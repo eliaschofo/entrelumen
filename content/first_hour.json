@@ -1,0 +1,638 @@
+{
+  "chapter": "a_light_among_ruins",
+  "title": {
+    "en_us": "I · A Light Among Ruins",
+    "es_es": "I · Una luz entre ruinas"
+  },
+  "quests": [
+    {
+      "key": "arrival",
+      "deps": [],
+      "type": "checkmark",
+      "optional": true,
+      "icon": "minecraft:book",
+      "en_us": [
+        "A page without a place",
+        "An unsigned page whispers: 'A place begins when someone decides to return.' Choose a site with water, wood and room to grow.\n\nOpen quests with F8 or the book icon in your inventory. If you change the binding, find Quests in Controls. Read, then confirm; this optional acknowledgement does not advance the campaign."
+      ],
+      "es_es": [
+        "Una página sin lugar",
+        "Una página sin firma susurra: «Un lugar empieza cuando alguien decide volver». Elegí un sitio con agua, madera y espacio para crecer.\n\nAbrí las misiones con F8 o con el icono de libro del inventario. Si cambiás la tecla, buscá Misiones en Controles. Leé y confirmá: esta lectura opcional no avanza la campaña."
+      ],
+      "layout": {
+        "x": 0,
+        "y": 0,
+        "group": "shelter",
+        "shape": "circle",
+        "size": 0.75,
+        "hide_dependent_lines": false
+      }
+    },
+    {
+      "key": "workbench",
+      "deps": [
+        "arrival"
+      ],
+      "item": "minecraft:crafting_table",
+      "en_us": [
+        "Somewhere to begin",
+        "Build a crafting table. Before making a new tool, inspect its recipe and uses in the recipe viewer. The Atlas can remember a hundred destinations; a workbench gives you the means to reach the first."
+      ],
+      "es_es": [
+        "Un sitio para empezar",
+        "Fabricá una mesa de trabajo. Antes de hacer una herramienta nueva, consultá su receta y sus usos en el visor de recetas. El Atlas puede recordar cien destinos; una mesa te da los medios para alcanzar el primero."
+      ],
+      "layout": {
+        "x": 0,
+        "y": 2,
+        "group": "shelter",
+        "shape": "square",
+        "size": 0.85,
+        "hide_dependent_lines": true
+      }
+    },
+    {
+      "key": "stone_tools",
+      "deps": [
+        "workbench"
+      ],
+      "item": "minecraft:stone_pickaxe",
+      "en_us": [
+        "Read the stone",
+        "Make a stone pickaxe and inspect the block information overlay before mining unfamiliar ore. Tool requirements matter. Keep your wooden tool only if you still need it; the expedition is easier with a clear inventory."
+      ],
+      "es_es": [
+        "Leer la piedra",
+        "Fabricá un pico de piedra y consultá la información del bloque antes de picar una mena desconocida. El nivel de herramienta importa. Conservá el pico de madera sólo si todavía te sirve: una expedición es más cómoda con el inventario despejado."
+      ],
+      "layout": {
+        "x": 1,
+        "y": 4,
+        "group": "shelter",
+        "shape": "square",
+        "size": 0.85,
+        "hide_dependent_lines": false
+      }
+    },
+    {
+      "key": "recipe_favourites",
+      "deps": [
+        "workbench"
+      ],
+      "type": "checkmark",
+      "optional": true,
+      "icon": "minecraft:paper",
+      "en_us": [
+        "A recipe worth keeping",
+        "Open the recipe viewer and bookmark a recipe you plan to make next. Look up the viewer's bindings in Controls instead of guessing a key. Bookmarks are your shopping list; remove finished projects so the list stays useful. Confirm after trying it."
+      ],
+      "es_es": [
+        "Una receta para guardar",
+        "Abrí el visor de recetas y guardá una que quieras fabricar después. Buscá sus teclas en Controles en vez de adivinarlas. Los favoritos son tu lista de compras; quitá los proyectos terminados para mantenerla útil. Confirmá después de probarlo."
+      ],
+      "layout": {
+        "x": -4,
+        "y": 2,
+        "group": "qol",
+        "shape": "circle",
+        "size": 0.75,
+        "hide_dependent_lines": false
+      }
+    },
+    {
+      "key": "storage",
+      "deps": [
+        "workbench"
+      ],
+      "item": "minecraft:chest",
+      "en_us": [
+        "A shelf for tomorrow",
+        "Make a chest. Separate supplies for your next project from things you are collecting for later. Try the installed sorting and matching-deposit controls on ordinary materials first. Comfortable storage is available now; its purpose is to save attention."
+      ],
+      "es_es": [
+        "Un estante para mañana",
+        "Fabricá un cofre. Separá los materiales del próximo proyecto de lo que guardás para después. Probá ordenar y depositar objetos coincidentes primero con materiales comunes. El almacenamiento cómodo está disponible desde ahora: sirve para ahorrar atención."
+      ],
+      "layout": {
+        "x": -2,
+        "y": 4,
+        "group": "shelter",
+        "shape": "square",
+        "size": 0.85,
+        "hide_dependent_lines": false
+      }
+    },
+    {
+      "key": "furnace",
+      "deps": [
+        "stone_tools"
+      ],
+      "item": "minecraft:furnace",
+      "en_us": [
+        "Heat with a purpose",
+        "Build a furnace and cook or smelt a useful batch. Fuel keeps burning once lit, so prepare the inputs before starting. Later workshops will automate this same pattern: supply, transformation, collection."
+      ],
+      "es_es": [
+        "Calor con propósito",
+        "Construí un horno y cociná o fundí una tanda útil. El combustible sigue ardiendo después de encenderse: prepará los ingredientes antes. Los talleres futuros automatizarán este mismo patrón: abastecer, transformar y recoger."
+      ],
+      "layout": {
+        "x": 0,
+        "y": 6,
+        "group": "shelter",
+        "shape": "square",
+        "size": 0.85,
+        "hide_dependent_lines": true
+      }
+    },
+    {
+      "key": "light",
+      "deps": [
+        "stone_tools"
+      ],
+      "item": "minecraft:torch",
+      "count": 8,
+      "en_us": [
+        "The edge of the dark",
+        "Prepare eight torches. Light the path between your entrance, water and work area before expanding underground. A lit route is also a promise: you intend to come back along it."
+      ],
+      "es_es": [
+        "El borde de la oscuridad",
+        "Prepará ocho antorchas. Iluminá el camino entre la entrada, el agua y el taller antes de avanzar bajo tierra. Un camino iluminado también es una promesa: pensás volver por ahí."
+      ],
+      "layout": {
+        "x": 2,
+        "y": 6,
+        "group": "shelter",
+        "shape": "square",
+        "size": 0.85,
+        "hide_dependent_lines": false
+      }
+    },
+    {
+      "key": "bed",
+      "deps": [
+        "storage"
+      ],
+      "type": "checkmark",
+      "optional": true,
+      "icon": "minecraft:red_bed",
+      "en_us": [
+        "A return address",
+        "Place and use a bed when you can obtain wool safely. Check that the respawn space is clear. In co-op, tell your companions where the shelter is. This optional practice does not require hunting sheep immediately."
+      ],
+      "es_es": [
+        "Una dirección de regreso",
+        "Colocá y usá una cama cuando consigas lana sin complicarte. Dejá libre el espacio de reaparición. En cooperativo, contales a tus compañeros dónde está el refugio. Esta práctica opcional no exige salir a buscar ovejas de inmediato."
+      ],
+      "layout": {
+        "x": -5,
+        "y": 5,
+        "group": "qol",
+        "shape": "circle",
+        "size": 0.75,
+        "hide_dependent_lines": false
+      }
+    },
+    {
+      "key": "atlas",
+      "deps": [
+        "furnace",
+        "light"
+      ],
+      "milestone": "atlas_awakened",
+      "icon": "entrelumen:atlas",
+      "en_us": [
+        "The Atlas listens",
+        "The cover warms. 'Make room for those who have not arrived.'\n\nClick this milestone's task to open the Atlas. Select The Atlas Awakens, read its materials and choose Deliver. The first delivery gives your team a portable Atlas. Use the item to return to this screen; its crafting recipe is for replacements and gifts."
+      ],
+      "es_es": [
+        "El Atlas escucha",
+        "La tapa se entibia. «Hacé lugar para quienes todavía no llegaron».\n\nHacé clic en la tarea de este hito para abrir el Atlas. Elegí El Atlas despierta, revisá los materiales y pulsá Entregar. La primera entrega da un Atlas portátil a tu equipo. Usá el objeto para volver a esta pantalla; su receta sirve para reposiciones y regalos."
+      ],
+      "layout": {
+        "x": 1,
+        "y": 9,
+        "group": "signal",
+        "shape": "hexagon",
+        "size": 1.1,
+        "hide_dependent_lines": false
+      }
+    },
+    {
+      "key": "water",
+      "deps": [
+        "furnace"
+      ],
+      "item": "minecraft:bucket",
+      "en_us": [
+        "Carry the river",
+        "Smelt enough iron for a bucket. Carry water to a small farm near the shelter; hydrated farmland supports reliable food production. Keep the water accessible for future recipes and emergencies."
+      ],
+      "es_es": [
+        "Llevar el río",
+        "Fundí el hierro necesario para un balde. Acercá agua a una huerta pequeña junto al refugio: la tierra hidratada sostiene una producción confiable de comida. Dejá el agua accesible para recetas y emergencias."
+      ],
+      "layout": {
+        "x": -4,
+        "y": 8,
+        "group": "kitchen",
+        "shape": "square",
+        "size": 0.85,
+        "hide_dependent_lines": false
+      }
+    },
+    {
+      "key": "garden",
+      "deps": [
+        "water"
+      ],
+      "item": "minecraft:wheat",
+      "count": 3,
+      "en_us": [
+        "The patient part",
+        "Harvest three wheat and replant before leaving. A tiny maintained plot beats a huge forgotten field. Save seeds separately from food so one hurried inventory transfer does not empty the next harvest."
+      ],
+      "es_es": [
+        "La parte paciente",
+        "Cosechá tres unidades de trigo y replantá antes de irte. Una huerta pequeña y atendida rinde más que un campo enorme olvidado. Separá semillas y comida para que una transferencia apurada no se lleve la próxima cosecha."
+      ],
+      "layout": {
+        "x": -5,
+        "y": 10,
+        "group": "kitchen",
+        "shape": "square",
+        "size": 0.85,
+        "hide_dependent_lines": false
+      }
+    },
+    {
+      "key": "knife",
+      "deps": [
+        "furnace"
+      ],
+      "item": "farmersdelight:flint_knife",
+      "en_us": [
+        "A kitchen tool",
+        "Make a flint knife. Inspect its uses: Farmer's Delight knives take part in cutting-board recipes and gathering certain ingredients. Choose the recipe you need before spending durability on random plants."
+      ],
+      "es_es": [
+        "Una herramienta de cocina",
+        "Fabricá un cuchillo de pedernal. Consultá sus usos: los cuchillos de Farmer's Delight participan en recetas de la tabla de cortar y en la recolección de ciertos ingredientes. Elegí lo que necesitás antes de gastar durabilidad en plantas al azar."
+      ],
+      "layout": {
+        "x": -2,
+        "y": 8,
+        "group": "kitchen",
+        "shape": "square",
+        "size": 0.85,
+        "hide_dependent_lines": false
+      }
+    },
+    {
+      "key": "cutting_board",
+      "deps": [
+        "knife"
+      ],
+      "item": "farmersdelight:cutting_board",
+      "en_us": [
+        "A different kind of crafting",
+        "Place a cutting board and inspect a recipe that uses it. Put down the ingredient, then use the indicated tool. The board is a workstation with its own interactions; an ordinary crafting grid cannot replace it."
+      ],
+      "es_es": [
+        "Otra forma de fabricar",
+        "Colocá una tabla de cortar y consultá una receta que la use. Poné el ingrediente y después usá la herramienta indicada. La tabla tiene sus propias interacciones: una cuadrícula de fabricación común no la reemplaza."
+      ],
+      "layout": {
+        "x": -2,
+        "y": 10,
+        "group": "kitchen",
+        "shape": "square",
+        "size": 0.85,
+        "hide_dependent_lines": false
+      }
+    },
+    {
+      "key": "bowl",
+      "deps": [
+        "workbench"
+      ],
+      "item": "minecraft:bowl",
+      "count": 4,
+      "en_us": [
+        "Four places at the table",
+        "Prepare four bowls. Some meals return their container after eating; account for containers when planning a batch. Mara's margin note reads: 'A kitchen is measured by the people it can welcome.'"
+      ],
+      "es_es": [
+        "Cuatro lugares en la mesa",
+        "Prepará cuatro cuencos. Algunas comidas devuelven su recipiente al comerlas; contalos cuando prepares una tanda. Mara escribió al margen: «Una cocina se mide por la gente que puede recibir»."
+      ],
+      "layout": {
+        "x": -7,
+        "y": 10,
+        "group": "kitchen",
+        "shape": "square",
+        "size": 0.85,
+        "hide_dependent_lines": false
+      }
+    },
+    {
+      "key": "bread",
+      "deps": [
+        "garden"
+      ],
+      "item": "minecraft:bread",
+      "count": 3,
+      "en_us": [
+        "Food before distance",
+        "Prepare three bread for the short survey. Watch both hunger and saturation information: a fuller hunger bar alone does not describe how long a meal will sustain you. Keep a reserve at home."
+      ],
+      "es_es": [
+        "Comida antes que distancia",
+        "Prepará tres panes para el reconocimiento breve. Mirá la información de hambre y saturación: una barra de hambre llena no explica por sí sola cuánto te sostendrá una comida. Dejá una reserva en casa."
+      ],
+      "layout": {
+        "x": -5,
+        "y": 12,
+        "group": "kitchen",
+        "shape": "square",
+        "size": 0.85,
+        "hide_dependent_lines": false
+      }
+    },
+    {
+      "key": "table",
+      "deps": [
+        "atlas",
+        "cutting_board",
+        "bowl",
+        "bread"
+      ],
+      "milestone": "travellers_table",
+      "icon": "farmersdelight:cutting_board",
+      "en_us": [
+        "A table for those returning",
+        "Mara left a place at the table for a stranger. Keep this kitchen: future expeditions will need it.\n\nOpen the Atlas, select A Table for Travellers and check the available and missing materials before choosing Deliver. This first version checks the delivery, not your kitchen's layout."
+      ],
+      "es_es": [
+        "Una mesa para quienes vuelven",
+        "Mara dejó un lugar en la mesa para alguien desconocido. Conservá esta cocina: las próximas expediciones la van a necesitar.\n\nAbrí el Atlas, elegí Una mesa para viajeros y revisá los materiales disponibles y faltantes antes de pulsar Entregar. Esta primera versión comprueba la entrega, no la distribución de la cocina."
+      ],
+      "layout": {
+        "x": -3,
+        "y": 15,
+        "group": "kitchen",
+        "shape": "hexagon",
+        "size": 1.1,
+        "hide_dependent_lines": false
+      }
+    },
+    {
+      "key": "copper",
+      "deps": [
+        "furnace"
+      ],
+      "item": "minecraft:copper_ingot",
+      "count": 4,
+      "en_us": [
+        "Metal that remembers weather",
+        "Smelt four copper ingots. The old instruments used copper frames: easy to shape, easy to recognise. Store the ingots with the glass for the lens project instead of scattering them across chests."
+      ],
+      "es_es": [
+        "Un metal que recuerda el clima",
+        "Fundí cuatro lingotes de cobre. Los instrumentos antiguos usaban marcos de cobre: fáciles de moldear y reconocer. Guardalos junto al vidrio del proyecto de la lente, en vez de repartirlos entre cofres."
+      ],
+      "layout": {
+        "x": 4,
+        "y": 8,
+        "group": "cartography",
+        "shape": "square",
+        "size": 0.85,
+        "hide_dependent_lines": false
+      }
+    },
+    {
+      "key": "glass",
+      "deps": [
+        "furnace"
+      ],
+      "item": "minecraft:glass",
+      "count": 4,
+      "en_us": [
+        "A window small enough to carry",
+        "Smelt four glass. Take sand from a small, safe patch rather than undermining the bank beside your shelter. The lens starts with common materials; careful assembly will give them their purpose."
+      ],
+      "es_es": [
+        "Una ventana que cabe en la mano",
+        "Fundí cuatro bloques de vidrio. Sacá arena de un sitio pequeño y seguro, sin socavar la orilla del refugio. La lente empieza con materiales comunes; el armado cuidadoso les dará su función."
+      ],
+      "layout": {
+        "x": 3,
+        "y": 10,
+        "group": "cartography",
+        "shape": "square",
+        "size": 0.85,
+        "hide_dependent_lines": false
+      }
+    },
+    {
+      "key": "lens",
+      "deps": [
+        "atlas",
+        "copper",
+        "glass"
+      ],
+      "milestone": "lens_assembled",
+      "icon": "entrelumen:raw_lens",
+      "en_us": [
+        "A borrowed horizon",
+        "Ivo wrote beside the sketch: 'Measure before believing.'\n\nOpen the Atlas and select Assemble the Lens. Deliver the listed materials to receive the lens once. You do not need to craft another one for this project. Keep it for the first signal; the recipe remains available for replacements."
+      ],
+      "es_es": [
+        "Un horizonte prestado",
+        "Ivo escribió junto al dibujo: «Medí antes de creer».\n\nAbrí el Atlas y elegí Ensamblar la lente. Entregá los materiales indicados para recibir la lente una sola vez. No hace falta fabricar otra para este proyecto. Guardala para la primera señal; la receta sigue disponible para reposiciones."
+      ],
+      "layout": {
+        "x": 4,
+        "y": 12,
+        "group": "cartography",
+        "shape": "hexagon",
+        "size": 1.1,
+        "hide_dependent_lines": false
+      }
+    },
+    {
+      "key": "map_marker",
+      "deps": [
+        "storage"
+      ],
+      "type": "checkmark",
+      "optional": true,
+      "icon": "minecraft:map",
+      "en_us": [
+        "Mark the ordinary",
+        "Find the installed map controls and mark your shelter. Give the marker a practical name. Check the route home before leaving; a map is useful because it records your world, even when the Atlas remembers another one."
+      ],
+      "es_es": [
+        "Marcar lo cotidiano",
+        "Buscá los controles del mapa instalado y marcá tu refugio. Poné un nombre práctico. Revisá el regreso antes de salir: un mapa sirve porque registra tu mundo, aunque el Atlas recuerde otro."
+      ],
+      "layout": {
+        "x": 6,
+        "y": 8,
+        "group": "qol",
+        "shape": "circle",
+        "size": 0.75,
+        "hide_dependent_lines": false
+      }
+    },
+    {
+      "key": "survey_kit",
+      "deps": [
+        "bread",
+        "light"
+      ],
+      "item": "minecraft:paper",
+      "count": 3,
+      "en_us": [
+        "Leave with a question",
+        "Prepare three paper for field notes. Carry food, a pickaxe and light, leaving space for samples. Choose a nearby stretch of ground you can return from before supplies run low. This is a survey, not a race to a distant dimension."
+      ],
+      "es_es": [
+        "Salir con una pregunta",
+        "Prepará tres hojas de papel para las notas de campo. Llevá comida, pico y luz, y dejá espacio para muestras. Elegí un terreno cercano del que puedas volver antes de agotar provisiones. Es un reconocimiento, no una carrera hacia otra dimensión."
+      ],
+      "layout": {
+        "x": 1,
+        "y": 14,
+        "group": "cartography",
+        "shape": "square",
+        "size": 0.85,
+        "hide_dependent_lines": false
+      }
+    },
+    {
+      "key": "survey",
+      "deps": [
+        "lens",
+        "survey_kit"
+      ],
+      "milestone": "field_survey",
+      "icon": "entrelumen:survey_notes",
+      "en_us": [
+        "Two accounts of one place",
+        "Take a short walk. Compare one nearby landmark with your map, then return while you still have supplies.\n\nIn the Atlas, select Field Survey and Deliver its supplies to receive your notes. This version checks materials; the walk is suggested practice without a distance requirement. Keep the notes for the signal."
+      ],
+      "es_es": [
+        "Dos versiones de un lugar",
+        "Hacé una caminata breve. Compará un punto cercano con tu mapa y volvé mientras todavía tengas provisiones.\n\nEn el Atlas, elegí Relevamiento de campo y Entregar para recibir las notas. Esta versión comprueba materiales; la caminata es una práctica sugerida, sin distancia obligatoria. Guardá las notas para la señal."
+      ],
+      "layout": {
+        "x": 4,
+        "y": 16,
+        "group": "cartography",
+        "shape": "hexagon",
+        "size": 1.1,
+        "hide_dependent_lines": false
+      }
+    },
+    {
+      "key": "unpack",
+      "deps": [
+        "survey_kit"
+      ],
+      "type": "checkmark",
+      "optional": true,
+      "icon": "minecraft:chest",
+      "en_us": [
+        "The expedition ends at home",
+        "After your outing, replenish food and torches before storing the rest. Try matching-deposit without moving the supplies you want to carry. Write down one missing material for the next trip. A good return makes the next departure easier."
+      ],
+      "es_es": [
+        "La expedición termina en casa",
+        "Al volver, reponé comida y antorchas antes de guardar el resto. Probá depositar coincidentes sin mover lo que querés llevar encima. Anotá un material faltante para la próxima salida. Un buen regreso facilita la próxima partida."
+      ],
+      "layout": {
+        "x": 7,
+        "y": 16,
+        "group": "qol",
+        "shape": "circle",
+        "size": 0.75,
+        "hide_dependent_lines": false
+      }
+    },
+    {
+      "key": "signal",
+      "deps": [
+        "table",
+        "survey"
+      ],
+      "milestone": "first_signal",
+      "icon": "entrelumen:signal_core",
+      "en_us": [
+        "One light answers",
+        "The Atlas records a distant light answering. Someone listened, or something remembers how.\n\nOpen First Signal in the Atlas and Deliver the listed materials. Completed deliveries survive a normal restart. This version records the signal; it has no visible world effect yet."
+      ],
+      "es_es": [
+        "Una luz responde",
+        "El Atlas registra una luz lejana que responde. Alguien escuchó, o algo recuerda cómo hacerlo.\n\nAbrí Primera señal en el Atlas y pulsá Entregar con los materiales indicados. Las entregas sobreviven a un reinicio normal. Esta versión registra la señal; todavía no tiene un efecto visible en el mundo."
+      ],
+      "layout": {
+        "x": 0,
+        "y": 19,
+        "group": "signal",
+        "shape": "hexagon",
+        "size": 1.1,
+        "hide_dependent_lines": false
+      }
+    },
+    {
+      "key": "next_page",
+      "deps": [
+        "signal"
+      ],
+      "type": "checkmark",
+      "optional": true,
+      "icon": "minecraft:book",
+      "en_us": [
+        "A workshop with a destination",
+        "Your workshop has a destination. Keep the kitchen, shelves and survey kit useful as you explore the lost crafts.\n\nOnce every project in this act is delivered, choose Advance in the Atlas to open the next act. If a response takes too long, choose Refresh before trying again. This closing reading grants no reward."
+      ],
+      "es_es": [
+        "Un taller con destino",
+        "Tu taller tiene un destino. Mantené útiles la cocina, los estantes y el equipo de reconocimiento mientras descubrís los oficios perdidos.\n\nCuando entregues todos los proyectos del acto, pulsá Avanzar en el Atlas para abrir el siguiente. Si una respuesta tarda demasiado, pulsá Actualizar antes de reintentar. Esta lectura de cierre no entrega premios."
+      ],
+      "layout": {
+        "x": 0,
+        "y": 22,
+        "group": "signal",
+        "shape": "circle",
+        "size": 0.75,
+        "hide_dependent_lines": false
+      }
+    }
+  ],
+  "layout_groups": {
+    "shelter": {
+      "en_us": "A place to return",
+      "es_es": "Un lugar al que volver"
+    },
+    "kitchen": {
+      "en_us": "Welcome the travellers",
+      "es_es": "Recibir a los viajeros"
+    },
+    "cartography": {
+      "en_us": "Measure the horizon",
+      "es_es": "Medir el horizonte"
+    },
+    "signal": {
+      "en_us": "A light answers",
+      "es_es": "Una luz responde"
+    },
+    "qol": {
+      "en_us": "Small useful habits",
+      "es_es": "Pequeñas costumbres útiles"
+    }
+  },
+  "autofocus": "arrival"
+}

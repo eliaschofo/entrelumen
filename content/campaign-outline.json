@@ -1,0 +1,1156 @@
+{
+  "schemaVersion": 1,
+  "status": "editorial outline only; no additional playable quest data",
+  "localization": "Titles and narrative beats EN/ES. Other fields are internal Spanish editorial instructions; future player-facing quests must be fully EN/ES.",
+  "sources": [
+    "content/story_bible.md",
+    "content/glossary.json",
+    "content/first_hour.json",
+    "content/integration-design.json"
+  ],
+  "targets": {
+    "chapters": 36,
+    "acts": 6,
+    "quests": 900,
+    "main_quests": 150,
+    "main_playtime_hours": [
+      150,
+      200
+    ],
+    "measurement_status": "unverified targets requiring new-world playtests; never gate by elapsed hours"
+  },
+  "production_gate": "Do not generate further runtime quest data until first-hour entry/Atlas GUI QA closes. Outline is not campaign implementation.",
+  "count_policy": "25 per chapter is a planning envelope. Merge or cut weak exercises; never split recipes or duplicate descriptions to reach 900. Existing first25 IDs/content remain unchanged.",
+  "progression_policy": "Act I closes through existing first_signal in chapter a1_c1. The other five Act I chapters are optional learning routes available afterwards; they never delay act II. Acts II-VI budget 29 main quests each; chapter prerequisites are narrative presentation only until implemented. Main=5+5*29=150.",
+  "project_policy": "Associated project is not a new delivery every chapter. Reused projects supply context to distinct demonstrations and story beats. Integration prototypes are presented non-consumingly; no duplicate reward. Existing first-hour consuming project semantics are preserved.",
+  "gift_policy": "Gifts remain usable. Receiving/crafting a prototype does not complete a narrative event or expedition. No provenance gate.",
+  "ending_policy": "Six module chapters converge into four commissioning phases defined in integration-design. No claim that current six-click controller implements those phases.",
+  "chapters": [
+    {
+      "id": "a1_c1",
+      "act": 1,
+      "slot": 1,
+      "title": {
+        "en_us": "A Light Among Ruins",
+        "es_es": "Una luz entre ruinas"
+      },
+      "status": "existing-slice-awaiting-final-entry-QA",
+      "quest_budget": {
+        "total_target": 25,
+        "main_target": 5,
+        "optional_target": 20
+      },
+      "prerequisite_chapters": [],
+      "associated_project": "first_signal",
+      "purpose": "Preservar íntegra la primera hora ya escrita.",
+      "narrative_beat": {
+        "en_us": "A distant point answers the Atlas; Mara asks for a place at the table.",
+        "es_es": "Un punto lejano responde al Atlas; Mara pide un lugar en la mesa."
+      },
+      "learns": "Refugio, cocina, lectura de recetas y entregas del Atlas.",
+      "decision_or_alternative": "Resolver los suministros solo o repartiendo oficios con el equipo.",
+      "memorable_ending": "La primera señal vincula una casa concreta con el misterio.",
+      "retained_smaller_mod_utility": "Farmer’s Delight mantiene la cocina como infraestructura.",
+      "verification_criterion": "Jugar las 25 existentes desde cero; no duplicar materiales al entregar o cambiar de equipo.",
+      "verification_kind": "manual tutorial plus server milestone evidence where implemented; self-reported building exercises explicitly labelled",
+      "project_binding": "existing project; no extra reward or re-completion"
+    },
+    {
+      "id": "a1_c2",
+      "act": 1,
+      "slot": 2,
+      "title": {
+        "en_us": "Shelves with Names",
+        "es_es": "Estantes con nombre"
+      },
+      "status": "outline-only",
+      "quest_budget": {
+        "total_target": 25,
+        "main_target": 0,
+        "optional_target": 25
+      },
+      "prerequisite_chapters": [
+        "a1_c1"
+      ],
+      "associated_project": "first_signal",
+      "purpose": "Hacer que ordenar sea una decisión útil y breve.",
+      "narrative_beat": {
+        "en_us": "Mara labels one shelf RETURN; it holds supplies, not trophies.",
+        "es_es": "Mara rotula un estante REGRESO: guarda provisiones, no trofeos."
+      },
+      "learns": "Depósito coincidente, bloqueo de espacios y separación de reservas.",
+      "decision_or_alternative": "Cofres etiquetados o cajones para materiales abundantes.",
+      "memorable_ending": "Volver y preparar la siguiente salida con un solo recorrido por el depósito.",
+      "retained_smaller_mod_utility": "Functional Storage conserva almacenamiento físico legible junto a futuras redes digitales.",
+      "verification_criterion": "Probar depósito con objetos reservados; confirmar que no se vacía el equipo de viaje.",
+      "verification_kind": "manual tutorial plus server milestone evidence where implemented; self-reported building exercises explicitly labelled",
+      "project_binding": "existing project; no extra reward or re-completion"
+    },
+    {
+      "id": "a1_c3",
+      "act": 1,
+      "slot": 3,
+      "title": {
+        "en_us": "The Second Supper",
+        "es_es": "La segunda cena"
+      },
+      "status": "outline-only",
+      "quest_budget": {
+        "total_target": 25,
+        "main_target": 0,
+        "optional_target": 25
+      },
+      "prerequisite_chapters": [
+        "a1_c1"
+      ],
+      "associated_project": "travellers_table",
+      "purpose": "Ofrecer variedad alimentaria sin exigir una cocina enorme.",
+      "narrative_beat": {
+        "en_us": "A fish bone marks Mara’s recipe: this meal survived a winter of failed harvests.",
+        "es_es": "Una espina marca la receta de Mara: esta comida sobrevivió a un invierno sin cosechas."
+      },
+      "learns": "Recipientes retornables, saturación y dos suministros renovables.",
+      "decision_or_alternative": "Huerta como base o pesca como complemento; ambas siguen disponibles.",
+      "memorable_ending": "Servir dos comidas distintas usando reservas que se pueden reponer.",
+      "retained_smaller_mod_utility": "Aquaculture aporta pesca como ruta alimentaria; Cooking for Blockheads organiza ingredientes.",
+      "verification_criterion": "Comprobar ingredientes, recipiente devuelto y utilidad real; no acumular buffs obligatorios.",
+      "verification_kind": "manual tutorial plus server milestone evidence where implemented; self-reported building exercises explicitly labelled",
+      "project_binding": "existing project; no extra reward or re-completion"
+    },
+    {
+      "id": "a1_c4",
+      "act": 1,
+      "slot": 4,
+      "title": {
+        "en_us": "A Door in the Rain",
+        "es_es": "Una puerta bajo la lluvia"
+      },
+      "status": "outline-only",
+      "quest_budget": {
+        "total_target": 25,
+        "main_target": 0,
+        "optional_target": 25
+      },
+      "prerequisite_chapters": [
+        "a1_c1"
+      ],
+      "associated_project": "atlas_awakened",
+      "purpose": "Enseñar construcción cómoda sin puntuar decoración arbitraria.",
+      "narrative_beat": {
+        "en_us": "The Atlas remembers a palace; Ivo sketches a dry doorway instead.",
+        "es_es": "El Atlas recuerda un palacio; Ivo dibuja una entrada seca."
+      },
+      "learns": "Colocación asistida, iluminación y circulación entre agua y taller.",
+      "decision_or_alternative": "Refugio excavado o construcción exterior con igual aceptación.",
+      "memorable_ending": "Mostrar una entrada clara que funciona de noche y bajo lluvia.",
+      "retained_smaller_mod_utility": "Supplementaries y Amendments aportan señalización e interacción, sin ser ingredientes forzados.",
+      "verification_criterion": "Recorrido manual y captura del jugador, rotulados como autoevaluación; no inventar detector de belleza.",
+      "verification_kind": "manual tutorial plus server milestone evidence where implemented; self-reported building exercises explicitly labelled",
+      "project_binding": "existing project; no extra reward or re-completion"
+    },
+    {
+      "id": "a1_c5",
+      "act": 1,
+      "slot": 5,
+      "title": {
+        "en_us": "The Safe Way Home",
+        "es_es": "El regreso seguro"
+      },
+      "status": "outline-only",
+      "quest_budget": {
+        "total_target": 25,
+        "main_target": 0,
+        "optional_target": 25
+      },
+      "prerequisite_chapters": [
+        "a1_c1"
+      ],
+      "associated_project": "field_survey",
+      "purpose": "Practicar orientación antes de exigir grandes expediciones.",
+      "narrative_beat": {
+        "en_us": "Ivo crosses out the shortest route and circles the route with a landmark.",
+        "es_es": "Ivo tacha el camino más corto y rodea el que tiene una referencia visible."
+      },
+      "learns": "Marcadores, lectura de terreno y reserva de comida.",
+      "decision_or_alternative": "Camino señalizado o waypoint; no exigir teletransporte temprano.",
+      "memorable_ending": "Regresar sin perder la referencia del refugio.",
+      "retained_smaller_mod_utility": "Waystones tendrá valor de regreso cuando esté disponible; los mapas siguen sirviendo antes.",
+      "verification_criterion": "Recorrido corto repetible y explicación del regreso; no acreditar descubrimiento por recibir un mapa.",
+      "verification_kind": "manual tutorial plus server milestone evidence where implemented; self-reported building exercises explicitly labelled",
+      "project_binding": "existing project; no extra reward or re-completion"
+    },
+    {
+      "id": "a1_c6",
+      "act": 1,
+      "slot": 6,
+      "title": {
+        "en_us": "Leave Room to Grow",
+        "es_es": "Dejá lugar para crecer"
+      },
+      "status": "outline-only",
+      "quest_budget": {
+        "total_target": 25,
+        "main_target": 0,
+        "optional_target": 25
+      },
+      "prerequisite_chapters": [
+        "a1_c1"
+      ],
+      "associated_project": "first_signal",
+      "purpose": "Preparar una base ampliable sin convertir planificación en grind.",
+      "narrative_beat": {
+        "en_us": "Sera’s first note leaves an empty square beside the workshop.",
+        "es_es": "La primera nota de Sera deja un cuadrado vacío junto al taller."
+      },
+      "learns": "Buffers, espacio de mantenimiento y búsqueda de conflictos de teclas.",
+      "decision_or_alternative": "Taller compacto vertical o patio de máquinas distribuido.",
+      "memorable_ending": "Elegir un próximo oficio y dejar su espacio conectado al refugio.",
+      "retained_smaller_mod_utility": "Sophisticated Storage conserva estaciones locales aunque aparezca AE2.",
+      "verification_criterion": "Explicar una ampliación y probar sus accesos; capítulo opcional no retrasa el acto II.",
+      "verification_kind": "manual tutorial plus server milestone evidence where implemented; self-reported building exercises explicitly labelled",
+      "project_binding": "existing project; no extra reward or re-completion"
+    },
+    {
+      "id": "a2_c1",
+      "act": 2,
+      "slot": 1,
+      "title": {
+        "en_us": "A Measure of Brass",
+        "es_es": "Una medida de latón"
+      },
+      "status": "outline-only",
+      "quest_budget": {
+        "total_target": 25,
+        "main_target": 5,
+        "optional_target": 20
+      },
+      "prerequisite_chapters": [
+        "a1_c1"
+      ],
+      "associated_project": "entrelumen:precision_bench",
+      "purpose": "Convertir fabricación precisa en capacidad durable.",
+      "narrative_beat": {
+        "en_us": "Ivo’s two rulers disagree; the missing mark belongs to a machine still turning.",
+        "es_es": "Las dos reglas de Ivo no coinciden; la marca faltante pertenece a una máquina que todavía gira."
+      },
+      "learns": "Prensado, trefilado y lectura de una cadena entre mods.",
+      "decision_or_alternative": "Una línea manual compacta o una primera automatización por lotes.",
+      "memorable_ending": "Cuatro marcos calibrados encajan en el instrumento conservado del acto I.",
+      "retained_smaller_mod_utility": "Immersive Engineering aporta alambre y taller físico; Create conserva la precisión.",
+      "verification_criterion": "Fabricar cuatro marcos mediante procesos propios y repetir un lote sin desmontar la línea.",
+      "verification_kind": "manual tutorial plus server milestone evidence where implemented; self-reported building exercises explicitly labelled",
+      "project_binding": "integration-design proposal; chapter milestones require implementation, not mere possession"
+    },
+    {
+      "id": "a2_c2",
+      "act": 2,
+      "slot": 2,
+      "title": {
+        "en_us": "Light through Copper",
+        "es_es": "Luz entre cobre"
+      },
+      "status": "outline-only",
+      "quest_budget": {
+        "total_target": 25,
+        "main_target": 5,
+        "optional_target": 20
+      },
+      "prerequisite_chapters": [
+        "a2_c1"
+      ],
+      "associated_project": "entrelumen:crystal_grid",
+      "purpose": "Diferenciar energía, transformación y materiales conductores.",
+      "narrative_beat": {
+        "en_us": "Sera’s wiring diagram ends at a red crystal rather than another engine.",
+        "es_es": "El diagrama de Sera termina en un cristal rojo y no en otro motor."
+      },
+      "learns": "Conversión láser y componentes de acero; entradas y salidas.",
+      "decision_or_alternative": "Abastecimiento manual pequeño o lote automatizado, sin reactor.",
+      "memorable_ending": "Un cristal deja de ser un premio suelto y alimenta un acoplador útil.",
+      "retained_smaller_mod_utility": "Actually Additions conserva cristales con demanda posterior en redes y Arca.",
+      "verification_criterion": "Obtener Restonia por su proceso y comprobar un acoplador con receta cargada.",
+      "verification_kind": "manual tutorial plus server milestone evidence where implemented; self-reported building exercises explicitly labelled",
+      "project_binding": "integration-design proposal; chapter milestones require implementation, not mere possession"
+    },
+    {
+      "id": "a2_c3",
+      "act": 2,
+      "slot": 3,
+      "title": {
+        "en_us": "A Workshop that Breathes",
+        "es_es": "Un taller que respira"
+      },
+      "status": "outline-only",
+      "quest_budget": {
+        "total_target": 25,
+        "main_target": 5,
+        "optional_target": 20
+      },
+      "prerequisite_chapters": [
+        "a2_c1"
+      ],
+      "associated_project": "entrelumen:living_workshop",
+      "purpose": "Presentar magia como un proceso que se comprende y cuida.",
+      "narrative_beat": {
+        "en_us": "Mara spots new leaves where Ivo had measured only iron.",
+        "es_es": "Mara encuentra hojas nuevas donde Ivo sólo había medido hierro."
+      },
+      "learns": "Fibra de magebloom y consumo/regeneración de aura.",
+      "decision_or_alternative": "Cultivo manual junto a un área de aura o automatización acotada al mismo terreno.",
+      "memorable_ending": "La matriz viva une el marco mecánico con una cosecha renovable.",
+      "retained_smaller_mod_utility": "Nature’s Aura conserva regeneración local en cadenas de naturaleza tardías.",
+      "verification_criterion": "Completar un ciclo de fibra e infusión; describir cómo se repone el aura sin agotar la zona.",
+      "verification_kind": "manual tutorial plus server milestone evidence where implemented; self-reported building exercises explicitly labelled",
+      "project_binding": "integration-design proposal; chapter milestones require implementation, not mere possession"
+    },
+    {
+      "id": "a2_c4",
+      "act": 2,
+      "slot": 4,
+      "title": {
+        "en_us": "Provisions for the Road",
+        "es_es": "Provisiones para el camino"
+      },
+      "status": "outline-only",
+      "quest_budget": {
+        "total_target": 25,
+        "main_target": 5,
+        "optional_target": 20
+      },
+      "prerequisite_chapters": [
+        "a2_c1"
+      ],
+      "associated_project": "entrelumen:travelling_pantry",
+      "purpose": "Dar propósito a cocina y pesca durante expediciones más largas.",
+      "narrative_beat": {
+        "en_us": "Mara writes two names on the ration ledger; one never returned to sign it.",
+        "es_es": "Mara escribe dos nombres en el registro de provisiones; uno nunca volvió a firmarlo."
+      },
+      "learns": "Producción de comidas, recipientes y cálculo de lotes.",
+      "decision_or_alternative": "Pesca propia o intercambio con otro jugador; comprobar una cadena alimentaria en casa.",
+      "memorable_ending": "Armar una reserva de viaje sin gastar la comida diaria del refugio.",
+      "retained_smaller_mod_utility": "Aquaculture aporta filetes; Cooking for Blockheads evita microgestión de ingredientes.",
+      "verification_criterion": "Preparar dos cadenas y verificar retorno de cuencos; el lote no concede buffs acumulables.",
+      "verification_kind": "manual tutorial plus server milestone evidence where implemented; self-reported building exercises explicitly labelled",
+      "project_binding": "integration-design proposal; chapter milestones require implementation, not mere possession"
+    },
+    {
+      "id": "a2_c5",
+      "act": 2,
+      "slot": 5,
+      "title": {
+        "en_us": "Two Ways to Turn a Wheel",
+        "es_es": "Dos maneras de mover una rueda"
+      },
+      "status": "outline-only",
+      "quest_budget": {
+        "total_target": 25,
+        "main_target": 5,
+        "optional_target": 20
+      },
+      "prerequisite_chapters": [
+        "a2_c2",
+        "a2_c3"
+      ],
+      "associated_project": "entrelumen:precision_bench",
+      "purpose": "Comparar soluciones sin declarar obsoleto el oficio más pequeño.",
+      "narrative_beat": {
+        "en_us": "Ivo and Sera sign opposite sides of the same working drawing.",
+        "es_es": "Ivo y Sera firman lados opuestos de un mismo plano que funciona."
+      },
+      "learns": "Costos de instalación, energía y facilidad de reparación.",
+      "decision_or_alternative": "Demostrar un abastecimiento mecánico o eléctrico del mismo lote de marcos.",
+      "memorable_ending": "Conservar una elección explicada, sin exigir fabricar la otra ruta.",
+      "retained_smaller_mod_utility": "Create e Immersive Engineering quedan como alternativas operativas, no escalones descartables.",
+      "verification_criterion": "Medir entradas de un lote equivalente; reconocimiento narrativo separado del crafteo.",
+      "verification_kind": "manual tutorial plus server milestone evidence where implemented; self-reported building exercises explicitly labelled",
+      "project_binding": "integration-design proposal; chapter milestones require implementation, not mere possession"
+    },
+    {
+      "id": "a2_c6",
+      "act": 2,
+      "slot": 6,
+      "title": {
+        "en_us": "The Missing Apprentice",
+        "es_es": "El aprendiz ausente"
+      },
+      "status": "outline-only",
+      "quest_budget": {
+        "total_target": 25,
+        "main_target": 4,
+        "optional_target": 21
+      },
+      "prerequisite_chapters": [
+        "a2_c4",
+        "a2_c5"
+      ],
+      "associated_project": "entrelumen:living_workshop",
+      "purpose": "Cerrar el acto uniendo oficios y preparar el intercambio.",
+      "narrative_beat": {
+        "en_us": "A final workshop entry lists three crafts under one apprentice’s unfinished name.",
+        "es_es": "La última entrada del taller reúne tres oficios bajo el nombre inconcluso de un aprendiz."
+      },
+      "learns": "Leer faltantes compartidos y repartir responsabilidades entre jugadores.",
+      "decision_or_alternative": "Repartirse precisión, energía y cultivo o completarlos por turnos jugando solo.",
+      "memorable_ending": "El Atlas encuentra una dirección de entrega, no una lista de minerales raros.",
+      "retained_smaller_mod_utility": "La fibra de Ars y el aura sostienen una rama paralela al metal y los cristales.",
+      "verification_criterion": "Demostrar un lote combinado con infraestructura retenida; no premiar de nuevo los prototipos presentados.",
+      "verification_kind": "manual tutorial plus server milestone evidence where implemented; self-reported building exercises explicitly labelled",
+      "project_binding": "integration-design proposal; chapter milestones require implementation, not mere possession"
+    },
+    {
+      "id": "a3_c1",
+      "act": 3,
+      "slot": 1,
+      "title": {
+        "en_us": "A Shared Language",
+        "es_es": "Un lenguaje compartido"
+      },
+      "status": "outline-only",
+      "quest_budget": {
+        "total_target": 25,
+        "main_target": 5,
+        "optional_target": 20
+      },
+      "prerequisite_chapters": [
+        "a2_c6"
+      ],
+      "associated_project": "entrelumen:signal_exchange",
+      "purpose": "Introducir almacenamiento digital al servicio de sistemas existentes.",
+      "narrative_beat": {
+        "en_us": "Sera translates two incompatible inventory labels into one destination.",
+        "es_es": "Sera traduce dos etiquetas de inventario incompatibles a un mismo destino."
+      },
+      "learns": "Procesadores AE2, PCB y solicitudes de fabricación.",
+      "decision_or_alternative": "Una red mínima o terminal conectado a depósitos físicos; sin exigir megaproyecto.",
+      "memorable_ending": "Solicitar una matriz y recibir exactamente lo pedido.",
+      "retained_smaller_mod_utility": "PneumaticCraft y Actually Additions mantienen procesos propios dentro de la red.",
+      "verification_criterion": "Fabricar procesador y PCB, solicitar un lote; regalos de piezas no completan la demostración.",
+      "verification_kind": "manual tutorial plus server milestone evidence where implemented; self-reported building exercises explicitly labelled",
+      "project_binding": "integration-design proposal; chapter milestones require implementation, not mere possession"
+    },
+    {
+      "id": "a3_c2",
+      "act": 3,
+      "slot": 2,
+      "title": {
+        "en_us": "Seeds of Continuity",
+        "es_es": "Semillas de continuidad"
+      },
+      "status": "outline-only",
+      "quest_budget": {
+        "total_target": 25,
+        "main_target": 5,
+        "optional_target": 20
+      },
+      "prerequisite_chapters": [
+        "a3_c1"
+      ],
+      "associated_project": "entrelumen:nursery_protocol",
+      "purpose": "Abrir recursos renovables por capacidades y tamaño razonable.",
+      "narrative_beat": {
+        "en_us": "Mara’s seed envelope contains wax around a drawing of a second harvest.",
+        "es_es": "El sobre de semillas de Mara tiene cera alrededor del dibujo de una segunda cosecha."
+      },
+      "learns": "Ciclo de cultivo y colmena, reproducción y límites de extracción.",
+      "decision_or_alternative": "Especializar recursos posteriores en cultivos o abejas; la introducción muestra ambos ciclos.",
+      "memorable_ending": "La primera reserva se repone sin salir a minar cada ingrediente.",
+      "retained_smaller_mod_utility": "Farming for Blockheads simplifica la huerta; Productive Bees aporta materiales complementarios.",
+      "verification_criterion": "Completar una cosecha y una colmena; comprobar que desbloqueos afectan obtención, nunca uso de regalos.",
+      "verification_kind": "manual tutorial plus server milestone evidence where implemented; self-reported building exercises explicitly labelled",
+      "project_binding": "integration-design proposal; chapter milestones require implementation, not mere possession"
+    },
+    {
+      "id": "a3_c3",
+      "act": 3,
+      "slot": 3,
+      "title": {
+        "en_us": "Power in Small Places",
+        "es_es": "Energía en lugares pequeños"
+      },
+      "status": "outline-only",
+      "quest_budget": {
+        "total_target": 25,
+        "main_target": 5,
+        "optional_target": 20
+      },
+      "prerequisite_chapters": [
+        "a3_c1"
+      ],
+      "associated_project": "entrelumen:distributed_power",
+      "purpose": "Enseñar energía suficiente y reserva, sin acelerar a reactores.",
+      "narrative_beat": {
+        "en_us": "A damaged map shows three small lights surviving after the central mark goes dark.",
+        "es_es": "Un mapa dañado muestra tres luces pequeñas encendidas después de apagarse la marca central."
+      },
+      "learns": "Demanda por lote, buffers de energía y alimentación separada.",
+      "decision_or_alternative": "Eólica de Mekanism o generación de Immersive Engineering.",
+      "memorable_ending": "Terminar el lote después de desconectar la fuente central de prueba.",
+      "retained_smaller_mod_utility": "Immersive Engineering conserva generación y placas útiles junto a Mekanism.",
+      "verification_criterion": "Probar una línea pequeña con reserva; no exigir producción continua ni chunks extra.",
+      "verification_kind": "manual tutorial plus server milestone evidence where implemented; self-reported building exercises explicitly labelled",
+      "project_binding": "integration-design proposal; chapter milestones require implementation, not mere possession"
+    },
+    {
+      "id": "a3_c4",
+      "act": 3,
+      "slot": 4,
+      "title": {
+        "en_us": "When the Shelf Is Full",
+        "es_es": "Cuando el estante está lleno"
+      },
+      "status": "outline-only",
+      "quest_budget": {
+        "total_target": 25,
+        "main_target": 5,
+        "optional_target": 20
+      },
+      "prerequisite_chapters": [
+        "a3_c1"
+      ],
+      "associated_project": "entrelumen:measured_logistics",
+      "purpose": "Enseñar que una automatización buena también se detiene.",
+      "narrative_beat": {
+        "en_us": "Sera marks STOP beside the only undamaged storeroom.",
+        "es_es": "Sera escribe PARAR junto al único depósito intacto."
+      },
+      "learns": "Lectura de inventario, umbrales y backpressure.",
+      "decision_or_alternative": "Integrated Dynamics con túneles o LaserIO para el control del buffer.",
+      "memorable_ending": "El último objeto llega y la línea se detiene sola.",
+      "retained_smaller_mod_utility": "Integrated Dynamics resuelve control lógico; Functional Storage sigue como buffer visible.",
+      "verification_criterion": "Mover un lote, alcanzar el umbral y reanudar tras retirar parte; sin entidades tiradas.",
+      "verification_kind": "manual tutorial plus server milestone evidence where implemented; self-reported building exercises explicitly labelled",
+      "project_binding": "integration-design proposal; chapter milestones require implementation, not mere possession"
+    },
+    {
+      "id": "a3_c5",
+      "act": 3,
+      "slot": 5,
+      "title": {
+        "en_us": "Hands for the Workshop",
+        "es_es": "Manos para el taller"
+      },
+      "status": "outline-only",
+      "quest_budget": {
+        "total_target": 25,
+        "main_target": 5,
+        "optional_target": 20
+      },
+      "prerequisite_chapters": [
+        "a3_c2",
+        "a3_c3"
+      ],
+      "associated_project": "entrelumen:workshop_hands",
+      "purpose": "Reservar transporte flexible para problemas donde aporta algo.",
+      "narrative_beat": {
+        "en_us": "An unsigned maintenance note describes a hand that never needed a corridor.",
+        "es_es": "Una nota de mantenimiento sin firma describe una mano que nunca necesitó pasillo."
+      },
+      "learns": "Filtros, caras de inventario y movimiento discreto.",
+      "decision_or_alternative": "Modular Routers para un punto difícil o Pipez para una conexión directa.",
+      "memorable_ending": "Treinta y dos piezas cambian de estación sin llenar el suelo.",
+      "retained_smaller_mod_utility": "Modular Routers sirve en espacios difíciles mientras Pipez sigue válido para recorridos simples.",
+      "verification_criterion": "Transferir 32 objetos exactos, sin pérdida ni duplicación, con reinicio intermedio.",
+      "verification_kind": "manual tutorial plus server milestone evidence where implemented; self-reported building exercises explicitly labelled",
+      "project_binding": "integration-design proposal; chapter milestones require implementation, not mere possession"
+    },
+    {
+      "id": "a3_c6",
+      "act": 3,
+      "slot": 6,
+      "title": {
+        "en_us": "The First Broken Link",
+        "es_es": "El primer enlace roto"
+      },
+      "status": "outline-only",
+      "quest_budget": {
+        "total_target": 25,
+        "main_target": 4,
+        "optional_target": 21
+      },
+      "prerequisite_chapters": [
+        "a3_c4",
+        "a3_c5"
+      ],
+      "associated_project": "entrelumen:measured_logistics",
+      "purpose": "Unir logística con la razón humana de abastecer.",
+      "narrative_beat": {
+        "en_us": "The earliest failure report comes from a pantry, days before the central alarm.",
+        "es_es": "El primer informe de falla viene de una despensa, días antes de la alarma central."
+      },
+      "learns": "Pedidos mixtos y diagnóstico de un cuello de botella.",
+      "decision_or_alternative": "Resolver falta de suministro, capacidad o control: demostrar sólo la causa elegida.",
+      "memorable_ending": "Una cocina vuelve a recibir sus pedidos y cambia la lectura de la catástrofe.",
+      "retained_smaller_mod_utility": "Sensores y cajones mantienen diagnóstico local, aunque AE2 coordine pedidos.",
+      "verification_criterion": "Provocar y corregir un faltante controlado; reconocer una entrega mixta una vez.",
+      "verification_kind": "manual tutorial plus server milestone evidence where implemented; self-reported building exercises explicitly labelled",
+      "project_binding": "integration-design proposal; chapter milestones require implementation, not mere possession"
+    },
+    {
+      "id": "a4_c1",
+      "act": 4,
+      "slot": 1,
+      "title": {
+        "en_us": "The Spectral Archive",
+        "es_es": "El archivo espectral"
+      },
+      "status": "outline-only",
+      "quest_budget": {
+        "total_target": 25,
+        "main_target": 5,
+        "optional_target": 20
+      },
+      "prerequisite_chapters": [
+        "a3_c6"
+      ],
+      "associated_project": "entrelumen:spectral_archive",
+      "purpose": "Abrir investigación arcana con pruebas contradictorias.",
+      "narrative_beat": {
+        "en_us": "Two recovered voices give different dates for the same last departure.",
+        "es_es": "Dos voces recuperadas dan fechas distintas para la misma última partida."
+      },
+      "learns": "Procesamiento de Occultism y Malum, lentes y cadena de evidencia.",
+      "decision_or_alternative": "Comparar testimonios en distinto orden, conservando ambos.",
+      "memorable_ending": "La lente revela una corrección escrita sobre la fecha del Atlas.",
+      "retained_smaller_mod_utility": "Malum conserva materiales y sellos sin granjas masivas de sacrificio.",
+      "verification_criterion": "Recuperar dos testimonios identificados y presentar lente; inventario ajeno no cuenta como lectura del equipo.",
+      "verification_kind": "manual tutorial plus server milestone evidence where implemented; self-reported building exercises explicitly labelled",
+      "project_binding": "integration-design proposal; chapter milestones require implementation, not mere possession"
+    },
+    {
+      "id": "a4_c2",
+      "act": 4,
+      "slot": 2,
+      "title": {
+        "en_us": "Two Foreign Skies",
+        "es_es": "Dos cielos ajenos"
+      },
+      "status": "outline-only",
+      "quest_budget": {
+        "total_target": 25,
+        "main_target": 5,
+        "optional_target": 20
+      },
+      "prerequisite_chapters": [
+        "a4_c1"
+      ],
+      "associated_project": "entrelumen:horizon_survey",
+      "purpose": "Dar expediciones concretas con regreso preparado.",
+      "narrative_beat": {
+        "en_us": "Ivo draws the same missing tower beneath two incompatible skies.",
+        "es_es": "Ivo dibuja la misma torre ausente bajo dos cielos incompatibles."
+      },
+      "learns": "Portales, provisiones y observación en Aether y Twilight Forest.",
+      "decision_or_alternative": "Elegir qué dimensión visitar primero; registrar ambas antes de cerrar.",
+      "memorable_ending": "Volver al mismo refugio con dos observaciones que no encajan.",
+      "retained_smaller_mod_utility": "Waystones y mochilas reducen viaje repetido sin reemplazar descubrimientos.",
+      "verification_criterion": "Registrar visita del equipo a ambos destinos y regreso; controlar bloqueos propios de cada dimensión.",
+      "verification_kind": "manual tutorial plus server milestone evidence where implemented; self-reported building exercises explicitly labelled",
+      "project_binding": "integration-design proposal; chapter milestones require implementation, not mere possession"
+    },
+    {
+      "id": "a4_c3",
+      "act": 4,
+      "slot": 3,
+      "title": {
+        "en_us": "The Pollinator Treaty",
+        "es_es": "El acuerdo de los polinizadores"
+      },
+      "status": "outline-only",
+      "quest_budget": {
+        "total_target": 25,
+        "main_target": 5,
+        "optional_target": 20
+      },
+      "prerequisite_chapters": [
+        "a4_c1"
+      ],
+      "associated_project": "entrelumen:pollinator_treaty",
+      "purpose": "Presentar ecosistema como relación, no sólo cosecha de drops.",
+      "narrative_beat": {
+        "en_us": "Mara’s margin shows a flower beside a warning meant for the machines.",
+        "es_es": "El margen de Mara muestra una flor junto a una advertencia destinada a las máquinas."
+      },
+      "learns": "Interacción ecológica en Bumblezone y mantenimiento de colmena local.",
+      "decision_or_alternative": "Realizar la observación solo o acompañando a quien abastece la colmena.",
+      "memorable_ending": "La cápsula conserva una relación entre dos lugares, no una abeja sacrificada.",
+      "retained_smaller_mod_utility": "The Bumblezone mantiene expedición y materiales ecológicos en naturaleza avanzada.",
+      "verification_criterion": "Registrar interacción especificada por integración y una colmena productiva; nunca simular viaje con muestra regalada.",
+      "verification_kind": "manual tutorial plus server milestone evidence where implemented; self-reported building exercises explicitly labelled",
+      "project_binding": "integration-design proposal; chapter milestones require implementation, not mere possession"
+    },
+    {
+      "id": "a4_c4",
+      "act": 4,
+      "slot": 4,
+      "title": {
+        "en_us": "A Memory with a Seal",
+        "es_es": "Un recuerdo sellado"
+      },
+      "status": "outline-only",
+      "quest_budget": {
+        "total_target": 25,
+        "main_target": 5,
+        "optional_target": 20
+      },
+      "prerequisite_chapters": [
+        "a4_c1"
+      ],
+      "associated_project": "entrelumen:sealed_memory",
+      "purpose": "Hacer contención comprensible y útil para el Arca.",
+      "narrative_beat": {
+        "en_us": "Sera sealed the report because its reader could restart the wrong machine.",
+        "es_es": "Sera selló el informe porque quien lo leyera podía reiniciar la máquina equivocada."
+      },
+      "learns": "Lote arcano, seguridad de proceso y prueba antes de activación.",
+      "decision_or_alternative": "Usar la ruta base sellada; explorar transformación adicional de EvilCraft como maestría opcional.",
+      "memorable_ending": "Abrir una copia de consulta mientras el original permanece protegido.",
+      "retained_smaller_mod_utility": "EvilCraft mantiene una función de contención y una rama de transformación opcional.",
+      "verification_criterion": "Procesar lote acotado; rechazar activación incompleta sin destruir materiales previamente aceptados.",
+      "verification_kind": "manual tutorial plus server milestone evidence where implemented; self-reported building exercises explicitly labelled",
+      "project_binding": "integration-design proposal; chapter milestones require implementation, not mere possession"
+    },
+    {
+      "id": "a4_c5",
+      "act": 4,
+      "slot": 5,
+      "title": {
+        "en_us": "The Guardian’s Margin",
+        "es_es": "El margen del guardián"
+      },
+      "status": "outline-only",
+      "quest_budget": {
+        "total_target": 25,
+        "main_target": 5,
+        "optional_target": 20
+      },
+      "prerequisite_chapters": [
+        "a4_c2",
+        "a4_c3"
+      ],
+      "associated_project": "entrelumen:horizon_survey",
+      "purpose": "Concentrar combate en una expedición memorable y recuperable.",
+      "narrative_beat": {
+        "en_us": "A guarded annotation identifies the witness who never signed Mara’s ledger.",
+        "es_es": "Una anotación custodiada identifica al testigo que nunca firmó el registro de Mara."
+      },
+      "learns": "Preparación de equipo, patrones de encuentro y retirada.",
+      "decision_or_alternative": "Repartir combate y apoyo en coop o usar preparación y regreso en solo.",
+      "memorable_ending": "Tras el encuentro se recupera un nombre, no un salto aleatorio de poder.",
+      "retained_smaller_mod_utility": "Las comidas y herramientas situacionales tienen función en preparación; no se exige un arma única.",
+      "verification_criterion": "Elegir encuentro compatible con progresión de Twilight Forest; probar retirada y reintento sin borrar avance.",
+      "verification_kind": "manual tutorial plus server milestone evidence where implemented; self-reported building exercises explicitly labelled",
+      "project_binding": "integration-design proposal; chapter milestones require implementation, not mere possession"
+    },
+    {
+      "id": "a4_c6",
+      "act": 4,
+      "slot": 6,
+      "title": {
+        "en_us": "The Atlas Was Edited",
+        "es_es": "El Atlas fue corregido"
+      },
+      "status": "outline-only",
+      "quest_budget": {
+        "total_target": 25,
+        "main_target": 4,
+        "optional_target": 21
+      },
+      "prerequisite_chapters": [
+        "a4_c4",
+        "a4_c5"
+      ],
+      "associated_project": "entrelumen:spectral_archive",
+      "purpose": "Resolver la contradicción central sin convertirla en examen de lore.",
+      "narrative_beat": {
+        "en_us": "Three handwriting styles occupy a single restoration order; the Atlas calls them one voice.",
+        "es_es": "Tres caligrafías ocupan una orden de restauración; el Atlas las llama una sola voz."
+      },
+      "learns": "Comparar fuentes y vincular observaciones con proyectos.",
+      "decision_or_alternative": "Ordenar testimonios por fecha o por lugar; ambas lecturas revelan la mezcla.",
+      "memorable_ending": "El Atlas admite que conserva planes diferentes, no una verdad única.",
+      "retained_smaller_mod_utility": "Occultism y Malum siguen interpretando y preservando registros, no sólo fabricando armas.",
+      "verification_criterion": "Mostrar las tres fuentes y aceptar la síntesis explícita por equipo; sin respuesta oculta que bloquee.",
+      "verification_kind": "manual tutorial plus server milestone evidence where implemented; self-reported building exercises explicitly labelled",
+      "project_binding": "integration-design proposal; chapter milestones require implementation, not mere possession"
+    },
+    {
+      "id": "a5_c1",
+      "act": 5,
+      "slot": 1,
+      "title": {
+        "en_us": "A Backbone that Bends",
+        "es_es": "Una red que se adapta"
+      },
+      "status": "outline-only",
+      "quest_budget": {
+        "total_target": 25,
+        "main_target": 5,
+        "optional_target": 20
+      },
+      "prerequisite_chapters": [
+        "a4_c6"
+      ],
+      "associated_project": "entrelumen:resilient_backbone",
+      "purpose": "Construir capacidad de recuperación antes de escalar.",
+      "narrative_beat": {
+        "en_us": "Sera leaves a bypass around the line she once called permanent.",
+        "es_es": "Sera deja un desvío alrededor de la línea que una vez llamó permanente."
+      },
+      "learns": "Buffers, pausa limpia y reanudación de fabricación.",
+      "decision_or_alternative": "Panel ComputerCraft opcional o indicadores y controles sin código.",
+      "memorable_ending": "La línea vuelve a funcionar sin rehacer la instalación.",
+      "retained_smaller_mod_utility": "PneumaticCraft y routers resuelven distribución; ComputerCraft es observación opcional.",
+      "verification_criterion": "Vaciar y reponer un buffer, reiniciar y demostrar ausencia de duplicación en el lote.",
+      "verification_kind": "manual tutorial plus server milestone evidence where implemented; self-reported building exercises explicitly labelled",
+      "project_binding": "integration-design proposal; chapter milestones require implementation, not mere possession"
+    },
+    {
+      "id": "a5_c2",
+      "act": 5,
+      "slot": 2,
+      "title": {
+        "en_us": "A Living Reserve",
+        "es_es": "Una reserva viva"
+      },
+      "status": "outline-only",
+      "quest_budget": {
+        "total_target": 25,
+        "main_target": 5,
+        "optional_target": 20
+      },
+      "prerequisite_chapters": [
+        "a5_c1"
+      ],
+      "associated_project": "entrelumen:renewal_engine",
+      "purpose": "Integrar tres vías renovables sin crecimiento descontrolado.",
+      "narrative_beat": {
+        "en_us": "Mara asks for a reserve that grows back, not the largest harvest.",
+        "es_es": "Mara pide una reserva que vuelva a crecer, no la cosecha más grande."
+      },
+      "learns": "Cuellos de botella, reservas y equilibrio de aura.",
+      "decision_or_alternative": "Aumentar eficiencia local o escalonar lotes; no resolver con chunks forzados.",
+      "memorable_ending": "Completar la reserva con la misma huerta, colmena y zona de aura.",
+      "retained_smaller_mod_utility": "Nature’s Aura conserva regeneración como capacidad que MA no reemplaza.",
+      "verification_criterion": "Obtener un lote de cada vía y recuperar condiciones iniciales; registrar costo de ticks en instalación.",
+      "verification_kind": "manual tutorial plus server milestone evidence where implemented; self-reported building exercises explicitly labelled",
+      "project_binding": "integration-design proposal; chapter milestones require implementation, not mere possession"
+    },
+    {
+      "id": "a5_c3",
+      "act": 5,
+      "slot": 3,
+      "title": {
+        "en_us": "A Place Worth Returning To",
+        "es_es": "Un lugar al que volver"
+      },
+      "status": "outline-only",
+      "quest_budget": {
+        "total_target": 25,
+        "main_target": 5,
+        "optional_target": 20
+      },
+      "prerequisite_chapters": [
+        "a5_c1"
+      ],
+      "associated_project": "entrelumen:settlement_supply",
+      "purpose": "Cerrar el arco de cocina y habitabilidad sin consumir decoración.",
+      "narrative_beat": {
+        "en_us": "The oldest room in the Atlas has no throne, only a table with a spare bowl.",
+        "es_es": "La habitación más antigua del Atlas no tiene trono: sólo una mesa con un cuenco de más."
+      },
+      "learns": "Abastecimiento recurrente, descanso, iluminación y acceso.",
+      "decision_or_alternative": "Construir un refugio comunal o pequeñas casas conectadas a la misma reserva.",
+      "memorable_ending": "Recibir a todo el equipo sin desmontar sus puestos de trabajo.",
+      "retained_smaller_mod_utility": "Supplementaries y Amendments aportan uso y señalización; Cooking for Blockheads conserva cocina real.",
+      "verification_criterion": "Reponer un pedido mixto y recorrer el refugio; el diseño se autoevalúa, no se detecta automáticamente.",
+      "verification_kind": "manual tutorial plus server milestone evidence where implemented; self-reported building exercises explicitly labelled",
+      "project_binding": "integration-design proposal; chapter milestones require implementation, not mere possession"
+    },
+    {
+      "id": "a5_c4",
+      "act": 5,
+      "slot": 4,
+      "title": {
+        "en_us": "One Failed Delivery",
+        "es_es": "Una entrega fallida"
+      },
+      "status": "outline-only",
+      "quest_budget": {
+        "total_target": 25,
+        "main_target": 5,
+        "optional_target": 20
+      },
+      "prerequisite_chapters": [
+        "a5_c1"
+      ],
+      "associated_project": "entrelumen:resilient_backbone",
+      "purpose": "Practicar errores recuperables antes de comprometer el Arca.",
+      "narrative_beat": {
+        "en_us": "A torn receipt records no disaster: Sera stopped the order in time.",
+        "es_es": "Un recibo roto no registra un desastre: Sera detuvo el pedido a tiempo."
+      },
+      "learns": "Lectura de faltantes, entregas parciales previstas y no duplicación.",
+      "decision_or_alternative": "Probar un faltante de material o un prerrequisito incompleto.",
+      "memorable_ending": "Reintentar una entrega produce un solo resultado y deja el sistema útil.",
+      "retained_smaller_mod_utility": "Los buffers locales de Sophisticated Storage aíslan pruebas sin rehacer redes.",
+      "verification_criterion": "Inventario y progreso permanecen intactos tras rechazo; repetición idéntica no paga de nuevo.",
+      "verification_kind": "manual tutorial plus server milestone evidence where implemented; self-reported building exercises explicitly labelled",
+      "project_binding": "integration-design proposal; chapter milestones require implementation, not mere possession"
+    },
+    {
+      "id": "a5_c5",
+      "act": 5,
+      "slot": 5,
+      "title": {
+        "en_us": "Room for a Second Answer",
+        "es_es": "Lugar para otra respuesta"
+      },
+      "status": "outline-only",
+      "quest_budget": {
+        "total_target": 25,
+        "main_target": 5,
+        "optional_target": 20
+      },
+      "prerequisite_chapters": [
+        "a5_c2",
+        "a5_c3"
+      ],
+      "associated_project": "entrelumen:resilient_backbone",
+      "purpose": "Premiar alternativas reales sin forzar duplicar fábricas.",
+      "narrative_beat": {
+        "en_us": "Ivo leaves two working answers beside a question the Atlas wanted to close.",
+        "es_es": "Ivo deja dos respuestas que funcionan junto a una pregunta que el Atlas quería cerrar."
+      },
+      "learns": "Comparación de mantenimiento, espacio y demanda del proyecto.",
+      "decision_or_alternative": "Presentar ruta mecánica o ruta eléctrica para un mismo pedido; segunda ruta queda opcional.",
+      "memorable_ending": "Documentar una sustitución que conserva los demás oficios.",
+      "retained_smaller_mod_utility": "Actually Additions e Immersive Engineering retienen insumos específicos al escalar Mekanism.",
+      "verification_criterion": "Completar pedido equivalente con una alternativa y comprobar que ninguna receta exige ambas pruebas.",
+      "verification_kind": "manual tutorial plus server milestone evidence where implemented; self-reported building exercises explicitly labelled",
+      "project_binding": "integration-design proposal; chapter milestones require implementation, not mere possession"
+    },
+    {
+      "id": "a5_c6",
+      "act": 5,
+      "slot": 6,
+      "title": {
+        "en_us": "The Network We Refuse",
+        "es_es": "La red que no repetimos"
+      },
+      "status": "outline-only",
+      "quest_budget": {
+        "total_target": 25,
+        "main_target": 4,
+        "optional_target": 21
+      },
+      "prerequisite_chapters": [
+        "a5_c4",
+        "a5_c5"
+      ],
+      "associated_project": "entrelumen:settlement_supply",
+      "purpose": "Elegir reconstrucción distribuida como resolución de la investigación.",
+      "narrative_beat": {
+        "en_us": "The original design feeds every home through one gate; Mara’s correction draws six local reserves.",
+        "es_es": "El diseño original alimenta todas las casas por una puerta; Mara dibuja seis reservas locales."
+      },
+      "learns": "Dependencias entre seis disciplinas y reservas independientes.",
+      "decision_or_alternative": "Asignar responsables por disciplina o estaciones secuenciales para solo.",
+      "memorable_ending": "Aprobar un plano del Arca que no consume ni reemplaza el hogar.",
+      "retained_smaller_mod_utility": "La cocina, cultivos y depósitos siguen operativos como parte del diseño final.",
+      "verification_criterion": "Auditar seis suministros y ruta de recuperación; sin exigir tiempo online continuo.",
+      "verification_kind": "manual tutorial plus server milestone evidence where implemented; self-reported building exercises explicitly labelled",
+      "project_binding": "integration-design proposal; chapter milestones require implementation, not mere possession"
+    },
+    {
+      "id": "a6_c1",
+      "act": 6,
+      "slot": 1,
+      "title": {
+        "en_us": "The Beating Engine",
+        "es_es": "El motor del Arca"
+      },
+      "status": "outline-only",
+      "quest_budget": {
+        "total_target": 25,
+        "main_target": 5,
+        "optional_target": 20
+      },
+      "prerequisite_chapters": [
+        "a5_c6"
+      ],
+      "associated_project": "entrelumen:ark_engineering",
+      "purpose": "Instalar ingeniería y conservar fabricación precisa.",
+      "narrative_beat": {
+        "en_us": "Ivo’s oldest frame fits the newest engine without being melted down.",
+        "es_es": "El marco más antiguo de Ivo encaja en el motor nuevo sin volver al horno."
+      },
+      "learns": "Lote de calibración y lectura de reservas pendientes.",
+      "decision_or_alternative": "Alimentar lote desde red o buffer manual equivalente.",
+      "memorable_ending": "El controlador reconoce ingeniería sin consumir el bloque instalado.",
+      "retained_smaller_mod_utility": "Create y Actually Additions mantienen marcos y acopladores hasta el cierre.",
+      "verification_criterion": "Instalar módulo, aceptar calibración una vez y reiniciar conservando bloque y fase.",
+      "verification_kind": "manual tutorial plus server milestone evidence where implemented; self-reported building exercises explicitly labelled",
+      "project_binding": "integration-design proposal; chapter milestones require implementation, not mere possession"
+    },
+    {
+      "id": "a6_c2",
+      "act": 6,
+      "slot": 2,
+      "title": {
+        "en_us": "The Listening Chamber",
+        "es_es": "La cámara que escucha"
+      },
+      "status": "outline-only",
+      "quest_budget": {
+        "total_target": 25,
+        "main_target": 5,
+        "optional_target": 20
+      },
+      "prerequisite_chapters": [
+        "a5_c6"
+      ],
+      "associated_project": "entrelumen:ark_arcana",
+      "purpose": "Estabilizar memoria y preservar contexto.",
+      "narrative_beat": {
+        "en_us": "The chamber keeps the witnesses distinct instead of merging them into one answer.",
+        "es_es": "La cámara conserva a los testigos separados en vez de fundirlos en una respuesta."
+      },
+      "learns": "Sellos, testimonios y reanudación de fase.",
+      "decision_or_alternative": "Presentar testimonios en cualquier orden tras completar sus expediciones.",
+      "memorable_ending": "Tres voces se conservan con sus diferencias.",
+      "retained_smaller_mod_utility": "EvilCraft, Malum y Occultism aportan contención e interpretación necesarias.",
+      "verification_criterion": "Rechazo de lote incompleto no borra fases; no exigir familiares o sacrificios nuevos para reintentar.",
+      "verification_kind": "manual tutorial plus server milestone evidence where implemented; self-reported building exercises explicitly labelled",
+      "project_binding": "integration-design proposal; chapter milestones require implementation, not mere possession"
+    },
+    {
+      "id": "a6_c3",
+      "act": 6,
+      "slot": 3,
+      "title": {
+        "en_us": "The Garden in Reserve",
+        "es_es": "El jardín en reserva"
+      },
+      "status": "outline-only",
+      "quest_budget": {
+        "total_target": 25,
+        "main_target": 5,
+        "optional_target": 20
+      },
+      "prerequisite_chapters": [
+        "a5_c6"
+      ],
+      "associated_project": "entrelumen:ark_nature",
+      "purpose": "Completar naturaleza con abastecimiento finito y reposición.",
+      "narrative_beat": {
+        "en_us": "Mara closes the reserve and leaves a note: it will wait for you.",
+        "es_es": "Mara cierra la reserva y deja una nota: va a esperarte."
+      },
+      "learns": "Registro de cápsulas ecológicas y lotes naturales.",
+      "decision_or_alternative": "Producir en tandas o desde infraestructura continua con tope.",
+      "memorable_ending": "Cerrar la reserva sin drenaje durante una desconexión.",
+      "retained_smaller_mod_utility": "Bumblezone y Nature’s Aura conservan cápsulas y matriz viva en el módulo final.",
+      "verification_criterion": "Guardar y volver tras desconexión sin cambios en lotes aceptados; medir ausencia de tareas periódicas nuevas.",
+      "verification_kind": "manual tutorial plus server milestone evidence where implemented; self-reported building exercises explicitly labelled",
+      "project_binding": "integration-design proposal; chapter milestones require implementation, not mere possession"
+    },
+    {
+      "id": "a6_c4",
+      "act": 6,
+      "slot": 4,
+      "title": {
+        "en_us": "Nothing Lost in Transit",
+        "es_es": "Nada perdido en el camino"
+      },
+      "status": "outline-only",
+      "quest_budget": {
+        "total_target": 25,
+        "main_target": 5,
+        "optional_target": 20
+      },
+      "prerequisite_chapters": [
+        "a5_c6"
+      ],
+      "associated_project": "entrelumen:ark_logistics",
+      "purpose": "Hacer legibles las cantidades de puesta en marcha.",
+      "narrative_beat": {
+        "en_us": "Sera’s final manifest includes the tools needed to unpack it.",
+        "es_es": "El manifiesto final de Sera incluye las herramientas para desembalarlo."
+      },
+      "learns": "Buffer mixto y aceptación por fase.",
+      "decision_or_alternative": "Integrated Tunnels, LaserIO, routers o traslado manual autorizado.",
+      "memorable_ending": "El último lote llega sin una entidad de objeto perdida.",
+      "retained_smaller_mod_utility": "Las redes pequeñas siguen aceptadas; AE2 no monopoliza el transporte final.",
+      "verification_criterion": "Aceptar lotes parciales previstos mediante interacción; no extraer remoto; probar replay y reinicio.",
+      "verification_kind": "manual tutorial plus server milestone evidence where implemented; self-reported building exercises explicitly labelled",
+      "project_binding": "integration-design proposal; chapter milestones require implementation, not mere possession"
+    },
+    {
+      "id": "a6_c5",
+      "act": 6,
+      "slot": 5,
+      "title": {
+        "en_us": "Room for Everyone",
+        "es_es": "Un lugar para todos"
+      },
+      "status": "outline-only",
+      "quest_budget": {
+        "total_target": 25,
+        "main_target": 5,
+        "optional_target": 20
+      },
+      "prerequisite_chapters": [
+        "a5_c6"
+      ],
+      "associated_project": "entrelumen:ark_habitation",
+      "purpose": "Vincular cierre con hospitalidad y base útil.",
+      "narrative_beat": {
+        "en_us": "The spare bowl from the first page finally has a place beside the departure gate.",
+        "es_es": "El cuenco de más de la primera página encuentra lugar junto a la puerta de salida."
+      },
+      "learns": "Provisiones de viaje y zona de descanso operativa.",
+      "decision_or_alternative": "Un comedor común o reservas personales enlazadas; decoración libre.",
+      "memorable_ending": "El equipo puede partir y también decidir quedarse.",
+      "retained_smaller_mod_utility": "Aquaculture y Farmer’s Delight abastecen el final sin consumir muebles como rarezas.",
+      "verification_criterion": "Presentar abastecimiento y refugio documentado; no crear hambre artificial ni deterioro offline.",
+      "verification_kind": "manual tutorial plus server milestone evidence where implemented; self-reported building exercises explicitly labelled",
+      "project_binding": "integration-design proposal; chapter milestones require implementation, not mere possession"
+    },
+    {
+      "id": "a6_c6",
+      "act": 6,
+      "slot": 6,
+      "title": {
+        "en_us": "The Last Horizon",
+        "es_es": "El último horizonte"
+      },
+      "status": "outline-only",
+      "quest_budget": {
+        "total_target": 25,
+        "main_target": 4,
+        "optional_target": 21
+      },
+      "prerequisite_chapters": [
+        "a6_c1",
+        "a6_c2",
+        "a6_c3",
+        "a6_c4",
+        "a6_c5"
+      ],
+      "associated_project": "entrelumen:ark_exploration",
+      "purpose": "Completar exploración, puesta en marcha y cierre recuperable.",
+      "narrative_beat": {
+        "en_us": "The Atlas leaves its last page blank: the next place is yours to name.",
+        "es_es": "El Atlas deja la última página en blanco: el próximo lugar lo nombrás vos."
+      },
+      "learns": "Carta final, estados de cuatro fases y criterio de partida.",
+      "decision_or_alternative": "Elegir nombre y primer destino posgame; la campaña acepta ambas preferencias.",
+      "memorable_ending": "El Arca abre una conexión y conserva el hogar; maestrías quedan opcionales.",
+      "retained_smaller_mod_utility": "Waystones mantiene retorno; lentes arcanas y muestras dimensionales conservan utilidad.",
+      "verification_criterion": "Exigir seis módulos, fases calibrate/stabilize/provision/chart y visitas del equipo; probar cierre sin replay de premio.",
+      "verification_kind": "manual tutorial plus server milestone evidence where implemented; self-reported building exercises explicitly labelled",
+      "project_binding": "integration-design proposal; chapter milestones require implementation, not mere possession"
+    }
+  ]
+}

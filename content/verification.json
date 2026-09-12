@@ -1,0 +1,29 @@
+{
+  "scope": "First-hour authored quest slice; static checks only",
+  "quest_count": 25,
+  "campaign_task_count": 5,
+  "locales": ["en_us", "es_es"],
+  "passed": [
+    "python tools/generate_quests.py --check",
+    "Repeated generation produces identical output",
+    "Dependency cycle rejected",
+    "Missing dependency rejected",
+    "Duplicate semantic key rejected",
+    "Missing translation rejected",
+    "Farmer's Delight 1.21.1-1.3.3 JAR contains flint_knife and cutting_board item models"
+  ],
+  "not_verified": [
+    "FTB Quests SNBT load and custom task registration in game",
+    "Actual item registry resolution",
+    "Server task mirroring and team transitions",
+    "Rendered bilingual layout",
+    "First-hour duration and gameplay",
+    "Performance"
+  ],
+  "limitations": [
+    "Survey currently validates material delivery rather than movement",
+    "Signal has campaign state but no verified world visual effect",
+    "No FTB item rewards; companion owns transactional rewards",
+    "Further campaign quest production waits for playable slice verification"
+  ]
+}

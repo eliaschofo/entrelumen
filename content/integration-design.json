@@ -1,0 +1,2678 @@
+{
+  "schemaVersion": 1,
+  "status": "implementable proposal; not implemented campaign",
+  "platform": {
+    "minecraft": "1.21.1",
+    "loader": "neoforge-21.1.249"
+  },
+  "scope": {
+    "acts": [
+      2,
+      3,
+      4,
+      5,
+      6
+    ],
+    "projects": 22,
+    "contentMods": 39
+  },
+  "policies": {
+    "gifts": "All components and mod items remain usable, transferable and craftable regardless of campaign. Receiving an item never completes a narrative milestone.",
+    "recipeMechanism": "Register the 16 proposed component items, then implement 22 static shapeless recipes. Expand counts into <=9 occupied crafting slots; native crafting-table and automation support. No custom assembler needed.",
+    "progression": "Narrative directed prerequisites are distinct from physical recipe dependencies. Act number means expected acquisition phase, never a use restriction.",
+    "failureSafety": "Use native crafting transactions and vanilla container remainder behavior. Narrative delivery records idempotent accomplishment separately and grants no copy of the crafted output. No timer decay or forced chunks.",
+    "containers": "Preserve native recipe remainders for consumed soups/stews; verify bowls return normally in crafting and AE2 automation.",
+    "decorativeMods": "Optional building exercises with screenshots/manual checkmarks; no mandatory decorative ingredients.",
+    "massProduction": "Repeatable static crafting is compatible with ordinary crafting tables and existing autocrafting. No new tick handlers or machine scanning.",
+    "narrativeAcceptance": "A recipe craft or possession is never sufficient to finish a narrative project. Require previous narrative milestones plus the described demonstration/expedition and explicit acceptance. Manual installation exercises must be labelled self-reported, not machine-verified. Gifted prototypes are allowed; no provenance checks."
+  },
+  "components": [
+    {
+      "id": "entrelumen:calibration_frame",
+      "count": 1,
+      "registration": "proposed new component, must register before recipes"
+    },
+    {
+      "id": "entrelumen:energy_coupler",
+      "count": 1,
+      "registration": "proposed new component, must register before recipes"
+    },
+    {
+      "id": "entrelumen:living_matrix",
+      "count": 1,
+      "registration": "proposed new component, must register before recipes"
+    },
+    {
+      "id": "entrelumen:ration_bundle",
+      "count": 1,
+      "registration": "proposed new component, must register before recipes"
+    },
+    {
+      "id": "entrelumen:routing_matrix",
+      "count": 1,
+      "registration": "proposed new component, must register before recipes"
+    },
+    {
+      "id": "entrelumen:propagation_core",
+      "count": 1,
+      "registration": "proposed new component, must register before recipes"
+    },
+    {
+      "id": "entrelumen:power_regulator",
+      "count": 1,
+      "registration": "proposed new component, must register before recipes"
+    },
+    {
+      "id": "entrelumen:inventory_sensor",
+      "count": 1,
+      "registration": "proposed new component, must register before recipes"
+    },
+    {
+      "id": "entrelumen:handling_core",
+      "count": 1,
+      "registration": "proposed new component, must register before recipes"
+    },
+    {
+      "id": "entrelumen:spectral_lens",
+      "count": 1,
+      "registration": "proposed new component, must register before recipes"
+    },
+    {
+      "id": "entrelumen:horizon_chart",
+      "count": 1,
+      "registration": "proposed new component, must register before recipes"
+    },
+    {
+      "id": "entrelumen:ecosystem_capsule",
+      "count": 1,
+      "registration": "proposed new component, must register before recipes"
+    },
+    {
+      "id": "entrelumen:containment_seal",
+      "count": 1,
+      "registration": "proposed new component, must register before recipes"
+    },
+    {
+      "id": "entrelumen:ark_bus",
+      "count": 1,
+      "registration": "proposed new component, must register before recipes"
+    },
+    {
+      "id": "entrelumen:renewal_engine",
+      "count": 1,
+      "registration": "proposed new component, must register before recipes"
+    },
+    {
+      "id": "entrelumen:habitation_contract",
+      "count": 1,
+      "registration": "proposed new component, must register before recipes"
+    },
+    {
+      "id": "entrelumen:engineering_module",
+      "count": 1,
+      "registration": "existing companion module; replace placeholder acquisition"
+    },
+    {
+      "id": "entrelumen:arcane_module",
+      "count": 1,
+      "registration": "existing companion module; replace placeholder acquisition"
+    },
+    {
+      "id": "entrelumen:nature_module",
+      "count": 1,
+      "registration": "existing companion module; replace placeholder acquisition"
+    },
+    {
+      "id": "entrelumen:exploration_module",
+      "count": 1,
+      "registration": "existing companion module; replace placeholder acquisition"
+    },
+    {
+      "id": "entrelumen:logistics_module",
+      "count": 1,
+      "registration": "existing companion module; replace placeholder acquisition"
+    },
+    {
+      "id": "entrelumen:habitation_module",
+      "count": 1,
+      "registration": "existing companion module; replace placeholder acquisition"
+    }
+  ],
+  "projects": [
+    {
+      "id": "entrelumen:precision_bench",
+      "act": 2,
+      "title": {
+        "en_us": "A Measure of Brass",
+        "es_es": "Una medida de latón"
+      },
+      "output": {
+        "id": "entrelumen:calibration_frame",
+        "count": 1,
+        "registration": "proposed new component, must register before recipes"
+      },
+      "recipe": {
+        "id": "entrelumen:integration/precision_bench",
+        "type": "minecraft:crafting_shapeless",
+        "representation": "Expand each ingredient count into individual crafting-grid entries; total <=9. Native crafting remainders apply. Static recipe: no team/stage/player predicates.",
+        "inputs": [
+          {
+            "id": "create:brass_sheet",
+            "count": 2
+          },
+          {
+            "id": "immersiveengineering:wire_copper",
+            "count": 2
+          },
+          {
+            "id": "entrelumen:raw_lens",
+            "count": 1
+          }
+        ]
+      },
+      "systems": [
+        "create",
+        "immersiveengineering"
+      ],
+      "completion": "Producir 4 marcos con prensa y trefilado; conservar la línea para futuros instrumentos.",
+      "evidenceRequirements": [
+        "loaded item IDs and recipe outputs",
+        "survival acquisition without circular dependencies",
+        "team delivery idempotency/restart",
+        "manual tutorial playthrough"
+      ],
+      "status": "design-only",
+      "delivery": {
+        "count": 1,
+        "consume": false,
+        "purpose": "Non-consuming presentation of a prototype alongside the described project demonstration and narrative prerequisites; never auto-complete from possession/crafting. No duplicate item reward. Installed modules remain blocks."
+      }
+    },
+    {
+      "id": "entrelumen:crystal_grid",
+      "act": 2,
+      "title": {
+        "en_us": "Light through Copper",
+        "es_es": "Luz entre cobre"
+      },
+      "output": {
+        "id": "entrelumen:energy_coupler",
+        "count": 1,
+        "registration": "proposed new component, must register before recipes"
+      },
+      "recipe": {
+        "id": "entrelumen:integration/crystal_grid",
+        "type": "minecraft:crafting_shapeless",
+        "representation": "Expand each ingredient count into individual crafting-grid entries; total <=9. Native crafting remainders apply. Static recipe: no team/stage/player predicates.",
+        "inputs": [
+          {
+            "id": "actuallyadditions:restonia_crystal",
+            "count": 2
+          },
+          {
+            "id": "immersiveengineering:component_steel",
+            "count": 2
+          },
+          {
+            "id": "create:andesite_alloy",
+            "count": 2
+          }
+        ]
+      },
+      "systems": [
+        "actuallyadditions",
+        "immersiveengineering",
+        "create"
+      ],
+      "completion": "Convertir redstone con láser y abastecer componentes sin destruir instalaciones.",
+      "evidenceRequirements": [
+        "loaded item IDs and recipe outputs",
+        "survival acquisition without circular dependencies",
+        "team delivery idempotency/restart",
+        "manual tutorial playthrough"
+      ],
+      "status": "design-only",
+      "delivery": {
+        "count": 1,
+        "consume": false,
+        "purpose": "Non-consuming presentation of a prototype alongside the described project demonstration and narrative prerequisites; never auto-complete from possession/crafting. No duplicate item reward. Installed modules remain blocks."
+      }
+    },
+    {
+      "id": "entrelumen:living_workshop",
+      "act": 2,
+      "title": {
+        "en_us": "A Workshop that Breathes",
+        "es_es": "Un taller que respira"
+      },
+      "output": {
+        "id": "entrelumen:living_matrix",
+        "count": 1,
+        "registration": "proposed new component, must register before recipes"
+      },
+      "recipe": {
+        "id": "entrelumen:integration/living_workshop",
+        "type": "minecraft:crafting_shapeless",
+        "representation": "Expand each ingredient count into individual crafting-grid entries; total <=9. Native crafting remainders apply. Static recipe: no team/stage/player predicates.",
+        "inputs": [
+          {
+            "id": "ars_nouveau:magebloom_fiber",
+            "count": 2
+          },
+          {
+            "id": "naturesaura:infused_iron",
+            "count": 2
+          },
+          {
+            "id": "entrelumen:calibration_frame",
+            "count": 1
+          }
+        ]
+      },
+      "systems": [
+        "ars_nouveau",
+        "naturesaura"
+      ],
+      "completion": "Obtener fibra renovable y hierro infundido; explicar consumo/regeneración de aura.",
+      "evidenceRequirements": [
+        "loaded item IDs and recipe outputs",
+        "survival acquisition without circular dependencies",
+        "team delivery idempotency/restart",
+        "manual tutorial playthrough"
+      ],
+      "status": "design-only",
+      "delivery": {
+        "count": 1,
+        "consume": false,
+        "purpose": "Non-consuming presentation of a prototype alongside the described project demonstration and narrative prerequisites; never auto-complete from possession/crafting. No duplicate item reward. Installed modules remain blocks."
+      }
+    },
+    {
+      "id": "entrelumen:travelling_pantry",
+      "act": 2,
+      "title": {
+        "en_us": "Provisions for the Road",
+        "es_es": "Provisiones para el camino"
+      },
+      "output": {
+        "id": "entrelumen:ration_bundle",
+        "count": 1,
+        "registration": "proposed new component, must register before recipes"
+      },
+      "recipe": {
+        "id": "entrelumen:integration/travelling_pantry",
+        "type": "minecraft:crafting_shapeless",
+        "representation": "Expand each ingredient count into individual crafting-grid entries; total <=9. Native crafting remainders apply. Static recipe: no team/stage/player predicates.",
+        "inputs": [
+          {
+            "id": "farmersdelight:vegetable_soup",
+            "count": 2
+          },
+          {
+            "id": "aquaculture:fish_fillet_cooked",
+            "count": 2
+          }
+        ]
+      },
+      "systems": [
+        "farmersdelight",
+        "aquaculture",
+        "cookingforblockheads"
+      ],
+      "completion": "Preparar dos cadenas alimentarias; el componente es provisión de proyectos, no comida con buffs acumulables.",
+      "evidenceRequirements": [
+        "loaded item IDs and recipe outputs",
+        "survival acquisition without circular dependencies",
+        "team delivery idempotency/restart",
+        "manual tutorial playthrough"
+      ],
+      "status": "design-only",
+      "delivery": {
+        "count": 1,
+        "consume": false,
+        "purpose": "Non-consuming presentation of a prototype alongside the described project demonstration and narrative prerequisites; never auto-complete from possession/crafting. No duplicate item reward. Installed modules remain blocks."
+      }
+    },
+    {
+      "id": "entrelumen:signal_exchange",
+      "act": 3,
+      "title": {
+        "en_us": "A Shared Language",
+        "es_es": "Un lenguaje compartido"
+      },
+      "output": {
+        "id": "entrelumen:routing_matrix",
+        "count": 1,
+        "registration": "proposed new component, must register before recipes"
+      },
+      "recipe": {
+        "id": "entrelumen:integration/signal_exchange",
+        "type": "minecraft:crafting_shapeless",
+        "representation": "Expand each ingredient count into individual crafting-grid entries; total <=9. Native crafting remainders apply. Static recipe: no team/stage/player predicates.",
+        "inputs": [
+          {
+            "id": "ae2:logic_processor",
+            "count": 2
+          },
+          {
+            "id": "pneumaticcraft:printed_circuit_board",
+            "count": 1
+          },
+          {
+            "id": "actuallyadditions:palis_crystal",
+            "count": 2
+          },
+          {
+            "id": "entrelumen:calibration_frame",
+            "count": 1
+          }
+        ]
+      },
+      "systems": [
+        "ae2",
+        "pneumaticcraft",
+        "actuallyadditions"
+      ],
+      "completion": "Fabricar procesadores y PCB usando sus procesos propios; guardar y solicitar un lote de matrices.",
+      "evidenceRequirements": [
+        "loaded item IDs and recipe outputs",
+        "survival acquisition without circular dependencies",
+        "team delivery idempotency/restart",
+        "manual tutorial playthrough"
+      ],
+      "status": "design-only",
+      "delivery": {
+        "count": 1,
+        "consume": false,
+        "purpose": "Non-consuming presentation of a prototype alongside the described project demonstration and narrative prerequisites; never auto-complete from possession/crafting. No duplicate item reward. Installed modules remain blocks."
+      }
+    },
+    {
+      "id": "entrelumen:nursery_protocol",
+      "act": 3,
+      "title": {
+        "en_us": "Seeds of Continuity",
+        "es_es": "Semillas de continuidad"
+      },
+      "output": {
+        "id": "entrelumen:propagation_core",
+        "count": 1,
+        "registration": "proposed new component, must register before recipes"
+      },
+      "recipe": {
+        "id": "entrelumen:integration/nursery_protocol",
+        "type": "minecraft:crafting_shapeless",
+        "representation": "Expand each ingredient count into individual crafting-grid entries; total <=9. Native crafting remainders apply. Static recipe: no team/stage/player predicates.",
+        "inputs": [
+          {
+            "id": "mysticalagriculture:prudentium_essence",
+            "count": 2
+          },
+          {
+            "id": "productivebees:wax",
+            "count": 2
+          },
+          {
+            "id": "entrelumen:living_matrix",
+            "count": 1
+          }
+        ]
+      },
+      "systems": [
+        "mysticalagriculture",
+        "productivebees",
+        "farmingforblockheads"
+      ],
+      "completion": "Completar un ciclo de cosecha y otro de colmena; el núcleo habilita obtención de granjas seleccionadas, no su uso.",
+      "evidenceRequirements": [
+        "loaded item IDs and recipe outputs",
+        "survival acquisition without circular dependencies",
+        "team delivery idempotency/restart",
+        "manual tutorial playthrough"
+      ],
+      "status": "design-only",
+      "delivery": {
+        "count": 1,
+        "consume": false,
+        "purpose": "Non-consuming presentation of a prototype alongside the described project demonstration and narrative prerequisites; never auto-complete from possession/crafting. No duplicate item reward. Installed modules remain blocks."
+      }
+    },
+    {
+      "id": "entrelumen:distributed_power",
+      "act": 3,
+      "title": {
+        "en_us": "Power without a Monolith",
+        "es_es": "Energía a pequeña escala"
+      },
+      "output": {
+        "id": "entrelumen:power_regulator",
+        "count": 1,
+        "registration": "proposed new component, must register before recipes"
+      },
+      "recipe": {
+        "id": "entrelumen:integration/distributed_power",
+        "type": "minecraft:crafting_shapeless",
+        "representation": "Expand each ingredient count into individual crafting-grid entries; total <=9. Native crafting remainders apply. Static recipe: no team/stage/player predicates.",
+        "inputs": [
+          {
+            "id": "mekanism:basic_control_circuit",
+            "count": 2
+          },
+          {
+            "id": "immersiveengineering:plate_steel",
+            "count": 2
+          },
+          {
+            "id": "entrelumen:energy_coupler",
+            "count": 1
+          }
+        ]
+      },
+      "systems": [
+        "mekanism",
+        "mekanismgenerators",
+        "immersiveengineering"
+      ],
+      "completion": "Mantener una línea pequeña durante un lote; generación eólica o generador IE son alternativas, sin reactor obligatorio.",
+      "evidenceRequirements": [
+        "loaded item IDs and recipe outputs",
+        "survival acquisition without circular dependencies",
+        "team delivery idempotency/restart",
+        "manual tutorial playthrough"
+      ],
+      "status": "design-only",
+      "delivery": {
+        "count": 1,
+        "consume": false,
+        "purpose": "Non-consuming presentation of a prototype alongside the described project demonstration and narrative prerequisites; never auto-complete from possession/crafting. No duplicate item reward. Installed modules remain blocks."
+      }
+    },
+    {
+      "id": "entrelumen:measured_logistics",
+      "act": 3,
+      "title": {
+        "en_us": "When the Shelf is Full",
+        "es_es": "Cuando el estante está lleno"
+      },
+      "output": {
+        "id": "entrelumen:inventory_sensor",
+        "count": 1,
+        "registration": "proposed new component, must register before recipes"
+      },
+      "recipe": {
+        "id": "entrelumen:integration/measured_logistics",
+        "type": "minecraft:crafting_shapeless",
+        "representation": "Expand each ingredient count into individual crafting-grid entries; total <=9. Native crafting remainders apply. Static recipe: no team/stage/player predicates.",
+        "inputs": [
+          {
+            "id": "integrateddynamics:crystalized_menril_chunk",
+            "count": 2
+          },
+          {
+            "id": "laserio:logic_chip",
+            "count": 2
+          },
+          {
+            "id": "entrelumen:routing_matrix",
+            "count": 1
+          }
+        ]
+      },
+      "systems": [
+        "integrateddynamics",
+        "integratedtunnels",
+        "laserio",
+        "functionalstorage"
+      ],
+      "completion": "Mover un lote a un buffer y detener entrada al umbral; demostrar una de dos rutas, sin imponer ambas redes.",
+      "evidenceRequirements": [
+        "loaded item IDs and recipe outputs",
+        "survival acquisition without circular dependencies",
+        "team delivery idempotency/restart",
+        "manual tutorial playthrough"
+      ],
+      "status": "design-only",
+      "delivery": {
+        "count": 1,
+        "consume": false,
+        "purpose": "Non-consuming presentation of a prototype alongside the described project demonstration and narrative prerequisites; never auto-complete from possession/crafting. No duplicate item reward. Installed modules remain blocks."
+      }
+    },
+    {
+      "id": "entrelumen:workshop_hands",
+      "act": 3,
+      "title": {
+        "en_us": "Small Hands, Large Workshops",
+        "es_es": "Manos pequeñas, grandes talleres"
+      },
+      "output": {
+        "id": "entrelumen:handling_core",
+        "count": 1,
+        "registration": "proposed new component, must register before recipes"
+      },
+      "recipe": {
+        "id": "entrelumen:integration/workshop_hands",
+        "type": "minecraft:crafting_shapeless",
+        "representation": "Expand each ingredient count into individual crafting-grid entries; total <=9. Native crafting remainders apply. Static recipe: no team/stage/player predicates.",
+        "inputs": [
+          {
+            "id": "modularrouters:blank_module",
+            "count": 2
+          },
+          {
+            "id": "create:precision_mechanism",
+            "count": 1
+          },
+          {
+            "id": "entrelumen:power_regulator",
+            "count": 1
+          }
+        ]
+      },
+      "systems": [
+        "modularrouters",
+        "pipez",
+        "sophisticatedstorage",
+        "create"
+      ],
+      "completion": "Transportar 32 objetos entre dos contenedores sin arrojar entidades; routers avanzados conviven con tuberías simples.",
+      "evidenceRequirements": [
+        "loaded item IDs and recipe outputs",
+        "survival acquisition without circular dependencies",
+        "team delivery idempotency/restart",
+        "manual tutorial playthrough"
+      ],
+      "status": "design-only",
+      "delivery": {
+        "count": 1,
+        "consume": false,
+        "purpose": "Non-consuming presentation of a prototype alongside the described project demonstration and narrative prerequisites; never auto-complete from possession/crafting. No duplicate item reward. Installed modules remain blocks."
+      }
+    },
+    {
+      "id": "entrelumen:spectral_archive",
+      "act": 4,
+      "title": {
+        "en_us": "Voices in the Glass",
+        "es_es": "Voces en el cristal"
+      },
+      "output": {
+        "id": "entrelumen:spectral_lens",
+        "count": 1,
+        "registration": "proposed new component, must register before recipes"
+      },
+      "recipe": {
+        "id": "entrelumen:integration/spectral_archive",
+        "type": "minecraft:crafting_shapeless",
+        "representation": "Expand each ingredient count into individual crafting-grid entries; total <=9. Native crafting remainders apply. Static recipe: no team/stage/player predicates.",
+        "inputs": [
+          {
+            "id": "occultism:spirit_attuned_crystal",
+            "count": 1
+          },
+          {
+            "id": "malum:arcane_spirit",
+            "count": 2
+          },
+          {
+            "id": "create:precision_mechanism",
+            "count": 1
+          },
+          {
+            "id": "entrelumen:calibration_frame",
+            "count": 1
+          }
+        ]
+      },
+      "systems": [
+        "occultism",
+        "malum",
+        "create"
+      ],
+      "completion": "Recuperar testimonios y fabricar lentes; no consumir familiares ni obligar ciclos de sacrificio masivos.",
+      "evidenceRequirements": [
+        "loaded item IDs and recipe outputs",
+        "survival acquisition without circular dependencies",
+        "team delivery idempotency/restart",
+        "manual tutorial playthrough"
+      ],
+      "status": "design-only",
+      "delivery": {
+        "count": 1,
+        "consume": false,
+        "purpose": "Non-consuming presentation of a prototype alongside the described project demonstration and narrative prerequisites; never auto-complete from possession/crafting. No duplicate item reward. Installed modules remain blocks."
+      }
+    },
+    {
+      "id": "entrelumen:horizon_survey",
+      "act": 4,
+      "title": {
+        "en_us": "Above and Beyond the Canopy",
+        "es_es": "Más allá del dosel"
+      },
+      "output": {
+        "id": "entrelumen:horizon_chart",
+        "count": 1,
+        "registration": "proposed new component, must register before recipes"
+      },
+      "recipe": {
+        "id": "entrelumen:integration/horizon_survey",
+        "type": "minecraft:crafting_shapeless",
+        "representation": "Expand each ingredient count into individual crafting-grid entries; total <=9. Native crafting remainders apply. Static recipe: no team/stage/player predicates.",
+        "inputs": [
+          {
+            "id": "aether:ambrosium_shard",
+            "count": 2
+          },
+          {
+            "id": "twilightforest:ironwood_ingot",
+            "count": 2
+          },
+          {
+            "id": "entrelumen:survey_notes",
+            "count": 1
+          },
+          {
+            "id": "entrelumen:ration_bundle",
+            "count": 1
+          }
+        ]
+      },
+      "systems": [
+        "aether",
+        "twilightforest",
+        "waystones",
+        "sophisticatedbackpacks"
+      ],
+      "completion": "Visitar dos destinos distintos y volver con muestras; mapa personal y waystones ayudan, no equivalen a completar la expedición.",
+      "evidenceRequirements": [
+        "loaded item IDs and recipe outputs",
+        "survival acquisition without circular dependencies",
+        "team delivery idempotency/restart",
+        "manual tutorial playthrough"
+      ],
+      "status": "design-only",
+      "delivery": {
+        "count": 1,
+        "consume": false,
+        "purpose": "Non-consuming presentation of a prototype alongside the described project demonstration and narrative prerequisites; never auto-complete from possession/crafting. No duplicate item reward. Installed modules remain blocks."
+      }
+    },
+    {
+      "id": "entrelumen:pollinator_treaty",
+      "act": 4,
+      "title": {
+        "en_us": "The Pollinators Agreement",
+        "es_es": "El acuerdo de los polinizadores"
+      },
+      "output": {
+        "id": "entrelumen:ecosystem_capsule",
+        "count": 1,
+        "registration": "proposed new component, must register before recipes"
+      },
+      "recipe": {
+        "id": "entrelumen:integration/pollinator_treaty",
+        "type": "minecraft:crafting_shapeless",
+        "representation": "Expand each ingredient count into individual crafting-grid entries; total <=9. Native crafting remainders apply. Static recipe: no team/stage/player predicates.",
+        "inputs": [
+          {
+            "id": "the_bumblezone:pollen_puff",
+            "count": 2
+          },
+          {
+            "id": "productivebees:wax",
+            "count": 2
+          },
+          {
+            "id": "entrelumen:living_matrix",
+            "count": 2
+          }
+        ]
+      },
+      "systems": [
+        "the_bumblezone",
+        "productivebees",
+        "naturesaura"
+      ],
+      "completion": "Observar una interacción ecológica en Bumblezone y mantener una colmena productiva en casa.",
+      "evidenceRequirements": [
+        "loaded item IDs and recipe outputs",
+        "survival acquisition without circular dependencies",
+        "team delivery idempotency/restart",
+        "manual tutorial playthrough"
+      ],
+      "status": "design-only",
+      "delivery": {
+        "count": 1,
+        "consume": false,
+        "purpose": "Non-consuming presentation of a prototype alongside the described project demonstration and narrative prerequisites; never auto-complete from possession/crafting. No duplicate item reward. Installed modules remain blocks."
+      }
+    },
+    {
+      "id": "entrelumen:sealed_memory",
+      "act": 4,
+      "title": {
+        "en_us": "A Vessel for Restless Memory",
+        "es_es": "Un recipiente para la memoria"
+      },
+      "output": {
+        "id": "entrelumen:containment_seal",
+        "count": 1,
+        "registration": "proposed new component, must register before recipes"
+      },
+      "recipe": {
+        "id": "entrelumen:integration/sealed_memory",
+        "type": "minecraft:crafting_shapeless",
+        "representation": "Expand each ingredient count into individual crafting-grid entries; total <=9. Native crafting remainders apply. Static recipe: no team/stage/player predicates.",
+        "inputs": [
+          {
+            "id": "evilcraft:dark_gem",
+            "count": 2
+          },
+          {
+            "id": "malum:soul_stained_steel_ingot",
+            "count": 2
+          },
+          {
+            "id": "entrelumen:spectral_lens",
+            "count": 1
+          }
+        ]
+      },
+      "systems": [
+        "evilcraft",
+        "malum"
+      ],
+      "completion": "Procesar materiales arcanos y sellar un lote; otra ruta opcional de transformación acompaña su utilidad tardía.",
+      "evidenceRequirements": [
+        "loaded item IDs and recipe outputs",
+        "survival acquisition without circular dependencies",
+        "team delivery idempotency/restart",
+        "manual tutorial playthrough"
+      ],
+      "status": "design-only",
+      "delivery": {
+        "count": 1,
+        "consume": false,
+        "purpose": "Non-consuming presentation of a prototype alongside the described project demonstration and narrative prerequisites; never auto-complete from possession/crafting. No duplicate item reward. Installed modules remain blocks."
+      }
+    },
+    {
+      "id": "entrelumen:resilient_backbone",
+      "act": 5,
+      "title": {
+        "en_us": "A Network that Recovers",
+        "es_es": "Una red que se recupera"
+      },
+      "output": {
+        "id": "entrelumen:ark_bus",
+        "count": 1,
+        "registration": "proposed new component, must register before recipes"
+      },
+      "recipe": {
+        "id": "entrelumen:integration/resilient_backbone",
+        "type": "minecraft:crafting_shapeless",
+        "representation": "Expand each ingredient count into individual crafting-grid entries; total <=9. Native crafting remainders apply. Static recipe: no team/stage/player predicates.",
+        "inputs": [
+          {
+            "id": "mekanism:alloy_atomic",
+            "count": 2
+          },
+          {
+            "id": "pneumaticcraft:printed_circuit_board",
+            "count": 2
+          },
+          {
+            "id": "entrelumen:handling_core",
+            "count": 2
+          },
+          {
+            "id": "entrelumen:inventory_sensor",
+            "count": 1
+          }
+        ]
+      },
+      "systems": [
+        "mekanism",
+        "pneumaticcraft",
+        "modularrouters",
+        "computercraft"
+      ],
+      "completion": "Vaciar y reponer un buffer; reanudar fabricación sin duplicación. Panel ComputerCraft opcional, mismo resultado sin código.",
+      "evidenceRequirements": [
+        "loaded item IDs and recipe outputs",
+        "survival acquisition without circular dependencies",
+        "team delivery idempotency/restart",
+        "manual tutorial playthrough"
+      ],
+      "status": "design-only",
+      "delivery": {
+        "count": 1,
+        "consume": false,
+        "purpose": "Non-consuming presentation of a prototype alongside the described project demonstration and narrative prerequisites; never auto-complete from possession/crafting. No duplicate item reward. Installed modules remain blocks."
+      }
+    },
+    {
+      "id": "entrelumen:renewal_engine",
+      "act": 5,
+      "title": {
+        "en_us": "Renewable Horizons",
+        "es_es": "Horizontes renovables"
+      },
+      "output": {
+        "id": "entrelumen:renewal_engine",
+        "count": 1,
+        "registration": "proposed new component, must register before recipes"
+      },
+      "recipe": {
+        "id": "entrelumen:integration/renewal_engine",
+        "type": "minecraft:crafting_shapeless",
+        "representation": "Expand each ingredient count into individual crafting-grid entries; total <=9. Native crafting remainders apply. Static recipe: no team/stage/player predicates.",
+        "inputs": [
+          {
+            "id": "naturesaura:sky_ingot",
+            "count": 2
+          },
+          {
+            "id": "mysticalagriculture:imperium_essence",
+            "count": 2
+          },
+          {
+            "id": "entrelumen:ecosystem_capsule",
+            "count": 2
+          },
+          {
+            "id": "entrelumen:propagation_core",
+            "count": 2
+          }
+        ]
+      },
+      "systems": [
+        "naturesaura",
+        "mysticalagriculture",
+        "productivebees"
+      ],
+      "completion": "Entregar un lote de cada vía renovable sin forzar chunks adicionales ni multiplicadores descontrolados.",
+      "evidenceRequirements": [
+        "loaded item IDs and recipe outputs",
+        "survival acquisition without circular dependencies",
+        "team delivery idempotency/restart",
+        "manual tutorial playthrough"
+      ],
+      "status": "design-only",
+      "delivery": {
+        "count": 1,
+        "consume": false,
+        "purpose": "Non-consuming presentation of a prototype alongside the described project demonstration and narrative prerequisites; never auto-complete from possession/crafting. No duplicate item reward. Installed modules remain blocks."
+      }
+    },
+    {
+      "id": "entrelumen:settlement_supply",
+      "act": 5,
+      "title": {
+        "en_us": "A Place Worth Returning To",
+        "es_es": "Un lugar al que volver"
+      },
+      "output": {
+        "id": "entrelumen:habitation_contract",
+        "count": 1,
+        "registration": "proposed new component, must register before recipes"
+      },
+      "recipe": {
+        "id": "entrelumen:integration/settlement_supply",
+        "type": "minecraft:crafting_shapeless",
+        "representation": "Expand each ingredient count into individual crafting-grid entries; total <=9. Native crafting remainders apply. Static recipe: no team/stage/player predicates.",
+        "inputs": [
+          {
+            "id": "farmersdelight:fish_stew",
+            "count": 2
+          },
+          {
+            "id": "farmersdelight:mixed_salad",
+            "count": 2
+          },
+          {
+            "id": "ae2:calculation_processor",
+            "count": 1
+          },
+          {
+            "id": "entrelumen:ration_bundle",
+            "count": 2
+          }
+        ]
+      },
+      "systems": [
+        "farmersdelight",
+        "cookingforblockheads",
+        "ae2",
+        "supplementaries",
+        "amendments"
+      ],
+      "completion": "Abastecer cocina y depósito; habitación jugable con luz, descanso y señalización. Decoración libre no consumida ni contada como rareza.",
+      "evidenceRequirements": [
+        "loaded item IDs and recipe outputs",
+        "survival acquisition without circular dependencies",
+        "team delivery idempotency/restart",
+        "manual tutorial playthrough"
+      ],
+      "status": "design-only",
+      "delivery": {
+        "count": 1,
+        "consume": false,
+        "purpose": "Non-consuming presentation of a prototype alongside the described project demonstration and narrative prerequisites; never auto-complete from possession/crafting. No duplicate item reward. Installed modules remain blocks."
+      }
+    },
+    {
+      "id": "entrelumen:ark_engineering",
+      "act": 6,
+      "title": {
+        "en_us": "The Beating Engine",
+        "es_es": "El motor del Arca"
+      },
+      "output": {
+        "id": "entrelumen:engineering_module",
+        "count": 1,
+        "registration": "existing companion module; replace placeholder acquisition"
+      },
+      "recipe": {
+        "id": "entrelumen:integration/ark_engineering",
+        "type": "minecraft:crafting_shapeless",
+        "representation": "Expand each ingredient count into individual crafting-grid entries; total <=9. Native crafting remainders apply. Static recipe: no team/stage/player predicates.",
+        "inputs": [
+          {
+            "id": "entrelumen:calibration_frame",
+            "count": 2
+          },
+          {
+            "id": "entrelumen:energy_coupler",
+            "count": 2
+          },
+          {
+            "id": "entrelumen:ark_bus",
+            "count": 1
+          },
+          {
+            "id": "mekanism:alloy_atomic",
+            "count": 2
+          }
+        ]
+      },
+      "systems": [
+        "create",
+        "actuallyadditions",
+        "mekanism"
+      ],
+      "completion": "Instalar módulo y completar lote de calibración; conserva su estado al reiniciar.",
+      "evidenceRequirements": [
+        "loaded item IDs and recipe outputs",
+        "survival acquisition without circular dependencies",
+        "team delivery idempotency/restart",
+        "manual tutorial playthrough"
+      ],
+      "status": "design-only",
+      "delivery": {
+        "count": 1,
+        "consume": false,
+        "purpose": "Non-consuming presentation of a prototype alongside the described project demonstration and narrative prerequisites; never auto-complete from possession/crafting. No duplicate item reward. Installed modules remain blocks."
+      }
+    },
+    {
+      "id": "entrelumen:ark_arcana",
+      "act": 6,
+      "title": {
+        "en_us": "The Listening Chamber",
+        "es_es": "La cámara que escucha"
+      },
+      "output": {
+        "id": "entrelumen:arcane_module",
+        "count": 1,
+        "registration": "existing companion module; replace placeholder acquisition"
+      },
+      "recipe": {
+        "id": "entrelumen:integration/ark_arcana",
+        "type": "minecraft:crafting_shapeless",
+        "representation": "Expand each ingredient count into individual crafting-grid entries; total <=9. Native crafting remainders apply. Static recipe: no team/stage/player predicates.",
+        "inputs": [
+          {
+            "id": "entrelumen:spectral_lens",
+            "count": 2
+          },
+          {
+            "id": "entrelumen:containment_seal",
+            "count": 2
+          },
+          {
+            "id": "occultism:iesnium_ingot",
+            "count": 2
+          }
+        ]
+      },
+      "systems": [
+        "occultism",
+        "malum",
+        "evilcraft"
+      ],
+      "completion": "Instalar módulo y entregar un lote sellado; fallo de activación no elimina bloques ni exige familiares nuevos.",
+      "evidenceRequirements": [
+        "loaded item IDs and recipe outputs",
+        "survival acquisition without circular dependencies",
+        "team delivery idempotency/restart",
+        "manual tutorial playthrough"
+      ],
+      "status": "design-only",
+      "delivery": {
+        "count": 1,
+        "consume": false,
+        "purpose": "Non-consuming presentation of a prototype alongside the described project demonstration and narrative prerequisites; never auto-complete from possession/crafting. No duplicate item reward. Installed modules remain blocks."
+      }
+    },
+    {
+      "id": "entrelumen:ark_nature",
+      "act": 6,
+      "title": {
+        "en_us": "The Living Reserve",
+        "es_es": "La reserva viva"
+      },
+      "output": {
+        "id": "entrelumen:nature_module",
+        "count": 1,
+        "registration": "existing companion module; replace placeholder acquisition"
+      },
+      "recipe": {
+        "id": "entrelumen:integration/ark_nature",
+        "type": "minecraft:crafting_shapeless",
+        "representation": "Expand each ingredient count into individual crafting-grid entries; total <=9. Native crafting remainders apply. Static recipe: no team/stage/player predicates.",
+        "inputs": [
+          {
+            "id": "entrelumen:renewal_engine",
+            "count": 1
+          },
+          {
+            "id": "entrelumen:ecosystem_capsule",
+            "count": 2
+          },
+          {
+            "id": "entrelumen:living_matrix",
+            "count": 2
+          }
+        ]
+      },
+      "systems": [
+        "naturesaura",
+        "mysticalagriculture",
+        "productivebees",
+        "the_bumblezone"
+      ],
+      "completion": "Completar reserva por lotes y cerrar; sin drenaje mientras nadie juega.",
+      "evidenceRequirements": [
+        "loaded item IDs and recipe outputs",
+        "survival acquisition without circular dependencies",
+        "team delivery idempotency/restart",
+        "manual tutorial playthrough"
+      ],
+      "status": "design-only",
+      "delivery": {
+        "count": 1,
+        "consume": false,
+        "purpose": "Non-consuming presentation of a prototype alongside the described project demonstration and narrative prerequisites; never auto-complete from possession/crafting. No duplicate item reward. Installed modules remain blocks."
+      }
+    },
+    {
+      "id": "entrelumen:ark_exploration",
+      "act": 6,
+      "title": {
+        "en_us": "A Compass for Impossible Shores",
+        "es_es": "Una brújula para otras orillas"
+      },
+      "output": {
+        "id": "entrelumen:exploration_module",
+        "count": 1,
+        "registration": "existing companion module; replace placeholder acquisition"
+      },
+      "recipe": {
+        "id": "entrelumen:integration/ark_exploration",
+        "type": "minecraft:crafting_shapeless",
+        "representation": "Expand each ingredient count into individual crafting-grid entries; total <=9. Native crafting remainders apply. Static recipe: no team/stage/player predicates.",
+        "inputs": [
+          {
+            "id": "entrelumen:horizon_chart",
+            "count": 1
+          },
+          {
+            "id": "entrelumen:spectral_lens",
+            "count": 1
+          },
+          {
+            "id": "twilightforest:steeleaf_ingot",
+            "count": 2
+          },
+          {
+            "id": "aether:zanite_gemstone",
+            "count": 2
+          }
+        ]
+      },
+      "systems": [
+        "aether",
+        "twilightforest",
+        "waystones"
+      ],
+      "completion": "Registrar rutas descubiertas del equipo y preparar destino final; muestras regaladas no simulan descubrimientos.",
+      "evidenceRequirements": [
+        "loaded item IDs and recipe outputs",
+        "survival acquisition without circular dependencies",
+        "team delivery idempotency/restart",
+        "manual tutorial playthrough"
+      ],
+      "status": "design-only",
+      "delivery": {
+        "count": 1,
+        "consume": false,
+        "purpose": "Non-consuming presentation of a prototype alongside the described project demonstration and narrative prerequisites; never auto-complete from possession/crafting. No duplicate item reward. Installed modules remain blocks."
+      }
+    },
+    {
+      "id": "entrelumen:ark_logistics",
+      "act": 6,
+      "title": {
+        "en_us": "Nothing Lost in Transit",
+        "es_es": "Nada perdido en el camino"
+      },
+      "output": {
+        "id": "entrelumen:logistics_module",
+        "count": 1,
+        "registration": "existing companion module; replace placeholder acquisition"
+      },
+      "recipe": {
+        "id": "entrelumen:integration/ark_logistics",
+        "type": "minecraft:crafting_shapeless",
+        "representation": "Expand each ingredient count into individual crafting-grid entries; total <=9. Native crafting remainders apply. Static recipe: no team/stage/player predicates.",
+        "inputs": [
+          {
+            "id": "entrelumen:routing_matrix",
+            "count": 2
+          },
+          {
+            "id": "entrelumen:handling_core",
+            "count": 2
+          },
+          {
+            "id": "entrelumen:ark_bus",
+            "count": 1
+          }
+        ]
+      },
+      "systems": [
+        "ae2",
+        "integrateddynamics",
+        "integratedtunnels",
+        "laserio",
+        "modularrouters"
+      ],
+      "completion": "Entregar lote mixto desde buffer y acreditar una sola vez; cualquiera de las redes puede transportarlo.",
+      "evidenceRequirements": [
+        "loaded item IDs and recipe outputs",
+        "survival acquisition without circular dependencies",
+        "team delivery idempotency/restart",
+        "manual tutorial playthrough"
+      ],
+      "status": "design-only",
+      "delivery": {
+        "count": 1,
+        "consume": false,
+        "purpose": "Non-consuming presentation of a prototype alongside the described project demonstration and narrative prerequisites; never auto-complete from possession/crafting. No duplicate item reward. Installed modules remain blocks."
+      }
+    },
+    {
+      "id": "entrelumen:ark_habitation",
+      "act": 6,
+      "title": {
+        "en_us": "Room for Everyone",
+        "es_es": "Un lugar para todos"
+      },
+      "output": {
+        "id": "entrelumen:habitation_module",
+        "count": 1,
+        "registration": "existing companion module; replace placeholder acquisition"
+      },
+      "recipe": {
+        "id": "entrelumen:integration/ark_habitation",
+        "type": "minecraft:crafting_shapeless",
+        "representation": "Expand each ingredient count into individual crafting-grid entries; total <=9. Native crafting remainders apply. Static recipe: no team/stage/player predicates.",
+        "inputs": [
+          {
+            "id": "entrelumen:habitation_contract",
+            "count": 1
+          },
+          {
+            "id": "entrelumen:ration_bundle",
+            "count": 2
+          },
+          {
+            "id": "entrelumen:living_matrix",
+            "count": 2
+          }
+        ]
+      },
+      "systems": [
+        "cookingforblockheads",
+        "farmersdelight",
+        "aquaculture",
+        "supplementaries"
+      ],
+      "completion": "Completar suministros de viaje y zona de descanso; sin recetas que consuman sillas o bloques decorativos arbitrarios.",
+      "evidenceRequirements": [
+        "loaded item IDs and recipe outputs",
+        "survival acquisition without circular dependencies",
+        "team delivery idempotency/restart",
+        "manual tutorial playthrough"
+      ],
+      "status": "design-only",
+      "delivery": {
+        "count": 1,
+        "consume": false,
+        "purpose": "Non-consuming presentation of a prototype alongside the described project demonstration and narrative prerequisites; never auto-complete from possession/crafting. No duplicate item reward. Installed modules remain blocks."
+      }
+    }
+  ],
+  "mods": [
+    {
+      "modId": "actuallyadditions",
+      "introducedAct": "II",
+      "anchorItem": "actuallyadditions:restonia_crystal",
+      "introduction": "Laser conversion and compact production",
+      "laterUtility": "Retain conversion recipes in advanced instruments",
+      "concreteConnections": [
+        "entrelumen:crystal_grid",
+        "entrelumen:signal_exchange",
+        "entrelumen:ark_engineering"
+      ],
+      "participation": "project system or interchangeable infrastructure; owning all mods not required",
+      "runtimePending": [
+        "anchor registry membership",
+        "demonstrate described interaction on actual installed versions"
+      ]
+    },
+    {
+      "modId": "ae2",
+      "introducedAct": "III",
+      "anchorItem": "ae2:logic_processor",
+      "introduction": "Digital logistics",
+      "laterUtility": "Coordinate inventories used by all six Ark disciplines",
+      "concreteConnections": [
+        "entrelumen:signal_exchange",
+        "entrelumen:settlement_supply",
+        "entrelumen:ark_logistics"
+      ],
+      "participation": "project system or interchangeable infrastructure; owning all mods not required",
+      "runtimePending": [
+        "anchor registry membership",
+        "demonstrate described interaction on actual installed versions"
+      ]
+    },
+    {
+      "modId": "aether",
+      "introducedAct": "IV",
+      "anchorItem": "aether:ambrosium_shard",
+      "introduction": "Sky expeditions",
+      "laterUtility": "Recover observatory knowledge through a distinct dimension",
+      "concreteConnections": [
+        "entrelumen:horizon_survey",
+        "entrelumen:ark_exploration"
+      ],
+      "participation": "project system or interchangeable infrastructure; owning all mods not required",
+      "runtimePending": [
+        "anchor registry membership",
+        "demonstrate described interaction on actual installed versions"
+      ]
+    },
+    {
+      "modId": "amendments",
+      "introducedAct": "I",
+      "anchorItem": "amendments:dye_bottle",
+      "introduction": "Habitabilidad interactiva: ajustes a bloques existentes y detalles del puesto de suministros.",
+      "laterUtility": "Añadir interacción al asentamiento con Supplementaries sin pedir su ítem de tinte como impuesto.",
+      "concreteConnections": [
+        "entrelumen:settlement_supply"
+      ],
+      "participation": "optional architectural/utility path; never consumed as arbitrary module ingredient",
+      "runtimePending": [
+        "anchor registry membership",
+        "demonstrate described interaction on actual installed versions"
+      ]
+    },
+    {
+      "modId": "aquaculture",
+      "introducedAct": "I",
+      "anchorItem": "aquaculture:fish_fillet_cooked",
+      "introduction": "Fishing variety",
+      "laterUtility": "Food and collection routes for coastal expeditions",
+      "concreteConnections": [
+        "entrelumen:travelling_pantry",
+        "entrelumen:ark_habitation"
+      ],
+      "participation": "project system or interchangeable infrastructure; owning all mods not required",
+      "runtimePending": [
+        "anchor registry membership",
+        "demonstrate described interaction on actual installed versions"
+      ]
+    },
+    {
+      "modId": "ars_nouveau",
+      "introducedAct": "II",
+      "anchorItem": "ars_nouveau:magebloom_fiber",
+      "introduction": "Spellcraft and source automation",
+      "laterUtility": "Magic instruments and automated botanical supplies",
+      "concreteConnections": [
+        "entrelumen:living_workshop"
+      ],
+      "participation": "project system or interchangeable infrastructure; owning all mods not required",
+      "runtimePending": [
+        "anchor registry membership",
+        "demonstrate described interaction on actual installed versions"
+      ]
+    },
+    {
+      "modId": "buildinggadgets2",
+      "introducedAct": "III",
+      "anchorItem": "buildinggadgets2:gadget_building",
+      "introduction": "Construir grandes envolventes consumiendo materiales del jugador.",
+      "laterUtility": "Usar buffers Functional Storage para abastecer herramientas; no ingrediente de módulos.",
+      "concreteConnections": [
+        "entrelumen:settlement_supply"
+      ],
+      "participation": "optional architectural/utility path; never consumed as arbitrary module ingredient",
+      "runtimePending": [
+        "anchor registry membership",
+        "demonstrate described interaction on actual installed versions"
+      ]
+    },
+    {
+      "modId": "chipped",
+      "introducedAct": "I",
+      "anchorItem": "chipped:botanist_workbench",
+      "introduction": "Taller de variantes y paletas arquitectónicas.",
+      "laterUtility": "Personalizar la envolvente FramedBlocks/Arca sin cuotas de bloques raros.",
+      "concreteConnections": [
+        "entrelumen:settlement_supply"
+      ],
+      "participation": "optional architectural/utility path; never consumed as arbitrary module ingredient",
+      "runtimePending": [
+        "anchor registry membership",
+        "demonstrate described interaction on actual installed versions"
+      ]
+    },
+    {
+      "modId": "computercraft",
+      "introducedAct": "III",
+      "anchorItem": "computercraft:computer_normal",
+      "introduction": "Optional programming",
+      "laterUtility": "Monitor workshop systems without making coding mandatory",
+      "concreteConnections": [
+        "entrelumen:resilient_backbone"
+      ],
+      "participation": "project system or interchangeable infrastructure; owning all mods not required",
+      "runtimePending": [
+        "anchor registry membership",
+        "demonstrate described interaction on actual installed versions"
+      ]
+    },
+    {
+      "modId": "constructionstick",
+      "introducedAct": "I",
+      "anchorItem": "constructionstick:iron_stick",
+      "introduction": "Construcción repetitiva cómoda desde temprano.",
+      "laterUtility": "Extender almacenes y jardines con materiales de Sophisticated Storage.",
+      "concreteConnections": [
+        "entrelumen:settlement_supply"
+      ],
+      "participation": "optional architectural/utility path; never consumed as arbitrary module ingredient",
+      "runtimePending": [
+        "anchor registry membership",
+        "demonstrate described interaction on actual installed versions"
+      ]
+    },
+    {
+      "modId": "cookingforblockheads",
+      "introducedAct": "I",
+      "anchorItem": "cookingforblockheads:cooking_table",
+      "introduction": "Practical kitchen",
+      "laterUtility": "Teach shared provisioning infrastructure",
+      "concreteConnections": [
+        "entrelumen:travelling_pantry",
+        "entrelumen:settlement_supply",
+        "entrelumen:ark_habitation"
+      ],
+      "participation": "project system or interchangeable infrastructure; owning all mods not required",
+      "runtimePending": [
+        "anchor registry membership",
+        "demonstrate described interaction on actual installed versions"
+      ]
+    },
+    {
+      "modId": "create",
+      "introducedAct": "II",
+      "anchorItem": "create:precision_mechanism",
+      "introduction": "Precision manufacturing",
+      "laterUtility": "Produce mechanical instruments for Atlas projects",
+      "concreteConnections": [
+        "entrelumen:precision_bench",
+        "entrelumen:spectral_archive",
+        "entrelumen:ark_engineering"
+      ],
+      "participation": "project system or interchangeable infrastructure; owning all mods not required",
+      "runtimePending": [
+        "anchor registry membership",
+        "demonstrate described interaction on actual installed versions"
+      ]
+    },
+    {
+      "modId": "evilcraft",
+      "introducedAct": "IV",
+      "anchorItem": "evilcraft:dark_gem",
+      "introduction": "Blood machinery",
+      "laterUtility": "Alternative specialized transformation research",
+      "concreteConnections": [
+        "entrelumen:sealed_memory",
+        "entrelumen:ark_arcana"
+      ],
+      "participation": "project system or interchangeable infrastructure; owning all mods not required",
+      "runtimePending": [
+        "anchor registry membership",
+        "demonstrate described interaction on actual installed versions"
+      ]
+    },
+    {
+      "modId": "farmersdelight",
+      "introducedAct": "I",
+      "anchorItem": "farmersdelight:vegetable_soup",
+      "introduction": "Cooking and provisions",
+      "laterUtility": "Expedition meals and the habitability Ark module",
+      "concreteConnections": [
+        "entrelumen:travelling_pantry",
+        "entrelumen:settlement_supply",
+        "entrelumen:ark_habitation"
+      ],
+      "participation": "project system or interchangeable infrastructure; owning all mods not required",
+      "runtimePending": [
+        "anchor registry membership",
+        "demonstrate described interaction on actual installed versions"
+      ]
+    },
+    {
+      "modId": "farmingforblockheads",
+      "introducedAct": "I",
+      "anchorItem": "farmingforblockheads:market",
+      "introduction": "Accessible farming",
+      "laterUtility": "Establish food production and garden planning",
+      "concreteConnections": [
+        "entrelumen:nursery_protocol"
+      ],
+      "participation": "project system or interchangeable infrastructure; owning all mods not required",
+      "runtimePending": [
+        "anchor registry membership",
+        "demonstrate described interaction on actual installed versions"
+      ]
+    },
+    {
+      "modId": "framedblocks",
+      "introducedAct": "I",
+      "anchorItem": "framedblocks:framed_cube",
+      "introduction": "Formas y recubrimientos para arquitectura propia.",
+      "laterUtility": "Construir junto a Chipped y Rechiseled; sólo estructura opcional, sin receta de tributo.",
+      "concreteConnections": [
+        "entrelumen:settlement_supply"
+      ],
+      "participation": "optional architectural/utility path; never consumed as arbitrary module ingredient",
+      "runtimePending": [
+        "anchor registry membership",
+        "demonstrate described interaction on actual installed versions"
+      ]
+    },
+    {
+      "modId": "functionalstorage",
+      "introducedAct": "I",
+      "anchorItem": "functionalstorage:storage_controller",
+      "introduction": "Bulk storage",
+      "laterUtility": "Keep foundational material buffers useful at endgame",
+      "concreteConnections": [
+        "entrelumen:measured_logistics"
+      ],
+      "participation": "project system or interchangeable infrastructure; owning all mods not required",
+      "runtimePending": [
+        "anchor registry membership",
+        "demonstrate described interaction on actual installed versions"
+      ]
+    },
+    {
+      "modId": "handcrafted",
+      "introducedAct": "I",
+      "anchorItem": "handcrafted:oak_chair",
+      "introduction": "Habitaciones y mobiliario libre.",
+      "laterUtility": "Puesto de cocina de Cooking for Blockheads rodeado por una zona de descanso elegida por el jugador.",
+      "concreteConnections": [
+        "entrelumen:settlement_supply"
+      ],
+      "participation": "optional architectural/utility path; never consumed as arbitrary module ingredient",
+      "runtimePending": [
+        "anchor registry membership",
+        "demonstrate described interaction on actual installed versions"
+      ]
+    },
+    {
+      "modId": "immersiveengineering",
+      "introducedAct": "II",
+      "anchorItem": "immersiveengineering:component_steel",
+      "introduction": "Visible electrical engineering",
+      "laterUtility": "Bulk materials and wiring for observatory infrastructure",
+      "concreteConnections": [
+        "entrelumen:precision_bench",
+        "entrelumen:crystal_grid",
+        "entrelumen:distributed_power"
+      ],
+      "participation": "project system or interchangeable infrastructure; owning all mods not required",
+      "runtimePending": [
+        "anchor registry membership",
+        "demonstrate described interaction on actual installed versions"
+      ]
+    },
+    {
+      "modId": "integrateddynamics",
+      "introducedAct": "III",
+      "anchorItem": "integrateddynamics:crystalized_menril_chunk",
+      "introduction": "Logic and measurement",
+      "laterUtility": "Instrument reconstruction systems",
+      "concreteConnections": [
+        "entrelumen:measured_logistics",
+        "entrelumen:ark_logistics"
+      ],
+      "participation": "project system or interchangeable infrastructure; owning all mods not required",
+      "runtimePending": [
+        "anchor registry membership",
+        "demonstrate described interaction on actual installed versions"
+      ]
+    },
+    {
+      "modId": "integratedtunnels",
+      "introducedAct": "III",
+      "anchorItem": "integratedtunnels:part_interface_item",
+      "introduction": "Programmable transport",
+      "laterUtility": "Alternative precise material logistics",
+      "concreteConnections": [
+        "entrelumen:measured_logistics",
+        "entrelumen:ark_logistics"
+      ],
+      "participation": "project system or interchangeable infrastructure; owning all mods not required",
+      "runtimePending": [
+        "anchor registry membership",
+        "demonstrate described interaction on actual installed versions"
+      ]
+    },
+    {
+      "modId": "laserio",
+      "introducedAct": "III",
+      "anchorItem": "laserio:logic_chip",
+      "introduction": "Compact channel logistics",
+      "laterUtility": "Connect production disciplines with bounded networks",
+      "concreteConnections": [
+        "entrelumen:measured_logistics",
+        "entrelumen:ark_logistics"
+      ],
+      "participation": "project system or interchangeable infrastructure; owning all mods not required",
+      "runtimePending": [
+        "anchor registry membership",
+        "demonstrate described interaction on actual installed versions"
+      ]
+    },
+    {
+      "modId": "malum",
+      "introducedAct": "IV",
+      "anchorItem": "malum:arcane_spirit",
+      "introduction": "Soul research",
+      "laterUtility": "Alternative late magic research and stabilization",
+      "concreteConnections": [
+        "entrelumen:spectral_archive",
+        "entrelumen:sealed_memory",
+        "entrelumen:ark_arcana"
+      ],
+      "participation": "project system or interchangeable infrastructure; owning all mods not required",
+      "runtimePending": [
+        "anchor registry membership",
+        "demonstrate described interaction on actual installed versions"
+      ]
+    },
+    {
+      "modId": "mekanism",
+      "introducedAct": "III",
+      "anchorItem": "mekanism:alloy_atomic",
+      "introduction": "Chemical and industrial processing",
+      "laterUtility": "Supply advanced alloys to the engineering Ark module",
+      "concreteConnections": [
+        "entrelumen:distributed_power",
+        "entrelumen:resilient_backbone",
+        "entrelumen:ark_engineering"
+      ],
+      "participation": "project system or interchangeable infrastructure; owning all mods not required",
+      "runtimePending": [
+        "anchor registry membership",
+        "demonstrate described interaction on actual installed versions"
+      ]
+    },
+    {
+      "modId": "mekanismgenerators",
+      "introducedAct": "III",
+      "anchorItem": "mekanismgenerators:wind_generator",
+      "introduction": "Scalable energy",
+      "laterUtility": "Power industrial reconstruction without mandatory reactors",
+      "concreteConnections": [
+        "entrelumen:distributed_power"
+      ],
+      "participation": "project system or interchangeable infrastructure; owning all mods not required",
+      "runtimePending": [
+        "anchor registry membership",
+        "demonstrate described interaction on actual installed versions"
+      ]
+    },
+    {
+      "modId": "modularrouters",
+      "introducedAct": "III",
+      "anchorItem": "modularrouters:blank_module",
+      "introduction": "Compact item automation",
+      "laterUtility": "Reduce entity-heavy automation in reconstruction projects",
+      "concreteConnections": [
+        "entrelumen:workshop_hands",
+        "entrelumen:resilient_backbone",
+        "entrelumen:ark_logistics"
+      ],
+      "participation": "project system or interchangeable infrastructure; owning all mods not required",
+      "runtimePending": [
+        "anchor registry membership",
+        "demonstrate described interaction on actual installed versions"
+      ]
+    },
+    {
+      "modId": "mysticalagriculture",
+      "introducedAct": "III",
+      "anchorItem": "mysticalagriculture:prudentium_essence",
+      "introduction": "Staged resource crops",
+      "laterUtility": "Crop specialization as an alternative resource route",
+      "concreteConnections": [
+        "entrelumen:nursery_protocol",
+        "entrelumen:renewal_engine",
+        "entrelumen:ark_nature"
+      ],
+      "participation": "project system or interchangeable infrastructure; owning all mods not required",
+      "runtimePending": [
+        "anchor registry membership",
+        "demonstrate described interaction on actual installed versions"
+      ]
+    },
+    {
+      "modId": "naturesaura",
+      "introducedAct": "II",
+      "anchorItem": "naturesaura:infused_iron",
+      "introduction": "Environmental magic",
+      "laterUtility": "Nature restoration and sustainable ritual materials",
+      "concreteConnections": [
+        "entrelumen:living_workshop",
+        "entrelumen:pollinator_treaty",
+        "entrelumen:renewal_engine",
+        "entrelumen:ark_nature"
+      ],
+      "participation": "project system or interchangeable infrastructure; owning all mods not required",
+      "runtimePending": [
+        "anchor registry membership",
+        "demonstrate described interaction on actual installed versions"
+      ]
+    },
+    {
+      "modId": "occultism",
+      "introducedAct": "II",
+      "anchorItem": "occultism:spirit_attuned_crystal",
+      "introduction": "Ritual craft and spirits",
+      "laterUtility": "Spirit processing for the magic Ark module",
+      "concreteConnections": [
+        "entrelumen:spectral_archive",
+        "entrelumen:ark_arcana"
+      ],
+      "participation": "project system or interchangeable infrastructure; owning all mods not required",
+      "runtimePending": [
+        "anchor registry membership",
+        "demonstrate described interaction on actual installed versions"
+      ]
+    },
+    {
+      "modId": "pipez",
+      "introducedAct": "II",
+      "anchorItem": "pipez:item_pipe",
+      "introduction": "Introductory transport",
+      "laterUtility": "Teach inventories before advanced logistics",
+      "concreteConnections": [
+        "entrelumen:workshop_hands"
+      ],
+      "participation": "project system or interchangeable infrastructure; owning all mods not required",
+      "runtimePending": [
+        "anchor registry membership",
+        "demonstrate described interaction on actual installed versions"
+      ]
+    },
+    {
+      "modId": "pneumaticcraft",
+      "introducedAct": "III",
+      "anchorItem": "pneumaticcraft:printed_circuit_board",
+      "introduction": "Pressure automation",
+      "laterUtility": "Precision logistics and pressure-made components",
+      "concreteConnections": [
+        "entrelumen:signal_exchange",
+        "entrelumen:resilient_backbone"
+      ],
+      "participation": "project system or interchangeable infrastructure; owning all mods not required",
+      "runtimePending": [
+        "anchor registry membership",
+        "demonstrate described interaction on actual installed versions"
+      ]
+    },
+    {
+      "modId": "productivebees",
+      "introducedAct": "III",
+      "anchorItem": "productivebees:wax",
+      "introduction": "Bee breeding and resources",
+      "laterUtility": "Staged biological inputs and nature research",
+      "concreteConnections": [
+        "entrelumen:nursery_protocol",
+        "entrelumen:pollinator_treaty",
+        "entrelumen:renewal_engine",
+        "entrelumen:ark_nature"
+      ],
+      "participation": "project system or interchangeable infrastructure; owning all mods not required",
+      "runtimePending": [
+        "anchor registry membership",
+        "demonstrate described interaction on actual installed versions"
+      ]
+    },
+    {
+      "modId": "rechiseled",
+      "introducedAct": "I",
+      "anchorItem": "rechiseled:chisel",
+      "introduction": "Variantes coherentes de piedra y cobre.",
+      "laterUtility": "Paleta alternativa a Chipped para infraestructura IE; ninguna variante obligatoria.",
+      "concreteConnections": [
+        "entrelumen:settlement_supply"
+      ],
+      "participation": "optional architectural/utility path; never consumed as arbitrary module ingredient",
+      "runtimePending": [
+        "anchor registry membership",
+        "demonstrate described interaction on actual installed versions"
+      ]
+    },
+    {
+      "modId": "sophisticatedbackpacks",
+      "introducedAct": "I",
+      "anchorItem": "sophisticatedbackpacks:backpack",
+      "introduction": "Portable inventory",
+      "laterUtility": "Expedition organization with staged advanced upgrades",
+      "concreteConnections": [
+        "entrelumen:horizon_survey"
+      ],
+      "participation": "project system or interchangeable infrastructure; owning all mods not required",
+      "runtimePending": [
+        "anchor registry membership",
+        "demonstrate described interaction on actual installed versions"
+      ]
+    },
+    {
+      "modId": "sophisticatedstorage",
+      "introducedAct": "I",
+      "anchorItem": "sophisticatedstorage:barrel",
+      "introduction": "Configurable workshop storage",
+      "laterUtility": "Upgrade existing workshop organization",
+      "concreteConnections": [
+        "entrelumen:workshop_hands"
+      ],
+      "participation": "project system or interchangeable infrastructure; owning all mods not required",
+      "runtimePending": [
+        "anchor registry membership",
+        "demonstrate described interaction on actual installed versions"
+      ]
+    },
+    {
+      "modId": "supplementaries",
+      "introducedAct": "I",
+      "anchorItem": "supplementaries:notice_board",
+      "introduction": "Utility decoration",
+      "laterUtility": "Useful infrastructure for inhabited reconstruction sites",
+      "concreteConnections": [
+        "entrelumen:settlement_supply",
+        "entrelumen:ark_habitation"
+      ],
+      "participation": "project system or interchangeable infrastructure; owning all mods not required",
+      "runtimePending": [
+        "anchor registry membership",
+        "demonstrate described interaction on actual installed versions"
+      ]
+    },
+    {
+      "modId": "the_bumblezone",
+      "introducedAct": "III",
+      "anchorItem": "the_bumblezone:pollen_puff",
+      "introduction": "Pollinator expeditions",
+      "laterUtility": "Link bees and nature module research",
+      "concreteConnections": [
+        "entrelumen:pollinator_treaty",
+        "entrelumen:ark_nature"
+      ],
+      "participation": "project system or interchangeable infrastructure; owning all mods not required",
+      "runtimePending": [
+        "anchor registry membership",
+        "demonstrate described interaction on actual installed versions"
+      ]
+    },
+    {
+      "modId": "twilightforest",
+      "introducedAct": "IV",
+      "anchorItem": "twilightforest:ironwood_ingot",
+      "introduction": "Structured adventure",
+      "laterUtility": "Spaced encounters for exploration research",
+      "concreteConnections": [
+        "entrelumen:horizon_survey",
+        "entrelumen:ark_exploration"
+      ],
+      "participation": "project system or interchangeable infrastructure; owning all mods not required",
+      "runtimePending": [
+        "anchor registry membership",
+        "demonstrate described interaction on actual installed versions"
+      ]
+    },
+    {
+      "modId": "waystones",
+      "introducedAct": "II",
+      "anchorItem": "waystones:waystone",
+      "introduction": "Established travel routes",
+      "laterUtility": "Connect discovered expedition outposts",
+      "concreteConnections": [
+        "entrelumen:horizon_survey",
+        "entrelumen:ark_exploration"
+      ],
+      "participation": "project system or interchangeable infrastructure; owning all mods not required",
+      "runtimePending": [
+        "anchor registry membership",
+        "demonstrate described interaction on actual installed versions"
+      ]
+    }
+  ],
+  "itemEvidence": [
+    {
+      "itemId": "actuallyadditions:palis_crystal",
+      "jar": "actuallyadditions-1.3.26+mc1.21.1.jar",
+      "jarSha256": "072451bb6069025e255a39216edc0f892cda00c12b9905b552e7dd4631d44a41",
+      "itemModelResource": "assets/actuallyadditions/models/item/palis_crystal.json",
+      "recipeReferences": [
+        "data/actuallyadditions/recipe/compress/palis_crystal.json",
+        "data/actuallyadditions/recipe/compress/palis_crystal_block.json",
+        "data/actuallyadditions/recipe/decompress/palis_crystal.json"
+      ],
+      "recipeReferenceCount": 25,
+      "proof": "exact item model plus listed exact recipe references; runtime registry/recipe availability not yet verified"
+    },
+    {
+      "itemId": "actuallyadditions:restonia_crystal",
+      "jar": "actuallyadditions-1.3.26+mc1.21.1.jar",
+      "jarSha256": "072451bb6069025e255a39216edc0f892cda00c12b9905b552e7dd4631d44a41",
+      "itemModelResource": "assets/actuallyadditions/models/item/restonia_crystal.json",
+      "recipeReferences": [
+        "data/actuallyadditions/recipe/basic_coil.json",
+        "data/actuallyadditions/recipe/compress/restonia_crystal.json",
+        "data/actuallyadditions/recipe/compress/restonia_crystal_block.json"
+      ],
+      "recipeReferenceCount": 23,
+      "proof": "exact item model plus listed exact recipe references; runtime registry/recipe availability not yet verified"
+    },
+    {
+      "itemId": "ae2:calculation_processor",
+      "jar": "appliedenergistics2-19.2.17.jar",
+      "jarSha256": "460d779a0609b81409907d9956de8f6f70a1b0912257e3e5c3c7e75ac9630e95",
+      "itemModelResource": "assets/ae2/models/item/calculation_processor.json",
+      "recipeReferences": [
+        "data/ae2/recipe/inscriber/calculation_processor.json",
+        "data/ae2/recipe/materials/advancedcard.json",
+        "data/ae2/recipe/materials/basiccard.json"
+      ],
+      "recipeReferenceCount": 19,
+      "proof": "exact item model plus listed exact recipe references; runtime registry/recipe availability not yet verified"
+    },
+    {
+      "itemId": "ae2:logic_processor",
+      "jar": "appliedenergistics2-19.2.17.jar",
+      "jarSha256": "460d779a0609b81409907d9956de8f6f70a1b0912257e3e5c3c7e75ac9630e95",
+      "itemModelResource": "assets/ae2/models/item/logic_processor.json",
+      "recipeReferences": [
+        "data/ae2/recipe/inscriber/logic_processor.json",
+        "data/ae2/recipe/materials/annihilationcore.json",
+        "data/ae2/recipe/materials/formationcore.json"
+      ],
+      "recipeReferenceCount": 8,
+      "proof": "exact item model plus listed exact recipe references; runtime registry/recipe availability not yet verified"
+    },
+    {
+      "itemId": "aether:ambrosium_shard",
+      "jar": "aether-1.21.1-1.5.10-neoforge.jar",
+      "jarSha256": "b19386301560a017a458e9790a7b59999e270f93010def0b61e7cbe4c8630dbf",
+      "itemModelResource": "assets/aether/models/item/ambrosium_shard.json",
+      "recipeReferences": [
+        "data/aether/recipe/ambrosium_block.json",
+        "data/aether/recipe/ambrosium_shard_from_ambrosium_block.json",
+        "data/aether/recipe/ambrosium_shard_from_blasting.json"
+      ],
+      "recipeReferenceCount": 4,
+      "proof": "exact item model plus listed exact recipe references; runtime registry/recipe availability not yet verified"
+    },
+    {
+      "itemId": "aether:zanite_gemstone",
+      "jar": "aether-1.21.1-1.5.10-neoforge.jar",
+      "jarSha256": "b19386301560a017a458e9790a7b59999e270f93010def0b61e7cbe4c8630dbf",
+      "itemModelResource": "assets/aether/models/item/zanite_gemstone.json",
+      "recipeReferences": [
+        "data/aether/recipe/zanite_block.json",
+        "data/aether/recipe/zanite_gemstone_from_blasting.json",
+        "data/aether/recipe/zanite_gemstone_from_smelting.json"
+      ],
+      "recipeReferenceCount": 4,
+      "proof": "exact item model plus listed exact recipe references; runtime registry/recipe availability not yet verified"
+    },
+    {
+      "itemId": "amendments:dye_bottle",
+      "jar": "amendments-1.21-2.1.9-neoforge.jar",
+      "jarSha256": "28647bef2397e69953237e883333f80ca4d3e93feec714eff71c67350c389b9b",
+      "itemModelResource": "assets/amendments/models/item/dye_bottle.json",
+      "recipeReferences": [
+        "data/amendments/recipe/dye_bottle.json"
+      ],
+      "recipeReferenceCount": 1,
+      "proof": "exact item model plus listed exact recipe references; runtime registry/recipe availability not yet verified"
+    },
+    {
+      "itemId": "aquaculture:fish_fillet_cooked",
+      "jar": "Aquaculture-1.21.1-2.7.21.jar",
+      "jarSha256": "45f00f9059838b2fecc988861111d8b3d4613a5f1b3688a8dbfa8655751b85bb",
+      "itemModelResource": "assets/aquaculture/models/item/fish_fillet_cooked.json",
+      "recipeReferences": [
+        "data/aquaculture/recipe/cooked_fish_fillet.json",
+        "data/aquaculture/recipe/cooked_fish_fillet_from_campfire.json",
+        "data/aquaculture/recipe/cooked_fish_fillet_from_smoking.json"
+      ],
+      "recipeReferenceCount": 3,
+      "proof": "exact item model plus listed exact recipe references; runtime registry/recipe availability not yet verified"
+    },
+    {
+      "itemId": "ars_nouveau:magebloom_fiber",
+      "jar": "ars_nouveau-1.21.1-5.13.1.jar",
+      "jarSha256": "99dff85e8778f7ae21dfd51cdedadf20f555a834fc757c0afe5f03c10eea96f2",
+      "itemModelResource": "assets/ars_nouveau/models/item/magebloom_fiber.json",
+      "recipeReferences": [
+        "data/ars_nouveau/recipe/alteration_table.json",
+        "data/ars_nouveau/recipe/arcanist_boots.json",
+        "data/ars_nouveau/recipe/arcanist_hood.json"
+      ],
+      "recipeReferenceCount": 23,
+      "proof": "exact item model plus listed exact recipe references; runtime registry/recipe availability not yet verified"
+    },
+    {
+      "itemId": "buildinggadgets2:gadget_building",
+      "jar": "buildinggadgets2-1.3.9.jar",
+      "jarSha256": "acae3b628fa60ae8d34059b40c696ea282c01d20b14d32a506c4f85dd357b114",
+      "itemModelResource": "assets/buildinggadgets2/models/item/gadget_building.json",
+      "recipeReferences": [
+        "data/buildinggadgets2/recipe/gadget_building.json"
+      ],
+      "recipeReferenceCount": 1,
+      "proof": "exact item model plus listed exact recipe references; runtime registry/recipe availability not yet verified"
+    },
+    {
+      "itemId": "chipped:botanist_workbench",
+      "jar": "chipped-neoforge-1.21.1-4.0.2.jar",
+      "jarSha256": "18ac6fd6b30db4922ccc6ee8bea5b113f69587505b7529834f37ace506427291",
+      "itemModelResource": "assets/chipped/models/item/botanist_workbench.json",
+      "recipeReferences": [
+        "data/chipped/recipe/watering_can.json",
+        "data/minecraft/recipe/workbench/botanist_workbench.json"
+      ],
+      "recipeReferenceCount": 2,
+      "proof": "exact item model plus listed exact recipe references; runtime registry/recipe availability not yet verified"
+    },
+    {
+      "itemId": "computercraft:computer_normal",
+      "jar": "cc-tweaked-1.21.1-forge-1.120.2.jar",
+      "jarSha256": "e8651fe24b384e925e563c9ad077644744474e2e7c0adb8e6d5b4757598dce9f",
+      "itemModelResource": "assets/computercraft/models/item/computer_normal.json",
+      "recipeReferences": [
+        "data/computercraft/recipe/computer_advanced_upgrade.json",
+        "data/computercraft/recipe/computer_normal.json",
+        "data/computercraft/recipe/turtle_normal.json"
+      ],
+      "recipeReferenceCount": 3,
+      "proof": "exact item model plus listed exact recipe references; runtime registry/recipe availability not yet verified"
+    },
+    {
+      "itemId": "constructionstick:iron_stick",
+      "jar": "ConstructionSticks-1.21.1-1.4.2.jar",
+      "jarSha256": "8eb08eea278e73dc3a011063f0c5a85e22714f916791ffd2a825b5036b24d6bb",
+      "itemModelResource": "assets/constructionstick/models/item/iron_stick.json",
+      "recipeReferences": [
+        "data/constructionstick/recipe/iron_stick.json",
+        "data/constructionstick/recipe/smithing_upgrade/iron_stick_with_template_angel.json",
+        "data/constructionstick/recipe/smithing_upgrade/iron_stick_with_template_battery.json"
+      ],
+      "recipeReferenceCount": 6,
+      "proof": "exact item model plus listed exact recipe references; runtime registry/recipe availability not yet verified"
+    },
+    {
+      "itemId": "cookingforblockheads:cooking_table",
+      "jar": "cookingforblockheads-neoforge-1.21.1-21.1.24.jar",
+      "jarSha256": "ccf2e9de8130dec5642f841e76c2a684822d867b7eb26855b0f1c6d4f31e8419",
+      "itemModelResource": "assets/cookingforblockheads/models/item/cooking_table.json",
+      "recipeReferences": [
+        "data/cookingforblockheads/recipe/cooking_table.json",
+        "data/cookingforblockheads/recipe/remove_dye_from_cooking_table.json"
+      ],
+      "recipeReferenceCount": 2,
+      "proof": "exact item model plus listed exact recipe references; runtime registry/recipe availability not yet verified"
+    },
+    {
+      "itemId": "create:andesite_alloy",
+      "jar": "create-1.21.1-6.0.10.jar",
+      "jarSha256": "ef87fe5709f1ba1f5b8bb20a2925b5afb4669e178fd6d8bf10c167759eefe37a",
+      "itemModelResource": "assets/create/models/item/andesite_alloy.json",
+      "recipeReferences": [
+        "data/create/recipe/andesite_bars_from_andesite_alloy_stonecutting.json",
+        "data/create/recipe/andesite_ladder_from_andesite_alloy_stonecutting.json",
+        "data/create/recipe/andesite_scaffolding_from_andesite_alloy_stonecutting.json"
+      ],
+      "recipeReferenceCount": 81,
+      "proof": "exact item model plus listed exact recipe references; runtime registry/recipe availability not yet verified"
+    },
+    {
+      "itemId": "create:brass_sheet",
+      "jar": "create-1.21.1-6.0.10.jar",
+      "jarSha256": "ef87fe5709f1ba1f5b8bb20a2925b5afb4669e178fd6d8bf10c167759eefe37a",
+      "itemModelResource": "assets/create/models/item/brass_sheet.json",
+      "recipeReferences": [
+        "data/create/recipe/pressing/brass_ingot.json"
+      ],
+      "recipeReferenceCount": 1,
+      "proof": "exact item model plus listed exact recipe references; runtime registry/recipe availability not yet verified"
+    },
+    {
+      "itemId": "create:precision_mechanism",
+      "jar": "create-1.21.1-6.0.10.jar",
+      "jarSha256": "ef87fe5709f1ba1f5b8bb20a2925b5afb4669e178fd6d8bf10c167759eefe37a",
+      "itemModelResource": "assets/create/models/item/precision_mechanism.json",
+      "recipeReferences": [
+        "data/create/recipe/crafting/kinetics/controls.json",
+        "data/create/recipe/crafting/kinetics/mechanical_arm.json",
+        "data/create/recipe/crafting/kinetics/rotation_speed_controller.json"
+      ],
+      "recipeReferenceCount": 8,
+      "proof": "exact item model plus listed exact recipe references; runtime registry/recipe availability not yet verified"
+    },
+    {
+      "itemId": "evilcraft:dark_gem",
+      "jar": "evilcraft-1.21.1-neoforge-1.2.94.jar",
+      "jarSha256": "f8c65b990fb05b76d5fb844d272362b93eb0f65ad7089c962f98d403b4a1d71f",
+      "itemModelResource": "assets/evilcraft/models/item/dark_gem.json",
+      "recipeReferences": [
+        "data/evilcraft/recipe/blood_infuser/base/dark_power_gem.json",
+        "data/evilcraft/recipe/crafting/biome_extract.json",
+        "data/evilcraft/recipe/crafting/blood_extractor.json"
+      ],
+      "recipeReferenceCount": 20,
+      "proof": "exact item model plus listed exact recipe references; runtime registry/recipe availability not yet verified"
+    },
+    {
+      "itemId": "farmersdelight:fish_stew",
+      "jar": "FarmersDelight-1.21.1-1.3.3.jar",
+      "jarSha256": "5dfe78ec57cfc793952611c77cb92d0d66765da5bd1ac326ba85faa4c236b78d",
+      "itemModelResource": "assets/farmersdelight/models/item/fish_stew.json",
+      "recipeReferences": [
+        "data/farmersdelight/recipe/cooking/fish_stew.json"
+      ],
+      "recipeReferenceCount": 1,
+      "proof": "exact item model plus listed exact recipe references; runtime registry/recipe availability not yet verified"
+    },
+    {
+      "itemId": "farmersdelight:mixed_salad",
+      "jar": "FarmersDelight-1.21.1-1.3.3.jar",
+      "jarSha256": "5dfe78ec57cfc793952611c77cb92d0d66765da5bd1ac326ba85faa4c236b78d",
+      "itemModelResource": "assets/farmersdelight/models/item/mixed_salad.json",
+      "recipeReferences": [
+        "data/farmersdelight/recipe/mixed_salad.json"
+      ],
+      "recipeReferenceCount": 1,
+      "proof": "exact item model plus listed exact recipe references; runtime registry/recipe availability not yet verified"
+    },
+    {
+      "itemId": "farmersdelight:vegetable_soup",
+      "jar": "FarmersDelight-1.21.1-1.3.3.jar",
+      "jarSha256": "5dfe78ec57cfc793952611c77cb92d0d66765da5bd1ac326ba85faa4c236b78d",
+      "itemModelResource": "assets/farmersdelight/models/item/vegetable_soup.json",
+      "recipeReferences": [
+        "data/farmersdelight/recipe/cooking/vegetable_soup.json"
+      ],
+      "recipeReferenceCount": 1,
+      "proof": "exact item model plus listed exact recipe references; runtime registry/recipe availability not yet verified"
+    },
+    {
+      "itemId": "farmingforblockheads:market",
+      "jar": "farmingforblockheads-neoforge-1.21.1-21.1.13.jar",
+      "jarSha256": "12d8a9d3e93bfda0fc2cc74df1d56dcb01046fa309ae4610c1dcf722aba48fd2",
+      "itemModelResource": "assets/farmingforblockheads/models/item/market.json",
+      "recipeReferences": [
+        "data/farmingforblockheads/recipe/market.json",
+        "data/farmingforblockheads/recipe/market/actuallyadditions/canola_seeds.json",
+        "data/farmingforblockheads/recipe/market/actuallyadditions/coffee_seeds.json"
+      ],
+      "recipeReferenceCount": 811,
+      "proof": "exact item model plus listed exact recipe references; runtime registry/recipe availability not yet verified"
+    },
+    {
+      "itemId": "framedblocks:framed_cube",
+      "jar": "FramedBlocks-10.6.1.jar",
+      "jarSha256": "3337f29e1fa3331e8740eef9c20b0750d81fd86d1057fb81012a5c4792aa3369",
+      "itemModelResource": "assets/framedblocks/models/item/framed_cube.json",
+      "recipeReferences": [
+        "data/framedblocks/recipe/framed_axe.json",
+        "data/framedblocks/recipe/framed_bars.json",
+        "data/framedblocks/recipe/framed_blueprint.json"
+      ],
+      "recipeReferenceCount": 59,
+      "proof": "exact item model plus listed exact recipe references; runtime registry/recipe availability not yet verified"
+    },
+    {
+      "itemId": "functionalstorage:storage_controller",
+      "jar": "functionalstorage-1.21.1-1.5.8.jar",
+      "jarSha256": "e3e7368c28a24e7de5b877988aa92cc94ca7417c8f60b7d28e7f584a94a51147",
+      "itemModelResource": "assets/functionalstorage/models/item/storage_controller.json",
+      "recipeReferences": [
+        "data/functionalstorage/recipe/storage_controller.json"
+      ],
+      "recipeReferenceCount": 1,
+      "proof": "exact item model plus listed exact recipe references; runtime registry/recipe availability not yet verified"
+    },
+    {
+      "itemId": "handcrafted:oak_chair",
+      "jar": "handcrafted-neoforge-1.21.1-4.0.3.jar",
+      "jarSha256": "6f2a776fb28ed07d370899814e5e711fbeebe31396097d78a3b550439b364948",
+      "itemModelResource": "assets/handcrafted/models/item/oak_chair.json",
+      "recipeReferences": [
+        "data/handcrafted/recipe/oak_chair.json"
+      ],
+      "recipeReferenceCount": 1,
+      "proof": "exact item model plus listed exact recipe references; runtime registry/recipe availability not yet verified"
+    },
+    {
+      "itemId": "immersiveengineering:component_steel",
+      "jar": "ImmersiveEngineering-1.21.1-12.4.2-194.jar",
+      "jarSha256": "45942985a4a4aebf265b8e22a0c54a96208637471f36f2532ff5d4911322debc",
+      "itemModelResource": "assets/immersiveengineering/models/item/component_steel.json",
+      "recipeReferences": [
+        "data/immersiveengineering/recipe/blueprint/component_steel.json",
+        "data/immersiveengineering/recipe/blueprint/robot_wolf.json",
+        "data/immersiveengineering/recipe/crafting/component_steel.json"
+      ],
+      "recipeReferenceCount": 8,
+      "proof": "exact item model plus listed exact recipe references; runtime registry/recipe availability not yet verified"
+    },
+    {
+      "itemId": "immersiveengineering:plate_steel",
+      "jar": "ImmersiveEngineering-1.21.1-12.4.2-194.jar",
+      "jarSha256": "45942985a4a4aebf265b8e22a0c54a96208637471f36f2532ff5d4911322debc",
+      "itemModelResource": "assets/immersiveengineering/models/item/plate_steel.json",
+      "recipeReferences": [
+        "data/immersiveengineering/recipe/crafting/plate_steel_hammering.json"
+      ],
+      "recipeReferenceCount": 1,
+      "proof": "exact item model plus listed exact recipe references; runtime registry/recipe availability not yet verified"
+    },
+    {
+      "itemId": "immersiveengineering:wire_copper",
+      "jar": "ImmersiveEngineering-1.21.1-12.4.2-194.jar",
+      "jarSha256": "45942985a4a4aebf265b8e22a0c54a96208637471f36f2532ff5d4911322debc",
+      "itemModelResource": "assets/immersiveengineering/models/item/wire_copper.json",
+      "recipeReferences": [
+        "data/immersiveengineering/recipe/crafting/toolupgrade_revolver_electro.json",
+        "data/immersiveengineering/recipe/crafting/wire_copper.json"
+      ],
+      "recipeReferenceCount": 2,
+      "proof": "exact item model plus listed exact recipe references; runtime registry/recipe availability not yet verified"
+    },
+    {
+      "itemId": "integrateddynamics:crystalized_menril_chunk",
+      "jar": "integrateddynamics-1.21.1-neoforge-1.35.0-1981.jar",
+      "jarSha256": "4ba5771a946b1b9504440e90d433aaeb0bd8603f4b9154ea025a294e7682928e",
+      "itemModelResource": "assets/integrateddynamics/models/item/crystalized_menril_chunk.json",
+      "recipeReferences": [
+        "data/integrateddynamics/recipe/crafting/cable.json",
+        "data/integrateddynamics/recipe/crafting/cable_rotated.json",
+        "data/integrateddynamics/recipe/crafting/crystalized_menril_block.json"
+      ],
+      "recipeReferenceCount": 20,
+      "proof": "exact item model plus listed exact recipe references; runtime registry/recipe availability not yet verified"
+    },
+    {
+      "itemId": "integratedtunnels:part_interface_item",
+      "jar": "integratedtunnels-1.21.1-neoforge-1.10.0-729.jar",
+      "jarSha256": "30dfc849479977efcfdf8cab2332489535966034d8413bcc4621b3a02feb6f5c",
+      "itemModelResource": "assets/integratedtunnels/models/item/part_interface_item.json",
+      "recipeReferences": [
+        "data/integratedtunnels/recipe/crafting/part_exporter_item.json",
+        "data/integratedtunnels/recipe/crafting/part_importer_item.json",
+        "data/integratedtunnels/recipe/crafting/part_interface_filter_item.json"
+      ],
+      "recipeReferenceCount": 4,
+      "proof": "exact item model plus listed exact recipe references; runtime registry/recipe availability not yet verified"
+    },
+    {
+      "itemId": "laserio:logic_chip",
+      "jar": "laserio-1.9.11.jar",
+      "jarSha256": "03e8537d75bc2f4ced2fc214d3409753e684d1056ee63b26db7a2b9e199ef4df",
+      "itemModelResource": "assets/laserio/models/item/logic_chip.json",
+      "recipeReferences": [
+        "data/laserio/recipe/card_chemical.json",
+        "data/laserio/recipe/card_cloner.json",
+        "data/laserio/recipe/card_energy.json"
+      ],
+      "recipeReferenceCount": 14,
+      "proof": "exact item model plus listed exact recipe references; runtime registry/recipe availability not yet verified"
+    },
+    {
+      "itemId": "malum:arcane_spirit",
+      "jar": "malum-1.21.1-1.8.2.jar",
+      "jarSha256": "38f4fa53e8da9e3d67aa5f54f98fd7c83cb342f0463ce5c63a6864229c88efa8",
+      "itemModelResource": "assets/malum/models/item/arcane_spirit.json",
+      "recipeReferences": [
+        "data/malum/recipe/runeworking/rune_of_reinforcement.json",
+        "data/malum/recipe/runeworking/rune_of_spell_mastery.json"
+      ],
+      "recipeReferenceCount": 2,
+      "proof": "exact item model plus listed exact recipe references; runtime registry/recipe availability not yet verified"
+    },
+    {
+      "itemId": "malum:soul_stained_steel_ingot",
+      "jar": "malum-1.21.1-1.8.2.jar",
+      "jarSha256": "38f4fa53e8da9e3d67aa5f54f98fd7c83cb342f0463ce5c63a6864229c88efa8",
+      "itemModelResource": "assets/malum/models/item/soul_stained_steel_ingot.json",
+      "recipeReferences": [
+        "data/malum/recipe/block_of_soul_stained_steel.json",
+        "data/malum/recipe/elaborate_brooch.json",
+        "data/malum/recipe/farmersdelight/soul_stained_steel_knife.json"
+      ],
+      "recipeReferenceCount": 18,
+      "proof": "exact item model plus listed exact recipe references; runtime registry/recipe availability not yet verified"
+    },
+    {
+      "itemId": "mekanism:alloy_atomic",
+      "jar": "Mekanism-1.21.1-10.7.19.85.jar",
+      "jarSha256": "004dbc9f3106f4d192aeaa1ee1190dd16ec9ca8059ed3d093b80034f4c574f43",
+      "itemModelResource": "assets/mekanism/models/item/alloy_atomic.json",
+      "recipeReferences": [
+        "data/mekanism/recipe/antiprotonic_nucleosynthesizer.json",
+        "data/mekanism/recipe/metallurgic_infusing/alloy/atomic.json"
+      ],
+      "recipeReferenceCount": 2,
+      "proof": "exact item model plus listed exact recipe references; runtime registry/recipe availability not yet verified"
+    },
+    {
+      "itemId": "mekanism:basic_control_circuit",
+      "jar": "Mekanism-1.21.1-10.7.19.85.jar",
+      "jarSha256": "004dbc9f3106f4d192aeaa1ee1190dd16ec9ca8059ed3d093b80034f4c574f43",
+      "itemModelResource": "assets/mekanism/models/item/basic_control_circuit.json",
+      "recipeReferences": [
+        "data/mekanism/recipe/control_circuit/basic.json"
+      ],
+      "recipeReferenceCount": 1,
+      "proof": "exact item model plus listed exact recipe references; runtime registry/recipe availability not yet verified"
+    },
+    {
+      "itemId": "mekanismgenerators:wind_generator",
+      "jar": "MekanismGenerators-1.21.1-10.7.19.85.jar",
+      "jarSha256": "0e5783b111e756f27b48c62b2f0e02fff750c77f7985ff809bfadc5f444ba4ac",
+      "itemModelResource": "assets/mekanismgenerators/models/item/wind_generator.json",
+      "recipeReferences": [
+        "data/mekanismgenerators/recipe/generator/wind.json"
+      ],
+      "recipeReferenceCount": 1,
+      "proof": "exact item model plus listed exact recipe references; runtime registry/recipe availability not yet verified"
+    },
+    {
+      "itemId": "modularrouters:blank_module",
+      "jar": "modular-routers-13.2.7+mc1.21.1.jar",
+      "jarSha256": "10f84e7f2d1bc7b655d8398d8c2e7146c4929c3ad2c97408f940ca86c1bf898c",
+      "itemModelResource": "assets/modularrouters/models/item/blank_module.json",
+      "recipeReferences": [
+        "data/modularrouters/recipe/activator_module.json",
+        "data/modularrouters/recipe/augment_core.json",
+        "data/modularrouters/recipe/blank_module.json"
+      ],
+      "recipeReferenceCount": 17,
+      "proof": "exact item model plus listed exact recipe references; runtime registry/recipe availability not yet verified"
+    },
+    {
+      "itemId": "mysticalagriculture:imperium_essence",
+      "jar": "MysticalAgriculture-1.21.1-8.0.27.jar",
+      "jarSha256": "d67bb701fbe4ade2efeb0aafd477f569b5e6a5a7c8ac696a8a1f658f8477eb99",
+      "itemModelResource": "assets/mysticalagriculture/models/item/imperium_essence.json",
+      "recipeReferences": [
+        "data/mysticalagriculture/recipe/augment/absorption_iv.json",
+        "data/mysticalagriculture/recipe/augment/attack_aoe_ii.json",
+        "data/mysticalagriculture/recipe/augment/haste_ii.json"
+      ],
+      "recipeReferenceCount": 25,
+      "proof": "exact item model plus listed exact recipe references; runtime registry/recipe availability not yet verified"
+    },
+    {
+      "itemId": "mysticalagriculture:prudentium_essence",
+      "jar": "MysticalAgriculture-1.21.1-8.0.27.jar",
+      "jarSha256": "d67bb701fbe4ade2efeb0aafd477f569b5e6a5a7c8ac696a8a1f658f8477eb99",
+      "itemModelResource": "assets/mysticalagriculture/models/item/prudentium_essence.json",
+      "recipeReferences": [
+        "data/mysticalagriculture/recipe/augment/absorption_ii.json",
+        "data/mysticalagriculture/recipe/augment/blindness_resistance.json",
+        "data/mysticalagriculture/recipe/augment/health_boost_ii.json"
+      ],
+      "recipeReferenceCount": 22,
+      "proof": "exact item model plus listed exact recipe references; runtime registry/recipe availability not yet verified"
+    },
+    {
+      "itemId": "naturesaura:infused_iron",
+      "jar": "NaturesAura-41.9.jar",
+      "jarSha256": "c76a257fdf5da2bf2c21dcc4e474a7a1ff11202a13fca02fedc97e329426e517",
+      "itemModelResource": "assets/naturesaura/models/item/infused_iron.json",
+      "recipeReferences": [
+        "data/naturesaura/recipe/altar/infused_iron.json",
+        "data/naturesaura/recipe/aura_cache.json",
+        "data/naturesaura/recipe/aura_timer.json"
+      ],
+      "recipeReferenceCount": 31,
+      "proof": "exact item model plus listed exact recipe references; runtime registry/recipe availability not yet verified"
+    },
+    {
+      "itemId": "naturesaura:sky_ingot",
+      "jar": "NaturesAura-41.9.jar",
+      "jarSha256": "c76a257fdf5da2bf2c21dcc4e474a7a1ff11202a13fca02fedc97e329426e517",
+      "itemModelResource": "assets/naturesaura/models/item/sky_ingot.json",
+      "recipeReferences": [
+        "data/naturesaura/recipe/animal_spawner.json",
+        "data/naturesaura/recipe/aura_trove.json",
+        "data/naturesaura/recipe/auto_crafter.json"
+      ],
+      "recipeReferenceCount": 34,
+      "proof": "exact item model plus listed exact recipe references; runtime registry/recipe availability not yet verified"
+    },
+    {
+      "itemId": "occultism:iesnium_ingot",
+      "jar": "occultism-1.21.1-neoforge-1.224.4.jar",
+      "jarSha256": "b82a5ed9468d64beac21139aff5f15db287104668d8e98db7eafc042c9a79178",
+      "itemModelResource": "assets/occultism/models/item/iesnium_ingot.json",
+      "recipeReferences": [
+        "data/occultism/recipe/blasting/iesnium_ingot_from_dust.json",
+        "data/occultism/recipe/blasting/iesnium_ingot_from_ore.json",
+        "data/occultism/recipe/blasting/iesnium_ingot_from_raw.json"
+      ],
+      "recipeReferenceCount": 8,
+      "proof": "exact item model plus listed exact recipe references; runtime registry/recipe availability not yet verified"
+    },
+    {
+      "itemId": "occultism:spirit_attuned_crystal",
+      "jar": "occultism-1.21.1-neoforge-1.224.4.jar",
+      "jarSha256": "b82a5ed9468d64beac21139aff5f15db287104668d8e98db7eafc042c9a79178",
+      "itemModelResource": "assets/occultism/models/item/spirit_attuned_crystal.json",
+      "recipeReferences": [
+        "data/occultism/recipe/crafting/spirit_attuned_crystal.json",
+        "data/occultism/recipe/ritual/craft_dark_iesnium_sacrificial_bowl.json",
+        "data/occultism/recipe/ritual/craft_dimensional_battlefield.json"
+      ],
+      "recipeReferenceCount": 20,
+      "proof": "exact item model plus listed exact recipe references; runtime registry/recipe availability not yet verified"
+    },
+    {
+      "itemId": "pipez:item_pipe",
+      "jar": "pipez-neoforge-1.21.1-1.2.31.jar",
+      "jarSha256": "9b37e922443ea3452daeacbfba4bcf69de07692183c4ee09f1d1e82c9fc5cc5f",
+      "itemModelResource": "assets/pipez/models/item/item_pipe.json",
+      "recipeReferences": [
+        "data/pipez/recipe/item_pipe.json",
+        "data/pipez/recipe/universal_pipe.json"
+      ],
+      "recipeReferenceCount": 2,
+      "proof": "exact item model plus listed exact recipe references; runtime registry/recipe availability not yet verified"
+    },
+    {
+      "itemId": "pneumaticcraft:printed_circuit_board",
+      "jar": "pneumaticcraft-repressurized-8.2.23+mc1.21.1.jar",
+      "jarSha256": "647ce20d52cf139f3b693b9b4c4753966a95a6dafc82d9e538ae4ae5b0249f9c",
+      "itemModelResource": "assets/pneumaticcraft/models/item/printed_circuit_board.json",
+      "recipeReferences": [
+        "data/pneumaticcraft/recipe/assembly_controller.json",
+        "data/pneumaticcraft/recipe/assembly_drill.json",
+        "data/pneumaticcraft/recipe/assembly_io_unit_export.json"
+      ],
+      "recipeReferenceCount": 24,
+      "proof": "exact item model plus listed exact recipe references; runtime registry/recipe availability not yet verified"
+    },
+    {
+      "itemId": "productivebees:wax",
+      "jar": "productivebees-1.21.1-13.13.5.jar",
+      "jarSha256": "9d48d198bc6eacf3b7729f4d60b91e661cfa15d105264ba225dee87b1d547ba1",
+      "itemModelResource": "assets/productivebees/models/item/wax.json",
+      "recipeReferences": [
+        "data/productivebees/recipe/centrifuge/ad_astra/honeycomb_cheese.json",
+        "data/productivebees/recipe/centrifuge/ae2/honeycomb_fluix.json",
+        "data/productivebees/recipe/centrifuge/alloys/honeycomb_brass.json"
+      ],
+      "recipeReferenceCount": 278,
+      "proof": "exact item model plus listed exact recipe references; runtime registry/recipe availability not yet verified"
+    },
+    {
+      "itemId": "rechiseled:chisel",
+      "jar": "rechiseled-1.2.5-neoforge-mc1.21.jar",
+      "jarSha256": "7bf14cf8a4bfdc4b6c990126a75da29fd2bb7559d1c05b71e29c8fd5ae044435",
+      "itemModelResource": "assets/rechiseled/models/item/chisel.json",
+      "recipeReferences": [
+        "data/rechiseled/recipe/chisel.json"
+      ],
+      "recipeReferenceCount": 1,
+      "proof": "exact item model plus listed exact recipe references; runtime registry/recipe availability not yet verified"
+    },
+    {
+      "itemId": "sophisticatedbackpacks:backpack",
+      "jar": "sophisticatedbackpacks-1.21.1-3.25.78.2107.jar",
+      "jarSha256": "ece652898740ae68ce3c0d5f29606e0616f08360bfd429e380a137091909929d",
+      "itemModelResource": "assets/sophisticatedbackpacks/models/item/backpack.json",
+      "recipeReferences": [
+        "data/sophisticatedbackpacks/recipe/backpack.json",
+        "data/sophisticatedbackpacks/recipe/copper_backpack.json",
+        "data/sophisticatedbackpacks/recipe/iron_backpack.json"
+      ],
+      "recipeReferenceCount": 3,
+      "proof": "exact item model plus listed exact recipe references; runtime registry/recipe availability not yet verified"
+    },
+    {
+      "itemId": "sophisticatedstorage:barrel",
+      "jar": "sophisticatedstorage-1.21.1-1.5.91.2127.jar",
+      "jarSha256": "1594df1f45874825d22995457b8b664df8fcc83130bc86013c162740f0d12c47",
+      "itemModelResource": "assets/sophisticatedstorage/models/item/barrel.json",
+      "recipeReferences": [
+        "data/sophisticatedstorage/recipe/acacia_barrel.json",
+        "data/sophisticatedstorage/recipe/bamboo_barrel.json",
+        "data/sophisticatedstorage/recipe/birch_barrel.json"
+      ],
+      "recipeReferenceCount": 15,
+      "proof": "exact item model plus listed exact recipe references; runtime registry/recipe availability not yet verified"
+    },
+    {
+      "itemId": "supplementaries:notice_board",
+      "jar": "supplementaries-1.21.1-3.9.5-neoforge.jar",
+      "jarSha256": "1bccf7f9bbdd1584cc883aaf89ad048c6eba7bf976f3aff65e874754920e8843",
+      "itemModelResource": "assets/supplementaries/models/item/notice_board.json",
+      "recipeReferences": [
+        "data/supplementaries/advancement/recipe/notice_board.json",
+        "data/supplementaries/recipe/notice_board.json"
+      ],
+      "recipeReferenceCount": 2,
+      "proof": "exact item model plus listed exact recipe references; runtime registry/recipe availability not yet verified"
+    },
+    {
+      "itemId": "the_bumblezone:pollen_puff",
+      "jar": "the_bumblezone-7.15.3+1.21.1-neoforge.jar",
+      "jarSha256": "049b688a43886a3a5f70e8c0f195db7e33335e20adc1124c981a377a8b511101",
+      "itemModelResource": "assets/the_bumblezone/models/item/pollen_puff.json",
+      "recipeReferences": [
+        "data/the_bumblezone/recipe/bee_bread/from_bottle.json",
+        "data/the_bumblezone/recipe/bee_bread/from_bucket.json",
+        "data/the_bumblezone/recipe/honey_compass.json"
+      ],
+      "recipeReferenceCount": 4,
+      "proof": "exact item model plus listed exact recipe references; runtime registry/recipe availability not yet verified"
+    },
+    {
+      "itemId": "twilightforest:ironwood_ingot",
+      "jar": "twilightforest-1.21.1-4.8.3345-universal.jar",
+      "jarSha256": "493da16d10210f9f53a3c33b3d8fcb4ae9b14016ee420d753c894562bd9aba35",
+      "itemModelResource": "assets/twilightforest/models/item/ironwood_ingot.json",
+      "recipeReferences": [
+        "data/twilightforest/recipe/compressed_blocks/ironwood_block.json",
+        "data/twilightforest/recipe/compressed_blocks/reversed/ironwood_block.json",
+        "data/twilightforest/recipe/material/blasted_ironwood_ingot.json"
+      ],
+      "recipeReferenceCount": 4,
+      "proof": "exact item model plus listed exact recipe references; runtime registry/recipe availability not yet verified"
+    },
+    {
+      "itemId": "twilightforest:steeleaf_ingot",
+      "jar": "twilightforest-1.21.1-4.8.3345-universal.jar",
+      "jarSha256": "493da16d10210f9f53a3c33b3d8fcb4ae9b14016ee420d753c894562bd9aba35",
+      "itemModelResource": "assets/twilightforest/models/item/steeleaf_ingot.json",
+      "recipeReferences": [
+        "data/twilightforest/recipe/compressed_blocks/reversed/steeleaf_block.json",
+        "data/twilightforest/recipe/compressed_blocks/steeleaf_block.json"
+      ],
+      "recipeReferenceCount": 2,
+      "proof": "exact item model plus listed exact recipe references; runtime registry/recipe availability not yet verified"
+    },
+    {
+      "itemId": "waystones:waystone",
+      "jar": "waystones-neoforge-1.21.1-21.1.41.jar",
+      "jarSha256": "3d38c91a114a3c6d29767c0c7216633263816caef8d3b91600c8e061b3baa590",
+      "itemModelResource": "assets/waystones/models/item/waystone.json",
+      "recipeReferences": [
+        "data/waystones/recipe/mossy_waystone_from_moss_blocks.json",
+        "data/waystones/recipe/mossy_waystone_from_vines.json",
+        "data/waystones/recipe/waystone.json"
+      ],
+      "recipeReferenceCount": 3,
+      "proof": "exact item model plus listed exact recipe references; runtime registry/recipe availability not yet verified"
+    }
+  ],
+  "resourceStages": [
+    {
+      "act": 2,
+      "policy": "Food, ordinary crops and basic bees stay open; no gating of recipes for sorting/building/travel recovery."
+    },
+    {
+      "act": 3,
+      "policy": "Add one propagation_core to static recipes for selected resource seeds/breeding upgrades at iron/copper/redstone tier. Do not remove seed use, growth, inheritance, gifts, or base recipes. Exact affected recipe IDs must be resolved from loaded registry before implementation."
+    },
+    {
+      "act": 4,
+      "policy": "Gold, quartz, specialized breeding and dimensional resource automation add one ecosystem_capsule; retain native material costs and progression. Avoid touching normal decorative/food crops."
+    },
+    {
+      "act": 5,
+      "policy": "Diamond/emerald/netherite/high-tier automation adds renewal_engine or ark_bus in acquisition recipe. Audit all alternative recipes, loot and breeding routes before asserting gate completeness."
+    },
+    {
+      "act": 6,
+      "policy": "Creative rewards only after final activation; no EMC. Do not add unlimited growth multipliers or cheap chunk-loading budgets."
+    }
+  ],
+  "arkBehavior": {
+    "activation": "Six existing modules placed around existing controller; install once, feed commissioning batches through controller, never consume blocks.",
+    "phases": [
+      {
+        "id": "calibrate",
+        "requirements": {
+          "entrelumen:calibration_frame": 4,
+          "entrelumen:power_regulator": 2
+        }
+      },
+      {
+        "id": "stabilize",
+        "requirements": {
+          "entrelumen:containment_seal": 2,
+          "entrelumen:ecosystem_capsule": 2
+        }
+      },
+      {
+        "id": "provision",
+        "requirements": {
+          "entrelumen:ration_bundle": 8,
+          "entrelumen:routing_matrix": 2
+        }
+      },
+      {
+        "id": "chart",
+        "requirements": {
+          "entrelumen:horizon_chart": 1
+        }
+      }
+    ],
+    "failure": "Failure/restart preserves installed modules and already accepted batches; identical repeated request yields no duplicate payout.",
+    "finish": "After all phases + team exploration milestones, unlock ending narrative and optional mastery recipes. No periodic world/chunk scanning beyond one bounded controller volume on interaction.",
+    "moduleFunctions": [
+      {
+        "itemId": "entrelumen:engineering_module",
+        "phase": "calibrate",
+        "behavior": "Acepta lotes de calibración y muestra reservas pendientes; habilita el diagnóstico de ingeniería del controlador.",
+        "implementationStatus": "proposed; verify against existing controller before implementation"
+      },
+      {
+        "itemId": "entrelumen:arcane_module",
+        "phase": "stabilize",
+        "behavior": "Registra sellos de contención y testimonios recuperados; permite reanudar la estabilización sin repetir entregas.",
+        "implementationStatus": "proposed; verify against existing controller before implementation"
+      },
+      {
+        "itemId": "entrelumen:nature_module",
+        "phase": "stabilize",
+        "behavior": "Registra cápsulas ecológicas y el proyecto de restauración; muestra qué abastecimiento natural falta.",
+        "implementationStatus": "proposed; verify against existing controller before implementation"
+      },
+      {
+        "itemId": "entrelumen:exploration_module",
+        "phase": "chart",
+        "behavior": "Compila la carta final con expediciones del equipo verificadas; abre la escena final sólo junto a las demás fases.",
+        "implementationStatus": "proposed; verify against existing controller before implementation"
+      },
+      {
+        "itemId": "entrelumen:logistics_module",
+        "phase": "provision",
+        "behavior": "Presenta cantidades restantes por fase y acepta lotes parciales por interacción; no extrae inventarios remotos.",
+        "implementationStatus": "proposed; verify against existing controller before implementation"
+      },
+      {
+        "itemId": "entrelumen:habitation_module",
+        "phase": "provision",
+        "behavior": "Registra provisiones y el refugio documentado; conserva el abastecimiento sin hambre artificial ni deterioro offline.",
+        "implementationStatus": "proposed; verify against existing controller before implementation"
+      }
+    ]
+  },
+  "runtimePending": [
+    "All itemEvidence entries prove resource references only: validate registry presence and loaded recipe conditions with real server.",
+    "The 16 proposed components and 22 static recipes do not exist yet; register components before recipe export.",
+    "Native energy/fluid/automation interactions need actual GUI/inventory capability tests.",
+    "Resource-seed and breeding acquisition recipe IDs/alternatives are not finalized: inspect generated runtime recipes, tags and data components.",
+    "Balance quantities and six-player scaling through playtests; these are initial values, not proven 150–200h pacing.",
+    "Verify EN/ES names/tutorials, all recipe outputs, bowl remainders, native crafting transactions, restart/reconnect and gifts.",
+    "No claim of performance until profiling actual production lines and endgame bases."
+  ]
+}

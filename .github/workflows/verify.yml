@@ -1,0 +1,33 @@
+name: Verify original pack sources
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+      - uses: actions/setup-java@cf277c60eb25467037889841efdb72551f06f6c3
+        with:
+          distribution: temurin
+          java-version: '21'
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Install artwork renderer dependency
+        run: python -m pip install Pillow==12.3.0
+      - name: Verify authored quests, translations, artwork and benchmark calculations
+        run: |
+          python tools/generate_quests.py --check
+          python art/build_art.py --check
+          python tools/check_runtime_content.py
+          python tools/benchmark.py --self-test
+          python -W error::ResourceWarning tools/test_runtime_control.py
+      - name: Build companion and exercise real Minecraft server APIs
+        working-directory: companion
+        run: bash ./gradlew test build runGameTestServer --no-daemon
