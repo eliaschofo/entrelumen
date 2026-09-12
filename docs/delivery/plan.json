@@ -1,0 +1,192 @@
+{
+  "version": "astra-sdd/v1",
+  "state": "active",
+  "controller": {
+    "model": "gpt-6-astra",
+    "effort": "medium"
+  },
+  "history_refs": [],
+  "tasks": [
+    {
+      "id": "companion",
+      "depends_on": [],
+      "owns": [
+        "companion"
+      ],
+      "state": "pending",
+      "model": "gpt-6-astra",
+      "effort": "low",
+      "acceptance": [
+        "NeoForge JAR builds; team lifecycle, persistence, transitions and idempotent deliveries pass behavioral tests"
+      ],
+      "checks": [
+        [
+          "gradlew.bat",
+          "test",
+          "build"
+        ]
+      ]
+    },
+    {
+      "id": "catalog",
+      "depends_on": [],
+      "owns": [
+        "catalog",
+        "tools/curate_pack.py"
+      ],
+      "state": "pending",
+      "model": "gpt-6-astra",
+      "effort": "low",
+      "acceptance": [
+        "Curated version/side/license/provenance inventory resolves dependencies and excludes EMC"
+      ],
+      "checks": [
+        [
+          "python",
+          "tools/curate_pack.py",
+          "--check"
+        ]
+      ]
+    },
+    {
+      "id": "quest-slice",
+      "depends_on": [],
+      "owns": [
+        "content",
+        "pack/config/ftbquests",
+        "tools/generate_quests.py"
+      ],
+      "state": "pending",
+      "model": "gpt-6-astra",
+      "effort": "low",
+      "acceptance": [
+        "25 original first-hour quests use stable IDs, valid FTB format and complete EN/ES"
+      ],
+      "checks": [
+        [
+          "python",
+          "tools/generate_quests.py",
+          "--check"
+        ]
+      ]
+    },
+    {
+      "id": "integrate-slice",
+      "depends_on": [
+        "companion",
+        "catalog",
+        "quest-slice"
+      ],
+      "owns": [
+        "pack",
+        "tools",
+        "tests"
+      ],
+      "state": "pending",
+      "model": "gpt-6-astra",
+      "effort": "low",
+      "acceptance": [
+        "Client/server launch, first-hour gameplay, independent teams and restart verified"
+      ],
+      "checks": [
+        [
+          "python",
+          "tools/verify_pack.py"
+        ]
+      ]
+    },
+    {
+      "id": "campaign-full",
+      "depends_on": [
+        "integrate-slice"
+      ],
+      "owns": [
+        "companion",
+        "content",
+        "pack",
+        "tools",
+        "tests"
+      ],
+      "state": "pending",
+      "model": "gpt-6-astra",
+      "effort": "low",
+      "acceptance": [
+        "Six acts, full meaningful bilingual questline and functional six-module Ark integrated"
+      ],
+      "checks": [
+        [
+          "python",
+          "tools/verify_pack.py"
+        ]
+      ]
+    },
+    {
+      "id": "art-release",
+      "depends_on": [
+        "campaign-full"
+      ],
+      "owns": [
+        "art",
+        "site",
+        "docs/release",
+        "pack/resourcepacks"
+      ],
+      "state": "pending",
+      "model": "gpt-6-astra",
+      "effort": "low",
+      "acceptance": [
+        "Original cohesive art and bilingual CurseForge page use real screenshots"
+      ],
+      "checks": [
+        [
+          "python",
+          "tools/verify_pack.py"
+        ]
+      ]
+    },
+    {
+      "id": "verify-release",
+      "depends_on": [
+        "art-release"
+      ],
+      "owns": [
+        "tests",
+        "tools",
+        "docs/verification"
+      ],
+      "state": "pending",
+      "model": "gpt-6-astra",
+      "effort": "low",
+      "acceptance": [
+        "Manual campaign, two-hour performance, six players and upgrade/restore evidenced"
+      ],
+      "checks": [
+        [
+          "python",
+          "tools/verify_pack.py"
+        ]
+      ]
+    },
+    {
+      "id": "publish",
+      "depends_on": [
+        "verify-release"
+      ],
+      "owns": [
+        "docs/publication"
+      ],
+      "state": "pending",
+      "model": "gpt-6-astra",
+      "effort": "low",
+      "acceptance": [
+        "Approved public CurseForge client/server install, public source and weekly review verified"
+      ],
+      "checks": [
+        [
+          "python",
+          "tools/verify_pack.py"
+        ]
+      ]
+    }
+  ]
+}
