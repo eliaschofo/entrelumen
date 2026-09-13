@@ -1,0 +1,21 @@
+{
+  "schemaVersion": 1,
+  "commit": "6912c0796cc116228c7ff27fae28f18b6a589531",
+  "ciRun": "https://github.com/eliaschofo/entrelumen/actions/runs/34730440199",
+  "status": "passed",
+  "runner": "Ubuntu 24.04, Python 3.12, Pillow 12.3.0",
+  "previousFailure": "https://github.com/eliaschofo/entrelumen/actions/runs/34729743940",
+  "finding": "Regenerated survey textures, software preview and menu exports differed in PNG encoding but matched format, one-frame count, dimensions, native mode and every native/RGBA pixel byte. The Linux run emitted explicit matching-pixel/different-encoding diagnostics for these real assets.",
+  "checks": {
+    "pngRegressionTests": 7,
+    "sourceAndArtworkWorkflow": "passed",
+    "companionBuild": "passed",
+    "requiredGameTests": 15
+  },
+  "invariants": [
+    "RGB, hidden RGB, alpha, dimensions, mode, indexed palette colors, animation and non-PNG inputs remain checked.",
+    "Generated JSON/model bytes remain strict. Menu manifest SHA256 values use existing bytes only after verifying expected pixels.",
+    "No artwork pixels or canonical PixelLab assets changed; no new generation was requested.",
+    "Technical portability does not approve rejected menu backgrounds or establish artistic or gameplay acceptance."
+  ]
+}

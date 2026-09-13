@@ -65,15 +65,17 @@ class CampaignsTest {
   }
 
   @Test
-  void arkResumesWithoutRequiringContinuousPower() {
-    var c = new Campaigns.Campaign();
-    c.act = 6;
-    var modules = Set.of("a", "b", "c", "d", "e", "f");
-    c.completed.addAll(modules);
-    assertTrue(Campaigns.commission(c, modules));
-    var resumed = c.copy();
-    for (int i = 1; i < 6; i++) assertTrue(Campaigns.commission(resumed, modules));
-    assertEquals(6, resumed.arkPhase);
-    assertFalse(Campaigns.commission(resumed, modules));
+  void arkDepositsAreIndependentInFounderSnapshot() {
+    var campaigns = new Campaigns();
+    UUID founder = UUID.randomUUID(), team = UUID.randomUUID();
+    var personal = campaigns.personal(founder);
+    personal.arkPhase = 2;
+    personal.arkDeposits.put("entrelumen:ecosystem_capsule", 1);
+    var party = campaigns.party(team, founder);
+    assertEquals(personal.arkDeposits, party.arkDeposits);
+    party.arkDeposits.clear();
+    party.arkPhase++;
+    assertEquals(1, personal.arkDeposits.get("entrelumen:ecosystem_capsule"));
+    assertEquals(2, campaigns.current(founder, null, founder).arkPhase);
   }
 }

@@ -1,0 +1,69 @@
+{
+  "schemaVersion": 1,
+  "checkedAt": "2026-09-13T01:45:22.731166+00:00",
+  "scope": "Recoverable Ark commissioning batches; parent E2E goal stays active.",
+  "status": "technical slice passed",
+  "platform": "Minecraft 1.21.1 / NeoForge 21.1.249 / Temurin 21.0.12.1+1 / Windows",
+  "artifact": {
+    "path": "companion/build/libs/entrelumen-0.1.0.jar",
+    "sha256": "ee7fe0b0e529e52874be043a04dc5c2521be37e22c2098d267b13588faaab39b"
+  },
+  "sourceHashPolicy": "SHA256 of exact local UTF-8 files at verification; Git may normalize pre-existing CRLF source files to LF.",
+  "sourceSha256": {
+    "companion/src/main/java/dev/entrelumen/ArkActions.java": "1f99cb09b608bcc7a3194d937cc2fc6648f93d8c8a98386febb98f68a0045d83",
+    "companion/src/main/java/dev/entrelumen/ArkCommissioning.java": "eec72e76979a5556426ee5b37d4c9ee34eccfeeb5224fac6fff54d1426d66c35",
+    "companion/src/main/java/dev/entrelumen/ArkControllerBlock.java": "8921a7abec142f8b68d990cd786ecb16b967ee4a1e5a759988c4c29109ca6e11",
+    "companion/src/main/java/dev/entrelumen/CampaignData.java": "119211927c327f8171f6fe1defeb18d5343dc64ab6ad6600bf7ee5b44ae07f3f",
+    "companion/src/main/java/dev/entrelumen/Campaigns.java": "f3ce16d03b3daa5e0f197b1cf6a31904605091833c3f3d9c9c4fb490cae418c3",
+    "companion/src/main/java/dev/entrelumen/Entrelumen.java": "2083c61d7543bb23df1c1be1709f9132d1a0e49cbb09a458b38b440f2a21f07b",
+    "companion/src/main/java/dev/entrelumen/RuntimeGameTests.java": "e32ed0a8901be531682fe02ee807a0a4fe3edc97b84c40a2aa6dd567e6f8e047",
+    "companion/src/main/resources/assets/entrelumen/lang/en_us.json": "aa34caff5519bed1537882dbdd0f0e0c6335c913ca874bc886517953a3d934dc",
+    "companion/src/main/resources/assets/entrelumen/lang/es_es.json": "e6c301a43f23a7af0f7e8ee0c68aacc439a65fe70f57b9893dda957e09e76168",
+    "companion/src/test/java/dev/entrelumen/ArkCommissioningTest.java": "3813bfb6b6f6d3786847f68f795e3189fe565a2c19c0cadad8a0d042d3dc8df4",
+    "companion/src/test/java/dev/entrelumen/CampaignPersistenceTest.java": "dc133a750e1ae5c7467ef9322e46c291da56be6a7f73bf625a51ae163bd393b8",
+    "companion/src/test/java/dev/entrelumen/CampaignsTest.java": "23ba7674bfb14fac914a307f1c187d0bbaf64867f4cafe06d2d1b2f40b634341"
+  },
+  "checks": {
+    "command": "gradlew.bat build runGameTestServer --no-daemon",
+    "build": "passed",
+    "junit": 22,
+    "requiredGameTests": 18,
+    "gameTestNames": [
+      "arkControllerPartialOffhandTopupAndReplay",
+      "arkMissingModuleAndDeniedHookPreserveSupplies",
+      "arkPartyLedgerRejectsStaleIdentityAndRestoresPersonal",
+      "savedDataDiskRoundTrip"
+    ],
+    "controller": "Real gameMode.useItemOn path: inspect no consumption; crouched partial offhand deposit; exact topup; all six steps; surplus; completed click no consumption; controller/module blocks unchanged.",
+    "team": "Real FTB party creation, invitation, join, leave and dissolution; stale identity rejected; shared ledger and personal snapshots independent.",
+    "persistence": "NBT roundtrip plus real SavedData disk write/read retain a current-step partial ledger. Version1 preserves every credited phase0..6; version2 filters bounds; future version rejected.",
+    "sourceCoverage": {
+      "itemIds": 124,
+      "recipeOutputPairs": 29
+    },
+    "originalLocales": {
+      "keys": 118,
+      "parity": "EN/ES keys and placeholders passed"
+    },
+    "artwork": "Existing generator/parity checks passed; no new image generation or art changes.",
+    "review": "Independent bounded static review found no actionable issue in consumption, stale identity/step, chunk loading, denial/cancellation or migration."
+  },
+  "runtimeLog": {
+    "localWorkFile": "ark-batches-full-controller-build.log",
+    "sha256": "edfb109b4058cccff2ce7b0268c2c8540e860d579781e258bbe50cd383bace5e"
+  },
+  "cleanup": "Owned embedded GameTest server saved worlds, shut down and command exited0. No desktop input or client-file updates after Computer Use Escape stop.",
+  "limitations": [
+    "The running client remains on its prior JAR. English rendered Atlas review and manual new-controller rendering are pending after Computer Use stopped on Escape.",
+    "This commissioning ledger does not implement the ending scene, exploration attestations, mastery unlocks, permanent installation ownership or six complete module experiences.",
+    "Direct later-act ingredient sources were audited; survival acquisition, spirit collection and dimensional expeditions remain untested.",
+    "Normal Minecraft saving is used, not a crash-atomic journal spanning player inventory and world SavedData.",
+    "Full campaign, extra-large mod/quest parity, actual performance benchmarks, playtime, public CurseForge installs and first scheduled issue review remain open."
+  ],
+  "testServerInstall": {
+    "originalFiles": 129,
+    "jarSha256": "ee7fe0b0e529e52874be043a04dc5c2521be37e22c2098d267b13588faaab39b",
+    "backupDirectory": "before-ark-batches-server-20260912-224552",
+    "state": "Owned full-pack test server was stopped before sync and remains stopped; full-pack startup with this JAR is not claimed."
+  }
+}

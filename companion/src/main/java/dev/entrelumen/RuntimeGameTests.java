@@ -159,6 +159,7 @@ public final class RuntimeGameTests {
     original.act = 4;
     original.completed.add("field_survey");
     original.arkPhase = 2;
+    original.arkDeposits.put("entrelumen:ecosystem_capsule", 1);
     data.setDirty();
     server.overworld().getDataStorage().save();
     var path =
@@ -177,12 +178,190 @@ public final class RuntimeGameTests {
             helper.assertTrue(
                 restored.act == 4
                     && restored.arkPhase == 2
+                    && restored.arkDeposits.equals(Map.of("entrelumen:ecosystem_capsule", 1))
                     && restored.completed.contains("field_survey"),
                 "Persisted campaign did not survive disk read");
           } catch (java.io.IOException e) {
             helper.fail("SavedData IO has not completed: " + e.getMessage());
           }
         });
+  }
+
+  private static net.minecraft.core.BlockPos ark(GameTestHelper helper, ServerPlayer player) {
+    var pos = helper.absolutePos(new net.minecraft.core.BlockPos(1, 1, 1));
+    helper.getLevel().setBlockAndUpdate(pos, BuiltInRegistries.BLOCK.get(
+        ResourceLocation.parse("entrelumen:ark_controller")).defaultBlockState());
+    int index = 0;
+    for (String module : Entrelumen.MODULES) {
+      helper.getLevel().setBlockAndUpdate(pos.offset(index % 3 - 1, 0, index / 3 + 1),
+          BuiltInRegistries.BLOCK.get(ResourceLocation.parse("entrelumen:" + module)).defaultBlockState());
+      index++;
+    }
+    player.teleportTo(pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.5);
+    player.setItemInHand(net.minecraft.world.InteractionHand.MAIN_HAND, ItemStack.EMPTY);
+    var campaign = Entrelumen.current(player);
+    campaign.act = 6;
+    campaign.completed.addAll(Entrelumen.MODULES);
+    return pos;
+  }
+
+  private static net.minecraft.world.phys.BlockHitResult arkHit(net.minecraft.core.BlockPos pos) {
+    return new net.minecraft.world.phys.BlockHitResult(net.minecraft.world.phys.Vec3.atCenterOf(pos),
+        net.minecraft.core.Direction.UP, pos, false);
+  }
+
+  private static Item arkItem(String id) {
+    return BuiltInRegistries.ITEM.get(ResourceLocation.parse("entrelumen:" + id));
+  }
+
+  @GameTest(template = "empty", timeoutTicks = 200)
+  public static void arkControllerPartialOffhandTopupAndReplay(GameTestHelper helper) {
+    var player = player(helper, "ArkDepositTest");
+    var pos = ark(helper, player);
+    var campaign = Entrelumen.current(player);
+    var id = CampaignActions.campaignId(player);
+    var blocks = new HashMap<net.minecraft.core.BlockPos, net.minecraft.world.level.block.state.BlockState>();
+    net.minecraft.core.BlockPos.betweenClosed(pos.offset(-1, 0, 0), pos.offset(1, 0, 2))
+        .forEach(p -> blocks.put(p.immutable(), helper.getLevel().getBlockState(p)));
+    player.setItemInHand(net.minecraft.world.InteractionHand.OFF_HAND,
+        new ItemStack(arkItem("calibration_frame"), 2));
+    player.gameMode.useItemOn(player, helper.getLevel(), player.getMainHandItem(),
+        net.minecraft.world.InteractionHand.MAIN_HAND, arkHit(pos));
+    helper.assertTrue(player.getOffhandItem().getCount() == 2 && campaign.arkPhase == 0
+        && campaign.arkDeposits.isEmpty(), "Ordinary controller inspection consumed supplies");
+    player.setShiftKeyDown(true);
+    var result = player.gameMode.useItemOn(player, helper.getLevel(), player.getMainHandItem(),
+        net.minecraft.world.InteractionHand.MAIN_HAND, arkHit(pos));
+    helper.assertTrue(result.consumesAction() && player.getOffhandItem().isEmpty()
+        && campaign.arkPhase == 0
+        && campaign.arkDeposits.equals(Map.of("entrelumen:calibration_frame", 2))
+        && CampaignData.get(player.server).isDirty(), "Crouched offhand partial deposit failed");
+    var restored = CampaignData.load(CampaignData.get(player.server).save(new CompoundTag(),
+        helper.getLevel().registryAccess()), helper.getLevel().registryAccess()).campaigns.personal(id);
+    helper.assertTrue(restored.arkDeposits.equals(campaign.arkDeposits) && restored.arkPhase == 0,
+        "Partial controller ledger did not survive SavedData serialization");
+    player.getInventory().setItem(1, new ItemStack(arkItem("calibration_frame"), 5));
+    player.getInventory().setItem(2, new ItemStack(Items.DIAMOND, 3));
+    player.setItemInHand(net.minecraft.world.InteractionHand.OFF_HAND,
+        new ItemStack(arkItem("power_regulator"), 4));
+    player.gameMode.useItemOn(player, helper.getLevel(), player.getMainHandItem(),
+        net.minecraft.world.InteractionHand.MAIN_HAND, arkHit(pos));
+    helper.assertTrue(campaign.arkPhase == 1 && campaign.arkDeposits.isEmpty()
+        && player.getInventory().getItem(1).getCount() == 3 && player.getOffhandItem().getCount() == 2
+        && player.getInventory().countItem(Items.DIAMOND) == 3,
+        "Topup did not consume exactly the outstanding cost and preserve surplus");
+    player.getInventory().setItem(3, new ItemStack(arkItem("containment_seal"), 2));
+    helper.assertTrue(!ArkActions.deposit(player, id, pos, 0) && campaign.arkPhase == 1
+        && campaign.arkDeposits.isEmpty() && player.getInventory().getItem(3).getCount() == 2
+        && player.getInventory().getItem(1).getCount() == 3 && player.getOffhandItem().getCount() == 2,
+        "Stale expected step consumed supplies");
+    // Explicit acceptance costs, independent of the production commissioning table.
+    var remainingSteps = List.of(Map.entry("containment_seal", 2),
+        Map.entry("ecosystem_capsule", 2), Map.entry("routing_matrix", 2),
+        Map.entry("ration_bundle", 8), Map.entry("horizon_chart", 1));
+    int expectedPhase = 1;
+    for (var step : remainingSteps) {
+      player.getInventory().setItem(3, new ItemStack(arkItem(step.getKey()), step.getValue() + 3));
+      player.setItemInHand(net.minecraft.world.InteractionHand.MAIN_HAND, ItemStack.EMPTY);
+      player.setShiftKeyDown(true);
+      player.gameMode.useItemOn(player, helper.getLevel(), player.getMainHandItem(),
+          net.minecraft.world.InteractionHand.MAIN_HAND, arkHit(pos));
+      expectedPhase++;
+      helper.assertTrue(campaign.arkPhase == expectedPhase && campaign.arkDeposits.isEmpty()
+          && player.getInventory().getItem(3).is(arkItem(step.getKey()))
+          && player.getInventory().getItem(3).getCount() == 3,
+          "Controller did not complete the exact cost and preserve surplus for " + step.getKey());
+    }
+    var inventoryBeforeCompletedClick = Entrelumen.availableMaterials(player);
+    player.gameMode.useItemOn(player, helper.getLevel(), player.getMainHandItem(),
+        net.minecraft.world.InteractionHand.MAIN_HAND, arkHit(pos));
+    helper.assertTrue(campaign.arkPhase == 6 && campaign.arkDeposits.isEmpty()
+        && Entrelumen.availableMaterials(player).equals(inventoryBeforeCompletedClick)
+        && player.getInventory().getItem(1).getCount() == 3
+        && player.getInventory().getItem(3).getCount() == 3
+        && player.getOffhandItem().getCount() == 2
+        && player.getInventory().countItem(Items.DIAMOND) == 3,
+        "Completed controller click changed phase, ledger or remaining materials");
+    helper.assertTrue(blocks.entrySet().stream().allMatch(e ->
+        helper.getLevel().getBlockState(e.getKey()).equals(e.getValue())),
+        "Commissioning changed source blocks");
+    helper.succeed();
+  }
+
+  @GameTest(template = "empty", timeoutTicks = 200)
+  public static void arkMissingModuleAndDeniedHookPreserveSupplies(GameTestHelper helper) {
+    var player = player(helper, "ArkDeniedTest");
+    var pos = ark(helper, player);
+    player.setShiftKeyDown(true);
+    player.setItemInHand(net.minecraft.world.InteractionHand.OFF_HAND,
+        new ItemStack(arkItem("calibration_frame"), 4));
+    var denied = new net.neoforged.neoforge.event.entity.player.PlayerInteractEvent.RightClickBlock(
+        player, net.minecraft.world.InteractionHand.MAIN_HAND, pos, arkHit(pos));
+    denied.setUseBlock(net.neoforged.neoforge.common.util.TriState.FALSE);
+    ArkControllerBlock.allowEmptyHandDeposit(denied);
+    helper.assertTrue(denied.getUseBlock() == net.neoforged.neoforge.common.util.TriState.FALSE,
+        "Controller hook overwrote explicit block denial");
+    var canceled = new net.neoforged.neoforge.event.entity.player.PlayerInteractEvent.RightClickBlock(
+        player, net.minecraft.world.InteractionHand.MAIN_HAND, pos, arkHit(pos));
+    canceled.setCanceled(true);
+    var before = canceled.getUseBlock();
+    ArkControllerBlock.allowEmptyHandDeposit(canceled);
+    helper.assertTrue(canceled.isCanceled() && canceled.getUseBlock() == before,
+        "Controller hook overrode cancellation");
+    helper.getLevel().removeBlock(pos.offset(-1, 0, 1), false);
+    helper.assertTrue(ArkActions.missingModules(player, pos).size() == 1,
+        "Fixture must lack exactly one placed module");
+    player.gameMode.useItemOn(player, helper.getLevel(), player.getMainHandItem(),
+        net.minecraft.world.InteractionHand.MAIN_HAND, arkHit(pos));
+    helper.assertTrue(player.getOffhandItem().getCount() == 4
+        && Entrelumen.current(player).arkPhase == 0 && Entrelumen.current(player).arkDeposits.isEmpty(),
+        "Missing physical module permitted a deposit");
+    helper.succeed();
+  }
+
+  @GameTest(template = "empty", timeoutTicks = 200)
+  public static void arkPartyLedgerRejectsStaleIdentityAndRestoresPersonal(GameTestHelper helper)
+      throws Exception {
+    var founder = player(helper, "ArkFounder");
+    var guest = player(helper, "ArkGuest");
+    var pos = ark(helper, founder);
+    guest.teleportTo(pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.5);
+    var personal = Entrelumen.current(founder);
+    personal.arkDeposits.put("entrelumen:calibration_frame", 1);
+    var guestPersonal = Entrelumen.current(guest);
+    guestPersonal.act = 6;
+    guestPersonal.completed.addAll(Entrelumen.MODULES);
+    guestPersonal.arkDeposits.put("entrelumen:power_regulator", 1);
+    var team = (dev.ftb.mods.ftbteams.data.PartyTeam) FTBTeamsAPI.api().getManager()
+        .createPartyTeam(founder, "Ark " + founder.getUUID(), "",
+            dev.ftb.mods.ftblibrary.icon.Color4I.WHITE);
+    founder.setItemInHand(net.minecraft.world.InteractionHand.OFF_HAND,
+        new ItemStack(arkItem("calibration_frame"), 2));
+    helper.assertTrue(!ArkActions.deposit(founder, founder.getUUID(), pos, 0)
+        && founder.getOffhandItem().getCount() == 2, "Stale personal identity accepted after party creation");
+    guest.setItemInHand(net.minecraft.world.InteractionHand.OFF_HAND,
+        new ItemStack(arkItem("calibration_frame"), 2));
+    helper.assertTrue(!ArkActions.deposit(guest, team.getId(), pos, 0)
+        && guest.getOffhandItem().getCount() == 2
+        && guestPersonal.arkDeposits.equals(Map.of("entrelumen:power_regulator", 1)),
+        "Nonmember could target another team's ledger");
+    team.invite(founder, List.of(guest.getGameProfile()));
+    team.join(guest);
+    helper.assertTrue(ArkActions.deposit(founder, team.getId(), pos, 0)
+        && Entrelumen.current(guest).arkDeposits.equals(Map.of("entrelumen:calibration_frame", 3))
+        && personal.arkDeposits.equals(Map.of("entrelumen:calibration_frame", 1)),
+        "Team deposit did not share progress or mutated founder snapshot");
+    team.leave(guest.getUUID());
+    guest.setItemInHand(net.minecraft.world.InteractionHand.OFF_HAND,
+        new ItemStack(arkItem("calibration_frame"), 2));
+    helper.assertTrue(Entrelumen.current(guest).arkDeposits.equals(Map.of("entrelumen:power_regulator", 1))
+        && !ArkActions.deposit(guest, team.getId(), pos, 0) && guest.getOffhandItem().getCount() == 2,
+        "Leaving lost personal ledger or accepted stale party identity");
+    team.leave(founder.getUUID());
+    helper.assertTrue(Entrelumen.current(founder).arkDeposits.equals(Map.of("entrelumen:calibration_frame", 1))
+        && CampaignData.get(founder.server).campaigns.parties.get(team.getId()).archived,
+        "Dissolution did not preserve personal ledger and archive the party");
+    helper.succeed();
   }
 
   @GameTest(template = "empty", timeoutTicks = 200)

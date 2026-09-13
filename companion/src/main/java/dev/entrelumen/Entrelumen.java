@@ -59,43 +59,8 @@ public final class Entrelumen {
     var surveyStation = BLOCKS.register("survey_station", () -> new SignalStationBlock(
         BlockBehaviour.Properties.of().strength(3f).sound(SoundType.WOOD).noOcclusion().requiresCorrectToolForDrops()));
     ITEMS.registerSimpleBlockItem("survey_station", surveyStation);
-    var controller =
-        BLOCKS.register(
-            "ark_controller",
-            () ->
-                new Block(BlockBehaviour.Properties.of().strength(4f)) {
-                  @Override
-                  protected InteractionResult useWithoutItem(
-                      BlockState state,
-                      Level level,
-                      net.minecraft.core.BlockPos pos,
-                      Player player,
-                      BlockHitResult hit) {
-                    if (player instanceof ServerPlayer sp) {
-                      boolean structure =
-                          MODULES.stream()
-                              .allMatch(
-                                  id ->
-                                      net.minecraft.core.BlockPos.betweenClosedStream(
-                                              pos.offset(-3, -1, -3), pos.offset(3, 2, 3))
-                                          .anyMatch(
-                                              p ->
-                                                  BuiltInRegistries.BLOCK
-                                                      .getKey(level.getBlockState(p).getBlock())
-                                                      .toString()
-                                                      .equals("entrelumen:" + id)));
-                      CampaignData data = CampaignData.get(sp.server);
-                      var c = current(sp);
-                      boolean ok = structure && Campaigns.commission(c, MODULES);
-                      if (ok) data.setDirty();
-                      sp.sendSystemMessage(
-                          Component.translatable(
-                              ok ? "entrelumen.ark.phase" : "entrelumen.ark.requirements",
-                              c.arkPhase));
-                    }
-                    return InteractionResult.sidedSuccess(level.isClientSide);
-                  }
-                });
+    var controller = BLOCKS.register("ark_controller",
+        () -> new ArkControllerBlock(BlockBehaviour.Properties.of().strength(4f)));
     ITEMS.registerSimpleBlockItem("ark_controller", controller);
   }
 
@@ -104,6 +69,8 @@ public final class Entrelumen {
     bus.addListener(AtlasNetwork::register);
     BLOCKS.register(bus);
     NeoForge.EVENT_BUS.addListener(this::commands);
+    NeoForge.EVENT_BUS.addListener(net.neoforged.bus.api.EventPriority.LOWEST,
+        ArkControllerBlock::allowEmptyHandDeposit);
     NeoForge.EVENT_BUS.addListener(
         (net.neoforged.neoforge.event.AddReloadListenerEvent event) ->
             event.addListener(new ProjectReloadListener()));
@@ -328,7 +295,7 @@ public final class Entrelumen {
                                           .sendSuccess(
                                               () ->
                                                   Component.literal(
-                                                      "schema=1 personal="
+                                                      "schema=2 personal="
                                                           + d.campaigns.personal.size()
                                                           + " parties="
                                                           + d.campaigns.parties.size()),

@@ -8,6 +8,7 @@ public final class Campaigns {
     public int act = 1;
     public final Set<String> completed = new TreeSet<>();
     public int arkPhase;
+    public final Map<String, Integer> arkDeposits = new TreeMap<>();
     public boolean archived;
 
     public Campaign copy() {
@@ -15,6 +16,7 @@ public final class Campaigns {
       copy.act = act;
       copy.completed.addAll(completed);
       copy.arkPhase = arkPhase;
+      copy.arkDeposits.putAll(arkDeposits);
       return copy;
     }
   }
@@ -67,13 +69,4 @@ public final class Campaigns {
     return true;
   }
 
-  public static boolean commission(Campaign c, Set<String> modules) {
-    if (c.archived
-        || c.act != 6
-        || modules.size() != 6
-        || !c.completed.containsAll(modules)
-        || c.arkPhase >= 6) return false;
-    c.arkPhase++;
-    return true;
-  }
 }

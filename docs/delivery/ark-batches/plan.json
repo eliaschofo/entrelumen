@@ -1,0 +1,99 @@
+{
+  "version": "astra-sdd/v1",
+  "state": "complete",
+  "controller": {
+    "model": "gpt-6-astra",
+    "effort": "medium"
+  },
+  "history_refs": [
+    {
+      "path": "../act-three/plan.json",
+      "sha256": "e0a610e0458ea5b25833ce46c4aa740a8a6193bb76a0d47b02169c8d834bbe45"
+    }
+  ],
+  "tasks": [
+    {
+      "id": "domain",
+      "depends_on": [],
+      "owns": [
+        "companion/src/main/java/dev/entrelumen/Campaigns.java",
+        "companion/src/main/java/dev/entrelumen/CampaignData.java",
+        "companion/src/main/java/dev/entrelumen/ArkCommissioning.java",
+        "companion/src/test/java/dev/entrelumen/CampaignsTest.java",
+        "companion/src/test/java/dev/entrelumen/CampaignPersistenceTest.java",
+        "companion/src/test/java/dev/entrelumen/ArkCommissioningTest.java"
+      ],
+      "state": "complete",
+      "model": "gpt-6-astra",
+      "effort": "low",
+      "acceptance": [
+        "Partial batches cap exact costs, preserve legacy steps, survive versioned persistence and remain independent across team/personal snapshots."
+      ],
+      "checks": [
+        [
+          "gradlew.bat",
+          "test",
+          "--no-daemon"
+        ]
+      ],
+      "evidence_ref": "../../verification/ark-batches-runtime.json"
+    },
+    {
+      "id": "runtime",
+      "depends_on": [],
+      "owns": [
+        "companion/src/main/java/dev/entrelumen/ArkActions.java",
+        "companion/src/main/java/dev/entrelumen/ArkControllerBlock.java",
+        "companion/src/main/java/dev/entrelumen/Entrelumen.java",
+        "companion/src/main/resources/assets/entrelumen/lang/en_us.json",
+        "companion/src/main/resources/assets/entrelumen/lang/es_es.json"
+      ],
+      "state": "complete",
+      "model": "gpt-6-astra",
+      "effort": "low",
+      "acceptance": [
+        "Real controller interaction validates team, phase and six placed modules, consumes only explicit bounded player deposits, and reports EN/ES pending costs."
+      ],
+      "checks": [
+        [
+          "gradlew.bat",
+          "build",
+          "runGameTestServer",
+          "--no-daemon"
+        ]
+      ],
+      "evidence_ref": "../../verification/ark-batches-runtime.json"
+    },
+    {
+      "id": "verification",
+      "depends_on": [
+        "domain",
+        "runtime"
+      ],
+      "owns": [
+        "companion/src/main/java/dev/entrelumen/RuntimeGameTests.java",
+        "docs/design/ark-batches.md",
+        "docs/verification/ark-batches-runtime.json",
+        "content/integration-design.json",
+        "README.md"
+      ],
+      "state": "complete",
+      "model": "gpt-6-astra",
+      "effort": "low",
+      "acceptance": [
+        "Real inventory/block use, replay/team rejection, disk persistence and unchanged blocks are verified; remaining E2E limitations stay explicit."
+      ],
+      "checks": [
+        [
+          "gradlew.bat",
+          "test",
+          "build",
+          "runGameTestServer",
+          "--no-daemon"
+        ]
+      ],
+      "evidence_ref": "../../verification/ark-batches-runtime.json"
+    }
+  ],
+  "integration_status": "22 JUnit and18 requiredGameTests pass, including six real controller batches and final no-consumption; EN/ES and existing artwork parity pass. Parent E2E remains active; goal accounting and predecessor history preserved."
+}

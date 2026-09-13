@@ -2654,38 +2654,46 @@
         "itemId": "entrelumen:engineering_module",
         "phase": "calibrate",
         "behavior": "Acepta lotes de calibración y muestra reservas pendientes; habilita el diagnóstico de ingeniería del controlador.",
-        "implementationStatus": "proposed; verify against existing controller before implementation"
+        "implementationStatus": "Controller partial-batch ledger implemented and server-tested; the remaining described module experience is still proposed. See docs/design/ark-batches.md."
       },
       {
         "itemId": "entrelumen:arcane_module",
         "phase": "stabilize",
         "behavior": "Registra sellos de contención y testimonios recuperados; permite reanudar la estabilización sin repetir entregas.",
-        "implementationStatus": "proposed; verify against existing controller before implementation"
+        "implementationStatus": "Controller partial-batch ledger implemented and server-tested; the remaining described module experience is still proposed. See docs/design/ark-batches.md."
       },
       {
         "itemId": "entrelumen:nature_module",
         "phase": "stabilize",
         "behavior": "Registra cápsulas ecológicas y el proyecto de restauración; muestra qué abastecimiento natural falta.",
-        "implementationStatus": "proposed; verify against existing controller before implementation"
+        "implementationStatus": "Controller partial-batch ledger implemented and server-tested; the remaining described module experience is still proposed. See docs/design/ark-batches.md."
       },
       {
         "itemId": "entrelumen:exploration_module",
         "phase": "chart",
         "behavior": "Compila la carta final con expediciones del equipo verificadas; abre la escena final sólo junto a las demás fases.",
-        "implementationStatus": "proposed; verify against existing controller before implementation"
+        "implementationStatus": "Controller partial-batch ledger implemented and server-tested; the remaining described module experience is still proposed. See docs/design/ark-batches.md."
       },
       {
         "itemId": "entrelumen:logistics_module",
         "phase": "provision",
         "behavior": "Presenta cantidades restantes por fase y acepta lotes parciales por interacción; no extrae inventarios remotos.",
-        "implementationStatus": "proposed; verify against existing controller before implementation"
+        "implementationStatus": "Controller partial-batch ledger implemented and server-tested; the remaining described module experience is still proposed. See docs/design/ark-batches.md."
       },
       {
         "itemId": "entrelumen:habitation_module",
         "phase": "provision",
         "behavior": "Registra provisiones y el refugio documentado; conserva el abastecimiento sin hambre artificial ni deterioro offline.",
-        "implementationStatus": "proposed; verify against existing controller before implementation"
+        "implementationStatus": "Controller partial-batch ledger implemented and server-tested; the remaining described module experience is still proposed. See docs/design/ark-batches.md."
       }
+    ],
+    "commissioningSteps": [
+      "engineering_module",
+      "arcane_module",
+      "nature_module",
+      "logistics_module",
+      "habitation_module",
+      "exploration_module"
     ]
   },
   "runtimePending": [
@@ -2703,6 +2711,12 @@
       "scope": "Act III focused implementation",
       "decision": "Five design-only non-consuming presentations now use the explicit one-token consumption already implemented for Act II. Existing exchange_route is the five-project closure (3 paper + 1 copper). Static crafting, gifts and historical completed milestone IDs remain valid.",
       "evidence": "docs/design/act-three-recipes.md"
+    },
+    {
+      "date": "2026-09-12",
+      "scope": "Recoverable Ark batches",
+      "decision": "Four narrative phases have six module steps, preserving legacy arkPhase0..6. Schema2 retains partial deposits; no reward payout, background scanning or offline decay. Physical presence is rechecked on interaction; permanent installation and ending/masteries remain open.",
+      "evidence": "docs/verification/ark-batches-runtime.json"
     }
   ]
 }
