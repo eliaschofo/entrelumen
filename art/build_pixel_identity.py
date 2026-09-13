@@ -3,10 +3,13 @@ import argparse
 import hashlib
 import io
 import json
+import sys
 from pathlib import Path
 from PIL import Image, ImageDraw
 
 ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT / 'tools'))
+from png_equivalence import preserve_verified_encoding
 OUT = ROOT / 'art/menu'
 P = {
     'void':'#101D26', 'ink':'#132B29', 'map':'#1B3631', 'map_hi':'#284139',
@@ -99,6 +102,9 @@ def build():
              OUT/'title-background.png':png(backdrop.resize((1920,1080),Image.Resampling.NEAREST)),
              OUT/'loading-background.png':png(backdrop.resize((1920,1080),Image.Resampling.NEAREST)),
              OUT/'logo-source.png':png(brand),OUT/'logo.png':png(brand)}
+    # Manifest hashes describe tracked files, after verifying their native pixels
+    # against the generator. Different zlib builds can encode those pixels differently.
+    outputs = {path:preserve_verified_encoding(path,data) for path,data in outputs.items()}
     provenance = json.loads((OUT/'pixel-provenance.json').read_text())
     if hashlib.sha256((OUT/'pixel-master.png').read_bytes()).hexdigest() != provenance['masterSha256']:
         raise ValueError('Master differs from recorded provenance')

@@ -2,6 +2,7 @@
 import argparse,io,json,hashlib
 from pathlib import Path
 from PIL import Image,ImageDraw
+from png_equivalence import same_png_pixels
 ROOT=Path(__file__).resolve().parents[1]
 P=json.loads((ROOT/'art/sprites/survey_station.palette.json').read_text())['palette']
 def texture(kind):
@@ -109,6 +110,12 @@ def outputs():
 if __name__=='__main__':
  p=argparse.ArgumentParser();p.add_argument('--check',action='store_true');a=p.parse_args()
  for path,data in outputs().items():
-  if a.check:assert path.exists() and path.read_bytes()==data,path
+  if a.check:
+   assert path.is_file(),path
+   actual=path.read_bytes()
+   if path.suffix=='.png':
+    assert same_png_pixels(actual,data),path
+    if actual!=data:print(f'PASS identical PNG mode, size and pixels; encoding differs: {path.name}')
+   else:assert actual==data,path
   else:path.parent.mkdir(parents=True,exist_ok=True);path.write_bytes(data)
  print('PASS deterministic survey station:24 cuboids, native16 textures, integerUV; preview is software model, not in-game.')
