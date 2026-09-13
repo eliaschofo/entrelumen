@@ -114,7 +114,7 @@ def verify_market_log(text):
 
 
 def targets():
-    chapter = json.loads((ROOT / 'pack/config/ftbquests/quests/chapters/a_light_among_ruins.snbt').read_text(encoding='utf-8-sig'))
+    chapters = [json.loads(path.read_text(encoding='utf-8-sig')) for path in sorted((ROOT / 'pack/config/ftbquests/quests/chapters').glob('*.snbt'))]
     projects = json.loads((ROOT / 'companion/src/main/resources/data/entrelumen/campaign/projects.json').read_text(encoding='utf-8-sig'))
     items = set()
 
@@ -129,14 +129,13 @@ def targets():
             for child in value:
                 collect(child)
 
-    collect(chapter)
+    collect(chapters)
     for project in projects.values():
-        if project['act'] == 1:
-            items.update(project['items'])
-            if project.get('reward'):
-                items.add(project['reward'])
-    # Verify proposed cross-mod ingredients before implementing their recipes.
-    # These are existing third-party IDs, not unregistered proposed components.
+        items.update(project['items'])
+        if project.get('reward'):
+            items.add(project['reward'])
+    # Verify cross-mod ingredients and the implemented component recipes together.
+    integration_recipes = []
     design_path = ROOT / 'content/integration-design.json'
     if design_path.exists():
         design = json.loads(design_path.read_text(encoding='utf-8'))
@@ -145,6 +144,9 @@ def targets():
             if not re.fullmatch(r'[a-z0-9_.-]+:[a-z0-9_./-]+', item_id):
                 raise ValueError(f'Invalid integration ingredient ID: {item_id}')
             items.add(item_id)
+        for project in design['projects']:
+            items.add(project['output']['id'])
+            integration_recipes.append({'id': project['recipe']['id'], 'output': project['output']['id']})
     recipes = []
     for path in sorted((ROOT / 'companion/src/main/resources/data/entrelumen/recipe').glob('*.json')):
         output = json.loads(path.read_text(encoding='utf-8'))['result']['id']
@@ -155,6 +157,7 @@ def targets():
         item_id = 'farmersdelight:' + name
         if item_id in items:
             recipes.append({'id': item_id, 'output': item_id})
+    recipes.extend(integration_recipes)
     result = {'schema': 1, 'items': sorted(items), 'recipes': sorted(recipes, key=lambda r: r['id'])}
     result['signature'] = hashlib.sha256(json.dumps(result, sort_keys=True).encode()).hexdigest()[:16]
     return result

@@ -1,0 +1,92 @@
+{
+  "version": "astra-sdd/v1",
+  "state": "active",
+  "controller": {
+    "model": "gpt-6-astra",
+    "effort": "medium"
+  },
+  "history_refs": [
+    {
+      "path": "../plan.json",
+      "sha256": "ac2948744e69f30af4f63e2fd4acf5eb98586e5f24e48a011821b30d0022c096"
+    }
+  ],
+  "tasks": [
+    {
+      "id": "recipes",
+      "depends_on": [],
+      "owns": [
+        "content/integration-design.json",
+        "pack/kubejs/server_scripts/entrelumen_integration_recipes.js",
+        "docs/design/act-two-recipes.md"
+      ],
+      "state": "running",
+      "model": "gpt-6-astra",
+      "effort": "low",
+      "acceptance": [
+        "Pinned native ingredient IDs and recipes are verified; four early recipes remain craftable without later-stage systems."
+      ],
+      "checks": [
+        [
+          "python",
+          "tools/generate_integration_recipes.py",
+          "--check"
+        ]
+      ],
+      "evidence_ref": "../../verification/act-two-runtime.json"
+    },
+    {
+      "id": "campaign",
+      "depends_on": [],
+      "owns": [
+        "companion/src/main/resources/data/entrelumen/campaign/projects.json",
+        "companion/src/main/resources/assets/entrelumen/lang/en_us.json",
+        "companion/src/main/resources/assets/entrelumen/lang/es_es.json",
+        "companion/src/main/java/dev/entrelumen/Projects.java",
+        "companion/src/main/java/dev/entrelumen/RuntimeGameTests.java"
+      ],
+      "state": "complete",
+      "model": "gpt-6-astra",
+      "effort": "low",
+      "acceptance": [
+        "ActII prerequisites, exact consumption, no duplicate completion and advance behavior pass real GameTests."
+      ],
+      "checks": [
+        [
+          "gradlew.bat",
+          "test",
+          "build",
+          "runGameTestServer"
+        ]
+      ],
+      "evidence_ref": "../../verification/act-two-runtime.json"
+    },
+    {
+      "id": "quests",
+      "depends_on": [],
+      "owns": [
+        "content/act_two.json",
+        "content/campaign_task_ids.json",
+        "pack/config/ftbquests/quests",
+        "tools/generate_quests.py",
+        "tools/test_generate_quests.py",
+        "content/INTEGRATION.md"
+      ],
+      "state": "complete",
+      "model": "gpt-6-astra",
+      "effort": "low",
+      "acceptance": [
+        "Bilingual ActII chapter preserves first-hour IDs and mirrors all five new milestones; no geometric node overlap or cross-chapter cycles."
+      ],
+      "checks": [
+        [
+          "python",
+          "tools/generate_quests.py",
+          "--check"
+        ]
+      ],
+      "evidence_ref": "../../verification/act-two-runtime.json"
+    }
+  ],
+  "integration_status": "Manual client/art/tutorial review and survival acquisition acceptance remain open. RecipeManager passing does not establish the complete early acquisition chain. Parent accounting and history references are unchanged."
+}

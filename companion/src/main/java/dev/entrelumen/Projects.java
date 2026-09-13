@@ -17,6 +17,10 @@ public final class Projects {
           "lens_assembled",
           "field_survey",
           "first_signal",
+          "precision_bench",
+          "crystal_grid",
+          "living_workshop",
+          "travelling_pantry",
           "lost_workshop",
           "exchange_route",
           "atlas_voices",
@@ -45,9 +49,7 @@ public final class Projects {
         .forEach(
             entry -> {
               String id = entry.getKey();
-              if (!id.matches("[a-z0-9_]+"))
-                throw invalid(
-                    id, "project IDs must contain lowercase letters, digits or underscores");
+              validateProjectId(id, id);
               if (!entry.getValue().isJsonObject()) throw invalid(id, "expected a project object");
               JsonObject obj = entry.getValue().getAsJsonObject();
               for (String field : obj.keySet())
@@ -75,6 +77,7 @@ public final class Projects {
                   throw invalid(id + ".requires", "expected an array of project IDs");
                 for (JsonElement requirement : obj.getAsJsonArray("requires")) {
                   String prerequisite = string(requirement, id + ".requires");
+                  validateProjectId(prerequisite, id + ".requires");
                   if (!prerequisites.add(prerequisite))
                     throw invalid(id + ".requires", "duplicate prerequisite " + prerequisite);
                 }
@@ -124,6 +127,14 @@ public final class Projects {
       visit(prerequisite, projects, visited, path);
     path.remove(id);
     visited.add(id);
+  }
+
+  private static void validateProjectId(String id, String path) {
+    // AtlasNetwork encodes project and prerequisite IDs with writeUtf(..., 128).
+    if (id.length() > 128)
+      throw invalid(path, "project IDs must be at most 128 characters");
+    if (!id.matches("[a-z0-9_]+"))
+      throw invalid(path, "project IDs must contain lowercase letters, digits or underscores");
   }
 
   private static int positiveInteger(JsonElement element, String path) {

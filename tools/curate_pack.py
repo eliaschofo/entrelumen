@@ -21,6 +21,17 @@ BUILTINS = {'minecraft', 'neoforge', 'java'}
 
 # Intent is pack-original. Version, license, IDs and URLs come from source metadata.
 CONTENT = {
+    'ae2wtlib': ('III-V', 'Combined wireless terminals and upgrades', 'Provide real terminal combination serializers for AdvancedAE and retain pattern logistics in advanced workshops'),
+    'mekmm': ('III-V', 'Additional chemical processing factories', 'Staged factory acquisition; replication disabled by replacing data maps and recipe removals; runtime balance audit required'),
+    'jamd': ('II', 'Separate mining dimension', 'Supply reconstruction stone and ores without excavating inhabited landscapes'),
+    'botanypots': ('I', 'Compact food and botanical cultivation', 'Provision kitchens and expeditions; hopper acquisition in act II'),
+    'botanypotstiers': ('III', 'Tiered compact cultivation', 'Scale botanical supply with staged acquisition and measured throughput'),
+    'modularbees': ('IV', 'Modular productive apiaries and centrifuges', 'Consolidate bee production for nature and industrial Ark components'),
+    'extendedae': ('III', 'Expanded pattern handling and machines', 'Scale Atlas component workshops; assembler matrix in act V'),
+    'advanced_ae': ('IV', 'Directional patterns and quantum crafting', 'Route chemical production; quantum armor obtained in VI'),
+    'appmek': ('III', 'Chemical ME logistics', 'Connect Mekanism processing with AE2 requests'),
+    'megacells': ('IV', 'High capacity cells and crafting CPUs', 'Consolidate advanced production with chemical cell integration'),
+    'mekanism_extras': ('V', 'Advanced factories and transport tiers', 'Compact industrial Ark production; maximum tiers in VI'),
     'create': ('II', 'Precision manufacturing', 'Produce mechanical instruments for Atlas projects'),
     'mekanism': ('III', 'Chemical and industrial processing', 'Supply advanced alloys to the engineering Ark module'),
     'mekanismgenerators': ('III', 'Scalable energy', 'Power industrial reconstruction without mandatory reactors'),
@@ -62,6 +73,13 @@ CONTENT = {
     'computercraft': ('III', 'Optional programming', 'Monitor workshop systems without making coding mandatory'),
 }
 QOL = {
+    'cleanswing': 'Attack entities through replaceable grass without changing damage',
+    'crafting_on_a_stick': 'Portable vanilla workstations with native costs',
+    'smithingtemplateviewer': 'Preview smithing templates while planning upgrades',
+    'akashictome': 'Keep acquired guidebooks in one physical reference tome',
+    'chat_heads': 'Identify cooperative chat speakers',
+    'betterpingdisplay': 'Read numerical latency in the player list',
+    'cherishedworlds': 'Favorite worlds and protect them from accidental deletion',
     'emi': 'Recipe trees and material planning', 'jei': 'Recipe plugin compatibility',
     'jade': 'Understand blocks, entities and machines', 'jadeaddons': 'Additional machine inspection',
     'invtweaks': 'Inventory sorting and restocking',
@@ -86,8 +104,8 @@ QOL = {
     'simplebackups': 'Recover local worlds using bounded retention',
 }
 PERFORMANCE = {'sodium', 'modernfix', 'ferritecore', 'spark', 'immediatelyfast', 'fastsuite', 'fastfurnace', 'fastbench'}
-INFRA = {'ftbteams', 'ftbquests', 'kubejs', 'almostunified', 'ponderjs', 'fancymenu'}
-CLIENT = {'emi', 'jei', 'mousetweaks', 'controlling', 'appleskin', 'trashslot',
+INFRA = {'drippyloadingscreen', 'ftbteams', 'ftbquests', 'kubejs', 'almostunified', 'ponderjs', 'fancymenu'}
+CLIENT = {'drippyloadingscreen', 'smithingtemplateviewer', 'chat_heads', 'betterpingdisplay', 'cherishedworlds', 'emi', 'jei', 'mousetweaks', 'controlling', 'appleskin', 'trashslot',
           'enchdesc', 'jeed', 'journeymap', 'betteradvancements', 'justenoughbreeding',
           'justenoughprofessions', 'jearchaeology', 'jei_mekanism_multiblocks', 'ae2jeiintegration',
           'extremesoundmuffler', 'toastcontrol', 'justzoom', 'rebind_narrator', 'moreoverlays',
@@ -101,7 +119,7 @@ def read_json(path):
 
 def write_json(path, data):
     Path(path).parent.mkdir(parents=True, exist_ok=True)
-    Path(path).write_text(json.dumps(data, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
+    Path(path).write_text(json.dumps(data, ensure_ascii=False, indent=2) + '\n', encoding='utf-8', newline='\n')
 
 
 def jar_metadata(data):
@@ -130,7 +148,7 @@ def jar_metadata(data):
                             yield from flatten(child)
             for owner, deps in dep_groups.items():
                 for dep in flatten(deps):
-                    result['dependencies'].append({'owner': owner, 'id': dep['modId'], 'required': dep.get('type', 'required' if dep.get('mandatory', True) else 'optional') == 'required', 'type': dep.get('type', ''), 'range': dep.get('versionRange', ''), 'side': dep.get('side', 'BOTH').lower()})
+                    result['dependencies'].append({'owner': owner, 'id': dep['modId'], 'required': str(dep.get('type', 'required' if dep.get('mandatory', True) else 'optional')).lower() == 'required', 'type': dep.get('type', ''), 'range': dep.get('versionRange', ''), 'side': dep.get('side', 'BOTH').lower()})
             break
         if 'META-INF/jarjar/metadata.json' in jar.namelist():
             for entry in json.loads(jar.read('META-INF/jarjar/metadata.json')).get('jars', []):
@@ -178,6 +196,21 @@ def refresh(source):
         paths[path.name] = str(path)
         for mod_id in provided(meta):
             by_id.setdefault(mod_id, []).append(entry)
+    # Preserve explicitly locked official Modrinth additions outside the CF source instance.
+    # This keeps refresh reproducible without mislabelling their IDs as CurseForge IDs.
+    if (CATALOG / 'curated.json').exists() and (CATALOG / 'local-paths.json').exists():
+        previous_paths = read_json(CATALOG / 'local-paths.json')
+        for previous in read_json(CATALOG / 'curated.json')['mods']:
+            if previous['source']['provider'] != 'modrinth' and not previous['source'].get('lockedLocalCache'):
+                continue
+            path = Path(previous_paths.get(previous['filename'], ''))
+            if not path.is_file() or hashlib.sha256(path.read_bytes()).hexdigest() != previous['sha256']:
+                raise ValueError(f"Missing or changed locked official file: {previous['filename']}")
+            entry = dict(previous, metadata=jar_metadata(path))
+            inventory.append(entry)
+            paths[path.name] = str(path)
+            for mod_id in provided(entry['metadata']):
+                by_id.setdefault(mod_id, []).append(entry)
     requested = set(CONTENT) | set(QOL) | PERFORMANCE | INFRA
     selected = {}
     missing = []
@@ -200,7 +233,7 @@ def refresh(source):
         selected[entry['filename']] = entry
         entry['sha256'] = hashlib.sha256(Path(paths[entry['filename']]).read_bytes()).hexdigest()
         if entry['sourceSha1'] and hashlib.sha1(Path(paths[entry['filename']]).read_bytes()).hexdigest() != entry['sourceSha1']:
-            raise ValueError(f"Local file differs from CurseForge metadata: {entry['filename']}")
+            raise ValueError(f"Local file differs from official source metadata: {entry['filename']}")
         entry['selectionReason'] = reason
         entry['roles'] = []
         for m in entry['metadata']['mods']:
@@ -246,8 +279,17 @@ def check(lock, paths, side='client'):
         path = Path(paths.get(name, ''))
         if not path.is_file() or hashlib.sha256(path.read_bytes()).hexdigest() != entry['sha256']:
             errors.append(f'Missing or hash mismatch: {name}')
-        if not entry['projectID'] or not entry['fileID']:
-            errors.append(f'Missing CurseForge reference: {name}')
+        source = entry['source']
+        if source['provider'] == 'curseforge':
+            if not entry['projectID'] or not entry['fileID']:
+                errors.append(f'Missing CurseForge reference: {name}')
+        elif source['provider'] == 'modrinth':
+            if not source.get('projectId') or not source.get('versionId') or not source.get('downloadUrl', '').startswith('https://cdn.modrinth.com/') or not entry.get('sourceSha1'):
+                errors.append(f'Incomplete official Modrinth reference: {name}')
+        else:
+            errors.append(f'Unsupported source provider: {name}')
+        if path.is_file() and entry.get('sourceSha1') and hashlib.sha1(path.read_bytes()).hexdigest() != entry['sourceSha1']:
+            errors.append(f'Official source SHA1 mismatch: {name}')
         if provided(entry['metadata']) & EXCLUDED:
             errors.append(f'Excluded mod: {name}')
         for dep in dependencies(entry['metadata']):

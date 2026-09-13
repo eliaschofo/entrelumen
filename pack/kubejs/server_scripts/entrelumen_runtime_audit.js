@@ -4,6 +4,9 @@
 const entrelumenAuditTargets = {
   "schema": 1,
   "items": [
+    "actuallyadditions:atomic_reconstructor",
+    "actuallyadditions:coal_generator",
+    "actuallyadditions:iron_casing",
     "actuallyadditions:palis_crystal",
     "actuallyadditions:restonia_crystal",
     "ae2:calculation_processor",
@@ -13,6 +16,8 @@ const entrelumenAuditTargets = {
     "amendments:dye_bottle",
     "aquaculture:fish_fillet_cooked",
     "ars_nouveau:magebloom_fiber",
+    "ars_nouveau:novice_spell_book",
+    "ars_nouveau:source_gem",
     "buildinggadgets2:gadget_building",
     "chipped:botanist_workbench",
     "computercraft:computer_normal",
@@ -20,12 +25,40 @@ const entrelumenAuditTargets = {
     "cookingforblockheads:cooking_table",
     "create:andesite_alloy",
     "create:brass_sheet",
+    "create:goggles",
+    "create:iron_sheet",
+    "create:mechanical_press",
     "create:precision_mechanism",
+    "create:water_wheel",
+    "entrelumen:arcane_module",
+    "entrelumen:ark_bus",
     "entrelumen:atlas",
+    "entrelumen:calibration_frame",
+    "entrelumen:containment_seal",
+    "entrelumen:ecosystem_capsule",
+    "entrelumen:energy_coupler",
+    "entrelumen:engineering_module",
+    "entrelumen:exploration_module",
+    "entrelumen:habitation_contract",
+    "entrelumen:habitation_module",
+    "entrelumen:handling_core",
+    "entrelumen:horizon_chart",
+    "entrelumen:inventory_sensor",
+    "entrelumen:living_matrix",
+    "entrelumen:logistics_module",
+    "entrelumen:nature_module",
+    "entrelumen:power_regulator",
+    "entrelumen:propagation_core",
+    "entrelumen:ration_bundle",
     "entrelumen:raw_lens",
+    "entrelumen:renewal_engine",
+    "entrelumen:routing_matrix",
     "entrelumen:signal_core",
+    "entrelumen:spectral_lens",
     "entrelumen:survey_notes",
+    "entrelumen:survey_station",
     "evilcraft:dark_gem",
+    "farmersdelight:cooking_pot",
     "farmersdelight:cutting_board",
     "farmersdelight:fish_stew",
     "farmersdelight:flint_knife",
@@ -46,18 +79,33 @@ const entrelumenAuditTargets = {
     "mekanism:alloy_atomic",
     "mekanism:basic_control_circuit",
     "mekanismgenerators:wind_generator",
+    "minecraft:amethyst_block",
+    "minecraft:beacon",
+    "minecraft:blaze_rod",
     "minecraft:book",
     "minecraft:bowl",
     "minecraft:bread",
+    "minecraft:bricks",
     "minecraft:bucket",
     "minecraft:chest",
     "minecraft:compass",
     "minecraft:copper_ingot",
     "minecraft:crafting_table",
+    "minecraft:diamond_block",
+    "minecraft:echo_shard",
+    "minecraft:ender_eye",
+    "minecraft:ender_pearl",
     "minecraft:furnace",
     "minecraft:glass",
+    "minecraft:golden_carrot",
+    "minecraft:hopper",
+    "minecraft:iron_block",
+    "minecraft:lantern",
     "minecraft:map",
+    "minecraft:moss_block",
+    "minecraft:nether_star",
     "minecraft:paper",
+    "minecraft:piston",
     "minecraft:red_bed",
     "minecraft:stone_pickaxe",
     "minecraft:torch",
@@ -87,6 +135,94 @@ const entrelumenAuditTargets = {
       "output": "entrelumen:atlas"
     },
     {
+      "id": "entrelumen:integration/ark_arcana",
+      "output": "entrelumen:arcane_module"
+    },
+    {
+      "id": "entrelumen:integration/ark_engineering",
+      "output": "entrelumen:engineering_module"
+    },
+    {
+      "id": "entrelumen:integration/ark_exploration",
+      "output": "entrelumen:exploration_module"
+    },
+    {
+      "id": "entrelumen:integration/ark_habitation",
+      "output": "entrelumen:habitation_module"
+    },
+    {
+      "id": "entrelumen:integration/ark_logistics",
+      "output": "entrelumen:logistics_module"
+    },
+    {
+      "id": "entrelumen:integration/ark_nature",
+      "output": "entrelumen:nature_module"
+    },
+    {
+      "id": "entrelumen:integration/crystal_grid",
+      "output": "entrelumen:energy_coupler"
+    },
+    {
+      "id": "entrelumen:integration/distributed_power",
+      "output": "entrelumen:power_regulator"
+    },
+    {
+      "id": "entrelumen:integration/horizon_survey",
+      "output": "entrelumen:horizon_chart"
+    },
+    {
+      "id": "entrelumen:integration/living_workshop",
+      "output": "entrelumen:living_matrix"
+    },
+    {
+      "id": "entrelumen:integration/measured_logistics",
+      "output": "entrelumen:inventory_sensor"
+    },
+    {
+      "id": "entrelumen:integration/nursery_protocol",
+      "output": "entrelumen:propagation_core"
+    },
+    {
+      "id": "entrelumen:integration/pollinator_treaty",
+      "output": "entrelumen:ecosystem_capsule"
+    },
+    {
+      "id": "entrelumen:integration/precision_bench",
+      "output": "entrelumen:calibration_frame"
+    },
+    {
+      "id": "entrelumen:integration/renewal_engine",
+      "output": "entrelumen:renewal_engine"
+    },
+    {
+      "id": "entrelumen:integration/resilient_backbone",
+      "output": "entrelumen:ark_bus"
+    },
+    {
+      "id": "entrelumen:integration/sealed_memory",
+      "output": "entrelumen:containment_seal"
+    },
+    {
+      "id": "entrelumen:integration/settlement_supply",
+      "output": "entrelumen:habitation_contract"
+    },
+    {
+      "id": "entrelumen:integration/signal_exchange",
+      "output": "entrelumen:routing_matrix"
+    },
+    {
+      "id": "entrelumen:integration/spectral_archive",
+      "output": "entrelumen:spectral_lens"
+    },
+    {
+      "id": "entrelumen:integration/travelling_pantry",
+      "output": "entrelumen:ration_bundle"
+    },
+    {
+      "id": "entrelumen:integration/workshop_hands",
+      "output": "entrelumen:handling_core"
+    },
+    {
       "id": "entrelumen:raw_lens",
       "output": "entrelumen:raw_lens"
     },
@@ -99,6 +235,10 @@ const entrelumenAuditTargets = {
       "output": "entrelumen:survey_notes"
     },
     {
+      "id": "entrelumen:survey_station",
+      "output": "entrelumen:survey_station"
+    },
+    {
       "id": "farmersdelight:cutting_board",
       "output": "farmersdelight:cutting_board"
     },
@@ -107,7 +247,7 @@ const entrelumenAuditTargets = {
       "output": "farmersdelight:flint_knife"
     }
   ],
-  "signature": "ac0bd983cccce5ab"
+  "signature": "76307e4b9c88c4a4"
 };
 
 ServerEvents.afterRecipes(event => {

@@ -10,7 +10,7 @@
       "deps": [],
       "type": "checkmark",
       "optional": true,
-      "icon": "minecraft:book",
+      "icon": "entrelumen:atlas",
       "en_us": [
         "A page without a place",
         "An unsigned page whispers: 'A place begins when someone decides to return.' Choose a site with water, wood and room to grow.\n\nOpen quests with F8 or the book icon in your inventory. If you change the binding, find Quests in Controls. Read, then confirm; this optional acknowledgement does not advance the campaign."
@@ -196,10 +196,7 @@
     },
     {
       "key": "atlas",
-      "deps": [
-        "furnace",
-        "light"
-      ],
+      "deps": [],
       "milestone": "atlas_awakened",
       "icon": "entrelumen:atlas",
       "en_us": [
@@ -363,10 +360,7 @@
     {
       "key": "table",
       "deps": [
-        "atlas",
-        "cutting_board",
-        "bowl",
-        "bread"
+        "atlas"
       ],
       "milestone": "travellers_table",
       "icon": "farmersdelight:cutting_board",
@@ -438,9 +432,7 @@
     {
       "key": "lens",
       "deps": [
-        "atlas",
-        "copper",
-        "glass"
+        "atlas"
       ],
       "milestone": "lens_assembled",
       "icon": "entrelumen:raw_lens",
@@ -514,8 +506,8 @@
     {
       "key": "survey",
       "deps": [
-        "lens",
-        "survey_kit"
+        "atlas",
+        "lens"
       ],
       "milestone": "field_survey",
       "icon": "entrelumen:survey_notes",
@@ -565,17 +557,18 @@
       "key": "signal",
       "deps": [
         "table",
+        "lens",
         "survey"
       ],
       "milestone": "first_signal",
       "icon": "entrelumen:signal_core",
       "en_us": [
         "One light answers",
-        "The Atlas records a distant light answering. Someone listened, or something remembers how.\n\nOpen First Signal in the Atlas and Deliver the listed materials. Completed deliveries survive a normal restart. This version records the signal; it has no visible world effect yet."
+        "The Atlas records a distant light answering. Someone listened, or something remembers how.\n\nOpen First Signal in the Atlas and Deliver the listed materials. Your team receives a signal core once. Use it to build a survey station: the light now has a place in your home, and your compass can remember the way back."
       ],
       "es_es": [
         "Una luz responde",
-        "El Atlas registra una luz lejana que responde. Alguien escuchó, o algo recuerda cómo hacerlo.\n\nAbrí Primera señal en el Atlas y pulsá Entregar con los materiales indicados. Las entregas sobreviven a un reinicio normal. Esta versión registra la señal; todavía no tiene un efecto visible en el mundo."
+        "El Atlas registra una luz lejana que responde. Alguien escuchó, o algo recuerda cómo hacerlo.\n\nAbrí Primera señal en el Atlas y pulsá Entregar con los materiales indicados. Tu equipo recibe un núcleo de señal una sola vez. Usalo para construir una estación cartográfica: la luz ya tiene un lugar en tu casa y tu brújula puede recordar el camino de regreso."
       ],
       "layout": {
         "x": 0,
@@ -593,7 +586,7 @@
       ],
       "type": "checkmark",
       "optional": true,
-      "icon": "minecraft:book",
+      "icon": "entrelumen:atlas",
       "en_us": [
         "A workshop with a destination",
         "Your workshop has a destination. Keep the kitchen, shelves and survey kit useful as you explore the lost crafts.\n\nOnce every project in this act is delivered, choose Advance in the Atlas to open the next act. If a response takes too long, choose Refresh before trying again. This closing reading grants no reward."
@@ -608,6 +601,30 @@
         "group": "signal",
         "shape": "circle",
         "size": 0.75,
+        "hide_dependent_lines": false
+      }
+    },
+    {
+      "key": "survey_station",
+      "deps": [
+        "signal"
+      ],
+      "item": "entrelumen:survey_station",
+      "optional": true,
+      "en_us": [
+        "A place your compass remembers",
+        "Build a survey station with the signal core, copper, smooth stone and glass; the recipe viewer shows their arrangement. Place it somewhere worth returning to.\n\nUse a compass on the station to mark these coordinates without consuming the compass. It points here while you are in the same dimension. Moving or removing the station does not move the mark: use the compass on a station again to update it. An empty hand opens your current team’s Atlas.\n\nShare marked compasses with your companions. A gifted station works too; using it does not complete campaign projects."
+      ],
+      "es_es": [
+        "Un lugar que tu brújula recuerda",
+        "Construí una estación cartográfica con el núcleo de señal, cobre, piedra lisa y vidrio; el visor de recetas muestra cómo colocarlos. Ubicala en un sitio al que quieras volver.\n\nUsá una brújula sobre la estación para marcar esas coordenadas sin consumirla. Apunta hacia acá mientras estés en la misma dimensión. Mover o retirar la estación no mueve la marca: volvé a usar la brújula sobre una estación para actualizarla. Con la mano vacía abrís el Atlas de tu equipo actual.\n\nCompartí brújulas marcadas con tus compañeros. Una estación regalada también funciona; usarla no completa proyectos de la campaña."
+      ],
+      "layout": {
+        "x": 3,
+        "y": 22,
+        "group": "signal",
+        "shape": "square",
+        "size": 0.85,
         "hide_dependent_lines": false
       }
     }

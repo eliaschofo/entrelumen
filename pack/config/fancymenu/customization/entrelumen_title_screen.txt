@@ -1,0 +1,221 @@
+type = fancymenu_layout
+
+layout-meta {
+  identifier = title_screen
+  is_enabled = true
+  render_custom_elements_behind_vanilla = true
+  layout_index = 0
+}
+
+customization {
+  action = backgroundoptions
+  keepaspectratio = true
+}
+
+menu_background {
+  instance_identifier = entrelumen_title_screen_background
+  background_type = color_fancymenu
+  show_background = true
+  color = #132B29FF
+}
+
+scroll_list_customization {
+  apply_vanilla_background_blur = false
+  show_screen_background_overlay_on_custom_background = false
+}
+
+element {
+  element_type = image
+  instance_identifier = entrelumen_atlas_art
+  anchor_point = mid-right
+  sticky_anchor = false
+  x = -148
+  y = -64
+  width = 128
+  height = 128
+  source = [source:local]/config/fancymenu/assets/entrelumen/atlas.png
+  repeat_texture = false
+  nine_slice_texture = false
+}
+
+vanilla_button {
+  element_type = vanilla_button
+  instance_identifier = mc_titlescreen_singleplayer_button
+  anchor_point = mid-left
+  sticky_anchor = false
+  x = 20
+  y = -40
+  width = 160
+  height = 20
+  is_hidden = false
+  label_scale = 1.0
+  label_shadow = true
+  backgroundnormal = [source:local]/config/fancymenu/assets/entrelumen/gui/button_normal.png
+  backgroundhovered = [source:local]/config/fancymenu/assets/entrelumen/gui/button_hover.png
+  background_texture_inactive = [source:local]/config/fancymenu/assets/entrelumen/gui/button_disabled.png
+  nine_slice_custom_background = false
+}
+
+vanilla_button {
+  element_type = vanilla_button
+  instance_identifier = mc_titlescreen_multiplayer_button
+  anchor_point = mid-left
+  sticky_anchor = false
+  x = 20
+  y = -18
+  width = 160
+  height = 20
+  is_hidden = false
+  label_scale = 1.0
+  label_shadow = true
+  backgroundnormal = [source:local]/config/fancymenu/assets/entrelumen/gui/button_normal.png
+  backgroundhovered = [source:local]/config/fancymenu/assets/entrelumen/gui/button_hover.png
+  background_texture_inactive = [source:local]/config/fancymenu/assets/entrelumen/gui/button_disabled.png
+  nine_slice_custom_background = false
+}
+
+vanilla_button {
+  element_type = vanilla_button
+  instance_identifier = forge_titlescreen_mods_button
+  anchor_point = mid-left
+  sticky_anchor = false
+  x = 20
+  y = 4
+  width = 160
+  height = 20
+  is_hidden = false
+  label_scale = 1.0
+  label_shadow = true
+  backgroundnormal = [source:local]/config/fancymenu/assets/entrelumen/gui/button_normal.png
+  backgroundhovered = [source:local]/config/fancymenu/assets/entrelumen/gui/button_hover.png
+  background_texture_inactive = [source:local]/config/fancymenu/assets/entrelumen/gui/button_disabled.png
+  nine_slice_custom_background = false
+}
+
+vanilla_button {
+  element_type = vanilla_button
+  instance_identifier = mc_titlescreen_options_button
+  anchor_point = mid-left
+  sticky_anchor = false
+  x = 20
+  y = 26
+  width = 160
+  height = 20
+  is_hidden = false
+  label_scale = 1.0
+  label_shadow = true
+  backgroundnormal = [source:local]/config/fancymenu/assets/entrelumen/gui/button_normal.png
+  backgroundhovered = [source:local]/config/fancymenu/assets/entrelumen/gui/button_hover.png
+  background_texture_inactive = [source:local]/config/fancymenu/assets/entrelumen/gui/button_disabled.png
+  nine_slice_custom_background = false
+}
+
+vanilla_button {
+  element_type = vanilla_button
+  instance_identifier = mc_titlescreen_quit_button
+  anchor_point = mid-left
+  sticky_anchor = false
+  x = 20
+  y = 48
+  width = 160
+  height = 20
+  is_hidden = false
+  label_scale = 1.0
+  label_shadow = true
+  backgroundnormal = [source:local]/config/fancymenu/assets/entrelumen/gui/button_normal.png
+  backgroundhovered = [source:local]/config/fancymenu/assets/entrelumen/gui/button_hover.png
+  background_texture_inactive = [source:local]/config/fancymenu/assets/entrelumen/gui/button_disabled.png
+  nine_slice_custom_background = false
+}
+
+vanilla_button {
+  element_type = vanilla_button
+  instance_identifier = mc_titlescreen_realms_button
+  anchor_point = mid-left
+  sticky_anchor = false
+  x = 20
+  y = 70
+  width = 160
+  height = 20
+  is_hidden = false
+  label_scale = 1.0
+  label_shadow = true
+  backgroundnormal = [source:local]/config/fancymenu/assets/entrelumen/gui/button_normal.png
+  backgroundhovered = [source:local]/config/fancymenu/assets/entrelumen/gui/button_hover.png
+  background_texture_inactive = [source:local]/config/fancymenu/assets/entrelumen/gui/button_disabled.png
+  nine_slice_custom_background = false
+}
+
+vanilla_button {
+  element_type = vanilla_button
+  instance_identifier = entrelumen_title_language
+  anchor_point = mid-right
+  sticky_anchor = false
+  x = -148
+  y = 72
+  width = 20
+  height = 20
+  is_hidden = false
+}
+
+vanilla_button {
+  element_type = vanilla_button
+  instance_identifier = entrelumen_title_accessibility
+  anchor_point = mid-right
+  sticky_anchor = false
+  x = -122
+  y = 72
+  width = 20
+  height = 20
+  is_hidden = false
+}
+
+vanilla_button {
+  element_type = vanilla_button
+  instance_identifier = entrelumen_title_create
+  anchor_point = mid-right
+  sticky_anchor = false
+  x = -96
+  y = 72
+  width = 20
+  height = 20
+  is_hidden = false
+}
+
+vanilla_button {
+  element_type = vanilla_button
+  instance_identifier = entrelumen_title_supplementaries
+  anchor_point = mid-right
+  sticky_anchor = false
+  x = -70
+  y = 72
+  width = 20
+  height = 20
+  is_hidden = false
+}
+
+element {
+  element_type = image
+  instance_identifier = entrelumen_logo
+  anchor_point = mid-left
+  sticky_anchor = false
+  x = 10
+  y = -116
+  width = 180
+  height = 64
+  source = [source:local]/config/fancymenu/assets/entrelumen/logo.png
+  repeat_texture = false
+  nine_slice_texture = false
+}
+
+vanilla_button {
+  element_type = vanilla_button
+  instance_identifier = minecraft_logo_widget
+  is_hidden = true
+}
+
+vanilla_button {
+  element_type = vanilla_button
+  instance_identifier = minecraft_splash_widget
+  is_hidden = true
+}

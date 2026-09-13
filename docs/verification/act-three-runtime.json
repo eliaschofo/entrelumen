@@ -1,0 +1,144 @@
+{
+  "schema": "entrelumen/act-three-evidence-v1",
+  "date": "2026-09-12",
+  "status": "partial_acceptance",
+  "scope": "Focused ActIII campaign; full release remains open",
+  "campaign": {
+    "required_gametests_passed": 15,
+    "junit_tests_passed": 16,
+    "case": "thirdActConsumesGiftedPrototypesAndGatesClosure",
+    "log": "../../../../work/act-three-companion-build.log",
+    "jar_sha256": "DB79A27E9CF4E277E7C229196EF6F8D01E0480D6A3511C5D04B57997E73360D3"
+  },
+  "quests": {
+    "authored": 75,
+    "chapters": 3,
+    "act_three": 27,
+    "focused_tests_passed": 12,
+    "loaded_runtime": "75 quests / 3 chapters / 16 exact campaign milestones passed",
+    "gift_route_fix": "ActI milestone dependencies now mirror server requirements; original IDs/text/layout preserved, tutorials remain optional routes.",
+    "post_runtime_install_text_change": "After preparing the server, corrected PCB pressure wording in EN/ES (empty PCB 1.5 bar; capacitors/transistors/acid 1.0 bar). IDs, item references, task dependencies and layouts unchanged. Final text must be synced after shutdown; no rendered-text acceptance claimed."
+  },
+  "runtime": {
+    "token": "5b4706e9-2d77-4597-bff5-70a65f4237ff",
+    "status": "passed",
+    "results": [
+      {
+        "recipe": "entrelumen:integration/signal_exchange",
+        "output": "entrelumen:routing_matrix",
+        "orientations": 2,
+        "bowls": 0
+      },
+      {
+        "recipe": "entrelumen:integration/nursery_protocol",
+        "output": "entrelumen:propagation_core",
+        "orientations": 2,
+        "bowls": 0
+      },
+      {
+        "recipe": "entrelumen:integration/distributed_power",
+        "output": "entrelumen:power_regulator",
+        "orientations": 2,
+        "bowls": 0
+      },
+      {
+        "recipe": "entrelumen:integration/measured_logistics",
+        "output": "entrelumen:inventory_sensor",
+        "orientations": 2,
+        "bowls": 0
+      },
+      {
+        "recipe": "entrelumen:integration/workshop_hands",
+        "output": "entrelumen:handling_core",
+        "orientations": 2,
+        "bowls": 0
+      },
+      {
+        "recipe": "entrelumen:integration/precision_bench",
+        "output": "entrelumen:calibration_frame",
+        "orientations": 2,
+        "bowls": 0
+      },
+      {
+        "recipe": "entrelumen:integration/crystal_grid",
+        "output": "entrelumen:energy_coupler",
+        "orientations": 2,
+        "bowls": 0
+      },
+      {
+        "recipe": "entrelumen:integration/living_workshop",
+        "output": "entrelumen:living_matrix",
+        "orientations": 2,
+        "bowls": 0
+      },
+      {
+        "recipe": "entrelumen:integration/travelling_pantry",
+        "output": "entrelumen:ration_bundle",
+        "orientations": 2,
+        "bowls": 2
+      },
+      {
+        "recipe": "entrelumen:integration/settlement_supply",
+        "output": "entrelumen:habitation_contract",
+        "orientations": 2,
+        "bowls": 4
+      }
+    ],
+    "errors": [],
+    "questFile": {
+      "quests": 75,
+      "chapters": 3,
+      "milestones": [
+        "atlas_awakened",
+        "crystal_grid",
+        "distributed_power",
+        "exchange_route",
+        "field_survey",
+        "first_signal",
+        "lens_assembled",
+        "living_workshop",
+        "lost_workshop",
+        "measured_logistics",
+        "nursery_protocol",
+        "precision_bench",
+        "signal_exchange",
+        "travellers_table",
+        "travelling_pantry",
+        "workshop_hands"
+      ]
+    }
+  },
+  "manual_pending": [
+    "EN/ES populated ActIII render",
+    "Survival acquisition and pacing",
+    "Full campaign playthrough",
+    "Performance and public release"
+  ],
+  "source_audit": {
+    "items": 124,
+    "recipe_output_pairs": 29,
+    "signature": "76307e4b9c88c4a4",
+    "status": "passed"
+  },
+  "runtime_environment": {
+    "heap": "4G",
+    "purpose": "Registry and crafting integration, not performance acceptance",
+    "log_sha256": "cb4bc197be56dc339827b0f767fb52a6ae35bd4d5cfabc934c536c2abdcc9ea6",
+    "command_request_id": "c035924c-4fd6-4909-a2f0-6f50ca519dff",
+    "run_id": "f87460e8-7547-4182-b37a-3dec68ed9508"
+  },
+  "source_hashes": {
+    "content/act_three.json": "38cb2173a9e8546ce1c089ccde75c5661d0c9d7341755d256b0a7e05be73895e",
+    "content/first_hour.json": "1ed905cdc8b188a9b635047577464ba6a73f794ae62b75c80472fe779b805a6d",
+    "companion/src/main/resources/data/entrelumen/campaign/projects.json": "3e25702967a4998d1ba39dd6baf3bd387468f75761d6c4dbfc7dcb25374d9392",
+    "pack/kubejs/server_scripts/entrelumen_integration_recipes.js": "7101ea3880c5a236bc78fc37ecd1c996823ff2a1c05833e864e79efc6aad6479"
+  },
+  "cleanup": {
+    "server_exit_code": 0,
+    "server_ended": 1789261118.1394327,
+    "final_original_files_synced": 129,
+    "final_text_synced_after_shutdown": true,
+    "client": "Previous AA3D client remains open; desktop availability requested, not overwritten."
+  },
+  "source_hash_policy": "SHA256 of local verified file bytes. Git normalizes ordinary source line endings to LF; immutable delivery history retains exact bytes."
+}

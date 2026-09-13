@@ -10,12 +10,35 @@ import hashlib
 import json
 from pathlib import Path
 import shutil
+import tomllib
 
 ROOT = Path(__file__).resolve().parents[1]
 
 
 def digest(path):
     return hashlib.sha256(path.read_bytes()).hexdigest()
+
+
+def contains_settings(actual, desired):
+    if isinstance(desired, dict):
+        return isinstance(actual, dict) and all(key in actual and contains_settings(actual[key], value) for key, value in desired.items())
+    return type(actual) is type(desired) and actual == desired
+
+
+def has_extra_keys(actual, desired):
+    if isinstance(actual, dict):
+        return any(
+            not isinstance(desired, dict)
+            or key not in desired
+            or has_extra_keys(value, desired[key])
+            for key, value in actual.items()
+        )
+    if isinstance(actual, list):
+        return any(
+            has_extra_keys(value, desired[index] if isinstance(desired, list) and index < len(desired) else None)
+            for index, value in enumerate(actual)
+        )
+    return False
 
 
 def main():
@@ -40,8 +63,27 @@ def main():
         if not target.is_relative_to(destination):
             raise SystemExit(f"Unsafe destination: {name}")
         checksum = digest(source)
-        if target.exists() and digest(target) not in {checksum, previous.get(name)}:
-            raise SystemExit(f"Locally changed file needs review: {name}")
+        if target.exists():
+            actual_checksum = digest(target)
+            extra_keys = False
+            # NeoForge rewrites TOML comments/indentation on startup. Preserve
+            # its serialization and unspecified defaults when every setting
+            # explicitly owned by the pack still matches.
+            if target.suffix == '.toml':
+                try:
+                    actual = tomllib.loads(target.read_text(encoding='utf-8'))
+                    desired = tomllib.loads(source.read_text(encoding='utf-8'))
+                    same_values = contains_settings(actual, desired)
+                    extra_keys = has_extra_keys(actual, desired)
+                except (ValueError, UnicodeError):
+                    same_values = False
+                if same_values:
+                    pending[name] = actual_checksum
+                    continue
+            if actual_checksum not in {checksum, previous.get(name)}:
+                raise SystemExit(f"Locally changed file needs review: {name}")
+            if extra_keys:
+                raise SystemExit(f"TOML update would remove additional keys; merge/review required: {name}")
         pending[name] = checksum
     stale = set(previous) - sources.keys()
     if stale:

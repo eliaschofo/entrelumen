@@ -35,6 +35,7 @@ public final class Entrelumen {
           "habitation_module");
 
   static {
+    IntegrationItems.register(ITEMS);
     ITEMS.register(
         "atlas",
         () ->
@@ -55,6 +56,9 @@ public final class Entrelumen {
               id, BlockBehaviour.Properties.of().strength(3f).requiresCorrectToolForDrops());
       ITEMS.registerSimpleBlockItem(id, block);
     }
+    var surveyStation = BLOCKS.register("survey_station", () -> new SignalStationBlock(
+        BlockBehaviour.Properties.of().strength(3f).sound(SoundType.WOOD).noOcclusion().requiresCorrectToolForDrops()));
+    ITEMS.registerSimpleBlockItem("survey_station", surveyStation);
     var controller =
         BLOCKS.register(
             "ark_controller",

@@ -20,12 +20,41 @@ class ProjectValidationTest {
   @Test
   void validDefinitionsRemainImmutable() throws Exception {
     var projects = Projects.parse(defaults(), id -> true);
-    assertEquals(15, projects.size());
     assertEquals("entrelumen:atlas", projects.get("atlas_awakened").reward());
     assertThrows(UnsupportedOperationException.class, () -> projects.clear());
     assertThrows(
         UnsupportedOperationException.class,
         () -> projects.get("atlas_awakened").items().put("minecraft:stone", 9));
+  }
+
+  @Test
+  void projectAndPrerequisiteIdsRespectAtlasWireLimit() throws Exception {
+    String boundary = "a".repeat(128);
+    var valid = defaults();
+    valid.add(boundary, valid.getAsJsonObject("atlas_awakened").deepCopy());
+    var prerequisites = new JsonArray();
+    prerequisites.add(boundary);
+    valid.getAsJsonObject("travellers_table").add("requires", prerequisites);
+    assertTrue(Projects.parse(valid, id -> true).containsKey(boundary));
+
+    var oversizedProject = defaults();
+    oversizedProject.add(boundary + "a", valid.getAsJsonObject(boundary).deepCopy());
+    assertTrue(
+        assertThrows(
+                IllegalArgumentException.class, () -> Projects.parse(oversizedProject, id -> true))
+            .getMessage()
+            .contains("at most 128 characters"));
+
+    var oversizedPrerequisite = defaults();
+    var tooLong = new JsonArray();
+    tooLong.add(boundary + "a");
+    oversizedPrerequisite.getAsJsonObject("travellers_table").add("requires", tooLong);
+    assertTrue(
+        assertThrows(
+                IllegalArgumentException.class,
+                () -> Projects.parse(oversizedPrerequisite, id -> true))
+            .getMessage()
+            .contains("at most 128 characters"));
   }
 
   @Test

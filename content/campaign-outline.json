@@ -1,5 +1,5 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "status": "editorial outline only; no additional playable quest data",
   "localization": "Titles and narrative beats EN/ES. Other fields are internal Spanish editorial instructions; future player-facing quests must be fully EN/ES.",
   "sources": [
@@ -9,19 +9,25 @@
     "content/integration-design.json"
   ],
   "targets": {
-    "chapters": 36,
+    "chapters": 90,
     "acts": 6,
-    "quests": 900,
+    "quests": 5250,
     "main_quests": 150,
     "main_playtime_hours": [
       150,
       200
     ],
-    "measurement_status": "unverified targets requiring new-world playtests; never gate by elapsed hours"
+    "measurement_status": "unverified targets requiring new-world playtests; never gate by elapsed hours",
+    "quest_range": [
+      5000,
+      5500
+    ],
+    "optional_quests": 5100,
+    "mod_reference_target": 600
   },
   "production_gate": "Do not generate further runtime quest data until first-hour entry/Atlas GUI QA closes. Outline is not campaign implementation.",
-  "count_policy": "25 per chapter is a planning envelope. Merge or cut weak exercises; never split recipes or duplicate descriptions to reach 900. Existing first25 IDs/content remain unchanged.",
-  "progression_policy": "Act I closes through existing first_signal in chapter a1_c1. The other five Act I chapters are optional learning routes available afterwards; they never delay act II. Acts II-VI budget 29 main quests each; chapter prerequisites are narrative presentation only until implemented. Main=5+5*29=150.",
+  "count_policy": "5250 is a provisional editorial allocation, not completed quests or permission for filler. Do not split item colors/recipes, translations, tasks or rewards into extra counts. Reserved chapters require genuinely new selected systems; merge weak exercises and reallocate only after review.",
+  "progression_policy": "Preserve all first25 IDs and five act-I main milestones. Existing 36 chapter IDs and narrative prerequisite DAG are retained; added 54 chapters are optional and no original main chapter depends on them. Main remains 150; gifts have no provenance/use gate.",
   "project_policy": "Associated project is not a new delivery every chapter. Reused projects supply context to distinct demonstrations and story beats. Integration prototypes are presented non-consumingly; no duplicate reward. Existing first-hour consuming project semantics are preserved.",
   "gift_policy": "Gifts remain usable. Receiving/crafting a prototype does not complete a narrative event or expedition. No provenance gate.",
   "ending_policy": "Six module chapters converge into four commissioning phases defined in integration-design. No claim that current six-click controller implements those phases.",
@@ -209,6 +215,260 @@
       "verification_criterion": "Explicar una ampliación y probar sus accesos; capítulo opcional no retrasa el acto II.",
       "verification_kind": "manual tutorial plus server milestone evidence where implemented; self-reported building exercises explicitly labelled",
       "project_binding": "existing project; no extra reward or re-completion"
+    },
+    {
+      "id": "a1_c7",
+      "act": 1,
+      "slot": 7,
+      "title": {
+        "en_us": "An Inventory That Remembers",
+        "es_es": "El inventario que recuerda"
+      },
+      "status": "confirmed-family-outline",
+      "quest_budget": {
+        "total_target": 20,
+        "main_target": 0,
+        "optional_target": 20
+      },
+      "prerequisite_chapters": [
+        "a1_c1"
+      ],
+      "required_for_main": false,
+      "systems": [
+        "sophisticatedbackpacks",
+        "sophisticatedstorage"
+      ],
+      "purpose": "Separar herramientas, comida y retornos; comprobar reservas tras depositar.",
+      "editorial_mode": "optional-learning-and-design",
+      "candidate_rule": null,
+      "narrative_role": "Optional field notes enrich the corresponding act; this chapter cannot advance or block the main story.",
+      "verification_criterion": "Separar herramientas, comida y retornos; comprobar reservas tras depositar. La demostración requiere una sesión real; autoevaluaciones de construcción se rotulan como tales.",
+      "localization_status": "Chapter titles EN/ES; internal brief ES. All future player text requires full parity."
+    },
+    {
+      "id": "a1_c8",
+      "act": 1,
+      "slot": 8,
+      "title": {
+        "en_us": "The Windowsill Garden",
+        "es_es": "La huerta de la ventana"
+      },
+      "status": "confirmed-family-outline",
+      "quest_budget": {
+        "total_target": 25,
+        "main_target": 0,
+        "optional_target": 25
+      },
+      "prerequisite_chapters": [
+        "a1_c1"
+      ],
+      "required_for_main": false,
+      "systems": [
+        "botanypots",
+        "farmingforblockheads"
+      ],
+      "purpose": "Comparar maceta y parcela por espacio, entradas y productos; no imponer macetas.",
+      "editorial_mode": "optional-learning-and-design",
+      "candidate_rule": null,
+      "narrative_role": "Optional field notes enrich the corresponding act; this chapter cannot advance or block the main story.",
+      "verification_criterion": "Comparar maceta y parcela por espacio, entradas y productos; no imponer macetas. La demostración requiere una sesión real; autoevaluaciones de construcción se rotulan como tales.",
+      "localization_status": "Chapter titles EN/ES; internal brief ES. All future player text requires full parity."
+    },
+    {
+      "id": "a1_c9",
+      "act": 1,
+      "slot": 9,
+      "title": {
+        "en_us": "Wood with Purpose",
+        "es_es": "Madera con intención"
+      },
+      "status": "confirmed-family-outline",
+      "quest_budget": {
+        "total_target": 25,
+        "main_target": 0,
+        "optional_target": 25
+      },
+      "prerequisite_chapters": [
+        "a1_c1"
+      ],
+      "required_for_main": false,
+      "systems": [
+        "chipped",
+        "rechiseled"
+      ],
+      "purpose": "Diseñar dos paletas con materiales locales sin recolectar cada variante.",
+      "editorial_mode": "optional-learning-and-design",
+      "candidate_rule": null,
+      "narrative_role": "Optional field notes enrich the corresponding act; this chapter cannot advance or block the main story.",
+      "verification_criterion": "Diseñar dos paletas con materiales locales sin recolectar cada variante. La demostración requiere una sesión real; autoevaluaciones de construcción se rotulan como tales.",
+      "localization_status": "Chapter titles EN/ES; internal brief ES. All future player text requires full parity."
+    },
+    {
+      "id": "a1_c10",
+      "act": 1,
+      "slot": 10,
+      "title": {
+        "en_us": "Walls Worth Living In",
+        "es_es": "Paredes habitables"
+      },
+      "status": "confirmed-family-outline",
+      "quest_budget": {
+        "total_target": 30,
+        "main_target": 0,
+        "optional_target": 30
+      },
+      "prerequisite_chapters": [
+        "a1_c1"
+      ],
+      "required_for_main": false,
+      "systems": [
+        "framedblocks",
+        "handcrafted"
+      ],
+      "purpose": "Construir una habitación legible que conserve circulación y acceso a cofres.",
+      "editorial_mode": "optional-learning-and-design",
+      "candidate_rule": null,
+      "narrative_role": "Optional field notes enrich the corresponding act; this chapter cannot advance or block the main story.",
+      "verification_criterion": "Construir una habitación legible que conserve circulación y acceso a cofres. La demostración requiere una sesión real; autoevaluaciones de construcción se rotulan como tales.",
+      "localization_status": "Chapter titles EN/ES; internal brief ES. All future player text requires full parity."
+    },
+    {
+      "id": "a1_c11",
+      "act": 1,
+      "slot": 11,
+      "title": {
+        "en_us": "Before Throwing Away",
+        "es_es": "Antes de tirar"
+      },
+      "status": "reserved-candidate-family",
+      "quest_budget": {
+        "total_target": 25,
+        "main_target": 0,
+        "optional_target": 25
+      },
+      "prerequisite_chapters": [
+        "a1_c1"
+      ],
+      "required_for_main": false,
+      "systems": [],
+      "purpose": "Reservar familia candidata de reciclaje con conservación de materiales verificable.",
+      "editorial_mode": "optional-learning-and-design",
+      "candidate_rule": "Select distinct useful systems and runtime-validate them before authoring; quota is not written content. No invented mod list.",
+      "narrative_role": "Optional field notes enrich the corresponding act; this chapter cannot advance or block the main story.",
+      "verification_criterion": "Reservar familia candidata de reciclaje con conservación de materiales verificable. La demostración requiere una sesión real; autoevaluaciones de construcción se rotulan como tales.",
+      "localization_status": "Chapter titles EN/ES; internal brief ES. All future player text requires full parity."
+    },
+    {
+      "id": "a1_c12",
+      "act": 1,
+      "slot": 12,
+      "title": {
+        "en_us": "Hands That Build",
+        "es_es": "Manos que construyen"
+      },
+      "status": "confirmed-family-outline",
+      "quest_budget": {
+        "total_target": 30,
+        "main_target": 0,
+        "optional_target": 30
+      },
+      "prerequisite_chapters": [
+        "a1_c1"
+      ],
+      "required_for_main": false,
+      "systems": [
+        "constructionstick"
+      ],
+      "purpose": "Repetir una pared y deshacer errores sin perder suministros.",
+      "editorial_mode": "optional-learning-and-design",
+      "candidate_rule": null,
+      "narrative_role": "Optional field notes enrich the corresponding act; this chapter cannot advance or block the main story.",
+      "verification_criterion": "Repetir una pared y deshacer errores sin perder suministros. La demostración requiere una sesión real; autoevaluaciones de construcción se rotulan como tales.",
+      "localization_status": "Chapter titles EN/ES; internal brief ES. All future player text requires full parity."
+    },
+    {
+      "id": "a1_c13",
+      "act": 1,
+      "slot": 13,
+      "title": {
+        "en_us": "The Shared Table",
+        "es_es": "La mesa compartida"
+      },
+      "status": "confirmed-family-outline",
+      "quest_budget": {
+        "total_target": 35,
+        "main_target": 0,
+        "optional_target": 35
+      },
+      "prerequisite_chapters": [
+        "a1_c1"
+      ],
+      "required_for_main": false,
+      "systems": [
+        "farmersdelight",
+        "cookingforblockheads"
+      ],
+      "purpose": "Preparar menú cooperativo con alternativas de ingredientes y retorno de cuencos.",
+      "editorial_mode": "optional-learning-and-design",
+      "candidate_rule": null,
+      "narrative_role": "Optional field notes enrich the corresponding act; this chapter cannot advance or block the main story.",
+      "verification_criterion": "Preparar menú cooperativo con alternativas de ingredientes y retorno de cuencos. La demostración requiere una sesión real; autoevaluaciones de construcción se rotulan como tales.",
+      "localization_status": "Chapter titles EN/ES; internal brief ES. All future player text requires full parity."
+    },
+    {
+      "id": "a1_c14",
+      "act": 1,
+      "slot": 14,
+      "title": {
+        "en_us": "Reading the Terrain",
+        "es_es": "Leer el terreno"
+      },
+      "status": "reserved-candidate-family",
+      "quest_budget": {
+        "total_target": 25,
+        "main_target": 0,
+        "optional_target": 25
+      },
+      "prerequisite_chapters": [
+        "a1_c1"
+      ],
+      "required_for_main": false,
+      "systems": [],
+      "purpose": "Reservar herramientas de observación que enseñen rutas sin eliminar exploración.",
+      "editorial_mode": "optional-learning-and-design",
+      "candidate_rule": "Select distinct useful systems and runtime-validate them before authoring; quota is not written content. No invented mod list.",
+      "narrative_role": "Optional field notes enrich the corresponding act; this chapter cannot advance or block the main story.",
+      "verification_criterion": "Reservar herramientas de observación que enseñen rutas sin eliminar exploración. La demostración requiere una sesión real; autoevaluaciones de construcción se rotulan como tales.",
+      "localization_status": "Chapter titles EN/ES; internal brief ES. All future player text requires full parity."
+    },
+    {
+      "id": "a1_c15",
+      "act": 1,
+      "slot": 15,
+      "title": {
+        "en_us": "Small Trades",
+        "es_es": "Pequeños oficios"
+      },
+      "status": "confirmed-family-outline",
+      "quest_budget": {
+        "total_target": 35,
+        "main_target": 0,
+        "optional_target": 35
+      },
+      "prerequisite_chapters": [
+        "a1_c1"
+      ],
+      "required_for_main": false,
+      "systems": [
+        "amendments",
+        "supplementaries"
+      ],
+      "purpose": "Dar señalización y uso concreto a un taller; decoración opcional autoevaluada.",
+      "editorial_mode": "optional-learning-and-design",
+      "candidate_rule": null,
+      "narrative_role": "Optional field notes enrich the corresponding act; this chapter cannot advance or block the main story.",
+      "verification_criterion": "Dar señalización y uso concreto a un taller; decoración opcional autoevaluada. La demostración requiere una sesión real; autoevaluaciones de construcción se rotulan como tales.",
+      "localization_status": "Chapter titles EN/ES; internal brief ES. All future player text requires full parity."
     },
     {
       "id": "a2_c1",
@@ -399,6 +659,254 @@
       "project_binding": "integration-design proposal; chapter milestones require implementation, not mere possession"
     },
     {
+      "id": "a2_c7",
+      "act": 2,
+      "slot": 7,
+      "title": {
+        "en_us": "The Press and the Hammer",
+        "es_es": "La prensa y el martillo"
+      },
+      "status": "confirmed-family-outline",
+      "quest_budget": {
+        "total_target": 45,
+        "main_target": 0,
+        "optional_target": 45
+      },
+      "prerequisite_chapters": [
+        "a2_c1"
+      ],
+      "required_for_main": false,
+      "systems": [
+        "create",
+        "immersiveengineering"
+      ],
+      "purpose": "Comparar fabricación de láminas y conservar un taller de precisión.",
+      "editorial_mode": "optional-learning-and-design",
+      "candidate_rule": null,
+      "narrative_role": "Optional field notes enrich the corresponding act; this chapter cannot advance or block the main story.",
+      "verification_criterion": "Comparar fabricación de láminas y conservar un taller de precisión. La demostración requiere una sesión real; autoevaluaciones de construcción se rotulan como tales.",
+      "localization_status": "Chapter titles EN/ES; internal brief ES. All future player text requires full parity."
+    },
+    {
+      "id": "a2_c8",
+      "act": 2,
+      "slot": 8,
+      "title": {
+        "en_us": "Light in the Laboratory",
+        "es_es": "Luz en el laboratorio"
+      },
+      "status": "confirmed-family-outline",
+      "quest_budget": {
+        "total_target": 50,
+        "main_target": 0,
+        "optional_target": 50
+      },
+      "prerequisite_chapters": [
+        "a2_c1"
+      ],
+      "required_for_main": false,
+      "systems": [
+        "actuallyadditions"
+      ],
+      "purpose": "Convertir cristales por lotes sin saturar buffers de salida.",
+      "editorial_mode": "optional-learning-and-design",
+      "candidate_rule": null,
+      "narrative_role": "Optional field notes enrich the corresponding act; this chapter cannot advance or block the main story.",
+      "verification_criterion": "Convertir cristales por lotes sin saturar buffers de salida. La demostración requiere una sesión real; autoevaluaciones de construcción se rotulan como tales.",
+      "localization_status": "Chapter titles EN/ES; internal brief ES. All future player text requires full parity."
+    },
+    {
+      "id": "a2_c9",
+      "act": 2,
+      "slot": 9,
+      "title": {
+        "en_us": "A Garden That Breathes",
+        "es_es": "Un jardín que respira"
+      },
+      "status": "confirmed-family-outline",
+      "quest_budget": {
+        "total_target": 60,
+        "main_target": 0,
+        "optional_target": 60
+      },
+      "prerequisite_chapters": [
+        "a2_c1"
+      ],
+      "required_for_main": false,
+      "systems": [
+        "naturesaura",
+        "ars_nouveau"
+      ],
+      "purpose": "Medir extracción y recuperación de aura antes de escalar materiales vivos.",
+      "editorial_mode": "optional-learning-and-design",
+      "candidate_rule": null,
+      "narrative_role": "Optional field notes enrich the corresponding act; this chapter cannot advance or block the main story.",
+      "verification_criterion": "Medir extracción y recuperación de aura antes de escalar materiales vivos. La demostración requiere una sesión real; autoevaluaciones de construcción se rotulan como tales.",
+      "localization_status": "Chapter titles EN/ES; internal brief ES. All future player text requires full parity."
+    },
+    {
+      "id": "a2_c10",
+      "act": 2,
+      "slot": 10,
+      "title": {
+        "en_us": "Moving without Spilling",
+        "es_es": "Mover sin derramar"
+      },
+      "status": "confirmed-family-outline",
+      "quest_budget": {
+        "total_target": 55,
+        "main_target": 0,
+        "optional_target": 55
+      },
+      "prerequisite_chapters": [
+        "a2_c1"
+      ],
+      "required_for_main": false,
+      "systems": [
+        "pipez"
+      ],
+      "purpose": "Preparar filtros, prioridades y una parada por salida llena.",
+      "editorial_mode": "optional-learning-and-design",
+      "candidate_rule": null,
+      "narrative_role": "Optional field notes enrich the corresponding act; this chapter cannot advance or block the main story.",
+      "verification_criterion": "Preparar filtros, prioridades y una parada por salida llena. La demostración requiere una sesión real; autoevaluaciones de construcción se rotulan como tales.",
+      "localization_status": "Chapter titles EN/ES; internal brief ES. All future player text requires full parity."
+    },
+    {
+      "id": "a2_c11",
+      "act": 2,
+      "slot": 11,
+      "title": {
+        "en_us": "Plans for Tomorrow",
+        "es_es": "Los planos de mañana"
+      },
+      "status": "confirmed-family-outline",
+      "quest_budget": {
+        "total_target": 70,
+        "main_target": 0,
+        "optional_target": 70
+      },
+      "prerequisite_chapters": [
+        "a2_c1"
+      ],
+      "required_for_main": false,
+      "systems": [
+        "buildinggadgets2"
+      ],
+      "purpose": "Construir desde un suministro acotado y revisar materiales antes de copiar.",
+      "editorial_mode": "optional-learning-and-design",
+      "candidate_rule": null,
+      "narrative_role": "Optional field notes enrich the corresponding act; this chapter cannot advance or block the main story.",
+      "verification_criterion": "Construir desde un suministro acotado y revisar materiales antes de copiar. La demostración requiere una sesión real; autoevaluaciones de construcción se rotulan como tales.",
+      "localization_status": "Chapter titles EN/ES; internal brief ES. All future player text requires full parity."
+    },
+    {
+      "id": "a2_c12",
+      "act": 2,
+      "slot": 12,
+      "title": {
+        "en_us": "The Workshop Next Door",
+        "es_es": "El taller vecino"
+      },
+      "status": "reserved-candidate-family",
+      "quest_budget": {
+        "total_target": 60,
+        "main_target": 0,
+        "optional_target": 60
+      },
+      "prerequisite_chapters": [
+        "a2_c1"
+      ],
+      "required_for_main": false,
+      "systems": [],
+      "purpose": "Reservar ingeniería alternativa con procesos distintos; ningún mod seleccionado por cuota.",
+      "editorial_mode": "optional-learning-and-design",
+      "candidate_rule": "Select distinct useful systems and runtime-validate them before authoring; quota is not written content. No invented mod list.",
+      "narrative_role": "Optional field notes enrich the corresponding act; this chapter cannot advance or block the main story.",
+      "verification_criterion": "Reservar ingeniería alternativa con procesos distintos; ningún mod seleccionado por cuota. La demostración requiere una sesión real; autoevaluaciones de construcción se rotulan como tales.",
+      "localization_status": "Chapter titles EN/ES; internal brief ES. All future player text requires full parity."
+    },
+    {
+      "id": "a2_c13",
+      "act": 2,
+      "slot": 13,
+      "title": {
+        "en_us": "Water and Heat",
+        "es_es": "Agua y calor"
+      },
+      "status": "reserved-candidate-family",
+      "quest_budget": {
+        "total_target": 65,
+        "main_target": 0,
+        "optional_target": 65
+      },
+      "prerequisite_chapters": [
+        "a2_c1"
+      ],
+      "required_for_main": false,
+      "systems": [],
+      "purpose": "Reservar producción térmica con balance energético y aprovechamiento de subproductos.",
+      "editorial_mode": "optional-learning-and-design",
+      "candidate_rule": "Select distinct useful systems and runtime-validate them before authoring; quota is not written content. No invented mod list.",
+      "narrative_role": "Optional field notes enrich the corresponding act; this chapter cannot advance or block the main story.",
+      "verification_criterion": "Reservar producción térmica con balance energético y aprovechamiento de subproductos. La demostración requiere una sesión real; autoevaluaciones de construcción se rotulan como tales.",
+      "localization_status": "Chapter titles EN/ES; internal brief ES. All future player text requires full parity."
+    },
+    {
+      "id": "a2_c14",
+      "act": 2,
+      "slot": 14,
+      "title": {
+        "en_us": "The Ritual Route",
+        "es_es": "La ruta ritual"
+      },
+      "status": "confirmed-family-outline",
+      "quest_budget": {
+        "total_target": 70,
+        "main_target": 0,
+        "optional_target": 70
+      },
+      "prerequisite_chapters": [
+        "a2_c1"
+      ],
+      "required_for_main": false,
+      "systems": [
+        "occultism"
+      ],
+      "purpose": "Documentar un ritual reproducible y sus condiciones sin sacrificar familiares como tributo.",
+      "editorial_mode": "optional-learning-and-design",
+      "candidate_rule": null,
+      "narrative_role": "Optional field notes enrich the corresponding act; this chapter cannot advance or block the main story.",
+      "verification_criterion": "Documentar un ritual reproducible y sus condiciones sin sacrificar familiares como tributo. La demostración requiere una sesión real; autoevaluaciones de construcción se rotulan como tales.",
+      "localization_status": "Chapter titles EN/ES; internal brief ES. All future player text requires full parity."
+    },
+    {
+      "id": "a2_c15",
+      "act": 2,
+      "slot": 15,
+      "title": {
+        "en_us": "The Small Observatory",
+        "es_es": "El pequeño observatorio"
+      },
+      "status": "reserved-candidate-family",
+      "quest_budget": {
+        "total_target": 75,
+        "main_target": 0,
+        "optional_target": 75
+      },
+      "prerequisite_chapters": [
+        "a2_c1"
+      ],
+      "required_for_main": false,
+      "systems": [],
+      "purpose": "Reservar instrumentos de lectura ambiental, separados de generación de estructuras.",
+      "editorial_mode": "optional-learning-and-design",
+      "candidate_rule": "Select distinct useful systems and runtime-validate them before authoring; quota is not written content. No invented mod list.",
+      "narrative_role": "Optional field notes enrich the corresponding act; this chapter cannot advance or block the main story.",
+      "verification_criterion": "Reservar instrumentos de lectura ambiental, separados de generación de estructuras. La demostración requiere una sesión real; autoevaluaciones de construcción se rotulan como tales.",
+      "localization_status": "Chapter titles EN/ES; internal brief ES. All future player text requires full parity."
+    },
+    {
       "id": "a3_c1",
       "act": 3,
       "slot": 1,
@@ -585,6 +1093,262 @@
       "verification_criterion": "Provocar y corregir un faltante controlado; reconocer una entrega mixta una vez.",
       "verification_kind": "manual tutorial plus server milestone evidence where implemented; self-reported building exercises explicitly labelled",
       "project_binding": "integration-design proposal; chapter milestones require implementation, not mere possession"
+    },
+    {
+      "id": "a3_c7",
+      "act": 3,
+      "slot": 7,
+      "title": {
+        "en_us": "Patterns That Make Sense",
+        "es_es": "Patrones que se entienden"
+      },
+      "status": "confirmed-family-outline",
+      "quest_budget": {
+        "total_target": 120,
+        "main_target": 0,
+        "optional_target": 120
+      },
+      "prerequisite_chapters": [
+        "a3_c1"
+      ],
+      "required_for_main": false,
+      "systems": [
+        "ae2",
+        "extendedae"
+      ],
+      "purpose": "Escribir un patrón correcto, controlar excedentes y diagnosticar un ingrediente ausente.",
+      "editorial_mode": "optional-learning-and-design",
+      "candidate_rule": null,
+      "narrative_role": "Optional field notes enrich the corresponding act; this chapter cannot advance or block the main story.",
+      "verification_criterion": "Escribir un patrón correcto, controlar excedentes y diagnosticar un ingrediente ausente. La demostración requiere una sesión real; autoevaluaciones de construcción se rotulan como tales.",
+      "localization_status": "Chapter titles EN/ES; internal brief ES. All future player text requires full parity."
+    },
+    {
+      "id": "a3_c8",
+      "act": 3,
+      "slot": 8,
+      "title": {
+        "en_us": "Chemistry on the Network",
+        "es_es": "Química en la red"
+      },
+      "status": "confirmed-family-outline",
+      "quest_budget": {
+        "total_target": 110,
+        "main_target": 0,
+        "optional_target": 110
+      },
+      "prerequisite_chapters": [
+        "a3_c1"
+      ],
+      "required_for_main": false,
+      "systems": [
+        "appmek",
+        "mekanism"
+      ],
+      "purpose": "Solicitar un lote químico; distinguir celdas normales de manejo radiactivo.",
+      "editorial_mode": "optional-learning-and-design",
+      "candidate_rule": null,
+      "narrative_role": "Optional field notes enrich the corresponding act; this chapter cannot advance or block the main story.",
+      "verification_criterion": "Solicitar un lote químico; distinguir celdas normales de manejo radiactivo. La demostración requiere una sesión real; autoevaluaciones de construcción se rotulan como tales.",
+      "localization_status": "Chapter titles EN/ES; internal brief ES. All future player text requires full parity."
+    },
+    {
+      "id": "a3_c9",
+      "act": 3,
+      "slot": 9,
+      "title": {
+        "en_us": "Directions and Priorities",
+        "es_es": "Direcciones y prioridades"
+      },
+      "status": "confirmed-family-outline",
+      "quest_budget": {
+        "total_target": 100,
+        "main_target": 0,
+        "optional_target": 100
+      },
+      "prerequisite_chapters": [
+        "a3_c1"
+      ],
+      "required_for_main": false,
+      "systems": [
+        "integrateddynamics",
+        "integratedtunnels",
+        "laserio"
+      ],
+      "purpose": "Resolver una ruta con dos diseños alternativos y comparar su complejidad.",
+      "editorial_mode": "optional-learning-and-design",
+      "candidate_rule": null,
+      "narrative_role": "Optional field notes enrich the corresponding act; this chapter cannot advance or block the main story.",
+      "verification_criterion": "Resolver una ruta con dos diseños alternativos y comparar su complejidad. La demostración requiere una sesión real; autoevaluaciones de construcción se rotulan como tales.",
+      "localization_status": "Chapter titles EN/ES; internal brief ES. All future player text requires full parity."
+    },
+    {
+      "id": "a3_c10",
+      "act": 3,
+      "slot": 10,
+      "title": {
+        "en_us": "Mining Away from Home",
+        "es_es": "Minería lejos de casa"
+      },
+      "status": "confirmed-family-outline",
+      "quest_budget": {
+        "total_target": 70,
+        "main_target": 0,
+        "optional_target": 70
+      },
+      "prerequisite_chapters": [
+        "a3_c1"
+      ],
+      "required_for_main": false,
+      "systems": [
+        "jamd"
+      ],
+      "purpose": "Preparar una expedición minera con retorno seguro; separar terreno de trabajo y paisaje.",
+      "editorial_mode": "optional-learning-and-design",
+      "candidate_rule": null,
+      "narrative_role": "Optional field notes enrich the corresponding act; this chapter cannot advance or block the main story.",
+      "verification_criterion": "Preparar una expedición minera con retorno seguro; separar terreno de trabajo y paisaje. La demostración requiere una sesión real; autoevaluaciones de construcción se rotulan como tales.",
+      "localization_status": "Chapter titles EN/ES; internal brief ES. All future player text requires full parity."
+    },
+    {
+      "id": "a3_c11",
+      "act": 3,
+      "slot": 11,
+      "title": {
+        "en_us": "Pots with Limits",
+        "es_es": "Macetas con límites"
+      },
+      "status": "confirmed-family-outline",
+      "quest_budget": {
+        "total_target": 80,
+        "main_target": 0,
+        "optional_target": 80
+      },
+      "prerequisite_chapters": [
+        "a3_c1"
+      ],
+      "required_for_main": false,
+      "systems": [
+        "botanypots",
+        "botanypotstiers"
+      ],
+      "purpose": "Comparar velocidad y costo de niveles sin regalar cosechas avanzadas temprano.",
+      "editorial_mode": "optional-learning-and-design",
+      "candidate_rule": null,
+      "narrative_role": "Optional field notes enrich the corresponding act; this chapter cannot advance or block the main story.",
+      "verification_criterion": "Comparar velocidad y costo de niveles sin regalar cosechas avanzadas temprano. La demostración requiere una sesión real; autoevaluaciones de construcción se rotulan como tales.",
+      "localization_status": "Chapter titles EN/ES; internal brief ES. All future player text requires full parity."
+    },
+    {
+      "id": "a3_c12",
+      "act": 3,
+      "slot": 12,
+      "title": {
+        "en_us": "The First Hive",
+        "es_es": "La primera colmena"
+      },
+      "status": "confirmed-family-outline",
+      "quest_budget": {
+        "total_target": 110,
+        "main_target": 0,
+        "optional_target": 110
+      },
+      "prerequisite_chapters": [
+        "a3_c1"
+      ],
+      "required_for_main": false,
+      "systems": [
+        "productivebees",
+        "modularbees"
+      ],
+      "purpose": "Establecer ciclo de cría y producción antes de mejoras modulares.",
+      "editorial_mode": "optional-learning-and-design",
+      "candidate_rule": null,
+      "narrative_role": "Optional field notes enrich the corresponding act; this chapter cannot advance or block the main story.",
+      "verification_criterion": "Establecer ciclo de cría y producción antes de mejoras modulares. La demostración requiere una sesión real; autoevaluaciones de construcción se rotulan como tales.",
+      "localization_status": "Chapter titles EN/ES; internal brief ES. All future player text requires full parity."
+    },
+    {
+      "id": "a3_c13",
+      "act": 3,
+      "slot": 13,
+      "title": {
+        "en_us": "Seeds and Specialization",
+        "es_es": "Semillas y especialización"
+      },
+      "status": "confirmed-family-outline",
+      "quest_budget": {
+        "total_target": 100,
+        "main_target": 0,
+        "optional_target": 100
+      },
+      "prerequisite_chapters": [
+        "a3_c1"
+      ],
+      "required_for_main": false,
+      "systems": [
+        "mysticalagriculture"
+      ],
+      "purpose": "Elegir recursos prioritarios sin exigir una semilla de cada tipo.",
+      "editorial_mode": "optional-learning-and-design",
+      "candidate_rule": null,
+      "narrative_role": "Optional field notes enrich the corresponding act; this chapter cannot advance or block the main story.",
+      "verification_criterion": "Elegir recursos prioritarios sin exigir una semilla de cada tipo. La demostración requiere una sesión real; autoevaluaciones de construcción se rotulan como tales.",
+      "localization_status": "Chapter titles EN/ES; internal brief ES. All future player text requires full parity."
+    },
+    {
+      "id": "a3_c14",
+      "act": 3,
+      "slot": 14,
+      "title": {
+        "en_us": "Material Caravans",
+        "es_es": "Caravanas de materiales"
+      },
+      "status": "reserved-candidate-family",
+      "quest_budget": {
+        "total_target": 120,
+        "main_target": 0,
+        "optional_target": 120
+      },
+      "prerequisite_chapters": [
+        "a3_c1"
+      ],
+      "required_for_main": false,
+      "systems": [],
+      "purpose": "Reservar transporte a distancia distinto de teletransporte y redes digitales.",
+      "editorial_mode": "optional-learning-and-design",
+      "candidate_rule": "Select distinct useful systems and runtime-validate them before authoring; quota is not written content. No invented mod list.",
+      "narrative_role": "Optional field notes enrich the corresponding act; this chapter cannot advance or block the main story.",
+      "verification_criterion": "Reservar transporte a distancia distinto de teletransporte y redes digitales. La demostración requiere una sesión real; autoevaluaciones de construcción se rotulan como tales.",
+      "localization_status": "Chapter titles EN/ES; internal brief ES. All future player text requires full parity."
+    },
+    {
+      "id": "a3_c15",
+      "act": 3,
+      "slot": 15,
+      "title": {
+        "en_us": "Messages from the Workshop",
+        "es_es": "Mensajes del taller"
+      },
+      "status": "confirmed-family-outline",
+      "quest_budget": {
+        "total_target": 140,
+        "main_target": 0,
+        "optional_target": 140
+      },
+      "prerequisite_chapters": [
+        "a3_c1"
+      ],
+      "required_for_main": false,
+      "systems": [
+        "computercraft"
+      ],
+      "purpose": "Leer un estado y avisar de un buffer lleno; programación siempre optativa.",
+      "editorial_mode": "optional-learning-and-design",
+      "candidate_rule": null,
+      "narrative_role": "Optional field notes enrich the corresponding act; this chapter cannot advance or block the main story.",
+      "verification_criterion": "Leer un estado y avisar de un buffer lleno; programación siempre optativa. La demostración requiere una sesión real; autoevaluaciones de construcción se rotulan como tales.",
+      "localization_status": "Chapter titles EN/ES; internal brief ES. All future player text requires full parity."
     },
     {
       "id": "a4_c1",
@@ -775,6 +1539,258 @@
       "project_binding": "integration-design proposal; chapter milestones require implementation, not mere possession"
     },
     {
+      "id": "a4_c7",
+      "act": 4,
+      "slot": 7,
+      "title": {
+        "en_us": "A Face for Each Input",
+        "es_es": "Una cara para cada entrada"
+      },
+      "status": "confirmed-family-outline",
+      "quest_budget": {
+        "total_target": 130,
+        "main_target": 0,
+        "optional_target": 130
+      },
+      "prerequisite_chapters": [
+        "a4_c1"
+      ],
+      "required_for_main": false,
+      "systems": [
+        "advanced_ae",
+        "pneumaticcraft"
+      ],
+      "purpose": "Encaminar ingredientes por cara y recuperar un trabajo interrumpido.",
+      "editorial_mode": "optional-learning-and-design",
+      "candidate_rule": null,
+      "narrative_role": "Optional field notes enrich the corresponding act; this chapter cannot advance or block the main story.",
+      "verification_criterion": "Encaminar ingredientes por cara y recuperar un trabajo interrumpido. La demostración requiere una sesión real; autoevaluaciones de construcción se rotulan como tales.",
+      "localization_status": "Chapter titles EN/ES; internal brief ES. All future player text requires full parity."
+    },
+    {
+      "id": "a4_c8",
+      "act": 4,
+      "slot": 8,
+      "title": {
+        "en_us": "Deep Archives",
+        "es_es": "Archivos profundos"
+      },
+      "status": "confirmed-family-outline",
+      "quest_budget": {
+        "total_target": 100,
+        "main_target": 0,
+        "optional_target": 100
+      },
+      "prerequisite_chapters": [
+        "a4_c1"
+      ],
+      "required_for_main": false,
+      "systems": [
+        "megacells",
+        "appmek"
+      ],
+      "purpose": "Dimensionar celdas por necesidad real y probar restauración de almacenamiento químico.",
+      "editorial_mode": "optional-learning-and-design",
+      "candidate_rule": null,
+      "narrative_role": "Optional field notes enrich the corresponding act; this chapter cannot advance or block the main story.",
+      "verification_criterion": "Dimensionar celdas por necesidad real y probar restauración de almacenamiento químico. La demostración requiere una sesión real; autoevaluaciones de construcción se rotulan como tales.",
+      "localization_status": "Chapter titles EN/ES; internal brief ES. All future player text requires full parity."
+    },
+    {
+      "id": "a4_c9",
+      "act": 4,
+      "slot": 9,
+      "title": {
+        "en_us": "The Celestial Vault",
+        "es_es": "La bóveda celeste"
+      },
+      "status": "confirmed-family-outline",
+      "quest_budget": {
+        "total_target": 130,
+        "main_target": 0,
+        "optional_target": 130
+      },
+      "prerequisite_chapters": [
+        "a4_c1"
+      ],
+      "required_for_main": false,
+      "systems": [
+        "aether"
+      ],
+      "purpose": "Preparar una ruta con recursos y salida; guardar un testimonio de expedición.",
+      "editorial_mode": "optional-learning-and-design",
+      "candidate_rule": null,
+      "narrative_role": "Optional field notes enrich the corresponding act; this chapter cannot advance or block the main story.",
+      "verification_criterion": "Preparar una ruta con recursos y salida; guardar un testimonio de expedición. La demostración requiere una sesión real; autoevaluaciones de construcción se rotulan como tales.",
+      "localization_status": "Chapter titles EN/ES; internal brief ES. All future player text requires full parity."
+    },
+    {
+      "id": "a4_c10",
+      "act": 4,
+      "slot": 10,
+      "title": {
+        "en_us": "The Forest of Pacts",
+        "es_es": "El bosque de los pactos"
+      },
+      "status": "confirmed-family-outline",
+      "quest_budget": {
+        "total_target": 120,
+        "main_target": 0,
+        "optional_target": 120
+      },
+      "prerequisite_chapters": [
+        "a4_c1"
+      ],
+      "required_for_main": false,
+      "systems": [
+        "twilightforest"
+      ],
+      "purpose": "Separar preparación, encuentro y regreso; espaciar bosses en el relato.",
+      "editorial_mode": "optional-learning-and-design",
+      "candidate_rule": null,
+      "narrative_role": "Optional field notes enrich the corresponding act; this chapter cannot advance or block the main story.",
+      "verification_criterion": "Separar preparación, encuentro y regreso; espaciar bosses en el relato. La demostración requiere una sesión real; autoevaluaciones de construcción se rotulan como tales.",
+      "localization_status": "Chapter titles EN/ES; internal brief ES. All future player text requires full parity."
+    },
+    {
+      "id": "a4_c11",
+      "act": 4,
+      "slot": 11,
+      "title": {
+        "en_us": "The Language of Pollen",
+        "es_es": "La lengua del polen"
+      },
+      "status": "confirmed-family-outline",
+      "quest_budget": {
+        "total_target": 110,
+        "main_target": 0,
+        "optional_target": 110
+      },
+      "prerequisite_chapters": [
+        "a4_c1"
+      ],
+      "required_for_main": false,
+      "systems": [
+        "the_bumblezone",
+        "productivebees"
+      ],
+      "purpose": "Interpretar una interacción ecológica y aplicarla a la colmena doméstica.",
+      "editorial_mode": "optional-learning-and-design",
+      "candidate_rule": null,
+      "narrative_role": "Optional field notes enrich the corresponding act; this chapter cannot advance or block the main story.",
+      "verification_criterion": "Interpretar una interacción ecológica y aplicarla a la colmena doméstica. La demostración requiere una sesión real; autoevaluaciones de construcción se rotulan como tales.",
+      "localization_status": "Chapter titles EN/ES; internal brief ES. All future player text requires full parity."
+    },
+    {
+      "id": "a4_c12",
+      "act": 4,
+      "slot": 12,
+      "title": {
+        "en_us": "Fragments of Memory",
+        "es_es": "Los fragmentos del recuerdo"
+      },
+      "status": "confirmed-family-outline",
+      "quest_budget": {
+        "total_target": 100,
+        "main_target": 0,
+        "optional_target": 100
+      },
+      "prerequisite_chapters": [
+        "a4_c1"
+      ],
+      "required_for_main": false,
+      "systems": [
+        "malum",
+        "evilcraft"
+      ],
+      "purpose": "Comparar transformación y estabilización sin ciclos masivos obligatorios.",
+      "editorial_mode": "optional-learning-and-design",
+      "candidate_rule": null,
+      "narrative_role": "Optional field notes enrich the corresponding act; this chapter cannot advance or block the main story.",
+      "verification_criterion": "Comparar transformación y estabilización sin ciclos masivos obligatorios. La demostración requiere una sesión real; autoevaluaciones de construcción se rotulan como tales.",
+      "localization_status": "Chapter titles EN/ES; internal brief ES. All future player text requires full parity."
+    },
+    {
+      "id": "a4_c13",
+      "act": 4,
+      "slot": 13,
+      "title": {
+        "en_us": "Islands under Another Light",
+        "es_es": "Islas bajo otra luz"
+      },
+      "status": "reserved-candidate-family",
+      "quest_budget": {
+        "total_target": 120,
+        "main_target": 0,
+        "optional_target": 120
+      },
+      "prerequisite_chapters": [
+        "a4_c1"
+      ],
+      "required_for_main": false,
+      "systems": [],
+      "purpose": "Reservar una expedición dimensional sólo si ofrece mecánicas distintas y costo medido.",
+      "editorial_mode": "optional-learning-and-design",
+      "candidate_rule": "Select distinct useful systems and runtime-validate them before authoring; quota is not written content. No invented mod list.",
+      "narrative_role": "Optional field notes enrich the corresponding act; this chapter cannot advance or block the main story.",
+      "verification_criterion": "Reservar una expedición dimensional sólo si ofrece mecánicas distintas y costo medido. La demostración requiere una sesión real; autoevaluaciones de construcción se rotulan como tales.",
+      "localization_status": "Chapter titles EN/ES; internal brief ES. All future player text requires full parity."
+    },
+    {
+      "id": "a4_c14",
+      "act": 4,
+      "slot": 14,
+      "title": {
+        "en_us": "The Art of Listening",
+        "es_es": "El oficio de escuchar"
+      },
+      "status": "reserved-candidate-family",
+      "quest_budget": {
+        "total_target": 140,
+        "main_target": 0,
+        "optional_target": 140
+      },
+      "prerequisite_chapters": [
+        "a4_c1"
+      ],
+      "required_for_main": false,
+      "systems": [],
+      "purpose": "Reservar exploración narrativa de estructuras sin repetir cien cofres equivalentes.",
+      "editorial_mode": "optional-learning-and-design",
+      "candidate_rule": "Select distinct useful systems and runtime-validate them before authoring; quota is not written content. No invented mod list.",
+      "narrative_role": "Optional field notes enrich the corresponding act; this chapter cannot advance or block the main story.",
+      "verification_criterion": "Reservar exploración narrativa de estructuras sin repetir cien cofres equivalentes. La demostración requiere una sesión real; autoevaluaciones de construcción se rotulan como tales.",
+      "localization_status": "Chapter titles EN/ES; internal brief ES. All future player text requires full parity."
+    },
+    {
+      "id": "a4_c15",
+      "act": 4,
+      "slot": 15,
+      "title": {
+        "en_us": "The Botanical Station",
+        "es_es": "La estación botánica"
+      },
+      "status": "confirmed-family-outline",
+      "quest_budget": {
+        "total_target": 150,
+        "main_target": 0,
+        "optional_target": 150
+      },
+      "prerequisite_chapters": [
+        "a4_c1"
+      ],
+      "required_for_main": false,
+      "systems": [
+        "mekmm"
+      ],
+      "purpose": "Comparar estación de cultivo y macetas; replicador excluido hasta balance específico.",
+      "editorial_mode": "optional-learning-and-design",
+      "candidate_rule": null,
+      "narrative_role": "Optional field notes enrich the corresponding act; this chapter cannot advance or block the main story.",
+      "verification_criterion": "Comparar estación de cultivo y macetas; replicador excluido hasta balance específico. La demostración requiere una sesión real; autoevaluaciones de construcción se rotulan como tales.",
+      "localization_status": "Chapter titles EN/ES; internal brief ES. All future player text requires full parity."
+    },
+    {
       "id": "a5_c1",
       "act": 5,
       "slot": 1,
@@ -961,6 +1977,258 @@
       "verification_criterion": "Auditar seis suministros y ruta de recuperación; sin exigir tiempo online continuo.",
       "verification_kind": "manual tutorial plus server milestone evidence where implemented; self-reported building exercises explicitly labelled",
       "project_binding": "integration-design proposal; chapter milestones require implementation, not mere possession"
+    },
+    {
+      "id": "a5_c7",
+      "act": 5,
+      "slot": 7,
+      "title": {
+        "en_us": "Compact Factories",
+        "es_es": "Fábricas compactas"
+      },
+      "status": "confirmed-family-outline",
+      "quest_budget": {
+        "total_target": 110,
+        "main_target": 0,
+        "optional_target": 110
+      },
+      "prerequisite_chapters": [
+        "a5_c1"
+      ],
+      "required_for_main": false,
+      "systems": [
+        "mekanism_extras"
+      ],
+      "purpose": "Producir el mismo lote con menos máquinas y comparar MSPT, energía y buffers.",
+      "editorial_mode": "optional-learning-and-design",
+      "candidate_rule": null,
+      "narrative_role": "Optional field notes enrich the corresponding act; this chapter cannot advance or block the main story.",
+      "verification_criterion": "Producir el mismo lote con menos máquinas y comparar MSPT, energía y buffers. La demostración requiere una sesión real; autoevaluaciones de construcción se rotulan como tales.",
+      "localization_status": "Chapter titles EN/ES; internal brief ES. All future player text requires full parity."
+    },
+    {
+      "id": "a5_c8",
+      "act": 5,
+      "slot": 8,
+      "title": {
+        "en_us": "The Assembly Matrix",
+        "es_es": "La matriz de ensamblaje"
+      },
+      "status": "confirmed-family-outline",
+      "quest_budget": {
+        "total_target": 120,
+        "main_target": 0,
+        "optional_target": 120
+      },
+      "prerequisite_chapters": [
+        "a5_c1"
+      ],
+      "required_for_main": false,
+      "systems": [
+        "extendedae"
+      ],
+      "purpose": "Escalar ensamblaje con límites de solicitudes y apagar capacidad ociosa.",
+      "editorial_mode": "optional-learning-and-design",
+      "candidate_rule": null,
+      "narrative_role": "Optional field notes enrich the corresponding act; this chapter cannot advance or block the main story.",
+      "verification_criterion": "Escalar ensamblaje con límites de solicitudes y apagar capacidad ociosa. La demostración requiere una sesión real; autoevaluaciones de construcción se rotulan como tales.",
+      "localization_status": "Chapter titles EN/ES; internal brief ES. All future player text requires full parity."
+    },
+    {
+      "id": "a5_c9",
+      "act": 5,
+      "slot": 9,
+      "title": {
+        "en_us": "Concurrent Jobs",
+        "es_es": "Trabajos concurrentes"
+      },
+      "status": "confirmed-family-outline",
+      "quest_budget": {
+        "total_target": 100,
+        "main_target": 0,
+        "optional_target": 100
+      },
+      "prerequisite_chapters": [
+        "a5_c1"
+      ],
+      "required_for_main": false,
+      "systems": [
+        "advanced_ae"
+      ],
+      "purpose": "Separar concurrencia útil de una cola infinita; probar cancelación y reinicio.",
+      "editorial_mode": "optional-learning-and-design",
+      "candidate_rule": null,
+      "narrative_role": "Optional field notes enrich the corresponding act; this chapter cannot advance or block the main story.",
+      "verification_criterion": "Separar concurrencia útil de una cola infinita; probar cancelación y reinicio. La demostración requiere una sesión real; autoevaluaciones de construcción se rotulan como tales.",
+      "localization_status": "Chapter titles EN/ES; internal brief ES. All future player text requires full parity."
+    },
+    {
+      "id": "a5_c10",
+      "act": 5,
+      "slot": 10,
+      "title": {
+        "en_us": "Reserves without Excess",
+        "es_es": "Reservas sin exceso"
+      },
+      "status": "confirmed-family-outline",
+      "quest_budget": {
+        "total_target": 85,
+        "main_target": 0,
+        "optional_target": 85
+      },
+      "prerequisite_chapters": [
+        "a5_c1"
+      ],
+      "required_for_main": false,
+      "systems": [
+        "megacells",
+        "functionalstorage"
+      ],
+      "purpose": "Conservar buffers físicos y migrar sólo acumulaciones justificadas a celdas grandes.",
+      "editorial_mode": "optional-learning-and-design",
+      "candidate_rule": null,
+      "narrative_role": "Optional field notes enrich the corresponding act; this chapter cannot advance or block the main story.",
+      "verification_criterion": "Conservar buffers físicos y migrar sólo acumulaciones justificadas a celdas grandes. La demostración requiere una sesión real; autoevaluaciones de construcción se rotulan como tales.",
+      "localization_status": "Chapter titles EN/ES; internal brief ES. All future player text requires full parity."
+    },
+    {
+      "id": "a5_c11",
+      "act": 5,
+      "slot": 11,
+      "title": {
+        "en_us": "Specialized Hives",
+        "es_es": "Colmenas especializadas"
+      },
+      "status": "confirmed-family-outline",
+      "quest_budget": {
+        "total_target": 90,
+        "main_target": 0,
+        "optional_target": 90
+      },
+      "prerequisite_chapters": [
+        "a5_c1"
+      ],
+      "required_for_main": false,
+      "systems": [
+        "modularbees",
+        "productivebees"
+      ],
+      "purpose": "Elegir mejoras por cuello de botella y conservar variedad de rutas de recursos.",
+      "editorial_mode": "optional-learning-and-design",
+      "candidate_rule": null,
+      "narrative_role": "Optional field notes enrich the corresponding act; this chapter cannot advance or block the main story.",
+      "verification_criterion": "Elegir mejoras por cuello de botella y conservar variedad de rutas de recursos. La demostración requiere una sesión real; autoevaluaciones de construcción se rotulan como tales.",
+      "localization_status": "Chapter titles EN/ES; internal brief ES. All future player text requires full parity."
+    },
+    {
+      "id": "a5_c12",
+      "act": 5,
+      "slot": 12,
+      "title": {
+        "en_us": "Parallel Processes",
+        "es_es": "Procesos en paralelo"
+      },
+      "status": "confirmed-family-outline",
+      "quest_budget": {
+        "total_target": 115,
+        "main_target": 0,
+        "optional_target": 115
+      },
+      "prerequisite_chapters": [
+        "a5_c1"
+      ],
+      "required_for_main": false,
+      "systems": [
+        "mekmm",
+        "mekanism"
+      ],
+      "purpose": "Comparar fábricas químicas con máquinas originales; validar sobras y automatización.",
+      "editorial_mode": "optional-learning-and-design",
+      "candidate_rule": null,
+      "narrative_role": "Optional field notes enrich the corresponding act; this chapter cannot advance or block the main story.",
+      "verification_criterion": "Comparar fábricas químicas con máquinas originales; validar sobras y automatización. La demostración requiere una sesión real; autoevaluaciones de construcción se rotulan como tales.",
+      "localization_status": "Chapter titles EN/ES; internal brief ES. All future player text requires full parity."
+    },
+    {
+      "id": "a5_c13",
+      "act": 5,
+      "slot": 13,
+      "title": {
+        "en_us": "A Different Industry",
+        "es_es": "Una industria diferente"
+      },
+      "status": "reserved-candidate-family",
+      "quest_budget": {
+        "total_target": 100,
+        "main_target": 0,
+        "optional_target": 100
+      },
+      "prerequisite_chapters": [
+        "a5_c1"
+      ],
+      "required_for_main": false,
+      "systems": [],
+      "purpose": "Reservar especialización tecnológica nueva que mantenga ventajas fuera de Mekanism.",
+      "editorial_mode": "optional-learning-and-design",
+      "candidate_rule": "Select distinct useful systems and runtime-validate them before authoring; quota is not written content. No invented mod list.",
+      "narrative_role": "Optional field notes enrich the corresponding act; this chapter cannot advance or block the main story.",
+      "verification_criterion": "Reservar especialización tecnológica nueva que mantenga ventajas fuera de Mekanism. La demostración requiere una sesión real; autoevaluaciones de construcción se rotulan como tales.",
+      "localization_status": "Chapter titles EN/ES; internal brief ES. All future player text requires full parity."
+    },
+    {
+      "id": "a5_c14",
+      "act": 5,
+      "slot": 14,
+      "title": {
+        "en_us": "Power for a Horizon",
+        "es_es": "Energía para un horizonte"
+      },
+      "status": "confirmed-family-outline",
+      "quest_budget": {
+        "total_target": 80,
+        "main_target": 0,
+        "optional_target": 80
+      },
+      "prerequisite_chapters": [
+        "a5_c1"
+      ],
+      "required_for_main": false,
+      "systems": [
+        "mekanism_extras",
+        "mekanismgenerators"
+      ],
+      "purpose": "Planificar combustible y reactor como especialización; ningún reactor requerido para final.",
+      "editorial_mode": "optional-learning-and-design",
+      "candidate_rule": null,
+      "narrative_role": "Optional field notes enrich the corresponding act; this chapter cannot advance or block the main story.",
+      "verification_criterion": "Planificar combustible y reactor como especialización; ningún reactor requerido para final. La demostración requiere una sesión real; autoevaluaciones de construcción se rotulan como tales.",
+      "localization_status": "Chapter titles EN/ES; internal brief ES. All future player text requires full parity."
+    },
+    {
+      "id": "a5_c15",
+      "act": 5,
+      "slot": 15,
+      "title": {
+        "en_us": "Magic at Scale",
+        "es_es": "Magia en gran escala"
+      },
+      "status": "reserved-candidate-family",
+      "quest_budget": {
+        "total_target": 100,
+        "main_target": 0,
+        "optional_target": 100
+      },
+      "prerequisite_chapters": [
+        "a5_c1"
+      ],
+      "required_for_main": false,
+      "systems": [],
+      "purpose": "Reservar automatización arcana que conserve procesos propios y no sea otro generador gratis.",
+      "editorial_mode": "optional-learning-and-design",
+      "candidate_rule": "Select distinct useful systems and runtime-validate them before authoring; quota is not written content. No invented mod list.",
+      "narrative_role": "Optional field notes enrich the corresponding act; this chapter cannot advance or block the main story.",
+      "verification_criterion": "Reservar automatización arcana que conserve procesos propios y no sea otro generador gratis. La demostración requiere una sesión real; autoevaluaciones de construcción se rotulan como tales.",
+      "localization_status": "Chapter titles EN/ES; internal brief ES. All future player text requires full parity."
     },
     {
       "id": "a6_c1",
@@ -1151,6 +2419,283 @@
       "verification_criterion": "Exigir seis módulos, fases calibrate/stabilize/provision/chart y visitas del equipo; probar cierre sin replay de premio.",
       "verification_kind": "manual tutorial plus server milestone evidence where implemented; self-reported building exercises explicitly labelled",
       "project_binding": "integration-design proposal; chapter milestones require implementation, not mere possession"
+    },
+    {
+      "id": "a6_c7",
+      "act": 6,
+      "slot": 7,
+      "title": {
+        "en_us": "Recoverable Calibration",
+        "es_es": "Calibración recuperable"
+      },
+      "status": "confirmed-family-outline",
+      "quest_budget": {
+        "total_target": 60,
+        "main_target": 0,
+        "optional_target": 60
+      },
+      "prerequisite_chapters": [
+        "a6_c1"
+      ],
+      "required_for_main": false,
+      "systems": [
+        "create",
+        "mekanism_extras"
+      ],
+      "purpose": "Maestría del módulo de ingeniería: repetir diagnóstico sin repetir recompensas.",
+      "editorial_mode": "optional-mastery",
+      "candidate_rule": null,
+      "narrative_role": "Optional field notes enrich the corresponding act; this chapter cannot advance or block the main story.",
+      "verification_criterion": "Maestría del módulo de ingeniería: repetir diagnóstico sin repetir recompensas. La demostración requiere una sesión real; autoevaluaciones de construcción se rotulan como tales.",
+      "localization_status": "Chapter titles EN/ES; internal brief ES. All future player text requires full parity."
+    },
+    {
+      "id": "a6_c8",
+      "act": 6,
+      "slot": 8,
+      "title": {
+        "en_us": "Preserved Memory",
+        "es_es": "La memoria preservada"
+      },
+      "status": "confirmed-family-outline",
+      "quest_budget": {
+        "total_target": 65,
+        "main_target": 0,
+        "optional_target": 65
+      },
+      "prerequisite_chapters": [
+        "a6_c1"
+      ],
+      "required_for_main": false,
+      "systems": [
+        "malum",
+        "occultism"
+      ],
+      "purpose": "Maestría arcana: explicar qué testimonio estabiliza cada fase y conservar sellos entregados.",
+      "editorial_mode": "optional-mastery",
+      "candidate_rule": null,
+      "narrative_role": "Optional field notes enrich the corresponding act; this chapter cannot advance or block the main story.",
+      "verification_criterion": "Maestría arcana: explicar qué testimonio estabiliza cada fase y conservar sellos entregados. La demostración requiere una sesión real; autoevaluaciones de construcción se rotulan como tales.",
+      "localization_status": "Chapter titles EN/ES; internal brief ES. All future player text requires full parity."
+    },
+    {
+      "id": "a6_c9",
+      "act": 6,
+      "slot": 9,
+      "title": {
+        "en_us": "The Garden That Remains",
+        "es_es": "El jardín que queda"
+      },
+      "status": "confirmed-family-outline",
+      "quest_budget": {
+        "total_target": 65,
+        "main_target": 0,
+        "optional_target": 65
+      },
+      "prerequisite_chapters": [
+        "a6_c1"
+      ],
+      "required_for_main": false,
+      "systems": [
+        "naturesaura",
+        "modularbees"
+      ],
+      "purpose": "Maestría natural: demostrar suministro sostenible sin deterioro desconectado.",
+      "editorial_mode": "optional-mastery",
+      "candidate_rule": null,
+      "narrative_role": "Optional field notes enrich the corresponding act; this chapter cannot advance or block the main story.",
+      "verification_criterion": "Maestría natural: demostrar suministro sostenible sin deterioro desconectado. La demostración requiere una sesión real; autoevaluaciones de construcción se rotulan como tales.",
+      "localization_status": "Chapter titles EN/ES; internal brief ES. All future player text requires full parity."
+    },
+    {
+      "id": "a6_c10",
+      "act": 6,
+      "slot": 10,
+      "title": {
+        "en_us": "Nothing Goes Missing",
+        "es_es": "Nada se pierde"
+      },
+      "status": "confirmed-family-outline",
+      "quest_budget": {
+        "total_target": 65,
+        "main_target": 0,
+        "optional_target": 65
+      },
+      "prerequisite_chapters": [
+        "a6_c1"
+      ],
+      "required_for_main": false,
+      "systems": [
+        "ae2",
+        "appmek"
+      ],
+      "purpose": "Maestría logística: rastrear lotes parciales y recuperar una solicitud sin duplicación.",
+      "editorial_mode": "optional-mastery",
+      "candidate_rule": null,
+      "narrative_role": "Optional field notes enrich the corresponding act; this chapter cannot advance or block the main story.",
+      "verification_criterion": "Maestría logística: rastrear lotes parciales y recuperar una solicitud sin duplicación. La demostración requiere una sesión real; autoevaluaciones de construcción se rotulan como tales.",
+      "localization_status": "Chapter titles EN/ES; internal brief ES. All future player text requires full parity."
+    },
+    {
+      "id": "a6_c11",
+      "act": 6,
+      "slot": 11,
+      "title": {
+        "en_us": "The House of the Horizon",
+        "es_es": "La casa del horizonte"
+      },
+      "status": "confirmed-family-outline",
+      "quest_budget": {
+        "total_target": 65,
+        "main_target": 0,
+        "optional_target": 65
+      },
+      "prerequisite_chapters": [
+        "a6_c1"
+      ],
+      "required_for_main": false,
+      "systems": [
+        "farmersdelight",
+        "handcrafted"
+      ],
+      "purpose": "Maestría de habitabilidad: probar provisiones y diseñar refugio como elección libre.",
+      "editorial_mode": "optional-mastery",
+      "candidate_rule": null,
+      "narrative_role": "Optional field notes enrich the corresponding act; this chapter cannot advance or block the main story.",
+      "verification_criterion": "Maestría de habitabilidad: probar provisiones y diseñar refugio como elección libre. La demostración requiere una sesión real; autoevaluaciones de construcción se rotulan como tales.",
+      "localization_status": "Chapter titles EN/ES; internal brief ES. All future player text requires full parity."
+    },
+    {
+      "id": "a6_c12",
+      "act": 6,
+      "slot": 12,
+      "title": {
+        "en_us": "A Shared Map",
+        "es_es": "Un mapa compartido"
+      },
+      "status": "confirmed-family-outline",
+      "quest_budget": {
+        "total_target": 80,
+        "main_target": 0,
+        "optional_target": 80
+      },
+      "prerequisite_chapters": [
+        "a6_c1"
+      ],
+      "required_for_main": false,
+      "systems": [
+        "aether",
+        "twilightforest"
+      ],
+      "purpose": "Maestría exploradora: conectar testimonios del equipo, nunca completar por muestras regaladas.",
+      "editorial_mode": "optional-mastery",
+      "candidate_rule": null,
+      "narrative_role": "Optional field notes enrich the corresponding act; this chapter cannot advance or block the main story.",
+      "verification_criterion": "Maestría exploradora: conectar testimonios del equipo, nunca completar por muestras regaladas. La demostración requiere una sesión real; autoevaluaciones de construcción se rotulan como tales.",
+      "localization_status": "Chapter titles EN/ES; internal brief ES. All future player text requires full parity."
+    },
+    {
+      "id": "a6_c13",
+      "act": 6,
+      "slot": 13,
+      "title": {
+        "en_us": "Beyond the Armor",
+        "es_es": "Más allá de la armadura"
+      },
+      "status": "confirmed-family-outline",
+      "quest_budget": {
+        "total_target": 70,
+        "main_target": 0,
+        "optional_target": 70
+      },
+      "prerequisite_chapters": [
+        "a6_c1"
+      ],
+      "required_for_main": false,
+      "systems": [
+        "advanced_ae"
+      ],
+      "purpose": "Probar mejoras Quantum después de la preparación final; poder no sustituye hitos narrativos.",
+      "editorial_mode": "optional-mastery",
+      "candidate_rule": null,
+      "narrative_role": "Optional field notes enrich the corresponding act; this chapter cannot advance or block the main story.",
+      "verification_criterion": "Probar mejoras Quantum después de la preparación final; poder no sustituye hitos narrativos. La demostración requiere una sesión real; autoevaluaciones de construcción se rotulan como tales.",
+      "localization_status": "Chapter titles EN/ES; internal brief ES. All future player text requires full parity."
+    },
+    {
+      "id": "a6_c14",
+      "act": 6,
+      "slot": 14,
+      "title": {
+        "en_us": "Another Possible Answer",
+        "es_es": "Otra respuesta posible"
+      },
+      "status": "reserved-candidate-family",
+      "quest_budget": {
+        "total_target": 60,
+        "main_target": 0,
+        "optional_target": 60
+      },
+      "prerequisite_chapters": [
+        "a6_c1"
+      ],
+      "required_for_main": false,
+      "systems": [],
+      "purpose": "Reservar desafío posgame de diseño alternativo sin inflar cantidades de ingredientes.",
+      "editorial_mode": "optional-mastery",
+      "candidate_rule": "Select distinct useful systems and runtime-validate them before authoring; quota is not written content. No invented mod list.",
+      "narrative_role": "Optional field notes enrich the corresponding act; this chapter cannot advance or block the main story.",
+      "verification_criterion": "Reservar desafío posgame de diseño alternativo sin inflar cantidades de ingredientes. La demostración requiere una sesión real; autoevaluaciones de construcción se rotulan como tales.",
+      "localization_status": "Chapter titles EN/ES; internal brief ES. All future player text requires full parity."
+    },
+    {
+      "id": "a6_c15",
+      "act": 6,
+      "slot": 15,
+      "title": {
+        "en_us": "The Travelers Archive",
+        "es_es": "El archivo de los viajeros"
+      },
+      "status": "reserved-candidate-family",
+      "quest_budget": {
+        "total_target": 70,
+        "main_target": 0,
+        "optional_target": 70
+      },
+      "prerequisite_chapters": [
+        "a6_c1"
+      ],
+      "required_for_main": false,
+      "systems": [],
+      "purpose": "Reservar relatos y proyectos comunitarios autoevaluados; no contar mensajes como quests automáticamente.",
+      "editorial_mode": "optional-mastery",
+      "candidate_rule": "Select distinct useful systems and runtime-validate them before authoring; quota is not written content. No invented mod list.",
+      "narrative_role": "Optional field notes enrich the corresponding act; this chapter cannot advance or block the main story.",
+      "verification_criterion": "Reservar relatos y proyectos comunitarios autoevaluados; no contar mensajes como quests automáticamente. La demostración requiere una sesión real; autoevaluaciones de construcción se rotulan como tales.",
+      "localization_status": "Chapter titles EN/ES; internal brief ES. All future player text requires full parity."
     }
-  ]
+  ],
+  "first_hour_preservation": {
+    "source": "content/first_hour.json",
+    "sha256_at_outline": "a61183421a7721a731013c55cc6286d60717e793cb04cae4d3ca1e462e1a54f9",
+    "quest_count": 25,
+    "policy": "No first-hour IDs or content changed."
+  },
+  "scale_basis": "docs/design/scale-reference.md; provisional targets pending complete current FTB/Craftoria measurement and <=8GB performance evidence.",
+  "editorial_quality": {
+    "required_per_quest": [
+      "distinct lesson, decision, useful installation or earned narrative event",
+      "specific evidence or clearly labelled self-report",
+      "full EN/ES parity",
+      "reward appropriate to acquisition stage"
+    ],
+    "forbidden": [
+      "library-only chapters",
+      "one quest per color or trivial recipe variant",
+      "counting tasks/rewards/translations as quests",
+      "optional branches becoming hidden main prerequisites",
+      "claiming lore or narrative completion from inventory possession"
+    ],
+    "quota_status": "Planning capacity only; no generated runtime content. Long budgets imply multiple substantial lessons, never repeated three-line templates."
+  }
 }

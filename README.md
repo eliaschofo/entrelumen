@@ -4,7 +4,7 @@ An original Minecraft 1.21.1 NeoForge kitchen sink about recovering lost knowled
 
 **Development status:** implementation in progress. This repository is not yet a playable release. Performance targets and the 150–200 hour campaign are design goals until measured in playtests.
 
-The current prototype contains 25 bilingual opening quests, a server-authoritative team campaign, an Atlas interface, a pinned 119-mod client / 94-mod server dependency selection, and original item/block artwork. The client has entered a test world; the dedicated server has passed startup, resource reload, save and orderly shutdown. Eleven embedded-server GameTests cover campaign and network service behavior. Full campaign integration and acceptance testing remain in progress; see [verification evidence](docs/verification/client-first-entry.md) and [server checks](docs/verification/server-reload-stop.md).
+The current prototype contains 75 bilingual quests across three chapters, a server-authoritative team campaign, an Atlas interface, a functional compass survey station, a pinned 140-mod client / 110-mod server dependency selection, and candidate original item/block artwork. The client has entered a test world and connected to the local dedicated server. Fifteen embedded-server GameTests cover campaign and network service behavior, including both compass hands and deliveries through the third act. The five opening projects have also been delivered through the client interface using supplied QA materials. The dedicated server loaded all 75 quests and 16 campaign milestones; ten integration recipes passed real crafting checks, including bowl remainders. Full campaign, survival pacing, visual, compatibility and performance acceptance remain in progress; see [integration evidence](docs/verification/integration-slice.md) and [second-act checks](docs/verification/act-two-runtime.json) and [third-act checks](docs/verification/act-three-runtime.json).
 
 ## Design commitments
 - Six directed acts with independent team campaigns and unrestricted item trading.
@@ -13,6 +13,7 @@ The current prototype contains 25 bilingual opening quests, a server-authoritati
 - Staged resource farms without universal EMC conversion.
 - Six complementary Ark modules, recoverable commissioning and no offline decay.
 - Target: 16 GB system RAM, at most 8 GB Java heap, no default shaders.
+- Beautiful original content with a coherent Minecraft-scale pixel-art identity, reviewed inside the game. Technical fixtures and unreviewed concept art are not final content.
 
 ## Project layout
 - `companion/`: the NeoForge integration mod and campaign domain.
@@ -29,6 +30,6 @@ ENTRELUMEN es un kitchen sink original sobre recuperar conocimientos y reconstru
 
 **Estado:** implementación en curso; todavía no es una versión jugable publicada. Las metas de rendimiento y duración requieren mediciones y pruebas reales.
 
-El prototipo incluye 25 quests iniciales bilingües, campaña por equipo, interfaz del Atlas y arte propio. Ya arrancó en cliente y servidor; la campaña completa, su balance y la publicación siguen pendientes.
+El prototipo incluye 75 quests bilingües en tres capítulos, campaña por equipo, interfaz del Atlas, estación para marcar brújulas, 140 dependencias de cliente y 110 de servidor, y arte propio en revisión. Se completaron los cinco proyectos iniciales desde la interfaz usando suministros de QA. El servidor cargó las 75 quests y los 16 hitos; diez recetas de integración pasaron las pruebas de crafteo y devolución de cuencos. La campaña completa, su balance en supervivencia y la publicación siguen pendientes. Todo el contenido propio debe tener una identidad visual hermosa y coherente de pixel art a escala Minecraft, comprobada dentro del juego. Las maquetas técnicas y los conceptos sin revisión siguen siendo borradores.
 
 Las quests, la historia y las ayudas propias se desarrollan en inglés y español. El seguimiento del trabajo distingue implementación, pruebas y publicación.

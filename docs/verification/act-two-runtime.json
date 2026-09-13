@@ -1,0 +1,142 @@
+{
+  "schema": "entrelumen/act-two-evidence-v1",
+  "date": "2026-09-12",
+  "scope": "Act II implementation and dedicated-server crafting checks; not full campaign acceptance or release",
+  "status": "partial_acceptance",
+  "runtime": {
+    "token": "1de7c16d-65da-430e-85c7-48255cca2de6",
+    "status": "passed",
+    "results": [
+      {
+        "recipe": "entrelumen:integration/precision_bench",
+        "output": "entrelumen:calibration_frame",
+        "orientations": 2,
+        "bowls": 0
+      },
+      {
+        "recipe": "entrelumen:integration/crystal_grid",
+        "output": "entrelumen:energy_coupler",
+        "orientations": 2,
+        "bowls": 0
+      },
+      {
+        "recipe": "entrelumen:integration/living_workshop",
+        "output": "entrelumen:living_matrix",
+        "orientations": 2,
+        "bowls": 0
+      },
+      {
+        "recipe": "entrelumen:integration/travelling_pantry",
+        "output": "entrelumen:ration_bundle",
+        "orientations": 2,
+        "bowls": 2
+      },
+      {
+        "recipe": "entrelumen:integration/settlement_supply",
+        "output": "entrelumen:habitation_contract",
+        "orientations": 2,
+        "bowls": 4
+      }
+    ],
+    "errors": [],
+    "questFile": {
+      "quests": 48,
+      "chapters": 2,
+      "milestones": [
+        "atlas_awakened",
+        "crystal_grid",
+        "field_survey",
+        "first_signal",
+        "lens_assembled",
+        "living_workshop",
+        "lost_workshop",
+        "precision_bench",
+        "travellers_table",
+        "travelling_pantry"
+      ]
+    }
+  },
+  "crafting_contract": [
+    "Real RecipeManager matches the exact recipe ID in two grid arrangements.",
+    "Assembly yields exactly one expected output.",
+    "Remainders contain only the expected bowl count.",
+    "Removing the first ingredient rejects each tested recipe in both arrangements.",
+    "Assembly leaves occupied input stack counts at one; no player inventory is used."
+  ],
+  "campaign": {
+    "required_gametests_passed": 14,
+    "act_two_case": "secondActConsumesGiftedPrototypesAndGatesClosure",
+    "covered": [
+      "Wrong act and missing prerequisites reject without consumption.",
+      "Living workshop requires precision bench.",
+      "Gifted prototype possession alone does not progress story.",
+      "Explicit delivery consumes one prototype; replay does not consume or reward.",
+      "Closure requires all four projects and consumes three paper plus one copper exactly once.",
+      "Infrastructure and unrelated supplies remain; closure enables Act III and replay cannot skip it."
+    ],
+    "initial_combined_build": "failed: immutable-definitions JUnit test retained a stale exact project count; GameTests passed independently",
+    "subsequent_test_build": "passed after removing the unrelated exact-count assertion while retaining immutability assertions",
+    "junit": {
+      "tests": 16,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  },
+  "source_checks": {
+    "integration_generator": "passed: 22 static recipes, source parity, native grids/yields, bilingual titles and component DAG",
+    "quest_generator": "passed: 48 quests in two chapters, global IDs/DAG, EN/ES parity",
+    "quest_contract_tests": {
+      "passed": 7,
+      "covers": [
+        "First-hour stable ID fingerprint",
+        "Cross-chapter cycles and missing dependencies",
+        "Global key collisions",
+        "Translation placeholder parity",
+        "Spanish mechanical cost coverage and encoding",
+        "Five authoritative Act II milestone prerequisites and no rewards"
+      ]
+    }
+  },
+  "artifact_hashes": {
+    "content/integration-design.json": "7b184fd0b1cde17233b41102b41a6b8547149398e0221a0fde9bff725a25c781",
+    "pack/kubejs/server_scripts/entrelumen_integration_recipes.js": "7101ea3880c5a236bc78fc37ecd1c996823ff2a1c05833e864e79efc6aad6479",
+    "content/act_two.json": "23a8cbf2940c8208fa0057999a6a348fa18ea877ffed5eafc97a65b3cac5309b",
+    "content/first_hour.json": "53dbab4c356c0c7d2486798670ae2ab6282728fc33d191eb4b684b8c64b1c85a",
+    "content/campaign_task_ids.json": "42f60366330932f862377daa01a65f3fffdf1068696a969fceda374309f8fc58",
+    "companion/src/main/resources/data/entrelumen/campaign/projects.json": "5d08a42dcfba7947e0b2a67067b2de556cf6e55cf76cec9c07977cfd3e4b8e4f",
+    "companion/src/main/java/dev/entrelumen/RuntimeGameTests.java": "5267127e797ff06639b02ebe9e5116f54a949505ba198ad655e0ed48932141dd",
+    "companion/src/test/java/dev/entrelumen/ProjectValidationTest.java": "69090fc71e4c9b1a593937becd7aa42a26e3f7c6f1eb0c14a005b64cbcaaca4a",
+    "tools/test_generate_quests.py": "34f39539017525093ec6310c73942e28d6af24aced10378ac50ca113ae8d98e2"
+  },
+  "local_evidence_receipts": [
+    {
+      "name": "act-two-companion-build.log",
+      "sha256": "20945390fbd33c536bf67dd648d9a684efbe1185793a80312f27653ac938e6cb"
+    },
+    {
+      "name": "act-two-unit-build.log",
+      "sha256": "4ae47e3af0093a7e17a28b527f0d9143ade1d9fe44c4043e5c2797e6e2dc11b5"
+    },
+    {
+      "name": "prepare_act_two_craft_audit.py",
+      "sha256": "8e77b07207b1811ac21e8220b463f3cd91758a589b86bd7a28dbd9886018ef42"
+    }
+  ],
+  "runtime_log_receipt": {
+    "name": "act-two-runtime-recheck.log",
+    "sha256_prefix_through_passing_record": "00697cab1058b7bd59aeed1bf93bc1c47474f6d3a0bb4859607303e8938b6a7a",
+    "hash_scope": "UTF-8 decoded log prefix ending at the passing record, without trailing newline; live log can continue"
+  },
+  "prior_attempts": [
+    "Startup audit observed zero quests before the later explicit command; inner function binding failed in Rhino. This did not establish a recipe failure.",
+    "A later audit failed on unsupported getClass exposure. The passing fixture uses task serialization to inspect milestone fields."
+  ],
+  "limits": [
+    "Full survival ingredient acquisition, FE setup, crop harvesting and early accessibility are not proven by RecipeManager fixtures or source recipe inspection.",
+    "The loaded quest check proves task-bearing quest count, chapter count and milestone fields; it does not visually inspect pages or prove every localized line in the server installation is current.",
+    "Manual client tutorial, Atlas appearance, station interactions, pacing and restart walkthrough remain pending.",
+    "No hardware performance, two-hour soak, six-player or release acceptance is claimed.",
+    "The QA fixture is work-only and must not be packaged; owned runtime cleanup is still the integrator responsibility."
+  ]
+}

@@ -65,6 +65,206 @@
       ]
     },
     {
+      "filename": "AdvancedAE-1.6.12-1.21.1.jar",
+      "bytes": 4791255,
+      "projectID": 1084104,
+      "fileID": 8564177,
+      "sourceSha1": "9358ccfa5477c7ab1c5ffab6c831e105fe46ecc3",
+      "source": {
+        "provider": "curseforge",
+        "projectUrl": "https://www.curseforge.com/minecraft/mc-mods/advancedae",
+        "downloadUrl": "https://edge.forgecdn.net/files/8564/177/AdvancedAE-1.6.12-1.21.1.jar",
+        "allowModDistribution": true
+      },
+      "metadata": {
+        "mods": [
+          {
+            "id": "advanced_ae",
+            "version": "1.6.12-1.21.1",
+            "name": "Advanced AE"
+          }
+        ],
+        "dependencies": [
+          {
+            "owner": "advanced_ae",
+            "id": "neoforge",
+            "required": true,
+            "type": "required",
+            "range": "[21.1.169,)",
+            "side": "both"
+          },
+          {
+            "owner": "advanced_ae",
+            "id": "minecraft",
+            "required": true,
+            "type": "required",
+            "range": "1.21.1",
+            "side": "both"
+          },
+          {
+            "owner": "advanced_ae",
+            "id": "ae2",
+            "required": true,
+            "type": "required",
+            "range": "[19.2.16,)",
+            "side": "both"
+          },
+          {
+            "owner": "advanced_ae",
+            "id": "ae2addonlib",
+            "required": true,
+            "type": "required",
+            "range": "[1.0.0,)",
+            "side": "both"
+          },
+          {
+            "owner": "advanced_ae",
+            "id": "geckolib",
+            "required": true,
+            "type": "required",
+            "range": "[4.8.2,)",
+            "side": "both"
+          },
+          {
+            "owner": "advanced_ae",
+            "id": "ae2wtlib_api",
+            "required": true,
+            "type": "REQUIRED",
+            "range": "*",
+            "side": "both"
+          },
+          {
+            "owner": "advanced_ae",
+            "id": "ae2wtlib",
+            "required": false,
+            "type": "OPTIONAL",
+            "range": "[19.2.5,)",
+            "side": "both"
+          }
+        ],
+        "license": "LGPL-3.0",
+        "embedded": [
+          {
+            "path": "META-INF/jarjar/ae2wtlib_api-19.2.5.jar",
+            "artifact": {
+              "group": "de.mari_023",
+              "artifact": "ae2wtlib_api"
+            },
+            "version": {
+              "range": "[19.2.5,)",
+              "artifactVersion": "19.2.5"
+            },
+            "mods": [
+              {
+                "id": "ae2wtlib_api",
+                "version": "19.2.5",
+                "name": "AE2WTLib API"
+              }
+            ],
+            "dependencies": [
+              {
+                "owner": "ae2wtlib_api",
+                "id": "neoforge",
+                "required": true,
+                "type": "REQUIRED",
+                "range": "*",
+                "side": "both"
+              },
+              {
+                "owner": "ae2wtlib_api",
+                "id": "minecraft",
+                "required": true,
+                "type": "REQUIRED",
+                "range": "*",
+                "side": "both"
+              },
+              {
+                "owner": "ae2wtlib_api",
+                "id": "ae2",
+                "required": true,
+                "type": "REQUIRED",
+                "range": "[19.2.13,20.0.0)",
+                "side": "both"
+              },
+              {
+                "owner": "ae2wtlib",
+                "id": "ae2wtlib",
+                "required": false,
+                "type": "INCOMPATIBLE",
+                "range": "(,19.1.0-alpha)",
+                "side": "both"
+              }
+            ],
+            "license": "MIT",
+            "embedded": []
+          },
+          {
+            "path": "META-INF/jarjar/ae2addonlib-1.0.3-1.21.1.jar",
+            "artifact": {
+              "group": "io.github.pedroksl",
+              "artifact": "ae2addonlib"
+            },
+            "version": {
+              "range": "[1.0.3-1.21.1,)",
+              "artifactVersion": "1.0.3-1.21.1"
+            },
+            "mods": [
+              {
+                "id": "ae2addonlib",
+                "version": "1.0.3-1.21.1",
+                "name": "AE2AddonLib"
+              }
+            ],
+            "dependencies": [
+              {
+                "owner": "ae2addonlib",
+                "id": "neoforge",
+                "required": true,
+                "type": "required",
+                "range": "[21.1.203,)",
+                "side": "both"
+              },
+              {
+                "owner": "ae2addonlib",
+                "id": "minecraft",
+                "required": true,
+                "type": "required",
+                "range": "[1.21.1]",
+                "side": "both"
+              },
+              {
+                "owner": "ae2addonlib",
+                "id": "ae2",
+                "required": true,
+                "type": "required",
+                "range": "[19.2.16,)",
+                "side": "both"
+              }
+            ],
+            "license": "LGPL-3.0",
+            "embedded": []
+          }
+        ]
+      },
+      "cfRequiredProjects": [
+        388172,
+        223794
+      ],
+      "side": "both",
+      "sha256": "a01d9718667ac13899013e91c5b0b7708b9b9db1da9b8e380772dde54bbe8f41",
+      "selectionReason": "selected",
+      "roles": [
+        {
+          "modId": "advanced_ae",
+          "category": "content",
+          "act": "IV",
+          "role": "Directional patterns and quantum crafting",
+          "integration": "Route chemical production; quantum armor obtained in VI",
+          "status": "planned-not-yet-balanced"
+        }
+      ]
+    },
+    {
       "filename": "ae2jeiintegration-1.2.1.jar",
       "bytes": 91710,
       "projectID": 1074338,
@@ -117,6 +317,143 @@
           "modId": "ae2jeiintegration",
           "category": "qol",
           "role": "Explain AE2 processes"
+        }
+      ]
+    },
+    {
+      "filename": "ae2wtlib-19.5.1.jar",
+      "bytes": 252091,
+      "projectID": 459929,
+      "fileID": 8450398,
+      "sourceSha1": "b1bee01393b15f1eb0f46d58862ef99234e1d337",
+      "source": {
+        "provider": "curseforge",
+        "projectUrl": "https://www.curseforge.com/minecraft/mc-mods/applied-energistics-2-wireless-terminals",
+        "downloadUrl": "https://edge.forgecdn.net/files/8450/398/ae2wtlib-19.5.1.jar",
+        "allowModDistribution": true
+      },
+      "metadata": {
+        "mods": [
+          {
+            "id": "ae2wtlib",
+            "version": "19.5.1",
+            "name": "AE2WTLib"
+          }
+        ],
+        "dependencies": [
+          {
+            "owner": "ae2wtlib",
+            "id": "ae2wtlib_api",
+            "required": true,
+            "type": "REQUIRED",
+            "range": "[19.5.1]",
+            "side": "both"
+          },
+          {
+            "owner": "ae2wtlib",
+            "id": "ae2",
+            "required": true,
+            "type": "REQUIRED",
+            "range": "[19.2.17,20.0.0)",
+            "side": "both"
+          },
+          {
+            "owner": "ae2wtlib",
+            "id": "curios",
+            "required": false,
+            "type": "OPTIONAL",
+            "range": "*",
+            "side": "both"
+          },
+          {
+            "owner": "ae2wtlib",
+            "id": "extendedae",
+            "required": false,
+            "type": "INCOMPATIBLE",
+            "range": "(,1.21-1.1.4-neoforge]",
+            "side": "both"
+          },
+          {
+            "owner": "ae2wtlib",
+            "id": "megacells",
+            "required": false,
+            "type": "INCOMPATIBLE",
+            "range": "(0.0.0,4.0.0-alpha]",
+            "side": "both"
+          }
+        ],
+        "license": "MIT",
+        "embedded": [
+          {
+            "path": "META-INF/jarjar/de.mari_023.ae2wtlib_api-19.5.1.jar",
+            "artifact": {
+              "group": "de.mari_023",
+              "artifact": "ae2wtlib_api"
+            },
+            "version": {
+              "range": "[19.5.1,)",
+              "artifactVersion": "19.5.1"
+            },
+            "mods": [
+              {
+                "id": "ae2wtlib_api",
+                "version": "19.5.1",
+                "name": "AE2WTLib API"
+              }
+            ],
+            "dependencies": [
+              {
+                "owner": "ae2wtlib_api",
+                "id": "neoforge",
+                "required": true,
+                "type": "REQUIRED",
+                "range": "*",
+                "side": "both"
+              },
+              {
+                "owner": "ae2wtlib_api",
+                "id": "minecraft",
+                "required": true,
+                "type": "REQUIRED",
+                "range": "*",
+                "side": "both"
+              },
+              {
+                "owner": "ae2wtlib_api",
+                "id": "ae2",
+                "required": true,
+                "type": "REQUIRED",
+                "range": "[19.2.17,20.0.0)",
+                "side": "both"
+              },
+              {
+                "owner": "ae2wtlib",
+                "id": "ae2wtlib",
+                "required": false,
+                "type": "INCOMPATIBLE",
+                "range": "(,19.1.0-alpha)",
+                "side": "both"
+              }
+            ],
+            "license": "MIT",
+            "embedded": []
+          }
+        ]
+      },
+      "cfRequiredProjects": [
+        223794
+      ],
+      "side": "both",
+      "sha256": "407e7300351353cb4cb7698286e180aef2bd6e7a97ec7efc6493f9daa4dbffe5",
+      "selectionReason": "selected",
+      "roles": [
+        {
+          "modId": "ae2wtlib",
+          "category": "content",
+          "act": "III-V",
+          "role": "Combined wireless terminals and upgrades",
+          "integration": "Provide real terminal combination serializers for AdvancedAE and retain pattern logistics in advanced workshops",
+          "status": "planned-not-yet-balanced"
         }
       ]
     },
@@ -298,6 +635,59 @@
           "role": "Sky expeditions",
           "integration": "Recover observatory knowledge through a distinct dimension",
           "status": "planned-not-yet-balanced"
+        }
+      ]
+    },
+    {
+      "filename": "AkashicTome-1.8-30.jar",
+      "bytes": 50256,
+      "projectID": 250577,
+      "fileID": 7773841,
+      "sourceSha1": "6493e575f295e18fac1f7c5399c05c53caa1f7ce",
+      "source": {
+        "provider": "curseforge",
+        "projectUrl": "https://www.curseforge.com/minecraft/mc-mods/akashic-tome",
+        "downloadUrl": "https://edge.forgecdn.net/files/7773/841/AkashicTome-1.8-30.jar",
+        "allowModDistribution": true
+      },
+      "metadata": {
+        "mods": [
+          {
+            "id": "akashictome",
+            "version": "1.8-30",
+            "name": "Akashic Tome"
+          }
+        ],
+        "dependencies": [
+          {
+            "owner": "akashictome",
+            "id": "neoforge",
+            "required": true,
+            "type": "required",
+            "range": "[21.1.0,)",
+            "side": "both"
+          },
+          {
+            "owner": "akashictome",
+            "id": "minecraft",
+            "required": true,
+            "type": "required",
+            "range": "[1.21,)",
+            "side": "both"
+          }
+        ],
+        "license": "Creative Commons Attribution-NonCommercial-ShareAlike 3.0 Unported License",
+        "embedded": []
+      },
+      "cfRequiredProjects": [],
+      "side": "both",
+      "sha256": "c60f58fba975fe22681d69bd06dc93818e53a67830d9118167979852206f6ca8",
+      "selectionReason": "selected",
+      "roles": [
+        {
+          "modId": "akashictome",
+          "category": "qol",
+          "role": "Keep acquired guidebooks in one physical reference tome"
         }
       ]
     },
@@ -490,6 +880,73 @@
       ]
     },
     {
+      "filename": "Applied-Mekanistics-1.6.3.jar",
+      "bytes": 149709,
+      "projectID": 574300,
+      "fileID": 7096962,
+      "sourceSha1": "bec4a47269ec23bca2329742e13409bfde69c5c3",
+      "source": {
+        "provider": "curseforge",
+        "projectUrl": "https://www.curseforge.com/minecraft/mc-mods/applied-mekanistics",
+        "downloadUrl": "https://edge.forgecdn.net/files/7096/962/Applied-Mekanistics-1.6.3.jar",
+        "allowModDistribution": true
+      },
+      "metadata": {
+        "mods": [
+          {
+            "id": "appmek",
+            "version": "1.6.3",
+            "name": "Applied Mekanistics"
+          }
+        ],
+        "dependencies": [
+          {
+            "owner": "appmek",
+            "id": "neoforge",
+            "required": true,
+            "type": "required",
+            "range": "[21.0,)",
+            "side": "both"
+          },
+          {
+            "owner": "appmek",
+            "id": "ae2",
+            "required": true,
+            "type": "required",
+            "range": "[19.2.10,20.0.0)",
+            "side": "both"
+          },
+          {
+            "owner": "appmek",
+            "id": "mekanism",
+            "required": true,
+            "type": "required",
+            "range": "[10.7.14,11-)",
+            "side": "both"
+          }
+        ],
+        "license": "See GitHub repository for details",
+        "embedded": []
+      },
+      "cfRequiredProjects": [
+        268560,
+        223794
+      ],
+      "side": "both",
+      "sha256": "8946fea39451dbce8e709dedbef40a52ba337bdf7a25ac0c4b503800b1bf0773",
+      "selectionReason": "selected",
+      "roles": [
+        {
+          "modId": "appmek",
+          "category": "content",
+          "act": "III",
+          "role": "Chemical ME logistics",
+          "integration": "Connect Mekanism processing with AE2 requests",
+          "status": "planned-not-yet-balanced"
+        }
+      ]
+    },
+    {
       "filename": "appliedenergistics2-19.2.17.jar",
       "bytes": 8230896,
       "projectID": 223794,
@@ -513,7 +970,7 @@
           {
             "owner": "ae2",
             "id": "neoforge",
-            "required": false,
+            "required": true,
             "type": "REQUIRED",
             "range": "[21.1.169,)",
             "side": "both"
@@ -521,7 +978,7 @@
           {
             "owner": "ae2",
             "id": "minecraft",
-            "required": false,
+            "required": true,
             "type": "REQUIRED",
             "range": "[1.21.1]",
             "side": "both"
@@ -529,7 +986,7 @@
           {
             "owner": "ae2",
             "id": "guideme",
-            "required": false,
+            "required": true,
             "type": "REQUIRED",
             "range": "[21.1.1,)",
             "side": "both"
@@ -1149,6 +1606,62 @@
       ]
     },
     {
+      "projectID": null,
+      "fileID": null,
+      "sourceSha1": "66702459c2a87b9943af3347c4df1ae6ff14c897",
+      "source": {
+        "provider": "modrinth",
+        "projectId": "ZvaHbwoZ",
+        "versionId": "AzKubcBR",
+        "projectUrl": "https://modrinth.com/mod/ZvaHbwoZ",
+        "downloadUrl": "https://cdn.modrinth.com/data/ZvaHbwoZ/versions/AzKubcBR/BetterPingDisplay-1.21.1-1.1.jar",
+        "metadataUrl": "https://api.modrinth.com/v2/version/AzKubcBR",
+        "curseforgeMappingStatus": "pending official App resolution"
+      },
+      "cfRequiredProjects": [],
+      "filename": "BetterPingDisplay-1.21.1-1.1.jar",
+      "bytes": 13871,
+      "sha256": "f8388de4831ca70f3e94d98d4655278b514f8589234fa92df0d6b2ff1dff321b",
+      "metadata": {
+        "mods": [
+          {
+            "id": "betterpingdisplay",
+            "version": "1.1",
+            "name": "Better Ping Display"
+          }
+        ],
+        "dependencies": [
+          {
+            "owner": "betterpingdisplay",
+            "id": "neoforge",
+            "required": true,
+            "type": "required",
+            "range": "[21.1.0,)",
+            "side": "client"
+          },
+          {
+            "owner": "betterpingdisplay",
+            "id": "minecraft",
+            "required": true,
+            "type": "required",
+            "range": "[1.21.1, 1.22)",
+            "side": "client"
+          }
+        ],
+        "license": "MIT",
+        "embedded": []
+      },
+      "side": "client",
+      "selectionReason": "selected",
+      "roles": [
+        {
+          "modId": "betterpingdisplay",
+          "category": "qol",
+          "role": "Read numerical latency in the player list"
+        }
+      ]
+    },
+    {
       "filename": "bookshelf-neoforge-1.21.1-21.1.81.jar",
       "bytes": 328813,
       "projectID": 228525,
@@ -1192,12 +1705,171 @@
       "cfRequiredProjects": [],
       "side": "both",
       "sha256": "19e88d40da2b6a114c2b808f7fb469d96e66a5379df0a8a43fcb7834498b3e76",
-      "selectionReason": "required by enchdesc (both)",
+      "selectionReason": "required by botanypots (both)",
       "roles": [
         {
           "modId": "bookshelf",
           "category": "dependency",
-          "role": "Required support for required by enchdesc (both)"
+          "role": "Required support for required by botanypots (both)"
+        }
+      ]
+    },
+    {
+      "filename": "botanypots-neoforge-1.21.1-21.1.44.jar",
+      "bytes": 1068816,
+      "projectID": 353928,
+      "fileID": 8243851,
+      "sourceSha1": "fcb58dfa5f52819c85da40025fa50d0ddccbbb47",
+      "source": {
+        "provider": "curseforge",
+        "projectUrl": "https://www.curseforge.com/minecraft/mc-mods/botany-pots",
+        "downloadUrl": "https://edge.forgecdn.net/files/8243/851/botanypots-neoforge-1.21.1-21.1.44.jar",
+        "allowModDistribution": true
+      },
+      "metadata": {
+        "mods": [
+          {
+            "id": "botanypots",
+            "version": "21.1.44",
+            "name": "BotanyPots"
+          }
+        ],
+        "dependencies": [
+          {
+            "owner": "botanypots",
+            "id": "neoforge",
+            "required": true,
+            "type": "required",
+            "range": "[21.1.209,)",
+            "side": "both"
+          },
+          {
+            "owner": "botanypots",
+            "id": "minecraft",
+            "required": true,
+            "type": "required",
+            "range": "[1.21.1, 1.22)",
+            "side": "both"
+          },
+          {
+            "owner": "botanypots",
+            "id": "bookshelf",
+            "required": true,
+            "type": "required",
+            "range": "[21.1.75, 21.2)",
+            "side": "both"
+          },
+          {
+            "owner": "botanypots",
+            "id": "prickle",
+            "required": true,
+            "type": "required",
+            "range": "[21.1, 21.2)",
+            "side": "both"
+          }
+        ],
+        "license": "LGPL v2.1",
+        "embedded": []
+      },
+      "cfRequiredProjects": [
+        1023259,
+        228525
+      ],
+      "side": "both",
+      "sha256": "45b23ac195511f724f62ab5f0c2d7a1c2c2403ff324a7403a1142e28a7d65edd",
+      "selectionReason": "selected",
+      "roles": [
+        {
+          "modId": "botanypots",
+          "category": "content",
+          "act": "I",
+          "role": "Compact food and botanical cultivation",
+          "integration": "Provision kitchens and expeditions; hopper acquisition in act II",
+          "status": "planned-not-yet-balanced"
+        }
+      ]
+    },
+    {
+      "filename": "botanypotstiers-neoforge-1.21.1-7.0.11.jar",
+      "bytes": 1550980,
+      "projectID": 526754,
+      "fileID": 7878798,
+      "sourceSha1": "005b8fffd048dd9cde902b127b7d2ed104634806",
+      "source": {
+        "provider": "curseforge",
+        "projectUrl": "https://www.curseforge.com/minecraft/mc-mods/botany-pots-tiers",
+        "downloadUrl": "https://edge.forgecdn.net/files/7878/798/botanypotstiers-neoforge-1.21.1-7.0.11.jar",
+        "allowModDistribution": true
+      },
+      "metadata": {
+        "mods": [
+          {
+            "id": "botanypotstiers",
+            "version": "7.0.11",
+            "name": "BotanyPotsTiers"
+          }
+        ],
+        "dependencies": [
+          {
+            "owner": "botanypotstiers",
+            "id": "neoforge",
+            "required": true,
+            "type": "required",
+            "range": "[21.1.209,)",
+            "side": "both"
+          },
+          {
+            "owner": "botanypotstiers",
+            "id": "minecraft",
+            "required": true,
+            "type": "required",
+            "range": "[1.21.1, 1.22)",
+            "side": "both"
+          },
+          {
+            "owner": "botanypotstiers",
+            "id": "botanypots",
+            "required": true,
+            "type": "required",
+            "range": "[21.1.41,)",
+            "side": "both"
+          },
+          {
+            "owner": "botanypotstiers",
+            "id": "bookshelf",
+            "required": true,
+            "type": "required",
+            "range": "[21.1.75, 21.2)",
+            "side": "both"
+          },
+          {
+            "owner": "botanypotstiers",
+            "id": "prickle",
+            "required": true,
+            "type": "required",
+            "range": "[21.1, 21.2)",
+            "side": "both"
+          }
+        ],
+        "license": "LGPL v2.1",
+        "embedded": []
+      },
+      "cfRequiredProjects": [
+        228525,
+        1023259,
+        353928
+      ],
+      "side": "both",
+      "sha256": "2b7e569b7f095d9c72653e9f37b06558afe136fd6ef4afe2c524a2927147af35",
+      "selectionReason": "selected",
+      "roles": [
+        {
+          "modId": "botanypotstiers",
+          "category": "content",
+          "act": "III",
+          "role": "Tiered compact cultivation",
+          "integration": "Scale botanical supply with staged acquisition and measured throughput",
+          "status": "planned-not-yet-balanced"
         }
       ]
     },
@@ -1337,6 +2009,118 @@
       ]
     },
     {
+      "projectID": null,
+      "fileID": null,
+      "sourceSha1": "536b2af675229d2a33eb4cf5afbe7148a62d5f3f",
+      "source": {
+        "provider": "modrinth",
+        "projectId": "Wb5oqrBJ",
+        "versionId": "ZPylso9i",
+        "projectUrl": "https://modrinth.com/mod/Wb5oqrBJ",
+        "downloadUrl": "https://cdn.modrinth.com/data/Wb5oqrBJ/versions/ZPylso9i/chat_heads-0.15.7-neoforge-1.21.jar",
+        "metadataUrl": "https://api.modrinth.com/v2/version/ZPylso9i",
+        "curseforgeMappingStatus": "pending official App resolution"
+      },
+      "cfRequiredProjects": [],
+      "filename": "chat_heads-0.15.7-neoforge-1.21.jar",
+      "bytes": 91948,
+      "sha256": "02e10437ceeed34e14e0efe206204658e4b8aa8ee7df10f2a9e28ac20f1b0391",
+      "metadata": {
+        "mods": [
+          {
+            "id": "chat_heads",
+            "version": "0.15.7",
+            "name": "Chat Heads"
+          }
+        ],
+        "dependencies": [
+          {
+            "owner": "chat_heads",
+            "id": "neoforge",
+            "required": true,
+            "type": "",
+            "range": "[21.0.110-beta,)",
+            "side": "client"
+          },
+          {
+            "owner": "chat_heads",
+            "id": "minecraft",
+            "required": true,
+            "type": "",
+            "range": "[1.21, 1.21.1]",
+            "side": "client"
+          }
+        ],
+        "license": "MPL-2.0",
+        "embedded": []
+      },
+      "side": "client",
+      "selectionReason": "selected",
+      "roles": [
+        {
+          "modId": "chat_heads",
+          "category": "qol",
+          "role": "Identify cooperative chat speakers"
+        }
+      ]
+    },
+    {
+      "projectID": null,
+      "fileID": null,
+      "sourceSha1": "aefc8c79ba62606a71f509a9b3c881f3fc4cad5c",
+      "source": {
+        "provider": "modrinth",
+        "projectId": "3azQ6p0W",
+        "versionId": "o5lwJaRU",
+        "projectUrl": "https://modrinth.com/mod/3azQ6p0W",
+        "downloadUrl": "https://cdn.modrinth.com/data/3azQ6p0W/versions/o5lwJaRU/cherishedworlds-neoforge-10.1.1%2B1.21.1.jar",
+        "metadataUrl": "https://api.modrinth.com/v2/version/o5lwJaRU",
+        "curseforgeMappingStatus": "pending official App resolution"
+      },
+      "cfRequiredProjects": [],
+      "filename": "cherishedworlds-neoforge-10.1.1+1.21.1.jar",
+      "bytes": 61728,
+      "sha256": "73a352263e4d21dc4eaa9d52b31f949b896c507aec373e4218b0942fff8f73a3",
+      "metadata": {
+        "mods": [
+          {
+            "id": "cherishedworlds",
+            "version": "10.1.1+1.21.1",
+            "name": "Cherished Worlds"
+          }
+        ],
+        "dependencies": [
+          {
+            "owner": "cherishedworlds",
+            "id": "neoforge",
+            "required": true,
+            "type": "required",
+            "range": "[21,)",
+            "side": "both"
+          },
+          {
+            "owner": "cherishedworlds",
+            "id": "minecraft",
+            "required": true,
+            "type": "required",
+            "range": "[1.21, 1.22)",
+            "side": "both"
+          }
+        ],
+        "license": "LGPL-3.0-or-later",
+        "embedded": []
+      },
+      "side": "client",
+      "selectionReason": "selected",
+      "roles": [
+        {
+          "modId": "cherishedworlds",
+          "category": "qol",
+          "role": "Favorite worlds and protect them from accidental deletion"
+        }
+      ]
+    },
+    {
       "filename": "chipped-neoforge-1.21.1-4.0.2.jar",
       "bytes": 15020578,
       "projectID": 456956,
@@ -1416,6 +2200,59 @@
           "role": "Architectural materials",
           "integration": "Express each reconstructed settlement identity",
           "status": "planned-not-yet-balanced"
+        }
+      ]
+    },
+    {
+      "filename": "cleanswing-1.9.jar",
+      "bytes": 8449,
+      "projectID": 915308,
+      "fileID": 6153780,
+      "sourceSha1": "c4746d331a9a73158da1c330f0d46ce8714ce5d8",
+      "source": {
+        "provider": "curseforge",
+        "projectUrl": "https://www.curseforge.com/minecraft/mc-mods/clean-swing-through-grass",
+        "downloadUrl": "https://edge.forgecdn.net/files/6153/780/cleanswing-1.9.jar",
+        "allowModDistribution": true
+      },
+      "metadata": {
+        "mods": [
+          {
+            "id": "cleanswing",
+            "version": "1.9",
+            "name": "Clean Swing"
+          }
+        ],
+        "dependencies": [
+          {
+            "owner": "cleanswing",
+            "id": "neoforge",
+            "required": true,
+            "type": "required",
+            "range": "[21.0.40-beta,)",
+            "side": "both"
+          },
+          {
+            "owner": "cleanswing",
+            "id": "minecraft",
+            "required": true,
+            "type": "required",
+            "range": "[1.21,1.21z)",
+            "side": "both"
+          }
+        ],
+        "license": "All Rights Reserved",
+        "embedded": []
+      },
+      "cfRequiredProjects": [],
+      "side": "both",
+      "sha256": "b86e69372a3451a09c1b5d09d69f2e20485c6d2aa62fa8a538ef77509a5f5595",
+      "selectionReason": "selected",
+      "roles": [
+        {
+          "modId": "cleanswing",
+          "category": "qol",
+          "role": "Attack entities through replaceable grass without changing damage"
         }
       ]
     },
@@ -1854,6 +2691,59 @@
           "modId": "cosmeticarmorreworked",
           "category": "qol",
           "role": "Keep character appearance while upgrading equipment"
+        }
+      ]
+    },
+    {
+      "filename": "crafting_on_a_stick-1.21.0.6.jar",
+      "bytes": 78732,
+      "projectID": 577850,
+      "fileID": 8382581,
+      "sourceSha1": "1ba14315b4d13e3720d6317b399426343f9b05cd",
+      "source": {
+        "provider": "curseforge",
+        "projectUrl": "https://www.curseforge.com/minecraft/mc-mods/crafting-on-a-stick",
+        "downloadUrl": "https://edge.forgecdn.net/files/8382/581/crafting_on_a_stick-1.21.0.6.jar",
+        "allowModDistribution": true
+      },
+      "metadata": {
+        "mods": [
+          {
+            "id": "crafting_on_a_stick",
+            "version": "1.21.0.6",
+            "name": "Crafting On A Stick"
+          }
+        ],
+        "dependencies": [
+          {
+            "owner": "crafting_on_a_stick",
+            "id": "neoforge",
+            "required": true,
+            "type": "required",
+            "range": "[21.0.0-beta,)",
+            "side": "both"
+          },
+          {
+            "owner": "crafting_on_a_stick",
+            "id": "minecraft",
+            "required": true,
+            "type": "required",
+            "range": "[1.21,1.21.2)",
+            "side": "both"
+          }
+        ],
+        "license": "GNU GENERAL PUBLIC LICENSE",
+        "embedded": []
+      },
+      "cfRequiredProjects": [],
+      "side": "both",
+      "sha256": "dc90054bc50fcf4680e33e1515629e2c92508c04d5594afd0eeb08777ad5c9b7",
+      "selectionReason": "selected",
+      "roles": [
+        {
+          "modId": "crafting_on_a_stick",
+          "category": "qol",
+          "role": "Portable vanilla workstations with native costs"
         }
       ]
     },
@@ -2316,6 +3206,79 @@
       ]
     },
     {
+      "filename": "drippyloadingscreen_neoforge_3.1.5_MC_1.21.1.jar",
+      "bytes": 168632,
+      "projectID": 511770,
+      "fileID": 8552907,
+      "sourceSha1": "9d27991a7f5a551265692abf8ed40ece10ea1958",
+      "source": {
+        "provider": "curseforge",
+        "projectUrl": "https://www.curseforge.com/minecraft/mc-mods/drippy-loading-screen",
+        "downloadUrl": "https://edge.forgecdn.net/files/8552/907/drippyloadingscreen_neoforge_3.1.5_MC_1.21.1.jar",
+        "allowModDistribution": true
+      },
+      "metadata": {
+        "mods": [
+          {
+            "id": "drippyloadingscreen",
+            "version": "3.1.5",
+            "name": "Drippy Loading Screen"
+          }
+        ],
+        "dependencies": [
+          {
+            "owner": "drippyloadingscreen",
+            "id": "konkrete",
+            "required": true,
+            "type": "required",
+            "range": "[1.9.0,)",
+            "side": "both"
+          },
+          {
+            "owner": "drippyloadingscreen",
+            "id": "fancymenu",
+            "required": true,
+            "type": "required",
+            "range": "[3.9.9,)",
+            "side": "both"
+          },
+          {
+            "owner": "drippyloadingscreen",
+            "id": "neoforge",
+            "required": true,
+            "type": "required",
+            "range": "[21.1.47,)",
+            "side": "both"
+          },
+          {
+            "owner": "drippyloadingscreen",
+            "id": "minecraft",
+            "required": true,
+            "type": "required",
+            "range": "[1.21.1,)",
+            "side": "both"
+          }
+        ],
+        "license": "DSMSLv3.1 (DON'T SNATCH MA STUFF LICENSE v3.1)",
+        "embedded": []
+      },
+      "cfRequiredProjects": [
+        938643,
+        367706,
+        410295
+      ],
+      "side": "client",
+      "sha256": "f1fcb6cf3cbc7a6055fed0912bf284a7c455a0830de42460943fc5e130072759",
+      "selectionReason": "selected",
+      "roles": [
+        {
+          "modId": "drippyloadingscreen",
+          "category": "infrastructure",
+          "role": "Required support for selected"
+        }
+      ]
+    },
+    {
       "filename": "emi-1.1.24+1.21.1+neoforge.jar",
       "bytes": 1111538,
       "projectID": 580555,
@@ -2339,7 +3302,7 @@
           {
             "owner": "emi",
             "id": "neoforge",
-            "required": false,
+            "required": true,
             "type": "REQUIRED",
             "range": "[20.4.72-beta,)",
             "side": "both"
@@ -2590,6 +3553,161 @@
           "modId": "explorerscompass",
           "category": "qol",
           "role": "Locate exploration destinations with balanced search configuration"
+        }
+      ]
+    },
+    {
+      "filename": "ExtendedAE-1.21-2.2.35-neoforge.jar",
+      "bytes": 5578031,
+      "projectID": 892005,
+      "fileID": 8511901,
+      "sourceSha1": "e3521ca2567fabe0f0131cc923ec94dd99d6fa7b",
+      "source": {
+        "provider": "curseforge",
+        "projectUrl": "https://www.curseforge.com/minecraft/mc-mods/ex-pattern-provider",
+        "downloadUrl": "https://edge.forgecdn.net/files/8511/901/ExtendedAE-1.21-2.2.35-neoforge.jar",
+        "allowModDistribution": true
+      },
+      "metadata": {
+        "mods": [
+          {
+            "id": "extendedae",
+            "version": "1.21-2.2.35-neoforge",
+            "name": "ExtendedAE"
+          }
+        ],
+        "dependencies": [
+          {
+            "owner": "extendedae",
+            "id": "neoforge",
+            "required": true,
+            "type": "REQUIRED",
+            "range": "[21.1.194,)",
+            "side": "both"
+          },
+          {
+            "owner": "extendedae",
+            "id": "minecraft",
+            "required": true,
+            "type": "REQUIRED",
+            "range": "[1.21.1,)",
+            "side": "both"
+          },
+          {
+            "owner": "extendedae",
+            "id": "ae2",
+            "required": true,
+            "type": "REQUIRED",
+            "range": "[19.2.8,)",
+            "side": "both"
+          },
+          {
+            "owner": "extendedae",
+            "id": "guideme",
+            "required": true,
+            "type": "REQUIRED",
+            "range": "*",
+            "side": "both"
+          },
+          {
+            "owner": "extendedae",
+            "id": "glodium",
+            "required": true,
+            "type": "REQUIRED",
+            "range": "[1.21-2.0-neoforge,)",
+            "side": "both"
+          },
+          {
+            "owner": "extendedae",
+            "id": "ae2wtlib_api",
+            "required": true,
+            "type": "REQUIRED",
+            "range": "*",
+            "side": "both"
+          },
+          {
+            "owner": "extendedae",
+            "id": "ae2wtlib",
+            "required": false,
+            "type": "OPTIONAL",
+            "range": "[19.2.0,)",
+            "side": "both"
+          }
+        ],
+        "license": "LGPL-3.0",
+        "embedded": [
+          {
+            "path": "META-INF/jarjar/ae2wtlib_api-19.2.0.jar",
+            "artifact": {
+              "group": "de.mari_023",
+              "artifact": "ae2wtlib_api"
+            },
+            "version": {
+              "range": "[19.2.0,)",
+              "artifactVersion": "19.2.0"
+            },
+            "mods": [
+              {
+                "id": "ae2wtlib_api",
+                "version": "19.2.0",
+                "name": "AE2WTLib API"
+              }
+            ],
+            "dependencies": [
+              {
+                "owner": "ae2wtlib_api",
+                "id": "neoforge",
+                "required": true,
+                "type": "REQUIRED",
+                "range": "*",
+                "side": "both"
+              },
+              {
+                "owner": "ae2wtlib_api",
+                "id": "minecraft",
+                "required": true,
+                "type": "REQUIRED",
+                "range": "*",
+                "side": "both"
+              },
+              {
+                "owner": "ae2wtlib_api",
+                "id": "ae2",
+                "required": true,
+                "type": "REQUIRED",
+                "range": "[19.1.2-beta,20.0.0)",
+                "side": "both"
+              },
+              {
+                "owner": "ae2wtlib",
+                "id": "ae2wtlib",
+                "required": false,
+                "type": "INCOMPATIBLE",
+                "range": "(,19.1.0-alpha)",
+                "side": "both"
+              }
+            ],
+            "license": "MIT",
+            "embedded": []
+          }
+        ]
+      },
+      "cfRequiredProjects": [
+        223794,
+        1173950,
+        957920
+      ],
+      "side": "both",
+      "sha256": "14a2860fa2c747e9dda2279b8933fac6311fecfee166c765171022b902591c65",
+      "selectionReason": "selected",
+      "roles": [
+        {
+          "modId": "extendedae",
+          "category": "content",
+          "act": "III",
+          "role": "Expanded pattern handling and machines",
+          "integration": "Scale Atlas component workshops; assembler matrix in act V",
+          "status": "planned-not-yet-balanced"
         }
       ]
     },
@@ -3877,12 +4995,65 @@
       "cfRequiredProjects": [],
       "side": "both",
       "sha256": "5e548466af9ab6aca7a91a7c7d4dc0dc8bc385e22958aed5da0e7bebd0fa3fba",
-      "selectionReason": "required by ars_nouveau (both)",
+      "selectionReason": "required by advanced_ae (both)",
       "roles": [
         {
           "modId": "geckolib",
           "category": "dependency",
-          "role": "Required support for required by ars_nouveau (both)"
+          "role": "Required support for required by advanced_ae (both)"
+        }
+      ]
+    },
+    {
+      "filename": "Glodium-1.21-2.2-neoforge.jar",
+      "bytes": 61377,
+      "projectID": 957920,
+      "fileID": 5821676,
+      "sourceSha1": "9f61a3162665ad0b37f6f268339ac98097af1a87",
+      "source": {
+        "provider": "curseforge",
+        "projectUrl": "https://www.curseforge.com/minecraft/mc-mods/glodium",
+        "downloadUrl": "https://edge.forgecdn.net/files/5821/676/Glodium-1.21-2.2-neoforge.jar",
+        "allowModDistribution": true
+      },
+      "metadata": {
+        "mods": [
+          {
+            "id": "glodium",
+            "version": "1.21-2.2-neoforge",
+            "name": "Glodium"
+          }
+        ],
+        "dependencies": [
+          {
+            "owner": "glodium",
+            "id": "neoforge",
+            "required": true,
+            "type": "REQUIRED",
+            "range": "[21.1.1,)",
+            "side": "both"
+          },
+          {
+            "owner": "glodium",
+            "id": "minecraft",
+            "required": true,
+            "type": "REQUIRED",
+            "range": "[1.21.1,)",
+            "side": "both"
+          }
+        ],
+        "license": "MIT",
+        "embedded": []
+      },
+      "cfRequiredProjects": [],
+      "side": "both",
+      "sha256": "369e99753df0bdc90a38a8c52df4abb37baf6b18c6ca130af4c7bc75fb160a85",
+      "selectionReason": "required by extendedae (both)",
+      "roles": [
+        {
+          "modId": "glodium",
+          "category": "dependency",
+          "role": "Required support for required by extendedae (both)"
         }
       ]
     },
@@ -3910,7 +5081,7 @@
           {
             "owner": "guideme",
             "id": "neoforge",
-            "required": false,
+            "required": true,
             "type": "REQUIRED",
             "range": "[21.1.1,)",
             "side": "both"
@@ -3918,7 +5089,7 @@
           {
             "owner": "guideme",
             "id": "minecraft",
-            "required": false,
+            "required": true,
             "type": "REQUIRED",
             "range": "[1.21.1]",
             "side": "both"
@@ -3930,12 +5101,12 @@
       "cfRequiredProjects": [],
       "side": "both",
       "sha256": "d012aca7275e2186aa223bf180b643164e5360d6433385fb12951f369f0b8c84",
-      "selectionReason": "CF required project of ae2",
+      "selectionReason": "required by ae2 (both)",
       "roles": [
         {
           "modId": "guideme",
           "category": "dependency",
-          "role": "Required support for CF required project of ae2"
+          "role": "Required support for required by ae2 (both)"
         }
       ]
     },
@@ -4555,6 +5726,70 @@
       ]
     },
     {
+      "filename": "jamd-neo-21.1.1+mc1.21.1.jar",
+      "bytes": 76922,
+      "projectID": 422981,
+      "fileID": 6280200,
+      "sourceSha1": null,
+      "source": {
+        "provider": "curseforge",
+        "projectUrl": "https://www.curseforge.com/minecraft/mc-mods/jamd",
+        "downloadUrl": "https://edge.forgecdn.net/files/6280/200/jamd-neo-21.1.1%2Bmc1.21.1.jar",
+        "allowModDistribution": null
+      },
+      "metadata": {
+        "mods": [
+          {
+            "id": "jamd",
+            "version": "21.1.1",
+            "name": "Just Another Mining Dimension"
+          }
+        ],
+        "dependencies": [
+          {
+            "owner": "jamd",
+            "id": "neoforge",
+            "required": true,
+            "type": "",
+            "range": "[1.0,)",
+            "side": "both"
+          },
+          {
+            "owner": "jamd",
+            "id": "minecraft",
+            "required": true,
+            "type": "",
+            "range": "[1.21.1]",
+            "side": "both"
+          },
+          {
+            "owner": "jamd",
+            "id": "trenzalore",
+            "required": true,
+            "type": "",
+            "range": "[6.1.0,)",
+            "side": "both"
+          }
+        ],
+        "license": "All Rights Reserved unless stated otherwise. Distribution permission is given to FeedTheBeast and CurseForge for use in modpacks",
+        "embedded": []
+      },
+      "cfRequiredProjects": [],
+      "side": "both",
+      "sha256": "740bc6d99eeb34286bdb64af4842c08dfd7358501b03923491a128a2b3ad089b",
+      "selectionReason": "selected",
+      "roles": [
+        {
+          "modId": "jamd",
+          "category": "content",
+          "act": "II",
+          "role": "Separate mining dimension",
+          "integration": "Supply reconstruction stone and ores without excavating inhabited landscapes",
+          "status": "planned-not-yet-balanced"
+        }
+      ]
+    },
+    {
       "filename": "jearchaeology-1.21.1-1.2.0.jar",
       "bytes": 53509,
       "projectID": 890755,
@@ -4954,7 +6189,7 @@
           {
             "owner": "justenoughprofessions",
             "id": "jei",
-            "required": false,
+            "required": true,
             "type": "REQUIRED",
             "range": "[19.3.1.22,)",
             "side": "both"
@@ -4962,7 +6197,7 @@
           {
             "owner": "justenoughprofessions",
             "id": "neoforge",
-            "required": false,
+            "required": true,
             "type": "REQUIRED",
             "range": "[21.0.76-beta,)",
             "side": "both"
@@ -4970,7 +6205,7 @@
           {
             "owner": "justenoughprofessions",
             "id": "minecraft",
-            "required": false,
+            "required": true,
             "type": "REQUIRED",
             "range": "[1.21,1.22)",
             "side": "both"
@@ -5100,12 +6335,12 @@
       "cfRequiredProjects": [],
       "side": "client",
       "sha256": "791c5538751dd3015ef3a2ce92d98719e1a28a48ebbd817b78506771256654cd",
-      "selectionReason": "required by fancymenu (both)",
+      "selectionReason": "required by drippyloadingscreen (both)",
       "roles": [
         {
           "modId": "konkrete",
           "category": "dependency",
-          "role": "Required support for required by fancymenu (both)"
+          "role": "Required support for required by drippyloadingscreen (both)"
         }
       ]
     },
@@ -5509,6 +6744,56 @@
       ]
     },
     {
+      "filename": "megacells-4.11.0.jar",
+      "bytes": 1137276,
+      "projectID": 622112,
+      "fileID": 7952621,
+      "sourceSha1": "f0b1a44bf30c8a9e14e2fa7fce37360191aa55e8",
+      "source": {
+        "provider": "curseforge",
+        "projectUrl": "https://www.curseforge.com/minecraft/mc-mods/mega-cells",
+        "downloadUrl": "https://edge.forgecdn.net/files/7952/621/megacells-4.11.0.jar",
+        "allowModDistribution": true
+      },
+      "metadata": {
+        "mods": [
+          {
+            "id": "megacells",
+            "version": "4.11.0",
+            "name": "MEGA Cells"
+          }
+        ],
+        "dependencies": [
+          {
+            "owner": "megacells",
+            "id": "ae2",
+            "required": true,
+            "type": "",
+            "range": "[19.2.15,)",
+            "side": "both"
+          }
+        ],
+        "license": "LGPLv3.0",
+        "embedded": []
+      },
+      "cfRequiredProjects": [
+        223794
+      ],
+      "side": "both",
+      "sha256": "a386bbf12afb11729b0dcf77f64221893d250f22e6185a4d728b9799b230bc55",
+      "selectionReason": "selected",
+      "roles": [
+        {
+          "modId": "megacells",
+          "category": "content",
+          "act": "IV",
+          "role": "High capacity cells and crafting CPUs",
+          "integration": "Consolidate advanced production with chemical cell integration",
+          "status": "planned-not-yet-balanced"
+        }
+      ]
+    },
+    {
       "filename": "Mekanism-1.21.1-10.7.19.85.jar",
       "bytes": 11976009,
       "projectID": 268560,
@@ -5613,6 +6898,78 @@
       ]
     },
     {
+      "filename": "mekanism_extras-1.21.1-1.4.1.jar",
+      "bytes": 2517133,
+      "projectID": 1026040,
+      "fileID": 8677677,
+      "sourceSha1": null,
+      "source": {
+        "provider": "curseforge",
+        "projectUrl": "https://www.curseforge.com/minecraft/mc-mods/mekanism-extras",
+        "downloadUrl": "https://edge.forgecdn.net/files/8677/677/mekanism_extras-1.21.1-1.4.1.jar",
+        "allowModDistribution": null
+      },
+      "metadata": {
+        "mods": [
+          {
+            "id": "mekanism_extras",
+            "version": "1.4.1",
+            "name": "MekanismExtras"
+          }
+        ],
+        "dependencies": [
+          {
+            "owner": "mekanism_extras",
+            "id": "neoforge",
+            "required": true,
+            "type": "required",
+            "range": "[21.1,)",
+            "side": "both"
+          },
+          {
+            "owner": "mekanism_extras",
+            "id": "minecraft",
+            "required": true,
+            "type": "required",
+            "range": "[1.21, 1.21.1]",
+            "side": "both"
+          },
+          {
+            "owner": "mekanism_extras",
+            "id": "mekanism",
+            "required": true,
+            "type": "required",
+            "range": "[10.7.19,)",
+            "side": "both"
+          },
+          {
+            "owner": "mekanism_extras",
+            "id": "mekmm",
+            "required": false,
+            "type": "optional",
+            "range": "[1.4.0,)",
+            "side": "both"
+          }
+        ],
+        "license": "MIT",
+        "embedded": []
+      },
+      "cfRequiredProjects": [],
+      "side": "both",
+      "sha256": "7138aa6530cc184ef6838b02ec7138491907c045e870507bf11ae58cc4c70541",
+      "selectionReason": "selected",
+      "roles": [
+        {
+          "modId": "mekanism_extras",
+          "category": "content",
+          "act": "V",
+          "role": "Advanced factories and transport tiers",
+          "integration": "Compact industrial Ark production; maximum tiers in VI",
+          "status": "planned-not-yet-balanced"
+        }
+      ]
+    },
+    {
       "filename": "MekanismGenerators-1.21.1-10.7.19.85.jar",
       "bytes": 1114598,
       "projectID": 268566,
@@ -5663,6 +7020,78 @@
       ]
     },
     {
+      "filename": "mekmm-1.21.1-1.4.1.jar",
+      "bytes": 3659440,
+      "projectID": 1275257,
+      "fileID": 8724947,
+      "sourceSha1": null,
+      "source": {
+        "provider": "curseforge",
+        "projectUrl": "https://www.curseforge.com/minecraft/mc-mods/mekanism-more-machine",
+        "downloadUrl": "https://edge.forgecdn.net/files/8724/947/mekmm-1.21.1-1.4.1.jar",
+        "allowModDistribution": null
+      },
+      "metadata": {
+        "mods": [
+          {
+            "id": "mekmm",
+            "version": "1.4.1",
+            "name": "Mekanism: MoreMachine"
+          }
+        ],
+        "dependencies": [
+          {
+            "owner": "mekmm",
+            "id": "neoforge",
+            "required": true,
+            "type": "required",
+            "range": "[21.1,)",
+            "side": "both"
+          },
+          {
+            "owner": "mekmm",
+            "id": "minecraft",
+            "required": true,
+            "type": "required",
+            "range": "[1.21, 1.21.1]",
+            "side": "both"
+          },
+          {
+            "owner": "mekmm",
+            "id": "mekanism",
+            "required": true,
+            "type": "required",
+            "range": "[10.7.19,)",
+            "side": "both"
+          },
+          {
+            "owner": "mekmm",
+            "id": "evolvedmekanism",
+            "required": false,
+            "type": "optional",
+            "range": "",
+            "side": "both"
+          }
+        ],
+        "license": "MIT",
+        "embedded": []
+      },
+      "cfRequiredProjects": [],
+      "side": "both",
+      "sha256": "58d4eb5630c179f54cea6c91180eb4c1ba27f70ef2417d73d78be76061791219",
+      "selectionReason": "selected",
+      "roles": [
+        {
+          "modId": "mekmm",
+          "category": "content",
+          "act": "III-V",
+          "role": "Additional chemical processing factories",
+          "integration": "Staged factory acquisition; replication disabled by replacing data maps and recipe removals; runtime balance audit required",
+          "status": "planned-not-yet-balanced"
+        }
+      ]
+    },
+    {
       "filename": "melody_neoforge_1.0.10_MC_1.21.jar",
       "bytes": 36096,
       "projectID": 938643,
@@ -5706,12 +7135,12 @@
       "cfRequiredProjects": [],
       "side": "client",
       "sha256": "6b973a4564703c531fc0eae09db08b07a38091e0a743c687b8d2049457e84871",
-      "selectionReason": "required by fancymenu (client)",
+      "selectionReason": "CF required project of drippyloadingscreen",
       "roles": [
         {
           "modId": "melody",
           "category": "dependency",
-          "role": "Required support for required by fancymenu (client)"
+          "role": "Required support for CF required project of drippyloadingscreen"
         }
       ]
     },
@@ -5935,6 +7364,89 @@
           "act": "III",
           "role": "Compact item automation",
           "integration": "Reduce entity-heavy automation in reconstruction projects",
+          "status": "planned-not-yet-balanced"
+        }
+      ]
+    },
+    {
+      "filename": "ModularBees-1.21.1-3.4-neoforge.jar",
+      "bytes": 575830,
+      "projectID": 1350380,
+      "fileID": 8705124,
+      "sourceSha1": "22751f006a5608cd03b52a3b5faab992880e18fd",
+      "source": {
+        "provider": "curseforge",
+        "projectUrl": "https://www.curseforge.com/minecraft/mc-mods/modular-bees",
+        "downloadUrl": "https://edge.forgecdn.net/files/8705/124/ModularBees-1.21.1-3.4-neoforge.jar",
+        "allowModDistribution": true
+      },
+      "metadata": {
+        "mods": [
+          {
+            "id": "modularbees",
+            "version": "1.21.1-3.4-neoforge",
+            "name": "ModularBees"
+          }
+        ],
+        "dependencies": [
+          {
+            "owner": "modularbees",
+            "id": "neoforge",
+            "required": true,
+            "type": "REQUIRED",
+            "range": "[21.1.214,)",
+            "side": "both"
+          },
+          {
+            "owner": "modularbees",
+            "id": "minecraft",
+            "required": true,
+            "type": "REQUIRED",
+            "range": "1.21.1",
+            "side": "both"
+          },
+          {
+            "owner": "modularbees",
+            "id": "glodium",
+            "required": true,
+            "type": "REQUIRED",
+            "range": "[1.21-2.0-neoforge,)",
+            "side": "both"
+          },
+          {
+            "owner": "modularbees",
+            "id": "productivebees",
+            "required": true,
+            "type": "REQUIRED",
+            "range": "[1.21.1-13.12.0,)",
+            "side": "both"
+          },
+          {
+            "owner": "modularbees",
+            "id": "kubejs",
+            "required": false,
+            "type": "OPTIONAL",
+            "range": "[2101.7.2,)",
+            "side": "both"
+          }
+        ],
+        "license": "LGPL-3.0",
+        "embedded": []
+      },
+      "cfRequiredProjects": [
+        377897,
+        957920
+      ],
+      "side": "both",
+      "sha256": "4fb53b1dbc345f88f32eaa89711c92a3537337b40390880a57b88429d5453dc8",
+      "selectionReason": "selected",
+      "roles": [
+        {
+          "modId": "modularbees",
+          "category": "content",
+          "act": "IV",
+          "role": "Modular productive apiaries and centrifuges",
+          "integration": "Consolidate bee production for nature and industrial Ark components",
           "status": "planned-not-yet-balanced"
         }
       ]
@@ -6700,7 +8212,7 @@
           {
             "owner": "patchouli",
             "id": "neoforge",
-            "required": false,
+            "required": true,
             "type": "REQUIRED",
             "range": "[21.0.31-beta,)",
             "side": "both"
@@ -6708,7 +8220,7 @@
           {
             "owner": "patchouli",
             "id": "minecraft",
-            "required": false,
+            "required": true,
             "type": "REQUIRED",
             "range": "[1.21.1,1.21.2)",
             "side": "both"
@@ -7211,12 +8723,12 @@
       "cfRequiredProjects": [],
       "side": "both",
       "sha256": "ccf46c442ed3c7fe41ad056f0940560829ec4dd88360985dfacd78f4614eb167",
-      "selectionReason": "required by enchdesc (both)",
+      "selectionReason": "required by botanypots (both)",
       "roles": [
         {
           "modId": "prickle",
           "category": "dependency",
-          "role": "Required support for required by enchdesc (both)"
+          "role": "Required support for required by botanypots (both)"
         }
       ]
     },
@@ -7758,6 +9270,59 @@
           "modId": "smartbrainlib",
           "category": "dependency",
           "role": "Required support for required by occultism (both)"
+        }
+      ]
+    },
+    {
+      "filename": "smithingtemplateviewer-1.0.4.jar",
+      "bytes": 39702,
+      "projectID": 1133580,
+      "fileID": 7452053,
+      "sourceSha1": "4fea33926fafbd59f7434d1e4e64938ddee5d5db",
+      "source": {
+        "provider": "curseforge",
+        "projectUrl": "https://www.curseforge.com/minecraft/mc-mods/smithing-template-viewer",
+        "downloadUrl": "https://edge.forgecdn.net/files/7452/53/smithingtemplateviewer-1.0.4.jar",
+        "allowModDistribution": true
+      },
+      "metadata": {
+        "mods": [
+          {
+            "id": "smithingtemplateviewer",
+            "version": "1.0.4",
+            "name": "SmithingTemplateViewer"
+          }
+        ],
+        "dependencies": [
+          {
+            "owner": "smithingtemplateviewer",
+            "id": "neoforge",
+            "required": true,
+            "type": "required",
+            "range": "[21,)",
+            "side": "both"
+          },
+          {
+            "owner": "smithingtemplateviewer",
+            "id": "minecraft",
+            "required": true,
+            "type": "required",
+            "range": "[1.21.1,1.22)",
+            "side": "both"
+          }
+        ],
+        "license": "MIT",
+        "embedded": []
+      },
+      "cfRequiredProjects": [],
+      "side": "client",
+      "sha256": "ab08b7e4cef635d095d244bae3dffa844b73748efa68450637120f332fc63f9f",
+      "selectionReason": "selected",
+      "roles": [
+        {
+          "modId": "smithingtemplateviewer",
+          "category": "qol",
+          "role": "Preview smithing templates while planning upgrades"
         }
       ]
     },
@@ -9035,6 +10600,59 @@
           "modId": "trashslot",
           "category": "qol",
           "role": "Deliberate inventory disposal"
+        }
+      ]
+    },
+    {
+      "filename": "trenzalore-neo-6.1.1+mc1.21.1.jar",
+      "bytes": 25146,
+      "projectID": 870210,
+      "fileID": 5623160,
+      "sourceSha1": null,
+      "source": {
+        "provider": "curseforge",
+        "projectUrl": "https://www.curseforge.com/minecraft/mc-mods/trenzalore",
+        "downloadUrl": "https://edge.forgecdn.net/files/5623/160/trenzalore-neo-6.1.1%2Bmc1.21.1.jar",
+        "allowModDistribution": null
+      },
+      "metadata": {
+        "mods": [
+          {
+            "id": "trenzalore",
+            "version": "6.1.1",
+            "name": "Trenzalore"
+          }
+        ],
+        "dependencies": [
+          {
+            "owner": "trenzalore",
+            "id": "neoforge",
+            "required": true,
+            "type": "",
+            "range": "[1.0,)",
+            "side": "both"
+          },
+          {
+            "owner": "trenzalore",
+            "id": "minecraft",
+            "required": true,
+            "type": "",
+            "range": "[1.21.1]",
+            "side": "both"
+          }
+        ],
+        "license": "All Rights Reserved unless stated otherwise. Distribution permission is given to FeedTheBeast and CurseForge for use in modpacks",
+        "embedded": []
+      },
+      "cfRequiredProjects": [],
+      "side": "both",
+      "sha256": "ea7212433480a2bb125091a15afa1617761787c09028032ebad436322f340e18",
+      "selectionReason": "required by jamd (both)",
+      "roles": [
+        {
+          "modId": "trenzalore",
+          "category": "dependency",
+          "role": "Required support for required by jamd (both)"
         }
       ]
     },

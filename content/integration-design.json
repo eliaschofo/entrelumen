@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "status": "implementable proposal; not implemented campaign",
+  "status": "Act II recipe slice implemented in source; later campaign projects remain proposals; runtime acceptance pending",
   "platform": {
     "minecraft": "1.21.1",
     "loader": "neoforge-21.1.249"
@@ -18,13 +18,13 @@
   },
   "policies": {
     "gifts": "All components and mod items remain usable, transferable and craftable regardless of campaign. Receiving an item never completes a narrative milestone.",
-    "recipeMechanism": "Register the 16 proposed component items, then implement 22 static shapeless recipes. Expand counts into <=9 occupied crafting slots; native crafting-table and automation support. No custom assembler needed.",
+    "recipeMechanism": "22 static shapeless recipes are exported by tools/generate_integration_recipes.py; source generation is not evidence that all 22 narrative projects are implemented. Counts expand into <=9 occupied crafting slots with native remainders.",
     "progression": "Narrative directed prerequisites are distinct from physical recipe dependencies. Act number means expected acquisition phase, never a use restriction.",
     "failureSafety": "Use native crafting transactions and vanilla container remainder behavior. Narrative delivery records idempotent accomplishment separately and grants no copy of the crafted output. No timer decay or forced chunks.",
     "containers": "Preserve native recipe remainders for consumed soups/stews; verify bowls return normally in crafting and AE2 automation.",
     "decorativeMods": "Optional building exercises with screenshots/manual checkmarks; no mandatory decorative ingredients.",
     "massProduction": "Repeatable static crafting is compatible with ordinary crafting tables and existing autocrafting. No new tick handlers or machine scanning.",
-    "narrativeAcceptance": "A recipe craft or possession is never sufficient to finish a narrative project. Require previous narrative milestones plus the described demonstration/expedition and explicit acceptance. Manual installation exercises must be labelled self-reported, not machine-verified. Gifted prototypes are allowed; no provenance checks."
+    "narrativeAcceptance": "Crafting, possession and gifts never complete a narrative project. Act II requires first_signal and explicit authoritative server delivery consuming one prototype per project; machines remain installed. Tutorial exercises are self-reported, never machine-demo validation. Later-act demonstrations remain proposals, not implemented acceptance. No provenance checks."
   },
   "components": [
     {
@@ -143,13 +143,13 @@
       "id": "entrelumen:precision_bench",
       "act": 2,
       "title": {
-        "en_us": "A Measure of Brass",
-        "es_es": "Una medida de latón"
+        "en_us": "A Measure of Iron",
+        "es_es": "Una medida de hierro"
       },
       "output": {
         "id": "entrelumen:calibration_frame",
         "count": 1,
-        "registration": "proposed new component, must register before recipes"
+        "registration": "Integration recipe output; verify companion registry on the loaded server"
       },
       "recipe": {
         "id": "entrelumen:integration/precision_bench",
@@ -157,7 +157,7 @@
         "representation": "Expand each ingredient count into individual crafting-grid entries; total <=9. Native crafting remainders apply. Static recipe: no team/stage/player predicates.",
         "inputs": [
           {
-            "id": "create:brass_sheet",
+            "id": "create:iron_sheet",
             "count": 2
           },
           {
@@ -174,31 +174,31 @@
         "create",
         "immersiveengineering"
       ],
-      "completion": "Producir 4 marcos con prensa y trefilado; conservar la línea para futuros instrumentos.",
+      "completion": "Entregar explícitamente un prototipo al servidor después de first_signal; se consume sólo ese prototipo. Las máquinas quedan instaladas. Fabricar, poseer o recibir regalos no avanza la historia; los ejercicios del tutorial son autodeclarados.",
       "evidenceRequirements": [
         "loaded item IDs and recipe outputs",
         "survival acquisition without circular dependencies",
         "team delivery idempotency/restart",
         "manual tutorial playthrough"
       ],
-      "status": "design-only",
+      "status": "Act II recipe source implemented; authoritative delivery integration and runtime verification tracked in docs/delivery/act-two",
       "delivery": {
         "count": 1,
-        "consume": false,
-        "purpose": "Non-consuming presentation of a prototype alongside the described project demonstration and narrative prerequisites; never auto-complete from possession/crafting. No duplicate item reward. Installed modules remain blocks."
+        "consume": true,
+        "purpose": "Explicit authoritative server delivery after first_signal consumes one prototype, not installed machines. Supersedes the older non-consuming presentation proposal. No machine-demo or provenance validation; no duplicate reward."
       }
     },
     {
       "id": "entrelumen:crystal_grid",
       "act": 2,
       "title": {
-        "en_us": "Light through Copper",
-        "es_es": "Luz entre cobre"
+        "en_us": "A Crystal Connection",
+        "es_es": "Una conexión de cristal"
       },
       "output": {
         "id": "entrelumen:energy_coupler",
         "count": 1,
-        "registration": "proposed new component, must register before recipes"
+        "registration": "Integration recipe output; verify companion registry on the loaded server"
       },
       "recipe": {
         "id": "entrelumen:integration/crystal_grid",
@@ -210,8 +210,8 @@
             "count": 2
           },
           {
-            "id": "immersiveengineering:component_steel",
-            "count": 2
+            "id": "actuallyadditions:iron_casing",
+            "count": 1
           },
           {
             "id": "create:andesite_alloy",
@@ -221,21 +221,20 @@
       },
       "systems": [
         "actuallyadditions",
-        "immersiveengineering",
         "create"
       ],
-      "completion": "Convertir redstone con láser y abastecer componentes sin destruir instalaciones.",
+      "completion": "Entregar explícitamente un prototipo al servidor después de first_signal; se consume sólo ese prototipo. Las máquinas quedan instaladas. Fabricar, poseer o recibir regalos no avanza la historia; los ejercicios del tutorial son autodeclarados.",
       "evidenceRequirements": [
         "loaded item IDs and recipe outputs",
         "survival acquisition without circular dependencies",
         "team delivery idempotency/restart",
         "manual tutorial playthrough"
       ],
-      "status": "design-only",
+      "status": "Act II recipe source implemented; authoritative delivery integration and runtime verification tracked in docs/delivery/act-two",
       "delivery": {
         "count": 1,
-        "consume": false,
-        "purpose": "Non-consuming presentation of a prototype alongside the described project demonstration and narrative prerequisites; never auto-complete from possession/crafting. No duplicate item reward. Installed modules remain blocks."
+        "consume": true,
+        "purpose": "Explicit authoritative server delivery after first_signal consumes one prototype, not installed machines. Supersedes the older non-consuming presentation proposal. No machine-demo or provenance validation; no duplicate reward."
       }
     },
     {
@@ -248,7 +247,7 @@
       "output": {
         "id": "entrelumen:living_matrix",
         "count": 1,
-        "registration": "proposed new component, must register before recipes"
+        "registration": "Integration recipe output; verify companion registry on the loaded server"
       },
       "recipe": {
         "id": "entrelumen:integration/living_workshop",
@@ -260,7 +259,7 @@
             "count": 2
           },
           {
-            "id": "naturesaura:infused_iron",
+            "id": "ars_nouveau:source_gem",
             "count": 2
           },
           {
@@ -271,20 +270,21 @@
       },
       "systems": [
         "ars_nouveau",
-        "naturesaura"
+        "create",
+        "immersiveengineering"
       ],
-      "completion": "Obtener fibra renovable y hierro infundido; explicar consumo/regeneración de aura.",
+      "completion": "Entregar explícitamente un prototipo al servidor después de first_signal; se consume sólo ese prototipo. Las máquinas quedan instaladas. Fabricar, poseer o recibir regalos no avanza la historia; los ejercicios del tutorial son autodeclarados.",
       "evidenceRequirements": [
         "loaded item IDs and recipe outputs",
         "survival acquisition without circular dependencies",
         "team delivery idempotency/restart",
         "manual tutorial playthrough"
       ],
-      "status": "design-only",
+      "status": "Act II recipe source implemented; authoritative delivery integration and runtime verification tracked in docs/delivery/act-two",
       "delivery": {
         "count": 1,
-        "consume": false,
-        "purpose": "Non-consuming presentation of a prototype alongside the described project demonstration and narrative prerequisites; never auto-complete from possession/crafting. No duplicate item reward. Installed modules remain blocks."
+        "consume": true,
+        "purpose": "Explicit authoritative server delivery after first_signal consumes one prototype, not installed machines. Supersedes the older non-consuming presentation proposal. No machine-demo or provenance validation; no duplicate reward."
       }
     },
     {
@@ -297,7 +297,7 @@
       "output": {
         "id": "entrelumen:ration_bundle",
         "count": 1,
-        "registration": "proposed new component, must register before recipes"
+        "registration": "Integration recipe output; verify companion registry on the loaded server"
       },
       "recipe": {
         "id": "entrelumen:integration/travelling_pantry",
@@ -319,18 +319,18 @@
         "aquaculture",
         "cookingforblockheads"
       ],
-      "completion": "Preparar dos cadenas alimentarias; el componente es provisión de proyectos, no comida con buffs acumulables.",
+      "completion": "Entregar explícitamente un prototipo al servidor después de first_signal; se consume sólo ese prototipo. Las máquinas quedan instaladas. Fabricar, poseer o recibir regalos no avanza la historia; los ejercicios del tutorial son autodeclarados.",
       "evidenceRequirements": [
         "loaded item IDs and recipe outputs",
         "survival acquisition without circular dependencies",
         "team delivery idempotency/restart",
         "manual tutorial playthrough"
       ],
-      "status": "design-only",
+      "status": "Act II recipe source implemented; authoritative delivery integration and runtime verification tracked in docs/delivery/act-two",
       "delivery": {
         "count": 1,
-        "consume": false,
-        "purpose": "Non-consuming presentation of a prototype alongside the described project demonstration and narrative prerequisites; never auto-complete from possession/crafting. No duplicate item reward. Installed modules remain blocks."
+        "consume": true,
+        "purpose": "Explicit authoritative server delivery after first_signal consumes one prototype, not installed machines. Supersedes the older non-consuming presentation proposal. No machine-demo or provenance validation; no duplicate reward."
       }
     },
     {
@@ -343,7 +343,7 @@
       "output": {
         "id": "entrelumen:routing_matrix",
         "count": 1,
-        "registration": "proposed new component, must register before recipes"
+        "registration": "registered companion integration component"
       },
       "recipe": {
         "id": "entrelumen:integration/signal_exchange",
@@ -380,11 +380,11 @@
         "team delivery idempotency/restart",
         "manual tutorial playthrough"
       ],
-      "status": "design-only",
+      "status": "static-recipe-loaded; campaign delivery implemented; ActIII runtime crafting and survival review pending",
       "delivery": {
         "count": 1,
-        "consume": false,
-        "purpose": "Non-consuming presentation of a prototype alongside the described project demonstration and narrative prerequisites; never auto-complete from possession/crafting. No duplicate item reward. Installed modules remain blocks."
+        "consume": true,
+        "purpose": "Explicit Atlas delivery consumes one integration prototype and records the team milestone. It never consumes an installed machine or grants a duplicate item reward. Optional machine demonstrations do not gate gifts."
       }
     },
     {
@@ -397,7 +397,7 @@
       "output": {
         "id": "entrelumen:propagation_core",
         "count": 1,
-        "registration": "proposed new component, must register before recipes"
+        "registration": "registered companion integration component"
       },
       "recipe": {
         "id": "entrelumen:integration/nursery_protocol",
@@ -430,11 +430,11 @@
         "team delivery idempotency/restart",
         "manual tutorial playthrough"
       ],
-      "status": "design-only",
+      "status": "static-recipe-loaded; campaign delivery implemented; ActIII runtime crafting and survival review pending",
       "delivery": {
         "count": 1,
-        "consume": false,
-        "purpose": "Non-consuming presentation of a prototype alongside the described project demonstration and narrative prerequisites; never auto-complete from possession/crafting. No duplicate item reward. Installed modules remain blocks."
+        "consume": true,
+        "purpose": "Explicit Atlas delivery consumes one integration prototype and records the team milestone. It never consumes an installed machine or grants a duplicate item reward. Optional machine demonstrations do not gate gifts."
       }
     },
     {
@@ -447,7 +447,7 @@
       "output": {
         "id": "entrelumen:power_regulator",
         "count": 1,
-        "registration": "proposed new component, must register before recipes"
+        "registration": "registered companion integration component"
       },
       "recipe": {
         "id": "entrelumen:integration/distributed_power",
@@ -480,11 +480,11 @@
         "team delivery idempotency/restart",
         "manual tutorial playthrough"
       ],
-      "status": "design-only",
+      "status": "static-recipe-loaded; campaign delivery implemented; ActIII runtime crafting and survival review pending",
       "delivery": {
         "count": 1,
-        "consume": false,
-        "purpose": "Non-consuming presentation of a prototype alongside the described project demonstration and narrative prerequisites; never auto-complete from possession/crafting. No duplicate item reward. Installed modules remain blocks."
+        "consume": true,
+        "purpose": "Explicit Atlas delivery consumes one integration prototype and records the team milestone. It never consumes an installed machine or grants a duplicate item reward. Optional machine demonstrations do not gate gifts."
       }
     },
     {
@@ -497,7 +497,7 @@
       "output": {
         "id": "entrelumen:inventory_sensor",
         "count": 1,
-        "registration": "proposed new component, must register before recipes"
+        "registration": "registered companion integration component"
       },
       "recipe": {
         "id": "entrelumen:integration/measured_logistics",
@@ -531,11 +531,11 @@
         "team delivery idempotency/restart",
         "manual tutorial playthrough"
       ],
-      "status": "design-only",
+      "status": "static-recipe-loaded; campaign delivery implemented; ActIII runtime crafting and survival review pending",
       "delivery": {
         "count": 1,
-        "consume": false,
-        "purpose": "Non-consuming presentation of a prototype alongside the described project demonstration and narrative prerequisites; never auto-complete from possession/crafting. No duplicate item reward. Installed modules remain blocks."
+        "consume": true,
+        "purpose": "Explicit Atlas delivery consumes one integration prototype and records the team milestone. It never consumes an installed machine or grants a duplicate item reward. Optional machine demonstrations do not gate gifts."
       }
     },
     {
@@ -548,7 +548,7 @@
       "output": {
         "id": "entrelumen:handling_core",
         "count": 1,
-        "registration": "proposed new component, must register before recipes"
+        "registration": "registered companion integration component"
       },
       "recipe": {
         "id": "entrelumen:integration/workshop_hands",
@@ -582,11 +582,11 @@
         "team delivery idempotency/restart",
         "manual tutorial playthrough"
       ],
-      "status": "design-only",
+      "status": "static-recipe-loaded; campaign delivery implemented; ActIII runtime crafting and survival review pending",
       "delivery": {
         "count": 1,
-        "consume": false,
-        "purpose": "Non-consuming presentation of a prototype alongside the described project demonstration and narrative prerequisites; never auto-complete from possession/crafting. No duplicate item reward. Installed modules remain blocks."
+        "consume": true,
+        "purpose": "Explicit Atlas delivery consumes one integration prototype and records the team milestone. It never consumes an installed machine or grants a duplicate item reward. Optional machine demonstrations do not gate gifts."
       }
     },
     {
@@ -1452,7 +1452,7 @@
     {
       "modId": "create",
       "introducedAct": "II",
-      "anchorItem": "create:precision_mechanism",
+      "anchorItem": "create:iron_sheet",
       "introduction": "Precision manufacturing",
       "laterUtility": "Produce mechanical instruments for Atlas projects",
       "concreteConnections": [
@@ -1562,12 +1562,11 @@
     {
       "modId": "immersiveengineering",
       "introducedAct": "II",
-      "anchorItem": "immersiveengineering:component_steel",
+      "anchorItem": "immersiveengineering:wire_copper",
       "introduction": "Visible electrical engineering",
       "laterUtility": "Bulk materials and wiring for observatory infrastructure",
       "concreteConnections": [
         "entrelumen:precision_bench",
-        "entrelumen:crystal_grid",
         "entrelumen:distributed_power"
       ],
       "participation": "project system or interchangeable infrastructure; owning all mods not required",
@@ -1709,12 +1708,11 @@
     },
     {
       "modId": "naturesaura",
-      "introducedAct": "II",
+      "introducedAct": "IV",
       "anchorItem": "naturesaura:infused_iron",
       "introduction": "Environmental magic",
       "laterUtility": "Nature restoration and sustainable ritual materials",
       "concreteConnections": [
-        "entrelumen:living_workshop",
         "entrelumen:pollinator_treaty",
         "entrelumen:renewal_engine",
         "entrelumen:ark_nature"
@@ -1920,12 +1918,10 @@
       "jarSha256": "072451bb6069025e255a39216edc0f892cda00c12b9905b552e7dd4631d44a41",
       "itemModelResource": "assets/actuallyadditions/models/item/restonia_crystal.json",
       "recipeReferences": [
-        "data/actuallyadditions/recipe/basic_coil.json",
-        "data/actuallyadditions/recipe/compress/restonia_crystal.json",
-        "data/actuallyadditions/recipe/compress/restonia_crystal_block.json"
+        "data/actuallyadditions/recipe/laser/crystalize_restonia_crystal.json"
       ],
-      "recipeReferenceCount": 23,
-      "proof": "exact item model plus listed exact recipe references; runtime registry/recipe availability not yet verified"
+      "recipeReferenceCount": 1,
+      "proof": "Exact item model and native acquisition recipe read from pinned JAR; loaded registry, tags, machine behavior and survival pacing remain unverified."
     },
     {
       "itemId": "ae2:calculation_processor",
@@ -1996,12 +1992,10 @@
       "jarSha256": "45f00f9059838b2fecc988861111d8b3d4613a5f1b3688a8dbfa8655751b85bb",
       "itemModelResource": "assets/aquaculture/models/item/fish_fillet_cooked.json",
       "recipeReferences": [
-        "data/aquaculture/recipe/cooked_fish_fillet.json",
-        "data/aquaculture/recipe/cooked_fish_fillet_from_campfire.json",
-        "data/aquaculture/recipe/cooked_fish_fillet_from_smoking.json"
+        "data/aquaculture/recipe/cooked_fish_fillet.json"
       ],
-      "recipeReferenceCount": 3,
-      "proof": "exact item model plus listed exact recipe references; runtime registry/recipe availability not yet verified"
+      "recipeReferenceCount": 1,
+      "proof": "Exact item model and native acquisition recipe read from pinned JAR; loaded registry, tags, machine behavior and survival pacing remain unverified."
     },
     {
       "itemId": "ars_nouveau:magebloom_fiber",
@@ -2009,12 +2003,10 @@
       "jarSha256": "99dff85e8778f7ae21dfd51cdedadf20f555a834fc757c0afe5f03c10eea96f2",
       "itemModelResource": "assets/ars_nouveau/models/item/magebloom_fiber.json",
       "recipeReferences": [
-        "data/ars_nouveau/recipe/alteration_table.json",
-        "data/ars_nouveau/recipe/arcanist_boots.json",
-        "data/ars_nouveau/recipe/arcanist_hood.json"
+        "data/ars_nouveau/recipe/magebloom_fiber.json"
       ],
-      "recipeReferenceCount": 23,
-      "proof": "exact item model plus listed exact recipe references; runtime registry/recipe availability not yet verified"
+      "recipeReferenceCount": 1,
+      "proof": "Exact item model and native acquisition recipe read from pinned JAR; loaded registry, tags, machine behavior and survival pacing remain unverified."
     },
     {
       "itemId": "buildinggadgets2:gadget_building",
@@ -2083,12 +2075,10 @@
       "jarSha256": "ef87fe5709f1ba1f5b8bb20a2925b5afb4669e178fd6d8bf10c167759eefe37a",
       "itemModelResource": "assets/create/models/item/andesite_alloy.json",
       "recipeReferences": [
-        "data/create/recipe/andesite_bars_from_andesite_alloy_stonecutting.json",
-        "data/create/recipe/andesite_ladder_from_andesite_alloy_stonecutting.json",
-        "data/create/recipe/andesite_scaffolding_from_andesite_alloy_stonecutting.json"
+        "data/create/recipe/crafting/materials/andesite_alloy.json"
       ],
-      "recipeReferenceCount": 81,
-      "proof": "exact item model plus listed exact recipe references; runtime registry/recipe availability not yet verified"
+      "recipeReferenceCount": 1,
+      "proof": "Exact item model and native acquisition recipe read from pinned JAR; loaded registry, tags, machine behavior and survival pacing remain unverified."
     },
     {
       "itemId": "create:brass_sheet",
@@ -2158,7 +2148,7 @@
         "data/farmersdelight/recipe/cooking/vegetable_soup.json"
       ],
       "recipeReferenceCount": 1,
-      "proof": "exact item model plus listed exact recipe references; runtime registry/recipe availability not yet verified"
+      "proof": "Exact item model and native acquisition recipe read from pinned JAR; loaded registry, tags, machine behavior and survival pacing remain unverified."
     },
     {
       "itemId": "farmingforblockheads:market",
@@ -2238,11 +2228,10 @@
       "jarSha256": "45942985a4a4aebf265b8e22a0c54a96208637471f36f2532ff5d4911322debc",
       "itemModelResource": "assets/immersiveengineering/models/item/wire_copper.json",
       "recipeReferences": [
-        "data/immersiveengineering/recipe/crafting/toolupgrade_revolver_electro.json",
         "data/immersiveengineering/recipe/crafting/wire_copper.json"
       ],
-      "recipeReferenceCount": 2,
-      "proof": "exact item model plus listed exact recipe references; runtime registry/recipe availability not yet verified"
+      "recipeReferenceCount": 1,
+      "proof": "Exact item model and native acquisition recipe read from pinned JAR; loaded registry, tags, machine behavior and survival pacing remain unverified."
     },
     {
       "itemId": "integrateddynamics:crystalized_menril_chunk",
@@ -2570,6 +2559,39 @@
       ],
       "recipeReferenceCount": 3,
       "proof": "exact item model plus listed exact recipe references; runtime registry/recipe availability not yet verified"
+    },
+    {
+      "itemId": "create:iron_sheet",
+      "jar": "create-1.21.1-6.0.10.jar",
+      "jarSha256": "ef87fe5709f1ba1f5b8bb20a2925b5afb4669e178fd6d8bf10c167759eefe37a",
+      "itemModelResource": "assets/create/models/item/iron_sheet.json",
+      "recipeReferences": [
+        "data/create/recipe/pressing/iron_ingot.json"
+      ],
+      "recipeReferenceCount": 1,
+      "proof": "Exact item model and native acquisition recipe read from pinned JAR; loaded registry, tags, machine behavior and survival pacing remain unverified."
+    },
+    {
+      "itemId": "actuallyadditions:iron_casing",
+      "jar": "actuallyadditions-1.3.26+mc1.21.1.jar",
+      "jarSha256": "072451bb6069025e255a39216edc0f892cda00c12b9905b552e7dd4631d44a41",
+      "itemModelResource": "assets/actuallyadditions/models/item/iron_casing.json",
+      "recipeReferences": [
+        "data/actuallyadditions/recipe/iron_casing.json"
+      ],
+      "recipeReferenceCount": 1,
+      "proof": "Exact item model and native acquisition recipe read from pinned JAR; loaded registry, tags, machine behavior and survival pacing remain unverified."
+    },
+    {
+      "itemId": "ars_nouveau:source_gem",
+      "jar": "ars_nouveau-1.21.1-5.13.1.jar",
+      "jarSha256": "99dff85e8778f7ae21dfd51cdedadf20f555a834fc757c0afe5f03c10eea96f2",
+      "itemModelResource": "assets/ars_nouveau/models/item/source_gem.json",
+      "recipeReferences": [
+        "data/ars_nouveau/recipe/imbuement_amethyst.json"
+      ],
+      "recipeReferenceCount": 1,
+      "proof": "Exact item model and native acquisition recipe read from pinned JAR; loaded registry, tags, machine behavior and survival pacing remain unverified."
     }
   ],
   "resourceStages": [
@@ -2668,11 +2690,19 @@
   },
   "runtimePending": [
     "All itemEvidence entries prove resource references only: validate registry presence and loaded recipe conditions with real server.",
-    "The 16 proposed components and 22 static recipes do not exist yet; register components before recipe export.",
+    "22 static recipes are generated in source; this does not implement all 22 narrative projects. Verify companion registry and loaded recipes on the actual server; later-act campaign acceptance remains proposed.",
     "Native energy/fluid/automation interactions need actual GUI/inventory capability tests.",
     "Resource-seed and breeding acquisition recipe IDs/alternatives are not finalized: inspect generated runtime recipes, tags and data components.",
     "Balance quantities and six-player scaling through playtests; these are initial values, not proven 150–200h pacing.",
     "Verify EN/ES names/tutorials, all recipe outputs, bowl remainders, native crafting transactions, restart/reconnect and gifts.",
     "No claim of performance until profiling actual production lines and endgame bases."
+  ],
+  "implementationNotes": [
+    {
+      "date": "2026-09-12",
+      "scope": "Act III focused implementation",
+      "decision": "Five design-only non-consuming presentations now use the explicit one-token consumption already implemented for Act II. Existing exchange_route is the five-project closure (3 paper + 1 copper). Static crafting, gifts and historical completed milestone IDs remain valid.",
+      "evidence": "docs/design/act-three-recipes.md"
+    }
   ]
 }

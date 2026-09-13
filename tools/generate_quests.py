@@ -1,4 +1,4 @@
-"""Generate only ENTRELUMEN's original first-hour FTB Quests files.
+"""Generate ENTRELUMEN's original bilingual FTB chapters with stable global IDs.
 
 Run with --check for read-only validation and generated-file drift detection.
 No third-party content is read. IDs are signed-positive 64-bit hashes of semantic
@@ -27,9 +27,9 @@ def snbt(value):
     return json.dumps(value, ensure_ascii=False, indent=2) + "\n"
 
 
-def generate(data):
+def generate(data, all_quests=None, order_index=0):
     quests = data["quests"]
-    assert len(quests) == 25, "first-hour slice must contain 25 authored quests"
+    assert 18 <= len(quests) <= 30, "keep authored slices focused"
     keys = [q["key"] for q in quests]
     assert len(keys) == len(set(keys)), "duplicate semantic quest key"
     visiting, done, ids = set(), set(), set()
@@ -40,9 +40,10 @@ def generate(data):
         ids.add(result)
         return result
 
-    by_key = {q["key"]: q for q in quests}
+    by_key = {q["key"]: q for q in (all_quests or quests)}
+    local_keys = set(keys)
     positions = []
-    assert set(data["layout_groups"]) == {"shelter", "kitchen", "cartography", "signal", "qol"}
+    assert data["layout_groups"] and all(set(labels) == set(LOCALES) for labels in data["layout_groups"].values())
     for q in quests:
         layout = q["layout"]
         assert layout["group"] in data["layout_groups"], "unknown layout group"
@@ -55,7 +56,7 @@ def generate(data):
             assert math.hypot(layout["x"]-previous["x"], layout["y"]-previous["y"]) >= (layout["size"]+previous["size"])/2 + 0.5, "overlapping quest nodes"
         positions.append(layout)
         for dep in q["deps"]:
-            if dep in by_key:
+            if dep in local_keys:
                 assert by_key[dep]["layout"]["y"] <= layout["y"], "dependency runs against reading direction"
 
     def visit(key):
@@ -71,11 +72,11 @@ def generate(data):
 
     for key in keys:
         visit(key)
-    assert data["autofocus"] in by_key and not by_key[data["autofocus"]]["deps"], "focus must point to the welcome root"
+    assert data["autofocus"] in local_keys and not any(dep in local_keys for dep in by_key[data["autofocus"]]["deps"]), "focus must point to the chapter entry"
     chapter_id = ident("chapter:" + data["chapter"])
     languages = {lang: {f"chapter.{chapter_id}.title": data["title"][lang]} for lang in LOCALES}
-    chapter = {"id": chapter_id, "filename": data["chapter"], "order_index": 0,
-               "icon": {"id": "minecraft:book"}, "default_quest_shape": "square",
+    chapter = {"id": chapter_id, "filename": data["chapter"], "order_index": order_index,
+               "icon": {"id": "entrelumen:atlas"}, "default_quest_shape": "square",
                "autofocus_id": stable_id("quest:" + data["autofocus"]), "quests": []}
     milestones = {}
     seen_text = {lang: set() for lang in LOCALES}
@@ -118,10 +119,10 @@ def generate(data):
             placeholders.append(re.findall(r"%[0-9$]*[sd]|\{[a-zA-Z_][a-zA-Z_0-9]*\}", title + description))
         assert sorted(placeholders[0]) == sorted(placeholders[1]), f"placeholder mismatch: {key}"
     assert languages["en_us"].keys() == languages["es_es"].keys(), "locale key mismatch"
-    assert set(milestones) == {"atlas_awakened", "travellers_table", "lens_assembled", "field_survey", "first_signal"}
+    assert set(milestones) == set(data.get("milestones", ["atlas_awakened", "travellers_table", "lens_assembled", "field_survey", "first_signal"]))
     files = {OUT / "chapters" / (data["chapter"] + ".snbt"): snbt(chapter),
              OUT / "data.snbt": snbt({"version": 13, "default_consume_items": False, "default_reward_team": True,
-                                         "default_autoclaim_rewards": "disabled", "fallback_locale": "en_us"}),
+                                         "default_autoclaim_rewards": "disabled", "fallback_locale": "en_us", "pause_game": True}),
              OUT / "chapter_groups.snbt": snbt({"chapter_groups": []}),
              ROOT / "content/campaign_task_ids.json": snbt(milestones)}
     for lang in LOCALES:
@@ -129,23 +130,45 @@ def generate(data):
     return files
 
 
+def generate_all(chapters):
+    keys=[q['key'] for data in chapters for q in data['quests']]
+    assert len(keys)==len(set(keys)), 'duplicate global quest key'
+    assert len({data['chapter'] for data in chapters})==len(chapters), 'duplicate chapter'
+    all_quests=[q for data in chapters for q in data['quests']]
+    files={}; languages={lang:{} for lang in LOCALES}; milestones={}; ids=set(); descriptions={lang:set() for lang in LOCALES}
+    for index,data in enumerate(chapters):
+        assert set(data['title'])==set(LOCALES)
+        generated=generate(data,all_quests,index)
+        chapter_path=OUT/'chapters'/(data['chapter']+'.snbt')
+        chapter=json.loads(generated[chapter_path])
+        new_ids=[chapter['id']]+[i for q in chapter['quests'] for i in (q['id'],q['tasks'][0]['id'])]
+        assert not ids.intersection(new_ids), 'global ID collision'
+        ids.update(new_ids)
+        for lang in LOCALES:
+            for q in data['quests']:
+                assert q[lang][1] not in descriptions[lang], 'duplicate global description'
+                descriptions[lang].add(q[lang][1])
+            path=OUT/'lang'/(lang+'.snbt'); values=json.loads(generated.pop(path))
+            assert not languages[lang].keys() & values.keys(), 'duplicate locale key'
+            languages[lang].update(values)
+        mapping=json.loads(generated.pop(ROOT/'content/campaign_task_ids.json'))
+        assert not milestones.keys() & mapping.keys(), 'duplicate global milestone'
+        milestones.update(mapping); files.update(generated)
+    for lang in LOCALES:files[OUT/'lang'/(lang+'.snbt')]=snbt(languages[lang])
+    files[ROOT/'content/campaign_task_ids.json']=snbt(milestones)
+    return files
+
+
 def main():
-    parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--check", action="store_true")
-    args = parser.parse_args()
-    files = generate(json.loads((ROOT / "content/first_hour.json").read_text(encoding="utf-8")))
-    failures = []
-    for path, content in files.items():
+    parser=argparse.ArgumentParser(description=__doc__);parser.add_argument('--check',action='store_true');args=parser.parse_args()
+    chapters=[json.loads((ROOT/'content'/name).read_text(encoding='utf-8')) for name in ('first_hour.json','act_two.json','act_three.json')]
+    files=generate_all(chapters);failures=[]
+    for path,content in files.items():
         if args.check:
-            if not path.exists() or path.read_text(encoding="utf-8") != content:
-                failures.append(str(path.relative_to(ROOT)))
-        else:
-            path.parent.mkdir(parents=True, exist_ok=True)
-            path.write_text(content, encoding="utf-8", newline="\n")
-    if failures:
-        raise SystemExit("Generated output missing or stale: " + ", ".join(failures))
-    print(f"PASS: 25 quests, 5 server campaign tasks, EN/ES parity, unique IDs, acyclic dependencies; {len(files)} files {'checked' if args.check else 'generated'}. Runtime not verified.")
+            if not path.exists() or path.read_text(encoding='utf-8')!=content:failures.append(str(path.relative_to(ROOT)))
+        else:path.parent.mkdir(parents=True,exist_ok=True);path.write_text(content,encoding='utf-8',newline='\n')
+    if failures:raise SystemExit('Generated output missing or stale: '+', '.join(failures))
+    print(f"PASS: {len(chapters)} chapters, {sum(len(d['quests']) for d in chapters)} quests, global IDs/DAG, EN/ES parity; runtime not verified.")
 
 
-if __name__ == "__main__":
-    main()
+if __name__=='__main__':main()

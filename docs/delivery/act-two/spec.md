@@ -1,0 +1,11 @@
+# Act II integration slice
+
+Continue the full E2E contract in ../spec.md. This bounded implementation is not a release, full campaign or substitute for the first-hour manual playtest. The user's explicit “go” superseded the cooperative Computer Use pause; manual review is authorized but remains unverified. Previous art turn progressed: native PixelLab Atlas and book source integrated, unit tests/build passed; game review remains open.
+
+Replace ActII placeholder lost_workshop with four useful cross-mod projects and a closing archive. Stable IDs: precision_bench, crystal_grid, living_workshop, travelling_pantry, lost_workshop. The first four require first_signal; living_workshop additionally requires precision_bench; lost_workshop requires all four. Each project explicitly consumes one crafted prototype (frame/coupler/matrix/rations); closure consumes3 paper and1 copper. Infrastructure stays installed because no machines are delivered. This follows the user's consumable deliveries, superseding the older design-only non-consuming proposal. Gifts remain usable; story changes only on explicit authoritative delivery. No new ticking scanner, cooldown or provenance checks.
+
+Early costs: precision frame from2 Create iron sheets,2 IE copper wire,1 raw lens; energy coupler from2 AA restonia,1 AA iron casing,2 Create andesite alloy; living matrix from2 Ars magebloom fiber,2 Ars source gem,1 frame. Retain pantry recipe. Verify exact pinned source IDs before editing. Defer steel/brass/forest-altar demands to later functions; preserve their later integrations.
+
+Add a restrained bilingual ActII tutorial chapter, preserving every first-hour ID. Tutorial possession/self-reported exercises remain distinct from authoritative milestone tasks. No filler quests or power rewards. Root integrates and runs actual loaded recipe/campaign checks on the owned dedicated server. Manual client/tutorial/pacing/art acceptance remains open until the actual client walkthrough is completed.
+
+Local source edits, tests and isolated installation are already authorized by the E2E request. No external communications, credentials, purchases or publication in this slice. One writer per listed surface, no redelegation.

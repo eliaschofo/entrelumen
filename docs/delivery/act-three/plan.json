@@ -1,0 +1,105 @@
+{
+  "version": "astra-sdd/v1",
+  "state": "complete",
+  "controller": {
+    "model": "gpt-6-astra",
+    "effort": "medium"
+  },
+  "history_refs": [
+    {
+      "path": "predecessor-act-two-plan.json",
+      "sha256": "9a3a746dc911d389d97ad54c690a426f37e442e8b62fc7318908e5d05340955c"
+    }
+  ],
+  "tasks": [
+    {
+      "id": "campaign",
+      "depends_on": [],
+      "owns": [
+        "companion/src/main/resources/data/entrelumen/campaign/projects.json",
+        "companion/src/main/resources/assets/entrelumen/lang/en_us.json",
+        "companion/src/main/resources/assets/entrelumen/lang/es_es.json",
+        "companion/src/main/java/dev/entrelumen/RuntimeGameTests.java"
+      ],
+      "state": "complete",
+      "model": "gpt-6-astra",
+      "effort": "low",
+      "acceptance": [
+        "Five ActIII prototype deliveries plus the preserved exchange_route closure validate prerequisite order, exact single consumption, gifted supplies, replay rejection and advance to ActIV through real server APIs."
+      ],
+      "checks": [
+        [
+          "gradlew.bat",
+          "test",
+          "build",
+          "runGameTestServer",
+          "--no-daemon"
+        ]
+      ],
+      "evidence_ref": "../../verification/act-three-runtime.json"
+    },
+    {
+      "id": "quests",
+      "depends_on": [],
+      "owns": [
+        "content/act_three.json",
+        "tools/generate_quests.py",
+        "tools/test_generate_quests.py",
+        "content/campaign_task_ids.json",
+        "pack/config/ftbquests/quests",
+        "content/INTEGRATION.md"
+      ],
+      "state": "complete",
+      "model": "gpt-6-astra",
+      "effort": "low",
+      "acceptance": [
+        "One original bilingual ActIII chapter teaches the five integration chains, preserves all prior IDs and keeps optional tutorials out of authoritative milestone prerequisites."
+      ],
+      "checks": [
+        [
+          "python",
+          "tools/generate_quests.py",
+          "--check"
+        ],
+        [
+          "python",
+          "tools/test_generate_quests.py"
+        ]
+      ],
+      "evidence_ref": "../../verification/act-three-runtime.json"
+    },
+    {
+      "id": "integration",
+      "depends_on": [
+        "campaign",
+        "quests"
+      ],
+      "owns": [
+        "content/integration-design.json",
+        "pack/kubejs/server_scripts/entrelumen_integration_recipes.js",
+        "docs/design/act-three-recipes.md",
+        "docs/verification/act-three-runtime.json",
+        "README.md"
+      ],
+      "state": "complete",
+      "model": "gpt-6-astra",
+      "effort": "low",
+      "acceptance": [
+        "Pinned ingredient acquisition is source-audited, all five recipes craft in the full loaded registry and all three FTB chapters load with matching authoritative milestone IDs. Manual survival pacing and client rendering are recorded separately, never inferred."
+      ],
+      "checks": [
+        [
+          "python",
+          "tools/generate_integration_recipes.py",
+          "--check"
+        ],
+        [
+          "python",
+          "tools/check_runtime_content.py"
+        ]
+      ],
+      "evidence_ref": "../../verification/act-three-runtime.json"
+    }
+  ],
+  "integration_status": "Focused technical slice verified: 15 GameTests, 16 JUnit, 12 quest tests, 75 loaded quests/16 milestones and 10 crafted recipes. Server exited cleanly and final text synced. Parent full release, scale, art, performance and manual survival/render acceptance stay open; goal accounting unchanged."
+}

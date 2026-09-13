@@ -47,6 +47,78 @@ def fingerprint(path):
     return {"path": str(path), "sha256": hashlib.sha256(path.read_bytes()).hexdigest()}
 
 
+COLLECTOR = "entrelumen-integrated-v1"
+
+
+def validate_capture(config, paths):
+    """Check original collector artifacts before computing any acceptance metrics."""
+    supplied = [Path(path) for path in paths if path is not None]
+    roots = {path.resolve().parent for path in supplied}
+    declared = str(config.get("collector", "")).startswith("entrelumen-integrated")
+    detected = any((root / "session.json").exists() or
+                   (root / "capture-integrity.json").exists() or
+                   root.name.startswith("capture-") for root in roots)
+    if not declared and not detected:
+        return []
+    if len(roots) != 1:
+        raise ValueError("collector capture requires files from one original run directory")
+    root = roots.pop()
+    artifacts = []
+    documents = {}
+    for name in ("session.json", "capture-integrity.json"):
+        path = root / name
+        documents[name] = json.loads(path.read_text(encoding="utf-8-sig"))
+        if not isinstance(documents[name], dict):
+            raise ValueError(f"{name}: object required")
+        artifacts.append(fingerprint(path))
+    session, integrity = documents["session.json"], documents["capture-integrity.json"]
+    if config.get("collector") != COLLECTOR or session.get("collector") != COLLECTOR:
+        raise ValueError("collector metadata must match supported original session")
+    if session.get("clock") != "shared_process_nanoTime" or config.get("mode") not in {"singleplayer", "integrated_lan"}:
+        raise ValueError("collector requires a shared integrated-server clock")
+    if (integrity.get("status") != "closed_needs_review" or integrity.get("reasons") != [] or
+            integrity.get("pending_rows") != 0 or isinstance(integrity.get("pending_rows"), bool) or
+            integrity.get("clock_origin_verified") is not True or integrity.get("acceptance") is not False or
+            integrity.get("tick_scope") != "vanilla_tickServer"):
+        raise ValueError("capture integrity is incomplete or invalid: " + str(integrity.get("reasons", integrity.get("status"))))
+    for name, column in (("frames", "frame_ms"), ("ticks", "tick_ms"), ("memory", "heap_used_mb")):
+        path = root / (name + ".csv")
+        read_csv(path, ("elapsed_ms", column))
+        artifacts.append(fingerprint(path))
+    for supplied_path, expected in zip(paths, ("frames.csv", "ticks.csv", "memory.csv")):
+        if supplied_path is not None and Path(supplied_path).resolve() != root / expected:
+            raise ValueError("collector input must use original " + expected)
+    # Inspect raw flags even when someone accidentally retained a clean sidecar.
+    for name in ("frames", "ticks", "events", "gc", "post_gc"):
+        path = root / (name + ".csv")
+        with path.open(encoding="utf-8-sig", newline="") as handle:
+            reader = csv.DictReader(handle)
+            if not {"elapsed_ms", "detail"}.issubset(reader.fieldnames or []):
+                raise ValueError(f"{name}.csv: missing raw columns")
+            previous = -1.0
+            tick = None
+            for row in reader:
+                elapsed = float(row["elapsed_ms"])
+                if not math.isfinite(elapsed) or elapsed < 0 or elapsed <= previous:
+                    raise ValueError(f"{name}.csv: raw timestamps must strictly increase")
+                previous = elapsed
+                if name == "events" or (name == "frames" and row["detail"] != "valid"):
+                    raise ValueError(f"{name}.csv: invalid pause/focus/loading frame state")
+                if name == "ticks":
+                    counter = int(row["detail"])
+                    if tick is not None and counter != tick + 1:
+                        raise ValueError("ticks.csv: missing or duplicated tick")
+                    tick = counter
+                if name in {"gc", "post_gc"}:
+                    value = float(row["value"])
+                    if not math.isfinite(value) or value < (-1 if name == "gc" else 0):
+                        raise ValueError(f"{name}.csv: invalid raw value")
+            if name == "gc" and previous < 0:
+                raise ValueError("gc.csv: no GC observations")
+        artifacts.append(fingerprint(path))
+    return artifacts
+
+
 def validate_config(config):
     problems = []
     for key in ("hardware", "preset", "world"):
@@ -162,6 +234,7 @@ def report(config, frames_path=None, ticks_path=None, memory_path=None, base=Pat
                               "tick_p95_ms": "nearest-rank p95(tick_ms)",
                               "observed_tps": "1000 * (tick_count - 1) / timestamp_span_ms; diagnostic, not sustained-TPS proof"}}
     try:
+        result["sources"].extend(validate_capture(config, (frames_path, ticks_path, memory_path)))
         if frames_path and ticks_path:
             frames = read_csv(frames_path, ("elapsed_ms", "frame_ms"))
             ticks = read_csv(ticks_path, ("elapsed_ms", "tick_ms"))

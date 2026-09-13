@@ -1,0 +1,61 @@
+{
+  "schemaVersion": 2,
+  "status": "native Atlas title candidate; rejected filtered backgrounds inactive; visual acceptance pending",
+  "fancymenu": {
+    "version": "3.9.12",
+    "jarSha256": "fd0f446c22bb42a0a3ac5cbdcb614abcba5a70f99e2a0cda6556a8efad2859a5"
+  },
+  "assets": {
+    "title-background": {
+      "source": "art/menu/title-background.png",
+      "destination": "config/fancymenu/assets/entrelumen/title-background.png",
+      "available": false,
+      "sha256": "3f546bf528c63374e8fdafffe847fed8b35e39200ddb21d7be93f6dd17c40939",
+      "integrityVerified": true,
+      "artStatus": "rejected-filtered-illustration"
+    },
+    "loading-background": {
+      "source": "art/menu/loading-background.png",
+      "destination": "config/fancymenu/assets/entrelumen/loading-background.png",
+      "available": false,
+      "sha256": "3f546bf528c63374e8fdafffe847fed8b35e39200ddb21d7be93f6dd17c40939",
+      "integrityVerified": true,
+      "artStatus": "rejected-filtered-illustration"
+    },
+    "logo": {
+      "source": "art/menu/logo.png",
+      "destination": "config/fancymenu/assets/entrelumen/logo.png",
+      "available": true,
+      "sha256": "abb4d6d1d7a823f3dee3995876181d5c23aea57b3468673479cb492008bcbd58",
+      "integrityVerified": true,
+      "artStatus": "native-pixel-art-candidate"
+    }
+  },
+  "screens": [
+    "title_screen",
+    "select_world_screen",
+    "connect_screen",
+    "level_loading_screen",
+    "progress_screen",
+    "receiving_level_screen",
+    "generic_dirt_message_screen",
+    "drippy_loading_overlay"
+  ],
+  "logoStatus": "native-resolution bitmap candidate above left column; artistic acceptance pending",
+  "pixelArtPolicy": "Integrity is separate from artistic status. Rejected backgrounds stay inactive. Title Atlas uses an editable native 16x16 item grid displayed at integer 8x GUI scale; logo is native-size. No direct ImageGen raster or fractional sprite scaling.",
+  "nativeControls": [
+    "menu.singleplayer",
+    "menu.multiplayer",
+    "menu.options",
+    "menu.quit",
+    "NeoForge Mods button"
+  ],
+  "localization": "Native labels and loading messages follow selected Minecraft language; no baked translated labels.",
+  "facts": "Not added: preserve actual loading status and progress. EN/ES fact elements require editor-verified serialization.",
+  "exclusions": [
+    "NeoForge early loading window",
+    "launcher",
+    "crash/error dialogs"
+  ],
+  "visualQA": "Pending root client at 1028 and 1920; no synthetic screenshots or performance claim."
+}

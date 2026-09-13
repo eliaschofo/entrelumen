@@ -18,6 +18,48 @@ import net.neoforged.neoforge.gametest.*;
 @PrefixGameTestTemplate(false)
 public final class RuntimeGameTests {
   @GameTest(template = "empty", timeoutTicks = 200)
+  public static void surveyStationBookmarksWithoutCampaignOrLodestone(GameTestHelper helper) {
+    var player = player(helper, "SurveyTest");
+    var level = helper.getLevel();
+    var pos = helper.absolutePos(new net.minecraft.core.BlockPos(1, 1, 1));
+    var station = BuiltInRegistries.BLOCK.get(ResourceLocation.parse("entrelumen:survey_station"));
+    level.setBlockAndUpdate(pos, station.defaultBlockState());
+    var compass = new ItemStack(Items.COMPASS, 2);
+    player.setItemInHand(net.minecraft.world.InteractionHand.OFF_HAND, compass);
+    var before = Entrelumen.current(player).completed.size();
+    player.setItemInHand(net.minecraft.world.InteractionHand.MAIN_HAND, ItemStack.EMPTY);
+    var hit = new net.minecraft.world.phys.BlockHitResult(
+        net.minecraft.world.phys.Vec3.atCenterOf(pos), net.minecraft.core.Direction.UP, pos, false);
+    var firstAttempt = player.gameMode.useItemOn(player, level, player.getMainHandItem(),
+        net.minecraft.world.InteractionHand.MAIN_HAND, hit);
+    helper.assertTrue(!firstAttempt.consumesAction()
+        && !compass.has(net.minecraft.core.component.DataComponents.LODESTONE_TRACKER),
+        "Empty main hand consumed the click before the offhand compass attempt");
+    var secondAttempt = player.gameMode.useItemOn(player, level, compass,
+        net.minecraft.world.InteractionHand.OFF_HAND, hit);
+    helper.assertTrue(secondAttempt.consumesAction(), "Offhand compass did not consume its attempt");
+    var tracker = compass.get(net.minecraft.core.component.DataComponents.LODESTONE_TRACKER);
+    helper.assertTrue(tracker != null && !tracker.tracked()
+        && tracker.target().orElseThrow().equals(net.minecraft.core.GlobalPos.of(level.dimension(), pos))
+        && compass.getCount() == 2, "Station failed to bind the actual held compass without consumption");
+    level.removeBlock(pos, false);
+    compass.getItem().inventoryTick(compass, level, player, 0, false);
+    helper.assertTrue(compass.get(net.minecraft.core.component.DataComponents.LODESTONE_TRACKER).equals(tracker)
+        && Entrelumen.current(player).completed.size() == before,
+        "Bookmark disappeared after removal or interaction completed story");
+    var shape = station.defaultBlockState().getShape(level, pos);
+    helper.assertTrue(!net.minecraft.world.phys.shapes.Shapes.joinIsNotEmpty(shape,
+        net.minecraft.world.level.block.Block.box(7, 0, 7, 9, 2, 9),
+        net.minecraft.world.phys.shapes.BooleanOp.AND), "Station has invisible solid space below shelf");
+    var drops = net.minecraft.world.level.block.Block.getDrops(station.defaultBlockState(), level,
+        pos, null, player, new ItemStack(Items.IRON_PICKAXE));
+    helper.assertTrue(drops.size() == 1 && drops.getFirst().is(station.asItem())
+        && drops.getFirst().getCount() == 1 && !station.defaultBlockState().hasBlockEntity(),
+        "Station does not drop exactly one item or unexpectedly has a block entity");
+    helper.succeed();
+  }
+
+  @GameTest(template = "empty", timeoutTicks = 200)
   public static void registeredRecipesCraftAtlas(GameTestHelper helper) {
     for (String id :
         List.of("atlas", "raw_lens", "survey_notes", "signal_core", "ark_controller")) {
@@ -49,6 +91,7 @@ public final class RuntimeGameTests {
   }
 
   private static ServerPlayer player(GameTestHelper helper, String name) {
+    if (name.length() > 16) throw new IllegalArgumentException("GameTest profile exceeds 16 characters: " + name);
     var cookie =
         net.minecraft.server.network.CommonListenerCookie.createInitial(
             new GameProfile(UUID.randomUUID(), name), false);
@@ -478,6 +521,267 @@ public final class RuntimeGameTests {
     } finally {
       buffer.release();
     }
+    helper.succeed();
+  }
+
+  @GameTest(template = "empty", timeoutTicks = 200)
+  public static void firstActCompletesThroughRealDeliveries(GameTestHelper helper) {
+    var player = player(helper, "FirstActTest");
+    var initial = AtlasNetwork.handleOpen(player);
+    var campaign = Entrelumen.current(player);
+    player.getInventory().add(new ItemStack(Items.BOOK));
+    player.getInventory().add(new ItemStack(Items.COPPER_INGOT, 9));
+    player.getInventory().add(new ItemStack(Items.GLASS, 4));
+    player.getInventory().add(new ItemStack(Items.BREAD, 3));
+    player.getInventory().add(new ItemStack(Items.BOWL, 4));
+    player.getInventory().add(new ItemStack(Items.PAPER, 3));
+    player.getInventory().add(new ItemStack(Items.COMPASS));
+    // Supplies may be gifted: possession alone never grants a milestone.
+    helper.assertTrue(campaign.completed.isEmpty(), "Supplies completed the story automatically");
+    var denied = AtlasNetwork.handleRequest(player, new AtlasNetwork.Request(
+        initial.campaign(), CampaignActions.Action.DELIVER, "first_signal"));
+    helper.assertTrue(!denied.canAdvance() && campaign.completed.isEmpty()
+        && player.getInventory().countItem(Items.COPPER_INGOT) == 9,
+        "Premature final delivery consumed supplies or advanced the story");
+    for (String id : List.of("atlas_awakened", "travellers_table", "lens_assembled",
+        "field_survey", "first_signal")) {
+      var delivered = AtlasNetwork.handleRequest(player, new AtlasNetwork.Request(
+          initial.campaign(), CampaignActions.Action.DELIVER, id));
+      helper.assertTrue(delivered.message().equals("entrelumen.atlas.delivered")
+          && delivered.projects().stream().anyMatch(p -> p.id().equals(id) && p.completed()),
+          "First-act delivery failed: " + id);
+    }
+    helper.assertTrue(campaign.completed.size() == 5
+        && AtlasNetwork.handleOpen(player).canAdvance(), "Complete first act cannot advance");
+    var atlas = BuiltInRegistries.ITEM.get(ResourceLocation.parse("entrelumen:atlas"));
+    helper.assertTrue(player.getInventory().countItem(atlas) == 1
+        && player.getInventory().items.stream().filter(s -> !s.isEmpty()).count() == 2
+          && player.getInventory().countItem(BuiltInRegistries.ITEM.get(ResourceLocation.parse("entrelumen:signal_core"))) == 1,
+        "First-act deliveries consumed incorrect amounts or lost the portable Atlas");
+    var replay = AtlasNetwork.handleRequest(player, new AtlasNetwork.Request(
+        initial.campaign(), CampaignActions.Action.DELIVER, "first_signal"));
+    helper.assertTrue(replay.message().equals("entrelumen.delivery.failed")
+        && campaign.completed.size() == 5 && player.getInventory().countItem(atlas) == 1
+          && player.getInventory().countItem(BuiltInRegistries.ITEM.get(ResourceLocation.parse("entrelumen:signal_core"))) == 1,
+        "Completed signal replay changed progress or inventory");
+    var advanced = AtlasNetwork.handleRequest(player, new AtlasNetwork.Request(
+        initial.campaign(), CampaignActions.Action.ADVANCE, ""));
+    helper.assertTrue(advanced.act() == 2 && campaign.act == 2,
+        "Completed first act did not advance to act two");
+    var repeatedAdvance = AtlasNetwork.handleRequest(player, new AtlasNetwork.Request(
+        initial.campaign(), CampaignActions.Action.ADVANCE, ""));
+    helper.assertTrue(repeatedAdvance.act() == 2 && !repeatedAdvance.canAdvance(),
+        "Repeated advancement bypassed act two");
+    helper.succeed();
+  }
+
+  @GameTest(template = "empty", timeoutTicks = 200)
+  public static void secondActConsumesGiftedPrototypesAndGatesClosure(GameTestHelper helper) {
+    var player = player(helper, "SecondActTest");
+    var campaign = Entrelumen.current(player);
+    var campaignId = CampaignActions.campaignId(player);
+    var prototypes = new LinkedHashMap<String, Item>();
+    prototypes.put("precision_bench", BuiltInRegistries.ITEM.get(ResourceLocation.parse("entrelumen:calibration_frame")));
+    prototypes.put("crystal_grid", BuiltInRegistries.ITEM.get(ResourceLocation.parse("entrelumen:energy_coupler")));
+    prototypes.put("living_workshop", BuiltInRegistries.ITEM.get(ResourceLocation.parse("entrelumen:living_matrix")));
+    prototypes.put("travelling_pantry", BuiltInRegistries.ITEM.get(ResourceLocation.parse("entrelumen:ration_bundle")));
+    // Gifted prototypes are valid. This tests delivery, not the full pack's crafting recipes.
+    prototypes.values().forEach(item -> player.getInventory().add(new ItemStack(item, 2)));
+    player.getInventory().add(new ItemStack(Items.PAPER, 6));
+    player.getInventory().add(new ItemStack(Items.COPPER_INGOT, 2));
+    player.getInventory().add(new ItemStack(Items.ANVIL));
+    var installedPos = helper.absolutePos(new net.minecraft.core.BlockPos(1, 1, 1));
+    helper.getLevel().setBlockAndUpdate(installedPos,
+        net.minecraft.world.level.block.Blocks.ENCHANTING_TABLE.defaultBlockState());
+    helper.assertTrue(campaign.completed.isEmpty(), "Possession granted Act II progress");
+    campaign.completed.add("first_signal");
+    for (var entry : prototypes.entrySet()) {
+      helper.assertTrue(!CampaignActions.perform(player, campaignId,
+          CampaignActions.Action.DELIVER, entry.getKey()).success()
+          && player.getInventory().countItem(entry.getValue()) == 2,
+          "Wrong-act delivery accepted or consumed prototype: " + entry.getKey());
+    }
+    campaign.act = 2;
+    campaign.completed.clear();
+    for (var entry : prototypes.entrySet()) {
+      helper.assertTrue(!CampaignActions.perform(player, campaignId,
+          CampaignActions.Action.DELIVER, entry.getKey()).success()
+          && player.getInventory().countItem(entry.getValue()) == 2,
+          "Missing first signal accepted or consumed prototype: " + entry.getKey());
+    }
+    campaign.completed.add("first_signal");
+    helper.assertTrue(!CampaignActions.perform(player, campaignId,
+        CampaignActions.Action.DELIVER, "living_workshop").success()
+        && player.getInventory().countItem(prototypes.get("living_workshop")) == 2,
+        "Living workshop bypassed precision bench");
+    int deliveredCount = 0;
+    for (var entry : prototypes.entrySet()) {
+      helper.assertTrue(!CampaignActions.perform(player, campaignId,
+          CampaignActions.Action.DELIVER, "lost_workshop").success()
+          && player.getInventory().countItem(Items.PAPER) == 6
+          && player.getInventory().countItem(Items.COPPER_INGOT) == 2,
+          "Archive accepted incomplete projects or consumed materials");
+      helper.assertTrue(!CampaignActions.perform(player, campaignId,
+          CampaignActions.Action.ADVANCE, "").success() && campaign.act == 2,
+          "Incomplete Act II advanced");
+      helper.assertTrue(CampaignActions.perform(player, campaignId,
+          CampaignActions.Action.DELIVER, entry.getKey()).success()
+          && campaign.completed.contains(entry.getKey())
+          && player.getInventory().countItem(entry.getValue()) == 1,
+          "Prototype delivery did not consume exactly one: " + entry.getKey());
+      deliveredCount++;
+      helper.assertTrue(!CampaignActions.perform(player, campaignId,
+          CampaignActions.Action.DELIVER, entry.getKey()).success()
+          && player.getInventory().countItem(entry.getValue()) == 1
+          && campaign.completed.size() == deliveredCount + 1,
+          "Duplicate prototype delivery changed inventory or campaign");
+    }
+    helper.assertTrue(!AtlasNetwork.handleOpen(player).canAdvance()
+        && !CampaignActions.perform(player, campaignId,
+            CampaignActions.Action.ADVANCE, "").success(),
+        "Four prototypes bypassed the closing archive");
+    helper.assertTrue(CampaignActions.perform(player, campaignId,
+        CampaignActions.Action.DELIVER, "lost_workshop").success()
+        && player.getInventory().countItem(Items.PAPER) == 3
+        && player.getInventory().countItem(Items.COPPER_INGOT) == 1,
+        "Archive did not consume exactly three paper and one copper");
+    helper.assertTrue(!CampaignActions.perform(player, campaignId,
+        CampaignActions.Action.DELIVER, "lost_workshop").success()
+        && player.getInventory().countItem(Items.PAPER) == 3
+        && player.getInventory().countItem(Items.COPPER_INGOT) == 1
+        && campaign.completed.size() == 6,
+        "Archive replay changed supplies or progress");
+    helper.assertTrue(prototypes.values().stream().allMatch(item -> player.getInventory().countItem(item) == 1)
+        && player.getInventory().countItem(Items.ANVIL) == 1
+        && player.getInventory().items.stream().mapToInt(ItemStack::getCount).sum() == 9
+        && helper.getLevel().getBlockState(installedPos).is(net.minecraft.world.level.block.Blocks.ENCHANTING_TABLE),
+        "Deliveries granted items or consumed infrastructure/unrelated supplies");
+    helper.assertTrue(AtlasNetwork.handleOpen(player).canAdvance()
+        && CampaignActions.perform(player, campaignId, CampaignActions.Action.ADVANCE, "").success()
+        && campaign.act == 3,
+        "Closed Act II cannot advance to Act III");
+    helper.assertTrue(!CampaignActions.perform(player, campaignId,
+        CampaignActions.Action.ADVANCE, "").success() && campaign.act == 3,
+        "Repeated advancement bypassed Act III");
+    helper.succeed();
+  }
+
+  @GameTest(template = "empty", timeoutTicks = 200)
+  public static void thirdActConsumesGiftedPrototypesAndGatesClosure(GameTestHelper helper) {
+    var player = player(helper, "ThirdActTest");
+    var campaign = Entrelumen.current(player);
+    var campaignId = CampaignActions.campaignId(player);
+    var prototypes = new LinkedHashMap<String, Item>();
+    prototypes.put("signal_exchange", BuiltInRegistries.ITEM.get(ResourceLocation.parse("entrelumen:routing_matrix")));
+    prototypes.put("nursery_protocol", BuiltInRegistries.ITEM.get(ResourceLocation.parse("entrelumen:propagation_core")));
+    prototypes.put("measured_logistics", BuiltInRegistries.ITEM.get(ResourceLocation.parse("entrelumen:inventory_sensor")));
+    prototypes.put("distributed_power", BuiltInRegistries.ITEM.get(ResourceLocation.parse("entrelumen:power_regulator")));
+    prototypes.put("workshop_hands", BuiltInRegistries.ITEM.get(ResourceLocation.parse("entrelumen:handling_core")));
+    // Gifted prototypes are valid. This tests delivery, not the full pack's crafting recipes.
+    prototypes.values().forEach(item -> player.getInventory().add(new ItemStack(item, 2)));
+    player.getInventory().add(new ItemStack(Items.PAPER, 6));
+    player.getInventory().add(new ItemStack(Items.COPPER_INGOT, 2));
+    player.getInventory().add(new ItemStack(Items.ANVIL));
+    var installedPos = helper.absolutePos(new net.minecraft.core.BlockPos(1, 1, 1));
+    helper.getLevel().setBlockAndUpdate(installedPos,
+        net.minecraft.world.level.block.Blocks.ENCHANTING_TABLE.defaultBlockState());
+    helper.assertTrue(campaign.completed.isEmpty(), "Possession granted Act III progress");
+    campaign.completed.add("lost_workshop");
+    for (var entry : prototypes.entrySet()) {
+      helper.assertTrue(!CampaignActions.perform(player, campaignId,
+          CampaignActions.Action.DELIVER, entry.getKey()).success()
+          && player.getInventory().countItem(entry.getValue()) == 2,
+          "Wrong-act delivery accepted or consumed prototype: " + entry.getKey());
+    }
+    campaign.act = 3;
+    campaign.completed.clear();
+    for (var entry : prototypes.entrySet()) {
+      helper.assertTrue(!CampaignActions.perform(player, campaignId,
+          CampaignActions.Action.DELIVER, entry.getKey()).success()
+          && player.getInventory().countItem(entry.getValue()) == 2,
+          "Missing lost workshop accepted or consumed prototype: " + entry.getKey());
+    }
+    campaign.completed.add("lost_workshop");
+    helper.assertTrue(!CampaignActions.perform(player, campaignId,
+        CampaignActions.Action.DELIVER, "measured_logistics").success()
+        && player.getInventory().countItem(prototypes.get("measured_logistics")) == 2,
+        "Measured logistics bypassed signal exchange");
+    helper.assertTrue(!CampaignActions.perform(player, campaignId,
+        CampaignActions.Action.DELIVER, "workshop_hands").success()
+        && player.getInventory().countItem(prototypes.get("workshop_hands")) == 2,
+        "Workshop hands bypassed distributed power");
+    var initial = AtlasNetwork.handleOpen(player);
+    for (var entry : prototypes.entrySet()) {
+      var view = initial.projects().stream().filter(p -> p.id().equals(entry.getKey())).findFirst().orElseThrow();
+      helper.assertTrue(!view.completed() && view.materials().equals(List.of(
+          new AtlasNetwork.Material(BuiltInRegistries.ITEM.getKey(entry.getValue()), 2, 1)))
+          && view.prerequisites().stream().anyMatch(p -> p.id().equals("lost_workshop") && p.completed()),
+          "Atlas prototype costs or prerequisite status differ: " + entry.getKey());
+    }
+    var closure = initial.projects().stream().filter(p -> p.id().equals("exchange_route")).findFirst().orElseThrow();
+    helper.assertTrue(!closure.ready() && !closure.completed()
+        && closure.prerequisites().stream().map(AtlasNetwork.Prerequisite::id).collect(java.util.stream.Collectors.toSet()).equals(prototypes.keySet())
+        && closure.prerequisites().stream().noneMatch(AtlasNetwork.Prerequisite::completed)
+        && new HashSet<>(closure.materials()).equals(Set.of(
+            new AtlasNetwork.Material(ResourceLocation.parse("minecraft:paper"), 6, 3),
+            new AtlasNetwork.Material(ResourceLocation.parse("minecraft:copper_ingot"), 2, 1))),
+        "Atlas closure snapshot has incorrect costs or status");
+    int deliveredCount = 0;
+    for (var entry : prototypes.entrySet()) {
+      helper.assertTrue(!CampaignActions.perform(player, campaignId,
+          CampaignActions.Action.DELIVER, "exchange_route").success()
+          && player.getInventory().countItem(Items.PAPER) == 6
+          && player.getInventory().countItem(Items.COPPER_INGOT) == 2,
+          "Archive accepted incomplete projects or consumed materials");
+      helper.assertTrue(!CampaignActions.perform(player, campaignId,
+          CampaignActions.Action.ADVANCE, "").success() && campaign.act == 3,
+          "Incomplete Act III advanced");
+      var delivered = AtlasNetwork.handleRequest(player, new AtlasNetwork.Request(
+          campaignId, CampaignActions.Action.DELIVER, entry.getKey()));
+      helper.assertTrue(delivered.message().equals("entrelumen.atlas.delivered")
+          && delivered.projects().stream().anyMatch(p -> p.id().equals(entry.getKey()) && p.completed()
+              && !p.ready() && p.materials().getFirst().available() == 1)
+          && campaign.completed.contains(entry.getKey())
+          && player.getInventory().countItem(entry.getValue()) == 1,
+          "Prototype delivery did not consume exactly one: " + entry.getKey());
+      deliveredCount++;
+      helper.assertTrue(command(player, "entrelumen deliver " + entry.getKey()) == 0
+          && player.getInventory().countItem(entry.getValue()) == 1
+          && campaign.completed.size() == deliveredCount + 1,
+          "Duplicate prototype delivery changed inventory or campaign");
+    }
+    helper.assertTrue(!AtlasNetwork.handleOpen(player).canAdvance()
+        && !CampaignActions.perform(player, campaignId,
+            CampaignActions.Action.ADVANCE, "").success(),
+        "Five prototypes bypassed the closing archive");
+    var readyClosure = AtlasNetwork.handleOpen(player).projects().stream()
+        .filter(p -> p.id().equals("exchange_route")).findFirst().orElseThrow();
+    helper.assertTrue(readyClosure.ready() && !readyClosure.completed()
+        && readyClosure.prerequisites().stream().allMatch(AtlasNetwork.Prerequisite::completed),
+        "Atlas closure did not become ready after five deliveries");
+    helper.assertTrue(CampaignActions.perform(player, campaignId,
+        CampaignActions.Action.DELIVER, "exchange_route").success()
+        && player.getInventory().countItem(Items.PAPER) == 3
+        && player.getInventory().countItem(Items.COPPER_INGOT) == 1,
+        "Archive did not consume exactly three paper and one copper");
+    helper.assertTrue(!CampaignActions.perform(player, campaignId,
+        CampaignActions.Action.DELIVER, "exchange_route").success()
+        && player.getInventory().countItem(Items.PAPER) == 3
+        && player.getInventory().countItem(Items.COPPER_INGOT) == 1
+        && campaign.completed.size() == 7,
+        "Archive replay changed supplies or progress");
+    helper.assertTrue(prototypes.values().stream().allMatch(item -> player.getInventory().countItem(item) == 1)
+        && player.getInventory().countItem(Items.ANVIL) == 1
+        && player.getInventory().items.stream().mapToInt(ItemStack::getCount).sum() == 10
+        && helper.getLevel().getBlockState(installedPos).is(net.minecraft.world.level.block.Blocks.ENCHANTING_TABLE),
+        "Deliveries granted items or consumed infrastructure/unrelated supplies");
+    helper.assertTrue(AtlasNetwork.handleOpen(player).canAdvance()
+        && CampaignActions.perform(player, campaignId, CampaignActions.Action.ADVANCE, "").success()
+        && campaign.act == 4,
+        "Closed Act III cannot advance to Act IV");
+    helper.assertTrue(!CampaignActions.perform(player, campaignId,
+        CampaignActions.Action.ADVANCE, "").success() && campaign.act == 4,
+        "Repeated advancement bypassed Act IV");
     helper.succeed();
   }
 
