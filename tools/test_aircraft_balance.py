@@ -4,6 +4,7 @@ from __future__ import annotations
 from collections import Counter
 import hashlib
 import json
+import os
 from pathlib import Path
 import re
 import unittest
@@ -12,13 +13,15 @@ from zipfile import ZipFile
 
 ROOT = Path(__file__).resolve().parents[1]
 SCRIPT = ROOT / 'pack/kubejs/server_scripts/entrelumen_aircraft_balance.js'
-JAR = ROOT / 'catalog/downloads/immersive_aircraft-1.5.2+1.21.1-neoforge.jar'
+JAR = Path(os.environ.get('ENTRELUMEN_AIRCRAFT_JAR',
+                        ROOT / 'catalog/downloads/immersive_aircraft-1.5.2+1.21.1-neoforge.jar'))
 SHA256 = 'ef5b68c04171d1eadb3bb70e600eb766534ef7588a5b4737f9d55a4f38550ae9'
 VEHICLES = {
     'airship', 'biplane', 'gyrodyne', 'quadrocopter',
     'cargo_airship', 'warship', 'bamboo_hopper',
 }
 ACT_III_ITEMS = {'entrelumen:power_regulator', 'entrelumen:handling_core'}
+needs_jar = unittest.skipUnless(JAR.is_file(), f'Pinned Immersive Aircraft JAR unavailable: {JAR}')
 
 
 def parse_overrides() -> dict[str, dict]:
@@ -55,12 +58,36 @@ def ingredient_ids(recipe: dict) -> Counter[str]:
 class AircraftBalanceTest(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        cls.native = native_recipes()
         cls.overrides = parse_overrides()
 
-    def test_two_recipe_cut_covers_every_native_vehicle(self):
+    def test_static_recipe_contract_and_act_iii_components(self):
         self.assertEqual(set(self.overrides), {'immersive_aircraft:engine', 'immersive_aircraft:gyrodyne'})
-        recipes = self.native | self.overrides
+        for rid, recipe in self.overrides.items():
+            self.assertEqual(recipe['type'], 'minecraft:crafting_shaped')
+            self.assertEqual(recipe['result']['id'], rid)
+            self.assertEqual(len(recipe['pattern']), 3)
+            self.assertTrue(all(len(line) == 3 for line in recipe['pattern']))
+        self.assertEqual(ingredient_ids(self.overrides['immersive_aircraft:engine'])['entrelumen:power_regulator'], 1)
+        self.assertEqual(ingredient_ids(self.overrides['immersive_aircraft:gyrodyne'])['entrelumen:handling_core'], 1)
+        design = json.loads((ROOT / 'content/integration-design.json').read_text(encoding='utf-8'))
+        producers = {p['output']['id']: p['act'] for p in design['projects']}
+        self.assertEqual({producers[item] for item in ACT_III_ITEMS}, {3})
+
+    def test_preflight_precedes_both_recipe_changes(self):
+        source = SCRIPT.read_text(encoding='utf-8')
+        guard = source.index('if (missingItems.length || missingRecipes.length)')
+        mutation = source.index('event.remove({id: row.id})')
+        self.assertLess(source.index('Item.exists(id)'), guard)
+        self.assertLess(source.index('event.containsRecipe({id: row.id})'), guard)
+        self.assertLess(guard, mutation)
+        self.assertIn('event.custom(row.json).id(row.id)', source)
+        self.assertNotIn('event.remove({output:', source)
+
+    @needs_jar
+    def test_two_recipe_cut_covers_every_native_vehicle(self):
+        native = native_recipes()
+        self.assertEqual(set(self.overrides), {'immersive_aircraft:engine', 'immersive_aircraft:gyrodyne'})
+        recipes = native | self.overrides
         outputs = {recipe['result']['id']: rid for rid, recipe in recipes.items()}
 
         def requires_act_iii(item: str, visiting: frozenset[str] = frozenset()) -> bool:
@@ -82,33 +109,36 @@ class AircraftBalanceTest(unittest.TestCase):
         self.assertIn('immersive_aircraft:cargo_airship', ingredient_ids(recipes['immersive_aircraft:warship']))
         self.assertIn('immersive_aircraft:biplane', ingredient_ids(recipes['immersive_aircraft:bamboo_hopper']))
 
+    @needs_jar
     def test_gyrodyne_is_the_engine_bypass_and_quadrocopter_is_not(self):
-        self.assertNotIn('immersive_aircraft:engine', ingredient_ids(self.native['immersive_aircraft:gyrodyne']))
-        self.assertIn('immersive_aircraft:engine', ingredient_ids(self.native['immersive_aircraft:quadrocopter']))
+        native = native_recipes()
+        self.assertNotIn('immersive_aircraft:engine', ingredient_ids(native['immersive_aircraft:gyrodyne']))
+        self.assertIn('immersive_aircraft:engine', ingredient_ids(native['immersive_aircraft:quadrocopter']))
         self.assertEqual(ingredient_ids(self.overrides['immersive_aircraft:gyrodyne'])
-                         - ingredient_ids(self.native['immersive_aircraft:gyrodyne']),
+                         - ingredient_ids(native['immersive_aircraft:gyrodyne']),
                          Counter({'entrelumen:handling_core': 1}))
-        self.assertEqual(ingredient_ids(self.native['immersive_aircraft:gyrodyne'])
+        self.assertEqual(ingredient_ids(native['immersive_aircraft:gyrodyne'])
                          - ingredient_ids(self.overrides['immersive_aircraft:gyrodyne']), Counter())
 
+    @needs_jar
     def test_native_costs_and_outputs_survive_and_components_are_act_iii(self):
-        engine_before = ingredient_ids(self.native['immersive_aircraft:engine'])
+        native = native_recipes()
+        engine_before = ingredient_ids(native['immersive_aircraft:engine'])
         engine_after = ingredient_ids(self.overrides['immersive_aircraft:engine'])
         self.assertEqual(engine_before - engine_after, Counter({'minecraft:cobblestone': 1}))
         self.assertEqual(engine_after - engine_before, Counter({'entrelumen:power_regulator': 1}))
         for rid, override in self.overrides.items():
-            self.assertEqual(override['result'], self.native[rid]['result'])
-            self.assertEqual(override['type'], self.native[rid]['type'])
-        design = json.loads((ROOT / 'content/integration-design.json').read_text(encoding='utf-8'))
-        producers = {p['output']['id']: p['act'] for p in design['projects']}
-        self.assertEqual({producers[item] for item in ACT_III_ITEMS}, {3})
+            self.assertEqual(override['result'], native[rid]['result'])
+            self.assertEqual(override['type'], native[rid]['type'])
 
+    @needs_jar
     def test_pinned_jar_has_no_native_loot_or_workstation_route(self):
+        native = native_recipes()
         with ZipFile(JAR) as archive:
             data_paths = [name for name in archive.namelist() if name.startswith('data/immersive_aircraft/')]
         self.assertFalse([name for name in data_paths if any(segment in name for segment in
                           ('/loot_table/', '/loot_tables/', '/worldgen/', '/structure/', '/trades/'))])
-        self.assertEqual({recipe['type'] for recipe in self.native.values()}, {'minecraft:crafting_shaped'})
+        self.assertEqual({recipe['type'] for recipe in native.values()}, {'minecraft:crafting_shaped'})
 
     def test_runtime_audit_includes_engine_as_well_as_vehicle_outputs(self):
         source = SCRIPT.read_text(encoding='utf-8')
