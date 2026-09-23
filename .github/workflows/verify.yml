@@ -36,6 +36,7 @@ jobs:
           python tools/benchmark.py --self-test
           python tools/test_benchmark.py
           python tools/check_more_machine_balance.py --self-test
+          python tools/test_optional_loot_compat.py
           python -W error::ResourceWarning tools/test_runtime_control.py
       - name: Build companion and exercise real Minecraft server APIs
         working-directory: companion

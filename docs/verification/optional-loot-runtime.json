@@ -1,0 +1,171 @@
+{
+  "schemaVersion": 1,
+  "checkedAt": "2026-09-23T01:28:54.230196+00:00",
+  "scope": "Resolve the 85 missing-item addon block loot errors observed in Act V; full E2E pack remains unfinished.",
+  "status": "Integrated in owned client/server; loaded tables, drops, reload and final startup passed.",
+  "baseline": {
+    "commit": "677d4f6706e1921359856d3e1eca6194edd55e4f",
+    "ci": "https://github.com/eliaschofo/entrelumen/actions/runs/35805270651",
+    "ciResult": "success",
+    "lootParseErrors": 85,
+    "source": "docs/verification/act-five-runtime.json"
+  },
+  "source": {
+    "script": "pack/kubejs/server_scripts/entrelumen_optional_loot_compat.js",
+    "sha256": "e30e371719e9a8a355ae8eb10d817dd06f76a93d8931a59e4e0025e280bb3234",
+    "nativeJars": {
+      "ExtendedAE-1.21-2.2.35-neoforge.jar": "14a2860fa2c747e9dda2279b8933fac6311fecfee166c765171022b902591c65",
+      "mekanism_extras-1.21.1-1.4.1.jar": "7138aa6530cc184ef6838b02ec7138491907c045e870507bf11ae58cc4c70541",
+      "mekmm-1.21.1-1.4.1.jar": "58d4eb5630c179f54cea6c91180eb4c1ba27f70ef2417d73d78be76061791219"
+    },
+    "behavior": "Emit a conditional empty fallback only for absent items among the exact 85 affected IDs; emit no override for present items."
+  },
+  "checks": {
+    "regressions": {
+      "tests": 3,
+      "passed": true,
+      "localPinnedJars": 3,
+      "ciWithoutLocalPaths": "Explicit optional-JAR skip verified; registry selection tests still run in CI."
+    },
+    "runtime": {
+      "serverDependencies": 110,
+      "heapGiB": 4,
+      "qaRunId": "f5748a7f-42fa-4b64-80f1-38e67fbddd8c",
+      "fixtureToken": "5c80b3a4-2061-40a1-abf2-d22309799bbb",
+      "passingReceiptsBeforeAndAfterReload": [
+        {
+          "token": "5c80b3a4-2061-40a1-abf2-d22309799bbb",
+          "run": "1790126650860",
+          "status": "PASS",
+          "checked": 380,
+          "empty": 85,
+          "native": 295,
+          "drops": [
+            {
+              "id": "mekmm:basic_oxidizing_factory",
+              "count": 1,
+              "customNameAndEnergy": true
+            },
+            {
+              "id": "mekmm:ultimate_oxidizing_factory",
+              "count": 1,
+              "customNameAndEnergy": true
+            },
+            {
+              "id": "mekanism_extras:absolute_crushing_factory",
+              "count": 1,
+              "customNameAndEnergy": true
+            },
+            {
+              "id": "mekanism_extras:supreme_crushing_factory",
+              "count": 1,
+              "customNameAndEnergy": true
+            },
+            {
+              "id": "extendedae:ex_interface",
+              "count": 1,
+              "customNameAndEnergy": false
+            },
+            {
+              "id": "extendedae:assembler_matrix_crafter",
+              "count": 1,
+              "customNameAndEnergy": false
+            }
+          ],
+          "failures": []
+        },
+        {
+          "token": "5c80b3a4-2061-40a1-abf2-d22309799bbb",
+          "run": "1790126716310",
+          "status": "PASS",
+          "checked": 380,
+          "empty": 85,
+          "native": 295,
+          "drops": [
+            {
+              "id": "mekmm:basic_oxidizing_factory",
+              "count": 1,
+              "customNameAndEnergy": true
+            },
+            {
+              "id": "mekmm:ultimate_oxidizing_factory",
+              "count": 1,
+              "customNameAndEnergy": true
+            },
+            {
+              "id": "mekanism_extras:absolute_crushing_factory",
+              "count": 1,
+              "customNameAndEnergy": true
+            },
+            {
+              "id": "mekanism_extras:supreme_crushing_factory",
+              "count": 1,
+              "customNameAndEnergy": true
+            },
+            {
+              "id": "extendedae:ex_interface",
+              "count": 1,
+              "customNameAndEnergy": false
+            },
+            {
+              "id": "extendedae:assembler_matrix_crafter",
+              "count": 1,
+              "customNameAndEnergy": false
+            }
+          ],
+          "failures": []
+        }
+      ],
+      "fixturePolicy": "380 native JAR loot bodies, independently read from pinned dependencies. Loaded native tables are compared through LootTable.DIRECT_CODEC normalization; missing entries resolve to LootTable.EMPTY.",
+      "qaLootParseErrors": 0,
+      "firstProbeCorrection": "The initial QA helper incorrectly required conditionally excluded tables to remain registered and called equals on a Rhino-wrapped block state. Corrected the helper to check empty lookup semantics and compare state strings; the shipped guard was unchanged.",
+      "qaReflectionErrors": 1,
+      "qaReflectionExplanation": "Temporary Rhino introspection of Mekanism tile fields attempted to inspect a client sound class. The six drop checks still ran; this helper is not distributed. The final startup without it contains zero ERROR lines.",
+      "dropLimits": "Six in-memory block-entity drops, not manual mining. Four Mekanism factories additionally preserve custom name and 12345 stored energy. Other components retain exact native loot functions but were not individually populated."
+    },
+    "finalStartup": {
+      "runId": "ae86b133-93cd-47de-ab01-28d55f097e56",
+      "exitCode": 0,
+      "errorLines": 0,
+      "lootParseErrors": 0,
+      "qaHelperLoaded": false,
+      "generated": {
+        "checked": 85,
+        "empty": {
+          "mekmm": 80,
+          "mekanism_extras": 4,
+          "extendedae": 1
+        }
+      },
+      "chapters": 5,
+      "quests": 128,
+      "warningLines": 87
+    }
+  },
+  "integration": {
+    "clientAndServerScriptHashesMatch": true,
+    "clientLaunched": false,
+    "managedFileCount": 132,
+    "companionRebuilt": false,
+    "priorManagedFiles": "Only the new compatibility script and its receipt entry were installed; existing FTB serialization was inspected and preserved.",
+    "backups": {
+      "server": "before-optional-loot-server-20260922-222019",
+      "client": "before-optional-loot-client-20260922-222020"
+    }
+  },
+  "localEvidenceSha256": {
+    "optional-loot-runtime.log": "e792ef6a7d95a252220ec3f1f30fa7fa58bae24c92e9b854f19afff7fecbbed8",
+    "optional-loot-clean-start.log": "b48492528dc838663978e1152724788247ef2ec06f7c0e660cc3fbb25231cdb0",
+    "optional-loot-qa-run.json": "d4a78decf3538de3fc69c45ebcb4b089310004c90a617c429bd64840dce8dbd2",
+    "optional-loot-qa-fixtures.json": "26fdf34827ef390010e29569607ddb5f5252af46d144674829546323886271c9",
+    "entrelumen_qa_optional_loot.verified.js": "d09cc6fd5d416aa60df9e364d316537e592c8608b164949e7ecf777cfddf2e8d",
+    "prepare_optional_loot_qa.py": "2baaada41066dfb3ae08e0e7cc8619747af8b51d96065561a90f6684cbf88f97",
+    "optional-loot-sync-review.json": "9ac9b1cb6d8761d7f71a2e2c41a95254368e97d01d74a9c95156f2eb0167c5a4"
+  },
+  "cleanup": "Both owned server runs exited0 through their command queues. Temporary helper moved outside the active instance; no world blocks or campaign progress were intentionally changed.",
+  "remaining": [
+    "Full six-act manual campaign and complete Ark experiences/ending.",
+    "Extra-large mod/quest parity, visual acceptance, survival pacing and measured performance.",
+    "Official CurseForge installation and maintenance acceptance; exact Oscuria project still unresolved."
+  ]
+}
