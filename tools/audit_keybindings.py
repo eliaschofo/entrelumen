@@ -37,6 +37,9 @@ PROPOSED = {
     # QoL family (bytecode defaults V/H collided with Ultimine and the H group).
     "key_key.easy_villagers.pick_up": "key.keyboard.v:SHIFT",
     "key_simplemagnets.keys.toggle": "key.keyboard.m:SHIFT",
+    # Arcane family (Iron's spell wheel R and cast V collided with Tool Belt and Ultimine).
+    "key_key.irons_spellbooks.spell_wheel": "key.keyboard.g:SHIFT",
+    "key_key.irons_spellbooks.spellbook_cast": "key.keyboard.q:ALT",
 }
 # Operational context, NOT an assertion of a mod's declared conflict context.
 GUI = {"key_key.jei.showRecipe", "key_key.jei.showRecipe2", "key_key.jei.showUses",

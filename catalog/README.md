@@ -51,5 +51,6 @@ Families are added one reviewed batch at a time with `--add-families`, preservin
 |---|---|---|---|
 | [Industrial expansion](../docs/design/industrial-expansion-family.md) | 15 / 4 | 197 client / 162 server | [industrial](../docs/verification/industrial-expansion-runtime.json) |
 | [QoL and functional decoration](../docs/design/qol-functional-decor-family.md) | 18 / 2 | 217 client / 178 server | [qol](../docs/verification/qol-functional-decor-runtime.json) |
+| [Arcane expansion](../docs/design/arcane-expansion-family.md) | 9 / 4 | 230 client / 191 server | [arcane](../docs/verification/arcane-expansion-runtime.json) |
 
-Decisions against Oritech, Ender IO, Modern Industrialization, Extreme Reactors, Applied Flux, Productive Trees and Super Factory Manager are recorded in the industrial note. The lock, companion and QA server stay on NeoForge 21.1.249; no loader change was required.
+Decisions against Oritech, Ender IO, Modern Industrialization, Extreme Reactors, Applied Flux, Productive Trees and Super Factory Manager are recorded in the industrial note; the Apotheosis suite is kept out for the reasons in the arcane note. The lock, companion and QA server stay on NeoForge 21.1.249; no loader change was required.

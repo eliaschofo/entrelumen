@@ -51,6 +51,21 @@ def when_item_exists(path, item_id, why):
     return {'path': path, 'op': 'item_exists', 'item': item_id, 'why': why}
 
 
+def disabled(path, why):
+    """Disable a broken upstream data file with a neoforge:false condition."""
+    return {'path': path, 'op': 'disable', 'why': why}
+
+
+def renamed_key(path, field, old, new, why):
+    """Rename one map key in an upstream data file, keeping its value and position."""
+    return {'path': path, 'op': 'rename_key', 'field': field, 'old': old, 'new': new, 'why': why}
+
+
+def with_value(path, field, value, why, *, limit):
+    """Append one element to a list in an upstream data file (bounded by the mod's own slot limit)."""
+    return {'path': path, 'op': 'append', 'field': field, 'value': value, 'limit': limit, 'why': why}
+
+
 def without_values(path, field, values, why):
     """Drop exact values from a list in an upstream data file."""
     return {'path': path, 'op': 'remove_values', 'field': field, 'values': list(values), 'why': why}
@@ -110,8 +125,8 @@ FAMILIES = {
                              'create_dragons_plus:fragile_fluid_tank', 'Block is registered only with the optional Sable physics mod'),
             when_item_exists('data/create_dragons_plus/loot_table/blocks/levitite_fragile_fluid_tank.json',
                              'create_dragons_plus:levitite_fragile_fluid_tank', 'Block is registered only with the optional Sable physics mod'),
-            without_values('data/industrialforegoing/curios/entities/entities.json', 'slots', ['example', 'feet'],
-                           'Curios slot types that no selected mod registers'),
+            without_values('data/industrialforegoing/curios/entities/entities.json', 'slots', ['example'],
+                           'Curios slot type that no selected mod registers (Artifacts registers feet)'),
         ],
     },
     'qol': {
@@ -129,6 +144,32 @@ FAMILIES = {
                    alternates=['enderstorage:recolour_ender_pouch']),
         ],
         'removals': [],
+    },
+    'arcane': {
+        'script': 'entrelumen_arcane_balance.js',
+        'tag': 'ENTRELUMEN_ARCANE_BALANCE',
+        'namespaces': {'reliquary', 'theurgy', 'forbidden_arcanus', 'valhelsia_core'},
+        'changes': [
+            shaped('reliquary:rending_gale', 1, 0, tag('c:ingots/gold'), HZ, 'IV', 'Rending Gale flight'),
+            shaped('theurgy:crafting/shaped/sulfuric_flux_emitter', 0, 0, None, CS, 'IV', 'Same-tier sulfur reformation'),
+        ],
+        'tag_removals': [
+            ('block', 'c:ores_in_ground/deepslate', 'forbidden_arcanus:stella_arcanum'),
+            ('item', 'c:ores_in_ground/deepslate', 'forbidden_arcanus:stella_arcanum'),
+        ],
+        'removals': ['reliquary:alkahestry_tome', 'reliquary:uncrafting/spawn_egg'] + [
+            f'reliquary:alkahestry/crafting/{name}' for name in (
+                'charcoal', 'clay', 'copper_ingot', 'diamond', 'dirt', 'emerald', 'end_stone', 'flint', 'gold_ingot',
+                'gravel', 'gunpowder', 'iron_ingot', 'lapis_lazuli', 'nether_star', 'netherrack', 'obsidian', 'sand',
+                'sandstone', 'silver_ingot', 'soul_sand', 'steel_ingot', 'tin_ingot')],
+        'data': [
+            with_value('data/forbidden_arcanus/forbidden_arcanus/hephaestus_forge/ritual/eternal_stella.json', 'inputs',
+                       {'amount': 1, 'ingredient': {'item': CS}}, 'Unbreakable-tool modifier', limit=8),  # eight forge pedestals
+            renamed_key('data/create_enchantment_industry/data_maps/fluid/unit/experience.json', 'values',
+                        'reliquary:xp_juice_still', 'reliquary:xp_still', "Reliquary registers its experience fluid as xp_still"),
+            disabled('data/irons_jewelry/loot_table/generate_jewelry_test_materials.json',
+                     "Developer test table whose material keys are tags, which the loot codec rejects"),
+        ],
     },
 }
 
@@ -348,6 +389,25 @@ def build_data(name, found=None):
             assert 'neoforge:conditions' not in original, f"{spec['path']}: already conditional"
             result = {'neoforge:conditions': [{'type': 'neoforge:item_exists', 'item': spec['item']}], **original}
             reverse = {k: v for k, v in result.items() if k != 'neoforge:conditions'}
+        elif spec['op'] == 'disable':
+            assert 'neoforge:conditions' not in original, f"{spec['path']}: already conditional"
+            result = {'neoforge:conditions': [{'type': 'neoforge:false'}], **original}
+            reverse = {k: v for k, v in result.items() if k != 'neoforge:conditions'}
+        elif spec['op'] == 'rename_key':
+            mapping = result[spec['field']]
+            assert spec['old'] in mapping and spec['new'] not in mapping, f"{spec['path']}: map changed upstream"
+            result[spec['field']] = {(spec['new'] if k == spec['old'] else k): v for k, v in mapping.items()}
+            assert 'replace' not in original, f"{spec['path']}: upstream already replaces"
+            result = {'replace': True, **result}  # data maps merge across packs; the corrected map must replace
+            reverse = {k: v for k, v in result.items() if k != 'replace'}
+            reverse[spec['field']] = {(spec['old'] if k == spec['new'] else k): v for k, v in result[spec['field']].items()}
+        elif spec['op'] == 'append':
+            values = result[spec['field']]
+            occupied = sum(v.get('amount', 1) for v in values) + spec['value'].get('amount', 1)
+            assert spec['value'] not in values and occupied <= spec['limit'], f"{spec['path']}: list changed upstream"
+            values.append(spec['value'])
+            reverse = copy.deepcopy(result)
+            reverse[spec['field']] = reverse[spec['field']][:-1]
         elif spec['op'] == 'remove_values':
             values = result[spec['field']]
             assert all(values.count(v) == 1 for v in spec['values']), f"{spec['path']}: values changed upstream"
@@ -368,7 +428,7 @@ ServerEvents.recipes(event => {
     if (!event.containsRecipe({id: row.id})) missing.push({recipe: row.id, cause: 'native recipe absent'});
     if (!Item.exists(row.component)) missing.push({recipe: row.id, cause: 'component absent', component: row.component});
   });
-  REMOVALS.forEach(id => { if (!event.containsRecipe({id: id})) missing.push({recipe: id, cause: 'native recipe absent'}); });
+  var absent = REMOVALS.filter(id => !event.containsRecipe({id: id}));
   if (missing.length) {
     console.error('[TAG] ' + JSON.stringify({status: 'failed-preflight', signature: SIGNATURE, missing: missing}));
     throw new Error('TAG preflight failed; native recipes were not changed');
@@ -378,7 +438,8 @@ ServerEvents.recipes(event => {
     event.custom(row.json).id(row.id);
   });
   REMOVALS.forEach(id => event.remove({id: id}));
-  console.info('[TAG] ' + JSON.stringify({status: 'registered', signature: SIGNATURE, changed: ROWS.length, removed: REMOVALS.length}));
+  console.info('[TAG] ' + JSON.stringify({status: 'registered', signature: SIGNATURE, changed: ROWS.length,
+    removed: REMOVALS.length - absent.length, alreadyAbsent: absent}));
 });
 function FIELDCHECK(event, row) {
   // Machine recipes that do not expose getIngredients(): test the recipe's own public list field.
@@ -409,6 +470,20 @@ ServerEvents.afterRecipes(event => {
 '''
 
 
+def render_tags(family):
+    lines = []
+    for registry in ('block', 'item'):
+        entries = [(tag_id, value) for kind, tag_id, value in family.get('tag_removals', []) if kind == registry]
+        if not entries:
+            continue
+        lines.append(f"ServerEvents.tags('{registry}', event => {{")
+        for tag_id, value in entries:
+            lines.append(f"  event.remove({json.dumps(tag_id)}, {json.dumps(value)});")
+        lines.append(f"  console.info('[{family['tag']}] ' + JSON.stringify({{status: 'tags-removed', registry: '{registry}', count: {len(entries)}}}));")
+        lines.append('});')
+    return '\n'.join(lines) + ('\n' if lines else '')
+
+
 def render(name, rows, removals, used_files):
     family = FAMILIES[name]
     prefix = 'entrelumen' + ''.join(part.title() for part in name.split('_'))
@@ -421,7 +496,7 @@ def render(name, rows, removals, used_files):
             f'const {prefix}Signature = {json.dumps(signature)};\n'
             f'const {prefix}Sources = {json.dumps(used_files, separators=(",", ":"))};\n'
             f'const {prefix}Rows = {json.dumps(rows, ensure_ascii=False, separators=(",", ":"))};\n'
-            f'const {prefix}Removals = {json.dumps(removals)};\n' + body)
+            f'const {prefix}Removals = {json.dumps(removals)};\n' + body + render_tags(family))
 
 
 def main():

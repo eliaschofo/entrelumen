@@ -11,7 +11,7 @@ ServerEvents.recipes(event => {
     if (!event.containsRecipe({id: row.id})) missing.push({recipe: row.id, cause: 'native recipe absent'});
     if (!Item.exists(row.component)) missing.push({recipe: row.id, cause: 'component absent', component: row.component});
   });
-  entrelumenIndustrialRemovals.forEach(id => { if (!event.containsRecipe({id: id})) missing.push({recipe: id, cause: 'native recipe absent'}); });
+  var absent = entrelumenIndustrialRemovals.filter(id => !event.containsRecipe({id: id}));
   if (missing.length) {
     console.error('[ENTRELUMEN_INDUSTRIAL_BALANCE] ' + JSON.stringify({status: 'failed-preflight', signature: entrelumenIndustrialSignature, missing: missing}));
     throw new Error('ENTRELUMEN_INDUSTRIAL_BALANCE preflight failed; native recipes were not changed');
@@ -21,7 +21,8 @@ ServerEvents.recipes(event => {
     event.custom(row.json).id(row.id);
   });
   entrelumenIndustrialRemovals.forEach(id => event.remove({id: id}));
-  console.info('[ENTRELUMEN_INDUSTRIAL_BALANCE] ' + JSON.stringify({status: 'registered', signature: entrelumenIndustrialSignature, changed: entrelumenIndustrialRows.length, removed: entrelumenIndustrialRemovals.length}));
+  console.info('[ENTRELUMEN_INDUSTRIAL_BALANCE] ' + JSON.stringify({status: 'registered', signature: entrelumenIndustrialSignature, changed: entrelumenIndustrialRows.length,
+    removed: entrelumenIndustrialRemovals.length - absent.length, alreadyAbsent: absent}));
 });
 function entrelumenIndustrialFieldCheck(event, row) {
   // Machine recipes that do not expose getIngredients(): test the recipe's own public list field.

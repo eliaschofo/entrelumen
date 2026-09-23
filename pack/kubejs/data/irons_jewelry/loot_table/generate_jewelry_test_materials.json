@@ -1,0 +1,42 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:false"
+    }
+  ],
+  "type": "minecraft:chest",
+  "pools": [
+    {
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "function": "irons_jewelry:generate_jewelry",
+              "patterns": [
+                "irons_jewelry:simple_band",
+                "irons_jewelry:gemset_ring",
+                "irons_jewelry:improved_gemset_ring",
+                "irons_jewelry:superior_gemset_ring"
+              ],
+              "materials": {
+                "#irons_jewelry:metal": "irons_jewelry:gold",
+                "#irons_jewelry:gem": [
+                  "irons_jewelry:ruby",
+                  "irons_jewelry:diamond"
+                ]
+              }
+            }
+          ],
+          "name": "irons_jewelry:ring"
+        }
+      ],
+      "rolls": {
+        "type": "minecraft:uniform",
+        "max": 6.0,
+        "min": 2.0
+      }
+    }
+  ]
+}
