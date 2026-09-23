@@ -26,7 +26,7 @@ Official version metadata and SHA-1/SHA-512 were verified before computing and r
 - [Exposure KZR7AUbh](https://modrinth.com/mod/exposure/version/KZR7AUbh)
 - [Aircraft ZZTlNkV9](https://modrinth.com/mod/immersive-aircraft/version/ZZTlNkV9)
 
-These dependencies retain their own licenses: AGPL for Connected, the authors' reserved-rights terms for Copycats+/Macaw's mods, MIT for Exposure and GPL for Aircraft. [Copycats+ explicitly permits modpack inclusion](https://modrinth.com/mod/copycats). The repository contains metadata and original integration only. The CurseForge App recognized five additions; its SHA-1 values match the local files and their official Modrinth hashes. Their verified project/file references and distribution metadata are recorded in the catalog. Connected remains unresolved by the App. Final publication still requires the App's official export, rather than a handmade manifest.
+These dependencies retain their own licenses: AGPL for Connected, the authors' reserved-rights terms for Copycats+/Macaw's mods, MIT for Exposure and GPL for Aircraft. [Copycats+ explicitly permits modpack inclusion](https://modrinth.com/mod/copycats). The repository contains metadata and original integration only. The CurseForge App recognizes all six additions, with verified SHA-1 and project/file references. Five match their official Modrinth bytes. Connected now uses [official CurseForge file 8777573](https://www.curseforge.com/minecraft/mc-mods/create-connected/files/8777573): its sole difference from the tested Modrinth artifact is the manifest's build timestamp. All 1,783 other file entries, including classes, assets, data and its embedded JAR, are byte-identical. See the [artifact comparison](../verification/connected-distribution-variant.json). Final publication still requires the App's official export, rather than a handmade manifest.
 
 ## Acquisition and compatibility
 
@@ -38,7 +38,7 @@ Connected's `feature_categories.copycats` is disabled so Copycats+ owns the nine
 
 ## Technical budget
 
-The six JARs add 15,694,564 compressed bytes. This is a storage measure, not a memory or performance estimate. Roofs alone carries 2,683 model JSON files, so client model loading and in-world rendering remain necessary checks. No biome overhaul or new dimension is added by this batch.
+The six JARs add 15,694,565 compressed bytes, including the one-byte increase in the official Connected distribution variant. This is a storage measure, not a memory or performance estimate. Roofs alone carries 2,683 model JSON files, so client model loading and in-world rendering remain necessary checks. No biome overhaul or new dimension is added by this batch.
 
 Do not infer a rendering defect in the pinned version from an old Copycats+ issue, or disable connected textures blindly. Confirm the current options and test populated contraptions. Measure Exposure's native capture and aircraft movement in the client before accepting their cost.
 
