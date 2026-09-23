@@ -18,6 +18,148 @@ import net.neoforged.neoforge.gametest.*;
 @PrefixGameTestTemplate(false)
 public final class RuntimeGameTests {
   @GameTest(template = "empty", timeoutTicks = 200)
+  public static void engineeringWorkshopRepairsGiftedToolsWithoutCampaignOrComponentChanges(GameTestHelper helper)
+      throws Exception {
+    try (var session = new WorkshopPlayer(helper)) {
+      var player = session.player;
+      var controller = ark(helper, player);
+      var module = arkModule(helper, controller, "engineering_module");
+      // A recipient at the start of the story can use gifted infrastructure.
+      var campaign = Entrelumen.current(player);
+      campaign.act = 1;
+      campaign.completed.clear();
+      var data = CampaignData.get(player.server);
+      var beforeCampaign = data.save(new CompoundTag(), helper.getLevel().registryAccess());
+      var tool = new ItemStack(Items.DIAMOND_PICKAXE);
+      tool.setDamageValue(500);
+      tool.set(net.minecraft.core.component.DataComponents.CUSTOM_NAME,
+          net.minecraft.network.chat.Component.literal("Gift from another horizon"));
+      tool.set(net.minecraft.core.component.DataComponents.REPAIR_COST, 31);
+      tool.enchant(helper.getLevel().registryAccess().lookupOrThrow(
+          net.minecraft.core.registries.Registries.ENCHANTMENT).getOrThrow(
+              net.minecraft.world.item.enchantment.Enchantments.UNBREAKING), 3);
+      player.setItemInHand(net.minecraft.world.InteractionHand.MAIN_HAND, tool);
+      player.setItemInHand(net.minecraft.world.InteractionHand.OFF_HAND, new ItemStack(Items.DIAMOND, 3));
+      player.giveExperienceLevels(7);
+      int levels = player.experienceLevel;
+      var expected = tool.copy();
+      expected.setDamageValue(500 - tool.getMaxDamage() / 4);
+      var used = player.gameMode.useItemOn(player, helper.getLevel(), tool,
+          net.minecraft.world.InteractionHand.MAIN_HAND, arkHit(module));
+      helper.assertTrue(used.consumesAction() && ItemStack.matches(tool, expected)
+          && player.getOffhandItem().getCount() == 2, "Native interaction did not pay exactly one material per quarter repair");
+      player.gameMode.useItemOn(player, helper.getLevel(), tool,
+          net.minecraft.world.InteractionHand.MAIN_HAND, arkHit(module));
+      expected.setDamageValue(0);
+      helper.assertTrue(ItemStack.matches(tool, expected) && player.getOffhandItem().getCount() == 1,
+          "Partial final repair changed components or material cost");
+      player.gameMode.useItemOn(player, helper.getLevel(), tool,
+          net.minecraft.world.InteractionHand.MAIN_HAND, arkHit(module));
+      helper.assertTrue(ItemStack.matches(tool, expected) && player.getOffhandItem().getCount() == 1
+          && player.experienceLevel == levels, "Full-durability replay spent material or XP");
+      helper.assertTrue(beforeCampaign.equals(data.save(new CompoundTag(), helper.getLevel().registryAccess())),
+          "Workshop changed campaign state or rewarded a milestone");
+      // Native repair ingredients differ by equipment, not an Entrelumen whitelist.
+      for (var pair : List.of(new Item[] {Items.LEATHER_CHESTPLATE, Items.LEATHER},
+          new Item[] {Items.ELYTRA, Items.PHANTOM_MEMBRANE}, new Item[] {Items.IRON_PICKAXE, Items.IRON_INGOT})) {
+        var equipment = new ItemStack(pair[0]);
+        equipment.setDamageValue(1);
+        player.setItemInHand(net.minecraft.world.InteractionHand.MAIN_HAND, equipment);
+        player.setItemInHand(net.minecraft.world.InteractionHand.OFF_HAND, new ItemStack(pair[1]));
+        helper.assertTrue(EngineeringWorkshop.repair(player, module, net.minecraft.world.InteractionHand.MAIN_HAND)
+            && equipment.getDamageValue() == 0 && player.getOffhandItem().isEmpty(),
+            "Native equipment repair failed: " + pair[0]);
+      }
+    }
+    helper.succeed();
+  }
+
+  @GameTest(template = "empty", timeoutTicks = 200)
+  public static void engineeringWorkshopRejectsInvalidStructureAndUseWithoutConsumption(GameTestHelper helper)
+      throws Exception {
+    try (var session = new WorkshopPlayer(helper)) {
+      var player = session.player;
+      var controller = ark(helper, player);
+      var module = arkModule(helper, controller, "engineering_module");
+      var tool = new ItemStack(Items.IRON_PICKAXE);
+      tool.setDamageValue(100);
+      player.setItemInHand(net.minecraft.world.InteractionHand.MAIN_HAND, tool);
+      player.setItemInHand(net.minecraft.world.InteractionHand.OFF_HAND, new ItemStack(Items.DIAMOND, 3));
+      helper.assertTrue(!EngineeringWorkshop.repair(player, module, net.minecraft.world.InteractionHand.MAIN_HAND)
+          && player.getOffhandItem().getCount() == 3, "Wrong material was accepted");
+      player.setItemInHand(net.minecraft.world.InteractionHand.OFF_HAND, new ItemStack(Items.IRON_INGOT, 3));
+      var missing = arkModule(helper, controller, "nature_module");
+      var missingState = helper.getLevel().getBlockState(missing);
+      helper.getLevel().removeBlock(missing, false);
+      helper.assertTrue(!EngineeringWorkshop.repair(player, module, net.minecraft.world.InteractionHand.MAIN_HAND),
+          "Incomplete Ark repaired a tool");
+      helper.getLevel().setBlockAndUpdate(missing, missingState);
+      var duplicate = controller.above();
+      helper.getLevel().setBlockAndUpdate(duplicate, helper.getLevel().getBlockState(controller));
+      helper.assertTrue(!EngineeringWorkshop.repair(player, module, net.minecraft.world.InteractionHand.MAIN_HAND),
+          "Ambiguous controllers repaired a tool");
+      helper.getLevel().removeBlock(duplicate, false);
+      helper.assertTrue(!EngineeringWorkshop.repair(player, module, net.minecraft.world.InteractionHand.OFF_HAND),
+          "Offhand repaired a tool");
+      player.setGameMode(net.minecraft.world.level.GameType.SPECTATOR);
+      helper.assertTrue(!EngineeringWorkshop.repair(player, module, net.minecraft.world.InteractionHand.MAIN_HAND),
+          "Spectator repaired a tool");
+      player.setGameMode(net.minecraft.world.level.GameType.SURVIVAL);
+      player.teleportTo(module.getX() + 30.0, module.getY(), module.getZ());
+      helper.assertTrue(!EngineeringWorkshop.repair(player, module, net.minecraft.world.InteractionHand.MAIN_HAND),
+          "Remote use repaired a tool");
+      player.teleportTo(controller.getX() + 0.5, controller.getY() + 1.0, controller.getZ() + 0.5);
+      tool.setCount(2);
+      helper.assertTrue(!EngineeringWorkshop.repair(player, module, net.minecraft.world.InteractionHand.MAIN_HAND),
+          "Stacked damageable items repaired for a single payment");
+      tool.setCount(1);
+      helper.assertTrue(tool.getDamageValue() == 100 && player.getOffhandItem().getCount() == 3,
+          "Rejected repair changed tool or material");
+      player.setGameMode(net.minecraft.world.level.GameType.CREATIVE);
+      player.gameMode.useItemOn(player, helper.getLevel(), tool,
+          net.minecraft.world.InteractionHand.MAIN_HAND, arkHit(module));
+      helper.assertTrue(tool.getDamageValue() == 100 - tool.getMaxDamage() / 4
+          && player.getOffhandItem().getCount() == 2, "Creative repair bypassed material cost");
+      helper.getLevel().removeBlock(module, false);
+      helper.assertTrue(!EngineeringWorkshop.repair(player, module, net.minecraft.world.InteractionHand.MAIN_HAND)
+          && player.getOffhandItem().getCount() == 2, "Removed workshop still consumed material");
+    }
+    helper.succeed();
+  }
+
+  private static final class WorkshopPlayer implements AutoCloseable {
+    final ServerPlayer player;
+    final net.minecraft.network.Connection connection;
+    final io.netty.channel.embedded.EmbeddedChannel channel;
+
+    WorkshopPlayer(GameTestHelper helper) {
+      var cookie = net.minecraft.server.network.CommonListenerCookie.createInitial(
+          new GameProfile(UUID.randomUUID(), "WorkshopQA"), false);
+      player = new ServerPlayer(helper.getLevel().getServer(), helper.getLevel(),
+          cookie.gameProfile(), cookie.clientInformation());
+      connection = new net.minecraft.network.Connection(net.minecraft.network.protocol.PacketFlow.SERVERBOUND);
+      channel = new io.netty.channel.embedded.EmbeddedChannel(connection);
+      net.neoforged.neoforge.network.registration.NetworkRegistry.configureMockConnection(connection);
+      try {
+        player.server.getPlayerList().placeNewPlayer(connection, player, cookie);
+        player.getInventory().clearContent();
+      } catch (RuntimeException | Error failure) {
+        close();
+        throw failure;
+      }
+    }
+
+    public void close() {
+      try {
+        connection.disconnect(net.minecraft.network.chat.Component.literal("Workshop QA finished"));
+        connection.handleDisconnection();
+      } finally {
+        channel.finishAndReleaseAll();
+      }
+    }
+  }
+
+  @GameTest(template = "empty", timeoutTicks = 200)
   public static void arkFieldJournalsReadCurrentTeamWithoutMutation(GameTestHelper helper)
       throws Exception {
     var reader = player(helper, "JournalReader");

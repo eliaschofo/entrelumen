@@ -1,0 +1,90 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-09-23",
+  "status": "bounded_runtime_pass",
+  "baseCommit": "4a625a6268b7826e5d25868e4208e3e22dd8457d",
+  "counts": {
+    "clientDependencies": 170,
+    "serverDependencies": 135,
+    "originalQuests": 171
+  },
+  "normalJarSha256": "d68b13c138048c0768c882d84a7eb9b06d869f36a21eb4a837e0d41ca9a582e9",
+  "sourceSha256": {
+    "companion/src/main/java/dev/entrelumen/EngineeringWorkshop.java": "373ebe538da2ca6799bf521af453094c96748f222c696c004bbfa487724d6f0b",
+    "companion/src/main/java/dev/entrelumen/EngineeringModuleBlock.java": "bfb355914fcbb9491d617d49eb9fec76d59633573d4886661f1771f9c63ba813",
+    "companion/src/main/java/dev/entrelumen/EngineeringModuleItem.java": "66e5bb008b6ee66d41518156769f87d8833fe32a104cf13be5e2e5ae1163a05c",
+    "companion/src/main/java/dev/entrelumen/RuntimeGameTests.java": "b12f2f50ca9a8b8f1b177118ed3a7ff78195f0147a86f038f48e5b289120e73c",
+    "companion/src/fullpackGameTest/java/dev/entrelumen/ArsCreateGameTests.java": "04b54b099d59e97bbae2363e3c6e905458269d1a12306ae54db7f96fc8dc1357",
+    "companion/src/fullpackGameTest/java/dev/entrelumen/ArsOccultismGameTests.java": "b420d5b801556f69e19a2dc82d2ad296fbc2eab2e272f22136edd0d22167b2c7",
+    "companion/src/fullpackGameTest/java/dev/entrelumen/ArsAe2GameTests.java": "405f927ee8105ab9c97861a57f5d01c19b515928681ebd412f42c12382aa9644",
+    "companion/src/fullpackGameTest/java/dev/entrelumen/FullpackQABootstrap.java": "a0252dc111ff1ce2eb30af7c1dda154713f2bd09a42bf88bb5cd8f90c14f64b8",
+    "content/act_six.json": "c75abbf8ca62009db27b4d9de796e7c034ee102b95572aaf4416aff419149902"
+  },
+  "runs": [
+    {
+      "kind": "firstQA",
+      "runId": "21e046f1-af1e-4f6e-b2de-cf82c2aeef2f",
+      "exitCode": 0,
+      "logSha256": "1b19fb82cad893ec364cbbfaeb98c7847ceeeb12f9307113ba7d857353bc3e25",
+      "errorLines": 1,
+      "jarSha256": "efda66c58323a63d326143ae4fe2cb4b19822520ad4a8871d6c7b8e52ae453a0"
+    },
+    {
+      "kind": "correctedQA",
+      "runId": "8990e700-c9ed-468b-a7fe-364dfb638dc6",
+      "exitCode": 0,
+      "logSha256": "f699bebc4b17339943ef38dea30b9d2bdcb26d813647c1bef12dd5b55c0bd0bd",
+      "errorLines": 0,
+      "jarSha256": "37b376dfe3f3df1764d6f4604704df36361f44a546d0d1d75d9777ce945f4ea3"
+    },
+    {
+      "kind": "normal",
+      "runId": "ab508061-06fa-4ef7-988f-db3b6c582abc",
+      "exitCode": 0,
+      "logSha256": "495020efab81acea607ae9dfb2975beba3cd24c78d669b9645bf0bc15bc1b608",
+      "errorLines": 0
+    }
+  ],
+  "passedTests": [
+    "engineeringworkshoprepairsgiftedtoolswithoutcampaignorcomponentchanges",
+    "engineeringworkshoprejectsinvalidstructureandusewithoutconsumption",
+    "finitearssourcedrivesandstopscreateshaft",
+    "containedfoliotcrushesoneinputthroughnativecapability",
+    "finitesourceacceptorpowersmestoragethencutsoff"
+  ],
+  "firstFailure": {
+    "test": "finitesourceacceptorpowersmestoragethencutsoff",
+    "classification": "QA energy observation used AE2 cached globalAvailablePower before refresh; corrected with a bounded wait for AE2 native indexing, additionally observing the finite physical energy cell; idle load and network checks retained",
+    "productionMagicChanges": false
+  },
+  "observations": [
+    "ENTRELUMEN_ARS_CREATE_SOURCE_MOTOR seeded=256 costPerSecond=128 runningRPM=32.0 networkCapacity=8192.0 stoppedRPM=0",
+    "ENTRELUMEN_ARS_OCCULTISM_NATIVE jar=ars_nouveau:mob_jar spirit=occultism:foliot job=occultism:crush_tier1 recipe=occultism:crushing/othercobblestone input=1 output=1 retryDuplicate=false",
+    "ENTRELUMEN_ARS_AE2_POWER sampleWait=0 powered=true cachedStoredAE=0.0 physicalCellAE=292.15625 idleAEPerTick=4.0234375",
+    "ENTRELUMEN_ARS_AE2_POWER sampleWait=40 powered=true cachedStoredAE=206.21875 physicalCellAE=131.21875 idleAEPerTick=4.0234375",
+    "ENTRELUMEN_ARS_AE2 sourceInitial=32 sourceFinal=0 ratio=16.0 aeAtExhaustion=206.21875 aeDrawn=125.75 aeAtCutoff=0.0 meItemsRetained=4 gridOff=true"
+  ],
+  "sourceChecks": {
+    "junit": 53,
+    "isolatedGameTests": 32,
+    "questChecks": 27,
+    "localeKeys": 200,
+    "artParity": "pass; no new artwork"
+  },
+  "integration": {
+    "profilesUpdated": 3,
+    "changedFiles": "normal companion and two generated quest translations only; unrelated local settings preserved",
+    "ownedServerStopped": true,
+    "qaClassesAbsentFromInstalledJar": true,
+    "computerUse": false,
+    "clientLaunched": false
+  },
+  "limits": [
+    "One useful engineering service is added; complete benefits of the other modules and postgame masteries remain unfinished.",
+    "Repair uses native material predicates plus the NeoForge repairability opt-out; it is not full anvil-event equivalence. Foreign-claim runtime and broad modded-tool matrix remain untested.",
+    "Ars tests seed finite Source and a summoned spirit. They verify native machine processing, not survival acquisition, a self-sustaining generation loop, ritual pacing or industrial throughput.",
+    "Two completed ME storage operations precede a deliberate QA energy demand used to bound shutdown time.",
+    "Client rendering, natural first-hour survival, campaign scale/pacing, benchmark routes, six-player sessions, two-hour soak and public CurseForge installation remain pending."
+  ],
+  "privateEvidence": "work/ark-workshop-magic-20260923; logs and process receipts retained outside repository"
+}

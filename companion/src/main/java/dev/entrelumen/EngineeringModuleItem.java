@@ -18,5 +18,6 @@ public final class EngineeringModuleItem extends BlockItem {
   public void appendHoverText(ItemStack stack, Item.TooltipContext context,
       List<Component> tooltip, TooltipFlag flag) {
     tooltip.add(Component.translatable("entrelumen.engineering.tooltip"));
+    tooltip.add(Component.translatable("entrelumen.engineering.repair_tooltip"));
   }
 }
