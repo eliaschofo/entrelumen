@@ -60,6 +60,7 @@ def tag(value):
     return {'tag': value}
 
 
+LM = 'entrelumen:living_matrix'
 PR, RM, HC = 'entrelumen:power_regulator', 'entrelumen:routing_matrix', 'entrelumen:handling_core'
 EC, SL, HZ = 'entrelumen:ecosystem_capsule', 'entrelumen:spectral_lens', 'entrelumen:horizon_chart'
 CS, RE, AB = 'entrelumen:containment_seal', 'entrelumen:renewal_engine', 'entrelumen:ark_bus'
@@ -112,6 +113,22 @@ FAMILIES = {
             without_values('data/industrialforegoing/curios/entities/entities.json', 'slots', ['example', 'feet'],
                            'Curios slot types that no selected mod registers'),
         ],
+    },
+    'qol': {
+        'script': 'entrelumen_qol_balance.js',
+        'tag': 'ENTRELUMEN_QOL_BALANCE',
+        'namespaces': {'easy_villagers', 'enderstorage', 'codechickenlib'},
+        'changes': [
+            shaped('easy_villagers:iron_farm', 0, 0, tag('c:glass_panes/colorless'), LM, 'II', 'Compact golem iron farm'),
+            shaped('easy_villagers:auto_trader', 0, 0, tag('c:glass_panes/colorless'), RM, 'III', 'Automated villager trading'),
+            shaped('enderstorage:ender_chest', 0, 0, item('minecraft:blaze_rod'), RM, 'III', 'Cross-dimension shared item storage',
+                   alternates=['enderstorage:recolour_ender_chest']),
+            shaped('enderstorage:ender_tank', 0, 0, item('minecraft:blaze_rod'), RM, 'III', 'Cross-dimension shared fluid storage',
+                   alternates=['enderstorage:recolour_ender_tank']),
+            shaped('enderstorage:ender_pouch', 0, 0, item('minecraft:blaze_powder'), RM, 'III', 'Remote access to a shared frequency',
+                   alternates=['enderstorage:recolour_ender_pouch']),
+        ],
+        'removals': [],
     },
 }
 

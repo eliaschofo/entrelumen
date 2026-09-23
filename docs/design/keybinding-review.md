@@ -67,3 +67,4 @@ F12 quedó comprobado en la pantalla de controles del perfil aislado, en españo
 ## Large-parity families (23 de septiembre de 2026)
 
 Las familias nuevas se revisan con los defaults leídos del bytecode de cada JAR fijado; no hubo cliente lanzado. [Industrial](industrial-expansion-family.md#keybindings): motor de Iron Jetpacks en F4, vuelo estacionario Alt+H, Just Dire Things Alt+T/Shift+T, Draconic Alt+P y Alt+Y (no C: Ars lee C como código crudo) y Hostile Neural Networks Alt+U. `tools/audit_keybindings.py --simulate-preset` sobre las opciones del perfil más esos defaults no encontró solapamientos de mundo ni riesgo de código crudo; los modificadores quedan como review-context hasta la prueba en cliente.
+[QoL](qol-functional-decor-family.md#keybindings): recogida de Easy Villagers en Shift+V e imán de Simple Magnets en Shift+M; el ciclo de ofertas conserva C porque actúa en la pantalla de comercio.

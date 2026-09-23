@@ -50,5 +50,6 @@ Families are added one reviewed batch at a time with `--add-families`, preservin
 | Family | Selected / libraries | Lock after the batch | Runtime receipt |
 |---|---|---|---|
 | [Industrial expansion](../docs/design/industrial-expansion-family.md) | 15 / 4 | 197 client / 162 server | [industrial](../docs/verification/industrial-expansion-runtime.json) |
+| [QoL and functional decoration](../docs/design/qol-functional-decor-family.md) | 18 / 2 | 217 client / 178 server | [qol](../docs/verification/qol-functional-decor-runtime.json) |
 
 Decisions against Oritech, Ender IO, Modern Industrialization, Extreme Reactors, Applied Flux, Productive Trees and Super Factory Manager are recorded in the industrial note. The lock, companion and QA server stay on NeoForge 21.1.249; no loader change was required.

@@ -34,6 +34,9 @@ PROPOSED = {
     "key_key.draconicevolution.place_item": "key.keyboard.p:ALT",
     "key_key.draconicevolution.tool_config": "key.keyboard.y:ALT",
     "key_key.hostilenetworks.open_deep_learner": "key.keyboard.u:ALT",
+    # QoL family (bytecode defaults V/H collided with Ultimine and the H group).
+    "key_key.easy_villagers.pick_up": "key.keyboard.v:SHIFT",
+    "key_simplemagnets.keys.toggle": "key.keyboard.m:SHIFT",
 }
 # Operational context, NOT an assertion of a mod's declared conflict context.
 GUI = {"key_key.jei.showRecipe", "key_key.jei.showRecipe2", "key_key.jei.showUses",
