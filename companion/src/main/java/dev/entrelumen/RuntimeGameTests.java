@@ -112,6 +112,125 @@ public final class RuntimeGameTests {
   }
 
   @GameTest(template = "empty", timeoutTicks = 200)
+  public static void arkFieldJournalsDepositOnlyTheirOwnBatches(GameTestHelper helper)
+      throws Exception {
+    var keeper = player(helper, "JournalKeeper");
+    var outsider = player(helper, "JournalGuest");
+    var controller = ark(helper, keeper);
+    var team = FTBTeamsAPI.api().getManager().createPartyTeam(keeper,
+        "Journal deposit " + keeper.getUUID(), "", dev.ftb.mods.ftblibrary.icon.Color4I.WHITE);
+    var campaign = Entrelumen.current(keeper);
+    campaign.act = 6;
+    campaign.completed.addAll(CampaignMilestones.MODULE_IDS);
+    var other = Entrelumen.current(outsider);
+    other.act = 6;
+    other.completed.addAll(CampaignMilestones.MODULE_IDS);
+    keeper.setShiftKeyDown(true);
+    outsider.setShiftKeyDown(true);
+    var data = CampaignData.get(keeper.server);
+    for (var kind : ArkFieldJournals.Kind.values()) {
+      var module = arkModule(helper, controller, kind.module());
+      keeper.teleportTo(module.getX() + 0.5, module.getY() + 1, module.getZ() + 0.5);
+      outsider.teleportTo(module.getX() + 0.5, module.getY() + 1, module.getZ() + 0.5);
+      var requirement = ArkCommissioning.STEPS.get(kind.step()).requirements().entrySet()
+          .iterator().next();
+      var supply = arkItem(requirement.getKey().substring("entrelumen:".length()));
+      int required = requirement.getValue();
+      campaign.arkPhase = kind.step() - 1;
+      campaign.arkDeposits.clear();
+      keeper.getInventory().setItem(1, ItemStack.EMPTY);
+      keeper.setItemInHand(net.minecraft.world.InteractionHand.OFF_HAND,
+          new ItemStack(supply, required > 1 ? 1 : 2));
+      int before = keeper.getOffhandItem().getCount();
+      var wrongPhase = keeper.gameMode.useItemOn(keeper, helper.getLevel(),
+          keeper.getMainHandItem(), net.minecraft.world.InteractionHand.MAIN_HAND, arkHit(module));
+      helper.assertTrue(wrongPhase.consumesAction() && campaign.arkPhase == kind.step() - 1
+          && campaign.arkDeposits.isEmpty() && keeper.getOffhandItem().getCount() == before,
+          "An earlier Ark batch was charged through " + kind.module());
+
+      campaign.arkPhase = kind.step();
+      outsider.setItemInHand(net.minecraft.world.InteractionHand.OFF_HAND,
+          new ItemStack(supply, required));
+      helper.assertTrue(!ArkActions.depositFromJournal(outsider, team.getId(), module, kind)
+          && outsider.getOffhandItem().getCount() == required
+          && other.arkDeposits.isEmpty(),
+          "A foreign campaign deposited through " + kind.module());
+      var first = keeper.gameMode.useItemOn(keeper, helper.getLevel(),
+          keeper.getMainHandItem(), net.minecraft.world.InteractionHand.MAIN_HAND, arkHit(module));
+      helper.assertTrue(first.consumesAction() && keeper.getOffhandItem().getCount()
+          == (required > 1 ? 0 : 1)
+          && campaign.arkPhase == (required > 1 ? kind.step() : kind.step() + 1)
+          && campaign.arkDeposits.equals(required > 1
+              ? Map.of(requirement.getKey(), 1) : Map.of()),
+          "Journal did not take only the available offhand quantity: " + kind.module());
+      var restored = CampaignData.load(data.save(new CompoundTag(),
+          helper.getLevel().registryAccess()), helper.getLevel().registryAccess())
+          .campaigns.parties.get(team.getId());
+      helper.assertTrue(restored != null && restored.arkPhase == campaign.arkPhase
+          && restored.arkDeposits.equals(campaign.arkDeposits),
+          "Journal deposit did not persist: " + kind.module());
+      if (required > 1) {
+        keeper.getInventory().setItem(1, new ItemStack(supply, required));
+        var finish = keeper.gameMode.useItemOn(keeper, helper.getLevel(),
+            keeper.getMainHandItem(), net.minecraft.world.InteractionHand.MAIN_HAND, arkHit(module));
+        helper.assertTrue(finish.consumesAction() && campaign.arkPhase == kind.step() + 1
+            && campaign.arkDeposits.isEmpty() && keeper.getInventory().getItem(1).getCount() == 1,
+            "Journal top-up consumed surplus or advanced the wrong batch: " + kind.module());
+      }
+      var remaining = Entrelumen.availableMaterials(keeper);
+      var replay = keeper.gameMode.useItemOn(keeper, helper.getLevel(),
+          keeper.getMainHandItem(), net.minecraft.world.InteractionHand.MAIN_HAND, arkHit(module));
+      helper.assertTrue(replay.consumesAction() && campaign.arkPhase == kind.step() + 1
+          && campaign.arkDeposits.isEmpty()
+          && Entrelumen.availableMaterials(keeper).equals(remaining)
+          && !campaign.completed.contains(CampaignMilestones.LAST_HORIZON),
+          "Journal replay consumed supplies or activated the ending: " + kind.module());
+    }
+    helper.assertTrue(other.arkPhase == 0 && other.arkDeposits.isEmpty(),
+        "Journal deposits leaked into another team's campaign");
+    helper.succeed();
+  }
+
+  @GameTest(template = "empty", timeoutTicks = 200)
+  public static void arkFieldJournalDepositNeedsAUniqueCompleteReachableArk(GameTestHelper helper) {
+    var reader = player(helper, "JournalGuard");
+    var controller = ark(helper, reader);
+    var module = arkModule(helper, controller, "arcane_module");
+    var campaign = Entrelumen.current(reader);
+    campaign.arkPhase = ArkFieldJournals.Kind.ARCANE.step();
+    reader.teleportTo(module.getX() + 0.5, module.getY() + 1, module.getZ() + 0.5);
+    reader.setShiftKeyDown(true);
+    reader.setItemInHand(net.minecraft.world.InteractionHand.OFF_HAND,
+        new ItemStack(arkItem("containment_seal"), 2));
+    var id = CampaignActions.campaignId(reader);
+    var extra = module.above();
+    helper.getLevel().setBlockAndUpdate(extra, helper.getLevel().getBlockState(controller));
+    helper.assertTrue(!ArkActions.depositFromJournal(reader, id, module,
+        ArkFieldJournals.Kind.ARCANE) && reader.getOffhandItem().getCount() == 2,
+        "Ambiguous controllers accepted a journal deposit");
+    helper.getLevel().removeBlock(extra, false);
+    var missing = arkModule(helper, controller, "nature_module");
+    var state = helper.getLevel().getBlockState(missing);
+    helper.getLevel().removeBlock(missing, false);
+    helper.assertTrue(!ArkActions.depositFromJournal(reader, id, module,
+        ArkFieldJournals.Kind.ARCANE) && reader.getOffhandItem().getCount() == 2,
+        "Missing physical module accepted a journal deposit");
+    helper.getLevel().setBlockAndUpdate(missing, state);
+    reader.teleportTo(module.getX() + 20.5, module.getY() + 1, module.getZ() + 0.5);
+    helper.assertTrue(!ArkActions.depositFromJournal(reader, id, module,
+        ArkFieldJournals.Kind.ARCANE), "Remote journal deposited supplies");
+    reader.teleportTo(module.getX() + 0.5, module.getY() + 1, module.getZ() + 0.5);
+    reader.setGameMode(net.minecraft.world.level.GameType.SPECTATOR);
+    helper.assertTrue(!ArkActions.depositFromJournal(reader, id, module,
+        ArkFieldJournals.Kind.ARCANE), "Spectator deposited through a journal");
+    reader.setGameMode(net.minecraft.world.level.GameType.SURVIVAL);
+    helper.assertTrue(campaign.arkPhase == 1 && campaign.arkDeposits.isEmpty()
+        && reader.getOffhandItem().getCount() == 2,
+        "Rejected journal interactions mutated inventory or batch");
+    helper.succeed();
+  }
+
+  @GameTest(template = "empty", timeoutTicks = 200)
   public static void logisticsModuleDepositsCurrentBatchFromTeamInventoryOnce(GameTestHelper helper)
       throws Exception {
     var player = player(helper, "LogisticsMain");

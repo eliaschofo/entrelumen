@@ -11,6 +11,29 @@ import org.junit.jupiter.api.Test;
 
 class ArkFieldJournalsTest {
   @Test
+  void journalDepositStateTracksOnlyItsOwnAuthoritativeBatch() {
+    var campaign = new Campaigns.Campaign();
+    campaign.act = 6;
+    for (var kind : ArkFieldJournals.Kind.values()) {
+      campaign.completed.clear();
+      assertEquals(kind.module(), ArkCommissioning.STEPS.get(kind.step()).module());
+      campaign.arkPhase = kind.step() - 1;
+      assertEquals(ArkFieldJournals.DepositState.FUTURE,
+          ArkFieldJournals.depositState(campaign, kind));
+      campaign.arkPhase = kind.step();
+      assertEquals(ArkFieldJournals.DepositState.BLOCKED,
+          ArkFieldJournals.depositState(campaign, kind));
+      campaign.completed.addAll(CampaignMilestones.MODULE_IDS);
+      assertEquals(ArkFieldJournals.DepositState.CURRENT,
+          ArkFieldJournals.depositState(campaign, kind));
+      campaign.arkPhase++;
+      assertEquals(ArkFieldJournals.DepositState.COMPLETE,
+          ArkFieldJournals.depositState(campaign, kind));
+    }
+    assertTrue(campaign.arkDeposits.isEmpty());
+  }
+
+  @Test
   void bookPagesKeepLongEvidenceAndEveryLineWithinVanillaRowLimit() {
     List<Component> evidence = List.of(Component.literal("Arcane testimony"),
         Component.literal("spectral_archive recorded"),

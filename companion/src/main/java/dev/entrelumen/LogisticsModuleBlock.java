@@ -24,9 +24,11 @@ public final class LogisticsModuleBlock extends Block {
         || event.getHand() != InteractionHand.MAIN_HAND
         || !event.getEntity().isSecondaryUseActive()
         || !event.getEntity().getMainHandItem().isEmpty()) return;
-    if (event.getLevel().hasChunkAt(event.getPos())
-        && event.getLevel().getBlockState(event.getPos()).getBlock() instanceof LogisticsModuleBlock)
-      event.setUseBlock(TriState.TRUE);
+    if (event.getLevel().hasChunkAt(event.getPos())) {
+      var block = event.getLevel().getBlockState(event.getPos()).getBlock();
+      if (block instanceof LogisticsModuleBlock || block instanceof ArkFieldJournalBlock)
+        event.setUseBlock(TriState.TRUE);
+    }
   }
 
   @Override

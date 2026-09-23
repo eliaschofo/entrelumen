@@ -9,7 +9,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 
-/** Four installed disciplines share one read-only native interaction. */
+/** Four installed disciplines share one book view and one local batch interaction. */
 public final class ArkFieldJournalBlock extends Block {
   private final ArkFieldJournals.Kind kind;
 
@@ -26,7 +26,10 @@ public final class ArkFieldJournalBlock extends Block {
   protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos,
       Player player, BlockHitResult hit) {
     if (!player.getMainHandItem().isEmpty()) return InteractionResult.PASS;
-    if (player instanceof ServerPlayer serverPlayer) ArkFieldJournals.inspect(serverPlayer, pos);
+    if (player instanceof ServerPlayer serverPlayer) {
+      if (player.isSecondaryUseActive()) ArkFieldJournals.deposit(serverPlayer, pos);
+      else ArkFieldJournals.inspect(serverPlayer, pos);
+    }
     return InteractionResult.sidedSuccess(level.isClientSide);
   }
 }

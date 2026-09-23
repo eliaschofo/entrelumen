@@ -3,12 +3,14 @@ package dev.entrelumen;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
+import java.util.function.Predicate;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.Block;
 
 /** One bounded server transaction per deliberate controller interaction. */
 public final class ArkActions {
@@ -50,10 +52,27 @@ public final class ArkActions {
   /** A second interaction point for the same controller transaction and SavedData ledger. */
   static boolean depositFromModule(ServerPlayer player, UUID expectedCampaign, BlockPos module,
       int expectedStep) {
+    return depositFromInstalledModule(player, expectedCampaign, module, expectedStep,
+        block -> block instanceof LogisticsModuleBlock,
+        "entrelumen.logistics.controller_unavailable");
+  }
+
+  /** Journal modules may only deposit their own fixed commissioning step. */
+  static boolean depositFromJournal(ServerPlayer player, UUID expectedCampaign, BlockPos module,
+      ArkFieldJournals.Kind kind) {
+    if (!ArkCommissioning.STEPS.get(kind.step()).module().equals(kind.module())) return false;
+    return depositFromInstalledModule(player, expectedCampaign, module, kind.step(),
+        block -> block instanceof ArkFieldJournalBlock journal && journal.kind() == kind,
+        "entrelumen.journal.controller_unavailable");
+  }
+
+  private static boolean depositFromInstalledModule(ServerPlayer player, UUID expectedCampaign,
+      BlockPos module, int expectedStep, Predicate<Block> matchingModule,
+      String unavailableMessage) {
     if (!player.isSecondaryUseActive() || !player.getMainHandItem().isEmpty()
         || player.isSpectator() || !player.canInteractWithBlock(module, 1.0)
         || !player.serverLevel().hasChunkAt(module)
-        || !(player.serverLevel().getBlockState(module).getBlock() instanceof LogisticsModuleBlock))
+        || !matchingModule.test(player.serverLevel().getBlockState(module).getBlock()))
       return false;
     if (!CampaignActions.campaignId(player).equals(expectedCampaign)) {
       player.sendSystemMessage(Component.translatable("entrelumen.atlas.stale"));
@@ -63,7 +82,7 @@ public final class ArkActions {
     var controller = LogisticsModuleActions.controllerForDeposit(physical);
     if (controller == null || !player.serverLevel().hasChunkAt(controller)
         || !(player.serverLevel().getBlockState(controller).getBlock() instanceof ArkControllerBlock)) {
-      player.sendSystemMessage(Component.translatable("entrelumen.logistics.controller_unavailable"));
+      player.sendSystemMessage(Component.translatable(unavailableMessage));
       return false;
     }
     return acceptDeposit(player, expectedStep);

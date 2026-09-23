@@ -43,6 +43,7 @@ public final class ArkFieldJournals {
 
   public record Evidence(String id, boolean recorded) {}
   public enum BatchState { UPCOMING, CURRENT, COMPLETE }
+  public enum DepositState { FUTURE, CURRENT, COMPLETE, BLOCKED }
   public enum Narrative { EMPTY, PARTIAL, RECORDED }
 
   public record View(Kind kind, List<Evidence> projects, List<Evidence> journeys,
@@ -93,6 +94,40 @@ public final class ArkFieldJournals {
       return false;
     PacketDistributor.sendToPlayer(player, snapshot(player, module, block.kind()));
     return true;
+  }
+
+  static DepositState depositState(Campaigns.Campaign campaign, Kind kind) {
+    if (campaign.arkPhase < kind.step()) return DepositState.FUTURE;
+    if (campaign.arkPhase > kind.step()) return DepositState.COMPLETE;
+    return ArkCommissioning.eligible(campaign) ? DepositState.CURRENT : DepositState.BLOCKED;
+  }
+
+  public static boolean deposit(ServerPlayer player, BlockPos module) {
+    if (!player.isSecondaryUseActive() || !player.getMainHandItem().isEmpty()
+        || player.isSpectator() || !player.canInteractWithBlock(module, 1.0)
+        || !player.serverLevel().hasChunkAt(module)
+        || !(player.serverLevel().getBlockState(module).getBlock() instanceof ArkFieldJournalBlock block))
+      return false;
+    var kind = block.kind();
+    switch (depositState(EngineeringDiagnostics.currentReadOnly(player), kind)) {
+      case FUTURE -> {
+        player.sendSystemMessage(Component.translatable("entrelumen.journal.deposit_future",
+            kind.step() + 1, ArkCommissioning.STEPS.size()));
+        return false;
+      }
+      case COMPLETE -> {
+        player.sendSystemMessage(Component.translatable("entrelumen.journal.deposit_complete"));
+        return false;
+      }
+      case BLOCKED -> {
+        player.sendSystemMessage(Component.translatable("entrelumen.journal.deposit_blocked"));
+        return false;
+      }
+      case CURRENT -> {
+        return ArkActions.depositFromJournal(player, CampaignActions.campaignId(player), module, kind);
+      }
+    }
+    throw new IllegalStateException("Unknown journal deposit state");
   }
 
   static JournalBookNetwork.Snapshot snapshot(ServerPlayer player, BlockPos module, Kind kind) {
