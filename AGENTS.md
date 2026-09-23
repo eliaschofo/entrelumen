@@ -8,4 +8,4 @@ Before designing or redesigning any item, block, interface, structure or dimensi
 
 ## Local generated storage
 
-On Elias's Windows workstation, keep heavyweight generated servers, worlds, backups, JDKs and build output on `G:/Elias/Codex/Entrelumen-work`; existing workspace junctions preserve their old paths. Check C: headroom before build/runtime batches and clean or relocate only owned transients while their processes are stopped. Preserve useful state and unrelated files. This records Elias's explicit 2026-09-23 request to avoid filling C: and keep janitorial work current.
+On Elias's Windows workstation, keep heavyweight generated servers, worlds, backups, JDKs, dependency downloads and build output on `G:/Elias/Codex/Entrelumen-work`; existing workspace junctions preserve their old paths, including `catalog/downloads`. Check C: headroom before build/runtime batches and clean or relocate only owned transients while their processes are stopped. Preserve useful state and unrelated files. This records Elias's explicit 2026-09-23 request to avoid filling C: and keep janitorial work current.

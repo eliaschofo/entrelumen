@@ -9,6 +9,7 @@ import net.minecraft.client.gui.components.*;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
+import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.network.PacketDistributor;
 
@@ -43,14 +44,25 @@ public final class AtlasScreen extends Screen {
   }
 
   private void update(AtlasNetwork.Snapshot updated) {
-    if (!updated.campaign().equals(snapshot.campaign()) || updated.act() != snapshot.act())
-      selectedId = "";
-    double scroll = projects == null ? 0 : projects.getScrollAmount();
+    boolean samePage = updated.campaign().equals(snapshot.campaign()) && updated.act() == snapshot.act();
+    String previousId = selectedId;
+    double projectScroll = projects == null ? 0 : projects.scrollPosition();
+    double detailScroll = details == null ? 0 : details.getScrollAmount();
+    int detailSelection = details == null ? -1 : details.children().indexOf(details.getSelected());
+    int focusedWidget = children().indexOf(getFocused());
+    if (!samePage) selectedId = "";
     snapshot = updated;
     feedback = updated.message();
     waiting = false;
     rebuildWidgets();
-    projects.setScrollAmount(scroll);
+    // Widget order is stable; retain the active page/button across server replies.
+    if (focusedWidget >= 0 && focusedWidget < children().size())
+      setInitialFocus(children().get(focusedWidget));
+    // Native keyboard focus may scroll a list, so restore reading positions afterwards.
+    if (samePage && selectedId.equals(previousId)) {
+      projects.restoreScrollPosition(projectScroll);
+      details.restorePosition(detailScroll, detailSelection);
+    }
   }
 
   @Override
@@ -61,7 +73,7 @@ public final class AtlasScreen extends Screen {
     panelX = (width - panelWidth) / 2;
     bookY = (height - 210) / 2;
     leftWidth = 110;
-    contentTop = bookY + 45;
+    contentTop = bookY + 42;
     contentBottom = bookY + 154;
     detailX = panelX + 166;
     detailWidth = 106;
@@ -83,7 +95,7 @@ public final class AtlasScreen extends Screen {
         Component.translatable("entrelumen.atlas.deliver"),
         button -> request(CampaignActions.Action.DELIVER, selectedId)));
     projects.populate();
-    if (selectedId.isEmpty())
+    if (snapshot.projects().stream().noneMatch(project -> project.id().equals(selectedId)))
       selectedId =
           snapshot.projects().stream()
               .filter(p -> !p.completed())
@@ -95,6 +107,7 @@ public final class AtlasScreen extends Screen {
         .filter(entry -> entry.project.id().equals(selectedId))
         .findFirst()
         .ifPresent(projects::setSelected);
+    if (projects.getSelected() != null) projects.ensureVisible(projects.getSelected());
     updateButtons();
   }
 
@@ -198,11 +211,15 @@ public final class AtlasScreen extends Screen {
     return Component.translatable("entrelumen.project." + id);
   }
 
-  private String fitLabel(String text, int availableWidth) {
-    if (font.width(text) <= availableWidth) return text;
-    String suffix = "...";
-    return font.plainSubstrByWidth(text, Math.max(0, availableWidth - font.width(suffix)))
-        + suffix;
+  private int projectRowHeight(int width) {
+    int textWidth = width - 14;
+    int lines = snapshot.projects().stream()
+        .mapToInt(project -> font.split(projectName(project.id()), textWidth).size()
+            + font.split(status(project), textWidth).size())
+        .max().orElse(2);
+    // Native lists use equal-height hit targets. Size them to the longest translated
+    // entry, including its status, with 2px padding/gap and the native 4px row gap.
+    return 10 + lines * font.lineHeight;
   }
 
   private Component status(AtlasNetwork.ProjectView project) {
@@ -219,7 +236,7 @@ public final class AtlasScreen extends Screen {
 
   private final class ProjectList extends ObjectSelectionList<ProjectEntry> {
     ProjectList(int width, int height, int top) {
-      super(AtlasScreen.this.minecraft, width, height, top, 36);
+      super(AtlasScreen.this.minecraft, width, height, top, projectRowHeight(width));
     }
 
     void populate() {
@@ -229,7 +246,31 @@ public final class AtlasScreen extends Screen {
 
     @Override
     public int getRowWidth() {
-      return getWidth() - 12;
+      return getWidth() - 8;
+    }
+
+    @Override
+    public int getRowLeft() {
+      return getX() + 2;
+    }
+
+    double scrollPosition() {
+      return getScrollAmount() / itemHeight;
+    }
+
+    void restoreScrollPosition(double position) {
+      setScrollAmount(position * itemHeight);
+    }
+
+    @Override
+    protected void ensureVisible(ProjectEntry entry) {
+      int index = children().indexOf(entry);
+      if (index < 0) return;
+      int top = getRowTop(index);
+      if (top < getY() + 4)
+        setScrollAmount(getScrollAmount() + top - getY() - 4);
+      else if (top + itemHeight > getBottom())
+        setScrollAmount(getScrollAmount() + top + itemHeight - getBottom());
     }
 
     @Override
@@ -271,11 +312,14 @@ public final class AtlasScreen extends Screen {
   private final class ProjectEntry extends ObjectSelectionList.Entry<ProjectEntry> {
     final AtlasNetwork.ProjectView project;
     final Component name, label;
+    final List<FormattedCharSequence> nameLines, labelLines;
 
     ProjectEntry(AtlasNetwork.ProjectView project) {
       this.project = project;
       name = projectName(project.id());
       label = status(project);
+      nameLines = font.split(name, projects.getRowWidth() - 6);
+      labelLines = font.split(label, projects.getRowWidth() - 6);
     }
 
     @Override
@@ -285,7 +329,7 @@ public final class AtlasScreen extends Screen {
 
     @Override
     public boolean mouseClicked(double x, double y, int button) {
-      if (button == 0) {
+      if (button == 0 && x < projects.getScrollbarPosition()) {
         projects.setSelected(this);
         return true;
       }
@@ -304,42 +348,46 @@ public final class AtlasScreen extends Screen {
         int mouseY,
         boolean hovered,
         float partialTick) {
-      graphics.drawString(
-          font,
-          fitLabel(name.getString(), rowWidth - 8),
-          x + 3,
-          y + 5,
-          PAPER,
-          false);
-      graphics.drawString(
-          font,
-          fitLabel(label.getString(), rowWidth - 8),
-          x + 3,
-          y + 19,
-          project.ready() ? COPPER : MUTED,
-          false);
-      if (hovered) setTooltipForNextRenderPass(name);
+      int textY = y + 2;
+      for (var line : nameLines) {
+        graphics.drawString(font, line, x + 3, textY, PAPER, false);
+        textY += font.lineHeight;
+      }
+      textY += 2;
+      for (var line : labelLines) {
+        graphics.drawString(font, line, x + 3, textY, project.ready() ? COPPER : MUTED, false);
+        textY += font.lineHeight;
+      }
+      if (hovered) setTooltipForNextRenderPass(getNarration());
     }
   }
 
   private final class DetailList extends ObjectSelectionList<DetailEntry> {
+    private String projectId = "";
+
     DetailList(int width, int height, int top) {
-      super(AtlasScreen.this.minecraft, width, height, top, 12);
+      super(AtlasScreen.this.minecraft, width, height, top, font.lineHeight + 1);
     }
 
     void populate(AtlasNetwork.ProjectView project) {
+      boolean sameProject = project.id().equals(projectId);
+      boolean hadFocus = isFocused();
+      double scroll = sameProject ? getScrollAmount() : 0;
+      int selection = sameProject ? children().indexOf(getSelected()) : -1;
+      // clearEntries does not clear the native focused-entry reference.
+      setFocused(null);
       clearEntries();
-      setScrollAmount(0);
+      projectId = project.id();
       addText(projectName(project.id()), PAPER);
       addText(status(project), COPPER);
       for (var material : project.materials()) {
         var stack = new ItemStack(BuiltInRegistries.ITEM.get(material.item()));
         var nameLines = font.split(stack.getHoverName(), getRowWidth() - 25);
-        // A native 16px icon spans two 12px rows. Keep every name line indented,
-        // including an empty second row for short names, before drawing quantities.
-        for (int i = 0; i < Math.max(2, nameLines.size()); i++)
+        // Keep the full 16px icon, using only the rows needed by its height/name.
+        int iconRows = (16 + itemHeight - 1) / itemHeight;
+        for (int i = 0; i < Math.max(iconRows, nameLines.size()); i++)
           addEntry(new DetailEntry(i == 0 ? stack : ItemStack.EMPTY,
-              i < nameLines.size() ? nameLines.get(i) : net.minecraft.util.FormattedCharSequence.EMPTY,
+              i < nameLines.size() ? nameLines.get(i) : FormattedCharSequence.EMPTY,
               stack.getHoverName(), PAPER, 23));
         addText(Component.translatable("entrelumen.atlas.amounts", material.available(),
             material.required(), Math.max(0, material.required() - material.available())),
@@ -355,6 +403,21 @@ public final class AtlasScreen extends Screen {
               ? "entrelumen.atlas.prerequisite_complete" : "entrelumen.atlas.prerequisite_missing"), MUTED);
         }
       }
+      restorePosition(scroll, selection, hadFocus);
+    }
+
+    void restorePosition(double scroll, int selection) {
+      restorePosition(scroll, selection, isFocused());
+    }
+
+    private void restorePosition(double scroll, int selection, boolean hadFocus) {
+      if (!children().isEmpty() && (selection >= 0 || hadFocus)) {
+        int index = Math.max(0, Math.min(selection, children().size() - 1));
+        var entry = children().get(index);
+        setSelected(entry);
+        if (hadFocus) setFocused(entry);
+      }
+      setScrollAmount(scroll);
     }
 
     private void addText(Component text, int color) {
@@ -365,12 +428,27 @@ public final class AtlasScreen extends Screen {
     @Override
     protected void renderSelection(GuiGraphics graphics, int top, int width, int height,
         int outerColor, int innerColor) {
-      graphics.fill(getX() + 2, top, getRight() - 8, top + height, 0xFFE0D0AA);
+      // A continuation line must not paint over the lower half of a 16px icon.
+      int left = getSelected() != null && getSelected().textOffset > 3
+          ? getRowLeft() + getSelected().textOffset - 1 : getX() + 2;
+      graphics.fill(left, top, getRight() - 8, top + height + 4, 0xFFE0D0AA);
     }
 
     @Override
     public int getRowWidth() {
-      return getWidth() - 12;
+      return getWidth() - 8;
+    }
+
+    @Override
+    public int getRowLeft() {
+      return getX() + 2;
+    }
+
+    @Override
+    protected int getRowBottom(int index) {
+      // Keep an icon's visible lower pixels when its first text row scrolls out.
+      return super.getRowBottom(index)
+          + (getEntry(index).item.isEmpty() ? 0 : Math.max(0, 16 - itemHeight));
     }
 
     @Override
@@ -394,22 +472,22 @@ public final class AtlasScreen extends Screen {
 
   private final class DetailEntry extends ObjectSelectionList.Entry<DetailEntry> {
     final ItemStack item;
-    final net.minecraft.util.FormattedCharSequence line;
+    final FormattedCharSequence line;
     final Component narration;
     final int color;
     final int textOffset;
-    DetailEntry(ItemStack item, Component text, int color) {
-      this(item, net.minecraft.util.FormattedCharSequence.EMPTY, text, color);
-    }
-    DetailEntry(ItemStack item, net.minecraft.util.FormattedCharSequence line, Component narration, int color) {
+    DetailEntry(ItemStack item, FormattedCharSequence line, Component narration, int color) {
       this(item, line, narration, color, item.isEmpty() ? 3 : 23);
     }
-    DetailEntry(ItemStack item, net.minecraft.util.FormattedCharSequence line, Component narration,
+    DetailEntry(ItemStack item, FormattedCharSequence line, Component narration,
         int color, int textOffset) {
       this.item = item; this.line = line; this.narration = narration; this.color = color;
       this.textOffset = textOffset;
     }
     @Override public Component getNarration() { return narration; }
+    @Override public boolean mouseClicked(double x, double y, int button) {
+      return button == 0 && x < details.getScrollbarPosition();
+    }
     @Override public void render(GuiGraphics graphics, int index, int y, int x, int rowWidth,
         int rowHeight, int mouseX, int mouseY, boolean hovered, float partialTick) {
       if (!item.isEmpty()) graphics.renderItem(item, x + 2, y);
