@@ -127,6 +127,7 @@ CLIENT = {'defaultoptions', 'drippyloadingscreen', 'smithingtemplateviewer', 'ch
           'extremesoundmuffler', 'toastcontrol', 'justzoom', 'rebind_narrator', 'moreoverlays',
           'sodium', 'immediatelyfast', 'fancymenu', 'konkrete', 'melody', 'searchables'}
 EXCLUDED = {'projecte', 'allthemodium', 'allthetweaks', 'alltheores', 'allthecompressed'}
+FAMILY_PINS = {}
 
 
 def read_json(path):
@@ -136,6 +137,39 @@ def read_json(path):
 def write_json(path, data):
     Path(path).parent.mkdir(parents=True, exist_ok=True)
     Path(path).write_text(json.dumps(data, ensure_ascii=False, indent=2) + '\n', encoding='utf-8', newline='\n')
+
+
+def load_families():
+    """Merge separately owned selections without allowing implicit version updates."""
+    for path in sorted((CATALOG / 'families').glob('*.json')):
+        family = read_json(path)
+        if family.get('schemaVersion') != 1:
+            raise ValueError(f'Unsupported family schema: {path.name}')
+        for field, target in (('content', CONTENT), ('qol', QOL)):
+            for mod_id, role in family.get(field, {}).items():
+                if mod_id in target or mod_id in EXCLUDED:
+                    raise ValueError(f'Duplicate or excluded family selection: {mod_id}')
+                if field == 'content' and (not isinstance(role, list) or len(role) != 3
+                        or not all(isinstance(value, str) and value for value in role)):
+                    raise ValueError(f'Expected act, role and integration for {mod_id}')
+                if field == 'qol' and (not isinstance(role, str) or not role):
+                    raise ValueError(f'Expected QoL role for {mod_id}')
+                target[mod_id] = role
+        for field, target in (('clientOnly', CLIENT), ('performance', PERFORMANCE), ('infrastructure', INFRA)):
+            target.update(family.get(field, []))
+        for pin in family.get('pins', []):
+            name = pin['filename']
+            if (Path(name).name != name or not name.endswith('.jar')
+                    or len(pin['sha256']) != 64 or not pin['modIds']
+                    or not pin['projectID'] or not pin['fileID']):
+                raise ValueError(f'Invalid dependency pin in {path.name}: {name}')
+            if name in FAMILY_PINS and FAMILY_PINS[name] != pin:
+                raise ValueError(f'Conflicting family pin: {name}')
+            FAMILY_PINS[name] = pin
+        pinned_ids = {mod_id for pin in family.get('pins', []) for mod_id in pin['modIds']}
+        requested = set(family.get('content', {})) | set(family.get('qol', {}))
+        if not requested <= pinned_ids:
+            raise ValueError(f'Unpinned family selection in {path.name}: {sorted(requested - pinned_ids)}')
 
 
 def jar_metadata(data):
@@ -183,8 +217,10 @@ def dependencies(meta):
     return meta['dependencies'] + [d for x in meta['embedded'] for d in dependencies(x)]
 
 
-def refresh(source):
+def refresh(source, preserve=False):
     source = Path(source).resolve()
+    previous_lock = read_json(CATALOG / 'curated.json') if preserve else None
+    previous_paths = read_json(CATALOG / 'local-paths.json') if preserve else None
     manifest = read_json(source / 'manifest.json')
     instance = read_json(source / 'minecraftinstance.json')
     files = {a['fileNameOnDisk']: a for a in instance.get('installedAddons', []) if a.get('isEnabled', True)}
@@ -228,14 +264,25 @@ def refresh(source):
             for mod_id in provided(entry['metadata']):
                 by_id.setdefault(mod_id, []).append(entry)
     requested = set(CONTENT) | set(QOL) | PERFORMANCE | INFRA
-    selected = {}
+    selected = {entry['filename']: entry for entry in previous_lock['mods']} if preserve else {}
+    existing_providers = set().union(*(provided(entry['metadata']) for entry in selected.values()))
+    if preserve:
+        paths.update(previous_paths)
     missing = []
     queue = [(mod, 'selected') for mod in sorted(requested)]
     while queue:
         mod, reason = queue.pop(0)
-        if mod in BUILTINS:
+        if mod in BUILTINS or mod in existing_providers:
             continue
         options = by_id.get(mod, [])
+        pins = [pin for pin in FAMILY_PINS.values() if mod in pin['modIds']]
+        if len(pins) > 1:
+            raise ValueError(f'Multiple family files claim the same mod: {mod}')
+        if pins:
+            pin = pins[0]
+            options = [entry for entry in options
+                       if all(entry.get(key) == pin[key] for key in ('filename', 'projectID', 'fileID'))
+                       and hashlib.sha256(Path(paths[entry['filename']]).read_bytes()).hexdigest() == pin['sha256']]
         if not options:
             missing.append({'id': mod, 'reason': reason})
             continue
@@ -274,6 +321,13 @@ def refresh(source):
             'publicationStatus': 'local-curation-only; official CurseForge App export required',
             'sidePolicy': 'Explicit client-only seed list; other libraries conservatively both. Actual dedicated-server launch remains required.',
             'missing': sorted(missing, key=lambda m: m['id']), 'mods': sorted(selected.values(), key=lambda e: e['filename'].lower())}
+    if preserve:
+        lock = dict(previous_lock, mods=lock['mods'], missing=lock['missing'])
+    _, client_errors = check(lock, paths, 'client')
+    _, server_errors = check(lock, paths, 'server')
+    errors = sorted(set(client_errors + server_errors))
+    if errors:
+        raise ValueError('Curation rejected before writing: ' + '; '.join(errors))
     write_json(CATALOG / 'curated.json', lock)
     write_json(CATALOG / 'local-paths.json', {e['filename']: paths[e['filename']] for e in lock['mods']})
     print(f"Curated {len(lock['mods'])} JARs; missing requested IDs: {', '.join(x['id'] for x in lock['missing'])}")
@@ -283,6 +337,14 @@ def check(lock, paths, side='client'):
     errors = [f"Requested dependency unavailable: {item['id']} ({item['reason']})" for item in lock['missing']]
     active = [e for e in lock['mods'] if side == 'client' or e['side'] != 'client']
     supplied = BUILTINS | set().union(*(provided(e['metadata']) for e in active))
+    locked_by_name = {entry['filename']: entry for entry in lock['mods']}
+    for name, pin in FAMILY_PINS.items():
+        entry = locked_by_name.get(name)
+        if entry is None:
+            errors.append(f'Missing pinned family dependency: {name}')
+        elif (any(entry.get(key) != pin[key] for key in ('sha256', 'projectID', 'fileID'))
+                or not set(pin['modIds']) <= provided(entry['metadata'])):
+            errors.append(f'Pinned family dependency changed: {name}')
     projects = {e['projectID'] for e in active}
     seen = set()
     for entry in active:
@@ -320,14 +382,20 @@ def check(lock, paths, side='client'):
 
 
 def main():
+    load_families()
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--refresh', metavar='SOURCE_INSTANCE')
+    selection = parser.add_mutually_exclusive_group()
+    selection.add_argument('--refresh', metavar='SOURCE_INSTANCE')
+    selection.add_argument('--add-families', metavar='SOURCE_INSTANCE',
+                           help='Add selected families while retaining every existing lock entry')
     parser.add_argument('--check', action='store_true')
     parser.add_argument('--install', type=Path, metavar='DEST_INSTANCE')
     parser.add_argument('--side', choices=['client', 'server'], default='client')
     args = parser.parse_args()
     if args.refresh:
         refresh(args.refresh)
+    if args.add_families:
+        refresh(args.add_families, preserve=True)
     lock, paths = read_json(CATALOG / 'curated.json'), read_json(CATALOG / 'local-paths.json')
     active, errors = check(lock, paths, args.side)
     if args.check:

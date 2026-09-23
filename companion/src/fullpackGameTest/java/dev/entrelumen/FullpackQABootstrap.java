@@ -41,9 +41,13 @@ public final class FullpackQABootstrap {
       GameTestRegistry.register(ResourceFarmGameTests.class);
       GameTestRegistry.register(Ae2CraftingGameTests.class);
       GameTestRegistry.register(RFToolsRecipeGameTests.class);
+      GameTestRegistry.register(CookingProvisionsGameTests.class);
+      GameTestRegistry.register(CookingWorldgenGameTests.class);
+      GameTestRegistry.register(TeamLifecycleGameTests.class);
       Set<String> expected = new TreeSet<>();
       for (Class<?> owner : List.of(RuntimeGameTests.class, FullpackGameTests.class,
-          ResourceFarmGameTests.class, Ae2CraftingGameTests.class, RFToolsRecipeGameTests.class))
+          ResourceFarmGameTests.class, Ae2CraftingGameTests.class, RFToolsRecipeGameTests.class,
+          CookingProvisionsGameTests.class, CookingWorldgenGameTests.class, TeamLifecycleGameTests.class))
         for (var method : owner.getDeclaredMethods())
           if (method.isAnnotationPresent(GameTest.class))
             expected.add(method.getName().toLowerCase(Locale.ROOT));
