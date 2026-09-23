@@ -1,0 +1,99 @@
+{
+  "schemaVersion": 1,
+  "checkedAt": "2026-09-23T04:05:16.906134+00:00",
+  "scope": "Engineering module diagnosis only; six-module endgame, art, survival pacing and performance acceptance remain unfinished.",
+  "sourceCommit": "9735d4ee90c6708fda3282ffe8046ac976d570d9",
+  "sourceCi": {
+    "runId": 35815747765,
+    "conclusion": "success"
+  },
+  "platform": "Minecraft 1.21.1 / NeoForge 21.1.249 / Java 21 / Windows",
+  "normalJarSha256": "47e07a1166be40e6a05891716d828295c2b7287cae39a196552d49ffad6f943f",
+  "qaJarSha256": "78ece2c3fac0bab665ba89ab74495abb5936c775e53ab73a92dce3e07f6fda3b",
+  "unitTests": {
+    "passed": 3,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "reportSha256": "08e3212a49323518818f046c0557d1443cb29a36dc35d07c54759e59ee63ec7e"
+  },
+  "isolatedGameTests": {
+    "passed": 25,
+    "logSha256": "3112daa63c6cd3452aa2cf43306ec75744e685f13578cca138ff1ecb5d5fc6eb",
+    "limitation": "Isolated environment has four synthetic external ingredients; not proof of native full-pack compatibility."
+  },
+  "fullpack": {
+    "runId": "f8412516-de1b-488f-8493-e8c3f0bf3fa1",
+    "requestId": "55b66a2e-7ff2-45f8-a382-393964751291",
+    "registeredTests": 26,
+    "executedTests": [
+      "engineeringmoduleinspectionisreadonlyandteamscoped"
+    ],
+    "passed": 1,
+    "result": "ENTRELUMEN_QA_RESULT PASS engineeringmoduleinspectionisreadonlyandteamscoped",
+    "watchdogMilliseconds": 60000,
+    "normalStop": true,
+    "exitCode": 0,
+    "normalJarRestored": true,
+    "logSha256": "3af76a740b057cbf74ca9b4a6952d25f478b60a314b9777ea01d3c1bc3fc7665",
+    "limitation": "Only this new targeted test ran; 26 registered is not 26 passed. A 2821 ms / 56 tick catch-up warning occurred during the mock-player test; no performance claim."
+  },
+  "client": {
+    "world": "ENTRELUMEN-QA-ActVI",
+    "fixture": "Previously staged creative QA world, campaign act 6, all six batches and last_horizon already complete.",
+    "renderSize": [
+      1024,
+      768
+    ],
+    "controller": [
+      0,
+      161,
+      0
+    ],
+    "engineeringModule": [
+      -2,
+      161,
+      -1
+    ],
+    "observed": [
+      "Two ordinary empty-main-hand engineering-module inspections rendered the completed-team diagnosis in Spanish.",
+      "After switching the native language setting, another ordinary inspection rendered the diagnosis in English.",
+      "Both languages reported all six recorded projects, last horizon complete, controller 0/161/0 and six physical modules.",
+      "Repeated inspections did not visibly consume inventory; automated test checks exact inventory equality.",
+      "Normal save/quit preserved the complete campaign NBT semantically; no campaign file was edited for this session."
+    ],
+    "campaignNbtSemanticallyUnchanged": true,
+    "campaignSemanticSha256": "c4e1ec8e7d1aa0100946df9a8d53dddbd14efad3be010c4e340921581aaa05da",
+    "campaignBeforeRawSha256": "917d164056f944a93591a1405b972fa829a711631b40ea549dc0353143198764",
+    "campaignAfterRawSha256": "917d164056f944a93591a1405b972fa829a711631b40ea549dc0353143198764",
+    "normalSaveAndShutdown": true,
+    "originalLanguageRestored": "es_es",
+    "logSha256": "1fc7306033b947a0e908593bf7fc80e1b522ab930eaeb273d0d528919cba9b6d",
+    "screenshots": [
+      {
+        "path": "docs/verification/screenshots/engineering-diagnosis-es.png",
+        "source": "2026-09-23_00.53.33.png",
+        "sha256": "b47e35c90e232b9a93faca1a5d76fcaddf8107a153503d4a5ac7f64af33d4223"
+      },
+      {
+        "path": "docs/verification/screenshots/engineering-diagnosis-repeat-es.png",
+        "source": "2026-09-23_00.55.35.png",
+        "sha256": "9cfe375d17b5683270d77a2eff30ccbd84e24d4ad42776b3a0d238f2242888ef"
+      },
+      {
+        "path": "docs/verification/screenshots/engineering-diagnosis-en.png",
+        "source": "2026-09-23_01.01.57.png",
+        "sha256": "ebcafe58c5954d4b830606b3db1d01f077b300809c38971d90bb9eb81155f5ed"
+      }
+    ],
+    "limitations": [
+      "Creative fixture does not prove survival acquisition, progression duration, co-op or representative base performance.",
+      "Incomplete, partial, independent-team, remote/spectator and unloaded/ambiguous cases are automated evidence, not human co-op observations.",
+      "The translated item tooltip and updated engineering quest instruction have not been visually inspected in this session.",
+      "Candidate block art is not accepted by this functional check.",
+      "One coordinate click after F2 rotated the camera onto stone; it was not counted as an inspection. Two subsequent input attempts (coordinate-free click and chat history) did not produce a diagnosis; the successful inspections are visible in the preserved native captures."
+    ]
+  },
+  "retainedLocalEvidenceDirectory": "C:\\Users\\elias\\Documents\\Codex\\2026-09-12\\h\\work\\engineering-evidence",
+  "localLogPolicy": "Logs and world backups retained locally; committed screenshots and hashes contain no credentials. No raw campaign UUIDs published."
+}

@@ -13,3 +13,7 @@ The existing `ArkControllerBlock.useWithoutItem`, `ArkActions.inspect` and nativ
 ## Acceptance for this extension
 
 Verify incomplete and completed campaigns, remaining partial-batch amounts, independent teams, repeated inspection without state/inventory mutation, missing/ambiguous/unloaded controllers, block/reach/spectator checks, and distinct commissioned/ending states. Render messages and the use hint in English and Spanish. Record automated and real-client evidence separately. This document states the intended behavior; implementation and runtime acceptance require their own results.
+
+## Recorded verification — 2026-09-23
+
+Source `9735d4ee90c6708fda3282ffe8046ac976d570d9` passed three focused unit tests, 25 isolated GameTests and the single new targeted GameTest in the real dedicated pack with the normal 60-second watchdog. The completed-state diagnosis rendered in English and Spanish in the real client; repeated inspections and normal saving left the complete campaign NBT semantically unchanged. See [runtime evidence](../verification/engineering-runtime.json) for hashes, native screenshots and limitations. The translated item tooltip and updated quest paragraph still need visual review; these results do not accept the candidate block art, survival pacing, performance or the remaining module experiences.
