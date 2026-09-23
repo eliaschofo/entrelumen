@@ -139,6 +139,8 @@ idea {
 
 
 dependencies {
+    // Native-network QA only; Maven Central bytes match the pinned CurseForge AE2 JAR.
+    fullpackGameTestCompileOnly('org.appliedenergistics:appliedenergistics2:19.2.17') { transitive = false }
     // Official Default Options 21.1.8 NeoForge upload; compile API only, never bundle it.
     compileOnly 'maven.modrinth:WEg59z5b:1zt17WsC'
     implementation 'dev.ftb.mods:ftb-teams-neoforge:2101.1.11'

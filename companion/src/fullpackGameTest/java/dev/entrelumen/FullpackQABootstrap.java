@@ -33,12 +33,17 @@ public final class FullpackQABootstrap {
     if (!Boolean.getBoolean("entrelumen.qa"))
       throw new IllegalStateException("The Entrelumen QA JAR requires -Dentrelumen.qa=true; do not distribute it");
     FullpackGameTests.requireNativeInputs();
+    ResourceFarmGameTests.requireNativeInputs();
     if (GameTestHooks.isGametestEnabled()) return;
     if (!registered) {
       GameTestRegistry.register(RuntimeGameTests.class);
       GameTestRegistry.register(FullpackGameTests.class);
+      GameTestRegistry.register(ResourceFarmGameTests.class);
+      GameTestRegistry.register(Ae2CraftingGameTests.class);
+      GameTestRegistry.register(RFToolsRecipeGameTests.class);
       Set<String> expected = new TreeSet<>();
-      for (Class<?> owner : List.of(RuntimeGameTests.class, FullpackGameTests.class))
+      for (Class<?> owner : List.of(RuntimeGameTests.class, FullpackGameTests.class,
+          ResourceFarmGameTests.class, Ae2CraftingGameTests.class, RFToolsRecipeGameTests.class))
         for (var method : owner.getDeclaredMethods())
           if (method.isAnnotationPresent(GameTest.class))
             expected.add(method.getName().toLowerCase(Locale.ROOT));

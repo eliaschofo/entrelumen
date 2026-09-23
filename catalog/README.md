@@ -23,7 +23,7 @@ The installer copies only selected JARs, writes an `entrelumen-dependencies.json
 
 ## Curatorial boundaries
 
-- One principal digital-storage system (AE2), three complementary expedition dimensions (Aether, Twilight Forest, Bumblezone), no extra biome overhaul stack.
+- One principal digital-storage system (AE2), three complementary expedition dimensions (Aether, Twilight Forest, Bumblezone), no extra biome overhaul stack. RFTools Power stores energy, not items; RFTools Storage and Dimensions are excluded.
 - No ProjectE, Allthemodium, Alltheores, Allthecompressed or AlltheTweaks. No imported pack-specific changes.
 - Kitchen-sink diversity includes environmental magic, soul magic, lasers, pressure, programmable logistics, fishing, cooking and decorative construction.
 - QoL supports inventory, recipes, information, keybinds, construction, navigation, recovery, cooperative claims and accessibility. Power-affecting upgrades still need original stage balance.
@@ -36,4 +36,4 @@ Malum 1.8.2 and Lodestone 1.8.2 declare Minecraft `[1.21,1.21.1)`, as do several
 
 Official additional-file evidence is retained in `external-sources.json`; no third-party rehost is used.
 
-The selection now contains 151 client / 116 server dependencies. Default Options 21.1.8 is client-only and uses the already pinned Balm. Its native fragments and the companion’s missing-option merge apply authored defaults while preserving existing values; see [runtime evidence](../docs/verification/automatic-defaults-runtime.json). The [on-demand tooltip batch](../docs/design/qol-tooltips.md) adds Shulker Box Tooltip, JEED, Equipment Compare and the required Iceberg library as client-only JARs; the previous 147 catalog rows remain unchanged.
+The selection now contains 157 client / 122 server dependencies. Default Options 21.1.8 is client-only and uses the already pinned Balm. Its native fragments and the companion’s missing-option merge apply authored defaults while preserving existing values; see [runtime evidence](../docs/verification/automatic-defaults-runtime.json). The [on-demand tooltip batch](../docs/design/qol-tooltips.md) adds Shulker Box Tooltip, JEED, Equipment Compare and the required Iceberg library as client-only JARs. The [RFTools/XNet family](../docs/design/rftools-family.md) adds five content projects and McJtyLib without changing the 151 previous lock entries. Dedicated startup, all 11 adjusted crafting recipes and configured quarry-card preservation have [bounded runtime evidence](../docs/verification/rftools-resource-runtime.json); client and machine-workload validation remain pending.

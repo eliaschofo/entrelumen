@@ -6,7 +6,15 @@ Estado: implementado en fuentes del pack, pendiente de crafting/EMI/servidor rea
 
 Los 16 IntegrationItems tienen recetas shapeless públicas; las 22 recetas de integración no consultan campaña ni acto. Por ejemplo, propagation_core deriva de prudentium+wax+living_matrix; ecosystem_capsule usa pollen_puff+wax+living_matrix; renewal_engine usa sky_ingot+imperium+esas piezas. Ninguna exige completar un acto. Por eso los números II–VI siguientes son **objetivos de progresión tecnológica y editorial, no gates narrativos demostrados**. No se disfrazó esa limitación agregando supuestos permisos al crafting. El progreso de campaña continúa siendo independiente de posesión y regalos.
 
-Para garantizar actos con intercambio libre hará falta una futura pieza de proyecto emitida por el servidor que habilite la obtención normal y permanezca transferible, o una revisión autorizada de las cadenas base. Este cambio no modifica el core ni inventa un componente registrado. Incluso una pieza regalable puede adelantar poder por decisión explícita del diseño.
+La revisión de las cadenas fijadas del 23 de septiembre no encontró un salto de tier que justifique agregar permisos de campaña. Se conserva progresión tecnológica por materiales, máquinas y el tier anterior; los proyectos narrativos mantienen su validación autoritativa separada. Esto no garantiza que cada tecnología se obtenga en un acto exacto ni acredita duración o dificultad final. Una ficha nueva sólo tendría sentido ante un bloqueo rígido requerido o un atajo demostrado; no es una condición necesaria para estas recetas.
+
+Tres comprobaciones concretas de fuentes upstream e integración:
+
+- JAMD minería conserva siete obsidianas y pico de diamante además del `calibration_frame`. El frame requiere dos iron sheets de Create, dos copper wires de IE y el lente propio. Ningún ingrediente exige entrar primero en JAMD.
+- Elite usa `propagation_core`, que combina esencias iniciales, cera y la matriz de Ars/Create/IE. Las 366 recetas shaped Ultra conservan una maceta Elite y las 366 Mega, una Ultra. Los ítems de mejora también conservan la condición nativa de tier previo en `useOn`. La cápsula Ultra incorpora materiales de Bumblezone; el motor Mega incorpora Nature's Aura, incluidas botellas de aura Overworld y Nether. No hace falta que la cápsula contenga otro núcleo de propagación para conservar la secuencia.
+- El core modular conserva advanced beehive, simulator y adult upgrade. El simulator requiere anti-teleport upgrade, blaze rods, perla y bloques de panal; fabricar partes modulares sueltas no evita esa cadena. La cera inicial se obtiene en la centrifugadora básica, sin exigir previamente el apiario modular.
+
+Una ficha emitida por `nursery_protocol` o `pollinator_treaty` y exigida para fabricar el componente que consume ese mismo proyecto produciría un ciclo. Tampoco se introduce una recompensa nueva al incorporarse a un equipo. Los regalos siguen funcionando y recibir materiales no completa hitos. La comprobación actual es de recetas y prerrequisitos; crafting cargado, conservación de contenido al mejorar, autocrafteo y supervivencia necesitan evidencia propia.
 
 ## Costos concretos aplicados
 
@@ -40,6 +48,8 @@ La conservación de serializer no es garantía nueva de NBT: crafting vanilla no
 ## Verificación y pendientes
 
 `python tools/generate_resource_balance.py --check --self-test`: hashes fijados, cobertura de inventario, IDs únicos, tres upgrades cubiertos, resultado/tipo/conditions invariantes; pruebas sintéticas smithing/base/addition, maceta normal y wax sin modificar, herramienta única JAMD conservada. `node --check` pasa. No se ejecutó Gradle ni servidor.
+
+Actualización del 23 de septiembre: tres GameTests posteriores pasaron con los mods reales. Cubren 17 recetas blancas representativas, Shift+clic para los tres upgrades regalados de un equipo en acto V a otro en I, preservación exacta de suelo/semilla/herramienta/stock/NBT y producción efectiva con conservación del stock lleno. No convierten la auditoría de 1421 transformaciones en 1421 pruebas runtime ni verifican smithing o todas las variantes. Ver [casos y límites](resource-farm-runtime-cases.md) y [recibo](../verification/rftools-resource-runtime.json).
 
 El evento modifica sólo recipes ya presentes: conditions opcionales inactivas no se fuerzan. afterRecipes emite un recibo limitado a presencia/resultado (`loaded-output-check-only`), deliberadamente no PASS de balance, ingredientes o NBT. Debe verificarse en servidor el JSON/ingredientes efectivos de rutas directas/quick/upgrade, resultado/count/color, crafting remainder, smithing con componentes, useOn con maceta llena y regalo a otro equipo. Revisar también recipes aportadas por otros addons/datapacks: el inventario cubre sólo los cuatro JAR fijados. Si cambia alguno, regenerar después de auditar la diferencia; no actualizar silenciosamente.
 

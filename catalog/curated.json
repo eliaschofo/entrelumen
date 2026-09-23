@@ -7455,6 +7455,51 @@
       ]
     },
     {
+      "filename": "mcjtylib-1.21-9.0.21.jar",
+      "bytes": 699982,
+      "projectID": 233105,
+      "fileID": 8256201,
+      "sourceSha1": "ae0cadbb2c3f4fabc955e627f8bbefa281aa5d3f",
+      "source": {
+        "provider": "curseforge",
+        "projectUrl": "https://www.curseforge.com/minecraft/mc-mods/mcjtylib",
+        "downloadUrl": "https://edge.forgecdn.net/files/8256/201/mcjtylib-1.21-9.0.21.jar",
+        "allowModDistribution": true
+      },
+      "metadata": {
+        "mods": [
+          {
+            "id": "mcjtylib",
+            "version": "1.21-9.0.21",
+            "name": "McJtyLib"
+          }
+        ],
+        "dependencies": [
+          {
+            "owner": "mcjtylib",
+            "id": "neoforge",
+            "required": true,
+            "type": "required",
+            "range": "[21.0,)",
+            "side": "both"
+          }
+        ],
+        "license": "MIT License https://github.com/McJtyMods/McJtyLib/blob/1.21_neo/LICENSE",
+        "embedded": []
+      },
+      "cfRequiredProjects": [],
+      "side": "both",
+      "sha256": "b8eca900d4fe77a495c74137bd6be79c67281e5d7ae67ca55f59980c64960a0e",
+      "selectionReason": "required by rftoolsbase (both)",
+      "roles": [
+        {
+          "modId": "mcjtylib",
+          "category": "dependency",
+          "role": "Required support for RFTools Base, Builder, Utility, Power and XNet"
+        }
+      ]
+    },
+    {
       "filename": "mcw-bridges-3.1.2-mc1.21.1neoforge.jar",
       "bytes": 661387,
       "sha256": "070b817d3282760d9789b22ce13779613c8b558e02012fd5884d343175d88fd9",
@@ -9904,6 +9949,265 @@
       ]
     },
     {
+      "filename": "rftoolsbase-1.21-6.0.11.jar",
+      "bytes": 463973,
+      "projectID": 326041,
+      "fileID": 8256204,
+      "sourceSha1": "9614bdc12d6c633801b254a983d30dd4cbeb5aee",
+      "source": {
+        "provider": "curseforge",
+        "projectUrl": "https://www.curseforge.com/minecraft/mc-mods/rftools-base",
+        "downloadUrl": "https://edge.forgecdn.net/files/8256/204/rftoolsbase-1.21-6.0.11.jar",
+        "allowModDistribution": true
+      },
+      "metadata": {
+        "mods": [
+          {
+            "id": "rftoolsbase",
+            "version": "1.21-6.0.11",
+            "name": "RFToolsBase"
+          }
+        ],
+        "dependencies": [
+          {
+            "owner": "rftoolsbase",
+            "id": "neoforge",
+            "required": true,
+            "type": "required",
+            "range": "[21.0,)",
+            "side": "both"
+          },
+          {
+            "owner": "rftoolsbase",
+            "id": "mcjtylib",
+            "required": true,
+            "type": "",
+            "range": "[1.21-9.0.21,)",
+            "side": "both"
+          }
+        ],
+        "license": "MIT License https://github.com/McJtyMods/RFToolsBase/blob/1.16/LICENCE",
+        "embedded": []
+      },
+      "cfRequiredProjects": [
+        233105
+      ],
+      "side": "both",
+      "sha256": "5195ba530e6cf9ba61c9954a3297679e6d29aa1b6182e27ae14ea43463dd4b00",
+      "selectionReason": "selected",
+      "roles": [
+        {
+          "modId": "rftoolsbase",
+          "category": "content",
+          "act": "II-III",
+          "role": "McJty machine frames and instruments",
+          "integration": "Provide the common material and machine base for bounded building, routing and power projects",
+          "status": "planned-not-yet-balanced"
+        }
+      ]
+    },
+    {
+      "filename": "rftoolsbuilder-1.21-7.0.6.jar",
+      "bytes": 1054873,
+      "projectID": 347706,
+      "fileID": 8704384,
+      "sourceSha1": "57615d79eab2d62e6627bec543015bd4585c316e",
+      "source": {
+        "provider": "curseforge",
+        "projectUrl": "https://www.curseforge.com/minecraft/mc-mods/rftools-builder",
+        "downloadUrl": "https://edge.forgecdn.net/files/8704/384/rftoolsbuilder-1.21-7.0.6.jar",
+        "allowModDistribution": true
+      },
+      "metadata": {
+        "mods": [
+          {
+            "id": "rftoolsbuilder",
+            "version": "1.21-7.0.6",
+            "name": "RFToolsBuilder"
+          }
+        ],
+        "dependencies": [
+          {
+            "owner": "rftoolsbuilder",
+            "id": "neoforge",
+            "required": true,
+            "type": "required",
+            "range": "[21.0,)",
+            "side": "both"
+          },
+          {
+            "owner": "rftoolsbuilder",
+            "id": "mcjtylib",
+            "required": true,
+            "type": "",
+            "range": "[1.21-9.0.21,)",
+            "side": "both"
+          },
+          {
+            "owner": "rftoolsbuilder",
+            "id": "rftoolsbase",
+            "required": true,
+            "type": "",
+            "range": "[1.21-6.0.11,)",
+            "side": "both"
+          }
+        ],
+        "license": "MIT License https://github.com/McJtyMods/RFToolsBuilder/blob/1.21_neo/LICENCE",
+        "embedded": []
+      },
+      "cfRequiredProjects": [
+        233105,
+        326041
+      ],
+      "side": "both",
+      "sha256": "d35029986064919cdebf93cebdbe6d6119e830cd0532a44b18bacfe75f4ebb4b",
+      "selectionReason": "selected",
+      "roles": [
+        {
+          "modId": "rftoolsbuilder",
+          "category": "content",
+          "act": "III",
+          "role": "Powered construction and quarry cards",
+          "integration": "Build player-designed infrastructure and mine JAMD for named reconstruction projects",
+          "status": "planned-not-yet-balanced"
+        }
+      ]
+    },
+    {
+      "filename": "rftoolspower-1.21-7.0.6.jar",
+      "bytes": 579975,
+      "projectID": 290209,
+      "fileID": 8256213,
+      "sourceSha1": "d32e54b4ee0e3fe176dd720772a8a5e20036147e",
+      "source": {
+        "provider": "curseforge",
+        "projectUrl": "https://www.curseforge.com/minecraft/mc-mods/rftools-power",
+        "downloadUrl": "https://edge.forgecdn.net/files/8256/213/rftoolspower-1.21-7.0.6.jar",
+        "allowModDistribution": true
+      },
+      "metadata": {
+        "mods": [
+          {
+            "id": "rftoolspower",
+            "version": "1.21-7.0.6",
+            "name": "RFToolsPower"
+          }
+        ],
+        "dependencies": [
+          {
+            "owner": "rftoolspower",
+            "id": "neoforge",
+            "required": true,
+            "type": "required",
+            "range": "[21.0,)",
+            "side": "both"
+          },
+          {
+            "owner": "rftoolspower",
+            "id": "mcjtylib",
+            "required": true,
+            "type": "",
+            "range": "[1.21-9.0.21,)",
+            "side": "both"
+          },
+          {
+            "owner": "rftoolspower",
+            "id": "rftoolsbase",
+            "required": true,
+            "type": "",
+            "range": "[1.21-6.0.11,)",
+            "side": "both"
+          }
+        ],
+        "license": "MIT License https://github.com/McJtyMods/RFToolsPower/blob/1.21_neo/LICENCE",
+        "embedded": []
+      },
+      "cfRequiredProjects": [
+        326041,
+        233105
+      ],
+      "side": "both",
+      "sha256": "259ebd617cc48e82bf0f1384ab661584829c6bcf0296273e338ceaa38a11f5d8",
+      "selectionReason": "selected",
+      "roles": [
+        {
+          "modId": "rftoolspower",
+          "category": "content",
+          "act": "II-III",
+          "role": "Fuelled generation and energy buffers",
+          "integration": "Keep early finite power useful and stage wireless distribution for larger workshops",
+          "status": "planned-not-yet-balanced"
+        }
+      ]
+    },
+    {
+      "filename": "rftoolsutility-1.21-7.0.12.jar",
+      "bytes": 1434987,
+      "projectID": 342466,
+      "fileID": 8256212,
+      "sourceSha1": "d82b4c55d7754176a59003098a0fe90667f0e52a",
+      "source": {
+        "provider": "curseforge",
+        "projectUrl": "https://www.curseforge.com/minecraft/mc-mods/rftools-utility",
+        "downloadUrl": "https://edge.forgecdn.net/files/8256/212/rftoolsutility-1.21-7.0.12.jar",
+        "allowModDistribution": true
+      },
+      "metadata": {
+        "mods": [
+          {
+            "id": "rftoolsutility",
+            "version": "1.21-7.0.12",
+            "name": "RFToolsUtility"
+          }
+        ],
+        "dependencies": [
+          {
+            "owner": "rftoolsutility",
+            "id": "neoforge",
+            "required": true,
+            "type": "required",
+            "range": "[21.0,)",
+            "side": "both"
+          },
+          {
+            "owner": "rftoolsutility",
+            "id": "mcjtylib",
+            "required": true,
+            "type": "",
+            "range": "[1.21-9.0.21,)",
+            "side": "both"
+          },
+          {
+            "owner": "rftoolsutility",
+            "id": "rftoolsbase",
+            "required": true,
+            "type": "",
+            "range": "[1.21-6.0.11,)",
+            "side": "both"
+          }
+        ],
+        "license": "MIT License https://github.com/McJtyMods/RFToolsUtility/blob/1.16/LICENCE",
+        "embedded": []
+      },
+      "cfRequiredProjects": [
+        233105,
+        326041
+      ],
+      "side": "both",
+      "sha256": "1fdbf7505c6d6f4ef93b8b15961c9c1a6a4d35a5d676297f8f647916238f4d2a",
+      "selectionReason": "selected",
+      "roles": [
+        {
+          "modId": "rftoolsutility",
+          "category": "content",
+          "act": "III-IV",
+          "role": "Powered logic and finite services",
+          "integration": "Add measured screens, teleport routes and material-fed spawning for provisioned facilities",
+          "status": "planned-not-yet-balanced"
+        }
+      ]
+    },
+    {
       "filename": "rhino-2101.2.8-build.91.jar",
       "bytes": 980936,
       "projectID": 416294,
@@ -11677,6 +11981,73 @@
           "act": "II",
           "role": "Established travel routes",
           "integration": "Connect discovered expedition outposts",
+          "status": "planned-not-yet-balanced"
+        }
+      ]
+    },
+    {
+      "filename": "xnet-1.21-7.0.7.jar",
+      "bytes": 611577,
+      "projectID": 260912,
+      "fileID": 8256226,
+      "sourceSha1": "3ee807801ee484ee06d53d0bdb9ed85a6f10abf5",
+      "source": {
+        "provider": "curseforge",
+        "projectUrl": "https://www.curseforge.com/minecraft/mc-mods/xnet",
+        "downloadUrl": "https://edge.forgecdn.net/files/8256/226/xnet-1.21-7.0.7.jar",
+        "allowModDistribution": true
+      },
+      "metadata": {
+        "mods": [
+          {
+            "id": "xnet",
+            "version": "1.21-7.0.7",
+            "name": "XNet"
+          }
+        ],
+        "dependencies": [
+          {
+            "owner": "xnet",
+            "id": "neoforge",
+            "required": true,
+            "type": "",
+            "range": "[21.0,)",
+            "side": "both"
+          },
+          {
+            "owner": "xnet",
+            "id": "mcjtylib",
+            "required": true,
+            "type": "",
+            "range": "[1.21-9.0.21,)",
+            "side": "both"
+          },
+          {
+            "owner": "xnet",
+            "id": "rftoolsbase",
+            "required": true,
+            "type": "",
+            "range": "[1.21-6.0.11,)",
+            "side": "both"
+          }
+        ],
+        "license": "MIT License https://github.com/McJtyMods/XNet/blob/1.21_neo/LICENCE",
+        "embedded": []
+      },
+      "cfRequiredProjects": [
+        233105,
+        326041
+      ],
+      "side": "both",
+      "sha256": "0f393a4bff91a90e0665ec6d66ff649e45f9c33311dc038e4a5df0b154ea9d80",
+      "selectionReason": "selected",
+      "roles": [
+        {
+          "modId": "xnet",
+          "category": "content",
+          "act": "III",
+          "role": "Multichannel logic and routing",
+          "integration": "Coordinate item, fluid, energy and signal paths between specialized workshops",
           "status": "planned-not-yet-balanced"
         }
       ]
