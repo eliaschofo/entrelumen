@@ -1,0 +1,134 @@
+{
+  "schemaVersion": 1,
+  "checkedAt": "2026-09-23T04:27:45.663726+00:00",
+  "scope": "Logistics partial-deposit interaction and native EN/ES presentation; not final six-module endgame, art, pacing or performance acceptance.",
+  "sourceCommit": "4b1fbeb4fa086b8f441f6004f41afda3d8747fef",
+  "sourceCi": {
+    "runId": 35817277005,
+    "conclusion": "success"
+  },
+  "platform": "Minecraft 1.21.1 / NeoForge 21.1.249 / Java 21 / Windows",
+  "normalJarSha256": "6ed084ebed4054add3039d236681dfdc39359208c9bd8cd4957b92a9375be22d",
+  "qaJarSha256": "132bf8526edff0d4cb0db1015b6c45e4ca283c367e6c4a38c8c1ca8dd5c010e1",
+  "unitTests": [
+    {
+      "class": "dev.entrelumen.ArkCommissioningTest",
+      "passed": 4,
+      "reportSha256": "65e5b2e596c0e709fb4f8a3ac48cb9b12f95ddc518b046a5c060a9e210752912"
+    },
+    {
+      "class": "dev.entrelumen.LogisticsModuleActionsTest",
+      "passed": 1,
+      "reportSha256": "8488d301a3fe4cda630403f4537f9f5361a54cc9ec82b96d87a71088f50c207c"
+    }
+  ],
+  "isolatedGameTests": {
+    "passed": 27,
+    "logSha256": "feb51fe07319dbfbd96d1c0b15a46d18b5c7972ad5d8d69059f9662cd0109782",
+    "limitation": "Isolated test fixtures include four synthetic external ingredients; they do not establish native full-pack compatibility."
+  },
+  "fullpack": {
+    "runId": "96690dc2-3029-4669-bc54-f8cf4812cda6",
+    "registered": 28,
+    "executed": [
+      "logisticsmoduledepositscurrentbatchfromteaminventoryonce",
+      "logisticsmodulerejectsambiguousmissingremoteandspectator"
+    ],
+    "passed": 2,
+    "requests": [
+      "e0dbf4d2-edf9-4e70-b3a4-7454f2f994e0",
+      "728f912b-d598-427f-8cf4-ac9eeac580ca"
+    ],
+    "normalStopRequest": "a276c9d4-dfa3-4aeb-84d7-891de71ba8c0",
+    "exitCode": 0,
+    "watchdogMilliseconds": 60000,
+    "normalJarRestored": true,
+    "logSha256": "f177286448cfb99ca15ffb5910ff3579f28ef18cbbbfaef4fb6155ba5595203e",
+    "verified": [
+      "Exact partial inventory consumption, offhand supplies and surplus retention",
+      "Personal/team/outsider isolation and stale identity rejection",
+      "SavedData serialization round trip of the partial ledger",
+      "Repeated use cannot replay an old batch or trigger the final ending",
+      "Ambiguous controller, missing module, remote reach, spectator and explicit denied block-use rejection"
+    ],
+    "limitation": "Two new targeted tests ran, not all 28 registered tests. Unloaded-volume rejection is a unit-level geometric test. A 2127 ms / 42 tick catch-up warning occurred; this is not a performance measurement."
+  },
+  "client": {
+    "world": "ENTRELUMEN-QA-ActVI",
+    "fixture": "Existing creative QA world with a completed act-six campaign. No campaign or inventory staging was performed during this client session; a native teleport positioned the camera.",
+    "renderSize": [
+      1024,
+      768
+    ],
+    "controller": [
+      0,
+      161,
+      0
+    ],
+    "logisticsModule": [
+      2,
+      161,
+      1
+    ],
+    "observed": [
+      "Ordinary empty-main-hand module use rendered the completed-state query in Spanish and English",
+      "Logistics and engineering item hints rendered legibly in native EMI tooltips in both languages",
+      "Only one recipe panel was visible during these observations",
+      "Native save and quit left the complete campaign NBT semantically unchanged"
+    ],
+    "campaignNbtSemanticallyUnchanged": true,
+    "campaignSemanticSha256": "c4e1ec8e7d1aa0100946df9a8d53dddbd14efad3be010c4e340921581aaa05da",
+    "campaignBeforeRawSha256": "917d164056f944a93591a1405b972fa829a711631b40ea549dc0353143198764",
+    "campaignAfterRawSha256": "917d164056f944a93591a1405b972fa829a711631b40ea549dc0353143198764",
+    "normalSaveAndShutdown": true,
+    "originalLanguageRestored": "es_es",
+    "emiSearchCleared": true,
+    "screenshots": [
+      {
+        "path": "docs/verification/screenshots/logistics-diagnosis-es.png",
+        "nativeSource": "2026-09-23_01.18.31.png",
+        "kind": "logistics completed-state interaction es_es",
+        "sha256": "c38472b57805ab6eb23847bd90d5e62a99b4312b22686848f6d4952dd1b796f6"
+      },
+      {
+        "path": "docs/verification/screenshots/logistics-diagnosis-en.png",
+        "nativeSource": "2026-09-23_01.23.11.png",
+        "kind": "logistics completed-state interaction en_us",
+        "sha256": "d41390c3a8027f7e16eb834cd8d5812b153871bb06978dc4b6f9439568a5f228"
+      },
+      {
+        "path": "docs/verification/screenshots/logistics-tooltip-es.png",
+        "nativeSource": "2026-09-23_01.19.49.png",
+        "kind": "logistics tooltip es_es",
+        "sha256": "758f89b7f95e704058b1e4110b124907b6c5260a198425e645b5cde6410fd35d"
+      },
+      {
+        "path": "docs/verification/screenshots/logistics-tooltip-en.png",
+        "nativeSource": "2026-09-23_01.24.43.png",
+        "kind": "logistics tooltip en_us",
+        "sha256": "5da8920fdf8bf5c4a9ed714a8ad96090eeb69d7ce050a68f20af91f392d54adb"
+      },
+      {
+        "path": "docs/verification/screenshots/engineering-tooltip-es.png",
+        "nativeSource": "2026-09-23_01.20.29.png",
+        "kind": "engineering tooltip es_es",
+        "sha256": "b744402d60ac0f06d03731277c4346236b518b736d81d3ba3b90f4b4041ea401"
+      },
+      {
+        "path": "docs/verification/screenshots/engineering-tooltip-en.png",
+        "nativeSource": "2026-09-23_01.23.54.png",
+        "kind": "engineering tooltip en_us",
+        "sha256": "59687b47de0289bed92ac208d975eab89f2be39ee10f2c54b129ba0f8dc5447a"
+      }
+    ],
+    "logSha256": "fd59956946a1d40023c1928e521d50bd5ccf29798a70d073eff6e4f29273408d",
+    "foundIssue": "Completed-state messages still displayed the deposit hint. A follow-up source change removes that hint after commissioning or the ending; it was not part of this tested JAR and needs its own validation.",
+    "limitations": [
+      "Partial deposits were exercised by native full-pack GameTests, not manually in this completed client fixture",
+      "Updated quest paragraphs were generated and structurally checked, not visually inspected in this session",
+      "Only the current 1024x768 GUI layout was checked; candidate block art, survival pacing, co-op and performance remain unaccepted"
+    ]
+  },
+  "retainedLocalEvidenceDirectory": "C:\\Users\\elias\\Documents\\Codex\\2026-09-12\\h\\work\\logistics-evidence",
+  "review": "Root source review and behavioral checks; a separate Astra reviewer could not be created because the agent thread limit was reached. No independent review is claimed."
+}
