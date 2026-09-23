@@ -1,13 +1,15 @@
 {
   "schema": 1,
-  "status": "selection proposal; no runtime parity claim",
+  "status": "selection with bounded runtime observations; no overall parity claim",
   "date": "2026-09-12",
   "current_mod_ids": [
     "actuallyadditions",
     "advanced_ae",
     "ae2",
     "ae2jeiintegration",
+    "ae2wtlib",
     "aether",
+    "akashictome",
     "almostunified",
     "amendments",
     "appleskin",
@@ -19,11 +21,15 @@
     "balm",
     "betteradvancedtooltips",
     "betteradvancements",
+    "betterpingdisplay",
     "bookshelf",
     "botanypots",
     "botanypotstiers",
     "buildinggadgets2",
+    "chat_heads",
+    "cherishedworlds",
     "chipped",
+    "cleanswing",
     "clumps",
     "comforts",
     "commoncapabilities",
@@ -31,17 +37,24 @@
     "constructionstick",
     "controlling",
     "cookingforblockheads",
+    "copycats",
     "cosmeticarmorreworked",
+    "crafting_on_a_stick",
     "craftingtweaks",
     "create",
+    "create_connected",
     "cucumber",
     "curios",
     "cyclopscore",
+    "defaultoptions",
+    "drippyloadingscreen",
     "emi",
     "enchdesc",
+    "equipmentcompare",
     "evilcraft",
     "evilcraftcompat",
     "explorerscompass",
+    "exposure",
     "extendedae",
     "extremesoundmuffler",
     "fancymenu",
@@ -63,7 +76,9 @@
     "glodium",
     "guideme",
     "handcrafted",
+    "iceberg",
     "immediatelyfast",
+    "immersive_aircraft",
     "immersiveengineering",
     "integrateddynamics",
     "integrateddynamicscompat",
@@ -74,6 +89,7 @@
     "jadeaddons",
     "jamd",
     "jearchaeology",
+    "jeed",
     "jei",
     "jei_mekanism_multiblocks",
     "journeymap",
@@ -86,6 +102,8 @@
     "lodestone",
     "lootr",
     "malum",
+    "mcwbridges",
+    "mcwroofs",
     "megacells",
     "mekanism",
     "mekanism_extras",
@@ -118,8 +136,10 @@
     "resourcefullib",
     "rhino",
     "searchables",
+    "shulkerboxtooltip",
     "simplebackups",
     "smartbrainlib",
+    "smithingtemplateviewer",
     "sodium",
     "sophisticatedbackpacks",
     "sophisticatedcore",
@@ -708,7 +728,7 @@
     },
     {
       "name": "Shulker Box Tooltip",
-      "mod_id": null,
+      "mod_id": "shulkerboxtooltip",
       "slug": "shulkerboxtooltip",
       "version": "5.1.9+1.21.1-neoforge",
       "version_id": "IuqNIoAi",
@@ -723,10 +743,11 @@
       ],
       "required_dependencies": [],
       "description": "View the contents of shulker boxes from your inventory",
-      "already_selected": false,
+      "already_selected": true,
       "craftoria_manifest_presence": "not matched: Modrinth evidence only",
-      "decision": "priority next isolated trial",
-      "value_or_audit_question": "View the contents of shulker boxes from your inventory"
+      "decision": "integrated; bounded runtime evidence with held-input limits",
+      "value_or_audit_question": "View the contents of shulker boxes from your inventory",
+      "evidence": "docs/verification/qol-tooltips-runtime.json"
     },
     {
       "name": "Chat Heads",
@@ -987,7 +1008,7 @@
     },
     {
       "name": "Equipment Compare",
-      "mod_id": null,
+      "mod_id": "equipmentcompare",
       "slug": "equipment-compare",
       "version": "1.3.13",
       "version_id": "efoMHHTh",
@@ -1014,10 +1035,11 @@
         }
       ],
       "description": "Makes it easier to compare equipment by showing a tooltip for what you're already wearing.",
-      "already_selected": false,
+      "already_selected": true,
       "craftoria_manifest_presence": "not matched: Modrinth evidence only",
-      "decision": "priority next isolated trial",
-      "value_or_audit_question": "Makes it easier to compare equipment by showing a tooltip for what you're already wearing."
+      "decision": "integrated; bounded runtime evidence with held-input limits",
+      "value_or_audit_question": "Makes it easier to compare equipment by showing a tooltip for what you're already wearing.",
+      "evidence": "docs/verification/qol-tooltips-runtime.json"
     },
     {
       "name": "Legendary Tooltips",
@@ -1385,18 +1407,19 @@
     {
       "id": "container_preview",
       "function": "Vista de contenedores",
-      "owner": "Shulker Box Tooltip candidato",
-      "current_mod_ids": [],
-      "proposed_ids_or_names": [
+      "owner": "Shulker Box Tooltip",
+      "current_mod_ids": [
         "shulkerboxtooltip"
       ],
+      "proposed_ids_or_names": [],
       "avoid_overlap": "Easy Shulker Boxes previews duplicados",
-      "proposed_key_context": "Shift-hover",
-      "runtime_verification": "pending; no new client evidence in this audit",
+      "proposed_key_context": "Left Shift compact; Alt+Shift full; Ctrl lock (native defaults; held-input QA pending)",
+      "runtime_verification": "Compact filled/empty views checked ES GUI3 and EN GUI2 using temporary always-on; restored false. Sophisticated no takeover observed; held previews pending.",
       "acceptance_scenario": "Sophie previews existentes antes de sumar",
       "atm10_reference": "not established",
       "craftoria_reference": "not established",
-      "ftb_evolution_reference": "unknown: official page confirms release but mod list not exposed in fetched HTML"
+      "ftb_evolution_reference": "unknown: official page confirms release but mod list not exposed in fetched HTML",
+      "evidence": "docs/verification/qol-tooltips-runtime.json"
     },
     {
       "id": "food_info",
@@ -1433,18 +1456,19 @@
     {
       "id": "potion_info",
       "function": "Explicación efectos",
-      "owner": "JEED si ya seleccionado",
-      "current_mod_ids": [],
-      "proposed_ids_or_names": [
+      "owner": "Just Enough Effect Descriptions",
+      "current_mod_ids": [
         "jeed"
       ],
+      "proposed_ids_or_names": [],
       "avoid_overlap": "otro panel pociones",
-      "proposed_key_context": "hover efecto",
-      "runtime_verification": "pending; no new client evidence in this audit",
+      "proposed_key_context": "Search effect name in EMI, then open its virtual icon",
+      "runtime_verification": "Haste page/providers checked ES GUI3/EN GUI2. Companion fixes JEED discriminator omission; new effect history survived resource reload and unrelated item query/resave in QA.",
       "acceptance_scenario": "JEI/EMI puente",
       "atm10_reference": "not established",
       "craftoria_reference": "not established",
-      "ftb_evolution_reference": "unknown: official page confirms release but mod list not exposed in fetched HTML"
+      "ftb_evolution_reference": "unknown: official page confirms release but mod list not exposed in fetched HTML",
+      "evidence": "docs/verification/qol-tooltips-runtime.json"
     },
     {
       "id": "smithing_info",
@@ -1465,18 +1489,20 @@
     {
       "id": "item_compare",
       "function": "Comparar equipo",
-      "owner": "Equipment Compare candidato",
-      "current_mod_ids": [],
-      "proposed_ids_or_names": [
-        "equipmentcompare"
+      "owner": "Equipment Compare + Iceberg",
+      "current_mod_ids": [
+        "equipmentcompare",
+        "iceberg"
       ],
+      "proposed_ids_or_names": [],
       "avoid_overlap": "panel atributos duplicado",
-      "proposed_key_context": "Shift-hover configurable",
-      "runtime_verification": "pending; no new client evidence in this audit",
+      "proposed_key_context": "Left Shift in inventory (native default; held-input QA pending)",
+      "runtime_verification": "Iron versus diamond comparison and translated badge fit ES GUI3/EN GUI2 using temporary default_on=true; restored false. Curios comparisons remain off.",
       "acceptance_scenario": "ancho tooltip con Curios",
       "atm10_reference": "not established",
       "craftoria_reference": "not established",
-      "ftb_evolution_reference": "unknown: official page confirms release but mod list not exposed in fetched HTML"
+      "ftb_evolution_reference": "unknown: official page confirms release but mod list not exposed in fetched HTML",
+      "evidence": "docs/verification/qol-tooltips-runtime.json"
     },
     {
       "id": "durability",
@@ -2046,6 +2072,24 @@
     "source": "https://www.feed-the-beast.com/modpacks/125-ftb-evolution/mods",
     "status": "official HTML fetched, version verified, no mod entries exposed; function presence unknown"
   },
-  "runtime_conflicts_verified": [],
-  "note": "Key assignments are proposals, not observed defaults. Registry IDs from Modrinth-only candidates remain null until JAR metadata inspection. No parity completion claim."
+  "runtime_conflicts_verified": [
+    {
+      "id": "jeed-emi-effect-discriminator",
+      "status": "fixed_and_runtime_verified",
+      "origin": "Added JEED 1.21-2.3.4 serializer omits type=mob_effect. EMI 1.1.24 reads type before selecting a serializer.",
+      "observedImpact": "Language reload logs a caught NullPointerException in EmiSidebars.load; stored Haste lookup is discarded. Page itself still works.",
+      "potentialImpact": "Favorites and hidden effects use the same serializer; not separately exercised.",
+      "dataPolicy": "No user histories/favorites cleared or rewritten.",
+      "fix": "Optional client-only companion mixin adds type=mob_effect to JEED serializer output only when absent; no hard JEED/EMI dependency and no history migration."
+    },
+    {
+      "id": "backpack-accessory-slot-labels",
+      "status": "preexisting_pending",
+      "origin": "Accessories embedded in pinned Aether and existing Curios each emit a Back slot line; backpack has both item tags.",
+      "observedImpact": "Two slot labels, including Accessories English fallback in Spanish. No additional container panel from this batch.",
+      "configFinding": "Accessories showEquippedStackSlotType governs experimental equipped UI, not this tooltip callback; no suitable config fix found."
+    }
+  ],
+  "note": "Most key assignments remain proposals. Three tooltip functions now distinguish observed rendering from untested held controls; see linked evidence. No overall QoL parity claim.",
+  "updated": "2026-09-23"
 }

@@ -15,7 +15,7 @@ python tools/curate_pack.py --install 'PATH/TO/SEPARATE_INSTANCE' --side client
 python tools/curate_pack.py --install 'PATH/TO/SEPARATE_SERVER' --side server
 ```
 
-`catalog/local-paths.json` is ignored and holds machine-local origins. `catalog/downloads/` is ignored and holds additional official dependencies. CurseForge metadata lives in `external-sources.json`; pinned Modrinth additions carry their project/version IDs, metadata and download URLs directly in `curated.json`. Fetch those exact public URLs and verify their recorded hashes before refreshing on a new workstation. No account data is needed or stored. Existing source SHA-1 values are checked during refresh; the final lock verifies every local SHA-256 on check/install.
+`catalog/local-paths.json` is ignored and holds machine-local origins. `catalog/downloads/` is ignored and holds additional official dependencies. CurseForge metadata lives in `external-sources.json`; pinned Modrinth additions carry their project/version IDs, metadata and download URLs directly in `curated.json`. Fetch those exact public URLs and verify their recorded hashes before refreshing on a new workstation. No account data is needed or stored. Existing source SHA-1 values are checked during refresh; the final lock verifies every local SHA-256 and recorded provider SHA-1/SHA-512 on check/install.
 
 Do not use a whole-instance refresh to add a small batch: it can select newer files from the reference instance. Preserve the existing lock entries and compare every pre-existing filename/hash when integrating additions. The [building and expeditions batch](../docs/design/building-and-expeditions.md) follows this additive rule.
 
@@ -36,4 +36,4 @@ Malum 1.8.2 and Lodestone 1.8.2 declare Minecraft `[1.21,1.21.1)`, as do several
 
 Official additional-file evidence is retained in `external-sources.json`; no third-party rehost is used.
 
-The selection now contains 147 client / 116 server dependencies. Default Options 21.1.8 is client-only and uses the already pinned Balm. Its native fragments and the companion’s missing-option merge apply authored defaults while preserving existing values; see [runtime evidence](../docs/verification/automatic-defaults-runtime.json). The previous 146 catalog rows remain unchanged.
+The selection now contains 151 client / 116 server dependencies. Default Options 21.1.8 is client-only and uses the already pinned Balm. Its native fragments and the companion’s missing-option merge apply authored defaults while preserving existing values; see [runtime evidence](../docs/verification/automatic-defaults-runtime.json). The [on-demand tooltip batch](../docs/design/qol-tooltips.md) adds Shulker Box Tooltip, JEED, Equipment Compare and the required Iceberg library as client-only JARs; the previous 147 catalog rows remain unchanged.

@@ -1,0 +1,221 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-09-23",
+  "status": "bounded_integration_verified_with_limits",
+  "scope": "Three client information features and their library; not full QoL parity or release acceptance.",
+  "dependencies": {
+    "client": 151,
+    "server": 116,
+    "previousClientRowsUnchanged": 147,
+    "serverRowsUnchanged": true
+  },
+  "originalLanguageOverlays": {
+    "locales": [
+      "en_us",
+      "es_es"
+    ],
+    "jeedKeysPerLocale": 46,
+    "equipmentCompareKeysPerLocale": 2,
+    "placeholderParity": true,
+    "thirdPartyTranslationCopied": false
+  },
+  "initialRun": {
+    "profile": "ENTRELUMEN Defaults QA",
+    "world": "ENTRELUMEN Atlas e inventario QA",
+    "fixture": "Backed-up superflat UI world; QA datapack grants containers, armor and Haste, changes mode to survival. Peaceful selected. Not natural acquisition.",
+    "companionSha256": "c0046f479cb1d7ed83f41b6d92aa8d60bf5dd16e5c0528a17cb5e0deff3594da",
+    "viewport": [
+      1024,
+      768
+    ],
+    "languageScalePairs": [
+      {
+        "locale": "es_es",
+        "guiScale": 3
+      },
+      {
+        "locale": "en_us",
+        "guiScale": 2
+      }
+    ],
+    "observed": [
+      "Filled shulker compact view shows 16 copper ingots, 8 bread and one compass. Empty blue shulker shows empty; no stale contents.",
+      "Equipment Compare renders worn iron chestplate +6 armor next to diamond +8 armor/+2 toughness. Equipped/Equipado badge translated; panels fit. No comparison on shulker.",
+      "EMI search prisa/haste opens a single JEED status-effect page with original description and provider list in both languages. No duplicate JEI category observed.",
+      "With EMI effect-location TOP, clicking the native active effect did not open the JEED page; search the virtual effect icon instead.",
+      "Sophisticated backpack opens with B and accepts an iron chestplate. Empty/filled hover is not taken over by Shulker even with temporary always-on enabled.",
+      "Saved all dimensions and exited normally at 06:10:20 Argentina."
+    ],
+    "temporaryRenderingSettings": {
+      "equipmentCompareDefaultOn": true,
+      "shulkerAlwaysOn": true,
+      "reason": "Sky has tap chords, no documented held-modifier input. These settings exercise rendering only."
+    },
+    "restoredQaSettings": {
+      "equipmentCompareDefaultOn": false,
+      "shulkerAlwaysOn": false,
+      "equipmentSha256": "3cd6496878bf79cc2ab094f0c2d4736c7a11be1dc2812b62b0236bb35785a286",
+      "shulkerSha256": "5084d73325eb10313068a2446ffd7fda663b811737210882dad7a6de630eb97a"
+    },
+    "errorLines": 46,
+    "errorBreakdown": {
+      "ignoredThirdPartyResourcePaths": 45,
+      "jeedEmiHistoryDeserialization": 1
+    },
+    "logSha256": "0b9b3b617299e11945b7eba2d86d5be1405068a8f903d902f3ffcb8a0770086b"
+  },
+  "defects": [
+    {
+      "id": "jeed-emi-effect-discriminator",
+      "status": "fixed_and_runtime_verified",
+      "origin": "Added JEED 1.21-2.3.4 serializer omits type=mob_effect. EMI 1.1.24 reads type before selecting a serializer.",
+      "observedImpact": "Language reload logs a caught NullPointerException in EmiSidebars.load; stored Haste lookup is discarded. Page itself still works.",
+      "potentialImpact": "Favorites and hidden effects use the same serializer; not separately exercised.",
+      "dataPolicy": "No user histories/favorites cleared or rewritten.",
+      "fix": "Optional client-only companion mixin adds type=mob_effect to JEED serializer output only when absent; no hard JEED/EMI dependency and no history migration."
+    },
+    {
+      "id": "backpack-accessory-slot-labels",
+      "status": "preexisting_pending",
+      "origin": "Accessories embedded in pinned Aether and existing Curios each emit a Back slot line; backpack has both item tags.",
+      "observedImpact": "Two slot labels, including Accessories English fallback in Spanish. No additional container panel from this batch.",
+      "configFinding": "Accessories showEquippedStackSlotType governs experimental equipped UI, not this tooltip callback; no suitable config fix found."
+    }
+  ],
+  "installedInto": [
+    {
+      "profile": "ENTRELUMEN",
+      "dependencies": 151,
+      "overlays": {
+        "resourcepacks/entrelumen/assets/jeed/lang/en_us.json": "eda46068d5aec8e470882ca628735ff1c5786baf084d0379b2df572ff910d6c3",
+        "resourcepacks/entrelumen/assets/jeed/lang/es_es.json": "6dfe947e47e0cd314c4c52b3ab3669ee00f469b0a83ed391ddab6cf9d1fcb787",
+        "resourcepacks/entrelumen/assets/equipmentcompare/lang/en_us.json": "1464b45f7795ff341b11ee18ac0bc235db0829b346ed121b6889d27f75405476",
+        "resourcepacks/entrelumen/assets/equipmentcompare/lang/es_es.json": "89e757f4596015d173f379ae1aec9c7676ff78ed1dd3f36f6b62e68ab8cdd06b"
+      },
+      "companionSha256": "ad0786ef811d83b4287fed12072133195fe8d083933f8a72d0a63c7fceda2ef2"
+    },
+    {
+      "profile": "ENTRELUMEN Defaults QA",
+      "dependencies": 151,
+      "overlays": {
+        "resourcepacks/entrelumen/assets/jeed/lang/en_us.json": "eda46068d5aec8e470882ca628735ff1c5786baf084d0379b2df572ff910d6c3",
+        "resourcepacks/entrelumen/assets/jeed/lang/es_es.json": "6dfe947e47e0cd314c4c52b3ab3669ee00f469b0a83ed391ddab6cf9d1fcb787",
+        "resourcepacks/entrelumen/assets/equipmentcompare/lang/en_us.json": "1464b45f7795ff341b11ee18ac0bc235db0829b346ed121b6889d27f75405476",
+        "resourcepacks/entrelumen/assets/equipmentcompare/lang/es_es.json": "89e757f4596015d173f379ae1aec9c7676ff78ed1dd3f36f6b62e68ab8cdd06b"
+      },
+      "companionSha256": "ad0786ef811d83b4287fed12072133195fe8d083933f8a72d0a63c7fceda2ef2"
+    }
+  ],
+  "screenshots": [
+    {
+      "path": "docs/verification/screenshots/qol-jeed-es-gui3.png",
+      "sha256": "c41fec182097c2183168e35206208158d039413a690ff336fea80ee500433350",
+      "source": "2026-09-23_05.54.31.png"
+    },
+    {
+      "path": "docs/verification/screenshots/qol-equipment-es-gui3.png",
+      "sha256": "2f1d9994ed7b9c66fefd93916a0eed2c3d093f37a9390fa038ec0b62f06a1042",
+      "source": "2026-09-23_05.55.06.png"
+    },
+    {
+      "path": "docs/verification/screenshots/qol-shulker-es-gui3.png",
+      "sha256": "5d31c695e9be7574f04eceb4eb7d613c30946da83aeb5904f0f361225765664f",
+      "source": "2026-09-23_05.57.35.png"
+    },
+    {
+      "path": "docs/verification/screenshots/qol-equipment-en-gui2.png",
+      "sha256": "bc0c8c7cb38d1635ff9e2bf302ed660b82f3f30aa0598a1198a0074a4886d959",
+      "source": "2026-09-23_06.08.07.png"
+    },
+    {
+      "path": "docs/verification/screenshots/qol-shulker-en-gui2.png",
+      "sha256": "3d605e29262ee933d7ac7167f8c2b6ddde3d1e73f0a9a9142671d768ee8bf13a",
+      "source": "2026-09-23_06.08.28.png"
+    },
+    {
+      "path": "docs/verification/screenshots/qol-backpack-slot-conflict-en.png",
+      "sha256": "c533c5f1291b7778b323dee32f50c913a11749d7fa9d764481a2fa2fc896a15e",
+      "source": "2026-09-23_06.08.41.png"
+    },
+    {
+      "path": "docs/verification/screenshots/qol-jeed-en-gui2.png",
+      "sha256": "f28a32e8cc5c12df2a4170c305d21c1c9cbfaebea6bc5f883416de584d8d11ff",
+      "source": "2026-09-23_06.09.23.png"
+    }
+  ],
+  "rawEvidenceDirectory": "work/qol-tooltips-20260923 (workspace root; not distributed)",
+  "limits": [
+    "Held Shift/Alt/Ctrl, full slot-preserving preview, preview locking, physical EN/ES keyboard layouts and screen-edge placement are pending.",
+    "Sophisticated held-Shift contents preview and a modded effect without a description are pending.",
+    "No new dedicated-server run: dependency set unchanged and additions are client-only.",
+    "No FPS/TPS, memory-soak, survival pacing, final artwork, six-player or public CurseForge acceptance claimed.",
+    "This batch changes no quests or campaign IDs. Prototype remains 171 quests in seven chapters and 42 milestones.",
+    "Full-pack dedicated server was not rerun for this client-only patch; the isolated 30-test dedicated server passed without JEED/EMI. Separate favorite/hidden-effect persistence remains untested."
+  ],
+  "sourceValidation": {
+    "junitTests": 50,
+    "junitFailures": 0,
+    "gameTestsWithoutJeedEmi": 30,
+    "gameTestFailures": 0,
+    "dedicatedMetadataLoadWithoutClientDependencies": true,
+    "companionSha256": "ad0786ef811d83b4287fed12072133195fe8d083933f8a72d0a63c7fceda2ef2",
+    "runtimeMixinApplication": "Verified: new Haste query gains discriminator, reload parses it, unrelated bread query resaves it intact.",
+    "gameTestLogSha256": "773e086f4cc5c334f3f844d2c9e54fa20c2b7ca3bc04b7d2a1ff53d6029b83ba"
+  },
+  "regressionRun": {
+    "profile": "ENTRELUMEN Defaults QA",
+    "companionSha256": "ad0786ef811d83b4287fed12072133195fe8d083933f8a72d0a63c7fceda2ef2",
+    "locale": "en_us",
+    "guiScale": 2,
+    "plainHoverAfterRestart": "Diamond chestplate has no comparison panel; filled shulker has a Shift hint and no expanded preview. Temporary QA settings are restored.",
+    "oldMalformedEntry": "One startup error at 06:23:32 from the previously saved Haste record without type. EMI omitted this record; the fix does not edit old data.",
+    "newQuery": "Opened Haste in EMI; emi.json now contains type=mob_effect.",
+    "reload": "F3+T from the world; EMI finished reloading at 06:26:23 without another deserialization error.",
+    "memoryRoundTrip": "After reload, queried bread without reopening Haste. EMI resaved bread followed by the intact Haste object, proving the effect survived in-memory loading.",
+    "historyBeforeReload": [
+      {
+        "id": "minecraft:haste",
+        "show_icon": true,
+        "neoforge:cures": [
+          "protected_by_totem",
+          "milk"
+        ],
+        "type": "mob_effect"
+      }
+    ],
+    "historyAfterReloadAndSave": [
+      "item:minecraft:bread",
+      {
+        "id": "minecraft:haste",
+        "show_icon": true,
+        "neoforge:cures": [
+          "protected_by_totem",
+          "milk"
+        ],
+        "type": "mob_effect"
+      }
+    ],
+    "normalShutdown": "All dimensions saved; client stopped normally at 06:28:34 Argentina. History retained after shutdown.",
+    "errorLines": 31,
+    "errorBreakdown": {
+      "ignoredThirdPartyResourcePaths": 30,
+      "oldMalformedHistoryAtStartup": 1,
+      "newHistoryDeserialization": 0
+    },
+    "otherDiagnostics": "Two INFO-level OpenGL debug reports at 06:22:52 say depth formats do not match. No visible corruption in inspected screens; origin/performance impact not established.",
+    "logSha256": "4fccf14fe2d1012479a869b8e1f7aa0cf894ac9e87b3365e66663147eec2f743",
+    "historySnapshotSha256": {
+      "emi-before-fix.json": "ff9b50475d6c20b4516e2496cf51eb7326a54a228f5341fd23d7cedbd8467d97",
+      "emi-new-query-before-reload.json": "a4d9016a40a1506177909a24407f7e6e05e2751db09d0bade2b267dfecf17328",
+      "emi-reloaded-and-saved.json": "6027362b264f7211a3c280d4bf55ca3570f95270639da32a44b1b55a33315be9",
+      "emi-after-shutdown.json": "6027362b264f7211a3c280d4bf55ca3570f95270639da32a44b1b55a33315be9"
+    }
+  },
+  "companionAlsoInstalledInto": [
+    {
+      "profile": "owned dedicated server-slice",
+      "dependencies": 116,
+      "companionSha256": "ad0786ef811d83b4287fed12072133195fe8d083933f8a72d0a63c7fceda2ef2"
+    }
+  ]
+}

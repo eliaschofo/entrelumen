@@ -94,6 +94,9 @@ QOL = {
     'controlling': 'Search and resolve keybinding conflicts', 'appleskin': 'Explain food and saturation',
     'craftingtweaks': 'Rotate and balance crafting ingredients', 'trashslot': 'Deliberate inventory disposal',
     'enchdesc': 'Explain enchantments',
+    'jeed': 'Explain status effects through the existing EMI and JEI recipe viewers',
+    'shulkerboxtooltip': 'Preview shulker and supported container contents on demand',
+    'equipmentcompare': 'Compare hovered equipment with equipped items on demand',
     'journeymap': 'Map discoveries and expedition markers', 'naturescompass': 'Locate desired natural environments',
     'explorerscompass': 'Locate exploration destinations with balanced search configuration',
     'ftbultimine': 'Bounded connected mining with tool and hunger cost',
@@ -113,6 +116,7 @@ QOL = {
 PERFORMANCE = {'sodium', 'modernfix', 'ferritecore', 'spark', 'immediatelyfast', 'fastsuite', 'fastfurnace', 'fastbench'}
 INFRA = {'drippyloadingscreen', 'ftbteams', 'ftbquests', 'kubejs', 'almostunified', 'ponderjs', 'fancymenu'}
 CLIENT = {'defaultoptions', 'drippyloadingscreen', 'smithingtemplateviewer', 'chat_heads', 'betterpingdisplay', 'cherishedworlds', 'emi', 'jei', 'mousetweaks', 'controlling', 'appleskin', 'trashslot',
+          'shulkerboxtooltip', 'equipmentcompare', 'iceberg',
           'enchdesc', 'jeed', 'journeymap', 'betteradvancements', 'justenoughbreeding',
           'justenoughprofessions', 'jearchaeology', 'jei_mekanism_multiblocks', 'ae2jeiintegration',
           'extremesoundmuffler', 'toastcontrol', 'justzoom', 'rebind_narrator', 'moreoverlays',
@@ -297,6 +301,8 @@ def check(lock, paths, side='client'):
             errors.append(f'Unsupported source provider: {name}')
         if path.is_file() and entry.get('sourceSha1') and hashlib.sha1(path.read_bytes()).hexdigest() != entry['sourceSha1']:
             errors.append(f'Official source SHA1 mismatch: {name}')
+        if path.is_file() and source.get('sourceSha512') and hashlib.sha512(path.read_bytes()).hexdigest() != source['sourceSha512']:
+            errors.append(f'Official source SHA512 mismatch: {name}')
         if provided(entry['metadata']) & EXCLUDED:
             errors.append(f'Excluded mod: {name}')
         for dep in dependencies(entry['metadata']):
