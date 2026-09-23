@@ -18,6 +18,70 @@ import net.neoforged.neoforge.gametest.*;
 @PrefixGameTestTemplate(false)
 public final class RuntimeGameTests {
   @GameTest(template = "empty", timeoutTicks = 200)
+  public static void engineeringModuleInspectionIsReadOnlyAndTeamScoped(GameTestHelper helper)
+      throws Exception {
+    var engineer = player(helper, "EngInspector");
+    var outsider = player(helper, "EngOutsider");
+    var pos = helper.absolutePos(new net.minecraft.core.BlockPos(1, 1, 1));
+    var controller = pos.offset(1, 0, 0);
+    helper.getLevel().setBlockAndUpdate(pos,
+        BuiltInRegistries.BLOCK.get(ResourceLocation.parse("entrelumen:engineering_module"))
+            .defaultBlockState());
+    helper.getLevel().setBlockAndUpdate(controller,
+        BuiltInRegistries.BLOCK.get(ResourceLocation.parse("entrelumen:ark_controller"))
+            .defaultBlockState());
+    engineer.teleportTo(pos.getX() + 0.5, pos.getY() + 1, pos.getZ() + 0.5);
+    outsider.teleportTo(pos.getX() + 0.5, pos.getY() + 1, pos.getZ() + 0.5);
+    var personal = Entrelumen.current(engineer);
+    personal.act = 6;
+    personal.completed.addAll(Set.of("world_network", "engineering_module"));
+    personal.arkDeposits.put("entrelumen:calibration_frame", 1);
+    var other = Entrelumen.current(outsider);
+    other.act = 6;
+    other.arkDeposits.put("entrelumen:calibration_frame", 3);
+    var team = FTBTeamsAPI.api().getManager().createPartyTeam(engineer,
+        "Engineering " + engineer.getUUID(), "", dev.ftb.mods.ftblibrary.icon.Color4I.WHITE);
+    var shared = Entrelumen.current(engineer);
+    engineer.setItemInHand(net.minecraft.world.InteractionHand.OFF_HAND,
+        new ItemStack(arkItem("calibration_frame"), 4));
+    var supplies = Entrelumen.availableMaterials(engineer);
+    var data = CampaignData.get(engineer.server);
+    var before = data.save(new CompoundTag(), helper.getLevel().registryAccess());
+    var dirty = data.isDirty();
+    var state = helper.getLevel().getBlockState(pos);
+    for (int i = 0; i < 2; i++) {
+      var result = engineer.gameMode.useItemOn(engineer, helper.getLevel(),
+          engineer.getMainHandItem(), net.minecraft.world.InteractionHand.MAIN_HAND, arkHit(pos));
+      helper.assertTrue(result.consumesAction(), "Engineering module empty-hand interaction failed");
+    }
+    helper.assertTrue(EngineeringDiagnostics.currentReadOnly(engineer) == shared
+        && EngineeringDiagnostics.currentReadOnly(outsider) == other
+        && EngineeringDiagnostics.campaignView(shared).materials().getFirst().deposited() == 1
+        && EngineeringDiagnostics.campaignView(other).materials().getFirst().deposited() == 3
+        && EngineeringDiagnostics.physicalView(helper.getLevel(), pos).state()
+            == EngineeringDiagnostics.ControllerState.FOUND
+        && Entrelumen.availableMaterials(engineer).equals(supplies)
+        && data.isDirty() == dirty
+        && data.save(new CompoundTag(), helper.getLevel().registryAccess()).equals(before)
+        && helper.getLevel().getBlockState(pos).equals(state)
+        && personal.arkDeposits.equals(Map.of("entrelumen:calibration_frame", 1))
+        && team.getId().equals(CampaignActions.campaignId(engineer)),
+        "Repeated inspection changed supplies, progress, party identity or physical structure");
+    engineer.teleportTo(pos.getX() + 20.5, pos.getY() + 1, pos.getZ() + 0.5);
+    helper.assertTrue(!EngineeringDiagnostics.inspect(engineer, pos),
+        "Remote engineering inspection bypassed reach");
+    engineer.teleportTo(pos.getX() + 0.5, pos.getY() + 1, pos.getZ() + 0.5);
+    engineer.setGameMode(net.minecraft.world.level.GameType.SPECTATOR);
+    helper.assertTrue(!EngineeringDiagnostics.inspect(engineer, pos),
+        "Spectator inspected the engineering module");
+    engineer.setGameMode(net.minecraft.world.level.GameType.SURVIVAL);
+    helper.getLevel().removeBlock(pos, false);
+    helper.assertTrue(!EngineeringDiagnostics.inspect(engineer, pos),
+        "Removed engineering module remained interactable");
+    helper.succeed();
+  }
+
+  @GameTest(template = "empty", timeoutTicks = 200)
   public static void actSixDeliveriesUseCrossModCostsAndRewardOnce(GameTestHelper helper) {
     var player = player(helper, "ActSixCosts");
     var campaign = Entrelumen.current(player);

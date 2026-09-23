@@ -51,6 +51,12 @@ public final class Entrelumen {
     for (String id : List.of("raw_lens", "survey_notes", "signal_core"))
       ITEMS.registerSimpleItem(id);
     for (String id : MODULES) {
+      if (id.equals("engineering_module")) {
+        var engineering = BLOCKS.register(id, () -> new EngineeringModuleBlock(
+            BlockBehaviour.Properties.of().strength(3f).requiresCorrectToolForDrops()));
+        ITEMS.register(id, () -> new EngineeringModuleItem(engineering.get(), new Item.Properties()));
+        continue;
+      }
       var block =
           BLOCKS.registerSimpleBlock(
               id, BlockBehaviour.Properties.of().strength(3f).requiresCorrectToolForDrops());

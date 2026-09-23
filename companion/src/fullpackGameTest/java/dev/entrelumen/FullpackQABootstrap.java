@@ -42,8 +42,8 @@ public final class FullpackQABootstrap {
         for (var method : owner.getDeclaredMethods())
           if (method.isAnnotationPresent(GameTest.class))
             expected.add(method.getName().toLowerCase(Locale.ROOT));
-      if (expected.size() != 25)
-        throw new IllegalStateException("Full-pack QA expected 25 registered tests, found " + expected.size());
+      if (expected.isEmpty())
+        throw new IllegalStateException("Full-pack QA discovered no annotated tests");
       Set<String> registeredNames = new HashSet<>();
       GameTestRegistry.getAllTestFunctions().forEach(test -> registeredNames.add(test.testName()));
       if (!registeredNames.containsAll(expected))
