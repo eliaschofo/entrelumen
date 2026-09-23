@@ -1,0 +1,128 @@
+{
+  "schemaVersion": 1,
+  "checkedAt": "2026-09-23T05:24:59.805631+00:00",
+  "scope": "Native read-only Minecraft book presentation for the four existing team journals; no new gameplay mutation.",
+  "sourceCommit": "6a0306f0a4fb4587cb81e1219ffebddd3910712b",
+  "sourceCi": {
+    "runId": 35820959540,
+    "conclusion": "success"
+  },
+  "platform": "Minecraft 1.21.1 / NeoForge 21.1.249 / Java 21 / Windows",
+  "normalJarSha256": "2c2d47a628c1f1e2d35062a078f2f8014f62a4154088bb3c346cad204ac8d447",
+  "qaJarSha256": "7bfc36dd4b32dee687855a67d3abebbd6a7bc974f588515262cc3030695446f2",
+  "unitTests": [
+    {
+      "class": "dev.entrelumen.ArkFieldJournalsTest",
+      "passed": 5,
+      "reportSha256": "ac0c524713a6b790bf35c7792a1976c7ad9824ac68c8d8f95980a84bc7363068"
+    },
+    {
+      "class": "dev.entrelumen.EngineeringDiagnosticsTest",
+      "passed": 3,
+      "reportSha256": "82bc884d131d2eef0ef044e4bef1843d1729e22c5d36b667c3e9eb780d776d5c"
+    },
+    {
+      "class": "dev.entrelumen.LogisticsModuleActionsTest",
+      "passed": 2,
+      "reportSha256": "772882e28db570808946bc00f40f09483496ef17b425975aa40369381ff7530a"
+    }
+  ],
+  "isolatedGameTests": {
+    "passed": 28,
+    "logSha256": "3f43bda8e92500fc9e0424f940904bad98879b0f933f84885642537e6ad46758",
+    "limitation": "Separate isolated fixture, not native full-pack compatibility."
+  },
+  "fullpack": {
+    "runId": "4731c854-d18f-4203-b4b1-98f3ae3f8efd",
+    "registered": 29,
+    "executed": [
+      "arkfieldjournalsreadcurrentteamwithoutmutation"
+    ],
+    "passed": 1,
+    "request": "9562f169-013f-481c-bb6e-b10432725300",
+    "normalStopRequest": "71057f02-31b1-4c67-8ed3-c81adceac183",
+    "exitCode": 0,
+    "normalJarRestored": true,
+    "watchdogMilliseconds": 60000,
+    "logSha256": "f38685445cf5bb5927918ec536055b633d49de4bf7ddc430c534be32a72e16d3",
+    "verified": [
+      "Native interactions from all four module kinds preserve campaign, inventory and blocks",
+      "Snapshots retain current player, campaign, kind and translated components",
+      "Registry-buffer codec round-trip passes and oversized payload is rejected",
+      "Existing reach, spectator, removed-block and independent-team protections pass"
+    ],
+    "limitation": "One targeted test executed, not all 29 registered. A 2697ms/53-tick catch-up warning occurred during embedded-player setup; no performance acceptance."
+  },
+  "client": {
+    "world": "ENTRELUMEN-QA-ActVI",
+    "renderSize": [
+      1024,
+      768
+    ],
+    "fixture": "Existing creative QA campaign with completed milestones, batches and ending; not natural survival acquisition.",
+    "observed": [
+      "Exploration opens by empty-main-hand native use and renders all three pages in es_es and en_us",
+      "Arcane opens the same reader with its distinct two-page English record",
+      "Titles, narratives, projects, recorded journeys, module and batch completion, ending and controller position fit without clipping or raw translation keys",
+      "Forward arrows work; Tab then Enter moves back from page3 to page2; Done and Escape close the reader",
+      "Normal save and shutdown preserve campaign NBT semantically"
+    ],
+    "keyboardLimitation": "Computer Use keysyms Next and Page_Down did not change pages. Tab/Enter navigation worked. Physical Page Up/Page Down were not verified; no native-screen change was made for the ambiguous injected shortcut.",
+    "campaignNbtSemanticallyUnchanged": true,
+    "campaignSemanticSha256": "c4e1ec8e7d1aa0100946df9a8d53dddbd14efad3be010c4e340921581aaa05da",
+    "campaignBeforeRawSha256": "917d164056f944a93591a1405b972fa829a711631b40ea549dc0353143198764",
+    "campaignAfterRawSha256": "917d164056f944a93591a1405b972fa829a711631b40ea549dc0353143198764",
+    "normalSaveAndShutdown": true,
+    "originalLanguageRestored": "es_es",
+    "screenshots": [
+      {
+        "path": "docs/verification/screenshots/book-journal-exploration-es-1.png",
+        "nativeSource": "2026-09-23_02.17.09.png",
+        "sha256": "6bddb06f98dcc925127d6beee292efd88241f5f4e22ffd1c0c66f23feca99af1"
+      },
+      {
+        "path": "docs/verification/screenshots/book-journal-exploration-es-2.png",
+        "nativeSource": "2026-09-23_02.17.44.png",
+        "sha256": "0eebc893cf5d4a6b48326e55f01f296cc2ee80d9a361081de6b65e4222deb726"
+      },
+      {
+        "path": "docs/verification/screenshots/book-journal-exploration-es-3.png",
+        "nativeSource": "2026-09-23_02.18.10.png",
+        "sha256": "11ff047ea5712a22c1305476b7ba0551cdcb18768f1e0cdf7730581afdd26f1b"
+      },
+      {
+        "path": "docs/verification/screenshots/book-journal-exploration-en-1.png",
+        "nativeSource": "2026-09-23_02.21.04.png",
+        "sha256": "555a0b51f43c5ff8e4f60a88b07ec6346bbe09a488b3183bc9f5793d5a264790"
+      },
+      {
+        "path": "docs/verification/screenshots/book-journal-exploration-en-2.png",
+        "nativeSource": "2026-09-23_02.21.17.png",
+        "sha256": "eac2423fc1b60bb5b0736ea1324f3feb74e7af0140417790daa9fc9b17c4661e"
+      },
+      {
+        "path": "docs/verification/screenshots/book-journal-exploration-en-3.png",
+        "nativeSource": "2026-09-23_02.21.30.png",
+        "sha256": "cb9a6a2e4536ee9f89a0092315f963c479d1fcbc47b4a5a28f54599b21027361"
+      },
+      {
+        "path": "docs/verification/screenshots/book-journal-arcane-en-1.png",
+        "nativeSource": "2026-09-23_02.22.18.png",
+        "sha256": "79eacc93169266400d7d66f5d6c49870d99b1cb3b5b6a466c7c6ca9685399841"
+      },
+      {
+        "path": "docs/verification/screenshots/book-journal-arcane-en-2.png",
+        "nativeSource": "2026-09-23_02.22.32.png",
+        "sha256": "b2640d4b7673e6204abfe59f0049011cebe278d957df629b7419228bc81c706e"
+      }
+    ],
+    "logSha256": "3354acc231d96d6b6305846c990454eb809e87957c5f7ad7e42a0c3ddec460f4",
+    "limitations": [
+      "This session visually sampled exploration in both languages and arcane in English; all four kinds are covered by the native server test",
+      "Empty/partial branches were not visually inspected in this completed fixture",
+      "Candidate block art, complete module experiences, final-scale campaign, survival pacing, co-op and performance remain unaccepted"
+    ]
+  },
+  "retainedLocalEvidenceDirectory": "C:\\Users\\elias\\Documents\\Codex\\2026-09-12\\h\\work\\book-journals-evidence",
+  "review": "Root source review plus installed behavior; no independent Astra review claimed."
+}
