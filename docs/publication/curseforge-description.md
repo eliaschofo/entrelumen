@@ -13,7 +13,7 @@ ENTRELUMEN is an original kitchen-sink modpack in development, built around a ho
 
 - A **155-quest prototype across six chapters**, written in English and Spanish, with **42 campaign milestones** and a first narrative ending checked in a QA world.
 - A companion mod with server-side team campaigns, recoverable project deliveries, an Atlas interface and a working compass survey station.
-- A pinned selection of **140 client / 110 server dependencies**, plus the companion, including a mining dimension, Botany Pots and its tiers, Modular Bees, and AE2/Mekanism expansions.
+- A pinned selection of **146 client / 116 server dependencies**, plus the companion, including a mining dimension, Botany Pots and its tiers, Modular Bees, and AE2/Mekanism expansions.
 - Six Ark modules with diagnostics, local commissioning deposits and native Minecraft field journals. Their original block and item art remains under visual review.
 - Reproducible content generation and automated checks. These checks support development; they do not establish finished gameplay, balance or measured performance.
 
@@ -68,7 +68,7 @@ ENTRELUMEN es un modpack kitchen sink original en desarrollo, construido alreded
 
 - Un **prototipo de 155 quests en seis capítulos**, escrito en inglés y español, con **42 hitos de campaña** y un primer final narrativo comprobado en un mundo de QA.
 - Un mod propio con campaña por equipo en el servidor, entregas recuperables, interfaz del Atlas y una estación funcional para marcar brújulas.
-- Una selección fijada de **140 dependencias de cliente / 110 de servidor**, más el mod propio, que incluye dimensión minera, Botany Pots y sus tiers, Modular Bees y expansiones de AE2/Mekanism.
+- Una selección fijada de **146 dependencias de cliente / 116 de servidor**, más el mod propio, que incluye dimensión minera, Botany Pots y sus tiers, Modular Bees y expansiones de AE2/Mekanism.
 - Seis módulos del Arca con diagnóstico, entregas locales de puesta en marcha y diarios en el lector nativo de Minecraft. Su arte original de bloques e ítems sigue en revisión visual.
 - Generación reproducible de contenido y verificaciones automáticas. Estos controles ayudan al desarrollo; no demuestran por sí solos jugabilidad terminada, balance ni rendimiento medido.
 

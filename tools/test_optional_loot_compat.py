@@ -1,4 +1,4 @@
-"""Regression for the 85 optional block-loot decodes observed in Act V."""
+"""Regression for the 85 Act V and 16 Connected optional block-loot decodes."""
 from __future__ import annotations
 
 import hashlib
@@ -11,8 +11,18 @@ import zipfile
 
 ROOT = Path(__file__).resolve().parents[1]
 SCRIPT = ROOT / 'pack/kubejs/server_scripts/entrelumen_optional_loot_compat.js'
-EXPECTED_IDS_SHA256 = '397e3d1bdc589d4e639efa9624dc07851f458743b0e573ece03d178e79a62a64'
+EXPECTED_IDS_SHA256 = '9d61ed27683a98dc7402fcdfcd2d9435e39ceb6247300e00376b5ccdc017ff55'
+EXPECTED_ACT_V_IDS_SHA256 = '397e3d1bdc589d4e639efa9624dc07851f458743b0e573ece03d178e79a62a64'
+DYE_DEPOT_COLORS = (
+    'amber', 'aqua', 'beige', 'coral', 'forest', 'ginger', 'indigo', 'maroon',
+    'mint', 'navy', 'olive', 'rose', 'slate', 'tan', 'teal', 'verdant',
+)
+VANILLA_COLORS = (
+    'black', 'blue', 'brown', 'cyan', 'gray', 'green', 'light_blue', 'light_gray',
+    'lime', 'magenta', 'orange', 'pink', 'purple', 'red', 'white', 'yellow',
+)
 SOURCES = {
+    'create_connected': 'create_connected-1.3.3-mc1.21.1.jar',
     'extendedae': 'ExtendedAE-1.21-2.2.35-neoforge.jar',
     'mekanism_extras': 'mekanism_extras-1.21.1-1.4.1.jar',
     'mekmm': 'mekmm-1.21.1-1.4.1.jar',
@@ -42,7 +52,11 @@ function run(present) {
 
 const missing = run(new Set());
 const allIds = missing.writes.map(([id]) => id.replace(':loot_table/blocks/', ':').replace(/\.json$/, ''));
-const selected = new Set([allIds[0], allIds[19], allIds[84]]);
+const selected = new Set([
+  'mekmm:creative_centrifuging_factory',
+  'extendedae:ex_emc_interface',
+  'create_connected:dye_depot_amber_fan_dyeing_catalyst'
+]);
 process.stdout.write(JSON.stringify({missing, present: run(new Set(allIds)), mixed: run(selected), selected: [...selected]}));
 """
 
@@ -64,12 +78,24 @@ class OptionalLootCompatibilityTest(unittest.TestCase):
                    for path, _ in cls.writes]
 
     def test_exact_observed_failures_and_conditions(self):
-        self.assertEqual(len(self.ids), 85)
-        self.assertEqual(len(set(self.ids)), 85)
+        self.assertEqual(len(self.ids), 101)
+        self.assertEqual(len(set(self.ids)), 101)
         digest = hashlib.sha256('\n'.join(sorted(
             item.replace(':', ':blocks/', 1) for item in self.ids
         )).encode()).hexdigest()
         self.assertEqual(digest, EXPECTED_IDS_SHA256)
+        act_v_ids = [item for item in self.ids if not item.startswith('create_connected:')]
+        self.assertEqual(len(act_v_ids), 85)
+        self.assertEqual(hashlib.sha256('\n'.join(sorted(
+            item.replace(':', ':blocks/', 1) for item in act_v_ids
+        )).encode()).hexdigest(), EXPECTED_ACT_V_IDS_SHA256)
+        self.assertEqual(
+            {item for item in self.ids if item.startswith('create_connected:')},
+            {f'create_connected:dye_depot_{color}_fan_dyeing_catalyst'
+             for color in DYE_DEPOT_COLORS},
+        )
+        self.assertTrue({f'create_connected:{color}_fan_dyeing_catalyst'
+                         for color in VANILLA_COLORS}.isdisjoint(self.ids))
         for (path, value), item in zip(self.writes, self.ids):
             self.assertEqual(path, item.replace(':', ':loot_table/blocks/', 1) + '.json')
             self.assertEqual(value, {
@@ -80,12 +106,23 @@ class OptionalLootCompatibilityTest(unittest.TestCase):
     def test_present_upstream_tables_are_not_overridden(self):
         self.assertEqual(self.result['present']['writes'], [])
         selected = set(self.result['selected'])
+        self.assertTrue(selected.issubset(self.ids))
         mixed = self.result['mixed']['writes']
-        self.assertEqual(len(mixed), 85 - len(selected))
+        self.assertEqual(len(mixed), 101 - len(selected))
         self.assertEqual({path.replace(':loot_table/blocks/', ':').removesuffix('.json')
                           for path, _ in mixed}, set(self.ids) - selected)
-        self.assertEqual(json.loads(self.result['mixed']['logs'][0].split('] ', 1)[1])['empty'],
-                         {'mekmm': 78, 'mekanism_extras': 4, 'extendedae': 0})
+        receipts = [json.loads(self.result[case]['logs'][0].split('] ', 1)[1])
+                    for case in ('missing', 'present', 'mixed')]
+        self.assertTrue(all(receipt['checked'] == 101 for receipt in receipts))
+        self.assertEqual(receipts[0]['empty'],
+                         {'mekmm': 80, 'mekanism_extras': 4, 'extendedae': 1,
+                          'create_connected': 16})
+        self.assertEqual(receipts[1]['empty'],
+                         {'mekmm': 0, 'mekanism_extras': 0, 'extendedae': 0,
+                          'create_connected': 0})
+        self.assertEqual(receipts[2]['empty'],
+                         {'mekmm': 79, 'mekanism_extras': 4, 'extendedae': 0,
+                          'create_connected': 15})
 
     def test_pinned_upstream_resources_when_jars_available(self):
         local_paths = ROOT / 'catalog/local-paths.json'
@@ -111,6 +148,26 @@ class OptionalLootCompatibilityTest(unittest.TestCase):
                         self.assertEqual(table['type'], 'minecraft:block')
                         entries = [entry for pool in table['pools'] for entry in pool['entries']]
                         self.assertEqual([entry['name'] for entry in entries], [item])
+                    if namespace == 'create_connected':
+                        vanilla_ids = {f'create_connected:{color}_fan_dyeing_catalyst'
+                                       for color in VANILLA_COLORS}
+                        catalyst_resources = {
+                            name for name in jar.namelist()
+                            if name.startswith('data/create_connected/loot_table/blocks/')
+                            and name.endswith('_fan_dyeing_catalyst.json')
+                        }
+                        expected_ids = vanilla_ids | {
+                            item for item in self.ids if item.startswith('create_connected:')
+                        }
+                        self.assertEqual(catalyst_resources, {
+                            f'data/create_connected/loot_table/blocks/{item.split(":", 1)[1]}.json'
+                            for item in expected_ids
+                        })
+                        for item in vanilla_ids:
+                            resource = f'data/create_connected/loot_table/blocks/{item.split(":", 1)[1]}.json'
+                            table = json.loads(jar.read(resource))
+                            entries = [entry for pool in table['pools'] for entry in pool['entries']]
+                            self.assertEqual([entry['name'] for entry in entries], [item])
 
 
 if __name__ == '__main__':

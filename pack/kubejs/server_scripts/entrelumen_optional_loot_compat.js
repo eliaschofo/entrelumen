@@ -8,8 +8,17 @@ const entrelumenOptionalLoot = {
     'infinite_chemical_infusing_factory',
     'supreme_chemical_infusing_factory'
   ],
-  extendedae: ['ex_emc_interface']
+  extendedae: ['ex_emc_interface'],
+  create_connected: []
 };
+
+// Connected ships these Dye Depot loot tables even when that optional mod is absent.
+[
+  'amber', 'aqua', 'beige', 'coral', 'forest', 'ginger', 'indigo', 'maroon',
+  'mint', 'navy', 'olive', 'rose', 'slate', 'tan', 'teal', 'verdant'
+].forEach(color => {
+  entrelumenOptionalLoot.create_connected.push('dye_depot_' + color + '_fan_dyeing_catalyst');
+});
 
 const entrelumenMoreMachineOperations = [
   'centrifuging', 'crystallizing', 'dissolving', 'lathing',
@@ -25,9 +34,11 @@ const entrelumenMoreMachineOperations = [
 
 ServerEvents.generateData('after_mods', event => {
   const empty = {};
+  let checked = 0;
   Object.keys(entrelumenOptionalLoot).forEach(namespace => {
     empty[namespace] = 0;
     entrelumenOptionalLoot[namespace].forEach(name => {
+      checked++;
       const item = namespace + ':' + name;
       if (Item.exists(item)) return;
       // NeoForge replaces a failed conditional loot table with an empty table.
@@ -40,6 +51,6 @@ ServerEvents.generateData('after_mods', event => {
     });
   });
   console.info('[ENTRELUMEN_OPTIONAL_LOOT] ' + JSON.stringify({
-    checked: 85, empty: empty
+    checked: checked, empty: empty
   }));
 });

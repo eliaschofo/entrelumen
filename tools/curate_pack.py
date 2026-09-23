@@ -21,6 +21,12 @@ BUILTINS = {'minecraft', 'neoforge', 'java'}
 
 # Intent is pack-original. Version, license, IDs and URLs come from source metadata.
 CONTENT = {
+    'create_connected': ('II', 'Compact mechanical controls and drivetrain tools', 'Build readable Create workshops and regulate machines serving Atlas component production'),
+    'copycats': ('II', 'Material-matched moving mechanisms and construction shapes', 'Clad Create shafts, pipes and contraptions to match player-built observatories; avoid redundant Connected copycats'),
+    'mcwroofs': ('I', 'Purpose-built roofs and gutters', 'Finish expedition shelters and later inhabited Ark buildings without compulsory decoration ingredients'),
+    'mcwbridges': ('I', 'Walkable bridges and railings', 'Join outposts, farms and workshop walkways while preserving player choice of materials'),
+    'exposure': ('I-IV', 'Physical photography and expedition albums', 'Keep field records of discoveries and reconstruction, then exhibit them in the habitation district'),
+    'immersive_aircraft': ('III', 'Fuelled expedition aircraft', 'Use a staged workshop engine to survey routes, transport explorers and connect distant provisioned outposts'),
     'ae2wtlib': ('III-V', 'Combined wireless terminals and upgrades', 'Provide real terminal combination serializers for AdvancedAE and retain pattern logistics in advanced workshops'),
     'mekmm': ('III-V', 'Additional chemical processing factories', 'Staged factory acquisition; replication disabled by replacing data maps and recipe removals; runtime balance audit required'),
     'jamd': ('II', 'Separate mining dimension', 'Supply reconstruction stone and ores without excavating inhabited landscapes'),

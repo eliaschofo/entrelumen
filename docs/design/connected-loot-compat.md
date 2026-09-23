@@ -1,0 +1,9 @@
+# Connected optional dye loot
+
+The 2026-09-23 server slice log has exactly 16 loot decode errors for `create_connected:blocks/dye_depot_<color>_fan_dyeing_catalyst`. In every line the unknown item is `create_connected:dye_depot_<color>_fan_dyeing_catalyst`. The 16 colors are amber, aqua, beige, coral, forest, ginger, indigo, maroon, mint, navy, olive, rose, slate, tan, teal and verdant. Dye Depot is absent from that server's mods.
+
+`catalog/local-paths.json` points to `create_connected-1.3.3-mc1.21.1.jar`, whose SHA-256 matches the `catalog/curated.json` pin: `0c5eb9ffb5c8d71e6e2a39023feb85c51adfb10d38949bc47c4abbd53b351a4f`. That JAR contains all 16 failing loot JSONs, each with one `minecraft:item` entry naming its same-color Connected item. It also contains 16 distinct vanilla-color catalyst loot JSONs. Its `DyeDepotCompat.class` and `Mods.class` (which contains the `dye_depot` mod ID) identify the optional integration; the shipped loot resources remain present while its items are absent.
+
+The existing KubeJS `after_mods` guard now checks only those 16 new item IDs. If an item is missing, it emits a conditional table at the same resource path; NeoForge resolves the failed `neoforge:item_exists` condition to empty loot before decoding the missing entry. If the item exists, the script writes nothing, retaining the JAR's original table. None of the 16 vanilla-color catalyst IDs is checked or overridden.
+
+`C:/Python314/python.exe -m unittest tools.test_optional_loot_compat -v` passes all three tests. They pin the original 85-ID digest, the combined 101-ID digest, all 16 Connected IDs, absent/present/mixed registry behavior, pinned JAR hashes and exact loot entries, and the untouched vanilla-color resources. A post-change server startup and `/reload` remain integration checks for the root owner.

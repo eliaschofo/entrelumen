@@ -15,7 +15,9 @@ python tools/curate_pack.py --install 'PATH/TO/SEPARATE_INSTANCE' --side client
 python tools/curate_pack.py --install 'PATH/TO/SEPARATE_SERVER' --side server
 ```
 
-`catalog/local-paths.json` is ignored and holds machine-local origins. `catalog/downloads/` is ignored and contains the four additional official dependencies listed in `external-sources.json`. Fetch those exact public URLs before refreshing on a new workstation. No account data is needed or stored. Existing source SHA-1 values are checked during refresh; the final lock verifies every local SHA-256 on check/install.
+`catalog/local-paths.json` is ignored and holds machine-local origins. `catalog/downloads/` is ignored and holds additional official dependencies. CurseForge metadata lives in `external-sources.json`; pinned Modrinth additions carry their project/version IDs, metadata and download URLs directly in `curated.json`. Fetch those exact public URLs and verify their recorded hashes before refreshing on a new workstation. No account data is needed or stored. Existing source SHA-1 values are checked during refresh; the final lock verifies every local SHA-256 on check/install.
+
+Do not use a whole-instance refresh to add a small batch: it can select newer files from the reference instance. Preserve the existing lock entries and compare every pre-existing filename/hash when integrating additions. The [building and expeditions batch](../docs/design/building-and-expeditions.md) follows this additive rule.
 
 The installer copies only selected JARs, writes an `entrelumen-dependencies.json` receipt, preserves existing identical files, refuses differing file overwrites and refuses source directories or their descendants. It does not remove unexpected files from a nonempty destination; use a dedicated clean instance and inspect its receipt. It never creates the final CurseForge manifest. Client-only exclusions are explicit; all other dependencies are conservatively included on the server until actual runtime evidence narrows them.
 
