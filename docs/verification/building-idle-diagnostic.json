@@ -1,0 +1,145 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-09-23",
+  "status": "diagnostic_only_not_acceptance",
+  "normalJarSha256": "d68b13c138048c0768c882d84a7eb9b06d869f36a21eb4a837e0d41ca9a582e9",
+  "javaHeap": "6G maximum, 1G initial",
+  "method": "Four jcmd GC.heap_info and process-memory snapshots 10 seconds apart after 60 seconds idle warmup; spark tps and list receipts. No explicit GC. Zero connected players. Same existing owned QA world and normal companion.",
+  "limitations": [
+    "Sequential runs do not hold GC phase or world state constant.",
+    "The expanded sample overlaps a separate Gradle/isolated-test workload; system CPU pressure differs.",
+    "These samples cannot establish a per-mod memory delta, gameplay latency, FPS, leak absence, two-hour stability, six-player performance or acceptance."
+  ],
+  "runs": [
+    {
+      "label": "baseline",
+      "runId": "ade62753-9039-4172-9ac6-55ca6ee9b94d",
+      "clientDependencies": 170,
+      "serverDependencies": 135,
+      "exitCode": 0,
+      "rawDiagnosticSha256": "cb54089ca3c8c2d0a38d6868150a1f1cee5c7739afa41bd3b5cc524e21ac26fc",
+      "serverLogSha256": "507ab460f1874c9c90e9673a58d3cd9916df52176d46f0ed463d5a6726ae3cc6",
+      "samples": [
+        {
+          "secondsAfterSamplerStart": 61.64,
+          "heapInfo": [
+            " garbage-first heap   total 2248704K, used 1164715K [0x0000000680000000, 0x0000000800000000)",
+            "  region size 4096K, 54 young (221184K), 23 survivors (94208K)",
+            " Metaspace       used 405039K, committed 408512K, reserved 1376256K",
+            "  class space    used 84916K, committed 86528K, reserved 1048576K"
+          ],
+          "workingSetBytes": 3146268672,
+          "privateBytes": 3208151040,
+          "cpuSeconds": 338.109375
+        },
+        {
+          "secondsAfterSamplerStart": 72.68,
+          "heapInfo": [
+            " garbage-first heap   total 2248704K, used 1175984K [0x0000000680000000, 0x0000000800000000)",
+            "  region size 4096K, 57 young (233472K), 23 survivors (94208K)",
+            " Metaspace       used 405042K, committed 408512K, reserved 1376256K",
+            "  class space    used 84916K, committed 86528K, reserved 1048576K"
+          ],
+          "workingSetBytes": 3146235904,
+          "privateBytes": 3208089600,
+          "cpuSeconds": 338.765625
+        },
+        {
+          "secondsAfterSamplerStart": 83.85,
+          "heapInfo": [
+            " garbage-first heap   total 2248704K, used 1191339K [0x0000000680000000, 0x0000000800000000)",
+            "  region size 4096K, 61 young (249856K), 23 survivors (94208K)",
+            " Metaspace       used 405062K, committed 408512K, reserved 1376256K",
+            "  class space    used 84917K, committed 86528K, reserved 1048576K"
+          ],
+          "workingSetBytes": 3143467008,
+          "privateBytes": 3205255168,
+          "cpuSeconds": 339.46875
+        },
+        {
+          "secondsAfterSamplerStart": 95.04,
+          "heapInfo": [
+            " garbage-first heap   total 2248704K, used 1202603K [0x0000000680000000, 0x0000000800000000)",
+            "  region size 4096K, 64 young (262144K), 23 survivors (94208K)",
+            " Metaspace       used 405063K, committed 408512K, reserved 1376256K",
+            "  class space    used 84917K, committed 86528K, reserved 1048576K"
+          ],
+          "workingSetBytes": 3143467008,
+          "privateBytes": 3205255168,
+          "cpuSeconds": 340.234375
+        }
+      ],
+      "sparkLast10Seconds": {
+        "tps": 20.0,
+        "medianMs": 0.4,
+        "p95Ms": 0.7,
+        "maximumMs": 12.3
+      }
+    },
+    {
+      "label": "expanded",
+      "runId": "960597c0-0071-4c26-9a7d-b60439954b92",
+      "clientDependencies": 178,
+      "serverDependencies": 143,
+      "exitCode": 0,
+      "rawDiagnosticSha256": "6a099d4323970305673639f7c230955bf4d8b546052c8e23ca1a7223661d2d62",
+      "serverLogSha256": "2bbb1478b89fbb49f535db62f05e089c1edddc972944575d2eb53ba852926932",
+      "samples": [
+        {
+          "secondsAfterSamplerStart": 101.67,
+          "heapInfo": [
+            " garbage-first heap   total 2207744K, used 1826409K [0x0000000680000000, 0x0000000800000000)",
+            "  region size 4096K, 213 young (872448K), 25 survivors (102400K)",
+            " Metaspace       used 409783K, committed 413248K, reserved 1376256K",
+            "  class space    used 86255K, committed 87872K, reserved 1048576K"
+          ],
+          "workingSetBytes": 3114352640,
+          "privateBytes": 3174748160,
+          "cpuSeconds": 371.984375
+        },
+        {
+          "secondsAfterSamplerStart": 113.12,
+          "heapInfo": [
+            " garbage-first heap   total 2207744K, used 1842944K [0x0000000680000000, 0x0000000800000000)",
+            "  region size 4096K, 217 young (888832K), 25 survivors (102400K)",
+            " Metaspace       used 409802K, committed 413312K, reserved 1376256K",
+            "  class space    used 86256K, committed 87872K, reserved 1048576K"
+          ],
+          "workingSetBytes": 3112341504,
+          "privateBytes": 3174735872,
+          "cpuSeconds": 374.0
+        },
+        {
+          "secondsAfterSamplerStart": 125.37,
+          "heapInfo": [
+            " garbage-first heap   total 2207744K, used 1855232K [0x0000000680000000, 0x0000000800000000)",
+            "  region size 4096K, 220 young (901120K), 25 survivors (102400K)",
+            " Metaspace       used 409805K, committed 413312K, reserved 1376256K",
+            "  class space    used 86256K, committed 87872K, reserved 1048576K"
+          ],
+          "workingSetBytes": 3111350272,
+          "privateBytes": 3174744064,
+          "cpuSeconds": 374.9375
+        },
+        {
+          "secondsAfterSamplerStart": 137.83,
+          "heapInfo": [
+            " garbage-first heap   total 2207744K, used 1872688K [0x0000000680000000, 0x0000000800000000)",
+            "  region size 4096K, 224 young (917504K), 25 survivors (102400K)",
+            " Metaspace       used 409816K, committed 413312K, reserved 1376256K",
+            "  class space    used 86256K, committed 87872K, reserved 1048576K"
+          ],
+          "workingSetBytes": 3110363136,
+          "privateBytes": 3174813696,
+          "cpuSeconds": 377.109375
+        }
+      ],
+      "sparkLast10Seconds": {
+        "tps": 19.99,
+        "medianMs": 0.8,
+        "p95Ms": 1.1,
+        "maximumMs": 12.8
+      }
+    }
+  ]
+}

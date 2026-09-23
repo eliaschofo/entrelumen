@@ -1,0 +1,148 @@
+{
+  "schemaVersion": 1,
+  "content": {
+    "measurements": [
+      "I-VI",
+      "A tape measure for laying out the first shelter, farm and workshop without a second building wand",
+      "Repeatable dimension checks for the Ark modules, station corridors and machine clearances"
+    ],
+    "rechiseledcreate": [
+      "II-VI",
+      "The mechanical chisel converts existing Rechiseled materials using the installed Create drivetrain",
+      "Workshop-scale palette conversion for settlement and Ark construction; its extra window variants are optional"
+    ],
+    "rechiseled_chipped": [
+      "I-VI",
+      "Adds the existing Chipped variants to the existing Rechiseled chisel workflow without another block palette",
+      "Reusable direct conversion of saved building stock for later outposts and Ark repairs"
+    ],
+    "glassential": [
+      "II-VI",
+      "Craft functional redstone, luminous and pass-through glass for workshop doors, signals and safe access",
+      "Visible circuits, lit observation rooms and controlled pedestrian routes in the Ark; no glass type gates a module"
+    ],
+    "simplylight": [
+      "I-VI",
+      "Thin edge lighting and craftable redstone-switchable illuminant blocks for early usable builds",
+      "Flush maintenance lighting and switched service rooms, distinct from Macaw's decorative fixtures"
+    ]
+  },
+  "qol": {},
+  "clientOnly": [],
+  "performance": [],
+  "infrastructure": [],
+  "pins": [
+    {
+      "modIds": [
+        "measurements"
+      ],
+      "filename": "Measurements-neoforge-1.21.1-3.0.3.jar",
+      "sha256": "3ee0f9888139687128ff07651202a188ac459ff22e26c47468f122307c1c0a75",
+      "projectID": 478559,
+      "fileID": 6956811,
+      "dependencies": [
+        "minecraft [1.21,1.22)",
+        "neoforge [21.0.0-beta,)"
+      ],
+      "license": "MIT",
+      "side": "Client & Server",
+      "sourceUrl": "https://www.curseforge.com/minecraft/mc-mods/measurements/files/6956811"
+    },
+    {
+      "modIds": [
+        "rechiseledcreate"
+      ],
+      "filename": "rechiseledcreate-1.1.1-neoforge-mc1.21.jar",
+      "sha256": "ba89cd5d1221621ed226cc7f1c26dc84a660cc4f6d122753052429f96d71248d",
+      "projectID": 888624,
+      "fileID": 8302843,
+      "dependencies": [
+        "neoforge [21.0.78-beta,)",
+        "minecraft 1.21.1",
+        "supermartijn642corelib >=1.1.20 <1.2.0",
+        "rechiseled >=1.2.0",
+        "create >=6.0.4"
+      ],
+      "license": "All rights reserved",
+      "side": "Client & Server",
+      "sourceUrl": "https://www.curseforge.com/minecraft/mc-mods/rechiseled-create/files/8302843"
+    },
+    {
+      "modIds": [
+        "rechiseled_chipped"
+      ],
+      "filename": "rechiseled_chipped-2.0-1.21.1.jar",
+      "sha256": "07d5f74f0734aa171b1001e6570f53fa0469d8b81e9bfb4032e5697ba008f869",
+      "projectID": 1007578,
+      "fileID": 7524185,
+      "dependencies": [
+        "neoforge [21,)",
+        "minecraft [1.21.0,1.22)",
+        "chipped [4.0.2,)",
+        "rechiseled [1.1.6+a,)"
+      ],
+      "license": "All Rights Reserved",
+      "side": "Client & Server",
+      "sourceUrl": "https://www.curseforge.com/minecraft/mc-mods/rechiseled-chipped/files/7524185"
+    },
+    {
+      "modIds": [
+        "glassential"
+      ],
+      "filename": "Glassential-renewed-1.21.1-3.4.6.jar",
+      "sha256": "a2e6ce6d9bdc6362b1e928981a5b585a249ae6dd6de37a567183834ef600a0ba",
+      "projectID": 945149,
+      "fileID": 8851434,
+      "dependencies": [
+        "neoforge [21,)",
+        "minecraft [1.21.1,1.22)",
+        "fusion * (CLIENT)"
+      ],
+      "license": "MIT",
+      "side": "Client & Server",
+      "sourceUrl": "https://www.curseforge.com/minecraft/mc-mods/glassential-renewed/files/8851434"
+    },
+    {
+      "modIds": [
+        "simplylight"
+      ],
+      "filename": "simplylight-1.5.3+1.21.1-b4.jar",
+      "sha256": "6d791f98671c1a5facc8f240c28944d0c7a2a6a635a5d0c5bf4d97a9f3b7a3a0",
+      "projectID": 300331,
+      "fileID": 6219029,
+      "dependencies": [
+        "neoforge [20.6,)"
+      ],
+      "license": "MIT",
+      "side": "Client & Server",
+      "sourceUrl": "https://www.curseforge.com/minecraft/mc-mods/simply-light/files/6219029"
+    }
+  ],
+  "notes": {
+    "source": "Four final pins come from the read-only reference instance and its CurseForge metadata. Glassential 3.4.6 is downloaded from the official CurseForge CDN, replacing the 3.4.5 candidate before boot. Licenses and dependency ranges were read from each final JAR; no reference-pack scripts, quests, configuration or assets are included.",
+    "dependencyClosure": "Create 6.0.10, Rechiseled 1.2.5, Chipped 4.0.2, SuperMartijn642 Core Lib 1.1.24 and Fusion 1.3.14a are already pinned in catalog/curated.json. Fusion is declared CLIENT by Glassential, while the five content mods themselves run on client and server.",
+    "nativeQA": {
+      "measurements": [
+        "measurements:tape_measure"
+      ],
+      "rechiseledcreate": [
+        "rechiseledcreate:mechanical_chisel"
+      ],
+      "rechiseled_chipped": [
+        "Native group rechiseled_chipped:stone from data/rechiseled_chipped/chiseling_recipes/stone.json; carved_stone membership, datapack-loader owner, source recipe and 1:1 native conversion"
+      ],
+      "glassential": [
+        "glassential:glass_redstone",
+        "glassential:glass_light",
+        "glassential:glass_ghostly"
+      ],
+      "simplylight": [
+        "simplylight:edge_light",
+        "simplylight:illuminant_block_on",
+        "simplylight:illuminant_block_on_toggle"
+      ]
+    },
+    "exclusions": "ConnectedGlass is a second cosmetic connected-glass palette beside Rechiseled/Glassential; CloudGlass's no-collision panels overlap Ghostly Glass; Chisel2 duplicates Chipped/Rechiseled at 1293 blockstates; Additional Lights overlaps Simply Light and Macaw's Lights and declares minecraft [1.21,1.21.1).",
+    "knownPinCaveats": "Rechiseled: Chipped filename says 2.0 but embedded mod version is 1.3; SHA-256 and CurseForge fileID fix identity. Glassential final pin is 3.4.6, whose published fixes address gravity entities, multiplayer painting and lit panes. These three claims remain untested here; dedicated QA covers other listed behaviors."
+  }
+}

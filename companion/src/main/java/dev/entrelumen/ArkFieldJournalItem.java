@@ -17,5 +17,7 @@ public final class ArkFieldJournalItem extends BlockItem {
   public void appendHoverText(ItemStack stack, Item.TooltipContext context,
       List<Component> tooltip, TooltipFlag flag) {
     tooltip.add(Component.translatable("entrelumen.journal.tooltip"));
+    if (getBlock() instanceof ArkFieldJournalBlock block && block.kind() == ArkFieldJournals.Kind.ARCANE)
+      tooltip.add(Component.translatable("entrelumen.arcane.tooltip"));
   }
 }

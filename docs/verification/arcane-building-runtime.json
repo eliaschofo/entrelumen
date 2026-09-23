@@ -1,0 +1,133 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-09-23",
+  "status": "bounded_runtime_pass",
+  "baseCommit": "be7439316fe8b1e69fe55e5459892b915427f6e4",
+  "counts": {
+    "clientDependencies": 178,
+    "serverDependencies": 143,
+    "originalQuests": 171,
+    "chapters": 7,
+    "modLocaleKeysPerLanguage": 205
+  },
+  "normalJarSha256": "d4b4d2ed1a7232cc64eceb368c051ead0a32050bfd142175c910f8113dd080c3",
+  "qaJarSha256": {
+    "first": "7ca4c8ba8138097100b68fb6a80b761c1964bdd162d0caa70ed4e140d667edef",
+    "corrected": "bfb78c2f7d1e269e84e2dda5e663482b89ca931138d96e7b2dd803675f66b8bd"
+  },
+  "sourceSha256": {
+    "companion/src/main/java/dev/entrelumen/ArcaneLibrary.java": "ae41549c8dc6faed924daba6d08b08b4c8aff6a7a0dd1136c1217f0a2b3bf83b",
+    "companion/src/main/java/dev/entrelumen/ArkFieldJournalBlock.java": "d2fee4b276cd400f114955f1c5e66a3f4c7a6e70a2ec711961fe92ad7805af4d",
+    "companion/src/main/java/dev/entrelumen/ArkFieldJournalItem.java": "b588abb03dece885203f18fc2e5ffea5fff037e25ebb615ce0b28d6756d7cd44",
+    "companion/src/main/java/dev/entrelumen/RuntimeGameTests.java": "8935b452c1905d4fd4ecf17a6b81a41c02e9b5a21b60b454e13cbef4d2b80ae6",
+    "companion/src/fullpackGameTest/java/dev/entrelumen/FullpackQABootstrap.java": "8fe634483afe63c41a87408717d24d4ed26aaecc400870a9b34aa8ca66693031",
+    "companion/src/fullpackGameTest/java/dev/entrelumen/BuilderUtilitiesGameTests.java": "c0d4775f3ef94fb75c0cb6fa54efadb1714b7537b60a52e6e532a64339956e6f",
+    "companion/src/fullpackGameTest/java/dev/entrelumen/SettlementArchitectureGameTests.java": "dd8d8bcaae84eb5849ecfca6b48615d57ea264e9a61b2e47d7c39a70fef273f2",
+    "content/act_six.json": "013b292780a6efc83640a244ad4cb4f766cea2051df7d33b86b43bc6bcf31faf",
+    "catalog/families/builder-utilities.json": "453ebaa3bb9a075bdba2df9beb4eb0bdc04b054487191183003a75deec63bb95",
+    "catalog/families/settlement-architecture.json": "10f4919642e498e3fd9364941bf11fd9712d1656569e68fb94dac146eea77d6d"
+  },
+  "runs": [
+    {
+      "kind": "qa-first",
+      "runId": "1b0f0a2a-f401-4f9c-972d-15cd735bc6fd",
+      "exitCode": 0,
+      "logSha256": "6ac4b6e1406cb263cf51db9f0b4efac8e7e513add716828188b391f873d503cd",
+      "errorLines": 1
+    },
+    {
+      "kind": "qa-corrected",
+      "runId": "7dde0ddb-9e56-42b3-96ad-e780d37259d0",
+      "exitCode": 0,
+      "logSha256": "e51058c4733cf978451a5471a05b091fa7bf8023b17f64708614ee637d308acd",
+      "errorLines": 0
+    },
+    {
+      "kind": "normal",
+      "runId": "9a58c798-8073-40a2-aa12-a6b495ffba97",
+      "exitCode": 0,
+      "logSha256": "c9e087ec89af487966e7eefeb3f903f36ad871fb2422f8683da73dbf987a6de6",
+      "errorLines": 0
+    }
+  ],
+  "passedTests": [
+    "arcanelibraryconservesgiftedenchantmentsandmetadata",
+    "arcanelibraryrejectswithoutpartialpaymentoroverflow",
+    "chippedvariantsjoinloadedrechiseledconversiongroup",
+    "functionalglassandswitchedlightsusenativeblockbehavior",
+    "nativebuildercraftskeepcostsandoutputs",
+    "nativemacawrecipeskeepactualingredientsandyields",
+    "nativeshuttergateandgardenlightworkwhenplaced"
+  ],
+  "executionScope": "Seven targeted cases passed across two full-pack QA runs. The other registered full-pack cases were not rerun. All 34 isolated GameTests and 53 JUnit tests passed in the final build.",
+  "firstFailures": [
+    {
+      "scope": "isolated Arcana metadata assertion",
+      "cause": "The test incorrectly treated vanilla empty LORE as absence; corrected to compare additional output against the complete native default book plus its enchantment and repair cost. Production semantics unchanged."
+    },
+    {
+      "scope": "full-pack Chipped provenance assertion",
+      "cause": "The test assumed entry.owner() identified the supplying mod. Native bytecode and data show owner=rechiseled:datapacks and recipe=rechiseled_chipped:stone. Corrected both exact assertions; native membership and 1:1 conversion passed on rerun. No bridge content or balance changed."
+    }
+  ],
+  "behaviors": {
+    "arcana": "Native interaction separates three enchantments including a curse, spends exactly two ordinary books, preserves every level and source metadata once, preserves prior work on all outputs, changes no XP or campaign, rejects insufficient space/payment and invalid physical/player states, exact capacity succeeds and creative pays.",
+    "settlement": "Seven globally selected loaded recipes retain their inputs/results. Native placement and block use open shutters and both stacked gate pieces, two paid pieces break into exactly two real item drops, and a garden light switches 15 to 0.",
+    "builder": "Eight globally selected native recipes retain inputs/results. Loaded glass produces redstone15/light15 and allows entity collision passage; native lamps switch in both directions. The Chipped stone group retains explicit bridge provenance and native 1:1 conversion."
+  },
+  "curation": {
+    "preservedPriorLockEntries": 170,
+    "addedProjects": [
+      "mcwwindows",
+      "mcwfences",
+      "mcwlights",
+      "measurements",
+      "rechiseledcreate",
+      "rechiseled_chipped",
+      "glassential",
+      "simplylight"
+    ],
+    "glassential": "Official 3.4.6 replaces the unbooted 3.4.5 reference candidate; final JAR dependency ranges unchanged.",
+    "noReferencePackContentCopied": true
+  },
+  "installation": [
+    {
+      "profile": "server-slice",
+      "side": "server",
+      "files": {
+        "mods/entrelumen-0.1.0.jar": "d4b4d2ed1a7232cc64eceb368c051ead0a32050bfd142175c910f8113dd080c3",
+        "config/ftbquests/quests/lang/en_us.snbt": "78b9c40e21d2eb105fe7757c6cd7a1ad09b05e6cfc3602910d7afc143a7f80e1",
+        "config/ftbquests/quests/lang/es_es.snbt": "be2573b6ada4fda5aa06a3162e9be251fe27587c6e2a88c4c19898b551fe55e8"
+      },
+      "dependencyReceiptSha256": "73a924cb4ba31eeeb47e40a5776f4cf8faa3ea9f0f865e17c4b4fc4475b59c4e"
+    },
+    {
+      "profile": "ENTRELUMEN",
+      "side": "client",
+      "files": {
+        "mods/entrelumen-0.1.0.jar": "d4b4d2ed1a7232cc64eceb368c051ead0a32050bfd142175c910f8113dd080c3",
+        "config/ftbquests/quests/lang/en_us.snbt": "78b9c40e21d2eb105fe7757c6cd7a1ad09b05e6cfc3602910d7afc143a7f80e1",
+        "config/ftbquests/quests/lang/es_es.snbt": "be2573b6ada4fda5aa06a3162e9be251fe27587c6e2a88c4c19898b551fe55e8"
+      },
+      "dependencyReceiptSha256": "f2ca487226eb0b11c24e12b68ee9d37e29ed4c5d3aa6b5a4c42025f0121605ce"
+    },
+    {
+      "profile": "ENTRELUMEN Defaults QA",
+      "side": "client",
+      "files": {
+        "mods/entrelumen-0.1.0.jar": "d4b4d2ed1a7232cc64eceb368c051ead0a32050bfd142175c910f8113dd080c3",
+        "config/ftbquests/quests/lang/en_us.snbt": "78b9c40e21d2eb105fe7757c6cd7a1ad09b05e6cfc3602910d7afc143a7f80e1",
+        "config/ftbquests/quests/lang/es_es.snbt": "be2573b6ada4fda5aa06a3162e9be251fe27587c6e2a88c4c19898b551fe55e8"
+      },
+      "dependencyReceiptSha256": "f2ca487226eb0b11c24e12b68ee9d37e29ed4c5d3aa6b5a4c42025f0121605ce"
+    }
+  ],
+  "idleDiagnostic": "docs/verification/building-idle-diagnostic.json",
+  "limitations": [
+    "No Computer Use or client launch. Final 178-dependency client rendering, HUD, models, key behavior and bilingual service hints are unverified.",
+    "Native recipe/group checks do not establish a real powered Mechanical Chisel workload, tape-measure interaction, complete GUI crafting flow or claimed-area permissions.",
+    "Glassential published gravity/multiplayer-paint/lit-pane fixes are not directly exercised here.",
+    "Idle snapshots do not establish performance acceptance; final-scale gameplay, 2-hour stability, moving routes and six external players remain pending.",
+    "Other four practical Ark services, natural first-hour survival, 150-200h pacing, final quest/mod scale, public release and weekly review acceptance remain open."
+  ]
+}
