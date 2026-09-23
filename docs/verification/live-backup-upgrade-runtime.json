@@ -1,0 +1,133 @@
+{
+  "schemaVersion": 1,
+  "checkedAt": "2026-09-23T15:58:57.584875+00:00",
+  "status": "bounded_live_backup_restore_and_prototype_upgrade_passed",
+  "platform": "Minecraft 1.21.1 / NeoForge 21.1.249 / Java 21 / Windows",
+  "productionSourceCommit": "57126f306104baff016868623620df0c40a817fd",
+  "sourceSha256": {
+    "companion/src/fullpackGameTest/java/dev/entrelumen/BackupRestoreGameTests.java": "19ef37eff580cc274c9d231986b2f32db5fa8d5bd8564eaf1eaae171e36a40d3",
+    "companion/src/fullpackGameTest/java/dev/entrelumen/TeamRestartGameTests.java": "4c6e9035f559d022a503830f9df952321cdfe723f181a2c51c4e2227f9298c89",
+    "companion/src/fullpackGameTest/java/dev/entrelumen/FullpackQABootstrap.java": "1e689214631b3953b6f16a4d9c8acf9a176c8f0923febf0de26ebe28223dc43a"
+  },
+  "catalogSha256": "0d5512e6f35e5b69b85b4aa736b6aea6e5ca95469a6f025cfe22227c4b3a650c",
+  "dependencyCounts": {
+    "client": 178,
+    "server": 143
+  },
+  "normalJarSha256": "a9f4b1309957a90bff978d09e036d7ae1582e80c7690b4bffe04bf9b32c2dcc8",
+  "qaJarSha256": "4601b1367749e9346e40d80aac8d277d18d1e28ee8cc18948ea543e00cbf6a60",
+  "liveBackup": {
+    "provider": "SimpleBackups 1.21-4.0.30",
+    "command": "simplebackups backup start",
+    "configuration": {
+      "saveAll": true,
+      "backupType": "FULL_BACKUPS",
+      "collectErrors": true
+    },
+    "archiveSha256": "5ae901ae07d250c3ba7a9d0d602987f523c70abb622fde23b7e9e84db179e136",
+    "archiveBytes": 50625058,
+    "nativeReportedSeconds": 20.032,
+    "sourceAliveAtArchiveFreeze": true,
+    "preBackupWorldFilesCovered": 1168,
+    "preBackupFilesMissing": [],
+    "preBackupExclusions": [
+      "entrelumen-test/session.lock"
+    ],
+    "restoredFilesHashVerifiedAgainstArchive": 1169,
+    "runtimeFilesHashVerifiedAgainstSource": 246,
+    "ignoredNonWorldArchiveEntries": [
+      "backup.log"
+    ],
+    "nonce": "b3b1147f-480b-4bed-8cee-750df941446c",
+    "semanticDigest": "c987abf6fb4737d16bdaf09471dbf67828fd195747f6ee6e26ef7c82db22069b",
+    "preparedJvmStart": 1790178284982,
+    "restoredJvmStart": 1790178677364,
+    "newArsSignal": {
+      "power": 11,
+      "ticks": 1000000,
+      "absentOnDiskAtPreparation": true,
+      "presentInNativeZipAndLoadedRestore": true
+    },
+    "campaignsCompared": "Entire prepared campaign SavedData compared semantically, including retained personal histories",
+    "ftbPartiesChecked": 2,
+    "nativeMockPlayersReconnected": 3,
+    "inventories": "Native persisted Inventory, EnderItems and selected slot compared; loaded item counts checked after reconnect",
+    "arkMutation": {
+      "phase": 1,
+      "item": "entrelumen:containment_seal",
+      "deposited": 1
+    },
+    "sourceRuntime": {
+      "runId": "b2b06b1a-c579-473c-8266-ff6f9c6049b8",
+      "started": 1790178284.9009247,
+      "ended": 1790178513.49851,
+      "exitCode": 0,
+      "ownedProcessStopped": true,
+      "logSha256": "210f7dfcc39419684938c99161b573afc00ae10c5c5ca6dc7621650c16e76567",
+      "errorLineCount": 0,
+      "warningLineCount": 188,
+      "accessDeniedOccurrences": 0,
+      "qaBridgeLoaded": true
+    },
+    "restoredRuntime": {
+      "runId": "3fd081c5-24af-4022-89ee-386b61b5f03e",
+      "started": 1790178676.3335173,
+      "ended": 1790178863.330989,
+      "exitCode": 0,
+      "ownedProcessStopped": true,
+      "logSha256": "7614c887f1e08178277c600ca2914e6c8cc9c9068d4168b712740083de9024dc",
+      "errorLineCount": 0,
+      "warningLineCount": 188,
+      "accessDeniedOccurrences": 0,
+      "qaBridgeLoaded": true
+    },
+    "observerCorrection": "Initial wait expected Backup done. The actual Backup completed in marker was inspected; no second backup was submitted. The corrected observer and coverage checks preserved the first archive."
+  },
+  "prototypeUpgrade": {
+    "fromCompanionSourceCommit": "f31150229af1388cac569aa13a495605c1ff3b8b",
+    "fromNormalJarSha256": "0b0c14103eae4f9bf4d7ff1df6643d1450196cb5b06b2050e27b8e5e04e7f5a0",
+    "toNormalJarSha256": "a9f4b1309957a90bff978d09e036d7ae1582e80c7690b4bffe04bf9b32c2dcc8",
+    "originalArchiveSha256": "8bda48c538384315208e5c287ab05118405268a78d55c2035ca1389a4a0c3fbf",
+    "sameMinecraftNeoForgeAndCampaignSchema": true,
+    "companionVersionLabelBoth": "0.1.0",
+    "originalFiles": 100,
+    "campaignByteEqual": true,
+    "campaignSemanticEqual": true,
+    "campaignSemanticSha256": "c4e1ec8e7d1aa0100946df9a8d53dddbd14efad3be010c4e340921581aaa05da",
+    "inventorySemanticEqual": true,
+    "ftbFilesUnchanged": 4,
+    "playerDataFilesUnchanged": 3,
+    "worldFilesChangedByNormalRuntime": 21,
+    "worldFilesAddedByNormalRuntime": 1,
+    "worldFilesMissing": 0,
+    "loadedCampaignDiagnostic": "schema=2 personal=1 parties=0",
+    "runtime": {
+      "runId": "ea51eab8-c6cd-4f1a-b020-517b6990f1ac",
+      "started": 1790178905.7455664,
+      "ended": 1790179046.9357035,
+      "exitCode": 0,
+      "ownedProcessStopped": true,
+      "logSha256": "70e641eb61f3a0137287639f83656da940d7ca91d76e0845ed9c8536eeeadd3b",
+      "errorLineCount": 0,
+      "warningLineCount": 187,
+      "accessDeniedOccurrences": 0,
+      "qaBridgeLoaded": false
+    },
+    "normalJarOnly": true,
+    "clientLoggedIn": false
+  },
+  "cleanup": {
+    "sourceAndBothCopiesUseVerifiedNormalJar": true,
+    "allThreeOwnedJavaProcessesStopped": true,
+    "heavyEvidenceAndRuntimeLocation": "G:/Elias/Codex/Entrelumen-work"
+  },
+  "limitations": [
+    "One native live-backup run does not establish atomic snapshots for all mods or reproduce/resolve the earlier Windows AccessDenied race; no backup compatibility patch was made.",
+    "The probe was absent from disk at preparation; an intervening autosave was not instrumented, so persistence is not attributed exclusively to the SimpleBackups flush.",
+    "Live archive membership and extraction hashes cover observed files, not a byte-identical snapshot of the entire mutating source world at one instant.",
+    "The two teams and three players are native QA fixtures with seeded late-act eligibility, not human co-op or six external clients.",
+    "The upgraded archive is a creative Act VI prototype with one personal campaign; no player logged into that normal upgraded server. Persisted inventories were compared without client interaction.",
+    "The older and newer prototypes share Minecraft, NeoForge and campaign schema 2; this is not a schema migration or an upgrade from the eventual published beta.",
+    "First-hour survival, final-scale campaign, rendered experience, performance, two-hour soak, public release and weekly-review acceptance remain open."
+  ]
+}

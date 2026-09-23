@@ -74,7 +74,7 @@ public final class TeamRestartGameTests {
   private record State(int act, Set<String> completed, int phase,
       Map<String, Integer> deposits, boolean archived) {}
 
-  private record Receipt(UUID nonce, long preparedStart, long preparedPid,
+  record Receipt(UUID nonce, long preparedStart, long preparedPid,
       GameProfile ownerA, GameProfile ownerB, GameProfile guestA, UUID teamA, UUID teamB) {}
 
   private TeamRestartGameTests() {}
@@ -368,7 +368,7 @@ public final class TeamRestartGameTests {
             + (campaign == null ? "missing" : state(campaign)));
   }
 
-  private static BlockPos ark(GameTestHelper helper) {
+  static BlockPos ark(GameTestHelper helper) {
     BlockPos pos = helper.absolutePos(new BlockPos(1, 1, 1));
     helper.getLevel().setBlockAndUpdate(pos,
         BuiltInRegistries.BLOCK.get(ResourceLocation.parse("entrelumen:ark_controller"))
@@ -383,11 +383,11 @@ public final class TeamRestartGameTests {
     return pos;
   }
 
-  private static void nearController(ServerPlayer player, BlockPos pos) {
+  static void nearController(ServerPlayer player, BlockPos pos) {
     player.teleportTo(pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.5);
   }
 
-  private static void assertMembers(GameTestHelper helper, PartyTeam team, UUID... members) {
+  static void assertMembers(GameTestHelper helper, PartyTeam team, UUID... members) {
     helper.assertTrue(team.getMembers().equals(Set.of(members))
             && team.getOwner().equals(members[0]),
         "Persisted FTB team membership/owner differs for " + team.getId()
@@ -406,7 +406,7 @@ public final class TeamRestartGameTests {
         "Could not seed restart QA item " + BuiltInRegistries.ITEM.getKey(item));
   }
 
-  private static Map<String, Integer> inventory(ServerPlayer player) {
+  static Map<String, Integer> inventory(ServerPlayer player) {
     Map<String, Integer> result = new TreeMap<>();
     count(result, player.getInventory().items);
     count(result, player.getInventory().armor);
@@ -437,7 +437,7 @@ public final class TeamRestartGameTests {
     return new GameProfile(id, prefix + id.toString().substring(0, 5));
   }
 
-  private static NativePlayerSession connect(GameTestHelper helper, GameProfile profile,
+  static NativePlayerSession connect(GameTestHelper helper, GameProfile profile,
       boolean fresh) {
     var cookie = CommonListenerCookie.createInitial(profile, false);
     ServerPlayer player = new ServerPlayer(helper.getLevel().getServer(), helper.getLevel(),
@@ -459,8 +459,8 @@ public final class TeamRestartGameTests {
     }
   }
 
-  private static final class NativePlayerSession implements AutoCloseable {
-    private final ServerPlayer player;
+  static final class NativePlayerSession implements AutoCloseable {
+    final ServerPlayer player;
     private final Connection connection;
     private final EmbeddedChannel channel;
     private boolean closed;
@@ -487,11 +487,11 @@ public final class TeamRestartGameTests {
     }
   }
 
-  private static Path receiptPath(MinecraftServer server) {
+  static Path receiptPath(MinecraftServer server) {
     return server.getWorldPath(LevelResource.ROOT).resolve("data").resolve(RECEIPT);
   }
 
-  private static Path playerDataPath(MinecraftServer server, UUID id) {
+  static Path playerDataPath(MinecraftServer server, UUID id) {
     return server.getWorldPath(LevelResource.ROOT).resolve("playerdata")
         .resolve(id + ".dat");
   }
@@ -502,7 +502,7 @@ public final class TeamRestartGameTests {
             + " before another prepare: " + path);
   }
 
-  private static long processStart() {
+  static long processStart() {
     return ManagementFactory.getRuntimeMXBean().getStartTime();
   }
 
@@ -544,7 +544,7 @@ public final class TeamRestartGameTests {
     Files.move(pending, path);
   }
 
-  private static Receipt readReceipt(GameTestHelper helper, Path path) throws IOException {
+  static Receipt readReceipt(GameTestHelper helper, Path path) throws IOException {
     CompoundTag tag = NbtIo.readCompressed(path, NbtAccounter.unlimitedHeap());
     helper.assertTrue(tag.getInt("schema") == 1 && tag.getString("stage").equals("prepared")
             && !Files.exists(path.resolveSibling(RECEIPT + ".pending")),

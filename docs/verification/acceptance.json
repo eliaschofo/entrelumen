@@ -37,9 +37,10 @@
       "status": "pending",
       "evidence": [
         "docs/verification/magic-cooking-teams-runtime.json",
-        "docs/verification/habitation-restart-runtime.json"
+        "docs/verification/habitation-restart-runtime.json",
+        "docs/verification/live-backup-upgrade-runtime.json"
       ],
-      "note": "Prior native lifecycle cases plus a new real two-process restart fixture cover two FTB parties, three internally connected QA players, retained personal histories, independent partial Ark deposits, exact persisted inventories and replay conservation after restart. Late-act eligibility is seeded. Human co-op and full campaign migration remain pending; no six-external-client acceptance is claimed."
+      "note": "Prior native lifecycle cases plus a new real two-process restart fixture cover two FTB parties, three internally connected QA players, retained personal histories, independent partial Ark deposits, exact persisted inventories and replay conservation after restart. Late-act eligibility is seeded. Human co-op and full campaign migration remain pending; no six-external-client acceptance is claimed. Native QA team membership and inventories also survived restoration from a live backup in an isolated process."
     },
     {
       "id": "six_act_campaign",
@@ -76,7 +77,7 @@
         "docs/verification/arcane-building-runtime.json",
         "docs/verification/habitation-restart-runtime.json"
       ],
-      "note": "171 original quests across seven chapters have EN/ES source coverage; the optional storage introduction rendered in both languages. Atlas list focus and layout were checked in ES/EN at GUI 2/3. Storage self-checks and final-scale content remain pending. Three tooltip features rendered in ES GUI3/EN GUI2; 48 original overlay keys per locale have parity. Held-key behavior remains pending. The Arcana service and its existing main quest now have EN/ES source coverage; all 205 companion locale keys and placeholders match. New rendered service hints remain unverified."
+      "note": "171 original quests across seven chapters have EN/ES source coverage; the optional storage introduction rendered in both languages. Atlas list focus and layout were checked in ES/EN at GUI 2/3. Storage self-checks and final-scale content remain pending. Three tooltip features rendered in ES GUI3/EN GUI2; 48 original overlay keys per locale have parity. Held-key behavior remains pending. The Arcana service and its existing main quest now have EN/ES source coverage; all 224 companion locale keys and placeholders match. New rendered service hints remain unverified."
     },
     {
       "id": "quest_editorial_target",
@@ -87,7 +88,7 @@
         "docs/verification/atlas-inventory-runtime.json",
         "docs/verification/qol-tooltips-runtime.json"
       ],
-      "note": "Current prototype: 171 quests, seven chapters, 170 client/135 server dependency JARs. FTB export measured at 523 direct mod JARs and 2072 unique exported quests. Final target and full Craftoria comparison remain open."
+      "note": "Current prototype: 171 quests, seven chapters, 178 client/143 server dependency JARs. FTB export measured at 523 direct mod JARs and 2072 unique exported quests. Final target and full Craftoria comparison remain open."
     },
     {
       "id": "manual_campaign_playthrough",
@@ -123,9 +124,10 @@
       "id": "upgrade_restore",
       "status": "pending",
       "evidence": [
-        "docs/verification/offline-restore-runtime.json"
+        "docs/verification/offline-restore-runtime.json",
+        "docs/verification/live-backup-upgrade-runtime.json"
       ],
-      "note": "A full stopped QA world was archived and restored into a separate dedicated server on the same build. All 100 files and 56 directories matched at extraction; normal startup/save/shutdown preserved campaign, player and FTB files byte-for-byte and left the original world unchanged. Beta upgrade, live-backup consistency, restored client interaction and final-scale acceptance remain pending."
+      "note": "One native live SimpleBackups archive was restored into a different path/JVM with full observed file coverage and conserved two-party, three-player QA state, partial Ark delivery and new Ars signal. A separate normal server upgraded the archived older prototype to current dependencies and companion; campaign, FTB and playerdata bytes and inventory semantics matched after load/save/stop. No missing world files. Both builds share MC/NeoForge and campaign schema 2. Final beta upgrade, client interaction, atomic live-snapshot guarantees and the earlier Windows race remain pending."
     },
     {
       "id": "curseforge_approved",
