@@ -1,0 +1,13 @@
+# Backpack slot tooltip compatibility
+
+Reference: the native [English inventory capture](../verification/screenshots/qol-backpack-slot-conflict-en.png) shows two Back labels on the same Sophisticated Backpack. The [tooltip runtime record](../verification/qol-tooltips-runtime.json) records the Spanish fallback and the source of each callback. The intended result retains the existing Curios line, its styling and position; it introduces no new panel, icon or art.
+
+The pinned Aether 1.5.10 bundles Accessories 1.1.0-beta.48. Curios 9.5.1 is also required by selected content, including Ars Nouveau, Malum and Occultism. Removing a framework, changing tags or replacing the backend would have a wider effect than this display defect. The official [Accessories Compatibility Layer](https://github.com/wisp-forest/accessories-compat-layer/blob/1.21.1/README.md) describes a backend replacement with compatibility limitations; it is not selected for this correction.
+
+The correction is restricted to the six pinned Sophisticated Backpack items and to a pair of complete tooltip components that each describe exactly the single `back` slot. Recognition uses translation keys and component structure, independent of rendered language. Other slots, extra text, item attributes, unknown shapes and lone framework labels must remain intact. Curios and Accessories keep their APIs, tags, slots, controls and saved items.
+
+The pinned callbacks run at normal event priority; the client-only companion subscriber runs at `LOWEST`. Accessories produces an empty root containing a gray translated header; that header contains a blue empty wrapper with one translated Back child. Its singular and plural header keys are both recognized only with that single slot. Curios produces a gold translated root with two children: a literal U+0020 space and a yellow translated Back label. The space was checked directly in the pinned class constant pool after formatted disassembly obscured it. Both component trees must match the pinned bytecode in the tests; additional data must survive unchanged.
+
+Source tests and client rendering checks are required before accepting this filter. The regression should show one native Back label in English and Spanish, preserved contents hints, a backpack that still opens with its existing contents, and normal save/close. These checks do not establish equivalence of the frameworks or complete all accessory gameplay tests.
+
+The [bounded runtime record](../verification/backpack-slot-runtime.json) verifies that result for the basic backpack at GUI scale 2 in both languages, including its previously stored iron chestplate and normal shutdown. Other tiers and equipped-slot interactions remain outside this visual check.

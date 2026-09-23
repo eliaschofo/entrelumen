@@ -1,0 +1,119 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-09-23",
+  "status": "bounded_fix_runtime_verified",
+  "scope": "Remove only a duplicate Back slot label from the six pinned Sophisticated Backpack items. No framework migration.",
+  "reference": "docs/verification/screenshots/qol-backpack-slot-conflict-en.png",
+  "design": "docs/design/accessory-tooltip-compat.md",
+  "pinnedArtifacts": [
+    {
+      "filename": "aether-1.21.1-1.5.10-neoforge.jar",
+      "sha256": "b19386301560a017a458e9790a7b59999e270f93010def0b61e7cbe4c8630dbf"
+    },
+    {
+      "filename": "curios-neoforge-9.5.1+1.21.1.jar",
+      "sha256": "a45df2125c26219974aba7507ffc9afe7b83acc941a386af3faacb1cc0056fde"
+    },
+    {
+      "filename": "sophisticatedbackpacks-1.21.1-3.25.78.2107.jar",
+      "sha256": "ece652898740ae68ce3c0d5f29606e0616f08360bfd429e380a137091909929d"
+    }
+  ],
+  "embeddedAccessories": "Aether embeds accessories-neoforge-1.1.0-beta.48+1.21.1.jar",
+  "implementation": {
+    "event": "CLIENT-only ItemTooltipEvent at LOWEST, after both pinned NORMAL callbacks",
+    "match": "Exact translation keys, styles and complete component trees; no rendered-language comparison",
+    "accessoriesTree": "empty root -> gray translated header -> blue empty body -> one unstyled translated Back child",
+    "curiosTree": "gold translated root -> literal U+0020 space plus yellow translated Back child",
+    "preservation": "Additional slots, unknown text, attributes, nonmatching styles, other items and single-provider labels are left intact. No API, tag, slot or save changes.",
+    "review": "Independent bytecode review corrected two initial fixture mistakes (Curios space and Accessories nesting) before accepted client QA."
+  },
+  "sourceValidation": {
+    "junit": {
+      "tests": 53,
+      "failures": 0,
+      "errors": 0
+    },
+    "requiredGameTestsPassed": 30,
+    "gameTestsFailed": 0,
+    "gameTestLogSha256": "bc621ec805c9f8ab87ac3d4e0c864cd662b1b00510c281712633f469941f439a",
+    "dedicatedScope": "Isolated Minecraft GameTest server, without Curios, Accessories, JEED or EMI; not the full-pack dedicated server.",
+    "java": "21.0.12.1+1",
+    "companionSha256": "87f4438772fd2838298460762b4375a7cb7a75c925aaf1e5a17b5e0e5ae4d3d5",
+    "postBuildSourceChange": "Only fixture comments documenting pins and structure; no functional change."
+  },
+  "runtime": {
+    "profile": "ENTRELUMEN Defaults QA",
+    "world": "ENTRELUMEN Atlas e inventario QA",
+    "fixture": "Existing superflat technical UI world and previously granted items; not survival acquisition or pacing.",
+    "minecraft": "1.21.1",
+    "neoforge": "21.1.249",
+    "clientDependencies": 151,
+    "viewport": [
+      1024,
+      768
+    ],
+    "guiScale": 2,
+    "locales": [
+      "en_us",
+      "es_es"
+    ],
+    "observed": [
+      "Basic backpack hover shows one gold Slot: Back in English; gray/blue duplicate is absent.",
+      "English native contents hint remains visible. The F2 capture was taken while EMI was still reloading and does not show its mod-name footer.",
+      "B opens the backpack with the previously saved iron chestplate still in its first slot.",
+      "After language reload, Spanish hover shows one gold Ranuras: Espalda; translated contents hint and mod name remain visible.",
+      "All dimensions saved at 07:07:19 Argentina; client stopped normally at 07:07:36 and process exited."
+    ],
+    "normalJar": true,
+    "companionSha256": "87f4438772fd2838298460762b4375a7cb7a75c925aaf1e5a17b5e0e5ae4d3d5",
+    "errorLines": 30,
+    "errorBreakdown": {
+      "ignoredThirdPartyResourcePaths": 30,
+      "historyDeserialization": 0,
+      "otherErrorLines": 0
+    },
+    "otherDiagnostics": "Two INFO-level OpenGL debug errors report incompatible depth formats at 07:03:01. No visible corruption in inspected screens; origin and performance impact remain unresolved. Third-party optional model and update-check warnings remain.",
+    "clientLogSha256": "eaf4039620c7a40be41f68c358eb1ff79467935a1937459eaad5ee52c2a3385b",
+    "previousAbortedLaunch": "An earlier owned launch using an intermediate JAR was stopped before world entry when static review found fixture errors. It is not counted as accepted runtime evidence."
+  },
+  "screenshots": [
+    {
+      "path": "docs/verification/screenshots/backpack-slot-en-gui2.png",
+      "sha256": "b707ed3b04804774fadadc45fec590f467474d08b85f004c10870dddf333ac30",
+      "nativeF2Source": "2026-09-23_07.03.48.png"
+    },
+    {
+      "path": "docs/verification/screenshots/backpack-content-en-gui2.png",
+      "sha256": "f6654b3dd439275782676794e66f51db6b73eaa0f6f8d60afb9c77edaa197a57",
+      "nativeF2Source": "2026-09-23_07.04.11.png"
+    },
+    {
+      "path": "docs/verification/screenshots/backpack-slot-es-gui2.png",
+      "sha256": "e3b73aa96c41a8b6b582a170c7c139b47d050722e573118b96131350cb06a2c5",
+      "nativeF2Source": "2026-09-23_07.06.54.png"
+    }
+  ],
+  "installedInto": [
+    {
+      "profile": "ENTRELUMEN",
+      "companionSha256": "87f4438772fd2838298460762b4375a7cb7a75c925aaf1e5a17b5e0e5ae4d3d5"
+    },
+    {
+      "profile": "ENTRELUMEN Defaults QA",
+      "companionSha256": "87f4438772fd2838298460762b4375a7cb7a75c925aaf1e5a17b5e0e5ae4d3d5"
+    },
+    {
+      "profile": "owned dedicated server-slice",
+      "companionSha256": "87f4438772fd2838298460762b4375a7cb7a75c925aaf1e5a17b5e0e5ae4d3d5"
+    }
+  ],
+  "rawEvidenceDirectory": "work/qol-backpack-slots-20260923 (workspace root; not distributed)",
+  "limits": [
+    "Visual QA used the basic backpack, not every tier or every possible accessory.",
+    "Held-Shift preview, equipment movement between the two frameworks and full accessory gameplay remain untested.",
+    "Unknown tooltip shapes deliberately retain both lines; dependency upgrades require revalidation.",
+    "No performance, natural first-hour pacing, final artwork, six-player or public CurseForge acceptance claimed.",
+    "No dependency, recipe, campaign or quest changes; prototype remains 171 quests in seven chapters and 42 milestones."
+  ]
+}

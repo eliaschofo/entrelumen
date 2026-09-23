@@ -76,10 +76,12 @@
     },
     {
       "id": "backpack-accessory-slot-labels",
-      "status": "preexisting_pending",
+      "status": "fixed_and_runtime_verified",
       "origin": "Accessories embedded in pinned Aether and existing Curios each emit a Back slot line; backpack has both item tags.",
       "observedImpact": "Two slot labels, including Accessories English fallback in Spanish. No additional container panel from this batch.",
-      "configFinding": "Accessories showEquippedStackSlotType governs experimental equipped UI, not this tooltip callback; no suitable config fix found."
+      "configFinding": "Accessories showEquippedStackSlotType governs experimental equipped UI, not this tooltip callback; no suitable config fix found.",
+      "fix": "Companion client event removes only the exact redundant Accessories Back component when the pinned Curios Back component is present on a Sophisticated Backpack.",
+      "resolutionEvidence": "docs/verification/backpack-slot-runtime.json"
     }
   ],
   "installedInto": [
