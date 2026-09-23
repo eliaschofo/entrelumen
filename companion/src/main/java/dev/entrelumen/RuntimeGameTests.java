@@ -18,6 +18,63 @@ import net.neoforged.neoforge.gametest.*;
 @PrefixGameTestTemplate(false)
 public final class RuntimeGameTests {
   @GameTest(template = "empty", timeoutTicks = 200)
+  public static void arkFieldJournalsReadCurrentTeamWithoutMutation(GameTestHelper helper)
+      throws Exception {
+    var reader = player(helper, "JournalReader");
+    var outsider = player(helper, "JournalOther");
+    var controller = ark(helper, reader);
+    var personal = Entrelumen.current(reader);
+    personal.completed.addAll(Set.of("spectral_archive", "sealed_memory", "atlas_voices",
+        "nursery_protocol", "horizon_survey", "aether_arrival", "travellers_table"));
+    personal.arkPhase = 2;
+    personal.arkDeposits.put("entrelumen:ecosystem_capsule", 1);
+    var other = Entrelumen.current(outsider);
+    other.act = 6;
+    var team = FTBTeamsAPI.api().getManager().createPartyTeam(reader,
+        "Journals " + reader.getUUID(), "", dev.ftb.mods.ftblibrary.icon.Color4I.WHITE);
+    var shared = Entrelumen.current(reader);
+    reader.setItemInHand(net.minecraft.world.InteractionHand.OFF_HAND,
+        new ItemStack(Items.DIAMOND, 3));
+    var inventory = Entrelumen.availableMaterials(reader);
+    var data = CampaignData.get(reader.server);
+    var before = data.save(new CompoundTag(), helper.getLevel().registryAccess());
+    var dirty = data.isDirty();
+    var blocks = new HashMap<net.minecraft.core.BlockPos, net.minecraft.world.level.block.state.BlockState>();
+    for (var kind : ArkFieldJournals.Kind.values()) {
+      var module = arkModule(helper, controller, kind.module());
+      blocks.put(module, helper.getLevel().getBlockState(module));
+      reader.teleportTo(module.getX() + 0.5, module.getY() + 1, module.getZ() + 0.5);
+      var result = reader.gameMode.useItemOn(reader, helper.getLevel(), reader.getMainHandItem(),
+          net.minecraft.world.InteractionHand.MAIN_HAND, arkHit(module));
+      helper.assertTrue(result.consumesAction(), "Field journal did not respond: " + kind.module());
+    }
+    helper.assertTrue(ArkFieldJournals.view(shared, ArkFieldJournals.Kind.ARCANE).narrative()
+            == ArkFieldJournals.Narrative.RECORDED
+        && ArkFieldJournals.view(other, ArkFieldJournals.Kind.ARCANE).narrative()
+            == ArkFieldJournals.Narrative.EMPTY
+        && ArkFieldJournals.view(shared, ArkFieldJournals.Kind.NATURE).materials().getFirst()
+            .deposited() == 1
+        && ArkFieldJournals.view(shared, ArkFieldJournals.Kind.EXPLORATION).journeys().stream()
+            .filter(ArkFieldJournals.Evidence::recorded).count() == 1
+        && Entrelumen.availableMaterials(reader).equals(inventory)
+        && data.isDirty() == dirty
+        && data.save(new CompoundTag(), helper.getLevel().registryAccess()).equals(before)
+        && blocks.entrySet().stream().allMatch(e -> helper.getLevel().getBlockState(e.getKey()).equals(e.getValue()))
+        && CampaignActions.campaignId(reader).equals(team.getId()),
+        "Journal read consumed supplies, changed team progress or confused recorded journeys");
+    var arcane = arkModule(helper, controller, "arcane_module");
+    reader.teleportTo(arcane.getX() + 20.5, arcane.getY() + 1, arcane.getZ() + 0.5);
+    helper.assertTrue(!ArkFieldJournals.inspect(reader, arcane), "Remote journal bypassed reach");
+    reader.teleportTo(arcane.getX() + 0.5, arcane.getY() + 1, arcane.getZ() + 0.5);
+    reader.setGameMode(net.minecraft.world.level.GameType.SPECTATOR);
+    helper.assertTrue(!ArkFieldJournals.inspect(reader, arcane), "Spectator read a journal");
+    reader.setGameMode(net.minecraft.world.level.GameType.SURVIVAL);
+    helper.getLevel().removeBlock(arcane, false);
+    helper.assertTrue(!ArkFieldJournals.inspect(reader, arcane), "Removed journal still responded");
+    helper.succeed();
+  }
+
+  @GameTest(template = "empty", timeoutTicks = 200)
   public static void logisticsModuleDepositsCurrentBatchFromTeamInventoryOnce(GameTestHelper helper)
       throws Exception {
     var player = player(helper, "LogisticsMain");

@@ -63,6 +63,16 @@ public final class Entrelumen {
         ITEMS.register(id, () -> new LogisticsModuleItem(logistics.get(), new Item.Properties()));
         continue;
       }
+      ArkFieldJournals.Kind journalKind = null;
+      for (var kind : ArkFieldJournals.Kind.values())
+        if (kind.module().equals(id)) journalKind = kind;
+      if (journalKind != null) {
+        var selected = journalKind;
+        var journal = BLOCKS.register(id, () -> new ArkFieldJournalBlock(selected,
+            BlockBehaviour.Properties.of().strength(3f).requiresCorrectToolForDrops()));
+        ITEMS.register(id, () -> new ArkFieldJournalItem(journal.get(), new Item.Properties()));
+        continue;
+      }
       var block =
           BLOCKS.registerSimpleBlock(
               id, BlockBehaviour.Properties.of().strength(3f).requiresCorrectToolForDrops());

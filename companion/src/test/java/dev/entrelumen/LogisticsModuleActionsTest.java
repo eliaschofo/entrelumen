@@ -3,11 +3,35 @@ package dev.entrelumen;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import net.minecraft.core.BlockPos;
 import org.junit.jupiter.api.Test;
 
 class LogisticsModuleActionsTest {
+  @Test
+  void completedOrEndedLedgerDoesNotInviteAnotherDeposit() {
+    var physical = new EngineeringDiagnostics.PhysicalView(
+        EngineeringDiagnostics.ControllerState.ABSENT, null, java.util.Set.of(), false);
+    var active = new EngineeringDiagnostics.CampaignView(6, false, List.of(), List.of(),
+        false, false, 5, 6, "chart", "exploration_module", List.of(), false);
+    var commissioned = new EngineeringDiagnostics.CampaignView(6, false, List.of(), List.of(),
+        false, false, 6, 6, "", "", List.of(), false);
+    var ending = new EngineeringDiagnostics.CampaignView(6, false, List.of(), List.of(),
+        false, false, 6, 6, "", "", List.of(), true);
+    assertTrue(hasKey(LogisticsModuleActions.lines(active, physical), "entrelumen.logistics.hint"));
+    assertFalse(hasKey(LogisticsModuleActions.lines(commissioned, physical), "entrelumen.logistics.hint"));
+    assertFalse(hasKey(LogisticsModuleActions.lines(ending, physical), "entrelumen.logistics.hint"));
+    assertTrue(hasKey(LogisticsModuleActions.lines(commissioned, physical),
+        "entrelumen.logistics.commissioned"));
+  }
+
+  private static boolean hasKey(List<net.minecraft.network.chat.Component> lines, String key) {
+    return lines.stream().anyMatch(component -> component.getContents()
+        instanceof net.minecraft.network.chat.contents.TranslatableContents translated
+        && translated.getKey().equals(key));
+  }
+
   @Test
   void onlyOneFullyKnownCompleteControllerCanReceiveADeposit() {
     var module = new BlockPos(0, 70, 0);
@@ -22,9 +46,12 @@ class LogisticsModuleActionsTest {
     var complete = scan(module, blocks, pos -> true);
     assertEquals(controller, LogisticsModuleActions.controllerForDeposit(complete));
 
-    var removed = blocks.remove(controller.offset(0, 0, 1));
+    var removedPos = blocks.entrySet().stream()
+        .filter(entry -> entry.getValue().equals("nature_module"))
+        .map(Map.Entry::getKey).findFirst().orElseThrow();
+    var removed = blocks.remove(removedPos);
     assertNull(LogisticsModuleActions.controllerForDeposit(scan(module, blocks, pos -> true)));
-    blocks.put(controller.offset(0, 0, 1), removed);
+    blocks.put(removedPos, removed);
     assertNull(LogisticsModuleActions.controllerForDeposit(
         scan(module, blocks, pos -> pos.getX() != 4)));
     assertNull(LogisticsModuleActions.controllerForDeposit(

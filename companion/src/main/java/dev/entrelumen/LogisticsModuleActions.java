@@ -65,7 +65,8 @@ public final class LogisticsModuleActions {
                 Component.translatable("entrelumen.project." + id)));
       }
     }
-    lines.add(Component.translatable("entrelumen.logistics.hint"));
+    if (!view.commissioned() && !view.ending())
+      lines.add(Component.translatable("entrelumen.logistics.hint"));
     return List.copyOf(lines);
   }
 }
