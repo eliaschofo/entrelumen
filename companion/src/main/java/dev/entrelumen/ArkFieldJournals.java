@@ -8,6 +8,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.ItemStack;
+import net.neoforged.neoforge.network.PacketDistributor;
 
 /** Read-only, team-specific field notes for four Ark disciplines. */
 public final class ArkFieldJournals {
@@ -90,10 +91,15 @@ public final class ArkFieldJournals {
         || !player.serverLevel().hasChunkAt(module)) return false;
     if (!(player.serverLevel().getBlockState(module).getBlock() instanceof ArkFieldJournalBlock block))
       return false;
+    PacketDistributor.sendToPlayer(player, snapshot(player, module, block.kind()));
+    return true;
+  }
+
+  static JournalBookNetwork.Snapshot snapshot(ServerPlayer player, BlockPos module, Kind kind) {
     var campaign = EngineeringDiagnostics.currentReadOnly(player);
     var physical = EngineeringDiagnostics.physicalView(player.serverLevel(), module);
-    lines(view(campaign, block.kind()), physical).forEach(player::sendSystemMessage);
-    return true;
+    return new JournalBookNetwork.Snapshot(player.getUUID(), CampaignActions.campaignId(player),
+        kind, lines(view(campaign, kind), physical));
   }
 
   static List<Component> lines(View view, EngineeringDiagnostics.PhysicalView physical) {

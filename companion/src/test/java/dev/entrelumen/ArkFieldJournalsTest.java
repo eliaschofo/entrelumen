@@ -4,9 +4,53 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.Map;
 import java.util.Set;
+import java.util.List;
+import java.util.UUID;
+import net.minecraft.network.chat.Component;
 import org.junit.jupiter.api.Test;
 
 class ArkFieldJournalsTest {
+  @Test
+  void bookPagesKeepLongEvidenceAndEveryLineWithinVanillaRowLimit() {
+    List<Component> evidence = List.of(Component.literal("Arcane testimony"),
+        Component.literal("spectral_archive recorded"),
+        Component.literal("sealed_memory recorded"),
+        Component.literal("a very long last testimony that spans more than one page"));
+    java.util.function.ToIntFunction<Component> rows = text ->
+        java.util.Arrays.stream(text.getString().split("\\n", -1))
+            .mapToInt(part -> Math.max(1, (part.length() + 7) / 8)).sum();
+    var pages = JournalBookPagination.pages(evidence, 3, rows, line -> {
+      String value = line.getString();
+      var pieces = new java.util.ArrayList<Component>();
+      for (int at = 0; at < value.length(); at += 8)
+        pieces.add(Component.literal(value.substring(at, Math.min(at + 8, value.length()))));
+      return pieces;
+    });
+    assertTrue(pages.size() > 2);
+    assertTrue(pages.stream().allMatch(page -> rows.applyAsInt(page) <= 3));
+    assertEquals(evidence.stream().map(Component::getString).collect(java.util.stream.Collectors.joining()),
+        pages.stream().map(Component::getString).collect(java.util.stream.Collectors.joining())
+            .replace("\n", ""));
+  }
+
+  @Test
+  void bookSnapshotIsBoundedAndKeepsTranslationComponents() {
+    var player = UUID.randomUUID();
+    var campaign = UUID.randomUUID();
+    var title = Component.translatable("entrelumen.journal.arcane.title");
+    List<Component> source = new java.util.ArrayList<>(List.of(title));
+    var snapshot = new JournalBookNetwork.Snapshot(player, campaign,
+        ArkFieldJournals.Kind.ARCANE, source);
+    source.clear();
+    assertEquals(List.of(title), snapshot.lines());
+    assertThrows(UnsupportedOperationException.class, () -> snapshot.lines().clear());
+    assertThrows(IllegalArgumentException.class, () -> new JournalBookNetwork.Snapshot(
+        player, campaign, ArkFieldJournals.Kind.ARCANE, List.of()));
+    assertThrows(IllegalArgumentException.class, () -> new JournalBookNetwork.Snapshot(
+        player, campaign, ArkFieldJournals.Kind.ARCANE,
+        java.util.Collections.nCopies(33, title)));
+  }
+
   @Test
   void eachDisciplineNarratesOnlyRecordedTeamEvidence() {
     var team = new Campaigns.Campaign();

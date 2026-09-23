@@ -47,6 +47,43 @@ public final class RuntimeGameTests {
       var result = reader.gameMode.useItemOn(reader, helper.getLevel(), reader.getMainHandItem(),
           net.minecraft.world.InteractionHand.MAIN_HAND, arkHit(module));
       helper.assertTrue(result.consumesAction(), "Field journal did not respond: " + kind.module());
+      var snapshot = ArkFieldJournals.snapshot(reader, module, kind);
+      var outsiderSnapshot = ArkFieldJournals.snapshot(outsider, module, kind);
+      helper.assertTrue(snapshot.player().equals(reader.getUUID())
+          && snapshot.campaign().equals(team.getId()) && snapshot.kind() == kind
+          && !snapshot.campaign().equals(outsiderSnapshot.campaign())
+          && !snapshot.lines().equals(outsiderSnapshot.lines())
+          && snapshot.lines().getFirst().getContents()
+              instanceof net.minecraft.network.chat.contents.TranslatableContents,
+          "Journal packet lost team identity, distinct observations or translation keys");
+      var buffer = new net.minecraft.network.RegistryFriendlyByteBuf(
+          io.netty.buffer.Unpooled.buffer(), helper.getLevel().registryAccess());
+      try {
+        JournalBookNetwork.Snapshot.CODEC.encode(buffer, snapshot);
+        var decoded = JournalBookNetwork.Snapshot.CODEC.decode(buffer);
+        helper.assertTrue(decoded.equals(snapshot)
+            && decoded.lines().getFirst().getContents()
+                instanceof net.minecraft.network.chat.contents.TranslatableContents,
+            "Journal packet changed team identity or translated narrative on the wire");
+      } finally {
+        buffer.release();
+      }
+    }
+    var oversized = new JournalBookNetwork.Snapshot(reader.getUUID(), team.getId(),
+        ArkFieldJournals.Kind.ARCANE, List.of(net.minecraft.network.chat.Component.literal(
+            "x".repeat(33 * 1024))));
+    var oversizedBuffer = new net.minecraft.network.RegistryFriendlyByteBuf(
+        io.netty.buffer.Unpooled.buffer(), helper.getLevel().registryAccess());
+    try {
+      boolean rejected = false;
+      try {
+        JournalBookNetwork.Snapshot.CODEC.encode(oversizedBuffer, oversized);
+      } catch (IllegalArgumentException expected) {
+        rejected = true;
+      }
+      helper.assertTrue(rejected, "Oversized journal payload escaped the wire limit");
+    } finally {
+      oversizedBuffer.release();
     }
     helper.assertTrue(ArkFieldJournals.view(shared, ArkFieldJournals.Kind.ARCANE).narrative()
             == ArkFieldJournals.Narrative.RECORDED
