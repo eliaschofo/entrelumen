@@ -2595,4 +2595,467 @@ public final class RuntimeGameTests {
     }
     helper.succeed();
   }
+  // Nature restoration: a 40x40 meadow template keeps every simulated canopy inside this test's area.
+  private static final int NATURE_EXTENT = 40;
+
+  private static net.minecraft.core.BlockPos natureSite(GameTestHelper helper) {
+    return helper.absolutePos(new net.minecraft.core.BlockPos(20, 1, 20));
+  }
+
+  private static void natureMeadow(GameTestHelper helper) {
+    var level = helper.getLevel();
+    for (int x = 0; x < NATURE_EXTENT; x++)
+      for (int z = 0; z < NATURE_EXTENT; z++) {
+        level.setBlock(helper.absolutePos(new net.minecraft.core.BlockPos(x, -1, z)),
+            net.minecraft.world.level.block.Blocks.DIRT.defaultBlockState(), 2);
+        level.setBlock(helper.absolutePos(new net.minecraft.core.BlockPos(x, 0, z)),
+            net.minecraft.world.level.block.Blocks.GRASS_BLOCK.defaultBlockState(), 2);
+      }
+  }
+
+  /** Forced template chunks load their entity sections asynchronously; never test before that. */
+  private static void whenNatureLoaded(GameTestHelper helper, net.minecraft.core.BlockPos site,
+      int waited, Runnable body) {
+    if (NatureRestoration.loaded(helper.getLevel(), site)) {
+      body.run();
+      return;
+    }
+    helper.assertTrue(waited < 100, "Nature restoration fixture never finished loading");
+    helper.runAfterDelay(1, () -> whenNatureLoaded(helper, site, waited + 1, body));
+  }
+
+  private static Map<net.minecraft.core.BlockPos, net.minecraft.world.level.block.state.BlockState>
+      natureSnapshot(GameTestHelper helper) {
+    Map<net.minecraft.core.BlockPos, net.minecraft.world.level.block.state.BlockState> states = new HashMap<>();
+    for (int x = 0; x < NATURE_EXTENT; x++)
+      for (int y = -1; y <= 27; y++)
+        for (int z = 0; z < NATURE_EXTENT; z++) {
+          var pos = helper.absolutePos(new net.minecraft.core.BlockPos(x, y, z));
+          states.put(pos, helper.getLevel().getBlockState(pos));
+        }
+    return states;
+  }
+
+  private static Map<net.minecraft.core.BlockPos, net.minecraft.world.level.block.state.BlockState>
+      natureChanges(Map<net.minecraft.core.BlockPos, net.minecraft.world.level.block.state.BlockState> before,
+          GameTestHelper helper) {
+    Map<net.minecraft.core.BlockPos, net.minecraft.world.level.block.state.BlockState> changed = new HashMap<>();
+    before.forEach((pos, state) -> {
+      var now = helper.getLevel().getBlockState(pos);
+      if (!now.equals(state)) changed.put(pos, now);
+    });
+    return changed;
+  }
+
+  private static boolean naturePlant(net.minecraft.world.level.block.state.BlockState state) {
+    return state.is(net.minecraft.world.level.block.Blocks.SHORT_GRASS)
+        || state.is(net.minecraft.tags.BlockTags.SMALL_FLOWERS)
+        || state.getBlock() instanceof net.minecraft.world.level.block.DoublePlantBlock
+            && state.getValue(net.minecraft.world.level.block.DoublePlantBlock.HALF)
+                == net.minecraft.world.level.block.state.properties.DoubleBlockHalf.LOWER;
+  }
+
+  /** Restored ground, plants and whole native trees (one trunk base each) in one pass. */
+  private record NatureDelta(int ground, int plants, int trunks) {}
+
+  private static NatureDelta natureDelta(
+      Map<net.minecraft.core.BlockPos, net.minecraft.world.level.block.state.BlockState> before,
+      Map<net.minecraft.core.BlockPos, net.minecraft.world.level.block.state.BlockState> changed, int groundY) {
+    int ground = 0, plants = 0, trunks = 0;
+    for (var entry : changed.entrySet()) {
+      int y = entry.getKey().getY();
+      var now = entry.getValue();
+      if (y == groundY && before.get(entry.getKey()).is(net.minecraft.world.level.block.Blocks.DIRT)
+          && now.is(net.minecraft.world.level.block.Blocks.GRASS_BLOCK)) ground++;
+      if (y == groundY + 1 && naturePlant(now)) plants++;
+      if (y == groundY + 1 && now.is(net.minecraft.tags.BlockTags.LOGS)) trunks++;
+    }
+    return new NatureDelta(ground, plants, trunks);
+  }
+
+  private static ItemStack natureBookmark(
+      net.minecraft.resources.ResourceKey<net.minecraft.world.level.Level> dimension,
+      net.minecraft.core.BlockPos target) {
+    var compass = new ItemStack(Items.COMPASS);
+    compass.set(net.minecraft.core.component.DataComponents.LODESTONE_TRACKER,
+        new net.minecraft.world.item.component.LodestoneTracker(
+            Optional.of(net.minecraft.core.GlobalPos.of(dimension, target)), false));
+    return compass;
+  }
+
+  private static void natureEvidence(String scenario, int pass, NatureRestoration.Outcome outcome) {
+    com.mojang.logging.LogUtils.getLogger().info("NATURE_QA scenario={} pass={} {}", scenario, pass, outcome);
+  }
+
+  private static int natureSquare(int value) {
+    return value * value;
+  }
+
+  @GameTest(template = "nature_restoration", timeoutTicks = 400, skyAccess = true)
+  public static void natureRestorationHealsScarsAtExactCostAndSparesBuilds(GameTestHelper helper) {
+    natureMeadow(helper);
+    var site = natureSite(helper);
+    whenNatureLoaded(helper, site, 0, () -> {
+      try (var session = new WorkshopPlayer(helper)) {
+        natureMeadowScenario(helper, session.player, site);
+      }
+      helper.succeed();
+    });
+  }
+
+  private static void natureMeadowScenario(GameTestHelper helper, ServerPlayer player,
+      net.minecraft.core.BlockPos site) {
+    var level = helper.getLevel();
+    var main = net.minecraft.world.InteractionHand.MAIN_HAND;
+    var dirt = net.minecraft.world.level.block.Blocks.DIRT.defaultBlockState();
+    var controller = ark(helper, player);
+    var module = arkModule(helper, controller, "nature_module");
+    var data = CampaignData.get(player.server);
+    var beforeCampaign = data.save(new CompoundTag(), level.registryAccess());
+    int cx = site.getX(), cz = site.getZ(), gy = site.getY() - 1;
+    List<net.minecraft.core.BlockPos> scars = new ArrayList<>();
+    for (int dx = -3; dx <= 1; dx++)
+      for (int dz = -3; dz <= 1; dz++) {
+        var pos = new net.minecraft.core.BlockPos(cx + dx, gy, cz + dz);
+        level.setBlock(pos, dirt, 2);
+        scars.add(pos);
+      }
+    var besideWall = new net.minecraft.core.BlockPos(cx + 3, gy, cz);
+    var outside = new net.minecraft.core.BlockPos(cx, gy, cz + 10);
+    var claimed = new net.minecraft.core.BlockPos(cx - 2, gy, cz + 6);
+    var underStatue = new net.minecraft.core.BlockPos(cx - 6, gy, cz - 2);
+    for (var pos : List.of(besideWall, outside, claimed, underStatue)) level.setBlock(pos, dirt, 2);
+    var wall = new net.minecraft.core.BlockPos(cx + 4, gy + 1, cz);
+    level.setBlockAndUpdate(wall, net.minecraft.world.level.block.Blocks.OAK_PLANKS.defaultBlockState());
+    level.setBlockAndUpdate(wall.above(), net.minecraft.world.level.block.Blocks.OAK_PLANKS.defaultBlockState());
+    var chestPos = new net.minecraft.core.BlockPos(cx + 4, gy + 1, cz + 1);
+    level.setBlockAndUpdate(chestPos, net.minecraft.world.level.block.Blocks.CHEST.defaultBlockState());
+    var chest = (net.minecraft.world.level.block.entity.ChestBlockEntity) level.getBlockEntity(chestPos);
+    chest.setItem(0, new ItemStack(Items.WHEAT_SEEDS, 7));
+    var statue = new net.minecraft.world.entity.decoration.ArmorStand(level,
+        underStatue.getX() + 0.5, gy + 1, underStatue.getZ() + 0.5);
+    level.addFreshEntity(statue);
+
+    var compass = natureBookmark(level.dimension(), site);
+    var original = compass.copy();
+    player.setItemInHand(main, compass);
+    var used = player.gameMode.useItemOn(player, level, compass, main, arkHit(module));
+    var team = CampaignActions.campaignId(player);
+    var marks = NatureRestorationData.get(player.server);
+    helper.assertTrue(used.consumesAction()
+        && net.minecraft.core.GlobalPos.of(level.dimension(), site).equals(marks.site(team))
+        && ItemStack.matches(original, player.getMainHandItem()),
+        "Bookmarked compass did not mark the team's site or was changed");
+    helper.assertTrue(NatureRestoration.mark(player, module, main).status()
+        == NatureRestoration.Status.ALREADY_MARKED, "Repeated mark was not idempotent");
+
+    java.util.function.Consumer<net.neoforged.neoforge.event.level.BlockEvent.EntityPlaceEvent> claim =
+        event -> {
+          if (event.getPos().equals(claimed)) event.setCanceled(true);
+        };
+    net.neoforged.neoforge.common.NeoForge.EVENT_BUS.addListener(
+        net.neoforged.bus.api.EventPriority.NORMAL, false,
+        net.neoforged.neoforge.event.level.BlockEvent.EntityPlaceEvent.class, claim);
+    try {
+      var before = natureSnapshot(helper);
+      player.setItemInHand(main, new ItemStack(Items.BONE_MEAL, 5));
+      player.setItemInHand(net.minecraft.world.InteractionHand.OFF_HAND, new ItemStack(Items.OAK_SAPLING, 8));
+      used = player.gameMode.useItemOn(player, level, player.getMainHandItem(), main, arkHit(module));
+      var changed = natureChanges(before, helper);
+      var nearest = scars.stream().sorted(Comparator
+              .comparingInt((net.minecraft.core.BlockPos p) -> natureSquare(p.getX() - cx) + natureSquare(p.getZ() - cz))
+              .thenComparingInt(net.minecraft.core.BlockPos::getX)
+              .thenComparingInt(net.minecraft.core.BlockPos::getZ))
+          .limit(5).toList();
+      helper.assertTrue(used.consumesAction() && player.getMainHandItem().isEmpty()
+          && changed.keySet().equals(Set.copyOf(nearest))
+          && changed.values().stream().allMatch(state -> state.is(net.minecraft.world.level.block.Blocks.GRASS_BLOCK)),
+          "Five bone meal did not restore exactly the five nearest scars: " + changed.keySet());
+
+      boolean settled = false;
+      int saplings = player.getOffhandItem().getCount();
+      for (int pass = 0; pass < 6 && !settled; pass++) {
+        var snapshot = natureSnapshot(helper);
+        player.setItemInHand(main, new ItemStack(Items.BONE_MEAL, 64));
+        var outcome = NatureRestoration.restore(player, module, main);
+        natureEvidence("meadow", pass, outcome);
+        var delta = natureChanges(snapshot, helper);
+        var counted = natureDelta(snapshot, delta, gy);
+        int spent = 64 - player.getMainHandItem().getCount();
+        int planted = saplings - player.getOffhandItem().getCount();
+        saplings = player.getOffhandItem().getCount();
+        helper.assertTrue(spent == outcome.boneMeal() && planted == outcome.saplings()
+            && outcome.ground() == counted.ground() && outcome.plants() == counted.plants()
+            && outcome.trees() == counted.trunks() && planted == counted.trunks()
+            && spent == counted.ground() + counted.plants()
+                + NatureRestorationRules.TREE_BONE_MEAL * counted.trunks(),
+            "Payment did not match applied restoration: " + outcome + " " + counted);
+        helper.assertTrue(counted.trunks() > 0 || delta.keySet().stream().allMatch(pos ->
+                natureSquare(pos.getX() - cx) + natureSquare(pos.getZ() - cz) <= 64
+                    && pos.getY() >= gy && pos.getY() <= gy + 2),
+            "Ground and flora left the marked radius");
+        if (delta.isEmpty()) {
+          helper.assertTrue(spent == 0 && planted == 0, "A settled site still charged materials");
+          settled = true;
+        }
+      }
+      helper.assertTrue(settled, "Repeated restoration kept changing the site");
+    } finally {
+      net.neoforged.neoforge.common.NeoForge.EVENT_BUS.unregister(claim);
+    }
+
+    helper.assertTrue(level.getBlockState(besideWall).is(net.minecraft.world.level.block.Blocks.DIRT)
+        && level.getBlockState(besideWall.above()).isAir()
+        && level.getBlockState(outside).is(net.minecraft.world.level.block.Blocks.DIRT)
+        && level.getBlockState(claimed).is(net.minecraft.world.level.block.Blocks.DIRT)
+        && level.getBlockState(underStatue).is(net.minecraft.world.level.block.Blocks.DIRT)
+        && scars.stream().allMatch(pos -> level.getBlockState(pos).is(net.minecraft.world.level.block.Blocks.GRASS_BLOCK)),
+        "Scar, build margin, claim, decoration or radius boundary was handled incorrectly");
+    helper.assertTrue(level.getBlockState(wall).is(net.minecraft.world.level.block.Blocks.OAK_PLANKS)
+        && level.getBlockState(wall.above()).is(net.minecraft.world.level.block.Blocks.OAK_PLANKS)
+        && level.getBlockState(chestPos).is(net.minecraft.world.level.block.Blocks.CHEST)
+        && ItemStack.matches(chest.getItem(0), new ItemStack(Items.WHEAT_SEEDS, 7))
+        && statue.isAlive() && !statue.isRemoved(),
+        "Restoration disturbed a build, container or decoration");
+    var area = new net.minecraft.world.phys.AABB(helper.absolutePos(net.minecraft.core.BlockPos.ZERO))
+        .expandTowards(NATURE_EXTENT, 30, NATURE_EXTENT);
+    helper.assertTrue(level.getEntitiesOfClass(net.minecraft.world.entity.item.ItemEntity.class, area).isEmpty()
+        && beforeCampaign.equals(data.save(new CompoundTag(), level.registryAccess())),
+        "Restoration dropped items or changed campaign progress");
+    var journal = ArkFieldJournals.snapshot(player, module, ArkFieldJournals.Kind.NATURE);
+    helper.assertTrue(journal.lines().stream().anyMatch(line -> line.getContents()
+            instanceof net.minecraft.network.chat.contents.TranslatableContents text
+            && text.getKey().equals("entrelumen.nature.journal.site")),
+        "Nature journal omitted the team's restoration site");
+  }
+
+  @GameTest(template = "nature_restoration", timeoutTicks = 400, skyAccess = true)
+  public static void natureRestorationGrowsWholeNativeTreesOrNone(GameTestHelper helper) {
+    natureMeadow(helper);
+    var level = helper.getLevel();
+    var forest = level.registryAccess().registryOrThrow(net.minecraft.core.registries.Registries.BIOME)
+        .getHolderOrThrow(net.minecraft.world.level.biome.Biomes.FOREST);
+    var filled = net.minecraft.server.commands.FillBiomeCommand.fill(level,
+        helper.absolutePos(new net.minecraft.core.BlockPos(0, -4, 0)),
+        helper.absolutePos(new net.minecraft.core.BlockPos(NATURE_EXTENT - 1, 11, NATURE_EXTENT - 1)), forest);
+    helper.assertTrue(filled.left().isPresent(), "Forest biome fixture was refused");
+    var site = natureSite(helper);
+    whenNatureLoaded(helper, site, 0, () -> {
+      try (var session = new WorkshopPlayer(helper)) {
+        natureForestScenario(helper, session.player, site);
+      }
+      helper.succeed();
+    });
+  }
+
+  private static void natureForestScenario(GameTestHelper helper, ServerPlayer player,
+      net.minecraft.core.BlockPos site) {
+    var level = helper.getLevel();
+    var main = net.minecraft.world.InteractionHand.MAIN_HAND;
+    var off = net.minecraft.world.InteractionHand.OFF_HAND;
+    helper.assertTrue(level.getBiome(site).is(net.minecraft.world.level.biome.Biomes.FOREST),
+        "Fixture site is not a forest");
+    var controller = ark(helper, player);
+    var module = arkModule(helper, controller, "nature_module");
+    var data = CampaignData.get(player.server);
+    var beforeCampaign = data.save(new CompoundTag(), level.registryAccess());
+    int cx = site.getX(), cz = site.getZ(), gy = site.getY() - 1;
+    var post = new net.minecraft.core.BlockPos(cx + 2, gy + 1, cz - 5);
+    List<net.minecraft.core.BlockPos> postBlocks = List.of(post, post.above(), post.above(2));
+    for (var pos : postBlocks)
+      level.setBlockAndUpdate(pos, net.minecraft.world.level.block.Blocks.COBBLESTONE.defaultBlockState());
+    player.setItemInHand(main, natureBookmark(level.dimension(), site));
+    helper.assertTrue(NatureRestoration.mark(player, module, main).status() == NatureRestoration.Status.MARKED,
+        "Forest site was not marked");
+    player.setItemInHand(off, new ItemStack(Items.BIRCH_SAPLING, 16));
+
+    int reach = NatureRestorationRules.writeReach();
+    var permitted = new net.minecraft.world.level.levelgen.structure.BoundingBox(cx - reach,
+        level.getMinBuildHeight(), cz - reach, cx + reach, level.getMaxBuildHeight(), cz + reach);
+    java.util.function.Consumer<net.neoforged.neoforge.event.level.BlockEvent.EntityPlaceEvent> noCanopy =
+        event -> {
+          if (permitted.isInside(event.getPos())
+              && event.getPlacedBlock().is(net.minecraft.tags.BlockTags.LEAVES)) event.setCanceled(true);
+        };
+    net.neoforged.neoforge.common.NeoForge.EVENT_BUS.addListener(
+        net.neoforged.bus.api.EventPriority.NORMAL, false,
+        net.neoforged.neoforge.event.level.BlockEvent.EntityPlaceEvent.class, noCanopy);
+    try {
+      var before = natureSnapshot(helper);
+      player.setItemInHand(main, new ItemStack(Items.BONE_MEAL, 64));
+      var refused = NatureRestoration.restore(player, module, main);
+      natureEvidence("forest-vetoed-canopy", 0, refused);
+      var delta = natureChanges(before, helper);
+      helper.assertTrue(refused.trees() == 0 && refused.guarded() > 0 && refused.saplings() == 0
+          && player.getOffhandItem().getCount() == 16
+          && delta.values().stream().noneMatch(state -> state.is(net.minecraft.tags.BlockTags.LOGS)
+              || state.is(net.minecraft.tags.BlockTags.LEAVES))
+          && 64 - player.getMainHandItem().getCount() == refused.plants() + refused.ground(),
+          "A refused canopy left part of a tree or charged for it: " + refused);
+    } finally {
+      net.neoforged.neoforge.common.NeoForge.EVENT_BUS.unregister(noCanopy);
+    }
+
+    boolean settled = false;
+    int trunks = 0;
+    for (int pass = 0; pass < 6 && !settled; pass++) {
+      var snapshot = natureSnapshot(helper);
+      int saplings = player.getOffhandItem().getCount();
+      player.setItemInHand(main, new ItemStack(Items.BONE_MEAL, 64));
+      var outcome = NatureRestoration.restore(player, module, main);
+      natureEvidence("forest", pass, outcome);
+      var delta = natureChanges(snapshot, helper);
+      var counted = natureDelta(snapshot, delta, gy);
+      int spent = 64 - player.getMainHandItem().getCount();
+      int planted = saplings - player.getOffhandItem().getCount();
+      helper.assertTrue(spent == outcome.boneMeal() && planted == outcome.saplings()
+          && outcome.trees() == counted.trunks() && planted == counted.trunks()
+          && outcome.plants() == counted.plants() && outcome.ground() == counted.ground()
+          && spent == counted.ground() + counted.plants()
+              + NatureRestorationRules.TREE_BONE_MEAL * counted.trunks(),
+          "Tree payment did not match whole trees grown: " + outcome + " " + counted);
+      for (var pos : delta.keySet()) {
+        helper.assertTrue(permitted.isInside(pos), "A native tree grew outside its permitted area: " + pos);
+        for (var direction : net.minecraft.core.Direction.values())
+          helper.assertTrue(!postBlocks.contains(pos.relative(direction)),
+              "Restoration touched the cobblestone post at " + pos);
+      }
+      trunks += counted.trunks();
+      if (delta.isEmpty()) {
+        helper.assertTrue(spent == 0 && planted == 0, "A settled forest site still charged materials");
+        settled = true;
+      }
+    }
+    helper.assertTrue(settled && trunks >= 1, "Forest restoration grew no native tree or never settled");
+    helper.assertTrue(postBlocks.stream().allMatch(pos -> level.getBlockState(pos)
+            .is(net.minecraft.world.level.block.Blocks.COBBLESTONE)),
+        "Restoration changed the cobblestone post");
+    List<net.minecraft.core.BlockPos> bases = new ArrayList<>();
+    for (int x = cx - reach; x <= cx + reach; x++)
+      for (int z = cz - reach; z <= cz + reach; z++) {
+        var pos = new net.minecraft.core.BlockPos(x, gy + 1, z);
+        if (level.getBlockState(pos).is(net.minecraft.tags.BlockTags.LOGS)) bases.add(pos);
+      }
+    for (var first : bases)
+      for (var second : bases)
+        helper.assertTrue(first.equals(second) || Math.max(Math.abs(first.getX() - second.getX()),
+                Math.abs(first.getZ() - second.getZ())) > 3,
+            "Native trees were planted closer than their spacing: " + first + " " + second);
+    var area = new net.minecraft.world.phys.AABB(helper.absolutePos(net.minecraft.core.BlockPos.ZERO))
+        .expandTowards(NATURE_EXTENT, 30, NATURE_EXTENT);
+    helper.assertTrue(bases.size() == trunks
+        && level.getEntitiesOfClass(net.minecraft.world.entity.item.ItemEntity.class, area).isEmpty()
+        && beforeCampaign.equals(data.save(new CompoundTag(), level.registryAccess())),
+        "Tree count, drops or campaign progress were wrong");
+  }
+
+  @GameTest(template = "nature_restoration", timeoutTicks = 400, skyAccess = true)
+  public static void natureRestorationRefusesWithoutMutation(GameTestHelper helper) {
+    natureMeadow(helper);
+    var site = natureSite(helper);
+    whenNatureLoaded(helper, site, 0, () -> {
+      try (var session = new WorkshopPlayer(helper)) {
+        natureRefusalScenario(helper, session.player, site);
+      }
+      helper.succeed();
+    });
+  }
+
+  private static void natureRefusalScenario(GameTestHelper helper, ServerPlayer player,
+      net.minecraft.core.BlockPos site) {
+    var level = helper.getLevel();
+    var main = net.minecraft.world.InteractionHand.MAIN_HAND;
+    var controller = ark(helper, player);
+    var module = arkModule(helper, controller, "nature_module");
+    int cx = site.getX(), cz = site.getZ(), gy = site.getY() - 1;
+    for (int dx = -1; dx <= 1; dx++)
+      for (int dz = -1; dz <= 1; dz++)
+        level.setBlock(new net.minecraft.core.BlockPos(cx + dx, gy, cz + dz),
+            net.minecraft.world.level.block.Blocks.DIRT.defaultBlockState(), 2);
+    var team = CampaignActions.campaignId(player);
+    var marks = NatureRestorationData.get(player.server);
+    var before = natureSnapshot(helper);
+
+    player.setItemInHand(main, new ItemStack(Items.BONE_MEAL, 64));
+    helper.assertTrue(NatureRestoration.restore(player, module, main).status() == NatureRestoration.Status.NO_SITE
+        && player.getMainHandItem().getCount() == 64, "Restoration ran without a marked site");
+    player.setItemInHand(main, new ItemStack(Items.COMPASS));
+    helper.assertTrue(NatureRestoration.mark(player, module, main).status()
+        == NatureRestoration.Status.UNBOUND_COMPASS, "An unbound compass marked a site");
+    player.setItemInHand(main, natureBookmark(net.minecraft.world.level.Level.NETHER, site));
+    helper.assertTrue(NatureRestoration.mark(player, module, main).status()
+        == NatureRestoration.Status.OTHER_DIMENSION, "A site in another dimension was accepted");
+    player.setItemInHand(main, natureBookmark(level.dimension(), site.offset(200, 0, 0)));
+    helper.assertTrue(NatureRestoration.mark(player, module, main).status()
+        == NatureRestoration.Status.TOO_FAR, "A distant site was accepted");
+    var engineering = arkModule(helper, controller, "engineering_module");
+    var engineeringState = level.getBlockState(engineering);
+    level.removeBlock(engineering, false);
+    player.setItemInHand(main, natureBookmark(level.dimension(), site));
+    helper.assertTrue(NatureRestoration.mark(player, module, main).status()
+        == NatureRestoration.Status.STRUCTURE && marks.site(team) == null,
+        "An incomplete Ark marked a site");
+    level.setBlockAndUpdate(engineering, engineeringState);
+    helper.assertTrue(NatureRestoration.mark(player, module, main).status() == NatureRestoration.Status.MARKED,
+        "A complete Ark refused a valid site");
+
+    level.removeBlock(engineering, false);
+    player.setItemInHand(main, new ItemStack(Items.BONE_MEAL, 64));
+    helper.assertTrue(NatureRestoration.restore(player, module, main).status() == NatureRestoration.Status.STRUCTURE,
+        "An incomplete Ark restored the site");
+    level.setBlockAndUpdate(engineering, engineeringState);
+    level.setBlockAndUpdate(controller.above(), level.getBlockState(controller));
+    helper.assertTrue(NatureRestoration.restore(player, module, main).status() == NatureRestoration.Status.STRUCTURE,
+        "Ambiguous controllers restored the site");
+    level.removeBlock(controller.above(), false);
+    helper.assertTrue(NatureRestoration.restore(player, module, net.minecraft.world.InteractionHand.OFF_HAND)
+        .status() == NatureRestoration.Status.UNAVAILABLE, "Offhand use restored the site");
+    player.setGameMode(net.minecraft.world.level.GameType.SPECTATOR);
+    helper.assertTrue(NatureRestoration.restore(player, module, main).status() == NatureRestoration.Status.UNAVAILABLE,
+        "A spectator restored the site");
+    player.setGameMode(net.minecraft.world.level.GameType.SURVIVAL);
+    player.teleportTo(module.getX() + 30.5, module.getY() + 1, module.getZ() + 0.5);
+    helper.assertTrue(NatureRestoration.restore(player, module, main).status() == NatureRestoration.Status.UNAVAILABLE,
+        "A remote player restored the site");
+    player.teleportTo(controller.getX() + 0.5, controller.getY() + 1.0, controller.getZ() + 0.5);
+
+    var guest = player(helper, "NatureGuest");
+    guest.teleportTo(controller.getX() + 0.5, controller.getY() + 1.0, controller.getZ() + 0.5);
+    guest.setItemInHand(main, new ItemStack(Items.BONE_MEAL, 64));
+    helper.assertTrue(NatureRestoration.restore(guest, module, main).status() == NatureRestoration.Status.NO_SITE
+        && guest.getMainHandItem().getCount() == 64
+        && ArkFieldJournals.snapshot(guest, module, ArkFieldJournals.Kind.NATURE).lines().stream()
+            .anyMatch(line -> line.getContents() instanceof net.minecraft.network.chat.contents.TranslatableContents text
+                && text.getKey().equals("entrelumen.nature.journal.none")),
+        "Another team used or saw this team's restoration site");
+
+    java.util.function.Consumer<net.neoforged.neoforge.event.entity.player.PlayerInteractEvent.RightClickBlock> deny =
+        event -> {
+          if (event.getEntity() == player) event.setCanceled(true);
+        };
+    net.neoforged.neoforge.common.NeoForge.EVENT_BUS.addListener(
+        net.neoforged.bus.api.EventPriority.NORMAL, false,
+        net.neoforged.neoforge.event.entity.player.PlayerInteractEvent.RightClickBlock.class, deny);
+    try {
+      player.gameMode.useItemOn(player, level, player.getMainHandItem(), main, arkHit(module));
+    } finally {
+      net.neoforged.neoforge.common.NeoForge.EVENT_BUS.unregister(deny);
+    }
+    helper.assertTrue(player.getMainHandItem().getCount() == 64 && natureChanges(before, helper).isEmpty(),
+        "A refused or canceled request consumed bone meal or changed the site");
+
+    var saved = marks.save(new CompoundTag(), level.registryAccess());
+    helper.assertTrue(net.minecraft.core.GlobalPos.of(level.dimension(), site).equals(
+            NatureRestorationData.load(saved, level.registryAccess()).site(team)),
+        "The team's site did not survive a save round trip");
+    player.setGameMode(net.minecraft.world.level.GameType.CREATIVE);
+    var paid = NatureRestoration.restore(player, module, main);
+    helper.assertTrue(paid.status() == NatureRestoration.Status.RESTORED && paid.ground() == 9
+        && paid.boneMeal() > 0 && 64 - player.getMainHandItem().getCount() == paid.boneMeal(),
+        "Creative restoration bypassed payment: " + paid);
+    player.setGameMode(net.minecraft.world.level.GameType.SURVIVAL);
+    level.removeBlock(module, false);
+    helper.assertTrue(NatureRestoration.restore(player, module, main).status() == NatureRestoration.Status.UNAVAILABLE,
+        "A removed module still restored the site");
+  }
 }

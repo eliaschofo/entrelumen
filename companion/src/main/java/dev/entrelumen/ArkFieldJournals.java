@@ -135,6 +135,7 @@ public final class ArkFieldJournals {
     var physical = EngineeringDiagnostics.physicalView(player.serverLevel(), module);
     List<Component> content = new ArrayList<>(lines(view(campaign, kind), physical));
     if (kind == Kind.HABITATION) content.addAll(ArkHabitation.journalLines(player));
+    if (kind == Kind.NATURE) content.addAll(NatureRestoration.journalLines(player));
     return new JournalBookNetwork.Snapshot(player.getUUID(), CampaignActions.campaignId(player),
         kind, List.copyOf(content));
   }
