@@ -1,10 +1,48 @@
 """Focused multi-chapter contracts; no gameplay claims."""
 import copy,hashlib,json,unittest
 from pathlib import Path
-from generate_quests import ROOT,OUT,generate_all
+from generate_quests import ROOT,OUT,generate_all,stable_id
 class ChapterContracts(unittest.TestCase):
  def setUp(self):
   self.chapters=[json.loads((ROOT/'content'/n).read_text(encoding='utf-8')) for n in ('first_hour.json','act_two.json','act_three.json','act_four.json','act_five.json','act_six.json')]
+ def synthetic_chapter(self,name,count):
+  quests=[]
+  for i in range(count):
+   key=f'{name}_node_{i:03}'
+   quests.append({'key':key,'deps':[quests[-1]['key']] if quests else [],
+    'type':'checkmark','optional':True,
+    'en_us':[f'English title {i}',f'English chapter {name} node {i}: read this distinct account of the route and confirm this optional lesson after visiting its place in the Atlas.'],
+    'es_es':[f'Título español {i}',f'Capítulo {name}, nodo {i}: leé este relato distinto del camino y confirmá esta lección opcional después de encontrar su lugar en el Atlas.'],
+    'layout':{'x':0,'y':i*2.5,'group':'route','shape':'square','size':1.0}})
+  return {'chapter':name,'title':{'en_us':f'English {name}','es_es':f'Español {name}'},
+   'layout_groups':{'route':{'en_us':'Route','es_es':'Camino'}},
+   'autofocus':f'{name}_node_000','milestones':[],'quests':quests}
+ def test_variable_nonempty_chapters_preserve_all_ids_and_bilingual_text(self):
+  chapters=[self.synthetic_chapter('short_route',3),self.synthetic_chapter('long_route',64)]
+  files=generate_all(chapters)
+  ids=set()
+  for chapter in chapters:
+   name=chapter['chapter'];compiled=json.loads(files[OUT/'chapters'/(name+'.snbt')])
+   self.assertEqual(len(compiled['quests']),len(chapter['quests']))
+   self.assertEqual(compiled['autofocus_id'],stable_id('quest:'+chapter['autofocus']))
+   self.assertEqual(compiled['id'],stable_id('chapter:'+name))
+   ids.add(compiled['id'])
+   for source,output in zip(chapter['quests'],compiled['quests']):
+    qid=stable_id('quest:'+source['key']);tid=stable_id('task:'+source['key'])
+    self.assertEqual((output['id'],output['tasks'][0]['id']),(qid,tid))
+    self.assertEqual(output['dependencies'],[stable_id('quest:'+dep) for dep in source['deps']])
+    ids.update((qid,tid))
+    for locale,label in (('en_us','Route'),('es_es','Camino')):
+     values=json.loads(files[OUT/'lang'/(locale+'.snbt')])
+     self.assertEqual(values[f'quest.{qid}.title'],source[locale][0])
+     self.assertEqual(values[f'quest.{qid}.quest_desc'],[label,'',source[locale][1]])
+  self.assertEqual(len(ids),2+2*(3+64))
+  for locale in ('en_us','es_es'):
+   self.assertEqual(len(json.loads(files[OUT/'lang'/(locale+'.snbt')])),2+2*(3+64))
+  self.assertEqual(json.loads(files[ROOT/'content/campaign_task_ids.json']),{})
+ def test_empty_chapter_rejected(self):
+  chapter=self.synthetic_chapter('empty_route',0)
+  with self.assertRaisesRegex(AssertionError,'empty chapter'):generate_all([chapter])
  def test_first_hour_ids_unchanged(self):
   c=json.loads(generate_all(self.chapters)[OUT/'chapters/a_light_among_ruins.snbt'])
   ids=[c['id']]+[i for q in c['quests'] for i in (q['id'],q['tasks'][0]['id'])]

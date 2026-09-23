@@ -29,7 +29,7 @@ def snbt(value):
 
 def generate(data, all_quests=None, order_index=0):
     quests = data["quests"]
-    assert 18 <= len(quests) <= 30, "keep authored slices focused"
+    assert quests, "empty chapter"
     keys = [q["key"] for q in quests]
     assert len(keys) == len(set(keys)), "duplicate semantic quest key"
     visiting, done, ids = set(), set(), set()
