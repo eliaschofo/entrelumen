@@ -13,8 +13,10 @@ Referencia visual final elegida por Elias el 12 de septiembre de 2026: **textura
 - Controles nativos accesibles, etiquetas traducibles EN/ES, teclado y foco visibles. El arte deja espacio para acciones y progreso real. No cocinar textos traducibles dentro del fondo.
 - Las capturas reales de juego son evidencia y se identifican como tales. La ilustración conceptual no se presenta como una base construida, gameplay ni prueba de rendimiento.
 
-`python art/pixel_filter.py --source <imagen>` reproduce la conversión rechazada y registra procedencia. `python art/build_pixel_identity.py --check` comprueba integridad técnica de ese borrador; no certifica pixel art nativo ni aprobación estética. Las exportaciones de publicación derivadas de esa escena también siguen siendo borradores.
+`python art/build_pixel_identity.py --check` comprueba la integridad técnica de escenas y logo (tamaño nativo, paleta, alfa binario, exportación entera); no certifica aprobación estética.
 
 ## Rehecho del 23 de septiembre de 2026
 
 Elias liberó todos los assets creativos para rehacerlos ("mucho slop, sobre todo en pixel art"); la mesa de reconocimiento se conserva. Los 20 íconos y las 9 caras de bloque se rehicieron sobre grillas editables de 16×16 (`art/grids/`), con paleta maestra común y procedencia por textura. Método y límites en `art/README.md`. Falta la revisión dentro del juego.
+
+Menú (mismo día): la ilustración filtrada y su pipeline se retiraron. El título usa una escena nativa de PixelLab (valle nocturno con observatorio de cúpula de cobre oxidado y haz turquesa, 384×216, exportada ×5 nearest); la carga usa otra escena nativa (352×199). El logo es un wordmark de letras en bloque dibujado texel por texel: «ENTRE» en cobre nuevo que se oxida hasta «LUMEN» en verdín, siguiendo las cuatro etapas del cobre de Minecraft. Los botones son de toba con marco de cobre; el hover despierta la pátina. Portada y avatar de CurseForge se arman con esas mismas fuentes. Sin revisión dentro del juego todavía.

@@ -14,28 +14,18 @@ customization {
 
 menu_background {
   instance_identifier = entrelumen_title_screen_background
-  background_type = color_fancymenu
+  background_type = image
   show_background = true
-  color = #132B29FF
+  image_path = [source:local]/config/fancymenu/assets/entrelumen/title-background.png
+  slide = false
+  repeat_texture = false
+  parallax = false
+  restart_animated_on_menu_load = false
 }
 
 scroll_list_customization {
   apply_vanilla_background_blur = false
   show_screen_background_overlay_on_custom_background = false
-}
-
-element {
-  element_type = image
-  instance_identifier = entrelumen_atlas_art
-  anchor_point = mid-right
-  sticky_anchor = false
-  x = -148
-  y = -64
-  width = 128
-  height = 128
-  source = [source:local]/config/fancymenu/assets/entrelumen/atlas.png
-  repeat_texture = false
-  nine_slice_texture = false
 }
 
 vanilla_button {
@@ -149,10 +139,10 @@ vanilla_button {
 vanilla_button {
   element_type = vanilla_button
   instance_identifier = entrelumen_title_language
-  anchor_point = mid-right
+  anchor_point = top-right
   sticky_anchor = false
-  x = -148
-  y = 72
+  x = -100
+  y = 4
   width = 20
   height = 20
   is_hidden = false
@@ -161,10 +151,10 @@ vanilla_button {
 vanilla_button {
   element_type = vanilla_button
   instance_identifier = entrelumen_title_accessibility
-  anchor_point = mid-right
+  anchor_point = top-right
   sticky_anchor = false
-  x = -122
-  y = 72
+  x = -76
+  y = 4
   width = 20
   height = 20
   is_hidden = false
@@ -173,10 +163,10 @@ vanilla_button {
 vanilla_button {
   element_type = vanilla_button
   instance_identifier = entrelumen_title_create
-  anchor_point = mid-right
+  anchor_point = top-right
   sticky_anchor = false
-  x = -96
-  y = 72
+  x = -52
+  y = 4
   width = 20
   height = 20
   is_hidden = false
@@ -185,10 +175,10 @@ vanilla_button {
 vanilla_button {
   element_type = vanilla_button
   instance_identifier = entrelumen_title_supplementaries
-  anchor_point = mid-right
+  anchor_point = top-right
   sticky_anchor = false
-  x = -70
-  y = 72
+  x = -28
+  y = 4
   width = 20
   height = 20
   is_hidden = false
@@ -199,10 +189,10 @@ element {
   instance_identifier = entrelumen_logo
   anchor_point = mid-left
   sticky_anchor = false
-  x = 10
-  y = -116
-  width = 180
-  height = 64
+  x = 12
+  y = -83
+  width = 255
+  height = 33
   source = [source:local]/config/fancymenu/assets/entrelumen/logo.png
   repeat_texture = false
   nine_slice_texture = false

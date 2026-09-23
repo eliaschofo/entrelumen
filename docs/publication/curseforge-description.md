@@ -50,7 +50,7 @@ For an issue, include the build revision, reproduction steps, relevant logs and 
 
 Original ENTRELUMEN code, quests and art use the **ENTRELUMEN Source-Available License**: inspection, personal use and private modifications are permitted under its terms; public redistribution is restricted. This is not an open-source license. Third-party mods and their assets retain their own licenses. [Read the license](https://github.com/eliaschofo/entrelumen/blob/main/LICENSE).
 
-*Cover and avatar: original conceptual artwork. They are not gameplay screenshots. Real in-game captures will accompany a tested release.*
+*Cover and avatar: original pixel art built from the pack's title scene and Atlas icon. They are not gameplay screenshots. Real in-game captures will accompany a tested release.*
 
 ---
 
@@ -105,4 +105,4 @@ Incluí la revisión del build, los pasos para reproducir el problema, los logs 
 
 El código, las quests y el arte originales usan la **licencia Source-Available de ENTRELUMEN**: permite inspección, uso personal y modificaciones privadas según sus términos; restringe la redistribución pública. No es una licencia open source. Los mods y assets ajenos conservan sus propias licencias. [Leé la licencia](https://github.com/eliaschofo/entrelumen/blob/main/LICENSE).
 
-*Portada y avatar: arte conceptual original. No son capturas del juego. Una versión probada se acompañará con capturas reales dentro del mundo.*
+*Portada y avatar: pixel art original armado con la escena del título y el ícono del Atlas. No son capturas del juego. Una versión probada se acompañará con capturas reales dentro del mundo.*

@@ -4,15 +4,15 @@
 
 **Review status:** these publication assets remain unaccepted concepts. Their existence and reproducible rendering do not establish the required native Minecraft pixel-art quality. Review them against the current in-game Atlas and identity before selecting release artwork; do not upload them as approved final assets.
 
-`art/publication/avatar-400.png`: 400×400 avatar. `cover-en.png` and `cover-es.png`: 1200×480 conceptual covers with explicit development status and concept-art captions. Matching SVGs are the editable vector sources; `art/publication/build.py` renders them from the existing original Atlas SVG using Pillow. Text uses the local Consolas font; no font file is redistributed. Palette and Atlas mark belong to ENTRELUMEN. No external stock art or gameplay image is used.
+`art/publication/avatar-400.png`: 400×400 avatar (the 16×16 Atlas item at ×5 on a copper-framed plate, exported ×4). `cover-en.png` and `cover-es.png`: 1200×480 covers built by `art/publication/build.py` from a 300×120 crop of the native title scene (PixelLab, receipt in `art/candidates/pixellab-v2/bg_observatory/`), the copper wordmark and an original 5×7 bitmap tagline, exported ×4 nearest. No fonts or stock art. The scene is generated pixel art, not a gameplay capture.
 
 All original assets here use the repository's ENTRELUMEN Source-Available License 1.0, including its official-hosting allowance. Preserve its public redistribution restriction and third-party exclusions. Do not label the project open source or imply the license revokes hosting-platform rights.
 
 | Asset | English alt text | Texto alternativo español |
 |---|---|---|
-| Avatar | Original pixel-art Atlas book with a copper spine, teal cover and ivory compass, on a dark cartographic grid. | Atlas original en pixel art, con lomo de cobre, tapa verde petróleo y brújula de marfil sobre una cuadrícula cartográfica oscura. |
-| English cover | ENTRELUMEN: The Living Atlas. In development. Original conceptual cover showing the Atlas book and a copper route with six waypoints. | ENTRELUMEN: The Living Atlas. En desarrollo. Portada conceptual original con el Atlas y una ruta de cobre con seis puntos. |
-| Spanish cover | ENTRELUMEN: El Atlas Vivo. In development. Original conceptual cover showing the Atlas book and a copper route with six waypoints. | ENTRELUMEN: El Atlas Vivo. En desarrollo. Portada conceptual original con el Atlas y una ruta de cobre con seis puntos. |
+| Avatar | Pixel-art Living Atlas: a green leather guide book with copper corner caps and a teal compass rose, in a copper frame. | El Atlas Vivo en pixel art: libro de cuero verde con esquinas de cobre y rosa de los vientos turquesa, en un marco de cobre. |
+| English cover | ENTRELUMEN: The Living Atlas. In development. Copper block letters over a blocky night valley with a copper-domed observatory and a teal light beam. | ENTRELUMEN: The Living Atlas. En desarrollo. Letras de cobre sobre un valle nocturno en bloques con un observatorio de cúpula de cobre y un haz turquesa. |
+| Spanish cover | ENTRELUMEN: El Atlas Vivo. En desarrollo. Copper block letters over a blocky night valley with a copper-domed observatory and a teal light beam. | ENTRELUMEN: El Atlas Vivo. En desarrollo. Letras de cobre sobre un valle nocturno en bloques con un observatorio de cúpula de cobre y un haz turquesa. |
 
 Upload approved cover art to CurseForge's editor/media hosting and insert its actual hosted URL when available. `curseforge-description.md` is paste-ready text without broken local-image URLs or download links. Keep the development label until release evidence supports changing it. Check layout in the actual editor later; this task used no browser/UI.
 

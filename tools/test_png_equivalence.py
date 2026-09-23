@@ -80,26 +80,26 @@ class PngEquivalenceTests(unittest.TestCase):
         spec.loader.exec_module(identity)
         with tempfile.TemporaryDirectory() as folder:
             out = Path(folder)
-            for name in ('pixel-master.png', 'pixel-provenance.json'):
+            for name in ('title-scene.png', 'loading-scene.png', 'wordmark.py'):
                 (out / name).write_bytes((identity.OUT / name).read_bytes())
             identity.OUT = out
-            for path, data in identity.build().items():
+            for path, data in identity.build()[0].items():
                 path.write_bytes(data)
             path = out / 'logo.png'
-            tracked = encode(identity.logo(), compress_level=0)
+            tracked = encode(identity.wordmark(), compress_level=0)
             path.write_bytes(tracked)
-            generated = identity.build()
-            identity.validate(generated)
+            generated, scenes, logo = identity.build()
+            identity.validate(generated, scenes, logo)
             self.assertEqual(generated[path], tracked)
             manifest = json.loads(generated[out / 'pixel-manifest.json'])
             self.assertEqual(manifest['files']['logo.png'], hashlib.sha256(tracked).hexdigest())
-            changed = identity.logo()
+            changed = identity.wordmark()
             changed.putpixel((0, 0), (1, 2, 3, 255))
             invalid = encode(changed)
             path.write_bytes(invalid)
-            regenerated = identity.build()
+            regenerated = identity.build()[0]
             self.assertNotEqual(regenerated[path], invalid)
-            self.assertTrue(same_png_pixels(regenerated[path], encode(identity.logo())))
+            self.assertTrue(same_png_pixels(regenerated[path], encode(identity.wordmark())))
 
 
 if __name__ == '__main__':

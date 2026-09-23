@@ -1,96 +1,115 @@
-"""Original native GUI textures; deterministic palette pixels, no font/image inputs."""
+"""Title-screen button textures: tuff face, bevelled like vanilla, copper frame; hover wakes the patina.
+
+Deterministic pixels from the master palette (art/authoring/palette.py ramps); no fonts or images.
+Labels are drawn by Minecraft over these textures, so every face pixel keeps >=4.5:1 contrast with
+the ivory label colour.
+"""
 import argparse, hashlib, io, json
 from pathlib import Path
-from PIL import Image, ImageDraw
-ROOT=Path(__file__).resolve().parents[2]
-HERE=ROOT/'art/gui'
-DEST=ROOT/'pack/config/fancymenu/assets/entrelumen/gui'
-P={'ink':'#132B29','pine':'#1B3631','raised':'#284139','deep':'#101D26','copper':'#B8794B','edge':'#DFAB70','rust':'#754E3B','dark':'#493A33','patina':'#65A69A','ivory':'#E8DFC3','sand':'#C7BA99'}
-def canvas(w,h): return Image.new('RGBA',(w,h),(0,0,0,0))
+from PIL import Image
+
+ROOT = Path(__file__).resolve().parents[2]
+HERE = ROOT / 'art/gui'
+DEST = ROOT / 'pack/config/fancymenu/assets/entrelumen/gui'
+P = {
+    'ink': '#141417',
+    'tuff_deep': '#343833', 'tuff_dark': '#474c45', 'tuff': '#50564e', 'tuff_light': '#71776c', 'tuff_edge': '#8b9284',
+    'copper_dark': '#6b3424', 'copper': '#ad5a3f', 'copper_light': '#e08e6a', 'copper_glint': '#f4b596',
+    'verdigris_deep': '#1c3f37', 'verdigris': '#2b5e50', 'verdigris_light': '#52a07f', 'teal': '#35ccbd',
+    'label': '#e8dcb5',
+}
+W, H = 160, 20
+
+
+def rgb(name):
+    v = P[name]
+    return tuple(int(v[i:i + 2], 16) for i in (1, 3, 5)) + (255,)
+
+
+def noise(x, y, seed):
+    n = (x * 73856093) ^ (y * 19349663) ^ (seed * 83492791)
+    n = ((n ^ (n >> 13)) * 1274126177) & 0xffffffff
+    return (n & 0xffff) / 0xffff
+
+
 def button(state):
- im=canvas(160,20);d=ImageDraw.Draw(im)
- active=state!='disabled';hover=state=='hover'
- d.rectangle((0,0,159,19),fill=P['deep'])
- d.rectangle((1,1,158,18),fill=P['copper' if active else 'dark'])
- d.line((1,1,158,1),fill=P['edge' if hover else 'rust'])
- d.line((1,2,1,17),fill=P['edge' if hover else 'copper' if active else 'rust'])
- d.line((2,18,158,18),fill=P['dark'])
- d.rectangle((3,3,156,16),fill=P['raised' if hover else 'pine' if active else 'ink'])
- # Quiet irregular grain. Text zone remains dark, with no icon beneath labels.
- for y in range(4,16):
-  for x in range(4,156):
-   n=(x*19+y*37+x*y*3)%113
-   if n<5: d.point((x,y),fill=P['pine' if hover else 'ink'])
- for x in (2,157):
-  d.point((x,2),fill=P['ivory' if hover else 'edge' if active else 'rust'])
-  d.point((x,17),fill=P['rust'])
- if hover:
-  d.line((5,2,154,2),fill=P['patina'])
-  d.point((5,17),fill=P['patina']);d.point((154,17),fill=P['patina'])
- return im
+    im = Image.new('RGBA', (W, H), (0, 0, 0, 0))
+    px = im.load()
+    hover, disabled = state == 'hover', state == 'disabled'
+    face, grain = (('verdigris', 'verdigris_deep') if hover else ('tuff_deep', 'tuff_deep') if disabled else ('tuff', 'tuff_dark'))
+    for y in range(H):
+        for x in range(W):
+            px[x, y] = rgb(face)
+            if 3 <= x < W - 3 and 3 <= y < H - 3 and noise(x, y, 7) < 0.045:
+                px[x, y] = rgb(grain)
+    # 1px ink outline
+    for x in range(W):
+        px[x, 0] = px[x, H - 1] = rgb('ink')
+    for y in range(H):
+        px[0, y] = px[W - 1, y] = rgb('ink')
+    # copper frame: light top/left, dark bottom/right (vanilla bevel direction)
+    top = 'tuff_light' if disabled else 'copper_light'
+    low = 'tuff_dark' if disabled else 'copper_dark'
+    mid = 'tuff_dark' if disabled else 'copper'
+    for x in range(1, W - 1):
+        px[x, 1] = rgb(top); px[x, H - 2] = rgb(low)
+    for y in range(1, H - 1):
+        px[1, y] = rgb(top); px[W - 2, y] = rgb(low)
+    for x in range(2, W - 2):
+        px[x, 2] = rgb(mid if not hover else 'verdigris_light')
+    px[1, 1] = rgb('copper_glint' if not disabled else 'tuff_edge')
+    px[W - 2, H - 2] = rgb(low)
+    # verdigris rivets at the four inner corners; a teal lumen dot when hovered/focused
+    for (x, y) in ((3, 3), (W - 4, 3), (3, H - 4), (W - 4, H - 4)):
+        px[x, y] = rgb('tuff_dark' if disabled else 'verdigris_light' if not hover else 'teal')
+    return im
 
-def icon(kind):
- im=canvas(16,16);d=ImageDraw.Draw(im)
- if kind=='atlas':
-  d.rectangle((2,2,12,13),fill=P['deep']);d.rectangle((3,1,12,12),fill=P['rust'])
-  d.rectangle((4,2,11,10),fill=P['pine']);d.line((4,11,11,11),fill=P['ivory'])
-  d.line((4,12,11,12),fill=P['sand']);d.line((3,2,3,11),fill=P['copper'])
-  d.line((5,3,10,3),fill=P['raised']);d.point((5,7),fill=P['patina'])
-  d.line((6,6,9,6),fill=P['copper']);d.line((8,4,8,8),fill=P['edge'])
-  d.point((7,7),fill=P['patina']);d.point((12,5),fill=P['edge'])
- elif kind=='compass':
-  d.polygon([(5,1),(10,1),(14,5),(14,10),(10,14),(5,14),(1,10),(1,5)],fill=P['deep'])
-  d.polygon([(5,2),(10,2),(13,5),(13,10),(10,13),(5,13),(2,10),(2,5)],fill=P['copper'])
-  d.rectangle((4,4,11,11),fill=P['ink']);d.line((5,3,10,3),fill=P['edge'])
-  d.line((3,5,3,9),fill=P['edge']);d.line((5,12,10,12),fill=P['rust'])
-  d.polygon([(8,4),(8,8),(5,11)],fill=P['patina']);d.polygon([(9,4),(9,8),(6,11)],fill=P['ivory'])
-  d.point((8,8),fill=P['copper'])
- return im
-
-def tile(kind):
- im=canvas(16,16);d=ImageDraw.Draw(im);d.rectangle((0,0,15,15),fill=P['pine'])
- for y in range(16):
-  for x in range(16):
-   if (x*17+y*29+x*y)%31<4:d.point((x,y),fill=P['ink'])
- if kind=='copper_frame':
-  d.rectangle((0,0,15,15),outline=P['deep']);d.rectangle((1,1,14,14),outline=P['copper'])
-  d.line((2,2,13,2),fill=P['edge']);d.line((2,3,2,12),fill=P['rust'])
-  for xy in [(1,1),(14,1),(1,14),(14,14)]:d.point(xy,fill=P['patina'])
- return im
 
 def encode(im):
- b=io.BytesIO();im.save(b,format='PNG',optimize=False);return b.getvalue()
-def luminance(rgb):
- c=[v/255 for v in rgb];return sum(a*(v/12.92 if v<=.04045 else ((v+.055)/1.055)**2.4) for a,v in zip((.2126,.7152,.0722),c))
+    b = io.BytesIO(); im.save(b, format='PNG', optimize=False); return b.getvalue()
+
+
+def luminance(c):
+    c = [v / 255 for v in c[:3]]
+    return sum(a * (v / 12.92 if v <= .04045 else ((v + .055) / 1.055) ** 2.4) for a, v in zip((.2126, .7152, .0722), c))
+
+
 def outputs():
- images={**{'button_'+s:button(s) for s in ('normal','hover','disabled')},**{'icon_'+s:icon(s) for s in ('atlas','compass')},**{'tile_'+s:tile(s) for s in ('pine','copper_frame')}}
- palette={tuple(bytes.fromhex(v[1:])) for v in P.values()}
- for name,im in images.items():
-  for count,c in im.getcolors(im.width*im.height):
-   assert c[3] in (0,255)
-   assert c[3]==0 or c[:3] in palette
- text=tuple(bytes.fromhex(P['ivory'][1:]));ratios={}
- for s in ('normal','hover','disabled'):
-  im=images['button_'+s];cols={im.getpixel((x,y))[:3] for y in range(4,16) for x in range(8,152)}
-  ratios[s]=round(min((luminance(text)+.05)/(luminance(c)+.05) for c in cols),2)
-  assert ratios[s]>=4.5
- assert len({encode(images['button_'+s]) for s in ('normal','hover','disabled')})==3
- out={}
- for name,im in images.items():
-  for folder in (HERE,DEST):out[folder/(name+'.png')]=encode(im)
- sheet=Image.new('RGBA',(176,100),P['deep'])
- for i,s in enumerate(('normal','hover','disabled')):sheet.paste(images['button_'+s],(8,4+24*i))
- for i,s in enumerate(('icon_atlas','icon_compass','tile_pine','tile_copper_frame')):sheet.paste(images[s],(8+24*i,80),images[s])
- out[HERE/'contact-sheet.png']=encode(sheet.resize((704,400),Image.Resampling.NEAREST))
- manifest={'palette':P,'native_dimensions':{n:list(i.size) for n,i in images.items()},'text_color':P['ivory'],'text_minimum_contrast':ratios,'text_insets':[8,4,8,4],'scaling':'native 1:1 GUI units or integer nearest; no smoothing; button not nine-slice','states':'normal, hover (also keyboard focus), disabled; native localized text rendered separately','provenance':'Original deterministic pixel drawing, no game textures, external images or fonts.','sha256':{n:hashlib.sha256(encode(i)).hexdigest() for n,i in images.items()}}
- out[HERE/'manifest.json']=(json.dumps(manifest,indent=2)+'\n').encode()
- return out
+    images = {'button_' + s: button(s) for s in ('normal', 'hover', 'disabled')}
+    label = rgb('label'); ratios = {}
+    for s in ('normal', 'hover', 'disabled'):
+        im = images['button_' + s]
+        cols = {im.getpixel((x, y)) for y in range(4, 16) for x in range(8, 152)}
+        ratios[s] = round(min((luminance(label) + .05) / (luminance(c) + .05) for c in cols), 2)
+        assert ratios[s] >= 4.5, (s, ratios[s])
+    assert len({encode(images['button_' + s]) for s in ('normal', 'hover', 'disabled')}) == 3
+    out = {}
+    for name, im in images.items():
+        for folder in (HERE, DEST):
+            out[folder / (name + '.png')] = encode(im)
+    sheet = Image.new('RGBA', (176, 76), rgb('ink'))
+    for i, s in enumerate(('normal', 'hover', 'disabled')):
+        sheet.alpha_composite(images['button_' + s], (8, 4 + 24 * i))
+    out[HERE / 'contact-sheet.png'] = encode(sheet.resize((704, 304), Image.Resampling.NEAREST))
+    manifest = {'palette': P, 'native_dimensions': {n: list(i.size) for n, i in images.items()}, 'text_color': P['label'],
+                'text_minimum_contrast': ratios, 'text_insets': [8, 4, 8, 4],
+                'scaling': 'native 1:1 GUI units; no smoothing; not nine-slice',
+                'states': 'normal, hover (also keyboard focus), disabled; native localized text rendered separately',
+                'provenance': 'Original deterministic pixel drawing from the ENTRELUMEN master palette; no game textures, external images or fonts.',
+                'sha256': {n: hashlib.sha256(encode(i)).hexdigest() for n, i in images.items()}}
+    out[HERE / 'manifest.json'] = (json.dumps(manifest, indent=2) + '\n').encode()
+    return out
+
 
 def main():
- p=argparse.ArgumentParser();p.add_argument('--check',action='store_true');a=p.parse_args()
- for path,data in outputs().items():
-  if a.check:
-   assert path.exists() and path.read_bytes()==data,f'Stale: {path}'
-  else:path.parent.mkdir(parents=True,exist_ok=True);path.write_bytes(data)
- print('PASS: deterministic native pixels, 11-color palette, binary alpha, 3 distinct states, text contrast >=4.5:1')
-if __name__=='__main__':main()
+    p = argparse.ArgumentParser(); p.add_argument('--check', action='store_true'); a = p.parse_args()
+    for path, data in outputs().items():
+        if a.check:
+            assert path.exists() and path.read_bytes() == data, f'Stale: {path}'
+        else:
+            path.parent.mkdir(parents=True, exist_ok=True); path.write_bytes(data)
+    print('PASS: deterministic button textures, binary alpha, 3 distinct states, label contrast >=4.5:1')
+
+
+if __name__ == '__main__':
+    main()

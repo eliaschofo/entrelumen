@@ -67,11 +67,6 @@ def build():
                         'artStatus': policy[name]}
         if available:
             outputs[target] = source.read_bytes()
-    atlas = ROOT / 'pack/resourcepacks/entrelumen/assets/entrelumen/textures/item/atlas.png'
-    atlas_target = BASE / 'assets/entrelumen/atlas.png'
-    if struct.unpack('>II', atlas.read_bytes()[16:24]) != (16,16):
-        raise ValueError('Atlas item must use its native Minecraft-scale 16x16 grid')
-    outputs[atlas_target] = atlas.read_bytes()
     for screen in SCREENS:
         name = 'title-background' if screen == 'title_screen' else 'loading-background'
         background = {'instance_identifier': 'entrelumen_' + screen + '_background',
@@ -91,11 +86,6 @@ def build():
         text += block('scroll_list_customization', {'apply_vanilla_background_blur': 'false',
                                                    'show_screen_background_overlay_on_custom_background': 'false'})
         if screen == 'title_screen':
-            text += block('element', {'element_type': 'image', 'instance_identifier': 'entrelumen_atlas_art',
-                                     'anchor_point': 'mid-right', 'sticky_anchor': 'false',
-                                     'x': -148, 'y': -64, 'width': 128, 'height': 128,
-                                     'source': '[source:local]/config/fancymenu/assets/entrelumen/atlas.png',
-                                     'repeat_texture': 'false', 'nine_slice_texture': 'false'})
             for index, widget in enumerate(('mc_titlescreen_singleplayer_button', 'mc_titlescreen_multiplayer_button',
                                              'forge_titlescreen_mods_button', 'mc_titlescreen_options_button',
                                              'mc_titlescreen_quit_button', 'mc_titlescreen_realms_button')):
@@ -110,30 +100,30 @@ def build():
             for index, widget in enumerate(('entrelumen_title_language', 'entrelumen_title_accessibility',
                                              'entrelumen_title_create', 'entrelumen_title_supplementaries')):
                 text += block('vanilla_button', {'element_type': 'vanilla_button', 'instance_identifier': widget,
-                                                'anchor_point': 'mid-right', 'sticky_anchor': 'false',
-                                                'x': -148 + index * 26, 'y': 72, 'width': 20, 'height': 20,
+                                                'anchor_point': 'top-right', 'sticky_anchor': 'false',
+                                                'x': -100 + index * 24, 'y': 4, 'width': 20, 'height': 20,
                                                 'is_hidden': 'false'})
             if assets['logo']['available']:
                 logo = outputs[BASE / 'assets/entrelumen/logo.png']
                 if logo[:8] != b'\x89PNG\r\n\x1a\n':
                     raise ValueError('Logo must be PNG')
                 width, height = struct.unpack('>II', logo[16:24])
-                if width > 192 or height > 64:
-                    raise ValueError('Supply native pixel-art logo <=192x64; generator never fractionally resizes it.')
+                if width > 256 or height > 64:
+                    raise ValueError('Supply native pixel-art logo <=256x64; generator never fractionally resizes it.')
                 text += block('element', {'element_type': 'image', 'instance_identifier': 'entrelumen_logo',
                                          'anchor_point': 'mid-left', 'sticky_anchor': 'false',
-                                         'x': 20 + (160 - width) // 2, 'y': -52 - height, 'width': width, 'height': height,
+                                         'x': 12, 'y': -50 - height, 'width': width, 'height': height,
                                          'source': '[source:local]/config/fancymenu/assets/entrelumen/logo.png',
                                          'repeat_texture': 'false', 'nine_slice_texture': 'false'})
                 for widget in ('minecraft_logo_widget', 'minecraft_splash_widget'):
                     text += block('vanilla_button', {'element_type': 'vanilla_button',
                                                     'instance_identifier': widget, 'is_hidden': 'true'})
         outputs[BASE / 'customization' / ('entrelumen_' + screen + '.txt')] = text.rstrip().encode('utf-8') + b'\n'
-    manifest = {'schemaVersion': 2, 'status': 'native Atlas title candidate; rejected filtered backgrounds inactive; visual acceptance pending',
+    manifest = {'schemaVersion': 2, 'status': 'native PixelLab scenes, copper wordmark and tuff/copper buttons; in-game visual acceptance pending',
                 'fancymenu': {'version': version, 'jarSha256': entry['sha256']}, 'assets': assets,
                 'screens': list(SCREENS),
-                'logoStatus': 'native-resolution bitmap candidate above left column; artistic acceptance pending',
-                'pixelArtPolicy': 'Integrity is separate from artistic status. Rejected backgrounds stay inactive. Title Atlas uses an editable native 16x16 item grid displayed at integer 8x GUI scale; logo is native-size. No direct ImageGen raster or fractional sprite scaling.',
+                'logoStatus': 'copper wordmark at native size above the left column; artistic acceptance pending',
+                'pixelArtPolicy': 'Integrity is separate from artistic status. Scenes are native pixel art exported at integer x5; the wordmark is drawn at 1:1 GUI units. No filtered illustration or fractional sprite scaling.',
                 'nativeControls': ['menu.singleplayer', 'menu.multiplayer', 'menu.options', 'menu.quit', 'NeoForge Mods button'],
                 'localization': 'Native labels and loading messages follow selected Minecraft language; no baked translated labels.',
                 'facts': 'Not added: preserve actual loading status and progress. EN/ES fact elements require editor-verified serialization.',
