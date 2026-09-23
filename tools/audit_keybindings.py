@@ -40,6 +40,13 @@ PROPOSED = {
     # Arcane family (Iron's spell wheel R and cast V collided with Tool Belt and Ultimine).
     "key_key.irons_spellbooks.spell_wheel": "key.keyboard.g:SHIFT",
     "key_key.irons_spellbooks.spellbook_cast": "key.keyboard.q:ALT",
+    # Exploration family (Deeper and Darker B/V and Cataclysm V/C/Y/V collided with world keys).
+    "key_key.deeperdarker.boost": "key.keyboard.b:ALT",
+    "key_key.deeperdarker.transmit": "key.keyboard.n:ALT",
+    "key_key.cataclysm.ability": "key.keyboard.j:ALT",
+    "key_key.cataclysm.helmet_ability": "key.keyboard.k:ALT",
+    "key_key.cataclysm.chestplate_ability": "key.keyboard.l:ALT",
+    "key_key.cataclysm.boots_ability": "key.keyboard.i:ALT",
 }
 # Operational context, NOT an assertion of a mod's declared conflict context.
 GUI = {"key_key.jei.showRecipe", "key_key.jei.showRecipe2", "key_key.jei.showUses",
