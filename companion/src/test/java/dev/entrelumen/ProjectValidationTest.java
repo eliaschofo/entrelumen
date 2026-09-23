@@ -58,6 +58,25 @@ class ProjectValidationTest {
   }
 
   @Test
+  void onlyReservedServerObservationsCanBeExternalPrerequisites() throws Exception {
+    var json = defaults();
+    var requirements = new JsonArray();
+    requirements.add("exchange_route");
+    requirements.add("aether_arrival");
+    requirements.add("twilight_arrival");
+    json.getAsJsonObject("horizon_survey").add("requires", requirements);
+    assertEquals(java.util.Set.of("exchange_route", "aether_arrival", "twilight_arrival"),
+        Projects.parse(json, id -> true).get("horizon_survey").prerequisites());
+
+    requirements.add("invented_arrival");
+    assertThrows(IllegalArgumentException.class, () -> Projects.parse(json, id -> true));
+    var collision = defaults();
+    collision.add("aether_arrival", collision.getAsJsonObject("atlas_awakened").deepCopy());
+    assertTrue(assertThrows(IllegalArgumentException.class,
+        () -> Projects.parse(collision, id -> true)).getMessage().contains("observation IDs"));
+  }
+
+  @Test
   void malformedCountsAndUnknownItemsAreRejected() throws Exception {
     for (JsonElement value :
         new JsonElement[] {

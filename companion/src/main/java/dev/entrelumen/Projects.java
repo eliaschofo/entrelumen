@@ -22,7 +22,16 @@ public final class Projects {
           "living_workshop",
           "travelling_pantry",
           "lost_workshop",
+          "signal_exchange",
+          "nursery_protocol",
+          "distributed_power",
+          "measured_logistics",
+          "workshop_hands",
           "exchange_route",
+          "spectral_archive",
+          "horizon_survey",
+          "pollinator_treaty",
+          "sealed_memory",
           "atlas_voices",
           "world_network",
           "engineering_module",
@@ -50,6 +59,8 @@ public final class Projects {
             entry -> {
               String id = entry.getKey();
               validateProjectId(id, id);
+              if (Expeditions.IDS.contains(id))
+                throw invalid(id, "observation IDs cannot be deliverable projects");
               if (!entry.getValue().isJsonObject()) throw invalid(id, "expected a project object");
               JsonObject obj = entry.getValue().getAsJsonObject();
               for (String field : obj.keySet())
@@ -104,6 +115,7 @@ public final class Projects {
                 .prerequisites()
                 .forEach(
                     prerequisite -> {
+                      if (Expeditions.IDS.contains(prerequisite)) return;
                       Project previous = result.get(prerequisite);
                       if (previous == null)
                         throw invalid(id + ".requires", "unknown prerequisite " + prerequisite);
@@ -124,7 +136,7 @@ public final class Projects {
     if (!path.add(id))
       throw invalid(id, "prerequisite cycle: " + String.join(" -> ", path) + " -> " + id);
     for (String prerequisite : projects.get(id).prerequisites())
-      visit(prerequisite, projects, visited, path);
+      if (!Expeditions.IDS.contains(prerequisite)) visit(prerequisite, projects, visited, path);
     path.remove(id);
     visited.add(id);
   }

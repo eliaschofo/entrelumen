@@ -56,27 +56,49 @@
   },
   "precision_bench": {
     "act": 2,
-    "requires": ["first_signal"],
-    "items": {"entrelumen:calibration_frame": 1}
+    "requires": [
+      "first_signal"
+    ],
+    "items": {
+      "entrelumen:calibration_frame": 1
+    }
   },
   "crystal_grid": {
     "act": 2,
-    "requires": ["first_signal"],
-    "items": {"entrelumen:energy_coupler": 1}
+    "requires": [
+      "first_signal"
+    ],
+    "items": {
+      "entrelumen:energy_coupler": 1
+    }
   },
   "living_workshop": {
     "act": 2,
-    "requires": ["first_signal", "precision_bench"],
-    "items": {"entrelumen:living_matrix": 1}
+    "requires": [
+      "first_signal",
+      "precision_bench"
+    ],
+    "items": {
+      "entrelumen:living_matrix": 1
+    }
   },
   "travelling_pantry": {
     "act": 2,
-    "requires": ["first_signal"],
-    "items": {"entrelumen:ration_bundle": 1}
+    "requires": [
+      "first_signal"
+    ],
+    "items": {
+      "entrelumen:ration_bundle": 1
+    }
   },
   "lost_workshop": {
     "act": 2,
-    "requires": ["precision_bench", "crystal_grid", "living_workshop", "travelling_pantry"],
+    "requires": [
+      "precision_bench",
+      "crystal_grid",
+      "living_workshop",
+      "travelling_pantry"
+    ],
     "items": {
       "minecraft:paper": 3,
       "minecraft:copper_ingot": 1
@@ -84,43 +106,116 @@
   },
   "signal_exchange": {
     "act": 3,
-    "requires": ["lost_workshop"],
-    "items": {"entrelumen:routing_matrix": 1}
+    "requires": [
+      "lost_workshop"
+    ],
+    "items": {
+      "entrelumen:routing_matrix": 1
+    }
   },
   "nursery_protocol": {
     "act": 3,
-    "requires": ["lost_workshop"],
-    "items": {"entrelumen:propagation_core": 1}
+    "requires": [
+      "lost_workshop"
+    ],
+    "items": {
+      "entrelumen:propagation_core": 1
+    }
   },
   "distributed_power": {
     "act": 3,
-    "requires": ["lost_workshop"],
-    "items": {"entrelumen:power_regulator": 1}
+    "requires": [
+      "lost_workshop"
+    ],
+    "items": {
+      "entrelumen:power_regulator": 1
+    }
   },
   "measured_logistics": {
     "act": 3,
-    "requires": ["lost_workshop", "signal_exchange"],
-    "items": {"entrelumen:inventory_sensor": 1}
+    "requires": [
+      "lost_workshop",
+      "signal_exchange"
+    ],
+    "items": {
+      "entrelumen:inventory_sensor": 1
+    }
   },
   "workshop_hands": {
     "act": 3,
-    "requires": ["lost_workshop", "distributed_power"],
-    "items": {"entrelumen:handling_core": 1}
+    "requires": [
+      "lost_workshop",
+      "distributed_power"
+    ],
+    "items": {
+      "entrelumen:handling_core": 1
+    }
   },
   "exchange_route": {
     "act": 3,
-    "requires": ["signal_exchange", "nursery_protocol", "distributed_power", "measured_logistics", "workshop_hands"],
+    "requires": [
+      "signal_exchange",
+      "nursery_protocol",
+      "distributed_power",
+      "measured_logistics",
+      "workshop_hands"
+    ],
     "items": {
       "minecraft:paper": 3,
       "minecraft:copper_ingot": 1
     }
   },
+  "spectral_archive": {
+    "act": 4,
+    "requires": [
+      "exchange_route"
+    ],
+    "items": {
+      "entrelumen:spectral_lens": 1
+    }
+  },
+  "horizon_survey": {
+    "act": 4,
+    "requires": [
+      "exchange_route",
+      "aether_arrival",
+      "twilight_arrival"
+    ],
+    "items": {
+      "entrelumen:horizon_chart": 1
+    }
+  },
+  "pollinator_treaty": {
+    "act": 4,
+    "requires": [
+      "exchange_route",
+      "bumblezone_arrival"
+    ],
+    "items": {
+      "entrelumen:ecosystem_capsule": 1
+    }
+  },
+  "sealed_memory": {
+    "act": 4,
+    "requires": [
+      "exchange_route",
+      "spectral_archive"
+    ],
+    "items": {
+      "entrelumen:containment_seal": 1
+    }
+  },
   "atlas_voices": {
     "act": 4,
+    "requires": [
+      "spectral_archive",
+      "horizon_survey",
+      "pollinator_treaty",
+      "sealed_memory"
+    ],
     "items": {
-      "minecraft:echo_shard": 4,
-      "minecraft:blaze_rod": 8,
-      "minecraft:ender_eye": 4
+      "minecraft:paper": 3,
+      "minecraft:copper_ingot": 1
     }
   },
   "world_network": {

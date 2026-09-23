@@ -49,3 +49,18 @@ Focused verification freezes the full Act II ID sequence in addition to Act I, c
 
 
 Act I gift-route correction: only the five campaign nodes' dependencies were aligned with `projects.json`: atlas has none; table and lens require atlas; survey requires atlas and lens; signal requires table, lens and survey. Tutorial branches, IDs, text, positions and rewards remain unchanged. This removes extra UI requirements for gifted deliveries without changing server authority or resetting completed progress. Tests compare all three chapters against server prerequisites and traverse complete campaign ancestry without a chapter boundary exception.
+
+
+## Act IV — Voices of the Atlas
+
+`act_four.json` adds 29 original bilingual quests: 17 non-consuming item tutorials, four optional readings and eight authoritative campaign mirrors. Total: 104 quests and 24 milestones. The 75 prior quest/task IDs, chapter geometry, task behavior and EN/ES strings are frozen by full chapter-output and locale fingerprints. No prior source chapters are edited.
+
+Five deliveries mirror the server project prerequisites exactly: spectral_archive follows exchange_route; horizon_survey also requires aether_arrival and twilight_arrival; pollinator_treaty also requires bumblezone_arrival; sealed_memory also requires spectral_archive. The preserved atlas_voices closes after all four. Each prototype delivery consumes one item; closure consumes three paper and one copper ingot. All FTB rewards remain empty. The lens lesson explicitly budgets two lenses because the archive delivery and containment recipe each consume one.
+
+The three arrival tasks have no prerequisites, item tasks or rewards. They mirror server-observed travel/login/respawn in any act, so early visits count. One member's arrival serves the current team campaign. Joining does not merge historical journeys. Gifts and optional tutorial clicks cannot create observations. Tests exempt only the exact three observer IDs from project lookup; every other campaign task must match a real project and its direct dependencies. No tutorial gates a deliverable.
+
+The chapter reuses the existing restrained FTB conventions: four spaced material branches, square possession nodes, optional circular readings, larger hexagonal campaign tasks and a shared closing archive. Geometry and reading direction are statically checked; rendered layout acceptance remains with the integrator.
+
+Acquisition evidence supplied by the bounded pinned-JAR audit covers Occultism's four diamonds through Spirit Fire into four attuned gems, then a 2×2 crystal; Malum's crude scythe without steel, native spirit sources and Spirit Altar steel inputs; and dimension entry/return behavior. The text includes ordinary honeycomb centrifuging for wax, native guides for breeding and processing, ambrosium ore, raw ironwood ingredients, pollen piles without Silk Touch, and dark-gem ore. No invented ore heights, drop guarantees or machine thresholds. Exact integration inputs follow content/integration-design.json; delivery authority follows the newer Act IV spec and projects.json, superseding that design file's old non-consuming proposal.
+
+Verification: `python tools/test_generate_quests.py` passes 17 focused contracts; `python tools/generate_quests.py --check` confirms four chapters, 104 quests, global IDs/DAG, geometry, EN/ES parity and generated-file drift. These results do not establish FTB runtime loading, survival acquisition, portal travel, rendered translation quality or campaign event integration; those remain separate integrator checks.

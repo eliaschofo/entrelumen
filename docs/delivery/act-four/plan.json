@@ -1,0 +1,124 @@
+{
+  "version": "astra-sdd/v1",
+  "state": "complete",
+  "controller": {
+    "model": "gpt-6-astra",
+    "effort": "medium"
+  },
+  "history_refs": [
+    {
+      "path": "../ark-batches/plan.json",
+      "sha256": "b805417965c921ef4c31a98cbe1b0616cce194748d450844b8ca28f0f6a4d787"
+    }
+  ],
+  "tasks": [
+    {
+      "id": "observations",
+      "depends_on": [],
+      "owns": [
+        "companion/src/main/java/dev/entrelumen/Expeditions.java",
+        "companion/src/test/java/dev/entrelumen/ExpeditionsTest.java"
+      ],
+      "state": "complete",
+      "model": "gpt-6-astra",
+      "effort": "low",
+      "acceptance": [
+        "Known server-observed destinations record once in current campaign; copies and archived campaigns preserve their invariants."
+      ],
+      "checks": [
+        [
+          "gradlew.bat",
+          "test",
+          "--no-daemon"
+        ]
+      ],
+      "evidence_ref": "../../verification/act-four-runtime.json"
+    },
+    {
+      "id": "quests",
+      "depends_on": [],
+      "owns": [
+        "content/act_four.json",
+        "tools/generate_quests.py",
+        "tools/test_generate_quests.py",
+        "content/campaign_task_ids.json",
+        "pack/config/ftbquests/quests",
+        "content/INTEGRATION.md"
+      ],
+      "state": "complete",
+      "model": "gpt-6-astra",
+      "effort": "low",
+      "acceptance": [
+        "Original EN/ES chapter explains four integration chains and three real journeys; prior75IDs/text/layout unchanged, campaign graph mirrors authority."
+      ],
+      "checks": [
+        [
+          "python",
+          "tools/generate_quests.py",
+          "--check"
+        ],
+        [
+          "python",
+          "tools/test_generate_quests.py"
+        ]
+      ],
+      "evidence_ref": "../../verification/act-four-runtime.json"
+    },
+    {
+      "id": "integration",
+      "depends_on": [
+        "observations",
+        "quests"
+      ],
+      "owns": [
+        "companion/src/main/java/dev/entrelumen/Projects.java",
+        "companion/src/main/java/dev/entrelumen/Entrelumen.java",
+        "companion/src/main/java/dev/entrelumen/RuntimeGameTests.java",
+        "companion/src/main/resources/data/entrelumen/campaign/projects.json",
+        "companion/src/main/resources/assets/entrelumen/lang/en_us.json",
+        "companion/src/main/resources/assets/entrelumen/lang/es_es.json",
+        "companion/src/test/java/dev/entrelumen/ProjectValidationTest.java",
+        "docs/design/act-four-recipes.md",
+        "docs/verification/act-four-runtime.json",
+        "content/integration-design.json",
+        "README.md"
+      ],
+      "state": "complete",
+      "model": "gpt-6-astra",
+      "effort": "low",
+      "acceptance": [
+        "Five server deliveries respect visits, gifts and team state; real loaded recipes and FTB metadata pass, with manual/visual/full-release limits explicit."
+      ],
+      "checks": [
+        [
+          "gradlew.bat",
+          "test",
+          "build",
+          "runGameTestServer",
+          "--no-daemon"
+        ],
+        [
+          "python",
+          "tools/check_runtime_content.py"
+        ]
+      ],
+      "evidence_ref": "../../verification/act-four-runtime.json"
+    }
+  ],
+  "integration_status": "28 JUnit / 19 required GameTests; 17 quest tests; four loaded recipe crafts; 104 quests / 24 milestones; three authenticated client arrivals persisted without advancing act, repeated visit unchanged; representative EN/ES quest detail reviewed. Technical slice complete, full E2E acceptance open; usage-limited goal/accounting and predecessor history unchanged.",
+  "continuation_2026_09_22": {
+    "runtime_qa": {
+      "model": "gpt-6-sol",
+      "effort": "xhigh"
+    },
+    "requested_mod_audit": {
+      "model": "gpt-6-luna",
+      "effort": "max"
+    },
+    "static_review": {
+      "model": "gpt-6-astra",
+      "effort": "xhigh"
+    },
+    "note": "Historical controller/task model records above are retained rather than rewritten."
+  }
+}

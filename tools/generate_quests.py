@@ -161,7 +161,7 @@ def generate_all(chapters):
 
 def main():
     parser=argparse.ArgumentParser(description=__doc__);parser.add_argument('--check',action='store_true');args=parser.parse_args()
-    chapters=[json.loads((ROOT/'content'/name).read_text(encoding='utf-8')) for name in ('first_hour.json','act_two.json','act_three.json')]
+    chapters=[json.loads((ROOT/'content'/name).read_text(encoding='utf-8')) for name in ('first_hour.json','act_two.json','act_three.json','act_four.json')]
     files=generate_all(chapters);failures=[]
     for path,content in files.items():
         if args.check:

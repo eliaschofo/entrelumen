@@ -158,6 +158,9 @@ public final class RuntimeGameTests {
     var original = data.campaigns.personal(id);
     original.act = 4;
     original.completed.add("field_survey");
+    Expeditions.record(original, "aether:the_aether");
+    Expeditions.record(original, "twilightforest:twilight_forest");
+    Expeditions.record(original, "the_bumblezone:the_bumblezone");
     original.arkPhase = 2;
     original.arkDeposits.put("entrelumen:ecosystem_capsule", 1);
     data.setDirty();
@@ -179,7 +182,9 @@ public final class RuntimeGameTests {
                 restored.act == 4
                     && restored.arkPhase == 2
                     && restored.arkDeposits.equals(Map.of("entrelumen:ecosystem_capsule", 1))
-                    && restored.completed.contains("field_survey"),
+                    && restored.completed.contains("field_survey")
+                    && restored.completed.containsAll(Expeditions.IDS)
+                    && !Expeditions.record(restored, "aether:the_aether"),
                 "Persisted campaign did not survive disk read");
           } catch (java.io.IOException e) {
             helper.fail("SavedData IO has not completed: " + e.getMessage());
@@ -962,6 +967,131 @@ public final class RuntimeGameTests {
         CampaignActions.Action.ADVANCE, "").success() && campaign.act == 4,
         "Repeated advancement bypassed Act IV");
     helper.succeed();
+  }
+
+  @GameTest(template = "empty", timeoutTicks = 200)
+  public static void fourthActRequiresJourneysAndFiveDeliveries(GameTestHelper helper) throws Exception {
+    var player = player(helper, "FourthActTest");
+    var other = player(helper, "FourthActOther");
+    var otherTeam = FTBTeamsAPI.api().getManager().createPartyTeam(other,
+        "Fourth " + other.getUUID(), "", dev.ftb.mods.ftblibrary.icon.Color4I.WHITE);
+    var otherCampaign = Entrelumen.current(other);
+    var otherBefore = Set.copyOf(otherCampaign.completed);
+    var campaign = Entrelumen.current(player);
+    campaign.act = 4;
+    for (int act = 1; act <= 3; act++) campaign.completed.addAll(Projects.forAct(act));
+    var expectedCompleted = new HashSet<>(campaign.completed);
+    var prototypes = new LinkedHashMap<String, Item>();
+    prototypes.put("spectral_archive", arkItem("spectral_lens"));
+    prototypes.put("horizon_survey", arkItem("horizon_chart"));
+    prototypes.put("pollinator_treaty", arkItem("ecosystem_capsule"));
+    prototypes.put("sealed_memory", arkItem("containment_seal"));
+    prototypes.values().forEach(item -> player.getInventory().add(new ItemStack(item, 2)));
+    player.getInventory().add(new ItemStack(Items.PAPER, 6));
+    player.getInventory().add(new ItemStack(Items.COPPER_INGOT, 2));
+    player.getInventory().add(new ItemStack(Items.DIAMOND, 3));
+    var expectedInventory = new HashMap<>(Entrelumen.availableMaterials(player));
+    var prerequisites = Map.of("spectral_archive", Set.of("exchange_route"),
+        "horizon_survey", Set.of("exchange_route", "aether_arrival", "twilight_arrival"),
+        "pollinator_treaty", Set.of("exchange_route", "bumblezone_arrival"),
+        "sealed_memory", Set.of("exchange_route", "spectral_archive"));
+    var initial = AtlasNetwork.handleOpen(player);
+    for (var entry : prototypes.entrySet()) {
+      var view = initial.projects().stream().filter(p -> p.id().equals(entry.getKey())).findFirst().orElseThrow();
+      helper.assertTrue(!view.completed() && view.materials().equals(List.of(
+          new AtlasNetwork.Material(BuiltInRegistries.ITEM.getKey(entry.getValue()), 2, 1)))
+          && view.prerequisites().stream().map(AtlasNetwork.Prerequisite::id)
+              .collect(java.util.stream.Collectors.toSet()).equals(prerequisites.get(entry.getKey()))
+          && view.prerequisites().stream().allMatch(p -> p.completed() == expectedCompleted.contains(p.id())),
+          "Act IV prototype snapshot differs: " + entry.getKey());
+    }
+    var closure = initial.projects().stream().filter(p -> p.id().equals("atlas_voices")).findFirst().orElseThrow();
+    helper.assertTrue(!closure.ready() && !closure.completed()
+        && closure.prerequisites().stream().map(AtlasNetwork.Prerequisite::id)
+            .collect(java.util.stream.Collectors.toSet()).equals(prototypes.keySet())
+        && closure.prerequisites().stream().noneMatch(AtlasNetwork.Prerequisite::completed)
+        && new HashSet<>(closure.materials()).equals(Set.of(
+            new AtlasNetwork.Material(ResourceLocation.parse("minecraft:paper"), 6, 3),
+            new AtlasNetwork.Material(ResourceLocation.parse("minecraft:copper_ingot"), 2, 1))),
+        "Atlas voices closure identity, prerequisites or costs changed");
+    for (String id : List.of("aether_arrival", "horizon_survey", "pollinator_treaty", "sealed_memory"))
+      fourthActDenied(helper, player, id);
+    helper.assertTrue(player.serverLevel().dimension().equals(net.minecraft.world.level.Level.OVERWORLD),
+        "Forged-transition fixture must stay in overworld");
+    var aether = net.minecraft.resources.ResourceKey.create(net.minecraft.core.registries.Registries.DIMENSION,
+        ResourceLocation.parse("aether:the_aether"));
+    Expeditions.onDimensionChanged(new net.neoforged.neoforge.event.entity.player.PlayerEvent.PlayerChangedDimensionEvent(
+        player, player.serverLevel().dimension(), aether));
+    var file = ServerQuestFile.getInstance().orElseThrow();
+    var chapter = new Chapter(0x7E440001L, file, file.getDefaultChapterGroup());
+    var quest = new Quest(0x7E440002L, chapter);
+    chapter.addQuest(quest);
+    var task = new CampaignTask(0x7E440003L, quest);
+    quest.addTask(task);
+    var tag = new CompoundTag();
+    tag.putString("milestone", "aether_arrival");
+    task.readData(tag, helper.getLevel().registryAccess());
+    var teamData = file.getOrCreateTeamData(player);
+    teamData.setProgress(task, 1);
+    task.submitTask(teamData, player, new ItemStack(arkItem("horizon_chart")));
+    helper.assertTrue(teamData.getProgress(task) == 0 && campaign.completed.equals(expectedCompleted)
+        && Entrelumen.availableMaterials(player).equals(expectedInventory),
+        "Gifts, forged transition or FTB projection fabricated an observation");
+    // Synthetic observations test delivery gates; this is not a portal/travel playtest.
+    helper.assertTrue(Expeditions.record(campaign, "aether:the_aether"), "Synthetic Aether record failed");
+    fourthActDenied(helper, player, "horizon_survey");
+    helper.assertTrue(Expeditions.record(campaign, "twilightforest:twilight_forest"), "Synthetic Twilight record failed");
+    fourthActDenied(helper, player, "pollinator_treaty");
+    helper.assertTrue(Expeditions.record(campaign, "the_bumblezone:the_bumblezone"), "Synthetic Bumblezone record failed");
+    expectedCompleted.addAll(Expeditions.IDS);
+    task.submitTask(teamData, player, ItemStack.EMPTY);
+    helper.assertTrue(teamData.getProgress(task) == 1, "Recorded observation did not mirror");
+    for (var entry : prototypes.entrySet()) {
+      fourthActDenied(helper, player, "atlas_voices");
+      helper.assertTrue(command(player, "entrelumen advance") == 0 && campaign.act == 4,
+          "Incomplete Act IV advanced");
+      var result = AtlasNetwork.handleRequest(player, new AtlasNetwork.Request(
+          initial.campaign(), CampaignActions.Action.DELIVER, entry.getKey()));
+      expectedInventory.compute(BuiltInRegistries.ITEM.getKey(entry.getValue()).toString(), (id, count) -> count - 1);
+      expectedCompleted.add(entry.getKey());
+      helper.assertTrue(result.message().equals("entrelumen.atlas.delivered") && campaign.act == 4
+          && campaign.completed.equals(expectedCompleted)
+          && Entrelumen.availableMaterials(player).equals(expectedInventory),
+          "Act IV delivery changed unrelated progress, consumed surplus or granted rewards: " + entry.getKey());
+      fourthActDenied(helper, player, entry.getKey());
+    }
+    helper.assertTrue(!AtlasNetwork.handleOpen(player).canAdvance(), "Prototypes bypassed Atlas voices");
+    var closed = AtlasNetwork.handleRequest(player, new AtlasNetwork.Request(
+        initial.campaign(), CampaignActions.Action.DELIVER, "atlas_voices"));
+    expectedInventory.compute("minecraft:paper", (id, count) -> count - 3);
+    expectedInventory.compute("minecraft:copper_ingot", (id, count) -> count - 1);
+    expectedCompleted.add("atlas_voices");
+    helper.assertTrue(closed.message().equals("entrelumen.atlas.delivered") && closed.canAdvance()
+        && campaign.completed.equals(expectedCompleted)
+        && Entrelumen.availableMaterials(player).equals(expectedInventory), "Atlas voices consumption differs");
+    fourthActDenied(helper, player, "atlas_voices");
+    var advanced = AtlasNetwork.handleRequest(player, new AtlasNetwork.Request(
+        initial.campaign(), CampaignActions.Action.ADVANCE, ""));
+    helper.assertTrue(advanced.act() == 5 && campaign.act == 5
+        && command(player, "entrelumen advance") == 0 && campaign.act == 5
+        && campaign.completed.equals(expectedCompleted)
+        && Entrelumen.availableMaterials(player).equals(expectedInventory)
+        && otherCampaign.completed.equals(otherBefore) && otherCampaign.act == 1
+        && CampaignActions.campaignId(other).equals(otherTeam.getId()),
+        "Advancement changed inventory, unrelated progress or another team's campaign");
+    helper.succeed();
+  }
+
+  private static void fourthActDenied(GameTestHelper helper, ServerPlayer player, String project) {
+    var campaign = Entrelumen.current(player);
+    var completed = Set.copyOf(campaign.completed);
+    var inventory = Entrelumen.availableMaterials(player);
+    var result = AtlasNetwork.handleRequest(player, new AtlasNetwork.Request(
+        CampaignActions.campaignId(player), CampaignActions.Action.DELIVER, project));
+    helper.assertTrue(result.message().equals("entrelumen.delivery.failed")
+        && campaign.completed.equals(completed) && campaign.act == 4
+        && Entrelumen.availableMaterials(player).equals(inventory),
+        "Rejected Act IV delivery mutated campaign or supplies: " + project);
   }
 
   @GameTest(template = "empty", timeoutTicks = 200)

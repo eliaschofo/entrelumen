@@ -81,7 +81,6 @@ const entrelumenAuditTargets = {
     "mekanismgenerators:wind_generator",
     "minecraft:amethyst_block",
     "minecraft:beacon",
-    "minecraft:blaze_rod",
     "minecraft:book",
     "minecraft:bowl",
     "minecraft:bread",
@@ -247,7 +246,7 @@ const entrelumenAuditTargets = {
       "output": "farmersdelight:flint_knife"
     }
   ],
-  "signature": "76307e4b9c88c4a4"
+  "signature": "39470704b308029e"
 };
 
 ServerEvents.afterRecipes(event => {

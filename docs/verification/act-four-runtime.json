@@ -1,0 +1,202 @@
+{
+  "schemaVersion": 1,
+  "checkedAt": "2026-09-23T00:48:56.764900+00:00",
+  "scope": "Act IV technical integration, full-pack crafting and actual client dimension observations; the full E2E pack remains unfinished.",
+  "status": "technical slice passed; survival, complete visual and performance acceptance remain open",
+  "platform": "Minecraft 1.21.1 / NeoForge 21.1.249 / Java 21 / Windows",
+  "artifact": {
+    "path": "companion/build/libs/entrelumen-0.1.0.jar",
+    "sha256": "16524b46ef4045a9d6b9bc4c0e5a50c0ba9f20a567b2765139ed77cd6d165af8",
+    "installedClientAndOwnedServer": true
+  },
+  "sourceHashPolicy": "Exact local UTF-8 files; Git may normalize pre-existing CRLF source files to LF.",
+  "sourceSha256": {
+    "companion/src/main/java/dev/entrelumen/Expeditions.java": "af68754e97378c987dadb801fcc356d716ffeb0066d3e3a0b9566363d3d948f0",
+    "companion/src/main/java/dev/entrelumen/Entrelumen.java": "b8c4e63e82db043c51c024c18f6440ca8b8a8a8edbe0cf08aba5046b6ad3c986",
+    "companion/src/main/java/dev/entrelumen/Projects.java": "644e062ab0dbef9ef4bf4ed6a0ab73a307a13738c0cb64dc66b7a7c727507add",
+    "companion/src/main/java/dev/entrelumen/RuntimeGameTests.java": "5d4249afc614aeb2f7d796fb63f61395b2062f30520ce238a2e811a0526a730b",
+    "companion/src/main/resources/data/entrelumen/campaign/projects.json": "1156723369ea6e4251a0b42dc9135f104b9c723cfb75cfce3c344ef8eb19fa2e",
+    "companion/src/main/resources/assets/entrelumen/lang/en_us.json": "1921cfde9f22c0d521e8357d974400058d4dcf1b6ff4de5974d9f77a69995f03",
+    "companion/src/main/resources/assets/entrelumen/lang/es_es.json": "e7ff82f582177b3686fed1a713ed78b556489195e357ea97bca6a2d1818ea600",
+    "companion/src/test/java/dev/entrelumen/ExpeditionsTest.java": "f402104da2b2066212bd8a0f0d1eb43b83d067df8a336317a180b1427bbd1ad1",
+    "companion/src/test/java/dev/entrelumen/ProjectValidationTest.java": "ebbbe150c5e8f0495981ae45e6cd5f3c5ad50194b6c2397dd4279da98b29bc9d",
+    "content/act_four.json": "b9b99e094837c3cc2d9dc8c4012380be8b614fc46877417e25bd433dc8c76c4f",
+    "content/campaign_task_ids.json": "dbc4bf5f3cb8df145aef5204a41841053ad81b42be776fc3d1b14958f02a6f22",
+    "tools/generate_quests.py": "78611e416a394ca08a9761964fe1fba835155b9428930e5c6fd3c8c1767885fb",
+    "tools/test_generate_quests.py": "a374cc26ed28373106702e2df166e15d96f47d795c177d0706ed8076570201f7",
+    "pack/config/ftbquests/quests/chapters/voices_of_the_atlas.snbt": "1c120b93b38a38bcf5e9756ca3979d6e5e67aa5b090e630f8a91f3313dde3ad2",
+    "pack/config/ftbquests/quests/lang/en_us.snbt": "bffc5c1d1fec63222008d6a24a88b3cb2b3c46aadff3d2f76c990c8803ba9c78",
+    "pack/config/ftbquests/quests/lang/es_es.snbt": "c9a5d503529a3bdcc05f332c491be5ec64302b0451286f6c81fc7e31750ebf4a",
+    "pack/kubejs/server_scripts/entrelumen_runtime_audit.js": "6c0fb6d98896d1dc5e118111a34e15d8106062853279de44bd5ec9cc94965dc3"
+  },
+  "checks": {
+    "companion": {
+      "build": "passed",
+      "junit": 28,
+      "requiredGameTests": 19,
+      "reusedBuild": "12 September build reused because tested Java/resources and installed artifact were unchanged; the full-pack run below is fresh on 22 September.",
+      "coverage": [
+        "Five Act IV deliveries and IV-to-V transition",
+        "Missing materials/prerequisites, gifted prototypes, exact consumption, surplus and replay",
+        "Forged destination event and FTB completion cannot grant a visit",
+        "Independent campaigns and archived campaign rejection",
+        "Observation IDs and partial Ark ledger survive NBT and real SavedData disk roundtrip"
+      ]
+    },
+    "quests": {
+      "chapters": 4,
+      "total": 104,
+      "newActFour": 29,
+      "campaignMilestones": 24,
+      "generatorTests": 17,
+      "previous75": "Exact stable ID/text/layout fingerprints retained",
+      "locales": "en_us/es_es key and placeholder parity passed"
+    },
+    "staticRecipeSource": {
+      "count": 22,
+      "check": "passed; does not mean 22 narrative projects are complete"
+    },
+    "fullPack": {
+      "serverDependencyCount": 110,
+      "clientDependencyCount": 140,
+      "heapGiB": 4,
+      "runId": "997f44dd-8df7-4d2d-882c-f292ae2bc349",
+      "craftToken": "a5ce4057-1178-4a86-a3ed-9a9faaf5ada9",
+      "craftRequest": "4a0b127a-a2ec-46e7-a6e3-99261736e6e4",
+      "crafting": [
+        {
+          "recipe": "entrelumen:integration/spectral_archive",
+          "output": "entrelumen:spectral_lens",
+          "orientations": 2,
+          "bowls": 0
+        },
+        {
+          "recipe": "entrelumen:integration/horizon_survey",
+          "output": "entrelumen:horizon_chart",
+          "orientations": 2,
+          "bowls": 0
+        },
+        {
+          "recipe": "entrelumen:integration/pollinator_treaty",
+          "output": "entrelumen:ecosystem_capsule",
+          "orientations": 2,
+          "bowls": 0
+        },
+        {
+          "recipe": "entrelumen:integration/sealed_memory",
+          "output": "entrelumen:containment_seal",
+          "orientations": 2,
+          "bowls": 0
+        }
+      ],
+      "loadedMilestones": [
+        "aether_arrival",
+        "atlas_awakened",
+        "atlas_voices",
+        "bumblezone_arrival",
+        "crystal_grid",
+        "distributed_power",
+        "exchange_route",
+        "field_survey",
+        "first_signal",
+        "horizon_survey",
+        "lens_assembled",
+        "living_workshop",
+        "lost_workshop",
+        "measured_logistics",
+        "nursery_protocol",
+        "pollinator_treaty",
+        "precision_bench",
+        "sealed_memory",
+        "signal_exchange",
+        "spectral_archive",
+        "travellers_table",
+        "travelling_pantry",
+        "twilight_arrival",
+        "workshop_hands"
+      ],
+      "craftAssertions": "Independent literal grids in two orders, exact one-item output, missing-ingredient negative, unchanged input and zero container remainders.",
+      "sourceCoverage": {
+        "itemIds": 123,
+        "recipeOutputPairs": 29,
+        "signature": "39470704b308029e",
+        "auditRun": "1790123196549"
+      },
+      "market": {
+        "checked": 745,
+        "skipped": 705,
+        "untouched": 40,
+        "loadedMarketRecipes": 107,
+        "unexpected": []
+      }
+    },
+    "actualClientTravel": {
+      "method": "Authenticated real client, existing QA character in spectator mode, administrative dimension teleports; no synthetic player and no mod class-filter relaxation.",
+      "destinations": [
+        {
+          "dimension": "aether:the_aether",
+          "milestone": "aether_arrival",
+          "request": "fd16f755-df56-4f3f-89df-c76b53e6b0a1",
+          "serverDimensionConfirmedAt": "2026-09-22T21:34:07-03:00"
+        },
+        {
+          "dimension": "twilightforest:twilight_forest",
+          "milestone": "twilight_arrival",
+          "request": "4c5bec47-7e86-4253-81b6-1f9255f1051e",
+          "serverDimensionConfirmedAt": "2026-09-22T21:34:39-03:00"
+        },
+        {
+          "dimension": "the_bumblezone:the_bumblezone",
+          "milestone": "bumblezone_arrival",
+          "request": "d732471d-61d4-4a57-8638-3fbd4c581ce6",
+          "serverDimensionConfirmedAt": "2026-09-22T21:35:08-03:00"
+        }
+      ],
+      "persistence": "Read-only campaign NBT snapshots before travel, after save-all flush and after clean shutdown. Exactly three observations added; act remained 1, Ark phase 0, no delivery/project completion or party mutation.",
+      "repeat": "Second Aether visit produced no fourth notification; final campaign snapshot exactly equals the first saved three-visit snapshot.",
+      "clientState": "Returned to original Overworld position; spectator mode unchanged. No inventory or administrative campaign edits.",
+      "visual": "Twilight arrival detail rendered completely in English and Spanish at a 1024x768 client area. Green completed task and no rewards visible. Only a representative detail and the three arrival nodes were reviewed; not the entire chapter layout or Atlas UI."
+    },
+    "review": "Independent Astra xhigh static review found no actionable issue; checked pinned event timing and FTB Teams login listener priority.",
+    "unsuccessfulProbe": "A KubeJS mock-player travel helper failed before creating any actors because EmbeddedChannel is blocked by the class filter. It is not counted as a pass. Actual authenticated client travel above supplies the dimension-event evidence."
+  },
+  "screenshots": [
+    {
+      "path": "screenshots/act-four-twilight-es-completed.png",
+      "sha256": "bb7814d02064c19f4a287e73e6abd77bcea9679e0f713a3190f7425f0481bd2f"
+    },
+    {
+      "path": "screenshots/act-four-twilight-en-completed.png",
+      "sha256": "b6b295f3d928e5831f51b201e52ce289fdfe44df6e95ad1885d91f40cc9dce87"
+    }
+  ],
+  "localEvidence": {
+    "act-four-companion-build.log": "2c112e697472544172ca96550ca77e506402493258b19ebd789f296705b3c886",
+    "act-four-fullpack-runtime.log": "284805d4dfe770e7c3777e00c8ed71b973bf564bca05f6392ae54451dcb3beac",
+    "act-four-client-runtime.log": "d989c39a3e0c7f99d914748f29b3c5ef6c02d2001f8cfcc9c87b1cff338a9027",
+    "act-four-campaign-before.json": "d13029535be4a0f6d0a4f50b0ba60af4cee969210e97a83bbe77bb13ac365665",
+    "act-four-campaign-after-visits.json": "059761984b00adbc7dcf0307c5a317d2b77a7c4867d041d89d52c620d6679695",
+    "act-four-campaign-final.json": "059761984b00adbc7dcf0307c5a317d2b77a7c4867d041d89d52c620d6679695",
+    "entrelumen_qa_act_four_runtime.verified.js": "76aac7fdc81dba6094bb095b27e9c02f8f14a69f9ff55aa3a10d7e09f8bf0223"
+  },
+  "cleanup": {
+    "backups": [
+      "before-act-four-server-20260922-212245",
+      "before-visual-ENTRELUMEN-20260922-212643"
+    ],
+    "server": "Owned server saved all dimensions and exited 0 after queued stop; request 8052e1cc-92d6-45bb-88ce-eec7c325d40b.",
+    "client": "Disconnected and closed normally; original es_es language restored. Both owned process IDs absent after shutdown.",
+    "qaHelper": "Moved out of the active server script directory into local work evidence; never included in the pack.",
+    "generatedDefaults": "FTB rewrote its six server SNBT defaults on save; client rewrote FancyMenu and FTB Chunks defaults. Managed receipts were not silently re-baselined. Review these known local rewrites before the next sync."
+  },
+  "limitations": [
+    "No survival portal/acquisition run, full six-act playthrough, pacing or 150-200h validation.",
+    "No full-pack restart/relogin or two-client team lifecycle run in this session; existing embedded tests cover persistence/team invariants.",
+    "No measured FPS, 1% lows, MSPT percentile, two-hour soak or six-client performance acceptance. New-terrain dimension transfers produced 2-5 second server lag warnings.",
+    "Full Atlas interface, complete chapter layouts and original artwork still require visual acceptance.",
+    "Extra-large catalog/quest reference parity, Acts V-VI, finished Ark experiences, CurseForge public installation and maintenance acceptance remain open.",
+    "Oscuria remains a required unidentified dependency; awaiting the exact project link. No similar-name mod was substituted.",
+    "Normal Minecraft saving is not a crash-atomic journal across player inventory and SavedData.",
+    "The existing usage-limited goal and its accounting were not reset or marked complete."
+  ]
+}

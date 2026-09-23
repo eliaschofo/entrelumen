@@ -69,6 +69,9 @@ public final class Entrelumen {
     bus.addListener(AtlasNetwork::register);
     BLOCKS.register(bus);
     NeoForge.EVENT_BUS.addListener(this::commands);
+    NeoForge.EVENT_BUS.addListener(Expeditions::onDimensionChanged);
+    NeoForge.EVENT_BUS.addListener(Expeditions::onLogin);
+    NeoForge.EVENT_BUS.addListener(Expeditions::onRespawn);
     NeoForge.EVENT_BUS.addListener(net.neoforged.bus.api.EventPriority.LOWEST,
         ArkControllerBlock::allowEmptyHandDeposit);
     NeoForge.EVENT_BUS.addListener(
