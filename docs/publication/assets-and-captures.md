@@ -2,6 +2,8 @@
 
 ## Original brand assets
 
+**Review status:** these publication assets remain unaccepted concepts. Their existence and reproducible rendering do not establish the required native Minecraft pixel-art quality. Review them against the current in-game Atlas and identity before selecting release artwork; do not upload them as approved final assets.
+
 `art/publication/avatar-400.png`: 400×400 avatar. `cover-en.png` and `cover-es.png`: 1200×480 conceptual covers with explicit development status and concept-art captions. Matching SVGs are the editable vector sources; `art/publication/build.py` renders them from the existing original Atlas SVG using Pillow. Text uses the local Consolas font; no font file is redistributed. Palette and Atlas mark belong to ENTRELUMEN. No external stock art or gameplay image is used.
 
 All original assets here use the repository's ENTRELUMEN Source-Available License 1.0, including its official-hosting allowance. Preserve its public redistribution restriction and third-party exclusions. Do not label the project open source or imply the license revokes hosting-platform rights.

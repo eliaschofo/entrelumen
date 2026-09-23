@@ -11,20 +11,30 @@ ENTRELUMEN is an original kitchen-sink modpack in development, built around a ho
 
 ## What exists today
 
-- An original **25-quest opening chapter**, written in English and Spanish, with routes for shelter, cooking, surveying and the first signal.
-- A companion mod with server-side campaign records, project deliveries, team integration and quest milestones.
-- Original Atlas, lens, field-note and signal artwork, plus six discipline modules and an Ark controller.
+- A **155-quest prototype across six chapters**, written in English and Spanish, with **42 campaign milestones** and a first narrative ending checked in a QA world.
+- A companion mod with server-side team campaigns, recoverable project deliveries, an Atlas interface and a working compass survey station.
+- A pinned selection of **140 client / 110 server dependencies**, plus the companion, including a mining dimension, Botany Pots and its tiers, Modular Bees, and AE2/Mekanism expansions.
+- Six Ark modules with diagnostics, local commissioning deposits and native Minecraft field journals. Their original block and item art remains under visual review.
 - Reproducible content generation and automated checks. These checks support development; they do not establish finished gameplay, balance or measured performance.
 
-The opening remains a development slice. Its survey and signal are still being expanded into their intended in-world experiences. This page does not announce a stable release or a verified complete campaign.
+This is a development prototype. Natural first-hour acquisition, the complete survival campaign, multiplayer, final art and performance still need acceptance tests. The QA ending is not a completed survival playthrough or a stable release.
 
 ## Where the Atlas is heading
 
-Six acts will connect engineering, magic, nature, exploration, logistics and habitation. Projects are intended to leave useful infrastructure behind. The planned **Ark of Horizons** brings these disciplines together in recoverable commissioning stages.
+Six acts connect engineering, magic, nature, exploration, logistics and habitation. Projects are intended to leave useful infrastructure behind. The **Ark of Horizons** already accepts recoverable commissioning batches in the prototype; the full module experiences and postgame remain in development.
+
+| Act | Your next horizon |
+| --- | --- |
+| I · A Light Among Ruins | Make a home and repair the first signal. |
+| II · The Lost Crafts | Give old techniques a useful place in your workshop. |
+| III · Routes of Exchange | Connect production, supplies and expeditions. |
+| IV · Voices of the Atlas | Recover testimony across unfamiliar worlds. |
+| V · The World We Build | Turn separate crafts into systems that support a settlement. |
+| VI · The Last Horizon | Bring six disciplines together at the Ark. |
 
 Our design priorities are abundant early quality-of-life tools, understandable recipes, useful roles for smaller mods, cooperative team progression and unrestricted gifts. Stronger resource production will arrive in stages. The aim is a generous kitchen sink with a purposeful progression curve, without expert-style recipe inflation.
 
-The editorial target is around **900 original quests** and a **150–200-hour main campaign**. These are development goals, not current content counts or tested playtime. Only the opening chapter has been authored so far.
+The provisional extra-large target is **600 useful main mod projects/JARs and 5,000–5,500 original quests**, with around **150–200 directed milestones** and a **150–200-hour first-ending campaign**. The current prototype is far below that scale. These are development targets, not installed counts, a promise that every candidate will survive curation, or measured playtime. Most learning and mastery quests will be optional; reaching the ending will not require completing the whole book.
 
 ## Performance is a development requirement
 
@@ -56,20 +66,30 @@ ENTRELUMEN es un modpack kitchen sink original en desarrollo, construido alreded
 
 ### Qué existe hoy
 
-- Un **primer capítulo de 25 quests originales**, escrito en inglés y español, con rutas de refugio, cocina, cartografía y primera señal.
-- Un mod propio con registros de campaña en el servidor, entregas de proyectos, integración de equipos e hitos de quests.
-- Arte original para el Atlas, la lente, las notas y la señal, más seis módulos de disciplinas y un controlador del Arca.
+- Un **prototipo de 155 quests en seis capítulos**, escrito en inglés y español, con **42 hitos de campaña** y un primer final narrativo comprobado en un mundo de QA.
+- Un mod propio con campaña por equipo en el servidor, entregas recuperables, interfaz del Atlas y una estación funcional para marcar brújulas.
+- Una selección fijada de **140 dependencias de cliente / 110 de servidor**, más el mod propio, que incluye dimensión minera, Botany Pots y sus tiers, Modular Bees y expansiones de AE2/Mekanism.
+- Seis módulos del Arca con diagnóstico, entregas locales de puesta en marcha y diarios en el lector nativo de Minecraft. Su arte original de bloques e ítems sigue en revisión visual.
 - Generación reproducible de contenido y verificaciones automáticas. Estos controles ayudan al desarrollo; no demuestran por sí solos jugabilidad terminada, balance ni rendimiento medido.
 
-El comienzo sigue siendo una versión de desarrollo. El reconocimiento y la señal todavía se están ampliando hacia sus experiencias previstas dentro del mundo. Esta página no anuncia una versión estable ni una campaña completa verificada.
+Es un prototipo en desarrollo. La adquisición natural de la primera hora, la campaña completa en supervivencia, el multijugador, el arte final y el rendimiento siguen pendientes de aceptación. El final en QA no equivale a un recorrido completo en supervivencia ni a una versión estable.
 
 ### Hacia dónde va el Atlas
 
-Seis actos conectarán ingeniería, magia, naturaleza, exploración, logística y habitabilidad. Los proyectos buscan dejar instalaciones útiles. La **Arca de los Horizontes** reunirá esas disciplinas mediante etapas de puesta en marcha recuperables.
+Seis actos conectan ingeniería, magia, naturaleza, exploración, logística y habitabilidad. Los proyectos buscan dejar instalaciones útiles. El **Arca de los Horizontes** ya acepta lotes recuperables de puesta en marcha en el prototipo; las experiencias completas de sus módulos y el posgame siguen en desarrollo.
+
+| Acto | Tu próximo horizonte |
+| --- | --- |
+| I · Una luz entre ruinas | Construí un hogar y repará la primera señal. |
+| II · Los oficios perdidos | Dale un lugar útil a técnicas antiguas en tu taller. |
+| III · Rutas de intercambio | Conectá producción, abastecimiento y expediciones. |
+| IV · Las voces del Atlas | Recuperá testimonios en mundos desconocidos. |
+| V · El mundo que construimos | Convertí oficios separados en sistemas que sostengan un asentamiento. |
+| VI · El último horizonte | Reuní seis disciplinas en el Arca. |
 
 Las prioridades son muchas comodidades desde el inicio, recetas comprensibles, funciones útiles para mods pequeños, progreso cooperativo por equipo y regalos libres. La producción potente de recursos llegará por etapas. Buscamos un kitchen sink generoso con una progresión con propósito, sin inflar recetas al estilo expert.
 
-El objetivo editorial es de unas **900 quests originales** y una **campaña principal de 150–200 horas**. Son metas de desarrollo, no cantidades actuales ni duración comprobada. Por ahora está escrito el primer capítulo.
+La meta extra large provisional es de **600 proyectos de mods/JAR principales útiles y 5.000–5.500 quests originales**, con unos **150–200 hitos dirigidos** y **150–200 horas hasta el primer final**. El prototipo actual todavía está muy por debajo de esa escala. Son objetivos de desarrollo, no cantidades instaladas, una promesa de conservar todos los candidatos ni duración medida. La mayoría de las quests de aprendizaje y maestría serán opcionales; llegar al final no exigirá completar todo el libro.
 
 ### El rendimiento es un requisito de desarrollo
 
