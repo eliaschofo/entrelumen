@@ -29,3 +29,7 @@ La barrera elimina la superposición con las escrituras ya encoladas por ese flu
 En una copia aislada Windows: repetir guardado+backup con cambios reales de señales Ars, comprobar ausencia de errores, abrir el archivo dentro del ZIP y restaurar la copia para contrastar los datos. Verificar que la espera ocurre en Server thread y que el backup sólo inicia después de completar la cola; no aceptar únicamente el mensaje Backup completed. Si persiste AccessDenied, identificar el bloqueo externo y revisar la consistencia del snapshot antes de ampliar el parche.
 
 Estado: diagnóstico y recomendación; sin Mixin, cambios de configuración ni afirmación de reproducción.
+
+## Restauración offline posterior — 23 de septiembre
+
+Un ZIP del mundo QA con el juego cerrado se restauró íntegro en un servidor separado con el mismo build: 100 archivos y 56 directorios verificados, excluyendo sólo `session.lock`. El arranque, guardado y cierre normales conservaron la campaña, los datos de jugador y FTB; el mundo original quedó intacto. El log no tuvo líneas ERROR ni AccessDenied, pero conserva 88 advertencias. La [evidencia de restauración](../verification/offline-restore-runtime.json) fija hashes, solicitudes y límites. Esta prueba no ejecutó SimpleBackups en vivo ni reproduce o resuelve la carrera descrita arriba; tampoco verifica actualización entre betas o interacción de un cliente con la copia restaurada.

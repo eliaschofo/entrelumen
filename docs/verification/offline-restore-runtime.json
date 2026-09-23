@@ -1,0 +1,110 @@
+{
+  "schemaVersion": 1,
+  "checkedAt": "2026-09-23T06:13:54.583239+00:00",
+  "status": "bounded_offline_restore_passed",
+  "scope": "Complete stopped QA world archived, hash-verified on extraction, started once in a separate dedicated server, saved and stopped normally with campaign preservation.",
+  "platform": "Minecraft 1.21.1 / NeoForge 21.1.249 / Java 21 / Windows",
+  "companionSourceCommit": "f31150229af1388cac569aa13a495605c1ff3b8b",
+  "questSourceCommit": "87fcbb7feb9fe189e7df8dbb6bd2838389d981c8",
+  "catalogSha256": "2f19ec32e91cd28a720d5ec6cb450c1e38990e0da4de7c947bac26341c5312f8",
+  "normalJarSha256": "0b0c14103eae4f9bf4d7ff1df6643d1450196cb5b06b2050e27b8e5e04e7f5a0",
+  "archive": {
+    "sha256": "8bda48c538384315208e5c287ab05118405268a78d55c2035ca1389a4a0c3fbf",
+    "bytes": 14196324,
+    "filesVerifiedSourceToZipToExtraction": 100,
+    "directoriesVerified": 56,
+    "excludedOnly": [
+      "session.lock"
+    ],
+    "manifestSha256": "86b67204f28dbd531d2829c2e0013753f4fafe667043ae93ebf954ddbfef9136",
+    "sourceWorldUnchanged": true,
+    "publiclyUploaded": false
+  },
+  "runtime": {
+    "restoreId": "76ab9916-ab6a-454e-a9a3-7277c41f5a87",
+    "runId": "97f45121-dc25-44df-ae00-e246d92e3e72",
+    "normalJarOnly": true,
+    "serverIp": "127.0.0.1",
+    "serverPort": 25577,
+    "heap": "6G",
+    "watchdogMilliseconds": 60000,
+    "modsIncludingCompanionVerifiedAgainstOriginal": 111,
+    "libraryFilesVerifiedAgainstOriginal": 102,
+    "ready": true,
+    "validatedProjectDefinitions": 31,
+    "commands": [
+      {
+        "text": "save-all flush",
+        "requestId": "f70c2f07-308c-4b87-a6eb-fe09aea0406d",
+        "executionConfirmedInLog": true
+      },
+      {
+        "text": "stop",
+        "requestId": "fd9359d3-c41c-4668-a8ec-d71930a19fd9",
+        "executionConfirmedInLog": true
+      }
+    ],
+    "exitCode": 0,
+    "ownedProcessNoLongerRunning": true,
+    "logSha256": "be1daefe79964ed58fc3714235e62d7a3aef525fb81474000aa2fde1de78716a",
+    "errorLineCount": 0,
+    "accessDeniedOccurrences": 0,
+    "warningLineCount": 88
+  },
+  "preservedAfterSave": {
+    "campaignByteEqual": true,
+    "campaignSemanticEqual": true,
+    "campaignRawSha256": "917d164056f944a93591a1405b972fa829a711631b40ea549dc0353143198764",
+    "campaignSemanticSha256": "c4e1ec8e7d1aa0100946df9a8d53dddbd14efad3be010c4e340921581aaa05da",
+    "schema": 2,
+    "personalCampaignCount": 1,
+    "partyCampaignCount": 0,
+    "personalCampaignStates": [
+      {
+        "act": 6,
+        "archived": false,
+        "arkPhase": 6,
+        "completedCount": 36,
+        "endingRecorded": true
+      }
+    ],
+    "fileAreas": {
+      "ftbquests": {
+        "addedAfterRun": 0,
+        "changedAfterRun": 0,
+        "missingAfterRun": 0,
+        "sourceFiles": 1
+      },
+      "ftbteams": {
+        "addedAfterRun": 0,
+        "changedAfterRun": 0,
+        "missingAfterRun": 0,
+        "sourceFiles": 2
+      },
+      "playerdata": {
+        "addedAfterRun": 0,
+        "changedAfterRun": 0,
+        "missingAfterRun": 0,
+        "sourceFiles": 3
+      },
+      "stats": {
+        "addedAfterRun": 0,
+        "changedAfterRun": 0,
+        "missingAfterRun": 0,
+        "sourceFiles": 1
+      }
+    },
+    "originalFilesMissing": 0,
+    "worldFilesChangedByNormalServerSave": 21,
+    "worldFilesAddedByNormalServerSave": 1
+  },
+  "localEvidenceDirectory": "C:\\Users\\elias\\Documents\\Codex\\2026-09-12\\h\\work\\restore-prototype-evidence-20260923",
+  "limitations": [
+    "The source is the creative QA world with one personal campaign and no party campaigns, not a fresh survival playthrough or a representative multiplayer world",
+    "This is a stopped-world ZIP restore on the same dependency and companion versions; beta upgrade and cross-version migration remain untested",
+    "No player logged into the restored dedicated server; byte preservation does not establish restored client interactions or team lifecycle",
+    "This does not test live SimpleBackups or resolve the previously observed Windows SavedData/backup race",
+    "Ordinary world metadata/chunks changed during server saving; only the specifically compared campaign, player and FTB files are claimed byte-identical",
+    "Performance, soak, final-scale content and public CurseForge installation remain unaccepted"
+  ]
+}
