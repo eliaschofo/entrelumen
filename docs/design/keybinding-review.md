@@ -63,3 +63,7 @@ El JAR fijado Immersive Aircraft 1.5.2 registra `key.immersive_aircraft.dismount
 El primer perfil completo reveló `key_key.moreoverlays.lightoverlay.desc` en F7; se descartó esa propuesta. F12 no aparece en ninguna otra asignación del options generado de 460 líneas. La tecla final necesita todavía la prueba de bajada con cinturón; la ausencia de otra asignación registrada no demuestra todos los contextos.
 
 F12 quedó comprobado en la pantalla de controles del perfil aislado, en español y sin otra asignación coincidente: [captura nativa](../verification/screenshots/automatic-defaults-f12-es.png). No se ensayó aún la maniobra con cinturón.
+
+## Large-parity families (23 de septiembre de 2026)
+
+Las familias nuevas se revisan con los defaults leídos del bytecode de cada JAR fijado; no hubo cliente lanzado. [Industrial](industrial-expansion-family.md#keybindings): motor de Iron Jetpacks en F4, vuelo estacionario Alt+H, Just Dire Things Alt+T/Shift+T, Draconic Alt+P y Alt+Y (no C: Ars lee C como código crudo) y Hostile Neural Networks Alt+U. `tools/audit_keybindings.py --simulate-preset` sobre las opciones del perfil más esos defaults no encontró solapamientos de mundo ni riesgo de código crudo; los modificadores quedan como review-context hasta la prueba en cliente.

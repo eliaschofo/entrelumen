@@ -26,6 +26,14 @@ PROPOSED = {
     "key_key.occultism.backpack": "key.keyboard.insert",
     "key_key.toastcontrol.clear": "key.keyboard.f10",
     "key_key.buildinggadgets2.range": "key.keyboard.end",
+    # Industrial family (bytecode defaults V/H/V/K/P/C/U collided in the world context).
+    "key_keybind.ironjetpacks.engine": "key.keyboard.f4",
+    "key_keybind.ironjetpacks.hover": "key.keyboard.h:ALT",
+    "key_justdirethings.key.toggle_tool": "key.keyboard.t:ALT",
+    "key_justdirethings.key.toolUI": "key.keyboard.t:SHIFT",
+    "key_key.draconicevolution.place_item": "key.keyboard.p:ALT",
+    "key_key.draconicevolution.tool_config": "key.keyboard.y:ALT",
+    "key_key.hostilenetworks.open_deep_learner": "key.keyboard.u:ALT",
 }
 # Operational context, NOT an assertion of a mod's declared conflict context.
 GUI = {"key_key.jei.showRecipe", "key_key.jei.showRecipe2", "key_key.jei.showUses",
