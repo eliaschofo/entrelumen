@@ -1,0 +1,433 @@
+{
+  "chapter": "inventory_that_remembers",
+  "title": {
+    "en_us": "An Inventory That Remembers",
+    "es_es": "El inventario que recuerda"
+  },
+  "autofocus": "inventory_field_note",
+  "milestones": [],
+  "layout_groups": {
+    "threshold": {
+      "en_us": "Mara's margin",
+      "es_es": "El margen de Mara"
+    },
+    "field": {
+      "en_us": "What travels with you",
+      "es_es": "Lo que llevás encima"
+    },
+    "workshop": {
+      "en_us": "A bench with a memory",
+      "es_es": "Un taller con memoria"
+    },
+    "return": {
+      "en_us": "The return route",
+      "es_es": "El camino de vuelta"
+    },
+    "future": {
+      "en_us": "One shelf stays local",
+      "es_es": "Un estante queda cerca"
+    }
+  },
+  "quests": [
+    {
+      "key": "inventory_field_note",
+      "deps": [
+        "signal"
+      ],
+      "type": "checkmark",
+      "optional": true,
+      "icon": "entrelumen:atlas",
+      "layout": {
+        "group": "threshold",
+        "x": 0,
+        "y": 0,
+        "size": 0.75,
+        "shape": "circle",
+        "hide_dependent_lines": false
+      },
+      "en_us": [
+        "Self-check: Two columns in the margin",
+        "After the first light answered, Mara drew two columns beside the map: TAKE and LEAVE. Choose one supply that must survive a hurried return and one material that belongs at the workshop. The distinction matters more than the container you choose.\n\nThis entire chapter is optional. Squares recognize an item in your inventory; they cannot prove that an upgrade works. Circles are your own self-checks, with no world inspection or campaign delivery. Mark this note only after making your choice."
+      ],
+      "es_es": [
+        "Autoevaluación: Dos columnas en el margen",
+        "Después de la primera respuesta luminosa, Mara dibujó dos columnas junto al mapa: LLEVAR y DEJAR. Elegí una provisión que debe sobrevivir a un regreso apurado y un material que pertenece al taller. La distinción importa más que el recipiente elegido.\n\nTodo este capítulo es opcional. Los cuadrados reconocen un objeto en tu inventario; no prueban que una mejora funcione. Los círculos son autoevaluaciones tuyas, sin inspección del mundo ni entregas de campaña. Marcá esta nota sólo después de elegir."
+      ]
+    },
+    {
+      "key": "inventory_backpack",
+      "deps": [
+        "inventory_field_note"
+      ],
+      "item": "sophisticatedbackpacks:backpack",
+      "optional": true,
+      "layout": {
+        "group": "field",
+        "x": -8,
+        "y": 2.5,
+        "size": 0.85,
+        "shape": "square",
+        "hide_dependent_lines": false
+      },
+      "en_us": [
+        "A bag for the road",
+        "Make a basic Sophisticated Backpack from leather, string and a wooden chest; inspect its recipe before spending supplies. Put one ordinary block inside and find the backpack action under Controls if you want quick access. You do not need a higher tier for these notes.\n\nThe item task only notices that you possess the backpack. It says nothing about what is packed, whether an upgrade is installed, or what will happen on your next trip."
+      ],
+      "es_es": [
+        "Una mochila para el camino",
+        "Fabricá una mochila básica de Sophisticated Backpacks con cuero, hilo y un cofre de madera; mirá la receta antes de gastar materiales. Guardá un bloque común y buscá la acción de la mochila en Controles si querés abrirla rápido. No necesitás un nivel superior para estas notas.\n\nLa tarea de objeto sólo detecta que tenés la mochila. No dice qué guardaste, si instalaste una mejora ni qué pasará en la próxima salida."
+      ]
+    },
+    {
+      "key": "inventory_workshop_chest",
+      "deps": [
+        "inventory_field_note"
+      ],
+      "item": "sophisticatedstorage:chest",
+      "optional": true,
+      "layout": {
+        "group": "workshop",
+        "x": 8,
+        "y": 2.5,
+        "size": 0.85,
+        "shape": "square",
+        "hide_dependent_lines": false
+      },
+      "en_us": [
+        "A place that stays",
+        "Combine an ordinary chest and a lever to make a Sophisticated Storage chest. Set it near the bench you actually use and give it a job: incoming stone, repair stock, or food for the next journey. The backpack follows you; this chest makes the workshop legible to anyone who returns.\n\nPossessing the chest completes only this item task. Placement and a useful stock arrangement are choices you will inspect yourself."
+      ],
+      "es_es": [
+        "Un lugar que permanece",
+        "Combiná un cofre común y una palanca para hacer un cofre de Sophisticated Storage. Ponelo junto a la mesa que usás y dale un oficio: piedra entrante, repuestos o comida para la próxima salida. La mochila te sigue; este cofre vuelve legible el taller para quien regresa.\n\nTener el cofre completa sólo esta tarea de objeto. La ubicación y el orden útil de las reservas los vas a revisar vos."
+      ]
+    },
+    {
+      "key": "inventory_travel_reserve",
+      "deps": [
+        "inventory_backpack"
+      ],
+      "type": "checkmark",
+      "optional": true,
+      "icon": "minecraft:bread",
+      "layout": {
+        "group": "field",
+        "x": -8,
+        "y": 5,
+        "size": 0.75,
+        "shape": "circle",
+        "hide_dependent_lines": false
+      },
+      "en_us": [
+        "Self-check: What must stay aboard",
+        "Pack food for one short trip and a spare tool in clearly chosen places. Keep the tool you are using within reach; the spare is there for a broken handle, not to bury the working one. Leave at least one food reserve at home so an empty return does not become an empty departure.\n\nOpen the bag and the home stock, then name what is carried and what stays. Mark this self-check after you can find both without searching every slot; no inventory task can judge that decision."
+      ],
+      "es_es": [
+        "Autoevaluación: Lo que debe viajar",
+        "Guardá comida para una salida corta y una herramienta de repuesto en lugares que hayas elegido. Dejá a mano la herramienta en uso; la otra está para cuando se rompa el mango, no para esconder la primera. Conservá comida en casa para que un regreso sin botín no impida salir otra vez.\n\nAbrí la mochila y la reserva de casa; nombrá qué llevás y qué queda. Marcá esta autoevaluación cuando puedas encontrar ambos sin revisar cada ranura; ninguna tarea de inventario juzga esa decisión."
+      ]
+    },
+    {
+      "key": "inventory_slot_memory",
+      "deps": [
+        "inventory_workshop_chest"
+      ],
+      "type": "checkmark",
+      "optional": true,
+      "icon": "sophisticatedstorage:chest",
+      "layout": {
+        "group": "workshop",
+        "x": 8,
+        "y": 5,
+        "size": 0.75,
+        "shape": "circle",
+        "hide_dependent_lines": false
+      },
+      "en_us": [
+        "Self-check: An empty slot with a name",
+        "In the chest's settings, set Memory on one slot holding a common workshop material. Take its last stack out, then try returning the same material and a different one. The empty slot should still have a purpose; if your trial differs, inspect the selected slot and its settings before trusting it with rarer stock.\n\nThis is a self-check of a configured slot, not an item collection task. The ordinary chest from the first hour taught you to make room; here the room can remember what belongs in it."
+      ],
+      "es_es": [
+        "Autoevaluación: Una ranura vacía con nombre",
+        "En la configuración del cofre, activá Memoria en una ranura con un material común del taller. Sacá la última pila y probá devolver el mismo material y otro distinto. La ranura vacía debería conservar su propósito; si tu prueba difiere, revisá la ranura elegida y su configuración antes de confiarle algo escaso.\n\nEsta es una autoevaluación de una ranura configurada, no una tarea de recolección. El cofre de la primera hora te enseñó a hacer lugar; acá ese lugar puede recordar qué le corresponde."
+      ]
+    },
+    {
+      "key": "inventory_pickup_upgrade",
+      "deps": [
+        "inventory_backpack"
+      ],
+      "item": "sophisticatedbackpacks:pickup_upgrade",
+      "optional": true,
+      "layout": {
+        "group": "field",
+        "x": -12,
+        "y": 7.5,
+        "size": 0.85,
+        "shape": "square",
+        "hide_dependent_lines": false
+      },
+      "en_us": [
+        "The bag learns to gather",
+        "The basic Pickup Upgrade is made from an Upgrade Base, a sticky piston, string and redstone. Put it in the backpack's upgrade slot only when you are ready to test ordinary drops. Its filter is more useful than an indiscriminate stream of loose blocks.\n\nHolding the upgrade satisfies this square; installing and configuring it are separate actions. Check the recipe viewer for the exact arrangement and the upgrade tab for its current settings."
+      ],
+      "es_es": [
+        "La mochila aprende a recoger",
+        "La mejora básica de Recolección se fabrica con una base de mejora, un pistón pegajoso, hilo y redstone. Instalala en la ranura de mejoras de la mochila sólo cuando vayas a probarla con objetos comunes en el suelo. Su filtro sirve más que un río indiscriminado de bloques sueltos.\n\nTener la mejora satisface este cuadrado; instalarla y configurarla son acciones aparte. Consultá el visor de recetas para la disposición exacta y la pestaña de mejora para ver su configuración actual."
+      ]
+    },
+    {
+      "key": "inventory_refill_upgrade",
+      "deps": [
+        "inventory_backpack"
+      ],
+      "item": "sophisticatedbackpacks:refill_upgrade",
+      "optional": true,
+      "layout": {
+        "group": "field",
+        "x": -4,
+        "y": 7.5,
+        "size": 0.85,
+        "shape": "square",
+        "hide_dependent_lines": false
+      },
+      "en_us": [
+        "A second stack within reach",
+        "The Refill Upgrade can keep a selected stack in your inventory supplied from the backpack. Its recipe uses an Upgrade Base, an ender pearl, a chest, iron and redstone; check the recipe viewer before making one. Torches are a good first test because each used torch leaves an obvious gap.\n\nThis square recognizes the upgrade in hand. It cannot tell whether you selected a stack, had spare torches, or preserved food for the return."
+      ],
+      "es_es": [
+        "Una segunda pila al alcance",
+        "La mejora de Rellenado puede mantener abastecida una pila elegida de tu inventario desde la mochila. Su receta usa una base de mejora, una perla de ender, un cofre, hierro y redstone; comprobala en el visor antes de fabricarla. Las antorchas sirven para la primera prueba porque cada una usada deja un hueco visible.\n\nEste cuadrado reconoce la mejora en tu mano. No sabe si elegiste una pila, si tenías antorchas de reserva o si conservaste comida para volver."
+      ]
+    },
+    {
+      "key": "inventory_storage_filter",
+      "deps": [
+        "inventory_workshop_chest"
+      ],
+      "item": "sophisticatedstorage:filter_upgrade",
+      "optional": true,
+      "layout": {
+        "group": "workshop",
+        "x": 4,
+        "y": 7.5,
+        "size": 0.85,
+        "shape": "square",
+        "hide_dependent_lines": false
+      },
+      "en_us": [
+        "A rule at the workshop door",
+        "Make a Sophisticated Storage Filter Upgrade for the workshop chest. This one governs items piped into or out of storage; it is a different job from the backpack's Pickup Upgrade. Decide whether this chest should accept a common building block or a fragile workshop input, then configure one rule at a time.\n\nHaving the upgrade only completes an item task. The next note asks you to check the actual route with expendable materials."
+      ],
+      "es_es": [
+        "Una regla en la puerta del taller",
+        "Fabricá una mejora de Filtro de Sophisticated Storage para el cofre del taller. Esta regula objetos transportados por conductos hacia o desde el depósito; cumple otro oficio que la mejora de Recolección de la mochila. Decidí si este cofre recibirá bloques comunes o un insumo delicado y configurá una regla por vez.\n\nTener la mejora sólo completa una tarea de objeto. La nota siguiente te pide comprobar el recorrido real con materiales reemplazables."
+      ]
+    },
+    {
+      "key": "inventory_controller",
+      "deps": [
+        "inventory_workshop_chest"
+      ],
+      "item": "sophisticatedstorage:controller",
+      "optional": true,
+      "layout": {
+        "group": "workshop",
+        "x": 12,
+        "y": 7.5,
+        "size": 0.85,
+        "shape": "square",
+        "hide_dependent_lines": false
+      },
+      "en_us": [
+        "A shared doorstep",
+        "A Storage Controller gives a connected group of Sophisticated Storage blocks one place for deposits and external item transfer. Its recipe starts with a wooden storage block and comparators; keep the individual chests useful even when the group has a common entrance.\n\nThe item task recognizes the controller, not a connected network. Place and test a small group before moving valuable workshop stock."
+      ],
+      "es_es": [
+        "Una entrada compartida",
+        "Un Controlador de almacenamiento ofrece un punto de depósito y transporte externo para un grupo conectado de bloques de Sophisticated Storage. Su receta parte de un depósito de madera y comparadores; conservá útiles los cofres individuales aunque el conjunto tenga una entrada común.\n\nLa tarea de objeto reconoce el controlador, no una red conectada. Colocá y probá un grupo pequeño antes de mover las reservas valiosas del taller."
+      ]
+    },
+    {
+      "key": "inventory_pickup_trial",
+      "deps": [
+        "inventory_pickup_upgrade"
+      ],
+      "type": "checkmark",
+      "optional": true,
+      "icon": "sophisticatedbackpacks:pickup_upgrade",
+      "layout": {
+        "group": "field",
+        "x": -12,
+        "y": 10,
+        "size": 0.75,
+        "shape": "circle",
+        "hide_dependent_lines": false
+      },
+      "en_us": [
+        "Self-check: Two drops, one decision",
+        "Install Pickup and set its filter for one plentiful block. In a safe place, drop that block and a different expendable item, then inspect the backpack, your own inventory and the ground. Change the filter if the route is not the one you intended. Keep rare tools out of this first experiment.\n\nMark this self-check only after you can account for both items. The Atlas cannot observe a pickup rule merely because you own the upgrade."
+      ],
+      "es_es": [
+        "Autoevaluación: Dos objetos, una decisión",
+        "Instalá Recolección y configurá su filtro para un bloque abundante. En un lugar seguro, tirá ese bloque y otro objeto reemplazable; después revisá la mochila, tu inventario y el suelo. Cambiá el filtro si el recorrido no fue el que buscabas. Dejá las herramientas raras fuera de este primer ensayo.\n\nMarcá esta autoevaluación sólo cuando puedas dar cuenta de ambos objetos. El Atlas no observa una regla de recogida porque tengas la mejora."
+      ]
+    },
+    {
+      "key": "inventory_refill_trial",
+      "deps": [
+        "inventory_refill_upgrade",
+        "inventory_travel_reserve"
+      ],
+      "type": "checkmark",
+      "optional": true,
+      "icon": "minecraft:torch",
+      "layout": {
+        "group": "field",
+        "x": -4,
+        "y": 10,
+        "size": 0.75,
+        "shape": "circle",
+        "hide_dependent_lines": false
+      },
+      "en_us": [
+        "Self-check: The last torch is visible",
+        "The basic backpack has one upgrade slot. Remove Pickup or the previous upgrade and install Refill before this trial. Put spare torches in the backpack and select torches in Refill's settings. Use one from your inventory, then compare the carried stack and the reserve in the bag. Repeat once with the bag empty so you know how the arrangement fails before you need light in a cave.\n\nThis self-check concerns a chosen supply, not a promise of infinite torches. Keep food and the spare tool in their own places; the upgrade should save a search, not conceal a shortage."
+      ],
+      "es_es": [
+        "Autoevaluación: La última antorcha se ve",
+        "La mochila básica tiene una sola ranura de mejora. Retirá Recolección o la mejora anterior e instalá Rellenado antes de esta prueba. Guardá antorchas de repuesto en la mochila y elegí antorchas en la configuración de Rellenado. Usá una de tu inventario y compará la pila a mano con la reserva de la mochila. Repetí una vez con la mochila vacía para saber cómo falla el arreglo antes de necesitar luz en una cueva.\n\nEsta autoevaluación trata una provisión elegida, no promete antorchas infinitas. Mantené la comida y la herramienta de repuesto en sus lugares; la mejora debe ahorrarte una búsqueda, no ocultar una falta."
+      ]
+    },
+    {
+      "key": "inventory_workshop_filter_trial",
+      "deps": [
+        "inventory_storage_filter",
+        "inventory_slot_memory"
+      ],
+      "type": "checkmark",
+      "optional": true,
+      "icon": "minecraft:hopper",
+      "layout": {
+        "group": "workshop",
+        "x": 4,
+        "y": 10,
+        "size": 0.75,
+        "shape": "circle",
+        "hide_dependent_lines": false
+      },
+      "en_us": [
+        "Self-check: The bench accepts one kind",
+        "Fit the Filter Upgrade to the workshop chest and feed it through a hopper. Try one permitted block, then one rejected block, separately. Look in the hopper and chest after each attempt; a rejected item may wait upstream, so clear the test before a real batch. Manual insertion and piped insertion need not follow the same rule.\n\nMark this self-check after you can explain where both blocks ended. That explanation is the workshop interface: which input is accepted, and where a stalled input can be recovered."
+      ],
+      "es_es": [
+        "Autoevaluación: La mesa acepta un tipo",
+        "Instalá la mejora de Filtro en el cofre del taller y alimentalo con una tolva. Probá un bloque permitido y después otro rechazado, por separado. Revisá la tolva y el cofre tras cada intento; un objeto rechazado puede quedar antes de la entrada, así que despejá el ensayo antes de una tanda real. La inserción manual y la transportada pueden seguir reglas distintas.\n\nMarcá esta autoevaluación cuando puedas explicar dónde terminó cada bloque. Esa explicación define la interfaz del taller: qué entrada acepta y dónde se recupera un insumo detenido."
+      ]
+    },
+    {
+      "key": "inventory_controller_trial",
+      "deps": [
+        "inventory_controller",
+        "inventory_slot_memory"
+      ],
+      "type": "checkmark",
+      "optional": true,
+      "icon": "sophisticatedstorage:controller",
+      "layout": {
+        "group": "workshop",
+        "x": 12,
+        "y": 10,
+        "size": 0.75,
+        "shape": "circle",
+        "hide_dependent_lines": false
+      },
+      "en_us": [
+        "Self-check: One entrance, two shelves",
+        "Place the controller beside two connected Sophisticated Storage blocks. Put different ordinary materials in the two stores, then try a small deposit through the controller. Find the deposited items in the physical stores and retrieve them. If nothing moves, inspect the connection before extending the group.\n\nThis self-check tests a short, visible route. A controller in your inventory does not establish links, and a distant shelf is not connected merely because it shares a name."
+      ],
+      "es_es": [
+        "Autoevaluación: Una entrada, dos estantes",
+        "Colocá el controlador junto a dos bloques conectados de Sophisticated Storage. Guardá materiales comunes distintos en ambos y probá un depósito pequeño desde el controlador. Encontrá lo depositado en los depósitos físicos y retiralo. Si nada se mueve, revisá la conexión antes de extender el conjunto.\n\nEsta autoevaluación prueba un recorrido corto y visible. Tener un controlador en el inventario no crea vínculos; un estante lejano tampoco queda conectado sólo por compartir nombre."
+      ]
+    },
+    {
+      "key": "inventory_deposit_upgrade",
+      "deps": [
+        "inventory_backpack",
+        "inventory_workshop_chest"
+      ],
+      "item": "sophisticatedbackpacks:deposit_upgrade",
+      "optional": true,
+      "layout": {
+        "group": "return",
+        "x": -8,
+        "y": 12.5,
+        "size": 0.85,
+        "shape": "square",
+        "hide_dependent_lines": false
+      },
+      "en_us": [
+        "The return has a gesture",
+        "The Backpack Deposit Upgrade moves items from the backpack into an inventory you sneak-right-click. Its recipe uses an Upgrade Base, a piston, a wooden chest, iron and redstone. Set up a destination containing an ordinary material before trying its Match Inventory Contents option.\n\nOwning this upgrade is a useful preparation, not evidence that anything was deposited. The next note tests whether your reserve stayed aboard."
+      ],
+      "es_es": [
+        "El regreso tiene un gesto",
+        "La mejora de Depósito de la mochila mueve objetos de ella a un inventario sobre el que hacés clic derecho agachado. Su receta usa una base de mejora, un pistón, un cofre de madera, hierro y redstone. Prepará un destino con un material común antes de probar la opción de Coincidir con el contenido del inventario.\n\nTener esta mejora es una preparación útil, no evidencia de que algo se haya depositado. La próxima nota comprueba si tu reserva permaneció a bordo."
+      ]
+    },
+    {
+      "key": "inventory_deposit_trial",
+      "deps": [
+        "inventory_deposit_upgrade",
+        "inventory_travel_reserve"
+      ],
+      "type": "checkmark",
+      "optional": true,
+      "icon": "sophisticatedbackpacks:deposit_upgrade",
+      "layout": {
+        "group": "return",
+        "x": -8,
+        "y": 15,
+        "size": 0.75,
+        "shape": "circle",
+        "hide_dependent_lines": false
+      },
+      "en_us": [
+        "Self-check: The bag comes home lighter",
+        "Swap the previous upgrade for Deposit in the basic backpack’s single upgrade slot. Put a small stack of stone in the bag beside the food and spare tool you chose to keep. Stock the workshop chest with stone, configure Deposit to match the destination's contents, and use the upgraded backpack on that chest while sneaking. Count stone on both sides; check the food and tool before leaving again.\n\nIf the result surprises you, retrieve the items and adjust the setting with cheap stock. Mark this self-check only after a return that leaves the travel reserve intact."
+      ],
+      "es_es": [
+        "Autoevaluación: La mochila vuelve más liviana",
+        "Intercambiá la mejora anterior por Depósito en la única ranura de mejora de la mochila básica. Guardá una pila pequeña de piedra en la mochila junto a la comida y la herramienta de repuesto que elegiste conservar. Poné piedra en el cofre del taller, configurá Depósito para coincidir con el contenido del destino y usá la mochila mejorada sobre ese cofre mientras estás agachado. Contá la piedra en ambos lados y revisá comida y herramienta antes de volver a salir.\n\nSi el resultado te sorprende, recuperá los objetos y corregí la opción con materiales baratos. Marcá esta autoevaluación sólo después de un regreso que conserve la reserva de viaje."
+      ]
+    },
+    {
+      "key": "inventory_local_cache",
+      "deps": [
+        "inventory_deposit_trial",
+        "inventory_workshop_filter_trial",
+        "inventory_controller_trial"
+      ],
+      "type": "checkmark",
+      "optional": true,
+      "icon": "sophisticatedstorage:chest",
+      "layout": {
+        "group": "future",
+        "x": 0,
+        "y": 18,
+        "size": 0.75,
+        "shape": "circle",
+        "hide_dependent_lines": false
+      },
+      "en_us": [
+        "Self-check: A shelf after the network",
+        "Sera's later sketches show a digital network, but Mara leaves a small physical shelf beside the bench. When you have AE2, briefly stop using its terminal and retrieve one food stack and one repair supply from this local stock. Decide which reserve deserves to remain reachable during a network outage.\n\nLeave this self-check open until you can make that comparison. AE2 does not erase the value of a nearby, visible cache, and this optional observation never holds back the next act."
+      ],
+      "es_es": [
+        "Autoevaluación: Un estante después de la red",
+        "Los dibujos posteriores de Sera muestran una red digital, pero Mara deja un estante físico junto a la mesa. Cuando tengas AE2, dejá de usar un momento su terminal y sacá de esa reserva una pila de comida y un insumo de reparación. Decidí qué provisión merece seguir accesible durante una caída de la red.\n\nDejá abierta esta autoevaluación hasta poder hacer esa comparación. AE2 no borra el valor de una reserva cercana y visible, y esta observación opcional nunca detiene el acto siguiente."
+      ]
+    }
+  ]
+}

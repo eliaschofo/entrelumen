@@ -1,0 +1,110 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-09-23",
+  "status": "bounded_integration_verified_with_limits",
+  "scope": "Visible Atlas list focus and one optional storage chapter; not full-pack acceptance.",
+  "companionSha256": "c0046f479cb1d7ed83f41b6d92aa8d60bf5dd16e5c0528a17cb5e0deff3594da",
+  "sourceValidation": {
+    "questTestsPassed": 27,
+    "chapters": 7,
+    "quests": 171,
+    "newOptionalQuests": 16,
+    "priorQuestCount": 155,
+    "priorSixChapterFilesUnchanged": true,
+    "priorLocaleValuesUnchanged": true,
+    "campaignMilestoneCount": 42,
+    "campaignTaskIdsUnchanged": true,
+    "itemTasksConsume": false,
+    "newRewards": 0
+  },
+  "client": {
+    "profile": "ENTRELUMEN Defaults QA",
+    "world": "ENTRELUMEN Atlas e inventario QA",
+    "mode": "creative; superflat; UI QA only",
+    "dependencies": 147,
+    "jarIncludesQAFixture": false,
+    "locales": [
+      "es_es",
+      "en_us"
+    ],
+    "atlasGuiScales": [
+      2,
+      3
+    ],
+    "viewport": [
+      1024,
+      768
+    ],
+    "observed": [
+      "Both Atlas lists distinguish focus using Tab/Shift+Tab; focused button clears the list outline.",
+      "Mouse selects the second project and shows its full title; detail scrolling works.",
+      "Refresh returns to its enabled state; no delivery or advance was performed.",
+      "New chapter appears after ftbquests reload. Its entry is locked before signal; descriptions remain readable.",
+      "Unchanged chapter introduction rendered in ES GUI 2 and EN GUI 3; titles and full body fit.",
+      "Saved world and closed client normally."
+    ],
+    "errorLines": 45,
+    "errorBreakdown": {
+      "knownIgnoredResourcePaths": 30,
+      "skyArrowScancodeErrorLines": 15,
+      "invalidScancodeOccurrences": 5
+    },
+    "logSha256": "edc552e64487c9d40f7d340a5c5f28a145b4640927b053abd564c1385512410e"
+  },
+  "server": {
+    "dependencies": 116,
+    "heap": "6G",
+    "exitCode": 0,
+    "errorLines": 0,
+    "logSha256": "5259706ca9f2811d237ad4c3289bc4b1a876547b91ac6f69949f48e0bfc300b7",
+    "audit": {
+      "items": 122,
+      "recipes": 30,
+      "failures": 0,
+      "signature": "9fb9e7271c0ff78d",
+      "run": "1790151779400",
+      "status": "PASS"
+    },
+    "cleanSaveConfirmed": true
+  },
+  "installedInto": [
+    "ENTRELUMEN",
+    "ENTRELUMEN Defaults QA",
+    "owned dedicated server-slice"
+  ],
+  "screenshots": [
+    {
+      "path": "docs/verification/screenshots/inventory-chapter-es.png",
+      "sourceF2": "2026-09-23_05.09.14.png",
+      "sha256": "c26141a12ff32ef9bcf45df665f62bf47fc21218a957562c136eb5cdb1e75f06"
+    },
+    {
+      "path": "docs/verification/screenshots/inventory-chapter-en.png",
+      "sourceF2": "2026-09-23_05.16.17.png",
+      "sha256": "250233b03a1365ea02a4bc1118e442ca80f2735a10c463842665e0a26c20ae18"
+    },
+    {
+      "path": "docs/verification/screenshots/atlas-focus-es-gui3.png",
+      "sourceF2": "2026-09-23_05.11.43.png",
+      "sha256": "7da39a8419966127af729d4eec74a9c7c9da353fb9c8419ab24566390e686891"
+    },
+    {
+      "path": "docs/verification/screenshots/atlas-focus-en-gui3.png",
+      "sourceF2": "2026-09-23_05.17.09.png",
+      "sha256": "2b208a5bb8439f59f135c44ff5d8ad8c4e89faddb26954c0ce86b7c2df0ae0dd"
+    },
+    {
+      "path": "docs/verification/screenshots/atlas-focus-en-gui2.png",
+      "sourceF2": "2026-09-23_05.19.46.png",
+      "sha256": "55f27316f33c94d0ae827c849441a2ce1200b7528ec3bae1eaaa9923c9aa1213"
+    }
+  ],
+  "rawEvidenceDirectory": "work/atlas-inventory-20260923 (workspace root; not distributed)",
+  "limits": [
+    "Sky Up/Down did not work in Atlas or native chat and logged Invalid scancode 256. Physical arrow-key navigation still needs a valid input runner.",
+    "Storage self-checks (configured pickup, memory, refill, filter, controller and deposit) require actual gameplay; registry and bytecode checks do not complete them.",
+    "The two trial paragraphs teaching the single upgrade slot and corrected Spanish upgrade names were integrated after the captured introductory screens; those changed trial paragraphs have source checks, not fresh rendered evidence.",
+    "Natural first-hour survival acquisition/pacing remains pending. No supplies, campaign progress or first-hour acceptance were inferred from this creative QA.",
+    "No FPS/TPS, final art, final-scale content, six-player or public-release acceptance is claimed."
+  ]
+}

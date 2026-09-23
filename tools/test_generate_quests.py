@@ -1,10 +1,25 @@
 """Focused multi-chapter contracts; no gameplay claims."""
 import copy,hashlib,json,unittest
 from pathlib import Path
-from generate_quests import ROOT,OUT,generate_all,stable_id
+from generate_quests import ROOT,OUT,generate_all,stable_id,load_chapters
 class ChapterContracts(unittest.TestCase):
  def setUp(self):
-  self.chapters=[json.loads((ROOT/'content'/n).read_text(encoding='utf-8')) for n in ('first_hour.json','act_two.json','act_three.json','act_four.json','act_five.json','act_six.json')]
+  self.chapters=load_chapters()
+ def test_optional_inventory_branch_preserves_campaign_and_prior_text(self):
+  prior=generate_all(self.chapters[:6]);out=generate_all(self.chapters)
+  branch=self.chapters[6];keys={q['key'] for q in branch['quests']}
+  self.assertEqual(branch['chapter'],'inventory_that_remembers')
+  self.assertEqual(branch['milestones'],[])
+  self.assertTrue(all(q.get('optional') and 'milestone' not in q for q in branch['quests']))
+  self.assertTrue(all(not keys.intersection(q['deps']) for c in self.chapters[:6] for q in c['quests']))
+  for path,content in prior.items():
+   if path.parent == OUT/'lang':
+    before=json.loads(content);after=json.loads(out[path])
+    self.assertEqual(before,{key:after[key] for key in before})
+   else:self.assertEqual(content,out[path])
+  compiled=json.loads(out[OUT/'chapters/inventory_that_remembers.snbt'])
+  self.assertTrue(all(q['optional'] and q['rewards']==[] for q in compiled['quests']))
+  self.assertTrue(all(t.get('consume_items',False)==False for q in compiled['quests'] for t in q['tasks']))
  def synthetic_chapter(self,name,count):
   quests=[]
   for i in range(count):

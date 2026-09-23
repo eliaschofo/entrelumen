@@ -15,6 +15,12 @@ import math
 ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / "pack/config/ftbquests/quests"
 LOCALES = ("en_us", "es_es")
+CHAPTER_SOURCES = ("first_hour.json", "act_two.json", "act_three.json", "act_four.json",
+                   "act_five.json", "act_six.json", "inventory_that_remembers.json")
+
+
+def load_chapters():
+    return [json.loads((ROOT / "content" / name).read_text(encoding="utf-8")) for name in CHAPTER_SOURCES]
 
 
 def stable_id(key):
@@ -161,7 +167,7 @@ def generate_all(chapters):
 
 def main():
     parser=argparse.ArgumentParser(description=__doc__);parser.add_argument('--check',action='store_true');args=parser.parse_args()
-    chapters=[json.loads((ROOT/'content'/name).read_text(encoding='utf-8')) for name in ('first_hour.json','act_two.json','act_three.json','act_four.json','act_five.json','act_six.json')]
+    chapters=load_chapters()
     files=generate_all(chapters);failures=[]
     for path,content in files.items():
         if args.check:

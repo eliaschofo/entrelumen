@@ -25,7 +25,7 @@
     "optional_quests": 5100,
     "mod_reference_target": 600
   },
-  "production_gate": "Do not generate further runtime quest data until first-hour entry/Atlas GUI QA closes. Outline is not campaign implementation.",
+  "production_gate": "Validate the natural first-hour playable slice before mass quest authoring, as required by docs/delivery/spec.md. Bounded fixes and a single useful optional chapter may be integrated independently; UI QA alone does not validate survival acquisition or pacing. Outline is not campaign implementation.",
   "count_policy": "5250 is a provisional editorial allocation, not completed quests or permission for filler. Do not split item colors/recipes, translations, tasks or rewards into extra counts. Reserved chapters require genuinely new selected systems; merge weak exercises and reallocate only after review.",
   "progression_policy": "Preserve all first25 IDs and five act-I main milestones. Existing 36 chapter IDs and narrative prerequisite DAG are retained; added 54 chapters are optional and no original main chapter depends on them. Main remains 150; gifts have no provenance/use gate.",
   "project_policy": "Associated project is not a new delivery every chapter. Reused projects supply context to distinct demonstrations and story beats. Integration prototypes are presented non-consumingly; no duplicate reward. Existing first-hour consuming project semantics are preserved.",
@@ -40,7 +40,7 @@
         "en_us": "A Light Among Ruins",
         "es_es": "Una luz entre ruinas"
       },
-      "status": "existing-slice-awaiting-final-entry-QA",
+      "status": "existing-slice-awaiting-natural-first-hour-playtest",
       "quest_budget": {
         "total_target": 25,
         "main_target": 5,
@@ -224,7 +224,7 @@
         "en_us": "An Inventory That Remembers",
         "es_es": "El inventario que recuerda"
       },
-      "status": "confirmed-family-outline",
+      "status": "implemented-bounded-runtime-reviewed; storage self-check playtest pending",
       "quest_budget": {
         "total_target": 20,
         "main_target": 0,
@@ -243,7 +243,9 @@
       "candidate_rule": null,
       "narrative_role": "Optional field notes enrich the corresponding act; this chapter cannot advance or block the main story.",
       "verification_criterion": "Separar herramientas, comida y retornos; comprobar reservas tras depositar. La demostración requiere una sesión real; autoevaluaciones de construcción se rotulan como tales.",
-      "localization_status": "Chapter titles EN/ES; internal brief ES. All future player text requires full parity."
+      "localization_status": "All 16 original runtime quests authored in EN/ES; rendered checks recorded separately.",
+      "runtime_source": "content/inventory_that_remembers.json",
+      "implemented_quest_count": 16
     },
     {
       "id": "a1_c8",

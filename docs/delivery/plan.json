@@ -1,9 +1,9 @@
 {
-  "version": "astra-sdd/v1",
+  "version": "entrelumen-delivery/v2",
   "state": "active",
   "controller": {
-    "model": "gpt-6-astra",
-    "effort": "medium"
+    "owner": "root",
+    "note": "Model and live agent choices follow AGENTS.md; this delivery file does not configure the runtime."
   },
   "history_refs": [],
   "tasks": [
@@ -13,9 +13,7 @@
       "owns": [
         "companion"
       ],
-      "state": "running",
-      "model": "gpt-6-astra",
-      "effort": "low",
+      "state": "partial",
       "acceptance": [
         "NeoForge JAR builds; team lifecycle, persistence, transitions and idempotent deliveries pass behavioral tests"
       ],
@@ -34,9 +32,7 @@
         "catalog",
         "tools/curate_pack.py"
       ],
-      "state": "running",
-      "model": "gpt-6-astra",
-      "effort": "low",
+      "state": "partial",
       "acceptance": [
         "Curated version/side/license/provenance inventory resolves dependencies and excludes EMC"
       ],
@@ -56,9 +52,7 @@
         "pack/config/ftbquests",
         "tools/generate_quests.py"
       ],
-      "state": "running",
-      "model": "gpt-6-astra",
-      "effort": "low",
+      "state": "partial",
       "acceptance": [
         "25 original first-hour quests use stable IDs, valid FTB format and complete EN/ES"
       ],
@@ -83,15 +77,13 @@
         "tests"
       ],
       "state": "pending",
-      "model": "gpt-6-astra",
-      "effort": "low",
       "acceptance": [
         "Client/server launch, first-hour gameplay, independent teams and restart verified"
       ],
       "checks": [
         [
           "python",
-          "tools/verify_pack.py"
+          "tools/check_runtime_content.py"
         ]
       ]
     },
@@ -108,15 +100,14 @@
         "tests"
       ],
       "state": "pending",
-      "model": "gpt-6-astra",
-      "effort": "low",
       "acceptance": [
         "Six acts, full meaningful bilingual questline and functional six-module Ark integrated"
       ],
       "checks": [
         [
           "python",
-          "tools/verify_pack.py"
+          "tools/generate_quests.py",
+          "--check"
         ]
       ]
     },
@@ -132,15 +123,19 @@
         "pack/resourcepacks"
       ],
       "state": "pending",
-      "model": "gpt-6-astra",
-      "effort": "low",
       "acceptance": [
         "Original cohesive art and bilingual CurseForge page use real screenshots"
       ],
       "checks": [
         [
           "python",
-          "tools/verify_pack.py"
+          "art/build_art.py",
+          "--check"
+        ],
+        [
+          "python",
+          "art/build_pixel_identity.py",
+          "--check"
         ]
       ]
     },
@@ -155,17 +150,10 @@
         "docs/verification"
       ],
       "state": "pending",
-      "model": "gpt-6-astra",
-      "effort": "low",
       "acceptance": [
         "Manual campaign, two-hour performance, six players and upgrade/restore evidenced"
       ],
-      "checks": [
-        [
-          "python",
-          "tools/verify_pack.py"
-        ]
-      ]
+      "checks": []
     },
     {
       "id": "publish",
@@ -176,17 +164,30 @@
         "docs/publication"
       ],
       "state": "pending",
-      "model": "gpt-6-astra",
-      "effort": "low",
       "acceptance": [
         "Approved public CurseForge client/server install, public source and weekly review verified"
       ],
-      "checks": [
-        [
-          "python",
-          "tools/verify_pack.py"
-        ]
-      ]
+      "checks": []
     }
-  ]
+  ],
+  "execution_note": "This file tracks delivery milestones, not live agent state. Early task labels are historical; actual acceptance is recorded in docs/verification/acceptance.json. Commands cover source consistency only. Manual gameplay, measured performance, visual quality and approved public installation require their own recorded evidence.",
+  "last_delivery": {
+    "id": "atlas-and-inventory-branch",
+    "owner": "root",
+    "scope": [
+      "Visible keyboard focus in the existing Atlas book, checked in EN/ES at GUI 2 and 3",
+      "One optional Sophisticated Backpacks/Storage learning chapter, integrated without changing campaign IDs or prerequisites"
+    ],
+    "mass_authoring_gate": "Natural first-hour survival playtest remains required before mass quest production. Entry/UI QA and synthetic tests are not pacing evidence.",
+    "first_hour_runner": "A runner must support held movement and mining. The available Sky API exposes press_key/click/drag but no documented held-input duration. A human playtest has been requested while independent integration continues.",
+    "following_delivery": "Address first-hour findings, then grow useful chapter families. Do not require final mod-count parity or all artwork before a bounded optional chapter.",
+    "status": "integrated and bounded runtime verified; limitations in docs/verification/atlas-inventory-runtime.json"
+  },
+  "next_delivery": {
+    "id": "natural-first-hour",
+    "scope": "Run the existing 60-minute survival protocol with a runner supporting held movement/mining, record even a pacing failure, and address observed blockers before mass quest production.",
+    "protocol": "docs/verification/first-hour-playtest.md",
+    "runner_status": "Requested human playtest; no answer yet. Current Sky API cannot supply sustained gameplay inputs.",
+    "independent_work": "Existing six-module Ark experiences and remaining bounded content integrations may proceed; this gate does not prohibit all product work."
+  }
 }

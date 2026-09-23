@@ -185,6 +185,15 @@ public final class AtlasScreen extends Screen {
     graphics.fill(x + 1, y, x + 4, y + thumb, 0xFF9A7750);
   }
 
+  private void renderPaperListFocus(GuiGraphics graphics, AbstractSelectionList<?> list) {
+    if (list.isFocused()) {
+      // Selection remains visible on both pages; only the focused page receives arrow keys.
+      // Keep the focus rule outside the scissor so it cannot cross text or a 16px item icon.
+      graphics.renderOutline(list.getX() - 2, list.getY() - 2,
+          list.getWidth() + 4, list.getHeight() + 4, COPPER);
+    }
+  }
+
   private Component projectName(String id) {
     return Component.translatable("entrelumen.project." + id);
   }
@@ -232,6 +241,7 @@ public final class AtlasScreen extends Screen {
     public void renderWidget(GuiGraphics graphics, int mouseX, int mouseY, float partialTick) {
       super.renderWidget(graphics, mouseX, mouseY, partialTick);
       renderPaperScrollbar(graphics, this);
+      renderPaperListFocus(graphics, this);
     }
 
     @Override
@@ -372,6 +382,7 @@ public final class AtlasScreen extends Screen {
     public void renderWidget(GuiGraphics graphics, int mouseX, int mouseY, float partialTick) {
       super.renderWidget(graphics, mouseX, mouseY, partialTick);
       renderPaperScrollbar(graphics, this);
+      renderPaperListFocus(graphics, this);
     }
 
     @Override

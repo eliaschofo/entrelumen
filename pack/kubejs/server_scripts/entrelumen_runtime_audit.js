@@ -93,6 +93,7 @@ const entrelumenAuditTargets = {
     "minecraft:filled_map",
     "minecraft:furnace",
     "minecraft:glass",
+    "minecraft:hopper",
     "minecraft:lantern",
     "minecraft:map",
     "minecraft:paper",
@@ -113,7 +114,13 @@ const entrelumenAuditTargets = {
     "productivebees:wax",
     "rechiseled:chisel",
     "sophisticatedbackpacks:backpack",
+    "sophisticatedbackpacks:deposit_upgrade",
+    "sophisticatedbackpacks:pickup_upgrade",
+    "sophisticatedbackpacks:refill_upgrade",
     "sophisticatedstorage:barrel",
+    "sophisticatedstorage:chest",
+    "sophisticatedstorage:controller",
+    "sophisticatedstorage:filter_upgrade",
     "supplementaries:notice_board",
     "the_bumblezone:pollen_puff",
     "twilightforest:ironwood_ingot",
@@ -242,7 +249,7 @@ const entrelumenAuditTargets = {
       "output": "farmersdelight:flint_knife"
     }
   ],
-  "signature": "0bd1cd3ed351ac92"
+  "signature": "9fb9e7271c0ff78d"
 };
 
 ServerEvents.afterRecipes(event => {
