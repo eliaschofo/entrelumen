@@ -42,4 +42,6 @@ The six JARs add 15,694,564 compressed bytes. This is a storage measure, not a m
 
 Do not infer a rendering defect in the pinned version from an old Copycats+ issue, or disable connected textures blindly. Confirm the current options and test populated contraptions. Measure Exposure's native capture and aircraft movement in the client before accepting their cost.
 
-The batch does not establish the final-scale FPS, two-hour stability or survival pacing targets.
+The dedicated server integration and a windowed client smoke test are recorded in [runtime evidence](../verification/building-travel-runtime.json). The client displayed the staged engine recipe, Connected's visible item page, and the airship model and inventory. It saved and closed normally, preserving the campaign bytes. Ignored third-party resource paths and optional integration model warnings are documented rather than counted as a warning-free startup.
+
+The airship visual fixture used commands and `NoGravity`; Exposure capture, populated contraptions, built Macaw structures and normal flight controls still need testing. The batch does not establish the final-scale FPS, two-hour stability or survival pacing targets.

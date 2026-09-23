@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
-  "checkedAt": "2026-09-23T06:48:01.775942+00:00",
+  "checkedAt": "2026-09-23T07:04:24.080438+00:00",
   "scope": "Six useful building/expedition additions; original 140 dependency entries unchanged. Not final-scale or performance acceptance.",
-  "status": "Server integration passed after two reloads; client validation in progress",
+  "status": "Bounded server integration and client visual smoke test passed; gameplay/performance acceptance pending",
   "counts": {
     "clientDependencies": 146,
     "serverDependencies": 116,
@@ -271,7 +271,130 @@
     ]
   },
   "client": {
-    "status": "pending"
+    "status": "bounded_visual_smoke_passed_with_documented_upstream_warnings",
+    "minecraft": "1.21.1",
+    "neoForge": "21.1.249",
+    "heapGiB": 8,
+    "java": "21.0.11+10",
+    "language": "es_es",
+    "viewport": {
+      "width": 1024,
+      "height": 768,
+      "windowed": true
+    },
+    "world": "Existing creative QA world; not a natural survival playtest",
+    "savedNormally": true,
+    "processNoLongerRunning": true,
+    "logSha256": "a4e6657f43c2d228f9299685752a0a1624150899736341673df6bae8c7086420",
+    "aircraftRecipeAudit": [
+      {
+        "status": "PASS",
+        "sourceSha256": "ef5b68c04171d1eadb3bb70e600eb766534ef7588a5b4737f9d55a4f38550ae9",
+        "checkedOverrides": 2,
+        "checkedOutputs": 8,
+        "routeIds": {
+          "immersive_aircraft:engine": [
+            "immersive_aircraft:engine"
+          ],
+          "immersive_aircraft:airship": [
+            "immersive_aircraft:airship"
+          ],
+          "immersive_aircraft:biplane": [
+            "immersive_aircraft:biplane"
+          ],
+          "immersive_aircraft:gyrodyne": [
+            "immersive_aircraft:gyrodyne"
+          ],
+          "immersive_aircraft:quadrocopter": [
+            "immersive_aircraft:quadrocopter"
+          ],
+          "immersive_aircraft:cargo_airship": [
+            "immersive_aircraft:cargo_airship"
+          ],
+          "immersive_aircraft:warship": [
+            "immersive_aircraft:warship"
+          ],
+          "immersive_aircraft:bamboo_hopper": [
+            "immersive_aircraft:bamboo_hopper"
+          ]
+        },
+        "failures": []
+      }
+    ],
+    "visualChecks": [
+      "EMI engine recipe shows the power regulator and native remaining costs.",
+      "Aircraft item icons, a spawned airship entity, mounting camera and native airship inventory render.",
+      "Connected EMI filter fits one page without overlapping copycat families or visibly missing textures."
+    ],
+    "screenshots": [
+      {
+        "path": "docs/verification/screenshots/aircraft-engine-emi-es.png",
+        "sha256": "7521d234e3c8212d19e60c91834cee5d3c61717551a788bd3d67bf40a02eb3a8",
+        "nativeCapture": "2026-09-23_03.55.28.png"
+      },
+      {
+        "path": "docs/verification/screenshots/airship-inventory-es.png",
+        "sha256": "fb00862d0648e9e2a4f5f1b383cb8eb198c07c619a9759d50f9ca51f185f23fe",
+        "nativeCapture": "2026-09-23_03.58.15.png"
+      },
+      {
+        "path": "docs/verification/screenshots/airship-model-qa.png",
+        "sha256": "1bc218f6f75760ce8a3facfffcbe4b76d727e75b12562291ce10041099499b1e",
+        "nativeCapture": "2026-09-23_03.58.50.png"
+      },
+      {
+        "path": "docs/verification/screenshots/connected-visible-items-es.png",
+        "sha256": "bd50b690ef14da698ff3b88c7f397d28a2a86be012f8893325d8c2dc2a464313",
+        "nativeCapture": "2026-09-23_04.00.26.png"
+      }
+    ],
+    "campaignUnchanged": {
+      "rawByteEqual": true,
+      "semanticEqual": true,
+      "sha256": "917d164056f944a93591a1405b972fa829a711631b40ea549dc0353143198764"
+    },
+    "logFindings": {
+      "errorLineCount": 15,
+      "invalidIgnoredThirdPartyResourcePaths": [
+        "neoforge:lang/README.txt",
+        "create_connected:lang/README.md",
+        "actuallyadditions:lang/ru_RU.lang",
+        "actuallyadditions:lang/ko_KR.lang",
+        "actuallyadditions:lang/it_IT.lang",
+        "actuallyadditions:lang/fr_FR.lang",
+        "actuallyadditions:lang/fr_CA.lang",
+        "actuallyadditions:lang/en_UD.lang",
+        "actuallyadditions:lang/de_DE.lang",
+        "copycats:lang/README.md",
+        "mekanism:lang/ry_UA.json",
+        "mekanismgenerators:lang/ry_UA.json",
+        "journeymap:lang/message/splash-en_US.json",
+        "jade:lang/README.txt",
+        "create:lang/README.md"
+      ],
+      "otherErrorLines": 0,
+      "missingConnectedModels": [
+        "create_connected:fan_ending_catalyst_dragons_breath",
+        "create_connected:fan_enriched_catalyst",
+        "create_connected:fan_glooming_catalyst",
+        "create_connected:fan_soul_stripping_catalyst",
+        "create_connected:fan_transmutation_catalyst"
+      ],
+      "connectedExplanation": "Registered models for five disabled integrations reference absent mods. Native FeatureToggle conditions hide them in creative/JEI; visible EMI items were also inspected. No asset patch applied.",
+      "otherMissingModels": [
+        "occultism:item/ritual_dummy_misc",
+        "ars_nouveau:item/planarium_projector"
+      ],
+      "accessDeniedOccurrences": 0
+    },
+    "limits": [
+      "Airship was spawned with NoGravity and mounted using a QA command; no survival acquisition, fuel consumption or flight-performance claim.",
+      "The short R key input did not visibly dismount; player was returned to the QA platform via teleport. Normal dismount controls still need manual checking.",
+      "Tagged visual QA airship remains in the isolated QA world; no campaign mutation occurred.",
+      "Exposure capture, populated moving Copycats contraptions and built Macaw structures remain untested.",
+      "Windowed visual checks are not the 1080p acceptance benchmark or two-hour soak.",
+      "Client has documented ignored resource-path errors and optional model warnings; this is not a zero-warning clean-start claim."
+    ]
   },
   "publication": {
     "curseforgeAppMappingsVerified": 5,
@@ -286,5 +409,19 @@
     "hardware FPS/TPS targets and two-hour soak",
     "six external cooperative clients",
     "CurseForge approved publication and public installation"
-  ]
+  ],
+  "sourceRegressionChecks": {
+    "commit": "98fcbcbeb41f3b40d56a45023cfbf40e21d5afe3",
+    "githubRun": "https://github.com/eliaschofo/entrelumen/actions/runs/35829191538",
+    "githubConclusion": "success",
+    "aircraftWithPinnedJar": {
+      "passed": 7,
+      "skipped": 0
+    },
+    "aircraftWithoutIgnoredJar": {
+      "passed": 3,
+      "skipped": 4,
+      "reason": "Four tests compare the pinned third-party JAR; source checks still run."
+    }
+  }
 }
