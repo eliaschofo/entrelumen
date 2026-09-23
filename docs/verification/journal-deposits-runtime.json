@@ -1,0 +1,157 @@
+{
+  "schemaVersion": 1,
+  "checkedAt": "2026-09-23T05:58:57.383689+00:00",
+  "scope": "Arcane, nature, habitation and exploration modules accept only their own current commissioning batch through deliberate crouched empty-main-hand use. Normal use preserves the native book reader; final activation remains at the controller.",
+  "sourceCommit": "f31150229af1388cac569aa13a495605c1ff3b8b",
+  "sourceCi": {
+    "runId": 35822461361,
+    "conclusion": "success"
+  },
+  "platform": "Minecraft 1.21.1 / NeoForge 21.1.249 / Java 21 / Windows",
+  "normalJarSha256": "0b0c14103eae4f9bf4d7ff1df6643d1450196cb5b06b2050e27b8e5e04e7f5a0",
+  "qaJarSha256": "94507c92c0b0ea23060abb63cadb20129a33dc2da1716b7a5c7a9416a1112df7",
+  "unitTests": [
+    {
+      "class": "dev.entrelumen.ArkFieldJournalsTest",
+      "passed": 6,
+      "reportSha256": "d048a3e2cfb23047c55312e9fc1e12c99669c9bb90a7024080b3781626b0e72d"
+    },
+    {
+      "class": "dev.entrelumen.EngineeringDiagnosticsTest",
+      "passed": 3,
+      "reportSha256": "5f9c393ee78fd617da76d672dce9af45da29fcb144ed8f30adfbc9b0dbec8455"
+    },
+    {
+      "class": "dev.entrelumen.LogisticsModuleActionsTest",
+      "passed": 2,
+      "reportSha256": "04f2bf7289ce9cc756975e1bdc73cad37439f28b2f0357ce0ec4919ef86d37d8"
+    }
+  ],
+  "isolatedGameTests": {
+    "passed": 30,
+    "logSha256": "19c3d0982546d4632ad5a6e82f49a8513796e8763ed810b0ee74c79e1bff2702",
+    "limitation": "Isolated fixture; separate from native full-pack compatibility."
+  },
+  "fullpack": {
+    "runId": "c527f40f-b5e1-41e0-ba68-3980da25b6a1",
+    "registered": 31,
+    "executed": [
+      {
+        "test": "arkfieldjournalsdepositonlytheirownbatches",
+        "request": "136ec584-052c-43d8-89fc-0cf1ab831868"
+      },
+      {
+        "test": "arkfieldjournaldepositneedsauniquecompletereachableark",
+        "request": "f5e11b3a-0c4b-48c4-b37e-a4c8c29a27d4"
+      },
+      {
+        "test": "arkfieldjournalsreadcurrentteamwithoutmutation",
+        "request": "a7f36067-8675-47bb-9b4c-ccc15dc5bd3e"
+      },
+      {
+        "test": "logisticsmoduledepositscurrentbatchfromteaminventoryonce",
+        "request": "40191fb5-309b-4d75-b37a-1653f9e82069"
+      },
+      {
+        "test": "logisticsmodulerejectsambiguousmissingremoteandspectator",
+        "request": "2a0a2c28-5b72-4a81-82c5-8f33da3cb4ef"
+      }
+    ],
+    "passed": 5,
+    "normalStopRequest": "88c42645-a19d-4946-a1da-fea0e7fdde61",
+    "exitCode": 0,
+    "watchdogMilliseconds": 60000,
+    "normalJarRestored": true,
+    "logSha256": "7391c165a87a4310691eef0663b595c21d5b0dd194a567a27a03e531bf33eb9b",
+    "verified": [
+      "All four module kinds reject earlier phases without charging supplies",
+      "Each kind accepts only its own required material with capped offhand and inventory consumption",
+      "Partial deposits survive SavedData round-trip; top-up retains surplus and replay consumes nothing",
+      "Foreign expected team, ambiguous controller, missing modules, remote reach and spectator deposit are rejected",
+      "Exploration commissioning does not activate the ending",
+      "Existing book snapshot remains read-only and the shared logistics interactions still pass"
+    ],
+    "limitation": "Five targeted tests executed, not all 31 registered. Embedded-player setup caused one 2616ms/52-tick catch-up warning. This is functional compatibility evidence, not performance acceptance."
+  },
+  "client": {
+    "status": "bounded_checks_passed",
+    "world": "ENTRELUMEN-QA-ActVI",
+    "renderSize": [
+      1024,
+      768
+    ],
+    "fixture": "Existing creative QA campaign with all batches and the ending complete; no supplied commands or campaign edits in this client session.",
+    "observed": [
+      "Native crouched empty-main-hand use of the arcane module reports that the completed batch consumes nothing in es_es and en_us",
+      "Standing empty-main-hand use still opens the native read-only arcane journal in es_es",
+      "F8 opens FTB Quests; Ctrl+F locates the arcane quest, whose complete updated description renders legibly in both languages",
+      "Arcane quest mirror is complete; no clipped text or raw translation keys in the sampled quest descriptions",
+      "Normal save and shutdown preserve campaign NBT semantically"
+    ],
+    "campaignNbtSemanticallyUnchanged": true,
+    "campaignSemanticSha256": "c4e1ec8e7d1aa0100946df9a8d53dddbd14efad3be010c4e340921581aaa05da",
+    "campaignBeforeRawSha256": "917d164056f944a93591a1405b972fa829a711631b40ea549dc0353143198764",
+    "campaignAfterRawSha256": "917d164056f944a93591a1405b972fa829a711631b40ea549dc0353143198764",
+    "normalSaveAndShutdown": true,
+    "saveCompletedLocal": "2026-09-23T02:56:04.224-03:00",
+    "clientStoppingLocal": "2026-09-23T02:56:24.269-03:00",
+    "ownedClientPidNoLongerRunning": 11444,
+    "restoredOptions": {
+      "lang": "es_es",
+      "toggleCrouch": false,
+      "otherCurrentOptionBytesPreserved": true
+    },
+    "screenshots": [
+      {
+        "path": "docs/verification/screenshots/journal-deposit-complete-es.png",
+        "nativeSource": "2026-09-23_02.43.41.png",
+        "sha256": "2319474d4a1a83ee597f708d7105fc782159328ccd9c8e2076fcc277bcc05e47"
+      },
+      {
+        "path": "docs/verification/screenshots/journal-deposit-complete-en.png",
+        "nativeSource": "2026-09-23_02.54.28.png",
+        "sha256": "79db7a67bd5073bf5012ac76663222c72434b1758ba414266807fc1896ce7e06"
+      },
+      {
+        "path": "docs/verification/screenshots/journal-deposit-normal-reader-es.png",
+        "nativeSource": "2026-09-23_02.44.16.png",
+        "sha256": "f75bf3ecf66fc46bf73ee76d2a57775761fd956d93b47b679c0f8d372a019d34"
+      },
+      {
+        "path": "docs/verification/screenshots/journal-deposit-quest-es.png",
+        "nativeSource": "2026-09-23_02.46.52.png",
+        "sha256": "fb4dfeea406cc9055f12becc4035d25005876c9c7c36d766775a400ce563cf92"
+      },
+      {
+        "path": "docs/verification/screenshots/journal-deposit-quest-en.png",
+        "nativeSource": "2026-09-23_02.55.25.png",
+        "sha256": "724b94ad3cbe324f6ccf91bedd27839f822e3b5643be0a02d55031c829a2b8f8"
+      }
+    ],
+    "logSha256": "4e7e2a3a5035877dc7c016c252c62c22bb6d6fbfe1ba85745181ae85d6f75891",
+    "limitations": [
+      "Native client sampling covers the completed arcane gesture and quest in both languages, not every material-taking branch or all four quest panels",
+      "Exact partial consumption, phase routing, team validation and restart round-trip are covered by the separate server tests above",
+      "Crouch used the temporary native toggle option, restored after shutdown; physical held-key input was not tested",
+      "Client log retains third-party invalid-resource-path errors and resource warnings, a 2095ms/41-tick catch-up warning after language reload, and a spark sampler shutdown RejectedExecutionException; all dimensions were then saved and the client stopped normally",
+      "Candidate art, complete module experiences, final-scale content, natural survival pacing, multiplayer and performance acceptance remain pending"
+    ]
+  },
+  "retainedLocalEvidenceDirectory": "C:\\Users\\elias\\Documents\\Codex\\2026-09-12\\h\\work\\journal-deposits-evidence",
+  "review": "Root source review and functional checks; no independent Astra review claimed.",
+  "questSource": {
+    "commit": "87fcbb7feb9fe189e7df8dbb6bd2838389d981c8",
+    "ciRunId": 35823275191,
+    "ciConclusion": "success",
+    "installedFiles": [
+      {
+        "path": "config/ftbquests/quests/lang/en_us.snbt",
+        "sha256": "8485b6837c00edbc2fec969b36a6a16ee94e284effa5a93bb0857fa90f27e3ca"
+      },
+      {
+        "path": "config/ftbquests/quests/lang/es_es.snbt",
+        "sha256": "0290fa7ed4e24e79afaa8a4bcc46e18c380df7e6626bb9e286da65e312ca0ce7"
+      }
+    ]
+  }
+}
