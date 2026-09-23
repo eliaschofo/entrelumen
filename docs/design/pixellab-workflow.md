@@ -30,3 +30,12 @@ This supersedes the pending-observation status above only for the observations l
 - [Atlas before density correction](../verification/screenshots/atlas-pixellab-es-before-density-fix.png) remains as failure evidence: the prior layout hid costs. It is not current acceptance evidence.
 
 The integrator reports test/build PASS in `work/atlas-readability-build.log` for the current JAR. English, other GUI scales, right-page scrolling and station crafting remain unverified. Further Computer Use was left pending because the user was active on the desktop; no English test is claimed. Main-menu/loading identity is still incomplete, and the rejected filtered backgrounds remain inactive.
+
+## Findings from the 2026-09-23 icon redo
+
+- The key is read from Windows Credential Manager (`Llavero/PixelLab/api-key`) through `cred-run` into `PIXELLAB_API_KEY`; `tools/pixellab.py` never writes it. It stores the dispatch receipt before polling and resumes the same job after an interruption.
+- Tier 1 allows eight concurrent background jobs; the client waits and retries on HTTP 429.
+- `/generate-image-v2` at 16×16 with one vanilla item as `style_image` (outline, detail and shading copied; palette not copied) gave the most Minecraft-like drafts. Its 64 outputs are small variations of one composition, so explore by changing the prompt or style image, not by reading more candidates.
+- `/generate-with-style-v2` returned pale, low-contrast variants. Adding a composition sketch as a subject reference made drafts noisier. Block faces from PixelLab were saturated and noisy.
+- Drafts still carry mottled mid-tones. Promotion = master-palette remap + despeckle + hand fixes on the text grid; weak drafts were redrawn by hand.
+- About 400 generations were spent on this redo; 1,260 of 2,000 remained afterwards.
