@@ -19,5 +19,7 @@ public final class ArkFieldJournalItem extends BlockItem {
     tooltip.add(Component.translatable("entrelumen.journal.tooltip"));
     if (getBlock() instanceof ArkFieldJournalBlock block && block.kind() == ArkFieldJournals.Kind.ARCANE)
       tooltip.add(Component.translatable("entrelumen.arcane.tooltip"));
+    if (getBlock() instanceof ArkFieldJournalBlock block && block.kind() == ArkFieldJournals.Kind.HABITATION)
+      tooltip.add(Component.translatable("entrelumen.habitation.tooltip"));
   }
 }

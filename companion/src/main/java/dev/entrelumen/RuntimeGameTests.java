@@ -291,6 +291,372 @@ public final class RuntimeGameTests {
     }
   }
 
+
+  @GameTest(template = "empty", timeoutTicks = 200)
+  public static void habitationBedClickChecksInAndOutWithoutChangingCampaign(GameTestHelper helper)
+      throws Exception {
+    try (var session = new WorkshopPlayer(helper)) {
+      var player = session.player;
+      var level = helper.getLevel();
+      var controller = ark(helper, player);
+      var module = arkModule(helper, controller, "habitation_module");
+      var missing = arkModule(helper, controller, "nature_module");
+      var campaign = Entrelumen.current(player);
+      campaign.act = 1;
+      campaign.completed.clear();
+      var home = controller.offset(12, 0, 0);
+      player.setRespawnPosition(net.minecraft.world.level.Level.OVERWORLD, home, 37.5F, true, false);
+      var bed = new ItemStack(Items.RED_BED);
+      player.setItemInHand(net.minecraft.world.InteractionHand.MAIN_HAND, bed);
+      var before = CampaignData.get(player.server).save(new CompoundTag(), level.registryAccess());
+
+      var missingState = level.getBlockState(missing);
+      level.removeBlock(missing, false);
+      habitationClick(player, module, false);
+      helper.assertTrue(home.equals(player.getRespawnPosition()) && !habitationBooked(player),
+          "Incomplete physical Ark registered lodging");
+      level.setBlockAndUpdate(missing, missingState);
+
+      var overhead = new HashMap<net.minecraft.core.BlockPos,
+          net.minecraft.world.level.block.state.BlockState>();
+      for (int dx = -1; dx <= 1; dx++) for (int dz = -1; dz <= 1; dz++) {
+        var pos = module.offset(dx, 1, dz);
+        overhead.put(pos, level.getBlockState(pos));
+        level.setBlockAndUpdate(pos, net.minecraft.world.level.block.Blocks.STONE.defaultBlockState());
+      }
+      habitationClick(player, module, false);
+      helper.assertTrue(home.equals(player.getRespawnPosition()) && player.isRespawnForced()
+          && !habitationBooked(player) && bed.getCount() == 1,
+          "Fully obstructed lodging changed home or reserved a false spawn");
+      overhead.forEach(level::setBlockAndUpdate);
+
+      habitationClick(player, module, false);
+      helper.assertTrue(module.equals(player.getRespawnPosition())
+          && !player.isRespawnForced() && habitationBooked(player) && bed.getCount() == 1,
+          "Native bed click failed to register non-forced lodging");
+      var booking = player.getPersistentData().copy();
+      habitationClick(player, module, false);
+      helper.assertTrue(booking.equals(player.getPersistentData()) && bed.getCount() == 1,
+          "Repeated check-in changed backup or consumed bed");
+      level.removeBlock(missing, false);
+      habitationClick(player, module, true);
+      helper.assertTrue(home.equals(player.getRespawnPosition())
+          && player.getRespawnDimension().equals(net.minecraft.world.level.Level.OVERWORLD)
+          && Float.compare(player.getRespawnAngle(), 37.5F) == 0
+          && player.isRespawnForced() && !habitationBooked(player) && bed.getCount() == 1,
+          "Checkout with incomplete Ark failed to restore original spawn tuple");
+      helper.assertTrue(campaign.act == 1 && campaign.completed.isEmpty()
+          && before.equals(CampaignData.get(player.server).save(new CompoundTag(), level.registryAccess())),
+          "Lodging changed campaign progress or rewards");
+    }
+    helper.succeed();
+  }
+
+  @GameTest(template = "empty", timeoutTicks = 200)
+  public static void habitationUsesNativeNonForcedRespawnAndRejectsUnsafeSpaces(GameTestHelper helper)
+      throws Exception {
+    try (var session = new WorkshopPlayer(helper)) {
+      var player = session.player;
+      var level = helper.getLevel();
+      var controller = ark(helper, player);
+      var module = arkModule(helper, controller, "habitation_module");
+      var unrelated = arkModule(helper, controller, "arcane_module");
+      player.setItemInHand(net.minecraft.world.InteractionHand.MAIN_HAND, new ItemStack(Items.BLUE_BED));
+      habitationClick(player, module, false);
+      var initial = player.findRespawnPositionAndUseSpawnBlock(false,
+          net.minecraft.world.level.portal.DimensionTransition.DO_NOTHING);
+      helper.assertTrue(!initial.missingRespawnBlock() && initial.newLevel() == level
+          && !player.isRespawnForced()
+          && net.minecraft.core.BlockPos.containing(initial.pos()).equals(module.above()),
+          "Vanilla did not select safe space over lodging");
+      level.removeBlock(unrelated, false);
+      helper.assertTrue(!player.findRespawnPositionAndUseSpawnBlock(false,
+          net.minecraft.world.level.portal.DimensionTransition.DO_NOTHING).missingRespawnBlock(),
+          "Respawn required other Ark modules again");
+      for (int dx = -1; dx <= 1; dx++) for (int dz = -1; dz <= 1; dz++)
+        if (dx != 0 || dz != 0)
+          level.setBlockAndUpdate(module.offset(dx, 0, dz),
+              net.minecraft.world.level.block.Blocks.STONE.defaultBlockState());
+      level.setBlockAndUpdate(module.above(),
+          net.minecraft.world.level.block.Blocks.WATER.defaultBlockState());
+      helper.assertTrue(player.findRespawnPositionAndUseSpawnBlock(false,
+          net.minecraft.world.level.portal.DimensionTransition.DO_NOTHING).missingRespawnBlock(),
+          "Native respawn accepted fluid feet");
+      level.setBlockAndUpdate(module.above(),
+          net.minecraft.world.level.block.Blocks.STONE.defaultBlockState());
+      helper.assertTrue(player.findRespawnPositionAndUseSpawnBlock(false,
+          net.minecraft.world.level.portal.DimensionTransition.DO_NOTHING).missingRespawnBlock(),
+          "Native respawn accepted obstructed space");
+      var north = module.north();
+      level.setBlockAndUpdate(north.below(),
+          net.minecraft.world.level.block.Blocks.STONE.defaultBlockState());
+      level.setBlockAndUpdate(north, net.minecraft.world.level.block.Blocks.AIR.defaultBlockState());
+      level.setBlockAndUpdate(north.above(),
+          net.minecraft.world.level.block.Blocks.AIR.defaultBlockState());
+      var lateral = player.findRespawnPositionAndUseSpawnBlock(false,
+          net.minecraft.world.level.portal.DimensionTransition.DO_NOTHING);
+      helper.assertTrue(!lateral.missingRespawnBlock()
+          && net.minecraft.core.BlockPos.containing(lateral.pos()).equals(north),
+          "Vanilla did not select the safe lateral exit");
+      level.removeBlock(module, false);
+      helper.assertTrue(player.findRespawnPositionAndUseSpawnBlock(false,
+          net.minecraft.world.level.portal.DimensionTransition.DO_NOTHING).missingRespawnBlock(),
+          "Removed module still provided a respawn");
+    }
+    helper.succeed();
+  }
+
+  @GameTest(template = "empty", timeoutTicks = 200)
+  public static void habitationBrokenModuleFallsBackToNativeBedAndSurvivesClone(GameTestHelper helper)
+      throws Exception {
+    try (var session = new WorkshopPlayer(helper)) {
+      var player = session.player;
+      var level = helper.getLevel();
+      var controller = ark(helper, player);
+      var module = arkModule(helper, controller, "habitation_module");
+      var home = controller.offset(8, 0, 0);
+      habitationTestBed(level, home, net.minecraft.core.Direction.EAST,
+          net.minecraft.world.level.block.Blocks.WHITE_BED.defaultBlockState());
+      player.setRespawnPosition(net.minecraft.world.level.Level.OVERWORLD, home, 19.0F, false, false);
+      helper.assertTrue(!player.findRespawnPositionAndUseSpawnBlock(false,
+          net.minecraft.world.level.portal.DimensionTransition.DO_NOTHING).missingRespawnBlock(),
+          "Original bed fixture is not a native respawn");
+      player.setItemInHand(net.minecraft.world.InteractionHand.MAIN_HAND,
+          new ItemStack(Items.GREEN_BED));
+      habitationClick(player, module, false);
+      level.removeBlock(module, false);
+      var missing = player.findRespawnPositionAndUseSpawnBlock(false,
+          net.minecraft.world.level.portal.DimensionTransition.DO_NOTHING);
+      helper.assertTrue(missing.missingRespawnBlock(), "Vanilla did not detect missing lodging");
+      var event = new net.neoforged.neoforge.event.entity.player.PlayerRespawnPositionEvent(
+          player, missing, false);
+      net.neoforged.neoforge.common.NeoForge.EVENT_BUS.post(event);
+      helper.assertTrue(!event.getDimensionTransition().missingRespawnBlock()
+          && event.getDimensionTransition().newLevel() == level
+          && event.copyOriginalSpawnPosition() && home.equals(player.getRespawnPosition())
+          && Float.compare(player.getRespawnAngle(), 19.0F) == 0 && !player.isRespawnForced(),
+          "Respawn event did not restore original native bed");
+      var fresh = new ServerPlayer(player.server, level, player.getGameProfile(),
+          player.clientInformation());
+      fresh.connection = player.connection;
+      fresh.restoreFrom(player, false);
+      fresh.copyRespawnPosition(player);
+      net.neoforged.neoforge.common.NeoForge.EVENT_BUS.post(
+          new net.neoforged.neoforge.event.entity.player.PlayerEvent.PlayerRespawnEvent(fresh, false));
+      helper.assertTrue(home.equals(fresh.getRespawnPosition()) && !habitationBooked(fresh),
+          "Clone/post-respawn lost the home or retained stale booking");
+    }
+    helper.succeed();
+  }
+
+  @GameTest(template = "empty", timeoutTicks = 200)
+  public static void habitationNativeBedReplacingModuleRestoresOriginalHome(GameTestHelper helper)
+      throws Exception {
+    try (var session = new WorkshopPlayer(helper)) {
+      var player = session.player;
+      var level = helper.getLevel();
+      var controller = ark(helper, player);
+      var module = arkModule(helper, controller, "habitation_module");
+      var home = controller.offset(8, 0, 0);
+      habitationTestBed(level, home, net.minecraft.core.Direction.EAST,
+          net.minecraft.world.level.block.Blocks.WHITE_BED.defaultBlockState());
+      player.setRespawnPosition(net.minecraft.world.level.Level.OVERWORLD, home, 13.0F, false, false);
+      helper.assertTrue(!player.findRespawnPositionAndUseSpawnBlock(false,
+          net.minecraft.world.level.portal.DimensionTransition.DO_NOTHING).missingRespawnBlock(),
+          "Original bed fixture is not a native respawn");
+      player.setItemInHand(net.minecraft.world.InteractionHand.MAIN_HAND, new ItemStack(Items.BLUE_BED));
+      habitationClick(player, module, false);
+      habitationTestBed(level, module, net.minecraft.core.Direction.NORTH,
+          net.minecraft.world.level.block.Blocks.RED_BED.defaultBlockState());
+      var replacement = player.findRespawnPositionAndUseSpawnBlock(false,
+          net.minecraft.world.level.portal.DimensionTransition.DO_NOTHING);
+      helper.assertTrue(!replacement.missingRespawnBlock()
+          && level.getBlockState(module).is(net.minecraft.world.level.block.Blocks.RED_BED),
+          "Same-coordinate replacement is not a valid native bed");
+      var event = new net.neoforged.neoforge.event.entity.player.PlayerRespawnPositionEvent(
+          player, replacement, false);
+      net.neoforged.neoforge.common.NeoForge.EVENT_BUS.post(event);
+      var expectedHome = player.findRespawnPositionAndUseSpawnBlock(false,
+          net.minecraft.world.level.portal.DimensionTransition.DO_NOTHING);
+      helper.assertTrue(home.equals(player.getRespawnPosition())
+          && Float.compare(player.getRespawnAngle(), 13.0F) == 0
+          && !player.isRespawnForced() && event.copyOriginalSpawnPosition()
+          && !expectedHome.missingRespawnBlock()
+          && event.getDimensionTransition().pos().equals(expectedHome.pos())
+          && !event.getDimensionTransition().pos().equals(replacement.pos()),
+          "Replacement native bed stole lodging instead of restoring original home");
+    }
+    helper.succeed();
+  }
+
+  @GameTest(template = "empty", timeoutTicks = 200)
+  public static void habitationNewBedWinsAndBookingSurvivesPlayerSerialization(GameTestHelper helper)
+      throws Exception {
+    try (var session = new WorkshopPlayer(helper)) {
+      var player = session.player;
+      var controller = ark(helper, player);
+      var module = arkModule(helper, controller, "habitation_module");
+      var home = controller.offset(10, 0, 0);
+      player.setRespawnPosition(net.minecraft.world.level.Level.OVERWORLD, home, 27.0F, true, false);
+      player.setItemInHand(net.minecraft.world.InteractionHand.MAIN_HAND,
+          new ItemStack(Items.YELLOW_BED));
+      habitationClick(player, module, false);
+      var saved = player.saveWithoutId(new CompoundTag());
+      var fresh = new ServerPlayer(player.server, helper.getLevel(), player.getGameProfile(),
+          player.clientInformation());
+      fresh.connection = player.connection;
+      fresh.load(saved);
+      helper.assertTrue(module.equals(fresh.getRespawnPosition()) && !fresh.isRespawnForced()
+          && habitationBooked(fresh), "Player save/load lost lodging or native spawn");
+      ArkHabitation.onLogin(
+          new net.neoforged.neoforge.event.entity.player.PlayerEvent.PlayerLoggedInEvent(fresh));
+      helper.assertTrue(habitationBooked(fresh), "Reconnect discarded active booking");
+      fresh.setItemInHand(net.minecraft.world.InteractionHand.MAIN_HAND,
+          new ItemStack(Items.YELLOW_BED));
+      fresh.teleportTo(module.getX() + 0.5, module.getY() + 1.0, module.getZ() + 0.5);
+      fresh.setShiftKeyDown(true);
+      helper.assertTrue(ArkHabitation.use(fresh, module,
+          net.minecraft.world.InteractionHand.MAIN_HAND, true)
+          && home.equals(fresh.getRespawnPosition())
+          && Float.compare(fresh.getRespawnAngle(), 27.0F) == 0
+          && fresh.isRespawnForced() && !habitationBooked(fresh),
+          "Saved booking could not restore original tuple");
+      var newerBed = controller.offset(14, 0, 0);
+      player.setRespawnPosition(net.minecraft.world.level.Level.OVERWORLD,
+          newerBed, 64.0F, false, false);
+      ArkHabitation.onLogin(
+          new net.neoforged.neoforge.event.entity.player.PlayerEvent.PlayerLoggedInEvent(player));
+      helper.assertTrue(newerBed.equals(player.getRespawnPosition())
+          && Float.compare(player.getRespawnAngle(), 64.0F) == 0
+          && !habitationBooked(player), "Newer native bed lost to stale Ark booking");
+    }
+    helper.succeed();
+  }
+
+  @GameTest(template = "empty", timeoutTicks = 200)
+  public static void habitationCanceledSpawnSettersKeepBackupAndRecoverClone(GameTestHelper helper)
+      throws Exception {
+    try (var session = new WorkshopPlayer(helper)) {
+      var player = session.player;
+      var controller = ark(helper, player);
+      var module = arkModule(helper, controller, "habitation_module");
+      var home = controller.offset(11, 0, 0);
+      player.setRespawnPosition(net.minecraft.world.level.Level.OVERWORLD, home, 48.0F, true, false);
+      player.setItemInHand(net.minecraft.world.InteractionHand.MAIN_HAND,
+          new ItemStack(Items.ORANGE_BED));
+      var bus = net.neoforged.neoforge.common.NeoForge.EVENT_BUS;
+      java.util.function.Consumer<net.neoforged.neoforge.event.entity.player.PlayerSetSpawnEvent>
+          rejectEntry = event -> {
+            if (event.getEntity() == player && module.equals(event.getNewSpawn()))
+              event.setCanceled(true);
+          };
+      bus.addListener(net.neoforged.bus.api.EventPriority.HIGHEST,
+          net.neoforged.neoforge.event.entity.player.PlayerSetSpawnEvent.class, rejectEntry);
+      try {
+        habitationClick(player, module, false);
+        helper.assertTrue(home.equals(player.getRespawnPosition()) && !habitationBooked(player),
+            "Canceled check-in changed home or saved false booking");
+      } finally {
+        bus.unregister(rejectEntry);
+      }
+      habitationClick(player, module, false);
+      java.util.function.Consumer<net.neoforged.neoforge.event.entity.player.PlayerSetSpawnEvent>
+          rejectExit = event -> {
+            if (event.getEntity() == player && home.equals(event.getNewSpawn()))
+              event.setCanceled(true);
+          };
+      bus.addListener(net.neoforged.bus.api.EventPriority.HIGHEST,
+          net.neoforged.neoforge.event.entity.player.PlayerSetSpawnEvent.class, rejectExit);
+      try {
+        habitationClick(player, module, true);
+        helper.assertTrue(module.equals(player.getRespawnPosition()) && habitationBooked(player),
+            "Canceled checkout discarded active backup");
+      } finally {
+        bus.unregister(rejectExit);
+      }
+      player.setShiftKeyDown(false);
+      var selected = player.findRespawnPositionAndUseSpawnBlock(false,
+          net.minecraft.world.level.portal.DimensionTransition.DO_NOTHING);
+      helper.assertTrue(!selected.missingRespawnBlock(), "Fixture lodging is not native spawn");
+      bus.post(new net.neoforged.neoforge.event.entity.player.PlayerRespawnPositionEvent(
+          player, selected, false));
+      var fresh = new ServerPlayer(player.server, helper.getLevel(), player.getGameProfile(),
+          player.clientInformation());
+      fresh.connection = player.connection;
+      fresh.restoreFrom(player, false);
+      var firstCopy = new java.util.concurrent.atomic.AtomicBoolean(true);
+      java.util.function.Consumer<net.neoforged.neoforge.event.entity.player.PlayerSetSpawnEvent>
+          rejectClone = event -> {
+            if (event.getEntity() == fresh && module.equals(event.getNewSpawn())
+                && firstCopy.getAndSet(false)) event.setCanceled(true);
+          };
+      bus.addListener(net.neoforged.bus.api.EventPriority.HIGHEST,
+          net.neoforged.neoforge.event.entity.player.PlayerSetSpawnEvent.class, rejectClone);
+      try {
+        fresh.copyRespawnPosition(player);
+        helper.assertTrue(fresh.getRespawnPosition() == null && habitationBooked(fresh),
+            "Canceled clone setter lost persisted backup");
+        bus.post(new net.neoforged.neoforge.event.entity.player.PlayerEvent.PlayerRespawnEvent(
+            fresh, false));
+        helper.assertTrue(module.equals(fresh.getRespawnPosition())
+            && !fresh.isRespawnForced() && habitationBooked(fresh),
+            "Post-respawn failed to recover canceled clone setter");
+      } finally {
+        bus.unregister(rejectClone);
+      }
+
+      var vetoCopy = new net.neoforged.neoforge.event.entity.player.PlayerRespawnPositionEvent(
+          player, selected, false);
+      vetoCopy.setCopyOriginalSpawnPosition(false);
+      bus.post(vetoCopy);
+      var noCopy = new ServerPlayer(player.server, helper.getLevel(), player.getGameProfile(),
+          player.clientInformation());
+      noCopy.connection = player.connection;
+      noCopy.restoreFrom(player, false);
+      bus.post(new net.neoforged.neoforge.event.entity.player.PlayerEvent.PlayerRespawnEvent(
+          noCopy, false));
+      helper.assertTrue(noCopy.getRespawnPosition() == null && !habitationBooked(noCopy),
+          "Another listener's copy veto was overridden by habitation recovery");
+    }
+    helper.succeed();
+  }
+
+  private static void habitationClick(ServerPlayer player, net.minecraft.core.BlockPos module,
+      boolean crouched) {
+    player.setShiftKeyDown(crouched);
+    var result = player.gameMode.useItemOn(player, player.serverLevel(), player.getMainHandItem(),
+        net.minecraft.world.InteractionHand.MAIN_HAND, arkHit(module));
+    if (!result.consumesAction())
+      throw new IllegalStateException("Native habitation block interaction was not consumed");
+  }
+
+  private static boolean habitationBooked(ServerPlayer player) {
+    return player.getPersistentData().getCompound(
+        net.minecraft.world.entity.player.Player.PERSISTED_NBT_TAG)
+        .contains("entrelumen:habitation");
+  }
+
+  private static void habitationTestBed(net.minecraft.server.level.ServerLevel level,
+      net.minecraft.core.BlockPos foot, net.minecraft.core.Direction facing,
+      net.minecraft.world.level.block.state.BlockState bed) {
+    var stone = net.minecraft.world.level.block.Blocks.STONE.defaultBlockState();
+    var air = net.minecraft.world.level.block.Blocks.AIR.defaultBlockState();
+    level.setBlock(foot.below(), stone, 2);
+    level.setBlock(foot.relative(facing).below(), stone, 2);
+    for (var side : List.of(facing.getClockWise(), facing.getCounterClockWise())) {
+      var exit = foot.relative(side);
+      level.setBlock(exit.below(), stone, 2);
+      level.setBlock(exit, air, 2);
+      level.setBlock(exit.above(), air, 2);
+    }
+    bed = bed.setValue(net.minecraft.world.level.block.BedBlock.FACING, facing);
+    level.setBlock(foot, bed.setValue(net.minecraft.world.level.block.BedBlock.PART,
+        net.minecraft.world.level.block.state.properties.BedPart.FOOT), 2);
+    level.setBlock(foot.relative(facing),
+        bed.setValue(net.minecraft.world.level.block.BedBlock.PART,
+            net.minecraft.world.level.block.state.properties.BedPart.HEAD), 2);
+  }
+
   @GameTest(template = "empty", timeoutTicks = 200)
   public static void arkFieldJournalsReadCurrentTeamWithoutMutation(GameTestHelper helper)
       throws Exception {

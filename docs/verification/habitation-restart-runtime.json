@@ -1,0 +1,134 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-09-23",
+  "status": "bounded_runtime_pass",
+  "baseCommit": "cf50d6d5401d4aaad26dc14bd0187d2e8cd517b6",
+  "counts": {
+    "clientDependencies": 178,
+    "serverDependencies": 143,
+    "originalQuests": 171,
+    "chapters": 7,
+    "campaignMilestones": 42,
+    "modLocaleKeysPerLanguage": 224
+  },
+  "normalJarSha256": "a9f4b1309957a90bff978d09e036d7ae1582e80c7690b4bffe04bf9b32c2dcc8",
+  "qaJarSha256": {
+    "first": "68273ff8fbfd6af1c3ac73167ee2c4551a9d47789d1609104a248c8fa1a5bf98",
+    "corrected": "4a108bb32770a2ebe30416f13f6811aeddfd9479b37f5e23fc4a49db41bcf737"
+  },
+  "sourceSha256": {
+    "companion/src/main/java/dev/entrelumen/ArkHabitation.java": "5983e02f2a58febeb290a797374394322fb0fce86e97363c8a3024fb8ba144c6",
+    "companion/src/main/java/dev/entrelumen/ArkFieldJournalBlock.java": "77f7671ee00d3f7be488f8fb1989f51e9ae9be8e8459bf67b0cd5a06368b5c6e",
+    "companion/src/main/java/dev/entrelumen/ArkFieldJournals.java": "1ce1583464bf74f35a6c308604b1b648517dfe699d38b97117d988f707a11d67",
+    "companion/src/main/java/dev/entrelumen/ArkFieldJournalItem.java": "81a524bd0968b935ad631033779c19b54d8457a6b07bf443d006e409c49df682",
+    "companion/src/main/java/dev/entrelumen/Entrelumen.java": "50a38d6918cbea7065beac6045c280feab7613d269ba058d38230c5c810ede7a",
+    "companion/src/main/java/dev/entrelumen/RuntimeGameTests.java": "a3aae2ea2c4f8df2d196074abc2bb380102f2c3d2841f2912d15d1a3f2e2033e",
+    "companion/src/fullpackGameTest/java/dev/entrelumen/FullpackQABootstrap.java": "b9b563453d2b1a23c642f8aa3d620eed52c3d2935e8678f3486db313f9e40b8a",
+    "companion/src/fullpackGameTest/java/dev/entrelumen/MechanicalChiselGameTests.java": "d8ba1faf5cd326b9f21cbb7dfba9326c8ee81814f0f030b0ee6846098dd2788a",
+    "companion/src/fullpackGameTest/java/dev/entrelumen/TeamRestartGameTests.java": "d245491a50e5c728ac7dc6cd7e12424fbbece08f4205ff6ffd577f6cbccb66a3",
+    "content/act_six.json": "3766202f467a8eb7fd7b7eeab921c6d519fc43c182871588403c30ac7679aca5"
+  },
+  "runs": [
+    {
+      "kind": "qa-first",
+      "runId": "a163d527-a384-49cd-b651-40d16a25e1e5",
+      "exitCode": 0,
+      "logSha256": "84a845a9cb803bd7a269725437ca118e78578e2cacc11dfee303c7d67e7b218c",
+      "errorLines": 1
+    },
+    {
+      "kind": "qa-prepare",
+      "runId": "c684f4d2-9bfe-4a85-b1d9-a27ad8010961",
+      "exitCode": 0,
+      "logSha256": "586038b34c6e17d9c151e8a5fa1d0a05bf218504a45136e8eb18b58256f29807",
+      "errorLines": 0
+    },
+    {
+      "kind": "qa-verify",
+      "runId": "2d86ab47-5c11-4970-a223-a2d66e7144e6",
+      "exitCode": 0,
+      "logSha256": "c89fe986ecb60beea5eb49949c729c695a7f3f0f35bb444c7d656018b628d142",
+      "errorLines": 0
+    },
+    {
+      "kind": "normal",
+      "runId": "8e0b64ea-f73b-4eef-b174-b52b92ac7407",
+      "exitCode": 0,
+      "logSha256": "b5e6ce4c45e30bdc5afc35b9157560ff029d19834379536f424e0de27dd74375",
+      "errorLines": 0
+    }
+  ],
+  "passedTests": [
+    "arkfieldjournalsdepositonlytheirownbatches",
+    "arkfieldjournalsreadcurrentteamwithoutmutation",
+    "habitationbedclickchecksinandoutwithoutchangingcampaign",
+    "habitationbrokenmodulefallsbacktonativebedandsurvivesclone",
+    "habitationcanceledspawnsetterskeepbackupandrecoverclone",
+    "habitationnativebedreplacingmodulerestoresoriginalhome",
+    "habitationnewbedwinsandbookingsurvivesplayerserialization",
+    "habitationusesnativenonforcedrespawnandrejectsunsafespaces",
+    "poweredmechanicalchiselconvertsrealchippedstoneonce",
+    "prepareteamrestartfixture",
+    "verifyteamrestartafternewserverprocess"
+  ],
+  "executionScope": "Eleven directed cases passed across three full-pack QA runs; the initial chisel stability assertion failed before its fixture correction. All 40 isolated GameTests and 53 JUnit tests passed. Only the QA fixture changed afterward, and qaJar was rebuilt; unrelated full-pack cases were not rerun.",
+  "coverage": {
+    "habitation": "Six cases exercise native bed interaction, check-in/checkout, preserved home tuple and bed, unchanged early campaign, incomplete/obstructed rejection, safe non-forced native respawn, fluid/obstruction refusal, independent module removal, broken lodging, replacement by a valid bed, native event fallback to the original bed, clone/NBT roundtrip, later-bed precedence, canceled entry/checkout/clone setters and another mod's explicit no-copy decision.",
+    "journalRegression": "Two existing cases verify team-specific read-only journal packets and recoverable module batch deposits after adding the personal lodging view.",
+    "mechanicalChisel": "Native processing capability and Chipped filter; 12 unpowered ticks conserve input, then a real Create creative motor supplies 32 RPM to the same unstressed network. One stone becomes one carved stone, and the same single ItemEntity remains after 40 powered ticks. This is a QA power fixture, not finite-fuel balance evidence.",
+    "teamRestart": "Three internally connected players in two real FTB parties log out normally. Distinct personal histories, party membership, different actual partial Ark deposits and exact inventories survive a normal stop and new JVM. Both teams complete their remaining batch independently; replay and a foreign campaign ID consume nothing. Act-six/module eligibility is seeded QA state, not a natural playthrough."
+  },
+  "restartProof": {
+    "nonce": "5df63edb-ec5b-4901-b2cb-95bb2bd01738",
+    "proof": "9c6080a35d6aaabe801619155e9a6eec22afac8deb1492dffc90bfea29282818",
+    "preparedJvmStart": 1790176273014,
+    "verifiedJvmStart": 1790176509900
+  },
+  "firstFailures": [
+    {
+      "case": "poweredmechanicalchiselconvertsrealchippedstoneonce",
+      "observation": "The native recipe and initial single output passed, but after 40 ticks the small observation box was empty.",
+      "causeAndCorrection": "Pinned native code ejects the item along Z. The empty fixture lacked a receiving floor. Added five stone floor blocks beneath that path and required the same output UUID at the final no-duplication check; the corrected case passed. No production recipe, mod or kinetic balance was changed."
+    }
+  ],
+  "installation": [
+    {
+      "profile": "server-slice",
+      "side": "server",
+      "files": {
+        "mods/entrelumen-0.1.0.jar": "a9f4b1309957a90bff978d09e036d7ae1582e80c7690b4bffe04bf9b32c2dcc8",
+        "config/ftbquests/quests/lang/en_us.snbt": "a6f3d0be0c971a4aea41c56f481a4d51e84eab78fb2770976069d57be26ecfd7",
+        "config/ftbquests/quests/lang/es_es.snbt": "cd830b218cf59c52596d7fcea2593b10dfa327f4b95b5a7e2c15e6aa12c24929"
+      },
+      "dependencyReceiptSha256": "73a924cb4ba31eeeb47e40a5776f4cf8faa3ea9f0f865e17c4b4fc4475b59c4e"
+    },
+    {
+      "profile": "ENTRELUMEN",
+      "side": "client",
+      "files": {
+        "mods/entrelumen-0.1.0.jar": "a9f4b1309957a90bff978d09e036d7ae1582e80c7690b4bffe04bf9b32c2dcc8",
+        "config/ftbquests/quests/lang/en_us.snbt": "a6f3d0be0c971a4aea41c56f481a4d51e84eab78fb2770976069d57be26ecfd7",
+        "config/ftbquests/quests/lang/es_es.snbt": "cd830b218cf59c52596d7fcea2593b10dfa327f4b95b5a7e2c15e6aa12c24929"
+      },
+      "dependencyReceiptSha256": "f2ca487226eb0b11c24e12b68ee9d37e29ed4c5d3aa6b5a4c42025f0121605ce"
+    },
+    {
+      "profile": "ENTRELUMEN Defaults QA",
+      "side": "client",
+      "files": {
+        "mods/entrelumen-0.1.0.jar": "a9f4b1309957a90bff978d09e036d7ae1582e80c7690b4bffe04bf9b32c2dcc8",
+        "config/ftbquests/quests/lang/en_us.snbt": "a6f3d0be0c971a4aea41c56f481a4d51e84eab78fb2770976069d57be26ecfd7",
+        "config/ftbquests/quests/lang/es_es.snbt": "cd830b218cf59c52596d7fcea2593b10dfa327f4b95b5a7e2c15e6aa12c24929"
+      },
+      "dependencyReceiptSha256": "f2ca487226eb0b11c24e12b68ee9d37e29ed4c5d3aa6b5a4c42025f0121605ce"
+    }
+  ],
+  "limitations": [
+    "No Computer Use or client launch; bilingual rendering, final artwork and client acceptance remain pending.",
+    "Lodging tests invoke native selection/events/clone and serialize player NBT; they do not execute a complete human network death session. Anchor charge, End-return edge cases, cold chunk-boundary behavior and every third-party respawn handler were inspected in source but not directly exercised here. Lodging itself was not the two-process fixture.",
+    "Team restart uses internal mock network connections and seeded late-act eligibility; human co-op, six external clients, natural acquisition and pacing remain pending.",
+    "No gameplay FPS/MSPT, two-hour soak or industrial-base performance acceptance is claimed.",
+    "Nature, exploration and logistics still lack selected complete practical services. Final mod/quest scale, first-hour gate, full campaign playthrough, approved public release and weekly-review acceptance remain open."
+  ],
+  "localStorage": "After C: filled during a test-source write, the exclusive test file was recovered atomically from HEAD plus the authored tests, rebuilt and verified. Owned stopped server/world/backups, JDK and generated build/run directories now reside on G: with original paths preserved by junctions. Active unrelated processes and Codex databases were not modified."
+}

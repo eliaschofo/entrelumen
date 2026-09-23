@@ -133,8 +133,10 @@ public final class ArkFieldJournals {
   static JournalBookNetwork.Snapshot snapshot(ServerPlayer player, BlockPos module, Kind kind) {
     var campaign = EngineeringDiagnostics.currentReadOnly(player);
     var physical = EngineeringDiagnostics.physicalView(player.serverLevel(), module);
+    List<Component> content = new ArrayList<>(lines(view(campaign, kind), physical));
+    if (kind == Kind.HABITATION) content.addAll(ArkHabitation.journalLines(player));
     return new JournalBookNetwork.Snapshot(player.getUUID(), CampaignActions.campaignId(player),
-        kind, lines(view(campaign, kind), physical));
+        kind, List.copyOf(content));
   }
 
   static List<Component> lines(View view, EngineeringDiagnostics.PhysicalView physical) {
