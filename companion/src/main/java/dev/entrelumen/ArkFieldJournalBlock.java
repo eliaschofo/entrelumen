@@ -63,6 +63,11 @@ public final class ArkFieldJournalBlock extends Block {
       if (player instanceof ServerPlayer serverPlayer) NatureRestoration.use(serverPlayer, pos, hand);
       return ItemInteractionResult.sidedSuccess(level.isClientSide);
     }
+    if (kind == ArkFieldJournals.Kind.EXPLORATION && hand == InteractionHand.MAIN_HAND
+        && stack.is(Items.FILLED_MAP)) {
+      if (player instanceof ServerPlayer serverPlayer) ArkCharts.compile(serverPlayer, pos, hand);
+      return ItemInteractionResult.sidedSuccess(level.isClientSide);
+    }
     if (kind != ArkFieldJournals.Kind.ARCANE || hand != InteractionHand.MAIN_HAND
         || !stack.is(Items.ENCHANTED_BOOK))
       return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;

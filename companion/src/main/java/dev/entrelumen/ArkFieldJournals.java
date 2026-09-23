@@ -136,6 +136,7 @@ public final class ArkFieldJournals {
     List<Component> content = new ArrayList<>(lines(view(campaign, kind), physical));
     if (kind == Kind.HABITATION) content.addAll(ArkHabitation.journalLines(player));
     if (kind == Kind.NATURE) content.addAll(NatureRestoration.journalLines(player));
+    if (kind == Kind.EXPLORATION) content.addAll(ArkCharts.journalLines());
     return new JournalBookNetwork.Snapshot(player.getUUID(), CampaignActions.campaignId(player),
         kind, List.copyOf(content));
   }

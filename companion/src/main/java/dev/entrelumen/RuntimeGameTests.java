@@ -3058,4 +3058,289 @@ public final class RuntimeGameTests {
     helper.assertTrue(NatureRestoration.restore(player, module, main).status() == NatureRestoration.Status.UNAVAILABLE,
         "A removed module still restored the site");
   }
+
+  // Exploration chart room: field maps compile into a held chart at a complete Ark.
+  private static byte chartColour(net.minecraft.world.level.material.MapColor colour) {
+    return colour.getPackedId(net.minecraft.world.level.material.MapColor.Brightness.NORMAL);
+  }
+
+  private static ItemStack chartMap(GameTestHelper helper, int x, int z, int scale) {
+    return net.minecraft.world.item.MapItem.create(helper.getLevel(), x, z, (byte) scale, true, false);
+  }
+
+  private static net.minecraft.world.level.saveddata.maps.MapItemSavedData chartData(
+      GameTestHelper helper, ItemStack map) {
+    return net.minecraft.world.item.MapItem.getSavedData(map, helper.getLevel());
+  }
+
+  private static void chartFill(net.minecraft.world.level.saveddata.maps.MapItemSavedData data,
+      int x0, int z0, int x1, int z1, byte colour) {
+    for (int x = x0; x < x1; x++)
+      for (int z = z0; z < z1; z++) data.colors[x + z * 128] = colour;
+  }
+
+  private static int chartAt(net.minecraft.world.level.saveddata.maps.MapItemSavedData data, int x, int z) {
+    return data.colors[x + z * 128];
+  }
+
+  private static List<ItemStack> chartInventory(ServerPlayer player) {
+    List<ItemStack> stacks = new ArrayList<>();
+    for (var stack : player.getInventory().items) stacks.add(stack.copy());
+    for (var stack : player.getInventory().armor) stacks.add(stack.copy());
+    for (var stack : player.getInventory().offhand) stacks.add(stack.copy());
+    return stacks;
+  }
+
+  private static boolean chartInventoryUnchanged(List<ItemStack> before, ServerPlayer player) {
+    var now = chartInventory(player);
+    if (now.size() != before.size()) return false;
+    for (int i = 0; i < now.size(); i++)
+      if (!ItemStack.matches(before.get(i), now.get(i))) return false;
+    return true;
+  }
+
+  private static ItemStack chartInDimension(GameTestHelper helper,
+      net.minecraft.resources.ResourceKey<net.minecraft.world.level.Level> dimension, int x, int z) {
+    var level = helper.getLevel();
+    var id = level.getFreeMapId();
+    level.setMapData(id, net.minecraft.world.level.saveddata.maps.MapItemSavedData.createFresh(
+        x, z, (byte) 0, true, false, dimension));
+    var map = new ItemStack(Items.FILLED_MAP);
+    map.set(net.minecraft.core.component.DataComponents.MAP_ID, id);
+    return map;
+  }
+
+  @GameTest(template = "empty", timeoutTicks = 200)
+  public static void explorationChartsCompileFieldMapsWithoutConsumingAnything(GameTestHelper helper)
+      throws Exception {
+    try (var session = new WorkshopPlayer(helper)) {
+      var player = session.player;
+      var level = helper.getLevel();
+      var main = net.minecraft.world.InteractionHand.MAIN_HAND;
+      var controller = ark(helper, player);
+      var module = arkModule(helper, controller, "exploration_module");
+      // An early visitor with gifted maps: the chart room never reads or writes the campaign.
+      var campaign = Entrelumen.current(player);
+      campaign.act = 1;
+      campaign.completed.clear();
+      var data = CampaignData.get(player.server);
+      var beforeCampaign = data.save(new CompoundTag(), level.registryAccess());
+
+      byte grass = chartColour(net.minecraft.world.level.material.MapColor.GRASS);
+      byte water = chartColour(net.minecraft.world.level.material.MapColor.WATER);
+      byte stone = chartColour(net.minecraft.world.level.material.MapColor.STONE);
+      byte sand = chartColour(net.minecraft.world.level.material.MapColor.SAND);
+      byte snow = chartColour(net.minecraft.world.level.material.MapColor.SNOW);
+      byte wood = chartColour(net.minecraft.world.level.material.MapColor.WOOD);
+      // A blank scale-1 chart, as a cartography table zoom-out leaves it, and its field tiles.
+      var chart = chartMap(helper, controller.getX(), controller.getZ(), 1);
+      var target = chartData(helper, chart);
+      var grid = ArkCharts.grid(target);
+      int ox = (int) grid.originX(), oz = (int) grid.originZ();
+      target.colors[0] = wood;
+      var northwest = chartMap(helper, ox + 10, oz + 10, 0);
+      chartFill(chartData(helper, northwest), 0, 0, 128, 128, grass);
+      var northeast = chartMap(helper, ox + 138, oz + 10, 0);
+      chartFill(chartData(helper, northeast), 0, 0, 64, 128, water);
+      var southwest = chartMap(helper, ox + 10, oz + 138, 0);
+      var southwestData = chartData(helper, southwest);
+      southwestData.colors[0] = stone;
+      southwestData.colors[1] = stone;
+      southwestData.colors[128] = sand;
+      southwestData.colors[2] = sand;
+      southwestData.colors[3] = stone;
+      var older = chartMap(helper, controller.getX(), controller.getZ(), 1);
+      var olderData = chartData(helper, older);
+      olderData.colors[120 + 120 * 128] = snow;
+      olderData.colors[127 + 127 * 128] = snow;
+      olderData.colors[0] = snow;
+      // Left out: another dimension, a coarser scale and a distant area.
+      var nether = chartInDimension(helper, net.minecraft.world.level.Level.NETHER, ox + 10, oz + 10);
+      chartFill(chartData(helper, nether), 0, 0, 128, 128, stone);
+      var coarse = chartMap(helper, controller.getX(), controller.getZ(), 2);
+      chartFill(chartData(helper, coarse), 0, 0, 128, 128, sand);
+      var distant = chartMap(helper, ox + 5000, oz, 0);
+      chartFill(chartData(helper, distant), 0, 0, 128, 128, sand);
+      List<net.minecraft.world.level.saveddata.maps.MapItemSavedData> sources = List.of(
+          chartData(helper, northwest), chartData(helper, northeast), southwestData, olderData,
+          chartData(helper, nether), chartData(helper, coarse), chartData(helper, distant));
+      List<byte[]> sourceColours = sources.stream().map(source -> source.colors.clone()).toList();
+
+      var inventory = player.getInventory();
+      inventory.selected = 0;
+      inventory.setItem(0, chart);
+      inventory.setItem(1, northwest);
+      inventory.setItem(2, northeast.copyWithCount(2));
+      inventory.setItem(3, older);
+      inventory.setItem(4, nether);
+      inventory.setItem(5, coarse);
+      inventory.setItem(6, distant);
+      inventory.setItem(7, chart.copy());
+      inventory.setItem(9, northeast.copy());
+      inventory.setItem(10, new ItemStack(Items.MAP, 3));
+      inventory.setItem(11, new ItemStack(Items.PAPER, 5));
+      player.setItemInHand(net.minecraft.world.InteractionHand.OFF_HAND, southwest);
+      var beforeInventory = chartInventory(player);
+      var beforeChart = target.colors.clone();
+      target.setDirty(false);
+
+      var result = player.gameMode.useItemOn(player, level, chart, main, arkHit(module));
+      helper.assertTrue(result.consumesAction(), "Native chart interaction did not run");
+      int changed = 0;
+      for (int i = 0; i < beforeChart.length; i++) if (beforeChart[i] != target.colors[i]) changed++;
+      // North-west quarter less the pre-drawn corner, the explored half of the north-east quarter,
+      // two south-west pixels and two south-east pixels from the older chart.
+      helper.assertTrue(changed == 64 * 64 - 1 + 32 * 64 + 2 + 2,
+          "Unexpected number of charted pixels: " + changed);
+      helper.assertTrue(chartAt(target, 0, 0) == wood && chartAt(target, 63, 63) == grass
+          && chartAt(target, 64, 0) == water && chartAt(target, 95, 63) == water
+          && chartAt(target, 96, 0) == 0 && chartAt(target, 0, 64) == stone
+          && chartAt(target, 1, 64) == (Byte.toUnsignedInt(stone) < Byte.toUnsignedInt(sand) ? stone : sand)
+          && chartAt(target, 2, 64) == 0 && chartAt(target, 120, 120) == snow
+          && chartAt(target, 127, 127) == snow && chartAt(target, 100, 100) == 0,
+          "Charted pixels do not follow their field maps");
+      helper.assertTrue(target.isDirty(), "The chart's saved data was not marked for saving");
+      var reloaded = net.minecraft.world.level.saveddata.maps.MapItemSavedData.load(
+          target.save(new CompoundTag(), level.registryAccess()), level.registryAccess());
+      helper.assertTrue(java.util.Arrays.equals(reloaded.colors, target.colors) && !reloaded.locked,
+          "The compiled chart did not survive a save round trip");
+      for (int i = 0; i < sources.size(); i++)
+        helper.assertTrue(java.util.Arrays.equals(sourceColours.get(i), sources.get(i).colors),
+            "A field map was changed by compiling");
+      helper.assertTrue(chartInventoryUnchanged(beforeInventory, player),
+          "Compiling consumed, created or changed an item");
+      helper.assertTrue(beforeCampaign.equals(data.save(new CompoundTag(), level.registryAccess())),
+          "Compiling changed campaign data");
+
+      var compiled = target.colors.clone();
+      target.setDirty(false);
+      var repeat = ArkCharts.compile(player, module, main);
+      helper.assertTrue(repeat.status() == ArkCharts.Status.NOTHING_NEW && repeat.matched() == 4
+          && repeat.skipped() == 3 && repeat.pixels() == 0,
+          "A repeated compilation was not a no-op: " + repeat);
+      helper.assertTrue(java.util.Arrays.equals(compiled, target.colors) && !target.isDirty()
+          && chartInventoryUnchanged(beforeInventory, player), "A repeated compilation changed something");
+      helper.assertTrue(ArkFieldJournals.snapshot(player, module, ArkFieldJournals.Kind.EXPLORATION).lines()
+          .stream().anyMatch(line -> line.getContents() instanceof net.minecraft.network.chat.contents.TranslatableContents text
+              && text.getKey().equals("entrelumen.exploration.chart.journal")),
+          "The exploration journal does not explain the chart room");
+      helper.assertTrue(beforeCampaign.equals(data.save(new CompoundTag(), level.registryAccess())),
+          "Reading or repeating changed campaign data");
+    }
+    helper.succeed();
+  }
+
+  @GameTest(template = "empty", timeoutTicks = 200)
+  public static void explorationChartsRefuseWithoutMutation(GameTestHelper helper) throws Exception {
+    try (var session = new WorkshopPlayer(helper)) {
+      var player = session.player;
+      var level = helper.getLevel();
+      var main = net.minecraft.world.InteractionHand.MAIN_HAND;
+      var controller = ark(helper, player);
+      var module = arkModule(helper, controller, "exploration_module");
+      byte grass = chartColour(net.minecraft.world.level.material.MapColor.GRASS);
+      var chart = chartMap(helper, controller.getX(), controller.getZ(), 0);
+      var target = chartData(helper, chart);
+      var field = chartMap(helper, controller.getX(), controller.getZ(), 0);
+      var fieldData = chartData(helper, field);
+      chartFill(fieldData, 0, 0, 128, 128, grass);
+      var fieldColours = fieldData.colors.clone();
+      var blank = target.colors.clone();
+      var inventory = player.getInventory();
+      inventory.selected = 0;
+      inventory.setItem(0, chart);
+
+      helper.assertTrue(ArkCharts.compile(player, module, main).status() == ArkCharts.Status.NO_SOURCES,
+          "A lone chart compiled");
+      var nether = chartInDimension(helper, net.minecraft.world.level.Level.NETHER,
+          controller.getX(), controller.getZ());
+      chartFill(chartData(helper, nether), 0, 0, 128, 128, grass);
+      var coarse = chartMap(helper, controller.getX(), controller.getZ(), 1);
+      chartFill(chartData(helper, coarse), 0, 0, 128, 128, grass);
+      inventory.setItem(1, nether);
+      inventory.setItem(2, coarse);
+      var onlySkipped = ArkCharts.compile(player, module, main);
+      helper.assertTrue(onlySkipped.status() == ArkCharts.Status.NO_SOURCES && onlySkipped.skipped() == 2,
+          "Another dimension or a coarser scale was used: " + onlySkipped);
+      inventory.setItem(3, field);
+      var before = chartInventory(player);
+
+      var locked = chart.copy();
+      net.minecraft.world.item.MapItem.lockMap(level, locked);
+      var lockedData = chartData(helper, locked);
+      helper.assertTrue(lockedData.locked, "Lock fixture failed");
+      inventory.setItem(0, locked);
+      helper.assertTrue(ArkCharts.compile(player, module, main).status() == ArkCharts.Status.LOCKED
+          && java.util.Arrays.equals(blank, lockedData.colors), "A locked chart changed");
+      var missing = new ItemStack(Items.FILLED_MAP);
+      inventory.setItem(0, missing);
+      helper.assertTrue(ArkCharts.compile(player, module, main).status() == ArkCharts.Status.NO_DATA,
+          "A map without an id compiled");
+      var unknown = new ItemStack(Items.FILLED_MAP);
+      unknown.set(net.minecraft.core.component.DataComponents.MAP_ID,
+          new net.minecraft.world.level.saveddata.maps.MapId(Integer.MAX_VALUE - 7));
+      inventory.setItem(0, unknown);
+      helper.assertTrue(ArkCharts.compile(player, module, main).status() == ArkCharts.Status.NO_DATA,
+          "A map without saved data compiled");
+      inventory.setItem(0, chart);
+
+      var engineering = arkModule(helper, controller, "engineering_module");
+      var engineeringState = level.getBlockState(engineering);
+      level.removeBlock(engineering, false);
+      helper.assertTrue(ArkCharts.compile(player, module, main).status() == ArkCharts.Status.STRUCTURE,
+          "An incomplete Ark compiled");
+      level.setBlockAndUpdate(engineering, engineeringState);
+      level.setBlockAndUpdate(controller.above(), level.getBlockState(controller));
+      helper.assertTrue(ArkCharts.compile(player, module, main).status() == ArkCharts.Status.STRUCTURE,
+          "Ambiguous controllers compiled");
+      level.removeBlock(controller.above(), false);
+      helper.assertTrue(ArkCharts.compile(player, module, net.minecraft.world.InteractionHand.OFF_HAND)
+          .status() == ArkCharts.Status.UNAVAILABLE, "The offhand compiled");
+      helper.assertTrue(ArkCharts.compile(player, arkModule(helper, controller, "nature_module"), main)
+          .status() == ArkCharts.Status.UNAVAILABLE, "Another module compiled");
+      player.setGameMode(net.minecraft.world.level.GameType.SPECTATOR);
+      helper.assertTrue(ArkCharts.compile(player, module, main).status() == ArkCharts.Status.UNAVAILABLE,
+          "A spectator compiled");
+      player.setGameMode(net.minecraft.world.level.GameType.SURVIVAL);
+      player.teleportTo(module.getX() + 30.5, module.getY() + 1, module.getZ() + 0.5);
+      helper.assertTrue(ArkCharts.compile(player, module, main).status() == ArkCharts.Status.UNAVAILABLE,
+          "A remote player compiled");
+      player.teleportTo(controller.getX() + 0.5, controller.getY() + 1.0, controller.getZ() + 0.5);
+
+      java.util.function.Consumer<net.neoforged.neoforge.event.entity.player.PlayerInteractEvent.RightClickBlock> deny =
+          event -> {
+            if (event.getEntity() == player) event.setCanceled(true);
+          };
+      net.neoforged.neoforge.common.NeoForge.EVENT_BUS.addListener(
+          net.neoforged.bus.api.EventPriority.NORMAL, false,
+          net.neoforged.neoforge.event.entity.player.PlayerInteractEvent.RightClickBlock.class, deny);
+      try {
+        player.gameMode.useItemOn(player, level, chart, main, arkHit(module));
+      } finally {
+        net.neoforged.neoforge.common.NeoForge.EVENT_BUS.unregister(deny);
+      }
+      // An empty main hand with the chart in the offhand keeps the journal gesture.
+      inventory.setItem(0, ItemStack.EMPTY);
+      player.setItemInHand(net.minecraft.world.InteractionHand.OFF_HAND, chart);
+      player.gameMode.useItemOn(player, level, ItemStack.EMPTY, main, arkHit(module));
+      player.gameMode.useItemOn(player, level, chart, net.minecraft.world.InteractionHand.OFF_HAND, arkHit(module));
+      player.setItemInHand(net.minecraft.world.InteractionHand.OFF_HAND, ItemStack.EMPTY);
+      inventory.setItem(0, chart);
+      helper.assertTrue(java.util.Arrays.equals(blank, target.colors)
+          && java.util.Arrays.equals(fieldColours, fieldData.colors)
+          && chartInventoryUnchanged(before, player),
+          "A refused or canceled request changed a chart or the inventory");
+
+      var accepted = ArkCharts.compile(player, module, main);
+      helper.assertTrue(accepted.status() == ArkCharts.Status.COMPILED && accepted.pixels() == 128 * 128
+          && accepted.matched() == 1 && accepted.contributed() == 1 && accepted.skipped() == 2
+          && java.util.Arrays.equals(fieldColours, target.colors)
+          && chartInventoryUnchanged(before, player),
+          "The same request failed once the Ark and gesture were valid: " + accepted);
+      level.removeBlock(module, false);
+      helper.assertTrue(ArkCharts.compile(player, module, main).status() == ArkCharts.Status.UNAVAILABLE,
+          "A removed module still compiled");
+    }
+    helper.succeed();
+  }
 }
