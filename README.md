@@ -10,6 +10,8 @@ The 85 missing-item addon loot errors have been resolved. Server checks preserve
 
 The Ark controller accepts capped partial batches for all six modules and preserves contributions through team changes and saving. Its final activation requires the campaign's recorded End journey, completed module projects, six commissioning batches and the physical modules. Activation records the ending once and consumes nothing further; later inspection replays it. Complete module benefits and postgame mastery systems remain unfinished. See the [Act VI route](docs/design/act-six-route.md) and [earlier Ark batch evidence](docs/verification/ark-batches-runtime.json).
 
+Act VI has now been checked in the real client in English and Spanish. Loading a previously stranded save repairs all 42 campaign quest mirrors while preserving the authoritative campaign and prior completion timestamps. The dedicated full-pack checks passed 25/25 with a temporary QA watchdog extension after the four-reload test sequence hit the normal watchdog. Its aggregate delay does not measure an ordinary production reload. See the [Act VI runtime evidence](docs/verification/act-six-runtime.json).
+
 ## Design commitments
 - Six directed acts with independent team campaigns and unrestricted item trading.
 - Extensive early quality-of-life tools and approachable, purposeful automation.
@@ -37,6 +39,8 @@ ENTRELUMEN es un kitchen sink original sobre recuperar conocimientos y reconstru
 El prototipo incluye 155 quests bilingües en seis capítulos, campaña por equipo, interfaz del Atlas, estación para marcar brújulas, 140 dependencias de cliente y 110 de servidor, y arte propio en revisión. Las entregas abarcan los seis actos, con 42 hitos y un primer final narrativo explícito. Las seis recetas de módulos pasaron pruebas de crafteo con los mods reales; las verificaciones anteriores de los actos II–V conservan su evidencia. Todavía está lejos de la escala final acordada. El recorrido completo en supervivencia, su duración, el rendimiento y la publicación siguen pendientes. Todo el contenido propio debe tener una identidad visual hermosa y coherente de pixel art a escala Minecraft, comprobada dentro del juego. Las maquetas técnicas y los conceptos sin revisión siguen siendo borradores.
 
 El controlador del Arca acepta lotes parciales y conserva las entregas. La activación final exige el viaje al End registrado, los seis proyectos, sus seis lotes de puesta en marcha y los módulos físicos presentes. Registra el final una sola vez, sin consumir nada más; inspeccionarlo permite releerlo. Los beneficios completos de cada módulo y las maestrías del posgame siguen pendientes.
+
+El acto VI se comprobó dentro de Minecraft en inglés y español. Al cargar una partida que tenía las quests trabadas, se recuperaron los 42 hitos reflejados sin alterar la campaña ni las fechas de finalización anteriores. Pasaron los 25 controles con una ampliación temporal del watchdog de QA, después de que la secuencia de cuatro recargas activara el límite normal. Su atraso acumulado no mide una recarga ordinaria de producción. [Evidencia del acto VI](docs/verification/act-six-runtime.json).
 
 Se corrigieron los 85 errores de loot de addons. Las 295 tablas disponibles conservaron su contenido original y seis bloques pasaron pruebas de drops antes y después de recargar. El arranque final sin herramientas temporales de prueba no tuvo líneas ERROR; esto no acredita todavía el rendimiento del pack. [Evidencia de compatibilidad](docs/verification/optional-loot-runtime.json).
 

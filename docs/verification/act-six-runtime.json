@@ -1,0 +1,583 @@
+{
+  "schemaVersion": 1,
+  "checkedAt": "2026-09-23T03:06:55.574942+00:00",
+  "scope": "Act VI construction, commissioning and first narrative ending; full E2E pack remains unfinished.",
+  "status": "Act VI functional integration and saved-quest repair verified; QA reload-batch limitation recorded. Full-pack performance acceptance remains unmeasured.",
+  "platform": "Minecraft 1.21.1 / NeoForge 21.1.249 / Java 21 / Windows",
+  "sourceHashPolicy": "Exact local bytes; Git can normalize CRLF to LF.",
+  "sourceSha256": {
+    "companion/src/main/java/dev/entrelumen/ArkActions.java": "d5903aed5832bb47bafed788171721e7355299f9cd47368bee0d6ac3774e8ff9",
+    "companion/src/main/java/dev/entrelumen/ArkControllerBlock.java": "058d0140f6dd3f7d87cd51e03f214f46e9cb50cbfaef0b3ff030e3b76e3a09f5",
+    "companion/src/main/java/dev/entrelumen/CampaignMilestones.java": "5f37becf4846bdcca33b5e74faa18bb789fe9cc56367343710bfe5d1a9726ff7",
+    "companion/src/main/java/dev/entrelumen/CampaignTask.java": "1e4b85fa9e30c0139e4a2a034931c0c06de524de250e9f35342bbc5deeb3216a",
+    "companion/src/main/java/dev/entrelumen/Expeditions.java": "d9fa4f94452ef944f86fd7f07404b387ea2ce99734b53192cac2ddc22f8fe9ac",
+    "companion/src/main/resources/data/entrelumen/campaign/projects.json": "1dcccffb540e2f23381effb1911101bae19c766a8caf369cf9ee829e97c541fb",
+    "content/act_six.json": "dab6474772959ee9db47bad66e50711b82c292780d9d3cd376625b0ca7ebf206",
+    "content/campaign_task_ids.json": "3d0b4cc15b0e2ca1ef3e6617170b379ece8624047cbba7167bdf0a64f6893ffc",
+    "pack/config/ftbquests/quests/chapters/last_horizon.snbt": "6bbf63247e4dde76927f2fbc0ef69a622f0aac3acf08e44d50377b2a7ecd63ec",
+    "pack/config/ftbquests/quests/lang/en_us.snbt": "601ef34bcd728fdfb7499513c0d13d7d174000896398d2e004d83d45fb377da2",
+    "pack/config/ftbquests/quests/lang/es_es.snbt": "d5b2ea308afabfe8b350b92c7723cfc361e084436bfdecdc583d4c1f7334e529",
+    "pack/kubejs/server_scripts/entrelumen_runtime_audit.js": "f4cbfdc8165a328317a5ef738d6390c67c5f7c59e0675d019f8310f1a74ed39e"
+  },
+  "quests": {
+    "total": 155,
+    "chapters": 6,
+    "newActSix": 27,
+    "campaignMilestones": 42,
+    "generatorTests": 24,
+    "previous128Preserved": true,
+    "locales": [
+      "en_us",
+      "es_es"
+    ]
+  },
+  "recipes": {
+    "staticDefinitionsUnchanged": 22,
+    "fullPackCrafting": {
+      "token": "0aab97d7-026c-4be9-8c0e-7a6ff582909e",
+      "kind": "craft",
+      "status": "passed",
+      "results": [
+        {
+          "recipe": "entrelumen:integration/ark_engineering",
+          "output": "entrelumen:engineering_module",
+          "orientations": 2,
+          "bowls": 0
+        },
+        {
+          "recipe": "entrelumen:integration/ark_arcana",
+          "output": "entrelumen:arcane_module",
+          "orientations": 2,
+          "bowls": 0
+        },
+        {
+          "recipe": "entrelumen:integration/ark_nature",
+          "output": "entrelumen:nature_module",
+          "orientations": 2,
+          "bowls": 0
+        },
+        {
+          "recipe": "entrelumen:integration/ark_exploration",
+          "output": "entrelumen:exploration_module",
+          "orientations": 2,
+          "bowls": 0
+        },
+        {
+          "recipe": "entrelumen:integration/ark_logistics",
+          "output": "entrelumen:logistics_module",
+          "orientations": 2,
+          "bowls": 0
+        },
+        {
+          "recipe": "entrelumen:integration/ark_habitation",
+          "output": "entrelumen:habitation_module",
+          "orientations": 2,
+          "bowls": 0
+        }
+      ],
+      "errors": [],
+      "questFile": {
+        "quests": 155,
+        "chapters": 6,
+        "milestones": [
+          "aether_arrival",
+          "arcane_module",
+          "ark_calibrated",
+          "ark_charted",
+          "ark_contained",
+          "ark_provisioned",
+          "ark_renewed",
+          "ark_routed",
+          "atlas_awakened",
+          "atlas_voices",
+          "bumblezone_arrival",
+          "crystal_grid",
+          "distributed_power",
+          "end_arrival",
+          "engineering_module",
+          "exchange_route",
+          "exploration_module",
+          "field_survey",
+          "first_signal",
+          "habitation_module",
+          "horizon_survey",
+          "last_horizon",
+          "lens_assembled",
+          "living_workshop",
+          "logistics_module",
+          "lost_workshop",
+          "measured_logistics",
+          "nature_module",
+          "nursery_protocol",
+          "pollinator_treaty",
+          "precision_bench",
+          "renewal_engine",
+          "resilient_backbone",
+          "sealed_memory",
+          "settlement_supply",
+          "signal_exchange",
+          "spectral_archive",
+          "travellers_table",
+          "travelling_pantry",
+          "twilight_arrival",
+          "workshop_hands",
+          "world_network"
+        ]
+      }
+    },
+    "fixturePolicy": "Independent literal inputs; two grid orders; exact output, missing-input rejection, unchanged input and native remainder checks."
+  },
+  "firstFullpackRun": {
+    "runId": "3900135b-1ac8-4e78-95bf-eb346524dfb6",
+    "log": "C:\\Users\\elias\\Documents\\Codex\\2026-09-12\\h\\work\\act-six-fullpack-runtime.log",
+    "logSha256": "76a249adce792c1750a254528b815358f77880b517e2d55287ee91f5f7d3286a",
+    "craftRequest": "9f36c446-9aa3-4a6a-9fd8-f394884acb33",
+    "gameTestRequest": "e8737057-1ec8-47c7-bf05-0d0699f33e43",
+    "exitCode": 0,
+    "gameTests": "Four failures exposed starter books in synthetic players; fixture now clears login items before test setup. This run is not claimed as passing.",
+    "runtimeSourceCoverage": {
+      "items": 115,
+      "recipes": 30,
+      "signature": "0bd1cd3ed351ac92",
+      "run": "1790128731695"
+    },
+    "market": {
+      "checked": 745,
+      "skipped": 705,
+      "untouched": 40,
+      "loadedMarketRecipes": 107
+    }
+  },
+  "clientFirstRun": {
+    "world": "ENTRELUMEN-QA-ActVI",
+    "copyOf": "ENTRELUMEN-QA-functional; original world not edited",
+    "jarSha256": "8352177872438808ccbb55da411b11faed231b305c0dd54744d8053fde000298",
+    "log": "C:\\Users\\elias\\Documents\\Codex\\2026-09-12\\h\\work\\act-six-client-first-run.log",
+    "logSha256": "42a1a29692417def82f93fdc2c801fa71e8eb5796b24bcaba6c15057a88fc410",
+    "fixture": "Creative-mode QA supplies, physical structure, previous projects/trips and commissioning phases 0-5 supplied by a temporary operator helper. Does not prove survival acquisition or pacing.",
+    "observed": [
+      "Crouched empty-main-hand controller interaction consumed one horizon chart and advanced phase 5 to 6.",
+      "A separate activation attempt without end_arrival was rejected.",
+      "Actual native player teleport into the End triggered the mod observation event; no direct write of end_arrival.",
+      "Returning and interacting with the controller recorded last_horizon and displayed the Spanish ending.",
+      "Save/exit, reopen and controller replay displayed the English ending.",
+      "Complete campaign NBT was identical before and after reopening and replay; no additional reward appeared in the hotbar.",
+      "Spanish final quest text rendered legibly; its completion lock exposed a separate mirror defect."
+    ],
+    "campaignAfterReplay": {
+      "act": 6,
+      "archived": 0,
+      "arkDeposits": {},
+      "arkPhase": 6,
+      "completed": [
+        "aether_arrival",
+        "arcane_module",
+        "atlas_awakened",
+        "atlas_voices",
+        "bumblezone_arrival",
+        "crystal_grid",
+        "distributed_power",
+        "end_arrival",
+        "engineering_module",
+        "exchange_route",
+        "exploration_module",
+        "field_survey",
+        "first_signal",
+        "habitation_module",
+        "horizon_survey",
+        "last_horizon",
+        "lens_assembled",
+        "living_workshop",
+        "logistics_module",
+        "lost_workshop",
+        "measured_logistics",
+        "nature_module",
+        "nursery_protocol",
+        "pollinator_treaty",
+        "precision_bench",
+        "renewal_engine",
+        "resilient_backbone",
+        "sealed_memory",
+        "settlement_supply",
+        "signal_exchange",
+        "spectral_archive",
+        "travellers_table",
+        "travelling_pantry",
+        "twilight_arrival",
+        "workshop_hands",
+        "world_network"
+      ]
+    },
+    "savedSchemaVersion": 2,
+    "helperRemoved": true,
+    "nonPassingFixtureAttempts": "Earlier auxiliary attempts failed on KubeJS getUUID/dimension mappings; exceptions aborted queued native commands. The corrected build command prepared the physical fixture. These attempts are retained in the log.",
+    "performanceWarning": "New End generation logged a 5929 ms catch-up warning. This session is not a benchmark.",
+    "screenshots": [
+      "docs/verification/screenshots/act-six-end-required-es.png",
+      "docs/verification/screenshots/act-six-ending-es.png"
+    ]
+  },
+  "mirrorDefect": {
+    "reproduction": "Saved team had all 42 authoritative task progress values at 1, but only four journey completions. Even root atlas_awakened had no completed timestamp.",
+    "cause": "FTB setProgress(1) does not repair completed state when progress is already 1. CampaignTask skipped that state permanently.",
+    "evidence": "C:\\Users\\elias\\Documents\\Codex\\2026-09-12\\h\\work\\act-six-client-ftb-before-mirror-fix.snbt",
+    "status": "Repaired through the native FTB completion path; verified on the previously stranded real client save.",
+    "verification": {
+      "teamFile": "G:\\curseforge\\Instances\\ENTRELUMEN\\saves\\ENTRELUMEN-QA-ActVI\\ftbquests\\41061249-2832-4af3-add9-f0d6539283b6.snbt",
+      "teamFileSha256": "427a491c9adfdb15397ded168e2443c62fb2e9ba74e9a7b870ccef686d355ecb",
+      "milestones": {
+        "atlas_awakened": {
+          "progress": 1,
+          "taskCompleted": true,
+          "questCompleted": true
+        },
+        "travellers_table": {
+          "progress": 1,
+          "taskCompleted": true,
+          "questCompleted": true
+        },
+        "lens_assembled": {
+          "progress": 1,
+          "taskCompleted": true,
+          "questCompleted": true
+        },
+        "field_survey": {
+          "progress": 1,
+          "taskCompleted": true,
+          "questCompleted": true
+        },
+        "first_signal": {
+          "progress": 1,
+          "taskCompleted": true,
+          "questCompleted": true
+        },
+        "precision_bench": {
+          "progress": 1,
+          "taskCompleted": true,
+          "questCompleted": true
+        },
+        "crystal_grid": {
+          "progress": 1,
+          "taskCompleted": true,
+          "questCompleted": true
+        },
+        "living_workshop": {
+          "progress": 1,
+          "taskCompleted": true,
+          "questCompleted": true
+        },
+        "travelling_pantry": {
+          "progress": 1,
+          "taskCompleted": true,
+          "questCompleted": true
+        },
+        "lost_workshop": {
+          "progress": 1,
+          "taskCompleted": true,
+          "questCompleted": true
+        },
+        "signal_exchange": {
+          "progress": 1,
+          "taskCompleted": true,
+          "questCompleted": true
+        },
+        "nursery_protocol": {
+          "progress": 1,
+          "taskCompleted": true,
+          "questCompleted": true
+        },
+        "distributed_power": {
+          "progress": 1,
+          "taskCompleted": true,
+          "questCompleted": true
+        },
+        "measured_logistics": {
+          "progress": 1,
+          "taskCompleted": true,
+          "questCompleted": true
+        },
+        "workshop_hands": {
+          "progress": 1,
+          "taskCompleted": true,
+          "questCompleted": true
+        },
+        "exchange_route": {
+          "progress": 1,
+          "taskCompleted": true,
+          "questCompleted": true
+        },
+        "aether_arrival": {
+          "progress": 1,
+          "taskCompleted": true,
+          "questCompleted": true
+        },
+        "twilight_arrival": {
+          "progress": 1,
+          "taskCompleted": true,
+          "questCompleted": true
+        },
+        "bumblezone_arrival": {
+          "progress": 1,
+          "taskCompleted": true,
+          "questCompleted": true
+        },
+        "spectral_archive": {
+          "progress": 1,
+          "taskCompleted": true,
+          "questCompleted": true
+        },
+        "horizon_survey": {
+          "progress": 1,
+          "taskCompleted": true,
+          "questCompleted": true
+        },
+        "pollinator_treaty": {
+          "progress": 1,
+          "taskCompleted": true,
+          "questCompleted": true
+        },
+        "sealed_memory": {
+          "progress": 1,
+          "taskCompleted": true,
+          "questCompleted": true
+        },
+        "atlas_voices": {
+          "progress": 1,
+          "taskCompleted": true,
+          "questCompleted": true
+        },
+        "resilient_backbone": {
+          "progress": 1,
+          "taskCompleted": true,
+          "questCompleted": true
+        },
+        "renewal_engine": {
+          "progress": 1,
+          "taskCompleted": true,
+          "questCompleted": true
+        },
+        "settlement_supply": {
+          "progress": 1,
+          "taskCompleted": true,
+          "questCompleted": true
+        },
+        "world_network": {
+          "progress": 1,
+          "taskCompleted": true,
+          "questCompleted": true
+        },
+        "end_arrival": {
+          "progress": 1,
+          "taskCompleted": true,
+          "questCompleted": true
+        },
+        "engineering_module": {
+          "progress": 1,
+          "taskCompleted": true,
+          "questCompleted": true
+        },
+        "arcane_module": {
+          "progress": 1,
+          "taskCompleted": true,
+          "questCompleted": true
+        },
+        "nature_module": {
+          "progress": 1,
+          "taskCompleted": true,
+          "questCompleted": true
+        },
+        "logistics_module": {
+          "progress": 1,
+          "taskCompleted": true,
+          "questCompleted": true
+        },
+        "habitation_module": {
+          "progress": 1,
+          "taskCompleted": true,
+          "questCompleted": true
+        },
+        "exploration_module": {
+          "progress": 1,
+          "taskCompleted": true,
+          "questCompleted": true
+        },
+        "ark_calibrated": {
+          "progress": 1,
+          "taskCompleted": true,
+          "questCompleted": true
+        },
+        "ark_contained": {
+          "progress": 1,
+          "taskCompleted": true,
+          "questCompleted": true
+        },
+        "ark_renewed": {
+          "progress": 1,
+          "taskCompleted": true,
+          "questCompleted": true
+        },
+        "ark_routed": {
+          "progress": 1,
+          "taskCompleted": true,
+          "questCompleted": true
+        },
+        "ark_provisioned": {
+          "progress": 1,
+          "taskCompleted": true,
+          "questCompleted": true
+        },
+        "ark_charted": {
+          "progress": 1,
+          "taskCompleted": true,
+          "questCompleted": true
+        },
+        "last_horizon": {
+          "progress": 1,
+          "taskCompleted": true,
+          "questCompleted": true
+        }
+      },
+      "oldCompletionTimestampsPreserved": true,
+      "campaignUnchanged": true,
+      "passed": true
+    }
+  },
+  "remainingAcceptance": [
+    "The four-reload GameTest sequence hit the default 60 s watchdog on its first run, then passed with a QA-only 180 s allowance. Its 67.114 s catch-up is aggregate delay, not the duration of one production /reload. Production timeout is restored to 60 s. Owner: root; profile one ordinary reload separately when assessing operational performance; do not repeat the broad QA suite merely to infer it.",
+    "Manual new-world complete campaign playthrough and 150-200 hour pacing.",
+    "Complete six module benefits and postgame mastery experiences.",
+    "Extra-large mod/quest parity, remaining QoL curation and exact Oscuria project identification.",
+    "Beautiful final art, structures, UI and in-game acceptance; existing assets remain candidates.",
+    "Reference-machine performance, two-hour soak, integrated LAN and six external clients.",
+    "CurseForge moderation, public installation and full release acceptance."
+  ],
+  "implementationCommit": "6219831821e7636a6dd95472d86901d851a26440",
+  "ci": {
+    "run": 35811658235,
+    "url": "https://github.com/eliaschofo/entrelumen/actions/runs/35811658235",
+    "head": "6219831821e7636a6dd95472d86901d851a26440",
+    "conclusion": "success"
+  },
+  "automatedChecks": {
+    "junit": {
+      "tests": 33,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "standaloneGameTests": {
+      "passed": 24,
+      "expected": 24,
+      "externalItems": "Synthetic fixture; not native mod compatibility evidence."
+    },
+    "fullpackGameTests": {
+      "status": "passed_with_qa_watchdog_override",
+      "expected": 25,
+      "finished": 25,
+      "passed": 25,
+      "failed": 0,
+      "pending": [],
+      "normalJarSha256": "38E051BFBDD92F1545E86EB13E1F447CD9105FCFF7C57ED57F8E5FC6685CC255",
+      "qaJarSha256": "3FCD930763C9A2764E2393A13F551CCCBF5C113B288F843AD600817E90F93D70",
+      "priorAttempt": {
+        "runId": "dee60e72-abb7-4881-8b4d-1cb8fde0c4f1",
+        "exitCode": 1,
+        "result": "24 PASS, 1 pending; watchdog at 60000 ms during KubeJS datapack reload",
+        "log": "work/act-six-fullpack-verified.log",
+        "logSha256": "90C9BA27494EF37F5361BD4B6FB6D9F594C4D86DEA330378BAA7A992A659393C"
+      },
+      "verifiedRun": {
+        "runId": "d5321c74-cdfa-4745-91c7-8d82fb02dc71",
+        "pid": 31664,
+        "exitCode": 0,
+        "testRequestId": "be14f3b4-6973-474c-856d-c113ae62221c",
+        "resultsRequestId": "c864a4f6-61d7-4986-88ea-f42344f2b7a5",
+        "stopRequestId": "a6783fb5-3898-41c5-818c-7a6968269be2",
+        "log": "work/act-six-fullpack-verified-retry.log",
+        "logSha256": "CB6C8490C94DD75690941B10A5C490F4DC02445BB76F34A0420960A8DDA7FE2C",
+        "terminal": "ENTRELUMEN_QA_SUMMARY expected=25 finished=25 failed=0 passed=25 failedNames=[] pendingNames=[]",
+        "watchdogMs": 180000,
+        "watchdogRestoredMs": 60000,
+        "reloadBatchSeconds": 57,
+        "serverCatchupMs": 67114,
+        "minObservedFreePhysicalMiB": 305,
+        "finalObservedWorkingSetMiB": 3221,
+        "finalObservedPrivateMiB": 3889,
+        "observedYoungGcCount": 90,
+        "observedFullGcCount": 0,
+        "observedGcSeconds": 4.861
+      },
+      "risk": "The first four-reload GameTest sequence hit the normal 60000 ms watchdog. The retry passed with an isolated QA allowance of 180000 ms. Its 67114 ms catch-up is aggregate sequence delay, not proof that a single production /reload exceeds 60 seconds. Ordinary reload performance has not been measured in this slice.",
+      "retractedRiskStatement": "The full-pack reload exceeded the normal 60000 ms watchdog; functional tests pass only with the isolated QA watchdog raised to 180000 ms. Reload performance remains a material operational risk.",
+      "reloadInterpretation": {
+        "count": 4,
+        "sequence": [
+          "valid data",
+          "invalid data",
+          "dependency cycle",
+          "restore"
+        ],
+        "scheduling": "succeedWhen runs the sequence across GameTest passes, waiting for each future before starting the next; not four calls in a single tick.",
+        "completionTimesLocal": [
+          "23:52:46",
+          "23:52:48",
+          "23:52:52",
+          "23:53:16"
+        ],
+        "approximateSeconds": [
+          26,
+          2,
+          4,
+          24
+        ],
+        "source": "RuntimeGameTests.datapackReloadIsAtomicAndRejectsCycles at implementation commit 6219831821e7636a6dd95472d86901d851a26440",
+        "correctedAt": "2026-09-23T03:06:55.440189+00:00"
+      }
+    }
+  },
+  "serverRestoration": {
+    "normalJarSha256": "38e051bfbdd92f1545e86eb13e1f447cd9105fcff7c57ed57f8e5fc6685cc255",
+    "retiredHelpers": [
+      {
+        "name": "entrelumen_qa_act_six_runtime.js",
+        "sha256": "e230d4bb05380eb556c796e2d71bdf45dba9007e3ba7cc9165df9a8f82bd4ff5"
+      },
+      {
+        "name": "entrelumen_qa_act_three_crafting.js",
+        "sha256": "f0d4f653a3d11904f85c5f2367c81c81ce3eb8d448ccf086a6921f7357a103a4"
+      }
+    ],
+    "maxTickTime": 60000,
+    "stoppedRunId": "d5321c74-cdfa-4745-91c7-8d82fb02dc71",
+    "exitCode": 0
+  },
+  "clientMirrorRepair": {
+    "normalJarSha256": "38e051bfbdd92f1545e86eb13e1f447cd9105fcff7c57ed57f8e5fc6685cc255",
+    "world": "ENTRELUMEN-QA-ActVI",
+    "temporaryOperatorHelperPresent": false,
+    "observed": [
+      "Loading the previously stranded save reconciled all 42 authoritative campaign task and quest completions.",
+      "The final quest opened with its completed task, readable English and Spanish narrative and no dependency lock.",
+      "Ordinary controller inspection replayed the English ending without granting another item.",
+      "After saving, all prior completion timestamps were unchanged and the entire campaign NBT matched its before-image.",
+      "World saved, Minecraft closed normally; language es_es and toggleCrouch false restored."
+    ],
+    "logs": {
+      "act-six-client-mirror-start.log.gz": "f8fe52c5134de7442615ec2ff5a36a16f5ea226ef89352f9694f67d17954ea22",
+      "act-six-client-mirror-fixed.log": "648dec3676a4318d65cda65fc603c9442acc5009a126ab1b136db8e6c26d4b9a"
+    },
+    "logRotation": "The local session crossed midnight; the gzipped segment contains startup and the latest segment contains language reload and shutdown.",
+    "screenshots": {
+      "docs/verification/screenshots/act-six-ending-en.png": "ddc5e672a0f2d636dc19a4a8d6cb2dcd486b8b46e1132db2b5644ef9bb8fd658",
+      "docs/verification/screenshots/act-six-final-quest-en.png": "3930d930e29f3f31bfd4711837e90598c1b48fdfe43333b9bbf339aa3928c325",
+      "docs/verification/screenshots/act-six-final-quest-es.png": "fb4c781cf25af102c532bbcf72390944286e1efa141b6a5f74d8a74b177e2877"
+    },
+    "limits": "Creative QA save, not a new-world survival playthrough or performance benchmark. Existing third-party resource-path/model warnings remain; the log is not claimed error-free. Existing artwork remains a candidate."
+  },
+  "acquisitionReview": {
+    "head": "6219831821e7636a6dd95472d86901d851a26440",
+    "scope": "Read-only review of 31 project definitions, 22 integration recipes, staged resource scripts and already pinned native JAR data.",
+    "result": "No reproducible self-dependency blocker found. Basic centrifuge wax, native essence acquisition and native portals remain alternatives; lenses and notes can be recrafted.",
+    "limit": "Does not verify actual world generation, per-world availability or a complete survival playthrough."
+  }
+}
