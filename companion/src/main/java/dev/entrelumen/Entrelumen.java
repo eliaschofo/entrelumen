@@ -57,6 +57,12 @@ public final class Entrelumen {
         ITEMS.register(id, () -> new EngineeringModuleItem(engineering.get(), new Item.Properties()));
         continue;
       }
+      if (id.equals("logistics_module")) {
+        var logistics = BLOCKS.register(id, () -> new LogisticsModuleBlock(
+            BlockBehaviour.Properties.of().strength(3f).requiresCorrectToolForDrops()));
+        ITEMS.register(id, () -> new LogisticsModuleItem(logistics.get(), new Item.Properties()));
+        continue;
+      }
       var block =
           BLOCKS.registerSimpleBlock(
               id, BlockBehaviour.Properties.of().strength(3f).requiresCorrectToolForDrops());
@@ -80,6 +86,8 @@ public final class Entrelumen {
     NeoForge.EVENT_BUS.addListener(Expeditions::onRespawn);
     NeoForge.EVENT_BUS.addListener(net.neoforged.bus.api.EventPriority.LOWEST,
         ArkControllerBlock::allowEmptyHandDeposit);
+    NeoForge.EVENT_BUS.addListener(net.neoforged.bus.api.EventPriority.LOWEST,
+        LogisticsModuleBlock::allowCrouchedUse);
     NeoForge.EVENT_BUS.addListener(
         (net.neoforged.neoforge.event.AddReloadListenerEvent event) ->
             event.addListener(new ProjectReloadListener()));

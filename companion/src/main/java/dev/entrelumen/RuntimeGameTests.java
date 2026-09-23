@@ -18,6 +18,132 @@ import net.neoforged.neoforge.gametest.*;
 @PrefixGameTestTemplate(false)
 public final class RuntimeGameTests {
   @GameTest(template = "empty", timeoutTicks = 200)
+  public static void logisticsModuleDepositsCurrentBatchFromTeamInventoryOnce(GameTestHelper helper)
+      throws Exception {
+    var player = player(helper, "LogisticsMain");
+    var outsider = player(helper, "LogisticsOther");
+    var controller = ark(helper, player);
+    var module = arkModule(helper, controller, "logistics_module");
+    player.teleportTo(module.getX() + 0.5, module.getY() + 1, module.getZ() + 0.5);
+    outsider.teleportTo(module.getX() + 0.5, module.getY() + 1, module.getZ() + 0.5);
+    var personal = Entrelumen.current(player);
+    personal.arkDeposits.put("entrelumen:calibration_frame", 1);
+    var other = Entrelumen.current(outsider);
+    other.act = 6;
+    other.completed.addAll(Entrelumen.MODULES);
+    other.arkDeposits.put("entrelumen:power_regulator", 1);
+    var team = FTBTeamsAPI.api().getManager().createPartyTeam(player,
+        "Logistics " + player.getUUID(), "", dev.ftb.mods.ftblibrary.icon.Color4I.WHITE);
+    var campaign = Entrelumen.current(player);
+    player.setItemInHand(net.minecraft.world.InteractionHand.OFF_HAND,
+        new ItemStack(arkItem("calibration_frame"), 2));
+    player.getInventory().setItem(1, new ItemStack(arkItem("power_regulator"), 3));
+    player.getInventory().setItem(2, new ItemStack(Items.DIAMOND, 5));
+    var blocks = Map.of(module, helper.getLevel().getBlockState(module),
+        controller, helper.getLevel().getBlockState(controller));
+    var materials = Entrelumen.availableMaterials(player);
+    var ordinary = player.gameMode.useItemOn(player, helper.getLevel(), player.getMainHandItem(),
+        net.minecraft.world.InteractionHand.MAIN_HAND, arkHit(module));
+    helper.assertTrue(ordinary.consumesAction() && Entrelumen.availableMaterials(player).equals(materials)
+        && campaign.arkDeposits.equals(Map.of("entrelumen:calibration_frame", 1)),
+        "Ordinary logistics inspection consumed or changed the current batch");
+
+    outsider.setShiftKeyDown(true);
+    outsider.setItemInHand(net.minecraft.world.InteractionHand.OFF_HAND,
+        new ItemStack(arkItem("calibration_frame"), 4));
+    helper.assertTrue(!ArkActions.depositFromModule(outsider, team.getId(), module, 0)
+        && outsider.getOffhandItem().getCount() == 4
+        && other.arkDeposits.equals(Map.of("entrelumen:power_regulator", 1)),
+        "Foreign campaign identity entered the team's logistics ledger");
+
+    player.setShiftKeyDown(true);
+    var accepted = player.gameMode.useItemOn(player, helper.getLevel(), player.getMainHandItem(),
+        net.minecraft.world.InteractionHand.MAIN_HAND, arkHit(module));
+    helper.assertTrue(accepted.consumesAction() && campaign.arkPhase == 0
+        && campaign.arkDeposits.equals(Map.of("entrelumen:calibration_frame", 3,
+            "entrelumen:power_regulator", 2))
+        && player.getOffhandItem().isEmpty()
+        && player.getInventory().getItem(1).getCount() == 1
+        && player.getInventory().countItem(Items.DIAMOND) == 5,
+        "Crouched logistics click failed to cap the partial batch to exact player inventory");
+    var restored = CampaignData.load(CampaignData.get(player.server).save(new CompoundTag(),
+        helper.getLevel().registryAccess()), helper.getLevel().registryAccess())
+        .campaigns.parties.get(team.getId());
+    helper.assertTrue(restored != null && restored.arkPhase == 0
+        && restored.arkDeposits.equals(campaign.arkDeposits),
+        "Partial logistics batch did not survive SavedData round trip");
+
+    player.getInventory().setItem(3, new ItemStack(arkItem("calibration_frame"), 4));
+    player.gameMode.useItemOn(player, helper.getLevel(), player.getMainHandItem(),
+        net.minecraft.world.InteractionHand.MAIN_HAND, arkHit(module));
+    helper.assertTrue(campaign.arkPhase == 1 && campaign.arkDeposits.isEmpty()
+        && player.getInventory().getItem(3).getCount() == 3,
+        "Top-up did not advance exactly one batch and retain surplus");
+    var afterTopup = Entrelumen.availableMaterials(player);
+    player.gameMode.useItemOn(player, helper.getLevel(), player.getMainHandItem(),
+        net.minecraft.world.InteractionHand.MAIN_HAND, arkHit(module));
+    helper.assertTrue(campaign.arkPhase == 1 && campaign.arkDeposits.isEmpty()
+        && Entrelumen.availableMaterials(player).equals(afterTopup)
+        && personal.arkDeposits.equals(Map.of("entrelumen:calibration_frame", 1))
+        && other.arkDeposits.equals(Map.of("entrelumen:power_regulator", 1)),
+        "Replay consumed surplus or crossed personal/team boundaries");
+    campaign.arkPhase = ArkCommissioning.STEPS.size();
+    campaign.completed.addAll(Set.of("world_network", "end_arrival"));
+    player.gameMode.useItemOn(player, helper.getLevel(), player.getMainHandItem(),
+        net.minecraft.world.InteractionHand.MAIN_HAND, arkHit(module));
+    helper.assertTrue(!campaign.completed.contains(CampaignMilestones.LAST_HORIZON)
+        && campaign.arkPhase == ArkCommissioning.STEPS.size()
+        && Entrelumen.availableMaterials(player).equals(afterTopup)
+        && blocks.entrySet().stream().allMatch(e -> helper.getLevel().getBlockState(e.getKey()).equals(e.getValue())),
+        "Logistics click activated the ending, consumed supplies or changed the structure");
+    helper.succeed();
+  }
+
+  @GameTest(template = "empty", timeoutTicks = 200)
+  public static void logisticsModuleRejectsAmbiguousMissingRemoteAndSpectator(GameTestHelper helper) {
+    var player = player(helper, "LogisticsGuard");
+    var controller = ark(helper, player);
+    var module = arkModule(helper, controller, "logistics_module");
+    player.teleportTo(module.getX() + 0.5, module.getY() + 1, module.getZ() + 0.5);
+    player.setShiftKeyDown(true);
+    player.setItemInHand(net.minecraft.world.InteractionHand.OFF_HAND,
+        new ItemStack(arkItem("calibration_frame"), 4));
+    var campaign = Entrelumen.current(player);
+    var id = CampaignActions.campaignId(player);
+    var extra = module.above();
+    helper.getLevel().setBlockAndUpdate(extra, helper.getLevel().getBlockState(controller));
+    helper.assertTrue(!ArkActions.depositFromModule(player, id, module, 0)
+        && player.getOffhandItem().getCount() == 4 && campaign.arkDeposits.isEmpty(),
+        "Ambiguous controllers accepted a logistics deposit");
+    helper.getLevel().removeBlock(extra, false);
+    var missing = arkModule(helper, controller, "nature_module");
+    var state = helper.getLevel().getBlockState(missing);
+    helper.getLevel().removeBlock(missing, false);
+    helper.assertTrue(!ArkActions.depositFromModule(player, id, module, 0)
+        && player.getOffhandItem().getCount() == 4 && campaign.arkDeposits.isEmpty(),
+        "Incomplete Ark accepted a logistics deposit");
+    helper.getLevel().setBlockAndUpdate(missing, state);
+    player.teleportTo(module.getX() + 20.5, module.getY() + 1, module.getZ() + 0.5);
+    helper.assertTrue(!ArkActions.depositFromModule(player, id, module, 0),
+        "Remote logistics interaction bypassed reach");
+    player.teleportTo(module.getX() + 0.5, module.getY() + 1, module.getZ() + 0.5);
+    player.setGameMode(net.minecraft.world.level.GameType.SPECTATOR);
+    helper.assertTrue(!ArkActions.depositFromModule(player, id, module, 0),
+        "Spectator deposited through logistics");
+    player.setGameMode(net.minecraft.world.level.GameType.SURVIVAL);
+    var denied = new net.neoforged.neoforge.event.entity.player.PlayerInteractEvent.RightClickBlock(
+        player, net.minecraft.world.InteractionHand.MAIN_HAND, module, arkHit(module));
+    denied.setUseBlock(net.neoforged.neoforge.common.util.TriState.FALSE);
+    LogisticsModuleBlock.allowCrouchedUse(denied);
+    helper.assertTrue(denied.getUseBlock() == net.neoforged.neoforge.common.util.TriState.FALSE,
+        "Logistics hook overrode another mod's explicit denial");
+    helper.assertTrue(campaign.arkPhase == 0 && campaign.arkDeposits.isEmpty()
+        && player.getOffhandItem().getCount() == 4,
+        "Denied logistics interactions consumed supplies or changed progress");
+    helper.succeed();
+  }
+
+  @GameTest(template = "empty", timeoutTicks = 200)
   public static void engineeringModuleInspectionIsReadOnlyAndTeamScoped(GameTestHelper helper)
       throws Exception {
     var engineer = player(helper, "EngInspector");
@@ -381,6 +507,15 @@ public final class RuntimeGameTests {
   private static net.minecraft.world.phys.BlockHitResult arkHit(net.minecraft.core.BlockPos pos) {
     return new net.minecraft.world.phys.BlockHitResult(net.minecraft.world.phys.Vec3.atCenterOf(pos),
         net.minecraft.core.Direction.UP, pos, false);
+  }
+
+  private static net.minecraft.core.BlockPos arkModule(GameTestHelper helper,
+      net.minecraft.core.BlockPos controller, String id) {
+    var block = BuiltInRegistries.BLOCK.get(ResourceLocation.parse("entrelumen:" + id));
+    for (var pos : net.minecraft.core.BlockPos.betweenClosed(controller.offset(-1, 0, 1),
+        controller.offset(1, 0, 2)))
+      if (helper.getLevel().getBlockState(pos).is(block)) return pos.immutable();
+    throw new IllegalStateException("Ark fixture lacks " + id);
   }
 
   private static Item arkItem(String id) {

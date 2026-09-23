@@ -44,6 +44,32 @@ public final class ArkActions {
       player.sendSystemMessage(Component.translatable("entrelumen.ark.structure"));
       return false;
     }
+    return acceptDeposit(player, expectedStep);
+  }
+
+  /** A second interaction point for the same controller transaction and SavedData ledger. */
+  static boolean depositFromModule(ServerPlayer player, UUID expectedCampaign, BlockPos module,
+      int expectedStep) {
+    if (!player.isSecondaryUseActive() || !player.getMainHandItem().isEmpty()
+        || player.isSpectator() || !player.canInteractWithBlock(module, 1.0)
+        || !player.serverLevel().hasChunkAt(module)
+        || !(player.serverLevel().getBlockState(module).getBlock() instanceof LogisticsModuleBlock))
+      return false;
+    if (!CampaignActions.campaignId(player).equals(expectedCampaign)) {
+      player.sendSystemMessage(Component.translatable("entrelumen.atlas.stale"));
+      return false;
+    }
+    var physical = EngineeringDiagnostics.physicalView(player.serverLevel(), module);
+    var controller = LogisticsModuleActions.controllerForDeposit(physical);
+    if (controller == null || !player.serverLevel().hasChunkAt(controller)
+        || !(player.serverLevel().getBlockState(controller).getBlock() instanceof ArkControllerBlock)) {
+      player.sendSystemMessage(Component.translatable("entrelumen.logistics.controller_unavailable"));
+      return false;
+    }
+    return acceptDeposit(player, expectedStep);
+  }
+
+  private static boolean acceptDeposit(ServerPlayer player, int expectedStep) {
     var campaign = Entrelumen.current(player);
     boolean accepted = ArkCommissioning.deposit(campaign, expectedStep,
         Entrelumen.availableMaterials(player), acceptedItems -> {
