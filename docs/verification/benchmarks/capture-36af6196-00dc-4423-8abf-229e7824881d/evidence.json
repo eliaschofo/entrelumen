@@ -1,0 +1,66 @@
+{
+  "run_id": "capture-36af6196-00dc-4423-8abf-229e7824881d",
+  "acceptance": false,
+  "scope": "Real collector validation in the existing stationary Act VI QA fixture; not a representative early/mid/late base or acceptance benchmark.",
+  "raw": {
+    "session.json": {
+      "sha256": "7663a42667f627056f27406323252d0da56c4417bba19a8fbc1089f2046ab686",
+      "bytes": 280
+    },
+    "capture-integrity.json": {
+      "sha256": "1ca2f6b59efc181d4aa44e3f6c88599da431d1721be334fb7b17b0c04ddc75be",
+      "bytes": 271
+    },
+    "frames.csv": {
+      "sha256": "56fd9ade7987576679aecbbb0baedd2a4af5956a20bc006a288579d3b821c4af",
+      "bytes": 1235817
+    },
+    "ticks.csv": {
+      "sha256": "11ee32c426a0d9515232d826780ab03563cd28e3dedff1645e2fda9471fa99bd",
+      "bytes": 203725
+    },
+    "memory.csv": {
+      "sha256": "33a233a0aa05f6e59ceb5518e1c94ffc0e7497b720a77b711e0d68fd26e23919",
+      "bytes": 782
+    },
+    "events.csv": {
+      "sha256": "52f977ec478f09b676ba496f44518ae0f5fe71016998630d586b5441540bdf3c",
+      "bytes": 24
+    },
+    "gc.csv": {
+      "sha256": "8840fa3758bfef2a28da958462ddd4ea2ce1be85a5b14b095967a87514487c5e",
+      "bytes": 1967
+    },
+    "post_gc.csv": {
+      "sha256": "475aeb219e3a96cf220194c070645420bf9939e385557ff2ec0a4c185ea76328",
+      "bytes": 1706
+    },
+    "probe-config.json": {
+      "sha256": "dcf815f7544a3b567edd104efbb71c099d97b3af2daa1f9f6aee55b80eaf3248",
+      "bytes": 1502
+    }
+  },
+  "archive_sha256": "9f83b32432646d38d3fa8542737fc61e0d5e0a88361d9ae3ec98ff246412a51e",
+  "fixture_screenshot_sha256": "cfefda731ba82a50978ab8d37ef2f683147fb00930c22dc93843838432b76931",
+  "companion_sha256": "38e051bfbdd92f1545e86eb13e1f447cd9105fcff7c57ed57f8e5fc6685cc255",
+  "client_log_local_sha256": "12869cd097d71ed8b2528b4ef69f8627d05ab932cdf88662c463c50eaa6cf164",
+  "cleanup": {
+    "normal_world_save": true,
+    "normal_client_exit_observed": true,
+    "temporary_options_restored": {
+      "fullscreen": "false",
+      "overrideHeight": "0",
+      "overrideWidth": "0"
+    }
+  },
+  "limitations": [
+    "Stationary creative QA fixture, not a representative gameplay base.",
+    "No collector-overhead A/B, external frame-present measurement, six-client load or two-hour soak.",
+    "Raw invalid flags and stalls must remain; no trimming or acceptance relabeling.",
+    "All frames retained, including native F2 screenshot overhead and the final chat used to stop capture.",
+    "Sky fullscreen screenshots froze while native F2 captures and the collector continued. This is a capture-tool limitation, not evidence of a game pause.",
+    "Maximum tick was 241.0389 ms; whole-run mean TPS does not prove sustained TPS.",
+    "GPU driver 582.66 observed in the client log. Power mode, thermal state and collector overhead were not controlled or measured.",
+    "Memory samples cover only this short run; no two-hour stability conclusion."
+  ]
+}

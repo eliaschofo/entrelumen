@@ -13,6 +13,9 @@ The Ark controller accepts capped partial batches for all six modules and preser
 Act VI has now been checked in the real client in English and Spanish. Loading a previously stranded save repairs all 42 campaign quest mirrors while preserving the authoritative campaign and prior completion timestamps. The dedicated full-pack checks passed 25/25 with a temporary QA watchdog extension after the four-reload test sequence hit the normal watchdog. Its aggregate delay does not measure an ordinary production reload. See the [Act VI runtime evidence](docs/verification/act-six-runtime.json).
 
 ## Design commitments
+
+The integrated performance collector has one [real, untrimmed validation run](docs/verification/benchmarks/capture-36af6196-00dc-4423-8abf-229e7824881d/README.md): 117.34 mean FPS, 73.55 FPS 1% low and 15.17 ms tick p95 at 1080p. This stationary creative fixture is **not pack performance acceptance**; representative machines, routes, long sessions and co-op remain unmeasured.
+
 - Six directed acts with independent team campaigns and unrestricted item trading.
 - Extensive early quality-of-life tools and approachable, purposeful automation.
 - Original English and Spanish quests, tutorials and narrative.
@@ -45,3 +48,5 @@ El acto VI se comprobó dentro de Minecraft en inglés y español. Al cargar una
 Se corrigieron los 85 errores de loot de addons. Las 295 tablas disponibles conservaron su contenido original y seis bloques pasaron pruebas de drops antes y después de recargar. El arranque final sin herramientas temporales de prueba no tuvo líneas ERROR; esto no acredita todavía el rendimiento del pack. [Evidencia de compatibilidad](docs/verification/optional-loot-runtime.json).
 
 Las quests, la historia y las ayudas propias se desarrollan en inglés y español. El seguimiento del trabajo distingue implementación, pruebas y publicación.
+
+La primera validación real del colector midió 117,34 FPS de media, 73,55 FPS de 1% low y 15,17 ms por tick en p95 a 1080p. Es un escenario creativo quieto; **no acredita el rendimiento del pack**. Los archivos originales, las limitaciones y la reproducción están en la [evidencia de captura](docs/verification/benchmarks/capture-36af6196-00dc-4423-8abf-229e7824881d/README.md).

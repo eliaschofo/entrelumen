@@ -1,6 +1,8 @@
-# Captura de benchmarks optativa — diseño pendiente de implementación
+# Captura de benchmarks optativa
 
-Estado: propuesta técnica; no existe colector nuevo ni medición realizada por este documento. No modifica companion ni el analizador. Referencia: `tools/benchmark.py`, Minecraft 1.21.1, NeoForge 21.1.249, Java 21.
+Este documento conserva la propuesta técnica original. El colector integrado ya existe en `companion/src/main/java/dev/entrelumen/client/BenchmarkClient.java` y `benchmark/CaptureSession.java`, con los comandos locales `/entrelumen_capture start` y `/entrelumen_capture stop`. El analizador comprueba sus archivos originales e integridad. Esto no acredita todavía overhead, rutas representativas, seis jugadores ni la sesión de dos horas; dedicado y sincronización entre procesos siguen siendo propuestas. Referencia: `tools/benchmark.py`, Minecraft 1.21.1, NeoForge 21.1.249, Java 21.
+
+La [primera captura real íntegra](../verification/benchmarks/capture-36af6196-00dc-4423-8abf-229e7824881d/README.md) duró 395 segundos en un escenario QA quieto. Valida la salida del colector; no reemplaza ninguna ruta de aceptación.
 
 ## Activación y costo
 

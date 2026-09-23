@@ -1,0 +1,128 @@
+{
+  "schema": 1,
+  "status": "incomplete",
+  "scope": "Real collector validation in the existing stationary Act VI QA fixture; not a representative early/mid/late base or acceptance benchmark.",
+  "config": {
+    "run_id": "capture-36af6196-00dc-4423-8abf-229e7824881d",
+    "captured_at": "2026-09-23T03:20:13.789734100Z",
+    "evidence_kind": "real",
+    "pack_revision": "c982db71d25acc98a955eb930badb51f4f273b7f;catalog-sha256=2f19ec32e91cd28a720d5ec6cb450c1e38990e0da4de7c947bac26341c5312f8",
+    "collector": "entrelumen-integrated-v1",
+    "hardware": {
+      "cpu": "i7-8750H",
+      "gpu": "GTX 1070",
+      "ram_gb": 16,
+      "os": "Microsoft Windows 11 Home",
+      "java": "Temurin 21.0.11+10-LTS"
+    },
+    "preset": {
+      "width": 1920,
+      "height": 1080,
+      "render_chunks": 10,
+      "simulation_chunks": 6,
+      "shaders": false,
+      "heap_gb": 8,
+      "fps_cap": 120,
+      "vsync": false
+    },
+    "world": {
+      "seed": 71942026,
+      "save_id": "294c4d30aa538c0bc665ffc567f3dccc8ffb52da24bcb949199d9d48bc9eccc2",
+      "route_id": "act-six-stationary-collector-probe",
+      "dimension": "minecraft:overworld",
+      "preloaded": true
+    },
+    "scenario": "collector_validation",
+    "mode": "singleplayer",
+    "players": 1,
+    "scope": "Real collector validation in the existing stationary Act VI QA fixture; not a representative early/mid/late base or acceptance benchmark.",
+    "acceptance": false,
+    "limitations": [
+      "Stationary creative QA fixture, not a representative gameplay base.",
+      "No collector-overhead A/B, external frame-present measurement, six-client load or two-hour soak.",
+      "Raw invalid flags and stalls must remain; no trimming or acceptance relabeling."
+    ]
+  },
+  "sources": [
+    {
+      "path": "session.json",
+      "sha256": "7663a42667f627056f27406323252d0da56c4417bba19a8fbc1089f2046ab686"
+    },
+    {
+      "path": "capture-integrity.json",
+      "sha256": "1ca2f6b59efc181d4aa44e3f6c88599da431d1721be334fb7b17b0c04ddc75be"
+    },
+    {
+      "path": "frames.csv",
+      "sha256": "56fd9ade7987576679aecbbb0baedd2a4af5956a20bc006a288579d3b821c4af"
+    },
+    {
+      "path": "ticks.csv",
+      "sha256": "11ee32c426a0d9515232d826780ab03563cd28e3dedff1645e2fda9471fa99bd"
+    },
+    {
+      "path": "memory.csv",
+      "sha256": "33a233a0aa05f6e59ceb5518e1c94ffc0e7497b720a77b711e0d68fd26e23919"
+    },
+    {
+      "path": "frames.csv",
+      "sha256": "56fd9ade7987576679aecbbb0baedd2a4af5956a20bc006a288579d3b821c4af"
+    },
+    {
+      "path": "ticks.csv",
+      "sha256": "11ee32c426a0d9515232d826780ab03563cd28e3dedff1645e2fda9471fa99bd"
+    },
+    {
+      "path": "events.csv",
+      "sha256": "52f977ec478f09b676ba496f44518ae0f5fe71016998630d586b5441540bdf3c"
+    },
+    {
+      "path": "gc.csv",
+      "sha256": "8840fa3758bfef2a28da958462ddd4ea2ce1be85a5b14b095967a87514487c5e"
+    },
+    {
+      "path": "post_gc.csv",
+      "sha256": "475aeb219e3a96cf220194c070645420bf9939e385557ff2ec0a4c185ea76328"
+    },
+    {
+      "path": "frames.csv",
+      "sha256": "56fd9ade7987576679aecbbb0baedd2a4af5956a20bc006a288579d3b821c4af"
+    },
+    {
+      "path": "ticks.csv",
+      "sha256": "11ee32c426a0d9515232d826780ab03563cd28e3dedff1645e2fda9471fa99bd"
+    }
+  ],
+  "reasons": [
+    "scenario must be early_base, mid_base, late_base or exploration"
+  ],
+  "definitions": {
+    "fps_mean": "1000 * frame_count / sum(frame_ms)",
+    "fps_1pct_low": "1000 / nearest-rank p99(frame_ms)",
+    "tick_p95_ms": "nearest-rank p95(tick_ms)",
+    "observed_tps": "1000 * (tick_count - 1) / timestamp_span_ms; diagnostic, not sustained-TPS proof"
+  },
+  "metrics": {
+    "frame_samples": 46338,
+    "tick_samples": 7899,
+    "frame_duration_ms": 394902.7702,
+    "frame_span_ms": 394894.75279999996,
+    "tick_span_ms": 394894.4301,
+    "fps_mean": 117.3402758773557,
+    "frame_p99_ms": 13.597,
+    "fps_1pct_low": 73.5456350665588,
+    "tick_p95_ms": 15.1671,
+    "observed_tps": 20.00028209564762,
+    "frame_max_ms": 97.0881,
+    "tick_max_ms": 241.0389,
+    "frames_over_50ms": 10,
+    "frames_over_100ms": 0
+  },
+  "checks": {
+    "fps_mean_gte_60": true,
+    "fps_1pct_low_gte_40": true,
+    "tick_p95_lt_50": true
+  },
+  "acceptance": false,
+  "source_base": "Files inside raw.zip; original samples unmodified"
+}
