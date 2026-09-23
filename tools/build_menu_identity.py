@@ -112,17 +112,18 @@ def build():
                     raise ValueError('Supply native pixel-art logo <=256x64; generator never fractionally resizes it.')
                 text += block('element', {'element_type': 'image', 'instance_identifier': 'entrelumen_logo',
                                          'anchor_point': 'mid-left', 'sticky_anchor': 'false',
-                                         'x': 12, 'y': -50 - height, 'width': width, 'height': height,
+                                         'x': 12 if width > 192 else 20 + (160 - width) // 2,
+                                         'y': -50 - height if width > 192 else -52 - height, 'width': width, 'height': height,
                                          'source': '[source:local]/config/fancymenu/assets/entrelumen/logo.png',
                                          'repeat_texture': 'false', 'nine_slice_texture': 'false'})
                 for widget in ('minecraft_logo_widget', 'minecraft_splash_widget'):
                     text += block('vanilla_button', {'element_type': 'vanilla_button',
                                                     'instance_identifier': widget, 'is_hidden': 'true'})
         outputs[BASE / 'customization' / ('entrelumen_' + screen + '.txt')] = text.rstrip().encode('utf-8') + b'\n'
-    manifest = {'schemaVersion': 2, 'status': 'native PixelLab scenes, copper wordmark and tuff/copper buttons; in-game visual acceptance pending',
+    manifest = {'schemaVersion': 2, 'status': 'title: pixel conversion of the original illustration with the classic logo; loading: native PixelLab scene; tuff/copper buttons; in-game visual acceptance pending',
                 'fancymenu': {'version': version, 'jarSha256': entry['sha256']}, 'assets': assets,
                 'screens': list(SCREENS),
-                'logoStatus': 'copper wordmark at native size above the left column; artistic acceptance pending',
+                'logoStatus': 'classic Atlas logo at native size above the left column (copper wordmark kept as alternative); artistic acceptance pending',
                 'pixelArtPolicy': 'Integrity is separate from artistic status. Scenes are native pixel art exported at integer x5; the wordmark is drawn at 1:1 GUI units. No filtered illustration or fractional sprite scaling.',
                 'nativeControls': ['menu.singleplayer', 'menu.multiplayer', 'menu.options', 'menu.quit', 'NeoForge Mods button'],
                 'localization': 'Native labels and loading messages follow selected Minecraft language; no baked translated labels.',

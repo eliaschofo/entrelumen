@@ -80,12 +80,13 @@ class PngEquivalenceTests(unittest.TestCase):
         spec.loader.exec_module(identity)
         with tempfile.TemporaryDirectory() as folder:
             out = Path(folder)
-            for name in ('title-scene.png', 'loading-scene.png', 'wordmark.py'):
+            for name in ('title-scene.png', 'loading-scene.png', 'wordmark.py', 'logo-classic.png'):
                 (out / name).write_bytes((identity.OUT / name).read_bytes())
             identity.OUT = out
             for path, data in identity.build()[0].items():
                 path.write_bytes(data)
             path = out / 'logo.png'
+            identity.LOGO = 'wordmark'
             tracked = encode(identity.wordmark(), compress_level=0)
             path.write_bytes(tracked)
             generated, scenes, logo = identity.build()

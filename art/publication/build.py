@@ -81,7 +81,7 @@ def avatar():
 
 
 def cover(locale):
-    scene = Image.open(ART / 'menu/title-scene.png').convert('RGBA')
+    scene = Image.open(ART / 'menu/scene-observatory.png').convert('RGBA')
     image = scene.crop((84, 4, 384, 124))
     draw = ImageDraw.Draw(image)
     mark = wordmark()
