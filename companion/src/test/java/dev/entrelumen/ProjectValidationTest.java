@@ -28,6 +28,33 @@ class ProjectValidationTest {
   }
 
   @Test
+  void actFiveDeliveriesRemainStableAndRequireThePreviousClosure() throws Exception {
+    var definitions = defaults();
+    var projects = Projects.parse(definitions, id -> true);
+    var costs = java.util.Map.of(
+        "resilient_backbone", "entrelumen:ark_bus",
+        "renewal_engine", "entrelumen:renewal_engine",
+        "settlement_supply", "entrelumen:habitation_contract");
+    costs.forEach((id, item) -> {
+      var project = projects.get(id);
+      assertEquals(5, project.act());
+      assertEquals(java.util.Set.of("atlas_voices"), project.prerequisites());
+      assertEquals(java.util.Map.of(item, 1), project.items());
+      assertTrue(project.reward().isEmpty());
+      var missing = definitions.deepCopy();
+      missing.remove(id);
+      assertTrue(assertThrows(IllegalArgumentException.class,
+          () -> Projects.parse(missing, key -> true)).getMessage().contains(id));
+    });
+    var closure = projects.get("world_network");
+    assertEquals(5, closure.act());
+    assertEquals(costs.keySet(), closure.prerequisites());
+    assertEquals(java.util.Map.of("minecraft:paper", 3, "minecraft:copper_ingot", 1),
+        closure.items());
+    assertTrue(closure.reward().isEmpty());
+  }
+
+  @Test
   void projectAndPrerequisiteIdsRespectAtlasWireLimit() throws Exception {
     String boundary = "a".repeat(128);
     var valid = defaults();

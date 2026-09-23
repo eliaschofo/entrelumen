@@ -156,8 +156,9 @@ public final class RuntimeGameTests {
     var data = CampaignData.get(server);
     UUID id = UUID.randomUUID();
     var original = data.campaigns.personal(id);
-    original.act = 4;
+    original.act = 5;
     original.completed.add("field_survey");
+    original.completed.addAll(List.of("resilient_backbone", "renewal_engine", "settlement_supply"));
     Expeditions.record(original, "aether:the_aether");
     Expeditions.record(original, "twilightforest:twilight_forest");
     Expeditions.record(original, "the_bumblezone:the_bumblezone");
@@ -179,10 +180,12 @@ public final class RuntimeGameTests {
                 CampaignData.load(tag.getCompound("data"), helper.getLevel().registryAccess());
             var restored = loaded.campaigns.personal(id);
             helper.assertTrue(
-                restored.act == 4
+                restored.act == 5
                     && restored.arkPhase == 2
                     && restored.arkDeposits.equals(Map.of("entrelumen:ecosystem_capsule", 1))
                     && restored.completed.contains("field_survey")
+                    && restored.completed.containsAll(
+                        List.of("resilient_backbone", "renewal_engine", "settlement_supply"))
                     && restored.completed.containsAll(Expeditions.IDS)
                     && !Expeditions.record(restored, "aether:the_aether"),
                 "Persisted campaign did not survive disk read");
@@ -1092,6 +1095,168 @@ public final class RuntimeGameTests {
         && campaign.completed.equals(completed) && campaign.act == 4
         && Entrelumen.availableMaterials(player).equals(inventory),
         "Rejected Act IV delivery mutated campaign or supplies: " + project);
+  }
+
+  @GameTest(template = "empty", timeoutTicks = 200)
+  public static void fifthActRequiresFourDeliveriesBeforeAdvancing(GameTestHelper helper) throws Exception {
+    var player = player(helper, "FifthActTest");
+    var other = player(helper, "FifthActOther");
+    var otherTeam = FTBTeamsAPI.api().getManager().createPartyTeam(other,
+        "Fifth " + other.getUUID(), "", dev.ftb.mods.ftblibrary.icon.Color4I.WHITE);
+    var otherCampaign = Entrelumen.current(other);
+    var otherBefore = Set.copyOf(otherCampaign.completed);
+    var campaign = Entrelumen.current(player);
+    var campaignId = CampaignActions.campaignId(player);
+    campaign.act = 4;
+    for (int act = 1; act <= 3; act++) campaign.completed.addAll(Projects.forAct(act));
+    campaign.completed.addAll(Projects.forAct(4));
+    campaign.completed.remove("atlas_voices");
+    var prototypes = new LinkedHashMap<String, Item>();
+    prototypes.put("resilient_backbone", arkItem("ark_bus"));
+    prototypes.put("renewal_engine", arkItem("renewal_engine"));
+    prototypes.put("settlement_supply", arkItem("habitation_contract"));
+    player.setItemInHand(net.minecraft.world.InteractionHand.OFF_HAND,
+        new ItemStack(prototypes.get("resilient_backbone"), 2));
+    player.getInventory().add(new ItemStack(prototypes.get("renewal_engine"), 2));
+    player.getInventory().add(new ItemStack(prototypes.get("settlement_supply"), 2));
+    player.getInventory().add(new ItemStack(Items.PAPER, 6));
+    player.getInventory().add(new ItemStack(Items.COPPER_INGOT, 2));
+    player.getInventory().add(new ItemStack(Items.DIAMOND, 3));
+    var installedPos = helper.absolutePos(new net.minecraft.core.BlockPos(1, 1, 1));
+    helper.getLevel().setBlockAndUpdate(installedPos,
+        net.minecraft.world.level.block.Blocks.CRAFTER.defaultBlockState());
+    var expectedInventory = new HashMap<>(Entrelumen.availableMaterials(player));
+    var expectedCompleted = new HashSet<>(campaign.completed);
+    for (String id : prototypes.keySet()) {
+      helper.assertTrue(!CampaignActions.perform(player, campaignId,
+          CampaignActions.Action.DELIVER, id).success()
+          && campaign.completed.equals(expectedCompleted)
+          && Entrelumen.availableMaterials(player).equals(expectedInventory),
+          "Early gifted sample completed an Act V delivery: " + id);
+    }
+    campaign.act = 5;
+    for (String id : prototypes.keySet()) fifthActDenied(helper, player, id);
+    fifthActDenied(helper, player, "world_network");
+    helper.assertTrue(!CampaignActions.perform(player, campaignId,
+        CampaignActions.Action.ADVANCE, "").success() && campaign.act == 5,
+        "Missing Act IV closure advanced Act V");
+    campaign.completed.add("atlas_voices");
+    expectedCompleted.add("atlas_voices");
+
+    var file = ServerQuestFile.getInstance().orElseThrow();
+    var chapter = new Chapter(0x7E550001L, file, file.getDefaultChapterGroup());
+    var quest = new Quest(0x7E550002L, chapter);
+    chapter.addQuest(quest);
+    var task = new CampaignTask(0x7E550003L, quest);
+    quest.addTask(task);
+    var tag = new CompoundTag();
+    tag.putString("milestone", "resilient_backbone");
+    task.readData(tag, helper.getLevel().registryAccess());
+    var teamData = file.getOrCreateTeamData(player);
+    teamData.setProgress(task, 1);
+    task.submitTask(teamData, player, new ItemStack(prototypes.get("resilient_backbone")));
+    helper.assertTrue(teamData.getProgress(task) == 0
+        && campaign.completed.equals(expectedCompleted)
+        && Entrelumen.availableMaterials(player).equals(expectedInventory),
+        "FTB mirror or gifted sample granted Act V progress");
+
+    var initial = AtlasNetwork.handleOpen(player);
+    helper.assertTrue(initial.projects().stream().map(AtlasNetwork.ProjectView::id)
+        .collect(java.util.stream.Collectors.toSet()).equals(Set.of(
+            "resilient_backbone", "renewal_engine", "settlement_supply", "world_network")),
+        "Atlas omitted an Act V delivery");
+    for (var entry : prototypes.entrySet()) {
+      var view = initial.projects().stream().filter(p -> p.id().equals(entry.getKey()))
+          .findFirst().orElseThrow();
+      helper.assertTrue(view.ready() && !view.completed()
+          && view.prerequisites().equals(List.of(new AtlasNetwork.Prerequisite("atlas_voices", true)))
+          && view.materials().equals(List.of(new AtlasNetwork.Material(
+              BuiltInRegistries.ITEM.getKey(entry.getValue()), 2, 1))),
+          "Atlas Act V material or prerequisite differs: " + entry.getKey());
+    }
+    var closure = initial.projects().stream().filter(p -> p.id().equals("world_network"))
+        .findFirst().orElseThrow();
+    helper.assertTrue(!closure.ready() && !closure.completed()
+        && closure.prerequisites().stream().map(AtlasNetwork.Prerequisite::id)
+            .collect(java.util.stream.Collectors.toSet()).equals(prototypes.keySet())
+        && closure.prerequisites().stream().noneMatch(AtlasNetwork.Prerequisite::completed)
+        && new HashSet<>(closure.materials()).equals(Set.of(
+            new AtlasNetwork.Material(ResourceLocation.parse("minecraft:paper"), 6, 3),
+            new AtlasNetwork.Material(ResourceLocation.parse("minecraft:copper_ingot"), 2, 1))),
+        "World network closure has wrong cost or prerequisite state");
+
+    for (var entry : prototypes.entrySet()) {
+      fifthActDenied(helper, player, "world_network");
+      helper.assertTrue(!CampaignActions.perform(player, campaignId,
+          CampaignActions.Action.ADVANCE, "").success() && campaign.act == 5,
+          "Incomplete Act V advanced");
+      var delivered = AtlasNetwork.handleRequest(player, new AtlasNetwork.Request(
+          campaignId, CampaignActions.Action.DELIVER, entry.getKey()));
+      expectedInventory.compute(BuiltInRegistries.ITEM.getKey(entry.getValue()).toString(),
+          (id, count) -> count - 1);
+      expectedCompleted.add(entry.getKey());
+      helper.assertTrue(delivered.message().equals("entrelumen.atlas.delivered")
+          && !delivered.canAdvance() && campaign.completed.equals(expectedCompleted)
+          && Entrelumen.availableMaterials(player).equals(expectedInventory),
+          "Act V delivery consumed surplus or granted rewards: " + entry.getKey());
+      fifthActDenied(helper, player, entry.getKey());
+    }
+    task.submitTask(teamData, player, ItemStack.EMPTY);
+    helper.assertTrue(teamData.getProgress(task) == 1,
+        "FTB mirror did not reflect an authoritative Act V delivery");
+    helper.assertTrue(player.getOffhandItem().getCount() == 1
+        && player.getInventory().countItem(prototypes.get("renewal_engine")) == 1
+        && player.getInventory().countItem(prototypes.get("settlement_supply")) == 1
+        && !AtlasNetwork.handleOpen(player).canAdvance(),
+        "Prototype surplus or closure gate changed");
+    var paper = player.getInventory().items.stream().filter(stack -> stack.is(Items.PAPER))
+        .findFirst().orElseThrow();
+    paper.setCount(2);
+    expectedInventory.put("minecraft:paper", 2);
+    fifthActDenied(helper, player, "world_network");
+    helper.assertTrue(!AtlasNetwork.handleOpen(player).projects().stream()
+        .filter(p -> p.id().equals("world_network")).findFirst().orElseThrow().ready(),
+        "World network accepted missing paper");
+    player.getInventory().add(new ItemStack(Items.PAPER, 4));
+    expectedInventory.put("minecraft:paper", 6);
+    var readyClosure = AtlasNetwork.handleOpen(player).projects().stream()
+        .filter(p -> p.id().equals("world_network")).findFirst().orElseThrow();
+    helper.assertTrue(readyClosure.ready()
+        && readyClosure.prerequisites().stream().allMatch(AtlasNetwork.Prerequisite::completed),
+        "World network did not become ready after the three deliveries");
+    var closed = AtlasNetwork.handleRequest(player, new AtlasNetwork.Request(
+        campaignId, CampaignActions.Action.DELIVER, "world_network"));
+    expectedInventory.compute("minecraft:paper", (id, count) -> count - 3);
+    expectedInventory.compute("minecraft:copper_ingot", (id, count) -> count - 1);
+    expectedCompleted.add("world_network");
+    helper.assertTrue(closed.message().equals("entrelumen.atlas.delivered")
+        && closed.canAdvance() && campaign.completed.equals(expectedCompleted)
+        && Entrelumen.availableMaterials(player).equals(expectedInventory)
+        && helper.getLevel().getBlockState(installedPos).is(net.minecraft.world.level.block.Blocks.CRAFTER),
+        "World network consumed the wrong supplies, awarded an item or touched an installed machine");
+    fifthActDenied(helper, player, "world_network");
+    var advanced = AtlasNetwork.handleRequest(player, new AtlasNetwork.Request(
+        campaignId, CampaignActions.Action.ADVANCE, ""));
+    helper.assertTrue(advanced.act() == 6 && campaign.act == 6
+        && campaign.completed.equals(expectedCompleted)
+        && Entrelumen.availableMaterials(player).equals(expectedInventory)
+        && command(player, "entrelumen advance") == 0 && campaign.act == 6
+        && otherCampaign.act == 1 && otherCampaign.completed.equals(otherBefore)
+        && CampaignActions.campaignId(other).equals(otherTeam.getId()),
+        "Act V advancement changed historical progress, supplies or another campaign");
+    helper.succeed();
+  }
+
+  private static void fifthActDenied(GameTestHelper helper, ServerPlayer player, String project) {
+    var campaign = Entrelumen.current(player);
+    var completed = Set.copyOf(campaign.completed);
+    var inventory = Entrelumen.availableMaterials(player);
+    var result = AtlasNetwork.handleRequest(player, new AtlasNetwork.Request(
+        CampaignActions.campaignId(player), CampaignActions.Action.DELIVER, project));
+    helper.assertTrue(result.message().equals("entrelumen.delivery.failed")
+        && campaign.completed.equals(completed) && campaign.act == 5
+        && Entrelumen.availableMaterials(player).equals(inventory),
+        "Rejected Act V delivery mutated campaign or supplies: " + project);
   }
 
   @GameTest(template = "empty", timeoutTicks = 200)

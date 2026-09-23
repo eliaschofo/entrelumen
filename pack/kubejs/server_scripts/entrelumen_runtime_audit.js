@@ -80,7 +80,6 @@ const entrelumenAuditTargets = {
     "mekanism:basic_control_circuit",
     "mekanismgenerators:wind_generator",
     "minecraft:amethyst_block",
-    "minecraft:beacon",
     "minecraft:book",
     "minecraft:bowl",
     "minecraft:bread",
@@ -90,7 +89,6 @@ const entrelumenAuditTargets = {
     "minecraft:compass",
     "minecraft:copper_ingot",
     "minecraft:crafting_table",
-    "minecraft:diamond_block",
     "minecraft:echo_shard",
     "minecraft:ender_eye",
     "minecraft:ender_pearl",
@@ -102,10 +100,10 @@ const entrelumenAuditTargets = {
     "minecraft:lantern",
     "minecraft:map",
     "minecraft:moss_block",
-    "minecraft:nether_star",
     "minecraft:paper",
     "minecraft:piston",
     "minecraft:red_bed",
+    "minecraft:redstone",
     "minecraft:stone_pickaxe",
     "minecraft:torch",
     "minecraft:wheat",
@@ -246,7 +244,7 @@ const entrelumenAuditTargets = {
       "output": "farmersdelight:flint_knife"
     }
   ],
-  "signature": "39470704b308029e"
+  "signature": "3f5781a336b627ee"
 };
 
 ServerEvents.afterRecipes(event => {

@@ -1,0 +1,70 @@
+{
+  "version": "astra-sdd/v1",
+  "state": "complete",
+  "history_refs": [
+    {
+      "path": "../act-four/plan.json",
+      "sha256": "bf45ee9491ca90e5ae3bde6811669a7d76b7510a1ec9ebd17fa4777a13e41c7f"
+    }
+  ],
+  "previous_goal_turn": {
+    "classification": "progress",
+    "commit": "edbc00bc24abaa0a72793ce1f388d03297c4c5b5",
+    "ci": "https://github.com/eliaschofo/entrelumen/actions/runs/35803722671"
+  },
+  "tasks": [
+    {
+      "id": "campaign",
+      "state": "complete",
+      "depends_on": [],
+      "owner": "act_five_campaign",
+      "model": "gpt-6-sol",
+      "effort": "xhigh",
+      "acceptance": [
+        "Four authoritative deliveries, gifts, replay, independent campaigns and V-to-VI transition."
+      ],
+      "evidence_ref": "../../verification/act-five-runtime.json"
+    },
+    {
+      "id": "acquisition",
+      "state": "complete",
+      "depends_on": [],
+      "owner": "act_five_acquisition",
+      "model": "gpt-6-luna",
+      "effort": "max",
+      "acceptance": [
+        "Pinned native acquisition facts and remainders guide original tutorials."
+      ],
+      "evidence_ref": "../../verification/act-five-runtime.json"
+    },
+    {
+      "id": "quests",
+      "state": "complete",
+      "depends_on": [
+        "acquisition"
+      ],
+      "owner": "act_five_quests",
+      "model": "gpt-6-sol",
+      "effort": "xhigh",
+      "acceptance": [
+        "Original bilingual teaching chapter, prior104 stable, four campaign mirrors."
+      ],
+      "evidence_ref": "../../verification/act-five-runtime.json"
+    },
+    {
+      "id": "integration",
+      "state": "complete",
+      "depends_on": [
+        "campaign",
+        "quests",
+        "acquisition"
+      ],
+      "owner": "root",
+      "acceptance": [
+        "Build and meaningful tests, full-pack loaded crafting and FTB checks, source publication and CI; full E2E limits explicit."
+      ],
+      "evidence_ref": "../../verification/act-five-runtime.json"
+    }
+  ],
+  "integration_status": "29JUnit/20requiredGameTests;21quest tests;3loaded craft recipes with4bowls returned;128quests/28milestones; matching client/server installed. Independent source review passed. Full E2E goal active; unresolved compatibility and manual/performance/visual gates explicitly retained."
+}

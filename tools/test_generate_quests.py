@@ -4,7 +4,7 @@ from pathlib import Path
 from generate_quests import ROOT,OUT,generate_all
 class ChapterContracts(unittest.TestCase):
  def setUp(self):
-  self.chapters=[json.loads((ROOT/'content'/n).read_text(encoding='utf-8')) for n in ('first_hour.json','act_two.json','act_three.json','act_four.json')]
+  self.chapters=[json.loads((ROOT/'content'/n).read_text(encoding='utf-8')) for n in ('first_hour.json','act_two.json','act_three.json','act_four.json','act_five.json')]
  def test_first_hour_ids_unchanged(self):
   c=json.loads(generate_all(self.chapters)[OUT/'chapters/a_light_among_ruins.snbt'])
   ids=[c['id']]+[i for q in c['quests'] for i in (q['id'],q['tasks'][0]['id'])]
@@ -125,7 +125,8 @@ class ChapterContracts(unittest.TestCase):
    'aether_arrival':[],'twilight_arrival':[],'bumblezone_arrival':[]}
   self.assertEqual({key:q['deps'] for key,q in source.items()},expected)
   out=generate_all(self.chapters);c=json.loads(out[OUT/'chapters/voices_of_the_atlas.snbt'])
-  mapping=json.loads(out[ROOT/'content/campaign_task_ids.json']);self.assertEqual(len(mapping),24)
+  mapping=json.loads(out[ROOT/'content/campaign_task_ids.json'])
+  self.assertEqual(len(json.loads(generate_all(self.chapters[:4])[ROOT/'content/campaign_task_ids.json'])),24)
   for q in c['quests']:
    self.assertEqual(q['rewards'],[]);task=q['tasks'][0]
    if task['type']=='entrelumen:campaign':self.assertEqual(mapping[task['milestone']],{'quest_id':q['id'],'task_id':task['id']})
@@ -145,4 +146,91 @@ class ChapterContracts(unittest.TestCase):
  def test_act_four_cycle_rejected(self):
   next(q for q in self.chapters[2]['quests'] if q['key']=='exchange_archive')['deps']=['voices_chorus']
   with self.assertRaisesRegex(AssertionError,'cycle|reading direction'):generate_all(self.chapters)
+ def test_first_104_quests_and_text_frozen(self):
+  from generate_quests import snbt
+  out=generate_all(self.chapters)
+  expected={'a_light_among_ruins':'28fdd2969fdd6829c2cad480e2a54b74c9d1ba7ab980e7203831f2fea5304bae',
+   'the_lost_crafts':'26dcb9e26fa44e764b56f1667141abae1ea0d37f66ec671b4d2e7a3263aa57e5',
+   'routes_of_exchange':'adb774f655ee0442b2ab825a8c634b55b137842b5e137177df7df21a1c46f38c',
+   'voices_of_the_atlas':'1c120b93b38a38bcf5e9756ca3979d6e5e67aa5b090e630f8a91f3313dde3ad2'}
+  self.assertEqual(sum(len(c['quests']) for c in self.chapters[:4]),104)
+  for chapter,digest in expected.items():
+   self.assertEqual(hashlib.sha256(out[OUT/'chapters'/(chapter+'.snbt')].encode()).hexdigest(),digest)
+  prior=generate_all(self.chapters[:4])
+  for lang,digest in [('en_us','bffc5c1d1fec63222008d6a24a88b3cb2b3c46aadff3d2f76c990c8803ba9c78'),
+                      ('es_es','c9a5d503529a3bdcc05f332c491be5ec64302b0451286f6c81fc7e31750ebf4a')]:
+   before=json.loads(prior[OUT/'lang'/(lang+'.snbt')]);after=json.loads(out[OUT/'lang'/(lang+'.snbt')])
+   self.assertEqual(hashlib.sha256(snbt({key:after[key] for key in before}).encode()).hexdigest(),digest)
+  mapping=json.loads(out[ROOT/'content/campaign_task_ids.json'])
+  before=json.loads(prior[ROOT/'content/campaign_task_ids.json'])
+  self.assertEqual(hashlib.sha256(snbt({key:mapping[key] for key in before}).encode()).hexdigest(),
+                   'dbc4bf5f3cb8df145aef5204a41841053ad81b42be776fc3d1b14958f02a6f22')
+ def test_act_five_authority_recipe_counts_and_rewards(self):
+  chapter=self.chapters[4];self.assertEqual(len(chapter['quests']),24)
+  projects=json.loads((ROOT/'companion/src/main/resources/data/entrelumen/campaign/projects.json').read_text(encoding='utf-8'))
+  source={q['milestone']:q for q in chapter['quests'] if 'milestone' in q}
+  self.assertEqual({m:q['deps'] for m,q in source.items()},
+   {'resilient_backbone':['voices_chorus'],'renewal_engine':['voices_chorus'],
+    'settlement_supply':['voices_chorus'],'world_network':['world_backbone','world_renewal','world_settlement']})
+  self.assertEqual({m:projects[m]['items'] for m in source},
+   {'resilient_backbone':{'entrelumen:ark_bus':1},'renewal_engine':{'entrelumen:renewal_engine':1},
+    'settlement_supply':{'entrelumen:habitation_contract':1},
+    'world_network':{'minecraft:paper':3,'minecraft:copper_ingot':1}})
+  expected_items={'world_atomic_alloy':2,'world_circuit_boards':2,'world_handling_cores':2,'world_inventory_sensor':1,
+   'world_ark_bus':1,'world_sky_ingots':2,'world_imperium':2,'world_capsules':2,'world_propagation':2,
+   'world_renewal_item':1,'world_fish_stew':2,'world_mixed_salad':2,'world_calculation':1,'world_rations':2,
+   'world_contract_item':1}
+  self.assertEqual({q['key']:q['count'] for q in chapter['quests'] if 'item' in q},expected_items)
+  designs=json.loads((ROOT/'content/integration-design.json').read_text(encoding='utf-8'))['projects']
+  designs={p['id'].split(':')[1]:p['recipe'] for p in designs if p.get('act')==5}
+  material_quests={q['item']:q['count'] for q in chapter['quests'] if 'item' in q}
+  for milestone,slots in [('resilient_backbone',7),('renewal_engine',8),('settlement_supply',7)]:
+   recipe=designs[milestone]
+   self.assertEqual(recipe['type'],'minecraft:crafting_shapeless')
+   self.assertEqual(sum(i['count'] for i in recipe['inputs']),slots)
+   for ingredient in recipe['inputs']:
+    self.assertEqual(material_quests[ingredient['id']],ingredient['count'])
+  out=generate_all(self.chapters);compiled=json.loads(out[OUT/'chapters/world_we_build.snbt'])
+  self.assertEqual(len(compiled['quests']),24)
+  self.assertEqual(sum(q['tasks'][0]['type']=='entrelumen:campaign' for q in compiled['quests']),4)
+  self.assertTrue(all(q['rewards']==[] for q in compiled['quests']))
+  for q in compiled['quests']:
+   task=q['tasks'][0]
+   if task['type']=='item':self.assertFalse(task['consume_items'])
+   if task['type']=='checkmark':self.assertTrue(q['optional'])
+  mapping=json.loads(out[ROOT/'content/campaign_task_ids.json']);self.assertEqual(len(mapping),28)
+  for q in compiled['quests']:
+   task=q['tasks'][0]
+   if task['type']=='entrelumen:campaign':
+    self.assertEqual(mapping[task['milestone']],{'quest_id':q['id'],'task_id':task['id']})
+ def test_act_five_bilingual_material_and_truthful_exercises(self):
+  source={q['key']:q for q in self.chapters[4]['quests']}
+  required={'world_atomic_alloy':('40 refined-obsidian infusion','40 de infusión de obsidiana refinada'),
+   'world_circuit_boards':('UV Light Box','UV Light Box'),
+   'world_sky_ingots':('Overworld and Nether aura bottles','Overworld y Nether'),
+   'world_imperium':('128 inferium','128 inferium'),
+   'world_fish_stew':('tomato sauce and onion','salsa de tomate y cebolla'),
+   'world_mixed_salad':('tomato, beetroot and bowl','tomate, remolacha y cuenco'),
+   'world_ark_bus':('seven slots','siete espacios'),
+   'world_renewal_item':('Eight slots','Ocho espacios'),
+   'world_contract_item':('four bowls','cuatro cuencos'),
+   'world_network':('three paper and one copper ingot','tres papeles y un lingote de cobre'),
+   'world_optional_panel':('ComputerCraft','ComputerCraft')}
+  for key,terms in required.items():
+   for locale,term in zip(('en_us','es_es'),terms):self.assertIn(term,source[key][locale][1])
+  for key in ('world_buffer_trial','world_renewal_trial','world_habitation_trial','world_optional_panel'):
+   self.assertEqual(source[key]['type'],'checkmark');self.assertTrue(source[key]['optional'])
+   self.assertIn('self-reported',source[key]['en_us'][1]);self.assertIn('autoevaluado',source[key]['es_es'][1])
+  for q in source.values():
+   for locale in ('en_us','es_es'):
+    for value in q[locale]:
+     self.assertNotIn('\ufffd',value);self.assertNotIn('\u00c3',value)
+ def test_act_five_optional_practice_cannot_gate_campaign(self):
+  quests={q['key']:q for chapter in self.chapters for q in chapter['quests']}
+  def ancestors(key):
+   for dep in quests[key]['deps']:
+    self.assertIn('milestone',quests[dep],f'{key} gated by tutorial {dep}')
+    ancestors(dep)
+  for q in self.chapters[4]['quests']:
+   if 'milestone' in q:ancestors(q['key'])
 if __name__=='__main__':unittest.main()

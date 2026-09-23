@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "status": "Campaign deliveries implemented through Act IV; full release, later acts and survival acceptance remain open",
+  "status": "Campaign deliveries implemented through Act V; full release, Act VI and survival acceptance remain open",
   "platform": {
     "minecraft": "1.21.1",
     "loader": "neoforge-21.1.249"
@@ -24,7 +24,7 @@
     "containers": "Preserve native recipe remainders for consumed soups/stews; verify bowls return normally in crafting and AE2 automation.",
     "decorativeMods": "Optional building exercises with screenshots/manual checkmarks; no mandatory decorative ingredients.",
     "massProduction": "Repeatable static crafting is compatible with ordinary crafting tables and existing autocrafting. No new tick handlers or machine scanning.",
-    "narrativeAcceptance": "Crafting, possession and gifts never complete a narrative project. Acts II-IV use explicit authoritative server deliveries consuming one prototype per project; machines remain installed. Act IV also requires server-observed journeys for its horizon and pollinator projects. Tutorial exercises remain optional and self-reported. Later-act demonstrations remain proposals. No provenance checks."
+    "narrativeAcceptance": "Crafting, possession and gifts never complete a narrative project. Acts II-V use explicit authoritative server deliveries consuming one prototype per project; machines remain installed. Act IV also requires server-observed journeys for its horizon and pollinator projects. Tutorial exercises remain optional and self-reported. Act V field exercises are optional and self-reported; complete Act VI experiences remain proposals. No provenance checks."
   },
   "components": [
     {
@@ -95,17 +95,17 @@
     {
       "id": "entrelumen:ark_bus",
       "count": 1,
-      "registration": "proposed new component, must register before recipes"
+      "registration": "Registered by the companion; static recipes and explicit campaign delivery are implemented."
     },
     {
       "id": "entrelumen:renewal_engine",
       "count": 1,
-      "registration": "proposed new component, must register before recipes"
+      "registration": "Registered by the companion; static recipes and explicit campaign delivery are implemented."
     },
     {
       "id": "entrelumen:habitation_contract",
       "count": 1,
-      "registration": "proposed new component, must register before recipes"
+      "registration": "Registered by the companion; static recipes and explicit campaign delivery are implemented."
     },
     {
       "id": "entrelumen:engineering_module",
@@ -807,7 +807,7 @@
       "output": {
         "id": "entrelumen:ark_bus",
         "count": 1,
-        "registration": "proposed new component, must register before recipes"
+        "registration": "Registered companion item; static recipe retained."
       },
       "recipe": {
         "id": "entrelumen:integration/resilient_backbone",
@@ -838,19 +838,22 @@
         "modularrouters",
         "computercraft"
       ],
-      "completion": "Vaciar y reponer un buffer; reanudar fabricación sin duplicación. Panel ComputerCraft opcional, mismo resultado sin código.",
       "evidenceRequirements": [
         "loaded item IDs and recipe outputs",
         "survival acquisition without circular dependencies",
         "team delivery idempotency/restart",
         "manual tutorial playthrough"
       ],
-      "status": "design-only",
+      "status": "Campaign delivery implemented; full-pack crafting verification tracked in docs/verification/act-five-runtime.json; survival and installation exercise acceptance remain open.",
       "delivery": {
         "count": 1,
-        "consume": false,
-        "purpose": "Non-consuming presentation of a prototype alongside the described project demonstration and narrative prerequisites; never auto-complete from possession/crafting. No duplicate item reward. Installed modules remain blocks."
-      }
+        "consume": true,
+        "requires": [
+          "atlas_voices"
+        ],
+        "purpose": "Explicit Atlas delivery consumes the portable prototype once and records the current team milestone. No duplicate reward; installed machines remain in place. The related installation exercise is optional and self-reported."
+      },
+      "tutorialExercise": "Vaciar y reponer un buffer; reanudar fabricación sin duplicación. Panel ComputerCraft opcional, mismo resultado sin código."
     },
     {
       "id": "entrelumen:renewal_engine",
@@ -862,7 +865,7 @@
       "output": {
         "id": "entrelumen:renewal_engine",
         "count": 1,
-        "registration": "proposed new component, must register before recipes"
+        "registration": "Registered companion item; static recipe retained."
       },
       "recipe": {
         "id": "entrelumen:integration/renewal_engine",
@@ -892,19 +895,22 @@
         "mysticalagriculture",
         "productivebees"
       ],
-      "completion": "Entregar un lote de cada vía renovable sin forzar chunks adicionales ni multiplicadores descontrolados.",
       "evidenceRequirements": [
         "loaded item IDs and recipe outputs",
         "survival acquisition without circular dependencies",
         "team delivery idempotency/restart",
         "manual tutorial playthrough"
       ],
-      "status": "design-only",
+      "status": "Campaign delivery implemented; full-pack crafting verification tracked in docs/verification/act-five-runtime.json; survival and installation exercise acceptance remain open.",
       "delivery": {
         "count": 1,
-        "consume": false,
-        "purpose": "Non-consuming presentation of a prototype alongside the described project demonstration and narrative prerequisites; never auto-complete from possession/crafting. No duplicate item reward. Installed modules remain blocks."
-      }
+        "consume": true,
+        "requires": [
+          "atlas_voices"
+        ],
+        "purpose": "Explicit Atlas delivery consumes the portable prototype once and records the current team milestone. No duplicate reward; installed machines remain in place. The related installation exercise is optional and self-reported."
+      },
+      "tutorialExercise": "Entregar un lote de cada vía renovable sin forzar chunks adicionales ni multiplicadores descontrolados."
     },
     {
       "id": "entrelumen:settlement_supply",
@@ -916,7 +922,7 @@
       "output": {
         "id": "entrelumen:habitation_contract",
         "count": 1,
-        "registration": "proposed new component, must register before recipes"
+        "registration": "Registered companion item; static recipe retained."
       },
       "recipe": {
         "id": "entrelumen:integration/settlement_supply",
@@ -948,19 +954,22 @@
         "supplementaries",
         "amendments"
       ],
-      "completion": "Abastecer cocina y depósito; habitación jugable con luz, descanso y señalización. Decoración libre no consumida ni contada como rareza.",
       "evidenceRequirements": [
         "loaded item IDs and recipe outputs",
         "survival acquisition without circular dependencies",
         "team delivery idempotency/restart",
         "manual tutorial playthrough"
       ],
-      "status": "design-only",
+      "status": "Campaign delivery implemented; full-pack crafting verification tracked in docs/verification/act-five-runtime.json; survival and installation exercise acceptance remain open.",
       "delivery": {
         "count": 1,
-        "consume": false,
-        "purpose": "Non-consuming presentation of a prototype alongside the described project demonstration and narrative prerequisites; never auto-complete from possession/crafting. No duplicate item reward. Installed modules remain blocks."
-      }
+        "consume": true,
+        "requires": [
+          "atlas_voices"
+        ],
+        "purpose": "Explicit Atlas delivery consumes the portable prototype once and records the current team milestone. No duplicate reward; installed machines remain in place. The related installation exercise is optional and self-reported."
+      },
+      "tutorialExercise": "Abastecer cocina y depósito; habitación jugable con luz, descanso y señalización. Decoración libre no consumida ni contada como rareza."
     },
     {
       "id": "entrelumen:ark_engineering",
@@ -2717,6 +2726,12 @@
       "scope": "Recoverable Ark batches",
       "decision": "Four narrative phases have six module steps, preserving legacy arkPhase0..6. Schema2 retains partial deposits; no reward payout, background scanning or offline decay. Physical presence is rechecked on interaction; permanent installation and ending/masteries remain open.",
       "evidence": "docs/verification/ark-batches-runtime.json"
+    },
+    {
+      "date": "2026-09-22",
+      "scope": "Act V campaign integration",
+      "decision": "Three existing prototypes now feed consuming, idempotent team deliveries after atlas_voices. Preserved world_network closes all three for3paper+1copper. Static recipes and gifts remain unrestricted. Native tutorial/installation exercises are distinct from authoritative campaign completion.",
+      "evidence": "docs/verification/act-five-runtime.json"
     }
   ]
 }
