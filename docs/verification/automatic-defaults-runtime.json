@@ -1,0 +1,97 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-09-23",
+  "status": "passed_bounded_defaults_integration",
+  "scope": "Automatic client defaults and preference preservation; not final-scale installation, gameplay or performance acceptance",
+  "minecraft": "1.21.1",
+  "neoforge": "21.1.249",
+  "heapMiBObservedInNativeLoadingScreen": 8192,
+  "clientDependencies": 147,
+  "serverDependencies": 116,
+  "companionSha256": "51991746fddd9e9411032adbd30633011bbf9d05e11da190e43f8927bb5ca75f",
+  "defaultOptions": {
+    "version": "21.1.8",
+    "curseforgeProjectId": 232131,
+    "curseforgeFileId": 8498229,
+    "sha256": "d12790dc1f0857778d282c00ad5be56882ac6fce44769c1f012be09b5604874a",
+    "side": "client"
+  },
+  "firstLaunch": {
+    "profileCreatedBy": "CurseForge App",
+    "optionsCreatedByLauncher": true,
+    "manualPrepareClientNotUsed": true,
+    "qaOnlyBeforeLaunchChange": "fullscreen false for native capture",
+    "originalOptionsPrefixPreserved": true,
+    "addedMissingGeneralOptions": 11,
+    "configuredBindingsLoaded": 23,
+    "launcherRenderDistancePreserved": 8,
+    "launcherGuiScalePreserved": 2,
+    "resourcePackSelected": "file/entrelumen",
+    "initialAircraftCandidate": "F7; rejected after loaded More Overlays F7 conflict",
+    "normalShutdown": true,
+    "optionsSha256": "b241454046c6469f2d49213a534d800fd020f7231fb7afe5dd67ca66ab561be8",
+    "logSha256": "a582157cb3c31819520490a194009d6eec7ef132de0ad459445c1ca8a1760687"
+  },
+  "reopen": {
+    "customLanguagePreserved": "es_es",
+    "customRenderDistancePreserved": 7,
+    "customQuestKeyPreserved": "key.keyboard.f4",
+    "customResourcePacksPreserved": [
+      "vanilla",
+      "mod_resources"
+    ],
+    "clientNormalization": {
+      "maxFps": {
+        "before": "91",
+        "after": "90"
+      }
+    },
+    "defaultMaxFps120NotReapplied": true,
+    "otherExistingOptionsUnchanged": 458,
+    "qaRemovedOnlyAircraftBindingToTestNewBinding": true,
+    "newBindingApplied": "key.keyboard.f12",
+    "f12OnlyRegisteredBinding": "key_key.immersive_aircraft.dismount",
+    "controlsScreenShowsNoF12Conflict": true,
+    "normalShutdown": true,
+    "optionsSha256": "e34e1d867d5a785c67719fc83a8f47b9125d2154264d7543aa93f46f2c62cc41",
+    "logSha256": "9b6ae4d0e42f6e69df7040e741a267a43d1de83f87cf7dd3d4773020790528b1"
+  },
+  "errors": {
+    "firstLaunch": 15,
+    "reopen": 15,
+    "scope": "Previously observed third-party invalid resource paths; no Default Options or companion startup error"
+  },
+  "screenshot": {
+    "path": "docs/verification/screenshots/automatic-defaults-f12-es.png",
+    "sha256": "60d91566c0c05075293da3dab0e90a74a15da22eb3f584ed888e826671e8e923"
+  },
+  "localEvidence": "work/qol-defaults-20260923/runtime (workspace root; raw logs not published)",
+  "integration": [
+    {
+      "profile": "ENTRELUMEN",
+      "files": [
+        "config/defaultoptions/options.txt",
+        "config/defaultoptions/keybindings.txt",
+        "config/entrelumen/client-preset.json",
+        "mods/entrelumen-0.1.0.jar"
+      ]
+    },
+    {
+      "profile": "server-slice",
+      "files": [
+        "mods/entrelumen-0.1.0.jar"
+      ]
+    }
+  ],
+  "automatedChecks": [
+    "4/4 focused ClientOptionsMergeTest JUnit tests and normal jar build",
+    "4/4 generator tests; deterministic --check",
+    "147 client / 116 server hash and required dependency closure; all previous 146 catalog rows unchanged"
+  ],
+  "pending": [
+    "Actual aircraft dismount with Tool Belt equipped",
+    "Contextual G/H/C and middle-click collision review",
+    "Direct launcher without pre-existing options.txt runtime branch",
+    "First-hour natural survival playtest and full pack acceptance"
+  ]
+}

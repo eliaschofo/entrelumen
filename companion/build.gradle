@@ -139,6 +139,8 @@ idea {
 
 
 dependencies {
+    // Official Default Options 21.1.8 NeoForge upload; compile API only, never bundle it.
+    compileOnly 'maven.modrinth:WEg59z5b:1zt17WsC'
     implementation 'dev.ftb.mods:ftb-teams-neoforge:2101.1.11'
     implementation 'dev.ftb.mods:ftb-library-neoforge:2101.1.35'
     implementation 'dev.architectury:architectury-neoforge:13.0.11'
@@ -149,7 +151,12 @@ dependencies {
 test { useJUnitPlatform() }
 
 
-repositories { mavenCentral(); maven { url = 'https://maven.ftb.dev/releases' }; maven { url = 'https://maven.architectury.dev' } }
+repositories {
+    mavenCentral()
+    maven { url = 'https://maven.ftb.dev/releases' }
+    maven { url = 'https://maven.architectury.dev' }
+    maven { url = 'https://api.modrinth.com/maven'; content { includeGroup 'maven.modrinth' } }
+}
 sourceSets.test.compileClasspath += sourceSets.main.compileClasspath
 sourceSets.test.runtimeClasspath += sourceSets.main.runtimeClasspath
 

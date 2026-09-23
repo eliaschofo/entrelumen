@@ -79,6 +79,7 @@ CONTENT = {
     'computercraft': ('III', 'Optional programming', 'Monitor workshop systems without making coding mandatory'),
 }
 QOL = {
+    'defaultoptions': 'Apply packaged first-launch defaults while preserving existing player settings',
     'cleanswing': 'Attack entities through replaceable grass without changing damage',
     'crafting_on_a_stick': 'Portable vanilla workstations with native costs',
     'smithingtemplateviewer': 'Preview smithing templates while planning upgrades',
@@ -111,7 +112,7 @@ QOL = {
 }
 PERFORMANCE = {'sodium', 'modernfix', 'ferritecore', 'spark', 'immediatelyfast', 'fastsuite', 'fastfurnace', 'fastbench'}
 INFRA = {'drippyloadingscreen', 'ftbteams', 'ftbquests', 'kubejs', 'almostunified', 'ponderjs', 'fancymenu'}
-CLIENT = {'drippyloadingscreen', 'smithingtemplateviewer', 'chat_heads', 'betterpingdisplay', 'cherishedworlds', 'emi', 'jei', 'mousetweaks', 'controlling', 'appleskin', 'trashslot',
+CLIENT = {'defaultoptions', 'drippyloadingscreen', 'smithingtemplateviewer', 'chat_heads', 'betterpingdisplay', 'cherishedworlds', 'emi', 'jei', 'mousetweaks', 'controlling', 'appleskin', 'trashslot',
           'enchdesc', 'jeed', 'journeymap', 'betteradvancements', 'justenoughbreeding',
           'justenoughprofessions', 'jearchaeology', 'jei_mekanism_multiblocks', 'ae2jeiintegration',
           'extremesoundmuffler', 'toastcontrol', 'justzoom', 'rebind_narrator', 'moreoverlays',

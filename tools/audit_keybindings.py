@@ -17,6 +17,7 @@ PROPOSED = {
     "key_key.mekanism.legs_mode": "key.keyboard.down:ALT",
     "key_key.mekanism.feet_mode": "key.keyboard.right:ALT",
     "key_key.toolbelt.open": "key.keyboard.r",
+    "key_key.immersive_aircraft.dismount": "key.keyboard.f12",
     "key_key.toolbelt.slot": "key.keyboard.r:SHIFT",
     "key_key.aether.invisibility_toggle.desc": "key.keyboard.home",
     "key_key.twilightforest.swap_hotbar": "key.keyboard.semicolon",
