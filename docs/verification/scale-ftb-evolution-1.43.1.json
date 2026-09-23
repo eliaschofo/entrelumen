@@ -1,0 +1,466 @@
+{
+  "pack": {
+    "name": "FTB Evolution",
+    "pack_id": 125,
+    "version_id": 100487,
+    "version": "1.43.1",
+    "minecraft": "1.21.1",
+    "modloader": "21.1.248"
+  },
+  "sources": {
+    "manifest_api": "https://api.feed-the-beast.com/v1/modpacks/modpack/125/100487",
+    "official_installer_source": "https://github.com/FTBTeam/FTB-Server-Installer/blob/main/repos/ftb.go",
+    "manifest_bytes": 5315824,
+    "manifest_sha256": "25329424e52c186702e401efcc104c34c651ab86078f93a7d561328d883345ca",
+    "manifest_file_records": 7153,
+    "request_method": "Unauthenticated HTTP GET; official FTB API and official FTB blob URLs; no launcher, auth, instance, or game runtime."
+  },
+  "mod_counts": {
+    "direct_mod_manifest_records": 523,
+    "direct_jar_files": 523,
+    "unique_direct_jar_names": 523,
+    "unique_curseforge_project_ids": 520,
+    "curseforge_project_records": 520,
+    "unique_curseforge_file_ids": 520,
+    "direct_mod_records_without_curseforge_project_id": 3,
+    "without_curseforge_project_names": [
+      "cc-tweaked-1.21.1-forge-1.119.0.jar",
+      "ftb-auxilium-neoforge-21.1.6.jar",
+      "rgp-client-2.0.9+mc21.1-neoforge.jar"
+    ],
+    "client_only": 29,
+    "server_only": 0,
+    "server_install_mod_records": 494,
+    "embedded_jarjar_libraries_counted": false
+  },
+  "quest_counts": {
+    "exported_chapter_files": 40,
+    "direct_quest_objects": 2072,
+    "objects_with_direct_id": 2072,
+    "unique_direct_quest_ids": 2072,
+    "duplicate_id_occurrences": 0,
+    "direct_objects_missing_id": 0,
+    "chapter_manifest_sha1_verified": 40,
+    "chapter_count_min": 3,
+    "chapter_count_max": 145,
+    "quest_set_sha256": "213d38b840af22c72d5b1cf69e5f4416f2e2ce1b3b1e08b28a7cce291de66a68",
+    "quest_set_sha256_method": "Sort chapter records by (path,name); SHA-256 updates with UTF-8 relative path + NUL + raw blob bytes + NUL for each chapter."
+  },
+  "runtime_limits": {
+    "runtime_loaded_quest_count": null,
+    "reason": "No pack or game was launched. Counts cover exported chapter SNBT only; static scan cannot prove FTB Quests runtime load/registration behavior.",
+    "script_files_scanned": 78,
+    "script_hashes_verified": 78,
+    "script_registration_pattern_matches": 0,
+    "broad_term_match_paths": [
+      "./kubejs/server_scripts/systems/pyramid.js"
+    ]
+  },
+  "method": {
+    "mods": "Count API file records where type=mod, path=./mods, and filename ends .jar. Read nested curseforge.project IDs for unique upstream CurseForge projects. Three entries have no upstream project metadata. JarJar/nested libraries were not separately counted.",
+    "quests": "A string-aware delimiter lexer tracks the root quests list and counts only direct child compounds and their direct id fields. Tasks, nested ids, text, rewards, chapter ids, and language strings are excluded. Unique IDs are deduplicated across all 40 files.",
+    "integrity": "Each downloaded chapter raw-byte SHA-1 was compared with the API manifest SHA-1; each row includes raw-byte SHA-256 and blob URL."
+  },
+  "chapters": [
+    {
+      "path": "./config/ftbquests/quests/chapters/actually_additions.snbt",
+      "url": "https://files.feed-the-beast.com/blob/8b/8b854b658d646ee81b8a7f3a3fa6b01bb72dc2cd5a71152db54e094056dd5d25.snbt",
+      "manifest_sha1": "029d8bcacf7a4f94295c168908c427112f7ef3d0",
+      "sha256": "9feb343b14e71cb82ce3a481b21c850e4ba8727f7dbed47a6825370d540f89ae",
+      "bytes": 30091,
+      "direct_quest_objects": 46,
+      "objects_with_direct_id": 46,
+      "objects_missing_direct_id": 0
+    },
+    {
+      "path": "./config/ftbquests/quests/chapters/ae2.snbt",
+      "url": "https://files.feed-the-beast.com/blob/fc/fc235392779237e806988a19030a2b52a89df47559c568e912896d58450b67af.snbt",
+      "manifest_sha1": "5bab758054e996a669f40346648770e25cac1b74",
+      "sha256": "9d1538b408098beafaca8e8ef4d9b6f71562fbec2e645227b5fbc103e117493e",
+      "bytes": 32547,
+      "direct_quest_objects": 46,
+      "objects_with_direct_id": 46,
+      "objects_missing_direct_id": 0
+    },
+    {
+      "path": "./config/ftbquests/quests/chapters/ars_nouveau.snbt",
+      "url": "https://files.feed-the-beast.com/blob/00/00981ab98de136572b94883fd477a17cd4fd5dec2f8dcf3c204bafc2ffe6b3ac.snbt",
+      "manifest_sha1": "9d5ade377f90f6a26c16b8bdd285f1ebc9c6ae35",
+      "sha256": "82207fbcbdb58ffbc185da30a2213014459bc80bc72b2145f50a92f7a65db05e",
+      "bytes": 37001,
+      "direct_quest_objects": 57,
+      "objects_with_direct_id": 57,
+      "objects_missing_direct_id": 0
+    },
+    {
+      "path": "./config/ftbquests/quests/chapters/cooking_and_brewing.snbt",
+      "url": "https://files.feed-the-beast.com/blob/5c/5ce8b405bb1f2c1d1f69801f1b16831ef363f07eec6633b5292ccd18b7deda71.snbt",
+      "manifest_sha1": "6f15938a42f7da4bbed83b8c99cf655057ed32f9",
+      "sha256": "a89b053e127f39a8ddc1782d3557d911737eb52fbccf2dd39d39569af2dc610f",
+      "bytes": 24309,
+      "direct_quest_objects": 44,
+      "objects_with_direct_id": 44,
+      "objects_missing_direct_id": 0
+    },
+    {
+      "path": "./config/ftbquests/quests/chapters/create.snbt",
+      "url": "https://files.feed-the-beast.com/blob/47/4763b6ae1fa25a7601daf8ef43085cfbbd93ba5278cb21ca6b7405c8b317fb5c.snbt",
+      "manifest_sha1": "0dcd2ac9bd6e480e02ab493d04107d304f24eac7",
+      "sha256": "f32e429a185ce659c42e46e932c113ae223a53821e2662dead2a9e77244a1742",
+      "bytes": 55393,
+      "direct_quest_objects": 102,
+      "objects_with_direct_id": 102,
+      "objects_missing_direct_id": 0
+    },
+    {
+      "path": "./config/ftbquests/quests/chapters/draconic_evolution.snbt",
+      "url": "https://files.feed-the-beast.com/blob/55/55486042d2947065996035d8be92ca967aaa8008c6efb7d74722d767f58caede.snbt",
+      "manifest_sha1": "6747dc13a4655ea5fa5b5763d2a010a4a992fc25",
+      "sha256": "b3a93128f675039d4bf0a64934f7e21267427bd7a168d62eda9e51973bd4f2fa",
+      "bytes": 31339,
+      "direct_quest_objects": 41,
+      "objects_with_direct_id": 41,
+      "objects_missing_direct_id": 0
+    },
+    {
+      "path": "./config/ftbquests/quests/chapters/enderio.snbt",
+      "url": "https://files.feed-the-beast.com/blob/88/889458492ad264d4ed6467a703db9f78d2fa46886c93f6628ddecc4388564ff4.snbt",
+      "manifest_sha1": "6c2a0055a16ec7549896c423e9e56c54d592ce88",
+      "sha256": "c940f66760b5b81af01fbe980b72dee9d21242a6d540628588b14bc9f26eba20",
+      "bytes": 19439,
+      "direct_quest_objects": 27,
+      "objects_with_direct_id": 27,
+      "objects_missing_direct_id": 0
+    },
+    {
+      "path": "./config/ftbquests/quests/chapters/fargos_talismans.snbt",
+      "url": "https://files.feed-the-beast.com/blob/16/160d8676d49b8e5725df9ca6f34307c4bd7af9396670ce4b50f3ba756f890b01.snbt",
+      "manifest_sha1": "f9ba0f51245f63c18a1655fd7d4c846ac80adff9",
+      "sha256": "3ac24750198a92b94170b7753ed235cae6dc7e024bd0f7edeb2a4d9e755d98b2",
+      "bytes": 51637,
+      "direct_quest_objects": 80,
+      "objects_with_direct_id": 80,
+      "objects_missing_direct_id": 0
+    },
+    {
+      "path": "./config/ftbquests/quests/chapters/forbidden_arcanus.snbt",
+      "url": "https://files.feed-the-beast.com/blob/d9/d9c629746e627e5d16eaacc9b4d104824c98b391916d4d7fdb4159877c68f460.snbt",
+      "manifest_sha1": "9b72e5d90575ef8b1f578d9bdd107a6d57ae2d2f",
+      "sha256": "a2eab58396d4b0c1da65adf45208aa2c2d23471d3fe4e640e01bbac7428f8279",
+      "bytes": 28732,
+      "direct_quest_objects": 28,
+      "objects_with_direct_id": 28,
+      "objects_missing_direct_id": 0
+    },
+    {
+      "path": "./config/ftbquests/quests/chapters/ftb_pyramid.snbt",
+      "url": "https://files.feed-the-beast.com/blob/6b/6bf55c1f9659e19ccc2d74af79c909dc0db56cbc51b9dcd0682842ee0f4c0293.snbt",
+      "manifest_sha1": "dc8bae821be5ccda3857ad0e3accaaa58679e3b5",
+      "sha256": "c5ba3baa97a0bdaa2d7b8bb2ed2a45c42cbde91c989ce29be34070488e9a4828",
+      "bytes": 21148,
+      "direct_quest_objects": 25,
+      "objects_with_direct_id": 25,
+      "objects_missing_direct_id": 0
+    },
+    {
+      "path": "./config/ftbquests/quests/chapters/gearing_up.snbt",
+      "url": "https://files.feed-the-beast.com/blob/ad/ad954dbe312de317b67218d1bc2b568d8ed69f2772566f18582f37aff024add6.snbt",
+      "manifest_sha1": "c1d06eea6fcf3e31271490ba04dcb92ce1ca7528",
+      "sha256": "8b861052e7b2c2dd8ea7014eacf5e02d77896ca1cb5490b271c4eba5980ab92c",
+      "bytes": 49066,
+      "direct_quest_objects": 77,
+      "objects_with_direct_id": 77,
+      "objects_missing_direct_id": 0
+    },
+    {
+      "path": "./config/ftbquests/quests/chapters/general_storage.snbt",
+      "url": "https://files.feed-the-beast.com/blob/2c/2c78e632dfca1eb07a6f7ca01921d79b130b034202dcbf1ac4d9b11710d9b00b.snbt",
+      "manifest_sha1": "0daba33543d7d7a641f44cc15975bf477648ca3d",
+      "sha256": "314fcba74ddb059ca16fb2473a192866ba7c529a8cd11c0ba408be1395e7335b",
+      "bytes": 27276,
+      "direct_quest_objects": 36,
+      "objects_with_direct_id": 36,
+      "objects_missing_direct_id": 0
+    },
+    {
+      "path": "./config/ftbquests/quests/chapters/genetics.snbt",
+      "url": "https://files.feed-the-beast.com/blob/9f/9ffe7a8e663ebfc8bc1d1b51d98b236b4d8805b922a23e0a17445d7d5410364b.snbt",
+      "manifest_sha1": "7dcca397a61e1f508c3105fcd366cff0c1ded8d6",
+      "sha256": "8665741823d915979dc0ca3cdf03d01d016fa9144df43cd4d3c639971222ed2b",
+      "bytes": 10531,
+      "direct_quest_objects": 19,
+      "objects_with_direct_id": 19,
+      "objects_missing_direct_id": 0
+    },
+    {
+      "path": "./config/ftbquests/quests/chapters/hexerei.snbt",
+      "url": "https://files.feed-the-beast.com/blob/e4/e46816040f1da71592f856cb7232c2e71c89459aa7e880ffc86faf4a00e8669f.snbt",
+      "manifest_sha1": "aa212d58dcb75787715ccf46fd8961621e3a28bd",
+      "sha256": "84b1d14ab2466bf937ff1519d2fd80a4336d1225d3162a6b8478e58cad583886",
+      "bytes": 13995,
+      "direct_quest_objects": 23,
+      "objects_with_direct_id": 23,
+      "objects_missing_direct_id": 0
+    },
+    {
+      "path": "./config/ftbquests/quests/chapters/immersive_engineering.snbt",
+      "url": "https://files.feed-the-beast.com/blob/e6/e6b74b91259cb1c775e86798fee538aadd0521048557e5fd3b98baef572a6f76.snbt",
+      "manifest_sha1": "ecc2f6645f7dfc2285358c3e4dbe9c9b196795b9",
+      "sha256": "183edccfe2f6d809383772f8419343867da2b8132938450e3a25b5892c354c46",
+      "bytes": 31036,
+      "direct_quest_objects": 46,
+      "objects_with_direct_id": 46,
+      "objects_missing_direct_id": 0
+    },
+    {
+      "path": "./config/ftbquests/quests/chapters/industrial_foregoing.snbt",
+      "url": "https://files.feed-the-beast.com/blob/91/91d9d32340c176522279c59472bc816243681ed7d57894568a68829fda60695b.snbt",
+      "manifest_sha1": "f0c745120a947481cdeee7f94ded249edc18cba1",
+      "sha256": "ef93e7335f19788ee3cb138aab50c26ba628007cadc6fa908ef0d6bd25c07381",
+      "bytes": 42512,
+      "direct_quest_objects": 46,
+      "objects_with_direct_id": 46,
+      "objects_missing_direct_id": 0
+    },
+    {
+      "path": "./config/ftbquests/quests/chapters/integrated_dynamics.snbt",
+      "url": "https://files.feed-the-beast.com/blob/3c/3cabd67c1e2b6881f47cede5dbe9180e7faa3c71656e38b53609552f86a45ce3.snbt",
+      "manifest_sha1": "7a242839bad955e263ff39803ca435e8c4b9f4af",
+      "sha256": "7e4f3716fdb5ea7a463201adadaf6f0372fbfef0b4923b9f04e0cc4d08d7384f",
+      "bytes": 23976,
+      "direct_quest_objects": 41,
+      "objects_with_direct_id": 41,
+      "objects_missing_direct_id": 0
+    },
+    {
+      "path": "./config/ftbquests/quests/chapters/irons_spells_spellbooks.snbt",
+      "url": "https://files.feed-the-beast.com/blob/6a/6a467fcb31ac6c83d898494446966a6534790a2cab6f33c6fe23678ee8ba3077.snbt",
+      "manifest_sha1": "3e2bbcc969a7897a9e114013c22d4f366180657b",
+      "sha256": "8e732f4f528ef326a74ba68a5d78d2ce488c6032b48510b2aa69120d9bd511db",
+      "bytes": 47250,
+      "direct_quest_objects": 59,
+      "objects_with_direct_id": 59,
+      "objects_missing_direct_id": 0
+    },
+    {
+      "path": "./config/ftbquests/quests/chapters/just_dire_things.snbt",
+      "url": "https://files.feed-the-beast.com/blob/d6/d647af726a1c331b81a9e241995c246d0ab8724dd9eb7469d60f3801afe0a615.snbt",
+      "manifest_sha1": "45c63ce825759ebfb717212bae9bc2f3ba539942",
+      "sha256": "71889cd3d81c7f4d979c3f74e36725ff3bc551f2fd81abadd19b3c4ba7fe3885",
+      "bytes": 48769,
+      "direct_quest_objects": 89,
+      "objects_with_direct_id": 89,
+      "objects_missing_direct_id": 0
+    },
+    {
+      "path": "./config/ftbquests/quests/chapters/logistics.snbt",
+      "url": "https://files.feed-the-beast.com/blob/e3/e3fe16dd7cacea83c15b52bf5bebdfd05542d124330271c1c33b23df1c4a91f2.snbt",
+      "manifest_sha1": "8eadeedf5f85ca178b136ec23de02ab10978360a",
+      "sha256": "028229cebeeb381f73c67412be31b6059ee089d4fe5ceb82391ce06650a74c08",
+      "bytes": 29248,
+      "direct_quest_objects": 54,
+      "objects_with_direct_id": 54,
+      "objects_missing_direct_id": 0
+    },
+    {
+      "path": "./config/ftbquests/quests/chapters/malum.snbt",
+      "url": "https://files.feed-the-beast.com/blob/43/43601de95a600ca053dfd3daaa84903ea891aeb14198455a4f8a1a74906e3f2d.snbt",
+      "manifest_sha1": "eb7ea85446890f1e750b8bb8733fd1611bf3ccd8",
+      "sha256": "f6bea1b909c45643ff03810919697a295d03b5a7ad7441ad66f682c88c46ee5a",
+      "bytes": 26205,
+      "direct_quest_objects": 35,
+      "objects_with_direct_id": 35,
+      "objects_missing_direct_id": 0
+    },
+    {
+      "path": "./config/ftbquests/quests/chapters/mekanism.snbt",
+      "url": "https://files.feed-the-beast.com/blob/6f/6f2814b052f08dce62da59c11c9b5026594048ba24ae73a5d1100d3b5d4a1941.snbt",
+      "manifest_sha1": "858ed1f76e89f5cf170dd9afc407fddeedba7f2e",
+      "sha256": "7cd506af43ca6c73b583e267dc70edb437fca85625fbb8b10b9f2fad82554504",
+      "bytes": 48138,
+      "direct_quest_objects": 82,
+      "objects_with_direct_id": 82,
+      "objects_missing_direct_id": 0
+    },
+    {
+      "path": "./config/ftbquests/quests/chapters/mffs.snbt",
+      "url": "https://files.feed-the-beast.com/blob/82/82ae897ec44923cbe1177dfc3083e9d404e6987a41fc6ce2172b3e4accae4c09.snbt",
+      "manifest_sha1": "fd9df006a8674caffff6f1f7398bd101ff7ed6dd",
+      "sha256": "1925604edbd4fa40fbde4a7c7e8142e1006bfcdcfb56eecff272aae2e513250a",
+      "bytes": 10723,
+      "direct_quest_objects": 14,
+      "objects_with_direct_id": 14,
+      "objects_missing_direct_id": 0
+    },
+    {
+      "path": "./config/ftbquests/quests/chapters/modern_industrialization.snbt",
+      "url": "https://files.feed-the-beast.com/blob/b4/b45311ff78aa186a2240422b303af5e0c9cc85cf8eabb43f543cbe70ab62a38f.snbt",
+      "manifest_sha1": "abd7cbebdd7c2e0eda5d44788151cc2bbb40d84b",
+      "sha256": "5d1960f546fc39a376661200dd614cdee6c3a68d95d0a7a9af3b4bf29533aba8",
+      "bytes": 109931,
+      "direct_quest_objects": 145,
+      "objects_with_direct_id": 145,
+      "objects_missing_direct_id": 0
+    },
+    {
+      "path": "./config/ftbquests/quests/chapters/nautec.snbt",
+      "url": "https://files.feed-the-beast.com/blob/68/68010f77f31742573fee799164269d7133f05bd04c68bfbb736ee0e50c3792e6.snbt",
+      "manifest_sha1": "db141fd67a77ce1dba27ac5dd160eaaf6ed6c108",
+      "sha256": "b6001ab1a20a62f35199cbd1f49c1a29b39746a82d0ee4f002310a3d609fa8de",
+      "bytes": 32990,
+      "direct_quest_objects": 73,
+      "objects_with_direct_id": 73,
+      "objects_missing_direct_id": 0
+    },
+    {
+      "path": "./config/ftbquests/quests/chapters/neo_vitae.snbt",
+      "url": "https://files.feed-the-beast.com/blob/5b/5bdea9f2e66f6fe0ef4a4c67c6497c48b3d6b16ed8088186b6305824983d071c.snbt",
+      "manifest_sha1": "39fa09cf90686b7e5fc0f26152024e2b2763818d",
+      "sha256": "34b3b55e99c2c214b011a962829621e2c67634d7d8988edc49f9a108e30a959b",
+      "bytes": 31759,
+      "direct_quest_objects": 47,
+      "objects_with_direct_id": 47,
+      "objects_missing_direct_id": 0
+    },
+    {
+      "path": "./config/ftbquests/quests/chapters/occultism.snbt",
+      "url": "https://files.feed-the-beast.com/blob/f1/f19b69a6cc6c19335e0c7ad2a0b19542f617ce00e64b77cf708f78064a7cc681.snbt",
+      "manifest_sha1": "aa187eb4532dbabd73e74c4af016f7d479da070b",
+      "sha256": "d6f3b1f2ff54566e2bb025747421900dc88924bfb57941413a61d60666e4d6d3",
+      "bytes": 94513,
+      "direct_quest_objects": 113,
+      "objects_with_direct_id": 113,
+      "objects_missing_direct_id": 0
+    },
+    {
+      "path": "./config/ftbquests/quests/chapters/oritech.snbt",
+      "url": "https://files.feed-the-beast.com/blob/7d/7dbdea3ad09a8c77b554b332c9466b10f0dcce5f868ecb8deff56b66133b6d92.snbt",
+      "manifest_sha1": "2fd1011cba132f11cde284540c3161d255f83e1b",
+      "sha256": "b008e6d2665d2c76751a204d24fbfce31f599f4422fb8384a1cbbcab0b38c297",
+      "bytes": 46896,
+      "direct_quest_objects": 88,
+      "objects_with_direct_id": 88,
+      "objects_missing_direct_id": 0
+    },
+    {
+      "path": "./config/ftbquests/quests/chapters/pagans_blessing.snbt",
+      "url": "https://files.feed-the-beast.com/blob/16/16ad104c34a822f29474dcbfbaf7498ef09e740ae6c63e5148429a0e9643b842.snbt",
+      "manifest_sha1": "5954d0a65ee31977dc9bd83fffdf15615d4873ae",
+      "sha256": "5b47e632b23887cb704e3a324a09a358ee3b3d745076014addf43a6afa6f983a",
+      "bytes": 23970,
+      "direct_quest_objects": 38,
+      "objects_with_direct_id": 38,
+      "objects_missing_direct_id": 0
+    },
+    {
+      "path": "./config/ftbquests/quests/chapters/pncr.snbt",
+      "url": "https://files.feed-the-beast.com/blob/30/30c973abb5dc798e370b13f908f0605111d013a27b0c7a72df25d25b51555fae.snbt",
+      "manifest_sha1": "d28a5eb1543584b885d96e7c955e5af4a70351fa",
+      "sha256": "5aff1139a36c528bad393f512e2c92ce59a80c6df4ac3ad526273f029d705ae7",
+      "bytes": 24531,
+      "direct_quest_objects": 36,
+      "objects_with_direct_id": 36,
+      "objects_missing_direct_id": 0
+    },
+    {
+      "path": "./config/ftbquests/quests/chapters/power.snbt",
+      "url": "https://files.feed-the-beast.com/blob/e5/e50870ebbe44823afcd67d26f3c8306d70f29a362e4839b50903eea7df1d35a5.snbt",
+      "manifest_sha1": "68a5ef4bb71dd6619eb59850783e2117545c4c83",
+      "sha256": "96ba37e1fda4b4894c02db8c4581cded2e57d9f8a56206b9cb1624daa58b0a03",
+      "bytes": 36226,
+      "direct_quest_objects": 51,
+      "objects_with_direct_id": 51,
+      "objects_missing_direct_id": 0
+    },
+    {
+      "path": "./config/ftbquests/quests/chapters/refined_storage_2.snbt",
+      "url": "https://files.feed-the-beast.com/blob/f9/f9355a11d5d601f9f90281059ce5d0c85cbec554328207e39450c0c9106df64f.snbt",
+      "manifest_sha1": "273776bd6c7b80207d88ac43126bd1b34b02da71",
+      "sha256": "e474356064a1acacf26de478670b6f80e1f56e2132d7b3296f8096f0c71b97d3",
+      "bytes": 41641,
+      "direct_quest_objects": 56,
+      "objects_with_direct_id": 56,
+      "objects_missing_direct_id": 0
+    },
+    {
+      "path": "./config/ftbquests/quests/chapters/resource_generation.snbt",
+      "url": "https://files.feed-the-beast.com/blob/a7/a74cf7114284514f2ffcb2cff7c379c94112f507bcc1813627c7f75219856e7f.snbt",
+      "manifest_sha1": "0f32e36c37156473279182d7da2c8a3397f4eec2",
+      "sha256": "6cd3f777377c03c64956290b46115dc6a0cbf06280bbe3a769ab8282482939fd",
+      "bytes": 77105,
+      "direct_quest_objects": 117,
+      "objects_with_direct_id": 117,
+      "objects_missing_direct_id": 0
+    },
+    {
+      "path": "./config/ftbquests/quests/chapters/reward_test_chapter.snbt",
+      "url": "https://files.feed-the-beast.com/blob/a1/a138279c07bb0f95af885af36913d66b22d9fe5a4506e8c5a8e6a518ec77835e.snbt",
+      "manifest_sha1": "25b815de663287ec65190fa019772dfc5bd9d652",
+      "sha256": "b66ac9178f7e35e024f3c909b26d239edaac41129aba13befc2cfc5bd9ab1e18",
+      "bytes": 258013,
+      "direct_quest_objects": 3,
+      "objects_with_direct_id": 3,
+      "objects_missing_direct_id": 0
+    },
+    {
+      "path": "./config/ftbquests/quests/chapters/tempad.snbt",
+      "url": "https://files.feed-the-beast.com/blob/c0/c0618624bd52eb66266bd3a734ff1541cd75bd392b98b3319f0d28751b67d32f.snbt",
+      "manifest_sha1": "5bd2c4322feaafbd43ef0c42248ce4d7090cee77",
+      "sha256": "0ca626691ea90cf69f7c58c723d2fe94d46d1e7179bf113a50294e8abc3f2fce",
+      "bytes": 7218,
+      "direct_quest_objects": 17,
+      "objects_with_direct_id": 17,
+      "objects_missing_direct_id": 0
+    },
+    {
+      "path": "./config/ftbquests/quests/chapters/the_beginning.snbt",
+      "url": "https://files.feed-the-beast.com/blob/99/991ee588a8da374d57102c0f754b0a559d047dcee1159048bcbe6aa5b6cedd55.snbt",
+      "manifest_sha1": "4d5aa3dbe2c89b0cdd323d03351d83fff73bde0b",
+      "sha256": "0a08f7c23d6065bfef3e777167ae40f06c94c99a2873f5befc3fe5b91287db6d",
+      "bytes": 27642,
+      "direct_quest_objects": 36,
+      "objects_with_direct_id": 36,
+      "objects_missing_direct_id": 0
+    },
+    {
+      "path": "./config/ftbquests/quests/chapters/the_travelers_quest.snbt",
+      "url": "https://files.feed-the-beast.com/blob/8f/8f71c527dfa7def45860445be7471a2aaf8d720d29e48313b68dd5b05fcb507c.snbt",
+      "manifest_sha1": "34b4474ff1896689c7647a6a6fd6c62c7ebe0a6d",
+      "sha256": "164e3241a79d6c17a9ccca00d281d84fb88589defdaeed0f5a03e2c80b94aefd",
+      "bytes": 25453,
+      "direct_quest_objects": 37,
+      "objects_with_direct_id": 37,
+      "objects_missing_direct_id": 0
+    },
+    {
+      "path": "./config/ftbquests/quests/chapters/the_wild_hunt.snbt",
+      "url": "https://files.feed-the-beast.com/blob/fc/fccf4d4e1b97522b8c2a1f3692f08c82892c5caa0323dafe320c0735582e9eb0.snbt",
+      "manifest_sha1": "9df45683c5de79f60cd8b3ac53ca707f94726d45",
+      "sha256": "d31b3ff17f4f5c10a4863a28453f5a2c7e9ea1141487fa1fae115d5dd084ed13",
+      "bytes": 54907,
+      "direct_quest_objects": 69,
+      "objects_with_direct_id": 69,
+      "objects_missing_direct_id": 0
+    },
+    {
+      "path": "./config/ftbquests/quests/chapters/useful_items_tips.snbt",
+      "url": "https://files.feed-the-beast.com/blob/a3/a3404f4b9bcf4f6b86947a1f1d8e14d6e6fefe17d2eff2365c5a8d164c773fa2.snbt",
+      "manifest_sha1": "8218cfd1f9a92b94001daaba311a452cbf8602bb",
+      "sha256": "c7ffd868dd8b9e1531f96f567d27ea960a7dafa3670116c27fe75c0c5ef8ff8b",
+      "bytes": 14690,
+      "direct_quest_objects": 25,
+      "objects_with_direct_id": 25,
+      "objects_missing_direct_id": 0
+    },
+    {
+      "path": "./config/ftbquests/quests/chapters/welcome.snbt",
+      "url": "https://files.feed-the-beast.com/blob/1d/1defff370f411f67d50fef617c665b17dc576e7e31ae6f5d6d3abbe8381612a4.snbt",
+      "manifest_sha1": "235a495c8a743c89ed3cf4d71f3fd8523cfe28fa",
+      "sha256": "2bd438acc9371b9c3fb55191b054e42467d8a039d98bd3877437d6274a400dd3",
+      "bytes": 2806,
+      "direct_quest_objects": 4,
+      "objects_with_direct_id": 4,
+      "objects_missing_direct_id": 0
+    }
+  ]
+}

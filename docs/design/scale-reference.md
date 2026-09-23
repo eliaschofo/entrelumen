@@ -1,6 +1,6 @@
 # Escala comparada y nueva meta
 
-Actualización solicitada: igualar o superar en mods y quests a ATM10, FTB Evolution y Craftoria, con sensación extra large y sin contenido de relleno. **900 quests deja de ser objetivo final o techo.** Fecha de inspección: 2026-09-12.
+Actualización solicitada: igualar o superar en mods y quests a ATM10, FTB Evolution y Craftoria, con sensación extra large y sin contenido de relleno. **900 quests deja de ser objetivo final o techo.** Inspección inicial: 2026-09-12; medición del export FTB completada el 2026-09-23.
 
 ## Unidades que no deben mezclarse
 
@@ -16,7 +16,7 @@ Actualización solicitada: igualar o superar en mods y quests a ATM10, FTB Evolu
 | ATM10 **8.1**, MC 1.21.1 / NeoForge 21.1.249 | **491 proyectos únicos** en manifest; **498 JAR físicos** en la instancia local; **4.790 IDs únicos de quest en 66 capítulos SNBT** | Medido local read-only. La instancia puede contener diferencias respecto del export público; 491 no son 491 sistemas. No se clasificaron todas sus bibliotecas. |
 | Craftoria **1.36.0**, archivo CF **8850018** | **560 referencias CF únicas**, **1 JAR adicional** en overrides/mods. **1.136 IDs únicos** en **28 capítulos .snbt** del export | Medido en ZIP oficial, en memoria. Hay otros tres archivos .txt en el directorio de capítulos que no se contabilizaron como capítulos cargables. El snapshot de Crash Assistant incluye **521 nombres .jar**, pero no es inventario de un arranque verificado. |
 | Craftoria, presentación oficial actual | **500+ mods / 2.000+ quests** | Declaración del editor, no medición exacta. La diferencia frente a 1.136 definiciones exportadas queda abierta: puede haber contenido aportado por mods u otros mecanismos. No afirmar que el pack completo sólo tiene 1.136. |
-| FTB Evolution **1.43.1**, pack **125**, versión **100487**, MC 1.21.1 | Versión publicada y fecha **27-08-2026** comprobadas. Su página recomienda **8 GB**, mínimo 6 GB | No se obtuvo inventario ni questbook completo de esa versión en esta revisión; sus cuentas actuales quedan **sin medir**. No convertir testimonios o cifras de otra versión en exactitud. |
+| FTB Evolution **1.43.1**, pack **125**, versión **100487**, MC 1.21.1 / NeoForge 21.1.248 | **523 JAR directos**, **520 proyectos CF únicos** y tres JAR sin project ID; **2.072 IDs únicos de quest en 40 capítulos SNBT** | Medido en el manifiesto y capítulos oficiales: 29 JAR client-only, 494 seleccionables por el installer de servidor. No se sumó JarJar. Son definiciones exportadas; no se lanzó el pack para comprobar el total cargado. |
 
 Fuentes: [ATM10 y release 8.1](https://www.curseforge.com/minecraft/modpacks/all-the-mods-10), [Craftoria 1.36.0](https://www.curseforge.com/minecraft/modpacks/craftoria/files/8850018), [declaración de Craftoria](https://www.curseforge.com/minecraft/modpacks/craftoria), [FTB Evolution oficial](https://www.feed-the-beast.com/modpacks/125-ftb-evolution).
 
@@ -26,7 +26,7 @@ ATM10: `G:/curseforge/Instances/All the Mods 10 - ATM10/manifest.json`, nombres 
 
 Craftoria: [ZIP oficial](https://edge.forgecdn.net/files/8850/018/Craftoria-1.36.0.zip), SHA-256 `c87a6dd7471c34f459d93910a4285c7166ce5995ba996ce92f57ba02cd43084c`. Se leyeron sólo el manifiesto, inventarios y estructura de capítulos para contar. No se extrajeron archivos a ENTRELUMEN ni se copió narrativa. Un tokenizador respetó cadenas entre comillas y delimitadores para contar únicamente `id` de compuestos directamente dentro de `quests`; número de IDs y número de IDs únicos coinciden en ambas mediciones. Esto no evalúa calidad ni si la pantalla expone todas esas quests.
 
-FTB: la API antigua `api.modpacks.ch/public/modpack/125` devuelve como última versión 1.3.0 (2024), y solicitar 100487 devuelve versión inválida. El endpoint actual consultado respondió HTTP 403. Se descartó usar el inventario antiguo como si fuera 1.43.1. Hace falta una exportación oficial actual o acceso al manifiesto vigente; no se requiere copiar su contenido editorial.
+FTB, intento inicial del 12 de septiembre: la API antigua `api.modpacks.ch/public/modpack/125` devolvía como última versión 1.3.0 (2024), y solicitar 100487 daba versión inválida. El endpoint entonces consultado respondió HTTP 403; se descartó sustituir la versión por un inventario antiguo. La medición del 23 de septiembre resolvió la ruta vigente mediante el código del instalador oficial; se detalla al final.
 
 No hay cifra comparable exacta de bibliotecas para las tres referencias. Un manifiesto público no aporta esa clasificación por sí mismo. Por eso no se presenta una resta inventada de “mods reales”. En ENTRELUMEN sí se mantiene clasificación editorial propia.
 
@@ -34,13 +34,13 @@ No hay cifra comparable exacta de bibliotecas para las tres referencias. Un mani
 
 **Objetivo provisional: 600 proyectos de mods/JAR principales útiles y 5.000–5.500 quests originales únicas**, contando dependencias principales dentro de los 600 pero mostrándolas separadas. Excluir resource packs, shaders, idiomas, tareas y recompensas del contador correspondiente. Apuntar a la parte baja del rango editorial: pasar el máximo por un margen pequeño, no perseguir miles adicionales por prestigio.
 
-La condición final de escala es **igualar o superar el máximo de los tres packs en una unidad común y versiones congeladas**, no cumplir un número publicitario. Los 600 y 5.000 son planificación prudente a partir de los datos disponibles, **no prueba de haber superado FTB Evolution actual ni toda Craftoria**. Antes de cerrar producción hay que completar esas dos mediciones; ajustar el objetivo sólo si el máximo comparable lo exige. No reducir silenciosamente el pedido a 125 mods/900 quests.
+La condición final de escala es **igualar o superar el máximo de los tres packs en una unidad común y versiones congeladas**, no cumplir un número publicitario. Los 600 y 5.000 son planificación prudente a partir de los datos disponibles, **no prueba de paridad cumplida**. El export FTB ya está medido; el contenido completo cargado de Craftoria sigue pendiente, y ningún conteo de export equivale por sí solo a un arranque. Ajustar el objetivo sólo si el máximo comparable lo exige. No reducir silenciosamente el pedido a 125 mods/900 quests.
 
 Para que 5.000 quests no conviertan la campaña en una lista de compras: conservar unos 150–200 hitos narrativos principales y distribuir el resto en tutoriales de sistemas, diseños de instalaciones, expediciones, alternativas y maestrías. La campaña no exige completismo. No desdoblar una acción en cinco quests, contar la traducción como otra ni pedir cada color decorativo para inflar el número. Cada nodo tiene que enseñar, abrir una experiencia, comprobar un sistema útil o plantear una decisión.
 
 ## Diferencia con la selección actual
 
-ENTRELUMEN tiene **125 JAR seleccionados**, con **44 roles de contenido, 36 QoL, 34 dependencia, 8 rendimiento y 6 infraestructura**. Esos 128 roles corresponden a mod IDs, no a 128 JAR: algunos archivos declaran más de uno. El companion se contabiliza por separado al empaquetar. La distancia frente a las referencias es real; cinco addons AE2/Mekanism enriquecen una familia, pero no cubren toda la variedad pendiente.
+La selección inicial descrita aquí tenía **125 JAR**, con **44 roles de contenido, 36 QoL, 34 dependencia, 8 rendimiento y 6 infraestructura**. Al 23 de septiembre el catálogo tiene **140 JAR de cliente / 110 de servidor**, más el companion propio. La distancia frente a las referencias sigue siendo real; los addons AE2/Mekanism enriquecen una familia, pero no cubren toda la variedad pendiente. Los roles se clasifican por mod ID en `catalog/curated.json`; no equivalen a JAR ni se suman como diversidad jugable.
 
 Falta ampliar con curaduría concreta: ingeniería industrial alternativa y redes especializadas; automatización de magia y sus addons; fabricación agrícola y cocina variada; exploración, estructuras y encuentros de dificultad moderada; utilidades de construcción y decoración funcional; movilidad, transporte y bases remotas; herramientas para colecciones y especializaciones. No equivale a instalar todos los candidatos: cada incorporación debe justificar introducción, utilidad posterior y relación con otro sistema. No apilar varios reemplazos completos de biomas ni tres soluciones idénticas de almacenamiento para sumar entradas.
 
@@ -59,4 +59,14 @@ Se volvió a inspeccionar el mismo ZIP Craftoria 1.36.0, sin extracción. El tok
 
 El único JAR directo del export es CC:Tweaked. El ZIP también incluye numerosos resource packs; no se asumió que fueran questbooks ni se descargaron 560 dependencias para perseguir el dato. Esto descarta errores obvios del contador y ubicaciones SNBT adicionales del export, pero **no verifica el contenido aportado por los mods descargados ni el questbook cargado**. La discrepancia de la publicidad de Craftoria permanece abierta; 1.136 sigue siendo sólo el mínimo de definiciones exportadas medido.
 
-Para FTB, una lectura directa del HTML oficial actual también respondió **HTTP 403**. No se intentó evadirlo ni reutilizar datos de versiones antiguas. La ruta corta oficial no aportó manifiesto nuevo: quedan pendientes el inventario y las quests efectivamente cargadas de 1.43.1. No cambia la meta provisional ni se afirma paridad cumplida. Esta revisión se mantuvo en el ZIP oficial conocido y la página FTB, sin expansión de catálogo.
+En esa segunda revisión, una lectura directa del HTML FTB también respondió **HTTP 403**. No se intentó evadirlo ni reutilizar datos antiguos. Ese intento no aportó un manifiesto nuevo. Se conserva como antecedente; la consulta del 23 de septiembre siguiente sí obtuvo el export oficial.
+
+## FTB Evolution: export oficial medido el 23 de septiembre
+
+El [instalador oficial FTB](https://github.com/FTBTeam/FTB-Server-Installer/blob/main/repos/ftb.go) identifica la [API vigente para pack 125 / versión 100487](https://api.feed-the-beast.com/v1/modpacks/modpack/125/100487). Una consulta sin autenticación devolvió 5.315.824 bytes, SHA-256 `25329424e52c186702e401efcc104c34c651ab86078f93a7d561328d883345ca`. No se instaló ni ejecutó FTB Evolution.
+
+Se contaron registros `type=mod` en `./mods` con nombre `.jar`: 523 nombres distintos. Hay 520 project IDs CF distintos y tres JAR sin ese dato; las bibliotecas embebidas no se cuentan aparte. El filtro del instalador excluye los 29 client-only y deja 494 entradas, sin afirmar arranque de servidor.
+
+Un lector de delimitadores que respeta cadenas contó únicamente compuestos directos de la lista raíz `quests` y sus IDs directos: 2.072 objetos e IDs únicos en 40 capítulos. Los 40 archivos coincidieron con el SHA-1 publicado en el manifiesto. El [índice agregado de evidencia](../verification/scale-ftb-evolution-1.43.1.json) conserva URLs, tamaños, hashes por capítulo y método; no incluye textos ni IDs de quests. El hash del corpus completo es `213d38b840af22c72d5b1cf69e5f4416f2e2ce1b3b1e08b28a7cce291de66a68`.
+
+Se inspeccionaron los 78 scripts publicados y sus hashes: no se encontraron patrones reconocidos de registro dinámico de quests. Eso no descarta aportes de código de mods ni acredita el total cargado. La meta provisional queda igual; las 4.790 quests de ATM10 siguen siendo el mayor total estructural medido entre estas referencias.
