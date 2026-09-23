@@ -1,0 +1,172 @@
+{
+  "schemaVersion": 1,
+  "checkedAt": "2026-09-23T04:56:43.173627+00:00",
+  "scope": "Four read-only team journals and completed logistics hint; native chat presentation is provisional and needs the recorded book-reading improvement.",
+  "sourceCommit": "aa44a4841de7ae7d3d776e832462e6bd955afe8b",
+  "sourceCi": {
+    "runId": 35818612856,
+    "conclusion": "success"
+  },
+  "platform": "Minecraft 1.21.1 / NeoForge 21.1.249 / Java 21 / Windows",
+  "normalJarSha256": "d414590bdc82369b077e7d2c2a594e57574af88a13e2218c2d92d5a2d47085e7",
+  "qaJarSha256": "90f5ba519f3b2e6ba59fa1fd20400065f5bcb0f73b2764e3bfb0b6f59acc0777",
+  "unitTests": [
+    {
+      "class": "dev.entrelumen.ArkCommissioningTest",
+      "passed": 4,
+      "reportSha256": "016045495a0d223ad3e209122471aebc1175df61926df30d178cb26aacf910b2"
+    },
+    {
+      "class": "dev.entrelumen.ArkFieldJournalsTest",
+      "passed": 3,
+      "reportSha256": "52f9f861f59052fe30088be9c7eb7926ef023546e45482be07af15fde0f2f0af"
+    },
+    {
+      "class": "dev.entrelumen.EngineeringDiagnosticsTest",
+      "passed": 3,
+      "reportSha256": "bb7b7f0e0f5e62ce0a5438a8ba76c4d69bec1b1a1ab73045e2706a0c99023e9e"
+    },
+    {
+      "class": "dev.entrelumen.LogisticsModuleActionsTest",
+      "passed": 2,
+      "reportSha256": "2aa03458decc3768a9eca80c2f59fb13c81d36088b72465ea87bf914888b31d4"
+    }
+  ],
+  "isolatedGameTests": {
+    "passed": 28,
+    "logSha256": "2c01bbd87b1d636925ed3a4a10886b98679ab1f9b868937a5d24d0170ab46bca",
+    "limitation": "Includes four synthetic external ingredients; separate from native full-pack compatibility."
+  },
+  "fullpack": {
+    "runId": "7bb305b7-1e64-4284-9196-4f559904006b",
+    "registered": 29,
+    "executed": [
+      "arkfieldjournalsreadcurrentteamwithoutmutation"
+    ],
+    "passed": 1,
+    "request": "a249d375-8ece-4a3a-a0d3-a94b09db52d0",
+    "normalStopRequest": "bdcc54da-0166-4a20-b74b-6c4129355519",
+    "exitCode": 0,
+    "watchdogMilliseconds": 60000,
+    "normalJarRestored": true,
+    "logSha256": "f2ab90123fb0584e49d7d2153e85f821b177e7a89e2b2dd55502ba230b4a8753",
+    "verified": [
+      "Each of the four physical modules responds through native gameMode.useItemOn",
+      "Current party projection remains distinct from an outsider campaign",
+      "Recorded projects and journeys, partial nature deposit and narrative states remain distinct",
+      "Reading changes neither campaign data/dirty state nor inventory or module blocks",
+      "Remote reach, spectator and removed-block interactions are rejected"
+    ],
+    "limitation": "One targeted new test ran, not all 29 registered tests. A 2860ms/57-tick catch-up warning occurred during embedded-player setup; no performance acceptance is claimed."
+  },
+  "client": {
+    "world": "ENTRELUMEN-QA-ActVI",
+    "renderSize": [
+      1024,
+      768
+    ],
+    "fixture": "Existing creative QA campaign with all milestones, batches and ending already recorded; this is not a survival run.",
+    "modulePositions": {
+      "arcane": [
+        0,
+        161,
+        -2
+      ],
+      "nature": [
+        2,
+        161,
+        -1
+      ],
+      "exploration": [
+        -2,
+        161,
+        1
+      ],
+      "habitation": [
+        0,
+        163,
+        0
+      ]
+    },
+    "observed": [
+      "All four journals were opened by native empty-main-hand use in both languages",
+      "Current projects, journeys, completed own batch and ending rendered in both languages",
+      "Completed logistics query no longer showed a deposit instruction in either language",
+      "Opening native chat history exposed complete journal text without untranslated keys",
+      "Native save and quit preserved campaign NBT semantically"
+    ],
+    "campaignNbtSemanticallyUnchanged": true,
+    "campaignSemanticSha256": "c4e1ec8e7d1aa0100946df9a8d53dddbd14efad3be010c4e340921581aaa05da",
+    "campaignBeforeRawSha256": "917d164056f944a93591a1405b972fa829a711631b40ea549dc0353143198764",
+    "campaignAfterRawSha256": "917d164056f944a93591a1405b972fa829a711631b40ea549dc0353143198764",
+    "normalSaveAndShutdown": true,
+    "originalLanguageRestored": "es_es",
+    "screenshots": [
+      {
+        "path": "docs/verification/screenshots/logistics-completed-fixed-es.png",
+        "nativeSource": "2026-09-23_01.41.09.png",
+        "sha256": "0918566ff288f4e0fbfb7257b2c904bd983e44d48c7fa0032f36ce715877fd8f"
+      },
+      {
+        "path": "docs/verification/screenshots/journal-arcane-es.png",
+        "nativeSource": "2026-09-23_01.42.26.png",
+        "sha256": "54cbe175690e1f42366a175dc9ced59ca64693c6d6a90544062402cbd9add12d"
+      },
+      {
+        "path": "docs/verification/screenshots/journal-nature-es.png",
+        "nativeSource": "2026-09-23_01.43.17.png",
+        "sha256": "bae74c9c6e14309f8e7f4c786f9242df99d7a7d7cfeb6e585d48a96e40a69175"
+      },
+      {
+        "path": "docs/verification/screenshots/journal-exploration-es.png",
+        "nativeSource": "2026-09-23_01.44.09.png",
+        "sha256": "d1b732a00a0b27b14b0c36a9f0e505858025c78638d2ea26a0f0399dbfea1a0e"
+      },
+      {
+        "path": "docs/verification/screenshots/journal-habitation-es.png",
+        "nativeSource": "2026-09-23_01.44.55.png",
+        "sha256": "f36c583e7793c3f9de2b907eb3d13b6e2dc023973bc94d8d08f0661f00b77c37"
+      },
+      {
+        "path": "docs/verification/screenshots/journal-habitation-en.png",
+        "nativeSource": "2026-09-23_01.47.31.png",
+        "sha256": "7110c539e286a25eb43fe3a7683be185d3331146dc32cda4f29d94cd07287357"
+      },
+      {
+        "path": "docs/verification/screenshots/journal-exploration-en.png",
+        "nativeSource": "2026-09-23_01.48.14.png",
+        "sha256": "f30baa5cb8eda24bd70f26838dde1066a6829d8ad57ae83b245c708f18cb03cf"
+      },
+      {
+        "path": "docs/verification/screenshots/journal-nature-en.png",
+        "nativeSource": "2026-09-23_01.49.21.png",
+        "sha256": "172095771a4e12b0f0c3da26d2565e91eb7fbb5696ffd2bb851f477ce377457b"
+      },
+      {
+        "path": "docs/verification/screenshots/journal-arcane-en.png",
+        "nativeSource": "2026-09-23_01.50.06.png",
+        "sha256": "a6ce4a4616f5d6571c323e41bfb00bcb8ffcd9067e5317c84b8356b98b56ca6f"
+      },
+      {
+        "path": "docs/verification/screenshots/logistics-completed-fixed-en.png",
+        "nativeSource": "2026-09-23_01.50.59.png",
+        "sha256": "785f5a5c960abc14050feafa3788f52b80dedf8e4ad9da10698c4d8b45cf72cc"
+      },
+      {
+        "path": "docs/verification/screenshots/minecraft-book-and-quill-native.png",
+        "nativeSource": "2026-09-23_01.53.26.png",
+        "sha256": "68fcd9ad3d3c443b39759b33b16864a4132023c4e15bb78c85fa637d0550dae4"
+      }
+    ],
+    "logSha256": "2e7332c63c37142165eb6434cdf38783115edc525ce077642bf5a92d3952cb59",
+    "presentationFinding": "Closed chat has too few visible lines for several journals, hiding the title/narrative. Open chat is legible; this does not satisfy finished presentation. A native book reader is the next correction.",
+    "referenceInspection": "After the journal checks, a Book and Quill was supplied through /give in this creative fixture and opened in the air. Its native parchment page, spine, page indicator and controls were visually inspected and captured. The initial block-targeted use placed a decorative book via installed content; this separate reference setup changes the fixture inventory/world and is not evidence of journal mutation or survival acquisition.",
+    "limitations": [
+      "Empty/partial branches were covered by tests, not manually in this completed campaign",
+      "Updated quest paragraphs and item tooltips were not visually reviewed in this session",
+      "Candidate block art, complete module experiences, final-scale survival, co-op, pacing and performance remain unaccepted"
+    ]
+  },
+  "retainedLocalEvidenceDirectory": "C:\\Users\\elias\\Documents\\Codex\\2026-09-12\\h\\work\\journals-evidence",
+  "review": "Root source review and behavioral checks; no independent Astra review is claimed."
+}
