@@ -64,6 +64,9 @@ public final class Projects {
               validateProjectId(id, id);
               if (Expeditions.IDS.contains(id))
                 throw invalid(id, "observation IDs cannot be deliverable projects");
+              if (CampaignMilestones.RESERVED_IDS.contains(id)
+                  || CampaignMilestones.LAST_HORIZON.equals(id))
+                throw invalid(id, "derived or terminal milestone IDs cannot be deliverable projects");
               if (!entry.getValue().isJsonObject()) throw invalid(id, "expected a project object");
               JsonObject obj = entry.getValue().getAsJsonObject();
               for (String field : obj.keySet())

@@ -38,6 +38,21 @@ jobs:
           python tools/check_more_machine_balance.py --self-test
           python tools/test_optional_loot_compat.py
           python -W error::ResourceWarning tools/test_runtime_control.py
-      - name: Build companion and exercise real Minecraft server APIs
+      - name: Build companion and exercise Minecraft APIs with isolated item fixtures
         working-directory: companion
-        run: bash ./gradlew test build runGameTestServer --no-daemon
+        run: bash ./gradlew test build runGameTestServer qaJar --no-daemon
+      - name: Keep QA classes and synthetic items out of the distributable mod
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import zipfile
+          jars = list(Path('companion/build/libs').glob('*.jar'))
+          normal = next(p for p in jars if not p.stem.endswith('-qa'))
+          qa = next(p for p in jars if p.stem.endswith('-qa'))
+          with zipfile.ZipFile(normal) as z:
+              assert not any('GameTest' in p or 'FullpackQA' in p for p in z.namelist())
+              assert 'data/entrelumen/structure/empty.nbt' not in z.namelist()
+          with zipfile.ZipFile(qa) as z:
+              assert 'dev/entrelumen/FullpackQABootstrap.class' in z.namelist()
+              assert not any('GameTestFixture' in p for p in z.namelist())
+          PY

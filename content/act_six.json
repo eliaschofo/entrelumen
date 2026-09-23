@@ -1,0 +1,673 @@
+{
+  "chapter": "last_horizon",
+  "title": {
+    "en_us": "VI · The Last Horizon",
+    "es_es": "VI · El último horizonte"
+  },
+  "autofocus": "horizon_welcome",
+  "layout_groups": {
+    "threshold": {
+      "en_us": "Sera · A route between homes",
+      "es_es": "Sera · Una ruta entre hogares"
+    },
+    "workshop": {
+      "en_us": "Six distinct contributions",
+      "es_es": "Seis aportes distintos"
+    },
+    "expedition": {
+      "en_us": "The End · A witnessed journey",
+      "es_es": "El End · Un viaje presenciado"
+    },
+    "commission": {
+      "en_us": "The Ark · Six recoverable batches",
+      "es_es": "El Arca · Seis lotes recuperables"
+    },
+    "afterward": {
+      "en_us": "Optional horizons · self-reported",
+      "es_es": "Horizontes opcionales · autoevaluados"
+    }
+  },
+  "milestones": [
+    "end_arrival",
+    "engineering_module",
+    "arcane_module",
+    "nature_module",
+    "logistics_module",
+    "habitation_module",
+    "exploration_module",
+    "ark_calibrated",
+    "ark_contained",
+    "ark_renewed",
+    "ark_routed",
+    "ark_provisioned",
+    "ark_charted",
+    "last_horizon"
+  ],
+  "quests": [
+    {
+      "key": "horizon_welcome",
+      "deps": [],
+      "type": "checkmark",
+      "optional": true,
+      "icon": "entrelumen:atlas",
+      "en_us": [
+        "A map that keeps its villages",
+        "Sera's final plan leaves space around every settlement. Ivo first reads those gaps as missing measurements; Sera's note calls them room to refuse a broken route. Build six different Ark modules, then commission them one batch at a time. The Atlas records deliberate deliveries and the controller records physical work. This optional page is a reading, not a switch that starts the campaign."
+      ],
+      "es_es": [
+        "Un mapa que conserva sus pueblos",
+        "El último plano de Sera deja espacio alrededor de cada asentamiento. Ivo cree primero que faltan medidas; una nota de Sera dice que ese espacio permite rechazar una ruta rota. Construí seis módulos distintos del Arca y ponelos en marcha, un lote por vez. El Atlas registra entregas deliberadas y el controlador registra el trabajo físico. Esta lectura opcional no inicia la campaña."
+      ],
+      "layout": {
+        "group": "threshold",
+        "x": 0,
+        "y": 0,
+        "size": 0.75,
+        "shape": "circle"
+      }
+    },
+    {
+      "key": "horizon_controller",
+      "deps": [
+        "horizon_welcome"
+      ],
+      "item": "entrelumen:ark_controller",
+      "en_us": [
+        "A controller, not a throne",
+        "Craft the Ark controller shapelessly with one lodestone, one Entrelumen signal core and one diamond. Keep the finished controller: this possession task does not install it or record a campaign step. Place it where all six module blocks can remain nearby; a normal interaction reports the current batch and missing blocks. Sera leaves the working homes behind the drawing, not under this new machine."
+      ],
+      "es_es": [
+        "Un controlador, no un trono",
+        "Fabricá el controlador del Arca sin forma fija con una magnetita, un núcleo de señal de Entrelumen y un diamante. Guardá el controlador terminado: esta tarea de posesión no lo instala ni registra un paso de campaña. Colocalo donde los seis bloques de módulo puedan permanecer cerca; una interacción común informa el lote actual y los bloques faltantes. Sera deja los hogares en funcionamiento detrás del plano, no debajo de esta máquina."
+      ],
+      "layout": {
+        "group": "threshold",
+        "x": 0,
+        "y": 3,
+        "size": 0.75,
+        "shape": "square"
+      }
+    },
+    {
+      "key": "horizon_engineering_parts",
+      "deps": [
+        "horizon_welcome"
+      ],
+      "item": "mekanism:alloy_atomic",
+      "count": 2,
+      "en_us": [
+        "A bus with a second path",
+        "Set aside two Mekanism atomic alloys for engineering. The delivery also uses two calibration frames, two energy couplers and one Ark bus. These seven parts match the module's ordinary crafting recipe, so a lost module can be crafted again. Ivo draws a bypass beside every line Sera drew; no installed machine has to be uprooted."
+      ],
+      "es_es": [
+        "Un bus con otra ruta",
+        "Reservá dos aleaciones atómicas de Mekanism para ingeniería. La entrega también usa dos marcos de calibración, dos acopladores de energía y un bus del Arca. Estas siete piezas coinciden con la receta común del módulo, así que podés fabricar de nuevo uno perdido. Ivo dibuja un desvío junto a cada línea de Sera; no hace falta arrancar ninguna máquina instalada."
+      ],
+      "layout": {
+        "group": "workshop",
+        "x": -15,
+        "y": 6,
+        "size": 0.75,
+        "shape": "square"
+      }
+    },
+    {
+      "key": "horizon_arcane_parts",
+      "deps": [
+        "horizon_welcome"
+      ],
+      "item": "occultism:iesnium_ingot",
+      "count": 2,
+      "en_us": [
+        "A boundary with a witness",
+        "Reserve two Occultism iesnium ingots. Iesnium is hidden as Nether netherrack; Otherworld Goggles reveal it, but an Infused or Iesnium Pickaxe is needed to mine it. Smelt the raw iesnium. Two spectral lenses and two containment seals complete the module's six-part delivery and ordinary recipe. Sera marks a boundary for the strange signal; Ivo insists on a window to inspect it."
+      ],
+      "es_es": [
+        "Un límite con testigo",
+        "Reservá dos lingotes de iesnium de Occultism. El iesnium se oculta como netherrack en el Nether; las Otherworld Goggles lo revelan, pero necesitás un Infused Pickaxe o Iesnium Pickaxe para picarlo. Fundí el iesnium crudo. Dos lentes espectrales y dos sellos de contención completan la entrega y receta común de seis piezas. Sera marca un límite para la señal; Ivo deja una ventana para observarla."
+      ],
+      "layout": {
+        "group": "workshop",
+        "x": -9,
+        "y": 6,
+        "size": 0.75,
+        "shape": "square"
+      }
+    },
+    {
+      "key": "horizon_nature_parts",
+      "deps": [
+        "horizon_welcome"
+      ],
+      "item": "entrelumen:renewal_engine",
+      "en_us": [
+        "A reserve that answers",
+        "The nature module takes one renewal engine, two ecosystem capsules and two living matrices. The same five inputs make a replacement at a crafting table if the awarded block is lost. The reserve from Act V showed why replacement matters: if one supply fails, a living system can begin again. Keep the existing settlement installation useful."
+      ],
+      "es_es": [
+        "Una reserva que responde",
+        "El módulo de naturaleza requiere un motor de renovación, dos cápsulas de ecosistema y dos matrices vivientes. Esos mismos cinco insumos permiten fabricar un reemplazo en la mesa si se pierde el bloque otorgado. La reserva del Acto V mostró por qué importa reponer: si falla un suministro, un sistema vivo puede recomenzar. Conservá útil la instalación del asentamiento."
+      ],
+      "layout": {
+        "group": "workshop",
+        "x": -3,
+        "y": 6,
+        "size": 0.75,
+        "shape": "square"
+      }
+    },
+    {
+      "key": "horizon_logistics_parts",
+      "deps": [
+        "horizon_welcome"
+      ],
+      "item": "entrelumen:routing_matrix",
+      "count": 2,
+      "en_us": [
+        "Routes with readable stores",
+        "Prepare two routing matrices, two handling cores and one Ark bus for the logistics delivery. The same five inputs craft a replacement block without reopening the one-time Atlas project. Ivo asks for a count that people can verify before a route changes. Holding these components only completes a non-consuming lesson."
+      ],
+      "es_es": [
+        "Rutas con depósitos legibles",
+        "Prepará dos matrices de enrutamiento, dos núcleos de manipulación y un bus del Arca para la entrega logística. Los mismos cinco insumos fabrican un bloque de reemplazo sin reabrir el proyecto único del Atlas. Ivo pide una cuenta que cualquiera pueda verificar antes de cambiar una ruta. Tener esos componentes sólo completa una lección sin consumo."
+      ],
+      "layout": {
+        "group": "workshop",
+        "x": 3,
+        "y": 6,
+        "size": 0.75,
+        "shape": "square"
+      }
+    },
+    {
+      "key": "horizon_habitation_parts",
+      "deps": [
+        "horizon_welcome"
+      ],
+      "item": "entrelumen:habitation_contract",
+      "en_us": [
+        "A room for whoever follows",
+        "Set aside one habitation contract, two ration bundles and two living matrices for the habitation delivery. The same five inputs craft a replacement block later. Mara counts these two bundles separately from the eight-bundle commissioning batch, so the Ark never borrows a visitor's supper without saying so. A contract in hand is preparation, not project credit."
+      ],
+      "es_es": [
+        "Un lugar para quien venga",
+        "Reservá un contrato de habitación, dos paquetes de raciones y dos matrices vivientes para la entrega de habitabilidad. Los mismos cinco insumos fabrican un bloque de reemplazo más adelante. Mara cuenta estos dos paquetes aparte del lote posterior de ocho, para que el Arca no tome la cena de una visita sin avisar. Tener un contrato prepara la entrega, pero no acredita el proyecto."
+      ],
+      "layout": {
+        "group": "workshop",
+        "x": 9,
+        "y": 6,
+        "size": 0.75,
+        "shape": "square"
+      }
+    },
+    {
+      "key": "horizon_exploration_parts",
+      "deps": [
+        "horizon_welcome"
+      ],
+      "item": "entrelumen:horizon_chart",
+      "en_us": [
+        "A chart with a return line",
+        "The exploration module takes one horizon chart, one spectral lens, two Twilight Forest steeleaf ingots and two Aether zanite gemstones. Search Hollow Hill chests for steeleaf; Labyrinth chests offer another chance, never a guaranteed find. Mine zanite ore for gemstones rather than preserving it with Silk Touch. These six inputs also craft a lost block again. Sera draws the return route first; a real team journey into the End is still required."
+      ],
+      "es_es": [
+        "Una carta con ruta de regreso",
+        "El módulo de exploración requiere una carta del horizonte, un lente espectral, dos lingotes de steeleaf de Twilight Forest y dos gemas de zanite de Aether. Buscá steeleaf en cofres de Hollow Hills; los del Labyrinth son otra posibilidad, nunca un hallazgo garantizado. Picá mena de zanite para obtener gemas en vez de conservarla con Toque de Seda. Esos seis insumos también reponen un bloque perdido. Sera traza primero el regreso; además hace falta un viaje real del equipo al End."
+      ],
+      "layout": {
+        "group": "workshop",
+        "x": 15,
+        "y": 6,
+        "size": 0.75,
+        "shape": "square"
+      }
+    },
+    {
+      "key": "horizon_eyes",
+      "deps": [
+        "horizon_welcome"
+      ],
+      "item": "minecraft:ender_eye",
+      "en_us": [
+        "The old doorway",
+        "Craft Eyes of Ender from ender pearls and blaze powder. Throwing an eye helps locate a stronghold; its portal room has a frame that needs eyes to open. Bring enough for the search and the frame. This possession lesson is only preparation: neither an eye nor an End item gifted by a friend proves that your current campaign actually entered the dimension."
+      ],
+      "es_es": [
+        "La vieja entrada",
+        "Fabricá ojos de ender con perlas de ender y polvo de blaze. Al lanzar un ojo podés localizar una fortaleza; su sala de portal tiene un marco que necesita ojos para abrirse. Llevá suficientes para la búsqueda y el marco. Esta tarea de posesión sólo prepara el viaje: ni un ojo ni un objeto del End regalado prueban que tu campaña actual haya entrado en esa dimensión."
+      ],
+      "layout": {
+        "group": "expedition",
+        "x": 21,
+        "y": 3,
+        "size": 0.75,
+        "shape": "square"
+      }
+    },
+    {
+      "key": "horizon_end_plan",
+      "deps": [
+        "horizon_eyes"
+      ],
+      "type": "checkmark",
+      "optional": true,
+      "icon": "minecraft:filled_map",
+      "en_us": [
+        "Field note: a way home",
+        "Optional expedition plan: pack food, protection and blocks before entering the stronghold portal, and agree on a return route. In a new End, defeating the dragon opens the ordinary exit portal home. On a shared world, that exit may already be open; your team does not need a second dragon kill for this campaign. Outer End gateways are optional later journeys. Mark this note when your team has a plan; the travel itself is recorded separately."
+      ],
+      "es_es": [
+        "Nota de campo: volver",
+        "Plan de expedición opcional: llevá comida, protección y bloques antes de entrar al portal de la fortaleza, y acordá una ruta de regreso. En un End nuevo, derrotar al dragón abre el portal de salida a casa. En un mundo compartido esa salida puede estar abierta: tu equipo no necesita otra muerte del dragón para esta campaña. Los portales hacia las islas exteriores son viajes opcionales posteriores. Marcá esta nota cuando tengan un plan; el viaje se registra aparte."
+      ],
+      "layout": {
+        "group": "expedition",
+        "x": 21,
+        "y": 6,
+        "size": 0.75,
+        "shape": "circle"
+      }
+    },
+    {
+      "key": "horizon_end_arrival",
+      "deps": [],
+      "milestone": "end_arrival",
+      "icon": "minecraft:end_stone",
+      "en_us": [
+        "A horizon actually crossed",
+        "Enter the End yourself with the current team. The server witnesses real entry, login or respawn there; an earlier visit can count, even before Act VI. Joining a team does not import your former personal travels into that team's record. Ivo marks the place and time, not the contents of a backpack, and the exploration delivery can proceed when this observation is credited."
+      ],
+      "es_es": [
+        "Un horizonte cruzado de verdad",
+        "Entrá al End con tu equipo actual. El servidor observa la entrada, el inicio de sesión o la reaparición real allí; una visita temprana puede contar, incluso antes del Acto VI. Al sumarte a otro equipo no importás los viajes de tu campaña personal a su registro. Ivo anota el lugar y el momento, no el contenido de una mochila; entonces puede avanzar la entrega de exploración."
+      ],
+      "layout": {
+        "group": "expedition",
+        "x": 21,
+        "y": 9,
+        "size": 1.1,
+        "shape": "hexagon"
+      }
+    },
+    {
+      "key": "horizon_engineering",
+      "deps": [
+        "world_network"
+      ],
+      "milestone": "engineering_module",
+      "icon": "entrelumen:engineering_module",
+      "en_us": [
+        "Engineering: a path around failure",
+        "After the world network is complete, deliver two calibration frames, two energy couplers, one Ark bus and two Mekanism atomic alloys through the Atlas. That explicit delivery consumes the seven components once and grants one engineering module block. The crafting-table recipe uses the same inputs if a block is later lost; the Atlas project itself stays credited."
+      ],
+      "es_es": [
+        "Ingeniería: rodear una falla",
+        "Tras completar la red del mundo, entregá dos marcos de calibración, dos acopladores de energía, un bus del Arca y dos aleaciones atómicas de Mekanism mediante el Atlas. Esa entrega explícita consume los siete componentes una sola vez y otorga un bloque de módulo de ingeniería. La receta en mesa usa los mismos insumos si después se pierde un bloque; el proyecto del Atlas queda acreditado."
+      ],
+      "layout": {
+        "group": "workshop",
+        "x": -15,
+        "y": 12,
+        "size": 1.1,
+        "shape": "hexagon"
+      }
+    },
+    {
+      "key": "horizon_arcane",
+      "deps": [
+        "world_network"
+      ],
+      "milestone": "arcane_module",
+      "icon": "entrelumen:arcane_module",
+      "en_us": [
+        "Arcane: a boundary that holds",
+        "After the world network, deliver two spectral lenses, two containment seals and two Occultism iesnium ingots through the Atlas. The server consumes that six-part set once and awards one arcane module block. A gifted ingot may serve as material, but simply holding it never records the project. The matching crafting recipe can replace a lost block without replaying the delivery."
+      ],
+      "es_es": [
+        "Arcano: un límite que resiste",
+        "Tras completar la red del mundo, entregá dos lentes espectrales, dos sellos de contención y dos lingotes de iesnium de Occultism mediante el Atlas. El servidor consume esas seis piezas una sola vez y otorga un bloque de módulo arcano. Un lingote regalado sirve como material, pero tenerlo no registra el proyecto. La receta equivalente permite reemplazar un bloque perdido sin repetir la entrega."
+      ],
+      "layout": {
+        "group": "workshop",
+        "x": -9,
+        "y": 12,
+        "size": 1.1,
+        "shape": "hexagon"
+      }
+    },
+    {
+      "key": "horizon_nature",
+      "deps": [
+        "world_network"
+      ],
+      "milestone": "nature_module",
+      "icon": "entrelumen:nature_module",
+      "en_us": [
+        "Nature: growth with reserves",
+        "After the world network, deliver one renewal engine, two ecosystem capsules and two living matrices through the Atlas. The server consumes them once and awards one nature module block. The same inputs can craft a lost block again, while the renewable reserve at home remains its own installation. Mara asks what still grows if one source pauses."
+      ],
+      "es_es": [
+        "Naturaleza: crecer con reservas",
+        "Tras completar la red del mundo, entregá un motor de renovación, dos cápsulas de ecosistema y dos matrices vivientes mediante el Atlas. El servidor los consume una sola vez y otorga un bloque de módulo de naturaleza. Los mismos insumos fabrican de nuevo un bloque perdido, mientras la reserva renovable de casa sigue siendo una instalación propia. Mara pregunta qué sigue creciendo si una fuente se detiene."
+      ],
+      "layout": {
+        "group": "workshop",
+        "x": -3,
+        "y": 12,
+        "size": 1.1,
+        "shape": "hexagon"
+      }
+    },
+    {
+      "key": "horizon_logistics",
+      "deps": [
+        "world_network"
+      ],
+      "milestone": "logistics_module",
+      "icon": "entrelumen:logistics_module",
+      "en_us": [
+        "Logistics: a count before movement",
+        "After the world network, deliver two routing matrices, two handling cores and one Ark bus through the Atlas. The five components are consumed once and grant one logistics module block. The same crafting recipe can replace a missing block without taking down installed equipment. Ivo wants the route to show what it moved before anyone mistakes an empty store for a fulfilled promise."
+      ],
+      "es_es": [
+        "Logística: contar antes de mover",
+        "Tras completar la red del mundo, entregá dos matrices de enrutamiento, dos núcleos de manipulación y un bus del Arca mediante el Atlas. Los cinco componentes se consumen una sola vez y otorgan un bloque de módulo logístico. La misma receta permite reponer un bloque sin desarmar equipos instalados. Ivo quiere que la ruta muestre qué movió antes de que alguien confunda un depósito vacío con una promesa cumplida."
+      ],
+      "layout": {
+        "group": "workshop",
+        "x": 3,
+        "y": 12,
+        "size": 1.1,
+        "shape": "hexagon"
+      }
+    },
+    {
+      "key": "horizon_habitation",
+      "deps": [
+        "world_network"
+      ],
+      "milestone": "habitation_module",
+      "icon": "entrelumen:habitation_module",
+      "en_us": [
+        "Habitation: a place to arrive",
+        "After the world network, deliver one habitation contract, two ration bundles and two living matrices through the Atlas. The materials are consumed once and grant one habitation module block. This builds the module; its later commissioning takes a separate eight ration bundles. The same ordinary recipe can replace a lost block, but cannot credit the project a second time."
+      ],
+      "es_es": [
+        "Habitabilidad: un lugar al que llegar",
+        "Tras completar la red del mundo, entregá un contrato de habitación, dos paquetes de raciones y dos matrices vivientes mediante el Atlas. Los materiales se consumen una sola vez y otorgan un bloque de módulo de habitabilidad. Esto construye el módulo; su puesta en marcha requiere otros ocho paquetes de raciones. La receta común puede reponer un bloque perdido, pero no acredita el proyecto otra vez."
+      ],
+      "layout": {
+        "group": "workshop",
+        "x": 9,
+        "y": 12,
+        "size": 1.1,
+        "shape": "hexagon"
+      }
+    },
+    {
+      "key": "horizon_exploration",
+      "deps": [
+        "world_network",
+        "horizon_end_arrival"
+      ],
+      "milestone": "exploration_module",
+      "icon": "entrelumen:exploration_module",
+      "en_us": [
+        "Exploration: the return marked first",
+        "After the world network and a server-witnessed End arrival, deliver one horizon chart, one spectral lens, two Twilight Forest steeleaf ingots and two Aether zanite gemstones through the Atlas. That six-part set is consumed once and grants one exploration module block. The matching recipe replaces a lost block. A chart bought or gifted is usable material; it cannot replace the journey."
+      ],
+      "es_es": [
+        "Exploración: primero la vuelta",
+        "Tras completar la red del mundo y una llegada al End observada por el servidor, entregá una carta del horizonte, un lente espectral, dos lingotes de steeleaf de Twilight Forest y dos gemas de zanite de Aether mediante el Atlas. Las seis piezas se consumen una sola vez y otorgan un bloque de exploración. La receta equivalente repone un bloque perdido. Una carta regalada sirve de material, pero no reemplaza el viaje."
+      ],
+      "layout": {
+        "group": "workshop",
+        "x": 15,
+        "y": 12,
+        "size": 1.1,
+        "shape": "hexagon"
+      }
+    },
+    {
+      "key": "horizon_placement",
+      "deps": [
+        "horizon_controller"
+      ],
+      "type": "checkmark",
+      "optional": true,
+      "icon": "entrelumen:ark_controller",
+      "en_us": [
+        "Field note: six blocks in reach",
+        "Optional, self-reported placement check: put the controller down and keep all six awarded module blocks within three blocks horizontally, one below or two above it. Inspect the controller to see which blocks it finds. This note cannot certify the structure; the server checks the real blocks at each batch and at final activation. An installed block is not a commissioning material."
+      ],
+      "es_es": [
+        "Nota de campo: seis bloques al alcance",
+        "Comprobación opcional y autoevaluada: colocá el controlador y mantené los seis bloques de módulo a no más de tres bloques en horizontal, uno por debajo o dos por encima. Inspeccionalo para ver cuáles encuentra. Esta nota no certifica la estructura; el servidor revisa los bloques reales en cada lote y en la activación final. Un bloque instalado no es material de puesta en marcha."
+      ],
+      "layout": {
+        "group": "commission",
+        "x": -9,
+        "y": 16,
+        "size": 0.75,
+        "shape": "circle"
+      }
+    },
+    {
+      "key": "horizon_calibrated",
+      "deps": [
+        "horizon_engineering",
+        "horizon_arcane",
+        "horizon_nature",
+        "horizon_logistics",
+        "horizon_habitation",
+        "horizon_exploration"
+      ],
+      "milestone": "ark_calibrated",
+      "icon": "entrelumen:engineering_module",
+      "en_us": [
+        "I · Calibrate the bypass",
+        "When all six module projects are credited, place their blocks around the controller. For the first commissioning batch, bring four additional calibration frames and two additional power regulators. Crouch and use the controller with an empty main hand; it accepts available supplies toward this batch. Inspect to see the remainder. Partial deposits survive a restart, and this mirror appears only when the server credits the completed step."
+      ],
+      "es_es": [
+        "I · Calibrar el desvío",
+        "Cuando estén acreditados los seis proyectos de módulo, colocá sus bloques alrededor del controlador. Para el primer lote de puesta en marcha, llevá otros cuatro marcos de calibración y otros dos reguladores de energía. Agachate y usá el controlador con la mano principal vacía; acepta los insumos disponibles. Inspeccionalo para ver lo pendiente. Los depósitos parciales sobreviven al reinicio y este reflejo aparece cuando el servidor acredita el paso completo."
+      ],
+      "layout": {
+        "group": "commission",
+        "x": 0,
+        "y": 16,
+        "size": 1.1,
+        "shape": "hexagon"
+      }
+    },
+    {
+      "key": "horizon_contained",
+      "deps": [
+        "horizon_calibrated"
+      ],
+      "milestone": "ark_contained",
+      "icon": "entrelumen:arcane_module",
+      "en_us": [
+        "II · Hold the boundary",
+        "The second batch takes two additional containment seals at the controller. Keep the six physical module blocks present and use the same deliberate crouched, empty-main-hand interaction. The first batch is already credited; repeating it neither consumes more frames nor advances the sequence. Ivo watches for a boundary that can be checked again tomorrow."
+      ],
+      "es_es": [
+        "II · Sostener el límite",
+        "El segundo lote requiere otros dos sellos de contención en el controlador. Mantené presentes los seis bloques físicos de módulo y repetí la interacción deliberada, agachado y con la mano principal vacía. El primer lote ya quedó acreditado; repetirlo no consume más marcos ni adelanta la secuencia. Ivo observa un límite que también pueda comprobarse mañana."
+      ],
+      "layout": {
+        "group": "commission",
+        "x": 0,
+        "y": 19,
+        "size": 1.1,
+        "shape": "hexagon"
+      }
+    },
+    {
+      "key": "horizon_renewed",
+      "deps": [
+        "horizon_contained"
+      ],
+      "milestone": "ark_renewed",
+      "icon": "entrelumen:nature_module",
+      "en_us": [
+        "III · Keep a living reserve",
+        "The third controller batch takes two additional ecosystem capsules. Deposit them with the six module blocks still present; the server records each accepted amount and credits the step only when its batch is complete. Mara refuses to call a reserve renewable just because the diagram is green. The settlement's existing reserve remains where it was built."
+      ],
+      "es_es": [
+        "III · Conservar una reserva viva",
+        "El tercer lote del controlador requiere otras dos cápsulas de ecosistema. Depositalas con los seis bloques de módulo todavía presentes; el servidor registra cada cantidad aceptada y acredita el paso al completar el lote. Mara se niega a llamar renovable a una reserva sólo porque el plano sea verde. La reserva ya instalada en el asentamiento sigue donde fue construida."
+      ],
+      "layout": {
+        "group": "commission",
+        "x": 0,
+        "y": 22,
+        "size": 1.1,
+        "shape": "hexagon"
+      }
+    },
+    {
+      "key": "horizon_routed",
+      "deps": [
+        "horizon_renewed"
+      ],
+      "milestone": "ark_routed",
+      "icon": "entrelumen:logistics_module",
+      "en_us": [
+        "IV · Route the first load",
+        "The fourth controller batch takes two additional routing matrices. Bring those separately from the matrices consumed to construct the logistics module. A deliberate deposit can be partial; inspect the controller for the exact remainder before bringing more. Sera wants a route whose supplies and progress remain legible after a team member leaves."
+      ],
+      "es_es": [
+        "IV · Encauzar la primera carga",
+        "El cuarto lote del controlador requiere otras dos matrices de enrutamiento. Traelas aparte de las matrices consumidas al construir el módulo logístico. Un depósito deliberado puede ser parcial; inspeccioná el controlador para ver lo pendiente antes de traer más. Sera quiere una ruta cuyos insumos y avances sigan claros cuando alguien del equipo se vaya."
+      ],
+      "layout": {
+        "group": "commission",
+        "x": 0,
+        "y": 25,
+        "size": 1.1,
+        "shape": "hexagon"
+      }
+    },
+    {
+      "key": "horizon_provisioned",
+      "deps": [
+        "horizon_routed"
+      ],
+      "milestone": "ark_provisioned",
+      "icon": "entrelumen:habitation_module",
+      "en_us": [
+        "V · Provision a welcome",
+        "The fifth controller batch takes eight additional ration bundles, distinct from the two used in the habitation project. Keep all module blocks in place and deposit the supplies by crouching with an empty main hand. Mara's arithmetic is blunt: a route that carries people must also carry enough to receive them, without quietly emptying the kitchen at home."
+      ],
+      "es_es": [
+        "V · Preparar una bienvenida",
+        "El quinto lote del controlador requiere otros ocho paquetes de raciones, distintos de los dos usados en el proyecto de habitabilidad. Mantené todos los bloques de módulo en su lugar y depositá los insumos agachado, con la mano principal vacía. La cuenta de Mara es directa: una ruta que lleva personas también debe poder recibirlas, sin vaciar a escondidas la cocina de casa."
+      ],
+      "layout": {
+        "group": "commission",
+        "x": 0,
+        "y": 28,
+        "size": 1.1,
+        "shape": "hexagon"
+      }
+    },
+    {
+      "key": "horizon_charted",
+      "deps": [
+        "horizon_provisioned"
+      ],
+      "milestone": "ark_charted",
+      "icon": "entrelumen:exploration_module",
+      "en_us": [
+        "VI · Chart a return",
+        "The sixth and last commissioning batch takes one additional horizon chart at the controller. It is separate from the one spent on the exploration module. After this deposit, inspect the controller: six batches can be complete while the final activation still waits for your explicit choice. Ivo folds the chart so the route home remains visible on its outer face."
+      ],
+      "es_es": [
+        "VI · Trazar el regreso",
+        "El sexto y último lote de puesta en marcha requiere otra carta del horizonte en el controlador. Es distinta de la gastada en el módulo de exploración. Tras depositarla, inspeccioná el controlador: los seis lotes pueden estar completos y la activación final todavía espera tu elección explícita. Ivo pliega la carta dejando la ruta de regreso a la vista."
+      ],
+      "layout": {
+        "group": "commission",
+        "x": 0,
+        "y": 31,
+        "size": 1.1,
+        "shape": "hexagon"
+      }
+    },
+    {
+      "key": "horizon_last",
+      "deps": [
+        "horizon_charted",
+        "world_network",
+        "horizon_end_arrival"
+      ],
+      "milestone": "last_horizon",
+      "icon": "entrelumen:ark_controller",
+      "en_us": [
+        "The last horizon",
+        "After six credited batches, with the world network complete, the End journey witnessed and all six physical modules still beside the controller, crouch and interact with it once more using an empty main hand. That explicit act activates the Ark; it consumes nothing else and leaves every block in place. The server records this first ending for your current campaign. Inspect the controller later to read it again.\n\nSera's last line was not an order to leave: 'A bridge is good when either shore can still live without it.' Ivo adds the measured distance. Mara leaves the door open. The Atlas finally holds three accounts without forcing them into one voice."
+      ],
+      "es_es": [
+        "El último horizonte",
+        "Tras acreditar seis lotes, con la red del mundo completa, el viaje al End observado y los seis módulos físicos todavía junto al controlador, agachate e interactuá una vez más con la mano principal vacía. Ese acto explícito activa el Arca; no consume nada más y deja todos los bloques en su lugar. El servidor registra este primer final para tu campaña actual. Inspeccioná después el controlador para volver a leerlo.\n\nLa última línea de Sera no era una orden de partir: «Un puente es bueno cuando ambas orillas pueden seguir viviendo sin él». Ivo agrega la distancia medida. Mara deja la puerta abierta. Por fin, el Atlas conserva tres relatos sin obligarlos a hablar con una sola voz."
+      ],
+      "layout": {
+        "group": "commission",
+        "x": 0,
+        "y": 34,
+        "size": 1.1,
+        "shape": "hexagon"
+      }
+    },
+    {
+      "key": "horizon_post_routes",
+      "deps": [
+        "horizon_last"
+      ],
+      "type": "checkmark",
+      "optional": true,
+      "icon": "minecraft:map",
+      "en_us": [
+        "Afterward: two routes",
+        "Optional, self-reported challenge: make two different ways to move one useful supply between your existing settlements, then pause one and see whether the other is understandable and usable. Record what failed and what was easy to repair. This is an invitation to experiment with the machines you already own, not a new Ark unlock or an automatically measured benefit."
+      ],
+      "es_es": [
+        "Después: dos rutas",
+        "Desafío opcional y autoevaluado: armá dos maneras distintas de mover un insumo útil entre tus asentamientos, detené una y observá si la otra se entiende y funciona. Anotá qué falló y qué fue fácil de reparar. Es una invitación a probar las máquinas que ya tenés, no un nuevo desbloqueo del Arca ni un beneficio medido automáticamente."
+      ],
+      "layout": {
+        "group": "afterward",
+        "x": -6,
+        "y": 38,
+        "size": 0.75,
+        "shape": "circle"
+      }
+    },
+    {
+      "key": "horizon_post_reserve",
+      "deps": [
+        "horizon_last"
+      ],
+      "type": "checkmark",
+      "optional": true,
+      "icon": "minecraft:wheat",
+      "en_us": [
+        "Afterward: a shared reserve",
+        "Optional, self-reported challenge: choose one renewable food or material reserve, let a visitor take a known amount and measure how long your ordinary process takes to replace it. Write down the conditions that would make the reserve fair to share. Mara's question is about people and replenishment, not a hidden score or a feature this page unlocks."
+      ],
+      "es_es": [
+        "Después: una reserva compartida",
+        "Desafío opcional y autoevaluado: elegí una reserva renovable de comida o material, dejá que una visita tome una cantidad conocida y medí cuánto tarda tu proceso habitual en reponerla. Anotá qué condiciones harían justo compartir esa reserva. La pregunta de Mara trata de personas y reposición, no de un puntaje oculto ni de una función que esta página desbloquee."
+      ],
+      "layout": {
+        "group": "afterward",
+        "x": 6,
+        "y": 38,
+        "size": 0.75,
+        "shape": "circle"
+      }
+    }
+  ]
+}

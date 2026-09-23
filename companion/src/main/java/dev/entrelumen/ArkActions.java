@@ -66,11 +66,34 @@ public final class ArkActions {
     return accepted;
   }
 
+  public static boolean activate(ServerPlayer player, UUID expectedCampaign, BlockPos controller) {
+    if (!player.isSecondaryUseActive() || !player.getMainHandItem().isEmpty()) return false;
+    if (!CampaignActions.campaignId(player).equals(expectedCampaign)) {
+      player.sendSystemMessage(Component.translatable("entrelumen.atlas.stale"));
+      return false;
+    }
+    if (!reachableController(player, controller) || !missingModules(player, controller).isEmpty()) {
+      player.sendSystemMessage(Component.translatable("entrelumen.ark.structure"));
+      return false;
+    }
+    if (!CampaignMilestones.finish(Entrelumen.current(player))) {
+      player.sendSystemMessage(Component.translatable("entrelumen.ark.activation_unavailable"));
+      return false;
+    }
+    CampaignData.get(player.server).setDirty();
+    return true;
+  }
+
   public static void inspect(ServerPlayer player, BlockPos controller) {
     if (!reachableController(player, controller)) return;
     var campaign = Entrelumen.current(player);
+    if (campaign.completed.contains(CampaignMilestones.LAST_HORIZON)) {
+      player.sendSystemMessage(Component.translatable("entrelumen.ark.ending"));
+      return;
+    }
     if (campaign.arkPhase >= ArkCommissioning.STEPS.size()) {
       player.sendSystemMessage(Component.translatable("entrelumen.ark.commissioned"));
+      player.sendSystemMessage(Component.translatable("entrelumen.ark.activate_hint"));
       return;
     }
     var step = ArkCommissioning.STEPS.get(campaign.arkPhase);

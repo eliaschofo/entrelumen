@@ -32,8 +32,13 @@ public final class ArkControllerBlock extends Block {
       Player player, BlockHitResult hit) {
     if (player instanceof ServerPlayer serverPlayer) {
       if (player.isSecondaryUseActive() && player.getMainHandItem().isEmpty()) {
-        ArkActions.deposit(serverPlayer, CampaignActions.campaignId(serverPlayer), pos,
-            Entrelumen.current(serverPlayer).arkPhase);
+        var campaignId = CampaignActions.campaignId(serverPlayer);
+        int phase = Entrelumen.current(serverPlayer).arkPhase;
+        if (phase == ArkCommissioning.STEPS.size()
+            && !Entrelumen.current(serverPlayer).completed.contains(CampaignMilestones.LAST_HORIZON))
+          ArkActions.activate(serverPlayer, campaignId, pos);
+        else if (phase < ArkCommissioning.STEPS.size())
+          ArkActions.deposit(serverPlayer, campaignId, pos, phase);
       }
       ArkActions.inspect(serverPlayer, pos);
     }

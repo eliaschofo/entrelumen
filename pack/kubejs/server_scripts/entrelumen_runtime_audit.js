@@ -32,6 +32,7 @@ const entrelumenAuditTargets = {
     "create:water_wheel",
     "entrelumen:arcane_module",
     "entrelumen:ark_bus",
+    "entrelumen:ark_controller",
     "entrelumen:atlas",
     "entrelumen:calibration_frame",
     "entrelumen:containment_seal",
@@ -79,29 +80,22 @@ const entrelumenAuditTargets = {
     "mekanism:alloy_atomic",
     "mekanism:basic_control_circuit",
     "mekanismgenerators:wind_generator",
-    "minecraft:amethyst_block",
     "minecraft:book",
     "minecraft:bowl",
     "minecraft:bread",
-    "minecraft:bricks",
     "minecraft:bucket",
     "minecraft:chest",
     "minecraft:compass",
     "minecraft:copper_ingot",
     "minecraft:crafting_table",
-    "minecraft:echo_shard",
+    "minecraft:end_stone",
     "minecraft:ender_eye",
-    "minecraft:ender_pearl",
+    "minecraft:filled_map",
     "minecraft:furnace",
     "minecraft:glass",
-    "minecraft:golden_carrot",
-    "minecraft:hopper",
-    "minecraft:iron_block",
     "minecraft:lantern",
     "minecraft:map",
-    "minecraft:moss_block",
     "minecraft:paper",
-    "minecraft:piston",
     "minecraft:red_bed",
     "minecraft:redstone",
     "minecraft:stone_pickaxe",
@@ -127,6 +121,10 @@ const entrelumenAuditTargets = {
     "waystones:waystone"
   ],
   "recipes": [
+    {
+      "id": "entrelumen:ark_controller",
+      "output": "entrelumen:ark_controller"
+    },
     {
       "id": "entrelumen:atlas",
       "output": "entrelumen:atlas"
@@ -244,7 +242,7 @@ const entrelumenAuditTargets = {
       "output": "farmersdelight:flint_knife"
     }
   ],
-  "signature": "3f5781a336b627ee"
+  "signature": "0bd1cd3ed351ac92"
 };
 
 ServerEvents.afterRecipes(event => {

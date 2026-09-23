@@ -74,6 +74,8 @@ public final class CampaignTask extends Task {
   public void addMouseOverText(dev.ftb.mods.ftblibrary.util.TooltipList tooltip, TeamData data) {
     super.addMouseOverText(tooltip, data);
     tooltip.add(net.minecraft.network.chat.Component.translatable("entrelumen.atlas.open_hint"));
+    if (CampaignMilestones.LAST_HORIZON.equals(milestone) && data.getProgress(this) == 1)
+      tooltip.add(net.minecraft.network.chat.Component.translatable("entrelumen.ark.ending"));
   }
 
   @Override
@@ -88,8 +90,13 @@ public final class CampaignTask extends Task {
 
   @Override
   public void submitTask(TeamData data, ServerPlayer player, ItemStack crafted) {
-    if (Entrelumen.current(player).completed.contains(milestone)) {
+    if (CampaignMilestones.isComplete(Entrelumen.current(player), milestone)) {
       if (data.getProgress(this) != 1) data.setProgress(this, 1);
+      // A saved task can already have full progress without its FTB completion stamp
+      // (for example, if its dependency was completed after that progress was written).
+      // Re-enter FTB's normal completion path only after its own prerequisites are ready.
+      if (!data.isLocked() && data.getProgress(this) == 1 && !data.isCompleted(this)
+          && data.areDependenciesComplete(getQuest())) data.markTaskCompleted(this);
     } else if (data.getProgress(this) != 0
         || data.getCompletedTime(id).isPresent()
         || data.getCompletedTime(getQuest().id).isPresent()) {

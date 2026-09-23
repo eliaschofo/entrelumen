@@ -18,6 +18,93 @@ import net.neoforged.neoforge.gametest.*;
 @PrefixGameTestTemplate(false)
 public final class RuntimeGameTests {
   @GameTest(template = "empty", timeoutTicks = 200)
+  public static void actSixDeliveriesUseCrossModCostsAndRewardOnce(GameTestHelper helper) {
+    var player = player(helper, "ActSixCosts");
+    var campaign = Entrelumen.current(player);
+    campaign.act = 6;
+    for (String id : Entrelumen.MODULES.stream().sorted().toList()) {
+      campaign.completed.remove("world_network");
+      var project = Projects.all().get(id);
+      helper.assertTrue(project != null, "Act VI project missing: " + id);
+      player.getInventory().clearContent();
+      project.items().forEach((item, count) -> player.getInventory().add(
+          new ItemStack(BuiltInRegistries.ITEM.get(ResourceLocation.parse(item)), count)));
+      var supplied = Entrelumen.availableMaterials(player);
+      helper.assertTrue(command(player, "entrelumen deliver " + id) == 0
+          && Entrelumen.availableMaterials(player).equals(supplied),
+          "Module delivery bypassed World Network: " + id);
+      campaign.completed.add("world_network");
+      if (id.equals("exploration_module")) {
+        helper.assertTrue(command(player, "entrelumen deliver " + id) == 0
+            && Entrelumen.availableMaterials(player).equals(supplied),
+            "Exploration delivery bypassed End observation");
+        campaign.completed.add("end_arrival");
+      }
+      helper.assertTrue(command(player, "entrelumen deliver " + id) == 1,
+          "Cross-mod module delivery rejected: " + id);
+      helper.assertTrue(campaign.completed.contains(id)
+          && player.getInventory().countItem(arkItem(id)) == 1,
+          "Module delivery failed to credit one reward: " + id);
+      for (String item : project.items().keySet())
+        helper.assertTrue(Entrelumen.availableMaterials(player).getOrDefault(item, 0) == 0,
+            "Module delivery did not consume exact input: " + item);
+      var remaining = Entrelumen.availableMaterials(player);
+      helper.assertTrue(command(player, "entrelumen deliver " + id) == 0
+          && Entrelumen.availableMaterials(player).equals(remaining)
+          && player.getInventory().countItem(arkItem(id)) == 1,
+          "Repeated module delivery consumed or rewarded again: " + id);
+    }
+    helper.succeed();
+  }
+
+  @GameTest(template = "empty", timeoutTicks = 200)
+  public static void lastHorizonNeedsCurrentCampaignReachAndPhysicalArk(GameTestHelper helper) {
+    var player = player(helper, "LastHorizon");
+    var intruder = player(helper, "OtherTeam");
+    var pos = ark(helper, player);
+    var campaign = Entrelumen.current(player);
+    campaign.arkPhase = 6;
+    campaign.completed.add("world_network");
+    player.setShiftKeyDown(true);
+    intruder.setShiftKeyDown(true);
+    var id = CampaignActions.campaignId(player);
+    helper.assertTrue(!ArkActions.activate(player, id, pos)
+        && !campaign.completed.contains(CampaignMilestones.LAST_HORIZON),
+        "End observation was bypassed");
+    campaign.completed.add("end_arrival");
+    helper.assertTrue(!ArkActions.activate(player, UUID.randomUUID(), pos)
+        && !ArkActions.activate(intruder, id, pos),
+        "Stale or foreign campaign activated the Ark");
+    var removedPos = pos.offset(-1, 0, 1);
+    var module = helper.getLevel().getBlockState(removedPos);
+    helper.getLevel().removeBlock(removedPos, false);
+    helper.assertTrue(!ArkActions.activate(player, id, pos),
+        "Missing physical module activated the Ark");
+    helper.getLevel().setBlockAndUpdate(removedPos, module);
+    player.teleportTo(pos.getX() + 20.5, pos.getY() + 1.0, pos.getZ() + 0.5);
+    helper.assertTrue(!ArkActions.activate(player, id, pos),
+        "Out-of-reach controller activated the Ark");
+    player.teleportTo(pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.5);
+    var materials = Entrelumen.availableMaterials(player);
+    player.setShiftKeyDown(true);
+    var clicked = player.gameMode.useItemOn(player, helper.getLevel(), player.getMainHandItem(),
+        net.minecraft.world.InteractionHand.MAIN_HAND, arkHit(pos));
+    helper.assertTrue(clicked.consumesAction()
+        && campaign.completed.contains(CampaignMilestones.LAST_HORIZON)
+        && campaign.arkPhase == 6 && campaign.arkDeposits.isEmpty()
+        && Entrelumen.availableMaterials(player).equals(materials),
+        "Explicit empty-hand controller activation failed or consumed supplies");
+    var completed = Set.copyOf(campaign.completed);
+    player.gameMode.useItemOn(player, helper.getLevel(), player.getMainHandItem(),
+        net.minecraft.world.InteractionHand.MAIN_HAND, arkHit(pos));
+    helper.assertTrue(campaign.completed.equals(completed)
+        && Entrelumen.availableMaterials(player).equals(materials)
+        && helper.getLevel().getBlockState(removedPos).equals(module),
+        "Finished controller replay changed campaign, supplies or blocks");
+    helper.succeed();
+  }
+
+  @GameTest(template = "empty", timeoutTicks = 200)
   public static void surveyStationBookmarksWithoutCampaignOrLodestone(GameTestHelper helper) {
     var player = player(helper, "SurveyTest");
     var level = helper.getLevel();
@@ -106,6 +193,8 @@ public final class RuntimeGameTests {
     new io.netty.channel.embedded.EmbeddedChannel(connection);
     net.neoforged.neoforge.network.registration.NetworkRegistry.configureMockConnection(connection);
     player.server.getPlayerList().placeNewPlayer(connection, player, cookie);
+    // Full packs can grant starter supplies on login; each test defines its own inventory.
+    player.getInventory().clearContent();
     return player;
   }
 
@@ -162,8 +251,16 @@ public final class RuntimeGameTests {
     Expeditions.record(original, "aether:the_aether");
     Expeditions.record(original, "twilightforest:twilight_forest");
     Expeditions.record(original, "the_bumblezone:the_bumblezone");
+    Expeditions.record(original, "minecraft:the_end");
     original.arkPhase = 2;
     original.arkDeposits.put("entrelumen:ecosystem_capsule", 1);
+    UUID endingId = UUID.randomUUID();
+    var ending = data.campaigns.personal(endingId);
+    ending.act = 6;
+    ending.completed.addAll(Entrelumen.MODULES);
+    ending.completed.addAll(List.of("world_network", "end_arrival"));
+    ending.arkPhase = 6;
+    helper.assertTrue(CampaignMilestones.finish(ending), "Ending fixture failed");
     data.setDirty();
     server.overworld().getDataStorage().save();
     var path =
@@ -179,6 +276,7 @@ public final class RuntimeGameTests {
             var loaded =
                 CampaignData.load(tag.getCompound("data"), helper.getLevel().registryAccess());
             var restored = loaded.campaigns.personal(id);
+            var restoredEnding = loaded.campaigns.personal(endingId);
             helper.assertTrue(
                 restored.act == 5
                     && restored.arkPhase == 2
@@ -187,6 +285,9 @@ public final class RuntimeGameTests {
                     && restored.completed.containsAll(
                         List.of("resilient_backbone", "renewal_engine", "settlement_supply"))
                     && restored.completed.containsAll(Expeditions.IDS)
+                    && restoredEnding.arkPhase == 6
+                    && restoredEnding.completed.contains(CampaignMilestones.LAST_HORIZON)
+                    && !CampaignMilestones.finish(restoredEnding)
                     && !Expeditions.record(restored, "aether:the_aether"),
                 "Persisted campaign did not survive disk read");
           } catch (java.io.IOException e) {
@@ -854,6 +955,146 @@ public final class RuntimeGameTests {
   }
 
   @GameTest(template = "empty", timeoutTicks = 200)
+  public static void questMirrorRepairsSavedProgressThroughDependencyDag(GameTestHelper helper) {
+    var owner = player(helper, "FTBMirrorOwner");
+    var outsider = player(helper, "FTBMirrorOther");
+    var campaign = Entrelumen.current(owner);
+    campaign.completed.addAll(List.of("atlas_awakened", "first_signal", "lost_workshop", "field_survey"));
+    var authoritative = Set.copyOf(campaign.completed);
+    var file = ServerQuestFile.getInstance().orElseThrow();
+    var chapter = new Chapter(0x7E660001L, file, file.getDefaultChapterGroup());
+    // Deliberately visit the child first, as a loaded quest file may not be topologically sorted.
+    var leafQuest = new Quest(0x7E660002L, chapter);
+    var middleQuest = new Quest(0x7E660003L, chapter);
+    var rootQuest = new Quest(0x7E660004L, chapter);
+    var secondRootQuest = new Quest(0x7E660005L, chapter);
+    for (var quest : List.of(leafQuest, middleQuest, rootQuest, secondRootQuest))
+      chapter.addQuest(quest);
+    middleQuest.addDependency(rootQuest);
+    leafQuest.addDependency(middleQuest);
+    leafQuest.addDependency(secondRootQuest);
+    var leaf = campaignTask(0x7E660006L, leafQuest, "field_survey", helper);
+    var middle = campaignTask(0x7E660007L, middleQuest, "lost_workshop", helper);
+    var root = campaignTask(0x7E660008L, rootQuest, "atlas_awakened", helper);
+    var secondRoot = campaignTask(0x7E660009L, secondRootQuest, "first_signal", helper);
+    var data = file.getOrCreateTeamData(owner);
+    var otherData = file.getOrCreateTeamData(outsider);
+    helper.assertTrue(!data.getTeamId().equals(otherData.getTeamId()), "Fixture teams merged");
+
+    // Full progress written before dependencies, plus a legacy root missing completion stamps.
+    data.setProgress(leaf, 1);
+    data.setProgress(middle, 1);
+    data.setProgress(root, 1);
+    data.setProgress(secondRoot, 1);
+    data.setCompleted(root.id, null);
+    data.setCompleted(rootQuest.id, null);
+    helper.assertTrue(data.getProgress(root) == 1 && !data.isCompleted(root)
+        && !data.isCompleted(rootQuest) && data.getProgress(middle) == 1
+        && !data.isCompleted(middle) && data.getProgress(leaf) == 1
+        && !data.isCompleted(leaf), "Fixture did not reproduce saved progress without completion");
+
+    leaf.submitTask(data, owner, ItemStack.EMPTY);
+    middle.submitTask(data, owner, ItemStack.EMPTY);
+    root.submitTask(data, owner, ItemStack.EMPTY);
+    helper.assertTrue(data.isCompleted(root) && data.isCompleted(rootQuest)
+        && !data.isCompleted(middle) && !data.isCompleted(leaf),
+        "Root repair bypassed the dependency graph");
+    leaf.submitTask(data, owner, ItemStack.EMPTY);
+    middle.submitTask(data, owner, ItemStack.EMPTY);
+    helper.assertTrue(data.isCompleted(middle) && data.isCompleted(middleQuest)
+        && !data.isCompleted(leaf), "Middle repair did not unlock in dependency order");
+    leaf.submitTask(data, owner, ItemStack.EMPTY);
+    helper.assertTrue(data.isCompleted(leaf) && data.isCompleted(leafQuest)
+        && data.getCompletionCount(leafQuest) == 1,
+        "Fully authoritative DAG did not converge to completed FTB quests");
+
+    // FTB forgery on another team must not grant campaign authority or affect this team's repair.
+    otherData.setProgress(root, 1);
+    otherData.setProgress(leaf, 1);
+    root.submitTask(otherData, outsider, ItemStack.EMPTY);
+    leaf.submitTask(otherData, outsider, ItemStack.EMPTY);
+    helper.assertTrue(otherData.getProgress(root) == 0 && otherData.getProgress(leaf) == 0
+        && !otherData.isCompleted(rootQuest) && !otherData.isCompleted(leafQuest)
+        && Entrelumen.current(outsider).completed.isEmpty(),
+        "False FTB progress escaped its team or granted campaign authority");
+
+    long rootTime = data.getCompletedTime(root.id).orElseThrow().getTime();
+    long middleTime = data.getCompletedTime(middle.id).orElseThrow().getTime();
+    long leafTime = data.getCompletedTime(leaf.id).orElseThrow().getTime();
+    helper.runAfterDelay(2, () -> {
+      for (var task : List.of(leaf, middle, root, secondRoot))
+        task.submitTask(data, owner, ItemStack.EMPTY);
+      helper.assertTrue(data.getCompletedTime(root.id).orElseThrow().getTime() == rootTime
+          && data.getCompletedTime(middle.id).orElseThrow().getTime() == middleTime
+          && data.getCompletedTime(leaf.id).orElseThrow().getTime() == leafTime
+          && data.getCompletionCount(rootQuest) == 1
+          && data.getCompletionCount(middleQuest) == 1
+          && data.getCompletionCount(leafQuest) == 1
+          && owner.getInventory().isEmpty() && campaign.completed.equals(authoritative),
+          "Replay re-emitted FTB completion or changed rewards, inventory, or campaign authority");
+      helper.succeed();
+    });
+  }
+
+  private static CampaignTask campaignTask(long id, Quest quest, String milestone, GameTestHelper helper) {
+    var task = new CampaignTask(id, quest);
+    quest.addTask(task);
+    var tag = new CompoundTag();
+    tag.putString("milestone", milestone);
+    task.readData(tag, helper.getLevel().registryAccess());
+    return task;
+  }
+
+  @GameTest(template = "empty", timeoutTicks = 200)
+  public static void phaseAndEndingQuestTasksOnlyMirrorSavedAuthority(GameTestHelper helper) {
+    var player = player(helper, "ActSixMirror");
+    var campaign = Entrelumen.current(player);
+    var file = ServerQuestFile.getInstance().orElseThrow();
+    var chapter = new Chapter(0x7E120001L, file, file.getDefaultChapterGroup());
+    var phaseQuest = new Quest(0x7E120002L, chapter);
+    var endingQuest = new Quest(0x7E120003L, chapter);
+    chapter.addQuest(phaseQuest);
+    chapter.addQuest(endingQuest);
+    var phaseTask = new CampaignTask(0x7E120004L, phaseQuest);
+    var endingTask = new CampaignTask(0x7E120005L, endingQuest);
+    phaseQuest.addTask(phaseTask);
+    endingQuest.addTask(endingTask);
+    var phaseTag = new CompoundTag();
+    phaseTag.putString("milestone", CampaignMilestones.PHASE_IDS.getFirst());
+    phaseTask.readData(phaseTag, helper.getLevel().registryAccess());
+    var endingTag = new CompoundTag();
+    endingTag.putString("milestone", CampaignMilestones.LAST_HORIZON);
+    endingTask.readData(endingTag, helper.getLevel().registryAccess());
+    var teamData = file.getOrCreateTeamData(player);
+    campaign.completed.add(CampaignMilestones.PHASE_IDS.getFirst());
+    campaign.arkPhase = 1;
+    phaseTask.submitTask(teamData, player, ItemStack.EMPTY);
+    endingTask.submitTask(teamData, player, ItemStack.EMPTY);
+    helper.assertTrue(teamData.getProgress(phaseTask) == 0
+        && teamData.getProgress(endingTask) == 0,
+        "FTB accepted a fabricated phase or ending");
+    campaign.act = 6;
+    campaign.completed.addAll(Entrelumen.MODULES);
+    phaseTask.submitTask(teamData, player, ItemStack.EMPTY);
+    helper.assertTrue(teamData.getProgress(phaseTask) == 1,
+        "Commissioning phase did not project to FTB");
+    campaign.arkPhase = 6;
+    campaign.completed.addAll(List.of("world_network", "end_arrival"));
+    endingTask.submitTask(teamData, player, ItemStack.EMPTY);
+    helper.assertTrue(teamData.getProgress(endingTask) == 0,
+        "FTB granted the ending from prerequisites alone");
+    helper.assertTrue(CampaignMilestones.finish(campaign), "Ending fixture rejected");
+    endingTask.submitTask(teamData, player, ItemStack.EMPTY);
+    helper.assertTrue(teamData.getProgress(endingTask) == 1,
+        "Persisted ending did not project to FTB");
+    campaign.completed.remove("nature_module");
+    phaseTask.submitTask(teamData, player, ItemStack.EMPTY);
+    helper.assertTrue(teamData.getProgress(phaseTask) == 0,
+        "FTB retained a derived phase after authority became invalid");
+    helper.succeed();
+  }
+
+  @GameTest(template = "empty", timeoutTicks = 200)
   public static void thirdActConsumesGiftedPrototypesAndGatesClosure(GameTestHelper helper) {
     var player = player(helper, "ThirdActTest");
     var campaign = Entrelumen.current(player);
@@ -1046,7 +1287,7 @@ public final class RuntimeGameTests {
     helper.assertTrue(Expeditions.record(campaign, "twilightforest:twilight_forest"), "Synthetic Twilight record failed");
     fourthActDenied(helper, player, "pollinator_treaty");
     helper.assertTrue(Expeditions.record(campaign, "the_bumblezone:the_bumblezone"), "Synthetic Bumblezone record failed");
-    expectedCompleted.addAll(Expeditions.IDS);
+    expectedCompleted.addAll(Set.of("aether_arrival", "twilight_arrival", "bumblezone_arrival"));
     task.submitTask(teamData, player, ItemStack.EMPTY);
     helper.assertTrue(teamData.getProgress(task) == 1, "Recorded observation did not mirror");
     for (var entry : prototypes.entrySet()) {

@@ -12,7 +12,8 @@ class ExpeditionsTest {
   private static final Map<String, String> DESTINATIONS = Map.of(
       "aether:the_aether", "aether_arrival",
       "twilightforest:twilight_forest", "twilight_arrival",
-      "the_bumblezone:the_bumblezone", "bumblezone_arrival");
+      "the_bumblezone:the_bumblezone", "bumblezone_arrival",
+      "minecraft:the_end", "end_arrival");
 
   @Test
   void knownDestinationsRecordOnceInEveryActWithoutChangingOtherProgress() {
@@ -33,7 +34,7 @@ class ExpeditionsTest {
       assertEquals(2, campaign.arkPhase);
       assertEquals(Map.of("entrelumen:ecosystem_capsule", 1), campaign.arkDeposits);
       assertEquals(Set.of("exchange_route", "aether_arrival", "twilight_arrival",
-          "bumblezone_arrival"), campaign.completed);
+          "bumblezone_arrival", "end_arrival"), campaign.completed);
       assertFalse(campaign.archived);
     }
   }
@@ -41,7 +42,7 @@ class ExpeditionsTest {
   @Test
   void unknownDimensionsAndObservationIdsCannotFabricateJourneys() {
     var campaign = new Campaigns.Campaign();
-    for (String dimension : Set.of("minecraft:overworld", "minecraft:the_end",
+    for (String dimension : Set.of("minecraft:overworld", "minecraft:the_nether",
         "aether:other", "the_bumblezone:bumblezone", "aether_arrival", "")) {
       assertFalse(Expeditions.record(campaign, dimension));
     }

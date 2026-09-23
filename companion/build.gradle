@@ -25,8 +25,19 @@ base {
 
 java.toolchain.languageVersion = JavaLanguageVersion.of(21)
 
+sourceSets {
+    gameTestFixture
+    fullpackGameTest
+}
+
+sourceSets.fullpackGameTest.compileClasspath += sourceSets.main.output + sourceSets.main.compileClasspath
+sourceSets.fullpackGameTest.runtimeClasspath += sourceSets.main.runtimeClasspath
+
 neoForge {
     version = project.neo_version
+
+    addModdingDependenciesTo sourceSets.gameTestFixture
+    addModdingDependenciesTo sourceSets.fullpackGameTest
 
     parchment {
         mappingsVersion = project.parchment_mappings_version
@@ -34,25 +45,38 @@ neoForge {
     }
 
 
+    mods {
+        "${mod_id}" {
+            sourceSet(sourceSets.main)
+        }
+        entrelumen_gametest_fixture {
+            sourceSet(sourceSets.gameTestFixture)
+        }
+    }
+
     runs {
         client {
             client()
+            loadedMods = [mods.entrelumen]
             systemProperty 'neoforge.enabledGameTestNamespaces', project.mod_id
         }
 
         server {
             server()
+            loadedMods = [mods.entrelumen]
             programArgument '--nogui'
             systemProperty 'neoforge.enabledGameTestNamespaces', project.mod_id
         }
 
         gameTestServer {
             type = "gameTestServer"
+            loadedMods = [mods.entrelumen, mods.entrelumen_gametest_fixture]
             systemProperty 'neoforge.enabledGameTestNamespaces', project.mod_id
         }
 
         data {
             data()
+            loadedMods = [mods.entrelumen]
 
             programArguments.addAll '--mod', project.mod_id, '--all', '--output', file('src/generated/resources/').getAbsolutePath(), '--existing', file('src/main/resources/').getAbsolutePath()
         }
@@ -64,11 +88,6 @@ neoForge {
         }
     }
 
-    mods {
-        "${mod_id}" {
-            sourceSet(sourceSets.main)
-        }
-    }
 }
 
 configurations {
@@ -137,6 +156,16 @@ sourceSets.test.runtimeClasspath += sourceSets.main.runtimeClasspath
 tasks.named('jar') {
     exclude 'dev/entrelumen/RuntimeGameTests*.class'
     exclude 'data/entrelumen/structure/empty.nbt'
+    from('../LICENSE')
+    from('TEMPLATE_LICENSE.txt')
+    from('NOTICE.txt')
+}
+
+tasks.register('qaJar', Jar) {
+    description = 'Non-distributable full-pack GameTest JAR; use instead of the release JAR.'
+    archiveClassifier = 'qa'
+    from(sourceSets.main.output)
+    from(sourceSets.fullpackGameTest.output)
     from('../LICENSE')
     from('TEMPLATE_LICENSE.txt')
     from('NOTICE.txt')

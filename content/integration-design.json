@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "status": "Campaign deliveries implemented through Act V; full release, Act VI and survival acceptance remain open",
+  "status": "Campaign deliveries implemented through Act VI with explicit first ending; runtime integration, complete module experiences, survival and release acceptance remain open",
   "platform": {
     "minecraft": "1.21.1",
     "loader": "neoforge-21.1.249"
@@ -20,11 +20,11 @@
     "gifts": "All components and mod items remain usable, transferable and craftable regardless of campaign. Receiving an item never completes a narrative milestone.",
     "recipeMechanism": "22 static shapeless recipes are exported by tools/generate_integration_recipes.py; source generation is not evidence that all 22 narrative projects are implemented. Counts expand into <=9 occupied crafting slots with native remainders.",
     "progression": "Narrative directed prerequisites are distinct from physical recipe dependencies. Act number means expected acquisition phase, never a use restriction.",
-    "failureSafety": "Use native crafting transactions and vanilla container remainder behavior. Narrative delivery records idempotent accomplishment separately and grants no copy of the crafted output. No timer decay or forced chunks.",
+    "failureSafety": "Native static crafting retains container remainders. Acts II-V consume prototypes without replacement; Act VI consumes construction inputs and rewards one module once. Commissioning consumes only accepted batches. No timer decay or forced chunks.",
     "containers": "Preserve native recipe remainders for consumed soups/stews; verify bowls return normally in crafting and AE2 automation.",
     "decorativeMods": "Optional building exercises with screenshots/manual checkmarks; no mandatory decorative ingredients.",
     "massProduction": "Repeatable static crafting is compatible with ordinary crafting tables and existing autocrafting. No new tick handlers or machine scanning.",
-    "narrativeAcceptance": "Crafting, possession and gifts never complete a narrative project. Acts II-V use explicit authoritative server deliveries consuming one prototype per project; machines remain installed. Act IV also requires server-observed journeys for its horizon and pollinator projects. Tutorial exercises remain optional and self-reported. Act V field exercises are optional and self-reported; complete Act VI experiences remain proposals. No provenance checks."
+    "narrativeAcceptance": "Crafting, possession and gifts never complete a narrative project. Acts II-V use authoritative deliveries consuming one prototype; machines remain installed. Act IV requires observed journeys. Act VI consumes the exact module construction recipe inputs after World Network, with End arrival additionally required for exploration. Six commissioning milestones derive from saved phases; the final ending requires deliberate controller activation. Tutorial installations remain optional and self-reported. Full module benefits and mastery systems remain proposed; no provenance checks."
   },
   "components": [
     {
@@ -981,7 +981,7 @@
       "output": {
         "id": "entrelumen:engineering_module",
         "count": 1,
-        "registration": "existing companion module; replace placeholder acquisition"
+        "registration": "registered companion module; repeatable static recipe and one-time construction project use the same cost"
       },
       "recipe": {
         "id": "entrelumen:integration/ark_engineering",
@@ -1011,18 +1011,32 @@
         "actuallyadditions",
         "mekanism"
       ],
-      "completion": "Instalar módulo y completar lote de calibración; conserva su estado al reiniciar.",
+      "completion": "Entregar los materiales de construcción en el Atlas acredita el proyecto y devuelve un módulo. Instalar los seis módulos y aportar los lotes del controlador son pasos separados; se conservan al reiniciar.",
       "evidenceRequirements": [
         "loaded item IDs and recipe outputs",
         "survival acquisition without circular dependencies",
         "team delivery idempotency/restart",
         "manual tutorial playthrough"
       ],
-      "status": "design-only",
+      "status": "implemented campaign construction delivery; full-pack verification and survival pacing pending",
       "delivery": {
-        "count": 1,
-        "consume": false,
-        "purpose": "Non-consuming presentation of a prototype alongside the described project demonstration and narrative prerequisites; never auto-complete from possession/crafting. No duplicate item reward. Installed modules remain blocks."
+        "projectId": "engineering_module",
+        "act": 6,
+        "requires": [
+          "world_network"
+        ],
+        "items": {
+          "entrelumen:calibration_frame": 2,
+          "entrelumen:energy_coupler": 2,
+          "entrelumen:ark_bus": 1,
+          "mekanism:alloy_atomic": 2
+        },
+        "consume": true,
+        "reward": {
+          "id": "entrelumen:engineering_module",
+          "count": 1
+        },
+        "purpose": "Explicit server delivery consumes construction inputs and grants one module once; replay cannot reward again. Static crafting remains an unrestricted replacement path and grants no campaign credit. Installed modules are never consumed."
       }
     },
     {
@@ -1035,7 +1049,7 @@
       "output": {
         "id": "entrelumen:arcane_module",
         "count": 1,
-        "registration": "existing companion module; replace placeholder acquisition"
+        "registration": "registered companion module; repeatable static recipe and one-time construction project use the same cost"
       },
       "recipe": {
         "id": "entrelumen:integration/ark_arcana",
@@ -1061,18 +1075,31 @@
         "malum",
         "evilcraft"
       ],
-      "completion": "Instalar módulo y entregar un lote sellado; fallo de activación no elimina bloques ni exige familiares nuevos.",
+      "completion": "Entregar los materiales de construcción en el Atlas acredita el proyecto y devuelve un módulo. Instalar los seis módulos y aportar los lotes del controlador son pasos separados; se conservan al reiniciar.",
       "evidenceRequirements": [
         "loaded item IDs and recipe outputs",
         "survival acquisition without circular dependencies",
         "team delivery idempotency/restart",
         "manual tutorial playthrough"
       ],
-      "status": "design-only",
+      "status": "implemented campaign construction delivery; full-pack verification and survival pacing pending",
       "delivery": {
-        "count": 1,
-        "consume": false,
-        "purpose": "Non-consuming presentation of a prototype alongside the described project demonstration and narrative prerequisites; never auto-complete from possession/crafting. No duplicate item reward. Installed modules remain blocks."
+        "projectId": "arcane_module",
+        "act": 6,
+        "requires": [
+          "world_network"
+        ],
+        "items": {
+          "entrelumen:spectral_lens": 2,
+          "entrelumen:containment_seal": 2,
+          "occultism:iesnium_ingot": 2
+        },
+        "consume": true,
+        "reward": {
+          "id": "entrelumen:arcane_module",
+          "count": 1
+        },
+        "purpose": "Explicit server delivery consumes construction inputs and grants one module once; replay cannot reward again. Static crafting remains an unrestricted replacement path and grants no campaign credit. Installed modules are never consumed."
       }
     },
     {
@@ -1085,7 +1112,7 @@
       "output": {
         "id": "entrelumen:nature_module",
         "count": 1,
-        "registration": "existing companion module; replace placeholder acquisition"
+        "registration": "registered companion module; repeatable static recipe and one-time construction project use the same cost"
       },
       "recipe": {
         "id": "entrelumen:integration/ark_nature",
@@ -1112,18 +1139,31 @@
         "productivebees",
         "the_bumblezone"
       ],
-      "completion": "Completar reserva por lotes y cerrar; sin drenaje mientras nadie juega.",
+      "completion": "Entregar los materiales de construcción en el Atlas acredita el proyecto y devuelve un módulo. Instalar los seis módulos y aportar los lotes del controlador son pasos separados; se conservan al reiniciar.",
       "evidenceRequirements": [
         "loaded item IDs and recipe outputs",
         "survival acquisition without circular dependencies",
         "team delivery idempotency/restart",
         "manual tutorial playthrough"
       ],
-      "status": "design-only",
+      "status": "implemented campaign construction delivery; full-pack verification and survival pacing pending",
       "delivery": {
-        "count": 1,
-        "consume": false,
-        "purpose": "Non-consuming presentation of a prototype alongside the described project demonstration and narrative prerequisites; never auto-complete from possession/crafting. No duplicate item reward. Installed modules remain blocks."
+        "projectId": "nature_module",
+        "act": 6,
+        "requires": [
+          "world_network"
+        ],
+        "items": {
+          "entrelumen:renewal_engine": 1,
+          "entrelumen:ecosystem_capsule": 2,
+          "entrelumen:living_matrix": 2
+        },
+        "consume": true,
+        "reward": {
+          "id": "entrelumen:nature_module",
+          "count": 1
+        },
+        "purpose": "Explicit server delivery consumes construction inputs and grants one module once; replay cannot reward again. Static crafting remains an unrestricted replacement path and grants no campaign credit. Installed modules are never consumed."
       }
     },
     {
@@ -1136,7 +1176,7 @@
       "output": {
         "id": "entrelumen:exploration_module",
         "count": 1,
-        "registration": "existing companion module; replace placeholder acquisition"
+        "registration": "registered companion module; repeatable static recipe and one-time construction project use the same cost"
       },
       "recipe": {
         "id": "entrelumen:integration/ark_exploration",
@@ -1166,18 +1206,33 @@
         "twilightforest",
         "waystones"
       ],
-      "completion": "Registrar rutas descubiertas del equipo y preparar destino final; muestras regaladas no simulan descubrimientos.",
+      "completion": "Entregar los materiales de construcción en el Atlas acredita el proyecto y devuelve un módulo. Instalar los seis módulos y aportar los lotes del controlador son pasos separados; se conservan al reiniciar.",
       "evidenceRequirements": [
         "loaded item IDs and recipe outputs",
         "survival acquisition without circular dependencies",
         "team delivery idempotency/restart",
         "manual tutorial playthrough"
       ],
-      "status": "design-only",
+      "status": "implemented campaign construction delivery; full-pack verification and survival pacing pending",
       "delivery": {
-        "count": 1,
-        "consume": false,
-        "purpose": "Non-consuming presentation of a prototype alongside the described project demonstration and narrative prerequisites; never auto-complete from possession/crafting. No duplicate item reward. Installed modules remain blocks."
+        "projectId": "exploration_module",
+        "act": 6,
+        "requires": [
+          "world_network",
+          "end_arrival"
+        ],
+        "items": {
+          "entrelumen:horizon_chart": 1,
+          "entrelumen:spectral_lens": 1,
+          "twilightforest:steeleaf_ingot": 2,
+          "aether:zanite_gemstone": 2
+        },
+        "consume": true,
+        "reward": {
+          "id": "entrelumen:exploration_module",
+          "count": 1
+        },
+        "purpose": "Explicit server delivery consumes construction inputs and grants one module once; replay cannot reward again. Static crafting remains an unrestricted replacement path and grants no campaign credit. Installed modules are never consumed."
       }
     },
     {
@@ -1190,7 +1245,7 @@
       "output": {
         "id": "entrelumen:logistics_module",
         "count": 1,
-        "registration": "existing companion module; replace placeholder acquisition"
+        "registration": "registered companion module; repeatable static recipe and one-time construction project use the same cost"
       },
       "recipe": {
         "id": "entrelumen:integration/ark_logistics",
@@ -1218,18 +1273,31 @@
         "laserio",
         "modularrouters"
       ],
-      "completion": "Entregar lote mixto desde buffer y acreditar una sola vez; cualquiera de las redes puede transportarlo.",
+      "completion": "Entregar los materiales de construcción en el Atlas acredita el proyecto y devuelve un módulo. Instalar los seis módulos y aportar los lotes del controlador son pasos separados; se conservan al reiniciar.",
       "evidenceRequirements": [
         "loaded item IDs and recipe outputs",
         "survival acquisition without circular dependencies",
         "team delivery idempotency/restart",
         "manual tutorial playthrough"
       ],
-      "status": "design-only",
+      "status": "implemented campaign construction delivery; full-pack verification and survival pacing pending",
       "delivery": {
-        "count": 1,
-        "consume": false,
-        "purpose": "Non-consuming presentation of a prototype alongside the described project demonstration and narrative prerequisites; never auto-complete from possession/crafting. No duplicate item reward. Installed modules remain blocks."
+        "projectId": "logistics_module",
+        "act": 6,
+        "requires": [
+          "world_network"
+        ],
+        "items": {
+          "entrelumen:routing_matrix": 2,
+          "entrelumen:handling_core": 2,
+          "entrelumen:ark_bus": 1
+        },
+        "consume": true,
+        "reward": {
+          "id": "entrelumen:logistics_module",
+          "count": 1
+        },
+        "purpose": "Explicit server delivery consumes construction inputs and grants one module once; replay cannot reward again. Static crafting remains an unrestricted replacement path and grants no campaign credit. Installed modules are never consumed."
       }
     },
     {
@@ -1242,7 +1310,7 @@
       "output": {
         "id": "entrelumen:habitation_module",
         "count": 1,
-        "registration": "existing companion module; replace placeholder acquisition"
+        "registration": "registered companion module; repeatable static recipe and one-time construction project use the same cost"
       },
       "recipe": {
         "id": "entrelumen:integration/ark_habitation",
@@ -1269,18 +1337,31 @@
         "aquaculture",
         "supplementaries"
       ],
-      "completion": "Completar suministros de viaje y zona de descanso; sin recetas que consuman sillas o bloques decorativos arbitrarios.",
+      "completion": "Entregar los materiales de construcción en el Atlas acredita el proyecto y devuelve un módulo. Instalar los seis módulos y aportar los lotes del controlador son pasos separados; se conservan al reiniciar.",
       "evidenceRequirements": [
         "loaded item IDs and recipe outputs",
         "survival acquisition without circular dependencies",
         "team delivery idempotency/restart",
         "manual tutorial playthrough"
       ],
-      "status": "design-only",
+      "status": "implemented campaign construction delivery; full-pack verification and survival pacing pending",
       "delivery": {
-        "count": 1,
-        "consume": false,
-        "purpose": "Non-consuming presentation of a prototype alongside the described project demonstration and narrative prerequisites; never auto-complete from possession/crafting. No duplicate item reward. Installed modules remain blocks."
+        "projectId": "habitation_module",
+        "act": 6,
+        "requires": [
+          "world_network"
+        ],
+        "items": {
+          "entrelumen:habitation_contract": 1,
+          "entrelumen:ration_bundle": 2,
+          "entrelumen:living_matrix": 2
+        },
+        "consume": true,
+        "reward": {
+          "id": "entrelumen:habitation_module",
+          "count": 1
+        },
+        "purpose": "Explicit server delivery consumes construction inputs and grants one module once; replay cannot reward again. Static crafting remains an unrestricted replacement path and grants no campaign credit. Installed modules are never consumed."
       }
     }
   ],
@@ -2657,7 +2738,7 @@
       }
     ],
     "failure": "Failure/restart preserves installed modules and already accepted batches; identical repeated request yields no duplicate payout.",
-    "finish": "After all phases + team exploration milestones, unlock ending narrative and optional mastery recipes. No periodic world/chunk scanning beyond one bounded controller volume on interaction.",
+    "finish": "After six persisted commissioning steps, World Network, all six module projects and an observed End arrival, crouched empty-main-hand interaction validates current team, reach and the six physical modules, then records last_horizon once. Inspection replays the ending. Mastery systems and further module benefits remain unimplemented. No periodic world/chunk scanning.",
     "moduleFunctions": [
       {
         "itemId": "entrelumen:engineering_module",
@@ -2703,7 +2784,20 @@
       "logistics_module",
       "habitation_module",
       "exploration_module"
-    ]
+    ],
+    "milestones": {
+      "phaseIds": [
+        "ark_calibrated",
+        "ark_contained",
+        "ark_renewed",
+        "ark_routed",
+        "ark_provisioned",
+        "ark_charted"
+      ],
+      "observation": "end_arrival",
+      "ending": "last_horizon",
+      "storage": "Phase mirrors are derived from the existing 0-6 counter; last_horizon uses the saved completed set."
+    }
   },
   "runtimePending": [
     "All itemEvidence entries prove resource references only: validate registry presence and loaded recipe conditions with real server.",
@@ -2732,6 +2826,12 @@
       "scope": "Act V campaign integration",
       "decision": "Three existing prototypes now feed consuming, idempotent team deliveries after atlas_voices. Preserved world_network closes all three for3paper+1copper. Static recipes and gifts remain unrestricted. Native tutorial/installation exercises are distinct from authoritative campaign completion.",
       "evidence": "docs/verification/act-five-runtime.json"
+    },
+    {
+      "date": "2026-09-22",
+      "scope": "Act VI first ending",
+      "decision": "Preserve all six existing module recipes and charge the same materials for one-time module construction projects. End arrival is a server observation. Six FTB phase tasks mirror the saved Ark counter; deliberate final activation records a replayable ending. Existing completed module projects and credited batches remain valid; no new recipes or art. Full module benefits and masteries remain open.",
+      "evidence": "docs/design/act-six-route.md"
     }
   ]
 }

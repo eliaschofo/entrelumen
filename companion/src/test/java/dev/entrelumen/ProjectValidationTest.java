@@ -55,6 +55,46 @@ class ProjectValidationTest {
   }
 
   @Test
+  void actSixUsesExactCrossModCostsAndPreservesOneModuleRewards() throws Exception {
+    var projects = Projects.parse(defaults(), id -> true);
+    var expected = java.util.Map.of(
+        "engineering_module", java.util.Map.of("entrelumen:calibration_frame", 2,
+            "entrelumen:energy_coupler", 2, "entrelumen:ark_bus", 1,
+            "mekanism:alloy_atomic", 2),
+        "arcane_module", java.util.Map.of("entrelumen:spectral_lens", 2,
+            "entrelumen:containment_seal", 2, "occultism:iesnium_ingot", 2),
+        "nature_module", java.util.Map.of("entrelumen:renewal_engine", 1,
+            "entrelumen:ecosystem_capsule", 2, "entrelumen:living_matrix", 2),
+        "exploration_module", java.util.Map.of("entrelumen:horizon_chart", 1,
+            "entrelumen:spectral_lens", 1, "twilightforest:steeleaf_ingot", 2,
+            "aether:zanite_gemstone", 2),
+        "logistics_module", java.util.Map.of("entrelumen:routing_matrix", 2,
+            "entrelumen:handling_core", 2, "entrelumen:ark_bus", 1),
+        "habitation_module", java.util.Map.of("entrelumen:habitation_contract", 1,
+            "entrelumen:ration_bundle", 2, "entrelumen:living_matrix", 2));
+    assertEquals(expected.keySet(), CampaignMilestones.MODULE_IDS);
+    expected.forEach((id, items) -> {
+      var project = projects.get(id);
+      assertEquals(6, project.act());
+      assertEquals(items, project.items());
+      assertEquals("entrelumen:" + id, project.reward());
+      assertEquals(id.equals("exploration_module")
+          ? java.util.Set.of("world_network", "end_arrival")
+          : java.util.Set.of("world_network"), project.prerequisites());
+    });
+  }
+
+  @Test
+  void phaseAndEndingIdsCannotBecomeDeliverableProjects() throws Exception {
+    for (String id : java.util.stream.Stream.concat(CampaignMilestones.PHASE_IDS.stream(),
+        java.util.stream.Stream.of(CampaignMilestones.LAST_HORIZON, "end_arrival")).toList()) {
+      var collision = defaults();
+      collision.add(id, collision.getAsJsonObject("atlas_awakened").deepCopy());
+      assertThrows(IllegalArgumentException.class, () -> Projects.parse(collision, key -> true), id);
+    }
+  }
+
+  @Test
   void projectAndPrerequisiteIdsRespectAtlasWireLimit() throws Exception {
     String boundary = "a".repeat(128);
     var valid = defaults();

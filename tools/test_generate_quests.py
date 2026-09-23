@@ -4,7 +4,7 @@ from pathlib import Path
 from generate_quests import ROOT,OUT,generate_all
 class ChapterContracts(unittest.TestCase):
  def setUp(self):
-  self.chapters=[json.loads((ROOT/'content'/n).read_text(encoding='utf-8')) for n in ('first_hour.json','act_two.json','act_three.json','act_four.json','act_five.json')]
+  self.chapters=[json.loads((ROOT/'content'/n).read_text(encoding='utf-8')) for n in ('first_hour.json','act_two.json','act_three.json','act_four.json','act_five.json','act_six.json')]
  def test_first_hour_ids_unchanged(self):
   c=json.loads(generate_all(self.chapters)[OUT/'chapters/a_light_among_ruins.snbt'])
   ids=[c['id']]+[i for q in c['quests'] for i in (q['id'],q['tasks'][0]['id'])]
@@ -96,9 +96,17 @@ class ChapterContracts(unittest.TestCase):
    if 'milestone' not in q:continue
    with self.subTest(milestone=q['milestone']):
     self.assertTrue(all('milestone' in quests[dep] for dep in q['deps']))
-    if q['milestone'] in {'aether_arrival','twilight_arrival','bumblezone_arrival'}:
+    if q['milestone'] in {'aether_arrival','twilight_arrival','bumblezone_arrival','end_arrival'}:
      self.assertEqual(q['deps'],[])
      self.assertNotIn(q['milestone'],projects)
+    elif q['milestone'] in {'ark_calibrated','ark_contained','ark_renewed','ark_routed','ark_provisioned','ark_charted','last_horizon'}:
+     self.assertNotIn(q['milestone'],projects)
+     expected={
+      'ark_calibrated':['engineering_module','arcane_module','nature_module','logistics_module','habitation_module','exploration_module'],
+      'ark_contained':['ark_calibrated'],'ark_renewed':['ark_contained'],'ark_routed':['ark_renewed'],
+      'ark_provisioned':['ark_routed'],'ark_charted':['ark_provisioned'],
+      'last_horizon':['ark_charted','world_network','end_arrival']}
+     self.assertEqual([quests[dep]['milestone'] for dep in q['deps']],expected[q['milestone']])
     else:self.assertEqual([quests[dep]['milestone'] for dep in q['deps']],projects[q['milestone']].get('requires',[]))
  def test_prior_chapters_and_translations_unchanged(self):
   out=generate_all(self.chapters)
@@ -198,7 +206,7 @@ class ChapterContracts(unittest.TestCase):
    task=q['tasks'][0]
    if task['type']=='item':self.assertFalse(task['consume_items'])
    if task['type']=='checkmark':self.assertTrue(q['optional'])
-  mapping=json.loads(out[ROOT/'content/campaign_task_ids.json']);self.assertEqual(len(mapping),28)
+  mapping=json.loads(generate_all(self.chapters[:5])[ROOT/'content/campaign_task_ids.json']);self.assertEqual(len(mapping),28)
   for q in compiled['quests']:
    task=q['tasks'][0]
    if task['type']=='entrelumen:campaign':
@@ -233,4 +241,93 @@ class ChapterContracts(unittest.TestCase):
     ancestors(dep)
   for q in self.chapters[4]['quests']:
    if 'milestone' in q:ancestors(q['key'])
+ def test_first_128_quests_frozen(self):
+  from generate_quests import snbt
+  out=generate_all(self.chapters)
+  prior=generate_all(self.chapters[:5])
+  self.assertEqual(sum(len(c['quests']) for c in self.chapters[:5]),128)
+  hashes={'a_light_among_ruins':'28fdd2969fdd6829c2cad480e2a54b74c9d1ba7ab980e7203831f2fea5304bae',
+   'the_lost_crafts':'26dcb9e26fa44e764b56f1667141abae1ea0d37f66ec671b4d2e7a3263aa57e5',
+   'routes_of_exchange':'adb774f655ee0442b2ab825a8c634b55b137842b5e137177df7df21a1c46f38c',
+   'voices_of_the_atlas':'1c120b93b38a38bcf5e9756ca3979d6e5e67aa5b090e630f8a91f3313dde3ad2',
+   'world_we_build':'f410b503d830631db65c1efdb7ceefe2ad2a27e6c18c6e646ab0807003341ad6'}
+  for chapter,digest in hashes.items():
+   path=OUT/'chapters'/(chapter+'.snbt')
+   self.assertEqual(hashlib.sha256(out[path].encode()).hexdigest(),digest)
+   self.assertEqual(out[path],prior[path])
+  for lang,digest in [('en_us','41e8b7af973281c564ee5b05ccb26e966c3ad3ba7762ee3ead621d1e658b8385'),
+                      ('es_es','3ee79458cf984118be71330b874afc6dd39b4c15458d5944d62ae80dda475829')]:
+   path=OUT/'lang'/(lang+'.snbt')
+   before=json.loads(prior[path]);after=json.loads(out[path])
+   self.assertEqual(hashlib.sha256(snbt({key:after[key] for key in before}).encode()).hexdigest(),digest)
+  path=ROOT/'content/campaign_task_ids.json'
+  before=json.loads(prior[path]);after=json.loads(out[path])
+  self.assertEqual(hashlib.sha256(snbt({key:after[key] for key in before}).encode()).hexdigest(),
+                   '095c83ab710a2f76683054f73aebb924f3c96dce807370f48c457085187d54d1')
+ def test_act_six_authority_and_exact_deliveries(self):
+  chapter=self.chapters[5]
+  self.assertEqual(chapter['chapter'],'last_horizon')
+  self.assertEqual(len(chapter['quests']),27)
+  source={q['milestone']:q for q in chapter['quests'] if 'milestone' in q}
+  self.assertEqual(set(source),set(chapter['milestones']))
+  self.assertEqual(len(source),14)
+  projects=json.loads((ROOT/'companion/src/main/resources/data/entrelumen/campaign/projects.json').read_text(encoding='utf-8'))
+  designs=json.loads((ROOT/'content/integration-design.json').read_text(encoding='utf-8'))['projects']
+  recipes={p['id'].split(':')[1]:p['recipe'] for p in designs if p.get('act')==6}
+  names={'engineering_module':'ark_engineering','arcane_module':'ark_arcana','nature_module':'ark_nature',
+         'exploration_module':'ark_exploration','logistics_module':'ark_logistics','habitation_module':'ark_habitation'}
+  exact={
+   'engineering_module':{'entrelumen:calibration_frame':2,'entrelumen:energy_coupler':2,'entrelumen:ark_bus':1,'mekanism:alloy_atomic':2},
+   'arcane_module':{'entrelumen:spectral_lens':2,'entrelumen:containment_seal':2,'occultism:iesnium_ingot':2},
+   'nature_module':{'entrelumen:renewal_engine':1,'entrelumen:ecosystem_capsule':2,'entrelumen:living_matrix':2},
+   'exploration_module':{'entrelumen:horizon_chart':1,'entrelumen:spectral_lens':1,'twilightforest:steeleaf_ingot':2,'aether:zanite_gemstone':2},
+   'logistics_module':{'entrelumen:routing_matrix':2,'entrelumen:handling_core':2,'entrelumen:ark_bus':1},
+   'habitation_module':{'entrelumen:habitation_contract':1,'entrelumen:ration_bundle':2,'entrelumen:living_matrix':2}}
+  for milestone,recipe_name in names.items():
+   recipe=recipes[recipe_name]
+   expected={item['id']:item['count'] for item in recipe['inputs']}
+   self.assertEqual(expected,exact[milestone])
+   self.assertEqual(projects[milestone]['items'],expected)
+   self.assertEqual(projects[milestone]['reward'],'entrelumen:'+milestone)
+   self.assertEqual(recipe['type'],'minecraft:crafting_shapeless')
+   self.assertEqual(sum(expected.values()),sum(i['count'] for i in recipe['inputs']))
+  self.assertEqual({m:source[m]['deps'] for m in names},
+   {'engineering_module':['world_network'],'arcane_module':['world_network'],'nature_module':['world_network'],
+    'exploration_module':['world_network','horizon_end_arrival'],
+    'logistics_module':['world_network'],'habitation_module':['world_network']})
+  self.assertEqual(source['end_arrival']['deps'],[])
+  for q in source.values():
+   self.assertTrue(all('milestone' in {p['key']:p for c in self.chapters for p in c['quests']}[dep] for dep in q['deps']))
+ def test_act_six_mirrors_and_bilingual_instructions(self):
+  out=generate_all(self.chapters)
+  compiled=json.loads(out[OUT/'chapters/last_horizon.snbt'])
+  mapping=json.loads(out[ROOT/'content/campaign_task_ids.json'])
+  self.assertEqual(len(compiled['quests']),27)
+  self.assertEqual(len(mapping),42)
+  self.assertTrue(all(q['rewards']==[] for q in compiled['quests']))
+  source={q['key']:q for q in self.chapters[5]['quests']}
+  for q in compiled['quests']:
+   task=q['tasks'][0]
+   if task['type']=='entrelumen:campaign':
+    self.assertEqual(mapping[task['milestone']],{'quest_id':q['id'],'task_id':task['id']})
+   elif task['type']=='item':self.assertFalse(task['consume_items'])
+   else:self.assertEqual((task['type'],q.get('optional')),('checkmark',True))
+  required={'horizon_controller':('lodestone','magnetita'),
+   'horizon_engineering':('two energy couplers','dos acopladores de energía'),
+   'horizon_arcane':('two Occultism iesnium ingots','dos lingotes de iesnium de Occultism'),
+   'horizon_exploration':('two Twilight Forest steeleaf ingots','dos lingotes de steeleaf de Twilight Forest'),
+   'horizon_end_arrival':('server witnesses real entry','servidor observa la entrada'),
+   'horizon_calibrated':('four additional calibration frames','otros cuatro marcos de calibración'),
+   'horizon_contained':('two additional containment seals','otros dos sellos de contención'),
+   'horizon_renewed':('two additional ecosystem capsules','otras dos cápsulas de ecosistema'),
+   'horizon_routed':('two additional routing matrices','otras dos matrices de enrutamiento'),
+   'horizon_provisioned':('eight additional ration bundles','otros ocho paquetes de raciones'),
+   'horizon_charted':('one additional horizon chart','otra carta del horizonte'),
+   'horizon_last':('crouch and interact','agachate e interactuá')}
+  for key,terms in required.items():
+   for locale,term in zip(('en_us','es_es'),terms):self.assertIn(term,source[key][locale][1])
+  for q in source.values():
+   for locale in ('en_us','es_es'):
+    for value in q[locale]:
+     self.assertNotIn('\ufffd',value);self.assertNotIn('\u00c3',value)
 if __name__=='__main__':unittest.main()

@@ -11,7 +11,8 @@ public final class Expeditions {
   private static final Map<String, String> DIMENSIONS = Map.of(
       "aether:the_aether", "aether_arrival",
       "twilightforest:twilight_forest", "twilight_arrival",
-      "the_bumblezone:the_bumblezone", "bumblezone_arrival");
+      "the_bumblezone:the_bumblezone", "bumblezone_arrival",
+      "minecraft:the_end", "end_arrival");
   public static final Set<String> IDS = Set.copyOf(DIMENSIONS.values());
 
   private Expeditions() {}
