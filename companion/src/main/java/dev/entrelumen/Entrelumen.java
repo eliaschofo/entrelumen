@@ -13,9 +13,12 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.*;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.*;
 import net.minecraft.world.phys.BlockHitResult;
 import net.neoforged.bus.api.IEventBus;
+import net.neoforged.neoforge.capabilities.Capabilities;
+import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.RegisterCommandsEvent;
@@ -25,6 +28,14 @@ import net.neoforged.neoforge.registries.*;
 public final class Entrelumen {
   public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems("entrelumen");
   public static final DeferredRegister.Blocks BLOCKS = DeferredRegister.createBlocks("entrelumen");
+  public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITIES =
+      DeferredRegister.create(BuiltInRegistries.BLOCK_ENTITY_TYPE, "entrelumen");
+  public static final DeferredBlock<LogisticsModuleBlock> LOGISTICS_MODULE = BLOCKS.register(
+      "logistics_module", () -> new LogisticsModuleBlock(
+          BlockBehaviour.Properties.of().strength(3f).requiresCorrectToolForDrops()));
+  public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<LogisticsStock>>
+      LOGISTICS_STOCK = BLOCK_ENTITIES.register("logistics_stock",
+          () -> BlockEntityType.Builder.of(LogisticsStock::new, LOGISTICS_MODULE.get()).build(null));
   public static final Set<String> MODULES =
       Set.of(
           "engineering_module",
@@ -58,9 +69,7 @@ public final class Entrelumen {
         continue;
       }
       if (id.equals("logistics_module")) {
-        var logistics = BLOCKS.register(id, () -> new LogisticsModuleBlock(
-            BlockBehaviour.Properties.of().strength(3f).requiresCorrectToolForDrops()));
-        ITEMS.register(id, () -> new LogisticsModuleItem(logistics.get(), new Item.Properties()));
+        ITEMS.register(id, () -> new LogisticsModuleItem(LOGISTICS_MODULE.get(), new Item.Properties()));
         continue;
       }
       ArkFieldJournals.Kind journalKind = null;
@@ -91,6 +100,8 @@ public final class Entrelumen {
     bus.addListener(AtlasNetwork::register);
     bus.addListener(JournalBookNetwork::register);
     BLOCKS.register(bus);
+    BLOCK_ENTITIES.register(bus);
+    bus.addListener(this::registerCapabilities);
     NeoForge.EVENT_BUS.addListener(this::commands);
     NeoForge.EVENT_BUS.addListener(Expeditions::onDimensionChanged);
     NeoForge.EVENT_BUS.addListener(Expeditions::onLogin);
@@ -127,6 +138,11 @@ public final class Entrelumen {
             data.setDirty();
           }
         });
+  }
+
+  private void registerCapabilities(RegisterCapabilitiesEvent event) {
+    event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, LOGISTICS_STOCK.get(),
+        (stock, side) -> stock.itemHandler());
   }
 
   public static Campaigns.Campaign current(ServerPlayer player) {
