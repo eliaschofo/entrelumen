@@ -113,6 +113,14 @@ var generateModMetadata = tasks.register("generateModMetadata", ProcessResources
 sourceSets.main.resources.srcDir generateModMetadata
 neoForge.ideSyncTask generateModMetadata
 
+// content/compass_targets.json is the authored source of the Heliodor compass objectives.
+tasks.named('processResources', ProcessResources) {
+    from('../content/compass_targets.json') {
+        into 'data/entrelumen/compass'
+        rename { 'targets.json' }
+    }
+}
+
 publishing {
     publications {
         register('mavenJava', MavenPublication) {

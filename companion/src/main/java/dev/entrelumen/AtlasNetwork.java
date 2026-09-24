@@ -24,6 +24,20 @@ public final class AtlasNetwork {
     }
   }
 
+  /**
+   * The Heliodor compass as the Atlas explains it: objective ID (empty when none), a
+   * {@link CompassState} state, the target dimension ID, the kind and recovered lore IDs.
+   */
+  public record CompassView(
+      String objective, int state, String dimension, int kind, List<String> lore) {
+    public static final CompassView NONE =
+        new CompassView("", CompassState.COMPLETE, "", 0, List.of());
+
+    public CompassView {
+      lore = List.copyOf(lore);
+    }
+  }
+
   public record Snapshot(
       UUID campaign,
       int act,
@@ -31,7 +45,8 @@ public final class AtlasNetwork {
       List<ProjectView> projects,
       boolean canAdvance,
       boolean open,
-      String message)
+      String message,
+      CompassView compass)
       implements CustomPacketPayload {
     public static final Type<Snapshot> TYPE =
         new Type<>(ResourceLocation.fromNamespaceAndPath("entrelumen", "atlas_snapshot"));
@@ -66,6 +81,12 @@ public final class AtlasNetwork {
           buf.writeVarInt(material.required());
         }
       }
+      buf.writeUtf(compass.objective(), 128);
+      buf.writeVarInt(compass.state());
+      buf.writeUtf(compass.dimension(), 256);
+      buf.writeVarInt(compass.kind());
+      buf.writeVarInt(compass.lore().size());
+      for (String lore : compass.lore()) buf.writeUtf(lore, 128);
     }
 
     private static Snapshot read(RegistryFriendlyByteBuf buf) {
@@ -90,7 +111,15 @@ public final class AtlasNetwork {
         projects.add(
             new ProjectView(id, completed, List.copyOf(prerequisites), List.copyOf(materials)));
       }
-      return new Snapshot(campaign, act, phase, List.copyOf(projects), advance, open, message);
+      String objective = buf.readUtf(128);
+      int compassState = buf.readVarInt();
+      String dimension = buf.readUtf(256);
+      int kind = buf.readVarInt();
+      int loreCount = boundedCount(buf);
+      List<String> lore = new ArrayList<>(loreCount);
+      for (int i = 0; i < loreCount; i++) lore.add(buf.readUtf(128));
+      return new Snapshot(campaign, act, phase, List.copyOf(projects), advance, open, message,
+          new CompassView(objective, compassState, dimension, kind, lore));
     }
 
     private static int boundedCount(RegistryFriendlyByteBuf buf) {
@@ -142,7 +171,8 @@ public final class AtlasNetwork {
   public static Consumer<Snapshot> clientReceiver = snapshot -> {};
 
   public static void register(RegisterPayloadHandlersEvent event) {
-    var registrar = event.registrar("1");
+    // Version 2 adds the Heliodor compass view to the snapshot.
+    var registrar = event.registrar("2");
     registrar.playToServer(
         OpenRequest.TYPE,
         OpenRequest.CODEC,
@@ -216,6 +246,7 @@ public final class AtlasNetwork {
             && !projects.isEmpty()
             && projects.stream().allMatch(ProjectView::completed),
         open,
-        message);
+        message,
+        HeliodorCompass.view(player));
   }
 }

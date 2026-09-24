@@ -105,6 +105,7 @@ public final class Entrelumen {
     BLOCK_ENTITIES.register(bus);
     Altars.register(bus);
     Luminous.register(bus);
+    HeliodorContent.register(bus);
     bus.addListener(this::registerCapabilities);
     NeoForge.EVENT_BUS.addListener(this::commands);
     NeoForge.EVENT_BUS.addListener(Expeditions::onDimensionChanged);
