@@ -63,7 +63,12 @@ def _encode_refs(endpoint: str, body: dict, refs: dict, base: Path) -> dict:
         for entry in (paths if isinstance(paths, list) else [paths]):
             p, usage = (entry, None) if isinstance(entry, str) else (entry['path'], entry.get('usage'))
             img, w, h = _b64(base / p)
-            if endpoint == '/generate-with-style-v2' or field == 'style_images':
+            if field == 'image':
+                # image-to-pixelart endpoints take the Base64Image itself; the basic one also needs its size.
+                items.append(img)
+                if endpoint == '/image-to-pixelart':
+                    body['image_size'] = {'width': w, 'height': h}
+            elif endpoint == '/generate-with-style-v2' or field == 'style_images':
                 items.append({'image': img, 'width': w, 'height': h})
             else:
                 item = {'image': img, 'size': {'width': w, 'height': h}}

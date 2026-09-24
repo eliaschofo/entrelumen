@@ -22,9 +22,17 @@ ITEMS = ['atlas', 'raw_lens', 'survey_notes', 'signal_core', 'calibration_frame'
          'ration_bundle', 'routing_matrix', 'propagation_core', 'power_regulator', 'inventory_sensor', 'handling_core',
          'spectral_lens', 'horizon_chart', 'ecosystem_capsule', 'containment_seal', 'ark_bus', 'renewal_engine',
          'habitation_contract']
+AUGMENTS = ['burning', 'echoing', 'ignore_conditions', 'ignore_light', 'ignore_players', 'initial_health', 'max_delay',
+            'max_nearby', 'min_delay', 'no_ai', 'player_range', 'redstone_control', 'silent', 'spawn_count', 'spawn_range', 'youthful']
+ITEMS += ['augment_' + a for a in AUGMENTS]
+# Enchanting shelves (cube_column: side + end) and the Atlas Library (cube_bottom_top).
+SHELVES = {'cartographer_shelf': 'shelf_end_wood', 'patina_shelf': 'shelf_end_copper',
+           'lumen_shelf': 'shelf_end_tuff', 'horizon_shelf': 'shelf_end_verdigris'}
+LIBRARY = {'atlas_library': ('atlas_library', 'atlas_library_top', 'module_bottom')}
 MODULES = ['engineering_module', 'arcane_module', 'nature_module', 'exploration_module', 'logistics_module',
            'habitation_module', 'ark_controller']
-BLOCKS = MODULES + ['module_top', 'module_bottom']
+BLOCKS = (MODULES + ['module_top', 'module_bottom'] + list(SHELVES) + sorted(set(SHELVES.values()))
+          + ['atlas_library', 'atlas_library_top'])
 
 COMPONENT_NAMES = {
     'calibration_frame': ('Calibration Frame', 'Marco de calibración'),
@@ -112,6 +120,16 @@ def expected():
         for dest in ('pack', 'mod'):
             out[(dest, f'models/block/{name}.json')] = block
             out[(dest, f'models/item/{name}.json')] = item
+    new_blocks = {name: {'parent': 'minecraft:block/cube_column', 'textures': {
+                      'side': 'entrelumen:block/' + name, 'end': 'entrelumen:block/' + end}} for name, end in SHELVES.items()}
+    new_blocks.update({name: {'parent': 'minecraft:block/cube_bottom_top', 'textures': {
+                      'side': 'entrelumen:block/' + side, 'top': 'entrelumen:block/' + top, 'bottom': 'entrelumen:block/' + bottom}}
+                       for name, (side, top, bottom) in LIBRARY.items()})
+    for name, model in new_blocks.items():
+        for dest in ('pack', 'mod'):
+            out[(dest, f'models/block/{name}.json')] = js(model)
+            out[(dest, f'models/item/{name}.json')] = js({'parent': 'entrelumen:block/' + name})
+        out[('mod', f'blockstates/{name}.json')] = js({'variants': {'': {'model': 'entrelumen:block/' + name}}})
     return images, out
 
 
