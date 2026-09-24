@@ -28,7 +28,8 @@ ITEMS += ['augment_' + a for a in AUGMENTS]
 # Luminous content: animated items are stored as frame grids <name>__f<N>.txt and exported as vertical strips.
 DISCIPLINES = ['engineering', 'arcane', 'nature', 'exploration', 'logistics', 'habitation']
 ANIMATED = {**{'luminosity_' + d: 8 for d in DISCIPLINES}, 'luminous_ingot': 8}
-# A long rest on frame 0 keeps the glimmer occasional ("no tan flashero").
+# Luminosities flicker like vanilla soul fire (frametime 2); the ingot rests on frame 0 so its glimmer stays occasional.
+FIRE_ANIMATION = {'animation': {'frametime': 2}}
 ANIMATION = {'animation': {'frametime': 3, 'frames': [{'index': 0, 'time': 40}, 1, 2, 3, 4, 5, 6, 7]}}
 HANDHELD = {'luminous_sword', 'luminous_pickaxe', 'luminous_axe', 'luminous_shovel', 'luminous_hoe'}
 ITEMS += list(ANIMATED) + sorted(HANDHELD) + ['luminous_helmet', 'luminous_chestplate', 'luminous_leggings', 'luminous_boots']
@@ -132,8 +133,9 @@ def expected():
         out[('pack', f'textures/{key}.png')] = data
         out[('mod', f'textures/{key}.png')] = data
         if key in strips:
-            out[('pack', f'textures/{key}.png.mcmeta')] = js(ANIMATION)
-            out[('mod', f'textures/{key}.png.mcmeta')] = js(ANIMATION)
+            anim = FIRE_ANIMATION if key.startswith('item/luminosity_') else ANIMATION
+            out[('pack', f'textures/{key}.png.mcmeta')] = js(anim)
+            out[('mod', f'textures/{key}.png.mcmeta')] = js(anim)
     for name in ARMOR_LAYERS:
         layer = Image.open(ART / 'armor' / f'{name}.png').convert('RGBA')
         assert layer.size == (64, 32), f'{name} must be 64x32'
