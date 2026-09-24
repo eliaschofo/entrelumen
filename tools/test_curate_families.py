@@ -154,5 +154,64 @@ class FamilyCurationTest(unittest.TestCase):
         self.assertEqual(after['missing'], [])
 
 
+    def add_download(self, filename, mod_id, version):
+        """An official Modrinth download in catalog/downloads, outside the CurseForge reference."""
+        (self.catalog / 'downloads').mkdir(exist_ok=True)
+        path = self.catalog / 'downloads' / filename
+        with zipfile.ZipFile(path, 'w') as jar:
+            jar.writestr('META-INF/neoforge.mods.toml',
+                         f'modLoader="javafml"\nloaderVersion="[1,)"\nlicense="MIT"\n[[mods]]\nmodId="{mod_id}"\n'
+                         f'version="{version}"\ndisplayName="{mod_id}"\n')
+        data = path.read_bytes()
+        return {
+            'modIds': [mod_id], 'filename': filename, 'provider': 'modrinth',
+            'sha256': hashlib.sha256(data).hexdigest(), 'projectId': 'AbCdEf12', 'versionId': 'Gh34Ij56',
+            'downloadUrl': f'https://cdn.modrinth.com/data/AbCdEf12/versions/Gh34Ij56/{filename}',
+            'sourceSha1': hashlib.sha1(data).hexdigest(), 'sourceSha512': hashlib.sha512(data).hexdigest(),
+        }
+
+    def test_modrinth_pin_is_locked_with_its_official_version_and_both_hashes(self):
+        self.sync_instance()
+        pin = self.add_download('garden-1.jar', 'garden', '1.0')
+        self.write_json(self.catalog / 'families' / 'garden.json', {
+            'schemaVersion': 1,
+            'content': {'garden': ['I', 'Synthetic garden', 'Synthetic kitchen']},
+            'pins': [pin],
+        })
+        curate.load_families()
+
+        curate.refresh(self.source)
+
+        lock = curate.read_json(self.catalog / 'curated.json')
+        entry = lock['mods'][0]
+        self.assertEqual(entry['filename'], 'garden-1.jar')
+        self.assertIsNone(entry['projectID'])
+        self.assertEqual(entry['source']['provider'], 'modrinth')
+        self.assertEqual(entry['source']['versionId'], pin['versionId'])
+        self.assertEqual(entry['source']['sourceSha512'], pin['sourceSha512'])
+        self.assertEqual(entry['sourceSha1'], pin['sourceSha1'])
+        paths = curate.read_json(self.catalog / 'local-paths.json')
+        self.assertEqual(curate.check(lock, paths, 'server')[1], [])
+
+    def test_modrinth_pin_rejects_changed_bytes_or_version(self):
+        self.sync_instance()
+        pin = self.add_download('garden-1.jar', 'garden', '1.0')
+        for change in ({'sourceSha512': '0' * 128}, {'versionId': 'Other123'}):
+            with self.subTest(change=change):
+                curate.CONTENT.clear()
+                curate.FAMILY_PINS.clear()
+                curate.CONTENT['garden'] = ('I', 'Synthetic garden', 'Synthetic kitchen')
+                curate.FAMILY_PINS['garden-1.jar'] = dict(pin, **change)
+                with self.assertRaisesRegex(ValueError, 'Curation rejected before writing'):
+                    curate.refresh(self.source)
+
+    def test_modrinth_pin_needs_official_cdn_and_hashes(self):
+        pin = self.add_download('garden-1.jar', 'garden', '1.0')
+        self.assertTrue(curate.valid_pin_source(pin))
+        for change in ({'downloadUrl': 'https://example.com/garden-1.jar'}, {'sourceSha1': ''}, {'versionId': ''}):
+            with self.subTest(change=change):
+                self.assertFalse(curate.valid_pin_source(dict(pin, **change)))
+
+
 if __name__ == '__main__':
     unittest.main()
