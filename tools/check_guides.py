@@ -38,8 +38,12 @@ ID = re.compile(r'^[a-z0-9_.-]+:[a-z0-9_./-]+$')
 _ITEMS = None
 
 
+CACHE = Path('E:/Elias/Codex/Entrelumen-ssd/research/item-registry.json')
+
+
 def registry():
-    """Item-like ids known from item models and lang keys of every pinned JAR, plus vanilla and the companion."""
+    """Item-like ids known from item models and lang keys of every pinned JAR, plus vanilla and the companion.
+    Cached (outside the repository) per set of JAR paths, since reading 300+ JARs takes a while."""
     global _ITEMS
     if _ITEMS is not None:
         return _ITEMS
@@ -48,6 +52,18 @@ def registry():
     lp = ROOT / 'catalog' / 'local-paths.json'
     if lp.exists():
         jars += [Path(p) for p in json.loads(lp.read_text(encoding='utf-8')).values()]
+    signature = sorted(str(j) for j in jars)
+    if CACHE.exists():
+        try:
+            c = json.loads(CACHE.read_text(encoding='utf-8'))
+            if c.get('jars') == signature:
+                items, namespaces = set(c['items']), set(c['namespaces'])
+                comp = ROOT / 'companion' / 'src' / 'main' / 'resources' / 'assets' / 'entrelumen'
+                items |= {'entrelumen:' + p.stem for p in (comp / 'models' / 'item').glob('*.json')}
+                _ITEMS = (items, namespaces | {'entrelumen', 'minecraft', 'c', 'neoforge'})
+                return _ITEMS
+        except Exception:
+            pass
     if VANILLA_JAR.exists():
         jars.append(VANILLA_JAR)
     for jar in jars:
@@ -73,6 +89,12 @@ def registry():
                         namespaces.add(m.group(1))
         except Exception:
             continue
+    try:
+        CACHE.parent.mkdir(parents=True, exist_ok=True)
+        CACHE.write_text(json.dumps({'jars': signature, 'items': sorted(items), 'namespaces': sorted(namespaces)}),
+                         encoding='utf-8')
+    except Exception:
+        pass
     comp = ROOT / 'companion' / 'src' / 'main' / 'resources' / 'assets' / 'entrelumen'
     for p in (comp / 'models' / 'item').glob('*.json'):
         items.add('entrelumen:' + p.stem)
