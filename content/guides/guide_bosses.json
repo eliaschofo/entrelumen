@@ -24,11 +24,11 @@
       },
       "en_us": [
         "Materials, not milestones",
-        "ENTRELUMEN's story bible is explicit: the Wither, the Ender Dragon and the Elder Guardian must be in the game, but they matter for their drops, as materials; the story does not frame them. The Heliodor Compass still passes by them in act V (the ocean monument, the stronghold and the End).\n\nMowzie's Mobs adds optional mini-bosses with unique weapons for acts II to IV. None of them closes an act."
+        "ENTRELUMEN's story bible is explicit: the Wither, the Ender Dragon and the Elder Guardian must be in the game, but they matter for their drops, as materials; the story does not frame them. The Heliodor Compass still passes by them in act V (the ocean monument, the stronghold and the End), and their drops feed the endgame: Luminous gear and the act VI creative items.\n\nMowzie's Mobs adds optional mini-bosses with unique weapons for acts II to IV. None of them closes an act."
       ],
       "es_es": [
         "Materiales, no hitos",
-        "La biblia de la historia de ENTRELUMEN es explícita: el Wither, el Dragón del End y el Guardián anciano tienen que estar en el juego, pero importan por sus drops, como materiales; la historia no los enmarca. Igual la Brújula de Heliodor pasa por ellos en el acto V (el monumento oceánico, la fortaleza y el End).\n\nMowzie's Mobs suma minijefes opcionales con armas únicas para los actos II a IV. Ninguno cierra un acto."
+        "La biblia de la historia de ENTRELUMEN es explícita: el Wither, el Dragón del End y el Guardián anciano tienen que estar en el juego, pero importan por sus drops, como materiales; la historia no los enmarca. Igual la Brújula de Heliodor pasa por ellos en el acto V (el monumento oceánico, la fortaleza y el End), y sus drops alimentan el final: el equipo Luminoso y los ítems creativos del acto VI.\n\nMowzie's Mobs suma minijefes opcionales con armas únicas para los actos II a IV. Ninguno cierra un acto."
       ],
       "sources": [
         "repo:docs/design/story-bible.md",
@@ -107,14 +107,16 @@
       },
       "en_us": [
         "What a Nether Star is for",
-        "Beacons first (\"Bring Home the Beacon\"), and many high-tier recipes across the pack; EMI's uses view (U on the star) lists them all. Cataclysm's Harbinger also needs one.\n\nFor more stars without farming by hand: Hostile Neural Networks has a Wither data model. Train it by killing Withers and its simulation produces Nether Stars; the Simulation Chamber is an act IV machine in this pack."
+        "In ENTRELUMEN each Luminous piece (act VI) is a netherite piece upgraded on a Smithing Table with a Luminous Ingot, using a Nether Star as the template: nine stars for the full set. Several creative items also ask for one. Beacons too (\"Bring Home the Beacon\"), and many high-tier recipes; EMI's uses view (U on the star) lists them all. Cataclysm's Harbinger also needs one.\n\nFor more stars without farming by hand: Hostile Neural Networks has a Wither data model. Train it by killing Withers and its simulation produces Nether Stars; the Simulation Chamber is an act IV machine in this pack."
       ],
       "es_es": [
         "Para qué sirve una Estrella del Nether",
-        "Primero, los faros («Bring Home the Beacon»), y muchas recetas de nivel alto de todo el pack; la vista de usos de EMI (U sobre la estrella) las muestra todas. El Heraldo de Cataclysm también necesita una.\n\nPara tener más estrellas sin farmear a mano: Hostile Neural Networks tiene un modelo de datos del Wither. Se entrena matando Withers y su simulación produce Estrellas del Nether; la Cámara de simulación es una máquina del acto IV en este pack."
+        "En ENTRELUMEN cada pieza Luminosa (acto VI) es una pieza de netherite mejorada en la mesa de herrería con un Lingote Luminoso, y la plantilla es una Estrella del Nether: nueve estrellas para el set completo. Varios ítems creativos también piden una. Además, los faros («Bring Home the Beacon») y muchas recetas de nivel alto; la vista de usos de EMI (U sobre la estrella) las muestra todas. El Heraldo de Cataclysm también necesita una.\n\nPara tener más estrellas sin farmear a mano: Hostile Neural Networks tiene un modelo de datos del Wither. Se entrena matando Withers y su simulación produce Estrellas del Nether; la Cámara de simulación es una máquina del acto IV en este pack."
       ],
       "sources": [
         "jar:minecraft_1.21.1_client.jar:data/minecraft/advancement/nether/create_beacon.json",
+        "repo:pack/kubejs/data/entrelumen/recipe/luminous_chestplate.json",
+        "repo:docs/design/luminous-gear.md",
         "jar:HostileNeuralNetworks-1.21.1-6.5.1.jar:data/hostilenetworks/data_models/wither.json",
         "repo:pack/kubejs/server_scripts/entrelumen_industrial_balance.js",
         "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:com/github/L_Ender/cataclysm/entity/InternalAnimationMonster/IABossMonsters/The_Harbinger_Entity.class"
@@ -135,14 +137,15 @@
       },
       "en_us": [
         "The monument and the wet sponge",
-        "Ocean monuments are rebuilt by YUNG's Better Ocean Monuments, still guarded by Elder Guardians that inflict Mining Fatigue. Beat them and loot the sponge rooms. Cartographer ocean maps point to these monuments.\n\nIn act V the Heliodor Compass sends you to a monument and counts it done as soon as someone on your team carries a wet sponge. Bring water breathing and a Respiration or Depth Strider set; the Aether's Neptune armor and Iron Bubble also shine here."
+        "Ocean monuments are rebuilt by YUNG's Better Ocean Monuments, still guarded by Elder Guardians that inflict Mining Fatigue. Beat them and loot the sponge rooms. Cartographer ocean maps point to these monuments.\n\nIn act V the Heliodor Compass sends you to a monument and counts it done as soon as someone on your team carries a wet sponge; wet sponges also go into the act VI creative fluid tanks. Bring water breathing and a Respiration or Depth Strider set; the Aether's Neptune armor and Iron Bubble also shine here."
       ],
       "es_es": [
         "El monumento y la esponja húmeda",
-        "Los monumentos oceánicos los rearma YUNG's Better Ocean Monuments, todavía custodiados por Guardianes ancianos que provocan Fatiga minera. Vencelos y saqueá las salas de esponjas. Los mapas oceánicos de los cartógrafos apuntan a estos monumentos.\n\nEn el acto V la Brújula de Heliodor te manda a un monumento y lo da por cumplido cuando alguien de tu equipo lleva una esponja húmeda. Llevá respiración acuática y un equipo con Respiración o Agilidad acuática; la armadura de Neptuno y la Burbuja de hierro del Aether también rinden acá."
+        "Los monumentos oceánicos los rearma YUNG's Better Ocean Monuments, todavía custodiados por Guardianes ancianos que provocan Fatiga minera. Vencelos y saqueá las salas de esponjas. Los mapas oceánicos de los cartógrafos apuntan a estos monumentos.\n\nEn el acto V la Brújula de Heliodor te manda a un monumento y lo da por cumplido cuando alguien de tu equipo lleva una esponja húmeda; las esponjas húmedas además van en los tanques de fluidos creativos del acto VI. Llevá respiración acuática y un equipo con Respiración o Agilidad acuática; la armadura de Neptuno y la Burbuja de hierro del Aether también rinden acá."
       ],
       "sources": [
         "repo:content/compass_targets.json",
+        "repo:pack/kubejs/data/entrelumen/recipe/creative/mekanism/creative_fluid_tank.json",
         "jar:YungsBetterOceanMonuments-1.21.1-NeoForge-4.1.2.jar:data/minecraft/tags/worldgen/structure/on_ocean_explorer_maps.json",
         "jar:YungsBetterOceanMonuments-1.21.1-NeoForge-4.1.2.jar:data/betteroceanmonuments/worldgen/structure/ocean_monument.json",
         "jar:aether-1.21.1-1.5.10-neoforge.jar:assets/aether/lang/en_us.json"
@@ -222,15 +225,17 @@
       },
       "en_us": [
         "Free the End",
-        "Destroy the End Crystals on the towers first (arrows, or climb to the protected ones), then fight the Dragon when it perches. Killing it completes the act V compass objective for the End.\n\nIts drops: a big pile of experience, the Dragon Egg and the exit gateway to the outer islands. It also counts as proof of strength for Eternal Starlight's Gatekeeper."
+        "Destroy the End Crystals on the towers first (arrows, or climb to the protected ones), then fight the Dragon when it perches. Killing it completes the act V compass objective for the End.\n\nIts drops: a big pile of experience, the Dragon Egg, the exit gateway to the outer islands and, with Draconic Evolution, a Dragon Heart, which the creative energy items of act VI require. It also counts as proof of strength for Eternal Starlight's Gatekeeper."
       ],
       "es_es": [
         "Liberar el End",
-        "Primero destruí los Cristales del End de las torres (con flechas, o subiendo a los protegidos), después peleá con el Dragón cuando se posa. Matarlo cumple el objetivo de la brújula del End en el acto V.\n\nLo que deja: mucha experiencia, el Huevo de dragón y el portal hacia las islas exteriores. También cuenta como prueba de fuerza para el Gatekeeper de Eternal Starlight."
+        "Primero destruí los Cristales del End de las torres (con flechas, o subiendo a los protegidos), después peleá con el Dragón cuando se posa. Matarlo cumple el objetivo de la brújula del End en el acto V.\n\nLo que deja: mucha experiencia, el Huevo de dragón, el portal hacia las islas exteriores y, con Draconic Evolution, un Corazón de dragón, que piden los ítems creativos de energía del acto VI. También cuenta como prueba de fuerza para el Gatekeeper de Eternal Starlight."
       ],
       "sources": [
         "jar:minecraft_1.21.1_client.jar:data/minecraft/advancement/end/kill_dragon.json",
         "repo:content/compass_targets.json",
+        "repo:pack/kubejs/data/entrelumen/recipe/creative/mekanism/creative_energy_cube.json",
+        "repo:docs/design/luminous-gear.md",
         "jar:eternalstarlight-0.9.0+1.21.1+neoforge.jar:assets/eternal_starlight/lang/en_us.json"
       ]
     },
