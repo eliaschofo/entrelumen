@@ -62,6 +62,7 @@ const entrelumenAuditTargets = {
     "entrelumen:spectral_lens",
     "entrelumen:survey_notes",
     "entrelumen:survey_station",
+    "entrelumen:terra_arm",
     "entrelumen:terraform_altar",
     "entrelumen:time_altar",
     "evilcraft:dark_gem",
@@ -279,7 +280,7 @@ const entrelumenAuditTargets = {
       "output": "farmersdelight:flint_knife"
     }
   ],
-  "signature": "dcd9a1eef5973c5c"
+  "signature": "a78793e12e397148"
 };
 
 ServerEvents.afterRecipes(event => {
