@@ -63,8 +63,8 @@ public final class SolsticioCity {
   /** A piece resource and where it lands. */
   record Source(String name, ResourceLocation resource, CityLayout.Placement placement) {}
 
-  /** A marker found in a template, in world coordinates. */
-  record FoundMarker(CityLayout.Marker marker, BlockPos pos) {}
+  /** A marker found in a template, in world coordinates, with its argument (or empty). */
+  record FoundMarker(CityLayout.Marker marker, String argument, BlockPos pos) {}
 
   /** One cube ready to place: its template and world origin. */
   record ReadySlice(StructureTemplate template, BlockPos origin, int blocks) {}
@@ -308,8 +308,8 @@ public final class SolsticioCity {
         String name = partition.markerNames().get(i);
         int[] local = partition.markerPositions().get(i);
         BlockPos world = new BlockPos(placement.x() + local[0], placement.y() + local[1], placement.z() + local[2]);
-        var marker = CityLayout.Marker.parse(name);
-        if (marker.isPresent()) job.markers.add(new FoundMarker(marker.get(), world));
+        var marker = CityLayout.parseMarker(name);
+        if (marker.isPresent()) job.markers.add(new FoundMarker(marker.get().marker(), marker.get().argument(), world));
         else LOGGER.warn("Unknown Solsticio marker '{}' at {} in {}", name, world, source.name());
       }
     }
@@ -437,6 +437,7 @@ public final class SolsticioCity {
     data.arrival = data.portal = data.waystone = data.tradingHall = null;
     data.npcs.clear();
     List<BlockPos> plotCorners = new ArrayList<>();
+    List<CommerceSites.Found> commerce = new ArrayList<>();
     boolean provisional = false;
     for (FoundMarker found : job.markers) {
       switch (found.marker()) {
@@ -446,6 +447,8 @@ public final class SolsticioCity {
         case TRADING_HALL -> data.tradingHall = found.pos();
         case PLAYER_PLOT -> plotCorners.add(found.pos());
         case PROVISIONAL -> provisional = true;
+        case SHOP, SIDEQUEST, RESIDENT, EASTER ->
+            commerce.add(new CommerceSites.Found(found.marker(), found.argument(), found.pos()));
         default -> {
           if (found.marker().npc()) data.npcs.put(found.marker().id, found.pos());
         }
@@ -482,6 +485,10 @@ public final class SolsticioCity {
         job.blocks, job.placingTicks, job.placingNanos / 1_000_000, job.worstTickNanos / 1_000_000,
         (System.nanoTime() - job.startedAt) / 1_000_000);
     for (ServerPlayer player : level.players()) SolsticioTravel.rescue(player);
+    // Shopkeepers, natives, side-quest NPCs and common villagers: spawned once, in the background.
+    data.commerce.rebuild(commerce, data.tradingHall);
+    data.setDirty();
+    SolsticioCommerce.startPopulation(server);
   }
 
   // ---- Plots ------------------------------------------------------------------------------

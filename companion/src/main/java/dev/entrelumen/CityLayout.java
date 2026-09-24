@@ -53,26 +53,67 @@ public final class CityLayout {
     GARDENER("gardener"),
     PRIEST("priest"),
     /** Present only in placeholder templates; the definitive city must not carry it. */
-    PROVISIONAL("provisional");
+    PROVISIONAL("provisional"),
+    /** {@code shop:<type>}: where a shopkeeper stands behind the counter. */
+    SHOP("shop", true),
+    /** {@code sidequest:<id>}: the NPC who gives a side quest. */
+    SIDEQUEST("sidequest", true),
+    /** The home of a common villager. */
+    RESIDENT("resident"),
+    /** {@code easter:<name>}: an easter egg; only its position is recorded. */
+    EASTER("easter", true);
 
     public final String id;
+    /** Written {@code id:<argument>}; the bare id is not a valid marker. */
+    public final boolean parameterized;
 
     Marker(String id) {
+      this(id, false);
+    }
+
+    Marker(String id, boolean parameterized) {
       this.id = id;
+      this.parameterized = parameterized;
     }
 
     public boolean npc() {
       return this == MAYOR || this == INVENTOR || this == GARDENER || this == PRIEST;
     }
 
-    /** Accepts {@code id} and {@code entrelumen:id}, any case, surrounding spaces ignored. */
+    /**
+     * Accepts {@code id} and {@code entrelumen:id}, any case, surrounding spaces ignored; for
+     * parameterized markers see {@link CityLayout#parseMarker}.
+     */
     public static Optional<Marker> parse(String metadata) {
-      if (metadata == null) return Optional.empty();
-      String key = metadata.trim().toLowerCase(Locale.ROOT);
-      if (key.startsWith("entrelumen:")) key = key.substring("entrelumen:".length());
-      for (Marker marker : values()) if (marker.id.equals(key)) return Optional.of(marker);
-      return Optional.empty();
+      return parseMarker(metadata).map(Parsed::marker);
     }
+  }
+
+  /** A marker with its argument: the shop type, side quest id or easter egg name, else empty. */
+  public record Parsed(Marker marker, String argument) {}
+
+  /** Arguments of parameterized markers: lower-case ids, as in resource paths. */
+  static final Pattern ARGUMENT = Pattern.compile("[a-z0-9_][a-z0-9_./-]{0,63}");
+
+  /**
+   * Parses a DATA marker. Plain markers accept {@code id} or {@code entrelumen:id}; parameterized
+   * ones need {@code id:<argument>} (or {@code entrelumen:id:<argument>}) with a valid argument.
+   * Any case, surrounding spaces ignored. Anything else is empty (unknown, logged by the caller).
+   */
+  public static Optional<Parsed> parseMarker(String metadata) {
+    if (metadata == null) return Optional.empty();
+    String key = metadata.trim().toLowerCase(Locale.ROOT);
+    if (key.startsWith("entrelumen:")) key = key.substring("entrelumen:".length());
+    int colon = key.indexOf(':');
+    String name = colon < 0 ? key : key.substring(0, colon);
+    String argument = colon < 0 ? "" : key.substring(colon + 1).trim();
+    for (Marker marker : Marker.values()) {
+      if (!marker.id.equals(name)) continue;
+      if (marker.parameterized != (colon >= 0)) return Optional.empty();
+      if (marker.parameterized && !ARGUMENT.matcher(argument).matches()) return Optional.empty();
+      return Optional.of(new Parsed(marker, argument));
+    }
+    return Optional.empty();
   }
 
   /** A template piece: grid cell and size. */
