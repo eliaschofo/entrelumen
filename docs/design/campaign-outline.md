@@ -4,6 +4,8 @@
 
 > **Texto jugable, 24/9/2026:** el texto de los actos I–V y la presentación del VI se reescribieron con el lore de la [biblia](story-bible.md), sin cambiar tareas ni progresión. Los títulos V y VI pasan a «El Arca» y «Solsticio». El mapeo de actos, ruinas y personajes está en [quest-lore.md](quest-lore.md). Los títulos de este mapa editorial y las escenas que nombra abajo (Mara, Ivo, Sera) son del plan anterior.
 
+> **Renumeración, 24/9/2026:** el Arca (módulos, lotes y activación) pasó al acto V junto con la preparación industrial, y Solsticio es el acto VI. El acto IV cierra con el Sun Spirit y el Corazón de Heliodor. Detalle en [act-renumbering.md](act-renumbering.md). Los presupuestos por acto de este mapa editorial no se recalcularon.
+
 ## Distribución y reglas
 
 La meta provisional de 600 mods y 5.000–5.500 quests procede de `scale-reference.md`; no prueba paridad final con las tres referencias. Los presupuestos son desiguales: primeras horas breves, sistemas industriales y expediciones extensos, maestrías optativas. No hay capítulos de bibliotecas ni una lista inventada de 600 nombres.

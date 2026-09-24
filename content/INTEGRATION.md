@@ -77,6 +77,8 @@ The three static integration recipes use seven, eight and seven crafting slots. 
 
 ## Act VI — The Last Horizon
 
+> Renumbered 24 September 2026: this chapter (now `act_five_activation.json`, «V · La activación») is the second chapter of act V; act VI is Solsticio (`act_six.json`). See `docs/design/act-renumbering.md`.
+
 `act_six.json` adds 27 original EN/ES quests: six non-consuming material lessons, one non-consuming controller lesson, one End-eye lesson, three optional preparation/placement readings, six authoritative module projects, one authoritative End observation, six derived commissioning mirrors, one terminal campaign mirror and two optional postgame challenges. Total: 155 quests and 42 campaign tasks. Full chapter hashes and prior locale/task-map digests freeze the first 128 quests' IDs, prose, layout and behavior. No earlier source chapter was changed.
 
 The six module project deliveries match their existing unrestricted shapeless crafting recipes in `content/integration-design.json` exactly; the companion awards one corresponding module block once per project. A lost block can be crafted from the same inputs without replaying the project. All six projects require `world_network`; exploration also requires `end_arrival`. The observer is server travel state, with no quest prerequisite. Holding or receiving End items cannot create it. No item lesson or optional checkmark is an ancestor of a campaign task.

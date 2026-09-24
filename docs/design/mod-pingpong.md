@@ -1,5 +1,7 @@
 # Selección de mods por ida y vuelta con Elias
 
+> **Renumeración de actos, 24/9:** el Arca pasó al acto V y Solsticio es el VI ([act-renumbering.md](act-renumbering.md)). El escalonado de las rondas 1 a 4 va por componente de acto y no cambia: el Bus del Arca y el Motor de Renovación ya eran del V, y ninguna receta usaba componentes del acto 6. Psi pasó entero al III.
+
 Desde el 24 de septiembre de 2026 no hay un número objetivo de mods: cada mod tiene que contar, tener sentido y no arruinar el rendimiento. El controlador propone por tipo; Elias elige. Antes de instalar, cada elegido se verifica: versión para NeoForge 1.21.1 (21.1.249), dependencias, conflictos, costo de rendimiento y escalonado por actos.
 
 ## Ronda 1 (24/9)
@@ -175,7 +177,7 @@ Fuentes:
 
 | Mod | Versión | Fuente | Acto | Escalonado o integración |
 |---|---|---|---|---|
-| Psi | 1.21.1-110 | Modrinth pOeA0exL/j9TFdTKC | II-III | El Ensamblador de CAD pide un Marco de Calibración (II): sin él no hay CAD ni hechizos. Los núcleos de psigema (hiperacelerado y radiativo) piden una Matriz de Distribución (III). |
+| Psi | 1.21.1-110 | Modrinth pOeA0exL/j9TFdTKC | III | Entero en el acto III (Elias, 24/9; antes el ensamblador era del II). El Ensamblador de CAD pide un Regulador de Energía (III): sin él no hay CAD ni hechizos. Los núcleos de psigema (hiperacelerado y radiativo) piden una Matriz de Distribución (III). |
 | Create: New Age | 1.2.0+mc1.21.1 | Modrinth FTeXqI9v/IwtuwMZy | II-IV | La tecnología de Heliodor; ver la tabla de abajo. |
 | Create: Central Kitchen | 2.6.2 | Modrinth btq68HMO/whbguqT1 | II | Automatiza la olla de cocción, la sartén, la cocina, la tabla de cortar con brazo mecánico y los banquetes. |
 | Create Slice & Dice | 4.3.4 | Modrinth GmjmRQ0A/D6mQaFRW | II | Rebanadora para las recetas de la tabla de cortar, aspersores y fertilizante líquido. |
@@ -238,7 +240,7 @@ La reescritura de quests (`docs/design/quest-lore.md`, ya en `main`) nombra este
   - Templo de la Luz Sagrada (IV): el reactor de torio, cuya barra pide el Sello de Contención, es el eco de la fusión. Jugaban con fuego. El corio fundido sirve como lore de lo que casi pasó.
 - **Terra**
   - El Terraprisma «canaliza la luminosidad en distintas formas de energía», y New Age es eso mismo: luz del sol → calor → rotación → electricidad → luz. Sus misiones del acto VI pueden pedir la pieza que falta de un circuito eléctrico roto de Solsticio: una bobina, un alambre de oro sobrecargado o una farola.
-  - Psi es su magia programable. El Ensamblador de CAD en el taller, con el Marco de Calibración, y un hechizo de luz programado como primera prueba.
+  - Psi es su magia programable. El Ensamblador de CAD, con el Regulador de Energía del acto III, y un hechizo de luz programado como primera prueba.
 - **La luz**
   - La farola de New Age consume energía según la luz del lugar. Sirve de metáfora de Solsticio: una ciudad que guarda luz.
   - La paleta de Solsticio podría sumar farolas y postes de New Age. Queda para el dueño de la paleta.
@@ -363,7 +365,7 @@ Recibo: [`docs/verification/mod-pingpong-r4-runtime.json`](../verification/mod-p
   - Potencia del generador frente a Create: Crafts & Additions, Mekanism e Immersive Engineering, que ya están.
   - Las recetas de manzana dorada encantada y de experiencia energizadas.
   - El reactor de torio frente al de MI.
-- **Psi:** ¿el Ensamblador de CAD en el acto II está bien, o preferís abrirlo en el III junto a Mahou Tsukai?
+- ~~**Psi:** ¿el Ensamblador de CAD en el acto II está bien, o preferís abrirlo en el III junto a Mahou Tsukai?~~ Elias, 24/9: Psi entero en el III. El ensamblador pide un Regulador de Energía (`feature/acts-renumber`).
 - **Revisión en cliente:**
   - Render de los cables y farolas de New Age y de las partículas de Psi.
   - La tecla Alt+C de Psi.

@@ -77,6 +77,7 @@ Para contestarles hace falta un artefacto que se perdió en el Aether. La entida
 - **Revelación por partes:** pistas desde el acto I. En el acto IV, el Templo de la Luz Sagrada revela la fusión y **se vence al Sun Spirit al final del acto IV**. Su llave hace que el Atlas hable claro.
 - **Acto V:** construir el Arca sabiendo todo. El Arca forja la Llave de Luz.
   - *Decisión de Elias del 24/9:* en el código, el Arca (sus seis módulos, los lotes y la activación que forja la Llave) estaba en el acto VI. Se fusiona con el acto V actual (la preparación industrial) en un solo **acto V, «El Arca»**. Solsticio pasa a ser el **acto VI**, corto y denso. Hay que renumerar el escalonado por actos, los World Tiers, la puerta de Solsticio y los objetivos de la brújula.
+  - *Hecho el 24/9:* [act-renumbering.md](act-renumbering.md) (tabla de gates antes y después, World Tiers y migración de partidas guardadas).
 - **Acto VI:** Solsticio.
 - **Las 171 quests actuales** conservan tareas y progresión, pero su texto se reescribe con el lore nuevo: Heliodor, la Inventora y la luz.
 
@@ -84,6 +85,7 @@ Para contestarles hace falta un artefacto que se perdió en el Aether. La entida
 
 - El Sun Spirit suelta el **Corazón de Heliodor**: el núcleo de la máquina de la fusión, que él les confiscó. Puesto en el Atlas le da voz clara en los dos sentidos, pero es la misma tecnología que casi los destruye.
 - *Actualizado el 24/9:* ya no hay dos finales ni una disputa por el Corazón. **El Corazón de Heliodor y el cristal sagrado de Bodhi son el mismo objeto.** El Sun Spirit se lo había confiscado a Bodhi. En el acto IV lo recuperás y le da voz clara al Atlas. En el final se lo devolvés a Bodhi para que lo bendiga, y así se convierte en la tercera reliquia del portal.
+- *Hecho el 24/9:* `entrelumen:heart_of_heliodor` cae una vez por equipo al vencer al Sun Spirit, el acto IV cierra con el Corazón entregado en el Atlas y el Atlas lo guarda hasta el acto VI. Ver [act-renumbering.md](act-renumbering.md).
 
 ## Las tres reliquias y el final único (24 de septiembre, reemplaza los dos finales)
 

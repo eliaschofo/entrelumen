@@ -1,6 +1,6 @@
 # Texto de las quests con el lore nuevo
 
-24 de septiembre de 2026. Aplica la [biblia de la historia](story-bible.md) al texto de las quests. Se cambiaron sólo títulos, subtítulos y descripciones: tareas, recompensas, dependencias, íconos y layout siguen igual.
+24 de septiembre de 2026. *Actualizado el mismo día con la renumeración de actos* ([act-renumbering.md](act-renumbering.md)): el Arca es el acto V en dos capítulos, «V · El Arca» y «V · La activación»; Solsticio es el acto VI, con su propio capítulo; y el acto IV cierra con el Corazón de Heliodor. Aplica la [biblia de la historia](story-bible.md) al texto de las quests. Se cambiaron sólo títulos, subtítulos y descripciones: tareas, recompensas, dependencias, íconos y layout siguen igual.
 
 ## Qué cambió
 
@@ -19,8 +19,8 @@
 | II · Los oficios perdidos | Taller hundido | Terra con nombre: el taller es suyo y el Atlas devuelve su brazo. J. alimenta a los turnos largos y B. cuida la magia | Al cierre, la voz dice su nombre a medias: «…Terra» |
 | III · Rutas de intercambio | Invernadero-domo | Juan con nombre: el invernadero y el Altar de Crecimiento son suyos. Tinta dorada y sellos dorados rumbo a Solsticio | Terra se presenta. Solsticio no figura en ningún mapa: «La ciudad no cayó. Sigue acá» |
 | IV · Las voces del Atlas | Observatorio del risco y Templo de la Luz Sagrada | Aurelia, en una sesión del Consejo. Bodhi es B., el sacerdote que dijo que no | El Templo revela la fusión. El Espíritu del Sol los congeló y se llevó el Corazón de Heliodor, el cristal de Bodhi |
-| V · El Arca | (ninguna nueva) | Terra diseña el Arca, Juan pone la reserva, Aurelia firma la carta de habitabilidad y Bodhi pone la condición | Con el Corazón habla claro. Recién acá se nombra **el Entrelumen**. El Arca va a forjar la Llave de Luz |
-| VI · Solsticio | Solsticio | Los cuatro, dentro del Entrelumen | Presentación nueva; el resto del acto no cambió |
+| V · El Arca (dos capítulos: el plano y la activación) | (ninguna nueva) | Terra diseña el Arca, Juan pone la reserva, Aurelia firma la carta de habitabilidad y Bodhi pone la condición | Con el Corazón habla claro. Recién acá se nombra **el Entrelumen**. Activar el Arca forja la Llave de Luz |
+| VI · Solsticio | Solsticio | Los cuatro, dentro del Entrelumen | Una quest de entrada (cruzar con la Llave de Luz); el resto lo escribe quien haga el acto VI |
 
 Otras dimensiones: el santuario de Juan en Twilight Forest, el tratado con las abejas de Bumblezone y la luz del Aether, que vista desde el Observatorio es «de donde vino la luz».
 
@@ -58,8 +58,7 @@ Las menciones van en la línea de qué hacer, no en la voz narrativa:
 
 ## Pendiente
 
-- **El capítulo del acto VI contiene la construcción del Arca.** Los seis módulos, los lotes y la activación que forja la Llave están en `last_horizon`, y en `projects.json` los módulos son de acto 6. La biblia pone «construir el Arca» en el acto V. Por ahora el VI se llama «Solsticio» y su presentación dice que primero se termina el Arca. Hay que elegir entre mover los módulos al acto V, lo que toca el acompañante y la progresión, o dejar que el VI empiece terminando el Arca. Lo tiene que saber quien escriba el acto VI.
-- **Espíritu del Sol:** la biblia lo pone al final del acto IV. Los objetivos de la brújula ponen las mazmorras de plata y de oro en el acto 5, y no existe ninguna quest ni ningún ítem del Corazón de Heliodor. El texto lo presenta como la meta que sigue y no exige nada. Falta el drop en el acompañante y alinear la brújula.
+- ~~El capítulo del acto VI contiene la construcción del Arca~~ y ~~falta el Corazón de Heliodor~~: resueltos el 24/9 en [act-renumbering.md](act-renumbering.md). El capítulo `last_horizon` es «V · La activación», con sus 27 quests reescritas en esta voz; el Espíritu del Sol y la entrega del Corazón son dos quests del acto IV.
 - `heliodor-ruins.md` todavía pone el Templo en el acto V; este texto sigue a la biblia, que lo pone en el IV.
 - Las ruinas de los actos no están colocadas: el texto las nombra como lugares de la historia, pero la brújula todavía no apunta a ellas.
 - Los textos del acompañante no se tocaron: nombres de proyectos del Atlas, lore de la brújula y tooltips. Las quests citan los nombres de proyecto tal como se ven hoy.

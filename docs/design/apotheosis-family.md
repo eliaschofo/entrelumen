@@ -21,10 +21,12 @@ Apotheosis checks one advancement per tier (`apotheosis:progression/haven` … `
 | Haven | `minecraft:tick` | From the first tick |
 | Frontier | `minecraft:impossible` | The team's campaign completes Act II (reaches Act III) |
 | Ascent | `minecraft:impossible` | The campaign completes Act III (reaches Act IV) |
-| Summit | `minecraft:impossible` | The campaign completes Act V (reaches Act VI) |
-| Pinnacle | `minecraft:impossible` | The team activates the Ark (`last_horizon`) |
+| Summit | `minecraft:impossible` | The campaign completes Act IV (reaches Act V, the Ark) |
+| Pinnacle | `minecraft:impossible` | The team activates the Ark, which opens Act VI (`last_horizon`) |
 
-Ascent opens after Act III rather than Act IV. Act IV is the expedition act: Aether, Twilight Forest, Bumblezone, Cataclysm structures and horizon charts. Opening Ascent as it starts rewards those dungeons with Ascent's uncommon-to-epic loot and makes epic material reachable for Act V spawner augments. The tier ladder then spaces one tier per act: Frontier during III, Ascent during IV–V, Summit during VI and Pinnacle after the ending.
+Ascent opens after Act III rather than Act IV. Act IV is the expedition act: Aether, Twilight Forest, Bumblezone, Cataclysm structures, horizon charts and the Sun Spirit. Opening Ascent as it starts rewards those dungeons with Ascent's uncommon-to-epic loot and makes epic material reachable for Act V spawner augments. The tier ladder then spaces one tier per act: Frontier during III, Ascent during IV, Summit during V (the Ark) and Pinnacle during VI (Solsticio).
+
+*Renumbered 24 September 2026* ([act-renumbering.md](act-renumbering.md)): the Ark moved from act 6 to act 5 and Solsticio became act 6. Summit used to wait for the end of the industrial preparation; it now opens with the whole Ark act, and Pinnacle with act VI, which the activation opens. A saved campaign migrated from act 6 to act 5 keeps Summit, and the tier a player already holds never drops.
 
 Since 24 September 2026 the story sets the difficulty: completing the milestone raises every team member's *active* World Tier to that tier. It never goes back down, and players cannot pick another one. Manual selection is disabled (`Enable Manual World Tier Changes = false`). See [Story-set World Tiers](#story-set-world-tiers) below. Until then, tier selection was manual and an unlocked tier was only an offer.
 

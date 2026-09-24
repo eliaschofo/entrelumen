@@ -6,7 +6,7 @@ The Light Key, the broken key and the three relics have the controller's 16x16 a
 
 ## Act numbering
 
-The code still has six campaign acts with the Ark commissioned and activated in act 6 (`CampaignMilestones.LAST_HORIZON`). The story bible moves the Ark to act V and Solsticio to act VI; that renumbering is not done. Solsticio therefore opens to a team through one gate, `Solsticio.GATE = ActGate(6, "last_horizon")`: campaign act at least 6 **and** the Ark activation recorded. When acts are renumbered, only that constant changes.
+Renumbered on 24 September 2026 ([act-renumbering.md](act-renumbering.md)): the Ark (modules, batches and activation) is act V and Solsticio is act VI. The activation (`CampaignMilestones.LAST_HORIZON`) forges the Light Key and moves the campaign to act 6 in the same mutation. Solsticio opens to a team through one gate, `Solsticio.GATE = ActGate(Solsticio.ACT = 6, "last_horizon")`: the same value as before, now meaning act VI **and** the Ark activation recorded (the milestone keeps an act set by hand from opening the city). The team's own crossing records `solsticio_arrival`, the entry quest of the «VI · Solsticio» chapter; a visitor who arrives through another team's portal, a waystone or a command does not.
 
 ## Dimension `entrelumen:solsticio`
 
@@ -128,5 +128,4 @@ Stable IDs: `light_key`, `light_key_broken`, `solsticio_portal`, `heliodor_relic
 - In-game visual review on a client: sky, fog, motes, portal particles and the controller's city under eternal noon (for example whether its daylight detectors toggle any copper bulb on the first tick).
 - Final art for the five items and the portal (controller).
 - Missions that award the relics and the named villagers on their marker points. The trading hall's natives, the shops and moved-villager discounts are in [solsticio-commerce.md](solsticio-commerce.md).
-- Act renumbering (Ark → V, Solsticio → VI): only `Solsticio.GATE` changes.
 - Full-pack check with Waystones loaded (the reflection path is not exercised by the isolated tests).

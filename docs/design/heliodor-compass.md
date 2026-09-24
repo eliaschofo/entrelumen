@@ -192,9 +192,9 @@ The authored source is `content/compass_targets.json`. `processResources` copies
 A rejected document keeps the previous list. An objective whose `mods` are not all loaded is skipped, so the isolated runtime works without Twilight Forest or the Aether.
 
 ```json
-{"id": "gold_dungeon", "act": 5, "kind": "boss", "mods": ["aether"],
+{"id": "gold_dungeon", "act": 4, "kind": "boss", "mods": ["aether"],
  "target": {"type": "structure", "structure": "aether:gold_dungeon", "dimension": "aether:the_aether"},
- "advance_when": {"type": "advancement", "advancement": "aether:gold_dungeon"}, "lore": true}
+ "advance_when": {"type": "milestone", "milestone": "heart_recovered"}, "lore": true}
 ```
 
 **Draft list** (every structure ID, advancement and placement was checked in the pinned JARs):
@@ -212,11 +212,14 @@ A rejected document keeps the previous list. An objective whose `mods` are not a
 | IV | `bronze_dungeon` | `aether:bronze_dungeon` | `aether:bronze_dungeon` (Slider) |
 | IV | `lich_tower` | `twilightforest:lich_tower` | `twilightforest:progress_lich` |
 | IV | `bumblezone` | dimension | `bumblezone_arrival` |
-| V | `silver_dungeon` | `aether:silver_dungeon` | `aether:silver_dungeon` (Valkyrie Queen) |
-| V | `gold_dungeon` | `aether:gold_dungeon` | `aether:gold_dungeon` (Sun Spirit: the Atlas key) |
-| VI | `ocean_monument` | `betteroceanmonuments:ocean_monument` | carrying a wet sponge (Elder Guardian) |
-| VI | `stronghold` | `betterstrongholds:stronghold` | `end_arrival` |
-| VI | `the_end` | dimension | `minecraft:end/kill_dragon` |
+| IV | `silver_dungeon` | `aether:silver_dungeon` | `aether:silver_dungeon` (Valkyrie Queen) |
+| IV | `gold_dungeon` | `aether:gold_dungeon` | `heart_recovered` (the Sun Spirit dropped the Heart of Heliodor; the Heart delivered to the Atlas also counts) |
+| V | `ocean_monument` | `betteroceanmonuments:ocean_monument` | carrying a wet sponge (Elder Guardian) |
+| V | `stronghold` | `betterstrongholds:stronghold` | `end_arrival` |
+| V | `the_end` | dimension | `minecraft:end/kill_dragon` |
+| VI | `solsticio` | dimension `entrelumen:solsticio` | `solsticio_arrival` (the team's own crossing with the Light Key) |
+
+Acts renumbered on 24 September 2026 ([act-renumbering.md](act-renumbering.md)): the Sun Spirit closes act IV, the Ark is act V and Solsticio act VI. Before, the silver and gold dungeons were act V, the gold one advanced with the `aether:gold_dungeon` advancement, and the monument, stronghold and End were act VI.
 
 Every objective has an EN/ES name and a "why it matters" line. Nine carry a lore fragment for the Atlas; early fragments keep the mystery, and the truth arrives with the Sun Spirit's key.
 

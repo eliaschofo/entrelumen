@@ -30,7 +30,7 @@ Naturaleza   Aleación atómica         Habitabilidad
 La receta es simétrica: las seis Luminosidades ocupan las columnas laterales y la central funde magia, lo divino y la máquina. Así se forjaba Heliodor, pero esta vez con respeto.
 
 - `naturesaura:sky_ingot`: magia ambiental, material de etapa V de la familia industrial.
-- `apotheosis:godforged_pearl`: material de rareza mítica. Sólo sale de desguazar botín mítico, que aparece desde el World Tier Summit, abierto al terminar el acto V. Es tan de acto VI como las Luminosidades.
+- `apotheosis:godforged_pearl`: material de rareza mítica. Sólo sale de desguazar botín mítico, que aparece desde el World Tier Summit. Desde la renumeración del 24/9 Summit abre con el acto V, el Arca ([act-renumbering.md](act-renumbering.md)), así que la perla es del acto V. Las recetas que la piden igual quedan en el VI por las Luminosidades.
 - `mekanism:alloy_atomic`: tecnología de etapa V.
 
 Da un lingote por receta: seis Luminosidades por lingote. Es fireproof y repara todo el equipo luminoso en el yunque.

@@ -1,5 +1,7 @@
 # Act VI: construction, commissioning and the first ending
 
+> **Renumbered 24 September 2026:** this is now the second chapter of act V, «V · La activación» (the Ark act); act VI is Solsticio. The module projects are act 5, the batches and the activation require act 5, and the activation moves the campaign to act 6 and forges the Light Key. See [act-renumbering.md](act-renumbering.md). The rest of this document is the original record.
+
 The six existing `entrelumen:integration/ark_*` recipes stay byte-for-byte unchanged. The Atlas construction projects now charge those same ingredients once and award one module block. Crafting remains the replacement path; it does not credit the project. All six projects follow `world_network`; exploration also requires the current campaign's observed `end_arrival`. Historical project completions and commissioning batches remain credited.
 
 Construction and commissioning have separate costs. The six controller steps remain: 4 calibration frames + 2 power regulators; 2 containment seals; 2 ecosystem capsules; 2 routing matrices; 8 ration bundles; 1 horizon chart. Partial deposits remain in SavedData. The six FTB phase tasks derive from that counter instead of maintaining a second record.
