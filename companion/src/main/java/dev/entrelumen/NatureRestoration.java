@@ -40,7 +40,6 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.DoublePlantBlock;
 import net.minecraft.world.level.block.LevelEvent;
 import net.minecraft.world.level.block.LiquidBlock;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
@@ -64,8 +63,6 @@ import net.minecraft.world.level.levelgen.placement.RepeatingPlacement;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.phys.AABB;
 import net.neoforged.neoforge.common.Tags;
-import net.neoforged.neoforge.common.util.BlockSnapshot;
-import net.neoforged.neoforge.event.EventHooks;
 
 /**
  * Landscape restoration at a complete Ark. A team marks a site with a bookmarked compass; bone
@@ -621,25 +618,7 @@ public final class NatureRestoration {
      */
     private boolean commit(Map<BlockPos, BlockState> writes, Map<BlockPos, CompoundTag> blockEntities,
         int flags) {
-      List<BlockSnapshot> snapshots = new ArrayList<>(writes.size());
-      for (BlockPos pos : writes.keySet())
-        snapshots.add(BlockSnapshot.create(level.dimension(), level, pos, flags));
-      for (var entry : writes.entrySet()) {
-        level.setBlock(entry.getKey(), entry.getValue(), flags);
-        CompoundTag data = blockEntities.get(entry.getKey());
-        BlockEntity entity = data == null ? null : level.getBlockEntity(entry.getKey());
-        if (entity != null) {
-          entity.loadCustomOnly(data, level.registryAccess());
-          entity.setChanged();
-        }
-      }
-      for (BlockSnapshot snapshot : snapshots) {
-        if (EventHooks.onBlockPlace(player, snapshot, Direction.UP)) {
-          for (int i = snapshots.size() - 1; i >= 0; i--) snapshots.get(i).restore(flags);
-          return false;
-        }
-      }
-      return true;
+      return LandWorks.commit(player, level, writes, blockEntities, flags);
     }
 
     /** Creative players pay too; there is no free branch to leak into survival. */

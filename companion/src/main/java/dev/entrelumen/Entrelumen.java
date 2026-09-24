@@ -101,6 +101,7 @@ public final class Entrelumen {
     bus.addListener(JournalBookNetwork::register);
     BLOCKS.register(bus);
     BLOCK_ENTITIES.register(bus);
+    Altars.register(bus);
     bus.addListener(this::registerCapabilities);
     NeoForge.EVENT_BUS.addListener(this::commands);
     NeoForge.EVENT_BUS.addListener(Expeditions::onDimensionChanged);
