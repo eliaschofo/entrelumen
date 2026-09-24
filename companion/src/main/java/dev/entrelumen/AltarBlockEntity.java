@@ -42,6 +42,7 @@ public abstract class AltarBlockEntity extends BlockEntity implements Container 
   protected boolean contentsDropped;
   private boolean registered;
   private int registeredRadius = -1;
+  private int registeredHalfHeight = -1;
   private boolean actorReady;
   /** One-time cost of resolving the acting player, kept out of tick measurements. */
   long actorNanos = -1;
@@ -118,6 +119,14 @@ public abstract class AltarBlockEntity extends BlockEntity implements Container 
 
   /** Half-width of the square the altar covers while active. */
   protected abstract int areaRadius();
+
+  /**
+   * Vertical half-height of the area, symmetric above and below the altar; the whole column by
+   * default ({@link AltarRegistry#FULL_HEIGHT}).
+   */
+  protected int areaHalfHeight() {
+    return AltarRegistry.FULL_HEIGHT;
+  }
 
   /** Whether the altar is active now: registered, and paying time. */
   protected abstract boolean working();
@@ -247,9 +256,11 @@ public abstract class AltarBlockEntity extends BlockEntity implements Container 
     if (!(level instanceof ServerLevel world)) return;
     boolean wanted = working() && !isRemoved();
     int radius = areaRadius();
-    if (wanted && (!registered || registeredRadius != radius)) {
-      AltarRegistry.put(world, new AltarRegistry.Entry(type, worldPosition, radius));
+    int halfHeight = areaHalfHeight();
+    if (wanted && (!registered || registeredRadius != radius || registeredHalfHeight != halfHeight)) {
+      AltarRegistry.put(world, new AltarRegistry.Entry(type, worldPosition, radius, halfHeight));
       registeredRadius = radius;
+      registeredHalfHeight = halfHeight;
     } else if (!wanted && registered) {
       AltarRegistry.remove(world, worldPosition);
     }

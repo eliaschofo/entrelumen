@@ -266,7 +266,9 @@ public final class Entrelumen {
             new ItemStack(
                 BuiltInRegistries.ITEM.get(
                     net.minecraft.resources.ResourceLocation.parse(p.reward())));
+        Component rewardName = reward.getHoverName();
         if (!player.getInventory().add(reward)) player.drop(reward, false);
+        player.sendSystemMessage(Component.translatable("entrelumen.delivery.reward", rewardName));
       }
     }
     player.sendSystemMessage(

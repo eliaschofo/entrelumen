@@ -210,7 +210,9 @@ FAMILIES = {
             shaped('enderstorage:ender_pouch', 0, 0, item('minecraft:blaze_powder'), RM, 'III', 'Remote access to a shared frequency',
                    alternates=['enderstorage:recolour_ender_pouch']),
         ],
-        'removals': [],
+        # The Altar of Peace (companion, Act III reward) replaces the Mega Torch; the rest of
+        # Torchmaster (Dread Lamp, Feral Flare Lantern, Frozen Pearl) keeps its native recipes.
+        'removals': ['torchmaster:megatorch'],
     },
     'arcane': {
         'script': 'entrelumen_arcane_balance.js',
