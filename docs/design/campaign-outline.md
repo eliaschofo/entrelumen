@@ -2,6 +2,8 @@
 
 **90 capítulos / 5.250 quests planificadas: 150 principales y 5.100 opcionales.** Es un mapa de producción; no son quests jugables nuevas. Conserva los 36 IDs previos, las primeras 25 quests intactas y seis actos. La producción runtime sigue esperando QA de entrada y GUI de primera hora.
 
+> **Texto jugable, 24/9/2026:** el texto de los actos I–V y la presentación del VI se reescribieron con el lore de la [biblia](story-bible.md), sin cambiar tareas ni progresión. Los títulos V y VI pasan a «El Arca» y «Solsticio». El mapeo de actos, ruinas y personajes está en [quest-lore.md](quest-lore.md). Los títulos de este mapa editorial y las escenas que nombra abajo (Mara, Ivo, Sera) son del plan anterior.
+
 ## Distribución y reglas
 
 La meta provisional de 600 mods y 5.000–5.500 quests procede de `scale-reference.md`; no prueba paridad final con las tres referencias. Los presupuestos son desiguales: primeras horas breves, sistemas industriales y expediciones extensos, maestrías optativas. No hay capítulos de bibliotecas ni una lista inventada de 600 nombres.
