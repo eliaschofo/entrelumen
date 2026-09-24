@@ -1,11 +1,12 @@
 """Terra's Arm (entrelumen:terra_arm): a copper prosthetic arm, drawn on the 16x16 item grid.
 
-A curved, flexed arm (Elias, 24 September: "que sea curvo"): shoulder joint at the bottom left,
-upper arm rising to an iron elbow joint with a teal core, the forearm bending toward the top right
-with brass rings and a luminous teal vein, an iron wrist, a glowing palm and three brass fingers
-along the forearm's direction. The centre line is a quadratic curve; each pixel takes its colour
-from the nearest point of that curve (position along the arm and signed offset across it), with
-cylindrical shading plus vanilla's top-left light. It is not mirror-symmetric: a bent arm cannot be.
+A flexed arm (Elias, 24 September: curved, "más codo", elbow toward the bottom-right corner, the
+hand easy to read): the shoulder cap at the left, the brass upper arm running to a big iron elbow
+joint with a teal core in the bottom-right corner, the copper forearm rising with brass rings and a
+luminous teal vein, an iron wrist, and an open hand at the top right: a glowing palm and three brass
+fingers pointing up. The centre line is two segments meeting at the elbow; each pixel takes its
+colour from the nearest point (position along the arm, offset across it), with cylindrical shading,
+vanilla's top-left light and a dark outline. A bent arm cannot be mirror-symmetric.
 
     python art/authoring/draw_terra_arm.py        # writes art/grids/item/terra_arm.txt + preview
 """
@@ -18,73 +19,64 @@ sys.path.insert(0, HERE)
 from palette import RAMPS as R  # noqa: E402
 
 OUT = os.path.join(HERE, '..', 'grids', 'item', 'terra_arm.txt')
-P0, P1, P2 = (3.2, 12.6), (3.4, 4.6), (11.4, 3.6)     # shoulder, bend control, wrist end
+SHOULDER, ELBOW, WRIST = (2.4, 9.6), (11.4, 12.2), (12.0, 6.6)
 
 
-def curve(n=400):
-    pts = []
-    for i in range(n + 1):
-        t = i / n
-        x = (1 - t) ** 2 * P0[0] + 2 * (1 - t) * t * P1[0] + t * t * P2[0]
-        z = (1 - t) ** 2 * P0[1] + 2 * (1 - t) * t * P1[1] + t * t * P2[1]
-        dx = 2 * (1 - t) * (P1[0] - P0[0]) + 2 * t * (P2[0] - P1[0])
-        dz = 2 * (1 - t) * (P1[1] - P0[1]) + 2 * t * (P2[1] - P1[1])
-        ln = math.hypot(dx, dz)
-        pts.append((t, x, z, dx / ln, dz / ln))
-    return pts
-
-
-PTS = curve()
-END = PTS[-1]
+def nearest(cx, cy, a, b):
+    ax, ay = a
+    bx, by = b
+    dx, dy = bx - ax, by - ay
+    ln2 = dx * dx + dy * dy
+    t = max(0.0, min(1.0, ((cx - ax) * dx + (cy - ay) * dy) / ln2))
+    px, py = ax + dx * t, ay + dy * t
+    return math.hypot(cx - px, cy - py), t, px, py
 
 
 def colour(px, py):
     cu, br, te, ir = R['copper'], R['brass'], R['teal'], R['iron']
     cx, cy = px + 0.5, py + 0.5
-    # fingers beyond the wrist end, along the end tangent: middle finger and two alongside
-    _, ex, ey, tx, ty = END
-    nx, ny = -ty, tx
-    along = (cx - ex) * tx + (cy - ey) * ty
-    across = (cx - ex) * nx + (cy - ey) * ny
-    if 0.2 < along <= 3.4:
-        for off, length in ((0.0, 3.4), (-1.9, 2.6), (1.9, 2.6)):
-            if abs(across - off) <= 0.55 and along <= length:
-                tip = along > length - 1.0
-                return br[5] if tip else (br[4] if off == 0 else br[3])
-        if abs(across) <= 2.5 and along <= 1.1:
-            return cu[1]
-    # nearest point of the arm's centre line
-    best = min(PTS, key=lambda p: (cx - p[1]) ** 2 + (cy - p[2]) ** 2)
-    t, x, y, tx, ty = best
-    d = math.hypot(cx - x, cy - y)
-    side = (cx - x) * (-ty) + (cy - y) * tx          # signed: negative toward the top-left
-    light = -side                                    # vanilla light comes from the top left
-    # shoulder cap and elbow joint, each with a teal core
-    for (jt, jr, metal) in ((0.0, 1.7, cu), (0.46, 1.6, ir)):
-        jp = PTS[int(jt * (len(PTS) - 1))]
-        jd = math.hypot(cx - jp[1], cy - jp[2])
-        if jd <= 0.7:
+    fx, fy = WRIST[0] - ELBOW[0], WRIST[1] - ELBOW[1]
+    fl = math.hypot(fx, fy)
+    ux, uy = fx / fl, fy / fl                       # forearm direction (toward the hand)
+    nx, ny = -uy, ux
+    along = (cx - WRIST[0]) * ux + (cy - WRIST[1]) * uy
+    across = (cx - WRIST[0]) * nx + (cy - WRIST[1]) * ny
+    light = -((cx - WRIST[0]) + (cy - WRIST[1]))
+    # the hand: palm just past the wrist, three fingers beyond it
+    if 2.3 < along <= 6.0:
+        for off, length in ((0.0, 6.0), (-1.9, 5.3), (1.9, 5.3)):
+            if abs(across - off) <= 0.6 and along <= length:
+                return br[5] if along > length - 1.0 else br[4] if off <= 0 else br[3]
+        return None
+    if 0.4 < along <= 2.3 and abs(across) <= 2.4:
+        if abs(across) <= 0.7 and 0.9 < along <= 1.9:
             return te[4]
+        return cu[5] if across < 0 else cu[4]
+    # joints: a big iron elbow and the copper shoulder cap, each with a teal core
+    for (jp, jr, metal) in ((ELBOW, 2.2, ir), (SHOULDER, 1.6, cu)):
+        jd = math.hypot(cx - jp[0], cy - jp[1])
+        if jd <= 0.75:
+            return te[4]
+        if jd <= 1.2 and metal is ir:
+            return te[2]
         if jd <= jr:
-            return metal[4] if (cx - jp[1]) + (cy - jp[2]) < 0 else metal[2]
-    if t <= 0.46:
-        if d <= 1.35:
-            return br[4] if light > 0.3 else br[3] if light > -0.5 else br[2]
+            return metal[4] if (cx - jp[0]) + (cy - jp[1]) < 0 else metal[2]
+    d1, t1, x1, y1 = nearest(cx, cy, SHOULDER, ELBOW)
+    d2, t2, x2, y2 = nearest(cx, cy, ELBOW, WRIST)
+    if d1 <= d2:
+        side = -((cx - x1) + (cy - y1))
+        if d1 <= 1.45:
+            return br[4] if side > 0.4 else br[3] if side > -0.6 else br[2]
         return None
-    if t <= 0.84:
-        if d <= 1.4:
-            if int(t * 38) % 5 == 0:
-                return br[4] if light > 0 else br[2]
-            if d <= 0.45:
-                return te[3]
-            return cu[5] if light > 0.5 else cu[4] if light > -0.5 else cu[2]
-        return None
-    if t <= 0.9:
-        return (ir[4] if light > 0 else ir[2]) if d <= 1.6 else None
-    if d <= 0.6:
-        return te[4]
-    if d <= 1.8:
-        return cu[5] if light > 0 else cu[3]
+    side = -((cx - x2) + (cy - y2))
+    if t2 > 0.88:
+        return (ir[4] if side > 0 else ir[2]) if d2 <= 1.7 else None
+    if d2 <= 1.5:
+        if int(t2 * 20) % 4 == 3:
+            return br[4] if side > 0 else br[2]
+        if d2 <= 0.5:
+            return te[3]
+        return cu[5] if side > 0.5 else cu[4] if side > -0.5 else cu[2]
     return None
 
 
@@ -119,7 +111,9 @@ if __name__ == '__main__':
             if g[y][x]:
                 c = g[y][x]
                 im.putpixel((x, y), tuple(int(c[i:i + 2], 16) for i in (1, 3, 5)) + (255,))
-    bg = Image.new('RGBA', (16 * 16 + 32, 16 * 16 + 32), (139, 139, 139, 255))
+    bg = Image.new('RGBA', (16 * 16 + 32 + 16 * 3 + 16, 16 * 16 + 32), (139, 139, 139, 255))
     bg.alpha_composite(im.resize((256, 256), Image.NEAREST), (16, 16))
+    bg.alpha_composite(im.resize((48, 48), Image.NEAREST), (16 * 16 + 32, 16))
+    bg.alpha_composite(im, (16 * 16 + 32 + 16, 16 + 48 + 16))
     bg.save(os.path.join(os.environ.get('TEMP', '.'), 'terra_arm_preview.png'))
     print(OUT)
