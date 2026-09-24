@@ -21,7 +21,7 @@ from palette import RAMPS as R  # noqa: E402
 OUT = os.path.join(HERE, '..', 'grids', 'item', 'terra_arm.txt')
 # the curve of the first bent draft mirrored across the anti-diagonal (elbow toward the bottom right),
 # with the bend pushed a touch further
-P0, P1, P2 = (2.4, 11.8), (11.0, 12.2), (11.4, 3.6)     # shoulder, bend control, wrist end
+P0, P1, P2 = (2.2, 12.0), (11.5, 12.7), (11.6, 4.6)     # shoulder, bend control, wrist end
 
 
 def curve(n=400):
@@ -49,13 +49,13 @@ def colour(px, py):
     nx, ny = -ty, tx
     along = (cx - ex) * tx + (cy - ey) * ty
     across = (cx - ex) * nx + (cy - ey) * ny
-    if 0.2 < along <= 3.4:
-        for off, length in ((0.0, 3.4), (-1.9, 2.6), (1.9, 2.6)):
-            if abs(across - off) <= 0.55 and along <= length:
+    if 0.2 < along <= 4.3:
+        for off, length in ((0.0, 4.3), (-2.0, 3.6), (2.0, 3.6)):
+            if abs(across - off) <= 0.62 and along <= length:
                 tip = along > length - 1.0
-                return br[5] if tip else (br[4] if off == 0 else br[3])
-        if abs(across) <= 2.5 and along <= 1.1:
-            return cu[1]
+                return br[5] if tip else br[4]
+        if abs(across) <= 2.6 and along <= 1.2:
+            return br[3]
     # nearest point of the arm's centre line
     best = min(PTS, key=lambda p: (cx - p[1]) ** 2 + (cy - p[2]) ** 2)
     t, x, y, tx, ty = best
@@ -84,10 +84,10 @@ def colour(px, py):
         return None
     if t <= 0.9:
         return (ir[4] if light > 0 else ir[2]) if d <= 1.6 else None
-    if d <= 0.6:
+    if d <= 0.7:
         return te[4]
-    if d <= 1.8:
-        return cu[5] if light > 0 else cu[3]
+    if d <= 2.1:
+        return cu[6] if light > 0 else cu[4]
     return None
 
 
