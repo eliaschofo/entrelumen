@@ -97,8 +97,8 @@ def face_textures(state):
     if base.endswith('_door'):
         half = 'bottom' if 'half=lower' in state else 'top'
         return base + '_' + half, base + '_' + half
-    if base.startswith('stripped_') and base.endswith('_wood'):
-        log = base[:-len('_wood')] + '_log'
+    if base.endswith('_wood') or base.endswith('_hyphae'):
+        log = base[:-len('_wood')] + '_log' if base.endswith('_wood') else base[:-len('_hyphae')] + '_stem'
         return log, log
     if base == 'beehive':
         return 'beehive_end', 'beehive_front'

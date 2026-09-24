@@ -150,7 +150,7 @@ A villager without a Solsticio role that is inside the trading hall zone becomes
 
 - The controller's definitive template with `shop:`, `sidequest:`, `resident` and `easter:` markers (the current `city.nbt` is draft 3, which only has `trading_hall`: a world placed with it gets the natives and nothing else). A world placed before the new template needs an explicit migration, as for the rest of the city.
 - Side quests, easter-egg content and the final quest that liberates the Entrelumen (`setLiberated`).
-- Heliodor clothing for all these villagers (today vanilla professions and biome outfits), and the innkeepers' own names per inn if the quests want them.
+- Heliodor clothing for all these villagers (today vanilla professions and biome outfits). The art is ready since 24 September: `entrelumen:textures/entity/villager/type/heliodor.png` (`art/authoring/draw_villager_heliodor.py`: the vanilla plains type layer traced, cream robe, copper seams, a teal sash, mirror-symmetric front and back). Still to do in code: register an `entrelumen:heliodor` villager type and give it to every villager the city spawns. The innkeepers' own names per inn, if the quests want them.
 - In-game review on a client: trading screens, out-of-stock gated offers, survey map charting in a real world (not exercised by the flat test world), awakening particles, text EN/ES.
 - Full-pack check: modded offers, Easy Villagers carrying natives and settling newcomers, Carry On refused on fixed NPCs, Jade tooltips.
 - Balance playtest: emerald income against these prices and the Luminosity rhythm (54 for the gear, 48 for the creative items).

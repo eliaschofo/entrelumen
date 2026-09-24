@@ -21,7 +21,8 @@ COMPANION = ROOT / 'companion/src/main/resources/assets/entrelumen'
 ITEMS = ['atlas', 'raw_lens', 'survey_notes', 'signal_core', 'calibration_frame', 'energy_coupler', 'living_matrix',
          'ration_bundle', 'routing_matrix', 'propagation_core', 'power_regulator', 'inventory_sensor', 'handling_core',
          'spectral_lens', 'horizon_chart', 'ecosystem_capsule', 'containment_seal', 'ark_bus', 'renewal_engine',
-         'habitation_contract', 'terra_arm']
+         'habitation_contract', 'terra_arm', 'light_key', 'light_key_broken', 'heliodor_relic_1',
+         'heliodor_relic_2', 'heliodor_relic_3']
 AUGMENTS = ['burning', 'echoing', 'ignore_conditions', 'ignore_light', 'ignore_players', 'initial_health', 'max_delay',
             'max_nearby', 'min_delay', 'no_ai', 'player_range', 'redstone_control', 'silent', 'spawn_count', 'spawn_range', 'youthful']
 ITEMS += ['augment_' + a for a in AUGMENTS]
@@ -43,6 +44,7 @@ MODULES = ['engineering_module', 'arcane_module', 'nature_module', 'exploration_
            'habitation_module', 'ark_controller']
 # Sculpted (voxel) block models authored by art/authoring/sym_altars.py, stored as JSON sources.
 SCULPTED = ['renewal_altar', 'terraform_altar', 'peace_altar', 'growth_altar', 'time_altar', 'repose_altar']
+BLOCK_MODELS_ONLY = ['solsticio_portal_dormant', 'solsticio_portal_open']   # the mod owns their blockstate; no item form
 BLOCKS = (MODULES + ['module_top', 'module_bottom'] + list(SHELVES) + sorted(set(SHELVES.values()))
           + ['atlas_library', 'atlas_library_top', 'altar_stone', 'altar_plinth_top', 'renewal_altar_top',
              'terraform_altar_top', 'peace_altar_top', 'growth_altar_top', 'time_altar_top',
@@ -186,6 +188,10 @@ def expected():
                        for name, (side, top, bottom) in LIBRARY.items()})
     for name in SCULPTED:
         new_blocks[name] = json.loads((ART / 'models/block' / f'{name}.json').read_text(encoding='utf-8'))
+    for name in BLOCK_MODELS_ONLY:
+        model = json.loads((ART / 'models/block' / f'{name}.json').read_text(encoding='utf-8'))
+        for dest in ('pack', 'mod'):
+            out[(dest, f'models/block/{name}.json')] = js(model)
     for name, model in new_blocks.items():
         for dest in ('pack', 'mod'):
             out[(dest, f'models/block/{name}.json')] = js(model)

@@ -18,8 +18,11 @@ Diseño del controlador, 24 de septiembre de 2026. Sigue la [biblia de la histor
 | Invernadero-domo (domo de vidrio roto, árbol en flor) | III | `ruins_acts.py` | 21×14×21 | Boceto, sin colocación |
 | Observatorio en un risco (torre, telescopio cenital) | IV | `ruins_acts.py` | 17×25×17 | Boceto, sin colocación |
 | Templo de la Luz Sagrada (terrazas de calcita, cráter de la fusión, anillo roto) | V | `ruins_acts.py` | 27×14×27 | Boceto, sin colocación |
-| Solsticio | VI | `art/solsticio/city.py` | 105×78×105 | En la rama `feature/solsticio` |
-| Nether, Twilight Forest, Aether y End | — | — | — | Pendiente |
+| Solsticio | VI | `art/solsticio/city6.py` | 250×189×239 | En el juego (ciudad orgánica v6) |
+| Fundición bajo la lava (crisol fundido, contrafuertes de basalto, caños de cobre) | Nether | `ruins_dims.py` | 29×16×29 | Boceto, sin colocación |
+| Santuario (círculo de menhires, estanque, árbol en flor con luciérnagas) | Twilight Forest | `ruins_dims.py` | 27×19×27 | Boceto, sin colocación |
+| Antesala del Sun Spirit (plataforma de cuarzo y oro entre nubes, puertas del sol, escalera de luz) | Aether | `ruins_dims.py` | 31×17×31 | Boceto, sin colocación; los bloques del Aether pueden reemplazar a los vanilla |
+| Observatorio sobre el vacío (anillo telescopio de purpur, pilones de obsidiana, piso abierto al vacío) | End | `ruins_dims.py` | 27×23×27 | Boceto, sin colocación |
 
 ## Decisiones de forma
 
@@ -48,7 +51,5 @@ Pedido de Elias del 24 de septiembre: un brazo ciborg hecho por Terra, curio, qu
 
 ## Pendiente
 
-- Ícono y modelo del Brazo de Terra (`art/build_art.py`, en `main`).
-- Diseñar las cuatro ruinas de otras dimensiones.
 - Colocar las ruinas de los actos. Tienen que ser raras pero accesibles, sin caminatas de miles de bloques. Hay que conectarlas con la lista de objetivos de la brújula y con la protección de `feature/solsticio`.
 - Poner en cada ruina la pieza clave del acto, un minidesafío, su altar o artefacto, loot y lore que se desbloquea una sola vez.
