@@ -27,6 +27,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.Vec3;
+import net.neoforged.neoforge.common.NeoForgeConfig;
 import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.event.EventHooks;
 import net.neoforged.neoforge.gametest.GameTestHolder;
@@ -204,9 +205,16 @@ public final class AltarEffectsFullpackGameTests {
     Map<String, String> notSlowed = new TreeMap<>();
     Map<String, String> skipped = new TreeMap<>();
     int[] slowed = {0};
+    // Bare projectiles can still fail in the world (Ars Nouveau's wall casts on nearby entities with
+    // no emitter). For this case only, NeoForge discards an erroring entity instead of stopping the
+    // server; the setting is changed in memory, never saved, and restored when the batches end.
+    ERRORING_BEFORE[0] = NeoForgeConfig.SERVER.removeErroringEntities.get();
+    NeoForgeConfig.SERVER.removeErroringEntities.set(true);
     helper.runAfterDelay(2, () -> projectileBatch(helper, level, Vec3.atCenterOf(altar.getBlockPos()), owner, types, 0,
         slowed, notSlowed, skipped));
   }
+
+  private static final boolean[] ERRORING_BEFORE = {false};
 
   /**
    * Fires the next batch: a pair per type, one inside the altar's cube and a control 30 blocks above
@@ -277,6 +285,7 @@ public final class AltarEffectsFullpackGameTests {
             skipped));
         return;
       }
+      NeoForgeConfig.SERVER.removeErroringEntities.set(ERRORING_BEFORE[0]);
       LOGGER.info("ALTAR_FULLPACK time projectiles slowed={} notSlowed={} skipped={}", slowed[0], notSlowed, skipped);
       helper.assertTrue(slowed[0] > 0 && notSlowed.isEmpty(), "Projectiles not slowed: " + notSlowed);
       helper.succeed();
