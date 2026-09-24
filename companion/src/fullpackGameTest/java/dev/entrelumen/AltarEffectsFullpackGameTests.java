@@ -207,14 +207,21 @@ public final class AltarEffectsFullpackGameTests {
     int[] slowed = {0};
     // Bare projectiles can still fail in the world (Ars Nouveau's wall casts on nearby entities with
     // no emitter). For this case only, NeoForge discards an erroring entity instead of stopping the
-    // server; the setting is changed in memory, never saved, and restored when the batches end.
+    // server: the value is changed in memory (never saved; the cache is cleared because the setting
+    // is marked world-restart) and restored when the batches end.
     ERRORING_BEFORE[0] = NeoForgeConfig.SERVER.removeErroringEntities.get();
-    NeoForgeConfig.SERVER.removeErroringEntities.set(true);
+    erroringEntitiesRemoved(true);
+    helper.assertTrue(NeoForgeConfig.SERVER.removeErroringEntities.get(), "Could not relax removeErroringEntities");
     helper.runAfterDelay(2, () -> projectileBatch(helper, level, Vec3.atCenterOf(altar.getBlockPos()), owner, types, 0,
         slowed, notSlowed, skipped));
   }
 
   private static final boolean[] ERRORING_BEFORE = {false};
+
+  private static void erroringEntitiesRemoved(boolean value) {
+    NeoForgeConfig.SERVER.removeErroringEntities.set(value);
+    NeoForgeConfig.SERVER.removeErroringEntities.clearCache();
+  }
 
   /**
    * Fires the next batch: a pair per type, one inside the altar's cube and a control 30 blocks above
@@ -285,7 +292,9 @@ public final class AltarEffectsFullpackGameTests {
             skipped));
         return;
       }
-      NeoForgeConfig.SERVER.removeErroringEntities.set(ERRORING_BEFORE[0]);
+      erroringEntitiesRemoved(ERRORING_BEFORE[0]);
+      helper.assertTrue(NeoForgeConfig.SERVER.removeErroringEntities.get() == ERRORING_BEFORE[0],
+          "NeoForge's removeErroringEntities was not restored");
       LOGGER.info("ALTAR_FULLPACK time projectiles slowed={} notSlowed={} skipped={}", slowed[0], notSlowed, skipped);
       helper.assertTrue(slowed[0] > 0 && notSlowed.isEmpty(), "Projectiles not slowed: " + notSlowed);
       helper.succeed();
