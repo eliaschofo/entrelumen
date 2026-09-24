@@ -3,7 +3,7 @@
  "task": "Act renumbering (the Ark is act V, Solsticio act VI), Heart of Heliodor, Terra Arm +3, Psi in act III",
  "branch": "feature/acts-renumber",
  "base": "605c9b695b8701d838790b9b91cea2dbf1bed12d",
- "head": "21ca54eaab84a1dc864dc2fb6dffd7f60ccd625e",
+ "head": "0406861ccb5762ed1ab5f882e00b3b6520ac2fdc (main when installed; companion code identical to the QA head 21ca54e, main added only art, research and guide tooling)",
  "design": "docs/design/act-renumbering.md",
  "receipts": "E:\\Elias\\Codex\\Entrelumen-ssd\\acts-20260924",
  "python": {
@@ -23,6 +23,7 @@
  "jarsSha256": {
   "entrelumen-0.1.0-21ca54e.jar": "10cc209f5dd705e042f634c0b74f9ea436d3aff6b6294c45d1ff756e55b5e067",
   "entrelumen-0.1.0-706e30a.jar": "10cc209f5dd705e042f634c0b74f9ea436d3aff6b6294c45d1ff756e55b5e067",
+  "entrelumen-0.1.0-cb2f5cb.jar": "10cc209f5dd705e042f634c0b74f9ea436d3aff6b6294c45d1ff756e55b5e067",
   "entrelumen-0.1.0-qa-21ca54e.jar": "c6648bb9b23ea5ad32d3b8d49019dca2a49d05722ab8f9d417bd5ed09adf626d",
   "entrelumen-0.1.0-qa-706e30a.jar": "9cd431aa3375502858ec5ef3ef812306f8ccee5d2d7577783461cb35eaaaca70"
  },
@@ -103,5 +104,151 @@
    "KubeJS runtime audit on the QA server: 131 items (heart_of_heliodor included), 37 recipes, 0 failures."
   ]
  },
- "installation": null
+ "installation": {
+  "head": "0406861ccb5762ed1ab5f882e00b3b6520ac2fdc",
+  "jarSha256": "10cc209f5dd705e042f634c0b74f9ea436d3aff6b6294c45d1ff756e55b5e067",
+  "catalogSha256": "8d88e218dea279dad52f88653a8bbfd27dd5db877e540257f8d63017b102477a",
+  "serverWorldBackup": {
+   "archive": "E:\\Elias\\Codex\\Entrelumen-ssd\\acts-20260924\\server-world-before-install-0406861.zip",
+   "files": 1566,
+   "sha256": "0081e50695437e55698d60c3daa5ec5240534e1ed7b75b3e8a3bce94a0e644d7"
+  },
+  "clientSavesBackups": [
+   {
+    "profile": "E:\\curseforge\\Instances\\ENTRELUMEN",
+    "archive": "E:\\Elias\\Codex\\Entrelumen-ssd\\acts-20260924\\client-saves-before-install-0406861-ENTRELUMEN.zip",
+    "files": 186,
+    "sha256": "894b2d621c02042827371ecf8883e33fc299b2850ffd5919cec501ab0f18de6f"
+   },
+   {
+    "profile": "E:\\curseforge\\Instances\\ENTRELUMEN Defaults QA",
+    "archive": "E:\\Elias\\Codex\\Entrelumen-ssd\\acts-20260924\\client-saves-before-install-0406861-ENTRELUMEN_Defaults_QA.zip",
+    "files": 163,
+    "sha256": "8a70850014101f477437a277de57e9287d6e69d2f4dd41870ddedd9226acc683"
+   }
+  ],
+  "profiles": [
+   {
+    "profile": "E:\\curseforge\\Instances\\ENTRELUMEN",
+    "side": "client",
+    "backup": "E:\\Elias\\Codex\\Entrelumen-ssd\\acts-20260924\\integration-before\\0406861\\ENTRELUMEN",
+    "written": 16,
+    "ftbResaved": [
+     "config/ftbquests/quests/chapters/voices_of_the_atlas.snbt"
+    ],
+    "retired": [
+     "kubejs/data/create_dragons_plus/loot_table/blocks/fragile_fluid_tank.json",
+     "kubejs/data/create_dragons_plus/loot_table/blocks/levitite_fragile_fluid_tank.json"
+    ],
+    "jarsAdded": [
+     "CreateDragonsPlus-1.11.9.jar",
+     "Psi-neoforge-1.21.1-110.jar",
+     "create-central-kitchen-2.6.2.jar",
+     "create-new-age-1.2.0+neoforge-mc1.21.1.jar",
+     "dungeons-and-taverns-v4.4.4.jar",
+     "kotlinforforge-5.12.0-all.jar",
+     "sliceanddice-4.3.4-neoforge.jar"
+    ],
+    "jarsTotal": 316,
+    "preservedLocal": [
+     "config/fancymenu/options.txt",
+     "config/ftbchunks-client.snbt",
+     "config/ftbquests/quests/chapter_groups.snbt",
+     "config/ftbquests/quests/chapters/a_light_among_ruins.snbt",
+     "config/ftbquests/quests/chapters/last_horizon.snbt",
+     "config/ftbquests/quests/chapters/routes_of_exchange.snbt",
+     "config/ftbquests/quests/chapters/the_lost_crafts.snbt",
+     "config/ftbquests/quests/chapters/world_we_build.snbt",
+     "config/ftbquests/quests/data.snbt"
+    ],
+    "guardedUnchanged": 51
+   },
+   {
+    "profile": "E:\\curseforge\\Instances\\ENTRELUMEN Defaults QA",
+    "side": "client",
+    "backup": "E:\\Elias\\Codex\\Entrelumen-ssd\\acts-20260924\\integration-before\\0406861\\ENTRELUMEN Defaults QA",
+    "written": 16,
+    "ftbResaved": [
+     "config/ftbquests/quests/chapters/inventory_that_remembers.snbt",
+     "config/ftbquests/quests/chapters/voices_of_the_atlas.snbt"
+    ],
+    "retired": [
+     "kubejs/data/create_dragons_plus/loot_table/blocks/fragile_fluid_tank.json",
+     "kubejs/data/create_dragons_plus/loot_table/blocks/levitite_fragile_fluid_tank.json"
+    ],
+    "jarsAdded": [
+     "CreateDragonsPlus-1.11.9.jar",
+     "Psi-neoforge-1.21.1-110.jar",
+     "create-central-kitchen-2.6.2.jar",
+     "create-new-age-1.2.0+neoforge-mc1.21.1.jar",
+     "dungeons-and-taverns-v4.4.4.jar",
+     "kotlinforforge-5.12.0-all.jar",
+     "sliceanddice-4.3.4-neoforge.jar"
+    ],
+    "jarsTotal": 316,
+    "preservedLocal": [
+     "config/fancymenu/options.txt",
+     "config/ftbchunks-client.snbt",
+     "config/ftbquests/quests/chapter_groups.snbt",
+     "config/ftbquests/quests/chapters/a_light_among_ruins.snbt",
+     "config/ftbquests/quests/chapters/last_horizon.snbt",
+     "config/ftbquests/quests/chapters/routes_of_exchange.snbt",
+     "config/ftbquests/quests/chapters/the_lost_crafts.snbt",
+     "config/ftbquests/quests/chapters/world_we_build.snbt",
+     "config/ftbquests/quests/data.snbt"
+    ],
+    "guardedUnchanged": 22
+   },
+   {
+    "profile": "E:\\Elias\\Codex\\Entrelumen-ssd\\server-slice",
+    "side": "server",
+    "backup": "E:\\Elias\\Codex\\Entrelumen-ssd\\acts-20260924\\integration-before\\0406861\\server-slice",
+    "written": 16,
+    "ftbResaved": [
+     "config/ftbquests/quests/chapters/inventory_that_remembers.snbt",
+     "config/ftbquests/quests/chapters/voices_of_the_atlas.snbt"
+    ],
+    "retired": [
+     "kubejs/data/create_dragons_plus/loot_table/blocks/fragile_fluid_tank.json",
+     "kubejs/data/create_dragons_plus/loot_table/blocks/levitite_fragile_fluid_tank.json"
+    ],
+    "jarsAdded": [
+     "CreateDragonsPlus-1.11.9.jar",
+     "Psi-neoforge-1.21.1-110.jar",
+     "create-central-kitchen-2.6.2.jar",
+     "create-new-age-1.2.0+neoforge-mc1.21.1.jar",
+     "dungeons-and-taverns-v4.4.4.jar",
+     "kotlinforforge-5.12.0-all.jar",
+     "sliceanddice-4.3.4-neoforge.jar"
+    ],
+    "jarsTotal": 274,
+    "preservedLocal": [
+     "config/ftbquests/quests/chapter_groups.snbt",
+     "config/ftbquests/quests/chapters/a_light_among_ruins.snbt",
+     "config/ftbquests/quests/chapters/last_horizon.snbt",
+     "config/ftbquests/quests/chapters/routes_of_exchange.snbt",
+     "config/ftbquests/quests/chapters/the_lost_crafts.snbt",
+     "config/ftbquests/quests/chapters/world_we_build.snbt",
+     "config/ftbquests/quests/data.snbt"
+    ],
+    "guardedUnchanged": 3
+   }
+  ],
+  "clientLaunched": false,
+  "note": "HEAD includes feature/mods-r4 (605c9b6), which had not been installed in these profiles yet: its 5 mods and 2 libraries, its configs and scripts, and the two Create: Dragons Plus loot tables retired into the backup. FTB Quests had re-saved our quest files in its own SNBT format; the installer (acts-20260924/install_head.py with ftb_snbt.py) treats such a copy as untouched only when it is semantically identical to the receipt's source (605c9b6), backs it up and replaces it; a real edit still aborts.",
+  "normalStart": {
+   "bootWallSeconds": 387.3,
+   "doneSeconds": 61.349,
+   "diagnostic": "schema=3 personal=161 parties=31",
+   "exitCode": 0,
+   "watchdog": false,
+   "errorLines": [
+    "[20:38:09] [Worker-Main-7/ERROR] [minecraft/TagLoader]: Couldn't read tag list minecraft:rabbit_food from minecraft:tags/item/rabbit_food.json in data pack mod/pamhc2crops",
+    "[20:40:06] [main/ERROR] [ne.ne.ne.re.DataMapLoader/]: Object with ID enderio:xpjuice specified in data map for registry minecraft:fluid doesn't exist",
+    "[20:40:06] [main/ERROR] [ne.ne.ne.re.DataMapLoader/]: Object with ID reliquary:xp_juice_still specified in data map for registry minecraft:fluid doesn't exist"
+   ],
+   "companionErrors": []
+  }
+ },
+ "qaHead": "21ca54eaab84a1dc864dc2fb6dffd7f60ccd625e"
 }

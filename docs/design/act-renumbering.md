@@ -134,6 +134,12 @@ Recibo: [`docs/verification/acts-renumber-runtime.json`](../verification/acts-re
   - **B** (JVM nueva, watchdog otra vez en 60 s): pasan los verificadores de reinicio de equipos y de logística.
   - En total pasan 125 de 127. No se corrió el par de backup en vivo, que necesita un ZIP de SimpleBackups y un servidor de restauración; su código no cambió.
 - **Auditoría de KubeJS en el servidor de QA:** 131 ítems, entre ellos `heart_of_heliodor`, y 37 recetas, sin fallas.
+- **Instalación** en `server-slice` y en los perfiles «ENTRELUMEN» y «ENTRELUMEN Defaults QA», con `main` en 0406861. Se hizo con el instalador administrado de `fix/fullpack`.
+  - Antes de escribir se guardaron en ZIP verificados el mundo del servidor (1566 archivos) y `saves/` de los dos clientes (186 y 163). Además quedaron backups de cada archivo reemplazado.
+  - En cada perfil se escribieron 16 archivos y se agregaron 7 JAR. La instalación también trae `feature/mods-r4` (605c9b6), que todavía no estaba instalado: sus cinco mods, dos librerías, configs y scripts. Las dos tablas de loot de Create: Dragons Plus que esa ronda dejó de pisar se retiraron al backup.
+  - FTB Quests había vuelto a guardar nuestros capítulos en su propio formato SNBT. El instalador ahora acepta esa copia como intacta sólo cuando es semánticamente idéntica al archivo instalado la vez anterior. Así pasaron `voices_of_the_atlas` y, en dos perfiles, `inventory_that_remembers`: se guardó la copia y se reemplazó. Una edición real sigue abortando la instalación.
+  - Ningún archivo protegido (opciones, servidores, `local/`) cambió. No se abrió ningún cliente.
+  - Arranque normal de `server-slice` después de instalar: listo en 61 s, sin watchdog. El diagnóstico del acompañante da `schema=3` con 161 campañas personales y 31 de grupo ya migradas. En el log quedaron sólo los 3 errores upstream de siempre, ninguno del acompañante. Se detuvo con código 0.
 
 ## Pendiente
 
