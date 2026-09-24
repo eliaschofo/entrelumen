@@ -14,10 +14,10 @@ Diseño del controlador, 24 de septiembre de 2026. Sigue la [biblia de la histor
 |---|---|---|---|---|
 | Ruina inicial (patio del sol, pedestal de la brújula) | inicio | `ruin_start.py` → `tools/build_heliodor_ruin_start.py` | 15×9×15 | En el juego: reemplaza la plantilla provisional de 7×3×7 |
 | Patio del Atlas (claustro, atril con el Atlas) | I | `ruin_atlas.py` | 21×8×21 | Boceto, sin colocación |
-| Taller hundido | II | — | — | Pendiente |
+| Taller hundido (foso con cuatro escaleras, motor de cobre ahogado) | II | `ruins_acts.py` | 19×7×19, 5 bajo el suelo | Boceto, sin colocación |
 | Invernadero-domo (domo de vidrio roto, árbol en flor) | III | `ruins_acts.py` | 21×14×21 | Boceto, sin colocación |
 | Observatorio en un risco (torre, telescopio cenital) | IV | `ruins_acts.py` | 17×25×17 | Boceto, sin colocación |
-| Templo de la Luz Sagrada | V | — | — | Pendiente |
+| Templo de la Luz Sagrada (terrazas de calcita, cráter de la fusión, anillo roto) | V | `ruins_acts.py` | 27×14×27 | Boceto, sin colocación |
 | Solsticio | VI | `art/solsticio/city.py` | 105×78×105 | En la rama `feature/solsticio` |
 | Nether, Twilight Forest, Aether y End | — | — | — | Pendiente |
 
@@ -37,6 +37,6 @@ Renderizadas desde el JAR del servidor 1.21.1 con `voxkit.load_nbt`:
 
 ## Pendiente
 
-- Diseñar el Taller hundido, el Templo de la Luz Sagrada y las cuatro ruinas de otras dimensiones.
+- Diseñar las cuatro ruinas de otras dimensiones.
 - Colocar las ruinas de los actos. Tienen que ser raras pero accesibles, sin caminatas de miles de bloques. Hay que conectarlas con la lista de objetivos de la brújula y con la protección de `feature/solsticio`.
 - Poner en cada ruina la pieza clave del acto, un minidesafío, su altar o artefacto, loot y lore que se desbloquea una sola vez.

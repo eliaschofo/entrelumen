@@ -125,3 +125,17 @@ Design and verification: [docs/design/heliodor-compass.md](../docs/design/heliod
 - Operator command: `/entrelumen admin ruin` places the start ruin once in a world created before this feature and moves the world spawn beside it.
 - The Atlas snapshot carries the compass view. The Atlas network version is now 2, so client and server need the same JAR.
 - The companion gives nothing on login. A new world gets the start ruin at its spawn, and a brand-new player appears beside it.
+
+## Solsticio commerce (2026-09-24)
+
+Design and verification: [docs/design/solsticio-commerce.md](../docs/design/solsticio-commerce.md).
+
+- Markers `shop:<type>`, `sidequest:<id>`, `resident` and `easter:<name>` join the Solsticio template contract; the six natives stand around `trading_hall`.
+- Data: `entrelumen:solsticio_shops/<type>.json` (16) and `entrelumen:solsticio_natives/<discipline>.json` (6), reloaded by `/reload`; structure tags `entrelumen:on_jungle_temple_maps`, `on_swamp_hut_maps` and `on_ancient_city_maps`.
+- Villagers are vanilla `Villager`s tagged `entrelumen.solsticio` with persistent data `entrelumen_commerce`. `VillagerTradingMixin` (in `entrelumen.common.mixins.json`) hooks `Villager.updateSpecialPrices` and `resetSpecialPrices` for the discounts and act locks.
+- SavedData `entrelumen_solsticio` gains `liberated` and `commerce` (sites, hall, easter eggs); older saves load with neither.
+- Server config `config/entrelumen-commerce-server.toml`; operator commands `/entrelumen admin solsticio liberated [true|false]` and `/entrelumen admin solsticio commerce [populate|list|respawn <index>]`.
+- API: `SolsticioCommerce.setLiberated(server, true)` for the final quest and `SolsticioCommerce.registerSideQuest(id, hook)` for side quests.
+- Test-only: `RuntimeGameTestsCommerce` and the `commerce_fixture` structure (`tools/build_commerce_fixture.py`), both excluded from the release JAR.
+
+Verification: 189 JUnit tests passed; `runGameTestServer` passed all 88 required GameTests, including five new ones in `RuntimeGameTestsCommerce`.

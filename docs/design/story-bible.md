@@ -79,14 +79,28 @@ Para contestarles hace falta un artefacto que se perdió en el Aether. La entida
 - **Acto VI:** Solsticio.
 - **Las 171 quests actuales** conservan tareas y progresión, pero su texto se reescribe con el lore nuevo: Heliodor, la Inventora y la luz.
 
-## El Corazón de Heliodor y los dos finales (24 de septiembre)
+## El Corazón de Heliodor (24 de septiembre)
 
 - El Sun Spirit suelta el **Corazón de Heliodor**: el núcleo de la máquina de la fusión, que él les confiscó. Puesto en el Atlas le da voz clara en los dos sentidos, pero es la misma tecnología que casi los destruye.
-- En Solsticio, Aurelia lo quiere de vuelta y Bodhi ruega que no se lo den. **Decisión final con dos finales:** entregárselo a Aurelia (camino técnico) o a Bodhi (camino espiritual o mágico).
-- **Consecuencias acotadas:** ningún final agrega intercambios ni bloquea nada.
-  - El camino elegido obtiene **descuentos absurdos** en sus Luminosidades y tradeos correspondientes; el opuesto sube de precio.
-  - Como son precios de súper endgame, pesan poco.
-  - Cambia un poco la estética final del pueblo y el lore, nada más.
+- *Actualizado el 24/9:* ya no hay dos finales ni una disputa por el Corazón. **El Corazón de Heliodor y el cristal sagrado de Bodhi son el mismo objeto.** El Sun Spirit se lo había confiscado a Bodhi. En el acto IV lo recuperás y le da voz clara al Atlas. En el final se lo devolvés a Bodhi para que lo bendiga, y así se convierte en la tercera reliquia del portal.
+
+## Las tres reliquias y el final único (24 de septiembre, reemplaza los dos finales)
+
+- **Reliquias del portal**, una por personaje. Aurelia no da reliquia: da la misión final.
+  - **Juan:** una **semilla bioingenierizada con luminosidad**.
+  - **Terra:** el **Terraprisma**, su obra maestra. Canaliza la luminosidad en distintas formas de energía que las personas pueden aprovechar.
+  - **Bodhi:** un **cristal sagrado imbuido con la fuerza del amor**, indispensable para que el Atlas funcione. Es el Corazón de Heliodor que le quitaste al Sun Spirit, bendecido por Bodhi cuando se lo devolvés.
+- **Un solo final, sin sistema de descuentos.** Se elimina el premio o castigo de precios por camino. Los descuentos de la sala de comercio por mudar aldeanos siguen.
+  - Al final convencés a Aurelia y a Bodhi de que colaboren con sus partes.
+  - Aurelia deja su rol de autócrata y acepta llamar a elecciones, siempre que Bodhi le dé el cristal al jugador para abrir el portal y que el Entrelumen quede libre.
+- **Posgame:** Aurelia es reelegida alcaldesa por su buen trabajo. Fue poco democrática, pero el pueblo valora su buen gobierno. Siguen las sospechas de corrupción, como lore oculto: conversaciones de aldeanos y detalles sueltos.
+
+## Solsticio como ciudad (24 de septiembre)
+
+- **Ciudad enorme de verdad**, sin irse de mambo. Una isla de unos 250 bloques con barrios de casas, calles, plazas y tiendas alrededor del Ayuntamiento. El límite es una **barrera de luz infranqueable**. El fondo de la isla importa poco: lo que cuenta es el piso, las casas y las tiendas.
+- **Tiendas con trades copados:** por ejemplo, una librería con Mending y otros encantamientos, y tiendas de materiales raros. Es una ciudad donde se consiguen muchos materiales que da paja conseguir: caros, pero ahí están.
+- **Al liberar el Entrelumen, los precios bajan.** También se pueden mudar aldeanos de otras zonas: algunos ofrecen Luminosidades y otros solo mejoran los trades.
+- **Easter eggs, cosas copadas y side quests** por toda la ciudad.
 
 ## Personajes de Solsticio (24 de septiembre)
 
