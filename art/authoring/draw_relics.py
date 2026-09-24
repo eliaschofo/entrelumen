@@ -8,7 +8,8 @@
 - heliodor_relic_2, Terra's Terraprism: a glass prism in a copper frame that splits the light into
   rays of energy.
 - heliodor_relic_3, the Blessed Heart of Heliodor (Bodhi's sacred crystal): a faceted gold crystal
-  with a glowing heart inside.
+  with a glowing heart inside; heart_of_heliodor is the same crystal before the blessing, in dim amber
+  and copper with a dark ember for a heart.
 The three relics are mirror-symmetric about the vertical axis; the key keeps vanilla's silhouette.
 
     python art/authoring/draw_relics.py     # writes art/grids/item/<id>.txt and a preview sheet
@@ -173,6 +174,17 @@ def heart(dx, y):
     return GOLD[4] if y < 6 else GOLD[3]
 
 
+def heart_unblessed(dx, y):
+    """The Heart of Heliodor as the Sun Spirit kept it: the same crystal in dim amber and copper, the
+    heart inside a dark ember. Bodhi's blessing turns it into heliodor_relic_3."""
+    c = heart(dx, y)
+    if c is None:
+        return None
+    swap = {GOLD[2]: R['copper'][2], GOLD[3]: R['copper'][3], GOLD[4]: R['brass'][3], GOLD[5]: R['brass'][4],
+            R['crimson'][4]: R['crimson'][2], R['crimson'][5]: R['crimson'][3]}
+    return swap.get(c, c)
+
+
 def write(name, g):
     cols = sorted({c for row in g for c in row if c}, key=lum)
     keys = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghij'
@@ -195,8 +207,9 @@ def image(g):
 if __name__ == '__main__':
     key, broken = key_grids()
     sheets = {'light_key': key, 'light_key_broken': broken, 'heliodor_relic_1': sym_grid(seed),
-              'heliodor_relic_2': sym_grid(terraprism), 'heliodor_relic_3': sym_grid(heart)}
-    for name in ('heliodor_relic_1', 'heliodor_relic_2', 'heliodor_relic_3'):
+              'heliodor_relic_2': sym_grid(terraprism), 'heliodor_relic_3': sym_grid(heart),
+              'heart_of_heliodor': sym_grid(heart_unblessed)}
+    for name in ('heliodor_relic_1', 'heliodor_relic_2', 'heliodor_relic_3', 'heart_of_heliodor'):
         g = sheets[name]
         assert all(g[y][x] == g[y][15 - x] for y in range(16) for x in range(16)), name
     for name, g in sheets.items():
