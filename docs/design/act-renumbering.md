@@ -119,6 +119,22 @@ Antes, Summit llegaba al terminar la preparación industrial y Pinnacle con la a
   - el cruce registra `solsticio_arrival` y un visitante no.
 - **Pack completo** (`ActsFullpackGameTests`): un Sun Spirit real del Aether 1.5.10 muere a manos de un jugador y suelta un Corazón junto a su llave de oro; un segundo no suelta otro; el Corazón cierra el acto IV en el Atlas y el acto V juega en Summit; la brújula apunta a la mazmorra de oro en el IV y a Solsticio en el VI. `RuntimeGameTestsActs` también corre ahí.
 
+## Verificación
+
+Recibo: [`docs/verification/acts-renumber-runtime.json`](../verification/acts-renumber-runtime.json). Los scripts y logs están en `E:/Elias/Codex/Entrelumen-ssd/acts-20260924`.
+
+- **Build y tests.** `gradlew test build runGameTestServer qaJar`: 199 JUnit, las 96 GameTests aisladas pasan.
+- **Chequeos de Python.** Los 31 comandos de siempre dan 0: la lista de `verify.yml`, `generate_quests --check`, `curate_pack --check` de cliente y de servidor, las familias con `--check`, la auditoría de teclas y `unittest discover`.
+- **QA de pack completo.** Corrió en un servidor propio y nuevo, `server-acts-qa`: de `server-slice` sólo se copiaron las librerías. Tenía los 272 JAR de servidor del lock, `pack/` y el JAR de QA, mundo nuevo y `-Dentrelumen.qa=true`. Hay 127 tests registrados y corren de a uno.
+  - **A** (watchdog de 60 s): pasaron 69 de 70, incluidos el Sun Spirit real, el cierre del acto IV en Summit, la brújula, las pruebas aisladas de actos y el Brazo de Terra con +3.
+    - Falló el test de tooltip del Corazón: `getTooltipLines` dispara los listeners del pack y uno carga clases de cliente en el servidor dedicado. Ahora el test lee sólo las líneas propias del ítem.
+    - La prueba de altar falló por tiempo y pasó al repetirla.
+    - La corrida terminó por el watchdog en la prueba de las cuatro recargas, como en `fix/fullpack`. Dejó su datapack temporal en el mundo, así que la siguiente corrida arrancó con un mundo nuevo.
+  - **C** (con la tolerancia de 180 s sólo para QA, como en `fix/fullpack`): 55 de 55. Corrió lo que faltaba y repitió los dos tests del Corazón que cambiaron.
+  - **B** (JVM nueva, watchdog otra vez en 60 s): pasan los verificadores de reinicio de equipos y de logística.
+  - En total pasan 125 de 127. No se corrió el par de backup en vivo, que necesita un ZIP de SimpleBackups y un servidor de restauración; su código no cambió.
+- **Auditoría de KubeJS en el servidor de QA:** 131 ítems, entre ellos `heart_of_heliodor`, y 37 recetas, sin fallas.
+
 ## Pendiente
 
 - Arte: la variante sin bendecir del Corazón (controlador).
