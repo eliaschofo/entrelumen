@@ -10,6 +10,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.GlobalPos;
 import net.minecraft.gametest.framework.GameTest;
 import net.minecraft.gametest.framework.GameTestHelper;
+import net.minecraft.gametest.framework.GameTestServer;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.stats.Stats;
@@ -67,7 +68,10 @@ public final class RuntimeGameTestsCompass {
   public static void newPlayerArrivesWithAnEmptyInventory(GameTestHelper helper) {
     var player = arrive(helper, "EmptyHands");
     helper.assertTrue(emptyInventory(player), "Login handed the player items");
-    helper.assertTrue(RuinData.get(player.server).find(HeliodorRuins.START).isEmpty(),
+    // Only the isolated server must stay without a start ruin: a real server (the full-pack QA
+    // run) places it on its first start by design.
+    helper.assertTrue(!(player.server instanceof GameTestServer)
+            || RuinData.get(player.server).find(HeliodorRuins.START).isEmpty(),
         "The isolated GameTest world must never place the start ruin implicitly");
     // Tick-triggered advancements (a common gift route) fire on the player's first ticks.
     helper.runAfterDelay(10, () -> {
@@ -78,15 +82,51 @@ public final class RuntimeGameTestsCompass {
     });
   }
 
-  @GameTest(template = "empty", timeoutTicks = 200)
+  /** Keeps the far test site generated while the start-ruin case waits for it; expires if abandoned. */
+  private static final net.minecraft.server.level.TicketType<net.minecraft.world.level.ChunkPos> RUIN_SITE =
+      net.minecraft.server.level.TicketType.create("entrelumen_qa_ruin_site",
+          Comparator.comparingLong(net.minecraft.world.level.ChunkPos::toLong), 1200);
+
+  @GameTest(template = "empty", timeoutTicks = 3600)
   public static void startRuinIsAnchoredRegisteredAndPlacedOnce(GameTestHelper helper) {
     var level = helper.getLevel();
     var template = level.getStructureManager().get(HeliodorRuins.START).orElseThrow();
     var size = template.getSize();
     // Fresh terrain far from the test grid; the world registry stays untouched.
     var near = helper.absolutePos(BlockPos.ZERO).offset(4096, 0, 0);
+    // The site search reads every column within its radius. On the superflat world those chunks
+    // cost nothing; on a full-pack noise world they are ~120 fresh chunks, far more than one
+    // server tick may generate (a 60 s watchdog stop). A real start has its spawn area generated
+    // before the ruin is placed, so the case asks worldgen for the area through a ticket first and
+    // places the ruin once every chunk is ready.
+    int reach = HeliodorRuins.SEARCH_RADIUS + Math.max(size.getX(), size.getZ()) / 2 + 2;
+    int radius = (reach + 15) / 16;
+    var site = new net.minecraft.world.level.ChunkPos(near);
+    Runnable hold = () -> level.getChunkSource().addRegionTicket(RUIN_SITE, site, radius, site);
+    hold.run();
+    helper.startSequence()
+        .thenWaitUntil(() -> {
+          hold.run();
+          for (int dx = -radius; dx <= radius; dx++)
+            for (int dz = -radius; dz <= radius; dz++)
+              helper.assertTrue(level.getChunkSource().getChunkNow(site.x + dx, site.z + dz) != null,
+                  "Waiting for the ruin test site to generate");
+        })
+        .thenExecute(() -> {
+          try {
+            placeStartRuin(helper, level, size, near);
+          } finally {
+            level.getChunkSource().removeRegionTicket(RUIN_SITE, site, radius, site);
+          }
+        })
+        .thenSucceed();
+  }
+
+  private static void placeStartRuin(GameTestHelper helper, net.minecraft.server.level.ServerLevel level,
+      net.minecraft.core.Vec3i size, BlockPos near) {
     int x0 = near.getX() - size.getX() / 2, z0 = near.getZ() - size.getZ() / 2;
-    level.getChunk(x0 >> 4, z0 >> 4);
+    // Load the column that is sampled: an unloaded one reads as the bottom of the world.
+    level.getChunk((x0 + 1) >> 4, (z0 + 1) >> 4);
     int ground = level.getHeight(net.minecraft.world.level.levelgen.Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
         x0 + 1, z0 + 1) - 1;
     // A two-deep dip under the footprint must be filled by the foundation.
@@ -151,7 +191,6 @@ public final class RuntimeGameTestsCompass {
     var before = veteran.blockPosition();
     helper.assertTrue(!HeliodorRuins.welcome(veteran, ruin) && veteran.blockPosition().equals(before),
         "A returning player was moved to the ruin");
-    helper.succeed();
   }
 
   @GameTest(template = "empty", timeoutTicks = 100)
@@ -252,10 +291,20 @@ public final class RuntimeGameTestsCompass {
         .containsAll(List.of("qa_marker", "qa_end")), "Reached objectives were not persisted");
 
     // The shipped draft: the ruin anchor first, then the first campaign milestone moves it on.
+    // The isolated world has no start ruin (NOT_FOUND); a full-pack server placed one at its
+    // first start, and the needle then points at it. Either way it never spins.
     var solo = arrive(helper, "DraftReader");
     var draft = HeliodorCompass.compute(solo);
-    helper.assertTrue(draft.objective().equals("heliodor_ruin") && draft.state() == CompassState.NOT_FOUND
-        && !draft.spinning(), "Draft does not start at the ruin, or spins without one: " + draft);
+    var ruin = RuinData.get(solo.server).find(HeliodorRuins.START)
+        .filter(r -> r.dimension().equals(Level.OVERWORLD)
+            && CompassData.horizontalDistanceSqr(r.center(), solo.blockPosition())
+                <= (long) CompassTargets.DEFAULT_RADIUS * CompassTargets.DEFAULT_RADIUS);
+    boolean drafted = ruin.isPresent()
+        ? draft.state() == CompassState.POINTING
+            && draft.target().equals(Optional.of(GlobalPos.of(Level.OVERWORLD, ruin.get().center())))
+        : draft.state() == CompassState.NOT_FOUND;
+    helper.assertTrue(draft.objective().equals("heliodor_ruin") && drafted && !draft.spinning(),
+        "Draft does not start at the ruin, or spins without one: " + draft);
     Entrelumen.current(solo).completed.add("atlas_awakened");
     helper.assertTrue(HeliodorCompass.compute(solo).objective().equals("village_survey"),
         "Awakening the Atlas did not move the draft compass on");
@@ -281,20 +330,37 @@ public final class RuntimeGameTestsCompass {
     helper.succeed();
   }
 
-  /** Measures bounded searches on the isolated flat world. Numbers are logged for the design doc. */
+  /**
+   * Measures bounded searches. On the isolated superflat world (structure starts disabled, cost
+   * test bypassing that option) every predicted plains village is confirmed and rejected: the worst
+   * case. On a full-pack server the same searches run on real terrain, where the village may exist.
+   * Either way the search stays within the radius, never blocks a tick on worldgen and answers an
+   * impossible target without searching. Numbers are logged for the design doc.
+   */
   @GameTest(template = "empty", timeoutTicks = 2400)
   public static void compassSearchesStayBoundedAndCooperative(GameTestHelper helper) {
     var level = helper.getLevel();
     var locator = CompassLocator.of(level.getServer());
     var origin = helper.absolutePos(BlockPos.ZERO).offset(0, 0, 8192);
+    boolean flat = level.getChunkSource().getGenerator()
+        instanceof net.minecraft.world.level.levelgen.FlatLevelSource;
+    // The biome under the origin, sampled like BiomeJob does (plains on the superflat world).
+    var sampled = level.getChunkSource().getGenerator().getBiomeSource().getNoiseBiome(
+        net.minecraft.core.QuartPos.fromBlock(origin.getX()),
+        net.minecraft.core.QuartPos.fromBlock(origin.getY()),
+        net.minecraft.core.QuartPos.fromBlock(origin.getZ()),
+        level.getChunkSource().randomState().sampler());
+    String underfoot = sampled.unwrapKey().orElseThrow().location().toString();
+    long radiusSqr = (long) CompassTargets.MAX_RADIUS * CompassTargets.MAX_RADIUS;
     Map<String, CompassLocator.Outcome> outcomes = new LinkedHashMap<>();
     Map<String, CompassTargets.Target> targets = new LinkedHashMap<>();
     targets.put("village_plains", new CompassTargets.Target(CompassTargets.TargetType.STRUCTURE,
         "minecraft:village_plains", "minecraft:overworld", null, CompassTargets.MAX_RADIUS));
-    targets.put("jungle", new CompassTargets.Target(CompassTargets.TargetType.BIOME,
-        "minecraft:jungle", "minecraft:overworld", null, CompassTargets.MAX_RADIUS));
-    targets.put("plains", new CompassTargets.Target(CompassTargets.TargetType.BIOME,
-        "minecraft:plains", "minecraft:overworld", null, CompassTargets.MAX_RADIUS));
+    // An End biome never occurs in an overworld biome source, flat or noise.
+    targets.put("absent", new CompassTargets.Target(CompassTargets.TargetType.BIOME,
+        "minecraft:the_end", "minecraft:overworld", null, CompassTargets.MAX_RADIUS));
+    targets.put("underfoot", new CompassTargets.Target(CompassTargets.TargetType.BIOME,
+        underfoot, "minecraft:overworld", null, CompassTargets.MAX_RADIUS));
     AtomicReference<String> failure = new AtomicReference<>();
     targets.forEach((name, target) -> {
       // Ignore the flat world's "no structures" option to measure the real scan cost.
@@ -302,28 +368,36 @@ public final class RuntimeGameTestsCompass {
           outcome -> outcomes.put(name, outcome))) failure.set("Search was not queued: " + name);
     });
     helper.assertTrue(failure.get() == null, String.valueOf(failure.get()));
-    // A structure that cannot generate in this world (snowy biome absent) costs no search at all.
+    // A structure that cannot generate in this dimension (End cities need End biomes) costs no
+    // search at all. The superflat world also lacks snowy villages, a full-pack overworld does not.
     var immediate = new AtomicReference<CompassLocator.Outcome>();
-    boolean queued = locator.request("qa-cost-snowy-" + origin.toShortString(), level,
-        new CompassTargets.Target(CompassTargets.TargetType.STRUCTURE, "minecraft:village_snowy",
+    boolean queued = locator.request("qa-cost-impossible-" + origin.toShortString(), level,
+        new CompassTargets.Target(CompassTargets.TargetType.STRUCTURE, "minecraft:end_city",
             "minecraft:overworld", null, CompassTargets.MAX_RADIUS), origin, false, immediate::set);
     helper.assertTrue(!queued && immediate.get() != null && immediate.get().found().isEmpty(),
         "An impossible structure was searched");
     helper.succeedWhen(() -> {
       helper.assertTrue(outcomes.size() == targets.size(), "Searches still running");
-      outcomes.forEach((name, outcome) -> LOGGER.info("COMPASS COST {}: found={} {}", name,
-          outcome.found().map(BlockPos::toShortString).orElse("none"), outcome.cost()));
+      outcomes.forEach((name, outcome) -> LOGGER.info("COMPASS COST {} ({}): found={} {}", name,
+          flat ? "superflat" : "full pack", outcome.found().map(BlockPos::toShortString).orElse("none"),
+          outcome.cost()));
       var plains = outcomes.get("village_plains");
-      helper.assertTrue(plains.cost().candidates() > 0 && plains.found().isEmpty()
-          && plains.cost().positions() == 189 * 189,
-          "Plains villages must be predicted, never started, over the whole 1500-block square: "
-              + plains.cost());
-      var jungle = outcomes.get("jungle");
-      helper.assertTrue(jungle.found().isEmpty() && jungle.cost().positions() == 93 * 93,
-          "An absent biome must sample the whole radius: " + jungle.cost());
-      var near = outcomes.get("plains");
+      if (flat)
+        helper.assertTrue(plains.cost().candidates() > 0 && plains.found().isEmpty()
+            && plains.cost().positions() == 189 * 189,
+            "Plains villages must be predicted, never started, over the whole 1500-block square: "
+                + plains.cost());
+      else
+        helper.assertTrue(plains.found().map(pos -> CompassData.horizontalDistanceSqr(origin, pos) <= radiusSqr)
+                .orElse(plains.cost().positions() == 189 * 189),
+            "A village search left the 1500-block radius or stopped early: " + plains.found() + " "
+                + plains.cost());
+      var absent = outcomes.get("absent");
+      helper.assertTrue(absent.found().isEmpty() && absent.cost().positions() == 93 * 93,
+          "An absent biome must sample the whole radius: " + absent.cost());
+      var near = outcomes.get("underfoot");
       helper.assertTrue(near.found().isPresent() && near.cost().ticks() == 1,
-          "The biome under the player must be found at once: " + near.cost());
+          "The biome under the player must be found at once: " + underfoot + " " + near.cost());
       for (var outcome : outcomes.values())
         helper.assertTrue(outcome.cost().maxStepNanos() < 250_000_000L,
             "A single search step blocked the server tick: " + outcome.cost());
