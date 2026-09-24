@@ -317,6 +317,7 @@ def plazas():
                     for y in range(hh + 1, hh + 6):
                         V.pop((c[0], y, c[1]), None)
         fountain(cx, hh, cz)
+        PLAZAS.append((cx, hh, cz))
 
 
 def fountain(cx, h, cz):
@@ -331,6 +332,120 @@ def fountain(cx, h, cz):
     V[(cx, h + 5, cz)] = B('ochre_froglight')
     for dx, dz in ((1, 0), (-1, 0), (0, 1), (0, -1)):
         V[(cx + dx, h + 4, cz + dz)] = B('waxed_cut_copper_slab[type=top,waterlogged=false]')
+
+
+PLAZAS = []
+
+
+def plaza_decor():
+    """Benches facing each fountain, flowering trees in planters at the plaza corners."""
+    for (cx, h, cz) in PLAZAS:
+        for (dx, dz, facing) in ((0, 4, 'north'), (0, -4, 'south'), (4, 0, 'west'), (-4, 0, 'east')):
+            for k in (-1, 0, 1):
+                x, z = cx + dx + (k if dx == 0 else 0), cz + dz + (k if dz == 0 else 0)
+                V[(x, h + 1, z)] = B('birch_stairs[facing=%s,half=bottom,shape=straight,waterlogged=false]' % facing)
+        for (dx, dz) in ((4, 4), (4, -4), (-4, 4), (-4, -4)):
+            x, z = cx + dx, cz + dz
+            V[(x, h + 1, z)] = B('moss_block')
+            V[(x, h, z)] = B('calcite')
+            tree(x, z, h + 1, 4, 2)
+
+
+def arches():
+    """A flowering pergola over every footpath where it opens onto a street."""
+    for (x, z) in sorted(PATHCELLS):
+        for dx, dz in ((1, 0), (-1, 0), (0, 1), (0, -1)):
+            if (x + dx, z + dz) not in ROAD:
+                continue
+            h = HEIGHT[(x, z)]
+            px, pz = dz, dx
+            ok = all((x + px * k, z + pz * k) in HEIGHT and (x + px * k, z + pz * k) not in ROAD for k in (-1, 1))
+            if not ok:
+                continue
+            for k in (-1, 1):
+                for y in range(h + 1, h + 4):
+                    V[(x + px * k, y, z + pz * k)] = B('stripped_birch_log[axis=y]')
+            for k in (-1, 0, 1):
+                V[(x + px * k, h + 4, z + pz * k)] = LEAVES
+            V[(x, h + 3, z)] = HANG
+            break
+
+
+def easter_eggs():
+    # the tavern under the first plaza: a room below the fountain, a hatch at the plaza edge
+    if PLAZAS:
+        cx, h, cz = PLAZAS[0]
+        for dx in range(-4, 5):
+            for dz in range(-4, 5):
+                for y in range(h - 4, h - 1):
+                    V[(cx + dx, y, cz + dz)] = AIR
+                V[(cx + dx, h - 5, cz + dz)] = B('stripped_birch_wood[axis=y]') if (dx + dz) % 2 else B('birch_planks')
+        for dx in (-3, 3):
+            for dz in (-3, 3):
+                V[(cx + dx, h - 4, cz + dz)] = B('barrel[facing=up,open=false]')
+        V[(cx, h - 4, cz)] = B('jukebox[has_record=false]')
+        for (dx, dz) in ((2, 0), (-2, 0), (0, 2), (0, -2)):
+            V[(cx + dx, h - 2, cz + dz)] = B('ochre_froglight')
+        for y in range(h - 4, h):
+            V[(cx + 5, y, cz)] = B('ladder[facing=west,waterlogged=false]')
+            V[(cx + 6, y, cz)] = B('calcite')
+        V[(cx + 5, h, cz)] = B('waxed_copper_trapdoor[facing=west,half=top,open=false,powered=false,waterlogged=false]')
+        MARKERS.append(('easter:tavern', (cx, h - 4, cz)))
+    # the secret garden on the highest ground: a gazebo in a ring of flowers
+    def free_disc(c, r):
+        return all((c[0] + dx, c[1] + dz) in HEIGHT and (c[0] + dx, c[1] + dz) not in USED
+                   for dx in range(-r, r + 1) for dz in range(-r, r + 1) if math.hypot(dx, dz) <= r + 0.5)
+    spot = next((c for c in sorted(HEIGHT, key=lambda c: -HEIGHT[c])
+                 if math.hypot(*c) > T2 + 10 and free_disc(c, 5)), None)
+    if spot is None:
+        return
+    gx, gz = spot
+    hh = HEIGHT[spot]
+    for dx in range(-4, 5):
+        for dz in range(-4, 5):
+            d = math.hypot(dx, dz)
+            c = (gx + dx, gz + dz)
+            if c not in HEIGHT or d > 4.5:
+                continue
+            V[(c[0], hh, c[1])] = B('moss_block') if d > 2.6 else B('calcite')
+            for y in range(hh + 1, hh + 6):
+                V.pop((c[0], y, c[1]), None)
+            if 3.4 < d <= 4.5:
+                V[(c[0], hh + 1, c[1])] = B(('allium', 'azure_bluet', 'lily_of_the_valley', 'oxeye_daisy')[(dx * 3 + dz) % 4])
+    for (dx, dz) in ((2, 2), (2, -2), (-2, 2), (-2, -2)):
+        for y in range(hh + 1, hh + 4):
+            V[(gx + dx, y, gz + dz)] = B('quartz_pillar[axis=y]')
+    for dx in range(-2, 3):
+        for dz in range(-2, 3):
+            V[(gx + dx, hh + 4, gz + dz)] = LEAVES if max(abs(dx), abs(dz)) == 2 else B('yellow_stained_glass')
+    V[(gx, hh + 1, gz)] = B('lectern[facing=south,has_book=false,powered=false]')
+    MARKERS.append(('easter:secret_garden', (gx, hh + 1, gz)))
+    for dx in range(-5, 6):
+        for dz in range(-5, 6):
+            USED.add((gx + dx, gz + dz))
+    # a sundial on the second highest open ground
+    for c in sorted(HEIGHT, key=lambda c: -HEIGHT[c]):
+        if math.hypot(c[0] - gx, c[1] - gz) < 40 or math.hypot(*c) <= T2 + 10 or not free_disc(c, 4):
+            continue
+        sx, sz = c
+        sh = HEIGHT[c]
+        if not all((sx + dx, sz + dz) in HEIGHT for dx in (-3, 3) for dz in (-3, 3)):
+            continue
+        for dx in range(-3, 4):
+            for dz in range(-3, 4):
+                if math.hypot(dx, dz) <= 3.3:
+                    V[(sx + dx, sh, sz + dz)] = B('calcite') if (dx or dz) else B('waxed_chiseled_copper')
+                    for y in range(sh + 1, sh + 4):
+                        V.pop((sx + dx, y, sz + dz), None)
+        for k in range(0, 12):
+            th = math.radians(k * 30)
+            V[(sx + round(3 * math.cos(th)), sh, sz + round(3 * math.sin(th)))] = B('waxed_cut_copper')
+        V[(sx, sh + 1, sz)] = B('lightning_rod[facing=up,powered=false,waterlogged=false]')
+        MARKERS.append(('easter:sundial', (sx, sh + 1, sz)))
+        for dx in range(-4, 5):
+            for dz in range(-4, 5):
+                USED.add((sx + dx, sz + dz))
+        break
 
 
 def lamps():
@@ -925,6 +1040,7 @@ def build():
         d.clear()
     PATHCELLS.clear()
     RIVER_END.clear()
+    PLAZAS.clear()
     MARKERS.clear()
     USED.clear()
     PATHS.clear()
@@ -940,6 +1056,9 @@ def build():
     place_lots()
     footpaths()
     footbridges()
+    plaza_decor()
+    arches()
+    easter_eggs()
     lamps()
     lighthouses()
     nature()
