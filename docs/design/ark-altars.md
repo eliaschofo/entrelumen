@@ -436,6 +436,8 @@ Root integration in `C:/Users/elias/Documents/Codex/2026-09-12/h/outputs/entrelu
 
 **Installation.** The final code, `eabad96`, was installed in `ENTRELUMEN`, `ENTRELUMEN Defaults QA` and the server with the receipt-managed installer: 42 files each, 21 of them new. They are the QoL script, the companion JAR, and the altar, shelf and module art in `resourcepacks/entrelumen`. Nothing was retired, no JAR was added, and player and local files were unchanged. Later commits changed only the QA source set, so the normal JAR is byte-identical.
 
+The CI check `tools/check_runtime_content.py` then found the runtime audit script stale, because the altars had become rewards. `6a743eb` synced it and was installed the same way, one file per profile. A normal boot with it passed the runtime content audit: 128 items and 36 recipe/output pairs, including the six altars and their duplication recipes.
+
 ## Limitations
 
 - Pits deeper than 16 blocks below the original surface are not refilled (level them first). Neither are overhangs, closed caves, flooded pits or carver ravines.

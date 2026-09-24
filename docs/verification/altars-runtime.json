@@ -1,13 +1,14 @@
 {
   "schemaVersion": 1,
-  "checkedAt": "2026-09-24T05:59:36+00:00",
+  "checkedAt": "2026-09-24T06:06:51+00:00",
   "scope": "Altars integration on main: the storage move of the QA server, JDK and companion build/run folders to the E: NVMe, offline build with JUnit and isolated GameTests after both altar merges, full-pack QA of the six altars and the Apotheosis regression cases on the owned server, a normal start/save/stop at max-tick-time 60000, and the managed installation of the final code in both client profiles and the server. Not client rendering, EN/ES review, survival play, co-op, pacing or performance acceptance.",
   "platform": "Minecraft 1.21.1 / NeoForge 21.1.249 / JDK 21.0.12.1+1 / Windows 11",
   "sourceCommits": {
     "firstMerge": "ab3796a",
     "secondMerge": "ba505fd",
-    "installed": "eabad96",
-    "finalCode": "f1a7e90"
+    "installedCode": "eabad96",
+    "installedPack": "6a743eb",
+    "finalQaSources": "f1a7e90"
   },
   "designDocs": [
     "docs/design/ark-altars.md"
@@ -326,6 +327,20 @@
         "saveAll": "under 1 s (02:50:15)",
         "stopToAllSaved": "under 1 s (02:50:16)"
       },
+      "finalNormalBoot": {
+        "runId": "20963d3c-9781-40d1-a002-44b2877dd5a2",
+        "exitCode": 0,
+        "installed": "6a743eb (same companion JAR)",
+        "jvmStartToDoneSeconds": 84.9,
+        "doneSeconds": 2.821,
+        "cantKeepUpWarnings": 0,
+        "watchdog": [],
+        "spark": [
+          "03:05:19 0.5/0.6/1.0/11.8;  0.5/0.9/14.9/272.6",
+          "03:06:31 0.4/0.4/0.6/0.8;  0.4/0.5/0.7/1.5"
+        ],
+        "runtimeContentAudit": "tools/check_runtime_content.py --log logs/kubejs/server.log: PASS, 128 items and 36 recipe/output pairs including the six altars and their duplication recipes; market guard 745 checked"
+      },
       "cantKeepUpCauses": {
         "26399 ms (QA run 1b, 02:03:36)": "forceload of 144 new ocean chunks 2,000 blocks away (QA site search)",
         "2010-3824 ms (QA runs 1b-2g)": "once per QA run, while a case spawned mock players with FTB claims or hundreds of projectiles",
@@ -333,7 +348,7 @@
       },
       "watchdogOnlyAfterCrash": "Runs 2, 2b, 2c and 2d stopped on a Ticking-entity crash of the QA projectile case; the watchdog line 60 s later is the stop after the crash, not a slow tick."
     },
-    "summary": "Boot (JVM start to Done) fell from 548-1515 s in the last three G: runs to 82-138 s on E:; the normal boot on E: took 82.4 s with no tick warning, worst spark tick 46.3 ms in its first minute and 7.1 ms after three minutes, and saved in under a second, against 31-66 s saves and ticks up to 90 s behind on G:.",
+    "summary": "Boot (JVM start to Done) fell from 548-1515 s in the last three G: runs to 82-138 s on E:. The two normal boots on E: took 82.4 and 84.9 s with no tick warning; their worst spark tick was 46.3 and 272.6 ms in the first minute and 1.5-7.1 ms afterwards, and they saved in under a second, against 31-66 s saves and ticks up to 90 s behind on G:.",
     "limitation": "Same machine, same world and pack, but not a controlled benchmark: G: was contended by other sessions (the SSD migration robocopy and the search indexer) and RAM was about 2 GB free. No players, no client, no gameplay load."
   },
   "build": {
@@ -639,7 +654,28 @@
       }
     ],
     "art": "altar models and textures (six altars), mirrored shelf and module textures in resourcepacks/entrelumen and in the companion JAR; the augment item art was already installed and is unchanged in the new JAR",
-    "serverJarNow": "63b0c0db9e375a7061b06b5e7d1886fe80f56a9aff45bdbdcb8cb833654238af"
+    "serverJarNow": "63b0c0db9e375a7061b06b5e7d1886fe80f56a9aff45bdbdcb8cb833654238af",
+    "reinstall": {
+      "head": "6a743eb3b9589371709517ac49f10efbbfa21d95",
+      "reason": "tools/check_runtime_content.py found the runtime audit script stale after the altars became rewards; --sync",
+      "written": [
+        [
+          "kubejs/server_scripts/entrelumen_runtime_audit.js"
+        ],
+        [
+          "kubejs/server_scripts/entrelumen_runtime_audit.js"
+        ],
+        [
+          "kubejs/server_scripts/entrelumen_runtime_audit.js"
+        ]
+      ],
+      "worldBackup": {
+        "archive": "E:\\Elias\\Codex\\Entrelumen-ssd\\head-ab3796a-20260924\\server-world-before-install-6a743eb.zip",
+        "files": 1462,
+        "sha256": "fbbef8ca48f174953f45642a79ba47f844a0e2cc237114e582044170375fc5f8"
+      },
+      "clientLaunched": false
+    }
   },
   "limits": [
     "Full-pack cases prove behaviour with mock players on an installed server, not client rendering or play.",
