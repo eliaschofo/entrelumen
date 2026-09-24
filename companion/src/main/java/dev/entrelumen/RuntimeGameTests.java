@@ -1106,18 +1106,21 @@ public final class RuntimeGameTests {
     player.setShiftKeyDown(true);
     var clicked = player.gameMode.useItemOn(player, helper.getLevel(), player.getMainHandItem(),
         net.minecraft.world.InteractionHand.MAIN_HAND, arkHit(pos));
+    // Activation forges the team's one Light Key (act VI) and consumes nothing.
+    var forged = new HashMap<>(materials);
+    forged.merge("entrelumen:light_key", 1, Integer::sum);
     helper.assertTrue(clicked.consumesAction()
         && campaign.completed.contains(CampaignMilestones.LAST_HORIZON)
         && campaign.arkPhase == 6 && campaign.arkDeposits.isEmpty()
-        && Entrelumen.availableMaterials(player).equals(materials),
-        "Explicit empty-hand controller activation failed or consumed supplies");
+        && Entrelumen.availableMaterials(player).equals(forged),
+        "Explicit empty-hand controller activation failed, consumed supplies or forged no single Light Key");
     var completed = Set.copyOf(campaign.completed);
     player.gameMode.useItemOn(player, helper.getLevel(), player.getMainHandItem(),
         net.minecraft.world.InteractionHand.MAIN_HAND, arkHit(pos));
     helper.assertTrue(campaign.completed.equals(completed)
-        && Entrelumen.availableMaterials(player).equals(materials)
+        && Entrelumen.availableMaterials(player).equals(forged)
         && helper.getLevel().getBlockState(removedPos).equals(module),
-        "Finished controller replay changed campaign, supplies or blocks");
+        "Finished controller replay changed campaign, supplies, blocks or forged a second key");
     helper.succeed();
   }
 
