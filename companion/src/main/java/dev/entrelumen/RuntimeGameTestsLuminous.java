@@ -132,6 +132,12 @@ public final class RuntimeGameTestsLuminous {
     var axe = new ItemStack(Luminous.AXE.get());
     helper.assertTrue(sum(axe, Attributes.ATTACK_DAMAGE, EquipmentSlotGroup.MAINHAND) + 1 == LuminousRules.axeDamage()
         && axe.is(ItemTags.AXES), "Axe stats differ");
+    // Like netherite tools, the attributes live in the default component that mods such as
+    // Apotheosis read directly to file a weapon's affix category.
+    for (var tool : List.of(sword, axe, new ItemStack(Luminous.PICKAXE.get()), new ItemStack(Luminous.SHOVEL.get())))
+      helper.assertTrue(!tool.getOrDefault(DataComponents.ATTRIBUTE_MODIFIERS,
+          net.minecraft.world.item.component.ItemAttributeModifiers.EMPTY).modifiers().isEmpty(),
+          "Attributes missing from the default component of " + tool);
     var pickaxe = new ItemStack(Luminous.PICKAXE.get());
     helper.assertTrue(pickaxe.is(ItemTags.PICKAXES) && pickaxe.getDestroySpeed(Blocks.STONE.defaultBlockState()) == LuminousRules.TOOL_SPEED
         && pickaxe.isCorrectToolForDrops(Blocks.OBSIDIAN.defaultBlockState())

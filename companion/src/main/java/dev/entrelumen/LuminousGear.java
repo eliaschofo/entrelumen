@@ -22,14 +22,14 @@ import net.minecraft.world.item.PickaxeItem;
 import net.minecraft.world.item.ShovelItem;
 import net.minecraft.world.item.SwordItem;
 import net.minecraft.world.item.TooltipFlag;
-import net.minecraft.world.item.component.ItemAttributeModifiers;
 import net.minecraft.world.level.block.state.BlockState;
 
 /**
  * Item classes of the luminous content. Every luminous piece shares three behaviours through the
- * static helpers: damage stops one point before breaking, a piece on its last point is dimmed (no
- * attribute modifiers, fist mining speed, no drops that need a tool) and names carry the luminous
- * colour. Light repair and the set bonus run per player in {@link Luminous}.
+ * static helpers: damage stops one point before breaking, a piece on its last point is dimmed (fist
+ * mining speed, no drops that need a tool; {@link Luminous} clears its attribute modifiers) and names
+ * carry the luminous colour. Tools keep their attributes in the vanilla default component, as
+ * netherite does. Light repair and the set bonus run per player in {@link Luminous}.
  *
  * <p>No enchantment glint: the shine is the controller's animated sprite, and the purple vanilla
  * glint would hide the six discipline colours and read as "enchanted".
@@ -107,11 +107,6 @@ public final class LuminousGear {
     }
 
     @Override
-    public ItemAttributeModifiers getDefaultAttributeModifiers(ItemStack stack) {
-      return dimmed(stack) ? ItemAttributeModifiers.EMPTY : super.getDefaultAttributeModifiers(stack);
-    }
-
-    @Override
     public <T extends LivingEntity> int damageItem(ItemStack stack, int amount, T entity, Consumer<Item> onBroken) {
       return clamp(stack, amount);
     }
@@ -128,16 +123,9 @@ public final class LuminousGear {
   }
 
   public static final class Sword extends SwordItem implements Piece {
-    private final ItemAttributeModifiers attributes;
-
     public Sword(Properties properties) {
-      super(Luminous.TIER, properties);
-      attributes = SwordItem.createAttributes(Luminous.TIER, LuminousRules.SWORD_DAMAGE, LuminousRules.SWORD_SPEED);
-    }
-
-    @Override
-    public ItemAttributeModifiers getDefaultAttributeModifiers(ItemStack stack) {
-      return dimmed(stack) ? ItemAttributeModifiers.EMPTY : attributes;
+      super(Luminous.TIER, properties.attributes(
+          SwordItem.createAttributes(Luminous.TIER, LuminousRules.SWORD_DAMAGE, LuminousRules.SWORD_SPEED)));
     }
 
     @Override
@@ -178,16 +166,9 @@ public final class LuminousGear {
   }
 
   public static final class Pickaxe extends PickaxeItem implements Piece {
-    private final ItemAttributeModifiers attributes;
-
     public Pickaxe(Properties properties) {
-      super(Luminous.TIER, properties);
-      attributes = DiggerItem.createAttributes(Luminous.TIER, LuminousRules.PICKAXE_DAMAGE, LuminousRules.PICKAXE_SPEED);
-    }
-
-    @Override
-    public ItemAttributeModifiers getDefaultAttributeModifiers(ItemStack stack) {
-      return dimmed(stack) ? ItemAttributeModifiers.EMPTY : attributes;
+      super(Luminous.TIER, properties.attributes(
+          DiggerItem.createAttributes(Luminous.TIER, LuminousRules.PICKAXE_DAMAGE, LuminousRules.PICKAXE_SPEED)));
     }
 
     @Override
@@ -217,16 +198,9 @@ public final class LuminousGear {
   }
 
   public static final class Axe extends AxeItem implements Piece {
-    private final ItemAttributeModifiers attributes;
-
     public Axe(Properties properties) {
-      super(Luminous.TIER, properties);
-      attributes = DiggerItem.createAttributes(Luminous.TIER, LuminousRules.AXE_DAMAGE, LuminousRules.AXE_SPEED);
-    }
-
-    @Override
-    public ItemAttributeModifiers getDefaultAttributeModifiers(ItemStack stack) {
-      return dimmed(stack) ? ItemAttributeModifiers.EMPTY : attributes;
+      super(Luminous.TIER, properties.attributes(
+          DiggerItem.createAttributes(Luminous.TIER, LuminousRules.AXE_DAMAGE, LuminousRules.AXE_SPEED)));
     }
 
     @Override
@@ -256,16 +230,9 @@ public final class LuminousGear {
   }
 
   public static final class Shovel extends ShovelItem implements Piece {
-    private final ItemAttributeModifiers attributes;
-
     public Shovel(Properties properties) {
-      super(Luminous.TIER, properties);
-      attributes = DiggerItem.createAttributes(Luminous.TIER, LuminousRules.SHOVEL_DAMAGE, LuminousRules.SHOVEL_SPEED);
-    }
-
-    @Override
-    public ItemAttributeModifiers getDefaultAttributeModifiers(ItemStack stack) {
-      return dimmed(stack) ? ItemAttributeModifiers.EMPTY : attributes;
+      super(Luminous.TIER, properties.attributes(
+          DiggerItem.createAttributes(Luminous.TIER, LuminousRules.SHOVEL_DAMAGE, LuminousRules.SHOVEL_SPEED)));
     }
 
     @Override
@@ -295,16 +262,9 @@ public final class LuminousGear {
   }
 
   public static final class Hoe extends HoeItem implements Piece {
-    private final ItemAttributeModifiers attributes;
-
     public Hoe(Properties properties) {
-      super(Luminous.TIER, properties);
-      attributes = DiggerItem.createAttributes(Luminous.TIER, LuminousRules.HOE_DAMAGE, LuminousRules.HOE_SPEED);
-    }
-
-    @Override
-    public ItemAttributeModifiers getDefaultAttributeModifiers(ItemStack stack) {
-      return dimmed(stack) ? ItemAttributeModifiers.EMPTY : attributes;
+      super(Luminous.TIER, properties.attributes(
+          DiggerItem.createAttributes(Luminous.TIER, LuminousRules.HOE_DAMAGE, LuminousRules.HOE_SPEED)));
     }
 
     @Override

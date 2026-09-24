@@ -68,7 +68,7 @@ Fuentes, leídas el 24 de septiembre de 2026:
 
 ### Habilidades
 
-- **Nunca se rompe.** El daño se corta un punto antes del máximo (`damageItem` de NeoForge, antes de Irrompibilidad). Una pieza en su último punto se **apaga**: sin armadura ni atributos, velocidad de puño y sin drops que pidan herramienta. Funciona como la élitra, que deja de planear en su último punto.
+- **Nunca se rompe.** El daño se corta un punto antes del máximo (`damageItem` de NeoForge, antes de Irrompibilidad). Una pieza en su último punto se **apaga**: `ItemAttributeModifierEvent` le vacía los atributos (sin armadura, dureza, ataque ni velocidad), mina a velocidad de puño y no da drops que pidan herramienta. Funciona como la élitra, que deja de planear en su último punto. Las herramientas guardan sus atributos en el componente por defecto, igual que la netherita. Así Apotheosis, que lee ese componente directamente, las archiva como armas; la primera corrida full-pack encontró que el hacha quedaba sin categoría cuando los atributos venían de un override.
 - **Reparación por luz.** Cada segundo, la luz en los ojos del jugador repara todas las piezas luminosas que lleva, sea en el inventario, la armadura o la mano secundaria. Repara `brillo − 11` puntos por pieza: nada por debajo de 12 y 4 a pleno sol. La noche a cielo abierto no repara, porque cuenta el brillo del cielo oscurecido por la hora. Una pechera agotada queda entera en menos de 7 minutos de sol. El Remiendo y el lingote en el yunque siguen funcionando.
 - **Bono de set** con las cuatro piezas encendidas:
   - visión nocturna ambiental, renovada cada segundo a 13 s, siempre fuera de la ventana de parpadeo de 10 s. Se quita sólo si la dio el set, nunca la de una poción;

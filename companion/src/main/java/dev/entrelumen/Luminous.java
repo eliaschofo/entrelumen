@@ -27,6 +27,7 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.block.Block;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.common.NeoForge;
+import net.neoforged.neoforge.event.ItemAttributeModifierEvent;
 import net.neoforged.neoforge.event.entity.living.LivingFallEvent;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 import net.neoforged.neoforge.registries.DeferredHolder;
@@ -150,6 +151,12 @@ public final class Luminous {
     ARMOR_MATERIALS.register(bus);
     NeoForge.EVENT_BUS.addListener(Luminous::playerTick);
     NeoForge.EVENT_BUS.addListener(Luminous::fall);
+    NeoForge.EVENT_BUS.addListener(Luminous::dimAttributes);
+  }
+
+  /** A dimmed piece gives no armour, toughness, knockback resistance, attack or speed. */
+  static void dimAttributes(ItemAttributeModifierEvent event) {
+    if (LuminousGear.dimmed(event.getItemStack())) event.clearModifiers();
   }
 
   private static void playerTick(PlayerTickEvent.Post event) {
