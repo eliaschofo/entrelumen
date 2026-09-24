@@ -16,6 +16,8 @@ PAL = {
  'i': R['iron'][2], 'I': R['iron'][3], 'J': R['iron'][4],
  'v': R['verdigris'][2], 'V': R['verdigris'][3],
  'p': R['violet'][4], 'y': R['straw'][3], 'f': R['parch'][5],
+ 's': R['straw'][1], 'S': R['straw'][2], 'a': R['glass'][2], 'A': R['glass'][3], 'B': R['glass'][4],
+ 'o': R['brass'][3], 'O': R['brass'][4], 'r': R['crimson'][3],
 }
 KEYS = list(PAL)
 def texel(key):

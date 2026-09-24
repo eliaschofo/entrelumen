@@ -32,10 +32,11 @@ LIBRARY = {'atlas_library': ('atlas_library', 'atlas_library_top', 'module_botto
 MODULES = ['engineering_module', 'arcane_module', 'nature_module', 'exploration_module', 'logistics_module',
            'habitation_module', 'ark_controller']
 # Sculpted (voxel) block models authored by art/authoring/sym_altars.py, stored as JSON sources.
-SCULPTED = ['renewal_altar', 'terraform_altar']
+SCULPTED = ['renewal_altar', 'terraform_altar', 'ward_altar', 'growth_altar', 'time_altar', 'gathering_altar']
 BLOCKS = (MODULES + ['module_top', 'module_bottom'] + list(SHELVES) + sorted(set(SHELVES.values()))
           + ['atlas_library', 'atlas_library_top', 'altar_stone', 'altar_plinth_top', 'renewal_altar_top',
-             'terraform_altar_top', 'altar_voxels'])
+             'terraform_altar_top', 'ward_altar_top', 'growth_altar_top', 'time_altar_top',
+             'gathering_altar_top', 'altar_voxels'])
 PALETTE_TEXTURES = {'block/altar_voxels'}   # one texel per colour; exempt from the per-texture colour budget
 
 COMPONENT_NAMES = {
