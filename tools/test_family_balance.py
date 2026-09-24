@@ -228,6 +228,40 @@ class FamilyBalanceTest(unittest.TestCase):
         self.assertEqual({k: written[k] for k in fd[0]['value']}, fd[0]['value'])
         self.assertEqual(written['neoforge:conditions'], [{'type': 'neoforge:mod_loaded', 'modid': 'silentgear'}])
 
+    def test_disable_keeps_existing_conditions_and_renames_several_keys(self):
+        conditional = {'neoforge:conditions': [{'type': 'neoforge:mod_loaded', 'modid': 'create'}],
+                       'type': 'create:crushing', 'results': [{'item': 'x:out'}]}
+        plain = {'type': 'x:recipe', 'result': {'id': 'x:out'}}
+        datamap = {'values': {'a:old': {'v': 1}, 'b:old': {'v': 2}, 'c:keep': {'v': 3}}}
+        specs = [balance.disabled('data/x/recipe/conditional.json', ''), balance.disabled('data/x/recipe/plain.json', ''),
+                 balance.renamed_key('data/x/data_maps/m.json', 'values', 'a:old', 'a:new', '', more={'b:old': 'b:new'})]
+        found = {specs[0]['path']: [('x.jar', '', json.dumps(conditional).encode())],
+                 specs[1]['path']: [('x.jar', '', json.dumps(plain).encode())],
+                 specs[2]['path']: [('x.jar', '', json.dumps(datamap).encode())]}
+        with unittest.mock.patch.dict(balance.FAMILIES, {'probe': {'data': specs}}):
+            out = {k: json.loads(v) for k, v in balance.build_data('probe', found).items()}
+        self.assertEqual(out['x/recipe/conditional.json']['neoforge:conditions'],
+                         [{'type': 'neoforge:false'}, {'type': 'neoforge:mod_loaded', 'modid': 'create'}])
+        self.assertEqual(list(out['x/recipe/plain.json'])[0], 'neoforge:conditions')
+        self.assertEqual(out['x/recipe/plain.json']['neoforge:conditions'], [{'type': 'neoforge:false'}])
+        renamed = out['x/data_maps/m.json']
+        self.assertTrue(renamed['replace'])
+        self.assertEqual(list(renamed['values']), ['a:new', 'b:new', 'c:keep'])
+        found[specs[0]['path']] = [('x.jar', '', json.dumps(out['x/recipe/conditional.json']).encode())]
+        with unittest.mock.patch.dict(balance.FAMILIES, {'probe': {'data': specs[:1]}}):
+            with self.assertRaises(AssertionError):
+                balance.build_data('probe', found)
+
+    def test_pingpong_stages_use_act_components_and_remove_duplicators(self):
+        family = balance.FAMILIES['pingpong']
+        by_id = {change['id']: change for change in family['changes']}
+        self.assertEqual(by_id['ad_astra:nasa_workbench']['act'], 'V')
+        self.assertEqual(by_id['eternal_starlight:orb_of_prophecy']['add'], balance.HZ)
+        self.assertEqual(by_id['refinedstorage:controller']['add'], balance.RM)
+        self.assertIn('modern_industrialization:electric_age/machine/assembler/replicator', family['removals'])
+        self.assertIn('oritech:particle/nether_star', family['removals'])
+        self.assertTrue(all(spec['op'] == 'disable' for spec in family['data']))
+
     def test_loop_check_catches_uncrafting_and_gate_leaks(self):
         lum = balance.LUMINOSITY['arcane']
         ingot = balance.created_shaped('t:ingot', 't:ingot', ['LXL', 'XXX', 'LXL'],
