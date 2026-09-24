@@ -114,7 +114,7 @@ Residual risks, not covered: dispensers or modded machines inside a plot that pl
 
 ## Assets
 
-Stable IDs: `light_key`, `light_key_broken`, `solsticio_portal`, `heliodor_relic_1/2/3`. All models are `PROVISIONAL` and reference vanilla textures only (no copied files): keys `item/trial_key` and `item/ominous_trial_key`; relics `item/heart_of_the_sea`, `item/echo_shard`, `item/prismarine_crystals`; the portal is a symmetric quartz-and-copper pedestal (dormant) or a quartz sill with an unshaded `shroomlight` column (open). The portal has no item form (it is unbreakable and only the city places it). EN and ES translations are complete.
+Stable IDs: `light_key`, `light_key_broken`, `solsticio_portal`, `heliodor_relic_1/2/3`. The keys and relics use the controller's art (see the top of this document); the portal is still `PROVISIONAL` and references vanilla textures only (no copied files): it is a symmetric quartz-and-copper pedestal (dormant) or a quartz sill with an unshaded `shroomlight` column (open). The portal has no item form (it is unbreakable and only the city places it). EN and ES translations are complete.
 
 ## Tests
 
