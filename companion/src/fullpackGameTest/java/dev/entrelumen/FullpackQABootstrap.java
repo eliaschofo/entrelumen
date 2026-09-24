@@ -36,6 +36,7 @@ public final class FullpackQABootstrap {
     ResourceFarmGameTests.requireNativeInputs();
     ApotheosisGameTests.requireSuite();
     LuminousGameTests.requireSuite();
+    TerraArmFullpackGameTests.requireSuite();
     if (GameTestHooks.isGametestEnabled()) return;
     if (!registered) {
       GameTestRegistry.register(RuntimeGameTests.class);
@@ -63,6 +64,7 @@ public final class FullpackQABootstrap {
       GameTestRegistry.register(AltarEffectsFullpackGameTests.class);
       GameTestRegistry.register(LuminousGameTests.class);
       GameTestRegistry.register(StartWithoutBloatFullpackGameTests.class);
+      GameTestRegistry.register(TerraArmFullpackGameTests.class);
       Set<String> expected = new TreeSet<>();
       for (Class<?> owner : List.of(RuntimeGameTests.class, FullpackGameTests.class,
           ResourceFarmGameTests.class, Ae2CraftingGameTests.class, RFToolsRecipeGameTests.class,
@@ -73,7 +75,7 @@ public final class FullpackQABootstrap {
           LogisticsProvisioningGameTests.class, LogisticsRestartGameTests.class,
           NatureRestorationGameTests.class, ArkChartsGameTests.class, ApotheosisGameTests.class,
           AltarFullpackGameTests.class, AltarEffectsFullpackGameTests.class, LuminousGameTests.class,
-          StartWithoutBloatFullpackGameTests.class))
+          StartWithoutBloatFullpackGameTests.class, TerraArmFullpackGameTests.class))
         for (var method : owner.getDeclaredMethods())
           if (method.isAnnotationPresent(GameTest.class))
             expected.add(method.getName().toLowerCase(Locale.ROOT));

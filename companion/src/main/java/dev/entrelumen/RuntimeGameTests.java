@@ -1968,11 +1968,13 @@ public final class RuntimeGameTests {
         && player.getInventory().countItem(Items.COPPER_INGOT) == 1
         && campaign.completed.size() == 6,
         "Archive replay changed supplies or progress");
+    // The closing archive grants Terra's Arm once; the prototype deliveries grant nothing.
     helper.assertTrue(prototypes.values().stream().allMatch(item -> player.getInventory().countItem(item) == 1)
         && player.getInventory().countItem(Items.ANVIL) == 1
-        && player.getInventory().items.stream().mapToInt(ItemStack::getCount).sum() == 9
+        && player.getInventory().countItem(TerraArm.ITEM.get()) == 1
+        && player.getInventory().items.stream().mapToInt(ItemStack::getCount).sum() == 10
         && helper.getLevel().getBlockState(installedPos).is(net.minecraft.world.level.block.Blocks.ENCHANTING_TABLE),
-        "Deliveries granted items or consumed infrastructure/unrelated supplies");
+        "Deliveries granted items other than Terra's Arm or consumed infrastructure/unrelated supplies");
     helper.assertTrue(AtlasNetwork.handleOpen(player).canAdvance()
         && CampaignActions.perform(player, campaignId, CampaignActions.Action.ADVANCE, "").success()
         && campaign.act == 3,
