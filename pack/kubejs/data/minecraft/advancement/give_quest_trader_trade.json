@@ -1,0 +1,21 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:false"
+    }
+  ],
+  "parent": "minecraft:root",
+  "criteria": {
+    "asda": {
+      "trigger": "minecraft:villager_trade",
+      "conditions": {
+        "villager": {
+          "nbt": "{Tags:[\"dnt_quest_trader\"]}"
+        }
+      }
+    }
+  },
+  "rewards": {
+    "function": "nova_structures:choose_dnt_quest_trader"
+  }
+}

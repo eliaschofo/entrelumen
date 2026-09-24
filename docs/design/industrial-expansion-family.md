@@ -64,7 +64,7 @@ After loading, the script logs `[ENTRELUMEN_INDUSTRIAL_BALANCE]`: a registered c
 
 The first dedicated start with this family logged four ERROR lines from two upstream data files, both harmless but noisy. The generator writes minimal, reversible overrides under `pack/kubejs/data`:
 
-- `create_dragons_plus/loot_table/blocks/fragile_fluid_tank.json` and `levitite_fragile_fluid_tank.json`: Create: Dragons Plus registers these blocks only with the optional Sable physics mod, but ships their loot tables unconditionally. Each override is the original table plus a `neoforge:item_exists` condition, so the table loads again automatically if the block exists.
+- `create_dragons_plus/loot_table/blocks/fragile_fluid_tank.json` and `levitite_fragile_fluid_tank.json`: Create: Dragons Plus registers these blocks only with the optional Sable physics mod, but ships their loot tables unconditionally. Each override is the original table plus a `neoforge:item_exists` condition, so the table loads again automatically if the block exists. Since Dragons Plus 1.11.9 (mod ping-pong round 4, 24 September) the mod ships the same condition itself, so both overrides were removed.
 - `industrialforegoing/curios/entities/entities.json`: Industrial Foregoing's player slot list names `example` and `feet`, which no selected mod registers. The override removes exactly those two values and keeps the other ten slots.
 
 ## Keybindings

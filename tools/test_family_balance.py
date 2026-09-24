@@ -262,6 +262,31 @@ class FamilyBalanceTest(unittest.TestCase):
         self.assertIn('oritech:particle/nether_star', family['removals'])
         self.assertTrue(all(spec['op'] == 'disable' for spec in family['data']))
 
+    def test_round_four_stages_heliodor_solar_tech_and_psi(self):
+        family = balance.FAMILIES['pingpong4']
+        by_id = {change['id']: change for change in family['changes']}
+        self.assertEqual(by_id['create_new_age:shaped/basic_solar_heating_plate']['add'], balance.CF)
+        self.assertEqual(by_id['create_new_age:shaped/generator_coil']['add'], balance.EN)
+        self.assertEqual(by_id['create_new_age:mechanical_crafting/reactor_rod']['add'], balance.CS)
+        self.assertEqual(by_id['psi:assembler']['act'], 'II')
+        self.assertEqual({change['act'] for change in family['changes']}, {'II', 'III', 'IV'})
+        self.assertEqual({spec['op'] for spec in family['data']}, {'copy', 'disable'})
+
+    def test_copy_keeps_one_owner_of_a_shared_path_and_can_move_the_other(self):
+        path = 'data/patchouli/recipe/guide_book.json'
+        first = {'type': 'minecraft:crafting_shapeless', 'result': {'id': 'patchouli:guide_book'}, 'n': 1}
+        second = {'type': 'psi:trick_crafting', 'output': {'id': 'patchouli:guide_book'}, 'n': 2}
+        found = {path: [('alpha-1.jar', '', json.dumps(first).encode()), ('beta-2.jar', '', json.dumps(second).encode())]}
+        specs = [balance.copied(path, 'alpha-', '', owners=2),
+                 balance.copied(path, 'beta-', '', owners=2, to='data/beta/recipe/book.json')]
+        with unittest.mock.patch.dict(balance.FAMILIES, {'probe': {'data': specs}}):
+            out = {k: json.loads(v) for k, v in balance.build_data('probe', found).items()}
+        self.assertEqual(out, {'patchouli/recipe/guide_book.json': first, 'beta/recipe/book.json': second})
+        for spec in (balance.copied(path, 'alpha-', '', owners=3), balance.copied(path, 'gamma-', '', owners=2)):
+            with unittest.mock.patch.dict(balance.FAMILIES, {'probe': {'data': [spec]}}):
+                with self.assertRaises(AssertionError):
+                    balance.build_data('probe', found)
+
     def test_loop_check_catches_uncrafting_and_gate_leaks(self):
         lum = balance.LUMINOSITY['arcane']
         ingot = balance.created_shaped('t:ingot', 't:ingot', ['LXL', 'XXX', 'LXL'],

@@ -73,6 +73,14 @@ def without_values(path, field, values, why):
     return {'path': path, 'op': 'remove_values', 'field': field, 'values': list(values), 'why': why}
 
 
+def copied(path, source, why, *, owners, to=None):
+    """Write one named JAR's version of a data path that `owners` pinned JARs ship, unchanged.
+
+    Mod datapacks overwrite each other at a shared path; the pack keeps `source`'s file there (or at
+    `to`, a new ID, so both survive). `owners` is the exact number of JARs shipping the path."""
+    return {'path': path, 'op': 'copy', 'source': source, 'owners': owners, 'to': to or path, 'why': why}
+
+
 def rewritten(path, expect, value, why):
     """Replace whole top-level fields of an upstream data file; every other field stays native."""
     return {'path': path, 'op': 'rewrite', 'expect': expect, 'value': value, 'why': why}
@@ -109,6 +117,7 @@ EC, SL, HZ = 'entrelumen:ecosystem_capsule', 'entrelumen:spectral_lens', 'entrel
 CS, RE, AB = 'entrelumen:containment_seal', 'entrelumen:renewal_engine', 'entrelumen:ark_bus'
 PC, IS = 'entrelumen:propagation_core', 'entrelumen:inventory_sensor'
 CF = 'entrelumen:calibration_frame'
+EN = 'entrelumen:energy_coupler'
 
 # Spawner augments: act, the Apothic Spawners original item kept as the medallion's core, the
 # Apotheosis rarity material and the ENTRELUMEN component. Rarity follows World Tier drops:
@@ -367,10 +376,8 @@ FAMILIES = {
         ],
         'removals': [],
         'data': [
-            when_item_exists('data/create_dragons_plus/loot_table/blocks/fragile_fluid_tank.json',
-                             'create_dragons_plus:fragile_fluid_tank', 'Block is registered only with the optional Sable physics mod'),
-            when_item_exists('data/create_dragons_plus/loot_table/blocks/levitite_fragile_fluid_tank.json',
-                             'create_dragons_plus:levitite_fragile_fluid_tank', 'Block is registered only with the optional Sable physics mod'),
+            # Create: Dragons Plus 1.11.9 (mod ping-pong round 4) ships its fragile tank loot tables with the
+            # same neoforge:item_exists condition this family used to add, so those overrides are gone.
             without_values('data/industrialforegoing/curios/entities/entities.json', 'slots', ['example'],
                            'Curios slot type that no selected mod registers (Artifacts registers feet)'),
         ],
@@ -521,6 +528,48 @@ FAMILIES = {
         # removed spirit keys); disabled so the log stays clean, listed in docs/design/mod-pingpong.md.
         'data': [disabled(f"data/{rid.split(':')[0]}/recipe/{rid.split(':')[1]}.json", why)
                  for rid, why in PINGPONG_BROKEN_RECIPES],
+    },
+    # Round 4 of the mod ping-pong (docs/design/mod-pingpong.md): Create: New Age is Heliodor's solar and
+    # electric technology, so its key pieces carry the act components; Psi is Terra's programmable magic.
+    'pingpong4': {
+        'script': 'entrelumen_pingpong4_balance.js',
+        'tag': 'ENTRELUMEN_PINGPONG4_BALANCE',
+        'namespaces': {'create_new_age', 'esl', 'psi', 'create_central_kitchen', 'sliceanddice', 'nova_structures'},
+        'changes': [
+            shaped('create_new_age:shaped/basic_solar_heating_plate', 0, 1, tag('c:glass_blocks/colorless'), CF, 'II',
+                   'Solar heat for Create boilers: the Heliodor lens in the calibration frame'),
+            shaped('create_new_age:shaped/generator_coil', 0, 1, tag('c:ingots/copper'), EN, 'II',
+                   'Electricity from rotation: every New Age generator needs a coil'),
+            shaped('create_new_age:shaped/advanced_solar_heating_plate', 0, 1, tag('c:glass_blocks/colorless'), PR, 'III',
+                   'Stronger solar boiler heat'),
+            shaped('create_new_age:shaped/advanced_energiser', 1, 0, None, PR, 'III', 'Faster overcharging'),
+            shaped('create_new_age:shaped/advanced_motor', 0, 1, tag('c:nuggets/gold'), PR, 'III',
+                   'Second electric motor tier'),
+            shaped('create_new_age:shaped/reinforced_energiser', 2, 0, None, SL, 'IV', 'Fastest overcharging'),
+            shaped('create_new_age:mechanical_crafting/reinforced_motor', 0, 0, tag('c:gems/diamond'), SL, 'IV',
+                   'Top electric motor tier and its extension'),
+            shaped('create_new_age:mechanical_crafting/reactor_rod', 1, 0, None, CS, 'IV',
+                   'Thorium fission: every reactor needs rods'),
+            shaped('psi:assembler', 1, 1, None, CF, 'II', 'Every CAD, and so every Psi spell'),
+            shaped('psi:cad_core_hyperclocked', 0, 0, None, RM, 'III', 'Highest spell complexity'),
+            shaped('psi:cad_core_radiative', 0, 0, None, RM, 'III', 'Psigem core with the highest potency'),
+        ],
+        'removals': [],
+        'data': [
+            copied('data/patchouli/recipe/guide_book.json', 'pneumaticcraft-',
+                   "PneumaticCraft and Psi both ship their Patchouli book recipe at this ID; PneumaticCraft's keeps it",
+                   owners=2),
+            copied('data/patchouli/recipe/guide_book.json', 'Psi-',
+                   "Psi's Encyclopaedia Psionica recipe, unchanged, under its own ID so both books stay craftable",
+                   owners=2, to='data/psi/recipe/encyclopaedia_psionica.json'),
+            # Found by the first dedicated boot with round 4 (mods-r4-20260924/smoke1): both hidden
+            # advancements name the missing parent minecraft:root and fail to load, and wander_add_map
+            # rewards a function the JAR does not ship; disabled so the log stays clean.
+            disabled('data/minecraft/advancement/give_quest_trader_trade.json',
+                     "Dungeons and Taverns quest-trader hook whose parent minecraft:root does not exist in 1.21.1"),
+            disabled('data/minecraft/advancement/wander_add_map.json',
+                     "Dungeons and Taverns wandering-trader hook with a missing parent and a missing reward function"),
+        ],
     },
     'luminous': {
         'script': 'entrelumen_luminous_balance.js',
@@ -760,6 +809,15 @@ def build_data(name, found=None):
     outputs_by_path = {}
     for spec in family['data']:
         sources = found.get(spec['path'], [])
+        if spec['op'] == 'copy':
+            assert len(sources) == spec['owners'], \
+                f"{spec['path']}: expected {spec['owners']} pinned owners, found {len(sources)}"
+            chosen = [s for s in sources if s[0].startswith(spec['source'])]
+            assert len(chosen) == 1, f"{spec['path']}: expected one file from {spec['source']}"
+            target = spec['to'][len('data/'):]
+            assert target not in outputs_by_path, f"{spec['to']}: written twice"
+            outputs_by_path[target] = json.dumps(json.loads(chosen[0][2]), indent=2, ensure_ascii=False) + '\n'
+            continue
         if spec.get('source'):
             # Another pinned JAR may ship the same path; it must only be a disabled placeholder.
             others = [s for s in sources if not s[0].startswith(spec['source'])]
