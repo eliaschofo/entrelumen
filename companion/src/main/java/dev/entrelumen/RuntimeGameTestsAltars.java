@@ -10,6 +10,8 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.function.BooleanSupplier;
 import java.util.function.Consumer;
 import net.minecraft.core.BlockPos;
@@ -66,6 +68,16 @@ import org.slf4j.Logger;
 @PrefixGameTestTemplate(false)
 public final class RuntimeGameTestsAltars {
   private static final Logger LOGGER = LogUtils.getLogger();
+  /**
+   * The noise test's own worker. The GameTest server ticks without pausing, so tick limits are
+   * short in wall time: its three heavy regenerations must not queue ahead of the altars' own
+   * references on the shared altar worker, or the concurrent renewal tests time out.
+   */
+  private static final ExecutorService NOISE_WORKER = Executors.newSingleThreadExecutor(task -> {
+    Thread thread = new Thread(task, "Entrelumen altar QA noise reference");
+    thread.setDaemon(true);
+    return thread;
+  });
   private static final int EXTENT = 40;
   private static final int RADIUS = 10;
   private static final BlockPos ALTAR = new BlockPos(20, 1, 20);
@@ -531,9 +543,13 @@ public final class RuntimeGameTestsAltars {
     List<ChunkPos> area = new ArrayList<>();
     for (int dx = -1; dx <= 1; dx++)
       for (int dz = -1; dz <= 1; dz++) area.add(new ChunkPos(center.x + dx, center.z + dz));
-    CompletableFuture<TerrainReference.Region> first = TerrainReference.generate(setup, List.of(center), () -> false);
-    CompletableFuture<TerrainReference.Region> second = TerrainReference.generate(setup, List.of(center), () -> false);
-    CompletableFuture<TerrainReference.Region> wide = TerrainReference.generate(setup, area, () -> false);
+    area.sort(java.util.Comparator.comparingInt((ChunkPos pos) -> pos.x).thenComparingInt(pos -> pos.z));
+    CompletableFuture<TerrainReference.Region> first = CompletableFuture.supplyAsync(
+        () -> TerrainReference.build(setup, List.of(center), () -> false), NOISE_WORKER);
+    CompletableFuture<TerrainReference.Region> second = CompletableFuture.supplyAsync(
+        () -> TerrainReference.build(setup, List.of(center), () -> false), NOISE_WORKER);
+    CompletableFuture<TerrainReference.Region> wide = CompletableFuture.supplyAsync(
+        () -> TerrainReference.build(setup, List.copyOf(area), () -> false), NOISE_WORKER);
     await(helper, () -> first.isDone() && second.isDone() && wide.isDone(), 0, 3900, "Noise reference", () -> {
       var one = first.join();
       var two = second.join();

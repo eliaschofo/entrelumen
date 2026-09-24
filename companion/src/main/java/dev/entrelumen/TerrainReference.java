@@ -396,6 +396,8 @@ final class TerrainReference {
     private final LevelHeightAccessor height;
     private final Region region;
     private final Map<BlockPos, BlockEntity> entities = new ConcurrentHashMap<>();
+    /** Bee nests the decorators placed; kept out of the chunks (see {@link #write}). */
+    private final Set<BlockPos> nests = ConcurrentHashMap.newKeySet();
     private final WorldBorder border = new WorldBorder();
     /** Answers for chunks outside the sandbox: no terrain, no structure references or starts. */
     private final ProtoChunk empty;
@@ -446,6 +448,15 @@ final class TerrainReference {
 
     private boolean write(BlockPos pos, BlockState state) {
       if (!writable(pos)) return false;
+      if (state.is(Blocks.BEE_NEST)) {
+        // Vanilla's BeehiveDecorator picks the nest's side with an unseeded Collections.shuffle, so
+        // no regeneration can reproduce where it went. The nest stays virtual: the decorator still
+        // gets its hive and draws its bees from the feature random as in vanilla, while the
+        // reference keeps air there. The altar never restores block entities such as nests.
+        nests.add(pos.immutable());
+        return true;
+      }
+      nests.remove(pos);
       chunk(pos.getX() >> 4, pos.getZ() >> 4).setBlockState(pos, state, false);
       BlockEntity existing = entities.get(pos);
       if (existing != null && !existing.getType().isValid(state)) entities.remove(pos);
@@ -456,7 +467,7 @@ final class TerrainReference {
       BlockPos key = pos.immutable();
       BlockEntity existing = entities.get(key);
       if (existing != null) return existing;
-      BlockState state = state(key);
+      BlockState state = nests.contains(key) ? Blocks.BEE_NEST.defaultBlockState() : state(key);
       if (!state.hasBlockEntity() || !(state.getBlock() instanceof EntityBlock block)) return null;
       BlockEntity created = block.newBlockEntity(key, state);
       if (created != null) entities.put(key, created);
