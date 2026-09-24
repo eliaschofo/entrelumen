@@ -4,7 +4,7 @@ Implements Elias's direction of 24 September 2026 ([story bible](story-bible.md)
 
 Status:
 
-- **The start ruin template is PROVISIONAL.** It is a minimal symmetric tuff patio; the controller designs the real ruin.
+- **The start ruin is the controller's design of 24 September** (a round sun patio, section 2). It is a sketch like the rest of the art: no in-game visual review yet.
 - **The objective list is a DRAFT** until Elias defines the anchor ruins.
 - **The pedestal model is PROVISIONAL.** It reuses chiseled tuff textures. The compass model is the one `art/build_art.py` generates on `main` (integration of 24 September): Heliodor needle frames coloured by destination dimension, grey for `state` >= 3.
 - Nothing here has had in-game visual or pacing review. The full-pack checks below have not run yet; they are pending integration.
@@ -60,13 +60,15 @@ Implemented by `HeliodorRuins`, with `RuinData` as the registry.
 - **Site.** The search starts at the vanilla spawn. Candidate centres are sampled every 4 blocks in square rings up to 64 blocks away. A footprint is rejected over water, lava or tree trunks. The first footprint with at most 2 blocks of height spread and no canopy wins. Otherwise the best one seen wins (spread, canopy and distance). The floor height is the most common ground level across the footprint.
 - **Anchoring.** Dips under the floor are filled downwards with the floor block itself, or tuff when that block is not a full cube, down to 12 blocks. The ruin never floats.
 - **Spawn.** The arrival point is the middle of the south side, one block outside the ruin, on safe ground; the other sides are fallbacks. The world spawn moves there, facing the ruin. A brand-new player on first login (zero play time, no bed) is placed exactly on the arrival point. Vanilla spawn fuzz would otherwise scatter them within `spawnRadius`. Returning players are never moved.
-- **Provisional template** (`tools/build_heliodor_ruin_start.py`, deterministic, `--check` verifies the committed file). A 7×3×7 patio:
-  - polished tuff border and tuff brick floor;
-  - four oxidized copper veins leading to a chiseled tuff centre;
-  - chiseled tuff brick corner pillars topped with tuff brick wall posts;
+- **Template** (design `art/structures/ruin_start.py`, serialised by `tools/build_heliodor_ruin_start.py`, deterministic; `--check` verifies the committed file). A 15×9×15 sun patio:
+  - a round tuff floor (radius 7) with a polished tuff rim, a calcite ring and an oxidized-copper sun of eight rays around a chiseled tuff centre; pearlescent froglights glow at the four diagonals of the pedestal;
+  - eight quartz columns on chiseled tuff brick bases: the four on the axes stand, capped in oxidized copper, and carry the broken stumps of a copper dome; the four on the diagonals broke at two blocks and their capitals lie on the grass outside the rim;
+  - moss, short grass and moss carpet in a deterministic crack pattern; ferns and azaleas on the grass around;
   - the pedestal in the middle.
 
-  It is symmetric under every rotation and mirror.
+  It is symmetric under every rotation and mirror (`Voxels.is_symmetric()` asserts it). Floor cells outside the round patio are left out, so the terrain stays; `pourFoundation` levels a dip there with the ground found under it, floor cell included, instead of pouring tuff under a hole. Every other empty cell of the box is air, clearing grass and bushes.
+
+  References inspected before drawing (rendered from the 1.21.1 server JAR with `art/structures/voxkit.py`): `data/minecraft/structure/trial_chambers/chamber/pedestal/quadrant_2.nbt` (tuff and oxidized copper as a single palette), `trail_ruins/tower/tower_1.nbt` (small buried ruin scale) and `ancient_city/city_center/city_center_1.nbt` (a symmetric frame around a centrepiece).
 
 ### Ruin registry for the protection system
 

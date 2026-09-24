@@ -184,17 +184,24 @@ public final class HeliodorRuins {
     level.getChunk(x >> 4, z >> 4);
   }
 
-  /** Fills dips under the floor layer with the floor block itself, so nothing floats. */
+  /**
+   * Fills dips under the floor layer with the floor block itself, so nothing floats. Floor cells
+   * the template leaves to the terrain (a round ruin's corners) are levelled with the ground found
+   * under them instead, floor cell included.
+   */
   private static int pourFoundation(ServerLevel level, BoundingBox box) {
     int lowest = box.minY();
     for (int x = box.minX(); x <= box.maxX(); x++)
       for (int z = box.minZ(); z <= box.maxZ(); z++) {
-        BlockState floor = level.getBlockState(new BlockPos(x, box.minY(), z));
+        BlockPos floorPos = new BlockPos(x, box.minY(), z);
+        BlockState floor = level.getBlockState(floorPos);
+        boolean open = floor.canBeReplaced();
+        if (open) floor = groundBelow(level, floorPos);
         BlockState fill =
-            floor.isCollisionShapeFullBlock(level, new BlockPos(x, box.minY(), z))
+            floor.isCollisionShapeFullBlock(level, floorPos)
                 ? floor
                 : Blocks.TUFF.defaultBlockState();
-        for (int y = box.minY() - 1; y >= box.minY() - MAX_FOUNDATION; y--) {
+        for (int y = box.minY() - (open ? 0 : 1); y >= box.minY() - MAX_FOUNDATION; y--) {
           BlockPos pos = new BlockPos(x, y, z);
           BlockState state = level.getBlockState(pos);
           if (!state.canBeReplaced() && !state.is(BlockTags.LEAVES)) break;
@@ -203,6 +210,15 @@ public final class HeliodorRuins {
         }
       }
     return lowest;
+  }
+
+  /** The first solid terrain block under a floor cell, or tuff when the dip is deeper than a foundation. */
+  private static BlockState groundBelow(ServerLevel level, BlockPos floorPos) {
+    for (int dy = 1; dy <= MAX_FOUNDATION; dy++) {
+      BlockState state = level.getBlockState(floorPos.below(dy));
+      if (!state.canBeReplaced() && !state.is(BlockTags.LEAVES)) return state;
+    }
+    return Blocks.TUFF.defaultBlockState();
   }
 
   /** Middle of the south side, then the other sides; last resort, on the floor at the center. */
