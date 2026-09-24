@@ -17,7 +17,10 @@ import net.neoforged.fml.ModList;
 import net.neoforged.neoforge.gametest.GameTestHolder;
 import net.neoforged.neoforge.gametest.PrefixGameTestTemplate;
 
-/** Native loaded recipes, including the original provisions route and bowl returns. */
+/**
+ * Native loaded recipes, including the original provisions route and bowl returns, and the
+ * satiety overflow measured on a real Farmer's Delight pie eaten in place.
+ */
 @GameTestHolder("entrelumen")
 @PrefixGameTestTemplate(false)
 public final class CookingProvisionsGameTests {
@@ -85,5 +88,46 @@ public final class CookingProvisionsGameTests {
     if (!BuiltInRegistries.ITEM.containsKey(key) || BuiltInRegistries.ITEM.get(key) == Items.AIR)
       throw new IllegalStateException("Missing native provisions item " + id);
     return new ItemStack(BuiltInRegistries.ITEM.get(key));
+  }
+
+  /**
+   * PENDING: written on 24 September 2026, not yet run on the installed pack. A bite of the real
+   * {@code farmersdelight:apple_pie} block at 19/20 hunger and 19 saturation must be measured
+   * through the block window with the slice's own values (3 hunger, 1.8 saturation): 2 + 0.8
+   * surplus points of glut, whatever effects the slice itself gives.
+   */
+  @GameTest(template = "empty", timeoutTicks = 100)
+  public static void farmersDelightPieBiteCountsAsSatietySurplus(GameTestHelper helper) {
+    if (!ModList.get().isLoaded("farmersdelight")) throw new IllegalStateException("Farmer's Delight is absent");
+    var level = helper.getLevel();
+    var pie = BuiltInRegistries.BLOCK.get(ResourceLocation.parse("farmersdelight:apple_pie"));
+    var pos = helper.absolutePos(new net.minecraft.core.BlockPos(1, 2, 1));
+    level.setBlockAndUpdate(pos, pie.defaultBlockState());
+    var cookie = net.minecraft.server.network.CommonListenerCookie.createInitial(
+        new com.mojang.authlib.GameProfile(java.util.UUID.randomUUID(), "PieQA"), false);
+    var player = new net.minecraft.server.level.ServerPlayer(level.getServer(), level, cookie.gameProfile(),
+        cookie.clientInformation());
+    var connection = new net.minecraft.network.Connection(net.minecraft.network.protocol.PacketFlow.SERVERBOUND);
+    var channel = new io.netty.channel.embedded.EmbeddedChannel(connection);
+    try {
+      net.neoforged.neoforge.network.registration.NetworkRegistry.configureMockConnection(connection);
+      level.getServer().getPlayerList().placeNewPlayer(connection, player, cookie);
+      player.setGameMode(net.minecraft.world.level.GameType.SURVIVAL);
+      player.getInventory().clearContent();
+      player.getFoodData().setFoodLevel(19);
+      player.getFoodData().setSaturation(19);
+      player.gameMode.useItemOn(player, level, ItemStack.EMPTY, net.minecraft.world.InteractionHand.MAIN_HAND,
+          new net.minecraft.world.phys.BlockHitResult(net.minecraft.world.phys.Vec3.atCenterOf(pos),
+              net.minecraft.core.Direction.UP, pos, false));
+      SatietyOverflowEvents.closeBites();
+      double glut = player.getPersistentData().getCompound("entrelumen_satiety").getDouble("glut");
+      helper.assertTrue(player.getFoodData().getFoodLevel() == 20 && Math.abs(glut - 2.8) < 1e-3,
+          "The pie bite was not measured as 2.8 surplus points: glut " + glut);
+    } finally {
+      connection.disconnect(net.minecraft.network.chat.Component.literal("Pie QA finished"));
+      connection.handleDisconnection();
+      channel.finishAndReleaseAll();
+    }
+    helper.succeed();
   }
 }

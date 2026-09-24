@@ -88,7 +88,7 @@ Con los números nuevos, el set luminoso supera todos los valores base del pack,
 - la absorción de hasta el 100 % del daño de la MekaSuit (`unspecifiedDamageReductionRatio = 1.0`);
 - el escudo caótico de Draconic, con módulos de daño de +16 cada uno.
 
-Superar eso exigiría invulnerabilidad. Queda como decisión abierta de Elias.
+Superar eso exigiría invulnerabilidad. Decisión de Elias (24/9): se deja así. El luminoso es más barato y no usa energía; MekaSuit y Draconic caótico siguen siendo el techo para quien arme la infraestructura.
 
 ## Silent Gear y luz dinámica
 

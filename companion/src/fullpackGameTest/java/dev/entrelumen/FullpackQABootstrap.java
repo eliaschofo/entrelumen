@@ -62,6 +62,7 @@ public final class FullpackQABootstrap {
       GameTestRegistry.register(AltarFullpackGameTests.class);
       GameTestRegistry.register(AltarEffectsFullpackGameTests.class);
       GameTestRegistry.register(LuminousGameTests.class);
+      GameTestRegistry.register(StartWithoutBloatFullpackGameTests.class);
       Set<String> expected = new TreeSet<>();
       for (Class<?> owner : List.of(RuntimeGameTests.class, FullpackGameTests.class,
           ResourceFarmGameTests.class, Ae2CraftingGameTests.class, RFToolsRecipeGameTests.class,
@@ -71,7 +72,8 @@ public final class FullpackQABootstrap {
           MechanicalChiselGameTests.class, TeamRestartGameTests.class, BackupRestoreGameTests.class,
           LogisticsProvisioningGameTests.class, LogisticsRestartGameTests.class,
           NatureRestorationGameTests.class, ArkChartsGameTests.class, ApotheosisGameTests.class,
-          AltarFullpackGameTests.class, AltarEffectsFullpackGameTests.class, LuminousGameTests.class))
+          AltarFullpackGameTests.class, AltarEffectsFullpackGameTests.class, LuminousGameTests.class,
+          StartWithoutBloatFullpackGameTests.class))
         for (var method : owner.getDeclaredMethods())
           if (method.isAnnotationPresent(GameTest.class))
             expected.add(method.getName().toLowerCase(Locale.ROOT));

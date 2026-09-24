@@ -1,0 +1,138 @@
+{
+  "draft": true,
+  "note": "DRAFT until Elias defines the anchor ruins. Order is campaign order. advance_when prefers campaign milestones and story bosses so a missing nearby structure never blocks guidance. Radius is in blocks, at most 1500. Objectives whose mods are absent are skipped. Source of truth; the companion build copies it to data/entrelumen/compass/targets.json.",
+  "objectives": [
+    {
+      "id": "heliodor_ruin",
+      "act": 1,
+      "kind": "structure",
+      "target": {"type": "anchor", "anchor": "entrelumen:heliodor_ruin_start"},
+      "advance_when": {"type": "milestone", "milestone": "atlas_awakened"},
+      "lore": true
+    },
+    {
+      "id": "village_survey",
+      "act": 1,
+      "kind": "structure",
+      "target": {"type": "structure", "structure": "#minecraft:village"},
+      "advance_when": {"type": "milestone", "milestone": "field_survey"},
+      "lore": true
+    },
+    {
+      "id": "trial_chambers",
+      "act": 1,
+      "kind": "structure",
+      "target": {"type": "structure", "structure": "minecraft:trial_chambers"},
+      "advance_when": {"type": "milestone", "milestone": "first_signal"},
+      "lore": true
+    },
+    {
+      "id": "trail_ruins",
+      "act": 2,
+      "kind": "artifact",
+      "target": {"type": "structure", "structure": "minecraft:trail_ruins"},
+      "advance_when": {"type": "milestone", "milestone": "lost_workshop"},
+      "lore": true
+    },
+    {
+      "id": "nether_fortress",
+      "act": 3,
+      "kind": "structure",
+      "mods": ["betterfortresses"],
+      "target": {"type": "structure", "structure": "betterfortresses:fortress", "dimension": "minecraft:the_nether"},
+      "advance_when": {"type": "item", "item": "minecraft:blaze_rod"}
+    },
+    {
+      "id": "twilight_forest",
+      "act": 3,
+      "kind": "structure",
+      "mods": ["twilightforest"],
+      "target": {"type": "dimension", "dimension": "twilightforest:twilight_forest"},
+      "advance_when": {"type": "milestone", "milestone": "twilight_arrival"},
+      "lore": true
+    },
+    {
+      "id": "naga_courtyard",
+      "act": 3,
+      "kind": "boss",
+      "mods": ["twilightforest"],
+      "target": {"type": "structure", "structure": "twilightforest:naga_courtyard", "dimension": "twilightforest:twilight_forest"},
+      "advance_when": {"type": "advancement", "advancement": "twilightforest:progress_naga"}
+    },
+    {
+      "id": "the_aether",
+      "act": 4,
+      "kind": "structure",
+      "mods": ["aether"],
+      "target": {"type": "dimension", "dimension": "aether:the_aether"},
+      "advance_when": {"type": "milestone", "milestone": "aether_arrival"},
+      "lore": true
+    },
+    {
+      "id": "bronze_dungeon",
+      "act": 4,
+      "kind": "boss",
+      "mods": ["aether"],
+      "target": {"type": "structure", "structure": "aether:bronze_dungeon", "dimension": "aether:the_aether"},
+      "advance_when": {"type": "advancement", "advancement": "aether:bronze_dungeon"}
+    },
+    {
+      "id": "lich_tower",
+      "act": 4,
+      "kind": "boss",
+      "mods": ["twilightforest"],
+      "target": {"type": "structure", "structure": "twilightforest:lich_tower", "dimension": "twilightforest:twilight_forest"},
+      "advance_when": {"type": "advancement", "advancement": "twilightforest:progress_lich"}
+    },
+    {
+      "id": "bumblezone",
+      "act": 4,
+      "kind": "structure",
+      "mods": ["the_bumblezone"],
+      "target": {"type": "dimension", "dimension": "the_bumblezone:the_bumblezone"},
+      "advance_when": {"type": "milestone", "milestone": "bumblezone_arrival"},
+      "lore": true
+    },
+    {
+      "id": "silver_dungeon",
+      "act": 5,
+      "kind": "boss",
+      "mods": ["aether"],
+      "target": {"type": "structure", "structure": "aether:silver_dungeon", "dimension": "aether:the_aether"},
+      "advance_when": {"type": "advancement", "advancement": "aether:silver_dungeon"}
+    },
+    {
+      "id": "gold_dungeon",
+      "act": 5,
+      "kind": "boss",
+      "mods": ["aether"],
+      "target": {"type": "structure", "structure": "aether:gold_dungeon", "dimension": "aether:the_aether"},
+      "advance_when": {"type": "advancement", "advancement": "aether:gold_dungeon"},
+      "lore": true
+    },
+    {
+      "id": "ocean_monument",
+      "act": 6,
+      "kind": "boss",
+      "mods": ["betteroceanmonuments"],
+      "target": {"type": "structure", "structure": "betteroceanmonuments:ocean_monument"},
+      "advance_when": {"type": "item", "item": "minecraft:wet_sponge"}
+    },
+    {
+      "id": "stronghold",
+      "act": 6,
+      "kind": "structure",
+      "mods": ["betterstrongholds"],
+      "target": {"type": "structure", "structure": "betterstrongholds:stronghold"},
+      "advance_when": {"type": "milestone", "milestone": "end_arrival"}
+    },
+    {
+      "id": "the_end",
+      "act": 6,
+      "kind": "boss",
+      "target": {"type": "dimension", "dimension": "minecraft:the_end"},
+      "advance_when": {"type": "advancement", "advancement": "minecraft:end/kill_dragon"},
+      "lore": true
+    }
+  ]
+}
