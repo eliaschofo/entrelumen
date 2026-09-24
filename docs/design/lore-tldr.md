@@ -1,0 +1,9 @@
+# ENTRELUMEN: el lore en corto (24/9/2026)
+
+Heliodor era una civilización solarpunk de cobre, vidrio y jardines. Su gobernante, Aurelia, empujó la fusión de la luminosidad con la tecnología para controlarla. El gobierno obligó a Terra, la inventora, a construir la máquina, y Bodhi, el sacerdote, avisó que iba a ser una catástrofe. La fusión falló y Heliodor quedó congelada en un limbo de luz, **el Entrelumen**, con su capital, Solsticio, adentro. En el mundo quedaron ruinas.
+
+Arrancás al lado de una ruina, sin nada. Ahí encontrás la **Brújula de Heliodor**, que te lleva hasta el **Atlas**. Terra lo construyó desde adentro de la luz y te habla en fragmentos con interferencia. En cada acto, una ruina te revela un pedazo de la historia: el Patio del Atlas, el Taller hundido, el Invernadero-domo y el Observatorio. En el acto IV, el Templo de la Luz Sagrada te muestra qué fue la fusión. Al final de ese acto vencés al Sun Spirit y recuperás el **Corazón de Heliodor**, el cristal sagrado de Bodhi que el Sun Spirit había confiscado. Con él, el Atlas habla claro.
+
+En el acto V construís el **Arca**, ya sabiendo todo. El Arca forja la **Llave de Luz**, que abre el paso una sola vez, se rompe y te queda como llave personal para volver. En el acto VI llegás a **Solsticio** y hacés misiones para sus personajes. Juan te da una semilla bioingenierizada con luminosidad. Terra te da el Terraprisma, su obra maestra. Bodhi bendice el cristal cuando se lo devolvés. Al final convencés a Aurelia y a Bodhi de que colaboren: ella deja de ser autócrata y llama a elecciones, él entrega el cristal, se abre el portal y el Entrelumen queda libre.
+
+En el posgame, Aurelia es reelegida por su buen gobierno, aunque los aldeanos siguen murmurando sospechas de corrupción. Tenés tu lote en la ciudad, la sala de comercio y las Luminosidades para craftear los ítems creativos.
