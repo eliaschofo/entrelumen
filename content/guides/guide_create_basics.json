@@ -1,0 +1,887 @@
+{
+ "chapter": "guide_create_basics",
+ "group": "tech",
+ "act": "I",
+ "icon": "create:cogwheel",
+ "title": {
+  "en_us": "Create: rotation and processing",
+  "es_es": "Create: rotación y procesamiento"
+ },
+ "subtitle": {
+  "en_us": "Shafts, cogs, water wheels and your first machines. Everything in Create runs on rotation.",
+  "es_es": "Ejes, engranajes, ruedas hidráulicas y tus primeras máquinas. En Create todo funciona con rotación."
+ },
+ "quests": [
+  {
+   "key": "crb_welcome",
+   "deps": [],
+   "type": "checkmark",
+   "icon": "create:cogwheel",
+   "layout": {
+    "x": 0,
+    "y": 0,
+    "size": 2.0,
+    "shape": "hexagon"
+   },
+   "en_us": [
+    "Welcome to Create",
+    "Create builds machines out of moving parts instead of electricity. A source makes rotation, shafts and cogs carry it, and machines spend it to press, mix, grind, move and build.\n\nIn ENTRELUMEN, Create is the first real workshop: several act components lean on its sheets, alloy and precision mechanisms. You can do it all by hand at first; Create is how you stop doing it by hand."
+   ],
+   "es_es": [
+    "Bienvenida a Create",
+    "Create arma máquinas con piezas que se mueven, no con electricidad. Una fuente genera rotación, los ejes y engranajes la llevan y las máquinas la gastan para prensar, mezclar, moler, mover y construir.\n\nEn ENTRELUMEN, Create es el primer taller de verdad: los componentes de acto usan sus láminas, su aleación y, más adelante, sus mecanismos de precisión. Al principio podés hacer todo a mano; Create es la forma de dejar de hacerlo a mano."
+   ],
+   "sources": [
+    "jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#advancement.create.root",
+    "jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#advancement.create.andesite_alloy"
+   ]
+  },
+  {
+   "key": "crb_ponder",
+   "deps": [
+    "crb_welcome"
+   ],
+   "type": "checkmark",
+   "icon": "minecraft:book",
+   "layout": {
+    "x": 0,
+    "y": -2.5,
+    "size": 1.0,
+    "shape": "circle"
+   },
+   "en_us": [
+    "Ponder: the built-in manual",
+    "Hover any Create block in your inventory or in EMI and hold the Ponder key (W by default). An animated scene shows how the block works, step by step, with the exact rules.\n\nWhenever this chapter is short on detail, Ponder is the long version. Most addons in the pack (New Age, Crafts and Additions, Connected, Enchantment Industry) ship their own scenes too."
+   ],
+   "es_es": [
+    "Ponder: el manual incorporado",
+    "Pasá el cursor sobre cualquier bloque de Create en tu inventario o en EMI y mantené la tecla de Ponder (W por defecto). Una escena animada muestra cómo funciona, paso a paso y con las reglas exactas.\n\nCuando a este capítulo le falte detalle, Ponder es la versión larga. Casi todos los addons del pack (New Age, Crafts and Additions, Connected, Enchantment Industry) traen sus propias escenas."
+   ],
+   "sources": [
+    "jar:create-1.21.1-6.0.10.jar:META-INF/jarjar/ponder-neoforge-1.0.82+mc1.21.1.jar#net/createmod/ponder/enums/PonderKeybinds.class",
+    "jar:create-1.21.1-6.0.10.jar:assets/create/ponder"
+   ]
+  },
+  {
+   "key": "crb_alloy",
+   "deps": [
+    "crb_welcome"
+   ],
+   "type": "item",
+   "item": "create:andesite_alloy",
+   "count": 16,
+   "layout": {
+    "x": 3,
+    "y": 0,
+    "size": 1.5,
+    "shape": "hexagon"
+   },
+   "en_us": [
+    "Andesite Alloy",
+    "Craft andesite and iron nuggets in a 2x2 checkerboard: two of each give one Andesite Alloy. Zinc nuggets work instead of iron. Later a Mixer makes it from one andesite and one nugget.\n\nThis is the most used material of the early Create age: shafts, casings, belts, funnels and half the machines start here. Keep a stack on hand."
+   ],
+   "es_es": [
+    "Aleación de andesita",
+    "Crafteá andesita y pepitas de hierro en damero de 2x2: dos de cada una dan una Aleación de andesita. También sirven pepitas de zinc en lugar de hierro. Más adelante, la Mezcladora la hace con una andesita y una pepita.\n\nEs el material más usado del principio de Create: ejes, carcasas, cintas, embudos y la mitad de las máquinas arrancan acá. Tené siempre un stack."
+   ],
+   "sources": [
+    "jar:create-1.21.1-6.0.10.jar:data/create/recipe/crafting/materials/andesite_alloy.json",
+    "jar:create-1.21.1-6.0.10.jar:data/create/recipe/crafting/materials/andesite_alloy_from_zinc.json",
+    "jar:create-1.21.1-6.0.10.jar:data/create/recipe/mixing/andesite_alloy.json",
+    "jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#advancement.create.andesite_alloy"
+   ]
+  },
+  {
+   "key": "crb_shafts",
+   "deps": [
+    "crb_alloy"
+   ],
+   "type": "item",
+   "item": "create:cogwheel",
+   "count": 8,
+   "layout": {
+    "x": 5,
+    "y": 0,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Shafts and Cogwheels",
+    "Two alloys stacked give 8 Shafts; a shaft plus any plank gives a Cogwheel. Shafts carry rotation in a straight line. Cogwheels pass it to the cogwheels touching them, and each neighbour spins the opposite way.\n\nThat direction flip matters: some machines only work turning one way. If something runs backwards, add or remove one cog in the chain."
+   ],
+   "es_es": [
+    "Ejes y engranajes",
+    "Dos aleaciones una sobre otra dan 8 Ejes; un eje más cualquier tabla da un Engranaje. Los ejes llevan la rotación en línea recta. Los engranajes la pasan a los que tocan, y cada vecino gira al revés.\n\nEse cambio de sentido importa: algunas máquinas sólo funcionan girando para un lado. Si algo anda al revés, sumá o sacá un engranaje de la cadena."
+   ],
+   "sources": [
+    "jar:create-1.21.1-6.0.10.jar:data/create/recipe/crafting/kinetics/shaft.json",
+    "jar:create-1.21.1-6.0.10.jar:data/create/recipe/crafting/kinetics/cogwheel.json",
+    "jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#create.ponder.shaft",
+    "jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#create.ponder.cogwheel"
+   ]
+  },
+  {
+   "key": "crb_large_cog",
+   "deps": [
+    "crb_shafts"
+   ],
+   "type": "item",
+   "item": "create:large_cogwheel",
+   "optional": true,
+   "layout": {
+    "x": 5,
+    "y": -2,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Changing speed",
+    "A Large Cogwheel meshes diagonally with a small one. Going from large to small doubles the speed; small to large halves it. Two large cogwheels can also meet at a right angle to change axis.\n\nFaster is not free: machines work quicker, but they also draw more stress (next steps). Speed up only what needs it."
+   ],
+   "es_es": [
+    "Cambiar la velocidad",
+    "Un Engranaje grande se engrana en diagonal con uno chico. De grande a chico la velocidad se duplica; de chico a grande se reduce a la mitad. Dos engranajes grandes también se cruzan en ángulo recto para cambiar de eje.\n\nIr más rápido no es gratis: las máquinas trabajan antes, pero piden más estrés (lo vemos después). Acelerá sólo lo que lo necesita."
+   ],
+   "sources": [
+    "jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#create.ponder.cog_speedup",
+    "jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#create.ponder.large_cogwheel",
+    "jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#advancement.create.shifting_gears"
+   ]
+  },
+  {
+   "key": "crb_gearbox",
+   "deps": [
+    "crb_shafts"
+   ],
+   "type": "item",
+   "item": "create:gearbox",
+   "optional": true,
+   "layout": {
+    "x": 5,
+    "y": 2,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Gearbox",
+    "Four cogwheels around an Andesite Casing make a Gearbox: a compact block that turns rotation around corners. Outputs around a corner spin mirrored; the straight-through side is reversed.\n\nUse it instead of a tangle of cogs when you need to split power to several sides."
+   ],
+   "es_es": [
+    "Caja de engranajes",
+    "Cuatro engranajes alrededor de una Carcasa de andesita forman una Caja de engranajes: un bloque compacto que dobla la rotación en las esquinas. Las salidas en esquina giran en espejo; la salida recta queda invertida.\n\nUsala en vez de un nudo de engranajes cuando necesites repartir la fuerza hacia varios lados."
+   ],
+   "sources": [
+    "jar:create-1.21.1-6.0.10.jar:data/create/recipe/crafting/kinetics/gearbox.json",
+    "jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#create.ponder.gearbox"
+   ]
+  },
+  {
+   "key": "crb_water_wheel",
+   "deps": [
+    "crb_shafts"
+   ],
+   "type": "item",
+   "item": "create:water_wheel",
+   "layout": {
+    "x": 7.5,
+    "y": 0,
+    "size": 1.5,
+    "shape": "hexagon"
+   },
+   "en_us": [
+    "Water Wheel",
+    "Eight planks around a shaft make a Water Wheel. It turns from water flowing past it; covering extra sides with water does not add power. Put it where a river or a waterfall moves, or make a short running stream.\n\nIt is the easiest steady power in the early game: no fuel, no upkeep. You can re-skin it with any wood plank."
+   ],
+   "es_es": [
+    "Rueda hidráulica",
+    "Ocho tablas alrededor de un eje forman una Rueda hidráulica. Gira con agua que corre a su lado; mojar más caras no suma fuerza. Ponela donde se mueva un río o una cascada, o armá un arroyito que corra.\n\nEs la energía constante más fácil del principio: sin combustible ni mantenimiento. Podés cambiarle la madera con cualquier tabla."
+   ],
+   "sources": [
+    "jar:create-1.21.1-6.0.10.jar:data/create/recipe/crafting/kinetics/water_wheel.json",
+    "jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#create.ponder.water_wheel",
+    "jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#advancement.create.water_wheel"
+   ]
+  },
+  {
+   "key": "crb_large_wheel",
+   "deps": [
+    "crb_water_wheel"
+   ],
+   "type": "item",
+   "item": "create:large_water_wheel",
+   "optional": true,
+   "layout": {
+    "x": 7.5,
+    "y": -2,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Large Water Wheel",
+    "Surround a Water Wheel with planks to make a Large Water Wheel. It spins at half the speed of the small one but supplies much more stress capacity.\n\nPair it with a large-to-small cog step to get the speed back."
+   ],
+   "es_es": [
+    "Rueda hidráulica grande",
+    "Rodeá una Rueda hidráulica con tablas y tenés una Rueda hidráulica grande. Gira a la mitad de velocidad que la chica, pero aporta mucha más capacidad de estrés.\n\nCombinala con un paso de engranaje grande a chico para recuperar velocidad."
+   ],
+   "sources": [
+    "jar:create-1.21.1-6.0.10.jar:data/create/recipe/crafting/kinetics/large_water_wheel.json",
+    "jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#create.ponder.large_water_wheel"
+   ]
+  },
+  {
+   "key": "crb_windmill",
+   "deps": [
+    "crb_water_wheel"
+   ],
+   "type": "item",
+   "item": "create:windmill_bearing",
+   "optional": true,
+   "layout": {
+    "x": 9.5,
+    "y": -2,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Windmill",
+    "A Windmill Bearing turns a glued structure into a windmill. It needs at least 8 sail-like blocks (Sails or Sail Frames, which stick to each other without glue). Right-click the bearing to start it; more sails mean more speed.\n\nGood where there is no water. Right-click again to stop it and edit the blades."
+   ],
+   "es_es": [
+    "Molino de viento",
+    "Un Rodamiento de molino convierte una estructura pegada en un molino. Necesita al menos 8 bloques tipo vela (Velas o Marcos de vela, que se pegan entre sí sin pegamento). Hacé clic derecho en el rodamiento para arrancarlo; más velas, más velocidad.\n\nSirve donde no hay agua. Otro clic derecho lo frena para editar las aspas."
+   ],
+   "sources": [
+    "jar:create-1.21.1-6.0.10.jar:data/create/recipe/crafting/kinetics/windmill_bearing.json",
+    "jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#create.ponder.windmill_source",
+    "jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#create.ponder.windmill_structure",
+    "jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#create.ponder.sail"
+   ]
+  },
+  {
+   "key": "crb_stress",
+   "deps": [
+    "crb_water_wheel"
+   ],
+   "type": "checkmark",
+   "icon": "create:stressometer",
+   "layout": {
+    "x": 10,
+    "y": 0,
+    "size": 1.0,
+    "shape": "circle"
+   },
+   "en_us": [
+    "Stress: the real limit",
+    "Every source adds stress capacity (measured in su) and every machine uses some of it, more the faster it spins. When a network asks for more than its sources give, it overstresses and everything on it stops.\n\nThe fix is always one of two: add more sources, or slow down the hungry machines. Split big factories into separate networks so one overload does not freeze the rest."
+   ],
+   "es_es": [
+    "Estrés: el límite real",
+    "Cada fuente suma capacidad de estrés (se mide en su) y cada máquina usa una parte, más cuanto más rápido gira. Si una red pide más de lo que dan sus fuentes, se sobreestresa y todo lo que está conectado se frena.\n\nLa solución siempre es una de dos: sumar fuentes o bajar la velocidad de las máquinas que más piden. Separá las fábricas grandes en redes distintas para que una sobrecarga no congele todo."
+   ],
+   "sources": [
+    "jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#create.gui.contraptions.network_overstressed",
+    "jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#create.generic.unit.stress",
+    "jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#create.ponder.stressometer"
+   ]
+  },
+  {
+   "key": "crb_goggles",
+   "deps": [
+    "crb_stress"
+   ],
+   "type": "item",
+   "item": "create:goggles",
+   "layout": {
+    "x": 10,
+    "y": 2.5,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Engineer's Goggles and Wrench",
+    "Wear the Goggles and look at a block: machines show their stress impact or capacity, and a Stressometer shows the whole network. The Wrench rotates components on the clicked face; sneak-use it to dismantle them without breaking anything.\n\nBoth save hours of guessing. Put the Goggles on and leave them there."
+   ],
+   "es_es": [
+    "Antiparras de ingeniero y llave",
+    "Ponete las Antiparras y mirá un bloque: las máquinas muestran su impacto o capacidad de estrés, y un Estresómetro muestra la red entera. La Llave gira componentes sobre la cara que tocás; agachado, los desarma sin romper nada.\n\nLas dos te ahorran horas de adivinar. Ponete las antiparras y no te las saques."
+   ],
+   "sources": [
+    "jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#item.create.goggles.tooltip.behaviour1",
+    "jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#item.create.wrench.tooltip.behaviour1",
+    "jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#advancement.create.wrench_goggles"
+   ]
+  },
+  {
+   "key": "crb_casing",
+   "deps": [
+    "crb_stress"
+   ],
+   "type": "item",
+   "item": "create:andesite_casing",
+   "count": 8,
+   "layout": {
+    "x": 12.5,
+    "y": 0,
+    "size": 1.5,
+    "shape": "hexagon"
+   },
+   "en_us": [
+    "Andesite Casing",
+    "Right-click a stripped log or stripped wood with Andesite Alloy to turn it into Andesite Casing. You can also let a Deployer do it later.\n\nCasing is the body of almost every basic machine: press, mixer, fan, millstone, drill, saw, bearing and gearbox all use it."
+   ],
+   "es_es": [
+    "Carcasa de andesita",
+    "Hacé clic derecho sobre un tronco o una madera sin corteza con Aleación de andesita y se convierte en Carcasa de andesita. Más adelante lo puede hacer un Desplegador.\n\nLa carcasa es el cuerpo de casi todas las máquinas básicas: prensa, mezcladora, ventilador, molino, taladro, sierra, rodamiento y caja de engranajes."
+   ],
+   "sources": [
+    "jar:create-1.21.1-6.0.10.jar:data/create/recipe/item_application/andesite_casing_from_log.json",
+    "jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#advancement.create.andesite_casing"
+   ]
+  },
+  {
+   "key": "crb_press",
+   "deps": [
+    "crb_casing"
+   ],
+   "type": "item",
+   "item": "create:iron_sheet",
+   "count": 16,
+   "layout": {
+    "x": 15,
+    "y": 0,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Mechanical Press",
+    "The Press works on whatever is under it: drop items on the ground, on a Depot or on a moving belt. Iron ingots become Iron Sheets, copper becomes Copper Sheets. Over a Basin it compacts instead: 2x2 and 3x3 crafting recipes and a few extras.\n\nSheets are everywhere in the pack, from Create parts to the Calibration Frame of Act II."
+   ],
+   "es_es": [
+    "Prensa mecánica",
+    "La Prensa trabaja sobre lo que tenga abajo: ítems tirados en el piso, sobre un Depósito o sobre una cinta en movimiento. Los lingotes de hierro salen como Láminas de hierro, los de cobre como Láminas de cobre. Encima de una Cuenca, en cambio, compacta: recetas de crafteo de 2x2 y 3x3 y algunas extra.\n\nLas láminas están en todo el pack, desde piezas de Create hasta el Marco de calibración del acto II."
+   ],
+   "sources": [
+    "jar:create-1.21.1-6.0.10.jar:data/create/recipe/crafting/kinetics/mechanical_press.json",
+    "jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#create.ponder.mechanical_press",
+    "jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#create.ponder.mechanical_press_compacting",
+    "jar:create-1.21.1-6.0.10.jar:data/create/recipe/pressing/iron_ingot.json"
+   ]
+  },
+  {
+   "key": "crb_components",
+   "deps": [
+    "crb_press"
+   ],
+   "type": "checkmark",
+   "icon": "entrelumen:calibration_frame",
+   "layout": {
+    "x": 15,
+    "y": -2.5,
+    "size": 1.0,
+    "shape": "gear"
+   },
+   "en_us": [
+    "Create in the act components",
+    "ENTRELUMEN change: several act components are built from Create parts. The Calibration Frame (Act II) takes 2 Iron Sheets, 2 Immersive Engineering copper wires and the Raw Lens. The Energy Coupler (II) takes 2 Andesite Alloys. The Handling Core (III) and the Spectral Lens (IV) each take a Precision Mechanism.\n\nNone of these Create parts is gated: presses, alloy, brass and precision mechanisms stay free on purpose, so the components never lock you out."
+   ],
+   "es_es": [
+    "Create en los componentes de acto",
+    "Cambio de ENTRELUMEN: varios componentes de acto se hacen con piezas de Create. El Marco de calibración (acto II) lleva 2 Láminas de hierro, 2 alambres de cobre de Immersive Engineering y la Lente en bruto. El Acoplador de energía (II) lleva 2 Aleaciones de andesita. El Núcleo de manipulación (III) y la Lente espectral (IV) llevan un Mecanismo de precisión cada uno.\n\nNinguna de estas piezas de Create está gateada: la prensa, la aleación, el latón y los mecanismos de precisión quedan libres a propósito, para que los componentes nunca te traben."
+   ],
+   "sources": [
+    "repo:pack/kubejs/server_scripts/entrelumen_integration_recipes.js",
+    "repo:docs/research/reference-packs.md"
+   ]
+  },
+  {
+   "key": "crb_mixer",
+   "deps": [
+    "crb_press"
+   ],
+   "type": "item",
+   "item": "create:mechanical_mixer",
+   "layout": {
+    "x": 17.5,
+    "y": 0,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Basin and Mixer",
+    "A Mechanical Mixer over a Basin automates any shapeless crafting recipe plus Create mixing recipes (alloy, dough, liquids). Some need heat from a Blaze Burner under the Basin. The filter slot picks one recipe when two could match.\n\nThe Basin spits results out through a faucet into an inventory below or beside it; without a faucet it keeps them inside."
+   ],
+   "es_es": [
+    "Cuenca y mezcladora",
+    "Una Mezcladora mecánica sobre una Cuenca automatiza cualquier receta de crafteo sin forma y las mezclas propias de Create (aleación, masa, líquidos). Algunas piden calor de un Quemador de blaze debajo de la cuenca. La ranura de filtro elige una receta cuando dos podrían coincidir.\n\nLa Cuenca larga el resultado por un grifo a un inventario de abajo o del costado; sin grifo, lo guarda adentro."
+   ],
+   "sources": [
+    "jar:create-1.21.1-6.0.10.jar:data/create/recipe/crafting/kinetics/mechanical_mixer.json",
+    "jar:create-1.21.1-6.0.10.jar:data/create/recipe/crafting/kinetics/basin.json",
+    "jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#create.ponder.mechanical_mixer",
+    "jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#create.ponder.basin"
+   ]
+  },
+  {
+   "key": "crb_burner",
+   "deps": [
+    "crb_mixer"
+   ],
+   "type": "item",
+   "item": "create:blaze_burner",
+   "layout": {
+    "x": 20,
+    "y": 0,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Blaze Burner",
+    "Craft an Empty Blaze Burner from iron sheets and netherrack, then right-click a Blaze with it (or use it on a blaze spawner). Feed the burner flammable items to heat the Basin above; a Blaze Cake makes it super-heated for the hardest recipes.\n\nA Mechanical Arm or a Deployer can keep it fed later."
+   ],
+   "es_es": [
+    "Quemador de blaze",
+    "Crafteá un Quemador de blaze vacío con láminas de hierro y netherrack, y hacé clic derecho a un Blaze con él (o usalo sobre un generador de blazes). Alimentalo con ítems inflamables para calentar la cuenca de arriba; una Torta de blaze lo sobrecalienta para las recetas más difíciles.\n\nDespués, un Brazo mecánico o un Desplegador lo mantienen alimentado."
+   ],
+   "sources": [
+    "jar:create-1.21.1-6.0.10.jar:data/create/recipe/crafting/kinetics/empty_blaze_burner.json",
+    "jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#create.ponder.empty_blaze_burner",
+    "jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#create.ponder.blaze_burner",
+    "jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#advancement.create.burner"
+   ]
+  },
+  {
+   "key": "crb_brass",
+   "deps": [
+    "crb_burner"
+   ],
+   "type": "item",
+   "item": "create:brass_ingot",
+   "count": 8,
+   "layout": {
+    "x": 23,
+    "y": 0,
+    "size": 2.0,
+    "shape": "octagon"
+   },
+   "en_us": [
+    "Real alloys: Brass",
+    "Mix one copper and one zinc ingot in a heated Basin to get 2 Brass Ingots. Zinc ore generates in the Overworld; crush or smelt it like any other ore.\n\nBrass opens the second Create age: brass casing, precision mechanisms, mechanical arms and trains. The next chapter, Create: brass and automation, picks up from here."
+   ],
+   "es_es": [
+    "Aleaciones de verdad: latón",
+    "Mezclá un lingote de cobre y uno de zinc en una cuenca calentada y salen 2 Lingotes de latón. El mineral de zinc aparece en el Overworld; molelo o fundilo como cualquier otro.\n\nEl latón abre la segunda era de Create: carcasa de latón, mecanismos de precisión, brazos mecánicos y trenes. El capítulo siguiente, Create: latón y automatización, arranca acá."
+   ],
+   "sources": [
+    "jar:create-1.21.1-6.0.10.jar:data/create/recipe/mixing/brass_ingot.json",
+    "jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#advancement.create.brass"
+   ]
+  },
+  {
+   "key": "crb_fan",
+   "deps": [
+    "crb_casing"
+   ],
+   "type": "item",
+   "item": "create:encased_fan",
+   "layout": {
+    "x": 12.5,
+    "y": -2.5,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Encased Fan",
+    "A fan pushes or pulls air depending on its rotation. Items and mobs caught in the stream move with it, and the air processes items that pass through a catalyst in front of the fan.\n\nFans also lift items up a Chute when placed at the top or bottom of it."
+   ],
+   "es_es": [
+    "Ventilador encapsulado",
+    "Un ventilador sopla o aspira según el sentido de giro. Los ítems y mobs que quedan en la corriente se mueven con ella, y el aire procesa los ítems que pasan por un catalizador delante del ventilador.\n\nTambién suben ítems por un Conducto si lo ponés arriba o abajo del mismo."
+   ],
+   "sources": [
+    "jar:create-1.21.1-6.0.10.jar:data/create/recipe/crafting/kinetics/encased_fan.json",
+    "jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#create.ponder.fan_direction",
+    "jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#create.ponder.chute_upward"
+   ]
+  },
+  {
+   "key": "crb_fan_processing",
+   "deps": [
+    "crb_fan"
+   ],
+   "type": "checkmark",
+   "icon": "minecraft:campfire",
+   "layout": {
+    "x": 12.5,
+    "y": -5,
+    "size": 1.0,
+    "shape": "circle"
+   },
+   "en_us": [
+    "Bulk processing with fans",
+    "Put a block in the air stream and items flying through it get processed: lava or a Blaze Burner smelts (bulk blasting), fire or a campfire smokes food, water washes, soul fire haunts. Food in a lava stream burns: smoke it instead.\n\nFan speed only changes the range, not the processing time. It also works on items resting on Depots and belts. Addons in the pack add more catalysts: Dragons Plus colours and sands, Connected adds catalyst blocks."
+   ],
+   "es_es": [
+    "Procesamiento masivo con ventiladores",
+    "Poné un bloque en la corriente de aire y los ítems que la cruzan se procesan: lava o un Quemador de blaze funden, fuego o una fogata ahúman comida, agua lava, fuego de almas embruja. La comida en una corriente de lava se quema: ahumala.\n\nLa velocidad del ventilador sólo cambia el alcance, no el tiempo de proceso. También funciona sobre ítems en Depósitos y cintas. Los addons del pack suman catalizadores: Dragons Plus tiñe y lija, Connected agrega bloques catalizadores."
+   ],
+   "sources": [
+    "jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#create.ponder.fan_processing",
+    "jar:create-1.21.1-6.0.10.jar:data/create/tags/block/fan_processing_catalysts/haunting.json",
+    "jar:create-1.21.1-6.0.10.jar:data/create/tags/fluid/fan_processing_catalysts/blasting.json",
+    "jar:CreateDragonsPlus-1.11.9.jar:data/create_dragons_plus/tags/block/fan_processing_catalysts/sanding.json",
+    "jar:create_connected-1.3.3-mc1.21.1.jar:data/create/tags/block/fan_processing_catalysts/splashing.json"
+   ]
+  },
+  {
+   "key": "crb_millstone",
+   "deps": [
+    "crb_casing"
+   ],
+   "type": "item",
+   "item": "create:millstone",
+   "optional": true,
+   "layout": {
+    "x": 14.5,
+    "y": -5,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Millstone",
+    "Drop items into the top of a Millstone, powered from the side with a cogwheel, and it grinds them: gravel to flint, wheat to flour, ores and flowers to dust or dye. Right-click to take the result, or pull it out with a funnel.\n\nIt is slow but cheap. Crushing Wheels, in the brass age, do the same job faster and better."
+   ],
+   "es_es": [
+    "Molino de piedra",
+    "Tirá ítems por arriba de un Molino de piedra, movido desde el costado con un engranaje, y los muele: grava a pedernal, trigo a harina, minerales y flores a polvo o tinte. Sacá el resultado con clic derecho o con un embudo.\n\nEs lento pero barato. Las Ruedas trituradoras, en la era del latón, hacen lo mismo mejor y más rápido."
+   ],
+   "sources": [
+    "jar:create-1.21.1-6.0.10.jar:data/create/recipe/crafting/kinetics/millstone.json",
+    "jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#create.ponder.millstone",
+    "jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#advancement.create.millstone"
+   ]
+  },
+  {
+   "key": "crb_belt",
+   "deps": [
+    "crb_casing"
+   ],
+   "type": "item",
+   "item": "create:belt_connector",
+   "count": 6,
+   "layout": {
+    "x": 12.5,
+    "y": 2.5,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Mechanical Belt",
+    "Six dried kelp make a Belt. Right-click two shafts with it to connect them: straight, diagonal or vertical, from 2 to 20 blocks long. Every shaft on a belt turns at the same speed and direction.\n\nBelts carry items and mobs. Machines like the Press, Saw and Spout process items right on the belt as they pass."
+   ],
+   "es_es": [
+    "Cinta mecánica",
+    "Seis algas secas hacen una Cinta. Hacé clic derecho en dos ejes para unirlos: recta, en diagonal o vertical, de 2 a 20 bloques. Todos los ejes de una cinta giran a la misma velocidad y en el mismo sentido.\n\nLas cintas llevan ítems y mobs. Máquinas como la Prensa, la Sierra o el Surtidor procesan los ítems sobre la cinta mientras pasan."
+   ],
+   "sources": [
+    "jar:create-1.21.1-6.0.10.jar:data/create/recipe/crafting/kinetics/belt_connector.json",
+    "jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#create.ponder.belt_connector",
+    "jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#create.ponder.belt_directions",
+    "jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#create.ponder.belt_transport"
+   ]
+  },
+  {
+   "key": "crb_funnel",
+   "deps": [
+    "crb_belt"
+   ],
+   "type": "item",
+   "item": "create:andesite_funnel",
+   "count": 4,
+   "layout": {
+    "x": 12.5,
+    "y": 5,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Funnels and Depots",
+    "An Andesite Funnel moves single items into or out of inventories. Placed normally it pulls from the inventory; placed while sneaking it pushes into it; a wrench flips it later. On a belt it follows the belt direction. Redstone stops it.\n\nA Depot is a one-slot belt: machines work on it and arms can take from it. Funnels cannot pass items directly between two closed containers: use a chute or a belt between them."
+   ],
+   "es_es": [
+    "Embudos y depósitos",
+    "Un Embudo de andesita mueve ítems de a uno hacia o desde inventarios. Colocado normal, saca del inventario; colocado agachado, mete; con la llave lo das vuelta. Sobre una cinta sigue el sentido de la cinta. Con redstone se frena.\n\nUn Depósito es una cinta de un solo lugar: las máquinas trabajan sobre él y los brazos toman de ahí. Los embudos no pasan ítems directo entre dos contenedores cerrados: poné un conducto o una cinta en el medio."
+   ],
+   "sources": [
+    "jar:create-1.21.1-6.0.10.jar:data/create/recipe/crafting/logistics/andesite_funnel.json",
+    "jar:create-1.21.1-6.0.10.jar:data/create/recipe/crafting/kinetics/depot.json",
+    "jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#create.ponder.funnel_direction",
+    "jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#create.ponder.funnel_transfer",
+    "jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#create.ponder.depot"
+   ]
+  },
+  {
+   "key": "crb_chute",
+   "deps": [
+    "crb_funnel"
+   ],
+   "type": "item",
+   "item": "create:chute",
+   "count": 4,
+   "optional": true,
+   "layout": {
+    "x": 12.5,
+    "y": 7.5,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Chutes",
+    "Chutes move items straight down between inventories, and diagonally if you aim one at the side of another. With an Encased Fan at the top or bottom they carry items upward too; the Goggles show which way they flow.\n\nA wrench adds a window; Industrial Iron Blocks can encase them."
+   ],
+   "es_es": [
+    "Conductos",
+    "Los conductos bajan ítems en línea recta entre inventarios, y en diagonal si apuntás uno al costado de otro. Con un Ventilador encapsulado arriba o abajo también los suben; las antiparras muestran hacia dónde fluyen.\n\nCon la llave les agregás una ventana; los Bloques de hierro industrial los encapsulan."
+   ],
+   "sources": [
+    "jar:create-1.21.1-6.0.10.jar:data/create/recipe/crafting/kinetics/chute.json",
+    "jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#create.ponder.chute",
+    "jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#create.ponder.chute_upward"
+   ]
+  },
+  {
+   "key": "crb_contraption",
+   "deps": [
+    "crb_casing"
+   ],
+   "type": "item",
+   "item": "create:mechanical_bearing",
+   "optional": true,
+   "layout": {
+    "x": 14.5,
+    "y": 2.5,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Moving structures",
+    "A Mechanical Bearing rotates the blocks in front of it; a Mechanical Piston slides them. Super Glue groups blocks into one moving contraption (click two corners to glue an area).\n\nOn a moving contraption, Drills break blocks, Saws cut whole trees and Harvesters reap crops. A bearing with saws, or a piston with drills, is the classic first farm."
+   ],
+   "es_es": [
+    "Estructuras que se mueven",
+    "Un Rodamiento mecánico gira los bloques que tiene adelante; un Pistón mecánico los desliza. El Pegamento une bloques en una sola estructura móvil (hacé clic en dos esquinas para pegar un área).\n\nEn una estructura móvil, los Taladros rompen bloques, las Sierras cortan árboles enteros y las Cosechadoras juntan cultivos. Un rodamiento con sierras o un pistón con taladros es la primera granja clásica."
+   ],
+   "sources": [
+    "jar:create-1.21.1-6.0.10.jar:data/create/recipe/crafting/kinetics/mechanical_bearing.json",
+    "jar:create-1.21.1-6.0.10.jar:data/create/recipe/crafting/kinetics/super_glue.json",
+    "jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#create.ponder.mechanical_bearing",
+    "jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#create.ponder.super_glue",
+    "jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#create.ponder.mechanical_saw_contraption",
+    "jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#create.ponder.mechanical_drill_contraption"
+   ]
+  },
+  {
+   "key": "crb_drill",
+   "deps": [
+    "crb_contraption"
+   ],
+   "type": "item",
+   "item": "create:mechanical_saw",
+   "optional": true,
+   "layout": {
+    "x": 16.5,
+    "y": 2.5,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Drill and Saw",
+    "Standing still, a Drill breaks the block in front of it and a Saw cuts a tree if it breaks the log touching the ground. Mining speed follows the rotation speed.\n\nAn upward-facing Saw is also a processing machine for items passing over it, for example one Andesite Alloy into 6 shafts (crafting gives 4 per alloy). Its filter picks one result when there are several."
+   ],
+   "es_es": [
+    "Taladro y sierra",
+    "Quieto, un Taladro rompe el bloque que tiene adelante y una Sierra corta un árbol si rompe el tronco que toca el suelo. La velocidad de minado sigue a la de rotación.\n\nUna Sierra mirando hacia arriba también es una máquina de proceso para los ítems que pasan por encima: por ejemplo, una Aleación de andesita en 6 ejes (crafteando salen 4 por aleación). Su filtro elige un resultado cuando hay varios."
+   ],
+   "sources": [
+    "jar:create-1.21.1-6.0.10.jar:data/create/recipe/crafting/kinetics/mechanical_drill.json",
+    "jar:create-1.21.1-6.0.10.jar:data/create/recipe/crafting/kinetics/mechanical_saw.json",
+    "jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#create.ponder.mechanical_drill",
+    "jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#create.ponder.mechanical_saw_breaker",
+    "jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#create.ponder.mechanical_saw_processing",
+    "jar:create-1.21.1-6.0.10.jar:data/create/recipe/cutting/andesite_alloy.json"
+   ]
+  },
+  {
+   "key": "crb_copper",
+   "deps": [
+    "crb_casing"
+   ],
+   "type": "item",
+   "item": "create:mechanical_pump",
+   "layout": {
+    "x": 17,
+    "y": -2.5,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Copper Casing and pipes",
+    "Apply Copper Ingots to stripped wood for Copper Casing, the waterproof body of fluid machines. Fluid Pipes come from copper sheets and ingots; a cogwheel on a pipe gives a Mechanical Pump.\n\nPipes never hold fluid themselves: the pump moves it between the ends. A pump reaches pipes up to 16 blocks away, and its arrow, not the rotation, sets the direction (flip it with a wrench)."
+   ],
+   "es_es": [
+    "Carcasa de cobre y tuberías",
+    "Aplicá Lingotes de cobre sobre madera sin corteza y obtenés Carcasa de cobre, el cuerpo impermeable de las máquinas de fluidos. Las Tuberías salen de láminas y lingotes de cobre; un engranaje sobre una tubería da una Bomba mecánica.\n\nLas tuberías nunca guardan fluido: la bomba lo mueve entre los extremos. Una bomba alcanza tuberías hasta 16 bloques de distancia, y su flecha, no el giro, marca el sentido (se invierte con la llave)."
+   ],
+   "sources": [
+    "jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#advancement.create.copper_casing",
+    "jar:create-1.21.1-6.0.10.jar:data/create/recipe/crafting/kinetics/fluid_pipe.json",
+    "jar:create-1.21.1-6.0.10.jar:data/create/recipe/crafting/kinetics/mechanical_pump.json",
+    "jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#create.ponder.fluid_pipe_flow",
+    "jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#create.ponder.mechanical_pump_flow",
+    "jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#create.ponder.mechanical_pump_speed"
+   ]
+  },
+  {
+   "key": "crb_tank",
+   "deps": [
+    "crb_copper"
+   ],
+   "type": "item",
+   "item": "create:fluid_tank",
+   "count": 4,
+   "layout": {
+    "x": 19.5,
+    "y": -2.5,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Fluid Tanks",
+    "Fluid Tanks join into bigger tanks: up to 3x3 wide and more than 30 layers tall. Pipes can push and pull from any side, and a comparator reads the level. In survival you cannot pour fluids in or out by hand: use a Basin, an Item Drain or a Spout.\n\nA Hose Pulley lowered into a large enough body of water or lava pumps forever without draining it."
+   ],
+   "es_es": [
+    "Tanques de fluido",
+    "Los Tanques de fluido se unen en tanques más grandes: hasta 3x3 de base y más de 30 capas de alto. Las tuberías empujan y sacan por cualquier cara, y un comparador lee el nivel. En supervivencia no podés cargar ni sacar fluido a mano: usá una Cuenca, un Drenaje de ítems o un Surtidor.\n\nUna Polea de manguera bajada en un cuerpo de agua o lava lo bastante grande bombea para siempre sin vaciarlo."
+   ],
+   "sources": [
+    "jar:create-1.21.1-6.0.10.jar:data/create/recipe/crafting/kinetics/fluid_tank.json",
+    "jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#create.ponder.fluid_tank_sizes",
+    "jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#create.ponder.fluid_tank_storage",
+    "jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#create.ponder.hose_pulley_infinite"
+   ]
+  },
+  {
+   "key": "crb_steam",
+   "deps": [
+    "crb_tank",
+    "crb_burner"
+   ],
+   "type": "item",
+   "item": "create:steam_engine",
+   "count": 2,
+   "layout": {
+    "x": 22,
+    "y": -2.5,
+    "size": 1.5,
+    "shape": "hexagon"
+   },
+   "en_us": [
+    "Steam Engine",
+    "Place Steam Engines on a Fluid Tank and click each with a shaft to make its output. With heat under the tank, water piped in and enough tank size, the boiler makes rotation. Ponder builds the smallest working boiler from 4 tanks.\n\nPassive heaters (magma, campfires, a Farmer's Delight stove) count as heat, but the real power comes from fed Blaze Burners. Each boiler level lets one more engine run at full power; the Goggles show what is missing: heat, water or size."
+   ],
+   "es_es": [
+    "Motor de vapor",
+    "Poné Motores de vapor sobre un Tanque de fluido y hacé clic en cada uno con un eje para crear su salida. Con calor debajo del tanque, agua por tubería y suficiente tamaño, la caldera genera rotación. Ponder arma la caldera mínima con 4 tanques.\n\nLos calentadores pasivos (magma, fogatas, un horno de Farmer's Delight) cuentan como calor, pero la potencia de verdad sale de Quemadores de blaze alimentados. Cada nivel de caldera deja trabajar un motor más a plena potencia; las antiparras muestran qué falta: calor, agua o tamaño."
+   ],
+   "sources": [
+    "jar:create-1.21.1-6.0.10.jar:data/create/recipe/crafting/kinetics/steam_engine.json",
+    "jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#create.ponder.steam_engine",
+    "jar:create-1.21.1-6.0.10.jar:data/create/tags/block/passive_boiler_heaters.json",
+    "jar:create-central-kitchen-2.6.2.jar:data/create/tags/block/passive_boiler_heaters.json",
+    "jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#advancement.create.steam_engine"
+   ]
+  },
+  {
+   "key": "crb_vault",
+   "deps": [
+    "crb_funnel"
+   ],
+   "type": "item",
+   "item": "create:item_vault",
+   "optional": true,
+   "layout": {
+    "x": 14.5,
+    "y": 5,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Item Vault",
+    "Item Vaults join like tanks (up to 3 wide and three times as long as wide) and hold a lot, but you cannot open them by hand: funnels, chutes, arms and other machines move items in and out.\n\nThey make a good buffer between machines and, later, a stock for packagers."
+   ],
+   "es_es": [
+    "Bóveda de ítems",
+    "Las Bóvedas de ítems se unen como los tanques (hasta 3 de ancho y tres veces más largas que anchas) y guardan muchísimo, pero no se abren a mano: embudos, conductos, brazos y otras máquinas meten y sacan ítems.\n\nSirven de buffer entre máquinas y, más adelante, de stock para los empaquetadores."
+   ],
+   "sources": [
+    "jar:create-1.21.1-6.0.10.jar:data/create/recipe/crafting/kinetics/item_vault.json",
+    "jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#create.ponder.item_vault_sizes",
+    "jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#create.ponder.item_vault_storage"
+   ]
+  },
+  {
+   "key": "crb_link",
+   "deps": [
+    "crb_goggles"
+   ],
+   "type": "item",
+   "item": "create:redstone_link",
+   "count": 2,
+   "optional": true,
+   "layout": {
+    "x": 10,
+    "y": 5,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Redstone Link",
+    "Redstone Links send a redstone signal wirelessly to receivers within 256 blocks. Put two items in the slots to set a frequency; only matching links talk. Sneak-right-click (or use the wrench) to switch between sending and receiving.\n\nA clutch on a shaft, driven by a link, is the cleanest remote on/off switch for a machine."
+   ],
+   "es_es": [
+    "Enlace de redstone",
+    "Los Enlaces de redstone mandan una señal sin cables a receptores a menos de 256 bloques. Poné dos ítems en las ranuras para fijar una frecuencia; sólo se hablan los que coinciden. Agachado con clic derecho (o con la llave) cambiás entre emisor y receptor.\n\nUn embrague en un eje, manejado por un enlace, es el interruptor remoto más limpio para prender y apagar una máquina."
+   ],
+   "sources": [
+    "jar:create-1.21.1-6.0.10.jar:data/create/recipe/crafting/logistics/redstone_link.json",
+    "jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#create.ponder.redstone_link",
+    "jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#create.ponder.clutch"
+   ]
+  },
+  {
+   "key": "crb_creative",
+   "deps": [
+    "crb_brass"
+   ],
+   "type": "checkmark",
+   "icon": "create:creative_motor",
+   "layout": {
+    "x": 23,
+    "y": 3,
+    "size": 1.0,
+    "shape": "gear"
+   },
+   "en_us": [
+    "Creative Create parts",
+    "ENTRELUMEN change: the Creative Motor, the Creative Fluid Tank and the Creative Blaze Cake are crafted, but only with two Luminosities each, sold in Solsticio (Act VI). The Creative Crate cannot be crafted at all.\n\nSo plan real power: water, wind and steam carry you all the way to the end."
+   ],
+   "es_es": [
+    "Piezas creativas de Create",
+    "Cambio de ENTRELUMEN: el Motor creativo, el Tanque de fluido creativo y la Torta de blaze creativa se craftean, pero sólo con dos Luminosidades cada uno, que se venden en Solsticio (acto VI). La Caja creativa no se puede craftear.\n\nAsí que planeá energía de verdad: agua, viento y vapor te llevan hasta el final."
+   ],
+   "sources": [
+    "repo:pack/kubejs/server_scripts/entrelumen_luminous_balance.js"
+   ]
+  }
+ ]
+}

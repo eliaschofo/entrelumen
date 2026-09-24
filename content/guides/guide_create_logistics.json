@@ -1,0 +1,730 @@
+{
+ "chapter": "guide_create_logistics",
+ "group": "tech",
+ "act": "II",
+ "icon": "create:track_station",
+ "title": {
+  "en_us": "Create: trains and packages",
+  "es_es": "Create: trenes y paquetes"
+ },
+ "subtitle": {
+  "en_us": "Rail networks with scheduled trains, and the Create 6 package network: packagers, frogports, stock tickers and factory gauges.",
+  "es_es": "Redes de trenes con horarios y la red de paquetes de Create 6: empaquetadores, ranaportes, tickers de stock y medidores de fábrica."
+ },
+ "quests": [
+  {
+   "key": "clg_welcome",
+   "deps": [],
+   "type": "checkmark",
+   "icon": "create:track_station",
+   "layout": {
+    "x": 0,
+    "y": 2.5,
+    "size": 2.0,
+    "shape": "hexagon"
+   },
+   "en_us": [
+    "Moving things far",
+    "Belts and chutes are for one room. For distances Create has two systems: trains, which carry you and cargo along tracks, and the package network, which boxes items, labels them with an address and ships them on chains, trains or by hand.\n\nBoth work in unloaded chunks, which makes them the best long-range logistics in the early and mid game."
+   ],
+   "es_es": [
+    "Mover cosas lejos",
+    "Las cintas y los conductos sirven para una habitación. Para distancias, Create tiene dos sistemas: los trenes, que llevan jugadores y carga por vías, y la red de paquetes, que encaja ítems, les pone una dirección y los manda por cadenas, trenes o a mano.\n\nLos dos funcionan en chunks descargados, así que son la mejor logística de larga distancia del juego temprano y medio."
+   ],
+   "sources": [
+    "jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#create.ponder.track_chunks",
+    "jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#create.ponder.postbox"
+   ]
+  },
+  {
+   "key": "clg_no_snr",
+   "deps": [
+    "clg_welcome"
+   ],
+   "type": "checkmark",
+   "icon": "create:track",
+   "layout": {
+    "x": 0,
+    "y": -0.5,
+    "size": 1.0,
+    "shape": "gear"
+   },
+   "en_us": [
+    "No Steam 'n' Rails here",
+    "ENTRELUMEN note: Create: Steam 'n' Rails is not in the pack. Its official releases stop at Minecraft 1.20.1, and only an unofficial beta port exists for 1.21.1, so the pack does not ship it. You get Create's own standard-gauge tracks, stations, signals and bogeys.\n\nFor moving yourself between buildings, Create Hypertube (Create: addons chapter) is the other option."
+   ],
+   "es_es": [
+    "Sin Steam 'n' Rails",
+    "Nota de ENTRELUMEN: Create: Steam 'n' Rails no está en el pack. Sus versiones oficiales llegan hasta Minecraft 1.20.1 y para 1.21.1 sólo hay un port no oficial en beta, así que el pack no lo incluye. Tenés las vías de trocha estándar, estaciones, señales y bogies propios de Create.\n\nPara moverte entre edificios, la otra opción es Create Hypertube (capítulo Create: addons)."
+   ],
+   "sources": [
+    "repo:docs/design/mod-pingpong.md"
+   ]
+  },
+  {
+   "key": "clg_sturdy",
+   "deps": [
+    "clg_welcome"
+   ],
+   "type": "item",
+   "item": "create:sturdy_sheet",
+   "count": 8,
+   "layout": {
+    "x": 3,
+    "y": 0,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Sturdy Sheet",
+    "Crush obsidian into Powdered Obsidian, then run it through a short sequenced assembly: a Spout adds 500 mB of lava and a Press stamps it twice. The result is a Sturdy Sheet.\n\nSturdy sheets make train casing and schedules. One lava-fed spout and one press over a looping belt are enough."
+   ],
+   "es_es": [
+    "Lámina resistente",
+    "Triturá obsidiana en Obsidiana en polvo y pasala por un ensamblaje secuencial corto: un Surtidor le agrega 500 mB de lava y una Prensa la estampa dos veces. Sale una Lámina resistente.\n\nLas láminas resistentes hacen la carcasa de tren y los horarios. Alcanza con un surtidor con lava y una prensa sobre una cinta en bucle."
+   ],
+   "sources": [
+    "jar:create-1.21.1-6.0.10.jar:data/create/recipe/crushing/obsidian.json",
+    "jar:create-1.21.1-6.0.10.jar:data/create/recipe/sequenced_assembly/sturdy_sheet.json",
+    "jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#advancement.create.sturdy_sheet"
+   ]
+  },
+  {
+   "key": "clg_casing",
+   "deps": [
+    "clg_sturdy"
+   ],
+   "type": "item",
+   "item": "create:railway_casing",
+   "count": 4,
+   "layout": {
+    "x": 5.5,
+    "y": 0,
+    "size": 1.5,
+    "shape": "hexagon"
+   },
+   "en_us": [
+    "Train Casing",
+    "Apply a Sturdy Sheet to Brass Casing to get Train Casing. It is the base of every railway block: stations, controls, signals, observers and train doors. Used on a track, it also places a bogey when assembling a train."
+   ],
+   "es_es": [
+    "Carcasa de tren",
+    "Aplicá una Lámina resistente sobre Carcasa de latón y obtenés Carcasa de tren. Es la base de todos los bloques ferroviarios: estaciones, controles, señales, observadores y puertas de tren. Usada sobre una vía, además coloca un bogie al armar un tren."
+   ],
+   "sources": [
+    "jar:create-1.21.1-6.0.10.jar:data/create/recipe/item_application/railway_casing.json",
+    "jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#advancement.create.train_casing_00",
+    "jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#create.ponder.train_assembly"
+   ]
+  },
+  {
+   "key": "clg_track",
+   "deps": [
+    "clg_casing"
+   ],
+   "type": "item",
+   "item": "create:track",
+   "count": 64,
+   "layout": {
+    "x": 8,
+    "y": 0,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Train Tracks",
+    "Tracks come from sequenced assembly: a stone, smooth stone or andesite slab gets two iron or zinc nuggets from deployers and then a press. A press line makes them by the thousand.\n\nTo lay track, click an existing track, then place or select a second one: it fills the gap with straights, turns or slopes."
+   ],
+   "es_es": [
+    "Vías de tren",
+    "Las vías salen de ensamblaje secuencial: una losa de piedra, piedra lisa o andesita recibe dos pepitas de hierro o zinc de desplegadores y después pasa por una prensa. Una línea de prensado las hace por miles.\n\nPara tender vía, hacé clic en una vía existente y después colocá o elegí otra: llena el hueco con rectas, curvas o pendientes."
+   ],
+   "sources": [
+    "jar:create-1.21.1-6.0.10.jar:data/create/recipe/sequenced_assembly/track.json",
+    "jar:create-1.21.1-6.0.10.jar:data/create/tags/item/sleepers.json",
+    "jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#create.ponder.track_placement",
+    "jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#advancement.create.track_crafting_factory"
+   ]
+  },
+  {
+   "key": "clg_track_tip",
+   "deps": [
+    "clg_track"
+   ],
+   "type": "checkmark",
+   "icon": "minecraft:obsidian",
+   "layout": {
+    "x": 8,
+    "y": -2.5,
+    "size": 1.0,
+    "shape": "circle"
+   },
+   "en_us": [
+    "Laying track well",
+    "When connecting, turns are made evenly sized; hold sprint to get the longest possible bend instead. Blocks in your off-hand get paved under the new track automatically.\n\nTrack placed against a Nether portal builds a matching track on the other side, so trains can cross dimensions."
+   ],
+   "es_es": [
+    "Tender bien la vía",
+    "Al conectar, las curvas salen parejas; mantené correr para hacer la curva más larga posible. Los bloques que tengas en la otra mano se pavimentan solos debajo de la vía nueva.\n\nUna vía apoyada contra un portal del Nether crea una vía gemela del otro lado, así los trenes cruzan de dimensión."
+   ],
+   "sources": [
+    "jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#create.ponder.track_placement",
+    "jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#create.ponder.track_portal",
+    "jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#advancement.create.train_portal"
+   ]
+  },
+  {
+   "key": "clg_station",
+   "deps": [
+    "clg_track"
+   ],
+   "type": "item",
+   "item": "create:track_station",
+   "layout": {
+    "x": 10.5,
+    "y": 0,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Train Station",
+    "Train Casing plus a compass. Select a track, then place the Station beside it. Stations are the waypoints of your network, and where trains are built: open the UI, switch to assembly mode, and scheduled trains will stay away while you build.\n\nA map used on a station adds a labelled marker."
+   ],
+   "es_es": [
+    "Estación de tren",
+    "Carcasa de tren más una brújula. Seleccioná una vía y colocá la Estación al lado. Las estaciones son los puntos de ruta de tu red y el lugar donde se arman los trenes: abrí la interfaz, pasá a modo ensamblaje y los trenes con horario no se acercan mientras construís.\n\nUn mapa usado sobre una estación le agrega un marcador con nombre."
+   ],
+   "sources": [
+    "jar:create-1.21.1-6.0.10.jar:data/create/recipe/crafting/kinetics/track_station.json",
+    "jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#create.ponder.train_assembly"
+   ]
+  },
+  {
+   "key": "clg_controls",
+   "deps": [
+    "clg_station"
+   ],
+   "type": "item",
+   "item": "create:controls",
+   "layout": {
+    "x": 13,
+    "y": 0,
+    "size": 1.5,
+    "shape": "hexagon"
+   },
+   "en_us": [
+    "Your first train",
+    "Train Controls take train casing, a lever and a precision mechanism. In assembly mode, use Train Casing on the track to place bogeys, glue your blocks together with Super Glue, put the Controls on board and confirm in the station UI. A second set of controls lets it leave stations in both directions.\n\nRight-click the controls to drive: movement keys accelerate and steer, the mouse wheel sets top speed, space approaches a station."
+   ],
+   "es_es": [
+    "Tu primer tren",
+    "Los Controles de tren llevan carcasa de tren, una palanca y un mecanismo de precisión. En modo ensamblaje, usá Carcasa de tren sobre la vía para poner bogies, uní los bloques con Pegamento, subí los Controles y confirmá en la interfaz de la estación. Un segundo juego de controles le permite salir de las estaciones hacia los dos lados.\n\nClic derecho en los controles para manejar: las teclas de movimiento aceleran y giran, la rueda del mouse fija la velocidad máxima, espacio lo acerca a una estación."
+   ],
+   "sources": [
+    "jar:create-1.21.1-6.0.10.jar:data/create/recipe/crafting/kinetics/controls.json",
+    "jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#create.ponder.train_assembly",
+    "jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#create.ponder.train_controls",
+    "jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#advancement.create.train"
+   ]
+  },
+  {
+   "key": "clg_train_tips",
+   "deps": [
+    "clg_controls"
+   ],
+   "type": "checkmark",
+   "icon": "create:item_vault",
+   "layout": {
+    "x": 13,
+    "y": -2.5,
+    "size": 1.0,
+    "shape": "circle"
+   },
+   "en_us": [
+    "Train quirks",
+    "Trains only turn back into blocks at a station; a wrench can move an assembled train to nearby track. Fuel in chests or barrels on board makes them faster, but fuel inside Item Vaults is never burned. Sprint blows an on-board whistle, sneak leaves the controls.\n\nIn unloaded chunks trains keep running and still obey stations and signals, but drills and other on-board machines stop working there."
+   ],
+   "es_es": [
+    "Mañas de los trenes",
+    "Los trenes sólo vuelven a ser bloques en una estación; la llave puede mover un tren armado a una vía cercana. Combustible en cofres o barriles a bordo los hace más rápidos, pero el que está en Bóvedas de ítems nunca se quema. Correr toca el silbato de a bordo y agacharse suelta los controles.\n\nEn chunks descargados los trenes siguen andando y respetan estaciones y señales, pero los taladros y demás máquinas de a bordo dejan de funcionar ahí."
+   ],
+   "sources": [
+    "jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#create.ponder.train_assembly",
+    "jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#create.ponder.train_controls",
+    "jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#create.ponder.track_chunks"
+   ]
+  },
+  {
+   "key": "clg_schedule",
+   "deps": [
+    "clg_controls"
+   ],
+   "type": "item",
+   "item": "create:schedule",
+   "layout": {
+    "x": 15.5,
+    "y": 0,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Train Schedule",
+    "A schedule (sturdy sheet plus paper) is a program: stops, waits and conditions. Hand it to a conductor sitting in front of the Controls: any mob or a Blaze Burner works, and a mob on a lead can be seated easily. You can take it back at any time.\n\nA schedule placed on a station copies itself to every train that stops there, and the driver does not keep the item."
+   ],
+   "es_es": [
+    "Horario de tren",
+    "Un horario (lámina resistente más papel) es un programa: paradas, esperas y condiciones. Dáselo a un conductor sentado frente a los Controles: sirve cualquier mob o un Quemador de blaze, y a un mob con rienda lo sentás fácil. Lo podés recuperar cuando quieras.\n\nUn horario colocado en una estación se copia a cada tren que para ahí, y el conductor no se queda con el ítem."
+   ],
+   "sources": [
+    "jar:create-1.21.1-6.0.10.jar:data/create/recipe/crafting/kinetics/schedule.json",
+    "jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#create.ponder.train_schedule",
+    "jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#create.ponder.auto_schedule",
+    "jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#advancement.create.conductor"
+   ]
+  },
+  {
+   "key": "clg_signal",
+   "deps": [
+    "clg_schedule"
+   ],
+   "type": "item",
+   "item": "create:track_signal",
+   "count": 4,
+   "layout": {
+    "x": 18,
+    "y": 0,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Train Signals",
+    "Signals split track into segments and allow one train per segment, which stops collisions. Scheduled trains never pass a signal from behind unless there is a second signal facing the other way. The wrench switches a signal to its brass mode, which also stops a train that could not leave the next segment right away: use it before busy junctions.\n\nRedstone forces a signal red, and a red signal powers a comparator."
+   ],
+   "es_es": [
+    "Señales de tren",
+    "Las señales dividen la vía en segmentos y permiten un tren por segmento, así no hay choques. Los trenes con horario nunca cruzan una señal por detrás, salvo que haya otra mirando para el otro lado. Con la llave la señal pasa a su modo de latón, que además frena a un tren que no podría salir enseguida del segmento siguiente: usala antes de los cruces cargados.\n\nLa redstone fuerza la señal en rojo, y una señal roja activa un comparador."
+   ],
+   "sources": [
+    "jar:create-1.21.1-6.0.10.jar:data/create/recipe/crafting/kinetics/track_signal.json",
+    "jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#create.ponder.train_signal_placement",
+    "jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#create.ponder.train_signal_signaling",
+    "jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#create.ponder.train_signal_redstone"
+   ]
+  },
+  {
+   "key": "clg_observer",
+   "deps": [
+    "clg_signal"
+   ],
+   "type": "item",
+   "item": "create:track_observer",
+   "optional": true,
+   "layout": {
+    "x": 18,
+    "y": -2.5,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Train Observer",
+    "Select a track and place the observer nearby: it emits redstone when a train passes the marker, and it can be filtered by cargo. Use it to open doors, count trains or trigger loading."
+   ],
+   "es_es": [
+    "Observador de tren",
+    "Seleccioná una vía y colocá el observador cerca: da redstone cuando un tren pasa por la marca, y se puede filtrar por carga. Usalo para abrir puertas, contar trenes o disparar la carga."
+   ],
+   "sources": [
+    "jar:create-1.21.1-6.0.10.jar:data/create/recipe/crafting/kinetics/track_observer.json",
+    "jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#create.ponder.track_observer"
+   ]
+  },
+  {
+   "key": "clg_psi",
+   "deps": [
+    "clg_schedule"
+   ],
+   "type": "item",
+   "item": "create:portable_storage_interface",
+   "optional": true,
+   "layout": {
+    "x": 15.5,
+    "y": -2.5,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Loading moving contraptions",
+    "A Portable Storage Interface on a train or contraption and another on the ground, with a gap of 1 or 2 blocks, connect when they pass. While connected the ground one stands for every inventory on board; once no items move for a while, the train goes on. The Portable Fluid Interface does the same with tanks.\n\nPair them with a station stop to build automatic cargo runs."
+   ],
+   "es_es": [
+    "Cargar estructuras en movimiento",
+    "Una Interfaz de almacenamiento portátil en un tren o estructura y otra en el piso, con 1 o 2 bloques de separación, se conectan cuando se cruzan. Mientras tanto, la del piso representa todos los inventarios de a bordo; cuando dejan de moverse ítems un rato, el tren sigue. La Interfaz de fluidos portátil hace lo mismo con tanques.\n\nCombinalas con una parada de estación y tenés viajes de carga automáticos."
+   ],
+   "sources": [
+    "jar:create-1.21.1-6.0.10.jar:data/create/recipe/crafting/kinetics/portable_storage_interface.json",
+    "jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#create.ponder.portable_storage_interface",
+    "jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#create.ponder.portable_fluid_interface"
+   ]
+  },
+  {
+   "key": "clg_cardboard",
+   "deps": [
+    "clg_welcome"
+   ],
+   "type": "item",
+   "item": "create:cardboard",
+   "count": 16,
+   "layout": {
+    "x": 3,
+    "y": 5,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Cardboard",
+    "Mix four pulpable items (bamboo, sugar cane or saplings) with 250 mB of water into Pulp, then press it into Cardboard. Cardboard blocks make packagers, and the rest can become cardboard armour.\n\nPackages are made of it: the whole logistics network starts here."
+   ],
+   "es_es": [
+    "Cartón",
+    "Mezclá cuatro ítems que se puedan hacer pulpa (bambú, caña de azúcar o brotes) con 250 mB de agua para obtener Pulpa, y prensala en Cartón. Los bloques de cartón hacen empaquetadores, y el resto puede ser armadura de cartón.\n\nLos paquetes son de cartón: toda la red de logística arranca acá."
+   ],
+   "sources": [
+    "jar:create-1.21.1-6.0.10.jar:data/create/recipe/mixing/cardboard_pulp.json",
+    "jar:create-1.21.1-6.0.10.jar:data/create/tags/item/pulpifiable.json",
+    "jar:create-1.21.1-6.0.10.jar:data/create/recipe/pressing/cardboard.json",
+    "jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#advancement.create.cardboard"
+   ]
+  },
+  {
+   "key": "clg_packager",
+   "deps": [
+    "clg_cardboard"
+   ],
+   "type": "item",
+   "item": "create:packager",
+   "layout": {
+    "x": 5.5,
+    "y": 5,
+    "size": 1.5,
+    "shape": "hexagon"
+   },
+   "en_us": [
+    "Packager",
+    "Attach a Packager to an inventory. A redstone pulse boxes its items into a package, which you can carry like any item. A package put into a packager is unwrapped into the inventory, but only if everything fits.\n\nPackages keep their contents together through belts, chutes, chains and trains."
+   ],
+   "es_es": [
+    "Empaquetador",
+    "Poné un Empaquetador pegado a un inventario. Un pulso de redstone mete sus ítems en un paquete, que se lleva como cualquier ítem. Un paquete que entra a un empaquetador se desarma dentro del inventario, pero sólo si entra todo.\n\nLos paquetes mantienen su contenido junto por cintas, conductos, cadenas y trenes."
+   ],
+   "sources": [
+    "jar:create-1.21.1-6.0.10.jar:data/create/recipe/crafting/logistics/packager.json",
+    "jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#create.ponder.packager",
+    "jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#advancement.create.packager"
+   ]
+  },
+  {
+   "key": "clg_address",
+   "deps": [
+    "clg_packager"
+   ],
+   "type": "checkmark",
+   "icon": "create:package_filter",
+   "layout": {
+    "x": 5.5,
+    "y": 7.5,
+    "size": 1.0,
+    "shape": "circle"
+   },
+   "en_us": [
+    "Addresses",
+    "A sign on a packager writes its text as the address of every package it makes. A Package Filter (zinc nuggets and wool) in any filter slot matches packages by address, so funnels, tunnels and chutes can route them. A saw can unpack straight onto a belt.\n\nRight-click frogports with a clipboard to collect their addresses; the clipboard then auto-completes address fields."
+   ],
+   "es_es": [
+    "Direcciones",
+    "Un cartel sobre un empaquetador escribe su texto como dirección de cada paquete que hace. Un Filtro de paquetes (pepitas de zinc y lana) en cualquier ranura de filtro reconoce paquetes por dirección, así los embudos, túneles y conductos los encaminan. Una sierra los puede desarmar directo sobre una cinta.\n\nHacé clic derecho en los ranaportes con un portapapeles para juntar sus direcciones; después el portapapeles autocompleta los campos de dirección."
+   ],
+   "sources": [
+    "jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#create.ponder.packager_address",
+    "jar:create-1.21.1-6.0.10.jar:data/create/recipe/crafting/kinetics/package_filter.json",
+    "jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#create.ponder.package_frogport"
+   ]
+  },
+  {
+   "key": "clg_chain",
+   "deps": [
+    "clg_packager"
+   ],
+   "type": "item",
+   "item": "create:chain_conveyor",
+   "count": 4,
+   "layout": {
+    "x": 8,
+    "y": 5,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Chain Conveyor",
+    "Chain Conveyors (a large cogwheel ringed by four andesite casings, two per craft) link together when you right-click two of them with chains. They pass rotation along and to shafts above or below. Right-click a chain with a wrench to ride it yourself; at junctions, look at the chain you want.\n\nThey are the roads of the package network."
+   ],
+   "es_es": [
+    "Transportador de cadena",
+    "Los Transportadores de cadena (un engranaje grande rodeado de cuatro carcasas de andesita, dos por crafteo) se unen haciendo clic derecho en dos de ellos con cadenas. Pasan rotación entre sí y a ejes arriba o abajo. Con la llave, clic derecho en una cadena y viajás colgado vos; en los cruces, mirá la cadena que querés.\n\nSon las rutas de la red de paquetes."
+   ],
+   "sources": [
+    "jar:create-1.21.1-6.0.10.jar:data/create/recipe/crafting/kinetics/chain_conveyor.json",
+    "jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#create.ponder.chain_conveyor"
+   ]
+  },
+  {
+   "key": "clg_frogport",
+   "deps": [
+    "clg_chain"
+   ],
+   "type": "item",
+   "item": "create:package_frogport",
+   "count": 2,
+   "layout": {
+    "x": 10.5,
+    "y": 5,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Package Frogport",
+    "Right-click a chain conveyor with the Frogport, place it nearby and give it an address. Packages it receives with another address go onto the chain and find the frogport that matches; packages with no valid destination spin in place.\n\nA frogport also feeds the inventory below it, and a packager there turns it into a full shipping dock."
+   ],
+   "es_es": [
+    "Ranaporte de paquetes",
+    "Hacé clic derecho en un transportador de cadena con el Ranaporte, colocalo cerca y ponele una dirección. Los paquetes que recibe con otra dirección salen por la cadena y buscan el ranaporte que coincida; los que no tienen destino válido giran en el lugar.\n\nUn ranaporte también carga el inventario de abajo, y un empaquetador ahí lo vuelve un muelle de envíos completo."
+   ],
+   "sources": [
+    "jar:create-1.21.1-6.0.10.jar:data/create/recipe/crafting/logistics/package_frogport.json",
+    "jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#create.ponder.package_frogport",
+    "jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#advancement.create.frogport"
+   ]
+  },
+  {
+   "key": "clg_postbox",
+   "deps": [
+    "clg_frogport"
+   ],
+   "type": "item",
+   "item": "create:white_postbox",
+   "optional": true,
+   "layout": {
+    "x": 10.5,
+    "y": 7.5,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Postboxes and trains",
+    "Place a Postbox near a Train Station and give it an address. Packages for other addresses are picked up as cargo by trains that stop there; packages for this address are dropped off. Like trains, postboxes keep working in unloaded chunks.\n\nIt is how a far outpost ships ore home without you."
+   ],
+   "es_es": [
+    "Buzones y trenes",
+    "Poné un Buzón cerca de una Estación de tren y dale una dirección. Los paquetes para otras direcciones los levantan como carga los trenes que paran ahí; los de esta dirección los dejan. Como los trenes, los buzones siguen funcionando en chunks descargados.\n\nAsí un puesto lejano manda mineral a casa sin vos."
+   ],
+   "sources": [
+    "jar:create-1.21.1-6.0.10.jar:data/create/recipe/crafting/logistics/white_postbox.json",
+    "jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#create.ponder.postbox"
+   ]
+  },
+  {
+   "key": "clg_link",
+   "deps": [
+    "clg_frogport"
+   ],
+   "type": "item",
+   "item": "create:stock_link",
+   "count": 2,
+   "layout": {
+    "x": 13,
+    "y": 5,
+    "size": 1.5,
+    "shape": "hexagon"
+   },
+   "en_us": [
+    "Stock Link",
+    "A Stock Link starts a stock network; right-click an existing link before placing a new one to join it. Packagers with a link make their inventory visible to the network, which can then request those items and pack them.\n\nThe signal has unlimited range, but packages still need a physical way to travel. Full redstone stops a link; weaker redstone lowers its priority."
+   ],
+   "es_es": [
+    "Enlace de stock",
+    "Un Enlace de stock inicia una red de stock; hacé clic derecho en un enlace existente antes de colocar otro para sumarlo. Los empaquetadores con enlace muestran su inventario a la red, que puede pedir esos ítems y empaquetarlos.\n\nLa señal tiene alcance ilimitado, pero los paquetes igual necesitan un camino físico. Redstone al máximo frena un enlace; una más débil le baja la prioridad."
+   ],
+   "sources": [
+    "jar:create-1.21.1-6.0.10.jar:data/create/recipe/crafting/logistics/stock_link.json",
+    "jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#create.ponder.stock_link"
+   ]
+  },
+  {
+   "key": "clg_ticker",
+   "deps": [
+    "clg_link"
+   ],
+   "type": "item",
+   "item": "create:stock_ticker",
+   "layout": {
+    "x": 15.5,
+    "y": 5,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Stock Ticker",
+    "Bind a Stock Ticker to a link and seat a mob or put a Blaze Burner in front of it: that is your stock keeper. Right-click the keeper to browse everything on the network and order items to any address. Categories come from filters.\n\nHand the keeper a Schematicannon clipboard and it orders every block the build needs."
+   ],
+   "es_es": [
+    "Ticker de stock",
+    "Vinculá un Ticker de stock a un enlace y sentá un mob o poné un Quemador de blaze adelante: ese es tu encargado. Clic derecho en él para ver todo lo que hay en la red y pedir ítems a cualquier dirección. Las categorías salen de filtros.\n\nDale al encargado el portapapeles de un Cañón de esquemas y pide todos los bloques que necesita la obra."
+   ],
+   "sources": [
+    "jar:create-1.21.1-6.0.10.jar:data/create/recipe/crafting/logistics/stock_ticker.json",
+    "jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#create.ponder.stock_ticker",
+    "jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#create.ponder.stock_ticker_address",
+    "jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#advancement.create.stock_ticker"
+   ]
+  },
+  {
+   "key": "clg_requester",
+   "deps": [
+    "clg_ticker"
+   ],
+   "type": "item",
+   "item": "create:redstone_requester",
+   "optional": true,
+   "layout": {
+    "x": 15.5,
+    "y": 7.5,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Redstone Requester",
+    "Bound to a link like the ticker, it orders a fixed list of items every time it gets a redstone pulse. Set the order in its UI, or configure it through a stock keeper before placing it.\n\nOne button, one delivery: ideal for a \"refill my building materials\" switch."
+   ],
+   "es_es": [
+    "Solicitante de redstone",
+    "Vinculado a un enlace como el ticker, pide una lista fija de ítems cada vez que recibe un pulso de redstone. Configurá el pedido en su interfaz, o armalo en un encargado de stock antes de colocarlo.\n\nUn botón, una entrega: ideal para un interruptor de «reponeme los materiales de obra»."
+   ],
+   "sources": [
+    "jar:create-1.21.1-6.0.10.jar:data/create/recipe/crafting/logistics/redstone_requester.json",
+    "jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#create.ponder.redstone_requester"
+   ]
+  },
+  {
+   "key": "clg_shop",
+   "deps": [
+    "clg_ticker"
+   ],
+   "type": "item",
+   "item": "create:white_table_cloth",
+   "optional": true,
+   "layout": {
+    "x": 13,
+    "y": 7.5,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Table Cloth shops",
+    "With a packager, a link and a stock ticker you can run a shop: hold a Table Cloth and interact with the keeper to create a trade, place it, and set a price in its side slot. Other players buy at the cashier; their goods come out packaged and the payment stays in the ticker.\n\nA fun way to trade with your team without handing out chest access."
+   ],
+   "es_es": [
+    "Tiendas con manteles",
+    "Con un empaquetador, un enlace y un ticker de stock podés tener una tienda: con un Mantel en la mano interactuá con el encargado para crear una oferta, colocalo y fijá el precio en su ranura lateral. Otros jugadores pagan en la caja; la mercadería sale empaquetada y el pago queda en el ticker.\n\nUna forma divertida de comerciar con tu equipo sin darle acceso a tus cofres."
+   ],
+   "sources": [
+    "jar:create-1.21.1-6.0.10.jar:data/create/recipe/crafting/logistics/white_table_cloth.json",
+    "jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#create.ponder.table_cloth",
+    "jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#advancement.create.table_cloth_shop"
+   ]
+  },
+  {
+   "key": "clg_gauge",
+   "deps": [
+    "clg_ticker"
+   ],
+   "type": "item",
+   "item": "create:factory_gauge",
+   "count": 2,
+   "layout": {
+    "x": 18,
+    "y": 5,
+    "size": 1.5,
+    "shape": "hexagon"
+   },
+   "en_us": [
+    "Factory Gauge",
+    "A Stock Link plus a precision mechanism. On a packager, a gauge watches one item in that inventory and requests more from the network whenever it drops below the target. Off a packager, it watches the whole network and sends ingredients to an address where machines process them; chain several gauges into a board and each keeps its own item stocked.\n\nOn a 3x3 of wrench-linked Mechanical Crafters it arranges crafting-table recipes by itself."
+   ],
+   "es_es": [
+    "Medidor de fábrica",
+    "Un Enlace de stock más un mecanismo de precisión. Sobre un empaquetador, el medidor vigila un ítem de ese inventario y pide más a la red cuando baja del objetivo. Fuera de un empaquetador, vigila toda la red y manda ingredientes a una dirección donde las máquinas los procesan; encadená varios en un tablero y cada uno mantiene su ítem.\n\nSobre un 3x3 de Crafteadores mecánicos unidos con la llave, acomoda solo las recetas de mesa de crafteo."
+   ],
+   "sources": [
+    "jar:create-1.21.1-6.0.10.jar:data/create/recipe/crafting/logistics/factory_gauge.json",
+    "jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#create.ponder.factory_gauge_restocker",
+    "jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#create.ponder.factory_gauge_recipe",
+    "jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#create.ponder.factory_gauge_crafting",
+    "jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#advancement.create.factory_gauge"
+   ]
+  },
+  {
+   "key": "clg_repack",
+   "deps": [
+    "clg_gauge"
+   ],
+   "type": "checkmark",
+   "icon": "create:repackager",
+   "layout": {
+    "x": 18,
+    "y": 7.5,
+    "size": 1.0,
+    "shape": "circle"
+   },
+   "en_us": [
+    "Re-Packager",
+    "Big orders arrive split in several packages, and other packages can slip in between. Send them to an inventory with a powered Re-Packager: once every fragment arrived, it ships them as one package, in a predictable order.\n\nFactory gauges feeding crafters work far better with one."
+   ],
+   "es_es": [
+    "Re-empaquetador",
+    "Los pedidos grandes llegan partidos en varios paquetes, y otros pueden meterse en el medio. Mandalos a un inventario con un Re-empaquetador con redstone: cuando llegaron todas las partes, los despacha como un solo paquete y en orden predecible.\n\nLos medidores de fábrica que alimentan crafteadores funcionan mucho mejor con uno."
+   ],
+   "sources": [
+    "jar:create-1.21.1-6.0.10.jar:data/create/recipe/crafting/logistics/repackager_from_conversion.json",
+    "jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#create.ponder.repackager",
+    "jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#create.ponder.factory_gauge_crafting"
+   ]
+  },
+  {
+   "key": "clg_mastery",
+   "deps": [
+    "clg_gauge",
+    "clg_signal"
+   ],
+   "type": "item",
+   "item": "create:factory_gauge",
+   "count": 4,
+   "layout": {
+    "x": 21,
+    "y": 2.5,
+    "size": 2.0,
+    "shape": "octagon"
+   },
+   "en_us": [
+    "Logistics mastery",
+    "Connect a far outpost to your base: a train on a schedule with a postbox at each end, and a factory board at home that keeps your key items stocked on its own.\n\nFrom here on, AE2 or Refined Storage can take over storage, but Create packages remain the best way to move goods between distant places without chunk loading."
+   ],
+   "es_es": [
+    "Maestría logística",
+    "Conectá un puesto lejano con tu base: un tren con horario y un buzón en cada punta, y en casa un tablero de fábrica que mantiene solo tus ítems clave.\n\nDe acá en adelante AE2 o Refined Storage pueden hacerse cargo del almacenamiento, pero los paquetes de Create siguen siendo la mejor forma de mover mercadería entre lugares lejanos sin cargar chunks."
+   ],
+   "sources": [
+    "jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#create.ponder.postbox",
+    "jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#create.ponder.factory_gauge_recipe"
+   ]
+  }
+ ]
+}
