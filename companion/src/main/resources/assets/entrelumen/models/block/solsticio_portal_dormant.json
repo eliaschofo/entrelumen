@@ -1,0 +1,35 @@
+{
+  "__comment": "PROVISIONAL: symmetric keystone pedestal from vanilla quartz and copper textures; the controller draws the definitive portal.",
+  "parent": "minecraft:block/block",
+  "textures": {
+    "particle": "minecraft:block/quartz_block_side",
+    "base": "minecraft:block/quartz_block_side",
+    "top": "minecraft:block/chiseled_quartz_block_top",
+    "core": "minecraft:block/copper_block"
+  },
+  "elements": [
+    {
+      "from": [2, 0, 2],
+      "to": [14, 4, 14],
+      "faces": {
+        "down": {"uv": [2, 2, 14, 14], "texture": "#base", "cullface": "down"},
+        "up": {"uv": [2, 2, 14, 14], "texture": "#top"},
+        "north": {"uv": [2, 12, 14, 16], "texture": "#base"},
+        "south": {"uv": [2, 12, 14, 16], "texture": "#base"},
+        "west": {"uv": [2, 12, 14, 16], "texture": "#base"},
+        "east": {"uv": [2, 12, 14, 16], "texture": "#base"}
+      }
+    },
+    {
+      "from": [4, 4, 4],
+      "to": [12, 13, 12],
+      "faces": {
+        "up": {"uv": [4, 4, 12, 12], "texture": "#core"},
+        "north": {"uv": [4, 3, 12, 12], "texture": "#core"},
+        "south": {"uv": [4, 3, 12, 12], "texture": "#core"},
+        "west": {"uv": [4, 3, 12, 12], "texture": "#core"},
+        "east": {"uv": [4, 3, 12, 12], "texture": "#core"}
+      }
+    }
+  ]
+}

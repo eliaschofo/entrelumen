@@ -126,6 +126,8 @@ public final class ArkActions {
       return false;
     }
     CampaignData.get(player.server).setDirty();
+    // The activated Ark forges the team's Light Key (act VI: Solsticio).
+    Solsticio.forgeKey(player);
     return true;
   }
 
@@ -134,6 +136,8 @@ public final class ArkActions {
     var campaign = Entrelumen.current(player);
     if (campaign.completed.contains(CampaignMilestones.LAST_HORIZON)) {
       player.sendSystemMessage(Component.translatable("entrelumen.ark.ending"));
+      // Teams that activated the Ark before the key existed receive it here, once.
+      Solsticio.forgeKey(player);
       return;
     }
     if (campaign.arkPhase >= ArkCommissioning.STEPS.size()) {

@@ -96,7 +96,7 @@ public final class Entrelumen {
     ITEMS.registerSimpleBlockItem("ark_controller", controller);
   }
 
-  public Entrelumen(IEventBus bus) {
+  public Entrelumen(IEventBus bus, net.neoforged.fml.ModContainer container) {
     ITEMS.register(bus);
     bus.addListener(AtlasNetwork::register);
     bus.addListener(JournalBookNetwork::register);
@@ -105,6 +105,7 @@ public final class Entrelumen {
     BLOCK_ENTITIES.register(bus);
     Altars.register(bus);
     Luminous.register(bus);
+    Solsticio.register(bus, container);
     bus.addListener(this::registerCapabilities);
     NeoForge.EVENT_BUS.addListener(this::commands);
     NeoForge.EVENT_BUS.addListener(Expeditions::onDimensionChanged);
