@@ -98,7 +98,7 @@ Story-set tiers (2026-09-24): `sync` also moves the player's active World Tier t
 
 The tier never drops, not even after leaving a team, and `sync` also runs on FTB `PLAYER_CHANGED`. It calls Apotheosis's public `WorldTier.getTier` and `setTier` through reflection resolved once behind `ModList.isLoaded("apotheosis")`, and writes only when the tier differs. A failure disables the step instead of the tick. The pack sets `Enable Manual World Tier Changes = false`. See `docs/design/apotheosis-family.md#story-set-world-tiers`.
 
-Satiety overflow (2026-09-24): `SatietyOverflowEvents` snapshots hunger and saturation on the last `LivingEntityUseItemEvent.Tick` and converts the surplus a meal loses to the caps on `Finish`. Blocks eaten in place (cake, pies) are measured through a bite window: `RightClickBlock` opens it, the common mixin `FoodDataMixin` (config `entrelumen.common.mixins.json`) measures `FoodData.add` before the caps, and it closes at the next tick boundary. It grants short ambient buffs from the datapack file `data/entrelumen/satiety/overflow.json`, with a 10 s cooldown and decaying glut, and never replaces stronger or infinite effects. The pure rules are in `SatietyOverflow`. See `docs/design/satiety-overflow.md`.
+Satiety overflow (2026-09-24): `SatietyOverflowEvents` snapshots hunger and saturation on the last `LivingEntityUseItemEvent.Tick` and converts the surplus a meal loses to the caps on `Finish`. Blocks eaten in place (cake, pies) are measured through a bite window: `RightClickBlock` opens it (highest priority, cancelled events included, since Amendments eats cakes from its own handler), the common mixin `FoodDataMixin` (config `entrelumen.common.mixins.json`) measures `FoodData.add` before the caps, and it closes at the next tick boundary. It grants short ambient buffs from the datapack file `data/entrelumen/satiety/overflow.json`, with a 10 s cooldown and decaying glut, and never replaces stronger or infinite effects. The pure rules are in `SatietyOverflow`. See `docs/design/satiety-overflow.md`.
 
 Verification: 127 JUnit tests passed; `runGameTestServer` passed all 62 required GameTests, including five new ones in `RuntimeGameTestsGameplay`. Two full-pack cases are written but pending: `ApotheosisGameTests.worldTierFollowsTheStoryAndCannotBeChosen` and `CookingProvisionsGameTests.farmersDelightPieBiteCountsAsSatietySurplus`.
 
@@ -124,7 +124,9 @@ Design and verification: [docs/design/heliodor-compass.md](../docs/design/heliod
   - `entrelumen_compass`: compasses claimed per UUID, reached objectives per campaign, shared search results.
 - Operator command: `/entrelumen admin ruin` places the start ruin once in a world created before this feature and moves the world spawn beside it.
 - The Atlas snapshot carries the compass view. The Atlas network version is now 2, so client and server need the same JAR.
-- The companion gives nothing on login. A new world gets the start ruin at its spawn, and a brand-new player appears beside it.
+- The companion gives nothing on login. A new world gets the start ruin at its spawn, and a brand-new player appears beside it; with no footing on any side, a tuff step beside the ruin becomes the arrival point.
+- `FirstJoinGifts` (24 September) sets Ars Nouveau's persisted `an_plush` flag on `PlayerLoggedInEvent` at HIGHEST priority, so Ars's remote Starbuncle plush campaign (no config) never hands a new player an item. Config gifts stay in `pack/config`.
+- Compass searches never load a chunk on the server thread: a predicted structure start is generated to `STRUCTURE_STARTS` through the region ticket type `entrelumen_compass` (600-tick lifespan, renewed while in flight, removed on confirmation) and polled on later ticks.
 
 ## Solsticio commerce (2026-09-24)
 

@@ -88,7 +88,11 @@ public final class SatietyOverflowEvents {
     // First on Finish, so a Spice of Life milestone message sent in the same tick is the one shown.
     NeoForge.EVENT_BUS.addListener(EventPriority.HIGHEST, SatietyOverflowEvents::onUseFinish);
     NeoForge.EVENT_BUS.addListener(SatietyOverflowEvents::onLogout);
-    NeoForge.EVENT_BUS.addListener(EventPriority.LOWEST, SatietyOverflowEvents::onRightClickBlock);
+    // First, and even when cancelled: a mod may eat the block from its own handler and cancel the
+    // event (Amendments turns a bitten cake into its directional cake). A window only measures food
+    // actually added, so a protection cancel that eats nothing converts nothing.
+    NeoForge.EVENT_BUS.addListener(EventPriority.HIGHEST, true, PlayerInteractEvent.RightClickBlock.class,
+        SatietyOverflowEvents::onRightClickBlock);
     NeoForge.EVENT_BUS.addListener((ServerTickEvent.Pre event) -> closeBites());
     NeoForge.EVENT_BUS.addListener((ServerTickEvent.Post event) -> closeBites());
     NeoForge.EVENT_BUS.addListener((AddReloadListenerEvent event) -> event.addListener(new ReloadListener()));

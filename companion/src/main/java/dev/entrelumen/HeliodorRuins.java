@@ -223,7 +223,12 @@ public final class HeliodorRuins {
     return Blocks.TUFF.defaultBlockState();
   }
 
-  /** Middle of the south side, then the other sides; last resort, on the floor at the center. */
+  /**
+   * Middle of the south side, then the other sides. When none of them offers footing (a ruin
+   * surrounded by open water, lava or a canopy), a tuff step is laid at the south middle, level
+   * with the ruin floor, so the arrival point is always beside the ruin and safe. Last resort, on
+   * the floor at the center.
+   */
   static BlockPos besideRuin(ServerLevel level, BoundingBox box) {
     int cx = (box.minX() + box.maxX()) / 2, cz = (box.minZ() + box.maxZ()) / 2;
     int[][] sides = {
@@ -234,6 +239,19 @@ public final class HeliodorRuins {
       BlockPos pos = new BlockPos(side[0],
           level.getHeight(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, side[0], side[1]), side[1]);
       if (standable(level, pos)) return pos;
+    }
+    BlockPos step = new BlockPos(cx, box.minY() + 1, box.maxZ() + 1);
+    if (step.getY() + 1 < level.getMaxBuildHeight()) {
+      BlockPos below = step.below();
+      if (!level.getBlockState(below).getFluidState().isEmpty()
+          || !level.getBlockState(below).isFaceSturdy(level, below, Direction.UP))
+        level.setBlock(below, Blocks.TUFF.defaultBlockState(), Block.UPDATE_CLIENTS);
+      for (BlockPos pos : List.of(step, step.above())) {
+        BlockState state = level.getBlockState(pos);
+        if (!state.getCollisionShape(level, pos).isEmpty() || !state.getFluidState().isEmpty())
+          level.setBlock(pos, Blocks.AIR.defaultBlockState(), Block.UPDATE_CLIENTS);
+      }
+      if (standable(level, step)) return step;
     }
     BlockPos pos = new BlockPos(cx, box.minY() + 1, cz);
     while (!standable(level, pos) && pos.getY() < level.getMaxBuildHeight() - 2) pos = pos.above();

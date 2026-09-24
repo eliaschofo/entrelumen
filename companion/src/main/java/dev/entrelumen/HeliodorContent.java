@@ -61,6 +61,7 @@ public final class HeliodorContent {
     NeoForge.EVENT_BUS.addListener(HeliodorRuins::onCreateSpawn);
     NeoForge.EVENT_BUS.addListener(HeliodorRuins::onServerStarted);
     NeoForge.EVENT_BUS.addListener(EventPriority.LOW, HeliodorRuins::onLogin);
+    FirstJoinGifts.register();
     NeoForge.EVENT_BUS.addListener(
         (AddReloadListenerEvent event) -> event.addListener(new TargetsReloadListener()));
     NeoForge.EVENT_BUS.addListener((ServerTickEvent.Post event) ->
