@@ -1,0 +1,3140 @@
+{
+ "schemaVersion": 1,
+ "checkedAt": "2026-09-24T21:45:00+00:00",
+ "scope": "Mod ping-pong round 4: Psi, Create: New Age, Create: Central Kitchen, Create Slice & Dice and Dungeons and Taverns (plus Kotlin for Forge, and Create: Dragons Plus 1.11.7b -> 1.11.9) added to the lock; act staging, kitchen route split, guide-book recipe split, Psi keybinding. Dedicated-server boots, idle TPS/MSPT, forced worldgen, full-pack GameTests on owned QA copies. Not client rendering, survival pacing, co-op or long soaks.",
+ "branch": "feature/mods-r4",
+ "platform": "Minecraft 1.21.1 / NeoForge 21.1.249 / JDK 21.0.12.1+1 / Windows 11 / i7-8750H 6C12T / 16 GB, heap 6G",
+ "designDocs": [
+  "docs/design/mod-pingpong.md"
+ ],
+ "receipts": "E:\\Elias\\Codex\\Entrelumen-ssd\\mods-r4-20260924",
+ "fullpackServer": "E:/Elias/Codex/Entrelumen-ssd/server-mods-r4-qa (clean: libraries, 272 lock JARs, pack/, QA JAR built at 93eb5f2 = this branch with main 35f22ad merged; the rerun used the QA JAR with the narrowed kitchen test, 9331c9c)",
+ "qaServers": {
+  "before": "E:/Elias/Codex/Entrelumen-ssd/server-mods-r4-base (main lock ce7cdda, 266 server JARs)",
+  "after": "E:/Elias/Codex/Entrelumen-ssd/server-mods-r4 (this lock, 272 server JARs)",
+  "note": "Owned servers built from the r123 QA server skeleton (libraries and launch files only; mods and pack files installed from each lock); server-slice, other workers' servers and client profiles untouched. Watchdog 60 s."
+ },
+ "downloads": [
+  {
+   "provider": "modrinth",
+   "filename": "Psi-neoforge-1.21.1-110.jar",
+   "sha1": "f4be150631efd276e780b7cc693a71d565ce3e21",
+   "sha256": "25b2e19bb9433bf5e462dfd9906dcd7b07b6dcb208e243ca936a007dc6e14033",
+   "sha512": "2bbe6b40f230cd495a5342db61fb5a6c2a4d03fda0ee5fe0a21d8b7ccc8494d1d3e7fa5f54236d5f90cbe78a8bb75c27e3bb9cd9b85e4b6eed67aa976ffe857a",
+   "bytes": 2553645,
+   "projectId": "pOeA0exL",
+   "slug": "psi",
+   "title": "Psi",
+   "versionId": "j9TFdTKC",
+   "versionNumber": "1.21.1-110-neoforge",
+   "versionType": "release",
+   "datePublished": "2026-09-01T17:27:23.103552Z",
+   "downloadUrl": "https://cdn.modrinth.com/data/pOeA0exL/versions/j9TFdTKC/Psi-neoforge-1.21.1-110.jar",
+   "metadataUrl": "https://api.modrinth.com/v2/version/j9TFdTKC",
+   "license": {
+    "id": "LicenseRef-Psi-License",
+    "name": "",
+    "url": "https://psi.vazkii.net/license.php"
+   },
+   "sha1Verified": true,
+   "sha512Verified": true,
+   "status": "written",
+   "at": 1790280566.651204
+  },
+  {
+   "provider": "modrinth",
+   "filename": "create-new-age-1.2.0+neoforge-mc1.21.1.jar",
+   "sha1": "849df57070ffa75c2446b9c460d03f6b49fa089e",
+   "sha256": "a217ea21ccc8364e99d86777e519436bc7c94516df9737ad0103047e48a44717",
+   "sha512": "5075c6482b800af7044b594ad694855e7d56f386cb0354967eafe99d77e84b4e26ee7f880d287672d24d84ea8086fd074b7695e46632f32f215b31ce859ada72",
+   "bytes": 1644485,
+   "projectId": "FTeXqI9v",
+   "slug": "create-new-age",
+   "title": "Create: New Age",
+   "versionId": "IwtuwMZy",
+   "versionNumber": "1.2.0+mc1.21.1",
+   "versionType": "release",
+   "datePublished": "2026-06-08T07:57:10.810928Z",
+   "downloadUrl": "https://cdn.modrinth.com/data/FTeXqI9v/versions/IwtuwMZy/create-new-age-1.2.0%2Bneoforge-mc1.21.1.jar",
+   "metadataUrl": "https://api.modrinth.com/v2/version/IwtuwMZy",
+   "license": {
+    "id": "BSD-3-Clause",
+    "name": "BSD 3-Clause \"New\" or \"Revised\" License",
+    "url": null
+   },
+   "sha1Verified": true,
+   "sha512Verified": true,
+   "status": "written",
+   "at": 1790280567.8278913
+  },
+  {
+   "provider": "modrinth",
+   "filename": "create-central-kitchen-2.6.2.jar",
+   "sha1": "fc25056911ed744f4f7f762f4939d9805aa9f340",
+   "sha256": "b0cd470dce5a1cfd455255d0d26951326fd2abdad8fc785e3545d3bbbc53e222",
+   "sha512": "187d8d86217825e5812a112b7922603af498427f7a4ba1c71cf5c651d12e7ef2ca046597d72743f61ebd497c82e7f1c79e28c853cd643d1d680093e086354f7f",
+   "bytes": 511685,
+   "projectId": "btq68HMO",
+   "slug": "create-central-kitchen",
+   "title": "Create: Central Kitchen",
+   "versionId": "whbguqT1",
+   "versionNumber": "2.6.2",
+   "versionType": "release",
+   "datePublished": "2026-09-22T04:21:23.970126Z",
+   "downloadUrl": "https://cdn.modrinth.com/data/btq68HMO/versions/whbguqT1/create-central-kitchen-2.6.2.jar",
+   "metadataUrl": "https://api.modrinth.com/v2/version/whbguqT1",
+   "license": {
+    "id": "LGPL-3.0-or-later",
+    "name": "GNU Lesser General Public License v3.0 or later",
+    "url": null
+   },
+   "sha1Verified": true,
+   "sha512Verified": true,
+   "status": "written",
+   "at": 1790280568.8567064
+  },
+  {
+   "provider": "modrinth",
+   "filename": "sliceanddice-4.3.4-neoforge.jar",
+   "sha1": "bfcb12d13465caf6743f200fbd755b72705011e4",
+   "sha256": "b3982e89611761d7f1cdce90794cd88498a2c9e1447d8a1aba33ed831f3c9201",
+   "sha512": "18fc9c70d2958ad6a0e7106ca2a5659d664fe9d5001a02afbd0c7d6980749764fcd90203abb2b9c6d7b1c8e564e421be04dfca1aeb25974371d7deeabf4b96a3",
+   "bytes": 1356389,
+   "projectId": "GmjmRQ0A",
+   "slug": "slice-and-dice",
+   "title": "Create Slice & Dice",
+   "versionId": "D6mQaFRW",
+   "versionNumber": "4.3.4",
+   "versionType": "release",
+   "datePublished": "2026-09-20T09:52:46.741955Z",
+   "downloadUrl": "https://cdn.modrinth.com/data/GmjmRQ0A/versions/D6mQaFRW/sliceanddice-4.3.4-neoforge.jar",
+   "metadataUrl": "https://api.modrinth.com/v2/version/D6mQaFRW",
+   "license": {
+    "id": "LicenseRef-Custom",
+    "name": "",
+    "url": "https://github.com/PssbleTrngle/SliceAndDice/blob/1.19.x/LICENSE.txt"
+   },
+   "sha1Verified": true,
+   "sha512Verified": true,
+   "status": "written",
+   "at": 1790280569.8870995
+  },
+  {
+   "provider": "modrinth",
+   "filename": "dungeons-and-taverns-v4.4.4.jar",
+   "sha1": "249a5bdd0e8622b8a11f88758e6f5fd5fda036a3",
+   "sha256": "1db28e89e0cb76aebe9e40955d1866e8ac1779575d15c2a1e250ac804a762d05",
+   "sha512": "83069dc336bcc212059f753923373d9522aa5953bf4b4fe2a8cfa666b4e28d2d017daa66c4b35e315c3be8d1ad60c2872879dd47cc1f47665ebbfd102da76976",
+   "bytes": 24859622,
+   "projectId": "tpehi7ww",
+   "slug": "dungeons-and-taverns",
+   "title": "Dungeons and Taverns",
+   "versionId": "BYUUUeZA",
+   "versionNumber": "v4.4.4+mod",
+   "versionType": "release",
+   "datePublished": "2024-09-29T19:53:08.688601Z",
+   "downloadUrl": "https://cdn.modrinth.com/data/tpehi7ww/versions/BYUUUeZA/dungeons-and-taverns-v4.4.4.jar",
+   "metadataUrl": "https://api.modrinth.com/v2/version/BYUUUeZA",
+   "license": {
+    "id": "LicenseRef-All-Rights-Reserved",
+    "name": "",
+    "url": null
+   },
+   "sha1Verified": true,
+   "sha512Verified": true,
+   "status": "written",
+   "at": 1790280572.027201
+  },
+  {
+   "provider": "modrinth",
+   "filename": "kotlinforforge-5.12.0-all.jar",
+   "sha1": "d10d062caf1aad9aec82d7852f2fee1781735c1f",
+   "sha256": "2785a4dd6de5c6c56065fd8eb789c82771bd2ee773c30794c23160a3b2c39139",
+   "sha512": "b8c3942f4d33179edf3f102f3d870b99dd436f8b8236dbbd31aa51b888162c692cfd88927295f24dc8b4375232f4c6c17360c5d6c4823f93cbcd7cf4bdc8bd14",
+   "bytes": 7279264,
+   "projectId": "ordsPcFz",
+   "slug": "kotlin-for-forge",
+   "title": "Kotlin for Forge",
+   "versionId": "uhJhCT7X",
+   "versionNumber": "5.12.0",
+   "versionType": "release",
+   "datePublished": "2026-06-28T16:33:47.870642Z",
+   "downloadUrl": "https://cdn.modrinth.com/data/ordsPcFz/versions/uhJhCT7X/kotlinforforge-5.12.0-all.jar",
+   "metadataUrl": "https://api.modrinth.com/v2/version/uhJhCT7X",
+   "license": {
+    "id": "LGPL-2.1-only",
+    "name": "GNU Lesser General Public License v2.1 only",
+    "url": null
+   },
+   "sha1Verified": true,
+   "sha512Verified": true,
+   "status": "written",
+   "at": 1790280573.1255155
+  },
+  {
+   "provider": "modrinth",
+   "filename": "CreateDragonsPlus-1.11.9.jar",
+   "sha1": "67ffcb61207a7dbc6b1e70f0473ddbacb19d44eb",
+   "sha256": "37f05a6775bbe811fe8c2833fa6289a1c704d0b25bdd5f239d343a5c6f62ed8a",
+   "sha512": "43299e49afe7132515aa8ad545b8c9566d90f12cfb39456b3d6e1ebc8e03f05787fbc420e7cc9495df4d6b585d13e7a4c4c7385f82f20aeb829c9491b725af53",
+   "bytes": 1085674,
+   "projectId": "dzb1a5WV",
+   "slug": "create-dragons-plus",
+   "title": "Create: Dragons Plus",
+   "versionId": "b0u9vk8C",
+   "versionNumber": "1.11.9",
+   "versionType": "release",
+   "datePublished": "2026-09-17T01:16:15.484691Z",
+   "downloadUrl": "https://cdn.modrinth.com/data/dzb1a5WV/versions/b0u9vk8C/CreateDragonsPlus-1.11.9.jar",
+   "metadataUrl": "https://api.modrinth.com/v2/version/b0u9vk8C",
+   "license": {
+    "id": "LGPL-3.0-or-later",
+    "name": "GNU Lesser General Public License v3.0 or later",
+    "url": null
+   },
+   "sha1Verified": true,
+   "sha512Verified": true,
+   "status": "written",
+   "at": 1790281140.4756553
+  },
+  {
+   "provider": "curseforge",
+   "filename": "CreateDragonsPlus-1.11.9.jar",
+   "sha1": "67ffcb61207a7dbc6b1e70f0473ddbacb19d44eb",
+   "sha256": "37f05a6775bbe811fe8c2833fa6289a1c704d0b25bdd5f239d343a5c6f62ed8a",
+   "sha512": "43299e49afe7132515aa8ad545b8c9566d90f12cfb39456b3d6e1ebc8e03f05787fbc420e7cc9495df4d6b585d13e7a4c4c7385f82f20aeb829c9491b725af53",
+   "bytes": 1085674,
+   "projectID": 1216624,
+   "fileID": 8900055,
+   "downloadUrl": "https://edge.forgecdn.net/files/8900/55/CreateDragonsPlus-1.11.9.jar",
+   "fileRecord": "https://www.curseforge.com/api/v1/mods/1216624/files/8900055",
+   "lengthVerified": true,
+   "modrinthSameBytes": {
+    "projectId": "dzb1a5WV",
+    "versionId": "b0u9vk8C",
+    "versionNumber": "1.11.9",
+    "downloadUrl": "https://cdn.modrinth.com/data/dzb1a5WV/versions/b0u9vk8C/CreateDragonsPlus-1.11.9.jar",
+    "sha1": "67ffcb61207a7dbc6b1e70f0473ddbacb19d44eb",
+    "sha512": "43299e49afe7132515aa8ad545b8c9566d90f12cfb39456b3d6e1ebc8e03f05787fbc420e7cc9495df4d6b585d13e7a4c4c7385f82f20aeb829c9491b725af53"
+   },
+   "status": "existing-identical",
+   "at": 1790281310.8687162
+  }
+ ],
+ "measurements": {
+  "base1": {
+   "runId": "7eaf362b-3fd0-47be-b49e-d573a45445dc",
+   "heap": "6G",
+   "bootWallSeconds": 262.4,
+   "modernfixLoadSeconds": 287.281,
+   "datapackLoadMinutes": 1.425,
+   "doneSeconds": 37.81,
+   "cpuAtDone": 721.1,
+   "idleSeconds": 90,
+   "idleCpuSeconds": 115.2,
+   "exitCode": 0,
+   "errorLines": 3,
+   "warnLines": 324,
+   "cantKeepUp": 7,
+   "otherJavaAtStart": [
+    "E:\\Elias\\Codex\\Entrelumen-ssd\\runtime\\jdk-21.0.12.1+1\\bin\\java.exe -Xmx64m -Xms64m -Dorg.gradle.appname=gradlew -classpath \"E:/\\\"/\\\"\" -jar E",
+    "E:\\Elias\\Codex\\Entrelumen-ssd\\runtime\\jdk-21.0.12.1+1\\bin\\java.exe --add-opens=java.base/java.lang=ALL-UNNAMED --add-opens=java.base/java.la"
+   ],
+   "otherJavaDuring": [
+    "E:\\Elias\\Codex\\Entrelumen-ssd\\runtime\\jdk-21.0.12.1+1\\bin\\java.exe -Xmx6G -Xms1G @E:\\Elias\\Codex\\Entrelumen-ssd\\server-mods-r4-base\\librarie"
+   ],
+   "idle": {
+    "tps_5s_10s_1m_5m_15m": "[?]  20.0, 20.0, 20.0, *20.0, *20.0",
+    "mspt_min_med_p95_max_10s_1m": "[?]  0.8/1.5/2.1/46.2;  0.7/1.6/4.4/46.2",
+    "cpuSystem": "72%, 72%, 83%  (system)",
+    "heap": "2.3 GB / 6.0 GB   (38%)"
+   },
+   "worldgen256Chunks": [
+    {
+     "dimension": "minecraft:overworld",
+     "origin": [
+      20000,
+      20000
+     ],
+     "wallSeconds": 107.6,
+     "cpuSeconds": 272.1,
+     "complete": true,
+     "slowestBatch16Chunks": 45.75,
+     "after": {
+      "tps_5s_10s_1m_5m_15m": "[?]  *20.0, *20.0, 9.39, 16.31, 18.6",
+      "mspt_min_med_p95_max_10s_1m": "[?]  9.1/13.8/52.5/1841.0;  0.8/11.1/52.6/44496.5"
+     }
+    },
+    {
+     "dimension": "minecraft:overworld",
+     "origin": [
+      -20000,
+      20000
+     ],
+     "wallSeconds": 58.2,
+     "cpuSeconds": 167.1,
+     "complete": true,
+     "slowestBatch16Chunks": 15.26,
+     "after": {
+      "tps_5s_10s_1m_5m_15m": "[?]  *20.0, 20.0, 14.6, 15.39, 18.18",
+      "mspt_min_med_p95_max_10s_1m": "[?]  2.8/8.5/44.8/1744.6;  0.7/3.4/38.1/14695.3"
+     }
+    },
+    {
+     "dimension": "minecraft:the_nether",
+     "origin": [
+      4000,
+      4000
+     ],
+     "wallSeconds": 49.6,
+     "cpuSeconds": 92.1,
+     "complete": true,
+     "slowestBatch16Chunks": 18.26,
+     "after": {
+      "tps_5s_10s_1m_5m_15m": "[?]  20.0, 11.27, 14.3, 14.45, 17.73",
+      "mspt_min_med_p95_max_10s_1m": "[?]  4.0/9.4/53.1/7837.3;  0.6/5.9/41.3/17467.7"
+     }
+    },
+    {
+     "dimension": "minecraft:the_end",
+     "origin": [
+      4000,
+      4000
+     ],
+     "wallSeconds": 18.5,
+     "cpuSeconds": 61.0,
+     "complete": true,
+     "slowestBatch16Chunks": 2.56,
+     "after": {
+      "tps_5s_10s_1m_5m_15m": "[?]  20.0, *20.0, 17.78, 14.45, 17.73",
+      "mspt_min_med_p95_max_10s_1m": "[?]  1.8/3.6/22.9/1599.9;  0.4/3.1/31.9/7837.3"
+     }
+    }
+   ],
+   "final": {
+    "cpuSystem": "49%, 68%, 85%  (system)",
+    "heap": "3.1 GB / 6.0 GB   (51%)"
+   }
+  },
+  "after1": {
+   "runId": "a609b513-1e28-4d33-98d7-c1091b3d6be2",
+   "heap": "6G",
+   "bootWallSeconds": 205.7,
+   "modernfixLoadSeconds": 222.999,
+   "datapackLoadMinutes": 1.118,
+   "doneSeconds": 31.156,
+   "cpuAtDone": 706.9,
+   "idleSeconds": 90,
+   "idleCpuSeconds": 101.3,
+   "exitCode": 0,
+   "errorLines": 3,
+   "warnLines": 312,
+   "cantKeepUp": 9,
+   "otherJavaAtStart": [],
+   "otherJavaDuring": [
+    "E:\\Elias\\Codex\\Entrelumen-ssd\\runtime\\jdk-21.0.12.1+1\\bin\\java.exe -Xmx6G -Xms1G @E:\\Elias\\Codex\\Entrelumen-ssd\\server-mods-r4\\libraries\\net",
+    "E:\\Elias\\Codex\\Entrelumen-ssd\\runtime\\jdk-21.0.12.1+1\\bin\\java.exe -Xmx6G -Xms1G @E:\\Elias\\Codex\\Entrelumen-ssd\\server-fullpack-qa4\\librarie"
+   ],
+   "idle": {
+    "tps_5s_10s_1m_5m_15m": "[?]  20.0, 20.0, *20.0, *20.0, *20.0",
+    "mspt_min_med_p95_max_10s_1m": "[?]  0.8/1.5/2.1/86.1;  0.7/1.6/3.2/117.6",
+    "cpuSystem": "74%, 84%, 86%  (system)",
+    "heap": "2.4 GB / 6.0 GB   (39%)"
+   },
+   "worldgen256Chunks": [
+    {
+     "dimension": "minecraft:overworld",
+     "origin": [
+      20000,
+      20000
+     ],
+     "wallSeconds": 84.3,
+     "cpuSeconds": 263.1,
+     "complete": true,
+     "slowestBatch16Chunks": 26.82,
+     "after": {
+      "tps_5s_10s_1m_5m_15m": "[?]  *20.0, *20.0, 11.89, 17.6, 19.13",
+      "mspt_min_med_p95_max_10s_1m": "[?]  9.7/16.3/53.3/2044.3;  0.6/12.7/52.5/26076.3"
+     }
+    },
+    {
+     "dimension": "minecraft:overworld",
+     "origin": [
+      -20000,
+      20000
+     ],
+     "wallSeconds": 91.8,
+     "cpuSeconds": 191.9,
+     "complete": true,
+     "slowestBatch16Chunks": 20.29,
+     "after": {
+      "tps_5s_10s_1m_5m_15m": "[?]  *20.0, *20.0, 12.18, 15.81, 18.38",
+      "mspt_min_med_p95_max_10s_1m": "[?]  3.1/7.9/38.7/1769.5;  1.3/3.9/29.6/19300.2"
+     }
+    },
+    {
+     "dimension": "minecraft:the_nether",
+     "origin": [
+      4000,
+      4000
+     ],
+     "wallSeconds": 53.1,
+     "cpuSeconds": 102.4,
+     "complete": true,
+     "slowestBatch16Chunks": 20.51,
+     "after": {
+      "tps_5s_10s_1m_5m_15m": "[?]  *20.0, 15.05, 14.42, 14.9, 17.95",
+      "mspt_min_med_p95_max_10s_1m": "[?]  3.8/9.3/105.8/3516.2;  1.0/5.7/39.8/19786.4"
+     }
+    },
+    {
+     "dimension": "minecraft:the_end",
+     "origin": [
+      4000,
+      4000
+     ],
+     "wallSeconds": 26.6,
+     "cpuSeconds": 55.7,
+     "complete": true,
+     "slowestBatch16Chunks": 5.16,
+     "after": {
+      "tps_5s_10s_1m_5m_15m": "[?]  *20.0, *20.0, 18.01, 14.78, 17.89",
+      "mspt_min_med_p95_max_10s_1m": "[?]  1.8/4.2/38.9/400.0;  0.3/2.8/30.0/4774.3"
+     }
+    }
+   ],
+   "final": {
+    "cpuSystem": "64%, 80%, 88%  (system)",
+    "heap": "2.4 GB / 6.0 GB   (39%)"
+   }
+  },
+  "after2": {
+   "runId": "770304d9-ee55-446b-bb35-86994dba4469",
+   "heap": "6G",
+   "bootWallSeconds": 266.2,
+   "modernfixLoadSeconds": 278.9,
+   "datapackLoadMinutes": 1.148,
+   "doneSeconds": 36.44,
+   "cpuAtDone": 778.9,
+   "idleSeconds": 90,
+   "idleCpuSeconds": 94.7,
+   "exitCode": 0,
+   "errorLines": 3,
+   "warnLines": 312,
+   "cantKeepUp": 14,
+   "otherJavaAtStart": [
+    "E:\\Elias\\Codex\\Entrelumen-ssd\\runtime\\jdk-21.0.12.1+1\\bin\\java.exe -Xmx6G -Xms1G @E:\\Elias\\Codex\\Entrelumen-ssd\\server-fullpack-qa4\\librarie"
+   ],
+   "otherJavaDuring": [
+    "E:\\Elias\\Codex\\Entrelumen-ssd\\runtime\\jdk-21.0.12.1+1\\bin\\java.exe -Xmx6G -Xms1G @E:\\Elias\\Codex\\Entrelumen-ssd\\server-mods-r4\\libraries\\net",
+    "E:\\Elias\\Codex\\Entrelumen-ssd\\runtime\\jdk-21.0.12.1+1\\bin\\java.exe -Xmx6G -Xms1G @E:\\Elias\\Codex\\Entrelumen-ssd\\server-fullpack-qa5\\librarie"
+   ],
+   "idle": {
+    "tps_5s_10s_1m_5m_15m": "[?]  19.59, 19.79, 19.96, 20.0, 20.0",
+    "mspt_min_med_p95_max_10s_1m": "[?]  0.7/1.4/2.1/202.9;  0.7/1.5/10.0/465.6",
+    "cpuSystem": "92%, 88%, 86%  (system)",
+    "heap": "2.8 GB / 6.0 GB   (45%)"
+   },
+   "worldgen256Chunks": [
+    {
+     "dimension": "minecraft:overworld",
+     "origin": [
+      20000,
+      20000
+     ],
+     "wallSeconds": 107.0,
+     "cpuSeconds": 267.5,
+     "complete": true,
+     "slowestBatch16Chunks": 33.44,
+     "after": {
+      "tps_5s_10s_1m_5m_15m": "[?]  *20.0, *20.0, 8.69, 15.87, 18.4",
+      "mspt_min_med_p95_max_10s_1m": "[?]  8.4/18.5/72.2/2734.1;  0.7/7.3/61.8/32534.9"
+     }
+    },
+    {
+     "dimension": "minecraft:overworld",
+     "origin": [
+      -20000,
+      20000
+     ],
+     "wallSeconds": 143.1,
+     "cpuSeconds": 213.6,
+     "complete": true,
+     "slowestBatch16Chunks": 33.63,
+     "after": {
+      "tps_5s_10s_1m_5m_15m": "[?]  *20.0, 18.95, 7.79, 12.71, 16.79",
+      "mspt_min_med_p95_max_10s_1m": "[?]  5.0/13.1/56.9/2294.4;  1.2/6.7/50.5/32618.7"
+     }
+    },
+    {
+     "dimension": "minecraft:the_nether",
+     "origin": [
+      4000,
+      4000
+     ],
+     "wallSeconds": 66.1,
+     "cpuSeconds": 126.6,
+     "complete": true,
+     "slowestBatch16Chunks": 15.93,
+     "after": {
+      "tps_5s_10s_1m_5m_15m": "[?]  *20.0, *20.0, 14.67, 12.15, 16.45",
+      "mspt_min_med_p95_max_10s_1m": "[?]  6.7/13.4/108.1/1485.1;  0.7/8.0/52.3/15172.9"
+     }
+    },
+    {
+     "dimension": "minecraft:the_end",
+     "origin": [
+      4000,
+      4000
+     ],
+     "wallSeconds": 41.8,
+     "cpuSeconds": 71.3,
+     "complete": true,
+     "slowestBatch16Chunks": 5.04,
+     "after": {
+      "tps_5s_10s_1m_5m_15m": "[?]  14.34, 18.23, 17.17, 11.91, 16.31",
+      "mspt_min_med_p95_max_10s_1m": "[?]  4.2/10.8/53.4/2811.8;  0.6/3.5/50.9/4136.9"
+     }
+    }
+   ],
+   "final": {
+    "cpuSystem": "98%, 98%, 94%  (system)",
+    "heap": "2.2 GB / 6.0 GB   (36%)"
+   }
+  },
+  "base2": {
+   "runId": "b7766fde-6aea-411e-938c-be1ac4d41c52",
+   "heap": "6G",
+   "bootWallSeconds": 404.0,
+   "modernfixLoadSeconds": 449.069,
+   "datapackLoadMinutes": 2.046,
+   "doneSeconds": 79.596,
+   "cpuAtDone": 898.7,
+   "idleSeconds": 90,
+   "idleCpuSeconds": 146.3,
+   "exitCode": 0,
+   "errorLines": 3,
+   "warnLines": 311,
+   "cantKeepUp": 16,
+   "otherJavaAtStart": [
+    "E:\\Elias\\Codex\\Entrelumen-ssd\\runtime\\jdk-21.0.12.1+1\\bin\\java.exe -Xmx6G -Xms1G @E:\\Elias\\Codex\\Entrelumen-ssd\\server-fullpack-qa5\\librarie"
+   ],
+   "otherJavaDuring": [
+    "E:\\Elias\\Codex\\Entrelumen-ssd\\runtime\\jdk-21.0.12.1+1\\bin\\java.exe -Xmx6G -Xms1G @E:\\Elias\\Codex\\Entrelumen-ssd\\server-mods-r4-base\\librarie"
+   ],
+   "idle": {
+    "tps_5s_10s_1m_5m_15m": "[?]  19.98, 19.99, 17.82, 19.52, 19.84",
+    "mspt_min_med_p95_max_10s_1m": "[?]  1.3/2.6/4.9/146.6;  1.3/5.0/52.3/8449.5",
+    "cpuSystem": "93%, 95%, 97%  (system)",
+    "heap": "2.3 GB / 6.0 GB   (38%)"
+   },
+   "worldgen256Chunks": [
+    {
+     "dimension": "minecraft:overworld",
+     "origin": [
+      20000,
+      20000
+     ],
+     "wallSeconds": 94.7,
+     "cpuSeconds": 272.2,
+     "complete": true,
+     "slowestBatch16Chunks": 34.67,
+     "after": {
+      "tps_5s_10s_1m_5m_15m": "[?]  *20.0, *20.0, 10.85, 16.76, 18.79",
+      "mspt_min_med_p95_max_10s_1m": "[?]  10.5/18.5/52.3/2055.4;  1.4/14.5/65.2/33732.1"
+     }
+    },
+    {
+     "dimension": "minecraft:overworld",
+     "origin": [
+      -20000,
+      20000
+     ],
+     "wallSeconds": 149.2,
+     "cpuSeconds": 259.7,
+     "complete": true,
+     "slowestBatch16Chunks": 46.65,
+     "after": {
+      "tps_5s_10s_1m_5m_15m": "[?]  *20.0, 18.29, 9.67, 13.34, 17.15",
+      "mspt_min_med_p95_max_10s_1m": "[?]  14.1/21.8/218.9/728.9;  2.0/10.9/91.3/30915.1"
+     }
+    },
+    {
+     "dimension": "minecraft:the_nether",
+     "origin": [
+      4000,
+      4000
+     ],
+     "wallSeconds": 104.5,
+     "cpuSeconds": 140.0,
+     "complete": true,
+     "slowestBatch16Chunks": 42.62,
+     "after": {
+      "tps_5s_10s_1m_5m_15m": "[?]  *20.0, *20.0, 9.89, 11.71, 16.18",
+      "mspt_min_med_p95_max_10s_1m": "[?]  7.6/13.1/38.5/710.6;  1.2/8.6/68.3/40920.6"
+     }
+    },
+    {
+     "dimension": "minecraft:the_end",
+     "origin": [
+      4000,
+      4000
+     ],
+     "wallSeconds": 33.9,
+     "cpuSeconds": 53.5,
+     "complete": true,
+     "slowestBatch16Chunks": 6.91,
+     "after": {
+      "tps_5s_10s_1m_5m_15m": "[?]  *20.0, 13.21, 16.94, 11.63, 16.03",
+      "mspt_min_med_p95_max_10s_1m": "[?]  2.3/4.4/35.4/5202.6;  0.3/3.4/31.4/5711.6"
+     }
+    }
+   ],
+   "final": {
+    "cpuSystem": "53%, 81%, 95%  (system)",
+    "heap": "2.7 GB / 6.0 GB   (44%)"
+   }
+  },
+  "base3": {
+   "runId": "a826a2e0-4fb0-401a-9fbd-4b56aa2e6cec",
+   "heap": "6G",
+   "bootWallSeconds": 245.6,
+   "modernfixLoadSeconds": 264.398,
+   "datapackLoadMinutes": 1.609,
+   "doneSeconds": 32.807,
+   "cpuAtDone": 715.7,
+   "idleSeconds": 90,
+   "idleCpuSeconds": 102.2,
+   "exitCode": 0,
+   "errorLines": 3,
+   "warnLines": 308,
+   "cantKeepUp": 7,
+   "otherJavaAtStart": [],
+   "otherJavaDuring": [
+    "E:\\Elias\\Codex\\Entrelumen-ssd\\runtime\\jdk-21.0.12.1+1\\bin\\java.exe -Xmx6G -Xms1G @E:\\Elias\\Codex\\Entrelumen-ssd\\server-mods-r4-base\\librarie",
+    "E:\\Elias\\Codex\\Entrelumen-ssd\\runtime\\jdk-21.0.12.1+1\\bin\\java.exe -Xmx6G -Xms1G @E:\\Elias\\Codex\\Entrelumen-ssd\\server-fullpack-final\\librar"
+   ],
+   "idle": {
+    "tps_5s_10s_1m_5m_15m": "[?]  *20.0, 20.0, *20.0, 19.87, 19.96",
+    "mspt_min_med_p95_max_10s_1m": "[?]  0.6/1.0/1.7/45.3;  0.6/1.4/3.3/67.0",
+    "cpuSystem": "58%, 75%, 84%  (system)",
+    "heap": "2.8 GB / 6.0 GB   (45%)"
+   },
+   "worldgen256Chunks": [
+    {
+     "dimension": "minecraft:overworld",
+     "origin": [
+      20000,
+      20000
+     ],
+     "wallSeconds": 156.2,
+     "cpuSeconds": 235.4,
+     "complete": true,
+     "slowestBatch16Chunks": 48.54,
+     "after": {
+      "tps_5s_10s_1m_5m_15m": "[?]  *20.0, *20.0, 6.71, 14.26, 17.63",
+      "mspt_min_med_p95_max_10s_1m": "[?]  5.7/12.3/52.6/1085.3;  0.6/8.2/50.8/47186.9"
+     }
+    },
+    {
+     "dimension": "minecraft:overworld",
+     "origin": [
+      -20000,
+      20000
+     ],
+     "wallSeconds": 54.8,
+     "cpuSeconds": 152.8,
+     "complete": true,
+     "slowestBatch16Chunks": 11.97,
+     "after": {
+      "tps_5s_10s_1m_5m_15m": "[?]  *20.0, *20.0, 15.29, 13.66, 17.32",
+      "mspt_min_med_p95_max_10s_1m": "[?]  3.1/8.4/41.1/1428.3;  1.0/2.9/30.1/11550.9"
+     }
+    },
+    {
+     "dimension": "minecraft:the_nether",
+     "origin": [
+      4000,
+      4000
+     ],
+     "wallSeconds": 24.1,
+     "cpuSeconds": 59.7,
+     "complete": true,
+     "slowestBatch16Chunks": 6.66,
+     "after": {
+      "tps_5s_10s_1m_5m_15m": "[?]  *20.0, *20.0, 18.18, 13.47, 17.22",
+      "mspt_min_med_p95_max_10s_1m": "[?]  3.3/7.1/27.5/1137.5;  0.3/4.7/32.2/6076.0"
+     }
+    },
+    {
+     "dimension": "minecraft:the_end",
+     "origin": [
+      4000,
+      4000
+     ],
+     "wallSeconds": 18.4,
+     "cpuSeconds": 52.0,
+     "complete": true,
+     "slowestBatch16Chunks": 2.71,
+     "after": {
+      "tps_5s_10s_1m_5m_15m": "[?]  *20.0, *20.0, *20.0, 13.47, 17.22",
+      "mspt_min_med_p95_max_10s_1m": "[?]  1.6/3.9/30.0/776.4;  0.6/2.9/21.5/1750.6"
+     }
+    }
+   ],
+   "final": {
+    "cpuSystem": "56%, 71%, 82%  (system)",
+    "heap": "2.4 GB / 6.0 GB   (39%)"
+   }
+  },
+  "after3": {
+   "runId": "eb605d33-857b-433b-93fc-1bd19f13a10f",
+   "heap": "6G",
+   "bootWallSeconds": 227.1,
+   "modernfixLoadSeconds": 240.004,
+   "datapackLoadMinutes": 1.122,
+   "doneSeconds": 33.848,
+   "cpuAtDone": 705.2,
+   "idleSeconds": 90,
+   "idleCpuSeconds": 90.6,
+   "exitCode": 0,
+   "errorLines": 3,
+   "warnLines": 309,
+   "cantKeepUp": 5,
+   "otherJavaAtStart": [
+    "E:\\Elias\\Codex\\Entrelumen-ssd\\runtime\\jdk-21.0.12.1+1\\bin\\java.exe -Xmx6G -Xms1G @E:\\Elias\\Codex\\Entrelumen-ssd\\server-fullpack-final\\librar"
+   ],
+   "otherJavaDuring": [
+    "E:\\Elias\\Codex\\Entrelumen-ssd\\runtime\\jdk-21.0.12.1+1\\bin\\java.exe -Xmx6G -Xms1G @E:\\Elias\\Codex\\Entrelumen-ssd\\server-mods-r4\\libraries\\net",
+    "E:\\Elias\\Codex\\Entrelumen-ssd\\runtime\\jdk-21.0.12.1+1\\bin\\java.exe -Xmx6G -Xms1G @E:\\Elias\\Codex\\Entrelumen-ssd\\server-fullpack-final\\librar"
+   ],
+   "idle": {
+    "tps_5s_10s_1m_5m_15m": "[?]  20.0, 20.0, *20.0, *20.0, *20.0",
+    "mspt_min_med_p95_max_10s_1m": "[?]  0.5/0.8/1.5/20.9;  0.5/0.9/2.0/20.9",
+    "cpuSystem": "40%, 39%, 53%  (system)",
+    "heap": "2.7 GB / 6.0 GB   (44%)"
+   },
+   "worldgen256Chunks": [
+    {
+     "dimension": "minecraft:overworld",
+     "origin": [
+      20000,
+      20000
+     ],
+     "wallSeconds": 40.6,
+     "cpuSeconds": 178.6,
+     "complete": true,
+     "slowestBatch16Chunks": 14.09,
+     "after": {
+      "tps_5s_10s_1m_5m_15m": "[?]  *20.0, *20.0, 16.33, 19.14, 19.71",
+      "mspt_min_med_p95_max_10s_1m": "[?]  5.9/14.2/50.9/772.1;  0.5/1.6/26.3/13545.5"
+     }
+    },
+    {
+     "dimension": "minecraft:overworld",
+     "origin": [
+      -20000,
+      20000
+     ],
+     "wallSeconds": 45.4,
+     "cpuSeconds": 141.4,
+     "complete": true,
+     "slowestBatch16Chunks": 10.08,
+     "after": {
+      "tps_5s_10s_1m_5m_15m": "[?]  *20.0, *20.0, 17.0, 18.52, 19.48",
+      "mspt_min_med_p95_max_10s_1m": "[?]  3.2/7.9/45.3/1093.2;  1.0/3.7/45.3/8306.9"
+     }
+    },
+    {
+     "dimension": "minecraft:the_nether",
+     "origin": [
+      4000,
+      4000
+     ],
+     "wallSeconds": 26.0,
+     "cpuSeconds": 64.6,
+     "complete": true,
+     "slowestBatch16Chunks": 7.01,
+     "after": {
+      "tps_5s_10s_1m_5m_15m": "[?]  *20.0, *20.0, 18.49, 18.17, 19.35",
+      "mspt_min_med_p95_max_10s_1m": "[?]  2.9/6.4/25.7/907.6;  0.5/5.2/28.9/6175.0"
+     }
+    },
+    {
+     "dimension": "minecraft:the_end",
+     "origin": [
+      4000,
+      4000
+     ],
+     "wallSeconds": 14.0,
+     "cpuSeconds": 45.9,
+     "complete": true,
+     "slowestBatch16Chunks": 2.62,
+     "after": {
+      "tps_5s_10s_1m_5m_15m": "[?]  13.42, 16.64, 17.51, 18.04, 19.3",
+      "mspt_min_med_p95_max_10s_1m": "[?]  0.4/2.2/69.7/2487.9;  0.4/3.0/23.8/6175.0"
+     }
+    }
+   ],
+   "final": {
+    "cpuSystem": "59%, 53%, 57%  (system)",
+    "heap": "2.9 GB / 6.0 GB   (48%)"
+   }
+  },
+  "after3-noDnT": {
+   "runId": "6275491d-bba7-48a3-ab55-aedf009c244a",
+   "heap": "6G",
+   "bootWallSeconds": 221.0,
+   "modernfixLoadSeconds": 231.881,
+   "datapackLoadMinutes": 1.487,
+   "doneSeconds": 35.601,
+   "cpuAtDone": 687.0,
+   "idleSeconds": 90,
+   "idleCpuSeconds": 76.9,
+   "exitCode": 0,
+   "errorLines": 3,
+   "warnLines": 301,
+   "cantKeepUp": 5,
+   "otherJavaAtStart": [
+    "E:\\Elias\\Codex\\Entrelumen-ssd\\runtime\\jdk-21.0.12.1+1\\bin\\java.exe -Xmx6G -Xms1G @E:\\Elias\\Codex\\Entrelumen-ssd\\server-fullpack-final\\librar"
+   ],
+   "otherJavaDuring": [
+    "E:\\Elias\\Codex\\Entrelumen-ssd\\runtime\\jdk-21.0.12.1+1\\bin\\java.exe -Xmx6G -Xms1G @E:\\Elias\\Codex\\Entrelumen-ssd\\server-mods-r4\\libraries\\net",
+    "E:\\Elias\\Codex\\Entrelumen-ssd\\runtime\\jdk-21.0.12.1+1\\bin\\java.exe -Xmx6G -Xms1G @E:\\Elias\\Codex\\Entrelumen-ssd\\server-fullpack-final2\\libra"
+   ],
+   "idle": {
+    "tps_5s_10s_1m_5m_15m": "[?]  20.0, 20.0, 20.0, *20.0, *20.0",
+    "mspt_min_med_p95_max_10s_1m": "[?]  0.5/0.7/1.1/24.2;  0.5/0.7/1.3/24.2",
+    "cpuSystem": "45%, 36%, 51%  (system)",
+    "heap": "2.3 GB / 6.0 GB   (37%)"
+   },
+   "worldgen256Chunks": [
+    {
+     "dimension": "minecraft:overworld",
+     "origin": [
+      20000,
+      20000
+     ],
+     "wallSeconds": 55.3,
+     "cpuSeconds": 213.6,
+     "complete": true,
+     "slowestBatch16Chunks": 15.44,
+     "after": {
+      "tps_5s_10s_1m_5m_15m": "[?]  *20.0, *20.0, 14.19, 18.49, 19.47",
+      "mspt_min_med_p95_max_10s_1m": "[?]  7.6/12.5/50.9/1176.0;  0.5/6.3/34.8/15029.2"
+     }
+    },
+    {
+     "dimension": "minecraft:overworld",
+     "origin": [
+      -20000,
+      20000
+     ],
+     "wallSeconds": 59.8,
+     "cpuSeconds": 149.1,
+     "complete": true,
+     "slowestBatch16Chunks": 12.68,
+     "after": {
+      "tps_5s_10s_1m_5m_15m": "[?]  *20.0, *20.0, 15.68, 17.59, 19.13",
+      "mspt_min_med_p95_max_10s_1m": "[?]  4.1/9.1/40.6/1364.9;  0.9/2.7/26.4/11888.8"
+     }
+    },
+    {
+     "dimension": "minecraft:the_nether",
+     "origin": [
+      4000,
+      4000
+     ],
+     "wallSeconds": 25.0,
+     "cpuSeconds": 69.2,
+     "complete": true,
+     "slowestBatch16Chunks": 6.97,
+     "after": {
+      "tps_5s_10s_1m_5m_15m": "[?]  *20.0, *20.0, 18.22, 17.27, 19.0",
+      "mspt_min_med_p95_max_10s_1m": "[?]  3.0/6.8/34.4/1366.5;  0.5/5.2/34.5/6493.2"
+     }
+    },
+    {
+     "dimension": "minecraft:the_end",
+     "origin": [
+      4000,
+      4000
+     ],
+     "wallSeconds": 16.9,
+     "cpuSeconds": 42.0,
+     "complete": true,
+     "slowestBatch16Chunks": 2.09,
+     "after": {
+      "tps_5s_10s_1m_5m_15m": "[?]  20.0, *20.0, *20.0, 17.27, 19.0",
+      "mspt_min_med_p95_max_10s_1m": "[?]  0.9/3.3/33.7/761.0;  0.5/2.8/22.9/1610.2"
+     }
+    }
+   ],
+   "final": {
+    "cpuSystem": "80%, 74%, 71%  (system)",
+    "heap": "3.3 GB / 6.0 GB   (54%)"
+   }
+  },
+  "after4": {
+   "runId": "1e274485-bcd3-45d0-a53c-7e5e6488ccbc",
+   "heap": "6G",
+   "bootWallSeconds": 207.6,
+   "modernfixLoadSeconds": 221.188,
+   "datapackLoadMinutes": 1.024,
+   "doneSeconds": 35.365,
+   "cpuAtDone": 710.3,
+   "idleSeconds": 90,
+   "idleCpuSeconds": 92.7,
+   "exitCode": 0,
+   "errorLines": 3,
+   "warnLines": 304,
+   "cantKeepUp": 8,
+   "otherJavaAtStart": [
+    "E:\\Elias\\Codex\\Entrelumen-ssd\\runtime\\jdk-21.0.12.1+1\\bin\\java.exe -Xmx6G -Xms1G @E:\\Elias\\Codex\\Entrelumen-ssd\\server-fullpack-final2\\libra"
+   ],
+   "otherJavaDuring": [
+    "E:\\Elias\\Codex\\Entrelumen-ssd\\runtime\\jdk-21.0.12.1+1\\bin\\java.exe -Xmx6G -Xms1G @E:\\Elias\\Codex\\Entrelumen-ssd\\server-mods-r4\\libraries\\net",
+    "E:\\Elias\\Codex\\Entrelumen-ssd\\runtime\\jdk-21.0.12.1+1\\bin\\java.exe -Xmx6G -Xms1G @E:\\Elias\\Codex\\Entrelumen-ssd\\server-fullpack-final2\\libra"
+   ],
+   "idle": {
+    "tps_5s_10s_1m_5m_15m": "[?]  *20.0, *20.0, *20.0, *20.0, *20.0",
+    "mspt_min_med_p95_max_10s_1m": "[?]  0.6/1.1/1.6/16.8;  0.6/1.2/2.3/17.1",
+    "cpuSystem": "33%, 55%, 71%  (system)",
+    "heap": "1.9 GB / 6.0 GB   (32%)"
+   },
+   "worldgen256Chunks": [
+    {
+     "dimension": "minecraft:overworld",
+     "origin": [
+      20000,
+      20000
+     ],
+     "wallSeconds": 57.9,
+     "cpuSeconds": 219.5,
+     "complete": true,
+     "slowestBatch16Chunks": 18.6,
+     "after": {
+      "tps_5s_10s_1m_5m_15m": "[?]  *20.0, *20.0, 14.0, 18.42, 19.45",
+      "mspt_min_med_p95_max_10s_1m": "[?]  8.4/15.1/43.7/1206.0;  0.5/6.4/37.0/17778.5"
+     }
+    },
+    {
+     "dimension": "minecraft:overworld",
+     "origin": [
+      -20000,
+      20000
+     ],
+     "wallSeconds": 59.7,
+     "cpuSeconds": 163.9,
+     "complete": true,
+     "slowestBatch16Chunks": 13.1,
+     "after": {
+      "tps_5s_10s_1m_5m_15m": "[?]  *20.0, 17.24, 14.26, 17.15, 18.95",
+      "mspt_min_med_p95_max_10s_1m": "[?]  3.9/9.6/47.1/2075.9;  1.0/3.6/39.0/11728.7"
+     }
+    },
+    {
+     "dimension": "minecraft:the_nether",
+     "origin": [
+      4000,
+      4000
+     ],
+     "wallSeconds": 35.1,
+     "cpuSeconds": 88.3,
+     "complete": true,
+     "slowestBatch16Chunks": 8.05,
+     "after": {
+      "tps_5s_10s_1m_5m_15m": "[?]  20.0, 16.08, 17.23, 16.68, 18.75",
+      "mspt_min_med_p95_max_10s_1m": "[?]  3.6/7.6/26.3/2909.4;  0.5/5.6/44.6/7196.6"
+     }
+    },
+    {
+     "dimension": "minecraft:the_end",
+     "origin": [
+      4000,
+      4000
+     ],
+     "wallSeconds": 18.4,
+     "cpuSeconds": 54.9,
+     "complete": true,
+     "slowestBatch16Chunks": 3.04,
+     "after": {
+      "tps_5s_10s_1m_5m_15m": "[?]  *20.0, *20.0, 18.5, 16.57, 18.71",
+      "mspt_min_med_p95_max_10s_1m": "[?]  1.5/3.5/17.3/1436.6;  0.5/3.0/21.2/2909.4"
+     }
+    }
+   ],
+   "final": {
+    "cpuSystem": "52%, 68%, 75%  (system)",
+    "heap": "3.2 GB / 6.0 GB   (53%)"
+   }
+  },
+  "base4": {
+   "runId": "ca21abfa-3ccd-406b-b83e-59c6e57ff5f6",
+   "heap": "6G",
+   "bootWallSeconds": 246.3,
+   "modernfixLoadSeconds": 261.975,
+   "datapackLoadMinutes": 1.18,
+   "doneSeconds": 40.026,
+   "cpuAtDone": 702.9,
+   "idleSeconds": 90,
+   "idleCpuSeconds": 93.3,
+   "exitCode": 0,
+   "errorLines": 3,
+   "warnLines": 299,
+   "cantKeepUp": 6,
+   "otherJavaAtStart": [
+    "E:\\Elias\\Codex\\Entrelumen-ssd\\runtime\\jdk-21.0.12.1+1\\bin\\java.exe -Xmx6G -Xms1G @E:\\Elias\\Codex\\Entrelumen-ssd\\server-fullpack-final2\\libra"
+   ],
+   "otherJavaDuring": [
+    "E:\\Elias\\Codex\\Entrelumen-ssd\\runtime\\jdk-21.0.12.1+1\\bin\\java.exe -Xmx6G -Xms1G @E:\\Elias\\Codex\\Entrelumen-ssd\\server-mods-r4-base\\librarie"
+   ],
+   "idle": {
+    "tps_5s_10s_1m_5m_15m": "[?]  19.99, 20.0, *20.0, *20.0, *20.0",
+    "mspt_min_med_p95_max_10s_1m": "[?]  0.6/1.3/2.1/127.2;  0.6/1.4/2.3/127.2",
+    "cpuSystem": "92%, 76%, 81%  (system)",
+    "heap": "2.0 GB / 6.0 GB   (33%)"
+   },
+   "worldgen256Chunks": [
+    {
+     "dimension": "minecraft:overworld",
+     "origin": [
+      20000,
+      20000
+     ],
+     "wallSeconds": 67.8,
+     "cpuSeconds": 212.6,
+     "complete": true,
+     "slowestBatch16Chunks": 17.16,
+     "after": {
+      "tps_5s_10s_1m_5m_15m": "[?]  *20.0, 16.33, 14.37, 18.55, 19.49",
+      "mspt_min_med_p95_max_10s_1m": "[?]  6.3/14.3/89.9/4010.3;  0.5/9.3/49.6/16549.4"
+     }
+    },
+    {
+     "dimension": "minecraft:overworld",
+     "origin": [
+      -20000,
+      20000
+     ],
+     "wallSeconds": 39.5,
+     "cpuSeconds": 129.9,
+     "complete": true,
+     "slowestBatch16Chunks": 10.01,
+     "after": {
+      "tps_5s_10s_1m_5m_15m": "[?]  *20.0, 20.0, 17.97, 18.02, 19.29",
+      "mspt_min_med_p95_max_10s_1m": "[?]  2.1/6.1/46.0/1241.0;  0.5/2.7/27.8/9276.8"
+     }
+    },
+    {
+     "dimension": "minecraft:the_nether",
+     "origin": [
+      4000,
+      4000
+     ],
+     "wallSeconds": 20.0,
+     "cpuSeconds": 51.4,
+     "complete": true,
+     "slowestBatch16Chunks": 4.38,
+     "after": {
+      "tps_5s_10s_1m_5m_15m": "[?]  *20.0, *20.0, 19.11, 17.8, 19.21",
+      "mspt_min_med_p95_max_10s_1m": "[?]  2.2/4.8/84.8/576.3;  0.3/3.4/24.5/4008.5"
+     }
+    },
+    {
+     "dimension": "minecraft:the_end",
+     "origin": [
+      4000,
+      4000
+     ],
+     "wallSeconds": 14.3,
+     "cpuSeconds": 46.2,
+     "complete": true,
+     "slowestBatch16Chunks": 1.87,
+     "after": {
+      "tps_5s_10s_1m_5m_15m": "[?]  *20.0, *20.0, 18.76, 17.8, 19.21",
+      "mspt_min_med_p95_max_10s_1m": "[?]  1.1/2.4/62.7/832.5;  0.3/1.9/16.5/4008.5"
+     }
+    }
+   ],
+   "final": {
+    "cpuSystem": "37%, 45%, 66%  (system)",
+    "heap": "3.3 GB / 6.0 GB   (55%)"
+   }
+  }
+ },
+ "measurementMethod": "Boot: wall time from launch to Done, plus ModernFix total load and datapack load lines. Idle: spark tps/health after 90 s on a fresh world with no players. Worldgen: forceload of a 16x16-chunk square in 16 batches of 4x4, timed to each confirmation; cpuSeconds is the JVM process CPU time over the probe. Runs in ABBA order on fresh worlds; another worker's QA server ran during part of the series, recorded in otherJava* and in machineLoadSamples.",
+ "notes": [
+  "The workstation lost power at about 18:53 local time during the boot of base3 (bootstrap stage, before any world existed); that run was discarded, its process receipt was closed by the owner, both servers were re-verified (every JAR hash) and base3, after3 and after3-noDnT were run again. The system clock restarted behind: load samples jump from 18:52 back to 17:19; each run times itself with its own wall and JVM CPU clocks.",
+  "qa0 is the first targeted QA run with the defaults of Slice & Dice and Central Kitchen, before the pack configs that split the kitchen routes; it found the 93 basin-cooking copies that the configs remove."
+ ],
+ "pythonChecks": [
+  "[0] python tools/generate_quests.py --check :: PASS: 7 chapters, 171 quests, global IDs/DAG, EN/ES parity; runtime not verified.",
+  "[0] python tools/test_generate_quests.py :: OK",
+  "[0] python tools/test_sync_pack.py :: OK",
+  "[0] python tools/test_curate_families.py :: Curated 1 JARs; missing requested IDs: ",
+  "[0] python tools/test_family_balance.py :: OK",
+  "[0] python tools/generate_client_defaults.py --check :: Default Options checked: 15 options, 68 bindings",
+  "[0] python tools/test_generate_client_defaults.py :: OK",
+  "[0] python tools/test_png_equivalence.py :: PASS identical PNG mode, size and pixels; encoding differs: logo.png",
+  "[0] python tools/generate_integration_recipes.py --check :: PASS: 22 static recipes, valid native grids/yields, bilingual project titles, component DAG, reserved IDs and source parity. Crafting runtime not tested.",
+  "[0] python tools/build_survey_station_art.py --check :: PASS deterministic survey station:24 cuboids, native16 textures, integerUV; preview is software model, not in-game.",
+  "[0] python tools/build_atlas_book_art.py --check :: PASS native PixelLab book texture bytes and provenance; game QA is separate",
+  "[0] python art/build_art.py --check :: PASS: 58 item and 28 block grids render byte-identically into the resource pack and companion; models, EN/ES names and hash inventory current. In-game visual re",
+  "[0] python tools/build_heliodor_ruin_start.py --check :: heliodor_ruin_start.nbt matches its design",
+  "[0] python art/build_pixel_identity.py --check :: PASS: native scenes 243x139, 352x199 exported by integer nearest; classic logo 180x64; binary alpha. In-game review separate.",
+  "[0] python tools/check_runtime_content.py :: PASS source coverage only: 129 item IDs, 36 recipe/output pairs. Runtime evidence still required with --log.",
+  "[0] python tools/benchmark.py --self-test :: PASS synthetic unit checks only: nearest-rank percentiles, FPS, strict 50ms/40FPS boundaries, short input and malformed CSV rejection.",
+  "[0] python tools/test_benchmark.py :: PASS synthetic unit checks only: nearest-rank percentiles, FPS, strict 50ms/40FPS boundaries, short input and malformed CSV rejection.",
+  "[0] python tools/test_benchmark_fixture.py :: OK",
+  "[0] python tools/check_more_machine_balance.py --self-test :: PASS synthetic receipt rejection tests; not runtime evidence",
+  "[0] python tools/test_optional_loot_compat.py :: OK",
+  "[0] python tools/test_aircraft_balance.py :: OK (skipped=4)",
+  "[0] python -W error::ResourceWarning tools/test_runtime_control.py :: {\"requestId\": \"12bacdc4-100a-4128-9bc8-48e94d227e95\", \"status\": \"delivered\", \"deliveredAt\": 1790286154.9931338, \"runId\": \"f443181e-3ea0-4798-80bd-8a9954b0ab57\",",
+  "[0] python tools/curate_pack.py --check :: PASS: 314 client JAR hashes, references and required dependency closure. Requested-but-unavailable: 0. Runtime/version compatibility still needs loader verifica",
+  "[0] python tools/curate_pack.py --check --side server :: PASS: 272 server JAR hashes, references and required dependency closure. Requested-but-unavailable: 0. Runtime/version compatibility still needs loader verifica",
+  "[0] python tools/generate_family_balance.py --check :: {\"family\": \"qol\", \"status\": \"static-PASS\", \"nativeRecipesIndexed\": 46464, \"changed\": 5, \"removed\": 1, \"dataOverrides\": 0, \"addedRecipes\": 0, \"creations\": 0, \"ac",
+  "[0] python tools/generate_resource_balance.py --check :: {\"status\": \"static-PASS\", \"changed\": 1421, \"byReason\": {\"dimensional_material_and_integration\": 3, \"highest_electrode_native_smithing\": 1, \"hopper_automation\": ",
+  "[0] python tools/generate_malum_compat.py --check :: PASS: five exact recipe IDs; source hash, native schema and all non-key semantics preserved.",
+  "[0] python tools/generate_cooking_provisions.py --check :: {\"status\": \"static-PASS\", \"newJars\": 5, \"nativeRecipesAudited\": 8, \"addedRoutes\": 2, \"marketBackedTrees\": 9, \"overlappingPlacementsDisabled\": 9, \"originalRoute\"",
+  "[0] python tools/generate_rftools_balance.py --check :: {\"status\": \"static-PASS\", \"nativeRecipesAudited\": 235, \"changed\": 11, \"componentDAG\": [\"entrelumen:calibration_frame\", \"entrelumen:ecosystem_capsule\", \"entrelum",
+  "[0] python tools/audit_keybindings.py E:/Elias/Codex/Entrelumen-ssd/mods-r4-20260924/keys-sim-options.txt --check-preset :: }",
+  "[0] python -m unittest discover -s tools -p test_*.py :: {\"requestId\": \"5b10076e-e3dd-4766-ae00-cee53eff739a\", \"status\": \"delivered\", \"deliveredAt\": 1790286350.2537668, \"runId\": \"9ef14a4f-6aee-4d4a-956e-5e545ef4dd63\",",
+  "overall=0"
+ ],
+ "machineLoadSamples": [
+  [
+   "17:53:45",
+   "37",
+   "6",
+   "4",
+   "1",
+   "server-mods-r4-base"
+  ],
+  [
+   "17:54:16",
+   "91",
+   "4",
+   "5",
+   "2",
+   "server-mods-r4-base;server-fullpack-qa3"
+  ],
+  [
+   "17:54:48",
+   "100",
+   "2",
+   "1",
+   "2",
+   "server-mods-r4-base;server-fullpack-qa3"
+  ],
+  [
+   "17:55:20",
+   "77",
+   "2",
+   "1",
+   "2",
+   "server-mods-r4-base;server-fullpack-qa3"
+  ],
+  [
+   "17:55:51",
+   "76",
+   "1",
+   "4",
+   "2",
+   "server-mods-r4-base;server-fullpack-qa3"
+  ],
+  [
+   "17:56:23",
+   "76",
+   "0",
+   "5",
+   "2",
+   "server-mods-r4-base;server-fullpack-qa3"
+  ],
+  [
+   "17:56:55",
+   "100",
+   "0",
+   "3",
+   "2",
+   "server-mods-r4-base;server-fullpack-qa3"
+  ],
+  [
+   "17:57:27",
+   "93",
+   "0",
+   "5",
+   "2",
+   "server-mods-r4-base;server-fullpack-qa3"
+  ],
+  [
+   "17:57:58",
+   "97",
+   "0",
+   "2",
+   "2",
+   "server-mods-r4-base;server-fullpack-qa3"
+  ],
+  [
+   "17:58:31",
+   "100",
+   "0",
+   "3",
+   "2",
+   "server-mods-r4-base;server-fullpack-qa3"
+  ],
+  [
+   "17:59:02",
+   "97",
+   "1",
+   "4",
+   "2",
+   "server-mods-r4-base;server-fullpack-qa3"
+  ],
+  [
+   "17:59:34",
+   "97",
+   "1",
+   "1",
+   "2",
+   "server-mods-r4-base;server-fullpack-qa3"
+  ],
+  [
+   "18:00:06",
+   "96",
+   "1",
+   "1",
+   "2",
+   "server-mods-r4-base;server-fullpack-qa3"
+  ],
+  [
+   "18:00:38",
+   "100",
+   "0",
+   "8",
+   "2",
+   "server-mods-r4-base;server-fullpack-qa3"
+  ],
+  [
+   "18:01:10",
+   "69",
+   "0",
+   "6",
+   "2",
+   "server-mods-r4-base;server-fullpack-qa3"
+  ],
+  [
+   "18:01:41",
+   "97",
+   "0",
+   "6",
+   "2",
+   "server-mods-r4-base;server-fullpack-qa3"
+  ],
+  [
+   "18:02:13",
+   "83",
+   "0",
+   "9",
+   "2",
+   "server-mods-r4-base;server-fullpack-qa3"
+  ],
+  [
+   "18:02:44",
+   "69",
+   "0",
+   "8",
+   "2",
+   "server-mods-r4-base;server-fullpack-qa3"
+  ],
+  [
+   "18:03:16",
+   "79",
+   "0",
+   "4",
+   "2",
+   "server-mods-r4-base;server-fullpack-qa3"
+  ],
+  [
+   "18:03:48",
+   "94",
+   "0",
+   "5",
+   "2",
+   "server-mods-r4-base;server-fullpack-qa3"
+  ],
+  [
+   "18:04:21",
+   "99",
+   "0",
+   "2",
+   "2",
+   "server-mods-r4-base;server-fullpack-qa3"
+  ],
+  [
+   "18:04:52",
+   "84",
+   "0",
+   "9",
+   "2",
+   "server-mods-r4-base;server-fullpack-qa3"
+  ],
+  [
+   "18:05:24",
+   "68",
+   "3",
+   "7",
+   "1",
+   "server-mods-r4-base"
+  ],
+  [
+   "18:05:55",
+   "60",
+   "3",
+   "3",
+   "1",
+   "server-mods-r4-base"
+  ],
+  [
+   "18:06:27",
+   "100",
+   "5",
+   "1",
+   "1",
+   "server-mods-r4"
+  ],
+  [
+   "18:06:59",
+   "81",
+   "4",
+   "9",
+   "1",
+   "server-mods-r4"
+  ],
+  [
+   "18:07:30",
+   "77",
+   "4",
+   "2",
+   "1",
+   "server-mods-r4"
+  ],
+  [
+   "18:08:02",
+   "73",
+   "3",
+   "6",
+   "1",
+   "server-mods-r4"
+  ],
+  [
+   "18:08:34",
+   "82",
+   "2",
+   "1",
+   "server-mods-r4"
+  ],
+  [
+   "18:09:05",
+   "53",
+   "1",
+   "9",
+   "1",
+   "server-mods-r4"
+  ],
+  [
+   "18:09:37",
+   "84",
+   "2",
+   "3",
+   "1",
+   "server-mods-r4"
+  ],
+  [
+   "18:10:08",
+   "71",
+   "1",
+   "2",
+   "server-mods-r4;server-fullpack-qa4"
+  ],
+  [
+   "18:10:40",
+   "90",
+   "1",
+   "2",
+   "2",
+   "server-mods-r4;server-fullpack-qa4"
+  ],
+  [
+   "18:11:12",
+   "96",
+   "2",
+   "8",
+   "2",
+   "server-mods-r4;server-fullpack-qa4"
+  ],
+  [
+   "18:11:44",
+   "99",
+   "0",
+   "9",
+   "2",
+   "server-mods-r4;server-fullpack-qa4"
+  ],
+  [
+   "18:12:15",
+   "96",
+   "0",
+   "7",
+   "2",
+   "server-mods-r4;server-fullpack-qa4"
+  ],
+  [
+   "18:12:47",
+   "100",
+   "0",
+   "3",
+   "2",
+   "server-mods-r4;server-fullpack-qa4"
+  ],
+  [
+   "18:13:19",
+   "91",
+   "0",
+   "5",
+   "2",
+   "server-mods-r4;server-fullpack-qa4"
+  ],
+  [
+   "18:13:51",
+   "100",
+   "0",
+   "3",
+   "2",
+   "server-mods-r4;server-fullpack-qa4"
+  ],
+  [
+   "18:14:23",
+   "90",
+   "0",
+   "4",
+   "2",
+   "server-mods-r4;server-fullpack-qa4"
+  ],
+  [
+   "18:14:54",
+   "73",
+   "0",
+   "5",
+   "2",
+   "server-mods-r4;server-fullpack-qa4"
+  ],
+  [
+   "18:15:26",
+   "93",
+   "0",
+   "3",
+   "2",
+   "server-mods-r4;server-fullpack-qa4"
+  ],
+  [
+   "18:15:58",
+   "94",
+   "1",
+   "5",
+   "2",
+   "server-mods-r4;server-fullpack-qa4"
+  ],
+  [
+   "18:16:30",
+   "71",
+   "0",
+   "6",
+   "2",
+   "server-mods-r4;server-fullpack-qa4"
+  ],
+  [
+   "18:17:01",
+   "96",
+   "0",
+   "3",
+   "2",
+   "server-mods-r4;server-fullpack-qa4"
+  ],
+  [
+   "18:17:33",
+   "80",
+   "0",
+   "5",
+   "2",
+   "server-mods-r4;server-fullpack-qa4"
+  ],
+  [
+   "18:18:05",
+   "56",
+   "0",
+   "6",
+   "2",
+   "server-mods-r4;server-fullpack-qa4"
+  ],
+  [
+   "18:18:36",
+   "96",
+   "3",
+   "2",
+   "2",
+   "server-fullpack-qa4;server-mods-r4"
+  ],
+  [
+   "18:19:08",
+   "94",
+   "1",
+   "7",
+   "2",
+   "server-fullpack-qa4;server-mods-r4"
+  ],
+  [
+   "18:19:40",
+   "82",
+   "1",
+   "2",
+   "server-fullpack-qa4;server-mods-r4"
+  ],
+  [
+   "18:20:12",
+   "99",
+   "0",
+   "4",
+   "2",
+   "server-fullpack-qa4;server-mods-r4"
+  ],
+  [
+   "18:20:43",
+   "48",
+   "5",
+   "1",
+   "server-mods-r4"
+  ],
+  [
+   "18:21:15",
+   "99",
+   "3",
+   "1",
+   "1",
+   "server-mods-r4"
+  ],
+  [
+   "18:21:46",
+   "39",
+   "2",
+   "1",
+   "server-mods-r4"
+  ],
+  [
+   "18:22:18",
+   "91",
+   "1",
+   "9",
+   "1",
+   "server-mods-r4"
+  ],
+  [
+   "18:22:49",
+   "100",
+   "2",
+   "1",
+   "1",
+   "server-mods-r4"
+  ],
+  [
+   "18:23:21",
+   "73",
+   "1",
+   "5",
+   "2",
+   "server-mods-r4;server-fullpack-qa5"
+  ],
+  [
+   "18:23:53",
+   "87",
+   "1",
+   "2",
+   "server-mods-r4;server-fullpack-qa5"
+  ],
+  [
+   "18:24:25",
+   "96",
+   "1",
+   "2",
+   "server-mods-r4;server-fullpack-qa5"
+  ],
+  [
+   "18:24:57",
+   "100",
+   "0",
+   "4",
+   "2",
+   "server-mods-r4;server-fullpack-qa5"
+  ],
+  [
+   "18:25:29",
+   "84",
+   "0",
+   "4",
+   "2",
+   "server-mods-r4;server-fullpack-qa5"
+  ],
+  [
+   "18:26:01",
+   "100",
+   "1",
+   "2",
+   "2",
+   "server-mods-r4;server-fullpack-qa5"
+  ],
+  [
+   "18:26:33",
+   "100",
+   "0",
+   "9",
+   "2",
+   "server-mods-r4;server-fullpack-qa5"
+  ],
+  [
+   "18:27:05",
+   "100",
+   "0",
+   "2",
+   "2",
+   "server-mods-r4;server-fullpack-qa5"
+  ],
+  [
+   "18:27:37",
+   "99",
+   "0",
+   "4",
+   "2",
+   "server-mods-r4;server-fullpack-qa5"
+  ],
+  [
+   "18:28:09",
+   "100",
+   "0",
+   "8",
+   "2",
+   "server-mods-r4;server-fullpack-qa5"
+  ],
+  [
+   "18:28:41",
+   "100",
+   "1",
+   "6",
+   "2",
+   "server-mods-r4;server-fullpack-qa5"
+  ],
+  [
+   "18:29:13",
+   "100",
+   "1",
+   "5",
+   "2",
+   "server-mods-r4;server-fullpack-qa5"
+  ],
+  [
+   "18:29:44",
+   "100",
+   "1",
+   "2",
+   "server-mods-r4;server-fullpack-qa5"
+  ],
+  [
+   "18:30:16",
+   "100",
+   "0",
+   "4",
+   "2",
+   "server-mods-r4;server-fullpack-qa5"
+  ],
+  [
+   "18:30:48",
+   "96",
+   "0",
+   "8",
+   "2",
+   "server-mods-r4;server-fullpack-qa5"
+  ],
+  [
+   "18:31:20",
+   "97",
+   "0",
+   "7",
+   "2",
+   "server-mods-r4;server-fullpack-qa5"
+  ],
+  [
+   "18:31:52",
+   "97",
+   "0",
+   "9",
+   "2",
+   "server-mods-r4;server-fullpack-qa5"
+  ],
+  [
+   "18:32:24",
+   "99",
+   "0",
+   "2",
+   "server-mods-r4;server-fullpack-qa5"
+  ],
+  [
+   "18:32:56",
+   "96",
+   "1",
+   "4",
+   "2",
+   "server-mods-r4;server-fullpack-qa5"
+  ],
+  [
+   "18:33:27",
+   "100",
+   "2",
+   "2",
+   "server-fullpack-qa5;server-mods-r4-base"
+  ],
+  [
+   "18:34:06",
+   "100",
+   "0",
+   "2",
+   "2",
+   "server-fullpack-qa5;server-mods-r4-base"
+  ],
+  [
+   "18:34:38",
+   "100",
+   "0",
+   "2",
+   "2",
+   "server-fullpack-qa5;server-mods-r4-base"
+  ],
+  [
+   "18:35:10",
+   "100",
+   "0",
+   "6",
+   "2",
+   "server-fullpack-qa5;server-mods-r4-base"
+  ],
+  [
+   "18:35:41",
+   "90",
+   "0",
+   "8",
+   "2",
+   "server-fullpack-qa5;server-mods-r4-base"
+  ],
+  [
+   "18:36:13",
+   "99",
+   "0",
+   "4",
+   "2",
+   "server-fullpack-qa5;server-mods-r4-base"
+  ],
+  [
+   "18:36:45",
+   "100",
+   "1",
+   "9",
+   "2",
+   "server-fullpack-qa5;server-mods-r4-base"
+  ],
+  [
+   "18:37:17",
+   "100",
+   "1",
+   "1",
+   "2",
+   "server-fullpack-qa5;server-mods-r4-base"
+  ],
+  [
+   "18:37:49",
+   "93",
+   "1",
+   "1",
+   "2",
+   "server-fullpack-qa5;server-mods-r4-base"
+  ],
+  [
+   "18:38:21",
+   "85",
+   "0",
+   "8",
+   "2",
+   "server-fullpack-qa5;server-mods-r4-base"
+  ],
+  [
+   "18:38:53",
+   "100",
+   "0",
+   "6",
+   "2",
+   "server-fullpack-qa5;server-mods-r4-base"
+  ],
+  [
+   "18:39:25",
+   "100",
+   "0",
+   "7",
+   "2",
+   "server-fullpack-qa5;server-mods-r4-base"
+  ],
+  [
+   "18:39:57",
+   "96",
+   "1",
+   "2",
+   "2",
+   "server-fullpack-qa5;server-mods-r4-base"
+  ],
+  [
+   "18:40:29",
+   "99",
+   "0",
+   "3",
+   "2",
+   "server-fullpack-qa5;server-mods-r4-base"
+  ],
+  [
+   "18:41:02",
+   "88",
+   "0",
+   "2",
+   "server-fullpack-qa5;server-mods-r4-base"
+  ],
+  [
+   "18:41:37",
+   "99",
+   "0",
+   "1",
+   "2",
+   "server-fullpack-qa5;server-mods-r4-base"
+  ],
+  [
+   "18:42:09",
+   "94",
+   "0",
+   "8",
+   "2",
+   "server-fullpack-qa5;server-mods-r4-base"
+  ],
+  [
+   "18:42:41",
+   "96",
+   "2",
+   "1",
+   "server-mods-r4-base"
+  ],
+  [
+   "18:43:13",
+   "99",
+   "1",
+   "2",
+   "1",
+   "server-mods-r4-base"
+  ],
+  [
+   "18:43:45",
+   "96",
+   "2",
+   "5",
+   "1",
+   "server-mods-r4-base"
+  ],
+  [
+   "18:44:17",
+   "100",
+   "1",
+   "2",
+   "2",
+   "server-mods-r4-base;server-fullpack-qa5"
+  ],
+  [
+   "18:44:49",
+   "99",
+   "0",
+   "6",
+   "2",
+   "server-mods-r4-base;server-fullpack-qa5"
+  ],
+  [
+   "18:45:21",
+   "100",
+   "0",
+   "4",
+   "2",
+   "server-mods-r4-base;server-fullpack-qa5"
+  ],
+  [
+   "18:45:53",
+   "99",
+   "0",
+   "8",
+   "2",
+   "server-mods-r4-base;server-fullpack-qa5"
+  ],
+  [
+   "18:46:25",
+   "94",
+   "0",
+   "9",
+   "2",
+   "server-mods-r4-base;server-fullpack-qa5"
+  ],
+  [
+   "18:46:57",
+   "99",
+   "0",
+   "3",
+   "2",
+   "server-mods-r4-base;server-fullpack-qa5"
+  ],
+  [
+   "18:47:29",
+   "100",
+   "0",
+   "8",
+   "2",
+   "server-mods-r4-base;server-fullpack-qa5"
+  ],
+  [
+   "18:48:01",
+   "96",
+   "0",
+   "8",
+   "2",
+   "server-mods-r4-base;server-fullpack-qa5"
+  ],
+  [
+   "18:48:33",
+   "100",
+   "0",
+   "4",
+   "2",
+   "server-mods-r4-base;server-fullpack-qa5"
+  ],
+  [
+   "18:49:05",
+   "93",
+   "1",
+   "7",
+   "2",
+   "server-mods-r4-base;server-fullpack-qa5"
+  ],
+  [
+   "18:49:37",
+   "54",
+   "0",
+   "8",
+   "2",
+   "server-mods-r4-base;server-fullpack-qa5"
+  ],
+  [
+   "18:50:09",
+   "100",
+   "1",
+   "2",
+   "server-mods-r4-base;server-fullpack-qa5"
+  ],
+  [
+   "18:50:40",
+   "51",
+   "2",
+   "9",
+   "1",
+   "server-mods-r4-base"
+  ],
+  [
+   "18:51:12",
+   "60",
+   "1",
+   "9",
+   "1",
+   "other"
+  ],
+  [
+   "18:52:21",
+   "100",
+   "2",
+   "7",
+   "2",
+   "server-fullpack-qa5;server-mods-r4-base"
+  ],
+  [
+   "18:52:53",
+   "100",
+   "2",
+   "6",
+   "2",
+   "server-fullpack-qa5;server-mods-r4-base"
+  ],
+  [
+   "17:19:31",
+   "74",
+   "3",
+   "1",
+   "1",
+   "server-mods-r4-base"
+  ],
+  [
+   "17:20:02",
+   "73",
+   "1",
+   "9",
+   "1",
+   "server-mods-r4-base"
+  ],
+  [
+   "17:20:34",
+   "74",
+   "1",
+   "7",
+   "1",
+   "server-mods-r4-base"
+  ],
+  [
+   "17:21:05",
+   "97",
+   "1",
+   "2",
+   "2",
+   "server-mods-r4-base;other"
+  ],
+  [
+   "17:21:37",
+   "100",
+   "0",
+   "6",
+   "3",
+   "server-mods-r4-base;other;other"
+  ],
+  [
+   "17:22:08",
+   "100",
+   "0",
+   "4",
+   "4",
+   "server-mods-r4-base;other;other;other"
+  ],
+  [
+   "17:22:40",
+   "85",
+   "0",
+   "2",
+   "4",
+   "server-mods-r4-base;other;other;other"
+  ],
+  [
+   "17:23:11",
+   "99",
+   "0",
+   "3",
+   "4",
+   "server-mods-r4-base;other;other;other"
+  ],
+  [
+   "17:23:43",
+   "100",
+   "1",
+   "4",
+   "3",
+   "server-mods-r4-base;other;other"
+  ],
+  [
+   "17:24:14",
+   "99",
+   "0",
+   "9",
+   "4",
+   "server-mods-r4-base;other;other;other"
+  ],
+  [
+   "17:24:46",
+   "90",
+   "0",
+   "3",
+   "4",
+   "server-mods-r4-base;other;other;other"
+  ],
+  [
+   "17:25:18",
+   "67",
+   "2",
+   "4",
+   "1",
+   "server-mods-r4-base"
+  ],
+  [
+   "17:25:50",
+   "99",
+   "1",
+   "3",
+   "2",
+   "server-mods-r4-base;server-fullpack-final"
+  ],
+  [
+   "17:26:22",
+   "100",
+   "0",
+   "4",
+   "2",
+   "server-mods-r4-base;server-fullpack-final"
+  ],
+  [
+   "17:26:54",
+   "97",
+   "2",
+   "7",
+   "2",
+   "server-mods-r4-base;server-fullpack-final"
+  ],
+  [
+   "17:27:26",
+   "100",
+   "1",
+   "3",
+   "2",
+   "server-mods-r4-base;server-fullpack-final"
+  ],
+  [
+   "17:27:58",
+   "96",
+   "1",
+   "8",
+   "2",
+   "server-mods-r4-base;server-fullpack-final"
+  ],
+  [
+   "17:28:29",
+   "40",
+   "1",
+   "3",
+   "2",
+   "server-mods-r4-base;server-fullpack-final"
+  ],
+  [
+   "17:29:00",
+   "82",
+   "0",
+   "5",
+   "2",
+   "server-mods-r4-base;server-fullpack-final"
+  ],
+  [
+   "17:29:32",
+   "73",
+   "0",
+   "4",
+   "2",
+   "server-mods-r4-base;server-fullpack-final"
+  ],
+  [
+   "17:30:03",
+   "53",
+   "0",
+   "3",
+   "2",
+   "server-mods-r4-base;server-fullpack-final"
+  ],
+  [
+   "17:30:34",
+   "87",
+   "0",
+   "3",
+   "2",
+   "server-mods-r4-base;server-fullpack-final"
+  ],
+  [
+   "17:31:06",
+   "68",
+   "1",
+   "2",
+   "2",
+   "server-mods-r4-base;server-fullpack-final"
+  ],
+  [
+   "17:31:37",
+   "57",
+   "1",
+   "1",
+   "2",
+   "server-mods-r4-base;server-fullpack-final"
+  ],
+  [
+   "17:32:09",
+   "56",
+   "4",
+   "5",
+   "2",
+   "server-fullpack-final;server-mods-r4"
+  ],
+  [
+   "17:32:40",
+   "79",
+   "2",
+   "5",
+   "2",
+   "server-fullpack-final;server-mods-r4"
+  ],
+  [
+   "17:33:12",
+   "96",
+   "1",
+   "8",
+   "2",
+   "server-fullpack-final;server-mods-r4"
+  ],
+  [
+   "17:33:43",
+   "68",
+   "0",
+   "9",
+   "2",
+   "server-fullpack-final;server-mods-r4"
+  ],
+  [
+   "17:34:15",
+   "80",
+   "1",
+   "2",
+   "server-fullpack-final;server-mods-r4"
+  ],
+  [
+   "17:34:46",
+   "74",
+   "0",
+   "7",
+   "2",
+   "server-fullpack-final;server-mods-r4"
+  ],
+  [
+   "17:35:18",
+   "99",
+   "0",
+   "6",
+   "2",
+   "server-fullpack-final;server-mods-r4"
+  ],
+  [
+   "17:35:49",
+   "99",
+   "1",
+   "2",
+   "server-fullpack-final;server-mods-r4"
+  ],
+  [
+   "17:36:20",
+   "49",
+   "1",
+   "2",
+   "2",
+   "server-fullpack-final;server-mods-r4"
+  ],
+  [
+   "17:36:52",
+   "65",
+   "0",
+   "8",
+   "2",
+   "server-fullpack-final;server-mods-r4"
+  ],
+  [
+   "17:37:23",
+   "56",
+   "0",
+   "7",
+   "2",
+   "server-fullpack-final;server-mods-r4"
+  ],
+  [
+   "17:37:54",
+   "65",
+   "4",
+   "8",
+   "1",
+   "server-mods-r4"
+  ],
+  [
+   "17:38:26",
+   "93",
+   "4",
+   "5",
+   "2",
+   "server-mods-r4;server-fullpack-final"
+  ],
+  [
+   "17:38:57",
+   "79",
+   "3",
+   "1",
+   "2",
+   "server-mods-r4;server-fullpack-final"
+  ],
+  [
+   "17:39:29",
+   "91",
+   "2",
+   "4",
+   "2",
+   "server-mods-r4;server-fullpack-final"
+  ],
+  [
+   "17:40:00",
+   "91",
+   "1",
+   "9",
+   "2",
+   "server-mods-r4;server-fullpack-final"
+  ],
+  [
+   "17:40:31",
+   "22",
+   "0",
+   "6",
+   "2",
+   "server-mods-r4;server-fullpack-final"
+  ],
+  [
+   "17:41:03",
+   "51",
+   "0",
+   "4",
+   "2",
+   "server-mods-r4;server-fullpack-final"
+  ],
+  [
+   "17:41:34",
+   "55",
+   "0",
+   "6",
+   "2",
+   "server-mods-r4;server-fullpack-final"
+  ],
+  [
+   "17:42:05",
+   "57",
+   "3",
+   "8",
+   "2",
+   "server-fullpack-final;server-mods-r4"
+  ],
+  [
+   "17:42:37",
+   "53",
+   "2",
+   "8",
+   "2",
+   "server-fullpack-final;server-mods-r4"
+  ],
+  [
+   "17:43:08",
+   "43",
+   "6",
+   "9",
+   "1",
+   "server-mods-r4"
+  ],
+  [
+   "17:43:39",
+   "100",
+   "6",
+   "2",
+   "3",
+   "server-mods-r4;other;other"
+  ],
+  [
+   "17:44:11",
+   "99",
+   "4",
+   "7",
+   "3",
+   "server-mods-r4;other;other"
+  ],
+  [
+   "17:44:42",
+   "91",
+   "3",
+   "3",
+   "4",
+   "server-mods-r4;other;other;other"
+  ],
+  [
+   "17:45:14",
+   "80",
+   "2",
+   "4",
+   "4",
+   "server-mods-r4;other;other;other"
+  ],
+  [
+   "17:45:45",
+   "99",
+   "4",
+   "8",
+   "1",
+   "server-mods-r4"
+  ],
+  [
+   "17:46:16",
+   "22",
+   "4",
+   "6",
+   "1",
+   "server-mods-r4"
+  ],
+  [
+   "17:46:47",
+   "19",
+   "4",
+   "2",
+   "1",
+   "server-mods-r4"
+  ],
+  [
+   "17:47:19",
+   "35",
+   "4",
+   "1",
+   "1",
+   "server-mods-r4"
+  ],
+  [
+   "17:47:50",
+   "97",
+   "3",
+   "8",
+   "1",
+   "server-mods-r4"
+  ],
+  [
+   "17:48:21",
+   "96",
+   "2",
+   "6",
+   "1",
+   "server-mods-r4"
+  ],
+  [
+   "17:48:53",
+   "73",
+   "1",
+   "3",
+   "2",
+   "server-mods-r4;server-fullpack-final2"
+  ],
+  [
+   "17:49:24",
+   "82",
+   "1",
+   "2",
+   "2",
+   "server-mods-r4;server-fullpack-final2"
+  ],
+  [
+   "17:49:56",
+   "93",
+   "3",
+   "2",
+   "server-mods-r4;server-fullpack-final2"
+  ],
+  [
+   "17:50:27",
+   "71",
+   "1",
+   "8",
+   "2",
+   "server-mods-r4;server-fullpack-final2"
+  ],
+  [
+   "17:50:59",
+   "85",
+   "1",
+   "1",
+   "2",
+   "server-mods-r4;server-fullpack-final2"
+  ],
+  [
+   "17:51:30",
+   "63",
+   "0",
+   "9",
+   "2",
+   "server-mods-r4;server-fullpack-final2"
+  ],
+  [
+   "17:52:02",
+   "99",
+   "0",
+   "6",
+   "2",
+   "server-mods-r4;server-fullpack-final2"
+  ],
+  [
+   "17:53:04",
+   "83",
+   "4",
+   "2",
+   "server-fullpack-final2;server-mods-r4"
+  ],
+  [
+   "17:53:36",
+   "91",
+   "2",
+   "4",
+   "2",
+   "server-fullpack-final2;server-mods-r4"
+  ],
+  [
+   "17:54:07",
+   "79",
+   "2",
+   "2",
+   "server-fullpack-final2;server-mods-r4"
+  ],
+  [
+   "17:54:38",
+   "43",
+   "1",
+   "6",
+   "2",
+   "server-fullpack-final2;server-mods-r4"
+  ],
+  [
+   "17:55:10",
+   "54",
+   "0",
+   "5",
+   "2",
+   "server-fullpack-final2;server-mods-r4"
+  ],
+  [
+   "17:55:41",
+   "80",
+   "0",
+   "5",
+   "2",
+   "server-fullpack-final2;server-mods-r4"
+  ],
+  [
+   "17:56:13",
+   "83",
+   "0",
+   "3",
+   "2",
+   "server-fullpack-final2;server-mods-r4"
+  ],
+  [
+   "17:56:44",
+   "83",
+   "0",
+   "6",
+   "2",
+   "server-fullpack-final2;server-mods-r4"
+  ],
+  [
+   "17:57:16",
+   "82",
+   "0",
+   "4",
+   "2",
+   "server-fullpack-final2;server-mods-r4"
+  ],
+  [
+   "17:57:47",
+   "65",
+   "0",
+   "7",
+   "2",
+   "server-fullpack-final2;server-mods-r4"
+  ],
+  [
+   "17:58:18",
+   "34",
+   "0",
+   "8",
+   "2",
+   "server-fullpack-final2;server-mods-r4"
+  ],
+  [
+   "17:58:50",
+   "93",
+   "0",
+   "6",
+   "2",
+   "server-fullpack-final2;server-mods-r4"
+  ],
+  [
+   "17:59:21",
+   "85",
+   "0",
+   "7",
+   "2",
+   "server-fullpack-final2;server-mods-r4"
+  ],
+  [
+   "17:59:53",
+   "91",
+   "0",
+   "6",
+   "2",
+   "server-fullpack-final2;server-mods-r4"
+  ],
+  [
+   "18:00:24",
+   "99",
+   "0",
+   "6",
+   "2",
+   "server-fullpack-final2;server-mods-r4"
+  ],
+  [
+   "18:00:56",
+   "100",
+   "2",
+   "9",
+   "2",
+   "server-mods-r4;server-fullpack-final2"
+  ],
+  [
+   "18:01:28",
+   "94",
+   "3",
+   "6",
+   "2",
+   "server-mods-r4;server-fullpack-final2"
+  ],
+  [
+   "18:01:59",
+   "79",
+   "2",
+   "9",
+   "2",
+   "server-mods-r4;server-fullpack-final2"
+  ],
+  [
+   "18:02:32",
+   "85",
+   "2",
+   "4",
+   "2",
+   "server-mods-r4;server-fullpack-final2"
+  ],
+  [
+   "18:03:03",
+   "41",
+   "1",
+   "3",
+   "2",
+   "server-mods-r4;server-fullpack-final2"
+  ],
+  [
+   "18:03:34",
+   "68",
+   "0",
+   "6",
+   "2",
+   "server-mods-r4;server-fullpack-final2"
+  ],
+  [
+   "18:04:06",
+   "74",
+   "3",
+   "5",
+   "2",
+   "server-fullpack-final2;server-mods-r4-base"
+  ],
+  [
+   "18:04:39",
+   "93",
+   "2",
+   "1",
+   "2",
+   "server-fullpack-final2;server-mods-r4-base"
+  ],
+  [
+   "18:05:10",
+   "76",
+   "6",
+   "9",
+   "1",
+   "server-mods-r4-base"
+  ],
+  [
+   "18:05:41",
+   "60",
+   "6",
+   "5",
+   "1",
+   "server-mods-r4-base"
+  ],
+  [
+   "18:06:13",
+   "68",
+   "4",
+   "9",
+   "1",
+   "server-mods-r4-base"
+  ],
+  [
+   "18:06:45",
+   "100",
+   "2",
+   "3",
+   "2",
+   "server-mods-r4-base;server-fullpack-restore3"
+  ],
+  [
+   "18:07:16",
+   "100",
+   "2",
+   "3",
+   "2",
+   "server-mods-r4-base;server-fullpack-restore3"
+  ],
+  [
+   "18:07:48",
+   "94",
+   "2",
+   "1",
+   "2",
+   "server-mods-r4-base;server-fullpack-restore3"
+  ],
+  [
+   "18:08:19",
+   "80",
+   "1",
+   "5",
+   "2",
+   "server-mods-r4-base;server-fullpack-restore3"
+  ],
+  [
+   "18:08:51",
+   "46",
+   "1",
+   "2",
+   "2",
+   "server-mods-r4-base;server-fullpack-restore3"
+  ],
+  [
+   "18:09:22",
+   "82",
+   "0",
+   "5",
+   "2",
+   "server-mods-r4-base;server-fullpack-restore3"
+  ],
+  [
+   "18:09:53",
+   "71",
+   "2",
+   "3",
+   "2",
+   "server-mods-r4-base;server-fullpack-restore3"
+  ],
+  [
+   "18:10:25",
+   "100",
+   "0",
+   "4",
+   "2",
+   "server-mods-r4-base;server-fullpack-restore3"
+  ],
+  [
+   "18:10:56",
+   "54",
+   "0",
+   "8",
+   "2",
+   "server-mods-r4-base;server-fullpack-restore3"
+  ],
+  [
+   "18:11:28",
+   "64",
+   "0",
+   "9",
+   "2",
+   "server-mods-r4-base;server-fullpack-restore3"
+  ],
+  [
+   "18:11:59",
+   "34",
+   "6",
+   "1",
+   "1",
+   "server-mods-r4-base"
+  ],
+  [
+   "18:12:30",
+   "53",
+   "5",
+   "9",
+   "1",
+   "server-mods-r4-base"
+  ],
+  [
+   "18:13:01",
+   "25",
+   "5",
+   "8",
+   "1",
+   "server-mods-r4-base"
+  ],
+  [
+   "18:13:32",
+   "37",
+   "5",
+   "8",
+   "1",
+   "server-mods-r4-base"
+  ],
+  [
+   "18:14:04",
+   "43",
+   "3",
+   "7",
+   "1",
+   "server-mods-r4-base"
+  ]
+ ],
+ "fullpack": {
+  "qa0": {
+   "bootWallSeconds": 294.0,
+   "expected": 120,
+   "passed": 6,
+   "failed": 2,
+   "exitCode": 0,
+   "tests": {
+    "pingponground4batchloaded": "PASS",
+    "heliodorsolarandpsipiecesneedactcomponents": "PASS",
+    "pneumaticcraftandpsiguidebooksstaycraftable": "PASS",
+    "kitchenautomationkeepsoneroutepertask": "FAIL",
+    "dungeonsandtavernsstructuresregistered": "PASS",
+    "fullpackplayerarrivesemptyhanded": "FAIL",
+    "fullpackfirstjoingiftsstaydisabled": "PASS",
+    "pingpongbatchloadedwithoutrejectedbuilds": "PASS"
+   },
+   "failureLines": {
+    "kitchenautomationkeepsoneroutepertask": [
+     "[17:51:58] [Server thread/ERROR] [minecraft/LogTestReporter]: kitchenautomationkeepsoneroutepertask failed at -8, 66, -5! 93 cooking-pot outputs also mix in a basin, e.g. [sliceanddice:cooking/farmersdelight/cooking/enchanted_berry_jam_0, sliceanddice:cooking/farmersdelight/cooking/beetroot_soup_0, sliceanddice:cooking/farmersdelight/cooking/hot_cocoa_0]"
+    ],
+    "fullpackplayerarrivesemptyhanded": [
+     "[17:52:08] [Server thread/ERROR] [minecraft/LogTestReporter]: fullpackplayerarrivesemptyhanded failed at -8, 66, -5! A new player received [1x ars_nouveau:starbuncle_plush, 1x silentgear:material_book, 1x silentgear:blueprint_package]"
+    ]
+   },
+   "seconds": {
+    "pingponground4batchloaded": 1.0,
+    "heliodorsolarandpsipiecesneedactcomponents": 1.0,
+    "pneumaticcraftandpsiguidebooksstaycraftable": 1.0,
+    "kitchenautomationkeepsoneroutepertask": 1.0,
+    "dungeonsandtavernsstructuresregistered": 1.0,
+    "fullpackplayerarrivesemptyhanded": 8.1,
+    "fullpackfirstjoingiftsstaydisabled": 3.1,
+    "pingpongbatchloadedwithoutrejectedbuilds": 3.1
+   },
+   "summary": null
+  },
+  "final": {
+   "bootWallSeconds": 210.9,
+   "expected": 120,
+   "passed": 114,
+   "failed": 6,
+   "exitCode": 0,
+   "tests": {
+    "carryonrefusessensitiveblocks": "PASS",
+    "compassmovestothenextobjectivewhentheteammeetsthecondition": "PASS",
+    "compasssearchesstayboundedandcooperative": "PASS",
+    "dungeonsandtavernsstructuresregistered": "PASS",
+    "fullpackfirstjoingiftsstaydisabled": "PASS",
+    "fullpackplayerarrivesemptyhanded": "PASS",
+    "heliodorsolarandpsipiecesneedactcomponents": "PASS",
+    "kitchenautomationkeepsoneroutepertask": "FAIL",
+    "newplayerarriveswithanemptyinventory": "PASS",
+    "pedestalgiveseachplayeronecompassever": "PASS",
+    "pingpongbatchloadedwithoutrejectedbuilds": "PASS",
+    "pingponground4batchloaded": "PASS",
+    "pneumaticcraftandpsiguidebooksstaycraftable": "PASS",
+    "satietyoverflowatafullbarturnssurplusintobuffs": "PASS",
+    "satietyoverflowcooldownandglutstopcheapspam": "PASS",
+    "satietyoverflowcountsbiteseatenfromblocks": "PASS",
+    "satietyoverflowneverreplacesstrongereffects": "PASS",
+    "solsticiocitypaletteresolvesinthefullpack": "PASS",
+    "solsticioshoptablesresolveinthefullpack": "PASS",
+    "startruinisanchoredregisteredandplacedonce": "PASS",
+    "storytieronlyrisesandcannotbechosen": "PASS",
+    "unifiedcropsdropfarmersdelighttomatoes": "PASS",
+    "actsixdeliveriesusecrossmodcostsandrewardonce": "PASS",
+    "ae2settlementsupplycraftstwiceandreturnsallbowls": "PASS",
+    "altarsrespectforeignftbchunksclaims": "FAIL",
+    "apothicenchantingreadsentrelumenshelfstats": "PASS",
+    "arcanerestorationkeepsapotheosisandmoddeddataatarealark": "PASS",
+    "arcanerestorationrejectswithoutpartialpayment": "PASS",
+    "arcanerestorationresetsforginghistoryandkeepseverythingelse": "PASS",
+    "arkcontrollerpartialoffhandtopupandreplay": "PASS",
+    "arkfieldjournaldepositneedsauniquecompletereachableark": "PASS",
+    "arkfieldjournalsdepositonlytheirownbatches": "PASS",
+    "arkfieldjournalsreadcurrentteamwithoutmutation": "PASS",
+    "arkmissingmoduleanddeniedhookpreservesupplies": "PASS",
+    "arkpartyledgerrejectsstaleidentityandrestorespersonal": "PASS",
+    "atlasadvanceandsnapshotcodecuseauthoritativestate": "PASS",
+    "atlaslibrarycapsbyrealeternawithoutduplication": "PASS",
+    "atlasopenneedsnoitemorcampaigntoken": "PASS",
+    "atlasrouterejectsstaleteamandcannotdoubleconsume": "PASS",
+    "chippedvariantsjoinloadedrechiseledconversiongroup": "PASS",
+    "configuredquarrycardpreservesnativeshapedata": "PASS",
+    "containedfoliotcrushesoneinputthroughnativecapability": "PASS",
+    "datapackreloadisatomicandrejectscycles": "PASS",
+    "deliveryconsumesserverinventoryonce": "PASS",
+    "engineeringmoduleinspectionisreadonlyandteamscoped": "PASS",
+    "engineeringworkshoprejectsinvalidstructureandusewithoutconsumption": "PASS",
+    "engineeringworkshoprepairsgiftedtoolswithoutcampaignorcomponentchanges": "PASS",
+    "explorationchartscompilefieldmapswithoutconsuminganything": "PASS",
+    "explorationchartskeepsupplementariesslicemapsapart": "PASS",
+    "explorationchartsrefusewithoutmutation": "PASS",
+    "explorationchartsrespectforeignftbchunksclaim": "PASS",
+    "farmersdelightpiebitecountsassatietysurplus": "PASS",
+    "fifthactrequiresfourdeliveriesbeforeadvancing": "PASS",
+    "finitearssourcedrivesandstopscreateshaft": "PASS",
+    "finitesourceacceptorpowersmestoragethencutsoff": "PASS",
+    "firstactcompletesthroughrealdeliveries": "PASS",
+    "fourthactrequiresjourneysandfivedeliveries": "PASS",
+    "functionalglassandswitchedlightsusenativeblockbehavior": "PASS",
+    "giftednativeupgradespreservefilledpotacrossthreetiers": "PASS",
+    "habitationbedclickchecksinandoutwithoutchangingcampaign": "PASS",
+    "habitationbrokenmodulefallsbacktonativebedandsurvivesclone": "PASS",
+    "habitationcanceledspawnsetterskeepbackupandrecoverclone": "PASS",
+    "habitationnativebedreplacingmodulerestoresoriginalhome": "PASS",
+    "habitationnewbedwinsandbookingsurvivesplayerserialization": "PASS",
+    "habitationusesnativenonforcedrespawnandrejectsunsafespaces": "PASS",
+    "installedhostileprojectilesareslowedbythealtaroftime": "PASS",
+    "kubejsapotheosisrecipesmatchthegeneratedscript": "PASS",
+    "lasthorizonneedscurrentcampaignreachandphysicalark": "PASS",
+    "logisticsallornothingpreservesvariantsandrejectedprofiles": "PASS",
+    "logisticslegacyinventoryandremovaldonotduplicate": "PASS",
+    "logisticsmoduledepositscurrentbatchfromteaminventoryonce": "PASS",
+    "logisticsmodulerejectsambiguousmissingremoteandspectator": "PASS",
+    "logisticsnativedenialandstructurecannotmovestock": "PASS",
+    "logisticspersonalkitsurvivesnativedeathclone": "PASS",
+    "logisticspipezdepotpreparestwoexactpersonalkits": "PASS",
+    "luminousgeartakesapotheosisaffixes": "PASS",
+    "luminousingotandcreativeitemscraftfromtheirgrids": "PASS",
+    "luminousrecipesloadwithrealitemsandexclusiveoutputs": "PASS",
+    "luminoussilentgeararmouroutclassesandflies": "PASS",
+    "luminousupgradeskeepenchantmentsdamageandnames": "PASS",
+    "mysticalcropsgrowfasterbuttheiressenceisnotmultiplied": "PASS",
+    "nativeactsixinputscomefromrealmods": "PASS",
+    "nativebuildercraftskeepcostsandoutputs": "PASS",
+    "nativemacawrecipeskeepactualingredientsandyields": "PASS",
+    "nativemegahopperproduceswheatandfullstockkeepscontents": "PASS",
+    "nativepartysnapshotsarchiverecoveryandreconnect": "PASS",
+    "nativerecipesrequireintegrationcomponents": "PASS",
+    "nativeshuttergateandgardenlightworkwhenplaced": "PASS",
+    "nativewhitepotcraftingrequiresrealintegrationitems": "PASS",
+    "naturerestorationgrowswholenativetreesornone": "PASS",
+    "naturerestorationhealsscarsatexactcostandsparesbuilds": "PASS",
+    "naturerestorationrefuseswithoutmutation": "PASS",
+    "naturerestorationrespectsforeignftbchunksclaim": "PASS",
+    "offhanddeliveryandmissingmaterialareatomic": "PASS",
+    "pamtreeskeepmarketacquisitionwithoutduplicateworldgen": "PASS",
+    "peacealtarrefuseseveryinstalledhostilenaturalspawn": "PASS",
+    "phaseandendingquesttasksonlymirrorsavedauthority": "PASS",
+    "poweredmechanicalchiselconvertsrealchippedstoneonce": "PASS",
+    "preparelivebackupfixture": "FAIL",
+    "preparelogisticsrestartfixture": "PASS",
+    "prepareteamrestartfixture": "PASS",
+    "questmirrorcannotgrantcampaign": "PASS",
+    "questmirrorrepairssavedprogressthroughdependencydag": "PASS",
+    "realpartylifecyclepreservespersonalsnapshots": "PASS",
+    "registeredrecipescraftatlas": "PASS",
+    "renewalaltarrebuildslandfromthepacksowngenerator": "PASS",
+    "saveddatadiskroundtrip": "PASS",
+    "secondactconsumesgiftedprototypesandgatesclosure": "PASS",
+    "spawneraugmentsmodifyrealspawnersandrunesaregone": "PASS",
+    "statusreportsmissingmaterialsandprerequisites": "PASS",
+    "surveystationbookmarkswithoutcampaignorlodestone": "PASS",
+    "terraarmwornincurioshandsgivesfiveblockreach": "PASS",
+    "thirdactconsumesgiftedprototypesandgatesclosure": "PASS",
+    "threeprovisionsrouteskeepcookedcostsandbowls": "PASS",
+    "torchmasterkeepsitslightsbutlosesthemegatorch": "PASS",
+    "verifylogisticsrestartfixture": "FAIL",
+    "verifyrestoredlivebackup": "FAIL",
+    "verifyteamrestartafternewserverprocess": "FAIL",
+    "worldtierfollowsthestoryandcannotbechosen": "PASS",
+    "worldtieroverridesopenwhentheteamclosesacts": "PASS"
+   },
+   "failureLines": {
+    "kitchenautomationkeepsoneroutepertask": [
+     "[18:25:59] [Server thread/ERROR] [minecraft/LogTestReporter]: kitchenautomationkeepsoneroutepertask failed at -8, 66, -5! 1 cooking-pot outputs also mix in a basin, e.g. [farmersdelight:integration/create/mixing/tomato_sauce_from_mixing]"
+    ],
+    "altarsrespectforeignftbchunksclaims": [
+     "[18:28:11] [Server thread/ERROR] [minecraft/LogTestReporter]: altarsrespectforeignftbchunksclaims failed at -8, 66, -5! Claimed terraform did not finish in time"
+    ],
+    "preparelivebackupfixture": [
+     "[18:33:04] [Server thread/ERROR] [minecraft/LogTestReporter]: preparelivebackupfixture failed at -8, 66, -5! .\\world-qa-final\\.\\data\\entrelumen_team_restart_qa_receipt.dat"
+    ],
+    "verifylogisticsrestartfixture": [
+     "[18:33:53] [Server thread/ERROR] [minecraft/LogTestReporter]: verifylogisticsrestartfixture failed at -8, 66, -5! Logistics verifier requires a different JVM start and PID after normal shutdown"
+    ],
+    "verifyrestoredlivebackup": [
+     "[18:33:54] [Server thread/ERROR] [minecraft/LogTestReporter]: verifyrestoredlivebackup failed at -8, 66, -5! Restored verifier needs -Dentrelumen.qa.backup.archive=<native SimpleBackups ZIP>"
+    ],
+    "verifyteamrestartafternewserverprocess": [
+     "[18:33:56] [Server thread/ERROR] [minecraft/LogTestReporter]: verifyteamrestartafternewserverprocess failed at -8, 66, -5! Restart verifier ran in the same JVM as prepare; stop and start the server first"
+    ]
+   },
+   "seconds": {
+    "carryonrefusessensitiveblocks": 1.0,
+    "compassmovestothenextobjectivewhentheteammeetsthecondition": 3.0,
+    "compasssearchesstayboundedandcooperative": 14.2,
+    "dungeonsandtavernsstructuresregistered": 1.0,
+    "fullpackfirstjoingiftsstaydisabled": 2.0,
+    "fullpackplayerarrivesemptyhanded": 3.1,
+    "heliodorsolarandpsipiecesneedactcomponents": 1.0,
+    "kitchenautomationkeepsoneroutepertask": 1.0,
+    "newplayerarriveswithanemptyinventory": 2.0,
+    "pedestalgiveseachplayeronecompassever": 2.1,
+    "pingpongbatchloadedwithoutrejectedbuilds": 1.0,
+    "pingponground4batchloaded": 1.1,
+    "pneumaticcraftandpsiguidebooksstaycraftable": 1.1,
+    "satietyoverflowatafullbarturnssurplusintobuffs": 2.0,
+    "satietyoverflowcooldownandglutstopcheapspam": 1.0,
+    "satietyoverflowcountsbiteseatenfromblocks": 2.1,
+    "satietyoverflowneverreplacesstrongereffects": 2.1,
+    "solsticiocitypaletteresolvesinthefullpack": 2.0,
+    "solsticioshoptablesresolveinthefullpack": 1.0,
+    "startruinisanchoredregisteredandplacedonce": 16.1,
+    "storytieronlyrisesandcannotbechosen": 1.0,
+    "unifiedcropsdropfarmersdelighttomatoes": 2.0,
+    "actsixdeliveriesusecrossmodcostsandrewardonce": 2.0,
+    "ae2settlementsupplycraftstwiceandreturnsallbowls": 3.1,
+    "altarsrespectforeignftbchunksclaims": 82.1,
+    "apothicenchantingreadsentrelumenshelfstats": 1.0,
+    "arcanerestorationkeepsapotheosisandmoddeddataatarealark": 1.0,
+    "arcanerestorationrejectswithoutpartialpayment": 1.0,
+    "arcanerestorationresetsforginghistoryandkeepseverythingelse": 2.0,
+    "arkcontrollerpartialoffhandtopupandreplay": 2.0,
+    "arkfieldjournaldepositneedsauniquecompletereachableark": 2.0,
+    "arkfieldjournalsdepositonlytheirownbatches": 2.0,
+    "arkfieldjournalsreadcurrentteamwithoutmutation": 2.0,
+    "arkmissingmoduleanddeniedhookpreservesupplies": 1.0,
+    "arkpartyledgerrejectsstaleidentityandrestorespersonal": 2.0,
+    "atlasadvanceandsnapshotcodecuseauthoritativestate": 1.0,
+    "atlaslibrarycapsbyrealeternawithoutduplication": 2.0,
+    "atlasopenneedsnoitemorcampaigntoken": 1.0,
+    "atlasrouterejectsstaleteamandcannotdoubleconsume": 2.0,
+    "chippedvariantsjoinloadedrechiseledconversiongroup": 1.0,
+    "configuredquarrycardpreservesnativeshapedata": 1.0,
+    "containedfoliotcrushesoneinputthroughnativecapability": 7.0,
+    "datapackreloadisatomicandrejectscycles": 70.6,
+    "deliveryconsumesserverinventoryonce": 1.0,
+    "engineeringmoduleinspectionisreadonlyandteamscoped": 1.0,
+    "engineeringworkshoprejectsinvalidstructureandusewithoutconsumption": 1.0,
+    "engineeringworkshoprepairsgiftedtoolswithoutcampaignorcomponentchanges": 1.0,
+    "explorationchartscompilefieldmapswithoutconsuminganything": 1.0,
+    "explorationchartskeepsupplementariesslicemapsapart": 1.0,
+    "explorationchartsrefusewithoutmutation": 1.0,
+    "explorationchartsrespectforeignftbchunksclaim": 2.0,
+    "farmersdelightpiebitecountsassatietysurplus": 1.0,
+    "fifthactrequiresfourdeliveriesbeforeadvancing": 2.0,
+    "finitearssourcedrivesandstopscreateshaft": 4.0,
+    "finitesourceacceptorpowersmestoragethencutsoff": 9.1,
+    "firstactcompletesthroughrealdeliveries": 2.1,
+    "fourthactrequiresjourneysandfivedeliveries": 2.0,
+    "functionalglassandswitchedlightsusenativeblockbehavior": 1.0,
+    "giftednativeupgradespreservefilledpotacrossthreetiers": 2.0,
+    "habitationbedclickchecksinandoutwithoutchangingcampaign": 2.0,
+    "habitationbrokenmodulefallsbacktonativebedandsurvivesclone": 2.0,
+    "habitationcanceledspawnsetterskeepbackupandrecoverclone": 2.0,
+    "habitationnativebedreplacingmodulerestoresoriginalhome": 2.0,
+    "habitationnewbedwinsandbookingsurvivesplayerserialization": 1.0,
+    "habitationusesnativenonforcedrespawnandrejectsunsafespaces": 1.0,
+    "installedhostileprojectilesareslowedbythealtaroftime": 7.4,
+    "kubejsapotheosisrecipesmatchthegeneratedscript": 1.0,
+    "lasthorizonneedscurrentcampaignreachandphysicalark": 2.1,
+    "logisticsallornothingpreservesvariantsandrejectedprofiles": 2.1,
+    "logisticslegacyinventoryandremovaldonotduplicate": 2.0,
+    "logisticsmoduledepositscurrentbatchfromteaminventoryonce": 2.0,
+    "logisticsmodulerejectsambiguousmissingremoteandspectator": 2.0,
+    "logisticsnativedenialandstructurecannotmovestock": 1.0,
+    "logisticspersonalkitsurvivesnativedeathclone": 1.0,
+    "logisticspipezdepotpreparestwoexactpersonalkits": 12.1,
+    "luminousgeartakesapotheosisaffixes": 1.0,
+    "luminousingotandcreativeitemscraftfromtheirgrids": 2.1,
+    "luminousrecipesloadwithrealitemsandexclusiveoutputs": 1.0,
+    "luminoussilentgeararmouroutclassesandflies": 2.0,
+    "luminousupgradeskeepenchantmentsdamageandnames": 1.0,
+    "mysticalcropsgrowfasterbuttheiressenceisnotmultiplied": 15.1,
+    "nativeactsixinputscomefromrealmods": 1.0,
+    "nativebuildercraftskeepcostsandoutputs": 2.0,
+    "nativemacawrecipeskeepactualingredientsandyields": 1.0,
+    "nativemegahopperproduceswheatandfullstockkeepscontents": 27.1,
+    "nativepartysnapshotsarchiverecoveryandreconnect": 2.0,
+    "nativerecipesrequireintegrationcomponents": 1.0,
+    "nativeshuttergateandgardenlightworkwhenplaced": 1.0,
+    "nativewhitepotcraftingrequiresrealintegrationitems": 1.0,
+    "naturerestorationgrowswholenativetreesornone": 2.0,
+    "naturerestorationhealsscarsatexactcostandsparesbuilds": 2.0,
+    "naturerestorationrefuseswithoutmutation": 2.0,
+    "naturerestorationrespectsforeignftbchunksclaim": 2.0,
+    "offhanddeliveryandmissingmaterialareatomic": 2.1,
+    "pamtreeskeepmarketacquisitionwithoutduplicateworldgen": 1.0,
+    "peacealtarrefuseseveryinstalledhostilenaturalspawn": 2.0,
+    "phaseandendingquesttasksonlymirrorsavedauthority": 2.0,
+    "poweredmechanicalchiselconvertsrealchippedstoneonce": 7.0,
+    "preparelivebackupfixture": 1.0,
+    "preparelogisticsrestartfixture": 13.1,
+    "prepareteamrestartfixture": 2.0,
+    "questmirrorcannotgrantcampaign": 1.0,
+    "questmirrorrepairssavedprogressthroughdependencydag": 2.0,
+    "realpartylifecyclepreservespersonalsnapshots": 2.0,
+    "registeredrecipescraftatlas": 1.0,
+    "renewalaltarrebuildslandfromthepacksowngenerator": 6.1,
+    "saveddatadiskroundtrip": 2.0,
+    "secondactconsumesgiftedprototypesandgatesclosure": 1.0,
+    "spawneraugmentsmodifyrealspawnersandrunesaregone": 1.0,
+    "statusreportsmissingmaterialsandprerequisites": 1.0,
+    "surveystationbookmarkswithoutcampaignorlodestone": 1.0,
+    "terraarmwornincurioshandsgivesfiveblockreach": 2.0,
+    "thirdactconsumesgiftedprototypesandgatesclosure": 2.1,
+    "threeprovisionsrouteskeepcookedcostsandbowls": 1.0,
+    "torchmasterkeepsitslightsbutlosesthemegatorch": 1.0,
+    "verifylogisticsrestartfixture": 1.0,
+    "verifyrestoredlivebackup": 1.0,
+    "verifyteamrestartafternewserverprocess": 1.0,
+    "worldtierfollowsthestoryandcannotbechosen": 3.1,
+    "worldtieroverridesopenwhentheteamclosesacts": 3.1
+   },
+   "summary": "ENTRELUMEN_QA_SUMMARY expected=120 finished=120 failed=6 passed=114 failedNames=[altarsrespectforeignftbchunksclaims, kitchenautomationkeepsoneroutepertask, preparelivebackupfixture, verifylogisticsrestartfixture, verifyrestoredlivebackup, verifyteamrestartafternewserverprocess] pendingNames=[]\r"
+  },
+  "final-rerun": {
+   "bootWallSeconds": 148.5,
+   "expected": 120,
+   "passed": 4,
+   "failed": 0,
+   "exitCode": 0,
+   "tests": {
+    "kitchenautomationkeepsoneroutepertask": "PASS",
+    "altarsrespectforeignftbchunksclaims": "PASS",
+    "pingponground4batchloaded": "PASS",
+    "heliodorsolarandpsipiecesneedactcomponents": "PASS"
+   },
+   "failureLines": null,
+   "seconds": {
+    "kitchenautomationkeepsoneroutepertask": 1.0,
+    "altarsrespectforeignftbchunksclaims": 14.1,
+    "pingponground4batchloaded": 1.0,
+    "heliodorsolarandpsipiecesneedactcomponents": 1.0
+   },
+   "summary": null
+  }
+ }
+}

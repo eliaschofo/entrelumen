@@ -31,9 +31,19 @@ Pedidos previos del mismo día, a cargo del worker del contenido luminoso: **Sil
 | Aventura y loot | **Repurposed Structures** | Medir el costo de worldgen. |
 | Jefes y combate | Ninguno | |
 
+## Ronda 4 (24/9)
+
+| Tipo | Elegidos por Elias | Notas |
+|---|---|---|
+| Magia | **Psi** | Hechizos programables; encaja con Terra, la inventora. |
+| Tecnología | **Create: New Age** | «Es RECONTRA Heliodor»: la tecnología solar característica de Heliodor (paneles solares, electricidad, generadores y bobinas), escalonada con los componentes de acto. |
+| Cocina automatizada | **Create: Central Kitchen** y **Create Slice & Dice** | Automatizan Farmer's Delight con Create; revisar que no se pisen entre sí ni con lo que ya hay. |
+| Estructuras | **Dungeons and Taverns** | Estructuras livianas; medir la generación del Overworld, que ya había subido un 72% con la ronda anterior. |
+| Transporte | Ninguno | Botania, Blood Magic y Steam 'n' Rails quedan afuera. |
+
 ## Descargas
 
-El 24/9 Elias autorizó bajar de las fuentes oficiales (CurseForge y Modrinth) los mods que eligió en estas rondas, aunque no estén en ninguna instancia local: «no estamos copiando, estamos tomando inspiración, no importa si están o no en otro pack, bajalos porque te lo pedí». Por separado aprobó LambDynamicLights 4.8.11+1.21.1 desde Modrinth. Cada JAR se verifica por hash y se fija en el catálogo con su fuente.
+El 24/9 Elias autorizó bajar de las fuentes oficiales (CurseForge y Modrinth) los mods que eligió en estas rondas, aunque no estén en ninguna instancia local: «no estamos copiando, estamos tomando inspiración, no importa si están o no en otro pack, bajalos porque te lo pedí». Por separado aprobó LambDynamicLights 4.8.11+1.21.1 desde Modrinth. Para la ronda 4 autorizó lo mismo: los mods elegidos y sus dependencias obligatorias, desde Modrinth o CurseForge, con los hashes verificados, todo gratis y sin login. Cada JAR se verifica por hash y se fija en el catálogo con su fuente.
 
 ## Resultado de la integración (rondas 1 a 3)
 
@@ -151,3 +161,212 @@ Servidor limpio nuevo (`server-mods-r123-qa`: sólo librerías, los 266 JAR del 
 - Balance en juego: potencia de MI, Oritech y Ender IO frente a Mekanism; hechizos de Mahou Tsukai; loot de Repurposed Structures; la armadura cuántica de MI frente al equipo luminoso.
 - Las quests y la brújula todavía no mencionan las dimensiones nuevas; en ellas la aguja queda gris.
 - Recetas desactivadas que podrían reescribirse al formato 1.21 si se extrañan: las de Create, Mekanism e IE para los minerales de Ad Astra y las de Croptopia en Botany Pots.
+
+## Resultado de la integración (ronda 4)
+
+Rama `feature/mods-r4`, 24/9. Misma familia `catalog/families/mod-pingpong.json`: 5 mods elegidos, 1 librería nueva y 1 librería actualizada. El lock pasa de 308 cliente / 266 servidor a **314 / 272**. La única entrada previa que cambió es Create: Dragons Plus (ver abajo); el resto quedó idéntico byte a byte.
+
+Fuentes:
+- Los cinco mods y Kotlin for Forge vienen del CDN oficial de Modrinth, con SHA-1 y SHA-512 de la API de versiones verificados.
+- Dragons Plus 1.11.9 viene del CDN de CurseForge: el tamaño coincide con el registro oficial, y los mismos bytes están en Modrinth con SHA-1 y SHA-512 verificados.
+- Nada pidió pago ni login. Los JAR están en `E:/Elias/Codex/Entrelumen-ssd/catalog-downloads`.
+
+### Entró
+
+| Mod | Versión | Fuente | Acto | Escalonado o integración |
+|---|---|---|---|---|
+| Psi | 1.21.1-110 | Modrinth pOeA0exL/j9TFdTKC | II-III | El Ensamblador de CAD pide un Marco de Calibración (II): sin él no hay CAD ni hechizos. Los núcleos de psigema (hiperacelerado y radiativo) piden una Matriz de Distribución (III). |
+| Create: New Age | 1.2.0+mc1.21.1 | Modrinth FTeXqI9v/IwtuwMZy | II-IV | La tecnología de Heliodor; ver la tabla de abajo. |
+| Create: Central Kitchen | 2.6.2 | Modrinth btq68HMO/whbguqT1 | II | Automatiza la olla de cocción, la sartén, la cocina, la tabla de cortar con brazo mecánico y los banquetes. |
+| Create Slice & Dice | 4.3.4 | Modrinth GmjmRQ0A/D6mQaFRW | II | Rebanadora para las recetas de la tabla de cortar, aspersores y fertilizante líquido. |
+| Dungeons and Taverns | v4.4.4 | Modrinth tpehi7ww/BYUUUeZA | I-IV | Tabernas, torres, criptas, campamentos y mazmorras chicas en el Overworld, el Nether y el End; su botín pasa por Lootr. |
+
+Librerías:
+- **Kotlin for Forge 5.12.0** (Modrinth ordsPcFz/uhJhCT7X): obligatoria para Slice & Dice.
+  - Es un JAR que sólo trae librerías anidadas, sin `[[mods]]` propio.
+  - `tools/curate_pack.py` ahora resuelve esos JAR por lo que proveen y los deja en los dos lados; antes los ignoraba.
+- **Create: Dragons Plus 1.11.7b → 1.11.9** (CurseForge 1216624/8900055): Central Kitchen 2.6.2 (y también 2.6.1) exige 1.11.9 o superior.
+  - La alternativa era Central Kitchen 2.6.0, que acepta 1.11.7b, pero trae el lag de servidor que corrigió 2.6.1: los Spouts sobre Depots revisaban recetas en cada tick.
+  - 1.11.8 y 1.11.9 sólo agregan fichas agrupadas de Ponder y corrigen tablas de botín y una duplicación de baldes. Create: Enchantment Industry 2.5.3b acepta `[1.11.3,)` y carga sin quejas.
+  - La familia declara el reemplazo (`replaces`), y `--check` rechaza el lock si 1.11.7b sigue en él.
+  - 1.11.9 ya trae la condición `item_exists` en las tablas de botín de los tanques frágiles, así que la familia industrial dejó de pisarlas.
+
+**Create no cambia: sigue en 6.0.10.**
+- New Age pide `[6.0.9,6.1.0)`, Central Kitchen `[6.0.10,)` y Slice & Dice `[6.0.9,7.0.0)`.
+- Slice & Dice trae anidado Ponder 1.0.87; el cargador conserva el 1.0.82 de Create (visto en el log).
+- MixinExtras sale de NeoForge (0.5.3).
+
+### Create: New Age, la tecnología de Heliodor
+
+New Age 1.2.0 no tiene paneles fotovoltaicos. Sus «paneles solares» son **placas de calentamiento solar**, que calientan las calderas de Create con la luz del sol. La electricidad sale de una **bobina generadora** que gira entre imanes y se recoge con **escobillas de carbón**.
+- Los **energizadores** sobrecargan metales con esa electricidad.
+- Los **motores** la vuelven a convertir en rotación.
+- Hay un **reactor de torio** con barras, un aceptor de combustible y ventilaciones de calor.
+- Las **farolas** (street light) se cargan con electricidad y alumbran según la luz del lugar.
+- Genera torio y magnetita en el Overworld (ver las mediciones).
+
+Las piezas clave llevan los componentes de acto que ya usa el pack; son materiales de Heliodor. El Marco de Calibración contiene la lente en bruto de la ruina, más cobre e hierro.
+
+| Pieza | Acto | Componente | Por qué |
+|---|---|---|---|
+| Placa de calentamiento solar básica | II | Marco de Calibración (reemplaza el vidrio del centro) | La lente de Heliodor concentra el sol. |
+| Bobina generadora | II | Acoplador de Energía (reemplaza un lingote de cobre) | Toda generación eléctrica pasa por una bobina. |
+| Placa de calentamiento solar avanzada | III | Regulador de Energía | Más calor solar. |
+| Energizador avanzado | III | Regulador de Energía | Sobrecarga más rápida. |
+| Motor avanzado | III | Regulador de Energía (reemplaza una pepita de oro) | Segundo nivel de motor. |
+| Energizador reforzado | IV | Lente Espectral | La luz concentrada: sobrecarga máxima. |
+| Motor reforzado (ensamblaje mecánico) | IV | Lente Espectral (reemplaza un diamante) | Último nivel de motor y su extensión. |
+| Barra de reactor (ensamblaje mecánico) | IV | Sello de Contención | Sin barras no hay fisión. |
+
+- Los materiales temáticos ya estaban: New Age usa cobre en casi todo (8 lingotes en la bobina, alambre, tubos de calor, bloques de cobre). No se cambió ningún otro ingrediente, así que el balance nativo sigue igual.
+- Se dejaron nativos:
+  - Las piezas que dependen de una de las escalonadas: escobillas, cables, conectores y el energizador básico, que es una receta sin forma y se alimenta de la bobina.
+  - Las farolas y los postes, que son decoración.
+- También quedaron nativas dos recetas de New Age que conviene revisar en juego:
+  - La manzana dorada encantada por ensamblaje secuenciado: 4 vueltas de 2.000.000 de energía cada una.
+  - El frasco de experiencia energizado.
+- El torio no lleva el tag `c:ores/thorium`. Así el minero dimensional de Occultism no lo produce y el reactor depende de la mina.
+
+### Ganchos para las quests (New Age y Psi)
+
+La reescritura de quests (`docs/design/quest-lore.md`, ya en `main`) nombra este escalonado en la línea de qué hacer. Estos son ganchos para la voz narrativa y las ruinas; no se escribió ninguna quest ni línea del Atlas.
+
+- **Ruinas de Heliodor**
+  - Taller hundido (II): una fila de placas solares rotas sobre una caldera fría. La misión «Volver a encender el taller» pide armar la placa básica con el Marco de Calibración y hacer hervir la caldera.
+  - Invernadero-domo (III): las placas avanzadas en el vidrio del domo y las farolas de New Age a lo largo del camino. Relevar cuántas vuelven a encenderse de noche.
+  - Observatorio (IV): el energizador reforzado con la Lente Espectral. Diamantes sobrecargados como «luz guardada».
+  - Templo de la Luz Sagrada (IV): el reactor de torio, cuya barra pide el Sello de Contención, es el eco de la fusión. Jugaban con fuego. El corio fundido sirve como lore de lo que casi pasó.
+- **Terra**
+  - El Terraprisma «canaliza la luminosidad en distintas formas de energía», y New Age es eso mismo: luz del sol → calor → rotación → electricidad → luz. Sus misiones del acto VI pueden pedir la pieza que falta de un circuito eléctrico roto de Solsticio: una bobina, un alambre de oro sobrecargado o una farola.
+  - Psi es su magia programable. El Ensamblador de CAD en el taller, con el Marco de Calibración, y un hechizo de luz programado como primera prueba.
+- **La luz**
+  - La farola de New Age consume energía según la luz del lugar. Sirve de metáfora de Solsticio: una ciudad que guarda luz.
+  - La paleta de Solsticio podría sumar farolas y postes de New Age. Queda para el dueño de la paleta.
+- La brújula y el Atlas todavía no mencionan nada de esto, y las ruinas de los actos todavía no están colocadas.
+
+### Central Kitchen frente a Slice & Dice
+
+No se pisan en código: ningún mixin comparte objetivo y ninguno crashea. Sí se superponen en dos tareas.
+
+| Tarea | Central Kitchen | Slice & Dice | Qué se dejó |
+|---|---|---|---|
+| Recetas de la olla de cocción (92) | Automatiza la olla real: brazo mecánico, empaquetadores y quemador de blaze como fuente de calor. | «Cocción en cuenco» (basin cooking): copia cada receta de la olla como mezcla calentada. Con su configuración por defecto agregó 92 copias, una por receta. | Central Kitchen. `basin_cooking.enabled = false` en `pack/config/sliceanddice-common.toml`. |
+| Recetas de la tabla de cortar (268) | Las convierte en recetas de sierra mecánica y de desplegador con cuchillo. | Rebanadora propia, que acepta cualquier herramienta. | Slice & Dice. `convertCuttingBoardRecipesToSawingRecipes` y `…ToDeployingRecipes = false` en `pack/config/create_central_kitchen-common.toml`. |
+
+- **Ninguno sobra.** Central Kitchen es lo único que automatiza la olla, la sartén, la cocina y los banquetes. Slice & Dice aporta la rebanadora, los aspersores (riego, fertilizante, pociones y experiencia de CEI) y el fertilizante líquido: el lado de granja, que encaja con Juan.
+- Con las dos cosas apagadas, cada receta aparece en EMI una sola vez más, en vez de tres o cuatro.
+- Con lo que ya había:
+  - Ningún otro mod del pack automatiza Farmer's Delight.
+  - Slice & Dice reescribe la receta de Create de la bola de slime: acepta cualquier masa (`c:foods/dough`) en lugar de sólo la de Create. Es inofensivo.
+  - Central Kitchen suma las fuentes de calor de Farmer's Delight a los calentadores pasivos de caldera de Create.
+- La GameTest `kitchenautomationkeepsoneroutepertask` controla las dos cosas en el pack cargado.
+
+### Otras integraciones
+
+- **Almost Unified:** no aplica.
+  - Los metales y gemas nuevos son únicos: psimetal, psigema, ébano e marfil de Psi; torio y magnetita de New Age.
+  - El único cultivo nuevo tocado es la masa, que no es un material.
+- **Recetas y datos que no cargaban**, resueltos con el generador (`--family pingpong4`):
+  - Psi y PneumaticCraft publican su libro de Patchouli con el mismo ID (`patchouli:guide_book`) y uno pisaba al otro. El pack conserva el de PneumaticCraft ahí y copia el de Psi, sin cambios, a `psi:encyclopaedia_psionica`. Ahora se craftean los dos.
+  - Dos logros ocultos de Dungeons and Taverns (`minecraft:wander_add_map` y `minecraft:give_quest_trader_trade`) nombran un padre `minecraft:root` que no existe en 1.21.1 y no cargaban; quedaron desactivados. El comerciante-misión de sus tabernas pierde ese intercambio extra. El resto de la estructura funciona.
+- **Teclas:** la tecla maestra de Psi (`psimisc.keybind`) viene en C, la de guardar la barra rápida. El preset la pasa a Alt+C. Ninguno de los otros cuatro mods registra teclas. Auditoría simulada sin superposición en el mundo.
+- **Regalos de primer ingreso:** ninguno de los cinco regala ítems.
+  - Psi abre su libro con la tecla maestra sólo si no tenés un CAD en la mano; no lo regala.
+  - Dungeons and Taverns no da nada al entrar.
+  - `fullpackfirstjoingiftsstaydisabled` pasa. `fullpackplayerarrivesemptyhanded` sigue fallando en esta rama por los regalos de Ars Nouveau y Silent Gear que arregla `fix/fullpack` (ver la QA).
+- **Dungeons and Taverns pesa más de lo que parece:** 97 estructuras y 34 conjuntos.
+  - Pisa sólo dos archivos vainilla: el conjunto de las mansiones del bosque, que ahora comparten lugar con su mansión illager, y la aldea de taiga, que cambia de tag de biomas.
+  - Agrega aldeas de jungla, pantano y abedul. Sus 17 tablas de botín en el espacio `minecraft` tienen nombres propios; no pisan tablas vainilla.
+  - Corre una función cada 5 ticks que recorre rayos y esqueletos wither cargados.
+  - Sus 13 encantamientos son sólo de tesoro.
+
+### Rendimiento (servidor dedicado, antes y después)
+
+- **Servidores:** `server-mods-r4-base` con el lock de `main` (ce7cdda, 266 JAR de servidor) y `server-mods-r4` con este lock (272). Son copias propias en E:, armadas con el esqueleto del servidor de QA de la ronda anterior; no se tocaron `server-slice`, los servidores de otros workers ni los perfiles de cliente.
+- **Condiciones:** heap de 6 GB, mundo nuevo con la semilla de QA en cada corrida, sin jugadores, watchdog de 60 s. Las pruebas y el método de worldgen son los de las rondas 1 a 3, más el End: 256 chunks forzados en 16 tandas de 4×4 por prueba. Esa generación es síncrona, el peor caso.
+- **Ruido:** la PC estuvo compartida con los servidores de QA de `fix/fullpack` durante casi toda la serie, con carga del sistema entre 33% y 97%. Por eso se corrieron 4 pares (base-después, después-base) y se dan medianas. Una corrida `base3` se perdió por el apagón y se repitió.
+
+| Medida | Antes (mediana de 4) | Después (mediana de 4) | Notas |
+|---|---|---|---|
+| Arranque, pared | 254 s | 217 s | Rangos: 246-404 contra 206-266 s. Sin aumento. |
+| Carga total según ModernFix | 276 s | 232 s | |
+| CPU de la JVM hasta `Done` | 718 s | 709 s | La medida menos sensible a la carga: igual. |
+| Carga de datapacks | 1,52 min | 1,12 min | |
+| TPS en reposo | 20 | 20 | Sólo bajó a 17,8 (1 min) una corrida base con el sistema al 93-97%. |
+| MSPT en reposo, mediana | 1,4 ms | 1,25 ms | p95 de 1,5 a 4,9 ms en ambos. |
+| Heap usado en reposo | 2,0-2,8 GB | 1,9-2,8 GB | Sin diferencia apreciable. |
+| Overworld, 512 chunks (dos cuadrados), CPU | 414 s | 419 s | +1%. Pared: 189 contra 147 s de mediana, ruido de ±50%. |
+| Nether, 256 chunks, CPU | 76 s | 95 s | Mediana +25%, pero los pares van de −9% a +72%; ver D&T. |
+| End, 256 chunks, CPU | 53 s | 56 s | |
+| Líneas de error en un arranque limpio | 3 | 3 | Las mismas 3 de antes, todas upstream: los fluidos viejos de Reliquary y Ender IO en el mapa de CEI y el typo de Pam's. |
+
+- **Dungeons and Taverns:** se midió aparte, sacando su JAR y con la misma carga, una corrida detrás de la otra.
+  - Con D&T, el Overworld tardó 86 s de pared y 320 s de CPU; sin D&T, 115 s y 363 s. El Nether dio 65 contra 69 s de CPU.
+  - Su costo de generación queda por debajo del ruido de esta PC, de ±15-20% en pares seguidos.
+  - En reposo, su función cada 5 ticks no mueve el MSPT: 0,8 ms con D&T y 0,7 ms sin él.
+- **Veredicto:** la ronda 4 no agrega costo medible en el arranque, en reposo ni en la generación del Overworld. El 72-81% que sumó la ronda anterior sigue siendo el costo de fondo.
+  - New Age suma torio y magnetita, Slice & Dice nada, y D&T estructuras espaciadas.
+  - Lo único que conviene mirar es el Nether en cliente, donde D&T suma fortalezas, puertos y torres.
+- **Sin medir:** el render en cliente (los cables y farolas de New Age, las partículas de Psi) y una fábrica de Create cocinando en carga, que es donde pesan Central Kitchen y Slice & Dice.
+
+Recibos: `E:/Elias/Codex/Entrelumen-ssd/mods-r4-20260924` y [`docs/verification/mod-pingpong-r4-runtime.json`](../verification/mod-pingpong-r4-runtime.json).
+
+### QA de pack completo
+
+- **Servidor y condiciones:** servidor limpio nuevo (`server-mods-r4-qa`: sólo librerías, los 272 JAR del lock, los archivos de `pack/` y el JAR de QA), mundo nuevo y `-Dentrelumen.qa=true`.
+- **Rama probada:** la rama con `main` mergeado en 35f22ad, que incluye los arreglos de `fix/fullpack`, la reescritura de quests y la biblia actualizada.
+- **Ejecución:** las 120 GameTests registradas corrieron de a una, porque comparten datos de campaña.
+
+- **114 pasan y 6 fallan; ninguna falla viene del lote:**
+  - `kitchenautomationkeepsoneroutepertask` era un falso positivo de la prueba. Contaba también una receta nativa de Farmer's Delight, la salsa de tomate por mezcla de Create, que comparte salida con la olla. Se corrigió para contar sólo las copias de Slice & Dice, y al repetirla pasa con 0 copias.
+  - `altarsrespectforeignftbchunksclaims` falló por tiempo con la máquina cargada y pasó al repetirla, igual que en `fix/fullpack`.
+  - Las 4 de reinicio y backup (`preparelivebackupfixture`, `verifylogisticsrestartfixture`, `verifyrestoredlivebackup` y `verifyteamrestartafternewserverprocess`) necesitan otro proceso o un ZIP de backup. No aplican en una sola corrida; `fix/fullpack` las verificó en JVM separadas.
+- **Las cinco pruebas nuevas pasan:** `pingponground4batchloaded`, `heliodorsolarandpsipiecesneedactcomponents`, `pneumaticcraftandpsiguidebooksstaycraftable`, `dungeonsandtavernsstructuresregistered` y `kitchenautomationkeepsoneroutepertask`, esta última en la repetición.
+- **Las 7 fallas de `main` que quedaban de la ronda anterior ahora pasan con el lote puesto:**
+  - el jugador nuevo sin ítems (`fullpackplayerarrivesemptyhanded` y `newplayerarriveswithanemptyinventory`);
+  - la ruina de inicio;
+  - las dos de la brújula;
+  - la saciedad de bloques;
+  - el tier de la historia.
+- **También pasan:** el lote anterior (`pingpongbatchloadedwithoutrejectedbuilds`, Carry On, cultivos unificados), el comercio y la paleta de Solsticio, y `datapackreloadisatomicandrejectscycles`.
+- **Guía de primer ingreso:** `tools/audit_first_join.py` (de `fix/fullpack`) sobre los 314 JAR no encuentra ningún regalo de los cinco mods nuevos.
+  - D&T tiene logros con recompensa de función, pero se disparan al comerciar, al interactuar con un comerciante o al recibir daño, nunca al entrar.
+  - Los otros aciertos son vocabulario de librerías (`startWithValue`, `startWith`).
+- **Log:**
+  - Los mismos 3 errores upstream de siempre en cada carga de datapacks.
+  - La queja de Almost Unified por `stella_arcanum` al recargar, que es anterior a este lote.
+  - Excepciones de entidades de hechizos de Ars Nouveau (`resolveEmitter` nulo), atrapadas por el nivel durante una prueba de Ars, como en la ronda anterior.
+  - Ninguna línea de los mods nuevos.
+- **Pruebas de Python** del repo, sobre la rama mergeada: 31 comandos, todos en 0.
+  - La lista de `fix/fullpack`.
+  - `curate_pack --check` en cliente y servidor.
+  - Todas las familias de `generate_family_balance --check` y los demás generadores con `--check`.
+  - La auditoría de teclas y `unittest discover`.
+  - El acompañante compila (`jar`, `qaJar` y `test`).
+
+Recibo: [`docs/verification/mod-pingpong-r4-runtime.json`](../verification/mod-pingpong-r4-runtime.json).
+
+### Quedó afuera
+
+| Qué | Motivo |
+|---|---|
+| Botania, Blood Magic, Steam 'n' Rails y todo transporte | Elias los dejó afuera en esta ronda. |
+| Create: Central Kitchen 2.6.0 | Aceptaba Dragons Plus 1.11.7b, pero tiene el lag de servidor que corrige 2.6.1. Se eligió 2.6.2 con Dragons Plus 1.11.9. |
+| Kotlin for Forge de la instancia ATM10 | Son otros bytes que los del Modrinth oficial. Se usó el de Modrinth. |
+| Cocción en cuenco de Slice & Dice; conversiones de la tabla de cortar a sierra y desplegador de Central Kitchen | Duplican una ruta que el otro mod ya cubre; están apagadas por configuración. |
+| Dos logros ocultos de Dungeons and Taverns | No cargan en 1.21.1 (padre inexistente); están desactivados. |
+
+### Pendiente para Elias
+
+- **Cocina:** ¿te sirve la división (olla con Central Kitchen, corte con Slice & Dice)? Si preferís la cocción en cuenco o la sierra de Create, se invierte con un cambio de config.
+- **New Age en juego:**
+  - Potencia del generador frente a Create: Crafts & Additions, Mekanism e Immersive Engineering, que ya están.
+  - Las recetas de manzana dorada encantada y de experiencia energizadas.
+  - El reactor de torio frente al de MI.
+- **Psi:** ¿el Ensamblador de CAD en el acto II está bien, o preferís abrirlo en el III junto a Mahou Tsukai?
+- **Revisión en cliente:**
+  - Render de los cables y farolas de New Age y de las partículas de Psi.
+  - La tecla Alt+C de Psi.
+  - El Nether con las estructuras de D&T en una PC modesta.
+- **Quests y ruinas:** los ganchos de arriba son propuestas. Las ruinas de los actos todavía no están colocadas.
+- **Estructuras de D&T y ruinas:** `startruinisanchoredregisteredandplacedonce` pasa, pero no se buscó a propósito si alguna estructura de D&T puede generarse cerca de la ruina de inicio.
