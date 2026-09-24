@@ -78,10 +78,27 @@ def ethereal_fire():
         cmap = rank_map(cols, ramp_rgb)
         for i in range(n):
             fr = src.crop((0, 16 * i, 16, 16 * i + 16)); out = Image.new('RGBA', (16, 16), (0, 0, 0, 0))
+            cx, cy, r = 7.5, 10.0, 5.2
             for y in range(16):
                 for x in range(16):
+                    d = ((x - cx) ** 2 + (y - cy) ** 2) ** 0.5
                     p = fr.getpixel((x, y))
-                    if p[3] >= 128: out.putpixel((x, y), cmap[p[:3]] + (255,))
+                    if d <= r:
+                        # round fireball body: discrete radial ramp, flickered by the vanilla flame brightness
+                        flick = 0 if p[3] < 128 else (1 if lum(p[:3]) > 170 else 0)
+                        t = d / r
+                        idx = 6 if t < 0.28 else 5 if t < 0.5 else 4 if t < 0.68 else 3 if t < 0.84 else 2
+                        idx = min(6, idx + flick) if t > 0.6 else idx
+                        out.putpixel((x, y), ramp_rgb[idx] + (255,))
+                    elif p[3] >= 128 and y < cy:
+                        # tongues of ethereal flame rising from the orb (traced from the vanilla flame)
+                        out.putpixel((x, y), cmap[p[:3]] + (255,))
+            # rim: darkest ramp on the lower half of the orb edge so it reads round, lit from above
+            for y in range(16):
+                for x in range(16):
+                    if out.getpixel((x, y))[3] and y > cy:
+                        if any(not (0 <= x + a < 16 and 0 <= y + b < 16) or out.getpixel((x + a, y + b))[3] == 0 for a, b in ((1, 0), (-1, 0), (0, 1))):
+                            out.putpixel((x, y), ramp_rgb[1] + (255,))
             save_grid(out, f'luminosity_{key}__f{i}')
     return n
 
