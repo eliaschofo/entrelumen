@@ -123,9 +123,12 @@ public final class ModPingpongRound4FullpackGameTests {
     Collection<RecipeHolder<?>> all = helper.getLevel().getRecipeManager().getRecipes();
     for (RecipeHolder<?> holder : all)
       if (holder.value().getType() == cooking) potOutputs.add(holder.value().getResultItem(access).getItem());
+    // Slice & Dice injects its basin copies as sliceanddice:cooking/...; native Create mixing recipes that
+    // happen to share an output (Farmer's Delight's own tomato sauce) are not copies.
     List<String> basinCooking = new ArrayList<>();
     for (RecipeHolder<?> holder : all)
-      if (holder.value().getType() == mixing && potOutputs.contains(holder.value().getResultItem(access).getItem()))
+      if (holder.value().getType() == mixing && "sliceanddice".equals(holder.id().getNamespace())
+          && potOutputs.contains(holder.value().getResultItem(access).getItem()))
         basinCooking.add(holder.id().toString());
     var file = FMLPaths.CONFIGDIR.get().resolve("create_central_kitchen-common.toml");
     String text = Files.isRegularFile(file) ? Files.readString(file) : "";
