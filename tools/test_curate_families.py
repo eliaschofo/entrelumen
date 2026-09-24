@@ -196,14 +196,19 @@ class FamilyCurationTest(unittest.TestCase):
     def test_modrinth_pin_rejects_changed_bytes_or_version(self):
         self.sync_instance()
         pin = self.add_download('garden-1.jar', 'garden', '1.0')
-        for change in ({'sourceSha512': '0' * 128}, {'versionId': 'Other123'}):
+        curate.CONTENT['garden'] = ('I', 'Synthetic garden', 'Synthetic kitchen')
+        for change in ({'sourceSha512': '0' * 128}, {'sourceSha1': '0' * 40}, {'sha256': '0' * 64}):
             with self.subTest(change=change):
-                curate.CONTENT.clear()
                 curate.FAMILY_PINS.clear()
-                curate.CONTENT['garden'] = ('I', 'Synthetic garden', 'Synthetic kitchen')
                 curate.FAMILY_PINS['garden-1.jar'] = dict(pin, **change)
-                with self.assertRaisesRegex(ValueError, 'Curation rejected before writing'):
+                with self.assertRaises(ValueError):
                     curate.refresh(self.source)
+        curate.FAMILY_PINS['garden-1.jar'] = pin
+        curate.refresh(self.source)
+        lock = curate.read_json(self.catalog / 'curated.json')
+        paths = curate.read_json(self.catalog / 'local-paths.json')
+        curate.FAMILY_PINS['garden-1.jar'] = dict(pin, versionId='Other123')
+        self.assertIn('Pinned family dependency changed: garden-1.jar', curate.check(lock, paths, 'client')[1])
 
     def test_modrinth_pin_needs_official_cdn_and_hashes(self):
         pin = self.add_download('garden-1.jar', 'garden', '1.0')
