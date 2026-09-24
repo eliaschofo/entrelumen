@@ -1,0 +1,409 @@
+{
+  "chapter": "guide_building_tools",
+  "group": "qol",
+  "act": "any",
+  "icon": "buildinggadgets2:gadget_building",
+  "title": {
+    "en_us": "Building Tools",
+    "es_es": "Herramientas de construcción"
+  },
+  "subtitle": {
+    "en_us": "Framed blocks, tiny tiles, construction sticks, gadgets and measuring tape: detail and scale.",
+    "es_es": "Bloques enmarcados, piezas diminutas, varas de construcción, gadgets y cinta métrica: detalle y escala."
+  },
+  "quests": [
+    {
+      "key": "building_tools_welcome",
+      "deps": [],
+      "type": "checkmark",
+      "layout": {
+        "x": 0,
+        "y": 0,
+        "size": 2.0,
+        "shape": "hexagon"
+      },
+      "en_us": [
+        "Tools for Builders",
+        "Two kinds of tools live here. Some are for &edetail&r: shapes smaller than a block and blocks that wear any texture. Others are for &escale&r: placing, swapping and copying hundreds of blocks at once.\n\nNone of them is gated by the story, except the heavy machines of later acts noted at the end."
+      ],
+      "es_es": [
+        "Herramientas para constructores",
+        "Acá viven dos tipos de herramientas. Unas son para el &edetalle&r: formas más chicas que un bloque y bloques que se visten con cualquier textura. Otras son para la &eescala&r: poner, cambiar y copiar cientos de bloques a la vez.\n\nNinguna está escalonada por la historia, salvo las máquinas pesadas de actos posteriores que se nombran al final."
+      ],
+      "sources": [
+        "repo:docs/design/builder-utilities-family.md",
+        "repo:docs/research/reference-packs.md"
+      ]
+    },
+    {
+      "key": "building_tools_stick",
+      "deps": [
+        "building_tools_welcome"
+      ],
+      "type": "item",
+      "item": "constructionstick:iron_stick",
+      "layout": {
+        "x": 3,
+        "y": -2.5,
+        "size": 1.25,
+        "shape": "circle"
+      },
+      "en_us": [
+        "Construction Sticks",
+        "A &eConstruction Stick&r extends the face you click: right-click a wall and it places a whole new layer of the same block from your inventory. Tiers go wooden, copper, iron, diamond and netherite, each placing more blocks at once, and there is an undo.\n\nTemplates add upgrades such as placing in mid-air, replacing blocks, destroying or running on energy; EMI shows how to apply them."
+      ],
+      "es_es": [
+        "Varas de construcción",
+        "Una &eVara de construcción&r extiende la cara donde hacés clic: clic derecho en una pared y pone una capa nueva entera del mismo bloque sacado de tu inventario. Los niveles van de madera, cobre, hierro y diamante a netherita, y cada uno pone más bloques a la vez; también se puede deshacer.\n\nLas plantillas agregan mejoras como poner en el aire, reemplazar bloques, destruir o funcionar con energía; EMI muestra cómo aplicarlas."
+      ],
+      "sources": [
+        "jar:ConstructionSticks-1.21.1-1.4.2.jar:assets/constructionstick/lang/en_us.json",
+        "repo:docs/design/qol-parity.md"
+      ]
+    },
+    {
+      "key": "building_tools_tape",
+      "deps": [
+        "building_tools_welcome"
+      ],
+      "type": "item",
+      "item": "measurements:tape_measure",
+      "layout": {
+        "x": 3,
+        "y": 2.5,
+        "size": 1.0,
+        "shape": "circle"
+      },
+      "en_us": [
+        "Measure Before You Build",
+        "The &eTape Measure&r (gray wool, yellow wool and an iron ingot) measures distances: use it on two positions and it shows the size between them. Measure a plot, a farm or a machine room before placing anything.\n\nLittleTiles also has its own Little Measure Tape for tiny work."
+      ],
+      "es_es": [
+        "Medí antes de construir",
+        "La &eCinta métrica&r (lana gris, lana amarilla y un lingote de hierro) mide distancias: usala en dos posiciones y muestra el tamaño entre ellas. Medí un lote, una granja o una sala de máquinas antes de poner nada.\n\nLittleTiles tiene además su propia Little Measure Tape para trabajos diminutos."
+      ],
+      "sources": [
+        "repo:docs/design/builder-utilities-family.md",
+        "jar:Measurements-neoforge-1.21.1-3.0.3.jar:META-INF/neoforge.mods.toml"
+      ]
+    },
+    {
+      "key": "building_tools_framed",
+      "deps": [
+        "building_tools_stick"
+      ],
+      "type": "item",
+      "item": "framedblocks:framed_cube",
+      "layout": {
+        "x": 6,
+        "y": -2.5,
+        "size": 1.5,
+        "shape": "square"
+      },
+      "en_us": [
+        "FramedBlocks: Any Texture, Any Shape",
+        "&eFramedBlocks&r makes shapes (slabs, stairs, panels, slopes, corners, doors, fences and many more) out of an empty wooden frame. Right-click a placed framed block with any block to wear its texture: a sloped roof of copper, a stone door, a glass-looking slab.\n\nEach shape is crafted normally or picked from the &eFraming Saw&r, which lists them all."
+      ],
+      "es_es": [
+        "FramedBlocks: cualquier textura, cualquier forma",
+        "&eFramedBlocks&r hace formas (losas, escaleras, paneles, rampas, esquinas, puertas, cercos y muchas más) a partir de un marco de madera vacío. Hacé clic derecho en un bloque enmarcado colocado con cualquier bloque para que tome su textura: un techo inclinado de cobre, una puerta de piedra, una losa con aspecto de vidrio.\n\nCada forma se fabrica normalmente o se elige en la &eFraming Saw&r, que las lista a todas."
+      ],
+      "sources": [
+        "jar:FramedBlocks-10.6.1.jar:assets/framedblocks/lang/en_us.json",
+        "repo:docs/design/settlement-architecture-family.md"
+      ]
+    },
+    {
+      "key": "building_tools_framed_tools",
+      "deps": [
+        "building_tools_framed"
+      ],
+      "type": "item",
+      "item": "framedblocks:framed_wrench",
+      "optional": true,
+      "layout": {
+        "x": 9,
+        "y": -4,
+        "size": 1.0,
+        "shape": "circle"
+      },
+      "en_us": [
+        "Framed Tools and Tricks",
+        "Framed extras:\n\n- the &eFramed Wrench&r rotates and configures framed blocks; the &eFramed Hammer&r toggles some styles and recovers the camo;\n- &eglowstone dust&r on a framed block makes it glow; a &eFramed Reinforcement&r makes it blast resistant;\n- the &eFramed Blueprint&r copies a framed block with its camo and places copies using your materials."
+      ],
+      "es_es": [
+        "Herramientas y trucos enmarcados",
+        "Extras de FramedBlocks:\n\n- la &eFramed Wrench&r rota y configura los bloques enmarcados; el &eFramed Hammer&r alterna algunos estilos y recupera el camuflaje;\n- &epolvo de piedra luminosa&r en un bloque enmarcado lo hace brillar; un &eFramed Reinforcement&r lo vuelve resistente a explosiones;\n- el &eFramed Blueprint&r copia un bloque enmarcado con su camuflaje y pone copias usando tus materiales."
+      ],
+      "sources": [
+        "jar:FramedBlocks-10.6.1.jar:assets/framedblocks/lang/en_us.json",
+        "jar:FramedBlocks-10.6.1.jar:xfacthd/framedblocks/common/data/FramedToolType.class"
+      ]
+    },
+    {
+      "key": "building_tools_littletiles",
+      "deps": [
+        "building_tools_framed"
+      ],
+      "type": "item",
+      "item": "littletiles:chisel",
+      "layout": {
+        "x": 9,
+        "y": -1,
+        "size": 1.25,
+        "shape": "circle"
+      },
+      "en_us": [
+        "LittleTiles: Building Inside a Block",
+        "&eLittleTiles&r lets you build with pieces much smaller than a block. The main tools:\n\n- &eLittle Chisel&r: pick a block and place shapes made of it;\n- &eLittle Hammer&r: carve shapes out of blocks;\n- &eLittle Glove&r: select, move and place pieces;\n- &eLittle Paint Brush&r: color pieces with color bottles;\n- &eLittle Bag&r: holds the material and colors the tools use;\n- &eLittle Blueprint&r: copy and paste small builds.\n\nKeys: &eI&r configures the tool (grid size and shape), &eCtrl+B&r building mode, &eU&r mark, &eN&r mirror, &eCtrl+Z&r and &eCtrl+Y&r undo and redo."
+      ],
+      "es_es": [
+        "LittleTiles: construir adentro de un bloque",
+        "&eLittleTiles&r permite construir con piezas mucho más chicas que un bloque. Las herramientas principales:\n\n- &eLittle Chisel&r: elegí un bloque y poné formas hechas de él;\n- &eLittle Hammer&r: tallá formas en los bloques;\n- &eLittle Glove&r: seleccioná, mové y poné piezas;\n- &eLittle Paint Brush&r: pintá piezas con botellas de color;\n- &eLittle Bag&r: guarda el material y los colores que usan las herramientas;\n- &eLittle Blueprint&r: copiá y pegá construcciones chicas.\n\nTeclas: &eI&r configura la herramienta (tamaño de grilla y forma), &eCtrl+B&r modo de construcción, &eU&r marcar, &eN&r espejo, &eCtrl+Z&r y &eCtrl+Y&r deshacer y rehacer."
+      ],
+      "sources": [
+        "jar:LittleTiles_BETA_v1.6.0-pre228_mc1.21.1.jar:assets/littletiles/lang/en_us.json",
+        "repo:pack/config/defaultoptions/keybindings.txt",
+        "repo:docs/design/mod-pingpong.md"
+      ]
+    },
+    {
+      "key": "building_tools_littletiles_perf",
+      "deps": [
+        "building_tools_littletiles"
+      ],
+      "type": "checkmark",
+      "optional": true,
+      "icon": "littletiles:hammer",
+      "layout": {
+        "x": 12,
+        "y": -1,
+        "size": 1.0,
+        "shape": "diamond"
+      },
+      "en_us": [
+        "Quirk: Tiny Tiles Cost Frames",
+        "Each LittleTiles block can hold a lot of geometry, and its cost is on your graphics card, not the server. A few detailed rooms are fine; a whole city of micro-detail can drop your frame rate.\n\nUse LittleTiles for statues, furniture and signs, and FramedBlocks or Copycats for large surfaces."
+      ],
+      "es_es": [
+        "Particularidad: las piezas diminutas cuestan cuadros",
+        "Cada bloque de LittleTiles puede tener mucha geometría, y su costo lo paga tu placa de video, no el servidor. Unos cuantos cuartos detallados andan bien; una ciudad entera de microdetalle puede bajarte los cuadros por segundo.\n\nUsá LittleTiles para estatuas, muebles y carteles, y FramedBlocks o Copycats para superficies grandes."
+      ],
+      "sources": [
+        "repo:docs/design/mod-pingpong.md"
+      ]
+    },
+    {
+      "key": "building_tools_littletiles_doors",
+      "deps": [
+        "building_tools_littletiles"
+      ],
+      "type": "item",
+      "item": "littletiles:blueprint",
+      "optional": true,
+      "layout": {
+        "x": 12,
+        "y": -6,
+        "size": 1.0,
+        "shape": "circle"
+      },
+      "en_us": [
+        "LittleTiles Doors and Structures",
+        "With the Little Blueprint you can save a selection as a structure. Some structures, such as doors, move: they slide or rotate by the distance and angle you choose, and can be set to open with a right-click.\n\nSecret bookshelf doors and hatches made of tiny pieces are a classic LittleTiles project."
+      ],
+      "es_es": [
+        "Puertas y estructuras de LittleTiles",
+        "Con el Little Blueprint podés guardar una selección como estructura. Algunas estructuras, como las puertas, se mueven: se deslizan o giran según la distancia y el ángulo que elijas, y se pueden configurar para abrirse con clic derecho.\n\nLas puertas secretas de biblioteca y las escotillas hechas de piezas chiquitas son un proyecto clásico de LittleTiles."
+      ],
+      "sources": [
+        "jar:LittleTiles_BETA_v1.6.0-pre228_mc1.21.1.jar:assets/littletiles/lang/en_us.json"
+      ]
+    },
+    {
+      "key": "building_tools_gadgets",
+      "deps": [
+        "building_tools_tape"
+      ],
+      "type": "item",
+      "item": "buildinggadgets2:gadget_building",
+      "layout": {
+        "x": 6,
+        "y": 2.5,
+        "size": 1.5,
+        "shape": "square"
+      },
+      "en_us": [
+        "Building Gadgets 2",
+        "Five powered gadgets for big jobs:\n\n- &eBuilding Gadget&r: places blocks in shapes (walls, floors, surfaces);\n- &eExchanging Gadget&r: swaps blocks in an area for another block;\n- &eCopy-Paste&r and &eCut-Paste&r gadgets: copy or move whole structures;\n- &eDestruction Gadget&r: clears a box.\n\nThey run on energy: charge them in any FE charger, such as the charge slot of a Mekanism energy cube. Each has undo in its radial menu."
+      ],
+      "es_es": [
+        "Building Gadgets 2",
+        "Cinco gadgets con energía para trabajos grandes:\n\n- &eBuilding Gadget&r: pone bloques en formas (paredes, pisos, superficies);\n- &eExchanging Gadget&r: cambia los bloques de un área por otro;\n- &eCopy-Paste&r y &eCut-Paste&r: copian o mudan estructuras enteras;\n- &eDestruction Gadget&r: vacía una caja.\n\nFuncionan con energía: cargalos en cualquier cargador de FE, como el casillero de carga de un cubo de energía de Mekanism. Cada uno tiene deshacer en su menú radial."
+      ],
+      "sources": [
+        "jar:buildinggadgets2-1.3.9.jar:assets/buildinggadgets2/lang/en_us.json",
+        "repo:docs/design/qol-parity.md"
+      ]
+    },
+    {
+      "key": "building_tools_gadget_keys",
+      "deps": [
+        "building_tools_gadgets"
+      ],
+      "type": "item",
+      "item": "buildinggadgets2:template_manager",
+      "optional": true,
+      "layout": {
+        "x": 9,
+        "y": 2.5,
+        "size": 1.0,
+        "shape": "circle"
+      },
+      "en_us": [
+        "Gadget Keys and Templates",
+        "Hold a gadget and open its settings with the Building Gadgets &eSettings Menu&r key (look it up in Controls). The range key moved to &eEnd&r in the pack's preset. The &eAnchor&r key locks the preview in place so you can walk around it.\n\nThe &eTemplate Manager&r stores Copy-Paste templates so you can reuse a design later."
+      ],
+      "es_es": [
+        "Teclas y plantillas de los gadgets",
+        "Con un gadget en la mano, abrí su configuración con la tecla &eSettings Menu&r de Building Gadgets (buscala en Controles). La tecla de alcance quedó en &eFin&r en el preset del pack. La tecla &eAnchor&r fija la vista previa en su lugar para que puedas caminar alrededor.\n\nEl &eTemplate Manager&r guarda plantillas de Copy-Paste para reusar un diseño después."
+      ],
+      "sources": [
+        "jar:buildinggadgets2-1.3.9.jar:assets/buildinggadgets2/lang/en_us.json",
+        "repo:pack/config/defaultoptions/keybindings.txt"
+      ]
+    },
+    {
+      "key": "building_tools_gadget_limits",
+      "deps": [
+        "building_tools_gadget_keys"
+      ],
+      "type": "checkmark",
+      "optional": true,
+      "icon": "minecraft:shield",
+      "layout": {
+        "x": 12,
+        "y": 2.5,
+        "size": 1.0,
+        "shape": "diamond"
+      },
+      "en_us": [
+        "Quirk: Protected Areas",
+        "Other teams' claims, Heliodor ruins and Solsticio outside your own plot are protected: the game refuses breaking and placing there, and what a ruin keeps stays locked until your act. Do not plan big gadget jobs inside them.\n\nOn your own land, gadgets, sticks and altars act as you, so they follow your team's claim settings."
+      ],
+      "es_es": [
+        "Particularidad: zonas protegidas",
+        "Los reclamos de otros equipos, las ruinas de Heliodor y Solsticio fuera de tu lote están protegidos: el juego rechaza romper y poner bloques ahí, y lo que guarda una ruina queda cerrado hasta tu acto. No planees trabajos grandes con gadgets adentro.\n\nEn tu propio terreno, los gadgets, las varas y los altares actúan como vos, así que siguen la configuración de reclamos de tu equipo."
+      ],
+      "sources": [
+        "repo:docs/design/solsticio.md",
+        "repo:companion/src/main/java/dev/entrelumen/StructureProtection.java",
+        "jar:ftb-chunks-neoforge-2101.1.21.jar:assets/ftbchunks/lang/en_us.json"
+      ]
+    },
+    {
+      "key": "building_tools_terraform",
+      "deps": [
+        "building_tools_framed_tools"
+      ],
+      "type": "item",
+      "item": "entrelumen:terraform_altar",
+      "optional": true,
+      "layout": {
+        "x": 12,
+        "y": -4,
+        "size": 1.0,
+        "shape": "pentagon"
+      },
+      "en_us": [
+        "Flatten Land the Pack's Way",
+        "For big flat areas, the &eAltar of Levelling&r, an act III reward, levels a square around itself with a smooth symmetric slope into the terrain, keeping every block it cuts in its buffer and filling holes only with what it holds.\n\nThe Altars chapter explains sizes, fuel and gestures."
+      ],
+      "es_es": [
+        "Aplaná el terreno a la manera del pack",
+        "Para áreas grandes y planas, el &eAltar de Nivelación&r, recompensa del acto III, nivela un cuadrado a su alrededor con una pendiente suave y simétrica hacia el terreno, guarda en su depósito cada bloque que corta y rellena los pozos sólo con lo que tiene.\n\nEl capítulo de los Altares explica tamaños, combustible y gestos."
+      ],
+      "sources": [
+        "repo:docs/design/ark-altars.md"
+      ]
+    },
+    {
+      "key": "building_tools_heavy",
+      "deps": [
+        "building_tools_littletiles_perf",
+        "building_tools_gadget_limits"
+      ],
+      "type": "checkmark",
+      "icon": "mininggadgets:mininggadget",
+      "layout": {
+        "x": 15,
+        "y": 0,
+        "size": 1.0,
+        "shape": "pentagon"
+      },
+      "en_us": [
+        "Pack Change: Heavy Builders Come Later",
+        "Two powerful machines carry act components: the &eRFTools Builder&r needs a Handling Core and the &eMining Gadgets&r need a Power Regulator, both act III. They move or mine huge volumes, so the pack places them after the first logistics.\n\nEverything else in this chapter is free from day one."
+      ],
+      "es_es": [
+        "Cambio del pack: los constructores pesados llegan después",
+        "Dos máquinas poderosas llevan componentes de acto: el &eRFTools Builder&r pide un Núcleo de Manipulación y los &eMining Gadgets&r un Regulador de Energía, ambos del acto III. Mueven o minan volúmenes enormes, así que el pack los ubica después de la primera logística.\n\nTodo lo demás de este capítulo está libre desde el primer día."
+      ],
+      "sources": [
+        "repo:pack/kubejs/server_scripts/entrelumen_rftools_balance.js",
+        "repo:pack/kubejs/server_scripts/entrelumen_industrial_balance.js"
+      ]
+    },
+    {
+      "key": "building_tools_tip_workflow",
+      "deps": [
+        "building_tools_terraform"
+      ],
+      "type": "checkmark",
+      "optional": true,
+      "icon": "minecraft:scaffolding",
+      "layout": {
+        "x": 15,
+        "y": -3.5,
+        "size": 1.0,
+        "shape": "diamond"
+      },
+      "en_us": [
+        "Tip: a Builder's Workflow",
+        "A workflow that saves hours: measure with the tape, flatten with the Altar of Levelling or a Destruction Gadget, raise walls with a Construction Stick, swap materials with the Exchanging Gadget, then add detail with FramedBlocks, Macaw's and LittleTiles.\n\nCopy-Paste your best house to build a street."
+      ],
+      "es_es": [
+        "Truco: un método de constructor",
+        "Un método que ahorra horas: medí con la cinta, aplaná con el Altar de Nivelación o un Destruction Gadget, levantá paredes con una Vara de construcción, cambiá materiales con el Exchanging Gadget y después sumá detalle con FramedBlocks, Macaw's y LittleTiles.\n\nCopiá y pegá tu mejor casa para armar una calle."
+      ],
+      "sources": [
+        "repo:docs/design/builder-utilities-family.md"
+      ]
+    },
+    {
+      "key": "building_tools_close",
+      "deps": [
+        "building_tools_heavy",
+        "building_tools_tip_workflow"
+      ],
+      "type": "checkmark",
+      "icon": "minecraft:brick",
+      "layout": {
+        "x": 18,
+        "y": 0,
+        "size": 2.0,
+        "shape": "hexagon"
+      },
+      "en_us": [
+        "Detail and Scale",
+        "You can now shape blocks smaller than a block, wear any texture on any shape, and place or copy thousands of blocks without breaking a sweat.\n\nThat closes the building chapters. The farming chapters come next: every good house needs a garden."
+      ],
+      "es_es": [
+        "Detalle y escala",
+        "Ya podés dar forma a piezas más chicas que un bloque, vestir cualquier forma con cualquier textura y poner o copiar miles de bloques sin transpirar.\n\nCon esto se cierran los capítulos de construcción. Siguen los de granjas: toda buena casa necesita una huerta."
+      ],
+      "sources": [
+        "repo:content/guides/README.md"
+      ]
+    }
+  ]
+}

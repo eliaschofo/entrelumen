@@ -1,0 +1,482 @@
+{
+  "chapter": "guide_building_furniture",
+  "group": "qol",
+  "act": "any",
+  "icon": "handcrafted:oak_chair",
+  "title": {
+    "en_us": "Furniture and Functional Decor",
+    "es_es": "Muebles y decoración funcional"
+  },
+  "subtitle": {
+    "en_us": "Handcrafted, Another Furniture, Refurbished Furniture, kitchens, Supplementaries and Amendments: rooms that work.",
+    "es_es": "Handcrafted, Another Furniture, Refurbished Furniture, cocinas, Supplementaries y Amendments: cuartos que funcionan."
+  },
+  "quests": [
+    {
+      "key": "building_furniture_welcome",
+      "deps": [],
+      "type": "checkmark",
+      "layout": {
+        "x": 0,
+        "y": 0,
+        "size": 2.0,
+        "shape": "hexagon"
+      },
+      "en_us": [
+        "A House, Not a Box",
+        "Walls make a shelter; furniture makes a home. The pack has three furniture sets with different jobs, two kitchen systems, and Supplementaries and Amendments, which add hundreds of small blocks that do something.\n\nThis chapter walks through them room by room."
+      ],
+      "es_es": [
+        "Una casa, no una caja",
+        "Las paredes hacen un refugio; los muebles hacen un hogar. El pack tiene tres juegos de muebles con trabajos distintos, dos sistemas de cocina, y Supplementaries y Amendments, que agregan cientos de bloques chicos que hacen algo.\n\nEste capítulo los recorre cuarto por cuarto."
+      ],
+      "sources": [
+        "repo:docs/design/qol-functional-decor-family.md",
+        "repo:docs/design/cooking-provisions-family.md"
+      ]
+    },
+    {
+      "key": "building_furniture_handcrafted",
+      "deps": [
+        "building_furniture_welcome"
+      ],
+      "type": "item",
+      "item": "handcrafted:oak_chair",
+      "layout": {
+        "x": 3,
+        "y": -2.5,
+        "size": 1.25,
+        "shape": "circle"
+      },
+      "en_us": [
+        "Handcrafted: the Living Room",
+        "&eHandcrafted&r is the classic furniture set: chairs, benches, couches, tables, desks, side tables, nightstands, cupboards, shelves, counters and fancy beds in every wood. You can sit on chairs, benches and couches.\n\nPersonalize them with &ecushions&r and &esheets&r in sixteen colors, and finish with pillar and corner trims, crockery, cups, jars and mounted trophies."
+      ],
+      "es_es": [
+        "Handcrafted: el living",
+        "&eHandcrafted&r es el juego de muebles clásico: sillas, bancos, sillones, mesas, escritorios, mesitas, mesas de luz, alacenas, estantes, mostradores y camas elegantes en todas las maderas. Te podés sentar en sillas, bancos y sillones.\n\nPersonalizalos con &ealmohadones&r y &esábanas&r de dieciséis colores, y terminá con molduras de pilar y esquina, vajilla, tazas, frascos y trofeos de pared."
+      ],
+      "sources": [
+        "jar:handcrafted-neoforge-1.21.1-4.0.3.jar:assets/handcrafted/lang/en_us.json"
+      ]
+    },
+    {
+      "key": "building_furniture_another",
+      "deps": [
+        "building_furniture_welcome"
+      ],
+      "type": "item",
+      "item": "another_furniture:furniture_hammer",
+      "layout": {
+        "x": 3,
+        "y": 2.5,
+        "size": 1.25,
+        "shape": "circle"
+      },
+      "en_us": [
+        "Another Furniture: Cozy Details",
+        "&eAnother Furniture&r fills gaps: chairs, stools, tall stools, sofas, benches and tables to sit at; &eshelves&r that display items; &edrawers&r that store them; &ecurtains&r and &eshutters&r that open; flower boxes, lattices, awnings, lamps joined by a &elamp connector&r, and a &eservice bell&r for the counter.\n\nIts &eHammer&r changes the style of some placed pieces."
+      ],
+      "es_es": [
+        "Another Furniture: detalles cálidos",
+        "&eAnother Furniture&r llena huecos: sillas, banquetas, banquetas altas, sofás, bancos y mesas donde sentarse; &eestantes&r que exhiben ítems; &ecajoneras&r que los guardan; &ecortinas&r y &epostigos&r que se abren; jardineras, celosías, toldos, lámparas unidas con un &econector de lámpara&r y una &ecampanilla de servicio&r para el mostrador.\n\nSu &eMartillo&r cambia el estilo de algunas piezas colocadas."
+      ],
+      "sources": [
+        "jar:another_furniture-neoforge-4.0.3.jar:assets/another_furniture/lang/en_us.json",
+        "repo:docs/design/mod-pingpong.md"
+      ]
+    },
+    {
+      "key": "building_furniture_refurbished",
+      "deps": [
+        "building_furniture_handcrafted"
+      ],
+      "type": "item",
+      "item": "refurbished_furniture:workbench",
+      "layout": {
+        "x": 6,
+        "y": -4,
+        "size": 1.0,
+        "shape": "circle"
+      },
+      "en_us": [
+        "Refurbished Furniture: Appliances",
+        "&eRefurbished Furniture&r is the furniture that works: fridges and freezers that store and freeze, stoves and ovens that cook, microwaves, toasters, grills, kitchen sinks and drawers, cutting boards and frying pans. Most pieces are built at its own &eWorkbench&r, which needs electricity.\n\nIts kitchen recipes appear in EMI under their own tabs."
+      ],
+      "es_es": [
+        "Refurbished Furniture: electrodomésticos",
+        "&eRefurbished Furniture&r son los muebles que funcionan: heladeras y freezers que guardan y congelan, cocinas y hornos que cocinan, microondas, tostadoras, parrillas, bachas y cajoneras de cocina, tablas de cortar y sartenes. La mayoría de las piezas se arma en su propio &eBanco de trabajo&r, que necesita electricidad.\n\nSus recetas de cocina aparecen en EMI con pestañas propias."
+      ],
+      "sources": [
+        "jar:refurbished_furniture-neoforge-1.21.1-1.0.22.jar:assets/refurbished_furniture/lang/en_us.json",
+        "repo:docs/design/qol-functional-decor-family.md"
+      ]
+    },
+    {
+      "key": "building_furniture_electricity",
+      "deps": [
+        "building_furniture_refurbished"
+      ],
+      "type": "item",
+      "item": "refurbished_furniture:light_electricity_generator",
+      "layout": {
+        "x": 9,
+        "y": -4,
+        "size": 1.0,
+        "shape": "circle"
+      },
+      "en_us": [
+        "Electricity for Your Home",
+        "Refurbished Furniture has its own small power grid. Place an &eElectricity Generator&r, fuel it, and link it to the workbench, lights, TV or computer with the &eWrench&r: select one node, then the other, to draw a link. A screen that says it is missing power needs a link to a running generator."
+      ],
+      "es_es": [
+        "Electricidad para tu casa",
+        "Refurbished Furniture tiene su propia red eléctrica chica. Poné un &eGenerador eléctrico&r, cargale combustible y unilo al banco de trabajo, las luces, la tele o la computadora con la &eLlave&r: elegís un nodo y después el otro para trazar un enlace. Si una pantalla dice que falta energía, necesita un enlace a un generador funcionando."
+      ],
+      "sources": [
+        "jar:refurbished_furniture-neoforge-1.21.1-1.0.22.jar:assets/refurbished_furniture/lang/en_us.json",
+        "jar:refurbished_furniture-neoforge-1.21.1-1.0.22.jar:com/mrcrayfish/furniture/refurbished/blockentity/WorkbenchBlockEntity.class"
+      ]
+    },
+    {
+      "key": "building_furniture_post",
+      "deps": [
+        "building_furniture_electricity"
+      ],
+      "type": "item",
+      "item": "refurbished_furniture:post_box",
+      "optional": true,
+      "layout": {
+        "x": 12,
+        "y": -4,
+        "size": 1.0,
+        "shape": "circle"
+      },
+      "en_us": [
+        "Mail Between Players",
+        "The &ePost Box&r sends packages: choose a mailbox from the list (search a player with @), put items in the package slots, add a message and send. Anyone can place a &eMailbox&r at home to receive them.\n\nIn co-op it is the friendliest way to share items without meeting up. The Television and the Computer are just for fun: the computer even has a paddle-ball game."
+      ],
+      "es_es": [
+        "Correo entre jugadores",
+        "El &eBuzón de envíos&r manda paquetes: elegí un buzón de la lista (buscá a un jugador con @), poné ítems en los casilleros del paquete, agregá un mensaje y enviá. Cualquiera puede poner un &eBuzón&r en su casa para recibirlos.\n\nEn cooperativo es la forma más amable de compartir ítems sin encontrarse. La Televisión y la Computadora son para divertirse: la computadora hasta tiene un juego de paleta y pelota."
+      ],
+      "sources": [
+        "jar:refurbished_furniture-neoforge-1.21.1-1.0.22.jar:assets/refurbished_furniture/lang/en_us.json"
+      ]
+    },
+    {
+      "key": "building_furniture_cfb",
+      "deps": [
+        "building_furniture_handcrafted"
+      ],
+      "type": "item",
+      "item": "cookingforblockheads:cooking_table",
+      "layout": {
+        "x": 6,
+        "y": -1,
+        "size": 1.25,
+        "shape": "circle"
+      },
+      "en_us": [
+        "A Kitchen That Cooks for You",
+        "&eCooking for Blockheads&r turns connected kitchen blocks into one kitchen. The &eCooking Table&r shows every food you can make with what the kitchen holds and crafts it: click a food to see it, click again to make it.\n\n- &eFridge&r, counters, spice rack and fruit basket store ingredients;\n- the &eSink&r provides water, the &eOven&r bakes, the &eTool Rack&r lends tools;\n- milk jars and the ice unit provide milk, snow and ice;\n- connectors and kitchen floor join blocks around corners."
+      ],
+      "es_es": [
+        "Una cocina que cocina por vos",
+        "&eCooking for Blockheads&r convierte los bloques de cocina conectados en una sola cocina. La &eMesa de cocina&r muestra toda la comida que podés hacer con lo que hay en la cocina y la fabrica: un clic en una comida para verla y otro para hacerla.\n\n- La &eheladera&r, las mesadas, el especiero y el frutero guardan ingredientes;\n- la &ebacha&r da agua, el &ehorno&r hornea y el &eportaherramientas&r presta herramientas;\n- los frascos de leche y la unidad de hielo dan leche, nieve y hielo;\n- los conectores y el piso de cocina unen bloques en esquinas y a distancia."
+      ],
+      "sources": [
+        "jar:cookingforblockheads-neoforge-1.21.1-21.1.24.jar:assets/cookingforblockheads/lang/en_us.json"
+      ]
+    },
+    {
+      "key": "building_furniture_storage_delight",
+      "deps": [
+        "building_furniture_cfb"
+      ],
+      "type": "item",
+      "item": "storagedelight:acacia_drawer",
+      "optional": true,
+      "layout": {
+        "x": 9,
+        "y": -1,
+        "size": 1.0,
+        "shape": "circle"
+      },
+      "en_us": [
+        "Pantry Storage",
+        "&eStorage Delight&r adds kitchen furniture that stores things: cabinets with countertops of several stones, cabinets with glass doors, drawers and bookshelves with doors, in every wood.\n\nPair it with the Cooking for Blockheads kitchen for a pantry that looks the part."
+      ],
+      "es_es": [
+        "Almacenamiento de despensa",
+        "&eStorage Delight&r agrega muebles de cocina que guardan cosas: alacenas con mesada de varias piedras, alacenas con puertas de vidrio, cajoneras y bibliotecas con puerta, en todas las maderas.\n\nCombinalo con la cocina de Cooking for Blockheads para una despensa que se vea como tal."
+      ],
+      "sources": [
+        "repo:docs/design/cooking-provisions-family.md"
+      ]
+    },
+    {
+      "key": "building_furniture_sup_storage",
+      "deps": [
+        "building_furniture_another"
+      ],
+      "type": "item",
+      "item": "supplementaries:jar",
+      "layout": {
+        "x": 6,
+        "y": 2.5,
+        "size": 1.0,
+        "shape": "circle"
+      },
+      "en_us": [
+        "Supplementaries: Keep and Show",
+        "Supplementaries' storage and display blocks:\n\n- &eJar&r: holds bowls, bottles, buckets, cookies and small mobs, and shows them;\n- &eSack&r: a portable bag, quite heavy to carry;\n- &eSafe&r: locks to its owner or to a key;\n- &eItem Shelf&r, &ePedestal&r and &eHat Stand&r: show off items and armor;\n- &eNotice Board&r: pin a book or map for everyone to read."
+      ],
+      "es_es": [
+        "Supplementaries: guardar y mostrar",
+        "Los bloques de guardado y exhibición de Supplementaries:\n\n- &eFrasco&r: guarda cuencos, botellas, baldes, galletas y bichos chicos, y los muestra;\n- &eBolsa&r: un saco portátil, bastante pesado de cargar;\n- &eCaja fuerte&r: se traba para su dueño o para una llave;\n- &eEstante&r, &ePedestal&r y &eSoporte de sombreros&r: exhiben ítems y armaduras;\n- &eTablón de anuncios&r: colgá un libro o un mapa para que todos lo lean."
+      ],
+      "sources": [
+        "jar:supplementaries-1.21.1-3.9.5-neoforge.jar:assets/supplementaries/lang/en_us.json"
+      ]
+    },
+    {
+      "key": "building_furniture_sup_decor",
+      "deps": [
+        "building_furniture_sup_storage"
+      ],
+      "type": "item",
+      "item": "supplementaries:flag_white",
+      "layout": {
+        "x": 9,
+        "y": 2.5,
+        "size": 1.0,
+        "shape": "circle"
+      },
+      "en_us": [
+        "Supplementaries: Decoration",
+        "More blocks for character:\n\n- &eFlags&r with banner patterns, &eawnings&r and &ebuntings&r hung on ropes;\n- &etimber frames&r that accept any full block, for half-timbered walls;\n- &eflower boxes&r that hold big plants, &eplanters&r and &edoormats&r;\n- &esconces&r and stackable &ecandle holders&r;\n- &eblackboards&r you can draw on, &eglobes&r and &eway signs&r that point to places."
+      ],
+      "es_es": [
+        "Supplementaries: decoración",
+        "Más bloques con carácter:\n\n- &ebanderas&r con diseños de estandarte, &etoldos&r y &eguirnaldas&r colgadas de sogas;\n- &eentramados&r de madera que aceptan cualquier bloque entero, para paredes a la Tudor;\n- &ejardineras&r que sostienen plantas grandes, &emaceteros&r y &efelpudos&r;\n- &eapliques&r y &eportavelas&r apilables;\n- &epizarrones&r donde se puede dibujar, &eglobos terráqueos&r y &ecarteles indicadores&r que señalan lugares."
+      ],
+      "sources": [
+        "jar:supplementaries-1.21.1-3.9.5-neoforge.jar:assets/supplementaries/lang/en_us.json"
+      ]
+    },
+    {
+      "key": "building_furniture_sup_gadgets",
+      "deps": [
+        "building_furniture_sup_decor"
+      ],
+      "type": "item",
+      "item": "supplementaries:hourglass",
+      "optional": true,
+      "layout": {
+        "x": 12,
+        "y": 1,
+        "size": 1.0,
+        "shape": "circle"
+      },
+      "en_us": [
+        "Supplementaries: Gadgets",
+        "Blocks that react or move:\n\n- &eHourglass&r: a redstone timer filled with any sand, dust or powder;\n- &eWind Vane&r: reacts to the weather;\n- &eTurn Table&r: rotates the block on top;\n- &eFaucet&r: pours fluid out of jars, cauldrons and tanks;\n- &eRope&r and &ePulley&r: climb and haul;\n- &eLock Block&r and &eKey&r: a door only the key holder opens;\n- &eClock Block&r, &eCrank&r and &eBellows&r for machinery."
+      ],
+      "es_es": [
+        "Supplementaries: artefactos",
+        "Bloques que reaccionan o se mueven:\n\n- &eReloj de arena&r: un temporizador de redstone que se llena con cualquier arena, polvo o polvillo;\n- &eVeleta&r: reacciona al clima;\n- &ePlato giratorio&r: rota el bloque de arriba;\n- &eCanilla&r: vierte fluido de frascos, calderos y tanques;\n- &eSoga&r y &ePolea&r: para trepar y levantar cargas;\n- &eBloque de cerradura&r y &eLlave&r: una puerta que sólo abre quien tiene la llave;\n- &eBloque de reloj&r, &eManivela&r y &eFuelle&r para mecanismos."
+      ],
+      "sources": [
+        "jar:supplementaries-1.21.1-3.9.5-neoforge.jar:assets/supplementaries/lang/en_us.json"
+      ]
+    },
+    {
+      "key": "building_furniture_sup_tools",
+      "deps": [
+        "building_furniture_sup_decor"
+      ],
+      "type": "item",
+      "item": "supplementaries:quiver",
+      "optional": true,
+      "layout": {
+        "x": 12,
+        "y": 4,
+        "size": 1.0,
+        "shape": "circle"
+      },
+      "en_us": [
+        "Supplementaries: Carry-On Tools",
+        "Items to try:\n\n- the &eQuiver&r holds arrows and chooses which to shoot; open it with the key where US keyboards have the apostrophe;\n- the &eSlingshot&r throws blocks and items;\n- the &eCannon&r can shoot almost anything;\n- the &eCage&r catches small or tamed animals;\n- &ePresents&r wrap items addressed to a player;\n- the &eLunch Basket&r carries food and switches mode with a click."
+      ],
+      "es_es": [
+        "Supplementaries: herramientas para llevar",
+        "Ítems para probar:\n\n- el &eCarcaj&r guarda flechas y elige cuáles disparar; se abre con la tecla donde el teclado estadounidense tiene el apóstrofo;\n- la &eHonda&r arroja bloques e ítems;\n- el &eCañón&r puede disparar casi cualquier cosa;\n- la &eJaula&r atrapa animales chicos o domesticados;\n- los &eRegalos&r envuelven ítems dirigidos a un jugador;\n- la &eCanasta de almuerzo&r lleva comida y cambia de modo con un clic."
+      ],
+      "sources": [
+        "jar:supplementaries-1.21.1-3.9.5-neoforge.jar:assets/supplementaries/lang/en_us.json",
+        "repo:pack/config/defaultoptions/keybindings.txt"
+      ]
+    },
+    {
+      "key": "building_furniture_amendments",
+      "deps": [
+        "building_furniture_sup_storage"
+      ],
+      "type": "checkmark",
+      "icon": "minecraft:lantern",
+      "layout": {
+        "x": 15,
+        "y": 2.5,
+        "size": 1.25,
+        "shape": "circle"
+      },
+      "en_us": [
+        "Amendments: Vanilla, Improved",
+        "&eAmendments&r changes how vanilla blocks behave:\n\n- lanterns hang on walls, and flower pots hang from ceilings;\n- banners hang from ceilings, carpets go on stairs and slabs;\n- tools hang on tripwire hooks;\n- skulls stack into piles and take candles;\n- cauldrons hold potions and mix dyes;\n- cakes can be eaten from any side, and two cakes stack into a double cake."
+      ],
+      "es_es": [
+        "Amendments: vanilla, mejorado",
+        "&eAmendments&r cambia cómo se comportan los bloques de vanilla:\n\n- los faroles se cuelgan en las paredes y las macetas del techo;\n- los estandartes cuelgan del techo y las alfombras van sobre escaleras y losas;\n- las herramientas se cuelgan de ganchos de cuerda;\n- las calaveras se apilan y aceptan velas;\n- los calderos guardan pociones y mezclan tintes;\n- las tortas se comen desde cualquier lado y dos tortas se apilan en una torta doble."
+      ],
+      "sources": [
+        "jar:amendments-1.21-2.1.9-neoforge.jar:assets/amendments/lang/en_us.json",
+        "repo:docs/design/satiety-overflow.md"
+      ]
+    },
+    {
+      "key": "building_furniture_cake_quirk",
+      "deps": [
+        "building_furniture_amendments"
+      ],
+      "type": "item",
+      "item": "minecraft:cake",
+      "optional": true,
+      "layout": {
+        "x": 15,
+        "y": 5.5,
+        "size": 1.0,
+        "shape": "diamond"
+      },
+      "en_us": [
+        "Quirk: Cake Bites Count",
+        "When Amendments turns a cake into its directional version, a bite still counts for ENTRELUMEN's satiety overflow: food eaten from a block, like cake or a Farmer's Delight pie, is measured just like food from your hand.\n\nThe Satiety chapter explains how surplus food becomes buffs."
+      ],
+      "es_es": [
+        "Particularidad: los bocados de torta cuentan",
+        "Cuando Amendments convierte una torta en su versión direccional, el bocado igual cuenta para la saciedad sobrante de ENTRELUMEN: la comida que se come desde un bloque, como una torta o un pastel de Farmer's Delight, se mide igual que la que comés de la mano.\n\nEl capítulo de Saciedad explica cómo la comida que sobra se vuelve buffs."
+      ],
+      "sources": [
+        "repo:docs/design/satiety-overflow.md",
+        "repo:companion/src/main/java/dev/entrelumen/SatietyOverflowEvents.java"
+      ]
+    },
+    {
+      "key": "building_furniture_sitting",
+      "deps": [
+        "building_furniture_storage_delight",
+        "building_furniture_another"
+      ],
+      "type": "item",
+      "item": "another_furniture:oak_chair",
+      "optional": true,
+      "layout": {
+        "x": 15,
+        "y": -1.5,
+        "size": 1.0,
+        "shape": "diamond"
+      },
+      "en_us": [
+        "Tip: Where You Can Sit",
+        "Chairs, benches, stools and couches from Handcrafted and Another Furniture let you sit: right-click with an empty hand, sneak to get up. It is purely cosmetic, but it makes screenshots and co-op evenings much better."
+      ],
+      "es_es": [
+        "Truco: dónde sentarse",
+        "Las sillas, bancos, banquetas y sillones de Handcrafted y Another Furniture te dejan sentarte: clic derecho con la mano vacía y agachate para levantarte. Es puramente estético, pero mejora mucho las capturas y las noches de cooperativo."
+      ],
+      "sources": [
+        "jar:handcrafted-neoforge-1.21.1-4.0.3.jar:META-INF/neoforge.mods.toml",
+        "jar:another_furniture-neoforge-4.0.3.jar:META-INF/neoforge.mods.toml"
+      ]
+    },
+    {
+      "key": "building_furniture_carry_quirk",
+      "deps": [
+        "building_furniture_another"
+      ],
+      "type": "checkmark",
+      "optional": true,
+      "icon": "minecraft:chest",
+      "layout": {
+        "x": 3,
+        "y": 5.5,
+        "size": 1.0,
+        "shape": "diamond"
+      },
+      "en_us": [
+        "Quirk: Heavy Furniture Stays Put",
+        "Carry On refuses some furniture on purpose: Cooking for Blockheads kitchen blocks, Farmer's Delight blocks and Sophisticated and Functional storage are on its blacklist. Break and replace them instead, or use Packing Tape for Sophisticated chests.\n\nPlain chests, barrels and furnaces can still be carried."
+      ],
+      "es_es": [
+        "Particularidad: los muebles pesados no se mueven",
+        "Carry On rechaza a propósito algunos muebles: los bloques de cocina de Cooking for Blockheads, los de Farmer's Delight y el almacenamiento de Sophisticated y Functional están en su lista negra. Rompelos y volvelos a poner, o usá cinta de embalar para los cofres de Sophisticated.\n\nLos cofres, barriles y hornos comunes se siguen pudiendo cargar."
+      ],
+      "sources": [
+        "repo:pack/config/carryon-common.toml"
+      ]
+    },
+    {
+      "key": "building_furniture_pack_mega",
+      "deps": [
+        "building_furniture_storage_delight"
+      ],
+      "type": "checkmark",
+      "optional": true,
+      "icon": "mcwdoors:oak_barn_door",
+      "layout": {
+        "x": 12,
+        "y": -1.5,
+        "size": 1.0,
+        "shape": "pentagon"
+      },
+      "en_us": [
+        "Pack Change: One Role per Set",
+        "The pack picked its furniture sets so each has a job: Handcrafted for classic furniture, Refurbished Furniture for working appliances, Another Furniture for cozy details and Storage Delight for kitchen storage. Macaw's Furniture was left out as a third palette without new functions.\n\nMacaw's windows, doors, roofs and lights are in: see the previous chapter."
+      ],
+      "es_es": [
+        "Cambio del pack: un rol por juego",
+        "El pack eligió sus juegos de muebles para que cada uno tenga un trabajo: Handcrafted para los muebles clásicos, Refurbished Furniture para los electrodomésticos que funcionan, Another Furniture para los detalles cálidos y Storage Delight para guardar en la cocina. Macaw's Furniture quedó afuera por ser una tercera paleta sin funciones nuevas.\n\nLas ventanas, puertas, techos y luces de Macaw's sí están: mirá el capítulo anterior."
+      ],
+      "sources": [
+        "repo:docs/design/qol-functional-decor-family.md"
+      ]
+    },
+    {
+      "key": "building_furniture_close",
+      "deps": [
+        "building_furniture_sitting",
+        "building_furniture_amendments",
+        "building_furniture_post"
+      ],
+      "type": "checkmark",
+      "icon": "minecraft:red_bed",
+      "layout": {
+        "x": 18,
+        "y": 0,
+        "size": 2.0,
+        "shape": "hexagon"
+      },
+      "en_us": [
+        "Home, Furnished",
+        "A living room to sit in, a kitchen that cooks, appliances with power, jars and shelves full of things, and vanilla blocks that finally hang where you want.\n\nThe last building chapter covers the tools for fine detail and big projects."
+      ],
+      "es_es": [
+        "Casa amueblada",
+        "Un living para sentarse, una cocina que cocina, electrodomésticos con energía, frascos y estantes llenos de cosas, y bloques de vanilla que por fin cuelgan donde querés.\n\nEl último capítulo de construcción cubre las herramientas para el detalle fino y los proyectos grandes."
+      ],
+      "sources": [
+        "repo:content/guides/README.md"
+      ]
+    }
+  ]
+}
