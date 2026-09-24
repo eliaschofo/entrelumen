@@ -71,6 +71,11 @@ def without_values(path, field, values, why):
     return {'path': path, 'op': 'remove_values', 'field': field, 'values': list(values), 'why': why}
 
 
+def rewritten(path, expect, value, why):
+    """Replace whole top-level fields of an upstream data file; every other field stays native."""
+    return {'path': path, 'op': 'rewrite', 'expect': expect, 'value': value, 'why': why}
+
+
 def tag(value):
     return {'tag': value}
 
@@ -373,6 +378,20 @@ FAMILIES = {
         'removals': [],
         'creations': LUMINOUS_RECIPES,
         'uncraftable': list(UNCRAFTABLE_CREATIVE) + [LUMINOSITY[d] for d in DISCIPLINES],
+        'data': [
+            # Farmer's Delight 1.3.3 ships its Silent Gear netherwood cutting recipe in the pre-1.21
+            # format; with Silent Gear added for the luminous material it fails to parse. Same recipe,
+            # native 1.21 format of Farmer's Delight's own log cutting (cutting/oak_log.json).
+            rewritten('data/farmersdelight/recipe/integration/silentgear/cutting/netherwood.json',
+                      {'result': [{'item': 'silentgear:stripped_netherwood_log'}, {'item': 'farmersdelight:tree_bark'}],
+                       'sound': 'minecraft:item.axe.strip',
+                       'tool': {'type': 'farmersdelight:tool_action', 'action': 'axe_strip'}},
+                      {'result': [{'item': {'count': 1, 'id': 'silentgear:stripped_netherwood_log'}},
+                                  {'item': {'count': 1, 'id': 'farmersdelight:tree_bark'}}],
+                       'sound': {'sound_id': 'minecraft:item.axe.strip'},
+                       'tool': [{'type': 'farmersdelight:item_ability', 'action': 'axe_strip'}, {'tag': 'minecraft:axes'}]},
+                      'Pre-1.21 result, sound and tool format rejected by the 1.21 cutting codec'),
+        ],
     },
 }
 
@@ -636,6 +655,12 @@ def build_data(name, found=None):
             result['mainhand'] = {'item': spec['item']}
             reverse = copy.deepcopy(result)
             reverse['mainhand'] = original['mainhand']
+        elif spec['op'] == 'rewrite':
+            assert set(spec['expect']) == set(spec['value']), f"{spec['path']}: rewrite fields differ"
+            assert all(original.get(k) == v for k, v in spec['expect'].items()), f"{spec['path']}: changed upstream"
+            result.update(copy.deepcopy(spec['value']))
+            reverse = copy.deepcopy(result)
+            reverse.update(copy.deepcopy(spec['expect']))
         elif spec['op'] == 'remove_values':
             values = result[spec['field']]
             assert all(values.count(v) == 1 for v in spec['values']), f"{spec['path']}: values changed upstream"
