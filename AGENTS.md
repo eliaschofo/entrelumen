@@ -17,3 +17,4 @@ On Elias's Windows workstation, keep heavyweight generated servers, worlds, back
 - Other workers keep their own worktrees and build folders beside it on E: (for example `wt-altars2`, `altars2-build`). The Gradle user home stays in `C:/Users/elias/.gradle`.
 
 Build with `JAVA_HOME=E:/Elias/Codex/Entrelumen-ssd/runtime/jdk-21.0.12.1+1` and `gradlew --offline --no-daemon`, so no daemon outlives the batch.
+The retired `*.__old-20260924` copies on G: were deleted on 2026-09-24 with Elias's approval after the E: copies were verified.

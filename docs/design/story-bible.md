@@ -79,5 +79,11 @@ Para contestarles hace falta un artefacto que se perdió en el Aether. La entida
 - **Solo primero**, con buen co-op: todo se puede hacer solo y en equipo se reparten ramas.
 - **La historia marca la dificultad:** al pasar de acto, el mundo sube de World Tier de Apotheosis solo; el jugador no lo elige.
 
+## Arte (24 de septiembre)
+
+- **Íconos de ítems como vanilla:** herramientas y pergaminos en diagonal; simétricos sólo los que lo son por naturaleza. La simetría estricta rige para bloques, modelos, estructuras, GUI y emblemas.
+- **Armadura luminosa:** blanco crema y oro con vetas turquesa, con partes de vidrio y luz dorada radiante.
+- **Libro de quests con tema Heliodor:** fondo, colores e íconos de capítulo propios (cobre, pergamino, luz), coherente con el Atlas y el menú.
+
 ## Abierto (decidir con Elias)
 - Cuánto se construye a mano (aldea completa) y cuánto se resuelve con estructuras vistosas y recetas escalonadas. Elias aclaró que el proyecto no necesita llegar a v1.0: prioridad a lo que se pueda hacer bien.
