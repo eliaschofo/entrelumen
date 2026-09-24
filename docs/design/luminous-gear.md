@@ -197,24 +197,28 @@ Tiene tests sintéticos para las tres propiedades.
 
 ## Verificación
 
-- `python tools/generate_family_balance.py --check` (las cinco familias) y `tools/test_family_balance.py` (11 tests, 4 nuevos; el que compara con los JAR corre localmente).
-- JUnit `LuminousRulesTest` (6): stats frente al techo, nunca se rompe, reparación por luz, set y colores.
-- GameTests aislados `RuntimeGameTestsLuminous` (4), que corren con el resto de la suite:
+- `python tools/generate_family_balance.py --check` (las cinco familias) y `tools/test_family_balance.py` (12 tests, 5 nuevos; el que compara con los JAR corre localmente). La familia luminosa también genera un override reversible de la receta de corte de netherwood de Farmer's Delight 1.3.3 para Silent Gear, que venía en formato anterior a 1.21 y fallaba al cargar.
+- JUnit `LuminousRulesTest` (7): stats frente al techo, nunca se rompe, reparación por luz, set, colores y el material de Silent Gear frente al mejor valor de cada stat.
+- GameTests aislados `RuntimeGameTestsLuminous` (6), que corren con el resto de la suite (63/63):
   - material, tier, atributos, tags y colores;
   - la pieza se apaga en vez de romperse y la luz la repara;
   - visión nocturna estable y caída anulada, también para otra entidad;
-  - la espada revela y castiga no-muertos.
-- Full-pack `LuminousGameTests` (4), registrado en `FullpackQABootstrap`:
+  - la espada revela y castiga no-muertos;
+  - el vuelo del set sin tocar otras fuentes de vuelo, con aterrizaje en caída lenta;
+  - los datos de luz dinámica.
+- Full-pack `LuminousGameTests` (5), registrado en `FullpackQABootstrap`:
   - las 22 recetas cargan con los ítems reales y salidas exclusivas;
   - las 13 grillas crean lo que dicen, con el cubo lleno;
   - las 9 mejoras conservan encantamientos, desgaste y nombre;
-  - las categorías de afijo de Apotheosis coinciden con las de la netherita.
-- El resultado del runtime y la instalación quedan en [luminous-runtime.json](../verification/luminous-runtime.json).
+  - las categorías de afijo de Apotheosis coinciden con las de la netherita;
+  - la armadura de Silent Gear, fabricada con las recetas reales, supera a la de Obsidiana Refinada (12/22/16/10 contra 5/12/8/5, dureza 15 contra 4 por pieza), vuela con el set completo o mezclado y deja de volar con una pieza común.
+- Runtime, instalación y hallazgos en [luminous-runtime.json](../verification/luminous-runtime.json).
 
 ## Pendiente
 
 - Fuente de las Luminosidades: los aldeanos nativos de Solsticio y sus intercambios.
-- Arte del controlador: sprites animados de Luminosidades y lingote, íconos y capa de armadura, revisados dentro del juego.
-- Revisión en cliente: texto EN/ES, colores de nombre, visión nocturna y tooltips.
-- Ritmo de supervivencia y costo real de las Luminosidades.
-- Decidir si el equipo luminoso debe superar también a Draconic caótico y MekaSuit con energía.
+- Arte del controlador (sprites animados de Luminosidades y lingote, íconos y capa de armadura) revisado dentro del juego.
+- Revisión en cliente: luz dinámica en pantalla, sensación del vuelo, texto EN/ES y el material de Silent Gear.
+- Herramientas y armas de Silent Gear con el material luminoso probadas en juego; hoy las cubre la tabla de JUnit.
+- Ritmo de supervivencia y precio real de las Luminosidades.
+- Decidir si también debe superar la absorción de la MekaSuit y el escudo caótico de Draconic con energía.

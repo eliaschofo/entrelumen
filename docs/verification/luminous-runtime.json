@@ -1,0 +1,309 @@
+{
+ "schemaVersion": 1,
+ "checkedAt": "2026-09-24T14:55:00+00:00",
+ "scope": "Luminous content: six Luminosities, the Luminous Ingot, luminous gear, twelve creative recipes, the Silent Gear material entrelumen:luminous with the Radiant trait, full-set flight and LambDynamicLights data. Offline build with JUnit and isolated GameTests, three full-pack QA runs and a final normal boot on the owned server, and the managed installation of HEAD in both client profiles and the server. Not client rendering, dynamic light on screen, flight feel, EN/ES review, survival pacing or co-op.",
+ "platform": "Minecraft 1.21.1 / NeoForge 21.1.249 / JDK 21.0.12.1+1 / Windows 11",
+ "designDocs": [
+  "docs/design/luminous-gear.md"
+ ],
+ "receipts": "E:\\Elias\\Codex\\Entrelumen-ssd\\head-luminous-20260924",
+ "modsAdded": [
+  {
+   "mod": "Silent Gear 4.2.1.1",
+   "file": "silent-gear-1.21.1-neoforge-4.2.1.1.jar",
+   "curseforge": [
+    297039,
+    8095210
+   ],
+   "source": "ATM10 reference instance, SHA-1 928064b09748d6e963077c114d65f5ce79aff581 matched",
+   "side": "both"
+  },
+  {
+   "mod": "Silent Lib 10.6.0",
+   "file": "silent-lib-1.21.1-neoforge-10.6.0.jar",
+   "curseforge": [
+    242998,
+    7935618
+   ],
+   "source": "ATM10 reference instance, SHA-1 991055113a165bef7d0b620c091165d55f7dbb24 matched",
+   "side": "both"
+  },
+  {
+   "mod": "LambDynamicLights 4.8.11+1.21.1",
+   "file": "lambdynamiclights-4.8.11+1.21.1.jar",
+   "modrinth": [
+    "yBW8D80W",
+    "ksaGCvSu"
+   ],
+   "source": "official Modrinth CDN, download approved by Elias; SHA-1 7b5afc75a094b4e8a7118f9856eec959b10f2422 and SHA-512 matched",
+   "side": "client"
+  }
+ ],
+ "lock": "275 client / 234 server (from 272 / 232); previous entries unchanged; curate_pack --check PASS both sides",
+ "build": {
+  "command": "JAVA_HOME=E:/Elias/Codex/Entrelumen-ssd/runtime/jdk-21.0.12.1+1 gradlew --offline --no-daemon test build qaJar; runGameTestServer",
+  "junit": {
+   "passed": 122,
+   "failed": 0,
+   "luminousRulesTest": 7
+  },
+  "isolated": {
+   "result": "All 63 required tests passed",
+   "log": "E:\\Elias\\Codex\\Entrelumen-ssd\\head-luminous-20260924\\isolated-7.log",
+   "sha256": "7ba5bde7276330ec2893ba04dc9c5220ae942fe1fa2ef9dfd1dea6f5f5eb6b45",
+   "history": "4 new luminous tests at first; a set-bonus test failed once because refresh() mended the spent helmet in daylight (test fixed to call setBonus); one later run lost 3 renewal-altar tests to tick limits under a concurrent worker build and passed on rerun; 2 more tests (flight, dynamic light data) added with the Silent Gear batch"
+  },
+  "pythonChecks": "generate_family_balance --check (5 families), test_family_balance (12), test_curate_families, check_runtime_content, art checks and every CI script: PASS"
+ },
+ "fullpack": {
+  "server": "E:/Elias/Codex/Entrelumen-ssd/server-slice, heap 6G, max-tick-time 60000",
+  "jvmFlag": "-Dentrelumen.qa=true through JAVA_TOOL_OPTIONS (QA runs only)",
+  "runs": {
+   "qa1 (980412e)": {
+    "runId": "c7a3e4fc-6de4-4d9e-b225-6e3cf36360d1",
+    "exitCode": 0,
+    "seconds": 435,
+    "tests": {
+     "luminousrecipesloadwithrealitemsandexclusiveoutputs": "PASS",
+     "luminousingotandcreativeitemscraftfromtheirgrids": "PASS",
+     "luminousgeartakesapotheosisaffixes": "FAIL",
+     "luminousupgradeskeepenchantmentsdamageandnames": "PASS",
+     "kubejsapotheosisrecipesmatchthegeneratedscript": "PASS"
+    },
+    "finding": "Apotheosis filed the luminous axe under none: it reads DataComponents.ATTRIBUTE_MODIFIERS directly; fixed in e2bd31a by keeping tool attributes in the default component"
+   },
+   "qa2 (e2bd31a)": {
+    "runId": "3364dacd-aeff-447a-a079-d83a40da67d9",
+    "exitCode": 0,
+    "seconds": 213,
+    "tests": {
+     "luminousrecipesloadwithrealitemsandexclusiveoutputs": "PASS",
+     "luminousingotandcreativeitemscraftfromtheirgrids": "PASS",
+     "luminousgeartakesapotheosisaffixes": "PASS",
+     "luminousupgradeskeepenchantmentsdamageandnames": "PASS",
+     "kubejsapotheosisrecipesmatchthegeneratedscript": "PASS"
+    }
+   },
+   "qa3 (eca1684, Silent Gear)": {
+    "runId": "5635ba76-0004-4a16-a7d2-dac2e084d9d1",
+    "exitCode": 0,
+    "seconds": 235,
+    "tests": {
+     "luminoussilentgeararmouroutclassesandflies": "PASS",
+     "luminousrecipesloadwithrealitemsandexclusiveoutputs": "PASS",
+     "luminousingotandcreativeitemscraftfromtheirgrids": "PASS",
+     "luminousgeartakesapotheosisaffixes": "PASS",
+     "luminousupgradeskeepenchantmentsdamageandnames": "PASS",
+     "kubejsapotheosisrecipesmatchthegeneratedscript": "PASS",
+     "nativeactsixinputscomefromrealmods": "PASS",
+     "threeprovisionsrouteskeepcookedcostsandbowls": "PASS",
+     "nativebuildercraftskeepcostsandoutputs": "PASS",
+     "nativerecipesrequireintegrationcomponents": "PASS",
+     "nativewhitepotcraftingrequiresrealintegrationitems": "PASS",
+     "ae2settlementsupplycraftstwiceandreturnsallbowls": "PASS",
+     "apothicenchantingreadsentrelumenshelfstats": "PASS",
+     "spawneraugmentsmodifyrealspawnersandrunesaregone": "PASS"
+    },
+    "silentGearArmour": "helmet 12 vs 5, chestplate 22 vs 12, leggings 16 vs 8, boots 10 vs 5 armour; toughness 15 vs 4 per piece (luminous vs Refined Obsidian, both crafted through the real Silent Gear recipes)",
+    "finding": "Farmer's Delight 1.3.3's Silent Gear netherwood cutting recipe failed to parse once Silent Gear was present; fixed in 03cbf4d with a generated rewrite override"
+   },
+   "normal (03cbf4d, release JAR)": {
+    "runId": "559735b0-dd3a-425b-acf8-76cb07847b22",
+    "exitCode": 0,
+    "seconds": 163,
+    "datapackLoadSeconds": 53.49,
+    "doneSeconds": 5.537,
+    "cantKeepUp": 0,
+    "errors": [
+     "known: Create Enchantment Industry data map names reliquary:xp_juice_still"
+    ],
+    "farmersDelightNetherwood": "no parse error"
+   }
+  },
+  "kubejs": {
+   "exclusiveOutputs": "creations 22, displaced []",
+   "creationsLoaded": "checked 35, failed []",
+   "runtimeAudit": "PASS 128 items / 36 recipes"
+  },
+  "silentGearData": "MaterialManager decoded entrelumen:luminous and TraitManager entrelumen:radiant in every boot",
+  "worldBackups": {
+   "980412e": {
+    "archive": "E:\\Elias\\Codex\\Entrelumen-ssd\\head-luminous-20260924\\server-world-before-install-980412e.zip",
+    "files": 1462,
+    "sha256": "55e6ab1ef54f58a9065f8d2639b7d2de31717fd6f61cb4e00f403ea2c8ec1b64"
+   },
+   "e2bd31a": {
+    "archive": "E:\\Elias\\Codex\\Entrelumen-ssd\\head-luminous-20260924\\server-world-before-install-e2bd31a.zip",
+    "files": 1462,
+    "sha256": "5ac5df265bb8c84ccc2591bbb0a35d6f83a39d66592c37e5131bb96de3b20054"
+   },
+   "eca1684": {
+    "archive": "E:\\Elias\\Codex\\Entrelumen-ssd\\head-luminous-20260924\\server-world-before-install-eca1684.zip",
+    "files": 1462,
+    "sha256": "d549a8171b2ac38ef19914a8152edd690d15805117eac938498f882ff3c41c22"
+   },
+   "03cbf4d": {
+    "archive": "E:\\Elias\\Codex\\Entrelumen-ssd\\head-luminous-20260924\\server-world-before-install-03cbf4d.zip",
+    "files": 1476,
+    "sha256": "491fa74471404247d8f6bc779edae4cedefc73cda7cdf0a1524a7c4cd566f822"
+   }
+  },
+  "restores": []
+ },
+ "installation": {
+  "mechanism": "Receipt-managed pack files plus tools/curate_pack.py --install (installer copied from head-ab3796a-20260924/install_head.py with E: paths); no Minecraft or owned Java process running",
+  "installs": {
+   "980412e": {
+    "jarSha256": "d3f65818bb0b72c763d447c19cfd80b183bbc42b0800d3c7b9461854f9cf08eb",
+    "worldBackup": {
+     "archive": "E:\\Elias\\Codex\\Entrelumen-ssd\\head-luminous-20260924\\server-world-before-install-980412e.zip",
+     "files": 1462,
+     "sha256": "55e6ab1ef54f58a9065f8d2639b7d2de31717fd6f61cb4e00f403ea2c8ec1b64"
+    },
+    "profiles": [
+     {
+      "profile": "E:\\curseforge\\Instances\\ENTRELUMEN",
+      "side": "client",
+      "written": 65,
+      "jarsAdded": [],
+      "jarsTotal": 273
+     },
+     {
+      "profile": "E:\\curseforge\\Instances\\ENTRELUMEN Defaults QA",
+      "side": "client",
+      "written": 65,
+      "jarsAdded": [],
+      "jarsTotal": 273
+     },
+     {
+      "profile": "E:\\Elias\\Codex\\Entrelumen-ssd\\server-slice",
+      "side": "server",
+      "written": 65,
+      "jarsAdded": [],
+      "jarsTotal": 233
+     }
+    ]
+   },
+   "e2bd31a": {
+    "jarSha256": "649285e986d9c1cf827de79120843eb80a1469e92d39cd84a6e38acd59c1462a",
+    "worldBackup": {
+     "archive": "E:\\Elias\\Codex\\Entrelumen-ssd\\head-luminous-20260924\\server-world-before-install-e2bd31a.zip",
+     "files": 1462,
+     "sha256": "5ac5df265bb8c84ccc2591bbb0a35d6f83a39d66592c37e5131bb96de3b20054"
+    },
+    "profiles": [
+     {
+      "profile": "E:\\curseforge\\Instances\\ENTRELUMEN",
+      "side": "client",
+      "written": 474,
+      "jarsAdded": [],
+      "jarsTotal": 273
+     },
+     {
+      "profile": "E:\\curseforge\\Instances\\ENTRELUMEN Defaults QA",
+      "side": "client",
+      "written": 474,
+      "jarsAdded": [],
+      "jarsTotal": 273
+     },
+     {
+      "profile": "E:\\Elias\\Codex\\Entrelumen-ssd\\server-slice",
+      "side": "server",
+      "written": 474,
+      "jarsAdded": [],
+      "jarsTotal": 233
+     }
+    ]
+   },
+   "eca1684": {
+    "jarSha256": "1c4756fe32a5dbeaa09a783df6121e545dc6b9435cc18cdffcdd8aa3a4ade93b",
+    "worldBackup": {
+     "archive": "E:\\Elias\\Codex\\Entrelumen-ssd\\head-luminous-20260924\\server-world-before-install-eca1684.zip",
+     "files": 1462,
+     "sha256": "d549a8171b2ac38ef19914a8152edd690d15805117eac938498f882ff3c41c22"
+    },
+    "profiles": [
+     {
+      "profile": "E:\\curseforge\\Instances\\ENTRELUMEN",
+      "side": "client",
+      "written": 1,
+      "jarsAdded": [
+       "lambdynamiclights-4.8.11+1.21.1.jar",
+       "silent-gear-1.21.1-neoforge-4.2.1.1.jar",
+       "silent-lib-1.21.1-neoforge-10.6.0.jar"
+      ],
+      "jarsTotal": 276
+     },
+     {
+      "profile": "E:\\curseforge\\Instances\\ENTRELUMEN Defaults QA",
+      "side": "client",
+      "written": 1,
+      "jarsAdded": [
+       "lambdynamiclights-4.8.11+1.21.1.jar",
+       "silent-gear-1.21.1-neoforge-4.2.1.1.jar",
+       "silent-lib-1.21.1-neoforge-10.6.0.jar"
+      ],
+      "jarsTotal": 276
+     },
+     {
+      "profile": "E:\\Elias\\Codex\\Entrelumen-ssd\\server-slice",
+      "side": "server",
+      "written": 1,
+      "jarsAdded": [
+       "silent-gear-1.21.1-neoforge-4.2.1.1.jar",
+       "silent-lib-1.21.1-neoforge-10.6.0.jar"
+      ],
+      "jarsTotal": 235
+     }
+    ]
+   },
+   "03cbf4d": {
+    "jarSha256": "1c4756fe32a5dbeaa09a783df6121e545dc6b9435cc18cdffcdd8aa3a4ade93b",
+    "worldBackup": {
+     "archive": "E:\\Elias\\Codex\\Entrelumen-ssd\\head-luminous-20260924\\server-world-before-install-03cbf4d.zip",
+     "files": 1476,
+     "sha256": "491fa74471404247d8f6bc779edae4cedefc73cda7cdf0a1524a7c4cd566f822"
+    },
+    "profiles": [
+     {
+      "profile": "E:\\curseforge\\Instances\\ENTRELUMEN",
+      "side": "client",
+      "written": 1,
+      "jarsAdded": [],
+      "jarsTotal": 276
+     },
+     {
+      "profile": "E:\\curseforge\\Instances\\ENTRELUMEN Defaults QA",
+      "side": "client",
+      "written": 1,
+      "jarsAdded": [],
+      "jarsTotal": 276
+     },
+     {
+      "profile": "E:\\Elias\\Codex\\Entrelumen-ssd\\server-slice",
+      "side": "server",
+      "written": 1,
+      "jarsAdded": [],
+      "jarsTotal": 235
+     }
+    ]
+   }
+  },
+  "finalHead": "03cbf4d",
+  "finalCompanionJarSha256": "1c4756fe32a5dbeaa09a783df6121e545dc6b9435cc18cdffcdd8aa3a4ade93b",
+  "clientLaunched": false
+ },
+ "limits": [
+  "Full-pack cases use mock players on an installed server: no client rendering, no dynamic light on screen, no flight feel.",
+  "LambDynamicLights is client-only; its data files are validated through the same ItemPredicate codec on the server, not by the mod itself.",
+  "Silent Gear tools and weapons were not crafted in QA; the material table is checked in JUnit and armour through real recipes.",
+  "Silent Gear adds its own ores and worldgen to new chunks; not benchmarked.",
+  "Regression covered a subset of 14 of the 95 full-pack tests, chosen for recipes, KubeJS and Apotheosis."
+ ],
+ "pending": [
+  "Solsticio native villagers as the source of the Luminosities.",
+  "Client review: art of the controller, dynamic light, flight, EN/ES text and Silent Gear material rendering.",
+  "Survival pacing and Luminosity prices.",
+  "Decide whether the luminous gear must also beat the MekaSuit absorption and the Draconic chaotic shield with energy."
+ ]
+}
