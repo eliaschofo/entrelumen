@@ -115,9 +115,9 @@ public final class SolsticioTravel {
       event.setResult(MobSpawnEvent.PositionCheck.Result.FAIL);
   }
 
-  /** Every second: void rescue and border upkeep for players in Solsticio. */
+  /** Twice a second: void rescue and border upkeep for players in Solsticio. */
   static void tick(MinecraftServer server) {
-    if (server.getTickCount() % 20 != 0) return;
+    if (server.getTickCount() % 10 != 0) return;
     ServerLevel level = server.getLevel(Solsticio.LEVEL);
     if (level == null || level.players().isEmpty()) return;
     SolsticioData data = SolsticioData.get(server);

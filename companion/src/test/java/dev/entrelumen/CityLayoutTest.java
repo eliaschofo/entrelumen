@@ -59,14 +59,28 @@ class CityLayoutTest {
   }
 
   @Test
-  void slicesCoverThePieceExactlyOnce() {
-    var slices = CityLayout.slices(0, 70, 33, 32);
-    assertEquals(6, slices.size());
-    int area = slices.stream().mapToInt(s -> s.width() * s.depth()).sum();
-    assertEquals(70 * 33, area);
-    assertEquals(64, slices.get(2).fromX());
-    assertEquals(6, slices.get(2).width());
-    assertEquals(1, slices.get(5).depth());
+  void cutsFollowTheWorldGrid() {
+    // A piece starting at world x = -52 is cut at -48, -32, -16, 0, 16...
+    var cuts = CityLayout.cuts(105, -52, 16);
+    assertArrayEquals(new int[] {0, 4}, cuts.get(0));
+    assertArrayEquals(new int[] {4, 20}, cuts.get(1));
+    assertArrayEquals(new int[] {100, 105}, cuts.getLast());
+    assertEquals(105, cuts.stream().mapToInt(c -> c[1] - c[0]).sum());
+    assertEquals(List.of(), CityLayout.cuts(0, 5, 16));
+    assertEquals(1, CityLayout.cuts(16, 64, 16).size());
+  }
+
+  @Test
+  void cubesCoverThePieceExactlyOnceBottomUpPerColumn() {
+    var cubes = CityLayout.cubes(40, 20, 17, -8, 64, 0, 16);
+    long volume = cubes.stream().mapToLong(c -> (long) c.width() * c.height() * c.depth()).sum();
+    assertEquals(40L * 20 * 17, volume);
+    // x cuts: [0,8) [8,24) [24,40); y cuts: [0,16) [16,20); z cuts: [0,16) [16,17).
+    assertEquals(3 * 2 * 2, cubes.size());
+    assertEquals(0, cubes.get(0).fromY());
+    assertEquals(16, cubes.get(1).fromY());
+    assertEquals(cubes.get(0).fromX(), cubes.get(1).fromX(), "the same column continues upward");
+    assertEquals(8, cubes.get(2).fromX());
   }
 
   @Test
@@ -152,13 +166,13 @@ class CityLayoutTest {
     tag.put("entities", entities);
     tag.putInt("DataVersion", 3955);
 
-    var partition = SolsticioCity.partition(tag, 32);
+    var partition = SolsticioCity.partition(tag, 32, 0, 64, 0);
     assertEquals(2, partition.slices().size());
     assertEquals(List.of("arrival"), partition.markerNames());
     assertArrayEquals(new int[] {35, 1, 4}, partition.markerPositions().getFirst());
     CompoundTag east = partition.slices().get(1);
     assertEquals(8, east.getList("size", Tag.TAG_INT).getInt(0));
-    assertArrayEquals(new int[] {32, 0}, partition.sliceOrigins().get(1));
+    assertArrayEquals(new int[] {32, 0, 0}, partition.sliceOrigins().get(1));
     assertEquals(32, partition.blockCounts().get(0));
     assertEquals(9, partition.blockCounts().get(1), "8 stones and the marker, now air");
     ListTag eastBlocks = east.getList("blocks", Tag.TAG_COMPOUND);

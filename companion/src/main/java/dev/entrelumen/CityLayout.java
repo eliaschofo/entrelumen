@@ -13,7 +13,8 @@ import java.util.regex.Pattern;
 
 /**
  * Pure layout of Solsticio: how template pieces tile around the origin, how each piece splits into
- * the slices placed one per tick, the marker vocabulary and plot allocation. Registry-free and
+ * the world-aligned cubes placed within a per-tick time budget, the marker vocabulary and plot
+ * allocation. Registry-free and
  * unit-tested; {@link SolsticioCity} feeds it template sizes and marker strings.
  */
 public final class CityLayout {
@@ -24,8 +25,13 @@ public final class CityLayout {
   static final String SINGLE = "city";
   /** Layer 0 of every template sits at this world height. */
   public static final int BASE_Y = 64;
-  /** Horizontal edge of the columns placed per step; the full template height goes at once. */
-  public static final int SLICE = 32;
+  /**
+   * Edge of the cubes placed as one unit, aligned to world chunk sections so each cube touches one
+   * section; the server places cubes until its per-tick time budget is spent.
+   */
+  public static final int CUBE = 16;
+  /** Changes when the cutting changes, so an interrupted placement never resumes with other cubes. */
+  public static final String CUT_FORMAT = "cubes16";
   /** Plots are always this wide and deep, from their {@code player_plot} marker. */
   public static final int PLOT_SIZE = 16;
   /** Blocks below the marker a plot owner may dig, and above it they may build. */
@@ -75,10 +81,14 @@ public final class CityLayout {
   /** Where a piece's template origin (its minimum corner) lands in the world. */
   public record Placement(Piece piece, int x, int y, int z) {}
 
-  /** A column slice of a piece, in template-local coordinates. */
-  public record Slice(int pieceIndex, int fromX, int fromZ, int toX, int toZ) {
+  /** A cube of a piece in template-local coordinates, half-open: [from, to). */
+  public record Cube(int fromX, int fromY, int fromZ, int toX, int toY, int toZ) {
     public int width() {
       return toX - fromX;
+    }
+
+    public int height() {
+      return toY - fromY;
     }
 
     public int depth() {
@@ -134,13 +144,32 @@ public final class CityLayout {
     return offsets;
   }
 
-  /** Column slices of one piece, west to east then north to south. */
-  public static List<Slice> slices(int pieceIndex, int sizeX, int sizeZ, int edge) {
-    List<Slice> slices = new ArrayList<>();
-    for (int z = 0; z < sizeZ; z += edge)
-      for (int x = 0; x < sizeX; x += edge)
-        slices.add(new Slice(pieceIndex, x, z, Math.min(sizeX, x + edge), Math.min(sizeZ, z + edge)));
-    return slices;
+  /**
+   * Half-open intervals covering [0, size) of a piece whose layer 0 sits at world {@code origin},
+   * cut wherever the world coordinate is a multiple of {@code edge}.
+   */
+  public static List<int[]> cuts(int size, int origin, int edge) {
+    List<int[]> cuts = new ArrayList<>();
+    int from = 0;
+    while (from < size) {
+      int to = Math.min(size, from + edge - Math.floorMod(origin + from, edge));
+      cuts.add(new int[] {from, to});
+      from = to;
+    }
+    return cuts;
+  }
+
+  /**
+   * World-aligned cubes of one piece placed at {@code (originX, originY, originZ)}: north to south,
+   * west to east, and bottom to top inside each column, so supports come before what they hold.
+   */
+  public static List<Cube> cubes(int sizeX, int sizeY, int sizeZ, int originX, int originY, int originZ, int edge) {
+    List<Cube> cubes = new ArrayList<>();
+    for (int[] z : cuts(sizeZ, originZ, edge))
+      for (int[] x : cuts(sizeX, originX, edge))
+        for (int[] y : cuts(sizeY, originY, edge))
+          cubes.add(new Cube(x[0], y[0], z[0], x[1], y[1], z[1]));
+    return cubes;
   }
 
   /** Border radius around the origin that keeps the whole footprint plus the margin. */
