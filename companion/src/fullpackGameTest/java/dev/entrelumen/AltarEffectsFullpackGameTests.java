@@ -169,6 +169,24 @@ public final class AltarEffectsFullpackGameTests {
     return total;
   }
 
+  /** Ticks a detached projectile of the type three times; the failure's class name, or null. */
+  private static String probe(EntityType<?> type, ServerLevel level, Husk owner, Vec3 at) {
+    var entity = type.create(level);
+    if (!(entity instanceof Projectile projectile)) return "not a projectile";
+    try {
+      projectile.setOwner(owner);
+      projectile.setPos(at);
+      projectile.setDeltaMovement(0.9, 0, 0);
+      projectile.setNoGravity(true);
+      for (int tick = 0; tick < 3 && !projectile.isRemoved(); tick++) projectile.tick();
+      return null;
+    } catch (RuntimeException failure) {
+      return failure.getClass().getSimpleName();
+    } finally {
+      projectile.discard();
+    }
+  }
+
   /** Projectile pairs per batch: one slot each in a 3 x 6 x 12 grid, so no two ever touch. */
   private static final int SLOTS = 3 * 6 * 12;
 
@@ -213,8 +231,17 @@ public final class AltarEffectsFullpackGameTests {
         a.setOwner(owner);
         b.setOwner(owner);
         int column = slot / 72, row = slot % 72 / 12, lane = slot % 12;
-        slot++;
         Vec3 at = center.add(-11 + 8 * column, 2 + 2 * row, -11 + 2 * lane);
+        // A third, detached copy flies three ticks first: a type whose own tick fails without the
+        // data its launcher gives it (Aquaculture's bobber has no hook) must not reach the world.
+        String failure = probe(type, level, owner, at.add(0, 60, 0));
+        if (failure != null) {
+          a.discard();
+          b.discard();
+          skipped.put(id, "tick fails without spawn data: " + failure);
+          continue;
+        }
+        slot++;
         a.setPos(at);
         b.setPos(at.add(0, 30, 0));
         a.setDeltaMovement(0.9, 0, 0);
