@@ -1,0 +1,424 @@
+{
+  "chapter": "guide_travel",
+  "group": "exploration",
+  "act": "I",
+  "icon": "waystones:waystone",
+  "title": {
+    "en_us": "Travel: waystones, maps and vehicles",
+    "es_es": "Viajes: waystones, mapas y vehículos"
+  },
+  "subtitle": {
+    "en_us": "Get anywhere and back: JourneyMap, the Waystones network, beds on the road and aircraft.",
+    "es_es": "Llegar a cualquier lado y volver: JourneyMap, la red de Waystones, camas de viaje y aeronaves."
+  },
+  "quests": [
+    {
+      "key": "tr_welcome",
+      "deps": [],
+      "type": "checkmark",
+      "layout": {
+        "x": 0,
+        "y": 0,
+        "size": 2.0,
+        "shape": "hexagon"
+      },
+      "en_us": [
+        "The road is long; walking it twice is optional",
+        "ENTRELUMEN is an exploration pack, so travel matters from day one. The toolkit: JourneyMap for maps and waypoints, Waystones for fast travel between places you have visited, Comforts for sleeping away from home, and, from act III, aircraft and other late-game teleports.\n\nThe Heliodor Compass tells you where the story goes next; this chapter is about getting there and back."
+      ],
+      "es_es": [
+        "El camino es largo; caminarlo dos veces es opcional",
+        "ENTRELUMEN es un pack de exploración, así que viajar importa desde el primer día. Las herramientas: JourneyMap para mapas y waypoints, Waystones para viajar rápido entre lugares que ya visitaste, Comforts para dormir lejos de casa y, desde el acto III, aeronaves y otros teletransportes.\n\nLa Brújula de Heliodor te dice adónde va la historia; este capítulo es sobre cómo llegar y volver."
+      ],
+      "sources": [
+        "repo:docs/design/story-bible.md",
+        "repo:catalog/curated.json"
+      ]
+    },
+    {
+      "key": "tr_journeymap",
+      "deps": [
+        "tr_welcome"
+      ],
+      "type": "checkmark",
+      "icon": "minecraft:filled_map",
+      "layout": {
+        "x": 3,
+        "y": -3,
+        "size": 1.0,
+        "shape": "circle"
+      },
+      "en_us": [
+        "JourneyMap: open the map",
+        "JourneyMap draws the world as you explore it: a minimap in the corner and a full-screen map on J in this pack. The full-screen map has day, night, topography, biome and cave views, and it switches to a cave map by itself when you go underground.\n\nThe FTB Chunks minimap is turned off in this pack so the two do not overlap; FTB Chunks stays for claims (K)."
+      ],
+      "es_es": [
+        "JourneyMap: abrí el mapa",
+        "JourneyMap dibuja el mundo a medida que lo explorás: un minimapa en la esquina y un mapa a pantalla completa en J en este pack. El mapa completo tiene vistas de día, noche, topografía, biomas y cuevas, y cambia solo al mapa de cuevas cuando bajás bajo tierra.\n\nEl minimapa de FTB Chunks está apagado en este pack para que no se superpongan; FTB Chunks queda para los reclamos de terreno (K)."
+      ],
+      "sources": [
+        "jar:journeymap-neoforge-1.21.1-6.0.6.jar:assets/journeymap/lang/en_us.json",
+        "repo:pack/config/defaultoptions/keybindings.txt",
+        "repo:pack/config/ftbchunks-client.snbt"
+      ]
+    },
+    {
+      "key": "tr_waypoints",
+      "deps": [
+        "tr_journeymap"
+      ],
+      "type": "checkmark",
+      "icon": "minecraft:compass",
+      "layout": {
+        "x": 6,
+        "y": -3,
+        "size": 0.85,
+        "shape": "circle"
+      },
+      "en_us": [
+        "Waypoints and death points",
+        "Press M to create a waypoint where you stand, or B on the full-screen map to create one at the cursor (the pack moved these keys off the backpack key). Waypoints show a beacon in the world and can be shared with other players.\n\nJourneyMap also drops a \"Death\" waypoint where you die, which leads you straight back to your Tombstone grave."
+      ],
+      "es_es": [
+        "Waypoints y puntos de muerte",
+        "Apretá M para crear un waypoint donde estás parado, o B en el mapa completo para crearlo en el cursor (el pack movió estas teclas para que no choquen con la mochila). Los waypoints muestran un haz en el mundo y se pueden compartir con otros jugadores.\n\nJourneyMap además deja un waypoint «Death» donde morís, que te lleva directo a tu tumba de Tombstone."
+      ],
+      "sources": [
+        "jar:journeymap-neoforge-1.21.1-6.0.6.jar:assets/journeymap/lang/en_us.json",
+        "repo:pack/config/defaultoptions/keybindings.txt",
+        "repo:docs/design/keybinding-review.md"
+      ]
+    },
+    {
+      "key": "tr_find_waystone",
+      "deps": [
+        "tr_welcome"
+      ],
+      "type": "checkmark",
+      "icon": "waystones:mossy_waystone",
+      "layout": {
+        "x": 3,
+        "y": 0,
+        "size": 1.0,
+        "shape": "circle"
+      },
+      "en_us": [
+        "Find a waystone",
+        "Waystones generate on their own in the wild (roughly every 25 chunks, styled after the biome) and in some villages. Right-click one to activate it: from then on it appears in your list of destinations. Activation is per player.\n\nThey are also landmarks: with the default settings every waystone you activate gets a JourneyMap waypoint automatically."
+      ],
+      "es_es": [
+        "Encontrá una waystone",
+        "Las waystones aparecen solas en el mundo (más o menos cada 25 chunks, con el estilo del bioma) y en algunas aldeas. Hacé clic derecho en una para activarla: desde ahí aparece en tu lista de destinos. La activación es por jugador.\n\nTambién sirven de referencia: con la configuración por defecto, cada waystone que activás recibe un waypoint de JourneyMap automáticamente."
+      ],
+      "sources": [
+        "jar:waystones-neoforge-1.21.1-21.1.41.jar:net/blay09/mods/waystones/config/WaystonesConfigData.class",
+        "jar:waystones-neoforge-1.21.1-21.1.41.jar:net/blay09/mods/waystones/config/WaystonesConfigData$WorldGen.class",
+        "jar:waystones-neoforge-1.21.1-21.1.41.jar:net/blay09/mods/waystones/config/WaystonesConfigData$Compatibility.class",
+        "jar:waystones-neoforge-1.21.1-21.1.41.jar:assets/waystones/lang/en_us.json"
+      ]
+    },
+    {
+      "key": "tr_warp_stone",
+      "deps": [
+        "tr_find_waystone"
+      ],
+      "type": "item",
+      "item": "waystones:warp_stone",
+      "layout": {
+        "x": 6,
+        "y": 0,
+        "size": 1.0,
+        "shape": "square"
+      },
+      "en_us": [
+        "A Warp Stone",
+        "An ender pearl, amethyst shards and an emerald make a Warp Stone: hold right click to open your list of activated waystones from anywhere. It loses durability with each use.\n\nThe Warp Stone is also the core of any waystone you build yourself."
+      ],
+      "es_es": [
+        "Una Piedra de teletransporte",
+        "Una perla de ender, fragmentos de amatista y una esmeralda hacen una Piedra de teletransporte: manteniendo el clic derecho abrís tu lista de waystones activadas desde cualquier lugar. Pierde durabilidad con cada uso.\n\nLa Piedra de teletransporte también es el núcleo de cualquier waystone que construyas vos."
+      ],
+      "sources": [
+        "jar:waystones-neoforge-1.21.1-21.1.41.jar:data/waystones/recipe/warp_stone.json",
+        "jar:waystones-neoforge-1.21.1-21.1.41.jar:assets/waystones/lang/en_us.json",
+        "jar:waystones-neoforge-1.21.1-21.1.41.jar:net/blay09/mods/waystones/config/WaystonesConfigData$Teleports.class"
+      ]
+    },
+    {
+      "key": "tr_own_waystone",
+      "deps": [
+        "tr_warp_stone"
+      ],
+      "type": "item",
+      "item": "waystones:waystone",
+      "layout": {
+        "x": 9,
+        "y": 0,
+        "size": 1.0,
+        "shape": "square"
+      },
+      "en_us": [
+        "Your own waystone",
+        "Stone bricks, obsidian and a Warp Stone craft a waystone; there are versions in mossy, sandy, deepslate, blackstone, Nether, End, purpur, prismarine and mud brick styles. Put one at your base, one at each expedition camp and one at every structure you plan to revisit.\n\nOnly the owner can edit a waystone a player placed. Waystones cannot be moved with Carry On."
+      ],
+      "es_es": [
+        "Tu propia waystone",
+        "Ladrillos de piedra, obsidiana y una Piedra de teletransporte hacen una waystone; hay versiones musgosa, de arena, de pizarra profunda, de piedra negra, del Nether, del End, de purpur, de prismarina y de ladrillo de barro. Poné una en tu base, una en cada campamento de expedición y una en cada estructura a la que pienses volver.\n\nSólo el dueño puede editar una waystone que puso un jugador. Las waystones no se pueden mover con Carry On."
+      ],
+      "sources": [
+        "jar:waystones-neoforge-1.21.1-21.1.41.jar:data/waystones/recipe/waystone.json",
+        "jar:waystones-neoforge-1.21.1-21.1.41.jar:data/waystones/recipe/mossy_waystone.json",
+        "jar:waystones-neoforge-1.21.1-21.1.41.jar:net/blay09/mods/waystones/config/WaystonesConfigData$General.class",
+        "repo:pack/config/carryon-common.toml"
+      ]
+    },
+    {
+      "key": "tr_costs",
+      "deps": [
+        "tr_own_waystone"
+      ],
+      "type": "checkmark",
+      "icon": "minecraft:experience_bottle",
+      "layout": {
+        "x": 9,
+        "y": -3,
+        "size": 0.85,
+        "shape": "circle"
+      },
+      "en_us": [
+        "What a warp costs",
+        "Teleporting costs experience. Within a dimension the cost grows with distance; between dimensions it is a flat, higher cost; there is a cap either way. Warps to global waystones and from warp plates are free.\n\nLeashed animals travel with you; pets do not (the mod's default). Keep some levels in reserve before a long trip."
+      ],
+      "es_es": [
+        "Cuánto cuesta un viaje",
+        "Teletransportarse cuesta experiencia. Dentro de una misma dimensión el costo crece con la distancia; entre dimensiones es un costo fijo más alto; en los dos casos hay un tope. Los viajes a waystones globales y desde placas de teletransporte son gratis.\n\nLos animales atados con rienda viajan con vos; las mascotas no (así viene el mod). Guardá algunos niveles de reserva antes de un viaje largo."
+      ],
+      "sources": [
+        "jar:waystones-neoforge-1.21.1-21.1.41.jar:net/blay09/mods/waystones/config/WaystonesConfigData.class",
+        "jar:waystones-neoforge-1.21.1-21.1.41.jar:net/blay09/mods/waystones/config/WaystonesConfigData$Teleports.class",
+        "jar:waystones-neoforge-1.21.1-21.1.41.jar:assets/waystones/lang/en_us.json"
+      ]
+    },
+    {
+      "key": "tr_scrolls",
+      "deps": [
+        "tr_own_waystone"
+      ],
+      "type": "item",
+      "item": "waystones:return_scroll",
+      "layout": {
+        "x": 12,
+        "y": 0,
+        "size": 1.0,
+        "shape": "square"
+      },
+      "en_us": [
+        "Scrolls: one-way tickets",
+        "Waystones has single-use scrolls:\n- Return Scroll: takes you to your nearest activated waystone (or back through an open warp portal).\n- Warp Scroll: opens the destination list once.\n- Blank Scroll, used on a waystone, becomes a Bound Scroll to that waystone: a gift for a friend who has not been there.\n- Portal Scroll opens a temporary Warp Portal.\n\nCarry a Return Scroll on every expedition."
+      ],
+      "es_es": [
+        "Pergaminos: pasajes de ida",
+        "Waystones tiene pergaminos de un solo uso:\n- Pergamino de regreso: te lleva a la waystone activada más cercana (o de vuelta por un portal de teletransporte abierto).\n- Pergamino de teletransporte: abre la lista de destinos una vez.\n- El Pergamino en blanco, usado sobre una waystone, se vuelve un Pergamino vinculado a esa waystone: un regalo para un amigo que nunca estuvo ahí.\n- El Pergamino de portal abre un Portal de teletransporte temporal.\n\nLlevá un Pergamino de regreso en cada expedición."
+      ],
+      "sources": [
+        "jar:waystones-neoforge-1.21.1-21.1.41.jar:data/waystones/recipe/return_scroll.json",
+        "jar:waystones-neoforge-1.21.1-21.1.41.jar:net/blay09/mods/waystones/item/ReturnScrollItem.class",
+        "jar:waystones-neoforge-1.21.1-21.1.41.jar:data/waystones/recipe/warp_scroll.json",
+        "jar:waystones-neoforge-1.21.1-21.1.41.jar:data/waystones/recipe/blank_scroll.json",
+        "jar:waystones-neoforge-1.21.1-21.1.41.jar:data/waystones/recipe/portal_scroll.json",
+        "jar:waystones-neoforge-1.21.1-21.1.41.jar:assets/waystones/lang/en_us.json"
+      ]
+    },
+    {
+      "key": "tr_sharestones",
+      "deps": [
+        "tr_scrolls"
+      ],
+      "type": "checkmark",
+      "optional": true,
+      "icon": "waystones:light_blue_sharestone",
+      "layout": {
+        "x": 12,
+        "y": 3,
+        "size": 0.85,
+        "shape": "circle"
+      },
+      "en_us": [
+        "Sharestones and warp plates",
+        "Sharestones come in sixteen colors: each one teleports to any other of the same color, and they are shared by everyone, perfect for a team network. Warp Plates are linked in pairs with shards: step on one and you appear on the other, for free.\n\nPortstones are waystones you can leave from but never arrive at."
+      ],
+      "es_es": [
+        "Sharestones y placas de teletransporte",
+        "Las Sharestones vienen en dieciséis colores: cada una teletransporta a cualquier otra del mismo color, y son compartidas por todos, ideales para la red de un equipo. Las Placas de teletransporte se vinculan de a pares con fragmentos: te parás en una y aparecés en la otra, gratis.\n\nLas Portstones son waystones desde las que se puede salir pero a las que nunca se llega."
+      ],
+      "sources": [
+        "jar:waystones-neoforge-1.21.1-21.1.41.jar:assets/waystones/lang/en_us.json",
+        "jar:waystones-neoforge-1.21.1-21.1.41.jar:data/waystones/recipe/warp_plate.json",
+        "jar:waystones-neoforge-1.21.1-21.1.41.jar:data/waystones/recipe/dormant_shard.json"
+      ]
+    },
+    {
+      "key": "tr_solsticio",
+      "deps": [
+        "tr_scrolls"
+      ],
+      "type": "checkmark",
+      "icon": "entrelumen:light_key",
+      "layout": {
+        "x": 15,
+        "y": 0,
+        "size": 1.0,
+        "shape": "rsquare"
+      },
+      "en_us": [
+        "Solsticio's rift works like a waystone",
+        "In act VI the Rift of Solsticio, built inside the Town Hall with the three relics, stays open for everyone and behaves like a waystone of the Waystones network. Teleporting in by waystone disables the portal for a moment when you touch it, so you do not bounce straight back.\n\nUntil then, keep a waystone near your Ark: act V is the busiest act for travel."
+      ],
+      "es_es": [
+        "La grieta de Solsticio funciona como una waystone",
+        "En el acto VI la Grieta de Solsticio, armada dentro del Ayuntamiento con las tres reliquias, queda abierta para todos y funciona como una waystone de la red de Waystones. Al llegar por waystone el portal se desactiva un momento cuando lo tocás, para que no rebotes enseguida.\n\nHasta entonces, tené una waystone cerca de tu Arca: el acto V es el de más viajes."
+      ],
+      "sources": [
+        "repo:docs/design/story-bible.md",
+        "repo:companion/src/main/java/dev/entrelumen/SolsticioPortalBlock.java"
+      ]
+    },
+    {
+      "key": "tr_comforts",
+      "deps": [
+        "tr_welcome"
+      ],
+      "type": "item",
+      "item": "comforts:sleeping_bag_white",
+      "layout": {
+        "x": 3,
+        "y": 3,
+        "size": 1.0,
+        "shape": "square"
+      },
+      "en_us": [
+        "A bed for the road",
+        "Comforts adds Sleeping Bags and Hammocks. A sleeping bag lets you skip the night away from home without moving your respawn point; crouch to place it. Hammocks hang between two Rope and Nail blocks and let you sleep through the day.\n\nThat keeps your spawn at base while you camp far away."
+      ],
+      "es_es": [
+        "Una cama para el camino",
+        "Comforts suma Bolsas de dormir y Hamacas. Una bolsa de dormir te deja saltear la noche lejos de casa sin cambiar tu punto de reaparición; agachate para ponerla. Las hamacas se cuelgan entre dos bloques de Soga y clavo y sirven para dormir de día.\n\nAsí tu reaparición queda en la base mientras acampás lejos."
+      ],
+      "sources": [
+        "jar:comforts-neoforge-9.0.5+1.21.1.jar:assets/comforts/lang/en_us.json",
+        "repo:docs/design/ark-habitation.md",
+        "repo:catalog/curated.json"
+      ]
+    },
+    {
+      "key": "tr_boats",
+      "deps": [
+        "tr_comforts"
+      ],
+      "type": "checkmark",
+      "optional": true,
+      "icon": "fireproofboats:crimson_boat",
+      "layout": {
+        "x": 6,
+        "y": 3,
+        "size": 0.85,
+        "shape": "circle"
+      },
+      "en_us": [
+        "Small travel fixes",
+        "- Jump Boat: a boat can hop onto the shore instead of being stuck or broken.\n- Fireproof Boats: adds crimson and warped boats, which survive lava like their planks.\n- Nether Portal Fix: return portals link back to the portal you came from, so two bases do not share a Nether exit by accident."
+      ],
+      "es_es": [
+        "Arreglos chicos para viajar",
+        "- Jump Boat: un bote puede saltar a la orilla en lugar de quedar trabado o romperse.\n- Fireproof Boats: suma botes de madera carmesí y distorsionada, que resisten la lava como sus tablas.\n- Nether Portal Fix: los portales de vuelta se vinculan con el portal del que saliste, así dos bases no comparten por accidente la salida del Nether."
+      ],
+      "sources": [
+        "repo:catalog/curated.json",
+        "jar:fireproofboats-1.21.1-1.0.4.jar:assets/fireproofboats/lang/en_us.json",
+        "jar:netherportalfix-neoforge-1.21.1-21.1.1.jar:META-INF/neoforge.mods.toml"
+      ]
+    },
+    {
+      "key": "tr_aircraft",
+      "deps": [
+        "tr_boats"
+      ],
+      "type": "item",
+      "item": "immersive_aircraft:engine",
+      "optional": true,
+      "layout": {
+        "x": 9,
+        "y": 6,
+        "size": 1.0,
+        "shape": "circle"
+      },
+      "en_us": [
+        "Aircraft (act III)",
+        "Immersive Aircraft builds airships, biplanes, quadrocopters and gyrodynes. In ENTRELUMEN the engine needs a Power Regulator and the gyrodyne a Handling Core, both act III components; everything else is the mod's own recipe. Once you have them, fuel, repairs and use are free of pack gates.\n\nThe dismount key moved to F12 in this pack."
+      ],
+      "es_es": [
+        "Aeronaves (acto III)",
+        "Immersive Aircraft construye dirigibles, biplanos, cuadricópteros y girodinos. En ENTRELUMEN el motor pide un Regulador de energía y el girodino un Núcleo de manipulación, los dos componentes del acto III; el resto es la receta del mod. Una vez que los tenés, el combustible, las reparaciones y el uso no tienen trabas del pack.\n\nEn este pack la tecla para bajarse pasó a F12."
+      ],
+      "sources": [
+        "repo:docs/design/aircraft-balance.md",
+        "repo:pack/kubejs/server_scripts/entrelumen_aircraft_balance.js",
+        "repo:pack/config/defaultoptions/keybindings.txt"
+      ]
+    },
+    {
+      "key": "tr_late",
+      "deps": [
+        "tr_aircraft"
+      ],
+      "type": "checkmark",
+      "optional": true,
+      "icon": "entrelumen:routing_matrix",
+      "layout": {
+        "x": 12,
+        "y": 6,
+        "size": 0.85,
+        "shape": "circle"
+      },
+      "en_us": [
+        "Late-game teleports",
+        "Other mods add their own teleports, gated with the act III Routing Matrix in this pack, like Ender IO's Travel Anchor and Staff of Travelling. Tombstone's tablets can take you home or to a memorized place (see the Tombstone chapter). Pick one system for your base network and keep it simple."
+      ],
+      "es_es": [
+        "Teletransportes del final",
+        "Otros mods suman sus propios teletransportes, escalonados en este pack con la Matriz de distribución del acto III, como el Ancla de viaje y el Bastón de viaje de Ender IO. Las tablillas de Tombstone te llevan a casa o a un lugar memorizado (mirá el capítulo de Tombstone). Elegí un solo sistema para la red de tu base y mantenelo simple."
+      ],
+      "sources": [
+        "repo:pack/kubejs/server_scripts/entrelumen_pingpong_balance.js",
+        "jar:tombstone-neoforge-1.21.1-9.5.5.jar:assets/tombstone/lang/en_us.json"
+      ]
+    },
+    {
+      "key": "tr_mastery",
+      "deps": [
+        "tr_solsticio",
+        "tr_waypoints"
+      ],
+      "type": "checkmark",
+      "icon": "waystones:warp_stone",
+      "layout": {
+        "x": 18,
+        "y": 0,
+        "size": 2.25,
+        "shape": "pentagon"
+      },
+      "en_us": [
+        "Always a way back",
+        "A map that remembers, waypoints on every find, a waystone network, a scroll in your pocket and a bed on your back. Getting lost is now a choice."
+      ],
+      "es_es": [
+        "Siempre hay vuelta",
+        "Un mapa que recuerda, waypoints en cada hallazgo, una red de waystones, un pergamino en el bolsillo y una cama a la espalda. Perderse ahora es una elección."
+      ],
+      "sources": [
+        "jar:waystones-neoforge-1.21.1-21.1.41.jar:assets/waystones/lang/en_us.json",
+        "jar:journeymap-neoforge-1.21.1-6.0.6.jar:assets/journeymap/lang/en_us.json"
+      ]
+    }
+  ]
+}
