@@ -88,6 +88,10 @@ public final class ApotheosisContent {
     NeoForge.EVENT_BUS.addListener(ApotheosisTiers::tick);
     TeamEvent.PLAYER_LOGGED_IN.register(event -> ApotheosisTiers.sync(event.getPlayer()));
     TeamEvent.PLAYER_JOINED_PARTY.register(event -> ApotheosisTiers.sync(event.getPlayer()));
+    // Leaving a party moves the player back to their personal campaign and its tier.
+    TeamEvent.PLAYER_CHANGED.register(event -> {
+      if (event.getPlayer() != null) ApotheosisTiers.sync(event.getPlayer());
+    });
   }
 
   private static void registerCapabilities(RegisterCapabilitiesEvent event) {
