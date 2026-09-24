@@ -117,6 +117,7 @@ QOL = {
     'moreoverlays': 'Inspect light and chunk boundaries', 'toolbelt': 'Quick tool selection',
     'cosmeticarmorreworked': 'Keep character appearance while upgrading equipment',
     'simplebackups': 'Recover local worlds using bounded retention',
+    'lambdynlights': 'Dynamic light from held and worn light sources, including the luminous gear',
 }
 PERFORMANCE = {'sodium', 'modernfix', 'ferritecore', 'spark', 'immediatelyfast', 'fastsuite', 'fastfurnace', 'fastbench'}
 INFRA = {'drippyloadingscreen', 'ftbteams', 'ftbquests', 'kubejs', 'almostunified', 'ponderjs', 'fancymenu'}
@@ -125,7 +126,7 @@ CLIENT = {'defaultoptions', 'drippyloadingscreen', 'smithingtemplateviewer', 'ch
           'enchdesc', 'jeed', 'journeymap', 'betteradvancements', 'justenoughbreeding',
           'justenoughprofessions', 'jearchaeology', 'jei_mekanism_multiblocks', 'ae2jeiintegration',
           'extremesoundmuffler', 'toastcontrol', 'justzoom', 'rebind_narrator', 'moreoverlays',
-          'sodium', 'immediatelyfast', 'fancymenu', 'konkrete', 'melody', 'searchables'}
+          'sodium', 'immediatelyfast', 'fancymenu', 'konkrete', 'melody', 'searchables', 'lambdynlights'}
 EXCLUDED = {'projecte', 'allthemodium', 'allthetweaks', 'alltheores', 'allthecompressed'}
 FAMILY_PINS = {}
 

@@ -49,42 +49,109 @@ Es el mismo camino que diamante → netherita. La herrería copia todos los comp
 
 ### Stats
 
-| | Luminoso | Techo pasivo actual |
+El 24 de septiembre, Elias pidió stats absurdas: el equipo luminoso tiene que ser, por lejos, el mejor del pack.
+
+| | Luminoso | Techo actual del pack |
 |---|---|---|
-| Armadura del set | **34** (6/12/10/6) | Ignitium de Cataclysm 32 (6/11/9/6); Obsidiana Refinada de Mekanism Tools 31 (6/12/8/5); netherita y MekaSuit 20 |
-| Dureza por pieza | **6** | Obsidiana Refinada 5; Ignitium 4; netherita/MekaSuit 3 |
+| Armadura del set | **60** (12/22/16/10) | Ignitium de Cataclysm 32; Obsidiana Refinada 31 en Mekanism Tools y 30 en Silent Gear; netherita y MekaSuit 20 |
+| Dureza por pieza | **15** | Obsidiana Refinada 5 (4 en Silent Gear); Ignitium 4; netherita/MekaSuit 3 |
 | Resistencia al empuje por pieza | **0,25** (set 1,0: inmune) | Obsidiana Refinada 0,2; Ignitium 0,15; netherita/MekaSuit 0,1 |
-| Encantabilidad | **40** | Draconic caótico 35; Obsidiana Refinada 18; netherita 15 |
-| Durabilidad | 1100/1600/1500/1300; herramientas 8192; **nunca se rompe** | Obsidiana Refinada 825–1200, herramientas 4096 |
-| Herramientas | velocidad **16**, cosecha todo (tag `entrelumen:incorrect_for_luminous_tool` vacío) | Obsidiana Refinada 12; netherita 9 |
-| Espada / hacha | **14** a 1,6/s; **16** a 1,0/s | Obsidiana Refinada 12; netherita 8 |
+| Encantabilidad | **60** | Obsidiana Refinada de Silent Gear 40; Draconic caótico 35; netherita 15 |
+| Durabilidad | 2750/4000/3750/3250; herramientas 32.768; **nunca se rompe** | Acero tirio de Silent Gear 3652; Obsidiana Refinada 4096 en herramientas |
+| Herramientas | velocidad **60**, cosecha todo (tag `entrelumen:incorrect_for_luminous_tool` vacío) | Draconic caótico 50 con energía; electro azur de Silent Gear 29; netherita 9 |
+| Espada / hacha | **30** a 1,6/s; **32** a 1,0/s | Draconic caótico 17,5 base con energía (más módulos); Obsidiana Refinada 12; netherita 8 |
 
 Fuentes, leídas el 24 de septiembre de 2026:
 
 - `config/Mekanism/startup.toml` para MekaSuit y `tools-materials-startup.toml` para Obsidiana Refinada;
 - bytecode de `Armortier` en Cataclysm 3.33 para el Ignitium;
 - `ModularChestpiece` de Draconic Evolution 3.1.4, que usa material de diamante, y `DraconicEvolution.cfg` para sus valores internos (caótico: daño 2,5 × 7, 2 golpes/s × 1,6, velocidad 50, encantabilidad 35, módulos de daño de +16);
-- `ALCombatRules` de Apothic Attributes. Con su fórmula (daño × a/(a+armadura), a = 10 para golpes menores de 20), 34 de armadura deja pasar el 22,7 % del golpe; 32, el 24,4 %; 20, el 33 %. La dureza resiste la perforación de armadura a 2 % por punto: 24 puntos en el set dan 48 %, bajo el tope de 60 %.
+- los 138 materiales de Silent Gear 4.2.1.1 (tabla más abajo);
+- `ALCombatRules` de Apothic Attributes. Con su fórmula (daño × a/(a+armadura), a = 10 para golpes menores de 20), 60 de armadura deja pasar el 14,3 % del golpe; 32, el 24,4 %; 20, el 33 %. La dureza resiste la perforación de armadura a 2 % por punto: los 60 del set llegan al tope de 60 %. AttributeFix, fijado en el pack, levanta el tope vanilla de 30 de armadura.
 
 ### Habilidades
 
 - **Nunca se rompe.** El daño se corta un punto antes del máximo (`damageItem` de NeoForge, antes de Irrompibilidad). Una pieza en su último punto se **apaga**: `ItemAttributeModifierEvent` le vacía los atributos (sin armadura, dureza, ataque ni velocidad), mina a velocidad de puño y no da drops que pidan herramienta. Funciona como la élitra, que deja de planear en su último punto. Las herramientas guardan sus atributos en el componente por defecto, igual que la netherita. Así Apotheosis, que lee ese componente directamente, las archiva como armas; la primera corrida full-pack encontró que el hacha quedaba sin categoría cuando los atributos venían de un override.
-- **Reparación por luz.** Cada segundo, la luz en los ojos del jugador repara todas las piezas luminosas que lleva, sea en el inventario, la armadura o la mano secundaria. Repara `brillo − 11` puntos por pieza: nada por debajo de 12 y 4 a pleno sol. La noche a cielo abierto no repara, porque cuenta el brillo del cielo oscurecido por la hora. Una pechera agotada queda entera en menos de 7 minutos de sol. El Remiendo y el lingote en el yunque siguen funcionando.
-- **Bono de set** con las cuatro piezas encendidas:
+- **Reparación por luz.** Cada segundo, la luz en los ojos del jugador repara todas las piezas luminosas y de Silent Gear radiantes que lleva, sea en el inventario, la armadura o la mano secundaria. Repara `brillo − 11` puntos por pieza: nada por debajo de 12 y 4 a pleno sol. La noche a cielo abierto no repara, porque cuenta el brillo del cielo oscurecido por la hora. Una pechera agotada queda entera en menos de 17 minutos de sol. El Remiendo y el lingote en el yunque siguen funcionando.
+- **Bono de set** con cuatro piezas encendidas, luminosas, de Silent Gear radiantes o mezcladas:
+  - **vuelo tipo creativo**, por el atributo `neoforge:creative_flight` con un modificador propio (`entrelumen:luminous_flight`), nunca con `abilities.mayfly`. Se recalcula al cambiar el equipo (`LivingEquipmentChangeEvent`) y cada segundo. Sacarse una pieza quita sólo ese modificador: el vuelo creativo, los jetpacks, los anillos y otros modificadores siguen. Si el jugador estaba volando y ya no puede, recibe caída lenta 8 s: perder el set nunca mata y no deja trampa de caída;
   - visión nocturna ambiental, renovada cada segundo a 13 s, siempre fuera de la ventana de parpadeo de 10 s. Se quita sólo si la dio el set, nunca la de una poción;
   - sin daño de caída, para quien lo lleve.
+- **Luz dinámica** con LambDynamicLights: la armadura puesta y la herramienta en mano iluminan con nivel 15 mientras están encendidas; el lingote y las Luminosidades, con 12. Ver la sección de Silent Gear.
 - **Espada:** cada golpe revela al objetivo (Brillo 5 s) y hace +25 % de daño a no-muertos (`#minecraft:undead`).
 - Todo es fireproof y está en los tags vanilla de armadura y herramientas. Por eso los encantamientos y los tags `c:` funcionan, y Apotheosis archiva cada pieza en la misma categoría de afijos que su netherita.
 
-### Criterio frente a Draconic y MekaSuit
+### Frente a Draconic y MekaSuit
 
-El set luminoso supera **cada número pasivo** del pack: armadura, dureza, empuje, encantabilidad, durabilidad, velocidad y daño sin energía. Además no necesita energía ni infraestructura. **No** supera a la MekaSuit ni a la pechera caótica de Draconic cuando tienen energía:
+Con los números nuevos, el set luminoso supera todos los valores base del pack, incluido el arma caótica de Draconic sin módulos, y vuela sin energía. Todavía no iguala dos mecanismos alimentados por energía:
 
-- la MekaSuit absorbe hasta el 100 % del daño con energía (`unspecifiedDamageReductionRatio = 1.0`);
-- el escudo caótico absorbe cientos de puntos y se recupera;
-- las armas caóticas empiezan en unos 17,5 de daño a 3,2 golpes/s y suman módulos de +16.
+- la absorción de hasta el 100 % del daño de la MekaSuit (`unspecifiedDamageReductionRatio = 1.0`);
+- el escudo caótico de Draconic, con módulos de daño de +16 cada uno.
 
-Superarlos exigiría invulnerabilidad o matar de un golpe, es decir, romper todo. Por eso el equipo luminoso es el mejor sin energía y el único con set completo, bono, reparación por luz y compatibilidad total con afijos. Si Elias quiere que también supere a Draconic caótico, habría que agregarle un escudo de luz recargable; es una decisión de diseño abierta.
+Superar eso exigiría invulnerabilidad. Queda como decisión abierta de Elias.
+
+## Silent Gear y luz dinámica
+
+Pedido de Elias del 24 de septiembre: el Lingote Luminoso también es material de Silent Gear, con stats absurdas y traits de luz; el set completo vuela y el equipo luminoso ilumina alrededor.
+
+### Mods agregados
+
+| Mod | Versión y archivo | Origen | Lado | Por qué |
+|---|---|---|---|---|
+| Silent Gear | 4.2.1.1 (`silent-gear-1.21.1-neoforge-4.2.1.1.jar`, CF 297039/8095210, MIT) | instancia de referencia ATM10, SHA-1 verificado | ambos | herramientas, armas y armaduras por materiales |
+| Silent Lib | 10.6.0 (`silent-lib-1.21.1-neoforge-10.6.0.jar`, CF 242998/7935618, MIT) | ídem | ambos | dependencia requerida de Silent Gear |
+| LambDynamicLights | 4.8.11+1.21.1 (`lambdynamiclights-4.8.11+1.21.1.jar`, Modrinth yBW8D80W/ksaGCvSu, The Lambda License) | CDN oficial de Modrinth, descarga aprobada por Elias; SHA-1 y SHA-512 verificados | cliente | luz dinámica |
+
+- Familia `catalog/families/silent-gear.json`, agregada con `curate_pack.py --add-families`. El lock pasa de 272/232 a **275 cliente / 234 servidor** y las entradas previas no cambian.
+- Silent Gear Metalworks no hizo falta.
+- Silent Gear trae sus propios minerales (hierro carmesí, plata azur, bort) y su generación de mundo. No se tocaron sus configs.
+- **Luz dinámica.** Sodium Dynamic Lights, la opción obvia, quedó descartado:
+  - su última versión para NeoForge 1.21.1 es 1.0.10, de enero de 2025;
+  - depende de Sodium Options API, incompatible con Sodium 0.8 (issues #80 y #82 del repo);
+  - con Sodium 0.8 congela el cliente (issue #79).
+
+  RyoamicLights y el port no oficial de LambDynamicLights están abandonados desde 2024. **LambDynamicLights 4.8.11** oficial carga en NeoForge desde 4.5.0. Su runtime usa la API de configuración propia de Sodium 0.8: `ConfigBuilder`, `ModOptionsBuilder` y `ExternalPageBuilder`, que están presentes con esas firmas en el Sodium 0.8.13 fijado. Declara incompatibles a Sodium Dynamic Lights y RyoamicLights, y deja su tecla sin asignar. Su modo por defecto es `fancy`, con luces de entidades y del propio jugador activas.
+
+### Material `entrelumen:luminous`
+
+Archivo: `companion/src/main/resources/data/entrelumen/silentgear_materials/luminous.json`, formato `silentgear:simple` de 4.2.1.1. Usa el Lingote Luminoso como ingrediente, con color crema dorado `#F3E3B0` y textura `HIGH_CONTRAST`. El salvage está desactivado para que desguazar no devuelva Luminosidades. Parte principal frente al mejor valor de cada stat entre los 138 materiales de Silent Gear:
+
+| Stat (parte principal) | Luminoso | Mejor material existente |
+|---|---|---|
+| Armadura del set (casco/pechera/grebas/botas) | **60** (12/22/16/10) | Obsidiana Refinada 30 (5/12/8/5) |
+| Dureza (total del set; ÷4 por pieza) | **60** | Obsidiana Refinada 16 |
+| Resistencia al empuje (÷10 por pieza) | **2,5** → 0,25 por pieza | sólo la capa de netherita, +1,0 |
+| Armadura mágica | **60** | electro azur 19 |
+| Durabilidad de armadura | **250** | barrera 84; acero tirio 81 |
+| Daño de ataque | **30** | Obsidiana Refinada 10 |
+| Velocidad de ataque | **+1,0** | piedra luminosa +0,4 |
+| Daño mágico | **30** | electro azur 11 |
+| Daño a distancia | **12** | acero tirio y Obsidiana Refinada 4 |
+| Durabilidad | **32.768** | acero tirio 3652 |
+| Encantabilidad | **60** | Obsidiana Refinada 40 |
+| Velocidad de cosecha | **60** | electro azur 29 |
+| Carga / tensado / precisión / velocidad de proyectil | **2,5 / 1,0 / 2,0 / 3,0** | 1,5 / 0,4 / 1,5 / 2,0 |
+| Rareza | **250** | barrera 111 |
+| Nivel de cosecha | `luminous`, cosecha todo | netherita / acero tirio |
+
+Además define una punta (+10 ataque, +4096 durabilidad, +20 velocidad) y una capa: duplica ataque, durabilidad y velocidad de la pieza que recubre, y agrega Radiante e ignífugo.
+
+**Traits de la parte principal:**
+
+- **Radiante** (`entrelumen:radiant`, nuevo, datos en `silentgear_traits/radiant.json`, lógica en el companion). Cuenta para el bono de set, mezclable con la armadura luminosa propia: vuelo, visión nocturna y sin caída. Da luz dinámica, y la luz lo repara. Silent Gear no tiene un bono de set completo nativo que dé vuelo, así que el companion lee el trait por reflexión (`TraitHelper.getTraitLevel`, `GearHelper.isBroken`) sin enlazar contra Silent Gear.
+- Sagrado V (`silentgear:holy`): +10 de daño a no-muertos.
+- Lustroso V (`silentgear:lustrous`): gran bonus de velocidad de cosecha con luz.
+- Refractivo (`silentgear:refractive`): las herramientas colocan luces fantasma.
+- Visión felina (`silentgear:kitty_vision`): visión nocturna en el casco solo.
+- Ignífugo.
+
+**Luz dinámica.** `companion/src/main/resources/assets/entrelumen/dynamiclights/item/`:
+
+- `luminous_gear.json` (nivel 15);
+- `luminous_materials.json` (nivel 12);
+- `silent_gear_radiant.json` (nivel 15, las 33 piezas de equipo de Silent Gear, `silence_error` si falta Silent Gear).
+
+Los archivos de equipo usan el sub-predicado `entrelumen:radiant`, que registra el companion: coincide con una pieza luminosa encendida o con una de Silent Gear radiante que no esté rota, así que el equipo apagado no ilumina. LambDynamicLights recorre `getAllSlots()` y cuenta lo que se sostiene y lo que se lleva puesto.
 
 ## Ítems creativos
 

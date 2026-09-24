@@ -13,6 +13,11 @@ import java.util.List;
  * an elytra stops gliding at its last point. Light at the wearer's eyes repairs every luminous piece
  * the player carries by {@code brightness - 11} points per second: nothing below 12, four in full
  * daylight. Night outdoors (sky light darkened) does not repair.
+ *
+ * <p>Elias's direction of 24 September 2026 makes the luminous gear absurdly strong, far above every
+ * other set of the pack, with creative-style flight for the full set. The Silent Gear material made
+ * from the same ingot ({@code data/entrelumen/silentgear_materials/luminous.json}) matches these
+ * numbers, and either set, or a mix of both, earns the same set bonus.
  */
 public final class LuminousRules {
   private LuminousRules() {}
@@ -43,21 +48,21 @@ public final class LuminousRules {
   public static final int LUMINOUS_COLOR = 0xF3E3B0;
 
   // ---- armour material ----------------------------------------------------------------------
-  /** Armour points per piece: helmet, chestplate, leggings, boots (34 for the set). */
-  public static final int HELMET_ARMOR = 6, CHESTPLATE_ARMOR = 12, LEGGINGS_ARMOR = 10, BOOTS_ARMOR = 6;
-  /** Toughness per piece (24 for the set). */
-  public static final float TOUGHNESS = 6f;
+  /** Armour points per piece: helmet, chestplate, leggings, boots (60 for the set). */
+  public static final int HELMET_ARMOR = 12, CHESTPLATE_ARMOR = 22, LEGGINGS_ARMOR = 16, BOOTS_ARMOR = 10;
+  /** Toughness per piece (60 for the set). */
+  public static final float TOUGHNESS = 15f;
   /** Knockback resistance per piece (1.0, full immunity, for the set). */
   public static final float KNOCKBACK_RESISTANCE = 0.25f;
-  /** Vanilla durability factor: helmet 1100, chestplate 1600, leggings 1500, boots 1300. */
-  public static final int ARMOR_DURABILITY_FACTOR = 100;
-  public static final int ENCHANTABILITY = 40;
+  /** Vanilla durability factor: helmet 2750, chestplate 4000, leggings 3750, boots 3250. */
+  public static final int ARMOR_DURABILITY_FACTOR = 250;
+  public static final int ENCHANTABILITY = 60;
 
   // ---- tool tier ------------------------------------------------------------------------------
-  public static final int TOOL_USES = 8192;
-  public static final float TOOL_SPEED = 16f;
-  /** Tier attack bonus; the sword adds 3 and the player 1, for 14 damage. */
-  public static final float TOOL_ATTACK_BONUS = 10f;
+  public static final int TOOL_USES = 32768;
+  public static final float TOOL_SPEED = 60f;
+  /** Tier attack bonus; the sword adds 3 and the player 1, for 30 damage. */
+  public static final float TOOL_ATTACK_BONUS = 26f;
   /** Per-tool attack modifier and attack-speed modifier, as vanilla netherite uses them. */
   public static final float SWORD_DAMAGE = 3f, SWORD_SPEED = -2.4f;
   public static final float AXE_DAMAGE = 5f, AXE_SPEED = -3.0f;
@@ -77,6 +82,8 @@ public final class LuminousRules {
   public static final int REPAIR_MIN_BRIGHTNESS = 12;
   /** Night vision duration refreshed every interval; stays above the 200-tick flicker window. */
   public static final int NIGHT_VISION_TICKS = 260;
+  /** Slow falling granted when the set stops flying in mid-air, so losing it never kills. */
+  public static final int FLIGHT_LANDING_TICKS = 160;
 
   public static int setArmor() {
     return HELMET_ARMOR + CHESTPLATE_ARMOR + LEGGINGS_ARMOR + BOOTS_ARMOR;

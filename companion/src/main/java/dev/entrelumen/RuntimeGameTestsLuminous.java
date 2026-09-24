@@ -110,7 +110,8 @@ public final class RuntimeGameTestsLuminous {
         && layer.texture(false).equals(ResourceLocation.parse("entrelumen:textures/models/armor/luminous_layer_1.png"))
         && layer.texture(true).equals(ResourceLocation.parse("entrelumen:textures/models/armor/luminous_layer_2.png")),
         "Armour layer textures moved");
-    int[] durability = {1100, 1600, 1500, 1300};
+    int[] durability = {11 * LuminousRules.ARMOR_DURABILITY_FACTOR, 16 * LuminousRules.ARMOR_DURABILITY_FACTOR,
+        15 * LuminousRules.ARMOR_DURABILITY_FACTOR, 13 * LuminousRules.ARMOR_DURABILITY_FACTOR};
     var armour = List.of(Luminous.HELMET, Luminous.CHESTPLATE, Luminous.LEGGINGS, Luminous.BOOTS);
     var groups = List.of(EquipmentSlotGroup.HEAD, EquipmentSlotGroup.CHEST, EquipmentSlotGroup.LEGS, EquipmentSlotGroup.FEET);
     var tags = List.of(ItemTags.HEAD_ARMOR, ItemTags.CHEST_ARMOR, ItemTags.LEG_ARMOR, ItemTags.FOOT_ARMOR);
@@ -299,6 +300,82 @@ public final class RuntimeGameTestsLuminous {
       cow.discard();
       dark.discard();
     }
+    helper.succeed();
+  }
+
+  @GameTest(template = "empty", timeoutTicks = 100)
+  public static void luminousFullSetFliesWithoutTouchingOtherFlight(GameTestHelper helper) {
+    try (var session = new Session(helper, "LuminousFlight", new BlockPos(2, 1, 2))) {
+      var player = session.player;
+      var pieces = List.of(Luminous.HELMET, Luminous.CHESTPLATE, Luminous.LEGGINGS, Luminous.BOOTS);
+      helper.assertTrue(!player.mayFly(), "A survival player already flies");
+      for (int i = 0; i < 4; i++)
+        player.setItemSlot(Luminous.SET_SLOTS.get(i), new ItemStack(pieces.get(i).get()));
+      Luminous.setBonus(player);
+      helper.assertTrue(player.mayFly() && Luminous.setFlight(player), "The full set does not fly");
+      // Taking a piece off in mid-air ends the set's flight and lands the player on slow falling.
+      player.getAbilities().flying = true;
+      var helmet = player.getItemBySlot(EquipmentSlot.HEAD);
+      player.setItemSlot(EquipmentSlot.HEAD, ItemStack.EMPTY);
+      Luminous.setBonus(player);
+      helper.assertTrue(!player.mayFly() && !player.getAbilities().flying && !Luminous.setFlight(player)
+          && player.hasEffect(MobEffects.SLOW_FALLING), "Losing the set left flight on or dropped the player");
+      // Another flight modifier (a ring or jetpack) and abilities.mayfly survive the set coming and going.
+      var flight = player.getAttribute(net.neoforged.neoforge.common.NeoForgeMod.CREATIVE_FLIGHT);
+      var ring = ResourceLocation.parse("entrelumen_test:ring");
+      flight.addTransientModifier(new net.minecraft.world.entity.ai.attributes.AttributeModifier(ring, 1.0,
+          net.minecraft.world.entity.ai.attributes.AttributeModifier.Operation.ADD_VALUE));
+      player.setItemSlot(EquipmentSlot.HEAD, helmet);
+      Luminous.setBonus(player);
+      player.getAbilities().flying = true;
+      player.setItemSlot(EquipmentSlot.HEAD, ItemStack.EMPTY);
+      Luminous.setBonus(player);
+      helper.assertTrue(player.mayFly() && player.getAbilities().flying && flight.hasModifier(ring)
+          && !Luminous.setFlight(player), "The set removed someone else's flight");
+      flight.removeModifier(ring);
+      player.getAbilities().mayfly = true;
+      player.setItemSlot(EquipmentSlot.HEAD, helmet);
+      Luminous.setBonus(player);
+      player.setItemSlot(EquipmentSlot.HEAD, ItemStack.EMPTY);
+      Luminous.setBonus(player);
+      helper.assertTrue(player.mayFly() && player.getAbilities().mayfly, "The set cleared abilities.mayfly");
+      player.getAbilities().mayfly = false;
+      // A dark piece breaks the set too.
+      player.setItemSlot(EquipmentSlot.HEAD, helmet);
+      Luminous.setBonus(player);
+      helper.assertTrue(Luminous.setFlight(player), "The rebuilt set does not fly");
+      spend(helper, helmet);
+      Luminous.setBonus(player);
+      helper.assertTrue(!Luminous.setFlight(player), "A dark piece still flies");
+    }
+    helper.succeed();
+  }
+
+  @GameTest(template = "empty", timeoutTicks = 100)
+  public static void luminousDynamicLightDataMatchesLitPiecesOnly(GameTestHelper helper) throws Exception {
+    var ops = net.minecraft.resources.RegistryOps.create(com.mojang.serialization.JsonOps.INSTANCE,
+        helper.getLevel().registryAccess());
+    java.util.Map<String, net.minecraft.advancements.critereon.ItemPredicate> matches = new java.util.HashMap<>();
+    for (String file : List.of("luminous_gear", "luminous_materials")) {
+      try (var stream = RuntimeGameTestsLuminous.class.getResourceAsStream(
+          "/assets/entrelumen/dynamiclights/item/" + file + ".json")) {
+        helper.assertTrue(stream != null, "Dynamic light data missing: " + file);
+        var json = com.google.gson.JsonParser.parseReader(
+            new java.io.InputStreamReader(stream, java.nio.charset.StandardCharsets.UTF_8)).getAsJsonObject();
+        matches.put(file, net.minecraft.advancements.critereon.ItemPredicate.CODEC
+            .parse(ops, json.get("match")).getOrThrow());
+      }
+    }
+    var gear = matches.get("luminous_gear");
+    var sword = new ItemStack(Luminous.SWORD.get());
+    helper.assertTrue(gear.test(sword) && gear.test(new ItemStack(Luminous.CHESTPLATE.get()))
+        && !gear.test(new ItemStack(Items.NETHERITE_SWORD)), "Gear light predicate is wrong");
+    spend(helper, sword);
+    helper.assertTrue(!gear.test(sword), "A dark sword still lights");
+    var materials = matches.get("luminous_materials");
+    helper.assertTrue(materials.test(new ItemStack(Luminous.INGOT.get()))
+        && materials.test(new ItemStack(Luminous.LUMINOSITIES.get(LuminousRules.Discipline.ARCANE).get()))
+        && !materials.test(new ItemStack(Items.GLOWSTONE)), "Material light predicate is wrong");
     helper.succeed();
   }
 }
