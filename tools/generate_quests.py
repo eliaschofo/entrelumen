@@ -2,8 +2,10 @@
 
 Run with --check for read-only validation and generated-file drift detection.
 No third-party content is read. IDs are signed-positive 64-bit hashes of semantic
-keys, independent of ordering and translated text. Runtime verification remains
-required: static validation cannot prove FTB loading or campaign synchronization.
+keys, independent of ordering and translated text. Chapters may carry an optional
+subtitle (FTB chapter_subtitle); '&' formatting codes are validated so the Atlas's
+interference stays parseable and legible. Runtime verification remains required:
+static validation cannot prove FTB loading or campaign synchronization.
 """
 import argparse
 import hashlib
@@ -31,6 +33,38 @@ def stable_id(key):
 def snbt(value):
     # JSON is a valid quoted-key subset of SNBT; integer task counts fit int32.
     return json.dumps(value, ensure_ascii=False, indent=2) + "\n"
+
+
+# FTB Library parses '&' formatting codes in quest text (0-9, a-f, k-o, r and &#RRGGBB).
+# The Atlas speaks through interference: struck-through words (&m) and short glitches (&k).
+FORMAT_CODE = re.compile(r"&(#[0-9A-Fa-f]{6}|[0-9a-fk-or])")
+MAX_GLITCH_CHARS = 8
+MAX_GLITCHES = 2
+
+
+def check_formatting(text, where, allow_codes):
+    """Reject text that FTB would fail to parse, style that bleeds or glitches that hide the story."""
+    stripped = FORMAT_CODE.sub("", text)
+    assert "&" not in stripped, f"invalid or stray formatting code: {where}"
+    if not allow_codes:
+        assert stripped == text, f"formatting codes are only allowed in descriptions: {where}"
+        return
+    glitches = 0
+    for paragraph in text.split("\n\n"):
+        open_style, glitch = False, None
+        for part in re.split(r"(&(?:#[0-9A-Fa-f]{6}|[0-9a-fk-or]))", paragraph):
+            if FORMAT_CODE.fullmatch(part):
+                if glitch is not None:
+                    assert 0 < len(glitch.strip()) <= MAX_GLITCH_CHARS, f"unreadable glitch: {where}"
+                    glitch = None
+                open_style = part != "&r"
+                if part == "&k":
+                    glitches += 1
+                    glitch = ""
+            elif glitch is not None:
+                glitch += part
+        assert not open_style and glitch is None, f"formatting must be reset before the paragraph ends: {where}"
+    assert glitches <= MAX_GLITCHES, f"too many glitches to stay legible: {where}"
 
 
 def generate(data, all_quests=None, order_index=0):
@@ -81,6 +115,19 @@ def generate(data, all_quests=None, order_index=0):
     assert data["autofocus"] in local_keys and not any(dep in local_keys for dep in by_key[data["autofocus"]]["deps"]), "focus must point to the chapter entry"
     chapter_id = ident("chapter:" + data["chapter"])
     languages = {lang: {f"chapter.{chapter_id}.title": data["title"][lang]} for lang in LOCALES}
+    for lang in LOCALES:
+        check_formatting(data["title"][lang], f"{data['chapter']}/title/{lang}", False)
+        for group, labels in data["layout_groups"].items():
+            check_formatting(labels[lang], f"{data['chapter']}/{group}/{lang}", False)
+    if "subtitle" in data:
+        # Chapter presentation: FTB reads chapter_subtitle as a list of lines.
+        assert set(data["subtitle"]) == set(LOCALES), "subtitle locale mismatch"
+        for lang in LOCALES:
+            lines = data["subtitle"][lang]
+            assert isinstance(lines, list) and lines and all(isinstance(line, str) and line.strip() for line in lines)
+            for line in lines:
+                check_formatting(line, f"{data['chapter']}/subtitle/{lang}", False)
+            languages[lang][f"chapter.{chapter_id}.chapter_subtitle"] = lines
     chapter = {"id": chapter_id, "filename": data["chapter"], "order_index": order_index,
                "icon": {"id": "entrelumen:atlas"}, "default_quest_shape": "square",
                "autofocus_id": stable_id("quest:" + data["autofocus"]), "quests": []}
@@ -117,6 +164,8 @@ def generate(data, all_quests=None, order_index=0):
         for lang in LOCALES:
             title, description = q[lang]
             assert title.strip() and len(description) >= 80, f"missing text: {key}/{lang}"
+            check_formatting(title, f"{key}/title/{lang}", False)
+            check_formatting(description, f"{key}/{lang}", True)
             assert description not in seen_text[lang], "duplicate description"
             seen_text[lang].add(description)
             languages[lang][f"quest.{qid}.title"] = title
