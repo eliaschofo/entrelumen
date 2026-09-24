@@ -340,6 +340,63 @@ public final class RuntimeGameTestsSolsticio {
     helper.succeed();
   }
 
+  /**
+   * The start ruin, placed far from the test grid into a local registry, is protected through the
+   * same mapping the ruin provider uses: its box (foundation and terrain corners included) cannot
+   * be broken or blown up, while its pedestal still hands out the compass.
+   */
+  @GameTest(template = "empty", timeoutTicks = 200)
+  public static void startRuinIsProtectedButItsPedestalStaysUsable(GameTestHelper helper) {
+    var level = helper.getLevel();
+    var server = level.getServer();
+    var data = new RuinData();
+    var ruin = HeliodorRuins.place(level, data, helper.absolutePos(BlockPos.ZERO).offset(0, 0, 4096), false)
+        .orElseThrow();
+    var regions = StructureProtection.ruinRegions(data);
+    helper.assertTrue(regions.size() == 1 && regions.getFirst().box().equals(StructureProtection.box(ruin.box()))
+        && regions.getFirst().gate().equals(ProtectionRules.ActGate.act(1))
+        && regions.getFirst().dimension().equals(level.dimension().location().toString()),
+        "The ruin region does not match the registered ruin");
+    var mapped = regions.getFirst();
+    var region = new ProtectionRules.Region("entrelumen:qa_ruin_" + ruin.origin().toShortString(), mapped.dimension(),
+        mapped.box(), mapped.gate(), mapped.holes());
+    StructureProtection.addTransient(server, region);
+    try (var qa = new QaPlayer(helper, "RuinQA")) {
+      var player = qa.player;
+      var arrival = ruin.arrival();
+      player.teleportTo(arrival.getX() + 0.5, arrival.getY(), arrival.getZ() + 0.5);
+      BlockPos pedestal = ruin.pedestals().getFirst();
+      BlockPos floor = pedestal.below();
+      helper.assertTrue(!player.gameMode.destroyBlock(floor) && !level.getBlockState(floor).isAir(),
+          "The ruin floor broke");
+      helper.assertTrue(!player.gameMode.destroyBlock(pedestal)
+          && level.getBlockState(pedestal).is(HeliodorContent.PEDESTAL.get()), "The pedestal broke");
+      var box = ruin.box();
+      BlockPos foundation = null, corner = new BlockPos(box.minX(), ruin.origin().getY(), box.minZ());
+      for (int x = box.minX(); x <= box.maxX() && foundation == null; x++)
+        for (int z = box.minZ(); z <= box.maxZ() && foundation == null; z++) {
+          BlockPos candidate = new BlockPos(x, box.minY(), z);
+          if (box.minY() < ruin.origin().getY() && !level.getBlockState(candidate).isAir()) foundation = candidate;
+        }
+      if (foundation != null)
+        helper.assertTrue(!player.gameMode.destroyBlock(foundation) && !level.getBlockState(foundation).isAir(),
+            "The poured foundation broke");
+      if (!level.getBlockState(corner).isAir())
+        helper.assertTrue(!player.gameMode.destroyBlock(corner) && !level.getBlockState(corner).isAir(),
+            "The natural terrain corner inside the box broke");
+      player.gameMode.useItemOn(player, level, ItemStack.EMPTY, InteractionHand.MAIN_HAND, top(pedestal));
+      helper.assertTrue(player.getInventory().countItem(HeliodorContent.COMPASS.get()) == 1,
+          "The protected pedestal did not hand out the compass");
+      level.explode(null, pedestal.getX() + 0.5, pedestal.getY() + 1.0, pedestal.getZ() + 0.5, 3.0F,
+          Level.ExplosionInteraction.TNT);
+      helper.assertTrue(level.getBlockState(pedestal).is(HeliodorContent.PEDESTAL.get())
+          && !level.getBlockState(floor).isAir(), "An explosion damaged the ruin");
+    } finally {
+      StructureProtection.removeTransient(server, region.id());
+    }
+    helper.succeed();
+  }
+
   // ---- Light Key --------------------------------------------------------------------------
 
   @GameTest(template = "empty", timeoutTicks = 800)

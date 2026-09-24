@@ -61,14 +61,7 @@ Pure model in `ProtectionRules`, runtime in `StructureProtection`.
 
 - **Region** = stable id, dimension id, inclusive box, `ActGate` (act and optional milestone) and holes. **Hole** = box plus either *open* (exempts everyone) or *claimable* (a plot: protected until a campaign claims it, then only that campaign may build there). Overlapping regions must all allow an action; a hole of one region never opens another.
 - **Sources.** Providers registered with `StructureProtection.registerProvider(id, server -> regions)` are read whenever the index is rebuilt (`StructureProtection.invalidate(server)` after their data changes); transient regions (`addTransient`/`removeTransient`) serve tests and temporary sites. The index is per dimension and per chunk, allocation-free when a dimension has no region.
-- **Ruins.** `feature/compass` is not merged, so nothing references `RuinData` yet. After merging, one provider protects every placed ruin at its act:
-
-  ```java
-  StructureProtection.registerProvider("entrelumen:ruins", server -> RuinData.get(server).ruins().stream()
-      .map(r -> StructureProtection.ruin(r.id(), r.dimension().location(), r.box(), r.act())).toList());
-  ```
-
-  plus `StructureProtection.invalidate(server)` after `RuinData.add`.
+- **Ruins.** `StructureProtection.register` adds the provider `entrelumen:ruins`, which maps every ruin in `RuinData` to a region: its registered box (the template plus the foundation `HeliodorRuins` pours under it, so the round patio's natural-terrain corners are inside too), gated at the ruin's act, without holes. `HeliodorRuins.place` invalidates the index after registering a ruin; the foundation is poured before that, so protection never interferes with it. The start ruin's pedestal is in `entrelumen:protection/usable`: anyone can still take their compass.
 - **Solsticio** contributes one region: the whole bordered square, full height, gated by `Solsticio.GATE`, with one claimable hole per plot. The paired Overworld rift (fallback only) gets a small ungated region.
 
 What is refused, always on the logical server at the moment it happens (spectators, noclip clients and creative mode included):
@@ -85,6 +78,8 @@ What is refused, always on the logical server at the moment it happens (spectato
 | Fire | `FireSpreadMixin`: no burning (`checkBurnOut`) and no spreading (`getIgniteOdds`) into guarded blocks |
 | Mobs, trampling | `EntityMobGriefingEvent` (mobs in guarded blocks), `LivingDestroyBlockEvent`, `FarmlandTrampleEvent` |
 | Frames, paintings, armor stands | `EntityInvulnerabilityCheckEvent` (every damage source), `EntityInteract(Specific)` gated |
+
+`FireSpreadMixin`, `FluidSpreadMixin` and `SolsticioWeatherMixin` live in `dev.entrelumen.mixin.common`, declared in the required `entrelumen.common.mixins.json`.
 
 Right-clicks on guarded blocks fall in three classes: **free** (tag `entrelumen:protection/usable`: doors, trapdoors, gates, buttons, levers, bells, beds, stateless workstations, ender chests; also any block without block entity that opens a menu), **gated** (tag `entrelumen:protection/gated`, lecterns, Ark altars, and any block entity that is a container or exposes an item handler: chests, barrels, pots, shelves, jukeboxes, modded machines) and **locked** (everything else that would change the block, plus tag `entrelumen:protection/locked`, anvils). Gated blocks open when the acting team's campaign passes the region's gate; nobody may break them. A frame's shown item may be taken by an unlocked team; the frame stays. Fake players may work inside claimed plots but never open gated blocks. Operators toggle `/entrelumen admin protection bypass` for themselves (not persisted).
 
@@ -123,7 +118,7 @@ Stable IDs: `light_key`, `light_key_broken`, `solsticio_portal`, `heliodor_relic
 ## Tests
 
 - JUnit: `ProtectionRulesTest` (regions, holes, gates, overlap, fluids), `CityLayoutTest` (grid and centring, world-aligned cuts and cubes, markers, plots, border, template partition with markers and entities, `SolsticioData` round trip), `LightKeyRulesTest`.
-- GameTests (`RuntimeGameTestsSolsticio`, isolated server, run against the controller's `city.nbt`): dimension and city placed exactly once with markers, plots, portal anchor, border, biome and spawn refusal; weather ignored; break/place refused and the plot free for its team only (creative included, buckets refused); explosion, piston and incoming water stopped while the plot stays usable; chest locked until the act (spectators too), lever free, frames locked then their item takeable; key crossing, breaking and binding, locked team refused, mount left behind; the real item-use path (early release cancels with the key intact, a full channel crosses with exactly one broken key and no whole key left); return key for its owner only, both ways; portal refused to a locked team, opened with three relics and the owner's key, anti-bounce on both sides.
+- GameTests (`RuntimeGameTestsSolsticio`, isolated server, run against the controller's `city.nbt`): dimension and city placed exactly once with markers, plots, portal anchor, border, biome and spawn refusal; weather ignored; break/place refused and the plot free for its team only (creative included, buckets refused); explosion, piston and incoming water stopped while the plot stays usable; chest locked until the act (spectators too), lever free, frames locked then their item takeable; key crossing, breaking and binding, locked team refused, mount left behind; the real item-use path (early release cancels with the key intact, a full channel crosses with exactly one broken key and no whole key left); return key for its owner only, both ways; portal refused to a locked team, opened with three relics and the owner's key, anti-bounce on both sides; the start ruin (placed far from the grid into a local registry and protected through the provider's mapping) resists breaking of floor, foundation and terrain corners and an explosion, while its pedestal still hands out the compass.
 - Vanilla's GameTest server bakes its world with an empty dimension registry, so datapack dimensions never load there. The test-only fixture mod (`src/gameTestFixture`, never shipped) carries `GameTestDatapackDimensionsMixin`, which passes the datapack dimensions exactly as a dedicated server does.
 - The existing activation GameTest now expects exactly one forged Light Key and none on replay.
 
@@ -133,5 +128,4 @@ Stable IDs: `light_key`, `light_key_broken`, `solsticio_portal`, `heliodor_relic
 - Final art for the five items and the portal (controller).
 - Missions that award the relics, named villagers on their marker points, the trading hall's trades and moved-villager discounts.
 - Act renumbering (Ark → V, Solsticio → VI): only `Solsticio.GATE` changes.
-- Ruin protection wiring once `feature/compass` merges (provider snippet above).
 - Full-pack check with Waystones loaded (the reflection path is not exercised by the isolated tests).

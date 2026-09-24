@@ -124,6 +124,8 @@ public final class HeliodorRuins {
     data.add(ruin);
     data.pendingStart = false;
     data.setDirty();
+    // The foundation is already poured: from now on the whole registered box is protected.
+    StructureProtection.invalidate(level.getServer());
     if (moveSpawn) level.setDefaultSpawnPos(arrival, facing(arrival, ruin.center()));
     return Optional.of(ruin);
   }

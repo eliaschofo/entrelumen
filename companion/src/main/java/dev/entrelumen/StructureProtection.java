@@ -60,10 +60,9 @@ import net.neoforged.neoforge.event.server.ServerStoppedEvent;
  * the logical server at the moment of the interaction, so noclip, spectator or client tricks do
  * not open anything the team has not unlocked. Pure decisions live in {@link ProtectionRules}.
  *
- * <p>Ruins join with one provider, for example:
- * {@code StructureProtection.registerProvider("entrelumen:ruins", server -> RuinData.get(server)
- * .ruins().stream().map(r -> StructureProtection.ruin(r.id(), r.dimension().location(), r.box(),
- * r.act())).toList())}, and a call to {@link #invalidate} after placing a ruin.
+ * <p>Every ruin registered in {@link RuinData} is protected by its registered box (template plus
+ * the foundation poured under it), gated at the ruin's act; {@code HeliodorRuins.place}
+ * invalidates the index after registering one.
  */
 public final class StructureProtection {
   /** Blocks anyone may use inside a protected structure (doors, buttons, workstations...). */
@@ -150,6 +149,15 @@ public final class StructureProtection {
   public static void removeTransient(MinecraftServer server, String id) {
     State state = state(server);
     if (state.transients.remove(id) != null) state.dirty = true;
+  }
+
+  public static final String RUINS_PROVIDER = "entrelumen:ruins";
+
+  /** One region per registered ruin: its whole box, gated at its act, without holes. */
+  public static List<ProtectionRules.Region> ruinRegions(RuinData data) {
+    return data.ruins().stream()
+        .map(ruin -> ruin(ruin.id(), ruin.dimension().location(), ruin.box(), ruin.act()))
+        .toList();
   }
 
   /** Ruin regions from the {@code RuinData} fields: gated at the ruin's act, without holes. */
@@ -306,6 +314,7 @@ public final class StructureProtection {
   // ---- Events -----------------------------------------------------------------------------
 
   static void register() {
+    registerProvider(RUINS_PROVIDER, server -> ruinRegions(RuinData.get(server)));
     var bus = NeoForge.EVENT_BUS;
     bus.addListener(StructureProtection::onBreak);
     bus.addListener(StructureProtection::onPlace);
