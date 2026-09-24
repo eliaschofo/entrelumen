@@ -79,6 +79,15 @@ Para contestarles hace falta un artefacto que se perdió en el Aether. La entida
 - **Acto VI:** Solsticio.
 - **Las 171 quests actuales** conservan tareas y progresión, pero su texto se reescribe con el lore nuevo: Heliodor, la Inventora y la luz.
 
+## El Corazón de Heliodor y los dos finales (24 de septiembre)
+
+- El Sun Spirit suelta el **Corazón de Heliodor**: el núcleo de la máquina de la fusión, que él les confiscó. Puesto en el Atlas le da voz clara en los dos sentidos, pero es la misma tecnología que casi los destruye.
+- En Solsticio, Aurelia lo quiere de vuelta y Bodhi ruega que no se lo den. **Decisión final con dos finales:** entregárselo a Aurelia (camino técnico) o a Bodhi (camino espiritual o mágico).
+- **Consecuencias acotadas:** ningún final agrega intercambios ni bloquea nada.
+  - El camino elegido obtiene **descuentos absurdos** en sus Luminosidades y tradeos correspondientes; el opuesto sube de precio.
+  - Como son precios de súper endgame, pesan poco.
+  - Cambia un poco la estética final del pueblo y el lore, nada más.
+
 ## Personajes de Solsticio (24 de septiembre)
 
 - **Aurelia, la Alcaldesa:** aristócrata, casi villana pero justa. Guardiana del Ayuntamiento y del portal; empujó la fusión de la luz con la tecnología para controlarla. Da la misión final.
