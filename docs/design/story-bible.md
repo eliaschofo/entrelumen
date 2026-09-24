@@ -43,6 +43,11 @@ Para contestarles hace falta un artefacto que se perdió en el Aether. La entida
   - Los aldeanos nativos de la sala, si los llevás a biomas concretos que ellos piden, también hacen descuentos enormes y venden piezas de ítems creativos (cubo de energía creativo y similares). Los ítems creativos se consiguen así.
 - **Lote propio.** Tenés un lote para construir tu casa; el resto de la ciudad es indestructible.
 
+- **Nombres:** el limbo de luz se llama **el Entrelumen** (el título del pack es ese lugar y se revela tarde). La civilización se llama **Heliodor**.
+- **Jefes:** un poco de Twilight Forest y del Aether, no todos; Cataclysm no cierra actos. Elder Guardian, Wither y Dragón tienen que estar presentes, pero sólo importan sus drops, como materiales necesarios; no se los enmarca en la historia ni son necesariamente jefes de acto.
+- **Luminosidades:** los aldeanos nativos venden seis Luminosidades, una por disciplina: cobre-naranja (ingeniería), violeta (arcana), verde (naturaleza), celeste (exploración), turquesa (logística) y dorado cálido (habitabilidad). Tienen sprite animado con un brillo sutil, sin exagerar. Sirven para craftear los ítems creativos (cubo de energía, tanques, celdas y demás), que no se venden terminados.
+- **Lingote Luminoso:** blanco crema dorado, con un destello en el inventario. Hace el mejor equipo endgame del pack: armadura completa, herramientas y arma.
+
 ## Abierto (decidir con Elias)
-- Nombre de la civilización, de la aldea y de la luz.
+- Nombre de la aldea y del aparato de entrada.
 - Cuánto se construye a mano (aldea completa) y cuánto se resuelve con estructuras vistosas y recetas escalonadas. Elias aclaró que el proyecto no necesita llegar a v1.0: prioridad a lo que se pueda hacer bien.
