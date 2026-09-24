@@ -40,8 +40,11 @@ import net.neoforged.neoforge.gametest.PrefixGameTestTemplate;
  *
  * <ul>
  *   <li>The Renewal Altar rebuilds a pit dug in land made by the pack's real overworld generator
- *       (noise, surface rules and modded biome features), next to the test near world spawn, and
- *       what it writes equals an independent regeneration of the same chunk.</li>
+ *       (noise, surface rules and modded biome features), next to the test, and what it writes
+ *       equals an independent regeneration of the same chunk. Run it on untouched land away from
+ *       the spawn test area, with the land 28-68 blocks east of the test loaded (for example
+ *       {@code forceload} and {@code execute positioned ... run test run ...}): earlier tests
+ *       reshape the land near spawn, and a server without players loads only the spawn chunks.</li>
  *   <li>A real FTB Chunks claim refuses a foreign team's Renewal and Terraform altars inside the
  *       claimed chunk, with no charge for refused work, while outside it the work goes on.</li>
  * </ul>
@@ -147,8 +150,16 @@ public final class AltarFullpackGameTests {
         level.setBlock(helper.absolutePos(new BlockPos(x, -1, z)), Blocks.DIRT.defaultBlockState(), 2);
         level.setBlock(helper.absolutePos(new BlockPos(x, 0, z)), Blocks.GRASS_BLOCK.defaultBlockState(), 2);
       }
-    var owner = new Session(helper, "AltarClaimOwner");
-    var visitor = new Session(helper, "AltarClaimVisitor");
+    // Player names are at most 16 characters: FTB Teams syncs them with the vanilla name codec.
+    var owner = new Session(helper, "AltarQAOwner");
+    Session created;
+    try {
+      created = new Session(helper, "AltarQAVisitor");
+    } catch (RuntimeException | Error failure) {
+      owner.close();
+      throw failure;
+    }
+    var visitor = created;
     BlockPos altarPos = helper.absolutePos(new BlockPos(20, 1, 20));
     // A pit that spans two chunks along x; the owner claims the eastern chunk.
     List<BlockPos> pit = new ArrayList<>();
