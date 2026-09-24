@@ -1,0 +1,967 @@
+{
+  "chapter": "guide_aether",
+  "group": "exploration",
+  "act": "IV",
+  "icon": "aether:aether_portal_frame",
+  "title": {
+    "en_us": "The Aether and Deep Aether",
+    "es_es": "El Aether y Deep Aether"
+  },
+  "subtitle": {
+    "en_us": "Floating islands, three dungeons and the Sun Spirit: the sky where act IV ends.",
+    "es_es": "Islas flotantes, tres mazmorras y el Espíritu del Sol: el cielo donde termina el acto IV."
+  },
+  "quests": [
+    {
+      "key": "aether_welcome",
+      "deps": [],
+      "type": "checkmark",
+      "layout": {
+        "x": 0,
+        "y": 0,
+        "size": 2.0,
+        "shape": "hexagon"
+      },
+      "en_us": [
+        "The sky above Heliodor",
+        "The Aether is a dimension of floating islands with its own ores, tools, mounts and three boss dungeons: Bronze, Silver and Gold. In ENTRELUMEN it belongs to act IV. The Heliodor Compass points there with a gold needle, then leads you through the dungeons, and the Sun Spirit at the end of the Gold Dungeon closes the act.\n\nYou may go earlier: the portal works like the Nether one and the pack does not lock it. This chapter is a manual, not a requirement. It follows the natural route (portal, first tools, Altar, gravitite, the three dungeons) and ends with what Deep Aether adds: new biomes, Skyjade, Stratus and the Brass Dungeon."
+      ],
+      "es_es": [
+        "El cielo sobre Heliodor",
+        "El Aether es una dimensión de islas flotantes con minerales, herramientas, monturas y tres mazmorras con jefe: Bronce, Plata y Oro. En ENTRELUMEN pertenece al acto IV. La Brújula de Heliodor apunta hacia allá con la aguja dorada, después te lleva por las mazmorras, y el Espíritu del Sol, al final de la Mazmorra de oro, cierra el acto.\n\nPodés ir antes: el portal funciona como el del Nether y el pack no lo bloquea. Este capítulo es un manual, no una obligación. Sigue la ruta natural (portal, primeras herramientas, Altar, gravitita, las tres mazmorras) y termina con lo que suma Deep Aether: biomas nuevos, Skyjade, Stratus y la Mazmorra de latón."
+      ],
+      "sources": [
+        "repo:docs/design/story-bible.md",
+        "repo:content/compass_targets.json",
+        "repo:docs/design/mod-pingpong.md"
+      ]
+    },
+    {
+      "key": "aether_portal",
+      "deps": [
+        "aether_welcome"
+      ],
+      "type": "item",
+      "item": "minecraft:glowstone",
+      "count": 10,
+      "layout": {
+        "x": 3,
+        "y": 0,
+        "size": 1.0,
+        "shape": "square"
+      },
+      "en_us": [
+        "A glowstone frame",
+        "Collect 10 glowstone blocks (4 dust make one block). Build a frame shaped like a Nether portal: the inside must be at least 2 wide and 3 tall and the corners are optional, so the smallest frame takes 10 blocks. Pour a water bucket inside and the water becomes an Aether portal.\n\nThe mod can hand out an Aether Portal Frame item when a world is created. ENTRELUMEN switches that off, because you start with an empty inventory, so this frame is the way up. The mod's own tip applies: place the water carefully, a misclick breaks the frame you just built."
+      ],
+      "es_es": [
+        "Un marco de piedra luminosa",
+        "Juntá 10 bloques de piedra luminosa (glowstone; 4 de polvo hacen un bloque). Armá un marco con la forma de un portal del Nether: el hueco mide al menos 2 de ancho y 3 de alto y las esquinas son opcionales, así que el marco más chico lleva 10 bloques. Volcá un balde de agua adentro y el agua se convierte en un portal al Aether.\n\nEl mod puede regalar un Marco de portal del Aether al crear el mundo. ENTRELUMEN lo tiene apagado, porque empezás con el inventario vacío, así que este marco es la forma de subir. Vale el consejo del propio mod: poné el agua con cuidado, un clic mal dado rompe el marco que acabás de armar."
+      ],
+      "sources": [
+        "jar:aether-1.21.1-1.5.10-neoforge.jar:data/aether/tags/block/aether_portal_blocks.json",
+        "jar:aether-1.21.1-1.5.10-neoforge.jar:com/aetherteam/aether/block/portal/AetherPortalShape.class",
+        "jar:aether-1.21.1-1.5.10-neoforge.jar:assets/aether/lang/en_us.json",
+        "repo:pack/config/aether-common.toml"
+      ]
+    },
+    {
+      "key": "aether_enter",
+      "deps": [
+        "aether_portal"
+      ],
+      "type": "dimension",
+      "dimension": "aether:the_aether",
+      "icon": "aether:book_of_lore",
+      "layout": {
+        "x": 6,
+        "y": 0,
+        "size": 1.75,
+        "shape": "diamond"
+      },
+      "en_us": [
+        "Hostile Paradise",
+        "Step through the portal. On your first arrival the Aether gives you a Book of Lore and a Golden Parachute; the pack keeps that gift on purpose. Put any item in the Book of Lore to read what it does: it is the mod's own encyclopedia and the source of most tips in this chapter.\n\nDays in the Aether last three times longer than on the surface, and while the Sun Spirit lives the sky stays in eternal daylight. The first visit by anyone on your team also records the act IV milestone \"Aether: a witnessed arrival\", even if you come early."
+      ],
+      "es_es": [
+        "Paraíso hostil",
+        "Cruzá el portal. En tu primera llegada el Aether te da un Libro de Historia (Book of Lore) y un Paracaídas dorado; el pack mantiene ese regalo a propósito. Poné cualquier ítem en el Libro de Historia para leer qué hace: es la enciclopedia del mod y la fuente de casi todos los consejos de este capítulo.\n\nLos días en el Aether duran el triple que en la superficie, y mientras el Espíritu del Sol viva el cielo queda en día eterno. La primera visita de cualquier integrante de tu equipo también registra el hito del acto IV «Aether: una llegada registrada», aunque llegues antes de tiempo."
+      ],
+      "sources": [
+        "jar:aether-1.21.1-1.5.10-neoforge.jar:data/aether/loot_table/advancements/enter_aether.json",
+        "jar:aether-1.21.1-1.5.10-neoforge.jar:assets/aether/lang/en_us.json",
+        "jar:aether-1.21.1-1.5.10-neoforge.jar:com/aetherteam/aether/AetherConfig$Server.class",
+        "repo:docs/design/story-bible.md",
+        "repo:content/act_four.json"
+      ]
+    },
+    {
+      "key": "aether_falling",
+      "deps": [
+        "aether_enter"
+      ],
+      "type": "item",
+      "item": "aether:cold_parachute",
+      "layout": {
+        "x": 6,
+        "y": -3,
+        "size": 1.0,
+        "shape": "square"
+      },
+      "en_us": [
+        "Falling is not the end",
+        "The islands float over the void, but falling out of the Aether does not kill you: with the default config (kept by the pack) you drop back into the Overworld instead. Parachutes open by themselves when you fall off an island. Craft a Cold Parachute from 4 Cold Aerclouds (one use) or a Golden Parachute from Golden Aerclouds (20 uses) and keep it in your hotbar.\n\nWhite Cold Aerclouds also cancel fall damage when you land on them, and Blue Aerclouds bounce you high. Carry a spare stack of blocks to bridge between islands."
+      ],
+      "es_es": [
+        "Caerse no es el final",
+        "Las islas flotan sobre el vacío, pero caerte del Aether no te mata: con la configuración por defecto (que el pack conserva) caés de vuelta al Overworld. Los paracaídas se abren solos cuando caés de una isla. Fabricá un Paracaídas frío con 4 Aeronubes frías (un solo uso) o uno dorado con Aeronubes doradas (20 usos) y tenelo en la barra rápida.\n\nLas Aeronubes frías, las blancas, también anulan el daño por caída si caés encima, y las azules te hacen rebotar bien alto. Llevá una pila de bloques de repuesto para hacer puentes entre islas."
+      ],
+      "sources": [
+        "jar:aether-1.21.1-1.5.10-neoforge.jar:data/aether/recipe/cold_parachute.json",
+        "jar:aether-1.21.1-1.5.10-neoforge.jar:assets/aether/lang/en_us.json",
+        "jar:aether-1.21.1-1.5.10-neoforge.jar:com/aetherteam/aether/AetherConfig$Server.class"
+      ]
+    },
+    {
+      "key": "aether_hazards",
+      "deps": [
+        "aether_enter"
+      ],
+      "type": "checkmark",
+      "icon": "aether:blue_aercloud",
+      "layout": {
+        "x": 9,
+        "y": -3,
+        "size": 0.85,
+        "shape": "circle"
+      },
+      "en_us": [
+        "What pushes you off",
+        "Most Aether deaths are falls, not fights. Watch for:\n- Zephyrs: flying mobs that shoot snowballs with enough knockback to throw you off an island.\n- Quicksoil, the slippery sand on island edges: it speeds up anything that walks or slides on it.\n- Blue Aerclouds: they launch mobs, and you, very high.\n- Chest Mimics in the Bronze and Silver Dungeons: a chest that bites when you open it.\n- Deep shafts in the ground.\n\nFight with your back to the island's centre, not to the edge."
+      ],
+      "es_es": [
+        "Lo que te tira de la isla",
+        "En el Aether casi todas las muertes son caídas, no peleas. Ojo con:\n- Céfiros (Zephyrs): bichos voladores que tiran bolas de nieve con empuje suficiente para sacarte de una isla.\n- Resbarena (Quicksoil), la arena resbalosa de los bordes: acelera todo lo que camina o se desliza encima.\n- Aeronubes azules: lanzan a los mobs, y a vos, muy alto.\n- Cofres mímicos en las mazmorras de Bronce y de Plata: un cofre que muerde cuando lo abrís.\n- Pozos profundos en el suelo.\n\nPeleá de espaldas al centro de la isla, no al borde."
+      ],
+      "sources": [
+        "jar:aether-1.21.1-1.5.10-neoforge.jar:assets/aether/lang/en_us.json"
+      ]
+    },
+    {
+      "key": "aether_home",
+      "deps": [
+        "aether_hazards"
+      ],
+      "type": "checkmark",
+      "optional": true,
+      "icon": "aether:skyroot_bed",
+      "layout": {
+        "x": 9,
+        "y": -6,
+        "size": 0.85,
+        "shape": "circle"
+      },
+      "en_us": [
+        "A quiet garden",
+        "Two small tricks keep a base in the Aether safe. Placing a Swet Banner stops Swets from appearing around it (advancement \"Get Off My Lawn!\"). Planting a flower on Enchanted Aether Grass deters Aechor Plants from spawning there (\"Tending The Garden\").\n\nAether beds are made of Skyroot; you can set your respawn point in the Aether with one during the day. The mod's option that makes vanilla beds explode up here is off by default and the pack leaves it off."
+      ],
+      "es_es": [
+        "Un jardín tranquilo",
+        "Dos trucos chicos mantienen segura una base en el Aether. Poner un Estandarte de Swet evita que aparezcan Swets alrededor (logro «Get Off My Lawn!»). Plantar una flor sobre Pasto del Aether encantado impide que aparezcan Plantas Aechor ahí («Tending The Garden»).\n\nLas camas del Aether son de raicielo; con una podés fijar tu punto de reaparición en el Aether durante el día. La opción del mod que hace explotar las camas vanilla acá arriba viene apagada y el pack la deja así."
+      ],
+      "sources": [
+        "jar:aether-1.21.1-1.5.10-neoforge.jar:assets/aether/lang/en_us.json",
+        "jar:aether-1.21.1-1.5.10-neoforge.jar:data/aether/advancement/prevent_swet_spawning.json",
+        "jar:aether-1.21.1-1.5.10-neoforge.jar:data/aether/advancement/prevent_aechor_petal_spawning.json",
+        "jar:aether-1.21.1-1.5.10-neoforge.jar:com/aetherteam/aether/AetherConfig$Server.class"
+      ]
+    },
+    {
+      "key": "aether_tools",
+      "deps": [
+        "aether_enter"
+      ],
+      "type": "item",
+      "item": "aether:skyroot_pickaxe",
+      "layout": {
+        "x": 9,
+        "y": 0,
+        "size": 1.0,
+        "shape": "square"
+      },
+      "en_us": [
+        "Aether tools for Aether blocks",
+        "Craft a Skyroot Pickaxe from Skyroot planks and Skyroot sticks, then move on to Holystone tools. With the default config, which the pack keeps, tools from outside the Aether mine Aether blocks slower: your diamond pickaxe feels sluggish up here on purpose.\n\nEach early tier has a trick. Skyroot tools double the drops of Holystone, Ambrosium Ore, Aether dirt and logs, and a Skyroot sword doubles mob drops. Holystone tools randomly drop Ambrosium Shards while you use them."
+      ],
+      "es_es": [
+        "Herramientas del Aether para bloques del Aether",
+        "Fabricá un Pico de raicielo (Skyroot) con tablas y palos de raicielo, y después pasá a las herramientas de Piedra sagrada (Holystone). Con la configuración por defecto, que el pack conserva, las herramientas de afuera del Aether pican más lento los bloques del Aether: tu pico de diamante se siente pesado acá arriba a propósito.\n\nCada nivel temprano tiene su truco. Las de raicielo duplican lo que sueltan la Piedra sagrada, la mena de ambrosium, la tierra y los troncos del Aether, y la espada de raicielo duplica el botín de los mobs. Las de Piedra sagrada sueltan Fragmentos de ambrosium al azar mientras las usás."
+      ],
+      "sources": [
+        "jar:aether-1.21.1-1.5.10-neoforge.jar:assets/aether/lang/en_us.json",
+        "jar:aether-1.21.1-1.5.10-neoforge.jar:com/aetherteam/aether/AetherConfig$Server.class"
+      ]
+    },
+    {
+      "key": "aether_ambrosium",
+      "deps": [
+        "aether_tools"
+      ],
+      "type": "item",
+      "item": "aether:ambrosium_shard",
+      "count": 16,
+      "layout": {
+        "x": 12,
+        "y": 0,
+        "size": 1.0,
+        "shape": "circle"
+      },
+      "en_us": [
+        "Ambrosium, the sky's coal",
+        "Ambrosium is the most common Aether ore. Its shards fuel the Altar, make Ambrosium Torches (the Aether's light and the Incubator's fuel), and can be eaten to restore half a heart. A Skyroot Pickaxe doubles them.\n\nGather a good pile early: every Altar enchantment and repair burns shards."
+      ],
+      "es_es": [
+        "Ambrosium, el carbón del cielo",
+        "El ambrosium es el mineral más común del Aether. Sus fragmentos alimentan el Altar, hacen Antorchas de ambrosium (la luz del Aether y el combustible de la Incubadora) y se pueden comer para recuperar medio corazón. El Pico de raicielo los duplica.\n\nJuntá una buena pila temprano: cada encantamiento y cada reparación del Altar quema fragmentos."
+      ],
+      "sources": [
+        "jar:aether-1.21.1-1.5.10-neoforge.jar:assets/aether/lang/en_us.json",
+        "jar:aether-1.21.1-1.5.10-neoforge.jar:com/aetherteam/aether/AetherConfig$Server.class"
+      ]
+    },
+    {
+      "key": "aether_zanite",
+      "deps": [
+        "aether_ambrosium"
+      ],
+      "type": "item",
+      "item": "aether:zanite_gemstone",
+      "count": 8,
+      "layout": {
+        "x": 15,
+        "y": 0,
+        "size": 1.0,
+        "shape": "circle"
+      },
+      "en_us": [
+        "Zanite gets better as it wears",
+        "Zanite Ore can be mined with a stone-tier pickaxe such as the Holystone one. Zanite armor protects like iron, but Zanite tools and the sword get stronger as they lose durability: the sword starts at iron damage and climbs up to double. Repairing one makes it slow again, so repair late.\n\nIn ENTRELUMEN a Zanite Gemstone is also the act IV component in the Iron Jetpacks elite coil."
+      ],
+      "es_es": [
+        "La zanita mejora con el desgaste",
+        "La mena de zanita se pica con un pico de piedra, como el de Piedra sagrada. La armadura de zanita protege como la de hierro, pero las herramientas y la espada se vuelven más fuertes a medida que pierden durabilidad: la espada arranca con daño de hierro y sube hasta el doble. Repararla la vuelve lenta otra vez, así que reparala tarde.\n\nEn ENTRELUMEN la Gema de zanita (Zanite Gemstone) es además el componente del acto IV en la bobina de élite de Iron Jetpacks."
+      ],
+      "sources": [
+        "jar:aether-1.21.1-1.5.10-neoforge.jar:assets/aether/lang/en_us.json",
+        "repo:pack/kubejs/server_scripts/entrelumen_industrial_balance.js"
+      ]
+    },
+    {
+      "key": "aether_gloves",
+      "deps": [
+        "aether_zanite"
+      ],
+      "type": "checkmark",
+      "icon": "aether:zanite_gloves",
+      "layout": {
+        "x": 15,
+        "y": 3,
+        "size": 0.85,
+        "shape": "circle"
+      },
+      "en_us": [
+        "Gloves complete the set",
+        "Aether armor has a fifth piece: gloves. With the default config (kept by the pack) a set bonus only works if you also wear the matching gloves: Gravitite's high jump, Valkyrie flight, Phoenix fire immunity, Neptune swimming. The mod also makes gloves for leather, chainmail, iron, gold, diamond and netherite armor.\n\nGloves, rings, pendants, capes and shields go in the Aether accessory menu: press I (or use the button in your inventory). Rings and pendants such as the Zanite ones speed up mining for a short while and wear out."
+      ],
+      "es_es": [
+        "Los guantes completan el set",
+        "La armadura del Aether tiene una quinta pieza: los guantes. Con la configuración por defecto (que el pack conserva) el bonus de set sólo funciona si además tenés puestos los guantes que corresponden: el salto de la gravitita, el vuelo de Valquiria, la inmunidad al fuego de Fénix, el nado de Neptuno. El mod también hace guantes para las armaduras de cuero, cota de malla, hierro, oro, diamante y netherite.\n\nGuantes, anillos, colgantes, capas y escudos van en el menú de accesorios del Aether: apretá I (o usá el botón del inventario). Los anillos y colgantes, como los de zanita, aceleran el picado un rato y se gastan."
+      ],
+      "sources": [
+        "jar:aether-1.21.1-1.5.10-neoforge.jar:assets/aether/lang/en_us.json",
+        "jar:aether-1.21.1-1.5.10-neoforge.jar:com/aetherteam/aether/AetherConfig$Server.class",
+        "jar:aether-1.21.1-1.5.10-neoforge.jar:com/aetherteam/aether/client/AetherKeys.class",
+        "jar:aether-1.21.1-1.5.10-neoforge.jar:data/aether/tags/item/accessories.json"
+      ]
+    },
+    {
+      "key": "aether_poison",
+      "deps": [
+        "aether_ambrosium"
+      ],
+      "type": "item",
+      "item": "aether:white_apple",
+      "optional": true,
+      "layout": {
+        "x": 12,
+        "y": -3,
+        "size": 1.0,
+        "shape": "circle"
+      },
+      "en_us": [
+        "Aether poison and its cure",
+        "Aechor Plants, and poison darts, inflict Inebriation: damage over time plus random stumbling, dangerous next to an edge. Cure it with a White Apple from Crystal Trees on small floating islands, or with a Skyroot Remedy Bucket, which you get by enchanting a Skyroot Poison Bucket in the Altar. Remedy also grants immunity for a while.\n\nYou can collect an Aechor Plant's poison with a Skyroot Bucket; its petals are the favourite food of baby Moas."
+      ],
+      "es_es": [
+        "El veneno del Aether y su cura",
+        "Las Plantas Aechor, y los dardos venenosos, provocan Embriaguez (Inebriation): daño con el tiempo y tambaleos al azar, peligrosos cerca de un borde. Se cura con una Manzana blanca de los Árboles de cristal que crecen en islitas flotantes, o con un Cubo de raicielo con remedio, que sale de encantar en el Altar un Cubo de raicielo con veneno. El remedio además te da inmunidad un rato.\n\nEl veneno de una Planta Aechor se junta con un Cubo de raicielo, y sus pétalos son la comida favorita de los Moas bebé."
+      ],
+      "sources": [
+        "jar:aether-1.21.1-1.5.10-neoforge.jar:assets/aether/lang/en_us.json"
+      ]
+    },
+    {
+      "key": "aether_altar",
+      "deps": [
+        "aether_zanite"
+      ],
+      "type": "item",
+      "item": "aether:altar",
+      "layout": {
+        "x": 18,
+        "y": 0,
+        "size": 1.0,
+        "shape": "square"
+      },
+      "en_us": [
+        "The Altar: enchanting with ambrosium",
+        "Craft an Altar from 8 Holystone around a Zanite Gemstone and fuel it with Ambrosium Shards. The Aether's \"enchanting\" is a conversion: Gravitite Ore turns into Enchanted Gravitite, Blue Berries into Enchanted Berries (far more food), Holystone into a Healing Stone (Regeneration), a Skyroot Poison Bucket into a Remedy Bucket, Quicksoil into Quicksoil Glass, and a music disc into its blue version.\n\nThe Altar also repairs damaged items, which matters for Zanite and Gravitite gear. EMI lists every Altar recipe."
+      ],
+      "es_es": [
+        "El Altar: encantar con ambrosium",
+        "Fabricá un Altar con 8 Piedras sagradas alrededor de una Gema de zanita y alimentalo con Fragmentos de ambrosium. El «encantamiento» del Aether es una conversión: la mena de gravitita se vuelve Gravitita encantada, las Bayas azules se vuelven Bayas encantadas (mucha más comida), la Piedra sagrada una Piedra curativa (Regeneración), el Cubo con veneno un Cubo con remedio, la Resbarena Vidrio de resbarena y un disco de música su versión azul.\n\nEl Altar también repara ítems gastados, algo clave para el equipo de zanita y de gravitita. En EMI están todas sus recetas."
+      ],
+      "sources": [
+        "jar:aether-1.21.1-1.5.10-neoforge.jar:data/aether/recipe/altar.json",
+        "jar:aether-1.21.1-1.5.10-neoforge.jar:assets/aether/lang/en_us.json"
+      ]
+    },
+    {
+      "key": "aether_freezer",
+      "deps": [
+        "aether_altar"
+      ],
+      "type": "item",
+      "item": "aether:freezer",
+      "optional": true,
+      "layout": {
+        "x": 18,
+        "y": 3,
+        "size": 1.0,
+        "shape": "square"
+      },
+      "en_us": [
+        "The Freezer and icy jewelry",
+        "Craft a Freezer (Holystone, one Icestone and Skyroot planks) and fuel it with Icestone. It freezes Aerclouds, water buckets and accessories: an Iron or Gold ring or pendant becomes an Ice Ring or Ice Pendant, which freezes water and lava under your feet as you walk (\"Cool Jewelery!\").\n\nPlaced as a block, Icestone freezes nearby water into ice and lava into obsidian: a cheap panic button next to a lava lake."
+      ],
+      "es_es": [
+        "El Congelador y las joyas de hielo",
+        "Fabricá un Congelador (Piedra sagrada, una Piedra helada y tablas de raicielo) y alimentalo con Piedra helada. Congela Aeronubes, baldes de agua y accesorios: un anillo o colgante de hierro u oro se vuelve un Anillo o Colgante de hielo, que congela el agua y la lava bajo tus pies mientras caminás («Cool Jewelery!»).\n\nPuesta como bloque, la Piedra helada congela el agua cercana en hielo y la lava en obsidiana: un botón de pánico barato al lado de un lago de lava."
+      ],
+      "sources": [
+        "jar:aether-1.21.1-1.5.10-neoforge.jar:data/aether/recipe/freezer.json",
+        "jar:aether-1.21.1-1.5.10-neoforge.jar:data/aether/advancement/ice_accessory.json",
+        "jar:aether-1.21.1-1.5.10-neoforge.jar:assets/aether/lang/en_us.json"
+      ]
+    },
+    {
+      "key": "aether_moa",
+      "deps": [
+        "aether_altar"
+      ],
+      "type": "item",
+      "tag": "aether:moa_eggs",
+      "optional": true,
+      "icon": "aether:blue_moa_egg",
+      "layout": {
+        "x": 18,
+        "y": -3,
+        "size": 1.0,
+        "shape": "circle"
+      },
+      "en_us": [
+        "A Moa egg",
+        "Moas are the Aether's birds. They lay eggs from time to time, and eggs also turn up in Silver Dungeon chests. Blue Moas give 3 mid-air jumps, White Moas 4 and the rare Black Moa 8, which makes it the best mount for crossing between islands.\n\nHatching needs an Incubator (next quest). A Moa egg in your hand is the first step."
+      ],
+      "es_es": [
+        "Un huevo de Moa",
+        "Los Moas son las aves del Aether. Ponen huevos cada tanto, y también aparecen huevos en los cofres de la Mazmorra de plata. El Moa azul da 3 saltos en el aire, el blanco 4 y el raro Moa negro 8: la mejor montura para cruzar entre islas.\n\nPara que nazca hace falta una Incubadora (quest siguiente). El primer paso es tener un huevo de Moa en la mano."
+      ],
+      "sources": [
+        "jar:aether-1.21.1-1.5.10-neoforge.jar:assets/aether/lang/en_us.json",
+        "jar:aether-1.21.1-1.5.10-neoforge.jar:data/aether/loot_table/chests/dungeon/silver/silver_dungeon_loot.json",
+        "jar:aether-1.21.1-1.5.10-neoforge.jar:com/aetherteam/aether/entity/passive/Moa.class"
+      ]
+    },
+    {
+      "key": "aether_moa_raise",
+      "deps": [
+        "aether_moa"
+      ],
+      "type": "item",
+      "item": "aether:incubator",
+      "optional": true,
+      "layout": {
+        "x": 21,
+        "y": -3,
+        "size": 1.0,
+        "shape": "square"
+      },
+      "en_us": [
+        "Incubate and raise it",
+        "Craft an Incubator (Holystone around an Ambrosium Torch), put the egg in and fuel it with Ambrosium Torches; hatching takes a long while (\"... Until They Hatch!\"). Feed the chick Aechor Petals until it grows, then ride it (\"Let's Fly!\" is for a Black Moa).\n\nA Nature Staff tells a tamed Moa to sit and stay. Moas can wear saddles and, with Deep Aether, Skyjade Moa Armor."
+      ],
+      "es_es": [
+        "Incubalo y crialo",
+        "Fabricá una Incubadora (Piedra sagrada alrededor de una Antorcha de ambrosium), poné el huevo y alimentala con Antorchas de ambrosium; tarda bastante («... Until They Hatch!»). Dale Pétalos de Aechor al pichón hasta que crezca y después montalo («Let's Fly!» es con un Moa negro).\n\nEl Bastón de la naturaleza le ordena a un Moa domado que se siente y se quede quieto. Los Moas aceptan montura y, con Deep Aether, Armadura de Skyjade para Moa."
+      ],
+      "sources": [
+        "jar:aether-1.21.1-1.5.10-neoforge.jar:data/aether/recipe/incubator.json",
+        "jar:aether-1.21.1-1.5.10-neoforge.jar:data/aether/advancement/incubate_moa.json",
+        "jar:aether-1.21.1-1.5.10-neoforge.jar:assets/aether/lang/en_us.json",
+        "jar:deep_aether-1.21.1-1.1.5.1.jar:assets/deep_aether/lang/en_us.json"
+      ]
+    },
+    {
+      "key": "aether_gravitite",
+      "deps": [
+        "aether_altar"
+      ],
+      "type": "item",
+      "item": "aether:enchanted_gravitite",
+      "count": 4,
+      "layout": {
+        "x": 21,
+        "y": 0,
+        "size": 1.0,
+        "shape": "circle"
+      },
+      "en_us": [
+        "Gravitite, the floating ore",
+        "Gravitite is the rarest Aether ore, and the block floats upward when nothing is above it: mine it from below or cover it first. Enchant the ore in the Altar into Enchanted Gravitite and craft the Aether's best tools and armor.\n\nGravitite tools lift blocks into the air with right click, and the pickaxe mines any ore. The full armor set, gloves included, gives a much higher jump and no fall damage: the best insurance up here. Enchanted Gravitite blocks float only while powered by redstone."
+      ],
+      "es_es": [
+        "Gravitita, el mineral que flota",
+        "La gravitita es el mineral más raro del Aether, y el bloque sube flotando cuando no tiene nada encima: picalo desde abajo o tapalo antes. Encantá la mena en el Altar para obtener Gravitita encantada y fabricá las mejores herramientas y armaduras del Aether.\n\nLas herramientas de gravitita levantan bloques con clic derecho, y el pico pica cualquier mineral. El set completo, guantes incluidos, da un salto mucho más alto y anula el daño por caída: el mejor seguro acá arriba. Los bloques de Gravitita encantada sólo flotan con señal de redstone."
+      ],
+      "sources": [
+        "jar:aether-1.21.1-1.5.10-neoforge.jar:assets/aether/lang/en_us.json",
+        "jar:aether-1.21.1-1.5.10-neoforge.jar:data/aether/advancement/enchanted_gravitite.json"
+      ]
+    },
+    {
+      "key": "aether_bronze",
+      "deps": [
+        "aether_gravitite"
+      ],
+      "type": "advancement",
+      "advancement": "aether:bronze_dungeon",
+      "icon": "aether:bronze_dungeon_key",
+      "layout": {
+        "x": 24,
+        "y": 0,
+        "size": 2.0,
+        "shape": "gear"
+      },
+      "en_us": [
+        "Bronze Dungeon: the Slider",
+        "The Bronze Dungeon is built of Carved Stone and hides a Chest Mimic or two. Its boss, the Slider, is a sliding stone block that crushes you against the walls. It only takes damage from pickaxes: a sword does nothing and the game tells you so. A long-reach Valkyrie Pickaxe, found later, makes a rematch easy.\n\nThe Slider drops the Bronze Key. Use it on the Treasure Chest behind the boss room: the Hammer of Kingbdogz, the Valkyrie Lance (long reach, good against Zephyrs and the Valkyrie Queen), Sentry Boots (no fall damage) and more."
+      ],
+      "es_es": [
+        "Mazmorra de bronce: el Deslizante",
+        "La Mazmorra de bronce es de Piedra tallada y esconde algún Cofre mímico. Su jefe, el Deslizante (Slider), es un bloque de piedra que se desliza y te aplasta contra las paredes. Sólo recibe daño de picos: una espada no le hace nada y el juego te lo avisa. Un Pico de Valquiria, de largo alcance, que conseguís más adelante, facilita una revancha.\n\nEl Deslizante suelta la Llave de bronce. Usala en el Cofre del tesoro detrás de la sala del jefe: el Martillo de Kingbdogz, la Lanza de Valquiria (largo alcance, buena contra Céfiros y la Reina Valquiria), las Botas de centinela (sin daño por caída) y más."
+      ],
+      "sources": [
+        "jar:aether-1.21.1-1.5.10-neoforge.jar:data/aether/tags/item/slider_damaging_items.json",
+        "jar:aether-1.21.1-1.5.10-neoforge.jar:data/aether/loot_table/entities/slider.json",
+        "jar:aether-1.21.1-1.5.10-neoforge.jar:data/aether/loot_table/chests/dungeon/bronze/bronze_dungeon_reward.json",
+        "jar:aether-1.21.1-1.5.10-neoforge.jar:assets/aether/lang/en_us.json",
+        "repo:content/compass_targets.json"
+      ]
+    },
+    {
+      "key": "aether_medals",
+      "deps": [
+        "aether_bronze"
+      ],
+      "type": "item",
+      "item": "aether:victory_medal",
+      "count": 10,
+      "layout": {
+        "x": 27,
+        "y": 0,
+        "size": 1.0,
+        "shape": "circle"
+      },
+      "en_us": [
+        "Ten Victory Medals",
+        "The Silver Dungeon is a Valkyrie sanctuary. Its lesser Valkyries teleport around and hit hard; each one you defeat drops a Victory Medal. The Valkyrie Queen refuses to fight until you bring her ten, so collect them before you talk to her.\n\nThe dungeon walls are Angelic Stone, unbreakable until the Queen falls, and some blocks are traps."
+      ],
+      "es_es": [
+        "Diez Medallas de la victoria",
+        "La Mazmorra de plata es un santuario de Valquirias. Las Valquirias menores se teletransportan y pegan fuerte; cada una que derrotás suelta una Medalla de la victoria. La Reina Valquiria no acepta pelear hasta que le llevás diez, así que juntalas antes de hablarle.\n\nLas paredes son de Piedra angelical, irrompible hasta que cae la Reina, y algunos bloques son trampas."
+      ],
+      "sources": [
+        "jar:aether-1.21.1-1.5.10-neoforge.jar:data/aether/loot_table/entities/valkyrie.json",
+        "jar:aether-1.21.1-1.5.10-neoforge.jar:assets/aether/lang/en_us.json"
+      ]
+    },
+    {
+      "key": "aether_silver",
+      "deps": [
+        "aether_medals"
+      ],
+      "type": "advancement",
+      "advancement": "aether:silver_dungeon",
+      "icon": "aether:silver_dungeon_key",
+      "layout": {
+        "x": 30,
+        "y": 0,
+        "size": 2.0,
+        "shape": "gear"
+      },
+      "en_us": [
+        "Silver Dungeon: the Valkyrie Queen",
+        "Talk to the Queen, hand over the ten medals and strike when she says she is ready. She flies and teleports; the Valkyrie Lance's reach helps a lot. Winning gives the Silver Key for the Treasure Chest.\n\nThat chest holds a piece of Valkyrie gear (full set with gloves: short flight), plus treasures such as the Regeneration Stone (stackable healing), the Invisibility Cloak (toggle with Home in this pack), the Holy Sword or the Lightning Sword. As in the mod's defaults, the Valkyrie Cape can appear in this loot and the Golden Feather cannot."
+      ],
+      "es_es": [
+        "Mazmorra de plata: la Reina Valquiria",
+        "Hablale a la Reina, entregale las diez medallas y atacala cuando diga que está lista. Vuela y se teletransporta; el alcance de la Lanza de Valquiria ayuda mucho. Al ganar recibís la Llave de plata para el Cofre del tesoro.\n\nEse cofre trae una pieza del equipo de Valquiria (el set completo con guantes da vuelo corto) y tesoros como la Piedra de regeneración (curación que se acumula), la Capa de invisibilidad (se alterna con Inicio en este pack), la Espada sagrada o la Espada de relámpago. Como viene el mod, la Capa de Valquiria puede salir en este botín y la Pluma dorada no."
+      ],
+      "sources": [
+        "jar:aether-1.21.1-1.5.10-neoforge.jar:data/aether/loot_table/entities/valkyrie_queen.json",
+        "jar:aether-1.21.1-1.5.10-neoforge.jar:data/aether/loot_table/chests/dungeon/silver/silver_dungeon_reward.json",
+        "jar:aether-1.21.1-1.5.10-neoforge.jar:assets/aether/lang/en_us.json",
+        "jar:aether-1.21.1-1.5.10-neoforge.jar:com/aetherteam/aether/AetherConfig$Server.class",
+        "repo:pack/config/defaultoptions/keybindings.txt"
+      ]
+    },
+    {
+      "key": "aether_gold",
+      "deps": [
+        "aether_silver"
+      ],
+      "type": "advancement",
+      "advancement": "aether:gold_dungeon",
+      "icon": "aether:gold_dungeon_key",
+      "layout": {
+        "x": 33,
+        "y": 0,
+        "size": 2.0,
+        "shape": "gear"
+      },
+      "en_us": [
+        "Gold Dungeon: the Sun Spirit",
+        "The Gold Dungeon is made of Hellfire Stone, unbreakable until its boss dies. The Sun Spirit ignores normal hits. It throws fire and ice crystals: hit an ice crystal back at it and the cold freezes it for a moment; only while it is frozen do your weapons hurt it. It also calls Fire Minions, so bring fire protection.\n\nIt always drops the Gold Key and the Sun Altar. In ENTRELUMEN it is the entity that froze Heliodor: defeating it recovers the Heart of Heliodor and closes act IV."
+      ],
+      "es_es": [
+        "Mazmorra de oro: el Espíritu del Sol",
+        "La Mazmorra de oro es de Piedra de fuego infernal, irrompible hasta que muere el jefe. El Espíritu del Sol ignora los golpes normales. Tira cristales de fuego y de hielo: devolvele un cristal de hielo de un golpe y el frío lo congela un momento; sólo mientras está congelado tus armas le hacen daño. También invoca Esbirros de fuego, así que llevá protección contra el fuego.\n\nSiempre suelta la Llave de oro y el Altar Solar. En ENTRELUMEN es la entidad que congeló a Heliodor: vencerlo recupera el Corazón de Heliodor y cierra el acto IV."
+      ],
+      "sources": [
+        "jar:aether-1.21.1-1.5.10-neoforge.jar:com/aetherteam/aether/entity/monster/dungeon/boss/SunSpirit.class",
+        "jar:aether-1.21.1-1.5.10-neoforge.jar:data/aether/loot_table/entities/sun_spirit.json",
+        "jar:aether-1.21.1-1.5.10-neoforge.jar:assets/aether/lang/en_us.json",
+        "repo:docs/design/story-bible.md",
+        "repo:content/compass_targets.json"
+      ]
+    },
+    {
+      "key": "aether_gold_loot",
+      "deps": [
+        "aether_gold"
+      ],
+      "type": "checkmark",
+      "icon": "aether:phoenix_chestplate",
+      "layout": {
+        "x": 33,
+        "y": 3,
+        "size": 0.85,
+        "shape": "circle"
+      },
+      "en_us": [
+        "Phoenix armor becomes obsidian",
+        "The Gold Key opens the treasure room. It holds Phoenix armor pieces (full set with gloves: fire immunity and swimming in lava) and Life Shards. With Deep Aether installed, the Gold Dungeon reward chest also always contains the Stratus smithing template.\n\nThe quirk: stand in water long enough while wearing Phoenix armor and it turns into Obsidian armor, stronger than diamond. It is the only way to get Obsidian armor, so decide which one you want before you go for a swim."
+      ],
+      "es_es": [
+        "La armadura de Fénix se vuelve obsidiana",
+        "La Llave de oro abre la sala del tesoro. Trae piezas de armadura de Fénix (el set completo con guantes da inmunidad al fuego y nado en lava) y Fragmentos de vida. Con Deep Aether, el cofre de recompensa de la Mazmorra de oro además trae siempre la plantilla de herrería de Stratus.\n\nLa rareza: si te quedás un buen rato en el agua con la armadura de Fénix puesta, se convierte en armadura de obsidiana, más fuerte que la de diamante. Es la única forma de conseguirla, así que decidí cuál querés antes de meterte a nadar."
+      ],
+      "sources": [
+        "jar:aether-1.21.1-1.5.10-neoforge.jar:data/aether/loot_table/chests/dungeon/gold/gold_dungeon_treasure.json",
+        "jar:deep_aether-1.21.1-1.1.5.1.jar:data/deep_aether/loot_modifiers/gold_loot_stratus_upgrade.json",
+        "jar:deep_aether-1.21.1-1.1.5.1.jar:io/github/razordevs/deep_aether/datagen/loot/modifiers/DAAddDungeonLootModifier.class",
+        "jar:aether-1.21.1-1.5.10-neoforge.jar:assets/aether/lang/en_us.json"
+      ]
+    },
+    {
+      "key": "aether_life",
+      "deps": [
+        "aether_gold_loot"
+      ],
+      "type": "item",
+      "item": "aether:life_shard",
+      "optional": true,
+      "layout": {
+        "x": 36,
+        "y": 3,
+        "size": 1.0,
+        "shape": "circle"
+      },
+      "en_us": [
+        "A permanent heart",
+        "Life Shards come from the Gold Dungeon treasure. Using one grants an extra permanent heart; the pack keeps the mod's limit of 10 shards per player.\n\nIn a team, share them: each player has their own cap."
+      ],
+      "es_es": [
+        "Un corazón permanente",
+        "Los Fragmentos de vida salen del tesoro de la Mazmorra de oro. Usar uno da un corazón extra permanente; el pack conserva el límite del mod: 10 fragmentos por jugador.\n\nEn equipo, repartilos: cada jugador tiene su propio tope."
+      ],
+      "sources": [
+        "jar:aether-1.21.1-1.5.10-neoforge.jar:assets/aether/lang/en_us.json",
+        "jar:aether-1.21.1-1.5.10-neoforge.jar:com/aetherteam/aether/AetherConfig$Server.class",
+        "jar:aether-1.21.1-1.5.10-neoforge.jar:data/aether/loot_table/chests/dungeon/gold/gold_dungeon_treasure.json"
+      ]
+    },
+    {
+      "key": "aether_sun_altar",
+      "deps": [
+        "aether_gold"
+      ],
+      "type": "advancement",
+      "advancement": "aether:aether_sleep",
+      "optional": true,
+      "icon": "aether:sun_altar",
+      "layout": {
+        "x": 36,
+        "y": -3,
+        "size": 1.0,
+        "shape": "circle"
+      },
+      "en_us": [
+        "Night returns to the Aether",
+        "With the Sun Spirit gone, the eternal day ends and the Aether gets a normal (three times longer) day and night cycle. The Sun Altar it dropped controls the time of day in the Aether; on a server anyone can use it unless an operator turns on its whitelist.\n\nNow you can finally sleep up here: that is the advancement \"A Well Earned Rest\"."
+      ],
+      "es_es": [
+        "La noche vuelve al Aether",
+        "Sin el Espíritu del Sol termina el día eterno y el Aether pasa a tener día y noche normales (el triple de largos). El Altar Solar que soltó controla la hora del día en el Aether; en un servidor lo puede usar cualquiera, salvo que un operador active su lista blanca.\n\nAhora sí podés dormir acá arriba: ese es el logro «A Well Earned Rest»."
+      ],
+      "sources": [
+        "jar:aether-1.21.1-1.5.10-neoforge.jar:assets/aether/lang/en_us.json",
+        "jar:aether-1.21.1-1.5.10-neoforge.jar:com/aetherteam/aether/AetherConfig$Server.class",
+        "jar:aether-1.21.1-1.5.10-neoforge.jar:data/aether/advancement/aether_sleep.json"
+      ]
+    },
+    {
+      "key": "deep_aether_intro",
+      "deps": [
+        "aether_enter"
+      ],
+      "type": "checkmark",
+      "icon": "deep_aether:roseroot_sapling",
+      "layout": {
+        "x": 9,
+        "y": 7,
+        "size": 1.5,
+        "shape": "hexagon"
+      },
+      "en_us": [
+        "Deep Aether: more sky",
+        "Deep Aether extends the same dimension through the same portal. It adds biomes such as the Aerglow Forests, Golden Heights and Golden Grove, the Yagroot Swamp, Aerlavender Fields and the high Cloud biomes, plus new woods, Quails, Aerglow Fish and a Brass Dungeon with its own boss.\n\nIts tips appear in light blue among the Aether ones. Visiting every Aether biome earns the advancement \"Aether Explorer\"."
+      ],
+      "es_es": [
+        "Deep Aether: más cielo",
+        "Deep Aether amplía la misma dimensión por el mismo portal. Suma biomas como los Bosques Aerglow, Golden Heights y Golden Grove, el Pantano de Yagroot, los Campos de Aerlavender y los biomas de nubes en lo alto, además de maderas nuevas, Codornices (Quails), peces Aerglow y una Mazmorra de latón con jefe propio.\n\nSus consejos aparecen en celeste entre los del Aether. Visitar todos los biomas del Aether da el logro «Aether Explorer»."
+      ],
+      "sources": [
+        "jar:deep_aether-1.21.1-1.1.5.1.jar:data/deep_aether/worldgen/biome",
+        "jar:deep_aether-1.21.1-1.1.5.1.jar:assets/deep_aether/lang/en_us.json",
+        "jar:deep_aether-1.21.1-1.1.5.1.jar:data/deep_aether/advancement/explore_aether.json",
+        "repo:docs/design/mod-pingpong.md"
+      ]
+    },
+    {
+      "key": "deep_aether_explorer",
+      "deps": [
+        "deep_aether_intro"
+      ],
+      "type": "advancement",
+      "advancement": "deep_aether:explore_aether",
+      "optional": true,
+      "icon": "naturescompass:naturescompass",
+      "layout": {
+        "x": 9,
+        "y": 10,
+        "size": 1.0,
+        "shape": "circle"
+      },
+      "en_us": [
+        "Aether Explorer",
+        "Walk through all ten biomes that the advancement lists. The Cloud biomes float highest and are where the Brass Dungeon generates, so this trip doubles as scouting.\n\nA Nature's Compass can search Aether biomes by name if you get tired of looking."
+      ],
+      "es_es": [
+        "Explorador del Aether",
+        "Recorré los diez biomas que pide el logro. Los biomas de nubes flotan más alto y son donde aparece la Mazmorra de latón, así que el paseo sirve también de reconocimiento.\n\nSi te cansás de buscar, la Brújula de la naturaleza (Nature's Compass) encuentra biomas del Aether por nombre."
+      ],
+      "sources": [
+        "jar:deep_aether-1.21.1-1.1.5.1.jar:data/deep_aether/advancement/explore_aether.json",
+        "jar:deep_aether-1.21.1-1.1.5.1.jar:data/deep_aether/tags/worldgen/biome/has_brass_dungeon.json",
+        "jar:NaturesCompass-1.21.1-3.4.0-neoforge.jar:assets/naturescompass/lang/en_us.json"
+      ]
+    },
+    {
+      "key": "deep_aether_skyjade",
+      "deps": [
+        "deep_aether_intro"
+      ],
+      "type": "item",
+      "item": "deep_aether:skyjade",
+      "count": 4,
+      "layout": {
+        "x": 12,
+        "y": 7,
+        "size": 1.0,
+        "shape": "circle"
+      },
+      "en_us": [
+        "Skyjade: strong, then fragile",
+        "Skyjade Ore needs an iron-grade pickaxe or better. Skyjade gear is the opposite of Zanite: it starts above diamond (the sword starts at netherite damage) and gets weaker and slower as it wears down. Keep it repaired.\n\nSkyjade also makes Moa armor, a shield, lanterns and chains, and it goes into the Combiner and the Stratus Ingot."
+      ],
+      "es_es": [
+        "Skyjade: fuerte y después frágil",
+        "La mena de Skyjade (Jade Celestial) pide un pico de hierro o mejor. El equipo de Skyjade es lo opuesto a la zanita: arranca por encima del diamante (la espada empieza con daño de netherite) y se vuelve más débil y lenta a medida que se gasta. Mantenelo reparado.\n\nCon Skyjade también se hacen armadura para Moa, un escudo, faroles y cadenas, y es ingrediente del Combinador y del Lingote de Stratus."
+      ],
+      "sources": [
+        "jar:deep_aether-1.21.1-1.1.5.1.jar:assets/deep_aether/lang/en_us.json"
+      ]
+    },
+    {
+      "key": "deep_aether_combiner",
+      "deps": [
+        "deep_aether_skyjade"
+      ],
+      "type": "item",
+      "item": "deep_aether:combiner",
+      "optional": true,
+      "layout": {
+        "x": 15,
+        "y": 7,
+        "size": 1.0,
+        "shape": "square"
+      },
+      "en_us": [
+        "The Combiner",
+        "Craft a Combiner from Skyroot planks, Holystone, Skyjade and an Ambrosium Shard; one also appears in Brass Dungeons. It combines Golden Amber, Frozen Goldenleaf Berries and a third item into Deep Aether goods. EMI lists every \"Combining\" recipe.\n\nGoldenleaf Berries grow on Golden Vines that come from Quicksoil; the frozen kind is the one used for combining."
+      ],
+      "es_es": [
+        "El Combinador",
+        "Fabricá un Combinador con tablas de raicielo, Piedra sagrada, Skyjade y un Fragmento de ambrosium; también aparece uno en las Mazmorras de latón. Combina Ámbar dorado, Bayas de hoja dorada congeladas y un tercer ítem para hacer cosas de Deep Aether. EMI muestra todas las recetas de «Combining».\n\nLas Bayas de hoja dorada crecen en Enredaderas doradas que salen de la Resbarena; las congeladas son las que se usan para combinar."
+      ],
+      "sources": [
+        "jar:deep_aether-1.21.1-1.1.5.1.jar:data/deep_aether/recipe/combiner.json",
+        "jar:deep_aether-1.21.1-1.1.5.1.jar:assets/deep_aether/lang/en_us.json"
+      ]
+    },
+    {
+      "key": "deep_aether_poison",
+      "deps": [
+        "deep_aether_combiner"
+      ],
+      "type": "advancement",
+      "advancement": "deep_aether:transform_poison",
+      "optional": true,
+      "icon": "deep_aether:poison_bucket",
+      "layout": {
+        "x": 15,
+        "y": 10,
+        "size": 1.0,
+        "shape": "circle"
+      },
+      "en_us": [
+        "Purple magic",
+        "Deep Aether turns the Aether's poison into a fluid you can carry in a bucket. Throwing an item into Poison transforms it: it un-enchants blocks and items that came out of an Altar, and Squashes turn purple. Doing it once earns \"Purple Magic\".\n\nWater and Poison mixing makes Aersmog, a venomous cloud-like block. Antidotes, made with Bio Crystals from Venomites, give Remedy."
+      ],
+      "es_es": [
+        "Magia violeta",
+        "Deep Aether convierte el veneno del Aether en un fluido que se lleva en balde. Tirar un ítem al Veneno lo transforma: desencanta los bloques e ítems que salieron de un Altar, y las Calabazas (Squash) se vuelven violetas. Hacerlo una vez da «Purple Magic».\n\nAgua y Veneno mezclados forman Aersmog, un bloque venenoso parecido a una nube. Los Antídotos, con Biocristales de los Venomites, dan Remedio."
+      ],
+      "sources": [
+        "jar:deep_aether-1.21.1-1.1.5.1.jar:assets/deep_aether/lang/en_us.json",
+        "jar:deep_aether-1.21.1-1.1.5.1.jar:data/deep_aether/advancement/transform_poison.json"
+      ]
+    },
+    {
+      "key": "deep_aether_brass",
+      "deps": [
+        "deep_aether_skyjade"
+      ],
+      "type": "advancement",
+      "advancement": "deep_aether:brass_dungeon",
+      "icon": "deep_aether:brass_dungeon_key",
+      "layout": {
+        "x": 24,
+        "y": 7,
+        "size": 2.0,
+        "shape": "gear"
+      },
+      "en_us": [
+        "Brass Dungeon: the Eye of the Storm",
+        "The Brass Dungeon generates only in the Cloud and Overgrown Cloud biomes, from around height 184 upward, so reaching it needs parachutes, Gravitite or a Moa. Its boss, the Eye of the Storm, hides inside a whirlwind; the game hints that you should hit that wind.\n\nIt drops the Brass Key and a stack of Cold Aerclouds. The treasure includes a Cloud Cape (double jump), an Aercloud Necklace (stand on clouds and powder snow) or a book with the glove reach enchantment, plus Stormforged armor, which shrugs off knockback."
+      ],
+      "es_es": [
+        "Mazmorra de latón: el Ojo de la Tormenta",
+        "La Mazmorra de latón aparece sólo en los biomas de nubes (Cloud y Overgrown Cloud), desde la altura 184 para arriba, así que llegar pide paracaídas, gravitita o un Moa. Su jefe, el Ojo de la Tormenta, se esconde dentro de un torbellino; el juego te sugiere pegarle a ese viento.\n\nSuelta la Llave de latón y una pila de Aeronubes frías. El tesoro trae una Capa de nube (doble salto), un Collar de aeronube (pararse sobre nubes y nieve polvo) o un libro con el encantamiento de alcance de guantes, además de armadura Stormforged, que casi no recibe empuje."
+      ],
+      "sources": [
+        "jar:deep_aether-1.21.1-1.1.5.1.jar:data/deep_aether/worldgen/structure/brass_dungeon.json",
+        "jar:deep_aether-1.21.1-1.1.5.1.jar:data/deep_aether/tags/worldgen/biome/has_brass_dungeon.json",
+        "jar:deep_aether-1.21.1-1.1.5.1.jar:data/deep_aether/loot_table/entities/eots_controller.json",
+        "jar:deep_aether-1.21.1-1.1.5.1.jar:data/deep_aether/loot_table/chests/dungeon/brass/brass_dungeon_treasure.json",
+        "jar:deep_aether-1.21.1-1.1.5.1.jar:assets/deep_aether/lang/en_us.json"
+      ]
+    },
+    {
+      "key": "deep_aether_stratus",
+      "deps": [
+        "aether_gold",
+        "deep_aether_skyjade"
+      ],
+      "type": "item",
+      "item": "deep_aether:stratus_ingot",
+      "layout": {
+        "x": 33,
+        "y": 7,
+        "size": 1.0,
+        "shape": "circle"
+      },
+      "en_us": [
+        "A Stratus Ingot",
+        "Stratus is the upgrade past Gravitite. Find Sterling Aerclouds near the build limit, enchant them in an Altar into Chromatic Aerclouds, then craft 5 Chromatic Aerclouds with Enchanted Gravitite, a Zanite Gemstone, an Ambrosium Shard and Skyjade into one Stratus Ingot.\n\nWith the Stratus smithing template from the Gold Dungeon, a Smithing Table turns Gravitite gear into Stratus. The full Stratus set adds a dash to Gravitite's jump: Alt+G in this pack."
+      ],
+      "es_es": [
+        "Un Lingote de Stratus",
+        "El Stratus es la mejora que sigue a la gravitita. Buscá Aeronubes Sterling (Aercloud Estéril) cerca del límite de altura, encantalas en un Altar para obtener Aeronubes cromáticas y combiná 5 de ellas con Gravitita encantada, una Gema de zanita, un Fragmento de ambrosium y Skyjade para hacer un Lingote de Stratus (Lingote de Estrato).\n\nCon la plantilla de Stratus de la Mazmorra de oro, la mesa de herrería convierte el equipo de gravitita en Stratus. El set completo suma un impulso (dash) al salto de la gravitita: Alt+G en este pack."
+      ],
+      "sources": [
+        "jar:deep_aether-1.21.1-1.1.5.1.jar:data/deep_aether/recipe/stratus_ingot.json",
+        "jar:deep_aether-1.21.1-1.1.5.1.jar:data/deep_aether/recipe/stratus_enchanting.json",
+        "jar:deep_aether-1.21.1-1.1.5.1.jar:assets/deep_aether/lang/en_us.json",
+        "repo:pack/config/defaultoptions/keybindings.txt"
+      ]
+    },
+    {
+      "key": "deep_aether_flawless",
+      "deps": [
+        "deep_aether_stratus"
+      ],
+      "type": "advancement",
+      "advancement": "deep_aether:aether_champion",
+      "optional": true,
+      "icon": "deep_aether:sun_core",
+      "layout": {
+        "x": 36,
+        "y": 7,
+        "size": 1.0,
+        "shape": "circle"
+      },
+      "en_us": [
+        "Flawless: the no-hit trophies",
+        "Deep Aether rewards a perfect fight. Beat the Slider without taking a hit and it drops a Slider Eye (a ground slam, Shift+H in this pack); the Valkyrie Queen drops a Medal of Honor (resistance against unholy mobs); the Sun Spirit drops a Sun Core, which crafts the Afterburner flamethrower.\n\nDefeating every Aether boss flawlessly is the advancement \"Champion Of The Aether\". Pure bragging rights: nothing in the story needs it."
+      ],
+      "es_es": [
+        "Impecable: los trofeos sin golpes",
+        "Deep Aether premia la pelea perfecta. Vencé al Deslizante sin recibir un golpe y suelta un Ojo del Slider (un golpe contra el suelo, Shift+H en este pack); la Reina Valquiria suelta una Medalla de Honor (resistencia contra criaturas impías); el Espíritu del Sol, un Núcleo del Sol, con el que se fabrica el lanzallamas Postquemador (Afterburner).\n\nVencer a todos los jefes del Aether sin golpes es el logro «Champion Of The Aether». Es puro orgullo: la historia no lo pide."
+      ],
+      "sources": [
+        "jar:deep_aether-1.21.1-1.1.5.1.jar:assets/deep_aether/lang/en_us.json",
+        "jar:deep_aether-1.21.1-1.1.5.1.jar:data/deep_aether/advancement/aether_champion.json",
+        "jar:deep_aether-1.21.1-1.1.5.1.jar:data/deep_aether/recipe/afterburner.json",
+        "repo:pack/config/defaultoptions/keybindings.txt"
+      ]
+    },
+    {
+      "key": "aether_pack",
+      "deps": [
+        "aether_welcome"
+      ],
+      "type": "checkmark",
+      "icon": "aether:skyroot_bed",
+      "layout": {
+        "x": 0,
+        "y": 3,
+        "size": 1.0,
+        "shape": "rsquare"
+      },
+      "en_us": [
+        "What ENTRELUMEN changes up here",
+        "Pack changes, all verifiable in its files:\n- No Aether Portal Frame on world creation: you build the glowstone portal.\n- The entry gift (Book of Lore and a Golden Parachute) stays on.\n- Carry On cannot lift Treasure Chests, Chest Mimics or the bosses.\n- A Zanite Gemstone is the act IV component of the Iron Jetpacks elite coil.\n- Aether's Delight adds Aether cooking on top of Farmer's Delight.\n- Keys: accessories on I, Gravitite jump on Space, invisibility toggle on Home, Stratus dash on Alt+G, Slider Eye on Shift+H."
+      ],
+      "es_es": [
+        "Qué cambia ENTRELUMEN acá arriba",
+        "Cambios del pack, todos verificables en sus archivos:\n- Sin Marco de portal del Aether al crear el mundo: el portal de piedra luminosa lo armás vos.\n- El regalo de llegada (Libro de Historia y Paracaídas dorado) sigue activo.\n- Carry On no puede levantar Cofres del tesoro, Cofres mímicos ni a los jefes.\n- La Gema de zanita es el componente del acto IV de la bobina de élite de Iron Jetpacks.\n- Aether's Delight suma cocina del Aether sobre Farmer's Delight.\n- Teclas: accesorios en I, salto de gravitita en Espacio, invisibilidad en Inicio, impulso de Stratus en Alt+G y Ojo del Slider en Shift+H."
+      ],
+      "sources": [
+        "repo:pack/config/aether-common.toml",
+        "repo:pack/config/carryon-common.toml",
+        "repo:pack/kubejs/server_scripts/entrelumen_industrial_balance.js",
+        "repo:pack/config/defaultoptions/keybindings.txt",
+        "jar:aether-1.21.1-1.5.10-neoforge.jar:com/aetherteam/aether/client/AetherKeys.class",
+        "repo:docs/design/heliodor-compass.md",
+        "repo:docs/design/mod-pingpong.md"
+      ]
+    },
+    {
+      "key": "aether_compass",
+      "deps": [
+        "aether_welcome"
+      ],
+      "type": "checkmark",
+      "icon": "entrelumen:heliodor_compass",
+      "layout": {
+        "x": 0,
+        "y": -3,
+        "size": 1.0,
+        "shape": "rsquare"
+      },
+      "en_us": [
+        "The compass in the sky",
+        "In act IV the Heliodor Compass lists, in order: reach the Aether, then the Bronze, Silver and Gold Dungeons. While you are in the Overworld the needle rests with the gold colour of the Aether, meaning \"the goal is in another dimension\". Inside the Aether it points at the nearest known dungeon within 1500 blocks; if there is none that close it turns grey instead of spinning forever.\n\nDungeons found by any team are shared, so a later team is pointed straight at them."
+      ],
+      "es_es": [
+        "La brújula en el cielo",
+        "En el acto IV la Brújula de Heliodor marca, en orden: llegar al Aether y después las mazmorras de Bronce, Plata y Oro. Mientras estás en el Overworld la aguja queda quieta con el color dorado del Aether, que significa «el objetivo está en otra dimensión». Adentro del Aether apunta a la mazmorra conocida más cercana dentro de 1500 bloques; si no hay ninguna tan cerca se pone gris en lugar de girar sin fin.\n\nLas mazmorras que encuentra cualquier equipo quedan compartidas, así que al equipo que llega después la aguja lo lleva directo."
+      ],
+      "sources": [
+        "repo:content/compass_targets.json",
+        "repo:docs/design/heliodor-compass.md",
+        "repo:docs/design/story-bible.md"
+      ]
+    },
+    {
+      "key": "aether_mastery",
+      "deps": [
+        "aether_gold",
+        "deep_aether_brass"
+      ],
+      "type": "checkmark",
+      "icon": "aether:sun_altar",
+      "layout": {
+        "x": 40,
+        "y": 0,
+        "size": 2.25,
+        "shape": "pentagon"
+      },
+      "en_us": [
+        "Master of the sky",
+        "You crossed the whole Aether: portal, Altar, Gravitite, the three dungeons and their keys. From here the sky is a resource: Gravitite for safe falls, a Black Moa for travel, Ice accessories for lava, Stratus for the dash, and the Sun Altar to choose day or night.\n\nFor the story, what matters is what the Sun Spirit carried. From now on the Atlas speaks clearly."
+      ],
+      "es_es": [
+        "Dueño del cielo",
+        "Recorriste el Aether entero: portal, Altar, gravitita, las tres mazmorras y sus llaves. De acá en adelante el cielo es un recurso: gravitita para caer tranquilo, un Moa negro para viajar, accesorios de hielo contra la lava, Stratus para el impulso y el Altar Solar para elegir el día o la noche.\n\nPara la historia, lo que importa es lo que llevaba el Espíritu del Sol. Desde ahora el Atlas habla claro."
+      ],
+      "sources": [
+        "repo:docs/design/story-bible.md",
+        "jar:aether-1.21.1-1.5.10-neoforge.jar:assets/aether/lang/en_us.json"
+      ]
+    }
+  ]
+}
