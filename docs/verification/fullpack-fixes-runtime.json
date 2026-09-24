@@ -1,0 +1,531 @@
+{
+ "schemaVersion": 1,
+ "checkedAt": "2026-09-24",
+ "branch": "fix/fullpack",
+ "scope": "Fixes for the full-pack QA failures left by the mod ping-pong batch (docs/verification/mod-pingpong-runtime.json), full-pack GameTests on clean owned QA servers with the 60 s watchdog, the restart and live-backup verifiers in separate JVMs, and the managed installation. Not client rendering, survival pacing, co-op or long soaks.",
+ "platform": "Minecraft 1.21.1 / NeoForge 21.1.249 / JDK 21.0.12.1+1 / Windows 11 / i7-8750H 6C12T / 16 GB, heap 6G, E: NVMe",
+ "fixes": [
+  {
+   "tests": [
+    "first full-pack run: 60 s watchdog stop"
+   ],
+   "cause": "CompassLocator confirmed a predicted structure start with Level.getChunk(STRUCTURE_STARTS) on the server thread (CompassLocator.java:220 before the fix); under heavy worldgen the wait passed 60 s.",
+   "fix": "Confirmation through the search's own region ticket at the STRUCTURE_STARTS level and a polled generation future; 8 chunks in flight, 64 queued, tickets renewed and expiring, a yield after every presence check.",
+   "commits": [
+    "76a22c2",
+    "02614eb"
+   ]
+  },
+  {
+   "tests": [
+    "fullpackplayerarrivesemptyhanded",
+    "newplayerarriveswithanemptyinventory"
+   ],
+   "cause": "Silent Lib InitialSpawnItems handed Silent Gear's Blueprint Package and Material Book (config spawn_with_starter_blueprints / spawn_with_material_book, default true); Ars Nouveau's login handler handed a Starbuncle plush while its remote starbuncle_plush.json campaign is on (no config, flag PlayerPersisted.an_plush).",
+   "fix": "pack/config/silentgear-common.toml sets both false; companion FirstJoinGifts sets an_plush at HIGHEST priority before Ars's handler. No JAR patched; the book and plush stay craftable; the package is a pure gift. newplayer also asserted that no start ruin exists, valid only on the isolated server.",
+   "commits": [
+    "d8c6bd8",
+    "76a22c2"
+   ]
+  },
+  {
+   "tests": [
+    "startruinisanchoredregisteredandplacedonce"
+   ],
+   "cause": "The test site 4096 blocks east of spawn is open ocean on seed 71942026: no side of the ruin had footing and besideRuin fell back to the centre. After that fix, generating the ~120 site chunks inside one tick hit the watchdog.",
+   "fix": "besideRuin lays a tuff step beside the south side when no side offers footing; the test has worldgen generate its site through a ticket first and loads the column it samples.",
+   "commits": [
+    "76a22c2"
+   ]
+  },
+  {
+   "tests": [
+    "compassmovestothenextobjectivewhentheteammeetsthecondition"
+   ],
+   "cause": "Test assumed no start ruin; a real server places one at first start, so the draft correctly points at it.",
+   "fix": "Test expects POINTING at the registered ruin when one exists, NOT_FOUND otherwise.",
+   "commits": [
+    "76a22c2"
+   ]
+  },
+  {
+   "tests": [
+    "compasssearchesstayboundedandcooperative"
+   ],
+   "cause": "Test targets only worked on the superflat world (snowy village and jungle absent there, present on noise terrain).",
+   "fix": "End city and an End biome as impossible targets, the biome under the origin as the found one; on noise terrain a found village must lie within the radius.",
+   "commits": [
+    "76a22c2"
+   ]
+  },
+  {
+   "tests": [
+    "satietyoverflowcountsbiteseatenfromblocks"
+   ],
+   "cause": "The fixture bite block is not in the QA JAR; on the full pack, Amendments eats a vanilla cake from its own RightClickBlock handler and cancels the event, so the bite window opened at LOWEST never saw it (real bug).",
+   "fix": "Bite window opens at HIGHEST and for cancelled events; the test uses Farmer's Delight's apple pie when the fixture is absent and ignores the slice's own effect.",
+   "commits": [
+    "ca32a6b"
+   ]
+  },
+  {
+   "tests": [
+    "storytieronlyrisesandcannotbechosen"
+   ],
+   "cause": "Test assumed the fixture's tiers (no Summit/Pinnacle); the full pack loads Apotheosis's own.",
+   "fix": "Test expects the highest reached tier whose advancement is loaded.",
+   "commits": [
+    "ca32a6b"
+   ]
+  },
+  {
+   "tests": [
+    "datapackreloadisatomicandrejectscycles"
+   ],
+   "cause": "entrelumen_resource_balance.js ran two filtered scans of ~43 000 recipes per row (2842 scans, ~30 s) in afterRecipes, also on /reload.",
+   "fix": "One pass over the loaded recipes with codec-read results (same verdict).",
+   "commits": [
+    "2b93d5a",
+    "335281a"
+   ]
+  },
+  {
+   "tests": [
+    "prepareteamrestartfixture",
+    "preparelivebackupfixture"
+   ],
+   "cause": "NeoForge writes SavedData on its IO pool; the test read the campaign file right after save(), so under load it read the previous file.",
+   "fix": "Join IOUtilities.waitUntilIOWorkerComplete() before reading.",
+   "commits": [
+    "f5a9b95"
+   ]
+  },
+  {
+   "tests": [
+    "python tools/check_runtime_content.py (CI)"
+   ],
+   "cause": "Diagnostic script lacked entrelumen:terra_arm after the Terra's Arm merge.",
+   "fix": "Regenerated with --sync.",
+   "commits": [
+    "076979a"
+   ]
+  }
+ ],
+ "loadRetries": "altarsrespectforeignftbchunksclaims failed once per run with 'Claimed terraform did not finish in time' and passed on the automatic repeat (machine load, as instructed). One isolated run right after the reboot failed growthaltargrowscropsfastanddoublesripeharvestsbutnotseeds on a tick-count assertion; the rerun and every later isolated run passed (91/91).",
+ "reloadWatchdog": "datapackreloadisatomicandrejectscycles (four /reloads in one case) passed at the 60 s watchdog in F2 (55.8 s, same test code at f5a9b95) but hit it in G2 while another worker's server (server-mods-r4-base) ran on the machine; G3 passed it with the QA-only 180 s allowance recorded in act-six-runtime.json (73.2 s, worst catch-up 61 s), restored to 60 s afterwards. A full-pack /reload remains close to the production watchdog: pending performance work (AlmostUnified, KubeJS afterRecipes checks and Immersive Engineering arc recycling showed in the stacks).",
+ "powerLoss": "The workstation lost power during the batch (a B5 run was killed during mod loading; its world had no file newer than the previous clean stop). After the reboot the system clock read about 1 h 40 min behind the earlier file times; it was not corrected here (system setting). Times after 17:13 local come from that clock.",
+ "receipts": "E:\\Elias\\Codex\\Entrelumen-ssd\\fullpack-20260924",
+ "finalRuns": {
+  "A": {
+   "label": "G1",
+   "server": "E:\\Elias\\Codex\\Entrelumen-ssd\\server-fullpack-final2",
+   "props": [],
+   "runId": "0d344fe2-b80b-4ca9-aa0a-c9df09a85b32",
+   "exitCode": 0,
+   "bootWallSeconds": 188.9,
+   "doneSeconds": 23.441,
+   "ruinPlaced": null,
+   "expected": 115,
+   "passed": 111,
+   "failed": [],
+   "retries": {
+    "altarsrespectforeignftbchunksclaims": [
+     [
+      "[17:55:11] [Server thread/ERROR] [minecraft/LogTestReporter]: altarsrespectforeignftbchunksclaims failed at -8, 66, -5! Claimed terraform did not finish in time",
+      "[17:55:11] [Server thread/INFO] [de.en.FullpackQABootstrap/]: ENTRELUMEN_QA_RESULT FAIL altarsrespectforeignftbchunksclaims"
+     ]
+    ]
+   },
+   "summary": "ENTRELUMEN_QA_SUMMARY expected=115 finished=111 failed=0 passed=111 failedNames=[] pendingNames=[datapackreloadisatomicandrejectscycles, verifylogisticsrestartfixture, verifyrestoredlivebackup, verifyteamrestartafternewserverprocess]\r",
+   "watchdog": false,
+   "cantKeepUp": 10,
+   "worstCantKeepUpMs": 11199,
+   "commands": {
+    "liveBackup": {
+     "seconds": 13.1,
+     "matched": "Backup completed in 12.155s (17,2 MB | 18,6 MB)\r"
+    }
+   },
+   "solsticioLog": [
+    "[17:57:13] [Server thread/INFO] [de.en.SolsticioCity/]: Solsticio placement: 557413 template blocks over 105 ticks, 1930 ms placing (worst tick 84 ms), 11648 ms wall",
+    "[17:57:14] [Server thread/INFO] [de.en.SolsticioCommerce/]: Solsticio commerce populated: 66 villager(s) spawned in 693 ms, 0 failed"
+   ],
+   "compassSearches": [
+    "Compass search structure|minecraft:overworld|#minecraft:village from -8, 65, -8 found 96, 0, -320 in 1013.7 ms over 68 ticks (max step 244.2 ms; 3249 positions, 5 candidates, 2 chunk loads)",
+    "Compass search structure|minecraft:overworld|minecraft:village_plains from -8, 66, 8187 found nothing in 299.8 ms over 34 ticks (max step 16.1 ms; 35721 positions, 32 candidates, 0 chunk loads)",
+    "Compass search biome|minecraft:overworld|minecraft:the_end from -8, 66, 8187 found nothing in 235.9 ms over 117 ticks (max step 2.3 ms; 8649 positions, 0 candidates, 0 chunk loads)",
+    "Compass search biome|minecraft:overworld|minecraft:desert from -8, 66, 8187 found -8, 66, 8187 in 0.2 ms over 1 ticks (max step 0.2 ms; 9 positions, 5 candidates, 0 chunk loads)",
+    "Compass search structure|minecraft:overworld|minecraft:trail_ruins from -8, 65, -8 found 208, 0, 192 in 1.9 ms over 1 ticks (max step 1.9 ms; 1849 positions, 1 candidates, 0 chunk loads)",
+    "Compass search structure|minecraft:overworld|minecraft:trial_chambers from -8, 65, -8 found 176, 0, -320 in 1.5 ms over 1 ticks (max step 1.5 ms; 3025 positions, 3 candidates, 0 chunk loads)"
+   ],
+   "seconds": {
+    "carryonrefusessensitiveblocks": 1.0,
+    "compassmovestothenextobjectivewhentheteammeetsthecondition": 3.1,
+    "compasssearchesstayboundedandcooperative": 11.6,
+    "fullpackfirstjoingiftsstaydisabled": 0.5,
+    "fullpackplayerarrivesemptyhanded": 3.1,
+    "newplayerarriveswithanemptyinventory": 1.6,
+    "pedestalgiveseachplayeronecompassever": 1.6,
+    "pingpongbatchloadedwithoutrejectedbuilds": 1.0,
+    "satietyoverflowatafullbarturnssurplusintobuffs": 1.6,
+    "satietyoverflowcooldownandglutstopcheapspam": 1.1,
+    "satietyoverflowcountsbiteseatenfromblocks": 1.6,
+    "satietyoverflowneverreplacesstrongereffects": 1.0,
+    "solsticiocitypaletteresolvesinthefullpack": 1.6,
+    "solsticioshoptablesresolveinthefullpack": 1.0,
+    "startruinisanchoredregisteredandplacedonce": 33.1,
+    "storytieronlyrisesandcannotbechosen": 1.1,
+    "unifiedcropsdropfarmersdelighttomatoes": 1.1,
+    "actsixdeliveriesusecrossmodcostsandrewardonce": 1.6,
+    "ae2settlementsupplycraftstwiceandreturnsallbowls": 4.3,
+    "altarsrespectforeignftbchunksclaims": 5.6,
+    "apothicenchantingreadsentrelumenshelfstats": 1.5,
+    "arcanerestorationkeepsapotheosisandmoddeddataatarealark": 1.0,
+    "arcanerestorationrejectswithoutpartialpayment": 1.6,
+    "arcanerestorationresetsforginghistoryandkeepseverythingelse": 1.0,
+    "arkcontrollerpartialoffhandtopupandreplay": 1.0,
+    "arkfieldjournaldepositneedsauniquecompletereachableark": 1.0,
+    "arkfieldjournalsdepositonlytheirownbatches": 1.6,
+    "arkfieldjournalsreadcurrentteamwithoutmutation": 1.6,
+    "arkmissingmoduleanddeniedhookpreservesupplies": 1.0,
+    "arkpartyledgerrejectsstaleidentityandrestorespersonal": 1.6,
+    "atlasadvanceandsnapshotcodecuseauthoritativestate": 1.0,
+    "atlaslibrarycapsbyrealeternawithoutduplication": 1.6,
+    "atlasopenneedsnoitemorcampaigntoken": 1.6,
+    "atlasrouterejectsstaleteamandcannotdoubleconsume": 1.0,
+    "chippedvariantsjoinloadedrechiseledconversiongroup": 1.0,
+    "configuredquarrycardpreservesnativeshapedata": 1.0,
+    "containedfoliotcrushesoneinputthroughnativecapability": 7.1,
+    "deliveryconsumesserverinventoryonce": 1.6,
+    "engineeringmoduleinspectionisreadonlyandteamscoped": 1.6,
+    "engineeringworkshoprejectsinvalidstructureandusewithoutconsumption": 1.1,
+    "engineeringworkshoprepairsgiftedtoolswithoutcampaignorcomponentchanges": 1.0,
+    "explorationchartscompilefieldmapswithoutconsuminganything": 1.0,
+    "explorationchartskeepsupplementariesslicemapsapart": 1.6,
+    "explorationchartsrefusewithoutmutation": 1.6,
+    "explorationchartsrespectforeignftbchunksclaim": 1.6,
+    "farmersdelightpiebitecountsassatietysurplus": 1.0,
+    "fifthactrequiresfourdeliveriesbeforeadvancing": 1.0,
+    "finitearssourcedrivesandstopscreateshaft": 4.1,
+    "finitesourceacceptorpowersmestoragethencutsoff": 9.7,
+    "firstactcompletesthroughrealdeliveries": 1.1,
+    "fourthactrequiresjourneysandfivedeliveries": 1.6,
+    "functionalglassandswitchedlightsusenativeblockbehavior": 1.0,
+    "giftednativeupgradespreservefilledpotacrossthreetiers": 1.6,
+    "habitationbedclickchecksinandoutwithoutchangingcampaign": 3.6,
+    "habitationbrokenmodulefallsbacktonativebedandsurvivesclone": 1.5,
+    "habitationcanceledspawnsetterskeepbackupandrecoverclone": 1.6,
+    "habitationnativebedreplacingmodulerestoresoriginalhome": 1.0,
+    "habitationnewbedwinsandbookingsurvivesplayerserialization": 1.0,
+    "habitationusesnativenonforcedrespawnandrejectsunsafespaces": 1.0,
+    "installedhostileprojectilesareslowedbythealtaroftime": 6.9,
+    "kubejsapotheosisrecipesmatchthegeneratedscript": 1.0,
+    "lasthorizonneedscurrentcampaignreachandphysicalark": 1.5,
+    "logisticsallornothingpreservesvariantsandrejectedprofiles": 1.6,
+    "logisticslegacyinventoryandremovaldonotduplicate": 1.5,
+    "logisticsmoduledepositscurrentbatchfromteaminventoryonce": 1.5,
+    "logisticsmodulerejectsambiguousmissingremoteandspectator": 1.5,
+    "logisticsnativedenialandstructurecannotmovestock": 1.5,
+    "logisticspersonalkitsurvivesnativedeathclone": 1.1,
+    "logisticspipezdepotpreparestwoexactpersonalkits": 12.6,
+    "luminousgeartakesapotheosisaffixes": 1.0,
+    "luminousingotandcreativeitemscraftfromtheirgrids": 1.1,
+    "luminousrecipesloadwithrealitemsandexclusiveoutputs": 1.0,
+    "luminoussilentgeararmouroutclassesandflies": 1.5,
+    "luminousupgradeskeepenchantmentsdamageandnames": 0.5,
+    "mysticalcropsgrowfasterbuttheiressenceisnotmultiplied": 12.1,
+    "nativeactsixinputscomefromrealmods": 1.0,
+    "nativebuildercraftskeepcostsandoutputs": 1.5,
+    "nativemacawrecipeskeepactualingredientsandyields": 1.0,
+    "nativemegahopperproduceswheatandfullstockkeepscontents": 27.1,
+    "nativepartysnapshotsarchiverecoveryandreconnect": 1.5,
+    "nativerecipesrequireintegrationcomponents": 1.0,
+    "nativeshuttergateandgardenlightworkwhenplaced": 1.0,
+    "nativewhitepotcraftingrequiresrealintegrationitems": 1.0,
+    "naturerestorationgrowswholenativetreesornone": 2.2,
+    "naturerestorationhealsscarsatexactcostandsparesbuilds": 1.5,
+    "naturerestorationrefuseswithoutmutation": 1.5,
+    "naturerestorationrespectsforeignftbchunksclaim": 1.6,
+    "offhanddeliveryandmissingmaterialareatomic": 1.0,
+    "pamtreeskeepmarketacquisitionwithoutduplicateworldgen": 1.0,
+    "peacealtarrefuseseveryinstalledhostilenaturalspawn": 1.0,
+    "phaseandendingquesttasksonlymirrorsavedauthority": 1.5,
+    "poweredmechanicalchiselconvertsrealchippedstoneonce": 6.6,
+    "questmirrorcannotgrantcampaign": 1.1,
+    "questmirrorrepairssavedprogressthroughdependencydag": 1.6,
+    "realpartylifecyclepreservespersonalsnapshots": 1.0,
+    "registeredrecipescraftatlas": 1.5,
+    "renewalaltarrebuildslandfromthepacksowngenerator": 8.1,
+    "saveddatadiskroundtrip": 1.0,
+    "secondactconsumesgiftedprototypesandgatesclosure": 1.0,
+    "spawneraugmentsmodifyrealspawnersandrunesaregone": 1.0,
+    "statusreportsmissingmaterialsandprerequisites": 1.1,
+    "surveystationbookmarkswithoutcampaignorlodestone": 1.0,
+    "terraarmwornincurioshandsgivesfiveblockreach": 2.1,
+    "thirdactconsumesgiftedprototypesandgatesclosure": 1.5,
+    "threeprovisionsrouteskeepcookedcostsandbowls": 1.0,
+    "torchmasterkeepsitslightsbutlosesthemegatorch": 1.5,
+    "worldtierfollowsthestoryandcannotbechosen": 3.6,
+    "worldtieroverridesopenwhentheteamclosesacts": 2.5,
+    "preparelogisticsrestartfixture": 11.6,
+    "prepareteamrestartfixture": 2.1,
+    "preparelivebackupfixture": 2.1
+   },
+   "tests": {
+    "carryonrefusessensitiveblocks": "PASS",
+    "compassmovestothenextobjectivewhentheteammeetsthecondition": "PASS",
+    "compasssearchesstayboundedandcooperative": "PASS",
+    "fullpackfirstjoingiftsstaydisabled": "PASS",
+    "fullpackplayerarrivesemptyhanded": "PASS",
+    "newplayerarriveswithanemptyinventory": "PASS",
+    "pedestalgiveseachplayeronecompassever": "PASS",
+    "pingpongbatchloadedwithoutrejectedbuilds": "PASS",
+    "satietyoverflowatafullbarturnssurplusintobuffs": "PASS",
+    "satietyoverflowcooldownandglutstopcheapspam": "PASS",
+    "satietyoverflowcountsbiteseatenfromblocks": "PASS",
+    "satietyoverflowneverreplacesstrongereffects": "PASS",
+    "solsticiocitypaletteresolvesinthefullpack": "PASS",
+    "solsticioshoptablesresolveinthefullpack": "PASS",
+    "startruinisanchoredregisteredandplacedonce": "PASS",
+    "storytieronlyrisesandcannotbechosen": "PASS",
+    "unifiedcropsdropfarmersdelighttomatoes": "PASS",
+    "actsixdeliveriesusecrossmodcostsandrewardonce": "PASS",
+    "ae2settlementsupplycraftstwiceandreturnsallbowls": "PASS",
+    "altarsrespectforeignftbchunksclaims": "PASS",
+    "apothicenchantingreadsentrelumenshelfstats": "PASS",
+    "arcanerestorationkeepsapotheosisandmoddeddataatarealark": "PASS",
+    "arcanerestorationrejectswithoutpartialpayment": "PASS",
+    "arcanerestorationresetsforginghistoryandkeepseverythingelse": "PASS",
+    "arkcontrollerpartialoffhandtopupandreplay": "PASS",
+    "arkfieldjournaldepositneedsauniquecompletereachableark": "PASS",
+    "arkfieldjournalsdepositonlytheirownbatches": "PASS",
+    "arkfieldjournalsreadcurrentteamwithoutmutation": "PASS",
+    "arkmissingmoduleanddeniedhookpreservesupplies": "PASS",
+    "arkpartyledgerrejectsstaleidentityandrestorespersonal": "PASS",
+    "atlasadvanceandsnapshotcodecuseauthoritativestate": "PASS",
+    "atlaslibrarycapsbyrealeternawithoutduplication": "PASS",
+    "atlasopenneedsnoitemorcampaigntoken": "PASS",
+    "atlasrouterejectsstaleteamandcannotdoubleconsume": "PASS",
+    "chippedvariantsjoinloadedrechiseledconversiongroup": "PASS",
+    "configuredquarrycardpreservesnativeshapedata": "PASS",
+    "containedfoliotcrushesoneinputthroughnativecapability": "PASS",
+    "deliveryconsumesserverinventoryonce": "PASS",
+    "engineeringmoduleinspectionisreadonlyandteamscoped": "PASS",
+    "engineeringworkshoprejectsinvalidstructureandusewithoutconsumption": "PASS",
+    "engineeringworkshoprepairsgiftedtoolswithoutcampaignorcomponentchanges": "PASS",
+    "explorationchartscompilefieldmapswithoutconsuminganything": "PASS",
+    "explorationchartskeepsupplementariesslicemapsapart": "PASS",
+    "explorationchartsrefusewithoutmutation": "PASS",
+    "explorationchartsrespectforeignftbchunksclaim": "PASS",
+    "farmersdelightpiebitecountsassatietysurplus": "PASS",
+    "fifthactrequiresfourdeliveriesbeforeadvancing": "PASS",
+    "finitearssourcedrivesandstopscreateshaft": "PASS",
+    "finitesourceacceptorpowersmestoragethencutsoff": "PASS",
+    "firstactcompletesthroughrealdeliveries": "PASS",
+    "fourthactrequiresjourneysandfivedeliveries": "PASS",
+    "functionalglassandswitchedlightsusenativeblockbehavior": "PASS",
+    "giftednativeupgradespreservefilledpotacrossthreetiers": "PASS",
+    "habitationbedclickchecksinandoutwithoutchangingcampaign": "PASS",
+    "habitationbrokenmodulefallsbacktonativebedandsurvivesclone": "PASS",
+    "habitationcanceledspawnsetterskeepbackupandrecoverclone": "PASS",
+    "habitationnativebedreplacingmodulerestoresoriginalhome": "PASS",
+    "habitationnewbedwinsandbookingsurvivesplayerserialization": "PASS",
+    "habitationusesnativenonforcedrespawnandrejectsunsafespaces": "PASS",
+    "installedhostileprojectilesareslowedbythealtaroftime": "PASS",
+    "kubejsapotheosisrecipesmatchthegeneratedscript": "PASS",
+    "lasthorizonneedscurrentcampaignreachandphysicalark": "PASS",
+    "logisticsallornothingpreservesvariantsandrejectedprofiles": "PASS",
+    "logisticslegacyinventoryandremovaldonotduplicate": "PASS",
+    "logisticsmoduledepositscurrentbatchfromteaminventoryonce": "PASS",
+    "logisticsmodulerejectsambiguousmissingremoteandspectator": "PASS",
+    "logisticsnativedenialandstructurecannotmovestock": "PASS",
+    "logisticspersonalkitsurvivesnativedeathclone": "PASS",
+    "logisticspipezdepotpreparestwoexactpersonalkits": "PASS",
+    "luminousgeartakesapotheosisaffixes": "PASS",
+    "luminousingotandcreativeitemscraftfromtheirgrids": "PASS",
+    "luminousrecipesloadwithrealitemsandexclusiveoutputs": "PASS",
+    "luminoussilentgeararmouroutclassesandflies": "PASS",
+    "luminousupgradeskeepenchantmentsdamageandnames": "PASS",
+    "mysticalcropsgrowfasterbuttheiressenceisnotmultiplied": "PASS",
+    "nativeactsixinputscomefromrealmods": "PASS",
+    "nativebuildercraftskeepcostsandoutputs": "PASS",
+    "nativemacawrecipeskeepactualingredientsandyields": "PASS",
+    "nativemegahopperproduceswheatandfullstockkeepscontents": "PASS",
+    "nativepartysnapshotsarchiverecoveryandreconnect": "PASS",
+    "nativerecipesrequireintegrationcomponents": "PASS",
+    "nativeshuttergateandgardenlightworkwhenplaced": "PASS",
+    "nativewhitepotcraftingrequiresrealintegrationitems": "PASS",
+    "naturerestorationgrowswholenativetreesornone": "PASS",
+    "naturerestorationhealsscarsatexactcostandsparesbuilds": "PASS",
+    "naturerestorationrefuseswithoutmutation": "PASS",
+    "naturerestorationrespectsforeignftbchunksclaim": "PASS",
+    "offhanddeliveryandmissingmaterialareatomic": "PASS",
+    "pamtreeskeepmarketacquisitionwithoutduplicateworldgen": "PASS",
+    "peacealtarrefuseseveryinstalledhostilenaturalspawn": "PASS",
+    "phaseandendingquesttasksonlymirrorsavedauthority": "PASS",
+    "poweredmechanicalchiselconvertsrealchippedstoneonce": "PASS",
+    "questmirrorcannotgrantcampaign": "PASS",
+    "questmirrorrepairssavedprogressthroughdependencydag": "PASS",
+    "realpartylifecyclepreservespersonalsnapshots": "PASS",
+    "registeredrecipescraftatlas": "PASS",
+    "renewalaltarrebuildslandfromthepacksowngenerator": "PASS",
+    "saveddatadiskroundtrip": "PASS",
+    "secondactconsumesgiftedprototypesandgatesclosure": "PASS",
+    "spawneraugmentsmodifyrealspawnersandrunesaregone": "PASS",
+    "statusreportsmissingmaterialsandprerequisites": "PASS",
+    "surveystationbookmarkswithoutcampaignorlodestone": "PASS",
+    "terraarmwornincurioshandsgivesfiveblockreach": "PASS",
+    "thirdactconsumesgiftedprototypesandgatesclosure": "PASS",
+    "threeprovisionsrouteskeepcookedcostsandbowls": "PASS",
+    "torchmasterkeepsitslightsbutlosesthemegatorch": "PASS",
+    "worldtierfollowsthestoryandcannotbechosen": "PASS",
+    "worldtieroverridesopenwhentheteamclosesacts": "PASS",
+    "preparelogisticsrestartfixture": "PASS",
+    "prepareteamrestartfixture": "PASS",
+    "preparelivebackupfixture": "PASS"
+   }
+  },
+  "B": {
+   "label": "G2",
+   "server": "E:\\Elias\\Codex\\Entrelumen-ssd\\server-fullpack-final2",
+   "props": [],
+   "runId": null,
+   "exitCode": null,
+   "bootWallSeconds": 159.6,
+   "doneSeconds": 6.541,
+   "ruinPlaced": null,
+   "expected": 115,
+   "passed": 2,
+   "failed": null,
+   "retries": null,
+   "summary": null,
+   "watchdog": null,
+   "cantKeepUp": null,
+   "worstCantKeepUpMs": null,
+   "commands": null,
+   "solsticioLog": null,
+   "compassSearches": null,
+   "seconds": {
+    "verifyteamrestartafternewserverprocess": 4.2,
+    "verifylogisticsrestartfixture": 2.1
+   },
+   "tests": {
+    "verifyteamrestartafternewserverprocess": "PASS",
+    "verifylogisticsrestartfixture": "PASS"
+   },
+   "serverEndedDuring": "datapackreloadisatomicandrejectscycles (60 s watchdog, see reloadWatchdog)"
+  },
+  "C": {
+   "label": "G3",
+   "server": "E:\\Elias\\Codex\\Entrelumen-ssd\\server-fullpack-restore3",
+   "props": [
+    "-Dentrelumen.qa.backup.archive=E:/Elias/Codex/Entrelumen-ssd/fullpack-20260924/livebackup-G1.zip"
+   ],
+   "runId": "32e1ee64-b501-48d5-9c10-7b9b157c0971",
+   "exitCode": 0,
+   "bootWallSeconds": 184.8,
+   "doneSeconds": 8.933,
+   "ruinPlaced": null,
+   "expected": 115,
+   "passed": 2,
+   "failed": [],
+   "retries": null,
+   "summary": "ENTRELUMEN_QA_SUMMARY expected=115 finished=2 failed=0 passed=2 failedNames=[] pendingNames=[actsixdeliveriesusecrossmodcostsandrewardonce, ae2settlementsupplycraftstwiceandreturnsallbowls, altarsrespectforeignftbchunksclaims, apothicenchantingreadsentrelumenshelfstats, arcanerestorationkeepsapotheosisandmoddeddataatarealark, arcanerestorationrejectswithoutpartialpayment, arcanerestorationresetsforginghistoryandkeepseverythingelse, arkcontrollerpartialoffhandtopupandreplay, arkfieldjournaldepositneedsauniquecompletereachableark, arkfieldjournalsdepositonlytheirownbatches, arkfieldjournalsreadcurrentteamwithoutmutation, arkmissingmoduleanddeniedhookpreservesupplies, arkpartyledgerrejectsstaleidentityandrestorespersonal, atlasadvanceandsnapshotcodecuseauthoritativestate, atlaslibrarycapsbyrealeternawithoutduplication, atlasopenneedsnoitemorcampaigntoken, atlasrouterejectsstaleteamandcannotdoubleconsume, carryonrefusessensitiveblocks, chippedvariantsjoinloadedrechiseledconversiongroup, compassmovestothenextobjectivewhentheteammeetsthecondition, compasssearchesstayboundedandcooperative, configuredquarrycardpreservesnativeshapedata, containedfoliotcrushesoneinputthroughnativecapability, deliveryconsumesserverinventoryonce, engineeringmoduleinspectionisreadonlyandteamscoped, engineeringworkshoprejectsinvalidstructureandusewithoutconsumption, engineeringworkshoprepairsgiftedtoolswithoutcampaignorcomponentchanges, explorationchartscompilefieldmapswithoutconsuminganything, explorationchartskeepsupplementariesslicemapsapart, explorationchartsrefusewithoutmutation, explorationchartsrespectforeignftbchunksclaim, farmersdelightpiebitecountsassatietysurplus, fifthactrequiresfourdeliveriesbeforeadvancing, finitearssourcedrivesandstopscreateshaft, finitesourceacceptorpowersmestoragethencutsoff, firstactcompletesthroughrealdeliveries, fourthactrequiresjourneysandfivedeliveries, fullpackfirstjoingiftsstaydisabled, fullpackplayerarrivesemptyhanded, functionalglassandswitchedlightsusenativeblockbehavior, giftednativeupgradespreservefilledpotacrossthreetiers, habitationbedclickchecksinandoutwithoutchangingcampaign, habitationbrokenmodulefallsbacktonativebedandsurvivesclone, habitationcanceledspawnsetterskeepbackupandrecoverclone, habitationnativebedreplacingmodulerestoresoriginalhome, habitationnewbedwinsandbookingsurvivesplayerserialization, habitationusesnativenonforcedrespawnandrejectsunsafespaces, installedhostileprojectilesareslowedbythealtaroftime, kubejsapotheosisrecipesmatchthegeneratedscript, lasthorizonneedscurrentcampaignreachandphysicalark, logisticsallornothingpreservesvariantsandrejectedprofiles, logisticslegacyinventoryandremovaldonotduplicate, logisticsmoduledepositscurrentbatchfromteaminventoryonce, logisticsmodulerejectsambiguousmissingremoteandspectator, logisticsnativedenialandstructurecannotmovestock, logisticspersonalkitsurvivesnativedeathclone, logisticspipezdepotpreparestwoexactpersonalkits, luminousgeartakesapotheosisaffixes, luminousingotandcreativeitemscraftfromtheirgrids, luminousrecipesloadwithrealitemsandexclusiveoutputs, luminoussilentgeararmouroutclassesandflies, luminousupgradeskeepenchantmentsdamageandnames, mysticalcropsgrowfasterbuttheiressenceisnotmultiplied, nativeactsixinputscomefromrealmods, nativebuildercraftskeepcostsandoutputs, nativemacawrecipeskeepactualingredientsandyields, nativemegahopperproduceswheatandfullstockkeepscontents, nativepartysnapshotsarchiverecoveryandreconnect, nativerecipesrequireintegrationcomponents, nativeshuttergateandgardenlightworkwhenplaced, nativewhitepotcraftingrequiresrealintegrationitems, naturerestorationgrowswholenativetreesornone, naturerestorationhealsscarsatexactcostandsparesbuilds, naturerestorationrefuseswithoutmutation, naturerestorationrespectsforeignftbchunksclaim, newplayerarriveswithanemptyinventory, offhanddeliveryandmissingmaterialareatomic, pamtreeskeepmarketacquisitionwithoutduplicateworldgen, peacealtarrefuseseveryinstalledhostilenaturalspawn, pedestalgiveseachplayeronecompassever, phaseandendingquesttasksonlymirrorsavedauthority, pingpongbatchloadedwithoutrejectedbuilds, poweredmechanicalchiselconvertsrealchippedstoneonce, preparelivebackupfixture, preparelogisticsrestartfixture, prepareteamrestartfixture, questmirrorcannotgrantcampaign, questmirrorrepairssavedprogressthroughdependencydag, realpartylifecyclepreservespersonalsnapshots, registeredrecipescraftatlas, renewalaltarrebuildslandfromthepacksowngenerator, satietyoverflowatafullbarturnssurplusintobuffs, satietyoverflowcooldownandglutstopcheapspam, satietyoverflowcountsbiteseatenfromblocks, satietyoverflowneverreplacesstrongereffects, saveddatadiskroundtrip, secondactconsumesgiftedprototypesandgatesclosure, solsticiocitypaletteresolvesinthefullpack, solsticioshoptablesresolveinthefullpack, spawneraugmentsmodifyrealspawnersandrunesaregone, startruinisanchoredregisteredandplacedonce, statusreportsmissingmaterialsandprerequisites, storytieronlyrisesandcannotbechosen, surveystationbookmarkswithoutcampaignorlodestone, terraarmwornincurioshandsgivesfiveblockreach, thirdactconsumesgiftedprototypesandgatesclosure, threeprovisionsrouteskeepcookedcostsandbowls, torchmasterkeepsitslightsbutlosesthemegatorch, unifiedcropsdropfarmersdelighttomatoes, verifylogisticsrestartfixture, verifyteamrestartafternewserverprocess, worldtierfollowsthestoryandcannotbechosen, worldtieroverridesopenwhentheteamclosesacts]\r",
+   "watchdog": false,
+   "cantKeepUp": 2,
+   "worstCantKeepUpMs": 60987,
+   "commands": null,
+   "solsticioLog": [],
+   "compassSearches": [],
+   "seconds": {
+    "verifyrestoredlivebackup": 4.3,
+    "datapackreloadisatomicandrejectscycles": 73.2
+   },
+   "tests": {
+    "verifyrestoredlivebackup": "PASS",
+    "datapackreloadisatomicandrejectscycles": "PASS"
+   }
+  }
+ },
+ "history": {
+  "A1": {
+   "passed": null,
+   "failed": null,
+   "serverEndedDuring": "startruinisanchoredregisteredandplacedonce",
+   "watchdog": null,
+   "worstCantKeepUpMs": null
+  },
+  "A2": {
+   "passed": 111,
+   "failed": [
+    "satietyoverflowcountsbiteseatenfromblocks"
+   ],
+   "serverEndedDuring": null,
+   "watchdog": false,
+   "worstCantKeepUpMs": 57722
+  },
+  "B2": {
+   "passed": 2,
+   "failed": [],
+   "serverEndedDuring": null,
+   "watchdog": false,
+   "worstCantKeepUpMs": 2667
+  },
+  "C2": {
+   "passed": 1,
+   "failed": [],
+   "serverEndedDuring": null,
+   "watchdog": false,
+   "worstCantKeepUpMs": 2515
+  },
+  "A3": {
+   "passed": null,
+   "failed": null,
+   "serverEndedDuring": "datapackreloadisatomicandrejectscycles",
+   "watchdog": null,
+   "worstCantKeepUpMs": null
+  },
+  "A4": {
+   "passed": null,
+   "failed": null,
+   "serverEndedDuring": "datapackreloadisatomicandrejectscycles",
+   "watchdog": null,
+   "worstCantKeepUpMs": null
+  },
+  "A5": {
+   "passed": 109,
+   "failed": [
+    "preparelivebackupfixture",
+    "prepareteamrestartfixture"
+   ],
+   "serverEndedDuring": null,
+   "watchdog": false,
+   "worstCantKeepUpMs": 59791
+  },
+  "A5b": {
+   "passed": 2,
+   "failed": [],
+   "serverEndedDuring": null,
+   "watchdog": false,
+   "worstCantKeepUpMs": 2160
+  },
+  "F1": {
+   "passed": 111,
+   "failed": [],
+   "serverEndedDuring": null,
+   "watchdog": false,
+   "worstCantKeepUpMs": 9221
+  },
+  "F2": {
+   "passed": 3,
+   "failed": [],
+   "serverEndedDuring": null,
+   "watchdog": false,
+   "worstCantKeepUpMs": 25645
+  }
+ },
+ "jars": {
+  "entrelumen-0.1.0-bf6f18d.jar": "1c378015c6fde2df11be06dc18f3503d2e7257b47170a32402f27044e6985525",
+  "entrelumen-0.1.0-qa-bf6f18d.jar": "39d146651bdcc3e0ee3683f884790e8ef06a18b995c5a90f985d398a9d8fa1b5"
+ }
+}

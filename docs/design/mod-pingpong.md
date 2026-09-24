@@ -140,7 +140,7 @@ Servidor limpio nuevo (`server-mods-r123-qa`: sólo librerías, los 266 JAR del 
   - Colocación en el pack completo: 557.413 bloques de plantilla en 131 ticks, 2.584 ms colocando, peor tick de 121 ms y 35,9 s de pared.
   - Quedó con llegada, portal, 4 lotes y los puntos de Aurelia, Terra, Juan y Bodhi. El comercio pobló 66 aldeanos en 1,9 s, sin fallas.
   - Sin avisos de marcadores desconocidos.
-- **Hallazgo de la brújula**: en la primera corrida (`test runall`, con mucha generación simultánea) el servidor se cayó por el watchdog. Un tick duró 60 s dentro de `CompassLocator$StructureJob.step`, que pide `level.getChunk(..., STRUCTURE_STARTS)` de forma síncrona en el hilo del servidor. Es código de la brújula: lo reporto a su dueño en lugar de tocarlo.
+- **Hallazgo de la brújula**: en la primera corrida (`test runall`, con mucha generación simultánea) el servidor se cayó por el watchdog. Un tick duró 60 s dentro de `CompassLocator$StructureJob.step`, que pide `level.getChunk(..., STRUCTURE_STARTS)` de forma síncrona en el hilo del servidor. Resuelto el 24 de septiembre en `fix/fullpack`: la búsqueda pide el chunk con un ticket propio y consulta el futuro en ticks siguientes, sin esperar en el hilo del servidor. Las otras fallas de esta QA, sus causas y la corrida en verde están en `docs/verification/fullpack-fixes-runtime.json`. Es código de la brújula: lo reporto a su dueño en lugar de tocarlo.
 - Otros errores de log ajenos al lote: excepciones de ticks de entidades de hechizos atrapadas por el nivel (Ars Nouveau `EntityWallSpell`, Theurgy `FollowProjectile`, Iron's `ChainLightning`) durante una prueba de Ars.
 
 ### Pendiente para Elias
