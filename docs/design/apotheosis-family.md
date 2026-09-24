@@ -113,6 +113,10 @@ Silk-touch spawner harvesting is disabled (`Spawner Silk Level = -1` in `pack/co
 
 Rarity weights, affix pools, invader chances per tier and gem drops stay native. The player's own tier is the difficulty knob: Haven has no invaders and no epic or mythic rarity.
 
+## Ark arcane service
+
+Book separation at the Ark became redundant with the Apothic and Atlas libraries. The arcane module now [restores an item's forging history](arcane-library.md): it resets the anvil prior-work penalty for one ordinary book and five levels per recorded operation, and keeps every other component, including Apotheosis affixes and sockets.
+
 ## Keybindings
 
 Native defaults are kept and now pinned in the client preset, with no world-context collision:
@@ -143,12 +147,13 @@ Static checks for this batch:
 - an offline companion build (`gradlew --offline build`, 80 JUnit tests passing, 12 of them new) covering the World Tier rule, the ledger formula, the ≥ 50 % loss, saturation and caps;
 - `runGameTestServer`: all 47 required GameTests passed, including two new isolated ones without Apotheosis. Stand-in advancements exercise tier grants, idempotence, a later joiner, non-revocation and a missing Summit. The library tests cover the item-handler deposit, curse refusal, extraction refusal, the vanilla-shelf Eterna cap, server rejection above the cap, round-trip loss, saturation, and break/restore without duplication.
 
-Pending for the runtime phase, all with the real JARs:
+Runtime phase (24 September 2026), recorded in [apotheosis-runtime.json](../verification/apotheosis-runtime.json):
 
-- dedicated-server and client startup;
-- Apothic stat pickup of the four shelves and the Atlas Library's reading of Apothic Eterna;
-- the KubeJS receipts for 4 edits, 46 removals and 21 additions;
-- advancement overrides taking precedence, and World Tier selection in the screen;
-- augment application and reversal on a real spawner;
-- keybinding and GUI checks in the client;
-- performance and the new rogue-spawner and invader worldgen.
+- HEAD installed into the owned server and both client profiles with the receipt-managed installer and `curate_pack.py --install` (four new JARs each).
+- The dedicated server started, saved and stopped cleanly. The only ERROR line is the known Create: Enchantment Industry data-map entry.
+- The first attempt was cut by the watchdog while classes loaded from the contended G: disk. The world was restored from the pre-install backup and the retry used a temporary `max-tick-time` of 180000, since returned to 60000.
+- KubeJS reported 4 edits, 43 removals plus 3 inactive fallbacks, 50 loaded checks and 21 additions without failures.
+- `apotheosis.cfg` and `apothic_spawners.cfg` kept their installed hashes through every boot.
+- Eight full-pack GameTests passed with the QA JAR: Apothic reads the shelf stats, KubeJS recipes match the generator, augments work on a real spawner and runes are gone, the Atlas Library uses real Eterna without duplication, World Tiers open as acts close, and three arcane-restoration cases.
+
+Still pending: a client launch (World Tier screen, Atlas Library GUI, keybindings, textures, EN/ES rendering), survival pacing, co-op with external clients, performance with the new worldgen, and a run at the normal tick limit without disk contention.

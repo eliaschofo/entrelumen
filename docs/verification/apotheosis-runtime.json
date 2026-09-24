@@ -1,0 +1,409 @@
+{
+  "schemaVersion": 1,
+  "checkedAt": "2026-09-24T03:39:42+00:00",
+  "scope": "Apotheosis family runtime: HEAD installation into the owned profiles, dedicated start/save/stop, full-pack QA for shelves, Atlas Library, World Tiers, spawner augments, KubeJS recipes and configs, and the Ark arcane forging-history restoration. Not client rendering, survival play, co-op, pacing or performance acceptance.",
+  "sourceCommits": {
+    "family": "e29baa0",
+    "fullpackQa": "5437d7c8f6c22f43ac304662d2defa8a2e92d1b4",
+    "arcana": "dd0b71867b43cda85f11ec2b1eed02dd9e15b7f1"
+  },
+  "platform": "Minecraft 1.21.1 / NeoForge 21.1.249 / JDK 21.0.12.1+1 / Windows",
+  "designDocs": [
+    "docs/design/apotheosis-family.md",
+    "docs/design/arcane-library.md"
+  ],
+  "build": {
+    "command": "gradlew --offline --no-daemon build qaJar",
+    "commit": "dd0b71867b43cda85f11ec2b1eed02dd9e15b7f1",
+    "logSha256": "2326ff7791cff1ac79c7e1f3ae9e9b609e94732fe708de0a3ffd7185f72107fe",
+    "normalJarSha256": "3085bac4483b3e58b2f85914bbf2c23aae5ca9816fa3776b2b06dd2f5dce096a",
+    "qaJarSha256": "7cc17eeef0a53195592d5f4f1fbba4ef84ce2c1def1d3328123e27a690a2262d",
+    "earlierNormalJarSha256": {
+      "5437d7c": "ca5f1341615f4e41bdf92e2a2c9f6af24326770a93cd19ad1364aa471f933010"
+    },
+    "normalJarExcludes": [
+      "RuntimeGameTests*",
+      "ApotheosisGameTests",
+      "all full-pack GameTest classes"
+    ],
+    "qaJarIncludes": [
+      "FullpackQABootstrap",
+      "ApotheosisGameTests"
+    ]
+  },
+  "unitTests": {
+    "passed": 82,
+    "failed": 0,
+    "new": {
+      "dev.entrelumen.ApotheosisTiersTest": 3,
+      "dev.entrelumen.ArcaneRestorationTest": 2,
+      "dev.entrelumen.AtlasLibraryLedgerTest": 9
+    }
+  },
+  "isolatedGameTests": {
+    "command": "gradlew --offline --no-daemon runGameTestServer",
+    "passed": 47,
+    "required": 47,
+    "logSha256": "1c5c35b1dcd7933c128f736727eb897d5a5e305c662203f379f5703048b5829c",
+    "new": [
+      "worldTiersFollowTheTeamCampaignIdempotently",
+      "atlasLibraryPoolsBooksCapsByShelvesAndSurvivesBreakingWithoutDuplication",
+      "arcaneRestorationResetsForgingHistoryAndKeepsEverythingElse",
+      "arcaneRestorationRejectsWithoutPartialPayment"
+    ],
+    "limitation": "No Apotheosis in the isolated server: fixture stand-in tier advancements and the vanilla shelf rule."
+  },
+  "installation": {
+    "mechanism": "Receipt-managed pack files (tools/sync_pack.py contract, installer adapted from head-e1cc078-20260923/install_head.py) plus tools/curate_pack.py --install; replaced files and receipts backed up under integration-before/. No Minecraft or client process running.",
+    "catalog": "272 client / 232 server JARs plus the companion",
+    "installs": [
+      {
+        "head": "5437d7c8f6c22f43ac304662d2defa8a2e92d1b4",
+        "installer": "G:\\Elias\\Codex\\Entrelumen-work\\head-5437d7c-20260923\\install_head.py",
+        "companionJarSha256": "ca5f1341615f4e41bdf92e2a2c9f6af24326770a93cd19ad1364aa471f933010",
+        "profiles": [
+          {
+            "profile": "E:\\curseforge\\Instances\\ENTRELUMEN",
+            "side": "client",
+            "packFilesWritten": 116,
+            "jarsAdded": [
+              "Apotheosis-1.21.1-8.7.0.jar",
+              "ApothicAttributes-1.21.1-2.10.1.jar",
+              "ApothicEnchanting-1.21.1-1.6.1.jar",
+              "ApothicSpawners-1.21.1-1.4.0.jar"
+            ],
+            "jarsTotal": 273,
+            "retired": 0,
+            "preservedLocal": 10,
+            "tomlEquivalent": [
+              "config/aether-startup.toml",
+              "config/create_connected-common.toml",
+              "config/cumulus_menus-client.toml"
+            ],
+            "guardedUnchanged": 51
+          },
+          {
+            "profile": "E:\\curseforge\\Instances\\ENTRELUMEN Defaults QA",
+            "side": "client",
+            "packFilesWritten": 116,
+            "jarsAdded": [
+              "Apotheosis-1.21.1-8.7.0.jar",
+              "ApothicAttributes-1.21.1-2.10.1.jar",
+              "ApothicEnchanting-1.21.1-1.6.1.jar",
+              "ApothicSpawners-1.21.1-1.4.0.jar"
+            ],
+            "jarsTotal": 273,
+            "retired": 0,
+            "preservedLocal": 11,
+            "tomlEquivalent": [
+              "config/aether-startup.toml",
+              "config/create_connected-common.toml",
+              "config/cumulus_menus-client.toml"
+            ],
+            "guardedUnchanged": 22
+          },
+          {
+            "profile": "G:\\Elias\\Codex\\Entrelumen-work\\server-slice",
+            "side": "server",
+            "packFilesWritten": 116,
+            "jarsAdded": [
+              "Apotheosis-1.21.1-8.7.0.jar",
+              "ApothicAttributes-1.21.1-2.10.1.jar",
+              "ApothicEnchanting-1.21.1-1.6.1.jar",
+              "ApothicSpawners-1.21.1-1.4.0.jar"
+            ],
+            "jarsTotal": 233,
+            "retired": 0,
+            "preservedLocal": 9,
+            "tomlEquivalent": [
+              "config/aether-startup.toml",
+              "config/create_connected-common.toml"
+            ],
+            "guardedUnchanged": 3
+          }
+        ],
+        "worldBackupBefore": {
+          "archive": "G:\\Elias\\Codex\\Entrelumen-work\\head-5437d7c-20260923\\server-world-before-head.zip",
+          "files": 1347,
+          "sha256": "48842500e72826aba17950677fba025aab0640664fd0820bf9846188c46e5aef"
+        }
+      },
+      {
+        "head": "dd0b71867b43cda85f11ec2b1eed02dd9e15b7f1",
+        "installer": "G:\\Elias\\Codex\\Entrelumen-work\\head-dd0b718-20260923\\install_head.py",
+        "companionJarSha256": "3085bac4483b3e58b2f85914bbf2c23aae5ca9816fa3776b2b06dd2f5dce096a",
+        "profiles": [
+          {
+            "profile": "E:\\curseforge\\Instances\\ENTRELUMEN",
+            "side": "client",
+            "packFilesWritten": 1,
+            "jarsAdded": [],
+            "jarsTotal": 273,
+            "retired": 0,
+            "preservedLocal": 10,
+            "tomlEquivalent": [
+              "config/aether-startup.toml",
+              "config/create_connected-common.toml",
+              "config/cumulus_menus-client.toml"
+            ],
+            "guardedUnchanged": 51
+          },
+          {
+            "profile": "E:\\curseforge\\Instances\\ENTRELUMEN Defaults QA",
+            "side": "client",
+            "packFilesWritten": 1,
+            "jarsAdded": [],
+            "jarsTotal": 273,
+            "retired": 0,
+            "preservedLocal": 11,
+            "tomlEquivalent": [
+              "config/aether-startup.toml",
+              "config/create_connected-common.toml",
+              "config/cumulus_menus-client.toml"
+            ],
+            "guardedUnchanged": 22
+          },
+          {
+            "profile": "G:\\Elias\\Codex\\Entrelumen-work\\server-slice",
+            "side": "server",
+            "packFilesWritten": 1,
+            "jarsAdded": [],
+            "jarsTotal": 233,
+            "retired": 0,
+            "preservedLocal": 9,
+            "tomlEquivalent": [
+              "config/aether-startup.toml",
+              "config/create_connected-common.toml"
+            ],
+            "guardedUnchanged": 3
+          }
+        ],
+        "worldBackupBefore": {
+          "archive": "G:\\Elias\\Codex\\Entrelumen-work\\head-dd0b718-20260923\\server-world-before-head.zip",
+          "files": 1347,
+          "sha256": "313b52a4815d014106a33efac04beae374eb9152053802ca3a93e4464f49ee61"
+        }
+      }
+    ],
+    "clientLaunched": false
+  },
+  "dedicatedServer": {
+    "server": "G:/Elias/Codex/Entrelumen-work/server-slice (owned QA server), heap 6G, normal companion JAR",
+    "firstAttempt": {
+      "done": {
+        "line": 1692,
+        "time": "23:06:41",
+        "message": "Done (98.423s)! For help, type \"help\""
+      },
+      "watchdog": {
+        "line": 1708,
+        "time": "23:07:41",
+        "message": "A single server tick took 60.00 seconds (should be max 0.05)"
+      },
+      "cause": "Watchdog at 60000 ms on the first tick after Done: Supplementaries creating a Moonlight fake player was blocked loading classes from a JAR on G: (FileDispatcherImpl.pread). Other Java processes outside this batch were active on the machine; the disk contention source was not isolated.",
+      "recovery": {
+        "worldRestoredFrom": "G:\\Elias\\Codex\\Entrelumen-work\\head-5437d7c-20260923\\server-world-before-head.zip",
+        "files": 1347,
+        "crashedWorldKeptAt": "G:\\Elias\\Codex\\Entrelumen-work\\head-5437d7c-20260923\\crashed-world-2307",
+        "maxTickTime": "60000 raised temporarily to 180000"
+      },
+      "errors": [
+        {
+          "line": 1619,
+          "time": "23:04:50",
+          "logger": "ne.ne.ne.re.DataMapLoader/",
+          "message": "Object with ID reliquary:xp_juice_still specified in data map for registry minecraft:fluid doesn't exist",
+          "classification": "known upstream: Create: Enchantment Industry resolves its own fluid data map entry (reliquary:xp_juice_still) before the pack override is merged; the merged map uses reliquary:xp_still (see arcane-expansion-runtime.json). Not caused by the companion."
+        },
+        {
+          "line": 1708,
+          "time": "23:07:41",
+          "logger": "minecraft/ServerWatchdog",
+          "message": "A single server tick took 60.00 seconds (should be max 0.05)",
+          "classification": "watchdog shutdown of the first attempt (see cause); world restored"
+        },
+        {
+          "line": 1709,
+          "time": "23:07:41",
+          "logger": "minecraft/ServerWatchdog",
+          "message": "Considering it to be crashed, server will forcibly shutdown.",
+          "classification": "watchdog shutdown of the first attempt (see cause); world restored"
+        },
+        {
+          "line": 1710,
+          "time": "23:07:42",
+          "logger": "ne.ne.ne.co.NeoForgeMod/",
+          "message": "Preparing crash report with UUID 0b61a8d7-d5c5-4bfd-a4df-97186436cac3",
+          "classification": "watchdog shutdown of the first attempt (see cause); world restored"
+        },
+        {
+          "line": 3141,
+          "time": "23:07:44",
+          "logger": "ne.ne.ne.co.NeoForgeMod/",
+          "message": "Preparing crash report with UUID b471d9ca-90c4-43e0-a9a2-be17f80a87b2",
+          "classification": "watchdog shutdown of the first attempt (see cause); world restored"
+        },
+        {
+          "line": 3142,
+          "time": "23:07:44",
+          "logger": "minecraft/ServerWatchdog",
+          "message": "This crash report has been saved to: G:\\Elias\\Codex\\Entrelumen-work\\server-slice\\crash-reports\\crash-2026-09-23_23.07.44-server.txt",
+          "classification": "watchdog shutdown of the first attempt (see cause); world restored"
+        }
+      ]
+    },
+    "runId": "67f0b054-d79a-4b51-8f0f-27ad647ead04",
+    "exitCode": 0,
+    "done": {
+      "line": 1672,
+      "time": "23:25:04",
+      "message": "Done (136.335s)! For help, type \"help\""
+    },
+    "saved": {
+      "line": 1772,
+      "time": "23:27:17",
+      "message": "Saved the game"
+    },
+    "stopping": {
+      "line": 1775,
+      "time": "23:27:32",
+      "message": "Stopping server"
+    },
+    "allSaved": {
+      "line": 1771,
+      "time": "23:27:17",
+      "message": "ThreadedAnvilChunkStorage: All dimensions are saved"
+    },
+    "errors": [
+      {
+        "line": 1618,
+        "time": "23:22:28",
+        "logger": "ne.ne.ne.re.DataMapLoader/",
+        "message": "Object with ID reliquary:xp_juice_still specified in data map for registry minecraft:fluid doesn't exist",
+        "classification": "known upstream: Create: Enchantment Industry resolves its own fluid data map entry (reliquary:xp_juice_still) before the pack override is merged; the merged map uses reliquary:xp_still (see arcane-expansion-runtime.json). Not caused by the companion."
+      }
+    ],
+    "tickWarnings": [
+      "23:26:35 Can't keep up! Is the server overloaded? Running 2072ms or 41 ticks behind"
+    ],
+    "kubejs": [
+      {
+        "status": "registered",
+        "signature": "b6b663750dc897768079daa76a854b599501153f1793eb2fa036a6bbd74de03d",
+        "changed": 4,
+        "removed": 43,
+        "alreadyAbsent": [
+          "apotheosis:fallback/infused_spawner_rune",
+          "apotheosis:fallback/summit_spawner_upgrade_rune",
+          "apotheosis:fallback/pinnacle_spawner_upgrade_rune"
+        ]
+      },
+      {
+        "status": "loaded-ingredient-check",
+        "signature": "b6b663750dc897768079daa76a854b599501153f1793eb2fa036a6bbd74de03d",
+        "checked": 50,
+        "failed": []
+      },
+      {
+        "status": "additions-loaded",
+        "checked": 21,
+        "failed": []
+      }
+    ],
+    "configsNotRewritten": {
+      "sha256": {
+        "apotheosis.cfg": "30219c5209add4eea703816baf1318cf22aee4ed700b3f1d356f161f60ce19fe",
+        "apothic_spawners.cfg": "b990b8a7e80db863ecc1433f755d73357cf271b7a25a09404a2bb415a225200a"
+      },
+      "checked": "identical to the installed pack files after the crashed boot, the clean boot and the QA run (Placebo replay reported no change)"
+    },
+    "maxTickTimeRestored": 60000
+  },
+  "fullpack": {
+    "jvmFlag": "-Dentrelumen.qa=true through JAVA_TOOL_OPTIONS",
+    "qaJarInstalledOnlyOn": "server-slice",
+    "runId": "61a60a0a-8ab7-46f8-9612-04d725508989",
+    "exitCode": 0,
+    "registered": 84,
+    "executed": [
+      "apothicenchantingreadsentrelumenshelfstats",
+      "kubejsapotheosisrecipesmatchthegeneratedscript",
+      "spawneraugmentsmodifyrealspawnersandrunesaregone",
+      "atlaslibrarycapsbyrealeternawithoutduplication",
+      "worldtieroverridesopenwhentheteamclosesacts",
+      "arcanerestorationkeepsapotheosisandmoddeddataatarealark",
+      "arcanerestorationresetsforginghistoryandkeepseverythingelse",
+      "arcanerestorationrejectswithoutpartialpayment"
+    ],
+    "passed": 8,
+    "failed": 0,
+    "requests": [
+      "2a01daf7-9c61-488c-92d8-3d501fc04c69",
+      "905380d3-11ce-4a67-b814-519fffaec5da",
+      "e2d860b6-133c-469c-bc4a-836c551b596b",
+      "435a49e7-a1ab-4284-8012-f74246887dae",
+      "9e09ba23-091c-4c10-ba0c-e9165265c681",
+      "6119933d-2482-43fa-be81-ce8f5509c62f",
+      "a724a66e-9433-40e6-9085-a11f66e6eed1",
+      "05c0c31d-8157-4a38-bfd7-f5e24add6599"
+    ],
+    "qaSummary": "ENTRELUMEN_QA_SUMMARY expected=84 finished=8 failed=0 passed=8 failedNames=[] pendingNames=[actsixdeliveriesusecrossmodc",
+    "done": {
+      "line": 1675,
+      "time": "00:15:03",
+      "message": "Done (124.223s)! For help, type \"help\""
+    },
+    "saved": {
+      "line": 1864,
+      "time": "00:19:45",
+      "message": "Saved the game"
+    },
+    "stopping": {
+      "line": 1868,
+      "time": "00:19:50",
+      "message": "Stopping server"
+    },
+    "errors": [
+      {
+        "line": 1619,
+        "time": "00:12:47",
+        "logger": "ne.ne.ne.re.DataMapLoader/",
+        "message": "Object with ID reliquary:xp_juice_still specified in data map for registry minecraft:fluid doesn't exist",
+        "classification": "known upstream: Create: Enchantment Industry resolves its own fluid data map entry (reliquary:xp_juice_still) before the pack override is merged; the merged map uses reliquary:xp_still (see arcane-expansion-runtime.json). Not caused by the companion."
+      }
+    ],
+    "tickWarnings": [
+      "00:16:39 Can't keep up! Is the server overloaded? Running 14169ms or 283 ticks behind",
+      "00:18:24 Can't keep up! Is the server overloaded? Running 90054ms or 1801 ticks behind",
+      "00:18:45 Can't keep up! Is the server overloaded? Running 6625ms or 132 ticks behind",
+      "00:19:45 Can't keep up! Is the server overloaded? Running 45133ms or 902 ticks behind"
+    ],
+    "verified": [
+      "apothicenchantingreadsentrelumenshelfstats: Apothic Enchanting's EnchantingStatRegistry returns the shipped Eterna/max/Quanta/Arcana/clues for all four shelves (3/40/0/0/0, 4/60/12/0/0, 7.5/80/0/15/1, 12.5/100/10/10/0). Sixteen cartographer shelves give the table 40 Eterna and sixteen horizon shelves 100, read through Apothic by the Atlas Library.",
+      "kubejsapotheosisrecipesmatchthegeneratedscript: The loaded recipe manager matches the installed generated script: 4 edited Apothic shelves contain their staged component and keep their output, 46 removals are absent, 21 new ENTRELUMEN recipes exist with the right output.",
+      "spawneraugmentsmodifyrealspawnersandrunesaregone: A placed vanilla spawner is the Apothic spawner tile. The original fermented spider eye no longer changes it. The spawn count augment adds 2 and is consumed; with quartz in the offhand it reverts to the original count, consuming the augment and keeping the quartz. The solitude augment sets and its inverse clears ignore_players. Exactly 32 spawner_modifier recipes load, all apothic_spawners paths on ENTRELUMEN augments; rune recipes are absent.",
+      "atlaslibrarycapsbyrealeternawithoutduplication: Sixteen patina shelves give 60 Eterna (cap 24). Four Sharpness X books through the item handler add 1024 lumen; level 25 is refused; Sharpness XI costs exactly 1024; Looting IV, never deposited, costs 40. Breaking drops one library with its pool and placing it restores the same pool.",
+      "worldtieroverridesopenwhentheteamclosesacts: All five apotheosis:progression advancements carry only the pack criterion (tick for Haven, impossible otherwise) and the ENTRELUMEN description. Closing Act II through Entrelumen.advance made Apotheosis WorldTier.isUnlocked report Frontier (and Haven, not Ascent) after the companion's own tick. Closing Act III opened Ascent, Act VI Summit, and the Ark ending Pinnacle exactly once.",
+      "arcanerestorationkeepsapotheosisandmoddeddataatarealark: At a real Ark, a netherite sword with Sharpness VII, Curse of Binding, Apothic Scavenger II, Apotheosis sockets, durability bonus, boss origin and affix name and repair_cost 63 came back identical except repair_cost 0, for six books and 30 levels; a replay charged nothing.",
+      "arcanerestorationresetsforginghistoryandkeepseverythingelse: Isolated restoration case repeated in the full pack: exact components, five books and 25 levels, campaign unchanged, no replay charge.",
+      "arcanerestorationrejectswithoutpartialpayment: Isolated rejection case repeated in the full pack: book, insufficient books or levels, wrong hand, incomplete or ambiguous Ark, spectator and remote use reject without mutation; creative pays."
+    ],
+    "normalJarRestored": {
+      "before": "7cc17eeef0a53195592d5f4f1fbba4ef84ce2c1def1d3328123e27a690a2262d",
+      "after": "3085bac4483b3e58b2f85914bbf2c23aae5ca9816fa3776b2b06dd2f5dce096a"
+    },
+    "worldAfterQa": {
+      "archive": "G:\\Elias\\Codex\\Entrelumen-work\\head-dd0b718-20260923\\server-world-after-qa.zip",
+      "files": 1390,
+      "sha256": "81964eb68abba1881bdfafb2b249e39b755c0a38e20b2c307feca081f28bc4ae"
+    },
+    "logSha256": "2d4195829ed064de270a05070ab19ec666eea2c2a438412abad21a891a8a761e",
+    "limitation": "Eight targeted cases, not all 84 registered tests. QA players are mock connections on the server. The tick warnings (up to 90 s behind) occurred while the disk was contended and are not a performance measurement; the run used max-tick-time 180000."
+  },
+  "pending": [
+    "Client launch: World Tier selection screen, Atlas Library screen, EN/ES text rendering, keybindings (Ctrl+T, Ctrl+O, Shift+T) and the controller-made textures and models.",
+    "Survival pacing of shelves, augments and World Tiers; co-op with external clients.",
+    "Performance and memory with the new rogue-spawner and invader worldgen; a run at max-tick-time 60000 without disk contention.",
+    "The remaining 76 registered full-pack cases were not re-run in this batch."
+  ]
+}
