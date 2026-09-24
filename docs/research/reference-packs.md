@@ -345,7 +345,7 @@ Son para quien escriba quests; `wt-acts` tiene hoy el libro y el mod.
 5. **Guías:** muchas líneas de quests informativas por mod y por tema (QoL, logística, construcción, granjas, tips), bien documentadas con las guías de los JARs y las wikis de la versión fijada. Se escriben en `content/guides/` (validador `tools/check_guides.py`).
 6. **Ultimine como curio propio** con 6 tiers:
    - Sin el curio no hay Ultimine.
-   - El tier 1 permite 16 bloques; cada tier suma 16, hasta 96. Elias escribió «hasta 92»: se usa 96 salvo que confirme otro tope.
+   - El tier 1 permite 16 bloques y cada tier suma 16, hasta **96** (confirmado por Elias).
    - La receta de cada tier incluye el curio anterior más materiales cada vez más difíciles, mezclando del pack (Heliodor) y de mods. El tier 1 es accesible («que el de 16 no sea TAN difícil»); después escala.
    - El tooltip muestra el alcance.
    - Hay que ver cómo limita FTB Ultimine por jugador en la versión fijada: config, permisos o API.
