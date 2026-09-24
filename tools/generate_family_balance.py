@@ -75,10 +75,77 @@ def tag(value):
     return {'tag': value}
 
 
+def campaign_tier(tier, trigger, why):
+    """Replace an Apotheosis World Tier advancement's criteria with one campaign criterion."""
+    return {'path': f'data/apotheosis/advancement/progression/{tier}.json', 'op': 'campaign_tier',
+            'trigger': trigger, 'description': f'entrelumen.apotheosis.tier.{tier}.desc', 'why': why}
+
+
+def augmented(modifier, *, inverse=False):
+    """Point one Apothic Spawners modifier (or its quartz inverse) at an ENTRELUMEN augment.
+
+    Apotheosis ships the same paths disabled; the Apothic Spawners original is the only source."""
+    folder = '_inverse/' if inverse else ''
+    return {'path': f'data/apothic_spawners/recipe/spawner_modifiers/{folder}{modifier}.json', 'op': 'mainhand',
+            'item': f'entrelumen:augment_{modifier}', 'source': 'ApothicSpawners-',
+            'why': 'Reverse with quartz in the offhand' if inverse else 'Apply'}
+
+
+def recipe(recipe_id, pattern, key, act, why, *, count=1):
+    """A new shaped recipe for an ENTRELUMEN block or item, written as pack data."""
+    return {'id': recipe_id, 'pattern': pattern, 'key': key, 'count': count, 'act': act, 'why': why}
+
+
 LM = 'entrelumen:living_matrix'
 PR, RM, HC = 'entrelumen:power_regulator', 'entrelumen:routing_matrix', 'entrelumen:handling_core'
 EC, SL, HZ = 'entrelumen:ecosystem_capsule', 'entrelumen:spectral_lens', 'entrelumen:horizon_chart'
 CS, RE, AB = 'entrelumen:containment_seal', 'entrelumen:renewal_engine', 'entrelumen:ark_bus'
+PC, IS = 'entrelumen:propagation_core', 'entrelumen:inventory_sensor'
+CF = 'entrelumen:calibration_frame'
+
+# Spawner augments: act, the Apothic Spawners original item kept as the medallion's core, the
+# Apotheosis rarity material and the ENTRELUMEN component. Rarity follows World Tier drops:
+# uncommon (Haven+), rare (Haven+, common from Frontier) and epic (from Ascent, Act IV).
+AUGMENTS = {
+    'min_delay': ('III', item('minecraft:sugar'), 'apotheosis:timeworn_fabric', PR),
+    'max_delay': ('III', item('minecraft:clock'), 'apotheosis:timeworn_fabric', PR),
+    'spawn_range': ('III', item('minecraft:piston'), 'apotheosis:timeworn_fabric', RM),
+    'player_range': ('III', item('minecraft:prismarine_crystals'), 'apotheosis:timeworn_fabric', IS),
+    'silent': ('III', tag('minecraft:wool'), 'apotheosis:timeworn_fabric', HC),
+    'youthful': ('III', item('minecraft:turtle_egg'), 'apotheosis:timeworn_fabric', PC),
+    'spawn_count': ('IV', item('minecraft:fermented_spider_eye'), 'apotheosis:luminous_crystal_shard', EC),
+    'max_nearby': ('IV', item('minecraft:ghast_tear'), 'apotheosis:luminous_crystal_shard', EC),
+    'initial_health': ('IV', item('minecraft:pointed_dripstone'), 'apotheosis:luminous_crystal_shard', SL),
+    'burning': ('IV', item('minecraft:campfire'), 'apotheosis:luminous_crystal_shard', CS),
+    'echoing': ('V', item('minecraft:echo_shard'), 'apotheosis:arcane_sands', RE),
+    'ignore_conditions': ('V', item('minecraft:conduit'), 'apotheosis:arcane_sands', RE),
+    'ignore_light': ('V', item('minecraft:soul_lantern'), 'apotheosis:arcane_sands', RE),
+    'ignore_players': ('V', item('minecraft:nether_star'), 'apotheosis:arcane_sands', AB),
+    'no_ai': ('V', item('minecraft:chorus_fruit'), 'apotheosis:arcane_sands', AB),
+    'redstone_control': ('V', item('minecraft:comparator'), 'apotheosis:arcane_sands', AB),
+}
+
+
+def augment_recipe(modifier):
+    act, core, material, component = AUGMENTS[modifier]
+    return recipe(f'entrelumen:augment_{modifier}', ['SDS', 'MOM', 'SKS'],
+                  {'S': item('create:copper_sheet'), 'D': item('apotheosis:gem_dust'), 'M': item(material),
+                   'O': core, 'K': item(component)}, act,
+                  'Copper medallion around the original Apothic Spawners item')
+
+
+RUNE_RECIPES = [f'apotheosis:{name}' for name in (
+    'spawner_rune', 'infused_spawner_rune', 'burning_spawner_rune', 'echoing_spawner_rune',
+    'ignore_conditions_spawner_rune', 'ignore_light_spawner_rune', 'ignore_players_spawner_rune',
+    'initial_health_spawner_rune', 'no_ai_spawner_rune', 'redstone_control_spawner_rune', 'silent_spawner_rune',
+    'spawn_range_spawner_rune', 'youthful_spawner_rune', 'frontier_spawner_upgrade_rune',
+    'ascent_spawner_upgrade_rune', 'summit_spawner_upgrade_rune', 'pinnacle_spawner_upgrade_rune',
+    'fallback/infused_spawner_rune', 'fallback/summit_spawner_upgrade_rune', 'fallback/pinnacle_spawner_upgrade_rune')]
+_RUNE_EFFECTS = ('burning', 'echoing', 'ignore_conditions', 'ignore_light', 'ignore_players', 'initial_health',
+                 'no_ai', 'redstone_control', 'silent', 'spawn_range', 'youthful')
+RUNE_MODIFIERS = ([f'apotheosis:spawner_modifiers/{name}' for name in _RUNE_EFFECTS]
+                  + [f'apotheosis:spawner_modifiers/_inverse/{name}' for name in _RUNE_EFFECTS]
+                  + [f'apotheosis:spawner_modifiers/tier/{t}' for t in ('frontier', 'ascent', 'summit', 'pinnacle')])
 
 FAMILIES = {
     'industrial': {
@@ -170,6 +237,46 @@ FAMILIES = {
             disabled('data/irons_jewelry/loot_table/generate_jewelry_test_materials.json',
                      "Developer test table whose material keys are tags, which the loot codec rejects"),
         ],
+    },
+    'apotheosis': {
+        'script': 'entrelumen_apotheosis_balance.js',
+        'tag': 'ENTRELUMEN_APOTHEOSIS_BALANCE',
+        'namespaces': {'apotheosis', 'apothic_enchanting', 'apothic_spawners', 'apothic_attributes', 'placebo'},
+        'changes': [
+            shaped('apothic_enchanting:echoing_sculkshelf', 0, 0, None, SL, 'IV', '80-Eterna sculkshelf'),
+            shaped('apothic_enchanting:soul_touched_sculkshelf', 0, 0, None, SL, 'IV', '80-Eterna sculkshelf'),
+            shaped('apothic_enchanting:endshelf', 0, 0, item('minecraft:end_stone_bricks'), CS, 'IV',
+                   '90-Eterna endshelf and, through it, the pearl endshelf'),
+            shaped('apothic_enchanting:draconic_endshelf', 0, 0, None, AB, 'V', '100-Eterna draconic endshelf'),
+        ],
+        # Apotheosis 8.7 replaces the Apothic Spawners modifiers with rune recipes; the pack keeps the
+        # Apothic Spawners set on ENTRELUMEN augments instead, so the runes lose their recipes.
+        'removals': RUNE_RECIPES + RUNE_MODIFIERS,
+        'data': [
+            campaign_tier('haven', 'minecraft:tick', 'Open from the start of every campaign'),
+            campaign_tier('frontier', 'minecraft:impossible', 'Granted by the companion after Act II'),
+            campaign_tier('ascent', 'minecraft:impossible', 'Granted by the companion after Act III'),
+            campaign_tier('summit', 'minecraft:impossible', 'Granted by the companion after Act V'),
+            campaign_tier('pinnacle', 'minecraft:impossible', 'Granted by the companion after the Ark activation'),
+        ] + [augmented(m) for m in AUGMENTS] + [augmented(m, inverse=True) for m in AUGMENTS],
+        'additions': [
+            recipe('entrelumen:cartographer_shelf', ['PMP', 'BFB', 'PMP'],
+                   {'P': tag('minecraft:planks'), 'M': item('minecraft:map'), 'B': item('minecraft:bookshelf'),
+                    'F': item(CF)}, 'II', 'Early Eterna shelf', count=2),
+            recipe('entrelumen:patina_shelf', ['OHO', 'HRH', 'OHO'],
+                   {'O': item('minecraft:oxidized_copper'), 'H': item('apothic_enchanting:hellshelf'),
+                    'R': item(PR)}, 'III', 'Quanta shelf', count=4),
+            recipe('entrelumen:lumen_shelf', ['GSG', 'SLS', 'GSG'],
+                   {'G': item('minecraft:glowstone'), 'S': item('apothic_enchanting:infused_seashelf'),
+                    'L': item(SL)}, 'IV', 'Arcana shelf', count=4),
+            recipe('entrelumen:horizon_shelf', ['DHD', 'LRL', 'DHD'],
+                   {'D': item('apothic_enchanting:deepshelf'), 'H': item(HZ), 'L': item('entrelumen:lumen_shelf'),
+                    'R': item(RE)}, 'V', 'Late shelf with high Eterna, Quanta and Arcana', count=4),
+            recipe('entrelumen:atlas_library', ['SAS', 'HEH', 'SRS'],
+                   {'S': item(CS), 'A': item(AB), 'H': item('entrelumen:horizon_shelf'),
+                    'E': item('apothic_enchanting:ender_library'), 'R': item(RE)}, 'V',
+                   'Pooled library beyond the Ender Library'),
+        ] + [augment_recipe(m) for m in AUGMENTS],
     },
 }
 
@@ -373,6 +480,10 @@ def data_files():
     return found
 
 
+def disabled_placeholder(data):
+    return {'type': 'neoforge:false'} in data.get('neoforge:conditions', [])
+
+
 def build_data(name, found=None):
     """Return {path below pack/kubejs/data: JSON text} for this family's upstream data overrides."""
     family = FAMILIES[name]
@@ -382,6 +493,12 @@ def build_data(name, found=None):
     outputs_by_path = {}
     for spec in family['data']:
         sources = found.get(spec['path'], [])
+        if spec.get('source'):
+            # Another pinned JAR may ship the same path; it must only be a disabled placeholder.
+            others = [s for s in sources if not s[0].startswith(spec['source'])]
+            sources = [s for s in sources if s[0].startswith(spec['source'])]
+            assert all(disabled_placeholder(json.loads(s[2])) for s in others), \
+                f"{spec['path']}: another pinned JAR provides an active version"
         assert len(sources) == 1, f"{spec['path']}: expected one pinned upstream file, found {len(sources)}"
         original = json.loads(sources[0][2])
         result = copy.deepcopy(original)
@@ -408,6 +525,21 @@ def build_data(name, found=None):
             values.append(spec['value'])
             reverse = copy.deepcopy(result)
             reverse[spec['field']] = reverse[spec['field']][:-1]
+        elif spec['op'] == 'campaign_tier':
+            assert 'neoforge:conditions' not in original and original.get('criteria'), f"{spec['path']}: changed upstream"
+            result['criteria'] = {'campaign': {'trigger': spec['trigger']}}
+            result['requirements'] = [['campaign']]
+            result['display'] = dict(original['display'], description={'translate': spec['description']})
+            reverse = copy.deepcopy(result)
+            reverse['criteria'] = original['criteria']
+            reverse['requirements'] = original['requirements']
+            reverse['display'] = dict(result['display'], description=original['display']['description'])
+        elif spec['op'] == 'mainhand':
+            assert original.get('type') == 'apothic_spawners:spawner_modifier' and 'neoforge:conditions' not in original, \
+                f"{spec['path']}: not an active spawner modifier upstream"
+            result['mainhand'] = {'item': spec['item']}
+            reverse = copy.deepcopy(result)
+            reverse['mainhand'] = original['mainhand']
         elif spec['op'] == 'remove_values':
             values = result[spec['field']]
             assert all(values.count(v) == 1 for v in spec['values']), f"{spec['path']}: values changed upstream"
@@ -419,6 +551,85 @@ def build_data(name, found=None):
         assert reverse == original, f"{spec['path']}: unrelated upstream data changed"
         outputs_by_path[spec['path'][len('data/'):]] = json.dumps(result, indent=2, ensure_ascii=False) + '\n'
     return outputs_by_path
+
+
+COMPANION_LANG = ROOT / 'companion/src/main/resources/assets/entrelumen/lang/en_us.json'
+
+
+def item_models():
+    """Every item model shipped by a locked JAR, as namespaced IDs."""
+    lock, paths = lock_entries()
+    models = set()
+    for entry in lock['mods']:
+        with zipfile.ZipFile(Path(paths[entry['filename']])) as jar:
+            for name in jar.namelist():
+                match = re.match(r'assets/([^/]+)/models/item/(.+)\.json$', name)
+                if match:
+                    models.add(f'{match.group(1)}:{match.group(2)}')
+    return models
+
+
+def build_additions(name, models=None):
+    """Return {path below pack/kubejs/data: JSON text} for this family's new shaped recipes.
+
+    Every item exists (companion lang for entrelumen, a pinned item model for other mods; vanilla
+    items are left to the runtime check) and the declared act equals the latest staged input."""
+    family = FAMILIES[name]
+    if not family.get('additions'):
+        return {}
+    models = models if models is not None else item_models()
+    lang = read(COMPANION_LANG)
+    design_sources, design_acts = component_sources()
+    acts = {out: ACTS[a['act']] for a in family['additions'] for out in [a['id']]}
+    outputs_by_path = {}
+    ids = [a['id'] for a in family['additions']]
+    assert len(ids) == len(set(ids)), 'Duplicate addition ID'
+    for addition in family['additions']:
+        namespace, path = addition['id'].split(':', 1)
+        assert namespace == 'entrelumen', f"{addition['id']}: additions only create ENTRELUMEN outputs"
+        assert f'item.entrelumen.{path}' in lang or f'block.entrelumen.{path}' in lang, \
+            f"{addition['id']}: output is not a named companion item"
+        pattern, key = addition['pattern'], addition['key']
+        assert 1 <= len(pattern) <= 3 and len({len(row) for row in pattern}) == 1 and len(pattern[0]) <= 3
+        used = {c for row in pattern for c in row if c != ' '}
+        assert used == set(key), f"{addition['id']}: pattern and key symbols differ"
+        latest = 1
+        for ingredient in key.values():
+            if 'tag' in ingredient:
+                continue
+            item_id = ingredient['item']
+            ns = item_id.split(':', 1)[0]
+            if ns == 'entrelumen':
+                path_id = item_id.split(':', 1)[1]
+                assert f'item.entrelumen.{path_id}' in lang or f'block.entrelumen.{path_id}' in lang, \
+                    f"{addition['id']}: unknown companion item {item_id}"
+                if item_id in design_acts:
+                    latest = max(latest, design_acts[item_id])
+                elif item_id in acts:
+                    latest = max(latest, acts[item_id])
+            elif ns != 'minecraft':
+                assert item_id in models, f"{addition['id']}: no pinned item {item_id}"
+                if item_id in STAGE_MATERIALS:
+                    latest = max(latest, ACTS[STAGE_MATERIALS[item_id]])
+        assert latest == ACTS[addition['act']], \
+            f"{addition['id']}: declared act {addition['act']} differs from inputs ({latest})"
+        data = {'type': 'minecraft:crafting_shaped', 'category': 'misc', 'pattern': pattern, 'key': key,
+                'result': {'id': addition['id'], 'count': addition['count']}}
+        outputs_by_path[f'{namespace}/recipe/{path}.json'] = json.dumps(data, indent=2, ensure_ascii=False) + '\n'
+    return outputs_by_path
+
+
+ADDITIONS_RUNTIME = '''
+ServerEvents.afterRecipes(event => {
+  var failed = [];
+  ADDITIONS.forEach(row => {
+    var loaded = event.countRecipes({id: row.id, output: row.output});
+    if (loaded !== 1) failed.push({recipe: row.id, loadedOutput: loaded});
+  });
+  console.info('[TAG] ' + JSON.stringify({status: failed.length ? 'failed-addition-check' : 'additions-loaded',
+    checked: ADDITIONS.length, failed: failed}));
+});
+'''
 
 
 RUNTIME = '''
@@ -496,7 +707,16 @@ def render(name, rows, removals, used_files):
             f'const {prefix}Signature = {json.dumps(signature)};\n'
             f'const {prefix}Sources = {json.dumps(used_files, separators=(",", ":"))};\n'
             f'const {prefix}Rows = {json.dumps(rows, ensure_ascii=False, separators=(",", ":"))};\n'
-            f'const {prefix}Removals = {json.dumps(removals)};\n' + body + render_tags(family))
+            f'const {prefix}Removals = {json.dumps(removals)};\n' + body + render_tags(family)
+            + render_additions(family, prefix))
+
+
+def render_additions(family, prefix):
+    additions = [{'id': a['id'], 'output': a['id']} for a in family.get('additions', [])]
+    if not additions:
+        return ''
+    return (f'const {prefix}Additions = {json.dumps(additions, separators=(",", ":"))};\n'
+            + ADDITIONS_RUNTIME.lstrip('\n').replace('ADDITIONS', prefix + 'Additions').replace('TAG', family['tag']))
 
 
 def main():
@@ -515,15 +735,18 @@ def main():
         elif not target.exists() or target.read_text(encoding='utf-8') != output:
             raise SystemExit(f'Generated {target.name} is stale; run --write')
         overrides = build_data(name)
-        for relative, text in overrides.items():
+        additions = build_additions(name)
+        assert not set(overrides) & set(additions), 'Addition path collides with a data override'
+        for relative, text in {**overrides, **additions}.items():
             destination = PACK_DATA / relative
             if args.write:
                 destination.parent.mkdir(parents=True, exist_ok=True)
                 destination.write_text(text, encoding='utf-8', newline='\n')
             elif not destination.is_file() or destination.read_text(encoding='utf-8') != text:
-                raise SystemExit(f'Generated data override {relative} is stale; run --write')
+                raise SystemExit(f'Generated data file {relative} is stale; run --write')
         print(json.dumps({'family': name, 'status': 'static-PASS', 'nativeRecipesIndexed': audited,
                           'changed': len(rows), 'removed': len(removals), 'dataOverrides': len(overrides),
+                          'addedRecipes': len(additions),
                           'acts': sorted({r['act'] for r in rows}), 'runtime': 'pending'}))
 
 

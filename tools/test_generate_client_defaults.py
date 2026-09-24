@@ -36,8 +36,9 @@ class ClientDefaultsTest(unittest.TestCase):
         self.assertIn('key_key.mekanism.head_mode:key.keyboard.up:ALT', bindings)
         self.assertIn('key_key.toolbelt.slot:key.keyboard.r:SHIFT', bindings)
         self.assertIn('key_supplementaries.keybind.quiver:key.keyboard.apostrophe', bindings)
+        self.assertIn('key_key.apotheosis.open_world_tier_select:key.keyboard.t:CONTROL', bindings)
         self.assertEqual({line.rsplit(':', 1)[1] for line in bindings if line.count(':') == 2},
-                         {'ALT', 'SHIFT'})
+                         {'ALT', 'SHIFT', 'CONTROL'})
 
     def test_unrelated_options_and_private_pack_ids_are_not_exported(self):
         preset = copy.deepcopy(self.preset)

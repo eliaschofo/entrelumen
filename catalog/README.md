@@ -55,5 +55,6 @@ Families are added one reviewed batch at a time with `--add-families`, preservin
 | [Exploration and structures](../docs/design/exploration-structures-family.md) | 15 / 3 | 248 client / 209 server | [exploration](../docs/verification/exploration-structures-runtime.json) |
 | [Workshop integrations](../docs/design/workshop-integrations-family.md) | 12 / 0 | — | [workshop](../docs/verification/workshop-integrations-runtime.json) |
 | [Small QoL](../docs/design/small-qol-family.md) | 8 / 0 | 268 client / 228 server | [small QoL](../docs/verification/small-qol-runtime.json) |
+| [Apotheosis](../docs/design/apotheosis-family.md) | 3 / 1 (Placebo already locked) | 272 client / 232 server | pending (static phase) |
 
-Decisions against Oritech, Ender IO, Modern Industrialization, Extreme Reactors, Applied Flux, Productive Trees and Super Factory Manager are recorded in the industrial note; the Apotheosis suite is kept out for the reasons in the arcane note. The lock, companion and QA server stay on NeoForge 21.1.249; no loader change was required.
+Decisions against Oritech, Ender IO, Modern Industrialization, Extreme Reactors, Applied Flux, Productive Trees and Super Factory Manager are recorded in the industrial note; the Apotheosis suite, first kept out in the arcane note, was added on 23 September at Elias's direction. The lock, companion and QA server stay on NeoForge 21.1.249; no loader change was required.

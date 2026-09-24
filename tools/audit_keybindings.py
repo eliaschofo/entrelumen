@@ -47,12 +47,19 @@ PROPOSED = {
     "key_key.cataclysm.helmet_ability": "key.keyboard.k:ALT",
     "key_key.cataclysm.chestplate_ability": "key.keyboard.l:ALT",
     "key_key.cataclysm.boots_ability": "key.keyboard.i:ALT",
+    # Apotheosis family: native defaults kept and pinned (Ctrl+T World Tier screen, Ctrl+O radial
+    # mining toggle, Shift+T item link inside inventories); no world-context collision.
+    "key_key.apotheosis.open_world_tier_select": "key.keyboard.t:CONTROL",
+    "key_key.apotheosis.toggle_radial_mining": "key.keyboard.o:CONTROL",
+    "key_key.apotheosis.link_item_to_chat": "key.keyboard.t:SHIFT",
 }
 # Operational context, NOT an assertion of a mod's declared conflict context.
 GUI = {"key_key.jei.showRecipe", "key_key.jei.showRecipe2", "key_key.jei.showUses",
-       "key_key.invtweaks_sort_inventory.desc", "key_key.craftingtweaks.compress_stack"}
+       "key_key.invtweaks_sort_inventory.desc", "key_key.craftingtweaks.compress_stack",
+       "key_key.apotheosis.link_item_to_chat", "key_key.apotheosis.compare_equipment",
+       "key_key.ftbquests.gui_editor.reward_tables"}
 MAP = {"key_key.journeymap.fullscreen_create_waypoint"}
-WORLD = set(PROPOSED) - MAP
+WORLD = set(PROPOSED) - MAP - GUI
 WORLD.update({"key_key.mekanism.mode", "key_key.mekanism.module_tweaker",
               "key_key.journeymap.minimap_preset", "key_key.buildinggadgets2.settings_menu"})
 RAW = {"key_key.ars_nouveau.selection_hud", "key_key.ars_nouveau.next_slot",

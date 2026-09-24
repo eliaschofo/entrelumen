@@ -71,3 +71,26 @@ During a session only, a 30-second sampler writes heap usage/committed/max, per-
 Verification: build passed, including three new JUnit scenarios covering frame deltas and close/drain behavior, invalid state breaking frame pairs plus tick gaps, and bounded-buffer overflow. Minecraft event/command code compiles against the real NeoForge 21.1.249 API. No client capture, overhead measurement, five-minute route or two-hour session has yet been verified; no FPS/TPS/memory acceptance is claimed. No campaign or project logic changed.
 
 Closure regression coverage added: terminal completion sees flushed artifacts, concurrent repeated close preserves the first request, and an actual filesystem failure writing integrity produces error completion. Tests prepared for the integrator build; no Gradle run was started during their active build.
+
+## Apotheosis integration (2026-09-23)
+
+New IDs, all without blockstate properties. Art is produced separately in `art/grids`.
+
+- Blocks with items: `cartographer_shelf`, `patina_shelf`, `lumen_shelf`, `horizon_shelf` and `atlas_library` (a block entity with the `entrelumen:atlas_library` menu).
+- Items: `augment_<modifier>` for burning, echoing, ignore_conditions, ignore_light, ignore_players, initial_health, max_delay, max_nearby, min_delay, no_ai, player_range, redstone_control, silent, spawn_count, spawn_range and youthful.
+
+Shelf stats live in `data/entrelumen/enchanting_stats`, which only Apothic Enchanting reads. Without it the shelves report a vanilla enchanting power. Nothing links against Apotheosis classes. The Atlas Library reads Apothic Eterna through one reflective call to the public `EnchantmentTableStats.gatherStats`, and falls back to the vanilla shelf rule.
+
+`ApotheosisTiers` grants `apotheosis:progression/*` advancements from the player's current campaign:
+
+- Haven always;
+- Frontier from Act III;
+- Ascent from Act IV;
+- Summit from Act VI;
+- Pinnacle after `last_horizon`.
+
+It syncs every second, on FTB login-after-team and on party join. It only grants and never revokes, and it skips absent advancements. Its campaign lookup is read-only.
+
+`AtlasLibraryLedger` holds the pool arithmetic: deposit value floor(b·2^(L−1)/2), price b·2^(L−1) (×2 for treasure), cap clamp(floor(Eterna/2.5), 1, 40). It is pure and unit-tested. The block entity validates every withdrawal on the server against a freshly measured Eterna. Its item handler only accepts books, and the drop keeps the pool in `block_entity_data`. See `docs/design/apotheosis-family.md`.
+
+Verification: an offline `build` ran 80 JUnit tests, and `runGameTestServer` passed all 47 required GameTests, including two new isolated ones in `RuntimeGameTestsApotheosis`. The fixture mod ships stand-in Haven, Frontier and Ascent advancements; Summit is deliberately absent. Apotheosis itself was not loaded in these runs.

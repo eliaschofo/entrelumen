@@ -47,6 +47,7 @@ public final class Entrelumen {
 
   static {
     IntegrationItems.register(ITEMS);
+    ApotheosisContent.register(ITEMS, BLOCKS, BLOCK_ENTITIES);
     ITEMS.register(
         "atlas",
         () ->
@@ -99,6 +100,7 @@ public final class Entrelumen {
     ITEMS.register(bus);
     bus.addListener(AtlasNetwork::register);
     bus.addListener(JournalBookNetwork::register);
+    ApotheosisContent.bootstrap(bus);
     BLOCKS.register(bus);
     BLOCK_ENTITIES.register(bus);
     bus.addListener(this::registerCapabilities);

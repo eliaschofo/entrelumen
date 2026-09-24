@@ -30,14 +30,16 @@ Deliberately native: Iron's Spells inks, scroll forge and alchemist cauldron (th
 
 ## Apotheosis decision
 
-Apotheosis 8.7.0 with Apothic Enchanting 1.6.1, Apothic Attributes 2.10.1 and Apothic Spawners 1.4.0 stays **out** of this batch (12.5 MB together):
+**Reverted on 23 September 2026 by Elias: the suite is in.** See the [Apotheosis family](apotheosis-family.md) for the pins, World Tiers tied to the campaign, the staged shelf ladder, the Atlas Library and the spawner augments. The original reasoning is kept below as history; each concern now has an explicit answer there.
+
+Apotheosis 8.7.0 with Apothic Enchanting 1.6.1, Apothic Attributes 2.10.1 and Apothic Spawners 1.4.0 stayed **out** of this batch (12.5 MB together):
 
 - Apothic Enchanting rewrites the enchanting table around Eterna/Quanta/Arcana, raises maximum levels and adds new shelves. Every enchant-based route already selected (Create: Enchantment Industry, Ars enchanting apparatus, EvilCraft, Tombstone) would need a new balance pass.
 - Its Library of Alexandria pools enchantment points and extracts any level on demand from early-game blocks. The companion's [Ark arcane library](arcane-library.md) deliberately only separates a compound book into its exact vanilla stored enchantments at a finished Ark. Functionally nothing would crash — the library reads `DataComponents.STORED_ENCHANTMENTS` on vanilla enchanted books, which Apotheosis keeps — but the Ark service would become redundant long before the endgame.
 - The Adventure module adds affixed loot, gems, rarities and invader bosses: a combat overhaul at odds with the moderate-combat target, while Iron's Spells and Cataclysm already provide optional combat depth.
 - Apothic Spawners rewrites vanilla spawner mechanics with modifiers, bypassing the staged RFTools/IF/HNN mob routes.
 
-Revisit only as a deliberate combat/enchanting redesign with Elias's approval. No selected mod replaces vanilla enchanting, enchanted books or anvil rules, so the Ark arcane library keeps working unchanged.
+That redesign happened with Elias's approval. The Ark arcane library still works, because Apotheosis keeps vanilla stored enchantments, but its book separation is now redundant; a replacement proposal is in [arcane-library.md](arcane-library.md#replacement-proposal).
 
 ## Other rejections
 
