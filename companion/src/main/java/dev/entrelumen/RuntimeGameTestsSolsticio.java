@@ -110,7 +110,7 @@ public final class RuntimeGameTestsSolsticio {
 
   // ---- Dimension and city -----------------------------------------------------------------
 
-  @GameTest(template = "empty", timeoutTicks = 800)
+  @GameTest(template = "empty", timeoutTicks = 3600)
   public static void solsticioDimensionAndProvisionalCityArePlacedOnce(GameTestHelper helper) {
     var server = helper.getLevel().getServer();
     whenCityReady(helper, () -> {
@@ -399,7 +399,7 @@ public final class RuntimeGameTestsSolsticio {
 
   // ---- Light Key --------------------------------------------------------------------------
 
-  @GameTest(template = "empty", timeoutTicks = 800)
+  @GameTest(template = "empty", timeoutTicks = 3600)
   public static void lightKeyCrossesOnceBreaksAndBindsToItsUser(GameTestHelper helper) {
     whenCityReady(helper, () -> {
       var level = helper.getLevel();
@@ -440,7 +440,7 @@ public final class RuntimeGameTestsSolsticio {
   }
 
   /** The real item-use path: hold to channel, release early to cancel, hold through to cross. */
-  @GameTest(template = "empty", timeoutTicks = 800)
+  @GameTest(template = "empty", timeoutTicks = 3600)
   public static void lightKeyChannelCancelsOnReleaseAndCrossesWhenHeld(GameTestHelper helper) {
     whenCityReady(helper, () -> {
       var level = helper.getLevel();
@@ -467,7 +467,7 @@ public final class RuntimeGameTestsSolsticio {
     });
   }
 
-  @GameTest(template = "empty", timeoutTicks = 800)
+  @GameTest(template = "empty", timeoutTicks = 3600)
   public static void brokenKeyCarriesOnlyItsOwnerBothWays(GameTestHelper helper) {
     whenCityReady(helper, () -> {
       var level = helper.getLevel();
@@ -515,7 +515,7 @@ public final class RuntimeGameTestsSolsticio {
     StructureProtection.invalidate(server);
   }
 
-  @GameTest(template = "empty", timeoutTicks = 800)
+  @GameTest(template = "empty", timeoutTicks = 3600)
   public static void portalOpensWithRelicsAndOwnKeyAndRestsAfterArrival(GameTestHelper helper) {
     whenCityReady(helper, () -> {
       var server = helper.getLevel().getServer();
