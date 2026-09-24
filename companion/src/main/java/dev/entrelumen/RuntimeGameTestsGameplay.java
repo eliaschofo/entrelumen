@@ -254,6 +254,11 @@ public final class RuntimeGameTestsGameplay {
    * Blocks eaten in place go through the same formula, glut and cooldown: vanilla cake through the
    * real right-click path, and a fixture block shaped like Farmer's Delight's pie bite (a slice's
    * food values eaten with {@code FoodData.eat}), so no block is special-cased.
+   *
+   * <p>The full-pack QA JAR never ships the fixture mod, so there the real block it imitates stands
+   * in: Farmer's Delight's apple pie, whose slice is the same (3, 1.8) bite. That slice also applies
+   * its own effect, so the pool is narrowed to effects the slice never gives and the slice's own
+   * effects are left out of every buff count.
    */
   @GameTest(template = "empty", timeoutTicks = 100)
   public static void satietyOverflowCountsBitesEatenFromBlocks(GameTestHelper helper) {
@@ -261,7 +266,26 @@ public final class RuntimeGameTestsGameplay {
     var level = helper.getLevel();
     var pieBlock = BuiltInRegistries.BLOCK.get(
         ResourceLocation.fromNamespaceAndPath("entrelumen_gametest_fixture", "bite_block"));
-    helper.assertTrue(pieBlock != Blocks.AIR, "The fixture's edible block is missing");
+    List<Holder<MobEffect>> sliceEffects = List.of();
+    SatietyOverflow.Settings replaced = null;
+    if (pieBlock == Blocks.AIR) {
+      pieBlock = BuiltInRegistries.BLOCK.get(ResourceLocation.parse("farmersdelight:apple_pie"));
+      helper.assertTrue(pieBlock != Blocks.AIR,
+          "Neither the fixture's edible block nor Farmer's Delight's apple pie is loaded");
+      var slice = BuiltInRegistries.ITEM.get(ResourceLocation.parse("farmersdelight:apple_pie_slice"))
+          .getDefaultInstance().get(net.minecraft.core.component.DataComponents.FOOD);
+      helper.assertTrue(slice != null && slice.nutrition() == 3 && near(slice.saturation(), 1.8),
+          "The apple pie slice is no longer a (3, 1.8) bite: " + slice);
+      sliceEffects = slice.effects().stream().map(effect -> effect.effect().getEffect()).toList();
+      var own = sliceEffects;
+      settings = settings.withPool(settings.pool().stream()
+          .filter(entry -> own.stream().noneMatch(effect -> effect.is(entry.effect()))).toList());
+      replaced = SatietyOverflowEvents.swapSettings(settings);
+    }
+    var slicesOwn = sliceEffects;
+    var restore = replaced;
+    java.util.function.Function<ServerPlayer, List<MobEffectInstance>> buffs = player ->
+        player.getActiveEffects().stream().filter(e -> !slicesOwn.contains(e.getEffect())).toList();
     BlockPos cake = helper.absolutePos(new BlockPos(1, 2, 1));
     BlockPos pie = helper.absolutePos(new BlockPos(3, 2, 1));
     BlockPos stone = helper.absolutePos(new BlockPos(5, 2, 1));
@@ -272,9 +296,13 @@ public final class RuntimeGameTestsGameplay {
     var pieEater = new Session(helper, "SatietyPie");
     var mixed = new Session(helper, "SatietyMixed");
     Runnable close = () -> {
-      cakeEater.close();
-      pieEater.close();
-      mixed.close();
+      try {
+        cakeEater.close();
+        pieEater.close();
+        mixed.close();
+      } finally {
+        if (restore != null) SatietyOverflowEvents.swapSettings(restore);
+      }
     };
     try {
       // A full bar: vanilla refuses the cake, so nothing is eaten or measured.
@@ -290,14 +318,17 @@ public final class RuntimeGameTestsGameplay {
       helper.assertTrue(level.getBlockState(cake).getValue(CakeBlock.BITES) == 1
           && cakeEater.player.getFoodData().getFoodLevel() == 20
           && near(satiety(cakeEater.player).getDouble("glut"), 1)
-          && cakeEater.player.getActiveEffects().isEmpty(), "The cake bite was not measured as 1 point");
+          && cakeEater.player.getActiveEffects().isEmpty(), "The cake bite was not measured as 1 point: bites "
+              + level.getBlockState(cake).getValue(CakeBlock.BITES) + ", food "
+              + cakeEater.player.getFoodData().getFoodLevel() + ", satiety " + satiety(cakeEater.player)
+              + ", effects " + cakeEater.player.getActiveEffects());
 
       // Pie-shaped bite (3, 1.8) at 19/19: 2 + 0.8 = 2.8 points -> one level-I buff at 14 %.
       set(pieEater.player, 19, 19);
       bite(pieEater.player, pie);
       SatietyOverflowEvents.closeBites();
       var plan = SatietyOverflow.plan(2.8, settings).orElseThrow();
-      var effects = pieEater.player.getActiveEffects();
+      var effects = buffs.apply(pieEater.player);
       helper.assertTrue(effects.size() == 1 && near(satiety(pieEater.player).getDouble("glut"), 2.8),
           "The pie bite did not grant exactly one buff for 2.8 points: " + effects);
       for (MobEffectInstance instance : effects) {
@@ -314,11 +345,11 @@ public final class RuntimeGameTestsGameplay {
       SatietyOverflowEvents.closeBites();
       helper.assertTrue(near(satiety(mixed.player).getDouble("glut"), 11), "An item meal was counted twice");
       // The same cooldown covers blocks: a bite right after the meal only adds glut.
-      var before = List.copyOf(mixed.player.getActiveEffects().stream().map(e -> e.getEffect()).toList());
+      var before = List.copyOf(buffs.apply(mixed.player).stream().map(e -> e.getEffect()).toList());
       set(mixed.player, 19, 19);
       bite(mixed.player, pie);
       SatietyOverflowEvents.closeBites();
-      var after = mixed.player.getActiveEffects().stream().map(e -> e.getEffect()).toList();
+      var after = buffs.apply(mixed.player).stream().map(e -> e.getEffect()).toList();
       helper.assertTrue(near(satiety(mixed.player).getDouble("glut"), 13.8)
           && after.size() == before.size() && after.containsAll(before),
           "The bite ignored the shared cooldown or glut");
@@ -384,22 +415,29 @@ public final class RuntimeGameTestsGameplay {
       stand.set(founder, ApotheosisTiers.Tier.HAVEN);
       ApotheosisTiers.sync(founder);
       helper.assertTrue(stand.get(founder) == ApotheosisTiers.Tier.FRONTIER, "A lower chosen tier survived");
-      // The fixture has no Summit or Pinnacle: Act VI with the Ark stays on the highest real tier.
+      // Act VI with the Ark reaches the highest tier whose advancement exists: the isolated fixture
+      // has no Summit or Pinnacle (Ascent), the full pack loads Apotheosis's own (Pinnacle).
       campaign.act = 6;
       campaign.completed.add(CampaignMilestones.LAST_HORIZON);
+      ApotheosisTiers.Tier top = null;
+      for (var tier : ApotheosisTiers.reached(campaign))
+        if (founder.server.getAdvancements().get(tier.advancement) != null) top = tier;
+      helper.assertTrue(top != null && top.ordinal() >= ApotheosisTiers.Tier.ASCENT.ordinal(),
+          "Ascent's advancement is missing: " + top);
       ApotheosisTiers.sync(founder);
-      helper.assertTrue(stand.get(founder) == ApotheosisTiers.Tier.ASCENT, "Missing tiers were forced");
+      helper.assertTrue(stand.get(founder) == top, "Missing tiers were forced, or the top one skipped: "
+          + stand.get(founder) + " instead of " + top);
 
-      helper.assertTrue("ASCENT".equals(founder.getData(ApotheosisContent.STORY_TIER)),
+      helper.assertTrue(top.name().equals(founder.getData(ApotheosisContent.STORY_TIER)),
           "The story tier was not recorded on the player");
       // A lower campaign never lowers the tier, and a chosen lower tier is put back.
       campaign.act = 1;
       campaign.completed.remove(CampaignMilestones.LAST_HORIZON);
       ApotheosisTiers.sync(founder);
-      helper.assertTrue(stand.get(founder) == ApotheosisTiers.Tier.ASCENT, "A lower campaign lowered the tier");
+      helper.assertTrue(stand.get(founder) == top, "A lower campaign lowered the tier");
       stand.set(founder, ApotheosisTiers.Tier.FRONTIER);
       ApotheosisTiers.sync(founder);
-      helper.assertTrue(stand.get(founder) == ApotheosisTiers.Tier.ASCENT, "A lower chosen tier survived");
+      helper.assertTrue(stand.get(founder) == top, "A lower chosen tier survived");
       campaign.act = 6;
       campaign.completed.add(CampaignMilestones.LAST_HORIZON);
 
@@ -410,14 +448,14 @@ public final class RuntimeGameTestsGameplay {
         team.invite(founder, List.of(guest.getGameProfile()));
         team.join(guest);
         ApotheosisTiers.sync(guest);
-        helper.assertTrue(stand.get(guest) == ApotheosisTiers.Tier.ASCENT, "Joining member kept their own tier");
+        helper.assertTrue(stand.get(guest) == top, "Joining member kept their own tier");
         int sets = stand.sets;
         ApotheosisTiers.sync(guest);
         helper.assertTrue(stand.sets == sets, "Reconnect-style replay set the tier again");
         team.leave(guest.getUUID());
         ApotheosisTiers.sync(guest);
-        helper.assertTrue(stand.get(guest) == ApotheosisTiers.Tier.ASCENT
-            && "ASCENT".equals(guest.getData(ApotheosisContent.STORY_TIER)),
+        helper.assertTrue(stand.get(guest) == top
+            && top.name().equals(guest.getData(ApotheosisContent.STORY_TIER)),
             "Leaving the party lowered the tier back to the personal campaign's");
       } finally {
         team.leave(founder.getUUID());
@@ -432,8 +470,8 @@ public final class RuntimeGameTestsGameplay {
       var reborn = new ServerPlayer(guest.server, helper.getLevel(), guest.getGameProfile(),
           net.minecraft.server.level.ClientInformation.createDefault());
       reborn.copyAttachmentsFrom(guest, true);
-      helper.assertTrue("ASCENT".equals(relogged.getData(ApotheosisContent.STORY_TIER))
-          && "ASCENT".equals(reborn.getData(ApotheosisContent.STORY_TIER)),
+      helper.assertTrue(top.name().equals(relogged.getData(ApotheosisContent.STORY_TIER))
+          && top.name().equals(reborn.getData(ApotheosisContent.STORY_TIER)),
           "The story tier was lost on relog or death");
 
       // Without Apotheosis (no access) sync still grants and records, and never fails.
