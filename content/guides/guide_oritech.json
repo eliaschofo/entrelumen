@@ -1,0 +1,529 @@
+{
+ "chapter": "guide_oritech",
+ "group": "tech",
+ "act": "III",
+ "icon": "oritech:laser_arm_block",
+ "title": {
+  "en_us": "Oritech",
+  "es_es": "Oritech"
+ },
+ "subtitle": {
+  "en_us": "Animated machines with cores and addons, lasers, gantry frames, drones, a modular reactor and a particle accelerator.",
+  "es_es": "Máquinas animadas con núcleos y addons, láseres, marcos de grúa, drones, un reactor modular y un acelerador de partículas."
+ },
+ "quests": [
+  {
+   "key": "ori_welcome",
+   "deps": [],
+   "type": "checkmark",
+   "icon": "oritech:assembler_block",
+   "layout": {
+    "x": 0,
+    "y": 0,
+    "size": 2.0,
+    "shape": "hexagon"
+   },
+   "en_us": [
+    "Welcome to Oritech",
+    "Oritech is a tech mod of big animated machines powered by RF (the same FE the rest of the pack uses). Machines grow with cores and addons, lasers carry energy and dig, gantry frames farm and build, drones ship items between bases, and at the top sit a modular nuclear reactor and a particle accelerator.\n\nIts in-game manual (the Oracle Index) has a page for every block, with numbers."
+   ],
+   "es_es": [
+    "Bienvenida a Oritech",
+    "Oritech es un mod técnico de máquinas grandes y animadas que funcionan con RF (el mismo FE que usa el resto del pack). Las máquinas crecen con núcleos y addons, los láseres llevan energía y excavan, los marcos de grúa cultivan y construyen, los drones mandan ítems entre bases, y arriba de todo hay un reactor nuclear modular y un acelerador de partículas.\n\nSu manual en el juego (el Oracle Index) tiene una página por bloque, con números."
+   ],
+   "sources": [
+    "jar:oritech-neoforge-1.21.1-1.2.11.jar:assets/oracle_index/books/oritech/docs/getting_started/have_fun.mdx",
+    "jar:oritech-neoforge-1.21.1-1.2.11.jar:assets/oracle_index/books/oritech/content/machines/machine_core_2.mdx"
+   ]
+  },
+  {
+   "key": "ori_resources",
+   "deps": [
+    "ori_welcome"
+   ],
+   "type": "item",
+   "item": "oritech:nickel_ingot",
+   "count": 16,
+   "layout": {
+    "x": 3,
+    "y": 0,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Nickel first",
+    "Oritech expects copper, iron, coal and above all nickel, which goes into early machines and alloys. Redstone, gold and a few diamonds follow quickly. Note where amethyst geodes are: fluxite comes from budding amethyst later.\n\nAlmost Unified gives Oritech's metals medium priority: shared metals such as steel or electrum may come out as another mod's version."
+   ],
+   "es_es": [
+    "Primero níquel",
+    "Oritech pide cobre, hierro, carbón y sobre todo níquel, que va en las primeras máquinas y aleaciones. Enseguida suman redstone, oro y algunos diamantes. Anotá dónde hay geodas de amatista: más adelante el fluxite sale de la amatista en brote.\n\nAlmost Unified le da a los metales de Oritech una prioridad media: metales compartidos como el acero o el electro pueden salir en la versión de otro mod."
+   ],
+   "sources": [
+    "jar:oritech-neoforge-1.21.1-1.2.11.jar:assets/oracle_index/books/oritech/docs/getting_started/gather_resources.mdx",
+    "repo:pack/config/almostunified/unification/materials.json"
+   ]
+  },
+  {
+   "key": "ori_generator",
+   "deps": [
+    "ori_resources"
+   ],
+   "type": "item",
+   "item": "oritech:basic_generator_block",
+   "layout": {
+    "x": 5.5,
+    "y": 0,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Basic Generator",
+    "Nickel, copper, a furnace and two magnetic coils. It burns normal furnace fuel for 32 RF/t: enough for the first machines. Build more than one.\n\nOritech power is push-based: generators push into Energy Pipes (10,000 RF/t), which deliver to machines; a wrench disables unwanted pipe connections."
+   ],
+   "es_es": [
+    "Generador básico",
+    "Níquel, cobre, un horno y dos bobinas magnéticas. Quema combustible normal de horno a 32 RF/t: alcanza para las primeras máquinas. Hacé más de uno.\n\nLa energía de Oritech es por empuje: los generadores empujan a las Tuberías de energía (10.000 RF/t), que entregan a las máquinas; con la llave desactivás conexiones que no quieras."
+   ],
+   "sources": [
+    "jar:oritech-neoforge-1.21.1-1.2.11.jar:assets/oracle_index/books/oritech/docs/getting_started/first_generator.mdx",
+    "jar:oritech-neoforge-1.21.1-1.2.11.jar:assets/oracle_index/books/oritech/content/logistics/energy_pipe.mdx"
+   ]
+  },
+  {
+   "key": "ori_alloys",
+   "deps": [
+    "ori_generator"
+   ],
+   "type": "item",
+   "item": "oritech:foundry_block",
+   "layout": {
+    "x": 8,
+    "y": 0,
+    "size": 1.5,
+    "shape": "hexagon"
+   },
+   "en_us": [
+    "Pulverizer and Foundry",
+    "Steel, electrum and adamant can be crafted by hand, expensively. Move alloys to a Pulverizer (ores and biomass to dust, better than smelting raw ore) and a Foundry (alloying, it needs 3 machine cores) as soon as you can.\n\nThat pair opens the later alloys: biosteel, energite and duratium."
+   ],
+   "es_es": [
+    "Pulverizador y Fundición",
+    "El acero, el electro y el adamante se pueden craftear a mano, caro. Pasá las aleaciones a un Pulverizador (minerales y biomasa a polvo, mejor que fundir en bruto) y una Fundición (aleaciones, pide 3 núcleos de máquina) cuanto antes.\n\nEse par abre las aleaciones posteriores: biosteel, energita y duratium."
+   ],
+   "sources": [
+    "jar:oritech-neoforge-1.21.1-1.2.11.jar:assets/oracle_index/books/oritech/docs/getting_started/alloys.mdx",
+    "jar:oritech-neoforge-1.21.1-1.2.11.jar:assets/oracle_index/books/oritech/content/machines/processing/pulverizer_block.mdx",
+    "jar:oritech-neoforge-1.21.1-1.2.11.jar:assets/oracle_index/books/oritech/content/machines/processing/foundry_block.mdx"
+   ]
+  },
+  {
+   "key": "ori_cores",
+   "deps": [
+    "ori_alloys"
+   ],
+   "type": "checkmark",
+   "icon": "oritech:machine_core_1",
+   "layout": {
+    "x": 8,
+    "y": -2.5,
+    "size": 1.0,
+    "shape": "circle"
+   },
+   "en_us": [
+    "Machine cores",
+    "Bigger machines need machine cores in specific spots (the tooltip says how many). Right-click the machine to highlight where they go, or right-click it holding a core to place the next one. Better cores do not make a machine faster: they raise its quality, which sets how many addons and extender layers it accepts.\n\nIf you will not add addons, use the cheapest cores."
+   ],
+   "es_es": [
+    "Núcleos de máquina",
+    "Las máquinas grandes piden núcleos en lugares puntuales (el tooltip dice cuántos). Clic derecho en la máquina para resaltar dónde van, o clic derecho con un núcleo en la mano para colocar el siguiente. Los núcleos mejores no aceleran la máquina: suben su calidad, que fija cuántos addons y capas de extensores acepta.\n\nSi no vas a poner addons, usá los núcleos más baratos."
+   ],
+   "sources": [
+    "jar:oritech-neoforge-1.21.1-1.2.11.jar:assets/oracle_index/books/oritech/docs/multiblocks.mdx"
+   ]
+  },
+  {
+   "key": "ori_addons",
+   "deps": [
+    "ori_cores"
+   ],
+   "type": "item",
+   "item": "oritech:machine_speed_addon",
+   "layout": {
+    "x": 10.5,
+    "y": -2.5,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Addons",
+    "Addons attach to marked spots on a machine: speed, efficiency, capacitors, inventory proxies, fluid access, redstone control, yield and more. They turn blue when connected (pink means disconnected). Machine Extenders add more addon spots, up to the machine's quality.\n\nA Steam Boiler addon turns a generator into a steam producer for the Steam Engine."
+   ],
+   "es_es": [
+    "Addons",
+    "Los addons se pegan en lugares marcados de una máquina: velocidad, eficiencia, capacitores, acceso al inventario, acceso a fluidos, control de redstone, rendimiento y más. Se ponen azules al conectarse (rosa es desconectado). Los Extensores de máquina suman lugares, hasta la calidad de la máquina.\n\nUn addon de Caldera de vapor convierte un generador en productor de vapor para el Motor de vapor."
+   ],
+   "sources": [
+    "jar:oritech-neoforge-1.21.1-1.2.11.jar:assets/oracle_index/books/oritech/docs/addons.mdx",
+    "jar:oritech-neoforge-1.21.1-1.2.11.jar:assets/oracle_index/books/oritech/content/machines/powergen/steam_engine_block.mdx"
+   ]
+  },
+  {
+   "key": "ori_assembler",
+   "deps": [
+    "ori_alloys"
+   ],
+   "type": "item",
+   "item": "oritech:assembler_block",
+   "layout": {
+    "x": 10.5,
+    "y": 0,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Assembler and Centrifuge",
+    "The Assembler makes components more efficiently than hand crafting, and some parts cannot be made properly without it. The Centrifuge processes ore clumps, carbon fibre and, with an addon, fluids.\n\nThe Fragment Forge breaks ores into clumps and small clumps (nine small make one) for a better yield; feed it silk-touched ore blocks. Nickel fragmenting is an early source of platinum."
+   ],
+   "es_es": [
+    "Ensamblador y Centrífuga",
+    "El Ensamblador hace componentes más eficientemente que a mano, y algunas piezas no salen bien sin él. La Centrífuga procesa grumos de mineral, fibra de carbono y, con un addon, fluidos.\n\nLa Forja de fragmentos rompe minerales en grumos y grumos chicos (nueve chicos hacen uno) para mejor rendimiento; dale bloques de mineral con Toque de seda. Fragmentar níquel es una fuente temprana de platino."
+   ],
+   "sources": [
+    "jar:oritech-neoforge-1.21.1-1.2.11.jar:assets/oracle_index/books/oritech/docs/getting_started/assembling_components.mdx",
+    "jar:oritech-neoforge-1.21.1-1.2.11.jar:assets/oracle_index/books/oritech/docs/getting_started/fragmenting.mdx",
+    "jar:oritech-neoforge-1.21.1-1.2.11.jar:assets/oracle_index/books/oritech/content/machines/processing/fragment_forge_block.mdx"
+   ]
+  },
+  {
+   "key": "ori_laser",
+   "deps": [
+    "ori_assembler"
+   ],
+   "type": "item",
+   "item": "oritech:fluxite",
+   "count": 8,
+   "layout": {
+    "x": 13,
+    "y": 0,
+    "size": 1.5,
+    "shape": "hexagon"
+   },
+   "en_us": [
+    "Enderic Laser and fluxite",
+    "The Enderic Laser fires up to 128 blocks. Aim it with a Target Designator at amethyst clusters to collect fluxite, the gate to the stronger machines. Lasers also power the Atomic Forge and the Bedrock Extractor and send energy wirelessly.\n\nFrom here machines stop being single blocks and become systems."
+   ],
+   "es_es": [
+    "Láser enderico y fluxite",
+    "El Láser enderico dispara hasta 128 bloques. Apuntalo con un Designador de objetivos a racimos de amatista para juntar fluxite, la llave de las máquinas más fuertes. Los láseres también alimentan la Forja atómica y el Extractor de roca madre, y mandan energía sin cables.\n\nDesde acá las máquinas dejan de ser bloques sueltos y pasan a ser sistemas."
+   ],
+   "sources": [
+    "jar:oritech-neoforge-1.21.1-1.2.11.jar:assets/oracle_index/books/oritech/docs/getting_started/lasers.mdx",
+    "jar:oritech-neoforge-1.21.1-1.2.11.jar:assets/oracle_index/books/oritech/content/machines/utility/laser_arm_block.mdx",
+    "jar:oritech-neoforge-1.21.1-1.2.11.jar:assets/oracle_index/books/oritech/content/equipment/target_designator.mdx"
+   ]
+  },
+  {
+   "key": "ori_forge",
+   "deps": [
+    "ori_laser"
+   ],
+   "type": "item",
+   "item": "oritech:atomic_forge_block",
+   "layout": {
+    "x": 15.5,
+    "y": 0,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Atomic Forge",
+    "Powered only by a laser (energy pipes cannot connect to it), the Atomic Forge makes advanced chips, reinforces deepslate and helps high-yield ore processing. It needs 8 machine cores.\n\nIt also has compatibility recipes for Mekanism circuits."
+   ],
+   "es_es": [
+    "Forja atómica",
+    "Alimentada sólo por láser (las tuberías de energía no se le conectan), la Forja atómica hace chips avanzados, refuerza pizarra profunda y ayuda al procesamiento de minerales de alto rendimiento. Pide 8 núcleos de máquina.\n\nTambién tiene recetas de compatibilidad para los circuitos de Mekanism."
+   ],
+   "sources": [
+    "jar:oritech-neoforge-1.21.1-1.2.11.jar:assets/oracle_index/books/oritech/content/machines/processing/atomic_forge_block.mdx",
+    "jar:oritech-neoforge-1.21.1-1.2.11.jar:data/oritech/recipe/atomicforge/compat/mekanism/basic_control_circuit.json"
+   ]
+  },
+  {
+   "key": "ori_power",
+   "deps": [
+    "ori_generator"
+   ],
+   "type": "item",
+   "item": "oritech:big_solar_panel_block",
+   "optional": true,
+   "layout": {
+    "x": 5.5,
+    "y": 2.5,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "More generators",
+    "Beyond the basic one: Lava, Fuel and Bio generators, a Big Solar Panel multiblock (32 RF/t in daylight with a clear sky) and the Steam Engine, fed by generators fitted with steam boilers, up to 50,000 RF/t.\n\nOritech biofuel also super-heats a Create liquid blaze burner."
+   ],
+   "es_es": [
+    "Más generadores",
+    "Además del básico: generadores de Lava, Combustible y Biológico, un Panel solar grande multibloque (32 RF/t de día con cielo despejado) y el Motor de vapor, alimentado por generadores con calderas, hasta 50.000 RF/t.\n\nEl biocombustible de Oritech también sobrecalienta un quemador de blaze líquido de Create."
+   ],
+   "sources": [
+    "jar:oritech-neoforge-1.21.1-1.2.11.jar:assets/oracle_index/books/oritech/content/machines/powergen/big_solar_panel_block.mdx",
+    "jar:oritech-neoforge-1.21.1-1.2.11.jar:assets/oracle_index/books/oritech/content/machines/powergen/steam_engine_block.mdx",
+    "jar:oritech-neoforge-1.21.1-1.2.11.jar:assets/oracle_index/books/oritech/content/machines/powergen/lava_generator_block.mdx",
+    "jar:oritech-neoforge-1.21.1-1.2.11.jar:data/c/tags/fluid/biofuel.json"
+   ]
+  },
+  {
+   "key": "ori_logistics",
+   "deps": [
+    "ori_power"
+   ],
+   "type": "item",
+   "item": "oritech:drone_port_block",
+   "optional": true,
+   "layout": {
+    "x": 8,
+    "y": 2.5,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Pipes and drones",
+    "Oritech item pipes have no inventory: set a pipe to extract from a neighbouring inventory; they move 8 items every 5 ticks. Drone Ports ship items and fluids to another port at least 50 blocks away, linked with a Target Designator.\n\nDrones are a chunk-friendly way to link two bases."
+   ],
+   "es_es": [
+    "Tuberías y drones",
+    "Las tuberías de ítems de Oritech no tienen inventario: configurá una para extraer del inventario vecino; mueven 8 ítems cada 5 ticks. Los Puertos de drones mandan ítems y fluidos a otro puerto a 50 bloques o más, vinculado con un Designador de objetivos.\n\nLos drones son una forma prolija de unir dos bases."
+   ],
+   "sources": [
+    "jar:oritech-neoforge-1.21.1-1.2.11.jar:assets/oracle_index/books/oritech/content/logistics/item_pipe.mdx",
+    "jar:oritech-neoforge-1.21.1-1.2.11.jar:assets/oracle_index/books/oritech/content/machines/utility/drone_port_block.mdx"
+   ]
+  },
+  {
+   "key": "ori_frames",
+   "deps": [
+    "ori_assembler"
+   ],
+   "type": "item",
+   "item": "oritech:machine_frame_block",
+   "count": 16,
+   "optional": true,
+   "layout": {
+    "x": 10.5,
+    "y": 2.5,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Machine frames and gantries",
+    "A rectangle of Machine Frame blocks (up to 64 long, empty inside) carries gantry machines: the Destroyer breaks blocks, the Placer places them and the Fertilizer grows crops. Farms and area clearing without contraptions.\n\nThe Tree Feller and the Pump are the other area machines."
+   ],
+   "es_es": [
+    "Marcos de máquina y grúas",
+    "Un rectángulo de bloques de Marco de máquina (hasta 64 de largo, vacío por dentro) lleva máquinas de grúa: el Destructor rompe bloques, el Colocador los pone y el Fertilizador hace crecer cultivos. Granjas y limpieza de áreas sin estructuras móviles.\n\nEl Talador y la Bomba son las otras máquinas de área."
+   ],
+   "sources": [
+    "jar:oritech-neoforge-1.21.1-1.2.11.jar:assets/oracle_index/books/oritech/content/machines/gantries/machine_frame_block.mdx",
+    "jar:oritech-neoforge-1.21.1-1.2.11.jar:assets/oracle_index/books/oritech/content/machines/gantries/destroyer_block.mdx",
+    "jar:oritech-neoforge-1.21.1-1.2.11.jar:assets/oracle_index/books/oritech/content/machines/gantries/placer_block.mdx",
+    "jar:oritech-neoforge-1.21.1-1.2.11.jar:assets/oracle_index/books/oritech/content/machines/gantries/fertilizer_block.mdx"
+   ]
+  },
+  {
+   "key": "ori_drill",
+   "deps": [
+    "ori_forge"
+   ],
+   "type": "item",
+   "item": "oritech:deep_drill_block",
+   "optional": true,
+   "layout": {
+    "x": 15.5,
+    "y": -2.5,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Bedrock Extractor",
+    "A big machine (26 cores) that mines infinite resource nodes below the bedrock: it only works placed right above them and scans a 3x3 area. It must be powered by Enderic Lasers.\n\nENTRELUMEN change: it needs a Spectral Lens (Act IV), like every quarry in the pack."
+   ],
+   "es_es": [
+    "Extractor de roca madre",
+    "Una máquina grande (26 núcleos) que extrae nodos de recursos infinitos bajo la roca madre: sólo funciona colocada justo encima de ellos y revisa un área de 3x3. Tiene que alimentarse con Láseres endericos.\n\nCambio de ENTRELUMEN: pide una Lente espectral (acto IV), como todas las canteras del pack."
+   ],
+   "sources": [
+    "jar:oritech-neoforge-1.21.1-1.2.11.jar:assets/oracle_index/books/oritech/content/machines/utility/deep_drill_block.mdx",
+    "repo:pack/kubejs/server_scripts/entrelumen_pingpong_balance.js",
+    "repo:docs/research/reference-packs.md"
+   ]
+  },
+  {
+   "key": "ori_gear",
+   "deps": [
+    "ori_laser"
+   ],
+   "type": "item",
+   "item": "oritech:exo_chestplate",
+   "optional": true,
+   "layout": {
+    "x": 13,
+    "y": 2.5,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Exo suit and jetpacks",
+    "The Exo Suit is early powered armour where each piece gives an ability. Jetpacks run on stored energy or turbofuel (filled in an Equipment Charger); the Exo Jetpack is crafted from a jetpack and the Exo chestplate.\n\nENTRELUMEN change: the basic Jetpack needs a Power Regulator (Act III) and the Exo Jetpack a Horizon Chart (Act IV)."
+   ],
+   "es_es": [
+    "Exotraje y jetpacks",
+    "El Exotraje es una armadura con energía temprana donde cada pieza da una habilidad. Los jetpacks funcionan con energía guardada o con turbocombustible (que se carga en un Cargador de equipo); el Exojetpack se craftea con un jetpack y la pechera del Exotraje.\n\nCambio de ENTRELUMEN: el Jetpack básico pide un Regulador de energía (acto III) y el Exojetpack una Carta de horizontes (acto IV)."
+   ],
+   "sources": [
+    "jar:oritech-neoforge-1.21.1-1.2.11.jar:assets/oracle_index/books/oritech/content/equipment/exo_suit.mdx",
+    "jar:oritech-neoforge-1.21.1-1.2.11.jar:assets/oracle_index/books/oritech/content/equipment/jetpack.mdx",
+    "repo:pack/kubejs/server_scripts/entrelumen_pingpong_balance.js"
+   ]
+  },
+  {
+   "key": "ori_arcane",
+   "deps": [
+    "ori_forge"
+   ],
+   "type": "item",
+   "item": "oritech:enchanter_block",
+   "optional": true,
+   "layout": {
+    "x": 18,
+    "y": -2.5,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Arcane machines",
+    "The Stabilized Enchanter lets you pick the exact enchantment, paid in energy and helped by catalysts within 16 blocks. The Spawner Controller runs a spawner cage for mob drops.\n\nENTRELUMEN change: the Spawner Controller needs an Ecosystem Capsule (Act IV), like every mob farm machine."
+   ],
+   "es_es": [
+    "Máquinas arcanas",
+    "El Encantador estabilizado te deja elegir el encantamiento exacto, pagado con energía y ayudado por catalizadores a 16 bloques. El Controlador de generador maneja una jaula de generador para drops de mobs.\n\nCambio de ENTRELUMEN: el Controlador de generador pide una Cápsula de ecosistema (acto IV), como toda máquina de granja de mobs."
+   ],
+   "sources": [
+    "jar:oritech-neoforge-1.21.1-1.2.11.jar:assets/oracle_index/books/oritech/content/arcane/enchanter_block.mdx",
+    "jar:oritech-neoforge-1.21.1-1.2.11.jar:assets/oracle_index/books/oritech/content/arcane/spawner_controller_block.mdx",
+    "repo:pack/kubejs/server_scripts/entrelumen_pingpong_balance.js"
+   ]
+  },
+  {
+   "key": "ori_reactor",
+   "deps": [
+    "ori_forge"
+   ],
+   "type": "item",
+   "item": "oritech:reactor_controller",
+   "layout": {
+    "x": 18,
+    "y": 0,
+    "size": 1.5,
+    "shape": "hexagon"
+   },
+   "en_us": [
+    "Oritech reactor",
+    "A rectangular reactor up to 64 blocks per side, walls on the edges, controller and energy ports (25,000 RF/t each) on the walls, fuel ports on the ceiling above the rods. Rods burn uranium or plutonium pellets; neutron reflectors raise efficiency; heat pipes, vents and ice-fed absorbers remove heat. The interior is designed in 2D and repeated vertically.\n\nA rod held above 2000 C long enough melts down, and the explosion scales with the reactor. Sirens warn you first."
+   ],
+   "es_es": [
+    "Reactor de Oritech",
+    "Un reactor rectangular de hasta 64 bloques por lado, paredes en los bordes, controlador y puertos de energía (25.000 RF/t cada uno) en las paredes y puertos de combustible en el techo sobre las barras. Las barras queman pellets de uranio o plutonio; los reflectores de neutrones suben la eficiencia; tubos de calor, ventilaciones y absorbedores con hielo sacan calor. El interior se diseña en 2D y se repite en altura.\n\nUna barra mantenida arriba de 2000 C el tiempo suficiente se funde, y la explosión crece con el reactor. Antes suenan las sirenas."
+   ],
+   "sources": [
+    "jar:oritech-neoforge-1.21.1-1.2.11.jar:assets/oracle_index/books/oritech/docs/reactor/introduction.mdx",
+    "jar:oritech-neoforge-1.21.1-1.2.11.jar:assets/oracle_index/books/oritech/docs/reactor/components.mdx",
+    "jar:oritech-neoforge-1.21.1-1.2.11.jar:assets/oracle_index/books/oritech/docs/reactor/designs.mdx"
+   ]
+  },
+  {
+   "key": "ori_accelerator",
+   "deps": [
+    "ori_reactor"
+   ],
+   "type": "item",
+   "item": "oritech:accelerator_controller",
+   "optional": true,
+   "layout": {
+    "x": 20.5,
+    "y": 0,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Particle accelerator",
+    "A ring of guide rings and motors: insert an item as a particle, bring it up to speed (read with a speed sensor), then insert a second, slow particle into the same ring for a collision. Collision energy is the sum of both speeds and decides the result.\n\nENTRELUMEN change: the accelerator controller needs an Ark Connection Bus (Act V), and the Nether Star collision recipe is removed."
+   ],
+   "es_es": [
+    "Acelerador de partículas",
+    "Un anillo de guías y motores: meté un ítem como partícula, llevalo a velocidad (se lee con un sensor), y después meté una segunda partícula lenta en el mismo anillo para chocarlas. La energía de colisión es la suma de las dos velocidades y define el resultado.\n\nCambio de ENTRELUMEN: el controlador del acelerador pide un Bus de conexión del Arca (acto V), y la receta de Estrella del Nether por colisión está quitada."
+   ],
+   "sources": [
+    "jar:oritech-neoforge-1.21.1-1.2.11.jar:assets/oracle_index/books/oritech/docs/particle_accelerator.mdx",
+    "repo:pack/kubejs/server_scripts/entrelumen_pingpong_balance.js"
+   ]
+  },
+  {
+   "key": "ori_pack",
+   "deps": [
+    "ori_reactor"
+   ],
+   "type": "checkmark",
+   "icon": "minecraft:nether_star",
+   "layout": {
+    "x": 18,
+    "y": 2.5,
+    "size": 1.0,
+    "shape": "gear"
+   },
+   "en_us": [
+    "Pack changes to Oritech",
+    "ENTRELUMEN changes: Jetpack (Power Regulator, III), Exo Jetpack (Horizon Chart, IV), Bedrock Extractor (Spectral Lens, IV), Spawner Controller (Ecosystem Capsule, IV), both nukes (Containment Seal, IV) and the particle accelerator controller (Ark Bus, V). The Nether Star from particle collisions is removed: the Wither stays the only source.\n\nEverything else is native."
+   ],
+   "es_es": [
+    "Cambios del pack a Oritech",
+    "Cambios de ENTRELUMEN: Jetpack (Regulador de energía, III), Exojetpack (Carta de horizontes, IV), Extractor de roca madre (Lente espectral, IV), Controlador de generador (Cápsula de ecosistema, IV), las dos bombas nucleares (Sello de contención, IV) y el controlador del acelerador (Bus del Arca, V). Se quitó la Estrella del Nether por colisión: el Wither sigue siendo la única fuente.\n\nEl resto es nativo."
+   ],
+   "sources": [
+    "repo:pack/kubejs/server_scripts/entrelumen_pingpong_balance.js",
+    "repo:docs/design/mod-pingpong.md"
+   ]
+  },
+  {
+   "key": "ori_mastery",
+   "deps": [
+    "ori_accelerator"
+   ],
+   "type": "item",
+   "item": "oritech:duratium_ingot",
+   "count": 8,
+   "layout": {
+    "x": 23,
+    "y": 0,
+    "size": 2.0,
+    "shape": "octagon"
+   },
+   "en_us": [
+    "Oritech mastery",
+    "Run a stable reactor feeding lasers that power an Atomic Forge and a Bedrock Extractor, with drones shipping the output home.\n\nOritech rewards compact, well-designed blocks: the manual's reactor designs page is worth a read before you build big."
+   ],
+   "es_es": [
+    "Maestría de Oritech",
+    "Hacé funcionar un reactor estable que alimente láseres que muevan una Forja atómica y un Extractor de roca madre, con drones que lleven la producción a casa.\n\nOritech premia los bloques compactos y bien pensados: la página de diseños de reactor del manual vale la pena antes de construir en grande."
+   ],
+   "sources": [
+    "jar:oritech-neoforge-1.21.1-1.2.11.jar:assets/oracle_index/books/oritech/docs/reactor/designs.mdx",
+    "jar:oritech-neoforge-1.21.1-1.2.11.jar:assets/oracle_index/books/oritech/docs/getting_started/have_fun.mdx"
+   ]
+  }
+ ]
+}
