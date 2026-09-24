@@ -1,0 +1,572 @@
+{
+ "chapter": "guide_create_addons",
+ "group": "tech",
+ "act": "II",
+ "icon": "create_enchantment_industry:blaze_enchanter",
+ "title": {
+  "en_us": "Create: addons",
+  "es_es": "Create: addons"
+ },
+ "subtitle": {
+  "en_us": "Enchantment Industry, Connected, Dragons Plus, Copycats+, Deco, Bells and Whistles and Hypertube: what each adds and when to use it.",
+  "es_es": "Enchantment Industry, Connected, Dragons Plus, Copycats+, Deco, Bells and Whistles y Hypertube: qué agrega cada uno y cuándo usarlo."
+ },
+ "quests": [
+  {
+   "key": "cad_welcome",
+   "deps": [],
+   "type": "checkmark",
+   "icon": "create:cogwheel",
+   "layout": {
+    "x": 0,
+    "y": 0,
+    "size": 2.0,
+    "shape": "hexagon"
+   },
+   "en_us": [
+    "The Create family",
+    "The pack carries a set of Create addons. Enchantment Industry automates experience and enchanting. Connected adds smarter kinetic and logistics parts. Dragons Plus adds fan processing types and fluid tools. Copycats+, Create Deco and Bells and Whistles are for building. Hypertube moves players through glass tubes.\n\nEvery one of them has Ponder scenes: hold W over any of their blocks."
+   ],
+   "es_es": [
+    "La familia Create",
+    "El pack trae un grupo de addons de Create. Enchantment Industry automatiza la experiencia y el encantamiento. Connected agrega piezas cinéticas y de logística más inteligentes. Dragons Plus suma tipos de procesamiento con ventilador y herramientas de fluidos. Copycats+, Create Deco y Bells and Whistles son para construir. Hypertube mueve jugadores por tubos de vidrio.\n\nTodos tienen escenas de Ponder: mantené W sobre cualquiera de sus bloques."
+   ],
+   "sources": [
+    "jar:create-enchantment-industry-2.5.3b.jar:assets/create_enchantment_industry/ponder",
+    "jar:create_connected-1.3.3-mc1.21.1.jar:assets/create_connected/ponder",
+    "jar:CreateDragonsPlus-1.11.9.jar:assets/create_dragons_plus/ponder"
+   ]
+  },
+  {
+   "key": "cad_xp",
+   "deps": [
+    "cad_welcome"
+   ],
+   "type": "item",
+   "item": "create_enchantment_industry:experience_hatch",
+   "layout": {
+    "x": 3,
+    "y": 0,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Liquid experience",
+    "Enchantment Industry runs on Liquid Experience. An Experience Hatch (a Dragons Plus Fluid Hatch with a Block of Experience applied) stores your own levels: right-click to deposit, sneak-right-click to withdraw, and its panel sets how much per click. Item Drains empty experience items, Spouts refill them, and liquid experience that leaks from a pipe turns into orbs.\n\nAn Experience Lantern also soaks up orbs and nearby players' experience."
+   ],
+   "es_es": [
+    "Experiencia líquida",
+    "Enchantment Industry funciona con Experiencia líquida. Una Escotilla de experiencia (una Escotilla de fluidos de Dragons Plus con un Bloque de experiencia aplicado) guarda tus propios niveles: clic derecho para depositar, agachado para retirar, y su panel fija cuánto por clic. Los Drenajes vacían ítems de experiencia, los Surtidores los rellenan, y la experiencia líquida que se escapa de una tubería se vuelve orbes.\n\nUna Linterna de experiencia también absorbe orbes y la experiencia de jugadores cercanos."
+   ],
+   "sources": [
+    "jar:create-enchantment-industry-2.5.3b.jar:data/create_enchantment_industry/recipe/item_application/experience_hatch.json",
+    "jar:create-enchantment-industry-2.5.3b.jar:assets/create_enchantment_industry/lang/en_us.json#create_enchantment_industry.ponder.experience.intro",
+    "jar:create-enchantment-industry-2.5.3b.jar:assets/create_enchantment_industry/lang/en_us.json#create_enchantment_industry.ponder.experience_hatch.intro",
+    "jar:create-enchantment-industry-2.5.3b.jar:assets/create_enchantment_industry/lang/en_us.json#create_enchantment_industry.ponder.experience_lantern.intro"
+   ]
+  },
+  {
+   "key": "cad_grindstone",
+   "deps": [
+    "cad_xp"
+   ],
+   "type": "item",
+   "item": "create_enchantment_industry:mechanical_grindstone",
+   "layout": {
+    "x": 5.5,
+    "y": 0,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Mechanical Grindstone",
+    "Eight andesite alloys around a shaft. Right-click an Item Drain with it to make a Grindstone Drain, and put another grindstone on top: items dropped in are ground, and experience nuggets become liquid experience. It also does everything a grindstone and sand paper do.\n\nCrushing Wheels and Deployers now drop experience nuggets when they kill mobs, so a mob farm feeds this directly."
+   ],
+   "es_es": [
+    "Muela mecánica",
+    "Ocho aleaciones de andesita alrededor de un eje. Clic derecho con ella sobre un Drenaje de ítems y tenés un Drenaje de muela; poné otra muela arriba: lo que caiga se muele, y las pepitas de experiencia pasan a experiencia líquida. Además hace todo lo que hacen una piedra de afilar y el papel de lija.\n\nLas Ruedas trituradoras y los Desplegadores ahora sueltan pepitas de experiencia al matar mobs, así que una granja de mobs alimenta esto directo."
+   ],
+   "sources": [
+    "jar:create-enchantment-industry-2.5.3b.jar:data/create_enchantment_industry/recipe/crafting/mechanical_grindstone.json",
+    "jar:create-enchantment-industry-2.5.3b.jar:assets/create_enchantment_industry/lang/en_us.json#create_enchantment_industry.ponder.mechanical_grindstone.intro",
+    "jar:create-enchantment-industry-2.5.3b.jar:assets/create_enchantment_industry/lang/en_us.json#create_enchantment_industry.ponder.mechanical_grindstone.extra",
+    "jar:create-enchantment-industry-2.5.3b.jar:assets/create_enchantment_industry/lang/en_us.json#create_enchantment_industry.ponder.experience.intro"
+   ]
+  },
+  {
+   "key": "cad_enchanter",
+   "deps": [
+    "cad_grindstone"
+   ],
+   "type": "item",
+   "item": "create_enchantment_industry:blaze_enchanter",
+   "layout": {
+    "x": 8,
+    "y": 0,
+    "size": 1.5,
+    "shape": "hexagon"
+   },
+   "en_us": [
+    "Blaze Enchanter",
+    "Smith an Enchanting Table onto a Blaze Burner with a Dragons Plus Blaze Upgrade template. Feed it liquid experience, set the enchanting level on its panel (a vanilla table tops out at 30) and it enchants what arms or belts bring it. Higher is not always better: some enchantments stop appearing at high levels.\n\nPut an item in its filter slot for Template mode: it then only rolls enchantments that item can take, and writes them onto a blank Enchanting Template (a pressed Block of Experience)."
+   ],
+   "es_es": [
+    "Encantador de blaze",
+    "Forjá en la mesa de herrería una Mesa de encantamientos sobre un Quemador de blaze con la plantilla de Mejora de blaze de Dragons Plus. Dale experiencia líquida, fijá el nivel en su panel (una mesa vainilla llega a 30) y encanta lo que le traigan brazos o cintas. Más alto no siempre es mejor: algunos encantamientos dejan de salir a nivel muy alto.\n\nPoné un ítem en su ranura de filtro para el modo Plantilla: sólo tira encantamientos que ese ítem acepta y los escribe en una Plantilla de encantamiento en blanco (un Bloque de experiencia prensado)."
+   ],
+   "sources": [
+    "jar:create-enchantment-industry-2.5.3b.jar:data/create_enchantment_industry/recipe/smithing/blaze_enchanter.json",
+    "jar:create-enchantment-industry-2.5.3b.jar:data/create_enchantment_industry/recipe/pressing/enchanting_template.json",
+    "jar:create-enchantment-industry-2.5.3b.jar:assets/create_enchantment_industry/lang/en_us.json#create_enchantment_industry.ponder.blaze_enchanter.intro",
+    "jar:create-enchantment-industry-2.5.3b.jar:assets/create_enchantment_industry/lang/en_us.json#create_enchantment_industry.ponder.blaze_enchanter.automate"
+   ]
+  },
+  {
+   "key": "cad_forger",
+   "deps": [
+    "cad_enchanter"
+   ],
+   "type": "item",
+   "item": "create_enchantment_industry:blaze_forger",
+   "layout": {
+    "x": 10.5,
+    "y": 0,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Blaze Forger",
+    "An anvil run by a blaze, fed with liquid experience. It merges enchantments with no repair cost, merges templates, applies a template to an item (Application mode) or strips an enchantment from gear or books onto a blank template (Extract mode).\n\nWith the Forger and templates you can move a good enchantment from an old tool to a new one."
+   ],
+   "es_es": [
+    "Forja de blaze",
+    "Un yunque manejado por un blaze, alimentado con experiencia líquida. Une encantamientos sin costo de reparación, une plantillas, aplica una plantilla a un ítem (modo Aplicación) o saca un encantamiento de equipo o libros a una plantilla en blanco (modo Extracción).\n\nCon la Forja y las plantillas podés pasar un buen encantamiento de una herramienta vieja a una nueva."
+   ],
+   "sources": [
+    "jar:create-enchantment-industry-2.5.3b.jar:assets/create_enchantment_industry/lang/en_us.json#create_enchantment_industry.ponder.blaze_forger.intro",
+    "jar:create-enchantment-industry-2.5.3b.jar:assets/create_enchantment_industry/lang/en_us.json#create_enchantment_industry.ponder.blaze_forger.automate"
+   ]
+  },
+  {
+   "key": "cad_super",
+   "deps": [
+    "cad_forger"
+   ],
+   "type": "checkmark",
+   "icon": "create_enchantment_industry:experience_cake",
+   "layout": {
+    "x": 10.5,
+    "y": -2.5,
+    "size": 1.0,
+    "shape": "circle"
+   },
+   "en_us": [
+    "Super Enchanting",
+    "Feed an Enchanter or Forger a Cake o' Enchanting and it starts seething: Super Enchanting mode. The level cap goes far higher, treasure enchantments can roll, and the Forger can merge conflicting enchantments. It only takes Super Enchanting Templates, made from Blocks of Super Experience.\n\nSuper Enchanting calls lightning: keep a Lightning Rod nearby. Covering the blaze avoids the strike but risks curses or repair cost; with no rod at all, you will regret it."
+   ],
+   "es_es": [
+    "Superencantamiento",
+    "Dale a un Encantador o una Forja una Torta de encantamiento y empieza a hervir: modo Superencantamiento. El tope de nivel sube muchísimo, pueden salir encantamientos de tesoro y la Forja puede unir encantamientos incompatibles. Sólo acepta Plantillas de superencantamiento, hechas con Bloques de superexperiencia.\n\nEl superencantamiento atrae rayos: tené un Pararrayos cerca. Tapar el blaze evita el rayo pero arriesga maldiciones o costo de reparación; sin pararrayos, te vas a arrepentir."
+   ],
+   "sources": [
+    "jar:create-enchantment-industry-2.5.3b.jar:assets/create_enchantment_industry/lang/en_us.json#create_enchantment_industry.ponder.blaze_enchanter.super_enchant",
+    "jar:create-enchantment-industry-2.5.3b.jar:assets/create_enchantment_industry/lang/en_us.json#create_enchantment_industry.ponder.blaze_forger.super_enchant",
+    "jar:create-enchantment-industry-2.5.3b.jar:assets/create_enchantment_industry/lang/en_us.json#create_enchantment_industry.ponder.experience.advance",
+    "jar:create-enchantment-industry-2.5.3b.jar:assets/create_enchantment_industry/lang/en_us.json#create_enchantment_industry.ponder.experience.prepare_for_super_enchant"
+   ]
+  },
+  {
+   "key": "cad_printer",
+   "deps": [
+    "cad_forger"
+   ],
+   "type": "item",
+   "item": "create_enchantment_industry:printer",
+   "optional": true,
+   "layout": {
+    "x": 13,
+    "y": 0,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Printer",
+    "Brass sheet, iron block and a spout. Put the item to copy in its filter and feed it the matching fluid: it copies written books, duplicates enchanted books, names items, copies train schedules and clipboards, and changes package addresses. EMI lists every printing recipe.\n\nENTRELUMEN note: the Printer is left native on purpose, because every copy is paid in liquid experience."
+   ],
+   "es_es": [
+    "Impresora",
+    "Lámina de latón, bloque de hierro y un surtidor. Poné en el filtro el ítem a copiar y dale el fluido correspondiente: copia libros escritos, duplica libros encantados, nombra ítems, copia horarios de tren y portapapeles y cambia direcciones de paquetes. EMI lista todas las recetas de impresión.\n\nNota de ENTRELUMEN: la Impresora quedó nativa a propósito, porque cada copia se paga con experiencia líquida."
+   ],
+   "sources": [
+    "jar:create-enchantment-industry-2.5.3b.jar:data/create_enchantment_industry/recipe/crafting/printer.json",
+    "jar:create-enchantment-industry-2.5.3b.jar:assets/create_enchantment_industry/lang/en_us.json#create_enchantment_industry.ponder.printer.intro",
+    "repo:docs/design/industrial-expansion-family.md"
+   ]
+  },
+  {
+   "key": "cad_apotheosis",
+   "deps": [
+    "cad_enchanter"
+   ],
+   "type": "item",
+   "item": "create_enchantment_industry:brass_bookshelf",
+   "optional": true,
+   "layout": {
+    "x": 8,
+    "y": -2.5,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Enchantment Industry and Apotheosis",
+    "With Apotheosis in the pack, Enchantment Industry adds more: the Brass Bookshelf gives adjustable enchanting stats (it needs rotation), the Affix Augmentor upgrades affixes on a belt with Apotheotic Essence, the Blaze Composer moves and merges affixes through templates, and a fan through Infused Dragon Breath salvages gear in bulk.\n\nInfused Dragon Breath can also salvage the gear you are wearing: keep out of the air stream."
+   ],
+   "es_es": [
+    "Enchantment Industry y Apotheosis",
+    "Con Apotheosis en el pack, Enchantment Industry suma más: la Estantería de latón da estadísticas de encantamiento ajustables (necesita rotación), el Aumentador de afijos mejora afijos sobre una cinta con Esencia apoteótica, el Compositor de blaze mueve y une afijos con plantillas, y un ventilador a través de Aliento de dragón infundido desarma equipo en masa.\n\nEl Aliento de dragón infundido también puede desarmar el equipo que tenés puesto: no te pares en la corriente."
+   ],
+   "sources": [
+    "jar:create-enchantment-industry-2.5.3b.jar:assets/create_enchantment_industry/lang/en_us.json#create_enchantment_industry.ponder.brass_bookshelf",
+    "jar:create-enchantment-industry-2.5.3b.jar:assets/create_enchantment_industry/lang/en_us.json#create_enchantment_industry.ponder.affix",
+    "jar:create-enchantment-industry-2.5.3b.jar:assets/create_enchantment_industry/lang/en_us.json#create_enchantment_industry.ponder.blaze_composer.intro",
+    "jar:create-enchantment-industry-2.5.3b.jar:assets/create_enchantment_industry/lang/en_us.json#create_enchantment_industry.ponder.bulk_salvaging"
+   ]
+  },
+  {
+   "key": "cad_cei_pack",
+   "deps": [
+    "cad_xp"
+   ],
+   "type": "checkmark",
+   "icon": "create_enchantment_industry:experience_bucket",
+   "layout": {
+    "x": 3,
+    "y": 2,
+    "size": 1.0,
+    "shape": "gear"
+   },
+   "en_us": [
+    "Pack changes: experience fluids and the creative shelf",
+    "ENTRELUMEN change: the pack corrects Enchantment Industry's list of other mods' experience fluids (Ender IO, Industrial Foregoing, Just Dire Things, PneumaticCraft, Reliquary, Sophisticated), which upstream named with outdated IDs, so CEI recognizes them.\n\nThe Creative Bookshelf is craftable only with two Luminosities (arcane and habitation) from Solsticio."
+   ],
+   "es_es": [
+    "Cambios: fluidos de experiencia y estantería creativa",
+    "Cambio de ENTRELUMEN: el pack corrige la lista de fluidos de experiencia de otros mods que usa Enchantment Industry (Ender IO, Industrial Foregoing, Just Dire Things, PneumaticCraft, Reliquary, Sophisticated), que en el original tenía IDs viejos, para que CEI los reconozca.\n\nLa Estantería creativa sólo se craftea con dos Luminosidades (arcana y habitabilidad) de Solsticio."
+   ],
+   "sources": [
+    "repo:pack/kubejs/data/create_enchantment_industry/data_maps/fluid/unit/experience.json",
+    "repo:docs/design/mod-pingpong.md",
+    "repo:pack/kubejs/server_scripts/entrelumen_luminous_balance.js"
+   ]
+  },
+  {
+   "key": "cad_super_goal",
+   "deps": [
+    "cad_super",
+    "cad_printer"
+   ],
+   "type": "item",
+   "item": "create_enchantment_industry:super_enchanting_template",
+   "layout": {
+    "x": 15.5,
+    "y": -1.25,
+    "size": 2.0,
+    "shape": "octagon"
+   },
+   "en_us": [
+    "Enchanting mastery",
+    "Make a Super Enchanting Template: turn Blocks of Experience into Blocks of Super Experience with lightning, craft the template, and run a seething Enchanter with a rod nearby.\n\nWith that and a Forger you can build gear beyond vanilla limits, all fed by a mob farm and a grindstone drain."
+   ],
+   "es_es": [
+    "Maestría del encantamiento",
+    "Hacé una Plantilla de superencantamiento: convertí Bloques de experiencia en Bloques de superexperiencia con rayos, crafteá la plantilla y hacé funcionar un Encantador hirviendo con un pararrayos cerca.\n\nCon eso y una Forja podés armar equipo que supera los límites vainilla, todo alimentado por una granja de mobs y un drenaje de muela."
+   ],
+   "sources": [
+    "jar:create-enchantment-industry-2.5.3b.jar:assets/create_enchantment_industry/lang/en_us.json#create_enchantment_industry.ponder.experience.prepare_for_super_enchant",
+    "jar:create-enchantment-industry-2.5.3b.jar:assets/create_enchantment_industry/lang/en_us.json#create_enchantment_industry.ponder.experience.advance"
+   ]
+  },
+  {
+   "key": "cad_connected",
+   "deps": [
+    "cad_welcome"
+   ],
+   "type": "item",
+   "item": "create_connected:six_way_gearbox",
+   "layout": {
+    "x": 3,
+    "y": 4.5,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Create: Connected, kinetics",
+    "Connected adds the kinetic parts Create lacks: a Brass Gearbox with each side set by wrench, a Six-way Gearbox, Parallel Gearboxes, Centrifugal, Freewheel and Overstress Clutches, a Shear Pin that breaks on overstress, a Brake that stops a network, a Crank Wheel and a Cross Connector.\n\nThe Overstress Clutch and the Shear Pin are cheap insurance: they cut off a runaway branch before it freezes the whole network."
+   ],
+   "es_es": [
+    "Create: Connected, cinética",
+    "Connected agrega las piezas cinéticas que le faltan a Create: una Caja de latón con cada lado configurable con la llave, una Caja de seis caras, Cajas paralelas, embragues Centrífugo, de Rueda libre y de Sobreestrés, un Pasador de seguridad que se rompe al sobreestresarse, un Freno que detiene una red, una Manivela de rueda y un Conector cruzado.\n\nEl embrague de sobreestrés y el pasador son un seguro barato: cortan una rama descontrolada antes de que congele toda la red."
+   ],
+   "sources": [
+    "jar:create_connected-1.3.3-mc1.21.1.jar:assets/create_connected/lang/en_us.json#block.create_connected.brass_gearbox.tooltip.summary",
+    "jar:create_connected-1.3.3-mc1.21.1.jar:assets/create_connected/lang/en_us.json#block.create_connected.six_way_gearbox.tooltip.summary",
+    "jar:create_connected-1.3.3-mc1.21.1.jar:assets/create_connected/lang/en_us.json#block.create_connected.overstress_clutch.tooltip.summary",
+    "jar:create_connected-1.3.3-mc1.21.1.jar:assets/create_connected/lang/en_us.json#block.create_connected.shear_pin.tooltip.summary",
+    "jar:create_connected-1.3.3-mc1.21.1.jar:assets/create_connected/lang/en_us.json#block.create_connected.brake.tooltip.summary"
+   ]
+  },
+  {
+   "key": "cad_battery",
+   "deps": [
+    "cad_connected"
+   ],
+   "type": "item",
+   "item": "create_connected:kinetic_battery",
+   "optional": true,
+   "layout": {
+    "x": 5.5,
+    "y": 4.5,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Kinetic Battery",
+    "It stores stress. Unpowered, it draws rotation from the front to charge; with a redstone signal it discharges, supplying a fixed stress capacity at a fixed speed, and only uses charge for the stress actually in use. It will not discharge while other sources cover the load.\n\nA comparator, threshold switch or display link reads its level. Charge it with a windmill by day, spend it at night."
+   ],
+   "es_es": [
+    "Batería cinética",
+    "Guarda estrés. Sin redstone, toma rotación por el frente para cargarse; con señal de redstone se descarga y entrega una capacidad fija a velocidad fija, gastando carga sólo por el estrés que realmente se usa. No se descarga mientras otras fuentes cubran la demanda.\n\nUn comparador, un interruptor de umbral o un enlace de visualización leen su nivel. Cargala con un molino de día y gastala de noche."
+   ],
+   "sources": [
+    "jar:create_connected-1.3.3-mc1.21.1.jar:data/create_connected/recipe/crafting/kinetics/kinetic_battery.json",
+    "jar:create_connected-1.3.3-mc1.21.1.jar:assets/create_connected/lang/en_us.json#create_connected.ponder.kinetic_battery.text_3"
+   ]
+  },
+  {
+   "key": "cad_conn_logi",
+   "deps": [
+    "cad_connected"
+   ],
+   "type": "item",
+   "item": "create_connected:empty_fan_catalyst",
+   "optional": true,
+   "layout": {
+    "x": 3,
+    "y": 7,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Connected logistics",
+    "The Brass Chute moves up to 64 items at a time. The Inventory Bridge lets one funnel reach two inventories at once (it adds no storage and cannot be chained). The Item Silo is a vertical Item Vault and the Fluid Vessel a horizontal tank, though a weaker boiler.\n\nFan Catalysts hold lava, water or fire inside a block, so fan processing works without spilling anything into your base."
+   ],
+   "es_es": [
+    "Logística de Connected",
+    "El Conducto de latón mueve hasta 64 ítems a la vez. El Puente de inventarios deja que un embudo llegue a dos inventarios juntos (no suma espacio y no se encadena). El Silo de ítems es una Bóveda vertical y el Recipiente de fluidos un tanque horizontal, aunque rinde menos como caldera.\n\nLos Catalizadores de ventilador guardan lava, agua o fuego adentro de un bloque, así el procesamiento con ventilador funciona sin derramar nada en tu base."
+   ],
+   "sources": [
+    "jar:create_connected-1.3.3-mc1.21.1.jar:assets/create_connected/lang/en_us.json#block.create_connected.brass_chute.tooltip.summary",
+    "jar:create_connected-1.3.3-mc1.21.1.jar:assets/create_connected/lang/en_us.json#create_connected.ponder.inventory_bridge.text_2",
+    "jar:create_connected-1.3.3-mc1.21.1.jar:assets/create_connected/lang/en_us.json#block.create_connected.item_silo.tooltip.summary",
+    "jar:create_connected-1.3.3-mc1.21.1.jar:assets/create_connected/lang/en_us.json#block.create_connected.fluid_vessel.tooltip.summary",
+    "jar:create_connected-1.3.3-mc1.21.1.jar:assets/create_connected/lang/en_us.json#block.create_connected.fan_blasting_catalyst.tooltip.summary"
+   ]
+  },
+  {
+   "key": "cad_conn_pack",
+   "deps": [
+    "cad_conn_logi"
+   ],
+   "type": "checkmark",
+   "icon": "copycats:copycat_block",
+   "layout": {
+    "x": 5.5,
+    "y": 7,
+    "size": 1.0,
+    "shape": "gear"
+   },
+   "en_us": [
+    "Pack change: one copycat family",
+    "ENTRELUMEN change: Create: Connected's own copycat blocks are turned off in its config, because Copycats+ already supplies those shapes. Connected keeps all its mechanical and logistics features.\n\nIf EMI shows two copycat versions of the same shape, use the Copycats+ one."
+   ],
+   "es_es": [
+    "Cambio del pack: una sola familia de copycats",
+    "Cambio de ENTRELUMEN: los bloques copycat propios de Create: Connected están apagados en su config, porque Copycats+ ya aporta esas formas. Connected conserva todas sus funciones mecánicas y de logística.\n\nSi en EMI ves dos versiones copycat de la misma forma, usá la de Copycats+."
+   ],
+   "sources": [
+    "repo:pack/config/create_connected-common.toml"
+   ]
+  },
+  {
+   "key": "cad_dragons",
+   "deps": [
+    "cad_welcome"
+   ],
+   "type": "item",
+   "item": "create_dragons_plus:fluid_hatch",
+   "layout": {
+    "x": 3,
+    "y": -5,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Create: Dragons Plus",
+    "Dragons Plus is the base Enchantment Industry and Central Kitchen build on, and it adds fluid tools of its own. The Fluid Hatch lets you fill or drain a tank with buckets and bottles. Dye mixed with water gives Liquid Dye, which colours items and mobs it touches and makes concrete when it meets lava. Dragon's Breath becomes a fluid that turns into end stone against lava.\n\nIts Blaze Upgrade template is what turns a Blaze Burner into Enchantment Industry machines."
+   ],
+   "es_es": [
+    "Create: Dragons Plus",
+    "Dragons Plus es la base sobre la que se apoyan Enchantment Industry y Central Kitchen, y suma herramientas de fluidos propias. La Escotilla de fluidos deja llenar o vaciar un tanque con baldes y botellas. El tinte mezclado con agua da Tinte líquido, que tiñe ítems y mobs que lo tocan y hace concreto al encontrarse con lava. El Aliento de dragón pasa a ser un fluido que forma piedra del End contra la lava.\n\nSu plantilla de Mejora de blaze es la que convierte un Quemador de blaze en máquinas de Enchantment Industry."
+   ],
+   "sources": [
+    "jar:CreateDragonsPlus-1.11.9.jar:assets/create_dragons_plus/lang/en_us.json#block.create_dragons_plus.fluid_hatch.tooltip.summary",
+    "jar:CreateDragonsPlus-1.11.9.jar:assets/create_dragons_plus/lang/en_us.json#create_dragons_plus.ponder.dye_fluids",
+    "jar:CreateDragonsPlus-1.11.9.jar:assets/create_dragons_plus/lang/en_us.json#create_dragons_plus.ponder.dragon_breath_fluid",
+    "jar:create-enchantment-industry-2.5.3b.jar:data/create_enchantment_industry/recipe/smithing/blaze_enchanter.json"
+   ]
+  },
+  {
+   "key": "cad_fans",
+   "deps": [
+    "cad_dragons"
+   ],
+   "type": "checkmark",
+   "icon": "minecraft:powder_snow_bucket",
+   "layout": {
+    "x": 5.5,
+    "y": -5,
+    "size": 1.0,
+    "shape": "circle"
+   },
+   "en_us": [
+    "New fan processing types",
+    "Dragons Plus adds fan setups: Liquid Dye colours (items, mobs and worn armour), Powder Snow freezes, Quicksand sands (any sand paper recipe), Dragon Head or Dragon's Breath does Ending, and a Golden Aercloud from the Aether enables Bulk Enchanting, which runs Aether altar recipes and can hatch Moa eggs.\n\nEMI lists each type as its own recipe category, with the catalyst block it needs."
+   ],
+   "es_es": [
+    "Nuevos procesamientos con ventilador",
+    "Dragons Plus suma montajes de ventilador: el Tinte líquido tiñe (ítems, mobs y armadura puesta), la Nieve polvo congela, la Arena movediza lija (cualquier receta de papel de lija), la Cabeza o el Aliento de dragón hacen el proceso del End, y una Nube dorada del Aether habilita el Encantamiento masivo, que hace recetas del altar del Aether y puede incubar huevos de Moa.\n\nEMI muestra cada tipo como su propia categoría de recetas, con el bloque catalizador que necesita."
+   ],
+   "sources": [
+    "jar:CreateDragonsPlus-1.11.9.jar:assets/create_dragons_plus/lang/en_us.json#create_dragons_plus.ponder.bulk_coloring",
+    "jar:CreateDragonsPlus-1.11.9.jar:assets/create_dragons_plus/lang/en_us.json#create_dragons_plus.ponder.bulk_freezing",
+    "jar:CreateDragonsPlus-1.11.9.jar:assets/create_dragons_plus/lang/en_us.json#create_dragons_plus.ponder.bulk_sanding",
+    "jar:CreateDragonsPlus-1.11.9.jar:assets/create_dragons_plus/lang/en_us.json#create_dragons_plus.ponder.bulk_ending",
+    "jar:CreateDragonsPlus-1.11.9.jar:assets/create_dragons_plus/lang/en_us.json#create_dragons_plus.ponder.bulk_enchanting",
+    "jar:CreateDragonsPlus-1.11.9.jar:assets/create_dragons_plus/lang/en_us.json#recipe.create_dragons_plus.fan_freezing.fan"
+   ]
+  },
+  {
+   "key": "cad_copycats",
+   "deps": [
+    "cad_welcome"
+   ],
+   "type": "item",
+   "item": "copycats:copycat_slope",
+   "count": 8,
+   "layout": {
+    "x": 3,
+    "y": -2.5,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Copycats+",
+    "Copycat blocks take the look of any full block. Right-click with a material to apply and rotate it; a wrench removes it; sneak-right-click with an empty hand toggles connected textures. Copycats+ adds dozens of shapes (slopes, layers, slices, vertical steps, beams), functional ones (doors, trapdoors, buttons, pressure plates, ladders) and a Ghost Block with no collision.\n\nMany are cut from zinc in a stonecutter."
+   ],
+   "es_es": [
+    "Copycats+",
+    "Los bloques copycat toman el aspecto de cualquier bloque completo. Clic derecho con un material para aplicarlo y rotarlo; con la llave se saca; agachado con la mano vacía activás o desactivás las texturas conectadas. Copycats+ suma decenas de formas (pendientes, capas, rebanadas, escalones verticales, vigas), funcionales (puertas, trampillas, botones, placas de presión, escaleras de mano) y un Bloque fantasma sin colisión.\n\nMuchos se cortan de zinc en un cortapiedras."
+   ],
+   "sources": [
+    "jar:copycats-3.0.9+mc.1.21.1-neoforge.jar:assets/copycats/lang/en_us.json",
+    "jar:copycats-3.0.9+mc.1.21.1-neoforge.jar:data/copycats/recipe/stonecutting/copycat_slope.json"
+   ]
+  },
+  {
+   "key": "cad_deco",
+   "deps": [
+    "cad_copycats"
+   ],
+   "type": "item",
+   "item": "createdeco:andesite_sheet_metal",
+   "count": 8,
+   "optional": true,
+   "layout": {
+    "x": 5.5,
+    "y": -2.5,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Create Deco and Rechiseled Create",
+    "Create Deco adds sheet metal, coloured bricks, industrial lamps, decals, bars, placards, doors, windows and supports in Create's style. Rechiseled Create adds chisel variants of Create's own blocks.\n\nENTRELUMEN change: one Deco recipe that dyes placards failed to load in 1.21.1 and is disabled; everything else is native."
+   ],
+   "es_es": [
+    "Create Deco y Rechiseled Create",
+    "Create Deco agrega chapas, ladrillos de colores, lámparas industriales, calcomanías, barrotes, placas, puertas, ventanas y soportes al estilo de Create. Rechiseled Create suma variantes de cincel para los bloques de Create.\n\nCambio de ENTRELUMEN: una receta de Deco que tiñe placas no cargaba en 1.21.1 y está desactivada; lo demás es nativo."
+   ],
+   "sources": [
+    "jar:createdeco-2.1.3.jar:assets/createdeco/lang/en_us.json",
+    "repo:pack/kubejs/data/createdeco/recipe/placard.json",
+    "repo:docs/design/mod-pingpong.md"
+   ]
+  },
+  {
+   "key": "cad_bw",
+   "deps": [
+    "cad_deco"
+   ],
+   "type": "item",
+   "item": "bellsandwhistles:headlight",
+   "count": 2,
+   "optional": true,
+   "layout": {
+    "x": 8,
+    "y": -5,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Bells and Whistles",
+    "Decoration for trains and stations: headlights, pilots (cowcatchers) in many stones, station platforms, metro casing, panels and windows, grab bars, steps and door steps.\n\nAll of it is decorative; glue it to a train like any other block."
+   ],
+   "es_es": [
+    "Bells and Whistles",
+    "Decoración para trenes y estaciones: faros, pilotos (quitapiedras) de muchas piedras, andenes, carcasa y paneles de metro, ventanas, agarraderas, escalones y estribos.\n\nTodo es decorativo; pegalo a un tren como cualquier otro bloque."
+   ],
+   "sources": [
+    "jar:bellsandwhistles-0.4.7-1.21.1.jar:assets/bellsandwhistles/lang/en_us.json"
+   ]
+  },
+  {
+   "key": "cad_hypertube",
+   "deps": [
+    "cad_welcome"
+   ],
+   "type": "item",
+   "item": "create_hypertube:hypertube_entrance",
+   "layout": {
+    "x": 0,
+    "y": 3.5,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Create Hypertube",
+    "Glass tubes that carry players and mobs. Right-click a placed tube while holding another, then place the second: they link. A Hypertube Entrance needs at least 16 RPM, and spins you faster the faster it turns; Accelerators speed you up or brake; a Splitter branches the line and you steer with movement keys.\n\nPerfect for linking the buildings of a large base without a train."
+   ],
+   "es_es": [
+    "Create Hypertube",
+    "Tubos de vidrio que llevan jugadores y mobs. Con un tubo en la mano, clic derecho en uno ya colocado y después colocá el segundo: quedan unidos. Una Entrada de hipertubo necesita al menos 16 RPM y te impulsa más rápido cuanto más rápido gira; los Aceleradores aceleran o frenan; un Divisor ramifica la línea y elegís con las teclas de movimiento.\n\nIdeal para unir los edificios de una base grande sin tren."
+   ],
+   "sources": [
+    "jar:create_hypertube-0.6.0-NEOFORGE.jar:data/create_hypertube/recipe/hypertube.json",
+    "jar:create_hypertube-0.6.0-NEOFORGE.jar:data/create_hypertube/recipe/hypertube_entrance.json",
+    "jar:create_hypertube-0.6.0-NEOFORGE.jar:assets/create_hypertube/lang/en_us.json#create_hypertube.ponder.simple_tube",
+    "jar:create_hypertube-0.6.0-NEOFORGE.jar:assets/create_hypertube/lang/en_us.json#create_hypertube.ponder.entrance",
+    "jar:create_hypertube-0.6.0-NEOFORGE.jar:assets/create_hypertube/lang/en_us.json#create_hypertube.ponder.accelerator",
+    "jar:create_hypertube-0.6.0-NEOFORGE.jar:assets/create_hypertube/lang/en_us.json#create_hypertube.ponder.splitter"
+   ]
+  }
+ ]
+}

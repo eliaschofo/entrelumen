@@ -1,0 +1,646 @@
+{
+ "chapter": "guide_create_power",
+ "group": "tech",
+ "act": "II",
+ "icon": "create_new_age:generator_coil",
+ "title": {
+  "en_us": "Create: electricity",
+  "es_es": "Create: electricidad"
+ },
+ "subtitle": {
+  "en_us": "Crafts and Additions bridges rotation and FE; New Age is the solar and magnetic technology of Heliodor.",
+  "es_es": "Crafts and Additions une rotación y FE; New Age es la tecnología solar y magnética de Heliodor."
+ },
+ "quests": [
+  {
+   "key": "cpw_welcome",
+   "deps": [],
+   "type": "checkmark",
+   "icon": "createaddition:alternator",
+   "layout": {
+    "x": 0,
+    "y": 0,
+    "size": 2.0,
+    "shape": "hexagon"
+   },
+   "en_us": [
+    "Rotation meets electricity",
+    "Two addons turn Create into a power plant. Create Crafts and Additions converts rotation into FE (Forge Energy, the electricity Mekanism, Powah, Immersive Engineering and most tech mods use) and back, and adds wires, a rolling mill and a tesla coil. Create: New Age is the pack's Heliodor technology: sun-heated plates, magnets and coils, energizers and a thorium reactor.\n\nPick either branch; both start from Create parts you already know."
+   ],
+   "es_es": [
+    "La rotación se encuentra con la electricidad",
+    "Dos addons convierten a Create en una central eléctrica. Create Crafts and Additions pasa rotación a FE (Forge Energy, la electricidad que usan Mekanism, Powah, Immersive Engineering y casi todos los mods técnicos) y al revés, y suma cables, un laminador y una bobina tesla. Create: New Age es la tecnología de Heliodor del pack: placas que calienta el sol, imanes y bobinas, energizadores y un reactor de torio.\n\nElegí cualquier rama; las dos arrancan de piezas de Create que ya conocés."
+   ],
+   "sources": [
+    "jar:createaddition-1.7.0.jar:assets/createaddition/lang/en_us.json#block.createaddition.connector.tooltip.summary",
+    "repo:docs/design/mod-pingpong.md"
+   ]
+  },
+  {
+   "key": "cpw_mill",
+   "deps": [
+    "cpw_welcome"
+   ],
+   "type": "item",
+   "item": "createaddition:rolling_mill",
+   "layout": {
+    "x": 3,
+    "y": -2.5,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Rolling Mill",
+    "A rotation-powered press for long parts: an ingot becomes 2 rods, a plate becomes 2 wires, bamboo or paper becomes straw. Drop items on top and right-click to take the result, or automate it with a belt and two funnels.\n\nWires go on spools; rods make connectors."
+   ],
+   "es_es": [
+    "Laminador",
+    "Una prensa movida por rotación para piezas largas: un lingote da 2 varillas, una placa da 2 alambres, el bambú o el papel dan paja. Tirá los ítems arriba y sacá el resultado con clic derecho, o automatizalo con una cinta y dos embudos.\n\nLos alambres van en bobinas; las varillas hacen conectores."
+   ],
+   "sources": [
+    "jar:createaddition-1.7.0.jar:data/createaddition/recipe/crafting/rolling_mill.json",
+    "jar:createaddition-1.7.0.jar:assets/createaddition/lang/en_us.json#createaddition.ponder.rolling_mill",
+    "jar:createaddition-1.7.0.jar:assets/createaddition/lang/en_us.json#createaddition.ponder.automated_rolling_mill",
+    "jar:createaddition-1.7.0.jar:data/createaddition/recipe/rolling/iron_ingot.json",
+    "jar:createaddition-1.7.0.jar:data/createaddition/recipe/rolling/iron_plate.json"
+   ]
+  },
+  {
+   "key": "cpw_spool",
+   "deps": [
+    "cpw_mill"
+   ],
+   "type": "item",
+   "item": "createaddition:copper_spool",
+   "count": 4,
+   "layout": {
+    "x": 5.5,
+    "y": -2.5,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Connectors and spools",
+    "A small Connector (copper rod, andesite alloy, slime) links FE blocks with Copper Spool wire, up to 4 links each. A Large Connector takes Gold or Electrum spools and up to 6 links, for high current. Right-click two connectors with a spool to wire them; the empty spool comes back.\n\nA wrench cycles each connector between Push, Pull and None: set the generator side to push and the machine side to pull."
+   ],
+   "es_es": [
+    "Conectores y bobinas",
+    "Un Conector chico (varilla de cobre, aleación de andesita, slime) une bloques de FE con cable de Bobina de cobre, hasta 4 enlaces cada uno. Un Conector grande acepta bobinas de oro o electro y hasta 6 enlaces, para corriente alta. Clic derecho en dos conectores con una bobina y quedan cableados; la bobina vacía vuelve.\n\nCon la llave cada conector rota entre Empujar, Tirar y Nada: poné empujar del lado del generador y tirar del lado de la máquina."
+   ],
+   "sources": [
+    "jar:createaddition-1.7.0.jar:data/createaddition/recipe/crafting/connector.json",
+    "jar:createaddition-1.7.0.jar:data/createaddition/recipe/crafting/copper_spool.json",
+    "jar:createaddition-1.7.0.jar:assets/createaddition/lang/en_us.json#block.createaddition.connector.tooltip.behaviour2",
+    "jar:createaddition-1.7.0.jar:assets/createaddition/lang/en_us.json#block.createaddition.large_connector.tooltip.behaviour2",
+    "jar:createaddition-1.7.0.jar:assets/createaddition/lang/en_us.json#block.createaddition.connector.tooltip.behaviour3"
+   ]
+  },
+  {
+   "key": "cpw_alternator",
+   "deps": [
+    "cpw_spool"
+   ],
+   "type": "item",
+   "item": "createaddition:alternator",
+   "layout": {
+    "x": 8,
+    "y": -2.5,
+    "size": 1.5,
+    "shape": "hexagon"
+   },
+   "en_us": [
+    "Alternator",
+    "A mechanical-crafting recipe (iron plates and rods, andesite alloy, a copper spool). It turns rotation into FE, but only from 32 RPM up, and makes more the faster it spins.\n\nThis is how a water wheel, windmill or steam engine powers Mekanism, Powah or IE machines. Watch the stress budget: a fast alternator is a hungry machine."
+   ],
+   "es_es": [
+    "Alternador",
+    "Una receta de crafteo mecánico (placas y varillas de hierro, aleación de andesita, una bobina de cobre). Convierte rotación en FE, pero sólo desde 32 RPM, y produce más cuanto más rápido gira.\n\nAsí una rueda hidráulica, un molino o un motor de vapor alimentan máquinas de Mekanism, Powah o IE. Ojo con el presupuesto de estrés: un alternador rápido pide mucho."
+   ],
+   "sources": [
+    "jar:createaddition-1.7.0.jar:data/createaddition/recipe/mechanical_crafting/alternator.json",
+    "jar:createaddition-1.7.0.jar:assets/createaddition/lang/en_us.json#createaddition.ponder.alternator"
+   ]
+  },
+  {
+   "key": "cpw_motor",
+   "deps": [
+    "cpw_alternator"
+   ],
+   "type": "item",
+   "item": "createaddition:electric_motor",
+   "layout": {
+    "x": 10.5,
+    "y": -2.5,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Electric Motor",
+    "The reverse trip: FE in, rotation out. Scroll on its back panel to set the RPM; the higher the RPM, the more energy it uses. A ComputerCraft computer can control it as a peripheral.\n\nA motor next to a battery bank is a compact, silent source of rotation for places without water or wind."
+   ],
+   "es_es": [
+    "Motor eléctrico",
+    "El viaje inverso: entra FE, sale rotación. Girá la rueda sobre su panel trasero para fijar las RPM; cuantas más RPM, más energía gasta. Una computadora de ComputerCraft lo puede manejar como periférico.\n\nUn motor al lado de un banco de baterías es una fuente de rotación compacta y silenciosa para lugares sin agua ni viento."
+   ],
+   "sources": [
+    "jar:createaddition-1.7.0.jar:data/createaddition/recipe/mechanical_crafting/electric_motor.json",
+    "jar:createaddition-1.7.0.jar:assets/createaddition/lang/en_us.json#createaddition.ponder.electric_motor",
+    "jar:createaddition-1.7.0.jar:assets/createaddition/lang/en_us.json#createaddition.ponder.cc_electric_motor"
+   ]
+  },
+  {
+   "key": "cpw_accumulator",
+   "deps": [
+    "cpw_alternator"
+   ],
+   "type": "item",
+   "item": "createaddition:modular_accumulator",
+   "optional": true,
+   "layout": {
+    "x": 8,
+    "y": -5,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Modular Accumulator",
+    "A multiblock battery: stack accumulators to grow it. Configure one connector as input and another as output; it also pushes energy into blocks on its top and bottom faces for easier compatibility.\n\nA Portable Energy Interface pair charges accumulators on a moving train or contraption as it passes."
+   ],
+   "es_es": [
+    "Acumulador modular",
+    "Una batería multibloque: apilá acumuladores para agrandarla. Configurá un conector como entrada y otro como salida; además empuja energía a los bloques de sus caras de arriba y abajo, para compatibilidad.\n\nUn par de Interfaces de energía portátiles carga los acumuladores de un tren o estructura en movimiento cuando pasa."
+   ],
+   "sources": [
+    "jar:createaddition-1.7.0.jar:data/createaddition/recipe/crafting/modular_accumulator.json",
+    "jar:createaddition-1.7.0.jar:assets/createaddition/lang/en_us.json#createaddition.ponder.modular_accumulator",
+    "jar:createaddition-1.7.0.jar:assets/createaddition/lang/en_us.json#createaddition.ponder.pei_transfer"
+   ]
+  },
+  {
+   "key": "cpw_tesla",
+   "deps": [
+    "cpw_motor"
+   ],
+   "type": "item",
+   "item": "createaddition:tesla_coil",
+   "optional": true,
+   "layout": {
+    "x": 13,
+    "y": -2.5,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Tesla Coil",
+    "Items under a Tesla Coil get charged: any FE item, plus charging recipes such as gold ingots, sheets and wires turning into electrum. With a redstone signal it also shocks nearby players and mobs.\n\nPut it over a depot and it becomes a charging station for your tools and jetpacks."
+   ],
+   "es_es": [
+    "Bobina tesla",
+    "Los ítems debajo de una Bobina tesla se cargan: cualquier ítem de FE, y además recetas de carga, como lingotes, láminas y alambres de oro que pasan a electro. Con redstone también electrocuta a jugadores y mobs cercanos.\n\nPonela sobre un depósito y tenés una estación de carga para tus herramientas y jetpacks."
+   ],
+   "sources": [
+    "jar:createaddition-1.7.0.jar:data/createaddition/recipe/mechanical_crafting/tesla_coil.json",
+    "jar:createaddition-1.7.0.jar:assets/createaddition/lang/en_us.json#createaddition.ponder.tesla_coil",
+    "jar:createaddition-1.7.0.jar:assets/createaddition/lang/en_us.json#createaddition.ponder.tesla_coil_hurt",
+    "jar:createaddition-1.7.0.jar:data/createaddition/recipe/charging/electrify_gold_ingot.json"
+   ]
+  },
+  {
+   "key": "cpw_liquid",
+   "deps": [
+    "cpw_mill"
+   ],
+   "type": "item",
+   "item": "createaddition:straw",
+   "count": 4,
+   "optional": true,
+   "layout": {
+    "x": 3,
+    "y": -5,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Liquid Blaze Burner",
+    "Use Straw on a Blaze Burner and it drinks liquid fuel, by bucket or by pipe. Lava keeps it lit for 20000 ticks a bucket; biofuels super-heat it: Bioethanol, and also the biofuel of Industrial Foregoing and Oritech, which share the same tag.\n\nNo more feeding coal by hand to your steam boilers."
+   ],
+   "es_es": [
+    "Quemador de blaze líquido",
+    "Usá Paja sobre un Quemador de blaze y pasa a tomar combustible líquido, con balde o por tubería. La lava lo mantiene encendido 20000 ticks por balde; los biocombustibles lo sobrecalientan: el Bioetanol y también el biocombustible de Industrial Foregoing y de Oritech, que comparten la misma etiqueta.\n\nSe acabó cargar carbón a mano en tus calderas de vapor."
+   ],
+   "sources": [
+    "jar:createaddition-1.7.0.jar:assets/createaddition/lang/en_us.json#createaddition.ponder.liquid_blaze_burner",
+    "jar:createaddition-1.7.0.jar:data/createaddition/recipe/liquid_burning/lava.json",
+    "jar:createaddition-1.7.0.jar:data/createaddition/recipe/liquid_burning/biofuel.json",
+    "jar:createaddition-1.7.0.jar:data/c/tags/fluid/biofuel.json",
+    "jar:industrialforegoing-1.21-3.6.39.jar:data/c/tags/fluid/biofuel.json",
+    "jar:oritech-neoforge-1.21.1-1.2.11.jar:data/c/tags/fluid/biofuel.json",
+    "jar:createaddition-1.7.0.jar:data/c/tags/fluid/biofuel.json",
+    "jar:industrialforegoing-1.21-3.6.39.jar:data/c/tags/fluid/biofuel.json",
+    "jar:oritech-neoforge-1.21.1-1.2.11.jar:data/c/tags/fluid/biofuel.json",
+    "jar:createaddition-1.7.0.jar:data/create/recipe/rolling/bamboo.json"
+   ]
+  },
+  {
+   "key": "cpw_biofuel",
+   "deps": [
+    "cpw_liquid"
+   ],
+   "type": "checkmark",
+   "icon": "createaddition:bioethanol_bucket",
+   "layout": {
+    "x": 5.5,
+    "y": -5,
+    "size": 1.0,
+    "shape": "circle"
+   },
+   "en_us": [
+    "Farming fuel",
+    "Seeds compacted in a Basin give Seed Oil. Crops, leaves, saplings or flowers mixed hot with plant oil give Biomass; sugar, cinder flour and two biomass mix into Bioethanol. Biomass can also be pressed into Biomass Pellets, a solid fuel.\n\nA wheat farm feeding a mixer is a renewable fuel line for liquid burners and generators."
+   ],
+   "es_es": [
+    "Combustible de granja",
+    "Las semillas compactadas en una Cuenca dan Aceite de semillas. Cultivos, hojas, brotes o flores mezclados en caliente con aceite vegetal dan Biomasa; azúcar, harina de ceniza y dos biomasas se mezclan en Bioetanol. La biomasa también se prensa en Pellets de biomasa, un combustible sólido.\n\nUna granja de trigo que alimenta una mezcladora es una línea de combustible renovable para quemadores líquidos y generadores."
+   ],
+   "sources": [
+    "jar:createaddition-1.7.0.jar:data/createaddition/recipe/compacting/seed_oil.json",
+    "jar:createaddition-1.7.0.jar:data/createaddition/recipe/mixing/biomass_from_crops.json",
+    "jar:createaddition-1.7.0.jar:data/createaddition/recipe/mixing/bioethanol.json",
+    "jar:createaddition-1.7.0.jar:data/createaddition/recipe/compacting/biomass_pellet.json"
+   ]
+  },
+  {
+   "key": "cpw_heliodor",
+   "deps": [
+    "cpw_welcome"
+   ],
+   "type": "checkmark",
+   "icon": "create_new_age:basic_solar_heating_plate",
+   "layout": {
+    "x": 3,
+    "y": 2.5,
+    "size": 1.0,
+    "shape": "circle"
+   },
+   "en_us": [
+    "New Age: Heliodor's technology",
+    "ENTRELUMEN note: New Age has no photovoltaic panels. Its solar plates make heat, not electricity: sunlight heats a plate, heat pipes carry it, and it feeds a boiler or a Stirling engine. Electricity comes from a Generator Coil spinning among magnets.\n\nLight becomes heat, heat becomes rotation, rotation becomes electricity, electricity becomes light again in its street lights. That cycle is why the pack ties it to Heliodor."
+   ],
+   "es_es": [
+    "New Age: la tecnología de Heliodor",
+    "Nota de ENTRELUMEN: New Age no tiene paneles fotovoltaicos. Sus placas solares hacen calor, no electricidad: el sol calienta una placa, los tubos de calor lo llevan y alimentan una caldera o un motor Stirling. La electricidad sale de una Bobina generadora que gira entre imanes.\n\nLa luz se vuelve calor, el calor rotación, la rotación electricidad y la electricidad otra vez luz en sus farolas. Por ese ciclo el pack la ata a Heliodor."
+   ],
+   "sources": [
+    "repo:docs/design/mod-pingpong.md",
+    "jar:create-new-age-1.2.0+neoforge-mc1.21.1.jar:assets/create_new_age/lang/en_us.json#create_new_age.ponder.heating",
+    "jar:create-new-age-1.2.0+neoforge-mc1.21.1.jar:assets/create_new_age/lang/en_us.json#create_new_age.ponder.generation"
+   ]
+  },
+  {
+   "key": "cpw_ores",
+   "deps": [
+    "cpw_heliodor"
+   ],
+   "type": "item",
+   "item": "create_new_age:magnetite_block",
+   "count": 4,
+   "layout": {
+    "x": 5.5,
+    "y": 2.5,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Magnetite and thorium",
+    "New Age adds Magnetite blocks and Thorium ore to the Overworld. Magnetite makes basic motors and magnets; thorium makes heat pumps and, once crushed, has a 10% chance of Radioactive Thorium for reactor fuel.\n\nThorium has no common ore tag in this pack on purpose, so dimensional miners cannot produce it: dig for it."
+   ],
+   "es_es": [
+    "Magnetita y torio",
+    "New Age agrega bloques de Magnetita y mineral de Torio al Overworld. La magnetita hace motores básicos e imanes; el torio hace bombas de calor y, triturado, tiene 10% de chance de dar Torio radiactivo para combustible de reactor.\n\nEn este pack el torio no tiene la etiqueta común de mineral a propósito, así que los mineros dimensionales no lo producen: hay que cavarlo."
+   ],
+   "sources": [
+    "jar:create-new-age-1.2.0+neoforge-mc1.21.1.jar:data/create_new_age/neoforge/biome_modifier/magnetite_block.json",
+    "jar:create-new-age-1.2.0+neoforge-mc1.21.1.jar:data/create_new_age/neoforge/biome_modifier/thorium_ore.json",
+    "jar:create-new-age-1.2.0+neoforge-mc1.21.1.jar:data/create_new_age/recipe/crushing/radioactive_thorium.json",
+    "repo:docs/design/mod-pingpong.md"
+   ]
+  },
+  {
+   "key": "cpw_coil",
+   "deps": [
+    "cpw_ores"
+   ],
+   "type": "item",
+   "item": "create_new_age:generator_coil",
+   "layout": {
+    "x": 8,
+    "y": 2.5,
+    "size": 1.5,
+    "shape": "hexagon"
+   },
+   "en_us": [
+    "Generator Coil and brushes",
+    "A spinning Generator Coil surrounded by magnets makes electricity, collected by Carbon Brushes. Stronger magnets turn a bigger share of the stress into electricity, but the coil also draws more stress. The coil itself never outputs rotation.\n\nENTRELUMEN change: the coil recipe swaps one copper ingot for an Energy Coupler (Act II)."
+   ],
+   "es_es": [
+    "Bobina generadora y escobillas",
+    "Una Bobina generadora girando rodeada de imanes hace electricidad, que juntan las Escobillas de carbón. Imanes más fuertes convierten una parte mayor del estrés en electricidad, pero la bobina también pide más estrés. La bobina nunca entrega rotación.\n\nCambio de ENTRELUMEN: la receta de la bobina cambia un lingote de cobre por un Acoplador de energía (acto II)."
+   ],
+   "sources": [
+    "jar:create-new-age-1.2.0+neoforge-mc1.21.1.jar:data/create_new_age/recipe/shaped/generator_coil.json",
+    "jar:create-new-age-1.2.0+neoforge-mc1.21.1.jar:data/create_new_age/recipe/shaped/carbon_brushes.json",
+    "jar:create-new-age-1.2.0+neoforge-mc1.21.1.jar:assets/create_new_age/lang/en_us.json#create_new_age.ponder.generation",
+    "repo:pack/kubejs/server_scripts/entrelumen_pingpong4_balance.js"
+   ]
+  },
+  {
+   "key": "cpw_magnets",
+   "deps": [
+    "cpw_coil"
+   ],
+   "type": "checkmark",
+   "icon": "create_new_age:redstone_magnet",
+   "layout": {
+    "x": 8,
+    "y": 5,
+    "size": 1.0,
+    "shape": "circle"
+   },
+   "en_us": [
+    "Magnet tiers",
+    "From weakest to strongest: Redstone Magnets (iron nuggets around a redstone block), Layered Magnets (overcharged iron and gold), Netherite Magnets (overcharged diamonds and netherite scrap) and Fluxuated Magnetite. The Goggles show a coil's magnetic force and efficiency.\n\nUpgrade magnets before adding coils: efficiency is free power."
+   ],
+   "es_es": [
+    "Niveles de imanes",
+    "Del más débil al más fuerte: Imanes de redstone (pepitas de hierro alrededor de un bloque de redstone), Imanes laminados (hierro y oro sobrecargados), Imanes de netherita (diamantes sobrecargados y restos de netherita) y Magnetita fluctuante. Las antiparras muestran la fuerza magnética y la eficiencia de una bobina.\n\nMejorá los imanes antes de sumar bobinas: la eficiencia es energía gratis."
+   ],
+   "sources": [
+    "jar:create-new-age-1.2.0+neoforge-mc1.21.1.jar:data/create_new_age/recipe/shaped/redstone_magnet.json",
+    "jar:create-new-age-1.2.0+neoforge-mc1.21.1.jar:data/create_new_age/recipe/shaped/layered_magnet.json",
+    "jar:create-new-age-1.2.0+neoforge-mc1.21.1.jar:data/create_new_age/recipe/shaped/netherite_magnet.json",
+    "jar:create-new-age-1.2.0+neoforge-mc1.21.1.jar:data/create_new_age/recipe/shaped/fluxuated_magnetite.json",
+    "jar:create-new-age-1.2.0+neoforge-mc1.21.1.jar:assets/create_new_age/lang/en_us.json#create.tooltip.create_new_age.magnetic_force"
+   ]
+  },
+  {
+   "key": "cpw_wire",
+   "deps": [
+    "cpw_coil"
+   ],
+   "type": "item",
+   "item": "create_new_age:copper_wire",
+   "count": 16,
+   "layout": {
+    "x": 10.5,
+    "y": 2.5,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Wires and connectors",
+    "A Saw cuts a copper sheet into 4 Copper Wires. Wire links Electrical Connectors, up to a maximum length. Most New Age blocks push energy into their neighbours; a connector in Pull mode (switch with a wrench) takes energy from blocks of other mods.\n\nPull mode cannot drain energizers or motors: it is only a compatibility bridge."
+   ],
+   "es_es": [
+    "Cables y conectores",
+    "Una Sierra corta una lámina de cobre en 4 Cables de cobre. El cable une Conectores eléctricos, hasta un largo máximo. Casi todos los bloques de New Age empujan energía a sus vecinos; un conector en modo Tirar (se cambia con la llave) toma energía de bloques de otros mods.\n\nEl modo Tirar no vacía energizadores ni motores: es sólo un puente de compatibilidad."
+   ],
+   "sources": [
+    "jar:create-new-age-1.2.0+neoforge-mc1.21.1.jar:data/create_new_age/recipe/cutting/copper_wire.json",
+    "jar:create-new-age-1.2.0+neoforge-mc1.21.1.jar:data/create_new_age/recipe/shaped/electrical_connector.json",
+    "jar:create-new-age-1.2.0+neoforge-mc1.21.1.jar:assets/create_new_age/lang/en_us.json#create_new_age.ponder.wires"
+   ]
+  },
+  {
+   "key": "cpw_energiser",
+   "deps": [
+    "cpw_wire"
+   ],
+   "type": "item",
+   "item": "create_new_age:overcharged_iron",
+   "count": 8,
+   "layout": {
+    "x": 13,
+    "y": 2.5,
+    "size": 1.5,
+    "shape": "hexagon"
+   },
+   "en_us": [
+    "Energizer",
+    "The Basic Energizer is andesite casing and a lightning rod. With electricity and rotation it energizes items under it on a depot or belt: iron becomes Overcharged Iron (1000 energy), gold Overcharged Gold (2000), a diamond an Overcharged Diamond (10000).\n\nENTRELUMEN change: the Advanced Energizer needs a Power Regulator (Act III) and the Reinforced one a Spectral Lens (Act IV)."
+   ],
+   "es_es": [
+    "Energizador",
+    "El Energizador básico es carcasa de andesita y un pararrayos. Con electricidad y rotación energiza los ítems que tiene abajo en un depósito o cinta: el hierro pasa a Hierro sobrecargado (1000 de energía), el oro a Oro sobrecargado (2000) y un diamante a Diamante sobrecargado (10000).\n\nCambio de ENTRELUMEN: el Energizador avanzado pide un Regulador de energía (acto III) y el reforzado una Lente espectral (acto IV)."
+   ],
+   "sources": [
+    "jar:create-new-age-1.2.0+neoforge-mc1.21.1.jar:data/create_new_age/recipe/shapeless/basic_energiser.json",
+    "jar:create-new-age-1.2.0+neoforge-mc1.21.1.jar:assets/create_new_age/lang/en_us.json#create_new_age.ponder.energiser",
+    "jar:create-new-age-1.2.0+neoforge-mc1.21.1.jar:data/create_new_age/recipe/energising/overcharged_iron.json",
+    "jar:create-new-age-1.2.0+neoforge-mc1.21.1.jar:data/create_new_age/recipe/energising/overcharged_gold.json",
+    "jar:create-new-age-1.2.0+neoforge-mc1.21.1.jar:data/create_new_age/recipe/energising/overcharged_diamond.json",
+    "repo:pack/kubejs/server_scripts/entrelumen_pingpong4_balance.js"
+   ]
+  },
+  {
+   "key": "cpw_na_motor",
+   "deps": [
+    "cpw_energiser"
+   ],
+   "type": "item",
+   "item": "create_new_age:basic_motor",
+   "layout": {
+    "x": 15.5,
+    "y": 2.5,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "New Age motors",
+    "Motors turn electricity back into rotation. A wrench sets the speed, but the stress capacity stays the same; redstone turns it off (right-click inverts that). Motor Extensions behind a motor raise its stress capacity multiplier, and energy use grows with it.\n\nENTRELUMEN change: the Advanced Motor needs a Power Regulator (Act III) and the Reinforced Motor a Spectral Lens (Act IV)."
+   ],
+   "es_es": [
+    "Motores de New Age",
+    "Los motores vuelven a pasar electricidad a rotación. Con la llave se fija la velocidad, pero la capacidad de estrés queda igual; la redstone lo apaga (clic derecho invierte eso). Las Extensiones de motor detrás de un motor suben su multiplicador de capacidad de estrés, y el consumo crece con él.\n\nCambio de ENTRELUMEN: el Motor avanzado pide un Regulador de energía (acto III) y el reforzado una Lente espectral (acto IV)."
+   ],
+   "sources": [
+    "jar:create-new-age-1.2.0+neoforge-mc1.21.1.jar:data/create_new_age/recipe/shaped/basic_motor.json",
+    "jar:create-new-age-1.2.0+neoforge-mc1.21.1.jar:assets/create_new_age/lang/en_us.json#create_new_age.ponder.motor",
+    "jar:create-new-age-1.2.0+neoforge-mc1.21.1.jar:assets/create_new_age/lang/en_us.json#create_new_age.ponder.motor_extension",
+    "repo:pack/kubejs/server_scripts/entrelumen_pingpong4_balance.js"
+   ]
+  },
+  {
+   "key": "cpw_solar",
+   "deps": [
+    "cpw_heliodor"
+   ],
+   "type": "item",
+   "item": "create_new_age:basic_solar_heating_plate",
+   "count": 4,
+   "layout": {
+    "x": 3,
+    "y": 5,
+    "size": 1.5,
+    "shape": "hexagon"
+   },
+   "en_us": [
+    "Solar heating plate",
+    "In daylight a Solar Heating Plate makes heat. Heat Pipes spread it, and a Heat Pump pushes it forward. Too much heat in one block melts it into lava: always give heat somewhere to go.\n\nENTRELUMEN change: the Basic plate replaces its centre glass with a Calibration Frame (Act II); the Advanced plate needs a Power Regulator (Act III). The lens of Heliodor focuses the sun."
+   ],
+   "es_es": [
+    "Placa solar de calentamiento",
+    "Con luz de día, una Placa solar de calentamiento hace calor. Los Tubos de calor lo reparten y una Bomba de calor lo empuja hacia adelante. Demasiado calor en un bloque lo derrite en lava: siempre dale al calor adónde ir.\n\nCambio de ENTRELUMEN: la placa básica cambia el vidrio del centro por un Marco de calibración (acto II); la avanzada pide un Regulador de energía (acto III). La lente de Heliodor concentra el sol."
+   ],
+   "sources": [
+    "jar:create-new-age-1.2.0+neoforge-mc1.21.1.jar:data/create_new_age/recipe/shaped/basic_solar_heating_plate.json",
+    "jar:create-new-age-1.2.0+neoforge-mc1.21.1.jar:data/create_new_age/recipe/shaped/heat_pipe.json",
+    "jar:create-new-age-1.2.0+neoforge-mc1.21.1.jar:data/create_new_age/recipe/shaped/heat_pump.json",
+    "jar:create-new-age-1.2.0+neoforge-mc1.21.1.jar:assets/create_new_age/lang/en_us.json#create_new_age.ponder.heating",
+    "repo:pack/kubejs/server_scripts/entrelumen_pingpong4_balance.js",
+    "repo:docs/design/mod-pingpong.md"
+   ]
+  },
+  {
+   "key": "cpw_heater",
+   "deps": [
+    "cpw_solar"
+   ],
+   "type": "item",
+   "item": "create_new_age:heater",
+   "layout": {
+    "x": 5.5,
+    "y": 5,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Boiler Heater",
+    "The Boiler Heater works like a Blaze Burner under a Create boiler, but burns heat instead of fuel: the more heat it gets, the more it releases. Solar plates, pipes and a heater make a steam engine that runs on sunlight.\n\nThe Stirling Engine is the small version: heat from below makes it rotate, faster with more heat."
+   ],
+   "es_es": [
+    "Calentador de caldera",
+    "El Calentador de caldera funciona como un Quemador de blaze debajo de una caldera de Create, pero quema calor en vez de combustible: cuanto más calor recibe, más entrega. Placas solares, tubos y un calentador arman un motor de vapor que anda con luz de sol.\n\nEl Motor Stirling es la versión chica: el calor desde abajo lo hace girar, más rápido con más calor."
+   ],
+   "sources": [
+    "jar:create-new-age-1.2.0+neoforge-mc1.21.1.jar:data/create_new_age/recipe/shaped/heater.json",
+    "jar:create-new-age-1.2.0+neoforge-mc1.21.1.jar:assets/create_new_age/lang/en_us.json#create_new_age.ponder.heater",
+    "jar:create-new-age-1.2.0+neoforge-mc1.21.1.jar:data/create_new_age/recipe/shaped/stirling_engine.json",
+    "jar:create-new-age-1.2.0+neoforge-mc1.21.1.jar:assets/create_new_age/lang/en_us.json#create_new_age.ponder.heating"
+   ]
+  },
+  {
+   "key": "cpw_reactor",
+   "deps": [
+    "cpw_heater"
+   ],
+   "type": "item",
+   "item": "create_new_age:reactor_rod",
+   "optional": true,
+   "layout": {
+    "x": 5.5,
+    "y": 7.5,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Thorium reactor",
+    "A reactor needs Reactor Rods, a Fuel Acceptor to load Nuclear Fuel and Heat Vents that send the heat to connected pipes. Its radiation is deadly: wear leather armour or enclose it fully in Reactor Casing or Glass. If nothing uses its heat, it melts down.\n\nENTRELUMEN change: the Reactor Rod needs a Containment Seal (Act IV), the echo of the fusion at the Temple of Sacred Light."
+   ],
+   "es_es": [
+    "Reactor de torio",
+    "Un reactor lleva Varillas de reactor, un Aceptor de combustible para cargar Combustible nuclear y Ventilaciones de calor que mandan el calor a las tuberías conectadas. Su radiación es mortal: usá armadura de cuero o encerralo entero en Carcasa o Vidrio de reactor. Si nada usa su calor, se funde.\n\nCambio de ENTRELUMEN: la Varilla de reactor pide un Sello de contención (acto IV), eco de la fusión del Templo de la Luz Sagrada."
+   ],
+   "sources": [
+    "jar:create-new-age-1.2.0+neoforge-mc1.21.1.jar:data/create_new_age/recipe/mechanical_crafting/reactor_rod.json",
+    "jar:create-new-age-1.2.0+neoforge-mc1.21.1.jar:data/create_new_age/recipe/sequenced_assembly/nuclear_fuel.json",
+    "jar:create-new-age-1.2.0+neoforge-mc1.21.1.jar:assets/create_new_age/lang/en_us.json#create_new_age.ponder.reactor",
+    "repo:pack/kubejs/server_scripts/entrelumen_pingpong4_balance.js",
+    "repo:docs/design/mod-pingpong.md"
+   ]
+  },
+  {
+   "key": "cpw_street",
+   "deps": [
+    "cpw_na_motor"
+   ],
+   "type": "item",
+   "item": "create_new_age:street_light",
+   "count": 4,
+   "optional": true,
+   "layout": {
+    "x": 15.5,
+    "y": 5,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Street lights",
+    "Street Lights run on electricity and adjust to the light around them. Lamp Posts are their decorative poles.\n\nA row of lit street lights along a road is a small tribute to Solsticio, the city that stores light."
+   ],
+   "es_es": [
+    "Farolas",
+    "Las Farolas funcionan con electricidad y se ajustan a la luz del lugar. Los Postes de farola son su parte decorativa.\n\nUna fila de farolas encendidas junto a un camino es un pequeño homenaje a Solsticio, la ciudad que guarda luz."
+   ],
+   "sources": [
+    "jar:create-new-age-1.2.0+neoforge-mc1.21.1.jar:data/create_new_age/recipe/shaped/street_light.json",
+    "jar:create-new-age-1.2.0+neoforge-mc1.21.1.jar:data/create_new_age/recipe/shaped/lamp_post.json",
+    "jar:create-new-age-1.2.0+neoforge-mc1.21.1.jar:assets/create_new_age/lang/en_us.json#create.tooltip.create_new_age.per_light_level",
+    "repo:docs/design/mod-pingpong.md"
+   ]
+  },
+  {
+   "key": "cpw_quirk",
+   "deps": [
+    "cpw_energiser"
+   ],
+   "type": "checkmark",
+   "icon": "minecraft:enchanted_golden_apple",
+   "layout": {
+    "x": 13,
+    "y": 5,
+    "size": 1.0,
+    "shape": "circle"
+   },
+   "en_us": [
+    "Two expensive recipes",
+    "New Age keeps two native recipes worth knowing: an Enchanted Golden Apple by sequenced assembly (4 loops, 2,000,000 energy per energizing step) and Bottles o' Enchanting from glass bottles at 50000 energy each.\n\nThey are renewable but costly; the pack left them untouched and flagged them for balance review."
+   ],
+   "es_es": [
+    "Dos recetas caras",
+    "New Age conserva dos recetas propias que conviene conocer: una Manzana dorada encantada por ensamblaje secuencial (4 vueltas, 2.000.000 de energía por paso de energizado) y Botellas de experiencia a partir de frascos de vidrio, a 50000 de energía cada una.\n\nSon renovables pero caras; el pack no las tocó y las anotó para revisar el balance."
+   ],
+   "sources": [
+    "jar:create-new-age-1.2.0+neoforge-mc1.21.1.jar:data/create_new_age/recipe/sequenced_assembly/enchanted_golden_apple.json",
+    "jar:create-new-age-1.2.0+neoforge-mc1.21.1.jar:data/create_new_age/recipe/energising/experience_bottle.json",
+    "repo:docs/design/mod-pingpong.md"
+   ]
+  },
+  {
+   "key": "cpw_mastery",
+   "deps": [
+    "cpw_na_motor",
+    "cpw_tesla"
+   ],
+   "type": "item",
+   "item": "create_new_age:reinforced_motor",
+   "layout": {
+    "x": 18.5,
+    "y": 0,
+    "size": 2.0,
+    "shape": "octagon"
+   },
+   "en_us": [
+    "Heliodor mastery: the Reinforced Motor",
+    "Close the loop: sun heats a boiler, the boiler turns coils, coils charge energizers, and energized parts build the Reinforced Motor, the strongest New Age motor. It needs the Spectral Lens of Act IV.\n\nBy then you can also run Crafts and Additions alternators and motors to share power with every FE mod in the pack."
+   ],
+   "es_es": [
+    "Maestría de Heliodor: el Motor reforzado",
+    "Cerrá el ciclo: el sol calienta una caldera, la caldera mueve bobinas, las bobinas cargan energizadores y las piezas energizadas arman el Motor reforzado, el motor más fuerte de New Age. Pide la Lente espectral del acto IV.\n\nPara entonces también podés usar alternadores y motores de Crafts and Additions para compartir energía con todos los mods de FE del pack."
+   ],
+   "sources": [
+    "jar:create-new-age-1.2.0+neoforge-mc1.21.1.jar:data/create_new_age/recipe/mechanical_crafting/reinforced_motor.json",
+    "repo:pack/kubejs/server_scripts/entrelumen_pingpong4_balance.js"
+   ]
+  }
+ ]
+}
