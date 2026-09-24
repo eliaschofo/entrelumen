@@ -382,6 +382,34 @@ public final class RuntimeGameTestsSolsticio {
     });
   }
 
+  /** The real item-use path: hold to channel, release early to cancel, hold through to cross. */
+  @GameTest(template = "empty", timeoutTicks = 800)
+  public static void lightKeyChannelCancelsOnReleaseAndCrossesWhenHeld(GameTestHelper helper) {
+    whenCityReady(helper, () -> {
+      var level = helper.getLevel();
+      try (var qa = new QaPlayer(helper, "ChannelQA")) {
+        var player = qa.player;
+        unlock(player, true);
+        BlockPos start = at(helper, 2, 1, 2);
+        player.teleportTo(start.getX() + 0.5, start.getY(), start.getZ() + 0.5);
+        player.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(Solsticio.LIGHT_KEY.get()));
+        player.gameMode.useItem(player, level, player.getMainHandItem(), InteractionHand.MAIN_HAND);
+        helper.assertTrue(player.isUsingItem(), "The key did not start channelling");
+        for (int i = 0; i < LightKeyRules.CHANNEL_TICKS / 2; i++) player.doTick();
+        player.releaseUsingItem();
+        helper.assertTrue(!player.isUsingItem() && player.level() == level
+            && player.getMainHandItem().is(Solsticio.LIGHT_KEY.get()), "Releasing early did not cancel cleanly");
+        player.gameMode.useItem(player, level, player.getMainHandItem(), InteractionHand.MAIN_HAND);
+        for (int i = 0; i <= LightKeyRules.CHANNEL_TICKS + 1 && player.level() == level; i++) player.doTick();
+        helper.assertTrue(player.level().dimension().equals(Solsticio.LEVEL), "A full channel did not cross");
+        helper.assertTrue(player.getMainHandItem().is(Solsticio.LIGHT_KEY_BROKEN.get())
+            && player.getInventory().countItem(Solsticio.LIGHT_KEY.get()) == 0
+            && player.getInventory().countItem(Solsticio.LIGHT_KEY_BROKEN.get()) == 1,
+            "The crossing duplicated or lost the key");
+      }
+    });
+  }
+
   @GameTest(template = "empty", timeoutTicks = 800)
   public static void brokenKeyCarriesOnlyItsOwnerBothWays(GameTestHelper helper) {
     whenCityReady(helper, () -> {
