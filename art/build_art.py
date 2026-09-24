@@ -25,6 +25,14 @@ ITEMS = ['atlas', 'raw_lens', 'survey_notes', 'signal_core', 'calibration_frame'
 AUGMENTS = ['burning', 'echoing', 'ignore_conditions', 'ignore_light', 'ignore_players', 'initial_health', 'max_delay',
             'max_nearby', 'min_delay', 'no_ai', 'player_range', 'redstone_control', 'silent', 'spawn_count', 'spawn_range', 'youthful']
 ITEMS += ['augment_' + a for a in AUGMENTS]
+# Luminous content: animated items are stored as frame grids <name>__f<N>.txt and exported as vertical strips.
+DISCIPLINES = ['engineering', 'arcane', 'nature', 'exploration', 'logistics', 'habitation']
+ANIMATED = {**{'luminosity_' + d: 8 for d in DISCIPLINES}, 'luminous_ingot': 8}
+# A long rest on frame 0 keeps the glimmer occasional ("no tan flashero").
+ANIMATION = {'animation': {'frametime': 3, 'frames': [{'index': 0, 'time': 40}, 1, 2, 3, 4, 5, 6, 7]}}
+HANDHELD = {'luminous_sword', 'luminous_pickaxe', 'luminous_axe', 'luminous_shovel', 'luminous_hoe'}
+ITEMS += list(ANIMATED) + sorted(HANDHELD) + ['luminous_helmet', 'luminous_chestplate', 'luminous_leggings', 'luminous_boots']
+ARMOR_LAYERS = ['luminous_layer_1', 'luminous_layer_2']   # 64x32 PNG sources in art/armor/
 # Enchanting shelves (cube_column: side + end) and the Atlas Library (cube_bottom_top).
 SHELVES = {'cartographer_shelf': 'shelf_end_wood', 'patina_shelf': 'shelf_end_copper',
            'lumen_shelf': 'shelf_end_tuff', 'horizon_shelf': 'shelf_end_verdigris'}
@@ -104,18 +112,37 @@ def expected():
     """Every generated file: relative destination -> bytes."""
     out = {}
     images = {}
+    strips = {}
     for name in ITEMS:
-        images['item/' + name] = read_grid(GRIDS / 'item' / f'{name}.txt')
+        if name in ANIMATED:
+            frames = [read_grid(GRIDS / 'item' / f'{name}__f{i}.txt') for i in range(ANIMATED[name])]
+            images['item/' + name] = frames[0]
+            strip = Image.new('RGBA', (16, 16 * len(frames)), (0, 0, 0, 0))
+            for i, frame in enumerate(frames):
+                strip.alpha_composite(frame, (0, 16 * i))
+            strips['item/' + name] = strip
+        else:
+            images['item/' + name] = read_grid(GRIDS / 'item' / f'{name}.txt')
     for name in BLOCKS:
         images['block/' + name] = read_grid(GRIDS / 'block' / f'{name}.txt')
-    for key, image in images.items():
-        data = png_bytes(image)
-        out[('pack', f'textures/{key}.png')] = data
-        out[('mod', f'textures/{key}.png')] = data
     def js(obj):
         return (json.dumps(obj, ensure_ascii=False, indent=2) + '\n').encode('utf-8')
+    for key, image in images.items():
+        data = png_bytes(strips.get(key, image))
+        out[('pack', f'textures/{key}.png')] = data
+        out[('mod', f'textures/{key}.png')] = data
+        if key in strips:
+            out[('pack', f'textures/{key}.png.mcmeta')] = js(ANIMATION)
+            out[('mod', f'textures/{key}.png.mcmeta')] = js(ANIMATION)
+    for name in ARMOR_LAYERS:
+        layer = Image.open(ART / 'armor' / f'{name}.png').convert('RGBA')
+        assert layer.size == (64, 32), f'{name} must be 64x32'
+        images['models/armor/' + name] = layer
+        out[('pack', f'textures/models/armor/{name}.png')] = png_bytes(layer)
+        out[('mod', f'textures/models/armor/{name}.png')] = png_bytes(layer)
     for name in ITEMS:
-        model = js({'parent': 'minecraft:item/generated', 'textures': {'layer0': 'entrelumen:item/' + name}})
+        parent = 'minecraft:item/handheld' if name in HANDHELD else 'minecraft:item/generated'
+        model = js({'parent': parent, 'textures': {'layer0': 'entrelumen:item/' + name}})
         out[('pack', f'models/item/{name}.json')] = model
         out[('mod', f'models/item/{name}.json')] = model
     for name in MODULES:
@@ -137,7 +164,7 @@ def expected():
             out[(dest, f'models/block/{name}.json')] = js(model)
             out[(dest, f'models/item/{name}.json')] = js({'parent': 'entrelumen:block/' + name})
         out[('mod', f'blockstates/{name}.json')] = js({'variants': {'': {'model': 'entrelumen:block/' + name}}})
-    return images, out
+    return images, out, strips
 
 
 def target(dest, rel):
@@ -148,6 +175,7 @@ def previews(images):
     icon = Image.new('RGBA', (128, 128), (20, 20, 23, 255))
     icon.alpha_composite(images['item/atlas'].resize((128, 128), Image.Resampling.NEAREST))
     sheet_items = [k for k in images if k.startswith('item/')]
+    images = {k: v for k, v in images.items() if k.startswith(('item/', 'block/'))}
     sheet_blocks = [k for k in images if k.startswith('block/')]
     scale, pad = 6, 34
     cols = 7
@@ -172,10 +200,12 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--check', action='store_true')
     args = parser.parse_args()
-    images, out = expected()
+    images, out, strips = expected()
     provenance = json.loads((GRIDS / 'provenance.json').read_text(encoding='utf-8'))
     assert set(provenance['item']) == set(ITEMS) and set(provenance['block']) == set(BLOCKS), 'provenance must cover every grid'
     for key, image in images.items():
+        if key.startswith('models/armor/'):
+            continue
         pixels = [image.getpixel((x, y)) for y in range(16) for x in range(16)]
         alphas = {p[3] for p in pixels}
         assert alphas <= {0, 255}, f'{key}: alpha must be binary'
@@ -188,9 +218,10 @@ def main():
             if rel.endswith('.png'):
                 # Compare decoded texels: PNG encoder bytes may differ between Pillow/zlib builds.
                 key = rel[len('textures/'):-len('.png')]
+                wanted = strips.get(key, images[key])
                 with Image.open(path) as actual:
-                    assert actual.mode == 'RGBA' and actual.size == (16, 16), f'{dest}:{rel} must be 16x16 RGBA'
-                    assert actual.tobytes() == images[key].tobytes(), f'stale texture: {dest}:{rel}'
+                    assert actual.mode == 'RGBA' and actual.size == wanted.size, f'{dest}:{rel} must be {wanted.size} RGBA'
+                    assert actual.tobytes() == wanted.tobytes(), f'stale texture: {dest}:{rel}'
                 if dest == 'mod':
                     assert path.read_bytes() == target('pack', rel).read_bytes(), f'mod/resource-pack texture drift: {rel}'
             else:
