@@ -48,16 +48,20 @@ def time():
     return d4(o)
 
 
-def gathering():
+def repose():
     o = {}
-    for y, r in ((5, 3), (4, 2), (3, 1)):                                 # inverted copper funnel
-        for x in range(7 - r, 8):
-            for z in range(7 - r, 8):
-                if x == 7 - r or z == 7 - r: o[(x, y, z)] = 'C' if y == 5 else 'c'
-    for y in range(0, 3): o[(7, y, 7)] = 'k'
-    o[(7, 3, 7)] = 'U'; o[(7, 4, 7)] = 'Y'
-    o[(3, 0, 3)] = 'W'; o[(4, 0, 3)] = 'X'; o[(3, 0, 4)] = 'X'; o[(4, 0, 4)] = 'W'   # tiny crates at the corners
-    o[(3, 1, 3)] = 'X'; o[(4, 1, 4)] = 'W'
+    # small symmetric coffer: 6x4x6 body with copper corners, darker lid, a teal clasp on every side
+    for y in range(0, 5):
+        for x in range(5, 8):
+            for z in range(5, 8):
+                if x == 5 or z == 5 or y in (0, 4):
+                    edge = (x == 5 and z == 5)
+                    o[(x, y, z)] = 'K' if edge else ('X' if y == 4 else 'W' if y in (0, 3) else 'X')
+    for x in range(5, 8): o[(x, 2, 5)] = 'c'; o[(5, 2, x)] = 'c'        # copper band around the body
+    o[(7, 2, 4)] = 'U'; o[(7, 3, 4)] = 'Y'                              # clasp (mirrored to all four sides)
+    for x in range(6, 8):
+        for z in range(6, 8): o[(x, 5, z)] = 'K'                         # lid cap
+    o[(7, 6, 7)] = 'V'
     return d4(o)
 
 
@@ -85,13 +89,13 @@ def growth_top(c):
 def time_top(c):
     ring(c, 5.5, 'o'); ring(c, 1.5, 'o')
     for (x, y) in ((7, 3), (8, 3), (7, 12), (8, 12), (3, 7), (3, 8), (12, 7), (12, 8)): c.px(x, y, 'P')
-def gathering_top(c): ring(c, 5.5, 'k'); ring(c, 2.5, 'k'); ring(c, 0.5, 't')
+def repose_top(c): ring(c, 5.5, 'k'); ring(c, 4.5, 't')
 
 TOPS = {
-    'ward_altar_top': (ward_top, dict(x=R['teal'][1], X=R['teal'][2])),
+    'peace_altar_top': (ward_top, dict(x=R['teal'][1], X=R['teal'][2])),
     'growth_altar_top': (growth_top, dict(g=R['wood'][1], G=R['wood'][2], f=R['leaf'][3])),
     'time_altar_top': (time_top, dict(o=R['brass'][2], P=R['brass'][4])),
-    'gathering_altar_top': (gathering_top, dict(k=R['copper'][2], t=R['teal'][3])),
+    'repose_altar_top': (repose_top, dict(k=R['copper'][2], t=R['teal'][2])),
 }
 
 if __name__ == '__main__':
@@ -102,7 +106,7 @@ if __name__ == '__main__':
     spec2 = importlib.util.spec_from_file_location('spr', 'draw_altar_sprites.py'); S = importlib.util.module_from_spec(spec2); spec2.loader.exec_module(S)
     load = lambda n: Image.open(f'grids/{n}.png').convert('RGBA')
     shots = []
-    for kind, sculpt in (('ward', ward), ('growth', growth), ('time', time), ('gathering', gathering)):
+    for kind, sculpt in (('peace', ward), ('growth', growth), ('time', time), ('repose', repose)):
         e = []
         A.box(e, 'plinth', [1, 0, 1], [15, 3, 15], 'stone', top='plinth_top', bottom='plinth_top')
         A.box(e, 'column', [3, 3, 3], [13, 11, 13], 'stone')
