@@ -16,7 +16,7 @@ Código: `companion/.../LuminousRules.java` (números y reglas puras), `Luminous
 | `entrelumen:luminosity_habitation` | Habitabilidad | dorado cálido `#F2B84B` |
 
 - **Sin foil.** El brillo queda en el sprite animado del controlador. El glint violeta de vanilla taparía los seis colores y se lee como "encantado". El nombre sí lleva el color de su disciplina; el lingote y cada pieza luminosa van en blanco crema dorado `#F3E3B0`.
-- **Fuente: pendiente.** Los aldeanos nativos de Solsticio todavía no existen. No hay receta que produzca una Luminosidad: el generador lo comprueba contra los 272 JAR fijados, los datos del pack y del companion, y el script de KubeJS quita al cargar cualquier receta que las produzca y avisa si queda alguna. Para QA u operadores: `/give @p entrelumen:luminosity_arcane 16`.
+- **Fuente:** los seis aldeanos nativos de la sala de comercio de Solsticio, uno por disciplina. Cada uno pide un bioma del Overworld y, una vez que estuvo ahí, vende su Luminosidad por 8 bloques de esmeralda y un catalizador, hasta 4 por reposición ([solsticio-commerce.md](solsticio-commerce.md)). No hay receta que produzca una Luminosidad: el generador lo comprueba contra los 272 JAR fijados, los datos del pack y del companion, y el script de KubeJS quita al cargar cualquier receta que las produzca y avisa si queda alguna. Para QA u operadores: `/give @p entrelumen:luminosity_arcane 16`.
 - Tag `entrelumen:luminosities`. Tooltip con una línea de lore y "Sólo la intercambian los aldeanos nativos de Solsticio".
 
 ## Lingote Luminoso (`entrelumen:luminous_ingot`)
@@ -216,7 +216,6 @@ Tiene tests sintéticos para las tres propiedades.
 
 ## Pendiente
 
-- Fuente de las Luminosidades: los aldeanos nativos de Solsticio y sus intercambios.
 - Arte del controlador (sprites animados de Luminosidades y lingote, íconos y capa de armadura) revisado dentro del juego.
 - Revisión en cliente: luz dinámica en pantalla, sensación del vuelo, texto EN/ES y el material de Silent Gear.
 - Herramientas y armas de Silent Gear con el material luminoso probadas en juego; hoy las cubre la tabla de JUnit.
