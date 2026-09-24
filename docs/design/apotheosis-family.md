@@ -26,20 +26,20 @@ Apotheosis checks one advancement per tier (`apotheosis:progression/haven` … `
 
 Ascent opens after Act III rather than Act IV. Act IV is the expedition act: Aether, Twilight Forest, Bumblezone, Cataclysm structures and horizon charts. Opening Ascent as it starts rewards those dungeons with Ascent's uncommon-to-epic loot and makes epic material reachable for Act V spawner augments. The tier ladder then spaces one tier per act: Frontier during III, Ascent during IV–V, Summit during VI and Pinnacle after the ending.
 
-Since 24 September 2026 the story sets the difficulty: completing the milestone moves every team member's *active* World Tier to that tier, and players cannot pick another one. Manual selection is disabled (`Enable Manual World Tier Changes = false`). See [Story-set World Tiers](#story-set-world-tiers) below. Until then, tier selection was manual and an unlocked tier was only an offer.
+Since 24 September 2026 the story sets the difficulty: completing the milestone raises every team member's *active* World Tier to that tier. It never goes back down, and players cannot pick another one. Manual selection is disabled (`Enable Manual World Tier Changes = false`). See [Story-set World Tiers](#story-set-world-tiers) below. Until then, tier selection was manual and an unlocked tier was only an offer.
 
 `companion/.../ApotheosisTiers.java` grants the remaining criteria through the vanilla `PlayerAdvancements.award` API. It holds pure rules (`reached(Campaign)` and `target(Campaign, unlocked)`, unit-tested), a read-only campaign lookup that never creates a campaign or marks SavedData dirty, and `sync(player)`. Sync runs:
 
 - once per second for online players (tick offset 7, apart from the FTB quest mirror);
 - on FTB `PLAYER_LOGGED_IN` (after the team is resolved), which covers reconnects;
 - on `PLAYER_JOINED_PARTY`, so a later member receives the team's tiers at once;
-- on `PLAYER_CHANGED`, so leaving a party applies the personal campaign at once.
+- on `PLAYER_CHANGED`, so leaving a party grants the personal campaign's unlocks at once.
 
-It is idempotent, because completed advancements are skipped. Advancements are never revoked: a player who leaves a party keeps the unlocks they already have. This matches vanilla advancement semantics and the pack's rule that possessions and knowledge stay usable regardless of origin. The active tier is a different matter: it follows the current campaign, as described below. A missing advancement is skipped silently: without Apotheosis, or when a datapack removes one, the grant path stays safe. The only hooks in existing code are two lines in `Entrelumen.java` that register the new content and listeners. Milestone, delivery, advance and Ark semantics are untouched.
+It is idempotent, because completed advancements are skipped. Advancements are never revoked: a player who leaves a party keeps the unlocks they already have. This matches vanilla advancement semantics and the pack's rule that possessions and knowledge stay usable regardless of origin. The active tier likewise only rises, as described below. A missing advancement is skipped silently: without Apotheosis, or when a datapack removes one, the grant path stays safe. The only hooks in existing code are two lines in `Entrelumen.java` that register the new content and listeners. Milestone, delivery, advance and Ark semantics are untouched.
 
 ## Story-set World Tiers
 
-Elias's direction (24 September 2026): when an act's milestone completes, the World Tier of every team member moves to that act's tier automatically, and the player cannot choose another one, higher or lower, while in the campaign.
+Elias's direction (24 September 2026): when an act's milestone completes, the World Tier of every team member moves to that act's tier automatically, and the player cannot choose another one, higher or lower. A later decision the same day: the tier stays at the **highest the player ever reached** and never drops, not even after leaving a team.
 
 **API.** Apotheosis 8.7.0 exposes the setter the mod itself uses: `dev.shadowsoffire.apotheosis.tiers.WorldTier.setTier(Player, WorldTier)`, public and static, with `getTier(Player)` beside it. This was checked in the decompiled copy in `G:/Elias/Codex/Entrelumen-work/apotheosis-inspect-20260923`. `setTier` stores the `apotheosis:world_tier` attachment, which is copied on death, and syncs it to the client with `WorldTierPayload`. It swaps the player tier augments and awards the `world_tiers_activated` stat, which also ends Apotheosis's tier tutorial.
 
@@ -51,18 +51,29 @@ The companion reaches these methods by reflection only:
 
 Nothing links against Apotheosis, and without it `sync` only grants advancements.
 
-**Target.** `target(campaign, unlocked)` is the highest tier that `reached(campaign)` includes *and* whose unlock advancement the player holds. A tier whose advancement a datapack removed is skipped, so the player never sits in a locked tier. After granting, `sync` compares the result with `getTier` and calls `setTier` only when they differ, so replays, reconnects and repeated events do nothing. On a real change the player gets one chat line, `entrelumen.apotheosis.tier.set` ("The story sets your World Tier to Frontier." / "La historia fija tu Nivel de Mundo en Frontera."). The tier name uses Apotheosis's own key.
+**Target.** `target(campaign, unlocked)` is the campaign's tier: the highest tier that `reached(campaign)` includes *and* whose unlock advancement the player holds. A tier whose advancement a datapack removed is skipped, so the player never sits in a locked tier.
+
+**Record.** The tier the player holds is `story(recorded, target) = max(recorded, target)`:
+
+- `recorded` is the `entrelumen:story_tier` attachment, a NeoForge data attachment that stores the tier name.
+- It is saved with the player, so it survives relogs and server restarts.
+- It is `copyOnDeath`, and NeoForge copies all serialisable attachments on non-death clones such as the End exit, so it survives both.
+- `sync` rewrites it whenever the result is higher.
+
+The record lives on the player, not in the campaign `SavedData`, so the campaign schema is untouched.
+
+After granting, `sync` compares the held tier with `getTier` and calls `setTier` only when they differ, so replays, reconnects and repeated events do nothing. The record is kept even without Apotheosis, so installing it later applies the right tier at once. On a real change the player gets one chat line, `entrelumen.apotheosis.tier.set` ("The story sets your World Tier to Frontier." / "La historia fija tu Nivel de Mundo en Frontera."). The tier name uses Apotheosis's own key.
 
 **Which campaign.** The lookup matches what `Campaigns.current` would create, but never creates anything:
 
 - a party reads its campaign, or its owner's personal campaign if none is stored yet;
 - a personal team reads the player's personal campaign, or a fresh Act I campaign if none is stored.
 
-So the tier can go down as well as up. A player who leaves a party returns to their personal campaign's tier, and rejoins the party's tier when they join again. The unlock advancements stay, only the active tier moves. The companion leaves the tier alone only when a player is outside any active campaign: the FTB Teams manager is not loaded, the player has no team, or the campaign is archived.
+Joining a party at a higher act raises a member to the party's tier. Leaving a party, joining one at a lower act, or `/entrelumen admin set` to an earlier act never lowers anyone. Outside any active campaign the record is still enforced: the FTB Teams manager is not loaded, the player has no team, or the campaign is archived.
 
 **Lock.** `pack/config/apotheosis/apotheosis.cfg` now sets `Enable Manual World Tier Changes = false`. Apotheosis syncs that value to clients in its config payload. The selection screen then shows the activate button as disabled ("tier changes disabled"), and the tutorial's last page shows Apotheosis's own EN/ES text saying tiers are activated automatically in this modpack. The server enforces the lock natively. The first serverbound tier packet of a player who never activated a tier (the tutorial's "done") only marks the tutorial finished. Any later one disconnects the client with `disconnect.apotheosis.tier_changes_disabled`, which a normal client never sends.
 
-As a second layer, anything that moves the tier outside the story is put back by the next sync, within a second. That covers a server that re-enables manual changes and the operator command `/apoth set_world_tier`. Operators who need another tier change the story instead, with `/entrelumen admin set <act>`.
+As a second layer, anything that moves the tier outside the story is put back by the next sync, within a second. That covers a server that re-enables manual changes and the operator command `/apoth set_world_tier`. Operators can raise a tier by moving the story forward with `/entrelumen admin set <act>`. Lowering one means clearing the player's `entrelumen:story_tier` attachment offline, which is deliberately not a command.
 
 The config was checked by replaying Apotheosis's `AdventureConfig` load calls through the real Placebo 9.9.2 `Configuration` class. The replay reports `changed=false`, `manualTiers=false`, cooldown 12000 and comparisons off, and leaves the file byte-identical, so the mod will not rewrite it.
 
@@ -195,20 +206,26 @@ Still pending: a client launch (World Tier screen, Atlas Library GUI, keybinding
 
 Story-set tiers (24 September 2026, branch `feature/gameplay`):
 
-- JUnit covers the target rule for every act, the Ark, a fresh campaign, missing unlocks, archived and absent campaigns, and the Apotheosis name keys.
-- The isolated GameTest `storyTierFollowsTheCampaignAndCannotBeChosen` runs against a stand-in tier store, because Apotheosis is absent there. It passed and covers:
+- JUnit covers:
+  - the target rule for every act, the Ark, a fresh campaign, missing unlocks, and archived or absent campaigns;
+  - `story` never going below the record, for all 25 pairs, including a player who leaves a party at Ascent;
+  - the Apotheosis name keys.
+- The isolated GameTest `storyTierOnlyRisesAndCannotBeChosen` runs against a stand-in tier store, because Apotheosis is absent there. It passed and covers:
   - Haven in Act I without a write;
   - Frontier after Act II, set exactly once;
   - a higher or lower tier set outside the story being put back;
-  - Act VI capped at the fixture's Ascent;
-  - a joining member taking the party's tier, with no second write on replay;
-  - a leaving member dropping to their personal Haven;
+  - Act VI capped at the fixture's Ascent and recorded on the player;
+  - a lower campaign keeping Ascent;
+  - a joining member raised to the party's tier, with no second write on replay;
+  - a leaving member keeping Ascent;
+  - the record surviving save/load and a death copy;
   - `sync` without Apotheosis.
 - The full-pack GameTest `worldTierFollowsTheStoryAndCannotBeChosen` in `ApotheosisGameTests` is written and **pending**: it has not run on the installed pack. It checks:
   - the config and client payload lock;
   - the companion tick moving the real tier to Frontier;
   - `/apoth`-style drift reverted;
   - Ascent, then Pinnacle after the Ark;
-  - a lower campaign lowering the tier without revoking the unlock.
+  - a lower campaign keeping Pinnacle, its record and its unlock;
+  - a chosen Haven being put back to Pinnacle.
 
   The owned server needs this `apotheosis.cfg` and the QA JAR. The `apotheosis.cfg` hash in [apotheosis-runtime.json](../verification/apotheosis-runtime.json) predates the change.

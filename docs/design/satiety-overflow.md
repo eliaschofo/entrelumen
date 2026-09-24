@@ -6,16 +6,23 @@ Variety stays the job of Spice of Life: Carrot Edition, which gives hearts for u
 
 ## When it runs
 
-`SatietyOverflowEvents` listens to NeoForge's native item-use events, so every food or drink that is eaten from the hand counts, whatever mod adds it. That includes Farmer's Delight meals, bowls and drinks, honey bottles and golden apples.
+`SatietyOverflowEvents` feeds the same formula, cooldown and glut from two native paths.
+
+**Food eaten from the hand.** NeoForge's item-use events cover every food or drink that is eaten from the hand, whatever mod adds it. That includes Farmer's Delight meals, bowls and drinks, honey bottles and golden apples.
 
 - On the last `LivingEntityUseItemEvent.Tick`, which fires in the same tick just before the food is applied, it records hunger and saturation. It runs at the lowest priority.
 - On `LivingEntityUseItemEvent.Finish`, which fires after `FoodData.eat`, it takes the item's `FoodProperties` for that player and runs the formula below. It runs at the highest priority; see [Spice of Life](#spice-of-life-carrot-edition).
 - If there is no snapshot from that same tick, the meal is skipped rather than guessed.
 
-Not converted:
+**Food eaten in place from a block** (added 24 September 2026). This covers vanilla cake and candle cakes, Farmer's Delight pies and cheesecakes, and any other block that feeds the player directly. These blocks call `FoodData.eat` from their `useWithoutItem` and fire no food event, and their values live in their code: cake is a literal `eat(2, 0.1)`, and a Farmer's Delight pie eats its slice item's `FoodProperties`. So the companion measures the bite itself instead of listing blocks:
 
-- players in creative or spectator mode, and fake players (Create deployers and similar);
-- food eaten in place from a block without the use cycle, such as cake and Farmer's Delight pies. Those call `FoodData.eat` directly and fire no event. Farmer's Delight feasts are served into bowls first, so they do count.
+- **Before the bite:** `PlayerInteractEvent.RightClickBlock`, at the lowest priority and only if nothing cancelled it (claim protection, for example), opens a *bite window* for that player.
+- **During the bite:** `FoodDataMixin` injects at the head of the private `FoodData.add(int, float)`, the single funnel behind both `eat` overloads. While a window is open for that player's food data, it adds `overflow(hunger, saturation, nutrition, saturation gained)` using the values just before vanilla clamps them. That is exactly the formula below, even if a block feeds more than once in one click. Food data without an open window returns at once, so the hook costs one empty-map check.
+- **After the bite:** the window closes at the next server tick boundary (`ServerTickEvent.Pre` or `Post`), when the player opens another window, or when an item meal starts its final use tick. The bite's surplus is then converted once, with the same glut and cooldown as item meals. An item meal is therefore never counted twice.
+
+Vanilla only lets a player take a cake or pie bite below 20 hunger (`canEat(false)`). A cake slice at 19 hunger loses 1 point, below the 2-point floor, so on its own it only adds glut. A Farmer's Delight pie slice (3 hunger, 1.8 saturation) at 19 hunger and 19 saturation loses 2 + 0.8 = 2.8 points: one level-I buff at f = 0.14.
+
+Not converted: players in creative or spectator mode, and fake players (Create deployers and similar). Farmer's Delight feasts are served into bowls and eaten from the hand, so they go through the item path.
 
 Vanilla only lets a player eat below 20 hunger, except for always-edible foods (golden apples, chorus fruit, suspicious stew, some drinks) and the honey bottle, which is drunk regardless. In practice most surplus is saturation: a big meal eaten when not very hungry.
 
@@ -133,11 +140,12 @@ When Spice of Life records a new food it shows its progress above the hotbar. Th
 
 ## State
 
-Glut, its timestamp and the last grant live in the player's NeoForge persistent data, under `entrelumen_satiety` with the keys `glut`, `glut_at` and `granted_at` (game-time ticks). They survive relogs. Death clears them, which only means the next meal is worth its full value. The pre-meal snapshot lives in memory for one tick and is dropped on logout.
+Glut, its timestamp and the last grant live in the player's NeoForge persistent data, under `entrelumen_satiety` with the keys `glut`, `glut_at` and `granted_at` (game-time ticks). They survive relogs. Death clears them, which only means the next meal is worth its full value. The pre-meal snapshot and the open bite windows live in memory for at most one tick and are dropped on logout.
 
 ## Code and verification
 
-- `SatietyOverflow` (pure rules and parsing) and `SatietyOverflowEvents` (events, reload listener, effects and message), wired by one line in `Entrelumen`.
+- `SatietyOverflow` (pure rules and parsing) and `SatietyOverflowEvents` (events, bite windows, reload listener, effects and message), wired by one line in `Entrelumen`.
+- `mixin/common/FoodDataMixin`, in its own config `entrelumen.common.mixins.json` (required, `defaultRequire` 1), declared in `neoforge.mods.toml` beside the existing client config.
 - JUnit `SatietyOverflowTest`, eight cases:
   - overflow arithmetic and negative foods;
   - every documented example;
@@ -161,4 +169,12 @@ Glut, its timestamp and the last grant live in the player's NeoForge persistent 
     - Speed II and an infinite Haste are untouched and get no hidden effect;
     - a shorter Luck I is extended;
     - a player whose effects are all stronger gets nothing and no cooldown.
+  - `satietyOverflowCountsBitesEatenFromBlocks`, which bites through the real `ServerPlayerGameMode.useItemOn` path (event, block, mixin):
+    - vanilla cake at a full bar is refused and nothing is measured;
+    - a cake bite at 19 / 19 measures exactly 1 point (glut only, no buff);
+    - a fixture block shaped like the Farmer's Delight pie bite (a slice's `FoodProperties` through `FoodData.eat`, nothing special-cased) gives exactly one level-I pool buff for 2.8 points;
+    - a right-click on stone followed by bread in the same tick counts the bread once (glut 11);
+    - a bite right after an item meal shares its cooldown and adds its glut (13.8);
+    - an unclosed window is closed by the tick boundary.
+- Full-pack GameTest `CookingProvisionsGameTests.farmersDelightPieBiteCountsAsSatietySurplus` is written and **pending**. It bites the real `farmersdelight:apple_pie` at 19 / 19 and expects 2.8 points of glut.
 - Not verified yet: a client session (action bar, particles, EN/ES rendering) and survival pacing on the installed pack with Farmer's Delight and Spice of Life loaded.
