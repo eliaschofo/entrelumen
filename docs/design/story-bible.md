@@ -70,5 +70,14 @@ Para contestarles hace falta un artefacto que se perdió en el Aether. La entida
 - **La brújula sigue al equipo**, no a cada jugador.
 - **Aldeanos de Solsticio:** unos pocos personajes con nombre (alcalde, inventora, jardinero, etc.) dan las misiones; el resto son aldeanos con ropa de Heliodor.
 
+## Estilo de juego (24 de septiembre)
+
+- **Muerte:** tumba con tus cosas (Tombstone), sin estrés.
+- **Comida:**
+  - Se recompensa la variedad.
+  - Además, la **saciedad que sobra se convierte en buffs aleatorios** según cuánto sobra. Hoy pasarse de 20 de hambre o saturación no sirve para nada y muchos mods regalan superalimentos al pedo; en ENTRELUMEN ese exceso vale.
+- **Solo primero**, con buen co-op: todo se puede hacer solo y en equipo se reparten ramas.
+- **La historia marca la dificultad:** al pasar de acto, el mundo sube de World Tier de Apotheosis solo; el jugador no lo elige.
+
 ## Abierto (decidir con Elias)
 - Cuánto se construye a mano (aldea completa) y cuánto se resuelve con estructuras vistosas y recetas escalonadas. Elias aclaró que el proyecto no necesita llegar a v1.0: prioridad a lo que se pueda hacer bien.
