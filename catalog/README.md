@@ -56,5 +56,6 @@ Families are added one reviewed batch at a time with `--add-families`, preservin
 | [Workshop integrations](../docs/design/workshop-integrations-family.md) | 12 / 0 | — | [workshop](../docs/verification/workshop-integrations-runtime.json) |
 | [Small QoL](../docs/design/small-qol-family.md) | 8 / 0 | 268 client / 228 server | [small QoL](../docs/verification/small-qol-runtime.json) |
 | [Apotheosis](../docs/design/apotheosis-family.md) | 3 / 1 (Placebo already locked) | 272 client / 232 server | [apotheosis](../docs/verification/apotheosis-runtime.json) |
+| [Silent Gear and dynamic light](../docs/design/luminous-gear.md#silent-gear-y-luz-dinámica) | 1 + LambDynamicLights (Modrinth, client) / 1 | 275 client / 234 server | [luminous](../docs/verification/luminous-runtime.json) |
 
 Decisions against Oritech, Ender IO, Modern Industrialization, Extreme Reactors, Applied Flux, Productive Trees and Super Factory Manager are recorded in the industrial note; the Apotheosis suite, first kept out in the arcane note, was added on 23 September at Elias's direction. The lock, companion and QA server stay on NeoForge 21.1.249; no loader change was required.

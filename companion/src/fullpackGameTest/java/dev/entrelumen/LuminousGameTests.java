@@ -45,7 +45,7 @@ public final class LuminousGameTests {
   private static final String SCRIPT = "kubejs/server_scripts/entrelumen_luminous_balance.js";
   private static final List<String> MODS = List.of("kubejs", "mekanism", "ae2", "megacells", "create", "powah",
       "ars_nouveau", "evilcraft", "create_enchantment_industry", "apothic_enchanting", "draconicevolution",
-      "naturesaura", "apotheosis");
+      "naturesaura", "apotheosis", "silentgear");
 
   private LuminousGameTests() {}
 
@@ -245,6 +245,105 @@ public final class LuminousGameTests {
               new ItemStack(item("minecraft:nether_star")), base, new ItemStack(item("minecraft:netherite_ingot"))), level)
           .map(h -> !h.id().getNamespace().equals("entrelumen")).orElse(true), "Upgrade without the ingot: " + piece);
     }
+    helper.succeed();
+  }
+
+  /** A Silent Gear armour piece crafted for real: blueprint and material into plates, plates into armour. */
+  private static ItemStack silentArmour(GameTestHelper helper, String piece, int count, Item material) {
+    var level = helper.getLevel();
+    var manager = level.getRecipeManager();
+    var registries = level.registryAccess();
+    List<ItemStack> slots = new ArrayList<>();
+    slots.add(new ItemStack(item("silentgear:" + piece + "_blueprint")));
+    for (int i = 0; i < count; i++) slots.add(new ItemStack(material));
+    while (slots.size() < 9) slots.add(ItemStack.EMPTY);
+    var grid = CraftingInput.of(3, 3, slots);
+    var partRecipe = manager.getRecipeFor(RecipeType.CRAFTING, grid, level).orElseThrow(
+        () -> new IllegalStateException("No Silent Gear part recipe takes " + count + " " + material + " for " + piece));
+    ItemStack plates = partRecipe.value().assemble(grid, registries);
+    var single = CraftingInput.of(1, 1, List.of(plates));
+    var gearRecipe = manager.getRecipeFor(RecipeType.CRAFTING, single, level).orElseThrow(
+        () -> new IllegalStateException("No Silent Gear recipe turns " + plates + " into a " + piece));
+    return gearRecipe.value().assemble(single, registries);
+  }
+
+  private static double attribute(ItemStack stack, net.minecraft.core.Holder<net.minecraft.world.entity.ai.attributes.Attribute> type) {
+    double[] total = {0};
+    var slot = ((net.minecraft.world.item.ArmorItem) stack.getItem()).getEquipmentSlot();
+    stack.getAttributeModifiers().forEach(slot,
+        (holder, modifier) -> { if (holder.equals(type)) total[0] += modifier.amount(); });
+    return total[0];
+  }
+
+  @GameTest(template = "empty", timeoutTicks = 200)
+  public static void luminousSilentGearArmourOutclassesAndFlies(GameTestHelper helper) throws Exception {
+    requireSuite();
+    helper.assertTrue(SilentGearCompat.available(), "The Silent Gear API is not reachable");
+    var obsidianIngot = item("mekanism:ingot_refined_obsidian");
+    String[] pieces = {"helmet", "chestplate", "leggings", "boots"};
+    int[] counts = {5, 8, 7, 4};
+    var slots = List.of(net.minecraft.world.entity.EquipmentSlot.HEAD, net.minecraft.world.entity.EquipmentSlot.CHEST,
+        net.minecraft.world.entity.EquipmentSlot.LEGS, net.minecraft.world.entity.EquipmentSlot.FEET);
+    List<ItemStack> luminous = new ArrayList<>(), obsidian = new ArrayList<>();
+    List<String> table = new ArrayList<>();
+    var armor = net.minecraft.world.entity.ai.attributes.Attributes.ARMOR;
+    var toughness = net.minecraft.world.entity.ai.attributes.Attributes.ARMOR_TOUGHNESS;
+    for (int i = 0; i < 4; i++) {
+      var bright = silentArmour(helper, pieces[i], counts[i], Luminous.INGOT.get());
+      var best = silentArmour(helper, pieces[i], counts[i], obsidianIngot);
+      helper.assertTrue(BuiltInRegistries.ITEM.getKey(bright.getItem()).toString().equals("silentgear:" + pieces[i]),
+          "Crafted " + bright + " instead of a Silent Gear " + pieces[i]);
+      helper.assertTrue(SilentGearCompat.radiantLevel(bright) >= 1 && SilentGearCompat.radiant(bright)
+          && SilentGearCompat.radiantLevel(best) == 0, "Radiant trait missing or leaking on " + pieces[i]);
+      helper.assertTrue(attribute(bright, armor) > 1.8 * attribute(best, armor)
+          && attribute(bright, toughness) > attribute(best, toughness),
+          "Luminous " + pieces[i] + " " + attribute(bright, armor) + "/" + attribute(bright, toughness)
+              + " does not outclass Refined Obsidian " + attribute(best, armor) + "/" + attribute(best, toughness));
+      table.add(pieces[i] + " armor " + attribute(bright, armor) + " vs " + attribute(best, armor)
+          + ", toughness " + attribute(bright, toughness) + " vs " + attribute(best, toughness));
+      luminous.add(bright);
+      obsidian.add(best);
+    }
+    // Dynamic light data matches radiant Silent Gear, not other Silent Gear.
+    try (var stream = LuminousGameTests.class.getResourceAsStream("/assets/entrelumen/dynamiclights/item/silent_gear_radiant.json")) {
+      helper.assertTrue(stream != null, "Silent Gear dynamic light data missing from the companion");
+      var json = JsonParser.parseReader(new java.io.InputStreamReader(stream, java.nio.charset.StandardCharsets.UTF_8)).getAsJsonObject();
+      var predicate = net.minecraft.advancements.critereon.ItemPredicate.CODEC.parse(
+          net.minecraft.resources.RegistryOps.create(com.mojang.serialization.JsonOps.INSTANCE, helper.getLevel().registryAccess()),
+          json.get("match")).getOrThrow();
+      helper.assertTrue(predicate.test(luminous.get(0)) && !predicate.test(obsidian.get(0)),
+          "Silent Gear light predicate does not follow the radiant trait");
+    }
+    // Four radiant pieces, or a mix with the companion set, fly; one ordinary piece breaks the set.
+    var cookie = net.minecraft.server.network.CommonListenerCookie.createInitial(
+        new com.mojang.authlib.GameProfile(java.util.UUID.randomUUID(), "LuminousSilent"), false);
+    var player = new net.minecraft.server.level.ServerPlayer(helper.getLevel().getServer(), helper.getLevel(),
+        cookie.gameProfile(), cookie.clientInformation());
+    var connection = new net.minecraft.network.Connection(net.minecraft.network.protocol.PacketFlow.SERVERBOUND);
+    var channel = new io.netty.channel.embedded.EmbeddedChannel(connection);
+    try {
+      net.neoforged.neoforge.network.registration.NetworkRegistry.configureMockConnection(connection);
+      player.server.getPlayerList().placeNewPlayer(connection, player, cookie);
+      player.getInventory().clearContent();
+      player.setGameMode(net.minecraft.world.level.GameType.SURVIVAL);
+      for (int i = 0; i < 4; i++) player.setItemSlot(slots.get(i), luminous.get(i));
+      Luminous.setBonus(player);
+      helper.assertTrue(Luminous.fullSet(player) && player.mayFly() && Luminous.setFlight(player)
+          && player.hasEffect(net.minecraft.world.effect.MobEffects.NIGHT_VISION), "Radiant Silent Gear set does not fly");
+      player.setItemSlot(slots.get(1), new ItemStack(Luminous.CHESTPLATE.get()));
+      Luminous.setBonus(player);
+      helper.assertTrue(Luminous.setFlight(player), "A mixed luminous set does not fly");
+      player.setItemSlot(slots.get(1), obsidian.get(1));
+      Luminous.setBonus(player);
+      helper.assertTrue(!Luminous.fullSet(player) && !player.mayFly(), "An ordinary piece keeps the set flying");
+      float[] fall = net.neoforged.neoforge.common.CommonHooks.onLivingFall(player, 40f, 1f);
+      helper.assertTrue(fall != null && fall[1] == 1f, "Falls stay harmless without the set");
+    } finally {
+      connection.disconnect(Component.literal("Entrelumen luminous QA finished"));
+      connection.handleDisconnection();
+      channel.finishAndReleaseAll();
+    }
+    LogUtils.getLogger().info("ENTRELUMEN_LUMINOUS_SILENT_GEAR {}", table);
     helper.succeed();
   }
 }

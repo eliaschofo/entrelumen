@@ -1,4 +1,4 @@
-package dev.entrelumen.mixin;
+package dev.entrelumen.mixin.common;
 
 import dev.entrelumen.StructureProtection;
 import net.minecraft.core.BlockPos;

@@ -54,7 +54,7 @@ Para contestarles hace falta un artefacto que se perdió en el Aether. La entida
 - **Lote del jugador:** 16×16.
 
 - **Inicio sin bloat:** el jugador aparece siempre cerca de una ruina de Heliodor y **sin ningún ítem en el inventario**; ningún mod regala libros ni guías al entrar.
-- **La Brújula de Heliodor** está en esa ruina y es la guía principal. Siempre apunta al siguiente artefacto, estructura o dungeon necesario para progresar. Al terminar un acto o conseguir el ítem clave de un lugar, pasa al siguiente. Si el objetivo está en otra dimensión o es algo especial, **cambia de color o de sprite** para indicarlo.
+- **La Brújula de Heliodor** está en esa ruina y es la guía principal. **El Atlas no está en la ruina: la brújula te lleva primero hasta él.** Siempre apunta al siguiente artefacto, estructura o dungeon necesario para progresar. Al terminar un acto o conseguir el ítem clave de un lugar, pasa al siguiente. Si el objetivo está en otra dimensión o es algo especial, **cambia de color o de sprite** para indicarlo.
 - **El Atlas** es mínimo: registra lo indispensable (materiales) y aporta sobre todo lore. Acompaña a la brújula para que el jugador nunca quede perdido. Hasta vencer al Sun Spirit habla en **fragmentos con interferencia**, cada vez más legibles.
 - **Ruinas de Heliodor:** pocas y memorables, cada una ancla un acto.
   - Propuesta temática por acto, más algunas en otras dimensiones:
@@ -64,6 +64,7 @@ Para contestarles hace falta un artefacto que se perdió en el Aether. La entida
     - IV: Observatorio en un risco.
     - V: Templo de la Luz Sagrada, donde intentaron la fusión.
     - VI: Solsticio.
+    - En otras dimensiones: **Nether** (fundición bajo la lava), **Twilight Forest** (santuario), **Aether** (antesala del Sun Spirit) y **End** (observatorio mirando al vacío).
   - **Accesibles sin explorar a lo loco:** se generan en el mundo, raras pero no tanto. La progresión nunca queda detrás de caminar miles de bloques ni de cargar chunks en masa; el pack tiene que andar en muchas PCs y no exigir jetpack para avanzar la historia.
   - **Indestructibles y protegidas:** ruinas y lore no se pueden romper ni griefear, para mantener la sensación de videojuego. Algunas se abren con llaves o artefactos (puertas, portales, atravesar muros). Aunque el jugador haga bypass o noclip, lo de adentro sigue bloqueado hasta que ese acto se desbloquee formalmente: atriles, altares, marcos con llaves o artefactos clave y cofres de loot.
   - **Contenido de cada ruina:** la pieza clave del acto, un mini desafío y uno de los artefactos o altares propios del lugar, así se pueden conseguir copias extra antes de llegar a Solsticio. También loot y lore; el lore se desbloquea una sola vez, la primera.
@@ -78,12 +79,21 @@ Para contestarles hace falta un artefacto que se perdió en el Aether. La entida
 - **Acto VI:** Solsticio.
 - **Las 171 quests actuales** conservan tareas y progresión, pero su texto se reescribe con el lore nuevo: Heliodor, la Inventora y la luz.
 
+## El Corazón de Heliodor y los dos finales (24 de septiembre)
+
+- El Sun Spirit suelta el **Corazón de Heliodor**: el núcleo de la máquina de la fusión, que él les confiscó. Puesto en el Atlas le da voz clara en los dos sentidos, pero es la misma tecnología que casi los destruye.
+- En Solsticio, Aurelia lo quiere de vuelta y Bodhi ruega que no se lo den. **Decisión final con dos finales:** entregárselo a Aurelia (camino técnico) o a Bodhi (camino espiritual o mágico).
+- **Consecuencias acotadas:** ningún final agrega intercambios ni bloquea nada.
+  - El camino elegido obtiene **descuentos absurdos** en sus Luminosidades y tradeos correspondientes; el opuesto sube de precio.
+  - Como son precios de súper endgame, pesan poco.
+  - Cambia un poco la estética final del pueblo y el lore, nada más.
+
 ## Personajes de Solsticio (24 de septiembre)
 
-- **La Alcaldesa:** guardiana del Ayuntamiento y del portal. Carga la culpa de haber apoyado la fusión y da la misión final.
-- **La Inventora:** construyó el Atlas desde adentro de la luz. **Es la voz que habla en fragmentos**; al conocerla en Solsticio se cierra el círculo. Da misiones de máquinas y redstone.
-- **El Jardinero:** cuida los jardines congelados, es nostálgico y pide semillas y cosas vivas del Overworld.
-- **El Sacerdote de la Luz:** advirtió que la fusión era un error y nadie le hizo caso. Trae el lore religioso y el del Sun Spirit.
+- **Aurelia, la Alcaldesa:** aristócrata, casi villana pero justa. Guardiana del Ayuntamiento y del portal; empujó la fusión de la luz con la tecnología para controlarla. Da la misión final.
+- **Terra, la Inventora:** genio autista. Quería mejorar la calidad de vida de Heliodor con tecnología, pero el gobierno la obligó a desarrollar la tecnología peligrosa. Construyó el Atlas desde adentro de la luz y **es la voz que habla en fragmentos**. Da misiones de máquinas y redstone.
+- **Juan, el Jardinero:** bioingeniero experto. Diseñó el sistema que alimentaba a multitudes y sostuvo la expansión de Heliodor como sociedad. **Diseñó el Altar de Crecimiento**. Hoy mantiene alimentada a Solsticio dentro del Entrelumen con su tecnología y su ingenio, pero teme quedarse sin suministros. Pide ayuda y, a cambio, da un artefacto que hace avanzar la historia.
+- **Bodhi, el Sacerdote:** quería usar la luminosidad para el crecimiento espiritual de Heliodor y temía que el plan de Aurelia de fusionarla y controlarla con tecnología hiciera explotar el planeta o algo peor. Sólo entrega su artefacto (el ítem que abre el paso) si hacés buenas obras por los aldeanos: misiones secundarias que suben tu **relación** con él.
 - **El resto** son aldeanos con ropa de Heliodor (túnicas crema y cobre, detalles turquesa); los personajes con nombre llevan algo distintivo.
 - **Acto VI corto y denso:** 8–12 misiones con lore y viajes al Overworld. Lo largo es el posgame: comercio, lote e ítems creativos.
 

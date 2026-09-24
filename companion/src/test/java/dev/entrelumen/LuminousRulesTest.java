@@ -2,7 +2,14 @@ package dev.entrelumen;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import org.junit.jupiter.api.Test;
 
@@ -24,7 +31,7 @@ class LuminousRulesTest {
 
   @Test
   void armourTopsEveryPassiveSetOfThePack() {
-    assertEquals(34, LuminousRules.setArmor());
+    assertEquals(60, LuminousRules.setArmor());
     for (var ceiling : CEILINGS) {
       assertTrue(LuminousRules.setArmor() > ceiling.setArmor(), ceiling.name());
       assertTrue(LuminousRules.TOUGHNESS > ceiling.toughness(), ceiling.name());
@@ -33,19 +40,21 @@ class LuminousRulesTest {
     }
     // Four pieces reach full knockback immunity exactly, not beyond.
     assertEquals(1.0f, 4 * LuminousRules.KNOCKBACK_RESISTANCE, 1e-6);
-    // Apothic Attributes lets toughness resist armour pierce/shred at 2 % per point up to 60 %.
-    assertTrue(4 * LuminousRules.TOUGHNESS * 0.02f <= 0.6f);
+    // Apothic Attributes lets toughness resist armour pierce/shred at 2 % per point up to 60 %: capped.
+    assertTrue(4 * LuminousRules.TOUGHNESS * 0.02f >= 0.6f);
+    // Every piece at least doubles the best Silent Gear material's split (Refined Obsidian 5/12/8/5).
+    int[] refinedObsidian = {5, 12, 8, 5};
+    for (int i = 0; i < 4; i++)
+      assertTrue(LuminousRules.armorByPiece().get(i) >= 1.8 * refinedObsidian[i], "piece " + i);
   }
 
   @Test
-  void toolsTopRefinedObsidianButStayBelowPoweredDraconic() {
-    assertTrue(LuminousRules.TOOL_USES > 4096); // Refined Obsidian tools
-    assertTrue(LuminousRules.TOOL_SPEED > 12f); // Refined Obsidian efficiency
-    assertTrue(LuminousRules.TOOL_SPEED < 50f); // Draconic chaotic harvest speed (with energy and AoE)
-    assertEquals(14, LuminousRules.swordDamage());
-    assertTrue(LuminousRules.swordDamage() > 12); // Refined Obsidian sword
-    assertTrue(LuminousRules.swordDamage() < 17.5f); // Draconic chaotic sword base (2.5 x 7) before modules
-    assertEquals(16, LuminousRules.axeDamage());
+  void toolsTopEveryToolOfThePackIncludingChaoticBase() {
+    assertTrue(LuminousRules.TOOL_USES > 3652 * 8); // Tyrian Steel, the most durable Silent Gear material
+    assertTrue(LuminousRules.TOOL_SPEED > 50f); // Draconic chaotic harvest speed (with energy and AoE)
+    assertEquals(30, LuminousRules.swordDamage());
+    assertTrue(LuminousRules.swordDamage() > 17.5f); // Draconic chaotic sword base (2.5 x 7) before modules
+    assertEquals(32, LuminousRules.axeDamage());
     assertEquals(1f, 1 + LuminousRules.TOOL_ATTACK_BONUS + LuminousRules.HOE_DAMAGE, 1e-6);
   }
 
@@ -79,9 +88,11 @@ class LuminousRulesTest {
     assertEquals(4, LuminousRules.lightRepair(20, 500));
     assertEquals(2, LuminousRules.lightRepair(15, 2)); // never repairs past full
     assertEquals(0, LuminousRules.lightRepair(15, 0));
-    // A spent chestplate (1599 damage) is whole again after under seven minutes of daylight.
-    int seconds = (int) Math.ceil(1599.0 / LuminousRules.lightRepair(15, 1599));
-    assertTrue(seconds < 7 * 60, "seconds " + seconds);
+    // A spent chestplate (3999 damage) is whole again after under seventeen minutes of daylight.
+    int spent = 16 * LuminousRules.ARMOR_DURABILITY_FACTOR - 1;
+    int seconds = (int) Math.ceil((double) spent / LuminousRules.lightRepair(15, spent));
+    assertTrue(seconds < 17 * 60, "seconds " + seconds);
+    assertTrue(LuminousRules.FLIGHT_LANDING_TICKS >= 100);
   }
 
   @Test
@@ -113,5 +124,63 @@ class LuminousRulesTest {
     assertEquals(0x3CC7B4, LuminousRules.Discipline.LOGISTICS.color); // turquoise
     assertEquals(0xF2B84B, LuminousRules.Discipline.HABITATION.color); // warm gold
     assertFalse(colours.contains(LuminousRules.LUMINOUS_COLOR));
+  }
+
+  /**
+   * The Silent Gear material of the Luminous Ingot against the best value of every stat among the
+   * 138 materials of Silent Gear 4.2.1.1 (read from the pinned JAR on 24 September 2026).
+   */
+  @Test
+  void silentGearMaterialIsTheBestByFar() throws Exception {
+    JsonObject material;
+    try (var stream = LuminousRulesTest.class.getResourceAsStream("/data/entrelumen/silentgear_materials/luminous.json")) {
+      assertNotNull(stream, "luminous Silent Gear material missing from resources");
+      material = JsonParser.parseReader(new InputStreamReader(stream, StandardCharsets.UTF_8)).getAsJsonObject();
+    }
+    var main = material.getAsJsonObject("properties").getAsJsonObject("silentgear:main");
+    Map<String, Double> best = new LinkedHashMap<>();
+    best.put("armor", 30.0); // refined_obsidian
+    best.put("armor/helmet", 5.0); // tyrian_steel, refined_obsidian
+    best.put("armor/chestplate", 12.0); // refined_obsidian
+    best.put("armor/leggings", 8.0); // refined_obsidian
+    best.put("armor/boots", 5.0); // refined_obsidian
+    best.put("armor_durability", 84.0); // barrier
+    best.put("armor_toughness", 16.0); // refined_obsidian
+    best.put("magic_armor", 19.0); // azure_electrum
+    best.put("attack_damage", 10.0); // refined_obsidian
+    best.put("attack_speed", 0.4); // glowstone
+    best.put("magic_damage", 11.0); // azure_electrum
+    best.put("ranged_damage", 4.0); // tyrian_steel, refined_obsidian
+    best.put("durability", 3652.0); // tyrian_steel
+    best.put("enchantment_value", 40.0); // refined_obsidian
+    best.put("harvest_speed", 29.0); // azure_electrum
+    best.put("charging_value", 1.5); // uranium, electrum, azure_electrum
+    best.put("draw_speed", 0.4); // electrum
+    best.put("projectile_accuracy", 1.5); // azure_electrum
+    best.put("projectile_speed", 2.0); // azure_electrum
+    best.put("rarity", 111.0); // barrier
+    for (var entry : best.entrySet()) {
+      double value = main.get(entry.getKey()).getAsDouble();
+      assertTrue(value >= 1.3 * entry.getValue(), entry.getKey() + " " + value + " vs " + entry.getValue());
+    }
+    // The Silent Gear pieces match the companion set piece for piece.
+    assertEquals(LuminousRules.HELMET_ARMOR, main.get("armor/helmet").getAsInt());
+    assertEquals(LuminousRules.CHESTPLATE_ARMOR, main.get("armor/chestplate").getAsInt());
+    assertEquals(LuminousRules.LEGGINGS_ARMOR, main.get("armor/leggings").getAsInt());
+    assertEquals(LuminousRules.BOOTS_ARMOR, main.get("armor/boots").getAsInt());
+    assertEquals(4 * LuminousRules.TOUGHNESS, main.get("armor_toughness").getAsFloat(), 1e-6); // split in four
+    assertEquals(LuminousRules.KNOCKBACK_RESISTANCE, main.get("knockback_resistance").getAsFloat() / 10f, 1e-6);
+    assertEquals(LuminousRules.ENCHANTABILITY, main.get("enchantment_value").getAsInt());
+    assertEquals("entrelumen:incorrect_for_luminous_tool",
+        main.getAsJsonObject("harvest_tier").get("incorrect_blocks_for_tool").getAsString());
+    var traits = new HashSet<String>();
+    main.getAsJsonArray("traits").forEach(t -> traits.add(t.getAsJsonObject().get("trait").getAsString()));
+    assertTrue(traits.contains("entrelumen:radiant") && traits.contains("silentgear:lustrous")
+        && traits.contains("silentgear:holy") && traits.contains("silentgear:refractive"), traits.toString());
+    for (String part : List.of("silentgear:tip", "silentgear:coating"))
+      assertTrue(material.getAsJsonObject("properties").getAsJsonObject(part).toString().contains("entrelumen:radiant"), part);
+    var crafting = material.getAsJsonObject("crafting");
+    assertFalse(crafting.get("can_salvage").getAsBoolean(), "salvaging would refund Luminosities");
+    assertEquals("entrelumen:luminous_ingot", crafting.getAsJsonObject("ingredient").get("item").getAsString());
   }
 }

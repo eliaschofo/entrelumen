@@ -1,4 +1,4 @@
-package dev.entrelumen.mixin;
+package dev.entrelumen.mixin.common;
 
 import net.minecraft.server.level.ServerLevel;
 import org.spongepowered.asm.mixin.Mixin;

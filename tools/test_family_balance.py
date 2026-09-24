@@ -209,6 +209,25 @@ class FamilyBalanceTest(unittest.TestCase):
         for piece in ('helmet', 'chestplate', 'leggings', 'boots', 'sword', 'pickaxe', 'axe', 'shovel', 'hoe', 'ingot'):
             self.assertIn(f'"luminous_{piece}"', java)
 
+    def test_rewrite_override_keeps_other_fields_and_refuses_upstream_changes(self):
+        original = {'type': 'farmersdelight:cutting', 'ingredients': [{'item': 'x:log'}], 'result': [{'item': 'x:out'}],
+                    'sound': 'x:sound'}
+        spec = balance.rewritten('data/x/recipe/y.json', {'result': [{'item': 'x:out'}], 'sound': 'x:sound'},
+                                 {'result': [{'item': {'count': 1, 'id': 'x:out'}}], 'sound': {'sound_id': 'x:sound'}}, '')
+        found = {spec['path']: [('x.jar', '', json.dumps(original).encode())]}
+        with unittest.mock.patch.dict(balance.FAMILIES, {'probe': {'data': [spec]}}):
+            out = json.loads(balance.build_data('probe', found)['x/recipe/y.json'])
+            self.assertEqual(out['ingredients'], original['ingredients'])
+            self.assertEqual(out['sound'], {'sound_id': 'x:sound'})
+            found[spec['path']] = [('x.jar', '', json.dumps(dict(original, sound='x:other')).encode())]
+            with self.assertRaises(AssertionError):
+                balance.build_data('probe', found)
+        fd = [s for s in balance.FAMILIES['luminous']['data'] if s['op'] == 'rewrite']
+        self.assertEqual(len(fd), 1)
+        written = json.loads((balance.PACK_DATA / fd[0]['path'][len('data/'):]).read_text(encoding='utf-8'))
+        self.assertEqual({k: written[k] for k in fd[0]['value']}, fd[0]['value'])
+        self.assertEqual(written['neoforge:conditions'], [{'type': 'neoforge:mod_loaded', 'modid': 'silentgear'}])
+
     def test_loop_check_catches_uncrafting_and_gate_leaks(self):
         lum = balance.LUMINOSITY['arcane']
         ingot = balance.created_shaped('t:ingot', 't:ingot', ['LXL', 'XXX', 'LXL'],

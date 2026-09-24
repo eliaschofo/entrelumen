@@ -101,10 +101,12 @@ public final class Entrelumen {
     bus.addListener(AtlasNetwork::register);
     bus.addListener(JournalBookNetwork::register);
     ApotheosisContent.bootstrap(bus);
+    SatietyOverflowEvents.register();
     BLOCKS.register(bus);
     BLOCK_ENTITIES.register(bus);
     Altars.register(bus);
     Luminous.register(bus);
+    HeliodorContent.register(bus);
     Solsticio.register(bus, container);
     bus.addListener(this::registerCapabilities);
     NeoForge.EVENT_BUS.addListener(this::commands);
