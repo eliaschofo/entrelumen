@@ -17,31 +17,36 @@ ServerEvents.afterRecipes(event => {
   // filtered scans of every recipe per row (about 30 s on the full pack) left no margin under the
   // 60 s watchdog. Each tracked row is a vanilla crafting or smithing recipe; its loaded result is
   // read through the recipe's own codec.
-  const ops = Java.loadClass('com.mojang.serialization.JsonOps').INSTANCE;
-  const expected = {};
+  // Plain var: Rhino treats block-scoped const inside repeated callbacks unreliably.
+  var ops = Java.loadClass('com.mojang.serialization.JsonOps').INSTANCE;
+  var expected = {};
   entrelumenResourceRecipes.forEach(row => { expected[row.id] = row.json.result.id; });
-  const counts = {};
-  const outputs = {};
+  var counts = {};
+  var outputs = {};
   event.forEachRecipe('*', holder => {
-    const id = String(holder.getOrCreateId());
+    var id = String(holder.getOrCreateId());
     if (expected[id] === undefined) return;
     counts[id] = (counts[id] || 0) + 1;
     try {
-      const encoded = JSON.parse(String(holder.getSerializer().codec().codec()
+      var encoded = JSON.parse(String(holder.getSerializer().codec().codec()
         .encodeStart(ops, holder.getRecipe()).getOrThrow()));
-      outputs[id] = encoded.result ? encoded.result.id : null;
+      outputs[id] = encoded.result ? String(encoded.result.id) : 'no result';
     } catch (error) {
       outputs[id] = 'codec: ' + error;
     }
   });
-  const failed = [];
-  let active = 0;
+  var failed = [];
+  var mismatches = [];
+  var active = 0;
   entrelumenResourceRecipes.forEach(row => {
     if (!counts[row.id]) return;
     active++;
-    if (counts[row.id] !== 1 || outputs[row.id] !== row.json.result.id) failed.push(row.id);
+    if (counts[row.id] !== 1 || outputs[row.id] !== row.json.result.id) {
+      failed.push(row.id);
+      if (mismatches.length < 3) mismatches.push({id: row.id, count: counts[row.id], output: outputs[row.id]});
+    }
   });
   console.info('[ENTRELUMEN_RESOURCE_BALANCE] ' + JSON.stringify({signature: entrelumenResourceSignature,
-    status: failed.length ? 'FAIL' : 'loaded-output-check-only', active: active, failed: failed,
+    status: failed.length ? 'FAIL' : 'loaded-output-check-only', active: active, failed: failed, mismatches: mismatches,
     note: 'Output presence does not prove ingredients, NBT preservation or narrative stage gating'}));
 });
