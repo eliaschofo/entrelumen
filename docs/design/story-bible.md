@@ -56,7 +56,18 @@ Para contestarles hace falta un artefacto que se perdió en el Aether. La entida
 - **Inicio sin bloat:** el jugador aparece siempre cerca de una ruina de Heliodor y **sin ningún ítem en el inventario**; ningún mod regala libros ni guías al entrar.
 - **La Brújula de Heliodor** está en esa ruina y es la guía principal. Siempre apunta al siguiente artefacto, estructura o dungeon necesario para progresar. Al terminar un acto o conseguir el ítem clave de un lugar, pasa al siguiente. Si el objetivo está en otra dimensión o es algo especial, **cambia de color o de sprite** para indicarlo.
 - **El Atlas** es mínimo: registra lo indispensable (materiales) y aporta sobre todo lore. Acompaña a la brújula para que el jugador nunca quede perdido. Hasta vencer al Sun Spirit habla en **fragmentos con interferencia**, cada vez más legibles.
-- **Ruinas de Heliodor** en el Overworld: pocas y memorables, cada una ancla un acto.
+- **Ruinas de Heliodor:** pocas y memorables, cada una ancla un acto.
+  - Propuesta temática por acto, más algunas en otras dimensiones:
+    - I: Patio del Atlas (inicio).
+    - II: Taller hundido.
+    - III: Invernadero-domo.
+    - IV: Observatorio en un risco.
+    - V: Templo de la Luz Sagrada, donde intentaron la fusión.
+    - VI: Solsticio.
+  - **Accesibles sin explorar a lo loco:** se generan en el mundo, raras pero no tanto. La progresión nunca queda detrás de caminar miles de bloques ni de cargar chunks en masa; el pack tiene que andar en muchas PCs y no exigir jetpack para avanzar la historia.
+  - **Indestructibles y protegidas:** ruinas y lore no se pueden romper ni griefear, para mantener la sensación de videojuego. Algunas se abren con llaves o artefactos (puertas, portales, atravesar muros). Aunque el jugador haga bypass o noclip, lo de adentro sigue bloqueado hasta que ese acto se desbloquee formalmente: atriles, altares, marcos con llaves o artefactos clave y cofres de loot.
+  - **Contenido de cada ruina:** la pieza clave del acto, un mini desafío y uno de los artefactos o altares propios del lugar, así se pueden conseguir copias extra antes de llegar a Solsticio. También loot y lore; el lore se desbloquea una sola vez, la primera.
+- **La brújula sigue al equipo**, no a cada jugador.
 - **Aldeanos de Solsticio:** unos pocos personajes con nombre (alcalde, inventora, jardinero, etc.) dan las misiones; el resto son aldeanos con ropa de Heliodor.
 
 ## Abierto (decidir con Elias)
