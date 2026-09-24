@@ -1,0 +1,191 @@
+"""Validate the informational guide chapters in content/guides/*.json.
+
+Each file is one chapter of the pack's manual (mods, QoL, logistics, building, farming, tips). The
+schema extends the story chapters' format (see content/act_two.json):
+
+  {"chapter": "guide_create", "group": "tech|magic|exploration|qol|entrelumen", "act": "II",
+   "icon": "create:cogwheel",
+   "title": {"en_us": "...", "es_es": "..."}, "subtitle": {"en_us": "...", "es_es": "..."},
+   "quests": [{"key": "create_welcome", "deps": [], "type": "checkmark|item|dimension|advancement",
+               "item": "create:shaft", "count": 1, "tag": "c:plates/iron", "dimension": "...",
+               "advancement": "...", "optional": true, "icon": "...",
+               "layout": {"x": 0, "y": 0, "size": 1.0, "shape": "circle"},
+               "en_us": ["Title", "Description"], "es_es": ["Título", "Descripción"],
+               "sources": ["jar:<file>:<path>", "https://..."]}]}
+
+Checks: schema, unique chapter ids and quest keys (globally, prefixed by the chapter), deps inside
+the chapter, EN/ES parity, text limits and formatting codes, sources on every quest, and that every
+item, icon and tag namespace exists in the pinned JARs (catalog/local-paths.json) or vanilla.
+
+    python tools/check_guides.py            # all chapters
+    python tools/check_guides.py create     # chapters whose id contains 'create'
+"""
+import json
+import re
+import sys
+import zipfile
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[1]
+GUIDES = ROOT / 'content' / 'guides'
+VANILLA_JAR = Path('G:/Elias/Codex/Entrelumen-work/neoform-cache/artifacts/minecraft_1.21.1_client.jar')
+GROUPS = {'tech', 'magic', 'exploration', 'qol', 'entrelumen'}
+TYPES = {'checkmark', 'item', 'dimension', 'advancement'}
+ACTS = {'I', 'II', 'III', 'IV', 'V', 'VI', 'any'}
+MAX_TITLE, MAX_DESC = 60, 1100
+FORMAT_CODE = re.compile(r'&(#[0-9A-Fa-f]{6}|[0-9a-fk-or])')
+ID = re.compile(r'^[a-z0-9_.-]+:[a-z0-9_./-]+$')
+_ITEMS = None
+
+
+def registry():
+    """Item-like ids known from item models and lang keys of every pinned JAR, plus vanilla and the companion."""
+    global _ITEMS
+    if _ITEMS is not None:
+        return _ITEMS
+    items, namespaces = set(), set()
+    jars = []
+    lp = ROOT / 'catalog' / 'local-paths.json'
+    if lp.exists():
+        jars += [Path(p) for p in json.loads(lp.read_text(encoding='utf-8')).values()]
+    if VANILLA_JAR.exists():
+        jars.append(VANILLA_JAR)
+    for jar in jars:
+        try:
+            with zipfile.ZipFile(jar) as z:
+                for name in z.namelist():
+                    m = re.match(r'assets/([^/]+)/models/item/(.+)\.json$', name)
+                    if m:
+                        items.add(f'{m.group(1)}:{m.group(2)}')
+                        namespaces.add(m.group(1))
+                    m = re.match(r'assets/([^/]+)/lang/en_us\.json$', name)
+                    if m:
+                        try:
+                            for k in json.loads(z.read(name).decode('utf-8', 'replace')):
+                                mm = re.match(r'^(item|block)\.([a-z0-9_]+)\.([a-z0-9_./]+)$', k)
+                                if mm:
+                                    items.add(f'{mm.group(2)}:{mm.group(3)}')
+                                    namespaces.add(mm.group(2))
+                        except Exception:
+                            pass
+                    m = re.match(r'data/([^/]+)/', name)
+                    if m:
+                        namespaces.add(m.group(1))
+        except Exception:
+            continue
+    comp = ROOT / 'companion' / 'src' / 'main' / 'resources' / 'assets' / 'entrelumen'
+    for p in (comp / 'models' / 'item').glob('*.json'):
+        items.add('entrelumen:' + p.stem)
+    namespaces |= {'entrelumen', 'minecraft', 'c', 'neoforge'}
+    _ITEMS = (items, namespaces)
+    return _ITEMS
+
+
+def text_ok(text, limit, where, errors, codes):
+    if not isinstance(text, str) or not text.strip():
+        errors.append(f'{where}: empty text')
+        return
+    plain = FORMAT_CODE.sub('', text)
+    if '&' in plain:
+        errors.append(f'{where}: stray "&"')
+    if not codes and plain != text:
+        errors.append(f'{where}: formatting codes only in descriptions')
+    if len(plain) > limit:
+        errors.append(f'{where}: {len(plain)} chars > {limit}')
+
+
+def check_chapter(path, seen_chapters, seen_keys, errors):
+    try:
+        ch = json.loads(path.read_text(encoding='utf-8'))
+    except Exception as e:
+        errors.append(f'{path.name}: invalid JSON ({e})')
+        return 0
+    items, namespaces = registry()
+    cid = ch.get('chapter', '')
+    where = path.name
+    if not re.match(r'^guide_[a-z0-9_]+$', cid):
+        errors.append(f'{where}: chapter id must be guide_<name>')
+    if cid in seen_chapters:
+        errors.append(f'{where}: duplicate chapter id {cid}')
+    seen_chapters.add(cid)
+    if ch.get('group') not in GROUPS:
+        errors.append(f'{where}: group must be one of {sorted(GROUPS)}')
+    if ch.get('act') not in ACTS:
+        errors.append(f'{where}: act must be one of {sorted(ACTS)}')
+    for part in ('title', 'subtitle'):
+        for lang in ('en_us', 'es_es'):
+            text_ok((ch.get(part) or {}).get(lang), MAX_TITLE if part == 'title' else 160, f'{where} {part}.{lang}', errors, False)
+    icon = ch.get('icon', '')
+    if icon not in items:
+        errors.append(f'{where}: chapter icon {icon} not found in the pinned JARs')
+    quests = ch.get('quests') or []
+    keys = {q.get('key') for q in quests}
+    if len(quests) < 8:
+        errors.append(f'{where}: only {len(quests)} quests; a guide chapter needs at least 8')
+    positions = set()
+    for q in quests:
+        k = q.get('key', '')
+        w = f'{where}:{k}'
+        if not re.match(r'^[a-z0-9_]+$', k):
+            errors.append(f'{w}: bad key')
+        if k in seen_keys:
+            errors.append(f'{w}: duplicate key across guides')
+        seen_keys.add(k)
+        for d in q.get('deps', []):
+            if d not in keys:
+                errors.append(f'{w}: dependency {d} not in this chapter')
+        t = q.get('type', 'item' if 'item' in q or 'tag' in q else None)
+        if t not in TYPES:
+            errors.append(f'{w}: type must be one of {sorted(TYPES)}')
+        if t == 'item':
+            if 'item' not in q and 'tag' not in q:
+                errors.append(f'{w}: item task needs "item" or "tag"')
+            if 'item' in q and q['item'] not in items:
+                errors.append(f'{w}: item {q["item"]} not found in the pinned JARs')
+            if 'tag' in q and (not ID.match(q['tag']) or q['tag'].split(':')[0] not in namespaces):
+                errors.append(f'{w}: tag {q["tag"]} has an unknown namespace')
+            c = q.get('count', 1)
+            if not isinstance(c, int) or not 1 <= c <= 4096:
+                errors.append(f'{w}: count must be 1..4096')
+        if t == 'dimension' and (not ID.match(q.get('dimension', '')) or q['dimension'].split(':')[0] not in namespaces):
+            errors.append(f'{w}: dimension {q.get("dimension")} unknown')
+        if t == 'advancement' and (not ID.match(q.get('advancement', '')) or q['advancement'].split(':')[0] not in namespaces):
+            errors.append(f'{w}: advancement {q.get("advancement")} unknown')
+        if 'icon' in q and q['icon'] not in items:
+            errors.append(f'{w}: icon {q["icon"]} not found in the pinned JARs')
+        for lang in ('en_us', 'es_es'):
+            pair = q.get(lang)
+            if not (isinstance(pair, list) and len(pair) == 2):
+                errors.append(f'{w}: {lang} must be [title, description]')
+                continue
+            text_ok(pair[0], MAX_TITLE, f'{w} {lang} title', errors, False)
+            text_ok(pair[1], MAX_DESC, f'{w} {lang} description', errors, True)
+        if not q.get('sources'):
+            errors.append(f'{w}: no sources')
+        lay = q.get('layout') or {}
+        pos = (lay.get('x'), lay.get('y'))
+        if None in pos:
+            errors.append(f'{w}: layout needs x and y')
+        elif pos in positions:
+            errors.append(f'{w}: two quests at the same position {pos}')
+        positions.add(pos)
+    return len(quests)
+
+
+def main():
+    flt = sys.argv[1] if len(sys.argv) > 1 else ''
+    errors, chapters, keys = [], set(), set()
+    total = 0
+    files = sorted(GUIDES.glob('*.json'))
+    for p in files:
+        if flt and flt not in p.stem:
+            continue
+        total += check_chapter(p, chapters, keys, errors)
+    for e in errors:
+        print('ERROR', e)
+    print(f'{"FAIL" if errors else "PASS"}: {len(chapters)} guide chapters, {total} quests, {len(errors)} errors')
+    return 1 if errors else 0
+
+
+if __name__ == '__main__':
+    raise SystemExit(main())
