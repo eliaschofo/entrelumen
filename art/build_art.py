@@ -21,7 +21,7 @@ COMPANION = ROOT / 'companion/src/main/resources/assets/entrelumen'
 ITEMS = ['atlas', 'raw_lens', 'survey_notes', 'signal_core', 'calibration_frame', 'energy_coupler', 'living_matrix',
          'ration_bundle', 'routing_matrix', 'propagation_core', 'power_regulator', 'inventory_sensor', 'handling_core',
          'spectral_lens', 'horizon_chart', 'ecosystem_capsule', 'containment_seal', 'ark_bus', 'renewal_engine',
-         'habitation_contract']
+         'habitation_contract', 'terra_arm']
 AUGMENTS = ['burning', 'echoing', 'ignore_conditions', 'ignore_light', 'ignore_players', 'initial_health', 'max_delay',
             'max_nearby', 'min_delay', 'no_ai', 'player_range', 'redstone_control', 'silent', 'spawn_count', 'spawn_range', 'youthful']
 ITEMS += ['augment_' + a for a in AUGMENTS]
