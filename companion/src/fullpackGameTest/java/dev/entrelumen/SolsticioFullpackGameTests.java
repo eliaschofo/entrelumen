@@ -41,6 +41,43 @@ public final class SolsticioFullpackGameTests {
     if (offer.extra() != null) item(where + " extra", offer.extra().item(), missing);
   }
 
+  /**
+   * Structure templates turn unknown block names into air without logging, so the city is checked
+   * against the loaded block registry before placement: every palette entry of every Solsticio
+   * piece must name a registered block.
+   */
+  @GameTest(template = "empty", timeoutTicks = 200)
+  public static void solsticioCityPaletteResolvesInTheFullPack(GameTestHelper helper) throws java.io.IOException {
+    var resources = helper.getLevel().getServer().getResourceManager().listResources("structure/solsticio",
+        location -> location.getPath().endsWith(".nbt"));
+    helper.assertTrue(!resources.isEmpty(), "No Solsticio templates found");
+    Map<String, Integer> unknown = new TreeMap<>();
+    int entries = 0;
+    for (var entry : resources.entrySet()) {
+      if (!entry.getKey().getNamespace().equals("entrelumen")) continue;
+      net.minecraft.nbt.CompoundTag tag;
+      try (var in = entry.getValue().open()) {
+        tag = net.minecraft.nbt.NbtIo.readCompressed(in, net.minecraft.nbt.NbtAccounter.unlimitedHeap());
+      }
+      List<net.minecraft.nbt.ListTag> palettes = new ArrayList<>();
+      if (tag.contains("palette", net.minecraft.nbt.Tag.TAG_LIST))
+        palettes.add(tag.getList("palette", net.minecraft.nbt.Tag.TAG_COMPOUND));
+      var many = tag.getList("palettes", net.minecraft.nbt.Tag.TAG_LIST);
+      for (int i = 0; i < many.size(); i++) palettes.add(many.getList(i));
+      for (var palette : palettes)
+        for (int i = 0; i < palette.size(); i++) {
+          String name = palette.getCompound(i).getString("Name");
+          entries++;
+          var location = ResourceLocation.tryParse(name);
+          if (location == null || !BuiltInRegistries.BLOCK.containsKey(location))
+            unknown.merge(entry.getKey().getPath() + " " + name, 1, Integer::sum);
+        }
+    }
+    helper.assertTrue(entries > 0, "Solsticio templates have no palette");
+    helper.assertTrue(unknown.isEmpty(), entries + " palette entries; unregistered: " + unknown);
+    helper.succeed();
+  }
+
   @GameTest(template = "empty", timeoutTicks = 20)
   public static void solsticioShopTablesResolveInTheFullPack(GameTestHelper helper) {
     Map<String, CommerceRules.Table> tables = new TreeMap<>();
