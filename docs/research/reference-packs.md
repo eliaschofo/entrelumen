@@ -343,7 +343,13 @@ Son para quien escriba quests; `wt-acts` tiene hoy el libro y el mod.
 3. **Drops de Wither, Dragón y Elder Guardian:** **sí**, como materiales de los módulos del Arca (acto V).
 4. **Libro de quests:** llevarlo a la altura de ATM y FTB, con un centro del que salen los capítulos, un capítulo final que dibuja el **Sol de Heliodor**, recompensas moderadas, imágenes de las ruinas y nodos grandes en los hitos.
 5. **Guías:** muchas líneas de quests informativas por mod y por tema (QoL, logística, construcción, granjas, tips), bien documentadas con las guías de los JARs y las wikis de la versión fijada. Se escriben en `content/guides/` (validador `tools/check_guides.py`).
-6. Siguen sin responder: Ultimine por acto y la vitrina de trofeos.
+6. **Ultimine como curio propio** con 6 tiers:
+   - Sin el curio no hay Ultimine.
+   - El tier 1 permite 16 bloques; cada tier suma 16, hasta 96. Elias escribió «hasta 92»: se usa 96 salvo que confirme otro tope.
+   - La receta de cada tier incluye el curio anterior más materiales cada vez más difíciles, mezclando del pack (Heliodor) y de mods. El tier 1 es accesible («que el de 16 no sea TAN difícil»); después escala.
+   - El tooltip muestra el alcance.
+   - Hay que ver cómo limita FTB Ultimine por jugador en la versión fijada: config, permisos o API.
+7. Sigue sin responder: la vitrina de trofeos.
 
 ## Límites
 
