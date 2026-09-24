@@ -53,5 +53,11 @@ Para contestarles hace falta un artefacto que se perdió en el Aether. La entida
 - **Estética de Solsticio:** solarpunk más luminoso: jardines y cascadas con cobre, vidrio y domos, todo bañado en luz.
 - **Lote del jugador:** 16×16.
 
+- **Inicio sin bloat:** el jugador aparece siempre cerca de una ruina de Heliodor y **sin ningún ítem en el inventario**; ningún mod regala libros ni guías al entrar.
+- **La Brújula de Heliodor** está en esa ruina y es la guía principal. Siempre apunta al siguiente artefacto, estructura o dungeon necesario para progresar. Al terminar un acto o conseguir el ítem clave de un lugar, pasa al siguiente. Si el objetivo está en otra dimensión o es algo especial, **cambia de color o de sprite** para indicarlo.
+- **El Atlas** es mínimo: registra lo indispensable (materiales) y aporta sobre todo lore. Acompaña a la brújula para que el jugador nunca quede perdido. Hasta vencer al Sun Spirit habla en **fragmentos con interferencia**, cada vez más legibles.
+- **Ruinas de Heliodor** en el Overworld: pocas y memorables, cada una ancla un acto.
+- **Aldeanos de Solsticio:** unos pocos personajes con nombre (alcalde, inventora, jardinero, etc.) dan las misiones; el resto son aldeanos con ropa de Heliodor.
+
 ## Abierto (decidir con Elias)
 - Cuánto se construye a mano (aldea completa) y cuánto se resuelve con estructuras vistosas y recetas escalonadas. Elias aclaró que el proyecto no necesita llegar a v1.0: prioridad a lo que se pueda hacer bien.
