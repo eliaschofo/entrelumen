@@ -50,8 +50,24 @@ class ApotheosisTiersTest {
     var ending = at(6);
     ending.completed.add(CampaignMilestones.LAST_HORIZON);
     assertEquals(PINNACLE, ApotheosisTiers.target(ending, all));
-    // A fresh campaign (a player back in a personal team) imposes Haven, which lowers the tier.
+    // A fresh campaign (a player back in a personal team) reaches only Haven.
     assertEquals(HAVEN, ApotheosisTiers.target(new Campaigns.Campaign(), all));
+  }
+
+  @Test
+  void theStoryTierOnlyRises() {
+    for (var recorded : ApotheosisTiers.Tier.values())
+      for (var campaign : ApotheosisTiers.Tier.values()) {
+        var held = ApotheosisTiers.story(recorded, campaign);
+        assertEquals(Math.max(recorded.ordinal(), campaign.ordinal()), held.ordinal());
+        assertTrue(held.ordinal() >= recorded.ordinal(), "the tier went down");
+      }
+    // Leaving a party at Ascent for a fresh personal campaign keeps Ascent.
+    assertEquals(ASCENT, ApotheosisTiers.story(ASCENT, ApotheosisTiers.target(new Campaigns.Campaign(), t -> true)));
+    // Outside any campaign the record stays; with neither there is nothing to apply.
+    assertEquals(SUMMIT, ApotheosisTiers.story(SUMMIT, null));
+    assertEquals(FRONTIER, ApotheosisTiers.story(null, FRONTIER));
+    assertNull(ApotheosisTiers.story(null, null));
   }
 
   @Test

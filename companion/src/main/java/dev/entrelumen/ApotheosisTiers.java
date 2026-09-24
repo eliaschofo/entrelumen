@@ -23,11 +23,13 @@ import org.slf4j.Logger;
  * <p>The pack overrides {@code apotheosis:progression/*} so Frontier to Pinnacle carry only an
  * impossible criterion (Haven keeps a tick criterion). {@link #sync} first grants the remaining
  * criteria of every tier the player's current campaign has reached, through the vanilla
- * advancement API, and never revokes them. It then moves the player's active World Tier to the
- * campaign's tier through Apotheosis's own {@code WorldTier.setTier}, up or down, so players never
- * pick a tier themselves; the pack also disables Apotheosis's manual selection
- * ({@code Enable Manual World Tier Changes = false}). Apotheosis is reached by reflection only:
- * without it, or if its API moved, the tier step is skipped and nothing fails.
+ * advancement API, and never revokes them. It then records the highest tier the story ever gave
+ * the player (the {@code entrelumen:story_tier} attachment, kept through death and relogs) and
+ * moves the active World Tier to it through Apotheosis's own {@code WorldTier.setTier}. The tier
+ * only rises: leaving a team or a lower campaign never lowers it. Players never pick a tier; the
+ * pack also disables Apotheosis's manual selection ({@code Enable Manual World Tier Changes =
+ * false}). Apotheosis is reached by reflection only: without it, or if its API moved, the tier
+ * step is skipped and nothing fails.
  */
 public final class ApotheosisTiers {
   private static final Logger LOGGER = LogUtils.getLogger();
@@ -78,15 +80,31 @@ public final class ApotheosisTiers {
   }
 
   /**
-   * Pure rule: the World Tier a campaign imposes, the highest reached tier whose unlock the player
-   * holds (a tier removed by a datapack is skipped). {@code null} means the player is outside any
-   * active campaign, or holds no tier at all, and the companion leaves the tier alone.
+   * Pure rule: the tier a campaign reaches for this player, the highest reached tier whose unlock
+   * the player holds (a tier removed by a datapack is skipped). {@code null} outside any active
+   * campaign or when no tier is unlocked; {@link #story} then keeps the recorded tier.
    */
   public static Tier target(Campaigns.Campaign campaign, Predicate<Tier> unlocked) {
     if (campaign == null || campaign.archived) return null;
     Tier target = null;
     for (Tier tier : reached(campaign)) if (unlocked.test(tier)) target = tier;
     return target;
+  }
+
+  /**
+   * Pure rule: the tier to hold, the higher of the recorded story tier and the current
+   * campaign's tier. It never goes down; {@code null} only when neither exists.
+   */
+  public static Tier story(Tier recorded, Tier campaign) {
+    if (recorded == null) return campaign;
+    if (campaign == null) return recorded;
+    return campaign.ordinal() > recorded.ordinal() ? campaign : recorded;
+  }
+
+  static Tier recorded(ServerPlayer player) {
+    String name = player.getData(ApotheosisContent.STORY_TIER);
+    for (Tier tier : Tier.values()) if (tier.name().equals(name)) return tier;
+    return null;
   }
 
   /**
@@ -107,8 +125,8 @@ public final class ApotheosisTiers {
   }
 
   /**
-   * Grants every missing criterion of each reached tier, then moves the active World Tier to the
-   * campaign's tier when it differs. Returns the number of criteria granted.
+   * Grants every missing criterion of each reached tier, records the story tier and moves the
+   * active World Tier to it when it differs. Returns the number of criteria granted.
    */
   public static int sync(ServerPlayer player) {
     var campaign = campaignOf(player);
@@ -122,12 +140,14 @@ public final class ApotheosisTiers {
     return holder != null && player.getAdvancements().getOrStartProgress(holder).isDone();
   }
 
-  /** Sets the campaign's tier if it differs; returns true when the tier changed. */
+  /** Records and applies the story tier; returns true when the active World Tier changed. */
   static boolean enforce(ServerPlayer player, Campaigns.Campaign campaign) {
+    Tier recorded = recorded(player);
+    Tier target = story(recorded, target(campaign, tier -> unlocked(player, tier)));
+    if (target == null) return false;
+    if (target != recorded) player.setData(ApotheosisContent.STORY_TIER, target.name());
     var tiers = access();
     if (tiers == null) return false;
-    Tier target = target(campaign, tier -> unlocked(player, tier));
-    if (target == null) return false;
     try {
       if (tiers.get(player) == target) return false;
       tiers.set(player, target);

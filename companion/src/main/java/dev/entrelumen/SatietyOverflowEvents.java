@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 import net.minecraft.core.Holder;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -24,6 +25,7 @@ import net.minecraft.util.profiling.ProfilerFiller;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.food.FoodData;
 import net.minecraft.world.food.FoodProperties;
 import net.neoforged.bus.api.EventPriority;
 import net.neoforged.neoforge.common.NeoForge;
@@ -31,14 +33,25 @@ import net.neoforged.neoforge.common.util.FakePlayer;
 import net.neoforged.neoforge.event.AddReloadListenerEvent;
 import net.neoforged.neoforge.event.entity.living.LivingEntityUseItemEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
+import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
+import net.neoforged.neoforge.event.tick.ServerTickEvent;
 import org.slf4j.Logger;
 
 /**
- * Server glue for {@link SatietyOverflow}. It reads the native item-use events, so every food or
- * drink that goes through the vanilla use cycle counts, from any mod: the last {@code Tick} before
- * completion records hunger and saturation, and {@code Finish} (fired after the food is applied)
- * compares that snapshot with the item's food values. Foods eaten in place from a block (cake,
- * pies) never fire these events and are not converted.
+ * Server glue for {@link SatietyOverflow}. Two native paths feed the same formula, cooldown and
+ * glut:
+ *
+ * <ul>
+ *   <li>Items: every food or drink that goes through the vanilla use cycle, from any mod. The last
+ *       {@code LivingEntityUseItemEvent.Tick} before completion records hunger and saturation, and
+ *       {@code Finish} (fired after the food is applied) compares that snapshot with the item's
+ *       food values.
+ *   <li>Blocks: cake, candle cake, Farmer's Delight pies and any block that feeds the player in
+ *       place. {@code PlayerInteractEvent.RightClickBlock} opens a bite window before the block
+ *       runs. While it is open, {@code FoodDataMixin} reports every {@code FoodData.add} on that
+ *       player's food data together with the state just before the bite. The window closes after
+ *       the interaction, at the next server tick boundary, and the bite is converted once.
+ * </ul>
  */
 public final class SatietyOverflowEvents {
   private static final Logger LOGGER = LogUtils.getLogger();
@@ -48,8 +61,20 @@ public final class SatietyOverflowEvents {
 
   private static volatile SatietyOverflow.Settings settings = SatietyOverflow.DEFAULTS;
   private static final Map<UUID, Snapshot> BEFORE = new HashMap<>();
+  /** Open block-bite windows by food data identity; read by the mixin on any thread. */
+  private static final Map<FoodData, Bite> BITES = new ConcurrentHashMap<>();
 
   record Snapshot(int food, float saturation, long tick) {}
+
+  /** Surplus measured while one block interaction runs. */
+  private static final class Bite {
+    final ServerPlayer player;
+    double points;
+
+    Bite(ServerPlayer player) {
+      this.player = player;
+    }
+  }
 
   /** What one meal did; returned for tests and diagnostics. */
   public record Result(double points, double effective, boolean coolingDown, List<MobEffectInstance> granted) {
@@ -63,6 +88,9 @@ public final class SatietyOverflowEvents {
     // First on Finish, so a Spice of Life milestone message sent in the same tick is the one shown.
     NeoForge.EVENT_BUS.addListener(EventPriority.HIGHEST, SatietyOverflowEvents::onUseFinish);
     NeoForge.EVENT_BUS.addListener(SatietyOverflowEvents::onLogout);
+    NeoForge.EVENT_BUS.addListener(EventPriority.LOWEST, SatietyOverflowEvents::onRightClickBlock);
+    NeoForge.EVENT_BUS.addListener((ServerTickEvent.Pre event) -> closeBites());
+    NeoForge.EVENT_BUS.addListener((ServerTickEvent.Post event) -> closeBites());
     NeoForge.EVENT_BUS.addListener((AddReloadListenerEvent event) -> event.addListener(new ReloadListener()));
   }
 
@@ -84,6 +112,8 @@ public final class SatietyOverflowEvents {
   static void onUseTick(LivingEntityUseItemEvent.Tick event) {
     if (!(event.getEntity() instanceof ServerPlayer player) || !counts(player)) return;
     if (event.getItem().getFoodProperties(player) == null) return;
+    // An item meal is measured by its own snapshot, never also as a block bite.
+    closeBite(player.getFoodData());
     var food = player.getFoodData();
     BEFORE.put(player.getUUID(),
         new Snapshot(food.getFoodLevel(), food.getSaturationLevel(), player.level().getGameTime()));
@@ -101,6 +131,37 @@ public final class SatietyOverflowEvents {
 
   private static void onLogout(PlayerEvent.PlayerLoggedOutEvent event) {
     BEFORE.remove(event.getEntity().getUUID());
+    BITES.remove(event.getEntity().getFoodData());
+  }
+
+  /** Before the block runs: opens a bite window for this player, closing any previous one. */
+  static void onRightClickBlock(PlayerInteractEvent.RightClickBlock event) {
+    if (!(event.getEntity() instanceof ServerPlayer player) || !counts(player)) return;
+    closeBite(player.getFoodData());
+    BITES.put(player.getFoodData(), new Bite(player));
+  }
+
+  /**
+   * Called by {@code FoodDataMixin} at the head of {@code FoodData.add}, before vanilla clamps the
+   * values. Only food data with an open bite window is measured; everything else returns at once.
+   */
+  public static void onFoodAdded(FoodData food, int nutrition, float saturation) {
+    if (BITES.isEmpty()) return;
+    var bite = BITES.get(food);
+    if (bite == null) return;
+    bite.points += SatietyOverflow.overflow(food.getFoodLevel(), food.getSaturationLevel(), nutrition, saturation);
+  }
+
+  /** After the interaction: converts the surplus of every open bite window. */
+  static void closeBites() {
+    if (BITES.isEmpty()) return;
+    for (var food : List.copyOf(BITES.keySet())) closeBite(food);
+  }
+
+  private static void closeBite(FoodData food) {
+    var bite = BITES.remove(food);
+    if (bite == null || !(bite.points > 0) || bite.player.isRemoved() || !counts(bite.player)) return;
+    convertPoints(bite.player, bite.points, settings, bite.player.getRandom());
   }
 
   static long now(ServerPlayer player) {
@@ -117,9 +178,14 @@ public final class SatietyOverflowEvents {
    */
   public static Result convert(ServerPlayer player, int food, float saturation, int nutrition,
       float foodSaturation, SatietyOverflow.Settings settings, RandomSource random) {
-    if (!settings.enabled()) return Result.NONE;
-    double points = SatietyOverflow.overflow(food, saturation, nutrition, foodSaturation);
-    if (!(points > 0)) return Result.NONE;
+    return convertPoints(player, SatietyOverflow.overflow(food, saturation, nutrition, foodSaturation),
+        settings, random);
+  }
+
+  /** Applies glut, cooldown and the plan to the surplus of one meal or bite. */
+  static Result convertPoints(ServerPlayer player, double points, SatietyOverflow.Settings settings,
+      RandomSource random) {
+    if (!settings.enabled() || !(points > 0)) return Result.NONE;
     long now = now(player);
     CompoundTag tag = player.getPersistentData().getCompound(TAG);
     double glut = SatietyOverflow.decay(tag.getDouble("glut"), now - tag.getLong("glut_at"),

@@ -310,8 +310,8 @@ public final class ApotheosisGameTests {
   /**
    * PENDING: written on 24 September 2026 with the story-set tiers and not yet run on the
    * installed pack. The pack config must disable manual selection (and sync that to clients), the
-   * companion tick must move the real Apotheosis tier with the campaign, up and down, and a tier
-   * set behind the story's back must be put back.
+   * companion tick must raise the real Apotheosis tier with the campaign, a tier set behind the
+   * story's back must be put back, and a lower campaign must never lower it.
    */
   @GameTest(template = "empty", timeoutTicks = 400)
   public static void worldTierFollowsTheStoryAndCannotBeChosen(GameTestHelper helper) throws Exception {
@@ -346,8 +346,12 @@ public final class ApotheosisGameTests {
         campaign.act = 1;
         campaign.completed.remove(CampaignMilestones.LAST_HORIZON);
         ApotheosisTiers.sync(player);
-        helper.assertTrue(activeTier(player).equals("HAVEN") && apotheosisUnlocked(player, "PINNACLE"),
-            "An earlier campaign did not lower the tier, or an unlock was revoked");
+        helper.assertTrue(activeTier(player).equals("PINNACLE") && apotheosisUnlocked(player, "PINNACLE")
+            && "PINNACLE".equals(player.getData(ApotheosisContent.STORY_TIER)),
+            "An earlier campaign lowered the tier, lost the record or revoked an unlock");
+        chooseTier(player, "HAVEN");
+        ApotheosisTiers.sync(player);
+        helper.assertTrue(activeTier(player).equals("PINNACLE"), "A lower chosen tier survived");
       } catch (ReflectiveOperationException error) {
         throw new IllegalStateException(error);
       } finally {
