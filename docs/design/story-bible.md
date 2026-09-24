@@ -70,6 +70,14 @@ Para contestarles hace falta un artefacto que se perdió en el Aether. La entida
 - **La brújula sigue al equipo**, no a cada jugador.
 - **Aldeanos de Solsticio:** unos pocos personajes con nombre (alcalde, inventora, jardinero, etc.) dan las misiones; el resto son aldeanos con ropa de Heliodor.
 
+## Estructura de actos (24 de septiembre)
+
+- **Títulos:** mezcla. Se mantienen los que encajan y cambian los que chocan con la historia nueva, sobre todo V y VI; VI pasa a ser «Solsticio».
+- **Revelación por partes:** pistas desde el acto I. En el acto IV, el Templo de la Luz Sagrada revela la fusión y **se vence al Sun Spirit al final del acto IV**. Su llave hace que el Atlas hable claro.
+- **Acto V:** construir el Arca sabiendo todo. El Arca forja la Llave de Luz.
+- **Acto VI:** Solsticio.
+- **Las 171 quests actuales** conservan tareas y progresión, pero su texto se reescribe con el lore nuevo: Heliodor, la Inventora y la luz.
+
 ## Personajes de Solsticio (24 de septiembre)
 
 - **La Alcaldesa:** guardiana del Ayuntamiento y del portal. Carga la culpa de haber apoyado la fusión y da la misión final.
