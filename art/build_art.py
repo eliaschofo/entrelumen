@@ -34,6 +34,7 @@ ANIMATION = {'animation': {'frametime': 3, 'frames': [{'index': 0, 'time': 40}, 
 HANDHELD = {'luminous_sword', 'luminous_pickaxe', 'luminous_axe', 'luminous_shovel', 'luminous_hoe'}
 ITEMS += list(ANIMATED) + sorted(HANDHELD) + ['luminous_helmet', 'luminous_chestplate', 'luminous_leggings', 'luminous_boots']
 ARMOR_LAYERS = ['luminous_layer_1', 'luminous_layer_2']   # 64x32 PNG sources in art/armor/
+COMPASS_DIMENSIONS = ['overworld', 'nether', 'end', 'aether', 'twilight', 'other']   # entrelumen:dimension 0..5
 # Enchanting shelves (cube_column: side + end) and the Atlas Library (cube_bottom_top).
 SHELVES = {'cartographer_shelf': 'shelf_end_wood', 'patina_shelf': 'shelf_end_copper',
            'lumen_shelf': 'shelf_end_tuff', 'horizon_shelf': 'shelf_end_verdigris'}
@@ -136,6 +137,30 @@ def expected():
             anim = FIRE_ANIMATION if key.startswith('item/luminosity_') else ANIMATION
             out[('pack', f'textures/{key}.png.mcmeta')] = js(anim)
             out[('mod', f'textures/{key}.png.mcmeta')] = js(anim)
+    # Heliodor compass: 32 traced vanilla frames per destination colour (art/authoring/trace_compass.py).
+    # Overrides follow vanilla's angle thresholds; later entries win, so higher dimension indices and the
+    # grey "no trace" states (entrelumen:state >= 3) come after.
+    compass_models = []
+    thresholds = [0.0] + [(i + 0.5) / 32 for i in range(32)]
+    frame_for = [16] + [(17 + i) % 32 for i in range(32)]
+    for dim in COMPASS_DIMENSIONS + ['none']:
+        for frame in range(32):
+            name = f'heliodor_compass/{dim}_{frame:02d}'
+            tex = Image.open(ART / 'compass' / f'{dim}_{frame:02d}.png').convert('RGBA')
+            images['item/' + name] = tex
+            for dest in ('pack', 'mod'):
+                out[(dest, f'textures/item/{name}.png')] = png_bytes(tex)
+                out[(dest, f'models/item/{name}.json')] = js({'parent': 'minecraft:item/generated', 'textures': {'layer0': 'entrelumen:item/' + name}})
+    for index, dim in enumerate(COMPASS_DIMENSIONS):
+        for th, frame in zip(thresholds, frame_for):
+            compass_models.append({'predicate': {'entrelumen:dimension': index, 'entrelumen:angle': th},
+                                   'model': f'entrelumen:item/heliodor_compass/{dim}_{frame:02d}'})
+    for th, frame in zip(thresholds, frame_for):
+        compass_models.append({'predicate': {'entrelumen:state': 3, 'entrelumen:angle': th},
+                               'model': f'entrelumen:item/heliodor_compass/none_{frame:02d}'})
+    for dest in ('pack', 'mod'):
+        out[(dest, 'models/item/heliodor_compass.json')] = js({'parent': 'minecraft:item/generated',
+            'textures': {'layer0': 'entrelumen:item/heliodor_compass/overworld_16'}, 'overrides': compass_models})
     for name in ARMOR_LAYERS:
         layer = Image.open(ART / 'armor' / f'{name}.png').convert('RGBA')
         assert layer.size == (64, 32), f'{name} must be 64x32'
@@ -176,8 +201,8 @@ def target(dest, rel):
 def previews(images):
     icon = Image.new('RGBA', (128, 128), (20, 20, 23, 255))
     icon.alpha_composite(images['item/atlas'].resize((128, 128), Image.Resampling.NEAREST))
+    images = {k: v for k, v in images.items() if k.startswith(('item/', 'block/')) and not k.startswith('item/heliodor_compass/')}
     sheet_items = [k for k in images if k.startswith('item/')]
-    images = {k: v for k, v in images.items() if k.startswith(('item/', 'block/'))}
     sheet_blocks = [k for k in images if k.startswith('block/')]
     scale, pad = 6, 34
     cols = 7
@@ -206,7 +231,7 @@ def main():
     provenance = json.loads((GRIDS / 'provenance.json').read_text(encoding='utf-8'))
     assert set(provenance['item']) == set(ITEMS) and set(provenance['block']) == set(BLOCKS), 'provenance must cover every grid'
     for key, image in images.items():
-        if key.startswith('models/armor/'):
+        if key.startswith(('models/armor/', 'item/heliodor_compass/')):
             continue
         pixels = [image.getpixel((x, y)) for y in range(16) for x in range(16)]
         alphas = {p[3] for p in pixels}
