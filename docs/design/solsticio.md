@@ -42,12 +42,13 @@ Runtime additions:
 | `arrival` | 1 | Feet position where the Light Key, the Overworld rift and void rescues land, facing the portal. If missing, the loader logs an error and uses the highest free block at x = z = 0. |
 | `town_hall_portal` | 1 | Feet position of the portal anchor (`entrelumen:solsticio_portal`, placed dormant by the loader) inside the Ayuntamiento. |
 | `town_hall_waystone` | 0–1 | Lower block of the global waystone placed when the portal opens and Waystones is installed (it is two blocks tall; keep the block above free). Without it the paired-portal fallback is used. |
-| `trading_hall` | 0–1 | Reference point of the trading hall; recorded for the future trade system. |
+| `trading_hall` | 0–1 | Centre of the trading hall: the six natives stand around it, and villagers from elsewhere that enter its zone settle ([solsticio-commerce.md](solsticio-commerce.md)). |
 | `player_plot` | any | North-west corner of one 16 × 16 plot, on its first free layer. The plot extends +15 in x and z, 5 blocks down and 40 up from the marker. Plots are numbered by (z, x) of their markers. |
 | `mayor`, `inventor`, `gardener`, `priest` | 0–1 each | Stand points of the named villagers; recorded for the future NPC system. |
 | `provisional` | 0–1 | Only in placeholder templates: logs a warning and marks the city provisional. The definitive city must not carry it. |
+| `shop:<type>`, `sidequest:<id>`, `resident`, `easter:<name>` | any | Shopkeepers, side-quest NPCs, common villagers' homes and easter eggs; contract and types in [solsticio-commerce.md](solsticio-commerce.md). |
 
-Unknown marker names are logged and ignored.
+Unknown marker names are logged and ignored, and so are parameterized markers without their argument (`shop`) or plain ones with one (`resident:1`).
 
 **Placement.** Once per world, the first time something needs the city: the Ark activation (key forging), a Light Key use, anyone entering the dimension, or `/entrelumen admin solsticio place`. Off the server thread, pieces are read (the datafixer only runs for older `DataVersion`s) and cut into 16-block cubes aligned to world chunk sections; empty cubes are dropped. Meanwhile a non-ticking chunk ticket (`entrelumen_solsticio`) loads the footprint's chunks in the background, so nothing is generated inside a tick. The server then places whole cubes, bottom-up per column, until 15 ms of the tick are spent (always at least one cube). Progress (`slicesDone`) is saved, so a restart resumes where it stopped; a changed template list or cutting format during an interrupted placement restarts it. When done, the ticket is released, `SolsticioData.placements` becomes 1 and the city is never placed again: a template changed after a world placed the city needs an explicit migration, not a re-run.
 
@@ -126,6 +127,6 @@ Stable IDs: `light_key`, `light_key_broken`, `solsticio_portal`, `heliodor_relic
 
 - In-game visual review on a client: sky, fog, motes, portal particles and the controller's city under eternal noon (for example whether its daylight detectors toggle any copper bulb on the first tick).
 - Final art for the five items and the portal (controller).
-- Missions that award the relics, named villagers on their marker points, the trading hall's trades and moved-villager discounts.
+- Missions that award the relics and the named villagers on their marker points. The trading hall's natives, the shops and moved-villager discounts are in [solsticio-commerce.md](solsticio-commerce.md).
 - Act renumbering (Ark → V, Solsticio → VI): only `Solsticio.GATE` changes.
 - Full-pack check with Waystones loaded (the reflection path is not exercised by the isolated tests).

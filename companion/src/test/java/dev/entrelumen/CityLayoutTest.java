@@ -92,6 +92,20 @@ class CityLayoutTest {
   }
 
   @Test
+  void commerceMarkersCarryTheirArgument() {
+    assertEquals(new CityLayout.Parsed(CityLayout.Marker.SHOP, "bookstore"), CityLayout.parseMarker("shop:bookstore").orElseThrow());
+    assertEquals(new CityLayout.Parsed(CityLayout.Marker.SHOP, "curiosities"),
+        CityLayout.parseMarker(" Entrelumen:Shop:Curiosities ").orElseThrow());
+    assertEquals(new CityLayout.Parsed(CityLayout.Marker.SIDEQUEST, "37_inn"), CityLayout.parseMarker("sidequest:37_inn").orElseThrow());
+    assertEquals(new CityLayout.Parsed(CityLayout.Marker.EASTER, "fountain_coin"), CityLayout.parseMarker("easter:fountain_coin").orElseThrow());
+    assertEquals(new CityLayout.Parsed(CityLayout.Marker.RESIDENT, ""), CityLayout.parseMarker("resident").orElseThrow());
+    assertEquals(new CityLayout.Parsed(CityLayout.Marker.ARRIVAL, ""), CityLayout.parseMarker("arrival").orElseThrow());
+    assertEquals(CityLayout.Marker.SHOP, CityLayout.Marker.parse("shop:maps").orElseThrow());
+    for (String bad : List.of("shop", "shop:", "shop:Two Words", "resident:1", "arrival:x", "easter:", "sidequest", "bogus:1"))
+      assertTrue(CityLayout.parseMarker(bad).isEmpty(), bad + " should be unknown");
+  }
+
+  @Test
   void plotsAreSixteenSquareWithRoomToDigAndBuild() {
     var box = CityLayout.plotBox(10, 69, -20);
     assertEquals(16, box.maxX() - box.minX() + 1);

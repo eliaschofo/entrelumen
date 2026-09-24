@@ -121,6 +121,7 @@ public final class Solsticio {
     StructureProtection.register();
     StructureProtection.registerProvider(REGION_ID, SolsticioCity::regions);
     SolsticioTravel.register();
+    SolsticioCommerce.register(bus, container);
     NeoForge.EVENT_BUS.addListener((ServerTickEvent.Post event) -> {
       SolsticioCity.tick(event.getServer());
       SolsticioTravel.tick(event.getServer());
@@ -209,6 +210,8 @@ public final class Solsticio {
       lines.add("plot " + i + " at " + plot.corner.toShortString() + " owner="
           + (plot.owner == null ? "-" : plot.owner + " (" + plot.ownerName + ")"));
     }
+    lines.add("commerce: liberated=" + data.liberated + " sites=" + data.commerce.sites.size() + " easterEggs="
+        + data.commerce.easterEggs.keySet() + " (details: /entrelumen admin solsticio commerce)");
     lines.add("portal armed=" + data.portalArmed + " relics=" + data.portalRelics + " waystone="
         + data.waystoneRegistered + " overworldRift=" + data.overworldPortal + " forgedKeys=" + data.forgedKeys.size());
     lines.forEach(line -> source.sendSuccess(() -> Component.literal(line), false));

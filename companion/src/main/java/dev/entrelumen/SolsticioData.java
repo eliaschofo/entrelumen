@@ -75,6 +75,14 @@ public final class SolsticioData extends SavedData {
   public final Set<UUID> forgedKeys = new TreeSet<>();
   public final Map<UUID, ReturnPoint> returns = new HashMap<>();
 
+  /**
+   * The Entrelumen was liberated (the final quest will set it; operators toggle it with
+   * {@code /entrelumen admin solsticio liberated}): every Solsticio merchant gets cheaper.
+   */
+  public boolean liberated;
+  /** Shopkeepers, natives, side-quest NPCs, homes and easter eggs of the placed city. */
+  public final CommerceSites commerce = new CommerceSites();
+
   public static SolsticioData get(MinecraftServer server) {
     return server.overworld().getDataStorage()
         .computeIfAbsent(new Factory<>(SolsticioData::new, SolsticioData::load), "entrelumen_solsticio");
@@ -107,6 +115,7 @@ public final class SolsticioData extends SavedData {
     portalArmedAt = 0;
     overworldPortal = null;
     waystoneRegistered = false;
+    commerce.clear();
   }
 
   private static void putPos(CompoundTag tag, String key, BlockPos pos) {
@@ -175,6 +184,8 @@ public final class SolsticioData extends SavedData {
         // Skip a malformed player id; that player falls back to their bed or the world spawn.
       }
     }
+    data.liberated = tag.getBoolean("liberated");
+    data.commerce.load(tag.getCompound("commerce"));
     return data;
   }
 
@@ -229,6 +240,8 @@ public final class SolsticioData extends SavedData {
       returnTag.put(player.toString(), entry);
     });
     tag.put("returns", returnTag);
+    tag.putBoolean("liberated", liberated);
+    tag.put("commerce", commerce.save());
     return tag;
   }
 }
