@@ -1,0 +1,418 @@
+{
+  "chapter": "guide_entrelumen_start",
+  "group": "entrelumen",
+  "act": "I",
+  "icon": "entrelumen:heliodor_pedestal",
+  "title": {
+    "en_us": "Waking Up: the Start, the Ruins and Their Light",
+    "es_es": "Despertar: el inicio, las ruinas y su luz"
+  },
+  "subtitle": {
+    "en_us": "Why you arrive with nothing, what the start ruin holds, and how Heliodor's places protect themselves.",
+    "es_es": "Por qué llegás sin nada, qué guarda la ruina inicial y cómo se protegen los lugares de Heliodor."
+  },
+  "quests": [
+    {
+      "key": "entrelumen_start_welcome",
+      "deps": [],
+      "type": "checkmark",
+      "layout": {
+        "x": 0,
+        "y": 0,
+        "size": 2.0,
+        "shape": "hexagon"
+      },
+      "en_us": [
+        "You Wake Among Ruins",
+        "Every ENTRELUMEN world starts the same way: you appear beside a small ruined sun patio, with an empty inventory and no manual in your hands. That is on purpose. The ruin, its compass and the Atlas are your only guides, and the rest is yours to discover.\n\nThis chapter explains how the start works and why Heliodor's places cannot be broken."
+      ],
+      "es_es": [
+        "Despertás entre ruinas",
+        "Todo mundo de ENTRELUMEN empieza igual: aparecés al lado de un pequeño patio del sol en ruinas, con el inventario vacío y sin ningún manual en las manos. Es a propósito. La ruina, su brújula y el Atlas son tus únicas guías, y el resto es tuyo para descubrir.\n\nEste capítulo explica cómo funciona el inicio y por qué los lugares de Heliodor no se pueden romper."
+      ],
+      "sources": [
+        "repo:docs/design/heliodor-compass.md",
+        "repo:docs/design/story-bible.md"
+      ]
+    },
+    {
+      "key": "entrelumen_start_empty",
+      "deps": [
+        "entrelumen_start_welcome"
+      ],
+      "type": "checkmark",
+      "icon": "minecraft:bundle",
+      "layout": {
+        "x": 3,
+        "y": -2,
+        "size": 1.25,
+        "shape": "pentagon"
+      },
+      "en_us": [
+        "An Empty Inventory, on Purpose",
+        "Several mods normally hand out books or kits when you join. The pack turns every one of them off: Ars Nouveau's notebook, the Integrated Dynamics manual, the Herbs and Harvest book, Modern Industrialization's guidebook, Silent Gear's blueprint package and material book, the Actually Additions booklet on your first craft, and a plush toy.\n\nThe books are still craftable when you want them. Nothing is lost, only not gifted."
+      ],
+      "es_es": [
+        "Un inventario vacío, a propósito",
+        "Varios mods suelen regalar libros o kits al entrar. El pack apaga todos: la libreta de Ars Nouveau, el manual de Integrated Dynamics, el libro de Herbs and Harvest, la guía de Modern Industrialization, el paquete de planos y el libro de materiales de Silent Gear, el folleto de Actually Additions al primer crafteo y un peluche.\n\nLos libros se siguen fabricando cuando los quieras. No se pierde nada, sólo no se regala."
+      ],
+      "sources": [
+        "repo:docs/design/heliodor-compass.md",
+        "repo:pack/config/ars_nouveau-common.toml",
+        "repo:pack/config/silentgear-common.toml",
+        "repo:pack/config/modern_industrialization-server.toml",
+        "repo:pack/config/integrateddynamics-common.toml",
+        "repo:pack/config/actuallyadditions-common.toml"
+      ]
+    },
+    {
+      "key": "entrelumen_start_aether_gift",
+      "deps": [
+        "entrelumen_start_empty"
+      ],
+      "type": "checkmark",
+      "optional": true,
+      "icon": "aether:golden_parachute",
+      "layout": {
+        "x": 6,
+        "y": -3.5,
+        "size": 1.0,
+        "shape": "diamond"
+      },
+      "en_us": [
+        "Quirk: the Aether Still Greets You",
+        "One gift stays: the first time you enter the Aether, the Aether mod gives you its Book of Lore and golden parachutes. It is not a login gift, and the parachutes are fall safety in a world of floating islands.\n\nThe Aether portal frame item is not given at world creation."
+      ],
+      "es_es": [
+        "Particularidad: el Aether igual te saluda",
+        "Un regalo se queda: la primera vez que entrás al Aether, el mod del Aether te da su Libro de Historia y paracaídas dorados. No es un regalo al conectarte, y los paracaídas son seguridad contra caídas en un mundo de islas flotantes.\n\nEl ítem de marco de portal del Aether no se entrega al crear el mundo."
+      ],
+      "sources": [
+        "repo:docs/design/heliodor-compass.md",
+        "repo:pack/config/aether-common.toml",
+        "repo:docs/design/story-bible.md"
+      ]
+    },
+    {
+      "key": "entrelumen_start_ruin",
+      "deps": [
+        "entrelumen_start_welcome"
+      ],
+      "type": "checkmark",
+      "icon": "minecraft:chiseled_tuff",
+      "layout": {
+        "x": 3,
+        "y": 2,
+        "size": 1.5,
+        "shape": "square"
+      },
+      "en_us": [
+        "The Start Ruin",
+        "A new world places the &estart ruin&r once, near spawn, on the flattest ground within 64 blocks: a round patio of tuff and calcite with an oxidized copper sun in the floor, eight quartz columns (four of them broken) and the &eHeliodor Pedestal&r in the middle.\n\nThe world spawn moves beside it, and a new player's first login lands exactly there, facing the ruin."
+      ],
+      "es_es": [
+        "La ruina inicial",
+        "Un mundo nuevo coloca la &eruina inicial&r una sola vez, cerca del spawn, en el terreno más plano a menos de 64 bloques: un patio redondo de toba y calcita con un sol de cobre oxidado en el piso, ocho columnas de cuarzo (cuatro rotas) y el &ePedestal de Heliodor&r en el medio.\n\nEl punto de aparición del mundo se mueve a su lado, y el primer ingreso de un jugador nuevo cae exactamente ahí, mirando a la ruina."
+      ],
+      "sources": [
+        "repo:docs/design/heliodor-compass.md",
+        "repo:companion/src/main/java/dev/entrelumen/HeliodorRuins.java"
+      ]
+    },
+    {
+      "key": "entrelumen_start_pedestal",
+      "deps": [
+        "entrelumen_start_ruin"
+      ],
+      "type": "item",
+      "item": "entrelumen:heliodor_compass",
+      "layout": {
+        "x": 6,
+        "y": 2,
+        "size": 1.25,
+        "shape": "circle"
+      },
+      "en_us": [
+        "Take the Compass",
+        "Use the pedestal to receive the &eHeliodor Compass&r: one per player, ever, in each world. The compass's first destination is the ruin itself, until you wake the Atlas with a book and a copper ingot.\n\nThe Compass and Atlas chapters take it from there."
+      ],
+      "es_es": [
+        "Tomá la brújula",
+        "Usá el pedestal para recibir la &eBrújula de Heliodor&r: una por jugador, para siempre, en cada mundo. El primer destino de la brújula es la propia ruina, hasta que despiertes el Atlas con un libro y un lingote de cobre.\n\nLos capítulos de la Brújula y del Atlas siguen desde ahí."
+      ],
+      "sources": [
+        "repo:docs/design/heliodor-compass.md",
+        "repo:content/compass_targets.json"
+      ]
+    },
+    {
+      "key": "entrelumen_start_first_steps",
+      "deps": [
+        "entrelumen_start_pedestal"
+      ],
+      "type": "item",
+      "item": "minecraft:copper_ingot",
+      "layout": {
+        "x": 9,
+        "y": 2,
+        "size": 1.0,
+        "shape": "circle"
+      },
+      "en_us": [
+        "First Steps That Work",
+        "A practical opening: take the compass, punch a tree, make wooden tools and a crafting table, find stone and coal, and look for &ecopper&r: the Atlas and its first projects ask for copper ingots, paper and glass.\n\nThe compass will point you to a village for bread and paper, and then to trial chambers, rich in copper and tuff like the ruin."
+      ],
+      "es_es": [
+        "Primeros pasos que sirven",
+        "Una apertura práctica: tomá la brújula, pegale a un árbol, hacé herramientas de madera y una mesa de crafteo, buscá piedra y carbón, y buscá &ecobre&r: el Atlas y sus primeros proyectos piden lingotes de cobre, papel y vidrio.\n\nLa brújula te va a llevar a una aldea por pan y papel, y después a las cámaras de desafío, ricas en cobre y toba como la ruina."
+      ],
+      "sources": [
+        "repo:companion/src/main/resources/data/entrelumen/campaign/projects.json",
+        "repo:content/compass_targets.json"
+      ]
+    },
+    {
+      "key": "entrelumen_start_protected",
+      "deps": [
+        "entrelumen_start_ruin"
+      ],
+      "type": "checkmark",
+      "icon": "minecraft:bedrock",
+      "layout": {
+        "x": 9,
+        "y": -1,
+        "size": 1.5,
+        "shape": "hexagon"
+      },
+      "en_us": [
+        "Heliodor's Light Keeps These Places",
+        "Heliodor's ruins cannot be broken or griefed. Inside a protected ruin, breaking and placing blocks is refused (\"Heliodor's light keeps this place as it is\"), and so are explosions, pistons, flowing fluids, spreading fire, mob griefing and trampling. Item frames, paintings and armor stands cannot be damaged.\n\nThe rule is checked on the server at the moment it happens, so spectator mode, noclip or creative do not get around it."
+      ],
+      "es_es": [
+        "La luz de Heliodor cuida estos lugares",
+        "Las ruinas de Heliodor no se pueden romper ni vandalizar. Dentro de una ruina protegida se rechaza romper y poner bloques (\"La luz de Heliodor conserva este lugar tal como está\"), y también las explosiones, los pistones, los fluidos que corren, el fuego que se propaga, los destrozos de mobs y el pisoteo. Los marcos, cuadros y soportes de armadura no se pueden dañar.\n\nLa regla se comprueba en el servidor en el momento, así que el modo espectador, el noclip o el creativo no la esquivan."
+      ],
+      "sources": [
+        "repo:companion/src/main/java/dev/entrelumen/StructureProtection.java",
+        "repo:docs/design/solsticio.md",
+        "repo:companion/src/main/resources/assets/entrelumen/lang/en_us.json"
+      ]
+    },
+    {
+      "key": "entrelumen_start_free_gated",
+      "deps": [
+        "entrelumen_start_protected"
+      ],
+      "type": "checkmark",
+      "icon": "minecraft:lectern",
+      "layout": {
+        "x": 12,
+        "y": -2.5,
+        "size": 1.25,
+        "shape": "circle"
+      },
+      "en_us": [
+        "Free, Sealed and Locked",
+        "Right-clicks inside a protected place fall in three groups:\n\n- &efree&r: doors, trapdoors, gates, buttons, levers, bells, beds, simple workstations, ender chests and the pedestal;\n- &esealed&r: chests, barrels and other containers, lecterns and altars; they open only when your team's campaign reaches that place's act (\"Sealed until your team reaches this part of the story\"), and nobody can break them;\n- &elocked&r: everything else that would change a block, and anvils.\n\nA frame's item can be taken once your team is unlocked; the frame stays."
+      ],
+      "es_es": [
+        "Libre, sellado y trabado",
+        "Los clics derechos dentro de un lugar protegido caen en tres grupos:\n\n- &elibres&r: puertas, trampillas, portones, botones, palancas, campanas, camas, estaciones de trabajo simples, cofres de ender y el pedestal;\n- &esellados&r: cofres, barriles y otros contenedores, atriles y altares; se abren sólo cuando la campaña de tu equipo llega al acto de ese lugar (\"Sellado hasta que tu equipo llegue a esta parte de la historia\"), y nadie puede romperlos;\n- &etrabados&r: todo lo demás que cambiaría un bloque, y los yunques.\n\nEl ítem de un marco se puede sacar cuando tu equipo está habilitado; el marco se queda."
+      ],
+      "sources": [
+        "repo:docs/design/solsticio.md",
+        "repo:companion/src/main/resources/data/entrelumen/tags/block/protection/usable.json",
+        "repo:companion/src/main/resources/data/entrelumen/tags/block/protection/gated.json",
+        "repo:companion/src/main/resources/data/entrelumen/tags/block/protection/locked.json",
+        "repo:companion/src/main/resources/assets/entrelumen/lang/en_us.json"
+      ]
+    },
+    {
+      "key": "entrelumen_start_why",
+      "deps": [
+        "entrelumen_start_protected"
+      ],
+      "type": "checkmark",
+      "optional": true,
+      "icon": "minecraft:written_book",
+      "layout": {
+        "x": 12,
+        "y": 0.5,
+        "size": 1.0,
+        "shape": "diamond"
+      },
+      "en_us": [
+        "Why Ruins Are Protected",
+        "The ruins are part of the story, like levels in a video game: the lore and the key pieces inside open only when your team gets there, whatever tricks anyone uses. Protection also means a friend cannot accidentally blow up the place the compass is pointing to."
+      ],
+      "es_es": [
+        "Por qué las ruinas están protegidas",
+        "Las ruinas son parte de la historia, como los niveles de un videojuego: el lore y las piezas clave de adentro se abren sólo cuando tu equipo llega, use quien use los trucos que sean. La protección además evita que un amigo vuele sin querer el lugar al que apunta la brújula."
+      ],
+      "sources": [
+        "repo:docs/design/story-bible.md",
+        "repo:docs/design/solsticio.md"
+      ]
+    },
+    {
+      "key": "entrelumen_start_tools_quirk",
+      "deps": [
+        "entrelumen_start_free_gated"
+      ],
+      "type": "checkmark",
+      "optional": true,
+      "icon": "minecraft:iron_pickaxe",
+      "layout": {
+        "x": 12,
+        "y": 3.5,
+        "size": 1.0,
+        "shape": "diamond"
+      },
+      "en_us": [
+        "Quirk: Tools Stop at the Edge",
+        "Ultimine, gadgets, construction sticks, Carry On and the land-shaping altars all act as a player, so they stop at a protected ruin's edge. Carry On posts a break check before lifting, which the protection refuses.\n\nBuild around a ruin, not into it."
+      ],
+      "es_es": [
+        "Particularidad: las herramientas se frenan en el borde",
+        "Ultimine, los gadgets, las varas de construcción, Carry On y los altares que modifican el terreno actúan como un jugador, así que se frenan en el borde de una ruina protegida. Carry On hace un chequeo de rotura antes de levantar, que la protección rechaza.\n\nConstruí alrededor de una ruina, no adentro."
+      ],
+      "sources": [
+        "repo:docs/design/mod-pingpong.md",
+        "repo:pack/config/carryon-common.toml",
+        "repo:docs/design/ark-altars.md"
+      ]
+    },
+    {
+      "key": "entrelumen_start_solsticio_link",
+      "deps": [
+        "entrelumen_start_free_gated"
+      ],
+      "type": "checkmark",
+      "icon": "minecraft:calcite",
+      "layout": {
+        "x": 15,
+        "y": -2.5,
+        "size": 1.0,
+        "shape": "pentagon"
+      },
+      "en_us": [
+        "The Same Light Covers Solsticio",
+        "The city at the end of the story uses the same protection, gated by act VI. Its only exceptions are the player plots: 16 by 16, one per team, where your team, and only your team, can build freely.\n\nThe Solsticio chapter explains how to claim one."
+      ],
+      "es_es": [
+        "La misma luz cubre Solsticio",
+        "La ciudad del final de la historia usa la misma protección, habilitada en el acto VI. Sus únicas excepciones son los lotes de jugador: de 16 por 16, uno por equipo, donde tu equipo, y sólo tu equipo, puede construir libremente.\n\nEl capítulo de Solsticio explica cómo reclamar uno."
+      ],
+      "sources": [
+        "repo:docs/design/solsticio.md"
+      ]
+    },
+    {
+      "key": "entrelumen_start_respawn",
+      "deps": [
+        "entrelumen_start_ruin"
+      ],
+      "type": "item",
+      "item": "minecraft:red_bed",
+      "optional": true,
+      "layout": {
+        "x": 3,
+        "y": 5.5,
+        "size": 1.0,
+        "shape": "diamond"
+      },
+      "en_us": [
+        "Tip: Your Spawn Is the Ruin",
+        "Until you sleep in a bed, you respawn at the start ruin. Set a bed or a Comforts sleeping spot near your first base early, and remember that Tombstone keeps your items in a grave where you fall."
+      ],
+      "es_es": [
+        "Truco: tu spawn es la ruina",
+        "Hasta que dormís en una cama, reaparecés en la ruina inicial. Poné una cama cerca de tu primera base temprano, y acordate de que Tombstone guarda tus cosas en una tumba donde caés."
+      ],
+      "sources": [
+        "repo:docs/design/heliodor-compass.md"
+      ]
+    },
+    {
+      "key": "entrelumen_start_existing_worlds",
+      "deps": [
+        "entrelumen_start_respawn"
+      ],
+      "type": "checkmark",
+      "optional": true,
+      "icon": "minecraft:command_block",
+      "layout": {
+        "x": 6,
+        "y": 5.5,
+        "size": 1.0,
+        "shape": "pentagon"
+      },
+      "en_us": [
+        "For Operators: Older Worlds",
+        "The start ruin is placed only in brand-new worlds; existing worlds are never touched. An operator can place it in an older world with &e/entrelumen admin ruin&r (running it again does nothing), and can toggle a personal protection bypass with &e/entrelumen admin protection bypass&r for repairs."
+      ],
+      "es_es": [
+        "Para operadores: mundos anteriores",
+        "La ruina inicial se coloca sólo en mundos nuevos; los mundos existentes nunca se tocan. Un operador puede colocarla en un mundo anterior con &e/entrelumen admin ruin&r (repetirlo no hace nada) y puede activar para sí un bypass de protección con &e/entrelumen admin protection bypass&r para reparaciones."
+      ],
+      "sources": [
+        "repo:docs/design/heliodor-compass.md",
+        "repo:docs/design/solsticio.md",
+        "repo:companion/src/main/java/dev/entrelumen/Entrelumen.java"
+      ]
+    },
+    {
+      "key": "entrelumen_start_residual",
+      "deps": [
+        "entrelumen_start_tools_quirk"
+      ],
+      "type": "checkmark",
+      "optional": true,
+      "icon": "minecraft:decorated_pot",
+      "layout": {
+        "x": 15,
+        "y": 1,
+        "size": 1.0,
+        "shape": "diamond"
+      },
+      "en_us": [
+        "Quirk: What Protection Cannot See",
+        "A few things slip past: blocks changed by other mods without the usual game events, projectiles breaking fragile blocks such as pots, and machines inside a plot that place fluids or blocks right next to a protected one. Placed that way, a fluid or fire cannot spread further.\n\nIf you find a hole in the protection, report it rather than using it."
+      ],
+      "es_es": [
+        "Particularidad: lo que la protección no ve",
+        "Algunas cosas se escapan: bloques que otros mods cambian sin los eventos habituales del juego, proyectiles que rompen bloques frágiles como las vasijas, y máquinas dentro de un lote que ponen fluidos o bloques justo al lado de uno protegido. Puestos así, el fluido o el fuego no se pueden seguir propagando.\n\nSi encontrás un agujero en la protección, reportalo en vez de usarlo."
+      ],
+      "sources": [
+        "repo:docs/design/solsticio.md"
+      ]
+    },
+    {
+      "key": "entrelumen_start_close",
+      "deps": [
+        "entrelumen_start_solsticio_link",
+        "entrelumen_start_residual",
+        "entrelumen_start_first_steps"
+      ],
+      "type": "item",
+      "item": "entrelumen:atlas",
+      "layout": {
+        "x": 18,
+        "y": 0,
+        "size": 2.0,
+        "shape": "hexagon"
+      },
+      "en_us": [
+        "Ready to Leave the Patio",
+        "You know why your pockets start empty, what the ruin holds, how to take your compass and what the light of Heliodor protects. From here, the compass and the Atlas lead the way.\n\nGood luck, traveller."
+      ],
+      "es_es": [
+        "Listo para dejar el patio",
+        "Ya sabés por qué empezás con los bolsillos vacíos, qué guarda la ruina, cómo tomar tu brújula y qué protege la luz de Heliodor. Desde acá, la brújula y el Atlas marcan el camino.\n\nSuerte, viajero."
+      ],
+      "sources": [
+        "repo:docs/design/story-bible.md"
+      ]
+    }
+  ]
+}
