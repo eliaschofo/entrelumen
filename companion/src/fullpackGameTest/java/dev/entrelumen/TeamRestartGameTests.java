@@ -196,6 +196,8 @@ public final class TeamRestartGameTests {
       helper.assertTrue(Files.isRegularFile(playerDataPath(server, id)),
           "Normal logout did not write playerdata/" + id + ".dat");
     server.overworld().getDataStorage().save();
+    // NeoForge writes SavedData on its IO pool; read the file only after that write landed.
+    net.neoforged.neoforge.common.IOUtilities.waitUntilIOWorkerComplete();
     assertDiskCampaigns(helper, server, ownerAProfile.getId(), ownerBProfile.getId(),
         guestProfile.getId(), teamAId, teamBId, false);
 
@@ -297,6 +299,8 @@ public final class TeamRestartGameTests {
     }
 
     server.overworld().getDataStorage().save();
+    // NeoForge writes SavedData on its IO pool; read the file only after that write landed.
+    net.neoforged.neoforge.common.IOUtilities.waitUntilIOWorkerComplete();
     assertDiskCampaigns(helper, server, receipt.ownerA().getId(), receipt.ownerB().getId(),
         receipt.guestA().getId(), receipt.teamA(), receipt.teamB(), true);
     LOGGER.info("ENTRELUMEN_TEAM_RESTART_VERIFY nonce={} proof={} preparedStart={} "
