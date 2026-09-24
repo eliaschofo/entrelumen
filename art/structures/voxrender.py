@@ -17,7 +17,7 @@ CROSS = {'allium', 'cornflower', 'lily_of_the_valley', 'azure_bluet', 'short_gra
          'lightning_rod', 'end_rod', 'candle', 'spore_blossom', 'tall_grass', 'large_fern', 'lilac',
          'peony', 'rose_bush', 'pitcher_plant', 'torchflower_crop', 'sugar_cane', 'bamboo', 'lantern',
          'soul_lantern', 'pointed_dripstone', 'ladder', 'potatoes', 'beetroots'}
-CROSS_TEX = {'wheat': 'wheat_stage7', 'carrots': 'carrots_stage3', 'potatoes': 'potatoes_stage3',
+CROSS_TEX = {'sugar_cane': 'sugar_cane', 'pink_petals': 'pink_petals', 'wheat': 'wheat_stage7', 'carrots': 'carrots_stage3', 'potatoes': 'potatoes_stage3',
              'pointed_dripstone': 'pointed_dripstone_down_tip', 'tall_grass': 'tall_grass_bottom',
              'large_fern': 'large_fern_bottom', 'candle': 'candle', 'beetroots': 'beetroots_stage3'}
 THIN = {'moss_carpet', 'pink_petals', 'daylight_detector', 'white_carpet', 'yellow_carpet',
@@ -69,6 +69,23 @@ def face_textures(state):
     if base in TEXNAME:
         t = TEXNAME[base]
         return t[0], t[1]
+    if base.endswith('_carpet'):
+        wool = base[:-len('_carpet')] + '_wool'
+        return (wool, wool) if _exists(wool) else ('moss_block', 'moss_block')
+    if base.endswith('_bed'):
+        wool = base[:-len('_bed')] + '_wool'
+        return wool, wool
+    if base == 'glass_pane' or base.endswith('_stained_glass_pane'):
+        g = base[:-len('_pane')]
+        return g, g
+    if base.endswith('_door'):
+        half = 'bottom' if 'half=lower' in state else 'top'
+        return base + '_' + half, base + '_' + half
+    if base.startswith('stripped_') and base.endswith('_wood'):
+        log = base[:-len('_wood')] + '_log'
+        return log, log
+    if base == 'beehive':
+        return 'beehive_end', 'beehive_front'
     for suffix in ('_stairs', '_slab', '_wall'):
         if base.endswith(suffix):
             core = base[: -len(suffix)]
@@ -97,6 +114,8 @@ def _sprite(state, face, s):
     top, side = face_textures(state)
     name = _name(state)
     if face == 'cross':
+        if name.startswith('potted_'):
+            name = name[len('potted_'):].replace('flowering_azalea_bush', 'flowering_azalea_side')
         t = CROSS_TEX.get(name) or (name if _exists(name) else (name + '_top' if _exists(name + '_top') else side))
         sp = _texture(t).resize((2 * s, 2 * s), Image.NEAREST)
     elif face == 'top':
@@ -134,7 +153,7 @@ def render(vox, path, scale=6, ground=None, sky=((252, 238, 208), (200, 218, 240
     solid = set()
     for k, v in allv.items():
         n = _name(v)
-        if n in CROSS or n in THIN or n in SEE_THROUGH or n.endswith(('_slab', '_stairs', '_wall', '_leaves',
+        if n in CROSS or n.startswith('potted_') or n in THIN or n in SEE_THROUGH or n.endswith(('_slab', '_stairs', '_wall', '_leaves',
                                                                        '_pane', '_fence', '_trapdoor', '_door')):
             continue
         if 'glass' in n or 'grate' in n:
@@ -162,7 +181,7 @@ def render(vox, path, scale=6, ground=None, sky=((252, 238, 208), (200, 218, 240
         n = _name(b)
         u, v = proj(x, y, z)
         u, v = int(u + ox), int(v + oy)
-        if n in CROSS:
+        if n in CROSS or n.startswith('potted_'):
             im.alpha_composite(_sprite(b, 'cross', s), (u - s, v + s2 - s))
             continue
         half = n.endswith('_slab') and 'type=bottom' in b
