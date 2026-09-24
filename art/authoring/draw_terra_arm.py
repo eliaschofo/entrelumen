@@ -21,7 +21,7 @@ from palette import RAMPS as R  # noqa: E402
 OUT = os.path.join(HERE, '..', 'grids', 'item', 'terra_arm.txt')
 # the curve of the first bent draft mirrored across the anti-diagonal (elbow toward the bottom right),
 # with the bend pushed a touch further
-P0, P1, P2 = (2.2, 12.0), (11.5, 12.7), (11.6, 4.6)     # shoulder, bend control, wrist end
+P0, P1, P2 = (2.4, 12.6), (11.5, 12.7), (11.6, 4.6)     # shoulder, bend control, wrist end
 
 
 def curve(n=400):
