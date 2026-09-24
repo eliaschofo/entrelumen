@@ -114,7 +114,7 @@ Residual risks, not covered: dispensers or modded machines inside a plot that pl
 
 ## Assets
 
-Stable IDs: `light_key`, `light_key_broken`, `solsticio_portal`, `heliodor_relic_1/2/3`. The keys, relics and portal use the controller's art (see the top of this document); the portal is a symmetric quartz-and-copper pedestal (dormant) or a quartz sill with an unshaded `shroomlight` column (open). The portal has no item form (it is unbreakable and only the city places it). EN and ES translations are complete.
+Stable IDs: `light_key`, `light_key_broken`, `solsticio_portal`, `heliodor_relic_1/2/3`. The keys, relics and portal use the controller's art (see the top of this document); the portal is a copper-and-calcite plinth with four sockets (dormant) or the same plinth with a column of light (open). The portal has no item form (it is unbreakable and only the city places it). EN and ES translations are complete.
 
 ## Tests
 
