@@ -219,14 +219,21 @@ public final class AltarFullpackGameTests {
               BlockPos pos = new BlockPos(x, y, z);
               claimedBefore.put(pos, level.getBlockState(pos));
             }
+        // The renewal pass left the land outside the claim level: dig a small pit just west of the
+        // claimed chunk, inside the square, so the work that goes on there includes fills.
+        for (int x = claimed.getMinBlockX() - 3; x < claimed.getMinBlockX(); x++)
+          for (int dy = -1; dy >= -2; dy--)
+            level.setBlock(new BlockPos(x, altarPos.getY() + dy, altarPos.getZ() - 5), Blocks.AIR.defaultBlockState(), 2);
         terraform.addFuel(new ItemStack(Items.COAL, 4));
         terraform.start(level);
         await(helper, () -> terraform.state() == TerraformAltarEntity.State.DONE, 0, 1600, "Claimed terraform", () -> {
           try {
             claimedBefore.forEach((pos, state) -> helper.assertTrue(level.getBlockState(pos).equals(state),
                 "A foreign Terraform Altar changed the claimed chunk at " + pos));
-            helper.assertTrue(terraform.refusals().getOrDefault("claim", 0) > 0 && terraform.totals().filled > 0,
-                "The claim did not refuse columns or nothing outside was filled: " + terraform.refusals());
+            var done = terraform.totals();
+            helper.assertTrue(terraform.refusals().getOrDefault("claim", 0) > 0 && done.filled > 0,
+                "The claim did not refuse columns or nothing outside was filled: " + terraform.refusals()
+                    + " columns=" + done.columns + " cut=" + done.cut + " filled=" + done.filled + " swapped=" + done.swapped);
             helper.succeed();
           } finally {
             cleanup(owner, visitor, east);
