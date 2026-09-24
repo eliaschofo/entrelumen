@@ -30,3 +30,7 @@ Pedidos previos del mismo día, a cargo del worker del contenido luminoso: **Sil
 | Transporte | **Create: Steam 'n' Rails** | Ya elegido en decoración; también cumple como transporte. |
 | Aventura y loot | **Repurposed Structures** | Medir el costo de worldgen. |
 | Jefes y combate | Ninguno | |
+
+## Descargas
+
+El 24/9 Elias autorizó bajar de las fuentes oficiales (CurseForge y Modrinth) los mods que eligió en estas rondas, aunque no estén en ninguna instancia local: «no estamos copiando, estamos tomando inspiración, no importa si están o no en otro pack, bajalos porque te lo pedí». Por separado aprobó LambDynamicLights 4.8.11+1.21.1 desde Modrinth. Cada JAR se verifica por hash y se fija en el catálogo con su fuente.
