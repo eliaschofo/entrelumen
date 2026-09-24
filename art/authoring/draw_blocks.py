@@ -83,14 +83,12 @@ def arcane():
 
 def nature():
     c = canvas(A=R['leaf'][1], B=R['leaf'][2], C=R['leaf'][3], D=R['leaf'][4], E=R['leaf'][5], W=R['wood'][1], X=R['wood'][2]); frame(c, 13)
-    for x in range(5, 11):
-        c.px(x, 11, 'X')
-    c.px(4, 11, 'W'); c.px(11, 11, 'W'); c.px(5, 10, 'W'); c.px(10, 10, 'W')
-    for y in range(6, 11):
-        c.px(8, y, 'B')
-    for (x, y, k) in [(5, 6, 'D'), (6, 6, 'D'), (6, 5, 'E'), (7, 6, 'C'), (6, 7, 'C'), (7, 7, 'B'),
-                      (9, 4, 'D'), (10, 4, 'E'), (10, 5, 'D'), (9, 5, 'C'), (11, 4, 'D'), (8, 5, 'B')]:
-        c.px(x, y, k)
+    for x in range(4, 12): c.px(x, 11, 'X')
+    for x in (4, 11): c.px(x, 10, 'W')
+    for y in range(7, 11): c.px(7, y, 'B'); c.px(8, y, 'B')          # 2px stem on the axis
+    for (x, y, k) in [(4, 6, 'C'), (5, 5, 'D'), (6, 5, 'D'), (5, 6, 'D'), (6, 6, 'C'), (6, 7, 'B'), (5, 4, 'E')]:
+        c.px(x, y, k); c.px(15 - x, y, k)                              # mirrored leaves
+    c.px(7, 5, 'D'); c.px(8, 5, 'D'); c.px(7, 4, 'E'); c.px(8, 4, 'E')  # bud
     return c
 
 
@@ -110,13 +108,14 @@ def exploration():
 
 def logistics():
     c = canvas(); frame(c, 15)
-    for (a, b) in [((4, 8), (7, 8)), ((7, 8), (10, 5)), ((7, 8), (11, 8)), ((7, 8), (10, 11))]:
-        c.line([a, b], 'o')
-    for (x, y) in [(5, 8), (8, 7), (9, 6), (9, 8), (8, 9)]:
-        c.px(x, y, 'p')
-    for (x, y) in [(4, 8), (11, 5), (11, 8), (11, 11)]:
-        c.px(x, y, 'h'); c.px(x, y - 1, 'i')
-    c.px(7, 8, 'r')
+    # symmetric routing: a trunk up the axis that splits left and right to copper terminals
+    for y in range(8, 12): c.px(7, y, 'o'); c.px(8, y, 'o')
+    for x in range(4, 12): c.px(x, 7, 'o')
+    for x in (4, 11):
+        for y in range(4, 7): c.px(x, y, 'o')
+    for (x, y) in [(4, 4), (11, 4), (7, 11), (8, 11)]: c.px(x, y, 'h')
+    for (x, y) in [(4, 3), (11, 3)]: c.px(x, y, 'i')
+    c.px(7, 7, 'r'); c.px(8, 7, 'r'); c.px(7, 8, 'p'); c.px(8, 8, 'p')
     return c
 
 
