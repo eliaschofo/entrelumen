@@ -1,0 +1,581 @@
+{
+ "chapter": "guide_ae2_basics",
+ "group": "tech",
+ "act": "II",
+ "icon": "ae2:controller",
+ "title": {
+  "en_us": "Applied Energistics 2: first network",
+  "es_es": "Applied Energistics 2: primera red"
+ },
+ "subtitle": {
+  "en_us": "Meteorites, certus, processors and a first ME network: storage cells, channels, the controller and buses.",
+  "es_es": "Meteoritos, certus, procesadores y una primera red ME: celdas, canales, el controlador y los buses."
+ },
+ "quests": [
+  {
+   "key": "ae2_welcome",
+   "deps": [],
+   "type": "checkmark",
+   "icon": "ae2:terminal",
+   "layout": {
+    "x": 0,
+    "y": 0,
+    "size": 2.0,
+    "shape": "hexagon"
+   },
+   "en_us": [
+    "Welcome to AE2",
+    "Applied Energistics 2 turns items into data. A network of cables links drives full of storage cells, terminals to search everything at once, buses that import and export, and later autocrafting. It is the main digital storage of the pack; Refined Storage is the alternative.\n\nAE2 starts from a meteorite. After that it is mostly a matter of making processors in bulk."
+   ],
+   "es_es": [
+    "Bienvenida a AE2",
+    "Applied Energistics 2 convierte ítems en datos. Una red de cables une unidades llenas de celdas de almacenamiento, terminales para buscar todo a la vez, buses que importan y exportan y, más adelante, autocrafteo. Es el almacenamiento digital principal del pack; Refined Storage es la alternativa.\n\nAE2 arranca de un meteorito. Después, es sobre todo cuestión de fabricar procesadores en cantidad."
+   ],
+   "sources": [
+    "jar:appliedenergistics2-19.2.17.jar:assets/ae2/ae2guide/getting-started.md",
+    "jar:appliedenergistics2-19.2.17.jar:assets/ae2/ae2guide/index.md"
+   ]
+  },
+  {
+   "key": "ae2_guide",
+   "deps": [
+    "ae2_welcome"
+   ],
+   "type": "checkmark",
+   "icon": "ae2:guide",
+   "layout": {
+    "x": 0,
+    "y": -2.5,
+    "size": 1.0,
+    "shape": "circle"
+   },
+   "en_us": [
+    "The guide inside the game",
+    "AE2 ships a full in-game guide. Hover any AE2 item (in your inventory or EMI) and hold G to open its page, with 3D scenes you can rotate and zoom. Extended AE, Advanced AE, MEGA Cells, AE2WTLib and the other addons add their own pages to it.\n\nThis chapter is the short version; the guide has every number."
+   ],
+   "es_es": [
+    "La guía dentro del juego",
+    "AE2 trae una guía completa dentro del juego. Pasá el cursor sobre cualquier ítem de AE2 (en tu inventario o en EMI) y mantené G para abrir su página, con escenas 3D que podés girar y acercar. Extended AE, Advanced AE, MEGA Cells, AE2WTLib y los demás addons suman sus propias páginas.\n\nEste capítulo es la versión corta; la guía tiene todos los números."
+   ],
+   "sources": [
+    "jar:guideme-21.1.17.jar:guideme/internal/hotkey/OpenGuideHotkey.class",
+    "jar:appliedenergistics2-19.2.17.jar:assets/ae2/ae2guide/items-blocks-machines/guide.md",
+    "jar:appliedenergistics2-19.2.17.jar:assets/ae2/lang/en_us.json#key.ae2.guide"
+   ]
+  },
+  {
+   "key": "ae2_compass",
+   "deps": [
+    "ae2_welcome"
+   ],
+   "type": "item",
+   "item": "ae2:meteorite_compass",
+   "layout": {
+    "x": 3,
+    "y": 0,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Find a meteorite",
+    "Meteorites are fairly common and leave large craters. If you have not seen one, a Meteorite Compass points to the nearest Mysterious Cube, which sits at the centre of each meteorite.\n\nDig to the centre: that is where the good stuff is."
+   ],
+   "es_es": [
+    "Encontrá un meteorito",
+    "Los meteoritos son bastante comunes y dejan cráteres grandes. Si no viste ninguno, una Brújula de meteoritos apunta al Cubo misterioso más cercano, que está en el centro de cada meteorito.\n\nCavá hasta el centro: ahí está lo bueno."
+   ],
+   "sources": [
+    "jar:appliedenergistics2-19.2.17.jar:assets/ae2/ae2guide/ae2-mechanics/meteorites.md",
+    "jar:appliedenergistics2-19.2.17.jar:assets/ae2/ae2guide/items-blocks-machines/meteorite_compass.md"
+   ]
+  },
+  {
+   "key": "ae2_presses",
+   "deps": [
+    "ae2_compass"
+   ],
+   "type": "item",
+   "item": "ae2:silicon_press",
+   "layout": {
+    "x": 5.5,
+    "y": 0,
+    "size": 1.5,
+    "shape": "hexagon"
+   },
+   "en_us": [
+    "The four presses",
+    "Breaking the Mysterious Cube gives all four inscriber presses: Silicon, Logic, Calculation and Engineering. They are reusable templates, never consumed.\n\nAround the cube you also find certus quartz clusters and budding certus blocks: take the clusters and certus blocks."
+   ],
+   "es_es": [
+    "Las cuatro prensas",
+    "Romper el Cubo misterioso da las cuatro prensas del inscriptor: de Silicio, Lógica, Cálculo e Ingeniería. Son moldes reutilizables, nunca se gastan.\n\nAlrededor del cubo también hay racimos de cuarzo certus y bloques de certus en brote: llevate los racimos y los bloques de certus."
+   ],
+   "sources": [
+    "jar:appliedenergistics2-19.2.17.jar:assets/ae2/ae2guide/getting-started.md",
+    "jar:appliedenergistics2-19.2.17.jar:assets/ae2/ae2guide/items-blocks-machines/presses.md",
+    "jar:appliedenergistics2-19.2.17.jar:assets/ae2/ae2guide/items-blocks-machines/mysterious_cube.md"
+   ]
+  },
+  {
+   "key": "ae2_budding",
+   "deps": [
+    "ae2_presses"
+   ],
+   "type": "checkmark",
+   "icon": "ae2:flawless_budding_quartz",
+   "layout": {
+    "x": 5.5,
+    "y": -2.5,
+    "size": 1.0,
+    "shape": "circle"
+   },
+   "en_us": [
+    "Budding certus: handle with care",
+    "Budding certus comes in four tiers: Flawless, Flawed, Chipped and Damaged. Buds grow like amethyst, and every growth stage can degrade a non-Flawless block one tier; Flawless ones never degrade from growth. Mining a budding block without Silk Touch drops it a tier; a Flawless one drops a tier even with Silk Touch and can never be repaired, so leave Flawless blocks where they are and build your farm around them.\n\nDegraded blocks, or plain certus blocks, become budding again when thrown in water with charged certus."
+   ],
+   "es_es": [
+    "Certus en brote: con cuidado",
+    "El certus en brote tiene cuatro niveles: Impecable, Defectuoso, Astillado y Dañado. Los brotes crecen como la amatista y cada etapa puede bajar un nivel a un bloque no Impecable; los Impecables nunca se degradan al crecer. Minarlo sin Toque de seda lo baja un nivel; uno Impecable baja un nivel incluso con Toque de seda y no se puede reparar, así que dejá los Impecables donde están y armá la granja alrededor.\n\nLos bloques degradados, o los de certus común, vuelven a brotar si los tirás al agua con certus cargado."
+   ],
+   "sources": [
+    "jar:appliedenergistics2-19.2.17.jar:assets/ae2/ae2guide/getting-started.md",
+    "jar:appliedenergistics2-19.2.17.jar:assets/ae2/ae2guide/items-blocks-machines/budding_certus.md"
+   ]
+  },
+  {
+   "key": "ae2_accelerator",
+   "deps": [
+    "ae2_presses"
+   ],
+   "type": "item",
+   "item": "ae2:growth_accelerator",
+   "count": 2,
+   "layout": {
+    "x": 8,
+    "y": 0,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Growth Accelerator",
+    "Certus buds grow very slowly on their own. A Growth Accelerator next to a budding block speeds them up enormously: build a few first. Power it with AE2 energy, or with a Crank if you have nothing else yet.\n\nThe guide has simple and advanced certus farms that harvest with Annihilation Planes."
+   ],
+   "es_es": [
+    "Acelerador de crecimiento",
+    "Los brotes de certus crecen muy lento solos. Un Acelerador de crecimiento al lado de un bloque en brote los acelera muchísimo: hacé varios primero. Alimentalo con energía de AE2, o con una Manivela si todavía no tenés otra cosa.\n\nLa guía tiene granjas de certus simples y avanzadas que cosechan con Planos de aniquilación."
+   ],
+   "sources": [
+    "jar:appliedenergistics2-19.2.17.jar:assets/ae2/ae2guide/getting-started.md",
+    "jar:appliedenergistics2-19.2.17.jar:assets/ae2/ae2guide/items-blocks-machines/growth_accelerator.md",
+    "jar:appliedenergistics2-19.2.17.jar:assets/ae2/ae2guide/example-setups/simple-certus-farm.md"
+   ]
+  },
+  {
+   "key": "ae2_fluix",
+   "deps": [
+    "ae2_accelerator"
+   ],
+   "type": "item",
+   "item": "ae2:fluix_crystal",
+   "count": 16,
+   "layout": {
+    "x": 10.5,
+    "y": -2.5,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Charger and Fluix",
+    "A Charger turns certus quartz into Charged Certus. Throw charged certus, redstone and nether quartz into water together and they become Fluix Crystals, used in cables, accelerators and many machines.\n\nCreate's Mixer can also make fluix, which is easy to automate."
+   ],
+   "es_es": [
+    "Cargador y fluix",
+    "Un Cargador convierte el cuarzo certus en Certus cargado. Tirá certus cargado, redstone y cuarzo del Nether juntos al agua y se vuelven Cristales de fluix, que van en cables, aceleradores y muchas máquinas.\n\nLa Mezcladora de Create también hace fluix, y es fácil de automatizar."
+   ],
+   "sources": [
+    "jar:appliedenergistics2-19.2.17.jar:assets/ae2/ae2guide/getting-started.md",
+    "jar:appliedenergistics2-19.2.17.jar:assets/ae2/ae2guide/items-blocks-machines/charger.md",
+    "jar:appliedenergistics2-19.2.17.jar:assets/ae2/ae2guide/items-blocks-machines/fluix_crystal.md",
+    "jar:create-1.21.1-6.0.10.jar:data/create/recipe/mixing/compat/ae2/fluix_crystal.json"
+   ]
+  },
+  {
+   "key": "ae2_inscriber",
+   "deps": [
+    "ae2_accelerator"
+   ],
+   "type": "item",
+   "item": "ae2:inscriber",
+   "layout": {
+    "x": 10.5,
+    "y": 0,
+    "size": 1.5,
+    "shape": "hexagon"
+   },
+   "en_us": [
+    "Inscriber",
+    "The Inscriber presses items with the presses. It is sided: items inserted from the top go to the top slot, from the bottom to the bottom slot, from the side or back to the middle, and results come out the side or back. A wrench rotates it.\n\nOne inscriber per step, fed by hoppers or pipes, is the classic processor line."
+   ],
+   "es_es": [
+    "Inscriptor",
+    "El Inscriptor prensa ítems con las prensas. Tiene lados: lo que entra por arriba va a la ranura de arriba, por abajo a la de abajo, por el costado o atrás a la del medio, y el resultado sale por el costado o atrás. Con una llave se gira.\n\nUn inscriptor por paso, alimentado con tolvas o tuberías, es la línea de procesadores clásica."
+   ],
+   "sources": [
+    "jar:appliedenergistics2-19.2.17.jar:assets/ae2/ae2guide/items-blocks-machines/inscriber.md",
+    "jar:appliedenergistics2-19.2.17.jar:assets/ae2/ae2guide/getting-started.md"
+   ]
+  },
+  {
+   "key": "ae2_processors",
+   "deps": [
+    "ae2_inscriber"
+   ],
+   "type": "item",
+   "item": "ae2:logic_processor",
+   "count": 8,
+   "layout": {
+    "x": 13,
+    "y": 0,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Processors",
+    "Three processors: Logic (gold), Calculation (certus quartz) and Engineering (diamond). Press the material into a printed circuit, press silicon into printed silicon, then put both with redstone in a final inscriber.\n\nYou will need hundreds. Automating processors is the first real AE2 project."
+   ],
+   "es_es": [
+    "Procesadores",
+    "Tres procesadores: Lógico (oro), de Cálculo (cuarzo certus) y de Ingeniería (diamante). Prensá el material en un circuito impreso, prensá silicio en silicio impreso y después juntá los dos con redstone en un inscriptor final.\n\nVas a necesitar cientos. Automatizar procesadores es el primer proyecto de AE2 en serio."
+   ],
+   "sources": [
+    "jar:appliedenergistics2-19.2.17.jar:assets/ae2/ae2guide/items-blocks-machines/processors.md",
+    "jar:appliedenergistics2-19.2.17.jar:assets/ae2/ae2guide/example-setups/processor-automation.md"
+   ]
+  },
+  {
+   "key": "ae2_pack",
+   "deps": [
+    "ae2_processors"
+   ],
+   "type": "checkmark",
+   "icon": "entrelumen:routing_matrix",
+   "layout": {
+    "x": 13,
+    "y": -2.5,
+    "size": 1.0,
+    "shape": "gear"
+   },
+   "en_us": [
+    "AE2 in the act components",
+    "ENTRELUMEN change: two Logic Processors go into the Routing Matrix (Act III), with a PneumaticCraft printed circuit board, two Actually Additions palis crystals and a Calibration Frame. A Calculation Processor goes into the Habitation Charter (Act V).\n\nAE2 itself stays native, controller included: inscribers, presses and processors are never gated, so the components cannot lock you out."
+   ],
+   "es_es": [
+    "AE2 en los componentes de acto",
+    "Cambio de ENTRELUMEN: dos Procesadores lógicos van en la Matriz de distribución (acto III), con una placa de circuito impreso de PneumaticCraft, dos cristales palis de Actually Additions y un Marco de calibración. Un Procesador de cálculo va en la Carta de habitabilidad (acto V).\n\nAE2 en sí queda nativo, controlador incluido: inscriptores, prensas y procesadores nunca se gatean, así los componentes no te pueden trabar."
+   ],
+   "sources": [
+    "repo:pack/kubejs/server_scripts/entrelumen_integration_recipes.js",
+    "repo:docs/research/reference-packs.md"
+   ]
+  },
+  {
+   "key": "ae2_first",
+   "deps": [
+    "ae2_processors"
+   ],
+   "type": "item",
+   "item": "ae2:drive",
+   "layout": {
+    "x": 15.5,
+    "y": 0,
+    "size": 1.5,
+    "shape": "hexagon"
+   },
+   "en_us": [
+    "Your first ME system",
+    "A Drive, an Energy Acceptor fed with FE from any mod, a Terminal (or Crafting Terminal) on a cable, and a few Storage Cells in the drive. That is searchable storage for the whole base.\n\nTip: a Crafting Terminal gives you a crafting grid that pulls straight from the network."
+   ],
+   "es_es": [
+    "Tu primer sistema ME",
+    "Una Unidad, un Aceptor de energía alimentado con FE de cualquier mod, una Terminal (o Terminal de crafteo) sobre un cable y algunas Celdas de almacenamiento en la unidad. Eso es almacenamiento con buscador para toda la base.\n\nConsejo: la Terminal de crafteo te da una grilla de crafteo que toma directo de la red."
+   ],
+   "sources": [
+    "jar:appliedenergistics2-19.2.17.jar:assets/ae2/ae2guide/getting-started.md",
+    "jar:appliedenergistics2-19.2.17.jar:assets/ae2/ae2guide/items-blocks-machines/drive.md",
+    "jar:appliedenergistics2-19.2.17.jar:assets/ae2/ae2guide/items-blocks-machines/energy_acceptor.md",
+    "jar:appliedenergistics2-19.2.17.jar:assets/ae2/ae2guide/items-blocks-machines/terminals.md"
+   ]
+  },
+  {
+   "key": "ae2_cells",
+   "deps": [
+    "ae2_first"
+   ],
+   "type": "item",
+   "item": "ae2:item_storage_cell_4k",
+   "layout": {
+    "x": 15.5,
+    "y": -2.5,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Storage cells: bytes and types",
+    "Cells come in 1k, 4k, 16k, 64k and 256k and hold up to 63 item types. Each type costs space up front, so a cell holds twice as much of one type as of 63: a 1k cell holds 8,128 items of one type. Upgrade a cell by crafting it with a bigger component (contents are kept), partition it in a Cell Workbench, and take an empty cell apart with sneak-right-click.\n\nKeep enchanted mob loot out of the network: every enchantment and durability combination is a new type."
+   ],
+   "es_es": [
+    "Celdas: bytes y tipos",
+    "Las celdas vienen de 1k, 4k, 16k, 64k y 256k y guardan hasta 63 tipos de ítem. Cada tipo cuesta espacio de entrada, así que una celda guarda el doble de un solo tipo que de 63: una celda de 1k guarda 8.128 ítems de un tipo. Mejorá una celda crafteándola con un componente mayor (conserva el contenido), particionala en una Mesa de celdas y desarmá una vacía con clic derecho agachado.\n\nNo metas botín encantado de mobs en la red: cada combinación de encantamiento y durabilidad es un tipo nuevo."
+   ],
+   "sources": [
+    "jar:appliedenergistics2-19.2.17.jar:assets/ae2/ae2guide/items-blocks-machines/storage_cells.md",
+    "jar:appliedenergistics2-19.2.17.jar:assets/ae2/ae2guide/ae2-mechanics/bytes-and-types.md",
+    "jar:appliedenergistics2-19.2.17.jar:assets/ae2/ae2guide/items-blocks-machines/cell_workbench.md",
+    "jar:appliedenergistics2-19.2.17.jar:assets/ae2/ae2guide/tips-and-tricks.md"
+   ]
+  },
+  {
+   "key": "ae2_energy",
+   "deps": [
+    "ae2_first"
+   ],
+   "type": "item",
+   "item": "ae2:energy_cell",
+   "layout": {
+    "x": 18,
+    "y": -2.5,
+    "size": 1.0,
+    "shape": "circle"
+   },
+   "en_us": [
+    "Energy: add a cell",
+    "AE2 converts FE into its own AE units one way: 2 FE make 1 AE. A network can only use as much energy per tick as it has stored, so dumping a full inventory into a tiny network can drain it and reboot it. One Energy Cell (200k AE) fixes that for most bases.\n\nRight-click the network with a Network Tool to see its energy statistics."
+   ],
+   "es_es": [
+    "Energía: sumá una celda",
+    "AE2 convierte FE en sus propias unidades AE en un solo sentido: 2 FE hacen 1 AE. Una red sólo puede usar por tick la energía que tiene guardada, así que volcar un inventario lleno en una red chiquita puede vaciarla y reiniciarla. Una Celda de energía (200k AE) lo arregla para casi cualquier base.\n\nClic derecho sobre la red con una Herramienta de red para ver sus estadísticas de energía."
+   ],
+   "sources": [
+    "jar:appliedenergistics2-19.2.17.jar:assets/ae2/ae2guide/ae2-mechanics/energy.md",
+    "jar:appliedenergistics2-19.2.17.jar:assets/ae2/ae2guide/items-blocks-machines/energy_cells.md"
+   ]
+  },
+  {
+   "key": "ae2_channels",
+   "deps": [
+    "ae2_first"
+   ],
+   "type": "checkmark",
+   "icon": "ae2:fluix_smart_cable",
+   "layout": {
+    "x": 18,
+    "y": 0,
+    "size": 1.0,
+    "shape": "circle"
+   },
+   "en_us": [
+    "Channels",
+    "Most devices need a channel. Normal cables carry 8 channels and dense cables 32. Without a controller (an ad-hoc network) you get 8 channel devices in total, then everything shuts down. Cable colour has nothing to do with channels: it only stops different colours from connecting.\n\nSmart cables show channel use. Build tree-like: dense cable from the controller, normal cable branches, devices in groups of 8."
+   ],
+   "es_es": [
+    "Canales",
+    "Casi todos los dispositivos necesitan un canal. Los cables normales llevan 8 canales y los densos 32. Sin controlador (una red ad hoc) tenés 8 dispositivos con canal en total, y después se apaga todo. El color del cable no tiene nada que ver con los canales: sólo evita que se conecten colores distintos.\n\nLos cables inteligentes muestran el uso de canales. Armá en árbol: cable denso desde el controlador, ramas de cable normal y dispositivos en grupos de 8."
+   ],
+   "sources": [
+    "jar:appliedenergistics2-19.2.17.jar:assets/ae2/ae2guide/ae2-mechanics/channels.md",
+    "jar:appliedenergistics2-19.2.17.jar:assets/ae2/ae2guide/items-blocks-machines/cables.md"
+   ]
+  },
+  {
+   "key": "ae2_controller",
+   "deps": [
+    "ae2_channels"
+   ],
+   "type": "item",
+   "item": "ae2:controller",
+   "layout": {
+    "x": 20.5,
+    "y": 0,
+    "size": 1.5,
+    "shape": "hexagon"
+   },
+   "en_us": [
+    "ME Controller",
+    "The controller turns an ad-hoc network into a real one: each face provides 32 channels. It can be a multiblock of controller blocks, up to 7x7x7, all touching, with no block having neighbours on more than one axis. Only one controller per network.\n\nRight-click it for the same statistics as a Network Tool."
+   ],
+   "es_es": [
+    "Controlador ME",
+    "El controlador convierte una red ad hoc en una de verdad: cada cara da 32 canales. Puede ser un multibloque de bloques controlador, de hasta 7x7x7, todos en contacto, sin bloques con vecinos en más de un eje. Un solo controlador por red.\n\nClic derecho sobre él y ves las mismas estadísticas que con una Herramienta de red."
+   ],
+   "sources": [
+    "jar:appliedenergistics2-19.2.17.jar:assets/ae2/ae2guide/items-blocks-machines/controller.md",
+    "jar:appliedenergistics2-19.2.17.jar:assets/ae2/ae2guide/ae2-mechanics/channels.md"
+   ]
+  },
+  {
+   "key": "ae2_buses",
+   "deps": [
+    "ae2_first"
+   ],
+   "type": "item",
+   "item": "ae2:storage_bus",
+   "layout": {
+    "x": 15.5,
+    "y": 2.5,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Import, export and storage buses",
+    "An Import Bus pulls items from the inventory it faces into the network; an Export Bus pushes filtered items out; a Storage Bus makes a chest, drawer or any inventory part of the network. An Import Bus on a furnace output and an Export Bus on its input already automate smelting.\n\nBuses take upgrade cards: speed, capacity, fuzzy, inverter, redstone and crafting cards."
+   ],
+   "es_es": [
+    "Buses de importación, exportación y almacenamiento",
+    "Un Bus de importación trae ítems del inventario al que mira hacia la red; un Bus de exportación saca ítems filtrados; un Bus de almacenamiento hace que un cofre, un cajón o cualquier inventario sea parte de la red. Un bus de importación en la salida de un horno y uno de exportación en su entrada ya automatizan la fundición.\n\nLos buses aceptan tarjetas de mejora: velocidad, capacidad, difusa, inversora, redstone y crafteo."
+   ],
+   "sources": [
+    "jar:appliedenergistics2-19.2.17.jar:assets/ae2/ae2guide/items-blocks-machines/import_bus.md",
+    "jar:appliedenergistics2-19.2.17.jar:assets/ae2/ae2guide/items-blocks-machines/export_bus.md",
+    "jar:appliedenergistics2-19.2.17.jar:assets/ae2/ae2guide/items-blocks-machines/storage_bus.md",
+    "jar:appliedenergistics2-19.2.17.jar:assets/ae2/ae2guide/items-blocks-machines/upgrade_cards.md",
+    "jar:appliedenergistics2-19.2.17.jar:assets/ae2/ae2guide/getting-started.md"
+   ]
+  },
+  {
+   "key": "ae2_interface",
+   "deps": [
+    "ae2_buses"
+   ],
+   "type": "item",
+   "item": "ae2:interface",
+   "optional": true,
+   "layout": {
+    "x": 13,
+    "y": 2.5,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "ME Interface",
+    "An interface is a network-connected inventory: machines and pipes can insert into it, and you can set it to keep specific items in stock for whatever pulls from it.\n\nIt is also the piece that makes subnetworks and multi-side pattern setups work (see the autocrafting chapter)."
+   ],
+   "es_es": [
+    "Interfaz ME",
+    "Una interfaz es un inventario conectado a la red: máquinas y tuberías pueden meter cosas, y la podés configurar para tener en stock ítems puntuales para lo que saque de ella.\n\nTambién es la pieza que hace andar las subredes y los patrones hacia varios lados (mirá el capítulo de autocrafteo)."
+   ],
+   "sources": [
+    "jar:appliedenergistics2-19.2.17.jar:assets/ae2/ae2guide/items-blocks-machines/interface.md",
+    "jar:appliedenergistics2-19.2.17.jar:assets/ae2/ae2guide/ae2-mechanics/subnetworks.md"
+   ]
+  },
+  {
+   "key": "ae2_wireless",
+   "deps": [
+    "ae2_controller"
+   ],
+   "type": "item",
+   "item": "ae2:wireless_access_point",
+   "optional": true,
+   "layout": {
+    "x": 20.5,
+    "y": -2.5,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Wireless access",
+    "A Wireless Access Point (needs a channel) lets a Wireless Terminal reach the network; Wireless Boosters inside it raise the range and the power cost. Link the terminal by placing it in the access point.\n\nAE2WTLib adds wireless crafting, pattern and universal terminals: see the next chapter."
+   ],
+   "es_es": [
+    "Acceso inalámbrico",
+    "Un Punto de acceso inalámbrico (necesita un canal) deja que una Terminal inalámbrica llegue a la red; los Amplificadores inalámbricos adentro suben el alcance y el consumo. Vinculá la terminal poniéndola en el punto de acceso.\n\nAE2WTLib agrega terminales inalámbricas de crafteo, de patrones y universales: mirá el capítulo siguiente."
+   ],
+   "sources": [
+    "jar:appliedenergistics2-19.2.17.jar:assets/ae2/ae2guide/items-blocks-machines/wireless_access_point.md",
+    "jar:appliedenergistics2-19.2.17.jar:assets/ae2/ae2guide/items-blocks-machines/wireless_terminals.md"
+   ]
+  },
+  {
+   "key": "ae2_p2p",
+   "deps": [
+    "ae2_controller"
+   ],
+   "type": "item",
+   "item": "ae2:me_p2p_tunnel",
+   "optional": true,
+   "layout": {
+    "x": 23,
+    "y": -2.5,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "P2P tunnels and the Quantum Bridge",
+    "P2P tunnels send one thing through a single cable: ME tunnels carry up to 32 channels, and other tunnel types carry items, fluids, energy or redstone. Tune tunnels together with a Memory Card. The Quantum Network Bridge links two networks across any distance or dimension, as long as both ends are loaded.\n\nAppMek adds a chemical P2P tunnel and Ars Energistique a source one."
+   ],
+   "es_es": [
+    "Túneles P2P y el Puente cuántico",
+    "Los túneles P2P mandan una sola cosa por un cable: los túneles ME llevan hasta 32 canales, y otros tipos llevan ítems, fluidos, energía o redstone. Sincronizá túneles con una Tarjeta de memoria. El Puente de red cuántico une dos redes a cualquier distancia o dimensión, siempre que las dos puntas estén cargadas.\n\nAppMek suma un túnel P2P químico y Ars Energistique uno de source."
+   ],
+   "sources": [
+    "jar:appliedenergistics2-19.2.17.jar:assets/ae2/ae2guide/ae2-mechanics/p2p-tunnels.md",
+    "jar:appliedenergistics2-19.2.17.jar:assets/ae2/ae2guide/items-blocks-machines/p2p_tunnels.md",
+    "jar:appliedenergistics2-19.2.17.jar:assets/ae2/ae2guide/ae2-mechanics/quantum-bridge.md",
+    "jar:Applied-Mekanistics-1.6.3.jar:assets/appmek/lang/en_us.json#item.appmek.chemical_p2p_tunnel",
+    "jar:arseng-2.1.1-beta.jar:assets/arseng/lang/en_us.json#item.arseng.source_p2p_tunnel"
+   ]
+  },
+  {
+   "key": "ae2_creative",
+   "deps": [
+    "ae2_controller"
+   ],
+   "type": "checkmark",
+   "icon": "ae2:creative_energy_cell",
+   "layout": {
+    "x": 23,
+    "y": 0,
+    "size": 1.0,
+    "shape": "gear"
+   },
+   "en_us": [
+    "Creative AE2",
+    "ENTRELUMEN change: the Creative Energy Cell is crafted only with two Luminosities (logistics and engineering) from Solsticio (Act VI). The Creative Storage Cell cannot be crafted.\n\nEverything else in AE2 follows its native recipes."
+   ],
+   "es_es": [
+    "AE2 creativo",
+    "Cambio de ENTRELUMEN: la Celda de energía creativa sólo se craftea con dos Luminosidades (logística e ingeniería) de Solsticio (acto VI). La Celda de almacenamiento creativa no se puede craftear.\n\nEl resto de AE2 sigue sus recetas nativas."
+   ],
+   "sources": [
+    "repo:pack/kubejs/server_scripts/entrelumen_luminous_balance.js"
+   ]
+  },
+  {
+   "key": "ae2_mastery",
+   "deps": [
+    "ae2_controller"
+   ],
+   "type": "item",
+   "item": "ae2:fluix_smart_dense_cable",
+   "count": 16,
+   "layout": {
+    "x": 23,
+    "y": 2.5,
+    "size": 2.0,
+    "shape": "octagon"
+   },
+   "en_us": [
+    "A real network",
+    "Controller, dense cable backbone, drives full of 64k cells, an energy cell, a wireless access point and an automated processor line. Your base now has one searchable inventory.\n\nNext step: patterns and autocrafting."
+   ],
+   "es_es": [
+    "Una red de verdad",
+    "Controlador, troncal de cable denso, unidades llenas de celdas de 64k, una celda de energía, un punto de acceso inalámbrico y una línea automática de procesadores. Tu base ahora tiene un solo inventario con buscador.\n\nPróximo paso: patrones y autocrafteo."
+   ],
+   "sources": [
+    "jar:appliedenergistics2-19.2.17.jar:assets/ae2/ae2guide/example-setups/main-network.md",
+    "jar:appliedenergistics2-19.2.17.jar:assets/ae2/ae2guide/items-blocks-machines/cables.md"
+   ]
+  }
+ ]
+}
