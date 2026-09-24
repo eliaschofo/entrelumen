@@ -17,6 +17,8 @@ import net.neoforged.neoforge.network.PacketDistributor;
 public final class AtlasScreen extends Screen {
   private static final int PAPER = 0xFF382F25, MUTED = 0xFF77684E,
       COPPER = 0xFF8B4C2D;
+  /** Pseudo entry at the top of the list: the Heliodor compass's current objective. */
+  private static final String COMPASS_ID = "#compass";
   private static final net.minecraft.resources.ResourceLocation BOOK =
       net.minecraft.resources.ResourceLocation.parse("entrelumen:textures/gui/atlas_book.png");
   private int bookY;
@@ -95,20 +97,26 @@ public final class AtlasScreen extends Screen {
         Component.translatable("entrelumen.atlas.deliver"),
         button -> request(CampaignActions.Action.DELIVER, selectedId)));
     projects.populate();
-    if (snapshot.projects().stream().noneMatch(project -> project.id().equals(selectedId)))
+    if (!selectedId.equals(COMPASS_ID)
+        && snapshot.projects().stream().noneMatch(project -> project.id().equals(selectedId)))
       selectedId =
           snapshot.projects().stream()
               .filter(p -> !p.completed())
               .findFirst()
               .or(() -> snapshot.projects().stream().findFirst())
               .map(AtlasNetwork.ProjectView::id)
-              .orElse("");
+              .orElse(COMPASS_ID);
     projects.children().stream()
-        .filter(entry -> entry.project.id().equals(selectedId))
+        .filter(entry -> entry.id().equals(selectedId))
         .findFirst()
         .ifPresent(projects::setSelected);
     if (projects.getSelected() != null) projects.ensureVisible(projects.getSelected());
     updateButtons();
+  }
+
+  private void repopulateDetails() {
+    if (selected() != null) details.populate(selected());
+    else if (selectedId.equals(COMPASS_ID)) details.populateCompass();
   }
 
   private AtlasNetwork.ProjectView selected() {
@@ -130,7 +138,7 @@ public final class AtlasScreen extends Screen {
     waiting = true;
     requestedAt = System.currentTimeMillis();
     feedback = "entrelumen.atlas.submitting";
-    if (selected() != null) details.populate(selected());
+    repopulateDetails();
     updateButtons();
     PacketDistributor.sendToServer(new AtlasNetwork.Request(snapshot.campaign(), action, project));
   }
@@ -140,7 +148,7 @@ public final class AtlasScreen extends Screen {
     if (waiting && System.currentTimeMillis() - requestedAt > 10000) {
       waiting = false;
       feedback = "entrelumen.atlas.timeout";
-      if (selected() != null) details.populate(selected());
+      repopulateDetails();
       updateButtons();
     }
   }
@@ -213,13 +221,30 @@ public final class AtlasScreen extends Screen {
 
   private int projectRowHeight(int width) {
     int textWidth = width - 14;
-    int lines = snapshot.projects().stream()
-        .mapToInt(project -> font.split(projectName(project.id()), textWidth).size()
-            + font.split(status(project), textWidth).size())
-        .max().orElse(2);
+    int lines = Math.max(
+        font.split(Component.translatable("entrelumen.atlas.compass"), textWidth).size()
+            + font.split(compassStatus(), textWidth).size(),
+        snapshot.projects().stream()
+            .mapToInt(project -> font.split(projectName(project.id()), textWidth).size()
+                + font.split(status(project), textWidth).size())
+            .max().orElse(2));
     // Native lists use equal-height hit targets. Size them to the longest translated
     // entry, including its status, with 2px padding/gap and the native 4px row gap.
     return 10 + lines * font.lineHeight;
+  }
+
+  private Component compassStatus() {
+    var compass = snapshot.compass();
+    return compass.objective().isEmpty()
+        ? Component.translatable("entrelumen.compass.state." + compass.state())
+        : Component.translatable("entrelumen.compass.objective." + compass.objective());
+  }
+
+  private static Component dimensionName(String dimension) {
+    return dimension.isEmpty()
+        ? Component.empty()
+        : Component.translatableWithFallback(
+            "entrelumen.compass.dimension." + dimension.replace(':', '.'), dimension);
   }
 
   private Component status(AtlasNetwork.ProjectView project) {
@@ -241,6 +266,7 @@ public final class AtlasScreen extends Screen {
 
     void populate() {
       clearEntries();
+      addEntry(new ProjectEntry(null));
       snapshot.projects().forEach(project -> addEntry(new ProjectEntry(project)));
     }
 
@@ -302,8 +328,9 @@ public final class AtlasScreen extends Screen {
     public void setSelected(ProjectEntry entry) {
       super.setSelected(entry);
       if (entry != null) {
-        selectedId = entry.project.id();
-        details.populate(entry.project);
+        selectedId = entry.id();
+        if (entry.project == null) details.populateCompass();
+        else details.populate(entry.project);
         updateButtons();
       }
     }
@@ -314,12 +341,18 @@ public final class AtlasScreen extends Screen {
     final Component name, label;
     final List<FormattedCharSequence> nameLines, labelLines;
 
+    /** A null project is the compass entry. */
     ProjectEntry(AtlasNetwork.ProjectView project) {
       this.project = project;
-      name = projectName(project.id());
-      label = status(project);
+      name = project == null
+          ? Component.translatable("entrelumen.atlas.compass") : projectName(project.id());
+      label = project == null ? compassStatus() : status(project);
       nameLines = font.split(name, projects.getRowWidth() - 6);
       labelLines = font.split(label, projects.getRowWidth() - 6);
+    }
+
+    String id() {
+      return project == null ? COMPASS_ID : project.id();
     }
 
     @Override
@@ -355,7 +388,10 @@ public final class AtlasScreen extends Screen {
       }
       textY += 2;
       for (var line : labelLines) {
-        graphics.drawString(font, line, x + 3, textY, project.ready() ? COPPER : MUTED, false);
+        boolean highlight = project == null
+            ? snapshot.compass().state() == dev.entrelumen.CompassState.POINTING
+            : project.ready();
+        graphics.drawString(font, line, x + 3, textY, highlight ? COPPER : MUTED, false);
         textY += font.lineHeight;
       }
       if (hovered) setTooltipForNextRenderPass(getNarration());
@@ -404,6 +440,46 @@ public final class AtlasScreen extends Screen {
         }
       }
       restorePosition(scroll, selection, hadFocus);
+    }
+
+    /** Objective, where it lies, why it matters and the lore fragments recovered so far. */
+    void populateCompass() {
+      boolean same = COMPASS_ID.equals(projectId);
+      boolean hadFocus = isFocused();
+      double scroll = same ? getScrollAmount() : 0;
+      int selection = same ? children().indexOf(getSelected()) : -1;
+      setFocused(null);
+      clearEntries();
+      projectId = COMPASS_ID;
+      var compass = snapshot.compass();
+      if (compass.objective().isEmpty()) {
+        addText(Component.translatable("entrelumen.atlas.compass"), PAPER);
+      } else {
+        String objective = "entrelumen.compass.objective." + compass.objective();
+        addText(Component.translatable(objective), PAPER);
+        addText(Component.translatable("entrelumen.atlas.compass.where",
+            Component.translatable("entrelumen.compass.kind." + compass.kind()),
+            dimensionName(compass.dimension())), COPPER);
+        addGap();
+        addText(Component.translatable(objective + ".why"), PAPER);
+      }
+      addGap();
+      addText(Component.translatable("entrelumen.compass.state." + compass.state()), MUTED);
+      if (!compass.lore().isEmpty()) {
+        addGap();
+        addText(Component.translatable("entrelumen.atlas.compass.lore"), COPPER);
+        // Newest fragment first: it answers what the team just did.
+        for (int i = compass.lore().size() - 1; i >= 0; i--) {
+          addText(Component.translatable("entrelumen.compass.lore." + compass.lore().get(i)), PAPER);
+          addGap();
+        }
+      }
+      if (!feedback.isEmpty()) addText(Component.translatable(feedback), MUTED);
+      restorePosition(scroll, selection, hadFocus);
+    }
+
+    private void addGap() {
+      addEntry(new DetailEntry(ItemStack.EMPTY, FormattedCharSequence.EMPTY, Component.empty(), MUTED));
     }
 
     void restorePosition(double scroll, int selection) {

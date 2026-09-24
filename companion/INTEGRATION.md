@@ -96,3 +96,21 @@ It syncs every second, on FTB login-after-team and on party join. It only grants
 Verification: an offline `build` ran 80 JUnit tests, and `runGameTestServer` passed all 47 required GameTests, including two new isolated ones in `RuntimeGameTestsApotheosis`. The fixture mod ships stand-in Haven, Frontier and Ascent advancements; Summit is deliberately absent. Apotheosis itself was not loaded in these runs.
 
 Ark arcane service (2026-09-24): `ArcaneRestoration` replaces the compound-book separation. With a worked item (not a book) in the main hand and ordinary books in the offhand, the arcane module of a complete Ark resets `minecraft:repair_cost` to 0. It charges one book and five levels per recorded operation (ceil(log2(cost + 1))), keeps every other component, and rejects before mutation. Covered by JUnit, two isolated GameTests and one full-pack case; see `docs/design/arcane-library.md`.
+
+## Start of the game and the Heliodor Compass (2026-09-24)
+
+Design and verification: [docs/design/heliodor-compass.md](../docs/design/heliodor-compass.md).
+
+- New IDs:
+  - item `heliodor_compass`;
+  - block and item `heliodor_pedestal` (unbreakable);
+  - data component `compass_state`;
+  - structure template `heliodor_ruin_start` (provisional);
+  - item properties `angle`, `dimension`, `kind`, `spinning` and `state`.
+- Data: `entrelumen:compass/targets.json`, copied at build time from `content/compass_targets.json`. Datapacks can override it, and `/reload` re-reads it; a rejected document keeps the previous list.
+- SavedData:
+  - `entrelumen_ruins`: the ruin registry, with bounding box, ID, act, arrival point and pedestals;
+  - `entrelumen_compass`: compasses claimed per UUID, reached objectives per campaign, shared search results.
+- Operator command: `/entrelumen admin ruin` places the start ruin once in a world created before this feature and moves the world spawn beside it.
+- The Atlas snapshot carries the compass view. The Atlas network version is now 2, so client and server need the same JAR.
+- The companion gives nothing on login. A new world gets the start ruin at its spawn, and a brand-new player appears beside it.
