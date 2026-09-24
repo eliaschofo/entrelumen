@@ -34,10 +34,9 @@ import net.neoforged.neoforge.gametest.PrefixGameTestTemplate;
 import org.slf4j.Logger;
 
 /**
- * Installed-pack QA for the Altars of Peace, Growth and Time, PENDING INTEGRATION: written and
- * compiled with the QA source set, not registered in {@link FullpackQABootstrap} and never run.
- * The root integrator registers this class there (registration and expected-name list) and runs it
- * on the owned QA server with {@code -Dentrelumen.qa=true}.
+ * Installed-pack QA for the Altars of Peace, Growth and Time, registered in
+ * {@link FullpackQABootstrap} and run on the owned QA server with {@code -Dentrelumen.qa=true}
+ * (evidence: docs/verification/altars-runtime.json).
  *
  * <ul>
  *   <li>Torchmaster: the Mega Torch has no recipe left, while the Dread Lamp, Feral Flare Lantern and
