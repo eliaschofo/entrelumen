@@ -1,6 +1,6 @@
 # Exploration: the chart room
 
-Decision, 2026-09-23. Implemented with isolated headless evidence. Two full-pack cases are written and registered but have not run; they await integration. Client review is pending too. This adds a practical benefit to the existing Exploration module. It does not change campaign deliveries or grant rewards.
+Decision, 2026-09-23. Implemented. Isolated headless evidence passed, and so did both full-pack cases on the owned QA server at `e1cc078` (see Verification). Client review is pending. This adds a practical benefit to the existing Exploration module. It does not change campaign deliveries or grant rewards.
 
 ## Purpose and native overlap
 
@@ -116,8 +116,8 @@ The offline `build qaJar` and `runGameTestServer` runs used the pinned JDK 21 an
     - the offhand, another module, a spectator, a remote player, a native canceled interaction, and an empty main hand with the chart in the offhand.
 
   A removed module then refuses.
-- Full-pack, pending integration: `ArkChartsGameTests` is compiled into the QA JAR and registered in `FullpackQABootstrap`. The QA server was not started for this change.
-  - `explorationChartsRespectForeignFtbChunksClaim`: a real `/ftbchunks claim` over the Ark must stop a visitor's chart gesture while the owner compiles.
+- Full-pack: both `ArkChartsGameTests` cases passed at `e1cc078` (details under Integration below).
+  - `explorationChartsRespectForeignFtbChunksClaim`: a real `/ftbchunks claim` over the Ark stops a visitor's chart gesture while the owner compiles.
   - `explorationChartsKeepSupplementariesSliceMapsApart`: with the pinned Supplementaries and Moonlight, a plain map has no view key and a map loaded with `depth_lock` does. The slice map is skipped while a plain field map compiles, and the chart round-trips with the map layers.
 
 GameTest shutdown save time, investigated because the Nature runs showed 8–12 minutes against about 1 minute before. The world lives on `G:`, a 5,400 rpm laptop HDD shared with the other worker's `server-slice` JVM. That JVM started during the baseline run and kept running.
@@ -133,9 +133,19 @@ Thread dumps during the save show the server thread idle in `ChunkStorage.flushW
 
 The larger Nature template adds about 35% more chunks to save, which cannot explain a 4–12× slowdown. Identical companion code also varied 2.8× between runs. The dominant cause is therefore disk-bound writes under contention, not companion work. A rerun of the pre-Nature commit was not taken: it would share the same contention and would not be conclusive.
 
+### Integration, 2026-09-23 (`e1cc078`)
+
+Root integration, with receipts in `G:/Elias/Codex/Entrelumen-work/head-e1cc078-20260923` and evidence in `docs/verification/ark-nature-exploration-runtime.json`.
+
+- Offline `build qaJar`: 68 JUnit tests passed, 7 of them `ArkChartRulesTest`. All 45 isolated GameTests passed.
+- Before the run, the view key was checked in the pinned bytecode. Supplementaries `DepthDataHandler$DepthMapData` loads and saves a top-level `depth_lock` int, only when a depth is set. Moonlight's `MapDataMixin` hands the root map tag to each custom data type. Both match `ArkCharts.VIEW_KEYS`.
+- The QA JAR ran only on the owned `server-slice` with `-Dentrelumen.qa=true` (run `6f8dfc96`). The world was archived first. Both cases passed on their first run, and no test or production change was needed.
+  - Claim: FTB Chunks 2101.1.21 logged the owner's claim of the Ark chunk `[0, -1]` and the unclaim. The visitor's chart stayed blank, and the owner's compiled.
+  - Slice maps: 1 map matched and 1 was skipped, filling 16,320 pixels. The slice map stayed byte-identical, and the chart round-tripped.
+- After a normal save and stop (exit 0), the normal JAR went back on the server. Its dedicated start/save/stop passed (exit 0), with only the known Create: Enchantment Industry `reliquary:xp_juice_still` ERROR.
+
 Pending:
 
-- the two full-pack cases;
 - a rendered EN/ES review of chat, tooltip, journal and quest;
 - a visual check of compiled charts with Supplementaries tint enabled;
 - a survival playtest with real field maps.

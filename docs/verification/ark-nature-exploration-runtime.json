@@ -1,0 +1,285 @@
+{
+  "schemaVersion": 1,
+  "checkedAt": "2026-09-24T00:34:53+00:00",
+  "scope": "Ark Nature landscape restoration and Exploration chart room: the pending full-pack QA cases, HEAD installation into the owned profiles and a dedicated start/save/stop. Not client rendering, survival play, co-op, pacing or performance acceptance.",
+  "sourceCommit": "e1cc07841d004177bd364becf3b537f1f07ca8bb",
+  "sourceCi": {
+    "runId": 35937076262,
+    "conclusion": "success"
+  },
+  "platform": "Minecraft 1.21.1 / NeoForge 21.1.249 / JDK 21.0.12.1+1 / Windows",
+  "designDocs": [
+    "docs/design/ark-nature-restoration.md",
+    "docs/design/ark-exploration-charts.md"
+  ],
+  "build": {
+    "command": "gradlew --offline build qaJar",
+    "logSha256": "74363a2c13165b6c32de3de9fcee373744dbc8ac53f5a8e353ea2d357a41c0f7",
+    "normalJarSha256": "ba10441cd6c4119de8bb571581df083ba42cb2bb7d7806eb32b1536f1de2a5d5",
+    "qaJarSha256": "3215bb9bb021803db7899345c50cc24908b9f8a00268f313b83503fe5db19727",
+    "normalJarExcludes": [
+      "RuntimeGameTests",
+      "all GameTest classes",
+      "data/entrelumen/structure/*.nbt"
+    ],
+    "qaJarIncludes": [
+      "FullpackQABootstrap",
+      "NatureRestorationGameTests",
+      "ArkChartsGameTests",
+      "data/entrelumen/structure/nature_restoration.nbt"
+    ]
+  },
+  "unitTests": {
+    "passed": 68,
+    "failed": 0,
+    "services": [
+      {
+        "class": "dev.entrelumen.ArkChartRulesTest",
+        "passed": 7,
+        "reportSha256": "3499e9afe49bccf6731a2880092bca9d6b316c93d9b38e632174b4405d0a2bd9"
+      },
+      {
+        "class": "dev.entrelumen.NatureRestorationRulesTest",
+        "passed": 8,
+        "reportSha256": "a4f55b91bd5de1201bfd72b6eb2cdb1389d64f654ec25c8e4475f7218b0775f2"
+      }
+    ]
+  },
+  "isolatedGameTests": {
+    "command": "gradlew --offline runGameTestServer",
+    "passed": 45,
+    "required": 45,
+    "wallSeconds": 211,
+    "logSha256": "7ad62a4c47456cb5237b46985194379bc2410be550eee1e05d4ce731fec0fb2d",
+    "natureOutcomes": [
+      "forest, canopy vetoed: 59 plants for 59 bone meal, 0 trees, 0 saplings",
+      "forest: 4 whole trees for 16 bone meal and 4 saplings, then nothing for nothing",
+      "meadow: 20 ground and 44 plants for 64 bone meal, then 8 plants for 8 bone meal, then nothing"
+    ],
+    "limitation": "Isolated fixtures use mock connections and a canceled test listener instead of FTB Chunks. Per-run counts differ from earlier receipts (56-59 plants, 4-5 trees, second meadow pass 1-25 plants); each run asserts exact cost against its own outcome."
+  },
+  "fullpack": {
+    "server": "G:/Elias/Codex/Entrelumen-work/server-slice (owned QA server)",
+    "jvmFlag": "-Dentrelumen.qa=true through JAVA_TOOL_OPTIONS",
+    "qaJarInstalledOnlyOn": "server-slice",
+    "runId": "6f8dfc96-d902-4029-aed5-2a7fcc8f2222",
+    "pid": 31564,
+    "registered": 78,
+    "executed": [
+      "naturerestorationrespectsforeignftbchunksclaim",
+      "explorationchartsrespectforeignftbchunksclaim",
+      "explorationchartskeepsupplementariesslicemapsapart"
+    ],
+    "passed": 3,
+    "failed": 0,
+    "requests": [
+      "d250cdb3-4263-4ab4-a7ca-a10b7c9f505b",
+      "0887e25a-51d4-403b-908b-f28cf9875dcb",
+      "4afa5357-93b1-4e99-8c48-dee08cbe1794"
+    ],
+    "qaSummary": "ENTRELUMEN_QA_SUMMARY expected=78 finished=3 failed=0 passed=3",
+    "done": {
+      "time": "21:25:55",
+      "message": "Done (18.962s)! For help, type \"help\""
+    },
+    "saved": {
+      "time": "21:27:09",
+      "message": "ThreadedAnvilChunkStorage: All dimensions are saved"
+    },
+    "stopping": {
+      "time": "21:26:59",
+      "message": "Stopping server"
+    },
+    "exitCode": 0,
+    "watchdogMilliseconds": 60000,
+    "normalJarRestored": true,
+    "worldBackupBefore": {
+      "archive": "G:\\Elias\\Codex\\Entrelumen-work\\head-e1cc078-20260923\\server-world-before-head.zip",
+      "files": 1302,
+      "sha256": "a11cf1e857445216512049c0ec8fb895cfbe9e576104ea885a3a0a7d6f2effe7"
+    },
+    "logSha256": "47bc27f97e34cc65f10b5db39898370a8c0b282b6a962d1cc78723a1b8508f84",
+    "ftbChunksLog": [
+      "NatureOwner claimed 1 chunk at chunkPos [1, 0], then unclaimed it",
+      "ChartOwner claimed 1 chunk at chunkPos [0, -1], then unclaimed it"
+    ],
+    "verified": [
+      "naturerestorationrespectsforeignftbchunksclaim: a real /ftbchunks claim by one team split the restoration disc. The other team's native bone meal gesture changed nothing in the claimed chunk and paid exactly for the blocks restored outside it; the claim owner then restored the claimed scars.",
+      "explorationchartsrespectforeignftbchunksclaim: with the Ark chunk claimed through /ftbchunks claim, the visitor's native chart gesture left the chart blank; the owner's gesture compiled the field map.",
+      "explorationchartskeepsupplementariesslicemapsapart: with Supplementaries 3.9.5 and Moonlight 3.5.2 loaded, a plain map has no view key and a map loaded with depth_lock has one. The slice map was skipped (1 matched, 1 skipped, 16,320 pixels), stayed byte-identical, and the chart round-tripped with the map layers."
+    ],
+    "bytecodeCheck": "Supplementaries DepthDataHandler$DepthMapData load/save use a top-level depth_lock int, and Moonlight MapDataMixin hands the root map tag to each custom data type, matching ArkCharts.VIEW_KEYS.",
+    "errors": [
+      {
+        "line": 1568,
+        "time": "21:25:33",
+        "logger": "ne.ne.ne.re.DataMapLoader/",
+        "message": "Object with ID reliquary:xp_juice_still specified in data map for registry minecraft:fluid doesn't exist",
+        "classification": "known upstream: Create: Enchantment Industry resolves its own fluid data map entry (reliquary:xp_juice_still) before the pack override is merged; the merged map uses reliquary:xp_still (see arcane-expansion-runtime.json). Not caused by the companion."
+      }
+    ],
+    "tickWarnings": [
+      "Can't keep up: 3628 ms and 3162 ms around test placement, 7910 ms during save-all flush"
+    ],
+    "limitation": "Three targeted cases ran, not all 78 registered tests. QA players are mock connections on the server, not external clients. The tick warnings are not a performance measurement."
+  },
+  "installation": {
+    "mechanism": "Receipt-managed files with the tools/sync_pack.py contract (installer adapted from head-install-20260923/install_head.py) plus tools/curate_pack.py --install for dependencies; replaced files and receipts backed up under integration-before/.",
+    "installer": "G:\\Elias\\Codex\\Entrelumen-work\\head-e1cc078-20260923\\install_head.py",
+    "clientLaunched": false,
+    "minecraftRunning": false,
+    "companionJarSha256": "ba10441cd6c4119de8bb571581df083ba42cb2bb7d7806eb32b1536f1de2a5d5",
+    "profiles": [
+      {
+        "profile": "E:\\curseforge\\Instances\\ENTRELUMEN",
+        "side": "client",
+        "packFilesWritten": [
+          "config/fancymenu/assets/entrelumen/logo.png",
+          "config/fancymenu/assets/entrelumen/manifest.json",
+          "config/fancymenu/assets/entrelumen/title-background.png",
+          "config/fancymenu/customization/entrelumen_title_screen.txt",
+          "config/ftbquests/quests/lang/en_us.snbt",
+          "config/ftbquests/quests/lang/es_es.snbt",
+          "mods/entrelumen-0.1.0.jar"
+        ],
+        "jarsAdded": 0,
+        "jarsTotal": 269,
+        "retired": 0,
+        "preservedLocal": [
+          "config/fancymenu/options.txt",
+          "config/ftbchunks-client.snbt",
+          "config/ftbquests/quests/chapter_groups.snbt",
+          "config/ftbquests/quests/chapters/a_light_among_ruins.snbt",
+          "config/ftbquests/quests/chapters/last_horizon.snbt",
+          "config/ftbquests/quests/chapters/routes_of_exchange.snbt",
+          "config/ftbquests/quests/chapters/the_lost_crafts.snbt",
+          "config/ftbquests/quests/chapters/voices_of_the_atlas.snbt",
+          "config/ftbquests/quests/chapters/world_we_build.snbt",
+          "config/ftbquests/quests/data.snbt"
+        ],
+        "tomlEquivalent": [
+          "config/aether-startup.toml",
+          "config/create_connected-common.toml",
+          "config/cumulus_menus-client.toml"
+        ],
+        "guardedUnchanged": 51
+      },
+      {
+        "profile": "E:\\curseforge\\Instances\\ENTRELUMEN Defaults QA",
+        "side": "client",
+        "packFilesWritten": [
+          "config/fancymenu/assets/entrelumen/logo.png",
+          "config/fancymenu/assets/entrelumen/manifest.json",
+          "config/fancymenu/assets/entrelumen/title-background.png",
+          "config/fancymenu/customization/entrelumen_title_screen.txt",
+          "config/ftbquests/quests/lang/en_us.snbt",
+          "config/ftbquests/quests/lang/es_es.snbt",
+          "mods/entrelumen-0.1.0.jar"
+        ],
+        "jarsAdded": 0,
+        "jarsTotal": 269,
+        "retired": 0,
+        "preservedLocal": [
+          "config/fancymenu/options.txt",
+          "config/ftbchunks-client.snbt",
+          "config/ftbquests/quests/chapter_groups.snbt",
+          "config/ftbquests/quests/chapters/a_light_among_ruins.snbt",
+          "config/ftbquests/quests/chapters/inventory_that_remembers.snbt",
+          "config/ftbquests/quests/chapters/last_horizon.snbt",
+          "config/ftbquests/quests/chapters/routes_of_exchange.snbt",
+          "config/ftbquests/quests/chapters/the_lost_crafts.snbt",
+          "config/ftbquests/quests/chapters/voices_of_the_atlas.snbt",
+          "config/ftbquests/quests/chapters/world_we_build.snbt",
+          "config/ftbquests/quests/data.snbt"
+        ],
+        "tomlEquivalent": [
+          "config/aether-startup.toml",
+          "config/create_connected-common.toml",
+          "config/cumulus_menus-client.toml"
+        ],
+        "guardedUnchanged": 22
+      },
+      {
+        "profile": "G:\\Elias\\Codex\\Entrelumen-work\\server-slice",
+        "side": "server",
+        "packFilesWritten": [
+          "config/fancymenu/assets/entrelumen/logo.png",
+          "config/fancymenu/assets/entrelumen/manifest.json",
+          "config/fancymenu/assets/entrelumen/title-background.png",
+          "config/fancymenu/customization/entrelumen_title_screen.txt",
+          "config/ftbquests/quests/lang/en_us.snbt",
+          "config/ftbquests/quests/lang/es_es.snbt",
+          "mods/entrelumen-0.1.0.jar"
+        ],
+        "jarsAdded": 0,
+        "jarsTotal": 229,
+        "retired": 0,
+        "preservedLocal": [
+          "config/ftbquests/quests/chapter_groups.snbt",
+          "config/ftbquests/quests/chapters/a_light_among_ruins.snbt",
+          "config/ftbquests/quests/chapters/inventory_that_remembers.snbt",
+          "config/ftbquests/quests/chapters/last_horizon.snbt",
+          "config/ftbquests/quests/chapters/routes_of_exchange.snbt",
+          "config/ftbquests/quests/chapters/the_lost_crafts.snbt",
+          "config/ftbquests/quests/chapters/voices_of_the_atlas.snbt",
+          "config/ftbquests/quests/chapters/world_we_build.snbt",
+          "config/ftbquests/quests/data.snbt"
+        ],
+        "tomlEquivalent": [
+          "config/aether-startup.toml",
+          "config/create_connected-common.toml"
+        ],
+        "guardedUnchanged": 3
+      }
+    ],
+    "fancyMenu": "title-background.png, logo.png, manifest.json and the title screen layout now match commit 1ccc210 in both client profiles and the server copy."
+  },
+  "dedicatedRun": {
+    "runId": "c0fbaf96-a96e-4dea-b8f1-8a433baffd06",
+    "pid": 22108,
+    "companionJarSha256": "ba10441cd6c4119de8bb571581df083ba42cb2bb7d7806eb32b1536f1de2a5d5",
+    "qaFlag": false,
+    "done": {
+      "time": "21:32:20",
+      "message": "Done (40.556s)! For help, type \"help\""
+    },
+    "saved": {
+      "time": "21:33:04",
+      "message": "ThreadedAnvilChunkStorage: All dimensions are saved"
+    },
+    "stopping": {
+      "time": "21:32:55",
+      "message": "Stopping server"
+    },
+    "exitCode": 0,
+    "worldBackupBefore": {
+      "archive": "G:\\Elias\\Codex\\Entrelumen-work\\head-e1cc078-20260923\\server-world-after-qa.zip",
+      "files": 1347,
+      "sha256": "4872ecb65b872894b3f63b427be683ed2827105242c469804c59180d6b4a09aa"
+    },
+    "watchdogMilliseconds": 60000,
+    "watchdogChanged": false,
+    "errors": [
+      {
+        "line": 1567,
+        "time": "21:31:37",
+        "logger": "ne.ne.ne.re.DataMapLoader/",
+        "message": "Object with ID reliquary:xp_juice_still specified in data map for registry minecraft:fluid doesn't exist",
+        "classification": "known upstream: Create: Enchantment Industry resolves its own fluid data map entry (reliquary:xp_juice_still) before the pack override is merged; the merged map uses reliquary:xp_still (see arcane-expansion-runtime.json). Not caused by the companion."
+      }
+    ],
+    "tickWarnings": [
+      "Can't keep up: 17811 ms during save-all flush"
+    ],
+    "logSha256": "a6d885da7df4837b71e5f3ae582c36a05b1c173adebf683eb207d9733e440acf"
+  },
+  "receipts": "G:\\Elias\\Codex\\Entrelumen-work\\head-e1cc078-20260923",
+  "limits": [
+    "No client was launched: the FancyMenu title art and the EN/ES chat, tooltips, journal lines and quest paragraphs of both services are unreviewed in a rendered client.",
+    "No survival playtest on real mined or logged terrain, no real field-map survey and no modded-biome samples.",
+    "Ars Nouveau and Nature's Aura coexistence was not exercised beyond loading them in the same server.",
+    "Supplementaries tint and light layers were loaded, but no compiled chart was inspected visually.",
+    "No TPS or save-time measurement; the G: HDD is shared with other jobs.",
+    "Acceptance status is unchanged; this is evidence toward ark_functional, not a pass."
+  ]
+}
