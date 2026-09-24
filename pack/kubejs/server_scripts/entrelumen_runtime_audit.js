@@ -40,6 +40,7 @@ const entrelumenAuditTargets = {
     "entrelumen:energy_coupler",
     "entrelumen:engineering_module",
     "entrelumen:exploration_module",
+    "entrelumen:growth_altar",
     "entrelumen:habitation_contract",
     "entrelumen:habitation_module",
     "entrelumen:handling_core",
@@ -48,16 +49,21 @@ const entrelumenAuditTargets = {
     "entrelumen:living_matrix",
     "entrelumen:logistics_module",
     "entrelumen:nature_module",
+    "entrelumen:peace_altar",
     "entrelumen:power_regulator",
     "entrelumen:propagation_core",
     "entrelumen:ration_bundle",
     "entrelumen:raw_lens",
+    "entrelumen:renewal_altar",
     "entrelumen:renewal_engine",
+    "entrelumen:repose_altar",
     "entrelumen:routing_matrix",
     "entrelumen:signal_core",
     "entrelumen:spectral_lens",
     "entrelumen:survey_notes",
     "entrelumen:survey_station",
+    "entrelumen:terraform_altar",
+    "entrelumen:time_altar",
     "evilcraft:dark_gem",
     "farmersdelight:cooking_pot",
     "farmersdelight:cutting_board",
@@ -135,6 +141,10 @@ const entrelumenAuditTargets = {
     {
       "id": "entrelumen:atlas",
       "output": "entrelumen:atlas"
+    },
+    {
+      "id": "entrelumen:growth_altar_duplication",
+      "output": "entrelumen:growth_altar"
     },
     {
       "id": "entrelumen:integration/ark_arcana",
@@ -225,8 +235,20 @@ const entrelumenAuditTargets = {
       "output": "entrelumen:handling_core"
     },
     {
+      "id": "entrelumen:peace_altar_duplication",
+      "output": "entrelumen:peace_altar"
+    },
+    {
       "id": "entrelumen:raw_lens",
       "output": "entrelumen:raw_lens"
+    },
+    {
+      "id": "entrelumen:renewal_altar_duplication",
+      "output": "entrelumen:renewal_altar"
+    },
+    {
+      "id": "entrelumen:repose_altar_duplication",
+      "output": "entrelumen:repose_altar"
     },
     {
       "id": "entrelumen:signal_core",
@@ -241,6 +263,14 @@ const entrelumenAuditTargets = {
       "output": "entrelumen:survey_station"
     },
     {
+      "id": "entrelumen:terraform_altar_duplication",
+      "output": "entrelumen:terraform_altar"
+    },
+    {
+      "id": "entrelumen:time_altar_duplication",
+      "output": "entrelumen:time_altar"
+    },
+    {
       "id": "farmersdelight:cutting_board",
       "output": "farmersdelight:cutting_board"
     },
@@ -249,7 +279,7 @@ const entrelumenAuditTargets = {
       "output": "farmersdelight:flint_knife"
     }
   ],
-  "signature": "9fb9e7271c0ff78d"
+  "signature": "dcd9a1eef5973c5c"
 };
 
 ServerEvents.afterRecipes(event => {
