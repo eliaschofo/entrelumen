@@ -1,0 +1,904 @@
+{
+  "chapter": "guide_twilight",
+  "group": "exploration",
+  "act": "III",
+  "icon": "twilightforest:twilight_portal_miniature_structure",
+  "title": {
+    "en_us": "The Twilight Forest",
+    "es_es": "Twilight Forest"
+  },
+  "subtitle": {
+    "en_us": "A forest of locked biomes: each boss lifts a curse and opens the next one.",
+    "es_es": "Un bosque de biomas bloqueados: cada jefe levanta una maldición y abre el siguiente."
+  },
+  "quests": [
+    {
+      "key": "tf_welcome",
+      "deps": [],
+      "type": "checkmark",
+      "layout": {
+        "x": 0,
+        "y": 0,
+        "size": 2.0,
+        "shape": "hexagon"
+      },
+      "en_us": [
+        "Where the light never arrives",
+        "The Twilight Forest is a dimension of perpetual dusk, designed as a chain of bosses. Most biomes are cursed (darkness, mosquitoes, blizzards, heat, acid rain) and each curse is lifted by beating the boss that feeds it. The advancements tab of the mod is literally the progression map: open it whenever you feel lost.\n\nIn ENTRELUMEN the Heliodor Compass sends you here in act III (green needle) and then to the Naga Courtyard; the Lich Tower follows in act IV. Heliodor's gardeners called this forest \"the rehearsal\", and Juan kept a sanctuary here."
+      ],
+      "es_es": [
+        "Donde la luz nunca termina de llegar",
+        "Twilight Forest es una dimensión de atardecer eterno pensada como una cadena de jefes. Casi todos los biomas están malditos (oscuridad, mosquitos, ventiscas, calor, lluvia ácida) y cada maldición se levanta venciendo al jefe que la alimenta. La pestaña de logros del mod es literalmente el mapa de progresión: abrila cada vez que te sientas perdido.\n\nEn ENTRELUMEN la Brújula de Heliodor te manda acá en el acto III (aguja verde) y después al Patio de la Naga; la Torre del Liche sigue en el acto IV. Los jardineros de Heliodor llamaban a este bosque «el ensayo», y Juan tenía un santuario acá."
+      ],
+      "sources": [
+        "repo:content/compass_targets.json",
+        "repo:docs/design/story-bible.md",
+        "repo:content/act_four.json",
+        "jar:twilightforest-1.21.1-4.8.3345-universal.jar:data/twilightforest/advancement/root.json"
+      ]
+    },
+    {
+      "key": "tf_portal",
+      "deps": [
+        "tf_welcome"
+      ],
+      "type": "item",
+      "item": "minecraft:diamond",
+      "layout": {
+        "x": 3,
+        "y": 0,
+        "size": 1.0,
+        "shape": "square"
+      },
+      "en_us": [
+        "A pool, flowers and a diamond",
+        "Dig a pool of water (2×2 is the classic size) with grass or dirt all around it, and put a plant on every block of that border: flowers, grass, ferns, mushrooms and similar plants all count. Then throw a diamond into the water. Lightning strikes and the water becomes a portal.\n\nThe lightning sets things on fire (the mod's default, kept by the pack), so build it away from your wooden house. The portal you arrive at on the other side works both ways without a new diamond."
+      ],
+      "es_es": [
+        "Un estanque, flores y un diamante",
+        "Cavá un estanque de agua (2×2 es el tamaño clásico) con pasto o tierra todo alrededor, y poné una planta sobre cada bloque de ese borde: flores, pasto, helechos, hongos y plantas parecidas sirven. Después tirá un diamante al agua. Cae un rayo y el agua se convierte en portal.\n\nEl rayo prende fuego lo que tenga cerca (así viene el mod y el pack lo deja igual), así que armalo lejos de tu casa de madera. El portal al que llegás del otro lado funciona en los dos sentidos sin otro diamante."
+      ],
+      "sources": [
+        "jar:twilightforest-1.21.1-4.8.3345-universal.jar:data/twilightforest/tags/item/portal/activator.json",
+        "jar:twilightforest-1.21.1-4.8.3345-universal.jar:data/twilightforest/tags/block/portal/edge.json",
+        "jar:twilightforest-1.21.1-4.8.3345-universal.jar:data/twilightforest/tags/block/portal/decoration.json",
+        "jar:twilightforest-1.21.1-4.8.3345-universal.jar:twilightforest/config/TFCommonConfig.class",
+        "jar:twilightforest-1.21.1-4.8.3345-universal.jar:assets/twilightforest/lang/en_us.json"
+      ]
+    },
+    {
+      "key": "tf_enter",
+      "deps": [
+        "tf_portal"
+      ],
+      "type": "dimension",
+      "dimension": "twilightforest:twilight_forest",
+      "icon": "twilightforest:twilight_oak_sapling",
+      "layout": {
+        "x": 6,
+        "y": 0,
+        "size": 1.75,
+        "shape": "diamond"
+      },
+      "en_us": [
+        "Into the Twilight Forest",
+        "Cross the portal. The forest is dark even at noon, so bring torches or a light source; mobs spawn more than you expect. Fireflies and Cicadas are harmless ambience, and you can put them in jars as lamps.\n\nThe first visit by anyone on your team records \"Twilight Forest: a witnessed arrival\", the milestone that the act IV Atlas asks for, even if you come during act III."
+      ],
+      "es_es": [
+        "Adentro de Twilight Forest",
+        "Cruzá el portal. El bosque está oscuro incluso al mediodía, así que llevá antorchas o alguna fuente de luz; aparecen más mobs de los que esperás. Las Luciérnagas y las Cigarras son puro ambiente, y se pueden meter en frascos como lámparas.\n\nLa primera visita de cualquier integrante de tu equipo registra «Twilight Forest: una llegada registrada», el hito que pide el Atlas del acto IV, aunque vengas durante el acto III."
+      ],
+      "sources": [
+        "jar:twilightforest-1.21.1-4.8.3345-universal.jar:data/twilightforest/advancement/root.json",
+        "jar:twilightforest-1.21.1-4.8.3345-universal.jar:assets/twilightforest/lang/en_us.json",
+        "repo:content/act_four.json",
+        "repo:companion/src/main/java/dev/entrelumen/Expeditions.java"
+      ]
+    },
+    {
+      "key": "tf_locks",
+      "deps": [
+        "tf_enter"
+      ],
+      "type": "checkmark",
+      "icon": "minecraft:written_book",
+      "layout": {
+        "x": 6,
+        "y": -3,
+        "size": 0.85,
+        "shape": "circle"
+      },
+      "en_us": [
+        "Locked biomes and explorer's notes",
+        "Walking into a biome you have not earned shows a \"Biome Locked! Check your advancements\" toast, and its curse starts working on you. Boss structures are protected too: their walls cannot be broken, so you cannot tunnel around a lock.\n\nWhen you reach a protected structure early the mod gives you an explorer's notebook (\"Notes on a Pointy Tower\", \"Notes on the Fire Swamp\"…). Read them: each one says which creature feeds the curse and where to find it."
+      ],
+      "es_es": [
+        "Biomas bloqueados y notas del explorador",
+        "Si entrás a un bioma que todavía no te ganaste aparece el aviso «Biome Locked! Check your advancements» y su maldición empieza a afectarte. Las estructuras de los jefes también están protegidas: sus paredes no se pueden romper, así que no hay túnel que saltee un bloqueo.\n\nCuando llegás antes de tiempo a una estructura protegida, el mod te da un cuaderno de explorador («Notes on a Pointy Tower», «Notes on the Fire Swamp»…). Leelos: cada uno dice qué criatura alimenta la maldición y dónde encontrarla."
+      ],
+      "sources": [
+        "jar:twilightforest-1.21.1-4.8.3345-universal.jar:assets/twilightforest/lang/en_us.json",
+        "jar:twilightforest-1.21.1-4.8.3345-universal.jar:twilightforest/config/TFClientConfig.class"
+      ]
+    },
+    {
+      "key": "tf_naga",
+      "deps": [
+        "tf_enter"
+      ],
+      "type": "advancement",
+      "advancement": "twilightforest:progress_naga",
+      "icon": "twilightforest:naga_trophy",
+      "layout": {
+        "x": 9,
+        "y": 0,
+        "size": 2.0,
+        "shape": "gear"
+      },
+      "en_us": [
+        "The Naga",
+        "The Naga is a huge serpent that coils around its stone courtyard. It charges in straight lines: sidestep and hit its head, and fight on open ground. The courtyard walls cannot be broken.\n\nIt drops Naga Scales and its trophy. A scale is the key to the barrier around the Lich Tower (\"Time To Even The Scales\"), and scales craft the Naga chestplate and leggings. Bosses in this pack leave their loot in a chest, the mod's default."
+      ],
+      "es_es": [
+        "La Naga",
+        "La Naga es una serpiente enorme que se enrosca en su patio de piedra. Carga en línea recta: esquivala hacia un costado y pegale en la cabeza, y peleá en terreno abierto. Las paredes del patio no se rompen.\n\nSuelta Escamas de Naga y su trofeo. Una escama es la llave de la barrera que rodea la Torre del Liche («Time To Even The Scales»), y con escamas se hacen la pechera y las grebas de Naga. En este pack los jefes dejan su botín en un cofre, como viene el mod."
+      ],
+      "sources": [
+        "jar:twilightforest-1.21.1-4.8.3345-universal.jar:data/twilightforest/advancement/progress_naga.json",
+        "jar:twilightforest-1.21.1-4.8.3345-universal.jar:data/twilightforest/loot_table/entities/naga.json",
+        "jar:twilightforest-1.21.1-4.8.3345-universal.jar:assets/twilightforest/lang/en_us.json",
+        "jar:twilightforest-1.21.1-4.8.3345-universal.jar:twilightforest/config/TFCommonConfig.class",
+        "repo:content/compass_targets.json"
+      ]
+    },
+    {
+      "key": "tf_naga_armor",
+      "deps": [
+        "tf_naga"
+      ],
+      "type": "advancement",
+      "advancement": "twilightforest:naga_armors",
+      "optional": true,
+      "icon": "twilightforest:naga_chestplate",
+      "layout": {
+        "x": 9,
+        "y": 3,
+        "size": 1.0,
+        "shape": "square"
+      },
+      "en_us": [
+        "Naga armor",
+        "Craft the Naga chestplate and leggings from scales. They are a solid step above iron for the early forest; Twilight gear can come with enchantments already applied, and the tooltip shows them.\n\nDo not spend every scale: keep one to open the Lich Tower."
+      ],
+      "es_es": [
+        "Armadura de Naga",
+        "Fabricá la pechera y las grebas de Naga con escamas. Son un buen salto por encima del hierro para el bosque temprano; el equipo de Twilight puede venir con encantamientos de fábrica, y el tooltip los muestra.\n\nNo gastes todas las escamas: guardá una para abrir la Torre del Liche."
+      ],
+      "sources": [
+        "jar:twilightforest-1.21.1-4.8.3345-universal.jar:data/twilightforest/advancement/naga_armors.json",
+        "jar:twilightforest-1.21.1-4.8.3345-universal.jar:assets/twilightforest/lang/en_us.json",
+        "jar:twilightforest-1.21.1-4.8.3345-universal.jar:twilightforest/config/TFCommonConfig.class"
+      ]
+    },
+    {
+      "key": "tf_lich",
+      "deps": [
+        "tf_naga"
+      ],
+      "type": "advancement",
+      "advancement": "twilightforest:progress_lich",
+      "icon": "twilightforest:lich_trophy",
+      "layout": {
+        "x": 12,
+        "y": 0,
+        "size": 2.0,
+        "shape": "gear"
+      },
+      "en_us": [
+        "The Twilight Lich",
+        "The Lich waits at the top of his pointy tower. Climb the tower: the Lich fights with Lich Bolts and explosive bolts and calls Lich Minions. Bring a bow, food and good armor.\n\nDefeating him and taking a scepter clears three curses at once: mosquitoes in the Swamp, blindness in the Dark Forest and the chill of the Snowy Forest (\"Bring Out Your Dead\"). From here the forest branches into three paths you can do in any order: the swamps, the dark forest and the snow."
+      ],
+      "es_es": [
+        "El Liche",
+        "El Liche espera arriba de su torre puntiaguda. Subí la torre: el Liche pelea con proyectiles mágicos, algunos explosivos, e invoca Secuaces del Liche. Llevá arco, comida y buena armadura.\n\nVencerlo y quedarte con un cetro levanta tres maldiciones de golpe: los mosquitos del Pantano, la ceguera del Bosque Oscuro y el frío del Bosque Nevado («Bring Out Your Dead»). Desde acá el bosque se abre en tres caminos que podés hacer en cualquier orden: los pantanos, el bosque oscuro y la nieve."
+      ],
+      "sources": [
+        "jar:twilightforest-1.21.1-4.8.3345-universal.jar:data/twilightforest/advancement/progress_lich.json",
+        "jar:twilightforest-1.21.1-4.8.3345-universal.jar:data/twilightforest/loot_table/entities/lich.json",
+        "jar:twilightforest-1.21.1-4.8.3345-universal.jar:assets/twilightforest/lang/en_us.json",
+        "repo:content/compass_targets.json"
+      ]
+    },
+    {
+      "key": "tf_scepters",
+      "deps": [
+        "tf_lich"
+      ],
+      "type": "advancement",
+      "advancement": "twilightforest:lich_scepters",
+      "optional": true,
+      "icon": "twilightforest:twilight_scepter",
+      "layout": {
+        "x": 12,
+        "y": 3,
+        "size": 1.0,
+        "shape": "circle"
+      },
+      "en_us": [
+        "The four scepters",
+        "The Lich's loot rolls among four scepters: Twilight (throws damaging pearls), Life Draining (steals health), Zombie (summons a loyal zombie) and Fortification (a protective shield). Each has limited charges; the Renewal enchantment recharges them from your inventory.\n\nOwning all four is \"By Our Powers Combined!\", which means fighting the Lich more than once, in other towers or with friends."
+      ],
+      "es_es": [
+        "Los cuatro cetros",
+        "El botín del Liche sortea entre cuatro cetros: del Crepúsculo (tira perlas que dañan), de Drenaje de vida (roba salud), Zombi (invoca un zombi leal) y de Fortificación (un escudo protector). Cada uno tiene cargas limitadas; el encantamiento Renewal los recarga desde tu inventario.\n\nTener los cuatro es «By Our Powers Combined!», y eso implica pelear con más de un Liche, en otras torres o con amigos."
+      ],
+      "sources": [
+        "jar:twilightforest-1.21.1-4.8.3345-universal.jar:data/twilightforest/loot_table/entities/lich.json",
+        "jar:twilightforest-1.21.1-4.8.3345-universal.jar:data/twilightforest/advancement/lich_scepters.json",
+        "jar:twilightforest-1.21.1-4.8.3345-universal.jar:assets/twilightforest/lang/en_us.json"
+      ]
+    },
+    {
+      "key": "tf_labyrinth",
+      "deps": [
+        "tf_lich"
+      ],
+      "type": "advancement",
+      "advancement": "twilightforest:progress_labyrinth",
+      "icon": "twilightforest:meef_stroganoff",
+      "layout": {
+        "x": 15,
+        "y": -3,
+        "size": 1.0,
+        "shape": "circle"
+      },
+      "en_us": [
+        "The Labyrinth and the Minoshroom",
+        "Under the Swamp lie labyrinths full of Minotaurs. The special one, the Minoshroom, guards the vault. It drops Meef Stroganoff, a diamond Minotaur axe and its trophy. Eating the stroganoff acclimatizes you to the Fire Swamp's heat (\"Mighty Stroganoff\").\n\nMinotaurs also drop the Maze Map Focus, the key ingredient of the Maze Map and of the Uncrafting Table."
+      ],
+      "es_es": [
+        "El Laberinto y el Minoseta",
+        "Debajo del Pantano hay laberintos llenos de Minotauros. El especial, el Minoseta (Minoshroom), custodia la bóveda. Suelta Meef Stroganoff, un hacha de minotauro de diamante y su trofeo. Comer el stroganoff te aclimata al calor del Pantano de Fuego («Mighty Stroganoff»).\n\nLos Minotauros además sueltan el Foco del mapa del laberinto (Maze Map Focus), ingrediente del Mapa del laberinto y de la Mesa de Descrafteo."
+      ],
+      "sources": [
+        "jar:twilightforest-1.21.1-4.8.3345-universal.jar:data/twilightforest/advancement/progress_labyrinth.json",
+        "jar:twilightforest-1.21.1-4.8.3345-universal.jar:data/twilightforest/loot_table/entities/minoshroom.json",
+        "jar:twilightforest-1.21.1-4.8.3345-universal.jar:data/twilightforest/loot_table/entities/minotaur.json",
+        "jar:twilightforest-1.21.1-4.8.3345-universal.jar:assets/twilightforest/lang/en_us.json"
+      ]
+    },
+    {
+      "key": "tf_hydra",
+      "deps": [
+        "tf_labyrinth"
+      ],
+      "type": "advancement",
+      "advancement": "twilightforest:progress_hydra",
+      "icon": "twilightforest:hydra_trophy",
+      "layout": {
+        "x": 18,
+        "y": -3,
+        "size": 2.0,
+        "shape": "gear"
+      },
+      "en_us": [
+        "The Hydra",
+        "In the Fire Swamp lives the Hydra, a many-headed beast that breathes fire and lobs Hydra Mortars. Hit its heads when they come close; fire resistance potions help a lot.\n\nIt drops Fiery Blood, Hydra Chops and its trophy (\"Hydra Slayer\"). Fiery Blood plus an iron ingot makes a Fiery Ingot: Fiery tools auto-smelt what you mine and Fiery armor burns attackers."
+      ],
+      "es_es": [
+        "La Hidra",
+        "En el Pantano de Fuego vive la Hidra, una bestia de varias cabezas que escupe fuego y lanza morteros. Pegale a las cabezas cuando se acercan; las pociones de resistencia al fuego ayudan mucho.\n\nSuelta Sangre ardiente (Fiery Blood), Chuletas de Hidra y su trofeo («Hydra Slayer»). Sangre ardiente más un lingote de hierro hace un Lingote ardiente: las herramientas ardientes funden lo que picás y la armadura ardiente quema a quien te pega."
+      ],
+      "sources": [
+        "jar:twilightforest-1.21.1-4.8.3345-universal.jar:data/twilightforest/advancement/progress_hydra.json",
+        "jar:twilightforest-1.21.1-4.8.3345-universal.jar:data/twilightforest/loot_table/entities/hydra.json",
+        "jar:twilightforest-1.21.1-4.8.3345-universal.jar:data/twilightforest/recipe/equipment/fiery_ingot_crafting.json",
+        "jar:twilightforest-1.21.1-4.8.3345-universal.jar:assets/twilightforest/lang/en_us.json"
+      ]
+    },
+    {
+      "key": "tf_fiery",
+      "deps": [
+        "tf_hydra"
+      ],
+      "type": "item",
+      "item": "twilightforest:fiery_ingot",
+      "optional": true,
+      "layout": {
+        "x": 18,
+        "y": -6,
+        "size": 1.0,
+        "shape": "circle"
+      },
+      "en_us": [
+        "Fiery gear",
+        "Craft a Fiery Ingot from Fiery Blood or Fiery Tears and an iron ingot, then a Fiery tool or weapon. Holding one while carrying a piece of Fiery armor earns \"Gallons of Blood and Tears\".\n\nThe Fiery Pickaxe smelts ores as you mine them: a very early auto-smelter."
+      ],
+      "es_es": [
+        "Equipo ardiente",
+        "Fabricá un Lingote ardiente con Sangre ardiente o Lágrimas ardientes y un lingote de hierro, y después una herramienta o arma ardiente. Tenerla en la mano con una pieza de armadura ardiente en el inventario da «Gallons of Blood and Tears».\n\nEl Pico ardiente funde los minerales mientras picás: una fundición automática muy temprana."
+      ],
+      "sources": [
+        "jar:twilightforest-1.21.1-4.8.3345-universal.jar:data/twilightforest/tags/item/fiery_vial.json",
+        "jar:twilightforest-1.21.1-4.8.3345-universal.jar:data/twilightforest/advancement/fiery_set.json",
+        "jar:twilightforest-1.21.1-4.8.3345-universal.jar:assets/twilightforest/lang/en_us.json"
+      ]
+    },
+    {
+      "key": "tf_pedestal",
+      "deps": [
+        "tf_lich"
+      ],
+      "type": "advancement",
+      "advancement": "twilightforest:progress_trophy_pedestal",
+      "icon": "twilightforest:trophy_pedestal",
+      "layout": {
+        "x": 15,
+        "y": 0,
+        "size": 1.0,
+        "shape": "circle"
+      },
+      "en_us": [
+        "A trophy on the pedestal",
+        "The Dark Forest hides the Knight Stronghold, ruins full of goblin knights. Deep inside is a Trophy Pedestal: place any boss trophy on it (the Naga's works) to claim your title and open the main part of the stronghold (\"Trophied Champion\").\n\nGoblin knights drop Armor Shards: nine make a cluster that smelts into a Knightmetal Ingot."
+      ],
+      "es_es": [
+        "Un trofeo en el pedestal",
+        "El Bosque Oscuro esconde la Fortaleza de los Caballeros, ruinas llenas de caballeros goblin. En lo profundo hay un Pedestal de trofeos: poné cualquier trofeo de jefe (sirve el de la Naga) para reclamar tu título y abrir la parte principal de la fortaleza («Trophied Champion»).\n\nLos caballeros goblin sueltan Fragmentos de armadura: con varios se arma un racimo que se funde en un Lingote de metal de caballero (Knightmetal)."
+      ],
+      "sources": [
+        "jar:twilightforest-1.21.1-4.8.3345-universal.jar:data/twilightforest/advancement/progress_trophy_pedestal.json",
+        "jar:twilightforest-1.21.1-4.8.3345-universal.jar:data/twilightforest/recipe/material/armor_shard_cluster.json",
+        "jar:twilightforest-1.21.1-4.8.3345-universal.jar:data/twilightforest/recipe/material/smelted_knightmetal_ingot.json",
+        "jar:twilightforest-1.21.1-4.8.3345-universal.jar:assets/twilightforest/lang/en_us.json"
+      ]
+    },
+    {
+      "key": "tf_knights",
+      "deps": [
+        "tf_pedestal"
+      ],
+      "type": "advancement",
+      "advancement": "twilightforest:progress_knights",
+      "icon": "twilightforest:knight_phantom_trophy",
+      "layout": {
+        "x": 18,
+        "y": 0,
+        "size": 2.0,
+        "shape": "gear"
+      },
+      "en_us": [
+        "The Knight Phantoms",
+        "In the stronghold's tomb wait the Knight Phantoms, who fight as a group. Settling all of them is \"Carminite Acclimation\": from then on the Dark Tower's carminite devices obey you.\n\nThey drop Knightmetal tools and Phantom armor. The Phantom helmet and chestplate are never lost on death, an excellent pair to wear on dangerous trips."
+      ],
+      "es_es": [
+        "Los Caballeros Fantasma",
+        "En la tumba de la fortaleza esperan los Caballeros Fantasma, que pelean en grupo. Calmarlos a todos es «Carminite Acclimation»: desde ahí los dispositivos de carminita de la Torre Oscura te obedecen.\n\nSueltan herramientas de metal de caballero y armadura Fantasma. El casco y la pechera Fantasma nunca se pierden al morir: un par excelente para los viajes peligrosos."
+      ],
+      "sources": [
+        "jar:twilightforest-1.21.1-4.8.3345-universal.jar:data/twilightforest/advancement/progress_knights.json",
+        "jar:twilightforest-1.21.1-4.8.3345-universal.jar:data/twilightforest/loot_table/entities/knight_phantom.json",
+        "jar:twilightforest-1.21.1-4.8.3345-universal.jar:assets/twilightforest/lang/en_us.json"
+      ]
+    },
+    {
+      "key": "tf_knightmetal",
+      "deps": [
+        "tf_knights"
+      ],
+      "type": "item",
+      "item": "twilightforest:knightmetal_ingot",
+      "optional": true,
+      "layout": {
+        "x": 18,
+        "y": 3,
+        "size": 1.0,
+        "shape": "circle"
+      },
+      "en_us": [
+        "Knightmetal",
+        "Smelt a cluster of Armor Shards into Knightmetal. Knightmetal swords and pickaxes deal extra damage to armored targets and the axe to unarmored ones; a Knightmetal block hurts whatever touches it.\n\nIt is also the ingredient of the Block and Chain, a heavy flail."
+      ],
+      "es_es": [
+        "Metal de caballero",
+        "Fundí un racimo de Fragmentos de armadura para obtener metal de caballero. La espada y el pico de metal de caballero hacen daño extra a los objetivos con armadura y el hacha a los que no tienen; el bloque de metal de caballero lastima a lo que lo toca.\n\nTambién es el ingrediente del Block and Chain, un mangual pesado."
+      ],
+      "sources": [
+        "jar:twilightforest-1.21.1-4.8.3345-universal.jar:data/twilightforest/recipe/material/smelted_knightmetal_ingot.json",
+        "jar:twilightforest-1.21.1-4.8.3345-universal.jar:assets/twilightforest/lang/en_us.json"
+      ]
+    },
+    {
+      "key": "tf_ghast_trap",
+      "deps": [
+        "tf_knights"
+      ],
+      "type": "advancement",
+      "advancement": "twilightforest:ghast_trap",
+      "icon": "twilightforest:ghast_trap",
+      "layout": {
+        "x": 21,
+        "y": 0,
+        "size": 1.0,
+        "shape": "circle"
+      },
+      "en_us": [
+        "The Ghast Trap",
+        "The Dark Tower is a vertical puzzle of carminite machines: vanishing blocks, reappearing blocks and locked doors opened by a Tower Key. At the top, kill the Carminite Ghastlings around a Ghast Trap and activate it to drag the Ur-Ghast down from the sky (\"Something Strange in Towerwood\").\n\nTowerwood Borers in the walls drop Borer Essence; with a ghast tear and redstone it makes Carminite."
+      ],
+      "es_es": [
+        "La Trampa para ghasts",
+        "La Torre Oscura es un acertijo vertical de máquinas de carminita: bloques que desaparecen, bloques que reaparecen y puertas cerradas que abre una Llave de la torre. Arriba de todo, matá a los Ghastlings de carminita alrededor de una Trampa para ghasts y activala para bajar al Ur-Ghast del cielo («Something Strange in Towerwood»).\n\nLos Barrenadores de madera de torre sueltan Esencia de barrenador; con una lágrima de ghast y redstone se hace Carminita."
+      ],
+      "sources": [
+        "jar:twilightforest-1.21.1-4.8.3345-universal.jar:data/twilightforest/advancement/ghast_trap.json",
+        "jar:twilightforest-1.21.1-4.8.3345-universal.jar:data/twilightforest/recipe/material/carminite.json",
+        "jar:twilightforest-1.21.1-4.8.3345-universal.jar:data/twilightforest/loot_table/darktower_key.json",
+        "jar:twilightforest-1.21.1-4.8.3345-universal.jar:assets/twilightforest/lang/en_us.json"
+      ]
+    },
+    {
+      "key": "tf_ur_ghast",
+      "deps": [
+        "tf_ghast_trap"
+      ],
+      "type": "advancement",
+      "advancement": "twilightforest:progress_ur_ghast",
+      "icon": "twilightforest:ur_ghast_trophy",
+      "layout": {
+        "x": 24,
+        "y": 0,
+        "size": 2.0,
+        "shape": "gear"
+      },
+      "en_us": [
+        "The Ur-Ghast",
+        "Once trapped, the Ur-Ghast fights in its room at the top of the tower, crying fire and shooting fireballs. Bring fire resistance and a bow.\n\nIt drops Fiery Tears, Carminite and its trophy (\"Tears of Fire\"). Fiery Tears work like Fiery Blood for Fiery Ingots."
+      ],
+      "es_es": [
+        "El Ur-Ghast",
+        "Una vez atrapado, el Ur-Ghast pelea en su sala arriba de la torre, llorando fuego y tirando bolas de fuego. Llevá resistencia al fuego y un arco.\n\nSuelta Lágrimas ardientes, Carminita y su trofeo («Tears of Fire»). Las Lágrimas ardientes sirven igual que la Sangre ardiente para el Lingote ardiente."
+      ],
+      "sources": [
+        "jar:twilightforest-1.21.1-4.8.3345-universal.jar:data/twilightforest/advancement/progress_ur_ghast.json",
+        "jar:twilightforest-1.21.1-4.8.3345-universal.jar:data/twilightforest/loot_table/entities/ur_ghast.json",
+        "jar:twilightforest-1.21.1-4.8.3345-universal.jar:assets/twilightforest/lang/en_us.json"
+      ]
+    },
+    {
+      "key": "tf_yeti",
+      "deps": [
+        "tf_lich"
+      ],
+      "type": "advancement",
+      "advancement": "twilightforest:progress_yeti",
+      "icon": "twilightforest:alpha_yeti_trophy",
+      "layout": {
+        "x": 15,
+        "y": 3,
+        "size": 2.0,
+        "shape": "gear"
+      },
+      "en_us": [
+        "The Alpha Yeti",
+        "The Snowy Forest's blizzard is fed by the Alpha Yeti, who lives in a cave full of yetis. It throws Ice Bombs and brings down falling ice. Its fur, lining your gear, keeps you safe from the Glacier's cold (\"Alpha Fur\").\n\nIt drops Alpha Yeti Fur, Ice Bombs and its trophy; regular yetis and winter wolves drop Arctic Fur for dyeable Arctic armor."
+      ],
+      "es_es": [
+        "El Yeti Alfa",
+        "La ventisca del Bosque Nevado la alimenta el Yeti Alfa, que vive en una cueva llena de yetis. Tira bombas de hielo y hace caer hielo del techo. Su piel, en tu equipo, te protege del frío del Glaciar («Alpha Fur»).\n\nSuelta Piel de Yeti Alfa, Bombas de hielo y su trofeo; los yetis comunes y los lobos de invierno sueltan Piel ártica para la armadura ártica, que se puede teñir."
+      ],
+      "sources": [
+        "jar:twilightforest-1.21.1-4.8.3345-universal.jar:data/twilightforest/advancement/progress_yeti.json",
+        "jar:twilightforest-1.21.1-4.8.3345-universal.jar:data/twilightforest/loot_table/entities/alpha_yeti.json",
+        "jar:twilightforest-1.21.1-4.8.3345-universal.jar:data/twilightforest/loot_table/entities/yeti.json",
+        "jar:twilightforest-1.21.1-4.8.3345-universal.jar:assets/twilightforest/lang/en_us.json"
+      ]
+    },
+    {
+      "key": "tf_snow_queen",
+      "deps": [
+        "tf_yeti"
+      ],
+      "type": "advancement",
+      "advancement": "twilightforest:progress_glacier",
+      "icon": "twilightforest:snow_queen_trophy",
+      "layout": {
+        "x": 21,
+        "y": 3,
+        "size": 2.0,
+        "shape": "gear"
+      },
+      "en_us": [
+        "The Snow Queen",
+        "At the top of the Glacier stands the Aurora Palace, and on its roof the Snow Queen. She fights with ice: ice cores, falling ice and Snow Guardians around her. Keep moving and keep your distance.\n\nShe drops the Triple Bow or the Seeker Bow, plus her trophy (\"Clear Skies\")."
+      ],
+      "es_es": [
+        "La Reina de las Nieves",
+        "En lo alto del Glaciar está el Palacio de la Aurora y, en su techo, la Reina de las Nieves. Pelea con hielo: núcleos de hielo, hielo que cae y Guardianes de nieve a su alrededor. Movete todo el tiempo y mantené distancia.\n\nSuelta el Arco triple o el Arco buscador, además de su trofeo («Clear Skies»)."
+      ],
+      "sources": [
+        "jar:twilightforest-1.21.1-4.8.3345-universal.jar:data/twilightforest/advancement/progress_glacier.json",
+        "jar:twilightforest-1.21.1-4.8.3345-universal.jar:data/twilightforest/loot_table/entities/snow_queen.json",
+        "jar:twilightforest-1.21.1-4.8.3345-universal.jar:assets/twilightforest/lang/en_us.json"
+      ]
+    },
+    {
+      "key": "tf_merge",
+      "deps": [
+        "tf_hydra",
+        "tf_ur_ghast",
+        "tf_snow_queen"
+      ],
+      "type": "advancement",
+      "advancement": "twilightforest:progress_merge",
+      "icon": "twilightforest:uberous_soil",
+      "layout": {
+        "x": 27,
+        "y": 0,
+        "size": 1.5,
+        "shape": "hexagon"
+      },
+      "en_us": [
+        "Ultimate Showdown",
+        "With the Hydra, the Ur-Ghast and the Snow Queen defeated, the acid rain over the Highlands stops (\"Ultimate Showdown\"). The three branches meet here.\n\nThe Highlands are the last region: troll caves, giants in the clouds and, on the plateau, the Final Castle."
+      ],
+      "es_es": [
+        "El gran final",
+        "Con la Hidra, el Ur-Ghast y la Reina de las Nieves vencidos, para la lluvia ácida sobre las Tierras Altas («Ultimate Showdown»). Las tres ramas se juntan acá.\n\nLas Tierras Altas son la última región: cuevas de trolls, gigantes en las nubes y, en la meseta, el Castillo Final."
+      ],
+      "sources": [
+        "jar:twilightforest-1.21.1-4.8.3345-universal.jar:data/twilightforest/advancement/progress_merge.json",
+        "jar:twilightforest-1.21.1-4.8.3345-universal.jar:assets/twilightforest/lang/en_us.json"
+      ]
+    },
+    {
+      "key": "tf_beanstalk",
+      "deps": [
+        "tf_merge"
+      ],
+      "type": "advancement",
+      "advancement": "twilightforest:giants",
+      "icon": "twilightforest:magic_beans",
+      "layout": {
+        "x": 30,
+        "y": 0,
+        "size": 1.0,
+        "shape": "circle"
+      },
+      "en_us": [
+        "Jack and the Beanstalk",
+        "Trolls in the Highland caves drop Magic Beans. Use a bean on the glowing Uberous Soil below the clouds and a huge beanstalk grows up to them (\"Jack and the Beanstalk\").\n\nUp there live Giant Miners: kill one and bring back its Giant's Pickaxe, which breaks the giant blocks of the troll caves (\"I'm on Cloud Nine\")."
+      ],
+      "es_es": [
+        "Jack y las habichuelas",
+        "Los trolls de las cuevas de las Tierras Altas sueltan Habichuelas mágicas. Usá una sobre la Tierra fértil brillante (Uberous Soil) debajo de las nubes y crece una planta gigante hasta ellas («Jack and the Beanstalk»).\n\nAllá arriba viven los Mineros Gigantes: matá uno y volvé con su Pico de gigante, que rompe los bloques gigantes de las cuevas de trolls («I'm on Cloud Nine»)."
+      ],
+      "sources": [
+        "jar:twilightforest-1.21.1-4.8.3345-universal.jar:data/twilightforest/advancement/beanstalk.json",
+        "jar:twilightforest-1.21.1-4.8.3345-universal.jar:data/twilightforest/advancement/giants.json",
+        "jar:twilightforest-1.21.1-4.8.3345-universal.jar:data/twilightforest/loot_table/entities/troll.json",
+        "jar:twilightforest-1.21.1-4.8.3345-universal.jar:data/twilightforest/loot_table/entities/giant_miner.json",
+        "jar:twilightforest-1.21.1-4.8.3345-universal.jar:assets/twilightforest/lang/en_us.json"
+      ]
+    },
+    {
+      "key": "tf_lamp",
+      "deps": [
+        "tf_beanstalk"
+      ],
+      "type": "advancement",
+      "advancement": "twilightforest:progress_troll",
+      "icon": "twilightforest:lamp_of_cinders",
+      "layout": {
+        "x": 33,
+        "y": 0,
+        "size": 1.0,
+        "shape": "circle"
+      },
+      "en_us": [
+        "The Lamp of Cinders",
+        "Behind giant blocks in the troll caves lies a vault with the Lamp of Cinders. It burns away the thorn barriers that close the way to the plateau (\"I Wish For More Burning\").\n\nThat is as far as the mod goes today: the Final Castle is unfinished, and reaching it shows the \"End of Progression\" advancement and a notice from the mod authors."
+      ],
+      "es_es": [
+        "La Lámpara de Cenizas",
+        "Detrás de los bloques gigantes de las cuevas de trolls hay una bóveda con la Lámpara de Cenizas (Lamp of Cinders). Quema las barreras de espinas que cierran el camino a la meseta («I Wish For More Burning»).\n\nHasta ahí llega hoy el mod: el Castillo Final está sin terminar, y alcanzarlo muestra el logro «End of Progression» y un aviso de los autores."
+      ],
+      "sources": [
+        "jar:twilightforest-1.21.1-4.8.3345-universal.jar:data/twilightforest/advancement/progress_troll.json",
+        "jar:twilightforest-1.21.1-4.8.3345-universal.jar:data/twilightforest/advancement/progression_end.json",
+        "jar:twilightforest-1.21.1-4.8.3345-universal.jar:data/twilightforest/loot_table/troll_vault_with_lamp.json",
+        "jar:twilightforest-1.21.1-4.8.3345-universal.jar:assets/twilightforest/lang/en_us.json"
+      ]
+    },
+    {
+      "key": "tf_ironwood",
+      "deps": [
+        "tf_enter"
+      ],
+      "type": "item",
+      "item": "twilightforest:ironwood_ingot",
+      "layout": {
+        "x": 3,
+        "y": 4,
+        "size": 1.0,
+        "shape": "circle"
+      },
+      "en_us": [
+        "Ironwood",
+        "Craft Raw Ironwood from Liveroot, raw iron and a gold nugget, then smelt it into an Ironwood Ingot. Liveroot comes from Liveroot blocks among the roots underground and from chests.\n\nIn ENTRELUMEN the Ironwood Ingot is the act IV component of Powah's niotic capacitor."
+      ],
+      "es_es": [
+        "Ironwood",
+        "Fabricá Ironwood en bruto con Liveroot, hierro en bruto y una pepita de oro, y fundilo en un Lingote de Ironwood. El Liveroot sale de los bloques de Liveroot entre las raíces subterráneas y de cofres.\n\nEn ENTRELUMEN el Lingote de Ironwood es el componente del acto IV del capacitor niótico de Powah."
+      ],
+      "sources": [
+        "jar:twilightforest-1.21.1-4.8.3345-universal.jar:data/twilightforest/recipe/material/raw_ironwood.json",
+        "jar:twilightforest-1.21.1-4.8.3345-universal.jar:data/twilightforest/recipe/material/smelted_ironwood_ingot.json",
+        "jar:twilightforest-1.21.1-4.8.3345-universal.jar:data/twilightforest/loot_table/blocks/liveroot_block.json",
+        "repo:pack/kubejs/server_scripts/entrelumen_industrial_balance.js"
+      ]
+    },
+    {
+      "key": "tf_hills",
+      "deps": [
+        "tf_enter"
+      ],
+      "type": "advancement",
+      "advancement": "twilightforest:hill1",
+      "optional": true,
+      "icon": "twilightforest:ore_magnet",
+      "layout": {
+        "x": 6,
+        "y": 4,
+        "size": 1.0,
+        "shape": "circle"
+      },
+      "en_us": [
+        "Hollow Hills",
+        "Mounds in the forest are Hollow Hills (small, medium and large), caves full of ore, spawners and Redcaps. Beating a Redcap in a small one earns \"The Boots Are Mine!\".\n\nTheir chests are where Steeleaf, the Ore Magnet (pulls ores out of the rock), Transformation Powder (turns some creatures into others) and Charms of Life turn up."
+      ],
+      "es_es": [
+        "Colinas huecas",
+        "Los montículos del bosque son Colinas huecas (chicas, medianas y grandes): cuevas llenas de mineral, generadores y Redcaps. Vencer a un Redcap en una chica da «The Boots Are Mine!».\n\nEn sus cofres aparecen el Steeleaf, el Imán de minerales (arranca menas de la roca), el Polvo de transformación (convierte unas criaturas en otras) y los Amuletos de vida."
+      ],
+      "sources": [
+        "jar:twilightforest-1.21.1-4.8.3345-universal.jar:data/twilightforest/advancement/hill1.json",
+        "jar:twilightforest-1.21.1-4.8.3345-universal.jar:data/twilightforest/loot_table/hill_1.json",
+        "jar:twilightforest-1.21.1-4.8.3345-universal.jar:data/twilightforest/loot_table/hill_3.json",
+        "jar:twilightforest-1.21.1-4.8.3345-universal.jar:assets/twilightforest/lang/en_us.json"
+      ]
+    },
+    {
+      "key": "tf_charms",
+      "deps": [
+        "tf_hills"
+      ],
+      "type": "checkmark",
+      "optional": true,
+      "icon": "twilightforest:charm_of_keeping_1",
+      "layout": {
+        "x": 6,
+        "y": 7,
+        "size": 0.85,
+        "shape": "circle"
+      },
+      "en_us": [
+        "Charms: life and keeping",
+        "Twilight chests hold two kinds of charms. A Charm of Life saves you from a deadly blow and is used up. A Charm of Keeping keeps part of your inventory when you die: tier I your armor and held items, tier II adds the hotbar, tier III everything. Four charms of one tier craft the next.\n\nPhantom armor from the Knight Phantoms is never lost on death either. For the rest, see the Tombstone chapter."
+      ],
+      "es_es": [
+        "Amuletos: vida y conservación",
+        "Los cofres de Twilight traen dos tipos de amuletos. El Amuleto de vida (Charm of Life) te salva de un golpe mortal y se consume. El Amuleto de conservación (Charm of Keeping) te guarda parte del inventario al morir: el nivel I la armadura y lo que tenés en las manos, el II suma la barra rápida y el III todo. Cuatro amuletos de un nivel fabrican el siguiente.\n\nLa armadura Fantasma de los Caballeros Fantasma tampoco se pierde al morir. Para el resto, mirá el capítulo de Tombstone."
+      ],
+      "sources": [
+        "jar:twilightforest-1.21.1-4.8.3345-universal.jar:data/twilightforest/recipe/charm_of_life_2.json",
+        "jar:twilightforest-1.21.1-4.8.3345-universal.jar:data/twilightforest/recipe/charm_of_keeping_2.json",
+        "jar:twilightforest-1.21.1-4.8.3345-universal.jar:data/twilightforest/loot_table/stronghold_cache.json",
+        "jar:twilightforest-1.21.1-4.8.3345-universal.jar:assets/twilightforest/lang/en_us.json",
+        "https://twilightforest.fandom.com/wiki/Charm_of_Keeping"
+      ]
+    },
+    {
+      "key": "tf_magic_map",
+      "deps": [
+        "tf_enter"
+      ],
+      "type": "advancement",
+      "advancement": "twilightforest:magic_map",
+      "optional": true,
+      "icon": "twilightforest:filled_magic_map",
+      "layout": {
+        "x": 9,
+        "y": 7,
+        "size": 1.0,
+        "shape": "circle"
+      },
+      "en_us": [
+        "Magic maps",
+        "Hunt the local wildlife (\"The Silence of the Forest\"), then craft a Magic Map Focus from a Raven Feather, glowstone dust and Torchberries (from plants on cave ceilings). The Magic Map it makes shows biomes and landmarks of the Twilight Forest at a glance.\n\nWith a Maze Map Focus you get the Maze Map for labyrinths, and later the Ore Map."
+      ],
+      "es_es": [
+        "Mapas mágicos",
+        "Cazá fauna del lugar («The Silence of the Forest») y fabricá un Foco de mapa mágico con una Pluma de cuervo, polvo de piedra luminosa y Torchberries (de plantas en los techos de las cuevas). El Mapa mágico que resulta muestra de un vistazo los biomas y los puntos importantes de Twilight Forest.\n\nCon un Foco de mapa del laberinto sale el Mapa del laberinto, y más adelante el Mapa de minerales."
+      ],
+      "sources": [
+        "jar:twilightforest-1.21.1-4.8.3345-universal.jar:data/twilightforest/recipe/magic_map_focus.json",
+        "jar:twilightforest-1.21.1-4.8.3345-universal.jar:data/twilightforest/advancement/magic_map.json",
+        "jar:twilightforest-1.21.1-4.8.3345-universal.jar:data/twilightforest/advancement/maze_map.json",
+        "jar:twilightforest-1.21.1-4.8.3345-universal.jar:data/twilightforest/advancement/ore_map.json",
+        "jar:twilightforest-1.21.1-4.8.3345-universal.jar:assets/twilightforest/lang/en_us.json"
+      ]
+    },
+    {
+      "key": "tf_uncrafting",
+      "deps": [
+        "tf_labyrinth"
+      ],
+      "type": "item",
+      "item": "twilightforest:uncrafting_table",
+      "optional": true,
+      "layout": {
+        "x": 15,
+        "y": -6,
+        "size": 1.0,
+        "shape": "square"
+      },
+      "en_us": [
+        "The Uncrafting Table",
+        "A crafting table plus a Maze Map Focus makes the Uncrafting Table. It breaks crafted items back into their ingredients for an XP cost, and it can also repair items, again for experience. Some items are banned from uncrafting; the table says so.\n\nUncrafting an Uncrafting Table is an advancement (\"A Step too Far\")."
+      ],
+      "es_es": [
+        "La Mesa de Descrafteo",
+        "Una mesa de trabajo más un Foco de mapa del laberinto hacen la Mesa de Descrafteo. Desarma ítems fabricados en sus ingredientes a cambio de experiencia, y también repara ítems, otra vez pagando experiencia. Algunos ítems no se pueden desarmar; la mesa lo avisa.\n\nDesarmar una Mesa de Descrafteo es un logro («A Step too Far»)."
+      ],
+      "sources": [
+        "jar:twilightforest-1.21.1-4.8.3345-universal.jar:data/twilightforest/recipe/uncrafting_table.json",
+        "jar:twilightforest-1.21.1-4.8.3345-universal.jar:data/twilightforest/advancement/uncraft_uncrafting_table.json",
+        "jar:twilightforest-1.21.1-4.8.3345-universal.jar:assets/twilightforest/lang/en_us.json"
+      ]
+    },
+    {
+      "key": "tf_quest_ram",
+      "deps": [
+        "tf_enter"
+      ],
+      "type": "advancement",
+      "advancement": "twilightforest:quest_ram",
+      "optional": true,
+      "icon": "twilightforest:quest_ram_trophy",
+      "layout": {
+        "x": 3,
+        "y": -4,
+        "size": 1.0,
+        "shape": "circle"
+      },
+      "en_us": [
+        "The Questing Ram",
+        "Somewhere in the forest stands a Quest Grove with a strange colourful ram. It is missing wool of several colours: bring it what it lacks, one by one (\"Consummate Baaahs\"). Its reward is worth the errand, and there is a trophy of it too.\n\nA good side trip while you are still waiting for the Naga."
+      ],
+      "es_es": [
+        "El Carnero de la búsqueda",
+        "En algún lugar del bosque hay una arboleda con un carnero colorido muy raro (Questing Ram). Le falta lana de varios colores: llevale lo que le falta, de a uno («Consummate Baaahs»). La recompensa vale el mandado, y también tiene trofeo.\n\nUn buen desvío mientras todavía no encontraste a la Naga."
+      ],
+      "sources": [
+        "jar:twilightforest-1.21.1-4.8.3345-universal.jar:data/twilightforest/advancement/quest_ram.json",
+        "jar:twilightforest-1.21.1-4.8.3345-universal.jar:assets/twilightforest/lang/en_us.json"
+      ]
+    },
+    {
+      "key": "tf_trophies",
+      "deps": [
+        "tf_ur_ghast"
+      ],
+      "type": "checkmark",
+      "optional": true,
+      "icon": "twilightforest:naga_trophy",
+      "layout": {
+        "x": 24,
+        "y": 3,
+        "size": 0.85,
+        "shape": "circle"
+      },
+      "en_us": [
+        "Trophies and team fights",
+        "Every boss drops a trophy, a head you can place as decoration. One of them opens the Knight Stronghold; the rest are a record of your hunt.\n\nThe pack keeps the mod's defaults for groups: boss loot goes into a chest when the boss dies and the multiplayer fight adjuster is off, so bosses do not scale with the number of players."
+      ],
+      "es_es": [
+        "Trofeos y peleas en equipo",
+        "Cada jefe suelta un trofeo, una cabeza que se pone como decoración. Uno de ellos abre la Fortaleza de los Caballeros; el resto es el registro de tu cacería.\n\nEl pack deja los valores del mod para grupos: el botín del jefe cae en un cofre cuando muere y el ajuste de peleas multijugador está apagado, así que los jefes no se hacen más fuertes con más jugadores."
+      ],
+      "sources": [
+        "jar:twilightforest-1.21.1-4.8.3345-universal.jar:twilightforest/config/TFCommonConfig.class",
+        "jar:twilightforest-1.21.1-4.8.3345-universal.jar:assets/twilightforest/lang/en_us.json"
+      ]
+    },
+    {
+      "key": "tf_pack",
+      "deps": [
+        "tf_welcome"
+      ],
+      "type": "checkmark",
+      "icon": "entrelumen:heliodor_compass",
+      "layout": {
+        "x": 0,
+        "y": 3,
+        "size": 1.0,
+        "shape": "rsquare"
+      },
+      "en_us": [
+        "What ENTRELUMEN changes in the forest",
+        "Pack specifics:\n- Compass: act III points to the Twilight Forest (green needle) and the Naga Courtyard; act IV to the Lich Tower.\n- The team's first arrival records the act IV \"witnessed arrival\" milestone.\n- The Ironwood Ingot is the act IV component of Powah's niotic capacitor.\n- Twilight's Flavor and Delight adds Twilight cooking.\n- Carry On cannot lift boss spawners or bosses.\n- The Traveller's Belt hotbar swap is on the ; key, not V."
+      ],
+      "es_es": [
+        "Qué cambia ENTRELUMEN en el bosque",
+        "Particularidades del pack:\n- Brújula: el acto III apunta a Twilight Forest (aguja verde) y al Patio de la Naga; el acto IV, a la Torre del Liche.\n- La primera llegada del equipo registra el hito «una llegada registrada» del acto IV.\n- El Lingote de Ironwood es el componente del acto IV del capacitor niótico de Powah.\n- Twilight's Flavor and Delight suma cocina de Twilight.\n- Carry On no puede levantar los generadores de jefes ni a los jefes.\n- El cambio de barra rápida del Cinturón de viajero está en la tecla ; en lugar de V."
+      ],
+      "sources": [
+        "repo:content/compass_targets.json",
+        "repo:content/act_four.json",
+        "repo:pack/kubejs/server_scripts/entrelumen_industrial_balance.js",
+        "repo:pack/config/carryon-common.toml",
+        "repo:pack/config/defaultoptions/keybindings.txt",
+        "repo:docs/design/keybinding-review.md",
+        "repo:docs/design/mod-pingpong.md"
+      ]
+    },
+    {
+      "key": "tf_food",
+      "deps": [
+        "tf_welcome"
+      ],
+      "type": "advancement",
+      "advancement": "twilightforest:twilight_dinner",
+      "optional": true,
+      "icon": "twilightforest:experiment_115",
+      "layout": {
+        "x": 0,
+        "y": -3,
+        "size": 0.85,
+        "shape": "circle"
+      },
+      "en_us": [
+        "Eating at eternal sundown",
+        "The forest has its own food: Venison from deer, Meef from Minotaurs, Hydra Chops and the odd cake called Experiment 115. Eating every Twilight-exclusive food is \"We Dine At Eternal Sundown\".\n\nThis matters in ENTRELUMEN: the pack rewards food variety, and leftover saturation turns into random buffs."
+      ],
+      "es_es": [
+        "Comer en el atardecer eterno",
+        "El bosque tiene su propia comida: carne de venado de los ciervos, Meef de los Minotauros, Chuletas de Hidra y la torta rarísima llamada Experimento 115. Comer todo lo exclusivo de Twilight es «We Dine At Eternal Sundown».\n\nEn ENTRELUMEN esto importa: el pack premia la variedad de comida, y la saciedad que sobra se convierte en efectos aleatorios."
+      ],
+      "sources": [
+        "jar:twilightforest-1.21.1-4.8.3345-universal.jar:data/twilightforest/advancement/twilight_dinner.json",
+        "jar:twilightforest-1.21.1-4.8.3345-universal.jar:data/twilightforest/advancement/experiment_115.json",
+        "jar:twilightforest-1.21.1-4.8.3345-universal.jar:data/twilightforest/loot_table/entities/deer.json",
+        "jar:twilightforest-1.21.1-4.8.3345-universal.jar:assets/twilightforest/lang/en_us.json",
+        "repo:docs/design/story-bible.md"
+      ]
+    },
+    {
+      "key": "tf_mastery",
+      "deps": [
+        "tf_lamp"
+      ],
+      "type": "checkmark",
+      "icon": "twilightforest:lich_trophy",
+      "layout": {
+        "x": 36,
+        "y": 0,
+        "size": 2.25,
+        "shape": "pentagon"
+      },
+      "en_us": [
+        "The forest is quiet",
+        "Naga, Lich, Minoshroom, Hydra, Knight Phantoms, Ur-Ghast, Alpha Yeti and Snow Queen: every curse is lifted and the forest is yours. What remains are materials for the rest of the pack (Ironwood, Steeleaf, Knightmetal, Fiery Ingots, Carminite) and trophies for your walls.\n\nJuan used to call this place a rehearsal. You just passed it."
+      ],
+      "es_es": [
+        "El bosque está en calma",
+        "Naga, Liche, Minoseta, Hidra, Caballeros Fantasma, Ur-Ghast, Yeti Alfa y Reina de las Nieves: todas las maldiciones levantadas y el bosque es tuyo. Lo que queda son materiales para el resto del pack (Ironwood, Steeleaf, metal de caballero, lingotes ardientes, carminita) y trofeos para tus paredes.\n\nJuan decía que este lugar era un ensayo. Lo acabás de aprobar."
+      ],
+      "sources": [
+        "jar:twilightforest-1.21.1-4.8.3345-universal.jar:data/twilightforest/advancement/progress_troll.json",
+        "repo:content/act_four.json"
+      ]
+    }
+  ]
+}
