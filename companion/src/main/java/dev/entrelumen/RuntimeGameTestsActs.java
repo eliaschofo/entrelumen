@@ -109,13 +109,15 @@ public final class RuntimeGameTestsActs {
       var campaign = Entrelumen.current(first.player);
       helper.assertTrue(!HeliodorHeartRules.recovered(campaign), "A new campaign already had its Heart");
       var loot = sunSpiritLoot(helper, first.player, table);
-      helper.assertTrue(hearts(loot) == 1 && loot.getFirst().is(Items.GOLD_INGOT) && loot.size() == 2,
+      // Other mods' loot modifiers may add their own drops on the full pack; only the Heart is counted.
+      helper.assertTrue(hearts(loot) == 1 && loot.stream().anyMatch(stack -> stack.is(Items.GOLD_INGOT)),
           "The first Sun Spirit did not add exactly one Heart to its own loot: " + loot);
       helper.assertTrue(campaign.completed.contains(HeliodorHeartRules.RECOVERED)
           && CampaignMilestones.isComplete(campaign, HeliodorHeartRules.RECOVERED),
           "The team's campaign did not record its Heart");
       var again = sunSpiritLoot(helper, first.player, table);
-      helper.assertTrue(hearts(again) == 0 && again.size() == 1, "A second Sun Spirit dropped another Heart");
+      helper.assertTrue(hearts(again) == 0 && again.stream().anyMatch(stack -> stack.is(Items.GOLD_INGOT)),
+          "A second Sun Spirit dropped another Heart");
       // Another team gets its own; another loot table never gives one.
       helper.assertTrue(hearts(sunSpiritLoot(helper, second.player, table)) == 1,
           "A second team did not get its own Heart");
@@ -154,10 +156,13 @@ public final class RuntimeGameTestsActs {
       }
       helper.assertTrue(!result.is(HeliodorHeart.ITEM.get()), "A recipe makes the Heart: " + recipe.id());
     }
-    var lines = stack.getTooltipLines(Item.TooltipContext.of(level), null, TooltipFlag.NORMAL);
+    // The item's own lines only: the full pack's tooltip listeners may touch client-only classes,
+    // which a dedicated server refuses to load.
+    var lines = new java.util.ArrayList<net.minecraft.network.chat.Component>();
+    stack.getItem().appendHoverText(stack, Item.TooltipContext.of(level), lines, TooltipFlag.NORMAL);
     long lore = lines.stream().filter(line -> line.getContents() instanceof TranslatableContents text
         && text.getKey().equals("entrelumen.heart_of_heliodor.tooltip")).count();
-    helper.assertTrue(lore == 1 && lines.size() == 2, "The tooltip is not the name and one line of lore: " + lines);
+    helper.assertTrue(lore == 1 && lines.size() == 1, "The Heart's tooltip is not one line of lore: " + lines);
     helper.succeed();
   }
 
