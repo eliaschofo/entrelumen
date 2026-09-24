@@ -76,7 +76,12 @@ TEXNAME = {'grass_block': ('grass_block_top', 'grass_block_side'), 'water': ('wa
            'lava': ('lava_still',) * 2, 'crying_obsidian': ('crying_obsidian',) * 2,
            'end_stone_bricks': ('end_stone_bricks',) * 2, 'purpur_pillar': ('purpur_pillar_top', 'purpur_pillar'),
            'fern': ('fern',) * 2, 'short_grass': ('short_grass',) * 2,
-           'lectern': ('lectern_top', 'lectern_sides'), 'bookshelf': ('oak_planks', 'bookshelf')}
+           'lectern': ('lectern_top', 'lectern_sides'), 'bookshelf': ('oak_planks', 'bookshelf'),
+           'smooth_quartz': ('quartz_block_bottom',) * 2, 'quartz_stairs': ('quartz_block_side',) * 2,
+           'crafter': ('crafter_top', 'crafter_south'), 'smithing_table': ('smithing_table_top', 'smithing_table_front'),
+           'oxidized_copper_bulb': ('oxidized_copper_bulb',) * 2,
+           'oxidized_cut_copper_slab': ('oxidized_cut_copper',) * 2, 'ladder': ('ladder',) * 2,
+           'end_rod': ('end_rod',) * 2, 'stripped_birch_log': ('stripped_birch_log_top', 'stripped_birch_log')}
 TINT = {'grass_block_top': (104, 158, 70), 'short_grass': (88, 140, 60), 'fern': (80, 130, 56),
         'water_still': (70, 120, 210)}
 _cache = {}
