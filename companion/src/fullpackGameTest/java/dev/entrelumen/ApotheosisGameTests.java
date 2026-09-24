@@ -296,6 +296,71 @@ public final class ApotheosisGameTests {
     });
   }
 
+  private static String activeTier(Player player) throws ReflectiveOperationException {
+    Class<?> worldTier = Class.forName("dev.shadowsoffire.apotheosis.tiers.WorldTier");
+    return ((Enum<?>) worldTier.getMethod("getTier", Player.class).invoke(null, player)).name();
+  }
+
+  @SuppressWarnings({"unchecked", "rawtypes"})
+  private static void chooseTier(Player player, String tier) throws ReflectiveOperationException {
+    Class worldTier = Class.forName("dev.shadowsoffire.apotheosis.tiers.WorldTier");
+    worldTier.getMethod("setTier", Player.class, worldTier).invoke(null, player, Enum.valueOf(worldTier, tier));
+  }
+
+  /**
+   * PENDING: written on 24 September 2026 with the story-set tiers and not yet run on the
+   * installed pack. The pack config must disable manual selection (and sync that to clients), the
+   * companion tick must raise the real Apotheosis tier with the campaign, a tier set behind the
+   * story's back must be put back, and a lower campaign must never lower it.
+   */
+  @GameTest(template = "empty", timeoutTicks = 400)
+  public static void worldTierFollowsTheStoryAndCannotBeChosen(GameTestHelper helper) throws Exception {
+    requireSuite();
+    Class<?> config = Class.forName("dev.shadowsoffire.apotheosis.AdventureConfig");
+    helper.assertTrue(!config.getField("enableManualWorldTierChanges").getBoolean(null),
+        "Manual World Tier changes are still enabled in the pack config");
+    Object payload = Class.forName("dev.shadowsoffire.apotheosis.AdventureConfig$ConfigPayload")
+        .getConstructor().newInstance();
+    helper.assertTrue(!(boolean) payload.getClass().getMethod("manualWorldTierChanges").invoke(payload),
+        "Clients would still be told that manual World Tier changes are allowed");
+    var session = new Session(helper, "StoryTierQA");
+    var player = session.player;
+    var campaign = Entrelumen.current(player);
+    ApotheosisTiers.sync(player);
+    helper.assertTrue(activeTier(player).equals("HAVEN"), "Act I did not play on Haven");
+    campaign.act = 3;
+    // No direct sync: the companion's own server tick must move the tier.
+    helper.runAfterDelay(40, () -> {
+      try {
+        helper.assertTrue(activeTier(player).equals("FRONTIER"), "Closing Act II did not move the tier to Frontier");
+        chooseTier(player, "PINNACLE");
+        ApotheosisTiers.sync(player);
+        helper.assertTrue(activeTier(player).equals("FRONTIER"), "A tier chosen outside the story survived");
+        campaign.act = 4;
+        ApotheosisTiers.sync(player);
+        helper.assertTrue(activeTier(player).equals("ASCENT"), "Act IV did not play on Ascent");
+        campaign.act = 6;
+        campaign.completed.add(CampaignMilestones.LAST_HORIZON);
+        ApotheosisTiers.sync(player);
+        helper.assertTrue(activeTier(player).equals("PINNACLE"), "The Ark did not raise the world to Pinnacle");
+        campaign.act = 1;
+        campaign.completed.remove(CampaignMilestones.LAST_HORIZON);
+        ApotheosisTiers.sync(player);
+        helper.assertTrue(activeTier(player).equals("PINNACLE") && apotheosisUnlocked(player, "PINNACLE")
+            && "PINNACLE".equals(player.getData(ApotheosisContent.STORY_TIER)),
+            "An earlier campaign lowered the tier, lost the record or revoked an unlock");
+        chooseTier(player, "HAVEN");
+        ApotheosisTiers.sync(player);
+        helper.assertTrue(activeTier(player).equals("PINNACLE"), "A lower chosen tier survived");
+      } catch (ReflectiveOperationException error) {
+        throw new IllegalStateException(error);
+      } finally {
+        session.close();
+      }
+      helper.succeed();
+    });
+  }
+
   private static CompoundTag spawnerTag(GameTestHelper helper, BlockPos pos) {
     return helper.getLevel().getBlockEntity(pos).saveWithoutMetadata(helper.getLevel().registryAccess());
   }
