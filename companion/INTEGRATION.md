@@ -91,6 +91,12 @@ Shelf stats live in `data/entrelumen/enchanting_stats`, which only Apothic Encha
 
 It syncs every second, on FTB login-after-team and on party join. It only grants and never revokes, and it skips absent advancements. Its campaign lookup is read-only.
 
+Story-set tiers (2026-09-24): `sync` also moves the player's active World Tier to `target(campaign, unlocked)`, the highest reached tier whose unlock the player holds. It goes up or down with the current campaign, and it also runs on FTB `PLAYER_CHANGED`. It calls Apotheosis's public `WorldTier.getTier` and `setTier` through reflection resolved once behind `ModList.isLoaded("apotheosis")`, and writes only when the tier differs. A failure disables the step instead of the tick. The pack sets `Enable Manual World Tier Changes = false`. See `docs/design/apotheosis-family.md#story-set-world-tiers`.
+
+Satiety overflow (2026-09-24): `SatietyOverflowEvents` snapshots hunger and saturation on the last `LivingEntityUseItemEvent.Tick` and converts the surplus a meal loses to the caps on `Finish`. It grants short ambient buffs from the datapack file `data/entrelumen/satiety/overflow.json`, with a 10 s cooldown and decaying glut, and never replaces stronger or infinite effects. The pure rules are in `SatietyOverflow`. See `docs/design/satiety-overflow.md`.
+
+Verification: 126 JUnit tests passed; `runGameTestServer` passed all 61 required GameTests, including four new ones in `RuntimeGameTestsGameplay`. The full-pack case `ApotheosisGameTests.worldTierFollowsTheStoryAndCannotBeChosen` is written but pending.
+
 `AtlasLibraryLedger` holds the pool arithmetic: deposit value floor(b·2^(L−1)/2), price b·2^(L−1) (×2 for treasure), cap clamp(floor(Eterna/2.5), 1, 40). It is pure and unit-tested. The block entity validates every withdrawal on the server against a freshly measured Eterna. Its item handler only accepts books, and the drop keeps the pool in `block_entity_data`. See `docs/design/apotheosis-family.md`.
 
 Verification: an offline `build` ran 80 JUnit tests, and `runGameTestServer` passed all 47 required GameTests, including two new isolated ones in `RuntimeGameTestsApotheosis`. The fixture mod ships stand-in Haven, Frontier and Ascent advancements; Summit is deliberately absent. Apotheosis itself was not loaded in these runs.
