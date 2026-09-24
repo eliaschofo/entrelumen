@@ -1,5 +1,5 @@
 """Focused multi-chapter contracts; no gameplay claims."""
-import copy,hashlib,json,unittest
+import copy,hashlib,json,re,unittest
 from pathlib import Path
 from generate_quests import ROOT,OUT,generate_all,stable_id,load_chapters
 class ChapterContracts(unittest.TestCase):
@@ -161,18 +161,30 @@ class ChapterContracts(unittest.TestCase):
       'last_horizon':['ark_charted','world_network','end_arrival']}
      self.assertEqual([quests[dep]['milestone'] for dep in q['deps']],expected[q['milestone']])
     else:self.assertEqual([quests[dep]['milestone'] for dep in q['deps']],projects[q['milestone']].get('requires',[]))
- def test_prior_chapters_and_translations_unchanged(self):
+ def assert_prefix_text_append_only(self,count,out):
+  # The chapter .snbt digests freeze IDs, tasks, dependencies, icons and layout. Text is authored
+  # and was rewritten on purpose (lore of 24 September 2026), so it is not frozen byte for byte.
+  # What stays frozen: the locale keys are exactly the ones those IDs imply, and adding later
+  # chapters never changes the text of earlier ones.
+  prior=generate_all(self.chapters[:count])
+  keys=set()
+  for data in self.chapters[:count]:
+   compiled=json.loads(out[OUT/'chapters'/(data['chapter']+'.snbt')])
+   keys.add(f"chapter.{compiled['id']}.title")
+   if 'subtitle' in data:keys.add(f"chapter.{compiled['id']}.chapter_subtitle")
+   keys.update(f'quest.{q["id"]}.{field}' for q in compiled['quests'] for field in ('title','quest_desc'))
+  for lang in ('en_us','es_es'):
+   before=json.loads(prior[OUT/'lang'/(lang+'.snbt')]);after=json.loads(out[OUT/'lang'/(lang+'.snbt')])
+   self.assertEqual(set(before),keys)
+   self.assertEqual(before,{key:after[key] for key in before})
+ def test_prior_chapters_frozen_and_text_append_only(self):
   out=generate_all(self.chapters)
   expected={'a_light_among_ruins':'28fdd2969fdd6829c2cad480e2a54b74c9d1ba7ab980e7203831f2fea5304bae',
    'the_lost_crafts':'26dcb9e26fa44e764b56f1667141abae1ea0d37f66ec671b4d2e7a3263aa57e5',
    'routes_of_exchange':'adb774f655ee0442b2ab825a8c634b55b137842b5e137177df7df21a1c46f38c'}
   for chapter,digest in expected.items():
    self.assertEqual(hashlib.sha256(out[OUT/'chapters'/(chapter+'.snbt')].encode()).hexdigest(),digest)
-  from generate_quests import snbt
-  for lang,digest in [('en_us','9ff5879a802da2c1da600724aaf04f86675d2edfafdd25f7d34c4ba2b09b5ecb'),('es_es','8c4c1bf1fd2a349a4dc920f9052ad988bb6856fa92b27cf796469ff14cf28f25')]:
-   prior=json.loads(generate_all(self.chapters[:3])[OUT/'lang'/(lang+'.snbt')])
-   actual=json.loads(out[OUT/'lang'/(lang+'.snbt')])
-   self.assertEqual(hashlib.sha256(snbt({key:actual[key] for key in prior}).encode()).hexdigest(),digest)
+  self.assert_prefix_text_append_only(3,out)
  def test_act_three_ids_unchanged(self):
   c=json.loads(generate_all(self.chapters)[OUT/'chapters/routes_of_exchange.snbt'])
   ids=[c['id']]+[i for q in c['quests'] for i in (q['id'],q['tasks'][0]['id'])]
@@ -207,7 +219,7 @@ class ChapterContracts(unittest.TestCase):
  def test_act_four_cycle_rejected(self):
   next(q for q in self.chapters[2]['quests'] if q['key']=='exchange_archive')['deps']=['voices_chorus']
   with self.assertRaisesRegex(AssertionError,'cycle|reading direction'):generate_all(self.chapters)
- def test_first_104_quests_and_text_frozen(self):
+ def test_first_104_quests_frozen(self):
   from generate_quests import snbt
   out=generate_all(self.chapters)
   expected={'a_light_among_ruins':'28fdd2969fdd6829c2cad480e2a54b74c9d1ba7ab980e7203831f2fea5304bae',
@@ -218,10 +230,7 @@ class ChapterContracts(unittest.TestCase):
   for chapter,digest in expected.items():
    self.assertEqual(hashlib.sha256(out[OUT/'chapters'/(chapter+'.snbt')].encode()).hexdigest(),digest)
   prior=generate_all(self.chapters[:4])
-  for lang,digest in [('en_us','bffc5c1d1fec63222008d6a24a88b3cb2b3c46aadff3d2f76c990c8803ba9c78'),
-                      ('es_es','c9a5d503529a3bdcc05f332c491be5ec64302b0451286f6c81fc7e31750ebf4a')]:
-   before=json.loads(prior[OUT/'lang'/(lang+'.snbt')]);after=json.loads(out[OUT/'lang'/(lang+'.snbt')])
-   self.assertEqual(hashlib.sha256(snbt({key:after[key] for key in before}).encode()).hexdigest(),digest)
+  self.assert_prefix_text_append_only(4,out)
   mapping=json.loads(out[ROOT/'content/campaign_task_ids.json'])
   before=json.loads(prior[ROOT/'content/campaign_task_ids.json'])
   self.assertEqual(hashlib.sha256(snbt({key:mapping[key] for key in before}).encode()).hexdigest(),
@@ -308,11 +317,7 @@ class ChapterContracts(unittest.TestCase):
    path=OUT/'chapters'/(chapter+'.snbt')
    self.assertEqual(hashlib.sha256(out[path].encode()).hexdigest(),digest)
    self.assertEqual(out[path],prior[path])
-  for lang,digest in [('en_us','41e8b7af973281c564ee5b05ccb26e966c3ad3ba7762ee3ead621d1e658b8385'),
-                      ('es_es','3ee79458cf984118be71330b874afc6dd39b4c15458d5944d62ae80dda475829')]:
-   path=OUT/'lang'/(lang+'.snbt')
-   before=json.loads(prior[path]);after=json.loads(out[path])
-   self.assertEqual(hashlib.sha256(snbt({key:after[key] for key in before}).encode()).hexdigest(),digest)
+  self.assert_prefix_text_append_only(5,out)
   path=ROOT/'content/campaign_task_ids.json'
   before=json.loads(prior[path]);after=json.loads(out[path])
   self.assertEqual(hashlib.sha256(snbt({key:after[key] for key in before}).encode()).hexdigest(),
@@ -383,4 +388,81 @@ class ChapterContracts(unittest.TestCase):
    for locale in ('en_us','es_es'):
     for value in q[locale]:
      self.assertNotIn('\ufffd',value);self.assertNotIn('\u00c3',value)
+ # Lore rewrite of 24 September 2026 (docs/design/story-bible.md, docs/design/quest-lore.md).
+ def act_text(self,data,locale):
+  parts=[data['title'][locale],*data.get('subtitle',{}).get(locale,[])]
+  parts+=[labels[locale] for labels in data['layout_groups'].values()]
+  for q in data['quests']:parts+=q[locale]
+  return '\n'.join(parts)
+ def test_act_titles_and_presentation(self):
+  titles=[c['title'] for c in self.chapters[:6]]
+  self.assertEqual([(t['en_us'],t['es_es']) for t in titles],
+   [('I · A Light Among Ruins','I · Una luz entre ruinas'),('II · The Lost Crafts','II · Los oficios perdidos'),
+    ('III · Routes of Exchange','III · Rutas de intercambio'),('IV · Voices of the Atlas','IV · Las voces del Atlas'),
+    ('V · The Ark','V · El Arca'),('VI · Solsticio','VI · Solsticio')])
+  out=generate_all(self.chapters)
+  for data in self.chapters[:6]:
+   compiled=json.loads(out[OUT/'chapters'/(data['chapter']+'.snbt')])
+   for locale in ('en_us','es_es'):
+    self.assertEqual(json.loads(out[OUT/'lang'/(locale+'.snbt')])[f"chapter.{compiled['id']}.chapter_subtitle"],data['subtitle'][locale])
+ def test_acts_one_to_five_tell_the_new_story(self):
+  acts={locale:[self.act_text(c,locale) for c in self.chapters[:5]] for locale in ('en_us','es_es')}
+  sixth=self.chapters[5];presentation=next(q for q in sixth['quests'] if q['key']=='horizon_welcome')
+  for locale,texts in acts.items():
+   intro=[sixth['title'][locale],*sixth['subtitle'][locale],sixth['layout_groups']['threshold'][locale],*presentation[locale]]
+   for text in texts+intro:
+    self.assertIsNone(re.search(r'\b(Mara|Ivo|Sera)\b',text),'a voice of the old story remains')
+   for text in texts:self.assertIn('Heliodor',text)
+   # The limbo of light is named only once the Atlas speaks clearly, in act V.
+   self.assertTrue(all('Entrelumen' not in text for text in texts[:4]));self.assertIn('Entrelumen',texts[4])
+   for name in ('Terra','Juan','Bodhi','Aurelia'):self.assertIn(name,'\n'.join(texts[:4]))
+  ruins={'en_us':['Atlas Courtyard','Sunken Workshop','Greenhouse Dome','Observatory'],
+         'es_es':['Patio del Atlas','Taller hundido','Invernadero-domo','Observatorio']}
+  for locale,names in ruins.items():
+   for act,name in enumerate(names):self.assertIn(name,acts[locale][act])
+  for locale,temple,spirit,heart,key in (('en_us','Temple of the Sacred Light','Sun Spirit','Heart of Heliodor','Light Key'),
+                                         ('es_es','Templo de la Luz Sagrada','Espíritu del Sol','Corazón de Heliodor','Llave de Luz')):
+   for term in (temple,spirit,heart):self.assertIn(term,acts[locale][3])
+   for term in (heart,key):self.assertIn(term,acts[locale][4])
+  # Hints from act I: initials and a golden seal before anyone is named.
+  for locale,seal in (('en_us','golden A'),('es_es','A dorada')):
+   for hint in ('—T.','—J.','—B.',seal):self.assertIn(hint,acts[locale][0])
+ def test_each_quest_says_what_then_why(self):
+  for data in self.chapters[:5]:
+   for q in data['quests']:
+    for locale in ('en_us','es_es'):
+     with self.subTest(quest=q['key'],locale=locale):
+      what,why=q[locale][1].split('\n\n')
+      self.assertTrue(what.strip() and why.strip())
+      self.assertLessEqual(len(q[locale][1]),500)
+ def test_atlas_interference_clears_after_the_heart(self):
+  for data in self.chapters[:4]:
+   for locale in ('en_us','es_es'):self.assertRegex(self.act_text(data,locale),'&[km]')
+  for locale in ('en_us','es_es'):
+   self.assertNotIn('&',self.act_text(self.chapters[4],locale))
+   self.assertNotIn('&',self.act_text(self.chapters[5],locale))
+ def test_formatting_codes_rejected_when_unsafe(self):
+  from generate_quests import check_formatting
+  check_formatting('A voice: …&kthose&r who… &mhave&r arrived.\n\nPlain.','ok',True)
+  for bad in ('stray & sign','&zbad code','ends with &','&mnever reset','&kmuchtoolong&r','&ka&r &kb&r &kc&r','&k&r empty'):
+   with self.subTest(text=bad):
+    with self.assertRaises(AssertionError):check_formatting(bad,'bad',True)
+  with self.assertRaises(AssertionError):check_formatting('&mTitle&r','title',False)
+  chapter=copy.deepcopy(self.chapters[0]);chapter['quests'][0]['es_es'][1]+=' &m'
+  with self.assertRaisesRegex(AssertionError,'formatting'):generate_all([chapter]+self.chapters[1:])
+ def test_project_rewards_named_in_quest_text(self):
+  projects=json.loads((ROOT/'companion/src/main/resources/data/entrelumen/campaign/projects.json').read_text(encoding='utf-8'))
+  names={locale:json.loads((ROOT/f'companion/src/main/resources/assets/entrelumen/lang/{locale}.json').read_text(encoding='utf-8'))
+         for locale in ('en_us','es_es')}
+  checked=set()
+  for data in self.chapters[:5]:
+   for q in data['quests']:
+    reward=projects.get(q.get('milestone'),{}).get('reward')
+    if not reward:continue
+    path=reward.split(':')[1]
+    for locale in ('en_us','es_es'):
+     name=names[locale].get('item.entrelumen.'+path) or names[locale]['block.entrelumen.'+path]
+     with self.subTest(milestone=q['milestone'],locale=locale):self.assertIn(name.lower(),q[locale][1].lower())
+    checked.add(path)
+  self.assertTrue({'peace_altar','growth_altar','terraform_altar','repose_altar','renewal_altar','time_altar','terra_arm'}<=checked)
 if __name__=='__main__':unittest.main()
