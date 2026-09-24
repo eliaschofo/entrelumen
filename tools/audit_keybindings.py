@@ -78,6 +78,8 @@ PROPOSED = {
     "key_key.little.building_mode": "key.keyboard.b:CONTROL",
     "key_key.little.undo": "key.keyboard.z:CONTROL",
     "key_key.little.redo": "key.keyboard.y:CONTROL",
+    # Mod ping-pong round 4: the Psi master keybind defaults to C, the vanilla hotbar-save key.
+    "key_psimisc.keybind": "key.keyboard.c:ALT",
 }
 # Operational context, NOT an assertion of a mod's declared conflict context.
 GUI = {"key_key.jei.showRecipe", "key_key.jei.showRecipe2", "key_key.jei.showUses",
