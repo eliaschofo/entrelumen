@@ -4,6 +4,7 @@ from __future__ import annotations
 import copy
 import hashlib
 import importlib.util
+import io
 import json
 from pathlib import Path
 import tempfile
@@ -36,7 +37,7 @@ class FamilyCurationTest(unittest.TestCase):
         })
         self.patch = patch.multiple(
             curate, CATALOG=self.catalog, CONTENT={}, QOL={}, CLIENT=set(),
-            PERFORMANCE=set(), INFRA=set(), FAMILY_PINS={},
+            PERFORMANCE=set(), INFRA=set(), FAMILY_PINS={}, REPLACED={},
         )
         self.patch.start()
         self.addCleanup(self.patch.stop)
@@ -216,6 +217,102 @@ class FamilyCurationTest(unittest.TestCase):
         for change in ({'downloadUrl': 'https://example.com/garden-1.jar'}, {'sourceSha1': ''}, {'versionId': ''}):
             with self.subTest(change=change):
                 self.assertFalse(curate.valid_pin_source(dict(pin, **change)))
+
+    def add_library_download(self, filename, provided_id):
+        """A library-only JAR (like Kotlin for Forge): no top-level [[mods]], one JarJar provider."""
+        (self.catalog / 'downloads').mkdir(exist_ok=True)
+        inner = io.BytesIO()
+        with zipfile.ZipFile(inner, 'w') as nested:
+            nested.writestr('META-INF/neoforge.mods.toml',
+                            f'modLoader="javafml"\nloaderVersion="[1,)"\nlicense="LGPL"\n[[mods]]\n'
+                            f'modId="{provided_id}"\nversion="5.0"\n')
+        path = self.catalog / 'downloads' / filename
+        with zipfile.ZipFile(path, 'w') as jar:
+            jar.writestr('META-INF/neoforge.mods.toml', 'modLoader="lowcodefml"\nloaderVersion="[1,)"\nlicense="LGPL"\n')
+            jar.writestr('META-INF/jarjar/lib.jar', inner.getvalue())
+            jar.writestr('META-INF/jarjar/metadata.json', json.dumps({'jars': [{
+                'identifier': {'group': 'x', 'artifact': 'lib'}, 'version': {'range': '[5,)', 'artifactVersion': '5.0'},
+                'path': 'META-INF/jarjar/lib.jar'}]}))
+        data = path.read_bytes()
+        return {'modIds': [provided_id], 'filename': filename, 'provider': 'modrinth',
+                'sha256': hashlib.sha256(data).hexdigest(), 'projectId': 'Kt12Kt12', 'versionId': 'Kv34Kv34',
+                'downloadUrl': f'https://cdn.modrinth.com/data/Kt12Kt12/versions/Kv34Kv34/{filename}',
+                'sourceSha1': hashlib.sha1(data).hexdigest(), 'sourceSha512': hashlib.sha512(data).hexdigest()}
+
+    def test_library_only_jar_resolves_as_both_sides_dependency(self):
+        self.sync_instance()
+        (self.catalog / 'downloads').mkdir(exist_ok=True)
+        slicer = self.catalog / 'downloads' / 'slicer-1.jar'
+        with zipfile.ZipFile(slicer, 'w') as jar:
+            jar.writestr('META-INF/neoforge.mods.toml',
+                         'modLoader="javafml"\nloaderVersion="[1,)"\nlicense="MIT"\n[[mods]]\nmodId="slicer"\n'
+                         'version="1.0"\n[[dependencies.slicer]]\nmodId="kotlinlib"\ntype="required"\n'
+                         'versionRange="[5,)"\nside="BOTH"\n')
+        data = slicer.read_bytes()
+        slicer_pin = {'modIds': ['slicer'], 'filename': 'slicer-1.jar', 'provider': 'modrinth',
+                      'sha256': hashlib.sha256(data).hexdigest(), 'projectId': 'Sl12Sl12', 'versionId': 'Sv34Sv34',
+                      'downloadUrl': 'https://cdn.modrinth.com/data/Sl12Sl12/versions/Sv34Sv34/slicer-1.jar',
+                      'sourceSha1': hashlib.sha1(data).hexdigest(), 'sourceSha512': hashlib.sha512(data).hexdigest()}
+        library_pin = self.add_library_download('kotlinlib-all.jar', 'kotlinlib')
+        self.write_json(self.catalog / 'families' / 'kitchen.json', {
+            'schemaVersion': 1, 'content': {'slicer': ['II', 'Synthetic slicer', 'Synthetic kitchen']},
+            'pins': [slicer_pin, library_pin]})
+        curate.load_families()
+
+        curate.refresh(self.source)
+
+        lock = curate.read_json(self.catalog / 'curated.json')
+        by_name = {entry['filename']: entry for entry in lock['mods']}
+        self.assertEqual(set(by_name), {'slicer-1.jar', 'kotlinlib-all.jar'})
+        self.assertEqual(by_name['kotlinlib-all.jar']['side'], 'both')
+        self.assertEqual([role['modId'] for role in by_name['kotlinlib-all.jar']['roles']], ['kotlinlib'])
+        paths = curate.read_json(self.catalog / 'local-paths.json')
+        self.assertEqual(curate.check(lock, paths, 'server')[1], [])
+
+    def test_family_replacement_swaps_one_old_entry_and_is_enforced(self):
+        curate.CONTENT['base'] = ('I', 'Existing role', 'Existing integration')
+        curate.CONTENT['lib'] = ('I', 'Old library', 'Old library')
+        self.add_jar('base-1.jar', 'base', '1.0', 200, 10)
+        self.add_jar('lib-1.jar', 'lib', '1.0', 300, 11)
+        self.sync_instance()
+        curate.refresh(self.source)
+        del curate.CONTENT['lib']
+        before = curate.read_json(self.catalog / 'curated.json')
+        base_entry = copy.deepcopy(next(e for e in before['mods'] if e['filename'] == 'base-1.jar'))
+
+        new_lib = self.add_jar('lib-2.jar', 'lib', '2.0', 300, 12)
+        self.sync_instance()
+        self.write_json(self.catalog / 'families' / 'magic.json', {
+            'schemaVersion': 1, 'content': {'lib': ['II', 'Newer library', 'Required by a newer addon']},
+            'replaces': [{'filename': 'lib-1.jar', 'by': 'lib-2.jar', 'why': 'Newer addon needs lib 2'}],
+            'pins': [new_lib]})
+        curate.load_families()
+        curate.refresh(self.source, preserve=True)
+
+        after = curate.read_json(self.catalog / 'curated.json')
+        by_name = {entry['filename']: entry for entry in after['mods']}
+        self.assertEqual(set(by_name), {'base-1.jar', 'lib-2.jar'})
+        self.assertEqual(by_name['base-1.jar'], base_entry)
+        paths = curate.read_json(self.catalog / 'local-paths.json')
+        self.assertNotIn('lib-1.jar', paths)
+        paths['lib-1.jar'] = str(self.source / 'mods' / 'lib-1.jar')
+        self.assertIn('Replaced family dependency still locked: lib-1.jar (replaced by lib-2.jar)',
+                      curate.check(before, paths, 'client')[1])
+
+    def test_replacement_must_name_a_pin_of_the_same_family(self):
+        pin = self.add_jar('magic-1.jar', 'magic', '1.0', 100, 10)
+        for replaced in ({'filename': 'old.jar', 'by': 'other.jar', 'why': 'x'},
+                         {'filename': 'old.jar', 'by': 'magic-1.jar'},
+                         {'filename': 'magic-1.jar', 'by': 'magic-1.jar', 'why': 'x'}):
+            with self.subTest(replaced=replaced):
+                self.write_json(self.catalog / 'families' / 'magic.json', {
+                    'schemaVersion': 1, 'content': {'magic': ['II', 'Synthetic', 'Synthetic']},
+                    'replaces': [replaced], 'pins': [pin]})
+                curate.CONTENT.clear()
+                curate.FAMILY_PINS.clear()
+                curate.REPLACED.clear()
+                with self.assertRaisesRegex(ValueError, 'Invalid replacement'):
+                    curate.load_families()
 
 
 if __name__ == '__main__':

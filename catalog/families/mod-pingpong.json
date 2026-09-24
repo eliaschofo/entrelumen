@@ -140,6 +140,31 @@
       "I-IV",
       "Variant vanilla structures across biomes and dimensions",
       "Exploration loot through Lootr; ENTRELUMEN ruins stay separate"
+    ],
+    "psi": [
+      "II-III",
+      "Programmable spell casting with CADs, bullets and a spell programmer",
+      "Terra's programmable magic: the CAD Assembler needs a calibration frame (Act II) and the psigem CAD cores a routing matrix (Act III); its guide-book recipe gets its own ID so PneumaticCraft's book keeps patchouli:guide_book"
+    ],
+    "create_new_age": [
+      "II-IV",
+      "Heliodor's solar and electric engineering on Create: solar heating plates, generator coils, carbon brushes, energisers, motors and a thorium reactor",
+      "The basic solar plate needs a calibration frame and the generator coil an energy coupler (Act II); the advanced solar plate, energiser and motor a power regulator (Act III); the reinforced energiser and motor a spectral lens and the reactor rod a containment seal (Act IV)"
+    ],
+    "create_central_kitchen": [
+      "II",
+      "Create automation of Farmer's Delight cooking pots, skillets, stoves, cutting boards and feasts",
+      "Cooking route of the Create kitchen; its cutting-board-to-sawing and -deploying conversions stay off because Slice & Dice's slicer covers cutting"
+    ],
+    "sliceanddice": [
+      "II",
+      "Slicer for cutting-board recipes, sprinklers and liquid fertilizer",
+      "Cutting and farm-watering route of the Create kitchen; its basin cooking stays off because Central Kitchen automates the real cooking pot"
+    ],
+    "mr_dungeons_andtaverns": [
+      "I-IV",
+      "Taverns, towers, crypts, camps and small dungeons in the Overworld, Nether and End",
+      "Loot through Lootr; Overworld worldgen cost measured against the previous lock"
     ]
   },
   "qol": {
@@ -150,6 +175,13 @@
   ],
   "performance": [],
   "infrastructure": [],
+  "replaces": [
+    {
+      "filename": "CreateDragonsPlus-1.11.7b.jar",
+      "by": "CreateDragonsPlus-1.11.9.jar",
+      "why": "Create: Central Kitchen 2.6.2 requires Create: Dragons Plus [1.11.9,); 1.11.8 and 1.11.9 only add Ponder tag cards and fix fragile-tank loot tables and Aether fan duplication, and Create: Enchantment Industry 2.5.3b accepts [1.11.3,)"
+    }
+  ],
   "pins": [
     {
       "modIds": [
@@ -881,6 +913,169 @@
       "sourceSha1": "180613074e3f8df9b1e052a3abe19a1c4ac38b48",
       "sourceSha512": "cae19e90001272f3d9be35b279e1c5eed6f1079740380532b5055af19fb378f32a74754beb3c9ca7d2e49f75259f6e1b44c5d602db6362bd6017b3a95d3fee75",
       "evidence": "Official Modrinth CDN; SHA-1 and SHA-512 from the version API matched"
+    },
+    {
+      "modIds": [
+        "psi"
+      ],
+      "filename": "Psi-neoforge-1.21.1-110.jar",
+      "sha256": "25b2e19bb9433bf5e462dfd9906dcd7b07b6dcb208e243ca936a007dc6e14033",
+      "dependencies": [
+        "minecraft 1.21.1",
+        "minecraft [1.21.1,)",
+        "neoforge [21.1.207,)",
+        "neoforge [21.1.80,)",
+        "patchouli [1.21-87,)"
+      ],
+      "license": "https://psi.vazkii.net/license.php",
+      "side": "Client & Server",
+      "provider": "modrinth",
+      "projectId": "pOeA0exL",
+      "versionId": "j9TFdTKC",
+      "projectUrl": "https://modrinth.com/mod/psi",
+      "downloadUrl": "https://cdn.modrinth.com/data/pOeA0exL/versions/j9TFdTKC/Psi-neoforge-1.21.1-110.jar",
+      "sourceSha1": "f4be150631efd276e780b7cc693a71d565ce3e21",
+      "sourceSha512": "2bbe6b40f230cd495a5342db61fb5a6c2a4d03fda0ee5fe0a21d8b7ccc8494d1d3e7fa5f54236d5f90cbe78a8bb75c27e3bb9cd9b85e4b6eed67aa976ffe857a",
+      "evidence": "Official Modrinth CDN, release 1.21.1-110-neoforge published 2026-09-01; SHA-1 and SHA-512 from the version API matched"
+    },
+    {
+      "modIds": [
+        "create_new_age"
+      ],
+      "filename": "create-new-age-1.2.0+neoforge-mc1.21.1.jar",
+      "sha256": "a217ea21ccc8364e99d86777e519436bc7c94516df9737ad0103047e48a44717",
+      "dependencies": [
+        "create [6.0.9,6.1.0)",
+        "esl [1.0.3]",
+        "minecraft [1.21.1]",
+        "neoforge [21.1.125,)",
+        "neoforge [21.1.209,)"
+      ],
+      "license": "BSD-3-Clause",
+      "side": "Client & Server",
+      "provider": "modrinth",
+      "projectId": "FTeXqI9v",
+      "versionId": "IwtuwMZy",
+      "projectUrl": "https://modrinth.com/mod/create-new-age",
+      "downloadUrl": "https://cdn.modrinth.com/data/FTeXqI9v/versions/IwtuwMZy/create-new-age-1.2.0%2Bneoforge-mc1.21.1.jar",
+      "sourceSha1": "849df57070ffa75c2446b9c460d03f6b49fa089e",
+      "sourceSha512": "5075c6482b800af7044b594ad694855e7d56f386cb0354967eafe99d77e84b4e26ee7f880d287672d24d84ea8086fd074b7695e46632f32f215b31ce859ada72",
+      "evidence": "Official Modrinth CDN, release 1.2.0+mc1.21.1 published 2026-06-08; SHA-1 and SHA-512 from the version API matched"
+    },
+    {
+      "modIds": [
+        "create_central_kitchen"
+      ],
+      "filename": "create-central-kitchen-2.6.2.jar",
+      "sha256": "b0cd470dce5a1cfd455255d0d26951326fd2abdad8fc785e3545d3bbbc53e222",
+      "dependencies": [
+        "create [6.0.10,)",
+        "create_dragons_plus [1.11.9,)",
+        "minecraft [1.21.1, 1.22)",
+        "neoforge [21.1.0,)"
+      ],
+      "license": "LGPL-3.0-or-later",
+      "side": "Client & Server",
+      "provider": "modrinth",
+      "projectId": "btq68HMO",
+      "versionId": "whbguqT1",
+      "projectUrl": "https://modrinth.com/mod/create-central-kitchen",
+      "downloadUrl": "https://cdn.modrinth.com/data/btq68HMO/versions/whbguqT1/create-central-kitchen-2.6.2.jar",
+      "sourceSha1": "fc25056911ed744f4f7f762f4939d9805aa9f340",
+      "sourceSha512": "187d8d86217825e5812a112b7922603af498427f7a4ba1c71cf5c651d12e7ef2ca046597d72743f61ebd497c82e7f1c79e28c853cd643d1d680093e086354f7f",
+      "evidence": "Official Modrinth CDN, release 2.6.2 published 2026-09-22; SHA-1 and SHA-512 from the version API matched"
+    },
+    {
+      "modIds": [
+        "sliceanddice"
+      ],
+      "filename": "sliceanddice-4.3.4-neoforge.jar",
+      "sha256": "b3982e89611761d7f1cdce90794cd88498a2c9e1447d8a1aba33ed831f3c9201",
+      "dependencies": [
+        "atmosphere [1.0.7,)",
+        "create [6.0.9,7.0.0)",
+        "flywheel [1.0.0,2.0)",
+        "kotlinforforge [5.8,)",
+        "minecraft [1.21.1,)",
+        "minecraft [1.21.1]",
+        "neoforge [21,)",
+        "neoforge [21.1.206,)",
+        "neoforge [21.1.80,)"
+      ],
+      "license": "https://github.com/pssbletrngle/sliceanddice/blob/main/1.21.x/LICENSE.md",
+      "side": "Client & Server",
+      "provider": "modrinth",
+      "projectId": "GmjmRQ0A",
+      "versionId": "D6mQaFRW",
+      "projectUrl": "https://modrinth.com/mod/slice-and-dice",
+      "downloadUrl": "https://cdn.modrinth.com/data/GmjmRQ0A/versions/D6mQaFRW/sliceanddice-4.3.4-neoforge.jar",
+      "sourceSha1": "bfcb12d13465caf6743f200fbd755b72705011e4",
+      "sourceSha512": "18fc9c70d2958ad6a0e7106ca2a5659d664fe9d5001a02afbd0c7d6980749764fcd90203abb2b9c6d7b1c8e564e421be04dfca1aeb25974371d7deeabf4b96a3",
+      "evidence": "Official Modrinth CDN, release 4.3.4 published 2026-09-20; SHA-1 and SHA-512 from the version API matched"
+    },
+    {
+      "modIds": [
+        "mr_dungeons_andtaverns"
+      ],
+      "filename": "dungeons-and-taverns-v4.4.4.jar",
+      "sha256": "1db28e89e0cb76aebe9e40955d1866e8ac1779575d15c2a1e250ac804a762d05",
+      "dependencies": [],
+      "license": "LicenseRef-All-Rights-Reserved",
+      "side": "Client & Server",
+      "provider": "modrinth",
+      "projectId": "tpehi7ww",
+      "versionId": "BYUUUeZA",
+      "projectUrl": "https://modrinth.com/mod/dungeons-and-taverns",
+      "downloadUrl": "https://cdn.modrinth.com/data/tpehi7ww/versions/BYUUUeZA/dungeons-and-taverns-v4.4.4.jar",
+      "sourceSha1": "249a5bdd0e8622b8a11f88758e6f5fd5fda036a3",
+      "sourceSha512": "83069dc336bcc212059f753923373d9522aa5953bf4b4fe2a8cfa666b4e28d2d017daa66c4b35e315c3be8d1ad60c2872879dd47cc1f47665ebbfd102da76976",
+      "evidence": "Official Modrinth CDN, release v4.4.4+mod published 2024-09-29; SHA-1 and SHA-512 from the version API matched"
+    },
+    {
+      "modIds": [
+        "kotlinforforge"
+      ],
+      "filename": "kotlinforforge-5.12.0-all.jar",
+      "sha256": "2785a4dd6de5c6c56065fd8eb789c82771bd2ee773c30794c23160a3b2c39139",
+      "dependencies": [
+        "minecraft [1.20.6,1.21.9)"
+      ],
+      "license": "LGPL-2.1-only",
+      "side": "Client & Server",
+      "provider": "modrinth",
+      "projectId": "ordsPcFz",
+      "versionId": "uhJhCT7X",
+      "projectUrl": "https://modrinth.com/mod/kotlin-for-forge",
+      "downloadUrl": "https://cdn.modrinth.com/data/ordsPcFz/versions/uhJhCT7X/kotlinforforge-5.12.0-all.jar",
+      "sourceSha1": "d10d062caf1aad9aec82d7852f2fee1781735c1f",
+      "sourceSha512": "b8c3942f4d33179edf3f102f3d870b99dd436f8b8236dbbd31aa51b888162c692cfd88927295f24dc8b4375232f4c6c17360c5d6c4823f93cbcd7cf4bdc8bd14",
+      "evidence": "Official Modrinth CDN, release 5.12.0 published 2026-06-28; SHA-1 and SHA-512 from the version API matched"
+    },
+    {
+      "modIds": [
+        "create_dragons_plus"
+      ],
+      "filename": "CreateDragonsPlus-1.11.9.jar",
+      "sha256": "37f05a6775bbe811fe8c2833fa6289a1c704d0b25bdd5f239d343a5c6f62ed8a",
+      "dependencies": [
+        "create [6.0.10,)",
+        "minecraft [1.21.1, 1.22)",
+        "neoforge [20.5,)",
+        "neoforge [21.1.0,)"
+      ],
+      "license": "LGPL-3.0-or-later",
+      "side": "Client & Server",
+      "projectID": 1216624,
+      "fileID": 8900055,
+      "sourceUrl": "https://www.curseforge.com/minecraft/mc-mods/create-dragons-plus/files/8900055",
+      "downloadUrl": "https://edge.forgecdn.net/files/8900/55/CreateDragonsPlus-1.11.9.jar",
+      "evidence": "Official CurseForge CDN; byte length matched the official file record (https://www.curseforge.com/api/v1/mods/1216624/files/8900055); identical bytes on Modrinth, SHA-1 and SHA-512 matched",
+      "sourceSha512": "43299e49afe7132515aa8ad545b8c9566d90f12cfb39456b3d6e1ebc8e03f05787fbc420e7cc9495df4d6b585d13e7a4c4c7385f82f20aeb829c9491b725af53",
+      "modrinthMapping": {
+        "projectId": "dzb1a5WV",
+        "versionId": "b0u9vk8C",
+        "downloadUrl": "https://cdn.modrinth.com/data/dzb1a5WV/versions/b0u9vk8C/CreateDragonsPlus-1.11.9.jar"
+      }
     }
   ]
 }

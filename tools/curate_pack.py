@@ -129,6 +129,8 @@ CLIENT = {'defaultoptions', 'drippyloadingscreen', 'smithingtemplateviewer', 'ch
           'sodium', 'immediatelyfast', 'fancymenu', 'konkrete', 'melody', 'searchables', 'lambdynlights'}
 EXCLUDED = {'projecte', 'allthemodium', 'allthetweaks', 'alltheores', 'allthecompressed'}
 FAMILY_PINS = {}
+# Earlier lock entries a family replaces on purpose: {filename: {'by': pinned filename, 'why': reason}}.
+REPLACED = {}
 
 
 def read_json(path):
@@ -178,7 +180,14 @@ def modrinth_pin_entry(path, meta, pin):
                        'declaredLicense': pin.get('license'),
                        'curseforgeMappingStatus': 'pending official App resolution'},
             'metadata': meta, 'cfRequiredProjects': [],
-            'side': 'client' if all(m['id'] in CLIENT for m in meta['mods']) else 'both'}
+            'side': jar_side(meta)}
+
+
+def jar_side(meta):
+    """Client-only when every declared mod is; a library-only JAR (no top-level [[mods]], only
+    JarJar providers such as Kotlin for Forge) is judged by what it provides, never client by default."""
+    ids = [m['id'] for m in meta['mods']] or sorted(provided(meta))
+    return 'client' if ids and all(mod_id in CLIENT for mod_id in ids) else 'both'
 
 
 def load_families():
@@ -207,6 +216,15 @@ def load_families():
             if name in FAMILY_PINS and FAMILY_PINS[name] != pin:
                 raise ValueError(f'Conflicting family pin: {name}')
             FAMILY_PINS[name] = pin
+        pinned_names = {pin['filename'] for pin in family.get('pins', [])}
+        for replaced in family.get('replaces', []):
+            name, by = replaced.get('filename', ''), replaced.get('by')
+            if (Path(name).name != name or not name.endswith('.jar') or by not in pinned_names
+                    or name in pinned_names or not replaced.get('why')):
+                raise ValueError(f'Invalid replacement in {path.name}: {name}')
+            if name in REPLACED and REPLACED[name] != {'by': by, 'why': replaced['why']}:
+                raise ValueError(f'Conflicting replacement: {name}')
+            REPLACED[name] = {'by': by, 'why': replaced['why']}
         pinned_ids = {mod_id for pin in family.get('pins', []) for mod_id in pin['modIds']}
         requested = set(family.get('content', {})) | set(family.get('qol', {}))
         if not requested <= pinned_ids:
@@ -275,7 +293,7 @@ def refresh(source, preserve=False):
             meta = jar_metadata(path)
         except (ValueError, KeyError, TypeError, zipfile.BadZipFile) as error:
             raise RuntimeError(f'Invalid metadata {path.name}: {error}') from error
-        if not meta['mods']:
+        if not provided(meta):
             continue
         addon = files.get(path.name, {})
         cf = addon.get('installedFile', {})
@@ -288,7 +306,7 @@ def refresh(source, preserve=False):
                      'sourceSha1': next((h['value'] for h in cf.get('hashes', []) if h.get('type') == 1), None),
                      'source': {'provider': 'curseforge', 'projectUrl': addon.get('webSiteURL'), 'downloadUrl': cf.get('downloadUrl'), 'allowModDistribution': addon.get('allowModDistribution')},
                      'metadata': meta, 'cfRequiredProjects': [d['addonId'] for d in cf.get('dependencies', []) if d.get('type') == 3],
-                     'side': 'client' if all(m['id'] in CLIENT for m in meta['mods']) else 'both'}
+                     'side': jar_side(meta)}
             if pin and pin.get('sourceSha512'):
                 # Same bytes published on Modrinth: its SHA-512 is verified on every check.
                 entry['source']['sourceSha512'] = pin['sourceSha512']
@@ -304,6 +322,8 @@ def refresh(source, preserve=False):
         for previous in read_json(CATALOG / 'curated.json')['mods']:
             if previous['source']['provider'] != 'modrinth' and not previous['source'].get('lockedLocalCache'):
                 continue
+            if previous['filename'] in REPLACED:
+                continue
             path = Path(previous_paths.get(previous['filename'], ''))
             if not path.is_file() or hashlib.sha256(path.read_bytes()).hexdigest() != previous['sha256']:
                 raise ValueError(f"Missing or changed locked official file: {previous['filename']}")
@@ -313,10 +333,12 @@ def refresh(source, preserve=False):
             for mod_id in provided(entry['metadata']):
                 by_id.setdefault(mod_id, []).append(entry)
     requested = set(CONTENT) | set(QOL) | PERFORMANCE | INFRA
-    selected = {entry['filename']: entry for entry in previous_lock['mods']} if preserve else {}
+    # Additive mode keeps every earlier entry except those a family explicitly replaces.
+    selected = ({entry['filename']: entry for entry in previous_lock['mods'] if entry['filename'] not in REPLACED}
+                if preserve else {})
     existing_providers = set().union(*(provided(entry['metadata']) for entry in selected.values()))
     if preserve:
-        paths.update(previous_paths)
+        paths.update({name: path for name, path in previous_paths.items() if name not in REPLACED})
     missing = []
     queue = [(mod, 'selected') for mod in sorted(requested)]
     while queue:
@@ -347,7 +369,7 @@ def refresh(source, preserve=False):
             raise ValueError(f"Local file differs from official source metadata: {entry['filename']}")
         entry['selectionReason'] = reason
         entry['roles'] = []
-        for m in entry['metadata']['mods']:
+        for m in entry['metadata']['mods'] or [{'id': mod_id} for mod_id in sorted(provided(entry['metadata']))]:
             key = m['id']
             if key in CONTENT:
                 act, role, integration = CONTENT[key]
@@ -386,6 +408,8 @@ def check(lock, paths, side='client'):
     active = [e for e in lock['mods'] if side == 'client' or e['side'] != 'client']
     supplied = BUILTINS | set().union(*(provided(e['metadata']) for e in active))
     locked_by_name = {entry['filename']: entry for entry in lock['mods']}
+    errors += [f"Replaced family dependency still locked: {name} (replaced by {REPLACED[name]['by']})"
+               for name in sorted(set(locked_by_name) & set(REPLACED))]
     for name, pin in FAMILY_PINS.items():
         entry = locked_by_name.get(name)
         if entry is None:
