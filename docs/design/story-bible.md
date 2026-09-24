@@ -70,6 +70,15 @@ Para contestarles hace falta un artefacto que se perdió en el Aether. La entida
 - **La brújula sigue al equipo**, no a cada jugador.
 - **Aldeanos de Solsticio:** unos pocos personajes con nombre (alcalde, inventora, jardinero, etc.) dan las misiones; el resto son aldeanos con ropa de Heliodor.
 
+## Personajes de Solsticio (24 de septiembre)
+
+- **La Alcaldesa:** guardiana del Ayuntamiento y del portal. Carga la culpa de haber apoyado la fusión y da la misión final.
+- **La Inventora:** construyó el Atlas desde adentro de la luz. **Es la voz que habla en fragmentos**; al conocerla en Solsticio se cierra el círculo. Da misiones de máquinas y redstone.
+- **El Jardinero:** cuida los jardines congelados, es nostálgico y pide semillas y cosas vivas del Overworld.
+- **El Sacerdote de la Luz:** advirtió que la fusión era un error y nadie le hizo caso. Trae el lore religioso y el del Sun Spirit.
+- **El resto** son aldeanos con ropa de Heliodor (túnicas crema y cobre, detalles turquesa); los personajes con nombre llevan algo distintivo.
+- **Acto VI corto y denso:** 8–12 misiones con lore y viajes al Overworld. Lo largo es el posgame: comercio, lote e ítems creativos.
+
 ## Estilo de juego (24 de septiembre)
 
 - **Muerte:** tumba con tus cosas (Tombstone), sin estrés.
