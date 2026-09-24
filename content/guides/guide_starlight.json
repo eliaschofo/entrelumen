@@ -1,0 +1,619 @@
+{
+  "chapter": "guide_starlight",
+  "group": "exploration",
+  "act": "IV",
+  "icon": "eternal_starlight:orb_of_prophecy",
+  "title": {
+    "en_us": "Eternal Starlight",
+    "es_es": "Eternal Starlight"
+  },
+  "subtitle": {
+    "en_us": "A night that never ends, meteor showers and the machines of a lost civilization.",
+    "es_es": "Una noche que no termina, lluvias de meteoritos y las máquinas de una civilización perdida."
+  },
+  "quests": [
+    {
+      "key": "es_welcome",
+      "deps": [],
+      "type": "checkmark",
+      "layout": {
+        "x": 0,
+        "y": 0,
+        "size": 2.0,
+        "shape": "hexagon"
+      },
+      "en_us": [
+        "Sky of a million stars",
+        "Eternal Starlight is a dimension under an eternal starry night, left behind by an ancient civilization, the Starlighters, whose golems and machines still guard their ruins. It has its own biomes, ores, crops, weather (meteor showers) and bosses, and an in-game guide, the Glimmering Tablet, that unlocks chapters as you discover things.\n\nIn ENTRELUMEN it belongs to act IV, the act of the Observatory: the pack puts a Horizon Chart in the Orb of Prophecy recipe. It is optional for the story; the Heliodor Compass has no objectives there."
+      ],
+      "es_es": [
+        "Un cielo de un millón de estrellas",
+        "Eternal Starlight es una dimensión bajo una noche estrellada eterna, abandonada por una civilización antigua, los Starlighters, cuyos gólems y máquinas todavía custodian sus ruinas. Tiene biomas, minerales, cultivos, clima (lluvias de meteoritos) y jefes propios, y una guía en el juego, la Glimmering Tablet, que desbloquea capítulos a medida que descubrís cosas.\n\nEn ENTRELUMEN pertenece al acto IV, el del Observatorio: el pack pone una Carta de horizontes en la receta del Orbe de la Profecía. Para la historia es opcional; la Brújula de Heliodor no tiene objetivos allá."
+      ],
+      "sources": [
+        "repo:pack/kubejs/server_scripts/entrelumen_pingpong_balance.js",
+        "repo:docs/design/mod-pingpong.md",
+        "jar:eternalstarlight-0.9.0+1.21.1+neoforge.jar:assets/eternal_starlight/lang/en_us.json",
+        "repo:content/compass_targets.json"
+      ]
+    },
+    {
+      "key": "es_ruins",
+      "deps": [
+        "es_welcome"
+      ],
+      "type": "checkmark",
+      "icon": "eternal_starlight:chiseled_voidstone",
+      "layout": {
+        "x": 3,
+        "y": 0,
+        "size": 1.0,
+        "shape": "circle"
+      },
+      "en_us": [
+        "The portal ruins",
+        "Across the Overworld there are small portal ruins (common, cold, desert, forest and jungle variants): a frame of Chiseled Voidstone and the spawner of their guardian, the Gatekeeper. They are spread out but not rare; an Explorer's Compass can search for them.\n\nTalk to the Gatekeeper before anything else: it can trade, answer and accept a challenge."
+      ],
+      "es_es": [
+        "Las ruinas del portal",
+        "Por todo el Overworld hay pequeñas ruinas de portal (variantes común, fría, de desierto, de bosque y de selva): un marco de Chiseled Voidstone y el generador de su guardián, el Gatekeeper. Están espaciadas pero no son raras; una Brújula de explorador (Explorer's Compass) puede buscarlas.\n\nHablá con el Gatekeeper antes que nada: puede comerciar, contestar y aceptar un desafío."
+      ],
+      "sources": [
+        "jar:eternalstarlight-0.9.0+1.21.1+neoforge.jar:data/eternal_starlight/worldgen/structure/portal_ruins_common.json",
+        "jar:eternalstarlight-0.9.0+1.21.1+neoforge.jar:data/eternal_starlight/worldgen/structure_set/portal_ruins_common.json",
+        "jar:eternalstarlight-0.9.0+1.21.1+neoforge.jar:data/eternal_starlight/tags/block/portal_frame_blocks.json",
+        "jar:eternalstarlight-0.9.0+1.21.1+neoforge.jar:data/eternal_starlight/structure/portal_ruins/common.nbt",
+        "jar:eternalstarlight-0.9.0+1.21.1+neoforge.jar:assets/eternal_starlight/lang/en_us.json"
+      ]
+    },
+    {
+      "key": "es_gatekeeper",
+      "deps": [
+        "es_ruins"
+      ],
+      "type": "advancement",
+      "advancement": "eternal_starlight:challenge_gatekeeper",
+      "icon": "eternal_starlight:book",
+      "layout": {
+        "x": 6,
+        "y": 0,
+        "size": 2.0,
+        "shape": "gear"
+      },
+      "en_us": [
+        "The Gatekeeper's trial",
+        "Choose \"Challenge\" and confirm: the Gatekeeper is a duelist who parries and throws fireballs. Passing the trial is \"Duke it out!\". He only trades with someone who has proven themselves, either by beating him or by having killed the Ender Dragon.\n\nThe first time you beat him he drops the Glimmering Tablet (the guide) and an Orb of Prophecy, plus a chance of a Glistering weapon and a music disc."
+      ],
+      "es_es": [
+        "El desafío del Gatekeeper",
+        "Elegí «Challenge» y confirmá: el Gatekeeper es un duelista que desvía golpes y tira bolas de fuego. Superar la prueba es «Duke it out!». Sólo comercia con quien ya se probó, sea venciéndolo o habiendo matado al Dragón del End.\n\nLa primera vez que lo vencés suelta la Glimmering Tablet (la guía) y un Orbe de la Profecía, más una chance de un arma Glistering y un disco de música."
+      ],
+      "sources": [
+        "jar:eternalstarlight-0.9.0+1.21.1+neoforge.jar:data/eternal_starlight/advancement/challenge_gatekeeper.json",
+        "jar:eternalstarlight-0.9.0+1.21.1+neoforge.jar:data/eternal_starlight/loot_table/bosses/the_gatekeeper.json",
+        "jar:eternalstarlight-0.9.0+1.21.1+neoforge.jar:assets/eternal_starlight/lang/en_us.json"
+      ]
+    },
+    {
+      "key": "es_orb",
+      "deps": [
+        "es_gatekeeper"
+      ],
+      "type": "item",
+      "item": "eternal_starlight:orb_of_prophecy",
+      "layout": {
+        "x": 9,
+        "y": 0,
+        "size": 1.0,
+        "shape": "circle"
+      },
+      "en_us": [
+        "The Orb of Prophecy",
+        "The Orb opens the portal: use it on the Chiseled Voidstone frame of a ruin. Your first Orb comes from the Gatekeeper. In ENTRELUMEN a spare is crafted from blue starlight crystal shards, glass and a Horizon Chart (act IV); the shards grow in the Starlight dimension itself.\n\nThe Orb is also your spellbook: it holds your crests and casts their spells with mana crystals. Switch crest with H in this pack."
+      ],
+      "es_es": [
+        "El Orbe de la Profecía",
+        "El Orbe abre el portal: usalo sobre el marco de Chiseled Voidstone de una ruina. El primero lo da el Gatekeeper. En ENTRELUMEN uno de repuesto se fabrica con fragmentos de cristal estelar azul, vidrio y una Carta de horizontes (acto IV); los fragmentos crecen en la propia dimensión.\n\nEl Orbe es además tu libro de hechizos: guarda tus emblemas (crests) y lanza sus hechizos con cristales de maná. En este pack se cambia de emblema con H."
+      ],
+      "sources": [
+        "repo:pack/kubejs/server_scripts/entrelumen_pingpong_balance.js",
+        "jar:eternalstarlight-0.9.0+1.21.1+neoforge.jar:data/eternal_starlight/recipe/orb_of_prophecy.json",
+        "jar:eternalstarlight-0.9.0+1.21.1+neoforge.jar:data/eternal_starlight/loot_table/bosses/the_gatekeeper.json",
+        "jar:eternalstarlight-0.9.0+1.21.1+neoforge.jar:assets/eternal_starlight/lang/en_us.json",
+        "repo:pack/config/defaultoptions/keybindings.txt"
+      ]
+    },
+    {
+      "key": "es_enter",
+      "deps": [
+        "es_orb"
+      ],
+      "type": "dimension",
+      "dimension": "eternal_starlight:starlight",
+      "icon": "eternal_starlight:lunar_log",
+      "layout": {
+        "x": 12,
+        "y": 0,
+        "size": 1.75,
+        "shape": "diamond"
+      },
+      "en_us": [
+        "Into the Starlight dimension",
+        "Cross the portal (\"Sky of a Million Stars\"). It is always night here, so bring light and expect monsters. The Glimmering Tablet updates its chapters as you meet creatures and find materials: open it often.\n\nPerformance tip: in the pack's server measurements this was the most expensive dimension to generate. Explore at walking pace instead of flying at full speed, especially on a modest PC."
+      ],
+      "es_es": [
+        "Adentro de la dimensión estelar",
+        "Cruzá el portal («Sky of a Million Stars»). Acá siempre es de noche, así que llevá luz y esperá monstruos. La Glimmering Tablet actualiza sus capítulos a medida que conocés criaturas y encontrás materiales: abrila seguido.\n\nConsejo de rendimiento: en las mediciones de servidor del pack esta fue la dimensión más cara de generar. Explorala a paso de caminata en vez de volar a toda velocidad, sobre todo en una PC modesta."
+      ],
+      "sources": [
+        "jar:eternalstarlight-0.9.0+1.21.1+neoforge.jar:data/eternal_starlight/advancement/enter_starlight.json",
+        "repo:docs/design/mod-pingpong.md",
+        "jar:eternalstarlight-0.9.0+1.21.1+neoforge.jar:assets/eternal_starlight/lang/en_us.json"
+      ]
+    },
+    {
+      "key": "es_seeking_eye",
+      "deps": [
+        "es_enter"
+      ],
+      "type": "item",
+      "item": "eternal_starlight:seeking_eye",
+      "layout": {
+        "x": 12,
+        "y": -3,
+        "size": 1.0,
+        "shape": "square"
+      },
+      "en_us": [
+        "Seeking Eyes",
+        "Eight Starlight Flowers around an ender pearl make 16 Seeking Eyes (\"Guided by Starlight\"). Thrown, an eye flies toward the ruins where powerful creatures live. To aim it at one structure, hold its locator item in the other hand: redstone or Golem Steel for the Golem Forge, cave moss and similar plants for the Cursed Garden."
+      ],
+      "es_es": [
+        "Ojos buscadores",
+        "Ocho Flores estelares alrededor de una perla de ender hacen 16 Ojos buscadores («Guided by Starlight»). Al lanzarlo, el ojo vuela hacia las ruinas donde viven criaturas poderosas. Para apuntarlo a una estructura en particular, tené su ítem localizador en la otra mano: redstone o Golem Steel para la Forja de Gólems, musgo de cueva y plantas parecidas para el Jardín Maldito."
+      ],
+      "sources": [
+        "jar:eternalstarlight-0.9.0+1.21.1+neoforge.jar:data/eternal_starlight/recipe/seeking_eye.json",
+        "jar:eternalstarlight-0.9.0+1.21.1+neoforge.jar:data/eternal_starlight/tags/item/golem_forge_locators.json",
+        "jar:eternalstarlight-0.9.0+1.21.1+neoforge.jar:data/eternal_starlight/tags/item/cursed_garden_locators.json",
+        "jar:eternalstarlight-0.9.0+1.21.1+neoforge.jar:data/eternal_starlight/advancement/obtain_seeking_eye.json",
+        "jar:eternalstarlight-0.9.0+1.21.1+neoforge.jar:assets/eternal_starlight/lang/en_us.json"
+      ]
+    },
+    {
+      "key": "es_golem_forge",
+      "deps": [
+        "es_seeking_eye"
+      ],
+      "type": "advancement",
+      "advancement": "eternal_starlight:enter_golem_forge",
+      "icon": "eternal_starlight:golem_steel_pillar",
+      "layout": {
+        "x": 15,
+        "y": -3,
+        "size": 1.0,
+        "shape": "circle"
+      },
+      "en_us": [
+        "The Golem Forge",
+        "The Golem Forge is a large underground ruin (\"Cradle of Legion\"). Inside wait Freezes, ancient cooling machines, and two bosses: the Starlight Golem and the Permafrost. Cold-proof armor helps against the Freezes' attacks."
+      ],
+      "es_es": [
+        "La Forja de Gólems",
+        "La Forja de Gólems es una ruina subterránea grande («Cradle of Legion»). Adentro esperan los Freeze, antiguas máquinas de enfriamiento, y dos jefes: el Starlight Golem y el Permafrost. Una armadura resistente al frío ayuda contra los ataques de los Freeze."
+      ],
+      "sources": [
+        "jar:eternalstarlight-0.9.0+1.21.1+neoforge.jar:data/eternal_starlight/advancement/enter_golem_forge.json",
+        "jar:eternalstarlight-0.9.0+1.21.1+neoforge.jar:data/eternal_starlight/worldgen/structure/golem_forge.json",
+        "jar:eternalstarlight-0.9.0+1.21.1+neoforge.jar:assets/eternal_starlight/lang/en_us.json"
+      ]
+    },
+    {
+      "key": "es_starlight_golem",
+      "deps": [
+        "es_golem_forge"
+      ],
+      "type": "advancement",
+      "advancement": "eternal_starlight:kill_golem",
+      "icon": "eternal_starlight:chiseled_golem_steel_block",
+      "layout": {
+        "x": 18,
+        "y": -3,
+        "size": 2.0,
+        "shape": "gear"
+      },
+      "en_us": [
+        "The Starlight Golem",
+        "The Golem does not move, but its armor shrugs off attacks. When it stops to absorb energy, put out the Energy Blocks it feeds on: its armor drops for a while (\"The Backstabber\"). A Frozen Tube thrown at it makes it enter that charging state sooner (\"Chill Out, Buddy!\").\n\nDefeating it is \"Ancient Wisdom\" and yields Golem Steel."
+      ],
+      "es_es": [
+        "El Starlight Golem",
+        "El Gólem no se mueve, pero su armadura aguanta casi todo. Cuando se detiene a absorber energía, apagá los Bloques de energía que lo alimentan y su armadura cae un rato («The Backstabber»). Un Frozen Tube lanzado contra él lo hace entrar antes en ese estado de carga («Chill Out, Buddy!»).\n\nVencerlo es «Ancient Wisdom» y da Golem Steel."
+      ],
+      "sources": [
+        "jar:eternalstarlight-0.9.0+1.21.1+neoforge.jar:data/eternal_starlight/advancement/kill_golem.json",
+        "jar:eternalstarlight-0.9.0+1.21.1+neoforge.jar:data/eternal_starlight/advancement/deactivate_energy_block.json",
+        "jar:eternalstarlight-0.9.0+1.21.1+neoforge.jar:data/eternal_starlight/advancement/freeze_starlight_golem.json",
+        "jar:eternalstarlight-0.9.0+1.21.1+neoforge.jar:data/eternal_starlight/loot_table/bosses/starlight_golem.json",
+        "jar:eternalstarlight-0.9.0+1.21.1+neoforge.jar:assets/eternal_starlight/lang/en_us.json"
+      ]
+    },
+    {
+      "key": "es_permafrost",
+      "deps": [
+        "es_golem_forge"
+      ],
+      "type": "advancement",
+      "advancement": "eternal_starlight:kill_permafrost",
+      "optional": true,
+      "icon": "eternal_starlight:coldsnap",
+      "layout": {
+        "x": 18,
+        "y": -6,
+        "size": 1.5,
+        "shape": "gear"
+      },
+      "en_us": [
+        "The Permafrost",
+        "The Starlighters fused several Freezes into one thermal regulator: the Permafrost. It spits frost and spreads freezing clouds. Beating it is \"Winter is Leaving\"."
+      ],
+      "es_es": [
+        "El Permafrost",
+        "Los Starlighters fusionaron varios Freeze en un solo regulador térmico: el Permafrost. Escupe escarcha y esparce nubes heladas. Vencerlo es «Winter is Leaving»."
+      ],
+      "sources": [
+        "jar:eternalstarlight-0.9.0+1.21.1+neoforge.jar:data/eternal_starlight/advancement/kill_permafrost.json",
+        "jar:eternalstarlight-0.9.0+1.21.1+neoforge.jar:assets/eternal_starlight/lang/en_us.json"
+      ]
+    },
+    {
+      "key": "es_monstrosity",
+      "deps": [
+        "es_starlight_golem"
+      ],
+      "type": "advancement",
+      "advancement": "eternal_starlight:kill_lunar_monstrosity",
+      "icon": "eternal_starlight:parasol_grass",
+      "layout": {
+        "x": 21,
+        "y": -3,
+        "size": 2.0,
+        "shape": "gear"
+      },
+      "en_us": [
+        "The Lunar Monstrosity",
+        "In the Cursed Garden grows the Lunar Monstrosity, a plant that devoured prisoners' souls. Its tough skin cuts all damage unless it is on fire or stunned: set it alight (\"Burn it to the Ground\") and strike then. It burrows to chase you, and Tangled Skulls explode when killed.\n\nDefeating it is \"Through the Thorns\"; it drops the Moonring Bow and opens the Crescent Spear and the Unrealium armor."
+      ],
+      "es_es": [
+        "La Lunar Monstrosity",
+        "En el Jardín Maldito crece la Lunar Monstrosity, una planta que devoraba el alma de los prisioneros. Su piel dura reduce todo el daño salvo cuando está prendida fuego o aturdida: encendela («Burn it to the Ground») y pegale en ese momento. Se entierra para perseguirte, y los Tangled Skulls explotan al morir.\n\nVencerla es «Through the Thorns»; suelta el Moonring Bow y abre la Crescent Spear y la armadura de Unrealium."
+      ],
+      "sources": [
+        "jar:eternalstarlight-0.9.0+1.21.1+neoforge.jar:data/eternal_starlight/advancement/kill_lunar_monstrosity.json",
+        "jar:eternalstarlight-0.9.0+1.21.1+neoforge.jar:data/eternal_starlight/advancement/ignite_lunar_monstrosity.json",
+        "jar:eternalstarlight-0.9.0+1.21.1+neoforge.jar:data/eternal_starlight/loot_table/bosses/lunar_monstrosity.json",
+        "jar:eternalstarlight-0.9.0+1.21.1+neoforge.jar:assets/eternal_starlight/lang/en_us.json"
+      ]
+    },
+    {
+      "key": "es_unrealium",
+      "deps": [
+        "es_monstrosity"
+      ],
+      "type": "advancement",
+      "advancement": "eternal_starlight:full_unrealium_armor",
+      "optional": true,
+      "icon": "eternal_starlight:unrealium_helmet",
+      "layout": {
+        "x": 24,
+        "y": -3,
+        "size": 1.0,
+        "shape": "circle"
+      },
+      "en_us": [
+        "Stepping into the Unseen",
+        "A full set of Unrealium armor is the dimension's top gear (\"Stepping into the Unseen\"). EMI shows its recipes and the boss materials they need."
+      ],
+      "es_es": [
+        "Entrar en lo invisible",
+        "Un set completo de armadura de Unrealium es el mejor equipo de la dimensión («Stepping into the Unseen»). EMI muestra sus recetas y los materiales de jefe que piden."
+      ],
+      "sources": [
+        "jar:eternalstarlight-0.9.0+1.21.1+neoforge.jar:data/eternal_starlight/advancement/full_unrealium_armor.json"
+      ]
+    },
+    {
+      "key": "es_meteor",
+      "deps": [
+        "es_enter"
+      ],
+      "type": "advancement",
+      "advancement": "eternal_starlight:obtain_aethersent_ingot",
+      "icon": "eternal_starlight:raw_aethersent",
+      "layout": {
+        "x": 12,
+        "y": 3,
+        "size": 1.0,
+        "shape": "circle"
+      },
+      "en_us": [
+        "Wish upon a star",
+        "Meteor showers sometimes cross the night sky. Beautiful and dangerous: dodge the big meteorites, then check the landing spots for Raw Aethersent and other ores. Creteors can crawl out of large impacts; their hide is a crafting material.\n\nAn Aethersent Ingot is \"Gift from the Sky\", and an Aetherstrike Rocket lets you call a meteor shower yourself."
+      ],
+      "es_es": [
+        "Pedile un deseo a una estrella",
+        "A veces cruzan el cielo lluvias de meteoritos. Hermosas y peligrosas: esquivá los meteoritos grandes y después revisá los puntos de impacto, donde hay Aethersent en bruto y otros minerales. De los impactos grandes pueden salir Creteors; su cuero sirve para fabricar.\n\nUn Lingote de Aethersent es «Gift from the Sky», y un Aetherstrike Rocket te deja convocar una lluvia de meteoritos cuando quieras."
+      ],
+      "sources": [
+        "jar:eternalstarlight-0.9.0+1.21.1+neoforge.jar:data/eternal_starlight/advancement/witness_meteor_shower.json",
+        "jar:eternalstarlight-0.9.0+1.21.1+neoforge.jar:data/eternal_starlight/advancement/obtain_aethersent_ingot.json",
+        "jar:eternalstarlight-0.9.0+1.21.1+neoforge.jar:data/eternal_starlight/advancement/obtain_aetherstrike_rocket.json",
+        "jar:eternalstarlight-0.9.0+1.21.1+neoforge.jar:data/eternal_starlight/advancement/kill_creteor.json",
+        "jar:eternalstarlight-0.9.0+1.21.1+neoforge.jar:assets/eternal_starlight/lang/en_us.json"
+      ]
+    },
+    {
+      "key": "es_ores",
+      "deps": [
+        "es_enter"
+      ],
+      "type": "item",
+      "item": "eternal_starlight:deepsilver_ingot",
+      "icon": "eternal_starlight:starlit_diamond",
+      "layout": {
+        "x": 15,
+        "y": 3,
+        "size": 1.0,
+        "shape": "circle"
+      },
+      "en_us": [
+        "Starlit materials",
+        "The dimension has its own mineral set: Starlit Diamonds, Deepsilver (its ore sits in stone, ice and Nightfall mud), Glacite shards in the Permafrost Forest, Thioquartz on the banks of the Ether River, Stellagmite underground (it melts in lava) and Amaramber from stripped Torreya logs. Each has an advancement.\n\nDeepsilver matters for the Dark Swamp: Stranghouls fear silver weapons."
+      ],
+      "es_es": [
+        "Materiales estelares",
+        "La dimensión tiene sus propios materiales: Diamantes estelares, Deepsilver (su mena aparece en piedra, hielo y barro Nightfall), fragmentos de Glacita en el Bosque de Permafrost, Thioquartz en las orillas del Río de Éter, Stellagmite bajo tierra (se derrite en lava) y Amaramber al descortezar troncos de Torreya. Cada uno tiene su logro.\n\nEl Deepsilver importa en el Pantano Oscuro: los Stranghouls le temen a las armas de plata."
+      ],
+      "sources": [
+        "jar:eternalstarlight-0.9.0+1.21.1+neoforge.jar:data/eternal_starlight/advancement/obtain_starlit_diamond.json",
+        "jar:eternalstarlight-0.9.0+1.21.1+neoforge.jar:data/eternal_starlight/advancement/obtain_deepsilver_ingot.json",
+        "jar:eternalstarlight-0.9.0+1.21.1+neoforge.jar:data/eternal_starlight/advancement/obtain_glacite_shard.json",
+        "jar:eternalstarlight-0.9.0+1.21.1+neoforge.jar:data/eternal_starlight/advancement/obtain_thioquartz_shard.json",
+        "jar:eternalstarlight-0.9.0+1.21.1+neoforge.jar:data/eternal_starlight/advancement/obtain_stellagmite.json",
+        "jar:eternalstarlight-0.9.0+1.21.1+neoforge.jar:data/eternal_starlight/advancement/obtain_raw_amaramber.json",
+        "jar:eternalstarlight-0.9.0+1.21.1+neoforge.jar:assets/eternal_starlight/lang/en_us.json"
+      ]
+    },
+    {
+      "key": "es_stranghoul",
+      "deps": [
+        "es_ores"
+      ],
+      "type": "advancement",
+      "advancement": "eternal_starlight:hire_stranghoul",
+      "optional": true,
+      "icon": "eternal_starlight:pungency_stew",
+      "layout": {
+        "x": 18,
+        "y": 3,
+        "size": 1.0,
+        "shape": "circle"
+      },
+      "en_us": [
+        "Stranghouls",
+        "Stranghouls are feral but intelligent humanoids of the Dark Swamp. They hunt (\"Even Death May Die\"), barter, and fear silver. A bowl of Pungency Stew hires one for a day (\"Anyone Can Cook\").\n\nThe Seeds Launcher, a weapon that fires any seed, is only obtained by bartering with them."
+      ],
+      "es_es": [
+        "Los Stranghouls",
+        "Los Stranghouls son humanoides salvajes pero inteligentes del Pantano Oscuro. Cazan («Even Death May Die»), comercian por trueque y le temen a la plata. Un tazón de Pungency Stew contrata a uno por un día («Anyone Can Cook»).\n\nEl Seeds Launcher, un arma que dispara cualquier semilla, sólo se consigue por trueque con ellos."
+      ],
+      "sources": [
+        "jar:eternalstarlight-0.9.0+1.21.1+neoforge.jar:data/eternal_starlight/advancement/hire_stranghoul.json",
+        "jar:eternalstarlight-0.9.0+1.21.1+neoforge.jar:data/eternal_starlight/advancement/witness_stranghoul_hunt.json",
+        "jar:eternalstarlight-0.9.0+1.21.1+neoforge.jar:data/eternal_starlight/loot_table/gameplay/stranghoul_bartering.json",
+        "jar:eternalstarlight-0.9.0+1.21.1+neoforge.jar:assets/eternal_starlight/lang/en_us.json"
+      ]
+    },
+    {
+      "key": "es_desert",
+      "deps": [
+        "es_enter"
+      ],
+      "type": "advancement",
+      "advancement": "eternal_starlight:obtain_tooth_of_hunger",
+      "optional": true,
+      "icon": "eternal_starlight:tooth_of_hunger",
+      "layout": {
+        "x": 9,
+        "y": 3,
+        "size": 1.0,
+        "shape": "circle"
+      },
+      "en_us": [
+        "The Crystallized Desert",
+        "The Crystallized Desert (\"Castle of Glass\") holds the blue starlight crystals, Crinoa seeds and Thirst Walkers. Kill a Thirst Walker or block its attack to get a Tooth of Hunger: it crafts the Dagger of Hunger (it grows sharper as it feeds) and the Crystalborn Catalyst, a redstone machine that \"infests\" the area around it to collect resources.\n\nCrystallized Moths can be tamed with enough meat."
+      ],
+      "es_es": [
+        "El Desierto Cristalizado",
+        "El Desierto Cristalizado («Castle of Glass») tiene los cristales estelares azules, las semillas de Crinoa y los Thirst Walkers. Matá a un Thirst Walker o bloqueá su ataque para conseguir un Tooth of Hunger: con él se hacen la Dagger of Hunger (se afila a medida que se alimenta) y el Crystalborn Catalyst, una máquina de redstone que «infesta» el área alrededor para juntar recursos.\n\nLas Polillas cristalizadas se pueden domar con suficiente carne."
+      ],
+      "sources": [
+        "jar:eternalstarlight-0.9.0+1.21.1+neoforge.jar:data/eternal_starlight/advancement/enter_crystallized_desert.json",
+        "jar:eternalstarlight-0.9.0+1.21.1+neoforge.jar:data/eternal_starlight/advancement/obtain_tooth_of_hunger.json",
+        "jar:eternalstarlight-0.9.0+1.21.1+neoforge.jar:data/eternal_starlight/advancement/obtain_crystalborn_catalyst.json",
+        "jar:eternalstarlight-0.9.0+1.21.1+neoforge.jar:data/eternal_starlight/advancement/tame_crystallized_moth.json",
+        "jar:eternalstarlight-0.9.0+1.21.1+neoforge.jar:assets/eternal_starlight/lang/en_us.json"
+      ]
+    },
+    {
+      "key": "es_accessories",
+      "deps": [
+        "es_ores"
+      ],
+      "type": "checkmark",
+      "optional": true,
+      "icon": "eternal_starlight:ether_bucket",
+      "layout": {
+        "x": 15,
+        "y": 6,
+        "size": 0.85,
+        "shape": "circle"
+      },
+      "en_us": [
+        "Accessories that live in your gear",
+        "Eternal Starlight accessories are not worn in slots: you combine each one with a specific type of equipment, like putting items in a bundle, and the equipment gains its property. How many it holds depends on its accessory slots.\n\nThe Glimmering Tablet lists how to get each one, for example the Butterfly Wings Amulet (throw any accessory into the Ether) or the Pearl Necklace (fish above the Abyss)."
+      ],
+      "es_es": [
+        "Accesorios que viven en tu equipo",
+        "Los accesorios de Eternal Starlight no van en ranuras: cada uno se combina con un tipo de equipo concreto, como meter ítems en un saco, y el equipo gana su propiedad. Cuántos admite depende de sus ranuras de accesorio.\n\nLa Glimmering Tablet dice cómo conseguir cada uno, por ejemplo el Butterfly Wings Amulet (tirá cualquier accesorio al Éter) o el Pearl Necklace (pescá sobre el Abismo)."
+      ],
+      "sources": [
+        "jar:eternalstarlight-0.9.0+1.21.1+neoforge.jar:assets/eternal_starlight/lang/en_us.json"
+      ]
+    },
+    {
+      "key": "es_food",
+      "deps": [
+        "es_enter"
+      ],
+      "type": "advancement",
+      "advancement": "eternal_starlight:obtain_bouldershroom_stew",
+      "optional": true,
+      "icon": "eternal_starlight:bouldershroom_stew",
+      "layout": {
+        "x": 6,
+        "y": 3,
+        "size": 1.0,
+        "shape": "circle"
+      },
+      "en_us": [
+        "Eating under the stars",
+        "Useful local foods: Bouldershroom Stew lets you climb any wall (\"Nimble as a Squirrel\"), Silver Pungency Fruit gives Numbness, which delays damage instead of stopping it (\"I've Become so Numb\"), and Nocturnal Millet is a crop whose seeds hide in Thioquartz on the Ether River banks.\n\nEverything new counts for ENTRELUMEN's food variety."
+      ],
+      "es_es": [
+        "Comer bajo las estrellas",
+        "Comidas útiles del lugar: el Bouldershroom Stew te deja trepar cualquier pared («Nimble as a Squirrel»), la Silver Pungency Fruit da Entumecimiento, que posterga el daño en vez de evitarlo («I've Become so Numb»), y el Nocturnal Millet es un cultivo cuyas semillas se esconden en el Thioquartz de las orillas del Río de Éter.\n\nTodo lo nuevo suma a la variedad de comida de ENTRELUMEN."
+      ],
+      "sources": [
+        "jar:eternalstarlight-0.9.0+1.21.1+neoforge.jar:data/eternal_starlight/advancement/obtain_bouldershroom_stew.json",
+        "jar:eternalstarlight-0.9.0+1.21.1+neoforge.jar:data/eternal_starlight/advancement/obtain_numbness_effect.json",
+        "jar:eternalstarlight-0.9.0+1.21.1+neoforge.jar:assets/eternal_starlight/lang/en_us.json",
+        "repo:docs/design/story-bible.md"
+      ]
+    },
+    {
+      "key": "es_weapons",
+      "deps": [
+        "es_meteor"
+      ],
+      "type": "checkmark",
+      "optional": true,
+      "icon": "eternal_starlight:petal_scythe",
+      "layout": {
+        "x": 21,
+        "y": 3,
+        "size": 0.85,
+        "shape": "circle"
+      },
+      "en_us": [
+        "Hammers, scythes and bombs",
+        "The mod has its own weapon families: hammers with a special attack on a full-strength critical hit (\"The Hammer of Justice\"), scythes (\"CHAOS, CHAOS\"), crystal greatswords and crossbows, Glacite arrows, and throwables such as Tear Bombs and Frozen Bombs.\n\nUnrealium and the boss weapons are the top tier of the dimension."
+      ],
+      "es_es": [
+        "Martillos, guadañas y bombas",
+        "El mod tiene sus propias familias de armas: martillos con un ataque especial al pegar un crítico con fuerza completa («The Hammer of Justice»), guadañas («CHAOS, CHAOS»), mandobles y ballestas de cristal, flechas de Glacita y arrojadizas como las Tear Bombs y las Frozen Bombs.\n\nEl Unrealium y las armas de jefe son lo mejor de la dimensión."
+      ],
+      "sources": [
+        "jar:eternalstarlight-0.9.0+1.21.1+neoforge.jar:data/eternal_starlight/advancement/hammer_critical_hit.json",
+        "jar:eternalstarlight-0.9.0+1.21.1+neoforge.jar:data/eternal_starlight/advancement/obtain_scythe.json",
+        "jar:eternalstarlight-0.9.0+1.21.1+neoforge.jar:data/eternal_starlight/advancement/obtain_glacite_arrow.json",
+        "jar:eternalstarlight-0.9.0+1.21.1+neoforge.jar:data/eternal_starlight/advancement/ignite_tear_bomb.json",
+        "jar:eternalstarlight-0.9.0+1.21.1+neoforge.jar:assets/eternal_starlight/lang/en_us.json"
+      ]
+    },
+    {
+      "key": "es_explorer",
+      "deps": [
+        "es_enter"
+      ],
+      "type": "advancement",
+      "advancement": "eternal_starlight:all_starlight_biomes",
+      "optional": true,
+      "icon": "eternal_starlight:nightfall_grass_block",
+      "layout": {
+        "x": 3,
+        "y": 3,
+        "size": 1.0,
+        "shape": "circle"
+      },
+      "en_us": [
+        "Starlight Explorer",
+        "Visit every Starlight biome: forests (Starlight, Dense, Scarlet, Torreya, Permafrost), the Dark Swamp, the Crystallized Desert, the Solaris Isles, the Ether and Shimmer rivers, the seas and The Abyss. It is a long trip; combine it with the materials hunt."
+      ],
+      "es_es": [
+        "Explorador estelar",
+        "Visitá todos los biomas estelares: bosques (Starlight, Denso, Escarlata, Torreya, Permafrost), el Pantano Oscuro, el Desierto Cristalizado, las Islas Solaris, los ríos de Éter y Shimmer, los mares y el Abismo. Es un viaje largo; combinalo con la búsqueda de materiales."
+      ],
+      "sources": [
+        "jar:eternalstarlight-0.9.0+1.21.1+neoforge.jar:data/eternal_starlight/advancement/all_starlight_biomes.json",
+        "jar:eternalstarlight-0.9.0+1.21.1+neoforge.jar:data/eternal_starlight/worldgen/biome"
+      ]
+    },
+    {
+      "key": "es_pack",
+      "deps": [
+        "es_welcome"
+      ],
+      "type": "checkmark",
+      "icon": "entrelumen:horizon_chart",
+      "layout": {
+        "x": 0,
+        "y": 3,
+        "size": 1.0,
+        "shape": "rsquare"
+      },
+      "en_us": [
+        "What ENTRELUMEN changes here",
+        "Pack specifics:\n- The Orb of Prophecy recipe needs a Horizon Chart (act IV); the Gatekeeper still drops one the first time you beat him.\n- The mod's option to hand out its guidebook on first join is off by default and nothing enables it: you earn the Glimmering Tablet from the Gatekeeper.\n- Carry On cannot pick up the Starlight Portal.\n- The crest switch key is H.\n- This is the costliest dimension to generate in the pack's measurements: explore at a calm pace."
+      ],
+      "es_es": [
+        "Qué cambia ENTRELUMEN acá",
+        "Particularidades del pack:\n- La receta del Orbe de la Profecía pide una Carta de horizontes (acto IV); el Gatekeeper igual suelta uno la primera vez que lo vencés.\n- La opción del mod que regala su guía al entrar viene apagada y nada la enciende: la Glimmering Tablet te la ganás contra el Gatekeeper.\n- Carry On no puede levantar el Portal estelar.\n- La tecla para cambiar de emblema es H.\n- Según las mediciones del pack es la dimensión más cara de generar: explorala con calma."
+      ],
+      "sources": [
+        "repo:pack/kubejs/server_scripts/entrelumen_pingpong_balance.js",
+        "jar:eternalstarlight-0.9.0+1.21.1+neoforge.jar:data/eternal_starlight/loot_table/bosses/the_gatekeeper.json",
+        "repo:docs/design/heliodor-compass.md",
+        "repo:pack/config/carryon-common.toml",
+        "repo:pack/config/defaultoptions/keybindings.txt",
+        "repo:docs/design/mod-pingpong.md"
+      ]
+    },
+    {
+      "key": "es_mastery",
+      "deps": [
+        "es_monstrosity"
+      ],
+      "type": "checkmark",
+      "icon": "eternal_starlight:orb_of_prophecy",
+      "layout": {
+        "x": 27,
+        "y": 0,
+        "size": 2.25,
+        "shape": "pentagon"
+      },
+      "en_us": [
+        "The Starlighters' heir",
+        "You passed the Gatekeeper's trial, crossed into the eternal night, silenced the Starlight Golem and burned the Lunar Monstrosity. What the Starlighters left behind (Golem Steel, Aethersent, Unrealium, crests and spells) is yours.\n\nAnother civilization that played with light and machines. Heliodor was not the only one."
+      ],
+      "es_es": [
+        "Heredero de los Starlighters",
+        "Superaste la prueba del Gatekeeper, entraste a la noche eterna, callaste al Starlight Golem y quemaste a la Lunar Monstrosity. Lo que dejaron los Starlighters (Golem Steel, Aethersent, Unrealium, emblemas y hechizos) es tuyo.\n\nOtra civilización que jugó con la luz y las máquinas. Heliodor no fue la única."
+      ],
+      "sources": [
+        "jar:eternalstarlight-0.9.0+1.21.1+neoforge.jar:data/eternal_starlight/advancement/kill_lunar_monstrosity.json",
+        "jar:eternalstarlight-0.9.0+1.21.1+neoforge.jar:assets/eternal_starlight/lang/en_us.json"
+      ]
+    }
+  ]
+}
