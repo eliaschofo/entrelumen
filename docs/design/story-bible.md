@@ -95,6 +95,13 @@ Para contestarles hace falta un artefacto que se perdió en el Aether. La entida
   - Aurelia deja su rol de autócrata y acepta llamar a elecciones, siempre que Bodhi le dé el cristal al jugador para abrir el portal y que el Entrelumen quede libre.
 - **Posgame:** Aurelia es reelegida alcaldesa por su buen trabajo. Fue poco democrática, pero el pueblo valora su buen gobierno. Siguen las sospechas de corrupción, como lore oculto: conversaciones de aldeanos y detalles sueltos.
 
+## Solsticio como ciudad (24 de septiembre)
+
+- **Ciudad enorme de verdad**, sin irse de mambo. Una isla de unos 250 bloques con barrios de casas, calles, plazas y tiendas alrededor del Ayuntamiento. El límite es una **barrera de luz infranqueable**. El fondo de la isla importa poco: lo que cuenta es el piso, las casas y las tiendas.
+- **Tiendas con trades copados:** por ejemplo, una librería con Mending y otros encantamientos, y tiendas de materiales raros. Es una ciudad donde se consiguen muchos materiales que da paja conseguir: caros, pero ahí están.
+- **Al liberar el Entrelumen, los precios bajan.** También se pueden mudar aldeanos de otras zonas: algunos ofrecen Luminosidades y otros solo mejoran los trades.
+- **Easter eggs, cosas copadas y side quests** por toda la ciudad.
+
 ## Personajes de Solsticio (24 de septiembre)
 
 - **Aurelia, la Alcaldesa:** aristócrata, casi villana pero justa. Guardiana del Ayuntamiento y del portal; empujó la fusión de la luz con la tecnología para controlarla. Da la misión final.

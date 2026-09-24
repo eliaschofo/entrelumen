@@ -16,19 +16,33 @@ def tf(x, z, t):
     return sx * x, sz * z
 
 
-def rot_state(b, t):
+def orient(b, f, mirror=False):
+    """Re-orient a block state by the direction map f((dx, dz)) -> (dx, dz): facing, axis, the
+    north/south/east/west connection keys, and (for mirrors) door hinges and stair shapes."""
     if '[' not in b:
         return b
     name, props = b[:-1].split('[')
     out = []
+    swaps = f((1, 0))[0] == 0
     for p in props.split(','):
         k, v = p.split('=')
         if k == 'facing' and v in FACING:
-            v = INV[tf(*FACING[v], t)]
-        if k == 'axis' and t[2] and v in 'xz':
+            v = INV[f(FACING[v])]
+        elif k in FACING:
+            k = INV[f(FACING[k])]
+        elif k == 'axis' and swaps and v in 'xz':
             v = 'z' if v == 'x' else 'x'
+        elif mirror and k == 'hinge':
+            v = 'right' if v == 'left' else 'left'
+        elif mirror and k == 'shape' and ('left' in v or 'right' in v):
+            v = v.replace('left', 'X').replace('right', 'left').replace('X', 'right')
         out.append(k + '=' + v)
-    return name + '[' + ','.join(out) + ']'
+    return name + '[' + ','.join(sorted(out)) + ']'
+
+
+def rot_state(b, t):
+    sx, sz, sw = t
+    return orient(b, lambda v: tf(v[0], v[1], t), mirror=sx * sz * (-1 if sw else 1) < 0)
 
 
 def ab(x, z):
@@ -78,7 +92,8 @@ TEXNAME = {'grass_block': ('grass_block_top', 'grass_block_side'), 'water': ('wa
            'fern': ('fern',) * 2, 'short_grass': ('short_grass',) * 2,
            'lectern': ('lectern_top', 'lectern_sides'), 'bookshelf': ('oak_planks', 'bookshelf'),
            'smooth_quartz': ('quartz_block_bottom',) * 2, 'quartz_stairs': ('quartz_block_side',) * 2,
-           'crafter': ('crafter_top', 'crafter_south'), 'smithing_table': ('smithing_table_top', 'smithing_table_front'),
+           'crafter': ('crafter_top', 'crafter_south'), 'cartography_table': ('cartography_table_top', 'cartography_table_side1'),
+           'grindstone': ('grindstone_round', 'grindstone_side'), 'smithing_table': ('smithing_table_top', 'smithing_table_front'),
            'oxidized_copper_bulb': ('oxidized_copper_bulb',) * 2,
            'oxidized_cut_copper_slab': ('oxidized_cut_copper',) * 2, 'ladder': ('ladder',) * 2,
            'end_rod': ('end_rod',) * 2, 'stripped_birch_log': ('stripped_birch_log_top', 'stripped_birch_log')}
