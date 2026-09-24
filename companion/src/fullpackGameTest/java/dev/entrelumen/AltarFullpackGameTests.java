@@ -35,9 +35,8 @@ import net.neoforged.neoforge.gametest.GameTestHolder;
 import net.neoforged.neoforge.gametest.PrefixGameTestTemplate;
 
 /**
- * Installed-pack QA for the altars, PENDING INTEGRATION: written and compiled with the QA source
- * set but not yet registered in {@link FullpackQABootstrap} and never run. The root integrator
- * registers this class there and runs it on the owned QA server with {@code -Dentrelumen.qa=true}.
+ * Installed-pack QA for the altars, registered in {@link FullpackQABootstrap} and run on the owned
+ * QA server with {@code -Dentrelumen.qa=true} (evidence: docs/verification/altars-runtime.json).
  *
  * <ul>
  *   <li>The Renewal Altar rebuilds a pit dug in land made by the pack's real overworld generator
