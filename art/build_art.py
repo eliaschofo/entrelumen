@@ -31,8 +31,12 @@ SHELVES = {'cartographer_shelf': 'shelf_end_wood', 'patina_shelf': 'shelf_end_co
 LIBRARY = {'atlas_library': ('atlas_library', 'atlas_library_top', 'module_bottom')}
 MODULES = ['engineering_module', 'arcane_module', 'nature_module', 'exploration_module', 'logistics_module',
            'habitation_module', 'ark_controller']
+# Sculpted (voxel) block models authored by art/authoring/sym_altars.py, stored as JSON sources.
+SCULPTED = ['renewal_altar', 'terraform_altar']
 BLOCKS = (MODULES + ['module_top', 'module_bottom'] + list(SHELVES) + sorted(set(SHELVES.values()))
-          + ['atlas_library', 'atlas_library_top'])
+          + ['atlas_library', 'atlas_library_top', 'altar_stone', 'altar_plinth_top', 'renewal_altar_top',
+             'terraform_altar_top', 'altar_voxels'])
+PALETTE_TEXTURES = {'block/altar_voxels'}   # one texel per colour; exempt from the per-texture colour budget
 
 COMPONENT_NAMES = {
     'calibration_frame': ('Calibration Frame', 'Marco de calibración'),
@@ -125,6 +129,8 @@ def expected():
     new_blocks.update({name: {'parent': 'minecraft:block/cube_bottom_top', 'textures': {
                       'side': 'entrelumen:block/' + side, 'top': 'entrelumen:block/' + top, 'bottom': 'entrelumen:block/' + bottom}}
                        for name, (side, top, bottom) in LIBRARY.items()})
+    for name in SCULPTED:
+        new_blocks[name] = json.loads((ART / 'models/block' / f'{name}.json').read_text(encoding='utf-8'))
     for name, model in new_blocks.items():
         for dest in ('pack', 'mod'):
             out[(dest, f'models/block/{name}.json')] = js(model)
@@ -173,7 +179,7 @@ def main():
         alphas = {p[3] for p in pixels}
         assert alphas <= {0, 255}, f'{key}: alpha must be binary'
         colours = {p[:3] for p in pixels if p[3]}
-        assert len(colours) <= 24, f'{key}: {len(colours)} colours exceeds the native budget'
+        assert key in PALETTE_TEXTURES or len(colours) <= 24, f'{key}: {len(colours)} colours exceeds the native budget'
     if args.check:
         for (dest, rel), data in out.items():
             path = target(dest, rel)
