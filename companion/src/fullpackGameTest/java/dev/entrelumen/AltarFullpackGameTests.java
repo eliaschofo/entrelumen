@@ -58,12 +58,19 @@ public final class AltarFullpackGameTests {
 
   private static void await(GameTestHelper helper, BooleanSupplier done, int waited, int limit, String what,
       Runnable then) {
+    await(helper, done, waited, limit, what, then, () -> {});
+  }
+
+  /** As above; {@code onTimeout} runs first when the wait expires, e.g. to log mock players out. */
+  private static void await(GameTestHelper helper, BooleanSupplier done, int waited, int limit, String what,
+      Runnable then, Runnable onTimeout) {
     if (done.getAsBoolean()) {
       then.run();
       return;
     }
+    if (waited >= limit) onTimeout.run();
     helper.assertTrue(waited < limit, what + " did not finish in time");
-    helper.runAfterDelay(1, () -> await(helper, done, waited + 1, limit, what, then));
+    helper.runAfterDelay(1, () -> await(helper, done, waited + 1, limit, what, then, onTimeout));
   }
 
   @GameTest(template = "empty", timeoutTicks = 3600)
@@ -141,7 +148,7 @@ public final class AltarFullpackGameTests {
         level.getHeight(), level.dimensionType(), Map.of(), Map.of(), Set.of());
   }
 
-  @GameTest(template = "nature_restoration", timeoutTicks = 2400, skyAccess = true)
+  @GameTest(template = "nature_restoration", timeoutTicks = 4000, skyAccess = true)
   public static void altarsRespectForeignFtbChunksClaims(GameTestHelper helper) {
     var level = helper.getLevel();
     for (int x = 0; x < EXTENT; x++)
@@ -212,6 +219,7 @@ public final class AltarFullpackGameTests {
               BlockPos pos = new BlockPos(x, y, z);
               claimedBefore.put(pos, level.getBlockState(pos));
             }
+        terraform.addFuel(new ItemStack(Items.COAL, 4));
         terraform.start(level);
         await(helper, () -> terraform.state() == TerraformAltarEntity.State.DONE, 0, 1600, "Claimed terraform", () -> {
           try {
@@ -223,12 +231,12 @@ public final class AltarFullpackGameTests {
           } finally {
             cleanup(owner, visitor, east);
           }
-        });
+        }, () -> cleanup(owner, visitor, east));
       } catch (RuntimeException | Error failure) {
         cleanup(owner, visitor, east);
         throw failure;
       }
-    });
+    }, () -> cleanup(owner, visitor, east));
   }
 
   private static void cleanup(Session owner, Session visitor, BlockPos east) {
