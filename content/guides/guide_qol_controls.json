@@ -1,0 +1,494 @@
+{
+  "chapter": "guide_qol_controls",
+  "group": "qol",
+  "act": "any",
+  "icon": "minecraft:lever",
+  "title": {
+    "en_us": "The Pack's Controls",
+    "es_es": "Los controles del pack"
+  },
+  "subtitle": {
+    "en_us": "Every key the preset moved, grouped by what you are doing, and how to change them.",
+    "es_es": "Cada tecla que movió el preset, agrupada por lo que estás haciendo, y cómo cambiarlas."
+  },
+  "quests": [
+    {
+      "key": "qol_controls_welcome",
+      "deps": [],
+      "type": "checkmark",
+      "layout": {
+        "x": 0,
+        "y": 0,
+        "size": 2.0,
+        "shape": "hexagon"
+      },
+      "en_us": [
+        "A Keyboard for 300 Mods",
+        "Many mods wanted the same letters: V, B, R, G and the arrows were claimed by five or six mods each. ENTRELUMEN ships a key preset that moves the clashing ones to free keys or to combinations with Alt, Ctrl or Shift.\n\nThe preset only fills keys you have never set yourself. If you change a key, your choice stays. This chapter lists the preset so you know where everything ended up."
+      ],
+      "es_es": [
+        "Un teclado para 300 mods",
+        "Muchos mods querían las mismas letras: V, B, R, G y las flechas las reclamaban cinco o seis mods cada una. ENTRELUMEN trae un preset de teclas que mueve las que chocaban a teclas libres o a combinaciones con Alt, Ctrl o Shift.\n\nEl preset sólo completa las teclas que nunca configuraste vos. Si cambiás una, tu elección se queda. Este capítulo lista el preset para que sepas dónde quedó cada cosa."
+      ],
+      "sources": [
+        "repo:pack/config/defaultoptions/keybindings.txt",
+        "repo:pack/config/entrelumen/client-preset.json",
+        "repo:docs/design/automatic-client-defaults.md"
+      ]
+    },
+    {
+      "key": "qol_controls_controlling",
+      "deps": [
+        "qol_controls_welcome"
+      ],
+      "type": "checkmark",
+      "icon": "minecraft:comparator",
+      "layout": {
+        "x": 3,
+        "y": 0,
+        "size": 1.5,
+        "shape": "square"
+      },
+      "en_us": [
+        "Find Any Key",
+        "Open Options, Controls, Key Binds. &eControlling&r adds a search box: type part of an action or a mod name to find it, and switch the filter to show only conflicting keys.\n\nA key shown in red is used twice. Some repeats are fine because they act in different places (one only in the world, another only inside a screen), but if two actions fire at once, rebind one."
+      ],
+      "es_es": [
+        "Encontrá cualquier tecla",
+        "Abrí Opciones, Controles, Asignación de teclas. &eControlling&r agrega un buscador: escribí parte de una acción o el nombre de un mod para encontrarla, y cambiá el filtro para ver sólo las teclas en conflicto.\n\nUna tecla en rojo está usada dos veces. Algunas repeticiones no molestan porque actúan en lugares distintos (una sólo en el mundo, otra sólo dentro de una pantalla), pero si dos acciones se disparan juntas, reasigná una."
+      ],
+      "sources": [
+        "jar:Controlling-neoforge-1.21.1-19.0.5.jar:META-INF/neoforge.mods.toml",
+        "repo:docs/design/keybinding-review.md"
+      ]
+    },
+    {
+      "key": "qol_controls_everyday",
+      "deps": [
+        "qol_controls_controlling"
+      ],
+      "type": "checkmark",
+      "icon": "minecraft:book",
+      "layout": {
+        "x": 6,
+        "y": 0,
+        "size": 1.5,
+        "shape": "hexagon"
+      },
+      "en_us": [
+        "Everyday Keys",
+        "The ones you will press every session:\n\n- &eF8&r quest book (it used to sit on the grave key).\n- &eV&r (hold) FTB Ultimine.\n- &eB&r opens the backpack you wear or carry.\n- &eR&r Tool Belt radial, &eShift+R&r its slot inventory.\n- &eJ&r full-screen map, &eM&r new waypoint, &eK&r claim manager.\n- &eZ&r zoom (Just Zoom).\n\nThe next quests explain each group."
+      ],
+      "es_es": [
+        "Teclas de todos los días",
+        "Las que vas a usar en cada sesión:\n\n- &eF8&r libro de quests (antes estaba en la tecla del acento grave).\n- &eV&r (mantener) FTB Ultimine.\n- &eB&r abre la mochila que llevás puesta o encima.\n- &eR&r menú radial del Tool Belt, &eShift+R&r su inventario de ranura.\n- &eJ&r mapa en pantalla completa, &eM&r nuevo waypoint, &eK&r administrador de reclamos.\n- &eZ&r zoom (Just Zoom).\n\nLas quests siguientes explican cada grupo."
+      ],
+      "sources": [
+        "repo:pack/config/defaultoptions/keybindings.txt",
+        "jar:justzoom_neoforge_2.1.0_MC_1.21.1.jar:de/keksuccino/justzoom/KeyMappings.class"
+      ]
+    },
+    {
+      "key": "qol_controls_map",
+      "deps": [
+        "qol_controls_everyday"
+      ],
+      "type": "checkmark",
+      "icon": "minecraft:filled_map",
+      "layout": {
+        "x": 9,
+        "y": -3,
+        "size": 1.0,
+        "shape": "circle"
+      },
+      "en_us": [
+        "Map and Waypoints",
+        "&eJourneyMap&r is the pack's map. &eJ&r opens the full-screen map and &eM&r creates a waypoint where you stand; inside the full map, &eB&r creates one at the cursor.\n\nFTB Chunks also has a map, but in this pack its key is unbound and its minimap is off: FTB Chunks is only used for teams and claims. Its claim manager opens with &eK&r."
+      ],
+      "es_es": [
+        "Mapa y waypoints",
+        "&eJourneyMap&r es el mapa del pack. &eJ&r abre el mapa en pantalla completa y &eM&r crea un waypoint donde estás; dentro del mapa completo, &eB&r crea uno donde apunta el cursor.\n\nFTB Chunks también tiene mapa, pero en este pack su tecla está sin asignar y su minimapa está apagado: FTB Chunks se usa sólo para equipos y reclamos. Su administrador de reclamos se abre con &eK&r."
+      ],
+      "sources": [
+        "repo:pack/config/defaultoptions/keybindings.txt",
+        "repo:pack/config/ftbchunks-client.snbt",
+        "repo:docs/design/keybinding-review.md"
+      ]
+    },
+    {
+      "key": "qol_controls_toolbelt",
+      "deps": [
+        "qol_controls_everyday"
+      ],
+      "type": "item",
+      "item": "toolbelt:belt",
+      "optional": true,
+      "layout": {
+        "x": 9,
+        "y": 0,
+        "size": 1.0,
+        "shape": "circle"
+      },
+      "en_us": [
+        "R and Shift+R: the Tool Belt",
+        "With a Tool Belt in its slot, hold &eR&r to open a radial menu and swap the item in your hand for one on the belt. &eShift+R&r opens the belt's slot inventory.\n\nR is also the recipe key inside screens; they do not clash because the belt only opens with no screen open. The aircraft dismount moved from R to &eF12&r for the same reason."
+      ],
+      "es_es": [
+        "R y Shift+R: el cinturón",
+        "Con un Tool Belt en su ranura, mantené &eR&r para abrir un menú radial y cambiar lo que tenés en la mano por algo del cinturón. &eShift+R&r abre el inventario de su ranura.\n\nR también es la tecla de recetas dentro de las pantallas; no chocan porque el cinturón sólo se abre sin pantallas abiertas. Bajarse de un avión pasó de R a &eF12&r por el mismo motivo."
+      ],
+      "sources": [
+        "repo:pack/config/defaultoptions/keybindings.txt",
+        "repo:docs/design/keybinding-review.md",
+        "jar:ToolBelt-1.21.1-2.2.10.jar:assets/toolbelt/lang/en_us.json"
+      ]
+    },
+    {
+      "key": "qol_controls_ultimine",
+      "deps": [
+        "qol_controls_everyday"
+      ],
+      "type": "checkmark",
+      "icon": "minecraft:iron_pickaxe",
+      "layout": {
+        "x": 9,
+        "y": 3,
+        "size": 1.0,
+        "shape": "circle"
+      },
+      "en_us": [
+        "V: Ultimine",
+        "Hold &eV&r while you break a block to break the whole connected vein, up to 64 blocks by default. Each block costs extra hunger. With V held, hold Shift and use the mouse wheel (or the up and down arrows) to change the shape: shapeless, tunnels or a 3x3 square.\n\nThe World chapter has the details. Modern Industrialization's 3x3 toggle for its tools moved to &eAlt+V&r."
+      ],
+      "es_es": [
+        "V: Ultimine",
+        "Mantené &eV&r mientras rompés un bloque para romper toda la veta conectada, hasta 64 bloques por defecto. Cada bloque cuesta hambre extra. Con V apretada, mantené Shift y usá la rueda del mouse (o las flechas arriba y abajo) para cambiar la forma: sin forma, túneles o un cuadrado de 3x3.\n\nEl capítulo del Mundo tiene los detalles. El modo 3x3 de las herramientas de Modern Industrialization pasó a &eAlt+V&r."
+      ],
+      "sources": [
+        "repo:pack/config/defaultoptions/keybindings.txt",
+        "jar:ftb-ultimine-neoforge-2101.1.15.jar:dev/ftb/mods/ftbultimine/config/FTBUltimineServerConfig.class",
+        "jar:ftb-ultimine-neoforge-2101.1.15.jar:assets/ftbultimine/lang/en_us.json"
+      ]
+    },
+    {
+      "key": "qol_controls_armor_keys",
+      "deps": [
+        "qol_controls_map"
+      ],
+      "type": "checkmark",
+      "optional": true,
+      "icon": "mekanism:jetpack",
+      "layout": {
+        "x": 12,
+        "y": -4.5,
+        "size": 1.0,
+        "shape": "circle"
+      },
+      "en_us": [
+        "Mekanism Armor: Alt + Arrows",
+        "Mekanism's four armor mode keys used to sit on V, G, J and B. Now they follow the arrows with &eAlt&r: &eAlt+Up&r helmet, &eAlt+Left&r chestplate, &eAlt+Down&r leggings and &eAlt+Right&r boots.\n\nYou will need them with the MekaSuit and the jetpack or free-runner modes."
+      ],
+      "es_es": [
+        "Armadura de Mekanism: Alt + flechas",
+        "Las cuatro teclas de modo de la armadura de Mekanism estaban en V, G, J y B. Ahora siguen las flechas con &eAlt&r: &eAlt+Arriba&r casco, &eAlt+Izquierda&r pechera, &eAlt+Abajo&r pantalones y &eAlt+Derecha&r botas.\n\nLas vas a necesitar con la MekaSuit y los modos de jetpack o de corredor libre."
+      ],
+      "sources": [
+        "repo:pack/config/defaultoptions/keybindings.txt",
+        "repo:docs/design/keybinding-review.md"
+      ]
+    },
+    {
+      "key": "qol_controls_flight_keys",
+      "deps": [
+        "qol_controls_map"
+      ],
+      "type": "checkmark",
+      "optional": true,
+      "icon": "minecraft:elytra",
+      "layout": {
+        "x": 12,
+        "y": -1.5,
+        "size": 1.0,
+        "shape": "circle"
+      },
+      "en_us": [
+        "Flight and Travel Keys",
+        "Every way of flying got its own key:\n\n- &eF4&r Iron Jetpacks engine, &eAlt+H&r its hover.\n- &eShift+F4&r Modern Industrialization flight.\n- &eCtrl+F4&r Ad Astra suit flight, &eAlt+R&r Ad Astra radio.\n- &eG&r Ender IO Staff of Travelling.\n- &eF12&r get off an Immersive Aircraft plane."
+      ],
+      "es_es": [
+        "Teclas de vuelo y viaje",
+        "Cada forma de volar tiene su tecla:\n\n- &eF4&r motor de Iron Jetpacks, &eAlt+H&r su modo flotar.\n- &eShift+F4&r vuelo de Modern Industrialization.\n- &eCtrl+F4&r vuelo del traje de Ad Astra, &eAlt+R&r radio de Ad Astra.\n- &eG&r Bastón de viaje de Ender IO.\n- &eF12&r bajarse de un avión de Immersive Aircraft."
+      ],
+      "sources": [
+        "repo:pack/config/defaultoptions/keybindings.txt",
+        "repo:docs/design/industrial-expansion-family.md"
+      ]
+    },
+    {
+      "key": "qol_controls_magic_keys",
+      "deps": [
+        "qol_controls_ultimine"
+      ],
+      "type": "checkmark",
+      "optional": true,
+      "icon": "minecraft:amethyst_shard",
+      "layout": {
+        "x": 12,
+        "y": 1.5,
+        "size": 1.0,
+        "shape": "circle"
+      },
+      "en_us": [
+        "Magic Keys",
+        "Spellcasting keys, moved away from the everyday letters:\n\n- &eF6&r Ars Nouveau spell radial.\n- &eShift+G&r Iron's Spells wheel, &eAlt+Q&r cast from the spellbook.\n- &eAlt+C&r Psi's main key (C stays as the vanilla hotbar save).\n- Mahou Tsukai: &eAlt+M&r draw a magic circle, &eShift+Y&r change the mystic code, &eCtrl+H&r selective displacement, &eAlt+.&r its settings, &ePage Up/Down&r its guns."
+      ],
+      "es_es": [
+        "Teclas de magia",
+        "Las teclas de hechizos, lejos de las letras de todos los días:\n\n- &eF6&r radial de hechizos de Ars Nouveau.\n- &eShift+G&r rueda de Iron's Spells, &eAlt+Q&r lanzar desde el libro de hechizos.\n- &eAlt+C&r tecla principal de Psi (C sigue guardando la barra rápida de vanilla).\n- Mahou Tsukai: &eAlt+M&r dibujar un círculo mágico, &eShift+Y&r cambiar el código místico, &eCtrl+H&r desplazamiento selectivo, &eAlt+.&r su configuración, &eRe Pág/Av Pág&r sus armas."
+      ],
+      "sources": [
+        "repo:pack/config/defaultoptions/keybindings.txt",
+        "jar:mahoutsukai-1.21.1-v1.36.27.jar:assets/mahoutsukai/lang/en_us.json",
+        "repo:docs/design/arcane-expansion-family.md",
+        "repo:docs/design/mod-pingpong.md"
+      ]
+    },
+    {
+      "key": "qol_controls_explore_keys",
+      "deps": [
+        "qol_controls_ultimine"
+      ],
+      "type": "checkmark",
+      "optional": true,
+      "icon": "minecraft:map",
+      "layout": {
+        "x": 12,
+        "y": 4.5,
+        "size": 1.0,
+        "shape": "circle"
+      },
+      "en_us": [
+        "Exploration and Armor Abilities",
+        "Keys you will meet on expeditions:\n\n- Aether: &eHome&r invisibility cloak; Deep Aether &eShift+Home&r skyjade transparency, &eAlt+G&r stratus dash, &eShift+H&r slider eye.\n- Twilight Forest: the key where US keyboards have the semicolon swaps the hotbar.\n- Eternal Starlight: &eH&r switches crest.\n- Deeper and Darker: &eAlt+B&r boost, &eAlt+N&r transmit.\n- Cataclysm armor: &eAlt+J&r, &eAlt+K&r helmet, &eAlt+L&r chestplate, &eAlt+I&r boots."
+      ],
+      "es_es": [
+        "Exploración y habilidades de armadura",
+        "Teclas que vas a encontrar en las expediciones:\n\n- Aether: &eInicio&r capa de invisibilidad; Deep Aether &eShift+Inicio&r transparencia del skyjade, &eAlt+G&r impulso de stratus, &eShift+H&r ojo del slider.\n- Twilight Forest: la tecla donde el teclado estadounidense tiene el punto y coma cambia la barra rápida.\n- Eternal Starlight: &eH&r cambia de emblema.\n- Deeper and Darker: &eAlt+B&r impulso, &eAlt+N&r transmitir.\n- Armadura de Cataclysm: &eAlt+J&r, &eAlt+K&r casco, &eAlt+L&r pechera, &eAlt+I&r botas."
+      ],
+      "sources": [
+        "repo:pack/config/defaultoptions/keybindings.txt",
+        "repo:docs/design/exploration-structures-family.md"
+      ]
+    },
+    {
+      "key": "qol_controls_utility_keys",
+      "deps": [
+        "qol_controls_toolbelt",
+        "qol_controls_magic_keys"
+      ],
+      "type": "checkmark",
+      "icon": "simplemagnets:basicmagnet",
+      "layout": {
+        "x": 15,
+        "y": 0,
+        "size": 1.25,
+        "shape": "square"
+      },
+      "en_us": [
+        "Utility Keys",
+        "Small helpers with modified keys:\n\n- &eShift+V&r pick up a villager (Easy Villagers).\n- &eShift+M&r Simple Magnets on or off; &eCtrl+M&r Ender IO electromagnet.\n- The key where US keyboards have the apostrophe opens the Supplementaries quiver.\n- &eO&r Occultism ender satchel, &eInsert&r Occultism satchel.\n- &eF10&r clears on-screen notifications.\n- &eEnd&r changes the Building Gadgets range.\n- &eAlt+T&r and &eShift+T&r Just Dire Things tool toggles.\n- &eAlt+P&r and &eAlt+Y&r Draconic Evolution; &eAlt+U&r Hostile Neural Networks; &eCtrl+G&r Oritech implants (hold)."
+      ],
+      "es_es": [
+        "Teclas utilitarias",
+        "Ayudas chicas con teclas modificadas:\n\n- &eShift+V&r levantar un aldeano (Easy Villagers).\n- &eShift+M&r prender o apagar Simple Magnets; &eCtrl+M&r electroimán de Ender IO.\n- La tecla donde el teclado estadounidense tiene el apóstrofo abre el carcaj de Supplementaries.\n- &eO&r morral del ender de Occultism, &eInsert&r morral de Occultism.\n- &eF10&r borra las notificaciones de pantalla.\n- &eFin&r cambia el alcance de Building Gadgets.\n- &eAlt+T&r y &eShift+T&r herramientas de Just Dire Things.\n- &eAlt+P&r y &eAlt+Y&r Draconic Evolution; &eAlt+U&r Hostile Neural Networks; &eCtrl+G&r implantes de Oritech (mantener)."
+      ],
+      "sources": [
+        "repo:pack/config/defaultoptions/keybindings.txt",
+        "repo:docs/design/qol-functional-decor-family.md",
+        "jar:oritech-neoforge-1.21.1-1.2.11.jar:assets/oritech/lang/en_us.json"
+      ]
+    },
+    {
+      "key": "qol_controls_apoth_keys",
+      "deps": [
+        "qol_controls_utility_keys"
+      ],
+      "type": "checkmark",
+      "optional": true,
+      "icon": "minecraft:nether_star",
+      "layout": {
+        "x": 18,
+        "y": -3,
+        "size": 1.0,
+        "shape": "circle"
+      },
+      "en_us": [
+        "Ctrl+T, Ctrl+O and Shift+T",
+        "Three Apotheosis keys keep their native combinations:\n\n- &eCtrl+T&r opens the World Tier screen. You can read it, but in ENTRELUMEN the story sets the tier, so the activate button stays disabled.\n- &eCtrl+O&r toggles radial mining on gear that has it.\n- &eShift+T&r, inside an inventory, links the hovered item in chat so your team can see it."
+      ],
+      "es_es": [
+        "Ctrl+T, Ctrl+O y Shift+T",
+        "Tres teclas de Apotheosis conservan sus combinaciones nativas:\n\n- &eCtrl+T&r abre la pantalla de World Tiers. Podés leerla, pero en ENTRELUMEN el nivel lo fija la historia, así que el botón de activar queda deshabilitado.\n- &eCtrl+O&r activa o desactiva la minería radial del equipo que la tenga.\n- &eShift+T&r, dentro de un inventario, muestra en el chat el ítem que apuntás para que lo vea tu equipo."
+      ],
+      "sources": [
+        "repo:pack/config/defaultoptions/keybindings.txt",
+        "repo:docs/design/apotheosis-family.md"
+      ]
+    },
+    {
+      "key": "qol_controls_littletiles_keys",
+      "deps": [
+        "qol_controls_utility_keys"
+      ],
+      "type": "checkmark",
+      "optional": true,
+      "icon": "minecraft:stone_button",
+      "layout": {
+        "x": 18,
+        "y": 3,
+        "size": 1.0,
+        "shape": "circle"
+      },
+      "en_us": [
+        "LittleTiles Keys",
+        "LittleTiles, the small-block builder, has its own set: &eN&r mirror, &eU&r mark, &eI&r configure the held tool (&eShift+I&r secondary settings), &eCtrl+B&r building mode, &eCtrl+Z&r undo and &eCtrl+Y&r redo.\n\nThe Building Tools chapter explains how to use them."
+      ],
+      "es_es": [
+        "Teclas de LittleTiles",
+        "LittleTiles, el constructor de bloques chiquitos, tiene su propio juego: &eN&r espejo, &eU&r marcar, &eI&r configurar la herramienta en mano (&eShift+I&r opciones secundarias), &eCtrl+B&r modo de construcción, &eCtrl+Z&r deshacer y &eCtrl+Y&r rehacer.\n\nEl capítulo de Herramientas de construcción explica cómo usarlas."
+      ],
+      "sources": [
+        "repo:pack/config/defaultoptions/keybindings.txt"
+      ]
+    },
+    {
+      "key": "qol_controls_tip_layout",
+      "deps": [
+        "qol_controls_controlling"
+      ],
+      "type": "checkmark",
+      "optional": true,
+      "layout": {
+        "x": 3,
+        "y": 4,
+        "size": 1.0,
+        "shape": "diamond"
+      },
+      "en_us": [
+        "Tip: Keys Named by Position",
+        "A few preset keys are named after US symbols: the semicolon and the apostrophe. On a Spanish or Latin American keyboard, those physical keys print something else.\n\nDo not hunt for the symbol: open Controls and read the label, which shows what your layout prints, or rebind the action to a key you like."
+      ],
+      "es_es": [
+        "Truco: teclas nombradas por posición",
+        "Algunas teclas del preset llevan el nombre de símbolos del teclado estadounidense: el punto y coma y el apóstrofo. En un teclado español o latinoamericano, esas teclas físicas imprimen otra cosa.\n\nNo busques el símbolo: abrí Controles y leé la etiqueta, que muestra lo que imprime tu distribución, o reasigná la acción a una tecla que te guste."
+      ],
+      "sources": [
+        "repo:docs/design/keybinding-review.md"
+      ]
+    },
+    {
+      "key": "qol_controls_tip_bundles",
+      "deps": [
+        "qol_controls_tip_layout"
+      ],
+      "type": "checkmark",
+      "optional": true,
+      "layout": {
+        "x": 6,
+        "y": 4,
+        "size": 1.0,
+        "shape": "diamond"
+      },
+      "en_us": [
+        "Tip: Key Bundles",
+        "&eKeyBind Bundles&r lets you gather rarely used actions into a radial menu behind one key of your choice. The pack ships it without a default key: bind &eOpen Bundle radial menu&r in Controls and build bundles from its screen.\n\nGood candidates: armor abilities, magic toggles, the Mahou Tsukai keys."
+      ],
+      "es_es": [
+        "Truco: paquetes de teclas",
+        "&eKeyBind Bundles&r te deja juntar acciones que usás poco en un menú radial detrás de una sola tecla a tu gusto. El pack lo trae sin tecla por defecto: asigná &eOpen Bundle radial menu&r en Controles y armá los paquetes desde su pantalla.\n\nBuenos candidatos: habilidades de armadura, interruptores de magia, las teclas de Mahou Tsukai."
+      ],
+      "sources": [
+        "jar:keybindbundles-1.4.0.jar:assets/keybindbundles/lang/en_us.json",
+        "repo:docs/design/small-qol-family.md"
+      ]
+    },
+    {
+      "key": "qol_controls_tip_modifiers",
+      "deps": [
+        "qol_controls_ultimine"
+      ],
+      "type": "checkmark",
+      "optional": true,
+      "layout": {
+        "x": 9,
+        "y": 6,
+        "size": 1.0,
+        "shape": "diamond"
+      },
+      "en_us": [
+        "Quirk: Alt, Ctrl and Shift Win",
+        "When a modified combination and a plain key share a letter, the game gives priority to the combination whose modifier you are holding. That is why &eAlt+Q&r casts a spell without also dropping your item, and &eCtrl+O&r toggles radial mining instead of opening Occultism's ender satchel.\n\nIf a combination ever triggers both actions, report it: the preset expects them to stay apart."
+      ],
+      "es_es": [
+        "Particularidad: Alt, Ctrl y Shift ganan",
+        "Cuando una combinación con modificador y una tecla sola comparten letra, el juego le da prioridad a la combinación cuyo modificador estás apretando. Por eso &eAlt+Q&r lanza un hechizo sin tirar el ítem, y &eCtrl+O&r cambia la minería radial en vez de abrir el morral del ender de Occultism.\n\nSi alguna combinación dispara las dos acciones, reportalo: el preset espera que queden separadas."
+      ],
+      "sources": [
+        "repo:docs/design/keybinding-review.md",
+        "repo:docs/design/apotheosis-family.md"
+      ]
+    },
+    {
+      "key": "qol_controls_pack_defaults",
+      "deps": [
+        "qol_controls_welcome"
+      ],
+      "type": "checkmark",
+      "optional": true,
+      "icon": "minecraft:redstone_torch",
+      "layout": {
+        "x": 0,
+        "y": -4,
+        "size": 1.0,
+        "shape": "pentagon"
+      },
+      "en_us": [
+        "Pack Change: Client Defaults",
+        "A new profile also receives a few performance settings: render distance 10, simulation distance 6, a 120 FPS cap, fast graphics, no clouds, fewer particles, no entity shadows, reduced screen effects and auto-jump off. The pack's resource pack is enabled.\n\nThey are only defaults. If your launcher already made an options file, existing values stay and only missing ones are added."
+      ],
+      "es_es": [
+        "Cambio del pack: valores iniciales del cliente",
+        "Un perfil nuevo también recibe algunos ajustes de rendimiento: distancia de renderizado 10, de simulación 6, tope de 120 FPS, gráficos rápidos, sin nubes, menos partículas, sin sombras de entidades, efectos de pantalla reducidos y salto automático apagado. Se activa el paquete de recursos del pack.\n\nSon sólo valores iniciales. Si tu launcher ya creó un archivo de opciones, los valores que existen se quedan y sólo se agregan los que faltan."
+      ],
+      "sources": [
+        "repo:pack/config/defaultoptions/options.txt",
+        "repo:docs/design/automatic-client-defaults.md"
+      ]
+    },
+    {
+      "key": "qol_controls_close",
+      "deps": [
+        "qol_controls_utility_keys"
+      ],
+      "type": "checkmark",
+      "icon": "minecraft:tripwire_hook",
+      "layout": {
+        "x": 21,
+        "y": 0,
+        "size": 2.0,
+        "shape": "hexagon"
+      },
+      "en_us": [
+        "Your Keyboard, Your Rules",
+        "Everything here is a suggestion. Keep what feels natural, rebind the rest with Controlling, and put rare actions in a bundle.\n\nWhen a new chapter introduces a tool, check this chapter again: its key is probably already waiting."
+      ],
+      "es_es": [
+        "Tu teclado, tus reglas",
+        "Todo esto es una sugerencia. Quedate con lo que te resulte natural, reasigná el resto con Controlling y guardá las acciones raras en un paquete.\n\nCuando un capítulo nuevo te presente una herramienta, volvé a mirar este: seguramente su tecla ya te está esperando."
+      ],
+      "sources": [
+        "repo:pack/config/entrelumen/client-preset.json"
+      ]
+    }
+  ]
+}

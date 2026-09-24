@@ -1,0 +1,649 @@
+{
+  "chapter": "guide_qol_recipes",
+  "group": "qol",
+  "act": "any",
+  "icon": "minecraft:knowledge_book",
+  "title": {
+    "en_us": "Recipes and Information",
+    "es_es": "Recetas e información"
+  },
+  "subtitle": {
+    "en_us": "EMI, Jade and the tooltips: how to find out what anything does without leaving the game.",
+    "es_es": "EMI, Jade y los tooltips: cómo averiguar qué hace cualquier cosa sin salir del juego."
+  },
+  "quests": [
+    {
+      "key": "qol_recipes_welcome",
+      "deps": [],
+      "type": "checkmark",
+      "layout": {
+        "x": 0,
+        "y": 0,
+        "size": 2.0,
+        "shape": "hexagon"
+      },
+      "en_us": [
+        "Where Answers Live",
+        "Hello from the guide shelf. This pack has more than three hundred mods, and nobody remembers every recipe. You do not need a wiki open: the game itself can tell you how to make an item, what it is used for, what a block holds and what an enchantment or effect does.\n\nThis chapter teaches the tools that answer those questions. Every quest here is optional and none of them moves the story."
+      ],
+      "es_es": [
+        "Donde viven las respuestas",
+        "Bienvenido al estante de guías. Este pack tiene más de trescientos mods y nadie se acuerda de todas las recetas. No hace falta tener una wiki abierta: el propio juego te dice cómo se fabrica un ítem, para qué sirve, qué tiene adentro un bloque y qué hace un encantamiento o un efecto.\n\nEste capítulo enseña las herramientas que responden esas preguntas. Todas las quests son opcionales y ninguna mueve la historia."
+      ],
+      "sources": [
+        "repo:docs/design/qol-parity.md",
+        "repo:catalog/curated.json"
+      ]
+    },
+    {
+      "key": "qol_recipes_emi_panel",
+      "deps": [
+        "qol_recipes_welcome"
+      ],
+      "type": "checkmark",
+      "icon": "minecraft:crafting_table",
+      "layout": {
+        "x": 3,
+        "y": 0,
+        "size": 1.5,
+        "shape": "square"
+      },
+      "en_us": [
+        "EMI: the Item List",
+        "Open your inventory. The column of items on the right is &eEMI&r, the pack's recipe viewer. The search bar sits at the bottom of the screen.\n\n- Type a name to filter the list. Names follow your game language, and mods without a Spanish translation show English names.\n- &eCtrl+F&r jumps into the search bar; &eCtrl+O&r hides or shows the whole EMI overlay.\n- Scroll with the mouse wheel to turn pages."
+      ],
+      "es_es": [
+        "EMI: la lista de ítems",
+        "Abrí el inventario. La columna de ítems de la derecha es &eEMI&r, el visor de recetas del pack. La barra de búsqueda está abajo, en el centro.\n\n- Escribí un nombre para filtrar la lista. Los nombres siguen el idioma del juego; los mods sin traducción al español muestran el nombre en inglés.\n- &eCtrl+F&r salta a la barra de búsqueda y &eCtrl+O&r oculta o muestra todo EMI.\n- La rueda del mouse pasa de página."
+      ],
+      "sources": [
+        "jar:emi-1.1.24+1.21.1+neoforge.jar:dev/emi/emi/config/EmiConfig.class",
+        "jar:emi-1.1.24+1.21.1+neoforge.jar:assets/emi/lang/en_us.json"
+      ]
+    },
+    {
+      "key": "qol_recipes_emi_recipes",
+      "deps": [
+        "qol_recipes_emi_panel"
+      ],
+      "type": "checkmark",
+      "layout": {
+        "x": 6,
+        "y": -1.5,
+        "size": 1.0,
+        "shape": "circle"
+      },
+      "en_us": [
+        "R: How Do I Make This?",
+        "Hover any item, in the EMI list or in any inventory, and press &eR&r (or left-click it in the list). EMI shows every recipe that produces it, one tab per machine or crafting type: crafting table, Create mixer, Mekanism enrichment chamber and so on.\n\nThe tab icons are the workstations. Hover them to see which blocks can run that recipe type. &eBackspace&r goes back to the previous page."
+      ],
+      "es_es": [
+        "R: ¿cómo se hace esto?",
+        "Pasá el mouse sobre cualquier ítem, de la lista de EMI o de cualquier inventario, y apretá &eR&r (o hacé clic izquierdo en la lista). EMI muestra todas las recetas que lo producen, una pestaña por máquina o tipo de fabricación: mesa de crafteo, mezcladora de Create, cámara de enriquecimiento de Mekanism, etcétera.\n\nLos íconos de las pestañas son las estaciones de trabajo; pasales el mouse para ver qué bloques hacen ese tipo de receta. &eRetroceso&r vuelve a la página anterior."
+      ],
+      "sources": [
+        "jar:emi-1.1.24+1.21.1+neoforge.jar:dev/emi/emi/config/EmiConfig.class"
+      ]
+    },
+    {
+      "key": "qol_recipes_emi_uses",
+      "deps": [
+        "qol_recipes_emi_panel"
+      ],
+      "type": "checkmark",
+      "layout": {
+        "x": 6,
+        "y": 1.5,
+        "size": 1.0,
+        "shape": "circle"
+      },
+      "en_us": [
+        "U: What Is This For?",
+        "Press &eU&r over an item (or right-click it in the list) to see every recipe that uses it. This is the fastest way to decide whether that strange drop is worth keeping.\n\nTip: press U over a machine to see what it can process. Over a Mekanism enrichment chamber, for example, the list shows everything it enriches."
+      ],
+      "es_es": [
+        "U: ¿para qué sirve esto?",
+        "Apretá &eU&r sobre un ítem (o clic derecho en la lista) para ver todas las recetas que lo usan. Es la forma más rápida de decidir si ese drop raro vale la pena guardarlo.\n\nTruco: apretá U sobre una máquina para ver qué puede procesar. Sobre una cámara de enriquecimiento de Mekanism, por ejemplo, aparece todo lo que enriquece."
+      ],
+      "sources": [
+        "jar:emi-1.1.24+1.21.1+neoforge.jar:dev/emi/emi/config/EmiConfig.class"
+      ]
+    },
+    {
+      "key": "qol_recipes_emi_search",
+      "deps": [
+        "qol_recipes_emi_recipes"
+      ],
+      "type": "checkmark",
+      "optional": true,
+      "layout": {
+        "x": 9,
+        "y": -3,
+        "size": 1.0,
+        "shape": "diamond"
+      },
+      "en_us": [
+        "Search Like a Pro",
+        "The EMI search understands prefixes:\n\n- &e@create&r shows only items from one mod.\n- &e#c:ingots&r filters by tag.\n- &e$fortune&r searches inside tooltips.\n- A leading &e-&r excludes: &edirt -@minecraft&r.\n- &e|&r means \"or\": &etin|lead&r.\n- Text between slashes is a regular expression, and quotes keep spaces together.\n\nMark this quest after trying one of them."
+      ],
+      "es_es": [
+        "Buscá como un profesional",
+        "La búsqueda de EMI entiende prefijos:\n\n- &e@create&r muestra sólo los ítems de un mod.\n- &e#c:ingots&r filtra por tag.\n- &e$fortuna&r busca dentro de los tooltips.\n- Un &e-&r adelante excluye: &etierra -@minecraft&r.\n- &e|&r significa \"o\": &eestaño|plomo&r.\n- El texto entre barras es una expresión regular, y las comillas mantienen juntos los espacios.\n\nMarcá esta quest después de probar alguno."
+      ],
+      "sources": [
+        "jar:emi-1.1.24+1.21.1+neoforge.jar:dev/emi/emi/search/QueryType.class",
+        "jar:emi-1.1.24+1.21.1+neoforge.jar:dev/emi/emi/search/EmiSearch$CompiledQuery.class"
+      ]
+    },
+    {
+      "key": "qol_recipes_emi_favorites",
+      "deps": [
+        "qol_recipes_emi_recipes",
+        "qol_recipes_emi_uses"
+      ],
+      "type": "checkmark",
+      "layout": {
+        "x": 9,
+        "y": 0,
+        "size": 1.0,
+        "shape": "circle"
+      },
+      "en_us": [
+        "A: Favorites",
+        "Press &eA&r over an item to pin it to the favorites sidebar on the left. You can also press A on a whole recipe to favorite that exact recipe.\n\nFavorites survive between sessions. Keep there what you craft often: rations, torches, the next act component. Press A again over a favorite to remove it."
+      ],
+      "es_es": [
+        "A: favoritos",
+        "Apretá &eA&r sobre un ítem para fijarlo en la barra de favoritos de la izquierda. También podés apretar A sobre una receta entera para guardar esa receta exacta.\n\nLos favoritos se conservan entre sesiones. Tené ahí lo que fabricás seguido: raciones, antorchas, el próximo componente de acto. Apretá A otra vez sobre un favorito para sacarlo."
+      ],
+      "sources": [
+        "jar:emi-1.1.24+1.21.1+neoforge.jar:dev/emi/emi/config/EmiConfig.class",
+        "jar:emi-1.1.24+1.21.1+neoforge.jar:assets/emi/lang/en_us.json"
+      ]
+    },
+    {
+      "key": "qol_recipes_emi_fill",
+      "deps": [
+        "qol_recipes_emi_uses"
+      ],
+      "type": "checkmark",
+      "layout": {
+        "x": 9,
+        "y": 3,
+        "size": 1.0,
+        "shape": "circle"
+      },
+      "en_us": [
+        "The + Button Fills the Grid",
+        "In a recipe page, the small &e+&r button beside a recipe moves the ingredients from your inventory into the open crafting grid or machine. &eShift+click&r on it fills as many batches as you can afford.\n\nIt only works with the right screen open: open the crafting table first, then look up the recipe."
+      ],
+      "es_es": [
+        "El botón + llena la grilla",
+        "En la página de una receta, el botoncito &e+&r al lado de la receta pasa los ingredientes de tu inventario a la grilla o máquina abierta. &eShift+clic&r llena todas las tandas que te alcancen.\n\nSólo funciona con la pantalla correcta abierta: primero abrí la mesa de crafteo y después buscá la receta."
+      ],
+      "sources": [
+        "jar:emi-1.1.24+1.21.1+neoforge.jar:dev/emi/emi/config/EmiConfig.class",
+        "jar:emi-1.1.24+1.21.1+neoforge.jar:assets/emi/lang/en_us.json"
+      ]
+    },
+    {
+      "key": "qol_recipes_emi_tree",
+      "deps": [
+        "qol_recipes_emi_favorites"
+      ],
+      "type": "checkmark",
+      "icon": "minecraft:oak_sapling",
+      "layout": {
+        "x": 12,
+        "y": 0,
+        "size": 1.5,
+        "shape": "hexagon"
+      },
+      "en_us": [
+        "The Recipe Tree",
+        "Big recipes have ingredients that have ingredients. Open a recipe and press the &eView Recipe Tree&r button: EMI draws the whole chain down to raw materials and totals the base cost.\n\n- Click a node to choose which recipe it should use; hold Shift to let EMI pick from your inventory.\n- Right-click folds a branch.\n- Switch the tree to crafting mode and EMI adds &bsynthetic favorites&r to the sidebar: the next steps you still have to craft.\n\nPerfect for act components, which chain two or three mods."
+      ],
+      "es_es": [
+        "El árbol de recetas",
+        "Las recetas grandes tienen ingredientes que tienen ingredientes. Abrí una receta y apretá el botón &eVer Árbol de Recetas&r: EMI dibuja toda la cadena hasta las materias primas y suma el costo base.\n\n- Clic en un nodo para elegir qué receta usa; con Shift, EMI elige según tu inventario.\n- Clic derecho pliega una rama.\n- Pasá el árbol a modo fabricación y EMI agrega &bfavoritos sintéticos&r a la barra: los pasos que todavía te faltan.\n\nIdeal para los componentes de acto, que encadenan dos o tres mods."
+      ],
+      "sources": [
+        "jar:emi-1.1.24+1.21.1+neoforge.jar:assets/emi/lang/en_us.json"
+      ]
+    },
+    {
+      "key": "qol_recipes_emi_defaults",
+      "deps": [
+        "qol_recipes_emi_tree"
+      ],
+      "type": "checkmark",
+      "optional": true,
+      "layout": {
+        "x": 12,
+        "y": -3,
+        "size": 1.0,
+        "shape": "diamond"
+      },
+      "en_us": [
+        "Default Recipes",
+        "When an item has several recipes, &eCtrl+click&r on the output of the one you prefer to make it the default. The recipe tree and synthetic favorites will use it from then on.\n\nUseful when the same plate or dust can come from Create, Immersive Engineering and Mekanism, and you only built one of them."
+      ],
+      "es_es": [
+        "Recetas por defecto",
+        "Cuando un ítem tiene varias recetas, &eCtrl+clic&r sobre la salida de la que preferís la marca como receta por defecto. El árbol de recetas y los favoritos sintéticos la usan a partir de ahí.\n\nSirve cuando la misma placa o el mismo polvo sale de Create, de Immersive Engineering y de Mekanism, y sólo armaste uno."
+      ],
+      "sources": [
+        "jar:emi-1.1.24+1.21.1+neoforge.jar:dev/emi/emi/config/EmiConfig.class",
+        "jar:emi-1.1.24+1.21.1+neoforge.jar:assets/emi/lang/en_us.json"
+      ]
+    },
+    {
+      "key": "qol_recipes_jei_backend",
+      "deps": [
+        "qol_recipes_emi_fill"
+      ],
+      "type": "checkmark",
+      "optional": true,
+      "layout": {
+        "x": 12,
+        "y": 3,
+        "size": 1.0,
+        "shape": "circle"
+      },
+      "en_us": [
+        "Why JEI Is Installed Too",
+        "JEI is in the pack, but EMI is the viewer you see. JEI stays so that add-ons written for it still reach you: EMI reads JEI plugins and shows their pages inside its own interface.\n\nThat is how you get Mekanism multiblock previews, villager professions, breeding foods and archaeology loot in EMI. If a page looks slightly different from the rest, it probably comes from a JEI plugin."
+      ],
+      "es_es": [
+        "Por qué también está JEI",
+        "JEI está en el pack, pero el visor que ves es EMI. JEI queda para que te lleguen los complementos escritos para él: EMI lee los plugins de JEI y muestra sus páginas dentro de su propia interfaz.\n\nAsí aparecen en EMI las vistas de multibloques de Mekanism, las profesiones de aldeanos, las comidas de cría y el botín de arqueología. Si una página se ve un poco distinta al resto, probablemente viene de un plugin de JEI."
+      ],
+      "sources": [
+        "jar:emi-1.1.24+1.21.1+neoforge.jar:dev/emi/emi/jemi/JemiPlugin.class",
+        "repo:docs/design/qol-parity.md"
+      ]
+    },
+    {
+      "key": "qol_recipes_jei_addons",
+      "deps": [
+        "qol_recipes_jei_backend"
+      ],
+      "type": "checkmark",
+      "optional": true,
+      "icon": "minecraft:brush",
+      "layout": {
+        "x": 15,
+        "y": 3,
+        "size": 1.0,
+        "shape": "circle"
+      },
+      "en_us": [
+        "Pages You Did Not Know About",
+        "Search these in EMI and open their pages:\n\n- &eJust Enough Professions&r: which workstation gives which villager profession.\n- &eJust Enough Breeding&r: what each animal eats to breed.\n- &eJust Enough Archaeology&r: what each suspicious block can drop when brushed.\n- &eJust Enough Mekanism Multiblocks&r: sizes and parts of the Mekanism multiblocks.\n- &eSmithing Template Viewer&r: every trim and upgrade a template makes.\n\nPress U over a lectern, a cow or a brush to find them fast."
+      ],
+      "es_es": [
+        "Páginas que no sabías que existían",
+        "Buscá esto en EMI y abrí sus páginas:\n\n- &eJust Enough Professions&r: qué estación de trabajo da cada profesión de aldeano.\n- &eJust Enough Breeding&r: qué come cada animal para reproducirse.\n- &eJust Enough Archaeology&r: qué puede soltar cada bloque sospechoso al cepillarlo.\n- &eJust Enough Mekanism Multiblocks&r: tamaños y piezas de los multibloques de Mekanism.\n- &eSmithing Template Viewer&r: todos los adornos y mejoras que hace una plantilla.\n\nApretá U sobre un atril, una vaca o un cepillo para encontrarlas rápido."
+      ],
+      "sources": [
+        "jar:JustEnoughProfessions-neoforge-1.21.1-4.0.5.jar:META-INF/neoforge.mods.toml",
+        "jar:justenoughbreeding-neoforge-1.21.1-3.2.1.jar:META-INF/neoforge.mods.toml",
+        "jar:jearchaeology-1.21.1-1.2.0.jar:META-INF/neoforge.mods.toml",
+        "jar:JustEnoughMekanismMultiblocks-1.21.1-7.18.jar:META-INF/neoforge.mods.toml",
+        "repo:docs/design/qol-batch-one.md"
+      ]
+    },
+    {
+      "key": "qol_recipes_jade_hud",
+      "deps": [
+        "qol_recipes_welcome"
+      ],
+      "type": "checkmark",
+      "icon": "minecraft:spyglass",
+      "layout": {
+        "x": 3,
+        "y": 4,
+        "size": 1.5,
+        "shape": "square"
+      },
+      "en_us": [
+        "Jade: What Am I Looking At?",
+        "Look at any block or creature. The small panel at the top of the screen is &eJade&r: name, the mod it comes from, and useful state such as a machine's energy, a crop's growth or a furnace's progress. Jade Addons adds more mods to it.\n\nThe mod name alone solves half the questions in a big pack: now you know which chapter to read."
+      ],
+      "es_es": [
+        "Jade: ¿qué estoy mirando?",
+        "Mirá cualquier bloque o criatura. El panelcito de arriba de la pantalla es &eJade&r: nombre, mod de origen y estado útil, como la energía de una máquina, el crecimiento de un cultivo o el progreso de un horno. Jade Addons le suma más mods.\n\nSólo el nombre del mod resuelve la mitad de las dudas en un pack grande: ya sabés qué capítulo leer."
+      ],
+      "sources": [
+        "jar:Jade-1.21.1-NeoForge-15.10.6.jar:snownee/jade/JadeClient.class",
+        "jar:JadeAddons-1.21.1-NeoForge-6.1.1.jar:META-INF/neoforge.mods.toml",
+        "repo:docs/design/qol-parity.md"
+      ]
+    },
+    {
+      "key": "qol_recipes_jade_keys",
+      "deps": [
+        "qol_recipes_jade_hud"
+      ],
+      "type": "checkmark",
+      "optional": true,
+      "layout": {
+        "x": 6,
+        "y": 5,
+        "size": 1.0,
+        "shape": "diamond"
+      },
+      "en_us": [
+        "Jade's Keypad Keys",
+        "Jade uses the numeric keypad by default:\n\n- &eNumpad 0&r opens its settings (you can hide lines you do not care about).\n- &eNumpad 1&r hides or shows the panel.\n- &eNumpad 2&r toggles whether it reads fluids.\n- &eNumpad 3&r and &eNumpad 4&r show recipes and uses of what you are looking at.\n\nNo keypad? Rebind them under Options, Controls, Key Binds."
+      ],
+      "es_es": [
+        "Las teclas del teclado numérico de Jade",
+        "Jade usa el teclado numérico por defecto:\n\n- &eNum 0&r abre su configuración (podés ocultar líneas que no te interesan).\n- &eNum 1&r oculta o muestra el panel.\n- &eNum 2&r alterna si lee fluidos.\n- &eNum 3&r y &eNum 4&r muestran recetas y usos de lo que estás mirando.\n\n¿Sin teclado numérico? Reasignalas en Opciones, Controles, Asignación de teclas."
+      ],
+      "sources": [
+        "jar:Jade-1.21.1-NeoForge-15.10.6.jar:snownee/jade/JadeClient.class",
+        "jar:Jade-1.21.1-NeoForge-15.10.6.jar:assets/jade/lang/en_us.json"
+      ]
+    },
+    {
+      "key": "qol_recipes_tooltips",
+      "deps": [
+        "qol_recipes_jade_hud"
+      ],
+      "type": "checkmark",
+      "icon": "minecraft:enchanted_book",
+      "layout": {
+        "x": 6,
+        "y": 7,
+        "size": 1.25,
+        "shape": "circle"
+      },
+      "en_us": [
+        "Tooltips That Explain",
+        "Hover items and read. The pack adds explanations where vanilla stays silent:\n\n- &eEnchantment Descriptions&r: every enchantment on a book or tool says what it does.\n- &eAppleSkin&r: food shows the hunger and saturation it restores; while you hold food, the hunger bar previews the result.\n- &eEquipment Compare&r: hold &eLeft Shift&r over armor or a weapon to see it beside what you wear.\n- &eF3+H&r (vanilla, extended by Better Advanced Tooltips) shows IDs, durability and technical data."
+      ],
+      "es_es": [
+        "Tooltips que explican",
+        "Pasá el mouse por los ítems y leé. El pack agrega explicaciones donde vanilla no dice nada:\n\n- &eEnchantment Descriptions&r: cada encantamiento de un libro o herramienta dice qué hace.\n- &eAppleSkin&r: la comida muestra el hambre y la saturación que devuelve; con comida en la mano, la barra de hambre anticipa el resultado.\n- &eEquipment Compare&r: mantené &eShift izquierdo&r sobre una armadura o arma para verla al lado de lo que llevás puesto.\n- &eF3+H&r (de vanilla, ampliado por Better Advanced Tooltips) muestra IDs, durabilidad y datos técnicos."
+      ],
+      "sources": [
+        "jar:enchdesc-neoforge-1.21.1-21.1.11.jar:net/darkhax/enchdesc/common/impl/Config.class",
+        "jar:appleskin-neoforge-mc1.21-3.0.9.jar:META-INF/neoforge.mods.toml",
+        "repo:docs/design/qol-tooltips.md"
+      ]
+    },
+    {
+      "key": "qol_recipes_shulker_preview",
+      "deps": [
+        "qol_recipes_tooltips"
+      ],
+      "type": "checkmark",
+      "optional": true,
+      "icon": "minecraft:shulker_box",
+      "layout": {
+        "x": 9,
+        "y": 7,
+        "size": 1.0,
+        "shape": "circle"
+      },
+      "en_us": [
+        "Peek Inside Containers",
+        "&eShulker Box Tooltip&r lets you look inside a shulker box without placing it: hold &eLeft Shift&r for a compact view, &eAlt+Shift&r for the full grid, and &eLeft Ctrl&r to lock the preview while you move the mouse.\n\nSophisticated Backpacks keep their own preview: hold Shift over a backpack to list its contents."
+      ],
+      "es_es": [
+        "Mirá adentro de los contenedores",
+        "&eShulker Box Tooltip&r te deja ver el contenido de una caja de shulker sin colocarla: mantené &eShift izquierdo&r para la vista compacta, &eAlt+Shift&r para la grilla completa y &eCtrl izquierdo&r para fijar la vista mientras movés el mouse.\n\nLas mochilas de Sophisticated Backpacks tienen su propia vista: mantené Shift sobre una mochila para ver lo que lleva."
+      ],
+      "sources": [
+        "jar:shulkerboxtooltip-neoforge-5.1.9+1.21.1.jar:META-INF/neoforge.mods.toml",
+        "repo:docs/design/qol-tooltips.md"
+      ]
+    },
+    {
+      "key": "qol_recipes_effects",
+      "deps": [
+        "qol_recipes_tooltips"
+      ],
+      "type": "checkmark",
+      "optional": true,
+      "icon": "minecraft:potion",
+      "layout": {
+        "x": 9,
+        "y": 5,
+        "size": 1.0,
+        "shape": "circle"
+      },
+      "en_us": [
+        "What Does This Effect Do?",
+        "Status effects from mods can be cryptic. Search the effect's name in EMI: &eJust Enough Effect Descriptions&r adds a page per effect with an explanation and the items that cause it.\n\nHandy for the random buffs of the satiety system and for the potions sold in Solsticio's apothecary."
+      ],
+      "es_es": [
+        "¿Qué hace este efecto?",
+        "Los efectos de estado de los mods pueden ser crípticos. Buscá el nombre del efecto en EMI: &eJust Enough Effect Descriptions&r agrega una página por efecto con su explicación y los ítems que lo causan.\n\nViene bien para los buffs aleatorios del sistema de saciedad y para las pociones que vende la boticaria de Solsticio."
+      ],
+      "sources": [
+        "jar:jeed-1.21-2.3.4-neoforge.jar:META-INF/neoforge.mods.toml",
+        "repo:docs/design/qol-tooltips.md"
+      ]
+    },
+    {
+      "key": "qol_recipes_polymorph",
+      "deps": [
+        "qol_recipes_welcome"
+      ],
+      "type": "checkmark",
+      "icon": "minecraft:crafter",
+      "layout": {
+        "x": 3,
+        "y": -4,
+        "size": 1.0,
+        "shape": "square"
+      },
+      "en_us": [
+        "Two Recipes, One Grid",
+        "With hundreds of mods, two recipes sometimes share the same pattern. &ePolymorph&r notices it: a small button appears next to the output slot, and clicking it lets you choose which result you want.\n\nIf a crafting table gives you the \"wrong\" item, look for that button before blaming the recipe."
+      ],
+      "es_es": [
+        "Dos recetas, una grilla",
+        "Con cientos de mods, a veces dos recetas comparten el mismo patrón. &ePolymorph&r lo detecta: aparece un botoncito al lado del casillero de salida y, al hacerle clic, elegís qué resultado querés.\n\nSi una mesa de crafteo te da el ítem \"equivocado\", buscá ese botón antes de culpar a la receta."
+      ],
+      "sources": [
+        "jar:polymorph-neoforge-1.1.0+1.21.1.jar:assets/polymorph/lang/en_us.json",
+        "repo:docs/design/qol-parity.md"
+      ]
+    },
+    {
+      "key": "qol_recipes_books",
+      "deps": [
+        "qol_recipes_welcome"
+      ],
+      "type": "item",
+      "item": "minecraft:book",
+      "icon": "minecraft:writable_book",
+      "layout": {
+        "x": 0,
+        "y": -4,
+        "size": 1.0,
+        "shape": "circle"
+      },
+      "en_us": [
+        "Guide Books Are Crafted, Not Given",
+        "You arrive empty-handed on purpose, so no mod hands you its book on login. The books still exist and are craftable: Ars Nouveau's Worn Notebook, Integrated Dynamics' manual, Actually Additions' booklet, Modern Industrialization's guidebook, Silent Gear's material book, the PneumaticCraft and Psi manuals and others.\n\nUse EMI to find each recipe. The Akashic Tome, in the inventory chapter, keeps them all in one book."
+      ],
+      "es_es": [
+        "Los libros guía se fabrican, no se regalan",
+        "Llegás sin nada a propósito, así que ningún mod te da su libro al entrar. Los libros existen y se fabrican: la Libreta gastada de Ars Nouveau, el manual de Integrated Dynamics, el folleto de Actually Additions, la guía de Modern Industrialization, el libro de materiales de Silent Gear, los manuales de PneumaticCraft y Psi, y otros.\n\nBuscá cada receta en EMI. El Tomo Akáshico, del capítulo de inventario, los junta a todos en un solo libro."
+      ],
+      "sources": [
+        "repo:docs/design/heliodor-compass.md",
+        "repo:pack/config/ars_nouveau-common.toml",
+        "repo:pack/config/silentgear-common.toml"
+      ]
+    },
+    {
+      "key": "qol_recipes_tip_modname",
+      "deps": [
+        "qol_recipes_emi_tree"
+      ],
+      "type": "checkmark",
+      "optional": true,
+      "layout": {
+        "x": 15,
+        "y": -1.5,
+        "size": 1.0,
+        "shape": "diamond"
+      },
+      "en_us": [
+        "Tip: Which Mod Is This?",
+        "Item tooltips in the EMI list end with the mod name in blue italics, and Jade shows it for blocks in the world. When a wiki page and the game disagree, trust the game: the pack changes some recipes, and EMI always shows the version you really have."
+      ],
+      "es_es": [
+        "Truco: ¿de qué mod es esto?",
+        "Los tooltips de la lista de EMI terminan con el nombre del mod en azul y cursiva, y Jade lo muestra para los bloques del mundo. Cuando una wiki y el juego no coinciden, confiá en el juego: el pack cambia algunas recetas y EMI siempre muestra la versión que tenés de verdad."
+      ],
+      "sources": [
+        "jar:Jade-1.21.1-NeoForge-15.10.6.jar:assets/jade/lang/en_us.json",
+        "repo:docs/design/resource-balance.md"
+      ]
+    },
+    {
+      "key": "qol_recipes_pack_components",
+      "deps": [
+        "qol_recipes_emi_tree"
+      ],
+      "type": "checkmark",
+      "icon": "entrelumen:calibration_frame",
+      "layout": {
+        "x": 15,
+        "y": 0,
+        "size": 1.0,
+        "shape": "pentagon"
+      },
+      "en_us": [
+        "Pack Change: One Slot Holds the Act",
+        "ENTRELUMEN swaps one slot of many native recipes for an &6act component&r: a Calibration Frame, a Routing Matrix, a Spectral Lens and so on. Only one slot, never a pile. The Refined Storage controller, XNet's controller, jetpacks, quarries, Ender Storage and the higher Botany Pots are examples.\n\nEMI shows the real recipe. If you see an unfamiliar ENTRELUMEN item in a grid, press R on it: the Atlas chapter explains where each one comes from."
+      ],
+      "es_es": [
+        "Cambio del pack: un casillero lleva el acto",
+        "ENTRELUMEN cambia un casillero de muchas recetas nativas por un &6componente de acto&r: un Marco de Calibración, una Matriz de Distribución, una Lente Espectral, etcétera. Un solo casillero, nunca una pila. Ejemplos: el controlador de Refined Storage, el de XNet, los jetpacks, las canteras, Ender Storage y las macetas altas de Botany Pots.\n\nEMI muestra la receta real. Si ves un ítem de ENTRELUMEN desconocido en una grilla, apretá R sobre él: el capítulo del Atlas explica de dónde sale cada uno."
+      ],
+      "sources": [
+        "repo:pack/kubejs/server_scripts/entrelumen_pingpong_balance.js",
+        "repo:pack/kubejs/server_scripts/entrelumen_rftools_balance.js",
+        "repo:pack/kubejs/server_scripts/entrelumen_qol_balance.js",
+        "repo:docs/design/resource-balance.md"
+      ]
+    },
+    {
+      "key": "qol_recipes_pack_kitchen",
+      "deps": [
+        "qol_recipes_pack_components"
+      ],
+      "type": "checkmark",
+      "optional": true,
+      "icon": "farmersdelight:cooking_pot",
+      "layout": {
+        "x": 15,
+        "y": -3,
+        "size": 1.0,
+        "shape": "pentagon"
+      },
+      "en_us": [
+        "Pack Change: One Route per Recipe",
+        "Some mods copy each other's recipes. The pack switches off the copies so each recipe appears once in EMI: Farmer's Delight pot recipes are automated by Create: Central Kitchen (Slice and Dice's basin copies are off), and cutting-board recipes by Slice and Dice's slicer (Central Kitchen's saw and deployer copies are off).\n\nSame with Apotheosis: its own item comparison is off because Equipment Compare already does it on Shift."
+      ],
+      "es_es": [
+        "Cambio del pack: una ruta por receta",
+        "Algunos mods copian recetas de otros. El pack apaga las copias para que cada receta aparezca una sola vez en EMI: las recetas de la olla de Farmer's Delight las automatiza Create: Central Kitchen (las copias en cuenco de Slice and Dice están apagadas), y las de la tabla de cortar, la rebanadora de Slice and Dice (las copias con sierra y desplegador de Central Kitchen están apagadas).\n\nLo mismo con Apotheosis: su comparación de ítems está apagada porque Equipment Compare ya la hace con Shift."
+      ],
+      "sources": [
+        "repo:pack/config/sliceanddice-common.toml",
+        "repo:pack/config/create_central_kitchen-common.toml",
+        "repo:docs/design/apotheosis-family.md",
+        "repo:docs/design/mod-pingpong.md"
+      ]
+    },
+    {
+      "key": "qol_recipes_pack_exclusive",
+      "deps": [
+        "qol_recipes_jei_addons"
+      ],
+      "type": "checkmark",
+      "optional": true,
+      "icon": "entrelumen:luminosity_logistics",
+      "layout": {
+        "x": 15,
+        "y": 6,
+        "size": 1.0,
+        "shape": "pentagon"
+      },
+      "en_us": [
+        "Pack Change: Things Without a Recipe",
+        "Some items have no recipe on purpose, and EMI simply shows none:\n\n- The six &6Luminosities&r: only Solsticio's native villagers trade them.\n- Item duplicators such as the creative crate, the creative storage cell, the creative bin and the infinity upgrades.\n- The Mega Torch from Torchmaster: the Altar of Peace replaces it.\n\nWhen U shows uses but R shows nothing, read the tooltip: it usually says where the item comes from."
+      ],
+      "es_es": [
+        "Cambio del pack: cosas sin receta",
+        "Algunos ítems no tienen receta a propósito, y EMI simplemente no muestra ninguna:\n\n- Las seis &6Luminosidades&r: sólo las intercambian los aldeanos nativos de Solsticio.\n- Los duplicadores de ítems, como la caja creativa, la celda de almacenamiento creativa, el contenedor creativo y las mejoras de infinito.\n- La Mega Torch de Torchmaster: la reemplaza el Altar de Paz.\n\nCuando U muestra usos pero R no muestra nada, leé el tooltip: suele decir de dónde sale el ítem."
+      ],
+      "sources": [
+        "repo:pack/kubejs/server_scripts/entrelumen_luminous_balance.js",
+        "repo:docs/design/luminous-gear.md",
+        "repo:pack/kubejs/server_scripts/entrelumen_qol_balance.js"
+      ]
+    },
+    {
+      "key": "qol_recipes_light_overlay",
+      "deps": [
+        "qol_recipes_jade_hud"
+      ],
+      "type": "checkmark",
+      "optional": true,
+      "icon": "minecraft:torch",
+      "layout": {
+        "x": 0,
+        "y": 4,
+        "size": 1.0,
+        "shape": "circle"
+      },
+      "en_us": [
+        "F7 and F9: Light and Chunk Lines",
+        "&eMore Overlays&r adds two world toggles:\n\n- &eF7&r marks blocks where hostile mobs can spawn because the light is too low.\n- &eF9&r draws chunk borders, handy before claiming land or placing a chunk-sized farm.\n\nLight a cave with F7 on until no marks remain."
+      ],
+      "es_es": [
+        "F7 y F9: luz y bordes de chunk",
+        "&eMore Overlays&r suma dos interruptores en el mundo:\n\n- &eF7&r marca los bloques donde pueden aparecer mobs hostiles porque la luz es baja.\n- &eF9&r dibuja los bordes de los chunks, útil antes de reclamar terreno o de armar una granja del tamaño de un chunk.\n\nIluminá una cueva con F7 prendido hasta que no quede ninguna marca."
+      ],
+      "sources": [
+        "jar:moreoverlays-1.24.2-mc1.21.1-neoforge.jar:at/ridgo8/moreoverlays/KeyBindings.class"
+      ]
+    },
+    {
+      "key": "qol_recipes_close",
+      "deps": [
+        "qol_recipes_pack_components",
+        "qol_recipes_jei_addons",
+        "qol_recipes_effects"
+      ],
+      "type": "checkmark",
+      "icon": "minecraft:compass",
+      "layout": {
+        "x": 18,
+        "y": 1.5,
+        "size": 2.0,
+        "shape": "hexagon"
+      },
+      "en_us": [
+        "You Can Look Anything Up",
+        "R for recipes, U for uses, A for favorites, the recipe tree for long chains, Jade for the world and the tooltips for everything else. With these, the rest of the guide chapters will make much more sense.\n\nNext stops: Controls, Inventory, and the Atlas when you want the story."
+      ],
+      "es_es": [
+        "Ya podés buscar cualquier cosa",
+        "R para recetas, U para usos, A para favoritos, el árbol para cadenas largas, Jade para el mundo y los tooltips para todo lo demás. Con esto, el resto de las guías se entiende mucho mejor.\n\nPróximas paradas: Controles, Inventario y, cuando quieras la historia, el Atlas."
+      ],
+      "sources": [
+        "repo:content/guides/README.md"
+      ]
+    }
+  ]
+}
