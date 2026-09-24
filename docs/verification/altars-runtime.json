@@ -1,0 +1,658 @@
+{
+  "schemaVersion": 1,
+  "checkedAt": "2026-09-24T05:59:36+00:00",
+  "scope": "Altars integration on main: the storage move of the QA server, JDK and companion build/run folders to the E: NVMe, offline build with JUnit and isolated GameTests after both altar merges, full-pack QA of the six altars and the Apotheosis regression cases on the owned server, a normal start/save/stop at max-tick-time 60000, and the managed installation of the final code in both client profiles and the server. Not client rendering, EN/ES review, survival play, co-op, pacing or performance acceptance.",
+  "platform": "Minecraft 1.21.1 / NeoForge 21.1.249 / JDK 21.0.12.1+1 / Windows 11",
+  "sourceCommits": {
+    "firstMerge": "ab3796a",
+    "secondMerge": "ba505fd",
+    "installed": "eabad96",
+    "finalCode": "f1a7e90"
+  },
+  "designDocs": [
+    "docs/design/ark-altars.md"
+  ],
+  "receipts": "E:\\Elias\\Codex\\Entrelumen-ssd\\head-ab3796a-20260924",
+  "storageMove": {
+    "receipt": "E:/Elias/Codex/Entrelumen-ssd/move-receipt-20260924.json",
+    "items": {
+      "server-slice": {
+        "from": "G:\\Elias\\Codex\\Entrelumen-work\\server-slice",
+        "to": "E:\\Elias\\Codex\\Entrelumen-ssd\\server-slice",
+        "files": 3481,
+        "bytes": 1234578831,
+        "copySeconds": 102.9,
+        "verifySeconds": 82.7,
+        "sha256Sampled": 342,
+        "sha256Mismatches": 0,
+        "swappedAt": "2026-09-24T01:24:39-0300",
+        "originalRetiredTo": "G:\\Elias\\Codex\\Entrelumen-work\\server-slice.__old-20260924",
+        "originalDeleted": false,
+        "repoJunctions": []
+      },
+      "companion-run": {
+        "from": "G:\\Elias\\Codex\\Entrelumen-work\\companion-run",
+        "to": "E:\\Elias\\Codex\\Entrelumen-ssd\\companion-run",
+        "files": 8540,
+        "bytes": 188520041,
+        "copySeconds": 146.5,
+        "verifySeconds": 54.6,
+        "sha256Sampled": 332,
+        "sha256Mismatches": 0,
+        "swappedAt": "2026-09-24T01:30:42-0300",
+        "originalRetiredTo": "G:\\Elias\\Codex\\Entrelumen-work\\companion-run.__old-20260924",
+        "originalDeleted": false,
+        "repoJunctions": [
+          "C:\\Users\\elias\\Documents\\Codex\\2026-09-12\\h\\outputs\\entrelumen\\companion\\run"
+        ]
+      },
+      "companion-build": {
+        "from": "G:\\Elias\\Codex\\Entrelumen-work\\companion-build",
+        "to": "E:\\Elias\\Codex\\Entrelumen-ssd\\companion-build",
+        "files": 1409,
+        "bytes": 101593406,
+        "copySeconds": 46.2,
+        "verifySeconds": 89.8,
+        "sha256Sampled": 370,
+        "sha256Mismatches": 0,
+        "swappedAt": "2026-09-24T01:30:45-0300",
+        "originalRetiredTo": "G:\\Elias\\Codex\\Entrelumen-work\\companion-build.__old-20260924",
+        "originalDeleted": false,
+        "repoJunctions": [
+          "C:\\Users\\elias\\Documents\\Codex\\2026-09-12\\h\\outputs\\entrelumen\\companion\\build"
+        ]
+      },
+      "runtime": {
+        "from": "G:\\Elias\\Codex\\Entrelumen-work\\runtime",
+        "to": "E:\\Elias\\Codex\\Entrelumen-ssd\\runtime",
+        "files": 490,
+        "bytes": 343823876,
+        "copySeconds": 12.0,
+        "verifySeconds": 8.9,
+        "sha256Sampled": 490,
+        "sha256Mismatches": 0,
+        "swappedAt": "2026-09-24T02:15:26-0300",
+        "originalRetiredTo": "G:\\Elias\\Codex\\Entrelumen-work\\runtime.__old-20260924",
+        "originalDeleted": false,
+        "repoJunctions": []
+      }
+    },
+    "method": "owned processes stopped; robocopy; every file size and the file set compared, SHA-256 of a sample (all 490 JDK files); original renamed aside on G:, junction at the old path, repo junctions re-pointed to E:",
+    "runtimeSwapDelay": "the runtime copy waited for a Gradle daemon of the finished altars worker (PID 29388, JDK on G:), which was not stopped; it was swapped once that daemon had exited"
+  },
+  "performance": {
+    "metric": "jvmStartToDoneSeconds: owned-process start (ModLauncher line) to \"Done\"; doneSeconds: vanilla spawn preparation only; maxBehindMs: worst \"Can't keep up\" warning; ModernFix \"Dedicated server took\" is the mod-loading figure it logs.",
+    "G_HDD": {
+      "disk": "G: Toshiba MQ02 5400 rpm HDD, shared with other sessions (a robocopy of G:\\dev to E:\\dev ran during this batch)",
+      "lastThreeRuns": [
+        {
+          "start": "22:57:32.956",
+          "jvmStartToDoneSeconds": 548.0,
+          "modLoadSeconds": 446.0,
+          "doneSeconds": 98.423,
+          "maxBehindMs": 0,
+          "watchdog": [
+            "23:07:41 A single server tick took 60.00 seconds (should be max 0.05)"
+          ],
+          "saved": null,
+          "stopping": null
+        },
+        {
+          "start": "23:10:20.914",
+          "jvmStartToDoneSeconds": 883.1,
+          "modLoadSeconds": 737.1,
+          "doneSeconds": 136.335,
+          "maxBehindMs": 2072,
+          "watchdog": [],
+          "saved": "23:27:17",
+          "stopping": "23:27:32"
+        },
+        {
+          "start": "23:49:48.031",
+          "jvmStartToDoneSeconds": 1515.0,
+          "modLoadSeconds": 1388.0,
+          "doneSeconds": 124.223,
+          "maxBehindMs": 90054,
+          "watchdog": [],
+          "saved": "00:19:45",
+          "stopping": "00:19:50"
+        }
+      ],
+      "since23September1743": {
+        "runs": 14,
+        "jvmStartToDoneSeconds": [
+          245.5,
+          1613.6
+        ],
+        "doneSeconds": [
+          18.962,
+          188.027
+        ],
+        "maxBehindMs": 134065,
+        "watchdogStops": 3
+      },
+      "modernFixLoadSeconds": [
+        282.343,
+        281.77,
+        1011.948,
+        1662.355
+      ],
+      "saves": {
+        "head-5437d7c": "save-all delivered 23:25:31, processed 23:26:46, saved 23:27:17; stop saved 18 s",
+        "head-dd0b718 QA": "save-all 00:18:56 to 00:19:45 (49 s); stop saved 66 s"
+      }
+    },
+    "E_NVMe": {
+      "disk": "E: Kingston A1000 NVMe",
+      "runs": [
+        {
+          "start": "01:52:25.057",
+          "jvmStartToDoneSeconds": 108.9,
+          "modLoadSeconds": 103.9,
+          "doneSeconds": 4.908,
+          "maxBehindMs": 0,
+          "watchdog": [],
+          "saved": "01:56:09",
+          "stopping": "01:56:09"
+        },
+        {
+          "start": "01:59:29.882",
+          "jvmStartToDoneSeconds": 90.1,
+          "modLoadSeconds": 86.1,
+          "doneSeconds": 3.183,
+          "maxBehindMs": 26399,
+          "watchdog": [],
+          "saved": "02:04:29",
+          "stopping": "02:07:17"
+        },
+        {
+          "start": "02:08:47.909",
+          "jvmStartToDoneSeconds": 98.1,
+          "modLoadSeconds": 93.1,
+          "doneSeconds": 5.056,
+          "maxBehindMs": 2911,
+          "watchdog": [],
+          "saved": "02:12:18",
+          "stopping": "02:12:18"
+        },
+        {
+          "start": "02:12:30.873",
+          "jvmStartToDoneSeconds": 117.1,
+          "modLoadSeconds": 110.1,
+          "doneSeconds": 5.954,
+          "maxBehindMs": 2035,
+          "watchdog": [],
+          "saved": "02:15:02",
+          "stopping": "02:15:03"
+        },
+        {
+          "start": "02:22:38.493",
+          "jvmStartToDoneSeconds": 122.5,
+          "modLoadSeconds": 118.5,
+          "doneSeconds": 3.112,
+          "maxBehindMs": 0,
+          "watchdog": [
+            "02:26:04 A single server tick took 60.00 seconds (should be max 0.05)"
+          ],
+          "saved": null,
+          "stopping": "02:25:04"
+        },
+        {
+          "start": "02:28:46.603",
+          "jvmStartToDoneSeconds": 138.4,
+          "modLoadSeconds": 132.4,
+          "doneSeconds": 5.732,
+          "maxBehindMs": 0,
+          "watchdog": [
+            "02:32:14 A single server tick took 60.00 seconds (should be max 0.05)"
+          ],
+          "saved": null,
+          "stopping": "02:31:13"
+        },
+        {
+          "start": "02:33:36.289",
+          "jvmStartToDoneSeconds": 101.7,
+          "modLoadSeconds": 97.7,
+          "doneSeconds": 4.158,
+          "maxBehindMs": 0,
+          "watchdog": [
+            "02:36:27 A single server tick took 60.00 seconds (should be max 0.05)"
+          ],
+          "saved": null,
+          "stopping": "02:35:26"
+        },
+        {
+          "start": "02:38:03.727",
+          "jvmStartToDoneSeconds": 84.3,
+          "modLoadSeconds": 80.3,
+          "doneSeconds": 3.712,
+          "maxBehindMs": 0,
+          "watchdog": [
+            "02:40:36 A single server tick took 60.00 seconds (should be max 0.05)"
+          ],
+          "saved": null,
+          "stopping": "02:39:35"
+        },
+        {
+          "start": "02:41:39.986",
+          "jvmStartToDoneSeconds": 85.0,
+          "modLoadSeconds": 80.0,
+          "doneSeconds": 4.061,
+          "maxBehindMs": 3824,
+          "watchdog": [],
+          "saved": "02:44:58",
+          "stopping": "02:44:59"
+        },
+        {
+          "start": "02:45:19.580",
+          "jvmStartToDoneSeconds": 82.4,
+          "modLoadSeconds": 79.4,
+          "doneSeconds": 3.051,
+          "maxBehindMs": 0,
+          "watchdog": [],
+          "saved": "02:50:15",
+          "stopping": "02:50:16"
+        },
+        {
+          "start": "02:50:56.197",
+          "jvmStartToDoneSeconds": 84.8,
+          "modLoadSeconds": 81.8,
+          "doneSeconds": 3.077,
+          "maxBehindMs": 3067,
+          "watchdog": [],
+          "saved": "02:53:15",
+          "stopping": "02:53:15"
+        },
+        {
+          "start": "02:53:24.646",
+          "jvmStartToDoneSeconds": 83.4,
+          "modLoadSeconds": 79.4,
+          "doneSeconds": 3.343,
+          "maxBehindMs": 2911,
+          "watchdog": [],
+          "saved": "02:55:07",
+          "stopping": "02:55:08"
+        }
+      ],
+      "cleanRuns": {
+        "count": 8,
+        "jvmStartToDoneSeconds": [
+          82.4,
+          117.1
+        ],
+        "doneSeconds": [
+          3.051,
+          5.954
+        ]
+      },
+      "modernFixLoadSeconds": [
+        120.377,
+        96.353,
+        107.627,
+        128.763,
+        131.055,
+        146.439,
+        110.241,
+        91.495,
+        92.114,
+        88.876,
+        91.743,
+        90.241
+      ],
+      "normalBoot": {
+        "runId": "8f5b9199-4c37-495c-8270-2a78525c1fa1",
+        "exitCode": 0,
+        "jar": "normal companion JAR, no QA flag",
+        "maxTickTime": 60000,
+        "heap": "6G",
+        "jvmStartToDoneSeconds": 82.4,
+        "doneSeconds": 3.051,
+        "modernFixLoadSeconds": 88.876,
+        "cantKeepUpWarnings": 0,
+        "watchdog": [],
+        "spark": [
+          "02:47:59 2.4/2.7/4.8/7.4;  2.4/3.0/4.8/46.3",
+          "02:50:00 2.4/2.7/4.7/7.1;  2.3/2.7/4.4/7.1"
+        ],
+        "tickQuery": [
+          "verage t Average time per tick: 0,0ms (Target: 50,0ms)",
+          "02:46:46 Percentiles: P50: 0,0ms P95: 0,0ms P99: 0,0ms, sample: 100",
+          "verage t Average time per tick: 2,7ms (Target: 50,0ms)",
+          "02:48:00 Percentiles: P50: 2,6ms P95: 3,2ms P99: 4,2ms, sample: 100",
+          "verage t Average time per tick: 2,8ms (Target: 50,0ms)",
+          "02:50:01 Percentiles: P50: 2,6ms P95: 4,2ms P99: 5,4ms, sample: 100"
+        ],
+        "neoforgeTps": "Overall: 20.000 TPS (2.793 ms/tick) at 02:50:01",
+        "saveAll": "under 1 s (02:50:15)",
+        "stopToAllSaved": "under 1 s (02:50:16)"
+      },
+      "cantKeepUpCauses": {
+        "26399 ms (QA run 1b, 02:03:36)": "forceload of 144 new ocean chunks 2,000 blocks away (QA site search)",
+        "2010-3824 ms (QA runs 1b-2g)": "once per QA run, while a case spawned mock players with FTB claims or hundreds of projectiles",
+        "normal boot": "none"
+      },
+      "watchdogOnlyAfterCrash": "Runs 2, 2b, 2c and 2d stopped on a Ticking-entity crash of the QA projectile case; the watchdog line 60 s later is the stop after the crash, not a slow tick."
+    },
+    "summary": "Boot (JVM start to Done) fell from 548-1515 s in the last three G: runs to 82-138 s on E:; the normal boot on E: took 82.4 s with no tick warning, worst spark tick 46.3 ms in its first minute and 7.1 ms after three minutes, and saved in under a second, against 31-66 s saves and ticks up to 90 s behind on G:.",
+    "limitation": "Same machine, same world and pack, but not a controlled benchmark: G: was contended by other sessions (the SSD migration robocopy and the search indexer) and RAM was about 2 GB free. No players, no client, no gameplay load."
+  },
+  "build": {
+    "command": "JAVA_HOME=E:/Elias/Codex/Entrelumen-ssd/runtime/jdk-21.0.12.1+1 gradlew --offline --no-daemon build qaJar; gradlew --offline --no-daemon runGameTestServer",
+    "firstMerge": {
+      "commit": "ab3796a (+ registration 1990238)",
+      "junit": {
+        "passed": 104,
+        "failed": 0
+      },
+      "isolatedRun1": "52 of 53: renewalAltarRegrowsTheOriginalTreesAndPlantsWhole, reference digest mismatch (a bee nest one block apart)",
+      "isolatedRuns2and3": "run 2: 50 of 53, run 3: 51 of 53. The renewal pits and reload tests exhausted their tick limits behind the noise test on the shared altar worker; in run 2 the forest test also found no tree to obstruct at its random position (fixture layout; did not recur in the eight later runs)",
+      "fix": "5ea36a0: bee nests virtual in the reference sandbox; the noise GameTest on its own thread",
+      "after": "53 of 53 in five consecutive runs"
+    },
+    "secondMerge": {
+      "commit": "ba505fd + registration eabad96",
+      "junit": {
+        "passed": 115,
+        "failed": 0
+      },
+      "isolated": "57 of 57 in three consecutive runs"
+    },
+    "isolatedLogs": {
+      "isolated-merge-1.log": {
+        "result": "All 57 required tests passed",
+        "sha256": "1b05edc5277e1a755d486566f4a570dc81d1df196ecc92ffec58b20cd4e31ce3"
+      },
+      "isolated-merge-2.log": {
+        "result": "All 57 required tests passed",
+        "sha256": "7f92c99ea66ef71cb720a3c93031ece8db4695cff6533507b4f00ca702dde46d"
+      },
+      "isolated-merge-3.log": {
+        "result": "All 57 required tests passed",
+        "sha256": "9a0757c4b2f7534ef88bd5785e356a65a5f5ad874053b1715d12527ec74a8435"
+      },
+      "isolated-tests-1.log": {
+        "result": "1 required tests failed",
+        "sha256": "9db77e63a30dd27fce563aad3e9464f7284c2edfb650e081bd428448727efdd5"
+      },
+      "isolated-tests-2.log": {
+        "result": "3 required tests failed",
+        "sha256": "13782ac67ddd260efbd006a0ebbc23b91063f2bb7081482cc79dba99dd828409"
+      },
+      "isolated-tests-3.log": {
+        "result": "2 required tests failed",
+        "sha256": "1af91146aeb46a7f0d749f6b56e03dece8a5524e20400f9afb452d4fbab21b67"
+      },
+      "isolated-tests-4.log": {
+        "result": "All 53 required tests passed",
+        "sha256": "67ab9dacad1d3598f56e68031d1533734d743ebf90f4650d5e83c3d1c5f651ca"
+      },
+      "isolated-tests-5.log": {
+        "result": "All 53 required tests passed",
+        "sha256": "cc4def32565c455bce205caa66ca4eda132255a8b17a1bf074f6220ecce48ecf"
+      },
+      "isolated-tests-6.log": {
+        "result": "All 53 required tests passed",
+        "sha256": "0cba2dc64d001ed703ab3a5e88aa8e4009c8b3ae55ebf84fe94102c7c8c0d295"
+      },
+      "isolated-tests-7.log": {
+        "result": "All 53 required tests passed",
+        "sha256": "21002f148e2505003abf73806e576a0c13c680596b07a72b1962a49e24667315"
+      },
+      "isolated-tests-8.log": {
+        "result": "All 53 required tests passed",
+        "sha256": "83bfa4668b932da8d113e14aed7757da4159878eee719a2f7aa18fbd3a49bf82"
+      }
+    },
+    "normalJar": {
+      "installedFrom": "eabad96",
+      "sha256": "63b0c0db9e375a7061b06b5e7d1886fe80f56a9aff45bdbdcb8cb833654238af",
+      "identicalThrough": "f1a7e90 (later commits change only the QA source set and docs)"
+    },
+    "qaJarFinal": {
+      "commit": "f1a7e90",
+      "sha256": "11f7c8d5177c2f04298c935afd8912f97fe8c5cd5ba9d48303330656f2fc17a9",
+      "installedOnlyOn": "server-slice, during QA runs; the normal JAR was restored"
+    }
+  },
+  "fullpack": {
+    "server": "E:/Elias/Codex/Entrelumen-ssd/server-slice (owned QA server), heap 6G, max-tick-time 60000",
+    "jvmFlag": "-Dentrelumen.qa=true through JAVA_TOOL_OPTIONS",
+    "registered": 90,
+    "worldArchives": {
+      "beforeQa1": {
+        "archive": "E:\\Elias\\Codex\\Entrelumen-ssd\\head-ab3796a-20260924\\server-world-before-qa1.zip",
+        "files": 1390,
+        "sha256": "81964eb68abba1881bdfafb2b249e39b755c0a38e20b2c307feca081f28bc4ae",
+        "runIdBefore": "61a60a0a-8ab7-46f8-9612-04d725508989"
+      },
+      "beforeInstall": {
+        "archive": "E:\\Elias\\Codex\\Entrelumen-ssd\\head-ab3796a-20260924\\server-world-before-install.zip",
+        "files": 1404,
+        "sha256": "ee0a190ac08fae1558d79486a49ea32c957aba78d69aed4a08b7d3a28c63a006"
+      },
+      "beforeQa2f": {
+        "archive": "E:\\Elias\\Codex\\Entrelumen-ssd\\head-ab3796a-20260924\\server-world-before-qa2f.zip",
+        "files": 1462,
+        "sha256": "d028f09aca3aa54f576213f5290fbd61eef3255cbf7cd5001fa438266ca24360",
+        "runIdBefore": "8f5b9199-4c37-495c-8270-2a78525c1fa1"
+      },
+      "afterQa2": {
+        "archive": "E:\\Elias\\Codex\\Entrelumen-ssd\\head-ab3796a-20260924\\server-world-after-qa2.zip",
+        "files": 1462,
+        "sha256": "fbbef8ca48f174953f45642a79ba47f844a0e2cc237114e582044170375fc5f8",
+        "runIdBefore": "28de44b5-e446-4b0e-92b4-d9ce6ed1a1d8"
+      },
+      "restores": [
+        {
+          "archive": "E:\\Elias\\Codex\\Entrelumen-ssd\\head-ab3796a-20260924\\server-world-before-qa1.zip",
+          "restoredFiles": 1390,
+          "replacedWorldMovedTo": "E:\\Elias\\Codex\\Entrelumen-ssd\\head-ab3796a-20260924\\world-after-qa1",
+          "runIdBefore": "12cb857b-dcd6-45d0-8f75-608adf38bd28"
+        },
+        {
+          "archive": "E:\\Elias\\Codex\\Entrelumen-ssd\\head-ab3796a-20260924\\server-world-before-qa1.zip",
+          "restoredFiles": 1390,
+          "replacedWorldMovedTo": "E:\\Elias\\Codex\\Entrelumen-ssd\\head-ab3796a-20260924\\world-after-qa1b",
+          "runIdBefore": "37e8610b-77f0-4a32-b609-1c22cab0a423"
+        },
+        {
+          "archive": "E:\\Elias\\Codex\\Entrelumen-ssd\\head-ab3796a-20260924\\server-world-before-qa1.zip",
+          "restoredFiles": 1390,
+          "replacedWorldMovedTo": "E:\\Elias\\Codex\\Entrelumen-ssd\\head-ab3796a-20260924\\world-after-qa1c",
+          "runIdBefore": "751aa7af-944d-48f4-bc2b-6ef5b695d02c"
+        },
+        {
+          "afterCrash": true,
+          "exitCodeBefore": 1,
+          "archive": "E:\\Elias\\Codex\\Entrelumen-ssd\\head-ab3796a-20260924\\server-world-before-install.zip",
+          "restoredFiles": 1404,
+          "replacedWorldMovedTo": "E:\\Elias\\Codex\\Entrelumen-ssd\\head-ab3796a-20260924\\world-after-qa2-crash",
+          "runIdBefore": "2fe78860-6996-469a-900b-ad0e00af301a"
+        },
+        {
+          "afterCrash": true,
+          "exitCodeBefore": 1,
+          "archive": "E:\\Elias\\Codex\\Entrelumen-ssd\\head-ab3796a-20260924\\server-world-before-install.zip",
+          "restoredFiles": 1404,
+          "replacedWorldMovedTo": "E:\\Elias\\Codex\\Entrelumen-ssd\\head-ab3796a-20260924\\world-after-qa2b-crash",
+          "runIdBefore": "903efc1f-2484-48c7-a215-18afe843b642"
+        },
+        {
+          "afterCrash": true,
+          "exitCodeBefore": 1,
+          "archive": "E:\\Elias\\Codex\\Entrelumen-ssd\\head-ab3796a-20260924\\server-world-before-install.zip",
+          "restoredFiles": 1404,
+          "replacedWorldMovedTo": "E:\\Elias\\Codex\\Entrelumen-ssd\\head-ab3796a-20260924\\world-after-qa2c-crash",
+          "runIdBefore": "9300ff11-d047-4f81-8157-a83aa86dd669"
+        },
+        {
+          "afterCrash": true,
+          "exitCodeBefore": 1,
+          "archive": "E:\\Elias\\Codex\\Entrelumen-ssd\\head-ab3796a-20260924\\server-world-before-install.zip",
+          "restoredFiles": 1404,
+          "replacedWorldMovedTo": "E:\\Elias\\Codex\\Entrelumen-ssd\\head-ab3796a-20260924\\world-after-qa2d-crash",
+          "runIdBefore": "1e9e7893-a615-409d-8600-871ebc00831c"
+        }
+      ]
+    },
+    "final": {
+      "apotheosis8": "PASS on 5ea36a0 (run 12cb857b) and on the final HEAD (run 8e050c4f)",
+      "renewalAltarRebuildsLandFromThePacksOwnGenerator": {
+        "result": "PASS (runs 37e8610b and 8e050c4f)",
+        "how": "forceload add 128 -112 191 -33; execute positioned 112 70 -76 run test run ...; altar at (160, 66, -69) on open grass chosen from the region files",
+        "totals": "filled 27, covered 0, trees 2, plants 5, guarded 3, skipped chunks 0, bone meal 13",
+        "reference": "16 terrain chunks in 1.0-1.8 s, 4 decorated in 0.11-0.22 s; skipped features pneumaticcraft:oil_lake_underground x1, waystones:waystone x4; unsupported getLevel",
+        "nearSpawn": "not runnable: execute if loaded false 48 and 68 blocks east of spawn (spawnChunkRadius 2, no players); the land there is test floors and barriers from earlier QA"
+      },
+      "altarsRespectForeignFtbChunksClaims": "PASS (runs e041cdfe and 8e050c4f): FTB Chunks claimed 1 chunk and unclaimed it",
+      "torchmasterKeepsItsLightsButLosesTheMegaTorch": "PASS (runs 2fe78860 and 8e050c4f)",
+      "peaceAltarRefusesEveryInstalledHostileNaturalSpawn": "PASS: 186 hostile types, none allowed",
+      "mysticalCropsGrowFasterButTheirEssenceIsNotMultiplied": "PASS: inferium essence 400 inside, 400 outside",
+      "installedHostileProjectilesAreSlowedByTheAltarOfTime": {
+        "result": "PASS (run 28de44b5, QA JAR f1a7e90)",
+        "slowed": 174,
+        "selfSteeringReported": [
+          "ars_nouveau:orbit",
+          "twilightforest:chain_block",
+          "twilightforest:cube_of_annihilation"
+        ],
+        "doNotFlyOnVelocity": 28,
+        "removedWithinThreeTicks": [
+          "aether:thunder_crystal",
+          "ars_elemental:lerp",
+          "ars_nouveau:enchanters_hook",
+          "ars_nouveau:flying_item",
+          "ars_nouveau:follow_proj",
+          "ars_nouveau:ritual",
+          "ars_nouveau:wall",
+          "cataclysm:wither_homing_missile",
+          "irons_spellbooks:arrow_volley",
+          "irons_spellbooks:chain_lightning",
+          "irons_spellbooks:echoing_sword",
+          "malum:scythe_maelstrom",
+          "pneumaticcraft:vortex",
+          "reliquary:kraken_slime",
+          "reliquary:lyssa_hook",
+          "theurgy:follow_projectile"
+        ],
+        "erroringTickDiscarded": [
+          "ars_nouveau:wall",
+          "irons_spellbooks:chain_lightning",
+          "theurgy:follow_projectile"
+        ],
+        "failedDetachedProbe": [
+          "aquaculture:bobber",
+          "create:potato_projectile"
+        ],
+        "neoforgeServerTomlUnchanged": true
+      }
+    },
+    "fixtureFixes": [
+      "c1ff67a: mock player names within 16 characters (FTB Teams codec); owner closed if the visitor cannot join",
+      "d22f58b: fuel the claimed Altar of Levelling; clean up (unclaim, log out) when a wait expires; 4000 ticks",
+      "68268e6: a pit west of the claimed chunk so the Altar of Levelling fills outside the claim",
+      "cb9f603: one slot per projectile pair in batches (Immersive Engineering flare crash)",
+      "48d3a5d: detached three-tick probe (Aquaculture bobber crash)",
+      "2f58c26 + 2e6e635: removeErroringEntities in memory for the projectile case, cache cleared (Ars Nouveau wall crash)",
+      "00f0c6d + f1a7e90: self-steering projectiles reported, free flight judged on every tick"
+    ],
+    "crashes": [
+      {
+        "run": "2fe78860",
+        "at": "02:25:03",
+        "cause": "Ticking entity: immersiveengineering:revolver_shot_flare NPE on hit (shared lane)"
+      },
+      {
+        "run": "903efc1f",
+        "at": "02:31:13",
+        "cause": "Ticking entity: aquaculture:bobber NPE (no hook)"
+      },
+      {
+        "run": "9300ff11",
+        "at": "02:35:26",
+        "cause": "Ticking entity: ars_nouveau:wall NPE (no emitter)"
+      },
+      {
+        "run": "1e9e7893",
+        "at": "02:39:35",
+        "cause": "same; removeErroringEntities.set kept its cached false"
+      }
+    ],
+    "errorsInFinalRuns": {
+      "known": "Object with ID reliquary:xp_juice_still specified in data map for registry minecraft:fluid doesn't exist (upstream, see arcane-expansion-runtime.json)",
+      "expectedFromProjectileCase": "three discarded Ticking-entity reports per projectile run"
+    }
+  },
+  "installation": {
+    "mechanism": "Receipt-managed pack files plus tools/curate_pack.py --install (installer adapted from head-dd0b718-20260923/install_head.py); replaced files and receipts backed up under integration-before/; no Minecraft or other Java process running",
+    "head": "eabad96946703fa76ff18d1ece51f899142f5d10",
+    "companionJarSha256": "63b0c0db9e375a7061b06b5e7d1886fe80f56a9aff45bdbdcb8cb833654238af",
+    "catalogSha256": "ad0df466b381e262692cc934f543f73b2d1fad768d36156b2af43fc889d9d631",
+    "clientLaunched": false,
+    "profiles": [
+      {
+        "profile": "E:\\curseforge\\Instances\\ENTRELUMEN",
+        "side": "client",
+        "written": 42,
+        "new": 21,
+        "retired": 0,
+        "jarsAdded": [],
+        "jarsTotal": 273,
+        "preservedLocal": 10,
+        "tomlEquivalent": [
+          "config/aether-startup.toml",
+          "config/create_connected-common.toml",
+          "config/cumulus_menus-client.toml"
+        ],
+        "guardedUnchanged": 51
+      },
+      {
+        "profile": "E:\\curseforge\\Instances\\ENTRELUMEN Defaults QA",
+        "side": "client",
+        "written": 42,
+        "new": 21,
+        "retired": 0,
+        "jarsAdded": [],
+        "jarsTotal": 273,
+        "preservedLocal": 11,
+        "tomlEquivalent": [
+          "config/aether-startup.toml",
+          "config/create_connected-common.toml",
+          "config/cumulus_menus-client.toml"
+        ],
+        "guardedUnchanged": 22
+      },
+      {
+        "profile": "E:\\Elias\\Codex\\Entrelumen-ssd\\server-slice",
+        "side": "server",
+        "written": 42,
+        "new": 21,
+        "retired": 0,
+        "jarsAdded": [],
+        "jarsTotal": 233,
+        "preservedLocal": 9,
+        "tomlEquivalent": [
+          "config/aether-startup.toml",
+          "config/create_connected-common.toml"
+        ],
+        "guardedUnchanged": 3
+      }
+    ],
+    "art": "altar models and textures (six altars), mirrored shelf and module textures in resourcepacks/entrelumen and in the companion JAR; the augment item art was already installed and is unchanged in the new JAR",
+    "serverJarNow": "63b0c0db9e375a7061b06b5e7d1886fe80f56a9aff45bdbdcb8cb833654238af"
+  },
+  "limits": [
+    "Full-pack cases prove behaviour with mock players on an installed server, not client rendering or play.",
+    "The renewal full-pack case ran on one site chosen from the region files; near spawn it cannot run.",
+    "The projectile case creates every modded projectile bare; 16 were removed within three ticks, 28 do not fly on their velocity, 2 fail a detached tick and 3 steer themselves. Those 49 are reported, not verified as slowed.",
+    "NeoForge removeErroringEntities was relaxed in memory during the projectile case only.",
+    "Performance figures are single runs on a contended workstation, not a benchmark; no players or chunk exploration load.",
+    "The G: originals are kept renamed aside; their deletion is pending Elias."
+  ],
+  "pending": [
+    "Client review: altar, shelf and module art, Repose coffer screen, EN/ES text.",
+    "Quest text sentences naming each altar reward (Integration checklist in ark-altars.md).",
+    "Decide whether the Altar of Time should slow self-steering projectiles (orbit, chain block, cube of annihilation).",
+    "Delete the G:/Elias/Codex/Entrelumen-work/*.__old-20260924 originals once Elias approves (about 1.87 GB)."
+  ]
+}

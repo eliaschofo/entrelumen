@@ -4,16 +4,18 @@ Decision, 23–24 September 2026. The common base and the first two altars are i
 
 24 September 2026: the Altars of Peace, Growth, Time and Repose, the act rewards of all six altars and the removal of the Mega Torch recipe are implemented on branch `feature/altars-effects` (worktree `E:/Elias/Codex/Entrelumen-ssd/wt-altars2`), on top of `main` ab3796a. Their isolated evidence is under Verification; full-pack QA and client review are pending integration.
 
+Integrated into `main` on 24 September 2026 (merges `ab3796a` and `ba505fd`) and installed in both client profiles and the owned server. Full-pack QA ran on the owned server; see [Integration on main](#integration-on-main-24-september). Client review is pending.
+
 Elias's idea (23 September), later extended to six altars. Place a block like an altar and feed it. The first one grows the land back like bone meal, but at long range and not at random: it rebuilds what the world generator actually made there, flowers and plants included, and revitalizes dead soil. A second one makes a smooth building surface that still looks like the land around it. Everything in the pack must be symmetric.
 
 | ID | EN / ES | Role | State |
 | --- | --- | --- | --- |
-| `renewal_altar` | Altar of Renewal / Altar de Renovación | Rebuilds the generator's land: dug holes, bare dirt, the original trees and plants | Implemented on `feature/altars` |
-| `terraform_altar` | Altar of Levelling / Altar de Nivelación | Flattens a centred square with a symmetric slope, moving matter without creating it | Implemented on `feature/altars` |
-| `peace_altar` | Altar of Peace / Altar de Paz | No natural hostile spawns in a large square; replaces Torchmaster's Mega Torch | Implemented on `feature/altars-effects` |
-| `growth_altar` | Altar of Growth / Altar de Crecimiento | Much faster crops and more drops. `c:seeds` seeds are not multiplied; Mystical Agriculture crops grow faster but their essence is not multiplied | Implemented on `feature/altars-effects` |
-| `time_altar` | Altar of Time / Altar del Tiempo | Hostile mobs and enemy projectiles in slow motion; much more loot and XP | Implemented on `feature/altars-effects` |
-| `repose_altar` | Altar of Repose / Altar de Reposo | A 4-slot chest (symmetric) that repairs stored gear very slowly, like Mending; needs fuel | Implemented on `feature/altars-effects` |
+| `renewal_altar` | Altar of Renewal / Altar de Renovación | Rebuilds the generator's land: dug holes, bare dirt, the original trees and plants | In `main` |
+| `terraform_altar` | Altar of Levelling / Altar de Nivelación | Flattens a centred square with a symmetric slope, moving matter without creating it | In `main` |
+| `peace_altar` | Altar of Peace / Altar de Paz | No natural hostile spawns in a large square; replaces Torchmaster's Mega Torch | In `main` |
+| `growth_altar` | Altar of Growth / Altar de Crecimiento | Much faster crops and more drops. `c:seeds` seeds are not multiplied; Mystical Agriculture crops grow faster but their essence is not multiplied | In `main` |
+| `time_altar` | Altar of Time / Altar del Tiempo | Hostile mobs and enemy projectiles in slow motion; much more loot and XP | In `main` |
+| `repose_altar` | Altar of Repose / Altar de Reposo | A 4-slot chest (symmetric) that repairs stored gear very slowly, like Mending; needs fuel | In `main` |
 
 ## Common base
 
@@ -335,7 +337,7 @@ Offline `gradlew --offline build qaJar runGameTestServer` in the worktree, with 
     - Started without fuel, the altar changes nothing and stays out of the registry. With charcoal it works, draws one unit, and registers its square exactly.
     - At the pause every column is untouched or finished, matter is conserved, and the altar leaves the registry.
     - Cursor, buffer, palette, flat height and totals round-trip through a block entity reload, and the resumed run completes conserving matter.
-- **Full-pack (pending integration).** `AltarFullpackGameTests` compiles into the QA JAR but is not registered or run. It covers the Altar of Renewal against the pack's real overworld generator near spawn, compared with an independent regeneration. It also covers real FTB Chunks claims against a foreign team's Altar of Renewal and Altar of Levelling.
+- **Full-pack.** `AltarFullpackGameTests` covers the Altar of Renewal against the pack's real overworld generator, compared with an independent regeneration, and real FTB Chunks claims against a foreign team's Altar of Renewal and Altar of Levelling. It was registered and run at integration; see [Integration on main](#integration-on-main-24-september).
 
 **History.** The first run (`full-1.log`) found test-fixture bugs:
 
@@ -344,7 +346,7 @@ Offline `gradlew --offline build qaJar runGameTestServer` in the worktree, with 
 - A claim was removed before the repeated pass.
 - A test had too little fill material.
 
-That run also found the fake-player stall, and it reported one reference-digest mismatch in the forest test. The mismatch did not reproduce in the seven later runs, and the forest test now checks three regenerations. Watch for it during integration.
+That run also found the fake-player stall, and it reported one reference-digest mismatch in the forest test. The mismatch did not reproduce in the seven later runs, and the forest test now checks three regenerations. Integration reproduced it and found the cause: bee nests (see [Integration on main](#integration-on-main-24-september)).
 
 ### Peace, Growth, Time and Repose (`feature/altars-effects`)
 
@@ -394,13 +396,52 @@ Offline `gradlew --offline build qaJar runGameTestServer` in the worktree, same 
 - **Static checks.**
   - `generate_family_balance.py --check`: all five families pass, qol now with 1 removal (`torchmaster:megatorch`, found in the pinned Torchmaster JAR).
   - `test_family_balance`, `generate_quests.py --check`, `test_generate_quests` (27) and `curate_pack.py --check` pass.
-- **Full-pack, pending integration.** `AltarEffectsFullpackGameTests` compiles into the QA JAR and is neither registered nor run; see the Integration checklist.
+- **Full-pack.** `AltarEffectsFullpackGameTests` was registered and run at integration; see [Integration on main](#integration-on-main-24-september).
+
+### Integration on main (24 September)
+
+Root integration in `C:/Users/elias/Documents/Codex/2026-09-12/h/outputs/entrelumen`, with the build and run folders on the NVMe `E:/Elias/Codex/Entrelumen-ssd`. Receipts are in `E:/Elias/Codex/Entrelumen-ssd/head-ab3796a-20260924`; the evidence is `docs/verification/altars-runtime.json`.
+
+**Build and isolated tests.** Offline `gradlew --offline --no-daemon build qaJar runGameTestServer`, pinned JDK 21.0.12.1+1.
+
+- The merge of the first two altars (`ab3796a`): JUnit 104 passed. The first isolated run passed 52 of 53: the forest test's digest mismatch came back.
+  - **Cause: bee nests.** The two references differed only in a bee nest, one block apart. Vanilla's `BeehiveDecorator` picks the nest's side with an unseeded `Collections.shuffle`, the only unseeded randomness in vanilla world generation. So no regeneration can reproduce where a nest went.
+  - **Fix in the sandbox.** Nests stay virtual. The decorator still gets its hive and draws its bees from the feature random, so the random stream is unchanged. The reference keeps air there, and the altar never restores block entities anyway.
+- The next two runs failed the pits and reload tests on their tick limits. One of them also failed the forest test's own setup: at that random position its reference had no tree to obstruct in the west half. That did not recur in the eight later runs.
+  - **Cause.** The GameTest server ticks without pausing, so a tick limit is short in wall time. The overworld-noise test's three regenerations queued ahead of those altars' references on the shared altar worker.
+  - **Fix.** That test now regenerates on its own thread. Then all 53 passed in five consecutive runs.
+- After merging the Peace, Growth, Time and Repose altars (`ba505fd`): JUnit 115 passed, and all 57 isolated GameTests passed in three consecutive runs.
+
+**Full pack.** The owned server on E: ran the QA JAR with `-Dentrelumen.qa=true`, a 6 GB heap and `max-tick-time` 60000. The world was archived before each QA run, and restored from that archive after any run that left QA data behind. All eight Apotheosis cases passed again, before and after the second merge.
+
+- `renewalAltarRebuildsLandFromThePacksOwnGenerator` **passed twice**.
+  - It cannot run next to spawn. A server without players loads only the spawn chunks: `execute if loaded` is false 48 and 68 blocks east. Earlier tests also replaced that land with barriers and stone test floors.
+  - It ran on untouched land: 20 chunks force-loaded around (160, −69), chosen from the region files as open grass, and `execute positioned 112 70 -76 run test run …`.
+  - The altar refilled all 27 pit blocks exactly as the independent regeneration has them. It also regrew 2 trees and 5 plants, guarded 3 columns, skipped no chunk and used 13 bone meal.
+  - The reference took 1.0–1.8 s for 16 terrain chunks and 0.11–0.22 s for 4 decorated ones. It skipped `pneumaticcraft:oil_lake_underground` once and `waystones:waystone` four times, because they need the live level.
+  - A first site 2,000 blocks from spawn was all ocean. Force-loading its 144 new chunks stalled the server for 26 s.
+- `altarsRespectForeignFtbChunksClaims` **passed** after three fixes to the test.
+  - Mock player names must fit 16 characters: FTB Teams syncs names with the vanilla codec. The 17-character visitor failed at login and left both mock players online. It also left a team record that would break every later login, so the world was restored.
+  - The Altar of Levelling had no fuel, so the case waited out its limit and skipped its cleanup.
+  - With the land already level, there was nothing to fill outside the claim.
+  - With these fixed, the real claim refused the renewal inside the claimed chunk at no charge, and the Altar of Levelling refused the claimed columns but filled a pit outside. The case now also unclaims and logs its players out when a wait expires.
+- `torchmasterKeepsItsLightsButLosesTheMegaTorch`, `peaceAltarRefusesEveryInstalledHostileNaturalSpawn` (186 hostile types, none allowed) and `mysticalCropsGrowFasterButTheirEssenceIsNotMultiplied` (inferium essence 400 inside and 400 outside) **passed**.
+- `installedHostileProjectilesAreSlowedByTheAltarOfTime` **passed** after four fixes to the test. Its first versions crashed the QA server three times, and each time the world was restored.
+  - **Crashes.** Every modded projectile type was created bare, without the data its launcher sets, and 20 shared lanes let them hit each other. The crashes: Immersive Engineering's revolver flare on hitting a projectile, Aquaculture's bobber on its first tick, and Ars Nouveau's wall casting on nearby entities without an emitter.
+  - **Separate slots.** Each pair now flies in its own slot, in batches.
+  - **Probe.** A detached copy first flies three ticks, to skip types whose own tick fails.
+  - **Erroring entities.** NeoForge's `removeErroringEntities` is set in memory for this case only. The setting is marked world-restart, so its cache is cleared, and it is restored and checked afterwards; `neoforge-server.toml` was unchanged.
+  - **Self-steering.** The case judges free flight on each tick and reports self-steering projectiles, a documented limitation, instead of failing on them.
+  - **Result.** 174 projectile types were slowed. Three steer themselves and were reported: `ars_nouveau:orbit` and Twilight Forest's `chain_block` and `cube_of_annihilation`. 28 do not fly on their velocity, and 16 were removed within three ticks, three of them because their tick threw. Two failed their detached tick.
+
+**Installation.** The final code, `eabad96`, was installed in `ENTRELUMEN`, `ENTRELUMEN Defaults QA` and the server with the receipt-managed installer: 42 files each, 21 of them new. They are the QoL script, the companion JAR, and the altar, shelf and module art in `resourcepacks/entrelumen`. Nothing was retired, no JAR was added, and player and local files were unchanged. Later commits changed only the QA source set, so the normal JAR is byte-identical.
 
 ## Limitations
 
 - Pits deeper than 16 blocks below the original surface are not refilled (level them first). Neither are overhangs, closed caves, flooded pits or carver ravines.
 - Where neighbouring chunks' features overlapped during real generation, the reference may differ slightly from the original. Trees and plants are only placed where everything is free, so a mismatch leaves a gap, not a collision.
 - Modded features that need the live level, entities or the server are skipped and counted. Modded chunk generators get no surface-rule pass.
+- Bee nests are never in the reference. Vanilla picks a nest's side with an unseeded shuffle, so the sandbox keeps air there, and the altar never places block entities.
 - Chunks next to a structure whose start is not loaded are skipped, and structure pieces are never rebuilt.
 - The Altar of Renewal needs its whole square and margin loaded, so it needs a player nearby.
 - Levelling drops follow loot tables, including other mods' global loot modifiers.
@@ -408,13 +449,12 @@ Offline `gradlew --offline build qaJar runGameTestServer` in the worktree, same 
 - Fake-player claim checks follow FTB Chunks' own fake-player setting.
 - Altar of Peace: a modded hostile outside the `MONSTER` category, or a mod that spawns hostiles without NeoForge's spawn events, is not refused.
 - Altar of Growth: modded plants that grow by random ticks but are neither tagged nor of a vanilla growing class are not accelerated; add them to `entrelumen:growth_altar_accelerated`. Its ticks do not follow the `randomTickSpeed` gamerule. A single random tick that grows a tree can take a few milliseconds.
-- Altar of Time: melee and ranged attack cadences come from mob goals, not attributes, so slowed mobs hit a third as hard but not a third as often. Creeper fuses, custom flight controllers and self-steering projectiles such as shulker bullets are only partly slowed. Projectiles whose mods apply gravity their own way bend more than vanilla ones.
+- Altar of Time: melee and ranged attack cadences come from mob goals, not attributes, so slowed mobs hit a third as hard but not a third as often. Creeper fuses, custom flight controllers and self-steering projectiles such as shulker bullets are only partly slowed; in this pack, also Ars Nouveau's orbit and Twilight Forest's chain block and cube of annihilation. Projectiles whose mods apply gravity their own way bend more than vanilla ones.
 - Altar of Repose: items whose durability is not vanilla damage (energy, custom bars) are not mended.
 
 ## Integration checklist
 
-- Register `AltarFullpackGameTests` in `FullpackQABootstrap`, in both the registration and the expected-name list. Run it on the owned QA server with `-Dentrelumen.qa=true`, after archiving the world.
-- Register `AltarEffectsFullpackGameTests` the same way (registration and expected-name list). It covers the Torchmaster recipe removal, the Altar of Peace against every installed hostile type, Mystical Agriculture crops in the Altar of Growth and every installed modded projectile in the Altar of Time.
+- Done 24 September: `AltarFullpackGameTests` and `AltarEffectsFullpackGameTests` are registered in `FullpackQABootstrap` (registration and expected names), and all six cases pass on the owned server. The renewal case needs untouched, loaded land away from spawn; see [Integration on main](#integration-on-main-24-september).
 - Add one sentence to the FTB quest text of `signal_exchange`, `nursery_protocol`, `workshop_hands`, `pollinator_treaty`, `horizon_survey` and `sealed_memory` naming the altar each grants, and update the frozen hashes in `tools/test_generate_quests.py`. The rewards themselves are wired in `projects.json` and announced in chat.
 - Review the Repose coffer's screen in a client (EN and ES status line width) with the four new blocks' shapes and tooltips.
 - Review the shapes against the models, and the lang keys and messages, in a client in EN and ES.
