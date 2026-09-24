@@ -151,14 +151,94 @@ class FamilyBalanceTest(unittest.TestCase):
                 with self.assertRaises(AssertionError):
                     balance.build_additions('probe', models)
 
+    def test_luminous_recipe_files_and_script_match_the_specification(self):
+        family = balance.FAMILIES['luminous']
+        for relative, text in balance.creation_files('luminous').items():
+            self.assertEqual((balance.PACK_DATA / relative).read_text(encoding='utf-8'), text, relative)
+        script = (ROOT / 'pack/kubejs/server_scripts' / family['script']).read_text(encoding='utf-8')
+        constants = {}
+        for name in ('CreationsSignature', 'Creations', 'Uncraftable'):
+            match = re.search(r'^const entrelumenLuminous' + name + r' = (.*);$', script, re.M)
+            self.assertTrue(match, name)
+            constants[name] = json.loads(match.group(1))
+        self.assertEqual([(r['id'], r['output']) for r in constants['Creations']],
+                         [(s['id'], s['output']) for s in family['creations']])
+        self.assertEqual(constants['Uncraftable'], family['uncraftable'])
+        payload = json.dumps({'creations': [balance.creation_json(s) for s in family['creations']],
+                              'uncraftable': family['uncraftable']}, ensure_ascii=False, separators=(',', ':'), sort_keys=True)
+        self.assertEqual(constants['CreationsSignature'], hashlib.sha256(payload.encode('utf-8')).hexdigest())
+        for luminosity in balance.LUMINOSITY.values():
+            self.assertIn(luminosity, constants['Uncraftable'])
+        self.assertNotIn('native recipe absent', script)  # a creation-only family edits nothing
+
+    def test_luminous_catalogue_is_symmetric_balanced_and_act_six(self):
+        uses = balance.check_creations_static('luminous')
+        self.assertEqual(uses, {d: 8 for d in balance.DISCIPLINES})
+        specs = balance.FAMILIES['luminous']['creations']
+        creative = [s for s in specs if s['disciplines']]
+        self.assertEqual(len(creative), 12)
+        self.assertEqual(len([s for s in specs if s['kind'] == 'smithing']), 9)
+        self.assertTrue(all(s['act'] == 'VI' for s in specs))
+        cube = next(s for s in specs if s['output'] == 'mekanism:creative_energy_cube')
+        self.assertEqual(balance.creation_json(cube)['result']['components'],
+                         {'mekanism:energy': {'energy_containers': [9223372036854775807]}})
+        ingot = next(s for s in specs if s['output'] == balance.LUMINOUS_INGOT)
+        self.assertEqual(sorted(set(balance.creation_inputs(ingot)) - set(balance.LUMINOSITY.values())),
+                         ['apotheosis:godforged_pearl', 'mekanism:alloy_atomic', 'naturesaura:sky_ingot'])
+        asymmetric = {'A': {'item': 'x:a'}, 'B': {'item': 'x:b'}, 'L': {'item': balance.LUMINOSITY['arcane']},
+                      'N': {'item': balance.LUMINOSITY['nature']}}
+        self.assertTrue(balance.mirrored(['LAN', 'BAB', 'NBL'], asymmetric))
+        self.assertFalse(balance.mirrored(['LAB', 'BAB', 'NBL'], asymmetric))
+        for duplicator in ('create:creative_crate', 'ae2:creative_storage_cell', 'mekanism:creative_bin'):
+            self.assertIn(duplicator, balance.FAMILIES['luminous']['uncraftable'])
+            self.assertNotIn(duplicator, {s['output'] for s in specs})
+
+    def test_luminous_items_are_named_in_both_languages(self):
+        lang = ROOT / 'companion/src/main/resources/assets/entrelumen/lang'
+        english = json.loads((lang / 'en_us.json').read_text(encoding='utf-8'))
+        spanish = json.loads((lang / 'es_es.json').read_text(encoding='utf-8'))
+        java = (ROOT / 'companion/src/main/java/dev/entrelumen/Luminous.java').read_text(encoding='utf-8')
+        items = [s['output'] for s in balance.FAMILIES['luminous']['creations'] if s['output'].startswith('entrelumen:')]
+        items += list(balance.LUMINOSITY.values())
+        self.assertEqual(len(set(items)), 16)
+        for item_id in items:
+            key = 'item.entrelumen.' + item_id.split(':', 1)[1]
+            self.assertIn(key, english)
+            self.assertIn(key, spanish)
+            self.assertNotEqual(english[key], spanish[key])
+        for piece in ('helmet', 'chestplate', 'leggings', 'boots', 'sword', 'pickaxe', 'axe', 'shovel', 'hoe', 'ingot'):
+            self.assertIn(f'"luminous_{piece}"', java)
+
+    def test_loop_check_catches_uncrafting_and_gate_leaks(self):
+        lum = balance.LUMINOSITY['arcane']
+        ingot = balance.created_shaped('t:ingot', 't:ingot', ['LXL', 'XXX', 'LXL'],
+                                       {'L': {'item': lum}, 'X': {'item': 't:metal'}}, '')
+        gear = balance.created_smithing('entrelumen:luminous_sword', 'minecraft:netherite_sword', '')
+        gear = dict(gear, addition={'item': 't:ingot'})
+        clean = balance.find_loops([ingot, gear], [], {}, {lum})
+        self.assertEqual(clean, [])
+        uncraft = {'type': 'x:recycle', 'ingredient': {'tag': 'x:swords'}, 'result': {'id': 't:ingot'}}
+        loops = balance.find_loops([ingot, gear], [uncraft], {'x:swords': {'entrelumen:luminous_sword'}}, {lum})
+        self.assertTrue(any(c == 'entrelumen:luminous_sword' and 'turns it back' in reason for c, reason in loops), loops)
+        direct = {'type': 'x:melt', 'ingredient': {'item': 't:ingot'}, 'result': {'id': 't:metal'}}
+        self.assertTrue(any(c == 't:ingot' for c, _ in balance.find_loops([ingot, gear], [direct], {}, {lum})))
+        leak = {'type': 'x:make', 'ingredient': {'item': 't:metal'}, 'result': {'id': lum}}
+        self.assertTrue(any(c == lum for c, _ in balance.find_loops([ingot, gear], [leak], {}, {lum})))
+        ungated = balance.created_shaped('t:free', 't:free', ['XXX', 'XXX', 'XXX'], {'X': {'item': 't:metal'}}, '')
+        self.assertTrue(any(c == 't:free' for c, _ in balance.find_loops([ungated], [], {}, {lum})))
+
     @unittest.skipUnless(lock_available(), 'Pinned dependency JARs are not available on this machine')
     def test_scripts_are_current_against_pinned_jars(self):
         for name, family in balance.FAMILIES.items():
             with self.subTest(family=name):
                 rows, removals, used, _ = balance.build(name)
+                if family.get('creations'):
+                    recipes, _, _ = balance.load_recipes()
+                    used = dict(sorted({**used, **balance.check_creations(name, recipes)}.items()))
                 expected = balance.render(name, rows, removals, used)
                 self.assertEqual((ROOT / 'pack/kubejs/server_scripts' / family['script']).read_text(encoding='utf-8'), expected)
-                for relative, text in {**balance.build_data(name), **balance.build_additions(name)}.items():
+                for relative, text in {**balance.build_data(name), **balance.build_additions(name),
+                                       **balance.creation_files(name)}.items():
                     self.assertEqual((balance.PACK_DATA / relative).read_text(encoding='utf-8'), text)
 
 

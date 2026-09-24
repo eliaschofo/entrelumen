@@ -147,6 +147,91 @@ RUNE_MODIFIERS = ([f'apotheosis:spawner_modifiers/{name}' for name in _RUNE_EFFE
                   + [f'apotheosis:spawner_modifiers/_inverse/{name}' for name in _RUNE_EFFECTS]
                   + [f'apotheosis:spawner_modifiers/tier/{t}' for t in ('frontier', 'ascent', 'summit', 'pinnacle')])
 
+# ---- luminous family: the Luminous Ingot, the luminous gear and the creative catalogue ----------
+# Luminosities (entrelumen:luminosity_<discipline>) have no recipe anywhere: Solsticio's native
+# villagers will trade them (pending). Every recipe below is new pack data, so it is a creation, not
+# an edit of a native recipe; outputs are exclusive (any other recipe producing them is removed at
+# load) and the item duplicators in UNCRAFTABLE_CREATIVE stay without a recipe.
+DISCIPLINES = ('engineering', 'arcane', 'nature', 'exploration', 'logistics', 'habitation')
+LUMINOSITY = {d: f'entrelumen:luminosity_{d}' for d in DISCIPLINES}
+LUMINOUS_INGOT = 'entrelumen:luminous_ingot'
+LUMINOUS_ACT = 'VI'
+# Boss drops that the story keeps as necessary materials (Wither, Ender Dragon, Elder Guardian).
+NETHER_STAR, DRAGON_HEART, WET_SPONGE = 'minecraft:nether_star', 'draconicevolution:dragon_heart', 'minecraft:wet_sponge'
+# Late materials of other families: stage V (see STAGE_MATERIALS) plus the Apotheosis mythic
+# salvage material, which only drops from the Summit World Tier (after Act V).
+LUMINOUS_MATERIAL_ACTS = {'naturesaura:sky_ingot': 'V', 'mekanism:alloy_atomic': 'V', 'apotheosis:godforged_pearl': 'VI'}
+# Creative items that copy arbitrary items: a recipe would clone Luminosities, nether stars and
+# godforged pearls, so they remain uncraftable (checked at load, like the Luminosities).
+UNCRAFTABLE_CREATIVE = ('create:creative_crate', 'ae2:creative_storage_cell', 'mekanism:creative_bin',
+                        'functionalstorage:creative_vending_upgrade', 'modularrouters:creative_module',
+                        'sophisticatedbackpacks:infinity_upgrade', 'sophisticatedstorage:infinity_upgrade')
+
+
+def created_shaped(recipe_id, output, pattern, key, why, *, components=None, disciplines=()):
+    return {'kind': 'shaped', 'id': recipe_id, 'output': output, 'pattern': pattern, 'key': key, 'why': why,
+            'components': components, 'disciplines': tuple(disciplines), 'act': LUMINOUS_ACT}
+
+
+def created_smithing(output, base, why):
+    return {'kind': 'smithing', 'id': output, 'output': output, 'template': item(NETHER_STAR), 'base': item(base),
+            'addition': item(LUMINOUS_INGOT), 'why': why, 'components': None, 'disciplines': (), 'act': LUMINOUS_ACT}
+
+
+def creative(output, primary, secondary, boss, material, core, component, why, *, components=None):
+    """Top pair: primary Luminosity; bottom pair: secondary; boss drop, two late materials, the mod's
+    top non-creative counterpart at the centre and an Act V ENTRELUMEN component."""
+    namespace, path = output.split(':', 1)
+    return created_shaped(f'entrelumen:creative/{namespace}/{path}', output, ['PXP', 'MCM', 'SRS'],
+                          {'P': item(LUMINOSITY[primary]), 'X': item(boss), 'M': item(material), 'C': item(core),
+                           'S': item(LUMINOSITY[secondary]), 'R': item(component)}, why,
+                          components=components, disciplines=(primary, secondary))
+
+
+LUMINOUS_RECIPES = [
+    # Left column engineering/arcane/nature, right column exploration/logistics/habitation; the centre
+    # column fuses magic (sky ingot), the divine (godforged pearl) and technology (atomic alloy).
+    created_shaped(LUMINOUS_INGOT, LUMINOUS_INGOT, ['EYX', 'AGL', 'NZH'],
+                   {'E': item(LUMINOSITY['engineering']), 'A': item(LUMINOSITY['arcane']),
+                    'N': item(LUMINOSITY['nature']), 'X': item(LUMINOSITY['exploration']),
+                    'L': item(LUMINOSITY['logistics']), 'H': item(LUMINOSITY['habitation']),
+                    'Y': item('naturesaura:sky_ingot'), 'G': item('apotheosis:godforged_pearl'),
+                    'Z': item('mekanism:alloy_atomic')},
+                   'All six Luminosities bound by magic, divine and machine metal'),
+] + [
+    created_smithing(f'entrelumen:luminous_{piece}', f'minecraft:netherite_{piece}',
+                     'Netherite upgrade path: keeps enchantments, affixes and gems of the base')
+    for piece in ('helmet', 'chestplate', 'leggings', 'boots', 'sword', 'pickaxe', 'axe', 'shovel', 'hoe')
+] + [
+    creative('mekanism:creative_energy_cube', 'engineering', 'logistics', DRAGON_HEART, 'mekanism:pellet_antimatter',
+             'mekanism:ultimate_energy_cube', AB, 'Infinite energy; crafted full, like the creative-tab cube',
+             components={'mekanism:energy': {'energy_containers': [9223372036854775807]}}),
+    creative('powah:energy_cell_creative', 'engineering', 'habitation', DRAGON_HEART, 'powah:nitro_crystal_block',
+             'powah:energy_cell_nitro', AB, 'Infinite energy for a settlement grid'),
+    creative('create:creative_motor', 'engineering', 'exploration', NETHER_STAR, 'create:precision_mechanism',
+             'create:steam_engine', AB, 'Infinite rotation for trains and contraptions'),
+    creative('ae2:creative_energy_cell', 'logistics', 'engineering', DRAGON_HEART, 'ae2:singularity',
+             'megacells:mega_energy_cell', AB, 'Infinite ME network power'),
+    creative('mekanism:creative_fluid_tank', 'logistics', 'nature', WET_SPONGE, 'mekanism:ultimate_control_circuit',
+             'mekanism:ultimate_fluid_tank', AB, 'Infinite supply of the first fluid poured in'),
+    creative('mekanism:creative_chemical_tank', 'logistics', 'exploration', NETHER_STAR, 'mekanism:pellet_antimatter',
+             'mekanism:ultimate_chemical_tank', AB, 'Infinite chemical lines, hydrogen and oxygen for travel'),
+    creative('ars_nouveau:creative_source_jar', 'nature', 'arcane', NETHER_STAR, 'ars_nouveau:source_gem_block',
+             'ars_nouveau:source_jar', RE, 'Infinite Source, the magic that living things give'),
+    creative('create:creative_fluid_tank', 'nature', 'habitation', WET_SPONGE, 'create:hose_pulley',
+             'create:fluid_tank', RE, 'A fountain that never runs dry'),
+    creative('evilcraft:creative_blood_drop', 'arcane', 'nature', NETHER_STAR, 'evilcraft:dark_power_gem_block',
+             'evilcraft:dark_tank', RE, 'Infinite blood'),
+    creative('create_enchantment_industry:creative_bookshelf', 'arcane', 'habitation', NETHER_STAR,
+             'entrelumen:horizon_shelf', 'apothic_enchanting:draconic_endshelf', RE,
+             'Any Eterna, Quanta and Arcana for a home library'),
+    creative('draconicevolution:creative_capacitor', 'exploration', 'arcane', DRAGON_HEART,
+             'draconicevolution:awakened_draconium_ingot', 'draconicevolution:chaotic_capacitor', AB,
+             'Keeps every carried tool and suit charged far from home'),
+    creative('create:creative_blaze_cake', 'habitation', 'exploration', NETHER_STAR, 'create:blaze_burner',
+             'create:blaze_cake', RE, 'A hearth that never goes out'),
+]
+
 FAMILIES = {
     'industrial': {
         'script': 'entrelumen_industrial_balance.js',
@@ -279,6 +364,15 @@ FAMILIES = {
                     'E': item('apothic_enchanting:ender_library'), 'R': item(RE)}, 'V',
                    'Pooled library beyond the Ender Library'),
         ] + [augment_recipe(m) for m in AUGMENTS],
+    },
+    'luminous': {
+        'script': 'entrelumen_luminous_balance.js',
+        'tag': 'ENTRELUMEN_LUMINOUS_BALANCE',
+        'namespaces': {'entrelumen'},
+        'changes': [],
+        'removals': [],
+        'creations': LUMINOUS_RECIPES,
+        'uncraftable': list(UNCRAFTABLE_CREATIVE) + [LUMINOSITY[d] for d in DISCIPLINES],
     },
 }
 
@@ -556,6 +650,7 @@ def build_data(name, found=None):
 
 
 COMPANION_LANG = ROOT / 'companion/src/main/resources/assets/entrelumen/lang/en_us.json'
+COMPANION_DATA = ROOT / 'companion/src/main/resources/data'
 
 
 def item_models():
@@ -619,6 +714,329 @@ def build_additions(name, models=None):
                 'result': {'id': addition['id'], 'count': addition['count']}}
         outputs_by_path[f'{namespace}/recipe/{path}.json'] = json.dumps(data, indent=2, ensure_ascii=False) + '\n'
     return outputs_by_path
+
+
+# ---- creations (luminous family) -----------------------------------------------------------------
+
+def mirrored(pattern, key):
+    """Left-right symmetric rows, where any two Luminosities count as alike."""
+    def kind(symbol):
+        if symbol == ' ':
+            return ' '
+        ingredient = key[symbol]
+        return 'luminosity' if ingredient.get('item') in LUMINOSITY.values() else json.dumps(ingredient, sort_keys=True)
+    return all([kind(c) for c in row] == [kind(c) for c in reversed(row)] for row in pattern)
+
+
+def creation_json(spec):
+    if spec['kind'] == 'shaped':
+        result = {'id': spec['output'], 'count': 1}
+        if spec['components']:
+            result['components'] = spec['components']
+        return {'type': 'minecraft:crafting_shaped', 'category': 'misc', 'pattern': spec['pattern'],
+                'key': spec['key'], 'result': result}
+    return {'type': 'minecraft:smithing_transform', 'template': spec['template'], 'base': spec['base'],
+            'addition': spec['addition'], 'result': {'id': spec['output'], 'count': 1}}
+
+
+def creation_inputs(spec):
+    if spec['kind'] == 'shaped':
+        return [spec['key'][c]['item'] for row in spec['pattern'] for c in row if c != ' ']
+    return [spec['template']['item'], spec['base']['item'], spec['addition']['item']]
+
+
+def creation_files(name):
+    """{path below pack/kubejs/data: JSON text}. Pure, so CI can compare it without the pinned JARs."""
+    out = {}
+    for spec in FAMILIES[name].get('creations', []):
+        namespace, path = spec['id'].split(':', 1)
+        out[f'{namespace}/recipe/{path}.json'] = json.dumps(creation_json(spec), indent=2, ensure_ascii=False) + '\n'
+    return out
+
+
+def is_creative_item(item_id):
+    path = item_id.split(':', 1)[1]
+    return path.startswith('creative') or path.endswith('_creative') or '_creative_' in path
+
+
+def check_creations_static(name):
+    """Checks that need no JAR: shape, symmetry, the Luminosity balance, acts and exclusions.
+    Returns how many Luminosities of each discipline the creative catalogue consumes."""
+    family = FAMILIES[name]
+    specs = family.get('creations', [])
+    ids = [s['id'] for s in specs]
+    assert len(ids) == len(set(ids)), 'Duplicate creation ID'
+    produced = [s['output'] for s in specs]
+    assert len(produced) == len(set(produced)), 'Two creations share an output'
+    lang = read(COMPANION_LANG)
+    luminosities = set(LUMINOSITY.values())
+    uses = {d: 0 for d in DISCIPLINES}
+    for spec in specs:
+        inputs = creation_inputs(spec)
+        assert spec['act'] == LUMINOUS_ACT, spec['id']
+        assert spec['output'] not in family['uncraftable'], f"{spec['id']}: produces an uncraftable item"
+        assert not any(is_creative_item(i) for i in inputs), f"{spec['id']}: consumes a creative item"
+        assert spec['output'] not in inputs, f"{spec['id']}: consumes its own output"
+        for item_id in inputs + [spec['output']]:
+            if item_id.startswith('entrelumen:'):
+                path = item_id.split(':', 1)[1]
+                assert f'item.entrelumen.{path}' in lang or f'block.entrelumen.{path}' in lang, \
+                    f"{spec['id']}: unknown companion item {item_id}"
+        if spec['kind'] == 'shaped':
+            pattern, key = spec['pattern'], spec['key']
+            assert len(pattern) == 3 and all(len(row) == 3 for row in pattern), f"{spec['id']}: not 3x3"
+            assert {c for row in pattern for c in row if c != ' '} == set(key), f"{spec['id']}: pattern and key differ"
+            assert mirrored(pattern, key), f"{spec['id']}: pattern is not left-right symmetric"
+            assert any(i in luminosities for i in inputs), f"{spec['id']}: no Luminosity"
+        else:
+            base = spec['base']['item']
+            assert base.startswith('minecraft:netherite_'), spec['id']
+            assert spec['output'] == 'entrelumen:luminous_' + base.split('netherite_', 1)[1], spec['id']
+            assert spec['addition'] == {'item': LUMINOUS_INGOT} and spec['template'] == {'item': NETHER_STAR}, spec['id']
+        if spec['disciplines']:
+            primary, secondary = spec['disciplines']
+            assert primary != secondary, spec['id']
+            assert spec['pattern'][0][0] == spec['pattern'][0][2] == 'P' and spec['pattern'][2][0] == spec['pattern'][2][2] == 'S'
+            assert spec['key']['P'] == {'item': LUMINOSITY[primary]} and spec['key']['S'] == {'item': LUMINOSITY[secondary]}
+            assert sum(i in luminosities for i in inputs) == 4, f"{spec['id']}: needs exactly four Luminosities"
+            uses[primary] += 2
+            uses[secondary] += 2
+    if any(s['disciplines'] for s in specs):
+        assert len(set(uses.values())) == 1, f'The creative catalogue favours a discipline: {uses}'
+    ingot = [s for s in specs if s['output'] == LUMINOUS_INGOT]
+    if ingot:
+        assert sorted(i for i in creation_inputs(ingot[0]) if i in luminosities) == sorted(luminosities), \
+            'The ingot must use each Luminosity exactly once'
+    return uses
+
+
+def item_model_sources():
+    """Every item model shipped by a locked JAR: {namespaced ID: first JAR filename}."""
+    lock, paths = lock_entries()
+    found = {}
+    for entry in lock['mods']:
+        with zipfile.ZipFile(Path(paths[entry['filename']])) as jar:
+            for name in jar.namelist():
+                match = re.match(r'assets/([^/]+)/models/item/(.+)\.json$', name)
+                if match:
+                    found.setdefault(f'{match.group(1)}:{match.group(2)}', entry['filename'])
+    return found
+
+
+def tag_members():
+    """Item tags of the pinned JARs, the companion and pack data, resolved to item IDs."""
+    raw = {}
+
+    def add(namespace, path, data):
+        values = raw.setdefault(f'{namespace}:{path}', [])
+        for value in data.get('values', []):
+            values.append(value['id'] if isinstance(value, dict) else value)
+
+    lock, paths = lock_entries()
+    for entry in lock['mods']:
+        with zipfile.ZipFile(Path(paths[entry['filename']])) as jar:
+            for name in jar.namelist():
+                match = re.match(r'data/([^/]+)/tags/items?/(.+)\.json$', name)
+                if match:
+                    try:
+                        add(match.group(1), match.group(2), json.loads(jar.read(name)))
+                    except (ValueError, UnicodeDecodeError):
+                        continue
+    for base in (COMPANION_DATA, PACK_DATA):
+        for path in base.glob('*/tags/*/**/*.json'):
+            match = re.match(r'([^/]+)/tags/items?/(.+)\.json$', path.relative_to(base).as_posix())
+            if match:
+                add(match.group(1), match.group(2), read(path))
+    resolved = {}
+
+    def resolve(tag_id, stack=()):
+        if tag_id in resolved:
+            return resolved[tag_id]
+        items = set()
+        for value in raw.get(tag_id, []):
+            if not value.startswith('#'):
+                items.add(value)
+            elif value[1:] not in stack:
+                items |= resolve(value[1:], stack + (tag_id,))
+        resolved[tag_id] = items
+        return items
+
+    return {tag_id: resolve(tag_id) for tag_id in raw}
+
+
+def recipe_edges(recipe, tags):
+    """(input item IDs, output item IDs) of one recipe JSON, item tags expanded."""
+    inputs = set()
+
+    def walk(value):
+        if isinstance(value, dict):
+            if isinstance(value.get('item'), str):
+                inputs.add(value['item'])
+            if isinstance(value.get('tag'), str):
+                inputs.update(tags.get(value['tag'], ()))
+            for key, child in value.items():
+                if key not in ('result', 'output', 'results', 'outputs'):
+                    walk(child)
+        elif isinstance(value, list):
+            for child in value:
+                walk(child)
+
+    walk(recipe)
+    return inputs, outputs(recipe)
+
+
+def find_loops(creations, others, tags, gate):
+    """Recipe loops through the creations, as (creation ID, reason) pairs.
+
+    Plain reachability is meaningless here: through cobblestone, ore processing and alchemy almost
+    every item reaches every other one. What makes a loop self-sustaining is an input that the loop
+    produces again, so three properties are checked instead:
+      - no recipe at all produces a gate item (the Luminosities), and every creation consumes a gate
+        item directly or through another creation, so no loop closes without new Luminosities;
+      - the creations among themselves form no cycle (ingot -> gear only);
+      - no single recipe turns a creation's output back into one of that creation's inputs
+        (uncrafting, recycling or salvage of the ingot, the gear or a creative item)."""
+    loops = []
+    produced_by = {}
+    for recipe in others:
+        for out in outputs(recipe):
+            produced_by.setdefault(out, 0)
+            produced_by[out] += 1
+    for item_id in gate:
+        if produced_by.get(item_id) or any(s['output'] == item_id for s in creations):
+            loops.append((item_id, 'gate item has a recipe'))
+    outputs_of = {s['output']: s for s in creations}
+
+    def gated(spec, stack=()):
+        inputs = creation_inputs(spec)
+        if any(i in gate for i in inputs):
+            return True
+        return any(i in outputs_of and i not in stack and gated(outputs_of[i], stack + (i,)) for i in inputs)
+
+    for spec in creations:
+        if not gated(spec):
+            loops.append((spec['id'], 'consumes no gate item'))
+        seen, frontier = set(), [spec['output']]
+        while frontier:
+            node = frontier.pop()
+            for other in creations:
+                if node in creation_inputs(other) and other['output'] not in seen:
+                    if other['output'] == spec['output']:
+                        loops.append((spec['id'], 'creations form a cycle'))
+                    seen.add(other['output'])
+                    frontier.append(other['output'])
+    for recipe in others:
+        inputs, produced = recipe_edges(recipe, tags)
+        for spec in creations:
+            if spec['output'] in inputs and produced & set(creation_inputs(spec)):
+                loops.append((spec['id'], f'a recipe turns it back into {sorted(produced & set(creation_inputs(spec)))}'))
+    return loops
+
+
+def check_creations(name, recipes):
+    """JAR-backed checks: every item exists, no native recipe produces an exclusive or uncraftable
+    output, nothing produces a Luminosity and no creation closes a recipe cycle. Returns the JARs
+    whose items the creations use."""
+    family = FAMILIES[name]
+    specs = family.get('creations', [])
+    if not specs:
+        return {}
+    check_creations_static(name)
+    models = item_model_sources()
+    lock, _ = lock_entries()
+    shas = {e['filename']: e['sha256'] for e in lock['mods']}
+    _, design_acts = component_sources()
+    used = {}
+    created = {s['output']: ACTS[s['act']] for s in specs}
+    for spec in specs:
+        latest = 1
+        for item_id in creation_inputs(spec):
+            namespace = item_id.split(':', 1)[0]
+            if item_id in LUMINOSITY.values():
+                latest = max(latest, ACTS[LUMINOUS_ACT])
+            elif item_id in created:
+                latest = max(latest, created[item_id])
+            elif namespace == 'entrelumen':
+                latest = max(latest, design_acts.get(item_id, 1))
+            elif item_id in LUMINOUS_MATERIAL_ACTS:
+                latest = max(latest, ACTS[LUMINOUS_MATERIAL_ACTS[item_id]])
+        assert latest == ACTS[spec['act']], f"{spec['id']}: inputs reach act {latest}, declared {spec['act']}"
+        for item_id in creation_inputs(spec) + [spec['output']]:
+            if item_id.split(':', 1)[0] in ('minecraft', 'entrelumen'):
+                continue
+            assert item_id in models, f"{spec['id']}: no pinned item {item_id}"
+            used[models[item_id]] = shas[models[item_id]]
+    producers = {}
+    for rid, (recipe, _) in recipes.items():
+        for out in outputs(recipe):
+            producers.setdefault(out, []).append(rid)
+    for spec in specs:
+        assert not producers.get(spec['output']), f"{spec['id']}: native recipes produce it: {producers[spec['output']]}"
+    for item_id in family['uncraftable']:
+        assert not producers.get(item_id), f'{item_id} has native recipes: {producers[item_id]}'
+        assert item_id.startswith('entrelumen:') or item_id in models, f'Uncraftable {item_id} is not a pinned item'
+    own = set(creation_files(name))
+    local = []
+    for base in (PACK_DATA, COMPANION_DATA):
+        for path in base.glob('*/recipe/**/*.json'):
+            if base == PACK_DATA and path.relative_to(base).as_posix() in own:
+                continue
+            local.append(read(path))
+    exclusive = {s['output'] for s in specs} | set(family['uncraftable'])
+    for recipe in local:
+        assert not outputs(recipe) & exclusive, f'A pack or companion recipe produces {outputs(recipe) & exclusive}'
+    loops = find_loops(specs, [r for r, _ in recipes.values()] + local, tag_members(), set(LUMINOSITY.values()))
+    assert not loops, f'Recipe loops through the luminous creations: {loops}'
+    return dict(sorted(used.items()))
+
+
+CREATIONS_RUNTIME = '''
+ServerEvents.recipes(event => {
+  // Exclusive outputs: any other recipe for a creation's output, or for an uncraftable item, goes.
+  var displaced = [];
+  CREATIONS.forEach(row => {
+    event.findRecipeIds({output: row.output}).forEach(id => {
+      if (String(id) !== row.id) displaced.push({recipe: String(id), output: row.output});
+    });
+  });
+  UNCRAFTABLE.forEach(output => {
+    event.findRecipeIds({output: output}).forEach(id => displaced.push({recipe: String(id), output: output}));
+  });
+  displaced.forEach(row => event.remove({id: row.recipe}));
+  console.info('[TAG] ' + JSON.stringify({status: 'exclusive-outputs', signature: SIGNATURE,
+    creations: CREATIONS.length, displaced: displaced}));
+});
+ServerEvents.afterRecipes(event => {
+  var failed = [];
+  CREATIONS.forEach(row => {
+    var own = event.countRecipes({id: row.id, output: row.output});
+    var producers = event.countRecipes({output: row.output});
+    if (own !== 1 || producers !== 1) failed.push({recipe: row.id, loadedOutput: own, producers: producers});
+  });
+  UNCRAFTABLE.forEach(output => {
+    var producers = event.countRecipes({output: output});
+    if (producers !== 0) failed.push({output: output, producers: producers});
+  });
+  console.info('[TAG] ' + JSON.stringify({status: failed.length ? 'failed-creation-check' : 'creations-loaded',
+    signature: SIGNATURE, checked: CREATIONS.length + UNCRAFTABLE.length, failed: failed}));
+});
+'''
+
+
+def render_creations(family, prefix):
+    specs = family.get('creations', [])
+    if not specs:
+        return ''
+    rows = [{'id': s['id'], 'output': s['output'], 'kind': s['kind'],
+             'disciplines': list(s['disciplines'])} for s in specs]
+    payload = json.dumps({'creations': [creation_json(s) for s in specs], 'uncraftable': family['uncraftable']},
+                         ensure_ascii=False, separators=(',', ':'), sort_keys=True)
+    return (f'const {prefix}CreationsSignature = {json.dumps(hashlib.sha256(payload.encode("utf-8")).hexdigest())};\n'
+            f'const {prefix}Creations = {json.dumps(rows, ensure_ascii=False, separators=(",", ":"))};\n'
+            f'const {prefix}Uncraftable = {json.dumps(family["uncraftable"])};\n'
+            + CREATIONS_RUNTIME.lstrip('\n').replace('CREATIONS', prefix + 'Creations')
+            .replace('UNCRAFTABLE', prefix + 'Uncraftable').replace('SIGNATURE', prefix + 'CreationsSignature')
+            .replace('TAG', family['tag']))
 
 
 ADDITIONS_RUNTIME = '''
@@ -704,13 +1122,17 @@ def render(name, rows, removals, used_files):
     signature = hashlib.sha256(payload.encode('utf-8')).hexdigest()
     body = (RUNTIME.replace('FIELDCHECK', prefix + 'FieldCheck').replace('ROWS', prefix + 'Rows').replace('REMOVALS', prefix + 'Removals')
             .replace('SIGNATURE', prefix + 'Signature').replace('TAG', family['tag']))
-    return (f'// Generated by tools/generate_family_balance.py --family {name}; native acquisition only.\n'
+    if not rows and not removals and family.get('creations'):
+        body = ''  # a creation-only family edits no native recipe
+    scope = ('new recipes with exclusive outputs; Luminosities and item duplicators stay uncraftable'
+             if family.get('creations') else 'native acquisition only')
+    return (f'// Generated by tools/generate_family_balance.py --family {name}; {scope}.\n'
             '// No team, act, use, dimension, origin, gift or reward checks.\n'
             f'const {prefix}Signature = {json.dumps(signature)};\n'
             f'const {prefix}Sources = {json.dumps(used_files, separators=(",", ":"))};\n'
             f'const {prefix}Rows = {json.dumps(rows, ensure_ascii=False, separators=(",", ":"))};\n'
             f'const {prefix}Removals = {json.dumps(removals)};\n' + body + render_tags(family)
-            + render_additions(family, prefix))
+            + render_additions(family, prefix) + render_creations(family, prefix))
 
 
 def render_additions(family, prefix):
@@ -730,6 +1152,9 @@ def main():
     args = parser.parse_args()
     for name in args.family or sorted(FAMILIES):
         rows, removals, used_files, audited = build(name)
+        if FAMILIES[name].get('creations'):
+            recipes, _, _ = load_recipes()
+            used_files = dict(sorted({**used_files, **check_creations(name, recipes)}.items()))
         target = SCRIPTS / FAMILIES[name]['script']
         output = render(name, rows, removals, used_files)
         if args.write:
@@ -737,7 +1162,7 @@ def main():
         elif not target.exists() or target.read_text(encoding='utf-8') != output:
             raise SystemExit(f'Generated {target.name} is stale; run --write')
         overrides = build_data(name)
-        additions = build_additions(name)
+        additions = {**build_additions(name), **creation_files(name)}
         assert not set(overrides) & set(additions), 'Addition path collides with a data override'
         for relative, text in {**overrides, **additions}.items():
             destination = PACK_DATA / relative
@@ -749,6 +1174,7 @@ def main():
         print(json.dumps({'family': name, 'status': 'static-PASS', 'nativeRecipesIndexed': audited,
                           'changed': len(rows), 'removed': len(removals), 'dataOverrides': len(overrides),
                           'addedRecipes': len(additions),
+                          'creations': len(FAMILIES[name].get('creations', [])),
                           'acts': sorted({r['act'] for r in rows}), 'runtime': 'pending'}))
 
 
