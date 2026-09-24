@@ -76,6 +76,7 @@ Para contestarles hace falta un artefacto que se perdió en el Aether. La entida
 - **Títulos:** mezcla. Se mantienen los que encajan y cambian los que chocan con la historia nueva, sobre todo V y VI; VI pasa a ser «Solsticio».
 - **Revelación por partes:** pistas desde el acto I. En el acto IV, el Templo de la Luz Sagrada revela la fusión y **se vence al Sun Spirit al final del acto IV**. Su llave hace que el Atlas hable claro.
 - **Acto V:** construir el Arca sabiendo todo. El Arca forja la Llave de Luz.
+  - *Decisión de Elias del 24/9:* en el código, el Arca (sus seis módulos, los lotes y la activación que forja la Llave) estaba en el acto VI. Se fusiona con el acto V actual (la preparación industrial) en un solo **acto V, «El Arca»**. Solsticio pasa a ser el **acto VI**, corto y denso. Hay que renumerar el escalonado por actos, los World Tiers, la puerta de Solsticio y los objetivos de la brújula.
 - **Acto VI:** Solsticio.
 - **Las 171 quests actuales** conservan tareas y progresión, pero su texto se reescribe con el lore nuevo: Heliodor, la Inventora y la luz.
 
