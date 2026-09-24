@@ -1,0 +1,487 @@
+{
+  "chapter": "guide_accessories",
+  "group": "exploration",
+  "act": "I",
+  "icon": "artifacts:cloud_in_a_bottle",
+  "title": {
+    "en_us": "Accessories and artifacts",
+    "es_es": "Accesorios y artefactos"
+  },
+  "subtitle": {
+    "en_us": "Curios slots, the Artifacts you find while exploring and the Aether's own accessory menu.",
+    "es_es": "Las ranuras de Curios, los Artifacts que encontrás explorando y el menú de accesorios propio del Aether."
+  },
+  "quests": [
+    {
+      "key": "acc_welcome",
+      "deps": [],
+      "type": "checkmark",
+      "layout": {
+        "x": 0,
+        "y": 0,
+        "size": 2.0,
+        "shape": "hexagon"
+      },
+      "en_us": [
+        "Extra slots, extra powers",
+        "Besides armor, ENTRELUMEN gives you accessory slots. Most mods use Curios: head, necklace, belt, hands, feet, back and more, added by the mods that need them. The Aether keeps its own accessory menu for rings, pendants, gloves, capes and shields. Eternal Starlight's accessories are not worn at all: they are combined into your equipment.\n\nThe richest source of accessories is the Artifacts mod: uncraftable trinkets found while exploring."
+      ],
+      "es_es": [
+        "Ranuras extra, poderes extra",
+        "Además de la armadura, ENTRELUMEN te da ranuras de accesorios. Casi todos los mods usan Curios: cabeza, collar, cinturón, manos, pies, espalda y más, según los mods que las necesitan. El Aether conserva su propio menú de accesorios para anillos, colgantes, guantes, capas y escudos. Los accesorios de Eternal Starlight ni siquiera se visten: se combinan con tu equipo.\n\nLa fuente más rica de accesorios es el mod Artifacts: chucherías que no se fabrican y se encuentran explorando."
+      ],
+      "sources": [
+        "jar:curios-neoforge-9.5.1+1.21.1.jar:assets/curios/lang/en_us.json",
+        "jar:aether-1.21.1-1.5.10-neoforge.jar:assets/aether/lang/en_us.json",
+        "jar:eternalstarlight-0.9.0+1.21.1+neoforge.jar:assets/eternal_starlight/lang/en_us.json",
+        "jar:artifacts-neoforge-13.2.3.jar:data/artifacts/curios/slots/belt.json",
+        "repo:docs/design/accessory-tooltip-compat.md"
+      ]
+    },
+    {
+      "key": "acc_curios",
+      "deps": [
+        "acc_welcome"
+      ],
+      "type": "checkmark",
+      "icon": "minecraft:armor_stand",
+      "layout": {
+        "x": 3,
+        "y": -3,
+        "size": 0.85,
+        "shape": "circle"
+      },
+      "en_us": [
+        "Open the Curios inventory",
+        "Use the Curios button in your inventory to open the slots. Each slot has a toggle to hide the item visually, and Artifacts adds cosmetic slots so you can show one trinket while wearing another.\n\nIf an item does not fit, it belongs to another slot type; hover the slot to read its name."
+      ],
+      "es_es": [
+        "Abrí el inventario de Curios",
+        "Usá el botón de Curios del inventario para abrir las ranuras. Cada ranura tiene un interruptor para ocultar el ítem a la vista, y Artifacts suma ranuras cosméticas para mostrar una chuchería mientras llevás puesta otra.\n\nSi un ítem no entra, es de otro tipo de ranura; pasá el mouse sobre la ranura para leer su nombre."
+      ],
+      "sources": [
+        "jar:curios-neoforge-9.5.1+1.21.1.jar:assets/curios/lang/en_us.json",
+        "jar:artifacts-neoforge-13.2.3.jar:data/artifacts/curios/slots/belt.json",
+        "jar:artifacts-neoforge-13.2.3.jar:assets/artifacts/lang/en_us.json"
+      ]
+    },
+    {
+      "key": "acc_find",
+      "deps": [
+        "acc_welcome"
+      ],
+      "type": "advancement",
+      "advancement": "artifacts:amateur_archaeologist",
+      "icon": "artifacts:crystal_heart",
+      "layout": {
+        "x": 3,
+        "y": 0,
+        "size": 1.0,
+        "shape": "circle"
+      },
+      "en_us": [
+        "Find an Artifact",
+        "Artifacts are never crafted. They are added to the loot of many structures: mineshafts, dungeons, desert and jungle temples, strongholds, Nether fortresses, bastions, End cities, ancient cities, shipwrecks, buried treasure, outposts, igloos, ruined portals and village chests, plus suspicious sand and gravel. YUNG's rebuilt temples, dungeons, strongholds and fortresses still use those vanilla chest tables, so they count.\n\nGrab your first one (\"Amateur Archaeologist\")."
+      ],
+      "es_es": [
+        "Encontrá un Artifact",
+        "Los Artifacts nunca se fabrican. Se agregan al botín de muchas estructuras: minas, mazmorras, templos del desierto y de la selva, fortalezas del End, fortalezas del Nether, bastiones, ciudades del End, ciudades antiguas, naufragios, tesoros enterrados, puestos de saqueadores, iglúes, portales en ruinas y cofres de aldea, además de la arena y la grava sospechosas. Los templos, mazmorras, fortalezas y fortalezas del Nether rehechas por YUNG's siguen usando esas tablas vanilla, así que cuentan.\n\nConseguí el primero («Amateur Archaeologist»)."
+      ],
+      "sources": [
+        "jar:artifacts-neoforge-13.2.3.jar:data/artifacts/loot_modifiers/inject/chests/simple_dungeon.json",
+        "jar:artifacts-neoforge-13.2.3.jar:data/artifacts/loot_modifiers/inject/archaeology/desert_well.json",
+        "jar:artifacts-neoforge-13.2.3.jar:data/artifacts/advancement/amateur_archaeologist.json",
+        "jar:YungsBetterDungeons-1.21.1-NeoForge-5.1.4.jar:data/betterdungeons"
+      ]
+    },
+    {
+      "key": "acc_mimic",
+      "deps": [
+        "acc_find"
+      ],
+      "type": "advancement",
+      "advancement": "artifacts:chest_slayer",
+      "icon": "artifacts:mimic_spawn_egg",
+      "layout": {
+        "x": 6,
+        "y": -3,
+        "size": 1.0,
+        "shape": "circle"
+      },
+      "en_us": [
+        "Campsites and Mimics",
+        "Artifacts also generates small underground campsites with barrels full of supplies and a chest with tools. Some of those chests are Mimics: they jump and bite when you open them. Kill one (\"Chest Slayer\"): every Mimic drops an artifact.\n\nIn this pack Lootr keeps structure loot per player, so each teammate gets their own roll from each container."
+      ],
+      "es_es": [
+        "Campamentos y Mímicos",
+        "Artifacts además genera campamentos subterráneos chicos con barriles llenos de provisiones y un cofre con herramientas. Algunos de esos cofres son Mímicos: saltan y muerden cuando los abrís. Matá uno («Chest Slayer»): cada Mímico suelta un artefacto.\n\nEn este pack Lootr guarda el botín de las estructuras por jugador, así que cada integrante del equipo tiene su propia tirada en cada contenedor."
+      ],
+      "sources": [
+        "jar:artifacts-neoforge-13.2.3.jar:data/artifacts/advancement/chest_slayer.json",
+        "jar:artifacts-neoforge-13.2.3.jar:data/artifacts/loot_table/entities/mimic.json",
+        "jar:artifacts-neoforge-13.2.3.jar:data/artifacts/loot_table/chests/campsite_chest.json",
+        "jar:artifacts-neoforge-13.2.3.jar:assets/artifacts/lang/en_us.json",
+        "jar:lootr-neoforge-1.21.1-1.11.38.124.jar:assets/lootr/lang/en_us.json"
+      ]
+    },
+    {
+      "key": "acc_move",
+      "deps": [
+        "acc_find"
+      ],
+      "type": "checkmark",
+      "icon": "artifacts:cloud_in_a_bottle",
+      "layout": {
+        "x": 6,
+        "y": 0,
+        "size": 0.85,
+        "shape": "circle"
+      },
+      "en_us": [
+        "Artifacts for moving",
+        "- Cloud in a Bottle: double jump.\n- Bunny Hoppers: higher jumps and softer landings.\n- Running Shoes: faster sprint and higher step while sprinting.\n- Aqua-Dashers: run across water and other fluids.\n- Flippers: much faster swimming.\n- Snowshoes: walk on powder snow and move faster on snow.\n- Steadfast Spikes: no knockback and less slipping on ice.\n- Helium Flamingo: \"swim\" through the air for a while."
+      ],
+      "es_es": [
+        "Artifacts para moverte",
+        "- Nube embotellada: doble salto.\n- Botas de conejo: saltos más altos y caídas más suaves.\n- Zapatos de deporte: correr más rápido y subir escalones al correr.\n- Botas de agua (Aqua-Dashers): correr sobre el agua y otros fluidos.\n- Aletas: nadar mucho más rápido.\n- Botas de nieve: caminar sobre nieve polvo y moverse más rápido en la nieve.\n- Garras antiempuje: sin empuje y menos resbalones en el hielo.\n- Flamenco de helio: «nadar» por el aire un rato."
+      ],
+      "sources": [
+        "jar:artifacts-neoforge-13.2.3.jar:artifacts/config/ItemConfigs$CloudInABottle.class",
+        "jar:artifacts-neoforge-13.2.3.jar:artifacts/config/ItemConfigs$BunnyHoppers.class",
+        "jar:artifacts-neoforge-13.2.3.jar:artifacts/config/ItemConfigs$RunningShoes.class",
+        "jar:artifacts-neoforge-13.2.3.jar:artifacts/config/ItemConfigs$AquaDashers.class",
+        "jar:artifacts-neoforge-13.2.3.jar:artifacts/config/ItemConfigs$Flippers.class",
+        "jar:artifacts-neoforge-13.2.3.jar:artifacts/config/ItemConfigs$Snowshoes.class",
+        "jar:artifacts-neoforge-13.2.3.jar:artifacts/config/ItemConfigs$SteadfastSpikes.class",
+        "jar:artifacts-neoforge-13.2.3.jar:artifacts/config/ItemConfigs$HeliumFlamingo.class",
+        "jar:artifacts-neoforge-13.2.3.jar:assets/artifacts/lang/en_us.json"
+      ]
+    },
+    {
+      "key": "acc_mining",
+      "deps": [
+        "acc_move"
+      ],
+      "type": "checkmark",
+      "icon": "artifacts:digging_claws",
+      "layout": {
+        "x": 9,
+        "y": -3,
+        "size": 0.85,
+        "shape": "circle"
+      },
+      "en_us": [
+        "Artifacts for mining and looting",
+        "- Digging Claws: faster mining and a higher base mining tier, even with your hand.\n- Pickaxe Heater: ores are smelted as you mine them.\n- Lucky Scarf: extra Fortune levels. Superstitious Hat: extra Looting levels.\n- Universal Attractor: pulls nearby items to you (toggle key).\n- Night Vision Goggles: see in the dark.\n- Onion Ring: Haste after eating.\n- Golden Hook: more experience from creatures."
+      ],
+      "es_es": [
+        "Artifacts para minar y saquear",
+        "- Garras de excavación: minás más rápido y con un nivel base de herramienta mayor, hasta con la mano.\n- Calentador de picos: los minerales salen fundidos al picarlos.\n- Bufanda de la suerte: niveles extra de Fortuna. Sombrero de la fortuna: niveles extra de Botín.\n- Imán universal: atrae los ítems cercanos (tiene tecla para alternar).\n- Gafas de visión nocturna: ver en la oscuridad.\n- Anillo de cebolla: Prisa minera después de comer.\n- Garfio dorado: más experiencia de las criaturas."
+      ],
+      "sources": [
+        "jar:artifacts-neoforge-13.2.3.jar:artifacts/config/ItemConfigs$DiggingClaws.class",
+        "jar:artifacts-neoforge-13.2.3.jar:artifacts/config/ItemConfigs$PickaxeHeater.class",
+        "jar:artifacts-neoforge-13.2.3.jar:artifacts/config/ItemConfigs$LuckyScarf.class",
+        "jar:artifacts-neoforge-13.2.3.jar:artifacts/config/ItemConfigs$SuperstitiousHat.class",
+        "jar:artifacts-neoforge-13.2.3.jar:artifacts/config/ItemConfigs$UniversalAttractor.class",
+        "jar:artifacts-neoforge-13.2.3.jar:artifacts/config/ItemConfigs$NightVisionGoggles.class",
+        "jar:artifacts-neoforge-13.2.3.jar:artifacts/config/ItemConfigs$OnionRing.class",
+        "jar:artifacts-neoforge-13.2.3.jar:artifacts/config/ItemConfigs$GoldenHook.class",
+        "jar:artifacts-neoforge-13.2.3.jar:assets/artifacts/lang/en_us.json"
+      ]
+    },
+    {
+      "key": "acc_combat",
+      "deps": [
+        "acc_move"
+      ],
+      "type": "checkmark",
+      "icon": "artifacts:power_glove",
+      "layout": {
+        "x": 9,
+        "y": 0,
+        "size": 0.85,
+        "shape": "circle"
+      },
+      "en_us": [
+        "Artifacts for fighting",
+        "- Power Glove: more damage. Feral Claws: faster attacks. Pocket Piston: more knockback.\n- Vampiric Glove: melee hits heal you.\n- Fire Gauntlet: melee hits set targets on fire. Withered Bracelet: chance to inflict Wither.\n- Crystal Heart: more maximum health.\n- Cross Necklace: longer invincibility after a hit. Panic Necklace: speed boost when hurt.\n- Thorn, Flame and Shock Pendants: strike back at attackers with damage, fire or lightning."
+      ],
+      "es_es": [
+        "Artifacts para pelear",
+        "- Guante del poder: más daño. Garras de rapidez: ataques más rápidos. Pistón de bolsillo: más empuje.\n- Guante vampírico: los golpes cuerpo a cuerpo te curan.\n- Guante de fuego: los golpes prenden fuego al objetivo. Pulsera descompuesta: chance de provocar Wither.\n- Corazón de cristal: más vida máxima.\n- Collar de cruz: invencibilidad más larga después de un golpe. Collar de pánico: velocidad cuando te lastiman.\n- Collares de espinas, de fuego y de rayos: devuelven el golpe con daño, fuego o rayo."
+      ],
+      "sources": [
+        "jar:artifacts-neoforge-13.2.3.jar:artifacts/config/ItemConfigs$PowerGlove.class",
+        "jar:artifacts-neoforge-13.2.3.jar:artifacts/config/ItemConfigs$FeralClaws.class",
+        "jar:artifacts-neoforge-13.2.3.jar:artifacts/config/ItemConfigs$PocketPiston.class",
+        "jar:artifacts-neoforge-13.2.3.jar:artifacts/config/ItemConfigs$VampiricGlove.class",
+        "jar:artifacts-neoforge-13.2.3.jar:artifacts/config/ItemConfigs$FireGauntlet.class",
+        "jar:artifacts-neoforge-13.2.3.jar:artifacts/config/ItemConfigs$WitheredBracelet.class",
+        "jar:artifacts-neoforge-13.2.3.jar:artifacts/config/ItemConfigs$CrystalHeart.class",
+        "jar:artifacts-neoforge-13.2.3.jar:artifacts/config/ItemConfigs$CrossNecklace.class",
+        "jar:artifacts-neoforge-13.2.3.jar:artifacts/config/ItemConfigs$PanicNecklace.class",
+        "jar:artifacts-neoforge-13.2.3.jar:artifacts/config/ItemConfigs$ThornPendant.class",
+        "jar:artifacts-neoforge-13.2.3.jar:assets/artifacts/lang/en_us.json"
+      ]
+    },
+    {
+      "key": "acc_survival",
+      "deps": [
+        "acc_combat"
+      ],
+      "type": "checkmark",
+      "icon": "artifacts:chorus_totem",
+      "layout": {
+        "x": 12,
+        "y": 0,
+        "size": 0.85,
+        "shape": "circle"
+      },
+      "en_us": [
+        "Artifacts that save you",
+        "- Chorus Totem: a fatal hit may teleport you away instead, with a cooldown.\n- Obsidian Skull: fire resistance after taking fire damage.\n- Strider Shoes: no damage from hot floors such as magma.\n- Antidote Vessel: shortens negative effects.\n- Snorkel: breathe underwater. Charm of Sinking: move freely underwater.\n- Kitty Slippers: creepers keep their distance and phantoms are repelled.\n- Umbrella: slows your fall and works as a shield."
+      ],
+      "es_es": [
+        "Artifacts que te salvan",
+        "- Tótem de coral (Chorus Totem): un golpe fatal puede teletransportarte en lugar de matarte, con tiempo de espera.\n- Calavera de obsidiana: resistencia al fuego después de quemarte.\n- Zapatillas ignífugas: sin daño de pisos calientes como el magma.\n- Frasco del antídoto: acorta los efectos negativos.\n- Gafas de buceo: respirar bajo el agua. Collar acuático: moverte libre bajo el agua.\n- Zapatillas de gatito: los creepers se alejan y los phantoms se espantan.\n- Paraguas: frena tu caída y sirve de escudo."
+      ],
+      "sources": [
+        "jar:artifacts-neoforge-13.2.3.jar:artifacts/config/ItemConfigs$ChorusTotem.class",
+        "jar:artifacts-neoforge-13.2.3.jar:artifacts/config/ItemConfigs$ObsidianSkull.class",
+        "jar:artifacts-neoforge-13.2.3.jar:artifacts/config/ItemConfigs$StriderShoes.class",
+        "jar:artifacts-neoforge-13.2.3.jar:artifacts/config/ItemConfigs$AntidoteVessel.class",
+        "jar:artifacts-neoforge-13.2.3.jar:artifacts/config/ItemConfigs$Snorkel.class",
+        "jar:artifacts-neoforge-13.2.3.jar:artifacts/config/ItemConfigs$CharmOfSinking.class",
+        "jar:artifacts-neoforge-13.2.3.jar:artifacts/config/ItemConfigs$KittySlippers.class",
+        "jar:artifacts-neoforge-13.2.3.jar:artifacts/config/ItemConfigs$Umbrella.class",
+        "jar:artifacts-neoforge-13.2.3.jar:assets/artifacts/lang/en_us.json"
+      ]
+    },
+    {
+      "key": "acc_life",
+      "deps": [
+        "acc_mining"
+      ],
+      "type": "checkmark",
+      "icon": "artifacts:villager_hat",
+      "layout": {
+        "x": 12,
+        "y": -3,
+        "size": 0.85,
+        "shape": "circle"
+      },
+      "en_us": [
+        "Everyday artifacts",
+        "- Villager Hat: better trade prices, great before Solsticio's shops.\n- Angler's Hat: extra Luck of the Sea and Lure. Cowboy Hat: faster mounts.\n- Drinking hats: eat and drink faster.\n- Rooted Boots: refill hunger while walking on grass.\n- Warp Drive: ender pearls are not consumed; they cost hunger instead.\n- Charm of Shrinking: become small (toggle key).\n- Scarf of Invisibility: turn invisible."
+      ],
+      "es_es": [
+        "Artifacts para todos los días",
+        "- Sombrero de paja (Villager Hat): mejores precios con los aldeanos, ideal antes de las tiendas de Solsticio.\n- Sombrero de pescador: Suerte marina y Atracción extra. Sombrero de vaquero: monturas más rápidas.\n- Gorros para beber: comés y tomás más rápido.\n- Botas con raíces: recuperás hambre caminando sobre el pasto.\n- Propulsor de movimiento (Warp Drive): las perlas de ender no se gastan; cuestan hambre.\n- Collar del enanismo: te volvés chiquito (tiene tecla para alternar).\n- Bufanda de la invisibilidad: te vuelve invisible."
+      ],
+      "sources": [
+        "jar:artifacts-neoforge-13.2.3.jar:artifacts/config/ItemConfigs$VillagerHat.class",
+        "jar:artifacts-neoforge-13.2.3.jar:artifacts/config/ItemConfigs$AnglersHat.class",
+        "jar:artifacts-neoforge-13.2.3.jar:artifacts/config/ItemConfigs$CowboyHat.class",
+        "jar:artifacts-neoforge-13.2.3.jar:artifacts/config/ItemConfigs$DrinkingHat.class",
+        "jar:artifacts-neoforge-13.2.3.jar:artifacts/config/ItemConfigs$RootedBoots.class",
+        "jar:artifacts-neoforge-13.2.3.jar:artifacts/config/ItemConfigs$WarpDrive.class",
+        "jar:artifacts-neoforge-13.2.3.jar:artifacts/config/ItemConfigs$CharmOfShrinking.class",
+        "jar:artifacts-neoforge-13.2.3.jar:artifacts/config/ItemConfigs$ScarfOfInvisibility.class",
+        "jar:artifacts-neoforge-13.2.3.jar:assets/artifacts/lang/en_us.json"
+      ]
+    },
+    {
+      "key": "acc_eat",
+      "deps": [
+        "acc_life"
+      ],
+      "type": "advancement",
+      "advancement": "artifacts:adventurous_eater",
+      "optional": true,
+      "icon": "artifacts:eternal_steak",
+      "layout": {
+        "x": 15,
+        "y": -3,
+        "size": 1.0,
+        "shape": "circle"
+      },
+      "en_us": [
+        "Adventurous Eater",
+        "Two artifacts are food that is never used up: the Everlasting Beef and the Eternal Steak, each with a cooldown. Eat one for \"Adventurous Eater\".\n\nA note for ENTRELUMEN: the pack rewards variety, so an endless steak is a safety net, not a diet."
+      ],
+      "es_es": [
+        "Comensal aventurero",
+        "Dos artefactos son comida que nunca se termina: el Filete crudo eterno y el Filete eterno, cada uno con su tiempo de espera. Comé uno para «Adventurous Eater».\n\nUna nota para ENTRELUMEN: el pack premia la variedad, así que un filete infinito es una red de seguridad, no una dieta."
+      ],
+      "sources": [
+        "jar:artifacts-neoforge-13.2.3.jar:artifacts/config/ItemConfigs$EverlastingBeef.class",
+        "jar:artifacts-neoforge-13.2.3.jar:artifacts/config/ItemConfigs$EternalSteak.class",
+        "jar:artifacts-neoforge-13.2.3.jar:data/artifacts/advancement/adventurous_eater.json",
+        "repo:docs/design/story-bible.md"
+      ]
+    },
+    {
+      "key": "acc_keys",
+      "deps": [
+        "acc_survival"
+      ],
+      "type": "checkmark",
+      "optional": true,
+      "icon": "artifacts:universal_attractor",
+      "layout": {
+        "x": 15,
+        "y": 0,
+        "size": 0.85,
+        "shape": "circle"
+      },
+      "en_us": [
+        "Toggles and keys",
+        "Several artifacts can be switched on and off: the Universal Attractor, the Night Vision Goggles, the Scarf of Invisibility, the Charms of Shrinking and Sinking, and the Helium Flamingo's flight. Their keys live in Controls, under the Artifacts category; assign the ones you use.\n\nA disabled attractor is handy inside your base, where you do not want every dropped item."
+      ],
+      "es_es": [
+        "Interruptores y teclas",
+        "Varios artefactos se prenden y apagan: el Imán universal, las Gafas de visión nocturna, la Bufanda de la invisibilidad, los Collares del enanismo y acuático, y el vuelo del Flamenco de helio. Sus teclas están en Controles, en la categoría Artifacts; asigná las que uses.\n\nUn imán apagado viene bien adentro de tu base, donde no querés juntar todo lo que se cae."
+      ],
+      "sources": [
+        "jar:artifacts-neoforge-13.2.3.jar:assets/artifacts/lang/en_us.json"
+      ]
+    },
+    {
+      "key": "acc_aether",
+      "deps": [
+        "acc_welcome"
+      ],
+      "type": "checkmark",
+      "icon": "aether:ice_ring",
+      "layout": {
+        "x": 3,
+        "y": 3,
+        "size": 0.85,
+        "shape": "circle"
+      },
+      "en_us": [
+        "The Aether accessory menu",
+        "The Aether uses its own accessory screen (key I, or its button in the inventory) with slots for rings, a pendant, gloves, a cape, a shield and miscellaneous accessories. Some highlights: Zanite rings and pendants (faster mining for a while), Ice rings and pendants (walk over water and lava), the Regeneration Stone, the Iron Bubble (breathe underwater), the Invisibility Cloak, capes such as the Agility Cape, and from Deep Aether the Cloud Cape (double jump) and the Aercloud Necklace."
+      ],
+      "es_es": [
+        "El menú de accesorios del Aether",
+        "El Aether usa su propia pantalla de accesorios (tecla I, o su botón en el inventario) con ranuras para anillos, un colgante, guantes, una capa, un escudo y accesorios varios. Algunos destacados: anillos y colgantes de zanita (picás más rápido un rato), anillos y colgantes de hielo (caminar sobre agua y lava), la Piedra de regeneración, la Burbuja de hierro (respirar bajo el agua), la Capa de invisibilidad, capas como la de Agilidad, y de Deep Aether la Capa de nube (doble salto) y el Collar de aeronube."
+      ],
+      "sources": [
+        "jar:aether-1.21.1-1.5.10-neoforge.jar:assets/aether/lang/en_us.json",
+        "jar:aether-1.21.1-1.5.10-neoforge.jar:com/aetherteam/aether/client/AetherKeys.class",
+        "jar:aether-1.21.1-1.5.10-neoforge.jar:data/aether/tags/item/accessories.json",
+        "jar:deep_aether-1.21.1-1.1.5.1.jar:assets/deep_aether/lang/en_us.json"
+      ]
+    },
+    {
+      "key": "acc_terra",
+      "deps": [
+        "acc_curios"
+      ],
+      "type": "item",
+      "item": "entrelumen:terra_arm",
+      "layout": {
+        "x": 6,
+        "y": 3,
+        "size": 1.0,
+        "shape": "circle"
+      },
+      "en_us": [
+        "Terra's Arm",
+        "ENTRELUMEN's own accessory: a cyborg arm Terra made \"to reach where the machine would not let her\". It is the reward of the act II Lost Workshop in the Atlas, and it also sits in a chest of the sunken workshop ruin. It goes in a Curios hands slot and increases your block reach; its tooltip shows by how much. Wearing two gives no extra reach."
+      ],
+      "es_es": [
+        "El Brazo de Terra",
+        "El accesorio propio de ENTRELUMEN: un brazo ciborg que Terra se hizo «para llegar adonde la máquina no la dejaba». Es la recompensa del Taller perdido del acto II en el Atlas, y también está en un cofre de la ruina del taller hundido. Va en una ranura de manos de Curios y aumenta tu alcance de bloques; el tooltip dice cuánto. Llevar dos no suma más."
+      ],
+      "sources": [
+        "repo:docs/design/heliodor-ruins.md",
+        "repo:companion/src/main/resources/data/curios/tags/item/hands.json",
+        "repo:companion/src/main/resources/data/entrelumen/campaign/projects.json",
+        "repo:companion/src/main/resources/data/entrelumen/loot_table/chests/ruin_act2_workshop.json"
+      ]
+    },
+    {
+      "key": "acc_starlight",
+      "deps": [
+        "acc_aether"
+      ],
+      "type": "checkmark",
+      "optional": true,
+      "icon": "eternal_starlight:orb_of_prophecy",
+      "layout": {
+        "x": 9,
+        "y": 3,
+        "size": 0.85,
+        "shape": "circle"
+      },
+      "en_us": [
+        "Starlight accessories go inside your gear",
+        "Eternal Starlight works differently: each accessory combines with a specific type of equipment, like putting items in a bundle, and the equipment gains the effect. How many fit depends on the equipment's accessory slots. The Glimmering Tablet tells you how to get each one."
+      ],
+      "es_es": [
+        "Los accesorios de Starlight van dentro del equipo",
+        "Eternal Starlight funciona distinto: cada accesorio se combina con un tipo de equipo concreto, como meter ítems en un saco, y el equipo gana el efecto. Cuántos entran depende de las ranuras de accesorio del equipo. La Glimmering Tablet te dice cómo conseguir cada uno."
+      ],
+      "sources": [
+        "jar:eternalstarlight-0.9.0+1.21.1+neoforge.jar:assets/eternal_starlight/lang/en_us.json"
+      ]
+    },
+    {
+      "key": "acc_pack",
+      "deps": [
+        "acc_welcome"
+      ],
+      "type": "checkmark",
+      "icon": "sophisticatedbackpacks:backpack",
+      "layout": {
+        "x": 0,
+        "y": 3,
+        "size": 1.0,
+        "shape": "rsquare"
+      },
+      "en_us": [
+        "Accessories in this pack",
+        "- Curios and the Aether's Accessories both run in this pack; the Aether keeps its own menu.\n- Artifacts registers its slots and cosmetic slots in Curios; mods such as Cataclysm, Occultism, Industrial Foregoing and Sophisticated Backpacks use Curios slots too (a backpack goes on your back).\n- Iron's Gems and Jewelry adds crafted rings and amulets at a jeweller's bench; see its own chapter."
+      ],
+      "es_es": [
+        "Los accesorios en este pack",
+        "- Curios y los Accessories del Aether conviven en este pack; el Aether conserva su propio menú.\n- Artifacts registra sus ranuras, y las cosméticas, en Curios; mods como Cataclysm, Occultism, Industrial Foregoing y Sophisticated Backpacks también usan ranuras de Curios (la mochila va en la espalda).\n- Iron's Gems and Jewelry suma anillos y amuletos que se fabrican en un banco de joyero; mirá su propio capítulo."
+      ],
+      "sources": [
+        "repo:docs/design/accessory-tooltip-compat.md",
+        "repo:docs/design/heliodor-ruins.md",
+        "repo:docs/design/arcane-expansion-family.md",
+        "jar:artifacts-neoforge-13.2.3.jar:data/artifacts/curios/slots/belt.json"
+      ]
+    },
+    {
+      "key": "acc_mastery",
+      "deps": [
+        "acc_keys",
+        "acc_terra"
+      ],
+      "type": "checkmark",
+      "icon": "artifacts:lucky_scarf",
+      "layout": {
+        "x": 18,
+        "y": 0,
+        "size": 2.25,
+        "shape": "pentagon"
+      },
+      "en_us": [
+        "A full set of trinkets",
+        "Every slot filled with something that fits your style: a jump, a heal, a magnet, a lucky scarf. Accessories are how two players with the same armor end up playing very differently."
+      ],
+      "es_es": [
+        "Un juego completo de chucherías",
+        "Cada ranura con algo que va con tu estilo: un salto, una curación, un imán, una bufanda de la suerte. Los accesorios son la razón por la que dos jugadores con la misma armadura terminan jugando muy distinto."
+      ],
+      "sources": [
+        "jar:artifacts-neoforge-13.2.3.jar:assets/artifacts/lang/en_us.json"
+      ]
+    }
+  ]
+}
