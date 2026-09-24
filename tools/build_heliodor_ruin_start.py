@@ -67,7 +67,8 @@ def _payload(out: io.BytesIO, tag: int, value) -> None:
         raise ValueError(tag)
 
 
-def build() -> bytes:
+def build_raw() -> bytes:
+    """The uncompressed NBT; --check compares this, since gzip bytes differ between zlib builds."""
     palette: list[tuple[str, tuple]] = []
     blocks = []
     for y in range(SIZE[1]):
@@ -101,9 +102,13 @@ def build() -> bytes:
     raw.write(struct.pack(">b", COMPOUND))
     _string(raw, "")
     _payload(raw, COMPOUND, root)
+    return raw.getvalue()
+
+
+def build() -> bytes:
     packed = io.BytesIO()
     with gzip.GzipFile(fileobj=packed, mode="wb", mtime=0, filename="") as stream:
-        stream.write(raw.getvalue())
+        stream.write(build_raw())
     return packed.getvalue()
 
 
@@ -111,13 +116,18 @@ def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--check", action="store_true")
     args = parser.parse_args()
-    data = build()
     if args.check:
-        if not TARGET.is_file() or TARGET.read_bytes() != data:
+        # Windows Python 3.14 compresses with zlib-ng, CI with the system zlib: compare the NBT itself.
+        try:
+            current = gzip.decompress(TARGET.read_bytes()) if TARGET.is_file() else None
+        except OSError:
+            current = None
+        if current != build_raw():
             print(f"{TARGET} is missing or stale; run without --check", file=sys.stderr)
             return 1
         print("heliodor_ruin_start.nbt matches its design")
         return 0
+    data = build()
     TARGET.parent.mkdir(parents=True, exist_ok=True)
     TARGET.write_bytes(data)
     print(f"wrote {TARGET.relative_to(ROOT)} ({len(data)} bytes)")
