@@ -1,0 +1,408 @@
+{
+  "chapter": "guide_farming_kitchen",
+  "group": "qol",
+  "act": "I",
+  "icon": "farmersdelight:cooking_pot",
+  "title": {
+    "en_us": "The Kitchen",
+    "es_es": "La cocina"
+  },
+  "subtitle": {
+    "en_us": "Pots, skillets and feasts, the Delights of other worlds, automated cooking with Create, and the pack's rations.",
+    "es_es": "Ollas, sartenes y banquetes, los Delights de otros mundos, la cocina automática con Create y las raciones del pack."
+  },
+  "quests": [
+    {
+      "key": "farming_kitchen_welcome",
+      "deps": [],
+      "type": "checkmark",
+      "layout": {
+        "x": 0,
+        "y": 0,
+        "size": 2.0,
+        "shape": "hexagon"
+      },
+      "en_us": [
+        "Cook Well, Travel Far",
+        "Good meals restore more, last longer and give effects. In ENTRELUMEN they matter twice: variety grows your hearts, and food that overflows a full bar becomes short buffs.\n\nThis chapter goes from the first cooking pot to a kitchen that cooks on its own, and ends with the rations the story asks for."
+      ],
+      "es_es": [
+        "Comé bien, viajá lejos",
+        "Las buenas comidas llenan más, duran más y dan efectos. En ENTRELUMEN importan dos veces: la variedad te da corazones, y la comida que desborda una barra llena se convierte en buffs cortos.\n\nEste capítulo va de la primera olla a una cocina que cocina sola, y termina con las raciones que pide la historia."
+      ],
+      "sources": [
+        "repo:docs/design/satiety-overflow.md",
+        "repo:docs/design/cooking-provisions-family.md"
+      ]
+    },
+    {
+      "key": "farming_kitchen_pot",
+      "deps": [
+        "farming_kitchen_welcome"
+      ],
+      "type": "item",
+      "item": "farmersdelight:cooking_pot",
+      "layout": {
+        "x": 3,
+        "y": -2,
+        "size": 1.25,
+        "shape": "circle"
+      },
+      "en_us": [
+        "The Cooking Pot",
+        "Place a &eCooking Pot&r over heat: a Stove, a campfire, fire, magma, lava or a lava cauldron. Put up to six ingredients in it and, for meals served in a bowl, a bowl in its container slot. It cooks several servings at once and keeps them; its tooltip shows how many.\n\nSoups and stews from the pot are the backbone of the pack's rations."
+      ],
+      "es_es": [
+        "La olla",
+        "Poné una &eOlla&r sobre calor: una Cocina, una fogata, fuego, magma, lava o un caldero con lava. Metele hasta seis ingredientes y, para las comidas que se sirven en cuenco, un cuenco en su casillero de recipiente. Cocina varias porciones a la vez y las guarda; su tooltip dice cuántas.\n\nLas sopas y guisos de la olla son la base de las raciones del pack."
+      ],
+      "sources": [
+        "jar:FarmersDelight-1.21.1-1.3.3.jar:assets/farmersdelight/lang/en_us.json",
+        "jar:FarmersDelight-1.21.1-1.3.3.jar:data/farmersdelight/tags/block/heat_sources.json",
+        "jar:FarmersDelight-1.21.1-1.3.3.jar:data/farmersdelight/tags/block/tray_heat_sources.json"
+      ]
+    },
+    {
+      "key": "farming_kitchen_soup",
+      "deps": [
+        "farming_kitchen_pot"
+      ],
+      "type": "item",
+      "item": "farmersdelight:vegetable_soup",
+      "layout": {
+        "x": 3,
+        "y": -4.5,
+        "size": 1.0,
+        "shape": "circle"
+      },
+      "en_us": [
+        "First Pot: Vegetable Soup",
+        "Cook a &eVegetable Soup&r in the pot: a carrot, a potato, a beetroot and a leafy green such as cabbage, served in a bowl. It is a solid meal and one half of the pack's first Ration Bundle.\n\nPress R on it in EMI if you want to check the exact ingredients."
+      ],
+      "es_es": [
+        "Primera olla: sopa de verduras",
+        "Cociná una &eSopa de verduras&r en la olla: una zanahoria, una papa, una remolacha y una verdura de hoja como el repollo, servida en cuenco. Es una comida sólida y la mitad del primer Fardo de raciones del pack.\n\nApretá R sobre ella en EMI si querés confirmar los ingredientes exactos."
+      ],
+      "sources": [
+        "jar:FarmersDelight-1.21.1-1.3.3.jar:data/farmersdelight/recipe/cooking/vegetable_soup.json",
+        "repo:docs/design/cooking-provisions-family.md"
+      ]
+    },
+    {
+      "key": "farming_kitchen_skillet_stove",
+      "deps": [
+        "farming_kitchen_pot"
+      ],
+      "type": "item",
+      "item": "farmersdelight:skillet",
+      "layout": {
+        "x": 6,
+        "y": -3.5,
+        "size": 1.0,
+        "shape": "circle"
+      },
+      "en_us": [
+        "Skillet and Stove",
+        "The &eStove&r is a heat source and also cooks food placed on top, like a campfire. The &eSkillet&r cooks on the go: stand near heat and hold food in your other hand; sneak to place it as a block.\n\nBoth are good early upgrades over the vanilla furnace for food."
+      ],
+      "es_es": [
+        "Sartén y cocina",
+        "La &eCocina&r es una fuente de calor y además cocina la comida puesta arriba, como una fogata. La &eSartén&r cocina al paso: parate cerca del calor con comida en la otra mano; agachate para colocarla como bloque.\n\nLas dos son buenas mejoras tempranas frente al horno de vanilla para la comida."
+      ],
+      "sources": [
+        "jar:FarmersDelight-1.21.1-1.3.3.jar:assets/farmersdelight/lang/en_us.json"
+      ]
+    },
+    {
+      "key": "farming_kitchen_feasts",
+      "deps": [
+        "farming_kitchen_pot"
+      ],
+      "type": "item",
+      "item": "farmersdelight:roast_chicken_block",
+      "layout": {
+        "x": 6,
+        "y": -0.5,
+        "size": 1.0,
+        "shape": "circle"
+      },
+      "en_us": [
+        "Feasts",
+        "Some meals are big enough to be placed down and shared: roast chicken, stuffed pumpkin, honey glazed ham and others. Place the feast and use it with a bowl to take a serving.\n\nFarmer's Delight effects to look for: &eNourishment&r stops the hunger bar from dropping (except when healing with saturation) and &eComfort&r gives natural regeneration however hungry you are."
+      ],
+      "es_es": [
+        "Banquetes",
+        "Algunas comidas son tan grandes que se apoyan y se comparten: pollo asado, calabaza rellena, jamón glaseado con miel y otras. Colocá el banquete y usalo con un cuenco para servirte una porción.\n\nEfectos de Farmer's Delight que conviene buscar: &eNutrición&r frena la barra de hambre (salvo al curarte con saturación) y &eConfort&r da regeneración natural sin importar el hambre."
+      ],
+      "sources": [
+        "jar:FarmersDelight-1.21.1-1.3.3.jar:assets/farmersdelight/lang/en_us.json"
+      ]
+    },
+    {
+      "key": "farming_kitchen_pams",
+      "deps": [
+        "farming_kitchen_welcome"
+      ],
+      "type": "item",
+      "item": "pamhc2foodcore:mixingbowlitem",
+      "layout": {
+        "x": 3,
+        "y": 2,
+        "size": 1.25,
+        "shape": "circle"
+      },
+      "en_us": [
+        "Pam's Tools and Other Cuisines",
+        "&ePam's HarvestCraft Food Core&r cooks about 180 foods from familiar ingredients using reusable tools crafted once: juicer, mixing bowl, pot, skillet, saucepan, bakeware, cutting board and grinder.\n\n&eHerbs and Harvest&r adds cheese, herbs and sandwiches, and &eSushi Go Crafting&r a sushi-rolling station with combined food effects. Every new dish counts for Spice of Life."
+      ],
+      "es_es": [
+        "Las herramientas de Pam's y otras cocinas",
+        "&ePam's HarvestCraft Food Core&r cocina unas 180 comidas con ingredientes conocidos usando herramientas reutilizables que se fabrican una vez: exprimidor, bol de mezcla, olla, sartén, cacerola, fuente de horno, tabla de cortar y moledor.\n\n&eHerbs and Harvest&r agrega quesos, hierbas y sándwiches, y &eSushi Go Crafting&r una estación para armar sushi con efectos de comida combinados. Cada plato nuevo cuenta para Spice of Life."
+      ],
+      "sources": [
+        "repo:docs/design/cooking-provisions-family.md",
+        "jar:pamhc2foodcore-NEOFORGE-1.21.1-1.0.4.jar:META-INF/neoforge.mods.toml"
+      ]
+    },
+    {
+      "key": "farming_kitchen_delights",
+      "deps": [
+        "farming_kitchen_pams"
+      ],
+      "type": "item",
+      "item": "aethersdelight:blue_berry_muffin",
+      "layout": {
+        "x": 6,
+        "y": 2,
+        "size": 1.0,
+        "shape": "circle"
+      },
+      "en_us": [
+        "Delights of Other Worlds",
+        "Four Farmer's Delight add-ons follow the dimensions of the story: &eMy Nether's Delight&r, &eTwilight's Flavor and Delight&r, &eAether's Delight&r and &eEnd's Delight&r. Each turns that world's creatures and plants into meals cooked with the same pot and knife.\n\nBring a knife on expeditions: new ingredients wait in each dimension."
+      ],
+      "es_es": [
+        "Delights de otros mundos",
+        "Cuatro complementos de Farmer's Delight siguen las dimensiones de la historia: &eMy Nether's Delight&r, &eTwilight's Flavor and Delight&r, &eAether's Delight&r y &eEnd's Delight&r. Cada uno convierte las criaturas y plantas de ese mundo en comidas hechas con la misma olla y el mismo cuchillo.\n\nLlevá un cuchillo en las expediciones: en cada dimensión esperan ingredientes nuevos."
+      ],
+      "sources": [
+        "repo:docs/design/mod-pingpong.md"
+      ]
+    },
+    {
+      "key": "farming_kitchen_kitchens",
+      "deps": [
+        "farming_kitchen_delights"
+      ],
+      "type": "item",
+      "item": "cookingforblockheads:cooking_table",
+      "optional": true,
+      "layout": {
+        "x": 9,
+        "y": 3.5,
+        "size": 1.0,
+        "shape": "circle"
+      },
+      "en_us": [
+        "Kitchen Furniture That Cooks",
+        "Two furniture mods cook too: the &eCooking for Blockheads&r kitchen crafts any food from what its fridges and counters hold, and &eRefurbished Furniture&r has stoves, ovens, freezers, grills and frying pans with their own recipes.\n\nThe Furniture chapter explains both."
+      ],
+      "es_es": [
+        "Muebles de cocina que cocinan",
+        "Dos mods de muebles también cocinan: la cocina de &eCooking for Blockheads&r fabrica cualquier comida con lo que tienen sus heladeras y mesadas, y &eRefurbished Furniture&r tiene cocinas, hornos, freezers, parrillas y sartenes con recetas propias.\n\nEl capítulo de Muebles explica los dos."
+      ],
+      "sources": [
+        "jar:cookingforblockheads-neoforge-1.21.1-21.1.24.jar:assets/cookingforblockheads/lang/en_us.json",
+        "jar:refurbished_furniture-neoforge-1.21.1-1.0.22.jar:assets/refurbished_furniture/lang/en_us.json"
+      ]
+    },
+    {
+      "key": "farming_kitchen_central_kitchen",
+      "deps": [
+        "farming_kitchen_feasts"
+      ],
+      "type": "checkmark",
+      "icon": "create:mechanical_arm",
+      "layout": {
+        "x": 9,
+        "y": -2,
+        "size": 1.25,
+        "shape": "circle"
+      },
+      "en_us": [
+        "Create: Central Kitchen",
+        "Once your Create workshop runs, &eCreate: Central Kitchen&r lets Create run your kitchen: mechanical arms and packagers feed the real cooking pot, skillet and stove, cutting boards and feasts. A &eblaze burner&r works as heat for the pot.\n\nIt also lets Farmer's Delight heat sources warm Create's boilers."
+      ],
+      "es_es": [
+        "Create: Central Kitchen",
+        "Cuando tu taller de Create ya anda, &eCreate: Central Kitchen&r deja que Create maneje tu cocina: los brazos mecánicos y los empaquetadores alimentan la olla real, la sartén y la cocina, las tablas de cortar y los banquetes. Un &equemador de blaze&r sirve como calor para la olla.\n\nAdemás, las fuentes de calor de Farmer's Delight calientan las calderas de Create."
+      ],
+      "sources": [
+        "repo:docs/design/mod-pingpong.md",
+        "jar:create-central-kitchen-2.6.2.jar:META-INF/neoforge.mods.toml"
+      ]
+    },
+    {
+      "key": "farming_kitchen_slice",
+      "deps": [
+        "farming_kitchen_central_kitchen"
+      ],
+      "type": "item",
+      "item": "sliceanddice:slicer",
+      "layout": {
+        "x": 12,
+        "y": -3.5,
+        "size": 1.0,
+        "shape": "circle"
+      },
+      "en_us": [
+        "Slice and Dice",
+        "&eCreate Slice and Dice&r adds the &eSlicer&r: a kinetic machine that runs cutting-board recipes with any tool you put in it. It also adds &esprinklers&r that spread water, liquid fertilizer, potions or experience fluid over an area, and the &eliquid fertilizer&r itself.\n\nPair a slicer with a belt and your onions chop themselves."
+      ],
+      "es_es": [
+        "Slice and Dice",
+        "&eCreate Slice and Dice&r agrega la &eRebanadora&r: una máquina cinética que hace las recetas de la tabla de cortar con la herramienta que le pongas. También agrega &easpersores&r que esparcen agua, fertilizante líquido, pociones o fluido de experiencia sobre un área, y el propio &efertilizante líquido&r.\n\nPoné una rebanadora con una cinta y las cebollas se pican solas."
+      ],
+      "sources": [
+        "repo:docs/design/mod-pingpong.md",
+        "repo:pack/config/sliceanddice-common.toml"
+      ]
+    },
+    {
+      "key": "farming_kitchen_one_route",
+      "deps": [
+        "farming_kitchen_central_kitchen"
+      ],
+      "type": "checkmark",
+      "icon": "farmersdelight:cutting_board",
+      "layout": {
+        "x": 12,
+        "y": -0.5,
+        "size": 1.0,
+        "shape": "pentagon"
+      },
+      "en_us": [
+        "Pack Change: Each Recipe Once",
+        "Central Kitchen and Slice and Dice overlapped in two jobs, so the pack kept one route for each: pot recipes are automated by Central Kitchen (Slice and Dice's basin cooking is off) and cutting-board recipes by the Slicer (Central Kitchen's saw and deployer versions are off).\n\nIn EMI each recipe appears once more instead of three or four times. Anything that seems missing is on the other machine."
+      ],
+      "es_es": [
+        "Cambio del pack: cada receta una vez",
+        "Central Kitchen y Slice and Dice se superponían en dos trabajos, así que el pack dejó una ruta para cada uno: las recetas de la olla las automatiza Central Kitchen (la cocción en cuenco de Slice and Dice está apagada) y las de la tabla de cortar, la Rebanadora (las versiones con sierra y desplegador de Central Kitchen están apagadas).\n\nEn EMI cada receta aparece una sola vez más en lugar de tres o cuatro. Si algo parece faltar, está en la otra máquina."
+      ],
+      "sources": [
+        "repo:pack/config/sliceanddice-common.toml",
+        "repo:pack/config/create_central_kitchen-common.toml",
+        "repo:docs/design/mod-pingpong.md"
+      ]
+    },
+    {
+      "key": "farming_kitchen_ration",
+      "deps": [
+        "farming_kitchen_delights",
+        "farming_kitchen_soup"
+      ],
+      "type": "item",
+      "item": "entrelumen:ration_bundle",
+      "layout": {
+        "x": 12,
+        "y": 2.5,
+        "size": 1.5,
+        "shape": "hexagon"
+      },
+      "en_us": [
+        "Rations for the Road",
+        "The &eRation Bundle&r is ENTRELUMEN's travel food and an act II delivery. Three shapeless recipes make one:\n\n- two Vegetable Soups and two cooked Aquaculture fish fillets;\n- two Vegetable Soups and two Pam's chicken dinners;\n- two Fish Stews and two Herbs and Harvest beef cheddar sandwiches.\n\nThe soup and stew bowls come back to you. Rations are also needed later, for the Horizon Chart and the Ark's habitation."
+      ],
+      "es_es": [
+        "Raciones para el camino",
+        "El &eFardo de raciones&r es la comida de viaje de ENTRELUMEN y una entrega del acto II. Tres recetas sin forma lo hacen:\n\n- dos Sopas de verduras y dos filetes de pescado cocidos de Aquaculture;\n- dos Sopas de verduras y dos cenas de pollo de Pam's;\n- dos Guisos de pescado y dos sándwiches de carne y cheddar de Herbs and Harvest.\n\nLos cuencos de la sopa y del guiso vuelven a vos. Las raciones hacen falta también más adelante, para la Carta de Horizonte y la habitabilidad del Arca."
+      ],
+      "sources": [
+        "repo:docs/design/cooking-provisions-family.md",
+        "repo:content/integration-design.json",
+        "repo:pack/kubejs/server_scripts/entrelumen_cooking_provisions.js"
+      ]
+    },
+    {
+      "key": "farming_kitchen_contract",
+      "deps": [
+        "farming_kitchen_ration"
+      ],
+      "type": "item",
+      "item": "entrelumen:habitation_contract",
+      "optional": true,
+      "layout": {
+        "x": 15,
+        "y": 2.5,
+        "size": 1.0,
+        "shape": "pentagon"
+      },
+      "en_us": [
+        "The Habitation Contract",
+        "In act V the Ark needs a place worth returning to. The &eHabitation Contract&r takes two Fish Stews, two Mixed Salads, an AE2 Calculation Processor and two Ration Bundles.\n\nA kitchen that cooks on its own, fed by an AE2 network, makes it painless."
+      ],
+      "es_es": [
+        "El Contrato de Habitabilidad",
+        "En el acto V el Arca necesita un lugar al que dé ganas volver. El &eContrato de Habitabilidad&r pide dos Guisos de pescado, dos Ensaladas mixtas, un Procesador de cálculo de AE2 y dos Fardos de raciones.\n\nUna cocina que cocina sola, alimentada por una red AE2, lo vuelve indoloro."
+      ],
+      "sources": [
+        "repo:content/integration-design.json",
+        "repo:docs/design/ae2-autocrafting-cases.md"
+      ]
+    },
+    {
+      "key": "farming_kitchen_tip_variety",
+      "deps": [
+        "farming_kitchen_slice",
+        "farming_kitchen_one_route"
+      ],
+      "type": "item",
+      "item": "minecraft:golden_carrot",
+      "optional": true,
+      "layout": {
+        "x": 15,
+        "y": -2,
+        "size": 1.0,
+        "shape": "diamond"
+      },
+      "en_us": [
+        "Tip: Variety Is Health",
+        "Spice of Life: Carrot Edition gives you an extra heart at &e10, 25, 45, 70 and 100&r different foods eaten, five in total, and never takes them back on death. With four crop mods, Pam's, the Delights and sushi, the list is long: try one new dish every day.\n\nThe Satiety chapter explains the milestones and the buffs from overflowing food."
+      ],
+      "es_es": [
+        "Truco: la variedad es salud",
+        "Spice of Life: Carrot Edition te da un corazón extra al comer &e10, 25, 45, 70 y 100&r comidas distintas, cinco en total, y nunca te los quita al morir. Con cuatro mods de cultivos, Pam's, los Delights y el sushi, la lista es larga: probá un plato nuevo por día.\n\nEl capítulo de Saciedad explica los hitos y los buffs de la comida que desborda."
+      ],
+      "sources": [
+        "repo:pack/defaultconfigs/solcarrot-server.toml",
+        "repo:docs/design/qol-functional-decor-family.md"
+      ]
+    },
+    {
+      "key": "farming_kitchen_close",
+      "deps": [
+        "farming_kitchen_tip_variety",
+        "farming_kitchen_contract"
+      ],
+      "type": "checkmark",
+      "icon": "minecraft:cake",
+      "layout": {
+        "x": 18,
+        "y": 0,
+        "size": 2.0,
+        "shape": "hexagon"
+      },
+      "en_us": [
+        "A Kitchen With a Plan",
+        "Pot, skillet, feasts, four worlds of Delights, an automated Create kitchen and the rations the story needs.\n\nThe next chapter, Satiety, shows what happens when you eat more than you need."
+      ],
+      "es_es": [
+        "Una cocina con plan",
+        "Olla, sartén, banquetes, cuatro mundos de Delights, una cocina automática con Create y las raciones que necesita la historia.\n\nEl capítulo siguiente, Saciedad, muestra qué pasa cuando comés más de lo que necesitás."
+      ],
+      "sources": [
+        "repo:content/guides/README.md"
+      ]
+    }
+  ]
+}
