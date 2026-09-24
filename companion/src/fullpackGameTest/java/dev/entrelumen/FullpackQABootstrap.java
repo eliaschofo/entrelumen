@@ -66,6 +66,7 @@ public final class FullpackQABootstrap {
       GameTestRegistry.register(StartWithoutBloatFullpackGameTests.class);
       GameTestRegistry.register(TerraArmFullpackGameTests.class);
       GameTestRegistry.register(ModPingpongFullpackGameTests.class);
+      GameTestRegistry.register(ModPingpongRound4FullpackGameTests.class);
       GameTestRegistry.register(SolsticioFullpackGameTests.class);
       // The compass and gameplay runtime suites also run on the full pack (merged 24 September).
       GameTestRegistry.register(RuntimeGameTestsCompass.class);
@@ -81,6 +82,7 @@ public final class FullpackQABootstrap {
           NatureRestorationGameTests.class, ArkChartsGameTests.class, ApotheosisGameTests.class,
           AltarFullpackGameTests.class, AltarEffectsFullpackGameTests.class, LuminousGameTests.class,
           StartWithoutBloatFullpackGameTests.class, TerraArmFullpackGameTests.class, ModPingpongFullpackGameTests.class,
+          ModPingpongRound4FullpackGameTests.class,
           RuntimeGameTestsCompass.class, RuntimeGameTestsGameplay.class, SolsticioFullpackGameTests.class))
         for (var method : owner.getDeclaredMethods())
           if (method.isAnnotationPresent(GameTest.class))
