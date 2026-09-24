@@ -191,6 +191,9 @@ public final class CompassLocator {
     /** A predicted start whose chunk still has to reach {@code STRUCTURE_STARTS}. */
     private record Check(Group group, Holder<Structure> structure) {}
 
+    /** One presence check still to run at a scanned candidate chunk. */
+    private record Presence(Group group, Holder<Structure> structure, ChunkPos chunk, int ring) {}
+
     /**
      * One chunk the search asked for through its own ticket. Worldgen threads bring it to
      * {@code STRUCTURE_STARTS}; the server thread only polls the future, never waits on it.
@@ -215,6 +218,8 @@ public final class CompassLocator {
     /** Predicted chunks waiting for a free ticket, in scan order, and the ones in flight. */
     private final Long2ObjectLinkedOpenHashMap<Load> waiting = new Long2ObjectLinkedOpenHashMap<>();
     private final Long2ObjectLinkedOpenHashMap<Load> inFlight = new Long2ObjectLinkedOpenHashMap<>();
+    /** Presence checks of the current candidate chunk; a tag like #village has several. */
+    private final ArrayDeque<Presence> checks = new ArrayDeque<>();
     private int stopRing = Integer.MAX_VALUE;
     private boolean scanned;
     private int timeouts;
@@ -281,9 +286,16 @@ public final class CompassLocator {
         acquire(load, now);
         inFlight.put(load.chunk.toLong(), load);
       }
-      // 3. Scan further while the budget lasts. Each jigsaw prediction is its own yield point,
-      // so one step overruns the budget by at most one of them.
-      while (!scanned && System.nanoTime() < deadline && waiting.size() < MAX_WAITING) {
+      // 3. Scan further while the budget lasts. Each presence check (a jigsaw prediction can take
+      // tens of milliseconds) is its own yield point, so one step overruns the budget by at most one.
+      while (!scanned && waiting.size() < MAX_WAITING) {
+        Presence next = checks.poll();
+        if (next != null) {
+          if (next.ring() <= stopRing) check(next, structures);
+          if (System.nanoTime() >= deadline) break;
+          continue;
+        }
+        if (System.nanoTime() >= deadline) break;
         if (!cursor.next(offset) || cursor.ring() > stopRing) {
           scanned = true;
           break;
@@ -298,24 +310,27 @@ public final class CompassLocator {
           if (!candidate) continue;
           candidates++;
           ChunkPos chunk = new ChunkPos(x, z);
-          for (Holder<Structure> holder : group.structures()) {
-            long checkStart = System.nanoTime();
-            StructureCheckResult presence =
-                structures.checkStructurePresence(chunk, holder.value(), group.placement(), false);
-            long took = System.nanoTime() - checkStart;
-            if (took >= SLOW_CHECK_NANOS)
-              LOGGER.info("Compass search {}: presence check of {} at {} took {} ms ({})", description,
-                  holder.unwrapKey().map(k -> k.location().toString()).orElse("?"), chunk,
-                  took / 1_000_000, presence);
-            if (presence == StructureCheckResult.START_PRESENT)
-              found(group.placement().getLocatePos(chunk), cursor.ring());
-            else if (presence == StructureCheckResult.CHUNK_LOAD_NEEDED)
-              // A prediction is not proof: shared structure sets pick one member per chunk.
-              enqueue(chunk, cursor.ring()).checks.add(new Check(group, holder));
-          }
+          for (Holder<Structure> holder : group.structures())
+            checks.add(new Presence(group, holder, chunk, cursor.ring()));
         }
       }
       return scanned && inFlight.isEmpty() && waiting.values().stream().allMatch(l -> l.ring > stopRing);
+    }
+
+    private void check(Presence next, net.minecraft.world.level.StructureManager structures) {
+      long checkStart = System.nanoTime();
+      StructureCheckResult presence = structures.checkStructurePresence(
+          next.chunk(), next.structure().value(), next.group().placement(), false);
+      long took = System.nanoTime() - checkStart;
+      if (took >= SLOW_CHECK_NANOS)
+        LOGGER.info("Compass search {}: presence check of {} at {} took {} ms ({})", description,
+            next.structure().unwrapKey().map(k -> k.location().toString()).orElse("?"), next.chunk(),
+            took / 1_000_000, presence);
+      if (presence == StructureCheckResult.START_PRESENT)
+        found(next.group().placement().getLocatePos(next.chunk()), next.ring());
+      else if (presence == StructureCheckResult.CHUNK_LOAD_NEEDED)
+        // A prediction is not proof: shared structure sets pick one member per chunk.
+        enqueue(next.chunk(), next.ring()).checks.add(new Check(next.group(), next.structure()));
     }
 
     private Load enqueue(ChunkPos chunk, int ring) {
@@ -387,6 +402,7 @@ public final class CompassLocator {
       inFlight.values().forEach(this::release);
       inFlight.clear();
       waiting.clear();
+      checks.clear();
     }
 
     @Override
