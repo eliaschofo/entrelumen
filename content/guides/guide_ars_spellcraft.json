@@ -1,0 +1,687 @@
+{
+ "chapter": "guide_ars_spellcraft",
+ "group": "magic",
+ "act": "II",
+ "icon": "ars_nouveau:novice_spell_book",
+ "title": {
+  "en_us": "Ars Nouveau I: Spellcraft",
+  "es_es": "Ars Nouveau I: hechizos"
+ },
+ "subtitle": {
+  "en_us": "Book, glyphs and spell grammar: from the first Projectile to the Archmage book.",
+  "es_es": "Grimorio, glifos y gramática: del primer Proyectil al grimorio de Archimago."
+ },
+ "quests": [
+  {
+   "key": "arsspell_welcome",
+   "deps": [],
+   "type": "checkmark",
+   "icon": "ars_nouveau:novice_spell_book",
+   "layout": {
+    "x": 0,
+    "y": 0,
+    "size": 2.0,
+    "shape": "hexagon"
+   },
+   "en_us": [
+    "Ars Nouveau: magic you write",
+    "Ars Nouveau is the pack's first real spell system. You build spells from glyphs, cast them from a spell book with mana, and later power machines, rituals and helpers with Source.\n\nIn ENTRELUMEN it opens in Act II. The Living Matrix you deliver to the Atlas is made from magebloom fiber and Source Gems, so learning Ars is not optional for the story, only how deep you go. This chapter covers the book, glyphs and spell grammar. The next three cover Source, rituals and familiars, and automation."
+   ],
+   "es_es": [
+    "Ars Nouveau: magia que se escribe",
+    "Ars Nouveau es el primer sistema de hechizos de verdad del pack. Armás hechizos con glifos, los lanzás desde un grimorio con maná y más adelante alimentás máquinas, rituales y ayudantes con Fuente.\n\nEn ENTRELUMEN se abre en el acto II. La Matriz viva que entregás en el Atlas lleva fibra de magebloom y gemas fuente, así que aprender Ars no es opcional para la historia; lo opcional es cuánto profundizás. Este capítulo cubre el grimorio, los glifos y la gramática de los hechizos. Los tres siguientes, la Fuente, los rituales y familiares, y la automatización."
+   ],
+   "sources": [
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:assets/ars_nouveau/lang/en_us.json#ars_nouveau.page1.spell_casting",
+    "repo:pack/kubejs/server_scripts/entrelumen_integration_recipes.js#living_workshop",
+    "repo:docs/design/mod-integration.md"
+   ]
+  },
+  {
+   "key": "arsspell_notebook",
+   "deps": [
+    "arsspell_welcome"
+   ],
+   "type": "item",
+   "item": "ars_nouveau:worn_notebook",
+   "optional": true,
+   "layout": {
+    "x": 0,
+    "y": -3,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "The Worn Notebook",
+    "Craft a Worn Notebook from a book and one lapis lazuli. It is Ars Nouveau's own guide: every glyph, ritual, machine and creature has a page, with the recipe beside it.\n\nENTRELUMEN starts every player with an empty inventory, so the notebook is not handed out when you join (spawnBook = false in the pack's Ars config). It is still fully craftable, and cheap. Keep it in a chest near your magic corner."
+   ],
+   "es_es": [
+    "El Cuaderno gastado",
+    "Crafteá el Cuaderno gastado (Worn Notebook) con un libro y un lapislázuli. Es la guía propia de Ars Nouveau: cada glifo, ritual, máquina y criatura tiene su página, con la receta al lado.\n\nENTRELUMEN arranca a todos con el inventario vacío, así que el cuaderno no se regala al entrar (spawnBook = false en la config de Ars del pack). Se sigue crafteando y es barato. Dejalo en un cofre cerca de tu rincón mágico."
+   ],
+   "sources": [
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:data/ars_nouveau/recipe/worn_notebook.json",
+    "repo:pack/config/ars_nouveau-common.toml"
+   ]
+  },
+  {
+   "key": "arsspell_book",
+   "deps": [
+    "arsspell_welcome"
+   ],
+   "type": "item",
+   "item": "ars_nouveau:novice_spell_book",
+   "layout": {
+    "x": 3,
+    "y": 0,
+    "size": 1.25,
+    "shape": "square"
+   },
+   "en_us": [
+    "A Novice Spell Book",
+    "Craft a Novice Spell Book: shapeless, one book plus an iron shovel, pickaxe, axe and sword. Yes, the four tools are consumed.\n\nThe book is your casting tool and your spell library. It holds several spell slots, stores the glyphs you learn and lets you cast Tier 1 glyphs. Later you upgrade the same book, and every learned glyph comes along."
+   ],
+   "es_es": [
+    "Un Grimorio de Novato",
+    "Crafteá el Grimorio de Novato: sin forma, un libro más una pala, un pico, un hacha y una espada de hierro. Sí, se gastan las cuatro herramientas.\n\nEl grimorio es tu herramienta para lanzar y tu biblioteca de hechizos. Tiene varias ranuras de hechizo, guarda los glifos que aprendés y lanza glifos de nivel 1. Más adelante mejorás este mismo libro y todos los glifos aprendidos pasan al nuevo."
+   ],
+   "sources": [
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:data/ars_nouveau/recipe/novice_spell_book.json",
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:assets/ars_nouveau/lang/en_us.json#ars_nouveau.page1.spell_books"
+   ]
+  },
+  {
+   "key": "arsspell_casting",
+   "deps": [
+    "arsspell_book"
+   ],
+   "type": "checkmark",
+   "layout": {
+    "x": 6,
+    "y": 0,
+    "size": 1.0,
+    "shape": "circle"
+   },
+   "en_us": [
+    "Keys and your first cast",
+    "Hold the book in your hotbar and press C to open spellcrafting. Click glyphs to add them to the bottom row, click them again to remove them, name the spell and save it in a slot. Right-click to cast the selected slot.\n\nA new book already knows five starter glyphs: Projectile, Touch, Self, Break and Harm. Try Projectile then Break: it breaks the block the bolt hits. Switch slots with the radial menu, which ENTRELUMEN moves to F6 (Ars ships it on V, where Ultimine lives in this pack)."
+   ],
+   "es_es": [
+    "Teclas y tu primer lanzamiento",
+    "Con el grimorio en la barra rápida, apretá C para abrir la creación de hechizos. Hacé clic en los glifos para sumarlos a la fila de abajo, clic otra vez para sacarlos, ponele nombre y guardalo en una ranura. Clic derecho lanza la ranura elegida.\n\nUn grimorio nuevo ya sabe cinco glifos iniciales: Proyectil, Tocar, Ser (Self), Romper y Dañar. Probá Proyectil y después Romper: rompe el bloque donde pega el proyectil. Cambiás de ranura con el menú radial, que ENTRELUMEN mueve a F6 (Ars lo trae en V, que en este pack es de Ultimine)."
+   ],
+   "sources": [
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:assets/ars_nouveau/lang/en_us.json#ars_nouveau.page1.introduction_to_spellcrafting",
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:assets/ars_nouveau/lang/en_us.json#ars_nouveau.page1.spellcasting",
+    "https://github.com/baileyholl/Ars-Nouveau (server config generated by 5.13.1: config/ars_nouveau-server.toml, config/ars_nouveau/glyph_*.toml)",
+    "repo:pack/config/entrelumen/client-preset.json#key_key.ars_nouveau.selection_hud",
+    "repo:docs/design/keybinding-review.md"
+   ]
+  },
+  {
+   "key": "arsspell_grammar",
+   "deps": [
+    "arsspell_casting"
+   ],
+   "type": "checkmark",
+   "layout": {
+    "x": 9,
+    "y": 0,
+    "size": 1.0,
+    "shape": "circle"
+   },
+   "en_us": [
+    "Forms, effects, augments",
+    "Every spell reads left to right. It starts with one Form, which decides how it travels: Projectile flies, Touch hits what you look at up close, Self hits you. Then come Effects, which decide what happens: Break, Harm, Light and so on. Augments sit right after the glyph they modify: Amplify makes it stronger, AOE wider, Extend Time longer.\n\nOrder matters. An augment only affects the glyph to its left. A spell has a maximum length, and the book's tier caps which glyph tiers you can use: Tier 1 in the Novice book, 2 in the Mage's, 3 in the Archmage's."
+   ],
+   "es_es": [
+    "Formas, efectos y aumentos",
+    "Todo hechizo se lee de izquierda a derecha. Empieza con una Forma, que decide cómo viaja: Proyectil vuela, Tocar pega en lo que mirás de cerca, Ser (Self) te afecta a vos. Después vienen los Efectos, que deciden qué pasa: Romper, Dañar, Luz, etcétera. Los Aumentos van justo después del glifo que modifican: Amplificar lo hace más fuerte, Área de efecto más ancho, Extender tiempo más largo.\n\nEl orden importa. Un aumento sólo afecta al glifo de su izquierda. El hechizo tiene un largo máximo y el nivel del grimorio limita qué glifos podés usar: nivel 1 en el de Novato, 2 en el de Mago, 3 en el de Archimago."
+   ],
+   "sources": [
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:assets/ars_nouveau/lang/en_us.json#ars_nouveau.page1.introduction_to_glyphs",
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:assets/ars_nouveau/patchouli_books/worn_notebook/en_us/categories/glyphs_1.json",
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:assets/ars_nouveau/lang/en_us.json#ars_nouveau.page1.spell_books"
+   ]
+  },
+  {
+   "key": "arsspell_mana",
+   "deps": [
+    "arsspell_casting"
+   ],
+   "type": "checkmark",
+   "layout": {
+    "x": 6,
+    "y": 3,
+    "size": 1.0,
+    "shape": "circle"
+   },
+   "en_us": [
+    "Mana, and why learning pays",
+    "Casting spends mana, shown as the bar at the bottom left. It refills over time. The cost is the sum of every glyph and augment in the spell, so a long spell is expensive.\n\nEvery new glyph you learn raises your maximum mana and regeneration a little (15 max mana per glyph with the default server config), and each book tier adds more. Magical armor, rings and amulets add even more. Learning cheap glyphs you rarely use is still worth it for the mana."
+   ],
+   "es_es": [
+    "El maná, y por qué conviene aprender",
+    "Lanzar gasta maná, que ves en la barra de abajo a la izquierda y se recarga con el tiempo. El costo es la suma de todos los glifos y aumentos del hechizo, así que un hechizo largo sale caro.\n\nCada glifo nuevo que aprendés sube un poco tu maná máximo y tu regeneración (15 de maná máximo por glifo con la config de servidor por defecto), y cada nivel de grimorio suma más. Las armaduras mágicas, anillos y amuletos suman todavía más. Aprender glifos baratos que casi no usás igual vale la pena por el maná."
+   ],
+   "sources": [
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:assets/ars_nouveau/lang/en_us.json#ars_nouveau.page1.spell_mana",
+    "https://github.com/baileyholl/Ars-Nouveau (server config generated by 5.13.1: config/ars_nouveau-server.toml, config/ars_nouveau/glyph_*.toml)"
+   ]
+  },
+  {
+   "key": "arsspell_archwood",
+   "deps": [
+    "arsspell_book"
+   ],
+   "type": "item",
+   "tag": "c:logs/archwood",
+   "count": 4,
+   "icon": "ars_nouveau:green_archwood_log",
+   "layout": {
+    "x": 9,
+    "y": -3,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Archwood",
+    "Collect four Archwood logs (any of the four colors). Archwood trees appear rarely in any biome and fill the Archwood Forest biome, together with Sourceberry bushes and magical creatures.\n\nArchwood planks and slabs build the Scribe's Table, Source Jars and Containment Jars, and each log color is a ritual ingredient. Plant the saplings at your base: a small grove saves many trips."
+   ],
+   "es_es": [
+    "Archwood",
+    "Juntá cuatro troncos de Archwood (de cualquiera de los cuatro colores). Los árboles de Archwood aparecen raros en cualquier bioma y llenan el bioma Bosque de Archwood, junto con arbustos de bayas fuente y criaturas mágicas.\n\nLos tablones y losas de Archwood hacen la Mesa de Escriba, los Frascos de Fuente y los Tarros de contención, y cada color de tronco es ingrediente de rituales. Plantá los brotes en tu base: una arboleda chica te ahorra muchos viajes."
+   ],
+   "sources": [
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:assets/ars_nouveau/lang/en_us.json#ars_nouveau.page1.archwood",
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:data/ars_nouveau/recipe/archwood_planks.json",
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:data/ars_nouveau/recipe/scribes_table.json"
+   ]
+  },
+  {
+   "key": "arsspell_dowsing",
+   "deps": [
+    "arsspell_archwood"
+   ],
+   "type": "item",
+   "item": "ars_nouveau:dowsing_rod",
+   "optional": true,
+   "layout": {
+    "x": 12,
+    "y": -3,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Dowsing Rod",
+    "Craft a Dowsing Rod from archwood planks and a gold ingot. Use it to highlight Budding Amethyst and nearby magical creatures for a short time; it has limited uses.\n\nWhy now: amethyst shards become Source Gems in the Imbuement Chamber (next chapter), and a geode is the easiest early supply. The rod also points you to Starbuncles, Whirlisprigs and other helpers you will want later."
+   ],
+   "es_es": [
+    "Varilla de zahorí",
+    "Crafteá la Varilla de zahorí con tablones de Archwood y un lingote de oro. Al usarla resalta por un rato la amatista brotante y las criaturas mágicas cercanas; tiene usos limitados.\n\nPor qué ahora: los fragmentos de amatista se vuelven gemas fuente en la Cámara de imbuir (capítulo siguiente), y una geoda es la fuente más fácil al principio. La varilla también te marca Carbuncles, Whirlisprigs y otros ayudantes que vas a querer después."
+   ],
+   "sources": [
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:data/ars_nouveau/recipe/dowsing_rod.json",
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:assets/ars_nouveau/patchouli_books/worn_notebook/en_us/entries/equipment/dowsing_rod.json"
+   ]
+  },
+  {
+   "key": "arsspell_scribes",
+   "deps": [
+    "arsspell_grammar",
+    "arsspell_archwood"
+   ],
+   "type": "item",
+   "item": "ars_nouveau:scribes_table",
+   "layout": {
+    "x": 12,
+    "y": 0,
+    "size": 1.5,
+    "shape": "hexagon"
+   },
+   "en_us": [
+    "Scribe's Table",
+    "Build the Scribe's Table: three archwood slabs on top, gold nuggets and archwood logs below. It is where glyphs are made.\n\nUse your spell book on the table to open the codex, pick a glyph and press select. The table shows the items it needs: throw them onto it (it also pulls them from inventories next to it) and pay the experience cost. The result is a glyph item; use it to learn the glyph. If auto-pull grabs things you did not want, use a Dominion Wand on the table to turn it off."
+   ],
+   "es_es": [
+    "Mesa de Escriba",
+    "Armá la Mesa de Escriba: tres losas de Archwood arriba, pepitas de oro y troncos de Archwood abajo. Ahí se fabrican los glifos.\n\nUsá el grimorio sobre la mesa para abrir el códice, elegí un glifo y apretá seleccionar. La mesa muestra los ítems que necesita: tiralos encima (también los toma de inventarios pegados) y pagá el costo de experiencia. El resultado es un glifo como ítem; usalo para aprenderlo. Si la mesa agarra cosas que no querías, una Varita de Dominio sobre la mesa apaga esa toma automática."
+   ],
+   "sources": [
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:data/ars_nouveau/recipe/scribes_table.json",
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:assets/ars_nouveau/lang/en_us.json#ars_nouveau.page1.scribes_table",
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:assets/ars_nouveau/lang/en_us.json#ars_nouveau.page1.learning_glyphs"
+   ]
+  },
+  {
+   "key": "arsspell_light",
+   "deps": [
+    "arsspell_scribes"
+   ],
+   "type": "item",
+   "item": "ars_nouveau:glyph_light",
+   "layout": {
+    "x": 15,
+    "y": 3,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Glyph: Conjure Magelight",
+    "Scribe Conjure Magelight: a lantern and a torch. Cast on a block it leaves a permanent light; on yourself it gives Night Vision.\n\nProjectile + Conjure Magelight is the classic cave-lighting spell, and far cheaper than carrying torches. Amplify makes the light brighter, Dampen dimmer."
+   ],
+   "es_es": [
+    "Glifo: Conjurar luz mágica",
+    "Escribí Conjurar luz mágica: una linterna y una antorcha. Lanzado sobre un bloque deja una luz permanente; sobre vos da Visión nocturna.\n\nProyectil + Conjurar luz mágica es el hechizo clásico para iluminar cuevas y sale mucho más barato que cargar antorchas. Amplificar da más brillo; Amortiguar, menos."
+   ],
+   "sources": [
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:data/ars_nouveau/recipe/glyph_light.json",
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:assets/ars_nouveau/lang/en_us.json#ars_nouveau.glyph_desc.glyph_light"
+   ]
+  },
+  {
+   "key": "arsspell_pickup",
+   "deps": [
+    "arsspell_scribes"
+   ],
+   "type": "item",
+   "item": "ars_nouveau:glyph_pickup",
+   "optional": true,
+   "layout": {
+    "x": 15,
+    "y": -3,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Glyph: Item Pickup",
+    "Scribe Item Pickup: two hoppers. It pulls in dropped items around where the spell lands.\n\nPut it after Break in a mining spell (Projectile, Break, Item Pickup) so the drops fly into your inventory instead of falling into lava or water. AOE widens the pickup radius."
+   ],
+   "es_es": [
+    "Glifo: Recogida de artículos",
+    "Escribí Recogida de artículos (Item Pickup): dos tolvas. Junta los ítems tirados alrededor de donde cae el hechizo.\n\nPonelo después de Romper en un hechizo de minería (Proyectil, Romper, Recogida) para que los drops vayan a tu inventario en vez de caer a la lava o al agua. Área de efecto agranda el radio."
+   ],
+   "sources": [
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:data/ars_nouveau/recipe/glyph_pickup.json",
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:assets/ars_nouveau/lang/en_us.json#ars_nouveau.glyph_desc.glyph_pickup"
+   ]
+  },
+  {
+   "key": "arsspell_amplify",
+   "deps": [
+    "arsspell_scribes"
+   ],
+   "type": "item",
+   "item": "ars_nouveau:glyph_amplify",
+   "layout": {
+    "x": 18,
+    "y": 0,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Glyph: Amplify",
+    "Scribe Amplify. It costs a diamond pickaxe, which the table consumes, so plan for it.\n\nAmplify is the most used augment in the mod. After Break it raises the harvest level, so Projectile, Break, Amplify mines diamond-tier ore; after Harm it adds damage. It stacks: two Amplify are stronger than one, at a higher mana cost."
+   ],
+   "es_es": [
+    "Glifo: Amplificar",
+    "Escribí Amplificar. Cuesta un pico de diamante, que la mesa consume, así que planealo.\n\nAmplificar es el aumento más usado del mod. Después de Romper sube el nivel de extracción, así que Proyectil, Romper, Amplificar pica menas de nivel diamante; después de Dañar suma daño. Se apila: dos Amplificar pegan más que uno, con más costo de maná."
+   ],
+   "sources": [
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:data/ars_nouveau/recipe/glyph_amplify.json",
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:assets/ars_nouveau/lang/en_us.json#ars_nouveau.glyph_desc.glyph_amplify"
+   ]
+  },
+  {
+   "key": "arsspell_sensitive",
+   "deps": [
+    "arsspell_light"
+   ],
+   "type": "item",
+   "item": "ars_nouveau:glyph_sensitive",
+   "optional": true,
+   "layout": {
+    "x": 18,
+    "y": 3,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Glyph: Sensitive",
+    "Scribe Sensitive: scaffolding, a poppy and a water bucket. It lets forms hit things they normally skip (Projectile hits grass, Touch hits fluids and air) and changes the behaviour of many effects.\n\nExamples written in the glyph pages: Break with Sensitive acts like shears, Ignite with Sensitive makes short-lived Mage Fire that does not spread. When a spell does something odd, check whether Sensitive changes it."
+   ],
+   "es_es": [
+    "Glifo: Sensible",
+    "Escribí Sensible (Sensitive): andamio, una amapola y un balde de agua. Hace que las formas peguen en cosas que normalmente ignoran (Proyectil pega en el pasto, Tocar en fluidos y aire) y cambia cómo funcionan muchos efectos.\n\nEjemplos de las páginas de glifos: Romper con Sensible actúa como tijeras; Encender con Sensible hace Fuego mágico corto que no se propaga. Cuando un hechizo hace algo raro, fijate si Sensible lo cambia."
+   ],
+   "sources": [
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:data/ars_nouveau/recipe/glyph_sensitive.json",
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:assets/ars_nouveau/lang/en_us.json#ars_nouveau.glyph_desc.glyph_sensitive",
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:assets/ars_nouveau/lang/en_us.json#ars_nouveau.glyph_desc.glyph_break"
+   ]
+  },
+  {
+   "key": "arsspell_miner",
+   "deps": [
+    "arsspell_amplify",
+    "arsspell_pickup"
+   ],
+   "type": "checkmark",
+   "optional": true,
+   "layout": {
+    "x": 21,
+    "y": 3,
+    "size": 1.0,
+    "shape": "circle"
+   },
+   "en_us": [
+    "Tip: a real mining spell",
+    "Put the pieces together in one slot: Projectile, Break, Amplify, AOE, Item Pickup. It digs a 3x3 face at range, mines up to diamond tier and collects the drops.\n\nAdd Extract (silk touch) or Luck (fortune) after Break for ores, never both: they cannot be combined. Keep a second slot with Touch instead of Projectile for precise work, and a Conjure Magelight slot for caves. Three good slots beat ten half-finished ones."
+   ],
+   "es_es": [
+    "Tip: un hechizo de minería de verdad",
+    "Juntá las piezas en una ranura: Proyectil, Romper, Amplificar, Área de efecto, Recogida. Excava una cara de 3x3 a distancia, pica hasta nivel diamante y junta los drops.\n\nSumá Extracto (toque de seda) o Suerte (fortuna) después de Romper para menas, nunca los dos: no se combinan. Tené una segunda ranura con Tocar en vez de Proyectil para trabajo fino, y una de Conjurar luz para cuevas. Tres ranuras buenas valen más que diez a medias."
+   ],
+   "sources": [
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:assets/ars_nouveau/lang/en_us.json#ars_nouveau.glyph_desc.glyph_extract",
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:assets/ars_nouveau/lang/en_us.json#ars_nouveau.glyph_desc.glyph_fortune",
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:assets/ars_nouveau/lang/en_us.json#ars_nouveau.glyph_desc.glyph_aoe"
+   ]
+  },
+  {
+   "key": "arsspell_essences_note",
+   "deps": [
+    "arsspell_pickup"
+   ],
+   "type": "checkmark",
+   "layout": {
+    "x": 15,
+    "y": -6,
+    "size": 1.0,
+    "shape": "circle"
+   },
+   "en_us": [
+    "Heads-up: some glyphs need essences",
+    "Harm, Heal, Grow, Dispel, Smelt and many others ask for an elemental essence at the Scribe's Table (earth, abjuration, fire and so on). Essences are made from Source Gems in the Imbuement Chamber, with three items on pedestals around it.\n\nIf a glyph shows an essence you do not have, open the next chapter, «Ars Nouveau II: Source». It is the same workshop, one step further."
+   ],
+   "es_es": [
+    "Ojo: algunos glifos piden esencias",
+    "Dañar, Sanar, Crecer, Disipar, Fundir y muchos más piden una esencia elemental en la Mesa de Escriba (tierra, abjuración, fuego, etcétera). Las esencias salen de gemas fuente en la Cámara de imbuir, con tres ítems en pedestales alrededor.\n\nSi un glifo muestra una esencia que no tenés, abrí el capítulo siguiente, «Ars Nouveau II: la Fuente». Es el mismo taller, un paso más allá."
+   ],
+   "sources": [
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:data/ars_nouveau/recipe/glyph_harm.json",
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:data/ars_nouveau/recipe/glyph_heal.json",
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:data/ars_nouveau/recipe/glyph_smelt.json",
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:data/ars_nouveau/recipe/imbuement_earth_essence.json"
+   ]
+  },
+  {
+   "key": "arsspell_mage_book",
+   "deps": [
+    "arsspell_amplify"
+   ],
+   "type": "item",
+   "item": "ars_nouveau:apprentice_spell_book",
+   "layout": {
+    "x": 21,
+    "y": 0,
+    "size": 1.5,
+    "shape": "hexagon"
+   },
+   "en_us": [
+    "The Mage's Spell Book",
+    "Upgrade to the Mage's Spell Book at a crafting table: your Novice book, obsidian, three diamonds, two quartz blocks and two blaze rods. The upgrade keeps every glyph you learned.\n\nIt unlocks Tier 2 glyphs such as AOE, Extend Time, Extract, Luck, Heal and Accelerate, adds mana and regeneration, and you can dye it like any Ars book. Blaze rods mean a Nether trip first."
+   ],
+   "es_es": [
+    "El Grimorio de Mago",
+    "Mejorá al Grimorio de Mago en la mesa de crafteo: tu grimorio de Novato, obsidiana, tres diamantes, dos bloques de cuarzo y dos varas de blaze. La mejora conserva todos los glifos aprendidos.\n\nHabilita los glifos de nivel 2, como Área de efecto, Extender tiempo, Extracto, Suerte, Sanar y Acelerar, suma maná y regeneración, y se puede teñir como cualquier grimorio de Ars. Las varas de blaze piden un viaje al Nether antes."
+   ],
+   "sources": [
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:data/ars_nouveau/recipe/apprentice_book_upgrade.json",
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:assets/ars_nouveau/lang/en_us.json#ars_nouveau.page1.spell_books"
+   ]
+  },
+  {
+   "key": "arsspell_aoe",
+   "deps": [
+    "arsspell_mage_book"
+   ],
+   "type": "item",
+   "item": "ars_nouveau:glyph_aoe",
+   "layout": {
+    "x": 24,
+    "y": -3,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Glyph: AOE",
+    "Scribe AOE (Tier 2): one firework star. Every AOE after an effect widens the area it hits around the target block.\n\nOne AOE on Break mines 3x3; stacking more grows the area and the cost. It also widens Item Pickup, Evaporate, Smelt and others."
+   ],
+   "es_es": [
+    "Glifo: Área de efecto",
+    "Escribí Área de efecto (nivel 2): una estrella de fuegos artificiales. Cada Área de efecto después de un efecto agranda la zona que toca alrededor del bloque.\n\nUno sobre Romper pica 3x3; si apilás más crece la zona y el costo. También agranda Recogida, Evaporar, Fundir y otros."
+   ],
+   "sources": [
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:data/ars_nouveau/recipe/glyph_aoe.json",
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:assets/ars_nouveau/lang/en_us.json#ars_nouveau.glyph_desc.glyph_aoe"
+   ]
+  },
+  {
+   "key": "arsspell_extract",
+   "deps": [
+    "arsspell_mage_book"
+   ],
+   "type": "item",
+   "item": "ars_nouveau:glyph_extract",
+   "optional": true,
+   "layout": {
+    "x": 24,
+    "y": 3,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Glyphs: Extract or Luck",
+    "Scribe Extract (an emerald) for a silk-touch Break, or Luck (a rabbit's foot) for extra drops from Break and Harm. Both are Tier 2 and each costs a little experience.\n\nThey exclude each other in the same spell. Keep two mining slots, one of each, and choose per ore."
+   ],
+   "es_es": [
+    "Glifos: Extracto o Suerte",
+    "Escribí Extracto (una esmeralda) para que Romper actúe con toque de seda, o Suerte (una pata de conejo) para más drops de Romper y Dañar. Los dos son de nivel 2 y cuestan un poco de experiencia.\n\nSe excluyen en el mismo hechizo. Tené dos ranuras de minería, una con cada uno, y elegí según la mena."
+   ],
+   "sources": [
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:data/ars_nouveau/recipe/glyph_extract.json",
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:data/ars_nouveau/recipe/glyph_fortune.json",
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:assets/ars_nouveau/lang/en_us.json#ars_nouveau.glyph_desc.glyph_extract"
+   ]
+  },
+  {
+   "key": "arsspell_chimera",
+   "deps": [
+    "arsspell_aoe"
+   ],
+   "type": "item",
+   "item": "ars_nouveau:wilden_tribute",
+   "optional": true,
+   "layout": {
+    "x": 27,
+    "y": -3,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "The Wilden Chimera",
+    "The Archmage book needs a Wilden Tribute, dropped by the Wilden Chimera. Craft the Summon Wilden ritual tablet (a vexing archwood log, three Wilden drops and a lapis block), then augment the ritual with a Wilden Spike, a Wilden Horn and a Wilden Wing before you light it.\n\nWilden Hunters, Stalkers and Defenders drop those parts near their dens in forests and cold biomes. The notebook calls the Chimera a fight for a caster with Tier 2 spells. Warning: summoning it destroys blocks around the brazier, so do it far from your base."
+   ],
+   "es_es": [
+    "La Quimera Wilden",
+    "El grimorio de Archimago pide un Tributo Salvaje (Wilden Tribute), que suelta la Quimera Wilden. Crafteá la tabla del ritual Invocar Wilden (un tronco de Archwood irritante, tres drops de Wilden y un bloque de lapislázuli) y aumentá el ritual con un Pincho, un Cuerno y un Ala de Wilden antes de encenderlo.\n\nLos Wilden cazadores, acechadores y defensores sueltan esas piezas cerca de sus guaridas, en bosques y biomas fríos. El cuaderno dice que la Quimera es una pelea para quien ya lanza hechizos de nivel 2. Ojo: invocarla rompe bloques alrededor del brasero, hacelo lejos de tu base."
+   ],
+   "sources": [
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:data/ars_nouveau/recipe/ritual_wilden_summon.json",
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:assets/ars_nouveau/lang/en_us.json#ars_nouveau.page1.wilden",
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:assets/ars_nouveau/patchouli_books/worn_notebook/en_us/entries/rituals/ritual_wilden_summon.json"
+   ]
+  },
+  {
+   "key": "arsspell_archmage",
+   "deps": [
+    "arsspell_mage_book",
+    "arsspell_chimera"
+   ],
+   "type": "item",
+   "item": "ars_nouveau:archmage_spell_book",
+   "layout": {
+    "x": 30,
+    "y": 0,
+    "size": 1.75,
+    "shape": "hexagon"
+   },
+   "en_us": [
+    "The Archmage Spell Book",
+    "Upgrade to the Archmage Spell Book: your Mage's book, three ender pearls, two emeralds, a Totem of Undying, a Nether Star and a Wilden Tribute. It unlocks Tier 3 glyphs (Blink, Burst, Linger, Wall, Lightning, Summon Undead and more).\n\nIn ENTRELUMEN the Nether Star only comes from the Wither: the pack removed the shortcut recipes of other mods. Plan the fight, or keep this upgrade for Act IV, when your gear is ready."
+   ],
+   "es_es": [
+    "El Grimorio de Archimago",
+    "Mejorá al Grimorio de Archimago: tu grimorio de Mago, tres perlas de ender, dos esmeraldas, un tótem de inmortalidad, una estrella del Nether y un Tributo Salvaje. Habilita los glifos de nivel 3 (Parpadear, Estallido, Persistir, Muro, Rayo, Invocar no-muertos y más).\n\nEn ENTRELUMEN la estrella del Nether sólo sale del Wither: el pack quitó las recetas atajo de otros mods. Planeá la pelea o dejá esta mejora para el acto IV, cuando tu equipo esté listo."
+   ],
+   "sources": [
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:data/ars_nouveau/recipe/archmage_book_upgrade.json",
+    "repo:docs/design/mod-pingpong.md#Integración",
+    "repo:docs/design/story-bible.md"
+   ]
+  },
+  {
+   "key": "arsspell_blink",
+   "deps": [
+    "arsspell_archmage"
+   ],
+   "type": "item",
+   "item": "ars_nouveau:glyph_blink",
+   "optional": true,
+   "layout": {
+    "x": 33,
+    "y": -3,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Glyph: Blink",
+    "Scribe Blink (Tier 3): one Manipulation Essence and four ender pearls. Self + Blink jumps you forward; Projectile + Blink teleports you where the bolt lands.\n\nWith a written Warp Scroll in your offhand, Blink on a creature sends it to the scroll's location. It is the Ars answer to mobility until you have flight."
+   ],
+   "es_es": [
+    "Glifo: Parpadear",
+    "Escribí Parpadear (Blink, nivel 3): una Esencia de manipulación y cuatro perlas de ender. Ser + Parpadear te hace saltar hacia adelante; Proyectil + Parpadear te lleva donde cae el proyectil.\n\nCon un Pergamino de teletransporte escrito en la otra mano, Parpadear sobre una criatura la manda al lugar del pergamino. Es la respuesta de Ars a la movilidad hasta que tengas vuelo."
+   ],
+   "sources": [
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:data/ars_nouveau/recipe/glyph_blink.json",
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:assets/ars_nouveau/lang/en_us.json#ars_nouveau.glyph_desc.glyph_blink"
+   ]
+  },
+  {
+   "key": "arsspell_codex",
+   "deps": [
+    "arsspell_archmage"
+   ],
+   "type": "item",
+   "item": "ars_nouveau:annotated_codex",
+   "optional": true,
+   "layout": {
+    "x": 33,
+    "y": 3,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Tip: share glyphs with the Annotated Codex",
+    "An Annotated Codex records every glyph you know when you use it, paying experience per glyph (10 per glyph by default). Another player then uses it to learn them all and the codex is consumed.\n\nIn co-op, one player scribes the expensive glyphs and the team copies them: a diamond pickaxe for Amplify only has to be spent once."
+   ],
+   "es_es": [
+    "Tip: compartí glifos con el Códice inscrito",
+    "El Códice inscrito (Annotated Codex) anota todos los glifos que sabés cuando lo usás, pagando experiencia por glifo (10 por glifo por defecto). Otro jugador lo usa para aprenderlos todos y el códice se gasta.\n\nEn cooperativo, uno escribe los glifos caros y el equipo los copia: el pico de diamante de Amplificar se gasta una sola vez."
+   ],
+   "sources": [
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:assets/ars_nouveau/patchouli_books/worn_notebook/en_us/entries/equipment/annotated_codex.json",
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:data/ars_nouveau/recipe/annotated_codex.json",
+    "https://github.com/baileyholl/Ars-Nouveau (server config generated by 5.13.1: config/ars_nouveau-server.toml, config/ars_nouveau/glyph_*.toml)"
+   ]
+  },
+  {
+   "key": "arsspell_keys_quirk",
+   "deps": [
+    "arsspell_book"
+   ],
+   "type": "checkmark",
+   "layout": {
+    "x": 3,
+    "y": 3,
+    "size": 1.0,
+    "shape": "circle"
+   },
+   "en_us": [
+    "Quirk: the pack moved some keys",
+    "ENTRELUMEN ships a first-launch key preset. For magic that means: Ars radial menu on F6; Iron's Spells wheel on Shift+G and casting on Alt+Q; Psi's master key on Alt+C, since plain C saves hotbars in vanilla and opens the Ars book; Mahou Tsukai's blood circle on Alt+M; Occultism's bag on O and its satchel on Insert.\n\nYour own changes are kept. If two mods fight over a key, search the action in Options, Controls."
+   ],
+   "es_es": [
+    "Particularidad: el pack movió algunas teclas",
+    "ENTRELUMEN trae un preset de teclas para el primer inicio. En magia: menú radial de Ars en F6; rueda de Iron's Spells en Shift+G y lanzar en Alt+Q; tecla maestra de Psi en Alt+C, porque la C sola guarda barras rápidas en vanilla y abre el grimorio de Ars; círculo de sangre de Mahou Tsukai en Alt+M; bolsa de Occultism en O y su morral en Insert.\n\nTus cambios se respetan. Si dos mods se pelean una tecla, buscá la acción en Opciones, Controles."
+   ],
+   "sources": [
+    "repo:pack/config/entrelumen/client-preset.json",
+    "repo:docs/design/keybinding-review.md",
+    "repo:docs/controls.md"
+   ]
+  },
+  {
+   "key": "arsspell_matrix",
+   "deps": [
+    "arsspell_scribes"
+   ],
+   "type": "item",
+   "item": "entrelumen:living_matrix",
+   "layout": {
+    "x": 12,
+    "y": -6,
+    "size": 1.25,
+    "shape": "diamond"
+   },
+   "en_us": [
+    "ENTRELUMEN: the Living Matrix",
+    "The Act II Atlas project «A workshop that breathes» turns Ars into a story piece. The Living Matrix is shapeless: two magebloom fibers, two Source Gems and a Calibration Frame.\n\nBoth Ars materials come from the next chapter (magebloom from the Enchanting Apparatus, gems from the Imbuement Chamber). Later components reuse the Matrix: the Propagation Core, the Ecosystem Capsule and the Ark's nature and habitation modules all consume Living Matrices."
+   ],
+   "es_es": [
+    "ENTRELUMEN: la Matriz viva",
+    "El proyecto del Atlas del acto II «Un taller que respira» vuelve a Ars una pieza de la historia. La Matriz viva es sin forma: dos fibras de magebloom, dos gemas fuente y un Marco de calibración.\n\nLos dos materiales de Ars salen del capítulo siguiente (el magebloom del Aparato de encantar, las gemas de la Cámara de imbuir). Después la Matriz se reusa: el Núcleo de propagación, la Cápsula de ecosistema y los módulos de naturaleza y habitabilidad del Arca consumen Matrices vivas."
+   ],
+   "sources": [
+    "repo:pack/kubejs/server_scripts/entrelumen_integration_recipes.js#living_workshop",
+    "repo:content/integration-design.json#living_workshop"
+   ]
+  },
+  {
+   "key": "arsspell_mastery",
+   "deps": [
+    "arsspell_archmage"
+   ],
+   "type": "checkmark",
+   "layout": {
+    "x": 36,
+    "y": 0,
+    "size": 2.0,
+    "shape": "gear"
+   },
+   "en_us": [
+    "Mastery: a spell library",
+    "You have the Archmage book, Tier 3 glyphs and a handful of working slots. What comes next is breadth: Source to power everything (chapter II), rituals and familiars (chapter III), creatures and turrets that work for you (chapter IV) and the addons that plug Ars into Create, Occultism and AE2.\n\nA good benchmark: one slot to dig, one to light, one to move, one to fight, and one you invented yourself."
+   ],
+   "es_es": [
+    "Maestría: una biblioteca de hechizos",
+    "Tenés el grimorio de Archimago, glifos de nivel 3 y un puñado de ranuras que funcionan. Lo que sigue es amplitud: la Fuente para alimentar todo (capítulo II), rituales y familiares (capítulo III), criaturas y torretas que trabajan por vos (capítulo IV) y los addons que enchufan Ars a Create, Occultism y AE2.\n\nUna buena vara: una ranura para cavar, una para iluminar, una para moverte, una para pelear y una que inventaste vos."
+   ],
+   "sources": [
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:assets/ars_nouveau/lang/en_us.json#ars_nouveau.page1.spell_books",
+    "repo:docs/design/magic-automation-family.md"
+   ]
+  }
+ ]
+}
