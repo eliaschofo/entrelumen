@@ -35,6 +35,8 @@
 
 Ender Storage recolouring recipes need an existing chest, tank or pouch and are the only whitelisted alternate routes. Breeder, farmer, converter, incubator and trader blocks stay native.
 
+The same script removes Torchmaster's `torchmaster:megatorch` recipe: the companion's Altar of Peace, an Act III reward, replaces the Mega Torch (see [ark-altars.md](ark-altars.md#altar-of-peace)). The Dread Lamp, Feral Flare Lantern and Frozen Pearl keep their native recipes.
+
 `pack/defaultconfigs/solcarrot-server.toml` sets one heart per milestone at 10, 25, 45, 70 and 100 unique foods (five extra hearts in total) instead of the native two hearts at 5/10/15/20/25, which the large food catalogue would reach in the first hours. Base hearts stay ten and progress is not reset on death. On NeoForge 21.1 the mod's server config lives in the instance `config/` folder: when `config/solcarrot-server.toml` does not exist yet, NeoForge creates it from this default and fills the omitted filtering/misc keys with native defaults (logged as a correction warning); a world can still override it in its own `serverconfig/`. On the owned dedicated server the generated file carried `heartsPerMilestone = 1` and milestones `[10, 25, 45, 70, 100]`.
 
 ## Keybindings

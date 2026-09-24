@@ -17,10 +17,26 @@ import net.minecraft.world.level.ChunkPos;
  * saves its own state and registers again when its chunk loads.
  */
 public final class AltarRegistry {
-  /** An active altar: its type, position and square half-width in blocks. */
-  public record Entry(AltarType type, BlockPos pos, int radius) {
+  /** Half-height of an altar whose square reaches the whole column. */
+  public static final int FULL_HEIGHT = Integer.MAX_VALUE;
+
+  /**
+   * An active altar: its type, position, square half-width and vertical half-height in blocks. A
+   * half-height of {@link #FULL_HEIGHT} covers the whole column; otherwise the area is a box
+   * centred on the altar, symmetric above and below it.
+   */
+  public record Entry(AltarType type, BlockPos pos, int radius, int halfHeight) {
+    public Entry(AltarType type, BlockPos pos, int radius) {
+      this(type, pos, radius, FULL_HEIGHT);
+    }
+
     public boolean covers(BlockPos target) {
-      return Math.abs(target.getX() - pos.getX()) <= radius && Math.abs(target.getZ() - pos.getZ()) <= radius;
+      return covers(target.getX(), target.getY(), target.getZ());
+    }
+
+    public boolean covers(int x, int y, int z) {
+      return Math.abs(x - pos.getX()) <= radius && Math.abs(z - pos.getZ()) <= radius
+          && (halfHeight == FULL_HEIGHT || Math.abs((long) y - pos.getY()) <= halfHeight);
     }
   }
 
@@ -34,8 +50,19 @@ public final class AltarRegistry {
 
   /** Whether an active altar of this type covers the position, in its level. */
   public static boolean isInsideActive(ServerLevel level, AltarType type, BlockPos pos) {
+    return isInsideActive(level, type, pos.getX(), pos.getY(), pos.getZ());
+  }
+
+  /** The same test without allocating, for per-entity and per-spawn checks. */
+  public static boolean isInsideActive(ServerLevel level, AltarType type, int x, int y, int z) {
     Index index = LEVELS.get(level);
-    return index != null && index.covering(type, pos).iterator().hasNext();
+    return index != null && index.anyCovering(type, x, y, z);
+  }
+
+  /** Whether any altar of this type is active in the level: a constant-time early exit. */
+  public static boolean anyActive(ServerLevel level, AltarType type) {
+    Index index = LEVELS.get(level);
+    return index != null && index.count(type) > 0;
   }
 
   /** Every active altar of this type covering the position. */
@@ -57,18 +84,21 @@ public final class AltarRegistry {
   static final class Index {
     private final Map<BlockPos, Entry> byPos = new HashMap<>();
     private final Long2ObjectOpenHashMap<List<Entry>> byChunk = new Long2ObjectOpenHashMap<>();
+    private final Map<AltarType, Integer> counts = new HashMap<>();
 
     void put(Entry entry) {
       remove(entry.pos());
       BlockPos pos = entry.pos().immutable();
-      Entry stored = new Entry(entry.type(), pos, entry.radius());
+      Entry stored = new Entry(entry.type(), pos, entry.radius(), entry.halfHeight());
       byPos.put(pos, stored);
+      counts.merge(stored.type(), 1, Integer::sum);
       forChunks(stored, key -> byChunk.computeIfAbsent(key, ignored -> new ArrayList<>()).add(stored));
     }
 
     void remove(BlockPos pos) {
       Entry old = byPos.remove(pos);
       if (old == null) return;
+      counts.computeIfPresent(old.type(), (type, count) -> count > 1 ? count - 1 : null);
       forChunks(old, key -> {
         List<Entry> list = byChunk.get(key);
         if (list == null) return;
@@ -83,6 +113,20 @@ public final class AltarRegistry {
       List<Entry> found = new ArrayList<>(1);
       for (Entry entry : list) if (entry.type().equals(type) && entry.covers(target)) found.add(entry);
       return found;
+    }
+
+    boolean anyCovering(AltarType type, int x, int y, int z) {
+      List<Entry> list = byChunk.get(ChunkPos.asLong(x >> 4, z >> 4));
+      if (list == null) return false;
+      for (int i = 0; i < list.size(); i++) {
+        Entry entry = list.get(i);
+        if (entry.type().equals(type) && entry.covers(x, y, z)) return true;
+      }
+      return false;
+    }
+
+    int count(AltarType type) {
+      return counts.getOrDefault(type, 0);
     }
 
     int size() {

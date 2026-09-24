@@ -2224,11 +2224,15 @@ public final class RuntimeGameTests {
         && player.getInventory().countItem(Items.COPPER_INGOT) == 1
         && campaign.completed.size() == 7,
         "Archive replay changed supplies or progress");
+    // Signal exchange, nursery protocol and workshop hands each grant their altar, exactly once.
+    var altarRewards = List.of(Altars.PEACE_ALTAR.get().asItem(), Altars.GROWTH_ALTAR.get().asItem(),
+        Altars.TERRAFORM_ALTAR.get().asItem());
     helper.assertTrue(prototypes.values().stream().allMatch(item -> player.getInventory().countItem(item) == 1)
+        && altarRewards.stream().allMatch(item -> player.getInventory().countItem(item) == 1)
         && player.getInventory().countItem(Items.ANVIL) == 1
-        && player.getInventory().items.stream().mapToInt(ItemStack::getCount).sum() == 10
+        && player.getInventory().items.stream().mapToInt(ItemStack::getCount).sum() == 10 + altarRewards.size()
         && helper.getLevel().getBlockState(installedPos).is(net.minecraft.world.level.block.Blocks.ENCHANTING_TABLE),
-        "Deliveries granted items or consumed infrastructure/unrelated supplies");
+        "Deliveries granted items other than one altar each, or consumed infrastructure/unrelated supplies");
     helper.assertTrue(AtlasNetwork.handleOpen(player).canAdvance()
         && CampaignActions.perform(player, campaignId, CampaignActions.Action.ADVANCE, "").success()
         && campaign.act == 4,
@@ -2323,11 +2327,13 @@ public final class RuntimeGameTests {
       var result = AtlasNetwork.handleRequest(player, new AtlasNetwork.Request(
           initial.campaign(), CampaignActions.Action.DELIVER, entry.getKey()));
       expectedInventory.compute(BuiltInRegistries.ITEM.getKey(entry.getValue()).toString(), (id, count) -> count - 1);
+      String reward = Projects.all().get(entry.getKey()).reward();
+      if (!reward.isEmpty()) expectedInventory.merge(reward, 1, Integer::sum);
       expectedCompleted.add(entry.getKey());
       helper.assertTrue(result.message().equals("entrelumen.atlas.delivered") && campaign.act == 4
           && campaign.completed.equals(expectedCompleted)
           && Entrelumen.availableMaterials(player).equals(expectedInventory),
-          "Act IV delivery changed unrelated progress, consumed surplus or granted rewards: " + entry.getKey());
+          "Act IV delivery changed unrelated progress, consumed surplus or granted other rewards: " + entry.getKey());
       fourthActDenied(helper, player, entry.getKey());
     }
     helper.assertTrue(!AtlasNetwork.handleOpen(player).canAdvance(), "Prototypes bypassed Atlas voices");
