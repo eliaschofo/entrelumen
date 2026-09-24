@@ -336,6 +336,15 @@ Son para quien escriba quests; `wt-acts` tiene hoy el libro y el mod.
 4. ¿Ultimine por rangos atado al acto (por ejemplo 32 → 64 → 128), como la otra palanca de «el mundo escala solo»?
 5. ¿Vitrina de trofeos en el lote de Solsticio?
 
+### Respuestas de Elias (24 de septiembre)
+
+1. **Marco de Calibración y Mekanism:** el primer Marco sale de la historia (recompensa del acto, sin receta de mesa). El **infusor metalúrgico pide un Marco**, y con el infusor se **fabrican más Marcos por infusión**. Esos alimentan el proyecto del acto II y las demás recetas gateadas (New Age, Psi, etc.). «Buen gate mechanic.»
+2. **MekaSuit y armaduras Quantum:** en el **acto VI**.
+3. **Drops de Wither, Dragón y Elder Guardian:** **sí**, como materiales de los módulos del Arca (acto V).
+4. **Libro de quests:** llevarlo a la altura de ATM y FTB, con un centro del que salen los capítulos, un capítulo final que dibuja el **Sol de Heliodor**, recompensas moderadas, imágenes de las ruinas y nodos grandes en los hitos.
+5. **Guías:** muchas líneas de quests informativas por mod y por tema (QoL, logística, construcción, granjas, tips), bien documentadas con las guías de los JARs y las wikis de la versión fijada. Se escriben en `content/guides/` (validador `tools/check_guides.py`).
+6. Siguen sin responder: Ultimine por acto y la vitrina de trofeos.
+
 ## Límites
 
 - Se leyó lo exportado, no se lanzó ningún pack. En ningún pack se inspeccionó el contenido que aportan los propios mods (por ejemplo, recetas nativas cambiadas por configs). Los datapacks de FTB se clasificaron por tipo; no se revisaron uno por uno.
