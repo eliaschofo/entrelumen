@@ -96,6 +96,13 @@ Para contestarles hace falta un artefacto que se perdió en el Aether. La entida
 - **Solo primero**, con buen co-op: todo se puede hacer solo y en equipo se reparten ramas.
 - **La historia marca la dificultad:** al pasar de acto, el mundo sube de World Tier de Apotheosis solo; el jugador no lo elige.
 
+## Brújula y Atlas (24 de septiembre)
+
+- Se mantienen el libro y los paracaídas que el Aether regala al entrar a esa dimensión: no es aparecer en el mundo.
+- Si se pierde la Brújula de Heliodor, **se craftea** con una receta barata.
+- **Interferencia del Atlas:** palabras tachadas y huecos, mezclados con algo de glitch, pero siempre con partes legibles. Los fragmentos se hilan a medida que avanzan los actos: nada de balbuceo que se pierda por estética, tiene que poder reconstruirse. En el endgame todo queda 100% legible.
+- **Aguja por dimensión:** turquesa en el Overworld, rojo en el Nether, violeta en el End, dorado en el Aether y verde en Twilight; gris cuando no hay rastro.
+
 ## Arte (24 de septiembre)
 
 - **Íconos de ítems como vanilla:** herramientas y pergaminos en diagonal; simétricos sólo los que lo son por naturaleza. La simetría estricta rige para bloques, modelos, estructuras, GUI y emblemas.
