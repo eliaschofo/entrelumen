@@ -531,6 +531,47 @@ def building(kind, st, floors, hw=4, D=9):
                 L[(u, top + 1, w)] = blk
             L[(0, top + 2, w)] = B('ochre_froglight')
     L[(0, top + hw + 3, -1)] = B('lightning_rod[facing=up,powered=false,waterlogged=false]')
+    variant = st.get('variant', 'gable') if not shop else 'gable'
+    if variant == 'bay':
+        for s_ in range(1, floors):
+            y0 = 5 * s_
+            for u in range(-(hw - 1), hw):
+                for y in (y0 + 1, y0 + 2, y0 + 3):
+                    L[(u, y, -1)] = g2 if abs(u) == hw - 1 else B('glass')
+                L[(u, y0 + 4, -1)] = B(roof + '_slab[type=bottom,waterlogged=false]')
+                L[(u, y0, -1)] = B(roof + '_slab[type=top,waterlogged=false]')
+                L[(u, y0 + 1, 0)] = AIR if u else L[(u, y0 + 1, 0)]
+    elif variant == 'greenhouse':
+        for key in [k for k in L if k[1] > top]:
+            del L[key]
+        for u in range(-hw, hw + 1):
+            for w in range(0, D):
+                L[(u, top + 1, w)] = B('waxed_cut_copper') if (abs(u) == hw or w in (0, back)) else B('moss_block')
+                if abs(u) == hw or w in (0, back):
+                    L[(u, top + 2, w)] = B('waxed_copper_grate') if (u + w) % 2 else B('potted_' + flower[(u * 3 + w) % len(flower)])
+        for u in range(-(hw - 1), hw):
+            for w in range(1, back):
+                edge = abs(u) == hw - 1 or w in (1, back - 1)
+                for y in (top + 2, top + 3, top + 4):
+                    if edge:
+                        L[(u, y, w)] = B('glass') if y < top + 4 or (u + w) % 2 else g1
+                    else:
+                        L[(u, y, w)] = AIR
+                L[(u, top + 5, w)] = B('glass') if (u + w) % 3 else g2
+                if not edge and (u + w) % 2 == 0:
+                    L[(u, top + 2, w)] = B('flowering_azalea') if (u * w) % 3 == 0 else B(flower[(u + w) % len(flower)])
+        L[(0, top + 2, 1)] = B('glass_pane[east=true,north=false,south=false,waterlogged=false,west=true]')
+    elif variant == 'turrets':
+        for sg in (-1, 1):
+            cu = sg * (hw - 1)
+            for du in (-1, 0, 1):
+                for w in (0, 1, 2):
+                    for y in range(top + 1, top + 4):
+                        edge = abs(du) == 1 or w != 1
+                        L[(cu + du, y, w)] = (g1 if (y == top + 2 and (du == 0 or w == 1)) else wall) if edge else AIR
+                    L[(cu + du, top + 4, w)] = B(roof + '_slab[type=bottom,waterlogged=false]') if (du or w != 1) else B(roof)
+            L[(cu, top + 5, 1)] = B(roof)
+            L[(cu, top + 6, 1)] = B('lightning_rod[facing=up,powered=false,waterlogged=false]')
     return L, marks
 
 
@@ -784,7 +825,7 @@ def footbridges():
 
 def place_lots():
     for (fx, fz, s, e, pad, bkind, idx, hw, D) in LOTS:
-        st = STYLES[idx % len(STYLES)]
+        st = dict(STYLES[idx % len(STYLES)], variant=('gable', 'bay', 'greenhouse', 'turrets')[(idx * 7 + 3) % 4])
         floors = 2 if bkind.startswith('shop:') else (2 + (idx % 3 == 1) if hw == 4 else 1 + (idx % 2))
         L, marks = building(bkind, st, floors, hw, D)
         f = lambda v: (v[0] * e[0] + v[1] * s[0], v[0] * e[1] + v[1] * s[1])
