@@ -1,0 +1,602 @@
+{
+  "chapter": "guide_undergarden",
+  "group": "exploration",
+  "act": "III",
+  "icon": "undergarden:catalyst",
+  "title": {
+    "en_us": "The Undergarden",
+    "es_es": "The Undergarden"
+  },
+  "subtitle": {
+    "en_us": "A hostile world below the world: its own ores, the Rotspawn plague and the Forgotten.",
+    "es_es": "Un mundo hostil debajo del mundo: sus propios minerales, la plaga Rotspawn y los Olvidados."
+  },
+  "quests": [
+    {
+      "key": "ug_welcome",
+      "deps": [],
+      "type": "checkmark",
+      "layout": {
+        "x": 0,
+        "y": 0,
+        "size": 2.0,
+        "shape": "hexagon"
+      },
+      "en_us": [
+        "The forgotten land below",
+        "The Undergarden is an underground dimension with its own stone (Depthrock, Shiverstone, Tremblecrust, Dreadrock), its own ores (Cloggrum, Froststeel, Utherium, Regalium, Rogdorium) and a fauna that ranges from harmless to nasty. It is optional in ENTRELUMEN: no story step needs it, but its gear and ores are worth the trip.\n\nIn this pack it opens in act III, because the Catalyst that lights its portal needs a Routing Matrix. The Heliodor Compass has no objectives down there."
+      ],
+      "es_es": [
+        "La tierra olvidada de abajo",
+        "The Undergarden es una dimensión subterránea con piedras propias (Depthrock, Shiverstone, Tremblecrust, Dreadrock), minerales propios (Cloggrum, Froststeel, Utherium, Regalium, Rogdorium) y una fauna que va de inofensiva a desagradable. En ENTRELUMEN es opcional: ningún paso de la historia la pide, pero su equipo y sus minerales valen el viaje.\n\nEn este pack se abre en el acto III, porque el Catalizador que enciende su portal pide una Matriz de distribución. La Brújula de Heliodor no tiene objetivos allá abajo."
+      ],
+      "sources": [
+        "repo:pack/kubejs/server_scripts/entrelumen_pingpong_balance.js",
+        "repo:docs/design/mod-pingpong.md",
+        "repo:content/compass_targets.json",
+        "jar:The_Undergarden-1.21.1-0.9.6.jar:assets/undergarden/lang/en_us.json"
+      ]
+    },
+    {
+      "key": "ug_catalyst",
+      "deps": [
+        "ug_welcome"
+      ],
+      "type": "item",
+      "item": "undergarden:catalyst",
+      "layout": {
+        "x": 3,
+        "y": 0,
+        "size": 1.0,
+        "shape": "square"
+      },
+      "en_us": [
+        "The Catalyst",
+        "In ENTRELUMEN the Catalyst is 4 copper ingots, 3 stones, an ender pearl and a Routing Matrix (the act III component) in the top middle slot. It is not consumed when you use it.\n\nThe mod also has a Crumbling Catalyst made from Undergarden materials (Cloggrum, Depthrock and a Forgotten Nugget) that wears out with use; it is a spare for later, since you need to have been down there to craft it."
+      ],
+      "es_es": [
+        "El Catalizador",
+        "En ENTRELUMEN el Catalizador lleva 4 lingotes de cobre, 3 piedras, una perla de ender y una Matriz de distribución (el componente del acto III) en el casillero de arriba al medio. No se gasta al usarlo.\n\nEl mod tiene además un Catalizador desmoronado (Crumbling Catalyst) hecho con materiales del Undergarden (Cloggrum, Depthrock y una Pepita olvidada) que se gasta con el uso; es un repuesto para más adelante, porque para fabricarlo ya tenés que haber bajado."
+      ],
+      "sources": [
+        "repo:pack/kubejs/server_scripts/entrelumen_pingpong_balance.js",
+        "jar:The_Undergarden-1.21.1-0.9.6.jar:data/undergarden/recipe/catalyst.json",
+        "jar:The_Undergarden-1.21.1-0.9.6.jar:data/undergarden/recipe/crumbling_catalyst.json",
+        "jar:The_Undergarden-1.21.1-0.9.6.jar:quek/undergarden/item/CrumblingCatalystItem.class",
+        "jar:The_Undergarden-1.21.1-0.9.6.jar:data/undergarden/advancement/undergarden/catalyst.json"
+      ]
+    },
+    {
+      "key": "ug_portal",
+      "deps": [
+        "ug_catalyst"
+      ],
+      "type": "dimension",
+      "dimension": "undergarden:undergarden",
+      "icon": "undergarden:depthrock",
+      "layout": {
+        "x": 6,
+        "y": 0,
+        "size": 1.75,
+        "shape": "diamond"
+      },
+      "en_us": [
+        "A stone-brick portal",
+        "Build a frame shaped like a Nether portal out of stone bricks (mossy, cracked and chiseled count), deepslate bricks or tiles, or polished deepslate, then use the Catalyst on the inside. It only works in the Overworld and in the Undergarden.\n\nYou arrive underground and it is dark: bring torches, food and a pickaxe. Mark the portal on your map before walking away."
+      ],
+      "es_es": [
+        "Un portal de ladrillos de piedra",
+        "Armá un marco con la forma de un portal del Nether con ladrillos de piedra (sirven los musgosos, agrietados y cincelados), ladrillos o baldosas de pizarra profunda, o pizarra profunda pulida, y usá el Catalizador en el hueco. Sólo funciona en el Overworld y en el Undergarden.\n\nLlegás bajo tierra y está oscuro: llevá antorchas, comida y un pico. Marcá el portal en el mapa antes de alejarte."
+      ],
+      "sources": [
+        "jar:The_Undergarden-1.21.1-0.9.6.jar:data/undergarden/tags/block/portal_frame_blocks.json",
+        "jar:The_Undergarden-1.21.1-0.9.6.jar:quek/undergarden/item/CatalystItem.class",
+        "jar:The_Undergarden-1.21.1-0.9.6.jar:data/undergarden/advancement/undergarden/enter_undergarden.json"
+      ]
+    },
+    {
+      "key": "ug_rotspawn",
+      "deps": [
+        "ug_portal"
+      ],
+      "type": "checkmark",
+      "icon": "undergarden:utheric_shard",
+      "layout": {
+        "x": 6,
+        "y": -3,
+        "size": 0.85,
+        "shape": "circle"
+      },
+      "en_us": [
+        "Rotspawn and the Utheric Infection",
+        "The Rotspawn (Rotling, Rotwalker, Rotbeast, Rotbelcher) are the local plague. Fighting them and walking the infected areas can give you the Utheric Infection, a meter that fills up and can kill you if it gets out of hand.\n\nHold it back by eating Rogdorium (or a nugget) or with the Purity effect (\"A Much Needed Antidote\"). Rotspawn drop Utheric Shards: one on a stick makes a Shard Torch, which hurts Rotspawn around it."
+      ],
+      "es_es": [
+        "Los Rotspawn y la Infección Utheric",
+        "Los Rotspawn (Rotling, Rotwalker, Rotbeast, Rotbelcher) son la plaga del lugar. Pelear con ellos y andar por las zonas infectadas te puede contagiar la Infección Utheric, un medidor que se llena y te puede matar si se descontrola.\n\nSe frena comiendo Rogdorium (o una pepita) o con el efecto Pureza («A Much Needed Antidote»). Los Rotspawn sueltan Fragmentos Utheric: uno sobre un palo hace una Antorcha de fragmento, que lastima a los Rotspawn cercanos."
+      ],
+      "sources": [
+        "jar:The_Undergarden-1.21.1-0.9.6.jar:data/undergarden/advancement/undergarden/contract_utheric_infection.json",
+        "jar:The_Undergarden-1.21.1-0.9.6.jar:data/undergarden/advancement/undergarden/cure_utheric_infection.json",
+        "jar:The_Undergarden-1.21.1-0.9.6.jar:data/undergarden/recipe/shard_torch.json",
+        "jar:The_Undergarden-1.21.1-0.9.6.jar:data/undergarden/loot_table/entities/rotling.json",
+        "jar:The_Undergarden-1.21.1-0.9.6.jar:assets/undergarden/lang/en_us.json"
+      ]
+    },
+    {
+      "key": "ug_shard_torch",
+      "deps": [
+        "ug_rotspawn"
+      ],
+      "type": "item",
+      "item": "undergarden:shard_torch",
+      "layout": {
+        "x": 9,
+        "y": -3,
+        "size": 1.0,
+        "shape": "square"
+      },
+      "en_us": [
+        "A Shard Torch",
+        "Craft a Shard Torch (\"Warding Device\"): a Utheric Shard on a stick. Place a few around your landing point to keep Rotspawn away.\n\nCareful in fights: the torch's magic can also hurt you if you stand next to it while escaping something."
+      ],
+      "es_es": [
+        "Una Antorcha de fragmento",
+        "Fabricá una Antorcha de fragmento («Warding Device»): un Fragmento Utheric sobre un palo. Poné algunas alrededor de tu punto de llegada para alejar a los Rotspawn.\n\nCuidado en las peleas: la magia de la antorcha también te puede lastimar si te quedás al lado mientras escapás de algo."
+      ],
+      "sources": [
+        "jar:The_Undergarden-1.21.1-0.9.6.jar:data/undergarden/recipe/shard_torch.json",
+        "jar:The_Undergarden-1.21.1-0.9.6.jar:data/undergarden/advancement/undergarden/shard_torch.json",
+        "jar:The_Undergarden-1.21.1-0.9.6.jar:assets/undergarden/lang/en_us.json"
+      ]
+    },
+    {
+      "key": "ug_fauna",
+      "deps": [
+        "ug_portal"
+      ],
+      "type": "checkmark",
+      "icon": "undergarden:goo_ball",
+      "layout": {
+        "x": 3,
+        "y": -3,
+        "size": 0.85,
+        "shape": "circle"
+      },
+      "en_us": [
+        "Who lives down here",
+        "Not everything bites. Scintlings are harmless little creatures that leave slowing goo (killing one earns a guilty advancement); Gloompers, Dwellers and Mogs are passive or neutral; Gwiblings are fish you can bucket. Brutes, Nargoyles, Munchers and the Rotspawn are the ones to watch.\n\nStoneborn are traders: trading with one is \"Interdimensional Business\". Denizens live in camps; destroying their campfire angers the whole camp."
+      ],
+      "es_es": [
+        "Quién vive acá abajo",
+        "No todo muerde. Los Scintlings son criaturitas inofensivas que dejan baba que ralentiza (matar uno da un logro culposo); los Gloompers, Dwellers y Mogs son pasivos o neutrales; los Gwiblings son peces que se juntan con balde. Hay que cuidarse de los Brutes, los Nargoyles, los Munchers y los Rotspawn.\n\nLos Stoneborn comercian: hacer un trato con uno es «Interdimensional Business». Los Denizens viven en campamentos; romper su fogata enoja a todo el campamento."
+      ],
+      "sources": [
+        "jar:The_Undergarden-1.21.1-0.9.6.jar:assets/undergarden/lang/en_us.json",
+        "jar:The_Undergarden-1.21.1-0.9.6.jar:data/undergarden/advancement/undergarden/stoneborn_trade.json",
+        "jar:The_Undergarden-1.21.1-0.9.6.jar:data/undergarden/advancement/undergarden/break_denizen_campfire.json",
+        "jar:The_Undergarden-1.21.1-0.9.6.jar:data/undergarden/advancement/undergarden/kill_scintling.json"
+      ]
+    },
+    {
+      "key": "ug_ores",
+      "deps": [
+        "ug_portal"
+      ],
+      "type": "item",
+      "item": "undergarden:raw_cloggrum",
+      "count": 8,
+      "layout": {
+        "x": 9,
+        "y": 0,
+        "size": 1.0,
+        "shape": "circle"
+      },
+      "en_us": [
+        "Deep extraction",
+        "The Undergarden has its own ores. Cloggrum is the common metal (iron-like), Froststeel comes from Shiverstone in the cold biomes, Utherium is a crystal, Regalium a precious gem, and Rogdorium hides in Dreadrock at the very bottom. They all carry the usual c: tags, so machines from other mods process them.\n\nOne block of every Undergarden ore is \"Collector's Edition\"."
+      ],
+      "es_es": [
+        "Extracción profunda",
+        "El Undergarden tiene minerales propios. El Cloggrum es el metal común (parecido al hierro), el Froststeel sale de la Shiverstone en los biomas fríos, el Utherium es un cristal, el Regalium una gema preciosa y el Rogdorium se esconde en la Dreadrock, bien al fondo. Todos llevan las etiquetas c: de siempre, así que las máquinas de otros mods los procesan.\n\nUn bloque de cada mineral del Undergarden es «Collector's Edition»."
+      ],
+      "sources": [
+        "jar:The_Undergarden-1.21.1-0.9.6.jar:data/undergarden/advancement/undergarden/mine_ore.json",
+        "jar:The_Undergarden-1.21.1-0.9.6.jar:data/undergarden/advancement/undergarden/all_ore_blocks.json",
+        "jar:The_Undergarden-1.21.1-0.9.6.jar:assets/undergarden/lang/en_us.json"
+      ]
+    },
+    {
+      "key": "ug_cloggrum",
+      "deps": [
+        "ug_ores"
+      ],
+      "type": "item",
+      "item": "undergarden:cloggrum_ingot",
+      "count": 8,
+      "layout": {
+        "x": 12,
+        "y": 0,
+        "size": 1.0,
+        "shape": "square"
+      },
+      "en_us": [
+        "Cloggrum gear",
+        "Smelt Raw Cloggrum and craft its tools and armor. A full suit is \"Cover Me in Coprolites\", and Cloggrum boots stop Scintling goo from slowing you.\n\nKeep your Cloggrum tools: the Forgotten upgrade later turns them into the best Undergarden gear."
+      ],
+      "es_es": [
+        "Equipo de Cloggrum",
+        "Fundí el Cloggrum crudo y fabricá sus herramientas y armadura. El set completo es «Cover Me in Coprolites», y las botas de Cloggrum evitan que la baba de Scintling te frene.\n\nGuardá tus herramientas de Cloggrum: la mejora Olvidada las convierte después en el mejor equipo del Undergarden."
+      ],
+      "sources": [
+        "jar:The_Undergarden-1.21.1-0.9.6.jar:data/undergarden/advancement/undergarden/cloggrum_armor.json",
+        "jar:The_Undergarden-1.21.1-0.9.6.jar:assets/undergarden/lang/en_us.json"
+      ]
+    },
+    {
+      "key": "ug_special_gear",
+      "deps": [
+        "ug_cloggrum"
+      ],
+      "type": "checkmark",
+      "optional": true,
+      "icon": "undergarden:utherium_sword",
+      "layout": {
+        "x": 12,
+        "y": 3,
+        "size": 0.85,
+        "shape": "circle"
+      },
+      "en_us": [
+        "Froststeel and Utherium",
+        "Two specialist sets. Froststeel weapons slow what they hit. Utherium weapons deal 1.5× damage to Rotspawn, which makes them the natural answer to the Infected Depths.\n\nThe Undergarden also brews its own potions: Brittleness (more damage the more armor the victim has), Featherweight (more knockback) and Virulent Resistance."
+      ],
+      "es_es": [
+        "Froststeel y Utherium",
+        "Dos sets especializados. Las armas de Froststeel ralentizan a lo que golpean. Las de Utherium hacen 1,5× de daño a los Rotspawn, y por eso son la respuesta natural a las Profundidades infectadas.\n\nEl Undergarden también tiene pociones propias: Fragilidad (más daño cuanto más armadura tiene la víctima), Ligereza (más empuje) y Resistencia a la virulencia."
+      ],
+      "sources": [
+        "jar:The_Undergarden-1.21.1-0.9.6.jar:assets/undergarden/lang/en_us.json"
+      ]
+    },
+    {
+      "key": "ug_slingshot",
+      "deps": [
+        "ug_ores"
+      ],
+      "type": "advancement",
+      "advancement": "undergarden:undergarden/slingshot",
+      "optional": true,
+      "icon": "undergarden:slingshot",
+      "layout": {
+        "x": 9,
+        "y": 3,
+        "size": 1.0,
+        "shape": "square"
+      },
+      "en_us": [
+        "The Slingshot",
+        "Craft a Slingshot (\"Your New Best Friend\") and fire Depthrock Pebbles, which Mogs and Stoneborn drop. Goo Balls, Rotten Blisterberries (they explode) and even Gronglets work as ammo, each with its own advancement.\n\nIts enchantments are worth knowing: Ricochet bounces shots off walls and Self Sling fires you instead of the ammo, a cheap way to cross a gap."
+      ],
+      "es_es": [
+        "La Resortera",
+        "Fabricá una Resortera («Your New Best Friend») y dispará Piedritas de Depthrock, que sueltan los Mogs y los Stoneborn. Las Bolas de baba, las Blisterberries podridas (explotan) y hasta los Gronglets sirven de munición, cada uno con su logro.\n\nConviene conocer sus encantamientos: Ricochet hace rebotar los disparos en las paredes y Self Sling te dispara a vos en lugar de la munición, una forma barata de cruzar un hueco."
+      ],
+      "sources": [
+        "jar:The_Undergarden-1.21.1-0.9.6.jar:data/undergarden/advancement/undergarden/slingshot.json",
+        "jar:The_Undergarden-1.21.1-0.9.6.jar:data/undergarden/advancement/undergarden/shoot_slingshot_rotten_blisterberry.json",
+        "jar:The_Undergarden-1.21.1-0.9.6.jar:data/undergarden/loot_table/entities/mog.json",
+        "jar:The_Undergarden-1.21.1-0.9.6.jar:assets/undergarden/lang/en_us.json"
+      ]
+    },
+    {
+      "key": "ug_food",
+      "deps": [
+        "ug_portal"
+      ],
+      "type": "advancement",
+      "advancement": "undergarden:undergarden/underbeans",
+      "optional": true,
+      "icon": "undergarden:underbeans",
+      "layout": {
+        "x": 6,
+        "y": 3,
+        "size": 1.0,
+        "shape": "circle"
+      },
+      "en_us": [
+        "Underground food",
+        "Pick an Underbean Bush (\"Glorious Beans!\"), plant Gloomgourd seeds (\"Purple Pumpkins\") and hunt Dwellers and Gloompers for meat. Blisterberries are food too, but rotten ones are ammunition, not dinner.\n\nNew foods count toward ENTRELUMEN's food variety."
+      ],
+      "es_es": [
+        "Comida subterránea",
+        "Recogé un arbusto de Underbeans («Glorious Beans!»), plantá semillas de Gloomgourd («Purple Pumpkins») y cazá Dwellers y Gloompers para carne. Las Blisterberries también se comen, pero las podridas son munición, no cena.\n\nLas comidas nuevas cuentan para la variedad de comida de ENTRELUMEN."
+      ],
+      "sources": [
+        "jar:The_Undergarden-1.21.1-0.9.6.jar:data/undergarden/advancement/undergarden/underbeans.json",
+        "jar:The_Undergarden-1.21.1-0.9.6.jar:data/undergarden/advancement/undergarden/plant_gloomgourd.json",
+        "jar:The_Undergarden-1.21.1-0.9.6.jar:assets/undergarden/lang/en_us.json",
+        "repo:docs/design/story-bible.md"
+      ]
+    },
+    {
+      "key": "ug_catacombs",
+      "deps": [
+        "ug_cloggrum"
+      ],
+      "type": "advancement",
+      "advancement": "undergarden:undergarden/catacombs",
+      "icon": "undergarden:depthrock_bricks",
+      "layout": {
+        "x": 15,
+        "y": 0,
+        "size": 1.0,
+        "shape": "circle"
+      },
+      "en_us": [
+        "Forgotten Halls",
+        "Catacombs are ruined halls of Depthrock bricks. Their chests hold Cloggrum and Froststeel nuggets, Regalium, Utheric Shards and the Forgotten upgrade smithing template.\n\nThey are guarded by the Forgotten, and some carry a Cloggrum Battleaxe you can take from them (\"Cold Dead Hands\")."
+      ],
+      "es_es": [
+        "Salones olvidados",
+        "Las Catacumbas son salones en ruinas de ladrillos de Depthrock. Sus cofres traen pepitas de Cloggrum y Froststeel, Regalium, Fragmentos Utheric y la plantilla de herrería de la mejora Olvidada.\n\nLas custodian los Olvidados (Forgotten), y algunos llevan un Hacha de batalla de Cloggrum que les podés quitar («Cold Dead Hands»)."
+      ],
+      "sources": [
+        "jar:The_Undergarden-1.21.1-0.9.6.jar:data/undergarden/advancement/undergarden/catacombs.json",
+        "jar:The_Undergarden-1.21.1-0.9.6.jar:data/undergarden/advancement/undergarden/cloggrum_battleaxe.json",
+        "jar:The_Undergarden-1.21.1-0.9.6.jar:data/undergarden/loot_table/chests/catacombs.json",
+        "jar:The_Undergarden-1.21.1-0.9.6.jar:assets/undergarden/lang/en_us.json"
+      ]
+    },
+    {
+      "key": "ug_guardian",
+      "deps": [
+        "ug_catacombs"
+      ],
+      "type": "advancement",
+      "advancement": "undergarden:undergarden/kill_forgotten_guardian",
+      "icon": "undergarden:forgotten_block",
+      "layout": {
+        "x": 18,
+        "y": 0,
+        "size": 1.5,
+        "shape": "gear"
+      },
+      "en_us": [
+        "The Forgotten Guardian",
+        "The Forgotten Guardian is the Undergarden's heavy hitter, found in the Catacombs. Beating it is \"Decommissioned\" and its drop is Forgotten Nuggets.\n\nNine nuggets make a Forgotten Ingot (\"What Now Is\"), the metal of the endgame of this dimension."
+      ],
+      "es_es": [
+        "El Guardián Olvidado",
+        "El Guardián Olvidado es el que más pega en el Undergarden y aparece en las Catacumbas. Vencerlo es «Decommissioned» y suelta Pepitas olvidadas.\n\nNueve pepitas hacen un Lingote olvidado («What Now Is»), el metal del final de esta dimensión."
+      ],
+      "sources": [
+        "jar:The_Undergarden-1.21.1-0.9.6.jar:data/undergarden/advancement/undergarden/kill_forgotten_guardian.json",
+        "jar:The_Undergarden-1.21.1-0.9.6.jar:data/undergarden/advancement/undergarden/forgotten_ingot.json",
+        "jar:The_Undergarden-1.21.1-0.9.6.jar:data/undergarden/loot_table/entities/forgotten_guardian.json",
+        "jar:The_Undergarden-1.21.1-0.9.6.jar:assets/undergarden/lang/en_us.json"
+      ]
+    },
+    {
+      "key": "ug_forgotten",
+      "deps": [
+        "ug_guardian"
+      ],
+      "type": "item",
+      "item": "undergarden:forgotten_pickaxe",
+      "layout": {
+        "x": 21,
+        "y": 0,
+        "size": 1.0,
+        "shape": "circle"
+      },
+      "en_us": [
+        "Forgotten Arsenal",
+        "On a Smithing Table, the Forgotten upgrade template plus a Forgotten Ingot turns a Cloggrum tool or weapon into its Forgotten version. Forgotten tools mine Undergarden blocks 1.5× faster and Forgotten weapons deal 1.5× damage to non-boss Undergarden mobs.\n\nOnly Forgotten tools can mine Dreadrock, the barrier at the bottom. All six Forgotten tools is \"Forgotten Arsenal\"; a Forgotten Battleaxe is \"Axe of Legends\"."
+      ],
+      "es_es": [
+        "Arsenal olvidado",
+        "En la mesa de herrería, la plantilla de mejora Olvidada más un Lingote olvidado convierte una herramienta o arma de Cloggrum en su versión Olvidada. Las herramientas Olvidadas pican 1,5× más rápido los bloques del Undergarden y las armas Olvidadas hacen 1,5× de daño a los mobs del Undergarden que no son jefe.\n\nSólo las herramientas Olvidadas pican la Dreadrock, la barrera del fondo. Las seis herramientas Olvidadas son «Forgotten Arsenal»; un Hacha de batalla Olvidada es «Axe of Legends»."
+      ],
+      "sources": [
+        "jar:The_Undergarden-1.21.1-0.9.6.jar:data/undergarden/tags/block/needs_forgotten_tool.json",
+        "jar:The_Undergarden-1.21.1-0.9.6.jar:data/undergarden/advancement/undergarden/forgotten_tools.json",
+        "jar:The_Undergarden-1.21.1-0.9.6.jar:data/undergarden/advancement/undergarden/forgotten_battleaxe.json",
+        "jar:The_Undergarden-1.21.1-0.9.6.jar:assets/undergarden/lang/en_us.json"
+      ]
+    },
+    {
+      "key": "ug_minion",
+      "deps": [
+        "ug_forgotten"
+      ],
+      "type": "advancement",
+      "advancement": "undergarden:undergarden/summon_minion",
+      "optional": true,
+      "icon": "undergarden:carved_gloomgourd",
+      "layout": {
+        "x": 21,
+        "y": 3,
+        "size": 1.0,
+        "shape": "circle"
+      },
+      "en_us": [
+        "A Forgotten Minion",
+        "Place a Carved Gloomgourd on a Block of Forgotten Metal, like building a golem, and you get a Forgotten Minion that shoots at hostile creatures (\"Buildin' a Sentry\"). A good guard for a base down here."
+      ],
+      "es_es": [
+        "Un Secuaz olvidado",
+        "Poné una Gloomgourd tallada sobre un Bloque de metal olvidado, como armando un gólem, y obtenés un Secuaz olvidado (Forgotten Minion) que dispara a las criaturas hostiles («Buildin' a Sentry»). Un buen guardia para una base acá abajo."
+      ],
+      "sources": [
+        "jar:The_Undergarden-1.21.1-0.9.6.jar:data/undergarden/advancement/undergarden/summon_minion.json",
+        "jar:The_Undergarden-1.21.1-0.9.6.jar:assets/undergarden/lang/en_us.json"
+      ]
+    },
+    {
+      "key": "ug_depths",
+      "deps": [
+        "ug_forgotten"
+      ],
+      "type": "advancement",
+      "advancement": "undergarden:undergarden/enter_depths",
+      "icon": "undergarden:dreadrock",
+      "layout": {
+        "x": 24,
+        "y": 0,
+        "size": 1.75,
+        "shape": "diamond"
+      },
+      "en_us": [
+        "Into the Depths",
+        "Dig through the Dreadrock barrier at the bottom with a Forgotten pickaxe to reach the Depths (\"Into the Depths\"). There you find Rogdorium, Dreadrock Utherium, Denizen camps and the Infected Depths, where the Utheric Infection is at its worst.\n\nCarry Rogdorium to eat and Utherium weapons for the Rotspawn."
+      ],
+      "es_es": [
+        "Hacia las Profundidades",
+        "Picá la barrera de Dreadrock del fondo con un pico Olvidado para llegar a las Profundidades («Into the Depths»). Ahí aparecen el Rogdorium, el Utherium de Dreadrock, los campamentos de Denizens y las Profundidades infectadas, donde la Infección Utheric pega más fuerte.\n\nLlevá Rogdorium para comer y armas de Utherium para los Rotspawn."
+      ],
+      "sources": [
+        "jar:The_Undergarden-1.21.1-0.9.6.jar:data/undergarden/advancement/undergarden/enter_depths.json",
+        "jar:The_Undergarden-1.21.1-0.9.6.jar:data/undergarden/tags/block/needs_forgotten_tool.json",
+        "jar:The_Undergarden-1.21.1-0.9.6.jar:assets/undergarden/lang/en_us.json"
+      ]
+    },
+    {
+      "key": "ug_infuser",
+      "deps": [
+        "ug_depths"
+      ],
+      "type": "item",
+      "item": "undergarden:infuser",
+      "layout": {
+        "x": 27,
+        "y": 0,
+        "size": 1.0,
+        "shape": "square"
+      },
+      "en_us": [
+        "The Infuser",
+        "Craft an Infuser from Dreadrock, a Utheric Cluster (9 Utheric Shards) and Rogdorium. Fuelled with Rogdorium or Utherium, it purifies and converts: a Utheric Cluster into a Utherium Crystal, an Ancient Root into a Denizen Totem, and it can infuse armor. EMI lists every \"Infusing\" recipe."
+      ],
+      "es_es": [
+        "El Infusor",
+        "Fabricá un Infusor con Dreadrock, un Racimo Utheric (9 Fragmentos Utheric) y Rogdorium. Alimentado con Rogdorium o Utherium, purifica y convierte: un Racimo Utheric en un Cristal de Utherium, una Raíz antigua en un Tótem de Denizen, y además infunde armaduras. EMI muestra todas las recetas de «Infusing»."
+      ],
+      "sources": [
+        "jar:The_Undergarden-1.21.1-0.9.6.jar:data/undergarden/recipe/infuser.json",
+        "jar:The_Undergarden-1.21.1-0.9.6.jar:data/undergarden/recipe/utheric_cluster.json",
+        "jar:The_Undergarden-1.21.1-0.9.6.jar:data/undergarden/recipe/utheric_cluster_to_utherium_crystal_infusing.json",
+        "jar:The_Undergarden-1.21.1-0.9.6.jar:data/undergarden/recipe/armor_infusing.json",
+        "jar:The_Undergarden-1.21.1-0.9.6.jar:data/undergarden/advancement/undergarden/craft_infuser.json"
+      ]
+    },
+    {
+      "key": "ug_denizens",
+      "deps": [
+        "ug_depths"
+      ],
+      "type": "advancement",
+      "advancement": "undergarden:undergarden/obtain_denizen_mask",
+      "optional": true,
+      "icon": "undergarden:denizen_mask",
+      "layout": {
+        "x": 27,
+        "y": -3,
+        "size": 1.0,
+        "shape": "circle"
+      },
+      "en_us": [
+        "Meeting the locals",
+        "Denizen camps sit in the Depths around a campfire. Destroying that campfire upsets every Denizen around it, so leave it alone. Their camps hold Ancient Roots, Denizen Masks and totems. A Mysterious Mask from a Denizen is \"One of Us\"."
+      ],
+      "es_es": [
+        "Conocer a los vecinos",
+        "Los campamentos de Denizens están en las Profundidades, alrededor de una fogata. Romper esa fogata enoja a todos los Denizens de alrededor, así que no la toques. En sus campamentos hay Raíces antiguas, Máscaras de Denizen y tótems. Conseguir una Máscara misteriosa de un Denizen es «One of Us»."
+      ],
+      "sources": [
+        "jar:The_Undergarden-1.21.1-0.9.6.jar:data/undergarden/advancement/undergarden/enter_denizen_camp.json",
+        "jar:The_Undergarden-1.21.1-0.9.6.jar:data/undergarden/advancement/undergarden/obtain_denizen_mask.json",
+        "jar:The_Undergarden-1.21.1-0.9.6.jar:data/undergarden/loot_table/chests/denizen_camp.json"
+      ]
+    },
+    {
+      "key": "ug_biomes",
+      "deps": [
+        "ug_portal"
+      ],
+      "type": "advancement",
+      "advancement": "undergarden:undergarden/all_undergarden_biomes",
+      "optional": true,
+      "icon": "undergarden:cloggrum_boots",
+      "layout": {
+        "x": 3,
+        "y": 3,
+        "size": 1.0,
+        "shape": "circle"
+      },
+      "en_us": [
+        "Subterranean Cartographer",
+        "Visit every Undergarden biome: forests of Smogstem and Wigglewood, mushroom bogs, the Frostfields, dead and ancient seas, the Smog Spires and more. The Forgotten Field and the Depths count too.\n\nJourneyMap keeps mapping underground here: waypoints are the best defence against getting lost."
+      ],
+      "es_es": [
+        "Cartógrafo subterráneo",
+        "Visitá todos los biomas del Undergarden: bosques de Smogstem y Wigglewood, pantanos de hongos, los Frostfields, mares muertos y antiguos, las Smog Spires y más. El Campo olvidado y las Profundidades también cuentan.\n\nJourneyMap sigue mapeando bajo tierra acá: los waypoints son la mejor defensa contra perderse."
+      ],
+      "sources": [
+        "jar:The_Undergarden-1.21.1-0.9.6.jar:data/undergarden/advancement/undergarden/all_undergarden_biomes.json",
+        "jar:The_Undergarden-1.21.1-0.9.6.jar:data/undergarden/worldgen/biome"
+      ]
+    },
+    {
+      "key": "ug_pack",
+      "deps": [
+        "ug_welcome"
+      ],
+      "type": "checkmark",
+      "icon": "entrelumen:routing_matrix",
+      "layout": {
+        "x": 0,
+        "y": 3,
+        "size": 1.0,
+        "shape": "rsquare"
+      },
+      "en_us": [
+        "What ENTRELUMEN changes down here",
+        "Pack specifics:\n- The Catalyst needs a Routing Matrix, so the dimension opens in act III.\n- It is optional: the story, the Atlas and the compass do not ask for it.\n- Undergarden ores keep their c: tags and feed other mods' ore processing.\n- A few upstream compatibility recipes that do not load in 1.21.1 (Malum repairs for Undergarden tools) are disabled.\n- The Undergarden's own Delight addon was left out on purpose to keep the pack lean."
+      ],
+      "es_es": [
+        "Qué cambia ENTRELUMEN acá abajo",
+        "Particularidades del pack:\n- El Catalizador pide una Matriz de distribución, así que la dimensión se abre en el acto III.\n- Es opcional: ni la historia, ni el Atlas, ni la brújula la piden.\n- Los minerales del Undergarden conservan sus etiquetas c: y entran al procesamiento de otros mods.\n- Algunas recetas de compatibilidad de terceros que no cargan en 1.21.1 (reparaciones de Malum para herramientas del Undergarden) están desactivadas.\n- El addon Delight del Undergarden se dejó afuera a propósito para no inflar el pack."
+      ],
+      "sources": [
+        "repo:pack/kubejs/server_scripts/entrelumen_pingpong_balance.js",
+        "repo:docs/design/mod-pingpong.md"
+      ]
+    },
+    {
+      "key": "ug_mastery",
+      "deps": [
+        "ug_infuser"
+      ],
+      "type": "checkmark",
+      "icon": "undergarden:forgotten_battleaxe",
+      "layout": {
+        "x": 30,
+        "y": 0,
+        "size": 2.25,
+        "shape": "pentagon"
+      },
+      "en_us": [
+        "Master of the underground",
+        "You lit the portal, survived the infection, beat the Forgotten Guardian, forged Forgotten tools and broke into the Depths. The Undergarden is now a mine you control: Regalium and Utherium for trades and gear, Froststeel and Cloggrum for bulk metal."
+      ],
+      "es_es": [
+        "Dueño del subsuelo",
+        "Encendiste el portal, sobreviviste a la infección, venciste al Guardián Olvidado, forjaste herramientas Olvidadas y entraste a las Profundidades. El Undergarden ahora es una mina que controlás: Regalium y Utherium para comercio y equipo, Froststeel y Cloggrum para metal en cantidad."
+      ],
+      "sources": [
+        "jar:The_Undergarden-1.21.1-0.9.6.jar:data/undergarden/advancement/undergarden/enter_depths.json"
+      ]
+    }
+  ]
+}
