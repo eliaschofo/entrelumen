@@ -21,3 +21,12 @@ Pedidos previos del mismo día, a cargo del worker del contenido luminoso: **Sil
 | Granja y comida | **Pam's HarvestCraft Crops**, **addons de Farmer's Delight** (Delights temáticos) y **Croptopia** | Evitar cultivos duplicados con Almost Unified y tags comunes. |
 | Construcción y decoración | **Create: Deco** y **Steam 'n' Rails**; **Chisel & Bits** o su equivalente para 1.21.1; **más muebles** (Another Furniture o similar) | Chisel & Bits es pesado: medir. |
 | Visual y ambiente | Ninguno | Se mantiene el look vanilla. |
+
+## Ronda 3 (24/9)
+
+| Tipo | Elegidos por Elias | Notas |
+|---|---|---|
+| QoL | **Carry On** | Levantar cofres y animales; revisar el bloqueo de entidades y bloques sensibles (spawners, altares, bloques del Arca, ruinas protegidas). |
+| Transporte | **Create: Steam 'n' Rails** | Ya elegido en decoración; también cumple como transporte. |
+| Aventura y loot | **Repurposed Structures** | Medir el costo de worldgen. |
+| Jefes y combate | Ninguno | |
