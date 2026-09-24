@@ -336,7 +336,7 @@ def fountain(cx, h, cz):
 def lamps():
     n = 0
     for (pts, sm, width, kind) in PATHS:
-        for i in range(0, len(pts), 22):
+        for i in range(0, len(pts), 34):
             x, z = pts[i]
             if i + 1 >= len(pts):
                 break
@@ -357,6 +357,15 @@ def lamps():
             V[(c[0], h + 5, c[1])] = B('ochre_froglight' if n % 3 else 'pearlescent_froglight')
             V[(c[0], h + 6, c[1])] = B('waxed_cut_copper_slab[type=bottom,waterlogged=false]')
             USED.add(c)
+            j = i + 17
+            if j + 1 < len(pts):
+                x2, z2 = pts[j]
+                c2 = (round(x2 - nx * side * (width / 2 + 0.6)), round(z2 - nz * side * (width / 2 + 0.6)))
+                if c2 in HEIGHT and (c2 not in USED or c2 in ROAD):
+                    h2 = ROAD[c2][0] if c2 in ROAD else HEIGHT[c2]
+                    V[(c2[0], h2 + 1, c2[1])] = B('moss_block')
+                    V[(c2[0], h2 + 2, c2[1])] = B('flowering_azalea')
+                    USED.add(c2)
 
 
 # ---------------- buildings ----------------
@@ -390,20 +399,21 @@ STYLES = [
 ]
 
 
-def building(kind, st, floors):
-    """Local frame: u across the street (-4..4), w depth (0 = front; 'north' faces the street),
-    y from the foundation (0). Symmetric across u = 0 except the ladder and the bed."""
+def building(kind, st, floors, hw=4, D=9):
+    """Local frame: u across the street (-hw..hw), w depth (0 = front; 'north' faces the street),
+    y from the foundation (0). Mirror-symmetric across u = 0 except the ladder and the bed."""
     L, marks = {}, []
     top = 5 * floors
     wall, roof = B(st['wall']), st['roof']
     trim = B(st['trim'] + '[axis=y]')
     g1, g2 = B(st['glass'][0] + '_stained_glass'), B(st['glass'][1] + '_stained_glass')
     shop = kind.startswith('shop:')
-    for u in range(-4, 5):
-        for w in range(0, 9):
+    back = D - 1
+    for u in range(-hw, hw + 1):
+        for w in range(0, D):
             L[(u, 0, w)] = B('polished_tuff')
-            edge = abs(u) == 4 or w in (0, 8)
-            corner = abs(u) == 4 and w in (0, 8)
+            edge = abs(u) == hw or w in (0, back)
+            corner = abs(u) == hw and w in (0, back)
             for y in range(1, top + 1):
                 band = y % 5 == 0
                 if edge:
@@ -411,108 +421,116 @@ def building(kind, st, floors):
                         B('polished_tuff') if y == 1 else wall
                 else:
                     L[(u, y, w)] = B('birch_planks') if band else AIR
-    for s in range(floors):
-        y0 = 5 * s
-        if s == 0:
+    flower = ('azure_bluet', 'allium', 'cornflower', 'oxeye_daisy', 'lily_of_the_valley', 'blue_orchid')
+    for s_ in range(floors):
+        y0 = 5 * s_
+        if s_ == 0:
             if shop:
-                for u in (-3, -2, -1, 1, 2, 3):
-                    for y in (1, 2, 3):
-                        L[(u, y, 0)] = B('glass')
+                for u in range(-(hw - 1), hw):
+                    if u:
+                        for y in (1, 2, 3):
+                            L[(u, y, 0)] = B('glass')
             else:
-                for u in (-3, -2, 2, 3):
-                    for y in (2, 3):
-                        L[(u, y, 0)] = PANE_U
-                    L[(u, 4, 0)] = g1 if abs(u) == 2 else g2
-                    L[(u, 1, -1)] = B('moss_block')
-                    L[(u, 2, -1)] = B(('azure_bluet', 'allium', 'cornflower', 'oxeye_daisy')[(abs(u) + len(st['glass'][0])) % 4])
+                for u in range(2, hw):
+                    for sg in (-1, 1):
+                        for y in (2, 3):
+                            L[(sg * u, y, 0)] = PANE_U
+                        L[(sg * u, 4, 0)] = g1 if u == 2 else g2
+                        L[(sg * u, 1, -1)] = B('moss_block')
+                        L[(sg * u, 2, -1)] = B(flower[(u + len(st['glass'][0])) % len(flower)])
         else:
-            for u in range(-3, 4):
+            for u in range(-(hw - 1), hw):
                 for y in (y0 + 1, y0 + 2, y0 + 3):
                     L[(u, y, 0)] = B('glass') if u == 0 else PANE_U
                 L[(u, y0 + 4, 0)] = g1 if u % 2 == 0 else g2
                 L[(u, y0, -1)] = B(roof + '_slab[type=top,waterlogged=false]')
-                if abs(u) in (1, 3):
+                if abs(u) % 2 == 1:
                     L[(u, y0 + 1, -1)] = B('waxed_copper_grate')
-                elif abs(u) == 2:
-                    L[(u, y0 + 1, -1)] = B('potted_azure_bluet' if st['glass'][0] in ('yellow', 'orange') else 'potted_allium')
-            for u in (-2, 2):
+                else:
+                    L[(u, y0 + 1, -1)] = B('potted_' + flower[(abs(u) + s_) % len(flower)]) if u else AIR
+            for u in (-(hw - 2), hw - 2):
                 L[(u, y0 - 1, -1)] = HANG
-        for w in (2, 6):
-            if shop and s == 0 and w == 6:
+        for w in (2, back - 2):
+            if shop and s_ == 0 and w == back - 2:
                 continue
             for y in (y0 + 2, y0 + 3):
-                L[(-4, y, w)] = PANE_W
-                L[(4, y, w)] = PANE_W
-            L[(-4, y0 + 4, w)] = g1
-            L[(4, y0 + 4, w)] = g1
-        for u in (-2, -1, 1, 2):
-            for y in (y0 + 2, y0 + 3):
-                L[(u, y, 8)] = PANE_U
-            L[(u, y0 + 4, 8)] = g2
-    # the door with a stained-glass transom and hanging lanterns
+                L[(-hw, y, w)] = PANE_W
+                L[(hw, y, w)] = PANE_W
+            L[(-hw, y0 + 4, w)] = g1
+            L[(hw, y0 + 4, w)] = g1
+        for u in range(-(hw - 2), hw - 1):
+            if u:
+                for y in (y0 + 2, y0 + 3):
+                    L[(u, y, back)] = PANE_U
+                L[(u, y0 + 4, back)] = g2
     L[(0, 1, 0)] = B('waxed_copper_door[facing=south,half=lower,hinge=left,open=false,powered=false]')
     L[(0, 2, 0)] = B('waxed_copper_door[facing=south,half=upper,hinge=left,open=false,powered=false]')
     L[(0, 3, 0)] = g1
     L[(0, 4, 0)] = B('ochre_froglight')
     if shop:
         carpet, band, shelf = SHOP_STYLE[kind.split(':')[1]]
-        for u in range(-3, 4):
+        for u in range(-(hw - 1), hw):
             if u:
                 L[(u, 4, 0)] = B(band)
-        for u in range(-4, 5):
+        for u in range(-hw, hw + 1):
             L[(u, 4, -1)] = B(roof + '_slab[type=top,waterlogged=false]')
             L[(u, 5, -1)] = B(carpet + '_carpet')
         for u in (-2, 2):
             L[(u, 1, 1)] = B(shelf)
             L[(u, 2, 1)] = B('lantern[hanging=false,waterlogged=false]')
         for u in range(-2, 3):
-            L[(u, 1, 4)] = B('stripped_birch_wood[axis=x]')
-        for u in range(-3, 3):
+            L[(u, 1, D // 2)] = B('stripped_birch_wood[axis=x]')
+        for u in range(-(hw - 1), hw - 1):
             for y in (1, 2, 3):
-                L[(u, y, 7)] = B(shelf)
-        marks.append((kind, (0, 1, 6)))
+                L[(u, y, back - 1)] = B(shelf)
+        marks.append((kind, (0, 1, back - 2)))
     else:
         for u in (-1, 0, 1):
             L[(u, 4, -1)] = B(roof + '_slab[type=top,waterlogged=false]')
         for u in (-1, 1):
             L[(u, 3, -1)] = HANG
             L[(u, 1, -1)] = B('potted_flowering_azalea_bush')
-        L[(-3, 1, 7)] = B('crafting_table')
-        L[(-3, 1, 6)] = B('barrel[facing=up,open=false]')
+        L[(-(hw - 1), 1, back - 1)] = B('crafting_table')
+        L[(-(hw - 1), 1, back - 2)] = B('barrel[facing=up,open=false]')
         if kind == 'inn':
             for u in (-2, 2):
                 L[(u, 1, 3)] = B('barrel[facing=up,open=false]')
                 L[(u, 1, 2)] = B('birch_stairs[facing=south,half=bottom,shape=straight,waterlogged=false]')
-            marks.append(('inn', (0, 1, 5)))
-    L[(0, 4, 4)] = B('pearlescent_froglight')
+            marks.append(('inn', (0, 1, back - 3)))
+    L[(0, 4, D // 2)] = B('pearlescent_froglight')
     for y in range(1, top):
-        L[(3, y, 7)] = B('ladder[facing=west,waterlogged=false]')
-    L[(-2, 6, 5)] = B(st['bed'] + '_bed[facing=south,occupied=false,part=foot]')
-    L[(-2, 6, 6)] = B(st['bed'] + '_bed[facing=south,occupied=false,part=head]')
+        L[(hw - 1, y, back - 1)] = B('ladder[facing=west,waterlogged=false]')
+    L[(-(hw - 2), 6, back - 3)] = B(st['bed'] + '_bed[facing=south,occupied=false,part=foot]')
+    L[(-(hw - 2), 6, back - 2)] = B(st['bed'] + '_bed[facing=south,occupied=false,part=head]')
     if kind == 'resident':
-        marks.append(('resident', (0, 6, 3)))
+        marks.append(('resident', (0, 6, 2)))
     # roof with a solar ridge; sun rosettes in both gables
-    for r in range(0, 5):
+    for r in range(0, hw + 1):
         y = top + 1 + r
-        for w in range(-1, 10):
-            if r < 4:
-                L[(4 - r, y, w)] = B(roof + '_stairs[facing=west,half=bottom,shape=straight,waterlogged=false]')
-                L[(-(4 - r), y, w)] = B(roof + '_stairs[facing=east,half=bottom,shape=straight,waterlogged=false]')
+        for w in range(-1, D + 1):
+            if r < hw:
+                L[(hw - r, y, w)] = B(roof + '_stairs[facing=west,half=bottom,shape=straight,waterlogged=false]')
+                L[(-(hw - r), y, w)] = B(roof + '_stairs[facing=east,half=bottom,shape=straight,waterlogged=false]')
             else:
                 L[(0, y, w)] = B(roof)
-                if 0 <= w <= 8:
+                if 0 <= w <= back:
                     L[(0, y + 1, w)] = B('daylight_detector[inverted=false,power=0]')
-        if r < 4:
-            for u in range(-(3 - r), 4 - r):
-                for w in (0, 8):
+        if r < hw:
+            for u in range(-(hw - 1 - r), hw - r):
+                for w in (0, back):
                     L[(u, y, w)] = wall
-    for w in (0, 8):
-        for u, blk in ((-2, g2), (-1, g1), (0, g1), (1, g1), (2, g2)):
-            L[(u, top + 1, w)] = blk
-        for u, blk in ((-1, g1), (0, B('ochre_froglight')), (1, g1)):
-            L[(u, top + 2, w)] = blk
-        L[(0, top + 3, w)] = g2
-    L[(0, top + 7, -1)] = B('lightning_rod[facing=up,powered=false,waterlogged=false]')
+    for w in (0, back):
+        if hw >= 4:
+            for u, blk in ((-2, g2), (-1, g1), (0, g1), (1, g1), (2, g2)):
+                L[(u, top + 1, w)] = blk
+            for u, blk in ((-1, g1), (0, B('ochre_froglight')), (1, g1)):
+                L[(u, top + 2, w)] = blk
+            L[(0, top + 3, w)] = g2
+        else:
+            for u, blk in ((-1, g2), (0, g1), (1, g2)):
+                L[(u, top + 1, w)] = blk
+            L[(0, top + 2, w)] = B('ochre_froglight')
+    L[(0, top + hw + 3, -1)] = B('lightning_rod[facing=up,powered=false,waterlogged=false]')
     return L, marks
 
 
@@ -561,7 +579,7 @@ def lots():
 
 def assign_kinds():
     """The 16 shops take the street-front lots nearest the centre; four inns, one per quadrant."""
-    front = sorted((i for i, l in enumerate(LOTS) if l[5].startswith('road:')),
+    front = sorted((i for i, l in enumerate(LOTS) if l[5].startswith('road:') and l[7] == 4),
                    key=lambda i: math.hypot(LOTS[i][0], LOTS[i][1]))
     kinds = {}
     for n, i in enumerate(front[:len(SHOP_TYPES)]):
@@ -609,13 +627,17 @@ def infill():
         dd = dist[door]
         if door in USED and door not in PATHCELLS:
             continue
-        for s in sorted(dirs, key=lambda v: _h(door[0] + v[0], door[1] + v[1], 22)):
+        placed = False
+        for (hw, D) in ((4, 9), (3, 7)):
+          if placed:
+            break
+          for s in sorted(dirs, key=lambda v: _h(door[0] + v[0], door[1] + v[1], 22)):
             back = (door[0] - s[0], door[1] - s[1])
             if back not in dist or dist[back] >= dd:
                 continue
             e = (s[1], -s[0])
             fx, fz = door[0] + s[0], door[1] + s[1]
-            cells = [(fx + u * e[0] + w * s[0], fz + u * e[1] + w * s[1]) for u in range(-4, 5) for w in range(0, 9)]
+            cells = [(fx + u * e[0] + w * s[0], fz + u * e[1] + w * s[1]) for u in range(-hw, hw + 1) for w in range(0, D)]
             if any(c not in HEIGHT or c in USED or c in RIVER for c in cells):
                 continue
             if not all(inside(c[0], c[1], 4) for c in cells[::8]):
@@ -624,7 +646,7 @@ def infill():
             pad = ROAD[back][0] if back in ROAD else HEIGHT[door]
             if max(hs) - pad > 7 or pad - min(hs) > 9:
                 continue
-            LOTS.append((fx, fz, s, e, pad, 'road:front' if dd <= 2 else 'infill', len(LOTS)))
+            LOTS.append((fx, fz, s, e, pad, 'road:front' if dd <= 2 else 'infill', len(LOTS), hw, D))
             for c in cells:
                 USED.add(c)
             c = door
@@ -636,6 +658,7 @@ def infill():
                     break
                 c = parent[c]
                 steps += 1
+            placed = True
             break
 
 
@@ -672,40 +695,46 @@ def river():
             x = x0 + (x1 - x0) * t + 4 * math.sin(i * 2.3 + t * 5.1)
             z = z0 + (z1 - z0) * t + 4 * math.cos(i * 1.7 + t * 4.3)
             pts.append((x, z))
-    level = None
-    for (x, z) in pts:
+    inland = [p for p in pts if (round(p[0]), round(p[1])) in HEIGHT]
+    if not inland:
+        return
+    L0 = HEIGHT[(round(inland[0][0]), round(inland[0][1]))] - 2
+    L1 = HEIGHT[(round(inland[-1][0]), round(inland[-1][1]))] - 2
+    seen_inland = False
+    for idx, (x, z) in enumerate(pts):
         c = (round(x), round(z))
         if c not in HEIGHT:
-            if level is not None:
+            if seen_inland:
                 RIVER_END.append(c)
                 break
             continue
-        g = HEIGHT[c] if c not in ROAD else min(HEIGHT[c], ROAD[c][0] - 3)
-        level = g - 1 if level is None else min(level, g - 1)
-        for dx in range(-4, 5):
-            for dz in range(-4, 5):
+        seen_inland = True
+        t = inland.index((x, z)) / max(1, len(inland) - 1) if (x, z) in inland else 0
+        level = round(L0 + (L1 - L0) * t)
+        if c in ROAD:
+            level = min(level, ROAD[c][0] - 3)
+        for dx in range(-7, 8):
+            for dz in range(-7, 8):
                 dd = math.hypot(dx + c[0] - x, dz + c[1] - z)
                 n = (c[0] + dx, c[1] + dz)
                 if n not in HEIGHT:
                     continue
-                if dd <= 1.7:
+                if dd <= 1.8:
                     RIVER[n] = min(RIVER.get(n, level), level)
-                elif dd <= 3.6 and n not in ROAD:
-                    HEIGHT[n] = min(HEIGHT[n], level + 1 + int(dd > 2.8))
+                elif n not in ROAD and n not in USED:
+                    HEIGHT[n] = min(HEIGHT[n], level + round((dd - 1.2) * 0.9))
     for (x, z), lvl in RIVER.items():
         on_road = (x, z) in ROAD
         top = ROAD[(x, z)][0] if on_road else HEIGHT[(x, z)]
-        for y in range(lvl + 1, top + (0 if on_road else 1)):
+        for y in range(lvl + 1, max(top, lvl) + 1):
             V.pop((x, y, z), None)
         V[(x, lvl, z)] = B('water')
         r = _h(x, z, 41)
         V[(x, lvl - 1, z)] = B('sea_lantern') if r < 0.05 else B('calcite') if r < 0.35 else B('gravel')
         if on_road:
             V[(x, top, z)] = B('waxed_cut_copper')
-            for dx, dz in ((1, 0), (-1, 0), (0, 1), (0, -1)):
-                nb = (x + dx, z + dz)
-                if nb in RIVER and nb not in ROAD:
-                    V[(x, top + 1, z)] = B('waxed_copper_grate')
+            if any((x + dx, z + dz) not in ROAD for dx, dz in ((1, 0), (-1, 0), (0, 1), (0, -1))):
+                V[(x, top + 1, z)] = B('waxed_copper_grate')
         else:
             HEIGHT[(x, z)] = lvl
             if _h(x, z, 43) < 0.06:
@@ -754,18 +783,18 @@ def footbridges():
 
 
 def place_lots():
-    for (fx, fz, s, e, pad, bkind, idx) in LOTS:
+    for (fx, fz, s, e, pad, bkind, idx, hw, D) in LOTS:
         st = STYLES[idx % len(STYLES)]
-        floors = 2 if bkind.startswith('shop:') else 2 + (idx % 3 == 1)
-        L, marks = building(bkind, st, floors)
+        floors = 2 if bkind.startswith('shop:') else (2 + (idx % 3 == 1) if hw == 4 else 1 + (idx % 2))
+        L, marks = building(bkind, st, floors, hw, D)
         f = lambda v: (v[0] * e[0] + v[1] * s[0], v[0] * e[1] + v[1] * s[1])
         # plinth: fill down to the ground under the footprint and cut the ground above the pad
-        for u in range(-4, 5):
-            for w in range(0, 9):
+        for u in range(-hw, hw + 1):
+            for w in range(0, D):
                 x, z = fx + u * e[0] + w * s[0], fz + u * e[1] + w * s[1]
                 g = HEIGHT.get((x, z), pad)
                 for y in range(min(g, pad) - 1, pad):
-                    V[(x, y, z)] = B('tuff_bricks' if (u in (-4, 4) or w in (0, 8)) else 'stone')
+                    V[(x, y, z)] = B('tuff_bricks' if (u in (-hw, hw) or w in (0, D - 1)) else 'stone')
                 for y in range(pad + 1, max(g, pad) + 1):
                     V.pop((x, y, z), None)
                 HEIGHT[(x, z)] = pad
