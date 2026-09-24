@@ -1,0 +1,560 @@
+{
+  "chapter": "guide_creatures",
+  "group": "exploration",
+  "act": "I",
+  "icon": "friendsandfoes:crab_claw",
+  "title": {
+    "en_us": "Creatures of the world",
+    "es_es": "Las criaturas del mundo"
+  },
+  "subtitle": {
+    "en_us": "Friends and Foes, Naturalist, Creeper Overhaul and Enderman Overhaul: who helps, who bites.",
+    "es_es": "Friends and Foes, Naturalist, Creeper Overhaul y Enderman Overhaul: quién ayuda y quién muerde."
+  },
+  "quests": [
+    {
+      "key": "cr_welcome",
+      "deps": [],
+      "type": "checkmark",
+      "layout": {
+        "x": 0,
+        "y": 0,
+        "size": 2.0,
+        "shape": "hexagon"
+      },
+      "en_us": [
+        "A livelier world",
+        "Four mods change who you meet outside, from the first night: Friends and Foes brings vanilla-style mobs and golems, Naturalist fills biomes with real-world wildlife, and Creeper Overhaul and Enderman Overhaul give creepers and endermen a variant for each biome.\n\nNone of them is gated: they are in the world from act I. This chapter points out the useful ones and the dangerous ones."
+      ],
+      "es_es": [
+        "Un mundo con más vida",
+        "Cuatro mods cambian a quién te cruzás afuera, desde la primera noche: Friends and Foes trae mobs y gólems al estilo vanilla, Naturalist llena los biomas de fauna del mundo real, y Creeper Overhaul y Enderman Overhaul le dan a los creepers y a los endermen una variante por bioma.\n\nNinguno está escalonado: están en el mundo desde el acto I. Este capítulo marca los útiles y los peligrosos."
+      ],
+      "sources": [
+        "repo:docs/design/mod-pingpong.md",
+        "jar:friendsandfoes-neoforge-4.0.27+mc1.21.1.jar:assets/friendsandfoes/lang/en_us.json",
+        "jar:naturalist-2.0.4-neoforge-1.21.1.jar:assets/naturalist/lang/en_us.json"
+      ]
+    },
+    {
+      "key": "ff_copper_golem",
+      "deps": [
+        "cr_welcome"
+      ],
+      "type": "advancement",
+      "advancement": "friendsandfoes:adventure/summon_copper_golem",
+      "icon": "minecraft:copper_block",
+      "layout": {
+        "x": 3,
+        "y": -3,
+        "size": 1.0,
+        "shape": "circle"
+      },
+      "en_us": [
+        "A copper golem",
+        "Stack a block of copper, a carved pumpkin and a lightning rod on top to build a Copper Golem (\"Off you go\"). It wanders around looking for copper buttons and presses them: a small, living redstone clock. Any oxidation stage of copper works for the body, waxed or not.\n\nFriends and Foes also adds copper buttons and weathered versions of the lightning rod."
+      ],
+      "es_es": [
+        "Un gólem de cobre",
+        "Apilá un bloque de cobre, una calabaza tallada y un pararrayos arriba para armar un Gólem de cobre («Off you go»). Anda dando vueltas buscando botones de cobre y los aprieta: un pequeño reloj de redstone vivo. Para el cuerpo sirve cualquier etapa de oxidación del cobre, encerado o no.\n\nFriends and Foes también suma botones de cobre y versiones oxidadas del pararrayos."
+      ],
+      "sources": [
+        "jar:friendsandfoes-neoforge-4.0.27+mc1.21.1.jar:data/friendsandfoes/advancement/adventure/summon_copper_golem.json",
+        "jar:friendsandfoes-neoforge-4.0.27+mc1.21.1.jar:com/faboslav/friendsandfoes/common/util/CopperGolemBuildPatternPredicates.class",
+        "jar:friendsandfoes-neoforge-4.0.27+mc1.21.1.jar:com/faboslav/friendsandfoes/common/entity/ai/brain/task/coppergolem/CopperGolemPressButtonTask.class",
+        "jar:friendsandfoes-neoforge-4.0.27+mc1.21.1.jar:data/friendsandfoes/loot_table/blocks/copper_button.json",
+        "jar:friendsandfoes-neoforge-4.0.27+mc1.21.1.jar:assets/friendsandfoes/lang/en_us.json"
+      ]
+    },
+    {
+      "key": "ff_glare",
+      "deps": [
+        "ff_copper_golem"
+      ],
+      "type": "advancement",
+      "advancement": "friendsandfoes:husbandry/tame_a_glare",
+      "optional": true,
+      "icon": "minecraft:glow_berries",
+      "layout": {
+        "x": 6,
+        "y": -3,
+        "size": 1.0,
+        "shape": "circle"
+      },
+      "en_us": [
+        "A Glare in the dark",
+        "Glares are small, grumpy moss creatures from lush caves. Tame one with glow berries (\"Grumpy and Cute\"): a tamed Glare leads you toward dark spots where monsters could spawn, handy when lighting a cave or a base."
+      ],
+      "es_es": [
+        "Un Glare en la oscuridad",
+        "Los Glares son criaturitas de musgo, gruñonas, de las cuevas frondosas. Domá una con bayas luminosas («Grumpy and Cute»): un Glare domado te guía hacia los rincones oscuros donde podrían aparecer monstruos, muy útil para iluminar una cueva o una base."
+      ],
+      "sources": [
+        "jar:friendsandfoes-neoforge-4.0.27+mc1.21.1.jar:data/friendsandfoes/advancement/husbandry/tame_a_glare.json",
+        "jar:friendsandfoes-neoforge-4.0.27+mc1.21.1.jar:data/friendsandfoes/loot_table/entities/glare.json",
+        "jar:friendsandfoes-neoforge-4.0.27+mc1.21.1.jar:com/faboslav/friendsandfoes/common/entity/ai/brain/task/glare/GlareLocateDarkSpotTask.class",
+        "jar:friendsandfoes-neoforge-4.0.27+mc1.21.1.jar:assets/friendsandfoes/lang/en_us.json"
+      ]
+    },
+    {
+      "key": "ff_crab",
+      "deps": [
+        "ff_copper_golem"
+      ],
+      "type": "item",
+      "item": "friendsandfoes:crab_claw",
+      "optional": true,
+      "layout": {
+        "x": 3,
+        "y": -6,
+        "size": 1.0,
+        "shape": "circle"
+      },
+      "en_us": [
+        "Crab claw: longer reach",
+        "Crabs scuttle on beaches and drop Crab Claws. A claw brews the Potion of Reaching, which increases the range at which you can place and break blocks, great for building.\n\nMoobloom cows grow buttercups on their backs; shear one for \"MooBoom!\"."
+      ],
+      "es_es": [
+        "Garra de cangrejo: más alcance",
+        "Los cangrejos andan por las playas y sueltan Garras de cangrejo. Con una garra se prepara la Poción de alcance, que aumenta la distancia a la que ponés y rompés bloques: ideal para construir.\n\nLas vacas Moobloom tienen ranúnculos en el lomo; esquilá una para «MooBoom!»."
+      ],
+      "sources": [
+        "jar:friendsandfoes-neoforge-4.0.27+mc1.21.1.jar:data/friendsandfoes/loot_table/entities/crab.json",
+        "jar:friendsandfoes-neoforge-4.0.27+mc1.21.1.jar:assets/friendsandfoes/lang/en_us.json",
+        "jar:friendsandfoes-neoforge-4.0.27+mc1.21.1.jar:data/friendsandfoes/advancement/husbandry/shear_a_moobloom.json"
+      ]
+    },
+    {
+      "key": "ff_rascal",
+      "deps": [
+        "ff_glare"
+      ],
+      "type": "advancement",
+      "advancement": "friendsandfoes:adventure/complete_hide_and_seek_game",
+      "optional": true,
+      "icon": "minecraft:bundle",
+      "layout": {
+        "x": 6,
+        "y": -6,
+        "size": 1.0,
+        "shape": "circle"
+      },
+      "en_us": [
+        "Hide and seek with a Rascal",
+        "Rascals are shy creatures that hide in mineshafts. When you find one it runs off and hides again; find it three times (\"Hide and Seek\") and it rewards you, sometimes with ores or a pickaxe. It is the most harmless mini-game in a mineshaft."
+      ],
+      "es_es": [
+        "Escondidas con un Rascal",
+        "Los Rascals son criaturas tímidas que se esconden en las minas abandonadas. Cuando encontrás uno se escapa y se vuelve a esconder; encontralo tres veces («Hide and Seek») y te da un premio, a veces minerales o un pico. Es el minijuego más inofensivo de una mina."
+      ],
+      "sources": [
+        "jar:friendsandfoes-neoforge-4.0.27+mc1.21.1.jar:data/friendsandfoes/advancement/adventure/complete_hide_and_seek_game.json",
+        "jar:friendsandfoes-neoforge-4.0.27+mc1.21.1.jar:data/friendsandfoes/loot_table/rewards/rascal_good_reward.json",
+        "jar:friendsandfoes-neoforge-4.0.27+mc1.21.1.jar:assets/friendsandfoes/lang/en_us.json"
+      ]
+    },
+    {
+      "key": "ff_magicians",
+      "deps": [
+        "ff_copper_golem"
+      ],
+      "type": "advancement",
+      "advancement": "friendsandfoes:adventure/the_magicians",
+      "icon": "friendsandfoes:totem_of_illusion",
+      "layout": {
+        "x": 9,
+        "y": -3,
+        "size": 1.0,
+        "shape": "circle"
+      },
+      "en_us": [
+        "The illager magicians",
+        "Two illager casters return: the Iceologer, who lives in an iceologer cabin and throws ice, and the Illusioner, found in shacks and training grounds, who creates copies of himself. Killing both plus the Evoker is \"The Magicians\".\n\nEach drops a totem that triggers when you fall below half your max health: the Totem of Freezing and the Totem of Illusion."
+      ],
+      "es_es": [
+        "Los magos illager",
+        "Vuelven dos illagers magos: el Iceologer, que vive en una cabaña y tira hielo, y el Illusioner, que aparece en chozas y campos de entrenamiento y crea copias de sí mismo. Matar a los dos y al Evocador es «The Magicians».\n\nCada uno suelta un tótem que se activa cuando bajás de la mitad de tu vida máxima: el Tótem de congelación y el Tótem de ilusión."
+      ],
+      "sources": [
+        "jar:friendsandfoes-neoforge-4.0.27+mc1.21.1.jar:data/friendsandfoes/advancement/adventure/the_magicians.json",
+        "jar:friendsandfoes-neoforge-4.0.27+mc1.21.1.jar:data/friendsandfoes/loot_table/entities/iceologer.json",
+        "jar:friendsandfoes-neoforge-4.0.27+mc1.21.1.jar:data/friendsandfoes/loot_table/entities/illusioner.json",
+        "jar:friendsandfoes-neoforge-4.0.27+mc1.21.1.jar:data/friendsandfoes/worldgen/structure/iceologer_cabin.json",
+        "jar:friendsandfoes-neoforge-4.0.27+mc1.21.1.jar:data/friendsandfoes/worldgen/structure/illusioner_shack.json",
+        "jar:friendsandfoes-neoforge-4.0.27+mc1.21.1.jar:assets/friendsandfoes/lang/en_us.json"
+      ]
+    },
+    {
+      "key": "ff_wildfire",
+      "deps": [
+        "ff_magicians"
+      ],
+      "type": "advancement",
+      "advancement": "friendsandfoes:nether/kill_wildfire",
+      "optional": true,
+      "icon": "friendsandfoes:wildfire_crown",
+      "layout": {
+        "x": 12,
+        "y": -3,
+        "size": 1.5,
+        "shape": "gear"
+      },
+      "en_us": [
+        "The Wildfire",
+        "In the Nether stands the Citadel (\"A fortress? No, a citadel!\"), guarded by the Wildfire, a blaze-like boss. Its barrels hold diamond gear. The Wildfire drops Crown Fragments; with enough of them you make the Wildfire Crown (\"Who's da New King of Nether?\")."
+      ],
+      "es_es": [
+        "El Wildfire",
+        "En el Nether se levanta la Ciudadela («A fortress? No, a citadel!»), custodiada por el Wildfire, un jefe parecido a un blaze. Sus barriles traen equipo de diamante. El Wildfire suelta Fragmentos de corona; con suficientes se arma la Corona del Wildfire («Who's da New King of Nether?»)."
+      ],
+      "sources": [
+        "jar:friendsandfoes-neoforge-4.0.27+mc1.21.1.jar:data/friendsandfoes/advancement/nether/find_citadel.json",
+        "jar:friendsandfoes-neoforge-4.0.27+mc1.21.1.jar:data/friendsandfoes/advancement/nether/kill_wildfire.json",
+        "jar:friendsandfoes-neoforge-4.0.27+mc1.21.1.jar:data/friendsandfoes/advancement/nether/obtain_wildfire_crown.json",
+        "jar:friendsandfoes-neoforge-4.0.27+mc1.21.1.jar:data/friendsandfoes/loot_table/entities/wildfire.json",
+        "jar:friendsandfoes-neoforge-4.0.27+mc1.21.1.jar:data/friendsandfoes/loot_table/barrels/citadel.json",
+        "jar:friendsandfoes-neoforge-4.0.27+mc1.21.1.jar:data/friendsandfoes/recipe/wildfire_crown.json"
+      ]
+    },
+    {
+      "key": "ff_small",
+      "deps": [
+        "ff_magicians"
+      ],
+      "type": "checkmark",
+      "optional": true,
+      "icon": "minecraft:tuff",
+      "layout": {
+        "x": 9,
+        "y": -6,
+        "size": 0.85,
+        "shape": "circle"
+      },
+      "en_us": [
+        "Friends and Foes, the rest",
+        "- Tuff Golem: tuff, wool and a carved pumpkin build a little golem that holds an item.\n- Mauler: a biting ambush predator (\"It Bites\").\n- Beekeeper: a villager profession for bee lovers, plus beehives for every wood type (\"Be Keeper\").\n- Zombie horse traps: like the vanilla skeleton trap, but with zombie riders (\"Riders On The Storm\")."
+      ],
+      "es_es": [
+        "Friends and Foes, el resto",
+        "- Gólem de toba: toba, lana y una calabaza tallada arman un gólem chiquito que sostiene un ítem.\n- Mauler: un depredador que muerde por sorpresa («It Bites»).\n- Apicultor: una profesión de aldeano para los amantes de las abejas, más colmenas de cada madera («Be Keeper»).\n- Trampas de caballo zombi: como la trampa de esqueletos vanilla, pero con jinetes zombis («Riders On The Storm»)."
+      ],
+      "sources": [
+        "jar:friendsandfoes-neoforge-4.0.27+mc1.21.1.jar:assets/friendsandfoes/lang/en_us.json",
+        "jar:friendsandfoes-neoforge-4.0.27+mc1.21.1.jar:data/friendsandfoes/advancement/adventure/it_bites.json",
+        "jar:friendsandfoes-neoforge-4.0.27+mc1.21.1.jar:data/friendsandfoes/advancement/husbandry/beehive.json",
+        "jar:friendsandfoes-neoforge-4.0.27+mc1.21.1.jar:data/friendsandfoes/advancement/adventure/activate_zombie_horse_trap.json",
+        "jar:friendsandfoes-neoforge-4.0.27+mc1.21.1.jar:com/faboslav/friendsandfoes/common/mixin/CarvedPumpkinBlockMixin.class"
+      ]
+    },
+    {
+      "key": "nat_intro",
+      "deps": [
+        "cr_welcome"
+      ],
+      "type": "checkmark",
+      "icon": "naturalist:antler",
+      "layout": {
+        "x": 3,
+        "y": 3,
+        "size": 1.5,
+        "shape": "hexagon"
+      },
+      "en_us": [
+        "Naturalist: wildlife",
+        "Naturalist adds real-world animals to fitting biomes: bears, deer, boars, lions, zebras, giraffes, elephants, rhinos, hippos, alligators, komodo dragons, snakes, scorpions, sharks, whales, birds, butterflies, fireflies and many more. Some are prey, some are predators, and some only attack when provoked.\n\nFeed a Bear a honeycomb, a Hippo a melon, or read a map while riding a Giraffe for its three advancements."
+      ],
+      "es_es": [
+        "Naturalist: fauna silvestre",
+        "Naturalist suma animales del mundo real en los biomas que les corresponden: osos, ciervos, jabalíes, leones, cebras, jirafas, elefantes, rinocerontes, hipopótamos, cocodrilos, dragones de Komodo, serpientes, escorpiones, tiburones, ballenas, pájaros, mariposas, luciérnagas y muchos más. Algunos son presa, otros depredadores y otros sólo atacan si los provocás.\n\nDale un panal a un Oso, una sandía a un Hipopótamo o usá un mapa montado en una Jirafa para sus tres logros."
+      ],
+      "sources": [
+        "jar:naturalist-2.0.4-neoforge-1.21.1.jar:assets/naturalist/lang/en_us.json",
+        "jar:naturalist-2.0.4-neoforge-1.21.1.jar:data/naturalist/advancement/husbandry/feed_bear_honeycomb.json",
+        "jar:naturalist-2.0.4-neoforge-1.21.1.jar:data/naturalist/advancement/husbandry/feed_hippo_melon.json",
+        "jar:naturalist-2.0.4-neoforge-1.21.1.jar:data/naturalist/advancement/husbandry/ride_giraffe_with_map.json"
+      ]
+    },
+    {
+      "key": "nat_net",
+      "deps": [
+        "nat_intro"
+      ],
+      "type": "item",
+      "item": "naturalist:capture_net",
+      "layout": {
+        "x": 6,
+        "y": 3,
+        "size": 1.0,
+        "shape": "square"
+      },
+      "en_us": [
+        "The Capture Net",
+        "Bamboo and string make a Capture Net, used to catch small creatures (butterflies, caterpillars, snails and the like) as items you can release elsewhere. Useful for decorating, breeding and filling a greenhouse.\n\nFish and small water creatures go in buckets, as in vanilla."
+      ],
+      "es_es": [
+        "La Red de captura",
+        "Bambú e hilo hacen una Red de captura, que sirve para atrapar criaturas chicas (mariposas, orugas, caracoles y similares) como ítems que después soltás en otro lado. Útil para decorar, criar y llenar un invernadero.\n\nLos peces y las criaturas acuáticas chicas van en baldes, como en vanilla."
+      ],
+      "sources": [
+        "jar:naturalist-2.0.4-neoforge-1.21.1.jar:data/naturalist/recipe/capture_net.json",
+        "jar:naturalist-2.0.4-neoforge-1.21.1.jar:assets/naturalist/lang/en_us.json"
+      ]
+    },
+    {
+      "key": "nat_materials",
+      "deps": [
+        "nat_net"
+      ],
+      "type": "checkmark",
+      "icon": "naturalist:hide",
+      "layout": {
+        "x": 9,
+        "y": 3,
+        "size": 0.85,
+        "shape": "circle"
+      },
+      "en_us": [
+        "What wildlife gives",
+        "- Hide smelts into leather and crafts a Knapsack.\n- Glow Goop (from glow berries) turns arrows into spectral arrows.\n- Duck eggs work in cakes and pumpkin pies.\n- Lots of new meats and fish, cooked in the usual ways: more variety for ENTRELUMEN's food system.\n- Naturalist adds the Potion of Antivenom and the Potion of the Forest Dasher; EMI shows how to brew them."
+      ],
+      "es_es": [
+        "Lo que da la fauna",
+        "- El cuero crudo (Hide) se funde en cuero y hace una Mochila (Knapsack).\n- La Baba luminosa (de bayas luminosas) convierte flechas en flechas espectrales.\n- Los huevos de pato sirven para tortas y pasteles de calabaza.\n- Muchas carnes y pescados nuevos, que se cocinan como siempre: más variedad para el sistema de comida de ENTRELUMEN.\n- Naturalist suma la Poción de antídoto (Antivenom) y la del Forest Dasher; EMI muestra cómo prepararlas."
+      ],
+      "sources": [
+        "jar:naturalist-2.0.4-neoforge-1.21.1.jar:data/naturalist/recipe/leather_from_smelting_hide.json",
+        "jar:naturalist-2.0.4-neoforge-1.21.1.jar:data/naturalist/recipe/knapsack.json",
+        "jar:naturalist-2.0.4-neoforge-1.21.1.jar:data/naturalist/recipe/glow_goop.json",
+        "jar:naturalist-2.0.4-neoforge-1.21.1.jar:data/naturalist/recipe/spectral_arrow_from_glow_goop.json",
+        "jar:naturalist-2.0.4-neoforge-1.21.1.jar:data/naturalist/recipe/cake.json",
+        "jar:naturalist-2.0.4-neoforge-1.21.1.jar:assets/naturalist/lang/en_us.json",
+        "repo:docs/design/story-bible.md"
+      ]
+    },
+    {
+      "key": "nat_danger",
+      "deps": [
+        "nat_intro"
+      ],
+      "type": "checkmark",
+      "icon": "naturalist:scorpion_poison_gland",
+      "layout": {
+        "x": 3,
+        "y": 6,
+        "size": 0.85,
+        "shape": "circle"
+      },
+      "en_us": [
+        "Wildlife that bites back",
+        "Early-game caution: alligators lurk in swamps and rivers, sharks and piranhas in water, desert and jungle scorpions, snakes, and big cats such as lions and tigers. Rhinos charge and break some blocks. Keep your distance from anything large until you have armor."
+      ],
+      "es_es": [
+        "Fauna que muerde",
+        "Precaución al principio: los cocodrilos acechan en pantanos y ríos, los tiburones y pirañas en el agua, los escorpiones del desierto y de la selva, las serpientes y los felinos grandes como leones y tigres. Los rinocerontes embisten y rompen algunos bloques. Mantené distancia de todo lo grande hasta tener armadura."
+      ],
+      "sources": [
+        "jar:naturalist-2.0.4-neoforge-1.21.1.jar:assets/naturalist/lang/en_us.json",
+        "jar:naturalist-2.0.4-neoforge-1.21.1.jar:data/naturalist/tags/block/rhino_charge_breakable.json",
+        "jar:naturalist-2.0.4-neoforge-1.21.1.jar:data/naturalist/tags/block/scorpions_spawnable_on.json"
+      ]
+    },
+    {
+      "key": "co_creepers",
+      "deps": [
+        "cr_welcome"
+      ],
+      "type": "checkmark",
+      "icon": "minecraft:creeper_head",
+      "layout": {
+        "x": 12,
+        "y": 3,
+        "size": 0.85,
+        "shape": "circle"
+      },
+      "en_us": [
+        "Creepers in camouflage",
+        "Creeper Overhaul gives most biomes their own creeper, textured to match: jungle, bamboo, desert, badlands, hills, savanna, mushroom, swamp, dripstone, cave, dark oak, spruce, beach, snowy, ocean and birch. They blend into the terrain, so the hiss is your best warning.\n\nIn caves and forests, listen before you look."
+      ],
+      "es_es": [
+        "Creepers camuflados",
+        "Creeper Overhaul le da a casi cada bioma su propio creeper, con textura a tono: selva, bambú, desierto, badlands, colinas, sabana, champiñones, pantano, espeleotemas, cueva, roble oscuro, abeto, playa, nieve, océano y abedul. Se mimetizan con el terreno, así que el siseo es tu mejor aviso.\n\nEn cuevas y bosques, escuchá antes de mirar."
+      ],
+      "sources": [
+        "jar:CreeperOverhaul-neoforge-1.21.1-4.0.6.jar:assets/creeperoverhaul/lang/en_us.json"
+      ]
+    },
+    {
+      "key": "eo_endermen",
+      "deps": [
+        "cr_welcome"
+      ],
+      "type": "checkmark",
+      "icon": "minecraft:ender_pearl",
+      "layout": {
+        "x": 12,
+        "y": 6,
+        "size": 0.85,
+        "shape": "circle"
+      },
+      "en_us": [
+        "Endermen for every biome",
+        "Enderman Overhaul adds biome endermen: badlands, cave, coral, crimson, dark oak, desert, End, End islands, flower fields, ice spikes, mushroom, Nether wastes, savanna, snowy, soul sand valley, swamp, warped and windswept hills. Some are more dangerous than the vanilla one; cave endermen can drop ores and emeralds.\n\nTheir special drops are worth hunting (next quests)."
+      ],
+      "es_es": [
+        "Endermen para cada bioma",
+        "Enderman Overhaul suma endermen de bioma: badlands, cueva, coral, carmesí, roble oscuro, desierto, End, islas del End, campos de flores, picos de hielo, champiñones, páramos del Nether, sabana, nieve, valle de arena de almas, pantano, distorsionado y colinas ventosas. Algunos son más peligrosos que el vanilla; los de cueva pueden soltar minerales y esmeraldas.\n\nSus drops especiales valen la cacería (quests siguientes)."
+      ],
+      "sources": [
+        "jar:endermanoverhaul-neoforge-1.21.1-2.0.3.jar:assets/endermanoverhaul/lang/en_us.json",
+        "jar:endermanoverhaul-neoforge-1.21.1-2.0.3.jar:data/endermanoverhaul/loot_table/entities/cave_enderman.json"
+      ]
+    },
+    {
+      "key": "eo_hood",
+      "deps": [
+        "eo_endermen"
+      ],
+      "type": "item",
+      "item": "endermanoverhaul:snowy_hood",
+      "optional": true,
+      "layout": {
+        "x": 15,
+        "y": 6,
+        "size": 1.0,
+        "shape": "circle"
+      },
+      "en_us": [
+        "A hood against stares",
+        "Badlands, savanna and snowy endermen can drop hoods. Wearing one lets you look at endermen without angering them, like a carved pumpkin but without covering your view."
+      ],
+      "es_es": [
+        "Una capucha contra las miradas",
+        "Los endermen de badlands, sabana y nieve pueden soltar capuchas. Con una puesta podés mirar a los endermen sin enojarlos, como con una calabaza tallada pero sin taparte la vista."
+      ],
+      "sources": [
+        "jar:endermanoverhaul-neoforge-1.21.1-2.0.3.jar:data/endermanoverhaul/loot_table/entities/badlands_enderman.json",
+        "jar:endermanoverhaul-neoforge-1.21.1-2.0.3.jar:data/endermanoverhaul/loot_table/entities/savanna_enderman.json",
+        "jar:endermanoverhaul-neoforge-1.21.1-2.0.3.jar:data/endermanoverhaul/loot_table/entities/snowy_enderman.json",
+        "jar:endermanoverhaul-neoforge-1.21.1-2.0.3.jar:assets/endermanoverhaul/lang/en_us.json"
+      ]
+    },
+    {
+      "key": "eo_pearls",
+      "deps": [
+        "eo_endermen"
+      ],
+      "type": "checkmark",
+      "optional": true,
+      "icon": "endermanoverhaul:bubble_pearl",
+      "layout": {
+        "x": 15,
+        "y": 3,
+        "size": 0.85,
+        "shape": "circle"
+      },
+      "en_us": [
+        "Special pearls",
+        "Each biome enderman drops its own pearl:\n- Bubble (coral): accurate, no gravity.\n- Icy (ice spikes, snowy): freezes targets on hit.\n- Crimson / Warped: Strength II / Resistance II when you teleport.\n- Soul (soul sand valley): bind a creature, then teleport it.\n- Summoner (swamp, windswept hills): teleports nearby targets on hit.\n- Corrupted (End): sends the target somewhere random.\n- Ancient (End islands): summons a friendly enderman that fights for you."
+      ],
+      "es_es": [
+        "Perlas especiales",
+        "Cada enderman de bioma suelta su perla:\n- Burbuja (coral): precisa, sin gravedad.\n- Helada (picos de hielo, nieve): congela a lo que golpea.\n- Carmesí / Distorsionada: Fuerza II / Resistencia II al teletransportarte.\n- De almas (valle de arena de almas): vinculá una criatura y después teletransportala.\n- Invocadora (pantano, colinas ventosas): teletransporta a los objetivos cercanos al impactar.\n- Corrupta (End): manda al objetivo a un lugar al azar.\n- Antigua (islas del End): invoca un enderman aliado que pelea por vos."
+      ],
+      "sources": [
+        "jar:endermanoverhaul-neoforge-1.21.1-2.0.3.jar:assets/endermanoverhaul/lang/en_us.json",
+        "jar:endermanoverhaul-neoforge-1.21.1-2.0.3.jar:data/endermanoverhaul/loot_table/entities/coral_enderman.json",
+        "jar:endermanoverhaul-neoforge-1.21.1-2.0.3.jar:data/endermanoverhaul/loot_table/entities/ice_spikes_enderman.json",
+        "jar:endermanoverhaul-neoforge-1.21.1-2.0.3.jar:data/endermanoverhaul/loot_table/entities/soulsand_valley_enderman.json",
+        "jar:endermanoverhaul-neoforge-1.21.1-2.0.3.jar:data/endermanoverhaul/loot_table/entities/swamp_enderman.json",
+        "jar:endermanoverhaul-neoforge-1.21.1-2.0.3.jar:data/endermanoverhaul/loot_table/entities/end_enderman.json",
+        "jar:endermanoverhaul-neoforge-1.21.1-2.0.3.jar:data/endermanoverhaul/loot_table/entities/end_islands_enderman.json"
+      ]
+    },
+    {
+      "key": "eo_corrupted",
+      "deps": [
+        "eo_pearls"
+      ],
+      "type": "item",
+      "item": "endermanoverhaul:corrupted_pearl",
+      "optional": true,
+      "layout": {
+        "x": 18,
+        "y": 3,
+        "size": 1.0,
+        "shape": "circle"
+      },
+      "en_us": [
+        "Corrupted gear",
+        "End endermen drop Corrupted Pearls and Enderman Teeth. Two teeth on a stick make the Corrupted Blade, which teleports what it hits; the Corrupted Shield teleports whoever hits you.\n\nTip: any special pearl crafts back into a plain ender pearl if you need one."
+      ],
+      "es_es": [
+        "Equipo corrupto",
+        "Los endermen del End sueltan Perlas corruptas y Dientes de enderman. Dos dientes sobre un palo hacen la Espada corrupta, que teletransporta a lo que golpea; el Escudo corrupto teletransporta a quien te pega.\n\nConsejo: cualquier perla especial se vuelve a fabricar como una perla de ender común si te hace falta."
+      ],
+      "sources": [
+        "jar:endermanoverhaul-neoforge-1.21.1-2.0.3.jar:data/endermanoverhaul/loot_table/entities/end_enderman.json",
+        "jar:endermanoverhaul-neoforge-1.21.1-2.0.3.jar:data/endermanoverhaul/recipe/corrupted_blade.json",
+        "jar:endermanoverhaul-neoforge-1.21.1-2.0.3.jar:data/endermanoverhaul/recipe/ender_pearl.json",
+        "jar:endermanoverhaul-neoforge-1.21.1-2.0.3.jar:assets/endermanoverhaul/lang/en_us.json"
+      ]
+    },
+    {
+      "key": "cr_pack",
+      "deps": [
+        "cr_welcome"
+      ],
+      "type": "checkmark",
+      "icon": "minecraft:lead",
+      "layout": {
+        "x": 0,
+        "y": 3,
+        "size": 1.0,
+        "shape": "rsquare"
+      },
+      "en_us": [
+        "How these fit in ENTRELUMEN",
+        "- All four mods are native, with no recipe changes: they belong to act I and simply live in the world.\n- New meats, fish and berries add to food variety, which the pack rewards.\n- Carry On can pick up some animals, as in its defaults, but never bosses or the pack's protected entities.\n- Friends and Foes structures (iceologer cabins, illusioner shacks, the Nether Citadel) keep their loot per player through Lootr."
+      ],
+      "es_es": [
+        "Cómo encajan en ENTRELUMEN",
+        "- Los cuatro mods vienen nativos, sin cambios de recetas: pertenecen al acto I y simplemente viven en el mundo.\n- Las carnes, pescados y bayas nuevas suman variedad de comida, algo que el pack premia.\n- Carry On puede levantar algunos animales, como viene por defecto, pero nunca jefes ni las entidades protegidas del pack.\n- Las estructuras de Friends and Foes (cabañas de iceologer, chozas de illusioner, la Ciudadela del Nether) guardan su botín por jugador con Lootr."
+      ],
+      "sources": [
+        "repo:docs/design/mod-pingpong.md",
+        "repo:pack/config/carryon-common.toml",
+        "repo:docs/design/story-bible.md",
+        "jar:lootr-neoforge-1.21.1-1.11.38.124.jar:assets/lootr/lang/en_us.json"
+      ]
+    },
+    {
+      "key": "cr_mastery",
+      "deps": [
+        "ff_magicians",
+        "nat_net",
+        "eo_pearls"
+      ],
+      "type": "checkmark",
+      "icon": "friendsandfoes:totem_of_freezing",
+      "layout": {
+        "x": 21,
+        "y": 0,
+        "size": 2.25,
+        "shape": "pentagon"
+      },
+      "en_us": [
+        "Naturalist's notebook",
+        "Golems that work, a Glare that finds dark corners, a crab claw for reach, totems from the illager magicians, a hood against endermen and a pocketful of special pearls: the living world is on your side now, mostly."
+      ],
+      "es_es": [
+        "Libreta de naturalista",
+        "Gólems que trabajan, un Glare que encuentra rincones oscuros, una garra de cangrejo para alcance, tótems de los magos illager, una capucha contra los endermen y un bolsillo lleno de perlas especiales: el mundo vivo ahora está de tu lado, casi siempre."
+      ],
+      "sources": [
+        "jar:friendsandfoes-neoforge-4.0.27+mc1.21.1.jar:assets/friendsandfoes/lang/en_us.json",
+        "jar:endermanoverhaul-neoforge-1.21.1-2.0.3.jar:assets/endermanoverhaul/lang/en_us.json",
+        "jar:naturalist-2.0.4-neoforge-1.21.1.jar:assets/naturalist/lang/en_us.json"
+      ]
+    }
+  ]
+}
