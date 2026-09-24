@@ -94,7 +94,9 @@ Para contestarles hace falta un artefacto que se perdió en el Aether. La entida
   - Se recompensa la variedad.
   - Además, la **saciedad que sobra se convierte en buffs aleatorios** según cuánto sobra. Hoy pasarse de 20 de hambre o saturación no sirve para nada y muchos mods regalan superalimentos al pedo; en ENTRELUMEN ese exceso vale.
 - **Solo primero**, con buen co-op: todo se puede hacer solo y en equipo se reparten ramas.
-- **La historia marca la dificultad:** al pasar de acto, el mundo sube de World Tier de Apotheosis solo; el jugador no lo elige.
+- **La historia marca la dificultad:** al pasar de acto, el mundo sube de World Tier de Apotheosis solo; el jugador no lo elige. El tier queda en el **más alto alcanzado** y nunca baja, ni siquiera al salir de un equipo.
+- Las **tortas y pasteles** comidos desde el bloque también cuentan para la saciedad sobrante.
+- **Escala de mods:** sin número objetivo. Todo mod tiene que contar y tener sentido, sin bloat y sin arruinar el rendimiento. Se elige en un ida y vuelta con Elias, por tipo de mod.
 
 ## Brújula y Atlas (24 de septiembre)
 
