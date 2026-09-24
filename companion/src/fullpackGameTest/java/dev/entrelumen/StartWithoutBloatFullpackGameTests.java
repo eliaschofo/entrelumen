@@ -29,7 +29,9 @@ public final class StartWithoutBloatFullpackGameTests {
       new String[] {"integrateddynamics", "integrateddynamics-common.toml", "obtainOnSpawn"},
       new String[] {"herbsandharvest", "herbsandharvest-common.toml", "give_book_on_join"},
       new String[] {"actuallyadditions", "actuallyadditions-common.toml", "giveBookletOnFirstCraft"},
-      new String[] {"aether", "aether-common.toml", "\"Gives player Aether Portal Frame item\""});
+      new String[] {"aether", "aether-common.toml", "\"Gives player Aether Portal Frame item\""},
+      new String[] {"modern_industrialization", "modern_industrialization-server.toml", "spawnWithGuideBook"},
+      new String[] {"modern_industrialization", "modern_industrialization-server.toml", "respawnWithGuideBook"});
 
   private StartWithoutBloatFullpackGameTests() {}
 

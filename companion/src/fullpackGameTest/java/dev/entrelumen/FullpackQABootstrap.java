@@ -65,6 +65,11 @@ public final class FullpackQABootstrap {
       GameTestRegistry.register(LuminousGameTests.class);
       GameTestRegistry.register(StartWithoutBloatFullpackGameTests.class);
       GameTestRegistry.register(TerraArmFullpackGameTests.class);
+      GameTestRegistry.register(ModPingpongFullpackGameTests.class);
+      GameTestRegistry.register(SolsticioFullpackGameTests.class);
+      // The compass and gameplay runtime suites also run on the full pack (merged 24 September).
+      GameTestRegistry.register(RuntimeGameTestsCompass.class);
+      GameTestRegistry.register(RuntimeGameTestsGameplay.class);
       Set<String> expected = new TreeSet<>();
       for (Class<?> owner : List.of(RuntimeGameTests.class, FullpackGameTests.class,
           ResourceFarmGameTests.class, Ae2CraftingGameTests.class, RFToolsRecipeGameTests.class,
@@ -75,7 +80,8 @@ public final class FullpackQABootstrap {
           LogisticsProvisioningGameTests.class, LogisticsRestartGameTests.class,
           NatureRestorationGameTests.class, ArkChartsGameTests.class, ApotheosisGameTests.class,
           AltarFullpackGameTests.class, AltarEffectsFullpackGameTests.class, LuminousGameTests.class,
-          StartWithoutBloatFullpackGameTests.class, TerraArmFullpackGameTests.class))
+          StartWithoutBloatFullpackGameTests.class, TerraArmFullpackGameTests.class, ModPingpongFullpackGameTests.class,
+          RuntimeGameTestsCompass.class, RuntimeGameTestsGameplay.class, SolsticioFullpackGameTests.class))
         for (var method : owner.getDeclaredMethods())
           if (method.isAnnotationPresent(GameTest.class))
             expected.add(method.getName().toLowerCase(Locale.ROOT));

@@ -56,9 +56,11 @@ def disabled(path, why):
     return {'path': path, 'op': 'disable', 'why': why}
 
 
-def renamed_key(path, field, old, new, why):
-    """Rename one map key in an upstream data file, keeping its value and position."""
-    return {'path': path, 'op': 'rename_key', 'field': field, 'old': old, 'new': new, 'why': why}
+def renamed_key(path, field, old, new, why, *, more=None):
+    """Rename map keys in an upstream data file, keeping their values and positions.
+
+    `more` renames further keys of the same file ({old: new}), since one file has one override."""
+    return {'path': path, 'op': 'rename_key', 'field': field, 'renames': {old: new, **(more or {})}, 'why': why}
 
 
 def with_value(path, field, value, why, *, limit):
@@ -237,6 +239,93 @@ LUMINOUS_RECIPES = [
              'create:blaze_cake', RE, 'A hearth that never goes out'),
 ]
 
+# Found by the first dedicated boot with the mod ping-pong additions (mods-r123-20260924/after2).
+PINGPONG_BROKEN_RECIPES = [
+    ('create:crushing/deepslate_calorite_ore', "Ad Astra's Create compat in the pre-1.21 result format (item instead of id)"),
+    ('create:crushing/deepslate_desh_ore', "Ad Astra's Create compat in the pre-1.21 result format (item instead of id)"),
+    ('create:crushing/deepslate_ice_shard_ore', "Ad Astra's Create compat in the pre-1.21 result format (item instead of id)"),
+    ('create:crushing/deepslate_ostrum_ore', "Ad Astra's Create compat in the pre-1.21 result format (item instead of id)"),
+    ('create:crushing/glacio_coal_ore', "Ad Astra's Create compat in the pre-1.21 result format (item instead of id)"),
+    ('create:crushing/glacio_copper_ore', "Ad Astra's Create compat in the pre-1.21 result format (item instead of id)"),
+    ('create:crushing/glacio_ice_shard_ore', "Ad Astra's Create compat in the pre-1.21 result format (item instead of id)"),
+    ('create:crushing/glacio_iron_ore', "Ad Astra's Create compat in the pre-1.21 result format (item instead of id)"),
+    ('create:crushing/glacio_lapis_ore', "Ad Astra's Create compat in the pre-1.21 result format (item instead of id)"),
+    ('create:crushing/mars_diamond_ore', "Ad Astra's Create compat in the pre-1.21 result format (item instead of id)"),
+    ('create:crushing/mars_ice_shard_ore', "Ad Astra's Create compat in the pre-1.21 result format (item instead of id)"),
+    ('create:crushing/mars_iron_ore', "Ad Astra's Create compat in the pre-1.21 result format (item instead of id)"),
+    ('create:crushing/mars_ostrum_ore', "Ad Astra's Create compat in the pre-1.21 result format (item instead of id)"),
+    ('create:crushing/mercury_iron_ore', "Ad Astra's Create compat in the pre-1.21 result format (item instead of id)"),
+    ('create:crushing/moon_cheese_ore', "Ad Astra's Create compat in the pre-1.21 result format (item instead of id)"),
+    ('create:crushing/moon_desh_ore', "Ad Astra's Create compat in the pre-1.21 result format (item instead of id)"),
+    ('create:crushing/moon_ice_shard_ore', "Ad Astra's Create compat in the pre-1.21 result format (item instead of id)"),
+    ('create:crushing/moon_iron_ore', "Ad Astra's Create compat in the pre-1.21 result format (item instead of id)"),
+    ('create:crushing/venus_calorite_ore', "Ad Astra's Create compat in the pre-1.21 result format (item instead of id)"),
+    ('create:crushing/venus_coal_ore', "Ad Astra's Create compat in the pre-1.21 result format (item instead of id)"),
+    ('create:crushing/venus_diamond_ore', "Ad Astra's Create compat in the pre-1.21 result format (item instead of id)"),
+    ('create:crushing/venus_gold_ore', "Ad Astra's Create compat in the pre-1.21 result format (item instead of id)"),
+    ('create:cutting/aeronos_caps', "Ad Astra's Create compat in the pre-1.21 result format (item instead of id)"),
+    ('create:cutting/glacian_log', "Ad Astra's Create compat in the pre-1.21 result format (item instead of id)"),
+    ('create:cutting/stripped_glacian_log', "Ad Astra's Create compat in the pre-1.21 result format (item instead of id)"),
+    ('create:cutting/strophar_caps', "Ad Astra's Create compat in the pre-1.21 result format (item instead of id)"),
+    ('create:milling/venus_sandstone', "Ad Astra's Create compat in the pre-1.21 result format (item instead of id)"),
+    ('create:pressing/calorite_ingot', "Ad Astra's Create compat in the pre-1.21 result format (item instead of id)"),
+    ('create:pressing/desh_ingot', "Ad Astra's Create compat in the pre-1.21 result format (item instead of id)"),
+    ('create:pressing/ostrum_ingot', "Ad Astra's Create compat in the pre-1.21 result format (item instead of id)"),
+    ('create:pressing/steel_ingot', "Ad Astra's Create compat in the pre-1.21 result format (item instead of id)"),
+    ('createdeco:placard', "Create Deco's placard dye recipe uses id instead of item in an ingredient"),
+    ('croptopia:botanypots/almond', "Croptopia's Botany Pots compat in the pre-1.21 Botany Pots format"),
+    ('croptopia:botanypots/apple', "Croptopia's Botany Pots compat in the pre-1.21 Botany Pots format"),
+    ('croptopia:botanypots/apricot', "Croptopia's Botany Pots compat in the pre-1.21 Botany Pots format"),
+    ('croptopia:botanypots/avocado', "Croptopia's Botany Pots compat in the pre-1.21 Botany Pots format"),
+    ('croptopia:botanypots/banana', "Croptopia's Botany Pots compat in the pre-1.21 Botany Pots format"),
+    ('croptopia:botanypots/cashew', "Croptopia's Botany Pots compat in the pre-1.21 Botany Pots format"),
+    ('croptopia:botanypots/cherry', "Croptopia's Botany Pots compat in the pre-1.21 Botany Pots format"),
+    ('croptopia:botanypots/cinnamon', "Croptopia's Botany Pots compat in the pre-1.21 Botany Pots format"),
+    ('croptopia:botanypots/coconut', "Croptopia's Botany Pots compat in the pre-1.21 Botany Pots format"),
+    ('croptopia:botanypots/date', "Croptopia's Botany Pots compat in the pre-1.21 Botany Pots format"),
+    ('croptopia:botanypots/dragonfruit', "Croptopia's Botany Pots compat in the pre-1.21 Botany Pots format"),
+    ('croptopia:botanypots/fig', "Croptopia's Botany Pots compat in the pre-1.21 Botany Pots format"),
+    ('croptopia:botanypots/grapefruit', "Croptopia's Botany Pots compat in the pre-1.21 Botany Pots format"),
+    ('croptopia:botanypots/kumquat', "Croptopia's Botany Pots compat in the pre-1.21 Botany Pots format"),
+    ('croptopia:botanypots/lemon', "Croptopia's Botany Pots compat in the pre-1.21 Botany Pots format"),
+    ('croptopia:botanypots/lime', "Croptopia's Botany Pots compat in the pre-1.21 Botany Pots format"),
+    ('croptopia:botanypots/mango', "Croptopia's Botany Pots compat in the pre-1.21 Botany Pots format"),
+    ('croptopia:botanypots/nectarine', "Croptopia's Botany Pots compat in the pre-1.21 Botany Pots format"),
+    ('croptopia:botanypots/nutmeg', "Croptopia's Botany Pots compat in the pre-1.21 Botany Pots format"),
+    ('croptopia:botanypots/orange', "Croptopia's Botany Pots compat in the pre-1.21 Botany Pots format"),
+    ('croptopia:botanypots/peach', "Croptopia's Botany Pots compat in the pre-1.21 Botany Pots format"),
+    ('croptopia:botanypots/pear', "Croptopia's Botany Pots compat in the pre-1.21 Botany Pots format"),
+    ('croptopia:botanypots/pecan', "Croptopia's Botany Pots compat in the pre-1.21 Botany Pots format"),
+    ('croptopia:botanypots/persimmon', "Croptopia's Botany Pots compat in the pre-1.21 Botany Pots format"),
+    ('croptopia:botanypots/plum', "Croptopia's Botany Pots compat in the pre-1.21 Botany Pots format"),
+    ('croptopia:botanypots/starfruit', "Croptopia's Botany Pots compat in the pre-1.21 Botany Pots format"),
+    ('croptopia:botanypots/walnut', "Croptopia's Botany Pots compat in the pre-1.21 Botany Pots format"),
+    ('immersiveengineering:crafting/plate_calorite_hammering', "Ad Astra's IE compat with a pre-1.21 result and forge: tags"),
+    ('immersiveengineering:crafting/plate_desh_hammering', "Ad Astra's IE compat with a pre-1.21 result and forge: tags"),
+    ('immersiveengineering:crafting/plate_ostrum_hammering', "Ad Astra's IE compat with a pre-1.21 result and forge: tags"),
+    ('malum:malum/spirit_repair/undergarden/cloggrum', "Malum's Undergarden repair recipes name spirit types without the malum namespace"),
+    ('malum:malum/spirit_repair/undergarden/forgotten', "Malum's Undergarden repair recipes name spirit types without the malum namespace"),
+    ('malum:malum/spirit_repair/undergarden/froststeel', "Malum's Undergarden repair recipes name spirit types without the malum namespace"),
+    ('malum:malum/spirit_repair/undergarden/slingshot', "Malum's Undergarden repair recipes name spirit types without the malum namespace"),
+    ('malum:malum/spirit_repair/undergarden/utherium', "Malum's Undergarden repair recipes name spirit types without the malum namespace"),
+    ('mekanism:crushing/venus_sandstone_to_venus_sand', "Ad Astra's Mekanism compat in the pre-1.21 format (mainOutput, forge: tags)"),
+    ('mekanism:enriching/ice_shard_or_to_ice_shards', "Ad Astra's Mekanism compat in the pre-1.21 format (mainOutput, forge: tags)"),
+    ('mekanism:sawing/door/aeronos', "Ad Astra's Mekanism compat in the pre-1.21 format (mainOutput, forge: tags)"),
+    ('mekanism:sawing/door/glacian', "Ad Astra's Mekanism compat in the pre-1.21 format (mainOutput, forge: tags)"),
+    ('mekanism:sawing/door/strophar', "Ad Astra's Mekanism compat in the pre-1.21 format (mainOutput, forge: tags)"),
+    ('mekanism:sawing/fence_gate/aeronos', "Ad Astra's Mekanism compat in the pre-1.21 format (mainOutput, forge: tags)"),
+    ('mekanism:sawing/fence_gate/glacian', "Ad Astra's Mekanism compat in the pre-1.21 format (mainOutput, forge: tags)"),
+    ('mekanism:sawing/fence_gate/strophar', "Ad Astra's Mekanism compat in the pre-1.21 format (mainOutput, forge: tags)"),
+    ('mekanism:sawing/log/aeronos', "Ad Astra's Mekanism compat in the pre-1.21 format (mainOutput, forge: tags)"),
+    ('mekanism:sawing/log/glacian', "Ad Astra's Mekanism compat in the pre-1.21 format (mainOutput, forge: tags)"),
+    ('mekanism:sawing/log/strophar', "Ad Astra's Mekanism compat in the pre-1.21 format (mainOutput, forge: tags)"),
+    ('mekanism:sawing/pressure_plate/glacian', "Ad Astra's Mekanism compat in the pre-1.21 format (mainOutput, forge: tags)"),
+    ('mekanism:sawing/trapdoor/aeronos', "Ad Astra's Mekanism compat in the pre-1.21 format (mainOutput, forge: tags)"),
+    ('mekanism:sawing/trapdoor/glacian', "Ad Astra's Mekanism compat in the pre-1.21 format (mainOutput, forge: tags)"),
+    ('mekanism:sawing/trapdoor/strophar', "Ad Astra's Mekanism compat in the pre-1.21 format (mainOutput, forge: tags)"),
+]
+
+
 FAMILIES = {
     'industrial': {
         'script': 'entrelumen_industrial_balance.js',
@@ -325,7 +414,9 @@ FAMILIES = {
             with_value('data/forbidden_arcanus/forbidden_arcanus/hephaestus_forge/ritual/eternal_stella.json', 'inputs',
                        {'amount': 1, 'ingredient': {'item': CS}}, 'Unbreakable-tool modifier', limit=8),  # eight forge pedestals
             renamed_key('data/create_enchantment_industry/data_maps/fluid/unit/experience.json', 'values',
-                        'reliquary:xp_juice_still', 'reliquary:xp_still', "Reliquary registers its experience fluid as xp_still"),
+                        'reliquary:xp_juice_still', 'reliquary:xp_still', "Reliquary registers its experience fluid as xp_still;"
+                        " Ender IO 8.2 (mod ping-pong) registers fluid_xp_juice_still",
+                        more={'enderio:xpjuice': 'enderio:fluid_xp_juice_still'}),
             disabled('data/irons_jewelry/loot_table/generate_jewelry_test_materials.json',
                      "Developer test table whose material keys are tags, which the loot codec rejects"),
         ],
@@ -369,6 +460,67 @@ FAMILIES = {
                     'E': item('apothic_enchanting:ender_library'), 'R': item(RE)}, 'V',
                    'Pooled library beyond the Ender Library'),
         ] + [augment_recipe(m) for m in AUGMENTS],
+    },
+    # Rounds 1-3 of the mod ping-pong with Elias (docs/design/mod-pingpong.md): dimension access and
+    # the power jumps of the new tech mods land on the act that opens them; Refined Storage enters
+    # in Act III like AE2.
+    'pingpong': {
+        'script': 'entrelumen_pingpong_balance.js',
+        'tag': 'ENTRELUMEN_PINGPONG_BALANCE',
+        'namespaces': {'ad_astra', 'undergarden', 'eternal_starlight', 'refinedstorage', 'oritech', 'enderio',
+                       'endercore', 'common_storage_lib', 'resourcefulconfig', 'modern_industrialization'},
+        'changes': [
+            shaped('ad_astra:nasa_workbench', 2, 0, tag('ad_astra:steel_plates'), AB, 'V', 'Every rocket and so every planet'),
+            shaped('undergarden:catalyst', 0, 1, tag('c:stones'), RM, 'III', 'Undergarden portal'),
+            shaped('eternal_starlight:orb_of_prophecy', 0, 0, item('minecraft:glass'), HZ, 'IV', 'Starlight portal and crest spells'),
+            shaped('refinedstorage:controller', 0, 0, item('refinedstorage:quartz_enriched_iron'), RM, 'III',
+                   'Refined Storage network, entering in Act III like AE2'),
+            shaped('refinedstorage:autocrafter', 0, 0, item('refinedstorage:quartz_enriched_iron'), HC, 'III',
+                   'Refined Storage autocrafting, like AE2 molecular assemblers'),
+            shaped('oritech:crafting/basicjetpack', 0, 0, None, PR, 'III', 'Powered flight, first tier',
+                   alternates=['oritech:crafting/basicjetpackalt']),
+            shaped('oritech:crafting/basicjetpackalt', 0, 0, None, PR, 'III', 'Powered flight, first tier',
+                   alternates=['oritech:crafting/basicjetpack']),
+            shaped('oritech:crafting/exojetpack', 0, 0, item('oritech:ion_thruster'), HZ, 'IV', 'Exosuit flight'),
+            shaped('oritech:crafting/deepdrill', 2, 0, tag('oritech:plating'), SL, 'IV', 'Ores from power without world mining'),
+            shaped('oritech:crafting/spawner', 0, 0, item('oritech:spawner_cage_block'), EC, 'IV', 'Spawner-class mob production'),
+            shaped('oritech:crafting/nuke', 0, 0, item('oritech:uranium_pellet'), CS, 'IV', 'Area destruction'),
+            shaped('oritech:crafting/nukebetter', 0, 0, item('oritech:plutonium_pellet'), CS, 'IV', 'Area destruction'),
+            shaped('oritech:crafting/particlecontroller', 0, 0, item('oritech:duratium_ingot'), AB, 'V',
+                   'Particle accelerator and its exotic materials'),
+            shaped('enderio:travel_anchor', 0, 0, tag('c:ingots/iron'), RM, 'III', 'Anchor-to-anchor teleportation',
+                   alternates=['enderio:erase_travel_anchor']),
+            shaped('enderio:staff_of_travelling', 0, 0, None, RM, 'III', 'Handheld teleportation'),
+            shaped('enderio:powered_spawner', 0, 0, tag('c:ingots/soularium'), EC, 'IV', 'Powered mob spawning',
+                   alternates=['enderio:erase_powered_spawner', 'enderio:soulbinding/powered_spawner']),
+            shaped('enderio:octadic_capacitor', 0, 1, tag('c:ingots/vibrant_alloy'), AB, 'V', 'Highest Ender IO machine tier'),
+            # Modern Industrialization: each staged controller keeps its shaped recipe; its assembler twin is removed.
+            shaped('modern_industrialization:armor/diesel_jetpack', 0, 0, item('modern_industrialization:pump'), PR, 'III',
+                   'Powered flight, first tier'),
+            shaped('modern_industrialization:armor/gravichestplate', 0, 0, item('modern_industrialization:superconductor_plate'),
+                   HZ, 'IV', 'Creative-style flight'),
+            shaped('modern_industrialization:electric_age/machine/electric_quarry_asbl', 0, 0,
+                   item('modern_industrialization:large_motor'), SL, 'IV', 'Ores from power without world mining'),
+            shaped('modern_industrialization:electric_age/machine/nuclear_reactor_asbl', 0, 0,
+                   item('modern_industrialization:nuclear_alloy_large_plate'), AB, 'V', 'Nuclear power'),
+            shaped('modern_industrialization:electric_age/circuit/craft/quantum_circuit_asbl', 0, 0,
+                   item('modern_industrialization:processing_unit'), RE, 'V',
+                   'Every quantum item: fusion reactor, quantum hull, quantum upgrade and armour'),
+        ],
+        'removals': [
+            'modern_industrialization:assembler_generated/electric_age/machine/electric_quarry',
+            'modern_industrialization:assembler_generated/electric_age/machine/nuclear_reactor',
+            'modern_industrialization:assembler_generated/electric_age/circuit/craft/quantum_circuit',
+            # Item duplicator (the pack keeps duplicators uncraftable, see UNCRAFTABLE_CREATIVE).
+            'modern_industrialization:electric_age/machine/assembler/replicator',
+            # The Wither stays the only source of nether stars (story bible: boss drops are necessary materials).
+            'modern_industrialization:vanilla_recipes/implosion_compressor/nether_star',
+            'oritech:particle/nether_star',
+        ],
+        # Upstream recipes that fail to parse on 1.21.1 (pre-1.21 result/ingredient formats, forge: tags or
+        # removed spirit keys); disabled so the log stays clean, listed in docs/design/mod-pingpong.md.
+        'data': [disabled(f"data/{rid.split(':')[0]}/recipe/{rid.split(':')[1]}.json", why)
+                 for rid, why in PINGPONG_BROKEN_RECIPES],
     },
     'luminous': {
         'script': 'entrelumen_luminous_balance.js',
@@ -622,17 +774,26 @@ def build_data(name, found=None):
             result = {'neoforge:conditions': [{'type': 'neoforge:item_exists', 'item': spec['item']}], **original}
             reverse = {k: v for k, v in result.items() if k != 'neoforge:conditions'}
         elif spec['op'] == 'disable':
-            assert 'neoforge:conditions' not in original, f"{spec['path']}: already conditional"
-            result = {'neoforge:conditions': [{'type': 'neoforge:false'}], **original}
-            reverse = {k: v for k, v in result.items() if k != 'neoforge:conditions'}
+            # A file that is already conditional keeps its conditions after the leading neoforge:false.
+            kept = original.get('neoforge:conditions', [])
+            assert {'type': 'neoforge:false'} not in kept, f"{spec['path']}: already disabled"
+            result = {**original, 'neoforge:conditions': [{'type': 'neoforge:false'}] + kept}
+            if not kept:
+                result = {'neoforge:conditions': result.pop('neoforge:conditions'), **result}
+            reverse = copy.deepcopy(result)
+            if kept:
+                reverse['neoforge:conditions'] = reverse['neoforge:conditions'][1:]
+            else:
+                del reverse['neoforge:conditions']
         elif spec['op'] == 'rename_key':
-            mapping = result[spec['field']]
-            assert spec['old'] in mapping and spec['new'] not in mapping, f"{spec['path']}: map changed upstream"
-            result[spec['field']] = {(spec['new'] if k == spec['old'] else k): v for k, v in mapping.items()}
+            mapping, renames = result[spec['field']], spec['renames']
+            back = {new: old for old, new in renames.items()}
+            assert all(o in mapping and n not in mapping for o, n in renames.items()), f"{spec['path']}: map changed upstream"
+            result[spec['field']] = {renames.get(k, k): v for k, v in mapping.items()}
             assert 'replace' not in original, f"{spec['path']}: upstream already replaces"
             result = {'replace': True, **result}  # data maps merge across packs; the corrected map must replace
             reverse = {k: v for k, v in result.items() if k != 'replace'}
-            reverse[spec['field']] = {(spec['old'] if k == spec['new'] else k): v for k, v in result[spec['field']].items()}
+            reverse[spec['field']] = {back.get(k, k): v for k, v in result[spec['field']].items()}
         elif spec['op'] == 'append':
             values = result[spec['field']]
             occupied = sum(v.get('amount', 1) for v in values) + spec['value'].get('amount', 1)

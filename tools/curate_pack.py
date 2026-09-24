@@ -140,6 +140,47 @@ def write_json(path, data):
     Path(path).write_text(json.dumps(data, ensure_ascii=False, indent=2) + '\n', encoding='utf-8', newline='\n')
 
 
+def valid_pin_source(pin):
+    """CurseForge pins name project/file IDs; Modrinth pins name the official version and both hashes.
+
+    An optional `sourceSha512` on a CurseForge pin records the same bytes' official Modrinth SHA-512."""
+    provider = pin.get('provider', 'curseforge')
+    if provider == 'curseforge':
+        return bool(pin.get('projectID') and pin.get('fileID')) and len(pin.get('sourceSha512', '0' * 128)) == 128
+    if provider == 'modrinth':
+        return (bool(pin.get('projectId') and pin.get('versionId'))
+                and str(pin.get('downloadUrl', '')).startswith('https://cdn.modrinth.com/')
+                and len(pin.get('sourceSha1', '')) == 40 and len(pin.get('sourceSha512', '')) == 128)
+    return False
+
+
+def pin_matches(entry, pin):
+    """The lock entry comes from exactly the pinned provider file."""
+    if entry.get('filename') != pin['filename']:
+        return False
+    if pin.get('provider', 'curseforge') == 'modrinth':
+        source = entry.get('source', {})
+        return (source.get('provider') == 'modrinth' and source.get('projectId') == pin['projectId']
+                and source.get('versionId') == pin['versionId'] and entry.get('sourceSha1') == pin['sourceSha1']
+                and source.get('sourceSha512') == pin['sourceSha512'])
+    return entry.get('projectID') == pin['projectID'] and entry.get('fileID') == pin['fileID']
+
+
+def modrinth_pin_entry(path, meta, pin):
+    """Lock entry for an official Modrinth download pinned by a family (no CurseForge IDs are invented)."""
+    return {'filename': path.name, 'bytes': path.stat().st_size, 'projectID': None, 'fileID': None,
+            'sourceSha1': pin['sourceSha1'],
+            'source': {'provider': 'modrinth', 'projectId': pin['projectId'], 'versionId': pin['versionId'],
+                       'projectUrl': pin.get('projectUrl', f"https://modrinth.com/mod/{pin['projectId']}"),
+                       'downloadUrl': pin['downloadUrl'],
+                       'metadataUrl': f"https://api.modrinth.com/v2/version/{pin['versionId']}",
+                       'sourceSha512': pin['sourceSha512'],
+                       'declaredLicense': pin.get('license'),
+                       'curseforgeMappingStatus': 'pending official App resolution'},
+            'metadata': meta, 'cfRequiredProjects': [],
+            'side': 'client' if all(m['id'] in CLIENT for m in meta['mods']) else 'both'}
+
+
 def load_families():
     """Merge separately owned selections without allowing implicit version updates."""
     for path in sorted((CATALOG / 'families').glob('*.json')):
@@ -161,8 +202,7 @@ def load_families():
         for pin in family.get('pins', []):
             name = pin['filename']
             if (Path(name).name != name or not name.endswith('.jar')
-                    or len(pin['sha256']) != 64 or not pin['modIds']
-                    or not pin['projectID'] or not pin['fileID']):
+                    or len(pin['sha256']) != 64 or not pin['modIds'] or not valid_pin_source(pin)):
                 raise ValueError(f'Invalid dependency pin in {path.name}: {name}')
             if name in FAMILY_PINS and FAMILY_PINS[name] != pin:
                 raise ValueError(f'Conflicting family pin: {name}')
@@ -239,14 +279,22 @@ def refresh(source, preserve=False):
             continue
         addon = files.get(path.name, {})
         cf = addon.get('installedFile', {})
-        entry = {'filename': path.name, 'bytes': path.stat().st_size,
-                 'projectID': addon.get('addonID'), 'fileID': cf.get('id'),
-                 'sourceSha1': next((h['value'] for h in cf.get('hashes', []) if h.get('type') == 1), None),
-                 'source': {'provider': 'curseforge', 'projectUrl': addon.get('webSiteURL'), 'downloadUrl': cf.get('downloadUrl'), 'allowModDistribution': addon.get('allowModDistribution')},
-                 'metadata': meta, 'cfRequiredProjects': [d['addonId'] for d in cf.get('dependencies', []) if d.get('type') == 3],
-                 'side': 'client' if all(m['id'] in CLIENT for m in meta['mods']) else 'both'}
+        pin = FAMILY_PINS.get(path.name)
+        if pin and pin.get('provider') == 'modrinth':
+            entry = modrinth_pin_entry(path, meta, pin)
+        else:
+            entry = {'filename': path.name, 'bytes': path.stat().st_size,
+                     'projectID': addon.get('addonID'), 'fileID': cf.get('id'),
+                     'sourceSha1': next((h['value'] for h in cf.get('hashes', []) if h.get('type') == 1), None),
+                     'source': {'provider': 'curseforge', 'projectUrl': addon.get('webSiteURL'), 'downloadUrl': cf.get('downloadUrl'), 'allowModDistribution': addon.get('allowModDistribution')},
+                     'metadata': meta, 'cfRequiredProjects': [d['addonId'] for d in cf.get('dependencies', []) if d.get('type') == 3],
+                     'side': 'client' if all(m['id'] in CLIENT for m in meta['mods']) else 'both'}
+            if pin and pin.get('sourceSha512'):
+                # Same bytes published on Modrinth: its SHA-512 is verified on every check.
+                entry['source']['sourceSha512'] = pin['sourceSha512']
+                entry['source']['modrinthMapping'] = pin.get('modrinthMapping')
         inventory.append(entry)
-        paths[path.name] = str(path)
+        paths[path.name] = str(path.resolve())
         for mod_id in provided(meta):
             by_id.setdefault(mod_id, []).append(entry)
     # Preserve explicitly locked official Modrinth additions outside the CF source instance.
@@ -281,8 +329,7 @@ def refresh(source, preserve=False):
             raise ValueError(f'Multiple family files claim the same mod: {mod}')
         if pins:
             pin = pins[0]
-            options = [entry for entry in options
-                       if all(entry.get(key) == pin[key] for key in ('filename', 'projectID', 'fileID'))
+            options = [entry for entry in options if pin_matches(entry, pin)
                        and hashlib.sha256(Path(paths[entry['filename']]).read_bytes()).hexdigest() == pin['sha256']]
         if not options:
             missing.append({'id': mod, 'reason': reason})
@@ -343,7 +390,8 @@ def check(lock, paths, side='client'):
         entry = locked_by_name.get(name)
         if entry is None:
             errors.append(f'Missing pinned family dependency: {name}')
-        elif (any(entry.get(key) != pin[key] for key in ('sha256', 'projectID', 'fileID'))
+        elif (entry.get('sha256') != pin['sha256'] or not pin_matches(entry, pin)
+                or pin.get('sourceSha512', entry['source'].get('sourceSha512')) != entry['source'].get('sourceSha512')
                 or not set(pin['modIds']) <= provided(entry['metadata'])):
             errors.append(f'Pinned family dependency changed: {name}')
     projects = {e['projectID'] for e in active}
