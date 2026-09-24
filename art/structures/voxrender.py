@@ -1,12 +1,18 @@
 """Textured isometric render for voxel designs: every visible face drawn with its real vanilla
 16x16 texture (top unshaded, the two visible sides shaded like Minecraft's directional light),
-plants as upright sprites, slabs and carpets at their height. Preview only."""
+plants as upright sprites, slabs and carpets at their height. Mod blocks listed in
+modblocks/palette.json use the textures and shape recorded there. Preview only."""
 import math
 import os
 
 from PIL import Image, ImageDraw
 
 from voxkit import TEX, TEXNAME
+
+try:                                        # decorative mod blocks: modblocks/palette.json
+    from modblocks import palette as _modpal
+except ImportError:
+    _modpal = None
 
 _TEXCACHE, _SPRITES = {}, {}
 CROSS = {'allium', 'cornflower', 'lily_of_the_valley', 'azure_bluet', 'short_grass', 'fern', 'dead_bush',
@@ -34,12 +40,20 @@ def _name(state):
     return state.split('[')[0].split(':')[1]
 
 
+def _mod(state):
+    """Palette record of a mod block state, or None (vanilla and unknown blocks keep the old path)."""
+    return _modpal.block(state) if _modpal and not state.startswith('minecraft:') else None
+
+
 def _exists(t):
     return os.path.exists(TEX + t + '.png')
 
 
 def _texture(t):
     if t in _TEXCACHE:
+        return _TEXCACHE[t]
+    if t.startswith('@') and _modpal:
+        _TEXCACHE[t] = _modpal.image(t)
         return _TEXCACHE[t]
     try:
         im = Image.open(TEX + t + '.png').convert('RGBA')
@@ -61,6 +75,8 @@ def _texture(t):
 
 def face_textures(state):
     """(top, side) texture names for a block state, guessed from vanilla naming."""
+    if _mod(state):
+        return _modpal.faces(state)
     base = _name(state).replace('waxed_', '')
     if base == 'water':
         return 'water_still', 'water_still'
@@ -113,7 +129,9 @@ def _sprite(state, face, s):
         return _SPRITES[key]
     top, side = face_textures(state)
     name = _name(state)
-    if face == 'cross':
+    if face == 'cross' and _mod(state):
+        sp = _texture(_modpal.sprite(state)).resize((2 * s, 2 * s), Image.NEAREST)
+    elif face == 'cross':
         if name.startswith('potted_'):
             name = name[len('potted_'):].replace('flowering_azalea_bush', 'flowering_azalea_side')
         t = CROSS_TEX.get(name) or (name if _exists(name) else (name + '_top' if _exists(name + '_top') else side))
@@ -152,6 +170,11 @@ def render(vox, path, scale=6, ground=None, sky=((252, 238, 208), (200, 218, 240
     allv = {k: v for k, v in allv.items() if not v.endswith(':air') and (keep is None or keep(*k))}
     solid = set()
     for k, v in allv.items():
+        rec = _mod(v)
+        if rec:
+            if rec['solid']:
+                solid.add(k)
+            continue
         n = _name(v)
         if n in CROSS or n.startswith('potted_') or n in THIN or n in SEE_THROUGH or n.endswith(('_slab', '_stairs', '_wall', '_leaves',
                                                                        '_pane', '_fence', '_trapdoor', '_door')):
@@ -179,13 +202,15 @@ def render(vox, path, scale=6, ground=None, sky=((252, 238, 208), (200, 218, 240
         d.line([(0, j), (W, j)], fill=tuple(int(sky[0][i] * (1 - k) + sky[1][i] * k) for i in range(3)) + (255,))
     for (x, y, z), b in sorted(items, key=lambda t: (t[0][0] + t[0][1] + t[0][2], t[0][1], t[0][0] - t[0][2])):
         n = _name(b)
+        mode = (_mod(b) or {}).get('render')
         u, v = proj(x, y, z)
         u, v = int(u + ox), int(v + oy)
-        if n in CROSS or n.startswith('potted_'):
+        if mode == 'cross' or (not mode and (n in CROSS or n.startswith('potted_'))):
             im.alpha_composite(_sprite(b, 'cross', s), (u - s, v + s2 - s))
             continue
-        half = n.endswith('_slab') and 'type=bottom' in b
-        thin = n in THIN
+        half = (mode == 'slab' and 'type=top' not in b and 'type=double' not in b) if mode else (
+            n.endswith('_slab') and 'type=bottom' in b)
+        thin = mode == 'thin' if mode else n in THIN
         dy = s if half else (s2 - max(1, s // 3) if thin else 0)
         if (x, y + 1, z) not in occ or half or thin:
             im.alpha_composite(_sprite(b, 'top', s), (u - s2, v + dy))
