@@ -2,7 +2,7 @@
 
 Direction: `docs/design/story-bible.md` (24 September 2026). Solsticio is the Heliodor capital frozen inside the Entrelumen. This document records the technical skeleton on branch `feature/solsticio`: the dimension, the one-time city placement and its template contract, the common structure protection (also meant for the Overworld ruins), the Light Key and the definitive portal. Missions, named villagers, the trading hall's trades and all final art are out of scope.
 
-The Light Key, the broken key and the three relics have the controller's 16x16 art since 24 September (`art/authoring/draw_relics.py`): the relics are Juan's Luminous Seed (`heliodor_relic_1`), Terra's Terraprism (`heliodor_relic_2`) and the Blessed Heart of Heliodor (`heliodor_relic_3`, Bodhi's crystal). The portal block still uses vanilla references marked `PROVISIONAL`; the in-game look of the sky, motes, items and portal has not been reviewed on a client.
+The Light Key, the broken key and the three relics have the controller's 16x16 art since 24 September (`art/authoring/draw_relics.py`): the relics are Juan's Luminous Seed (`heliodor_relic_1`), Terra's Terraprism (`heliodor_relic_2`) and the Blessed Heart of Heliodor (`heliodor_relic_3`, Bodhi's crystal). The portal block's two models (dormant and open) are sculpted voxels on the altar palette (`art/authoring/voxel_portal.py`): four copper posts with sockets for the three relics and the key around a dim crystal, and when open a two-block column of light with emissive elements. The in-game look of the sky, motes, items and portal has not been reviewed on a client.
 
 ## Act numbering
 
@@ -114,7 +114,7 @@ Residual risks, not covered: dispensers or modded machines inside a plot that pl
 
 ## Assets
 
-Stable IDs: `light_key`, `light_key_broken`, `solsticio_portal`, `heliodor_relic_1/2/3`. The keys and relics use the controller's art (see the top of this document); the portal is still `PROVISIONAL` and references vanilla textures only (no copied files): it is a symmetric quartz-and-copper pedestal (dormant) or a quartz sill with an unshaded `shroomlight` column (open). The portal has no item form (it is unbreakable and only the city places it). EN and ES translations are complete.
+Stable IDs: `light_key`, `light_key_broken`, `solsticio_portal`, `heliodor_relic_1/2/3`. The keys, relics and portal use the controller's art (see the top of this document); the portal is a symmetric quartz-and-copper pedestal (dormant) or a quartz sill with an unshaded `shroomlight` column (open). The portal has no item form (it is unbreakable and only the city places it). EN and ES translations are complete.
 
 ## Tests
 
