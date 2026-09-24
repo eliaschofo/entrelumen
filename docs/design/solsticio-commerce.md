@@ -144,6 +144,7 @@ A villager without a Solsticio role that is inside the trading hall zone becomes
   - a villager in a local hall settles (one outside does not) and trades at 10 instead of 20;
   - an arcane native sells nothing asleep in the plains, wakes in a swamp (biome filled by the test) with its Luminosity at 8 blocks and its bottles at 10, and stays awake back in the plains;
   - in the shared city, the population gives the real trading hall its six natives and a villager placed there settles at once.
+- Manual run (not committed) with the controller's draft 6 exported from main (`city6.py`, 250 × 189 × 239, 557,413 blocks) swapped in for `city.nbt` on a fresh test world: all markers parse (16 shops, 4 inns, 56 homes, 3 easter eggs, the civic markers); the population spawned 66 villagers (16 shopkeepers, 4 innkeepers, 40 of 56 homes, 6 natives) in 8.3 s wall, none failed, no lag warning. The city itself took 23 s wall to place, so two existing Light Key GameTests with an 800-tick timeout ran out of time: their timeouts need raising when draft 6 replaces `city.nbt`.
 
 ## Pending
 
