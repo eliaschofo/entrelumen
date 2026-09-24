@@ -48,6 +48,10 @@ Para contestarles hace falta un artefacto que se perdió en el Aether. La entida
 - **Luminosidades:** los aldeanos nativos venden seis Luminosidades, una por disciplina: cobre-naranja (ingeniería), violeta (arcana), verde (naturaleza), celeste (exploración), turquesa (logística) y dorado cálido (habitabilidad). Tienen sprite animado con un brillo sutil, sin exagerar. Sirven para craftear los ítems creativos (cubo de energía, tanques, celdas y demás), que no se venden terminados.
 - **Lingote Luminoso:** blanco crema dorado, con un destello en el inventario. Hace el mejor equipo endgame del pack: armadura completa, herramientas y arma.
 
+- **Solsticio** es la capital de Heliodor, la ciudad congelada dentro del Entrelumen y el escenario del último acto.
+- **Llave de Luz:** el aparato que forja el Arca. Abre el paso una vez, se rompe y queda como llave personal de regreso.
+- **Estética de Solsticio:** solarpunk más luminoso: jardines y cascadas con cobre, vidrio y domos, todo bañado en luz.
+- **Lote del jugador:** 16×16.
+
 ## Abierto (decidir con Elias)
-- Nombre de la aldea y del aparato de entrada.
 - Cuánto se construye a mano (aldea completa) y cuánto se resuelve con estructuras vistosas y recetas escalonadas. Elias aclaró que el proyecto no necesita llegar a v1.0: prioridad a lo que se pueda hacer bien.
