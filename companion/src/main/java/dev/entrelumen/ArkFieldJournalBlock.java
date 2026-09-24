@@ -69,9 +69,9 @@ public final class ArkFieldJournalBlock extends Block {
       return ItemInteractionResult.sidedSuccess(level.isClientSide);
     }
     if (kind != ArkFieldJournals.Kind.ARCANE || hand != InteractionHand.MAIN_HAND
-        || !stack.is(Items.ENCHANTED_BOOK))
+        || !ArcaneRestoration.eligible(stack))
       return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
-    if (player instanceof ServerPlayer serverPlayer) ArcaneLibrary.separate(serverPlayer, pos, hand);
+    if (player instanceof ServerPlayer serverPlayer) ArcaneRestoration.restore(serverPlayer, pos, hand);
     return ItemInteractionResult.sidedSuccess(level.isClientSide);
   }
 

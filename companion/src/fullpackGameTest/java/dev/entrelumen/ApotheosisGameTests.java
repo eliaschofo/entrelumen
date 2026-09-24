@@ -362,6 +362,58 @@ public final class ApotheosisGameTests {
     helper.succeed();
   }
 
+  @SuppressWarnings("unchecked")
+  private static <T> void setComponent(ItemStack stack, String id, T value) {
+    var type = (net.minecraft.core.component.DataComponentType<T>)
+        BuiltInRegistries.DATA_COMPONENT_TYPE.get(ResourceLocation.parse(id));
+    if (type == null) throw new IllegalStateException("Missing component type " + id);
+    stack.set(type, value);
+  }
+
+  @GameTest(template = "empty", timeoutTicks = 200)
+  public static void arcaneRestorationKeepsApotheosisAndModdedDataAtARealArk(GameTestHelper helper)
+      throws Exception {
+    requireSuite();
+    var level = helper.getLevel();
+    BlockPos controller = TeamRestartGameTests.ark(helper);
+    BlockPos module = null;
+    var arcane = block("entrelumen:arcane_module");
+    for (BlockPos pos : BlockPos.betweenClosed(controller.offset(-1, 0, 1), controller.offset(1, 0, 2)))
+      if (level.getBlockState(pos).is(arcane)) module = pos.immutable();
+    helper.assertTrue(module != null, "Ark fixture lacks the arcane module");
+    var sword = new ItemStack(Items.NETHERITE_SWORD);
+    var enchantments = new ItemEnchantments.Mutable(ItemEnchantments.EMPTY);
+    enchantments.set(enchantment(helper, Enchantments.SHARPNESS), 7);
+    enchantments.set(enchantment(helper, Enchantments.BINDING_CURSE), 1);
+    enchantments.set(level.registryAccess().lookupOrThrow(Registries.ENCHANTMENT).getOrThrow(
+        ResourceKey.create(Registries.ENCHANTMENT, ResourceLocation.parse("apothic_enchanting:scavenger"))), 2);
+    sword.set(DataComponents.ENCHANTMENTS, enchantments.toImmutable());
+    sword.set(DataComponents.REPAIR_COST, 63);
+    sword.set(DataComponents.DAMAGE, 77);
+    setComponent(sword, "apotheosis:sockets", 2);
+    setComponent(sword, "apotheosis:durability_bonus", 0.25f);
+    setComponent(sword, "apotheosis:from_boss", true);
+    setComponent(sword, "apotheosis:affix_name", Component.literal("Forgemaster's Edge"));
+    var expected = sword.copy();
+    expected.set(DataComponents.REPAIR_COST, 0);
+    try (var session = new Session(helper, "ArcaneFullQA")) {
+      var player = session.player;
+      TeamRestartGameTests.nearController(player, controller);
+      player.setItemInHand(InteractionHand.MAIN_HAND, sword);
+      player.setItemInHand(InteractionHand.OFF_HAND, new ItemStack(Items.BOOK, 8));
+      player.giveExperienceLevels(40);
+      var result = player.gameMode.useItemOn(player, level, sword, InteractionHand.MAIN_HAND,
+          new BlockHitResult(Vec3.atCenterOf(module), Direction.UP, module, false));
+      helper.assertTrue(result.consumesAction() && ItemStack.matches(player.getMainHandItem(), expected),
+          "Restoration at a real Ark changed more than repair_cost");
+      helper.assertTrue(player.getOffhandItem().getCount() == 2 && player.experienceLevel == 10,
+          "Six operations did not cost six books and 30 levels");
+      helper.assertTrue(!ArcaneRestoration.restore(player, module, InteractionHand.MAIN_HAND)
+          && player.getOffhandItem().getCount() == 2, "Replay charged again");
+    }
+    helper.succeed();
+  }
+
   private static JsonArray constant(String script, String name) {
     var match = Pattern.compile("^const entrelumenApotheosis" + name + " = (.*);$", Pattern.MULTILINE).matcher(script);
     if (!match.find()) throw new IllegalStateException("Generated script lacks " + name);

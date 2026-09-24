@@ -39,7 +39,7 @@ Apotheosis 8.7.0 with Apothic Enchanting 1.6.1, Apothic Attributes 2.10.1 and Ap
 - The Adventure module adds affixed loot, gems, rarities and invader bosses: a combat overhaul at odds with the moderate-combat target, while Iron's Spells and Cataclysm already provide optional combat depth.
 - Apothic Spawners rewrites vanilla spawner mechanics with modifiers, bypassing the staged RFTools/IF/HNN mob routes.
 
-That redesign happened with Elias's approval. The Ark arcane library still works, because Apotheosis keeps vanilla stored enchantments, but its book separation is now redundant; a replacement proposal is in [arcane-library.md](arcane-library.md#replacement-proposal).
+That redesign happened with Elias's approval. The Ark's book separation became redundant with the Apothic and Atlas libraries, so the arcane module now [restores an item's forging history](arcane-library.md) instead.
 
 ## Other rejections
 

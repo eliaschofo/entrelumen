@@ -18,135 +18,109 @@ import net.neoforged.neoforge.gametest.*;
 @PrefixGameTestTemplate(false)
 public final class RuntimeGameTests {
   @GameTest(template = "empty", timeoutTicks = 200)
-  public static void arcaneLibraryConservesGiftedEnchantmentsAndMetadata(GameTestHelper helper) throws Exception {
+  public static void arcaneRestorationResetsForgingHistoryAndKeepsEverythingElse(GameTestHelper helper)
+      throws Exception {
     try (var session = new WorkshopPlayer(helper)) {
       var player = session.player;
       var controller = ark(helper, player);
       var module = arkModule(helper, controller, "arcane_module");
+      // An early-campaign visitor using a gifted, heavily forged sword.
       var campaign = Entrelumen.current(player);
       campaign.act = 1;
       campaign.completed.clear();
       var data = CampaignData.get(player.server);
       var beforeCampaign = data.save(new CompoundTag(), helper.getLevel().registryAccess());
-      var source = arcaneBook(helper);
-      var original = source.copy();
-      var expected = source.get(net.minecraft.core.component.DataComponents.STORED_ENCHANTMENTS);
+      var source = forgedSword(helper, 31);
+      var expected = source.copy();
+      expected.set(net.minecraft.core.component.DataComponents.REPAIR_COST, 0);
       player.setItemInHand(net.minecraft.world.InteractionHand.MAIN_HAND, source);
-      player.setItemInHand(net.minecraft.world.InteractionHand.OFF_HAND, new ItemStack(Items.BOOK, 5));
-      player.giveExperiencePoints(119);
-      int xp = player.totalExperience;
-      int xpLevel = player.experienceLevel;
-      float xpProgress = player.experienceProgress;
+      player.setItemInHand(net.minecraft.world.InteractionHand.OFF_HAND, new ItemStack(Items.BOOK, 7));
+      player.giveExperienceLevels(30);
       var result = player.gameMode.useItemOn(player, helper.getLevel(), source,
           net.minecraft.world.InteractionHand.MAIN_HAND, arkHit(module));
-      helper.assertTrue(result.consumesAction(), "Native book interaction did not run");
-      var volumes = player.getInventory().items.stream().filter(stack -> stack.is(Items.ENCHANTED_BOOK)).toList();
-      helper.assertTrue(volumes.size() == 3 && player.getOffhandItem().getCount() == 3,
-          "Three enchantments did not yield exactly three volumes for two books");
-      var combined = new net.minecraft.world.item.enchantment.ItemEnchantments.Mutable(
-          net.minecraft.world.item.enchantment.ItemEnchantments.EMPTY);
-      int named = 0;
-      for (var volume : volumes) {
-        var one = volume.get(net.minecraft.core.component.DataComponents.STORED_ENCHANTMENTS);
-        helper.assertTrue(volume.getCount() == 1 && one != null && one.size() == 1,
-            "Output is not one book with one enchantment");
-        var entry = one.entrySet().iterator().next();
-        helper.assertTrue(combined.getLevel(entry.getKey()) == 0, "Enchantment duplicated");
-        combined.set(entry.getKey(), entry.getIntValue());
-        helper.assertTrue(volume.getOrDefault(net.minecraft.core.component.DataComponents.REPAIR_COST, 0) == 31,
-            "Anvil work cost was laundered");
-        if (volume.has(net.minecraft.core.component.DataComponents.CUSTOM_NAME)) {
-          named++;
-          var restored = volume.copy();
-          restored.set(net.minecraft.core.component.DataComponents.STORED_ENCHANTMENTS, expected);
-          helper.assertTrue(ItemStack.matches(restored, original), "Source components were lost or changed");
-        } else {
-          var plain = new ItemStack(Items.ENCHANTED_BOOK);
-          plain.set(net.minecraft.core.component.DataComponents.STORED_ENCHANTMENTS, one);
-          plain.set(net.minecraft.core.component.DataComponents.REPAIR_COST, 31);
-          helper.assertTrue(ItemStack.matches(volume, plain), "Metadata duplicated to a new volume");
-        }
-      }
-      helper.assertTrue(named == 1 && combined.toImmutable().equals(expected),
-          "Separation lost levels, curses or copied original metadata");
-      helper.assertTrue(player.totalExperience == xp && player.experienceLevel == xpLevel
-          && player.experienceProgress == xpProgress
-          && beforeCampaign.equals(data.save(new CompoundTag(), helper.getLevel().registryAccess())),
-          "Library changed XP or campaign state for an early gifted user");
-      helper.assertTrue(!ArcaneLibrary.separate(player, module, net.minecraft.world.InteractionHand.MAIN_HAND)
-          && player.getOffhandItem().getCount() == 3, "Repeated single-enchantment book consumed payment");
+      helper.assertTrue(result.consumesAction(), "Native interaction did not run");
+      helper.assertTrue(ItemStack.matches(player.getMainHandItem(), expected)
+          && player.getMainHandItem().getOrDefault(net.minecraft.core.component.DataComponents.REPAIR_COST, -1) == 0,
+          "Restoration changed more than the forging history");
+      helper.assertTrue(player.getOffhandItem().getCount() == 2 && player.experienceLevel == 5,
+          "Five recorded operations did not cost exactly five books and 25 levels");
+      helper.assertTrue(beforeCampaign.equals(data.save(new CompoundTag(), helper.getLevel().registryAccess())),
+          "Restoration changed campaign state");
+      // Replay: nothing left to restore, nothing paid.
+      helper.assertTrue(!ArcaneRestoration.restore(player, module, net.minecraft.world.InteractionHand.MAIN_HAND)
+          && player.getOffhandItem().getCount() == 2 && player.experienceLevel == 5, "Replay charged again");
     }
     helper.succeed();
   }
 
   @GameTest(template = "empty", timeoutTicks = 200)
-  public static void arcaneLibraryRejectsWithoutPartialPaymentOrOverflow(GameTestHelper helper) throws Exception {
+  public static void arcaneRestorationRejectsWithoutPartialPayment(GameTestHelper helper) throws Exception {
     try (var session = new WorkshopPlayer(helper)) {
       var player = session.player;
       var controller = ark(helper, player);
       var module = arkModule(helper, controller, "arcane_module");
-      player.setItemInHand(net.minecraft.world.InteractionHand.MAIN_HAND, arcaneBook(helper));
-      player.setItemInHand(net.minecraft.world.InteractionHand.OFF_HAND, new ItemStack(Items.BOOK, 2));
-      var original = player.getMainHandItem().copy();
-      for (int slot = 0; slot < player.getInventory().items.size(); slot++)
-        if (slot != player.getInventory().selected) player.getInventory().setItem(slot, new ItemStack(Items.STONE, 64));
-      helper.assertTrue(!ArcaneLibrary.separate(player, module, net.minecraft.world.InteractionHand.MAIN_HAND),
-          "Full inventory accepted a split");
-      player.getInventory().setItem(1, ItemStack.EMPTY);
-      helper.assertTrue(!ArcaneLibrary.separate(player, module, net.minecraft.world.InteractionHand.MAIN_HAND),
-          "One free slot accepted two additional volumes");
-      player.getInventory().setItem(2, ItemStack.EMPTY);
-      player.getOffhandItem().setCount(1);
-      helper.assertTrue(!ArcaneLibrary.separate(player, module, net.minecraft.world.InteractionHand.MAIN_HAND),
-          "Insufficient payment accepted");
+      var hand = net.minecraft.world.InteractionHand.MAIN_HAND;
+      var book = new ItemStack(Items.ENCHANTED_BOOK);
+      book.set(net.minecraft.core.component.DataComponents.REPAIR_COST, 7);
+      player.setItemInHand(hand, book);
+      player.setItemInHand(net.minecraft.world.InteractionHand.OFF_HAND, new ItemStack(Items.BOOK, 3));
+      player.giveExperienceLevels(15);
+      helper.assertTrue(!ArcaneRestoration.restore(player, module, hand), "Enchanted book accepted");
+      var sword = forgedSword(helper, 7);
+      var original = sword.copy();
+      player.setItemInHand(hand, sword);
       player.getOffhandItem().setCount(2);
-      helper.assertTrue(!ArcaneLibrary.separate(player, module, net.minecraft.world.InteractionHand.OFF_HAND),
+      helper.assertTrue(!ArcaneRestoration.restore(player, module, hand), "Insufficient books accepted");
+      player.getOffhandItem().setCount(3);
+      player.giveExperienceLevels(-1);
+      helper.assertTrue(!ArcaneRestoration.restore(player, module, hand), "Insufficient levels accepted");
+      player.giveExperienceLevels(1);
+      helper.assertTrue(!ArcaneRestoration.restore(player, module, net.minecraft.world.InteractionHand.OFF_HAND),
           "Wrong hand accepted");
       var missing = arkModule(helper, controller, "nature_module");
       var state = helper.getLevel().getBlockState(missing);
       helper.getLevel().removeBlock(missing, false);
-      helper.assertTrue(!ArcaneLibrary.separate(player, module, net.minecraft.world.InteractionHand.MAIN_HAND),
-          "Incomplete Ark accepted");
+      helper.assertTrue(!ArcaneRestoration.restore(player, module, hand), "Incomplete Ark accepted");
       helper.getLevel().setBlockAndUpdate(missing, state);
       helper.getLevel().setBlockAndUpdate(controller.above(), helper.getLevel().getBlockState(controller));
-      helper.assertTrue(!ArcaneLibrary.separate(player, module, net.minecraft.world.InteractionHand.MAIN_HAND),
-          "Ambiguous Ark accepted");
+      helper.assertTrue(!ArcaneRestoration.restore(player, module, hand), "Ambiguous Ark accepted");
       helper.getLevel().removeBlock(controller.above(), false);
       player.setGameMode(net.minecraft.world.level.GameType.SPECTATOR);
-      helper.assertTrue(!ArcaneLibrary.separate(player, module, net.minecraft.world.InteractionHand.MAIN_HAND),
-          "Spectator accepted");
+      helper.assertTrue(!ArcaneRestoration.restore(player, module, hand), "Spectator accepted");
       player.setGameMode(net.minecraft.world.level.GameType.SURVIVAL);
       player.teleportTo(module.getX() + 30.0, module.getY(), module.getZ());
-      helper.assertTrue(!ArcaneLibrary.separate(player, module, net.minecraft.world.InteractionHand.MAIN_HAND),
-          "Remote interaction accepted");
+      helper.assertTrue(!ArcaneRestoration.restore(player, module, hand), "Remote interaction accepted");
       player.teleportTo(controller.getX() + 0.5, controller.getY() + 1.0, controller.getZ() + 0.5);
       helper.assertTrue(ItemStack.matches(original, player.getMainHandItem())
-          && player.getOffhandItem().getCount() == 2 && player.getInventory().items.get(1).isEmpty()
-          && player.getInventory().items.get(2).isEmpty(), "Rejected action partially mutated inventory");
+          && player.getOffhandItem().getCount() == 3 && player.experienceLevel == 15,
+          "A rejected request partially mutated the item, books or levels");
       player.setGameMode(net.minecraft.world.level.GameType.CREATIVE);
-      helper.assertTrue(ArcaneLibrary.separate(player, module, net.minecraft.world.InteractionHand.MAIN_HAND)
-          && player.getOffhandItem().isEmpty(), "Exact-capacity split or creative payment failed");
+      helper.assertTrue(ArcaneRestoration.restore(player, module, hand) && player.getOffhandItem().isEmpty()
+          && player.experienceLevel == 0
+          && player.getMainHandItem().getOrDefault(net.minecraft.core.component.DataComponents.REPAIR_COST, -1) == 0,
+          "Exact payment failed or creative did not pay");
     }
     helper.succeed();
   }
 
-  private static ItemStack arcaneBook(GameTestHelper helper) {
-    var source = new ItemStack(Items.ENCHANTED_BOOK);
+  private static ItemStack forgedSword(GameTestHelper helper, int repairCost) {
+    var sword = new ItemStack(Items.DIAMOND_SWORD);
     var registry = helper.getLevel().registryAccess().lookupOrThrow(net.minecraft.core.registries.Registries.ENCHANTMENT);
-    var stored = new net.minecraft.world.item.enchantment.ItemEnchantments.Mutable(
+    var enchantments = new net.minecraft.world.item.enchantment.ItemEnchantments.Mutable(
         net.minecraft.world.item.enchantment.ItemEnchantments.EMPTY);
-    stored.set(registry.getOrThrow(net.minecraft.world.item.enchantment.Enchantments.UNBREAKING), 3);
-    stored.set(registry.getOrThrow(net.minecraft.world.item.enchantment.Enchantments.EFFICIENCY), 4);
-    stored.set(registry.getOrThrow(net.minecraft.world.item.enchantment.Enchantments.VANISHING_CURSE), 1);
-    source.set(net.minecraft.core.component.DataComponents.STORED_ENCHANTMENTS, stored.toImmutable());
-    source.set(net.minecraft.core.component.DataComponents.REPAIR_COST, 31);
-    source.set(net.minecraft.core.component.DataComponents.CUSTOM_NAME, net.minecraft.network.chat.Component.literal("Borrowed history"));
-    source.set(net.minecraft.core.component.DataComponents.LORE, new net.minecraft.world.item.component.ItemLore(
-        List.of(net.minecraft.network.chat.Component.literal("One original, three voices"))));
+    enchantments.set(registry.getOrThrow(net.minecraft.world.item.enchantment.Enchantments.SHARPNESS), 5);
+    enchantments.set(registry.getOrThrow(net.minecraft.world.item.enchantment.Enchantments.UNBREAKING), 3);
+    enchantments.set(registry.getOrThrow(net.minecraft.world.item.enchantment.Enchantments.VANISHING_CURSE), 1);
+    sword.set(net.minecraft.core.component.DataComponents.ENCHANTMENTS, enchantments.toImmutable());
+    sword.set(net.minecraft.core.component.DataComponents.REPAIR_COST, repairCost);
+    sword.set(net.minecraft.core.component.DataComponents.DAMAGE, 321);
+    sword.set(net.minecraft.core.component.DataComponents.CUSTOM_NAME, net.minecraft.network.chat.Component.literal("Borrowed history"));
+    sword.set(net.minecraft.core.component.DataComponents.LORE, new net.minecraft.world.item.component.ItemLore(
+        List.of(net.minecraft.network.chat.Component.literal("Forged by many hands"))));
     var custom = new CompoundTag();
     custom.putString("provenance", "gifted-qa");
-    source.set(net.minecraft.core.component.DataComponents.CUSTOM_DATA, net.minecraft.world.item.component.CustomData.of(custom));
-    return source;
+    sword.set(net.minecraft.core.component.DataComponents.CUSTOM_DATA, net.minecraft.world.item.component.CustomData.of(custom));
+    return sword;
   }
 
   @GameTest(template = "empty", timeoutTicks = 200)
