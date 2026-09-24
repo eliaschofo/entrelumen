@@ -1,5 +1,6 @@
 package dev.entrelumen;
 
+import com.mojang.serialization.Codec;
 import dev.ftb.mods.ftbteams.api.event.TeamEvent;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -13,6 +14,7 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.material.MapColor;
 import net.neoforged.bus.api.IEventBus;
+import net.neoforged.neoforge.attachment.AttachmentType;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.neoforged.neoforge.common.NeoForge;
@@ -20,6 +22,7 @@ import net.neoforged.neoforge.common.extensions.IMenuTypeExtension;
 import net.neoforged.neoforge.registries.DeferredBlock;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
+import net.neoforged.neoforge.registries.NeoForgeRegistries;
 
 /**
  * ENTRELUMEN content that builds on the Apotheosis suite: four enchanting shelves, the Atlas
@@ -46,6 +49,15 @@ public final class ApotheosisContent {
   public static final DeferredHolder<MenuType<?>, MenuType<AtlasLibraryMenu>> ATLAS_LIBRARY_MENU =
       MENUS.register("atlas_library", () -> IMenuTypeExtension.create(
           (id, inventory, buf) -> new AtlasLibraryMenu(id, inventory, buf.readBlockPos())));
+  public static final DeferredRegister<AttachmentType<?>> ATTACHMENTS =
+      DeferredRegister.create(NeoForgeRegistries.Keys.ATTACHMENT_TYPES, "entrelumen");
+  /**
+   * Highest World Tier the story gave this player (see {@link ApotheosisTiers}), by name; empty
+   * before the first sync. Saved with the player and kept through death.
+   */
+  public static final DeferredHolder<AttachmentType<?>, AttachmentType<String>> STORY_TIER =
+      ATTACHMENTS.register("story_tier", () -> AttachmentType.builder(() -> "")
+          .serialize(Codec.STRING, name -> !name.isEmpty()).copyOnDeath().build());
   public static DeferredBlock<AtlasLibraryBlock> ATLAS_LIBRARY;
   public static DeferredHolder<BlockEntityType<?>, BlockEntityType<AtlasLibraryBlockEntity>> ATLAS_LIBRARY_ENTITY;
 
@@ -83,11 +95,16 @@ public final class ApotheosisContent {
   /** Mod-bus and game-bus wiring, called once from the companion constructor. */
   static void bootstrap(IEventBus bus) {
     MENUS.register(bus);
+    ATTACHMENTS.register(bus);
     bus.addListener(AtlasLibraryNetwork::register);
     bus.addListener(ApotheosisContent::registerCapabilities);
     NeoForge.EVENT_BUS.addListener(ApotheosisTiers::tick);
     TeamEvent.PLAYER_LOGGED_IN.register(event -> ApotheosisTiers.sync(event.getPlayer()));
     TeamEvent.PLAYER_JOINED_PARTY.register(event -> ApotheosisTiers.sync(event.getPlayer()));
+    // Leaving a party: unlocks of the personal campaign apply at once; the tier never drops.
+    TeamEvent.PLAYER_CHANGED.register(event -> {
+      if (event.getPlayer() != null) ApotheosisTiers.sync(event.getPlayer());
+    });
   }
 
   private static void registerCapabilities(RegisterCapabilitiesEvent event) {
