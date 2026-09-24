@@ -72,5 +72,10 @@ class TerraArmDataTest {
       assertTrue(lore.startsWith("Terra ") && !lore.contains("%") && !lore.contains("\n"), lore);
     }
     assertNotEquals(en.get("entrelumen.terra_arm.tooltip"), es.get("entrelumen.terra_arm.tooltip"));
+    // Elias, 24 September 2026: the arm gives +3 and says so in its tooltip.
+    assertEquals(3.0, TerraArm.REACH_BONUS);
+    assertEquals("+%s block reach", en.get("entrelumen.terra_arm.reach").getAsString());
+    assertEquals("+%s de alcance de bloques", es.get("entrelumen.terra_arm.reach").getAsString());
+    assertEquals("3", TerraArm.Arm.reachText());
   }
 }

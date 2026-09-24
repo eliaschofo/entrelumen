@@ -145,9 +145,9 @@ public final class TeamRestartGameTests {
       Campaigns.Campaign sharedB = data.campaigns.parties.get(teamBId);
       helper.assertTrue(sharedA != null && sharedB != null,
           "FTB creation did not copy the founders' personal campaigns");
-      sharedA.act = 6;
+      sharedA.act = CampaignMilestones.ARK_ACT;
       sharedA.completed.addAll(Entrelumen.MODULES);
-      sharedB.act = 6;
+      sharedB.act = CampaignMilestones.ARK_ACT;
       sharedB.completed.addAll(Entrelumen.MODULES);
       data.setDirty();
       assertState(helper, sharedA, teamAPartialBeforeDeposit(), "team A before deposit");
@@ -330,27 +330,27 @@ public final class TeamRestartGameTests {
   }
 
   private static State teamAPartialBeforeDeposit() {
-    return new State(6, TEAM_A_COMPLETED, 0, Map.of(), false);
+    return new State(CampaignMilestones.ARK_ACT, TEAM_A_COMPLETED, 0, Map.of(), false);
   }
 
   private static State teamBPartialBeforeDeposit() {
-    return new State(6, TEAM_B_COMPLETED, 0, Map.of(), false);
+    return new State(CampaignMilestones.ARK_ACT, TEAM_B_COMPLETED, 0, Map.of(), false);
   }
 
   private static State teamAPartial() {
-    return new State(6, TEAM_A_COMPLETED, 0, Map.of(FRAME, 2), false);
+    return new State(CampaignMilestones.ARK_ACT, TEAM_A_COMPLETED, 0, Map.of(FRAME, 2), false);
   }
 
   private static State teamBPartial() {
-    return new State(6, TEAM_B_COMPLETED, 0, Map.of(REGULATOR, 1), false);
+    return new State(CampaignMilestones.ARK_ACT, TEAM_B_COMPLETED, 0, Map.of(REGULATOR, 1), false);
   }
 
   private static State teamACompleted() {
-    return new State(6, TEAM_A_COMPLETED, 1, Map.of(), false);
+    return new State(CampaignMilestones.ARK_ACT, TEAM_A_COMPLETED, 1, Map.of(), false);
   }
 
   private static State teamBCompleted() {
-    return new State(6, TEAM_B_COMPLETED, 1, Map.of(), false);
+    return new State(CampaignMilestones.ARK_ACT, TEAM_B_COMPLETED, 1, Map.of(), false);
   }
 
   private static void assertPersonalSnapshots(GameTestHelper helper, CampaignData data,

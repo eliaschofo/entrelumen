@@ -44,8 +44,10 @@ const entrelumenAuditTargets = {
     "entrelumen:habitation_contract",
     "entrelumen:habitation_module",
     "entrelumen:handling_core",
+    "entrelumen:heart_of_heliodor",
     "entrelumen:horizon_chart",
     "entrelumen:inventory_sensor",
+    "entrelumen:light_key",
     "entrelumen:living_matrix",
     "entrelumen:logistics_module",
     "entrelumen:nature_module",
@@ -236,6 +238,10 @@ const entrelumenAuditTargets = {
       "output": "entrelumen:handling_core"
     },
     {
+      "id": "entrelumen:light_key",
+      "output": "entrelumen:light_key"
+    },
+    {
       "id": "entrelumen:peace_altar_duplication",
       "output": "entrelumen:peace_altar"
     },
@@ -280,7 +286,7 @@ const entrelumenAuditTargets = {
       "output": "farmersdelight:flint_knife"
     }
   ],
-  "signature": "a78793e12e397148"
+  "signature": "eae949582f52d76f"
 };
 
 ServerEvents.afterRecipes(event => {

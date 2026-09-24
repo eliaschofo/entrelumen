@@ -420,6 +420,9 @@ public final class RuntimeGameTestsSolsticio {
         helper.assertTrue(after.is(Solsticio.LIGHT_KEY_BROKEN.get()) && after.getCount() == 1
             && player.getUUID().equals(after.get(Solsticio.KEY_OWNER).id()), "The key did not break into a bound return key");
         helper.assertTrue(player.blockPosition().distManhattan(data.arrival) <= 2, "Not at the arrival point");
+        // Act VI's entry quest: the team's own crossing is recorded (24 September 2026).
+        helper.assertTrue(Entrelumen.current(player).completed.contains(Expeditions.SOLSTICIO_ARRIVAL),
+            "The crossing did not record solsticio_arrival");
         helper.assertTrue(!player.isPassenger() && pig.isAlive() && pig.level() == level, "The mount travelled");
         var home = data.returns.get(player.getUUID());
         helper.assertTrue(home != null && home.pos().getX() == start.getX() && home.pos().getZ() == start.getZ(),
@@ -434,6 +437,14 @@ public final class RuntimeGameTestsSolsticio {
         helper.assertTrue(LightKeyItem.cross(early.player, lockedKey) == lockedKey
             && lockedKey.is(Solsticio.LIGHT_KEY.get()) && early.player.level() == level,
             "A team without the Ark crossed or lost its key");
+        // A visitor who arrives some other way (portal, waystone, command) records no crossing.
+        var solsticio = level.getServer().getLevel(Solsticio.LEVEL);
+        early.player.teleportTo(solsticio, data.arrival.getX() + 0.5, data.arrival.getY(), data.arrival.getZ() + 0.5,
+            java.util.Set.of(), 0f, 0f);
+        helper.assertTrue(early.player.level() == solsticio
+            && !Entrelumen.current(early.player).completed.contains(Expeditions.SOLSTICIO_ARRIVAL),
+            "A visitor recorded the team crossing");
+        early.player.teleportTo(level, start.getX() + 0.5, start.getY(), start.getZ() + 0.5, java.util.Set.of(), 0f, 0f);
         pig.discard();
       }
     });

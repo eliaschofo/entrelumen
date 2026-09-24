@@ -86,7 +86,7 @@ class ExpeditionsTest {
     var data = new CampaignData();
     UUID founder = UUID.randomUUID(), team = UUID.randomUUID();
     var personal = data.campaigns.personal(founder);
-    personal.act = 6;
+    personal.act = CampaignMilestones.ARK_ACT;
     personal.arkPhase = 2;
     personal.arkDeposits.put("entrelumen:ecosystem_capsule", 1);
     personal.completed.add("atlas_voices");
@@ -95,13 +95,13 @@ class ExpeditionsTest {
     assertTrue(Expeditions.record(party, "the_bumblezone:the_bumblezone"));
     data.campaigns.archive(team);
     CompoundTag saved = data.save(new CompoundTag(), null);
-    assertEquals(2, saved.getInt("version"));
+    assertEquals(CampaignData.VERSION, saved.getInt("version"));
     var restored = CampaignData.load(saved, null);
     var restoredPersonal = restored.campaigns.personal(founder);
     var restoredParty = restored.campaigns.parties.get(team);
     assertEquals(personal.completed, restoredPersonal.completed);
     assertEquals(party.completed, restoredParty.completed);
-    assertEquals(6, restoredParty.act);
+    assertEquals(CampaignMilestones.ARK_ACT, restoredParty.act);
     assertEquals(2, restoredParty.arkPhase);
     assertEquals(personal.arkDeposits, restoredParty.arkDeposits);
     assertTrue(restoredParty.archived);
@@ -110,5 +110,25 @@ class ExpeditionsTest {
     assertTrue(Expeditions.record(restoredPersonal, "twilightforest:twilight_forest"));
     assertFalse(restoredParty.completed.contains("twilight_arrival"));
     assertFalse(personal.completed.contains("twilight_arrival"));
+  }
+
+  @Test
+  void solsticioCountsOnlyForTheTeamsOwnCrossing() {
+    var visitor = new Campaigns.Campaign();
+    visitor.act = 4;
+    assertFalse(Expeditions.record(visitor, "entrelumen:solsticio"), "a visitor through another team's portal");
+    var sixByHand = new Campaigns.Campaign();
+    sixByHand.act = 6;
+    assertFalse(Expeditions.record(sixByHand, "entrelumen:solsticio"), "act VI without the activation");
+    var team = new Campaigns.Campaign();
+    team.act = 6;
+    team.completed.add(CampaignMilestones.LAST_HORIZON);
+    assertTrue(Expeditions.record(team, "entrelumen:solsticio"));
+    assertTrue(team.completed.contains(Expeditions.SOLSTICIO_ARRIVAL));
+    assertFalse(Expeditions.record(team, "entrelumen:solsticio"));
+    team.archived = true;
+    team.completed.remove(Expeditions.SOLSTICIO_ARRIVAL);
+    assertFalse(Expeditions.record(team, "entrelumen:solsticio"));
+    assertFalse(Expeditions.IDS.contains(Expeditions.SOLSTICIO_ARRIVAL));
   }
 }

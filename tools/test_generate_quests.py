@@ -6,12 +6,13 @@ class ChapterContracts(unittest.TestCase):
  def setUp(self):
   self.chapters=load_chapters()
  def test_optional_inventory_branch_preserves_campaign_and_prior_text(self):
-  prior=generate_all(self.chapters[:6]);out=generate_all(self.chapters)
-  branch=self.chapters[6];keys={q['key'] for q in branch['quests']}
+  # Since the renumbering of 24 September 2026 the campaign has seven chapters (act V has two).
+  prior=generate_all(self.chapters[:7]);out=generate_all(self.chapters)
+  branch=self.chapters[7];keys={q['key'] for q in branch['quests']}
   self.assertEqual(branch['chapter'],'inventory_that_remembers')
   self.assertEqual(branch['milestones'],[])
   self.assertTrue(all(q.get('optional') and 'milestone' not in q for q in branch['quests']))
-  self.assertTrue(all(not keys.intersection(q['deps']) for c in self.chapters[:6] for q in c['quests']))
+  self.assertTrue(all(not keys.intersection(q['deps']) for c in self.chapters[:7] for q in c['quests']))
   for path,content in prior.items():
    if path.parent == OUT/'lang':
     before=json.loads(content);after=json.loads(out[path])
@@ -149,8 +150,13 @@ class ChapterContracts(unittest.TestCase):
    if 'milestone' not in q:continue
    with self.subTest(milestone=q['milestone']):
     self.assertTrue(all('milestone' in quests[dep] for dep in q['deps']))
-    if q['milestone'] in {'aether_arrival','twilight_arrival','bumblezone_arrival','end_arrival'}:
+    if q['milestone'] in {'aether_arrival','twilight_arrival','bumblezone_arrival','end_arrival','heart_recovered'}:
+     # Server observations: dimension arrivals and the Heart a Sun Spirit dropped.
      self.assertEqual(q['deps'],[])
+     self.assertNotIn(q['milestone'],projects)
+    elif q['milestone']=='solsticio_arrival':
+     # Recorded only for a campaign past Solsticio's gate (the Ark activated).
+     self.assertEqual([quests[dep]['milestone'] for dep in q['deps']],['last_horizon'])
      self.assertNotIn(q['milestone'],projects)
     elif q['milestone'] in {'ark_calibrated','ark_contained','ark_renewed','ark_routed','ark_provisioned','ark_charted','last_horizon'}:
      self.assertNotIn(q['milestone'],projects)
@@ -190,16 +196,17 @@ class ChapterContracts(unittest.TestCase):
   ids=[c['id']]+[i for q in c['quests'] for i in (q['id'],q['tasks'][0]['id'])]
   self.assertEqual(hashlib.sha256(chr(10).join(ids).encode()).hexdigest(),'1b7c2c78e2260641cbcb7342b2843da49370bdb49e3bae887a71902fdd48a3c0')
  def test_act_four_campaign_and_observers(self):
-  chapter=self.chapters[3];self.assertEqual(len(chapter['quests']),29)
+  chapter=self.chapters[3];self.assertEqual(len(chapter['quests']),31)
   source={q['milestone']:q for q in chapter['quests'] if 'milestone' in q}
   expected={'spectral_archive':['exchange_archive'],'horizon_survey':['exchange_archive','voices_aether','voices_twilight'],
    'pollinator_treaty':['exchange_archive','voices_bumblezone'],'sealed_memory':['exchange_archive','voices_archive'],
-   'atlas_voices':['voices_archive','voices_horizon','voices_pollinators','voices_seal'],
-   'aether_arrival':[],'twilight_arrival':[],'bumblezone_arrival':[]}
+   'heliodor_heart':['exchange_archive','voices_sun_spirit'],
+   'atlas_voices':['voices_archive','voices_horizon','voices_pollinators','voices_seal','voices_heart'],
+   'aether_arrival':[],'twilight_arrival':[],'bumblezone_arrival':[],'heart_recovered':[]}
   self.assertEqual({key:q['deps'] for key,q in source.items()},expected)
   out=generate_all(self.chapters);c=json.loads(out[OUT/'chapters/voices_of_the_atlas.snbt'])
   mapping=json.loads(out[ROOT/'content/campaign_task_ids.json'])
-  self.assertEqual(len(json.loads(generate_all(self.chapters[:4])[ROOT/'content/campaign_task_ids.json'])),24)
+  self.assertEqual(len(json.loads(generate_all(self.chapters[:4])[ROOT/'content/campaign_task_ids.json'])),26)
   for q in c['quests']:
    self.assertEqual(q['rewards'],[]);task=q['tasks'][0]
    if task['type']=='entrelumen:campaign':self.assertEqual(mapping[task['milestone']],{'quest_id':q['id'],'task_id':task['id']})
@@ -209,7 +216,9 @@ class ChapterContracts(unittest.TestCase):
   quests={q['key']:q for q in self.chapters[3]['quests']}
   required={'voices_crystal':('four diamonds','cuatro diamantes'),'voices_spirits':('crude scythe','guadaña rudimentaria'),
    'voices_soul_steel':('eight refined','ocho piedras refinadas'),'voices_lens':('two lenses','dos lentes'),
-   'voices_chorus':('three paper and one copper ingot','tres papeles y un lingote de cobre')}
+   'voices_chorus':('three paper and one copper ingot','tres papeles y un lingote de cobre'),
+   'voices_sun_spirit':('ice crystals','cristales de hielo'),
+   'voices_heart':('Heart of Heliodor','Corazón de Heliodor')}
   for key,terms in required.items():
    for locale,term in zip(('en_us','es_es'),terms):self.assertIn(term,quests[key][locale][1])
   for q in quests.values():
@@ -219,14 +228,17 @@ class ChapterContracts(unittest.TestCase):
  def test_act_four_cycle_rejected(self):
   next(q for q in self.chapters[2]['quests'] if q['key']=='exchange_archive')['deps']=['voices_chorus']
   with self.assertRaisesRegex(AssertionError,'cycle|reading direction'):generate_all(self.chapters)
- def test_first_104_quests_frozen(self):
+ def test_first_106_quests_frozen(self):
+  # Act IV gained two quests on 24 September 2026 (the Sun Spirit and the Heart delivery) and
+  # voices_chorus now also depends on the delivery. Its chapter digest and the task-map digest were
+  # replaced on purpose; every earlier quest keeps its ID, task, icon and layout (checked below).
   from generate_quests import snbt
   out=generate_all(self.chapters)
   expected={'a_light_among_ruins':'28fdd2969fdd6829c2cad480e2a54b74c9d1ba7ab980e7203831f2fea5304bae',
    'the_lost_crafts':'26dcb9e26fa44e764b56f1667141abae1ea0d37f66ec671b4d2e7a3263aa57e5',
    'routes_of_exchange':'adb774f655ee0442b2ab825a8c634b55b137842b5e137177df7df21a1c46f38c',
-   'voices_of_the_atlas':'1c120b93b38a38bcf5e9756ca3979d6e5e67aa5b090e630f8a91f3313dde3ad2'}
-  self.assertEqual(sum(len(c['quests']) for c in self.chapters[:4]),104)
+   'voices_of_the_atlas':'7e5407195c10e48c213b4588b6fc8c06a1b2862d9c531fb14c0a3277b7d8733c'}
+  self.assertEqual(sum(len(c['quests']) for c in self.chapters[:4]),106)
   for chapter,digest in expected.items():
    self.assertEqual(hashlib.sha256(out[OUT/'chapters'/(chapter+'.snbt')].encode()).hexdigest(),digest)
   prior=generate_all(self.chapters[:4])
@@ -234,7 +246,22 @@ class ChapterContracts(unittest.TestCase):
   mapping=json.loads(out[ROOT/'content/campaign_task_ids.json'])
   before=json.loads(prior[ROOT/'content/campaign_task_ids.json'])
   self.assertEqual(hashlib.sha256(snbt({key:mapping[key] for key in before}).encode()).hexdigest(),
-                   'dbc4bf5f3cb8df145aef5204a41841053ad81b42be776fc3d1b14958f02a6f22')
+                   '9c676c7796077169cd3a6ff46de5a65d7f21d0048c3e818a027662219fa606d3')
+ def test_act_four_additions_keep_every_earlier_quest(self):
+  # The 29 act IV quests of the 24 September text rewrite are unchanged except for the one new
+  # dependency of voices_chorus; the new quests are the Sun Spirit observation and the Heart delivery.
+  compiled=json.loads(generate_all(self.chapters)[OUT/'chapters/voices_of_the_atlas.snbt'])
+  ids=[stable_id('quest:'+q['key']) for q in self.chapters[3]['quests']]
+  self.assertEqual([q['id'] for q in compiled['quests']],ids)
+  added={stable_id('quest:voices_sun_spirit'),stable_id('quest:voices_heart')}
+  kept=[q for q in compiled['quests'] if q['id'] not in added]
+  self.assertEqual(len(kept),29)
+  chorus=next(q for q in compiled['quests'] if q['id']==stable_id('quest:voices_chorus'))
+  self.assertEqual(chorus['dependencies'][-1],stable_id('quest:voices_heart'))
+  heart=next(q for q in compiled['quests'] if q['id']==stable_id('quest:voices_heart'))
+  self.assertEqual(heart['tasks'][0],{'id':stable_id('task:voices_heart'),'type':'entrelumen:campaign','milestone':'heliodor_heart'})
+  spirit=next(q for q in compiled['quests'] if q['id']==stable_id('quest:voices_sun_spirit'))
+  self.assertEqual((spirit['tasks'][0]['milestone'],spirit['dependencies']),('heart_recovered',[]))
  def test_act_five_authority_recipe_counts_and_rewards(self):
   chapter=self.chapters[4];self.assertEqual(len(chapter['quests']),24)
   projects=json.loads((ROOT/'companion/src/main/resources/data/entrelumen/campaign/projects.json').read_text(encoding='utf-8'))
@@ -268,7 +295,7 @@ class ChapterContracts(unittest.TestCase):
    task=q['tasks'][0]
    if task['type']=='item':self.assertFalse(task['consume_items'])
    if task['type']=='checkmark':self.assertTrue(q['optional'])
-  mapping=json.loads(generate_all(self.chapters[:5])[ROOT/'content/campaign_task_ids.json']);self.assertEqual(len(mapping),28)
+  mapping=json.loads(generate_all(self.chapters[:5])[ROOT/'content/campaign_task_ids.json']);self.assertEqual(len(mapping),30)
   for q in compiled['quests']:
    task=q['tasks'][0]
    if task['type']=='entrelumen:campaign':
@@ -303,15 +330,17 @@ class ChapterContracts(unittest.TestCase):
     ancestors(dep)
   for q in self.chapters[4]['quests']:
    if 'milestone' in q:ancestors(q['key'])
- def test_first_128_quests_frozen(self):
+ def test_first_130_quests_frozen(self):
+  # 128 before 24 September 2026; act IV gained two quests. world_we_build keeps its digest; the
+  # voices_of_the_atlas and task-map digests were replaced on purpose (see test_first_106_quests_frozen).
   from generate_quests import snbt
   out=generate_all(self.chapters)
   prior=generate_all(self.chapters[:5])
-  self.assertEqual(sum(len(c['quests']) for c in self.chapters[:5]),128)
+  self.assertEqual(sum(len(c['quests']) for c in self.chapters[:5]),130)
   hashes={'a_light_among_ruins':'28fdd2969fdd6829c2cad480e2a54b74c9d1ba7ab980e7203831f2fea5304bae',
    'the_lost_crafts':'26dcb9e26fa44e764b56f1667141abae1ea0d37f66ec671b4d2e7a3263aa57e5',
    'routes_of_exchange':'adb774f655ee0442b2ab825a8c634b55b137842b5e137177df7df21a1c46f38c',
-   'voices_of_the_atlas':'1c120b93b38a38bcf5e9756ca3979d6e5e67aa5b090e630f8a91f3313dde3ad2',
+   'voices_of_the_atlas':'7e5407195c10e48c213b4588b6fc8c06a1b2862d9c531fb14c0a3277b7d8733c',
    'world_we_build':'f410b503d830631db65c1efdb7ceefe2ad2a27e6c18c6e646ab0807003341ad6'}
   for chapter,digest in hashes.items():
    path=OUT/'chapters'/(chapter+'.snbt')
@@ -321,8 +350,8 @@ class ChapterContracts(unittest.TestCase):
   path=ROOT/'content/campaign_task_ids.json'
   before=json.loads(prior[path]);after=json.loads(out[path])
   self.assertEqual(hashlib.sha256(snbt({key:after[key] for key in before}).encode()).hexdigest(),
-                   '095c83ab710a2f76683054f73aebb924f3c96dce807370f48c457085187d54d1')
- def test_act_six_authority_and_exact_deliveries(self):
+                   'fe06d5fabf2770439aaf542286318cf21d67c667056ceb28375ae4d35f34aa9e')
+ def test_act_five_activation_authority_and_exact_deliveries(self):
   chapter=self.chapters[5]
   self.assertEqual(chapter['chapter'],'last_horizon')
   self.assertEqual(len(chapter['quests']),27)
@@ -331,7 +360,7 @@ class ChapterContracts(unittest.TestCase):
   self.assertEqual(len(source),14)
   projects=json.loads((ROOT/'companion/src/main/resources/data/entrelumen/campaign/projects.json').read_text(encoding='utf-8'))
   designs=json.loads((ROOT/'content/integration-design.json').read_text(encoding='utf-8'))['projects']
-  recipes={p['id'].split(':')[1]:p['recipe'] for p in designs if p.get('act')==6}
+  recipes={p['id'].split(':')[1]:p['recipe'] for p in designs if p.get('act')==5}
   names={'engineering_module':'ark_engineering','arcane_module':'ark_arcana','nature_module':'ark_nature',
          'exploration_module':'ark_exploration','logistics_module':'ark_logistics','habitation_module':'ark_habitation'}
   exact={
@@ -347,6 +376,7 @@ class ChapterContracts(unittest.TestCase):
    self.assertEqual(expected,exact[milestone])
    self.assertEqual(projects[milestone]['items'],expected)
    self.assertEqual(projects[milestone]['reward'],'entrelumen:'+milestone)
+   self.assertEqual(projects[milestone]['act'],5)
    self.assertEqual(recipe['type'],'minecraft:crafting_shapeless')
    self.assertEqual(sum(expected.values()),sum(i['count'] for i in recipe['inputs']))
   self.assertEqual({m:source[m]['deps'] for m in names},
@@ -356,12 +386,16 @@ class ChapterContracts(unittest.TestCase):
   self.assertEqual(source['end_arrival']['deps'],[])
   for q in source.values():
    self.assertTrue(all('milestone' in {p['key']:p for c in self.chapters for p in c['quests']}[dep] for dep in q['deps']))
- def test_act_six_mirrors_and_bilingual_instructions(self):
+ def test_act_five_activation_mirrors_and_bilingual_instructions(self):
   out=generate_all(self.chapters)
   compiled=json.loads(out[OUT/'chapters/last_horizon.snbt'])
   mapping=json.loads(out[ROOT/'content/campaign_task_ids.json'])
   self.assertEqual(len(compiled['quests']),27)
-  self.assertEqual(len(mapping),42)
+  # IDs, tasks, dependencies, icons and layout of the Ark chapter did not move with the renumbering.
+  self.assertEqual(hashlib.sha256(out[OUT/'chapters/last_horizon.snbt'].encode()).hexdigest(),
+                   '6bbf63247e4dde76927f2fbc0ef69a622f0aac3acf08e44d50377b2a7ecd63ec')
+  # 42 before 24 September 2026, plus heart_recovered, heliodor_heart and solsticio_arrival.
+  self.assertEqual(len(mapping),45)
   self.assertTrue(all(q['rewards']==[] for q in compiled['quests']))
   source={q['key']:q for q in self.chapters[5]['quests']}
   for q in compiled['quests']:
@@ -378,9 +412,9 @@ class ChapterContracts(unittest.TestCase):
    'horizon_calibrated':('four additional calibration frames','otros cuatro marcos de calibración'),
    'horizon_contained':('two additional containment seals','otros dos sellos de contención'),
    'horizon_renewed':('two additional ecosystem capsules','otras dos cápsulas de ecosistema'),
-   'horizon_routed':('two additional routing matrices','otras dos matrices de enrutamiento'),
-   'horizon_provisioned':('eight additional ration bundles','otros ocho paquetes de raciones'),
-   'horizon_charted':('one additional horizon chart','otra carta del horizonte'),
+   'horizon_routed':('two additional routing matrices','otras dos matrices de distribución'),
+   'horizon_provisioned':('eight more packs of Travel Rations','otras ocho provisiones de viaje'),
+   'horizon_charted':('one additional horizon chart','otra carta de horizontes'),
    'horizon_last':('crouch and interact','agachate e interactuá')}
   for key,terms in required.items():
    for locale,term in zip(('en_us','es_es'),terms):self.assertIn(term,source[key][locale][1])
@@ -395,27 +429,33 @@ class ChapterContracts(unittest.TestCase):
   for q in data['quests']:parts+=q[locale]
   return '\n'.join(parts)
  def test_act_titles_and_presentation(self):
-  titles=[c['title'] for c in self.chapters[:6]]
+  # Renumbered 24 September 2026: act V is two chapters (the plan and the activation), VI Solsticio.
+  titles=[c['title'] for c in self.chapters[:7]]
   self.assertEqual([(t['en_us'],t['es_es']) for t in titles],
    [('I · A Light Among Ruins','I · Una luz entre ruinas'),('II · The Lost Crafts','II · Los oficios perdidos'),
     ('III · Routes of Exchange','III · Rutas de intercambio'),('IV · Voices of the Atlas','IV · Las voces del Atlas'),
-    ('V · The Ark','V · El Arca'),('VI · Solsticio','VI · Solsticio')])
+    ('V · The Ark','V · El Arca'),('V · The Activation','V · La activación'),('VI · Solsticio','VI · Solsticio')])
   out=generate_all(self.chapters)
-  for data in self.chapters[:6]:
+  for data in self.chapters[:7]:
    compiled=json.loads(out[OUT/'chapters'/(data['chapter']+'.snbt')])
    for locale in ('en_us','es_es'):
     self.assertEqual(json.loads(out[OUT/'lang'/(locale+'.snbt')])[f"chapter.{compiled['id']}.chapter_subtitle"],data['subtitle'][locale])
- def test_acts_one_to_five_tell_the_new_story(self):
-  acts={locale:[self.act_text(c,locale) for c in self.chapters[:5]] for locale in ('en_us','es_es')}
-  sixth=self.chapters[5];presentation=next(q for q in sixth['quests'] if q['key']=='horizon_welcome')
+ def acts(self,locale):
+  # Acts I-IV are one chapter each, act V joins its two chapters, act VI is Solsticio.
+  texts=[self.act_text(c,locale) for c in self.chapters[:4]]
+  texts.append(self.act_text(self.chapters[4],locale)+'\n'+self.act_text(self.chapters[5],locale))
+  texts.append(self.act_text(self.chapters[6],locale))
+  return texts
+ def test_acts_tell_the_new_story(self):
+  acts={locale:self.acts(locale) for locale in ('en_us','es_es')}
   for locale,texts in acts.items():
-   intro=[sixth['title'][locale],*sixth['subtitle'][locale],sixth['layout_groups']['threshold'][locale],*presentation[locale]]
-   for text in texts+intro:
+   for text in texts:
     self.assertIsNone(re.search(r'\b(Mara|Ivo|Sera)\b',text),'a voice of the old story remains')
-   for text in texts:self.assertIn('Heliodor',text)
+    self.assertIn('Heliodor',text)
    # The limbo of light is named only once the Atlas speaks clearly, in act V.
    self.assertTrue(all('Entrelumen' not in text for text in texts[:4]));self.assertIn('Entrelumen',texts[4])
    for name in ('Terra','Juan','Bodhi','Aurelia'):self.assertIn(name,'\n'.join(texts[:4]))
+   self.assertIn('Solsticio',texts[5])
   ruins={'en_us':['Atlas Courtyard','Sunken Workshop','Greenhouse Dome','Observatory'],
          'es_es':['Patio del Atlas','Taller hundido','Invernadero-domo','Observatorio']}
   for locale,names in ruins.items():
@@ -424,11 +464,27 @@ class ChapterContracts(unittest.TestCase):
                                          ('es_es','Templo de la Luz Sagrada','Espíritu del Sol','Corazón de Heliodor','Llave de Luz')):
    for term in (temple,spirit,heart):self.assertIn(term,acts[locale][3])
    for term in (heart,key):self.assertIn(term,acts[locale][4])
+   self.assertIn(key,acts[locale][5])
   # Hints from act I: initials and a golden seal before anyone is named.
   for locale,seal in (('en_us','golden A'),('es_es','A dorada')):
    for hint in ('—T.','—J.','—B.',seal):self.assertIn(hint,acts[locale][0])
+ def test_act_four_closes_with_the_heart_and_act_six_opens_with_the_crossing(self):
+  projects=json.loads((ROOT/'companion/src/main/resources/data/entrelumen/campaign/projects.json').read_text(encoding='utf-8'))
+  self.assertEqual(projects['heliodor_heart'],{'act':4,'requires':['exchange_route','heart_recovered'],
+                                                'items':{'entrelumen:heart_of_heliodor':1}})
+  self.assertIn('heliodor_heart',projects['atlas_voices']['requires'])
+  self.assertEqual(sorted(m for m,p in projects.items() if p['act']==6),[])
+  self.assertEqual(sorted(m for m,p in projects.items() if p['act']==5),
+   ['arcane_module','engineering_module','exploration_module','habitation_module','logistics_module',
+    'nature_module','renewal_engine','resilient_backbone','settlement_supply','world_network'])
+  sixth=self.chapters[6]
+  self.assertEqual((sixth['chapter'],sixth['milestones'],[q['key'] for q in sixth['quests']]),
+                   ('solsticio',['solsticio_arrival'],['solsticio_arrival']))
+  entry=sixth['quests'][0]
+  self.assertEqual((entry['deps'],entry['milestone'],entry['layout']['shape']),(['horizon_last'],'solsticio_arrival','hexagon'))
+  for locale,term in (('en_us','Light Key'),('es_es','Llave de Luz')):self.assertIn(term,entry[locale][1])
  def test_each_quest_says_what_then_why(self):
-  for data in self.chapters[:5]:
+  for data in self.chapters[:7]:
    for q in data['quests']:
     for locale in ('en_us','es_es'):
      with self.subTest(quest=q['key'],locale=locale):
@@ -439,8 +495,7 @@ class ChapterContracts(unittest.TestCase):
   for data in self.chapters[:4]:
    for locale in ('en_us','es_es'):self.assertRegex(self.act_text(data,locale),'&[km]')
   for locale in ('en_us','es_es'):
-   self.assertNotIn('&',self.act_text(self.chapters[4],locale))
-   self.assertNotIn('&',self.act_text(self.chapters[5],locale))
+   for data in self.chapters[4:7]:self.assertNotIn('&',self.act_text(data,locale))
  def test_formatting_codes_rejected_when_unsafe(self):
   from generate_quests import check_formatting
   check_formatting('A voice: …&kthose&r who… &mhave&r arrived.\n\nPlain.','ok',True)
@@ -455,7 +510,7 @@ class ChapterContracts(unittest.TestCase):
   names={locale:json.loads((ROOT/f'companion/src/main/resources/assets/entrelumen/lang/{locale}.json').read_text(encoding='utf-8'))
          for locale in ('en_us','es_es')}
   checked=set()
-  for data in self.chapters[:5]:
+  for data in self.chapters[:7]:
    for q in data['quests']:
     reward=projects.get(q.get('milestone'),{}).get('reward')
     if not reward:continue
@@ -464,5 +519,7 @@ class ChapterContracts(unittest.TestCase):
      name=names[locale].get('item.entrelumen.'+path) or names[locale]['block.entrelumen.'+path]
      with self.subTest(milestone=q['milestone'],locale=locale):self.assertIn(name.lower(),q[locale][1].lower())
     checked.add(path)
-  self.assertTrue({'peace_altar','growth_altar','terraform_altar','repose_altar','renewal_altar','time_altar','terra_arm'}<=checked)
+  self.assertTrue({'peace_altar','growth_altar','terraform_altar','repose_altar','renewal_altar','time_altar','terra_arm',
+                   'engineering_module','arcane_module','nature_module','logistics_module','habitation_module',
+                   'exploration_module'}<=checked)
 if __name__=='__main__':unittest.main()

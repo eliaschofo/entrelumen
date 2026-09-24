@@ -22,7 +22,7 @@ public final class ArkCommissioning {
   private ArkCommissioning() {}
 
   public static boolean eligible(Campaigns.Campaign campaign) {
-    return !campaign.archived && campaign.act == 6
+    return !campaign.archived && campaign.act == CampaignMilestones.ARK_ACT
         && campaign.arkPhase >= 0 && campaign.arkPhase < STEPS.size()
         && STEPS.stream().allMatch(step -> campaign.completed.contains(step.module()));
   }

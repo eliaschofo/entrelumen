@@ -280,10 +280,12 @@ public final class ApotheosisGameTests {
         ApotheosisTiers.sync(player);
         helper.assertTrue(apotheosisUnlocked(player, "ASCENT") && !apotheosisUnlocked(player, "SUMMIT"),
             "Ascent did not open after Act III");
-        campaign.act = 6;
+        // Renumbered 24 September 2026: act V is the Ark (Summit), act VI Solsticio (Pinnacle).
+        campaign.act = CampaignMilestones.ARK_ACT;
         ApotheosisTiers.sync(player);
         helper.assertTrue(apotheosisUnlocked(player, "SUMMIT") && !apotheosisUnlocked(player, "PINNACLE"),
-            "Summit did not open after Act V, or Pinnacle opened before the Ark");
+            "Summit did not open with Act V, or Pinnacle opened before the Ark");
+        campaign.act = Campaigns.FINAL_ACT;
         campaign.completed.add(CampaignMilestones.LAST_HORIZON);
         helper.assertTrue(ApotheosisTiers.sync(player) == 1 && apotheosisUnlocked(player, "PINNACLE")
             && ApotheosisTiers.sync(player) == 0, "Pinnacle was not granted exactly once after the Ark");
@@ -339,7 +341,10 @@ public final class ApotheosisGameTests {
         campaign.act = 4;
         ApotheosisTiers.sync(player);
         helper.assertTrue(activeTier(player).equals("ASCENT"), "Act IV did not play on Ascent");
-        campaign.act = 6;
+        campaign.act = CampaignMilestones.ARK_ACT;
+        ApotheosisTiers.sync(player);
+        helper.assertTrue(activeTier(player).equals("SUMMIT"), "Act V, the Ark, did not play on Summit");
+        campaign.act = Campaigns.FINAL_ACT;
         campaign.completed.add(CampaignMilestones.LAST_HORIZON);
         ApotheosisTiers.sync(player);
         helper.assertTrue(activeTier(player).equals("PINNACLE"), "The Ark did not raise the world to Pinnacle");

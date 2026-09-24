@@ -17,8 +17,9 @@ import math
 ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / "pack/config/ftbquests/quests"
 LOCALES = ("en_us", "es_es")
+# Acts renumbered 24 September 2026: act V is two chapters (the plan and the activation), act VI Solsticio.
 CHAPTER_SOURCES = ("first_hour.json", "act_two.json", "act_three.json", "act_four.json",
-                   "act_five.json", "act_six.json", "inventory_that_remembers.json")
+                   "act_five.json", "act_five_activation.json", "act_six.json", "inventory_that_remembers.json")
 
 
 def load_chapters():

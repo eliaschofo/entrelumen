@@ -242,9 +242,10 @@ public final class AtlasNetwork {
         campaign.act,
         campaign.arkPhase,
         List.copyOf(projects),
-        campaign.act < 6
+        campaign.act < Campaigns.FINAL_ACT
             && !projects.isEmpty()
-            && projects.stream().allMatch(ProjectView::completed),
+            && campaign.completed.containsAll(Campaigns.advanceRequirements(campaign.act,
+                Projects.forAct(campaign.act))),
         open,
         message,
         HeliodorCompass.view(player));

@@ -6,10 +6,10 @@
   },
   "subtitle": {
     "en_us": [
-      "From an observatory on a cliff, Heliodor watched the sky. In the Temple of the Sacred Light it tried to seize it. This is what happened."
+      "From an observatory on a cliff, Heliodor watched the sky. In the Temple of the Sacred Light it tried to seize it. In the Aether, the Sun Spirit stopped it."
     ],
     "es_es": [
-      "Desde un observatorio en un risco, Heliodor miraba el cielo. En el Templo de la Luz Sagrada quiso apoderarse de él. Esto es lo que pasó."
+      "Desde un observatorio en un risco, Heliodor miraba el cielo. En el Templo de la Luz Sagrada quiso apoderarse de él. En el Aether, el Espíritu del Sol lo detuvo."
     ]
   },
   "autofocus": "voices_welcome",
@@ -37,6 +37,10 @@
     "memory": {
       "en_us": "The Temple · What was sealed",
       "es_es": "El Templo · Lo que quedó sellado"
+    },
+    "sun": {
+      "en_us": "The Aether · The Sun Spirit",
+      "es_es": "El Aether · El Espíritu del Sol"
     }
   },
   "milestones": [
@@ -47,6 +51,8 @@
     "horizon_survey",
     "pollinator_treaty",
     "sealed_memory",
+    "heart_recovered",
+    "heliodor_heart",
     "atlas_voices"
   ],
   "quests": [
@@ -57,11 +63,11 @@
       ],
       "en_us": [
         "The missing witnesses",
-        "Four routes below lead to this act's Atlas projects; arrivals in other worlds are recorded on their own when your team gets there. Confirm when ready.\n\nThe Cliffside Observatory still points at the same patch of sky. Its log ends on a single line: 'The light answered.'"
+        "Four routes below lead to this act's Atlas projects, and a fifth ends at the Sun Spirit; arrivals in other worlds are recorded on their own when your team gets there. Confirm when ready.\n\nThe Cliffside Observatory still points at the same patch of sky. Its log ends on a single line: 'The light answered.'"
       ],
       "es_es": [
         "Los testigos que faltan",
-        "Cuatro rutas llevan a los proyectos de este acto en el Atlas; las llegadas a otros mundos se registran solas cuando tu equipo llega. Confirmá cuando quieras.\n\nEl Observatorio del risco sigue apuntando al mismo pedazo de cielo. Su bitácora termina en una sola línea: «La luz respondió»."
+        "Cuatro rutas llevan a los proyectos de este acto en el Atlas y una quinta termina en el Espíritu del Sol; las llegadas a otros mundos se registran solas cuando tu equipo llega. Confirmá cuando quieras.\n\nEl Observatorio del risco sigue apuntando al mismo pedazo de cielo. Su bitácora termina en una sola línea: «La luz respondió»."
       ],
       "layout": {
         "group": "archive",
@@ -725,20 +731,68 @@
       "icon": "entrelumen:atlas"
     },
     {
+      "key": "voices_sun_spirit",
+      "deps": [],
+      "en_us": [
+        "The Sun Spirit",
+        "Defeat a Sun Spirit in one of the Aether's gold dungeons; the compass leads there after the silver dungeon. Only its own ice crystals, struck back at it, can wound it. The first one your team defeats drops the Heart of Heliodor, and the server records it.\n\nIt did not destroy Heliodor: it stopped it, and kept the Heart so no one could try again. Bodhi, through the noise: 'It was never &mtheirs&r… never anyone's to take.'"
+      ],
+      "es_es": [
+        "El Espíritu del Sol",
+        "Vencé a un Espíritu del Sol en una de las mazmorras de oro del Aether; la brújula te lleva ahí después de la mazmorra de plata. Sólo lo hieren sus propios cristales de hielo, devueltos de un golpe. El primero que vence tu equipo suelta el Corazón de Heliodor, y el servidor lo registra.\n\nNo destruyó Heliodor: la detuvo, y se quedó con el Corazón para que nadie volviera a intentarlo. Bodhi, entre el ruido: «Nunca fue &msuyo&r… nunca fue de nadie para quitarlo»."
+      ],
+      "layout": {
+        "group": "sun",
+        "x": 15,
+        "y": 16,
+        "size": 1.1,
+        "shape": "hexagon",
+        "hide_dependent_lines": false
+      },
+      "milestone": "heart_recovered",
+      "icon": "entrelumen:heart_of_heliodor"
+    },
+    {
+      "key": "voices_heart",
+      "deps": [
+        "exchange_archive",
+        "voices_sun_spirit"
+      ],
+      "en_us": [
+        "A Clear Voice",
+        "Deliver the Heart of Heliodor to A Clear Voice in the Atlas. Only your team's own Heart counts, the one your Sun Spirit dropped. The Atlas keeps it; you will need it again in Solsticio.\n\nThe crystal settles into the Atlas like a key into a lock, and the noise falls away. Terra, whole for the first time: 'There you are. We have always been able to hear you.'"
+      ],
+      "es_es": [
+        "Una voz clara",
+        "Entregá el Corazón de Heliodor en Una voz clara desde el Atlas. Sólo cuenta el Corazón de tu equipo, el que soltó tu Espíritu del Sol. El Atlas lo guarda: lo vas a necesitar otra vez en Solsticio.\n\nEl cristal entra en el Atlas como una llave en su cerradura, y el ruido se apaga. Terra, entera por primera vez: «Ahí estás. Siempre pudimos escucharte»."
+      ],
+      "layout": {
+        "group": "sun",
+        "x": 15,
+        "y": 21.5,
+        "size": 1.1,
+        "shape": "hexagon",
+        "hide_dependent_lines": true
+      },
+      "milestone": "heliodor_heart",
+      "icon": "entrelumen:heart_of_heliodor"
+    },
+    {
       "key": "voices_chorus",
       "deps": [
         "voices_archive",
         "voices_horizon",
         "voices_pollinators",
-        "voices_seal"
+        "voices_seal",
+        "voices_heart"
       ],
       "en_us": [
         "The Atlas keeps their voices",
-        "With the four projects complete, deliver three paper and one copper ingot to The Voices of the Atlas, then choose Advance. The compass will lead you to the Aether's dungeons, where the Sun Spirit waits.\n\nThe temple's last page: the fusion did not destroy Heliodor, because something from the Aether stopped it first. The Sun Spirit froze everyone inside the light and took the Heart of Heliodor, Bodhi's sacred crystal. Terra: 'Bring it &kback&r… and you will be able to answer us.'"
+        "With the five projects recorded, the Heart among them, deliver three paper and one copper ingot to The Voices of the Atlas, then choose Advance.\n\nThe temple's last page, read aloud at last: the fusion did not destroy Heliodor, because the Sun Spirit stopped it first and froze everyone inside the light. Terra: 'Now you know what we did. Help us leave without doing it again.'"
       ],
       "es_es": [
         "El Atlas conserva sus voces",
-        "Con los cuatro proyectos completos, entregá tres papeles y un lingote de cobre en Las voces del Atlas y pulsá Avanzar. La brújula te va a llevar a las mazmorras del Aether, donde espera el Espíritu del Sol.\n\nLa última página del templo: la fusión no destruyó Heliodor porque algo del Aether la detuvo antes. El Espíritu del Sol congeló a todos adentro de la luz y se llevó el Corazón de Heliodor, el cristal sagrado de Bodhi. Terra: «Traelo de &kvuelta&r… y vas a poder contestarnos»."
+        "Con los cinco proyectos registrados, el Corazón entre ellos, entregá tres papeles y un lingote de cobre en Las voces del Atlas y pulsá Avanzar.\n\nLa última página del templo, leída en voz alta por fin: la fusión no destruyó Heliodor porque el Espíritu del Sol la detuvo antes y congeló a todos adentro de la luz. Terra: «Ahora sabés lo que hicimos. Ayudanos a salir sin repetirlo»."
       ],
       "layout": {
         "group": "archive",

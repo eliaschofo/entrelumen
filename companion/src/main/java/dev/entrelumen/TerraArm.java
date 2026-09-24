@@ -42,7 +42,8 @@ public final class TerraArm {
 
   /** The only modifier the arm ever adds: additive, on block interaction range. */
   public static final ResourceLocation REACH = id("terra_arm_reach");
-  public static final double REACH_BONUS = 5.0;
+  /** Elias, 24 September 2026: +3 (was +5). */
+  public static final double REACH_BONUS = 3.0;
   /** Server ticks between two checks of a player's Curios slots. */
   public static final int INTERVAL_TICKS = 10;
   /** Curios accepts items of {@code curios:<slot>} in that slot; the arm goes on the hands. */
@@ -92,7 +93,7 @@ public final class TerraArm {
     return new AttributeModifier(REACH, REACH_BONUS, AttributeModifier.Operation.ADD_VALUE);
   }
 
-  /** The arm: one per stack, no durability, no recipe; a single line of lore. */
+  /** The arm: one per stack, no durability, no recipe; a line of lore and its effect. */
   public static final class Arm extends Item {
     public Arm(Properties properties) {
       super(properties);
@@ -102,6 +103,17 @@ public final class TerraArm {
     public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltip,
         TooltipFlag flag) {
       tooltip.add(Component.translatable("entrelumen.terra_arm.tooltip").withStyle(ChatFormatting.GRAY));
+      // Same colour as vanilla's attribute lines ("+3 Block Interaction Range" is blue).
+      tooltip.add(reachLine());
+    }
+
+    /** The effect line, "+3 block reach", in the colour of vanilla attribute modifiers. */
+    public static Component reachLine() {
+      return Component.translatable("entrelumen.terra_arm.reach", reachText()).withStyle(ChatFormatting.BLUE);
+    }
+
+    static String reachText() {
+      return REACH_BONUS == Math.rint(REACH_BONUS) ? Long.toString((long) REACH_BONUS) : Double.toString(REACH_BONUS);
     }
   }
 }

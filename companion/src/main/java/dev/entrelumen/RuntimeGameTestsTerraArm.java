@@ -109,7 +109,14 @@ public final class RuntimeGameTestsTerraArm {
     var lines = stack.getTooltipLines(Item.TooltipContext.of(level), null, TooltipFlag.NORMAL);
     long lore = lines.stream().filter(line -> line.getContents() instanceof TranslatableContents text
         && text.getKey().equals("entrelumen.terra_arm.tooltip")).count();
-    helper.assertTrue(lore == 1 && lines.size() == 2, "The tooltip is not the name and one line of lore: " + lines);
+    // The effect line: "+3 block reach", blue like vanilla's attribute lines.
+    long effect = lines.stream().filter(line -> line.getContents() instanceof TranslatableContents text
+        && text.getKey().equals("entrelumen.terra_arm.reach") && text.getArgs().length == 1
+        && "3".equals(String.valueOf(text.getArgs()[0]))
+        && line.getStyle().getColor() != null
+        && line.getStyle().getColor().equals(net.minecraft.network.chat.TextColor.fromLegacyFormat(net.minecraft.ChatFormatting.BLUE))).count();
+    helper.assertTrue(lore == 1 && effect == 1 && lines.size() == 3,
+        "The tooltip is not the name, one line of lore and the +3 reach line: " + lines);
     helper.succeed();
   }
 
@@ -151,8 +158,9 @@ public final class RuntimeGameTestsTerraArm {
       helper.assertTrue(reach != null && entityReach != null, "The player lacks interaction ranges");
       double base = reach.getValue();
       double entityBase = entityReach.getValue();
-      // Eight blocks from the eyes: out of vanilla survival reach, within reach plus five.
-      BlockPos far = BlockPos.containing(player.getEyePosition()).east(8);
+      // Seven blocks from the eyes (6.5 to the block's face): out of vanilla survival reach (4.5),
+      // within reach plus three (7.5).
+      BlockPos far = BlockPos.containing(player.getEyePosition()).east(7);
       helper.assertTrue(!player.canInteractWithBlock(far, 0.0), "The test block is already within reach");
 
       // Carried, held and forced into vanilla equipment slots: nothing happens and nothing breaks.
@@ -165,20 +173,20 @@ public final class RuntimeGameTestsTerraArm {
           && !reach.hasModifier(TerraArm.REACH) && reach.getValue() == base && entityReach.getValue() == entityBase,
           "The arm changed reach outside a Curios slot");
 
-      // The worn state adds exactly one additive +5 to block reach, once, and leaves other modifiers alone.
+      // The worn state adds exactly one additive +3 to block reach, once, and leaves other modifiers alone.
       var foreign = new AttributeModifier(ResourceLocation.fromNamespaceAndPath("entrelumen", "test_foreign_reach"),
           1.0, AttributeModifier.Operation.ADD_VALUE);
       reach.addTransientModifier(foreign);
       helper.assertTrue(TerraArm.sync(player, true) && !TerraArm.sync(player, true), "Wearing did not apply exactly once");
       var applied = reach.getModifier(TerraArm.REACH);
       helper.assertTrue(applied != null && applied.id().equals(ResourceLocation.parse("entrelumen:terra_arm_reach"))
-          && applied.amount() == 5.0 && applied.operation() == AttributeModifier.Operation.ADD_VALUE,
+          && applied.amount() == 3.0 && applied.operation() == AttributeModifier.Operation.ADD_VALUE,
           "Unexpected reach modifier: " + applied);
-      helper.assertTrue(reach.getValue() == base + 1.0 + 5.0 && player.blockInteractionRange() == base + 6.0
+      helper.assertTrue(reach.getValue() == base + 1.0 + 3.0 && player.blockInteractionRange() == base + 4.0
           && entityReach.getValue() == entityBase && reach.hasModifier(foreign.id()),
-          "Reach is not base + 5 on blocks only: " + reach.getValue());
+          "Reach is not base + 3 on blocks only: " + reach.getValue());
       reach.removeModifier(foreign.id());
-      helper.assertTrue(player.canInteractWithBlock(far, 0.0), "Reach + 5 does not reach eight blocks");
+      helper.assertTrue(player.canInteractWithBlock(far, 0.0), "Reach + 3 does not reach seven blocks");
 
       // The server's own check runs every INTERVAL_TICKS; without Curios nothing is ever worn, so the
       // check takes the bonus back off.

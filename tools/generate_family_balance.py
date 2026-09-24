@@ -175,8 +175,9 @@ LUMINOUS_ACT = 'VI'
 # Boss drops that the story keeps as necessary materials (Wither, Ender Dragon, Elder Guardian).
 NETHER_STAR, DRAGON_HEART, WET_SPONGE = 'minecraft:nether_star', 'draconicevolution:dragon_heart', 'minecraft:wet_sponge'
 # Late materials of other families: stage V (see STAGE_MATERIALS) plus the Apotheosis mythic
-# salvage material, which only drops from the Summit World Tier (after Act V).
-LUMINOUS_MATERIAL_ACTS = {'naturesaura:sky_ingot': 'V', 'mekanism:alloy_atomic': 'V', 'apotheosis:godforged_pearl': 'VI'}
+# salvage material, which only drops from the Summit World Tier (Act V, the Ark, since the renumbering
+# of 24 September 2026).
+LUMINOUS_MATERIAL_ACTS = {'naturesaura:sky_ingot': 'V', 'mekanism:alloy_atomic': 'V', 'apotheosis:godforged_pearl': 'V'}
 # Creative items that copy arbitrary items: a recipe would clone Luminosities, nether stars and
 # godforged pearls, so they remain uncraftable (checked at load, like the Luminosities).
 UNCRAFTABLE_CREATIVE = ('create:creative_crate', 'ae2:creative_storage_cell', 'mekanism:creative_bin',
@@ -446,8 +447,8 @@ FAMILIES = {
             campaign_tier('haven', 'minecraft:tick', 'Open from the start of every campaign'),
             campaign_tier('frontier', 'minecraft:impossible', 'Granted by the companion after Act II'),
             campaign_tier('ascent', 'minecraft:impossible', 'Granted by the companion after Act III'),
-            campaign_tier('summit', 'minecraft:impossible', 'Granted by the companion after Act V'),
-            campaign_tier('pinnacle', 'minecraft:impossible', 'Granted by the companion after the Ark activation'),
+            campaign_tier('summit', 'minecraft:impossible', 'Granted by the companion after Act IV (Act V, the Ark)'),
+            campaign_tier('pinnacle', 'minecraft:impossible', 'Granted by the companion at the Ark activation (Act VI)'),
         ] + [augmented(m) for m in AUGMENTS] + [augmented(m, inverse=True) for m in AUGMENTS],
         'additions': [
             recipe('entrelumen:cartographer_shelf', ['PMP', 'BFB', 'PMP'],
@@ -550,7 +551,8 @@ FAMILIES = {
                    'Top electric motor tier and its extension'),
             shaped('create_new_age:mechanical_crafting/reactor_rod', 1, 0, None, CS, 'IV',
                    'Thorium fission: every reactor needs rods'),
-            shaped('psi:assembler', 1, 1, None, CF, 'II', 'Every CAD, and so every Psi spell'),
+            # Elias, 24 September 2026: Psi opens whole in Act III (it was the calibration frame, Act II).
+            shaped('psi:assembler', 1, 1, None, PR, 'III', 'Every CAD, and so every Psi spell'),
             shaped('psi:cad_core_hyperclocked', 0, 0, None, RM, 'III', 'Highest spell complexity'),
             shaped('psi:cad_core_radiative', 0, 0, None, RM, 'III', 'Psigem core with the highest potency'),
         ],

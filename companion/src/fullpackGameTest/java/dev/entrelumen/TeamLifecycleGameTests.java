@@ -125,7 +125,7 @@ public final class TeamLifecycleGameTests {
 
       // Seed valid, bounded Ark ledgers to inspect their lifecycle; this is not an Ark deposit test.
       for (Campaigns.Campaign campaign : List.of(founderPersonal, guestPersonal, shared)) {
-        campaign.act = 6;
+        campaign.act = CampaignMilestones.ARK_ACT;
         campaign.completed.addAll(Entrelumen.MODULES);
       }
       founderPersonal.arkDeposits.put(FRAME, 1);
@@ -134,7 +134,7 @@ public final class TeamLifecycleGameTests {
       data.setDirty();
       helper.assertTrue(ArkCommissioning.eligible(founderPersonal)
           && ArkCommissioning.eligible(guestPersonal)
-          && ArkCommissioning.eligible(shared), "Ark ledger fixtures are not valid act-six campaigns");
+          && ArkCommissioning.eligible(shared), "Ark ledger fixtures are not valid Ark-act campaigns");
       CampaignState founderSnapshot = state(founderPersonal);
       CampaignState guestSnapshot = state(guestPersonal);
       CampaignState partySnapshot = state(shared);

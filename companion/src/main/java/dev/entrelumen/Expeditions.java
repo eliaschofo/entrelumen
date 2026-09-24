@@ -14,22 +14,34 @@ public final class Expeditions {
       "the_bumblezone:the_bumblezone", "bumblezone_arrival",
       "minecraft:the_end", "end_arrival");
   public static final Set<String> IDS = Set.copyOf(DIMENSIONS.values());
+  /**
+   * The team's own crossing into Solsticio, act VI's entry quest. Unlike the journeys above it only
+   * counts for a campaign that passes Solsticio's gate (the Ark activated): visitors who come through
+   * another team's portal or waystone do not record it.
+   */
+  public static final String SOLSTICIO_ARRIVAL = "solsticio_arrival";
+  static final String SOLSTICIO = "entrelumen:solsticio";
 
   private Expeditions() {}
 
   public static boolean record(Campaigns.Campaign campaign, String dimension) {
     if (campaign.archived || dimension == null) return false;
+    if (SOLSTICIO.equals(dimension))
+      return campaign.act >= Campaigns.FINAL_ACT
+          && campaign.completed.contains(CampaignMilestones.LAST_HORIZON)
+          && campaign.completed.add(SOLSTICIO_ARRIVAL);
     String observation = DIMENSIONS.get(dimension);
     return observation != null && campaign.completed.add(observation);
   }
 
   public static boolean observe(ServerPlayer player) {
     String dimension = player.serverLevel().dimension().location().toString();
-    if (!DIMENSIONS.containsKey(dimension)) return false;
+    String observation = SOLSTICIO.equals(dimension) ? SOLSTICIO_ARRIVAL : DIMENSIONS.get(dimension);
+    if (observation == null) return false;
     if (!record(Entrelumen.current(player), dimension)) return false;
     CampaignData.get(player.server).setDirty();
     player.sendSystemMessage(Component.translatable("entrelumen.expedition.recorded",
-        Component.translatable("entrelumen.project." + DIMENSIONS.get(dimension))));
+        Component.translatable("entrelumen.project." + observation)));
     return true;
   }
 

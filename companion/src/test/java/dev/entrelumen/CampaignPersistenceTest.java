@@ -59,7 +59,46 @@ class CampaignPersistenceTest {
   @Test
   void rejectsFutureSchemaInsteadOfDestroyingData() {
     var tag = new CompoundTag();
-    tag.putInt("version", 3);
+    tag.putInt("version", CampaignData.VERSION + 1);
     assertThrows(IllegalStateException.class, () -> CampaignData.load(tag, null));
+  }
+
+  /** Version 2 numbered the Ark act 6; since 24 September 2026 it is act 5 and act 6 is Solsticio. */
+  @Test
+  void version2CampaignsMoveTheArkToActFiveAndKeepTheActivatedInSix() {
+    var data = new CampaignData();
+    UUID building = UUID.randomUUID(), activated = UUID.randomUUID(), preparing = UUID.randomUUID(),
+        party = UUID.randomUUID();
+    var ark = data.campaigns.personal(building);
+    ark.act = 6;
+    ark.arkPhase = 3;
+    ark.completed.addAll(CampaignMilestones.MODULE_IDS);
+    ark.arkDeposits.put("entrelumen:routing_matrix", 1);
+    var done = data.campaigns.personal(activated);
+    done.act = 6;
+    done.arkPhase = 6;
+    done.completed.add(CampaignMilestones.LAST_HORIZON);
+    data.campaigns.personal(preparing).act = 5;
+    var archived = data.campaigns.party(party, building);
+    archived.archived = true;
+    var tag = data.save(new CompoundTag(), null);
+    assertEquals(CampaignData.VERSION, tag.getInt("version"));
+    tag.putInt("version", 2);
+    var loaded = CampaignData.load(tag, null);
+    assertTrue(loaded.isDirty(), "the migrated numbering must be written back");
+    var migrated = loaded.campaigns.personal(building);
+    assertEquals(5, migrated.act);
+    assertEquals(3, migrated.arkPhase);
+    assertEquals(ark.completed, migrated.completed);
+    assertEquals(ark.arkDeposits, migrated.arkDeposits);
+    assertTrue(ArkCommissioning.eligible(migrated), "a migrated Ark keeps taking its batches");
+    assertEquals(6, loaded.campaigns.personal(activated).act);
+    assertEquals(5, loaded.campaigns.personal(preparing).act);
+    assertEquals(5, loaded.campaigns.parties.get(party).act);
+    assertTrue(loaded.campaigns.parties.get(party).archived);
+    // Current saves are read as they are.
+    var current = CampaignData.load(data.save(new CompoundTag(), null), null);
+    assertEquals(6, current.campaigns.personal(building).act);
+    assertFalse(current.isDirty());
   }
 }

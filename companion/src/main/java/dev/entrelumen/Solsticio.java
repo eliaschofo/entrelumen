@@ -49,9 +49,15 @@ public final class Solsticio {
       ResourceKey.create(Registries.DIMENSION, ResourceLocation.fromNamespaceAndPath("entrelumen", "solsticio"));
   public static final String REGION_ID = "entrelumen:solsticio";
   public static final String RIFT_REGION_ID = "entrelumen:solsticio_rift";
-  /** Solsticio opens to a team once it activated the Ark (current code: act 6, last_horizon). */
+  /** Act VI is Solsticio's act; the Ark activation (act V) opens it and forges the Light Key. */
+  public static final int ACT = Campaigns.FINAL_ACT;
+  /**
+   * Solsticio opens to a team once it activated the Ark: act VI and {@code last_horizon}. Since the
+   * renumbering of 24 September 2026 the activation itself moves the campaign to act VI, so both
+   * conditions arrive together; keeping the milestone stops an act set by hand from opening the city.
+   */
   public static final ProtectionRules.ActGate GATE =
-      new ProtectionRules.ActGate(6, CampaignMilestones.LAST_HORIZON);
+      new ProtectionRules.ActGate(ACT, CampaignMilestones.LAST_HORIZON);
 
   static final DeferredRegister.Items ITEMS = DeferredRegister.createItems("entrelumen");
   static final DeferredRegister.Blocks BLOCKS = DeferredRegister.createBlocks("entrelumen");

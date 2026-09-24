@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test;
 class ArkCommissioningTest {
   private Campaigns.Campaign ready() {
     var campaign = new Campaigns.Campaign();
-    campaign.act = 6;
+    campaign.act = CampaignMilestones.ARK_ACT;
     ArkCommissioning.STEPS.forEach(step -> campaign.completed.add(step.module()));
     return campaign;
   }
@@ -38,9 +38,12 @@ class ArkCommissioningTest {
   void rejectsInvalidCampaignsAndZeroDepositsWithoutMutation() {
     var campaign = ready();
     var cost = ArkCommissioning.STEPS.getFirst().requirements();
-    campaign.act = 5;
-    assertFalse(ArkCommissioning.deposit(campaign, 0, cost, accepted -> fail()));
-    campaign.act = 6;
+    // Only the Ark act (V since 24 September 2026) takes batches: not act IV, not act VI.
+    for (int act : new int[] {4, 6}) {
+      campaign.act = act;
+      assertFalse(ArkCommissioning.deposit(campaign, 0, cost, accepted -> fail()), "act " + act);
+    }
+    campaign.act = CampaignMilestones.ARK_ACT;
     campaign.archived = true;
     assertFalse(ArkCommissioning.deposit(campaign, 0, cost, accepted -> fail()));
     campaign.archived = false;

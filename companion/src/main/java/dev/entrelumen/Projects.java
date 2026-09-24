@@ -32,6 +32,7 @@ public final class Projects {
           "horizon_survey",
           "pollinator_treaty",
           "sealed_memory",
+          "heliodor_heart",
           "atlas_voices",
           "resilient_backbone",
           "renewal_engine",
@@ -62,7 +63,7 @@ public final class Projects {
             entry -> {
               String id = entry.getKey();
               validateProjectId(id, id);
-              if (Expeditions.IDS.contains(id))
+              if (CampaignMilestones.OBSERVATIONS.contains(id))
                 throw invalid(id, "observation IDs cannot be deliverable projects");
               if (CampaignMilestones.RESERVED_IDS.contains(id)
                   || CampaignMilestones.LAST_HORIZON.equals(id))
@@ -73,7 +74,7 @@ public final class Projects {
                 if (!Set.of("act", "items", "requires", "reward").contains(field))
                   throw invalid(id, "unknown field " + field);
               int act = positiveInteger(obj.get("act"), id + ".act");
-              if (act > 6) throw invalid(id + ".act", "expected 1..6");
+              if (act > Campaigns.FINAL_ACT) throw invalid(id + ".act", "expected 1.." + Campaigns.FINAL_ACT);
               if (!obj.has("items")
                   || !obj.get("items").isJsonObject()
                   || obj.getAsJsonObject("items").isEmpty())
@@ -121,7 +122,7 @@ public final class Projects {
                 .prerequisites()
                 .forEach(
                     prerequisite -> {
-                      if (Expeditions.IDS.contains(prerequisite)) return;
+                      if (CampaignMilestones.OBSERVATIONS.contains(prerequisite)) return;
                       Project previous = result.get(prerequisite);
                       if (previous == null)
                         throw invalid(id + ".requires", "unknown prerequisite " + prerequisite);
@@ -142,7 +143,7 @@ public final class Projects {
     if (!path.add(id))
       throw invalid(id, "prerequisite cycle: " + String.join(" -> ", path) + " -> " + id);
     for (String prerequisite : projects.get(id).prerequisites())
-      if (!Expeditions.IDS.contains(prerequisite)) visit(prerequisite, projects, visited, path);
+      if (!CampaignMilestones.OBSERVATIONS.contains(prerequisite)) visit(prerequisite, projects, visited, path);
     path.remove(id);
     visited.add(id);
   }

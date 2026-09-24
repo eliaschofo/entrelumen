@@ -4,6 +4,13 @@ import java.util.*;
 
 /** Pure server domain. Callers persist after every successful mutation. */
 public final class Campaigns {
+  /**
+   * Six acts since the renumbering of 24 September 2026: I-IV unchanged, V "The Ark" (the industrial
+   * preparation plus the six modules, the batches and the activation), VI "Solsticio". Act VI begins
+   * when the team activates the Ark ({@link CampaignMilestones#finish}); nothing advances past it.
+   */
+  public static final int FINAL_ACT = 6;
+
   public static final class Campaign {
     public int act = 1;
     public final Set<String> completed = new TreeSet<>();
@@ -62,11 +69,27 @@ public final class Campaigns {
     return true;
   }
 
+  /**
+   * Moves to the next act once every requirement is recorded. The caller passes {@link
+   * #advanceRequirements}: the act's projects, plus the Ark activation when leaving act V.
+   */
   public static boolean advance(Campaign c, Set<String> required) {
-    if (c.archived || c.act >= 6 || required.isEmpty() || !c.completed.containsAll(required))
+    if (c.archived || c.act >= FINAL_ACT || required.isEmpty() || !c.completed.containsAll(required))
       return false;
     c.act++;
     return true;
+  }
+
+  /**
+   * What closing {@code act} takes: its deliverable projects and, for the Ark act, the activation.
+   * The activation itself already moves the campaign to act VI, so the Atlas never needs an Advance
+   * there; the extra requirement only keeps an Advance from skipping it.
+   */
+  public static Set<String> advanceRequirements(int act, Set<String> actProjects) {
+    Set<String> required = new TreeSet<>(actProjects);
+    if (act == CampaignMilestones.ARK_ACT && !required.isEmpty())
+      required.add(CampaignMilestones.LAST_HORIZON);
+    return Set.copyOf(required);
   }
 
 }

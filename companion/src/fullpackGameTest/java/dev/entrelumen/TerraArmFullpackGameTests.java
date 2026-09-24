@@ -25,7 +25,7 @@ import net.neoforged.neoforge.gametest.PrefixGameTestTemplate;
 
 /**
  * Installed-pack QA for Terra's Arm with the real Curios: the arm is accepted in the player's
- * {@code hands} slot, wearing it gives exactly +5 block reach, two arms give the same +5, taking one
+ * {@code hands} slot, wearing it gives exactly +3 block reach, two arms give the same +3, taking one
  * off keeps the other's bonus, and taking both off removes it. Curios is reached only by reflection.
  */
 @GameTestHolder("entrelumen")
@@ -107,7 +107,7 @@ public final class TerraArmFullpackGameTests {
   }
 
   @GameTest(template = "empty", timeoutTicks = 200)
-  public static void terraArmWornInCuriosHandsGivesFiveBlockReach(GameTestHelper helper) {
+  public static void terraArmWornInCuriosHandsGivesThreeBlockReach(GameTestHelper helper) {
     Curios curios;
     try {
       curios = Curios.resolve();
@@ -144,7 +144,8 @@ public final class TerraArmFullpackGameTests {
           var modifier = reach.getModifier(TerraArm.REACH);
           helper.assertTrue(TerraArm.worn(player) && modifier != null && modifier.amount() == TerraArm.REACH_BONUS
               && reach.getValue() == base + TerraArm.REACH_BONUS && entityReach.getValue() == entityBase,
-              "Wearing the arm did not give exactly +5 block reach: " + reach.getValue() + " from " + base);
+              "Wearing the arm did not give exactly +3 block reach: " + reach.getValue() + " from " + base);
+          helper.assertTrue(TerraArm.REACH_BONUS == 3.0, "The arm's bonus is not +3: " + TerraArm.REACH_BONUS);
           if (hands[0] < 2) return;
           try {
             curios.equip(player, 1, new ItemStack(TerraArm.ITEM.get()));
@@ -155,7 +156,7 @@ public final class TerraArmFullpackGameTests {
         .thenIdle(2)
         .thenExecute(() -> {
           check(player);
-          helper.assertTrue(reach.getValue() == base + TerraArm.REACH_BONUS, "Two arms do not give a single +5");
+          helper.assertTrue(reach.getValue() == base + TerraArm.REACH_BONUS, "Two arms do not give a single +3");
           if (hands[0] < 2) return;
           try {
             curios.equip(player, 0, ItemStack.EMPTY);

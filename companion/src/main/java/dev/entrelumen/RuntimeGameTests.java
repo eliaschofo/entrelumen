@@ -643,7 +643,7 @@ public final class RuntimeGameTests {
     personal.arkPhase = 2;
     personal.arkDeposits.put("entrelumen:ecosystem_capsule", 1);
     var other = Entrelumen.current(outsider);
-    other.act = 6;
+    other.act = CampaignMilestones.ARK_ACT;
     var team = FTBTeamsAPI.api().getManager().createPartyTeam(reader,
         "Journals " + reader.getUUID(), "", dev.ftb.mods.ftblibrary.icon.Color4I.WHITE);
     var shared = Entrelumen.current(reader);
@@ -734,10 +734,10 @@ public final class RuntimeGameTests {
     var team = FTBTeamsAPI.api().getManager().createPartyTeam(keeper,
         "Journal deposit " + keeper.getUUID(), "", dev.ftb.mods.ftblibrary.icon.Color4I.WHITE);
     var campaign = Entrelumen.current(keeper);
-    campaign.act = 6;
+    campaign.act = CampaignMilestones.ARK_ACT;
     campaign.completed.addAll(CampaignMilestones.MODULE_IDS);
     var other = Entrelumen.current(outsider);
-    other.act = 6;
+    other.act = CampaignMilestones.ARK_ACT;
     other.completed.addAll(CampaignMilestones.MODULE_IDS);
     keeper.setShiftKeyDown(true);
     outsider.setShiftKeyDown(true);
@@ -856,7 +856,7 @@ public final class RuntimeGameTests {
     var personal = Entrelumen.current(player);
     personal.arkDeposits.put("entrelumen:calibration_frame", 1);
     var other = Entrelumen.current(outsider);
-    other.act = 6;
+    other.act = CampaignMilestones.ARK_ACT;
     other.completed.addAll(Entrelumen.MODULES);
     other.arkDeposits.put("entrelumen:power_regulator", 1);
     var team = FTBTeamsAPI.api().getManager().createPartyTeam(player,
@@ -986,11 +986,11 @@ public final class RuntimeGameTests {
     engineer.teleportTo(pos.getX() + 0.5, pos.getY() + 1, pos.getZ() + 0.5);
     outsider.teleportTo(pos.getX() + 0.5, pos.getY() + 1, pos.getZ() + 0.5);
     var personal = Entrelumen.current(engineer);
-    personal.act = 6;
+    personal.act = CampaignMilestones.ARK_ACT;
     personal.completed.addAll(Set.of("world_network", "engineering_module"));
     personal.arkDeposits.put("entrelumen:calibration_frame", 1);
     var other = Entrelumen.current(outsider);
-    other.act = 6;
+    other.act = CampaignMilestones.ARK_ACT;
     other.arkDeposits.put("entrelumen:calibration_frame", 3);
     var team = FTBTeamsAPI.api().getManager().createPartyTeam(engineer,
         "Engineering " + engineer.getUUID(), "", dev.ftb.mods.ftblibrary.icon.Color4I.WHITE);
@@ -1038,7 +1038,7 @@ public final class RuntimeGameTests {
   public static void actSixDeliveriesUseCrossModCostsAndRewardOnce(GameTestHelper helper) {
     var player = player(helper, "ActSixCosts");
     var campaign = Entrelumen.current(player);
-    campaign.act = 6;
+    campaign.act = CampaignMilestones.ARK_ACT;
     for (String id : Entrelumen.MODULES.stream().sorted().toList()) {
       campaign.completed.remove("world_network");
       var project = Projects.all().get(id);
@@ -1103,9 +1103,17 @@ public final class RuntimeGameTests {
         "Out-of-reach controller activated the Ark");
     player.teleportTo(pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.5);
     var materials = Entrelumen.availableMaterials(player);
+    var actor = StructureProtection.actor(player);
+    helper.assertTrue(campaign.act == CampaignMilestones.ARK_ACT && !Solsticio.GATE.satisfiedBy(actor),
+        "The Ark act opened Solsticio before the activation");
     player.setShiftKeyDown(true);
     var clicked = player.gameMode.useItemOn(player, helper.getLevel(), player.getMainHandItem(),
         net.minecraft.world.InteractionHand.MAIN_HAND, arkHit(pos));
+    // Since 24 September 2026 the activation also opens act VI, Solsticio, and its gate.
+    helper.assertTrue(campaign.act == Campaigns.FINAL_ACT
+        && Solsticio.GATE.satisfiedBy(StructureProtection.actor(player))
+        && CampaignMilestones.PHASE_IDS.stream().allMatch(phase -> CampaignMilestones.isComplete(campaign, phase)),
+        "The activation did not open act VI with the Ark phases still complete");
     // Activation forges the team's one Light Key (act VI) and consumes nothing.
     var forged = new HashMap<>(materials);
     forged.merge("entrelumen:light_key", 1, Integer::sum);
@@ -1276,7 +1284,7 @@ public final class RuntimeGameTests {
     original.arkDeposits.put("entrelumen:ecosystem_capsule", 1);
     UUID endingId = UUID.randomUUID();
     var ending = data.campaigns.personal(endingId);
-    ending.act = 6;
+    ending.act = CampaignMilestones.ARK_ACT;
     ending.completed.addAll(Entrelumen.MODULES);
     ending.completed.addAll(List.of("world_network", "end_arrival"));
     ending.arkPhase = 6;
@@ -1306,6 +1314,7 @@ public final class RuntimeGameTests {
                         List.of("resilient_backbone", "renewal_engine", "settlement_supply"))
                     && restored.completed.containsAll(Expeditions.IDS)
                     && restoredEnding.arkPhase == 6
+                    && restoredEnding.act == Campaigns.FINAL_ACT
                     && restoredEnding.completed.contains(CampaignMilestones.LAST_HORIZON)
                     && !CampaignMilestones.finish(restoredEnding)
                     && !Expeditions.record(restored, "aether:the_aether"),
@@ -1329,7 +1338,7 @@ public final class RuntimeGameTests {
     player.teleportTo(pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.5);
     player.setItemInHand(net.minecraft.world.InteractionHand.MAIN_HAND, ItemStack.EMPTY);
     var campaign = Entrelumen.current(player);
-    campaign.act = 6;
+    campaign.act = CampaignMilestones.ARK_ACT;
     campaign.completed.addAll(Entrelumen.MODULES);
     return pos;
   }
@@ -1467,7 +1476,7 @@ public final class RuntimeGameTests {
     var personal = Entrelumen.current(founder);
     personal.arkDeposits.put("entrelumen:calibration_frame", 1);
     var guestPersonal = Entrelumen.current(guest);
-    guestPersonal.act = 6;
+    guestPersonal.act = CampaignMilestones.ARK_ACT;
     guestPersonal.completed.addAll(Entrelumen.MODULES);
     guestPersonal.arkDeposits.put("entrelumen:power_regulator", 1);
     var team = (dev.ftb.mods.ftbteams.data.PartyTeam) FTBTeamsAPI.api().getManager()
@@ -2104,7 +2113,7 @@ public final class RuntimeGameTests {
     helper.assertTrue(teamData.getProgress(phaseTask) == 0
         && teamData.getProgress(endingTask) == 0,
         "FTB accepted a fabricated phase or ending");
-    campaign.act = 6;
+    campaign.act = CampaignMilestones.ARK_ACT;
     campaign.completed.addAll(Entrelumen.MODULES);
     phaseTask.submitTask(teamData, player, ItemStack.EMPTY);
     helper.assertTrue(teamData.getProgress(phaseTask) == 1,
@@ -2285,9 +2294,11 @@ public final class RuntimeGameTests {
           "Act IV prototype snapshot differs: " + entry.getKey());
     }
     var closure = initial.projects().stream().filter(p -> p.id().equals("atlas_voices")).findFirst().orElseThrow();
+    var closurePrerequisites = new HashSet<>(prototypes.keySet());
+    closurePrerequisites.add(HeliodorHeartRules.PROJECT);
     helper.assertTrue(!closure.ready() && !closure.completed()
         && closure.prerequisites().stream().map(AtlasNetwork.Prerequisite::id)
-            .collect(java.util.stream.Collectors.toSet()).equals(prototypes.keySet())
+            .collect(java.util.stream.Collectors.toSet()).equals(closurePrerequisites)
         && closure.prerequisites().stream().noneMatch(AtlasNetwork.Prerequisite::completed)
         && new HashSet<>(closure.materials()).equals(Set.of(
             new AtlasNetwork.Material(ResourceLocation.parse("minecraft:paper"), 6, 3),
@@ -2342,6 +2353,26 @@ public final class RuntimeGameTests {
       fourthActDenied(helper, player, entry.getKey());
     }
     helper.assertTrue(!AtlasNetwork.handleOpen(player).canAdvance(), "Prototypes bypassed Atlas voices");
+    // 24 September 2026: the act closes only with the Heart of Heliodor in the Atlas.
+    fourthActDenied(helper, player, "atlas_voices");
+    player.getInventory().add(new ItemStack(HeliodorHeart.ITEM.get()));
+    expectedInventory.merge("entrelumen:heart_of_heliodor", 1, Integer::sum);
+    // A Heart the team did not take from its own Sun Spirit does not count.
+    fourthActDenied(helper, player, HeliodorHeartRules.PROJECT);
+    helper.assertTrue(HeliodorHeart.claim(player) && !HeliodorHeart.claim(player)
+        && CampaignMilestones.isComplete(campaign, HeliodorHeartRules.RECOVERED),
+        "The Sun Spirit's Heart was not recorded exactly once");
+    expectedCompleted.add(HeliodorHeartRules.RECOVERED);
+    var placed = AtlasNetwork.handleRequest(player, new AtlasNetwork.Request(
+        initial.campaign(), CampaignActions.Action.DELIVER, HeliodorHeartRules.PROJECT));
+    expectedInventory.remove("entrelumen:heart_of_heliodor");
+    expectedCompleted.add(HeliodorHeartRules.PROJECT);
+    helper.assertTrue(placed.message().equals("entrelumen.atlas.delivered") && !placed.canAdvance()
+        && campaign.completed.equals(expectedCompleted)
+        && Entrelumen.availableMaterials(player).equals(expectedInventory)
+        && HeliodorHeartRules.inAtlas(campaign) && !HeliodorHeartRules.canRelease(campaign),
+        "The Heart delivery did not consume exactly the Heart into the Atlas");
+    fourthActDenied(helper, player, HeliodorHeartRules.PROJECT);
     var closed = AtlasNetwork.handleRequest(player, new AtlasNetwork.Request(
         initial.campaign(), CampaignActions.Action.DELIVER, "atlas_voices"));
     expectedInventory.compute("minecraft:paper", (id, count) -> count - 3);
@@ -2439,10 +2470,11 @@ public final class RuntimeGameTests {
         "FTB mirror or gifted sample granted Act V progress");
 
     var initial = AtlasNetwork.handleOpen(player);
+    var actFive = new HashSet<>(Set.of("resilient_backbone", "renewal_engine", "settlement_supply", "world_network"));
+    actFive.addAll(Entrelumen.MODULES);
     helper.assertTrue(initial.projects().stream().map(AtlasNetwork.ProjectView::id)
-        .collect(java.util.stream.Collectors.toSet()).equals(Set.of(
-            "resilient_backbone", "renewal_engine", "settlement_supply", "world_network")),
-        "Atlas omitted an Act V delivery");
+        .collect(java.util.stream.Collectors.toSet()).equals(actFive),
+        "Atlas omitted an Act V delivery (the plan and, since 24 September 2026, the six modules)");
     for (var entry : prototypes.entrySet()) {
       var view = initial.projects().stream().filter(p -> p.id().equals(entry.getKey()))
           .findFirst().orElseThrow();
@@ -2508,20 +2540,28 @@ public final class RuntimeGameTests {
     expectedInventory.compute("minecraft:copper_ingot", (id, count) -> count - 1);
     expectedCompleted.add("world_network");
     helper.assertTrue(closed.message().equals("entrelumen.atlas.delivered")
-        && closed.canAdvance() && campaign.completed.equals(expectedCompleted)
+        && !closed.canAdvance() && campaign.completed.equals(expectedCompleted)
         && Entrelumen.availableMaterials(player).equals(expectedInventory)
         && helper.getLevel().getBlockState(installedPos).is(net.minecraft.world.level.block.Blocks.CRAFTER),
         "World network consumed the wrong supplies, awarded an item or touched an installed machine");
     fifthActDenied(helper, player, "world_network");
+    // Since the renumbering the Ark is act V: World Network opens the modules, and only the
+    // activation (not an Advance) leads to act VI.
     var advanced = AtlasNetwork.handleRequest(player, new AtlasNetwork.Request(
         campaignId, CampaignActions.Action.ADVANCE, ""));
-    helper.assertTrue(advanced.act() == 6 && campaign.act == 6
+    campaign.completed.addAll(Entrelumen.MODULES);
+    boolean modulesAlone = CampaignActions.perform(player, campaignId, CampaignActions.Action.ADVANCE, "").success();
+    boolean atlasOffersAdvance = AtlasNetwork.handleOpen(player).canAdvance();
+    campaign.completed.removeAll(Entrelumen.MODULES);
+    helper.assertTrue(advanced.act() == 5 && campaign.act == 5 && !advanced.canAdvance()
+        && advanced.message().equals("entrelumen.advance.failed")
+        && !modulesAlone && !atlasOffersAdvance
         && campaign.completed.equals(expectedCompleted)
         && Entrelumen.availableMaterials(player).equals(expectedInventory)
-        && command(player, "entrelumen advance") == 0 && campaign.act == 6
+        && command(player, "entrelumen advance") == 0 && campaign.act == 5
         && otherCampaign.act == 1 && otherCampaign.completed.equals(otherBefore)
         && CampaignActions.campaignId(other).equals(otherTeam.getId()),
-        "Act V advancement changed historical progress, supplies or another campaign");
+        "An Advance left the Ark act without the activation, or touched progress or another campaign");
     helper.succeed();
   }
 

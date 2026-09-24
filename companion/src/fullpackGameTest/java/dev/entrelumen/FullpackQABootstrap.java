@@ -37,6 +37,7 @@ public final class FullpackQABootstrap {
     ApotheosisGameTests.requireSuite();
     LuminousGameTests.requireSuite();
     TerraArmFullpackGameTests.requireSuite();
+    ActsFullpackGameTests.requireSuite();
     if (GameTestHooks.isGametestEnabled()) return;
     if (!registered) {
       GameTestRegistry.register(RuntimeGameTests.class);
@@ -71,6 +72,9 @@ public final class FullpackQABootstrap {
       // The compass and gameplay runtime suites also run on the full pack (merged 24 September).
       GameTestRegistry.register(RuntimeGameTestsCompass.class);
       GameTestRegistry.register(RuntimeGameTestsGameplay.class);
+      // Act renumbering and the Heart of Heliodor (24 September): isolated rules plus the real Sun Spirit.
+      GameTestRegistry.register(RuntimeGameTestsActs.class);
+      GameTestRegistry.register(ActsFullpackGameTests.class);
       Set<String> expected = new TreeSet<>();
       for (Class<?> owner : List.of(RuntimeGameTests.class, FullpackGameTests.class,
           ResourceFarmGameTests.class, Ae2CraftingGameTests.class, RFToolsRecipeGameTests.class,
@@ -83,7 +87,8 @@ public final class FullpackQABootstrap {
           AltarFullpackGameTests.class, AltarEffectsFullpackGameTests.class, LuminousGameTests.class,
           StartWithoutBloatFullpackGameTests.class, TerraArmFullpackGameTests.class, ModPingpongFullpackGameTests.class,
           ModPingpongRound4FullpackGameTests.class,
-          RuntimeGameTestsCompass.class, RuntimeGameTestsGameplay.class, SolsticioFullpackGameTests.class))
+          RuntimeGameTestsCompass.class, RuntimeGameTestsGameplay.class, SolsticioFullpackGameTests.class,
+          RuntimeGameTestsActs.class, ActsFullpackGameTests.class))
         for (var method : owner.getDeclaredMethods())
           if (method.isAnnotationPresent(GameTest.class))
             expected.add(method.getName().toLowerCase(Locale.ROOT));

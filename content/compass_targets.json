@@ -1,6 +1,6 @@
 {
   "draft": true,
-  "note": "DRAFT until Elias defines the anchor ruins. Order is campaign order. advance_when prefers campaign milestones and story bosses so a missing nearby structure never blocks guidance. Radius is in blocks, at most 1500. Objectives whose mods are absent are skipped. Source of truth; the companion build copies it to data/entrelumen/compass/targets.json.",
+  "note": "DRAFT until Elias defines the anchor ruins. Order is campaign order (acts renumbered 24 September 2026: IV ends with the Sun Spirit, V is the Ark, VI Solsticio). advance_when prefers campaign milestones and story bosses so a missing nearby structure never blocks guidance. Radius is in blocks, at most 1500. Objectives whose mods are absent are skipped. Source of truth; the companion build copies it to data/entrelumen/compass/targets.json.",
   "objectives": [
     {
       "id": "heliodor_ruin",
@@ -95,7 +95,7 @@
     },
     {
       "id": "silver_dungeon",
-      "act": 5,
+      "act": 4,
       "kind": "boss",
       "mods": ["aether"],
       "target": {"type": "structure", "structure": "aether:silver_dungeon", "dimension": "aether:the_aether"},
@@ -103,16 +103,17 @@
     },
     {
       "id": "gold_dungeon",
-      "act": 5,
+      "act": 4,
       "kind": "boss",
       "mods": ["aether"],
       "target": {"type": "structure", "structure": "aether:gold_dungeon", "dimension": "aether:the_aether"},
-      "advance_when": {"type": "advancement", "advancement": "aether:gold_dungeon"},
-      "lore": true
+      "advance_when": {"type": "milestone", "milestone": "heart_recovered"},
+      "lore": true,
+      "note": "The Sun Spirit drops the Heart of Heliodor once per campaign; delivering it closes act IV."
     },
     {
       "id": "ocean_monument",
-      "act": 6,
+      "act": 5,
       "kind": "boss",
       "mods": ["betteroceanmonuments"],
       "target": {"type": "structure", "structure": "betteroceanmonuments:ocean_monument"},
@@ -120,7 +121,7 @@
     },
     {
       "id": "stronghold",
-      "act": 6,
+      "act": 5,
       "kind": "structure",
       "mods": ["betterstrongholds"],
       "target": {"type": "structure", "structure": "betterstrongholds:stronghold"},
@@ -128,11 +129,20 @@
     },
     {
       "id": "the_end",
-      "act": 6,
+      "act": 5,
       "kind": "boss",
       "target": {"type": "dimension", "dimension": "minecraft:the_end"},
       "advance_when": {"type": "advancement", "advancement": "minecraft:end/kill_dragon"},
       "lore": true
+    },
+    {
+      "id": "solsticio",
+      "act": 6,
+      "kind": "structure",
+      "target": {"type": "dimension", "dimension": "entrelumen:solsticio"},
+      "advance_when": {"type": "milestone", "milestone": "solsticio_arrival"},
+      "lore": true,
+      "note": "Act VI: the Ark activation forges the Light Key; the team's own crossing records solsticio_arrival."
     }
   ]
 }

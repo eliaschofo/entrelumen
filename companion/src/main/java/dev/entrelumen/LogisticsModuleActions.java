@@ -47,7 +47,7 @@ public final class LogisticsModuleActions {
         lines.add(Component.translatable("entrelumen.ark.material", new ItemStack(item).getHoverName(),
             material.deposited(), material.required(), material.remaining()));
       }
-      if (view.archived() || view.act() != 6 || !view.missingProjects().isEmpty())
+      if (view.archived() || view.act() != CampaignMilestones.ARK_ACT || !view.missingProjects().isEmpty())
         lines.add(Component.translatable("entrelumen.logistics.projects_required"));
     }
     switch (physical.state()) {

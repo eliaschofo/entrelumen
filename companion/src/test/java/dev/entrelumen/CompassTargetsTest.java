@@ -43,10 +43,19 @@ class CompassTargetsTest {
     assertEquals(CompassTargets.TargetType.ANCHOR, all.getFirst().target().type());
     assertTrue(all.size() > vanilla.size(), "Mod-specific objectives must be optional");
     assertTrue(vanilla.stream().noneMatch(o -> o.id().equals("gold_dungeon")));
-    assertTrue(all.stream().anyMatch(o -> o.id().equals("gold_dungeon")
+    // Since 24 September 2026 the Sun Spirit closes act IV: the gold dungeon is an act IV boss and
+    // the compass moves on once the team recovered the Heart of Heliodor.
+    assertTrue(all.stream().anyMatch(o -> o.id().equals("gold_dungeon") && o.act() == 4
         && o.kind() == CompassTargets.Kind.BOSS
-        && o.advanceWhen().type() == CompassTargets.ConditionType.ADVANCEMENT
+        && o.advanceWhen().type() == CompassTargets.ConditionType.MILESTONE
+        && o.advanceWhen().value().equals(HeliodorHeartRules.RECOVERED)
         && o.target().dimension().equals("aether:the_aether")));
+    assertTrue(all.stream().anyMatch(o -> o.id().equals("silver_dungeon") && o.act() == 4));
+    for (String id : java.util.List.of("ocean_monument", "stronghold", "the_end"))
+      assertTrue(all.stream().anyMatch(o -> o.id().equals(id) && o.act() == 5), id);
+    assertEquals("solsticio", all.getLast().id());
+    assertEquals(6, all.getLast().act());
+    assertEquals(Expeditions.SOLSTICIO_ARRIVAL, all.getLast().advanceWhen().value());
     int act = 1;
     for (var objective : all) {
       assertTrue(objective.act() >= act, "Objectives are listed in act order");

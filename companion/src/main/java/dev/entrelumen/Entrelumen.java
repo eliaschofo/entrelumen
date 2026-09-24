@@ -108,6 +108,7 @@ public final class Entrelumen {
     Luminous.register(bus);
     HeliodorContent.register(bus);
     TerraArm.register(bus);
+    HeliodorHeart.register(bus);
     Solsticio.register(bus, container);
     bus.addListener(this::registerCapabilities);
     NeoForge.EVENT_BUS.addListener(this::commands);
@@ -285,7 +286,8 @@ public final class Entrelumen {
 
   static int advance(ServerPlayer player) {
     var campaign = current(player);
-    boolean ok = Campaigns.advance(campaign, Projects.forAct(campaign.act));
+    boolean ok = Campaigns.advance(campaign,
+        Campaigns.advanceRequirements(campaign.act, Projects.forAct(campaign.act)));
     if (ok) CampaignData.get(player.server).setDirty();
     player.sendSystemMessage(
         Component.translatable(
@@ -356,7 +358,7 @@ public final class Entrelumen {
                                           .sendSuccess(
                                               () ->
                                                   Component.literal(
-                                                      "schema=2 personal="
+                                                      "schema=" + CampaignData.VERSION + " personal="
                                                           + d.campaigns.personal.size()
                                                           + " parties="
                                                           + d.campaigns.parties.size()),
@@ -399,7 +401,7 @@ public final class Entrelumen {
                         .then(
                             Commands.literal("set")
                                 .then(
-                                    Commands.argument("act", IntegerArgumentType.integer(1, 6))
+                                    Commands.argument("act", IntegerArgumentType.integer(1, Campaigns.FINAL_ACT))
                                         .executes(
                                             ctx -> {
                                               var p = ctx.getSource().getPlayerOrException();

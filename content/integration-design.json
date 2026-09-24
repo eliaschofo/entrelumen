@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "status": "Campaign deliveries implemented through Act VI with explicit first ending; runtime integration, complete module experiences, survival and release acceptance remain open",
+  "status": "Campaign deliveries implemented through Act V (the Ark, renumbered 24 September 2026) up to the activation that opens Act VI, Solsticio; runtime integration, complete module experiences, survival and release acceptance remain open",
   "platform": {
     "minecraft": "1.21.1",
     "loader": "neoforge-21.1.249"
@@ -20,11 +20,11 @@
     "gifts": "All components and mod items remain usable, transferable and craftable regardless of campaign. Receiving an item never completes a narrative milestone.",
     "recipeMechanism": "22 static shapeless recipes are exported by tools/generate_integration_recipes.py; source generation is not evidence that all 22 narrative projects are implemented. Counts expand into <=9 occupied crafting slots with native remainders.",
     "progression": "Narrative directed prerequisites are distinct from physical recipe dependencies. Act number means expected acquisition phase, never a use restriction.",
-    "failureSafety": "Native static crafting retains container remainders. Acts II-V consume prototypes without replacement; Act VI consumes construction inputs and rewards one module once. Commissioning consumes only accepted batches. No timer decay or forced chunks.",
+    "failureSafety": "Native static crafting retains container remainders. Acts II-IV and the first half of Act V consume prototypes without replacement; the Ark half of Act V consumes construction inputs and rewards one module once. Commissioning consumes only accepted batches. No timer decay or forced chunks.",
     "containers": "Preserve native recipe remainders for consumed soups/stews; verify bowls return normally in crafting and AE2 automation.",
     "decorativeMods": "Optional building exercises with screenshots/manual checkmarks; no mandatory decorative ingredients.",
     "massProduction": "Repeatable static crafting is compatible with ordinary crafting tables and existing autocrafting. No new tick handlers or machine scanning.",
-    "narrativeAcceptance": "Crafting, possession and gifts never complete a narrative project. Acts II-V use authoritative deliveries consuming one prototype; machines remain installed. Act IV requires observed journeys. Act VI consumes the exact module construction recipe inputs after World Network, with End arrival additionally required for exploration. Six commissioning milestones derive from saved phases; the final ending requires deliberate controller activation. Tutorial installations remain optional and self-reported. Full module benefits and mastery systems remain proposed; no provenance checks."
+    "narrativeAcceptance": "Crafting, possession and gifts never complete a narrative project. Acts II-V use authoritative deliveries consuming one prototype; machines remain installed. Act IV requires observed journeys. Act V also consumes the exact module construction recipe inputs after World Network, with End arrival additionally required for exploration. Six commissioning milestones derive from saved phases; the deliberate controller activation forges the Light Key and opens Act VI. Tutorial installations remain optional and self-reported. Full module benefits and mastery systems remain proposed; no provenance checks."
   },
   "components": [
     {
@@ -973,7 +973,7 @@
     },
     {
       "id": "entrelumen:ark_engineering",
-      "act": 6,
+      "act": 5,
       "title": {
         "en_us": "The Beating Engine",
         "es_es": "El motor del Arca"
@@ -1041,7 +1041,7 @@
     },
     {
       "id": "entrelumen:ark_arcana",
-      "act": 6,
+      "act": 5,
       "title": {
         "en_us": "The Listening Chamber",
         "es_es": "La cámara que escucha"
@@ -1104,7 +1104,7 @@
     },
     {
       "id": "entrelumen:ark_nature",
-      "act": 6,
+      "act": 5,
       "title": {
         "en_us": "The Living Reserve",
         "es_es": "La reserva viva"
@@ -1168,7 +1168,7 @@
     },
     {
       "id": "entrelumen:ark_exploration",
-      "act": 6,
+      "act": 5,
       "title": {
         "en_us": "A Compass for Impossible Shores",
         "es_es": "Una brújula para otras orillas"
@@ -1237,7 +1237,7 @@
     },
     {
       "id": "entrelumen:ark_logistics",
-      "act": 6,
+      "act": 5,
       "title": {
         "en_us": "Nothing Lost in Transit",
         "es_es": "Nada perdido en el camino"
@@ -1302,7 +1302,7 @@
     },
     {
       "id": "entrelumen:ark_habitation",
-      "act": 6,
+      "act": 5,
       "title": {
         "en_us": "Room for Everyone",
         "es_es": "Un lugar para todos"
@@ -2832,6 +2832,12 @@
       "scope": "Act VI first ending",
       "decision": "Preserve all six existing module recipes and charge the same materials for one-time module construction projects. End arrival is a server observation. Six FTB phase tasks mirror the saved Ark counter; deliberate final activation records a replayable ending. Existing completed module projects and credited batches remain valid; no new recipes or art. Full module benefits and masteries remain open.",
       "evidence": "docs/design/act-six-route.md"
+    },
+    {
+      "date": "2026-09-24",
+      "scope": "Act renumbering",
+      "decision": "Elias merged the industrial preparation and the Ark into one Act V, The Ark: the six module projects moved from act 6 to act 5 with unchanged recipes and costs. The activation records last_horizon, forges the Light Key and moves the campaign to Act VI, Solsticio. Saved campaigns in act 6 without the activation migrate to act 5.",
+      "evidence": "docs/design/act-renumbering.md"
     }
   ]
 }

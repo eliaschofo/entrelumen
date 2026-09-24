@@ -13,7 +13,7 @@ class ArkFieldJournalsTest {
   @Test
   void journalDepositStateTracksOnlyItsOwnAuthoritativeBatch() {
     var campaign = new Campaigns.Campaign();
-    campaign.act = 6;
+    campaign.act = CampaignMilestones.ARK_ACT;
     for (var kind : ArkFieldJournals.Kind.values()) {
       campaign.completed.clear();
       assertEquals(kind.module(), ArkCommissioning.STEPS.get(kind.step()).module());
@@ -131,7 +131,7 @@ class ArkFieldJournalsTest {
   @Test
   void ownBatchMovesFromPlannedToStoredToCompleteWithoutWritingProgress() {
     var campaign = new Campaigns.Campaign();
-    campaign.act = 6;
+    campaign.act = CampaignMilestones.ARK_ACT;
     campaign.completed.addAll(CampaignMilestones.MODULE_IDS);
     var costs = Map.of(
         ArkFieldJournals.Kind.ARCANE, Map.entry("entrelumen:containment_seal", 2),

@@ -268,7 +268,7 @@ class FamilyBalanceTest(unittest.TestCase):
         self.assertEqual(by_id['create_new_age:shaped/basic_solar_heating_plate']['add'], balance.CF)
         self.assertEqual(by_id['create_new_age:shaped/generator_coil']['add'], balance.EN)
         self.assertEqual(by_id['create_new_age:mechanical_crafting/reactor_rod']['add'], balance.CS)
-        self.assertEqual(by_id['psi:assembler']['act'], 'II')
+        self.assertEqual(by_id['psi:assembler']['act'], 'III')
         self.assertEqual({change['act'] for change in family['changes']}, {'II', 'III', 'IV'})
         self.assertEqual({spec['op'] for spec in family['data']}, {'copy', 'disable'})
 

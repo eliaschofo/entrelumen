@@ -46,7 +46,7 @@ public final class ModPingpongRound4FullpackGameTests {
     STAGED.put("create_new_age:shaped/reinforced_energiser", "entrelumen:spectral_lens");
     STAGED.put("create_new_age:mechanical_crafting/reinforced_motor", "entrelumen:spectral_lens");
     STAGED.put("create_new_age:mechanical_crafting/reactor_rod", "entrelumen:containment_seal");
-    STAGED.put("psi:assembler", "entrelumen:calibration_frame");
+    STAGED.put("psi:assembler", "entrelumen:power_regulator");
     STAGED.put("psi:cad_core_hyperclocked", "entrelumen:routing_matrix");
     STAGED.put("psi:cad_core_radiative", "entrelumen:routing_matrix");
   }

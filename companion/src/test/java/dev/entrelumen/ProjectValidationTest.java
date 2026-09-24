@@ -54,6 +54,22 @@ class ProjectValidationTest {
     assertTrue(closure.reward().isEmpty());
   }
 
+  /** 24 September 2026: act IV closes only with the Heart of Heliodor delivered to the Atlas. */
+  @Test
+  void actFourClosesWithTheHeartTheTeamRecovered() throws Exception {
+    var projects = Projects.parse(defaults(), id -> true);
+    var heart = projects.get(HeliodorHeartRules.PROJECT);
+    assertEquals(4, heart.act());
+    assertEquals(java.util.Map.of("entrelumen:heart_of_heliodor", 1), heart.items());
+    assertEquals(java.util.Set.of("exchange_route", HeliodorHeartRules.RECOVERED), heart.prerequisites());
+    assertTrue(heart.reward().isEmpty(), "the Atlas keeps the Heart");
+    assertTrue(projects.get("atlas_voices").prerequisites().contains(HeliodorHeartRules.PROJECT));
+    assertTrue(Projects.forAct(4).isEmpty() || Projects.forAct(4).contains(HeliodorHeartRules.PROJECT));
+    assertTrue(projects.values().stream().noneMatch(p -> p.act() > Campaigns.FINAL_ACT));
+    assertTrue(projects.values().stream().noneMatch(p -> p.act() == Campaigns.FINAL_ACT),
+        "act VI has no Atlas deliveries yet; Solsticio's missions come later");
+  }
+
   @Test
   void actSixUsesExactCrossModCostsAndPreservesOneModuleRewards() throws Exception {
     var projects = Projects.parse(defaults(), id -> true);
@@ -75,7 +91,8 @@ class ProjectValidationTest {
     assertEquals(expected.keySet(), CampaignMilestones.MODULE_IDS);
     expected.forEach((id, items) -> {
       var project = projects.get(id);
-      assertEquals(6, project.act());
+      // The six modules are act V since the renumbering of 24 September 2026.
+      assertEquals(CampaignMilestones.ARK_ACT, project.act());
       assertEquals(items, project.items());
       assertEquals("entrelumen:" + id, project.reward());
       assertEquals(id.equals("exploration_module")
@@ -87,7 +104,8 @@ class ProjectValidationTest {
   @Test
   void phaseAndEndingIdsCannotBecomeDeliverableProjects() throws Exception {
     for (String id : java.util.stream.Stream.concat(CampaignMilestones.PHASE_IDS.stream(),
-        java.util.stream.Stream.of(CampaignMilestones.LAST_HORIZON, "end_arrival")).toList()) {
+        java.util.stream.Stream.of(CampaignMilestones.LAST_HORIZON, "end_arrival",
+            HeliodorHeartRules.RECOVERED, Expeditions.SOLSTICIO_ARRIVAL)).toList()) {
       var collision = defaults();
       collision.add(id, collision.getAsJsonObject("atlas_awakened").deepCopy());
       assertThrows(IllegalArgumentException.class, () -> Projects.parse(collision, key -> true), id);

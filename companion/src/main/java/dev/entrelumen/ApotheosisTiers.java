@@ -51,8 +51,12 @@ public final class ApotheosisTiers {
     }
   }
 
-  /** Campaign act reached after completing Act II, III and V respectively. */
-  public static final int FRONTIER_ACT = 3, ASCENT_ACT = 4, SUMMIT_ACT = 6;
+  /**
+   * Campaign act that opens each tier (renumbered 24 September 2026): Haven in acts I-II, Frontier in
+   * III, Ascent in IV (the Sun Spirit), Summit in V (the Ark) and Pinnacle in VI (Solsticio, opened
+   * by the Ark activation).
+   */
+  public static final int FRONTIER_ACT = 3, ASCENT_ACT = 4, SUMMIT_ACT = 5, PINNACLE_ACT = 6;
 
   static final int SYNC_INTERVAL = 20;
 
@@ -68,14 +72,15 @@ public final class ApotheosisTiers {
 
   private ApotheosisTiers() {}
 
-  /** Pure rule. Haven is always open; later tiers follow the campaign and the Ark activation. */
+  /** Pure rule. Haven is always open; later tiers follow the campaign act (Pinnacle also the Ark activation). */
   public static List<Tier> reached(Campaigns.Campaign campaign) {
     List<Tier> tiers = new ArrayList<>(List.of(Tier.HAVEN));
     if (campaign == null || campaign.archived) return List.copyOf(tiers);
     if (campaign.act >= FRONTIER_ACT) tiers.add(Tier.FRONTIER);
     if (campaign.act >= ASCENT_ACT) tiers.add(Tier.ASCENT);
     if (campaign.act >= SUMMIT_ACT) tiers.add(Tier.SUMMIT);
-    if (campaign.completed.contains(CampaignMilestones.LAST_HORIZON)) tiers.add(Tier.PINNACLE);
+    if (campaign.act >= PINNACLE_ACT || campaign.completed.contains(CampaignMilestones.LAST_HORIZON))
+      tiers.add(Tier.PINNACLE);
     return List.copyOf(tiers);
   }
 
