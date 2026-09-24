@@ -169,66 +169,90 @@ public final class AltarEffectsFullpackGameTests {
     return total;
   }
 
-  @GameTest(template = "nature_restoration", timeoutTicks = 200, skyAccess = true)
+  /** Projectile pairs per batch: one slot each in a 3 x 6 x 12 grid, so no two ever touch. */
+  private static final int SLOTS = 3 * 6 * 12;
+
+  @GameTest(template = "nature_restoration", timeoutTicks = 400, skyAccess = true)
   public static void installedHostileProjectilesAreSlowedByTheAltarOfTime(GameTestHelper helper) {
     ServerLevel level = helper.getLevel();
     var altar = place(helper, Altars.TIME_ALTAR.get(), TimeAltarEntity.class, new BlockPos(20, 1, 20), 12, 12,
         new ItemStack(Items.AMETHYST_SHARD, 2));
     Husk owner = helper.spawnWithNoFreeWill(EntityType.HUSK, new BlockPos(20, 1, 26));
-    Vec3 base = Vec3.atCenterOf(altar.getBlockPos()).add(-8, 9, 0);
-    Map<String, Projectile[]> pairs = new TreeMap<>();
+    List<EntityType<?>> types = new ArrayList<>();
+    for (EntityType<?> type : BuiltInRegistries.ENTITY_TYPE) {
+      String id = BuiltInRegistries.ENTITY_TYPE.getKey(type).toString();
+      if (!id.startsWith("minecraft:") || id.equals("minecraft:arrow")) types.add(type);
+    }
+    Map<String, String> notSlowed = new TreeMap<>();
     Map<String, String> skipped = new TreeMap<>();
-    helper.runAfterDelay(2, () -> {
-      int lane = 0;
-      for (EntityType<?> type : BuiltInRegistries.ENTITY_TYPE) {
-        String id = BuiltInRegistries.ENTITY_TYPE.getKey(type).toString();
-        if (id.startsWith("minecraft:") && !id.equals("minecraft:arrow")) continue;
-        try {
-          var inside = type.create(level);
-          var control = type.create(level);
-          if (!(inside instanceof Projectile a) || !(control instanceof Projectile b)) {
-            if (inside != null) inside.discard();
-            if (control != null) control.discard();
-            continue;
-          }
-          a.setOwner(owner);
-          b.setOwner(owner);
-          double z = -10 + (lane++ % 20);
-          a.setPos(base.add(0, 0, z));
-          b.setPos(base.add(0, 30, z));
-          a.setDeltaMovement(0.9, 0, 0);
-          b.setDeltaMovement(0.9, 0, 0);
-          a.setNoGravity(true);
-          b.setNoGravity(true);
-          if (level.addFreshEntity(a) && level.addFreshEntity(b)) pairs.put(id, new Projectile[] {a, b});
-          else skipped.put(id, "not added");
-        } catch (RuntimeException failure) {
-          skipped.put(id, failure.getClass().getSimpleName());
+    int[] slowed = {0};
+    helper.runAfterDelay(2, () -> projectileBatch(helper, level, Vec3.atCenterOf(altar.getBlockPos()), owner, types, 0,
+        slowed, notSlowed, skipped));
+  }
+
+  /**
+   * Fires the next batch: a pair per type, one inside the altar's cube and a control 30 blocks above
+   * it, each in its own grid slot. Bare-created modded projectiles may lack the data their hit code
+   * needs, so no two may meet (a shared lane crashed Immersive Engineering's revolver flare).
+   */
+  private static void projectileBatch(GameTestHelper helper, ServerLevel level, Vec3 center, Husk owner,
+      List<EntityType<?>> types, int from, int[] slowed, Map<String, String> notSlowed, Map<String, String> skipped) {
+    Map<String, Projectile[]> pairs = new TreeMap<>();
+    int next = from, slot = 0;
+    for (; next < types.size() && slot < SLOTS; next++) {
+      EntityType<?> type = types.get(next);
+      String id = BuiltInRegistries.ENTITY_TYPE.getKey(type).toString();
+      try {
+        var inside = type.create(level);
+        var control = type.create(level);
+        if (!(inside instanceof Projectile a) || !(control instanceof Projectile b)) {
+          if (inside != null) inside.discard();
+          if (control != null) control.discard();
+          continue;
         }
+        a.setOwner(owner);
+        b.setOwner(owner);
+        int column = slot / 72, row = slot % 72 / 12, lane = slot % 12;
+        slot++;
+        Vec3 at = center.add(-11 + 8 * column, 2 + 2 * row, -11 + 2 * lane);
+        a.setPos(at);
+        b.setPos(at.add(0, 30, 0));
+        a.setDeltaMovement(0.9, 0, 0);
+        b.setDeltaMovement(0.9, 0, 0);
+        a.setNoGravity(true);
+        b.setNoGravity(true);
+        if (level.addFreshEntity(a) && level.addFreshEntity(b)) pairs.put(id, new Projectile[] {a, b});
+        else skipped.put(id, "not added");
+      } catch (RuntimeException failure) {
+        skipped.put(id, failure.getClass().getSimpleName());
       }
-      Map<String, double[]> starts = new TreeMap<>();
-      pairs.forEach((id, pair) -> starts.put(id, new double[] {pair[0].getX(), pair[1].getX()}));
-      helper.runAfterDelay(3, () -> {
-        Map<String, String> notSlowed = new TreeMap<>();
-        int slowed = 0;
-        for (var entry : pairs.entrySet()) {
-          Projectile inside = entry.getValue()[0], control = entry.getValue()[1];
-          if (inside.isRemoved() || control.isRemoved()) {
-            skipped.put(entry.getKey(), "removed");
-            continue;
-          }
-          double stepIn = inside.getX() - starts.get(entry.getKey())[0];
-          double stepOut = control.getX() - starts.get(entry.getKey())[1];
-          if (stepOut > 0.3 && stepIn < 0.5 * stepOut && inside.hasData(AltarEffects.SLOWED_PROJECTILE)) slowed++;
-          else if (stepOut > 0.3) notSlowed.put(entry.getKey(), "inside=" + stepIn + " control=" + stepOut);
-          else skipped.put(entry.getKey(), "does not fly on its velocity");
-          inside.discard();
-          control.discard();
+    }
+    int done = next;
+    Map<String, double[]> starts = new TreeMap<>();
+    pairs.forEach((id, pair) -> starts.put(id, new double[] {pair[0].getX(), pair[1].getX()}));
+    helper.runAfterDelay(3, () -> {
+      for (var entry : pairs.entrySet()) {
+        Projectile inside = entry.getValue()[0], control = entry.getValue()[1];
+        if (inside.isRemoved() || control.isRemoved()) {
+          skipped.put(entry.getKey(), "removed");
+          continue;
         }
-        LOGGER.info("ALTAR_FULLPACK time projectiles slowed={} notSlowed={} skipped={}", slowed, notSlowed, skipped);
-        helper.assertTrue(slowed > 0 && notSlowed.isEmpty(), "Projectiles not slowed: " + notSlowed);
-        helper.succeed();
-      });
+        double stepIn = inside.getX() - starts.get(entry.getKey())[0];
+        double stepOut = control.getX() - starts.get(entry.getKey())[1];
+        if (stepOut > 0.3 && stepIn < 0.5 * stepOut && inside.hasData(AltarEffects.SLOWED_PROJECTILE)) slowed[0]++;
+        else if (stepOut > 0.3) notSlowed.put(entry.getKey(), "inside=" + stepIn + " control=" + stepOut);
+        else skipped.put(entry.getKey(), "does not fly on its velocity");
+        inside.discard();
+        control.discard();
+      }
+      if (done < types.size()) {
+        helper.runAfterDelay(1, () -> projectileBatch(helper, level, center, owner, types, done, slowed, notSlowed,
+            skipped));
+        return;
+      }
+      LOGGER.info("ALTAR_FULLPACK time projectiles slowed={} notSlowed={} skipped={}", slowed[0], notSlowed, skipped);
+      helper.assertTrue(slowed[0] > 0 && notSlowed.isEmpty(), "Projectiles not slowed: " + notSlowed);
+      helper.succeed();
     });
   }
 }
