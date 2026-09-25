@@ -177,6 +177,13 @@ Recibo: [`docs/verification/progression-runtime.json`](../verification/progressi
     - **E:** se agregó un diagnóstico.
     - **F:** el test pone la lente y la redstone en los slots con nombre de la máquina (`inputSlot`, `infusionSlot`). **Pasa:** un infusor metalúrgico real, con energía, copió un Marco a partir de una lente en bruto y redstone.
 
+- **Instalación** en `server-slice` con el instalador de `acts-20260924`, copiado a `progression-20260924/install_head.py`. `--only-server` instala sólo el servidor; `ADOPT` deja que el pack reemplace dos configs que los mods habían generado con sus valores por defecto antes de que el pack las trajera (`ftbultimine-server.snbt` y `mekanismcovers.json`), con backup de la copia local.
+  - Antes de escribir se hizo un ZIP verificado del mundo (1566 archivos).
+  - Se escribieron 47 archivos y se conservaron 10 quests que FTB Quests había reescrito.
+  - En el arranque normal: listo en 17 s, `schema=3 personal=161 parties=31`, todas las familias en `loaded`, `max_blocks: 0` y sólo los 3 errores upstream de siempre.
+  - Los perfiles cliente los instala el controlador: `install_head.py … --only-clients`. La corrida en seco planifica 44 y 47 escrituras.
+- **CI** verde en `main` 0f117ab. La prueba de ruido del altar fallaba en el runner porque el servidor de GameTest corre los ticks lo más rápido que puede y el trabajador asíncrono no llegaba en 3900 ticks, unos 5 s. Ahora cada tick de espera dura al menos 20 ms.
+
 ## Pendiente
 
 - Ver los seis íconos de los resonadores en el inventario del cliente.

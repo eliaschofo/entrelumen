@@ -3,7 +3,7 @@
  "task": "Progression batch: calibration frame by infusion and story reward, vein resonators (Ultimine curio), functions family of gates, Act VI top armor, Ark boss drops; recipe playtest rules of 24 September",
  "branch": "feature/progression",
  "base": "ca97f5f636aee0c9be1bfeb7c0923cc66efce482",
- "head": "036aedc69eab884b1f74eb8fad92da2e57c9597b",
+ "head": "01fe68ab102d8fe692706b13c89182b820391c5b",
  "design": "docs/design/progression-functions.md",
  "receipts": "E:\\Elias\\Codex\\Entrelumen-ssd\\progression-20260924",
  "python": {
@@ -20,9 +20,11 @@
   "summary": "All 99 required tests passed"
  },
  "jarsSha256": {
+  "entrelumen-0.1.0-2112a39.jar": "2b1a50921af4149deb7dbf17f53af406f2e02c516dde7ad4de050a39fce79fad",
   "entrelumen-0.1.0-3ee1f2d.jar": "6fbd12b35de4f71655753a0cfa271679092c536e38aae728a1fe3301f9b630ca",
   "entrelumen-0.1.0-79df9d8.jar": "6fbd12b35de4f71655753a0cfa271679092c536e38aae728a1fe3301f9b630ca",
   "entrelumen-0.1.0-e40b3a5.jar": "461b4763d039efdb8cbcc5e7f5ef563291ac66b75d1a21bec40b805238cdffb0",
+  "entrelumen-0.1.0-qa-2112a39.jar": "7a86ba17249e96b28ec5ff8b5535da4e2105f5f8d2323604269ae469a0eaac8b",
   "entrelumen-0.1.0-qa-3ee1f2d.jar": "6ba019e29898003623062541d90cbd674879f36e21ddcf66e75e1ca930d4ab23",
   "entrelumen-0.1.0-qa-796af6a.jar": "b6273fcbd37b5e7c25142cd201ddc1e14fde2758caf1a6b37ac3b70b866d9e63",
   "entrelumen-0.1.0-qa-79df9d8.jar": "d687b4760d734240d07a752751da08913c0b8c201e649a3287c7a7b6cd491f99",
@@ -183,5 +185,89 @@
    "C failures: realinfusercopiestheframe (the test fed the machine through closed faces) and solsticiocitypaletteresolvesinthefullpack (minecraft:polished_diorite_wall x13 in the new Solsticio city.nbt of main, not this batch). D to F rerun the infuser test on the world of C with the fixed test; F passes."
   ]
  },
- "installation": null
+ "installation": {
+  "head": "8002e300b056d386222c784a0b8eeadf7eb57e28",
+  "jarSha256": "2b1a50921af4149deb7dbf17f53af406f2e02c516dde7ad4de050a39fce79fad",
+  "profiles": [
+   "server-slice"
+  ],
+  "clientsPending": "the controller installs E:/curseforge/Instances/ENTRELUMEN and ENTRELUMEN Defaults QA (install_head.py --only-clients)",
+  "serverWorldBackup": {
+   "archive": "E:\\Elias\\Codex\\Entrelumen-ssd\\progression-20260924\\server-world-before-install-8002e30.zip",
+   "files": 1566,
+   "sha256": "31ac882f88e0255b7053225ce68f42e86f1fdd4463ae362cff06be3e49169e7d"
+  },
+  "backup": "E:\\Elias\\Codex\\Entrelumen-ssd\\progression-20260924\\integration-before\\8002e30\\server-slice",
+  "written": 47,
+  "adopted": [
+   "config/ftbultimine-server.snbt",
+   "config/mekanismcovers.json"
+  ],
+  "retired": 0,
+  "preservedLocal": 10,
+  "guardedUnchanged": 3,
+  "jarsAdded": [],
+  "normalStart": {
+   "bootWallSeconds": 200.2,
+   "doneSeconds": 17.483,
+   "diagnostic": "schema=3 personal=161 parties=31",
+   "exitCode": 0,
+   "watchdog": false,
+   "ultimineMaxBlocks": [
+    "0"
+   ],
+   "receipts": [
+    [
+     "ENTRELUMEN_APOTHEOSIS_BALANCE",
+     "additions-loaded"
+    ],
+    [
+     "ENTRELUMEN_APOTHEOSIS_BALANCE",
+     "loaded-ingredient-check"
+    ],
+    [
+     "ENTRELUMEN_ARCANE_BALANCE",
+     "loaded-ingredient-check"
+    ],
+    [
+     "ENTRELUMEN_COOKING",
+     "loaded-output-check-only"
+    ],
+    [
+     "ENTRELUMEN_FUNCTIONS_BALANCE",
+     "additions-loaded"
+    ],
+    [
+     "ENTRELUMEN_FUNCTIONS_BALANCE",
+     "loaded-ingredient-check"
+    ],
+    [
+     "ENTRELUMEN_INDUSTRIAL_BALANCE",
+     "loaded-ingredient-check"
+    ],
+    [
+     "ENTRELUMEN_INTEGRATION",
+     "loaded"
+    ],
+    [
+     "ENTRELUMEN_LUMINOUS_BALANCE",
+     "creations-loaded"
+    ],
+    [
+     "ENTRELUMEN_PINGPONG_BALANCE",
+     "loaded-ingredient-check"
+    ],
+    [
+     "ENTRELUMEN_QOL_BALANCE",
+     "loaded-ingredient-check"
+    ],
+    [
+     "ENTRELUMEN_RFTOOLS_BALANCE",
+     "loaded-output-check-only"
+    ]
+   ],
+   "errorLines": 3,
+   "entrelumenErrors": []
+  }
+ }
 }
