@@ -31,8 +31,17 @@ public final class CompassTargets {
     BIOME,
     ANCHOR,
     POSITION,
-    DIMENSION
+    DIMENSION,
+    /**
+     * A marker of Solsticio's placed city ({@code mayor}, {@code inventor}, {@code gardener},
+     * {@code priest} or {@code town_hall_portal}), read from the city at runtime, so the needle follows
+     * whatever template the controller exports (act VI, 24 September 2026).
+     */
+    CITY_MARKER
   }
+
+  /** The city markers a {@code city_marker} target may name. */
+  public static final Set<String> CITY_MARKERS = Set.of("mayor", "inventor", "gardener", "priest", "town_hall_portal");
 
   public enum ConditionType {
     ITEM,
@@ -131,6 +140,7 @@ public final class CompassTargets {
           case ANCHOR -> Set.of("type", "anchor", "dimension", "radius");
           case POSITION -> Set.of("type", "pos", "dimension");
           case DIMENSION -> Set.of("type", "dimension");
+          case CITY_MARKER -> Set.of("type", "marker");
         };
     for (String field : target.keySet())
       if (!allowed.contains(field)) throw invalid(path, "unknown field " + field + " for " + type);
@@ -142,6 +152,7 @@ public final class CompassTargets {
       throw invalid(path + ".dimension", "dimension targets need a dimension");
     if (type == TargetType.POSITION && dimension == null)
       throw invalid(path + ".dimension", "fixed positions need a dimension");
+    if (type == TargetType.CITY_MARKER) dimension = "entrelumen:solsticio";
     if (dimension == null) dimension = OVERWORLD;
     int radius =
         target.has("radius")
@@ -159,6 +170,11 @@ public final class CompassTargets {
               dimension, null, radius);
       case POSITION -> new Target(type, "", dimension, position(target, path), 0);
       case DIMENSION -> new Target(type, "", dimension, null, 0);
+      case CITY_MARKER -> {
+        String marker = string(target, "marker", path);
+        if (!CITY_MARKERS.contains(marker)) throw invalid(path + ".marker", "unknown city marker " + marker);
+        yield new Target(type, marker, dimension, null, 0);
+      }
     };
   }
 

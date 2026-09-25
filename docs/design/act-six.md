@@ -88,7 +88,7 @@ Cada misión es un **hito de la campaña del equipo** (`campaign.completed`, el 
 | # | Hito | Dónde | Qué comprueba el servidor | Qué da |
 |---|---|---|---|---|
 | 1 | `solsticio_arrival` | — | El cruce con la llave propia (ya existía) | La llave rota |
-| 2 | `solsticio_mayor` | Aurelia | Hablar con ella | La brújula marca el salón de Aurelia, los jardines, el taller, la capilla y el portal (`solsticio_*` en `compass_targets.json`, con las posiciones del `city.nbt` actual; una GameTest las compara con los marcadores colocados) |
+| 2 | `solsticio_mayor` | Aurelia | Hablar con ella | La brújula marca el salón de Aurelia, los jardines, el taller, la capilla y el portal (`solsticio_*` en `compass_targets.json`, tipo de objetivo nuevo `city_marker`: lee los marcadores de la ciudad colocada, así que sirve para cualquier plantilla) |
 | 3 | `solsticio_seeds` | Juan | 8 especies distintas del tag `entrelumen:solsticio/seeds` (vanilla, `#c:seeds`, `#minecraft:villager_plantable_seeds`). Se lleva una de cada una | Una canasta por día y por equipo: 6 de una comida y 2 flores |
 | 4 | `solsticio_harvest` | Juan | 4 platos distintos del tag `entrelumen:solsticio/meals` (las 27 comidas de Farmer's Delight, sin los guisos vanilla), 16 de cada uno | `heliodor_relic_1` |
 | 5 | `solsticio_power` | Terra | 4 bobinas del generador y 2 placas solares avanzadas de Create: New Age, más una batería de cualquier mod de energía de ≥100.000 FE cargada al 90 % (capacidad `EnergyStorage.ITEM`). Si falta un mod, su pieza se omite | Libro «Diagrama del Terraprisma» (3 páginas) |
@@ -154,6 +154,8 @@ La relación es la cantidad de encargos cumplidos por el equipo: se guardan en s
 
 ### Easter eggs
 
+*La ciudad del 25/9 todavía no tiene los marcadores; ver «Pendiente».*
+
 - **Descubrimiento.** Los tres marcadores `easter:tavern`, `easter:secret_garden` y `easter:sundial` se descubren entrando a ≤5 bloques en horizontal y ≤3 en vertical. Lo revisa el servidor cada 20 ticks, solo con jugadores en Solsticio.
 - **Qué da.** Cada equipo recibe, una vez:
   - una página de lore (libro escrito de 2 páginas, traducido en cada cliente);
@@ -186,4 +188,4 @@ La relación es la cantidad de encargos cumplidos por el equipo: se guardan en s
   - las líneas en los dos idiomas;
   - la aguja de la brújula dentro de Solsticio.
 - Jugar el acto de punta a punta en un mundo real: los tiempos de viaje, la economía de los platos y las baterías.
-- Las posiciones de la brújula están fijadas al `city.nbt` actual. Si el controlador cambia la plantilla, se regeneran; la GameTest lo detecta.
+- **La ciudadela en terrazas (`city7.py`, 25/9) no tiene marcadores `easter:`.** Hasta que el controlador los ponga, los tres easter eggs no se pueden descubrir y el encargo de las flores lo recibe Ciro. Las GameTests ponen huevos de prueba alrededor de la llegada.

@@ -188,6 +188,28 @@ public final class RuntimeGameTestsStory {
     player.teleportTo(solsticio, pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5, java.util.Set.of(), 0f, 0f);
   }
 
+  /**
+   * The city's easter eggs, or, when the template carries no {@code easter:} markers (the terraced
+   * citadel of 25 September has none yet), stand-ins around the arrival point for the duration of one
+   * test body. Returns what to restore.
+   */
+  private static Map<String, List<BlockPos>> stageEggs(SolsticioData data) {
+    Map<String, List<BlockPos>> before = new java.util.TreeMap<>();
+    data.commerce.easterEggs.forEach((name, spots) -> before.put(name, List.copyOf(spots)));
+    int i = 0;
+    for (String egg : SolsticioStoryRules.EGGS) {
+      if (!data.commerce.easterEggs.containsKey(egg))
+        data.commerce.easterEggs.put(egg, List.of(data.arrival.offset(24 * (i - 1), 0, 24)));
+      i++;
+    }
+    return before;
+  }
+
+  private static void restoreEggs(SolsticioData data, Map<String, List<BlockPos>> before) {
+    data.commerce.easterEggs.clear();
+    before.forEach((name, spots) -> data.commerce.easterEggs.put(name, new ArrayList<>(spots)));
+  }
+
   private static void home(GameTestHelper helper, ServerPlayer player) {
     BlockPos pos = helper.absolutePos(new BlockPos(2, 1, 2));
     player.teleportTo(helper.getLevel(), pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5, java.util.Set.of(), 0f, 0f);
@@ -228,13 +250,14 @@ public final class RuntimeGameTestsStory {
             "inventor", "solsticio_workshop", "priest", "solsticio_chapel");
         for (var hall : halls.entrySet()) {
           var objective = CompassTargets.active().stream().filter(o -> o.id().equals(hall.getValue())).findFirst();
-          helper.assertTrue(objective.isPresent() && objective.get().target().pos().equals(data.npcs.get(hall.getKey())),
+          helper.assertTrue(objective.isPresent()
+              && data.npcs.get(hall.getKey()).equals(HeliodorCompass.cityMarker(data, objective.get().target().value())),
               "The compass does not mark " + hall.getKey() + " at " + data.npcs.get(hall.getKey()) + ": " + objective);
           helper.assertTrue(data.commerce.find(CommerceRules.Role.CHARACTER, hall.getKey(), data.npcs.get(hall.getKey())) != null,
               "The city has no site for " + hall.getKey());
         }
         var portal = CompassTargets.active().stream().filter(o -> o.id().equals("solsticio_portal")).findFirst();
-        helper.assertTrue(portal.isPresent() && portal.get().target().pos().equals(data.portal),
+        helper.assertTrue(portal.isPresent() && data.portal.equals(HeliodorCompass.cityMarker(data, portal.get().target().value())),
             "The compass does not mark the portal");
       }
     });
@@ -364,6 +387,7 @@ public final class RuntimeGameTestsStory {
       var server = helper.getLevel().getServer();
       var data = SolsticioData.get(server);
       BlockPos oldElder = data.elder;
+      var eggs = stageEggs(data);
       try (var cast = new Cast(helper); var qa = new QaPlayer(helper, "StoryErrandsQA")) {
         var player = qa.player;
         var campaign = arrive(player, SolsticioStoryRules.MAYOR);
@@ -453,6 +477,7 @@ public final class RuntimeGameTestsStory {
         helper.assertTrue(SolsticioStoryRules.relation(campaign) == 8, "Relation after eight errands: " + SolsticioStoryRules.relation(campaign));
       } finally {
         data.elder = oldElder;
+        restoreEggs(data, eggs);
       }
     });
   }
@@ -677,11 +702,10 @@ public final class RuntimeGameTestsStory {
   public static void easterEggsGiveTheirPageOnceAndTogetherTheRumour(GameTestHelper helper) {
     whenCityReady(helper, () -> {
       var data = SolsticioData.get(helper.getLevel().getServer());
+      var eggs = stageEggs(data);
       try (var qa = new QaPlayer(helper, "StoryEggsQA"); var other = new QaPlayer(helper, "StoryEggsOtherQA")) {
         var player = qa.player;
         var campaign = arrive(player);
-        helper.assertTrue(data.commerce.easterEggs.keySet().containsAll(SolsticioStoryRules.EGGS),
-            "The city lacks an easter egg: " + data.commerce.easterEggs.keySet());
         for (String egg : SolsticioStoryRules.EGGS) {
           BlockPos spot = data.commerce.easterEggs.get(egg).getFirst();
           toSolsticio(player, spot.above(8));
@@ -703,6 +727,8 @@ public final class RuntimeGameTestsStory {
         assertSaid(helper, SolsticioStory.visit(other.player), "egg.tavern.found");
         home(helper, player);
         home(helper, other.player);
+      } finally {
+        restoreEggs(data, eggs);
       }
     });
   }

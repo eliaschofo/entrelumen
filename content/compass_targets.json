@@ -148,15 +148,15 @@
       "id": "solsticio_town_hall",
       "act": 6,
       "kind": "structure",
-      "target": {"type": "position", "pos": [-5, 144, 2], "dimension": "entrelumen:solsticio"},
+      "target": {"type": "city_marker", "marker": "mayor"},
       "advance_when": {"type": "milestone", "milestone": "solsticio_mayor"},
-      "note": "Act VI, mission 2: Aurelia's marker (mayor) in the controller's city.nbt (draft 6), in world coordinates. RuntimeGameTestsStory checks these positions against the placed city's markers."
+      "note": "Act VI, mission 2: Aurelia's marker (mayor), read from the placed city, so any city template works."
     },
     {
       "id": "solsticio_gardens",
       "act": 6,
       "kind": "structure",
-      "target": {"type": "position", "pos": [-11, 138, -36], "dimension": "entrelumen:solsticio"},
+      "target": {"type": "city_marker", "marker": "gardener"},
       "advance_when": {"type": "milestone", "milestone": "solsticio_harvest"},
       "note": "Mission 2's reward marks the three halls: Juan's (gardener) until relic I."
     },
@@ -164,7 +164,7 @@
       "id": "solsticio_workshop",
       "act": 6,
       "kind": "structure",
-      "target": {"type": "position", "pos": [27, 138, 2], "dimension": "entrelumen:solsticio"},
+      "target": {"type": "city_marker", "marker": "inventor"},
       "advance_when": {"type": "milestone", "milestone": "solsticio_terraprism"},
       "note": "Terra's hall (inventor) until relic II."
     },
@@ -172,7 +172,7 @@
       "id": "solsticio_chapel",
       "act": 6,
       "kind": "structure",
-      "target": {"type": "position", "pos": [-49, 138, 2], "dimension": "entrelumen:solsticio"},
+      "target": {"type": "city_marker", "marker": "priest"},
       "advance_when": {"type": "milestone", "milestone": "solsticio_blessing"},
       "note": "Bodhi's chapel (priest) until relic III."
     },
@@ -180,7 +180,7 @@
       "id": "solsticio_portal",
       "act": 6,
       "kind": "artifact",
-      "target": {"type": "position", "pos": [-11, 144, 2], "dimension": "entrelumen:solsticio"},
+      "target": {"type": "city_marker", "marker": "town_hall_portal"},
       "advance_when": {"type": "milestone", "milestone": "solsticio_portal"},
       "note": "Missions 9 and 10: the town hall portal (town_hall_portal marker)."
     }

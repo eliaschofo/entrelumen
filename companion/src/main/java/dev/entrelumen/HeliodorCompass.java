@@ -95,6 +95,12 @@ public final class HeliodorCompass {
       case DIMENSION ->
           new CompassState(Optional.empty(), CompassState.NOT_FOUND, dimension, kind, id);
       case POSITION -> pointing(key, target.pos(), dimension, kind, id);
+      case CITY_MARKER -> {
+        BlockPos marker = cityMarker(SolsticioData.get(player.server), target.value());
+        yield marker == null
+            ? new CompassState(Optional.empty(), CompassState.NOT_FOUND, dimension, kind, id)
+            : pointing(key, marker, dimension, kind, id);
+      }
       case ANCHOR -> {
         ResourceLocation anchor = ResourceLocation.parse(target.value());
         BlockPos nearest = nearest(RuinData.get(player.server).ruins().stream()
@@ -126,6 +132,13 @@ public final class HeliodorCompass {
         yield new CompassState(Optional.empty(), CompassState.SEARCHING, dimension, kind, id);
       }
     };
+  }
+
+  /** Where the placed city put one of its markers, or null before the city is ready. */
+  @Nullable
+  static BlockPos cityMarker(SolsticioData data, String marker) {
+    if (!data.ready()) return null;
+    return marker.equals("town_hall_portal") ? data.portal : data.npcs.get(marker);
   }
 
   private static CompassState pointing(

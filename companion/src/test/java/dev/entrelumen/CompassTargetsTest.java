@@ -64,14 +64,17 @@ class CompassTargetsTest {
             SolsticioStoryRules.BLESSING, SolsticioStoryRules.PORTAL),
         all.subList(ids.indexOf("solsticio") + 1, all.size()).stream().map(o -> o.advanceWhen().value()).toList());
     for (var hall : all.subList(ids.indexOf("solsticio") + 1, all.size()))
-      assertTrue(hall.act() == 6 && hall.target().type() == CompassTargets.TargetType.POSITION
+      assertTrue(hall.act() == 6 && hall.target().type() == CompassTargets.TargetType.CITY_MARKER
           && hall.target().dimension().equals("entrelumen:solsticio"), hall.id());
+    assertEquals(java.util.List.of("mayor", "gardener", "inventor", "priest", "town_hall_portal"),
+        all.subList(ids.indexOf("solsticio") + 1, all.size()).stream().map(o -> o.target().value()).toList());
     int act = 1;
     for (var objective : all) {
       assertTrue(objective.act() >= act, "Objectives are listed in act order");
       act = objective.act();
       assertTrue(objective.target().type() == CompassTargets.TargetType.DIMENSION
           || objective.target().type() == CompassTargets.TargetType.POSITION
+          || objective.target().type() == CompassTargets.TargetType.CITY_MARKER
           || objective.target().radius() <= CompassTargets.MAX_RADIUS);
     }
     assertThrows(UnsupportedOperationException.class, () -> all.add(all.getFirst()));
