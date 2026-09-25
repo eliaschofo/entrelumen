@@ -1,0 +1,416 @@
+{
+  "chapter": "guide_entrelumen_terra_arm",
+  "group": "entrelumen",
+  "act": "II",
+  "icon": "entrelumen:terra_arm",
+  "title": {
+    "en_us": "Terra's Arm",
+    "es_es": "El Brazo de Terra"
+  },
+  "subtitle": {
+    "en_us": "Heliodor's inventor built herself a longer reach. How to earn it, wear it and make the most of three extra blocks.",
+    "es_es": "La inventora de Heliodor se hizo un alcance más largo. Cómo ganarlo, ponérselo y aprovechar tres bloques extra."
+  },
+  "quests": [
+    {
+      "key": "entrelumen_terra_arm_welcome",
+      "deps": [],
+      "type": "checkmark",
+      "layout": {
+        "x": 0,
+        "y": 0,
+        "size": 2.0,
+        "shape": "hexagon"
+      },
+      "en_us": [
+        "An Arm Built to Reach",
+        "Terra, Heliodor's inventor, built herself a cyborg arm to reach where the machine would not let her. It is the reward that closes act II, and it does exactly one thing: it lets you reach blocks from farther away.\n\nSmall on paper, huge when building, farming or working with machines."
+      ],
+      "es_es": [
+        "Un brazo hecho para alcanzar",
+        "Terra, la inventora de Heliodor, se hizo un brazo ciborg para llegar adonde la máquina no la dejaba. Es la recompensa que cierra el acto II, y hace exactamente una cosa: te deja alcanzar bloques desde más lejos.\n\nChico en el papel, enorme a la hora de construir, cultivar o trabajar con máquinas."
+      ],
+      "sources": [
+        "repo:docs/design/heliodor-ruins.md",
+        "repo:companion/src/main/java/dev/entrelumen/TerraArm.java",
+        "repo:docs/design/story-bible.md"
+      ]
+    },
+    {
+      "key": "entrelumen_terra_arm_earn",
+      "deps": [
+        "entrelumen_terra_arm_welcome"
+      ],
+      "type": "item",
+      "item": "entrelumen:terra_arm",
+      "layout": {
+        "x": 3,
+        "y": 0,
+        "size": 1.5,
+        "shape": "square"
+      },
+      "en_us": [
+        "Earn It in Act II",
+        "Close act II's four prototype projects (Calibration Frame, Energy Coupler, Living Matrix and Travel Rations), then deliver &eWorkshop Archive&r to the Atlas: three paper and a copper ingot. The Atlas gives &eTerra's Arm&r to the player who delivers.\n\nIt has no recipe. It is the only Atlas reward of act II."
+      ],
+      "es_es": [
+        "Ganalo en el acto II",
+        "Cerrá los cuatro proyectos de prototipo del acto II (Marco de calibración, Acoplador de energía, Matriz viva y Provisiones de viaje) y después entregá &eArchivo del taller&r al Atlas: tres papeles y un lingote de cobre. El Atlas le da el &eBrazo de Terra&r a quien entrega.\n\nNo tiene receta. Es la única recompensa del Atlas en el acto II."
+      ],
+      "sources": [
+        "repo:companion/src/main/resources/data/entrelumen/campaign/projects.json",
+        "repo:docs/design/heliodor-ruins.md",
+        "repo:companion/src/main/resources/assets/entrelumen/lang/es_es.json"
+      ]
+    },
+    {
+      "key": "entrelumen_terra_arm_wear",
+      "deps": [
+        "entrelumen_terra_arm_earn"
+      ],
+      "type": "checkmark",
+      "icon": "minecraft:leather_chestplate",
+      "layout": {
+        "x": 6,
+        "y": 0,
+        "size": 1.25,
+        "shape": "circle"
+      },
+      "en_us": [
+        "Wear It on a Hand",
+        "The arm is a curio: open your inventory, open the Curios panel with its button, and place the arm in a &ehands&r slot. The pack makes sure every player has that slot.\n\nCarried in your inventory or put in any other slot, it does nothing: it has to be worn."
+      ],
+      "es_es": [
+        "Ponételo en una mano",
+        "El brazo es un curio: abrí el inventario, abrí el panel de Curios con su botón y poné el brazo en una ranura de &emanos&r. El pack se asegura de que todo jugador tenga esa ranura.\n\nLlevado en el inventario o puesto en otra ranura, no hace nada: hay que tenerlo puesto."
+      ],
+      "sources": [
+        "repo:companion/src/main/java/dev/entrelumen/TerraArm.java",
+        "repo:companion/src/main/resources/data/entrelumen/curios/entities/terra_arm.json",
+        "jar:curios-neoforge-9.5.1+1.21.1.jar:META-INF/neoforge.mods.toml"
+      ]
+    },
+    {
+      "key": "entrelumen_terra_arm_effect",
+      "deps": [
+        "entrelumen_terra_arm_wear"
+      ],
+      "type": "checkmark",
+      "icon": "minecraft:spyglass",
+      "layout": {
+        "x": 9,
+        "y": 0,
+        "size": 1.5,
+        "shape": "hexagon"
+      },
+      "en_us": [
+        "Three More Blocks",
+        "Worn, the arm adds &e+3 block reach&r: you can break, place and use blocks from 7.5 blocks away instead of 4.5. Its tooltip shows the effect in blue, like vanilla attribute lines.\n\nThe bonus is checked twice a second, so it appears and disappears a moment after you put the arm on or take it off."
+      ],
+      "es_es": [
+        "Tres bloques más",
+        "Puesto, el brazo suma &e+3 de alcance de bloques&r: podés romper, poner y usar bloques desde 7,5 bloques de distancia en vez de 4,5. Su tooltip muestra el efecto en azul, como las líneas de atributos de vanilla.\n\nEl bonus se revisa dos veces por segundo, así que aparece y desaparece un momento después de ponerte o sacarte el brazo."
+      ],
+      "sources": [
+        "branch:feature/acts-renumber:docs/design/heliodor-ruins.md",
+        "note:depends on feature/acts-renumber (reach bonus +3, tooltip effect line; main still has +5)",
+        "repo:companion/src/main/java/dev/entrelumen/TerraArm.java"
+      ]
+    },
+    {
+      "key": "entrelumen_terra_arm_blocks_only",
+      "deps": [
+        "entrelumen_terra_arm_effect"
+      ],
+      "type": "checkmark",
+      "icon": "minecraft:iron_sword",
+      "layout": {
+        "x": 12,
+        "y": -2,
+        "size": 1.25,
+        "shape": "pentagon"
+      },
+      "en_us": [
+        "Blocks, Not Swords",
+        "The arm extends only &eblock&r reach. Attacking and interacting with creatures keeps the normal range, so it gives no advantage in combat."
+      ],
+      "es_es": [
+        "Bloques, no espadas",
+        "El brazo extiende sólo el alcance de &ebloques&r. Atacar e interactuar con criaturas conserva el rango normal, así que no da ninguna ventaja en combate."
+      ],
+      "sources": [
+        "repo:docs/design/heliodor-ruins.md",
+        "repo:companion/src/main/java/dev/entrelumen/TerraArm.java"
+      ]
+    },
+    {
+      "key": "entrelumen_terra_arm_no_stack",
+      "deps": [
+        "entrelumen_terra_arm_effect"
+      ],
+      "type": "checkmark",
+      "optional": true,
+      "icon": "minecraft:iron_ingot",
+      "layout": {
+        "x": 12,
+        "y": 2,
+        "size": 1.0,
+        "shape": "diamond"
+      },
+      "en_us": [
+        "Quirk: Two Arms, Same Reach",
+        "Players have two hands slots, but a second arm adds nothing: the bonus is one modifier, on or off. Taking one of two arms off does not remove the bonus of the other.\n\nOther sources that add to the same attribute do stack with it, since it adds a flat +3."
+      ],
+      "es_es": [
+        "Particularidad: dos brazos, el mismo alcance",
+        "Los jugadores tienen dos ranuras de manos, pero un segundo brazo no suma nada: el bonus es un solo modificador, prendido o apagado. Sacarte uno de dos brazos no le quita el bonus al otro.\n\nOtras fuentes que suman al mismo atributo sí se acumulan con él, porque agrega +3 fijo."
+      ],
+      "sources": [
+        "repo:docs/design/heliodor-ruins.md",
+        "repo:companion/src/main/java/dev/entrelumen/TerraArm.java"
+      ]
+    },
+    {
+      "key": "entrelumen_terra_arm_building",
+      "deps": [
+        "entrelumen_terra_arm_blocks_only"
+      ],
+      "type": "item",
+      "item": "constructionstick:iron_stick",
+      "optional": true,
+      "layout": {
+        "x": 15,
+        "y": -3,
+        "size": 1.0,
+        "shape": "diamond"
+      },
+      "en_us": [
+        "Tip: Building Tall",
+        "With three more blocks you can place the top rows of a wall, the ridge of a roof or a ceiling light without scaffolding, and reach across a gap. Pair it with a Construction Stick to extend faces you could not reach before."
+      ],
+      "es_es": [
+        "Truco: construir en altura",
+        "Con tres bloques más podés poner las últimas filas de una pared, la cumbrera de un techo o una luz de techo sin andamios, y alcanzar del otro lado de un hueco. Combinalo con una Vara de construcción para extender caras que antes no alcanzabas."
+      ],
+      "sources": [
+        "repo:docs/design/heliodor-ruins.md",
+        "repo:docs/design/qol-parity.md"
+      ]
+    },
+    {
+      "key": "entrelumen_terra_arm_machines",
+      "deps": [
+        "entrelumen_terra_arm_blocks_only"
+      ],
+      "type": "item",
+      "item": "laserio:laser_node",
+      "optional": true,
+      "layout": {
+        "x": 15,
+        "y": -0.5,
+        "size": 1.0,
+        "shape": "diamond"
+      },
+      "en_us": [
+        "Tip: Machine Rooms",
+        "Reach a machine behind another, a lever on the far side of a pipe line or a chest at the back of a shelf without walking around. Dense rooms of LaserIO nodes and Create contraptions become much easier to work in."
+      ],
+      "es_es": [
+        "Truco: salas de máquinas",
+        "Alcanzá una máquina detrás de otra, una palanca del otro lado de una línea de caños o un cofre al fondo de un estante sin dar la vuelta. Las salas densas de nodos de LaserIO y artefactos de Create se vuelven mucho más cómodas."
+      ],
+      "sources": [
+        "repo:docs/design/heliodor-ruins.md"
+      ]
+    },
+    {
+      "key": "entrelumen_terra_arm_farming",
+      "deps": [
+        "entrelumen_terra_arm_no_stack"
+      ],
+      "type": "item",
+      "item": "minecraft:oak_log",
+      "optional": true,
+      "layout": {
+        "x": 15,
+        "y": 2,
+        "size": 1.0,
+        "shape": "diamond"
+      },
+      "en_us": [
+        "Tip: Fields and Trees",
+        "Harvest a wider strip of field from the path, reach the top logs and fruit of tall trees, and plant saplings without stepping on farmland. With Ultimine, the extra reach also lets you start a vein you would otherwise have to climb to."
+      ],
+      "es_es": [
+        "Truco: campos y árboles",
+        "Cosechá una franja más ancha del campo desde el camino, alcanzá los troncos y frutas de arriba de los árboles altos y plantá brotes sin pisar la tierra arada. Con Ultimine, el alcance extra también te deja empezar una veta a la que de otro modo tendrías que trepar."
+      ],
+      "sources": [
+        "repo:docs/design/heliodor-ruins.md",
+        "jar:ftb-ultimine-neoforge-2101.1.15.jar:assets/ftbultimine/lang/en_us.json"
+      ]
+    },
+    {
+      "key": "entrelumen_terra_arm_carry",
+      "deps": [
+        "entrelumen_terra_arm_farming"
+      ],
+      "type": "checkmark",
+      "optional": true,
+      "icon": "minecraft:chest",
+      "layout": {
+        "x": 18,
+        "y": 2,
+        "size": 1.0,
+        "shape": "diamond"
+      },
+      "en_us": [
+        "Quirk: Carry On Reaches Farther",
+        "The pack's Carry On settings scale pick-up distance with your reach, so with the arm you can lift chests, furnaces and animals from farther away too."
+      ],
+      "es_es": [
+        "Particularidad: Carry On llega más lejos",
+        "La configuración de Carry On del pack escala la distancia para levantar con tu alcance, así que con el brazo también podés levantar cofres, hornos y animales desde más lejos."
+      ],
+      "sources": [
+        "repo:pack/config/carryon-common.toml",
+        "repo:docs/design/heliodor-ruins.md"
+      ]
+    },
+    {
+      "key": "entrelumen_terra_arm_protection",
+      "deps": [
+        "entrelumen_terra_arm_building"
+      ],
+      "type": "checkmark",
+      "optional": true,
+      "icon": "minecraft:shield",
+      "layout": {
+        "x": 18,
+        "y": -2,
+        "size": 1.0,
+        "shape": "pentagon"
+      },
+      "en_us": [
+        "Reach Does Not Open Protected Places",
+        "More reach does not bypass anything: Heliodor's ruins, Solsticio outside your plot and other teams' claims refuse breaking and placing whatever your distance. The rule is checked on the server."
+      ],
+      "es_es": [
+        "El alcance no abre lugares protegidos",
+        "Más alcance no esquiva nada: las ruinas de Heliodor, Solsticio fuera de tu lote y los reclamos de otros equipos rechazan romper y poner bloques desde la distancia que sea. La regla se comprueba en el servidor."
+      ],
+      "sources": [
+        "repo:docs/design/solsticio.md",
+        "repo:companion/src/main/java/dev/entrelumen/StructureProtection.java"
+      ]
+    },
+    {
+      "key": "entrelumen_terra_arm_one_per_campaign",
+      "deps": [
+        "entrelumen_terra_arm_wear"
+      ],
+      "type": "checkmark",
+      "icon": "minecraft:player_head",
+      "layout": {
+        "x": 6,
+        "y": 3.5,
+        "size": 1.25,
+        "shape": "pentagon"
+      },
+      "en_us": [
+        "One Arm per Campaign",
+        "Atlas rewards are given once per campaign, to the player who delivers. In a team only one member gets the arm: decide who builds the most, or pass it around. Replaying or reconnecting never grants a second one.\n\nKeep it safe: it survives fire and lava, and if you die, Tombstone keeps it in your grave."
+      ],
+      "es_es": [
+        "Un brazo por campaña",
+        "Las recompensas del Atlas se dan una vez por campaña, a quien entrega. En un equipo sólo un integrante recibe el brazo: decidan quién construye más, o pásenselo. Repetir o reconectarse nunca da un segundo.\n\nCuidalo: resiste el fuego y la lava, y si morís, Tombstone lo guarda en tu tumba."
+      ],
+      "sources": [
+        "repo:companion/src/main/resources/data/entrelumen/campaign/projects.json",
+        "repo:companion/src/main/java/dev/entrelumen/Entrelumen.java",
+        "repo:companion/src/main/java/dev/entrelumen/TerraArm.java"
+      ]
+    },
+    {
+      "key": "entrelumen_terra_arm_lore",
+      "deps": [
+        "entrelumen_terra_arm_earn"
+      ],
+      "type": "checkmark",
+      "optional": true,
+      "icon": "entrelumen:heliodor_relic_2",
+      "layout": {
+        "x": 3,
+        "y": 3.5,
+        "size": 1.0,
+        "shape": "diamond"
+      },
+      "en_us": [
+        "Terra's Story",
+        "Terra wanted technology to make life in Heliodor better, and she built the Atlas from inside the light. In act II the Atlas returns her arm to you and, at the close, the voice half-speaks her name for the first time.\n\nHer later gifts, the Terraprism among them, come in the story's final act."
+      ],
+      "es_es": [
+        "La historia de Terra",
+        "Terra quería que la tecnología mejorara la vida en Heliodor, y construyó el Atlas desde adentro de la luz. En el acto II el Atlas te devuelve su brazo y, al cierre, la voz dice su nombre a medias por primera vez.\n\nSus regalos posteriores, entre ellos el Terraprisma, llegan en el acto final de la historia."
+      ],
+      "sources": [
+        "repo:docs/design/story-bible.md",
+        "repo:docs/design/quest-lore.md"
+      ]
+    },
+    {
+      "key": "entrelumen_terra_arm_without_curios",
+      "deps": [
+        "entrelumen_terra_arm_no_stack"
+      ],
+      "type": "checkmark",
+      "optional": true,
+      "icon": "minecraft:item_frame",
+      "layout": {
+        "x": 9,
+        "y": 3.5,
+        "size": 1.0,
+        "shape": "diamond"
+      },
+      "en_us": [
+        "Quirk: It Is a Curio by Data",
+        "The arm works through Curios' hands slot, and the pack gives every player that slot even if other mods stopped adding it. Held in your hand, in armor slots or in a backpack, it is just a trophy with a line of lore."
+      ],
+      "es_es": [
+        "Particularidad: es un curio por datos",
+        "El brazo funciona a través de la ranura de manos de Curios, y el pack le da esa ranura a todo jugador aunque otros mods dejaran de agregarla. En la mano, en las ranuras de armadura o en una mochila es sólo un trofeo con una línea de lore."
+      ],
+      "sources": [
+        "repo:companion/src/main/java/dev/entrelumen/TerraArm.java",
+        "repo:companion/src/main/resources/data/entrelumen/curios/entities/terra_arm.json"
+      ]
+    },
+    {
+      "key": "entrelumen_terra_arm_close",
+      "deps": [
+        "entrelumen_terra_arm_protection",
+        "entrelumen_terra_arm_carry",
+        "entrelumen_terra_arm_machines"
+      ],
+      "type": "item",
+      "item": "entrelumen:terra_arm",
+      "layout": {
+        "x": 21,
+        "y": 0,
+        "size": 2.0,
+        "shape": "hexagon"
+      },
+      "en_us": [
+        "Three Blocks Closer",
+        "You know how to earn the arm, where to wear it and what three extra blocks of reach can do. Terra would be glad to see it working again.\n\nThe story continues in act III, with the altars and the routes of exchange."
+      ],
+      "es_es": [
+        "Tres bloques más cerca",
+        "Ya sabés cómo ganar el brazo, dónde ponértelo y qué pueden hacer tres bloques más de alcance. A Terra le gustaría verlo funcionar otra vez.\n\nLa historia sigue en el acto III, con los altares y las rutas de intercambio."
+      ],
+      "sources": [
+        "repo:docs/design/heliodor-ruins.md"
+      ]
+    }
+  ]
+}
