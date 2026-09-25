@@ -13,8 +13,8 @@ import net.minecraft.nbt.LongTag;
 import net.minecraft.nbt.Tag;
 
 /**
- * Where Solsticio's villagers belong: one site per shopkeeper, side-quest NPC, common villager home
- * and native, the trading hall and the easter eggs. A site remembers the villager spawned for it,
+ * Where Solsticio's villagers belong: one site per shopkeeper, side-quest NPC, common villager home,
+ * native and named character, the trading hall and the easter eggs. A site remembers the villager spawned for it,
  * so population happens once and resumes after a restart. The city keeps one registry in
  * {@link SolsticioData}; GameTests build local ones over fixture templates.
  */
@@ -78,6 +78,8 @@ public final class CommerceSites {
         case SIDEQUEST -> fresh.add(new Site(CommerceRules.Role.SIDEQUEST, found.argument(), found.pos()));
         case RESIDENT -> fresh.add(new Site(CommerceRules.Role.TOWNSFOLK, "", found.pos()));
         case EASTER -> easterEggs.computeIfAbsent(found.argument(), name -> new ArrayList<>()).add(found.pos().immutable());
+        case MAYOR, INVENTOR, GARDENER, PRIEST ->
+            fresh.add(new Site(CommerceRules.Role.CHARACTER, found.marker().id, found.pos()));
         default -> {}
       }
     }
@@ -88,6 +90,20 @@ public final class CommerceSites {
       previous.stream().filter(old -> old.sameAs(site)).findFirst().ifPresent(old -> site.entity = old.entity);
       sites.add(site);
     }
+  }
+
+  /**
+   * Adds the named characters' sites (act VI) to a city placed before they existed, from its
+   * recorded NPC points; true when something was added.
+   */
+  public boolean ensureCharacters(Map<String, BlockPos> npcs) {
+    boolean added = false;
+    for (var entry : npcs.entrySet()) {
+      if (find(CommerceRules.Role.CHARACTER, entry.getKey(), entry.getValue()) != null) continue;
+      sites.add(new Site(CommerceRules.Role.CHARACTER, entry.getKey(), entry.getValue()));
+      added = true;
+    }
+    return added;
   }
 
   /** Common villager homes, in site order. */

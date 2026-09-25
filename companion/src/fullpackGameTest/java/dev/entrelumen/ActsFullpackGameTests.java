@@ -170,7 +170,7 @@ public final class ActsFullpackGameTests {
     helper.assertTrue(gold.act() == 4 && gold.advanceWhen().type() == CompassTargets.ConditionType.MILESTONE
         && gold.advanceWhen().value().equals(HeliodorHeartRules.RECOVERED), "The gold dungeon is not act IV's Heart");
     helper.assertTrue(objectives.get(ids.indexOf("silver_dungeon")).act() == 4
-        && objectives.get(ids.indexOf("the_end")).act() == 5 && objectives.getLast().id().equals("solsticio")
+        && objectives.get(ids.indexOf("the_end")).act() == 5 && objectives.get(ids.indexOf("solsticio")).act() == 6
         && objectives.getLast().act() == 6, "Compass acts not renumbered: " + objectives);
     // Everything before the gold dungeon done, the Heart missing: act IV points at the Sun Spirit.
     java.util.Set<String> before = new java.util.HashSet<>(ids.subList(0, ids.indexOf("gold_dungeon")));

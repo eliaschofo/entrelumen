@@ -17,10 +17,40 @@
     "arrival": {
       "en_us": "The Light Key · The crossing",
       "es_es": "La Llave de Luz · El cruce"
+    },
+    "town_hall": {
+      "en_us": "Aurelia · The town hall",
+      "es_es": "Aurelia · El Ayuntamiento"
+    },
+    "gardens": {
+      "en_us": "Juan · The gardens",
+      "es_es": "Juan · Los jardines"
+    },
+    "workshop": {
+      "en_us": "Terra · The workshop",
+      "es_es": "Terra · El taller"
+    },
+    "chapel": {
+      "en_us": "Bodhi · The chapel",
+      "es_es": "Bodhi · La capilla"
+    },
+    "portal": {
+      "en_us": "The portal · The Entrelumen",
+      "es_es": "El portal · El Entrelumen"
     }
   },
   "milestones": [
-    "solsticio_arrival"
+    "solsticio_arrival",
+    "solsticio_mayor",
+    "solsticio_seeds",
+    "solsticio_harvest",
+    "solsticio_power",
+    "solsticio_terraprism",
+    "solsticio_good_works",
+    "solsticio_blessing",
+    "solsticio_accord",
+    "solsticio_portal",
+    "solsticio_elections"
   ],
   "quests": [
     {
@@ -30,11 +60,11 @@
       ],
       "en_us": [
         "Inside the light",
-        "Hold use with your Light Key until the ring of light closes: it carries you into Solsticio once and breaks as you cross, leaving a return key bound to you. The server records your own team's arrival in the city; visits through another team's portal do not count.\n\nNoon that never ends, over copper and glass. Nobody here has aged a day. Terra is already waving, and the whole city turns to look at you."
+        "Hold use with your Light Key until the ring closes. It carries you into Solsticio and breaks as you cross; what is left takes you home and back.\n\nNoon over copper and glass, and nobody has aged a day. Terra is already waving."
       ],
       "es_es": [
         "Adentro de la luz",
-        "Mantené apretado el uso de tu Llave de Luz hasta que se cierre el anillo de luz: te lleva a Solsticio una vez y se rompe al cruzar, y te deja una llave de regreso atada a vos. El servidor registra la llegada de tu propio equipo a la ciudad; las visitas por el portal de otro equipo no cuentan.\n\nUn mediodía que no termina, sobre cobre y vidrio. Acá nadie envejeció un día. Terra ya está saludando, y la ciudad entera se da vuelta para mirarte."
+        "Mantené apretado el uso de la Llave de Luz hasta que se cierre el anillo. Te lleva a Solsticio y se rompe al cruzar; lo que queda te lleva a casa y de vuelta.\n\nMediodía sobre cobre y vidrio, y nadie envejeció un día. Terra ya te está saludando."
       ],
       "layout": {
         "group": "arrival",
@@ -46,6 +76,248 @@
       },
       "milestone": "solsticio_arrival",
       "icon": "entrelumen:light_key"
+    },
+    {
+      "key": "solsticio_mayor",
+      "deps": [
+        "solsticio_arrival"
+      ],
+      "en_us": [
+        "The City That Never Dawns",
+        "Talk to Aurelia in the town hall, beside the portal.\n\n'Three relics and the key that brought you. Juan, Terra and Bodhi each hold one. The Heart of Heliodor I would keep myself, of course.'"
+      ],
+      "es_es": [
+        "La ciudad que no amanece",
+        "Hablá con Aurelia en el Ayuntamiento, junto al portal.\n\n«Tres reliquias y la llave que te trajo. Juan, Terra y Bodhi tienen una cada uno. El Corazón de Heliodor lo guardaría yo, por supuesto.»"
+      ],
+      "layout": {
+        "group": "town_hall",
+        "x": 0,
+        "y": 2,
+        "size": 1.1,
+        "shape": "hexagon",
+        "hide_dependent_lines": false
+      },
+      "milestone": "solsticio_mayor",
+      "icon": "minecraft:bell"
+    },
+    {
+      "key": "solsticio_seeds",
+      "deps": [
+        "solsticio_mayor"
+      ],
+      "en_us": [
+        "Seeds of the World",
+        "Bring Juan seeds of eight different species from outside: wheat, beetroot, melon, carrot, potato, berries, cocoa, Farmer's Delight crops...\n\n'Same seeds since the light fell. The beds are tired. Variety, not sacks.'"
+      ],
+      "es_es": [
+        "Semillas del mundo",
+        "Llevale a Juan semillas de ocho especies distintas de afuera: trigo, remolacha, melón, zanahoria, patata, bayas, cacao, cultivos de Farmer's Delight...\n\n«Las mismas semillas desde que cayó la luz. Los canteros están cansados. Variedad, no bolsas.»"
+      ],
+      "layout": {
+        "group": "gardens",
+        "x": -3,
+        "y": 4,
+        "size": 1.1,
+        "shape": "hexagon",
+        "hide_dependent_lines": false
+      },
+      "milestone": "solsticio_seeds",
+      "icon": "minecraft:wheat_seeds"
+    },
+    {
+      "key": "solsticio_harvest",
+      "deps": [
+        "solsticio_seeds"
+      ],
+      "en_us": [
+        "A Harvest for Everyone",
+        "Bring Juan four different Farmer's Delight meals, sixteen of each; Central Kitchen or Slice and Dice can cook them. He gives you the Luminous Seed.\n\n'A city eats every day. Feed it, and the seed that carries the light is yours.'"
+      ],
+      "es_es": [
+        "Una cosecha para todos",
+        "Llevale a Juan cuatro platos distintos de Farmer's Delight, dieciséis de cada uno; Central Kitchen o Slice and Dice los cocinan. Te da la Semilla Luminosa.\n\n«Una ciudad come todos los días. Dale de comer y la semilla que lleva la luz es tuya.»"
+      ],
+      "layout": {
+        "group": "gardens",
+        "x": -3,
+        "y": 6,
+        "size": 1.1,
+        "shape": "hexagon",
+        "hide_dependent_lines": false
+      },
+      "milestone": "solsticio_harvest",
+      "icon": "entrelumen:heliodor_relic_1"
+    },
+    {
+      "key": "solsticio_power",
+      "deps": [
+        "solsticio_mayor"
+      ],
+      "en_us": [
+        "Power from Outside",
+        "Bring Terra four Generator Coils, two Advanced Solar Heating Plates and a charged battery from any energy mod (100,000 FE or more). She gives you the Terraprism diagram.\n\n'Frozen light runs machines badly. I need power from outside. Charged means full.'"
+      ],
+      "es_es": [
+        "Energía de afuera",
+        "Llevale a Terra cuatro bobinas del generador, dos placas solares avanzadas y una batería cargada de cualquier mod de energía (100.000 FE o más). Te da el diagrama del Terraprisma.\n\n«La luz congelada mueve mal las máquinas. Necesito energía de afuera. Cargada quiere decir llena.»"
+      ],
+      "layout": {
+        "group": "workshop",
+        "x": 0,
+        "y": 4,
+        "size": 1.1,
+        "shape": "hexagon",
+        "hide_dependent_lines": false
+      },
+      "milestone": "solsticio_power",
+      "icon": "minecraft:lightning_rod"
+    },
+    {
+      "key": "solsticio_terraprism",
+      "deps": [
+        "solsticio_power"
+      ],
+      "en_us": [
+        "Channelling the Light",
+        "Bring Terra one Luminosity of each discipline, all six; the natives of the trading hall sell them once they have seen their biome. She gives you the Terraprism.\n\n'It takes the light and gives it back as power people can use. That is all I ever wanted it to do.'"
+      ],
+      "es_es": [
+        "Canalizar la luz",
+        "Llevale a Terra una Luminosidad de cada disciplina, las seis; las venden los nativos de la sala de comercio cuando conocen su bioma. Te da el Terraprisma.\n\n«Toma la luz y la devuelve como energía que la gente puede usar. Es todo lo que siempre quise que hiciera.»"
+      ],
+      "layout": {
+        "group": "workshop",
+        "x": 0,
+        "y": 6,
+        "size": 1.1,
+        "shape": "hexagon",
+        "hide_dependent_lines": false
+      },
+      "milestone": "solsticio_terraprism",
+      "icon": "entrelumen:heliodor_relic_2"
+    },
+    {
+      "key": "solsticio_good_works",
+      "deps": [
+        "solsticio_mayor"
+      ],
+      "en_us": [
+        "Good Works",
+        "Do the errands of the four innkeepers, two each. Every errand raises your relation with Bodhi; at five, he listens.\n\n'I do not bless on request. Help the people here; I will hear about it.'"
+      ],
+      "es_es": [
+        "Buenas obras",
+        "Hacé los encargos de los cuatro posaderos, dos cada uno. Cada encargo sube tu relación con Bodhi; con cinco, te escucha.\n\n«No bendigo por encargo. Ayudá a la gente de acá; me voy a enterar.»"
+      ],
+      "layout": {
+        "group": "chapel",
+        "x": 3,
+        "y": 4,
+        "size": 1.1,
+        "shape": "hexagon",
+        "hide_dependent_lines": false
+      },
+      "milestone": "solsticio_good_works",
+      "icon": "minecraft:candle"
+    },
+    {
+      "key": "solsticio_blessing",
+      "deps": [
+        "solsticio_good_works"
+      ],
+      "en_us": [
+        "The Blessing",
+        "Talk to Bodhi: your Atlas gives back the Heart of Heliodor. Hand it to him and it becomes the Blessed Heart of Heliodor. If the Sun Spirit still has it, beat it first.\n\n'It was never a machine's heart. With love, then.'"
+      ],
+      "es_es": [
+        "La bendición",
+        "Hablá con Bodhi: tu Atlas devuelve el Corazón de Heliodor. Dáselo y se convierte en el Corazón de Heliodor bendito. Si el Espíritu del Sol todavía lo tiene, vencelo primero.\n\n«Nunca fue el corazón de una máquina. Con amor, entonces.»"
+      ],
+      "layout": {
+        "group": "chapel",
+        "x": 3,
+        "y": 6,
+        "size": 1.1,
+        "shape": "hexagon",
+        "hide_dependent_lines": false
+      },
+      "milestone": "solsticio_blessing",
+      "icon": "entrelumen:heliodor_relic_3"
+    },
+    {
+      "key": "solsticio_accord",
+      "deps": [
+        "solsticio_harvest",
+        "solsticio_terraprism",
+        "solsticio_blessing"
+      ],
+      "en_us": [
+        "The Table of Two Lights",
+        "With the three relics, talk to Aurelia in the town hall and to Bodhi in the chapel, in either order.\n\nShe wants the crystal to rule the light; he fears a second fusion. The only way out is that nobody keeps it."
+      ],
+      "es_es": [
+        "La mesa de las dos luces",
+        "Con las tres reliquias, hablá con Aurelia en el Ayuntamiento y con Bodhi en la capilla, en cualquier orden.\n\nElla quiere el cristal para mandar sobre la luz; él teme otra fusión. La única salida es que nadie se lo quede."
+      ],
+      "layout": {
+        "group": "town_hall",
+        "x": 0,
+        "y": 8,
+        "size": 1.1,
+        "shape": "hexagon",
+        "hide_dependent_lines": false
+      },
+      "milestone": "solsticio_accord",
+      "icon": "minecraft:lantern"
+    },
+    {
+      "key": "solsticio_portal",
+      "deps": [
+        "solsticio_accord"
+      ],
+      "en_us": [
+        "The Portal",
+        "Right-click the town hall portal with each of your three relics, then with your own Broken Light Key in your pack. The first team to open it frees the Entrelumen for everyone, and every shop gets cheaper.\n\nStill a shelter. No longer a prison."
+      ],
+      "es_es": [
+        "El portal",
+        "Clic derecho en el portal del Ayuntamiento con cada una de tus tres reliquias y después con tu propia Llave de Luz rota encima. El primer equipo que lo abre libera el Entrelumen para todos, y bajan los precios de todas las tiendas.\n\nSigue siendo un refugio. Ya no es una prisión."
+      ],
+      "layout": {
+        "group": "portal",
+        "x": 0,
+        "y": 10,
+        "size": 1.1,
+        "shape": "hexagon",
+        "hide_dependent_lines": false
+      },
+      "milestone": "solsticio_portal",
+      "icon": "entrelumen:light_key_broken"
+    },
+    {
+      "key": "solsticio_elections",
+      "deps": [
+        "solsticio_portal"
+      ],
+      "en_us": [
+        "Elections in Solsticio",
+        "Three days after the portal first opens, the square votes. Then talk to Aurelia.\n\n'Elected. It sounds different from appointed.' Nobody asks too loudly about the new windows."
+      ],
+      "es_es": [
+        "Elecciones en Solsticio",
+        "Tres días después de la primera apertura del portal, la plaza vota. Después hablá con Aurelia.\n\n«Elegida. Suena distinto de designada.» Nadie pregunta muy fuerte por los ventanales nuevos."
+      ],
+      "layout": {
+        "group": "town_hall",
+        "x": 0,
+        "y": 12,
+        "size": 1.1,
+        "shape": "hexagon",
+        "hide_dependent_lines": false
+      },
+      "milestone": "solsticio_elections",
+      "icon": "minecraft:paper"
     }
   ]
 }

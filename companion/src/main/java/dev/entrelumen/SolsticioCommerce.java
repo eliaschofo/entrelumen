@@ -318,14 +318,24 @@ public final class SolsticioCommerce {
       case SIDEQUEST -> {
         int persona = CommerceRules.persona(site.key, sites.sideQuestIds());
         data.putInt("persona", persona);
-        villager.setVillagerData(new VillagerData(VillagerType.PLAINS, VillagerProfession.NONE, 1));
+        villager.setVillagerData(new VillagerData(SolsticioStory.HELIODOR.get(), VillagerProfession.NONE, 1));
         villager.setNoAi(true);
         villager.setCustomName(Component.translatable("entrelumen.solsticio.innkeeper." + persona));
         villager.setOffers(new MerchantOffers());
+        // The innkeepers offer act VI's errands.
+        SolsticioStory.hookInnkeepers(List.of(site.key));
       }
       case TOWNSFOLK -> {
-        villager.setVillagerData(new VillagerData(VillagerType.PLAINS, VillagerProfession.NITWIT, 1));
+        villager.setVillagerData(new VillagerData(SolsticioStory.HELIODOR.get(), VillagerProfession.NITWIT, 1));
         villager.restrictTo(site.pos, CommerceRules.TOWNSFOLK_RANGE);
+      }
+      case CHARACTER -> {
+        var profession = SolsticioStory.CHARACTER_PROFESSIONS.get(site.key);
+        villager.setVillagerData(new VillagerData(SolsticioStory.HELIODOR.get(),
+            profession == null ? VillagerProfession.NONE : profession.get(), CommerceRules.MERCHANT_LEVEL));
+        villager.setNoAi(true);
+        villager.setCustomName(Component.translatable("entrelumen.solsticio.character." + site.key));
+        villager.setOffers(new MerchantOffers());
       }
       case MOVED -> {}
     }
@@ -339,12 +349,12 @@ public final class SolsticioCommerce {
 
   private static void dress(Villager villager, CommerceRules.Table table, int level) {
     VillagerProfession profession = VillagerProfession.NONE;
-    VillagerType type = VillagerType.PLAINS;
+    // Every villager the city spawns wears the Heliodor clothing (act VI); the table's villager_type is
+    // no longer used for the city's own merchants.
+    VillagerType type = SolsticioStory.HELIODOR.get();
     if (table != null) {
       profession = BuiltInRegistries.VILLAGER_PROFESSION.getOptional(ResourceLocation.parse(table.profession()))
           .orElse(VillagerProfession.NONE);
-      type = BuiltInRegistries.VILLAGER_TYPE.getOptional(ResourceLocation.parse(table.villagerType()))
-          .orElse(VillagerType.PLAINS);
     }
     // Set before the offers: a profession change clears a villager's offers.
     villager.setVillagerData(new VillagerData(type, profession, level));
@@ -441,6 +451,8 @@ public final class SolsticioCommerce {
       data.commerce.rebuild(List.of(), data.tradingHall);
       data.setDirty();
     }
+    // Cities placed before act VI's characters existed get Aurelia, Terra, Juan and Bodhi.
+    if (data.commerce.ensureCharacters(data.npcs)) data.setDirty();
     if (!data.commerce.pending(residentCap()).isEmpty()) startPopulation(server);
   }
 
@@ -623,12 +635,20 @@ public final class SolsticioCommerce {
         if (main) sideQuest(player, villager, data);
         return InteractionResult.SUCCESS;
       }
+      case CHARACTER -> {
+        if (main) SolsticioStory.character(player, villager, data.getString("key"));
+        return InteractionResult.SUCCESS;
+      }
       case TOWNSFOLK -> {
-        if (main) player.sendSystemMessage(townsfolkLine(level.getRandom()));
+        if (main && !SolsticioStory.townsfolk(player, villager))
+          player.sendSystemMessage(townsfolkLine(level.getRandom(), SolsticioStory.world(level.getServer())));
         return InteractionResult.SUCCESS;
       }
       case SHOP, NATIVE -> {
         if (!main || villager.isTrading()) return null;
+        // An errand for this shop (act VI) takes the click before the trades open.
+        if (role == CommerceRules.Role.SHOP && SolsticioStory.shopErrand(player, villager, data.getString("key")))
+          return InteractionResult.SUCCESS;
         CommerceRules.Table table = (role == CommerceRules.Role.SHOP ? shops : natives).get(data.getString("key"));
         if (role == CommerceRules.Role.NATIVE) awaken(level, villager, data, table, player);
         if (table == null) {
@@ -665,9 +685,11 @@ public final class SolsticioCommerce {
     return line;
   }
 
-  static Component townsfolkLine(RandomSource random) {
+  /** An ambient line; after the liberation and after the elections the city talks about other things. */
+  static Component townsfolkLine(RandomSource random, SolsticioStoryRules.World world) {
     return says(Component.translatable("entrelumen.solsticio.townsfolk"),
-        Component.translatable("entrelumen.solsticio.townsfolk." + random.nextInt(CommerceRules.TOWNSFOLK_LINES)));
+        Component.translatable("entrelumen.solsticio.townsfolk." + SolsticioStoryRules.townsfolkPool(world)
+            + random.nextInt(CommerceRules.TOWNSFOLK_LINES)));
   }
 
   static Component says(Component speaker, Component line) {
@@ -758,6 +780,7 @@ public final class SolsticioCommerce {
     }
     if (role == CommerceRules.Role.TOWNSFOLK && !villager.isNoAi() && data.contains("site", Tag.TAG_LONG))
       villager.restrictTo(BlockPos.of(data.getLong("site")), CommerceRules.TOWNSFOLK_RANGE);
+    SolsticioStory.dress(level, villager, data, role);
     if (role == CommerceRules.Role.NATIVE && !event.loadedFromDisk())
       awaken(level, villager, data, natives.get(data.getString("key")), null);
   }
@@ -788,11 +811,15 @@ public final class SolsticioCommerce {
 
   // ---- liberation and commands ----------------------------------------------------------
 
-  /** The final quest liberates the Entrelumen: every Solsticio merchant gets cheaper. */
+  /**
+   * The first team to open the portal liberates the Entrelumen (act VI, mission 10): every Solsticio
+   * merchant gets cheaper, and the elections are held three days of game time later.
+   */
   public static void setLiberated(MinecraftServer server, boolean liberated) {
     SolsticioData data = SolsticioData.get(server);
     if (data.liberated == liberated) return;
     data.liberated = liberated;
+    data.liberatedAt = liberated ? Math.max(1, server.overworld().getGameTime()) : 0;
     data.setDirty();
   }
 

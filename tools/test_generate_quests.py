@@ -2,6 +2,13 @@
 import copy,hashlib,json,re,unittest
 from pathlib import Path
 from generate_quests import ROOT,OUT,generate_all,stable_id,load_chapters
+# Act VI (24 September 2026): SolsticioStoryRules.REQUIRES, the same graph the server enforces
+# (SolsticioStoryRulesTest compares the Java map with content/act_six.json).
+SOLSTICIO_STORY={'solsticio_mayor':['solsticio_arrival'],'solsticio_seeds':['solsticio_mayor'],
+ 'solsticio_harvest':['solsticio_seeds'],'solsticio_power':['solsticio_mayor'],'solsticio_terraprism':['solsticio_power'],
+ 'solsticio_good_works':['solsticio_mayor'],'solsticio_blessing':['solsticio_good_works'],
+ 'solsticio_accord':['solsticio_harvest','solsticio_terraprism','solsticio_blessing'],
+ 'solsticio_portal':['solsticio_accord'],'solsticio_elections':['solsticio_portal']}
 class ChapterContracts(unittest.TestCase):
  def setUp(self):
   self.chapters=load_chapters()
@@ -158,6 +165,10 @@ class ChapterContracts(unittest.TestCase):
      # Recorded only for a campaign past Solsticio's gate (the Ark activated).
      self.assertEqual([quests[dep]['milestone'] for dep in q['deps']],['last_horizon'])
      self.assertNotIn(q['milestone'],projects)
+    elif q['milestone'] in SOLSTICIO_STORY:
+     # Act VI missions: recorded by SolsticioStory (dialogue, deliveries, the portal, the elections), never projects.
+     self.assertNotIn(q['milestone'],projects)
+     self.assertEqual([quests[dep]['milestone'] for dep in q['deps']],SOLSTICIO_STORY[q['milestone']])
     elif q['milestone'] in {'ark_calibrated','ark_contained','ark_renewed','ark_routed','ark_provisioned','ark_charted','last_horizon'}:
      self.assertNotIn(q['milestone'],projects)
      expected={
@@ -395,8 +406,8 @@ class ChapterContracts(unittest.TestCase):
   # IDs, tasks, dependencies, icons and layout of the Ark chapter did not move with the renumbering.
   self.assertEqual(hashlib.sha256(out[OUT/'chapters/last_horizon.snbt'].encode()).hexdigest(),
                    '6bbf63247e4dde76927f2fbc0ef69a622f0aac3acf08e44d50377b2a7ecd63ec')
-  # 42 before 24 September 2026, plus heart_recovered, heliodor_heart and solsticio_arrival.
-  self.assertEqual(len(mapping),45)
+  # 42 before 24 September 2026, plus heart_recovered, heliodor_heart and solsticio_arrival; plus act VI's ten missions.
+  self.assertEqual(len(mapping),55)
   self.assertTrue(all(q['rewards']==[] for q in compiled['quests']))
   source={q['key']:q for q in self.chapters[5]['quests']}
   for q in compiled['quests']:
@@ -480,11 +491,33 @@ class ChapterContracts(unittest.TestCase):
    ['arcane_module','engineering_module','exploration_module','habitation_module','logistics_module',
     'nature_module','renewal_engine','resilient_backbone','settlement_supply','world_network'])
   sixth=self.chapters[6]
-  self.assertEqual((sixth['chapter'],sixth['milestones'],[q['key'] for q in sixth['quests']]),
-                   ('solsticio',['solsticio_arrival'],['solsticio_arrival']))
+  missions=['solsticio_arrival',*SOLSTICIO_STORY]
+  self.assertEqual((sixth['chapter'],sixth['milestones'],[q['key'] for q in sixth['quests']]),('solsticio',missions,missions))
   entry=sixth['quests'][0]
   self.assertEqual((entry['deps'],entry['milestone'],entry['layout']['shape']),(['horizon_last'],'solsticio_arrival','hexagon'))
   for locale,term in (('en_us','Light Key'),('es_es','Llave de Luz')):self.assertIn(term,entry[locale][1])
+ def test_act_six_missions_name_their_people_and_relics(self):
+  # docs/design/act-six.md: eleven missions, one final, every mission a campaign milestone in the book.
+  quests={q['key']:q for q in self.chapters[6]['quests']}
+  self.assertEqual(len(quests),11)
+  self.assertTrue(all(q['milestone']==key and q['layout']['shape']=='hexagon' and not q.get('optional') for key,q in quests.items()))
+  who={'solsticio_mayor':'Aurelia','solsticio_seeds':'Juan','solsticio_harvest':'Juan','solsticio_power':'Terra',
+       'solsticio_terraprism':'Terra','solsticio_good_works':'Bodhi','solsticio_blessing':'Bodhi',
+       'solsticio_accord':'Aurelia','solsticio_elections':'Aurelia'}
+  for key,name in who.items():
+   for locale in ('en_us','es_es'):self.assertIn(name,quests[key][locale][1],key)
+  names={locale:json.loads((ROOT/f'companion/src/main/resources/assets/entrelumen/lang/{locale}.json').read_text(encoding='utf-8'))
+         for locale in ('en_us','es_es')}
+  for key,relic in (('solsticio_harvest',1),('solsticio_terraprism',2),('solsticio_blessing',3)):
+   self.assertEqual(quests[key]['icon'],f'entrelumen:heliodor_relic_{relic}')
+   for locale in ('en_us','es_es'):
+    self.assertIn(names[locale][f'item.entrelumen.heliodor_relic_{relic}'].lower(),quests[key][locale][1].lower(),key)
+  for locale,terms in (('en_us',('Heart of Heliodor','Broken Light Key','Luminosity','Generator Coils','Advanced Solar Heating Plates')),
+                       ('es_es',('Corazón de Heliodor','Llave de Luz rota','Luminosidad','bobinas del generador','placas solares avanzadas'))):
+   text='\n'.join(q[locale][1] for q in quests.values())
+   for term in terms:self.assertIn(term,text)
+  # The last mission closes the story.
+  self.assertEqual(self.chapters[6]['milestones'][-1],'solsticio_elections')
  def test_each_quest_says_what_then_why(self):
   for data in self.chapters[:7]:
    for q in data['quests']:

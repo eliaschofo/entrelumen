@@ -81,6 +81,8 @@ public final class FullpackQABootstrap {
       // vein resonators with the real Curios and FTB Ultimine.
       GameTestRegistry.register(ProgressionFullpackGameTests.class);
       GameTestRegistry.register(VeinResonatorFullpackGameTests.class);
+      // Act VI, Solsticio (25 September): the missions with the pack's real meals, parts and batteries.
+      GameTestRegistry.register(RuntimeGameTestsStory.class);
       Set<String> expected = new TreeSet<>();
       for (Class<?> owner : List.of(RuntimeGameTests.class, FullpackGameTests.class,
           ResourceFarmGameTests.class, Ae2CraftingGameTests.class, RFToolsRecipeGameTests.class,
@@ -95,7 +97,7 @@ public final class FullpackQABootstrap {
           ModPingpongRound4FullpackGameTests.class,
           RuntimeGameTestsCompass.class, RuntimeGameTestsGameplay.class, SolsticioFullpackGameTests.class,
           RuntimeGameTestsActs.class, ActsFullpackGameTests.class,
-          ProgressionFullpackGameTests.class, VeinResonatorFullpackGameTests.class))
+          ProgressionFullpackGameTests.class, VeinResonatorFullpackGameTests.class, RuntimeGameTestsStory.class))
         for (var method : owner.getDeclaredMethods())
           if (method.isAnnotationPresent(GameTest.class))
             expected.add(method.getName().toLowerCase(Locale.ROOT));

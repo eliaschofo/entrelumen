@@ -27,11 +27,13 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
 /**
- * The definitive portal, skeleton version. City placement sets it, dormant, on the
- * {@code town_hall_portal} marker. A team that unlocked Solsticio sets the three Heliodor relics
- * into it; with all three in place, a player holding their own broken Light Key opens it. Open,
- * anyone may walk in: from Solsticio it leads home, from its Overworld twin (only without
- * Waystones) it leads to the arrival point. The key is only shown, never consumed.
+ * The definitive portal. City placement sets it, dormant, on the {@code town_hall_portal} marker.
+ * Act VI, mission 10: a team that reached the accord (mission 9) sets its three Heliodor relics into
+ * it; with its three in place, a member holding their own broken Light Key completes the mission. The
+ * first team to do so opens the portal for everyone and liberates the Entrelumen; later teams set
+ * their relics in the open portal and complete theirs. Open, anyone may walk in: from Solsticio it
+ * leads home, from its Overworld twin (only without Waystones) it leads to the arrival point. The key
+ * is only shown, never consumed.
  */
 public final class SolsticioPortalBlock extends Block {
   public static final MapCodec<SolsticioPortalBlock> CODEC = simpleCodec(SolsticioPortalBlock::new);
@@ -116,37 +118,59 @@ public final class SolsticioPortalBlock extends Block {
       player.displayClientMessage(Component.translatable("entrelumen.portal.inert"), true);
       return false;
     }
-    if (data.portalArmed) {
-      player.displayClientMessage(Component.translatable("entrelumen.portal.open"), true);
-      return false;
-    }
     if (!Solsticio.GATE.satisfiedBy(StructureProtection.actor(player))) {
       player.displayClientMessage(Component.translatable("entrelumen.protection.locked"), true);
       return false;
     }
-    if (data.portalRelics.contains(relic)) {
+    Campaigns.Campaign campaign = SolsticioStory.campaign(player);
+    if (SolsticioStoryRules.done(campaign, SolsticioStoryRules.PORTAL)) {
+      player.displayClientMessage(Component.translatable("entrelumen.portal.open"), true);
+      return false;
+    }
+    if (!SolsticioStoryRules.done(campaign, SolsticioStoryRules.ACCORD)) {
+      // Mission 9 first: Aurelia and Bodhi agree to open it.
+      player.displayClientMessage(Component.translatable("entrelumen.portal.needs_accord"), true);
+      return false;
+    }
+    if (!SolsticioStoryRules.presentRelic(campaign, relic)) {
       player.displayClientMessage(Component.translatable("entrelumen.portal.relic_present"), true);
       return false;
     }
     stack.consume(1, player);
+    CampaignData.get(player.server).setDirty();
     data.portalRelics.add(relic);
     data.setDirty();
     player.serverLevel().playSound(null, pos, SoundEvents.AMETHYST_BLOCK_CHIME, SoundSource.BLOCKS, 1.0F, 0.9F + relic * 0.1F);
-    player.sendSystemMessage(Component.translatable("entrelumen.portal.relic_set", data.portalRelics.size(), 3));
+    player.sendSystemMessage(Component.translatable("entrelumen.portal.relic_set",
+        SolsticioStoryRules.relicsPresented(campaign), SolsticioStoryRules.RELICS));
     tryArm(player, pos);
     return true;
   }
 
-  /** Opens the portal when all relics are set and the player carries their own broken key. */
+  /**
+   * Mission 10 for the player's team once its three relics are set and the player carries their own
+   * broken key. The first team opens the portal for everyone and liberates the Entrelumen.
+   */
   static boolean tryArm(ServerPlayer player, BlockPos pos) {
     SolsticioData data = SolsticioData.get(player.server);
-    if (!isAnchor(player, pos) || data.portalArmed || data.portalRelics.size() < Solsticio.RELICS.size()) return false;
+    if (!isAnchor(player, pos)) return false;
+    Campaigns.Campaign campaign = SolsticioStory.campaign(player);
+    if (!SolsticioStoryRules.done(campaign, SolsticioStoryRules.ACCORD)
+        || SolsticioStoryRules.done(campaign, SolsticioStoryRules.PORTAL)
+        || SolsticioStoryRules.relicsPresented(campaign) < SolsticioStoryRules.RELICS) return false;
     if (!Solsticio.GATE.satisfiedBy(StructureProtection.actor(player))) return false;
     if (!carriesOwnKey(player)) {
       player.sendSystemMessage(Component.translatable("entrelumen.portal.needs_key"));
       return false;
     }
+    if (!SolsticioStoryRules.openPortal(campaign)) return false;
+    CampaignData.get(player.server).setDirty();
     ServerLevel level = player.serverLevel();
+    if (data.portalArmed) {
+      player.sendSystemMessage(Component.translatable("entrelumen.portal.joined"));
+      level.playSound(null, pos, SoundEvents.AMETHYST_BLOCK_RESONATE, SoundSource.BLOCKS, 1.0F, 1.0F);
+      return true;
+    }
     data.portalArmed = true;
     data.portalArmedBy = player.getUUID();
     data.portalArmedAt = level.getGameTime();
@@ -158,6 +182,7 @@ public final class SolsticioPortalBlock extends Block {
     level.playSound(null, pos, SoundEvents.BEACON_ACTIVATE, SoundSource.BLOCKS, 1.0F, 1.2F);
     player.server.getPlayerList().broadcastSystemMessage(
         Component.translatable("entrelumen.portal.opened", player.getDisplayName()), false);
+    SolsticioStory.liberate(player.server);
     return true;
   }
 
@@ -213,7 +238,11 @@ public final class SolsticioPortalBlock extends Block {
       player.displayClientMessage(Component.translatable("entrelumen.portal.inert"), true);
       return;
     }
-    if (data.portalArmed) player.displayClientMessage(Component.translatable("entrelumen.portal.open"), true);
-    else player.displayClientMessage(Component.translatable("entrelumen.portal.dormant", data.portalRelics.size(), 3), true);
+    Campaigns.Campaign campaign = SolsticioStory.campaign(player);
+    if (data.portalArmed && (SolsticioStoryRules.done(campaign, SolsticioStoryRules.PORTAL)
+        || !SolsticioStoryRules.done(campaign, SolsticioStoryRules.ACCORD)))
+      player.displayClientMessage(Component.translatable("entrelumen.portal.open"), true);
+    else player.displayClientMessage(Component.translatable("entrelumen.portal.dormant",
+        SolsticioStoryRules.relicsPresented(campaign), SolsticioStoryRules.RELICS), true);
   }
 }
