@@ -2,8 +2,8 @@
 
 A mirror-symmetric tuning fork: two prongs joined in a U, a stem, a collar and a faceted gem at
 the base that sets the resonance, all inside the outline. Each tier climbs in metal (copper, iron, brass, teal, dark alloy, luminous)
-and gem, so the six read as one family at inventory size. Writes art/grids/item/resonator_<n>.txt;
-the item ids are set by the progression work and the grids are renamed to match when registered.
+and gem, so the six read as one family at inventory size. Writes art/grids/item/vein_resonator_<n>.txt,
+the grids of the items entrelumen:vein_resonator_1..6 that art/build_art.py registers.
 
     python art/authoring/draw_resonators.py
 """
@@ -84,7 +84,7 @@ if __name__ == '__main__':
     for t in range(6):
         g = grid(t)
         assert all(g[y][x] == g[y][15 - x] for y in range(16) for x in range(16))
-        write('resonator_%d' % (t + 1), g)
+        write('vein_resonator_%d' % (t + 1), g)
         im = Image.new('RGBA', (16, 16), (0, 0, 0, 0))
         for y in range(16):
             for x in range(16):
