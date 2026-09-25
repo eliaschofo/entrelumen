@@ -1,0 +1,478 @@
+{
+ "chapter": "guide_industrial_foregoing",
+ "group": "tech",
+ "act": "II",
+ "icon": "industrialforegoing:machine_frame_simple",
+ "title": {
+  "en_us": "Industrial Foregoing",
+  "es_es": "Industrial Foregoing"
+ },
+ "subtitle": {
+  "en_us": "Latex and plastic, machine frames, farms and mob machines, biofuel, laser drills and the Infinity tools.",
+  "es_es": "Látex y plástico, marcos de máquina, granjas y máquinas de mobs, biocombustible, taladros láser y las herramientas Infinity."
+ },
+ "quests": [
+  {
+   "key": "if_welcome",
+   "deps": [],
+   "type": "checkmark",
+   "icon": "industrialforegoing:conveyor",
+   "layout": {
+    "x": 0,
+    "y": 0,
+    "size": 2.0,
+    "shape": "hexagon"
+   },
+   "en_us": [
+    "Welcome to Industrial Foregoing",
+    "Industrial Foregoing automates the boring parts of the game with powered machines on frames: tree tapping, farms, animal and mob machines, enchanting helpers, fluid generators and a laser drill that pulls ores out of the void. Machines take range, speed and efficiency addons.\n\nIts manual has an entry per machine; EMI shows every rate."
+   ],
+   "es_es": [
+    "Bienvenida a Industrial Foregoing",
+    "Industrial Foregoing automatiza lo aburrido del juego con máquinas eléctricas sobre marcos: extracción de árboles, granjas, máquinas de animales y mobs, ayudantes de encantamiento, generadores de fluidos y un taladro láser que saca minerales de la nada. Las máquinas aceptan addons de rango, velocidad y eficiencia.\n\nSu manual tiene una entrada por máquina; EMI muestra todos los rendimientos."
+   ],
+   "sources": [
+    "jar:industrialforegoing-1.21-3.6.39.jar:assets/industrialforegoing/patchouli_books/industrial_foregoing/en_us/entries/basics/addons.json",
+    "jar:industrialforegoing-1.21-3.6.39.jar:assets/industrialforegoing/patchouli_books/industrial_foregoing/en_us/entries/basics/plastic.json"
+   ]
+  },
+  {
+   "key": "if_latex",
+   "deps": [
+    "if_welcome"
+   ],
+   "type": "item",
+   "item": "industrialforegoing:fluid_extractor",
+   "layout": {
+    "x": 3,
+    "y": 0,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Latex",
+    "A Tree Fluid Extractor placed in front of a log extracts Latex, slowly consuming the log (first stripping it). Several extractors can work one log at once, and power makes them faster.\n\nPlant a row of trees and a line of extractors: latex is the base of plastic."
+   ],
+   "es_es": [
+    "Látex",
+    "Un Extractor de fluido de árbol puesto delante de un tronco extrae Látex, consumiendo el tronco de a poco (primero lo pela). Varios extractores pueden trabajar un mismo tronco, y la energía los acelera.\n\nPlantá una fila de árboles y una línea de extractores: el látex es la base del plástico."
+   ],
+   "sources": [
+    "jar:industrialforegoing-1.21-3.6.39.jar:assets/industrialforegoing/patchouli_books/industrial_foregoing/en_us/entries/basics/fluid_extractor.json",
+    "jar:industrialforegoing-1.21-3.6.39.jar:assets/industrialforegoing/lang/en_us.json#text.industrialforegoing.book.tree_fluid_extractor"
+   ]
+  },
+  {
+   "key": "if_plastic",
+   "deps": [
+    "if_latex"
+   ],
+   "type": "item",
+   "item": "industrialforegoing:plastic",
+   "count": 16,
+   "layout": {
+    "x": 5.5,
+    "y": 0,
+    "size": 1.5,
+    "shape": "hexagon"
+   },
+   "en_us": [
+    "Dry rubber and plastic",
+    "The Latex Processing Unit turns 750 mB of latex and 500 mB of water into Dry Rubber; smelting dry rubber gives Plastic. Plastic goes into most IF machines.\n\nIF plastic counts as plastic for other mods that ask for the common tag."
+   ],
+   "es_es": [
+    "Caucho seco y plástico",
+    "La Unidad de procesamiento de látex convierte 750 mB de látex y 500 mB de agua en Caucho seco; fundir el caucho seco da Plástico. El plástico va en casi todas las máquinas de IF.\n\nEl plástico de IF cuenta como plástico para otros mods que piden la etiqueta común."
+   ],
+   "sources": [
+    "jar:industrialforegoing-1.21-3.6.39.jar:assets/industrialforegoing/patchouli_books/industrial_foregoing/en_us/entries/basics/latex_processing_unit.json",
+    "jar:industrialforegoing-1.21-3.6.39.jar:assets/industrialforegoing/patchouli_books/industrial_foregoing/en_us/entries/basics/plastic.json",
+    "jar:industrialforegoing-1.21-3.6.39.jar:data/industrialforegoing/recipe/plastic.json",
+    "jar:industrialforegoing-1.21-3.6.39.jar:data/c/tags/item/plastics.json"
+   ]
+  },
+  {
+   "key": "if_frames",
+   "deps": [
+    "if_plastic"
+   ],
+   "type": "item",
+   "item": "industrialforegoing:machine_frame_simple",
+   "layout": {
+    "x": 8,
+    "y": 0,
+    "size": 1.5,
+    "shape": "hexagon"
+   },
+   "en_us": [
+    "Machine frames",
+    "Every IF machine is built on a frame: Pity, Simple, Advanced and Supreme, each better one needing better materials. The frame tier decides which machines you can build.\n\nThe Pitiful Generator burns fuel even when full: it is only a starter."
+   ],
+   "es_es": [
+    "Marcos de máquina",
+    "Todas las máquinas de IF se arman sobre un marco: Lastimoso, Simple, Avanzado y Supremo, cada uno mejor con materiales mejores. El nivel del marco decide qué máquinas podés hacer.\n\nEl Generador lastimoso quema combustible aunque esté lleno: es sólo para arrancar."
+   ],
+   "sources": [
+    "jar:industrialforegoing-1.21-3.6.39.jar:assets/industrialforegoing/patchouli_books/industrial_foregoing/en_us/entries/generators/pity.json",
+    "jar:industrialforegoing-1.21-3.6.39.jar:assets/industrialforegoing/lang/en_us.json"
+   ]
+  },
+  {
+   "key": "if_addons",
+   "deps": [
+    "if_frames"
+   ],
+   "type": "checkmark",
+   "icon": "industrialforegoing:machine_frame_advanced",
+   "layout": {
+    "x": 8,
+    "y": -2.5,
+    "size": 1.0,
+    "shape": "circle"
+   },
+   "en_us": [
+    "Addons",
+    "Range addons enlarge the working area of machines that have one (each tier adds 1). Speed addons advance the progress bar faster; Efficiency addons cut the ticks per operation (tier 1: 10%, tier 2: 20%).\n\nAdd range first on farms; speed and efficiency on processors."
+   ],
+   "es_es": [
+    "Addons",
+    "Los addons de Rango agrandan el área de trabajo de las máquinas que tienen una (cada nivel suma 1). Los de Velocidad hacen avanzar más rápido la barra de progreso; los de Eficiencia bajan los ticks por operación (nivel 1: 10%, nivel 2: 20%).\n\nEn granjas, primero rango; en procesadoras, velocidad y eficiencia."
+   ],
+   "sources": [
+    "jar:industrialforegoing-1.21-3.6.39.jar:assets/industrialforegoing/patchouli_books/industrial_foregoing/en_us/entries/basics/addons.json"
+   ]
+  },
+  {
+   "key": "if_dissolution",
+   "deps": [
+    "if_frames"
+   ],
+   "type": "item",
+   "item": "industrialforegoing:dissolution_chamber",
+   "layout": {
+    "x": 10.5,
+    "y": 0,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Dissolution Chamber",
+    "A shapeless crafting machine with up to 8 items and one fluid in, items and/or fluid out; it locks its slots to the current recipe. Many advanced IF parts, and the Infinity tools, are made here.\n\nFeed it by pipe and it becomes a clean automated crafter for IF recipes."
+   ],
+   "es_es": [
+    "Cámara de disolución",
+    "Una máquina de crafteo sin forma con hasta 8 ítems y un fluido de entrada, y ítems o fluido de salida; bloquea sus ranuras a la receta en curso. Muchas piezas avanzadas de IF, y las herramientas Infinity, se hacen acá.\n\nAlimentala por tubería y es un crafteador automático prolijo para las recetas de IF."
+   ],
+   "sources": [
+    "jar:industrialforegoing-1.21-3.6.39.jar:assets/industrialforegoing/patchouli_books/industrial_foregoing/en_us/entries/basics/dissolution_chamber.json"
+   ]
+  },
+  {
+   "key": "if_farm",
+   "deps": [
+    "if_frames"
+   ],
+   "type": "item",
+   "item": "industrialforegoing:plant_gatherer",
+   "layout": {
+    "x": 8,
+    "y": 2.5,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Plant farms",
+    "The Plant Sower plants, the Plant Fertilizer boosts growth and the Plant Gatherer chops whole trees and harvests crops, making a little Sludge. With a trickle of Ether Gas the gatherer replants on its own. The Hydroponic Bed speeds crops with power and water (lava for Nether crops).\n\nSludge goes into a Sewage Composter or back into fertilizer."
+   ],
+   "es_es": [
+    "Granjas de plantas",
+    "El Sembrador planta, el Fertilizador acelera el crecimiento y el Recolector de plantas tala árboles enteros y cosecha cultivos, generando un poco de Lodo. Con un hilo de Gas éter el recolector replanta solo. La Cama hidropónica acelera cultivos con energía y agua (lava para cultivos del Nether).\n\nEl lodo va a un Compostador de aguas residuales o de vuelta a fertilizante."
+   ],
+   "sources": [
+    "jar:industrialforegoing-1.21-3.6.39.jar:assets/industrialforegoing/patchouli_books/industrial_foregoing/en_us/entries/agr_hus/plant_sower.json",
+    "jar:industrialforegoing-1.21-3.6.39.jar:assets/industrialforegoing/patchouli_books/industrial_foregoing/en_us/entries/agr_hus/plant_gatherer.json",
+    "jar:industrialforegoing-1.21-3.6.39.jar:assets/industrialforegoing/patchouli_books/industrial_foregoing/en_us/entries/agr_hus/plant_fertilizer.json",
+    "jar:industrialforegoing-1.21-3.6.39.jar:assets/industrialforegoing/patchouli_books/industrial_foregoing/en_us/entries/agr_hus/hydroponic_bed.json"
+   ]
+  },
+  {
+   "key": "if_animals",
+   "deps": [
+    "if_farm"
+   ],
+   "type": "item",
+   "item": "industrialforegoing:animal_rancher",
+   "optional": true,
+   "layout": {
+    "x": 8,
+    "y": 5,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Animal machines",
+    "The Animal Feeder breeds, the Animal Rancher shears sheep and milks cows, the Animal Baby Separator teleports babies behind it, and the Sewer collects Sewage from animals and turns experience into Essence.\n\nA fenced pen with these four needs no player at all."
+   ],
+   "es_es": [
+    "Máquinas de animales",
+    "El Alimentador de animales los cría, el Ranchero esquila ovejas y ordeña vacas, el Separador de crías teletransporta a los bebés detrás suyo y la Cloaca junta Aguas residuales de los animales y convierte la experiencia en Esencia.\n\nUn corral con estas cuatro no necesita ningún jugador."
+   ],
+   "sources": [
+    "jar:industrialforegoing-1.21-3.6.39.jar:assets/industrialforegoing/patchouli_books/industrial_foregoing/en_us/entries/agr_hus/animal_feeder.json",
+    "jar:industrialforegoing-1.21-3.6.39.jar:assets/industrialforegoing/patchouli_books/industrial_foregoing/en_us/entries/agr_hus/animal_rancher.json",
+    "jar:industrialforegoing-1.21-3.6.39.jar:assets/industrialforegoing/patchouli_books/industrial_foregoing/en_us/entries/agr_hus/animal_baby_separator.json",
+    "jar:industrialforegoing-1.21-3.6.39.jar:assets/industrialforegoing/patchouli_books/industrial_foregoing/en_us/entries/agr_hus/sewer.json"
+   ]
+  },
+  {
+   "key": "if_mobs",
+   "deps": [
+    "if_dissolution"
+   ],
+   "type": "item",
+   "item": "industrialforegoing:mob_crusher",
+   "layout": {
+    "x": 13,
+    "y": 2.5,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Mob machines",
+    "The Mob Crusher kills mobs as a player would, dropping loot and Essence (liquid experience), or loot with random Fortune. The Mob Slaughter Factory grinds mobs into Liquid Meat and pink slime with no drops. The Mob Imprisonment Tool carries a mob.\n\nENTRELUMEN change: the Mob Duplicator, which spawns copies of an imprisoned mob using Essence, needs an Ecosystem Capsule (Act IV)."
+   ],
+   "es_es": [
+    "Máquinas de mobs",
+    "La Trituradora de mobs los mata como un jugador y suelta botín y Esencia (experiencia líquida), o botín con Fortuna al azar. La Fábrica de faena muele mobs en Carne líquida y slime rosa, sin drops. La Herramienta de encierro de mobs carga un mob.\n\nCambio de ENTRELUMEN: el Duplicador de mobs, que genera copias de un mob encerrado con Esencia, pide una Cápsula de ecosistema (acto IV)."
+   ],
+   "sources": [
+    "jar:industrialforegoing-1.21-3.6.39.jar:assets/industrialforegoing/patchouli_books/industrial_foregoing/en_us/entries/agr_hus/mob_crusher.json",
+    "jar:industrialforegoing-1.21-3.6.39.jar:assets/industrialforegoing/lang/en_us.json#text.industrialforegoing.book.mob_slaughter_factory",
+    "jar:industrialforegoing-1.21-3.6.39.jar:assets/industrialforegoing/patchouli_books/industrial_foregoing/en_us/entries/agr_hus/mob_duplicator.json",
+    "repo:pack/kubejs/server_scripts/entrelumen_industrial_balance.js"
+   ]
+  },
+  {
+   "key": "if_bio",
+   "deps": [
+    "if_farm"
+   ],
+   "type": "item",
+   "item": "industrialforegoing:bioreactor",
+   "layout": {
+    "x": 10.5,
+    "y": 2.5,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Bioreactor and biofuel",
+    "The Bioreactor turns seeds, saplings, dyes and other organics plus water into Biofuel; the more different items inside, the more biofuel per item. The Biofuel Generator burns it at 160 RF/t and stops consuming when its buffer is full.\n\nIF biofuel also super-heats a Create liquid blaze burner."
+   ],
+   "es_es": [
+    "Biorreactor y biocombustible",
+    "El Biorreactor convierte semillas, brotes, tintes y otros orgánicos más agua en Biocombustible; cuantos más ítems distintos adentro, más biocombustible por ítem. El Generador de biocombustible lo quema a 160 RF/t y deja de consumir cuando su buffer está lleno.\n\nEl biocombustible de IF también sobrecalienta un quemador de blaze líquido de Create."
+   ],
+   "sources": [
+    "jar:industrialforegoing-1.21-3.6.39.jar:assets/industrialforegoing/patchouli_books/industrial_foregoing/en_us/entries/generators/bioreactor.json",
+    "jar:industrialforegoing-1.21-3.6.39.jar:assets/industrialforegoing/patchouli_books/industrial_foregoing/en_us/entries/generators/biofuel_generator.json",
+    "jar:industrialforegoing-1.21-3.6.39.jar:data/c/tags/fluid/biofuel.json"
+   ]
+  },
+  {
+   "key": "if_mycelial",
+   "deps": [
+    "if_bio"
+   ],
+   "type": "item",
+   "item": "industrialforegoing:mycelial_furnace",
+   "optional": true,
+   "layout": {
+    "x": 10.5,
+    "y": 5,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Mycelial generators",
+    "A family of small generators, each burning something different (furnace fuel, food, and more). The Mycelial Reactor, made in the Dissolution Chamber, produces a lot of FE only while one of each kind of mycelial generator is running at the same time.\n\nA collector's power plant."
+   ],
+   "es_es": [
+    "Generadores miceliales",
+    "Una familia de generadores chicos, cada uno quemando algo distinto (combustible, comida y más). El Reactor micelial, hecho en la Cámara de disolución, produce mucho FE sólo mientras funciona a la vez uno de cada tipo de generador micelial.\n\nUna central de coleccionista."
+   ],
+   "sources": [
+    "jar:industrialforegoing-1.21-3.6.39.jar:assets/industrialforegoing/patchouli_books/industrial_foregoing/en_us/entries/generators/mycelial_reactor.json"
+   ]
+  },
+  {
+   "key": "if_laser",
+   "deps": [
+    "if_dissolution"
+   ],
+   "type": "item",
+   "item": "industrialforegoing:laser_drill",
+   "layout": {
+    "x": 13,
+    "y": 0,
+    "size": 1.5,
+    "shape": "hexagon"
+   },
+   "en_us": [
+    "Laser drills",
+    "An Ore Laser Base draws ores from nothing when Laser Drills placed one block away power it; coloured Laser Lenses bias it towards certain ores (EMI lists the chances). A Fluid Laser Base does the same for fluids; right on top of a Wither it makes Ether Gas.\n\nENTRELUMEN change: the Ore Laser Base needs a Spectral Lens (Act IV) and the Fluid Laser Base a Power Regulator (Act III)."
+   ],
+   "es_es": [
+    "Taladros láser",
+    "Una Base láser de minerales saca minerales de la nada cuando la cargan Taladros láser puestos a un bloque; las Lentes láser de colores la inclinan hacia ciertos minerales (EMI muestra las chances). Una Base láser de fluidos hace lo mismo con fluidos; justo encima de un Wither da Gas éter.\n\nCambio de ENTRELUMEN: la Base láser de minerales pide una Lente espectral (acto IV) y la de fluidos un Regulador de energía (acto III)."
+   ],
+   "sources": [
+    "jar:industrialforegoing-1.21-3.6.39.jar:assets/industrialforegoing/lang/en_us.json#text.industrialforegoing.book.laser_drill",
+    "jar:industrialforegoing-1.21-3.6.39.jar:assets/industrialforegoing/lang/en_us.json#emi.category.industrialforegoing.laser_drill_ore",
+    "jar:industrialforegoing-1.21-3.6.39.jar:assets/industrialforegoing/patchouli_books/industrial_foregoing/en_us/entries/resource_production/ether_gas.json",
+    "repo:pack/kubejs/server_scripts/entrelumen_industrial_balance.js"
+   ]
+  },
+  {
+   "key": "if_enchant",
+   "deps": [
+    "if_laser"
+   ],
+   "type": "item",
+   "item": "industrialforegoing:enchantment_extractor",
+   "optional": true,
+   "layout": {
+    "x": 15.5,
+    "y": -2.5,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Enchanting machines",
+    "The Enchantment Extractor pulls enchantments off items into books, or turns them into Essence. The Enchantment Applicator works like an anvil paid in Essence, the Enchantment Factory enchants an item at level 30 with lots of Essence and the Enchantment Sorter separates enchanted from plain items.\n\nWith a mob crusher feeding Essence, enchanting becomes a pipeline."
+   ],
+   "es_es": [
+    "Máquinas de encantamiento",
+    "El Extractor de encantamientos saca encantamientos de ítems a libros, o los convierte en Esencia. El Aplicador de encantamientos funciona como un yunque que se paga con Esencia, la Fábrica de encantamientos encanta un ítem a nivel 30 con mucha Esencia y el Clasificador separa lo encantado de lo común.\n\nCon una trituradora de mobs dando Esencia, encantar se vuelve una línea de producción."
+   ],
+   "sources": [
+    "jar:industrialforegoing-1.21-3.6.39.jar:assets/industrialforegoing/patchouli_books/industrial_foregoing/en_us/entries/misc/enchantment_extractor.json",
+    "jar:industrialforegoing-1.21-3.6.39.jar:assets/industrialforegoing/patchouli_books/industrial_foregoing/en_us/entries/misc/enchantment_applicator.json",
+    "jar:industrialforegoing-1.21-3.6.39.jar:assets/industrialforegoing/patchouli_books/industrial_foregoing/en_us/entries/misc/enchantment_factory.json",
+    "jar:industrialforegoing-1.21-3.6.39.jar:assets/industrialforegoing/patchouli_books/industrial_foregoing/en_us/entries/misc/enchantment_sorter.json"
+   ]
+  },
+  {
+   "key": "if_transport",
+   "deps": [
+    "if_welcome"
+   ],
+   "type": "item",
+   "item": "industrialforegoing:conveyor",
+   "count": 16,
+   "optional": true,
+   "layout": {
+    "x": 3,
+    "y": 2.5,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Conveyors and transporters",
+    "IF Conveyors carry items, mobs and (horizontally) fluids; glowstone speeds them up and upgrades let them interact with the world. Item, Fluid and World Transporters move things between inventories one block apart, several types in one block, each with insert or extract mode and filters.\n\nBlack Hole Units store up to 2,147,483,647 of one item; Black Hole Tanks the same in mB of one fluid."
+   ],
+   "es_es": [
+    "Cintas y transportadores",
+    "Las Cintas de IF llevan ítems, mobs y (en horizontal) fluidos; la glowstone las acelera y las mejoras las hacen interactuar con el mundo. Los Transportadores de ítems, fluidos y de mundo mueven cosas entre inventarios a un bloque, varios tipos en un mismo bloque, cada uno en modo insertar o extraer y con filtros.\n\nLas Unidades de agujero negro guardan hasta 2.147.483.647 de un ítem; los Tanques de agujero negro lo mismo en mB de un fluido."
+   ],
+   "sources": [
+    "jar:industrialforegoing-1.21-3.6.39.jar:assets/industrialforegoing/patchouli_books/industrial_foregoing/en_us/entries/transport/conveyor.json",
+    "jar:industrialforegoing-1.21-3.6.39.jar:assets/industrialforegoing/patchouli_books/industrial_foregoing/en_us/entries/transport/item_transporter.json",
+    "jar:industrialforegoing-1.21-3.6.39.jar:assets/industrialforegoing/lang/en_us.json#text.industrialforegoing.book.black_hole_unit",
+    "jar:industrialforegoing-1.21-3.6.39.jar:assets/industrialforegoing/lang/en_us.json#text.industrialforegoing.book.black_hole_tank"
+   ]
+  },
+  {
+   "key": "if_infinity",
+   "deps": [
+    "if_laser"
+   ],
+   "type": "item",
+   "item": "industrialforegoing:infinity_drill",
+   "layout": {
+    "x": 15.5,
+    "y": 0,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Infinity tools",
+    "Drill, Saw, Hammer, Trident, Launcher, Backpack and Nuke, made in the Dissolution Chamber. The more power they hold, the better, over seven tiers from Poor to Artifact; biofuel inside makes them use fuel instead of power, and drops teleport to you. Sneak-right-click opens their GUI. The Infinity Charger tops them up.\n\nENTRELUMEN change: the Infinity Drill needs a Power Regulator (Act III) and the Infinity Nuke a Containment Seal (Act IV)."
+   ],
+   "es_es": [
+    "Herramientas Infinity",
+    "Taladro, Sierra, Martillo, Tridente, Lanzador, Mochila y Bomba, hechas en la Cámara de disolución. Cuanta más energía guardan, mejores son, en siete niveles de Pobre a Artefacto; con biocombustible adentro gastan combustible en vez de energía, y los drops se teletransportan a vos. Agachado con clic derecho abrís su interfaz. El Cargador Infinity las recarga.\n\nCambio de ENTRELUMEN: el Taladro Infinity pide un Regulador de energía (acto III) y la Bomba Infinity un Sello de contención (acto IV)."
+   ],
+   "sources": [
+    "jar:industrialforegoing-1.21-3.6.39.jar:assets/industrialforegoing/patchouli_books/industrial_foregoing/en_us/entries/tools/infinity_tools.json",
+    "jar:industrialforegoing-1.21-3.6.39.jar:assets/industrialforegoing/patchouli_books/industrial_foregoing/en_us/entries/tools/infinity_drill.json",
+    "jar:industrialforegoing-1.21-3.6.39.jar:assets/industrialforegoing/patchouli_books/industrial_foregoing/en_us/entries/tools/infinity_nuke.json",
+    "jar:industrialforegoing-1.21-3.6.39.jar:assets/industrialforegoing/patchouli_books/industrial_foregoing/en_us/entries/misc/infinity_charger.json",
+    "repo:pack/kubejs/server_scripts/entrelumen_industrial_balance.js"
+   ]
+  },
+  {
+   "key": "if_pack",
+   "deps": [
+    "if_infinity"
+   ],
+   "type": "checkmark",
+   "icon": "entrelumen:spectral_lens",
+   "layout": {
+    "x": 15.5,
+    "y": 2.5,
+    "size": 1.0,
+    "shape": "gear"
+   },
+   "en_us": [
+    "Pack changes to Industrial Foregoing",
+    "ENTRELUMEN changes: Fluid Laser Base and Infinity Drill (Power Regulator, III), Ore Laser Base (Spectral Lens, IV), Mob Duplicator (Ecosystem Capsule, IV), Infinity Nuke (Containment Seal, IV). The pack also fixed IF's Curios slot list (two invalid slot names removed) and Enchantment Industry recognizes IF Essence as experience.\n\nPlastic, frames and farms stay native: they are early tools."
+   ],
+   "es_es": [
+    "Cambios del pack a Industrial Foregoing",
+    "Cambios de ENTRELUMEN: Base láser de fluidos y Taladro Infinity (Regulador de energía, III), Base láser de minerales (Lente espectral, IV), Duplicador de mobs (Cápsula de ecosistema, IV), Bomba Infinity (Sello de contención, IV). El pack también arregló la lista de ranuras de Curios de IF (se quitaron dos nombres inválidos) y Enchantment Industry reconoce la Esencia de IF como experiencia.\n\nEl plástico, los marcos y las granjas quedan nativos: son herramientas tempranas."
+   ],
+   "sources": [
+    "repo:pack/kubejs/server_scripts/entrelumen_industrial_balance.js",
+    "repo:pack/kubejs/data/industrialforegoing/curios/entities/entities.json",
+    "repo:pack/kubejs/data/create_enchantment_industry/data_maps/fluid/unit/experience.json"
+   ]
+  },
+  {
+   "key": "if_mastery",
+   "deps": [
+    "if_infinity"
+   ],
+   "type": "item",
+   "item": "industrialforegoing:ore_laser_base",
+   "layout": {
+    "x": 18,
+    "y": 0,
+    "size": 2.0,
+    "shape": "octagon"
+   },
+   "en_us": [
+    "IF mastery",
+    "An ore laser with its drills and lenses, a mob tower with crusher and enchantment line, and an Infinity tool levelled up to a high tier.\n\nIF quietly replaces the chores; you keep the exploring."
+   ],
+   "es_es": [
+    "Maestría de IF",
+    "Un láser de minerales con sus taladros y lentes, una torre de mobs con trituradora y línea de encantamiento, y una herramienta Infinity subida a un nivel alto.\n\nIF reemplaza en silencio las tareas repetitivas; a vos te queda explorar."
+   ],
+   "sources": [
+    "jar:industrialforegoing-1.21-3.6.39.jar:assets/industrialforegoing/patchouli_books/industrial_foregoing/en_us/entries/tools/infinity_tools.json",
+    "repo:pack/kubejs/server_scripts/entrelumen_industrial_balance.js"
+   ]
+  }
+ ]
+}
