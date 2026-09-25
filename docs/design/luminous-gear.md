@@ -153,6 +153,16 @@ Además define una punta (+10 ataque, +4096 durabilidad, +20 velocidad) y una ca
 
 Los archivos de equipo usan el sub-predicado `entrelumen:radiant`, que registra el companion: coincide con una pieza luminosa encendida o con una de Silent Gear radiante que no esté rota, así que el equipo apagado no ilumina. LambDynamicLights recorre `getAllSlots()` y cuenta lo que se sostiene y lo que se lleva puesto.
 
+### Tooltip del material (playtest del 25 de septiembre)
+
+Elias: «el material de Silent Gear tiene todos sus traits en UNO en vez de separados, y están escritos en cursiva». No es nuestro material ni `radiant.json`, ni un script del pack (`pack/kubejs` no tiene scripts de cliente; el companion sólo agrega su línea gris al lingote y el deduplicador de mochilas). Es cómo Silent Gear 4.2.1.1 (SHA-256 `d24d5f47…c0f3`) muestra cualquier material; decompilado con Vineflower 1.11.2, líneas de `javap -l`:
+
+- Con tooltips avanzados (F3+H), sin tocar teclas: `TooltipHandler.onMaterialTooltip` (líneas 131-132) llama a `MaterialTooltips.addJeiSearchTerms`, que junta categorías, tipos de parte y nombres de trait en **una línea en minúsculas, gris oscuro y cursiva** (`MaterialTooltips.java` 150-171; `withStyle(DARK_GRAY).withStyle(ITALIC)` en la 171). Son términos de búsqueda para JEI, no la lista de traits.
+- Con Ctrl (`key.silentgear.displayItemProperties`): la lista de propiedades usa el estilo compacto; `TraitListProperty.addCustomTooltip` lo rechaza (líneas 196-197) y los traits salen en una línea «Traits: A, B, C» (`formatValue`, `Collectors.joining(", ")`, línea 158).
+- Con Ctrl+Shift: un trait por línea con su descripción, que Silent Gear siempre pone en cursiva (`TraitListProperty` 211).
+
+Configurable: `config/silentgear-client.toml`, `tooltip.show_material_tooltips = false`, apaga todo el bloque de Silent Gear en los materiales (también las propiedades con Ctrl). La línea de búsqueda no tiene opción propia; desaparece con F3+H apagado. Silent Gear no trae `es_es`, así que sus traits se leen en inglés junto a «Radiante». No se cambió nada.
+
 ## Ítems creativos
 
 Cada receta es simétrica:

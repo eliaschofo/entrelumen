@@ -23,7 +23,7 @@ None of the pinned mods does biome-faithful repair that also protects builds in 
 
 | Gesture at the Nature Module | Result |
 | --- | --- |
-| Empty main hand | Existing team journal, now also showing the team's restoration site |
+| Empty main hand | Module status screen; its restoration row says whether the team marked a site (coordinates and how-to on hover) |
 | Crouched, empty main hand | Existing commissioning deposit, unchanged |
 | Compass bookmarked at a survey station or lodestone | Mark the team's restoration site |
 | Bone meal (optional saplings in offhand) | Restore the marked site |

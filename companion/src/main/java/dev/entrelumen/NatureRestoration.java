@@ -164,7 +164,8 @@ public final class NatureRestoration {
   }
 
   /** Book rendering reads the team's site without creating or changing any record. */
-  public static List<Component> journalLines(ServerPlayer player) {
+  /** The module screen's restoration row for the reader's team. */
+  public static ArkFieldJournals.Service journalService(ServerPlayer player) {
     GlobalPos site = NatureRestorationData.get(player.server).site(CampaignActions.campaignId(player));
     List<Component> lines = new ArrayList<>();
     if (site == null) lines.add(Component.translatable("entrelumen.nature.journal.none"));
@@ -172,7 +173,9 @@ public final class NatureRestoration {
         site.dimension().location().toString(), site.pos().getX(), site.pos().getY(), site.pos().getZ()));
     lines.add(Component.translatable("entrelumen.nature.journal.instructions",
         NatureRestorationRules.RADIUS, NatureRestorationRules.TREE_BONE_MEAL));
-    return List.copyOf(lines);
+    return new ArkFieldJournals.Service("minecraft:bone_meal", Component.translatable(
+        site == null ? "entrelumen.journal.service.nature.none" : "entrelumen.journal.service.nature.site"),
+        lines);
   }
 
   private static boolean reachable(ServerPlayer player, BlockPos module, InteractionHand hand) {

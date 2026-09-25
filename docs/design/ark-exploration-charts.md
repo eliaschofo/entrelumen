@@ -39,7 +39,7 @@ The selected service compiles charts. A held map absorbs the explored detail of 
 
 | Gesture at the Exploration Module | Result |
 | --- | --- |
-| Empty main hand | Existing team journal, now with one chart-room line |
+| Empty main hand | Module status screen, with a chart-room row (how-to on hover) |
 | Crouched, empty main hand | Existing commissioning deposit, unchanged |
 | Filled map in main hand | Compile the chart |
 | Map only in the offhand | Unchanged: the empty main hand opens the journal |

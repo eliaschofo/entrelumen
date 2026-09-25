@@ -187,26 +187,30 @@ public final class ArkHabitation {
     return Optional.empty();
   }
 
-  /** Book rendering never creates or changes a spawn or player record. */
-  public static List<Component> journalLines(ServerPlayer player) {
+  /** The module screen's lodging row; reading never creates or changes a spawn or player record. */
+  public static ArkFieldJournals.Service journalService(ServerPlayer player) {
     Stored stored = read(player);
     if (stored.state() == ReadState.MALFORMED)
-      return List.of(Component.translatable("entrelumen.habitation.corrupt"),
-          Component.translatable("entrelumen.habitation.instructions"));
+      return service("corrupt", List.of(Component.translatable("entrelumen.habitation.corrupt"),
+          Component.translatable("entrelumen.habitation.instructions")));
     Stay stay = stored.stay();
     if (stay == null)
-      return List.of(Component.translatable("entrelumen.habitation.none"),
-          Component.translatable("entrelumen.habitation.instructions"));
+      return service("none", List.of(Component.translatable("entrelumen.habitation.none"),
+          Component.translatable("entrelumen.habitation.instructions")));
     List<Component> lines = new ArrayList<>();
+    String state;
     if (matches(player, stay.reserved())) {
+      state = "active";
       lines.add(Component.translatable("entrelumen.habitation.active",
           stay.reserved().dimension().location().toString(),
           stay.reserved().position().getX(), stay.reserved().position().getY(),
           stay.reserved().position().getZ()));
     } else if ((stay.pendingRestore() || stay.pendingClone())
         && player.getRespawnPosition() == null) {
+      state = "pending";
       lines.add(Component.translatable("entrelumen.habitation.pending"));
     } else {
+      state = "stale";
       lines.add(Component.translatable("entrelumen.habitation.stale"));
     }
     if (stay.home().position() == null)
@@ -217,7 +221,12 @@ public final class ArkHabitation {
           stay.home().position().getX(), stay.home().position().getY(),
           stay.home().position().getZ()));
     lines.add(Component.translatable("entrelumen.habitation.instructions"));
-    return List.copyOf(lines);
+    return service(state, lines);
+  }
+
+  private static ArkFieldJournals.Service service(String state, List<Component> details) {
+    return new ArkFieldJournals.Service("minecraft:red_bed",
+        Component.translatable("entrelumen.journal.service.habitation." + state), details);
   }
 
   public static void onLogin(PlayerEvent.PlayerLoggedInEvent event) {
