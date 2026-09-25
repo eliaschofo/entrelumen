@@ -131,34 +131,64 @@ public final class ProgressionFullpackGameTests {
     helper.succeed();
   }
 
+  private static final List<net.minecraft.core.Direction> SIDES = new ArrayList<>();
+  static {
+    SIDES.add(null);
+    SIDES.addAll(List.of(net.minecraft.core.Direction.values()));
+  }
+
+  /**
+   * Inserts through whichever face Mekanism's default side configuration opens for the stack, as a pipe
+   * would; returns the face and slot used, or null.
+   */
+  private static String insert(GameTestHelper helper, BlockPos absolute, ItemStack stack) {
+    for (var side : SIDES) {
+      var handler = helper.getLevel().getCapability(Capabilities.ItemHandler.BLOCK, absolute, side);
+      if (handler == null) continue;
+      for (int slot = 0; slot < handler.getSlots(); slot++) {
+        if (handler.insertItem(slot, stack.copy(), true).getCount() >= stack.getCount()) continue;
+        handler.insertItem(slot, stack.copy(), false);
+        return side + "#" + slot;
+      }
+    }
+    return null;
+  }
+
+  private static boolean holdsFrame(GameTestHelper helper, BlockPos absolute) {
+    for (var side : SIDES) {
+      var handler = helper.getLevel().getCapability(Capabilities.ItemHandler.BLOCK, absolute, side);
+      if (handler == null) continue;
+      for (int slot = 0; slot < handler.getSlots(); slot++)
+        if (handler.getStackInSlot(slot).is(item(FRAME))) return true;
+    }
+    return false;
+  }
+
   @GameTest(template = "empty", timeoutTicks = 900)
   public static void realInfuserCopiesTheFrame(GameTestHelper helper) {
     requireSuite();
     var pos = new BlockPos(2, 1, 2);
     helper.setBlock(pos, BuiltInRegistries.BLOCK.get(ResourceLocation.parse("mekanism:metallurgic_infuser")));
     var absolute = helper.absolutePos(pos);
-    var items = helper.getLevel().getCapability(Capabilities.ItemHandler.BLOCK, absolute, null);
-    var energy = helper.getLevel().getCapability(Capabilities.EnergyStorage.BLOCK, absolute, null);
-    helper.assertTrue(items != null && energy != null, "The infuser exposes no item or energy handler");
-    int lensSlot = -1;
-    int dustSlot = -1;
-    for (int slot = 0; slot < items.getSlots(); slot++) {
-      if (lensSlot < 0 && items.isItemValid(slot, stack("entrelumen:raw_lens"))) lensSlot = slot;
-      else if (dustSlot < 0 && items.isItemValid(slot, new ItemStack(Items.REDSTONE))) dustSlot = slot;
+    String lens = insert(helper, absolute, stack("entrelumen:raw_lens"));
+    String dust = insert(helper, absolute, new ItemStack(Items.REDSTONE, 8));
+    helper.assertTrue(lens != null && dust != null,
+        "The infuser refused its inputs on every face: lens " + lens + ", redstone " + dust);
+    net.neoforged.neoforge.energy.IEnergyStorage[] energy = {null};
+    for (var side : SIDES) {
+      var storage = helper.getLevel().getCapability(Capabilities.EnergyStorage.BLOCK, absolute, side);
+      if (storage != null && storage.receiveEnergy(1000, true) > 0) {
+        energy[0] = storage;
+        break;
+      }
     }
-    helper.assertTrue(lensSlot >= 0 && dustSlot >= 0, "No input slot for the lens (" + lensSlot + ") or the redstone ("
-        + dustSlot + ")");
-    helper.assertTrue(items.insertItem(lensSlot, stack("entrelumen:raw_lens"), false).isEmpty()
-        && items.insertItem(dustSlot, new ItemStack(Items.REDSTONE, 8), false).isEmpty(),
-        "The infuser refused its inputs");
-    int[] charged = {0};
-    helper.onEachTick(() -> charged[0] += energy.receiveEnergy(Integer.MAX_VALUE, false));
+    helper.assertTrue(energy[0] != null, "The infuser takes energy on no face");
+    long[] charged = {0};
+    helper.onEachTick(() -> charged[0] += energy[0].receiveEnergy(Integer.MAX_VALUE, false));
     helper.succeedWhen(() -> {
-      boolean copied = false;
-      for (int slot = 0; slot < items.getSlots(); slot++)
-        if (items.getStackInSlot(slot).is(item(FRAME))) copied = true;
-      helper.assertTrue(copied, "No frame yet (energy " + charged[0] + ")");
-      LOGGER.info("ENTRELUMEN_FRAME_INFUSION copied a frame from a raw lens and redstone; energy received {}", charged[0]);
+      helper.assertTrue(holdsFrame(helper, absolute), "No frame yet (energy " + charged[0] + ")");
+      LOGGER.info("ENTRELUMEN_FRAME_INFUSION copied a frame from a raw lens ({}) and redstone ({}); energy received {}",
+          lens, dust, charged[0]);
     });
   }
 

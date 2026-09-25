@@ -168,7 +168,8 @@ public final class VeinResonatorFullpackGameTests {
     var player = session.player;
     int[] charms = {0};
     List<String> observed = new ArrayList<>();
-    helper.startSequence()
+    var sequence = helper.startSequence();
+    sequence
         .thenExecute(() -> {
           check(player);
           helper.assertTrue(UltimineCompat.effectiveMaxBlocks(player) == 0, "Ultimine works without a resonator: "
@@ -193,20 +194,27 @@ public final class VeinResonatorFullpackGameTests {
             helper.fail("Equipping through Curios failed: " + error);
           }
         })
-        .thenIdle(2)
-        .thenExecute(() -> {
-          for (int tier = 1; tier <= VeinResonator.TIERS; tier++) {
-            try {
-              curios.equip(player, 0, resonator(tier));
-            } catch (Throwable error) {
-              helper.fail("Equipping tier " + tier + " failed: " + error);
-            }
+        .thenIdle(2);
+    // Curios applies a changed slot on its next tick, as when a player swaps it by hand.
+    for (int step = 1; step <= VeinResonator.TIERS; step++) {
+      int tier = step;
+      sequence.thenExecute(() -> {
             check(player);
             int limit = UltimineCompat.effectiveMaxBlocks(player);
             observed.add(tier + "=" + limit);
             helper.assertTrue(VeinResonator.wornTier(player) == tier && limit == 16 * tier,
                 "Tier " + tier + " gives " + limit + " Ultimine blocks instead of " + 16 * tier);
-          }
+            if (tier == VeinResonator.TIERS) return;
+            try {
+              curios.equip(player, 0, resonator(tier + 1));
+            } catch (Throwable error) {
+              helper.fail("Equipping tier " + (tier + 1) + " failed: " + error);
+            }
+          })
+          .thenIdle(2);
+    }
+    sequence
+        .thenExecute(() -> {
           if (charms[0] < 2) return;
           try {
             curios.equip(player, 0, resonator(2));
