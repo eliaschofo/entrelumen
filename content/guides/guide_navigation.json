@@ -1,0 +1,469 @@
+{
+  "chapter": "guide_navigation",
+  "group": "exploration",
+  "act": "any",
+  "icon": "entrelumen:heliodor_compass",
+  "title": {
+    "en_us": "Explore without getting lost",
+    "es_es": "Explorar sin perderte"
+  },
+  "subtitle": {
+    "en_us": "The Heliodor Compass, the Atlas, maps, locator compasses and waystones working together.",
+    "es_es": "La Brújula de Heliodor, el Atlas, los mapas, las brújulas buscadoras y las waystones, trabajando juntos."
+  },
+  "quests": [
+    {
+      "key": "nav_welcome",
+      "deps": [],
+      "type": "checkmark",
+      "layout": {
+        "x": 0,
+        "y": 0,
+        "size": 2.0,
+        "shape": "hexagon"
+      },
+      "en_us": [
+        "Always know the next step",
+        "ENTRELUMEN promises that you are never lost. Three layers make that true:\n- The Heliodor Compass says where the story goes next.\n- The Living Atlas says what to deliver and keeps the lore.\n- Maps, locator compasses and waystones get you there and back.\n\nThe story never asks you to walk thousands of blocks or to fly with a jetpack: its objectives stay within reach."
+      ],
+      "es_es": [
+        "Saber siempre el próximo paso",
+        "ENTRELUMEN promete que nunca te perdés. Tres capas lo hacen posible:\n- La Brújula de Heliodor dice adónde va la historia.\n- El Atlas Vivo dice qué entregar y guarda el lore.\n- Los mapas, las brújulas buscadoras y las waystones te llevan y te traen.\n\nLa historia nunca te pide caminar miles de bloques ni volar con jetpack: sus objetivos quedan al alcance."
+      ],
+      "sources": [
+        "repo:docs/design/story-bible.md",
+        "repo:docs/design/heliodor-compass.md"
+      ]
+    },
+    {
+      "key": "nav_compass",
+      "deps": [
+        "nav_welcome"
+      ],
+      "type": "item",
+      "item": "entrelumen:heliodor_compass",
+      "layout": {
+        "x": 3,
+        "y": 0,
+        "size": 1.0,
+        "shape": "circle"
+      },
+      "en_us": [
+        "The Heliodor Compass",
+        "You start next to a Heliodor ruin with an empty inventory. On its pedestal, right-click to take your Heliodor Compass: one per player, per world. Carry it for a moment and it attunes.\n\nThe compass points to the next artifact, structure or guardian the story needs. When your team reaches it, it turns toward the next one and tells everyone online."
+      ],
+      "es_es": [
+        "La Brújula de Heliodor",
+        "Empezás al lado de una ruina de Heliodor con el inventario vacío. En su pedestal, hacé clic derecho para tomar tu Brújula de Heliodor: una por jugador, por mundo. Llevala un momento y se sintoniza.\n\nLa brújula apunta al próximo artefacto, estructura o guardián que necesita la historia. Cuando tu equipo lo alcanza, gira hacia el siguiente y se lo avisa a todos los que estén conectados."
+      ],
+      "sources": [
+        "repo:docs/design/heliodor-compass.md",
+        "repo:companion/src/main/resources/assets/entrelumen/lang/en_us.json",
+        "repo:docs/design/story-bible.md"
+      ]
+    },
+    {
+      "key": "nav_needle",
+      "deps": [
+        "nav_compass"
+      ],
+      "type": "checkmark",
+      "icon": "entrelumen:heliodor_compass",
+      "layout": {
+        "x": 6,
+        "y": -3,
+        "size": 0.85,
+        "shape": "circle"
+      },
+      "en_us": [
+        "Reading the needle",
+        "The needle color tells the destination dimension: turquoise for the Overworld, red for the Nether, violet for the End, gold for the Aether and green for the Twilight Forest; grey means \"no trace\".\n\nIts states: it points; it rests with the target dimension's color when the goal is in another dimension; it spins briefly while searching; it turns grey when nothing lies within 1500 blocks, when the next goal belongs to a later act, or when there is nothing left. The tooltip spells out each state."
+      ],
+      "es_es": [
+        "Leer la aguja",
+        "El color de la aguja dice la dimensión del destino: turquesa para el Overworld, rojo para el Nether, violeta para el End, dorado para el Aether y verde para Twilight Forest; gris significa «sin rastro».\n\nSus estados: apunta; queda quieta con el color de la dimensión cuando el objetivo está en otra; gira un momento mientras busca; se pone gris cuando no hay nada a menos de 1500 bloques, cuando el próximo objetivo es de un acto posterior o cuando no queda nada. El tooltip explica cada estado."
+      ],
+      "sources": [
+        "repo:docs/design/story-bible.md",
+        "repo:docs/design/heliodor-compass.md",
+        "repo:companion/src/main/java/dev/entrelumen/CompassState.java",
+        "repo:companion/src/main/resources/assets/entrelumen/lang/en_us.json"
+      ]
+    },
+    {
+      "key": "nav_team",
+      "deps": [
+        "nav_compass"
+      ],
+      "type": "checkmark",
+      "icon": "minecraft:player_head",
+      "layout": {
+        "x": 6,
+        "y": 0,
+        "size": 0.85,
+        "shape": "circle"
+      },
+      "en_us": [
+        "The compass follows the team",
+        "The compass works per FTB team: everyone sees the same objective, and whatever any member completes counts for all. If you did something early, the compass skips ahead the moment it notices. Structures found by any team are remembered by the world, so later players are pointed straight at them.\n\nIt never loads chunks in a hurry: searches are gentle on the server by design."
+      ],
+      "es_es": [
+        "La brújula sigue al equipo",
+        "La brújula funciona por equipo de FTB: todos ven el mismo objetivo, y lo que complete cualquier integrante cuenta para todos. Si hiciste algo antes de tiempo, la brújula salta hacia adelante apenas lo nota. Las estructuras que encuentra cualquier equipo quedan guardadas en el mundo, así que a los jugadores que vienen después la aguja los lleva directo.\n\nNunca carga chunks a las apuradas: sus búsquedas están pensadas para no cargar al servidor."
+      ],
+      "sources": [
+        "repo:docs/design/heliodor-compass.md"
+      ]
+    },
+    {
+      "key": "nav_keep",
+      "deps": [
+        "nav_compass"
+      ],
+      "type": "checkmark",
+      "icon": "tombstone:book_of_soulbound",
+      "layout": {
+        "x": 3,
+        "y": -3,
+        "size": 0.85,
+        "shape": "circle"
+      },
+      "en_us": [
+        "Do not lose it",
+        "Today the pedestal gives only one compass per player and there is no recipe yet (the story bible plans a cheap one). Protect it: put a Soulbound rune on it with Tombstone's Book of Soulbound, or leave it at home and follow your map when you already know the way."
+      ],
+      "es_es": [
+        "No la pierdas",
+        "Hoy el pedestal da una sola brújula por jugador y todavía no hay receta (la biblia de la historia prevé una barata). Protegela: ponele una runa Soulbound con el Libro de Soulbound de Tombstone, o dejala en casa y seguí tu mapa cuando ya conocés el camino."
+      ],
+      "sources": [
+        "repo:docs/design/heliodor-compass.md",
+        "repo:docs/design/story-bible.md",
+        "jar:tombstone-neoforge-1.21.1-9.5.5.jar:assets/tombstone/lang/en_us.json"
+      ]
+    },
+    {
+      "key": "nav_atlas",
+      "deps": [
+        "nav_team"
+      ],
+      "type": "item",
+      "item": "entrelumen:atlas",
+      "layout": {
+        "x": 9,
+        "y": 0,
+        "size": 1.0,
+        "shape": "square"
+      },
+      "en_us": [
+        "The Living Atlas",
+        "A book and a copper ingot make the Living Atlas. It is where you deliver the projects of each act and where the Heliodor voices speak, first in broken fragments and clearer as the story advances. It also has a Heliodor Compass page with the current objective, why it matters and every lore fragment you recovered.\n\nOpening the Atlas never delivers anything by accident: delivery is always an explicit button."
+      ],
+      "es_es": [
+        "El Atlas Vivo",
+        "Un libro y un lingote de cobre hacen el Atlas Vivo. Ahí se entregan los proyectos de cada acto y ahí hablan las voces de Heliodor, primero en fragmentos con interferencia y cada vez más claras a medida que avanza la historia. También tiene una página de la Brújula de Heliodor con el objetivo actual, por qué importa y todos los fragmentos de lore que recuperaste.\n\nAbrir el Atlas nunca entrega nada por accidente: la entrega siempre es un botón explícito."
+      ],
+      "sources": [
+        "repo:companion/src/main/resources/data/entrelumen/recipe/atlas.json",
+        "repo:docs/design/heliodor-compass.md",
+        "repo:companion/src/main/resources/assets/entrelumen/lang/en_us.json",
+        "repo:docs/design/story-bible.md"
+      ]
+    },
+    {
+      "key": "nav_station",
+      "deps": [
+        "nav_atlas"
+      ],
+      "type": "item",
+      "item": "entrelumen:survey_station",
+      "layout": {
+        "x": 12,
+        "y": 0,
+        "size": 1.0,
+        "shape": "square"
+      },
+      "en_us": [
+        "The Survey Station",
+        "Copper, glass, smooth stone and a Signal Core make a Survey Station. It is a movable bookmark: use a normal compass on it and the compass points to the station, like a lodestone, and an empty-hand click opens the Atlas.\n\nPut one at your base and carry the bound compass on expeditions: an arrow home that does not depend on the map."
+      ],
+      "es_es": [
+        "La Estación cartográfica",
+        "Cobre, vidrio, piedra lisa y un Núcleo de señal hacen una Estación cartográfica. Es un marcador que se puede mover: usá una brújula común sobre ella y la brújula apunta a la estación, como a una magnetita, y un clic con la mano vacía abre el Atlas.\n\nPoné una en tu base y llevá la brújula vinculada a las expediciones: una flecha a casa que no depende del mapa."
+      ],
+      "sources": [
+        "repo:companion/src/main/resources/data/entrelumen/recipe/survey_station.json",
+        "repo:companion/src/main/java/dev/entrelumen/SignalStationBlock.java"
+      ]
+    },
+    {
+      "key": "nav_journeymap",
+      "deps": [
+        "nav_welcome"
+      ],
+      "type": "checkmark",
+      "icon": "minecraft:filled_map",
+      "layout": {
+        "x": 3,
+        "y": 3,
+        "size": 0.85,
+        "shape": "circle"
+      },
+      "en_us": [
+        "Your map: JourneyMap",
+        "JourneyMap remembers everything you have seen: J opens the full-screen map, M creates a waypoint where you stand and B creates one at the cursor on the map. It switches to cave view underground and drops a waypoint where you die.\n\nMark every ruin, portal and structure you want to revisit. The travel chapter goes deeper."
+      ],
+      "es_es": [
+        "Tu mapa: JourneyMap",
+        "JourneyMap recuerda todo lo que viste: J abre el mapa a pantalla completa, M crea un waypoint donde estás parado y B crea uno en el cursor del mapa. Bajo tierra pasa a vista de cuevas y deja un waypoint donde morís.\n\nMarcá cada ruina, portal y estructura a la que quieras volver. El capítulo de viajes profundiza."
+      ],
+      "sources": [
+        "jar:journeymap-neoforge-1.21.1-6.0.6.jar:assets/journeymap/lang/en_us.json",
+        "repo:pack/config/defaultoptions/keybindings.txt"
+      ]
+    },
+    {
+      "key": "nav_waystones",
+      "deps": [
+        "nav_journeymap"
+      ],
+      "type": "checkmark",
+      "icon": "waystones:waystone",
+      "layout": {
+        "x": 6,
+        "y": 3,
+        "size": 0.85,
+        "shape": "circle"
+      },
+      "en_us": [
+        "Waystones as anchors",
+        "Every waystone you activate becomes a destination and, with the default settings, a JourneyMap waypoint too. A Warp Stone or a Return Scroll brings you back from far away. Build your own waystone next to every important place: your base, each Heliodor ruin, each portal."
+      ],
+      "es_es": [
+        "Waystones como anclas",
+        "Cada waystone que activás se vuelve un destino y, con la configuración por defecto, también un waypoint de JourneyMap. Una Piedra de teletransporte o un Pergamino de regreso te traen desde lejos. Construí tu propia waystone al lado de cada lugar importante: tu base, cada ruina de Heliodor, cada portal."
+      ],
+      "sources": [
+        "jar:waystones-neoforge-1.21.1-21.1.41.jar:assets/waystones/lang/en_us.json",
+        "jar:waystones-neoforge-1.21.1-21.1.41.jar:net/blay09/mods/waystones/config/WaystonesConfigData$Compatibility.class"
+      ]
+    },
+    {
+      "key": "nav_explorers",
+      "deps": [
+        "nav_waystones"
+      ],
+      "type": "item",
+      "item": "explorerscompass:explorerscompass",
+      "layout": {
+        "x": 9,
+        "y": 3,
+        "size": 1.0,
+        "shape": "square"
+      },
+      "en_us": [
+        "Explorer's Compass",
+        "A compass surrounded by cobwebs and cracked stone bricks makes the Explorer's Compass. Right-click to pick any structure from the list, from vanilla and from every mod, and it searches for the nearest one, then points at it and shows the distance.\n\nGreat for side trips; the story itself never needs it, because the Heliodor Compass handles that."
+      ],
+      "es_es": [
+        "Brújula del explorador",
+        "Una brújula rodeada de telarañas y ladrillos de piedra agrietados hace la Brújula del explorador. Con clic derecho elegís cualquier estructura de la lista, vanilla o de cualquier mod, y busca la más cercana; después apunta hacia ella y muestra la distancia.\n\nIdeal para los desvíos; la historia no la necesita, porque de eso se encarga la Brújula de Heliodor."
+      ],
+      "sources": [
+        "jar:ExplorersCompass-1.21.1-3.4.0-neoforge.jar:data/explorerscompass/recipe/explorers_compass.json",
+        "jar:ExplorersCompass-1.21.1-3.4.0-neoforge.jar:assets/explorerscompass/lang/en_us.json"
+      ]
+    },
+    {
+      "key": "nav_natures",
+      "deps": [
+        "nav_explorers"
+      ],
+      "type": "item",
+      "item": "naturescompass:naturescompass",
+      "layout": {
+        "x": 12,
+        "y": 3,
+        "size": 1.0,
+        "shape": "square"
+      },
+      "en_us": [
+        "Nature's Compass",
+        "A compass surrounded by saplings and logs makes Nature's Compass: it finds the nearest biome you choose, with info on its climate. Useful to find the biome a Solsticio native asks for, a mushroom island, or the cloud biomes of the Aether.\n\nBoth locator compasses can be repaired by crafting them with a plain compass."
+      ],
+      "es_es": [
+        "Brújula de la naturaleza",
+        "Una brújula rodeada de brotes y troncos hace la Brújula de la naturaleza: encuentra el bioma que elijas más cercano, con información de su clima. Sirve para encontrar el bioma que pide un nativo de Solsticio, una isla de champiñones o los biomas de nubes del Aether.\n\nLas dos brújulas buscadoras se reparan fabricándolas con una brújula común."
+      ],
+      "sources": [
+        "jar:NaturesCompass-1.21.1-3.4.0-neoforge.jar:data/naturescompass/recipe/natures_compass.json",
+        "jar:NaturesCompass-1.21.1-3.4.0-neoforge.jar:assets/naturescompass/lang/en_us.json",
+        "jar:ExplorersCompass-1.21.1-3.4.0-neoforge.jar:data/explorerscompass/recipe/repair_explorers_compass.json",
+        "repo:docs/design/solsticio-commerce.md"
+      ]
+    },
+    {
+      "key": "nav_maps",
+      "deps": [
+        "nav_explorers"
+      ],
+      "type": "checkmark",
+      "icon": "minecraft:map",
+      "layout": {
+        "x": 9,
+        "y": 6,
+        "size": 0.85,
+        "shape": "circle"
+      },
+      "en_us": [
+        "Maps that lead somewhere",
+        "Explorer maps are the oldest locator: vanilla cartographers sell ocean, woodland and trial maps (ocean maps also find YUNG's monuments), Repurposed Structures adds maps to some trades, Dungeons and Taverns taverns sell maps to their dungeons, and the Twilight Forest has magic, maze and ore maps.\n\nMaps you fill yourself can be framed on a wall as a world atlas."
+      ],
+      "es_es": [
+        "Mapas que llevan a algún lado",
+        "Los mapas de explorador son el localizador más viejo: los cartógrafos vanilla venden mapas del océano, del bosque y de las cámaras de prueba (los oceánicos también encuentran los monumentos de YUNG's), Repurposed Structures suma mapas a algunos intercambios, las tabernas de Dungeons and Taverns venden mapas a sus mazmorras y Twilight Forest tiene mapas mágicos, del laberinto y de minerales.\n\nLos mapas que llenás vos se pueden enmarcar en una pared como un atlas del mundo."
+      ],
+      "sources": [
+        "jar:YungsBetterOceanMonuments-1.21.1-NeoForge-4.1.2.jar:data/minecraft/tags/worldgen/structure/on_ocean_explorer_maps.json",
+        "jar:repurposed_structures-7.5.22+1.21.1-neoforge.jar:assets/repurposed_structures/lang/en_us.json",
+        "jar:dungeons-and-taverns-v4.4.4.jar:assets/dnt/lang/en_us.json",
+        "jar:twilightforest-1.21.1-4.8.3345-universal.jar:assets/twilightforest/lang/en_us.json"
+      ]
+    },
+    {
+      "key": "nav_chart",
+      "deps": [
+        "nav_maps"
+      ],
+      "type": "checkmark",
+      "optional": true,
+      "icon": "entrelumen:exploration_module",
+      "layout": {
+        "x": 12,
+        "y": 6,
+        "size": 0.85,
+        "shape": "circle"
+      },
+      "en_us": [
+        "The Ark's chart room",
+        "Once your Ark has its Exploration Module (act V), it doubles as a chart room: hold a filled map and use the module, and the map absorbs the explored detail of the other maps of the same area you carry. Several field maps become one overview, even one already framed on a wall, without walking it all again. Nothing is consumed."
+      ],
+      "es_es": [
+        "La sala de cartas del Arca",
+        "Cuando tu Arca tiene el Módulo de exploración (acto V), también funciona como sala de cartas: sostené un mapa lleno y usá el módulo, y el mapa absorbe el detalle explorado de los otros mapas de la misma zona que llevás encima. Varios mapas de campo se vuelven una sola vista general, incluso una ya enmarcada en la pared, sin volver a recorrer todo. No se gasta nada."
+      ],
+      "sources": [
+        "repo:docs/design/ark-exploration-charts.md"
+      ]
+    },
+    {
+      "key": "nav_special",
+      "deps": [
+        "nav_natures"
+      ],
+      "type": "checkmark",
+      "icon": "minecraft:recovery_compass",
+      "layout": {
+        "x": 15,
+        "y": 3,
+        "size": 0.85,
+        "shape": "circle"
+      },
+      "en_us": [
+        "Special locators",
+        "Some mods have their own finders:\n- Eyes of Ender: the stronghold (YUNG's version).\n- Cataclysm's eyes: one per boss arena.\n- Eternal Starlight's Seeking Eyes, aimed with a locator item in the other hand.\n- Twilight Forest magic maps.\n- The recovery compass: your last death point.\n- A lodestone, or a Survey Station, for any compass."
+      ],
+      "es_es": [
+        "Localizadores especiales",
+        "Algunos mods tienen sus propios buscadores:\n- Ojos de ender: la fortaleza (versión de YUNG's).\n- Los ojos de Cataclysm: uno por arena de jefe.\n- Los Ojos buscadores de Eternal Starlight, apuntados con un ítem localizador en la otra mano.\n- Los mapas mágicos de Twilight Forest.\n- La brújula de recuperación: tu último punto de muerte.\n- Una magnetita, o una Estación cartográfica, para cualquier brújula."
+      ],
+      "sources": [
+        "jar:YungsBetterStrongholds-1.21.1-NeoForge-5.1.3.jar:data/minecraft/tags/worldgen/structure/eye_of_ender_located.json",
+        "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:data/cataclysm/tags/worldgen/structure",
+        "jar:eternalstarlight-0.9.0+1.21.1+neoforge.jar:assets/eternal_starlight/lang/en_us.json",
+        "repo:companion/src/main/java/dev/entrelumen/SignalStationBlock.java"
+      ]
+    },
+    {
+      "key": "nav_cartographer",
+      "deps": [
+        "nav_station"
+      ],
+      "type": "checkmark",
+      "icon": "minecraft:map",
+      "layout": {
+        "x": 15,
+        "y": 0,
+        "size": 1.0,
+        "shape": "circle"
+      },
+      "en_us": [
+        "Solsticio's cartographer",
+        "In act VI, Rumbo, the cartographer of Solsticio, sells survey maps: blank maps that chart the nearest monument, trial chamber, jungle temple, swamp hut, buried treasure, woodland mansion or ancient city when used under the Overworld sky, plus Explorer's and Nature's Compasses, a spyglass, a recovery compass and a lodestone. Some offers open with later acts.\n\nMemoria, the curator, sells Heliodor lore books and every pottery sherd."
+      ],
+      "es_es": [
+        "El cartógrafo de Solsticio",
+        "En el acto VI, Rumbo, el cartógrafo de Solsticio, vende mapas de relevamiento: mapas en blanco que trazan el monumento, cámara de prueba, templo de la selva, choza de bruja, tesoro enterrado, mansión del bosque o ciudad antigua más cercanos cuando los usás bajo el cielo del Overworld, además de las brújulas del explorador y de la naturaleza, un catalejo, una brújula de recuperación y una magnetita. Algunas ofertas se abren con actos posteriores.\n\nMemoria, la curadora, vende libros de lore de Heliodor y todos los fragmentos de cerámica."
+      ],
+      "sources": [
+        "repo:companion/src/main/resources/data/entrelumen/solsticio_shops/maps.json",
+        "repo:docs/design/solsticio-commerce.md",
+        "repo:companion/src/main/resources/assets/entrelumen/lang/en_us.json"
+      ]
+    },
+    {
+      "key": "nav_routine",
+      "deps": [
+        "nav_welcome"
+      ],
+      "type": "checkmark",
+      "icon": "minecraft:writable_book",
+      "layout": {
+        "x": 0,
+        "y": 3,
+        "size": 1.0,
+        "shape": "rsquare"
+      },
+      "en_us": [
+        "A routine that never fails",
+        "Before every expedition:\n1. Check the Heliodor Compass and the Atlas: where and what for.\n2. Mark your base waystone and carry a Return Scroll.\n3. Bring a bound compass (Survey Station) and a sleeping bag.\n4. On arrival, place a waystone and a JourneyMap waypoint.\n5. If you die, follow the Death waypoint to your Tombstone grave."
+      ],
+      "es_es": [
+        "Una rutina que nunca falla",
+        "Antes de cada expedición:\n1. Mirá la Brújula de Heliodor y el Atlas: adónde y para qué.\n2. Tené la waystone de tu base y llevá un Pergamino de regreso.\n3. Llevá una brújula vinculada (Estación cartográfica) y una bolsa de dormir.\n4. Al llegar, poné una waystone y un waypoint de JourneyMap.\n5. Si morís, seguí el waypoint Death hasta tu tumba de Tombstone."
+      ],
+      "sources": [
+        "repo:docs/design/heliodor-compass.md",
+        "jar:waystones-neoforge-1.21.1-21.1.41.jar:assets/waystones/lang/en_us.json",
+        "jar:journeymap-neoforge-1.21.1-6.0.6.jar:assets/journeymap/lang/en_us.json",
+        "jar:comforts-neoforge-9.0.5+1.21.1.jar:assets/comforts/lang/en_us.json"
+      ]
+    },
+    {
+      "key": "nav_mastery",
+      "deps": [
+        "nav_cartographer",
+        "nav_special"
+      ],
+      "type": "checkmark",
+      "icon": "entrelumen:atlas",
+      "layout": {
+        "x": 18,
+        "y": 0,
+        "size": 2.25,
+        "shape": "pentagon"
+      },
+      "en_us": [
+        "Never lost",
+        "A compass for the story, an Atlas for the why, a map for the where and a waystone for the way back. That was the promise, and now it is your routine."
+      ],
+      "es_es": [
+        "Nunca perdido",
+        "Una brújula para la historia, un Atlas para el porqué, un mapa para el dónde y una waystone para la vuelta. Esa era la promesa, y ahora es tu rutina."
+      ],
+      "sources": [
+        "repo:docs/design/story-bible.md"
+      ]
+    }
+  ]
+}
