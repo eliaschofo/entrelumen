@@ -276,6 +276,7 @@ def stairs():
 # ---------------- building rows ----------------
 LOTS = []
 LOTCELLS = set()
+GARDEN = set()
 
 
 def rows():
@@ -350,6 +351,7 @@ def lanes():
         open_ground = sum((x + dx, z + dz) in free for dx in range(-3, 4) for dz in range(-3, 4)) >= 40
         r = _h(x, z, 5)
         if open_ground:
+            GARDEN.add((x, z))
             V[(x, top, z)] = B('grass_block' if (x // 3 + z // 3) % 3 else 'mcwpaths:mossy_stone_running_bond_path' and 'moss_block')
             if r < 0.02:
                 tree(x, z, top, 5 + int(r * 200) % 3, 2)
@@ -742,11 +744,70 @@ def summit():
         V[(fx0, top + 6, fz0)] = B('ochre_froglight')
 
 
+def easter_eggs():
+    """The three secrets of act VI: the tavern under a garden square, the secret garden on the
+    palace roof behind the dome, and the sundial in the summit gardens."""
+    # the tavern: a room dug under the largest garden square of the middle terraces, with a hatch
+    squares = [c for c in GARDEN if LEVEL[c] in (1, 2, 3, 4)
+               and all((c[0] + dx, c[1] + dz) in GARDEN and LEVEL.get((c[0] + dx, c[1] + dz)) == LEVEL[c]
+                       for dx in range(-5, 6) for dz in range(-4, 5))]
+    if squares:
+        cx, cz = min(squares, key=lambda c: (abs(c[0]) + abs(c[1] - 60)))
+        top = TOP[(cx, cz)]
+        for dx in range(-4, 5):
+            for dz in range(-3, 4):
+                edge = abs(dx) == 4 or abs(dz) == 3
+                for y in range(top - 6, top - 1):
+                    V[(cx + dx, y, cz + dz)] = B('spruce_planks' if y == top - 6 else 'stripped_spruce_log[axis=y]'
+                                                 if (edge and abs(dx) == 4 and abs(dz) == 3) else 'bricks' if edge else 'air')                         if not (y == top - 2 and not edge) else B('spruce_planks')
+        for dx in (-2, 2):
+            V[(cx + dx, top - 5, cz)] = mp_state('handcrafted:birch_table')
+            V[(cx + dx, top - 4, cz)] = B('candle[candles=3,lit=true,waterlogged=false]')
+            for dz in (-1, 1):
+                V[(cx + dx, top - 5, cz + dz)] = mp_state('handcrafted:birch_chair', facing='south' if dz < 0 else 'north')
+        for dx in range(-3, 4):
+            V[(cx + dx, top - 5, cz + 2)] = mp_state('handcrafted:birch_counter', facing='north', counter='dark_oak_planks') if abs(dx) < 3 else B('barrel[facing=north,open=false]')
+        V[(cx, top - 3, cz)] = mp_state('mcwlights:copper_chandelier')
+        for y in range(top - 5, top + 1):             # the hatch in the corner of the square
+            V[(cx + 3, y, cz - 2)] = B('ladder[facing=north,waterlogged=false]')
+        V[(cx + 3, top, cz - 2)] = B('spruce_trapdoor[facing=north,half=top,open=false,powered=false,waterlogged=false]')
+        MARKERS.append(('easter:tavern', (cx, top - 5, cz)))
+    # the secret garden: behind the dome on the palace roof, reached from the gardener's gallery
+    px, pz = PAL_C
+    ry = LEVELS[0] + PLINTH + BODY
+    gz = pz - PAL_HZ + 3
+    for dx in range(-6, 7):
+        for dz in range(0, 4):
+            V[(px + dx, ry, gz + dz)] = B('moss_block')
+            r = _h(px + dx, gz + dz, 71)
+            V[(px + dx, ry + 1, gz + dz)] = B(('flowering_azalea', 'azure_bluet', 'lily_of_the_valley', 'allium', 'pink_petals[facing=north,flower_amount=4]')[int(r * 5)])                 if abs(dx) != 0 else AIR
+    V[(px, ry + 1, gz + 1)] = mp_state('handcrafted:birch_bench', facing='south', shape='single')
+    MARKERS.append(('easter:secret_garden', (px, ry + 1, gz + 2)))
+    # the sundial: in the summit gardens, east of the palace
+    sx, sz = px + 38, pz + 4
+    if LEVEL.get((sx, sz)) == 0:
+        t = TOP[(sx, sz)]
+        for dx in range(-4, 5):
+            for dz in range(-4, 5):
+                rr = math.hypot(dx, dz)
+                if rr <= 4.4:
+                    V[(sx + dx, t, sz + dz)] = B('calcite' if rr > 1 else 'chiseled_quartz_block')
+                    for y in range(t + 1, t + 8):
+                        V.pop((sx + dx, y, sz + dz), None)
+                    if 3.4 < rr <= 4.4 and (dx + dz) % 2 == 0:
+                        V[(sx + dx, t + 1, sz + dz)] = B('smooth_quartz_slab[type=bottom,waterlogged=false]')
+        for y in range(t + 1, t + 4):
+            V[(sx, y, sz)] = B('quartz_pillar[axis=y]')
+        V[(sx, t + 4, sz)] = B('lightning_rod[facing=up,powered=false,waterlogged=false]')
+        MARKERS.append(('easter:sundial', (sx, t + 1, sz + 2)))
+
+
 def build():
     for d in (V, EXTRA, LEVEL, TOP):
         d.clear()
     MARKERS.clear()
     LOTCELLS.clear()
+    GARDEN.clear()
     USED.clear()
     RESERVED.clear()
     LOTS.clear()
@@ -759,6 +820,7 @@ def build():
     place_lots()
     summit()
     lanes()
+    easter_eggs()
     fill()
     city5.edge_radius = island_edge            # the barrier follows this island's shore
     city5.EXT = EXT
