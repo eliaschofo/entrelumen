@@ -181,7 +181,46 @@
   },
   "summary": "Final head 10ac55e: F ran 140 of 145 registered tests, all passed (altarsrespectforeignftbchunksclaims passed on its load-bound retry); G (new JVM) passed the team and logistics restart verifiers; H passed the four-reload test with the QA-only 180 s watchdog allowance, restored to 60 s after. Not run: the live backup pair (needs a SimpleBackups ZIP and a restore server; code unchanged). 143 of 145."
  },
- "installation": null,
+ "installation": {
+  "head": "a9419bf2a6cc5f6b691c8b819582c924cd1253dd",
+  "note": "main a9419bf = the branch head 0b4d903 merged; companion sources identical to 10ac55e, so the tested normal JAR was installed",
+  "jarSha256": "d442de83f7ccd6e98ef4589d8aac01a6f48d8786f00dafea45ef60313b9b0282",
+  "profiles": [
+   "server-slice only (the client profiles are the controller's: he installs them with sync_pack)"
+  ],
+  "installer": "act6-20260924/install_head.py (progression-20260924 installer, PREVIOUS_HEAD 8002e30) --only-server",
+  "serverWorldBackup": {
+   "archive": "E:\\Elias\\Codex\\Entrelumen-ssd\\act6-20260924\\server-world-before-install-a9419bf.zip",
+   "files": 1566,
+   "sha256": "ec810312b83fe1216d8cdd8c9a9e2201d3c1085bbd87f31f8a68ad3d39c42528"
+  },
+  "written": [
+   "config/ftbquests/quests/chapters/solsticio.snbt (FTB re-save of the installed copy, backed up)",
+   "config/ftbquests/quests/lang/en_us.snbt",
+   "config/ftbquests/quests/lang/es_es.snbt",
+   "kubejs/server_scripts/entrelumen_runtime_audit.js",
+   "mods/entrelumen-0.1.0.jar"
+  ],
+  "backup": "E:\\Elias\\Codex\\Entrelumen-ssd\\act6-20260924\\integration-before\\a9419bf\\server-slice",
+  "retired": [],
+  "jarsAdded": [],
+  "guardedUnchanged": 3,
+  "normalStart": {
+   "bootWallSeconds": 185.2,
+   "doneSeconds": 14.129,
+   "diagnostic": "schema=3 personal=161 parties=31",
+   "exitCode": 0,
+   "watchdog": false,
+   "entrelumenErrors": [],
+   "solsticioCommerce": [
+    "liberated=false hall=null populating=false residentCap=40 tables: shops=[nursery, seeds, records, parts, bakery, curiosities, textiles, smithy, bookstore, maps, apothecary, creatures, museum, apiary, rarities, minerals] natives=[habitation, logistics, engineering, nature, exploration, arcane]",
+    "resident homes: 0 (cap 40)",
+    "easter eggs: {}"
+   ],
+   "errorLines": 3,
+   "upstreamOnly": true
+  }
+ },
  "kubejsAudit": {
   "log": "server-act6-qa/logs/kubejs/server.log (pass H)",
   "result": "PASS runtime: 142 items, 37 recipes, signature 5c29abbdeea35ad6"
