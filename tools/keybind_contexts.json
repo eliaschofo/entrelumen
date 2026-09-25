@@ -1,0 +1,2457 @@
+{
+  "schema": 1,
+  "about": "Where each bound key acts, per JAR evidence (NeoForge 21.1.249, 316-mod client of 2026-09-24). default = binding with no pack preset. Used by tools/check_keybinds.py.",
+  "contexts": {
+    "world": "In the world with no screen open.",
+    "gui": "Any screen (tooltip or overlay keys).",
+    "screen:<id>": "Only inside that screen; screenParents lists the container screens.",
+    "hover": "Acts only on what is under the cursor; different targets never meet, except slot (any item)."
+  },
+  "screenParents": {
+    "curios": "container",
+    "merchant": "container",
+    "sophisticated": "container",
+    "crafting": "container",
+    "rs-grid": "container",
+    "ae2-bus": "container"
+  },
+  "gates": "A world key that only acts while holding (held:), riding (riding:) or holding another key (hold:). Two different held: gates never meet in one hand; other gates can meet. gateInContext: the KeyConflictContext itself is inactive outside the gate, so it cannot hide another key there.",
+  "protectedKeys": {
+    "key.keyboard.g": {
+      "owner": "key.curios.open.desc",
+      "reason": "Curios screen: Terra Arm and the Ultimine curio live there."
+    },
+    "key.keyboard.v": {
+      "owner": "key.ftbultimine",
+      "reason": "Held while mining, also while sneaking."
+    },
+    "key.keyboard.b": {
+      "owner": "key.sophisticatedbackpacks.open_backpack",
+      "reason": "Backpack from anywhere."
+    },
+    "key.keyboard.k": {
+      "owner": "key.ftbchunks.claim_manager",
+      "reason": "Claims and teams."
+    }
+  },
+  "protectedAbout": "Fixed owners chosen by Elias. Nothing else may use these letters with Shift or Ctrl in the world: sneaking or holding sprint would hide the owner behind the combination.",
+  "exclusiveGates": [
+    {
+      "gates": [
+        "hold:ultimine",
+        "held:littletiles"
+      ],
+      "reason": "Ultimine shapes change only while V is held to mine; LittleTiles rotates only with its tool in hand."
+    }
+  ],
+  "aliases": [
+    {
+      "keys": [
+        "key.jump",
+        "key.the_bumblezone.beehemoth_up"
+      ],
+      "reason": "Bumblezone reuses jump to climb while riding a Beehemoth."
+    },
+    {
+      "keys": [
+        "key.jump",
+        "pneumaticcraft.boots.jet_boots"
+      ],
+      "reason": "PneumaticCraft jet boots fire with the jump key by design."
+    },
+    {
+      "keys": [
+        "key.jump",
+        "key.aether.gravitite_jump_ability.desc"
+      ],
+      "reason": "Gravitite armor boosts the normal jump."
+    },
+    {
+      "keys": [
+        "pneumaticcraft.boots.jet_boots",
+        "key.aether.gravitite_jump_ability.desc"
+      ],
+      "reason": "Both extend the jump key; each needs its own armor piece."
+    },
+    {
+      "keys": [
+        "key.the_bumblezone.beehemoth_up",
+        "pneumaticcraft.boots.jet_boots"
+      ],
+      "reason": "Both extend the jump key; one only while riding a Beehemoth."
+    },
+    {
+      "keys": [
+        "key.the_bumblezone.beehemoth_up",
+        "key.aether.gravitite_jump_ability.desc"
+      ],
+      "reason": "Both extend the jump key; one only while riding a Beehemoth."
+    },
+    {
+      "keys": [
+        "key.attack",
+        "key.fireNobu"
+      ],
+      "reason": "Mahou Tsukai fires its summoned guns with the attack button while that ability is active."
+    },
+    {
+      "keys": [
+        "key.back",
+        "key.immersiveengineering.magnetEquip"
+      ],
+      "reason": "IE declares no conflict: a double tap of back raises a magnet shield."
+    },
+    {
+      "keys": [
+        "key.saveToolbarActivator",
+        "key.ars_nouveau.open_book"
+      ],
+      "reason": "The vanilla activator only acts together with 1-9 in creative; Ars needs its book in hand."
+    },
+    {
+      "keys": [
+        "key.easy_villagers.cycle_trades",
+        "key.silentgear.cycle.next"
+      ],
+      "reason": "Trading screen only, and Silent Gear only with one of its items under the cursor; both are the mods own defaults. Rare: C over a Silent Gear item while trading."
+    },
+    {
+      "keys": [
+        "key.easy_villagers.cycle_trades",
+        "key.modularrouters.configure"
+      ],
+      "reason": "Trading screen only, and Modular Routers only with a module under the cursor. Rare: C over a module while trading."
+    },
+    {
+      "keys": [
+        "key.extendedae.viewpattern",
+        "key.ftbquests.gui_quest_panel.add_page_break"
+      ],
+      "reason": "Page break exists only in quest edit mode; the pattern view needs an encoded pattern tooltip."
+    },
+    {
+      "keys": [
+        "key.curios.open.desc",
+        "key.guideme.guide"
+      ],
+      "reason": "Inside the Curios screen a G press closes it; GuideME needs G held over a guide item, so the guide just does not open there."
+    },
+    {
+      "keys": [
+        "key.ftbquests.gui.extended_info",
+        "key.openManual"
+      ],
+      "reason": "McJty manual only for a McJty item under the cursor; F1 extended info is the quest screen help."
+    }
+  ],
+  "keys": {
+    "accessories.key.open_accessories_screen": {
+      "default": "key.keyboard.h",
+      "contexts": [
+        "world"
+      ],
+      "evidence": "Accessories 1.1.0-beta.48 (inside Aether 1.5.10): vanilla ctor, opens the Accessories screen."
+    },
+    "crafting_on_a_stick.key.open_curios": {
+      "default": "key.keyboard.v",
+      "contexts": [
+        "world"
+      ],
+      "evidence": "Crafting on a Stick 1.21.0.6 COASKeyMappings: vanilla ctor, second shortcut to the Curios screen."
+    },
+    "create.keyinfo.alt_modifier": {
+      "default": "key.keyboard.left.alt",
+      "contexts": [
+        "world"
+      ],
+      "evidence": "Create 6.0.10 / Copycats+ 3.0.9: held modifier for scroll or placement, not a press action.",
+      "hold": true
+    },
+    "create.keyinfo.ctrl_modifier": {
+      "default": "key.keyboard.left.control",
+      "contexts": [
+        "world"
+      ],
+      "evidence": "Create 6.0.10 / Copycats+ 3.0.9: held modifier for scroll or placement, not a press action.",
+      "hold": true
+    },
+    "create.keyinfo.shift_modifier": {
+      "default": "key.keyboard.left.shift",
+      "contexts": [
+        "world"
+      ],
+      "evidence": "Create 6.0.10 / Copycats+ 3.0.9: held modifier for scroll or placement, not a press action.",
+      "hold": true
+    },
+    "create.keyinfo.toolbelt": {
+      "default": "key.keyboard.left.alt",
+      "contexts": [
+        "world"
+      ],
+      "evidence": "Create 6.0.10 ToolboxHandlerClient.onKeyInput: a press (not a hold) opens the toolbox radial when a toolbox is within 8 blocks or the slot is linked."
+    },
+    "create.keyinfo.toolmenu": {
+      "default": "key.keyboard.left.alt",
+      "contexts": [
+        "world"
+      ],
+      "evidence": "Create 6.0.10 / Copycats+ 3.0.9: held modifier for scroll or placement, not a press action.",
+      "hold": true
+    },
+    "equipmentcompare.key.showTooltips": {
+      "default": "key.keyboard.left.shift",
+      "contexts": [
+        "gui"
+      ],
+      "evidence": "Equipment Compare 1.3.13: held over a tooltip.",
+      "hold": true
+    },
+    "framedblocks.key.update_cull": {
+      "default": "key.keyboard.f9",
+      "contexts": [
+        "world"
+      ],
+      "evidence": "FramedBlocks 10.6.1 KeyMappings.onClientTick: culling refresh of the targeted block."
+    },
+    "ftbultimine.change_shape.next": {
+      "default": "key.keyboard.up",
+      "contexts": [
+        "world"
+      ],
+      "evidence": "FTB Ultimine 2101.1.15 onKeyPress: only while the Ultimine key is held.",
+      "gate": "hold:ultimine"
+    },
+    "ftbultimine.change_shape.prev": {
+      "default": "key.keyboard.down",
+      "contexts": [
+        "world"
+      ],
+      "evidence": "FTB Ultimine 2101.1.15 onKeyPress: only while the Ultimine key is held.",
+      "gate": "hold:ultimine"
+    },
+    "justdirethings.key.toggle_tool": {
+      "default": null,
+      "contexts": [
+        "world"
+      ],
+      "evidence": "Just Dire Things 1.5.7."
+    },
+    "justdirethings.key.toolUI": {
+      "default": null,
+      "contexts": [
+        "world"
+      ],
+      "evidence": "Just Dire Things 1.5.7."
+    },
+    "justzoom.keybinds.keybind.zoom": {
+      "default": "key.keyboard.z",
+      "contexts": [
+        "world"
+      ],
+      "evidence": "Just Zoom 2.1.0 KeyMappings: vanilla ctor, hold to zoom."
+    },
+    "key.ad_astra.open_radio": {
+      "default": null,
+      "contexts": [
+        "world"
+      ],
+      "evidence": "Ad Astra 1.16.19."
+    },
+    "key.ad_astra.toggle_suit_flight": {
+      "default": null,
+      "contexts": [
+        "world"
+      ],
+      "evidence": "Ad Astra 1.16.19."
+    },
+    "key.advancements": {
+      "default": "key.keyboard.l",
+      "contexts": [
+        "world"
+      ],
+      "evidence": "Minecraft 1.21.1 Options; NeoForge 21.1.249 default UNIVERSAL, polled in game.",
+      "vanilla": true
+    },
+    "key.ae2.mouse_wheel_item_modifier": {
+      "default": "key.keyboard.left.shift",
+      "contexts": [
+        "world"
+      ],
+      "evidence": "AE2 19.2.17: held modifier for part placement and wheel.",
+      "hold": true
+    },
+    "key.ae2.part_placement_opposite": {
+      "default": "key.keyboard.left.control",
+      "contexts": [
+        "world"
+      ],
+      "evidence": "AE2 19.2.17: held modifier for part placement and wheel.",
+      "hold": true
+    },
+    "key.aether.gravitite_jump_ability.desc": {
+      "default": "key.keyboard.space",
+      "contexts": [
+        "world"
+      ],
+      "evidence": "Aether 1.5.10: jump-key ability of gravitite armor."
+    },
+    "key.aether.invisibility_toggle.desc": {
+      "default": "key.keyboard.v",
+      "contexts": [
+        "world"
+      ],
+      "evidence": "Aether 1.5.10 AetherKeys."
+    },
+    "key.aether.open_accessories.desc": {
+      "default": "key.keyboard.i",
+      "contexts": [
+        "world"
+      ],
+      "evidence": "Aether 1.5.10 AetherKeys: vanilla ctor, opens the Aether accessory screen."
+    },
+    "key.apotheosis.compare_equipment": {
+      "default": "key.keyboard.left.shift",
+      "contexts": [
+        "gui"
+      ],
+      "evidence": "Apotheosis 8.7.0: held over a tooltip.",
+      "hold": true
+    },
+    "key.apotheosis.link_item_to_chat": {
+      "default": "key.keyboard.t:SHIFT",
+      "contexts": [
+        "screen:container"
+      ],
+      "evidence": "Apotheosis 8.7.0: links the item under the cursor, screens only.",
+      "hover": "slot"
+    },
+    "key.apotheosis.open_world_tier_select": {
+      "default": "key.keyboard.t:CONTROL",
+      "contexts": [
+        "world"
+      ],
+      "evidence": "Apotheosis 8.7.0."
+    },
+    "key.apotheosis.toggle_radial_mining": {
+      "default": "key.keyboard.o:CONTROL",
+      "contexts": [
+        "world"
+      ],
+      "evidence": "Apotheosis 8.7.0."
+    },
+    "key.ars_elemental.open_pouch": {
+      "default": "key.keyboard.j",
+      "contexts": [
+        "world"
+      ],
+      "evidence": "Ars Elemental 0.7.10.1 ClientEvents.openBackpackGui: isDown in client tick."
+    },
+    "key.ars_nouveau.head_curio_hotkey": {
+      "default": "key.keyboard.g",
+      "contexts": [
+        "world"
+      ],
+      "evidence": "Ars Nouveau 5.13.1 KeyHandler.checkCurioHotkey: raw key code, worn radial head curio (Alchemist's Crown).",
+      "raw": true
+    },
+    "key.ars_nouveau.next_slot": {
+      "default": "key.keyboard.x",
+      "contexts": [
+        "world"
+      ],
+      "evidence": "Ars Nouveau 5.13.1 KeyHandler.checkCasterKeys: raw key code with a caster tool in hand.",
+      "gate": "held:ars-caster",
+      "raw": true
+    },
+    "key.ars_nouveau.open_book": {
+      "default": "key.keyboard.c",
+      "contexts": [
+        "world"
+      ],
+      "evidence": "Ars Nouveau 5.13.1 KeyHandler.checkCasterKeys: raw key code, no screen, spell book or hotkey listener in hand.",
+      "gate": "held:ars-caster",
+      "raw": true
+    },
+    "key.ars_nouveau.open_documentation": {
+      "default": "key.keyboard.left.control",
+      "contexts": [
+        "gui"
+      ],
+      "evidence": "Ars Nouveau 5.13.1: held over a tooltip to open its documentation.",
+      "hold": true
+    },
+    "key.ars_nouveau.previous_slot": {
+      "default": "key.keyboard.z",
+      "contexts": [
+        "world"
+      ],
+      "evidence": "Ars Nouveau 5.13.1 KeyHandler.checkCasterKeys: raw key code with a caster tool in hand.",
+      "gate": "held:ars-caster",
+      "raw": true
+    },
+    "key.ars_nouveau.selection_hud": {
+      "default": "key.keyboard.v",
+      "contexts": [
+        "world"
+      ],
+      "evidence": "Ars Nouveau 5.13.1 KeyHandler.checkCasterKeys: raw key code with a radial provider in hand.",
+      "gate": "held:ars-caster",
+      "raw": true
+    },
+    "key.attack": {
+      "default": "key.mouse.left",
+      "contexts": [
+        "world"
+      ],
+      "evidence": "Minecraft 1.21.1 Options; NeoForge 21.1.249 default UNIVERSAL, polled in game.",
+      "vanilla": true
+    },
+    "key.back": {
+      "default": "key.keyboard.s",
+      "contexts": [
+        "world"
+      ],
+      "evidence": "Minecraft 1.21.1 Options; NeoForge 21.1.249 default UNIVERSAL, polled in game.",
+      "vanilla": true
+    },
+    "key.buildinggadgets2.anchor": {
+      "default": "key.keyboard.h",
+      "contexts": [
+        "world"
+      ],
+      "evidence": "Building Gadgets 2 1.3.9: KeyConflictContextGadget, active with a gadget in hand and no screen.",
+      "gate": "held:gadget",
+      "gateInContext": true
+    },
+    "key.buildinggadgets2.range": {
+      "default": "key.keyboard.r",
+      "contexts": [
+        "world"
+      ],
+      "evidence": "Building Gadgets 2 1.3.9: KeyConflictContextGadget, active with a gadget in hand and no screen.",
+      "gate": "held:gadget",
+      "gateInContext": true
+    },
+    "key.buildinggadgets2.settings_menu": {
+      "default": "key.keyboard.g",
+      "contexts": [
+        "world"
+      ],
+      "evidence": "Building Gadgets 2 1.3.9: KeyConflictContextGadget, active with a gadget in hand and no screen.",
+      "gate": "held:gadget",
+      "gateInContext": true
+    },
+    "key.buildinggadgets2.undo": {
+      "default": "key.keyboard.u",
+      "contexts": [
+        "world"
+      ],
+      "evidence": "Building Gadgets 2 1.3.9: KeyConflictContextGadget, active with a gadget in hand and no screen.",
+      "gate": "held:gadget",
+      "gateInContext": true
+    },
+    "key.cataclysm.ability": {
+      "default": null,
+      "contexts": [
+        "world"
+      ],
+      "evidence": "L_Ender's Cataclysm 3.33."
+    },
+    "key.cataclysm.boots_ability": {
+      "default": null,
+      "contexts": [
+        "world"
+      ],
+      "evidence": "L_Ender's Cataclysm 3.33."
+    },
+    "key.cataclysm.chestplate_ability": {
+      "default": null,
+      "contexts": [
+        "world"
+      ],
+      "evidence": "L_Ender's Cataclysm 3.33."
+    },
+    "key.cataclysm.helmet_ability": {
+      "default": null,
+      "contexts": [
+        "world"
+      ],
+      "evidence": "L_Ender's Cataclysm 3.33."
+    },
+    "key.changeMysticCode": {
+      "default": "key.keyboard.y",
+      "contexts": [
+        "world"
+      ],
+      "evidence": "Mahou Tsukai 1.36.27."
+    },
+    "key.chat": {
+      "default": "key.keyboard.t",
+      "contexts": [
+        "world"
+      ],
+      "evidence": "Minecraft 1.21.1 Options; NeoForge 21.1.249 default UNIVERSAL, polled in game.",
+      "vanilla": true
+    },
+    "key.command": {
+      "default": "key.keyboard.slash",
+      "contexts": [
+        "world"
+      ],
+      "evidence": "Minecraft 1.21.1 Options; NeoForge 21.1.249 default UNIVERSAL, polled in game.",
+      "vanilla": true
+    },
+    "key.craftingtweaks.compress_all": {
+      "default": "key.keyboard.k:SHIFT",
+      "contexts": [
+        "screen:crafting"
+      ],
+      "evidence": "Crafting Tweaks 21.1.11: crafting-grid screens."
+    },
+    "key.craftingtweaks.compress_one": {
+      "default": "key.keyboard.k:CONTROL",
+      "contexts": [
+        "screen:crafting"
+      ],
+      "evidence": "Crafting Tweaks 21.1.11: crafting-grid screens."
+    },
+    "key.craftingtweaks.compress_stack": {
+      "default": "key.keyboard.k",
+      "contexts": [
+        "screen:crafting"
+      ],
+      "evidence": "Crafting Tweaks 21.1.11: crafting-grid screens."
+    },
+    "key.craftingtweaks.refill_last": {
+      "default": "key.keyboard.tab:CONTROL",
+      "contexts": [
+        "screen:crafting"
+      ],
+      "evidence": "Crafting Tweaks 21.1.11: crafting-grid screens."
+    },
+    "key.craftingtweaks.refill_last_stack": {
+      "default": "key.keyboard.tab",
+      "contexts": [
+        "screen:crafting"
+      ],
+      "evidence": "Crafting Tweaks 21.1.11: crafting-grid screens."
+    },
+    "key.curios.open.desc": {
+      "default": "key.keyboard.g",
+      "contexts": [
+        "world",
+        "screen:curios"
+      ],
+      "evidence": "Curios 9.5.1: vanilla ctor (UNIVERSAL); ClientEventHandler.onClientTick consumeClick opens the Curios screen, CuriosScreen.keyPressed closes it."
+    },
+    "key.deep_aether.slider_eye_ability": {
+      "default": null,
+      "contexts": [
+        "world"
+      ],
+      "evidence": "Deep Aether 1.1.5.1."
+    },
+    "key.deep_aether.stratus_dash_ability.desc": {
+      "default": null,
+      "contexts": [
+        "world"
+      ],
+      "evidence": "Deep Aether 1.1.5.1."
+    },
+    "key.deep_aether.toggle_skyjade_transparency": {
+      "default": null,
+      "contexts": [
+        "world"
+      ],
+      "evidence": "Deep Aether 1.1.5.1."
+    },
+    "key.deeperdarker.boost": {
+      "default": null,
+      "contexts": [
+        "world"
+      ],
+      "evidence": "Deeper and Darker 1.4.1."
+    },
+    "key.deeperdarker.transmit": {
+      "default": null,
+      "contexts": [
+        "world"
+      ],
+      "evidence": "Deeper and Darker 1.4.1."
+    },
+    "key.draconicevolution.place_item": {
+      "default": null,
+      "contexts": [
+        "world"
+      ],
+      "evidence": "Draconic Evolution 3.1.4."
+    },
+    "key.draconicevolution.tool_config": {
+      "default": null,
+      "contexts": [
+        "world"
+      ],
+      "evidence": "Draconic Evolution 3.1.4."
+    },
+    "key.draconicevolution.tool_modules": {
+      "default": "key.keyboard.c:SHIFT",
+      "contexts": [
+        "world"
+      ],
+      "evidence": "Draconic Evolution 3.1.4."
+    },
+    "key.drawMahoujin": {
+      "default": "key.keyboard.m",
+      "contexts": [
+        "world"
+      ],
+      "evidence": "Mahou Tsukai 1.36.27."
+    },
+    "key.drop": {
+      "default": "key.keyboard.q",
+      "contexts": [
+        "world"
+      ],
+      "evidence": "Minecraft 1.21.1 Options; NeoForge 21.1.249 default UNIVERSAL, polled in game.",
+      "vanilla": true
+    },
+    "key.easy_villagers.cycle_trades": {
+      "default": "key.keyboard.c",
+      "contexts": [
+        "screen:merchant"
+      ],
+      "evidence": "Easy Villagers 1.1.42 GuiEvents: raw key code inside the trading screen.",
+      "raw": true
+    },
+    "key.easy_villagers.pick_up": {
+      "default": "key.keyboard.v",
+      "contexts": [
+        "world"
+      ],
+      "evidence": "Easy Villagers 1.1.42 VillagerEvents.onKeyInput: consumeClick in the world."
+    },
+    "key.enderio.toggle_magnet": {
+      "default": "key.keyboard.m",
+      "contexts": [
+        "world"
+      ],
+      "evidence": "Ender IO 8.2.11 KeymapHandler: vanilla ctor (UNIVERSAL)."
+    },
+    "key.enderio.travel_staff": {
+      "default": "key.keyboard.g",
+      "contexts": [
+        "world"
+      ],
+      "evidence": "Ender IO 8.2.11 KeymapHandler: vanilla ctor (UNIVERSAL)."
+    },
+    "key.eternal_starlight.switch_crest": {
+      "default": "key.keyboard.h",
+      "contexts": [
+        "world"
+      ],
+      "evidence": "Eternal Starlight 0.9.0 ESClientHandler.onClientTick: vanilla ctor (UNIVERSAL)."
+    },
+    "key.evilcraft.exaltedCrafting": {
+      "default": "key.keyboard.c",
+      "contexts": [
+        "world"
+      ],
+      "evidence": "EvilCraft 1.2.94 ExaltedCrafterKeyHandler: opens a carried Exalted Crafter."
+    },
+    "key.evilcraft.fart": {
+      "default": "key.keyboard.p",
+      "contexts": [
+        "world"
+      ],
+      "evidence": "EvilCraft 1.2.94 FartKeyHandler (CyclopsCore key registry)."
+    },
+    "key.extendedae.set_amount": {
+      "default": "key.mouse.middle",
+      "contexts": [
+        "screen:ae2-bus"
+      ],
+      "evidence": "ExtendedAE 2.2.35: matchesMouse on a config slot of its precise/threshold bus screens.",
+      "hover": "slot"
+    },
+    "key.extendedae.viewpattern": {
+      "default": "key.keyboard.p",
+      "contexts": [
+        "gui"
+      ],
+      "evidence": "ExtendedAE 2.2.35 PatternHotKey: tooltip of the encoded pattern under the cursor.",
+      "hover": "ae2-pattern"
+    },
+    "key.fireNobu": {
+      "default": "key.mouse.left",
+      "contexts": [
+        "world"
+      ],
+      "evidence": "Mahou Tsukai 1.36.27: mouse button of its gun ability."
+    },
+    "key.forward": {
+      "default": "key.keyboard.w",
+      "contexts": [
+        "world"
+      ],
+      "evidence": "Minecraft 1.21.1 Options; NeoForge 21.1.249 default UNIVERSAL, polled in game.",
+      "vanilla": true
+    },
+    "key.ftbchunks.claim_manager": {
+      "default": null,
+      "contexts": [
+        "world"
+      ],
+      "evidence": "FTB Chunks 2101.1.21: vanilla ctor."
+    },
+    "key.ftbchunks.map": {
+      "default": "key.keyboard.m",
+      "contexts": [
+        "world"
+      ],
+      "evidence": "FTB Chunks 2101.1.21: vanilla ctor."
+    },
+    "key.ftbchunks.minimap.zoomIn": {
+      "default": "key.keyboard.equal",
+      "contexts": [
+        "world"
+      ],
+      "evidence": "FTB Chunks 2101.1.21: vanilla ctor; its minimap is disabled by the pack."
+    },
+    "key.ftbchunks.minimap.zoomOut": {
+      "default": "key.keyboard.minus",
+      "contexts": [
+        "world"
+      ],
+      "evidence": "FTB Chunks 2101.1.21: vanilla ctor; its minimap is disabled by the pack."
+    },
+    "key.ftbquests.gui.extended_info": {
+      "default": "key.keyboard.f1",
+      "contexts": [
+        "screen:quests"
+      ],
+      "evidence": "FTB Quests 2101.1.34: quest screen/editor keys."
+    },
+    "key.ftbquests.gui.move_down": {
+      "default": "key.keyboard.down",
+      "contexts": [
+        "screen:quests"
+      ],
+      "evidence": "FTB Quests 2101.1.34: quest screen/editor keys."
+    },
+    "key.ftbquests.gui.move_left": {
+      "default": "key.keyboard.left",
+      "contexts": [
+        "screen:quests"
+      ],
+      "evidence": "FTB Quests 2101.1.34: quest screen/editor keys."
+    },
+    "key.ftbquests.gui.move_right": {
+      "default": "key.keyboard.right",
+      "contexts": [
+        "screen:quests"
+      ],
+      "evidence": "FTB Quests 2101.1.34: quest screen/editor keys."
+    },
+    "key.ftbquests.gui.move_up": {
+      "default": "key.keyboard.up",
+      "contexts": [
+        "screen:quests"
+      ],
+      "evidence": "FTB Quests 2101.1.34: quest screen/editor keys."
+    },
+    "key.ftbquests.gui.next_chapter": {
+      "default": "key.keyboard.tab",
+      "contexts": [
+        "screen:quests"
+      ],
+      "evidence": "FTB Quests 2101.1.34: quest screen/editor keys."
+    },
+    "key.ftbquests.gui.player_prefs": {
+      "default": "key.keyboard.p:CONTROL",
+      "contexts": [
+        "screen:quests"
+      ],
+      "evidence": "FTB Quests 2101.1.34: quest screen/editor keys."
+    },
+    "key.ftbquests.gui.prev_chapter": {
+      "default": "key.keyboard.tab:SHIFT",
+      "contexts": [
+        "screen:quests"
+      ],
+      "evidence": "FTB Quests 2101.1.34: quest screen/editor keys."
+    },
+    "key.ftbquests.gui.recenter": {
+      "default": "key.keyboard.space",
+      "contexts": [
+        "screen:quests"
+      ],
+      "evidence": "FTB Quests 2101.1.34: quest screen/editor keys."
+    },
+    "key.ftbquests.gui.search": {
+      "default": "key.keyboard.f:CONTROL",
+      "contexts": [
+        "screen:quests"
+      ],
+      "evidence": "FTB Quests 2101.1.34: quest screen/editor keys."
+    },
+    "key.ftbquests.gui.zoom_in": {
+      "default": "key.keyboard.equal",
+      "contexts": [
+        "screen:quests"
+      ],
+      "evidence": "FTB Quests 2101.1.34: quest screen/editor keys."
+    },
+    "key.ftbquests.gui.zoom_out": {
+      "default": "key.keyboard.minus",
+      "contexts": [
+        "screen:quests"
+      ],
+      "evidence": "FTB Quests 2101.1.34: quest screen/editor keys."
+    },
+    "key.ftbquests.gui.zoom_reset": {
+      "default": "key.keyboard.0",
+      "contexts": [
+        "screen:quests"
+      ],
+      "evidence": "FTB Quests 2101.1.34: quest screen/editor keys."
+    },
+    "key.ftbquests.gui_editor.copy": {
+      "default": "key.keyboard.c:CONTROL",
+      "contexts": [
+        "screen:quests"
+      ],
+      "evidence": "FTB Quests 2101.1.34: quest screen/editor keys."
+    },
+    "key.ftbquests.gui_editor.delete": {
+      "default": "key.keyboard.delete",
+      "contexts": [
+        "screen:quests"
+      ],
+      "evidence": "FTB Quests 2101.1.34: quest screen/editor keys."
+    },
+    "key.ftbquests.gui_editor.force_delete": {
+      "default": "key.keyboard.delete:SHIFT",
+      "contexts": [
+        "screen:quests"
+      ],
+      "evidence": "FTB Quests 2101.1.34: quest screen/editor keys."
+    },
+    "key.ftbquests.gui_editor.paste": {
+      "default": "key.keyboard.v:CONTROL",
+      "contexts": [
+        "screen:quests"
+      ],
+      "evidence": "FTB Quests 2101.1.34: quest screen/editor keys."
+    },
+    "key.ftbquests.gui_editor.redo": {
+      "default": "key.keyboard.y:CONTROL",
+      "contexts": [
+        "screen:quests"
+      ],
+      "evidence": "FTB Quests 2101.1.34: quest screen/editor keys."
+    },
+    "key.ftbquests.gui_editor.reload_theme": {
+      "default": "key.keyboard.f5",
+      "contexts": [
+        "screen:quests"
+      ],
+      "evidence": "FTB Quests 2101.1.34: quest screen/editor keys."
+    },
+    "key.ftbquests.gui_editor.reward_tables": {
+      "default": "key.keyboard.t:CONTROL",
+      "contexts": [
+        "screen:quests"
+      ],
+      "evidence": "FTB Quests 2101.1.34: quest screen/editor keys."
+    },
+    "key.ftbquests.gui_editor.select_all": {
+      "default": "key.keyboard.a:CONTROL",
+      "contexts": [
+        "screen:quests"
+      ],
+      "evidence": "FTB Quests 2101.1.34: quest screen/editor keys."
+    },
+    "key.ftbquests.gui_editor.select_none": {
+      "default": "key.keyboard.d:CONTROL",
+      "contexts": [
+        "screen:quests"
+      ],
+      "evidence": "FTB Quests 2101.1.34: quest screen/editor keys."
+    },
+    "key.ftbquests.gui_editor.toggle_crosshairs": {
+      "default": "key.keyboard.r:CONTROL",
+      "contexts": [
+        "screen:quests"
+      ],
+      "evidence": "FTB Quests 2101.1.34: quest screen/editor keys."
+    },
+    "key.ftbquests.gui_editor.undo": {
+      "default": "key.keyboard.z:CONTROL",
+      "contexts": [
+        "screen:quests"
+      ],
+      "evidence": "FTB Quests 2101.1.34: quest screen/editor keys."
+    },
+    "key.ftbquests.gui_quest_panel.add_image": {
+      "default": "key.keyboard.i",
+      "contexts": [
+        "screen:quests"
+      ],
+      "evidence": "FTB Quests 2101.1.34: quest screen/editor keys."
+    },
+    "key.ftbquests.gui_quest_panel.add_line": {
+      "default": "key.keyboard.l",
+      "contexts": [
+        "screen:quests"
+      ],
+      "evidence": "FTB Quests 2101.1.34: quest screen/editor keys."
+    },
+    "key.ftbquests.gui_quest_panel.add_page_break": {
+      "default": "key.keyboard.p",
+      "contexts": [
+        "screen:quests"
+      ],
+      "evidence": "FTB Quests 2101.1.34: quest screen/editor keys."
+    },
+    "key.ftbquests.gui_quest_panel.edit_desc": {
+      "default": "key.keyboard.d",
+      "contexts": [
+        "screen:quests"
+      ],
+      "evidence": "FTB Quests 2101.1.34: quest screen/editor keys."
+    },
+    "key.ftbquests.gui_quest_panel.edit_quest_props": {
+      "default": "key.keyboard.q",
+      "contexts": [
+        "screen:quests"
+      ],
+      "evidence": "FTB Quests 2101.1.34: quest screen/editor keys."
+    },
+    "key.ftbquests.gui_quest_panel.edit_subtitle": {
+      "default": "key.keyboard.s",
+      "contexts": [
+        "screen:quests"
+      ],
+      "evidence": "FTB Quests 2101.1.34: quest screen/editor keys."
+    },
+    "key.ftbquests.gui_quest_panel.edit_title": {
+      "default": "key.keyboard.t",
+      "contexts": [
+        "screen:quests"
+      ],
+      "evidence": "FTB Quests 2101.1.34: quest screen/editor keys."
+    },
+    "key.ftbquests.quests": {
+      "default": null,
+      "contexts": [
+        "world"
+      ],
+      "evidence": "FTB Quests 2101.1.34: opens the quest book."
+    },
+    "key.ftbultimine": {
+      "default": "key.keyboard.grave.accent",
+      "contexts": [
+        "world"
+      ],
+      "evidence": "FTB Ultimine 2101.1.15 clientTick: KeyMapping.isDown (hold)."
+    },
+    "key.fullscreen": {
+      "default": "key.keyboard.f11",
+      "contexts": [
+        "world"
+      ],
+      "evidence": "Minecraft 1.21.1 Options; NeoForge 21.1.249 default UNIVERSAL, polled in game.",
+      "vanilla": true
+    },
+    "key.guideme.guide": {
+      "default": "key.keyboard.g",
+      "contexts": [
+        "gui"
+      ],
+      "evidence": "GuideME 21.1.17 OpenGuideHotkey: KeyConflictContext.GUI, held over the tooltip of an item that has a guide.",
+      "hover": "guideme"
+    },
+    "key.gunDown": {
+      "default": "key.keyboard.down",
+      "contexts": [
+        "world"
+      ],
+      "evidence": "Mahou Tsukai 1.36.27."
+    },
+    "key.gunUp": {
+      "default": "key.keyboard.up",
+      "contexts": [
+        "world"
+      ],
+      "evidence": "Mahou Tsukai 1.36.27."
+    },
+    "key.hostilenetworks.open_deep_learner": {
+      "default": null,
+      "contexts": [
+        "world"
+      ],
+      "evidence": "Hostile Neural Networks 6.5.1."
+    },
+    "key.hotbar.1": {
+      "default": "key.keyboard.1",
+      "contexts": [
+        "world"
+      ],
+      "evidence": "Minecraft 1.21.1 Options; NeoForge 21.1.249 default UNIVERSAL, polled in game.",
+      "vanilla": true
+    },
+    "key.hotbar.2": {
+      "default": "key.keyboard.2",
+      "contexts": [
+        "world"
+      ],
+      "evidence": "Minecraft 1.21.1 Options; NeoForge 21.1.249 default UNIVERSAL, polled in game.",
+      "vanilla": true
+    },
+    "key.hotbar.3": {
+      "default": "key.keyboard.3",
+      "contexts": [
+        "world"
+      ],
+      "evidence": "Minecraft 1.21.1 Options; NeoForge 21.1.249 default UNIVERSAL, polled in game.",
+      "vanilla": true
+    },
+    "key.hotbar.4": {
+      "default": "key.keyboard.4",
+      "contexts": [
+        "world"
+      ],
+      "evidence": "Minecraft 1.21.1 Options; NeoForge 21.1.249 default UNIVERSAL, polled in game.",
+      "vanilla": true
+    },
+    "key.hotbar.5": {
+      "default": "key.keyboard.5",
+      "contexts": [
+        "world"
+      ],
+      "evidence": "Minecraft 1.21.1 Options; NeoForge 21.1.249 default UNIVERSAL, polled in game.",
+      "vanilla": true
+    },
+    "key.hotbar.6": {
+      "default": "key.keyboard.6",
+      "contexts": [
+        "world"
+      ],
+      "evidence": "Minecraft 1.21.1 Options; NeoForge 21.1.249 default UNIVERSAL, polled in game.",
+      "vanilla": true
+    },
+    "key.hotbar.7": {
+      "default": "key.keyboard.7",
+      "contexts": [
+        "world"
+      ],
+      "evidence": "Minecraft 1.21.1 Options; NeoForge 21.1.249 default UNIVERSAL, polled in game.",
+      "vanilla": true
+    },
+    "key.hotbar.8": {
+      "default": "key.keyboard.8",
+      "contexts": [
+        "world"
+      ],
+      "evidence": "Minecraft 1.21.1 Options; NeoForge 21.1.249 default UNIVERSAL, polled in game.",
+      "vanilla": true
+    },
+    "key.hotbar.9": {
+      "default": "key.keyboard.9",
+      "contexts": [
+        "world"
+      ],
+      "evidence": "Minecraft 1.21.1 Options; NeoForge 21.1.249 default UNIVERSAL, polled in game.",
+      "vanilla": true
+    },
+    "key.hypertube.tube_escape": {
+      "default": "key.keyboard.left.shift",
+      "contexts": [
+        "world"
+      ],
+      "evidence": "Create Hypertube 0.6.0: held like sneak to leave a tube.",
+      "hold": true
+    },
+    "key.immersive_aircraft.boost": {
+      "default": "key.keyboard.b",
+      "contexts": [
+        "world"
+      ],
+      "evidence": "Immersive Aircraft 1.5.2: pilot actions while riding an aircraft.",
+      "gate": "riding:aircraft"
+    },
+    "key.immersive_aircraft.dismount": {
+      "default": "key.keyboard.r",
+      "contexts": [
+        "world"
+      ],
+      "evidence": "Immersive Aircraft 1.5.2: pilot actions while riding an aircraft.",
+      "gate": "riding:aircraft"
+    },
+    "key.immersiveengineering.magnetEquip": {
+      "default": "key.keyboard.s",
+      "contexts": [
+        "world"
+      ],
+      "evidence": "Immersive Engineering 12.4.2 IEKeybinds$1: in-game context whose conflicts() is false; ClientEventHandler double-tap with a magnet shield."
+    },
+    "key.immersiveengineering.railgunZoom": {
+      "default": "key.mouse.middle",
+      "contexts": [
+        "world"
+      ],
+      "evidence": "Immersive Engineering 12.4.2 ItemKeybindConflictContext: active only with a zoom tool that can zoom in hand.",
+      "gate": "held:ie-zoom",
+      "gateInContext": true
+    },
+    "key.integrateddynamics.logic_programmer_focus_search": {
+      "default": "key.keyboard.f:ALT",
+      "contexts": [
+        "screen:logic-programmer"
+      ],
+      "evidence": "Integrated Dynamics 1.35.0: logic programmer screen."
+    },
+    "key.integrateddynamics.logic_programmer_open_rename": {
+      "default": "key.keyboard.r:ALT",
+      "contexts": [
+        "screen:logic-programmer"
+      ],
+      "evidence": "Integrated Dynamics 1.35.0: logic programmer screen."
+    },
+    "key.inventory": {
+      "default": "key.keyboard.e",
+      "contexts": [
+        "world"
+      ],
+      "evidence": "Minecraft 1.21.1 Options; NeoForge 21.1.249 default UNIVERSAL, polled in game.",
+      "vanilla": true
+    },
+    "key.invtweaks_sort_either.desc": {
+      "default": "key.mouse.middle",
+      "contexts": [
+        "screen:container"
+      ],
+      "evidence": "Inventory Tweaks Refoxed 1.3.2 ClientEvents.onMouseButtonPressed: sorts the inventory under the cursor in any AbstractContainerScreen except creative.",
+      "hover": "slot"
+    },
+    "key.invtweaks_sort_inventory.desc": {
+      "default": "key.keyboard.grave.accent",
+      "contexts": [
+        "screen:container"
+      ],
+      "evidence": "Inventory Tweaks Refoxed 1.3.2 ClientEvents: KeyConflictContext.GUI, any AbstractContainerScreen except creative."
+    },
+    "key.invtweaks_sort_player.desc": {
+      "default": "key.keyboard.backslash",
+      "contexts": [
+        "screen:container"
+      ],
+      "evidence": "Inventory Tweaks Refoxed 1.3.2 ClientEvents: KeyConflictContext.GUI, any AbstractContainerScreen except creative."
+    },
+    "key.irons_spellbooks.spell_bar_modifier": {
+      "default": "key.keyboard.left.alt",
+      "contexts": [
+        "world"
+      ],
+      "evidence": "Iron's Spells 3.16.3: held with the mouse wheel to change spell.",
+      "hold": true
+    },
+    "key.irons_spellbooks.spell_wheel": {
+      "default": null,
+      "contexts": [
+        "world"
+      ],
+      "evidence": "Iron's Spells 3.16.3."
+    },
+    "key.irons_spellbooks.spellbook_cast": {
+      "default": null,
+      "contexts": [
+        "world"
+      ],
+      "evidence": "Iron's Spells 3.16.3."
+    },
+    "key.jade.config": {
+      "default": "key.keyboard.keypad.0",
+      "contexts": [
+        "world"
+      ],
+      "evidence": "Jade 15.10.6: overlay toggles in the world."
+    },
+    "key.jade.narrate": {
+      "default": "key.keyboard.keypad.5",
+      "contexts": [
+        "world"
+      ],
+      "evidence": "Jade 15.10.6: overlay toggles in the world."
+    },
+    "key.jade.show_details": {
+      "default": "key.keyboard.left.shift",
+      "contexts": [
+        "world"
+      ],
+      "evidence": "Jade 15.10.6: held to expand the overlay.",
+      "hold": true
+    },
+    "key.jade.show_overlay": {
+      "default": "key.keyboard.keypad.1",
+      "contexts": [
+        "world"
+      ],
+      "evidence": "Jade 15.10.6: overlay toggles in the world."
+    },
+    "key.jade.show_recipes": {
+      "default": "key.keyboard.keypad.3",
+      "contexts": [
+        "world"
+      ],
+      "evidence": "Jade 15.10.6: overlay toggles in the world."
+    },
+    "key.jade.show_uses": {
+      "default": "key.keyboard.keypad.4",
+      "contexts": [
+        "world"
+      ],
+      "evidence": "Jade 15.10.6: overlay toggles in the world."
+    },
+    "key.jade.toggle_liquid": {
+      "default": "key.keyboard.keypad.2",
+      "contexts": [
+        "world"
+      ],
+      "evidence": "Jade 15.10.6: overlay toggles in the world."
+    },
+    "key.jei.bookmark": {
+      "default": "key.keyboard.a",
+      "contexts": [
+        "screen:container",
+        "screen:jei"
+      ],
+      "hover": "jei",
+      "evidence": "JEI 19.50.0.414: ingredient list, bookmarks and recipe screens only."
+    },
+    "key.jei.cheatItemStack": {
+      "default": "key.mouse.left:SHIFT",
+      "contexts": [
+        "screen:container",
+        "screen:jei"
+      ],
+      "hover": "jei",
+      "evidence": "JEI 19.50.0.414: ingredient list, bookmarks and recipe screens only."
+    },
+    "key.jei.cheatItemStack2": {
+      "default": "key.mouse.middle",
+      "contexts": [
+        "screen:container",
+        "screen:jei"
+      ],
+      "hover": "jei",
+      "evidence": "JEI 19.50.0.414: ingredient list, bookmarks and recipe screens only."
+    },
+    "key.jei.cheatOneItem": {
+      "default": "key.mouse.left",
+      "contexts": [
+        "screen:container",
+        "screen:jei"
+      ],
+      "hover": "jei",
+      "evidence": "JEI 19.50.0.414: ingredient list, bookmarks and recipe screens only."
+    },
+    "key.jei.cheatOneItem2": {
+      "default": "key.mouse.right",
+      "contexts": [
+        "screen:container",
+        "screen:jei"
+      ],
+      "hover": "jei",
+      "evidence": "JEI 19.50.0.414: ingredient list, bookmarks and recipe screens only."
+    },
+    "key.jei.clearSearchBar": {
+      "default": "key.mouse.right",
+      "contexts": [
+        "screen:container",
+        "screen:jei"
+      ],
+      "hover": "jei",
+      "evidence": "JEI 19.50.0.414: ingredient list, bookmarks and recipe screens only."
+    },
+    "key.jei.closeRecipeGui": {
+      "default": "key.keyboard.escape",
+      "contexts": [
+        "screen:container",
+        "screen:jei"
+      ],
+      "hover": "jei",
+      "evidence": "JEI 19.50.0.414: ingredient list, bookmarks and recipe screens only."
+    },
+    "key.jei.copy.recipe.id": {
+      "default": "key.keyboard.unknown",
+      "contexts": [
+        "screen:container",
+        "screen:jei"
+      ],
+      "hover": "jei",
+      "evidence": "JEI 19.50.0.414: ingredient list, bookmarks and recipe screens only."
+    },
+    "key.jei.focusSearch": {
+      "default": "key.keyboard.f:CONTROL",
+      "contexts": [
+        "screen:container",
+        "screen:jei"
+      ],
+      "hover": "jei",
+      "evidence": "JEI 19.50.0.414: ingredient list, bookmarks and recipe screens only."
+    },
+    "key.jei.maxTransferRecipeBookmark": {
+      "default": "key.mouse.left:CONTROL",
+      "contexts": [
+        "screen:container",
+        "screen:jei"
+      ],
+      "hover": "jei",
+      "evidence": "JEI 19.50.0.414: ingredient list, bookmarks and recipe screens only."
+    },
+    "key.jei.nextCategory": {
+      "default": "key.keyboard.page.down:SHIFT",
+      "contexts": [
+        "screen:container",
+        "screen:jei"
+      ],
+      "hover": "jei",
+      "evidence": "JEI 19.50.0.414: ingredient list, bookmarks and recipe screens only."
+    },
+    "key.jei.nextPage": {
+      "default": "key.keyboard.unknown",
+      "contexts": [
+        "screen:container",
+        "screen:jei"
+      ],
+      "hover": "jei",
+      "evidence": "JEI 19.50.0.414: ingredient list, bookmarks and recipe screens only."
+    },
+    "key.jei.nextRecipePage": {
+      "default": "key.keyboard.page.down",
+      "contexts": [
+        "screen:container",
+        "screen:jei"
+      ],
+      "hover": "jei",
+      "evidence": "JEI 19.50.0.414: ingredient list, bookmarks and recipe screens only."
+    },
+    "key.jei.nextSearch": {
+      "default": "key.keyboard.down",
+      "contexts": [
+        "screen:container",
+        "screen:jei"
+      ],
+      "hover": "jei",
+      "evidence": "JEI 19.50.0.414: ingredient list, bookmarks and recipe screens only."
+    },
+    "key.jei.pauseRecipeCycling": {
+      "default": "key.keyboard.left.shift",
+      "contexts": [
+        "screen:container",
+        "screen:jei"
+      ],
+      "evidence": "JEI 19.50.0.414: screen-only held modifier.",
+      "hold": true,
+      "hover": "jei"
+    },
+    "key.jei.previousCategory": {
+      "default": "key.keyboard.page.up:SHIFT",
+      "contexts": [
+        "screen:container",
+        "screen:jei"
+      ],
+      "hover": "jei",
+      "evidence": "JEI 19.50.0.414: ingredient list, bookmarks and recipe screens only."
+    },
+    "key.jei.previousPage": {
+      "default": "key.keyboard.unknown",
+      "contexts": [
+        "screen:container",
+        "screen:jei"
+      ],
+      "hover": "jei",
+      "evidence": "JEI 19.50.0.414: ingredient list, bookmarks and recipe screens only."
+    },
+    "key.jei.previousRecipePage": {
+      "default": "key.keyboard.page.up",
+      "contexts": [
+        "screen:container",
+        "screen:jei"
+      ],
+      "hover": "jei",
+      "evidence": "JEI 19.50.0.414: ingredient list, bookmarks and recipe screens only."
+    },
+    "key.jei.previousSearch": {
+      "default": "key.keyboard.up",
+      "contexts": [
+        "screen:container",
+        "screen:jei"
+      ],
+      "hover": "jei",
+      "evidence": "JEI 19.50.0.414: ingredient list, bookmarks and recipe screens only."
+    },
+    "key.jei.quickMove": {
+      "default": "key.mouse.left:SHIFT",
+      "contexts": [
+        "screen:container",
+        "screen:jei"
+      ],
+      "hover": "jei",
+      "evidence": "JEI 19.50.0.414: ingredient list, bookmarks and recipe screens only."
+    },
+    "key.jei.recipeBack": {
+      "default": "key.keyboard.backspace",
+      "contexts": [
+        "screen:container",
+        "screen:jei"
+      ],
+      "hover": "jei",
+      "evidence": "JEI 19.50.0.414: ingredient list, bookmarks and recipe screens only."
+    },
+    "key.jei.recipeForward": {
+      "default": "key.keyboard.unknown",
+      "contexts": [
+        "screen:container",
+        "screen:jei"
+      ],
+      "hover": "jei",
+      "evidence": "JEI 19.50.0.414: ingredient list, bookmarks and recipe screens only."
+    },
+    "key.jei.shareToChat": {
+      "default": "key.keyboard.unknown",
+      "contexts": [
+        "screen:container",
+        "screen:jei"
+      ],
+      "hover": "jei",
+      "evidence": "JEI 19.50.0.414: ingredient list, bookmarks and recipe screens only."
+    },
+    "key.jei.showBookmarkTooltipFeatures": {
+      "default": "key.keyboard.left.control",
+      "contexts": [
+        "screen:container",
+        "screen:jei"
+      ],
+      "evidence": "JEI 19.50.0.414: screen-only held modifier.",
+      "hold": true,
+      "hover": "jei"
+    },
+    "key.jei.showRecipe": {
+      "default": "key.keyboard.r",
+      "contexts": [
+        "screen:container",
+        "screen:jei"
+      ],
+      "hover": "jei",
+      "evidence": "JEI 19.50.0.414: ingredient list, bookmarks and recipe screens only."
+    },
+    "key.jei.showRecipe2": {
+      "default": "key.mouse.left",
+      "contexts": [
+        "screen:container",
+        "screen:jei"
+      ],
+      "hover": "jei",
+      "evidence": "JEI 19.50.0.414: ingredient list, bookmarks and recipe screens only."
+    },
+    "key.jei.showUses": {
+      "default": "key.keyboard.u",
+      "contexts": [
+        "screen:container",
+        "screen:jei"
+      ],
+      "hover": "jei",
+      "evidence": "JEI 19.50.0.414: ingredient list, bookmarks and recipe screens only."
+    },
+    "key.jei.showUses2": {
+      "default": "key.mouse.right",
+      "contexts": [
+        "screen:container",
+        "screen:jei"
+      ],
+      "hover": "jei",
+      "evidence": "JEI 19.50.0.414: ingredient list, bookmarks and recipe screens only."
+    },
+    "key.jei.toggleBookmarkOverlay": {
+      "default": "key.keyboard.unknown",
+      "contexts": [
+        "screen:container",
+        "screen:jei"
+      ],
+      "hover": "jei",
+      "evidence": "JEI 19.50.0.414: ingredient list, bookmarks and recipe screens only."
+    },
+    "key.jei.toggleCheatMode": {
+      "default": "key.keyboard.unknown",
+      "contexts": [
+        "screen:container",
+        "screen:jei"
+      ],
+      "hover": "jei",
+      "evidence": "JEI 19.50.0.414: ingredient list, bookmarks and recipe screens only."
+    },
+    "key.jei.toggleCheatModeConfigButton": {
+      "default": "key.mouse.left:CONTROL",
+      "contexts": [
+        "screen:container",
+        "screen:jei"
+      ],
+      "hover": "jei",
+      "evidence": "JEI 19.50.0.414: ingredient list, bookmarks and recipe screens only."
+    },
+    "key.jei.toggleEditMode": {
+      "default": "key.keyboard.unknown",
+      "contexts": [
+        "screen:container",
+        "screen:jei"
+      ],
+      "hover": "jei",
+      "evidence": "JEI 19.50.0.414: ingredient list, bookmarks and recipe screens only."
+    },
+    "key.jei.toggleHideIngredient": {
+      "default": "key.mouse.left:CONTROL",
+      "contexts": [
+        "screen:container",
+        "screen:jei"
+      ],
+      "hover": "jei",
+      "evidence": "JEI 19.50.0.414: ingredient list, bookmarks and recipe screens only."
+    },
+    "key.jei.toggleOverlay": {
+      "default": "key.keyboard.o:CONTROL",
+      "contexts": [
+        "screen:container",
+        "screen:jei"
+      ],
+      "hover": "jei",
+      "evidence": "JEI 19.50.0.414: ingredient list, bookmarks and recipe screens only."
+    },
+    "key.jei.toggleWildcardHideIngredient": {
+      "default": "key.mouse.right:CONTROL",
+      "contexts": [
+        "screen:container",
+        "screen:jei"
+      ],
+      "hover": "jei",
+      "evidence": "JEI 19.50.0.414: ingredient list, bookmarks and recipe screens only."
+    },
+    "key.jei.transferRecipeBookmark": {
+      "default": "key.mouse.left:SHIFT",
+      "contexts": [
+        "screen:container",
+        "screen:jei"
+      ],
+      "hover": "jei",
+      "evidence": "JEI 19.50.0.414: ingredient list, bookmarks and recipe screens only."
+    },
+    "key.journeymap.create_waypoint": {
+      "default": "key.keyboard.b",
+      "contexts": [
+        "world"
+      ],
+      "evidence": "JourneyMap 6.0.6 KeybindingHandler: withAction = world, addScreenAction(Fullscreen) = full map."
+    },
+    "key.journeymap.fullscreen.disable_buttons": {
+      "default": "key.keyboard.unknown",
+      "contexts": [
+        "screen:map"
+      ],
+      "evidence": "JourneyMap 6.0.6 KeybindingHandler: withAction = world, addScreenAction(Fullscreen) = full map."
+    },
+    "key.journeymap.fullscreen.east": {
+      "default": "key.keyboard.right",
+      "contexts": [
+        "screen:map"
+      ],
+      "evidence": "JourneyMap 6.0.6 KeybindingHandler: withAction = world, addScreenAction(Fullscreen) = full map."
+    },
+    "key.journeymap.fullscreen.north": {
+      "default": "key.keyboard.up",
+      "contexts": [
+        "screen:map"
+      ],
+      "evidence": "JourneyMap 6.0.6 KeybindingHandler: withAction = world, addScreenAction(Fullscreen) = full map."
+    },
+    "key.journeymap.fullscreen.south": {
+      "default": "key.keyboard.down",
+      "contexts": [
+        "screen:map"
+      ],
+      "evidence": "JourneyMap 6.0.6 KeybindingHandler: withAction = world, addScreenAction(Fullscreen) = full map."
+    },
+    "key.journeymap.fullscreen.west": {
+      "default": "key.keyboard.left",
+      "contexts": [
+        "screen:map"
+      ],
+      "evidence": "JourneyMap 6.0.6 KeybindingHandler: withAction = world, addScreenAction(Fullscreen) = full map."
+    },
+    "key.journeymap.fullscreen_chat_position": {
+      "default": "key.keyboard.c",
+      "contexts": [
+        "screen:map"
+      ],
+      "evidence": "JourneyMap 6.0.6 KeybindingHandler: withAction = world, addScreenAction(Fullscreen) = full map."
+    },
+    "key.journeymap.fullscreen_create_waypoint": {
+      "default": "key.keyboard.b",
+      "contexts": [
+        "screen:map"
+      ],
+      "evidence": "JourneyMap 6.0.6 KeybindingHandler: withAction = world, addScreenAction(Fullscreen) = full map."
+    },
+    "key.journeymap.fullscreen_follow_player": {
+      "default": "key.keyboard.f",
+      "contexts": [
+        "screen:map"
+      ],
+      "evidence": "JourneyMap 6.0.6 KeybindingHandler: withAction = world, addScreenAction(Fullscreen) = full map."
+    },
+    "key.journeymap.fullscreen_options": {
+      "default": "key.keyboard.o",
+      "contexts": [
+        "screen:map"
+      ],
+      "evidence": "JourneyMap 6.0.6 KeybindingHandler: withAction = world, addScreenAction(Fullscreen) = full map."
+    },
+    "key.journeymap.fullscreen_waypoints": {
+      "default": "key.keyboard.n",
+      "contexts": [
+        "world",
+        "screen:map"
+      ],
+      "evidence": "JourneyMap 6.0.6 KeybindingHandler: withAction = world, addScreenAction(Fullscreen) = full map."
+    },
+    "key.journeymap.map_toggle_alt": {
+      "default": "key.keyboard.j",
+      "contexts": [
+        "world",
+        "screen:map"
+      ],
+      "evidence": "JourneyMap 6.0.6 KeybindingHandler: withAction = world, addScreenAction(Fullscreen) = full map."
+    },
+    "key.journeymap.minimap_preset": {
+      "default": "key.keyboard.backslash",
+      "contexts": [
+        "world"
+      ],
+      "evidence": "JourneyMap 6.0.6 KeybindingHandler: withAction = world, addScreenAction(Fullscreen) = full map."
+    },
+    "key.journeymap.minimap_toggle_alt": {
+      "default": "key.keyboard.j:CONTROL",
+      "contexts": [
+        "world"
+      ],
+      "evidence": "JourneyMap 6.0.6 KeybindingHandler: withAction = world, addScreenAction(Fullscreen) = full map."
+    },
+    "key.journeymap.minimap_type": {
+      "default": "key.keyboard.left.bracket",
+      "contexts": [
+        "world",
+        "screen:map"
+      ],
+      "evidence": "JourneyMap 6.0.6 KeybindingHandler: withAction = world, addScreenAction(Fullscreen) = full map."
+    },
+    "key.journeymap.toggle_entity_names": {
+      "default": "key.keyboard.g",
+      "contexts": [
+        "world",
+        "screen:map"
+      ],
+      "evidence": "JourneyMap 6.0.6 KeybindingHandler: withAction = world, addScreenAction(Fullscreen) = full map."
+    },
+    "key.journeymap.toggle_render_waypoints": {
+      "default": "key.keyboard.unknown",
+      "contexts": [
+        "world",
+        "screen:map"
+      ],
+      "evidence": "JourneyMap 6.0.6 KeybindingHandler: withAction = world, addScreenAction(Fullscreen) = full map."
+    },
+    "key.journeymap.toggle_render_waypoints_map": {
+      "default": "key.keyboard.unknown",
+      "contexts": [
+        "screen:map"
+      ],
+      "evidence": "JourneyMap 6.0.6 KeybindingHandler: withAction = world, addScreenAction(Fullscreen) = full map."
+    },
+    "key.journeymap.toggle_render_waypoints_world": {
+      "default": "key.keyboard.unknown",
+      "contexts": [
+        "world"
+      ],
+      "evidence": "JourneyMap 6.0.6 KeybindingHandler: withAction = world, addScreenAction(Fullscreen) = full map."
+    },
+    "key.journeymap.toggle_waypoints": {
+      "default": "key.keyboard.unknown",
+      "contexts": [
+        "world",
+        "screen:map"
+      ],
+      "evidence": "JourneyMap 6.0.6 KeybindingHandler: withAction = world, addScreenAction(Fullscreen) = full map."
+    },
+    "key.journeymap.zoom_in": {
+      "default": "key.keyboard.equal",
+      "contexts": [
+        "world",
+        "screen:map"
+      ],
+      "evidence": "JourneyMap 6.0.6 KeybindingHandler: withAction = world, addScreenAction(Fullscreen) = full map."
+    },
+    "key.journeymap.zoom_out": {
+      "default": "key.keyboard.minus",
+      "contexts": [
+        "world",
+        "screen:map"
+      ],
+      "evidence": "JourneyMap 6.0.6 KeybindingHandler: withAction = world, addScreenAction(Fullscreen) = full map."
+    },
+    "key.jump": {
+      "default": "key.keyboard.space",
+      "contexts": [
+        "world"
+      ],
+      "evidence": "Minecraft 1.21.1 Options; NeoForge 21.1.249 default UNIVERSAL, polled in game.",
+      "vanilla": true
+    },
+    "key.keybindbundles.open_radial_menu": {
+      "default": "key.keyboard.left.alt",
+      "contexts": [
+        "world"
+      ],
+      "evidence": "KeyBind Bundles 1.4.0: a press opens the bundle radial."
+    },
+    "key.kubejs.kubedex": {
+      "default": "key.keyboard.k",
+      "contexts": [
+        "world"
+      ],
+      "evidence": "KubeJS 2101.7.2: UNIVERSAL developer inspector (Kubedex)."
+    },
+    "key.left": {
+      "default": "key.keyboard.a",
+      "contexts": [
+        "world"
+      ],
+      "evidence": "Minecraft 1.21.1 Options; NeoForge 21.1.249 default UNIVERSAL, polled in game.",
+      "vanilla": true
+    },
+    "key.little.building_mode": {
+      "default": "key.keyboard.b",
+      "contexts": [
+        "world"
+      ],
+      "evidence": "LittleTiles 1.6.0-pre228: LITTLE_KEY_CONTEXT, handled by PreviewManager/LittleTool only with a LittleTiles tool in hand.",
+      "gate": "held:littletiles"
+    },
+    "key.little.config.item": {
+      "default": "key.keyboard.c",
+      "contexts": [
+        "world"
+      ],
+      "evidence": "LittleTiles 1.6.0-pre228: LITTLE_KEY_CONTEXT, handled by PreviewManager/LittleTool only with a LittleTiles tool in hand.",
+      "gate": "held:littletiles"
+    },
+    "key.little.config_secondary.item": {
+      "default": "key.keyboard.c:SHIFT",
+      "contexts": [
+        "world"
+      ],
+      "evidence": "LittleTiles 1.6.0-pre228: LITTLE_KEY_CONTEXT, handled by PreviewManager/LittleTool only with a LittleTiles tool in hand.",
+      "gate": "held:littletiles"
+    },
+    "key.little.mark": {
+      "default": "key.keyboard.m",
+      "contexts": [
+        "world"
+      ],
+      "evidence": "LittleTiles 1.6.0-pre228: LITTLE_KEY_CONTEXT, handled by PreviewManager/LittleTool only with a LittleTiles tool in hand.",
+      "gate": "held:littletiles"
+    },
+    "key.little.mirror": {
+      "default": "key.keyboard.g",
+      "contexts": [
+        "world"
+      ],
+      "evidence": "LittleTiles 1.6.0-pre228: LITTLE_KEY_CONTEXT, handled by PreviewManager/LittleTool only with a LittleTiles tool in hand.",
+      "gate": "held:littletiles"
+    },
+    "key.little.redo": {
+      "default": "key.keyboard.y:CONTROL",
+      "contexts": [
+        "world"
+      ],
+      "evidence": "LittleTiles 1.6.0-pre228: LITTLE_KEY_CONTEXT, handled by PreviewManager/LittleTool only with a LittleTiles tool in hand.",
+      "gate": "held:littletiles"
+    },
+    "key.little.undo": {
+      "default": "key.keyboard.z:CONTROL",
+      "contexts": [
+        "world"
+      ],
+      "evidence": "LittleTiles 1.6.0-pre228: LITTLE_KEY_CONTEXT, handled by PreviewManager/LittleTool only with a LittleTiles tool in hand.",
+      "gate": "held:littletiles"
+    },
+    "key.loadToolbarActivator": {
+      "default": "key.keyboard.x",
+      "contexts": [
+        "world"
+      ],
+      "evidence": "Vanilla creative hotbar activator: only acts while held together with 1-9 in creative mode.",
+      "vanilla": true,
+      "gate": "mode:creative"
+    },
+    "key.mekanism.chest_mode": {
+      "default": "key.keyboard.g",
+      "contexts": [
+        "world"
+      ],
+      "evidence": "Mekanism 10.7.19: conflictInGame."
+    },
+    "key.mekanism.description": {
+      "default": "key.keyboard.n:SHIFT",
+      "contexts": [
+        "gui"
+      ],
+      "evidence": "Mekanism 10.7.19: conflictInGui, tooltip of a Mekanism item.",
+      "hover": "mekanism"
+    },
+    "key.mekanism.details": {
+      "default": "key.keyboard.left.shift",
+      "contexts": [
+        "gui"
+      ],
+      "evidence": "Mekanism 10.7.19: conflictInGui, tooltip details while held.",
+      "hold": true
+    },
+    "key.mekanism.feet_mode": {
+      "default": "key.keyboard.b",
+      "contexts": [
+        "world"
+      ],
+      "evidence": "Mekanism 10.7.19: conflictInGame."
+    },
+    "key.mekanism.head_mode": {
+      "default": "key.keyboard.v",
+      "contexts": [
+        "world"
+      ],
+      "evidence": "Mekanism 10.7.19: conflictInGame."
+    },
+    "key.mekanism.key_boost": {
+      "default": "key.keyboard.left.control",
+      "contexts": [
+        "world"
+      ],
+      "evidence": "Mekanism 10.7.19 MekanismKeyHandler: conflictInGame, held with sprint for MekaSuit boost.",
+      "hold": true
+    },
+    "key.mekanism.key_hud": {
+      "default": "key.keyboard.h",
+      "contexts": [
+        "world"
+      ],
+      "evidence": "Mekanism 10.7.19: conflictInGame."
+    },
+    "key.mekanism.legs_mode": {
+      "default": "key.keyboard.j",
+      "contexts": [
+        "world"
+      ],
+      "evidence": "Mekanism 10.7.19: conflictInGame."
+    },
+    "key.mekanism.mode": {
+      "default": "key.keyboard.n",
+      "contexts": [
+        "world"
+      ],
+      "evidence": "Mekanism 10.7.19 MekanismKeyHandler: conflictInGame; mode item in main hand, else off hand; Shift reverses.",
+      "gate": "held:mekanism-mode",
+      "sneakVariant": true
+    },
+    "key.mekanism.module_tweaker": {
+      "default": "key.keyboard.backslash",
+      "contexts": [
+        "world"
+      ],
+      "evidence": "Mekanism 10.7.19: conflictInGame."
+    },
+    "key.modern_industrialization.toggle_3x3": {
+      "default": null,
+      "contexts": [
+        "world"
+      ],
+      "evidence": "Modern Industrialization 2.5.6."
+    },
+    "key.modern_industrialization.toggle_flight": {
+      "default": null,
+      "contexts": [
+        "world"
+      ],
+      "evidence": "Modern Industrialization 2.5.6."
+    },
+    "key.modularrouters.configure": {
+      "default": "key.keyboard.c",
+      "contexts": [
+        "screen:container"
+      ],
+      "evidence": "Modular Routers 13.2.7: KeyConflictContext.GUI, acts on the module under the cursor.",
+      "hover": "modularrouters"
+    },
+    "key.modularrouters.moduleInfo": {
+      "default": "key.keyboard.i",
+      "contexts": [
+        "screen:container"
+      ],
+      "evidence": "Modular Routers 13.2.7: KeyConflictContext.GUI, acts on the module under the cursor.",
+      "hover": "modularrouters"
+    },
+    "key.moreoverlays.chunkbounds.desc": {
+      "default": "key.keyboard.f9",
+      "contexts": [
+        "world"
+      ],
+      "evidence": "More Overlays 1.24.2: vanilla ctor (UNIVERSAL), overlay toggles in the world."
+    },
+    "key.moreoverlays.lightoverlay.desc": {
+      "default": "key.keyboard.f7",
+      "contexts": [
+        "world"
+      ],
+      "evidence": "More Overlays 1.24.2: vanilla ctor (UNIVERSAL), overlay toggles in the world."
+    },
+    "key.nextDestination": {
+      "default": "key.keyboard.right.bracket",
+      "contexts": [
+        "world"
+      ],
+      "evidence": "RFTools Base 6.0.11: IN_GAME, charged porter destination."
+    },
+    "key.occultism.backpack": {
+      "default": "key.keyboard.b",
+      "contexts": [
+        "world"
+      ],
+      "evidence": "Occultism 1.224.4: BackpackKeyConflictContext."
+    },
+    "key.occultism.ender_bag": {
+      "default": "key.keyboard.v",
+      "contexts": [
+        "world"
+      ],
+      "evidence": "Occultism 1.224.4: EnderBagKeyConflictContext."
+    },
+    "key.occultism.storage_remote": {
+      "default": "key.keyboard.n",
+      "contexts": [
+        "world"
+      ],
+      "evidence": "Occultism 1.224.4: StorageRemoteKeyConflictContext."
+    },
+    "key.openManual": {
+      "default": "key.keyboard.f1",
+      "contexts": [
+        "gui"
+      ],
+      "evidence": "McJtyLib 9.0.21 TooltipRender/KeyInputHandler: KeyConflictContext.GUI, manual of the McJty item under the cursor.",
+      "hover": "mcjty"
+    },
+    "key.oritech.augment_screen": {
+      "default": null,
+      "contexts": [
+        "world"
+      ],
+      "evidence": "Oritech 1.2.11."
+    },
+    "key.pickItem": {
+      "default": "key.mouse.middle",
+      "contexts": [
+        "world"
+      ],
+      "evidence": "Minecraft 1.21.1 Options; NeoForge 21.1.249 default UNIVERSAL, polled in game.",
+      "vanilla": true
+    },
+    "key.playerlist": {
+      "default": "key.keyboard.tab",
+      "contexts": [
+        "world"
+      ],
+      "evidence": "Minecraft 1.21.1 Options; NeoForge 21.1.249 default UNIVERSAL, polled in game.",
+      "vanilla": true
+    },
+    "key.ponder.ponder": {
+      "default": "key.keyboard.w",
+      "contexts": [
+        "gui"
+      ],
+      "evidence": "Create 6.0.10: held over the tooltip of a Create item.",
+      "hold": true,
+      "hover": "ponder"
+    },
+    "key.prevDestination": {
+      "default": "key.keyboard.left.bracket",
+      "contexts": [
+        "world"
+      ],
+      "evidence": "RFTools Base 6.0.11: IN_GAME, charged porter destination."
+    },
+    "key.refinedstorage.clear_crafting_grid_matrix_to_network": {
+      "default": "key.keyboard.x:CONTROL",
+      "contexts": [
+        "screen:rs-grid"
+      ],
+      "evidence": "Refined Storage 2.0.9: grid screen keys."
+    },
+    "key.refinedstorage.focus_search_bar": {
+      "default": "key.keyboard.tab",
+      "contexts": [
+        "screen:rs-grid"
+      ],
+      "evidence": "Refined Storage 2.0.9: grid screen keys."
+    },
+    "key.right": {
+      "default": "key.keyboard.d",
+      "contexts": [
+        "world"
+      ],
+      "evidence": "Minecraft 1.21.1 Options; NeoForge 21.1.249 default UNIVERSAL, polled in game.",
+      "vanilla": true
+    },
+    "key.rotatedown": {
+      "default": "key.keyboard.down",
+      "contexts": [
+        "world"
+      ],
+      "evidence": "LittleTiles 1.6.0-pre228: LITTLE_KEY_CONTEXT, handled by PreviewManager/LittleTool only with a LittleTiles tool in hand.",
+      "gate": "held:littletiles"
+    },
+    "key.rotateleft": {
+      "default": "key.keyboard.left",
+      "contexts": [
+        "world"
+      ],
+      "evidence": "LittleTiles 1.6.0-pre228: LITTLE_KEY_CONTEXT, handled by PreviewManager/LittleTool only with a LittleTiles tool in hand.",
+      "gate": "held:littletiles"
+    },
+    "key.rotateright": {
+      "default": "key.keyboard.right",
+      "contexts": [
+        "world"
+      ],
+      "evidence": "LittleTiles 1.6.0-pre228: LITTLE_KEY_CONTEXT, handled by PreviewManager/LittleTool only with a LittleTiles tool in hand.",
+      "gate": "held:littletiles"
+    },
+    "key.rotateup": {
+      "default": "key.keyboard.up",
+      "contexts": [
+        "world"
+      ],
+      "evidence": "LittleTiles 1.6.0-pre228: LITTLE_KEY_CONTEXT, handled by PreviewManager/LittleTool only with a LittleTiles tool in hand.",
+      "gate": "held:littletiles"
+    },
+    "key.saveToolbarActivator": {
+      "default": "key.keyboard.c",
+      "contexts": [
+        "world"
+      ],
+      "evidence": "Vanilla creative hotbar activator: only acts while held together with 1-9 in creative mode.",
+      "vanilla": true,
+      "gate": "mode:creative"
+    },
+    "key.screenshot": {
+      "default": "key.keyboard.f2",
+      "contexts": [
+        "world"
+      ],
+      "evidence": "Minecraft 1.21.1 Options; NeoForge 21.1.249 default UNIVERSAL, polled in game.",
+      "vanilla": true
+    },
+    "key.selectiveDisplacement": {
+      "default": "key.keyboard.h",
+      "contexts": [
+        "world"
+      ],
+      "evidence": "Mahou Tsukai 1.36.27."
+    },
+    "key.settingsGUI": {
+      "default": "key.keyboard.period",
+      "contexts": [
+        "world"
+      ],
+      "evidence": "Mahou Tsukai 1.36.27."
+    },
+    "key.silentgear.cycle.back": {
+      "default": "key.keyboard.z",
+      "contexts": [
+        "screen:container"
+      ],
+      "evidence": "Silent Gear 4.2.1.1 KeyTracker: KeyConflictContext.GUI, acts on the Silent Gear item under the cursor.",
+      "hover": "silentgear"
+    },
+    "key.silentgear.cycle.next": {
+      "default": "key.keyboard.c",
+      "contexts": [
+        "screen:container"
+      ],
+      "evidence": "Silent Gear 4.2.1.1 KeyTracker: KeyConflictContext.GUI, acts on the Silent Gear item under the cursor.",
+      "hover": "silentgear"
+    },
+    "key.silentgear.displayItemConstruction": {
+      "default": "key.keyboard.left.alt",
+      "contexts": [
+        "gui"
+      ],
+      "evidence": "Silent Gear 4.2.1.1 KeyTracker: KeyConflictContext.GUI, tooltip detail while held.",
+      "hold": true
+    },
+    "key.silentgear.displayItemProperties": {
+      "default": "key.keyboard.left.control",
+      "contexts": [
+        "gui"
+      ],
+      "evidence": "Silent Gear 4.2.1.1 KeyTracker: KeyConflictContext.GUI, tooltip detail while held.",
+      "hold": true
+    },
+    "key.silentgear.displayTraitDescriptions": {
+      "default": "key.keyboard.left.shift",
+      "contexts": [
+        "gui"
+      ],
+      "evidence": "Silent Gear 4.2.1.1 KeyTracker: KeyConflictContext.GUI, tooltip detail while held.",
+      "hold": true
+    },
+    "key.silentgear.openItem": {
+      "default": "key.keyboard.x",
+      "contexts": [
+        "screen:container"
+      ],
+      "evidence": "Silent Gear 4.2.1.1 KeyTracker: KeyConflictContext.GUI, acts on the Silent Gear item under the cursor.",
+      "hover": "silentgear"
+    },
+    "key.smoothCamera": {
+      "default": "key.keyboard.unknown",
+      "contexts": [
+        "world"
+      ],
+      "evidence": "Minecraft 1.21.1 Options; NeoForge 21.1.249 default UNIVERSAL, polled in game.",
+      "vanilla": true
+    },
+    "key.sneak": {
+      "default": "key.keyboard.left.shift",
+      "contexts": [
+        "world"
+      ],
+      "evidence": "Minecraft 1.21.1 Options; NeoForge 21.1.249 default UNIVERSAL, polled in game.",
+      "vanilla": true,
+      "hold": true
+    },
+    "key.socialInteractions": {
+      "default": "key.keyboard.p",
+      "contexts": [
+        "world"
+      ],
+      "evidence": "Minecraft 1.21.1 Options; NeoForge 21.1.249 default UNIVERSAL, polled in game.",
+      "vanilla": true
+    },
+    "key.sophisticatedbackpacks.inventory_interaction": {
+      "default": "key.keyboard.c",
+      "contexts": [
+        "world"
+      ],
+      "evidence": "Sophisticated Backpacks 3.25.78: KeyConflictContext.IN_GAME."
+    },
+    "key.sophisticatedbackpacks.open_backpack": {
+      "default": "key.keyboard.b",
+      "contexts": [
+        "world"
+      ],
+      "evidence": "Sophisticated Backpacks 3.25.78 BackpackKeyConflictContext: world and container screens."
+    },
+    "key.sophisticatedbackpacks.toggle_upgrade_1": {
+      "default": "key.keyboard.z:ALT",
+      "contexts": [
+        "world"
+      ],
+      "evidence": "Sophisticated Backpacks 3.25.78: UNIVERSAL, ALT."
+    },
+    "key.sophisticatedbackpacks.toggle_upgrade_2": {
+      "default": "key.keyboard.x:ALT",
+      "contexts": [
+        "world"
+      ],
+      "evidence": "Sophisticated Backpacks 3.25.78: UNIVERSAL, ALT."
+    },
+    "key.sophisticatedcore.sort": {
+      "default": "key.mouse.middle",
+      "contexts": [
+        "screen:sophisticated"
+      ],
+      "evidence": "Sophisticated Core 1.4.90: SophisticatedScreenKeyConflictContext."
+    },
+    "key.sophisticatedcore.transfer_to_inventory": {
+      "default": "key.keyboard.right.bracket",
+      "contexts": [
+        "screen:container"
+      ],
+      "evidence": "Sophisticated Core 1.4.90: ContainerScreenKeyConflictContext."
+    },
+    "key.sophisticatedcore.transfer_to_storage": {
+      "default": "key.keyboard.left.bracket",
+      "contexts": [
+        "screen:container"
+      ],
+      "evidence": "Sophisticated Core 1.4.90: ContainerScreenKeyConflictContext."
+    },
+    "key.spectatorOutlines": {
+      "default": "key.keyboard.unknown",
+      "contexts": [
+        "world"
+      ],
+      "evidence": "Minecraft 1.21.1 Options; NeoForge 21.1.249 default UNIVERSAL, polled in game.",
+      "vanilla": true
+    },
+    "key.sprint": {
+      "default": "key.keyboard.left.control",
+      "contexts": [
+        "world"
+      ],
+      "evidence": "Minecraft 1.21.1 Options; NeoForge 21.1.249 default UNIVERSAL, polled in game.",
+      "vanilla": true,
+      "hold": true
+    },
+    "key.swapOffhand": {
+      "default": "key.keyboard.f",
+      "contexts": [
+        "world"
+      ],
+      "evidence": "Minecraft 1.21.1 Options; NeoForge 21.1.249 default UNIVERSAL, polled in game.",
+      "vanilla": true
+    },
+    "key.the_bumblezone.beehemoth_down": {
+      "default": "key.keyboard.caps.lock",
+      "contexts": [
+        "world"
+      ],
+      "evidence": "Bumblezone 7.15.3: while riding a Beehemoth.",
+      "gate": "riding:beehemoth"
+    },
+    "key.the_bumblezone.beehemoth_up": {
+      "default": "key.keyboard.space",
+      "contexts": [
+        "world"
+      ],
+      "evidence": "Bumblezone 7.15.3: while riding a Beehemoth.",
+      "gate": "riding:beehemoth"
+    },
+    "key.toastcontrol.clear": {
+      "default": null,
+      "contexts": [
+        "world"
+      ],
+      "evidence": "Toast Control 9.0.1: clears toasts."
+    },
+    "key.togglePerspective": {
+      "default": "key.keyboard.f5",
+      "contexts": [
+        "world"
+      ],
+      "evidence": "Minecraft 1.21.1 Options; NeoForge 21.1.249 default UNIVERSAL, polled in game.",
+      "vanilla": true
+    },
+    "key.toolbelt.open": {
+      "default": null,
+      "contexts": [
+        "world"
+      ],
+      "evidence": "Tool Belt 2.2.10 ClientEvents: only with no screen."
+    },
+    "key.toolbelt.slot": {
+      "default": null,
+      "contexts": [
+        "world"
+      ],
+      "evidence": "Tool Belt 2.2.10 ClientEvents: only with no screen."
+    },
+    "key.trashslot.delete": {
+      "default": "key.keyboard.delete",
+      "contexts": [
+        "screen:container"
+      ],
+      "evidence": "TrashSlot 21.1.11: inventory screens."
+    },
+    "key.trashslot.delete_all": {
+      "default": "key.keyboard.delete:SHIFT",
+      "contexts": [
+        "screen:container"
+      ],
+      "evidence": "TrashSlot 21.1.11: inventory screens."
+    },
+    "key.trashslot.toggle": {
+      "default": "key.keyboard.t",
+      "contexts": [
+        "screen:container"
+      ],
+      "evidence": "TrashSlot 21.1.11: inventory screens."
+    },
+    "key.twilightforest.item_display_map_cycle": {
+      "default": "key.keyboard.c",
+      "contexts": [
+        "world"
+      ],
+      "evidence": "Twilight Forest 4.8.3345 TravellersClientEvents.cycleItemDisplayMap."
+    },
+    "key.twilightforest.swap_hotbar": {
+      "default": "key.keyboard.v",
+      "contexts": [
+        "world"
+      ],
+      "evidence": "Twilight Forest 4.8.3345 TFKeyBinds: vanilla ctor."
+    },
+    "key.twilightforest.zoom": {
+      "default": "key.keyboard.z",
+      "contexts": [
+        "world"
+      ],
+      "evidence": "Twilight Forest 4.8.3345 TravellersClientEvents.isZoomKeyHeld: zoom with goggles."
+    },
+    "key.unmountVehicle": {
+      "default": "key.keyboard.backslash",
+      "contexts": [
+        "world"
+      ],
+      "evidence": "RFTools Builder 7.0.6: IN_GAME, KeyInputHandler."
+    },
+    "key.use": {
+      "default": "key.mouse.right",
+      "contexts": [
+        "world"
+      ],
+      "evidence": "Minecraft 1.21.1 Options; NeoForge 21.1.249 default UNIVERSAL, polled in game.",
+      "vanilla": true
+    },
+    "keybind.ironjetpacks.decrement_throttle": {
+      "default": "key.keyboard.comma",
+      "contexts": [
+        "world"
+      ],
+      "evidence": "Iron Jetpacks 8.0.11."
+    },
+    "keybind.ironjetpacks.engine": {
+      "default": null,
+      "contexts": [
+        "world"
+      ],
+      "evidence": "Iron Jetpacks 8.0.11."
+    },
+    "keybind.ironjetpacks.hover": {
+      "default": null,
+      "contexts": [
+        "world"
+      ],
+      "evidence": "Iron Jetpacks 8.0.11."
+    },
+    "keybind.ironjetpacks.increment_throttle": {
+      "default": "key.keyboard.period",
+      "contexts": [
+        "world"
+      ],
+      "evidence": "Iron Jetpacks 8.0.11."
+    },
+    "keyinfo.copycats.fill_copycat": {
+      "default": "key.keyboard.left.alt",
+      "contexts": [
+        "world"
+      ],
+      "evidence": "Create 6.0.10 / Copycats+ 3.0.9: held modifier for scroll or placement, not a press action.",
+      "hold": true
+    },
+    "options.narrator": {
+      "default": "key.keyboard.b:CONTROL",
+      "contexts": [
+        "world",
+        "gui"
+      ],
+      "evidence": "rebind_narrator 2025.12.23 exposes the vanilla narrator hotkey (Ctrl+B), active in the world and in screens.",
+      "vanilla": true
+    },
+    "placebo.toggleTrails": {
+      "default": "key.keyboard.keypad.9",
+      "contexts": [
+        "world"
+      ],
+      "evidence": "Placebo 9.9.2: cosmetic toggles in the world."
+    },
+    "placebo.toggleWings": {
+      "default": "key.keyboard.keypad.8",
+      "contexts": [
+        "world"
+      ],
+      "evidence": "Placebo 9.9.2: cosmetic toggles in the world."
+    },
+    "pneumaticcraft.armor.options": {
+      "default": "key.keyboard.u",
+      "contexts": [
+        "world"
+      ],
+      "evidence": "PneumaticCraft 8.2.23 KeyHandler: IN_GAME."
+    },
+    "pneumaticcraft.boots.jet_boots": {
+      "default": "key.keyboard.space",
+      "contexts": [
+        "world"
+      ],
+      "evidence": "PneumaticCraft 8.2.23: IN_GAME, jet boots on the jump key."
+    },
+    "pneumaticcraft.boots.kick": {
+      "default": "key.keyboard.x:CONTROL",
+      "contexts": [
+        "world"
+      ],
+      "evidence": "PneumaticCraft 8.2.23 KeyHandler: IN_GAME, CONTROL."
+    },
+    "pneumaticcraft.chestplate.launcher": {
+      "default": "key.keyboard.c:CONTROL",
+      "contexts": [
+        "world"
+      ],
+      "evidence": "PneumaticCraft 8.2.23 KeyHandler: IN_GAME, CONTROL."
+    },
+    "pneumaticcraft.helmet.debugging.drone": {
+      "default": "key.keyboard.y",
+      "contexts": [
+        "world"
+      ],
+      "evidence": "PneumaticCraft 8.2.23 KeyHandler: IN_GAME."
+    },
+    "pneumaticcraft.helmet.hack": {
+      "default": "key.keyboard.h",
+      "contexts": [
+        "world"
+      ],
+      "evidence": "PneumaticCraft 8.2.23 KeyHandler: IN_GAME."
+    },
+    "psimisc.keybind": {
+      "default": "key.keyboard.c",
+      "contexts": [
+        "world"
+      ],
+      "evidence": "Psi 110 KeybindHandler.keyDown: socket selector with a socketable in hand, otherwise opens the Psi book."
+    },
+    "simplemagnets.keys.toggle": {
+      "default": null,
+      "contexts": [
+        "world"
+      ],
+      "evidence": "Simple Magnets 1.1.12c."
+    },
+    "supplementaries.keybind.quiver": {
+      "default": null,
+      "contexts": [
+        "world"
+      ],
+      "evidence": "Supplementaries 3.9.5."
+    }
+  }
+}
