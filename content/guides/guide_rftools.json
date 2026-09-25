@@ -1,0 +1,433 @@
+{
+ "chapter": "guide_rftools",
+ "group": "tech",
+ "act": "III",
+ "icon": "rftoolsbase:machine_frame",
+ "title": {
+  "en_us": "RFTools and XNet",
+  "es_es": "RFTools y XNet"
+ },
+ "subtitle": {
+  "en_us": "Machine frames and dimensional shards, power cells, crafters, screens, teleporters, the Builder, and XNet channel networks.",
+  "es_es": "Marcos de máquina y fragmentos dimensionales, celdas de energía, crafteadores, pantallas, teletransportadores, el Constructor y las redes por canales de XNet."
+ },
+ "quests": [
+  {
+   "key": "rft_welcome",
+   "deps": [],
+   "type": "checkmark",
+   "icon": "rftoolsbase:manual",
+   "layout": {
+    "x": 0,
+    "y": 0,
+    "size": 2.0,
+    "shape": "hexagon"
+   },
+   "en_us": [
+    "Welcome to RFTools",
+    "The RFTools family in the pack is RFTools Base, Power, Utility and Builder, plus XNet. Together they bring FE generation and storage, logic blocks, crafters, information screens, player teleporters, a Builder that quarries and constructs by shape cards, and XNet's channel-based logistics.\n\nRFTools Storage and Dimensions are not in the pack on purpose: AE2 and the pack's own dimensions cover those roles. The shared manual comes from RFTools Base."
+   ],
+   "es_es": [
+    "Bienvenida a RFTools",
+    "La familia RFTools del pack es RFTools Base, Power, Utility y Builder, más XNet. Juntos traen generación y almacenamiento de FE, bloques lógicos, crafteadores, pantallas de información, teletransportadores de jugador, un Constructor que excava y construye con tarjetas de forma, y la logística por canales de XNet.\n\nRFTools Storage y Dimensions no están en el pack a propósito: AE2 y las dimensiones propias del pack cubren esos papeles. El manual compartido viene de RFTools Base."
+   ],
+   "sources": [
+    "repo:docs/design/rftools-family.md",
+    "jar:rftoolsbase-1.21-6.0.11.jar:assets/rftoolsbase/patchouli_books/manual/en_us/entries/basics/bugs.json"
+   ]
+  },
+  {
+   "key": "rft_frame",
+   "deps": [
+    "rft_welcome"
+   ],
+   "type": "item",
+   "item": "rftoolsbase:machine_frame",
+   "count": 4,
+   "layout": {
+    "x": 3,
+    "y": 0,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Machine Frame and Dimensional Shards",
+    "The Machine Frame is the housing of almost every RFTools machine; the Machine Base makes the quarter-block logic devices. Dimensional Shard ore, found underground in several dimensions and affected by Fortune, gives shards for advanced recipes and for infusing.\n\nThe Smart Wrench rotates, picks up (sneak) and, in Select mode, picks targets."
+   ],
+   "es_es": [
+    "Marco de máquina y fragmentos dimensionales",
+    "El Marco de máquina es el armazón de casi todas las máquinas de RFTools; la Base de máquina hace los dispositivos lógicos de un cuarto de bloque. El mineral de Fragmento dimensional, que aparece bajo tierra en varias dimensiones y se ve afectado por Fortuna, da fragmentos para recetas avanzadas y para infusionar.\n\nLa Llave inteligente gira, levanta (agachado) y, en modo Selección, elige objetivos."
+   ],
+   "sources": [
+    "jar:rftoolsbase-1.21-6.0.11.jar:assets/rftoolsbase/patchouli_books/manual/en_us/entries/basics/machine_frames.json",
+    "jar:rftoolsbase-1.21-6.0.11.jar:assets/rftoolsbase/patchouli_books/manual/en_us/entries/basics/machine_bases.json",
+    "jar:rftoolsbase-1.21-6.0.11.jar:assets/rftoolsbase/patchouli_books/manual/en_us/entries/basics/dimensional_shards.json",
+    "jar:rftoolsbase-1.21-6.0.11.jar:assets/rftoolsbase/patchouli_books/manual/en_us/entries/tools/smartwrench.json"
+   ]
+  },
+  {
+   "key": "rft_infuser",
+   "deps": [
+    "rft_frame"
+   ],
+   "type": "item",
+   "item": "rftoolsbase:machine_infuser",
+   "optional": true,
+   "layout": {
+    "x": 3,
+    "y": -2.5,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Machine Infuser",
+    "The Infuser feeds Dimensional Shards into a machine to improve it: most machines use less power, and some gain more (teleporters get faster, the Screen Controller gets range, generators produce more).\n\nInfuse the machines you keep running all day."
+   ],
+   "es_es": [
+    "Infusor de máquinas",
+    "El Infusor mete Fragmentos dimensionales en una máquina para mejorarla: casi todas gastan menos energía, y algunas ganan más (los teletransportadores son más rápidos, el Controlador de pantallas gana alcance, los generadores producen más).\n\nInfusioná las máquinas que dejás andando todo el día."
+   ],
+   "sources": [
+    "jar:rftoolsbase-1.21-6.0.11.jar:assets/rftoolsbase/patchouli_books/manual/en_us/entries/machines/infusing.json"
+   ]
+  },
+  {
+   "key": "rft_power",
+   "deps": [
+    "rft_frame"
+   ],
+   "type": "item",
+   "item": "rftoolspower:coalgenerator",
+   "layout": {
+    "x": 5.5,
+    "y": 0,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Coal Generator and Powercells",
+    "The RFTools Coal Generator burns coal or coal blocks for FE and keeps a buffer; it stays free on purpose as an early power source. Powercells store lots of FE, join into a multiblock with their neighbours regardless of tier, and are configured per side with the Smart Wrench (blue input, yellow output).\n\nThe Endergenic Generator is a timing puzzle with ender pearls for experts."
+   ],
+   "es_es": [
+    "Generador a carbón y Celdas de energía",
+    "El Generador a carbón de RFTools quema carbón o bloques de carbón por FE y guarda un buffer; queda libre a propósito como fuente temprana. Las Celdas de energía guardan mucho FE, se unen en multibloque con sus vecinas sin importar el nivel y se configuran por lado con la Llave inteligente (azul entrada, amarillo salida).\n\nEl Generador endergénico es un rompecabezas de sincronía con perlas de ender para expertos."
+   ],
+   "sources": [
+    "jar:rftoolspower-1.21-7.0.6.jar:assets/rftoolsbase/patchouli_books/manual/en_us/entries/powergeneration/coalgenerator.json",
+    "jar:rftoolspower-1.21-7.0.6.jar:assets/rftoolsbase/patchouli_books/manual/en_us/entries/powerstorage/powercell.json",
+    "jar:rftoolspower-1.21-7.0.6.jar:assets/rftoolsbase/patchouli_books/manual/en_us/entries/powergeneration/endergenic.json",
+    "repo:docs/design/rftools-family.md"
+   ]
+  },
+  {
+   "key": "rft_dimcell",
+   "deps": [
+    "rft_power"
+   ],
+   "type": "item",
+   "item": "rftoolspower:dimensionalcell",
+   "optional": true,
+   "layout": {
+    "x": 5.5,
+    "y": -2.5,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Dimensional Cells",
+    "Dimensional Cells are multi-dimensional FE storage: cells linked with a Powercell Card share power without touching. Drawing from remote cells costs a few percent, which infusing reduces. They move energy, not items.\n\nENTRELUMEN change: the Simple and regular Dimensional Cells need a Power Regulator (Act III); the local Powercells stay the cheap option."
+   ],
+   "es_es": [
+    "Celdas dimensionales",
+    "Las Celdas dimensionales son almacenamiento de FE entre dimensiones: las celdas vinculadas con una Tarjeta de celda comparten energía sin tocarse. Sacar de celdas lejanas cuesta un pequeño porcentaje, que la infusión reduce. Mueven energía, no ítems.\n\nCambio de ENTRELUMEN: las Celdas dimensionales Simple y normal piden un Regulador de energía (acto III); las Celdas locales siguen siendo la opción barata."
+   ],
+   "sources": [
+    "jar:rftoolspower-1.21-7.0.6.jar:assets/rftoolsbase/patchouli_books/manual/en_us/entries/powerstorage/dimensionalcell.json",
+    "jar:rftoolsbase-1.21-6.0.11.jar:assets/rftoolsbase/patchouli_books/manual/en_us/entries/machines/infusing.json",
+    "repo:pack/kubejs/server_scripts/entrelumen_rftools_balance.js",
+    "repo:docs/design/rftools-family.md"
+   ]
+  },
+  {
+   "key": "rft_crafter",
+   "deps": [
+    "rft_power"
+   ],
+   "type": "item",
+   "item": "rftoolsutility:crafter1",
+   "layout": {
+    "x": 8,
+    "y": 0,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Crafter",
+    "The Crafter automates crafting with energy: the top tier holds up to 8 recipes, with 26 input and 4 output slots. The R button remembers a slot's item so it only accepts that; F forgets. It takes the Filter Module, and infusing lowers its power use.\n\nRecipes live on Crafting Cards, which also work in other machines."
+   ],
+   "es_es": [
+    "Crafteador",
+    "El Crafteador automatiza el crafteo con energía: el nivel más alto guarda hasta 8 recetas, con 26 ranuras de entrada y 4 de salida. El botón R recuerda el ítem de una ranura para que sólo acepte ese; F lo olvida. Acepta el Módulo de filtro, e infusionarlo baja su consumo.\n\nLas recetas van en Tarjetas de crafteo, que también sirven en otras máquinas."
+   ],
+   "sources": [
+    "jar:rftoolsutility-1.21-7.0.12.jar:assets/rftoolsbase/patchouli_books/manual/en_us/entries/machines/crafter.json",
+    "jar:rftoolsbase-1.21-6.0.11.jar:assets/rftoolsbase/patchouli_books/manual/en_us/entries/tools/craftingcard.json",
+    "jar:rftoolsbase-1.21-6.0.11.jar:assets/rftoolsbase/patchouli_books/manual/en_us/entries/tools/filtermodule.json"
+   ]
+  },
+  {
+   "key": "rft_logic",
+   "deps": [
+    "rft_crafter"
+   ],
+   "type": "item",
+   "item": "rftoolsutility:screen",
+   "optional": true,
+   "layout": {
+    "x": 8,
+    "y": -2.5,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Logic blocks and screens",
+    "Quarter-block logic devices: timers, counters, sequencers, sensors, inventory checkers, analog and digit blocks, and wireless redstone transmitters and receivers. Screens show energy, inventories and more through modules, powered by a Screen Controller that scans a 32x32x32 area; a Screen Link in a Tablet opens a screen remotely.\n\nA power screen next to your cells shows the whole base at a glance."
+   ],
+   "es_es": [
+    "Bloques lógicos y pantallas",
+    "Dispositivos lógicos de un cuarto de bloque: temporizadores, contadores, secuenciadores, sensores, revisores de inventario, bloques analógicos y de dígitos, y emisores y receptores de redstone inalámbricos. Las Pantallas muestran energía, inventarios y más con módulos, alimentadas por un Controlador de pantallas que busca en un área de 32x32x32; un Enlace de pantalla en una Tableta abre una pantalla a distancia.\n\nUna pantalla de energía al lado de tus celdas muestra toda la base de un vistazo."
+   ],
+   "sources": [
+    "jar:rftoolsutility-1.21-7.0.12.jar:assets/rftoolsbase/patchouli_books/manual/en_us/entries/logic/timer.json",
+    "jar:rftoolsutility-1.21-7.0.12.jar:assets/rftoolsbase/patchouli_books/manual/en_us/entries/logic/sequencer.json",
+    "jar:rftoolsutility-1.21-7.0.12.jar:assets/rftoolsbase/patchouli_books/manual/en_us/entries/machines/screen.json",
+    "jar:rftoolsutility-1.21-7.0.12.jar:assets/rftoolsbase/patchouli_books/manual/en_us/entries/machines/screen_controller.json",
+    "jar:rftoolsutility-1.21-7.0.12.jar:assets/rftoolsbase/patchouli_books/manual/en_us/entries/machines/screen_link.json"
+   ]
+  },
+  {
+   "key": "rft_teleport",
+   "deps": [
+    "rft_crafter"
+   ],
+   "type": "item",
+   "item": "rftoolsutility:matter_receiver",
+   "layout": {
+    "x": 10.5,
+    "y": 0,
+    "size": 1.5,
+    "shape": "hexagon"
+   },
+   "en_us": [
+    "Matter Transmitter and Receiver",
+    "Stand on a Matter Transmitter and teleport to any Matter Receiver, even in another dimension; a Dialing Device near the transmitter picks the destination. The receiver must have enough power, or the trip can go badly. Charged Porters teleport you to stored receivers from your hand.\n\nENTRELUMEN change: the Matter Receiver and the Charged Porter need a Routing Matrix (Act III); the transmitter stays native."
+   ],
+   "es_es": [
+    "Transmisor y receptor de materia",
+    "Parate en un Transmisor de materia y teletransportate a cualquier Receptor de materia, incluso en otra dimensión; un Dispositivo de marcado cerca del transmisor elige el destino. El receptor tiene que tener energía suficiente, o el viaje puede salir mal. Los Porteadores cargados te llevan desde la mano a receptores guardados.\n\nCambio de ENTRELUMEN: el Receptor de materia y el Porteador cargado piden una Matriz de distribución (acto III); el transmisor queda nativo."
+   ],
+   "sources": [
+    "jar:rftoolsutility-1.21-7.0.12.jar:assets/rftoolsbase/patchouli_books/manual/en_us/entries/machines/matter_transmitter.json",
+    "jar:rftoolsutility-1.21-7.0.12.jar:assets/rftoolsbase/patchouli_books/manual/en_us/entries/machines/matter_receiver.json",
+    "jar:rftoolsutility-1.21-7.0.12.jar:assets/rftoolsbase/patchouli_books/manual/en_us/entries/machines/dialing_device.json",
+    "jar:rftoolsutility-1.21-7.0.12.jar:assets/rftoolsbase/patchouli_books/manual/en_us/entries/machines/teleporter.json",
+    "repo:pack/kubejs/server_scripts/entrelumen_rftools_balance.js"
+   ]
+  },
+  {
+   "key": "rft_env",
+   "deps": [
+    "rft_teleport"
+   ],
+   "type": "item",
+   "item": "rftoolsutility:environmental_controller",
+   "optional": true,
+   "layout": {
+    "x": 10.5,
+    "y": -2.5,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Environmental Controller and Spawner",
+    "The Environmental Controller infuses an area with up to seven effect modules (more effects, more power). The RFTools Spawner creates mobs from a filled syringe, FE and materials sent by Matter Beamers.\n\nENTRELUMEN change: the Environmental Controller needs a Power Regulator (Act III) and the Spawner an Ecosystem Capsule (Act IV); its mob data recipes are unchanged."
+   ],
+   "es_es": [
+    "Controlador ambiental y Generador",
+    "El Controlador ambiental infunde un área con hasta siete módulos de efecto (más efectos, más energía). El Generador de RFTools crea mobs con una jeringa cargada, FE y materiales que mandan los Emisores de materia.\n\nCambio de ENTRELUMEN: el Controlador ambiental pide un Regulador de energía (acto III) y el Generador una Cápsula de ecosistema (acto IV); sus recetas de datos de mobs no cambian."
+   ],
+   "sources": [
+    "jar:rftoolsutility-1.21-7.0.12.jar:assets/rftoolsbase/patchouli_books/manual/en_us/entries/machines/environmental.json",
+    "jar:rftoolsutility-1.21-7.0.12.jar:assets/rftoolsbase/patchouli_books/manual/en_us/entries/machines/spawner.json",
+    "jar:rftoolsutility-1.21-7.0.12.jar:assets/rftoolsbase/patchouli_books/manual/en_us/entries/machines/matter_beamer.json",
+    "repo:pack/kubejs/server_scripts/entrelumen_rftools_balance.js",
+    "repo:docs/design/rftools-family.md"
+   ]
+  },
+  {
+   "key": "rft_builder",
+   "deps": [
+    "rft_teleport"
+   ],
+   "type": "item",
+   "item": "rftoolsbuilder:shape_card_def",
+   "layout": {
+    "x": 13,
+    "y": 0,
+    "size": 1.5,
+    "shape": "hexagon"
+   },
+   "en_us": [
+    "Builder and shape cards",
+    "The Builder uses a Shape Card: box, sphere, cylinder, cone, torus, prism or a scanned shape, with size, offset and solid or hollow. It builds from supplied blocks, and a Quarry Card makes it mine the area (Clear, Silk Touch and Fortune variants); Void, Liquid and Pump cards also exist.\n\nENTRELUMEN change: the Builder needs a Handling Core (Act III) and the Quarry Card a Power Regulator (III). Card data is kept when crafting variants."
+   ],
+   "es_es": [
+    "Constructor y tarjetas de forma",
+    "El Constructor usa una Tarjeta de forma: caja, esfera, cilindro, cono, toro, prisma o una forma escaneada, con tamaño, desplazamiento y macizo o hueco. Construye con los bloques que le des, y una Tarjeta de cantera lo hace excavar el área (variantes Limpia, Toque de seda y Fortuna); también hay tarjetas de Vacío, Líquido y Bomba.\n\nCambio de ENTRELUMEN: el Constructor pide un Núcleo de manipulación (acto III) y la Tarjeta de cantera un Regulador de energía (III). Los datos de la tarjeta se conservan al craftear variantes."
+   ],
+   "sources": [
+    "jar:rftoolsbuilder-1.21-7.0.6.jar:assets/rftoolsbase/patchouli_books/manual/en_us/entries/builder/builder_intro.json",
+    "jar:rftoolsbuilder-1.21-7.0.6.jar:assets/rftoolsbase/patchouli_books/manual/en_us/entries/shape_cards/shape_card_def.json",
+    "jar:rftoolsbuilder-1.21-7.0.6.jar:assets/rftoolsbase/patchouli_books/manual/en_us/entries/shape_cards/shape_card_def_quarry.json",
+    "jar:rftoolsbuilder-1.21-7.0.6.jar:assets/rftoolsbase/patchouli_books/manual/en_us/entries/shape_cards/shape_card_def_void.json",
+    "repo:pack/kubejs/server_scripts/entrelumen_rftools_balance.js",
+    "repo:docs/design/rftools-family.md"
+   ]
+  },
+  {
+   "key": "rft_quarry_tip",
+   "deps": [
+    "rft_builder"
+   ],
+   "type": "checkmark",
+   "icon": "rftoolsbuilder:shape_card_quarry",
+   "layout": {
+    "x": 13,
+    "y": -2.5,
+    "size": 1.0,
+    "shape": "circle"
+   },
+   "en_us": [
+    "Quarry etiquette",
+    "A quarry card empties huge volumes and fills them with a filler block unless you use a Clear variant. In ENTRELUMEN, run quarries in the mining dimension (JAMD) instead of under your base or a village, and never quarry inside a claim that is not yours.\n\nThe Builder only works while its chunk is loaded."
+   ],
+   "es_es": [
+    "Modales de cantera",
+    "Una tarjeta de cantera vacía volúmenes enormes y los rellena con un bloque de relleno, salvo que uses una variante Limpia. En ENTRELUMEN, usá las canteras en la dimensión minera (JAMD) en vez de debajo de tu base o de una aldea, y nunca excaves dentro del reclamo de otro.\n\nEl Constructor sólo funciona mientras su chunk está cargado."
+   ],
+   "sources": [
+    "jar:rftoolsbuilder-1.21-7.0.6.jar:assets/rftoolsbase/patchouli_books/manual/en_us/entries/shape_cards/shape_card_def_quarry.json",
+    "repo:docs/design/rftools-family.md"
+   ]
+  },
+  {
+   "key": "rft_xnet",
+   "deps": [
+    "rft_frame"
+   ],
+   "type": "item",
+   "item": "xnet:controller",
+   "layout": {
+    "x": 5.5,
+    "y": 2.5,
+    "size": 1.5,
+    "shape": "hexagon"
+   },
+   "en_us": [
+    "XNet: controller, cables and connectors",
+    "XNet networks are built from coloured cables (red, green, blue and yellow never connect to each other), connectors placed next to the blocks you want to use, and one Controller. In the controller, add a channel, pick its type (items, fluids, energy or redstone) and add connectors to it, each with side, priority, filter and speed.\n\nENTRELUMEN change: the Controller needs a Routing Matrix (Act III); cables and connectors stay cheap."
+   ],
+   "es_es": [
+    "XNet: controlador, cables y conectores",
+    "Las redes de XNet se arman con cables de colores (rojo, verde, azul y amarillo nunca se conectan entre sí), conectores pegados a los bloques que quieras usar y un Controlador. En el controlador agregás un canal, elegís su tipo (ítems, fluidos, energía o redstone) y le sumás conectores, cada uno con lado, prioridad, filtro y velocidad.\n\nCambio de ENTRELUMEN: el Controlador pide una Matriz de distribución (acto III); los cables y conectores siguen baratos."
+   ],
+   "sources": [
+    "jar:xnet-1.21-7.0.7.jar:assets/rftoolsbase/patchouli_books/manual/en_us/entries/simple/controller.json",
+    "jar:xnet-1.21-7.0.7.jar:assets/rftoolsbase/patchouli_books/manual/en_us/entries/simple/cables.json",
+    "jar:xnet-1.21-7.0.7.jar:assets/rftoolsbase/patchouli_books/manual/en_us/entries/simple/connector.json",
+    "repo:pack/kubejs/server_scripts/entrelumen_rftools_balance.js"
+   ]
+  },
+  {
+   "key": "rft_xnet_router",
+   "deps": [
+    "rft_xnet"
+   ],
+   "type": "item",
+   "item": "xnet:router",
+   "optional": true,
+   "layout": {
+    "x": 8,
+    "y": 2.5,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "XNet routers",
+    "A Router links several controller networks through routing cables and connectors: channels are published on one side and consumed on the other. A Wireless Router does it without cables, with an antenna on top (antenna, antenna base or antenna dish, the dish having unlimited range at a higher RF cost).\n\nENTRELUMEN change: both routers need a Routing Matrix (Act III)."
+   ],
+   "es_es": [
+    "Routers de XNet",
+    "Un Router une varias redes de controlador con cables y conectores de enrutamiento: los canales se publican de un lado y se consumen del otro. Un Router inalámbrico lo hace sin cables, con una antena arriba (antena, base de antena o plato de antena; el plato tiene alcance ilimitado a un costo de RF mayor).\n\nCambio de ENTRELUMEN: los dos routers piden una Matriz de distribución (acto III)."
+   ],
+   "sources": [
+    "jar:xnet-1.21-7.0.7.jar:assets/rftoolsbase/patchouli_books/manual/en_us/entries/network/router.json",
+    "jar:xnet-1.21-7.0.7.jar:assets/rftoolsbase/patchouli_books/manual/en_us/entries/wireless/wireless_router.json",
+    "jar:xnet-1.21-7.0.7.jar:assets/rftoolsbase/patchouli_books/manual/en_us/entries/wireless/antennas.json",
+    "repo:pack/kubejs/server_scripts/entrelumen_rftools_balance.js"
+   ]
+  },
+  {
+   "key": "rft_xnet_tip",
+   "deps": [
+    "rft_xnet"
+   ],
+   "type": "checkmark",
+   "icon": "xnet:connector_red",
+   "layout": {
+    "x": 5.5,
+    "y": 5,
+    "size": 1.0,
+    "shape": "circle"
+   },
+   "en_us": [
+    "A useful XNet project",
+    "Try an energy channel plus a logic channel: a sensor watches a generator's buffer and only feeds it fuel when the buffer drops low, while an item channel sends outputs to the next workshop.\n\nXNet stands beside AE2, Pipez and LaserIO because one controller mixes items, fluids, FE and logic in the same network."
+   ],
+   "es_es": [
+    "Un proyecto útil de XNet",
+    "Probá un canal de energía más uno de lógica: un sensor vigila el buffer de un generador y sólo le da combustible cuando baja, mientras un canal de ítems manda la producción al taller siguiente.\n\nXNet convive con AE2, Pipez y LaserIO porque un solo controlador mezcla ítems, fluidos, FE y lógica en la misma red."
+   ],
+   "sources": [
+    "repo:docs/design/rftools-family.md",
+    "jar:xnet-1.21-7.0.7.jar:assets/rftoolsbase/patchouli_books/manual/en_us/entries/simple/controller.json"
+   ]
+  },
+  {
+   "key": "rft_mastery",
+   "deps": [
+    "rft_builder",
+    "rft_xnet_router"
+   ],
+   "type": "item",
+   "item": "rftoolsbuilder:builder",
+   "layout": {
+    "x": 15.5,
+    "y": 1,
+    "size": 2.0,
+    "shape": "octagon"
+   },
+   "en_us": [
+    "RFTools mastery",
+    "Powercells feeding a base, crafters on an XNet network, screens showing everything, a transmitter and receiver linking two bases, and a Builder quarrying in the mining dimension.\n\nRFTools shines as glue: small, efficient blocks that tie the other mods together."
+   ],
+   "es_es": [
+    "Maestría de RFTools",
+    "Celdas de energía alimentando una base, crafteadores en una red de XNet, pantallas mostrando todo, un transmisor y un receptor uniendo dos bases y un Constructor excavando en la dimensión minera.\n\nRFTools brilla como pegamento: bloques chicos y eficientes que unen a los demás mods."
+   ],
+   "sources": [
+    "repo:docs/design/rftools-family.md"
+   ]
+  }
+ ]
+}
