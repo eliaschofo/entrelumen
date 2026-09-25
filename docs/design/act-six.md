@@ -154,8 +154,6 @@ La relación es la cantidad de encargos cumplidos por el equipo: se guardan en s
 
 ### Easter eggs
 
-*La ciudad del 25/9 todavía no tiene los marcadores; ver «Pendiente».*
-
 - **Descubrimiento.** Los tres marcadores `easter:tavern`, `easter:secret_garden` y `easter:sundial` se descubren entrando a ≤5 bloques en horizontal y ≤3 en vertical. Lo revisa el servidor cada 20 ticks, solo con jugadores en Solsticio.
 - **Qué da.** Cada equipo recibe, una vez:
   - una página de lore (libro escrito de 2 páginas, traducido en cada cliente);
@@ -188,4 +186,4 @@ La relación es la cantidad de encargos cumplidos por el equipo: se guardan en s
   - las líneas en los dos idiomas;
   - la aguja de la brújula dentro de Solsticio.
 - Jugar el acto de punta a punta en un mundo real: los tiempos de viaje, la economía de los platos y las baterías.
-- **La ciudadela en terrazas (`city7.py`, 25/9) no tiene marcadores `easter:`.** Hasta que el controlador los ponga, los tres easter eggs no se pueden descubrir y el encargo de las flores lo recibe Ciro. Las GameTests ponen huevos de prueba alrededor de la llegada.
+- Si una plantilla futura no trae los marcadores `easter:`, los easter eggs no se pueden descubrir y el encargo de las flores lo recibe Ciro. Las GameTests ponen huevos de prueba alrededor de la llegada sólo para los que falten.
