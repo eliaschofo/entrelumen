@@ -130,35 +130,36 @@ PC, IS = 'entrelumen:propagation_core', 'entrelumen:inventory_sensor'
 CF = 'entrelumen:calibration_frame'
 EN = 'entrelumen:energy_coupler'
 
-# Spawner augments: act, the Apothic Spawners original item kept as the medallion's core, the
-# Apotheosis rarity material and the ENTRELUMEN component. Rarity follows World Tier drops:
-# uncommon (Haven+), rare (Haven+, common from Frontier) and epic (from Ascent, Act IV).
+# Spawner augments: act, the Apothic Spawners original item kept as the medallion's core and the
+# ENTRELUMEN component, which sets the act (the Apotheosis materials were swapped out on 24 September).
 AUGMENTS = {
-    'min_delay': ('III', item('minecraft:sugar'), 'apotheosis:timeworn_fabric', PR),
-    'max_delay': ('III', item('minecraft:clock'), 'apotheosis:timeworn_fabric', PR),
-    'spawn_range': ('III', item('minecraft:piston'), 'apotheosis:timeworn_fabric', RM),
-    'player_range': ('III', item('minecraft:prismarine_crystals'), 'apotheosis:timeworn_fabric', IS),
-    'silent': ('III', tag('minecraft:wool'), 'apotheosis:timeworn_fabric', HC),
-    'youthful': ('III', item('minecraft:turtle_egg'), 'apotheosis:timeworn_fabric', PC),
-    'spawn_count': ('IV', item('minecraft:fermented_spider_eye'), 'apotheosis:luminous_crystal_shard', EC),
-    'max_nearby': ('IV', item('minecraft:ghast_tear'), 'apotheosis:luminous_crystal_shard', EC),
-    'initial_health': ('IV', item('minecraft:pointed_dripstone'), 'apotheosis:luminous_crystal_shard', SL),
-    'burning': ('IV', item('minecraft:campfire'), 'apotheosis:luminous_crystal_shard', CS),
-    'echoing': ('V', item('minecraft:echo_shard'), 'apotheosis:arcane_sands', RE),
-    'ignore_conditions': ('V', item('minecraft:conduit'), 'apotheosis:arcane_sands', RE),
-    'ignore_light': ('V', item('minecraft:soul_lantern'), 'apotheosis:arcane_sands', RE),
-    'ignore_players': ('V', item('minecraft:nether_star'), 'apotheosis:arcane_sands', AB),
-    'no_ai': ('V', item('minecraft:chorus_fruit'), 'apotheosis:arcane_sands', AB),
-    'redstone_control': ('V', item('minecraft:comparator'), 'apotheosis:arcane_sands', AB),
+    'min_delay': ('III', item('minecraft:sugar'), PR),
+    'max_delay': ('III', item('minecraft:clock'), PR),
+    'spawn_range': ('III', item('minecraft:piston'), RM),
+    'player_range': ('III', item('minecraft:prismarine_crystals'), IS),
+    'silent': ('III', tag('minecraft:wool'), HC),
+    'youthful': ('III', item('minecraft:turtle_egg'), PC),
+    'spawn_count': ('IV', item('minecraft:fermented_spider_eye'), EC),
+    'max_nearby': ('IV', item('minecraft:ghast_tear'), EC),
+    'initial_health': ('IV', item('minecraft:pointed_dripstone'), SL),
+    'burning': ('IV', item('minecraft:campfire'), CS),
+    'echoing': ('V', item('minecraft:echo_shard'), RE),
+    'ignore_conditions': ('V', item('minecraft:conduit'), RE),
+    'ignore_light': ('V', item('minecraft:soul_lantern'), RE),
+    'ignore_players': ('V', item('minecraft:nether_star'), AB),
+    'no_ai': ('V', item('minecraft:chorus_fruit'), AB),
+    'redstone_control': ('V', item('minecraft:comparator'), AB),
 }
 
 
 def augment_recipe(modifier):
-    act, core, material, component = AUGMENTS[modifier]
-    return recipe(f'entrelumen:augment_{modifier}', ['SDS', 'MOM', 'SKS'],
-                  {'S': item('create:copper_sheet'), 'D': item('apotheosis:gem_dust'), 'M': item(material),
-                   'O': core, 'K': item(component)}, act,
-                  'Copper medallion around the original Apothic Spawners item')
+    """Elias's playtest of 24 September 2026: the augment swaps Apotheosis's materials (gem dust and
+    rarity materials) for the act component at a similar cost, instead of adding them up. A copper
+    medallion: the component on top, the Apothic Spawners original as the core, three copper sheets."""
+    act, core, component = AUGMENTS[modifier]
+    return recipe(f'entrelumen:augment_{modifier}', [' K ', 'SOS', ' S '],
+                  {'S': item('create:copper_sheet'), 'O': core, 'K': item(component)}, act,
+                  'Copper medallion around the original Apothic Spawners item; the component replaces the Apotheosis materials')
 
 
 RUNE_RECIPES = [f'apotheosis:{name}' for name in (

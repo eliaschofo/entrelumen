@@ -127,13 +127,18 @@ class FamilyBalanceTest(unittest.TestCase):
             self.assertIn(f'data/apothic_spawners/recipe/spawner_modifiers/{modifier}.json', data_paths)
             self.assertIn(f'data/apothic_spawners/recipe/spawner_modifiers/_inverse/{modifier}.json', data_paths)
         recipes = {a['id']: a for a in family['additions']}
-        for modifier, (act, core, material, component) in balance.AUGMENTS.items():
+        for modifier, (act, core, component) in balance.AUGMENTS.items():
             addition = recipes[f'entrelumen:augment_{modifier}']
             self.assertEqual(addition['act'], act)
             self.assertNotIn('rune', json.dumps(addition['key']))
             self.assertNotIn('slate', json.dumps(addition['key']))
             self.assertEqual(addition['key']['O'], core)
             self.assertEqual(addition['key']['K'], {'item': component})
+            # Playtest of 24 September 2026: the component replaces Apotheosis's materials, the
+            # medallion is a symmetric drawing with the component on the axis and the core in the centre.
+            self.assertNotIn('apotheosis:', json.dumps(addition['key']))
+            self.assertEqual(addition['pattern'], [' K ', 'SOS', ' S '])
+            self.assertEqual(sum(row.count('K') for row in addition['pattern']), 1)
         strong = {'echoing', 'ignore_conditions', 'ignore_light', 'ignore_players', 'no_ai', 'redstone_control'}
         basic = {'min_delay', 'max_delay', 'spawn_count', 'spawn_range', 'player_range'}
         self.assertTrue(all(balance.AUGMENTS[m][0] == 'V' for m in strong))

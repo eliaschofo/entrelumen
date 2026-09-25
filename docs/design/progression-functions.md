@@ -69,7 +69,7 @@ Tiers II a VI siguen el mismo dibujo: `_T_ / SRS / _B_`. El componente del acto 
 
 ### Arte
 
-Los seis íconos los dibujó el controlador (un diapasón simétrico por tier) y los registra en `art/build_art.py`, que escribe los modelos. Esta rama no crea modelos ni texturas para los resonadores: hasta que el controlador los integre, el juego los muestra con la textura faltante.
+Los seis íconos los dibujó el controlador (`art/authoring/draw_resonators.py`: un diapasón simétrico por tier, con la gema completa en la base). Las grillas pasaron de `resonator_<n>` a `vein_resonator_<n>` y `art/build_art.py` las registra, con procedencia, modelos y texturas en el acompañante y en el resource pack.
 
 ## MekaSuit y armaduras cuánticas: acto VI
 
@@ -139,6 +139,10 @@ La comprobación de clausura es por ítem y no por mod: Mekanism y AE2 fabrican 
 | Controlador del reactor de fusión con el Motor de Renovación | La propuesta dejaba elegir: el Motor quedó para la antimateria (SPS) y la fusión va con el Bus, como el reactor nuclear de MI. |
 | Otros miembros de las familias (cargadores de chunks, disassembler atómico y Meka-Tool) | No estaban en la propuesta. |
 
+### Aumentadores de spawner (regla 4)
+
+Cada aumentador canjea los materiales de Apotheosis (un polvo de gema y dos materiales de rareza) por el componente de acto, que ya llevaba: queda una medalla de cobre simétrica, `_K_ / SOS / _S_`, con el componente arriba, el ítem original de Apothic Spawners en el centro y tres láminas de cobre. Pasa de 9 ítems a 5 y el acto lo sigue marcando el componente. Se actualizaron [apotheosis-family](apotheosis-family.md) y las tres guías que describían la receta vieja.
+
 ### Para la auditoría de recetas
 
 Lo que este lote tocó y todavía choca con el playtest, porque arreglarlo no era barato acá:
@@ -146,7 +150,6 @@ Lo que este lote tocó y todavía choca con el playtest, porque arreglarlo no er
 - **Recetas sin forma.** Las 21 recetas de componentes y módulos del Arca (`generate_integration_recipes.py`) siguen sin forma, incluidos los tres módulos que ahora llevan drops de jefes. Pasarlas a dibujos cambia el generador, las entregas y sus tests.
 - **Tarjeta de cantera de RFTools.** Sólo cambió de componente; la Lente sigue en una esquina de un dibujo simétrico (`LPr / iMi / rSr`).
 - **Abanico heredado.** La Matriz de Enrutamiento y el Regulador de Energía ya cerraban cerca de veinte recetas cada uno antes de este lote.
-- **Aumentadores de spawner.** No se tocaron (regla 4).
 
 ## Validación
 
@@ -154,6 +157,6 @@ Lo que este lote tocó y todavía choca con el playtest, porque arreglarlo no er
 
 ## Pendiente
 
-- Arte de los seis resonadores (controlador).
+- Ver los seis íconos de los resonadores en el inventario del cliente.
 - Intercambios de Luminosidades en Solsticio (worker del acto VI): sin ellos no se fabrican el resonador VI ni las armaduras tope.
 - Ver en un cliente la línea azul del tooltip, el Marco en JEI/EMI como infusión y el alcance de Ultimine con el resonador puesto.
