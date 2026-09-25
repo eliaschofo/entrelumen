@@ -1,7 +1,7 @@
 """The six tiers of the Ultimine curio (a vein resonator made by Terra), on the 16x16 item grid.
 
-A mirror-symmetric tuning fork: two prongs joined in a U, a stem, and a faceted gem at the base
-that sets the resonance. Each tier climbs in metal (copper, iron, brass, teal, dark alloy, luminous)
+A mirror-symmetric tuning fork: two prongs joined in a U, a stem, a collar and a faceted gem at
+the base that sets the resonance, all inside the outline. Each tier climbs in metal (copper, iron, brass, teal, dark alloy, luminous)
 and gem, so the six read as one family at inventory size. Writes art/grids/item/resonator_<n>.txt;
 the item ids are set by the progression work and the grids are renamed to match when registered.
 
@@ -31,25 +31,25 @@ TIERS = [  # (metal ramp: dark..light, gem ramp: dark..light)
 
 def fork(dx, y, metal, gem):
     dark, mid, light = metal
-    # prongs: two bars at dx 2.5..3.5, rows 1..8, with an inner highlight
-    if 1 <= y <= 8 and 2.5 <= dx <= 3.5:
-        return light if dx == 2.5 and y < 7 else mid
-    if y == 0 and dx == 3.5:
-        return dark
+    # prongs: two bars at dx 2.5..3.5, rows 1..5, with an inner highlight
+    if 1 <= y <= 5 and 2.5 <= dx <= 3.5:
+        return light if dx == 2.5 and y < 4 else mid
     # the U joining the prongs
-    if y == 9 and dx <= 3.5:
+    if y == 6 and dx <= 3.5:
         return mid if dx > 0.5 else light
-    if y == 10 and dx <= 2.5:
+    if y == 7 and dx <= 2.5:
         return dark if dx > 1.5 else mid
-    # stem
-    if 11 <= y <= 12 and dx <= 0.5:
-        return mid if y == 11 else dark
-    # gem at the base
-    if y == 13 and dx <= 1.5:
+    # stem and the collar that holds the gem
+    if 8 <= y <= 10 and dx <= 0.5:
+        return dark if y == 10 else mid
+    if y == 11 and dx <= 1.5:
+        return light if dx == 0.5 else mid
+    # the gem at the base, whole and outlined
+    if y == 12 and dx <= 1.5:
         return gem[2] if dx == 0.5 else gem[1]
-    if y == 14 and dx <= 1.5:
+    if y == 13 and dx <= 1.5:
         return gem[1] if dx == 0.5 else gem[0]
-    if y == 15 and dx <= 0.5:
+    if y == 14 and dx <= 0.5:
         return gem[0]
     return None
 
