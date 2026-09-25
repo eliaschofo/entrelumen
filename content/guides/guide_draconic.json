@@ -1,0 +1,743 @@
+{
+ "chapter": "guide_draconic",
+ "group": "tech",
+ "act": "III",
+ "icon": "draconicevolution:draconium_core",
+ "title": {
+  "en_us": "Draconic Evolution",
+  "es_es": "Draconic Evolution"
+ },
+ "subtitle": {
+  "en_us": "Draconium, fusion crafting, dislocators and energy crystals; then wyvern, draconic and chaotic tools, the energy core and the reactor.",
+  "es_es": "Draconio, crafteo por fusión, dislocadores y cristales de energía; después herramientas wyvern, dracónicas y caóticas, el núcleo de energía y el reactor."
+ },
+ "quests": [
+  {
+   "key": "de_welcome",
+   "deps": [],
+   "type": "checkmark",
+   "icon": "draconicevolution:draconium_ingot",
+   "layout": {
+    "x": 0,
+    "y": 0,
+    "size": 2.0,
+    "shape": "hexagon"
+   },
+   "en_us": [
+    "Welcome to Draconic Evolution",
+    "Draconic Evolution is the pack's endgame power fantasy. It climbs four tiers: Draconium, Wyvern, Draconic (awakened) and Chaotic. Its energy is called OP and works as FE.\n\nENTRELUMEN pacing: draconium, fusion crafting and the Dislocator open in Act III; the Wyvern Core needs an Ark Bus and the Draconic Core a Renewal Engine (both Act V); the chaotic tier still comes from the Chaos Guardian."
+   ],
+   "es_es": [
+    "Bienvenida a Draconic Evolution",
+    "Draconic Evolution es la fantasía de poder del final del pack. Sube cuatro niveles: Draconio, Wyvern, Dracónico (despertado) y Caótico. Su energía se llama OP y funciona como FE.\n\nRitmo en ENTRELUMEN: el draconio, el crafteo por fusión y el Dislocador abren en el acto III; el Wyvern Core pide un Bus de conexión del Arca y el Draconic Core un Motor de renovación (los dos del acto V); el nivel caótico sigue saliendo del Guardián del Caos."
+   ],
+   "sources": [
+    "repo:docs/design/industrial-expansion-family.md",
+    "repo:pack/kubejs/server_scripts/entrelumen_industrial_balance.js",
+    "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:assets/draconicevolution/lang/en_us.json#tech_level.draconicevolution.chaotic"
+   ]
+  },
+  {
+   "key": "de_tips",
+   "deps": [
+    "de_welcome"
+   ],
+   "type": "checkmark",
+   "icon": "draconicevolution:module_core",
+   "layout": {
+    "x": 0,
+    "y": -2.5,
+    "size": 1.0,
+    "shape": "circle"
+   },
+   "en_us": [
+    "Tips and keys",
+    "Keys in this pack: Place Item is Alt+P (sets a held item down as a display block) and Tool Config is Alt+Y; Tool Modules, Toggle Flight and Toggle Item Dislocator are listed under Controls. Draconic and chaotic tools mine any block.\n\nModular tools have an AOE Safe Mode that cancels area mining when a block entity is in range: keep it on near your base."
+   ],
+   "es_es": [
+    "Consejos y teclas",
+    "Teclas en este pack: Place Item es Alt+P (apoya el ítem en la mano como bloque de exhibición) y Tool Config es Alt+Y; Tool Modules, Toggle Flight y Toggle Item Dislocator están en Controles. Las herramientas dracónicas y caóticas pican cualquier bloque.\n\nLas herramientas modulares tienen un Modo seguro de área que cancela el picado en área si hay una entidad de bloque en rango: dejalo activo cerca de tu base."
+   ],
+   "sources": [
+    "repo:pack/config/entrelumen/client-preset.json",
+    "repo:docs/design/keybinding-review.md",
+    "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:assets/draconicevolution/lang/en_us.json#key.draconicevolution.tool_modules",
+    "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:assets/draconicevolution/lang/en_us.json#item_prop.draconicevolution.aoe_safe.info",
+    "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:com/brandon3055/draconicevolution/DEConfig.class"
+   ]
+  },
+  {
+   "key": "de_ore",
+   "deps": [
+    "de_welcome"
+   ],
+   "type": "item",
+   "item": "draconicevolution:draconium_dust",
+   "count": 16,
+   "layout": {
+    "x": 3,
+    "y": 0,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Draconium",
+    "Draconium Ore drops 2 to 4 Draconium Dust, plus more with Fortune; smelt the dust into ingots. In the Overworld it hides between Y -64 and -48 in about one chunk of ten; in the Nether, larger veins between Y 4 and 16 in about one chunk of thirty; in the End, three small veins per chunk in end stone.\n\nThe Ender Dragon also drops around 64 dust when killed."
+   ],
+   "es_es": [
+    "Draconio",
+    "El Draconium Ore suelta de 2 a 4 Draconium Dust, y más con Fortuna; fundí el polvo en lingotes. En el Overworld se esconde entre Y -64 y -48 en más o menos un chunk de cada diez; en el Nether, vetas más grandes entre Y 4 y 16 en un chunk de cada treinta; en el End, tres vetas chicas por chunk en piedra del End.\n\nEl Ender Dragon también suelta unos 64 de polvo al morir."
+   ],
+   "sources": [
+    "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:data/draconicevolution/worldgen/placed_feature/overworld_draconium_ore.json",
+    "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:data/draconicevolution/worldgen/placed_feature/nether_draconium_ore.json",
+    "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:data/draconicevolution/worldgen/placed_feature/end_draconium_ore.json",
+    "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:data/draconicevolution/loot_table/blocks/overworld_draconium_ore.json",
+    "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:data/draconicevolution/recipe/components/draconium_ingot_from_dust.json",
+    "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:com/brandon3055/draconicevolution/handlers/LootEventHandler.class",
+    "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:com/brandon3055/draconicevolution/DEConfig.class"
+   ]
+  },
+  {
+   "key": "de_core",
+   "deps": [
+    "de_ore"
+   ],
+   "type": "item",
+   "item": "draconicevolution:draconium_core",
+   "count": 4,
+   "layout": {
+    "x": 6,
+    "y": 0,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Draconium Core",
+    "Draconium ingots, gold and a diamond make the Draconium Core, the part inside almost every Draconic block. Make a few: the Fusion Crafting Core, injectors, Generator and crystals all start here."
+   ],
+   "es_es": [
+    "Draconium Core",
+    "Lingotes de draconio, oro y un diamante hacen el Draconium Core, la pieza que va adentro de casi todos los bloques de Draconic. Hacé varios: el Fusion Crafting Core, los inyectores, el Generador y los cristales arrancan acá."
+   ],
+   "sources": [
+    "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:data/draconicevolution/recipe/components/draconium_core.json"
+   ]
+  },
+  {
+   "key": "de_generator",
+   "deps": [
+    "de_core"
+   ],
+   "type": "item",
+   "item": "draconicevolution:generator",
+   "optional": true,
+   "layout": {
+    "x": 6,
+    "y": -2.5,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Generator",
+    "A furnace-style generator that burns solid fuel for OP. Its modes trade output for efficiency: Eco and Eco Plus stretch fuel, Normal matches other basic generators, Performance and Overdrive burn faster for more power. Enough to charge your first fusion crafts."
+   ],
+   "es_es": [
+    "Generador",
+    "Un generador tipo horno que quema combustible sólido por OP. Sus modos cambian potencia por eficiencia: Eco y Eco Plus estiran el combustible, Normal se parece a otros generadores básicos, Performance y Overdrive queman más rápido por más energía. Alcanza para cargar tus primeros crafteos por fusión."
+   ],
+   "sources": [
+    "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:data/draconicevolution/recipe/machines/generator.json",
+    "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:assets/draconicevolution/lang/en_us.json#gui.draconicevolution.generator.mode_eco.info",
+    "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:assets/draconicevolution/lang/en_us.json#gui.draconicevolution.generator.mode_normal.info",
+    "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:assets/draconicevolution/lang/en_us.json#gui.draconicevolution.generator.mode_performance_plus.info"
+   ]
+  },
+  {
+   "key": "de_fusion",
+   "deps": [
+    "de_core"
+   ],
+   "type": "item",
+   "item": "draconicevolution:crafting_core",
+   "layout": {
+    "x": 9,
+    "y": 0,
+    "size": 1.5,
+    "shape": "hexagon"
+   },
+   "en_us": [
+    "Fusion Crafting Core",
+    "Fusion crafting is Draconic's big recipe altar. The catalyst goes in the Core; each other ingredient goes in its own injector. Injectors must face the core, at least 2 and at most 16 blocks away, and each one needs OP piped in. When the Core says Ready to craft, press Craft: it charges, then fuses.\n\nIf it says an injector is too close or the tier is too low, check spacing and injector tiers."
+   ],
+   "es_es": [
+    "Fusion Crafting Core",
+    "El crafteo por fusión es el gran altar de recetas de Draconic. El catalizador va en el Core; cada otro ingrediente va en su propio inyector. Los inyectores tienen que mirar al Core, a entre 2 y 16 bloques, y cada uno necesita OP entrando por caño. Cuando el Core dice Ready to craft, apretá Craft: carga y después fusiona.\n\nSi dice que un inyector está muy cerca o que el nivel es bajo, revisá la distancia y el nivel de los inyectores."
+   ],
+   "sources": [
+    "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:data/draconicevolution/recipe/machines/crafting_core.json",
+    "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:assets/draconicevolution/lang/en_us.json#fusion_status.draconicevolution.injector_close",
+    "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:assets/draconicevolution/lang/en_us.json#fusion_status.draconicevolution.tier_low",
+    "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:assets/draconicevolution/lang/en_us.json#fusion_status.draconicevolution.charging",
+    "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:com/brandon3055/draconicevolution/DEConfig.class"
+   ]
+  },
+  {
+   "key": "de_injectors",
+   "deps": [
+    "de_fusion"
+   ],
+   "type": "item",
+   "item": "draconicevolution:basic_crafting_injector",
+   "count": 6,
+   "layout": {
+    "x": 9,
+    "y": 2.5,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Fusion injectors",
+    "You need one injector per ingredient, so build a few. Every recipe has a tier, and each injector must reach it: Draconium injectors do draconium recipes, Wyvern injectors unlock wyvern ones, and so on. Better injectors also speed things up: charging and crafting take 300, 220, 140 or 60 ticks by the lowest tier used.\n\nInjectors have a single item or stack mode for feeding by automation."
+   ],
+   "es_es": [
+    "Inyectores de fusión",
+    "Necesitás un inyector por ingrediente, así que armá varios. Cada receta tiene un nivel, y cada inyector tiene que llegar a él: los de Draconio hacen recetas de draconio, los Wyvern habilitan las wyvern, y así. Los mejores inyectores también aceleran: la carga y el crafteo tardan 300, 220, 140 o 60 ticks según el nivel más bajo usado.\n\nLos inyectores tienen modo de un ítem o de stack para alimentarlos con automatización."
+   ],
+   "sources": [
+    "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:data/draconicevolution/recipe/machines/basic_crafting_injector.json",
+    "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:data/draconicevolution/recipe/machines/wyvern_crafting_injector.json",
+    "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:assets/draconicevolution/lang/en_us.json#gui.draconicevolution.fusion_craft.ne_tier_injectors",
+    "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:assets/draconicevolution/lang/en_us.json#fusion_inj.draconicevolution.single_item",
+    "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:com/brandon3055/draconicevolution/DEConfig.class"
+   ]
+  },
+  {
+   "key": "de_chest",
+   "deps": [
+    "de_injectors"
+   ],
+   "type": "item",
+   "item": "draconicevolution:draconium_chest",
+   "optional": true,
+   "layout": {
+    "x": 6,
+    "y": 5,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Draconium Chest",
+    "Your first fusion craft: a huge chest with a crafting grid and a built-in furnace section that runs on OP and can auto-smelt everything, only filtered items, or keep a sticky filter. Shulker boxes, bags and pouches are refused, so nobody nests storage inside it."
+   ],
+   "es_es": [
+    "Draconium Chest",
+    "Tu primer crafteo por fusión: un cofre enorme con grilla de crafteo y una sección de horno que funciona con OP y puede fundir todo solo, sólo lo filtrado, o mantener un filtro fijo. Rechaza cajas de shulker, bolsas y morrales, así nadie mete almacenamiento adentro."
+   ],
+   "sources": [
+    "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:data/draconicevolution/recipe/machines/draconium_chest.json",
+    "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:assets/draconicevolution/lang/en_us.json#gui.draconicevolution.draconium_chest.feed.all.info",
+    "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:assets/draconicevolution/lang/en_us.json#gui.draconicevolution.draconium_chest.feed.sticky.info",
+    "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:com/brandon3055/draconicevolution/DEConfig.class"
+   ]
+  },
+  {
+   "key": "de_dislocator",
+   "deps": [
+    "de_core"
+   ],
+   "type": "item",
+   "item": "draconicevolution:dislocator",
+   "layout": {
+    "x": 6,
+    "y": 2.5,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Dislocator",
+    "Sneak and right-click to save your position, facing and dimension; right-click later to teleport back, with a limited number of uses. Bound variants exist: a pair that sends you to its twin, and one bound to a player, who must agree by sneaking.\n\nENTRELUMEN change: the Dislocator needs a Routing Matrix (Act III), which also gates everything crafted from it."
+   ],
+   "es_es": [
+    "Dislocador",
+    "Agachado y clic derecho guarda tu posición, orientación y dimensión; después, clic derecho te teletransporta ahí, con usos limitados. Hay variantes vinculadas: un par que te manda a su gemelo, y una atada a un jugador, que tiene que aceptar agachándose.\n\nCambio de ENTRELUMEN: el Dislocador pide una Matriz de distribución (acto III), lo que también frena todo lo que se craftea con él."
+   ],
+   "sources": [
+    "repo:pack/kubejs/server_scripts/entrelumen_industrial_balance.js",
+    "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:data/draconicevolution/recipe/tools/dislocator.json",
+    "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:assets/draconicevolution/lang/en_us.json#dislocate.draconicevolution.un_set_info2",
+    "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:assets/draconicevolution/lang/en_us.json#dislocate.draconicevolution.uses_remain",
+    "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:assets/draconicevolution/lang/en_us.json#dislocate.draconicevolution.player_allow",
+    "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:data/draconicevolution/recipe/tools/p2p_dislocator_unbound.json",
+    "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:data/draconicevolution/recipe/tools/player_dislocator_unbound.json"
+   ]
+  },
+  {
+   "key": "de_magnet",
+   "deps": [
+    "de_dislocator"
+   ],
+   "type": "item",
+   "item": "draconicevolution:magnet",
+   "optional": true,
+   "layout": {
+    "x": 3,
+    "y": 2.5,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Item Dislocator",
+    "A magnet built around a Dislocator that pulls nearby drops to you. Toggle it with its key (Toggle Item Dislocator). Near farms, a Dislocation Normalization Field Projector stops magnets from grabbing items dropped within 5 blocks."
+   ],
+   "es_es": [
+    "Item Dislocator",
+    "Un imán armado alrededor de un Dislocador que atrae los drops cercanos. Se prende y apaga con su tecla (Toggle Item Dislocator). Cerca de granjas, un Dislocation Normalization Field Projector evita que los imanes agarren ítems caídos a menos de 5 bloques."
+   ],
+   "sources": [
+    "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:data/draconicevolution/recipe/tools/magnet.json",
+    "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:assets/draconicevolution/lang/en_us.json#key.draconicevolution.toggle_magnet",
+    "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:assets/draconicevolution/lang/en_us.json#tile.draconicevolution.dislocation_inhibitor.info"
+   ]
+  },
+  {
+   "key": "de_portal",
+   "deps": [
+    "de_dislocator"
+   ],
+   "type": "item",
+   "item": "draconicevolution:dislocator_receptacle",
+   "optional": true,
+   "layout": {
+    "x": 3,
+    "y": 5,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Dislocator portals",
+    "A Dislocator Receptacle holding a bound Dislocator opens a portal inside a frame of Draconium Infused Obsidian, leading to the Dislocator's saved spot. Frames can be large, up to 256 by 256.\n\nA Dislocator Pedestal holds a Dislocator for anyone who walks up to use it."
+   ],
+   "es_es": [
+    "Portales de dislocador",
+    "Un Dislocator Receptacle con un Dislocador vinculado abre un portal dentro de un marco de Draconium Infused Obsidian, que lleva al punto guardado del Dislocador. Los marcos pueden ser grandes, hasta 256 por 256.\n\nUn Dislocator Pedestal sostiene un Dislocador para quien se acerque a usarlo."
+   ],
+   "sources": [
+    "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:data/draconicevolution/recipe/dislocator_receptacle.json",
+    "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:data/draconicevolution/recipe/infused_obsidian.json",
+    "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:data/draconicevolution/recipe/dislocator_pedestal.json",
+    "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:com/brandon3055/draconicevolution/DEConfig.class"
+   ]
+  },
+  {
+   "key": "de_crystals",
+   "deps": [
+    "de_core"
+   ],
+   "type": "item",
+   "item": "draconicevolution:crystal_binder",
+   "optional": true,
+   "layout": {
+    "x": 3,
+    "y": -2.5,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Energy crystals",
+    "Crystals move OP without cables. Relay crystals pass energy along, I/O crystals take it from or give it to the block they sit on, and wireless crystals feed several receivers. Link them with the Crystal Binder: sneak and right-click the first device, then right-click the second.\n\nLinks cannot cross dimensions, and each crystal has a range and link limit."
+   ],
+   "es_es": [
+    "Cristales de energía",
+    "Los cristales mueven OP sin cables. Los de relevo pasan la energía, los de E/S la sacan o la dan al bloque donde están apoyados, y los inalámbricos alimentan varios receptores. Vinculalos con el Crystal Binder: agachado y clic derecho en el primer dispositivo, después clic derecho en el segundo.\n\nLos vínculos no cruzan dimensiones, y cada cristal tiene alcance y límite de enlaces."
+   ],
+   "sources": [
+    "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:data/draconicevolution/recipe/machines/basic_relay_crystal.json",
+    "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:data/draconicevolution/recipe/machines/basic_wireless_crystal.json",
+    "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:data/draconicevolution/recipe/tools/crystal_binder.json",
+    "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:assets/draconicevolution/lang/en_us.json#gui.draconicevolution.energy_net.tool_not_bound",
+    "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:assets/draconicevolution/lang/en_us.json#gui.draconicevolution.energy_net.link_to_other_dimension",
+    "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:assets/draconicevolution/lang/en_us.json#gui.draconicevolution.energy_net.io_mode"
+   ]
+  },
+  {
+   "key": "de_grinder",
+   "deps": [
+    "de_core"
+   ],
+   "type": "item",
+   "item": "draconicevolution:grinder",
+   "optional": true,
+   "layout": {
+    "x": 9,
+    "y": -2.5,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Mob Grinder",
+    "Kills mobs in an adjustable area with OP (80 per point of health) and can collect their drops into a neighbouring inventory and store their XP for you to claim. An optional weapon slot applies that weapon's effects.\n\nIt uses a Wyvern Energy Core, not a Wyvern Core, so it is available before Act V."
+   ],
+   "es_es": [
+    "Mob Grinder",
+    "Mata mobs en un área ajustable con OP (80 por punto de vida) y puede juntar sus drops en un inventario vecino y guardar su XP para que la reclames. Una ranura opcional de arma hace que ataque con esa arma.\n\nUsa un Wyvern Energy Core, no un Wyvern Core, así que está disponible antes del acto V."
+   ],
+   "sources": [
+    "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:data/draconicevolution/recipe/machines/grinder.json",
+    "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:com/brandon3055/draconicevolution/DEConfig.class",
+    "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:assets/draconicevolution/lang/en_us.json#gui.draconicevolution.grinder.collect.items.info",
+    "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:assets/draconicevolution/lang/en_us.json#gui.draconicevolution.grinder.collect.xp.info",
+    "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:assets/draconicevolution/lang/en_us.json#gui.draconicevolution.grinder.weapon_slot",
+    "repo:docs/design/industrial-expansion-family.md"
+   ]
+  },
+  {
+   "key": "de_disenchanter",
+   "deps": [
+    "de_grinder"
+   ],
+   "type": "item",
+   "item": "draconicevolution:disenchanter",
+   "optional": true,
+   "layout": {
+    "x": 9,
+    "y": -5,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Disenchanter and gadgets",
+    "The Disenchanter pulls one enchantment off an item onto a book, paying the XP level cost shown on its screen. Other gadgets: Entity Detectors that emit redstone by mob count, Flux and Fluid Gates that throttle flow by redstone, a Potentiometer, a Rain Sensor and the decorative Particle Generator."
+   ],
+   "es_es": [
+    "Desencantador y aparatos",
+    "El Disenchanter saca un encantamiento de un ítem y lo pasa a un libro, pagando el costo en niveles de XP que muestra su pantalla. Otros aparatos: Detectores de entidades que emiten redstone según cuántos mobs ven, Flux y Fluid Gates que regulan el flujo con redstone, un Potenciómetro, un Sensor de lluvia y el Particle Generator decorativo."
+   ],
+   "sources": [
+    "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:data/draconicevolution/recipe/disenchanter.json",
+    "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:assets/draconicevolution/lang/en_us.json#gui.draconicevolution.disenchanter.cost",
+    "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:assets/draconicevolution/lang/en_us.json#gui.draconicevolution.entity_detector.pulse_mode.info",
+    "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:assets/draconicevolution/lang/en_us.json#gui.draconicevolution.flow_gate.flow.info",
+    "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:data/draconicevolution/recipe/flux_gate.json"
+   ]
+  },
+  {
+   "key": "de_wyvern",
+   "deps": [
+    "de_injectors"
+   ],
+   "type": "item",
+   "item": "draconicevolution:wyvern_core",
+   "layout": {
+    "x": 12,
+    "y": 0,
+    "size": 1.5,
+    "shape": "hexagon"
+   },
+   "en_us": [
+    "Wyvern Core",
+    "The Wyvern Core opens the second tier: Wyvern injectors, capacitors, modular tools and armour, the Energy Core and the Celestial Manipulator.\n\nENTRELUMEN change: its recipe takes an Ark Bus (Act V) in place of one draconium ingot. It also needs a nether star."
+   ],
+   "es_es": [
+    "Wyvern Core",
+    "El Wyvern Core abre el segundo nivel: inyectores Wyvern, capacitores, herramientas y armadura modulares, el Núcleo de energía y el Celestial Manipulator.\n\nCambio de ENTRELUMEN: su receta lleva un Bus de conexión del Arca (acto V) en lugar de un lingote de draconio. También pide una estrella del Nether."
+   ],
+   "sources": [
+    "repo:pack/kubejs/server_scripts/entrelumen_industrial_balance.js",
+    "repo:docs/design/industrial-expansion-family.md"
+   ]
+  },
+  {
+   "key": "de_modular",
+   "deps": [
+    "de_wyvern"
+   ],
+   "type": "item",
+   "item": "draconicevolution:wyvern_pickaxe",
+   "layout": {
+    "x": 15,
+    "y": 0,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Modular tools and armour",
+    "Wyvern tools, bow, chestpiece and capacitor are fused with a diamond item or Wyvern Core as catalyst, a Wyvern Energy Core and wyvern-tier injectors. They run on OP and need energy modules to work.\n\nEach one has a module grid (Tool Modules key) and a configuration screen (Alt+Y) for area, speed and more. Upgrades fuse the previous tier as the catalyst, so nothing is wasted."
+   ],
+   "es_es": [
+    "Herramientas y armadura modulares",
+    "Las herramientas, el arco, la pechera y el capacitor Wyvern se fusionan con un ítem de diamante o un Wyvern Core como catalizador, un Wyvern Energy Core e inyectores de nivel wyvern. Funcionan con OP y necesitan módulos de energía.\n\nCada una tiene una grilla de módulos (tecla Tool Modules) y una pantalla de configuración (Alt+Y) para área, velocidad y más. Las mejoras fusionan el nivel anterior como catalizador, así que no se pierde nada."
+   ],
+   "sources": [
+    "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:data/draconicevolution/recipe/tools/wyvern_pickaxe.json",
+    "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:data/draconicevolution/recipe/tools/wyvern_capacitor.json",
+    "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:data/draconicevolution/recipe/tools/draconic_pickaxe.json",
+    "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:assets/draconicevolution/lang/en_us.json#modular_item.draconicevolution.requires_energy",
+    "repo:pack/config/entrelumen/client-preset.json"
+   ]
+  },
+  {
+   "key": "de_modules",
+   "deps": [
+    "de_modular"
+   ],
+   "type": "item",
+   "item": "draconicevolution:item_wyvern_flight",
+   "optional": true,
+   "layout": {
+    "x": 15,
+    "y": -2.5,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Modules",
+    "Modules start from a Module Core and fill the grid: energy, speed, damage, area, jump, auto-feed, night vision, junk filter and ender collection, plus shields, undying and flight for the chestpiece. Flight offers creative-style and elytra flight, each with its own toggle.\n\nHigher-tier modules fit only in items of their tier or above."
+   ],
+   "es_es": [
+    "Módulos",
+    "Los módulos arrancan de un Module Core y llenan la grilla: energía, velocidad, daño, área, salto, autoalimentación, visión nocturna, filtro de basura y recolección de ender, más escudos, inmortalidad y vuelo para la pechera. El vuelo ofrece modo creativo y de élitros, cada uno con su interruptor.\n\nLos módulos de nivel alto sólo entran en ítems de su nivel o superiores."
+   ],
+   "sources": [
+    "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:data/draconicevolution/recipe/modules/module_core.json",
+    "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:data/draconicevolution/recipe/modules/item_wyvern_flight.json",
+    "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:assets/draconicevolution/lang/en_us.json#item_prop.draconicevolution.flight_mod.creative.info",
+    "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:assets/draconicevolution/lang/en_us.json#modular_item.draconicevolution.cant_install.level_high",
+    "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:assets/draconicevolution/lang/en_us.json#hud.draconicevolution.shield_hud.info"
+   ]
+  },
+  {
+   "key": "de_energy_core",
+   "deps": [
+    "de_wyvern"
+   ],
+   "type": "item",
+   "item": "draconicevolution:energy_core",
+   "layout": {
+    "x": 12,
+    "y": -2.5,
+    "size": 1.5,
+    "shape": "hexagon"
+   },
+   "en_us": [
+    "Energy Core",
+    "A multiblock battery with eight tiers, from about 45 million OP at tier 1 to a practically bottomless tier 8. Its screen has a build guide and an Assemble Core button that places the structure from your inventory; stabilizers go around it, and the higher tiers need advanced stabilizers. Energy Pylons connect it to your network.\n\nNeeds a Wyvern Core, so it is an Act V project."
+   ],
+   "es_es": [
+    "Núcleo de energía",
+    "Una batería multibloque con ocho niveles, desde unos 45 millones de OP en el nivel 1 hasta un nivel 8 prácticamente sin fondo. Su pantalla tiene una guía de construcción y un botón Assemble Core que pone la estructura desde tu inventario; los estabilizadores van alrededor, y los niveles altos piden estabilizadores avanzados. Los Energy Pylons lo conectan a tu red.\n\nPide un Wyvern Core, así que es un proyecto del acto V."
+   ],
+   "sources": [
+    "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:data/draconicevolution/recipe/machines/energy_core.json",
+    "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:data/draconicevolution/recipe/machines/energy_core_stabilizer.json",
+    "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:data/draconicevolution/recipe/machines/energy_pylon.json",
+    "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:assets/draconicevolution/lang/en_us.json#gui.draconicevolution.energy_core.build_guide",
+    "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:assets/draconicevolution/lang/en_us.json#gui.draconicevolution.energy_core.stabilizers_advanced",
+    "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:com/brandon3055/draconicevolution/DEConfig.class"
+   ]
+  },
+  {
+   "key": "de_adv_dislocator",
+   "deps": [
+    "de_wyvern",
+    "de_dislocator"
+   ],
+   "type": "item",
+   "item": "draconicevolution:advanced_dislocator",
+   "optional": true,
+   "layout": {
+    "x": 12,
+    "y": 2.5,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Advanced Dislocator",
+    "A fusion upgrade that stores a named list of places. Ender pearls are its fuel: one pearl is one teleport or four blinks (short hops up to 32 blocks where you look), and it holds up to 1,024. Keys for teleport, blink and scrolling the list are under Controls."
+   ],
+   "es_es": [
+    "Dislocador avanzado",
+    "Una mejora por fusión que guarda una lista de lugares con nombre. Las perlas de ender son su combustible: una perla es un teletransporte o cuatro parpadeos (saltos cortos de hasta 32 bloques hacia donde mirás), y guarda hasta 1.024. Las teclas para teletransportar, parpadear y recorrer la lista están en Controles."
+   ],
+   "sources": [
+    "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:data/draconicevolution/recipe/tools/advanced_dislocator.json",
+    "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:assets/draconicevolution/lang/en_us.json#gui.draconicevolution.dislocator.fuel_add_1.info",
+    "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:com/brandon3055/draconicevolution/DEConfig.class",
+    "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:assets/draconicevolution/lang/en_us.json#key.draconicevolution.dislocator_blink"
+   ]
+  },
+  {
+   "key": "de_celestial",
+   "deps": [
+    "de_wyvern"
+   ],
+   "type": "item",
+   "item": "draconicevolution:celestial_manipulator",
+   "optional": true,
+   "layout": {
+    "x": 15,
+    "y": 2.5,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Celestial Manipulator",
+    "Skips to sunrise, noon, sunset or midnight, and starts or clears rain and storms, for OP. It needs a Wyvern Core and a dragon egg; in this pack the egg returns every time the dragon dies, so more than one player can build it."
+   ],
+   "es_es": [
+    "Celestial Manipulator",
+    "Salta al amanecer, mediodía, atardecer o medianoche, y empieza o corta lluvia y tormentas, a cambio de OP. Pide un Wyvern Core y un huevo de dragón; en este pack el huevo vuelve cada vez que muere el dragón, así que más de un jugador puede armarlo."
+   ],
+   "sources": [
+    "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:data/draconicevolution/recipe/celestial_manipulator.json",
+    "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:assets/draconicevolution/lang/en_us.json#gui.draconicevolution.celestial_manipulator.skipTo",
+    "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:com/brandon3055/draconicevolution/DEConfig.class",
+    "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:com/brandon3055/draconicevolution/handlers/LootEventHandler.class"
+   ]
+  },
+  {
+   "key": "de_heart",
+   "deps": [
+    "de_wyvern"
+   ],
+   "type": "item",
+   "item": "draconicevolution:dragon_heart",
+   "layout": {
+    "x": 18,
+    "y": 0,
+    "size": 1.5,
+    "shape": "hexagon"
+   },
+   "en_us": [
+    "Dragon Heart and awakened draconium",
+    "Killing the Ender Dragon drops a Dragon Heart. Fuse it with four draconium blocks as catalyst and six Draconium Cores on wyvern injectors (50 million OP) to get four Awakened Draconium Blocks. Respawn the dragon for more hearts."
+   ],
+   "es_es": [
+    "Corazón de dragón y draconio despertado",
+    "Matar al Ender Dragon suelta un Dragon Heart. Fusionalo con cuatro bloques de draconio como catalizador y seis Draconium Cores en inyectores wyvern (50 millones de OP) para sacar cuatro Awakened Draconium Blocks. Revivi al dragón para tener más corazones."
+   ],
+   "sources": [
+    "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:data/draconicevolution/recipe/awakened_draconium_block.json",
+    "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:com/brandon3055/draconicevolution/handlers/LootEventHandler.class",
+    "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:com/brandon3055/draconicevolution/DEConfig.class"
+   ]
+  },
+  {
+   "key": "de_awakened",
+   "deps": [
+    "de_heart"
+   ],
+   "type": "item",
+   "item": "draconicevolution:awakened_core",
+   "layout": {
+    "x": 21,
+    "y": 0,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Draconic Core and the draconic tier",
+    "The Draconic Core (Awakened Core) is fused from four Wyvern Cores, awakened ingots and a nether star. Draconic tools and armour then fuse the wyvern item with netherite ingots, awakened ingots, a Wyvern Core and a Draconic Energy Core, on draconic injectors.\n\nENTRELUMEN change: a Renewal Engine (Act V) replaces one of the awakened ingots in the Draconic Core."
+   ],
+   "es_es": [
+    "Draconic Core y el nivel dracónico",
+    "El Draconic Core (Awakened Core) se fusiona con cuatro Wyvern Cores, lingotes despertados y una estrella del Nether. Después, las herramientas y armadura dracónicas fusionan el ítem wyvern con lingotes de netherita, lingotes despertados, un Wyvern Core y un Draconic Energy Core, en inyectores dracónicos.\n\nCambio de ENTRELUMEN: un Motor de renovación (acto V) reemplaza uno de los lingotes despertados del Draconic Core."
+   ],
+   "sources": [
+    "repo:pack/kubejs/server_scripts/entrelumen_industrial_balance.js",
+    "repo:docs/design/industrial-expansion-family.md",
+    "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:data/draconicevolution/recipe/tools/draconic_pickaxe.json",
+    "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:data/draconicevolution/recipe/components/draconic_energy_core.json",
+    "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:data/draconicevolution/recipe/machines/awakened_crafting_injector.json"
+   ]
+  },
+  {
+   "key": "de_chaos",
+   "deps": [
+    "de_awakened"
+   ],
+   "type": "item",
+   "item": "draconicevolution:chaos_shard",
+   "layout": {
+    "x": 24,
+    "y": 0,
+    "size": 1.5,
+    "shape": "hexagon"
+   },
+   "en_us": [
+    "Chaos Islands and the Chaos Guardian",
+    "Far out in the End, Chaos Islands sit on a grid about 10,000 blocks apart. Guardian Crystals shield the Chaos Guardian, a boss far above the Ender Dragon; after the fight, breaking the Chaos Crystal yields 5 Chaos Shards. Chaotic weapons can break the crystal shields, which makes later fights easier.\n\nGo with full wyvern or draconic gear, shields charged, and a way home."
+   ],
+   "es_es": [
+    "Islas del Caos y el Guardián del Caos",
+    "Lejos en el End, las Islas del Caos están en una grilla a unos 10.000 bloques entre sí. Los Guardian Crystals protegen al Guardián del Caos, un jefe muy por encima del Ender Dragon; después de la pelea, romper el Chaos Crystal da 5 Chaos Shards. Las armas caóticas pueden romper los escudos de los cristales, lo que facilita las peleas siguientes.\n\nAndá con equipo wyvern o dracónico completo, escudos cargados y una forma de volver."
+   ],
+   "sources": [
+    "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:com/brandon3055/draconicevolution/DEConfig.class",
+    "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:assets/draconicevolution/lang/en_us.json#entity.draconicevolution.draconic_guardian",
+    "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:data/draconicevolution/worldgen/placed_feature/chaos_island.json",
+    "repo:docs/design/industrial-expansion-family.md"
+   ]
+  },
+  {
+   "key": "de_reactor",
+   "deps": [
+    "de_chaos"
+   ],
+   "type": "item",
+   "item": "draconicevolution:reactor_core",
+   "optional": true,
+   "layout": {
+    "x": 24,
+    "y": -2.5,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Draconic Reactor",
+    "The Reactor burns awakened draconium into chaos for enormous OP. Its core sits between Reactor Stabilizers, which draw power out, and an Energy Injector that feeds the containment field. Watch temperature, field strength and saturation; SAS shuts it down safely, and each part can drive a comparator.\n\nWarning: the large explosion is enabled in this pack. Build it far from anything you love."
+   ],
+   "es_es": [
+    "Reactor dracónico",
+    "El Reactor quema draconio despertado y lo convierte en caos por cantidades enormes de OP. Su núcleo va entre Reactor Stabilizers, que sacan la energía, y un Energy Injector que alimenta el campo de contención. Vigilá temperatura, fuerza del campo y saturación; SAS lo apaga de forma segura, y cada pieza puede manejar un comparador.\n\nOjo: la explosión grande está activa en este pack. Armalo lejos de todo lo que quieras."
+   ],
+   "sources": [
+    "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:data/draconicevolution/recipe/machines/reactor_core.json",
+    "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:data/draconicevolution/recipe/machines/reactor_stabilizer.json",
+    "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:data/draconicevolution/recipe/machines/reactor_injector.json",
+    "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:assets/draconicevolution/lang/en_us.json#gui.draconicevolution.reactor.sas.info",
+    "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:assets/draconicevolution/lang/en_us.json#gui.draconicevolution.reactor.field_rate.info",
+    "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:assets/draconicevolution/lang/en_us.json#gui.draconicevolution.reactor.core_volume.info",
+    "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:com/brandon3055/draconicevolution/DEConfig.class"
+   ]
+  },
+  {
+   "key": "de_mastery",
+   "deps": [
+    "de_chaos"
+   ],
+   "type": "item",
+   "item": "draconicevolution:chaotic_core",
+   "layout": {
+    "x": 27,
+    "y": 0,
+    "size": 2.0,
+    "shape": "octagon"
+   },
+   "en_us": [
+    "Mastery: Chaotic Core",
+    "The Chaotic Core fuses chaos fragments, awakened ingots and four Draconic Cores for 100 million OP. It unlocks chaotic injectors, tools, armour and capacitor, the strongest energy-powered gear in the pack.\n\nBeyond it, the Creative Capacitor is crafted only with Luminosities in Act VI."
+   ],
+   "es_es": [
+    "Maestría: Chaotic Core",
+    "El Chaotic Core fusiona fragmentos de caos, lingotes despertados y cuatro Draconic Cores por 100 millones de OP. Habilita los inyectores, herramientas, armadura y capacitor caóticos, el equipo con energía más fuerte del pack.\n\nMás allá, el Creative Capacitor sólo se craftea con Luminosidades en el acto VI."
+   ],
+   "sources": [
+    "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:data/draconicevolution/recipe/components/chaotic_core.json",
+    "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:data/draconicevolution/recipe/tools/chaotic_pickaxe.json",
+    "repo:pack/kubejs/server_scripts/entrelumen_luminous_balance.js",
+    "repo:docs/design/luminous-gear.md"
+   ]
+  }
+ ]
+}
