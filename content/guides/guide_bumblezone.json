@@ -1,0 +1,468 @@
+{
+  "chapter": "guide_bumblezone",
+  "group": "exploration",
+  "act": "IV",
+  "icon": "minecraft:bee_nest",
+  "title": {
+    "en_us": "The Bumblezone",
+    "es_es": "Bumblezone"
+  },
+  "subtitle": {
+    "en_us": "A dimension inside a beehive: honey, wrath, a Bee Queen with her own quest line and ancient sanctums.",
+    "es_es": "Una dimensión adentro de una colmena: miel, ira, una Abeja Reina con su propia línea de misiones y santuarios antiguos."
+  },
+  "quests": [
+    {
+      "key": "bz_welcome",
+      "deps": [],
+      "type": "checkmark",
+      "layout": {
+        "x": 0,
+        "y": 0,
+        "size": 2.0,
+        "shape": "hexagon"
+      },
+      "en_us": [
+        "Where Juan's bees came from",
+        "The Bumblezone is a dimension made of honeycomb, full of bees, honey and strange structures. In ENTRELUMEN it belongs to act IV: the Heliodor Compass points there, and the first arrival of anyone on your team records the \"Bumblezone: a witnessed arrival\" milestone the act IV Atlas asks for.\n\nThe story says Juan's bees came from here and Heliodor signed a treaty with them. Keep that in mind: the bees remember how you treat them."
+      ],
+      "es_es": [
+        "De dónde vinieron las abejas de Juan",
+        "Bumblezone es una dimensión hecha de panal, llena de abejas, miel y estructuras raras. En ENTRELUMEN pertenece al acto IV: la Brújula de Heliodor apunta hacia allá, y la primera llegada de cualquier integrante de tu equipo registra el hito «Bumblezone: una llegada registrada» que pide el Atlas del acto IV.\n\nLa historia dice que las abejas de Juan vinieron de acá y que Heliodor firmó un tratado con ellas. Tenelo en cuenta: las abejas se acuerdan de cómo las tratás."
+      ],
+      "sources": [
+        "repo:content/compass_targets.json",
+        "repo:content/act_four.json",
+        "repo:docs/design/quest-lore.md"
+      ]
+    },
+    {
+      "key": "bz_enter",
+      "deps": [
+        "bz_welcome"
+      ],
+      "type": "dimension",
+      "dimension": "the_bumblezone:the_bumblezone",
+      "icon": "minecraft:ender_pearl",
+      "layout": {
+        "x": 3,
+        "y": 0,
+        "size": 1.75,
+        "shape": "diamond"
+      },
+      "en_us": [
+        "A pearl into a beehive",
+        "Find a Bee Nest or a Beehive in the Overworld and throw an Ender Pearl at it: you teleport into the Bumblezone (\"Beenderman Intrusion!\"). Being pushed into a nest by a piston also works.\n\nTo leave, go past the bottom or the top of the dimension: you do not die, you teleport out (\"Dive Bombing Exit\"). Beds work here and set your respawn point without exploding."
+      ],
+      "es_es": [
+        "Una perla a una colmena",
+        "Buscá un Nido de abejas o una Colmena en el Overworld y tirale una Perla de ender: te teletransportás a Bumblezone («Beenderman Intrusion!»). Que un pistón te empuje adentro de un nido también funciona.\n\nPara salir, pasá por debajo del fondo o por encima del techo de la dimensión: no te morís, te teletransportás afuera («Dive Bombing Exit»). Las camas funcionan acá y fijan tu reaparición sin explotar."
+      ],
+      "sources": [
+        "jar:the_bumblezone-7.15.3+1.21.1-neoforge.jar:data/the_bumblezone/advancement/teleportation/teleport_to_bumblezone_pearl.json",
+        "jar:the_bumblezone-7.15.3+1.21.1-neoforge.jar:data/the_bumblezone/advancement/teleportation/teleport_to_bumblezone_piston.json",
+        "jar:the_bumblezone-7.15.3+1.21.1-neoforge.jar:data/the_bumblezone/advancement/teleportation/teleport_out_of_bumblezone.json",
+        "jar:the_bumblezone-7.15.3+1.21.1-neoforge.jar:data/the_bumblezone/advancement/beds/sleep_in_bed.json",
+        "repo:content/act_four.json"
+      ]
+    },
+    {
+      "key": "bz_wrath",
+      "deps": [
+        "bz_enter"
+      ],
+      "type": "checkmark",
+      "icon": "minecraft:honeycomb",
+      "layout": {
+        "x": 6,
+        "y": -3,
+        "size": 0.85,
+        "shape": "circle"
+      },
+      "en_us": [
+        "Wrath of the Hive",
+        "Attack a bee or take honey carelessly and you get Wrath of the Hive: every bee nearby hunts you, and hitting a bee under Wrath makes it worse (\"NOT THE BEEEEEES!!!\"). Feeding the swarm can calm it down if you survive long enough.\n\nThe opposite effect, Protection of the Hive, comes from feeding bees or Honeycomb Brood Blocks: with it you can collect honey safely and bees defend you."
+      ],
+      "es_es": [
+        "La Ira de la colmena",
+        "Si atacás una abeja o sacás miel sin cuidado, recibís la Ira de la colmena: todas las abejas cercanas te persiguen, y pegarle a una abeja con la Ira activa lo empeora («NOT THE BEEEEEES!!!»). Darle comida al enjambre lo puede calmar, si sobrevivís lo suficiente.\n\nEl efecto opuesto, Protección de la colmena, sale de alimentar abejas o Bloques de cría de panal: con él juntás miel sin problemas y las abejas te defienden."
+      ],
+      "sources": [
+        "jar:the_bumblezone-7.15.3+1.21.1-neoforge.jar:data/the_bumblezone/advancement/effects/bee_hit_wrath_of_the_hive.json",
+        "jar:the_bumblezone-7.15.3+1.21.1-neoforge.jar:data/the_bumblezone/advancement/effects/food_removed_wrath_of_the_hive.json",
+        "jar:the_bumblezone-7.15.3+1.21.1-neoforge.jar:data/the_bumblezone/advancement/effects/getting_protection.json",
+        "jar:the_bumblezone-7.15.3+1.21.1-neoforge.jar:data/the_bumblezone/advancement/effects/honey_permission.json",
+        "jar:the_bumblezone-7.15.3+1.21.1-neoforge.jar:assets/the_bumblezone/lang/en_us.json"
+      ]
+    },
+    {
+      "key": "bz_protection",
+      "deps": [
+        "bz_wrath"
+      ],
+      "type": "advancement",
+      "advancement": "the_bumblezone:effects/honey_permission",
+      "icon": "minecraft:honey_bottle",
+      "layout": {
+        "x": 9,
+        "y": -3,
+        "size": 1.0,
+        "shape": "circle"
+      },
+      "en_us": [
+        "Winning favors",
+        "Feed a Honeycomb Brood Block or a bee until you get Protection of the Hive (\"Winning Favors\"). Then collect honey from a filled porous honeycomb or mine a honey block while protected (\"No more Wrath! Only friendship!\").\n\nThat is the safe way to farm the Bumblezone."
+      ],
+      "es_es": [
+        "Ganar favores",
+        "Alimentá un Bloque de cría de panal o una abeja hasta recibir Protección de la colmena («Winning Favors»). Después juntá miel de un panal poroso lleno o picá un bloque de miel mientras estás protegido («No more Wrath! Only friendship!»).\n\nEsa es la forma segura de farmear Bumblezone."
+      ],
+      "sources": [
+        "jar:the_bumblezone-7.15.3+1.21.1-neoforge.jar:data/the_bumblezone/advancement/effects/getting_protection.json",
+        "jar:the_bumblezone-7.15.3+1.21.1-neoforge.jar:data/the_bumblezone/advancement/effects/honey_permission.json"
+      ]
+    },
+    {
+      "key": "bz_honey_bucket",
+      "deps": [
+        "bz_enter"
+      ],
+      "type": "advancement",
+      "advancement": "the_bumblezone:honey_bucket/obtain_honey_bucket",
+      "icon": "minecraft:honey_block",
+      "layout": {
+        "x": 6,
+        "y": 0,
+        "size": 1.0,
+        "shape": "circle"
+      },
+      "en_us": [
+        "A bucket of honey",
+        "Honey is a fluid here: fill a bucket (\"MOAR HONEEEEY!!!\"). A Honey Bucket makes baby bees grow instantly, makes adult bees fall in love and grows larvae in brood blocks (\"Bee Farmer\").\n\nHoney Crystals and sticky honey residue are the other local materials; a gentle touch (Silk Touch) is needed to keep the fragile crystal blocks."
+      ],
+      "es_es": [
+        "Un balde de miel",
+        "Acá la miel es un fluido: llená un balde («MOAR HONEEEEY!!!»). El Balde de miel hace crecer al instante a las abejas bebé, enamora a las adultas y hace crecer larvas en los bloques de cría («Bee Farmer»).\n\nLos Cristales de miel y el residuo pegajoso de miel son los otros materiales del lugar; para conservar los frágiles bloques de cristal hace falta un toque delicado (Toque de seda)."
+      ],
+      "sources": [
+        "jar:the_bumblezone-7.15.3+1.21.1-neoforge.jar:data/the_bumblezone/advancement/honey_bucket/obtain_honey_bucket.json",
+        "jar:the_bumblezone-7.15.3+1.21.1-neoforge.jar:data/the_bumblezone/advancement/honey_bucket/honey_bucket_brood.json",
+        "jar:the_bumblezone-7.15.3+1.21.1-neoforge.jar:data/the_bumblezone/advancement/honey_crystal/obtain_honey_crystal_block.json",
+        "jar:the_bumblezone-7.15.3+1.21.1-neoforge.jar:assets/the_bumblezone/lang/en_us.json"
+      ]
+    },
+    {
+      "key": "bz_compass",
+      "deps": [
+        "bz_honey_bucket"
+      ],
+      "type": "advancement",
+      "advancement": "the_bumblezone:tools/honey_compass_use",
+      "icon": "minecraft:compass",
+      "layout": {
+        "x": 9,
+        "y": 0,
+        "size": 1.0,
+        "shape": "circle"
+      },
+      "en_us": [
+        "The Honey Compass",
+        "Craft or find a Honey Compass (\"Is this even still a compass..?\") and activate its tracking (\"Dora the Beexplorer\"). Rare Honey Compasses from structure cocoons point to a Throne Pillar, where the Bee Queen sits (\"Off to see the Queen!\").\n\nHoney Cocoons are loot containers of the dimension; mine them with Silk Touch to take them whole."
+      ],
+      "es_es": [
+        "La Brújula de miel",
+        "Fabricá o encontrá una Brújula de miel («Is this even still a compass..?») y activá su rastreo («Dora the Beexplorer»). Unas Brújulas de miel raras, que salen de capullos en las estructuras, apuntan a un Pilar del trono, donde está la Abeja Reina («Off to see the Queen!»).\n\nLos Capullos de miel son los contenedores de botín de la dimensión; picalos con Toque de seda para llevártelos enteros."
+      ],
+      "sources": [
+        "jar:the_bumblezone-7.15.3+1.21.1-neoforge.jar:data/the_bumblezone/advancement/tools/craft_honey_compass.json",
+        "jar:the_bumblezone-7.15.3+1.21.1-neoforge.jar:data/the_bumblezone/advancement/tools/honey_compass_use.json",
+        "jar:the_bumblezone-7.15.3+1.21.1-neoforge.jar:data/the_bumblezone/advancement/tools/obtain_throne_honey_compass.json",
+        "jar:the_bumblezone-7.15.3+1.21.1-neoforge.jar:data/the_bumblezone/advancement/combs_and_wax/honey_cocoon_silk_touch.json"
+      ]
+    },
+    {
+      "key": "bz_queen",
+      "deps": [
+        "bz_compass"
+      ],
+      "type": "advancement",
+      "advancement": "the_bumblezone:the_queens_desire/the_beginning",
+      "icon": "minecraft:bee_spawn_egg",
+      "layout": {
+        "x": 12,
+        "y": 0,
+        "size": 1.5,
+        "shape": "hexagon"
+      },
+      "en_us": [
+        "The Bee Queen",
+        "Enter a Throne Pillar (\"Royal Presence\") and meet the Bee Queen. She trades, and she starts \"The Queen's Desire\", a line of advancements with Royal Jelly Bottle rewards: breed bees, craft nests, pollinate flowers, kill spiders, silverfish and endermites, save stingerless bees and more.\n\nCompleting all of them and talking to her again gives the grand reward: the Essence of the Bees (\"Journey's End\")."
+      ],
+      "es_es": [
+        "La Abeja Reina",
+        "Entrá a un Pilar del trono («Royal Presence») y conocé a la Abeja Reina. Comercia, y te da «The Queen's Desire», una línea de logros con Botellas de jalea real de premio: criar abejas, fabricar nidos, polinizar flores, matar arañas, lepismas y endermites, devolverles el aguijón a abejas y más.\n\nCompletarlos todos y volver a hablarle da el gran premio: la Esencia de las abejas («Journey's End»)."
+      ],
+      "sources": [
+        "jar:the_bumblezone-7.15.3+1.21.1-neoforge.jar:data/the_bumblezone/advancement/structures/enter_throne_pillar.json",
+        "jar:the_bumblezone-7.15.3+1.21.1-neoforge.jar:data/the_bumblezone/advancement/the_queens_desire/the_beginning.json",
+        "jar:the_bumblezone-7.15.3+1.21.1-neoforge.jar:data/the_bumblezone/advancement/the_queens_desire/journeys_end.json",
+        "jar:the_bumblezone-7.15.3+1.21.1-neoforge.jar:data/the_bumblezone/advancement/essence/bee_essence_infusion.json"
+      ]
+    },
+    {
+      "key": "bz_queen_trade",
+      "deps": [
+        "bz_queen"
+      ],
+      "type": "advancement",
+      "advancement": "the_bumblezone:windy_air/obtain_windy_air",
+      "optional": true,
+      "icon": "minecraft:feather",
+      "layout": {
+        "x": 12,
+        "y": -3,
+        "size": 1.0,
+        "shape": "circle"
+      },
+      "en_us": [
+        "Trading with a queen",
+        "The Bee Queen accepts many items in exchange for Bumblezone goods, and some bonus trades change over time. She is also the source of Windy Air, a placeable jet stream (\"Placeable Jetstreams!\"). Trading 128 times is \"Crazy Trader\"."
+      ],
+      "es_es": [
+        "Comerciar con una reina",
+        "La Abeja Reina acepta muchos ítems a cambio de cosas de Bumblezone, y algunos intercambios bonus cambian con el tiempo. También es la fuente del Aire ventoso, una corriente de viento que se coloca como bloque («Placeable Jetstreams!»). Comerciar 128 veces es «Crazy Trader»."
+      ],
+      "sources": [
+        "jar:the_bumblezone-7.15.3+1.21.1-neoforge.jar:data/the_bumblezone/advancement/windy_air/obtain_windy_air.json",
+        "jar:the_bumblezone-7.15.3+1.21.1-neoforge.jar:data/the_bumblezone/advancement/the_queens_desire/crazy_trader.json",
+        "jar:the_bumblezone-7.15.3+1.21.1-neoforge.jar:assets/the_bumblezone/lang/en_us.json"
+      ]
+    },
+    {
+      "key": "bz_essence",
+      "deps": [
+        "bz_queen"
+      ],
+      "type": "advancement",
+      "advancement": "the_bumblezone:structures/enter_sempiternal_sanctum",
+      "icon": "minecraft:glowstone",
+      "layout": {
+        "x": 15,
+        "y": 0,
+        "size": 1.0,
+        "shape": "circle"
+      },
+      "en_us": [
+        "Essence of the Bees",
+        "Consuming the Essence of the Bees lets you enter the Sempiternal Sanctums (\"Ancient Origins\"): six ancient structures, one per color, each with a special event. Beating each one gives its own essence:\n- Raging (red): Strength from kills. Knowing (purple): highlights mobs.\n- Calming (blue): stay calm while not fighting. Life (green): heal allies and grow crops.\n- Radiance (yellow): the sun heals armor. Continuity (white): teleports you to your respawn instead of dying."
+      ],
+      "es_es": [
+        "Esencia de las abejas",
+        "Consumir la Esencia de las abejas te deja entrar a los Santuarios sempiternos («Ancient Origins»): seis estructuras antiguas, una por color, cada una con un evento especial. Vencer cada uno da su propia esencia:\n- Furia (rojo): Fuerza por cada muerte. Saber (violeta): resalta a los mobs.\n- Calma (azul): mantenerse en calma mientras no peleás. Vida (verde): cura aliados y hace crecer cultivos.\n- Radiancia (amarillo): el sol repara la armadura. Continuidad (blanco): te teletransporta a tu reaparición en lugar de morir."
+      ],
+      "sources": [
+        "jar:the_bumblezone-7.15.3+1.21.1-neoforge.jar:data/the_bumblezone/advancement/structures/enter_sempiternal_sanctum.json",
+        "jar:the_bumblezone-7.15.3+1.21.1-neoforge.jar:data/the_bumblezone/advancement/essence/essence_radiance.json",
+        "jar:the_bumblezone-7.15.3+1.21.1-neoforge.jar:data/the_bumblezone/advancement/essence/essence_continuity.json",
+        "jar:the_bumblezone-7.15.3+1.21.1-neoforge.jar:assets/the_bumblezone/lang/en_us.json"
+      ]
+    },
+    {
+      "key": "bz_radiance",
+      "deps": [
+        "bz_essence"
+      ],
+      "type": "advancement",
+      "advancement": "the_bumblezone:essence/essence_radiance",
+      "optional": true,
+      "icon": "minecraft:sunflower",
+      "layout": {
+        "x": 18,
+        "y": 0,
+        "size": 1.0,
+        "shape": "circle"
+      },
+      "en_us": [
+        "Solar powered",
+        "Beat the Yellow Sempiternal Sanctum for the Essence of Radiance (\"Solar Powered\"): sunlight heals your armor and grants benefits. In a pack about light, it is the essence Heliodor would have chosen."
+      ],
+      "es_es": [
+        "Energía solar",
+        "Vencé el Santuario sempiterno amarillo para la Esencia de Radiancia («Solar Powered»): la luz del sol repara tu armadura y te da beneficios. En un pack sobre la luz, es la esencia que Heliodor habría elegido."
+      ],
+      "sources": [
+        "jar:the_bumblezone-7.15.3+1.21.1-neoforge.jar:data/the_bumblezone/advancement/essence/essence_radiance.json",
+        "jar:the_bumblezone-7.15.3+1.21.1-neoforge.jar:assets/the_bumblezone/lang/en_us.json"
+      ]
+    },
+    {
+      "key": "bz_beehemoth",
+      "deps": [
+        "bz_honey_bucket"
+      ],
+      "type": "advancement",
+      "advancement": "the_bumblezone:beehemoth/tamed_beehemoth",
+      "optional": true,
+      "icon": "minecraft:saddle",
+      "layout": {
+        "x": 9,
+        "y": 3,
+        "size": 1.0,
+        "shape": "circle"
+      },
+      "en_us": [
+        "A flying mount",
+        "Beehemoths are giant bees. Tame one with buckets of honey and saddle it for a flying mount (\"Bee Movie But It's 300% Larger\"); keep befriending it for maximum friendship.\n\nIt is one of the few ways to fly this early without a jetpack."
+      ],
+      "es_es": [
+        "Una montura voladora",
+        "Los Beehemoths son abejas gigantes. Domá uno con baldes de miel y ponele montura para tener una montura voladora («Bee Movie But It's 300% Larger»); seguí haciéndote amigo para la amistad máxima.\n\nEs una de las pocas formas de volar tan temprano sin jetpack."
+      ],
+      "sources": [
+        "jar:the_bumblezone-7.15.3+1.21.1-neoforge.jar:data/the_bumblezone/advancement/beehemoth/tamed_beehemoth.json",
+        "jar:the_bumblezone-7.15.3+1.21.1-neoforge.jar:data/the_bumblezone/advancement/beehemoth/queen_beehemoth.json"
+      ]
+    },
+    {
+      "key": "bz_armor",
+      "deps": [
+        "bz_beehemoth"
+      ],
+      "type": "advancement",
+      "advancement": "the_bumblezone:armor/warrior_bee",
+      "optional": true,
+      "icon": "minecraft:bee_nest",
+      "layout": {
+        "x": 12,
+        "y": 3,
+        "size": 1.0,
+        "shape": "circle"
+      },
+      "en_us": [
+        "The Bee Warrior",
+        "Bee armor pieces have tricks: Stingless Bee Helmet highlights bees, Bumble Bee Chestplate lets you buzz your wings, Honey Bee Leggings collect pollen and Carpenter Bee Boots let you burrow and hang from walls. Wearing Flower Headwear keeps the Cell Maze's Wrath away.\n\nThe Stinger Spear can be thrown and, enchanted with Neurotoxin, paralyzes. Full bee armor plus the spear is \"The Bee Warrior Rises!\"."
+      ],
+      "es_es": [
+        "El guerrero abeja",
+        "Las piezas de armadura de abeja tienen trucos: el Casco de abeja sin aguijón resalta abejas, la Pechera de abejorro te deja zumbar con las alas, las Grebas de abeja melífera juntan polen y las Botas de abeja carpintera te dejan excavar y colgarte de paredes. Llevar la Corona de flores evita la Ira adentro del Laberinto de celdas.\n\nLa Lanza de aguijón se puede arrojar y, encantada con Neurotoxina, paraliza. La armadura de abeja completa más la lanza es «The Bee Warrior Rises!»."
+      ],
+      "sources": [
+        "jar:the_bumblezone-7.15.3+1.21.1-neoforge.jar:data/the_bumblezone/advancement/armor/warrior_bee.json",
+        "jar:the_bumblezone-7.15.3+1.21.1-neoforge.jar:data/the_bumblezone/advancement/armor/flower_headwear_wrath_structure.json",
+        "jar:the_bumblezone-7.15.3+1.21.1-neoforge.jar:data/the_bumblezone/advancement/stinger_spear/obtain_stinger_spear.json",
+        "jar:the_bumblezone-7.15.3+1.21.1-neoforge.jar:data/the_bumblezone/advancement/stinger_spear/stinger_spear_paralyzing.json",
+        "jar:the_bumblezone-7.15.3+1.21.1-neoforge.jar:assets/the_bumblezone/lang/en_us.json"
+      ]
+    },
+    {
+      "key": "bz_flower",
+      "deps": [
+        "bz_armor"
+      ],
+      "type": "checkmark",
+      "optional": true,
+      "icon": "minecraft:amethyst_cluster",
+      "layout": {
+        "x": 15,
+        "y": 3,
+        "size": 0.85,
+        "shape": "circle"
+      },
+      "en_us": [
+        "The Crystalline Flower",
+        "The Crystalline Flower is Bumblezone's own enchanting: feed it items and experience until it grows (\"CONSUME CONSUME CONSUME\"), then right-click it to put enchantments on books (\"Choosing Wisely\")."
+      ],
+      "es_es": [
+        "La Flor cristalina",
+        "La Flor cristalina es el encantamiento propio de Bumblezone: dale ítems y experiencia hasta que crezca («CONSUME CONSUME CONSUME») y después hacé clic derecho para ponerles encantamientos a los libros («Choosing Wisely»)."
+      ],
+      "sources": [
+        "jar:the_bumblezone-7.15.3+1.21.1-neoforge.jar:data/the_bumblezone/advancement/crystalline_flower/grow_crystalline_flower.json",
+        "jar:the_bumblezone-7.15.3+1.21.1-neoforge.jar:data/the_bumblezone/advancement/crystalline_flower/enchant_crystalline_flower.json"
+      ]
+    },
+    {
+      "key": "bz_structures",
+      "deps": [
+        "bz_enter"
+      ],
+      "type": "checkmark",
+      "optional": true,
+      "icon": "minecraft:honeycomb_block",
+      "layout": {
+        "x": 3,
+        "y": 3,
+        "size": 0.85,
+        "shape": "circle"
+      },
+      "en_us": [
+        "Places inside the hive",
+        "The Bumblezone has many structures: Cell Mazes (Wrath inside unless you wear Flower Headwear), hanging gardens, honey fountains, hive temples, a honey slime ranch, a pirate ship, a subway, battle cubes, candle parkour and the Throne Pillars. Entering all of them is \"Sightbee-er\"; finding every biome is \"Beeography\"."
+      ],
+      "es_es": [
+        "Lugares adentro de la colmena",
+        "Bumblezone tiene muchas estructuras: Laberintos de celdas (Ira adentro salvo que lleves la Corona de flores), jardines colgantes, fuentes de miel, templos de la colmena, un rancho de slimes de miel, un barco pirata, un subte, cubos de batalla, un parkour de velas y los Pilares del trono. Entrar a todas es «Sightbee-er»; encontrar todos los biomas es «Beeography»."
+      ],
+      "sources": [
+        "jar:the_bumblezone-7.15.3+1.21.1-neoforge.jar:data/the_bumblezone/worldgen/structure",
+        "jar:the_bumblezone-7.15.3+1.21.1-neoforge.jar:data/the_bumblezone/advancement/structures/enter_cell_maze.json",
+        "jar:the_bumblezone-7.15.3+1.21.1-neoforge.jar:data/the_bumblezone/advancement/structures/enter_all_structures.json",
+        "jar:the_bumblezone-7.15.3+1.21.1-neoforge.jar:data/the_bumblezone/advancement/biomes/discover_all_biomes.json"
+      ]
+    },
+    {
+      "key": "bz_pack",
+      "deps": [
+        "bz_welcome"
+      ],
+      "type": "checkmark",
+      "icon": "entrelumen:heliodor_compass",
+      "layout": {
+        "x": 0,
+        "y": 3,
+        "size": 1.0,
+        "shape": "rsquare"
+      },
+      "en_us": [
+        "Bumblezone in ENTRELUMEN",
+        "- Act IV: the compass points to the Bumblezone and advances when your team arrives.\n- The arrival counts for the act IV Atlas even if it happens earlier.\n- Nothing in the pack gates the entry: an ender pearl and a bee nest are enough.\n- The Bee Queen's rewards are native; none of them is required by the story.\n- Juan's side of the story treats the bees as allies: Wrath is the price of forgetting that."
+      ],
+      "es_es": [
+        "Bumblezone en ENTRELUMEN",
+        "- Acto IV: la brújula apunta a Bumblezone y avanza cuando tu equipo llega.\n- La llegada cuenta para el Atlas del acto IV aunque pase antes.\n- Nada en el pack bloquea la entrada: alcanzan una perla de ender y un nido de abejas.\n- Las recompensas de la Abeja Reina son las del mod; la historia no pide ninguna.\n- La parte de Juan en la historia trata a las abejas como aliadas: la Ira es el precio de olvidarlo."
+      ],
+      "sources": [
+        "repo:content/compass_targets.json",
+        "repo:content/act_four.json",
+        "repo:docs/design/quest-lore.md",
+        "repo:companion/src/main/java/dev/entrelumen/Expeditions.java"
+      ]
+    },
+    {
+      "key": "bz_mastery",
+      "deps": [
+        "bz_radiance"
+      ],
+      "type": "checkmark",
+      "icon": "minecraft:bee_nest",
+      "layout": {
+        "x": 21,
+        "y": 0,
+        "size": 2.25,
+        "shape": "pentagon"
+      },
+      "en_us": [
+        "Keeper of the treaty",
+        "You entered through a beehive, won the bees' favor, served the Queen and walked the Sempiternal Sanctums. Heliodor's treaty with the bees still holds, and now you are part of it."
+      ],
+      "es_es": [
+        "Guardián del tratado",
+        "Entraste por una colmena, te ganaste el favor de las abejas, serviste a la Reina y recorriste los Santuarios sempiternos. El tratado de Heliodor con las abejas sigue en pie, y ahora vos sos parte de él."
+      ],
+      "sources": [
+        "jar:the_bumblezone-7.15.3+1.21.1-neoforge.jar:data/the_bumblezone/advancement/the_queens_desire/journeys_end.json",
+        "repo:docs/design/quest-lore.md"
+      ]
+    }
+  ]
+}
