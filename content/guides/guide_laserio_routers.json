@@ -1,0 +1,650 @@
+{
+ "chapter": "guide_laserio_routers",
+ "group": "tech",
+ "act": "III",
+ "icon": "laserio:laser_node",
+ "title": {
+  "en_us": "LaserIO, Modular Routers and Flux",
+  "es_es": "LaserIO, Modular Routers y Flux"
+ },
+ "subtitle": {
+  "en_us": "Card-driven laser networks, one-block routers with modules, and wireless energy with Flux Networks, in depth.",
+  "es_es": "Redes láser manejadas por tarjetas, routers de un bloque con módulos y energía inalámbrica con Flux Networks, a fondo."
+ },
+ "quests": [
+  {
+   "key": "lr_welcome",
+   "deps": [],
+   "type": "checkmark",
+   "icon": "modularrouters:modular_router",
+   "layout": {
+    "x": 0,
+    "y": 0,
+    "size": 2.0,
+    "shape": "hexagon"
+   },
+   "en_us": [
+    "Three compact logistics tools",
+    "This chapter goes deeper into three tools that the transport overview only introduces: LaserIO moves items, fluids, energy, chemicals and redstone between machines with beams and cards; Modular Routers does almost anything with items from a single block; Flux Networks sends FE wirelessly.\n\nFor plain pipes, Pipez is covered in the transport chapter."
+   ],
+   "es_es": [
+    "Tres herramientas compactas de logística",
+    "Este capítulo profundiza en tres herramientas que el resumen de transporte sólo presenta: LaserIO mueve ítems, fluidos, energía, químicos y redstone entre máquinas con haces y tarjetas; Modular Routers hace casi cualquier cosa con ítems desde un solo bloque; Flux Networks manda FE sin cables.\n\nPara caños comunes, Pipez está en el capítulo de transporte."
+   ],
+   "sources": [
+    "repo:docs/design/mod-integration.md",
+    "repo:content/guides/README.md"
+   ]
+  },
+  {
+   "key": "lr_chip",
+   "deps": [
+    "lr_welcome"
+   ],
+   "type": "item",
+   "item": "laserio:logic_chip",
+   "count": 16,
+   "layout": {
+    "x": 3,
+    "y": -3,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Logic Chips",
+    "Every LaserIO item starts from a Logic Chip: craft the raw chip from clay, gold nuggets, a quartz block and redstone, then smelt it. Make a stack.\n\nIn ENTRELUMEN, two logic chips also go into the Inventory Sensor, an Act III component."
+   ],
+   "es_es": [
+    "Chips lógicos",
+    "Todo ítem de LaserIO arranca de un Chip lógico: crafteá el chip crudo con arcilla, pepitas de oro, un bloque de cuarzo y redstone, y después fundilo. Hacé un stack.\n\nEn ENTRELUMEN, dos chips lógicos también van en el Sensor de inventario, un componente del acto III."
+   ],
+   "sources": [
+    "jar:laserio-1.9.11.jar:assets/laserio/patchouli_books/laseriobook/en_us/entries/logic_chip.json",
+    "jar:laserio-1.9.11.jar:data/laserio/recipe/logic_chip_raw.json",
+    "repo:pack/kubejs/server_scripts/entrelumen_integration_recipes.js"
+   ]
+  },
+  {
+   "key": "lr_node",
+   "deps": [
+    "lr_chip"
+   ],
+   "type": "item",
+   "item": "laserio:laser_node",
+   "count": 2,
+   "layout": {
+    "x": 6,
+    "y": -3,
+    "size": 1.5,
+    "shape": "hexagon"
+   },
+   "en_us": [
+    "Laser Node and Laser Wrench",
+    "The Laser Node touches your machines. Each of its six sides has a 3x3 grid for cards; right-click a side to open it, and use the top buttons to reach hidden sides. With the Laser Wrench, sneak and right-click one node, then right-click another to link them, up to 8 blocks apart.\n\nOne node can serve several neighbours at once."
+   ],
+   "es_es": [
+    "Nodo láser y Llave láser",
+    "El Nodo láser toca tus máquinas. Cada uno de sus seis lados tiene una grilla de 3x3 para tarjetas; clic derecho en un lado lo abre, y los botones de arriba llegan a los lados tapados. Con la Llave láser, agachado y clic derecho en un nodo, después clic derecho en otro para unirlos, hasta a 8 bloques.\n\nUn nodo puede atender varios vecinos a la vez."
+   ],
+   "sources": [
+    "jar:laserio-1.9.11.jar:assets/laserio/patchouli_books/laseriobook/en_us/entries/laser_node.json",
+    "jar:laserio-1.9.11.jar:assets/laserio/patchouli_books/laseriobook/en_us/entries/laser_wrench.json",
+    "jar:laserio-1.9.11.jar:data/laserio/recipe/laser_node.json"
+   ]
+  },
+  {
+   "key": "lr_connector",
+   "deps": [
+    "lr_node"
+   ],
+   "type": "item",
+   "item": "laserio:laser_connector_advanced",
+   "optional": true,
+   "layout": {
+    "x": 6,
+    "y": -5.5,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Connectors",
+    "Laser Connectors are cheap relay points to cover distance, each link again up to 8 blocks. Advanced Connectors pair with one other advanced connector at any distance, even across dimensions; the wrench shows its partner. They do not chunk-load: keep both ends loaded."
+   ],
+   "es_es": [
+    "Conectores",
+    "Los Conectores láser son relevos baratos para cubrir distancia, cada enlace de nuevo hasta 8 bloques. Los Conectores avanzados se emparejan con otro conector avanzado a cualquier distancia, incluso entre dimensiones; la llave muestra su pareja. No cargan chunks: mantené cargados los dos extremos."
+   ],
+   "sources": [
+    "jar:laserio-1.9.11.jar:assets/laserio/patchouli_books/laseriobook/en_us/entries/laser_connector.json",
+    "jar:laserio-1.9.11.jar:assets/laserio/patchouli_books/laseriobook/en_us/entries/laser_connector_advanced.json"
+   ]
+  },
+  {
+   "key": "lr_cards",
+   "deps": [
+    "lr_node"
+   ],
+   "type": "item",
+   "item": "laserio:card_item",
+   "count": 4,
+   "layout": {
+    "x": 9,
+    "y": -3,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Cards and modes",
+    "Cards tell a node what to do with the neighbour: Item, Fluid, Energy, Chemical (Mekanism) and Redstone. Right-click a card to set its mode: Extract pulls out, Insert accepts, Stock keeps a filtered amount by pulling from inserters, and Sensor only watches and emits redstone.\n\nCards only talk to cards on the same colour channel, so one network can run many routes."
+   ],
+   "es_es": [
+    "Tarjetas y modos",
+    "Las tarjetas le dicen al nodo qué hacer con el vecino: Ítem, Fluido, Energía, Químico (Mekanism) y Redstone. Clic derecho en una tarjeta elige el modo: Extraer saca, Insertar recibe, Stock mantiene una cantidad filtrada tirando de los insertores, y Sensor sólo mira y emite redstone.\n\nLas tarjetas sólo se hablan con tarjetas del mismo canal de color, así una red puede llevar muchas rutas."
+   ],
+   "sources": [
+    "jar:laserio-1.9.11.jar:assets/laserio/patchouli_books/laseriobook/en_us/entries/modes.json",
+    "jar:laserio-1.9.11.jar:assets/laserio/patchouli_books/laseriobook/en_us/entries/channel.json",
+    "jar:laserio-1.9.11.jar:assets/laserio/patchouli_books/laseriobook/en_us/entries/card_item.json",
+    "jar:laserio-1.9.11.jar:assets/laserio/patchouli_books/laseriobook/en_us/entries/card_chemical.json",
+    "jar:laserio-1.9.11.jar:assets/laserio/patchouli_books/laseriobook/en_us/entries/basics.json"
+   ]
+  },
+  {
+   "key": "lr_settings",
+   "deps": [
+    "lr_cards"
+   ],
+   "type": "checkmark",
+   "icon": "laserio:laser_wrench",
+   "layout": {
+    "x": 12,
+    "y": -3,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Card settings",
+    "Sneaky picks which face of the neighbour the card works on: insert ore into the top of a furnace and fuel into the bottom from the same side. Priority orders inserters (higher first, otherwise nearest first). Round Robin spreads items evenly, and Enforced waits if one target is full. Exact only moves the full extract amount.\n\nClick values to change them; Shift is x10 and Ctrl is x64."
+   ],
+   "es_es": [
+    "Ajustes de tarjeta",
+    "Sneaky elige sobre qué cara del vecino trabaja la tarjeta: meter mineral por arriba de un horno y combustible por abajo desde el mismo lado. Prioridad ordena los insertores (mayor primero, si no el más cercano). Round Robin reparte parejo, y Enforced espera si un destino se llena. Exact sólo mueve la cantidad completa de extracción.\n\nHacé clic en los valores para cambiarlos; Shift es x10 y Ctrl es x64."
+   ],
+   "sources": [
+    "jar:laserio-1.9.11.jar:assets/laserio/patchouli_books/laseriobook/en_us/entries/sneaky.json",
+    "jar:laserio-1.9.11.jar:assets/laserio/patchouli_books/laseriobook/en_us/entries/priority.json",
+    "jar:laserio-1.9.11.jar:assets/laserio/patchouli_books/laseriobook/en_us/entries/roundrobin.json",
+    "jar:laserio-1.9.11.jar:assets/laserio/patchouli_books/laseriobook/en_us/entries/exact.json",
+    "jar:laserio-1.9.11.jar:assets/laserio/patchouli_books/laseriobook/en_us/entries/extractamount.json"
+   ]
+  },
+  {
+   "key": "lr_filters",
+   "deps": [
+    "lr_cards"
+   ],
+   "type": "item",
+   "item": "laserio:filter_count",
+   "optional": true,
+   "layout": {
+    "x": 9,
+    "y": -5.5,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Filters",
+    "Filters go in cards: Basic (allow or deny listed items, optional NBT match), Counting (keep or leave a number, 1 to 4096), Tag, Mod and NBT filters. A counting filter on a Stock card keeps exactly that many in the target; with Regulate on, extras are pulled back out."
+   ],
+   "es_es": [
+    "Filtros",
+    "Los filtros van en las tarjetas: Básico (permitir o negar ítems listados, con NBT opcional), Contador (dejar o mantener una cantidad, de 1 a 4096), de Tag, de Mod y de NBT. Un filtro contador en una tarjeta de Stock mantiene exactamente esa cantidad en el destino; con Regulate activo, lo que sobra se vuelve a sacar."
+   ],
+   "sources": [
+    "jar:laserio-1.9.11.jar:assets/laserio/patchouli_books/laseriobook/en_us/entries/filter_basics.json",
+    "jar:laserio-1.9.11.jar:assets/laserio/patchouli_books/laseriobook/en_us/entries/filter_count.json",
+    "jar:laserio-1.9.11.jar:assets/laserio/patchouli_books/laseriobook/en_us/entries/filter_tag.json",
+    "jar:laserio-1.9.11.jar:assets/laserio/patchouli_books/laseriobook/en_us/entries/filter_mod.json",
+    "jar:laserio-1.9.11.jar:assets/laserio/patchouli_books/laseriobook/en_us/entries/filter_nbt.json",
+    "jar:laserio-1.9.11.jar:assets/laserio/patchouli_books/laseriobook/en_us/entries/regulate.json"
+   ]
+  },
+  {
+   "key": "lr_overclock",
+   "deps": [
+    "lr_settings"
+   ],
+   "type": "item",
+   "item": "laserio:overclocker_card",
+   "count": 4,
+   "layout": {
+    "x": 15,
+    "y": -3,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Overclockers",
+    "A plain item card moves 8 items every 20 ticks. Card Overclockers raise that: with 4, 64 items every tick. Fluid cards go from 5,000 mB per second up to 40,000 mB per tick. A node side runs only one card per tick; each Node Overclocker lets it run one more, up to all nine.\n\nEnergy cards need no overclockers: they move up to 1,000,000 FE per tick, with a fill or leave-behind percentage."
+   ],
+   "es_es": [
+    "Overclockers",
+    "Una tarjeta de ítems común mueve 8 ítems cada 20 ticks. Los Overclockers de tarjeta lo suben: con 4, 64 ítems por tick. Las de fluido van de 5.000 mB por segundo hasta 40.000 mB por tick. Un lado del nodo corre una sola tarjeta por tick; cada Overclocker de nodo le suma una más, hasta las nueve.\n\nLas tarjetas de energía no llevan overclockers: mueven hasta 1.000.000 FE por tick, con un porcentaje de llenado o de reserva."
+   ],
+   "sources": [
+    "jar:laserio-1.9.11.jar:assets/laserio/patchouli_books/laseriobook/en_us/entries/overclocker_card.json",
+    "jar:laserio-1.9.11.jar:assets/laserio/patchouli_books/laseriobook/en_us/entries/oveclocker_node.json",
+    "jar:laserio-1.9.11.jar:assets/laserio/patchouli_books/laseriobook/en_us/entries/card_item.json",
+    "jar:laserio-1.9.11.jar:assets/laserio/patchouli_books/laseriobook/en_us/entries/card_fluid.json",
+    "jar:laserio-1.9.11.jar:assets/laserio/patchouli_books/laseriobook/en_us/entries/card_energy.json",
+    "jar:laserio-1.9.11.jar:assets/laserio/patchouli_books/laseriobook/en_us/entries/limit.json",
+    "jar:laserio-1.9.11.jar:assets/laserio/patchouli_books/laseriobook/en_us/entries/tickspeed.json"
+   ]
+  },
+  {
+   "key": "lr_redstone",
+   "deps": [
+    "lr_cards"
+   ],
+   "type": "item",
+   "item": "laserio:card_redstone",
+   "optional": true,
+   "layout": {
+    "x": 12,
+    "y": -5.5,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Redstone over lasers",
+    "Redstone cards carry signals across the network on their own redstone channels: Input reads a lever or dust, Output emits weak or strong. Any card can obey a redstone channel (low or high), and a Sensor card lights one when the neighbour matches its filter, with And or Or logic."
+   ],
+   "es_es": [
+    "Redstone por láser",
+    "Las tarjetas de redstone llevan señales por la red en sus propios canales de redstone: Entrada lee una palanca o polvo, Salida emite débil o fuerte. Cualquier tarjeta puede obedecer un canal de redstone (bajo o alto), y una tarjeta Sensor lo enciende cuando el vecino cumple su filtro, con lógica Y u O."
+   ],
+   "sources": [
+    "jar:laserio-1.9.11.jar:assets/laserio/patchouli_books/laseriobook/en_us/entries/card_redstone.json",
+    "jar:laserio-1.9.11.jar:assets/laserio/patchouli_books/laseriobook/en_us/entries/redstonemode.json",
+    "jar:laserio-1.9.11.jar:assets/laserio/patchouli_books/laseriobook/en_us/entries/redstonechannel.json",
+    "jar:laserio-1.9.11.jar:assets/laserio/patchouli_books/laseriobook/en_us/entries/sensormode.json"
+   ]
+  },
+  {
+   "key": "lr_holder",
+   "deps": [
+    "lr_overclock"
+   ],
+   "type": "item",
+   "item": "laserio:card_holder",
+   "optional": true,
+   "layout": {
+    "x": 15,
+    "y": -5.5,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Card Holder and Card Cloner",
+    "The Card Holder stacks cards with matching settings, filters and overclockers; sneak and right-click to make it pull them from your inventory automatically, and its contents show up when you open a node. The Card Cloner copies one card's settings and pastes them onto others, taking filters and overclockers from the holder."
+   ],
+   "es_es": [
+    "Portatarjetas y Clonador",
+    "El Portatarjetas apila tarjetas con ajustes iguales, filtros y overclockers; agachado y clic derecho hace que los tome solo de tu inventario, y su contenido aparece al abrir un nodo. El Clonador de tarjetas copia los ajustes de una tarjeta y los pega en otras, tomando filtros y overclockers del portatarjetas."
+   ],
+   "sources": [
+    "jar:laserio-1.9.11.jar:assets/laserio/patchouli_books/laseriobook/en_us/entries/card_holder.json",
+    "jar:laserio-1.9.11.jar:assets/laserio/patchouli_books/laseriobook/en_us/entries/card_cloner.json"
+   ]
+  },
+  {
+   "key": "lr_router",
+   "deps": [
+    "lr_welcome"
+   ],
+   "type": "item",
+   "item": "modularrouters:modular_router",
+   "layout": {
+    "x": 3,
+    "y": 0,
+    "size": 1.5,
+    "shape": "hexagon"
+   },
+   "en_us": [
+    "Modular Router",
+    "A block with a one-stack buffer and nine module slots. Every router tick (once per second by default) it runs each module left to right on the buffer or the world around it. Pipes and hoppers can fill the buffer, and a comparator reads it.\n\nBlank Modules (paper, gold and redstone) start every module; two of them also go into the Handling Core, an Act III component."
+   ],
+   "es_es": [
+    "Modular Router",
+    "Un bloque con un buffer de un stack y nueve ranuras de módulo. En cada tick del router (una vez por segundo por defecto) corre cada módulo de izquierda a derecha sobre el buffer o el mundo alrededor. Caños y tolvas pueden llenar el buffer, y un comparador lo lee.\n\nLos Módulos en blanco (papel, oro y redstone) arrancan todos los módulos; dos también van en el Núcleo de manipulación, un componente del acto III."
+   ],
+   "sources": [
+    "jar:modular-routers-13.2.7+mc1.21.1.jar:assets/modularrouters/patchouli_books/book/en_us/entries/intro/modular_router.json",
+    "jar:modular-routers-13.2.7+mc1.21.1.jar:assets/modularrouters/patchouli_books/book/en_us/entries/router/modular_router.json",
+    "jar:modular-routers-13.2.7+mc1.21.1.jar:data/modularrouters/recipe/blank_module.json",
+    "repo:pack/kubejs/server_scripts/entrelumen_integration_recipes.js"
+   ]
+  },
+  {
+   "key": "lr_sender",
+   "deps": [
+    "lr_router"
+   ],
+   "type": "item",
+   "item": "modularrouters:sender_module_2",
+   "layout": {
+    "x": 6,
+    "y": 0,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Sender and Puller",
+    "Sender Mk1 pushes the buffer to an inventory in a straight line up to 8 blocks with clear sight. Mk2 reaches 24 blocks without sight (sneak-right-click the target with the module), and Mk3 reaches anywhere, any dimension, if the target is loaded. Pullers bring items into the buffer, Mk2 from up to 12 blocks away.\n\nEach module has nine filter slots and a direction relative to the router."
+   ],
+   "es_es": [
+    "Emisor y Extractor",
+    "El Emisor Mk1 empuja el buffer a un inventario en línea recta hasta 8 bloques con vista libre. El Mk2 llega a 24 bloques sin vista (agachado y clic derecho al destino con el módulo), y el Mk3 llega a cualquier lado, en cualquier dimensión, si el destino está cargado. Los Extractores traen ítems al buffer, el Mk2 desde hasta 12 bloques.\n\nCada módulo tiene nueve ranuras de filtro y una dirección relativa al router."
+   ],
+   "sources": [
+    "jar:modular-routers-13.2.7+mc1.21.1.jar:assets/modularrouters/patchouli_books/book/en_us/entries/modules/sender_1.json",
+    "jar:modular-routers-13.2.7+mc1.21.1.jar:assets/modularrouters/patchouli_books/book/en_us/entries/modules/sender_2.json",
+    "jar:modular-routers-13.2.7+mc1.21.1.jar:assets/modularrouters/patchouli_books/book/en_us/entries/modules/sender_3.json",
+    "jar:modular-routers-13.2.7+mc1.21.1.jar:assets/modularrouters/patchouli_books/book/en_us/entries/modules/puller_1.json",
+    "jar:modular-routers-13.2.7+mc1.21.1.jar:assets/modularrouters/patchouli_books/book/en_us/entries/modules/puller_2.json",
+    "jar:modular-routers-13.2.7+mc1.21.1.jar:assets/modularrouters/patchouli_books/book/en_us/entries/intro/modules.json"
+   ]
+  },
+  {
+   "key": "lr_world",
+   "deps": [
+    "lr_sender"
+   ],
+   "type": "item",
+   "item": "modularrouters:breaker_module",
+   "layout": {
+    "x": 9,
+    "y": 0,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Working the world",
+    "Breaker, Placer, Vacuum and Activator modules let a router act on blocks and entities. The Breaker mines with the pickaxe it was crafted from, keeping its level and enchantments (Silk Touch, Fortune). The Vacuum grabs drops in a 13x13x13 area. The Activator right-clicks with the buffer item, even on entities, like milking or shearing."
+   ],
+   "es_es": [
+    "Trabajar el mundo",
+    "Los módulos Rompedor, Colocador, Aspiradora y Activador dejan que el router actúe sobre bloques y entidades. El Rompedor pica con el pico con el que se crafteó, conservando su nivel y encantamientos (Toque de seda, Fortuna). La Aspiradora junta drops en un área de 13x13x13. El Activador hace clic derecho con el ítem del buffer, incluso sobre entidades, como ordeñar o esquilar."
+   ],
+   "sources": [
+    "jar:modular-routers-13.2.7+mc1.21.1.jar:assets/modularrouters/patchouli_books/book/en_us/entries/modules/breaker.json",
+    "jar:modular-routers-13.2.7+mc1.21.1.jar:assets/modularrouters/patchouli_books/book/en_us/entries/modules/placer.json",
+    "jar:modular-routers-13.2.7+mc1.21.1.jar:assets/modularrouters/patchouli_books/book/en_us/entries/modules/vacuum.json",
+    "jar:modular-routers-13.2.7+mc1.21.1.jar:assets/modularrouters/patchouli_books/book/en_us/entries/modules/activator.json"
+   ]
+  },
+  {
+   "key": "lr_extruder",
+   "deps": [
+    "lr_world"
+   ],
+   "type": "item",
+   "item": "modularrouters:extruder_module_1",
+   "optional": true,
+   "layout": {
+    "x": 9,
+    "y": 2.5,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Extruders, Player and Detector",
+    "Extruders push out a row of blocks on redstone and pull them back without it: drawbridges and hidden doors, 12 blocks long by default. The Player Module moves items to or from your own inventory, armour or ender chest from anywhere. The Detector emits redstone when the buffer matches its filter."
+   ],
+   "es_es": [
+    "Extrusores, Jugador y Detector",
+    "Los Extrusores sacan una fila de bloques con redstone y la retiran sin ella: puentes levadizos y puertas ocultas, de 12 bloques por defecto. El Módulo de jugador mueve ítems desde o hacia tu propio inventario, armadura o cofre de ender desde cualquier lado. El Detector emite redstone cuando el buffer cumple su filtro."
+   ],
+   "sources": [
+    "jar:modular-routers-13.2.7+mc1.21.1.jar:assets/modularrouters/patchouli_books/book/en_us/entries/modules/extruder_1.json",
+    "jar:modular-routers-13.2.7+mc1.21.1.jar:assets/modularrouters/patchouli_books/book/en_us/entries/modules/extruder_2.json",
+    "jar:modular-routers-13.2.7+mc1.21.1.jar:assets/modularrouters/patchouli_books/book/en_us/entries/modules/player.json",
+    "jar:modular-routers-13.2.7+mc1.21.1.jar:assets/modularrouters/patchouli_books/book/en_us/entries/modules/detector.json"
+   ]
+  },
+  {
+   "key": "lr_upgrades",
+   "deps": [
+    "lr_world"
+   ],
+   "type": "item",
+   "item": "modularrouters:stack_upgrade",
+   "layout": {
+    "x": 12,
+    "y": 0,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Upgrades and augments",
+    "Router upgrades (five slots): Speed cuts the tick interval by 2 server ticks each, down to 10 runs a second; Stack moves more items per run and is kinder to the server; Energy adds a 50,000 FE buffer; Camouflage disguises the router; Muffler silences it. Module augments (four per module) add range, stack size, a redstone rule, a regulator limit and more.\n\nPrefer Stack over Speed when you can."
+   ],
+   "es_es": [
+    "Mejoras y aumentos",
+    "Mejoras del router (cinco ranuras): Velocidad baja el intervalo 2 ticks del servidor cada una, hasta 10 corridas por segundo; Stack mueve más ítems por corrida y cuida más al servidor; Energía suma un buffer de 50.000 FE; Camuflaje disfraza el router; Silenciador lo calla. Los aumentos de módulo (cuatro por módulo) suman alcance, tamaño de stack, una regla de redstone, un límite regulador y más.\n\nPreferí Stack antes que Velocidad cuando puedas."
+   ],
+   "sources": [
+    "jar:modular-routers-13.2.7+mc1.21.1.jar:assets/modularrouters/patchouli_books/book/en_us/entries/upgrades/speed.json",
+    "jar:modular-routers-13.2.7+mc1.21.1.jar:assets/modularrouters/patchouli_books/book/en_us/entries/upgrades/stack.json",
+    "jar:modular-routers-13.2.7+mc1.21.1.jar:assets/modularrouters/patchouli_books/book/en_us/entries/upgrades/energy.json",
+    "jar:modular-routers-13.2.7+mc1.21.1.jar:assets/modularrouters/patchouli_books/book/en_us/entries/upgrades/camouflage.json",
+    "jar:modular-routers-13.2.7+mc1.21.1.jar:assets/modularrouters/patchouli_books/book/en_us/entries/upgrades/muffler.json",
+    "jar:modular-routers-13.2.7+mc1.21.1.jar:assets/modularrouters/patchouli_books/book/en_us/entries/intro/augments.json",
+    "jar:modular-routers-13.2.7+mc1.21.1.jar:assets/modularrouters/patchouli_books/book/en_us/entries/augments/regulator.json",
+    "jar:modular-routers-13.2.7+mc1.21.1.jar:assets/modularrouters/patchouli_books/book/en_us/entries/augments/range_up.json"
+   ]
+  },
+  {
+   "key": "lr_security",
+   "deps": [
+    "lr_upgrades"
+   ],
+   "type": "item",
+   "item": "modularrouters:security_upgrade",
+   "optional": true,
+   "layout": {
+    "x": 12,
+    "y": 2.5,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Security and termination",
+    "A Security Upgrade lets only listed players open the router, and makes the Placer, Breaker and Activator act as you instead of a nameless fake player: safer inside claims. A module's T button ends the router's run when that module did work, so a Void module for cobblestone can sit before a Sender for everything else."
+   ],
+   "es_es": [
+    "Seguridad y terminación",
+    "Una Mejora de seguridad deja abrir el router sólo a los jugadores listados, y hace que el Colocador, el Rompedor y el Activador actúen como vos en lugar de un jugador falso sin nombre: más seguro dentro de claims. El botón T de un módulo corta la corrida del router cuando ese módulo trabajó, así un módulo de Vacío para adoquín puede ir antes de un Emisor para todo lo demás."
+   ],
+   "sources": [
+    "jar:modular-routers-13.2.7+mc1.21.1.jar:assets/modularrouters/patchouli_books/book/en_us/entries/upgrades/security.json",
+    "jar:modular-routers-13.2.7+mc1.21.1.jar:assets/modularrouters/patchouli_books/book/en_us/entries/router/termination.json",
+    "jar:modular-routers-13.2.7+mc1.21.1.jar:assets/modularrouters/patchouli_books/book/en_us/entries/modules/void.json"
+   ]
+  },
+  {
+   "key": "lr_flux_dust",
+   "deps": [
+    "lr_welcome"
+   ],
+   "type": "item",
+   "item": "fluxnetworks:flux_dust",
+   "count": 16,
+   "layout": {
+    "x": 3,
+    "y": 5,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Flux Dust",
+    "Flux Dust is made in the world: over bedrock (or a Flux Block), leave one block of air, then obsidian above it. Drop redstone into the gap and left-click the obsidian: the redstone turns into Flux Dust. Flux Dust, obsidian and an eye of ender make Flux Cores."
+   ],
+   "es_es": [
+    "Polvo de flux",
+    "El Polvo de flux se hace en el mundo: sobre roca madre (o un Bloque de flux), dejá un bloque de aire y poné obsidiana arriba. Tirá redstone en el hueco y hacé clic izquierdo en la obsidiana: la redstone se convierte en Polvo de flux. Polvo de flux, obsidiana y un ojo de ender hacen Núcleos de flux."
+   ],
+   "sources": [
+    "jar:FluxNetworks-1.21.1-8.0.0.jar:assets/fluxnetworks/lang/en_us.json#tooltip.fluxnetworks.flux_dust",
+    "jar:FluxNetworks-1.21.1-8.0.0.jar:assets/fluxnetworks/lang/en_us.json#gui.fluxnetworks.jei.leftclickhelp",
+    "jar:FluxNetworks-1.21.1-8.0.0.jar:sonar/fluxnetworks/register/EventHandler.class",
+    "jar:FluxNetworks-1.21.1-8.0.0.jar:data/fluxnetworks/recipe/flux_core.json"
+   ]
+  },
+  {
+   "key": "lr_flux",
+   "deps": [
+    "lr_flux_dust"
+   ],
+   "type": "item",
+   "item": "fluxnetworks:flux_point",
+   "layout": {
+    "x": 6,
+    "y": 5,
+    "size": 1.5,
+    "shape": "hexagon"
+   },
+   "en_us": [
+    "Flux Plugs and Points",
+    "A Flux Plug takes energy from the blocks it touches into a network; a Flux Point gives it out to the blocks it touches, anywhere the network reaches, across dimensions. Open any device to create a network or join one.\n\nENTRELUMEN change: Plugs and Points each need a Power Regulator (Act III)."
+   ],
+   "es_es": [
+    "Enchufes y Puntos de flux",
+    "Un Enchufe de flux toma energía de los bloques que toca y la mete en una red; un Punto de flux la entrega a los bloques que toca, donde sea que llegue la red, entre dimensiones. Abrí cualquier dispositivo para crear una red o unirte a una.\n\nCambio de ENTRELUMEN: los Enchufes y Puntos piden cada uno un Regulador de energía (acto III)."
+   ],
+   "sources": [
+    "repo:pack/kubejs/server_scripts/entrelumen_industrial_balance.js",
+    "jar:FluxNetworks-1.21.1-8.0.0.jar:assets/fluxnetworks/lang/en_us.json#tooltip.fluxnetworks.flux_plug",
+    "jar:FluxNetworks-1.21.1-8.0.0.jar:assets/fluxnetworks/lang/en_us.json#tooltip.fluxnetworks.flux_point",
+    "jar:FluxNetworks-1.21.1-8.0.0.jar:assets/fluxnetworks/lang/en_us.json#gui.fluxnetworks.tab.create",
+    "https://www.curseforge.com/minecraft/mc-mods/flux-networks"
+   ]
+  },
+  {
+   "key": "lr_flux_cfg",
+   "deps": [
+    "lr_flux"
+   ],
+   "type": "item",
+   "item": "fluxnetworks:flux_configurator",
+   "layout": {
+    "x": 9,
+    "y": 7.5,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Network settings",
+    "Each device has a priority, a transfer limit (or Bypass Limit), a Power Surge option for top priority, and optional chunk loading. Networks can be Public, Private or Encrypted with a password, and the members tab manages access. The Flux Configurator copies one device's settings onto others."
+   ],
+   "es_es": [
+    "Ajustes de red",
+    "Cada dispositivo tiene prioridad, un límite de transferencia (o Bypass Limit), una opción Power Surge para prioridad máxima, y carga de chunks opcional. Las redes pueden ser Públicas, Privadas o Cifradas con contraseña, y la pestaña de miembros maneja el acceso. El Configurador de flux copia los ajustes de un dispositivo a otros."
+   ],
+   "sources": [
+    "jar:FluxNetworks-1.21.1-8.0.0.jar:assets/fluxnetworks/lang/en_us.json#gui.fluxnetworks.flux.priority",
+    "jar:FluxNetworks-1.21.1-8.0.0.jar:assets/fluxnetworks/lang/en_us.json#gui.fluxnetworks.flux.surgemode",
+    "jar:FluxNetworks-1.21.1-8.0.0.jar:assets/fluxnetworks/lang/en_us.json#gui.fluxnetworks.flux.disablelimit",
+    "jar:FluxNetworks-1.21.1-8.0.0.jar:assets/fluxnetworks/lang/en_us.json#gui.fluxnetworks.flux.chunkloading",
+    "jar:FluxNetworks-1.21.1-8.0.0.jar:assets/fluxnetworks/lang/en_us.json#gui.fluxnetworks.security.encrypted",
+    "jar:FluxNetworks-1.21.1-8.0.0.jar:data/fluxnetworks/recipe/flux_configurator.json"
+   ]
+  },
+  {
+   "key": "lr_flux_storage",
+   "deps": [
+    "lr_flux"
+   ],
+   "type": "item",
+   "item": "fluxnetworks:basic_flux_storage",
+   "optional": true,
+   "layout": {
+    "x": 9,
+    "y": 5,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Flux Storage",
+    "Basic, Herculean and Gargantuan Flux Storage hold energy inside the network, each crafted from the one below. Put storage on the network to smooth out bursts from generators."
+   ],
+   "es_es": [
+    "Almacenamiento de flux",
+    "El Almacenamiento de flux Básico, Hercúleo y Gargantuesco guarda energía dentro de la red, cada uno crafteado del anterior. Poné almacenamiento en la red para suavizar los picos de los generadores."
+   ],
+   "sources": [
+    "jar:FluxNetworks-1.21.1-8.0.0.jar:assets/fluxnetworks/lang/en_us.json#tooltip.fluxnetworks.flux_storage",
+    "jar:FluxNetworks-1.21.1-8.0.0.jar:data/fluxnetworks/recipe/basic_flux_storage.json",
+    "jar:FluxNetworks-1.21.1-8.0.0.jar:data/fluxnetworks/recipe/herculean_flux_storage.json"
+   ]
+  },
+  {
+   "key": "lr_flux_ctrl",
+   "deps": [
+    "lr_flux_storage"
+   ],
+   "type": "item",
+   "item": "fluxnetworks:flux_controller",
+   "optional": true,
+   "layout": {
+    "x": 12,
+    "y": 5,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Flux Controller",
+    "The Flux Controller enables wireless charging: members of the network get items in their inventory charged. Toggle it in the Wireless Charging tab.\n\nENTRELUMEN change: the controller needs a Routing Matrix (Act III)."
+   ],
+   "es_es": [
+    "Controlador de flux",
+    "El Controlador de flux habilita la carga inalámbrica: a los miembros de la red se les cargan los ítems del inventario. Se activa en la pestaña Wireless Charging.\n\nCambio de ENTRELUMEN: el controlador pide una Matriz de distribución (acto III)."
+   ],
+   "sources": [
+    "repo:pack/kubejs/server_scripts/entrelumen_industrial_balance.js",
+    "jar:FluxNetworks-1.21.1-8.0.0.jar:assets/fluxnetworks/lang/en_us.json#tooltip.fluxnetworks.flux_controller",
+    "jar:FluxNetworks-1.21.1-8.0.0.jar:assets/fluxnetworks/lang/en_us.json#gui.fluxnetworks.tab.wireless"
+   ]
+  },
+  {
+   "key": "lr_mastery",
+   "deps": [
+    "lr_holder",
+    "lr_security",
+    "lr_flux_ctrl"
+   ],
+   "type": "checkmark",
+   "icon": "laserio:card_energy",
+   "layout": {
+    "x": 18,
+    "y": 0,
+    "size": 2.0,
+    "shape": "octagon"
+   },
+   "en_us": [
+    "Mastery: a quiet factory",
+    "Wire a machine room without a single pipe: nodes on every machine with Stock cards feeding them, a router sorting and voiding the outputs, and Flux Points powering it all from a distant generator room. Fewer blocks, fewer entities, fewer ticks wasted."
+   ],
+   "es_es": [
+    "Maestría: una fábrica silenciosa",
+    "Cableá una sala de máquinas sin un solo caño: nodos en cada máquina con tarjetas de Stock que las alimentan, un router que clasifica y descarta las salidas, y Puntos de flux que lo alimentan todo desde una sala de generadores lejana. Menos bloques, menos entidades, menos ticks perdidos."
+   ],
+   "sources": [
+    "jar:laserio-1.9.11.jar:assets/laserio/patchouli_books/laseriobook/en_us/entries/modes.json",
+    "jar:modular-routers-13.2.7+mc1.21.1.jar:assets/modularrouters/patchouli_books/book/en_us/entries/intro/overview.json",
+    "jar:FluxNetworks-1.21.1-8.0.0.jar:assets/fluxnetworks/lang/en_us.json#tooltip.fluxnetworks.flux_point",
+    "repo:docs/design/mod-integration.md"
+   ]
+  }
+ ]
+}
