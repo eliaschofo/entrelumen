@@ -8,6 +8,7 @@
     "hover": "Acts only on what is under the cursor; different targets never meet, except slot (any item)."
   },
   "screenParents": {
+    "curios": "container",
     "merchant": "container",
     "sophisticated": "container",
     "crafting": "container",
@@ -127,6 +128,13 @@
         "key.ftbquests.gui_quest_panel.add_page_break"
       ],
       "reason": "Page break exists only in quest edit mode; the pattern view needs an encoded pattern tooltip."
+    },
+    {
+      "keys": [
+        "key.curios.open.desc",
+        "key.guideme.guide"
+      ],
+      "reason": "Inside the Curios screen a G press closes it; GuideME needs G held over a guide item, so the guide just does not open there."
     },
     {
       "keys": [
@@ -531,9 +539,10 @@
     "key.curios.open.desc": {
       "default": "key.keyboard.g",
       "contexts": [
-        "world"
+        "world",
+        "screen:curios"
       ],
-      "evidence": "Curios 9.5.1 KeyRegistry: vanilla ctor (UNIVERSAL), opens the Curios screen from the world."
+      "evidence": "Curios 9.5.1: vanilla ctor (UNIVERSAL); ClientEventHandler.onClientTick consumeClick opens the Curios screen, CuriosScreen.keyPressed closes it."
     },
     "key.deep_aether.slider_eye_ability": {
       "default": null,
