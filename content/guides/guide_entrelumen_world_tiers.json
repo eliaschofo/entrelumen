@@ -1,0 +1,417 @@
+{
+  "chapter": "guide_entrelumen_world_tiers",
+  "group": "entrelumen",
+  "act": "any",
+  "icon": "apotheosis:gem",
+  "title": {
+    "en_us": "World Tiers: the Story Sets the Pace",
+    "es_es": "World Tiers: la historia marca el ritmo"
+  },
+  "subtitle": {
+    "en_us": "Apotheosis difficulty tiers in ENTRELUMEN: when they rise, what changes, and why you cannot choose them.",
+    "es_es": "Los niveles de dificultad de Apotheosis en ENTRELUMEN: cuándo suben, qué cambia y por qué no se eligen."
+  },
+  "quests": [
+    {
+      "key": "entrelumen_world_tiers_welcome",
+      "deps": [],
+      "type": "checkmark",
+      "layout": {
+        "x": 0,
+        "y": 0,
+        "size": 2.0,
+        "shape": "hexagon"
+      },
+      "en_us": [
+        "A World That Grows With You",
+        "Apotheosis divides the game into five &eWorld Tiers&r: Haven, Frontier, Ascent, Summit and Pinnacle. Each tier makes monsters stronger and loot better. In most packs you pick the tier yourself.\n\nIn ENTRELUMEN the &estory&r sets it: when your team's campaign reaches a new stage, the world rises one tier on its own. You never have to guess when you are ready."
+      ],
+      "es_es": [
+        "Un mundo que crece con vos",
+        "Apotheosis divide el juego en cinco &eWorld Tiers&r: Refugio, Frontera, Ascenso, Cumbre y Pináculo. Cada nivel hace más fuertes a los monstruos y mejor el botín. En la mayoría de los packs el nivel lo elegís vos.\n\nEn ENTRELUMEN lo fija la &ehistoria&r: cuando la campaña de tu equipo llega a una etapa nueva, el mundo sube un nivel solo. Nunca tenés que adivinar si estás listo."
+      ],
+      "sources": [
+        "repo:docs/design/apotheosis-family.md",
+        "jar:Apotheosis-1.21.1-8.7.0.jar:assets/apotheosis/lang/en_us.json",
+        "repo:docs/design/story-bible.md"
+      ]
+    },
+    {
+      "key": "entrelumen_world_tiers_ladder",
+      "deps": [
+        "entrelumen_world_tiers_welcome"
+      ],
+      "type": "checkmark",
+      "icon": "minecraft:ladder",
+      "layout": {
+        "x": 3,
+        "y": 0,
+        "size": 1.5,
+        "shape": "square"
+      },
+      "en_us": [
+        "The Ladder",
+        "When each tier opens:\n\n- &eHaven&r: from the start, through acts I and II;\n- &eFrontier&r: when your team completes act II;\n- &eAscent&r: when it completes act III, just as the expeditions and the Sun Spirit begin;\n- &eSummit&r: when act IV is complete and the Ark begins (act V);\n- &ePinnacle&r: when your team activates the Ark and opens act VI.\n\nA chat line tells you: \"The story sets your World Tier to...\"."
+      ],
+      "es_es": [
+        "La escalera",
+        "Cuándo se abre cada nivel:\n\n- &eRefugio&r: desde el principio, durante los actos I y II;\n- &eFrontera&r: cuando tu equipo completa el acto II;\n- &eAscenso&r: cuando completa el acto III, justo cuando empiezan las expediciones y el Espíritu del Sol;\n- &eCumbre&r: cuando el acto IV está completo y empieza el Arca (acto V);\n- &ePináculo&r: cuando tu equipo activa el Arca y abre el acto VI.\n\nUna línea en el chat te avisa: \"La historia fija tu Nivel de Mundo en...\"."
+      ],
+      "sources": [
+        "repo:companion/src/main/java/dev/entrelumen/ApotheosisTiers.java",
+        "repo:companion/src/main/java/dev/entrelumen/ApotheosisTiers.java",
+        "note:reflects feature/acts-renumber, merged into main on 24/9 (Summit opens with act V, Pinnacle with act VI)",
+        "repo:companion/src/main/resources/assets/entrelumen/lang/es_es.json"
+      ]
+    },
+    {
+      "key": "entrelumen_world_tiers_never_down",
+      "deps": [
+        "entrelumen_world_tiers_ladder"
+      ],
+      "type": "checkmark",
+      "icon": "minecraft:arrow",
+      "layout": {
+        "x": 6,
+        "y": -2,
+        "size": 1.25,
+        "shape": "circle"
+      },
+      "en_us": [
+        "It Only Goes Up",
+        "Your tier is the &ehighest you ever reached&r and never drops: not on death, not when you leave a team, not when you join a team that is behind. Joining a team that is ahead raises you to its tier at once.\n\nThe tier is stored on you, so it follows you across dimensions and restarts."
+      ],
+      "es_es": [
+        "Sólo sube",
+        "Tu nivel es el &emás alto que alcanzaste&r y nunca baja: ni al morir, ni al salir de un equipo, ni al entrar a uno que va más atrás. Entrar a un equipo que va más adelante te sube a su nivel en el momento.\n\nEl nivel se guarda en vos, así que te acompaña entre dimensiones y reinicios."
+      ],
+      "sources": [
+        "repo:docs/design/apotheosis-family.md",
+        "repo:companion/src/main/java/dev/entrelumen/ApotheosisTiers.java"
+      ]
+    },
+    {
+      "key": "entrelumen_world_tiers_no_choice",
+      "deps": [
+        "entrelumen_world_tiers_ladder"
+      ],
+      "type": "checkmark",
+      "icon": "minecraft:barrier",
+      "layout": {
+        "x": 6,
+        "y": 2,
+        "size": 1.0,
+        "shape": "pentagon"
+      },
+      "en_us": [
+        "Pack Change: No Manual Selection",
+        "&eCtrl+T&r still opens Apotheosis's World Tier screen, and you can read every tier's details there. The activate button stays disabled: the pack turns off manual tier changes, and Apotheosis's own tutorial page says so.\n\nIf anything moves your tier outside the story, the pack puts it back within a second."
+      ],
+      "es_es": [
+        "Cambio del pack: sin selección manual",
+        "&eCtrl+T&r sigue abriendo la pantalla de World Tiers de Apotheosis, y ahí podés leer los detalles de cada nivel. El botón de activar queda deshabilitado: el pack apaga los cambios manuales de nivel, y la propia página del tutorial de Apotheosis lo dice.\n\nSi algo mueve tu nivel por fuera de la historia, el pack lo devuelve en un segundo."
+      ],
+      "sources": [
+        "repo:pack/config/apotheosis/apotheosis.cfg",
+        "repo:docs/design/apotheosis-family.md",
+        "jar:Apotheosis-1.21.1-8.7.0.jar:assets/apotheosis/lang/en_us.json",
+        "repo:pack/config/defaultoptions/keybindings.txt"
+      ]
+    },
+    {
+      "key": "entrelumen_world_tiers_details",
+      "deps": [
+        "entrelumen_world_tiers_never_down",
+        "entrelumen_world_tiers_no_choice"
+      ],
+      "type": "checkmark",
+      "icon": "minecraft:book",
+      "layout": {
+        "x": 9,
+        "y": 0,
+        "size": 1.25,
+        "shape": "circle"
+      },
+      "en_us": [
+        "Read the Details",
+        "On the World Tier screen, the details button lists what each tier changes: buffs and debuffs for players and for monsters, and the chance of each loot rarity and gem purity. Higher tiers mean stronger mobs and better rewards.\n\nApotheosis's guidebook, the Chronicle of Shadows, explains rarities, affixes and gems."
+      ],
+      "es_es": [
+        "Leé los detalles",
+        "En la pantalla de World Tiers, el botón de detalles lista lo que cambia cada nivel: mejoras y penalizaciones para jugadores y para monstruos, y la probabilidad de cada rareza de botín y pureza de gema. Los niveles altos traen mobs más fuertes y mejores recompensas.\n\nEl libro guía de Apotheosis, la Chronicle of Shadows, explica rarezas, afijos y gemas."
+      ],
+      "sources": [
+        "jar:Apotheosis-1.21.1-8.7.0.jar:assets/apotheosis/lang/en_us.json"
+      ]
+    },
+    {
+      "key": "entrelumen_world_tiers_invaders",
+      "deps": [
+        "entrelumen_world_tiers_details"
+      ],
+      "type": "checkmark",
+      "icon": "minecraft:zombie_head",
+      "layout": {
+        "x": 12,
+        "y": -2.5,
+        "size": 1.25,
+        "shape": "circle"
+      },
+      "en_us": [
+        "Invaders From Frontier On",
+        "From &eFrontier&r, Apotheosis's &einvaders&r can appear: tougher mini-bosses with affixed gear. Haven has no invaders and no epic or mythic loot.\n\nThe pack waits 10 minutes between invader spawns instead of three, so fights stay occasional. They are more common in the Twilight Forest, so go prepared."
+      ],
+      "es_es": [
+        "Invasores desde Frontera",
+        "Desde &eFrontera&r pueden aparecer los &einvasores&r de Apotheosis: minijefes más duros con equipo con afijos. Refugio no tiene invasores ni botín épico o mítico.\n\nEl pack espera 10 minutos entre apariciones de invasores en lugar de tres, así las peleas siguen siendo ocasionales. Son más frecuentes en el Twilight Forest, así que andá preparado."
+      ],
+      "sources": [
+        "jar:Apotheosis-1.21.1-8.7.0.jar:assets/apotheosis/lang/en_us.json",
+        "repo:docs/design/apotheosis-family.md",
+        "repo:pack/config/apotheosis/apotheosis.cfg"
+      ]
+    },
+    {
+      "key": "entrelumen_world_tiers_rarity",
+      "deps": [
+        "entrelumen_world_tiers_details"
+      ],
+      "type": "item",
+      "item": "apotheosis:salvaging_table",
+      "layout": {
+        "x": 12,
+        "y": 0.5,
+        "size": 1.25,
+        "shape": "circle"
+      },
+      "en_us": [
+        "Loot Rarity by Tier",
+        "Affixed gear and gems appear with rarities and purities. Better ones only drop at higher tiers: in this pack, &euncommon&r materials come from Haven on, &erare&r ones at higher tiers, &eepic&r from Ascent and &emythic&r from Summit.\n\nSalvage affixed loot at a Salvaging Table to get the rarity materials that tiered recipes use."
+      ],
+      "es_es": [
+        "Rareza del botín por nivel",
+        "El equipo con afijos y las gemas aparecen con rarezas y purezas. Las mejores sólo caen en niveles altos: en este pack, los materiales &epoco comunes&r salen desde Refugio, los &eraros&r en niveles más altos, los &eépicos&r desde Ascenso y los &emíticos&r desde Cumbre.\n\nDesarmá el botín con afijos en una Mesa de desguace para conseguir los materiales de rareza que usan las recetas por nivel."
+      ],
+      "sources": [
+        "repo:docs/design/apotheosis-family.md",
+        "repo:docs/design/luminous-gear.md"
+      ]
+    },
+    {
+      "key": "entrelumen_world_tiers_augments",
+      "deps": [
+        "entrelumen_world_tiers_invaders",
+        "entrelumen_world_tiers_rarity"
+      ],
+      "type": "item",
+      "item": "entrelumen:augment_spawn_count",
+      "layout": {
+        "x": 15,
+        "y": -2.5,
+        "size": 1.0,
+        "shape": "pentagon"
+      },
+      "en_us": [
+        "Spawner Augments Follow the Tiers",
+        "Apotheosis's spawner runes are replaced by ENTRELUMEN &espawner augments&r: copper medallions that tweak a spawner where you find it. Each needs a rarity material and an act component: act III augments use timeworn fabric (uncommon), act IV ones luminous crystal shards (rare), act V ones arcane sands (epic).\n\nSpawners cannot be picked up with Silk Touch in this pack."
+      ],
+      "es_es": [
+        "Los aumentos de spawner siguen los niveles",
+        "Las runas de spawner de Apotheosis se reemplazan por los &eaumentos de spawner&r de ENTRELUMEN: medallones de cobre que ajustan un spawner donde lo encontrás. Cada uno pide un material de rareza y un componente de acto: los del acto III usan tela desgastada (poco común), los del IV fragmentos de cristal luminoso (raros) y los del V arenas arcanas (épicas).\n\nEn este pack los spawners no se pueden levantar con Toque de seda."
+      ],
+      "sources": [
+        "repo:docs/design/apotheosis-family.md",
+        "repo:pack/config/apothic_spawners.cfg"
+      ]
+    },
+    {
+      "key": "entrelumen_world_tiers_pearl",
+      "deps": [
+        "entrelumen_world_tiers_rarity"
+      ],
+      "type": "item",
+      "item": "apotheosis:godforged_pearl",
+      "layout": {
+        "x": 15,
+        "y": 0.5,
+        "size": 1.25,
+        "shape": "circle"
+      },
+      "en_us": [
+        "The Godforged Pearl",
+        "One ingredient of the &eLuminous Ingot&r is Apotheosis's &eGodforged Pearl&r, which only comes from salvaging mythic loot. Mythic loot appears from Summit, so the pearl arrives with the Ark act, just before Solsticio.\n\nKeep your mythic drops for the salvaging table."
+      ],
+      "es_es": [
+        "La Perla forjada por dioses",
+        "Uno de los ingredientes del &eLingote Luminoso&r es la &ePerla forjada por dioses&r de Apotheosis, que sólo sale de desguazar botín mítico. El botín mítico aparece desde Cumbre, así que la perla llega con el acto del Arca, justo antes de Solsticio.\n\nGuardá tus drops míticos para la mesa de desguace."
+      ],
+      "sources": [
+        "repo:docs/design/luminous-gear.md",
+        "repo:companion/src/main/java/dev/entrelumen/ApotheosisTiers.java",
+        "note:reflects feature/acts-renumber, merged into main on 24/9 (Summit opens with act V, Pinnacle with act VI)"
+      ]
+    },
+    {
+      "key": "entrelumen_world_tiers_enchanting",
+      "deps": [
+        "entrelumen_world_tiers_rarity"
+      ],
+      "type": "item",
+      "item": "entrelumen:lumen_shelf",
+      "optional": true,
+      "layout": {
+        "x": 12,
+        "y": 3.5,
+        "size": 1.0,
+        "shape": "circle"
+      },
+      "en_us": [
+        "Enchanting Climbs in Steps Too",
+        "Apothic Enchanting's table depends on the shelves around it. The pack spaces the strongest shelves by act: up to about 45 Eterna in acts I and II, 60 in act III, 80 to 90 in act IV and 100 in act V, with four ENTRELUMEN shelves joining the ladder (Cartographer's, Patina, Lumen and Horizon).\n\nThe Atlas Library, from act V, stores enchantments from books and writes any eligible one up to level 40."
+      ],
+      "es_es": [
+        "El encantamiento también sube por escalones",
+        "La mesa de Apothic Enchanting depende de los estantes que la rodean. El pack escalona los estantes más fuertes por acto: hasta unos 45 de Eterna en los actos I y II, 60 en el acto III, de 80 a 90 en el IV y 100 en el V, con cuatro estantes de ENTRELUMEN sumados a la escalera (del cartógrafo, de pátina, de lumen y del horizonte).\n\nLa Biblioteca del Atlas, desde el acto V, guarda encantamientos de libros y escribe cualquiera elegible hasta el nivel 40."
+      ],
+      "sources": [
+        "repo:docs/design/apotheosis-family.md",
+        "repo:companion/src/main/java/dev/entrelumen/AtlasLibraryLedger.java"
+      ]
+    },
+    {
+      "key": "entrelumen_world_tiers_library",
+      "deps": [
+        "entrelumen_world_tiers_enchanting"
+      ],
+      "type": "item",
+      "item": "entrelumen:atlas_library",
+      "optional": true,
+      "layout": {
+        "x": 15,
+        "y": 3.5,
+        "size": 1.0,
+        "shape": "circle"
+      },
+      "en_us": [
+        "The Atlas Library",
+        "The &eAtlas Library&r improves on Apothic's Ender Library: deposit enchanted books to fill a shared pool of &elumen&r, then write any eligible enchantment onto a book, even ones you never deposited. The level cap depends on the Eterna around it, measured like an enchanting table; 100 Eterna reaches level 40.\n\nA deposit is always worth less than it costs to write, so there is no infinite loop. Curses are refused. Breaking the library keeps its pool."
+      ],
+      "es_es": [
+        "La Biblioteca del Atlas",
+        "La &eBiblioteca del Atlas&r mejora la Ender Library de Apothic: depositá libros encantados para llenar un fondo compartido de &elumen&r y después escribí en un libro cualquier encantamiento elegible, incluso los que nunca depositaste. El tope de nivel depende de la Eterna que la rodea, medida como en una mesa de encantamientos; 100 de Eterna llega al nivel 40.\n\nUn depósito siempre vale menos de lo que cuesta escribir, así que no hay bucle infinito. Las maldiciones se rechazan. Romper la biblioteca conserva su fondo."
+      ],
+      "sources": [
+        "repo:docs/design/apotheosis-family.md",
+        "repo:companion/src/main/java/dev/entrelumen/AtlasLibraryBlockEntity.java"
+      ]
+    },
+    {
+      "key": "entrelumen_world_tiers_tip_prepare",
+      "deps": [
+        "entrelumen_world_tiers_details"
+      ],
+      "type": "checkmark",
+      "optional": true,
+      "icon": "minecraft:iron_chestplate",
+      "layout": {
+        "x": 9,
+        "y": 4,
+        "size": 1.0,
+        "shape": "diamond"
+      },
+      "en_us": [
+        "Tip: Gear Up Before Closing an Act",
+        "Since the world rises the moment an act closes, upgrade your gear before pressing Advance on acts II and III: better armor, a few gems and food for the satiety buffs. There is no rush to close an act; you can keep exploring at the current tier as long as you like."
+      ],
+      "es_es": [
+        "Truco: equipate antes de cerrar un acto",
+        "Como el mundo sube apenas se cierra un acto, mejorá tu equipo antes de apretar Avanzar en los actos II y III: mejor armadura, algunas gemas y comida para los buffs de saciedad. No hay apuro por cerrar un acto; podés seguir explorando en el nivel actual todo lo que quieras."
+      ],
+      "sources": [
+        "repo:docs/design/apotheosis-family.md",
+        "repo:companion/src/main/java/dev/entrelumen/ApotheosisTiers.java"
+      ]
+    },
+    {
+      "key": "entrelumen_world_tiers_requires",
+      "deps": [
+        "entrelumen_world_tiers_augments"
+      ],
+      "type": "checkmark",
+      "optional": true,
+      "icon": "apotheosis:boss_summoner",
+      "layout": {
+        "x": 18,
+        "y": -3,
+        "size": 1.0,
+        "shape": "diamond"
+      },
+      "en_us": [
+        "Quirk: Items That Need a Tier",
+        "Some Apotheosis items say \"Requires World Tier\" in their tooltip. They stay inert until your tier reaches the one named; since the story raises it for you, just keep advancing the Atlas.\n\nNo need to open the tier screen and press anything: in this pack you could not anyway."
+      ],
+      "es_es": [
+        "Particularidad: ítems que piden un nivel",
+        "Algunos ítems de Apotheosis dicen \"Requiere World Tier\" en su tooltip. Quedan inertes hasta que tu nivel llega al indicado; como la historia te lo sube, seguí avanzando en el Atlas.\n\nNo hace falta abrir la pantalla de niveles y apretar nada: en este pack tampoco podrías."
+      ],
+      "sources": [
+        "jar:Apotheosis-1.21.1-8.7.0.jar:assets/apotheosis/lang/en_us.json",
+        "repo:docs/design/apotheosis-family.md"
+      ]
+    },
+    {
+      "key": "entrelumen_world_tiers_ops",
+      "deps": [
+        "entrelumen_world_tiers_augments",
+        "entrelumen_world_tiers_pearl"
+      ],
+      "type": "checkmark",
+      "optional": true,
+      "icon": "minecraft:command_block",
+      "layout": {
+        "x": 18,
+        "y": 0,
+        "size": 1.0,
+        "shape": "pentagon"
+      },
+      "en_us": [
+        "For Operators",
+        "Operators move the story, and with it the tier, with &e/entrelumen admin set <act>&r. The tier still never drops: lowering one means clearing the player's stored story tier offline, on purpose not a command. Apotheosis's own tier command is reverted by the next sync."
+      ],
+      "es_es": [
+        "Para operadores",
+        "Los operadores mueven la historia, y con ella el nivel, con &e/entrelumen admin set <acto>&r. El nivel igual nunca baja: bajarlo implica borrar el nivel de historia guardado del jugador sin conexión, que a propósito no es un comando. El comando de nivel propio de Apotheosis se revierte en la siguiente sincronización."
+      ],
+      "sources": [
+        "repo:docs/design/apotheosis-family.md",
+        "repo:companion/src/main/java/dev/entrelumen/ApotheosisTiers.java"
+      ]
+    },
+    {
+      "key": "entrelumen_world_tiers_close",
+      "deps": [
+        "entrelumen_world_tiers_ops",
+        "entrelumen_world_tiers_library"
+      ],
+      "type": "checkmark",
+      "icon": "minecraft:nether_star",
+      "layout": {
+        "x": 21,
+        "y": 0,
+        "size": 2.0,
+        "shape": "hexagon"
+      },
+      "en_us": [
+        "Difficulty With a Reason",
+        "Five tiers, set by the story, only rising, each one bringing tougher monsters and better loot. Play the acts at your own pace, and the world will be ready for you when you are ready for it.\n\nNext: how the game starts, the ruins and why some places cannot be broken."
+      ],
+      "es_es": [
+        "Dificultad con motivo",
+        "Cinco niveles, fijados por la historia, que sólo suben, y cada uno trae monstruos más duros y mejor botín. Jugá los actos a tu ritmo, y el mundo va a estar listo para vos cuando vos estés listo para él.\n\nLo que sigue: cómo empieza el juego, las ruinas y por qué algunos lugares no se pueden romper."
+      ],
+      "sources": [
+        "repo:docs/design/apotheosis-family.md"
+      ]
+    }
+  ]
+}

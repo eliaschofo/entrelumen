@@ -1,0 +1,584 @@
+{
+ "chapter": "guide_evilcraft",
+ "group": "magic",
+ "act": "II",
+ "icon": "evilcraft:dark_gem",
+ "title": {
+  "en_us": "EvilCraft: Blood Magic",
+  "es_es": "EvilCraft: magia de sangre"
+ },
+ "subtitle": {
+  "en_us": "Dark gems, blood extraction, the Blood Infuser, brooms and vengeance spirits.",
+  "es_es": "Gemas oscuras, extracción de sangre, el Infusor de sangre, escobas y espíritus de venganza."
+ },
+ "quests": [
+  {
+   "key": "evil_welcome",
+   "deps": [],
+   "type": "checkmark",
+   "icon": "evilcraft:dark_gem",
+   "layout": {
+    "x": 0,
+    "y": 0,
+    "size": 2.0,
+    "shape": "hexagon"
+   },
+   "en_us": [
+    "EvilCraft: the magic of blood",
+    "EvilCraft is blood magic with machines. You mine dark gems, collect blood from fallen creatures, and feed it to tanks and machines that infuse items, repair tools, purify curses, fly brooms and trap the vengeful spirits of the mobs you kill.\n\nEverything here is usable from early on; the pack's own use comes in Act IV, when two dark gems go into the Containment Seal next to Malum's Soulstained Steel. Blood Magic has no 1.21.1 version, so EvilCraft is the pack's blood-magic path."
+   ],
+   "es_es": [
+    "EvilCraft: la magia de la sangre",
+    "EvilCraft es magia de sangre con máquinas. Picás gemas oscuras, juntás sangre de las criaturas que caen y alimentás tanques y máquinas que infunden ítems, reparan herramientas, purifican maldiciones, hacen volar escobas y atrapan los espíritus vengativos de los monstruos que matás.\n\nTodo se puede usar desde temprano; el uso propio del pack llega en el acto IV, cuando dos gemas oscuras van en el Sello de contención junto al Acero manchado de alma de Malum. Blood Magic no tiene versión para 1.21.1, así que EvilCraft es el camino de magia de sangre del pack."
+   ],
+   "sources": [
+    "jar:evilcraft-1.21.1-neoforge-1.2.94.jar:data/evilcraft/info/book.xml#Preface",
+    "repo:pack/kubejs/server_scripts/entrelumen_integration_recipes.js#sealed_memory",
+    "repo:docs/design/mod-pingpong.md#Blood Magic",
+    "repo:docs/design/mod-integration.md#evilcraft"
+   ]
+  },
+  {
+   "key": "evil_book",
+   "deps": [
+    "evil_welcome"
+   ],
+   "type": "item",
+   "item": "evilcraft:origins_of_darkness",
+   "optional": true,
+   "layout": {
+    "x": 0,
+    "y": -3,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Origins of Darkness",
+    "EvilCraft's guide, Origins of Darkness, is found as loot: about one in five chests in villages (toolsmith, weaponsmith, shepherd), dungeons, mineshafts, jungle temples, igloos, Nether fortresses and ancient cities can carry it.\n\nIt is written as a diary in two ages. Recipes inside are clickable, and shift-clicking the arrows skips whole sections."
+   ],
+   "es_es": [
+    "Origins of Darkness",
+    "La guía de EvilCraft, Origins of Darkness, se encuentra como botín: más o menos uno de cada cinco cofres de aldeas (herrero de herramientas, de armas, pastor), mazmorras, minas abandonadas, templos de la jungla, iglús, fortalezas del Nether y ciudades antiguas puede traerla.\n\nEstá escrita como un diario en dos edades. Las recetas de adentro se pueden clicar, y Shift-clic en las flechas saltea secciones enteras."
+   ],
+   "sources": [
+    "jar:evilcraft-1.21.1-neoforge-1.2.94.jar:data/evilcraft/loot_modifiers/inject_origins_of_darkness_chests.json",
+    "jar:evilcraft-1.21.1-neoforge-1.2.94.jar:data/evilcraft/info/book.xml#Structure"
+   ]
+  },
+  {
+   "key": "evil_gems",
+   "deps": [
+    "evil_welcome"
+   ],
+   "type": "item",
+   "item": "evilcraft:dark_gem",
+   "count": 16,
+   "layout": {
+    "x": 3,
+    "y": 0,
+    "size": 1.25,
+    "shape": "square"
+   },
+   "en_us": [
+    "Dark gems",
+    "Mine Dark Ore, found mostly near redstone depth but sometimes higher; you need at least an iron pickaxe. With Fortune it also drops Crushed Dark Gem dust, more with higher levels.\n\nKeep a stack. Nine make a Dark Block; gems also make spikes, tanks, the Weather Container and bricks. Two go into the Containment Seal."
+   ],
+   "es_es": [
+    "Gemas oscuras",
+    "Picá Mena oscura, que aparece sobre todo cerca de la altura de la redstone pero a veces más arriba; necesitás al menos un pico de hierro. Con Fortuna también suelta polvo de Gema oscura triturada, más con niveles altos.\n\nGuardá una pila. Nueve hacen un Bloque oscuro; las gemas además hacen pinchos, tanques, el Contenedor del clima y ladrillos. Dos van en el Sello de contención."
+   ],
+   "sources": [
+    "jar:evilcraft-1.21.1-neoforge-1.2.94.jar:data/evilcraft/info/book.xml#Dark Ore",
+    "jar:evilcraft-1.21.1-neoforge-1.2.94.jar:data/evilcraft/loot_table/blocks/dark_ore.json",
+    "jar:evilcraft-1.21.1-neoforge-1.2.94.jar:data/evilcraft/recipe/crafting/dark_gem.json",
+    "repo:docs/design/act-four-recipes.md"
+   ]
+  },
+  {
+   "key": "evil_extractor",
+   "deps": [
+    "evil_gems"
+   ],
+   "type": "item",
+   "item": "evilcraft:blood_extractor",
+   "layout": {
+    "x": 6,
+    "y": 0,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Blood Extractor",
+    "Craft Spikes (a dark gem over an iron ingot gives sixteen), then the Blood Extractor (spikes, glass and a dark gem). While it is in your inventory it fills with blood when you kill certain creatures. Sneak-use it on Blood Stains, left where things fell to death, to collect more; right-click places a bucket of blood.\n\nCombine several extractors, or an extractor with Dark Tanks, in a crafting grid to raise its capacity."
+   ],
+   "es_es": [
+    "Extractor de sangre",
+    "Crafteá Pinchos (una gema oscura sobre un lingote de hierro da dieciséis) y el Extractor de sangre (pinchos, vidrio y una gema oscura). Mientras esté en tu inventario se llena de sangre cuando matás ciertas criaturas. Usalo agachado sobre Manchas de sangre, que quedan donde algo murió de una caída, para juntar más; clic derecho pone un balde de sangre.\n\nCombiná varios extractores, o un extractor con Tanques oscuros, en una mesa de crafteo para subirle la capacidad."
+   ],
+   "sources": [
+    "jar:evilcraft-1.21.1-neoforge-1.2.94.jar:data/evilcraft/recipe/crafting/dark_spike.json",
+    "jar:evilcraft-1.21.1-neoforge-1.2.94.jar:data/evilcraft/recipe/crafting/blood_extractor.json",
+    "jar:evilcraft-1.21.1-neoforge-1.2.94.jar:data/evilcraft/info/book.xml#Blood Extraction"
+   ]
+  },
+  {
+   "key": "evil_tank",
+   "deps": [
+    "evil_gems"
+   ],
+   "type": "item",
+   "item": "evilcraft:dark_tank",
+   "layout": {
+    "x": 6,
+    "y": -3,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Dark Tank",
+    "Craft a Dark Tank (dark gems, iron and glass). It holds about sixteen buckets, can be carried in your inventory, and combining tanks in a crafting grid grows them without losing fluid.\n\nRight-click a placed tank to open a drain at its bottom that fills containers and players below. Sneak-use it in the air to auto-fill whatever container you are holding."
+   ],
+   "es_es": [
+    "Tanque oscuro",
+    "Crafteá un Tanque oscuro (gemas oscuras, hierro y vidrio). Guarda más o menos dieciséis baldes, se lleva en el inventario y combinando tanques en la mesa de crafteo crecen sin perder fluido.\n\nClic derecho a un tanque puesto abre un drenaje abajo que llena recipientes y jugadores debajo. Agachado en el aire rellena solo el recipiente que tenés en la mano."
+   ],
+   "sources": [
+    "jar:evilcraft-1.21.1-neoforge-1.2.94.jar:data/evilcraft/recipe/crafting/dark_tank.json",
+    "jar:evilcraft-1.21.1-neoforge-1.2.94.jar:data/evilcraft/info/book.xml#Dark Tank"
+   ]
+  },
+  {
+   "key": "evil_power_gem",
+   "deps": [
+    "evil_extractor",
+    "evil_tank"
+   ],
+   "type": "item",
+   "item": "evilcraft:dark_power_gem",
+   "layout": {
+    "x": 9,
+    "y": 0,
+    "size": 1.25,
+    "shape": "square"
+   },
+   "en_us": [
+    "Dark Power Gems",
+    "Toss a dark gem into a pool of blood of at least five source blocks, aiming at the source blocks: it becomes a Dark Power Gem. You need to do this at least once; later the Blood Infuser makes them cheaper.\n\nBlood left in a dry place hardens. Break Hardened Blood with flint and steel for Hardened Blood Shards; the Blood Infusion Core is eight shards around a Dark Power Gem."
+   ],
+   "es_es": [
+    "Gemas de poder oscuras",
+    "Tirá una gema oscura en un charco de sangre de al menos cinco bloques fuente, apuntando a los bloques fuente: se vuelve una Gema de poder oscura. Hay que hacerlo al menos una vez; después el Infusor de sangre las hace más baratas.\n\nLa sangre en un lugar seco se endurece. Rompé la Sangre endurecida con un encendedor para obtener Fragmentos de sangre endurecida; el Núcleo de infusión de sangre son ocho fragmentos alrededor de una Gema de poder oscura."
+   ],
+   "sources": [
+    "jar:evilcraft-1.21.1-neoforge-1.2.94.jar:data/evilcraft/info/book.xml#The Powers of Blood",
+    "jar:evilcraft-1.21.1-neoforge-1.2.94.jar:data/evilcraft/recipe/crafting/blood_infusion_core.json"
+   ]
+  },
+  {
+   "key": "evil_infuser",
+   "deps": [
+    "evil_power_gem"
+   ],
+   "type": "item",
+   "item": "evilcraft:blood_infuser",
+   "layout": {
+    "x": 12,
+    "y": 0,
+    "size": 1.5,
+    "shape": "hexagon"
+   },
+   "en_us": [
+    "Blood Infuser",
+    "Build the Blood Infuser (a Blood Infusion Core in cobblestone). It fills blood containers and turns specific items into new ones with blood: Dark Power Gems at a much lower cost, Blooks (books infused with blood), undead saplings and more. A redstone signal pauses it.\n\nPromises (Tenacity, Velocity, Productivity) upgrade it: more capacity and recipes, more speed, less blood per item."
+   ],
+   "es_es": [
+    "Infusor de sangre",
+    "Armá el Infusor de sangre (un Núcleo de infusión de sangre rodeado de piedra). Llena recipientes de sangre y convierte ítems concretos en otros con sangre: Gemas de poder oscuras mucho más baratas, Blooks (libros infundidos con sangre), brotes no-muertos y más. Una señal de redstone lo pausa.\n\nLas Promesas (de Tenacidad, Velocidad y Productividad) lo mejoran: más capacidad y recetas, más velocidad, menos sangre por ítem."
+   ],
+   "sources": [
+    "jar:evilcraft-1.21.1-neoforge-1.2.94.jar:data/evilcraft/recipe/crafting/blood_infuser.json",
+    "jar:evilcraft-1.21.1-neoforge-1.2.94.jar:data/evilcraft/recipe/blood_infuser/base/dark_power_gem.json",
+    "jar:evilcraft-1.21.1-neoforge-1.2.94.jar:data/evilcraft/recipe/blood_infuser/base/blook.json",
+    "jar:evilcraft-1.21.1-neoforge-1.2.94.jar:data/evilcraft/info/book.xml#Blood Infuser",
+    "jar:evilcraft-1.21.1-neoforge-1.2.94.jar:data/evilcraft/info/book.xml#Advanced Blood Infusion"
+   ]
+  },
+  {
+   "key": "evil_chest",
+   "deps": [
+    "evil_infuser"
+   ],
+   "type": "item",
+   "item": "evilcraft:blood_chest",
+   "optional": true,
+   "layout": {
+    "x": 12,
+    "y": 3,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Blood Chest: tool repair",
+    "A Blood Chest (planks around a Blood Infusion Core) slowly repairs tools that sit inside, using blood. The catch: tools may rarely pick up bad effects, such as Curse of Breaking.\n\nIt pairs with the Purifier, which removes exactly those effects."
+   ],
+   "es_es": [
+    "Cofre de sangre: reparar herramientas",
+    "Un Cofre de sangre (tablones alrededor de un Núcleo de infusión de sangre) repara despacio las herramientas que están adentro, usando sangre. La trampa: rara vez las herramientas se llevan efectos malos, como Maldición de rotura.\n\nSe complementa con el Purificador, que saca justamente esos efectos."
+   ],
+   "sources": [
+    "jar:evilcraft-1.21.1-neoforge-1.2.94.jar:data/evilcraft/recipe/crafting/blood_chest.json",
+    "jar:evilcraft-1.21.1-neoforge-1.2.94.jar:data/evilcraft/info/book.xml#Blood Chest"
+   ]
+  },
+  {
+   "key": "evil_purifier",
+   "deps": [
+    "evil_chest"
+   ],
+   "type": "item",
+   "item": "evilcraft:purifier",
+   "optional": true,
+   "layout": {
+    "x": 15,
+    "y": 3,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Purifier",
+    "The Purifier (a Blood Infusion Core, dark gems, a dark block and blood shards) removes bad effects from a tool with at least one bucket of blood. Full of blood and given a Blook, it moves a random enchantment from an item onto the book, for three buckets. With an empty bottle it can even pull a potion effect out of a creature inside it.\n\nIt is one of several enchantment-moving options in the pack, with Apothic's extraction tome and others."
+   ],
+   "es_es": [
+    "Purificador",
+    "El Purificador (un Núcleo de infusión de sangre, gemas oscuras, un bloque oscuro y fragmentos de sangre) le saca los efectos malos a una herramienta con al menos un balde de sangre. Lleno de sangre y con un Blook, pasa un encantamiento al azar de un ítem al libro, por tres baldes. Con una botella vacía hasta le saca un efecto de poción a una criatura que esté adentro.\n\nEs una de las varias opciones del pack para mover encantamientos, junto al tomo de extracción de Apothic y otras."
+   ],
+   "sources": [
+    "jar:evilcraft-1.21.1-neoforge-1.2.94.jar:data/evilcraft/recipe/crafting/purifier.json",
+    "jar:evilcraft-1.21.1-neoforge-1.2.94.jar:data/evilcraft/info/book.xml#Purifier",
+    "repo:docs/design/arcane-library.md"
+   ]
+  },
+  {
+   "key": "evil_pedestal",
+   "deps": [
+    "evil_infuser"
+   ],
+   "type": "item",
+   "item": "evilcraft:spiked_plate",
+   "layout": {
+    "x": 12,
+    "y": -3,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Sanguinary Pedestal and spiked plates",
+    "A Sanguinary Pedestal (dark gems around a dark block) collects blood from nearby Blood Stains into tanks next to it. Put a Spiked Plate (spikes on a heavy pressure plate) on top and it also collects the blood of creatures the plate kills.\n\nThat is the classic blood farm: a mob drop onto spiked plates over pedestals, feeding your tanks."
+   ],
+   "es_es": [
+    "Pedestal sanguinario y placas de pinchos",
+    "Un Pedestal sanguinario (gemas oscuras alrededor de un bloque oscuro) junta la sangre de las Manchas de sangre cercanas en tanques pegados. Poné una Placa de pinchos (pinchos sobre una placa de presión pesada) encima y también junta la sangre de lo que mata la placa.\n\nEsa es la granja de sangre clásica: una caída de monstruos sobre placas de pinchos encima de pedestales, que llena tus tanques."
+   ],
+   "sources": [
+    "jar:evilcraft-1.21.1-neoforge-1.2.94.jar:data/evilcraft/recipe/crafting/sanguinary_pedestal_0.json",
+    "jar:evilcraft-1.21.1-neoforge-1.2.94.jar:data/evilcraft/recipe/crafting/spiked_plate.json",
+    "jar:evilcraft-1.21.1-neoforge-1.2.94.jar:data/evilcraft/info/book.xml#Sanguinary Pedestal",
+    "jar:evilcraft-1.21.1-neoforge-1.2.94.jar:data/evilcraft/info/book.xml#Spiked Plate"
+   ]
+  },
+  {
+   "key": "evil_weather",
+   "deps": [
+    "evil_gems"
+   ],
+   "type": "item",
+   "item": "evilcraft:weather_container",
+   "optional": true,
+   "layout": {
+    "x": 3,
+    "y": 3,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Dark Temples and weather",
+    "Dark Temples are ancient structures that infuse environmental powers. A Weather Container (a dark gem, a glass bottle and sugar) thrown into a temple's core absorbs the current weather; throwing the filled bottle releases it again. The temple's Environmental Accumulators are not craftable: they also empower items (Inverted Potentia, Exalted Crafter) with lightning and fill Biome Extracts, bottles that turn a small area into their biome, but they slowly degrade the temple's biome.\n\nLater, the Sanguinary Environmental Accumulator does the same in your base, running on blood from eight tanks around it."
+   ],
+   "es_es": [
+    "Templos oscuros y clima",
+    "Los Templos oscuros son estructuras antiguas que infunden poderes del ambiente. Un Contenedor del clima (una gema oscura, una botella y azúcar) tirado en el núcleo de un templo absorbe el clima actual; al tirar la botella llena lo vuelve a soltar. Los Acumuladores ambientales del templo no se craftean: además potencian ítems (Potentia invertida, Crafteador exaltado) con rayos y llenan Extractos de bioma, botellas que convierten una zona chica en su bioma, pero degradan de a poco el bioma del templo.\n\nMás adelante, el Acumulador ambiental sanguinario hace lo mismo en tu base, a sangre de ocho tanques alrededor."
+   ],
+   "sources": [
+    "jar:evilcraft-1.21.1-neoforge-1.2.94.jar:data/evilcraft/recipe/crafting/weather_container.json",
+    "jar:evilcraft-1.21.1-neoforge-1.2.94.jar:data/evilcraft/info/book.xml#Dark Temple",
+    "jar:evilcraft-1.21.1-neoforge-1.2.94.jar:data/evilcraft/info/book.xml#Biome Extract",
+    "jar:evilcraft-1.21.1-neoforge-1.2.94.jar:data/evilcraft/info/book.xml#Sanguinary Environmental Acc.",
+    "jar:evilcraft-1.21.1-neoforge-1.2.94.jar:assets/evilcraft/lang/en_us.json#block.evilcraft.environmental_accumulator.info"
+   ]
+  },
+  {
+   "key": "evil_spirits",
+   "deps": [
+    "evil_pedestal"
+   ],
+   "type": "item",
+   "item": "evilcraft:vengeance_ring",
+   "optional": true,
+   "layout": {
+    "x": 15,
+    "y": -3,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Vengeance spirits",
+    "Mobs you kill leave a fading aura. A Vengeance Ring (crushed dark gem and iron) shows it and lets you use its powers, but it angers the spirits, which chase you and deal minor damage. Upgrade the ring into a Vengeance Focus to freeze spirits and catch them in a Box of Eternal Closure; a Piercing Vengeance Focus can kill them for loot.\n\nA Burning Gem Stone (a dark block, smelted) turns spirit damage into hunger; Spectral Glasses, much later, hide you from them."
+   ],
+   "es_es": [
+    "Espíritus de venganza",
+    "Los monstruos que matás dejan un aura que se desvanece. Un Anillo de venganza (gema oscura triturada y hierro) te la deja ver y usar sus poderes, pero enoja a los espíritus, que te persiguen y hacen daño leve. Mejorá el anillo a Foco de venganza para congelar espíritus y atraparlos en una Caja de clausura eterna; un Foco de venganza perforante los puede matar por botín.\n\nUna Gema ardiente (un bloque oscuro fundido en horno) convierte el daño de los espíritus en hambre; los Anteojos espectrales, mucho más adelante, te esconden de ellos."
+   ],
+   "sources": [
+    "jar:evilcraft-1.21.1-neoforge-1.2.94.jar:data/evilcraft/recipe/crafting/vengeance_ring.json",
+    "jar:evilcraft-1.21.1-neoforge-1.2.94.jar:data/evilcraft/recipe/crafting/vengeance_focus.json",
+    "jar:evilcraft-1.21.1-neoforge-1.2.94.jar:data/evilcraft/recipe/crafting/piercing_vengeance_focus.json",
+    "jar:evilcraft-1.21.1-neoforge-1.2.94.jar:data/evilcraft/recipe/smelting/burning_gem_stone.json",
+    "jar:evilcraft-1.21.1-neoforge-1.2.94.jar:data/evilcraft/recipe/crafting/spectral_glasses.json",
+    "jar:evilcraft-1.21.1-neoforge-1.2.94.jar:data/evilcraft/info/book.xml#After Monsters Die",
+    "jar:evilcraft-1.21.1-neoforge-1.2.94.jar:data/evilcraft/info/book.xml#Catching Spirits",
+    "jar:evilcraft-1.21.1-neoforge-1.2.94.jar:data/evilcraft/info/book.xml#Spirit Protection",
+    "jar:evilcraft-1.21.1-neoforge-1.2.94.jar:data/evilcraft/info/book.xml#Spirit-Killing 101"
+   ]
+  },
+  {
+   "key": "evil_furnace",
+   "deps": [
+    "evil_spirits"
+   ],
+   "type": "item",
+   "item": "evilcraft:spirit_furnace",
+   "optional": true,
+   "layout": {
+    "x": 18,
+    "y": -3,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Spirit Furnace",
+    "Build a cube of blood-infused Dark Bricks around a hollow space big enough for the mob, with one Spirit Furnace in the wall. Load a Box of Eternal Closure with a spirit: the furnace revives it at a large blood cost and cooks it, collecting its drops. The box is reusable forever.\n\nIt is a mob-drop machine without mobs roaming. Size the chamber to the mob (a zombie needs 3x4 outside); very large mobs need up to nine by nine."
+   ],
+   "es_es": [
+    "Horno de espíritus",
+    "Armá un cubo de Ladrillos oscuros infundidos con sangre alrededor de un hueco del tamaño de la criatura, con un Horno de espíritus en la pared. Cargá una Caja de clausura eterna con un espíritu: el horno lo revive a gran costo de sangre y lo cocina, juntando sus drops. La caja se reusa para siempre.\n\nEs una máquina de drops sin criaturas sueltas. Ajustá la cámara al monstruo (un zombi pide 3x4 por fuera); las criaturas muy grandes piden hasta nueve por nueve."
+   ],
+   "sources": [
+    "jar:evilcraft-1.21.1-neoforge-1.2.94.jar:data/evilcraft/recipe/crafting/spirit_furnace.json",
+    "jar:evilcraft-1.21.1-neoforge-1.2.94.jar:data/evilcraft/info/book.xml#Spirit Furnace"
+   ]
+  },
+  {
+   "key": "evil_reanimator",
+   "deps": [
+    "evil_furnace"
+   ],
+   "type": "item",
+   "item": "evilcraft:spirit_reanimator",
+   "optional": true,
+   "layout": {
+    "x": 18,
+    "y": 3,
+    "size": 1.0,
+    "shape": "diamond"
+   },
+   "en_us": [
+    "Quirk: the Spirit Reanimator makes spawn eggs",
+    "The Spirit Reanimator (a Blood Infusion Core in cobblestone, iron and an iron block) puts a captured spirit into an egg with a lot of blood, turning it into a spawn egg. The spirit is used up; some mobs refuse.\n\nNote for ENTRELUMEN: the pack removed Reliquary's spawn-egg crafting to keep mob farms staged, but this EvilCraft route is native in this build. Spawners here cannot be moved with Silk Touch."
+   ],
+   "es_es": [
+    "Particularidad: el Reanimador de espíritus hace huevos",
+    "El Reanimador de espíritus (un Núcleo de infusión de sangre en piedra, hierro y un bloque de hierro) mete un espíritu capturado en un huevo con mucha sangre y lo vuelve un huevo de aparición. El espíritu se consume; algunas criaturas se niegan.\n\nNota para ENTRELUMEN: el pack quitó el crafteo de huevos de Reliquary para mantener escalonadas las granjas de criaturas, pero esta ruta de EvilCraft es nativa en esta versión. Acá los spawners no se mueven con Toque de seda."
+   ],
+   "sources": [
+    "jar:evilcraft-1.21.1-neoforge-1.2.94.jar:data/evilcraft/recipe/crafting/spirit_reanimator.json",
+    "jar:evilcraft-1.21.1-neoforge-1.2.94.jar:data/evilcraft/info/book.xml#Spirit Reanimator",
+    "repo:pack/kubejs/server_scripts/entrelumen_arcane_balance.js#reliquary:uncrafting/spawn_egg",
+    "repo:pack/config/apothic_spawners.cfg"
+   ]
+  },
+  {
+   "key": "evil_broom",
+   "deps": [
+    "evil_infuser"
+   ],
+   "type": "item",
+   "item": "evilcraft:broom",
+   "layout": {
+    "x": 15,
+    "y": 0,
+    "size": 1.25,
+    "shape": "square"
+   },
+   "en_us": [
+    "The Broom",
+    "Brooms are made of three parts combined in a crafting grid: a Rod, a Brush and a Cap. Bare parts use crushed dark gem, dark gems and Dark Sticks; add a material (bone, blaze rod, feathers, diamonds, skulls and more) to change their base stats. Modifiers (speed, acceleration, maneuverability, levitation, damage, flame and more) are added in a crafting grid, permanently.\n\nKeep it full of blood while flying or it slows down a lot. Dark Sticks are a dark gem over undead planks; undead trees grow from a dead bush infused with blood."
+   ],
+   "es_es": [
+    "La Escoba",
+    "Las escobas tienen tres partes que se combinan en la mesa de crafteo: una Vara, un Cepillo y una Tapa. Las partes en blanco usan gema oscura triturada, gemas oscuras y Palos oscuros; sumales un material (hueso, vara de blaze, plumas, diamantes, calaveras y más) para cambiar sus estadísticas base. Los modificadores (velocidad, aceleración, maniobra, levitación, daño, llama y más) se suman en la mesa de crafteo, para siempre.\n\nMantenela llena de sangre mientras volás o se frena mucho. Los Palos oscuros son una gema oscura sobre tablones no-muertos; los árboles no-muertos crecen de un arbusto seco infundido con sangre."
+   ],
+   "sources": [
+    "jar:evilcraft-1.21.1-neoforge-1.2.94.jar:data/evilcraft/recipe/crafting/broom_part_rod_bare.json",
+    "jar:evilcraft-1.21.1-neoforge-1.2.94.jar:data/evilcraft/recipe/crafting/broom_part_cap_bare.json",
+    "jar:evilcraft-1.21.1-neoforge-1.2.94.jar:data/evilcraft/recipe/special/combine_broom_part.json",
+    "jar:evilcraft-1.21.1-neoforge-1.2.94.jar:data/evilcraft/recipe/crafting/dark_stick.json",
+    "jar:evilcraft-1.21.1-neoforge-1.2.94.jar:data/evilcraft/recipe/blood_infuser/base/undead_sapling.json",
+    "jar:evilcraft-1.21.1-neoforge-1.2.94.jar:data/evilcraft/info/book.xml#Broom Basics",
+    "jar:evilcraft-1.21.1-neoforge-1.2.94.jar:data/evilcraft/info/book.xml#Broom Modifiers",
+    "jar:evilcraft-1.21.1-neoforge-1.2.94.jar:data/evilcraft/info/book.xml#Undead Tree"
+   ]
+  },
+  {
+   "key": "evil_broom_quirk",
+   "deps": [
+    "evil_broom"
+   ],
+   "type": "checkmark",
+   "optional": true,
+   "icon": "evilcraft:broom",
+   "layout": {
+    "x": 18,
+    "y": 0,
+    "size": 1.0,
+    "shape": "diamond"
+   },
+   "en_us": [
+    "Quirk: brooms are early flight",
+    "A blood-powered broom is real flight, and the pack does not stage it. Other flight is staged: basic jetpacks wait for the Act III Power Regulator, and the Rending Gale, the Exo Jetpack, the Gravichestplate and Just Dire Things' flight upgrade wait for the Act IV Horizon Chart. The broom only asks for blood and dark gems.\n\nIt still needs a steady blood supply, which is its own limit."
+   ],
+   "es_es": [
+    "Particularidad: la escoba es vuelo temprano",
+    "Una escoba a sangre es vuelo de verdad, y el pack no la escalona. El resto del vuelo sí: los jetpacks básicos esperan al Regulador de potencia del acto III, y el Rending Gale, el Exo Jetpack, la Gravichestplate y la mejora de vuelo de Just Dire Things esperan a la Carta de horizontes del acto IV. La escoba sólo pide sangre y gemas oscuras.\n\nIgual necesita un flujo constante de sangre, que es su propio límite."
+   ],
+   "sources": [
+    "repo:pack/kubejs/server_scripts/entrelumen_arcane_balance.js#reliquary:rending_gale",
+    "repo:pack/kubejs/server_scripts/entrelumen_industrial_balance.js#ironjetpacks:strap",
+    "repo:pack/kubejs/server_scripts/entrelumen_pingpong_balance.js#oritech:crafting/exojetpack",
+    "repo:pack/kubejs/server_scripts/entrelumen_industrial_balance.js#justdirethings:upgrade_flight"
+   ]
+  },
+  {
+   "key": "evil_tools",
+   "deps": [
+    "evil_chest"
+   ],
+   "type": "item",
+   "item": "evilcraft:blood_pearl_of_teleportation",
+   "optional": true,
+   "layout": {
+    "x": 15,
+    "y": 6,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Blood-powered tools",
+    "With Dark Power Gems and cores: the Blood Pearl of Teleportation is a reusable ender pearl that costs blood; the Mace of Distortion knocks back everything around you; the Necromancer Staff (with a skull) raises zombies to fight your target; the Invigorating Pendant, Effortless Ring and Kineticator help in the field.\n\nThe maces and the staff need Empowered Inverted Potentia, charged by lightning; the book explains each one."
+   ],
+   "es_es": [
+    "Herramientas a sangre",
+    "Con Gemas de poder oscuras y núcleos: la Perla de sangre de teletransporte es una perla de ender reusable que cuesta sangre; la Maza de distorsión empuja todo lo que tenés alrededor; el Bastón nigromante (con una calavera) levanta zombis que atacan a tu objetivo; el Colgante vigorizante, el Anillo sin esfuerzo y el Cineticador ayudan en el campo.\n\nLas mazas y el bastón piden Potentia invertida potenciada, cargada con un rayo; el libro explica cada uno."
+   ],
+   "sources": [
+    "jar:evilcraft-1.21.1-neoforge-1.2.94.jar:data/evilcraft/recipe/crafting/blood_pearl_of_teleportation.json",
+    "jar:evilcraft-1.21.1-neoforge-1.2.94.jar:data/evilcraft/recipe/crafting/mace_of_distortion.json",
+    "jar:evilcraft-1.21.1-neoforge-1.2.94.jar:data/evilcraft/recipe/crafting/necromancer_staff.json",
+    "jar:evilcraft-1.21.1-neoforge-1.2.94.jar:data/evilcraft/info/book.xml#Blood Pearl of Teleportation",
+    "jar:evilcraft-1.21.1-neoforge-1.2.94.jar:data/evilcraft/info/book.xml#Mace of Distortion",
+    "jar:evilcraft-1.21.1-neoforge-1.2.94.jar:data/evilcraft/info/book.xml#Necromancer Staff"
+   ]
+  },
+  {
+   "key": "evil_werewolf",
+   "deps": [
+    "evil_book"
+   ],
+   "type": "item",
+   "item": "evilcraft:werewolf_fur",
+   "optional": true,
+   "layout": {
+    "x": 3,
+    "y": -6,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Tip: werewolves at full moon",
+    "Some villages hide a werewolf: a villager unusually interested in dark gems who turns into a tall wolf on full-moon nights. It is a strong fight and drops Werewolf Fur, bones and flesh.\n\nThe book tells it as a story; plan to be in a village on a full moon with good gear."
+   ],
+   "es_es": [
+    "Tip: hombres lobo en luna llena",
+    "Algunas aldeas esconden un hombre lobo: un aldeano demasiado interesado en las gemas oscuras que se vuelve un lobo alto en las noches de luna llena. Es una pelea dura y suelta Piel, huesos y carne de hombre lobo.\n\nEl libro lo cuenta como una historia; planeá estar en una aldea en luna llena con buen equipo."
+   ],
+   "sources": [
+    "jar:evilcraft-1.21.1-neoforge-1.2.94.jar:data/evilcraft/info/book.xml#Werewolf",
+    "jar:evilcraft-1.21.1-neoforge-1.2.94.jar:data/evilcraft/loot_table/entities/werewolf.json"
+   ]
+  },
+  {
+   "key": "evil_seal",
+   "deps": [
+    "evil_broom_quirk",
+    "evil_reanimator"
+   ],
+   "type": "item",
+   "item": "entrelumen:containment_seal",
+   "layout": {
+    "x": 21,
+    "y": 0,
+    "size": 1.5,
+    "shape": "diamond"
+   },
+   "en_us": [
+    "ENTRELUMEN: the Containment Seal",
+    "The Act IV Containment Seal («A Vessel for Restless Memory») is two dark gems, two Soulstained Steel ingots and a Spectral Lens. It gates the pack's containment tier: Theurgy's sulfuric emitter, the Eternal Stella, Apothic endshelves, burning spawner augments and the Atlas Library all ask for one.\n\nIn the endgame, EvilCraft's Creative Blood Drop has a pack recipe with Luminosities, a Nether Star, a Dark Power Gem Block, a Dark Tank and a Renewal Engine."
+   ],
+   "es_es": [
+    "ENTRELUMEN: el Sello de contención",
+    "El Sello de contención del acto IV («Un recipiente para la memoria») son dos gemas oscuras, dos lingotes de Acero manchado de alma y una Lente espectral. Abre el nivel de contención del pack: el emisor sulfúrico de Theurgy, la Estela eterna, las estanterías del End de Apothic, los aumentadores ardientes de spawner y la Biblioteca del Atlas piden uno.\n\nEn el final, la Gota de sangre creativa de EvilCraft tiene una receta del pack con Luminosidades, una estrella del Nether, un Bloque de gema de poder oscura, un Tanque oscuro y un Motor de renovación."
+   ],
+   "sources": [
+    "repo:pack/kubejs/server_scripts/entrelumen_integration_recipes.js#sealed_memory",
+    "repo:pack/kubejs/data/entrelumen/recipe/creative/evilcraft/creative_blood_drop.json",
+    "repo:pack/kubejs/data/entrelumen/recipe/atlas_library.json",
+    "repo:pack/kubejs/data/entrelumen/recipe/augment_burning.json"
+   ]
+  },
+  {
+   "key": "evil_mastery",
+   "deps": [
+    "evil_seal"
+   ],
+   "type": "checkmark",
+   "icon": "evilcraft:blood_infuser",
+   "layout": {
+    "x": 24,
+    "y": 0,
+    "size": 2.0,
+    "shape": "gear"
+   },
+   "en_us": [
+    "Mastery: a blood engine",
+    "Spiked plates feeding pedestals and tanks, an infuser with promises, a purifier cleaning your tools, a broom in the air and a spirit furnace humming. EvilCraft turns every fight into fuel.\n\nIt pairs well with Malum (souls) and Occultism (spirits): the three dark schools share the Act IV components."
+   ],
+   "es_es": [
+    "Maestría: un motor de sangre",
+    "Placas de pinchos alimentando pedestales y tanques, un infusor con promesas, un purificador limpiando tus herramientas, una escoba en el aire y un horno de espíritus funcionando. EvilCraft convierte cada pelea en combustible.\n\nCombina bien con Malum (almas) y Occultism (espíritus): las tres escuelas oscuras comparten los componentes del acto IV."
+   ],
+   "sources": [
+    "jar:evilcraft-1.21.1-neoforge-1.2.94.jar:data/evilcraft/info/book.xml#Second Age",
+    "repo:docs/design/mod-integration.md"
+   ]
+  }
+ ]
+}

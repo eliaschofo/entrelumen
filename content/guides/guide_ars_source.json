@@ -1,0 +1,632 @@
+{
+ "chapter": "guide_ars_source",
+ "group": "magic",
+ "act": "II",
+ "icon": "ars_nouveau:source_jar",
+ "title": {
+  "en_us": "Ars Nouveau II: Source",
+  "es_es": "Ars Nouveau II: la Fuente"
+ },
+ "subtitle": {
+  "en_us": "Imbuement, Source Gems, jars, Sourcelinks and the Enchanting Apparatus.",
+  "es_es": "Imbuir, gemas fuente, frascos, generadores y el Aparato de encantar."
+ },
+ "quests": [
+  {
+   "key": "arssrc_welcome",
+   "deps": [],
+   "type": "checkmark",
+   "icon": "ars_nouveau:source_jar",
+   "layout": {
+    "x": 0,
+    "y": 0,
+    "size": 2.0,
+    "shape": "hexagon"
+   },
+   "en_us": [
+    "Source: the fuel of Ars",
+    "Source is Ars Nouveau's second resource. Your mana casts spells; Source powers blocks: it speeds up the Imbuement Chamber, pays for Enchanting Apparatus recipes and rituals, and feeds the creatures and turrets of the automation chapter.\n\nThe chain in this chapter: Imbuement Chamber, Source Gems, Source Jars, Sourcelinks to fill them, then the Enchanting Apparatus and magebloom. At the end you can make the Living Matrix for the Atlas."
+   ],
+   "es_es": [
+    "La Fuente: el combustible de Ars",
+    "La Fuente (Source) es el segundo recurso de Ars Nouveau. Tu maná lanza hechizos; la Fuente alimenta bloques: acelera la Cámara de imbuir, paga las recetas del Aparato de encantar y los rituales, y mantiene a las criaturas y torretas del capítulo de automatización.\n\nLa cadena de este capítulo: Cámara de imbuir, gemas fuente, Frascos de Fuente, generadores (Sourcelinks) para llenarlos, y después el Aparato de encantar y el magebloom. Al final podés hacer la Matriz viva para el Atlas."
+   ],
+   "sources": [
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:assets/ars_nouveau/lang/en_us.json#ars_nouveau.page1.source",
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:assets/ars_nouveau/lang/en_us.json#ars_nouveau.page1.magical_crafting"
+   ]
+  },
+  {
+   "key": "arssrc_chamber",
+   "deps": [
+    "arssrc_welcome"
+   ],
+   "type": "item",
+   "item": "ars_nouveau:imbuement_chamber",
+   "layout": {
+    "x": 3,
+    "y": 0,
+    "size": 1.25,
+    "shape": "square"
+   },
+   "en_us": [
+    "Imbuement Chamber",
+    "Craft an Imbuement Chamber from archwood planks and two gold ingots. Put an item inside and it slowly soaks up Source until it transforms.\n\nThe chamber gathers a trickle of Source on its own, and pulls from Source Jars within 2 blocks to go much faster. Recipes that need extra items read them from Arcane Pedestals within 1 block; those pedestal items are not consumed."
+   ],
+   "es_es": [
+    "Cámara de imbuir",
+    "Crafteá la Cámara de imbuir con tablones de Archwood y dos lingotes de oro. Le ponés un ítem adentro y absorbe Fuente despacio hasta transformarlo.\n\nLa cámara junta un hilito de Fuente sola y toma de Frascos de Fuente a 2 bloques para ir mucho más rápido. Las recetas que piden ítems extra los leen de Pedestales arcanos a 1 bloque; esos ítems de los pedestales no se gastan."
+   ],
+   "sources": [
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:data/ars_nouveau/recipe/imbuement_chamber.json",
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:assets/ars_nouveau/lang/en_us.json#ars_nouveau.page1.imbuement_chamber"
+   ]
+  },
+  {
+   "key": "arssrc_gem",
+   "deps": [
+    "arssrc_chamber"
+   ],
+   "type": "item",
+   "item": "ars_nouveau:source_gem",
+   "count": 8,
+   "layout": {
+    "x": 6,
+    "y": 0,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Source Gems",
+    "Imbue an amethyst shard or a lapis lazuli into a Source Gem (500 Source each). Gather eight: almost every Ars recipe asks for them, and the Living Matrix needs two.\n\nA budding amethyst geode is the renewable supply; the Dowsing Rod finds them. Four gems make a Source Gem Block, which relays, rituals and apparatus enchantments use."
+   ],
+   "es_es": [
+    "Gemas fuente",
+    "Imbuí un fragmento de amatista o un lapislázuli para obtener una gema fuente (500 de Fuente cada una). Juntá ocho: casi todas las recetas de Ars las piden, y la Matriz viva lleva dos.\n\nUna geoda con amatista brotante es el suministro renovable; la Varilla de zahorí las encuentra. Cuatro gemas hacen un Bloque de gemas fuente, que usan los repetidores, los rituales y los encantamientos del aparato."
+   ],
+   "sources": [
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:data/ars_nouveau/recipe/imbuement_amethyst.json",
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:data/ars_nouveau/recipe/imbuement_lapis.json",
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:data/ars_nouveau/recipe/source_gem_block.json",
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:assets/ars_nouveau/lang/en_us.json#ars_nouveau.page1.obtaining_gems"
+   ]
+  },
+  {
+   "key": "arssrc_jar",
+   "deps": [
+    "arssrc_gem"
+   ],
+   "type": "item",
+   "item": "ars_nouveau:source_jar",
+   "count": 2,
+   "layout": {
+    "x": 9,
+    "y": 0,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Source Jar",
+    "Craft a Source Jar: archwood slabs top and bottom, glass on the sides. Jars store Source; machines, rituals and creatures draw from jars near them.\n\nA comparator reads how full a jar is, which is handy for redstone. You can break a jar and carry its Source with it."
+   ],
+   "es_es": [
+    "Frasco de Fuente",
+    "Crafteá un Frasco de Fuente: losas de Archwood arriba y abajo, vidrio a los costados. Los frascos guardan Fuente; máquinas, rituales y criaturas toman de los frascos cercanos.\n\nUn comparador lee cuán lleno está, útil para redstone. Podés romper un frasco y llevártelo con la Fuente adentro."
+   ],
+   "sources": [
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:data/ars_nouveau/recipe/source_jar.json",
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:assets/ars_nouveau/lang/en_us.json#ars_nouveau.page1.source",
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:assets/ars_nouveau/patchouli_books/worn_notebook/en_us/entries/source/source_jar.json"
+   ]
+  },
+  {
+   "key": "arssrc_agronomic",
+   "deps": [
+    "arssrc_jar"
+   ],
+   "type": "item",
+   "item": "ars_nouveau:agronomic_sourcelink",
+   "layout": {
+    "x": 12,
+    "y": 0,
+    "size": 1.25,
+    "shape": "square"
+   },
+   "en_us": [
+    "Sourcelinks: making Source",
+    "Build an Agronomic Sourcelink: two gold ingots, two Source Gems and wheat. It makes Source from crops and trees growing within 15 blocks and fills jars within 5 blocks. Magical plants (mageblooms, sourceberry bushes, archwood saplings) count extra; bonemeal growth does not.\n\nThe other four links trade the wheat for another core: a mushroom stew (Mycelial, eats food), a glistering melon (Vitalic, mob deaths and breeding), a lava bucket (Volcanic, burns fuel) and a brewing stand (Alchemical, burns potions)."
+   ],
+   "es_es": [
+    "Generadores: hacer Fuente",
+    "Armá un Generador Agrónomo (Agronomic Sourcelink): dos lingotes de oro, dos gemas fuente y trigo. Hace Fuente con cultivos y árboles que crecen a 15 bloques y llena frascos a 5 bloques. Las plantas mágicas (magebloom, arbustos de bayas fuente, brotes de Archwood) suman extra; lo que crece con polvo de hueso no cuenta.\n\nLos otros cuatro cambian el trigo por otro núcleo: guiso de hongos (Micelial, come comida), sandía reluciente (Vital, muertes de criaturas y crianza), balde de lava (Volcánico, quema combustible) y soporte para pociones (Alquímico, quema pociones)."
+   ],
+   "sources": [
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:data/ars_nouveau/recipe/agronomic_sourcelink.json",
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:data/ars_nouveau/recipe/mycelial_sourcelink.json",
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:data/ars_nouveau/recipe/vitalic_sourcelink.json",
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:data/ars_nouveau/recipe/volcanic_sourcelink.json",
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:data/ars_nouveau/recipe/alchemical_sourcelink.json",
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:assets/ars_nouveau/patchouli_books/worn_notebook/en_us/entries/source/agronomic_sourcelink.json"
+   ]
+  },
+  {
+   "key": "arssrc_volcanic_tip",
+   "deps": [
+    "arssrc_agronomic"
+   ],
+   "type": "checkmark",
+   "optional": true,
+   "layout": {
+    "x": 12,
+    "y": 3,
+    "size": 1.0,
+    "shape": "circle"
+   },
+   "en_us": [
+    "Quirk: the Volcanic Sourcelink melts the floor",
+    "The Volcanic Sourcelink burns fuel items and gives the most Source for archwood, especially Blazing Archwood. It also makes heat: nearby stone turns into magma blocks and then lava.\n\nBuild it on a tiled floor you do not mind losing, keep it away from wood, and feed it through a hopper or pedestals. The Mycelial link has its own side effect: it turns the grass and dirt below it into mycelium."
+   ],
+   "es_es": [
+    "Particularidad: el Generador Volcánico derrite el piso",
+    "El Generador Volcánico quema combustible y da más Fuente con Archwood, sobre todo con Archwood Flameante. También genera calor: la piedra cercana se vuelve bloque de magma y después lava.\n\nArmalo sobre un piso que no te importe perder, lejos de la madera, y alimentalo con una tolva o pedestales. El Micelial tiene su propio efecto: convierte en micelio el pasto y la tierra de abajo."
+   ],
+   "sources": [
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:assets/ars_nouveau/lang/en_us.json#ars_nouveau.page1.volcanic_sourcelink",
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:assets/ars_nouveau/lang/en_us.json#ars_nouveau.page2.volcanic_sourcelink",
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:assets/ars_nouveau/patchouli_books/worn_notebook/en_us/entries/source/mycelial_sourcelink.json"
+   ]
+  },
+  {
+   "key": "arssrc_sourceberry",
+   "deps": [
+    "arssrc_agronomic"
+   ],
+   "type": "item",
+   "item": "ars_nouveau:sourceberry_bush",
+   "count": 4,
+   "optional": true,
+   "layout": {
+    "x": 15,
+    "y": 3,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Tip: sourceberries feed two links",
+    "Sourceberry bushes grow in taiga and Archwood Forests. Planted next to an Agronomic Sourcelink they count as magical plants; their berries and berry pie are worth far more Source in a Mycelial link than mundane food, and restore mana when you eat them.\n\nA Starbuncle (automation chapter) harvests ripe bushes on its own, which turns a berry patch into a Source farm with no hands."
+   ],
+   "es_es": [
+    "Tip: las bayas fuente alimentan dos generadores",
+    "Los arbustos de bayas fuente crecen en taiga y en Bosques de Archwood. Plantados junto a un Generador Agrónomo cuentan como plantas mágicas; sus bayas y el pastel de bayas valen mucha más Fuente en un Generador Micelial que la comida común, y te recargan maná al comerlas.\n\nUn Carbuncle (capítulo de automatización) cosecha solo los arbustos maduros, y eso vuelve un cantero de bayas una granja de Fuente sin manos."
+   ],
+   "sources": [
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:assets/ars_nouveau/lang/en_us.json#ars_nouveau.page1.sourceberry_bush",
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:assets/ars_nouveau/patchouli_books/worn_notebook/en_us/entries/source/mycelial_sourcelink.json"
+   ]
+  },
+  {
+   "key": "arssrc_essences",
+   "deps": [
+    "arssrc_gem",
+    "arssrc_pedestals"
+   ],
+   "type": "item",
+   "item": "ars_nouveau:earth_essence",
+   "layout": {
+    "x": 9,
+    "y": -3,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Elemental essences",
+    "Make an essence: a Source Gem in the Imbuement Chamber plus three items on Arcane Pedestals next to it (2000 Source). Earth: iron ingot, seeds, dirt. Fire: flint and steel, torch, gunpowder. Water: water bucket, snow block, kelp. Air: feather, Wilden wing, arrows. Abjuration: fermented spider eye, sugar, milk. Manipulation: stone button, redstone, clock. Conjuration: Wilden horn, Starbuncle token, book.\n\nThe pedestal items stay; only the gem is consumed. Essences unlock many glyphs, rituals, threads and trinkets."
+   ],
+   "es_es": [
+    "Esencias elementales",
+    "Hacé una esencia: una gema fuente en la Cámara de imbuir más tres ítems en Pedestales arcanos pegados (2000 de Fuente). Tierra: lingote de hierro, semillas, tierra. Fuego: encendedor, antorcha, pólvora. Agua: balde de agua, bloque de nieve, alga. Aire: pluma, ala de Wilden, flechas. Abjuración: ojo de araña fermentado, azúcar, leche. Manipulación: botón de piedra, redstone, reloj. Conjuración: cuerno de Wilden, ficha de Carbuncle, libro.\n\nLo de los pedestales queda; sólo se gasta la gema. Las esencias habilitan muchos glifos, rituales, hilos y accesorios."
+   ],
+   "sources": [
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:data/ars_nouveau/recipe/imbuement_earth_essence.json",
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:data/ars_nouveau/recipe/imbuement_fire_essence.json",
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:data/ars_nouveau/recipe/imbuement_water_essence.json",
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:data/ars_nouveau/recipe/imbuement_air_essence.json",
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:data/ars_nouveau/recipe/imbuement_abjuration_essence.json",
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:data/ars_nouveau/recipe/imbuement_manipulation_essence.json",
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:data/ars_nouveau/recipe/imbuement_conjuration_essence.json"
+   ]
+  },
+  {
+   "key": "arssrc_pedestals",
+   "deps": [
+    "arssrc_gem"
+   ],
+   "type": "item",
+   "item": "ars_nouveau:arcane_pedestal",
+   "count": 4,
+   "layout": {
+    "x": 6,
+    "y": -3,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Sourcestone and Arcane Pedestals",
+    "Craft Sourcestone (eight stone around a Source Gem gives eight), then Arcane Pedestals (Sourcestone, gold nuggets and a Source Gem). Make at least four.\n\nPedestals hold the side ingredients of imbuement and apparatus recipes. Sourcestone is also the frame of a Warp Portal and a nice magical building block: put it in a stonecutter for the decorative variants."
+   ],
+   "es_es": [
+    "Piedra fuente y Pedestales arcanos",
+    "Crafteá Piedra fuente (ocho piedras alrededor de una gema fuente dan ocho) y después Pedestales arcanos (piedra fuente, pepitas de oro y una gema fuente). Hacé al menos cuatro.\n\nLos pedestales sostienen los ingredientes laterales de las recetas de imbuir y del aparato. La piedra fuente también es el marco de un Portal de teletransporte y un lindo bloque de construcción: en el cortapiedras salen sus variantes decorativas."
+   ],
+   "sources": [
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:data/ars_nouveau/recipe/sourcestone.json",
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:data/ars_nouveau/recipe/arcane_pedestal.json",
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:assets/ars_nouveau/patchouli_books/worn_notebook/en_us/entries/resources/decorative.json"
+   ]
+  },
+  {
+   "key": "arssrc_core",
+   "deps": [
+    "arssrc_agronomic",
+    "arssrc_pedestals"
+   ],
+   "type": "item",
+   "item": "ars_nouveau:arcane_core",
+   "layout": {
+    "x": 15,
+    "y": 0,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Arcane Core",
+    "Craft the Arcane Core: Sourcestone around two gold ingots and a Source Gem. It is the base the Enchanting Apparatus stands on.\n\nThe apparatus only works with an Arcane Core directly below it. Build the two as one piece and leave space for pedestals around them."
+   ],
+   "es_es": [
+    "Núcleo arcano",
+    "Crafteá el Núcleo arcano: piedra fuente alrededor de dos lingotes de oro y una gema fuente. Es la base sobre la que se para el Aparato de encantar.\n\nEl aparato sólo funciona con un Núcleo arcano justo debajo. Armá los dos como una sola pieza y dejá lugar para los pedestales alrededor."
+   ],
+   "sources": [
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:data/ars_nouveau/recipe/arcane_core.json",
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:assets/ars_nouveau/lang/en_us.json#ars_nouveau.page1.enchanting_apparatus"
+   ]
+  },
+  {
+   "key": "arssrc_apparatus",
+   "deps": [
+    "arssrc_core"
+   ],
+   "type": "item",
+   "item": "ars_nouveau:enchanting_apparatus",
+   "layout": {
+    "x": 18,
+    "y": 0,
+    "size": 1.5,
+    "shape": "hexagon"
+   },
+   "en_us": [
+    "Enchanting Apparatus",
+    "Build the Enchanting Apparatus (gold nuggets, Sourcestone, gold ingots and a diamond) and place it on the Arcane Core. Put the side ingredients on Arcane Pedestals within 3 blocks, then use the central item on the apparatus.\n\nRecipes that cost Source take it from nearby jars. Almost everything advanced in Ars is made here: charms, armor, rings, the Dominion Wand and magebloom seeds."
+   ],
+   "es_es": [
+    "Aparato de encantar",
+    "Armá el Aparato de encantar (pepitas de oro, piedra fuente, lingotes de oro y un diamante) y ponelo sobre el Núcleo arcano. Poné los ingredientes laterales en Pedestales arcanos a 3 bloques y usá el ítem central sobre el aparato.\n\nLas recetas que cuestan Fuente la toman de frascos cercanos. Casi todo lo avanzado de Ars se hace acá: amuletos, armadura, anillos, la Varita de Dominio y las semillas de magebloom."
+   ],
+   "sources": [
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:data/ars_nouveau/recipe/enchanting_apparatus.json",
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:assets/ars_nouveau/lang/en_us.json#ars_nouveau.page1.enchanting_apparatus"
+   ]
+  },
+  {
+   "key": "arssrc_wand",
+   "deps": [
+    "arssrc_apparatus"
+   ],
+   "type": "item",
+   "item": "ars_nouveau:dominion_wand",
+   "layout": {
+    "x": 18,
+    "y": -3,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Dominion Wand",
+    "Make the Dominion Wand in the apparatus: a stick in the center, two Source Gems and a gold ingot on pedestals. It is the Ars wiring tool.\n\nUse it on a source block and then on a target to link them: jar to relay, relay to jar, a Starbuncle to a chest, a Wixie to an inventory. Sneak-use on a relay clears its links. You will need it for every chapter from here on."
+   ],
+   "es_es": [
+    "Varita de Dominio",
+    "Hacé la Varita de Dominio en el aparato: un palo al centro, dos gemas fuente y un lingote de oro en pedestales. Es la herramienta de cableado de Ars.\n\nUsala en el origen y después en el destino para enlazarlos: frasco a repetidor, repetidor a frasco, un Carbuncle a un cofre, una Wixie a un inventario. Agachado sobre un repetidor borra sus enlaces. La vas a necesitar en todos los capítulos que siguen."
+   ],
+   "sources": [
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:data/ars_nouveau/recipe/dominion_wand.json",
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:assets/ars_nouveau/lang/en_us.json#ars_nouveau.page.dominion_wand",
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:assets/ars_nouveau/patchouli_books/worn_notebook/en_us/entries/automation/dominion_wand.json"
+   ]
+  },
+  {
+   "key": "arssrc_relay",
+   "deps": [
+    "arssrc_wand"
+   ],
+   "type": "item",
+   "item": "ars_nouveau:relay",
+   "optional": true,
+   "layout": {
+    "x": 21,
+    "y": -3,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Source Relay",
+    "Craft a Source Relay (a Source Gem Block ringed with gold ingots). With the Dominion Wand, link a jar to the relay and the relay to a distant jar: Source travels up to 30 blocks per hop.\n\nA redstone signal stops a relay. Upgraded relays built in the apparatus pull from or push to every jar within 5 blocks (Collector, Depositor), split between many jars (Splitter) or warp Source any distance (Warper, with some loss beyond 30 blocks)."
+   ],
+   "es_es": [
+    "Repetidor de Fuente",
+    "Crafteá un Repetidor de Fuente (Source Relay; un bloque de gemas fuente rodeado de lingotes de oro). Con la Varita de Dominio, enlazá un frasco al repetidor y el repetidor a un frasco lejano: la Fuente viaja hasta 30 bloques por salto.\n\nUna señal de redstone frena un repetidor. Las versiones mejoradas del aparato toman o dejan en todos los frascos a 5 bloques (Colector, Depositor), reparten entre muchos (Divisor) o teletransportan Fuente a cualquier distancia (Teletransportador, con algo de pérdida pasados los 30 bloques)."
+   ],
+   "sources": [
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:data/ars_nouveau/recipe/relay.json",
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:assets/ars_nouveau/lang/en_us.json#ars_nouveau.page.relay",
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:assets/ars_nouveau/patchouli_books/worn_notebook/en_us/entries/source/relay_collector.json",
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:assets/ars_nouveau/patchouli_books/worn_notebook/en_us/entries/source/relay_splitter.json",
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:assets/ars_nouveau/patchouli_books/worn_notebook/en_us/entries/source/relay_warp.json"
+   ]
+  },
+  {
+   "key": "arssrc_magebloom",
+   "deps": [
+    "arssrc_apparatus"
+   ],
+   "type": "item",
+   "item": "ars_nouveau:magebloom_crop",
+   "layout": {
+    "x": 21,
+    "y": 0,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Magebloom",
+    "In the apparatus, surround any seeds with four Source Gems to get a Magebloom Seed. Plant it on farmland and harvest the flower.\n\nMagebloom is a magical plant: it adds extra Source to a nearby Agronomic Sourcelink while it grows. Plant a row next to your link and replant the seeds you get back."
+   ],
+   "es_es": [
+    "Magebloom",
+    "En el aparato, rodeá cualquier semilla con cuatro gemas fuente y obtenés una Semilla Magebloom. Plantala en tierra arada y cosechá la flor.\n\nEl magebloom es una planta mágica: suma Fuente extra a un Generador Agrónomo cercano mientras crece. Plantá una fila junto al generador y volvé a plantar las semillas que te devuelve."
+   ],
+   "sources": [
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:data/ars_nouveau/recipe/magebloom_crop.json",
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:assets/ars_nouveau/patchouli_books/worn_notebook/en_us/entries/resources/magebloom_crop.json"
+   ]
+  },
+  {
+   "key": "arssrc_fiber",
+   "deps": [
+    "arssrc_magebloom"
+   ],
+   "type": "item",
+   "item": "ars_nouveau:magebloom_fiber",
+   "count": 16,
+   "layout": {
+    "x": 24,
+    "y": 0,
+    "size": 1.25,
+    "shape": "square"
+   },
+   "en_us": [
+    "Magebloom Fiber",
+    "Craft each magebloom into four Magebloom Fiber and gather sixteen. Fiber is Ars's cloth: Blank Parchment, Blank Thread, the Alteration Table, Sorcerer's robes and, in ENTRELUMEN, the Living Matrix.\n\nWith fiber and gems in hand you have every Ars ingredient of the Act II Atlas project."
+   ],
+   "es_es": [
+    "Fibra Magebloom",
+    "Cada magebloom se craftea en cuatro fibras. Juntá dieciséis. La fibra es la tela de Ars: Pergamino vacío, Hilo en blanco, la Tabla de alteraciones, las túnicas del Hechicero y, en ENTRELUMEN, la Matriz viva.\n\nCon fibra y gemas en la mano tenés todos los ingredientes de Ars del proyecto del Atlas del acto II."
+   ],
+   "sources": [
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:data/ars_nouveau/recipe/magebloom_fiber.json",
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:data/ars_nouveau/recipe/blank_parchment.json",
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:data/ars_nouveau/recipe/blank_thread.json"
+   ]
+  },
+  {
+   "key": "arssrc_matrix",
+   "deps": [
+    "arssrc_fiber"
+   ],
+   "type": "item",
+   "item": "entrelumen:living_matrix",
+   "layout": {
+    "x": 24,
+    "y": -3,
+    "size": 1.25,
+    "shape": "diamond"
+   },
+   "en_us": [
+    "ENTRELUMEN: deliver the Living Matrix",
+    "Craft the Living Matrix (two magebloom fiber, two Source Gems, one Calibration Frame, shapeless) and deliver it at the Atlas project «Living Workshop».\n\nOnly the delivery moves the story; crafting or receiving one does not. Keep a Source Gem stock: the Propagation Core (Act III) and the Ecosystem Capsule (Act IV) each ask for Living Matrices again."
+   ],
+   "es_es": [
+    "ENTRELUMEN: entregá la Matriz viva",
+    "Crafteá la Matriz viva (dos fibras de magebloom, dos gemas fuente, un Marco de calibración, sin forma) y entregala en el proyecto del Atlas «Taller vivo».\n\nSólo la entrega mueve la historia; craftearla o recibirla no. Guardá gemas fuente: el Núcleo de propagación (acto III) y la Cápsula de ecosistema (acto IV) vuelven a pedir Matrices vivas."
+   ],
+   "sources": [
+    "repo:pack/kubejs/server_scripts/entrelumen_integration_recipes.js#living_workshop",
+    "repo:companion/src/main/resources/assets/entrelumen/lang/en_us.json#entrelumen.project.living_workshop",
+    "repo:content/act_two.json",
+    "repo:content/integration-design.json#nursery_protocol"
+   ]
+  },
+  {
+   "key": "arssrc_robes",
+   "deps": [
+    "arssrc_fiber"
+   ],
+   "type": "item",
+   "item": "ars_nouveau:sorcerer_robes",
+   "optional": true,
+   "layout": {
+    "x": 24,
+    "y": 3,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Magical armor",
+    "In the apparatus, put a golden armor piece in the center and four magebloom fiber on pedestals: you get the Sorcerer's set (hood, robes, leggings, boots). Magical armor raises mana regeneration and has Thread slots.\n\nThere are three sets. Sorcerer's has the lowest defence and the best Thread slots; Arcanist's and Battlemage's trade slot power for defence. Pick by playstyle, not by armor points."
+   ],
+   "es_es": [
+    "Armadura mágica",
+    "En el aparato, poné una pieza de armadura de oro al centro y cuatro fibras de magebloom en pedestales: sale el conjunto del Hechicero (capucha, túnica, pantalón, botas). La armadura mágica sube la regeneración de maná y tiene ranuras de Hilo.\n\nHay tres conjuntos. El del Hechicero tiene la menor defensa y las mejores ranuras; el de Arcanista y el de Mago de combate cambian potencia de ranura por defensa. Elegí por estilo de juego, no por puntos de armadura."
+   ],
+   "sources": [
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:data/ars_nouveau/recipe/sorcerer_robes.json",
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:data/ars_nouveau/recipe/sorcerer_hood.json",
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:assets/ars_nouveau/patchouli_books/worn_notebook/en_us/entries/armor/armor.json"
+   ]
+  },
+  {
+   "key": "arssrc_threads",
+   "deps": [
+    "arssrc_robes"
+   ],
+   "type": "item",
+   "item": "ars_nouveau:alteration_table",
+   "optional": true,
+   "layout": {
+    "x": 27,
+    "y": 3,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Threads and the Alteration Table",
+    "Craft Blank Thread (magebloom fiber and gold nuggets), turn it into a perk thread in the apparatus (Repairing: an anvil and two manipulation essences; Magic Capacity: sourceberries and mageblooms) and slot it at the Alteration Table (a Scribe's Table ringed with fiber).\n\nPut the armor on the table's stand, use the thread on the tablet, take the armor back. A thread applies once per set, not per piece. Upgrading armor tier in the apparatus (blaze rods and 2,500 Source, then ender pearls, chorus fruit and 5,000 Source) adds more and bigger slots."
+   ],
+   "es_es": [
+    "Hilos y la Tabla de alteraciones",
+    "Crafteá Hilo en blanco (fibra de magebloom y pepitas de oro), convertilo en un hilo con efecto en el aparato (Reparación: un yunque y dos esencias de manipulación; Capacidad mágica: bayas fuente y mageblooms) y colocalo en la Tabla de alteraciones (una Mesa de Escriba rodeada de fibra).\n\nPoné la armadura en el soporte de la tabla, usá el hilo sobre la tableta y sacá la armadura. Un hilo se aplica una vez por conjunto, no por pieza. Subir el nivel de la armadura en el aparato (varas de blaze y 2.500 de Fuente, después perlas de ender, fruta de coro y 5.000 de Fuente) suma más ranuras y más grandes."
+   ],
+   "sources": [
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:data/ars_nouveau/recipe/blank_thread.json",
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:data/ars_nouveau/recipe/thread_repairing.json",
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:data/ars_nouveau/recipe/thread_magic_capacity.json",
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:data/ars_nouveau/recipe/alteration_table.json",
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:data/ars_nouveau/recipe/first_armor_upgrade.json",
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:data/ars_nouveau/recipe/second_armor_upgrade.json",
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:assets/ars_nouveau/patchouli_books/worn_notebook/en_us/entries/armor/applying_perks.json"
+   ]
+  },
+  {
+   "key": "arssrc_trinkets",
+   "deps": [
+    "arssrc_apparatus"
+   ],
+   "type": "item",
+   "item": "ars_nouveau:ring_of_lesser_discount",
+   "optional": true,
+   "layout": {
+    "x": 21,
+    "y": 3,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Rings and amulets",
+    "Craft a Ring of Potential (iron nuggets around a Source Gem) and upgrade it in the apparatus into a Ring of Lesser Discount (four diamonds, two ender pearls, two Source Gems): cheaper spells plus a little mana. The Dull Trinket becomes the Amulet of Mana Boost or of Mana Regen the same way.\n\nThey go in Curios slots, so they stack with armor. Rings are the best early mana upgrade after learning glyphs."
+   ],
+   "es_es": [
+    "Anillos y amuletos",
+    "Crafteá un Anillo de Potencial (pepitas de hierro alrededor de una gema fuente) y mejoralo en el aparato a Anillo de Menor Descuento (cuatro diamantes, dos perlas de ender, dos gemas fuente): hechizos más baratos y un poco de maná. El Accesorio inútil (Dull Trinket) se vuelve Amuleto de Aumento o de Regeneración de maná de la misma forma.\n\nVan en ranuras de Curios, así que se suman a la armadura. Los anillos son la mejor mejora de maná temprana después de aprender glifos."
+   ],
+   "sources": [
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:data/ars_nouveau/recipe/ring_of_potential.json",
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:data/ars_nouveau/recipe/ring_of_lesser_discount.json",
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:data/ars_nouveau/recipe/dull_trinket.json",
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:data/ars_nouveau/recipe/amulet_of_mana_boost.json",
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:assets/ars_nouveau/patchouli_books/worn_notebook/en_us/entries/equipment/ring_of_lesser_discount.json"
+   ]
+  },
+  {
+   "key": "arssrc_enchant",
+   "deps": [
+    "arssrc_apparatus"
+   ],
+   "type": "checkmark",
+   "optional": true,
+   "layout": {
+    "x": 18,
+    "y": 3,
+    "size": 1.0,
+    "shape": "circle"
+   },
+   "en_us": [
+    "Tip: enchanting with the apparatus",
+    "The apparatus also applies vanilla enchantments: put the tool in the center and the listed items on pedestals. Each level needs the previous one already on the item (Smite 3 needs Smite 2), and every recipe costs Source (from 2,000 for level I up to 9,000 for the highest levels).\n\nIt is a way to aim for one exact enchantment without the table's randomness. For stacking many at once, compare with Apothic Enchanting's table (its own chapter)."
+   ],
+   "es_es": [
+    "Tip: encantar con el aparato",
+    "El aparato también aplica encantamientos vanilla: la herramienta al centro y los ítems listados en pedestales. Cada nivel pide el anterior ya puesto (Castigo 3 pide Castigo 2) y cada receta cuesta Fuente (desde 2.000 para el nivel I hasta 9.000 para los más altos).\n\nSirve para ir a un encantamiento exacto sin el azar de la mesa. Para meter muchos juntos, compará con la mesa de Apothic Enchanting (tiene su propio capítulo)."
+   ],
+   "sources": [
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:assets/ars_nouveau/lang/en_us.json#ars_nouveau.page1.how_to_enchant",
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:assets/ars_nouveau/lang/en_us.json#ars_nouveau.page2.how_to_enchant",
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:data/ars_nouveau/recipe/sharpness_1.json",
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:data/ars_nouveau/recipe/protection_1.json"
+   ]
+  },
+  {
+   "key": "arssrc_creative",
+   "deps": [
+    "arssrc_matrix"
+   ],
+   "type": "checkmark",
+   "optional": true,
+   "icon": "ars_nouveau:creative_source_jar",
+   "layout": {
+    "x": 27,
+    "y": -3,
+    "size": 1.0,
+    "shape": "diamond"
+   },
+   "en_us": [
+    "ENTRELUMEN: the Creative Source Jar",
+    "The Creative Source Jar is not a loot drop in ENTRELUMEN: the pack gives it a recipe in the endgame. Two Nature Luminosities, two Arcane Luminosities, a Nether Star, two Source Gem Blocks, a Source Jar and a Renewal Engine.\n\nLuminosities are sold by the native villagers of Solsticio in Act VI and the Renewal Engine is an Act V component, so treat this as a long-term goal."
+   ],
+   "es_es": [
+    "ENTRELUMEN: el Frasco de fuente creativa",
+    "En ENTRELUMEN el Frasco de fuente creativa no es botín: el pack le da una receta de endgame. Dos Luminosidades de Naturaleza, dos Luminosidades Arcanas, una estrella del Nether, dos bloques de gemas fuente, un Frasco de Fuente y un Motor de renovación.\n\nLas Luminosidades las venden los aldeanos nativos de Solsticio en el acto VI y el Motor de renovación es un componente del acto V, así que tomalo como una meta a largo plazo."
+   ],
+   "sources": [
+    "repo:pack/kubejs/data/entrelumen/recipe/creative/ars_nouveau/creative_source_jar.json",
+    "repo:docs/design/luminous-gear.md",
+    "repo:docs/design/story-bible.md"
+   ]
+  },
+  {
+   "key": "arssrc_mastery",
+   "deps": [
+    "arssrc_fiber",
+    "arssrc_relay"
+   ],
+   "type": "checkmark",
+   "layout": {
+    "x": 30,
+    "y": 0,
+    "size": 2.0,
+    "shape": "gear"
+   },
+   "en_us": [
+    "Mastery: a self-running Source network",
+    "Aim for a setup that refills itself: several Sourcelinks, a bank of jars, relays carrying Source to the apparatus and the chamber, and magebloom or sourceberries feeding the Agronomic link.\n\nWhen your jars stay full while you work, you are ready for rituals (chapter III) and for the creatures that do the chores (chapter IV)."
+   ],
+   "es_es": [
+    "Maestría: una red de Fuente que se sostiene sola",
+    "Apuntá a un armado que se rellene solo: varios generadores, un banco de frascos, repetidores llevando Fuente al aparato y a la cámara, y magebloom o bayas fuente alimentando el Generador Agrónomo.\n\nCuando tus frascos siguen llenos mientras trabajás, estás listo para los rituales (capítulo III) y para las criaturas que hacen las tareas (capítulo IV)."
+   ],
+   "sources": [
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:assets/ars_nouveau/lang/en_us.json#ars_nouveau.page1.source",
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:assets/ars_nouveau/patchouli_books/worn_notebook/en_us/entries/source/relay.json"
+   ]
+  }
+ ]
+}

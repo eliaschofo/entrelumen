@@ -1,0 +1,537 @@
+{
+ "chapter": "guide_ars_automation",
+ "group": "magic",
+ "act": "II",
+ "icon": "ars_nouveau:starbuncle_charm",
+ "title": {
+  "en_us": "Ars Nouveau IV: Automation",
+  "es_es": "Ars Nouveau IV: automatización"
+ },
+ "subtitle": {
+  "en_us": "Starbuncles, Drygmys, Whirlisprigs, Wixies, turrets and the Storage Lectern.",
+  "es_es": "Carbuncles, Drygmys, Whirlisprigs, Wixies, torretas y el Atril de almacenamiento."
+ },
+ "quests": [
+  {
+   "key": "arsauto_welcome",
+   "deps": [],
+   "type": "checkmark",
+   "icon": "ars_nouveau:starbuncle_charm",
+   "layout": {
+    "x": 0,
+    "y": 0,
+    "size": 2.0,
+    "shape": "hexagon"
+   },
+   "en_us": [
+    "Creatures that do the chores",
+    "Ars automation is alive. Starbuncles carry items, Drygmys produce mob drops without killing, Whirlisprigs grow wood and crops, Wixies craft and brew, Amethyst Golems farm geodes, and spell turrets cast your spells on a redstone pulse.\n\nMost helpers start as a token you earn from a wild creature, which becomes a charm in the Enchanting Apparatus. They need Source nearby to work, so keep a jar or a relay at every station."
+   ],
+   "es_es": [
+    "Criaturas que hacen las tareas",
+    "La automatización de Ars está viva. Los Carbuncles llevan ítems, los Drygmys producen drops de criaturas sin matarlas, los Whirlisprigs hacen crecer madera y cultivos, las Wixies craftean y preparan pociones, los Golems de amatista cultivan geodas y las torretas lanzan tus hechizos con un pulso de redstone.\n\nLa mayoría de los ayudantes empieza como una ficha que ganás de una criatura salvaje y que se vuelve amuleto en el Aparato de encantar. Necesitan Fuente cerca para trabajar, así que dejá un frasco o un repetidor en cada puesto."
+   ],
+   "sources": [
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:assets/ars_nouveau/lang/en_us.json#ars_nouveau.page1.magical_automation"
+   ]
+  },
+  {
+   "key": "arsauto_starby_token",
+   "deps": [
+    "arsauto_welcome"
+   ],
+   "type": "item",
+   "item": "ars_nouveau:starbuncle_shards",
+   "layout": {
+    "x": 3,
+    "y": -3,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "A Starbuncle Token",
+    "Starbuncles live in wooded areas and flee from players, unless you hold a gold nugget. Let one take a nugget: it vanishes and leaves a Starbuncle Token.\n\nThe Dowsing Rod or the Sense Magic glyph makes magical creatures glow within 75 blocks, which helps a lot in dense forest."
+   ],
+   "es_es": [
+    "Una Ficha de Carbuncle",
+    "Los Carbuncles (Starbuncles) viven en zonas boscosas y le escapan al jugador, salvo que tengas una pepita de oro en la mano. Dejá que uno agarre la pepita: desaparece y deja una Ficha de Carbuncle.\n\nLa Varilla de zahorí o el glifo Sentir magia hacen brillar a las criaturas mágicas a 75 bloques, y eso ayuda mucho en un bosque tupido."
+   ],
+   "sources": [
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:assets/ars_nouveau/lang/en_us.json#ars_nouveau.page1.starbuncle_charm",
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:assets/ars_nouveau/lang/en_us.json#ars_nouveau.glyph_desc.glyph_sense_magic"
+   ]
+  },
+  {
+   "key": "arsauto_starby_charm",
+   "deps": [
+    "arsauto_starby_token"
+   ],
+   "type": "item",
+   "item": "ars_nouveau:starbuncle_charm",
+   "layout": {
+    "x": 3,
+    "y": 0,
+    "size": 1.25,
+    "shape": "square"
+   },
+   "en_us": [
+    "Starbuncle Charm",
+    "In the apparatus, put the token in the center and four gold ingots on pedestals. Use the charm on the ground to summon your Starbuncle. It picks up items nearby and harvests ripe sourceberry bushes around it.\n\nDispel or death returns the charm, so a Starbuncle is never lost. You can dye them any color to tell jobs apart."
+   ],
+   "es_es": [
+    "Amuleto de Carbuncle",
+    "En el aparato, la ficha al centro y cuatro lingotes de oro en pedestales. Usá el amuleto en el piso para invocar tu Carbuncle. Junta ítems cercanos y cosecha los arbustos de bayas fuente maduros a su alrededor.\n\nDisipar o su muerte te devuelven el amuleto, así que un Carbuncle nunca se pierde. Se pueden teñir de cualquier color para distinguir trabajos."
+   ],
+   "sources": [
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:data/ars_nouveau/recipe/starbuncle_charm.json",
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:assets/ars_nouveau/lang/en_us.json#ars_nouveau.page2.starbuncle_charm"
+   ]
+  },
+  {
+   "key": "arsauto_starby_routes",
+   "deps": [
+    "arsauto_starby_charm"
+   ],
+   "type": "checkmark",
+   "layout": {
+    "x": 6,
+    "y": 0,
+    "size": 1.0,
+    "shape": "circle"
+   },
+   "en_us": [
+    "Starbuncle routes",
+    "With the Dominion Wand: click the Starbuncle then a chest to make it deliver there; click a chest then the Starbuncle to make it take from there. It can serve many chests; look at it to see how many it takes from and delivers to. Sneak-wand the Starbuncle to reset it.\n\nPlace a block on it to set a preferred path block; they also like grass paths. Stack several Starbuncles by using a charm on an existing one: a stack carries several stacks per trip."
+   ],
+   "es_es": [
+    "Rutas de Carbuncle",
+    "Con la Varita de Dominio: clic en el Carbuncle y después en un cofre para que entregue ahí; clic en un cofre y después en el Carbuncle para que saque de ahí. Puede atender muchos cofres; miralo para ver de cuántos toma y en cuántos deja. Agachado con la varita lo reiniciás.\n\nUsá un bloque sobre él para marcar el bloque de camino preferido; también les gustan los caminos de tierra. Apilá varios Carbuncles usando un amuleto sobre uno existente: una pila lleva varias pilas de ítems por viaje."
+   ],
+   "sources": [
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:assets/ars_nouveau/lang/en_us.json#ars_nouveau.page3.starbuncle_charm",
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:assets/ars_nouveau/lang/en_us.json#ars_nouveau.page4.starbuncle_charm",
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:assets/ars_nouveau/lang/en_us.json#ars_nouveau.page6.starbuncle_charm"
+   ]
+  },
+  {
+   "key": "arsauto_scrolls",
+   "deps": [
+    "arsauto_starby_routes"
+   ],
+   "type": "item",
+   "item": "ars_nouveau:allow_scroll",
+   "optional": true,
+   "layout": {
+    "x": 6,
+    "y": 3,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Filters: Item Scrolls",
+    "Craft an Item Scroll: Allow (Blank Parchment and a chest). Put it on the Scribe's Table and sneak-use items or blocks on the table to write them in. Give it to a Starbuncle and it only moves those items; a Deny scroll does the opposite.\n\nOr put an item frame on the target chest with a scroll or a single item in it: every Starbuncle using that chest respects the frame. A Mimic Scroll in a frame only accepts items already inside the inventory."
+   ],
+   "es_es": [
+    "Filtros: Pergaminos de objeto",
+    "Crafteá un Pergamino de objeto: Permitir (Pergamino vacío y un cofre). Ponelo en la Mesa de Escriba y usá ítems o bloques sobre la mesa agachado para anotarlos. Dáselo a un Carbuncle y sólo mueve esos ítems; uno de Denegar hace lo contrario.\n\nO poné un marco en el cofre destino con un pergamino o un solo ítem: todo Carbuncle que use ese cofre respeta el marco. Un Pergamino de imitación en un marco sólo acepta ítems que ya estén en el inventario."
+   ],
+   "sources": [
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:data/ars_nouveau/recipe/allow_scroll.json",
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:assets/ars_nouveau/patchouli_books/worn_notebook/en_us/entries/automation/allow_scroll.json",
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:assets/ars_nouveau/patchouli_books/worn_notebook/en_us/entries/automation/mimic_scroll.json",
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:assets/ars_nouveau/lang/en_us.json#ars_nouveau.page5.starbuncle_charm"
+   ]
+  },
+  {
+   "key": "arsauto_bed",
+   "deps": [
+    "arsauto_scrolls"
+   ],
+   "type": "item",
+   "item": "ars_nouveau:orange_sbed",
+   "optional": true,
+   "layout": {
+    "x": 9,
+    "y": 3,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Tip: beds and shades",
+    "A Magebloom Bed (magebloom fiber around a feather) gives idle Starbuncles a place to rest: bind it with the wand. A redstone signal on the bed sends every Starbuncle bound to it to sleep, pausing the line.\n\nStarbuncle Shades stop a Starbuncle from picking items off the ground or harvesting berries, so it only runs its chest route."
+   ],
+   "es_es": [
+    "Tip: camas y anteojos",
+    "Una Cama de flor mágica (fibra de magebloom alrededor de una pluma) le da a los Carbuncles ociosos un lugar para descansar: atala con la varita. Una señal de redstone en la cama manda a dormir a todos los Carbuncles atados, y así pausás la línea.\n\nLos Anteojos de Carbuncle evitan que junte ítems del piso o coseche bayas, así sólo hace su ruta de cofres."
+   ],
+   "sources": [
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:data/ars_nouveau/recipe/orange_sbed.json",
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:assets/ars_nouveau/patchouli_books/worn_notebook/en_us/entries/automation/summon_bed.json",
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:assets/ars_nouveau/patchouli_books/worn_notebook/en_us/entries/automation/starbuncle_shades.json"
+   ]
+  },
+  {
+   "key": "arsauto_drygmy",
+   "deps": [
+    "arsauto_starby_charm"
+   ],
+   "type": "item",
+   "item": "ars_nouveau:drygmy_charm",
+   "layout": {
+    "x": 9,
+    "y": -3,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Drygmy: drops without killing",
+    "Throw a Wilden Horn near a wild Drygmy to get its token, then make the charm in the apparatus (the token plus fish, wheat, an apple, a carrot, seeds and three Source Gems). Use the charm on Mossy Cobblestone: it becomes a Drygmy Henge.\n\nThe Drygmy produces drops and experience gems from creatures within 10 blocks as if they were slain, without hurting them. Put a chest and a Source Jar next to the henge. More creatures and more kinds make it happier and more productive; Containment Jars count as creatures."
+   ],
+   "es_es": [
+    "Drygmy: drops sin matar",
+    "Tirá un Cuerno de Wilden cerca de un Drygmy salvaje para ganar su ficha y hacé el amuleto en el aparato (la ficha más pescado, trigo, una manzana, una zanahoria, semillas y tres gemas fuente). Usá el amuleto sobre piedra musgosa: se vuelve un Henge de Drygmy.\n\nEl Drygmy produce drops y gemas de experiencia de las criaturas a 10 bloques como si las mataras, sin lastimarlas. Poné un cofre y un Frasco de Fuente pegados al henge. Más criaturas y más variedad lo ponen más contento y productivo; los Tarros de contención cuentan como criaturas."
+   ],
+   "sources": [
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:data/ars_nouveau/recipe/drygmy_charm.json",
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:assets/ars_nouveau/lang/en_us.json#ars_nouveau.page1.drygmy_charm",
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:assets/ars_nouveau/lang/en_us.json#ars_nouveau.page3.drygmy_charm",
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:assets/ars_nouveau/lang/en_us.json#ars_nouveau.page4.drygmy_charm",
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:assets/ars_nouveau/lang/en_us.json#ars_nouveau.page5.drygmy_charm"
+   ]
+  },
+  {
+   "key": "arsauto_whirli",
+   "deps": [
+    "arsauto_drygmy"
+   ],
+   "type": "item",
+   "item": "ars_nouveau:whirlisprig_charm",
+   "optional": true,
+   "layout": {
+    "x": 12,
+    "y": -3,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Whirlisprig: a garden that pays",
+    "Grow a tree next to a wild Whirlisprig in a forest to earn its token, craft the charm in the apparatus and use it on any flower. It treats 10 blocks around the flower as home and needs Source nearby and a chest next to the flower.\n\nIt produces the natural materials around it (logs, crops, seeds, flowers) in proportion to what grows there, and only when happy: happiness comes from quantity and diversity. Right-click it with a block to ask whether it likes it; mood takes minutes to update."
+   ],
+   "es_es": [
+    "Whirlisprig: un jardín que rinde",
+    "Hacé crecer un árbol al lado de un Whirlisprig salvaje en un bosque para ganar su ficha, hacé el amuleto en el aparato y usalo sobre cualquier flor. Toma como hogar 10 bloques alrededor de la flor y necesita Fuente cerca y un cofre pegado a la flor.\n\nProduce los materiales naturales de su alrededor (troncos, cultivos, semillas, flores) según lo que crece ahí, y sólo si está contento: la felicidad viene de la cantidad y la variedad. Usá un bloque sobre él para preguntarle si le gusta; el humor tarda minutos en actualizarse."
+   ],
+   "sources": [
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:data/ars_nouveau/recipe/whirlisprig_charm.json",
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:assets/ars_nouveau/lang/en_us.json#ars_nouveau.page1.whirlisprig_charm",
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:assets/ars_nouveau/lang/en_us.json#ars_nouveau.page2.whirlisprig_charm",
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:assets/ars_nouveau/lang/en_us.json#ars_nouveau.page3.whirlisprig_charm"
+   ]
+  },
+  {
+   "key": "arsauto_wixie",
+   "deps": [
+    "arsauto_starby_routes"
+   ],
+   "type": "item",
+   "item": "ars_nouveau:wixie_charm",
+   "layout": {
+    "x": 12,
+    "y": 0,
+    "size": 1.25,
+    "shape": "square"
+   },
+   "en_us": [
+    "Wixie: the crafting helper",
+    "Cast Dispel on a Witch at half health or less: it vanishes and leaves a Wixie Token. Make the charm (a sapling, an emerald, a crafting table and a brewing stand around the token) and use it on a cauldron to get a Wixie Cauldron.\n\nUse the item you want on the cauldron: the Wixie crafts it from nearby inventories, mixing any valid ingredients, for a little Source per craft. Pedestals next to the cauldron hold more target items, crafted in turn. A redstone signal stops it."
+   ],
+   "es_es": [
+    "Wixie: la ayudante de crafteo",
+    "Lanzá Disipar sobre una Bruja con la mitad de vida o menos: desaparece y deja una Ficha de Wixie. Hacé el amuleto (un brote, una esmeralda, una mesa de crafteo y un soporte para pociones alrededor de la ficha) y usalo sobre un caldero para obtener un Caldero de Wixie.\n\nUsá sobre el caldero el ítem que querés: la Wixie lo craftea con los inventarios cercanos, mezclando cualquier ingrediente válido, por un poco de Fuente por crafteo. Los pedestales pegados al caldero guardan más ítems objetivo, que craftea por turnos. Una señal de redstone la frena."
+   ],
+   "sources": [
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:data/ars_nouveau/recipe/wixie_charm.json",
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:assets/ars_nouveau/lang/en_us.json#ars_nouveau.page1.wixie_charm",
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:assets/ars_nouveau/lang/en_us.json#ars_nouveau.page2.wixie_charm",
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:assets/ars_nouveau/lang/en_us.json#ars_nouveau.page3.wixie_charm"
+   ]
+  },
+  {
+   "key": "arsauto_wixie_potions",
+   "deps": [
+    "arsauto_wixie"
+   ],
+   "type": "item",
+   "item": "ars_nouveau:potion_jar",
+   "optional": true,
+   "layout": {
+    "x": 12,
+    "y": 3,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Tip: Wixie potion brewing",
+    "Place an empty Potion Jar (a Source Jar plus an abjuration essence) next to the Wixie Cauldron, use an Awkward Potion on the cauldron and keep nether wart in a nearby chest. The Wixie brews and puts three doses into the jar per craft, supplying water itself.\n\nSneak-wand a Potion Jar to lock it to its current potion when several Wixies share jars. A Starbuncle wearing a Wixie Hat carries potions between jars."
+   ],
+   "es_es": [
+    "Tip: pociones con la Wixie",
+    "Poné un Frasco de poción vacío (un Frasco de Fuente más una esencia de abjuración) al lado del Caldero de Wixie, usá una Poción rara sobre el caldero y dejá verrugas del Nether en un cofre cercano. La Wixie prepara y deja tres dosis en el frasco por crafteo, poniendo ella el agua.\n\nAgachado con la varita sobre un Frasco de poción lo bloqueás a su poción actual cuando varias Wixies comparten frascos. Un Carbuncle con Sombrero de Wixie lleva pociones entre frascos."
+   ],
+   "sources": [
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:data/ars_nouveau/recipe/potion_jar.json",
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:assets/ars_nouveau/lang/en_us.json#ars_nouveau.page4.wixie_charm",
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:assets/ars_nouveau/lang/en_us.json#ars_nouveau.page5.wixie_charm",
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:assets/ars_nouveau/patchouli_books/worn_notebook/en_us/entries/automation/wixie_hat.json"
+   ]
+  },
+  {
+   "key": "arsauto_golem",
+   "deps": [
+    "arsauto_whirli"
+   ],
+   "type": "item",
+   "item": "ars_nouveau:amethyst_golem_charm",
+   "optional": true,
+   "layout": {
+    "x": 15,
+    "y": -3,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Amethyst Golem",
+    "Run the Awakening ritual next to Budding Amethyst to get an Amethyst Golem Charm. Summon the golem, then use the Dominion Wand on it and on a block to set its home (10 blocks around).\n\nIt converts amethyst blocks into budding amethyst, speeds up growth, harvests clusters and, if its home is an inventory, stores the shards. Shards feed your Source Gem production forever."
+   ],
+   "es_es": [
+    "Golem de amatista",
+    "Corré el ritual de Despertar al lado de amatista brotante para conseguir un Amuleto de golem de amatista. Invocá el golem y usá la Varita de Dominio sobre él y sobre un bloque para fijarle hogar (10 bloques alrededor).\n\nConvierte bloques de amatista en amatista brotante, acelera el crecimiento, cosecha los racimos y, si su hogar es un inventario, guarda los fragmentos. Los fragmentos alimentan tu producción de gemas fuente para siempre."
+   ],
+   "sources": [
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:assets/ars_nouveau/patchouli_books/worn_notebook/en_us/entries/automation/amethyst_golem_charm.json",
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:assets/ars_nouveau/lang/en_us.json#ars_nouveau.page1.amethyst_golem_charm",
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:assets/ars_nouveau/lang/en_us.json#ars_nouveau.page4.amethyst_golem_charm"
+   ]
+  },
+  {
+   "key": "arsauto_parchment",
+   "deps": [
+    "arsauto_wixie"
+   ],
+   "type": "item",
+   "item": "ars_nouveau:spell_parchment",
+   "layout": {
+    "x": 15,
+    "y": 3,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Spell Parchment",
+    "Put Blank Parchment on the Scribe's Table, select a spell slot in your book as if to cast it, and sneak-use the book on the table. The parchment now holds that spell.\n\nParchment programs turrets, runes (Runic Chalk), the Spell Sensor and the Enchanter's items. A Manipulation Essence used the same way hides the written spell from other players."
+   ],
+   "es_es": [
+    "Pergamino de hechizos",
+    "Poné Pergamino vacío en la Mesa de Escriba, elegí en el grimorio la ranura como si fueras a lanzarla y usá el grimorio sobre la mesa agachado. El pergamino guarda ese hechizo.\n\nEl pergamino programa torretas, runas (Tiza rúnica), el Sensor de hechizos y los objetos del Encantador. Una esencia de manipulación usada igual oculta el hechizo escrito a otros jugadores."
+   ],
+   "sources": [
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:assets/ars_nouveau/lang/en_us.json#ars_nouveau.page2.scribes_table",
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:assets/ars_nouveau/patchouli_books/worn_notebook/en_us/entries/equipment/runic_chalk.json"
+   ]
+  },
+  {
+   "key": "arsauto_turret",
+   "deps": [
+    "arsauto_parchment"
+   ],
+   "type": "item",
+   "item": "ars_nouveau:basic_spell_turret",
+   "layout": {
+    "x": 18,
+    "y": 0,
+    "size": 1.5,
+    "shape": "hexagon"
+   },
+   "en_us": [
+    "Spell turrets",
+    "Craft a Basic Spell Turret (Source Gems, gold ingots and a redstone block) and load a written parchment into it. On a redstone signal it casts the spell like a dispenser, with Touch or Projectile, paying from linked or nearby Source Jars.\n\nWith an inventory next to it, Item Pickup and Place Block work. The Enchanted Spell Turret (apparatus: a Source Gem Block and two blaze rods) casts at half the Source cost. Classic uses: one-block tree or crop farms, fortune smelting, mob farms with looting."
+   ],
+   "es_es": [
+    "Torretas de hechizos",
+    "Crafteá una Torreta básica (gemas fuente, lingotes de oro y un bloque de redstone) y cargale un pergamino escrito. Con una señal de redstone lanza el hechizo como un dispensador, con Tocar o Proyectil, pagando con Frascos de Fuente enlazados o cercanos.\n\nCon un inventario pegado funcionan Recogida y Colocar bloque. La Torreta de hechizos encantada (aparato: un Bloque de gemas fuente y dos varas de blaze) lanza a mitad de costo de Fuente. Usos clásicos: granjas de un bloque de árboles o cultivos, fundir con fortuna, granjas de criaturas con botín."
+   ],
+   "sources": [
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:data/ars_nouveau/recipe/basic_spell_turret.json",
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:data/ars_nouveau/recipe/spell_turret.json",
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:assets/ars_nouveau/lang/en_us.json#ars_nouveau.page1.basic_spell_turret",
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:assets/ars_nouveau/lang/en_us.json#ars_nouveau.page2.basic_spell_turret",
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:assets/ars_nouveau/lang/en_us.json#ars_nouveau.page4.basic_spell_turret"
+   ]
+  },
+  {
+   "key": "arsauto_timer",
+   "deps": [
+    "arsauto_turret"
+   ],
+   "type": "item",
+   "item": "ars_nouveau:timer_spell_turret",
+   "optional": true,
+   "layout": {
+    "x": 18,
+    "y": 3,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Timer Spell Turret",
+    "Upgrade a Basic Spell Turret with a clock in the apparatus. It fires on its own, every second by default: right-click to add time, punch to reduce it, sneak to change it in 10-second steps. Lock it with the Dominion Wand; 0 seconds or a redstone signal disables it.\n\nIt casts Projectile, Touch, Sensitive and Redstone glyphs for free, so only the effects cost Source. It is the simplest reliable clock in the pack."
+   ],
+   "es_es": [
+    "Torreta con temporizador",
+    "Mejorá una Torreta básica con un reloj en el aparato. Dispara sola, cada un segundo por defecto: clic derecho suma tiempo, golpe lo reduce, agachado cambia de a 10 segundos. Bloqueala con la Varita de Dominio; 0 segundos o una señal de redstone la apagan.\n\nLanza gratis los glifos Proyectil, Tocar, Sensible y Señal de redstone, así que sólo pagás Fuente por los efectos. Es el reloj confiable más simple del pack."
+   ],
+   "sources": [
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:data/ars_nouveau/recipe/timer_spell_turret.json",
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:assets/ars_nouveau/lang/en_us.json#ars_nouveau.page3.basic_spell_turret"
+   ]
+  },
+  {
+   "key": "arsauto_lectern",
+   "deps": [
+    "arsauto_turret"
+   ],
+   "type": "item",
+   "item": "ars_nouveau:storage_lectern",
+   "layout": {
+    "x": 21,
+    "y": 0,
+    "size": 1.25,
+    "shape": "square"
+   },
+   "en_us": [
+    "Storage Lectern",
+    "Make a Storage Lectern in the apparatus (a lectern in the center, four chests on pedestals). Link inventories to it with the Dominion Wand, up to 30 blocks away, and view, sort and craft from all of them in one screen.\n\nHow many inventories it can link depends on the Bookwyrms bound to it: use Bookwyrm charms on the lectern to add more. Named inventories become tabs. Items dropped into an unlinked inventory next to the lectern are imported automatically."
+   ],
+   "es_es": [
+    "Atril de almacenamiento",
+    "Hacé un Atril de almacenamiento en el aparato (un atril al centro, cuatro cofres en pedestales). Enlazale inventarios con la Varita de Dominio, hasta 30 bloques, y mirá, ordená y crafteá con todos desde una pantalla.\n\nCuántos inventarios puede enlazar depende de los Bookwyrms atados: usá amuletos de Bookwyrm sobre el atril para sumar. Los inventarios con nombre se vuelven pestañas. Lo que tirás en un inventario sin enlazar pegado al atril se importa solo."
+   ],
+   "sources": [
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:data/ars_nouveau/recipe/storage_lectern.json",
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:assets/ars_nouveau/lang/en_us.json#ars_nouveau.page1.storage_lectern",
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:assets/ars_nouveau/lang/en_us.json#ars_nouveau.page2.storage",
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:assets/ars_nouveau/lang/en_us.json#ars_nouveau.page3.storage"
+   ]
+  },
+  {
+   "key": "arsauto_repository",
+   "deps": [
+    "arsauto_lectern"
+   ],
+   "type": "item",
+   "item": "ars_nouveau:repository_controller",
+   "optional": true,
+   "layout": {
+    "x": 21,
+    "y": -3,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Tip: Repositories and the Catalog",
+    "A Repository holds a double chest and keeps its name when broken, which makes named tabs easy. A Repository Catalog (a Repository plus magebloom fiber) exposes a chain of connected Repositories to the lectern through one block.\n\nThe notebook recommends Catalogs over big chests or other many-slot systems for large or frequent automation with the lectern, because they are optimized for server performance. In a modpack this size that matters."
+   ],
+   "es_es": [
+    "Tip: Repositorios y el Catálogo",
+    "Un Repositorio guarda un cofre doble y conserva su nombre al romperlo, así las pestañas con nombre salen fáciles. Un Catálogo de repositorio (un Repositorio más fibra de magebloom) expone al atril una cadena de Repositorios conectados a través de un solo bloque.\n\nEl cuaderno recomienda Catálogos en lugar de cofres grandes u otros sistemas de muchas ranuras para automatización grande o frecuente con el atril, porque están optimizados para el rendimiento del servidor. En un pack de este tamaño eso importa."
+   ],
+   "sources": [
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:data/ars_nouveau/recipe/repository.json",
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:data/ars_nouveau/recipe/repository_controller.json",
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:assets/ars_nouveau/lang/en_us.json#ars_nouveau.page1.repository_controller",
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:assets/ars_nouveau/lang/en_us.json#ars_nouveau.page4.storage"
+   ]
+  },
+  {
+   "key": "arsauto_warp",
+   "deps": [
+    "arsauto_repository"
+   ],
+   "type": "item",
+   "item": "ars_nouveau:warp_scroll",
+   "optional": true,
+   "layout": {
+    "x": 24,
+    "y": -3,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Warp scrolls and portals",
+    "A Warp Scroll (four lapis, Blank Parchment and four Source Gems) records a location when used and teleports you there once, within the same dimension. A Warp Portal is a Sourcestone frame from 1x1 to 21x21: with a full Source Jar nearby, throw a written scroll into the frame and it becomes a permanent one-way portal to that spot, free to use.\n\nA Stabilized Warp Scroll (apparatus: blaze powder and ender pearls) is reusable and crosses dimensions, but is consumed if you use it to build a portal."
+   ],
+   "es_es": [
+    "Pergaminos y portales de teletransporte",
+    "Un Pergamino de teletransporte (cuatro lapislázulis, Pergamino vacío y cuatro gemas fuente) anota un lugar al usarlo y te lleva ahí una vez, dentro de la misma dimensión. Un Portal es un marco de piedra fuente de 1x1 a 21x21: con un Frasco de Fuente lleno cerca, tirá un pergamino escrito dentro del marco y se vuelve un portal de ida permanente a ese lugar, gratis de usar.\n\nUn Pergamino estabilizado (aparato: polvo de blaze y perlas de ender) se reusa y cruza dimensiones, pero se gasta si lo usás para armar un portal."
+   ],
+   "sources": [
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:data/ars_nouveau/recipe/warp_scroll.json",
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:data/ars_nouveau/recipe/stable_warp_scroll.json",
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:assets/ars_nouveau/lang/en_us.json#ars_nouveau.page1.warp_portal",
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:assets/ars_nouveau/patchouli_books/worn_notebook/en_us/entries/equipment/stable_warp_scroll.json"
+   ]
+  },
+  {
+   "key": "arsauto_pack_native",
+   "deps": [
+    "arsauto_timer"
+   ],
+   "type": "checkmark",
+   "layout": {
+    "x": 24,
+    "y": 3,
+    "size": 1.0,
+    "shape": "diamond"
+   },
+   "en_us": [
+    "ENTRELUMEN: helpers stay native",
+    "The pack's research proposed gating the Starbuncle, Wixie and Drygmy charms behind the Living Matrix, but that is only a proposal: in this build every Ars charm, turret and the lectern use their native recipes, with no act component.\n\nThe story gate in Ars is the Living Matrix delivery itself. Automate as early as you like; the apparatus, magebloom and Source Gems are exactly what the Matrix needs anyway."
+   ],
+   "es_es": [
+    "ENTRELUMEN: los ayudantes siguen nativos",
+    "La investigación del pack propuso atar los amuletos de Carbuncle, Wixie y Drygmy a la Matriz viva, pero es sólo una propuesta: en esta versión todos los amuletos, torretas y el atril de Ars usan sus recetas nativas, sin componente de acto.\n\nLa puerta de la historia en Ars es la entrega de la Matriz viva. Automatizá tan temprano como quieras; el aparato, el magebloom y las gemas fuente son justo lo que pide la Matriz."
+   ],
+   "sources": [
+    "repo:docs/research/reference-packs.md#Por acto",
+    "repo:pack/kubejs/server_scripts",
+    "repo:docs/design/magic-automation-family.md"
+   ]
+  },
+  {
+   "key": "arsauto_mastery",
+   "deps": [
+    "arsauto_lectern",
+    "arsauto_wixie"
+   ],
+   "type": "checkmark",
+   "layout": {
+    "x": 27,
+    "y": 0,
+    "size": 2.0,
+    "shape": "gear"
+   },
+   "en_us": [
+    "Mastery: a living factory",
+    "A finished Ars workshop: Starbuncles feeding a lectern network, a Wixie crafting parts on demand, a Drygmy henge surrounded by jars, a Whirlisprig garden, an Amethyst Golem geode and timer turrets doing the repetitive work.\n\nThe addons chapter shows how to plug all this into Create, AE2 and Occultism, and how to automate the apparatus itself with a Wixie."
+   ],
+   "es_es": [
+    "Maestría: una fábrica viva",
+    "Un taller de Ars terminado: Carbuncles alimentando la red del atril, una Wixie crafteando piezas a pedido, un henge de Drygmy rodeado de tarros, un jardín de Whirlisprig, una geoda con Golem de amatista y torretas con temporizador haciendo el trabajo repetitivo.\n\nEl capítulo de addons muestra cómo enchufar todo esto a Create, AE2 y Occultism, y cómo automatizar el propio aparato con una Wixie."
+   ],
+   "sources": [
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:assets/ars_nouveau/lang/en_us.json#ars_nouveau.page1.magical_automation",
+    "repo:docs/design/magic-automation-family.md"
+   ]
+  }
+ ]
+}

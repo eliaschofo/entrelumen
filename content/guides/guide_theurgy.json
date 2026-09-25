@@ -1,0 +1,519 @@
+{
+ "chapter": "guide_theurgy",
+ "group": "magic",
+ "act": "II",
+ "icon": "theurgy:incubator",
+ "title": {
+  "en_us": "Theurgy: Spagyrics",
+  "es_es": "Theurgy: espagiria"
+ },
+ "subtitle": {
+  "en_us": "Salt, sulfur and mercury: triple your ores, then learn to transform matter.",
+  "es_es": "Sal, azufre y mercurio: triplicá tus menas y después aprendé a transformar la materia."
+ },
+ "quests": [
+  {
+   "key": "theurgy_welcome",
+   "deps": [],
+   "type": "checkmark",
+   "icon": "theurgy:incubator",
+   "layout": {
+    "x": 0,
+    "y": 0,
+    "size": 2.0,
+    "shape": "hexagon"
+   },
+   "en_us": [
+    "Theurgy: alchemy as a science",
+    "Theurgy is classical alchemy, and it insists it is science, not magic. Every item is made of three principles: Salt (the body), Sulfur (the soul, which decides what the item is) and Mercury (the energy). Separate them and recombine them, and one raw ore becomes three ingots. Go further and you can turn one material into another.\n\nIn ENTRELUMEN the ore refining is an Act II tool with no gate. Transmutation needs the Reformation Array, which the pack stages at Act IV."
+   ],
+   "es_es": [
+    "Theurgy: la alquimia como ciencia",
+    "Theurgy es alquimia clásica, e insiste en que es ciencia, no magia. Todo ítem está hecho de tres principios: Sal (el cuerpo), Azufre (el alma, que decide qué es el ítem) y Mercurio (la energía). Separalos y recombinalos, y una mena en bruto da tres lingotes. Más adelante, podés convertir un material en otro.\n\nEn ENTRELUMEN el refinado de menas es una herramienta del acto II sin puerta. La transmutación pide el Conjunto de reformación, que el pack escalona al acto IV."
+   ],
+   "sources": [
+    "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/modonomicon/books/the_hermetica/entries/getting_started/about_mod.json",
+    "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/modonomicon/books/the_hermetica/entries/getting_started/spagyrics.json",
+    "repo:docs/design/arcane-expansion-family.md#staged-acquisition-and-removed-duplication"
+   ]
+  },
+  {
+   "key": "theurgy_hermetica",
+   "deps": [
+    "theurgy_welcome"
+   ],
+   "type": "checkmark",
+   "icon": "minecraft:book",
+   "layout": {
+    "x": 3,
+    "y": -3,
+    "size": 1.0,
+    "shape": "circle"
+   },
+   "en_us": [
+    "The Hermetica",
+    "Craft The Hermetica, Theurgy's guidebook, from a book and two sand. It walks you through the processes in order, with the machines you need at each step.\n\nOccultism's Dictionary of Spirits links to it too: Theurgy adds divination rods for ordinary ores that complement Occultism's."
+   ],
+   "es_es": [
+    "La Hermética",
+    "Crafteá La Hermética, el libro guía de Theurgy, con un libro y dos de arena. Te lleva por los procesos en orden, con las máquinas que necesitás en cada paso.\n\nEl Diccionario de espíritus de Occultism también la enlaza: Theurgy suma varillas de adivinación para menas comunes que complementan a las de Occultism."
+   ],
+   "sources": [
+    "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/recipe/crafting/shapeless/the_hermetica.json",
+    "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/modonomicon/books/the_hermetica/entries/getting_started/intro.json",
+    "jar:occultism-1.21.1-neoforge-1.224.4.jar:data/occultism/modonomicon/books/dictionary_of_spirits/entries/getting_started/theurgy_divination_rod.json"
+   ]
+  },
+  {
+   "key": "theurgy_rod",
+   "deps": [
+    "theurgy_welcome"
+   ],
+   "type": "item",
+   "item": "theurgy:divination_rod_t1",
+   "optional": true,
+   "layout": {
+    "x": 3,
+    "y": 3,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Divination rods",
+    "Craft a Glass Divination Rod (glass and sticks). Shift-click a block to attune it, then hold right-click: it points to the nearest block of that kind. It finds common ores like iron and coal; gold and diamonds need the Iron (amethyst) and Diamond rods.\n\nRods crafted with a specific Alchemical Sulfur come pre-attuned and last much longer."
+   ],
+   "es_es": [
+    "Varillas de adivinación",
+    "Crafteá una Varilla de adivinación de vidrio (vidrio y palos). Hacé Shift-clic en un bloque para afinarla y mantené clic derecho: apunta al bloque de ese tipo más cercano. Encuentra menas comunes como hierro y carbón; el oro y los diamantes piden las varillas de hierro (con amatista) y de diamante.\n\nLas varillas crafteadas con un Azufre alquímico concreto vienen afinadas y duran mucho más."
+   ],
+   "sources": [
+    "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/recipe/crafting/shaped/divination_rod_t1.json",
+    "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/recipe/crafting/shaped/divination_rod_t2.json",
+    "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/modonomicon/books/the_hermetica/entries/getting_started/about_divination_rods.json",
+    "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/modonomicon/books/the_hermetica/entries/getting_started/t1_divination_rod.json"
+   ]
+  },
+  {
+   "key": "theurgy_brazier",
+   "deps": [
+    "theurgy_welcome"
+   ],
+   "type": "item",
+   "item": "theurgy:pyromantic_brazier",
+   "count": 4,
+   "layout": {
+    "x": 3,
+    "y": 0,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Pyromantic Braziers",
+    "Craft four Pyromantic Braziers (copper ingots over stone). Every spagyric apparatus sits on top of one and takes its heat from the fuel you put in it: wood, coal or charcoal, by hand or by hopper.\n\nThe refining line needs four heated machines: the calcination oven, the liquefaction cauldron, the distiller and the incubator."
+   ],
+   "es_es": [
+    "Braseros piromantes",
+    "Crafteá cuatro Braseros piromantes (lingotes de cobre sobre piedra). Cada aparato espagírico va arriba de uno y toma su calor del combustible que le ponés: madera, carbón o carbón vegetal, a mano o con tolva.\n\nLa línea de refinado pide cuatro máquinas calentadas: el horno de calcinación, el caldero de licuefacción, el destilador y la incubadora."
+   ],
+   "sources": [
+    "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/recipe/crafting/shaped/pyromantic_brazier.json",
+    "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/modonomicon/books/the_hermetica/entries/apparatus/pyromantic_brazier.json",
+    "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/modonomicon/books/the_hermetica/entries/getting_started/needed_apparatus_spagyrics.json"
+   ]
+  },
+  {
+   "key": "theurgy_salt",
+   "deps": [
+    "theurgy_brazier"
+   ],
+   "type": "item",
+   "item": "theurgy:calcination_oven",
+   "layout": {
+    "x": 6,
+    "y": -3,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Salt: the Calcination Oven",
+    "Build a Calcination Oven (iron around a copper block) on a brazier. Right-click it with minerals (ores, raw metals, even stone, sand and dirt) and it calcinates them into Alchemical Salt; take the salt out with an empty hand.\n\nMineral Salt is the body for every metal or ore you refine. Stone, sand and dirt are a renewable source."
+   ],
+   "es_es": [
+    "Sal: el Horno de calcinación",
+    "Armá un Horno de calcinación (hierro alrededor de un bloque de cobre) sobre un brasero. Clic derecho con minerales (menas, metales en bruto, incluso piedra, arena y tierra) y los calcina en Sal alquímica; la sacás con la mano vacía.\n\nLa Sal mineral es el cuerpo de todo metal o mena que refinás. La piedra, la arena y la tierra son una fuente renovable."
+   ],
+   "sources": [
+    "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/recipe/crafting/shaped/calcination_oven.json",
+    "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/modonomicon/books/the_hermetica/entries/getting_started/create_salt.json",
+    "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/modonomicon/books/the_hermetica/entries/getting_started/strata_recycling.json"
+   ]
+  },
+  {
+   "key": "theurgy_solvent",
+   "deps": [
+    "theurgy_brazier"
+   ],
+   "type": "item",
+   "item": "theurgy:sal_ammoniac_bucket",
+   "layout": {
+    "x": 6,
+    "y": 3,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Sal Ammoniac: the solvent",
+    "Build a Sal Ammoniac Accumulator (stone, iron and sticks) on top of a Sal Ammoniac Tank. Fill the accumulator with up to ten water buckets and wait: traces of Sal Ammoniac collect in the tank. A Sal Ammoniac Crystal (found while mining) dissolved in it speeds this up a lot.\n\nTake the solvent out with a bucket. It strips matter of salt and mercury and leaves the sulfur behind."
+   ],
+   "es_es": [
+    "Sal amoníaco: el solvente",
+    "Armá un Acumulador de sal amoníaco (piedra, hierro y palos) arriba de un Tanque de sal amoníaco. Llená el acumulador con hasta diez baldes de agua y esperá: se juntan trazas de Sal amoníaco en el tanque. Un Cristal de sal amoníaco (se encuentra minando) disuelto ahí lo acelera mucho.\n\nSacá el solvente con un balde. Le quita la sal y el mercurio a la materia y deja el azufre."
+   ],
+   "sources": [
+    "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/recipe/crafting/shaped/sal_ammoniac_accumulator.json",
+    "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/recipe/crafting/shaped/sal_ammoniac_tank.json",
+    "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/modonomicon/books/the_hermetica/entries/getting_started/create_solvent.json"
+   ]
+  },
+  {
+   "key": "theurgy_sulfur",
+   "deps": [
+    "theurgy_solvent"
+   ],
+   "type": "item",
+   "item": "theurgy:alchemical_sulfur_iron",
+   "layout": {
+    "x": 9,
+    "y": 3,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Sulfur: the Liquefaction Cauldron",
+    "Build a Liquefaction Cauldron (copper around a cauldron, on stone) over a brazier, fill it with a Sal Ammoniac bucket and right-click it with a raw metal or ore. It extracts Alchemical Sulfur, and one raw material gives several sulfurs: this is where the multiplication happens.\n\nThe sulfur's name tells you what it becomes, for example Alchemical Sulfur of Iron."
+   ],
+   "es_es": [
+    "Azufre: el Caldero de licuefacción",
+    "Armá un Caldero de licuefacción (cobre alrededor de un caldero, sobre piedra) arriba de un brasero, llenalo con un balde de Sal amoníaco y hacele clic derecho con un metal en bruto o una mena. Extrae Azufre alquímico, y un material en bruto da varios azufres: acá ocurre la multiplicación.\n\nEl nombre del azufre te dice en qué se va a convertir, por ejemplo Azufre alquímico de hierro."
+   ],
+   "sources": [
+    "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/recipe/crafting/shaped/liquefaction_cauldron.json",
+    "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/modonomicon/books/the_hermetica/entries/getting_started/create_sulfur.json",
+    "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/modonomicon/books/the_hermetica/entries/getting_started/ore_refining.json"
+   ]
+  },
+  {
+   "key": "theurgy_mercury",
+   "deps": [
+    "theurgy_salt"
+   ],
+   "type": "item",
+   "item": "theurgy:mercury_shard",
+   "count": 8,
+   "layout": {
+    "x": 9,
+    "y": -3,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Mercury: the Distiller",
+    "Build a Mercury Distiller (iron around a copper block, on stone) over a brazier and feed it almost anything: crops, food, ores, raw metals, stone, sand, glass. It distills Mercury Shards; more valuable and more refined items give more.\n\nMercury is the energy of matter. Besides recombining items it powers the Mercury Catalyst and Theurgy's item logistics."
+   ],
+   "es_es": [
+    "Mercurio: el Destilador",
+    "Armá un Destilador de mercurio (hierro alrededor de un bloque de cobre, sobre piedra) arriba de un brasero y dale casi cualquier cosa: cultivos, comida, menas, metales en bruto, piedra, arena, vidrio. Destila Fragmentos de mercurio; los ítems más valiosos y refinados dan más.\n\nEl mercurio es la energía de la materia. Además de recombinar ítems, alimenta el Catalizador de mercurio y la logística de ítems de Theurgy."
+   ],
+   "sources": [
+    "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/recipe/crafting/shaped/distiller.json",
+    "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/modonomicon/books/the_hermetica/entries/getting_started/create_mercury.json",
+    "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/modonomicon/books/the_hermetica/entries/apparatus/mercury_flux.json"
+   ]
+  },
+  {
+   "key": "theurgy_incubator",
+   "deps": [
+    "theurgy_sulfur",
+    "theurgy_mercury"
+   ],
+   "type": "item",
+   "item": "theurgy:incubator",
+   "layout": {
+    "x": 12,
+    "y": 0,
+    "size": 1.5,
+    "shape": "hexagon"
+   },
+   "en_us": [
+    "The Incubator: three ingots from one",
+    "Build the Incubator (planks, gold, copper and stone) with its three vessels around it: a Mercury Vessel, a Salt Vessel and a Sulfur Vessel. Fill each with its principle, heat the Incubator and take out the result.\n\nFollowing the Hermetica's example, one raw iron becomes three iron ingots. That triple yield on raw metals is Theurgy's main reason to exist in an Act II base."
+   ],
+   "es_es": [
+    "La Incubadora: tres lingotes por uno",
+    "Armá la Incubadora (tablones, oro, cobre y piedra) con sus tres recipientes alrededor: el de Mercurio, el de Sal y el de Azufre. Llená cada uno con su principio, calentá la Incubadora y sacá el resultado.\n\nSiguiendo el ejemplo de la Hermética, un hierro en bruto se vuelve tres lingotes de hierro. Ese triple rendimiento sobre metales en bruto es la razón principal de Theurgy en una base del acto II."
+   ],
+   "sources": [
+    "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/recipe/crafting/shaped/incubator.json",
+    "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/recipe/crafting/shaped/incubator_mercury_vessel.json",
+    "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/recipe/crafting/shaped/incubator_salt_vessel.json",
+    "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/recipe/crafting/shaped/incubator_sulfur_vessel.json",
+    "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/modonomicon/books/the_hermetica/entries/getting_started/incubation.json"
+   ]
+  },
+  {
+   "key": "theurgy_automation",
+   "deps": [
+    "theurgy_incubator"
+   ],
+   "type": "item",
+   "item": "theurgy:caloric_flux_emitter",
+   "optional": true,
+   "layout": {
+    "x": 12,
+    "y": 3,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Tip: automating the line",
+    "Every apparatus follows the same rules: an empty hand takes the output first, then the input; an item in hand is inserted; fluid containers fill or drain it. Hoppers and pipes work the same way.\n\nThe Caloric Flux Emitter (gold, stone, mercury and a campfire or a lava bucket) heats apparatus without fuel and from a distance, which removes the most tedious part."
+   ],
+   "es_es": [
+    "Tip: automatizar la línea",
+    "Todo aparato sigue las mismas reglas: la mano vacía saca primero la salida y después la entrada; un ítem en la mano se inserta; los recipientes de fluido lo llenan o vacían. Tolvas y caños funcionan igual.\n\nEl Emisor de flujo calórico (oro, piedra, mercurio y una fogata o un balde de lava) calienta los aparatos sin combustible y a distancia, y eso saca la parte más tediosa."
+   ],
+   "sources": [
+    "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/modonomicon/books/the_hermetica/entries/apparatus/how_to.json",
+    "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/recipe/crafting/shaped/caloric_flux_emitter_from_campfire.json",
+    "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/modonomicon/books/the_hermetica/entries/getting_started/caloric_flux_emitter.json"
+   ]
+  },
+  {
+   "key": "theurgy_logistics",
+   "deps": [
+    "theurgy_automation"
+   ],
+   "type": "item",
+   "item": "theurgy:logistics_item_extractor",
+   "optional": true,
+   "layout": {
+    "x": 15,
+    "y": 3,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Mercurial logistics",
+    "Mercury Shards also move items over copper wire. Craft Mercurial Item Extractors and Inserters (copper and a mercury shard), connect them with Copper Wire and configure them with the Mercurial Wand; list and attribute filters limit what moves.\n\nOccultism's storage actuator is optimized for Theurgy's extractor with a list filter: it is the recommended way to pull items out of a big magic storage."
+   ],
+   "es_es": [
+    "Logística mercurial",
+    "Los Fragmentos de mercurio también mueven ítems por cable de cobre. Crafteá Extractores e Insertadores mercuriales de ítems (cobre y un fragmento de mercurio), conectalos con Cable de cobre y configuralos con la Varita mercurial; los filtros de lista y de atributos limitan lo que se mueve.\n\nEl accionador de almacenamiento de Occultism está optimizado para el extractor de Theurgy con filtro de lista: es la forma recomendada de sacar ítems de un almacén mágico grande."
+   ],
+   "sources": [
+    "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/recipe/crafting/shaped/logistics_item_extractor.json",
+    "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/recipe/crafting/shaped/copper_wire.json",
+    "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/recipe/crafting/shaped/mercurial_wand.json",
+    "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/modonomicon/books/the_hermetica/entries/logistics/intro.json",
+    "jar:occultism-1.21.1-neoforge-1.224.4.jar:data/occultism/modonomicon/books/dictionary_of_spirits/entries/storage/storage_system_automation_theurgy.json"
+   ]
+  },
+  {
+   "key": "theurgy_catalyst",
+   "deps": [
+    "theurgy_incubator"
+   ],
+   "type": "item",
+   "item": "theurgy:mercury_catalyst",
+   "layout": {
+    "x": 15,
+    "y": -3,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Mercury Catalyst",
+    "Build a Mercury Catalyst (iron, gold, a quartz block and mercury) and insert Mercury Shards: it slowly turns them into Mercury Flux, raw energy that flux emitters use. A redstone signal stops it from outputting, though it keeps converting.\n\nFlux is what drives the Reformation Array later."
+   ],
+   "es_es": [
+    "Catalizador de mercurio",
+    "Armá un Catalizador de mercurio (hierro, oro, un bloque de cuarzo y mercurio) y metele Fragmentos de mercurio: los convierte despacio en Flujo de mercurio, energía cruda que usan los emisores de flujo. Una señal de redstone le impide entregarlo, aunque siga convirtiendo.\n\nEl flujo es lo que mueve el Conjunto de reformación más adelante."
+   ],
+   "sources": [
+    "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/recipe/crafting/shaped/mercury_catalyst.json",
+    "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/modonomicon/books/the_hermetica/entries/apparatus/mercury_catalyst.json",
+    "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/modonomicon/books/the_hermetica/entries/apparatus/mercury_flux.json"
+   ]
+  },
+  {
+   "key": "theurgy_niter",
+   "deps": [
+    "theurgy_catalyst"
+   ],
+   "type": "item",
+   "item": "theurgy:alchemical_niter_metals_common",
+   "layout": {
+    "x": 18,
+    "y": 0,
+    "size": 1.25,
+    "shape": "square"
+   },
+   "en_us": [
+    "Sulfur and Niter: the idea of transformation",
+    "Sulfur resists change, so alchemists turn it into Alchemical Niter, the concept behind a material (common metal, precious gem) rather than the material itself. Niter is malleable.\n\nThree processes build on it: Reformation (between sulfurs of the same type and tier), Transmutation (another type, same tier: two metals for one gem, roughly) and Exaltation (another tier, four to one). Together they allow almost any material from almost any other."
+   ],
+   "es_es": [
+    "Azufre y Nitro: la idea de transformar",
+    "El azufre resiste el cambio, así que los alquimistas lo convierten en Nitro alquímico, el concepto detrás de un material (metal común, gema preciosa) en vez del material en sí. El nitro es maleable.\n\nSobre eso se apoyan tres procesos: Reformación (entre azufres del mismo tipo y nivel), Transmutación (otro tipo, mismo nivel: más o menos dos metales por una gema) y Exaltación (otro nivel, cuatro a uno). Juntos permiten casi cualquier material a partir de casi cualquier otro."
+   ],
+   "sources": [
+    "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/modonomicon/books/the_hermetica/entries/getting_started/alchemical_niter.json",
+    "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/modonomicon/books/the_hermetica/entries/getting_started/replication.json",
+    "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/modonomicon/books/the_hermetica/entries/getting_started/convert_to_other_type.json",
+    "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/modonomicon/books/the_hermetica/entries/getting_started/convert_to_other_tier.json"
+   ]
+  },
+  {
+   "key": "theurgy_emitter",
+   "deps": [
+    "theurgy_niter"
+   ],
+   "type": "item",
+   "item": "theurgy:sulfuric_flux_emitter",
+   "layout": {
+    "x": 21,
+    "y": 0,
+    "size": 1.5,
+    "shape": "diamond"
+   },
+   "en_us": [
+    "ENTRELUMEN: the Sulfuric Flux Emitter",
+    "Reformation needs a Sulfuric Flux Emitter to feed the array. In ENTRELUMEN its recipe also takes a Containment Seal in an empty slot, besides gold, stone, a sal ammoniac crystal and a sulfur.\n\nThe Containment Seal is an Act IV component, so every Theurgy transformation (reformation, transmutation and exaltation) is an Act IV tool in this pack. Ore tripling stays free from Act II."
+   ],
+   "es_es": [
+    "ENTRELUMEN: el Emisor de flujo sulfúrico",
+    "La reformación pide un Emisor de flujo sulfúrico que alimente el conjunto. En ENTRELUMEN su receta además lleva un Sello de contención en un hueco libre, aparte de oro, piedra, un cristal de sal amoníaco y un azufre.\n\nEl Sello de contención es un componente del acto IV, así que toda transformación de Theurgy (reformación, transmutación y exaltación) es una herramienta del acto IV en este pack. El triple de menas sigue libre desde el acto II."
+   ],
+   "sources": [
+    "repo:pack/kubejs/server_scripts/entrelumen_arcane_balance.js#theurgy:crafting/shaped/sulfuric_flux_emitter",
+    "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/recipe/crafting/shaped/sulfuric_flux_emitter.json",
+    "repo:docs/design/arcane-expansion-family.md#staged-acquisition-and-removed-duplication"
+   ]
+  },
+  {
+   "key": "theurgy_array",
+   "deps": [
+    "theurgy_emitter"
+   ],
+   "type": "item",
+   "item": "theurgy:reformation_source_pedestal",
+   "optional": true,
+   "layout": {
+    "x": 24,
+    "y": -3,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "The Reformation Array",
+    "The array has no fixed shape: place a Target Pedestal (the sulfur you want more of), one or more Source Pedestals (the sulfurs to consume) and a Result Pedestal within a few blocks, link the pedestals to the emitter with the Mercurial Wand, and feed the emitter mercury flux.\n\nThe Hermetica's walkthrough turns lapis sulfur into quartz sulfur, then incubates quartz."
+   ],
+   "es_es": [
+    "El Conjunto de reformación",
+    "El conjunto no tiene forma fija: poné un Pedestal objetivo (el azufre del que querés más), uno o más Pedestales fuente (los azufres a consumir) y un Pedestal resultado a pocos bloques, enlazá los pedestales al emisor con la Varita mercurial y alimentá al emisor con flujo de mercurio.\n\nEl recorrido de la Hermética convierte azufre de lapislázuli en azufre de cuarzo y después incuba cuarzo."
+   ],
+   "sources": [
+    "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/modonomicon/books/the_hermetica/entries/apparatus/reformation_array.json",
+    "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/recipe/crafting/shaped/reformation_source_pedestal.json",
+    "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/recipe/crafting/shaped/reformation_target_pedestal.json",
+    "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/recipe/crafting/shaped/reformation_result_pedestal.json",
+    "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/modonomicon/books/the_hermetica/entries/getting_started/result_pedestal.json"
+   ]
+  },
+  {
+   "key": "theurgy_vats",
+   "deps": [
+    "theurgy_emitter"
+   ],
+   "type": "item",
+   "item": "theurgy:fermentation_vat",
+   "optional": true,
+   "layout": {
+    "x": 24,
+    "y": 3,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Fermentation and Digestion vats",
+    "The Fermentation Vat (copper, a barrel and a sulfur) turns sulfur into niter, using crops for fermentation. The Digestion Vat (sandstone, gold, a decorated pot and a sal ammoniac crystal) converts niter between tiers, with purified gold as catalyst.\n\nBoth only process while closed and only accept input while open; a redstone setup opens and closes them for automation."
+   ],
+   "es_es": [
+    "Tinas de fermentación y digestión",
+    "La Tina de fermentación (cobre, un barril y un azufre) convierte azufre en nitro, usando cultivos para fermentar. La Tina de digestión (arenisca, oro, una vasija decorada y un cristal de sal amoníaco) pasa nitro entre niveles, con oro purificado como catalizador.\n\nLas dos sólo procesan cerradas y sólo aceptan entradas abiertas; un armado de redstone las abre y cierra para automatizar."
+   ],
+   "sources": [
+    "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/recipe/crafting/shaped/fermentation_vat.json",
+    "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/recipe/crafting/shaped/digestion_vat.json",
+    "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/modonomicon/books/the_hermetica/entries/apparatus/fermentation_vat.json",
+    "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/modonomicon/books/the_hermetica/entries/apparatus/digestion_vat.json",
+    "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/modonomicon/books/the_hermetica/entries/apparatus/basic_vat_automation.json",
+    "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/modonomicon/books/the_hermetica/entries/getting_started/purified_gold.json"
+   ]
+  },
+  {
+   "key": "theurgy_balance",
+   "deps": [
+    "theurgy_emitter"
+   ],
+   "type": "checkmark",
+   "optional": true,
+   "icon": "theurgy:alchemical_niter_metals_common",
+   "layout": {
+    "x": 21,
+    "y": 3,
+    "size": 1.0,
+    "shape": "circle"
+   },
+   "en_us": [
+    "Quirk: why transmutation waits for Act IV",
+    "Reformation converts sulfurs within one rarity tier; combined with transmutation and exaltation it becomes a controlled replication route for almost any material. The pack treats that like other replication tools and ties it to the Containment Seal.\n\nRefine your ores with Theurgy from day one; plan transmutation as a mid-game tool for materials you cannot mine."
+   ],
+   "es_es": [
+    "Particularidad: por qué la transmutación espera al acto IV",
+    "La reformación convierte azufres dentro de un mismo nivel de rareza; sumada a la transmutación y la exaltación se vuelve una ruta de replicación controlada de casi cualquier material. El pack la trata como a otras herramientas de réplica y la ata al Sello de contención.\n\nRefiná tus menas con Theurgy desde el primer día; pensá la transmutación como una herramienta de medio juego para los materiales que no podés minar."
+   ],
+   "sources": [
+    "repo:docs/design/arcane-expansion-family.md#staged-acquisition-and-removed-duplication",
+    "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/modonomicon/books/the_hermetica/entries/getting_started/replication.json"
+   ]
+  },
+  {
+   "key": "theurgy_mastery",
+   "deps": [
+    "theurgy_array",
+    "theurgy_vats"
+   ],
+   "type": "checkmark",
+   "icon": "theurgy:incubator",
+   "layout": {
+    "x": 27,
+    "y": 0,
+    "size": 2.0,
+    "shape": "gear"
+   },
+   "en_us": [
+    "Mastery: the alchemist's laboratory",
+    "A heated line that triples every raw metal, flux feeding a reformation array, vats that climb tiers and mercurial wires carrying it all. Theurgy is the magical answer to Mekanism's ore processing, and it works without electricity.\n\nCompare yields with your tech line and keep whichever feels better; both are valid in ENTRELUMEN."
+   ],
+   "es_es": [
+    "Maestría: el laboratorio del alquimista",
+    "Una línea calentada que triplica todo metal en bruto, flujo que alimenta un conjunto de reformación, tinas que suben de nivel y cables mercuriales que lo llevan todo. Theurgy es la respuesta mágica al procesado de menas de Mekanism, y funciona sin electricidad.\n\nCompará rendimientos con tu línea técnica y quedate con la que más te guste; las dos valen en ENTRELUMEN."
+   ],
+   "sources": [
+    "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/modonomicon/books/the_hermetica/entries/getting_started/replication.json",
+    "repo:docs/design/arcane-expansion-family.md"
+   ]
+  }
+ ]
+}

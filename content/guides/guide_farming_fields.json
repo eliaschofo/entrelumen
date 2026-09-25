@@ -1,0 +1,407 @@
+{
+  "chapter": "guide_farming_fields",
+  "group": "qol",
+  "act": "I",
+  "icon": "farmersdelight:cabbage",
+  "title": {
+    "en_us": "Farming: Fields, Orchards and Pots",
+    "es_es": "Granjas: campos, frutales y macetas"
+  },
+  "subtitle": {
+    "en_us": "Farmer's Delight, Croptopia, Pam's, Herbs and Harvest, the Market, Botany Pots and the Altar of Growth.",
+    "es_es": "Farmer's Delight, Croptopia, Pam's, Herbs and Harvest, el Mercado, Botany Pots y el Altar de Crecimiento."
+  },
+  "quests": [
+    {
+      "key": "farming_fields_welcome",
+      "deps": [],
+      "type": "checkmark",
+      "layout": {
+        "x": 0,
+        "y": 0,
+        "size": 2.0,
+        "shape": "hexagon"
+      },
+      "en_us": [
+        "A Garden Before a Factory",
+        "ENTRELUMEN rewards eating many different foods, and it wants you fed before the story sends you far away. This chapter sets up your first fields and orchards, explains where the hundreds of crops come from, and ends with pots and altars that farm for you.\n\nJuan, Heliodor's gardener, would approve."
+      ],
+      "es_es": [
+        "Una huerta antes que una fábrica",
+        "ENTRELUMEN premia comer muchas comidas distintas, y quiere que estés bien alimentado antes de que la historia te mande lejos. Este capítulo arma tus primeros campos y frutales, explica de dónde salen los cientos de cultivos y termina con macetas y altares que cultivan por vos.\n\nJuan, el jardinero de Heliodor, estaría de acuerdo."
+      ],
+      "sources": [
+        "repo:docs/design/story-bible.md",
+        "repo:docs/design/cooking-provisions-family.md"
+      ]
+    },
+    {
+      "key": "farming_fields_knife",
+      "deps": [
+        "farming_fields_welcome"
+      ],
+      "type": "item",
+      "item": "farmersdelight:iron_knife",
+      "layout": {
+        "x": 3,
+        "y": -2,
+        "size": 1.25,
+        "shape": "circle"
+      },
+      "en_us": [
+        "Farmer's Delight: the Knife",
+        "Everything in Farmer's Delight starts with a &eKnife&r. Use it on grass, wheat or rice to collect &eStraw&r, on pigs or hoglins for ham, and on a &eCutting Board&r to break food down: hold the tool in hand and use the board with the item on it.\n\nWild cabbages, onions, tomatoes and rice grow across many climates; break them for seeds."
+      ],
+      "es_es": [
+        "Farmer's Delight: el cuchillo",
+        "Todo en Farmer's Delight empieza con un &eCuchillo&r. Usalo en pasto, trigo o arroz para juntar &ePaja&r, en cerdos o hoglins para jamón, y en una &eTabla de cortar&r para despiezar comida: con la herramienta en la mano, usá la tabla con el ítem encima.\n\nLos repollos, cebollas, tomates y arroz silvestres crecen en muchos climas; rompelos para conseguir semillas."
+      ],
+      "sources": [
+        "jar:FarmersDelight-1.21.1-1.3.3.jar:assets/farmersdelight/lang/en_us.json"
+      ]
+    },
+    {
+      "key": "farming_fields_fd_crops",
+      "deps": [
+        "farming_fields_knife"
+      ],
+      "type": "item",
+      "item": "farmersdelight:rice",
+      "layout": {
+        "x": 6,
+        "y": -3.5,
+        "size": 1.0,
+        "shape": "circle"
+      },
+      "en_us": [
+        "Tomatoes, Rice and Rope",
+        "Two Farmer's Delight crops grow differently: &erice&r is planted in a shallow water puddle, and &etomatoes&r climb when you hang rope above them, giving more tomatoes per plant.\n\nCabbages and onions grow like any crop."
+      ],
+      "es_es": [
+        "Tomates, arroz y soga",
+        "Dos cultivos de Farmer's Delight crecen distinto: el &earroz&r se planta en un charco de agua poco profunda, y los &etomates&r trepan si colgás una soga encima, lo que da más tomates por planta.\n\nLos repollos y las cebollas crecen como cualquier cultivo."
+      ],
+      "sources": [
+        "jar:FarmersDelight-1.21.1-1.3.3.jar:assets/farmersdelight/lang/en_us.json"
+      ]
+    },
+    {
+      "key": "farming_fields_rich_soil",
+      "deps": [
+        "farming_fields_knife"
+      ],
+      "type": "item",
+      "item": "farmersdelight:organic_compost",
+      "layout": {
+        "x": 6,
+        "y": -0.5,
+        "size": 1.0,
+        "shape": "circle"
+      },
+      "en_us": [
+        "Organic Compost and Rich Soil",
+        "Place &eOrganic Compost&r and wait: it slowly turns into &eRich Soil&r, faster with sunlight, water and mushrooms nearby. Crops on rich soil grow better, and mushrooms planted on it grow into &emushroom colonies&r you can shear again and again.\n\nTill rich soil for Rich Soil Farmland."
+      ],
+      "es_es": [
+        "Compost orgánico y tierra fértil",
+        "Poné &eCompost orgánico&r y esperá: lentamente se convierte en &eTierra fértil&r, más rápido con sol, agua y hongos cerca. Los cultivos sobre tierra fértil crecen mejor, y los hongos plantados en ella forman &ecolonias de hongos&r que podés esquilar una y otra vez.\n\nArá la tierra fértil para tener Tierra de cultivo fértil."
+      ],
+      "sources": [
+        "jar:FarmersDelight-1.21.1-1.3.3.jar:assets/farmersdelight/lang/en_us.json"
+      ]
+    },
+    {
+      "key": "farming_fields_many_crops",
+      "deps": [
+        "farming_fields_welcome"
+      ],
+      "type": "item",
+      "item": "minecraft:wheat_seeds",
+      "layout": {
+        "x": 3,
+        "y": 2,
+        "size": 1.25,
+        "shape": "circle"
+      },
+      "en_us": [
+        "Hundreds of Crops",
+        "Three more mods fill the fields: &eCroptopia&r, &ePam's HarvestCraft 2&r (crops, fruit trees and the food core) and &eMama's Herbs and Harvest&r (herbs, vegetables, dairy and fruit trees). Seeds come from breaking grass and wild gardens, from chests and from the Market.\n\nThey feed the variety that Spice of Life rewards with extra hearts."
+      ],
+      "es_es": [
+        "Cientos de cultivos",
+        "Tres mods más llenan los campos: &eCroptopia&r, &ePam's HarvestCraft 2&r (cultivos, frutales y el núcleo de comidas) y &eMama's Herbs and Harvest&r (hierbas, verduras, lácteos y frutales). Las semillas salen de romper pasto y huertas silvestres, de cofres y del Mercado.\n\nAlimentan la variedad que Spice of Life premia con corazones extra."
+      ],
+      "sources": [
+        "repo:docs/design/mod-pingpong.md",
+        "repo:docs/design/cooking-provisions-family.md"
+      ]
+    },
+    {
+      "key": "farming_fields_unified",
+      "deps": [
+        "farming_fields_many_crops"
+      ],
+      "type": "item",
+      "item": "farmersdelight:tomato",
+      "layout": {
+        "x": 6,
+        "y": 2,
+        "size": 1.0,
+        "shape": "pentagon"
+      },
+      "en_us": [
+        "Pack Change: One Tomato, Not Four",
+        "Several mods add the same crop. The pack unifies 69 of them with Almost Unified: a tomato, a cabbage or a lemon drops the same item whatever plant it came from, and EMI hides the duplicates. The kept item follows a priority: Farmer's Delight first, then Croptopia, then Pam's, then Herbs and Harvest and the Delights.\n\nAny recipe that asks for that crop by tag accepts it."
+      ],
+      "es_es": [
+        "Cambio del pack: un tomate, no cuatro",
+        "Varios mods agregan el mismo cultivo. El pack unifica 69 de ellos con Almost Unified: un tomate, un repollo o un limón sueltan el mismo ítem venga de la planta que venga, y EMI oculta los duplicados. El ítem que queda sigue una prioridad: primero Farmer's Delight, después Croptopia, después Pam's, después Herbs and Harvest y los Delights.\n\nToda receta que pida ese cultivo por tag lo acepta."
+      ],
+      "sources": [
+        "repo:pack/config/almostunified/unification/crops.json",
+        "repo:pack/config/almostunified/placeholders.json",
+        "repo:docs/design/mod-pingpong.md"
+      ]
+    },
+    {
+      "key": "farming_fields_orchards",
+      "deps": [
+        "farming_fields_unified"
+      ],
+      "type": "item",
+      "item": "minecraft:apple",
+      "layout": {
+        "x": 9,
+        "y": 3.5,
+        "size": 1.0,
+        "shape": "circle"
+      },
+      "en_us": [
+        "Orchards",
+        "Pam's Trees and Herbs and Harvest grow fruit trees in the wild: apples, oranges, cherries, nuts, spices and many more. Harvest fruit from the leaves and plant saplings at home.\n\nPam's makes a replacement sapling from eight matching fruits and a sapling, so an orchard never runs out once you have one tree."
+      ],
+      "es_es": [
+        "Frutales",
+        "Pam's Trees y Herbs and Harvest hacen crecer frutales en el mundo: manzanas, naranjas, cerezas, frutos secos, especias y muchos más. Cosechá la fruta de las hojas y plantá los brotes en casa.\n\nPam's fabrica un brote nuevo con ocho frutas iguales y un brote, así que un frutal nunca se pierde una vez que tenés un árbol."
+      ],
+      "sources": [
+        "repo:docs/design/cooking-provisions-family.md",
+        "jar:pamhc2trees-NEOFORGE-1.21.1-1.0.9.jar:META-INF/neoforge.mods.toml"
+      ]
+    },
+    {
+      "key": "farming_fields_market",
+      "deps": [
+        "farming_fields_unified",
+        "farming_fields_rich_soil"
+      ],
+      "type": "item",
+      "item": "farmingforblockheads:market",
+      "layout": {
+        "x": 9,
+        "y": 0.5,
+        "size": 1.25,
+        "shape": "circle"
+      },
+      "en_us": [
+        "The Market",
+        "&eFarming for Blockheads&r adds the &eMarket&r: place it, a Merchant comes to run it, and you trade emeralds for seeds, saplings and fertilizers. It also sells the Pam's fruit saplings that the pack removed from natural generation, for one emerald each.\n\nIts &efertilizers&r upgrade farmland: red speeds growth, green increases output and yellow prevents trampling. The &eChicken Nest&r collects eggs and the &eFeeding Trough&r feeds animals ready to breed."
+      ],
+      "es_es": [
+        "El Mercado",
+        "&eFarming for Blockheads&r agrega el &eMercado&r: ponelo, llega un Mercader a atenderlo, y cambiás esmeraldas por semillas, brotes y fertilizantes. También vende los brotes frutales de Pam's que el pack sacó de la generación natural, a una esmeralda cada uno.\n\nSus &efertilizantes&r mejoran la tierra de cultivo: el rojo acelera el crecimiento, el verde aumenta la cosecha y el amarillo evita que se pisotee. El &eNido de gallinas&r junta los huevos y el &eComedero&r alimenta a los animales listos para criar."
+      ],
+      "sources": [
+        "jar:farmingforblockheads-neoforge-1.21.1-21.1.13.jar:assets/farmingforblockheads/lang/en_us.json",
+        "repo:docs/design/cooking-provisions-family.md"
+      ]
+    },
+    {
+      "key": "farming_fields_pams_quirk",
+      "deps": [
+        "farming_fields_orchards"
+      ],
+      "type": "checkmark",
+      "optional": true,
+      "icon": "minecraft:oak_sapling",
+      "layout": {
+        "x": 12,
+        "y": 3.5,
+        "size": 1.0,
+        "shape": "diamond"
+      },
+      "en_us": [
+        "Quirk: Nine Fruit Trees Moved to the Market",
+        "Nine Pam's tree species overlapped with identical Herbs and Harvest trees: avocado, cherry, cinnamon, lemon, lime, orange, peach, pear and plum. Their Pam's versions no longer generate in the world; Herbs and Harvest's still do. Buy the Pam's saplings at the Market if a recipe wants them.\n\nThanks to unification, the fruit itself is the same item either way."
+      ],
+      "es_es": [
+        "Particularidad: nueve frutales pasaron al Mercado",
+        "Nueve especies de árboles de Pam's se superponían con árboles idénticos de Herbs and Harvest: palta, cereza, canela, limón, lima, naranja, durazno, pera y ciruela. Sus versiones de Pam's ya no aparecen en el mundo; las de Herbs and Harvest sí. Comprá los brotes de Pam's en el Mercado si alguna receta los pide.\n\nGracias a la unificación, la fruta es el mismo ítem en ambos casos."
+      ],
+      "sources": [
+        "repo:docs/design/cooking-provisions-family.md",
+        "repo:pack/kubejs/data/pamhc2trees"
+      ]
+    },
+    {
+      "key": "farming_fields_ultimine_farm",
+      "deps": [
+        "farming_fields_fd_crops"
+      ],
+      "type": "checkmark",
+      "optional": true,
+      "icon": "minecraft:iron_hoe",
+      "layout": {
+        "x": 12,
+        "y": -3.5,
+        "size": 1.0,
+        "shape": "diamond"
+      },
+      "en_us": [
+        "Tip: Farm a Whole Field at Once",
+        "FTB Ultimine works on farms: hold &eV&r with a hoe to till many blocks, and right-click ripe crops with V held to harvest many at once. Even without V, right-clicking a ripe crop harvests it.\n\nSlice and Dice's &esprinklers&r water or fertilize an area when fed with fluid."
+      ],
+      "es_es": [
+        "Truco: trabajá un campo entero de una vez",
+        "FTB Ultimine sirve en la granja: mantené &eV&r con una azada para arar muchos bloques, y hacé clic derecho en cultivos maduros con V para cosechar muchos a la vez. Aun sin V, clic derecho en un cultivo maduro lo cosecha.\n\nLos &easpersores&r de Slice and Dice riegan o fertilizan un área cuando les das fluido."
+      ],
+      "sources": [
+        "jar:ftb-ultimine-neoforge-2101.1.15.jar:dev/ftb/mods/ftbultimine/config/FTBUltimineServerConfig.class",
+        "repo:docs/design/mod-pingpong.md"
+      ]
+    },
+    {
+      "key": "farming_fields_pots",
+      "deps": [
+        "farming_fields_market"
+      ],
+      "type": "item",
+      "item": "botanypots:terracotta_botany_pot",
+      "layout": {
+        "x": 12,
+        "y": 0.5,
+        "size": 1.5,
+        "shape": "square"
+      },
+      "en_us": [
+        "Botany Pots",
+        "A &eBotany Pot&r grows a crop or sapling with no field: put a soil (dirt, farmland and others) and a seed in it, and it grows on its own. Its tooltip shows growth time and yield from the pot, the soil and a tool placed in it. A &eHopper Botany Pot&r harvests automatically into the container below.\n\nNot every seed fits a pot. Press U on a seed in EMI: if a Botany Pots page appears, it can be potted. Botany Trees adds saplings that grow logs and fruit."
+      ],
+      "es_es": [
+        "Botany Pots",
+        "Una &eBotany Pot&r hace crecer un cultivo o un brote sin campo: poné una tierra (tierra, tierra de cultivo y otras) y una semilla, y crece solo. Su tooltip muestra el tiempo de crecimiento y el rendimiento por la maceta, la tierra y una herramienta puesta en ella. Una &eBotany Pot con tolva&r cosecha sola al contenedor de abajo.\n\nNo toda semilla entra en una maceta. Apretá U sobre una semilla en EMI: si aparece una página de Botany Pots, se puede plantar. Botany Trees agrega brotes que dan troncos y frutos."
+      ],
+      "sources": [
+        "jar:botanypots-neoforge-1.21.1-21.1.44.jar:assets/botanypots/lang/en_us.json",
+        "jar:botanytrees-neoforge-1.21.1-21.1.7.jar:META-INF/neoforge.mods.toml"
+      ]
+    },
+    {
+      "key": "farming_fields_pot_tiers",
+      "deps": [
+        "farming_fields_pots"
+      ],
+      "type": "item",
+      "item": "botanypotstiers:elite_upgrade",
+      "layout": {
+        "x": 15,
+        "y": -1.5,
+        "size": 1.0,
+        "shape": "pentagon"
+      },
+      "en_us": [
+        "Pack Change: Pot Tiers Follow the Acts",
+        "Better pots cost the act's component instead of arbitrary catalysts:\n\n- &eHopper&r pots: a &eCalibration Frame&r (act II);\n- &eElite&r pots: a &ePropagation Core&r (act III);\n- &eUltra&r pots: an &eEcosystem Capsule&r (act IV);\n- &eMega&r pots: a &eRenewal Engine&r (act V).\n\nThe tier upgrade items (Elite, Ultra, Mega) apply to a placed pot of the previous tier and keep its contents. Hold Shift over a tiered pot to see its speed and multiplier."
+      ],
+      "es_es": [
+        "Cambio del pack: los niveles de macetas siguen los actos",
+        "Las mejores macetas cuestan el componente del acto en lugar de catalizadores arbitrarios:\n\n- macetas con &etolva&r: un &eMarco de calibración&r (acto II);\n- macetas &eElite&r: un &eNúcleo de propagación&r (acto III);\n- macetas &eUltra&r: una &eCápsula de ecosistema&r (acto IV);\n- macetas &eMega&r: un &eMotor de renovación&r (acto V).\n\nLos ítems de mejora (Elite, Ultra, Mega) se aplican a una maceta colocada del nivel anterior y conservan su contenido. Mantené Shift sobre una maceta de nivel para ver su velocidad y multiplicador."
+      ],
+      "sources": [
+        "repo:docs/design/resource-balance.md",
+        "repo:pack/kubejs/server_scripts/entrelumen_resource_balance.js",
+        "jar:botanypotstiers-neoforge-1.21.1-7.0.11.jar:assets/botanypotstiers/lang/en_us.json"
+      ]
+    },
+    {
+      "key": "farming_fields_growth_altar",
+      "deps": [
+        "farming_fields_pots"
+      ],
+      "type": "item",
+      "item": "entrelumen:growth_altar",
+      "layout": {
+        "x": 15,
+        "y": 2.5,
+        "size": 1.0,
+        "shape": "pentagon"
+      },
+      "en_us": [
+        "The Altar of Growth",
+        "Juan's own design, and an act III reward. While it burns &ebone blocks&r, crops and saplings in the 33 by 33 field around it (from four blocks below to four above) grow about &e20 times&r faster, and ripe harvests drop &edouble&r.\n\nSeeds are never doubled, melons, pumpkins, cane, cactus and bamboo grow faster but drop normally, and Mystical Agriculture crops grow faster without extra essence. The Altars chapter has the details."
+      ],
+      "es_es": [
+        "El Altar de Crecimiento",
+        "Diseño del propio Juan y recompensa del acto III. Mientras quema &ebloques de hueso&r, los cultivos y brotes del campo de 33 por 33 a su alrededor (de cuatro bloques abajo a cuatro arriba) crecen unas &e20 veces&r más rápido, y las cosechas maduras sueltan el &edoble&r.\n\nLas semillas nunca se duplican; los melones, calabazas, cañas, cactus y bambú crecen más rápido pero sueltan lo normal, y los cultivos de Mystical Agriculture crecen más rápido sin esencia extra. El capítulo de los Altares tiene los detalles."
+      ],
+      "sources": [
+        "repo:docs/design/ark-altars.md",
+        "repo:companion/src/main/java/dev/entrelumen/GrowthAltarEntity.java",
+        "repo:companion/src/main/resources/data/entrelumen/campaign/projects.json"
+      ]
+    },
+    {
+      "key": "farming_fields_tip_animals",
+      "deps": [
+        "farming_fields_fd_crops"
+      ],
+      "type": "item",
+      "item": "farmingforblockheads:feeding_trough",
+      "optional": true,
+      "layout": {
+        "x": 9,
+        "y": -3,
+        "size": 1.0,
+        "shape": "diamond"
+      },
+      "en_us": [
+        "Tip: Animals and Breeding",
+        "Press U over an animal's spawn egg or search it in EMI: Just Enough Breeding lists what each one eats to breed, including modded animals from Naturalist and Friends and Foes. A Feeding Trough keeps a pen breeding without you."
+      ],
+      "es_es": [
+        "Truco: animales y cría",
+        "Apretá U sobre el huevo de un animal o buscalo en EMI: Just Enough Breeding lista qué come cada uno para reproducirse, incluidos los animales de Naturalist y Friends and Foes. Un Comedero mantiene criando un corral sin vos."
+      ],
+      "sources": [
+        "jar:justenoughbreeding-neoforge-1.21.1-3.2.1.jar:META-INF/neoforge.mods.toml",
+        "jar:farmingforblockheads-neoforge-1.21.1-21.1.13.jar:assets/farmingforblockheads/lang/en_us.json"
+      ]
+    },
+    {
+      "key": "farming_fields_close",
+      "deps": [
+        "farming_fields_pot_tiers",
+        "farming_fields_growth_altar"
+      ],
+      "type": "checkmark",
+      "icon": "minecraft:hay_block",
+      "layout": {
+        "x": 18,
+        "y": 0.5,
+        "size": 2.0,
+        "shape": "hexagon"
+      },
+      "en_us": [
+        "Fields That Feed a Team",
+        "You have crops from four mods under one name, orchards, a Market, pots that farm alone and, from act III, an altar that makes the field run twenty times faster.\n\nNext: turn those crops into meals in the Kitchen chapter, or into resources in the Resource Farming chapter."
+      ],
+      "es_es": [
+        "Campos que alimentan a un equipo",
+        "Tenés cultivos de cuatro mods bajo un mismo nombre, frutales, un Mercado, macetas que cultivan solas y, desde el acto III, un altar que hace andar el campo veinte veces más rápido.\n\nLo que sigue: convertir esos cultivos en comidas en el capítulo de Cocina, o en recursos en el de Granjas de recursos."
+      ],
+      "sources": [
+        "repo:content/guides/README.md"
+      ]
+    }
+  ]
+}

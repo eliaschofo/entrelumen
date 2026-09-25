@@ -1,0 +1,430 @@
+{
+  "chapter": "guide_gear",
+  "group": "exploration",
+  "act": "any",
+  "icon": "minecraft:netherite_sword",
+  "title": {
+    "en_us": "Weapons and armor by act",
+    "es_es": "Armas y armaduras por acto"
+  },
+  "subtitle": {
+    "en_us": "What to wear and wield at each point of the story, and where it comes from.",
+    "es_es": "Qué ponerte y qué empuñar en cada momento de la historia, y de dónde sale."
+  },
+  "quests": [
+    {
+      "key": "gear_welcome",
+      "deps": [],
+      "type": "checkmark",
+      "layout": {
+        "x": 0,
+        "y": 0,
+        "size": 2.0,
+        "shape": "hexagon"
+      },
+      "en_us": [
+        "Gear follows the story",
+        "This chapter is an index: for each act, the gear worth having and where it comes from, with links in spirit to the dimension and boss chapters. The rule of thumb in ENTRELUMEN: the world gets harder as the story advances (World Tiers), and the best set of the pack, Luminous gear, only appears in act VI.\n\nNothing here is mandatory. Pick what fits your style."
+      ],
+      "es_es": [
+        "El equipo sigue a la historia",
+        "Este capítulo es un índice: para cada acto, el equipo que conviene tener y de dónde sale, en sintonía con los capítulos de dimensiones y de jefes. La regla general en ENTRELUMEN: el mundo se vuelve más difícil a medida que avanza la historia (World Tiers), y el mejor set del pack, el equipo Luminoso, recién aparece en el acto VI.\n\nNada de esto es obligatorio. Elegí lo que vaya con tu estilo."
+      ],
+      "sources": [
+        "repo:docs/design/story-bible.md",
+        "repo:docs/design/apotheosis-family.md",
+        "repo:docs/design/luminous-gear.md"
+      ]
+    },
+    {
+      "key": "gear_tiers",
+      "deps": [
+        "gear_welcome"
+      ],
+      "type": "checkmark",
+      "icon": "apotheosis:salvaging_table",
+      "layout": {
+        "x": 0,
+        "y": -3,
+        "size": 1.0,
+        "shape": "rsquare"
+      },
+      "en_us": [
+        "The story sets the difficulty",
+        "ENTRELUMEN uses Apotheosis World Tiers, but you do not choose them: when your team completes an act, the tier rises by itself and never goes back down, not even if you leave the team. After the act renumbering the ladder is Haven (acts I and II), Frontier (III), Ascent (IV), Summit (V) and Pinnacle (VI).\n\nHigher tiers mean better loot and tougher monsters. Apothic Invaders, elite mobs with affix gear, appear from Frontier, at most once every 10 minutes per player (the pack raised the cooldown). Ctrl+T shows the tier screen; its button stays disabled."
+      ],
+      "es_es": [
+        "La historia marca la dificultad",
+        "ENTRELUMEN usa los World Tiers de Apotheosis, pero no los elegís: cuando tu equipo completa un acto, el nivel sube solo y nunca baja, ni siquiera si dejás el equipo. Después de la renumeración de actos la escalera es Haven (actos I y II), Frontier (III), Ascent (IV), Summit (V) y Pinnacle (VI).\n\nUn nivel más alto trae mejor botín y monstruos más duros. Los Invasores Apóticos, mobs de élite con equipo con afijos, aparecen desde Frontier, como mucho uno cada 10 minutos por jugador (el pack subió la espera). Ctrl+T muestra la pantalla de niveles; su botón queda desactivado."
+      ],
+      "sources": [
+        "repo:docs/design/apotheosis-family.md",
+        "repo:docs/design/act-renumbering.md",
+        "repo:pack/config/apotheosis/apotheosis.cfg",
+        "repo:pack/config/defaultoptions/keybindings.txt",
+        "jar:Apotheosis-1.21.1-8.7.0.jar:assets/apotheosis/lang/en_us.json"
+      ]
+    },
+    {
+      "key": "gear_affixes",
+      "deps": [
+        "gear_tiers"
+      ],
+      "type": "checkmark",
+      "optional": true,
+      "icon": "apotheosis:gem_cutting_table",
+      "layout": {
+        "x": 3,
+        "y": -3,
+        "size": 0.85,
+        "shape": "circle"
+      },
+      "en_us": [
+        "Affix loot: colors and salvage",
+        "Apotheosis gear drops with a rarity color (Common, Uncommon, Rare, Epic, Mythic) and random affixes; hover to read them. What you do not wear, break down at a Salvaging Table into Rarity Materials. Those materials, with gem dust, upgrade gems at the Gem Cutting Table and are the currency of the Augmenting Table.\n\nSmithing a piece keeps its enchantments and affixes, so an Epic diamond sword stays Epic as netherite, and as Luminous."
+      ],
+      "es_es": [
+        "Botín con afijos: colores y reciclaje",
+        "El equipo de Apotheosis cae con un color de rareza (Común, Poco común, Raro, Épico, Mítico) y afijos al azar; pasá el mouse para leerlos. Lo que no uses, desarmalo en la Mesa de reciclaje para obtener Materiales de rareza. Esos materiales, con polvo de gema, mejoran gemas en la Mesa de tallado de gemas y son la moneda de la Mesa de aumentación.\n\nLa herrería conserva encantamientos y afijos, así que una espada de diamante Épica sigue Épica como netherite, y como Luminosa."
+      ],
+      "sources": [
+        "jar:Apotheosis-1.21.1-8.7.0.jar:assets/apotheosis/lang/en_us.json",
+        "repo:docs/design/luminous-gear.md"
+      ]
+    },
+    {
+      "key": "gear_dummy",
+      "deps": [
+        "gear_welcome"
+      ],
+      "type": "item",
+      "item": "dummmmmmy:target_dummy",
+      "optional": true,
+      "layout": {
+        "x": 3,
+        "y": 3,
+        "size": 0.85,
+        "shape": "circle"
+      },
+      "en_us": [
+        "Test your damage",
+        "Before a boss, compare weapons on a Target Dummy (the MmmMmmMmmMmm mod): it shows the damage of each hit and never dies. Equipment Compare puts the stats of what you hold next to what you wear, Overloaded Armor Bar keeps armor above 20 readable, and AttributeFix lifts the vanilla armor cap so high-tier sets actually count."
+      ],
+      "es_es": [
+        "Probá tu daño",
+        "Antes de un jefe, compará armas contra un Muñeco de prácticas (el mod MmmMmmMmmMmm): muestra el daño de cada golpe y nunca muere. Equipment Compare pone las estadísticas de lo que tenés en la mano al lado de lo que llevás puesto, Overloaded Armor Bar mantiene legible la armadura por encima de 20 y AttributeFix levanta el tope de armadura vanilla para que los sets altos cuenten de verdad."
+      ],
+      "sources": [
+        "repo:catalog/curated.json",
+        "jar:dummmmmmy-neoforge-1.21-2.1.0.jar:assets/dummmmmmy/lang/en_us.json",
+        "repo:docs/design/luminous-gear.md"
+      ]
+    },
+    {
+      "key": "gear_act1",
+      "deps": [
+        "gear_welcome"
+      ],
+      "type": "item",
+      "item": "minecraft:shield",
+      "layout": {
+        "x": 3,
+        "y": 0,
+        "size": 1.0,
+        "shape": "circle"
+      },
+      "en_us": [
+        "Act I: iron and a shield",
+        "The first nights: a full iron set, a shield (it blocks creeper blasts and arrows) and a bow. Watch out for the camouflaged biome creepers and the wildlife that bites. Apotheosis loot from dungeons and structures can already beat crafted iron.\n\nThe world tier is Haven: no invaders yet."
+      ],
+      "es_es": [
+        "Acto I: hierro y un escudo",
+        "Las primeras noches: set completo de hierro, un escudo (bloquea explosiones de creeper y flechas) y un arco. Ojo con los creepers camuflados de cada bioma y con la fauna que muerde. El botín de Apotheosis de mazmorras y estructuras ya puede superar al hierro fabricado.\n\nEl nivel del mundo es Haven: todavía no hay invasores."
+      ],
+      "sources": [
+        "repo:docs/design/apotheosis-family.md",
+        "jar:CreeperOverhaul-neoforge-1.21.1-4.0.6.jar:assets/creeperoverhaul/lang/en_us.json"
+      ]
+    },
+    {
+      "key": "gear_act2",
+      "deps": [
+        "gear_act1"
+      ],
+      "type": "item",
+      "item": "minecraft:diamond_chestplate",
+      "layout": {
+        "x": 6,
+        "y": 0,
+        "size": 1.0,
+        "shape": "circle"
+      },
+      "en_us": [
+        "Act II: diamond and the Wroughtnaut's axe",
+        "Diamond gear, enchanted at a table or with Apotheosis shelves, carries you through act II. The best early prize is optional: Mowzie's Ferrous Wroughtnaut guards the Axe of a Thousand Metals and the Wrought Helm, both unbreakable."
+      ],
+      "es_es": [
+        "Acto II: diamante y el hacha del Wroughtnaut",
+        "El equipo de diamante, encantado en la mesa o con las estanterías de Apotheosis, te lleva por el acto II. El mejor premio temprano es opcional: el Caballero de hierro forjado de Mowzie's guarda el Hacha de mil metales y el Yelmo forjado, los dos irrompibles."
+      ],
+      "sources": [
+        "jar:mowziesmobs-1.21.1-1.8.2.jar:assets/mowziesmobs/lang/en_us.json",
+        "repo:docs/design/apotheosis-family.md"
+      ]
+    },
+    {
+      "key": "gear_act3",
+      "deps": [
+        "gear_act2"
+      ],
+      "type": "item",
+      "item": "twilightforest:knightmetal_ingot",
+      "layout": {
+        "x": 9,
+        "y": 0,
+        "size": 1.0,
+        "shape": "circle"
+      },
+      "en_us": [
+        "Act III: Twilight and Undergarden metals",
+        "Act III opens the Twilight Forest and the Undergarden, and both are armories:\n- Twilight: Naga armor, Ironwood, Steeleaf, Knightmetal (extra damage to armored foes), Fiery gear (auto-smelting pickaxe, burning armor) and Phantom armor, which is never lost on death.\n- Undergarden: Cloggrum, then Froststeel (slows), Utherium (1.5× against Rotspawn) and Forgotten tools.\n\nThe tier rises to Frontier: invaders start to appear."
+      ],
+      "es_es": [
+        "Acto III: metales de Twilight y del Undergarden",
+        "El acto III abre Twilight Forest y el Undergarden, y los dos son arsenales:\n- Twilight: armadura de Naga, Ironwood, Steeleaf, metal de caballero (daño extra a enemigos con armadura), equipo ardiente (pico que funde, armadura que quema) y la armadura Fantasma, que nunca se pierde al morir.\n- Undergarden: Cloggrum, después Froststeel (ralentiza), Utherium (1,5× contra Rotspawn) y las herramientas Olvidadas.\n\nEl nivel sube a Frontier: empiezan a aparecer invasores."
+      ],
+      "sources": [
+        "jar:twilightforest-1.21.1-4.8.3345-universal.jar:assets/twilightforest/lang/en_us.json",
+        "jar:The_Undergarden-1.21.1-0.9.6.jar:assets/undergarden/lang/en_us.json",
+        "repo:docs/design/act-renumbering.md"
+      ]
+    },
+    {
+      "key": "gear_netherite",
+      "deps": [
+        "gear_act3"
+      ],
+      "type": "item",
+      "item": "minecraft:netherite_ingot",
+      "icon": "minecraft:netherite_chestplate",
+      "layout": {
+        "x": 9,
+        "y": 3,
+        "size": 1.0,
+        "shape": "circle"
+      },
+      "en_us": [
+        "Netherite: the base of everything above",
+        "Ancient debris, netherite scrap and an upgrade template from a bastion turn diamond into netherite. Keep your netherite pieces: Cataclysm's Ignitium and Cursium upgrades and ENTRELUMEN's Luminous gear are all built on top of netherite by smithing.\n\nIn Solsticio the smith sells the netherite upgrade template from act IV on."
+      ],
+      "es_es": [
+        "Netherite: la base de todo lo que sigue",
+        "Los restos antiguos, la chatarra de netherite y una plantilla de mejora de un bastión convierten el diamante en netherite. Guardá tus piezas de netherite: las mejoras de Ignitium y Cursium de Cataclysm y el equipo Luminoso de ENTRELUMEN se construyen sobre netherite en la mesa de herrería.\n\nEn Solsticio el herrero vende la plantilla de mejora de netherite desde el acto IV."
+      ],
+      "sources": [
+        "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:assets/cataclysm/lang/en_us.json",
+        "repo:docs/design/luminous-gear.md",
+        "repo:companion/src/main/resources/data/entrelumen/solsticio_shops/smithy.json",
+        "repo:docs/design/solsticio-commerce.md"
+      ]
+    },
+    {
+      "key": "gear_act4",
+      "deps": [
+        "gear_act3"
+      ],
+      "type": "item",
+      "item": "aether:gravitite_chestplate",
+      "layout": {
+        "x": 12,
+        "y": 0,
+        "size": 1.0,
+        "shape": "circle"
+      },
+      "en_us": [
+        "Act IV: sky gear and boss upgrades",
+        "Act IV is the expedition act:\n- Aether: Gravitite (high jump, no fall damage), Valkyrie (short flight), Phoenix and Obsidian armor; Deep Aether adds Skyjade and Stratus.\n- Cataclysm: Ignitium (from Ignis) and Cursium (from Maledictus) upgrade netherite, plus unique weapons.\n- Eternal Starlight: Unrealium and boss weapons.\n\nRemember the Aether rule: armor set bonuses need the matching gloves. The tier rises to Ascent."
+      ],
+      "es_es": [
+        "Acto IV: equipo del cielo y mejoras de jefes",
+        "El acto IV es el de las expediciones:\n- Aether: gravitita (salto alto, sin daño por caída), Valquiria (vuelo corto), armaduras de Fénix y de obsidiana; Deep Aether suma Skyjade y Stratus.\n- Cataclysm: Ignitium (de Ignis) y Cursium (de Maledictus) mejoran la netherite, más armas únicas.\n- Eternal Starlight: Unrealium y armas de jefe.\n\nAcordate de la regla del Aether: los bonus de set piden los guantes que corresponden. El nivel sube a Ascent."
+      ],
+      "sources": [
+        "jar:aether-1.21.1-1.5.10-neoforge.jar:assets/aether/lang/en_us.json",
+        "jar:deep_aether-1.21.1-1.1.5.1.jar:assets/deep_aether/lang/en_us.json",
+        "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:assets/cataclysm/lang/en_us.json",
+        "jar:eternalstarlight-0.9.0+1.21.1+neoforge.jar:assets/eternal_starlight/lang/en_us.json",
+        "repo:docs/design/act-renumbering.md"
+      ]
+    },
+    {
+      "key": "gear_act5",
+      "deps": [
+        "gear_act4"
+      ],
+      "type": "item",
+      "item": "ad_astra:netherite_space_helmet",
+      "layout": {
+        "x": 15,
+        "y": 0,
+        "size": 1.0,
+        "shape": "circle"
+      },
+      "en_us": [
+        "Act V: space suits and heavy tech",
+        "Building the Ark takes you to space and to the End. For Venus and Mercury you need Ad Astra's Netherite Space Suit (fire resistance, oxygen), and the Jet Suit adds flight. The tech mods have their own top armors, such as the MekaSuit and Modern Industrialization's quantum suit; see their chapters.\n\nThe tier rises to Summit, where Mythic loot appears: salvaging it is the only source of the Godforged Pearl."
+      ],
+      "es_es": [
+        "Acto V: trajes espaciales y tecnología pesada",
+        "Construir el Arca te lleva al espacio y al End. Para Venus y Mercurio hace falta el Traje espacial de netherite de Ad Astra (resistencia al fuego, oxígeno), y el Jet Suit suma vuelo. Los mods de tecnología tienen sus propias armaduras tope, como la MekaSuit y el traje cuántico de Modern Industrialization; mirá sus capítulos.\n\nEl nivel sube a Summit, donde aparece el botín Mítico: reciclarlo es la única fuente de la Perla forjada por dioses."
+      ],
+      "sources": [
+        "jar:adastra-1.21.1-1.16.19-neoforge.jar:assets/ad_astra/patchouli_books/astrodux/en_us/entries/surviving_mars/netherite_space_suit.json",
+        "repo:docs/design/luminous-gear.md",
+        "repo:docs/design/act-renumbering.md",
+        "repo:docs/research/reference-packs.md"
+      ]
+    },
+    {
+      "key": "gear_act6",
+      "deps": [
+        "gear_act5"
+      ],
+      "type": "item",
+      "item": "entrelumen:luminous_ingot",
+      "layout": {
+        "x": 18,
+        "y": 0,
+        "size": 1.5,
+        "shape": "hexagon"
+      },
+      "en_us": [
+        "Act VI: Luminous gear",
+        "The best set in the pack. Six Luminosities from Solsticio's native villagers, a Sky Ingot, a Godforged Pearl and an Atomic Alloy make one Luminous Ingot. Each piece is its netherite version upgraded on a Smithing Table with the ingot and a Nether Star as template.\n\nIt never breaks (a spent piece just switches off), repairs itself in light, and the full set grants flight, night vision and no fall damage. Radiant Silent Gear pieces count toward the set."
+      ],
+      "es_es": [
+        "Acto VI: el equipo Luminoso",
+        "El mejor set del pack. Seis Luminosidades de los aldeanos nativos de Solsticio, un Lingote de los cielos, una Perla forjada por dioses y una Aleación atómica hacen un Lingote Luminoso. Cada pieza es su versión de netherite mejorada en la mesa de herrería con el lingote y una Estrella del Nether como plantilla.\n\nNunca se rompe (una pieza gastada simplemente se apaga), se repara con la luz, y el set completo da vuelo, visión nocturna y ningún daño por caída. Las piezas Radiantes de Silent Gear cuentan para el set."
+      ],
+      "sources": [
+        "repo:docs/design/luminous-gear.md",
+        "repo:docs/design/story-bible.md",
+        "repo:pack/kubejs/data/entrelumen/recipe/luminous_chestplate.json"
+      ]
+    },
+    {
+      "key": "gear_ranged",
+      "deps": [
+        "gear_tiers"
+      ],
+      "type": "checkmark",
+      "optional": true,
+      "icon": "minecraft:bow",
+      "layout": {
+        "x": 3,
+        "y": -6,
+        "size": 0.85,
+        "shape": "circle"
+      },
+      "en_us": [
+        "Ranged options along the way",
+        "Bows age well with good enchantments, but each dimension adds its own: the Aether's dart shooters (darts ignore gravity) and Phoenix Bow, Twilight's Triple and Seeker bows from the Snow Queen, the Undergarden Slingshot, Cataclysm's Cursed Bow and Astrape, Eternal Starlight's crystal crossbow and Moonring Bow, and Mowzie's blowgun with poison darts."
+      ],
+      "es_es": [
+        "Opciones a distancia en el camino",
+        "Los arcos envejecen bien con buenos encantamientos, pero cada dimensión suma los suyos: las cerbatanas de dardos del Aether (los dardos no caen) y el Arco de Fénix, los arcos Triple y Buscador de la Reina de las Nieves en Twilight, la Resortera del Undergarden, el Arco maldito y Astrape de Cataclysm, la ballesta de cristal y el Moonring Bow de Eternal Starlight, y la cerbatana con dardos venenosos de Mowzie's."
+      ],
+      "sources": [
+        "jar:aether-1.21.1-1.5.10-neoforge.jar:assets/aether/lang/en_us.json",
+        "jar:twilightforest-1.21.1-4.8.3345-universal.jar:assets/twilightforest/lang/en_us.json",
+        "jar:The_Undergarden-1.21.1-0.9.6.jar:assets/undergarden/lang/en_us.json",
+        "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:assets/cataclysm/lang/en_us.json",
+        "jar:mowziesmobs-1.21.1-1.8.2.jar:assets/mowziesmobs/lang/en_us.json"
+      ]
+    },
+    {
+      "key": "gear_survival",
+      "deps": [
+        "gear_netherite"
+      ],
+      "type": "checkmark",
+      "optional": true,
+      "icon": "minecraft:totem_of_undying",
+      "layout": {
+        "x": 12,
+        "y": 3,
+        "size": 0.85,
+        "shape": "circle"
+      },
+      "en_us": [
+        "Staying alive",
+        "Tools that save runs:\n- Totems: vanilla Totem of Undying (evokers), plus Friends and Foes' Totem of Freezing and Totem of Illusion, which trigger below half health.\n- Twilight charms: Charm of Life and Charm of Keeping.\n- Cataclysm's Cursium chestplate revives you once.\n- Aether Life Shards: up to 10 extra hearts.\n- Food variety and leftover saturation give buffs in this pack."
+      ],
+      "es_es": [
+        "Seguir vivo",
+        "Cosas que salvan una partida:\n- Tótems: el Tótem de la inmortalidad vanilla (evocadores), más los Tótems de congelación y de ilusión de Friends and Foes, que se activan por debajo de la mitad de la vida.\n- Amuletos de Twilight: de vida y de conservación.\n- La pechera de Cursium de Cataclysm te revive una vez.\n- Fragmentos de vida del Aether: hasta 10 corazones extra.\n- La variedad de comida y la saciedad sobrante dan efectos en este pack."
+      ],
+      "sources": [
+        "jar:friendsandfoes-neoforge-4.0.27+mc1.21.1.jar:assets/friendsandfoes/lang/en_us.json",
+        "jar:twilightforest-1.21.1-4.8.3345-universal.jar:assets/twilightforest/lang/en_us.json",
+        "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:assets/cataclysm/lang/en_us.json",
+        "jar:aether-1.21.1-1.5.10-neoforge.jar:assets/aether/lang/en_us.json",
+        "repo:docs/design/story-bible.md"
+      ]
+    },
+    {
+      "key": "gear_looks",
+      "deps": [
+        "gear_act5"
+      ],
+      "type": "checkmark",
+      "optional": true,
+      "icon": "minecraft:sentry_armor_trim_smithing_template",
+      "layout": {
+        "x": 15,
+        "y": 3,
+        "size": 0.85,
+        "shape": "circle"
+      },
+      "en_us": [
+        "Keep your look",
+        "Cosmetic Armor Reworked adds cosmetic slots: wear the protection you need while showing the armor you like. Armor trims also work on every vanilla-tagged armor; Solsticio's smith sells all eighteen trim templates."
+      ],
+      "es_es": [
+        "Conservá tu estilo",
+        "Cosmetic Armor Reworked suma ranuras cosméticas: llevá la protección que necesitás mostrando la armadura que te gusta. Los adornos de armadura (trims) también funcionan en toda armadura con las etiquetas vanilla; el herrero de Solsticio vende las dieciocho plantillas de adornos."
+      ],
+      "sources": [
+        "repo:catalog/curated.json",
+        "repo:companion/src/main/resources/data/entrelumen/solsticio_shops/smithy.json",
+        "repo:docs/design/solsticio-commerce.md"
+      ]
+    },
+    {
+      "key": "gear_mastery",
+      "deps": [
+        "gear_act6"
+      ],
+      "type": "checkmark",
+      "icon": "entrelumen:luminous_chestplate",
+      "layout": {
+        "x": 21,
+        "y": 0,
+        "size": 2.25,
+        "shape": "pentagon"
+      },
+      "en_us": [
+        "Dressed in light",
+        "From iron to Luminous: every dimension left something on your belt. The last set is not about stats; it is Heliodor's light forged with respect this time."
+      ],
+      "es_es": [
+        "Vestido de luz",
+        "Del hierro al Luminoso: cada dimensión te dejó algo en el cinturón. El último set no es una cuestión de números; es la luz de Heliodor forjada, esta vez, con respeto."
+      ],
+      "sources": [
+        "repo:docs/design/luminous-gear.md",
+        "repo:docs/design/story-bible.md"
+      ]
+    }
+  ]
+}

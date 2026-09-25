@@ -1,0 +1,639 @@
+{
+  "chapter": "guide_bosses",
+  "group": "exploration",
+  "act": "V",
+  "icon": "minecraft:nether_star",
+  "title": {
+    "en_us": "Bosses: vanilla and Mowzie's",
+    "es_es": "Jefes: vanilla y Mowzie's"
+  },
+  "subtitle": {
+    "en_us": "The Wither, the Dragon and the Elder Guardian as materials, plus Mowzie's optional mini-bosses.",
+    "es_es": "El Wither, el Dragón y el Guardián anciano como materiales, más los minijefes opcionales de Mowzie's."
+  },
+  "quests": [
+    {
+      "key": "bosses_welcome",
+      "deps": [],
+      "type": "checkmark",
+      "layout": {
+        "x": 0,
+        "y": 0,
+        "size": 2.0,
+        "shape": "hexagon"
+      },
+      "en_us": [
+        "Materials, not milestones",
+        "ENTRELUMEN's story bible is explicit: the Wither, the Ender Dragon and the Elder Guardian must be in the game, but they matter for their drops, as materials; the story does not frame them. The Heliodor Compass still passes by them in act V (the ocean monument, the stronghold and the End), and their drops feed the endgame: Luminous gear and the act VI creative items.\n\nMowzie's Mobs adds optional mini-bosses with unique weapons for acts II to IV. None of them closes an act."
+      ],
+      "es_es": [
+        "Materiales, no hitos",
+        "La biblia de la historia de ENTRELUMEN es explícita: el Wither, el Dragón del End y el Guardián anciano tienen que estar en el juego, pero importan por sus drops, como materiales; la historia no los enmarca. Igual la Brújula de Heliodor pasa por ellos en el acto V (el monumento oceánico, la fortaleza y el End), y sus drops alimentan el final: el equipo Luminoso y los ítems creativos del acto VI.\n\nMowzie's Mobs suma minijefes opcionales con armas únicas para los actos II a IV. Ninguno cierra un acto."
+      ],
+      "sources": [
+        "repo:docs/design/story-bible.md",
+        "repo:content/compass_targets.json",
+        "repo:docs/design/mod-pingpong.md"
+      ]
+    },
+    {
+      "key": "bosses_skulls",
+      "deps": [
+        "bosses_welcome"
+      ],
+      "type": "item",
+      "item": "minecraft:wither_skeleton_skull",
+      "count": 3,
+      "layout": {
+        "x": 3,
+        "y": -3,
+        "size": 1.0,
+        "shape": "circle"
+      },
+      "en_us": [
+        "Three wither skeleton skulls",
+        "Wither skeletons live in Nether fortresses, which YUNG's Better Nether Fortresses replaces with larger themed ones. Skulls are a rare drop: Looting helps a lot.\n\nFour soul sand or soul soil blocks in a T shape plus three skulls on top summon the Wither."
+      ],
+      "es_es": [
+        "Tres cráneos de esqueleto wither",
+        "Los esqueletos wither viven en las fortalezas del Nether, que YUNG's Better Nether Fortresses reemplaza por otras más grandes y temáticas. Los cráneos salen poco: Botín (Looting) ayuda mucho.\n\nCuatro bloques de arena o tierra de almas en forma de T más tres cráneos arriba invocan al Wither."
+      ],
+      "sources": [
+        "jar:minecraft_1.21.1_client.jar:data/minecraft/advancement/nether/get_wither_skull.json",
+        "jar:YungsBetterNetherFortresses-1.21.1-NeoForge-3.1.5.jar:data/betterfortresses/worldgen/structure/fortress.json"
+      ]
+    },
+    {
+      "key": "bosses_wither",
+      "deps": [
+        "bosses_skulls"
+      ],
+      "type": "item",
+      "item": "minecraft:nether_star",
+      "layout": {
+        "x": 6,
+        "y": -3,
+        "size": 2.0,
+        "shape": "gear"
+      },
+      "en_us": [
+        "The Wither",
+        "Summon it far from your base: it breaks blocks and explodes when it spawns. Bring healing, milk for the Wither effect and a strong bow or sword with Smite.\n\nIt drops a Nether Star (\"Withering Heights\" is summoning it). In ENTRELUMEN the Wither is the only source of Nether Stars: the pack removed the Modern Industrialization implosion, the Oritech particle collision and the Reliquary alkahestry recipes that made them."
+      ],
+      "es_es": [
+        "El Wither",
+        "Invocalo lejos de tu base: rompe bloques y explota al aparecer. Llevá curación, leche para el efecto Wither y un buen arco o una espada con Castigo (Smite).\n\nSuelta una Estrella del Nether («Withering Heights» es invocarlo). En ENTRELUMEN el Wither es la única fuente de Estrellas del Nether: el pack quitó las recetas de implosión de Modern Industrialization, de colisión de partículas de Oritech y de alquimia de Reliquary que las fabricaban."
+      ],
+      "sources": [
+        "jar:minecraft_1.21.1_client.jar:data/minecraft/advancement/nether/summon_wither.json",
+        "repo:pack/kubejs/server_scripts/entrelumen_pingpong_balance.js",
+        "repo:pack/kubejs/server_scripts/entrelumen_arcane_balance.js",
+        "repo:docs/design/mod-pingpong.md"
+      ]
+    },
+    {
+      "key": "bosses_star_uses",
+      "deps": [
+        "bosses_wither"
+      ],
+      "type": "checkmark",
+      "optional": true,
+      "icon": "minecraft:beacon",
+      "layout": {
+        "x": 9,
+        "y": -3,
+        "size": 0.85,
+        "shape": "circle"
+      },
+      "en_us": [
+        "What a Nether Star is for",
+        "In ENTRELUMEN each Luminous piece (act VI) is a netherite piece upgraded on a Smithing Table with a Luminous Ingot, using a Nether Star as the template: nine stars for the full set. Several creative items also ask for one. Beacons too (\"Bring Home the Beacon\"), and many high-tier recipes; EMI's uses view (U on the star) lists them all. Cataclysm's Harbinger also needs one.\n\nFor more stars without farming by hand: Hostile Neural Networks has a Wither data model. Train it by killing Withers and its simulation produces Nether Stars; the Simulation Chamber is an act IV machine in this pack."
+      ],
+      "es_es": [
+        "Para qué sirve una Estrella del Nether",
+        "En ENTRELUMEN cada pieza Luminosa (acto VI) es una pieza de netherite mejorada en la mesa de herrería con un Lingote Luminoso, y la plantilla es una Estrella del Nether: nueve estrellas para el set completo. Varios ítems creativos también piden una. Además, los faros («Bring Home the Beacon») y muchas recetas de nivel alto; la vista de usos de EMI (U sobre la estrella) las muestra todas. El Heraldo de Cataclysm también necesita una.\n\nPara tener más estrellas sin farmear a mano: Hostile Neural Networks tiene un modelo de datos del Wither. Se entrena matando Withers y su simulación produce Estrellas del Nether; la Cámara de simulación es una máquina del acto IV en este pack."
+      ],
+      "sources": [
+        "jar:minecraft_1.21.1_client.jar:data/minecraft/advancement/nether/create_beacon.json",
+        "repo:pack/kubejs/data/entrelumen/recipe/luminous_chestplate.json",
+        "repo:docs/design/luminous-gear.md",
+        "jar:HostileNeuralNetworks-1.21.1-6.5.1.jar:data/hostilenetworks/data_models/wither.json",
+        "repo:pack/kubejs/server_scripts/entrelumen_industrial_balance.js",
+        "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:com/github/L_Ender/cataclysm/entity/InternalAnimationMonster/IABossMonsters/The_Harbinger_Entity.class"
+      ]
+    },
+    {
+      "key": "bosses_monument",
+      "deps": [
+        "bosses_welcome"
+      ],
+      "type": "item",
+      "item": "minecraft:wet_sponge",
+      "layout": {
+        "x": 3,
+        "y": 0,
+        "size": 1.0,
+        "shape": "circle"
+      },
+      "en_us": [
+        "The monument and the wet sponge",
+        "Ocean monuments are rebuilt by YUNG's Better Ocean Monuments, still guarded by Elder Guardians that inflict Mining Fatigue. Beat them and loot the sponge rooms. Cartographer ocean maps point to these monuments.\n\nIn act V the Heliodor Compass sends you to a monument and counts it done as soon as someone on your team carries a wet sponge; wet sponges also go into the act VI creative fluid tanks. Bring water breathing and a Respiration or Depth Strider set; the Aether's Neptune armor and Iron Bubble also shine here."
+      ],
+      "es_es": [
+        "El monumento y la esponja húmeda",
+        "Los monumentos oceánicos los rearma YUNG's Better Ocean Monuments, todavía custodiados por Guardianes ancianos que provocan Fatiga minera. Vencelos y saqueá las salas de esponjas. Los mapas oceánicos de los cartógrafos apuntan a estos monumentos.\n\nEn el acto V la Brújula de Heliodor te manda a un monumento y lo da por cumplido cuando alguien de tu equipo lleva una esponja húmeda; las esponjas húmedas además van en los tanques de fluidos creativos del acto VI. Llevá respiración acuática y un equipo con Respiración o Agilidad acuática; la armadura de Neptuno y la Burbuja de hierro del Aether también rinden acá."
+      ],
+      "sources": [
+        "repo:content/compass_targets.json",
+        "repo:pack/kubejs/data/entrelumen/recipe/creative/mekanism/creative_fluid_tank.json",
+        "jar:YungsBetterOceanMonuments-1.21.1-NeoForge-4.1.2.jar:data/minecraft/tags/worldgen/structure/on_ocean_explorer_maps.json",
+        "jar:YungsBetterOceanMonuments-1.21.1-NeoForge-4.1.2.jar:data/betteroceanmonuments/worldgen/structure/ocean_monument.json",
+        "jar:aether-1.21.1-1.5.10-neoforge.jar:assets/aether/lang/en_us.json"
+      ]
+    },
+    {
+      "key": "bosses_stronghold",
+      "deps": [
+        "bosses_welcome"
+      ],
+      "type": "advancement",
+      "advancement": "minecraft:story/follow_ender_eye",
+      "icon": "minecraft:ender_eye",
+      "layout": {
+        "x": 3,
+        "y": 3,
+        "size": 1.0,
+        "shape": "circle"
+      },
+      "en_us": [
+        "Eye Spy: the stronghold",
+        "Eyes of Ender still lead to the stronghold, which YUNG's Better Strongholds replaces with a larger themed fortress. Follow an eye (\"Eye Spy\") and bring spare eyes: some break on the way.\n\nThe stronghold is an act V compass objective, completed when your team reaches the End."
+      ],
+      "es_es": [
+        "Ojo espía: la fortaleza",
+        "Los Ojos de ender siguen llevando a la fortaleza, que YUNG's Better Strongholds reemplaza por una fortaleza más grande y temática. Seguí un ojo («Eye Spy») y llevá ojos de repuesto: algunos se rompen en el camino.\n\nLa fortaleza es un objetivo de la brújula del acto V, que se cumple cuando tu equipo llega al End."
+      ],
+      "sources": [
+        "jar:YungsBetterStrongholds-1.21.1-NeoForge-5.1.3.jar:data/minecraft/tags/worldgen/structure/eye_of_ender_located.json",
+        "jar:YungsBetterStrongholds-1.21.1-NeoForge-5.1.3.jar:assets/betterstrongholds/lang/en_us.json",
+        "jar:minecraft_1.21.1_client.jar:data/minecraft/advancement/story/follow_ender_eye.json",
+        "repo:content/compass_targets.json"
+      ]
+    },
+    {
+      "key": "bosses_end",
+      "deps": [
+        "bosses_stronghold"
+      ],
+      "type": "dimension",
+      "dimension": "minecraft:the_end",
+      "icon": "minecraft:end_stone",
+      "layout": {
+        "x": 6,
+        "y": 3,
+        "size": 1.75,
+        "shape": "diamond"
+      },
+      "en_us": [
+        "The End",
+        "Enter the End. YUNG's Better End Island rebuilds the central island and the arena around the Ender Dragon, with its own towers and spawn platform. The first arrival of your team records the act V \"end_arrival\" milestone.\n\nBring blocks, a bow, slow falling or a water bucket, and a pumpkin if you do not want to fight Endermen all the time."
+      ],
+      "es_es": [
+        "El End",
+        "Entrá al End. YUNG's Better End Island rearma la isla central y la arena del Dragón del End, con torres y plataforma de llegada propias. La primera llegada de tu equipo registra el hito «end_arrival» del acto V.\n\nLlevá bloques, un arco, caída lenta o un balde de agua, y una calabaza si no querés pelear con Endermen todo el tiempo."
+      ],
+      "sources": [
+        "jar:YungsBetterEndIsland-1.21.1-NeoForge-3.1.2.jar:assets/betterendisland/lang/en_us.json",
+        "repo:companion/src/main/java/dev/entrelumen/Expeditions.java",
+        "repo:content/compass_targets.json",
+        "repo:docs/design/exploration-structures-family.md"
+      ]
+    },
+    {
+      "key": "bosses_dragon",
+      "deps": [
+        "bosses_end"
+      ],
+      "type": "advancement",
+      "advancement": "minecraft:end/kill_dragon",
+      "icon": "minecraft:dragon_head",
+      "layout": {
+        "x": 9,
+        "y": 3,
+        "size": 2.0,
+        "shape": "gear"
+      },
+      "en_us": [
+        "Free the End",
+        "Destroy the End Crystals on the towers first (arrows, or climb to the protected ones), then fight the Dragon when it perches. Killing it completes the act V compass objective for the End.\n\nIts drops: a big pile of experience, the Dragon Egg, the exit gateway to the outer islands and, with Draconic Evolution, a Dragon Heart, which the creative energy items of act VI require. It also counts as proof of strength for Eternal Starlight's Gatekeeper."
+      ],
+      "es_es": [
+        "Liberar el End",
+        "Primero destruí los Cristales del End de las torres (con flechas, o subiendo a los protegidos), después peleá con el Dragón cuando se posa. Matarlo cumple el objetivo de la brújula del End en el acto V.\n\nLo que deja: mucha experiencia, el Huevo de dragón, el portal hacia las islas exteriores y, con Draconic Evolution, un Corazón de dragón, que piden los ítems creativos de energía del acto VI. También cuenta como prueba de fuerza para el Gatekeeper de Eternal Starlight."
+      ],
+      "sources": [
+        "jar:minecraft_1.21.1_client.jar:data/minecraft/advancement/end/kill_dragon.json",
+        "repo:content/compass_targets.json",
+        "repo:pack/kubejs/data/entrelumen/recipe/creative/mekanism/creative_energy_cube.json",
+        "repo:docs/design/luminous-gear.md",
+        "jar:eternalstarlight-0.9.0+1.21.1+neoforge.jar:assets/eternal_starlight/lang/en_us.json"
+      ]
+    },
+    {
+      "key": "bosses_breath",
+      "deps": [
+        "bosses_dragon"
+      ],
+      "type": "advancement",
+      "advancement": "minecraft:end/dragon_breath",
+      "icon": "minecraft:dragon_breath",
+      "layout": {
+        "x": 12,
+        "y": 3,
+        "size": 1.0,
+        "shape": "circle"
+      },
+      "en_us": [
+        "Bottled dragon's breath",
+        "During the fight the Dragon breathes a purple cloud; catch it with empty glass bottles (\"You Need a Mint\"). Dragon's Breath makes lingering potions and appears in several mod recipes.\n\nYou can re-summon the Dragon with four End Crystals on the exit portal to get more breath (\"The End... Again...\")."
+      ],
+      "es_es": [
+        "Aliento de dragón embotellado",
+        "Durante la pelea el Dragón exhala una nube violeta; juntala con frascos de vidrio vacíos («You Need a Mint»). El Aliento de dragón hace pociones persistentes y aparece en varias recetas de mods.\n\nPodés volver a invocar al Dragón con cuatro Cristales del End sobre el portal de salida para conseguir más aliento («The End... Again...»)."
+      ],
+      "sources": [
+        "jar:minecraft_1.21.1_client.jar:data/minecraft/advancement/end/dragon_breath.json",
+        "jar:minecraft_1.21.1_client.jar:data/minecraft/advancement/end/respawn_dragon.json"
+      ]
+    },
+    {
+      "key": "bosses_elytra",
+      "deps": [
+        "bosses_breath"
+      ],
+      "type": "advancement",
+      "advancement": "minecraft:end/elytra",
+      "optional": true,
+      "icon": "minecraft:elytra",
+      "layout": {
+        "x": 15,
+        "y": 3,
+        "size": 1.0,
+        "shape": "circle"
+      },
+      "en_us": [
+        "Wings from an End city",
+        "The exit gateway takes you to the outer islands, where End cities hide Elytra in their ships (\"Sky's the Limit\"). Shulkers guard them; their shells make shulker boxes.\n\nIn ENTRELUMEN the Solsticio dealer of rarities also sells Elytra, but only from act VI."
+      ],
+      "es_es": [
+        "Alas de una ciudad del End",
+        "El portal de salida te lleva a las islas exteriores, donde las ciudades del End esconden Élitros en sus barcos («Sky's the Limit»). Los custodian Shulkers; sus caparazones hacen cajas de shulker.\n\nEn ENTRELUMEN el comerciante de rarezas de Solsticio también vende Élitros, pero recién desde el acto VI."
+      ],
+      "sources": [
+        "jar:minecraft_1.21.1_client.jar:data/minecraft/advancement/end/elytra.json",
+        "repo:companion/src/main/resources/data/entrelumen/solsticio_shops/rarities.json",
+        "repo:docs/design/solsticio-commerce.md"
+      ]
+    },
+    {
+      "key": "bosses_warden",
+      "deps": [
+        "bosses_welcome"
+      ],
+      "type": "advancement",
+      "advancement": "minecraft:adventure/avoid_vibration",
+      "optional": true,
+      "icon": "minecraft:sculk_shrieker",
+      "layout": {
+        "x": 3,
+        "y": 6,
+        "size": 0.85,
+        "shape": "circle"
+      },
+      "en_us": [
+        "The Warden: avoid, do not farm",
+        "The Warden rises from the Deep Dark when Sculk Shriekers are triggered. It is blind, tracks vibrations and smell, and hits harder than almost anything. Sneak, place wool to muffle steps, and throw snowballs or arrows to distract it (\"Sneak 100\").\n\nAncient cities hold echo shards and swift sneak books. Deeper and Darker adds more to them, including a way into the Otherside dimension."
+      ],
+      "es_es": [
+        "El Warden: evitalo, no lo farmees",
+        "El Warden sale de la Oscuridad profunda cuando se activan los Chilladores de sculk. Es ciego, sigue vibraciones y olores, y pega más fuerte que casi cualquier cosa. Andá agachado, poné lana para amortiguar pasos y tirá bolas de nieve o flechas para distraerlo («Sneak 100»).\n\nLas ciudades antiguas tienen fragmentos de eco y libros de Sigilo veloz. Deeper and Darker les suma más cosas, entre ellas una entrada a la dimensión Otherside."
+      ],
+      "sources": [
+        "jar:minecraft_1.21.1_client.jar:data/minecraft/advancement/adventure/avoid_vibration.json",
+        "repo:docs/design/exploration-structures-family.md"
+      ]
+    },
+    {
+      "key": "mowzie_intro",
+      "deps": [
+        "bosses_welcome"
+      ],
+      "type": "checkmark",
+      "icon": "mowziesmobs:wrought_helmet",
+      "layout": {
+        "x": 0,
+        "y": -7,
+        "size": 1.5,
+        "shape": "hexagon"
+      },
+      "en_us": [
+        "Mowzie's Mobs",
+        "Mowzie's Mobs adds a handful of detailed creatures and four headline mini-bosses that form a natural difficulty chain: the Ferrous Wroughtnaut underground, the Frostmaw in the cold, Tongbi the Sculptor in the mountains and Umvuthi the Sunbird with its tribe.\n\nThey are optional (acts II to IV in this pack). Their rewards are unique tools that never break, so they are worth the detour."
+      ],
+      "es_es": [
+        "Mowzie's Mobs",
+        "Mowzie's Mobs suma algunas criaturas muy detalladas y cuatro minijefes principales que forman una cadena natural de dificultad: el Caballero de hierro forjado bajo tierra, el Frostmaw en el frío, Tongbi el escultor en las montañas y Umvuthi, el ave solar, con su tribu.\n\nSon opcionales (actos II a IV en este pack). Sus premios son herramientas únicas que nunca se rompen, así que valen el desvío."
+      ],
+      "sources": [
+        "repo:docs/design/mod-pingpong.md",
+        "jar:mowziesmobs-1.21.1-1.8.2.jar:assets/mowziesmobs/lang/en_us.json",
+        "https://www.minecraft-guides.com/mod/mowzies-mobs/wiki/ferrous-wroughtnaut/",
+        "jar:mowziesmobs-1.21.1-1.8.2.jar:com/bobmowzie/mowziesmobs/server/config/ConfigHandler$BiomeConfig.class"
+      ]
+    },
+    {
+      "key": "mowzie_wroughtnaut",
+      "deps": [
+        "mowzie_intro"
+      ],
+      "type": "advancement",
+      "advancement": "mowziesmobs:kill_ferrous_wroughtnaut",
+      "icon": "mowziesmobs:wrought_axe",
+      "layout": {
+        "x": 3,
+        "y": -7,
+        "size": 1.5,
+        "shape": "gear"
+      },
+      "en_us": [
+        "The Ferrous Wroughtnaut",
+        "An armored giant sleeping in a Wrought Chamber, an underground room roughly between Y 20 and Y 50. It swings a huge axe: dodge, wait for the swing to end and hit its exposed back (\"Just a Flesh Wound\").\n\nYour reward is the Axe of a Thousand Metals (never breaks; right click sweeps a wide arc, sneak-right-click slams a shockwave) and the Wrought Helm (never breaks)."
+      ],
+      "es_es": [
+        "El Caballero de hierro forjado",
+        "Un gigante acorazado que duerme en una Cámara forjada, una sala subterránea más o menos entre Y 20 y Y 50. Revolea un hacha enorme: esquivá, esperá que termine el golpe y pegale en la espalda expuesta («Just a Flesh Wound»).\n\nEl premio es el Hacha de mil metales (nunca se rompe; clic derecho barre en arco, agachado y clic derecho golpea el suelo con una onda) y el Yelmo forjado (nunca se rompe)."
+      ],
+      "sources": [
+        "jar:mowziesmobs-1.21.1-1.8.2.jar:data/mowziesmobs/advancement/kill_ferrous_wroughtnaut.json",
+        "jar:mowziesmobs-1.21.1-1.8.2.jar:assets/mowziesmobs/lang/en_us.json",
+        "https://www.minecraft-guides.com/mod/mowzies-mobs/wiki/ferrous-wroughtnaut/"
+      ]
+    },
+    {
+      "key": "mowzie_frostmaw",
+      "deps": [
+        "mowzie_wroughtnaut"
+      ],
+      "type": "advancement",
+      "advancement": "mowziesmobs:kill_frostmaw",
+      "icon": "mowziesmobs:ice_crystal",
+      "layout": {
+        "x": 6,
+        "y": -7,
+        "size": 1.5,
+        "shape": "gear"
+      },
+      "en_us": [
+        "The Frostmaw",
+        "A huge ice ape that sleeps in cold biomes (\"Rude Awakening\" is killing it). It freezes you in place; fire damage breaks the Frozen effect early.\n\nIt carries an Ice Crystal: hold right click to channel an icy whirlwind, and it recharges in your inventory. You can steal the crystal instead of killing it (\"Big Brain Time\")."
+      ],
+      "es_es": [
+        "El Frostmaw",
+        "Un simio de hielo enorme que duerme en los biomas fríos («Rude Awakening» es matarlo). Te congela en el lugar; el daño por fuego rompe antes el efecto Congelado.\n\nLleva un Cristal de hielo: manteniendo el clic derecho canaliza un torbellino helado, y se recarga en tu inventario. También podés robarle el cristal en vez de matarlo («Big Brain™ Time»)."
+      ],
+      "sources": [
+        "jar:mowziesmobs-1.21.1-1.8.2.jar:data/mowziesmobs/advancement/kill_frostmaw.json",
+        "jar:mowziesmobs-1.21.1-1.8.2.jar:data/mowziesmobs/advancement/steal_ice_crystal.json",
+        "jar:mowziesmobs-1.21.1-1.8.2.jar:assets/mowziesmobs/lang/en_us.json"
+      ]
+    },
+    {
+      "key": "mowzie_sculptor",
+      "deps": [
+        "mowzie_frostmaw"
+      ],
+      "type": "advancement",
+      "advancement": "mowziesmobs:sculptor_challenge",
+      "icon": "mowziesmobs:earthrend_gauntlet",
+      "layout": {
+        "x": 9,
+        "y": -7,
+        "size": 1.5,
+        "shape": "gear"
+      },
+      "en_us": [
+        "Tongbi, the Sculptor",
+        "The Sculptor waits in a mountain monastery. Kill a Bluff to get a Bluff Rod and give it to him to start his test: climb the course he raises and right-click him at the top before time runs out, without placing or breaking blocks, teleporting or flying (\"You Must Believe\").\n\nPassing earns the Earthrend Gauntlet: lift and throw boulders, tunnel through the ground and rise on a pillar of earth. Geomancer robes and beads boost it."
+      ],
+      "es_es": [
+        "Tongbi, el escultor",
+        "El Escultor espera en un monasterio de montaña. Matá un Bluff para conseguir una Vara de bluff y dásela para empezar su prueba: subí el recorrido que levanta y hacé clic derecho sobre él arriba antes de que se acabe el tiempo, sin poner ni romper bloques, teletransportarte ni volar («You Must Believe»).\n\nAprobar da el Guantelete terráqueo: levantar y lanzar rocas, hacer túneles bajo tierra y subir sobre un pilar de tierra. La túnica y las cuentas de geomante lo potencian."
+      ],
+      "sources": [
+        "jar:mowziesmobs-1.21.1-1.8.2.jar:data/mowziesmobs/advancement/sculptor_challenge.json",
+        "jar:mowziesmobs-1.21.1-1.8.2.jar:data/mowziesmobs/advancement/kill_bluff.json",
+        "jar:mowziesmobs-1.21.1-1.8.2.jar:data/mowziesmobs/loot_table/entities/bluff.json",
+        "jar:mowziesmobs-1.21.1-1.8.2.jar:assets/mowziesmobs/lang/en_us.json"
+      ]
+    },
+    {
+      "key": "mowzie_umvuthi",
+      "deps": [
+        "mowzie_sculptor"
+      ],
+      "type": "advancement",
+      "advancement": "mowziesmobs:kill_umvuthi",
+      "icon": "mowziesmobs:sol_visage",
+      "layout": {
+        "x": 12,
+        "y": -7,
+        "size": 1.5,
+        "shape": "gear"
+      },
+      "en_us": [
+        "Umvuthi, the Sunbird",
+        "Umvuthi rules an Umvuthana grove guarded by masked warriors. Beat an Umvuthana Raptor for a mask (\"Masquerade\"), then fight the Sunbird (\"Praise the Sun\").\n\nIt drops the Sol Visage (never breaks; wear it and right-click another mask to summon Umvuthana followers). The six masks give Strength, Speed, Haste, Resistance, Jump Boost or Health Boost."
+      ],
+      "es_es": [
+        "Umvuthi, el ave solar",
+        "Umvuthi gobierna una arboleda Umvuthana custodiada por guerreros enmascarados. Vencé a un Umvuthana rapaz para conseguir una máscara («Masquerade») y después peleá con el Ave solar («Praise the Sun»).\n\nSuelta el Semblante solar (nunca se rompe; puesto, hacé clic derecho con otra máscara para invocar seguidores Umvuthana). Las seis máscaras dan Fuerza, Velocidad, Prisa minera, Resistencia, Supersalto o Salud mejorada."
+      ],
+      "sources": [
+        "jar:mowziesmobs-1.21.1-1.8.2.jar:data/mowziesmobs/advancement/kill_umvuthi.json",
+        "jar:mowziesmobs-1.21.1-1.8.2.jar:data/mowziesmobs/advancement/kill_umvuthana_raptor.json",
+        "jar:mowziesmobs-1.21.1-1.8.2.jar:assets/mowziesmobs/lang/en_us.json"
+      ]
+    },
+    {
+      "key": "mowzie_blessing",
+      "deps": [
+        "mowzie_umvuthi"
+      ],
+      "type": "advancement",
+      "advancement": "mowziesmobs:suns_blessing",
+      "optional": true,
+      "icon": "mowziesmobs:umvuthana_mask_fury",
+      "layout": {
+        "x": 15,
+        "y": -7,
+        "size": 1.0,
+        "shape": "circle"
+      },
+      "en_us": [
+        "Heliomancer",
+        "Sneak into an Umvuthana grove disguised with a mask (\"Birds of a Feather\") and Umvuthi can grant the Sun's Blessing (\"Heliomancer\"). With an empty hand: Sunstrike (right-click the ground), Solar Flare (sneak and left click), Solar Beam and Supernova, which cost blessing time. Its countdown only starts when you use an ability, and the Sunbird replenishes it for free later.\n\nFitting, in a pack about the light of Heliodor."
+      ],
+      "es_es": [
+        "Heliomante",
+        "Entrá a escondidas a una arboleda Umvuthana disfrazado con una máscara («Birds of a Feather») y Umvuthi te puede dar la Bendición del sol («Heliomancer»). Con la mano vacía: Golpe de sol (clic derecho al suelo), Llamarada solar (agachado y clic izquierdo), Rayo solar y Supernova, que gastan tiempo de bendición. La cuenta regresiva recién empieza cuando usás una habilidad, y el Ave solar la repone gratis más tarde.\n\nMuy a tono en un pack sobre la luz de Heliodor."
+      ],
+      "sources": [
+        "jar:mowziesmobs-1.21.1-1.8.2.jar:data/mowziesmobs/advancement/sneak_grove.json",
+        "jar:mowziesmobs-1.21.1-1.8.2.jar:data/mowziesmobs/advancement/suns_blessing.json",
+        "jar:mowziesmobs-1.21.1-1.8.2.jar:assets/mowziesmobs/lang/en_us.json"
+      ]
+    },
+    {
+      "key": "mowzie_grottol",
+      "deps": [
+        "mowzie_wroughtnaut"
+      ],
+      "type": "advancement",
+      "advancement": "mowziesmobs:kill_grottol_fortune",
+      "optional": true,
+      "icon": "mowziesmobs:captured_grottol",
+      "layout": {
+        "x": 3,
+        "y": -10,
+        "size": 1.0,
+        "shape": "circle"
+      },
+      "en_us": [
+        "The Grottol",
+        "Grottols are diamond-crusted cave critters that flee when they see you. Killing one with a Fortune pickaxe gives extra diamonds (\"Double Or Nothing!\"); with Silk Touch you capture it whole (\"You're Coming With Me\")."
+      ],
+      "es_es": [
+        "El Grútgol",
+        "Los Grútgols son bichitos de cueva cubiertos de diamantes que huyen cuando te ven. Matar uno con un pico con Fortuna da diamantes extra («Double Or Nothing!»); con Toque de seda lo capturás entero («You're Coming With Me»)."
+      ],
+      "sources": [
+        "jar:mowziesmobs-1.21.1-1.8.2.jar:data/mowziesmobs/advancement/kill_grottol_fortune.json",
+        "jar:mowziesmobs-1.21.1-1.8.2.jar:data/mowziesmobs/advancement/kill_grottol_silk_touch.json",
+        "jar:mowziesmobs-1.21.1-1.8.2.jar:assets/mowziesmobs/lang/en_us.json"
+      ]
+    },
+    {
+      "key": "mowzie_naga",
+      "deps": [
+        "mowzie_umvuthi"
+      ],
+      "type": "advancement",
+      "advancement": "mowziesmobs:kill_naga",
+      "optional": true,
+      "icon": "mowziesmobs:naga_fang",
+      "layout": {
+        "x": 12,
+        "y": -10,
+        "size": 1.0,
+        "shape": "circle"
+      },
+      "en_us": [
+        "The flying Naga",
+        "Not the Twilight one: Mowzie's Naga is a winged sea serpent that spits poison (\"Wingin' It\"). Its Naga Fang brews a Potion of Poison Resistance, crafts the Naga Fang Dagger (poison, double damage from behind) and crafts darts for the Blowgun."
+      ],
+      "es_es": [
+        "La Naga voladora",
+        "No es la de Twilight: la Naga de Mowzie's es una serpiente marina con alas que escupe veneno («Wingin' It»). Su Colmillo de naga sirve para la Poción de resistencia al veneno, la Daga de colmillo (veneno y doble daño por la espalda) y los dardos de la Cerbatana."
+      ],
+      "sources": [
+        "jar:mowziesmobs-1.21.1-1.8.2.jar:data/mowziesmobs/advancement/kill_naga.json",
+        "jar:mowziesmobs-1.21.1-1.8.2.jar:assets/mowziesmobs/lang/en_us.json"
+      ]
+    },
+    {
+      "key": "mowzie_small",
+      "deps": [
+        "mowzie_intro"
+      ],
+      "type": "checkmark",
+      "optional": true,
+      "icon": "mowziesmobs:foliaath_seed",
+      "layout": {
+        "x": 0,
+        "y": -10,
+        "size": 0.85,
+        "shape": "circle"
+      },
+      "en_us": [
+        "Smaller creatures",
+        "Foliaaths are carnivorous plants; their seed grows a pet Foliaath if you feed it meat for two days. Lanterns float around at night and drop Luminous Jelly (brief night vision). Elokosa Howlers drop moon paws that inflict Weakness, Slowness, Mining Fatigue, Fragility or Eclipse on nearby mobs."
+      ],
+      "es_es": [
+        "Criaturas menores",
+        "Los Foliaaths son plantas carnívoras; su semilla hace crecer un Foliaath mascota si le das carne durante dos días. Las Linternas flotan por ahí de noche y sueltan Gelatina luminosa (visión nocturna breve). Los Elokosa Howlers sueltan patas lunares que provocan Debilidad, Lentitud, Fatiga minera, Fragilidad o Eclipse a los mobs cercanos."
+      ],
+      "sources": [
+        "jar:mowziesmobs-1.21.1-1.8.2.jar:data/mowziesmobs/advancement/kill_foliaath.json",
+        "jar:mowziesmobs-1.21.1-1.8.2.jar:data/mowziesmobs/advancement/kill_elokosa_howler.json",
+        "jar:mowziesmobs-1.21.1-1.8.2.jar:assets/mowziesmobs/lang/en_us.json"
+      ]
+    },
+    {
+      "key": "bosses_pack",
+      "deps": [
+        "bosses_welcome"
+      ],
+      "type": "checkmark",
+      "icon": "minecraft:wither_skeleton_skull",
+      "layout": {
+        "x": 0,
+        "y": 3,
+        "size": 1.0,
+        "shape": "rsquare"
+      },
+      "en_us": [
+        "What ENTRELUMEN changes",
+        "Pack specifics:\n- The Wither is the only Nether Star source (MI, Oritech and Reliquary shortcuts removed); Hostile Neural Networks can simulate it once trained.\n- Act V compass: ocean monument (wet sponge), stronghold (End arrival), the End (Dragon killed).\n- YUNG's replaces fortresses, monuments, strongholds and the End island, and their locate IDs change (for example betterstrongholds:stronghold).\n- Carry On refuses the Wither, the Elder Guardian, the Warden, the Dragon and Mowzie's bosses.\n- Mowzie's mini-bosses are optional."
+      ],
+      "es_es": [
+        "Qué cambia ENTRELUMEN",
+        "Particularidades del pack:\n- El Wither es la única fuente de Estrellas del Nether (se quitaron los atajos de MI, Oritech y Reliquary); Hostile Neural Networks lo puede simular una vez entrenado.\n- Brújula del acto V: monumento oceánico (esponja húmeda), fortaleza (llegar al End), el End (Dragón muerto).\n- YUNG's reemplaza fortalezas, monumentos, fortalezas del End y la isla del End, y cambian sus IDs para /locate (por ejemplo betterstrongholds:stronghold).\n- Carry On rechaza al Wither, al Guardián anciano, al Warden, al Dragón y a los jefes de Mowzie's.\n- Los minijefes de Mowzie's son opcionales."
+      ],
+      "sources": [
+        "repo:docs/design/mod-pingpong.md",
+        "repo:content/compass_targets.json",
+        "repo:pack/config/carryon-common.toml",
+        "jar:YungsBetterStrongholds-1.21.1-NeoForge-5.1.3.jar:assets/betterstrongholds/lang/en_us.json",
+        "jar:HostileNeuralNetworks-1.21.1-6.5.1.jar:data/hostilenetworks/data_models/wither.json"
+      ]
+    },
+    {
+      "key": "bosses_mastery",
+      "deps": [
+        "bosses_dragon",
+        "bosses_wither",
+        "bosses_monument",
+        "mowzie_umvuthi"
+      ],
+      "type": "checkmark",
+      "icon": "minecraft:dragon_egg",
+      "layout": {
+        "x": 18,
+        "y": 0,
+        "size": 2.25,
+        "shape": "pentagon"
+      },
+      "en_us": [
+        "Trophy wall",
+        "Nether Star, wet sponge, Dragon's Breath and Elytra: the vanilla bosses gave what the pack needs from them. Mowzie's gave you an axe, a helm, a crystal, a gauntlet and the blessing of the sun. None of this was required; all of it makes the rest easier."
+      ],
+      "es_es": [
+        "Pared de trofeos",
+        "Estrella del Nether, esponja húmeda, Aliento de dragón y Élitros: los jefes vanilla dieron lo que el pack necesita de ellos. Mowzie's te dio un hacha, un yelmo, un cristal, un guantelete y la bendición del sol. Nada de esto era obligatorio; todo esto hace más fácil lo que sigue."
+      ],
+      "sources": [
+        "repo:docs/design/story-bible.md"
+      ]
+    }
+  ]
+}

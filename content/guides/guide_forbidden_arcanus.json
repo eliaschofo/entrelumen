@@ -1,0 +1,569 @@
+{
+ "chapter": "guide_forbidden_arcanus",
+ "group": "magic",
+ "act": "II",
+ "icon": "forbidden_arcanus:arcane_crystal",
+ "title": {
+  "en_us": "Forbidden and Arcanus",
+  "es_es": "Forbidden and Arcanus"
+ },
+ "subtitle": {
+  "en_us": "Arcane crystal, the Clibano, the Hephaestus Forge, its four essences and item modifiers.",
+  "es_es": "Cristal arcano, el Clibano, la Forja de Hefesto, sus cuatro esencias y los modificadores."
+ },
+ "quests": [
+  {
+   "key": "fa_welcome",
+   "deps": [],
+   "type": "checkmark",
+   "icon": "forbidden_arcanus:arcane_crystal",
+   "layout": {
+    "x": 0,
+    "y": 0,
+    "size": 2.0,
+    "shape": "hexagon"
+   },
+   "en_us": [
+    "Forbidden and Arcanus: dark crafting",
+    "Forbidden and Arcanus is dark magic built as craftsmanship. You mine arcane crystal and darkstone, build the Clibano (a furnace that makes alloys and extra ore) and the Hephaestus Forge, a multiblock where rituals fed with four essences forge relics, armor and the modifiers that make tools eternal, self-smelting or soulbound.\n\nIt has no guidebook item: use EMI (the forge and clibano recipes have their own tabs) and this chapter. It starts in Act II; the strongest rituals belong to Acts IV and V."
+   ],
+   "es_es": [
+    "Forbidden and Arcanus: artesanía oscura",
+    "Forbidden and Arcanus es magia oscura pensada como oficio. Picás cristal arcano y piedra oscura, armás el Clibano (un horno que hace aleaciones y mena extra) y la Forja de Hefesto, una estructura donde rituales alimentados con cuatro esencias forjan reliquias, armaduras y los modificadores que vuelven eternas, autofundidoras o ligadas al alma a tus herramientas.\n\nNo trae libro guía: usá EMI (las recetas de la forja y del clibano tienen sus pestañas) y este capítulo. Arranca en el acto II; los rituales más fuertes son de los actos IV y V."
+   ],
+   "sources": [
+    "https://wiki.valhelsia.net/external-mods/forbidden-and-arcanus/wiki/1.21.x/blocks/hephaestus-forge",
+    "repo:docs/design/arcane-expansion-family.md",
+    "jar:forbidden_arcanus-2.6.1.jar:assets/forbidden_arcanus/lang/en_us.json"
+   ]
+  },
+  {
+   "key": "fa_crystal",
+   "deps": [
+    "fa_welcome"
+   ],
+   "type": "item",
+   "item": "forbidden_arcanus:arcane_crystal",
+   "count": 8,
+   "layout": {
+    "x": 3,
+    "y": 0,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Arcane crystal",
+    "Mine Arcane Crystal ore (it also has a deepslate variant). Blast or smelt the crystal into Arcane Crystal Dust; the ore blasts straight into crystals too. Keep both: the crystal upgrades the forge, the dust goes into almost everything else.\n\nFortune works on the ore. Nine crystals compact into a block, which the Smelter Prism ritual uses."
+   ],
+   "es_es": [
+    "Cristal arcano",
+    "Picá mena de Cristal arcano (también tiene variante de pizarra profunda). Fundí el cristal en Polvo de cristal arcano; la mena también se funde directo en cristales. Guardá las dos cosas: el cristal mejora la forja y el polvo va en casi todo lo demás.\n\nFortuna funciona en la mena. Nueve cristales se compactan en un bloque, que usa el ritual del Prisma de fundición."
+   ],
+   "sources": [
+    "jar:forbidden_arcanus-2.6.1.jar:data/forbidden_arcanus/recipe/smelting/arcane_crystal_from_smelting.json",
+    "jar:forbidden_arcanus-2.6.1.jar:data/forbidden_arcanus/recipe/smelting/arcane_crystal_dust_from_smelting.json",
+    "jar:forbidden_arcanus-2.6.1.jar:data/forbidden_arcanus/recipe/blasting/arcane_crystal_from_blasting.json",
+    "jar:forbidden_arcanus-2.6.1.jar:data/forbidden_arcanus/loot_table/blocks/arcane_crystal_ore.json"
+   ]
+  },
+  {
+   "key": "fa_darkstone",
+   "deps": [
+    "fa_welcome"
+   ],
+   "type": "item",
+   "item": "forbidden_arcanus:polished_darkstone",
+   "count": 32,
+   "layout": {
+    "x": 3,
+    "y": -3,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Darkstone",
+    "Darkstone generates underground. Four darkstone make four Polished Darkstone, which turns into bricks, tiles and chiseled variants. Polished darkstone plus a Deorum ingot makes Arcane Polished Darkstone.\n\nYou will need a lot: the Clibano takes 26 blocks and the Hephaestus Forge more than 60, plus pedestals."
+   ],
+   "es_es": [
+    "Piedra oscura",
+    "La Piedra oscura se genera bajo tierra. Cuatro dan cuatro de Piedra oscura pulida, que se vuelve ladrillos, baldosas y variantes cinceladas. Piedra oscura pulida más un lingote de Deorum hace Piedra oscura arcana pulida.\n\nVas a necesitar mucha: el Clibano lleva 26 bloques y la Forja de Hefesto más de 60, más los pedestales."
+   ],
+   "sources": [
+    "jar:forbidden_arcanus-2.6.1.jar:data/forbidden_arcanus/recipe/polished_darkstone.json",
+    "jar:forbidden_arcanus-2.6.1.jar:data/forbidden_arcanus/recipe/arcane_polished_darkstone.json",
+    "jar:forbidden_arcanus-2.6.1.jar:data/forbidden_arcanus/worldgen/configured_feature/ore_darkstone.json"
+   ]
+  },
+  {
+   "key": "fa_mundabitur",
+   "deps": [
+    "fa_crystal"
+   ],
+   "type": "item",
+   "item": "forbidden_arcanus:mundabitur_dust",
+   "count": 4,
+   "layout": {
+    "x": 6,
+    "y": 0,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Mundabitur Dust",
+    "Craft Mundabitur Dust: arcane crystal dust, redstone, blaze powder, bone meal, a phantom membrane and gunpowder give four. It is the activator of the mod: you use it on a finished structure to turn it into the Clibano or the Hephaestus Forge.\n\nIt also goes into Deorum ingots and Quantum Cores."
+   ],
+   "es_es": [
+    "Polvo de Mundabitur",
+    "Crafteá Polvo de Mundabitur: polvo de cristal arcano, redstone, polvo de blaze, polvo de hueso, una membrana de phantom y pólvora dan cuatro. Es el activador del mod: lo usás sobre una estructura terminada para convertirla en el Clibano o en la Forja de Hefesto.\n\nTambién va en los lingotes de Deorum y en los Núcleos cuánticos."
+   ],
+   "sources": [
+    "jar:forbidden_arcanus-2.6.1.jar:data/forbidden_arcanus/recipe/mundabitur_dust.json",
+    "https://wiki.valhelsia.net/external-mods/forbidden-and-arcanus/wiki/1.21.x/blocks/clibano",
+    "https://wiki.valhelsia.net/external-mods/forbidden-and-arcanus/wiki/1.21.x/blocks/hephaestus-forge"
+   ]
+  },
+  {
+   "key": "fa_deorum",
+   "deps": [
+    "fa_mundabitur"
+   ],
+   "type": "item",
+   "item": "forbidden_arcanus:deorum_ingot",
+   "count": 2,
+   "layout": {
+    "x": 9,
+    "y": -3,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Deorum",
+    "Craft a Deorum ingot: a gold ingot in the center, two Mundabitur Dust at its sides, two arcane crystal dust above and below, and four charcoal in the corners. Nuggets gild chiseled polished darkstone, which the forge needs.\n\nDeorum also makes lanterns, chains, the Golden Dragon Scale and the forge's tier 3 upgrade."
+   ],
+   "es_es": [
+    "Deorum",
+    "Crafteá un lingote de Deorum: un lingote de oro al centro, dos Polvos de Mundabitur a los costados, dos polvos de cristal arcano arriba y abajo y cuatro carbones vegetales en las esquinas. Las pepitas doran la piedra oscura pulida cincelada, que pide la forja.\n\nEl Deorum además hace faroles, cadenas, la Escama de dragón dorada y la mejora de nivel 3 de la forja."
+   ],
+   "sources": [
+    "jar:forbidden_arcanus-2.6.1.jar:data/forbidden_arcanus/recipe/deorum_ingot.json",
+    "jar:forbidden_arcanus-2.6.1.jar:data/forbidden_arcanus/recipe/gilded_chiseled_polished_darkstone.json",
+    "jar:forbidden_arcanus-2.6.1.jar:data/forbidden_arcanus/forbidden_arcanus/hephaestus_forge/ritual/upgrade_tier_3.json"
+   ]
+  },
+  {
+   "key": "fa_clibano",
+   "deps": [
+    "fa_mundabitur",
+    "fa_darkstone"
+   ],
+   "type": "item",
+   "item": "forbidden_arcanus:clibano_core",
+   "layout": {
+    "x": 9,
+    "y": 0,
+    "size": 1.5,
+    "shape": "hexagon"
+   },
+   "en_us": [
+    "The Clibano",
+    "Craft a Clibano Core (a blast furnace ringed with darkstone) and build the structure around it with 18 Polished Darkstone Bricks and 8 Polished Darkstone, leaving the center air. Use Mundabitur Dust on the core and it becomes the Clibano, a faster upgrade of the blast furnace.\n\nThe Clibano smelts ores and raw metals, arcane crystal and runic stone. It is an Act II ore line that does not need power."
+   ],
+   "es_es": [
+    "El Clibano",
+    "Crafteá un Núcleo de Clibano (un alto horno rodeado de piedra oscura) y armá la estructura alrededor con 18 Ladrillos de piedra oscura pulida y 8 de Piedra oscura pulida, con el centro vacío. Usá Polvo de Mundabitur sobre el núcleo y se vuelve el Clibano, una mejora más rápida del alto horno.\n\nEl Clibano funde menas y metales en bruto, cristal arcano y piedra rúnica. Es una línea de menas del acto II que no pide energía."
+   ],
+   "sources": [
+    "jar:forbidden_arcanus-2.6.1.jar:data/forbidden_arcanus/recipe/clibano_core.json",
+    "https://wiki.valhelsia.net/external-mods/forbidden-and-arcanus/wiki/1.21.x/blocks/clibano",
+    "jar:forbidden_arcanus-2.6.1.jar:data/forbidden_arcanus/recipe/clibano_combustion/iron_ingot_from_clibano_combusting_raw_iron.json"
+   ]
+  },
+  {
+   "key": "fa_clibano_fire",
+   "deps": [
+    "fa_clibano"
+   ],
+   "type": "item",
+   "item": "forbidden_arcanus:obsidiansteel_ingot",
+   "optional": true,
+   "layout": {
+    "x": 12,
+    "y": 3,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Tip: soul fire and residues",
+    "Feed the Clibano Souls for soul fire (about 1.5 times faster) or Enchanted Souls for enchanted fire (about 2.5 times). With those fires each smelted item has a chance to leave a residue; nine iron residues combine into a whole iron block, so it works like slow ore doubling.\n\nPut an Artisan Relic in its enhancer slot to make alloys, starting with Obsidiansteel (raw iron plus obsidian). Artisan Relics turn up in village armorer, toolsmith and weaponsmith chests."
+   ],
+   "es_es": [
+    "Tip: fuego de almas y residuos",
+    "Alimentá el Clibano con Almas para fuego de almas (más o menos 1,5 veces más rápido) o con Almas encantadas para fuego encantado (unas 2,5 veces). Con esos fuegos cada ítem fundido tiene chance de dejar un residuo; nueve residuos de hierro se combinan en un bloque de hierro entero, así que funciona como una duplicación de mena lenta.\n\nPoné una Reliquia de artesano en su ranura de potenciador para hacer aleaciones, empezando por el Acero de obsidiana (hierro en bruto más obsidiana). Las Reliquias de artesano aparecen en cofres de herrero, armero y carpintero de armas de las aldeas."
+   ],
+   "sources": [
+    "https://wiki.valhelsia.net/external-mods/forbidden-and-arcanus/wiki/1.21.x/blocks/clibano",
+    "jar:forbidden_arcanus-2.6.1.jar:data/forbidden_arcanus/forbidden_arcanus/residue_type/iron.json",
+    "jar:forbidden_arcanus-2.6.1.jar:data/forbidden_arcanus/recipe/clibano_combustion/obsidiansteel_ingot_from_clibano_combustion.json",
+    "jar:forbidden_arcanus-2.6.1.jar:data/forbidden_arcanus/loot_modifiers/artisan_relic_addition.json",
+    "jar:forbidden_arcanus-2.6.1.jar:data/forbidden_arcanus/forbidden_arcanus/enhancer/definition/artisan_relic.json"
+   ]
+  },
+  {
+   "key": "fa_gavel",
+   "deps": [
+    "fa_deorum"
+   ],
+   "type": "item",
+   "item": "forbidden_arcanus:iron_blacksmith_gavel",
+   "layout": {
+    "x": 12,
+    "y": -3,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Blacksmith Gavel",
+    "Shape clay balls into a Blacksmith Gavel Head and craft a gavel with it (stone, iron, gold, diamond, or netherite by smithing). You start every Hephaestus Forge ritual by using a gavel on the forge.\n\nBonus: the mod gives mining with a gavel a chance to double ore drops."
+   ],
+   "es_es": [
+    "Mazo de herrero",
+    "Dale forma a bolas de arcilla para la Cabeza de mazo de herrero y crafteá un mazo con ella (piedra, hierro, oro, diamante, o netherita por herrería). Todo ritual de la Forja de Hefesto arranca usando un mazo sobre la forja.\n\nYapa: el mod le da a picar con un mazo una chance de duplicar los drops de las menas."
+   ],
+   "sources": [
+    "jar:forbidden_arcanus-2.6.1.jar:data/forbidden_arcanus/recipe/blacksmith_gavel_head.json",
+    "jar:forbidden_arcanus-2.6.1.jar:data/forbidden_arcanus/recipe/iron_blacksmith_gavel.json",
+    "jar:forbidden_arcanus-2.6.1.jar:data/forbidden_arcanus/loot_modifiers/blacksmith_gavel_ore_doubling.json",
+    "https://wiki.valhelsia.net/external-mods/forbidden-and-arcanus/wiki/1.21.x/blocks/hephaestus-forge"
+   ]
+  },
+  {
+   "key": "fa_forge",
+   "deps": [
+    "fa_clibano",
+    "fa_gavel"
+   ],
+   "type": "item",
+   "item": "forbidden_arcanus:darkstone_pedestal",
+   "count": 4,
+   "icon": "forbidden_arcanus:hephaestus_forge",
+   "layout": {
+    "x": 15,
+    "y": 0,
+    "size": 1.75,
+    "shape": "hexagon"
+   },
+   "en_us": [
+    "The Hephaestus Forge",
+    "Build the forge's base with 48 Polished Darkstone, 9 Gilded Chiseled Polished Darkstone and 4 Chiseled Arcane Polished Darkstone in the wiki's pattern, put a smithing table on the central gilded block and sneak-use Mundabitur Dust on it: corrupted lightning turns it into the Hephaestus Forge.\n\nAround it place Darkstone Pedestals (the magnetized ones display items by themselves). Ritual ingredients go on the pedestals, the main ingredient in the forge."
+   ],
+   "es_es": [
+    "La Forja de Hefesto",
+    "Armá la base de la forja con 48 de Piedra oscura pulida, 9 de Piedra oscura pulida cincelada dorada y 4 de Piedra oscura arcana pulida cincelada en el patrón de la wiki, poné una mesa de herrería sobre el bloque dorado central y usá agachado Polvo de Mundabitur sobre ella: un rayo corrupto la convierte en la Forja de Hefesto.\n\nAlrededor poné Pedestales de piedra oscura (los magnetizados exhiben los ítems solos). Los ingredientes del ritual van en los pedestales, el ingrediente principal en la forja."
+   ],
+   "sources": [
+    "https://wiki.valhelsia.net/external-mods/forbidden-and-arcanus/wiki/1.21.x/blocks/hephaestus-forge",
+    "jar:forbidden_arcanus-2.6.1.jar:data/forbidden_arcanus/recipe/darkstone_pedestal.json"
+   ]
+  },
+  {
+   "key": "fa_essences",
+   "deps": [
+    "fa_forge"
+   ],
+   "type": "item",
+   "item": "forbidden_arcanus:aureal_bottle",
+   "count": 4,
+   "layout": {
+    "x": 18,
+    "y": 3,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "The four essences",
+    "Rituals cost essences. Aureal: Aureal Bottles (eight arcane crystal dust around a Potion of Regeneration II, 35 each) or an Arcane Crystal Obelisk. Souls: Souls pulled from soul sand with a Soul Extractor, plus Corrupt and Enchanted Souls from Lost Souls. Blood: hurt creatures near the forge, or fill a Test Tube in your offhand while fighting. Experience: Xpetrified Orbs (91), bottles o' enchanting (15) or enchanted tools, whose enchantments become essence.\n\nA higher forge tier stores more of each."
+   ],
+   "es_es": [
+    "Las cuatro esencias",
+    "Los rituales cuestan esencias. Aureal: Botellas de Aureal (ocho polvos de cristal arcano alrededor de una Poción de Regeneración II, 35 cada una) o un Obelisco de cristal arcano. Almas: Almas que un Extractor de almas saca de la arena de almas, más Almas corruptas y encantadas de las Almas perdidas. Sangre: lastimá criaturas cerca de la forja, o llená un Tubo de ensayo en la otra mano mientras peleás. Experiencia: Orbes xpetrificados (91), botellas de experiencia (15) o herramientas encantadas, cuyos encantamientos se vuelven esencia.\n\nUn nivel de forja más alto guarda más de cada una."
+   ],
+   "sources": [
+    "https://wiki.valhelsia.net/external-mods/forbidden-and-arcanus/wiki/1.21.x/blocks/hephaestus-forge/essence-providers",
+    "jar:forbidden_arcanus-2.6.1.jar:data/forbidden_arcanus/recipe/aureal_bottle.json",
+    "jar:forbidden_arcanus-2.6.1.jar:data/forbidden_arcanus/recipe/soul_extractor.json",
+    "jar:forbidden_arcanus-2.6.1.jar:data/forbidden_arcanus/recipe/test_tube.json",
+    "jar:forbidden_arcanus-2.6.1.jar:data/forbidden_arcanus/loot_modifiers/simple_dungeon_additions.json"
+   ]
+  },
+  {
+   "key": "fa_tiers",
+   "deps": [
+    "fa_forge"
+   ],
+   "type": "item",
+   "item": "forbidden_arcanus:spawner_scrap",
+   "count": 4,
+   "layout": {
+    "x": 18,
+    "y": -3,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Forge tiers",
+    "The forge starts at tier 1 and rises with upgrade rituals that need the exact previous tier. Tier 2: Edelwood planks in the forge, four arcane crystals and four Spawner Scrap on pedestals. Tier 3: chiseled polished darkstone, four crystals and four Deorum ingots. Tier 4: four Stellarite pieces and four Runes. Tier 5: a Stellarite block, four sculk catalysts, two Dark Nether Stars and two Dragon Scales.\n\nSpawner Scrap drops from spawners broken without Silk Touch; Stellarite from Stella Arcanum ore; Dragon Scales from the Ender Dragon and End City treasure."
+   ],
+   "es_es": [
+    "Niveles de la forja",
+    "La forja arranca en nivel 1 y sube con rituales de mejora que piden exactamente el nivel anterior. Nivel 2: tablones de Edelwood en la forja, cuatro cristales arcanos y cuatro Chatarras de spawner en pedestales. Nivel 3: piedra oscura pulida cincelada, cuatro cristales y cuatro lingotes de Deorum. Nivel 4: cuatro Fragmentos de Stellarite y cuatro Runas. Nivel 5: un bloque de Stellarite, cuatro catalizadores de sculk, dos Estrellas del Nether oscuras y dos Escamas de dragón.\n\nLa Chatarra de spawner cae de spawners rotos sin Toque de seda; el Stellarite, de la mena Stella Arcanum; las Escamas de dragón, del Dragón del End y del tesoro de las Ciudades del End."
+   ],
+   "sources": [
+    "jar:forbidden_arcanus-2.6.1.jar:data/forbidden_arcanus/forbidden_arcanus/hephaestus_forge/ritual/upgrade_tier_2.json",
+    "jar:forbidden_arcanus-2.6.1.jar:data/forbidden_arcanus/forbidden_arcanus/hephaestus_forge/ritual/upgrade_tier_3.json",
+    "jar:forbidden_arcanus-2.6.1.jar:data/forbidden_arcanus/forbidden_arcanus/hephaestus_forge/ritual/upgrade_tier_4.json",
+    "jar:forbidden_arcanus-2.6.1.jar:data/forbidden_arcanus/forbidden_arcanus/hephaestus_forge/ritual/upgrade_tier_5.json",
+    "jar:forbidden_arcanus-2.6.1.jar:data/forbidden_arcanus/loot_modifiers/spawner_additions.json",
+    "jar:forbidden_arcanus-2.6.1.jar:data/forbidden_arcanus/loot_modifiers/ender_dragon_additions.json",
+    "jar:forbidden_arcanus-2.6.1.jar:data/forbidden_arcanus/loot_table/blocks/stella_arcanum.json"
+   ]
+  },
+  {
+   "key": "fa_enhancers",
+   "deps": [
+    "fa_essences"
+   ],
+   "type": "item",
+   "item": "forbidden_arcanus:crimson_stone",
+   "optional": true,
+   "layout": {
+    "x": 21,
+    "y": 3,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Enhancers: relics in the forge",
+    "The forge has enhancer slots, unlocked with tiers. Crimson Stone (pillager outpost chests) halves the souls needed; Crescent Moon cuts aureal depending on the time of day; Artisan Relic saves a quarter of the experience; Soul Crimson Stone removes the essence cost of one ritual. Elementarium (jungle temples, desert pyramids, underwater ruins) allows the elemental prisms, Divine Pact celestial items and Maledictus Pact (bastion treasure) cursed items.\n\nCheck a ritual's page in EMI: some require a specific enhancer."
+   ],
+   "es_es": [
+    "Potenciadores: reliquias en la forja",
+    "La forja tiene ranuras de potenciador que se abren con los niveles. La Piedra carmesí (cofres de puestos de saqueadores) reduce a la mitad las almas; la Luna creciente baja el aureal según la hora; la Reliquia de artesano ahorra un cuarto de la experiencia; la Piedra carmesí de almas quita el costo de esencia de un ritual. El Elementarium (templos de la jungla, pirámides del desierto, ruinas submarinas) habilita los prismas elementales, el Pacto divino los ítems celestiales y el Pacto maledictus (tesoro de bastión) los malditos.\n\nMirá la página del ritual en EMI: algunos piden un potenciador concreto."
+   ],
+   "sources": [
+    "jar:forbidden_arcanus-2.6.1.jar:data/forbidden_arcanus/forbidden_arcanus/enhancer/definition/crimson_stone.json",
+    "jar:forbidden_arcanus-2.6.1.jar:data/forbidden_arcanus/forbidden_arcanus/enhancer/definition/crescent_moon.json",
+    "jar:forbidden_arcanus-2.6.1.jar:data/forbidden_arcanus/forbidden_arcanus/enhancer/definition/artisan_relic.json",
+    "jar:forbidden_arcanus-2.6.1.jar:data/forbidden_arcanus/forbidden_arcanus/enhancer/definition/soul_crimson_stone.json",
+    "jar:forbidden_arcanus-2.6.1.jar:data/forbidden_arcanus/loot_modifiers/crimson_stone_addition.json",
+    "jar:forbidden_arcanus-2.6.1.jar:data/forbidden_arcanus/loot_modifiers/elementarium_addition.json",
+    "jar:forbidden_arcanus-2.6.1.jar:data/forbidden_arcanus/loot_modifiers/maledictus_pact.json",
+    "jar:forbidden_arcanus-2.6.1.jar:assets/forbidden_arcanus/lang/en_us.json#item.forbidden_arcanus.enhancer.divine_pact.hephaestus_forge"
+   ]
+  },
+  {
+   "key": "fa_modifiers",
+   "deps": [
+    "fa_tiers",
+    "fa_essences"
+   ],
+   "type": "item",
+   "item": "forbidden_arcanus:apply_modifier_smithing_template",
+   "layout": {
+    "x": 21,
+    "y": 0,
+    "size": 1.25,
+    "shape": "square"
+   },
+   "en_us": [
+    "Item modifiers",
+    "A modifier is applied at a Smithing Table with the Apply Modifier template (darkstone around a netherite upgrade template), the item and the modifier item. Smelter Prism: Fiery, tools smelt what they mine. Terrastomp Prism: Demolishing, for tools. Sea Prism: Aquatic, for helmets. Ferrognetic Mixture: Magnetized, for boots. Soul Binding Crystal: Soulbound, the item stays with you. Eternal Stella: Eternal, the item never breaks.\n\nThe prisms are forge rituals that need the Elementarium enhancer; each modifier excludes some enchantments."
+   ],
+   "es_es": [
+    "Modificadores de ítems",
+    "Un modificador se aplica en una Mesa de herrería con la plantilla de Aplicar modificador (piedra oscura alrededor de una plantilla de mejora de netherita), el ítem y el ítem modificador. Prisma de fundición: Ardiente, las herramientas funden lo que pican. Prisma Terrastomp: Demoledor, para herramientas. Prisma marino: Acuático, para cascos. Mezcla ferrognética: Magnetizado, para botas. Cristal de vínculo de alma: Ligado al alma, el ítem se queda con vos. Estela eterna: Eterno, el ítem nunca se rompe.\n\nLos prismas son rituales de la forja que piden el potenciador Elementarium; cada modificador excluye algunos encantamientos."
+   ],
+   "sources": [
+    "jar:forbidden_arcanus-2.6.1.jar:data/forbidden_arcanus/recipe/apply_modifier_smithing_template.json",
+    "jar:forbidden_arcanus-2.6.1.jar:data/forbidden_arcanus/recipe/smithing/apply_fiery_modifier.json",
+    "jar:forbidden_arcanus-2.6.1.jar:data/forbidden_arcanus/recipe/smithing/apply_eternal_modifier.json",
+    "jar:forbidden_arcanus-2.6.1.jar:data/forbidden_arcanus/recipe/smithing/apply_soulbound_modifier.json",
+    "jar:forbidden_arcanus-2.6.1.jar:data/forbidden_arcanus/forbidden_arcanus/hephaestus_forge/ritual/smelter_prism.json",
+    "jar:forbidden_arcanus-2.6.1.jar:data/forbidden_arcanus/forbidden_arcanus/hephaestus_forge/ritual/sea_prism.json",
+    "jar:forbidden_arcanus-2.6.1.jar:data/forbidden_arcanus/forbidden_arcanus/item_modifier/eternal.json"
+   ]
+  },
+  {
+   "key": "fa_stella",
+   "deps": [
+    "fa_modifiers"
+   ],
+   "type": "item",
+   "item": "forbidden_arcanus:eternal_stella",
+   "layout": {
+    "x": 24,
+    "y": 0,
+    "size": 1.5,
+    "shape": "diamond"
+   },
+   "en_us": [
+    "ENTRELUMEN: the Eternal Stella",
+    "The Eternal Stella ritual (tier 3) takes a diamond in the forge, three Xpetrified Orbs and a Stellarite piece on pedestals, plus essences. In ENTRELUMEN it also needs a Containment Seal on a pedestal (five of the eight pedestals are used).\n\nThe Eternal modifier makes a tool unbreakable, so the pack places it next to other late-game tool power: the Containment Seal is an Act IV component made from dark gems, Soulstained Steel and a Spectral Lens."
+   ],
+   "es_es": [
+    "ENTRELUMEN: la Estela eterna",
+    "El ritual de la Estela eterna (nivel 3) pide un diamante en la forja, tres Orbes xpetrificados y un Fragmento de Stellarite en pedestales, más esencias. En ENTRELUMEN además pide un Sello de contención en un pedestal (se usan cinco de los ocho pedestales).\n\nEl modificador Eterno hace irrompible una herramienta, así que el pack lo pone junto al resto del poder de herramientas de juego tardío: el Sello de contención es un componente del acto IV hecho con gemas oscuras, Acero manchado de alma y una Lente espectral."
+   ],
+   "sources": [
+    "repo:pack/kubejs/data/forbidden_arcanus/forbidden_arcanus/hephaestus_forge/ritual/eternal_stella.json",
+    "jar:forbidden_arcanus-2.6.1.jar:data/forbidden_arcanus/forbidden_arcanus/hephaestus_forge/ritual/eternal_stella.json",
+    "repo:docs/design/arcane-expansion-family.md#staged-acquisition-and-removed-duplication"
+   ]
+  },
+  {
+   "key": "fa_xpetrified",
+   "deps": [
+    "fa_stella"
+   ],
+   "type": "item",
+   "item": "forbidden_arcanus:xpetrified_orb",
+   "optional": true,
+   "layout": {
+    "x": 24,
+    "y": -3,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Doubtful spot: Xpetrified Orbs",
+    "Xpetrified Orbs hold experience essence (91 each). The mod's wiki says they are produced by the Black Hole block, which absorbs nearby experience orbs; the block exists in this version, but how you create it is not documented in the files the pack could read.\n\nCheck EMI in your game before planning an Eternal Stella around them, and tell the pack's maintainer if the route differs."
+   ],
+   "es_es": [
+    "Punto dudoso: los Orbes xpetrificados",
+    "Los Orbes xpetrificados guardan esencia de experiencia (91 cada uno). La wiki del mod dice que los produce el bloque Agujero negro, que absorbe los orbes de experiencia cercanos; el bloque existe en esta versión, pero cómo se crea no está documentado en los archivos que el pack pudo leer.\n\nRevisá EMI en tu partida antes de planear una Estela eterna con ellos, y avisale a quien mantiene el pack si la ruta es otra."
+   ],
+   "sources": [
+    "https://wiki.valhelsia.net/external-mods/forbidden-and-arcanus/wiki/1.21.x/blocks/hephaestus-forge/essence-providers",
+    "jar:forbidden_arcanus-2.6.1.jar:data/forbidden_arcanus/loot_table/blocks/black_hole.json"
+   ]
+  },
+  {
+   "key": "fa_armor",
+   "deps": [
+    "fa_enhancers"
+   ],
+   "type": "item",
+   "item": "forbidden_arcanus:draco_arcanus_chestplate",
+   "optional": true,
+   "layout": {
+    "x": 24,
+    "y": 3,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Draco Arcanus and Tyr armor",
+    "Forge Draco Arcanus armor on tier 2: a netherite piece in the forge with Dragon Scales and Obsidiansteel ingots on pedestals, plus essences (the chestplate asks four scales and three ingots). On tier 4, Draco Arcanus pieces become Tyr armor with Aquatic and Golden Dragon Scales, at a much higher essence cost.\n\nDragon Scales come from the Ender Dragon, so in ENTRELUMEN this is Act V gear: the dragon is fought for its drops while building the Ark."
+   ],
+   "es_es": [
+    "Armaduras Draco Arcanus y Tyr",
+    "Forjá la armadura Draco Arcanus en nivel 2: una pieza de netherita en la forja con Escamas de dragón y lingotes de Acero de obsidiana en pedestales, más esencias (la pechera pide cuatro escamas y tres lingotes). En nivel 4, las piezas Draco Arcanus se vuelven armadura de Tyr con Escamas de dragón acuáticas y doradas, a un costo de esencia mucho mayor.\n\nLas Escamas de dragón salen del Dragón del End, así que en ENTRELUMEN es equipo del acto V: al dragón se lo enfrenta por sus drops mientras se arma el Arca."
+   ],
+   "sources": [
+    "jar:forbidden_arcanus-2.6.1.jar:data/forbidden_arcanus/forbidden_arcanus/hephaestus_forge/ritual/draco_arcanus_chestplate.json",
+    "jar:forbidden_arcanus-2.6.1.jar:data/forbidden_arcanus/forbidden_arcanus/hephaestus_forge/ritual/tyr_chestplate.json",
+    "jar:forbidden_arcanus-2.6.1.jar:data/forbidden_arcanus/loot_modifiers/ender_dragon_additions.json",
+    "repo:docs/design/story-bible.md",
+    "repo:docs/design/act-renumbering.md"
+   ]
+  },
+  {
+   "key": "fa_quantum",
+   "deps": [
+    "fa_armor"
+   ],
+   "type": "item",
+   "item": "forbidden_arcanus:quantum_catcher",
+   "optional": true,
+   "layout": {
+    "x": 27,
+    "y": 3,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Quantum Catcher",
+    "A Quantum Core (a Rune, flint and Mundabitur Dust) becomes a Quantum Catcher in the forge with four Spawner Scrap. It captures a creature and releases it elsewhere, and can be dyed; a tier 4 ritual with a Nether Star makes the Boss Catcher.\n\nUseful to move villagers and animals; in this pack spawners cannot be picked up with Silk Touch, so moving mobs is the way to reorganize farms."
+   ],
+   "es_es": [
+    "Recepto cuántico",
+    "Un Núcleo cuántico (una Runa, pedernal y Polvo de Mundabitur) se vuelve un Recepto cuántico en la forja con cuatro Chatarras de spawner. Captura una criatura y la suelta en otro lado, y se puede teñir; un ritual de nivel 4 con una estrella del Nether hace el Captor de jefes.\n\nSirve para mudar aldeanos y animales; en este pack los spawners no se levantan con Toque de seda, así que mover criaturas es la forma de reorganizar granjas."
+   ],
+   "sources": [
+    "jar:forbidden_arcanus-2.6.1.jar:data/forbidden_arcanus/recipe/quantum_core.json",
+    "jar:forbidden_arcanus-2.6.1.jar:data/forbidden_arcanus/forbidden_arcanus/hephaestus_forge/ritual/quantum_catcher.json",
+    "jar:forbidden_arcanus-2.6.1.jar:data/forbidden_arcanus/forbidden_arcanus/hephaestus_forge/ritual/boss_catcher.json",
+    "repo:pack/config/apothic_spawners.cfg"
+   ]
+  },
+  {
+   "key": "fa_quirks",
+   "deps": [
+    "fa_forge"
+   ],
+   "type": "checkmark",
+   "optional": true,
+   "icon": "forbidden_arcanus:edelwood_log",
+   "layout": {
+    "x": 15,
+    "y": -6,
+    "size": 1.0,
+    "shape": "circle"
+   },
+   "en_us": [
+    "Quirks: world and pack details",
+    "Stella Arcanum ore only counts as stone ore for tags: the pack removed it from the deepslate ore tag, which made Almost Unified complain. Edelwood trees give Edelwood planks, sticks and a wooden bucket; smelting their logs gives Dark Matter. Bats drop Bat Wings for Bat Soup, and endermen ender pearl fragments.\n\nMagical Farmland has its own crop-doubling rule in the mod's data."
+   ],
+   "es_es": [
+    "Particularidades: detalles del mundo y del pack",
+    "La mena Stella Arcanum sólo cuenta como mena de piedra para los tags: el pack la sacó del tag de menas de pizarra profunda, que hacía protestar a Almost Unified. Los árboles de Edelwood dan tablones, palos y un balde de madera; fundir sus troncos da Materia oscura. Los murciélagos sueltan Alas de murciélago para la Sopa de murciélago, y los endermans fragmentos de perla de ender.\n\nLa Tierra de cultivo mágica tiene su propia regla de duplicar cosechas en los datos del mod."
+   ],
+   "sources": [
+    "repo:pack/kubejs/server_scripts/entrelumen_arcane_balance.js",
+    "repo:docs/design/arcane-expansion-family.md#upstream-data-corrections",
+    "jar:forbidden_arcanus-2.6.1.jar:data/forbidden_arcanus/recipe/smelting/dark_matter.json",
+    "jar:forbidden_arcanus-2.6.1.jar:data/forbidden_arcanus/recipe/edelwood_bucket.json",
+    "jar:forbidden_arcanus-2.6.1.jar:data/forbidden_arcanus/loot_modifiers/bat_additions.json",
+    "jar:forbidden_arcanus-2.6.1.jar:data/forbidden_arcanus/loot_modifiers/enderman_additions.json",
+    "jar:forbidden_arcanus-2.6.1.jar:data/forbidden_arcanus/loot_modifiers/magical_farmland_crop_doubling.json"
+   ]
+  },
+  {
+   "key": "fa_mastery",
+   "deps": [
+    "fa_stella",
+    "fa_quantum"
+   ],
+   "type": "item",
+   "item": "forbidden_arcanus:tyr_chestplate",
+   "icon": "forbidden_arcanus:hephaestus_forge",
+   "layout": {
+    "x": 30,
+    "y": 0,
+    "size": 2.0,
+    "shape": "gear"
+   },
+   "en_us": [
+    "Mastery: a master smith",
+    "A tier 5 forge with its enhancers, tools that never break, smelt their own ore and stay with you on death, and Tyr armor on your back. Forbidden and Arcanus is the pack's workshop for modifiers: combine them with Apotheosis affixes and gems for gear that lasts the whole campaign.\n\nWhen an item's anvil cost grows too high from all that work, the Ark's arcane module (Act V) resets it."
+   ],
+   "es_es": [
+    "Maestría: maestro herrero",
+    "Una forja de nivel 5 con sus potenciadores, herramientas que no se rompen, funden su propia mena y se quedan con vos al morir, y armadura de Tyr encima. Forbidden and Arcanus es el taller de modificadores del pack: combinalos con los afijos y gemas de Apotheosis para equipo que dure toda la campaña.\n\nCuando el costo de yunque de un ítem sube demasiado con tanto trabajo, el módulo arcano del Arca (acto V) lo reinicia."
+   ],
+   "sources": [
+    "jar:forbidden_arcanus-2.6.1.jar:data/forbidden_arcanus/forbidden_arcanus/hephaestus_forge/ritual/upgrade_tier_5.json",
+    "repo:docs/design/arcane-library.md"
+   ]
+  }
+ ]
+}

@@ -1,0 +1,436 @@
+{
+  "chapter": "guide_qol_inventory",
+  "group": "qol",
+  "act": "any",
+  "icon": "minecraft:chest",
+  "title": {
+    "en_us": "Inventory Without Pain",
+    "es_es": "Inventario sin sufrir"
+  },
+  "subtitle": {
+    "en_us": "Mouse gestures, sorting, trash, portable stations, magnets and the Tool Belt.",
+    "es_es": "Gestos del mouse, orden, basura, estaciones portátiles, imanes y el cinturón de herramientas."
+  },
+  "quests": [
+    {
+      "key": "qol_inventory_welcome",
+      "deps": [],
+      "type": "checkmark",
+      "layout": {
+        "x": 0,
+        "y": 0,
+        "size": 2.0,
+        "shape": "hexagon"
+      },
+      "en_us": [
+        "Less Clicking, More Playing",
+        "Big packs mean big inventories. The pack adds a handful of small mods that remove clicks: drag gestures, one-key sorting, a trash slot, crafting tables on a stick, magnets and a belt for your tools.\n\nNone of them changes progression. They are here so moving items never feels like work."
+      ],
+      "es_es": [
+        "Menos clics, más juego",
+        "Pack grande, inventario grande. El pack suma varios mods chicos que ahorran clics: gestos de arrastre, orden con una tecla, un casillero de basura, mesas de trabajo en un palo, imanes y un cinturón para las herramientas.\n\nNinguno cambia la progresión. Están para que mover ítems nunca se sienta como trabajo."
+      ],
+      "sources": [
+        "repo:docs/design/qol-parity.md",
+        "repo:catalog/curated.json"
+      ]
+    },
+    {
+      "key": "qol_inventory_mouse",
+      "deps": [
+        "qol_inventory_welcome"
+      ],
+      "type": "checkmark",
+      "icon": "minecraft:string",
+      "layout": {
+        "x": 3,
+        "y": -2,
+        "size": 1.0,
+        "shape": "square"
+      },
+      "en_us": [
+        "Mouse Tweaks",
+        "&eMouse Tweaks&r extends what the mouse does in any inventory:\n\n- Hold &eright click&r and drag over empty slots to drop one item in each.\n- Holding a stack, hold &eleft click&r and drag over slots to gather items of the same kind.\n- With an empty hand, hold &eShift&r and drag with left click to send every slot you touch to the other inventory.\n- Scroll the &emouse wheel&r over an item to move it one at a time between inventories."
+      ],
+      "es_es": [
+        "Mouse Tweaks",
+        "&eMouse Tweaks&r amplía lo que hace el mouse en cualquier inventario:\n\n- Mantené el &eclic derecho&r y arrastrá sobre casilleros vacíos para dejar uno en cada uno.\n- Con una pila en el cursor, mantené el &eclic izquierdo&r y arrastrá para juntar ítems del mismo tipo.\n- Con la mano vacía, mantené &eShift&r y arrastrá con clic izquierdo para mandar cada casillero que tocás al otro inventario.\n- Girá la &erueda&r sobre un ítem para pasarlo de a uno entre inventarios."
+      ],
+      "sources": [
+        "jar:MouseTweaks-neoforge-mc1.21-2.26.1.jar:META-INF/neoforge.mods.toml",
+        "repo:docs/design/qol-parity.md"
+      ]
+    },
+    {
+      "key": "qol_inventory_sort",
+      "deps": [
+        "qol_inventory_welcome"
+      ],
+      "type": "checkmark",
+      "icon": "minecraft:hopper",
+      "layout": {
+        "x": 3,
+        "y": 2,
+        "size": 1.0,
+        "shape": "square"
+      },
+      "en_us": [
+        "Sorting With Inventory Tweaks",
+        "&eInventory Tweaks Refoxed&r is the pack's only sorter:\n\n- &eMiddle click&r (wheel click) sorts the inventory under the cursor.\n- The &ebackslash&r key sorts your own inventory and the &egrave-accent&r key sorts the open chest; check Controls for the labels on your layout.\n- When a tool breaks or a stack in your hotbar runs out, it refills that slot from your inventory with a matching item."
+      ],
+      "es_es": [
+        "Ordenar con Inventory Tweaks",
+        "&eInventory Tweaks Refoxed&r es el único ordenador del pack:\n\n- El &eclic del medio&r (clic de la rueda) ordena el inventario que está bajo el cursor.\n- La tecla de la &ebarra invertida&r ordena tu inventario y la del &eacento grave&r ordena el cofre abierto; mirá en Controles la etiqueta en tu distribución.\n- Cuando se rompe una herramienta o se acaba una pila de la barra rápida, repone ese casillero con un ítem igual de tu inventario."
+      ],
+      "sources": [
+        "jar:invtweaks-1.21.1-1.3.2.jar:invtweaks/events/KeyMappings.class",
+        "jar:invtweaks-1.21.1-1.3.2.jar:invtweaks/config/InvTweaksConfig.class",
+        "repo:docs/design/qol-parity.md"
+      ]
+    },
+    {
+      "key": "qol_inventory_vanilla_tricks",
+      "deps": [
+        "qol_inventory_mouse"
+      ],
+      "type": "checkmark",
+      "optional": true,
+      "layout": {
+        "x": 6,
+        "y": -4,
+        "size": 1.0,
+        "shape": "diamond"
+      },
+      "en_us": [
+        "Vanilla Tricks Worth Knowing",
+        "Some of the best shortcuts come with Minecraft itself:\n\n- &eDouble-click&r an item to gather all of its kind onto the cursor.\n- &eShift+double-click&r moves every stack of that kind to the other inventory.\n- Number keys &e1-9&r swap the hovered slot with that hotbar slot; &eF&r swaps it with the offhand.\n- &eQ&r over a slot drops one, &eCtrl+Q&r the whole stack."
+      ],
+      "es_es": [
+        "Trucos de vanilla que conviene saber",
+        "Algunos de los mejores atajos vienen con el propio Minecraft:\n\n- &eDoble clic&r en un ítem junta en el cursor todos los de su tipo.\n- &eShift+doble clic&r manda todas las pilas de ese tipo al otro inventario.\n- Las teclas &e1-9&r intercambian el casillero apuntado con ese casillero de la barra; &eF&r lo intercambia con la mano secundaria.\n- &eQ&r sobre un casillero tira uno, &eCtrl+Q&r la pila entera."
+      ],
+      "sources": [
+        "https://minecraft.wiki/w/Controls"
+      ]
+    },
+    {
+      "key": "qol_inventory_crafting_tweaks",
+      "deps": [
+        "qol_inventory_mouse",
+        "qol_inventory_sort"
+      ],
+      "type": "item",
+      "item": "minecraft:crafting_table",
+      "layout": {
+        "x": 6,
+        "y": 0,
+        "size": 1.25,
+        "shape": "circle"
+      },
+      "en_us": [
+        "Crafting Tweaks",
+        "Open a crafting table: small buttons appear beside the grid. They &erotate&r the grid, &ebalance&r ingredients evenly, &espread&r them and &eclear&r the grid back to your inventory. Force clear drops items when your inventory is full.\n\nThey also appear on many modded crafting stations. EMI's + button and these buttons together make shaped recipes painless."
+      ],
+      "es_es": [
+        "Crafting Tweaks",
+        "Abrí una mesa de crafteo: al lado de la grilla aparecen botoncitos. Sirven para &erotar&r la grilla, &eequilibrar&r los ingredientes, &erepartirlos&r y &evaciar&r la grilla a tu inventario. El vaciado forzado tira los ítems si tu inventario está lleno.\n\nTambién aparecen en muchas estaciones de otros mods. El botón + de EMI y estos botones juntos hacen indolora cualquier receta con forma."
+      ],
+      "sources": [
+        "jar:craftingtweaks-neoforge-1.21.1-21.1.11.jar:assets/craftingtweaks/lang/en_us.json"
+      ]
+    },
+    {
+      "key": "qol_inventory_fuel",
+      "deps": [
+        "qol_inventory_sort"
+      ],
+      "type": "item",
+      "item": "minecraft:furnace",
+      "optional": true,
+      "layout": {
+        "x": 6,
+        "y": 4,
+        "size": 1.0,
+        "shape": "circle"
+      },
+      "en_us": [
+        "Fuel Goes Where It Should",
+        "&eFuel Goes Here&r fixes a small annoyance: when you Shift+click coal, charcoal or any fuel into a furnace, it goes to the fuel slot first instead of the input.\n\nFast Workbench and Fast Furnace also cache recipe lookups so crafting and smelting stay fast even with this many recipes."
+      ],
+      "es_es": [
+        "El combustible va donde tiene que ir",
+        "&eFuel Goes Here&r arregla una molestia chica: cuando hacés Shift+clic con carbón, carbón vegetal o cualquier combustible en un horno, va primero al casillero de combustible y no al de entrada.\n\nFast Workbench y Fast Furnace además guardan en caché la búsqueda de recetas para que fabricar y fundir siga siendo rápido con tantas recetas."
+      ],
+      "sources": [
+        "repo:docs/design/small-qol-family.md",
+        "jar:FastWorkbench-1.21.1-9.1.3.jar:META-INF/neoforge.mods.toml",
+        "jar:FastFurnace-1.21.1-9.0.1.jar:META-INF/neoforge.mods.toml"
+      ]
+    },
+    {
+      "key": "qol_inventory_trash",
+      "deps": [
+        "qol_inventory_crafting_tweaks"
+      ],
+      "type": "item",
+      "item": "trashcans:item_trash_can",
+      "layout": {
+        "x": 9,
+        "y": -2,
+        "size": 1.0,
+        "shape": "circle"
+      },
+      "en_us": [
+        "Getting Rid of Things",
+        "Two ways to delete junk:\n\n- &eTrashSlot&r adds a trash slot to your inventory screen. Drop an item there and it is gone; the slot keeps the last item until you trash another, so a misclick can be undone.\n- &eTrash Cans&r are blocks: item, fluid, energy and ultimate cans void whatever pipes send them. The item and fluid cans have a 9-entry filter, and the energy can limits its transfer rate.\n\nUse the blocks for farm overflow instead of letting items pile up on the floor."
+      ],
+      "es_es": [
+        "Deshacerse de cosas",
+        "Dos formas de borrar basura:\n\n- &eTrashSlot&r agrega un casillero de basura a la pantalla del inventario. Soltá un ítem ahí y desaparece; el casillero guarda el último ítem hasta que tires otro, así un clic equivocado tiene arreglo.\n- &eTrash Cans&r son bloques: las papeleras de ítems, fluidos, energía y la definitiva eliminan lo que les manden los caños. Las de ítems y fluidos tienen un filtro de 9 entradas y la de energía limita cuánto pasa.\n\nUsá los bloques para el sobrante de las granjas en vez de dejar ítems tirados en el piso."
+      ],
+      "sources": [
+        "jar:trashslot-neoforge-1.21.1-21.1.11.jar:assets/trashslot/lang/en_us.json",
+        "jar:trashcans-1.1.0-neoforge-mc1.21.jar:assets/trashcans/lang/en_us.json"
+      ]
+    },
+    {
+      "key": "qol_inventory_trash_quirk",
+      "deps": [
+        "qol_inventory_trash"
+      ],
+      "type": "checkmark",
+      "optional": true,
+      "layout": {
+        "x": 12,
+        "y": -4,
+        "size": 1.0,
+        "shape": "diamond"
+      },
+      "en_us": [
+        "Quirk: TrashSlot Needs the Server",
+        "TrashSlot works in single player. On a dedicated server it only works if the server also has it; otherwise the mod tells you so in chat and turns itself off.\n\nIf that happens, a Trash Can block does the same job for everyone."
+      ],
+      "es_es": [
+        "Particularidad: TrashSlot necesita al servidor",
+        "TrashSlot funciona en un jugador. En un servidor dedicado sólo anda si el servidor también lo tiene; si no, el mod te avisa en el chat y se desactiva.\n\nSi te pasa, una papelera (bloque) hace el mismo trabajo para todos."
+      ],
+      "sources": [
+        "jar:trashslot-neoforge-1.21.1-21.1.11.jar:assets/trashslot/lang/en_us.json",
+        "repo:catalog/curated.json"
+      ]
+    },
+    {
+      "key": "qol_inventory_stick",
+      "deps": [
+        "qol_inventory_crafting_tweaks"
+      ],
+      "type": "item",
+      "item": "crafting_on_a_stick:crafting_table",
+      "layout": {
+        "x": 9,
+        "y": 2,
+        "size": 1.0,
+        "shape": "circle"
+      },
+      "en_us": [
+        "Stations on a Stick",
+        "&eCrafting On A Stick&r turns workstations into items you use from the hotbar: crafting table, stonecutter, loom, cartography table, smithing table, grindstone and anvil. Right-click to open them anywhere.\n\nPerfect for the first expeditions, when every slot counts."
+      ],
+      "es_es": [
+        "Estaciones en un palo",
+        "&eCrafting On A Stick&r convierte las estaciones de trabajo en ítems que usás desde la barra: mesa de crafteo, cortapiedras, telar, mesa de cartografía, mesa de herrería, afiladora y yunque. Clic derecho para abrirlas en cualquier lado.\n\nIdeal para las primeras expediciones, cuando cada casillero cuenta."
+      ],
+      "sources": [
+        "jar:crafting_on_a_stick-1.21.0.6.jar:assets/crafting_on_a_stick/lang/en_us.json",
+        "repo:docs/design/qol-batch-one.md"
+      ]
+    },
+    {
+      "key": "qol_inventory_belt",
+      "deps": [
+        "qol_inventory_stick"
+      ],
+      "type": "item",
+      "item": "toolbelt:belt",
+      "layout": {
+        "x": 12,
+        "y": 0,
+        "size": 1.5,
+        "shape": "hexagon"
+      },
+      "en_us": [
+        "The Tool Belt",
+        "Craft a &eTool Belt&r (leather, string and an iron ingot) and put it in its slot. Tools on the belt do not take hotbar space: hold &eR&r for the radial menu and pick one, and &eShift+R&r opens the belt slot.\n\nIt starts small. Combine it with a &eBelt Pouch&r in an anvil to add slots."
+      ],
+      "es_es": [
+        "El cinturón de herramientas",
+        "Fabricá un &eTool Belt&r (cuero, hilo y un lingote de hierro) y ponelo en su ranura. Las herramientas del cinturón no ocupan la barra: mantené &eR&r para el menú radial y elegí una; &eShift+R&r abre la ranura del cinturón.\n\nEmpieza chico. Combinalo con un &eBelt Pouch&r en un yunque para sumar espacios."
+      ],
+      "sources": [
+        "jar:ToolBelt-1.21.1-2.2.10.jar:data/toolbelt/recipe/belt.json",
+        "jar:ToolBelt-1.21.1-2.2.10.jar:assets/toolbelt/lang/de_de.json",
+        "repo:pack/config/defaultoptions/keybindings.txt"
+      ]
+    },
+    {
+      "key": "qol_inventory_tome",
+      "deps": [
+        "qol_inventory_stick"
+      ],
+      "type": "item",
+      "item": "akashictome:tome",
+      "optional": true,
+      "layout": {
+        "x": 12,
+        "y": 4,
+        "size": 1.0,
+        "shape": "circle"
+      },
+      "en_us": [
+        "One Book for All Books",
+        "The &eAkashic Tome&r (a book and a bookshelf) stores every guide book in one item. Craft the tome together with a book to add it. Then &eShift+right-click&r the tome to choose which book it becomes.\n\nGreat for the pack's craftable manuals: Ars Nouveau, Integrated Dynamics, PneumaticCraft, Psi and the rest."
+      ],
+      "es_es": [
+        "Un libro para todos los libros",
+        "El &eTomo Akáshico&r (un libro y una estantería) guarda todos los libros guía en un solo ítem. Fabricá el tomo junto con un libro para agregarlo. Después, &eShift+clic derecho&r con el tomo para elegir en qué libro se convierte.\n\nIdeal para los manuales que se fabrican en el pack: Ars Nouveau, Integrated Dynamics, PneumaticCraft, Psi y los demás."
+      ],
+      "sources": [
+        "jar:AkashicTome-1.8-30.jar:data/akashictome/recipe/tome.json",
+        "jar:AkashicTome-1.8-30.jar:assets/akashictome/lang/en_us.json"
+      ]
+    },
+    {
+      "key": "qol_inventory_magnet",
+      "deps": [
+        "qol_inventory_belt"
+      ],
+      "type": "item",
+      "item": "simplemagnets:basicmagnet",
+      "layout": {
+        "x": 15,
+        "y": -2,
+        "size": 1.0,
+        "shape": "circle"
+      },
+      "en_us": [
+        "Magnets",
+        "&eSimple Magnets&r pulls items and experience toward you while it is switched on. Toggle it with &eShift+M&r. The basic magnet has a fixed range; the advanced one has adjustable ranges and a filter, so it can ignore cobblestone.\n\nNear farms that must not be looted by your magnet, place a &eDemagnetization Coil&r."
+      ],
+      "es_es": [
+        "Imanes",
+        "&eSimple Magnets&r atrae ítems y experiencia hacia vos mientras está prendido. Se prende y apaga con &eShift+M&r. El imán básico tiene alcance fijo; el avanzado permite ajustar el alcance y tiene filtro, así puede ignorar la piedra.\n\nCerca de granjas que tu imán no debe vaciar, poné una &eBobina de desmagnetización&r."
+      ],
+      "sources": [
+        "jar:simplemagnets-1.1.12c-neoforge-mc1.21.jar:assets/simplemagnets/lang/en_us.json",
+        "repo:docs/design/qol-functional-decor-family.md"
+      ]
+    },
+    {
+      "key": "qol_inventory_collectors",
+      "deps": [
+        "qol_inventory_belt"
+      ],
+      "type": "item",
+      "item": "itemcollectors:basic_collector",
+      "optional": true,
+      "layout": {
+        "x": 15,
+        "y": 2,
+        "size": 1.0,
+        "shape": "circle"
+      },
+      "en_us": [
+        "Item Collectors",
+        "An &eItem Collector&r (an ender pearl on obsidian) picks up dropped items in an area around itself and stores them for a hopper or pipe to pull out. The advanced one has a configurable range and a filter.\n\nPut one under a tree farm or in a mob room: fewer loose items means less lag."
+      ],
+      "es_es": [
+        "Colectores de ítems",
+        "Un &eColector de ítems&r (una perla de ender sobre obsidiana) junta los ítems tirados en un área a su alrededor y los guarda para que una tolva o un caño los saque. El avanzado tiene alcance configurable y filtro.\n\nPoné uno debajo de una granja de árboles o en una sala de mobs: menos ítems sueltos es menos lag."
+      ],
+      "sources": [
+        "jar:itemcollectors-1.1.10-neoforge-mc1.21.jar:data/itemcollectors/recipe/basic_collector.json",
+        "jar:itemcollectors-1.1.10-neoforge-mc1.21.jar:assets/itemcollectors/lang/en_us.json"
+      ]
+    },
+    {
+      "key": "qol_inventory_clumps",
+      "deps": [
+        "qol_inventory_collectors"
+      ],
+      "type": "checkmark",
+      "optional": true,
+      "icon": "minecraft:experience_bottle",
+      "layout": {
+        "x": 15,
+        "y": 5,
+        "size": 1.0,
+        "shape": "diamond"
+      },
+      "en_us": [
+        "Tip: Experience in Clumps",
+        "&eClumps&r merges nearby experience orbs into one. A mob farm or a big smelting session no longer floods the ground with orbs, and picking them up is instant."
+      ],
+      "es_es": [
+        "Truco: experiencia en grumos",
+        "&eClumps&r junta los orbes de experiencia cercanos en uno solo. Una granja de mobs o una fundición grande ya no llenan el piso de orbes, y levantarlos es instantáneo."
+      ],
+      "sources": [
+        "jar:Clumps-neoforge-1.21.1-19.0.0.1.jar:META-INF/neoforge.mods.toml"
+      ]
+    },
+    {
+      "key": "qol_inventory_backpack_link",
+      "deps": [
+        "qol_inventory_magnet",
+        "qol_inventory_tome"
+      ],
+      "type": "item",
+      "item": "sophisticatedbackpacks:backpack",
+      "layout": {
+        "x": 18,
+        "y": 0,
+        "size": 2.0,
+        "shape": "hexagon"
+      },
+      "en_us": [
+        "Next: a Real Backpack",
+        "The next step is a backpack. Sophisticated Backpacks carry dozens of slots, open with &eB&r and take upgrades that pick up, sort, restock and feed you.\n\nThe Storage chapter covers them in detail. Craft a basic backpack to close this chapter."
+      ],
+      "es_es": [
+        "Lo que sigue: una mochila de verdad",
+        "El paso siguiente es una mochila. Las de Sophisticated Backpacks tienen decenas de casilleros, se abren con &eB&r y aceptan mejoras que recogen, ordenan, reponen y te dan de comer.\n\nEl capítulo de Almacenamiento las explica en detalle. Fabricá una mochila básica para cerrar este capítulo."
+      ],
+      "sources": [
+        "jar:sophisticatedbackpacks-1.21.1-3.25.78.2107.jar:assets/sophisticatedbackpacks/lang/en_us.json",
+        "repo:pack/config/defaultoptions/keybindings.txt"
+      ]
+    },
+    {
+      "key": "qol_inventory_pack_empty",
+      "deps": [
+        "qol_inventory_welcome"
+      ],
+      "type": "checkmark",
+      "optional": true,
+      "icon": "minecraft:bundle",
+      "layout": {
+        "x": 0,
+        "y": 4,
+        "size": 1.0,
+        "shape": "pentagon"
+      },
+      "en_us": [
+        "Pack Change: You Start With Nothing",
+        "No mod puts items in your inventory when you join: guide books, starter kits and plushies are all switched off. Your first inventory is empty on purpose, and everything in this chapter is crafted from ordinary materials.\n\nThe ENTRELUMEN chapter about the start explains why."
+      ],
+      "es_es": [
+        "Cambio del pack: empezás sin nada",
+        "Ningún mod te pone ítems en el inventario al entrar: libros guía, kits de inicio y peluches están apagados. Tu primer inventario está vacío a propósito, y todo lo de este capítulo se fabrica con materiales comunes.\n\nEl capítulo de ENTRELUMEN sobre el inicio explica por qué."
+      ],
+      "sources": [
+        "repo:docs/design/heliodor-compass.md",
+        "repo:pack/config/ars_nouveau-common.toml"
+      ]
+    }
+  ]
+}

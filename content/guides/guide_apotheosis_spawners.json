@@ -1,0 +1,418 @@
+{
+ "chapter": "guide_apotheosis_spawners",
+ "group": "magic",
+ "act": "III",
+ "icon": "minecraft:spawner",
+ "title": {
+  "en_us": "Spawners and Augments",
+  "es_es": "Spawners y aumentadores"
+ },
+ "subtitle": {
+  "en_us": "Spawner stats, the sixteen copper augments by act, no Silk Touch and Capturing.",
+  "es_es": "Valores del spawner, los dieciséis aumentadores de cobre por acto, sin Toque de seda y Captura."
+ },
+ "quests": [
+  {
+   "key": "aspawn_welcome",
+   "deps": [],
+   "type": "checkmark",
+   "icon": "minecraft:spawner",
+   "layout": {
+    "x": 0,
+    "y": 0,
+    "size": 2.0,
+    "shape": "hexagon"
+   },
+   "en_us": [
+    "Spawners and copper augments",
+    "Apothic Spawners gives every mob spawner a set of stats (delay, count, range and more) that you can change in place. In ENTRELUMEN the changes are made with sixteen Augments, copper medallions built on Atlas components, one set per act from III to V. Apotheosis's rune system is removed.\n\nSpawners cannot be picked up here: you improve them where you find them, in dungeons and in Apotheosis rogue spawners."
+   ],
+   "es_es": [
+    "Spawners y aumentadores de cobre",
+    "Apothic Spawners le da a cada spawner de criaturas un conjunto de valores (espera, cantidad, alcance y más) que podés cambiar en el lugar. En ENTRELUMEN esos cambios se hacen con dieciséis Aumentadores, medallas de cobre armadas sobre componentes del Atlas, un juego por acto del III al V. El sistema de runas de Apotheosis está quitado.\n\nAcá los spawners no se levantan: se mejoran donde los encontrás, en mazmorras y en los spawners rebeldes de Apotheosis."
+   ],
+   "sources": [
+    "jar:Apotheosis-1.21.1-8.7.0.jar:assets/apotheosis/patchouli_books/apoth_chronicle/en_us/entries/spawner/stats.json",
+    "jar:Apotheosis-1.21.1-8.7.0.jar:assets/apotheosis/patchouli_books/apoth_chronicle/en_us/entries/spawner/modifiers.json",
+    "repo:docs/design/apotheosis-family.md#Spawner augments replace Apotheosis runes",
+    "repo:pack/config/apothic_spawners.cfg#Spawner Silk Level"
+   ]
+  },
+  {
+   "key": "aspawn_stats",
+   "deps": [
+    "aspawn_welcome"
+   ],
+   "type": "checkmark",
+   "icon": "minecraft:clock",
+   "layout": {
+    "x": 3,
+    "y": 0,
+    "size": 1.25,
+    "shape": "circle"
+   },
+   "en_us": [
+    "Spawner stats",
+    "After spawning, a spawner waits a random time between its Min and Max Spawn Delay (in ticks). Spawn Count is how many mobs it tries at once; Max Entities stops it when that many of its mob are nearby. It only runs with a player inside its Activation Range, and spawns within its Spawn Range.\n\nSwitches add behavior: Ignores Players, Ignores Conditions (such as grass for animals), Ignores Light, Redstone Control, No AI, Silent, Youthful (babies when possible), Burning, a lower Initial Health and Echoing (extra loot per level)."
+   ],
+   "es_es": [
+    "Valores del spawner",
+    "Después de invocar, un spawner espera un tiempo al azar entre su Espera mínima y máxima (en ticks). La Cantidad es cuántas criaturas intenta por vez; Máximo de entidades lo frena cuando hay esa cantidad de su criatura cerca. Sólo funciona con un jugador dentro de su Rango de activación, e invoca dentro de su Rango de aparición.\n\nLos interruptores suman comportamientos: Ignora jugadores, Ignora condiciones (como el pasto para animales), Ignora luz, Control por redstone, Sin IA, Silencioso, Juvenil (crías cuando se puede), Ardiente, Vida inicial menor y Eco (botín extra por nivel)."
+   ],
+   "sources": [
+    "jar:Apotheosis-1.21.1-8.7.0.jar:assets/apotheosis/patchouli_books/apoth_chronicle/en_us/entries/spawner/stats.json",
+    "jar:ApothicSpawners-1.21.1-1.4.0.jar:assets/apothic_spawners/lang/en_us.json#stat.apothic_spawners.echoing.desc",
+    "jar:ApothicSpawners-1.21.1-1.4.0.jar:assets/apothic_spawners/lang/en_us.json#stat.apothic_spawners.youthful.desc",
+    "jar:ApothicSpawners-1.21.1-1.4.0.jar:assets/apothic_spawners/lang/en_us.json#stat.apothic_spawners.initial_health.desc"
+   ]
+  },
+  {
+   "key": "aspawn_no_silk",
+   "deps": [
+    "aspawn_welcome"
+   ],
+   "type": "checkmark",
+   "icon": "minecraft:iron_pickaxe",
+   "layout": {
+    "x": 0,
+    "y": -3,
+    "size": 1.0,
+    "shape": "diamond"
+   },
+   "en_us": [
+    "ENTRELUMEN: spawners stay where they are",
+    "Silk Touch cannot harvest spawners in this pack (Spawner Silk Level is set to disabled). Portable spawners would bring mob farms ahead of the Act IV routes, such as Hostile Neural Networks and Industrial Foregoing.\n\nSo pick your spot well: build the farm around the spawner you found, or let it be."
+   ],
+   "es_es": [
+    "ENTRELUMEN: los spawners se quedan donde están",
+    "En este pack el Toque de seda no levanta spawners (el nivel de seda para spawners está deshabilitado). Los spawners portátiles adelantarían las granjas de criaturas a las rutas del acto IV, como Hostile Neural Networks e Industrial Foregoing.\n\nAsí que elegí bien: armá la granja alrededor del spawner que encontraste, o dejalo."
+   ],
+   "sources": [
+    "repo:pack/config/apothic_spawners.cfg#Spawner Silk Level",
+    "repo:docs/design/apotheosis-family.md#Spawner augments replace Apotheosis runes"
+   ]
+  },
+  {
+   "key": "aspawn_apply",
+   "deps": [
+    "aspawn_stats"
+   ],
+   "type": "item",
+   "item": "entrelumen:augment_spawn_count",
+   "layout": {
+    "x": 6,
+    "y": 0,
+    "size": 1.5,
+    "shape": "hexagon"
+   },
+   "en_us": [
+    "Applying an augment",
+    "Hold the augment and right-click the spawner: if the change is allowed, the augment is used up and the stat changes. Each augment moves one stat by a fixed step up to a cap (for example, Multitude adds 2 to Spawn Count, up to 16). EMI lists every modifier, its step and its cap under the spawner's uses.\n\nMade a mistake? Hold nether quartz in the other hand and apply the same augment: it reverses one step. The augment is consumed, the quartz is kept."
+   ],
+   "es_es": [
+    "Aplicar un aumentador",
+    "Sostené el aumentador y hacé clic derecho al spawner: si el cambio está permitido, el aumentador se gasta y el valor cambia. Cada aumentador mueve un valor un paso fijo hasta un tope (por ejemplo, el de cantidad suma 2 a la Cantidad, hasta 16). EMI lista cada modificador, su paso y su tope en los usos del spawner.\n\n¿Te equivocaste? Sostené cuarzo del Nether en la otra mano y aplicá el mismo aumentador: revierte un paso. El aumentador se gasta, el cuarzo queda."
+   ],
+   "sources": [
+    "jar:Apotheosis-1.21.1-8.7.0.jar:assets/apotheosis/patchouli_books/apoth_chronicle/en_us/entries/spawner/modifiers.json",
+    "repo:pack/kubejs/data/apothic_spawners/recipe/spawner_modifiers/spawn_count.json",
+    "repo:pack/kubejs/data/apothic_spawners/recipe/spawner_modifiers/_inverse/spawn_count.json",
+    "repo:docs/design/apotheosis-family.md#Spawner augments replace Apotheosis runes"
+   ]
+  },
+  {
+   "key": "aspawn_recipe",
+   "deps": [
+    "aspawn_apply"
+   ],
+   "type": "checkmark",
+   "optional": true,
+   "icon": "create:copper_sheet",
+   "layout": {
+    "x": 6,
+    "y": -3,
+    "size": 1.0,
+    "shape": "circle"
+   },
+   "en_us": [
+    "How augments are made",
+    "Every augment has the same frame: four Create copper sheets, one Apotheosis gem dust, two rarity materials, a core and an Atlas component. The core is the classic Apothic Spawners item for that stat (sugar for speed, a clock for the maximum delay, a fermented spider eye for count). The rarity material and the component set the act.\n\nAct III uses Timeworn Fabric, Act IV Luminous Crystal Shards and Act V Arcane Sands, so salvaging affix gear pays for spawner work."
+   ],
+   "es_es": [
+    "Cómo se hacen los aumentadores",
+    "Todos los aumentadores tienen el mismo marco: cuatro láminas de cobre de Create, un polvo de gema de Apotheosis, dos materiales de rareza, un núcleo y un componente del Atlas. El núcleo es el ítem clásico de Apothic Spawners para ese valor (azúcar para la velocidad, un reloj para la espera máxima, un ojo de araña fermentado para la cantidad). El material de rareza y el componente marcan el acto.\n\nEl acto III usa Tela deteriorada, el IV Fragmentos de cristal luminoso y el V Arenas arcanas, así que reciclar equipo con afijos paga el trabajo con spawners."
+   ],
+   "sources": [
+    "repo:pack/kubejs/data/entrelumen/recipe/augment_spawn_count.json",
+    "repo:pack/kubejs/data/entrelumen/recipe/augment_min_delay.json",
+    "repo:pack/kubejs/data/entrelumen/recipe/augment_echoing.json",
+    "repo:docs/design/apotheosis-family.md#Spawner augments replace Apotheosis runes"
+   ]
+  },
+  {
+   "key": "aspawn_act3_timing",
+   "deps": [
+    "aspawn_apply"
+   ],
+   "type": "item",
+   "item": "entrelumen:augment_min_delay",
+   "layout": {
+    "x": 9,
+    "y": 0,
+    "size": 1.25,
+    "shape": "square"
+   },
+   "en_us": [
+    "Act III: speed and reach",
+    "With Timeworn Fabric: the Quickening Augment (sugar, Power Regulator) lowers the Min Delay by 10 ticks, down to 20; the Hastening Augment (clock, Power Regulator) lowers the Max Delay by 20, down to 20. The Spread Augment (piston, Routing Matrix) adds 2 to the Spawn Range, up to 32, and the Reach Augment (prismarine crystals, Inventory Sensor) adds 4 to the Activation Range, up to 48.\n\nLower both delays: if the maximum falls below the minimum, the minimum is used."
+   ],
+   "es_es": [
+    "Acto III: velocidad y alcance",
+    "Con Tela deteriorada: el Aumentador acelerado (azúcar, Regulador de energía) baja la Espera mínima 10 ticks, hasta 20; el Aumentador apresurado (reloj, Regulador de energía) baja la Espera máxima 20, hasta 20. El Aumentador de dispersión (pistón, Matriz de distribución) suma 2 al Rango de aparición, hasta 32, y el Aumentador de alcance (cristales de prismarina, Sensor de inventario) suma 4 al Rango de activación, hasta 48.\n\nBajá las dos esperas: si la máxima queda debajo de la mínima, se usa la mínima."
+   ],
+   "sources": [
+    "repo:pack/kubejs/data/entrelumen/recipe/augment_min_delay.json",
+    "repo:pack/kubejs/data/entrelumen/recipe/augment_max_delay.json",
+    "repo:pack/kubejs/data/entrelumen/recipe/augment_spawn_range.json",
+    "repo:pack/kubejs/data/entrelumen/recipe/augment_player_range.json",
+    "repo:pack/kubejs/data/apothic_spawners/recipe/spawner_modifiers/min_delay.json",
+    "repo:pack/kubejs/data/apothic_spawners/recipe/spawner_modifiers/max_delay.json",
+    "repo:pack/kubejs/data/apothic_spawners/recipe/spawner_modifiers/spawn_range.json",
+    "repo:pack/kubejs/data/apothic_spawners/recipe/spawner_modifiers/player_range.json",
+    "jar:Apotheosis-1.21.1-8.7.0.jar:assets/apotheosis/patchouli_books/apoth_chronicle/en_us/entries/spawner/stats.json"
+   ]
+  },
+  {
+   "key": "aspawn_act3_quiet",
+   "deps": [
+    "aspawn_act3_timing"
+   ],
+   "type": "item",
+   "item": "entrelumen:augment_silent",
+   "optional": true,
+   "layout": {
+    "x": 9,
+    "y": 3,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Act III: silent and youthful",
+    "The Silent Augment (wool, Handling Core) makes the spawned mobs make no noise, a relief next to your base. The Youthful Augment (turtle egg, Propagation Core) makes the spawner produce babies whenever the mob has them.\n\nBoth are on/off switches: one augment is enough."
+   ],
+   "es_es": [
+    "Acto III: silencioso y juvenil",
+    "El Aumentador silencioso (lana, Núcleo de manipulación) hace que las criaturas invocadas no hagan ruido, un alivio al lado de tu base. El Aumentador juvenil (huevo de tortuga, Núcleo de propagación) hace que el spawner saque crías siempre que la criatura las tenga.\n\nLos dos son interruptores: con un aumentador alcanza."
+   ],
+   "sources": [
+    "repo:pack/kubejs/data/entrelumen/recipe/augment_silent.json",
+    "repo:pack/kubejs/data/entrelumen/recipe/augment_youthful.json",
+    "repo:pack/kubejs/data/apothic_spawners/recipe/spawner_modifiers/silent.json",
+    "repo:pack/kubejs/data/apothic_spawners/recipe/spawner_modifiers/youthful.json"
+   ]
+  },
+  {
+   "key": "aspawn_act4",
+   "deps": [
+    "aspawn_act3_timing"
+   ],
+   "type": "item",
+   "item": "entrelumen:augment_max_nearby",
+   "layout": {
+    "x": 12,
+    "y": 0,
+    "size": 1.25,
+    "shape": "square"
+   },
+   "en_us": [
+    "Act IV: more and weaker mobs",
+    "With Luminous Crystal Shards: the Multitude Augment (fermented spider eye, Ecosystem Capsule) adds 2 to Spawn Count, up to 16; the Crowd Augment (ghast tear, Ecosystem Capsule) adds 2 to Max Entities, up to 32. The Debilitating Augment (pointed dripstone, Spectral Lens) lowers the Initial Health of spawned mobs by 5%, down to 20%; the Burning Augment (campfire, Containment Seal) sets them on fire.\n\nRaise Max Entities along with Spawn Count, or the spawner stops as soon as the room fills."
+   ],
+   "es_es": [
+    "Acto IV: más criaturas y más débiles",
+    "Con Fragmentos de cristal luminoso: el Aumentador de cantidad (ojo de araña fermentado, Cápsula de ecosistema) suma 2 a la Cantidad, hasta 16; el Aumentador de multitud (lágrima de ghast, Cápsula de ecosistema) suma 2 al Máximo de entidades, hasta 32. El Aumentador debilitante (espeleotema puntiagudo, Lente espectral) baja la Vida inicial de las criaturas un 5%, hasta 20%; el Aumentador ardiente (fogata, Sello de contención) las prende fuego.\n\nSubí el Máximo de entidades junto con la Cantidad, o el spawner frena apenas se llena la sala."
+   ],
+   "sources": [
+    "repo:pack/kubejs/data/entrelumen/recipe/augment_spawn_count.json",
+    "repo:pack/kubejs/data/entrelumen/recipe/augment_max_nearby.json",
+    "repo:pack/kubejs/data/entrelumen/recipe/augment_initial_health.json",
+    "repo:pack/kubejs/data/entrelumen/recipe/augment_burning.json",
+    "repo:pack/kubejs/data/apothic_spawners/recipe/spawner_modifiers/spawn_count.json",
+    "repo:pack/kubejs/data/apothic_spawners/recipe/spawner_modifiers/max_nearby.json",
+    "repo:pack/kubejs/data/apothic_spawners/recipe/spawner_modifiers/initial_health.json",
+    "repo:pack/kubejs/data/apothic_spawners/recipe/spawner_modifiers/burning.json"
+   ]
+  },
+  {
+   "key": "aspawn_act5",
+   "deps": [
+    "aspawn_act4"
+   ],
+   "type": "item",
+   "item": "entrelumen:augment_echoing",
+   "layout": {
+    "x": 15,
+    "y": 0,
+    "size": 1.25,
+    "shape": "square"
+   },
+   "en_us": [
+    "Act V: the full farm",
+    "With Arcane Sands: the Echoing Augment (echo shard, Renewal Engine) adds a level of extra loot, up to 3. The Defiant Augment (conduit) ignores spawn conditions and the Twilight Augment (soul lantern) ignores light, both with a Renewal Engine. With an Ark Connection Bus: the Solitude Augment (nether star) runs without a player nearby, the Stupor Augment (chorus fruit) spawns mobs without AI, and the Control Augment (comparator) makes the spawner wait for a redstone signal.\n\nIgnoring light does nothing extra on a spawner that already ignores conditions."
+   ],
+   "es_es": [
+    "Acto V: la granja completa",
+    "Con Arenas arcanas: el Aumentador de eco (fragmento de eco, Motor de renovación) suma un nivel de botín extra, hasta 3. El Aumentador desafiante (conducto) ignora las condiciones de aparición y el Aumentador crepuscular (linterna de almas) ignora la luz, los dos con un Motor de renovación. Con un Bus de conexión del Arca: el Aumentador de soledad (estrella del Nether) funciona sin jugador cerca, el Aumentador de estupor (fruta coral) invoca criaturas sin IA y el Aumentador de control (comparador) hace que el spawner espere una señal de redstone.\n\nIgnorar la luz no suma nada en un spawner que ya ignora las condiciones."
+   ],
+   "sources": [
+    "repo:pack/kubejs/data/entrelumen/recipe/augment_echoing.json",
+    "repo:pack/kubejs/data/entrelumen/recipe/augment_ignore_conditions.json",
+    "repo:pack/kubejs/data/entrelumen/recipe/augment_ignore_light.json",
+    "repo:pack/kubejs/data/entrelumen/recipe/augment_ignore_players.json",
+    "repo:pack/kubejs/data/entrelumen/recipe/augment_no_ai.json",
+    "repo:pack/kubejs/data/entrelumen/recipe/augment_redstone_control.json",
+    "repo:pack/kubejs/data/apothic_spawners/recipe/spawner_modifiers/echoing.json",
+    "jar:Apotheosis-1.21.1-8.7.0.jar:assets/apotheosis/patchouli_books/apoth_chronicle/en_us/entries/spawner/stats.json"
+   ]
+  },
+  {
+   "key": "aspawn_no_ai_tip",
+   "deps": [
+    "aspawn_act5"
+   ],
+   "type": "item",
+   "item": "entrelumen:augment_no_ai",
+   "optional": true,
+   "layout": {
+    "x": 15,
+    "y": 3,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Tip: No AI for big farms",
+    "For any large mob farm, add the Stupor Augment. Mobs without AI float in place doing nothing, which cuts server load a lot and makes them easy to handle; the ones spawned this way can still be pushed and moved.\n\nPair it with Control to switch the farm off with a lever when you are not using it."
+   ],
+   "es_es": [
+    "Tip: Sin IA para granjas grandes",
+    "Para cualquier granja grande de criaturas, sumá el Aumentador de estupor. Las criaturas sin IA flotan quietas sin hacer nada, lo que baja mucho la carga del servidor y las hace fáciles de manejar; las que salen así igual se pueden empujar y mover.\n\nCombinalo con el de control para apagar la granja con una palanca cuando no la usás."
+   ],
+   "sources": [
+    "jar:Apotheosis-1.21.1-8.7.0.jar:assets/apotheosis/patchouli_books/apoth_chronicle/en_us/entries/spawner/stats.json",
+    "repo:pack/kubejs/data/entrelumen/recipe/augment_no_ai.json",
+    "repo:pack/kubejs/data/entrelumen/recipe/augment_redstone_control.json"
+   ]
+  },
+  {
+   "key": "aspawn_runes",
+   "deps": [
+    "aspawn_stats"
+   ],
+   "type": "checkmark",
+   "optional": true,
+   "icon": "minecraft:chain",
+   "layout": {
+    "x": 3,
+    "y": 3,
+    "size": 1.0,
+    "shape": "diamond"
+   },
+   "en_us": [
+    "ENTRELUMEN: no runes",
+    "Apotheosis 8.7 replaces Apothic Spawners' modifiers with spawner runes and tier-upgrade runes. The pack removes all of them and restores the full modifier set on its copper augments, so there is a single route.\n\nSpawner chains still drop from Apotheosis content but no longer craft anything."
+   ],
+   "es_es": [
+    "ENTRELUMEN: sin runas",
+    "Apotheosis 8.7 reemplaza los modificadores de Apothic Spawners por runas de spawner y runas de mejora de nivel. El pack las quita todas y devuelve el juego completo de modificadores sobre sus aumentadores de cobre, así que hay una sola ruta.\n\nLas cadenas de spawner siguen cayendo del contenido de Apotheosis, pero ya no craftean nada."
+   ],
+   "sources": [
+    "repo:pack/kubejs/server_scripts/entrelumen_apotheosis_balance.js#apotheosis:spawner_rune",
+    "repo:pack/kubejs/server_scripts/entrelumen_apotheosis_balance.js#apotheosis:spawner_modifiers/tier/frontier",
+    "repo:docs/design/apotheosis-family.md#Spawner augments replace Apotheosis runes"
+   ]
+  },
+  {
+   "key": "aspawn_capturing",
+   "deps": [
+    "aspawn_apply"
+   ],
+   "type": "checkmark",
+   "optional": true,
+   "icon": "minecraft:cow_spawn_egg",
+   "layout": {
+    "x": 6,
+    "y": 3,
+    "size": 1.0,
+    "shape": "circle"
+   },
+   "en_us": [
+    "Capturing and spawn eggs",
+    "A spawner's mob can be changed with a spawn egg. Apotheosis adds Capturing, a sword enchantment: each level gives mobs a 0.5% chance to drop their spawn egg when you kill them (the book says 0.4%, the pack's config sets 0.5%).\n\nIn ENTRELUMEN, Reliquary's spawn-egg crafting is removed; EvilCraft's Spirit Reanimator still makes eggs natively, at a high blood cost."
+   ],
+   "es_es": [
+    "Captura y huevos de aparición",
+    "La criatura de un spawner se cambia con un huevo de aparición. Apotheosis agrega Captura, un encantamiento de espada: cada nivel les da a las criaturas un 0,5% de chance de soltar su huevo cuando las matás (el libro dice 0,4%, la configuración del pack pone 0,5%).\n\nEn ENTRELUMEN está quitado el crafteo de huevos de Reliquary; el Reanimador de espíritus de EvilCraft sigue haciendo huevos de forma nativa, a un alto costo de sangre."
+   ],
+   "sources": [
+    "jar:Apotheosis-1.21.1-8.7.0.jar:assets/apotheosis/patchouli_books/apoth_chronicle/en_us/entries/spawner/capturing.json",
+    "repo:pack/config/apothic_spawners.cfg#Capturing Drop Chance",
+    "repo:pack/kubejs/server_scripts/entrelumen_arcane_balance.js#reliquary:uncrafting/spawn_egg",
+    "jar:evilcraft-1.21.1-neoforge-1.2.94.jar:data/evilcraft/info/book.xml#Spirit Reanimator"
+   ]
+  },
+  {
+   "key": "aspawn_where",
+   "deps": [
+    "aspawn_act4"
+   ],
+   "type": "checkmark",
+   "optional": true,
+   "icon": "minecraft:mossy_cobblestone",
+   "layout": {
+    "x": 12,
+    "y": -3,
+    "size": 1.0,
+    "shape": "circle"
+   },
+   "en_us": [
+    "Tip: where to find spawners",
+    "Vanilla dungeons, mineshafts and fortresses have spawners, and Apotheosis adds Rogue Spawners in caves: brutal ones (tougher mobs, slow) and swarm ones (many weak mobs, fast), each with a chest hidden below.\n\nSince none can be moved, scout a few before committing augments to one."
+   ],
+   "es_es": [
+    "Tip: dónde encontrar spawners",
+    "Las mazmorras, minas abandonadas y fortalezas del juego base tienen spawners, y Apotheosis suma Spawners rebeldes en cuevas: brutales (criaturas más duras, lentos) y de enjambre (muchas criaturas débiles, rápidos), cada uno con un cofre escondido abajo.\n\nComo ninguno se puede mover, explorá unos cuantos antes de gastar aumentadores en uno."
+   ],
+   "sources": [
+    "jar:Apotheosis-1.21.1-8.7.0.jar:assets/apotheosis/patchouli_books/apoth_chronicle/en_us/entries/adventure/rogue_spawners/brutal_spawners.json",
+    "jar:Apotheosis-1.21.1-8.7.0.jar:assets/apotheosis/patchouli_books/apoth_chronicle/en_us/entries/adventure/rogue_spawners/swarm_spawners.json",
+    "repo:docs/design/apotheosis-family.md#Spawner augments replace Apotheosis runes"
+   ]
+  },
+  {
+   "key": "aspawn_mastery",
+   "deps": [
+    "aspawn_act5"
+   ],
+   "type": "checkmark",
+   "icon": "entrelumen:augment_redstone_control",
+   "layout": {
+    "x": 18,
+    "y": 0,
+    "size": 2.0,
+    "shape": "gear"
+   },
+   "en_us": [
+    "Mastery: a tuned spawner",
+    "Sixteen mobs per cycle every second, no AI, no noise, maximum Echoing and a lever to stop it all. A fully augmented spawner is a machine built over three acts: fabric for speed, crystal for numbers, sands for the finishing touches."
+   ],
+   "es_es": [
+    "Maestría: un spawner afinado",
+    "Dieciséis criaturas por ciclo cada segundo, sin IA, sin ruido, Eco al máximo y una palanca para frenarlo todo. Un spawner con todos los aumentadores es una máquina armada a lo largo de tres actos: tela para la velocidad, cristal para la cantidad, arenas para los retoques."
+   ],
+   "sources": [
+    "repo:docs/design/apotheosis-family.md#Spawner augments replace Apotheosis runes",
+    "jar:Apotheosis-1.21.1-8.7.0.jar:assets/apotheosis/patchouli_books/apoth_chronicle/en_us/entries/spawner/stats.json"
+   ]
+  }
+ ]
+}

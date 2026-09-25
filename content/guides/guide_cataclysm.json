@@ -1,0 +1,659 @@
+{
+  "chapter": "guide_cataclysm",
+  "group": "exploration",
+  "act": "IV",
+  "icon": "cataclysm:the_incinerator",
+  "title": {
+    "en_us": "L_Ender's Cataclysm",
+    "es_es": "L_Ender's Cataclysm"
+  },
+  "subtitle": {
+    "en_us": "Eight arena bosses across three dimensions, each with a structure, a key and a weapon.",
+    "es_es": "Ocho jefes de arena en tres dimensiones, cada uno con su estructura, su llave y su arma."
+  },
+  "quests": [
+    {
+      "key": "cata_welcome",
+      "deps": [],
+      "type": "checkmark",
+      "layout": {
+        "x": 0,
+        "y": 0,
+        "size": 2.0,
+        "shape": "hexagon"
+      },
+      "en_us": [
+        "Optional giants",
+        "Cataclysm adds big boss structures: the Ancient Factory, the Cursed Pyramid, the Frosted Prison, the Sunken City and the Acropolis in the Overworld; the Burning Arena and the Soul Forge in the Nether; the Ruined Citadel in the End. Each boss drops a unique weapon or material and a music disc.\n\nIn ENTRELUMEN they are optional on purpose: the story bible says Cataclysm never closes an act. Come when your gear is ready; this chapter tells you where, how and what for."
+      ],
+      "es_es": [
+        "Gigantes opcionales",
+        "Cataclysm suma estructuras de jefes grandes: la Fábrica Antigua, la Pirámide Maldita, la Prisión Helada, la Ciudad Hundida y la Acrópolis en el Overworld; la Arena Ardiente y la Forja de Almas en el Nether; la Ciudadela en Ruinas en el End. Cada jefe suelta un arma o material único y un disco.\n\nEn ENTRELUMEN son opcionales a propósito: la biblia de la historia dice que Cataclysm nunca cierra un acto. Vení cuando tu equipo esté listo; este capítulo te dice dónde, cómo y para qué."
+      ],
+      "sources": [
+        "repo:docs/design/story-bible.md",
+        "repo:docs/design/exploration-structures-family.md",
+        "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:assets/cataclysm/lang/en_us.json"
+      ]
+    },
+    {
+      "key": "cata_eyes",
+      "deps": [
+        "cata_welcome"
+      ],
+      "type": "checkmark",
+      "icon": "cataclysm:flame_eye",
+      "layout": {
+        "x": 3,
+        "y": 0,
+        "size": 0.85,
+        "shape": "circle"
+      },
+      "en_us": [
+        "Eyes that find arenas",
+        "Every Cataclysm structure has an eye, crafted around an Eye of Ender, that flies toward the nearest one like an ender eye toward a stronghold:\n- Mech: Ancient Factory. Desert: Cursed Pyramid. Curse: Frosted Prison.\n- Abyss: Sunken City. Storm: Acropolis.\n- Flame: Burning Arena. Monstrous: Soul Forge.\n- Void: the Ruined Citadel in the End.\n\nEMI shows each recipe; they only use vanilla materials."
+      ],
+      "es_es": [
+        "Ojos que encuentran arenas",
+        "Cada estructura de Cataclysm tiene un ojo, fabricado alrededor de un Ojo de ender, que vuela hacia la más cercana como un ojo de ender hacia una fortaleza:\n- Mecánica: Fábrica Antigua. Desierto: Pirámide Maldita. Maldición: Prisión Helada.\n- Abismo: Ciudad Hundida. Tormenta: Acrópolis.\n- Fuego: Arena Ardiente. Monstruosidad: Forja de Almas.\n- Vacío: la Ciudadela en Ruinas del End.\n\nEMI muestra cada receta; sólo usan materiales vanilla."
+      ],
+      "sources": [
+        "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:data/cataclysm/tags/worldgen/structure/eye_of_mech_located.json",
+        "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:data/cataclysm/tags/worldgen/structure/eye_of_desert_located.json",
+        "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:data/cataclysm/tags/worldgen/structure/eye_of_curse_located.json",
+        "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:data/cataclysm/tags/worldgen/structure/eye_of_abyss_located.json",
+        "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:data/cataclysm/tags/worldgen/structure/eye_of_storm_located.json",
+        "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:data/cataclysm/tags/worldgen/structure/eye_of_flame_located.json",
+        "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:data/cataclysm/tags/worldgen/structure/eye_of_monstrous_located.json",
+        "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:data/cataclysm/tags/worldgen/structure/eye_of_ruined_located.json",
+        "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:data/cataclysm/recipe/flame_eye.json",
+        "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:data/cataclysm/recipe/mech_eye.json"
+      ]
+    },
+    {
+      "key": "cata_pyramid",
+      "deps": [
+        "cata_eyes"
+      ],
+      "type": "advancement",
+      "advancement": "cataclysm:find_cursed_pyramid",
+      "icon": "cataclysm:desert_eye",
+      "layout": {
+        "x": 6,
+        "y": -9,
+        "size": 1.0,
+        "shape": "circle"
+      },
+      "en_us": [
+        "The Cursed Pyramid",
+        "In deserts stands the Cursed Pyramid, full of poison dart traps (\"Desert Pyramid Revamped\"). Its prize is buried: brush the suspicious sand inside to find the Necklace of the Desert. As its tooltip hints, it can wake something up.\n\nCraft an Eye of Desert to find it faster."
+      ],
+      "es_es": [
+        "La Pirámide Maldita",
+        "En los desiertos está la Pirámide Maldita, llena de trampas de dardos venenosos («Desert Pyramid Revamped»). Su premio está enterrado: cepillá la arena sospechosa de adentro para encontrar el Collar del desierto. Como insinúa su tooltip, puede despertar algo.\n\nFabricá un Ojo del desierto para encontrarla más rápido."
+      ],
+      "sources": [
+        "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:data/cataclysm/advancement/find_cursed_pyramid.json",
+        "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:data/cataclysm/worldgen/structure/cursed_pyramid.json",
+        "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:data/cataclysm/loot_table/archaeology/cursed_pyramid_necklace.json",
+        "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:assets/cataclysm/lang/en_us.json"
+      ]
+    },
+    {
+      "key": "cata_remnant",
+      "deps": [
+        "cata_pyramid"
+      ],
+      "type": "advancement",
+      "advancement": "cataclysm:kill_remnant",
+      "icon": "cataclysm:remnant_skull",
+      "layout": {
+        "x": 9,
+        "y": -9,
+        "size": 2.0,
+        "shape": "gear"
+      },
+      "en_us": [
+        "The Ancient Remnant",
+        "Wake the Ancient Remnant in the pyramid and knock it down (\"Death Finds a Way\"). It fights with sandstorms and brute force.\n\nIt drops a Remnant Skull (it summons a Modern Remnant you can tame with a Sniffer Egg), Sandstorm in a Bottle (two orbiting sandstorms) and a Block of Ancient Metal."
+      ],
+      "es_es": [
+        "El Remanente Antiguo",
+        "Despertá al Remanente Antiguo en la pirámide y derribalo («Death Finds a Way»). Pelea con tormentas de arena y fuerza bruta.\n\nSuelta un Cráneo de remanente (invoca un Remanente moderno que se doma con un Huevo de sniffer), Tormenta de arena embotellada (dos tormentas que giran a tu alrededor) y un Bloque de metal antiguo."
+      ],
+      "sources": [
+        "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:data/cataclysm/advancement/kill_remnant.json",
+        "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:data/cataclysm/loot_table/entities/ancient_remnant.json",
+        "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:assets/cataclysm/lang/en_us.json"
+      ]
+    },
+    {
+      "key": "cata_factory",
+      "deps": [
+        "cata_eyes"
+      ],
+      "type": "advancement",
+      "advancement": "cataclysm:find_ancient_factory",
+      "icon": "cataclysm:mech_eye",
+      "layout": {
+        "x": 6,
+        "y": -6,
+        "size": 1.0,
+        "shape": "circle"
+      },
+      "en_us": [
+        "The Ancient Factory",
+        "The Ancient Factory is buried underground, far apart from the next one (\"Out-of-Place\"). Machines guard it, and at its heart sleeps the Harbinger.\n\nAn Eye of Mech (Eye of Ender, iron and a redstone block) points the way."
+      ],
+      "es_es": [
+        "La Fábrica Antigua",
+        "La Fábrica Antigua está enterrada bajo tierra, muy lejos una de otra («Out-of-Place»). La custodian máquinas, y en su centro duerme el Heraldo (Harbinger).\n\nUn Ojo de la mecánica (Ojo de ender, hierro y un bloque de redstone) marca el camino."
+      ],
+      "sources": [
+        "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:data/cataclysm/advancement/find_ancient_factory.json",
+        "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:data/cataclysm/worldgen/structure/ancient_factory.json",
+        "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:data/cataclysm/recipe/mech_eye.json"
+      ]
+    },
+    {
+      "key": "cata_harbinger",
+      "deps": [
+        "cata_factory"
+      ],
+      "type": "advancement",
+      "advancement": "cataclysm:kill_harbinger",
+      "icon": "cataclysm:witherite_ingot",
+      "layout": {
+        "x": 9,
+        "y": -6,
+        "size": 2.0,
+        "shape": "gear"
+      },
+      "en_us": [
+        "The Harbinger",
+        "The Harbinger is a war machine that must be woken (\"The Thing of Ancient Civilization\"); a Nether Star is involved. In ENTRELUMEN the Wither is the only source of Nether Stars, so plan this fight after the Wither. It fires missiles and a death laser.\n\nIt drops a Block of Witherite. Witherite Ingots craft the Mechanical Fusion Anvil, the Laser Gatling, the Meat Shredder and the Wither Assault Shoulder Weapon."
+      ],
+      "es_es": [
+        "El Heraldo",
+        "El Heraldo es una máquina de guerra que hay que despertar («The Thing of Ancient Civilization»); hace falta una Estrella del Nether. En ENTRELUMEN el Wither es la única fuente de Estrellas del Nether, así que planeá esta pelea después del Wither. Dispara misiles y un láser mortal.\n\nSuelta un Bloque de witherita. Con lingotes de witherita se fabrican el Yunque de fusión mecánica, la Laser Gatling, el Meat Shredder y el lanzamisiles de hombro Wither."
+      ],
+      "sources": [
+        "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:data/cataclysm/advancement/kill_harbinger.json",
+        "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:data/cataclysm/loot_table/entities/the_harbinger.json",
+        "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:com/github/L_Ender/cataclysm/entity/InternalAnimationMonster/IABossMonsters/The_Harbinger_Entity.class",
+        "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:data/cataclysm/recipe/witherite_ingot.json",
+        "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:data/cataclysm/recipe/mechanical_fusion_anvil.json",
+        "repo:docs/design/mod-pingpong.md"
+      ]
+    },
+    {
+      "key": "cata_prison",
+      "deps": [
+        "cata_eyes"
+      ],
+      "type": "advancement",
+      "advancement": "cataclysm:find_frosted_prison",
+      "icon": "cataclysm:door_of_seal",
+      "layout": {
+        "x": 6,
+        "y": -3,
+        "size": 1.0,
+        "shape": "circle"
+      },
+      "en_us": [
+        "The Frosted Prison",
+        "On snowy plains lies the Frosted Prison (\"Jail of Cold\"). Its Door of Seal only opens with a Strange Key, which the Aptrgangr drops; the Aptrgangr also drops Black Steel.\n\nInside waits the Cursed Tombstone. Using it before its time only shows \"Its power is still weak\"; once it is ready, it lights up and Maledictus rises."
+      ],
+      "es_es": [
+        "La Prisión Helada",
+        "En las llanuras nevadas está la Prisión Helada («Jail of Cold»). Su Puerta del sello sólo se abre con una Llave extraña, que suelta el Aptrgangr; el Aptrgangr también suelta Acero negro.\n\nAdentro espera la Lápida maldita. Usarla antes de tiempo sólo muestra «Its power is still weak»; cuando está lista, se enciende y se levanta Maledictus."
+      ],
+      "sources": [
+        "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:data/cataclysm/advancement/find_frosted_prison.json",
+        "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:data/cataclysm/worldgen/structure/frosted_prison.json",
+        "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:data/cataclysm/loot_table/entities/aptrgangr.json",
+        "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:com/github/L_Ender/cataclysm/blocks/Cursed_Tombstone_Block.class",
+        "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:assets/cataclysm/lang/en_us.json"
+      ]
+    },
+    {
+      "key": "cata_maledictus",
+      "deps": [
+        "cata_prison"
+      ],
+      "type": "advancement",
+      "advancement": "cataclysm:kill_maledictus",
+      "icon": "cataclysm:cursium_ingot",
+      "layout": {
+        "x": 9,
+        "y": -3,
+        "size": 2.0,
+        "shape": "gear"
+      },
+      "en_us": [
+        "Maledictus",
+        "Maledictus is the cursed warlord of the prison (\"Crusade Against Curse\"). It drops Cursium Ingots.\n\nWith the Cursium upgrade template, netherite armor becomes Cursium: the helmet shows creatures behind walls, the chestplate revives you once at 5 health with brief invincibility (then a long debuff), the leggings sometimes dodge attacks, and the boots cut fall damage and let you back-step. The Cursed Bow fires phantom arrows."
+      ],
+      "es_es": [
+        "Maledictus",
+        "Maledictus es el señor de la guerra maldito de la prisión («Crusade Against Curse»). Suelta Lingotes de cursium.\n\nCon la plantilla de mejora de cursium, la armadura de netherite pasa a Cursium: el casco muestra criaturas detrás de las paredes, la pechera te revive una vez con 5 de vida e invencibilidad breve (y después un debuff largo), las grebas a veces esquivan ataques y las botas reducen el daño por caída y te dejan saltar hacia atrás. El Arco maldito dispara flechas fantasma."
+      ],
+      "sources": [
+        "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:data/cataclysm/advancement/kill_maledictus.json",
+        "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:data/cataclysm/loot_table/entities/maledictus.json",
+        "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:assets/cataclysm/lang/en_us.json"
+      ]
+    },
+    {
+      "key": "cata_sunken",
+      "deps": [
+        "cata_eyes"
+      ],
+      "type": "advancement",
+      "advancement": "cataclysm:find_sunken_city",
+      "icon": "cataclysm:abyss_eye",
+      "layout": {
+        "x": 6,
+        "y": 0,
+        "size": 1.0,
+        "shape": "circle"
+      },
+      "en_us": [
+        "The Sunken City",
+        "In deep oceans lies the Sunken City (\"Sunken in the Sea\"), with the Altar of Abyss. To summon its boss, craft an Abyssal Sacrifice: a nautilus shell, a heart of the sea, crystallized coral, an Athame and blocks of diamond, emerald, iron, gold and amethyst, then place it on the altar.\n\nBring water breathing, or the Aether's Iron Bubble."
+      ],
+      "es_es": [
+        "La Ciudad Hundida",
+        "En los océanos profundos está la Ciudad Hundida («Sunken in the Sea»), con el Altar del abismo. Para invocar a su jefe, fabricá un Sacrificio abisal: una concha de nautilo, un corazón del mar, coral cristalizado, un Athame y bloques de diamante, esmeralda, hierro, oro y amatista, y ponelo en el altar.\n\nLlevá respiración acuática, o la Burbuja de hierro del Aether."
+      ],
+      "sources": [
+        "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:data/cataclysm/advancement/find_sunken_city.json",
+        "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:data/cataclysm/worldgen/structure/sunken_city.json",
+        "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:data/cataclysm/recipe/abyssal_sacrifice.json",
+        "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:com/github/L_Ender/cataclysm/blockentities/AltarOfAbyss_Block_Entity.class"
+      ]
+    },
+    {
+      "key": "cata_leviathan",
+      "deps": [
+        "cata_sunken"
+      ],
+      "type": "advancement",
+      "advancement": "cataclysm:kill_leviathan",
+      "icon": "cataclysm:tidal_claws",
+      "layout": {
+        "x": 9,
+        "y": 0,
+        "size": 2.0,
+        "shape": "gear"
+      },
+      "en_us": [
+        "The Leviathan",
+        "The Leviathan is a multidimensional predator that fights underwater (\"A Multidimensional Predator\"). It drops the Tidal Claws (right click: grappling hook; left click: a damaging tentacle) and an Abyssal Egg.\n\nThe world changes after it dies: Coral Golems start appearing in the ocean."
+      ],
+      "es_es": [
+        "El Leviatán",
+        "El Leviatán es un depredador multidimensional que pelea bajo el agua («A Multidimensional Predator»). Suelta las Garras de marea (clic derecho: gancho; clic izquierdo: un tentáculo que daña) y un Huevo abisal.\n\nEl mundo cambia cuando muere: empiezan a aparecer Gólems de coral en el océano."
+      ],
+      "sources": [
+        "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:data/cataclysm/advancement/kill_leviathan.json",
+        "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:data/cataclysm/loot_table/entities/the_leviathan.json",
+        "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:assets/cataclysm/lang/en_us.json"
+      ]
+    },
+    {
+      "key": "cata_acropolis",
+      "deps": [
+        "cata_eyes"
+      ],
+      "type": "advancement",
+      "advancement": "cataclysm:find_acropolis",
+      "icon": "cataclysm:storm_eye",
+      "layout": {
+        "x": 6,
+        "y": 3,
+        "size": 1.0,
+        "shape": "circle"
+      },
+      "en_us": [
+        "The Acropolis",
+        "Over warm oceans rises the Acropolis (\"Why in the Sky?\"). Its sea creatures, among them the Clawdian (\"Not so Shrimple Now\"), drop Lacrima; the Clawdian also drops a Chitin Claw.\n\nAn Eye of Storm leads there: prismarine, diamonds, a lightning rod and a water bucket around an Eye of Ender."
+      ],
+      "es_es": [
+        "La Acrópolis",
+        "Sobre los océanos cálidos se levanta la Acrópolis («Why in the Sky?»). Sus criaturas marinas, entre ellas el Clawdian («Not so Shrimple Now»), sueltan Lacrima; el Clawdian además suelta una Garra de quitina.\n\nUn Ojo de la tormenta lleva hasta ahí: prismarina, diamantes, un pararrayos y un balde de agua alrededor de un Ojo de ender."
+      ],
+      "sources": [
+        "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:data/cataclysm/advancement/find_acropolis.json",
+        "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:data/cataclysm/advancement/kill_clawdian.json",
+        "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:data/cataclysm/worldgen/structure/acropolis.json",
+        "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:data/cataclysm/loot_table/entities/clawdian.json",
+        "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:data/cataclysm/recipe/storm_eye.json"
+      ]
+    },
+    {
+      "key": "cata_scylla",
+      "deps": [
+        "cata_acropolis"
+      ],
+      "type": "advancement",
+      "advancement": "cataclysm:kill_scylla",
+      "icon": "cataclysm:essence_of_the_storm",
+      "layout": {
+        "x": 9,
+        "y": 3,
+        "size": 2.0,
+        "shape": "gear"
+      },
+      "en_us": [
+        "Scylla, the Storm Empress",
+        "Scylla rules the Acropolis (\"The Calm after the Storm\"). She drops Essence of the Storm and Lacrima: the essence crafts Astrape (right click throws a lightning spear) and Ceraunus (a throwable anchor that also summons waves while sneaking)."
+      ],
+      "es_es": [
+        "Scylla, la Emperatriz de la Tormenta",
+        "Scylla gobierna la Acrópolis («The Calm after the Storm»). Suelta Esencia de la tormenta y Lacrima: con la esencia se fabrican Astrape (clic derecho lanza una lanza de rayo) y Ceraunus (un ancla arrojadiza que además invoca olas si la usás agachado)."
+      ],
+      "sources": [
+        "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:data/cataclysm/advancement/kill_scylla.json",
+        "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:data/cataclysm/loot_table/entities/scylla.json",
+        "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:data/cataclysm/recipe/astrape.json",
+        "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:data/cataclysm/recipe/ceraunus.json",
+        "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:assets/cataclysm/lang/en_us.json"
+      ]
+    },
+    {
+      "key": "cata_arena",
+      "deps": [
+        "cata_eyes"
+      ],
+      "type": "advancement",
+      "advancement": "cataclysm:kill_revenant",
+      "icon": "cataclysm:burning_ashes",
+      "layout": {
+        "x": 6,
+        "y": 6,
+        "size": 1.0,
+        "shape": "circle"
+      },
+      "en_us": [
+        "The Burning Arena",
+        "In the Nether Wastes stands the Burning Arena (\"A Massive Arena\") with the Altar of Fire. Ignited Revenants guard it: kill them for Burning Ashes (\"Imperfect thing\"), or craft ashes from four Dying Embers.\n\nPlace Burning Ashes on the Altar of Fire to summon Ignis."
+      ],
+      "es_es": [
+        "La Arena Ardiente",
+        "En los Páramos del Nether está la Arena Ardiente («A Massive Arena») con el Altar del fuego. La custodian los Ignited Revenants: matalos para conseguir Cenizas ardientes («Imperfect thing»), o fabricá las cenizas con cuatro Brasas moribundas.\n\nPoné las Cenizas ardientes en el Altar del fuego para invocar a Ignis."
+      ],
+      "sources": [
+        "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:data/cataclysm/advancement/find_burning_arena.json",
+        "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:data/cataclysm/advancement/kill_revenant.json",
+        "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:data/cataclysm/worldgen/structure/burning_arena.json",
+        "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:data/cataclysm/loot_table/entities/ignited_revenant.json",
+        "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:data/cataclysm/recipe/burning_ashes.json",
+        "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:com/github/L_Ender/cataclysm/blockentities/AltarOfFire_Block_Entity.class"
+      ]
+    },
+    {
+      "key": "cata_ignis",
+      "deps": [
+        "cata_arena"
+      ],
+      "type": "advancement",
+      "advancement": "cataclysm:kill_ignis",
+      "icon": "cataclysm:ignitium_ingot",
+      "layout": {
+        "x": 9,
+        "y": 6,
+        "size": 2.0,
+        "shape": "gear"
+      },
+      "en_us": [
+        "Ignis",
+        "Ignis is a burning knight with a shield and a sword of fire (\"The Extinguished Fire\"). Fire resistance is mandatory.\n\nIt drops Ignitium Ingots: the Ignitium upgrade turns netherite armor into Ignitium (the chestplate can be combined with an elytra, the boots walk on lava) and crafts the Bulwark of the Flame and the Blazing Grips. After Ignis falls, Ignited Berserkers awaken in Nether fortresses."
+      ],
+      "es_es": [
+        "Ignis",
+        "Ignis es un caballero en llamas con escudo y espada de fuego («The Extinguished Fire»). La resistencia al fuego es obligatoria.\n\nSuelta Lingotes de ignitium: la mejora de ignitium convierte la armadura de netherite en Ignitium (la pechera se puede combinar con élitros, las botas caminan sobre lava) y fabrica el Baluarte de la llama y los Blazing Grips. Cuando cae Ignis, despiertan los Ignited Berserkers en las fortalezas del Nether."
+      ],
+      "sources": [
+        "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:data/cataclysm/advancement/kill_ignis.json",
+        "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:data/cataclysm/loot_table/entities/ignis.json",
+        "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:assets/cataclysm/lang/en_us.json"
+      ]
+    },
+    {
+      "key": "cata_forge",
+      "deps": [
+        "cata_eyes"
+      ],
+      "type": "advancement",
+      "advancement": "cataclysm:find_soul_black_smith",
+      "icon": "cataclysm:monstrous_eye",
+      "layout": {
+        "x": 6,
+        "y": 9,
+        "size": 1.0,
+        "shape": "circle"
+      },
+      "en_us": [
+        "The Soul Forge",
+        "In Nether biomes (crimson and warped forests, soul sand valleys, wastes) hides the Soul Forge (\"Where the Monstrous be Forged\"), home of the Netherite Monstrosity. An Eye of Monstrous (blackstone, netherite scrap, a lava bucket and an Eye of Ender) points to it."
+      ],
+      "es_es": [
+        "La Forja de Almas",
+        "En los biomas del Nether (bosques carmesí y distorsionado, valles de arena de almas, páramos) se esconde la Forja de Almas («Where the Monstrous be Forged»), la casa de la Monstruosidad de Netherite. Un Ojo de la monstruosidad (piedra negra, chatarra de netherite, un balde de lava y un Ojo de ender) apunta hacia ella."
+      ],
+      "sources": [
+        "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:data/cataclysm/advancement/find_soul_black_smith.json",
+        "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:data/cataclysm/worldgen/structure/soul_black_smith.json",
+        "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:data/cataclysm/recipe/monstrous_eye.json"
+      ]
+    },
+    {
+      "key": "cata_monstrosity",
+      "deps": [
+        "cata_forge"
+      ],
+      "type": "advancement",
+      "advancement": "cataclysm:kill_monstrosity",
+      "icon": "cataclysm:infernal_forge",
+      "layout": {
+        "x": 9,
+        "y": 9,
+        "size": 2.0,
+        "shape": "gear"
+      },
+      "en_us": [
+        "The Netherite Monstrosity",
+        "A giant war machine of the Nether (\"The Broken Nether's Warmachine\"). It drops the Infernal Forge (a pickaxe that deals area damage on right click), a Lava Power Cell and a Monstrous Horn.\n\nThe Monstrous Helm (a netherite helmet upgraded with the horn on a Smithing Table) knocks back nearby enemies and boosts defense when you drop below half health."
+      ],
+      "es_es": [
+        "La Monstruosidad de Netherite",
+        "Una máquina de guerra gigante del Nether («The Broken Nether's Warmachine»). Suelta la Forja infernal (un pico que hace daño en área con clic derecho), una Celda de energía de lava y un Cuerno monstruoso.\n\nEl Yelmo monstruoso (un casco de netherite mejorado con el cuerno en la mesa de herrería) empuja a los enemigos cercanos y sube la defensa cuando bajás de la mitad de la vida."
+      ],
+      "sources": [
+        "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:data/cataclysm/advancement/kill_monstrosity.json",
+        "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:data/cataclysm/loot_table/entities/netherite_monstrosity.json",
+        "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:data/cataclysm/recipe/smithing/monstrous_helm.json",
+        "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:assets/cataclysm/lang/en_us.json"
+      ]
+    },
+    {
+      "key": "cata_citadel",
+      "deps": [
+        "cata_eyes"
+      ],
+      "type": "advancement",
+      "advancement": "cataclysm:find_ruined_citadel",
+      "icon": "cataclysm:void_core",
+      "layout": {
+        "x": 6,
+        "y": 12,
+        "size": 1.0,
+        "shape": "circle"
+      },
+      "en_us": [
+        "The Ruined Citadel",
+        "In the outer End islands (highlands and midlands) stands the Ruined Citadel (\"Another Stronghold?!\"). Ender Golems patrol it and drop Void Cores (right click summons Void Runes) (\"Palette Swap\").\n\nAn Eye of Void (end stone bricks, purpur and a shulker shell around an Eye of Ender) points to it. It is an act V destination at the earliest: you need the End."
+      ],
+      "es_es": [
+        "La Ciudadela en Ruinas",
+        "En las islas exteriores del End (tierras altas y medias) está la Ciudadela en Ruinas («Another Stronghold?!»). La patrullan Gólems de ender que sueltan Núcleos del vacío (clic derecho invoca Runas del vacío) («Palette Swap»).\n\nUn Ojo del vacío (ladrillos de piedra del End, purpur y un caparazón de shulker alrededor de un Ojo de ender) apunta hacia ella. Es un destino del acto V como muy temprano: necesitás el End."
+      ],
+      "sources": [
+        "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:data/cataclysm/advancement/find_ruined_citadel.json",
+        "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:data/cataclysm/advancement/kill_ender_golem.json",
+        "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:data/cataclysm/worldgen/structure/ruined_citadel.json",
+        "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:data/cataclysm/loot_table/entities/ender_golem.json",
+        "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:data/cataclysm/tags/worldgen/structure/eye_of_ruined_located.json",
+        "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:data/cataclysm/recipe/void_eye.json",
+        "repo:content/compass_targets.json"
+      ]
+    },
+    {
+      "key": "cata_guardian",
+      "deps": [
+        "cata_citadel"
+      ],
+      "type": "advancement",
+      "advancement": "cataclysm:kill_ender_guardian",
+      "icon": "cataclysm:gauntlet_of_guard",
+      "layout": {
+        "x": 9,
+        "y": 12,
+        "size": 2.0,
+        "shape": "gear"
+      },
+      "en_us": [
+        "The Ender Guardian",
+        "The Ender Guardian commands the Citadel (\"Wasn't that a Shulker?\"). It drops the Gauntlet of Guard: right click pulls entities toward you."
+      ],
+      "es_es": [
+        "El Guardián Ender",
+        "El Guardián Ender manda en la Ciudadela («Wasn't that a Shulker?»). Suelta el Guantelete de la guardia: con clic derecho atrae a las criaturas hacia vos."
+      ],
+      "sources": [
+        "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:data/cataclysm/advancement/kill_ender_guardian.json",
+        "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:data/cataclysm/loot_table/entities/ender_guardian.json",
+        "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:assets/cataclysm/lang/en_us.json"
+      ]
+    },
+    {
+      "key": "cata_amethyst",
+      "deps": [
+        "cata_welcome"
+      ],
+      "type": "checkmark",
+      "optional": true,
+      "icon": "cataclysm:blessed_amethyst_crab_meat",
+      "layout": {
+        "x": -3,
+        "y": 0,
+        "size": 0.85,
+        "shape": "circle"
+      },
+      "en_us": [
+        "Smaller finds",
+        "Not everything is a boss. Amethyst Nests hide Amethyst Crabs, whose blessed meat protects against darkness and abyssal effects; abandoned spires, temples, villages and desert sites dot the world with loot and traps. They are good practice for the arenas."
+      ],
+      "es_es": [
+        "Hallazgos menores",
+        "No todo es un jefe. Los Nidos de amatista esconden Cangrejos de amatista, cuya carne bendita protege contra la oscuridad y los efectos abisales; torres, templos, aldeas y excavaciones abandonadas salpican el mundo con botín y trampas. Son buena práctica antes de las arenas."
+      ],
+      "sources": [
+        "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:data/cataclysm/worldgen/structure/amethyst_nest.json",
+        "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:data/cataclysm/worldgen/structure/abandoned_spire.json",
+        "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:data/cataclysm/worldgen/structure/abandoned_temple.json",
+        "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:data/cataclysm/worldgen/structure/desert_site.json",
+        "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:assets/cataclysm/lang/en_us.json"
+      ]
+    },
+    {
+      "key": "cata_prep",
+      "deps": [
+        "cata_welcome"
+      ],
+      "type": "checkmark",
+      "icon": "minecraft:potion",
+      "layout": {
+        "x": 0,
+        "y": 3,
+        "size": 0.85,
+        "shape": "circle"
+      },
+      "en_us": [
+        "Before any Cataclysm fight",
+        "These bosses have long, telegraphed attack patterns: watch one full cycle before committing. Bring:\n- Fire resistance for the Nether bosses, water breathing for the ocean ones.\n- A Charm of Keeping or Phantom armor from Twilight, and a Tombstone plan (see that chapter).\n- A bed or waystone near the arena to come back fast.\n\nBosses cannot be picked up with Carry On, and their altars cannot be moved."
+      ],
+      "es_es": [
+        "Antes de cualquier pelea de Cataclysm",
+        "Estos jefes tienen patrones de ataque largos y anunciados: mirá un ciclo completo antes de meterte. Llevá:\n- Resistencia al fuego para los del Nether, respiración acuática para los del océano.\n- Un Amuleto de conservación o la armadura Fantasma de Twilight, y un plan con Tombstone (mirá ese capítulo).\n- Una cama o una waystone cerca de la arena para volver rápido.\n\nA los jefes no se los puede levantar con Carry On, y sus altares no se pueden mover."
+      ],
+      "sources": [
+        "repo:pack/config/carryon-common.toml",
+        "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:assets/cataclysm/lang/en_us.json"
+      ]
+    },
+    {
+      "key": "cata_pack",
+      "deps": [
+        "cata_welcome"
+      ],
+      "type": "checkmark",
+      "icon": "cataclysm:altar_of_fire",
+      "layout": {
+        "x": 0,
+        "y": -3,
+        "size": 1.0,
+        "shape": "rsquare"
+      },
+      "en_us": [
+        "What ENTRELUMEN changes",
+        "Pack specifics:\n- Cataclysm is optional: no act, Atlas project or compass objective needs it.\n- The Wither is the only Nether Star source (the Modern Industrialization and Oritech shortcuts were removed), which matters for the Harbinger.\n- Armor ability keys moved off V and C: Alt+J ability, Alt+K helmet, Alt+L chestplate, Alt+I boots.\n- Carry On refuses Cataclysm entities and altars.\n- Structures only appear in newly generated chunks."
+      ],
+      "es_es": [
+        "Qué cambia ENTRELUMEN",
+        "Particularidades del pack:\n- Cataclysm es opcional: ningún acto, proyecto del Atlas ni objetivo de la brújula lo pide.\n- El Wither es la única fuente de Estrellas del Nether (se quitaron los atajos de Modern Industrialization y Oritech), y eso importa para el Heraldo.\n- Las teclas de habilidades de armadura dejaron V y C: Alt+J habilidad, Alt+K casco, Alt+L pechera, Alt+I botas.\n- Carry On rechaza las criaturas y los altares de Cataclysm.\n- Las estructuras sólo aparecen en chunks nuevos."
+      ],
+      "sources": [
+        "repo:docs/design/story-bible.md",
+        "repo:docs/design/mod-pingpong.md",
+        "repo:pack/config/defaultoptions/keybindings.txt",
+        "repo:docs/design/exploration-structures-family.md",
+        "repo:pack/config/carryon-common.toml"
+      ]
+    },
+    {
+      "key": "cata_mastery",
+      "deps": [
+        "cata_harbinger",
+        "cata_remnant",
+        "cata_maledictus",
+        "cata_leviathan",
+        "cata_scylla",
+        "cata_ignis",
+        "cata_monstrosity",
+        "cata_guardian"
+      ],
+      "type": "advancement",
+      "advancement": "cataclysm:kill_all_bosses",
+      "icon": "cataclysm:music_disc_the_cataclysmfarer",
+      "layout": {
+        "x": 13,
+        "y": 1.5,
+        "size": 2.25,
+        "shape": "pentagon"
+      },
+      "en_us": [
+        "The Cataclysmfarer",
+        "Defeat every Cataclysm boss to earn \"The Cataclysmfarer\" and its music disc. It is the hardest optional challenge in this family, and pure bragging rights: nothing in the story needs it."
+      ],
+      "es_es": [
+        "El Cataclysmfarer",
+        "Vencé a todos los jefes de Cataclysm para ganar «The Cataclysmfarer» y su disco. Es el desafío opcional más difícil de esta familia, y puro orgullo: la historia no lo pide."
+      ],
+      "sources": [
+        "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:data/cataclysm/advancement/kill_all_bosses.json"
+      ]
+    }
+  ]
+}
