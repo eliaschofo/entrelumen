@@ -138,6 +138,10 @@ public final class RuntimeGameTestsAltars {
       return;
     }
     helper.assertTrue(waited < limit, what + " did not finish in time");
+    // The GameTest server ticks as fast as it can, so a tick budget alone gives an async worker only a
+    // few seconds on a slow CI runner. Each waiting tick lasts at least 20 ms: the limit is then also a
+    // wall-clock floor (3900 ticks >= 78 s), paid only while a regeneration is still running.
+    java.util.concurrent.locks.LockSupport.parkNanos(20_000_000L);
     helper.runAfterDelay(1, () -> await(helper, done, waited + 1, limit, what, then));
   }
 
