@@ -97,6 +97,7 @@ const entrelumenAuditTargets = {
     "minecraft:compass",
     "minecraft:copper_ingot",
     "minecraft:crafting_table",
+    "minecraft:dragon_breath",
     "minecraft:end_stone",
     "minecraft:ender_eye",
     "minecraft:filled_map",
@@ -105,11 +106,13 @@ const entrelumenAuditTargets = {
     "minecraft:hopper",
     "minecraft:lantern",
     "minecraft:map",
+    "minecraft:nether_star",
     "minecraft:paper",
     "minecraft:red_bed",
     "minecraft:redstone",
     "minecraft:stone_pickaxe",
     "minecraft:torch",
+    "minecraft:wet_sponge",
     "minecraft:wheat",
     "modularrouters:blank_module",
     "mysticalagriculture:imperium_essence",
@@ -286,7 +289,7 @@ const entrelumenAuditTargets = {
       "output": "farmersdelight:flint_knife"
     }
   ],
-  "signature": "eae949582f52d76f"
+  "signature": "82a7f3d14c1fd031"
 };
 
 ServerEvents.afterRecipes(event => {

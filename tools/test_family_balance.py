@@ -52,7 +52,9 @@ class FamilyBalanceTest(unittest.TestCase):
                     self.assertEqual(row['component'], change['add'])
                     self.assertEqual(row['act'], change['act'])
                     component = row['component']
-                    if component.startswith('entrelumen:'):
+                    if component in balance.LUMINOSITY.values():
+                        self.assertEqual(row['act'], balance.LUMINOSITY_ACT)
+                    elif component.startswith('entrelumen:'):
                         self.assertEqual(ROMAN[row['act']], acts[component])
                     else:
                         self.assertEqual(balance.STAGE_MATERIALS[component], row['act'])
@@ -304,6 +306,110 @@ class FamilyBalanceTest(unittest.TestCase):
         self.assertTrue(any(c == lum for c, _ in balance.find_loops([ingot, gear], [leak], {}, {lum})))
         ungated = balance.created_shaped('t:free', 't:free', ['XXX', 'XXX', 'XXX'], {'X': {'item': 't:metal'}}, '')
         self.assertTrue(any(c == 't:free' for c, _ in balance.find_loops([ungated], [], {}, {lum})))
+
+    def test_functions_use_one_component_per_function_across_families(self):
+        family = balance.FAMILIES['functions']
+        for change in family['changes']:
+            component, act = balance.FUNCTIONS[change['function']]
+            self.assertEqual(change['act'], act, change['id'])
+            if component == 'luminosity':
+                self.assertIn(change['add'], balance.LUMINOSITY.values(), change['id'])
+            else:
+                self.assertEqual(change['add'], component, change['id'])
+        spec = importlib.util.spec_from_file_location('rftools_under_test', Path(__file__).with_name('generate_rftools_balance.py'))
+        rftools = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(rftools)
+        gates = {c['id']: c['add'] for f in balance.FAMILIES.values() for c in f.get('changes', [])}
+        gates.update({rid: row[0] for rid, row in rftools.CHANGES.items()})
+        for function, members in balance.FUNCTION_MEMBERS.items():
+            for member in members:
+                self.assertEqual(gates[member], balance.FUNCTIONS[function][0], f'{member} is a {function} gate')
+        # Gap 2 of reference-packs.md: every quarry, RFTools' card included, uses the spectral lens.
+        self.assertEqual(rftools.CHANGES['rftoolsbuilder:shape_card_quarry'][0], balance.SL)
+        # Gap 1: the AE2 controller now matches Refined Storage's.
+        self.assertEqual(gates['ae2:network/blocks/controller'], gates['refinedstorage:controller'])
+        # Gap 3: the inventory sensor gates something.
+        self.assertIn(balance.IS, gates.values())
+
+    def test_no_gate_touches_what_makes_the_components(self):
+        sources, _ = balance.component_sources()
+        self.assertIn('mekanism:metallurgic_infuser', sources[balance.CF])
+        protected_paths = {p.split(':', 1)[1] for p in balance.PROTECTED}
+        for family in balance.FAMILIES.values():
+            for change in family.get('changes', []):
+                if change['id'] == 'mekanism:metallurgic_infuser':
+                    self.assertIn(('mekanism:metallurgic_infuser', change['add']), balance.BOOTSTRAP)
+                    continue
+                self.assertNotIn(change['id'].split(':', 1)[1], protected_paths, change['id'])
+        infuser = next(c for c in balance.FAMILIES['functions']['changes'] if c['id'] == 'mekanism:metallurgic_infuser')
+        balance.check_function_gate(infuser, 'mekanism:metallurgic_infuser', sources)
+        # The bootstrap is only allowed while the story hands out two frames.
+        with unittest.mock.patch.object(balance, 'story_grants', return_value=1):
+            with self.assertRaises(AssertionError):
+                balance.check_function_gate(infuser, 'mekanism:metallurgic_infuser', sources)
+        with self.assertRaises(AssertionError):
+            balance.check_function_gate(dict(infuser, add=balance.PR, act='III', function='jetpack'),
+                                        'mekanism:metallurgic_infuser', sources)
+        # Gating an input of a component with that component is a loop.
+        loop = balance.shaped('ae2:x', 0, 0, None, balance.RM, 'III', '')
+        with self.assertRaises(AssertionError):
+            balance.check_function_gate(loop, 'ae2:logic_processor', sources)
+
+    def test_top_armor_takes_one_luminosity_per_piece_in_act_six(self):
+        armor = [c for c in balance.FAMILIES['functions']['changes'] if c['function'] == 'top_armor']
+        self.assertEqual(len(armor), 12)
+        self.assertEqual({c['add'] for c in armor if c['id'].startswith('mekanism:mekasuit_')}, {balance.LUMINOSITY['engineering']})
+        self.assertEqual({c['add'] for c in armor if c['id'].startswith('advanced_ae:')}, {balance.LUMINOSITY['logistics']})
+        self.assertEqual({c['add'] for c in armor if c['id'].startswith('modern_industrialization:')}, {balance.LUMINOSITY['habitation']})
+        self.assertTrue(all(c['act'] == 'VI' for c in armor))
+        packer = {'type': 'modern_industrialization:packer', 'item_inputs': [{'amount': 1, 'item': 'minecraft:netherite_boots'},
+                  {'amount': 1, 'item': 'modern_industrialization:quantum_upgrade'}],
+                  'item_outputs': [{'amount': 1, 'item': 'modern_industrialization:quantum_boots'}]}
+        change = next(c for c in armor if c['id'].endswith('quantum/boots'))
+        out = balance.transform(change, packer)
+        self.assertEqual(out['item_inputs'][-1], {'amount': 1, 'item': balance.LUMINOSITY['habitation']})
+        self.assertEqual(balance.outputs(out), {'modern_industrialization:quantum_boots'})
+        full = dict(packer, item_inputs=packer['item_inputs'] + [{'amount': 1, 'item': 'x:third'}])
+        with self.assertRaises(AssertionError):
+            balance.transform(change, full)
+
+    def test_vein_resonator_tiers_chain_by_act(self):
+        additions = balance.FAMILIES['functions']['additions']
+        self.assertEqual([a['id'] for a in additions], [balance.resonator(t) for t in range(1, 7)])
+        self.assertEqual([a['act'] for a in additions], ['I', 'II', 'III', 'IV', 'V', 'VI'])
+        for tier, addition in enumerate(additions, 1):
+            inputs = [addition['key'][c]['item'] for row in addition['pattern'] for c in row if c != ' ']
+            for row in addition['pattern']:
+                self.assertEqual(row, row[::-1], addition['id'])
+            if tier > 1:
+                self.assertEqual(inputs.count(balance.resonator(tier - 1)), 1, addition['id'])
+            luminosities = [i for i in inputs if i in balance.LUMINOSITY.values()]
+            self.assertEqual(len(luminosities), 2 if tier == 6 else 0, addition['id'])
+            if tier == 1:
+                self.assertLessEqual(len(inputs), 6)
+                self.assertTrue(all(i.startswith('minecraft:') or i == 'entrelumen:raw_lens' for i in inputs))
+        # Area mining is a power regulator function: the third tier carries it.
+        self.assertEqual(additions[2]['key']['T'], {'item': balance.PR})
+
+    def test_frame_is_infused_and_seeded_by_the_story(self):
+        spec = importlib.util.spec_from_file_location('integration_under_test', Path(__file__).with_name('generate_integration_recipes.py'))
+        integration = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(integration)
+        design = json.loads((ROOT / 'content/integration-design.json').read_text(encoding='utf-8'))
+        rows = {row['id']: row['json'] for row in integration.recipes_from(design)}
+        frame = rows['entrelumen:integration/precision_bench']
+        self.assertEqual(frame['type'], 'mekanism:metallurgic_infusing')
+        self.assertEqual(frame['item_input'], {'count': 1, 'item': 'entrelumen:raw_lens'})
+        self.assertEqual(frame['output'], {'count': 1, 'id': balance.CF})
+        self.assertEqual(sum(r['type'] == 'minecraft:crafting_shapeless' for r in rows.values()), 21)
+        self.assertFalse(any(balance.CF == r.get('result', {}).get('id') for r in rows.values()))
+        with unittest.mock.patch.object(integration, 'STORY_FRAMES', 3):
+            with self.assertRaises(ValueError):
+                integration.recipes_from(design)
+        crafted = json.loads(json.dumps(design))
+        next(p for p in crafted['projects'] if p['output']['id'] == balance.CF)['recipe']['type'] = 'minecraft:crafting_shapeless'
+        with self.assertRaises(ValueError):
+            integration.recipes_from(crafted)
 
     @unittest.skipUnless(lock_available(), 'Pinned dependency JARs are not available on this machine')
     def test_scripts_are_current_against_pinned_jars(self):

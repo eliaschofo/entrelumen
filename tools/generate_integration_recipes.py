@@ -1,4 +1,9 @@
-"""Generate/check the 22 static integration recipes; never writes a live instance."""
+"""Generate/check the 22 static integration recipes; never writes a live instance.
+
+21 are shapeless crafting recipes. The calibration frame (precision_bench) is a Mekanism metallurgic
+infusing recipe: it has no crafting recipe since 24 September 2026, the first two frames are the Act I
+reward of first_signal, and the infuser itself needs a frame, the only gate allowed to use a component
+that its own acquisition needs (docs/design/progression-functions.md)."""
 from __future__ import annotations
 import argparse
 import hashlib
@@ -9,7 +14,14 @@ import re
 ROOT = Path(__file__).resolve().parents[1]
 SOURCE = ROOT / "content/integration-design.json"
 TARGET = ROOT / "pack/kubejs/server_scripts/entrelumen_integration_recipes.js"
+PROJECTS = ROOT / "companion/src/main/resources/data/entrelumen/campaign/projects.json"
 ID = re.compile(r"^[a-z0-9_.-]+:[a-z0-9_./-]+$")
+INFUSING = "mekanism:metallurgic_infusing"
+INFUSER = "mekanism:metallurgic_infuser"
+# The only recipe that is not shapeless crafting: the frame, replicated by infusion.
+INFUSED = {"entrelumen:integration/precision_bench": "entrelumen:calibration_frame"}
+# Campaign frames a team receives before it can infuse: one builds the infuser, one is spare.
+STORY_FRAMES = 2
 
 
 def recipes_from(design):
@@ -23,8 +35,10 @@ def recipes_from(design):
         if not ID.fullmatch(rid) or not rid.startswith("entrelumen:integration/") or rid in ids:
             raise ValueError(f"Invalid/duplicate reserved recipe ID: {rid}")
         ids.add(rid)
-        if recipe["type"] != "minecraft:crafting_shapeless":
+        if recipe["type"] not in ("minecraft:crafting_shapeless", INFUSING):
             raise ValueError(f"Unsupported recipe type: {rid}")
+        if (recipe["type"] == INFUSING) != (rid in INFUSED):
+            raise ValueError(f"Exactly {sorted(INFUSED)} is infused: {rid}")
         if set(project["title"]) != {"en_us", "es_es"} or not all(isinstance(v, str) and v.strip() for v in project["title"].values()):
             raise ValueError(f"Missing bilingual project title: {rid}")
         if not ID.fullmatch(output["id"]) or not output["id"].startswith("entrelumen:") or output["id"] in outputs:
@@ -36,9 +50,12 @@ def recipes_from(design):
             if not ID.fullmatch(entry["id"]) or type(entry["count"]) is not int or not 1 <= entry["count"] <= 9:
                 raise ValueError(f"Invalid ingredient: {rid}: {entry}")
             ingredients.extend([{"item": entry["id"]}] * entry["count"])
+        outputs[output["id"]] = project
+        if recipe["type"] == INFUSING:
+            rows.append({"id": rid, "json": infusing(rid, recipe, output)})
+            continue
         if not 1 <= len(ingredients) <= 9:
             raise ValueError(f"Crafting grid overflow/empty: {rid}")
-        outputs[output["id"]] = project
         rows.append({"id": rid, "json": {"type": "minecraft:crafting_shapeless", "category": "misc", "ingredients": ingredients, "result": {"id": output["id"], "count": output["count"]}}})
     visiting, visited = set(), set()
     def visit(item):
@@ -54,7 +71,40 @@ def recipes_from(design):
         visited.add(item)
     for item in outputs:
         visit(item)
+    check_story_frames(outputs)
     return rows
+
+
+def infusing(rid, recipe, output):
+    """Native Mekanism 10.7 metallurgic infusing JSON: one item stack plus one infusion chemical."""
+    if INFUSED[rid] != output["id"] or recipe.get("machine") != INFUSER:
+        raise ValueError(f"Infusion must make {INFUSED[rid]} in {INFUSER}: {rid}")
+    if len(recipe["inputs"]) != 1 or any(entry["id"] in INFUSED.values() for entry in recipe["inputs"]):
+        raise ValueError(f"Infusion takes exactly one item input, never an infused component: {rid}")
+    chemical = recipe.get("chemical", {})
+    if set(chemical) != {"tag", "amount"} or not ID.fullmatch(chemical["tag"]) \
+            or type(chemical["amount"]) is not int or not 1 <= chemical["amount"] <= 1000:
+        raise ValueError(f"Infusion needs one chemical tag and a positive amount: {rid}")
+    (entry,) = recipe["inputs"]
+    return {"type": INFUSING, "chemical_input": {"amount": chemical["amount"], "tag": chemical["tag"]},
+            "item_input": {"count": entry["count"], "item": entry["id"]},
+            "output": {"count": output["count"], "id": output["id"]}, "per_tick_usage": False}
+
+
+def check_story_frames(outputs):
+    """An infused component has no crafting recipe, so the campaign hands out the first ones.
+
+    The infuser needs a frame (tools/generate_family_balance.py, functions family). With fewer than
+    STORY_FRAMES campaign frames a team could deliver its only frame to precision_bench and never
+    build the infuser."""
+    projects = json.loads(PROJECTS.read_text(encoding="utf-8"))
+    for item in INFUSED.values():
+        if item not in outputs:
+            raise ValueError(f"Infused component is not a project output: {item}")
+        granted = sum(p.get("extraRewards", {}).get(item, 0) + (p.get("reward") == item)
+                      for p in projects.values() if p["act"] <= outputs[item]["act"])
+        if granted < STORY_FRAMES:
+            raise ValueError(f"The campaign grants {granted} {item} by its act; {STORY_FRAMES} are needed")
 
 
 def check_existing_ids(rows):
@@ -72,14 +122,19 @@ def check_existing_ids(rows):
 def render(rows):
     payload = json.dumps(rows, ensure_ascii=False, indent=2)
     signature = hashlib.sha256(payload.encode()).hexdigest()
-    return "// Generated by tools/generate_integration_recipes.py --write; do not edit.\n// Static native recipes; no team, act, gifts, reward or inventory handlers.\nconst entrelumenIntegrationSignature = " + json.dumps(signature) + ";\nconst entrelumenIntegrationRecipes = " + payload + ";\n" + RUNTIME
+    return "// Generated by tools/generate_integration_recipes.py --write; do not edit.\n// Static native recipes (21 shapeless, the frame by Mekanism infusion); no team, act, gifts, reward or inventory handlers.\nconst entrelumenIntegrationSignature = " + json.dumps(signature) + ";\nconst entrelumenIntegrationRecipes = " + payload + ";\n" + RUNTIME
 
 
 RUNTIME = r"""
+// Shapeless rows name their result and ingredients; the infusing row its output and item input.
+function entrelumenIntegrationOutput(row) {
+  return row.json.result ? row.json.result.id : row.json.output.id;
+}
 ServerEvents.recipes(event => {
   const errors = [];
   entrelumenIntegrationRecipes.forEach(row => {
-    const ids = [row.json.result.id].concat(row.json.ingredients.map(i => i.item));
+    const inputs = row.json.ingredients ? row.json.ingredients.map(i => i.item) : [row.json.item_input.item];
+    const ids = [entrelumenIntegrationOutput(row)].concat(inputs);
     ids.forEach(id => {
       if (!Item.exists(id)) errors.push({recipe: row.id, missingItem: id});
     });
@@ -96,7 +151,7 @@ ServerEvents.recipes(event => {
 ServerEvents.afterRecipes(event => {
   const missing = [];
   entrelumenIntegrationRecipes.forEach(row => {
-    if (event.countRecipes({id: row.id, output: row.json.result.id}) !== 1) missing.push(row.id);
+    if (event.countRecipes({id: row.id, output: entrelumenIntegrationOutput(row)}) !== 1) missing.push(row.id);
   });
   const receipt = {status: missing.length ? 'failed-loaded-check' : 'loaded', signature: entrelumenIntegrationSignature, checked: entrelumenIntegrationRecipes.length, missing: missing};
   if (missing.length) console.error('[ENTRELUMEN_INTEGRATION] ' + JSON.stringify(receipt));
@@ -118,7 +173,7 @@ def main():
         TARGET.write_text(expected, encoding="utf-8")
     elif not TARGET.exists() or TARGET.read_text(encoding="utf-8") != expected:
         raise ValueError("Generated script differs from source; run --write")
-    print("PASS: 22 static recipes, valid native grids/yields, bilingual project titles, component DAG, reserved IDs and source parity. Crafting runtime not tested.")
+    print("PASS: 22 static recipes (21 shapeless, the frame by metallurgic infusing), valid native grids/yields, bilingual project titles, component DAG, two story frames, reserved IDs and source parity. Crafting runtime not tested.")
 
 
 if __name__ == "__main__":

@@ -38,6 +38,8 @@ public final class FullpackQABootstrap {
     LuminousGameTests.requireSuite();
     TerraArmFullpackGameTests.requireSuite();
     ActsFullpackGameTests.requireSuite();
+    ProgressionFullpackGameTests.requireSuite();
+    VeinResonatorFullpackGameTests.requireSuite();
     if (GameTestHooks.isGametestEnabled()) return;
     if (!registered) {
       GameTestRegistry.register(RuntimeGameTests.class);
@@ -75,6 +77,10 @@ public final class FullpackQABootstrap {
       // Act renumbering and the Heart of Heliodor (24 September): isolated rules plus the real Sun Spirit.
       GameTestRegistry.register(RuntimeGameTestsActs.class);
       GameTestRegistry.register(ActsFullpackGameTests.class);
+      // Progression batch (24 September): the frame by infusion, function gates, boss drops and the
+      // vein resonators with the real Curios and FTB Ultimine.
+      GameTestRegistry.register(ProgressionFullpackGameTests.class);
+      GameTestRegistry.register(VeinResonatorFullpackGameTests.class);
       Set<String> expected = new TreeSet<>();
       for (Class<?> owner : List.of(RuntimeGameTests.class, FullpackGameTests.class,
           ResourceFarmGameTests.class, Ae2CraftingGameTests.class, RFToolsRecipeGameTests.class,
@@ -88,7 +94,8 @@ public final class FullpackQABootstrap {
           StartWithoutBloatFullpackGameTests.class, TerraArmFullpackGameTests.class, ModPingpongFullpackGameTests.class,
           ModPingpongRound4FullpackGameTests.class,
           RuntimeGameTestsCompass.class, RuntimeGameTestsGameplay.class, SolsticioFullpackGameTests.class,
-          RuntimeGameTestsActs.class, ActsFullpackGameTests.class))
+          RuntimeGameTestsActs.class, ActsFullpackGameTests.class,
+          ProgressionFullpackGameTests.class, VeinResonatorFullpackGameTests.class))
         for (var method : owner.getDeclaredMethods())
           if (method.isAnnotationPresent(GameTest.class))
             expected.add(method.getName().toLowerCase(Locale.ROOT));

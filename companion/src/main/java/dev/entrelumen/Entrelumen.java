@@ -108,6 +108,7 @@ public final class Entrelumen {
     Luminous.register(bus);
     HeliodorContent.register(bus);
     TerraArm.register(bus);
+    VeinResonator.register(bus);
     HeliodorHeart.register(bus);
     Solsticio.register(bus, container);
     bus.addListener(this::registerCapabilities);
@@ -276,6 +277,14 @@ public final class Entrelumen {
         if (!player.getInventory().add(reward)) player.drop(reward, false);
         player.sendSystemMessage(Component.translatable("entrelumen.delivery.reward", rewardName));
       }
+      p.extraRewards().forEach((item, count) -> {
+        var extra = new ItemStack(
+            BuiltInRegistries.ITEM.get(net.minecraft.resources.ResourceLocation.parse(item)), count);
+        Component extraName = Component.translatable("entrelumen.delivery.reward_count", count,
+            extra.getHoverName());
+        if (!player.getInventory().add(extra)) player.drop(extra, false);
+        player.sendSystemMessage(Component.translatable("entrelumen.delivery.reward", extraName));
+      });
     }
     player.sendSystemMessage(
         Component.translatable(

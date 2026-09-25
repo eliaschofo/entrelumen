@@ -42,6 +42,17 @@ def listed(recipe_id, field, index, expect, add, act, why, *, wrap=None, alterna
             'add': add, 'wrap': wrap, 'act': act, 'why': why, 'alternates': list(alternates)}
 
 
+def appended(recipe_id, field, add, act, why, *, limit, extra=None, runtime_field=None, alternates=()):
+    """Append one element to a list-based machine recipe that has no repeated element to replace.
+
+    `limit` is the machine's own input count (a Modern Industrialization packer takes three items);
+    `extra` holds sibling keys of the element, such as MI's amount; `runtime_field` is the Java field
+    the loaded-recipe check reads when KubeJS cannot filter the recipe by input."""
+    return {'id': recipe_id, 'op': 'append', 'field': field, 'expect': None, 'add': add, 'limit': limit,
+            'extra': dict(extra or {}), 'runtime_field': runtime_field, 'act': act, 'why': why,
+            'alternates': list(alternates)}
+
+
 def item(value):
     return {'item': value}
 
@@ -336,6 +347,142 @@ PINGPONG_BROKEN_RECIPES = [
 ]
 
 
+# ---- functions family (24 September 2026): one component per game function -----------------------
+# docs/design/progression-functions.md. A function (quarries, teleportation, reactors...) has one gate,
+# so a mod that adds a quarry inherits the quarry gate instead of being decided case by case. One
+# component per foreign recipe, in one slot; tiers of the same function may use a later component.
+LUMINOSITY_ACT = 'VI'
+FUNCTIONS = {
+    # function: (component, act). 'luminosity' means one Luminosity (Solsticio only) per piece.
+    'mekanism_entry': (CF, 'II'),       # the metallurgic infuser: every Mekanism circuit and alloy
+    'magic_automation': (LM, 'II'),     # automating Ars Nouveau, not learning it
+    'storage_network': (RM, 'III'),     # controllers of AE2 and Refined Storage
+    'teleport': (RM, 'III'),
+    'wireless': (RM, 'III'),            # cross-dimension item, fluid and energy links
+    'jetpack': (PR, 'III'),             # first powered flight
+    'area_mining': (PR, 'III'),         # mining lasers, drills and the vein resonator's third tier
+    'smart_storage': (IS, 'III'),       # Mekanism QIO
+    'hands': (HC, 'III'),               # drones and autocrafters
+    'quarry': (SL, 'IV'),               # ores from power without walking the world
+    'flight': (HZ, 'IV'),               # creative-style flight
+    'mob_farm': (EC, 'IV'),
+    'reactor': (CS, 'IV'),              # fission and area destruction
+    'endgame_reactor': (AB, 'V'),       # fusion and nuclear power
+    'renewal': (RE, 'V'),               # antimatter, awakening, time
+    'top_armor': ('luminosity', LUMINOSITY_ACT),
+}
+# Gates of other families (and tools/generate_rftools_balance.py) that belong to a function; the tests
+# check that every member uses its function's component.
+FUNCTION_MEMBERS = {
+    'storage_network': ['refinedstorage:controller'],
+    'teleport': ['justdirethings:portalgun', 'justdirethings:portalgun_v2', 'enderio:travel_anchor',
+                 'enderio:staff_of_travelling', 'draconicevolution:tools/dislocator',
+                 'rftoolsutility:matter_receiver', 'rftoolsutility:charged_porter'],
+    'wireless': ['enderstorage:ender_chest', 'enderstorage:ender_tank', 'enderstorage:ender_pouch',
+                 'fluxnetworks:flux_controller'],
+    'jetpack': ['ironjetpacks:strap', 'oritech:crafting/basicjetpack', 'oritech:crafting/basicjetpackalt',
+                'modern_industrialization:armor/diesel_jetpack'],
+    'area_mining': ['mininggadgets:mininggadget_simple', 'mininggadgets:mininggadget', 'mininggadgets:mininggadget_fancy',
+                    'industrialforegoing:dissolution_chamber/infinity_drill'],
+    'hands': ['refinedstorage:autocrafter'],
+    'quarry': ['industrialforegoing:ore_laser_base', 'oritech:crafting/deepdrill',
+               'modern_industrialization:electric_age/machine/electric_quarry_asbl', 'rftoolsbuilder:shape_card_quarry'],
+    'flight': ['justdirethings:upgrade_flight', 'modern_industrialization:armor/gravichestplate',
+               'oritech:crafting/exojetpack', 'reliquary:rending_gale'],
+    'mob_farm': ['industrialforegoing:mob_duplicator', 'hostilenetworks:sim_chamber', 'enderio:powered_spawner',
+                 'oritech:crafting/spawner', 'rftoolsutility:spawner'],
+    'reactor': ['create_new_age:mechanical_crafting/reactor_rod', 'industrialforegoing:dissolution_chamber/infinity_nuke',
+                'oritech:crafting/nuke', 'oritech:crafting/nukebetter'],
+    'endgame_reactor': ['modern_industrialization:electric_age/machine/nuclear_reactor_asbl'],
+    'renewal': ['justdirethings:time_wand'],
+}
+# The "do not gate" list of docs/research/reference-packs.md: machines and tools that make the inputs of
+# the act components. No gate of any family may touch them, except the bootstrap below.
+PROTECTED = {
+    'create:mechanical_press', 'create:deployer', 'create:depot', 'create:mechanical_mixer', 'create:blaze_burner',
+    'immersiveengineering:hammer', 'immersiveengineering:wirecutter',
+    'actuallyadditions:atomic_reconstructor', 'actuallyadditions:iron_casing', 'actuallyadditions:coal_generator',
+    'ars_nouveau:enchanting_apparatus', 'ars_nouveau:arcane_core', 'ars_nouveau:imbuement_chamber',
+    'ae2:inscriber',
+    'pneumaticcraft:pressure_chamber_wall', 'pneumaticcraft:pressure_chamber_valve',
+    'pneumaticcraft:pressure_chamber_interface', 'pneumaticcraft:uv_light_box', 'pneumaticcraft:etching_tank',
+    'pneumaticcraft:air_compressor',
+    'mysticalagriculture:infusion_crystal', 'mysticalagriculture:master_infusion_crystal', 'productivebees:centrifuge',
+    'mekanism:metallurgic_infuser',
+    'integrateddynamics:squeezer', 'integrateddynamics:drying_basin',
+    'occultism:sacrificial_bowl', 'occultism:golden_sacrificial_bowl', 'malum:spirit_altar', 'malum:spirit_crucible',
+    'naturesaura:offering_table', 'naturesaura:nature_altar', 'farmersdelight:cooking_pot',
+}
+# A protected machine gated by a component its own acquisition needs. Allowed only because the campaign
+# hands out the first ones (first_signal grants two frames; also checked by generate_integration_recipes.py).
+BOOTSTRAP = {('mekanism:metallurgic_infuser', CF): 'first_signal'}
+
+
+def function_gate(function, recipe_id, row, col, expect, why, *, add=None, alternates=()):
+    component, act = FUNCTIONS[function]
+    change = shaped(recipe_id, row, col, expect, add or component, act, why, alternates=alternates)
+    return dict(change, function=function)
+
+
+def function_listed(function, recipe_id, field, index, expect, why, *, add=None, alternates=()):
+    component, act = FUNCTIONS[function]
+    return dict(listed(recipe_id, field, index, expect, add or component, act, why, alternates=alternates),
+                function=function)
+
+
+def function_appended(function, recipe_id, field, why, *, limit, add=None, extra=None, runtime_field=None,
+                      alternates=()):
+    component, act = FUNCTIONS[function]
+    return dict(appended(recipe_id, field, add or component, act, why, limit=limit, extra=extra,
+                         runtime_field=runtime_field, alternates=alternates), function=function)
+
+
+# Top armor, act VI (Elias, 24 September 2026): one Luminosity per piece, from the discipline of its mod.
+TOP_ARMOR = {
+    'mekanism': 'engineering',            # MekaSuit: the engineer's suit
+    'advanced_ae': 'logistics',           # quantum armor wired to the ME network
+    'modern_industrialization': 'habitation',  # quantum armor: shelter you wear
+}
+MEKASUIT = ('helmet', 'bodyarmor', 'pants', 'boots')
+AAE_QUANTUM = {'helmet': 'quantum_helmet', 'chestplate': 'quantum_chest', 'leggings': 'quantum_leggings',
+               'boots': 'quantum_boots'}
+MI_QUANTUM = ('helmet', 'chestplate', 'leggings', 'boots')
+
+# The vein resonator: FTB Ultimine only works while one is worn (Curios charm slot); tier n allows
+# 16 * n blocks (companion VeinResonatorRules). Tier 1 is cheap and every later tier consumes the
+# previous one plus act materials.
+
+
+def resonator(tier):
+    return f'entrelumen:vein_resonator_{tier}'
+
+
+def resonator_recipe(tier, top, sides, bottom, act, why):
+    """Left-right symmetric: the act material on top, a pair of mod materials beside the previous tier
+    and a third material under it."""
+    return dict(recipe(resonator(tier), [' T ', 'SRS', ' B '],
+                       {'T': item(top), 'S': item(sides), 'R': item(resonator(tier - 1)), 'B': item(bottom)},
+                       act, why), function='area_mining')
+
+
+RESONATOR_RECIPES = [
+    dict(recipe(resonator(1), ['C C', 'CAC', ' L '],
+                {'C': item('minecraft:copper_ingot'), 'A': item('minecraft:amethyst_shard'),
+                 'L': item('entrelumen:raw_lens')},
+                'I', 'A copper fork around an amethyst, tuned by a raw lens: cheap on purpose'), function='area_mining'),
+    resonator_recipe(2, CF, 'create:brass_ingot', 'mekanism:alloy_infused', 'II',
+                     'Workshop metals and the calibration frame'),
+    resonator_recipe(3, PR, 'minecraft:diamond', 'ae2:engineering_processor', 'III',
+                     'Area mining is a power regulator function'),
+    resonator_recipe(4, SL, 'aether:zanite_gemstone', 'twilightforest:ironwood_ingot', 'IV',
+                     'The quarry lens and two dimension materials'),
+    resonator_recipe(5, AB, 'mekanism:alloy_atomic', 'naturesaura:sky_ingot', 'V',
+                     'The Ark bus with atomic alloy and sky ingot'),
+    resonator_recipe(6, 'entrelumen:luminosity_exploration', 'minecraft:nether_star', 'entrelumen:luminosity_engineering',
+                     'VI', "Two Luminosities from Solsticio and two of the Wither's stars"),
+]
+
+
 FAMILIES = {
     'industrial': {
         'script': 'entrelumen_industrial_balance.js',
@@ -573,6 +720,74 @@ FAMILIES = {
                      "Dungeons and Taverns wandering-trader hook with a missing parent and a missing reward function"),
         ],
     },
+    # The progression batch of 24 September 2026 (docs/design/progression-functions.md): gates of the
+    # reference-packs proposal, one component per function, the top armor in Act VI and the vein
+    # resonator tiers. The closure check is per item (PROTECTED, component inputs), not per namespace:
+    # Mekanism and AE2 make inputs of the components and are gated at their tops.
+    'functions': {
+        'script': 'entrelumen_functions_balance.js',
+        'tag': 'ENTRELUMEN_FUNCTIONS_BALANCE',
+        'namespaces': set(),
+        'changes': [
+            function_gate('mekanism_entry', 'mekanism:metallurgic_infuser', 0, 1, item('minecraft:furnace'),
+                          'The way into Mekanism goes through the workshop: the infuser copies the frame'),
+            function_listed('magic_automation', 'ars_nouveau:starbuncle_charm', 'pedestalItems', 0,
+                            tag('c:ingots/gold'), 'Item-carrying familiar',
+                            alternates=['ars_nouveau:clear_starbuncle_charm']),
+            function_listed('magic_automation', 'ars_nouveau:drygmy_charm', 'pedestalItems', 5,
+                            tag('c:gems/source'), 'Mob-drop familiar',
+                            alternates=['ars_nouveau:clear_drygmy_charm']),
+            function_appended('magic_automation', 'ars_nouveau:wixie_charm', 'pedestalItems',
+                              'Crafting and potion familiar; no repeated pedestal item, so one more pedestal',
+                              limit=8, alternates=['ars_nouveau:clear_wixie_charm']),
+            function_gate('storage_network', 'ae2:network/blocks/controller', 0, 1, item('ae2:fluix_crystal'),
+                          'ME controller: the same entry as the Refined Storage controller'),
+            function_gate('teleport', 'mekanism:teleporter', 0, 0, tag('c:circuits/basic'), 'Teleporter block'),
+            function_gate('teleport', 'mekanism:portable_teleporter', 1, 0, tag('c:circuits/basic'),
+                          'Handheld teleporter'),
+            function_gate('wireless', 'mekanism:quantum_entangloporter', 0, 0, tag('c:ingots/refined_obsidian'),
+                          'Cross-dimension item, fluid, chemical and energy link'),
+            function_gate('jetpack', 'mekanism:jetpack', 2, 1, tag('c:ingots/tin'),
+                          'First powered flight; the armored jetpack upgrades it'),
+            function_gate('smart_storage', 'mekanism:qio_drive_array', 0, 0, item('mekanism:teleportation_core'),
+                          'QIO storage: the inventory sensor finally gates something'),
+        ] + [
+            function_gate('hands', f'pneumaticcraft:{drone}', 0, 1, item('pneumaticcraft:turbine_rotor'),
+                          'Drones are the workshop hands')
+            for drone in ('drone', 'logistics_drone', 'harvesting_drone', 'guard_drone', 'collector_drone')
+        ] + [
+            function_gate('quarry', 'mekanism:digital_miner', 2, 0, item('mekanism:teleportation_core'),
+                          'Ores from power without walking the world'),
+            function_listed('quarry', 'occultism:ritual/craft_dimensional_mineshaft', 'ingredients', 0,
+                            {'type': 'neoforge:compound',
+                             'children': [item('occultism:otherstone'), item('occultism:otherrock')]},
+                            'Mining spirits work from the mineshaft'),
+            function_gate('reactor', 'mekanismgenerators:fission_reactor/port', 0, 1,
+                          item('mekanismgenerators:fission_reactor_casing'), 'Fission reactor, echo of the Temple'),
+            function_gate('endgame_reactor', 'mekanismgenerators:reactor/controller', 2, 1,
+                          item('mekanismgenerators:fusion_reactor_frame'), 'Fusion reactor controller'),
+            function_gate('renewal', 'mekanism:sps_port', 0, 1, item('mekanism:sps_casing'), 'Antimatter'),
+            function_gate('renewal', 'mysticalagriculture:awakening_altar', 2, 1, item('mysticalagriculture:soulstone'),
+                          'Awakened essences'),
+        ] + [
+            function_gate('top_armor', f'mekanism:mekasuit_{piece}', 2, 0, tag('c:pellets/polonium'),
+                          'MekaSuit, Act VI', add=LUMINOSITY[TOP_ARMOR['mekanism']])
+            for piece in MEKASUIT
+        ] + [
+            function_gate('top_armor', f'advanced_ae:{recipe_path}', 2, 0, item('advanced_ae:quantum_alloy_plate'),
+                          'Advanced AE quantum armor, Act VI', add=LUMINOSITY[TOP_ARMOR['advanced_ae']],
+                          alternates=[f'advanced_ae:quantum_{piece}_item_reset'])
+            for piece, recipe_path in AAE_QUANTUM.items()
+        ] + [
+            function_appended('top_armor', f'modern_industrialization:upgrade/packer/quantum/{piece}', 'item_inputs',
+                              'Modern Industrialization quantum armor, Act VI: the packer takes a third input',
+                              limit=3, extra={'amount': 1}, runtime_field='itemInputs',
+                              add=LUMINOSITY[TOP_ARMOR['modern_industrialization']])
+            for piece in MI_QUANTUM
+        ],
+        'removals': [],
+        'additions': RESONATOR_RECIPES,
+    },
     'luminous': {
         'script': 'entrelumen_luminous_balance.js',
         'tag': 'ENTRELUMEN_LUMINOUS_BALANCE',
@@ -627,7 +842,7 @@ def outputs(recipe):
                 collect(child)
 
     body = recipe.get('recipe') if isinstance(recipe.get('recipe'), dict) else recipe
-    for key in ('result', 'output', 'results', 'outputs'):
+    for key in ('result', 'output', 'results', 'outputs', 'item_outputs'):  # item_outputs: Modern Industrialization
         if key in body:
             collect(body[key])
     if isinstance(body.get('result'), dict) and isinstance(body['result'].get('result_item'), dict):
@@ -698,6 +913,15 @@ def transform(change, original):
         reverse = copy.deepcopy(result)
         reverse[change['field']][index] = change['expect']
         assert reverse == original, f"{change['id']}: an unrelated native field changed"
+    elif change['op'] == 'append':
+        values = result[change['field']]
+        assert len(values) < change['limit'], f"{change['id']}: the machine has no free input left"
+        element = {**change['extra'], 'item': add}
+        assert element not in values, f"{change['id']}: the recipe already takes the component"
+        values.append(element)
+        reverse = copy.deepcopy(result)
+        reverse[change['field']] = reverse[change['field']][:-1]
+        assert reverse == original, f"{change['id']}: an unrelated native field changed"
     else:
         raise AssertionError(f"Unknown operation {change['op']}")
     assert outputs(result) == outputs(original) and result['type'] == original['type']
@@ -705,15 +929,55 @@ def transform(change, original):
 
 
 def component_sources():
+    """{component: its inputs, plus the machine of a machine recipe}, {component: act}."""
     design = read(DESIGN)
-    return {p['output']['id']: [i['id'] for i in p['recipe']['inputs']] for p in design['projects']}, \
+    return {p['output']['id']: [i['id'] for i in p['recipe']['inputs']]
+            + ([p['recipe']['machine']] if p['recipe'].get('machine') else []) for p in design['projects']}, \
         {p['output']['id']: p.get('act') for p in design['projects']}
+
+
+def component_closure(component, sources):
+    """Every item the component's own recipes consume, through the components it is made of."""
+    seen, stack = set(), [component]
+    while stack:
+        for child in sources.get(stack.pop(), ()):
+            if child not in seen:
+                seen.add(child)
+                stack.append(child)
+    return seen
+
+
+def story_grants(item_id):
+    """How many of item_id the campaign projects hand out as rewards."""
+    projects = read(ROOT / 'companion/src/main/resources/data/entrelumen/campaign/projects.json')
+    return sum(p.get('extraRewards', {}).get(item_id, 0) + (p.get('reward') == item_id) for p in projects.values())
+
+
+def check_function_gate(change, output, sources):
+    """A gate never touches what its component, or any component, needs to be made (PROTECTED and the
+    component's own inputs); the only exception is the story-seeded bootstrap of the infuser."""
+    component = change['add']
+    needed = output in PROTECTED or output in component_closure(component, sources)
+    if needed:
+        assert (output, component) in BOOTSTRAP, f"{change['id']}: {output} is needed to make {component}"
+        assert story_grants(component) >= 2, f"{change['id']}: the bootstrap needs two story {component}"
+    if 'function' in change:
+        expected, act = FUNCTIONS[change['function']]
+        if expected == 'luminosity':
+            assert component in LUMINOSITY.values(), f"{change['id']}: top armor takes one Luminosity"
+        else:
+            assert component == expected, f"{change['id']}: {change['function']} is gated by {expected}"
+        assert change['act'] == act, f"{change['id']}: {change['function']} belongs to act {act}"
 
 
 ACTS = {'I': 1, 'II': 2, 'III': 3, 'IV': 4, 'V': 5, 'VI': 6}
 
 
 def check_component(component, namespaces, sources, acts, producers, recipes):
+    if component in LUMINOSITY.values():
+        # Traded only by Solsticio's natives; the luminous family keeps them without any recipe.
+        assert component in FAMILIES['luminous']['uncraftable'] and not producers.get(component), component
+        return LUMINOSITY_ACT
     if component in STAGE_MATERIALS:
         makers = [rid for rid in producers.get(component, ())
                   if not any(i.split(':', 1)[0] in namespaces for i in ingredient_items(recipes[rid][0]))]
@@ -742,7 +1006,7 @@ def ingredient_items(recipe):
             if isinstance(value.get('item'), str):
                 items.add(value['item'])
             for key, child in value.items():
-                if key not in ('result', 'output', 'results', 'outputs'):
+                if key not in ('result', 'output', 'results', 'outputs', 'item_outputs'):
                     walk(child)
         elif isinstance(value, list):
             for child in value:
@@ -773,11 +1037,13 @@ def build(name):
         native_outputs = outputs(original)
         assert len(native_outputs) == 1, f"{change['id']}: expected one native output, got {native_outputs}"
         (out,) = native_outputs
-        alternates = sorted(set(producers.get(out, ())) - {change['id']} - set(change['alternates']))
+        alternates = sorted(set(producers.get(out, ())) - {change['id']} - set(change['alternates'])
+                            - set(family['removals']))
         assert not alternates, f"{change['id']}: alternate native route to {out}: {alternates}"
+        check_function_gate(change, out, comp_sources)
         row = {'id': change['id'], 'output': out, 'component': change['add'], 'act': change['act'], 'json': result}
-        if change['op'] == 'list':
-            row['field'] = change['field']
+        if change['op'] in ('list', 'append'):
+            row['field'] = change.get('runtime_field') or change['field']
         rows.append(row)
     removals = []
     for rid in family['removals']:
@@ -946,7 +1212,9 @@ def build_additions(name, models=None):
                 path_id = item_id.split(':', 1)[1]
                 assert f'item.entrelumen.{path_id}' in lang or f'block.entrelumen.{path_id}' in lang, \
                     f"{addition['id']}: unknown companion item {item_id}"
-                if item_id in design_acts:
+                if item_id in LUMINOSITY.values():
+                    latest = max(latest, ACTS[LUMINOSITY_ACT])
+                elif item_id in design_acts:
                     latest = max(latest, design_acts[item_id])
                 elif item_id in acts:
                     latest = max(latest, acts[item_id])
@@ -1121,7 +1389,7 @@ def recipe_edges(recipe, tags):
             if isinstance(value.get('tag'), str):
                 inputs.update(tags.get(value['tag'], ()))
             for key, child in value.items():
-                if key not in ('result', 'output', 'results', 'outputs'):
+                if key not in ('result', 'output', 'results', 'outputs', 'item_outputs'):
                     walk(child)
         elif isinstance(value, list):
             for child in value:
