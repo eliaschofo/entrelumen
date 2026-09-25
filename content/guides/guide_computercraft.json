@@ -24,12 +24,12 @@
     "shape": "hexagon"
    },
    "en_us": [
-    "Welcome to CC: Tweaked",
-    "CC: Tweaked adds computers that run Lua programs, robotic turtles, monitors, modems and printers. It is fully optional in ENTRELUMEN: no quest requires writing code, and the Act V network milestone accepts a computer panel as one way to do it, with the same result reachable without code.\n\nIf you never programmed, start with the built-in programs (help, edit, go, excavate): they already do a lot."
+    "Computers, optional and powerful",
+    "Lua computers, robotic turtles, monitors, modems and printers. Fully optional: no quest needs code, and the Act V network milestone accepts a computer panel as one route among others. Never programmed? The built-in programs (help, edit, go, excavate) already do a lot."
    ],
    "es_es": [
-    "Bienvenida a CC: Tweaked",
-    "CC: Tweaked agrega computadoras que corren programas en Lua, tortugas robot, monitores, módems e impresoras. En ENTRELUMEN es totalmente opcional: ninguna quest pide escribir código, y el hito de red del acto V acepta un panel de computadora como una vía, con el mismo resultado alcanzable sin código.\n\nSi nunca programaste, empezá por los programas incluidos (help, edit, go, excavate): ya hacen bastante."
+    "Computadoras, opcionales y potentes",
+    "Computadoras en Lua, tortugas robot, monitores, módems e impresoras. Totalmente opcional: ninguna quest pide código, y el hito de red del acto V acepta un panel de computadora como una ruta entre otras. ¿Nunca programaste? Los programas incluidos (help, edit, go, excavate) ya hacen bastante."
    ],
    "sources": [
     "repo:docs/design/mod-integration.md",
@@ -340,11 +340,11 @@
    },
    "en_us": [
     "GPS cluster",
-    "Place four computers with ender modems (wireless ones work, with much less reach) at the corners of a small cube, three at one level and one above, and run \"gps host x y z\" on each with its exact coordinates (put it in startup). Any computer, turtle or pocket computer in range then gets its position with \"gps locate\".\n\nWrong coordinates on one host give wrong answers everywhere: check them twice."
+    "Four computers with ender modems at the corners of a small cube, three on one level and one above, each running «gps host x y z» with its exact coordinates in startup. Anything in range then finds itself with «gps locate». One wrong coordinate breaks everyone's answer."
    ],
    "es_es": [
     "Clúster de GPS",
-    "Poné cuatro computadoras con Módems de Ender (los sin cables sirven, con mucho menos alcance) en las esquinas de un cubo chico, tres a un nivel y una arriba, y corré \"gps host x y z\" en cada una con sus coordenadas exactas (ponelo en startup). Cualquier computadora, tortuga o computadora de bolsillo en rango obtiene su posición con \"gps locate\".\n\nCoordenadas mal cargadas en un solo host dan respuestas mal en todos lados: revisalas dos veces."
+    "Cuatro computadoras con Módems de Ender en las esquinas de un cubo chico, tres a un nivel y una arriba, cada una con «gps host x y z» y sus coordenadas exactas en startup. Todo lo que esté en rango se ubica con «gps locate». Una coordenada mal cargada rompe la respuesta de todos."
    ],
    "sources": [
     "jar:cc-tweaked-1.21.1-forge-1.120.2.jar:data/computercraft/lua/rom/help/gps.txt",
@@ -574,11 +574,11 @@
    },
    "en_us": [
     "Create and computers",
-    "Many Create blocks are peripherals: Speedometer and Stressometer, Sequenced Gearshift, Rotation Speed Controller, train Station, Signal and Track Observer, and the Stock Ticker and Packager of the logistics system. A Display Link has a \"From Computer\" source to write on display boards. While a computer controls a device, its own interface says so.\n\nCrafts and Additions adds the Digital Adapter, which reaches pulleys, pistons, bearings and gauges."
+    "Speedometer, Stressometer, Sequenced Gearshift, speed controller, train Station, Signal and Track Observer, Stock Ticker and Packager are peripherals; a Display Link can print «From Computer» on boards. Crafts and Additions' Digital Adapter reaches pulleys, pistons and bearings."
    ],
    "es_es": [
     "Create y las computadoras",
-    "Muchos bloques de Create son periféricos: Velocímetro y Estresómetro, Caja de cambios secuenciada, Controlador de velocidad, Estación de tren, Señal y Observador de vía, y el Stock Ticker y el Empaquetador del sistema logístico. Un Enlace de pantalla tiene la fuente \"Desde computadora\" para escribir en tableros. Mientras una computadora controla un dispositivo, su propia interfaz lo avisa.\n\nCrafts and Additions suma el Adaptador digital, que llega a poleas, pistones, rodamientos y medidores."
+    "Velocímetro, Estresómetro, Caja de cambios secuenciada, controlador de velocidad, Estación de tren, Señal y Observador de vía, Stock Ticker y Empaquetador son periféricos; un Enlace de pantalla puede escribir «Desde computadora» en tableros. El Adaptador digital de Crafts and Additions llega a poleas, pistones y rodamientos."
    ],
    "sources": [
     "jar:create-1.21.1-6.0.10.jar:com/simibubi/create/compat/computercraft/implementation/peripherals/DisplayLinkPeripheral.class",
@@ -604,11 +604,11 @@
    },
    "en_us": [
     "Other mods on the wire",
-    "More peripherals in the pack: Mekanism machines and multiblock ports, Immersive Engineering, PneumaticCraft machines, the Energy Meter, New Age motors and energisers, Crafts and Additions motors and accumulators, and Draconic Evolution. Ender IO redstone conduits expose their channels to computers as bundled redstone.\n\nWrap one and call peripheral.getMethods on its name to see what it offers."
+    "Mekanism machines and multiblock ports, Immersive Engineering, PneumaticCraft, the Energy Meter, New Age and Crafts and Additions parts, and Draconic Evolution all answer computers; Ender IO redstone conduits show up as bundled redstone. «peripheral.getMethods» lists what each offers."
    ],
    "es_es": [
     "Otros mods en la red",
-    "Más periféricos en el pack: máquinas y puertos de multibloque de Mekanism, Immersive Engineering, máquinas de PneumaticCraft, el Medidor de energía, motores y energizadores de New Age, motores y acumuladores de Crafts and Additions, y Draconic Evolution. Los conductos de redstone de Ender IO muestran sus canales a las computadoras como redstone agrupada.\n\nEnvolvé uno y llamá peripheral.getMethods con su nombre para ver qué ofrece."
+    "Las máquinas y puertos de multibloque de Mekanism, Immersive Engineering, PneumaticCraft, el Medidor de energía, piezas de New Age y Crafts and Additions, y Draconic Evolution responden a computadoras; los conductos de redstone de Ender IO aparecen como redstone agrupada. «peripheral.getMethods» lista qué ofrece cada uno."
    ],
    "sources": [
     "jar:Mekanism-1.21.1-10.7.19.85.jar:mekanism/common/integration/computer/computercraft/CCApiObject.class",
