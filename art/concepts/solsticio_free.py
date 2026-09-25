@@ -48,6 +48,7 @@ def edge(x, z):
 
 
 HEIGHT = {}
+BOTTOM = {}
 
 
 def mountain(x, z):
@@ -75,6 +76,7 @@ def island():
     for (x, z, top, e) in cols:
         depth = int(26 + 120 * (1 - e) ** 1.6 + 16 * fbm2(x, z, 23, 11))
         bottom = top - depth
+        BOTTOM[(x, z)] = bottom
         lo = min(HEIGHT.get((x + dx, z + dz), -999) for dx, dz in ((1, 0), (-1, 0), (0, 1), (0, -1)))
         rim = lo == -999
         for y in range(bottom, top + 1):
@@ -485,6 +487,128 @@ def lattice():
                 S.put(x, -40 + R * math.sin(lat), z, SUN_H, emit=True, glass=True)
 
 
+# ---------------- v2: the twin city, the tree, airships, birds, the corona ----------------
+DUSK = ['#2b2f6b', '#3d3a8a', '#5a3f94', '#1f5d7a', '#6b3f7a']
+
+
+def twin_city():
+    """Under the island hangs its twin in an eternal dusk: towers upside down, lit windows,
+    rope bridges between them and crystal spikes at their tips."""
+    tips = []
+    k = 0
+    for (x, z), b in sorted(BOTTOM.items()):
+        if (x * 7 + z * 13) % 211 != 0:
+            continue
+        d = math.hypot(x, z)
+        if d > edge(x, z) * 0.8 or d < 20:
+            continue
+        k += 1
+        L = int(14 + 50 * rnd(x, 7, z, 81) * (1 - d / 170))
+        r = 3 + int(rnd(x, 8, z, 81) * 4)
+        wall = DUSK[int(rnd(x, 9, z, 81) * len(DUSK))]
+        S.cylinder(x, z, b - L, b, r, wall, shell=1)
+        for y in range(b - L + 2, b - 1, 3):
+            for a in range(0, 360, 45):
+                wx, wz = round(x + math.cos(math.radians(a)) * r), round(z + math.sin(math.radians(a)) * r)
+                if rnd(wx, y, wz, 82) < 0.6:
+                    S.put(wx, y, wz, AMBER if rnd(wx, y, wz, 83) < 0.7 else TEAL, emit=True, glass=True)
+        for j in range(0, 3):
+            S.cylinder(x, z, b - L + j * 6, b - L + j * 6, r + 1.5, GOLD_D)
+        S.cone(x, z, b - L - 14, 14, 0.3, r + 1, DUSK[(k + 1) % len(DUSK)])
+        for i in range(8):
+            S.put(x, b - L - 15 - i, z, TEAL if i < 5 else SUN_H, emit=True)
+        tips.append((x, b - L + 4, z))
+    for i in range(len(tips) - 1):
+        a, c = tips[i], tips[i + 1]
+        if math.dist(a, c) < 45:
+            n = int(math.dist(a, c) * 1.5)
+            for j in range(n + 1):
+                t = j / n
+                px, py, pz = a[0] + (c[0] - a[0]) * t, a[1] + (c[1] - a[1]) * t - 6 * math.sin(math.pi * t), a[2] + (c[2] - a[2]) * t
+                S.put(px, py, pz, '#8a6a3a')
+                if j % 5 == 0:
+                    S.put(px, py - 1, pz, AMBER, emit=True)
+
+
+def world_tree():
+    """A tree of light on the western shoulder: roots over the rim, a glowing canopy."""
+    th = math.radians(200)
+    R = edge(math.cos(th) * 100, math.sin(th) * 100) - 22
+    cx, cz = round(math.cos(th) * R), round(math.sin(th) * R)
+    base = HEIGHT.get((cx, cz), 20)
+    H = 78
+    for y in range(base - 4, base + H):
+        t = (y - base) / H
+        r = 7.5 * (1 - t) ** 0.8 + 2.2 + (3 if y < base + 4 else 0)
+        wob = 2.5 * math.sin(t * 5)
+        S.cylinder(round(cx + wob), cz, y, y, r, '#8a6440' if (y // 3) % 2 else '#7a5634')
+    for k in range(7):                                  # branches
+        a = 2 * math.pi * k / 7
+        y0 = base + 40 + k * 4
+        S.line((cx, y0, cz), (cx + math.cos(a) * 34, y0 + 18, cz + math.sin(a) * 34), 2.0 - k * 0.15, '#7a5634')
+        S.sphere(round(cx + math.cos(a) * 34), y0 + 22, round(cz + math.sin(a) * 34), 13,
+                 BLOSSOM, fn=lambda x, y, z: (pack(SUN_H, emit=True) if rnd(x, y, z, 91) < 0.05 else
+                                              pack(BLOSSOM if rnd(x, y, z, 92) > 0.35 else BLOSSOM_D)) if rnd(x, y, z, 93) > 0.3 else None)
+    S.sphere(cx, base + H + 4, cz, 20, BLOSSOM, fn=lambda x, y, z: (pack(SUN_H, emit=True) if rnd(x, y, z, 94) < 0.05 else
+                                                                     pack(BLOSSOM if rnd(x, y, z, 95) > 0.35 else BLOSSOM_D)) if rnd(x, y, z, 96) > 0.3 else None)
+    for k in range(10):                                 # roots spilling over the rim
+        a = th + (k - 4.5) * 0.12
+        pts = [(cx, base, cz)]
+        for step in range(1, 9):
+            rr = R + step * 4
+            pts.append((math.cos(a) * rr, base - step * step * 0.9, math.sin(a) * rr))
+        for i in range(len(pts) - 1):
+            S.line(pts[i], pts[i + 1], 1.6 - i * 0.12, '#6b4a2c')
+
+
+def airship(cx, cy, cz, heading, size):
+    ca, sa = math.cos(heading), math.sin(heading)
+    L, Rr = size, size * 0.32
+    for i in range(-int(L), int(L) + 1):
+        rr = Rr * math.sqrt(max(0, 1 - (i / L) ** 2))
+        for a in range(0, 360, 4):
+            v = rr * math.cos(math.radians(a))
+            y = rr * math.sin(math.radians(a))
+            x, z = cx + ca * i - sa * v, cz + sa * i + ca * v
+            stripe = (a // 30) % 2
+            S.put(x, cy + y, z, ROSE if stripe else GOLD_L)
+    for i in range(-int(L * 0.4), int(L * 0.4) + 1):     # gondola
+        for v in (-1, 0, 1):
+            S.put(cx + ca * i - sa * v, cy - Rr - 4, cz + sa * i + ca * v, '#8a6440')
+            if v == 0 and i % 3 == 0:
+                S.put(cx + ca * i, cy - Rr - 3, cz + sa * i, AMBER, emit=True)
+    for i in (-int(L * 0.3), int(L * 0.3)):
+        S.line((cx + ca * i, cy - Rr, cz + sa * i), (cx + ca * i, cy - Rr - 4, cz + sa * i), 0.4, GOLD_D)
+    tx, tz = cx - ca * (L + 2), cz - sa * (L + 2)       # tail fins and a propeller
+    S.line((tx, cy - Rr * 0.8, tz), (tx, cy + Rr * 0.8, tz), 0.6, GOLD)
+    S.line((tx - sa * Rr * 0.8, cy, tz + ca * Rr * 0.8), (tx + sa * Rr * 0.8, cy, tz - ca * Rr * 0.8), 0.6, GOLD)
+
+
+def birds():
+    for k in range(40):
+        x = (rnd(k, 5, 1, 97) - 0.5) * 380
+        z = (rnd(k, 6, 1, 97) - 0.5) * 380
+        y = 110 + rnd(k, 7, 1, 97) * 90
+        for d in (-2, -1, 1, 2):
+            S.put(x + d, y - abs(d) * 0.6 + 1, z, '#4a4458')
+        S.put(x, y, z, '#4a4458')
+
+
+def corona():
+    cy = SUMMIT + 96
+    S.sphere(0, cy, 0, 21, '#fffbe8', emit=True, shell=2)
+    for k in range(24):                                 # petals of light round the sun
+        th = 2 * math.pi * k / 24
+        for rr in range(26, 34):
+            w = (34 - rr) / 8
+            for dz in (-1, 0, 1):
+                if rnd(k, rr, dz, 99) < 0.5 + 0.4 * w:
+                    x = math.cos(th) * rr
+                    z = math.sin(th) * rr
+                    S.put(x - math.sin(th) * dz * w, cy + (rr - 26) * 0.2 * math.sin(3 * th), z + math.cos(th) * dz * w,
+                          SUN_H if w > 0.4 else GOLD_L, emit=True, glass=True)
+
+
 def build():
     t0 = time.time()
     island()
@@ -498,6 +622,13 @@ def build():
     satellites()
     lanterns()
     lattice()
+    twin_city()
+    world_tree()
+    airship(-150, 150, 60, 0.6, 22)
+    airship(120, 175, -150, 2.4, 16)
+    airship(-60, 200, -190, -0.4, 12)
+    birds()
+    corona()
     print(len(S), 'voxels', round(time.time() - t0, 1), 's')
     return S
 
@@ -512,6 +643,13 @@ if __name__ == '__main__':
     if which in ('summit', 'all'):
         print(render(S, os.path.join(OUT, 'solsticio_free_summit.png'), scale=3, sky=('#fff1cf', '#9cc4ec'), bloom=8,
                      crop=lambda x, y, z: math.hypot(x, z) < 75 and y > SUMMIT - 30))
+    if which in ('twin', 'all'):
+        from freevox import Scene as _Scene
+        from PIL import Image as _Image
+        below = _Scene({(x, -y, -z): v for (x, y, z), v in S.items() if y < 20 and math.hypot(x, z) < 180})
+        path = os.path.join(OUT, 'solsticio_free_twin.png')
+        print(render(below, path, scale=2, sky=('#241c4a', '#8fa6d8'), bloom=6))
+        _Image.open(path).transpose(_Image.FLIP_TOP_BOTTOM).save(path)
     if which in ('spiral', 'all'):
         print(render(S, os.path.join(OUT, 'solsticio_free_spiral.png'), scale=3, sky=('#fff1cf', '#9cc4ec'), bloom=8,
                      crop=lambda x, y, z: 20 < x < 150 and -40 < z < 90 and y > -10))
