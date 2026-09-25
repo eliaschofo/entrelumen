@@ -18,6 +18,12 @@ import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModList;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.neoforge.registries.RegisterEvent;
+import net.minecraft.core.component.DataComponentType;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.neoforged.neoforge.capabilities.Capabilities;
+import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
+import net.neoforged.neoforge.energy.ComponentEnergyStorage;
+import java.util.List;
 import org.slf4j.Logger;
 import com.mojang.logging.LogUtils;
 
@@ -31,9 +37,28 @@ public final class GameTestFixture {
       "twilightforest", "steeleaf_ingot",
       "aether", "zanite_gemstone");
 
+  /**
+   * Act VI (Solsticio) stand-ins: four Farmer's Delight meals and the two Create: New Age parts Terra
+   * asks for, registered only when those mods are absent.
+   */
+  private static final List<String[]> STORY_ITEMS = List.of(
+      new String[] {"farmersdelight", "beef_stew"}, new String[] {"farmersdelight", "fish_stew"},
+      new String[] {"farmersdelight", "fried_rice"}, new String[] {"farmersdelight", "ratatouille"},
+      new String[] {"create_new_age", "generator_coil"}, new String[] {"create_new_age", "advanced_solar_heating_plate"});
+  /** A 200,000 FE item battery for Terra's charged-battery check (any energy mod's item counts in the pack). */
+  static final ResourceLocation BATTERY = ResourceLocation.fromNamespaceAndPath("entrelumen_gametest_fixture", "test_battery");
+  static DataComponentType<Integer> energy;
+  static Item battery;
+
   public GameTestFixture(IEventBus bus) {
-    LOGGER.warn("Entrelumen isolated GameTests use four synthetic cross-mod item IDs; this is not full-pack compatibility evidence.");
+    LOGGER.warn("Entrelumen isolated GameTests use synthetic cross-mod item IDs; this is not full-pack compatibility evidence.");
     bus.addListener(this::registerItems);
+    bus.addListener(this::registerCapabilities);
+  }
+
+  private void registerCapabilities(RegisterCapabilitiesEvent event) {
+    event.registerItem(Capabilities.EnergyStorage.ITEM,
+        (stack, context) -> new ComponentEnergyStorage(stack, energy, 200_000), battery);
   }
 
   /** Eaten in place like a Farmer's Delight pie: a slice's food values through FoodData.eat. */
@@ -57,11 +82,25 @@ public final class GameTestFixture {
   private void registerItems(RegisterEvent event) {
     event.register(Registries.BLOCK, registry -> registry.register(
         ResourceLocation.fromNamespaceAndPath("entrelumen_gametest_fixture", "bite_block"), new BiteBlock()));
-    event.register(Registries.ITEM, registry -> ITEMS.forEach((mod, path) -> {
-      if (ModList.get().isLoaded(mod)) return;
-      var id = ResourceLocation.fromNamespaceAndPath(mod, path);
-      if (!BuiltInRegistries.ITEM.containsKey(id))
-        registry.register(id, new Item(new Item.Properties()));
-    }));
+    event.register(Registries.DATA_COMPONENT_TYPE, registry -> {
+      energy = DataComponentType.<Integer>builder().persistent(com.mojang.serialization.Codec.INT)
+          .networkSynchronized(ByteBufCodecs.VAR_INT).build();
+      registry.register(ResourceLocation.fromNamespaceAndPath("entrelumen_gametest_fixture", "energy"), energy);
+    });
+    event.register(Registries.ITEM, registry -> {
+      ITEMS.forEach((mod, path) -> {
+        if (ModList.get().isLoaded(mod)) return;
+        var id = ResourceLocation.fromNamespaceAndPath(mod, path);
+        if (!BuiltInRegistries.ITEM.containsKey(id))
+          registry.register(id, new Item(new Item.Properties()));
+      });
+      for (String[] item : STORY_ITEMS) {
+        if (ModList.get().isLoaded(item[0])) continue;
+        var id = ResourceLocation.fromNamespaceAndPath(item[0], item[1]);
+        if (!BuiltInRegistries.ITEM.containsKey(id)) registry.register(id, new Item(new Item.Properties().stacksTo(16)));
+      }
+      battery = new Item(new Item.Properties().stacksTo(1));
+      registry.register(BATTERY, battery);
+    });
   }
 }

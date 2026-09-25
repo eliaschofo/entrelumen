@@ -125,9 +125,10 @@ A villager without a Solsticio role that is inside the trading hall zone becomes
 ## Side quests, common villagers and easter eggs
 
 - Four innkeeper personas (Dorotea, Tobías, Amparo, Ciro), assigned by the numeric order of the side-quest ids and stored on the NPC; each has a greeting that hints at a favour.
-- **Hook for the quests:** `SolsticioCommerce.registerSideQuest("<id>", (player, npc, id) -> handled)`. Returning true takes the click; otherwise the NPC says its line. The quests themselves are not implemented.
-- Common villagers say one of eight ambient lines, a couple of them the posgame rumours about the mayor's spending.
-- Easter eggs are only recorded (`/entrelumen admin solsticio commerce` lists them) for future content.
+- **Hook for the quests:** `SolsticioCommerce.registerSideQuest("<id>", (player, npc, id) -> handled)`. Returning true takes the click; otherwise the NPC says its line. Since act VI ([act-six.md](act-six.md), 24 September 2026) every inn's hook is `SolsticioStory`: two errands per innkeeper that build the team's relation with Bodhi. Visitors still hear the greeting.
+- Common villagers say one of eight ambient lines, a couple of them the posgame rumours about the mayor's spending. After the liberation and after the elections they draw from two more pools of eight. The resident nearest the cartographer becomes Anselmo, the old neighbour of the map errand.
+- Easter eggs are recorded here and discovered by walking in (act VI): a lore page and a keepsake once per team, and the three together reveal the rumour.
+- The four named characters (Aurelia, Terra, Juan, Bodhi) are sites of role `character` on the `mayor`, `inventor`, `gardener` and `priest` markers: statues bound to their post, no trades, act VI's dialogue. Cities placed earlier get them on the next start.
 
 ## Commands and config
 
@@ -149,8 +150,8 @@ A villager without a Solsticio role that is inside the trading hall zone becomes
 ## Pending
 
 - The controller's definitive template with `shop:`, `sidequest:`, `resident` and `easter:` markers (the current `city.nbt` is draft 3, which only has `trading_hall`: a world placed with it gets the natives and nothing else). A world placed before the new template needs an explicit migration, as for the rest of the city.
-- Side quests, easter-egg content and the final quest that liberates the Entrelumen (`setLiberated`).
-- Heliodor clothing for all these villagers (today vanilla professions and biome outfits). The art is ready since 24 September: `entrelumen:textures/entity/villager/type/heliodor.png` (`art/authoring/draw_villager_heliodor.py`: the vanilla plains type layer traced, cream robe, copper seams, a teal sash, mirror-symmetric front and back). Still to do in code: register an `entrelumen:heliodor` villager type and give it to every villager the city spawns. The innkeepers' own names per inn, if the quests want them.
+- ~~Side quests, easter-egg content and the final quest that liberates the Entrelumen (`setLiberated`)~~: done in act VI ([act-six.md](act-six.md)). The first team to open the portal calls `setLiberated`, which now also records `liberatedAt` for the elections.
+- ~~Heliodor clothing~~: done on 24 September. `entrelumen:heliodor` is a registered villager type (texture `entrelumen:textures/entity/villager/type/heliodor.png`, `art/authoring/draw_villager_heliodor.py`) worn by every villager the city spawns, shopkeepers and natives included: the tables' `villager_type` no longer applies to the city's own merchants, only their profession does. Villagers placed before are re-dressed when they load; settled villagers from elsewhere keep their clothes. Pending art: the four characters' distinctive pieces (profession textures, transparent placeholders today; see act-six.md).
 - In-game review on a client: trading screens, out-of-stock gated offers, survey map charting in a real world (not exercised by the flat test world), awakening particles, text EN/ES.
 - Full-pack check: modded offers, Easy Villagers carrying natives and settling newcomers, Carry On refused on fixed NPCs, Jade tooltips.
 - Balance playtest: emerald income against these prices and the Luminosity rhythm (54 for the gear, 48 for the creative items).

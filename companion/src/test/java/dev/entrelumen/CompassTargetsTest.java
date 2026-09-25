@@ -53,9 +53,19 @@ class CompassTargetsTest {
     assertTrue(all.stream().anyMatch(o -> o.id().equals("silver_dungeon") && o.act() == 4));
     for (String id : java.util.List.of("ocean_monument", "stronghold", "the_end"))
       assertTrue(all.stream().anyMatch(o -> o.id().equals(id) && o.act() == 5), id);
-    assertEquals("solsticio", all.getLast().id());
-    assertEquals(6, all.getLast().act());
-    assertEquals(Expeditions.SOLSTICIO_ARRIVAL, all.getLast().advanceWhen().value());
+    // Act VI: the crossing, then (mission 2's reward) Aurelia's hall, the three halls and the portal.
+    var ids = all.stream().map(CompassTargets.Objective::id).toList();
+    var crossing = all.get(ids.indexOf("solsticio"));
+    assertEquals(6, crossing.act());
+    assertEquals(Expeditions.SOLSTICIO_ARRIVAL, crossing.advanceWhen().value());
+    assertEquals(java.util.List.of("solsticio", "solsticio_town_hall", "solsticio_gardens", "solsticio_workshop",
+        "solsticio_chapel", "solsticio_portal"), ids.subList(ids.indexOf("solsticio"), ids.size()));
+    assertEquals(java.util.List.of(SolsticioStoryRules.MAYOR, SolsticioStoryRules.HARVEST, SolsticioStoryRules.TERRAPRISM,
+            SolsticioStoryRules.BLESSING, SolsticioStoryRules.PORTAL),
+        all.subList(ids.indexOf("solsticio") + 1, all.size()).stream().map(o -> o.advanceWhen().value()).toList());
+    for (var hall : all.subList(ids.indexOf("solsticio") + 1, all.size()))
+      assertTrue(hall.act() == 6 && hall.target().type() == CompassTargets.TargetType.POSITION
+          && hall.target().dimension().equals("entrelumen:solsticio"), hall.id());
     int act = 1;
     for (var objective : all) {
       assertTrue(objective.act() >= act, "Objectives are listed in act order");

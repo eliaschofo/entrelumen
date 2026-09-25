@@ -536,6 +536,12 @@ public final class RuntimeGameTestsSolsticio {
         var player = qa.player;
         resetPortal(server, data);
         unlock(player, true);
+        // Act VI (24 September 2026): a team sets its relics after the accord of mission 9.
+        var story = Entrelumen.current(player);
+        story.completed.add(SolsticioStoryRules.ARRIVAL);
+        story.completed.addAll(SolsticioStoryRules.MISSIONS.subList(1, SolsticioStoryRules.MISSIONS.indexOf(SolsticioStoryRules.PORTAL)));
+        boolean wasLiberated = data.liberated;
+        long liberatedAt = data.liberatedAt;
         helper.assertTrue(SolsticioTravel.toSolsticio(player), "QA could not enter Solsticio");
         // A team that has not unlocked Solsticio cannot set relics.
         unlock(early.player, false);
@@ -575,6 +581,10 @@ public final class RuntimeGameTestsSolsticio {
           helper.assertTrue(!SolsticioTravel.portalContact(early.player, true)
               && early.player.level().dimension().equals(Solsticio.LEVEL), "The Solsticio portal bounced an arrival");
         }
+        helper.assertTrue(story.completed.contains(SolsticioStoryRules.PORTAL) && data.liberated,
+            "Opening the portal did not complete mission 10 and liberate the Entrelumen");
+        data.liberated = wasLiberated;
+        data.liberatedAt = liberatedAt;
       }
     });
   }

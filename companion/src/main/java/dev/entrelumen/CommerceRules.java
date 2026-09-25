@@ -53,7 +53,9 @@ public final class CommerceRules {
     /** The NPC of a side quest: no AI, a short dialogue, bound to its marker. */
     SIDEQUEST("sidequest"),
     /** A villager from elsewhere that settled in the trading hall: permanent discount. */
-    MOVED("moved");
+    MOVED("moved"),
+    /** Aurelia, Terra, Juan or Bodhi at their hall marker: no AI, act VI's dialogue, no trades. */
+    CHARACTER("character");
 
     public final String id;
 
@@ -68,7 +70,7 @@ public final class CommerceRules {
 
     /** Placed at a marker and put back there if it dies or is carried away. */
     public boolean bound() {
-      return this == SHOP || this == SIDEQUEST;
+      return this == SHOP || this == SIDEQUEST || this == CHARACTER;
     }
   }
 
@@ -94,9 +96,10 @@ public final class CommerceRules {
       case SHOP -> 1;
       case MOVED -> prices.moved();
       case NATIVE -> awakened ? prices.nativeHome() : 1;
-      case TOWNSFOLK, SIDEQUEST -> 1;
+      case TOWNSFOLK, SIDEQUEST, CHARACTER -> 1;
     };
-    if (liberated && role != Role.TOWNSFOLK && role != Role.SIDEQUEST) multiplier *= prices.liberated();
+    if (liberated && role != Role.TOWNSFOLK && role != Role.SIDEQUEST && role != Role.CHARACTER)
+      multiplier *= prices.liberated();
     return multiplier;
   }
 

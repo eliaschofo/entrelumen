@@ -450,7 +450,11 @@ public final class SolsticioCity {
         case SHOP, SIDEQUEST, RESIDENT, EASTER ->
             commerce.add(new CommerceSites.Found(found.marker(), found.argument(), found.pos()));
         default -> {
-          if (found.marker().npc()) data.npcs.put(found.marker().id, found.pos());
+          if (found.marker().npc()) {
+            data.npcs.put(found.marker().id, found.pos());
+            // Aurelia, Terra, Juan and Bodhi stand there (act VI).
+            commerce.add(new CommerceSites.Found(found.marker(), found.marker().id, found.pos()));
+          }
         }
       }
     }
@@ -488,6 +492,7 @@ public final class SolsticioCity {
     // Shopkeepers, natives, side-quest NPCs and common villagers: spawned once, in the background.
     data.commerce.rebuild(commerce, data.tradingHall);
     data.setDirty();
+    SolsticioStory.hookInnkeepers(data.commerce.sideQuestIds());
     SolsticioCommerce.startPopulation(server);
   }
 

@@ -17,10 +17,40 @@
     "arrival": {
       "en_us": "The Light Key · The crossing",
       "es_es": "La Llave de Luz · El cruce"
+    },
+    "town_hall": {
+      "en_us": "Aurelia · The town hall",
+      "es_es": "Aurelia · El Ayuntamiento"
+    },
+    "gardens": {
+      "en_us": "Juan · The gardens",
+      "es_es": "Juan · Los jardines"
+    },
+    "workshop": {
+      "en_us": "Terra · The workshop",
+      "es_es": "Terra · El taller"
+    },
+    "chapel": {
+      "en_us": "Bodhi · The chapel",
+      "es_es": "Bodhi · La capilla"
+    },
+    "portal": {
+      "en_us": "The portal · The Entrelumen",
+      "es_es": "El portal · El Entrelumen"
     }
   },
   "milestones": [
-    "solsticio_arrival"
+    "solsticio_arrival",
+    "solsticio_mayor",
+    "solsticio_seeds",
+    "solsticio_harvest",
+    "solsticio_power",
+    "solsticio_terraprism",
+    "solsticio_good_works",
+    "solsticio_blessing",
+    "solsticio_accord",
+    "solsticio_portal",
+    "solsticio_elections"
   ],
   "quests": [
     {
@@ -46,6 +76,248 @@
       },
       "milestone": "solsticio_arrival",
       "icon": "entrelumen:light_key"
+    },
+    {
+      "key": "solsticio_mayor",
+      "deps": [
+        "solsticio_arrival"
+      ],
+      "en_us": [
+        "The City That Never Dawns",
+        "Talk to Aurelia, the mayor, in the town hall beside the portal (right-click her). She explains what the portal needs, and your compass starts marking the halls of Juan, Terra and Bodhi.\n\nSolsticio lives in an endless noon and cannot leave the Entrelumen. Aurelia keeps the only door: three relics and the key that brought you. She also asks for the Heart of Heliodor, 'to keep it safe'."
+      ],
+      "es_es": [
+        "La ciudad que no amanece",
+        "Hablá con Aurelia, la alcaldesa, en el Ayuntamiento junto al portal (clic derecho). Te explica qué necesita el portal y tu brújula empieza a marcar los salones de Juan, Terra y Bodhi.\n\nSolsticio vive en un mediodía sin fin y no puede salir del Entrelumen. Aurelia guarda la única puerta: tres reliquias y la llave que te trajo. También pide el Corazón de Heliodor, «para custodiarlo»."
+      ],
+      "layout": {
+        "group": "town_hall",
+        "x": 0,
+        "y": 2,
+        "size": 1.1,
+        "shape": "hexagon",
+        "hide_dependent_lines": false
+      },
+      "milestone": "solsticio_mayor",
+      "icon": "minecraft:bell"
+    },
+    {
+      "key": "solsticio_seeds",
+      "deps": [
+        "solsticio_mayor"
+      ],
+      "en_us": [
+        "Seeds of the World",
+        "Carry seeds of eight different species from outside and right-click Juan in his gardens: wheat, beetroot, melon, carrot, potato, berries, cocoa, Farmer's Delight crops... He keeps one of each. From then on his gardens share a basket with you every day.\n\nJuan fed multitudes and designed the Growth Altar. Inside the light he has replanted the same seeds for too long, and he fears the beds will run out."
+      ],
+      "es_es": [
+        "Semillas del mundo",
+        "Llevá semillas de ocho especies distintas de afuera y hacé clic derecho en Juan, en sus jardines: trigo, remolacha, melón, zanahoria, patata, bayas, cacao, cultivos de Farmer's Delight... Se queda una de cada una. Desde entonces sus jardines te comparten una canasta por día.\n\nJuan alimentó a multitudes y diseñó el Altar de Crecimiento. Adentro de la luz replantó las mismas semillas demasiado tiempo, y teme que los canteros se agoten."
+      ],
+      "layout": {
+        "group": "gardens",
+        "x": -3,
+        "y": 4,
+        "size": 1.1,
+        "shape": "hexagon",
+        "hide_dependent_lines": false
+      },
+      "milestone": "solsticio_seeds",
+      "icon": "minecraft:wheat_seeds"
+    },
+    {
+      "key": "solsticio_harvest",
+      "deps": [
+        "solsticio_seeds"
+      ],
+      "en_us": [
+        "A Harvest for Everyone",
+        "Right-click Juan carrying four different Farmer's Delight meals, sixteen of each: stews, soups, rice or pasta dishes. Central Kitchen or Slice and Dice can cook them for you. He gives you the Luminous Seed, the first relic of the portal.\n\nA city that cannot feed itself cannot open anything. Juan's seed carries the light inside, bred for the day Solsticio would reach outside again."
+      ],
+      "es_es": [
+        "Una cosecha para todos",
+        "Hacé clic derecho en Juan con cuatro platos distintos de Farmer's Delight encima, dieciséis de cada uno: guisos, sopas, arroces o pastas. Central Kitchen o Slice and Dice los cocinan por vos. Te da la Semilla Luminosa, la primera reliquia del portal.\n\nUna ciudad que no se alimenta no abre nada. La semilla de Juan lleva la luz adentro, criada para el día en que Solsticio volviera a tocar el afuera."
+      ],
+      "layout": {
+        "group": "gardens",
+        "x": -3,
+        "y": 6,
+        "size": 1.1,
+        "shape": "hexagon",
+        "hide_dependent_lines": false
+      },
+      "milestone": "solsticio_harvest",
+      "icon": "entrelumen:heliodor_relic_1"
+    },
+    {
+      "key": "solsticio_power",
+      "deps": [
+        "solsticio_mayor"
+      ],
+      "en_us": [
+        "Power from Outside",
+        "Right-click Terra in her workshop carrying four Generator Coils and two Advanced Solar Heating Plates from Create: New Age, plus a charged battery from any energy mod (100,000 FE or more, nearly full). She gives you her diagram of the Terraprism.\n\nFrozen light does not run machines well. Terra built the Atlas from inside the light; now she needs honest power from outside to finish what the Council made her start."
+      ],
+      "es_es": [
+        "Energía de afuera",
+        "Hacé clic derecho en Terra, en su taller, con cuatro bobinas del generador y dos placas solares avanzadas de Create: New Age, más una batería cargada de cualquier mod de energía (100.000 FE o más, casi llena). Te da su diagrama del Terraprisma.\n\nLa luz congelada no mueve bien las máquinas. Terra construyó el Atlas desde adentro de la luz; ahora necesita energía honesta de afuera para terminar lo que el Consejo la obligó a empezar."
+      ],
+      "layout": {
+        "group": "workshop",
+        "x": 0,
+        "y": 4,
+        "size": 1.1,
+        "shape": "hexagon",
+        "hide_dependent_lines": false
+      },
+      "milestone": "solsticio_power",
+      "icon": "minecraft:lightning_rod"
+    },
+    {
+      "key": "solsticio_terraprism",
+      "deps": [
+        "solsticio_power"
+      ],
+      "en_us": [
+        "Channelling the Light",
+        "Bring Terra one Luminosity of each discipline, all six: the natives of the trading hall sell them once they have stood in their biome. She fuses them into her masterpiece and gives you the Terraprism, the second relic.\n\nThe Terraprism takes the light and hands it back as power people can use: heat, motion, growth, signal, order and shelter. It is what Terra wanted to build before anyone asked her for a god."
+      ],
+      "es_es": [
+        "Canalizar la luz",
+        "Llevale a Terra una Luminosidad de cada disciplina, las seis: las venden los nativos de la sala de comercio cuando ya pisaron su bioma. Las funde en su obra maestra y te da el Terraprisma, la segunda reliquia.\n\nEl Terraprisma toma la luz y la devuelve como energía que la gente puede usar: calor, movimiento, crecimiento, señal, orden y abrigo. Es lo que Terra quería construir antes de que alguien le pidiera un dios."
+      ],
+      "layout": {
+        "group": "workshop",
+        "x": 0,
+        "y": 6,
+        "size": 1.1,
+        "shape": "hexagon",
+        "hide_dependent_lines": false
+      },
+      "milestone": "solsticio_terraprism",
+      "icon": "entrelumen:heliodor_relic_2"
+    },
+    {
+      "key": "solsticio_good_works",
+      "deps": [
+        "solsticio_mayor"
+      ],
+      "en_us": [
+        "Good Works",
+        "Help the people of Solsticio: each of the four innkeepers has two errands (right-click them). Every errand done raises your relation with Bodhi by one; at five, the priest listens. Bodhi, in his chapel, tells you where you stand.\n\nBodhi does not bless on request. He wanted the light for the spirit of Heliodor, not for its machines, and he trusts deeds more than words."
+      ],
+      "es_es": [
+        "Buenas obras",
+        "Ayudá a la gente de Solsticio: cada uno de los cuatro posaderos tiene dos encargos (clic derecho). Cada encargo cumplido sube uno tu relación con Bodhi; con cinco, el sacerdote escucha. Bodhi, en su capilla, te dice cómo vas.\n\nBodhi no bendice por encargo. Quería la luz para el espíritu de Heliodor, no para sus máquinas, y confía más en los hechos que en las palabras."
+      ],
+      "layout": {
+        "group": "chapel",
+        "x": 3,
+        "y": 4,
+        "size": 1.1,
+        "shape": "hexagon",
+        "hide_dependent_lines": false
+      },
+      "milestone": "solsticio_good_works",
+      "icon": "minecraft:candle"
+    },
+    {
+      "key": "solsticio_blessing",
+      "deps": [
+        "solsticio_good_works"
+      ],
+      "en_us": [
+        "The Blessing",
+        "Talk to Bodhi: your Atlas lets go of the Heart of Heliodor it has kept since act IV. Right-click him again with the Heart and he blesses it into the Blessed Heart of Heliodor, the third relic. If the Sun Spirit still has it, defeat it first.\n\nThe Heart and Bodhi's sacred crystal are the same thing: the core of the fusion, confiscated by the Sun Spirit. Bodhi gives it back its purpose with the strength of love."
+      ],
+      "es_es": [
+        "La bendición",
+        "Hablá con Bodhi: tu Atlas suelta el Corazón de Heliodor que guarda desde el acto IV. Hacé clic derecho otra vez con el Corazón y lo bendice: queda el Corazón de Heliodor bendito, la tercera reliquia. Si el Espíritu del Sol todavía lo tiene, vencelo primero.\n\nEl Corazón y el cristal sagrado de Bodhi son lo mismo: el núcleo de la fusión, que el Espíritu del Sol le confiscó. Bodhi le devuelve su sentido con la fuerza del amor."
+      ],
+      "layout": {
+        "group": "chapel",
+        "x": 3,
+        "y": 6,
+        "size": 1.1,
+        "shape": "hexagon",
+        "hide_dependent_lines": false
+      },
+      "milestone": "solsticio_blessing",
+      "icon": "entrelumen:heliodor_relic_3"
+    },
+    {
+      "key": "solsticio_accord",
+      "deps": [
+        "solsticio_harvest",
+        "solsticio_terraprism",
+        "solsticio_blessing"
+      ],
+      "en_us": [
+        "The Table of Two Lights",
+        "With the three relics in hand, bring Aurelia and Bodhi to the same table: talk to both of them, in the town hall and in the chapel, in either order. They agree: Aurelia calls elections, and the crystal stays with you to open the portal.\n\nAurelia wants the crystal to control the light; Bodhi fears a second fusion. Neither is wrong about the other. The only way forward is that nobody keeps the light."
+      ],
+      "es_es": [
+        "La mesa de las dos luces",
+        "Con las tres reliquias, sentá a Aurelia y a Bodhi a la misma mesa: hablá con los dos, en el Ayuntamiento y en la capilla, en cualquier orden. Acuerdan: Aurelia llama a elecciones y el cristal queda en tus manos para abrir el portal.\n\nAurelia quiere el cristal para controlar la luz; Bodhi teme repetir la fusión. Ninguno se equivoca sobre el otro. La única salida es que nadie se quede con la luz."
+      ],
+      "layout": {
+        "group": "town_hall",
+        "x": 0,
+        "y": 8,
+        "size": 1.1,
+        "shape": "hexagon",
+        "hide_dependent_lines": false
+      },
+      "milestone": "solsticio_accord",
+      "icon": "minecraft:lantern"
+    },
+    {
+      "key": "solsticio_portal",
+      "deps": [
+        "solsticio_accord"
+      ],
+      "en_us": [
+        "The Portal",
+        "In the town hall, right-click the portal with each of your three relics, then with your own Broken Light Key in your pack. The first team to do it opens it for everyone: a global waystone (or a twin portal by the world spawn) and lower prices in every Solsticio shop.\n\nThe Entrelumen stays a shelter, but no longer a prison. Its people can come and go, and so can you."
+      ],
+      "es_es": [
+        "El portal",
+        "En el Ayuntamiento, hacé clic derecho en el portal con cada una de tus tres reliquias y después con tu propia Llave de Luz rota encima. El primer equipo que lo logra lo abre para todos: una waystone global (o un portal gemelo junto al spawn) y precios más bajos en todas las tiendas de Solsticio.\n\nEl Entrelumen sigue siendo un refugio, pero ya no una prisión. Su gente puede ir y venir, y vos también."
+      ],
+      "layout": {
+        "group": "portal",
+        "x": 0,
+        "y": 10,
+        "size": 1.1,
+        "shape": "hexagon",
+        "hide_dependent_lines": false
+      },
+      "milestone": "solsticio_portal",
+      "icon": "entrelumen:light_key_broken"
+    },
+    {
+      "key": "solsticio_elections",
+      "deps": [
+        "solsticio_portal"
+      ],
+      "en_us": [
+        "Elections in Solsticio",
+        "Three days of game time after the portal first opens, Solsticio votes in the square. Then talk to Aurelia once more. This closes the story; the city, its trades and your plot remain.\n\nAurelia was never democratic, but the city remembers who kept the fountains running. She is re-elected. Some still ask where the money for the new windows went; nobody asks too loudly."
+      ],
+      "es_es": [
+        "Elecciones en Solsticio",
+        "Tres días de juego después de la primera apertura del portal, Solsticio vota en la plaza. Después hablá otra vez con Aurelia. Con esto se cierra la historia; quedan la ciudad, sus tratos y tu lote.\n\nAurelia nunca fue democrática, pero la ciudad recuerda quién mantuvo las fuentes andando. La reeligen. Algunos todavía preguntan adónde fue la plata de los ventanales nuevos; nadie pregunta muy fuerte."
+      ],
+      "layout": {
+        "group": "town_hall",
+        "x": 0,
+        "y": 12,
+        "size": 1.1,
+        "shape": "hexagon",
+        "hide_dependent_lines": false
+      },
+      "milestone": "solsticio_elections",
+      "icon": "minecraft:paper"
     }
   ]
 }

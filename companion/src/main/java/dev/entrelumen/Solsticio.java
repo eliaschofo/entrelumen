@@ -81,7 +81,10 @@ public final class Solsticio {
       () -> new LightKeyItem(false, new Item.Properties().stacksTo(1).rarity(Rarity.EPIC).fireResistant()));
   public static final DeferredItem<LightKeyItem> LIGHT_KEY_BROKEN = ITEMS.register("light_key_broken",
       () -> new LightKeyItem(true, new Item.Properties().stacksTo(1).rarity(Rarity.RARE).fireResistant()));
-  /** Placeholder non-renewable pieces; future Solsticio missions award them. */
+  /**
+   * The three portal relics, awarded once per team by act VI's missions: Juan's Luminous Seed (4),
+   * Terra's Terraprism (6) and the Heart of Heliodor blessed by Bodhi (8). See {@link SolsticioStory}.
+   */
   public static final List<DeferredItem<Item>> RELICS = List.of(relic(1), relic(2), relic(3));
 
   public static final DeferredBlock<SolsticioPortalBlock> PORTAL = BLOCKS.register("solsticio_portal",
@@ -128,6 +131,7 @@ public final class Solsticio {
     StructureProtection.registerProvider(REGION_ID, SolsticioCity::regions);
     SolsticioTravel.register();
     SolsticioCommerce.register(bus, container);
+    SolsticioStory.register(bus);
     NeoForge.EVENT_BUS.addListener((ServerTickEvent.Post event) -> {
       SolsticioCity.tick(event.getServer());
       SolsticioTravel.tick(event.getServer());

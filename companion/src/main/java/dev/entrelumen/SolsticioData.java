@@ -76,12 +76,28 @@ public final class SolsticioData extends SavedData {
   public final Map<UUID, ReturnPoint> returns = new HashMap<>();
 
   /**
-   * The Entrelumen was liberated (the final quest will set it; operators toggle it with
-   * {@code /entrelumen admin solsticio liberated}): every Solsticio merchant gets cheaper.
+   * The Entrelumen was liberated (the first team to open the portal sets it, mission 10; operators
+   * toggle it with {@code /entrelumen admin solsticio liberated}): every Solsticio merchant gets cheaper.
    */
   public boolean liberated;
   /** Shopkeepers, natives, side-quest NPCs, homes and easter eggs of the placed city. */
   public final CommerceSites commerce = new CommerceSites();
+
+  // ---- act VI story (SolsticioStory): world state; each team's progress is in its campaign ----
+  /** Overworld game time of the liberation (0 while not liberated); the elections count from it. */
+  public long liberatedAt;
+  /** The square voted and Aurelia was re-elected; what Solsticio says changes for good. */
+  public boolean electionsHeld;
+  public long electionsAt;
+  /** Home marker of Anselmo, the old neighbour of the map errand; chosen once. */
+  public BlockPos elder;
+  /** Day (game time / 24000) of each campaign's last basket from Juan's gardens. */
+  public final Map<UUID, Long> baskets = new HashMap<>();
+
+  /** A team's lost cat: the roof it waits on and its entity (null until its chunk was loaded). */
+  public record ErrandCat(BlockPos pos, UUID entity) {}
+
+  public final Map<UUID, ErrandCat> cats = new HashMap<>();
 
   public static SolsticioData get(MinecraftServer server) {
     return server.overworld().getDataStorage()
@@ -116,6 +132,8 @@ public final class SolsticioData extends SavedData {
     overworldPortal = null;
     waystoneRegistered = false;
     commerce.clear();
+    elder = null;
+    cats.clear();
   }
 
   private static void putPos(CompoundTag tag, String key, BlockPos pos) {
@@ -186,6 +204,28 @@ public final class SolsticioData extends SavedData {
     }
     data.liberated = tag.getBoolean("liberated");
     data.commerce.load(tag.getCompound("commerce"));
+    data.liberatedAt = tag.getLong("liberatedAt");
+    data.electionsHeld = tag.getBoolean("electionsHeld");
+    data.electionsAt = tag.getLong("electionsAt");
+    data.elder = pos(tag, "elder");
+    CompoundTag baskets = tag.getCompound("baskets");
+    for (String key : baskets.getAllKeys()) {
+      try {
+        data.baskets.put(UUID.fromString(key), baskets.getLong(key));
+      } catch (IllegalArgumentException ignored) {
+        // A malformed campaign id only means one more basket.
+      }
+    }
+    CompoundTag cats = tag.getCompound("cats");
+    for (String key : cats.getAllKeys()) {
+      CompoundTag entry = cats.getCompound(key);
+      try {
+        data.cats.put(UUID.fromString(key), new ErrandCat(BlockPos.of(entry.getLong("pos")),
+            entry.hasUUID("entity") ? entry.getUUID("entity") : null));
+      } catch (IllegalArgumentException ignored) {
+        // The innkeeper places a new cat for that team.
+      }
+    }
     return data;
   }
 
@@ -242,6 +282,21 @@ public final class SolsticioData extends SavedData {
     tag.put("returns", returnTag);
     tag.putBoolean("liberated", liberated);
     tag.put("commerce", commerce.save());
+    tag.putLong("liberatedAt", liberatedAt);
+    tag.putBoolean("electionsHeld", electionsHeld);
+    tag.putLong("electionsAt", electionsAt);
+    putPos(tag, "elder", elder);
+    CompoundTag basketTag = new CompoundTag();
+    baskets.forEach((campaign, day) -> basketTag.putLong(campaign.toString(), day));
+    tag.put("baskets", basketTag);
+    CompoundTag catTag = new CompoundTag();
+    cats.forEach((campaign, cat) -> {
+      CompoundTag entry = new CompoundTag();
+      entry.putLong("pos", cat.pos().asLong());
+      if (cat.entity() != null) entry.putUUID("entity", cat.entity());
+      catTag.put(campaign.toString(), entry);
+    });
+    tag.put("cats", catTag);
     return tag;
   }
 }

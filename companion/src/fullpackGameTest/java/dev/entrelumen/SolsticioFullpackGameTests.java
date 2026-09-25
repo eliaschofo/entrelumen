@@ -101,4 +101,35 @@ public final class SolsticioFullpackGameTests {
     helper.assertTrue(missing.isEmpty(), offers + " offers checked; unresolved: " + missing);
     helper.succeed();
   }
+
+  /**
+   * Act VI's deliveries name real items once the whole pack is loaded: Juan's seeds and Farmer's
+   * Delight meals (tags), Terra's Create: New Age parts, and at least one mod battery that can hold
+   * the 100,000 FE Terra asks for.
+   */
+  @GameTest(template = "empty", timeoutTicks = 200)
+  public static void solsticioStoryDeliveriesResolveInTheFullPack(GameTestHelper helper) {
+    Set<String> seeds = new TreeSet<>(), meals = new TreeSet<>();
+    BuiltInRegistries.ITEM.getTagOrEmpty(SolsticioStory.SEEDS)
+        .forEach(holder -> seeds.add(BuiltInRegistries.ITEM.getKey(holder.value()).toString()));
+    BuiltInRegistries.ITEM.getTagOrEmpty(SolsticioStory.MEALS)
+        .forEach(holder -> meals.add(BuiltInRegistries.ITEM.getKey(holder.value()).toString()));
+    helper.assertTrue(seeds.size() >= SolsticioStoryRules.SEED_SPECIES + 4, "Too few seed species: " + seeds);
+    helper.assertTrue(meals.size() >= 20 && meals.stream().allMatch(id -> id.startsWith("farmersdelight:")),
+        "Farmer's Delight meals: " + meals);
+    List<String> missing = new ArrayList<>();
+    for (String id : SolsticioStory.POWER_PARTS.keySet()) item("Terra", id, missing);
+    helper.assertTrue(missing.isEmpty(), "Missing Create: New Age parts: " + missing);
+    List<String> batteries = new ArrayList<>();
+    for (var item : BuiltInRegistries.ITEM) {
+      var energy = new net.minecraft.world.item.ItemStack(item)
+          .getCapability(net.neoforged.neoforge.capabilities.Capabilities.EnergyStorage.ITEM);
+      if (energy != null && energy.getMaxEnergyStored() >= SolsticioStoryRules.BATTERY_CAPACITY)
+        batteries.add(BuiltInRegistries.ITEM.getKey(item).toString());
+    }
+    helper.assertTrue(batteries.size() >= 3, "Batteries that fit Terra's request: " + batteries);
+    com.mojang.logging.LogUtils.getLogger().info("Act VI deliveries: {} seed species, {} meals, {} batteries (e.g. {})",
+        seeds.size(), meals.size(), batteries.size(), batteries.subList(0, Math.min(8, batteries.size())));
+    helper.succeed();
+  }
 }

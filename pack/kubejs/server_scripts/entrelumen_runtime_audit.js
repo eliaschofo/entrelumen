@@ -45,9 +45,13 @@ const entrelumenAuditTargets = {
     "entrelumen:habitation_module",
     "entrelumen:handling_core",
     "entrelumen:heart_of_heliodor",
+    "entrelumen:heliodor_relic_1",
+    "entrelumen:heliodor_relic_2",
+    "entrelumen:heliodor_relic_3",
     "entrelumen:horizon_chart",
     "entrelumen:inventory_sensor",
     "entrelumen:light_key",
+    "entrelumen:light_key_broken",
     "entrelumen:living_matrix",
     "entrelumen:logistics_module",
     "entrelumen:nature_module",
@@ -89,10 +93,12 @@ const entrelumenAuditTargets = {
     "mekanism:alloy_atomic",
     "mekanism:basic_control_circuit",
     "mekanismgenerators:wind_generator",
+    "minecraft:bell",
     "minecraft:book",
     "minecraft:bowl",
     "minecraft:bread",
     "minecraft:bucket",
+    "minecraft:candle",
     "minecraft:chest",
     "minecraft:compass",
     "minecraft:copper_ingot",
@@ -104,6 +110,7 @@ const entrelumenAuditTargets = {
     "minecraft:glass",
     "minecraft:hopper",
     "minecraft:lantern",
+    "minecraft:lightning_rod",
     "minecraft:map",
     "minecraft:paper",
     "minecraft:red_bed",
@@ -111,6 +118,7 @@ const entrelumenAuditTargets = {
     "minecraft:stone_pickaxe",
     "minecraft:torch",
     "minecraft:wheat",
+    "minecraft:wheat_seeds",
     "modularrouters:blank_module",
     "mysticalagriculture:imperium_essence",
     "mysticalagriculture:prudentium_essence",
@@ -286,7 +294,7 @@ const entrelumenAuditTargets = {
       "output": "farmersdelight:flint_knife"
     }
   ],
-  "signature": "eae949582f52d76f"
+  "signature": "43e817ca6067c194"
 };
 
 ServerEvents.afterRecipes(event => {
