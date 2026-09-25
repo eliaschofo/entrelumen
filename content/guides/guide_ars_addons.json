@@ -1,0 +1,606 @@
+{
+ "chapter": "guide_ars_addons",
+ "group": "magic",
+ "act": "II",
+ "icon": "ars_elemental:fire_focus",
+ "title": {
+  "en_us": "Ars Nouveau V: The Addons",
+  "es_es": "Ars Nouveau V: los addons"
+ },
+ "subtitle": {
+  "en_us": "Elemental schools, Create and AE2 bridges, spirits in jars, charms and smarter Starbuncles.",
+  "es_es": "Escuelas elementales, puentes con Create y AE2, espíritus en frascos, amuletos y Carbuncles más listos."
+ },
+ "quests": [
+  {
+   "key": "arsadd_welcome",
+   "deps": [],
+   "type": "checkmark",
+   "icon": "ars_elemental:fire_focus",
+   "layout": {
+    "x": 0,
+    "y": 0,
+    "size": 2.0,
+    "shape": "hexagon"
+   },
+   "en_us": [
+    "The Ars addons in ENTRELUMEN",
+    "The pack carries nine Ars Nouveau addons. Ars Elemental adds elemental schools, foci and armor. Not Enough Glyphs adds more glyphs. Ars Technica and Ars Creo connect Ars to Create. Ars Ocultas puts Occultism spirits in Ars jars. Ars Additions brings charms, remote access and apparatus automation. Ars Controle adds precise control and remote linking. Ars Énergistique stores Source in AE2. StarbuncleMania teaches Starbuncles to carry fluids, energy and gases.\n\nNone of them is required by the story; pick the branches that fit your base."
+   ],
+   "es_es": [
+    "Los addons de Ars en ENTRELUMEN",
+    "El pack trae nueve addons de Ars Nouveau. Ars Elemental suma escuelas elementales, focos y armaduras. Not Enough Glyphs suma más glifos. Ars Technica y Ars Creo conectan Ars con Create. Ars Ocultas mete espíritus de Occultism en tarros de Ars. Ars Additions trae amuletos, acceso remoto y automatización del aparato. Ars Controle suma control preciso y enlaces remotos. Ars Énergistique guarda Fuente en AE2. StarbuncleMania enseña a los Carbuncles a llevar fluidos, energía y gases.\n\nNinguno lo pide la historia; elegí las ramas que le sirvan a tu base."
+   ],
+   "sources": [
+    "repo:docs/design/magic-automation-family.md",
+    "repo:docs/design/arcane-expansion-family.md",
+    "repo:catalog/curated.json"
+   ]
+  },
+  {
+   "key": "arsadd_schools",
+   "deps": [
+    "arsadd_welcome"
+   ],
+   "type": "checkmark",
+   "layout": {
+    "x": 3,
+    "y": -3,
+    "size": 1.0,
+    "shape": "circle"
+   },
+   "en_us": [
+    "Ars Elemental: schools of magic",
+    "Most glyphs belong to a school: the elemental Fire, Water, Air and Earth, and Manipulation, Conjuration, Abjuration and Anima. Equipment attuned to a school boosts or discounts the glyphs of that school.\n\nWhile Ars Elemental is installed some base glyphs also behave a little differently: Crush can process items with Sensitive, Cold Snap hurts freezing mobs more, Ignite melts ice into water, and summoned lightning no longer destroys items."
+   ],
+   "es_es": [
+    "Ars Elemental: escuelas de magia",
+    "La mayoría de los glifos pertenece a una escuela: las elementales Fuego, Agua, Aire y Tierra, más Manipulación, Conjuración, Abjuración y Ánima. El equipo afinado a una escuela potencia o abarata sus glifos.\n\nCon Ars Elemental instalado algunos glifos base cambian un poco: Triturar procesa ítems con Sensible, Golpe de frío daña más a quien se está congelando, Encender derrite el hielo en agua y los rayos invocados ya no destruyen ítems."
+   ],
+   "sources": [
+    "jar:ars_elemental-1.21.1-0.7.10.1.jar:assets/ars_elemental/lang/en_us.json#ars_elemental.page.schools",
+    "jar:ars_elemental-1.21.1-0.7.10.1.jar:assets/ars_elemental/lang/en_us.json#ars_elemental.page.elemental_tweaks"
+   ]
+  },
+  {
+   "key": "arsadd_lesser_focus",
+   "deps": [
+    "arsadd_schools"
+   ],
+   "type": "item",
+   "item": "ars_elemental:lesser_fire_focus",
+   "layout": {
+    "x": 6,
+    "y": -3,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "A Lesser Focus",
+    "Imbue an amethyst shard with three essences of one element and three gold ingots around it (5,000 Source) to get a Lesser Focus of that element. Wear it as a curio: glyphs of its school are amplified and cheaper, but the other elemental schools get weaker.\n\nEach focus also changes some glyphs. With Fire, Ignite inflicts Magic Burn and Summon Steed gives a Strider; with Air, Launch plus Extend Time makes mobs levitate; with Water, Freeze builds up to Frozen; with Earth, Gravity with Sensitive makes a gravity well."
+   ],
+   "es_es": [
+    "Un Foco menor",
+    "Imbuí un fragmento de amatista con tres esencias de un elemento y tres lingotes de oro alrededor (5.000 de Fuente) para obtener el Foco menor de ese elemento. Usalo como curio: los glifos de su escuela salen más fuertes y baratos, pero las otras escuelas elementales se debilitan.\n\nCada foco cambia además algunos glifos. Con Fuego, Encender aplica Quemadura mágica e Invocar corcel da un Strider; con Aire, Lanzar más Extender tiempo hace levitar; con Agua, Congelar acumula hasta Congelado; con Tierra, Gravedad con Sensible crea un pozo de gravedad."
+   ],
+   "sources": [
+    "jar:ars_elemental-1.21.1-0.7.10.1.jar:data/ars_elemental/recipe/lesser_fire_focus.json",
+    "jar:ars_elemental-1.21.1-0.7.10.1.jar:assets/ars_elemental/lang/en_us.json#ars_elemental.page1.fire_focus",
+    "jar:ars_elemental-1.21.1-0.7.10.1.jar:assets/ars_elemental/lang/en_us.json#ars_elemental.page2.fire_focus",
+    "jar:ars_elemental-1.21.1-0.7.10.1.jar:assets/ars_elemental/lang/en_us.json#ars_elemental.page2.air_focus",
+    "jar:ars_elemental-1.21.1-0.7.10.1.jar:assets/ars_elemental/lang/en_us.json#ars_elemental.page.freeze",
+    "jar:ars_elemental-1.21.1-0.7.10.1.jar:assets/ars_elemental/lang/en_us.json#ars_elemental.page.gravity"
+   ]
+  },
+  {
+   "key": "arsadd_mark",
+   "deps": [
+    "arsadd_lesser_focus"
+   ],
+   "type": "item",
+   "item": "ars_elemental:mark_of_mastery",
+   "optional": true,
+   "layout": {
+    "x": 9,
+    "y": -3,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Mark of Mastery and elemental armor",
+    "Imbue a Wilden Tribute with the eight essences around it, including Anima, for 10,000 Source: you get five Marks of Mastery. A Mark upgrades a Lesser Focus into its full Focus (5,000 Source); the notebook lists the penalty to other schools only for the lesser one, and the full Focus adds a bonus such as Mana Regen in its element's conditions.\n\nMarks also convert tier-3 Ars armor into elemental sets (a Mark, a netherite ingot and two essences, 7,000 Source per piece). A full set of one element soaks its element's damage and turns some of it into mana. Plan it for Act IV or later: netherite and a Chimera kill are the gates."
+   ],
+   "es_es": [
+    "Marca de maestría y armaduras elementales",
+    "Imbuí un Tributo Salvaje con las ocho esencias alrededor, incluida Ánima, por 10.000 de Fuente: salen cinco Marcas de maestría. Una Marca mejora un Foco menor a Foco completo (5.000 de Fuente); el cuaderno menciona la penalidad a las otras escuelas sólo para el menor, y el Foco completo suma un bono como Regeneración de maná en las condiciones de su elemento.\n\nLas Marcas también convierten armadura de Ars de nivel 3 en conjuntos elementales (una Marca, un lingote de netherita y dos esencias, 7.000 de Fuente por pieza). Un conjunto completo de un elemento absorbe el daño de su elemento y convierte parte en maná. Planealo para el acto IV o después: la netherita y matar a la Quimera son las puertas."
+   ],
+   "sources": [
+    "jar:ars_elemental-1.21.1-0.7.10.1.jar:data/ars_elemental/recipe/mark_of_mastery.json",
+    "jar:ars_elemental-1.21.1-0.7.10.1.jar:data/ars_elemental/recipe/air_focus.json",
+    "jar:ars_elemental-1.21.1-0.7.10.1.jar:data/ars_elemental/recipe/air_boots.json",
+    "jar:ars_elemental-1.21.1-0.7.10.1.jar:assets/ars_elemental/lang/en_us.json#ars_elemental.page1.mark_of_mastery",
+    "jar:ars_elemental-1.21.1-0.7.10.1.jar:assets/ars_elemental/lang/en_us.json#ars_elemental.page.armor_set.wip"
+   ]
+  },
+  {
+   "key": "arsadd_pouch",
+   "deps": [
+    "arsadd_schools"
+   ],
+   "type": "item",
+   "item": "ars_elemental:curio_bag",
+   "optional": true,
+   "layout": {
+    "x": 3,
+    "y": -6,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "QoL: the Trinkets Pouch",
+    "Craft a Trinkets Pouch: magebloom fiber around a chest. It stores magical trinkets and can be opened with its own key while it sits in the hotbar or a curio slot. Upgrade it later into the larger, dyeable Spellcaster Bag.\n\nAlso from Ars Elemental: the Urn of Endless Waters refills a linked cauldron with water for a little Source, and the Enchanter's Bangle can be attuned to one school to boost its damage."
+   ],
+   "es_es": [
+    "Comodidad: la Bolsa de accesorios",
+    "Crafteá una Bolsa de accesorios (Trinkets Pouch): fibra de magebloom alrededor de un cofre. Guarda accesorios mágicos y se abre con su propia tecla estando en la barra rápida o en una ranura de curio. Después se mejora a la Bolsa de hechicero, más grande y teñible.\n\nTambién de Ars Elemental: la Urna de aguas eternas rellena con agua un caldero enlazado por un poco de Fuente, y el Brazalete del encantador se afina a una escuela para subirle el daño."
+   ],
+   "sources": [
+    "jar:ars_elemental-1.21.1-0.7.10.1.jar:data/ars_elemental/recipe/curio_bag.json",
+    "jar:ars_elemental-1.21.1-0.7.10.1.jar:assets/ars_elemental/lang/en_us.json#ars_elemental.page1.curio_bag",
+    "jar:ars_elemental-1.21.1-0.7.10.1.jar:assets/ars_elemental/lang/en_us.json#ars_elemental.page.everfull_urn",
+    "jar:ars_elemental-1.21.1-0.7.10.1.jar:assets/ars_elemental/lang/en_us.json#ars_elemental.page1.base_bangle"
+   ]
+  },
+  {
+   "key": "arsadd_neg",
+   "deps": [
+    "arsadd_welcome"
+   ],
+   "type": "checkmark",
+   "optional": true,
+   "icon": "ars_nouveau:scribes_table",
+   "layout": {
+    "x": 3,
+    "y": 3,
+    "size": 1.0,
+    "shape": "circle"
+   },
+   "en_us": [
+    "Not Enough Glyphs",
+    "This addon adds glyphs to the same Scribe's Table. Highlights: contingency glyphs that fire a stored spell when something happens to the target (it teleports, falls, drops below a health threshold, dies, heals or burns); light and dark filters; Plow, which uses a hoe on blocks; Feed, which feeds the target from your inventory; and Propagate Plane, which spreads the rest of the spell over a flat area.\n\nOpen the codex at the table to see them with their costs; they follow the usual glyph tiers."
+   ],
+   "es_es": [
+    "Not Enough Glyphs",
+    "Este addon suma glifos a la misma Mesa de Escriba. Lo más útil: glifos de contingencia que disparan un hechizo guardado cuando le pasa algo al objetivo (se teletransporta, cae, baja de cierta vida, muere, se cura o se quema); filtros de luz y oscuridad; Arar, que usa una azada sobre bloques; Alimentar, que le da comida de tu inventario al objetivo; y Propagar plano, que extiende el resto del hechizo sobre un área plana.\n\nAbrí el códice en la mesa para verlos con sus costos; siguen los niveles de glifo de siempre."
+   ],
+   "sources": [
+    "jar:not_enough_glyphs-1.21.1-4.6.1.jar:assets/not_enough_glyphs/lang/en_us.json#not_enough_glyphs.glyph_desc.glyph_contingency_health",
+    "jar:not_enough_glyphs-1.21.1-4.6.1.jar:assets/not_enough_glyphs/lang/en_us.json#not_enough_glyphs.glyph_desc.glyph_plow",
+    "jar:not_enough_glyphs-1.21.1-4.6.1.jar:assets/not_enough_glyphs/lang/en_us.json#not_enough_glyphs.glyph_desc.glyph_feed",
+    "jar:not_enough_glyphs-1.21.1-4.6.1.jar:assets/not_enough_glyphs/lang/en_us.json#not_enough_glyphs.glyph_desc.glyph_propagate_plane"
+   ]
+  },
+  {
+   "key": "arsadd_motor",
+   "deps": [
+    "arsadd_welcome"
+   ],
+   "type": "item",
+   "item": "ars_technica:source_motor",
+   "layout": {
+    "x": 6,
+    "y": 0,
+    "size": 1.25,
+    "shape": "square"
+   },
+   "en_us": [
+    "Ars Technica: the Source Motor",
+    "Imbue a Create precision mechanism with four amethyst shards and four Source Gems into a Calibrated Precision Mechanism, then build the Source Motor (brass, cogwheels, an electron tube and that mechanism). It turns Source from jars nearby into Create rotation at the speed you set.\n\nThe pack tested it for real: a finite jar drives a shaft and the motor stops as soon as the jar is empty. Source is fuel here, not free power."
+   ],
+   "es_es": [
+    "Ars Technica: el Motor de Fuente",
+    "Imbuí un mecanismo de precisión de Create con cuatro fragmentos de amatista y cuatro gemas fuente para hacer un Mecanismo de precisión calibrado, y armá el Motor de Fuente (latón, engranajes, un tubo de electrones y ese mecanismo). Convierte la Fuente de frascos cercanos en rotación de Create a la velocidad que elijas.\n\nEl pack lo probó de verdad: un frasco finito mueve un eje y el motor se detiene apenas el frasco se vacía. La Fuente es combustible, no energía gratis."
+   ],
+   "sources": [
+    "jar:ars_technica-1.21.1-2.7.6.jar:data/ars_technica/recipe/source_motor.json",
+    "jar:ars_technica-1.21.1-2.7.6.jar:data/ars_technica/recipe/calibrated_precision_mechanism.json",
+    "repo:docs/design/ars-create-runtime-cases.md"
+   ]
+  },
+  {
+   "key": "arsadd_technica_glyphs",
+   "deps": [
+    "arsadd_motor"
+   ],
+   "type": "checkmark",
+   "optional": true,
+   "icon": "ars_technica:calibrated_precision_mechanism",
+   "layout": {
+    "x": 6,
+    "y": 3,
+    "size": 1.0,
+    "shape": "circle"
+   },
+   "en_us": [
+    "Ars Technica: processing glyphs",
+    "Ars Technica adds glyphs that run Create recipes on dropped items: Obliterate (crushing wheels, with Sensitive), Press, Fuse (mixing, heated with Smelt), Polish, Carve (cutting into stairs, walls or slabs), Pack (2x2 or 3x3 compacting) and Whirl, which washes, smokes, smelts or haunts items depending on the glyph after it.\n\nPut one on a Timer Spell Turret over a hopper and you have a Create machine that runs on Source instead of rotation."
+   ],
+   "es_es": [
+    "Ars Technica: glifos de procesado",
+    "Ars Technica suma glifos que hacen recetas de Create sobre ítems tirados: Obliterar (ruedas trituradoras, con Sensible), Prensar, Fusionar (mezcla; calentada con Fundir), Pulir, Tallar (cortar en escaleras, muros o losas), Empacar (compactar 2x2 o 3x3) y Remolino, que lava, ahúma, funde o embruja según el glifo que siga.\n\nPonelo en una Torreta con temporizador arriba de una tolva y tenés una máquina de Create que funciona con Fuente en vez de rotación."
+   ],
+   "sources": [
+    "jar:ars_technica-1.21.1-2.7.6.jar:assets/ars_technica/lang/en_us.json#ars_technica.glyph_desc.glyph_obliterate",
+    "jar:ars_technica-1.21.1-2.7.6.jar:assets/ars_technica/lang/en_us.json#ars_technica.glyph_desc.glyph_whirl",
+    "jar:ars_technica-1.21.1-2.7.6.jar:assets/ars_technica/lang/en_us.json#ars_technica.glyph_desc.glyph_fuse",
+    "jar:ars_technica-1.21.1-2.7.6.jar:assets/ars_technica/lang/en_us.json#ars_technica.effect_augment_desc.glyph_whirl_glyph_conjure_water"
+   ]
+  },
+  {
+   "key": "arsadd_creo",
+   "deps": [
+    "arsadd_technica_glyphs"
+   ],
+   "type": "item",
+   "item": "ars_creo:starbuncle_wheel",
+   "optional": true,
+   "layout": {
+    "x": 9,
+    "y": 3,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Ars Creo: Starbuncles on Create",
+    "Combine a Starbuncle charm with a water wheel into a Starbuncle Wheel: a small rotation source, faster with a gold block in front of it. Ars Creo also lets Ars blocks work on moving contraptions: turrets fire as they travel (the Enchanted one at every new block), Source Jars ride along, and a Display Link shows a jar's Source on a Display Board.\n\nPotions can be piped into Create fluid tanks, which makes big potion storage easy."
+   ],
+   "es_es": [
+    "Ars Creo: Carbuncles en Create",
+    "Combiná un amuleto de Carbuncle con una rueda hidráulica y sale la Rueda de Carbuncle: una fuente chica de rotación, más rápida con un bloque de oro enfrente. Ars Creo además deja que los bloques de Ars funcionen sobre contraptions en movimiento: las torretas disparan mientras viajan (la encantada, en cada bloque nuevo), los Frascos de Fuente viajan con ellas y un Display Link muestra la Fuente de un frasco en un Display Board.\n\nLas pociones se pueden pasar por caños a tanques de fluido de Create, así el almacenamiento grande de pociones sale fácil."
+   ],
+   "sources": [
+    "jar:ars_creo-1.21.1-5.4.0.jar:data/ars_creo/recipe/starbuncle_wheel.json",
+    "jar:ars_creo-1.21.1-5.4.0.jar:assets/ars_creo/lang/en_us.json#ars_creo.page1.starbuncle_wheel",
+    "jar:ars_creo-1.21.1-5.4.0.jar:assets/ars_creo/lang/en_us.json#ars_creo.page.behaviors",
+    "jar:ars_creo-1.21.1-5.4.0.jar:assets/ars_creo/lang/en_us.json#ars_creo.page1.ars_creo.fluid_tank"
+   ]
+  },
+  {
+   "key": "arsadd_ocultas",
+   "deps": [
+    "arsadd_motor"
+   ],
+   "type": "item",
+   "item": "ars_nouveau:mob_jar",
+   "icon": "occultism:book_of_binding_bound_foliot",
+   "layout": {
+    "x": 9,
+    "y": 0,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Ars Ocultas: spirits in jars",
+    "Capture an Occultism worker spirit (a Foliot Crusher, a Janitor) in a Containment Jar. Inside the jar it keeps working and does not decay. It picks up matching items in a 7x7 area around the jar, and hoppers, pipes and Starbuncles can push items into the jar. A Janitor in a jar pushes what it collects into an inventory next to it.\n\nThe pack verified the key case: a jarred Foliot crusher processes exactly one input per insert, with no duplication."
+   ],
+   "es_es": [
+    "Ars Ocultas: espíritus en frascos",
+    "Capturá un espíritu trabajador de Occultism (un Triturador Foliot, un Conserje) en un Tarro de contención. Adentro sigue trabajando y no se degrada. Junta los ítems que le sirven en un área de 7x7 alrededor del tarro, y tolvas, caños y Carbuncles pueden meterle ítems. Un Conserje en tarro deja lo que junta en un inventario pegado.\n\nEl pack verificó el caso clave: un triturador Foliot en tarro procesa exactamente una entrada por cada inserción, sin duplicar."
+   ],
+   "sources": [
+    "jar:ars_ocultas-1.21.1-2.6.1.jar:assets/ars_nouveau/patchouli_books/worn_notebook/en_us/entries/ars_ocultas/spirit_jar.json",
+    "repo:docs/design/ars-occultism-runtime-cases.md"
+   ]
+  },
+  {
+   "key": "arsadd_ocultas_gem",
+   "deps": [
+    "arsadd_ocultas"
+   ],
+   "type": "item",
+   "item": "occultism:spirit_attuned_gem",
+   "optional": true,
+   "layout": {
+    "x": 9,
+    "y": -6,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Tip: attuned gems without diamonds",
+    "Ars Ocultas adds an apparatus recipe for Occultism's Spirit Attuned Gem: a Source Gem in the center with conjuration and manipulation essences and a Demon's Dream essence (500 Source). Occultism's own route burns a diamond in spirit fire.\n\nThe Imbuement Chamber also swaps silver and gold both ways, with a manipulation essence and an attuned gem on the pedestals. Four attuned gems make the Spirit Attuned Crystal of the Spectral Lens."
+   ],
+   "es_es": [
+    "Tip: gemas afinadas sin diamantes",
+    "Ars Ocultas suma una receta del aparato para la Gema afinada al espíritu de Occultism: una gema fuente al centro con esencias de conjuración y de manipulación y una esencia de Sueño demoníaco (500 de Fuente). La ruta propia de Occultism quema un diamante en fuego espiritual.\n\nLa Cámara de imbuir además convierte plata y oro en los dos sentidos, con una esencia de manipulación y una gema afinada en los pedestales. Cuatro gemas afinadas hacen el Cristal afinado de la Lente espectral."
+   ],
+   "sources": [
+    "jar:ars_ocultas-1.21.1-2.6.1.jar:data/ars_ocultas/recipe/spirit_attuned_gem.json",
+    "jar:ars_ocultas-1.21.1-2.6.1.jar:data/ars_ocultas/recipe/gold_transmute.json",
+    "jar:ars_ocultas-1.21.1-2.6.1.jar:data/ars_ocultas/recipe/silver_transmute.json",
+    "repo:docs/design/act-four-recipes.md"
+   ]
+  },
+  {
+   "key": "arsadd_wixie_apparatus",
+   "deps": [
+    "arsadd_ocultas"
+   ],
+   "type": "item",
+   "item": "ars_nouveau:wixie_charm",
+   "layout": {
+    "x": 12,
+    "y": 0,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Ars Additions: Wixie Enchanting Apparatus",
+    "Sneak-use a Wixie Charm on an Enchanting Apparatus: it becomes a Wixie Enchanting Apparatus. Use the result item on it like a Wixie Cauldron and the Wixie fills the pedestals from nearby inventories and runs apparatus recipes by itself.\n\nThis is how you mass-produce essences, charms and threads without standing next to the pedestals."
+   ],
+   "es_es": [
+    "Ars Additions: Aparato de encantar con Wixie",
+    "Usá agachado un amuleto de Wixie sobre un Aparato de encantar: se vuelve un Aparato de encantar con Wixie. Usá sobre él el ítem resultado, como con el Caldero de Wixie, y la Wixie llena los pedestales con inventarios cercanos y hace las recetas del aparato sola.\n\nAsí producís en cantidad esencias, amuletos e hilos sin quedarte al lado de los pedestales."
+   ],
+   "sources": [
+    "jar:ars_additions-1.21.1-21.3.0.jar:assets/ars_additions/lang/en_us.json#ars_additions.page1.wixie_enchanting_apparatus"
+   ]
+  },
+  {
+   "key": "arsadd_charms",
+   "deps": [
+    "arsadd_wixie_apparatus"
+   ],
+   "type": "item",
+   "item": "ars_additions:undying_charm",
+   "optional": true,
+   "layout": {
+    "x": 12,
+    "y": 3,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Ars Additions: protective charms",
+    "Charms are curios with limited charges made in the apparatus around a glass bottle: Second Wind (a totem, crying obsidian, glowstone) saves you from a fatal hit, Featherlight casts feather fall after 3 blocks of falling, and others give night vision, fire immunity, water breathing, powdered-snow walking, void rescue or protection from the Warden's sonic boom.\n\nWhen the charges run out, recharge them in an Imbuement Chamber instead of crafting a new one."
+   ],
+   "es_es": [
+    "Ars Additions: amuletos protectores",
+    "Los amuletos (charms) son curios con cargas limitadas que se hacen en el aparato alrededor de una botella: Segundo aliento (un tótem, obsidiana llorosa, piedra luminosa) te salva de un golpe mortal, Pluma ligera te da caída lenta a los 3 bloques de caída, y otros dan visión nocturna, inmunidad al fuego, respiración acuática, caminar sobre nieve polvo, rescate del vacío o protección del rugido sónico del Warden.\n\nCuando se agotan las cargas, recargalos en una Cámara de imbuir en vez de hacer uno nuevo."
+   ],
+   "sources": [
+    "jar:ars_additions-1.21.1-21.3.0.jar:data/ars_additions/recipe/apparatus/undying_charm.json",
+    "jar:ars_additions-1.21.1-21.3.0.jar:data/ars_additions/recipe/apparatus/fall_prevention_charm.json",
+    "jar:ars_additions-1.21.1-21.3.0.jar:assets/ars_additions/lang/en_us.json#ars_additions.page1.charms",
+    "jar:ars_additions-1.21.1-21.3.0.jar:assets/ars_additions/lang/en_us.json#page.ars_additions.undying_charm.desc"
+   ]
+  },
+  {
+   "key": "arsadd_remote",
+   "deps": [
+    "arsadd_wixie_apparatus"
+   ],
+   "type": "item",
+   "item": "ars_additions:warp_index",
+   "optional": true,
+   "layout": {
+    "x": 12,
+    "y": -3,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Ars Additions: remote access and travel",
+    "The Ender Source Jar shares one pool of Source between every copy you place. The Warp Index (apparatus, on a Mundane Belt) opens your Storage Lectern from anywhere in the same dimension; the Stabilized version works across dimensions. The Advanced Dominion Wand links many blocks at once.\n\nIn the world look for Ruined Warp Portals (a chest with an Explorer's Warp Scroll) and Nexus Towers on Source leylines, whose Warp Nexus stores nine destinations."
+   ],
+   "es_es": [
+    "Ars Additions: acceso remoto y viajes",
+    "El Frasco de Fuente de Ender comparte una sola reserva de Fuente entre todas las copias que ponés. El Índice de teletransporte (aparato, sobre un Cinturón mundano) abre tu Atril de almacenamiento desde cualquier lugar de la misma dimensión; la versión estabilizada funciona entre dimensiones. La Varita de Dominio avanzada enlaza muchos bloques de una.\n\nEn el mundo buscá Portales de teletransporte en ruinas (un cofre con un Pergamino de explorador) y Torres Nexus sobre líneas de Fuente, cuyo Nexo guarda nueve destinos."
+   ],
+   "sources": [
+    "jar:ars_additions-1.21.1-21.3.0.jar:data/ars_additions/recipe/apparatus/warp_index.json",
+    "jar:ars_additions-1.21.1-21.3.0.jar:assets/ars_additions/lang/en_us.json#ars_additions.page.ender_source_jar",
+    "jar:ars_additions-1.21.1-21.3.0.jar:assets/ars_additions/lang/en_us.json#ars_additions.page1.warp_indexes",
+    "jar:ars_additions-1.21.1-21.3.0.jar:assets/ars_additions/lang/en_us.json#ars_additions.page1.ruined_warp_portals",
+    "jar:ars_additions-1.21.1-21.3.0.jar:assets/ars_additions/lang/en_us.json#ars_additions.page1.warp_nexus"
+   ]
+  },
+  {
+   "key": "arsadd_additions_quirks",
+   "deps": [
+    "arsadd_charms"
+   ],
+   "type": "checkmark",
+   "optional": true,
+   "icon": "ars_additions:source_spawner",
+   "layout": {
+    "x": 15,
+    "y": 3,
+    "size": 1.0,
+    "shape": "circle"
+   },
+   "en_us": [
+    "Quirks: spawner and chunk loading",
+    "Ars Additions' Source Spawner (a Drygmy Charm with a Summon Focus and a conjuration essence) spawns whatever creatures sit in nearby Containment Jars, paying Source per mob. It is native in this build; mind the server load.\n\nIts Ritual of Arcane Permanence force-loads chunks while fed Source, but its recipe ships disabled and the pack keeps it that way: ENTRELUMEN leaves chunk loading to FTB Chunks. The Locate Structure ritual is available."
+   ],
+   "es_es": [
+    "Particularidades: generador y carga de chunks",
+    "El Generador de Fuente de Ars Additions (un amuleto de Drygmy con un Foco de invocación y una esencia de conjuración) hace aparecer las criaturas que haya en Tarros de contención cercanos, pagando Fuente por cada una. En esta versión es nativo; cuidá la carga del servidor.\n\nSu Ritual de permanencia arcana mantiene chunks cargados mientras recibe Fuente, pero su receta viene desactivada y el pack la deja así: ENTRELUMEN deja la carga de chunks a FTB Chunks. El ritual de Localizar estructura sí está."
+   ],
+   "sources": [
+    "jar:ars_additions-1.21.1-21.3.0.jar:data/ars_additions/recipe/apparatus/source_spawner.json",
+    "jar:ars_additions-1.21.1-21.3.0.jar:assets/ars_additions/lang/en_us.json#ars_additions.page.source_spawner",
+    "jar:ars_additions-1.21.1-21.3.0.jar:assets/ars_additions/lang/en_us.json#ars_additions.ritual_desc.ritual_chunk_loading",
+    "repo:docs/design/magic-automation-family.md#Corrección del candidato de tarjetas AE2"
+   ]
+  },
+  {
+   "key": "arsadd_controle",
+   "deps": [
+    "arsadd_wixie_apparatus"
+   ],
+   "type": "item",
+   "item": "ars_controle:scryers_linkage",
+   "layout": {
+    "x": 15,
+    "y": 0,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Ars Controle: control and remote links",
+    "Ars Controle adds logic glyphs: filters by height (above, below, same level), Not, Or, Xor, Xnor and Random, plus Precise Delay, which waits 2 to the power of its Extend Time augments in ticks.\n\nIts blocks: the Scryer's Linkage lets machines interact with a linked block far away (items, fluids, energy, redstone); the Warping Spell Prism sends a spell projectile anywhere, even to another dimension; the Remote configures anything a Dominion Wand can, at range."
+   ],
+   "es_es": [
+    "Ars Controle: control y enlaces remotos",
+    "Ars Controle suma glifos lógicos: filtros por altura (arriba, abajo, mismo nivel), No, O, O exclusivo, Equivalencia y Azar, más Demora precisa, que espera 2 elevado a la cantidad de Extender tiempo en ticks.\n\nSus bloques: el Enlace del escudriñador (Scryer's Linkage) deja que las máquinas interactúen con un bloque enlazado lejos (ítems, fluidos, energía, redstone); el Prisma de hechizos teletransportador manda un proyectil a cualquier lado, incluso a otra dimensión; el Control remoto configura lo que puede una Varita de Dominio, a distancia."
+   ],
+   "sources": [
+    "jar:ars_controle-1.21.1-1.6.15.jar:assets/ars_controle/lang/en_us.json#ars_controle.glyph_desc.glyph_precise_delay",
+    "jar:ars_controle-1.21.1-1.6.15.jar:assets/ars_controle/lang/en_us.json#ars_controle.glyph_desc.glyph_filter_xor",
+    "jar:ars_controle-1.21.1-1.6.15.jar:assets/ars_controle/lang/en_us.json#ars_nouveau.page1.block.ars_controle.scryers_linkage",
+    "jar:ars_controle-1.21.1-1.6.15.jar:assets/ars_controle/lang/en_us.json#ars_nouveau.page1.block.ars_controle.warping_spell_prism"
+   ]
+  },
+  {
+   "key": "arsadd_stability",
+   "deps": [
+    "arsadd_controle"
+   ],
+   "type": "item",
+   "item": "ars_controle:temporal_stability_sensor",
+   "optional": true,
+   "layout": {
+    "x": 18,
+    "y": -3,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Tip: the Temporal Stability Sensor",
+    "Build a Temporal Stability Sensor in the apparatus (a clock with an ender eye and a Source Gem Block). With a comparator it outputs a signal that rises as the world gets closer to lagging.\n\nWire it to the Magebloom Bed of your Starbuncles, the redstone input of turrets or a brazier, and your farms switch off by themselves when the server struggles. On a shared server, everyone will thank you."
+   ],
+   "es_es": [
+    "Tip: el Sensor de estabilidad temporal",
+    "Armá un Sensor de estabilidad temporal en el aparato (un reloj con un ojo de ender y un Bloque de gemas fuente). Con un comparador da una señal que sube a medida que el mundo se acerca al lag.\n\nConectalo a la Cama de tus Carbuncles, a la entrada de redstone de las torretas o a un brasero, y tus granjas se apagan solas cuando el servidor sufre. En un servidor compartido, todos te lo van a agradecer."
+   ],
+   "sources": [
+    "jar:ars_controle-1.21.1-1.6.15.jar:data/ars_controle/recipe/temporal_stability_sensor.json",
+    "jar:ars_controle-1.21.1-1.6.15.jar:assets/ars_controle/lang/en_us.json#ars_nouveau.page1.block.ars_controle.temporal_stability_sensor"
+   ]
+  },
+  {
+   "key": "arsadd_arseng",
+   "deps": [
+    "arsadd_controle"
+   ],
+   "type": "item",
+   "item": "arseng:source_acceptor",
+   "optional": true,
+   "layout": {
+    "x": 18,
+    "y": 0,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Ars Énergistique: Source in AE2",
+    "With an AE2 network (Act III) you can store Source as a resource: Source Storage Cells (an apparatus-made Source Cell Housing plus a cell component), an ME Source Jar (a Source Jar with an ME interface and a manipulation essence) and the ME Source Converter, which turns Source into AE energy for the network.\n\nThe pack verified the converter: a relay feeding it from a finite jar powers an ME drive and the network shuts down when the Source runs out. It is a bridge, not a generator."
+   ],
+   "es_es": [
+    "Ars Énergistique: Fuente en AE2",
+    "Con una red AE2 (acto III) guardás la Fuente como un recurso más: Celdas de almacenamiento de Fuente (una Carcasa de celda de Fuente hecha en el aparato más un componente de celda), el Frasco de Fuente ME (un Frasco de Fuente con una interfaz ME y una esencia de manipulación) y el Conversor de Fuente ME, que pasa Fuente a energía AE para la red.\n\nEl pack verificó el conversor: un repetidor que lo alimenta desde un frasco finito prende un drive ME y la red se apaga cuando se acaba la Fuente. Es un puente, no un generador."
+   ],
+   "sources": [
+    "jar:arseng-2.1.1-beta.jar:data/arseng/recipe/source_acceptor.json",
+    "jar:arseng-2.1.1-beta.jar:data/arseng/recipe/me_source_jar.json",
+    "jar:arseng-2.1.1-beta.jar:data/arseng/recipe/source_cell_housing.json",
+    "repo:docs/design/ars-ae2-runtime-cases.md"
+   ]
+  },
+  {
+   "key": "arsadd_mania",
+   "deps": [
+    "arsadd_remote"
+   ],
+   "type": "item",
+   "item": "starbunclemania:fluid_jar",
+   "optional": true,
+   "layout": {
+    "x": 15,
+    "y": -6,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "StarbuncleMania: fluids, energy and gas",
+    "Craft a Fluid Jar (a water essence, glass, a gold ingot and cascading archwood), 16 buckets of storage. Put accessories on a Starbuncle to change its job: the Starbucket moves fluids between tanks, the StarbAttery moves FE between energy blocks, the Starballoon moves Mekanism chemicals. Link them with the Dominion Wand like item routes.\n\nMore: the Source Condenser turns jar Source into a liquid, the Fluid Sourcelink burns fluids into Source, and a Wixie placed on a furnace, stonecutter or cooking pot works that station."
+   ],
+   "es_es": [
+    "StarbuncleMania: fluidos, energía y gas",
+    "Crafteá un Frasco de fluidos (esencia de agua, vidrio, un lingote de oro y Archwood cascadeante), 16 baldes de capacidad. Ponele accesorios a un Carbuncle para cambiarle el trabajo: el Starbucket lleva fluidos entre tanques, el StarbAttery lleva FE entre bloques de energía, el Starballoon lleva químicos de Mekanism. Se enlazan con la Varita de Dominio como las rutas de ítems.\n\nMás: el Condensador de Fuente vuelve líquida la Fuente de los frascos, el Generador de fluidos quema fluidos para hacer Fuente, y una Wixie puesta sobre un horno, cortapiedras u olla trabaja esa estación."
+   ],
+   "sources": [
+    "jar:starbunclemania-1.21.1-1.5.7.jar:data/starbunclemania/recipe/fluid_jar.json",
+    "jar:starbunclemania-1.21.1-1.5.7.jar:assets/starbunclemania/lang/en_us.json#starbunclemania.page.fluid_jar",
+    "jar:starbunclemania-1.21.1-1.5.7.jar:assets/starbunclemania/lang/en_us.json#starbunclemania.bucket.tooltip",
+    "jar:starbunclemania-1.21.1-1.5.7.jar:assets/starbunclemania/lang/en_us.json#starbunclemania.battery.tooltip",
+    "jar:starbunclemania-1.21.1-1.5.7.jar:assets/starbunclemania/lang/en_us.json#starbunclemania.balloon.tooltip",
+    "jar:starbunclemania-1.21.1-1.5.7.jar:assets/starbunclemania/lang/en_us.json#starbunclemania.page.source_condenser",
+    "jar:starbunclemania-1.21.1-1.5.7.jar:assets/starbunclemania/lang/en_us.json#starbunclemania.adv.desc.wixie_cook"
+   ]
+  },
+  {
+   "key": "arsadd_polymorphia",
+   "deps": [
+    "arsadd_additions_quirks"
+   ],
+   "type": "checkmark",
+   "optional": true,
+   "icon": "ars_nouveau:enchanting_apparatus",
+   "layout": {
+    "x": 18,
+    "y": 3,
+    "size": 1.0,
+    "shape": "circle"
+   },
+   "en_us": [
+    "QoL: Ars Polymorphia",
+    "When two apparatus or imbuement recipes share the same inputs, Ars Polymorphia lets the Polymorph mod show a button to pick which output you want, instead of whichever recipe loaded first.\n\nIf an apparatus gives you a surprise item, look for the Polymorph selector before blaming your pedestals."
+   ],
+   "es_es": [
+    "Comodidad: Ars Polymorphia",
+    "Cuando dos recetas del aparato o de imbuir comparten las mismas entradas, Ars Polymorphia deja que el mod Polymorph muestre un botón para elegir qué resultado querés, en vez del que haya cargado primero.\n\nSi el aparato te da un ítem inesperado, buscá el selector de Polymorph antes de culpar a los pedestales."
+   ],
+   "sources": [
+    "repo:docs/design/arcane-expansion-family.md",
+    "repo:catalog/curated.json#ars_polymorphia"
+   ]
+  },
+  {
+   "key": "arsadd_mastery",
+   "deps": [
+    "arsadd_arseng",
+    "arsadd_motor"
+   ],
+   "type": "checkmark",
+   "layout": {
+    "x": 21,
+    "y": 0,
+    "size": 2.0,
+    "shape": "gear"
+   },
+   "en_us": [
+    "Mastery: Ars wired into everything",
+    "A complete Ars base talks to the rest of the pack: Source Motors spinning Create shafts, spirits working in jars, a Wixie running the apparatus, Source stored in AE2 and Starbuncles carrying fluids and power.\n\nFrom here the magic path continues with Occultism, Malum and the rest; see «Magic in ENTRELUMEN» for how they fit together."
+   ],
+   "es_es": [
+    "Maestría: Ars conectado a todo",
+    "Una base de Ars completa conversa con el resto del pack: Motores de Fuente girando ejes de Create, espíritus trabajando en tarros, una Wixie manejando el aparato, Fuente guardada en AE2 y Carbuncles llevando fluidos y energía.\n\nDesde acá el camino mágico sigue con Occultism, Malum y los demás; mirá «Magia en ENTRELUMEN» para ver cómo encajan."
+   ],
+   "sources": [
+    "repo:docs/design/magic-automation-family.md"
+   ]
+  }
+ ]
+}

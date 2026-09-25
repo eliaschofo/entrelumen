@@ -1,0 +1,655 @@
+{
+ "chapter": "guide_malum",
+ "group": "magic",
+ "act": "III",
+ "icon": "malum:spirit_altar",
+ "title": {
+  "en_us": "Malum: Soul Research",
+  "es_es": "Malum: investigación de almas"
+ },
+ "subtitle": {
+  "en_us": "Scythes, spirit crystals, the Spirit Altar, soul-touched metals and totem rites.",
+  "es_es": "Guadañas, cristales de espíritu, el Altar espiritual, metales que tocan el alma y ritos de tótem."
+ },
+ "quests": [
+  {
+   "key": "malum_welcome",
+   "deps": [],
+   "type": "checkmark",
+   "icon": "malum:encyclopedia_arcana",
+   "layout": {
+    "x": 0,
+    "y": 0,
+    "size": 2.0,
+    "shape": "hexagon"
+   },
+   "en_us": [
+    "Malum: the magic of souls",
+    "Malum studies the soul. With a scythe you shatter the souls of the creatures you kill into spirit crystals, and then you infuse those spirits into items at a Spirit Altar: new metals, trinkets, armor, and totems that change the world around them.\n\nIn ENTRELUMEN Malum is the soul half of two Act IV components: the Spectral Lens needs two Arcane Spirits, and the Containment Seal needs two Soulstained Steel ingots. Start it in Act III so the spirits are waiting when you arrive."
+   ],
+   "es_es": [
+    "Malum: la magia de las almas",
+    "Malum estudia el alma. Con una guadaña rompés las almas de las criaturas que matás en cristales de espíritu, y después infundís esos espíritus en ítems en un Altar espiritual: metales nuevos, accesorios, armaduras y tótems que cambian el mundo a su alrededor.\n\nEn ENTRELUMEN Malum es la mitad «alma» de dos componentes del acto IV: la Lente espectral pide dos Espíritus arcanos y el Sello de contención, dos lingotes de Acero manchado de alma. Empezalo en el acto III para que los espíritus te estén esperando."
+   ],
+   "sources": [
+    "jar:malum-1.21.1-1.8.2.jar:assets/malum/lang/en_us.json#malum.gui.book.entry.page.text.introduction.4",
+    "repo:pack/kubejs/server_scripts/entrelumen_integration_recipes.js#spectral_archive",
+    "repo:pack/kubejs/server_scripts/entrelumen_integration_recipes.js#sealed_memory",
+    "repo:docs/design/mod-integration.md"
+   ]
+  },
+  {
+   "key": "malum_soulstone",
+   "deps": [
+    "malum_welcome"
+   ],
+   "type": "item",
+   "item": "malum:refined_soulstone",
+   "count": 8,
+   "layout": {
+    "x": 3,
+    "y": 0,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Soulstone",
+    "Mine Soulstone ore underground (there is a deepslate variant too) and smelt the raw soulstone: each piece gives two Refined Soulstone. It looks mundane until refined, and it is the base of everything in Malum.\n\nYou will want plenty: the scythe, the altar, the Encyclopedia and every Soulstained Steel ingot (four refined soulstone each) use it."
+   ],
+   "es_es": [
+    "Piedra de alma",
+    "Picá mena de Piedra de alma bajo tierra (también hay variante de pizarra profunda) y fundí la piedra de alma cruda: cada una da dos Piedras de alma refinadas. Parece común hasta que se refina, y es la base de todo en Malum.\n\nVas a querer bastante: la guadaña, el altar, la Enciclopedia y cada lingote de Acero manchado de alma (cuatro piedras refinadas cada uno) la usan."
+   ],
+   "sources": [
+    "jar:malum-1.21.1-1.8.2.jar:data/malum/recipe/soulstone_from_raw_smelting.json",
+    "jar:malum-1.21.1-1.8.2.jar:assets/malum/lang/en_us.json#malum.gui.book.entry.page.text.soulstone.2",
+    "jar:malum-1.21.1-1.8.2.jar:assets/malum/lang/en_us.json#malum.gui.book.entry.page.text.spirit_crystals.2"
+   ]
+  },
+  {
+   "key": "malum_encyclopedia",
+   "deps": [
+    "malum_soulstone"
+   ],
+   "type": "item",
+   "item": "malum:encyclopedia_arcana",
+   "layout": {
+    "x": 3,
+    "y": -3,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Encyclopedia Arcana",
+    "Craft the Encyclopedia Arcana from a book and a Refined Soulstone. It is Malum's guide, written as a researcher's notes; every entry shows its infusion with the spirits and extra items it needs.\n\nThe entries form a tree: the ones near the top are what this chapter follows."
+   ],
+   "es_es": [
+    "Enciclopedia Arcana",
+    "Crafteá la Enciclopedia Arcana con un libro y una Piedra de alma refinada. Es la guía de Malum, escrita como notas de una investigadora; cada entrada muestra su infusión con los espíritus y los ítems extra que pide.\n\nLas entradas forman un árbol: las de arriba son las que sigue este capítulo."
+   ],
+   "sources": [
+    "jar:malum-1.21.1-1.8.2.jar:data/malum/recipe/encyclopedia_arcana.json",
+    "jar:malum-1.21.1-1.8.2.jar:assets/malum/lang/en_us.json#malum.gui.book.entry.page.text.introduction.2"
+   ]
+  },
+  {
+   "key": "malum_scythe",
+   "deps": [
+    "malum_soulstone"
+   ],
+   "type": "item",
+   "item": "malum:crude_scythe",
+   "layout": {
+    "x": 6,
+    "y": 0,
+    "size": 1.25,
+    "shape": "square"
+   },
+   "en_us": [
+    "Crude Scythe",
+    "Craft the Crude Scythe: three iron ingots, two sticks and a Refined Soulstone at the blade. Kill creatures with it and their souls shatter into spirit crystals that fly to you.\n\nIt is weaker than a sword but sweeps wide. The Spirit Plunder enchantment makes more spirits drop, at some extra durability cost."
+   ],
+   "es_es": [
+    "Guadaña cruda",
+    "Crafteá la Guadaña cruda: tres lingotes de hierro, dos palos y una Piedra de alma refinada en la hoja. Matá criaturas con ella y sus almas se rompen en cristales de espíritu que vuelan hacia vos.\n\nPega menos que una espada pero barre en área. El encantamiento Saqueo espiritual hace caer más espíritus, a cambio de algo más de durabilidad."
+   ],
+   "sources": [
+    "jar:malum-1.21.1-1.8.2.jar:data/malum/recipe/crude_scythe.json",
+    "jar:malum-1.21.1-1.8.2.jar:assets/malum/lang/en_us.json#malum.gui.book.entry.page.text.scythes.1",
+    "jar:malum-1.21.1-1.8.2.jar:assets/malum/lang/en_us.json#malum.gui.book.entry.page.text.scythes.2",
+    "jar:malum-1.21.1-1.8.2.jar:assets/malum/lang/en_us.json#malum.gui.book.entry.page.text.scythes.enchanting.spirit_plunder.1"
+   ]
+  },
+  {
+   "key": "malum_spirits",
+   "deps": [
+    "malum_scythe"
+   ],
+   "type": "item",
+   "item": "malum:arcane_spirit",
+   "count": 8,
+   "layout": {
+    "x": 9,
+    "y": 0,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Eight kinds of spirit",
+    "Each creature gives specific spirits. Sacred: passive animals (cows, sheep, pigs, villagers). Wicked: undead and hostile mobs. Arcane: witches, skeletons, phantoms, blazes. Earthen: zombies, cows, sheep. Infernal: creepers, blazes, piglins. Aerial: chickens, spiders, bees, phantoms. Aqueous: drowned, squid, fish. Eldritch: endermen, shulkers, evokers.\n\nA witch gives two Arcane and two Wicked, a zombie one Earthen and one Wicked. Gather at least eight Arcane Spirits; you need them from the very first infusion."
+   ],
+   "es_es": [
+    "Ocho clases de espíritu",
+    "Cada criatura da espíritus concretos. Sagrado: animales pasivos (vacas, ovejas, cerdos, aldeanos). Malévolo: no-muertos y hostiles. Arcano: brujas, esqueletos, phantoms, blazes. Terrestre: zombis, vacas, ovejas. Infernal: creepers, blazes, piglins. Aéreo: gallinas, arañas, abejas, phantoms. Acuoso: ahogados, calamares, peces. Eldritch: endermans, shulkers, evocadores.\n\nUna bruja da dos Arcanos y dos Malévolos, un zombi un Terrestre y un Malévolo. Juntá al menos ocho Espíritus arcanos; los necesitás desde la primera infusión."
+   ],
+   "sources": [
+    "jar:malum-1.21.1-1.8.2.jar:data/malum/spirit_data/entity/witch.json",
+    "jar:malum-1.21.1-1.8.2.jar:data/malum/spirit_data/entity/zombie.json",
+    "jar:malum-1.21.1-1.8.2.jar:data/malum/spirit_data/entity/skeleton.json",
+    "jar:malum-1.21.1-1.8.2.jar:data/malum/spirit_data/entity/creeper.json",
+    "jar:malum-1.21.1-1.8.2.jar:data/malum/spirit_data/entity/cow.json",
+    "jar:malum-1.21.1-1.8.2.jar:data/malum/spirit_data/entity/enderman.json",
+    "jar:malum-1.21.1-1.8.2.jar:data/malum/spirit_data/entity/drowned.json",
+    "jar:malum-1.21.1-1.8.2.jar:data/malum/spirit_data/entity/chicken.json",
+    "jar:malum-1.21.1-1.8.2.jar:assets/malum/lang/en_us.json#malum.gui.book.entry.page.text.primary_arcana.arcane.2"
+   ]
+  },
+  {
+   "key": "malum_pouch",
+   "deps": [
+    "malum_altar"
+   ],
+   "type": "item",
+   "item": "malum:soulwoven_pouch",
+   "optional": true,
+   "layout": {
+    "x": 9,
+    "y": 3,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Tip: the Soulwoven Pouch",
+    "Spirits clutter the inventory fast. Infuse wool with three Aerial and three Earthen spirits into Soulwoven Silk, and craft a Soulwoven Pouch (string and silk). It works like a bundle that picks up spirit crystals by itself.\n\nFeed it with rot and it becomes the Ravenous Pouch, which snatches any item matching what it stores."
+   ],
+   "es_es": [
+    "Tip: la Bolsa tejida con alma",
+    "Los espíritus llenan el inventario enseguida. Infundí lana con tres espíritus Aéreos y tres Terrestres para hacer Seda tejida con alma y crafteá una Bolsa tejida con alma (hilo y seda). Funciona como un saquito que junta solo los cristales de espíritu.\n\nSi la fusionás con podredumbre se vuelve la Bolsa voraz, que agarra cualquier ítem igual a lo que guarda."
+   ],
+   "sources": [
+    "jar:malum-1.21.1-1.8.2.jar:data/malum/recipe/spirit_infusion/soulwoven_silk.json",
+    "jar:malum-1.21.1-1.8.2.jar:data/malum/recipe/soulwoven_pouch.json",
+    "jar:malum-1.21.1-1.8.2.jar:assets/malum/lang/en_us.json#malum.gui.book.entry.page.text.soulwoven_pouch.1",
+    "jar:malum-1.21.1-1.8.2.jar:assets/malum/lang/en_us.json#malum.gui.book.entry.page.text.soulwoven_pouch.ravenous_pouch.1"
+   ]
+  },
+  {
+   "key": "malum_runewood",
+   "deps": [
+    "malum_scythe"
+   ],
+   "type": "item",
+   "item": "malum:runewood_log",
+   "count": 8,
+   "layout": {
+    "x": 6,
+    "y": -3,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Runewood",
+    "Find Runewood trees in open plains and sometimes in forests; their orange-yellow leaves give them away. Bring logs and saplings home.\n\nStrip a log that has sap on it and bottle the Runic Sap: a healing drink, and sapballs work as slimeballs in most recipes. Smelted runewood gives Arcane Charcoal, which burns longer than normal charcoal."
+   ],
+   "es_es": [
+    "Runewood",
+    "Buscá árboles de Runewood en llanuras abiertas y a veces en bosques; sus hojas naranja amarillentas los delatan. Llevá troncos y brotes a tu base.\n\nPelá un tronco que tenga savia y embotellá la Savia rúnica: una bebida curativa, y las bolas de savia sirven como bolas de slime en casi todas las recetas. La Runewood fundida da Carbón arcano, que dura más que el carbón vegetal."
+   ],
+   "sources": [
+    "jar:malum-1.21.1-1.8.2.jar:assets/malum/lang/en_us.json#malum.gui.book.entry.page.text.runewood.2",
+    "jar:malum-1.21.1-1.8.2.jar:assets/malum/lang/en_us.json#malum.gui.book.entry.page.text.runewood.runic_sap.1",
+    "jar:malum-1.21.1-1.8.2.jar:assets/malum/lang/en_us.json#malum.gui.book.entry.page.text.runewood.runic_sap.3",
+    "jar:malum-1.21.1-1.8.2.jar:assets/malum/lang/en_us.json#malum.gui.book.entry.page.text.runewood.arcane_charcoal.1",
+    "jar:malum-1.21.1-1.8.2.jar:data/malum/recipe/arcane_charcoal_from_runewood.json"
+   ]
+  },
+  {
+   "key": "malum_altar",
+   "deps": [
+    "malum_spirits",
+    "malum_runewood"
+   ],
+   "type": "item",
+   "item": "malum:spirit_altar",
+   "layout": {
+    "x": 12,
+    "y": 0,
+    "size": 1.5,
+    "shape": "hexagon"
+   },
+   "en_us": [
+    "Spirit Altar",
+    "Build the Spirit Altar: runewood planks, gold ingots and a Refined Soulstone. Put the item to infuse on the altar and the required spirits in it; extra ingredients go on Runewood item pedestals or stands within 4 blocks.\n\nThe spirits flow into the central item and the extra items are pulled in one by one. It is slow on purpose; hallowed obelisks speed it up later."
+   ],
+   "es_es": [
+    "Altar espiritual",
+    "Armá el Altar espiritual: tablones de Runewood, lingotes de oro y una Piedra de alma refinada. Poné el ítem a infundir sobre el altar y los espíritus que pide adentro; los ingredientes extra van en pedestales o soportes de Runewood a 4 bloques.\n\nLos espíritus fluyen hacia el ítem central y los extra se absorben de a uno. Es lento a propósito; los obeliscos de oro sagrado lo aceleran más adelante."
+   ],
+   "sources": [
+    "jar:malum-1.21.1-1.8.2.jar:data/malum/recipe/spirit_altar.json",
+    "jar:malum-1.21.1-1.8.2.jar:data/malum/recipe/runewood_item_pedestal.json",
+    "jar:malum-1.21.1-1.8.2.jar:assets/malum/lang/en_us.json#malum.gui.book.entry.page.text.spirit_infusion.1",
+    "jar:malum-1.21.1-1.8.2.jar:assets/malum/lang/en_us.json#malum.gui.book.entry.page.text.spirit_infusion.2",
+    "jar:malum-1.21.1-1.8.2.jar:assets/malum/lang/en_us.json#malum.gui.book.entry.page.text.spirit_infusion.3"
+   ]
+  },
+  {
+   "key": "malum_hex_ash",
+   "deps": [
+    "malum_altar"
+   ],
+   "type": "item",
+   "item": "malum:hex_ash",
+   "count": 8,
+   "layout": {
+    "x": 15,
+    "y": 3,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "First infusion: Hex Ash",
+    "Infuse gunpowder with one Arcane Spirit: Hex Ash. It is the first product of the altar and a common extra ingredient (totem bases, the crucible, impetus, the steel scythe).\n\nMake a stack while you learn the altar's rhythm."
+   ],
+   "es_es": [
+    "Primera infusión: Ceniza Hex",
+    "Infundí pólvora con un Espíritu arcano: Ceniza Hex. Es el primer producto del altar y un ingrediente extra frecuente (bases de tótem, el crisol, el impulso, la guadaña de acero).\n\nHacé una pila mientras aprendés el ritmo del altar."
+   ],
+   "sources": [
+    "jar:malum-1.21.1-1.8.2.jar:data/malum/recipe/spirit_infusion/hex_ash.json",
+    "jar:malum-1.21.1-1.8.2.jar:assets/malum/lang/en_us.json#malum.gui.book.entry.page.text.spirit_infusion.hex_ash.1"
+   ]
+  },
+  {
+   "key": "malum_hallowed",
+   "deps": [
+    "malum_altar"
+   ],
+   "type": "item",
+   "item": "malum:spirit_jar",
+   "count": 2,
+   "layout": {
+    "x": 15,
+    "y": -3,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Hallowed Gold and Spirit Jars",
+    "Infuse a gold ingot with two Sacred and one Arcane spirit, plus four quartz on pedestals: Hallowed Gold, the perfect conductor for spirits. Craft Spirit Jars (hallowed gold over glass).\n\nA jar stores a near-infinite amount of one spirit type. Keep one jar per spirit next to the altar and your inventory stays clean."
+   ],
+   "es_es": [
+    "Oro sagrado y Frascos espirituales",
+    "Infundí un lingote de oro con dos espíritus Sagrados y uno Arcano, más cuatro cuarzos en pedestales: Oro sagrado, el conductor perfecto para los espíritus. Crafteá Frascos espirituales (oro sagrado sobre vidrio).\n\nUn frasco guarda una cantidad casi infinita de un solo tipo de espíritu. Tené un frasco por espíritu junto al altar y tu inventario queda limpio."
+   ],
+   "sources": [
+    "jar:malum-1.21.1-1.8.2.jar:data/malum/recipe/spirit_infusion/hallowed_gold_ingot.json",
+    "jar:malum-1.21.1-1.8.2.jar:data/malum/recipe/spirit_jar.json",
+    "jar:malum-1.21.1-1.8.2.jar:assets/malum/lang/en_us.json#malum.gui.book.entry.page.text.spirit_metals.hallowed_gold.1",
+    "jar:malum-1.21.1-1.8.2.jar:assets/malum/lang/en_us.json#malum.gui.book.entry.page.text.spirit_jar.1"
+   ]
+  },
+  {
+   "key": "malum_steel",
+   "deps": [
+    "malum_hallowed",
+    "malum_hex_ash"
+   ],
+   "type": "item",
+   "item": "malum:soul_stained_steel_ingot",
+   "count": 2,
+   "layout": {
+    "x": 18,
+    "y": 0,
+    "size": 1.5,
+    "shape": "hexagon"
+   },
+   "en_us": [
+    "Soulstained Steel",
+    "Infuse an iron ingot with three Wicked, one Earthen and one Arcane spirit, plus four Refined Soulstone on pedestals: one Soulstained Steel ingot. Anything made of it strikes the soul directly.\n\nMake at least two: the Act IV Containment Seal takes two Soulstained Steel, two EvilCraft dark gems and a Spectral Lens. Zombies and witches cover almost all the spirits you need."
+   ],
+   "es_es": [
+    "Acero manchado de alma",
+    "Infundí un lingote de hierro con tres espíritus Malévolos, uno Terrestre y uno Arcano, más cuatro Piedras de alma refinadas en pedestales: un lingote de Acero manchado de alma. Todo lo que se hace con él golpea directamente el alma.\n\nHacé al menos dos: el Sello de contención del acto IV lleva dos de Acero manchado de alma, dos gemas oscuras de EvilCraft y una Lente espectral. Zombis y brujas cubren casi todos los espíritus que necesitás."
+   ],
+   "sources": [
+    "jar:malum-1.21.1-1.8.2.jar:data/malum/recipe/spirit_infusion/soul_stained_steel_ingot.json",
+    "jar:malum-1.21.1-1.8.2.jar:assets/malum/lang/en_us.json#malum.gui.book.entry.page.text.spirit_metals.soul_stained_steel.1",
+    "repo:pack/kubejs/server_scripts/entrelumen_integration_recipes.js#sealed_memory",
+    "repo:docs/design/act-four-recipes.md"
+   ]
+  },
+  {
+   "key": "malum_steel_gear",
+   "deps": [
+    "malum_steel"
+   ],
+   "type": "item",
+   "item": "malum:soul_stained_steel_scythe",
+   "optional": true,
+   "layout": {
+    "x": 21,
+    "y": 3,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Soulstained gear",
+    "Upgrade the Crude Scythe in the altar (four Soulstained Steel, two Hex Ash, four Refined Soulstone and 16 Earthen, 8 Wicked, 8 Arcane spirits); it keeps its enchantments. Soulstained armor starts from iron pieces with the same spirit trio.\n\nThe Encyclopedia warns that wearing raw soul-touching metal is dangerous, so the armor carries Soul Ward, a barrier that absorbs part of incoming damage and recharges."
+   ],
+   "es_es": [
+    "Equipo manchado de alma",
+    "Mejorá la Guadaña cruda en el altar (cuatro de Acero manchado de alma, dos Cenizas Hex, cuatro Piedras de alma refinadas y 16 Terrestres, 8 Malévolos y 8 Arcanos); conserva sus encantamientos. La armadura manchada de alma arranca de piezas de hierro con el mismo trío de espíritus.\n\nLa Enciclopedia avisa que usar metal que toca el alma es peligroso, así que la armadura lleva Guarda de alma, una barrera que absorbe parte del daño y se recarga."
+   ],
+   "sources": [
+    "jar:malum-1.21.1-1.8.2.jar:data/malum/recipe/spirit_infusion/soul_stained_steel_scythe.json",
+    "jar:malum-1.21.1-1.8.2.jar:data/malum/recipe/spirit_infusion/soul_stained_steel_chestplate.json",
+    "jar:malum-1.21.1-1.8.2.jar:assets/malum/lang/en_us.json#malum.gui.book.entry.page.text.spirit_metals.soul_stained_steel.2",
+    "jar:malum-1.21.1-1.8.2.jar:assets/malum/lang/en_us.json#malum.gui.book.entry.page.text.reactive_trinkets.ring_of_manaweaving.1"
+   ]
+  },
+  {
+   "key": "malum_rocks",
+   "deps": [
+    "malum_hallowed"
+   ],
+   "type": "item",
+   "item": "malum:twisted_rock",
+   "count": 8,
+   "layout": {
+    "x": 18,
+    "y": -3,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Tainted and Twisted Rock",
+    "Infuse sixteen stone with one Sacred and one Arcane spirit to get Tainted Rock, or with one Wicked and one Arcane for Twisted Rock. Tainted dissipates nearby magic, Twisted pushes it away; both make item pedestals and nice building blocks.\n\nYou need eight of each for the Spirit Crucible."
+   ],
+   "es_es": [
+    "Roca manchada y Roca torcida",
+    "Infundí dieciséis piedras con un espíritu Sagrado y uno Arcano para Roca manchada, o con uno Malévolo y uno Arcano para Roca torcida. La manchada disipa la magia cercana, la torcida la aleja; las dos hacen pedestales y buenos bloques de construcción.\n\nNecesitás ocho de cada una para el Crisol espiritual."
+   ],
+   "sources": [
+    "jar:malum-1.21.1-1.8.2.jar:data/malum/recipe/spirit_infusion/tainted_rock.json",
+    "jar:malum-1.21.1-1.8.2.jar:data/malum/recipe/spirit_infusion/twisted_rock.json",
+    "jar:malum-1.21.1-1.8.2.jar:assets/malum/lang/en_us.json#malum.gui.book.entry.page.text.spirit_stones.tainted_rock.1",
+    "jar:malum-1.21.1-1.8.2.jar:assets/malum/lang/en_us.json#malum.gui.book.entry.page.text.spirit_stones.twisted_rock.1"
+   ]
+  },
+  {
+   "key": "malum_crucible",
+   "deps": [
+    "malum_rocks"
+   ],
+   "type": "item",
+   "item": "malum:spirit_crucible",
+   "layout": {
+    "x": 21,
+    "y": -3,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Spirit Crucible and focusing",
+    "Infuse a furnace with eight Infernal and eight Aqueous spirits, plus two Hex Ash, eight Tainted and eight Twisted Rock: the Spirit Crucible. Feed it an Alchemical Impetus (made from Alchemical Calx, which comes from clay balls) and spirits, and it focuses them into materials: redstone, glowstone, gunpowder, quartz, amethyst, prismarine.\n\nThe impetus wears down with each cycle. Metal impetuses (iron, copper, gold, osmium and more) produce nodes that smelt into two thirds of an ingot in nuggets: slow, but it beats mining."
+   ],
+   "es_es": [
+    "Crisol espiritual y focalización",
+    "Infundí un horno con ocho espíritus Infernales y ocho Acuosos, más dos Cenizas Hex, ocho de Roca manchada y ocho de Roca torcida: el Crisol espiritual. Dale un Impulso alquímico (hecho con Calx alquímico, que sale de bolas de arcilla) y espíritus, y los focaliza en materiales: redstone, polvo de piedra luminosa, pólvora, cuarzo, amatista, prismarina.\n\nEl impulso se desgasta en cada ciclo. Los impulsos de metal (hierro, cobre, oro, osmio y más) dan nódulos que se funden en dos tercios de lingote en pepitas: lento, pero mejor que minar."
+   ],
+   "sources": [
+    "jar:malum-1.21.1-1.8.2.jar:data/malum/recipe/spirit_infusion/spirit_crucible.json",
+    "jar:malum-1.21.1-1.8.2.jar:data/malum/recipe/spirit_infusion/alchemical_calx.json",
+    "jar:malum-1.21.1-1.8.2.jar:data/malum/recipe/spirit_infusion/alchemical_impetus.json",
+    "jar:malum-1.21.1-1.8.2.jar:data/malum/recipe/spirit_crucible/redstone.json",
+    "jar:malum-1.21.1-1.8.2.jar:data/malum/recipe/spirit_crucible/node_focusing_iron.json",
+    "jar:malum-1.21.1-1.8.2.jar:assets/malum/lang/en_us.json#malum.gui.book.entry.page.text.spirit_focusing.1",
+    "jar:malum-1.21.1-1.8.2.jar:assets/malum/lang/en_us.json#malum.gui.book.entry.page.text.spirit_focusing.2",
+    "jar:malum-1.21.1-1.8.2.jar:assets/malum/lang/en_us.json#malum.gui.book.entry.page.text.focus_metals.2"
+   ]
+  },
+  {
+   "key": "malum_totems",
+   "deps": [
+    "malum_steel"
+   ],
+   "type": "item",
+   "item": "malum:runewood_totem_base",
+   "layout": {
+    "x": 21,
+    "y": 0,
+    "size": 1.25,
+    "shape": "square"
+   },
+   "en_us": [
+    "Totem magic: spirit rites",
+    "Infuse four runewood logs (plus planks, Hex Ash and two each of Aerial, Aqueous, Earthen, Infernal and Eldritch spirits) into Runewood Totem Bases. Engrave spirits into plain runewood logs, stack them above a base in the right order and the totem performs a Spirit Rite.\n\nRites affect nearby creatures or the world: healing, harming, Stone Ward, Howling Gale speed, nourishment, animals that grow faster, a locus that smelts blocks or speeds up furnaces. An axe strips a wrong rune off a log."
+   ],
+   "es_es": [
+    "Magia de tótems: ritos de espíritu",
+    "Infundí cuatro troncos de Runewood (más tablones, Ceniza Hex y dos de cada espíritu Aéreo, Acuoso, Terrestre, Infernal y Eldritch) en Bases de tótem de Runewood. Grabá espíritus en troncos de Runewood comunes, apilalos sobre una base en el orden correcto y el tótem realiza un Rito de espíritu.\n\nLos ritos afectan a las criaturas cercanas o al mundo: curar, dañar, Guarda de piedra, velocidad de Vendaval aullante, nutrición, animales que crecen más rápido, un locus que funde bloques o acelera hornos. Un hacha borra una runa equivocada de un tronco."
+   ],
+   "sources": [
+    "jar:malum-1.21.1-1.8.2.jar:data/malum/recipe/spirit_infusion/runewood_totem_base.json",
+    "jar:malum-1.21.1-1.8.2.jar:assets/malum/lang/en_us.json#malum.gui.book.entry.page.text.totem_magic.2",
+    "jar:malum-1.21.1-1.8.2.jar:assets/malum/lang/en_us.json#malum.gui.book.entry.page.text.totem_magic.3",
+    "jar:malum-1.21.1-1.8.2.jar:assets/malum/lang/en_us.json#malum.gui.rite.rite_of_healing.effect",
+    "jar:malum-1.21.1-1.8.2.jar:assets/malum/lang/en_us.json#malum.gui.rite.rite_of_smelting.effect",
+    "jar:malum-1.21.1-1.8.2.jar:assets/malum/lang/en_us.json#malum.gui.rite.rite_of_the_stone_ward.effect"
+   ]
+  },
+  {
+   "key": "malum_blight",
+   "deps": [
+    "malum_totems"
+   ],
+   "type": "checkmark",
+   "optional": true,
+   "icon": "malum:soulwood_log",
+   "layout": {
+    "x": 24,
+    "y": 3,
+    "size": 1.0,
+    "shape": "circle"
+   },
+   "en_us": [
+    "Warning: Blight and Soulwood",
+    "The Undirected Rite scars a totem into Soulwood, and a Soulwood totem changes what every rite does. Soulwood trees spread Blight around them as they grow, turning the land into corrupted ground where scarstone can crop up.\n\nKeep Soulwood experiments in a sealed test area, away from your farms and builds. Cursed Sap from Soulwood buffs attack and resistance, a small reward for the mess."
+   ],
+   "es_es": [
+    "Advertencia: la Plaga y la Soulwood",
+    "El Rito sin dirección cicatriza un tótem en Soulwood, y un tótem de Soulwood cambia lo que hace cada rito. Los árboles de Soulwood esparcen Plaga (Blight) a su alrededor al crecer y vuelven el terreno suelo corrupto donde puede aparecer piedra cicatriz.\n\nHacé los experimentos con Soulwood en una zona de prueba cerrada, lejos de tus granjas y construcciones. La Savia maldita de Soulwood da ataque y resistencia, un premio chico por el lío."
+   ],
+   "sources": [
+    "jar:malum-1.21.1-1.8.2.jar:assets/malum/lang/en_us.json#malum.gui.book.entry.page.text.unchained_rite.1",
+    "jar:malum-1.21.1-1.8.2.jar:assets/malum/lang/en_us.json#malum.gui.book.entry.page.text.unchained_rite.2",
+    "jar:malum-1.21.1-1.8.2.jar:assets/malum/lang/en_us.json#malum.gui.book.entry.page.text.soulwood.blight.1",
+    "jar:malum-1.21.1-1.8.2.jar:assets/malum/lang/en_us.json#malum.gui.book.entry.page.text.soulwood.cursed_sap.1",
+    "jar:malum-1.21.1-1.8.2.jar:assets/malum/lang/en_us.json#malum.gui.book.entry.page.text.scarstone.creation.1"
+   ]
+  },
+  {
+   "key": "malum_obelisks",
+   "deps": [
+    "malum_crucible"
+   ],
+   "type": "item",
+   "item": "malum:runewood_obelisk",
+   "optional": true,
+   "layout": {
+    "x": 24,
+    "y": -3,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Tip: obelisks",
+    "Up to four Runewood Obelisks socketed with Hallowed Gold near the altar each speed infusion up by a fourth. A Brilliant Obelisk, socketed with Brilliance instead, counts as five bookshelves for an enchanting table.\n\nBrilliance is solid experience: clusters of it are found as ore where a soul faded into stone."
+   ],
+   "es_es": [
+    "Tip: obeliscos",
+    "Hasta cuatro Obeliscos de Runewood con Oro sagrado cerca del altar aceleran la infusión un cuarto cada uno. Un Obelisco brillante, con Brillantez en su lugar, cuenta como cinco bibliotecas para una mesa de encantamientos.\n\nLa Brillantez es experiencia sólida: sus cúmulos aparecen como mena donde un alma se desvaneció en la piedra."
+   ],
+   "sources": [
+    "jar:malum-1.21.1-1.8.2.jar:assets/malum/lang/en_us.json#malum.gui.book.entry.page.text.altar_acceleration.runewood_obelisk.1",
+    "jar:malum-1.21.1-1.8.2.jar:assets/malum/lang/en_us.json#malum.gui.book.entry.page.text.altar_acceleration.brilliant_obelisk.1",
+    "jar:malum-1.21.1-1.8.2.jar:assets/malum/lang/en_us.json#malum.gui.book.entry.page.text.brilliance.2"
+   ]
+  },
+  {
+   "key": "malum_trinkets",
+   "deps": [
+    "malum_totems"
+   ],
+   "type": "item",
+   "item": "malum:ring_of_curative_talent",
+   "optional": true,
+   "layout": {
+    "x": 24,
+    "y": 0,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Trinkets and runeworking",
+    "Craft a Gilded Ring (hallowed gold and leather) and infuse it: the Ring of Curative Talent heals you a little each time you collect spirits, the Ring of Manaweaving speeds up Soul Ward recovery, the Belt of the Prospector adds fortune-like Avarice. Ornate rings use Soulstained Steel.\n\nLater, the Runic Workbench lets you inscribe runes and wear them on a brooch, so you stop swapping jewelry before each task."
+   ],
+   "es_es": [
+    "Accesorios y trabajo rúnico",
+    "Crafteá un Anillo dorado (oro sagrado y cuero) e infundilo: el Anillo de talento curativo te cura un poco cada vez que juntás espíritus, el de Tejido de maná acelera la recarga de la Guarda de alma, el Cinturón del prospector suma Avaricia, parecida a Fortuna. Los anillos ornamentados usan Acero manchado de alma.\n\nMás adelante, el Banco de trabajo rúnico te deja inscribir runas y llevarlas en un broche, y así dejás de cambiar de joyas antes de cada tarea."
+   ],
+   "sources": [
+    "jar:malum-1.21.1-1.8.2.jar:data/malum/recipe/gilded_ring.json",
+    "jar:malum-1.21.1-1.8.2.jar:data/malum/recipe/spirit_infusion/ring_of_curative_talent.json",
+    "jar:malum-1.21.1-1.8.2.jar:data/malum/recipe/spirit_infusion/ring_of_manaweaving.json",
+    "jar:malum-1.21.1-1.8.2.jar:assets/malum/lang/en_us.json#malum.gui.book.entry.page.text.reactive_trinkets.ring_of_curative_talent.1",
+    "jar:malum-1.21.1-1.8.2.jar:assets/malum/lang/en_us.json#malum.gui.book.entry.page.text.belt_of_the_prospector.avarice.1",
+    "jar:malum-1.21.1-1.8.2.jar:assets/malum/lang/en_us.json#malum.gui.book.entry.page.text.runeworking.3"
+   ]
+  },
+  {
+   "key": "malum_repair",
+   "deps": [
+    "malum_trinkets"
+   ],
+   "type": "item",
+   "item": "malum:repair_pylon",
+   "optional": true,
+   "layout": {
+    "x": 27,
+    "y": 3,
+    "size": 1.0,
+    "shape": "diamond"
+   },
+   "en_us": [
+    "Repair Pylon",
+    "Infuse a Tainted Rock item pedestal into a Repair Pylon (16 Sacred, Aerial, Aqueous and Infernal). Fed spirits and a matching repair material, it repairs a damaged item on a nearby pedestal, stand or crucible without experience: about half the durability, three quarters for spirit-made gear.\n\nENTRELUMEN fixed its Occultism recipes: the four chalk repairs (gold, purple, red and white) failed to load upstream and now work with their original costs."
+   ],
+   "es_es": [
+    "Pilón de reparación",
+    "Infundí un pedestal de Roca manchada en un Pilón de reparación (16 Sagrados, Aéreos, Acuosos e Infernales). Con espíritus y un material de reparación adecuado, repara un ítem dañado en un pedestal, soporte o crisol cercano sin gastar experiencia: más o menos la mitad de la durabilidad, tres cuartos si es equipo hecho con espíritus.\n\nENTRELUMEN arregló sus recetas de Occultism: las cuatro reparaciones de tiza (dorada, violeta, roja y blanca) no cargaban de origen y ahora funcionan con sus costos originales."
+   ],
+   "sources": [
+    "jar:malum-1.21.1-1.8.2.jar:data/malum/recipe/spirit_infusion/repair_pylon.json",
+    "jar:malum-1.21.1-1.8.2.jar:assets/malum/lang/en_us.json#malum.gui.book.entry.page.text.arcane_restoration.2",
+    "jar:malum-1.21.1-1.8.2.jar:assets/malum/lang/en_us.json#malum.gui.book.entry.page.text.arcane_restoration.tool_repair.1",
+    "jar:malum-1.21.1-1.8.2.jar:assets/malum/lang/en_us.json#malum.gui.book.entry.page.text.arcane_restoration.tool_repair.2",
+    "repo:docs/design/malum-compat.md",
+    "repo:pack/kubejs/data/malum/recipe/malum/spirit_repair/occultism"
+   ]
+  },
+  {
+   "key": "malum_pack_fixes",
+   "deps": [
+    "malum_crucible"
+   ],
+   "type": "checkmark",
+   "optional": true,
+   "icon": "malum:encyclopedia_arcana",
+   "layout": {
+    "x": 27,
+    "y": -3,
+    "size": 1.0,
+    "shape": "diamond"
+   },
+   "en_us": [
+    "ENTRELUMEN: Malum data fixes",
+    "Besides the chalk repairs, the pack corrected Malum's Create milling recipe for Grim Talc (its results used an outdated field and did not load); it now gives bone meal and a chance of yellow dye as intended. Malum's repair recipes for The Undergarden were written in an old format and are disabled.\n\nA server script audits the fixed recipes after every reload, so a broken update shows up in the log instead of silently in your game."
+   ],
+   "es_es": [
+    "ENTRELUMEN: arreglos de datos de Malum",
+    "Además de las reparaciones de tiza, el pack corrigió la receta de molienda de Create para el Talco sombrío (sus resultados usaban un campo viejo y no cargaban); ahora da polvo de hueso y una chance de tinte amarillo como se pensó. Las recetas de reparación de Malum para The Undergarden estaban en un formato viejo y quedaron desactivadas.\n\nUn script del servidor audita las recetas arregladas después de cada recarga, así una actualización rota aparece en el log en vez de fallar en silencio en tu partida."
+   ],
+   "sources": [
+    "repo:docs/design/malum-compat.md",
+    "repo:pack/kubejs/data/malum/recipe/create/milling/grim_talc.json",
+    "repo:pack/kubejs/server_scripts/entrelumen_malum_audit.js",
+    "repo:docs/design/mod-pingpong.md#Integración"
+   ]
+  },
+  {
+   "key": "malum_lens",
+   "deps": [
+    "malum_steel"
+   ],
+   "type": "item",
+   "item": "entrelumen:spectral_lens",
+   "layout": {
+    "x": 27,
+    "y": 0,
+    "size": 1.25,
+    "shape": "diamond"
+   },
+   "en_us": [
+    "ENTRELUMEN: the Spectral Lens",
+    "With two Arcane Spirits you can complete the Act IV Spectral Lens: an Occultism Spirit Attuned Crystal, two Malum Arcane Spirits, a Create precision mechanism and a Calibration Frame. Deliver it at the Atlas project «Voices in the Glass».\n\nKeep a jar of Arcane Spirits: the Containment Seal needs another Spectral Lens, and the Ark's arcane module needs two more."
+   ],
+   "es_es": [
+    "ENTRELUMEN: la Lente espectral",
+    "Con dos Espíritus arcanos podés completar la Lente espectral del acto IV: un Cristal espiritual armonizado de Occultism, dos Espíritus arcanos de Malum, un mecanismo de precisión de Create y un Marco de calibración. Entregala en el proyecto del Atlas «Voces en el cristal».\n\nGuardá un frasco de Espíritus arcanos: el Sello de contención pide otra Lente espectral y el módulo arcano del Arca, dos más."
+   ],
+   "sources": [
+    "repo:pack/kubejs/server_scripts/entrelumen_integration_recipes.js#spectral_archive",
+    "repo:content/integration-design.json#spectral_archive",
+    "repo:content/integration-design.json#ark_arcana"
+   ]
+  },
+  {
+   "key": "malum_mastery",
+   "deps": [
+    "malum_lens",
+    "malum_trinkets"
+   ],
+   "type": "checkmark",
+   "layout": {
+    "x": 30,
+    "y": 0,
+    "size": 2.0,
+    "shape": "gear"
+   },
+   "en_us": [
+    "Mastery: a soul workshop",
+    "An altar sped up by obelisks, a wall of spirit jars, a crucible turning spirits into metal, totems blessing your base and Soulstained gear on your back. Malum rewards patience and a steady supply of souls.\n\nSpirit crystals also feed other mods: this pack's Spectral Lens, Occultism's chalk repairs and your enchanting table, through the Brilliant Obelisk."
+   ],
+   "es_es": [
+    "Maestría: un taller de almas",
+    "Un altar acelerado por obeliscos, una pared de frascos de espíritu, un crisol que convierte espíritus en metal, tótems que bendicen tu base y equipo manchado de alma encima. Malum premia la paciencia y un flujo constante de almas.\n\nLos cristales de espíritu también alimentan a otros mods: la Lente espectral de este pack, las reparaciones de tiza de Occultism y tu mesa de encantamientos, a través del Obelisco brillante."
+   ],
+   "sources": [
+    "jar:malum-1.21.1-1.8.2.jar:assets/malum/lang/en_us.json#malum.gui.book.entry.page.text.introduction.5",
+    "jar:malum-1.21.1-1.8.2.jar:assets/malum/lang/en_us.json#malum.gui.book.entry.page.text.altar_acceleration.brilliant_obelisk.1"
+   ]
+  }
+ ]
+}

@@ -1,0 +1,716 @@
+{
+ "chapter": "guide_occultism",
+ "group": "magic",
+ "act": "II",
+ "icon": "occultism:golden_sacrificial_bowl",
+ "title": {
+  "en_us": "Occultism I: The Summoner's Craft",
+  "es_es": "Occultism I: el oficio del invocador"
+ },
+ "subtitle": {
+  "en_us": "Spiritfire, chalk, pentacles and bound books, up to iesnium and the attuned crystal.",
+  "es_es": "Fuego espiritual, tiza, pentáculos y tomos vinculados, hasta el iesnium y el cristal afinado."
+ },
+ "quests": [
+  {
+   "key": "occ_welcome",
+   "deps": [],
+   "type": "checkmark",
+   "icon": "occultism:dictionary_of_spirits",
+   "layout": {
+    "x": 0,
+    "y": 0,
+    "size": 2.0,
+    "shape": "hexagon"
+   },
+   "en_us": [
+    "Occultism: bargains with spirits",
+    "Occultism is ritual magic. You draw pentacles with chalk, lay offerings in sacrificial bowls and call spirits from the Otherworld: Foliot, Djinni, Afrit and Marid, from weakest to strongest. Bound spirits crush ores, carry items, mine in a pocket dimension, run a huge storage system or follow you as familiars.\n\nIn ENTRELUMEN it opens in Act II and matters twice for the story: the Act IV Spectral Lens needs a Spirit Attuned Crystal, and the Ark's arcane module in Act V needs iesnium ingots."
+   ],
+   "es_es": [
+    "Occultism: tratos con espíritus",
+    "Occultism es magia ritual. Dibujás pentáculos con tiza, dejás ofrendas en cuencos de sacrificio y llamás espíritus del Otro Lado: Foliot, Djinni, Afrit y Marid, del más débil al más fuerte. Los espíritus atados trituran menas, llevan ítems, minan en una dimensión de bolsillo, manejan un almacenamiento enorme o te acompañan como familiares.\n\nEn ENTRELUMEN se abre en el acto II y le importa dos veces a la historia: la Lente espectral del acto IV pide un Cristal espiritual armonizado y el módulo arcano del Arca, en el acto V, pide lingotes de iesnium."
+   ],
+   "sources": [
+    "jar:occultism-1.21.1-neoforge-1.224.4.jar:data/occultism/modonomicon/books/dictionary_of_spirits/entries/getting_started/intro.json",
+    "jar:occultism-1.21.1-neoforge-1.224.4.jar:data/occultism/modonomicon/books/dictionary_of_spirits/entries/spirits/overview.json",
+    "repo:pack/kubejs/server_scripts/entrelumen_integration_recipes.js#spectral_archive",
+    "repo:pack/kubejs/server_scripts/entrelumen_integration_recipes.js#ark_arcana"
+   ]
+  },
+  {
+   "key": "occ_seeds",
+   "deps": [
+    "occ_welcome"
+   ],
+   "type": "item",
+   "item": "occultism:datura_seeds",
+   "layout": {
+    "x": 3,
+    "y": 0,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Demon's Dream seeds",
+    "Break grass until you find Demon's Dream Seeds, and plant a few. Everything in Occultism starts with this herb.\n\nThe grown fruit is the key ingredient of spirit fire, heals spirits and familiars when you right-click them with it, and compresses into Demon's Dream Essence."
+   ],
+   "es_es": [
+    "Semillas de sueño demoníaco",
+    "Rompé pasto hasta encontrar Semillas de sueño demoníaco y plantá algunas. Todo en Occultism empieza con esta hierba.\n\nLa fruta madura es el ingrediente clave del fuego espiritual, cura a espíritus y familiares si los tocás con ella y se comprime en Esencia de sueño demoníaco."
+   ],
+   "sources": [
+    "jar:occultism-1.21.1-neoforge-1.224.4.jar:data/occultism/modonomicon/books/dictionary_of_spirits/entries/getting_started/demons_dream.json",
+    "jar:occultism-1.21.1-neoforge-1.224.4.jar:data/occultism/modonomicon/books/dictionary_of_spirits/entries/getting_started/healing_spirits.json"
+   ]
+  },
+  {
+   "key": "occ_dictionary",
+   "deps": [
+    "occ_seeds"
+   ],
+   "type": "item",
+   "item": "occultism:dictionary_of_spirits",
+   "layout": {
+    "x": 3,
+    "y": -3,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "The Dictionary of Spirits",
+    "Craft the Dictionary of Spirits from Demon's Dream seeds and a book. It is Occultism's guide, and also a tool: you craft it with a Book of Binding to write a spirit's name in, and it is never used up.\n\nEvery ritual page has a blue link that shows the pentacle, and you can preview and anchor the pentacle in the world to trace it block by block."
+   ],
+   "es_es": [
+    "El Diccionario de espíritus",
+    "Crafteá el Diccionario de espíritus con semillas de sueño demoníaco y un libro. Es la guía de Occultism y también una herramienta: lo crafteás junto a un Tomo vinculante para escribir el nombre de un espíritu, y nunca se gasta.\n\nCada página de ritual tiene un enlace azul que muestra el pentáculo, y podés previsualizarlo y anclarlo en el mundo para trazarlo bloque por bloque."
+   ],
+   "sources": [
+    "jar:occultism-1.21.1-neoforge-1.224.4.jar:data/occultism/recipe/crafting/dictionary_of_spirits.json",
+    "jar:occultism-1.21.1-neoforge-1.224.4.jar:data/occultism/modonomicon/books/dictionary_of_spirits/entries/getting_started/first_ritual.json",
+    "jar:occultism-1.21.1-neoforge-1.224.4.jar:data/occultism/modonomicon/books/dictionary_of_spirits/entries/crafting_rituals/apprentice_ritual_satchel.json"
+   ]
+  },
+  {
+   "key": "occ_third_eye",
+   "deps": [
+    "occ_seeds"
+   ],
+   "type": "item",
+   "item": "occultism:datura",
+   "optional": true,
+   "layout": {
+    "x": 6,
+    "y": -3,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "The Third Eye",
+    "Eat a Demon's Dream Fruit. With some luck you get Third Eye: you see where the Otherworld overlaps ours, and while the fruit's effect lasts you can also harvest those blocks, like Otherstone and Otherworld trees that look like oak.\n\nThe compressed essence guarantees Third Eye for longer but has side effects; purified in spirit fire it keeps only the good ones. Goggles (later) let you see, but not harvest."
+   ],
+   "es_es": [
+    "El Tercer ojo",
+    "Comé una Fruta de sueño demoníaco. Con suerte obtenés Tercer ojo: ves dónde el Otro Lado se superpone con el nuestro y, mientras dure el efecto de la fruta, también podés cosechar esos bloques, como la Piedra del Otro Lado y árboles del Otro Lado que parecen robles.\n\nLa esencia comprimida garantiza el Tercer ojo por más tiempo pero trae efectos secundarios; purificada en fuego espiritual conserva sólo los buenos. Las gafas (más adelante) te dejan ver, pero no cosechar."
+   ],
+   "sources": [
+    "jar:occultism-1.21.1-neoforge-1.224.4.jar:data/occultism/modonomicon/books/dictionary_of_spirits/entries/getting_started/demons_dream.json",
+    "jar:occultism-1.21.1-neoforge-1.224.4.jar:data/occultism/modonomicon/books/dictionary_of_spirits/entries/getting_started/third_eye.json"
+   ]
+  },
+  {
+   "key": "occ_spirit_fire",
+   "deps": [
+    "occ_seeds"
+   ],
+   "type": "item",
+   "item": "occultism:otherstone",
+   "count": 16,
+   "layout": {
+    "x": 6,
+    "y": 0,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Spiritfire",
+    "Throw a Demon's Dream Fruit on the ground and light it with flint and steel: it becomes Spiritfire, which does not hurt living things. Items thrown into it are converted without being burned.\n\nAndesite becomes Otherstone, an oak sapling an Otherworld sapling, a diamond a Spirit Attuned Gem, black dye Purified Ink, a feather an Awakened Feather and a book a Taboo Book. A sacrificial bowl placed over spiritfire converts items inserted into it instantly."
+   ],
+   "es_es": [
+    "Fuego espiritual",
+    "Tirá una Fruta de sueño demoníaco al piso y prendela con un encendedor: se vuelve Fuego espiritual, que no lastima a los seres vivos. Los ítems que tirás adentro se transforman sin quemarse.\n\nLa andesita se vuelve Piedra del Otro Lado, un brote de roble un brote del Otro Lado, un diamante una Gema afinada al espíritu, el tinte negro Tinta purificada, una pluma una Pluma despierta y un libro un Libro tabú. Un cuenco de sacrificio puesto sobre fuego espiritual transforma al instante lo que le metés."
+   ],
+   "sources": [
+    "jar:occultism-1.21.1-neoforge-1.224.4.jar:data/occultism/modonomicon/books/dictionary_of_spirits/entries/getting_started/spirit_fire.json",
+    "jar:occultism-1.21.1-neoforge-1.224.4.jar:data/occultism/recipe/spirit_fire/otherstone.json",
+    "jar:occultism-1.21.1-neoforge-1.224.4.jar:data/occultism/recipe/spirit_fire/spirit_attuned_gem.json",
+    "jar:occultism-1.21.1-neoforge-1.224.4.jar:data/occultism/recipe/spirit_fire/purified_ink.json",
+    "jar:occultism-1.21.1-neoforge-1.224.4.jar:data/occultism/modonomicon/books/dictionary_of_spirits/entries/getting_started/ritual_prep_bowl.json"
+   ]
+  },
+  {
+   "key": "occ_bowls",
+   "deps": [
+    "occ_spirit_fire"
+   ],
+   "type": "item",
+   "item": "occultism:golden_sacrificial_bowl",
+   "layout": {
+    "x": 9,
+    "y": 0,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Sacrificial bowls",
+    "Craft four Sacrificial Bowls from Otherstone, then a Golden Ritual Bowl (a sacrificial bowl ringed with gold ingots). The golden bowl is the center of every pentacle; you start rituals by using the activation item on it.\n\nThe plain bowls hold the ingredients. Their exact position does not matter: anywhere within 8 blocks horizontally of the golden bowl. Copper and silver versions of the bowl work the same."
+   ],
+   "es_es": [
+    "Cuencos de sacrificio",
+    "Crafteá cuatro Cuencos de sacrificio con Piedra del Otro Lado y después un Cuenco ritual dorado (un cuenco rodeado de lingotes de oro). El dorado es el centro de todo pentáculo; los rituales arrancan cuando usás el ítem de activación sobre él.\n\nLos cuencos comunes guardan los ingredientes. Su posición exacta no importa: en cualquier lugar a 8 bloques en horizontal del cuenco dorado. Las versiones de cobre y de plata funcionan igual."
+   ],
+   "sources": [
+    "jar:occultism-1.21.1-neoforge-1.224.4.jar:data/occultism/recipe/crafting/sacrificial_bowl.json",
+    "jar:occultism-1.21.1-neoforge-1.224.4.jar:data/occultism/recipe/crafting/golden_sacrificial_bowl.json",
+    "jar:occultism-1.21.1-neoforge-1.224.4.jar:data/occultism/modonomicon/books/dictionary_of_spirits/entries/getting_started/ritual_prep_bowl.json",
+    "jar:occultism-1.21.1-neoforge-1.224.4.jar:data/occultism/modonomicon/books/dictionary_of_spirits/entries/pentacles/pentacle_overview.json"
+   ]
+  },
+  {
+   "key": "occ_chalk",
+   "deps": [
+    "occ_spirit_fire"
+   ],
+   "type": "item",
+   "item": "occultism:chalk_white",
+   "layout": {
+    "x": 9,
+    "y": -3,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "White chalk",
+    "Chalk draws pentacles. Smelt polished Otherstone into Burnt Otherstone, burn Otherworld logs in spiritfire into Otherworld Ashes, and craft three of each into Impure White Chalk. Throw it into spiritfire to purify it into White Chalk.\n\nRight-click a block to draw a glyph; clicking again cycles the drawing, which is only decoration. Only the color and position of each mark count. A Chalk Brush wipes marks off quickly."
+   ],
+   "es_es": [
+    "Tiza blanca",
+    "La tiza dibuja pentáculos. Fundí Piedra del Otro Lado pulida para obtener Piedra del Otro Lado quemada, quemá troncos del Otro Lado en fuego espiritual para Cenizas del Otro Lado y crafteá tres de cada una en Tiza blanca impura. Tirala al fuego espiritual para purificarla en Tiza blanca.\n\nClic derecho sobre un bloque dibuja un glifo; volver a clicar cambia el dibujo, que es sólo decoración. Cuentan el color y la posición de cada marca. Un Cepillo de tiza borra marcas rápido."
+   ],
+   "sources": [
+    "jar:occultism-1.21.1-neoforge-1.224.4.jar:data/occultism/recipe/crafting/chalk_white_impure.json",
+    "jar:occultism-1.21.1-neoforge-1.224.4.jar:data/occultism/recipe/spirit_fire/chalk_white.json",
+    "jar:occultism-1.21.1-neoforge-1.224.4.jar:data/occultism/recipe/spirit_fire/otherworld_ashes.json",
+    "jar:occultism-1.21.1-neoforge-1.224.4.jar:data/occultism/recipe/smelting/burnt_otherstone.json",
+    "jar:occultism-1.21.1-neoforge-1.224.4.jar:data/occultism/modonomicon/books/dictionary_of_spirits/entries/getting_started/ritual_prep_chalk.json",
+    "jar:occultism-1.21.1-neoforge-1.224.4.jar:data/occultism/modonomicon/books/dictionary_of_spirits/entries/getting_started/brush.json"
+   ]
+  },
+  {
+   "key": "occ_candles",
+   "deps": [
+    "occ_bowls"
+   ],
+   "type": "item",
+   "item": "occultism:large_candle",
+   "count": 4,
+   "optional": true,
+   "layout": {
+    "x": 9,
+    "y": 3,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Candles and tallow",
+    "Kill big animals (pigs, cows, sheep) with a Butcher Knife to get Tallow, and craft Large Candles (string over tallow). Candles stabilize pentacles and almost every pentacle has some.\n\nVanilla candles and candles from other mods work too. Large Candles also count as bookshelves for enchanting, and can be dyed and lit with different flames."
+   ],
+   "es_es": [
+    "Velas y sebo",
+    "Matá animales grandes (cerdos, vacas, ovejas) con un Cuchillo de carnicero para obtener Sebo y crafteá Velas grandes (hilo sobre sebo). Las velas estabilizan los pentáculos y casi todos llevan alguna.\n\nTambién sirven las velas vanilla y las de otros mods. Las Velas grandes además cuentan como bibliotecas para encantar, se tiñen y se prenden con distintas llamas."
+   ],
+   "sources": [
+    "jar:occultism-1.21.1-neoforge-1.224.4.jar:data/occultism/recipe/crafting/butcher_knife.json",
+    "jar:occultism-1.21.1-neoforge-1.224.4.jar:data/occultism/recipe/crafting/large_candle.json",
+    "jar:occultism-1.21.1-neoforge-1.224.4.jar:data/occultism/modonomicon/books/dictionary_of_spirits/entries/getting_started/candle.json"
+   ]
+  },
+  {
+   "key": "occ_book",
+   "deps": [
+    "occ_chalk",
+    "occ_dictionary"
+   ],
+   "type": "item",
+   "item": "occultism:book_of_binding_bound_foliot",
+   "layout": {
+    "x": 12,
+    "y": -3,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "A bound Book of Binding",
+    "Craft a Book of Binding: Foliot from Purified Ink, an Awakened Feather, a Taboo Book and blue dye. Then craft it together with the Dictionary of Spirits: the book gets a spirit's name and becomes a Bound Book of Binding, the activation item of Foliot rituals.\n\nOther tiers use other dyes: purple for Djinni, yellow for Afrit, green for Marid. Tip: a chiseled bookshelf full of books, sneak-used with the Dictionary, binds up to six at once."
+   ],
+   "es_es": [
+    "Un Tomo vinculante con nombre",
+    "Crafteá un Tomo vinculante: Foliot con Tinta purificada, una Pluma despierta, un Libro tabú y tinte azul. Después crafteálo junto con el Diccionario de espíritus: el libro recibe el nombre de un espíritu y se vuelve un Tomo vinculado, el ítem que activa los rituales de Foliot.\n\nLos otros rangos usan otros tintes: violeta para Djinni, amarillo para Afrit, verde para Marid. Tip: una biblioteca cincelada llena de tomos, usada agachado con el Diccionario, vincula hasta seis de una."
+   ],
+   "sources": [
+    "jar:occultism-1.21.1-neoforge-1.224.4.jar:data/occultism/recipe/crafting/book_of_binding_foliot.json",
+    "jar:occultism-1.21.1-neoforge-1.224.4.jar:data/occultism/recipe/crafting/book_of_binding_djinni.json",
+    "jar:occultism-1.21.1-neoforge-1.224.4.jar:data/occultism/modonomicon/books/dictionary_of_spirits/entries/getting_started/books_of_binding.json",
+    "jar:occultism-1.21.1-neoforge-1.224.4.jar:data/occultism/modonomicon/books/dictionary_of_spirits/entries/getting_started/bookshelf_binding.json"
+   ]
+  },
+  {
+   "key": "occ_crusher",
+   "deps": [
+    "occ_book",
+    "occ_bowls"
+   ],
+   "type": "item",
+   "tag": "c:ingots/silver",
+   "icon": "occultism:book_of_binding_bound_foliot",
+   "layout": {
+    "x": 15,
+    "y": 0,
+    "size": 1.5,
+    "shape": "hexagon"
+   },
+   "en_us": [
+    "First ritual: a Foliot Crusher",
+    "Place the Golden Ritual Bowl and draw Aviar's Circle around it in white chalk (the Dictionary shows it). Put one iron, one gold, one copper and one silver ingot in four sacrificial bowls within 8 blocks, then use the bound Foliot book on the golden bowl. Purple particles mean it is working.\n\nThe Foliot Crusher that appears picks up ores dropped near it and throws out dusts, two per ore. Djinni, Afrit and Marid crushers raise that to three, four and six."
+   ],
+   "es_es": [
+    "Primer ritual: un Triturador Foliot",
+    "Poné el Cuenco ritual dorado y dibujá alrededor el Círculo de Aviar con tiza blanca (el Diccionario lo muestra). Dejá un lingote de hierro, uno de oro, uno de cobre y uno de plata en cuatro cuencos a 8 bloques, y usá el tomo Foliot vinculado sobre el cuenco dorado. Las partículas violetas indican que funciona.\n\nEl Triturador Foliot que aparece junta las menas que le tirás cerca y devuelve polvos, dos por mena. Los trituradores Djinni, Afrit y Marid suben eso a tres, cuatro y seis."
+   ],
+   "sources": [
+    "jar:occultism-1.21.1-neoforge-1.224.4.jar:data/occultism/modonomicon/books/dictionary_of_spirits/entries/getting_started/first_ritual.json",
+    "jar:occultism-1.21.1-neoforge-1.224.4.jar:data/occultism/recipe/ritual/summon_foliot_crusher.json",
+    "jar:occultism-1.21.1-neoforge-1.224.4.jar:data/occultism/modonomicon/books/dictionary_of_spirits/entries/summoning_rituals/summon_crusher_t1.json",
+    "jar:occultism-1.21.1-neoforge-1.224.4.jar:data/occultism/modonomicon/books/dictionary_of_spirits/entries/summoning_rituals/summon_crusher_t4.json"
+   ]
+  },
+  {
+   "key": "occ_silver_quirk",
+   "deps": [
+    "occ_bowls"
+   ],
+   "type": "checkmark",
+   "optional": true,
+   "layout": {
+    "x": 12,
+    "y": 3,
+    "size": 1.0,
+    "shape": "circle"
+   },
+   "en_us": [
+    "Quirk: silver is unified",
+    "Occultism asks for silver in many recipes and generates its own silver ore. ENTRELUMEN runs Almost Unified, which merges duplicate metals by tag: silver made through recipes comes out as the pack's preferred silver, and recipes accept any silver.\n\nIf EMI shows a different silver ingot than the one in your chest, that is expected. Keep them in one stack of whatever you get; rituals check the tag, not the mod."
+   ],
+   "es_es": [
+    "Particularidad: la plata está unificada",
+    "Occultism pide plata en muchas recetas y genera su propia mena de plata. ENTRELUMEN usa Almost Unified, que une los metales duplicados por tag: la plata hecha por recetas sale como la plata preferida del pack y las recetas aceptan cualquier plata.\n\nSi EMI muestra un lingote de plata distinto al de tu cofre, es lo esperado. Juntalos como vengan; los rituales miran el tag, no el mod."
+   ],
+   "sources": [
+    "repo:pack/config/almostunified/unification/materials.json",
+    "jar:occultism-1.21.1-neoforge-1.224.4.jar:data/occultism/recipe/ritual/summon_foliot_crusher.json"
+   ]
+  },
+  {
+   "key": "occ_grey",
+   "deps": [
+    "occ_crusher"
+   ],
+   "type": "checkmark",
+   "layout": {
+    "x": 15,
+    "y": 3,
+    "size": 1.0,
+    "shape": "circle"
+   },
+   "en_us": [
+    "Tip: grey particles and sacrifices",
+    "If a ritual shows grey particles over the golden bowl and nothing is consumed, it is waiting for something: using a specific item within 16 blocks, or a sacrifice. Sacrifices are animals killed by a player within 8 blocks of the golden bowl; kills by machines do not count.\n\nA hopper or pipe can insert the activation item to start rituals automatically, but familiars and tamed summons then come out untamed. A sacrificial bowl facing down above the golden bowl catches crafted results instead of dropping them."
+   ],
+   "es_es": [
+    "Tip: partículas grises y sacrificios",
+    "Si un ritual muestra partículas grises sobre el cuenco dorado y no consume nada, está esperando algo: usar un ítem concreto a 16 bloques, o un sacrificio. Los sacrificios son animales que mata un jugador a 8 bloques del cuenco dorado; las muertes por máquinas no cuentan.\n\nUna tolva o un caño pueden meter el ítem de activación para arrancar rituales solos, pero los familiares e invocaciones domesticadas salen sin domesticar. Un cuenco de sacrificio boca abajo arriba del dorado atrapa los resultados en vez de tirarlos."
+   ],
+   "sources": [
+    "jar:occultism-1.21.1-neoforge-1.224.4.jar:data/occultism/modonomicon/books/dictionary_of_spirits/entries/getting_started/grey_particles.json",
+    "jar:occultism-1.21.1-neoforge-1.224.4.jar:data/occultism/modonomicon/books/dictionary_of_spirits/entries/rituals/item_use.json",
+    "jar:occultism-1.21.1-neoforge-1.224.4.jar:data/occultism/modonomicon/books/dictionary_of_spirits/entries/rituals/sacrifice.json",
+    "jar:occultism-1.21.1-neoforge-1.224.4.jar:data/occultism/modonomicon/books/dictionary_of_spirits/entries/getting_started/first_ritual.json"
+   ]
+  },
+  {
+   "key": "occ_rod",
+   "deps": [
+    "occ_spirit_fire"
+   ],
+   "type": "item",
+   "item": "occultism:divination_rod",
+   "layout": {
+    "x": 6,
+    "y": 3,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Divination Rod",
+    "Turn a diamond into a Spirit Attuned Gem in spiritfire and craft the Divination Rod (gold, glass and the gem). Sneak-use it on a real block to attune it: andesite finds Otherstone, oak wood Otherworld logs, oak leaves Otherworld leaves, netherrack iesnium ore. Then hold right-click until the animation ends.\n\nThe nearest match is outlined through walls. Theurgy adds more rods for ordinary ores; the Dictionary links to them."
+   ],
+   "es_es": [
+    "Varilla de adivinación",
+    "Convertí un diamante en Gema afinada al espíritu en fuego espiritual y crafteá la Varilla de adivinación (oro, vidrio y la gema). Usala agachado sobre un bloque real para afinarla: la andesita busca Piedra del Otro Lado, la madera de roble troncos del Otro Lado, las hojas de roble hojas del Otro Lado, el netherrack mena de iesnium. Después mantené clic derecho hasta que termine la animación.\n\nEl bloque más cercano queda marcado a través de las paredes. Theurgy suma más varillas para menas comunes; el Diccionario las enlaza."
+   ],
+   "sources": [
+    "jar:occultism-1.21.1-neoforge-1.224.4.jar:data/occultism/recipe/crafting/divination_rod.json",
+    "jar:occultism-1.21.1-neoforge-1.224.4.jar:data/occultism/modonomicon/books/dictionary_of_spirits/entries/getting_started/divination_rod.json",
+    "jar:occultism-1.21.1-neoforge-1.224.4.jar:data/occultism/modonomicon/books/dictionary_of_spirits/entries/getting_started/theurgy_divination_rod.json"
+   ]
+  },
+  {
+   "key": "occ_yellow",
+   "deps": [
+    "occ_crusher"
+   ],
+   "type": "item",
+   "item": "occultism:chalk_gold",
+   "layout": {
+    "x": 18,
+    "y": -3,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Yellow chalk: possession",
+    "Pentacles are learned in steps, and each new chalk color opens a ritual type. Yellow chalk (also called golden) is the chalk of possession: Impure White Chalk, glowstone dust and two gold dust, purified in spiritfire.\n\nDusts come from any crusher: your Foliot Crusher, Create's crushing wheels or a Mekanism crusher. The Pentacles section of the Dictionary is the roadmap; follow its unlocked entries in order."
+   ],
+   "es_es": [
+    "Tiza amarilla: posesión",
+    "Los pentáculos se aprenden por pasos y cada color nuevo de tiza abre un tipo de ritual. La tiza amarilla (también llamada dorada) es la de posesión: Tiza blanca impura, polvo de piedra luminosa y dos polvos de oro, purificada en fuego espiritual.\n\nLos polvos salen de cualquier triturador: tu Triturador Foliot, las ruedas trituradoras de Create o un triturador de Mekanism. La sección Pentáculos del Diccionario es la hoja de ruta; seguí sus entradas desbloqueadas en orden."
+   ],
+   "sources": [
+    "jar:occultism-1.21.1-neoforge-1.224.4.jar:data/occultism/recipe/crafting/chalk_yellow_impure.json",
+    "jar:occultism-1.21.1-neoforge-1.224.4.jar:data/occultism/modonomicon/books/dictionary_of_spirits/entries/pentacles/yellow_chalk.json",
+    "jar:occultism-1.21.1-neoforge-1.224.4.jar:data/occultism/modonomicon/books/dictionary_of_spirits/entries/pentacles/didactics.json"
+   ]
+  },
+  {
+   "key": "occ_endermite",
+   "deps": [
+    "occ_yellow"
+   ],
+   "type": "item",
+   "item": "minecraft:end_stone",
+   "count": 4,
+   "layout": {
+    "x": 21,
+    "y": -3,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "A possessed endermite for end stone",
+    "Draw Hedyrin's Lure (white and yellow chalk) and run the Possessed Endermite ritual: dirt and stone in the bowls, a bound Foliot book on the golden bowl. The possessed endermite has a high chance to drop end stone.\n\nThat is how the Dictionary gets you end stone for purple chalk long before the End. Possessed mobs in general are tougher but drop their rare loot much more often."
+   ],
+   "es_es": [
+    "Un endermite poseído para piedra del End",
+    "Dibujá el Señuelo de Hedyrin (tiza blanca y amarilla) y corré el ritual del Endermite poseído: tierra y piedra en los cuencos, un tomo Foliot vinculado sobre el cuenco dorado. El endermite poseído tiene alta probabilidad de soltar piedra del End.\n\nAsí el Diccionario te da piedra del End para la tiza violeta mucho antes del End. Las criaturas poseídas en general son más duras pero sueltan su botín raro mucho más seguido."
+   ],
+   "sources": [
+    "jar:occultism-1.21.1-neoforge-1.224.4.jar:data/occultism/recipe/ritual/possess_endermite.json",
+    "jar:occultism-1.21.1-neoforge-1.224.4.jar:data/occultism/modonomicon/books/dictionary_of_spirits/entries/pentacles/purple_chalk.json",
+    "jar:occultism-1.21.1-neoforge-1.224.4.jar:data/occultism/modonomicon/books/dictionary_of_spirits/entries/getting_started/possession_rituals.json"
+   ]
+  },
+  {
+   "key": "occ_purple",
+   "deps": [
+    "occ_endermite"
+   ],
+   "type": "item",
+   "item": "occultism:chalk_purple",
+   "layout": {
+    "x": 24,
+    "y": -3,
+    "size": 1.25,
+    "shape": "square"
+   },
+   "en_us": [
+    "Purple chalk: infusion",
+    "Craft Impure Purple Chalk (Impure White Chalk, end stone dust and two obsidian dust) and purify it. Purple is the chalk of infusion: rituals that bind a spirit into an object, drawn on Eziveus' Spectral Compulsion (white and purple).\n\nThat unlocks Foliot infusions: Infused Lenses for the goggles, the Surprisingly Substantial Satchel, the storage actuator base and Research Fragment Dust, the key to lime chalk."
+   ],
+   "es_es": [
+    "Tiza violeta: infusión",
+    "Crafteá Tiza violeta impura (Tiza blanca impura, polvo de piedra del End y dos polvos de obsidiana) y purificala. La violeta es la tiza de infusión: rituales que atan un espíritu a un objeto, dibujados en la Compulsión espectral de Eziveus (blanca y violeta).\n\nEso habilita las infusiones Foliot: las Lentes imbuidas para las gafas, el Morral sorprendentemente amplio, la base del accionador de almacenamiento y el Polvo de fragmentos de investigación, la llave de la tiza lima."
+   ],
+   "sources": [
+    "jar:occultism-1.21.1-neoforge-1.224.4.jar:data/occultism/recipe/crafting/chalk_purple_impure.json",
+    "jar:occultism-1.21.1-neoforge-1.224.4.jar:data/occultism/modonomicon/books/dictionary_of_spirits/entries/pentacles/purple_chalk.json",
+    "jar:occultism-1.21.1-neoforge-1.224.4.jar:data/occultism/modonomicon/books/dictionary_of_spirits/entries/pentacles/craft_foliot.json",
+    "jar:occultism-1.21.1-neoforge-1.224.4.jar:data/occultism/recipe/ritual/craft_research_fragment_dust.json"
+   ]
+  },
+  {
+   "key": "occ_goggles",
+   "deps": [
+    "occ_purple"
+   ],
+   "type": "item",
+   "item": "occultism:otherworld_goggles",
+   "optional": true,
+   "layout": {
+    "x": 24,
+    "y": -6,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Otherworld Goggles",
+    "Craft Glass Lenses (panes around an attuned gem), infuse them in a Foliot ritual with two silver ingots and a gold ingot, build a Lens Frame (Otherstone and silver) and assemble the goggles with leather. Many summoners see this as a rite of passage.\n\nThey give permanent Third Eye and reveal even blocks hidden from Demon's Dream, like iesnium ore, but they do not let you harvest: for that you need an Infused or Iesnium Pickaxe."
+   ],
+   "es_es": [
+    "Gafas del Otro Lado",
+    "Crafteá Lentes de cristal (paneles alrededor de una gema afinada), infundilas en un ritual Foliot con dos lingotes de plata y uno de oro, armá un Marco de lentes (Piedra del Otro Lado y plata) y ensamblá las gafas con cuero. Muchos invocadores lo ven como un rito de paso.\n\nDan Tercer ojo permanente y muestran incluso bloques que el sueño demoníaco no revela, como la mena de iesnium, pero no te dejan cosechar: para eso hace falta un Pico infundido o de iesnium."
+   ],
+   "sources": [
+    "jar:occultism-1.21.1-neoforge-1.224.4.jar:data/occultism/recipe/crafting/lenses.json",
+    "jar:occultism-1.21.1-neoforge-1.224.4.jar:data/occultism/recipe/ritual/craft_infused_lenses.json",
+    "jar:occultism-1.21.1-neoforge-1.224.4.jar:data/occultism/recipe/crafting/lens_frame.json",
+    "jar:occultism-1.21.1-neoforge-1.224.4.jar:data/occultism/recipe/crafting/goggles.json",
+    "jar:occultism-1.21.1-neoforge-1.224.4.jar:data/occultism/modonomicon/books/dictionary_of_spirits/entries/crafting_rituals/craft_otherworld_goggles.json"
+   ]
+  },
+  {
+   "key": "occ_djinni_chalks",
+   "deps": [
+    "occ_purple"
+   ],
+   "type": "item",
+   "item": "occultism:chalk_lime",
+   "layout": {
+    "x": 21,
+    "y": 0,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Light gray and lime: calling a Djinni",
+    "Djinni pentacles add two colors. Light gray chalk (silver, iron and calcite dust) is a stronger foundation that can replace white almost everywhere. Lime chalk needs Research Fragment Dust (a Foliot infusion of emerald dust and two bottles of enchanting), emerald dust and a slimeball.\n\nDjinni pentacles also ask for skeleton skulls and more candles. Draw them once and keep them: every higher tier upgrades the same drawing."
+   ],
+   "es_es": [
+    "Gris claro y lima: llamar a un Djinni",
+    "Los pentáculos Djinni suman dos colores. La tiza gris clara (polvo de plata, de hierro y de calcita) es una base más fuerte que reemplaza a la blanca casi en todos lados. La tiza lima pide Polvo de fragmentos de investigación (una infusión Foliot de polvo de esmeralda y dos botellas de experiencia), polvo de esmeralda y una bola de slime.\n\nLos pentáculos Djinni además piden calaveras de esqueleto y más velas. Dibujalos una vez y conservalos: cada rango superior mejora el mismo dibujo."
+   ],
+   "sources": [
+    "jar:occultism-1.21.1-neoforge-1.224.4.jar:data/occultism/recipe/crafting/chalk_light_gray_impure.json",
+    "jar:occultism-1.21.1-neoforge-1.224.4.jar:data/occultism/recipe/crafting/chalk_lime_impure.json",
+    "jar:occultism-1.21.1-neoforge-1.224.4.jar:data/occultism/recipe/ritual/craft_research_fragment_dust.json",
+    "jar:occultism-1.21.1-neoforge-1.224.4.jar:data/occultism/modonomicon/books/dictionary_of_spirits/entries/pentacles/light_gray_chalk.json",
+    "jar:occultism-1.21.1-neoforge-1.224.4.jar:data/occultism/modonomicon/books/dictionary_of_spirits/entries/pentacles/lime_chalk.json",
+    "jar:occultism-1.21.1-neoforge-1.224.4.jar:data/occultism/modonomicon/books/dictionary_of_spirits/entries/pentacles/didactics.json"
+   ]
+  },
+  {
+   "key": "occ_infused_pick",
+   "deps": [
+    "occ_djinni_chalks",
+    "occ_rod"
+   ],
+   "type": "item",
+   "item": "occultism:infused_pickaxe",
+   "layout": {
+    "x": 24,
+    "y": 0,
+    "size": 1.25,
+    "shape": "square"
+   },
+   "en_us": [
+    "Infused Pickaxe (a Djinni ritual)",
+    "Craft a Spirit Attuned Pickaxe Head (three attuned gems) and infuse it with a Djinni on Strigeor's Higher Binding: two sticks and two silver ingots in the bowls, a bound Djinni book (purple dye) on the golden bowl.\n\nThe Infused Pickaxe mines Tier 2 Otherworld materials such as iesnium ore, but its durability is extremely low. Use it to get your first iesnium, then make an Iesnium Pickaxe."
+   ],
+   "es_es": [
+    "Pico infundido (un ritual Djinni)",
+    "Crafteá una Cabeza de pico espiritual afinada (tres gemas afinadas) e infundila con un Djinni en la Vinculación superior de Strigeor: dos palos y dos lingotes de plata en los cuencos, un tomo Djinni vinculado (tinte violeta) sobre el cuenco dorado.\n\nEl Pico infundido pica materiales del Otro Lado de nivel 2 como la mena de iesnium, pero su durabilidad es bajísima. Usalo para el primer iesnium y hacé enseguida un Pico de iesnium."
+   ],
+   "sources": [
+    "jar:occultism-1.21.1-neoforge-1.224.4.jar:data/occultism/recipe/crafting/spirit_attuned_pickaxe_head.json",
+    "jar:occultism-1.21.1-neoforge-1.224.4.jar:data/occultism/recipe/ritual/craft_infused_pickaxe.json",
+    "jar:occultism-1.21.1-neoforge-1.224.4.jar:data/occultism/modonomicon/books/dictionary_of_spirits/entries/crafting_rituals/craft_infused_pickaxe.json",
+    "jar:occultism-1.21.1-neoforge-1.224.4.jar:data/occultism/modonomicon/books/dictionary_of_spirits/entries/pentacles/craft_djinni.json"
+   ]
+  },
+  {
+   "key": "occ_iesnium",
+   "deps": [
+    "occ_infused_pick"
+   ],
+   "type": "item",
+   "item": "occultism:iesnium_ingot",
+   "count": 4,
+   "layout": {
+    "x": 27,
+    "y": 0,
+    "size": 1.5,
+    "shape": "hexagon"
+   },
+   "en_us": [
+    "Iesnium",
+    "Go to the Nether with the rod attuned to netherrack. Iesnium ore looks like netherrack and cannot be mined with a normal pickaxe; mine it with the Infused Pickaxe. It drops raw iesnium, which smelts into ingots and respects Fortune. With Silk Touch you get a stabilized ore any pickaxe can break later.\n\nCraft an Iesnium Pickaxe (three ingots, two sticks): it mines Otherworld ores and lasts. Keep the rest: iesnium builds lamps, the mineshaft and, in ENTRELUMEN, the Ark's arcane module."
+   ],
+   "es_es": [
+    "Iesnium",
+    "Andá al Nether con la varilla afinada a netherrack. La mena de iesnium parece netherrack y no se pica con un pico común; usá el Pico infundido. Suelta iesnium en bruto, que se funde en lingotes y respeta Fortuna. Con toque de seda sale una mena estabilizada que después rompe cualquier pico.\n\nCrafteá un Pico de iesnium (tres lingotes, dos palos): pica menas del Otro Lado y dura. Guardá el resto: el iesnium hace lámparas, la mina dimensional y, en ENTRELUMEN, el módulo arcano del Arca."
+   ],
+   "sources": [
+    "jar:occultism-1.21.1-neoforge-1.224.4.jar:data/occultism/modonomicon/books/dictionary_of_spirits/entries/getting_started/iesnium.json",
+    "jar:occultism-1.21.1-neoforge-1.224.4.jar:data/occultism/modonomicon/books/dictionary_of_spirits/entries/getting_started/iesnium_pickaxe.json",
+    "jar:occultism-1.21.1-neoforge-1.224.4.jar:data/occultism/recipe/crafting/iesnium_pickaxe.json"
+   ]
+  },
+  {
+   "key": "occ_afrit",
+   "deps": [
+    "occ_iesnium"
+   ],
+   "type": "item",
+   "item": "occultism:afrit_essence",
+   "optional": true,
+   "layout": {
+    "x": 30,
+    "y": -3,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Danger: Afrit Essence",
+    "Red chalk, needed for the strongest binding pentacles, requires Afrit Essence. The only way is to summon an Afrit unbound and kill it: netherrack, iesnium, flint and steel and gunpowder in the bowls, a bound Afrit book (yellow dye) on the golden bowl, and a pentacle that also asks for gray and orange chalk and a Spirit Attuned Crystal.\n\nUnbound spirits are not controlled and are very dangerous to everything nearby. Build it far from home and bring good armor and potions."
+   ],
+   "es_es": [
+    "Peligro: Esencia de Afrit",
+    "La tiza roja, necesaria para los pentáculos de vinculación más fuertes, pide Esencia de Afrit. La única forma es invocar un Afrit sin atar y matarlo: netherrack, iesnium, encendedor y pólvora en los cuencos, un tomo Afrit vinculado (tinte amarillo) sobre el cuenco dorado y un pentáculo que además pide tiza gris y naranja y un Cristal espiritual armonizado.\n\nLos espíritus sin atar no están controlados y son muy peligrosos para todo lo que esté cerca. Armalo lejos de tu casa y llevá buena armadura y pociones."
+   ],
+   "sources": [
+    "jar:occultism-1.21.1-neoforge-1.224.4.jar:data/occultism/recipe/ritual/summon_unbound_afrit.json",
+    "jar:occultism-1.21.1-neoforge-1.224.4.jar:data/occultism/modonomicon/books/dictionary_of_spirits/entries/summoning_rituals/afrit_essence.json",
+    "jar:occultism-1.21.1-neoforge-1.224.4.jar:data/occultism/modonomicon/books/dictionary_of_spirits/entries/spirits/unbound_spirits.json",
+    "jar:occultism-1.21.1-neoforge-1.224.4.jar:data/occultism/modonomicon/books/dictionary_of_spirits/entries/pentacles/summon_unbound_afrit.json"
+   ]
+  },
+  {
+   "key": "occ_crystal",
+   "deps": [
+    "occ_iesnium"
+   ],
+   "type": "item",
+   "item": "occultism:spirit_attuned_crystal",
+   "layout": {
+    "x": 30,
+    "y": 3,
+    "size": 1.25,
+    "shape": "diamond"
+   },
+   "en_us": [
+    "ENTRELUMEN: the Spirit Attuned Crystal",
+    "Craft a Spirit Attuned Crystal from four Spirit Attuned Gems (four diamonds through spiritfire, or Ars Ocultas's apparatus recipe). Crystals also stabilize advanced pentacles.\n\nIn ENTRELUMEN it is the Occultism part of the Act IV Spectral Lens: one crystal, two Malum Arcane Spirits, a Create precision mechanism and a Calibration Frame. Getting here in Act II or III means the lens only waits for Malum."
+   ],
+   "es_es": [
+    "ENTRELUMEN: el Cristal espiritual armonizado",
+    "Crafteá un Cristal espiritual armonizado con cuatro Gemas afinadas al espíritu (cuatro diamantes por fuego espiritual, o la receta del aparato de Ars Ocultas). Los cristales también estabilizan pentáculos avanzados.\n\nEn ENTRELUMEN es la parte de Occultism de la Lente espectral del acto IV: un cristal, dos Espíritus arcanos de Malum, un mecanismo de precisión de Create y un Marco de calibración. Llegar acá en el acto II o III hace que la lente sólo espere a Malum."
+   ],
+   "sources": [
+    "jar:occultism-1.21.1-neoforge-1.224.4.jar:data/occultism/recipe/crafting/spirit_attuned_crystal.json",
+    "jar:occultism-1.21.1-neoforge-1.224.4.jar:data/occultism/modonomicon/books/dictionary_of_spirits/entries/pentacles/paraphernalia.json",
+    "repo:pack/kubejs/server_scripts/entrelumen_integration_recipes.js#spectral_archive",
+    "repo:docs/design/act-four-recipes.md"
+   ]
+  },
+  {
+   "key": "occ_keys",
+   "deps": [
+    "occ_purple"
+   ],
+   "type": "item",
+   "item": "occultism:ritual_satchel_t1",
+   "optional": true,
+   "layout": {
+    "x": 27,
+    "y": -6,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Quirk: satchels, bags and keys",
+    "Occultism's portable storage has hotkeys. In ENTRELUMEN the ender bag key is O and the satchel key is Insert (the mod ships both on keys already taken in this pack).\n\nThe Surprisingly Substantial Satchel holds more than its size suggests; the Ritual Satchels hold chalk, candles and crystals and place a previewed pentacle for you, one block at a time (Apprentice) or all at once (Artisanal)."
+   ],
+   "es_es": [
+    "Particularidad: morrales, bolsas y teclas",
+    "El almacenamiento portátil de Occultism tiene teclas. En ENTRELUMEN la bolsa de ender va en O y el morral en Insert (el mod las trae en teclas que en este pack ya están ocupadas).\n\nEl Morral sorprendentemente amplio guarda más de lo que su tamaño indica; los Morrales rituales guardan tiza, velas y cristales y colocan por vos un pentáculo previsualizado, de a un bloque (Aprendiz) o de una (Artesanal)."
+   ],
+   "sources": [
+    "repo:pack/config/entrelumen/client-preset.json#key_key.occultism.ender_bag",
+    "repo:docs/design/keybinding-review.md",
+    "jar:occultism-1.21.1-neoforge-1.224.4.jar:data/occultism/modonomicon/books/dictionary_of_spirits/entries/crafting_rituals/craft_satchel.json",
+    "jar:occultism-1.21.1-neoforge-1.224.4.jar:data/occultism/modonomicon/books/dictionary_of_spirits/entries/getting_started/ritual_satchels.json"
+   ]
+  },
+  {
+   "key": "occ_malum_fix",
+   "deps": [
+    "occ_crusher"
+   ],
+   "type": "checkmark",
+   "optional": true,
+   "icon": "occultism:chalk_red",
+   "layout": {
+    "x": 18,
+    "y": 3,
+    "size": 1.0,
+    "shape": "diamond"
+   },
+   "en_us": [
+    "ENTRELUMEN: Malum repairs your chalk",
+    "Malum's Repair Pylon has recipes to restore Occultism chalk with arcane spirits. Upstream those four recipes failed to load on 1.21.1; ENTRELUMEN ships corrected copies with the same materials and spirits, so the repair works.\n\nIt is the cheapest way to keep expensive colored chalk alive once you run Malum (see its chapter)."
+   ],
+   "es_es": [
+    "ENTRELUMEN: Malum repara tu tiza",
+    "El Pilón de reparación de Malum tiene recetas para restaurar tiza de Occultism con espíritus arcanos. De origen esas cuatro recetas no cargaban en 1.21.1; ENTRELUMEN trae copias corregidas con los mismos materiales y espíritus, así que la reparación funciona.\n\nEs la forma más barata de mantener viva la tiza de color cara cuando ya usás Malum (mirá su capítulo)."
+   ],
+   "sources": [
+    "repo:pack/kubejs/data/malum/recipe/malum/spirit_repair/occultism",
+    "repo:docs/design/malum-compat.md"
+   ]
+  },
+  {
+   "key": "occ_mastery",
+   "deps": [
+    "occ_iesnium",
+    "occ_grey"
+   ],
+   "type": "checkmark",
+   "layout": {
+    "x": 33,
+    "y": 0,
+    "size": 2.0,
+    "shape": "gear"
+   },
+   "en_us": [
+    "Mastery: a summoner's circle",
+    "You can draw Foliot and Djinni pentacles, bind books, see and mine the Otherworld, and you hold iesnium. That is the whole foundation.\n\nThe next chapter, «Occultism II: Spirits at Work», puts spirits to use: miners in a pocket dimension, magic storage, familiars and the tools of a master summoner."
+   ],
+   "es_es": [
+    "Maestría: el círculo del invocador",
+    "Sabés dibujar pentáculos Foliot y Djinni, vincular tomos, ver y minar el Otro Lado, y tenés iesnium. Esa es toda la base.\n\nEl capítulo siguiente, «Occultism II: espíritus a trabajar», pone a los espíritus a laburar: mineros en una dimensión de bolsillo, almacenamiento mágico, familiares y las herramientas de un invocador maestro."
+   ],
+   "sources": [
+    "jar:occultism-1.21.1-neoforge-1.224.4.jar:data/occultism/modonomicon/books/dictionary_of_spirits/entries/getting_started/more_rituals.json"
+   ]
+  }
+ ]
+}

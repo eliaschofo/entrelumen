@@ -1,0 +1,430 @@
+{
+  "chapter": "guide_tombstone",
+  "group": "exploration",
+  "act": "I",
+  "icon": "tombstone:grave_key",
+  "title": {
+    "en_us": "Death without stress: Tombstone",
+    "es_es": "Morir sin estrés: Tombstone"
+  },
+  "subtitle": {
+    "en_us": "What happens when you die, how to get your things back and how to die less.",
+    "es_es": "Qué pasa cuando morís, cómo recuperar tus cosas y cómo morir menos."
+  },
+  "quests": [
+    {
+      "key": "tombstone_welcome",
+      "deps": [],
+      "type": "checkmark",
+      "layout": {
+        "x": 0,
+        "y": 0,
+        "size": 2.0,
+        "shape": "hexagon"
+      },
+      "en_us": [
+        "Death is a detour",
+        "ENTRELUMEN's rule for death is short: a grave with your things, no stress. Tombstone is the only death-recovery mod in the pack on purpose; there is no second system to learn.\n\nWhen you die, your lost items go into a grave at that spot, you respawn with a Grave Key and a short Ghostly Shape effect that keeps creatures from attacking you. With the default settings no item is lost on death."
+      ],
+      "es_es": [
+        "Morir es un desvío",
+        "La regla de ENTRELUMEN para la muerte es corta: una tumba con tus cosas, sin estrés. Tombstone es a propósito el único mod de recuperación al morir del pack; no hay un segundo sistema que aprender.\n\nCuando morís, lo que perdiste va a una tumba en ese lugar, reaparecés con una Llave de tumba y un efecto breve de Forma fantasmal que evita que las criaturas te ataquen. Con la configuración por defecto no se pierde ningún ítem al morir."
+      ],
+      "sources": [
+        "repo:docs/design/story-bible.md",
+        "repo:docs/design/qol-parity.md",
+        "jar:tombstone-neoforge-1.21.1-9.5.5.jar:assets/tombstone/lang/en_us.json",
+        "jar:tombstone-neoforge-1.21.1-9.5.5.jar:ovh/corail/tombstone/config/ConfigTombstone$PlayerDeath.class"
+      ]
+    },
+    {
+      "key": "tombstone_key",
+      "deps": [
+        "tombstone_welcome"
+      ],
+      "type": "item",
+      "item": "tombstone:grave_key",
+      "layout": {
+        "x": 3,
+        "y": 0,
+        "size": 1.0,
+        "shape": "circle"
+      },
+      "en_us": [
+        "The Grave Key",
+        "After respawning you hold a Grave Key. In the same dimension it shows your grave at a distance. Walk back, then right-click the grave or sneak over it to get everything back (\"You have recovered your lost items\").\n\nItems lying within a few blocks of your death are collected into the grave too, and dying again before you recover it adds to the same grave instead of creating another."
+      ],
+      "es_es": [
+        "La Llave de tumba",
+        "Al reaparecer tenés una Llave de tumba. En la misma dimensión te muestra tu tumba a la distancia. Volvé, y hacé clic derecho sobre la tumba o agachate encima para recuperar todo («You have recovered your lost items»).\n\nLos ítems tirados a pocos bloques de donde moriste también van a la tumba, y si volvés a morir antes de recuperarla, se suman a la misma tumba en lugar de crear otra."
+      ],
+      "sources": [
+        "jar:tombstone-neoforge-1.21.1-9.5.5.jar:assets/tombstone/lang/en_us.json",
+        "jar:tombstone-neoforge-1.21.1-9.5.5.jar:ovh/corail/tombstone/config/ConfigTombstone$PlayerDeath.class"
+      ]
+    },
+    {
+      "key": "tombstone_waypoint",
+      "deps": [
+        "tombstone_key"
+      ],
+      "type": "checkmark",
+      "icon": "minecraft:recovery_compass",
+      "layout": {
+        "x": 3,
+        "y": -3,
+        "size": 0.85,
+        "shape": "circle"
+      },
+      "en_us": [
+        "Find it on the map",
+        "JourneyMap creates a \"Death\" waypoint where you die: follow its beacon. If you were far from home, a Waystones Return Scroll or a nearby waystone saves most of the walk.\n\nIn the Aether, remember that falling off an island drops you into the Overworld rather than killing you; your grave, if any, stays where you actually died."
+      ],
+      "es_es": [
+        "Encontrala en el mapa",
+        "JourneyMap crea un waypoint «Death» donde morís: seguí su haz. Si estabas lejos de casa, un Pergamino de regreso de Waystones o una waystone cercana te ahorran casi toda la caminata.\n\nEn el Aether acordate de que caerte de una isla te manda al Overworld en lugar de matarte; tu tumba, si la hay, queda donde moriste de verdad."
+      ],
+      "sources": [
+        "jar:journeymap-neoforge-1.21.1-6.0.6.jar:assets/journeymap/lang/en_us.json",
+        "jar:waystones-neoforge-1.21.1-21.1.41.jar:assets/waystones/lang/en_us.json",
+        "jar:aether-1.21.1-1.5.10-neoforge.jar:com/aetherteam/aether/AetherConfig$Server.class"
+      ]
+    },
+    {
+      "key": "tombstone_enchanted_key",
+      "deps": [
+        "tombstone_key"
+      ],
+      "type": "checkmark",
+      "optional": true,
+      "icon": "tombstone:grave_key",
+      "layout": {
+        "x": 6,
+        "y": 0,
+        "size": 1.0,
+        "shape": "square"
+      },
+      "en_us": [
+        "An enchanted key teleports you",
+        "An enchanted Grave Key lets you hold right click to teleport straight to your grave. Enchant it by crafting it with an Ender Pearl, or with a soul haunting a decorative grave. Sometimes the key comes already enchanted.\n\nTeleporting with the key caps your Ghostly Shape to 10 seconds, so be ready to fight when you land."
+      ],
+      "es_es": [
+        "Una llave encantada te teletransporta",
+        "Una Llave de tumba encantada te deja mantener el clic derecho para teletransportarte directo a tu tumba. Se encanta fabricándola con una Perla de ender, o con un alma que ronde una tumba decorativa. A veces la llave ya viene encantada.\n\nTeletransportarte con la llave limita la Forma fantasmal a 10 segundos, así que llegá listo para pelear."
+      ],
+      "sources": [
+        "jar:tombstone-neoforge-1.21.1-9.5.5.jar:data/tombstone/recipe/enchanted_grave_key.json",
+        "jar:tombstone-neoforge-1.21.1-9.5.5.jar:assets/tombstone/lang/en_us.json",
+        "jar:tombstone-neoforge-1.21.1-9.5.5.jar:ovh/corail/tombstone/config/ConfigTombstone$PlayerDeath.class"
+      ]
+    },
+    {
+      "key": "tombstone_dust",
+      "deps": [
+        "tombstone_key"
+      ],
+      "type": "item",
+      "item": "tombstone:grave_dust",
+      "count": 8,
+      "layout": {
+        "x": 6,
+        "y": 3,
+        "size": 1.0,
+        "shape": "circle"
+      },
+      "en_us": [
+        "Grave Dust",
+        "Grave Dust drops from undead creatures, and cats sometimes bring it as a morning gift. It is the base of almost everything Tombstone crafts: marble, decorative graves, scrolls, tablets, books and the Ankh.\n\nKeep a few in a chest; you will want them later."
+      ],
+      "es_es": [
+        "Polvo de tumba",
+        "El Polvo de tumba cae de las criaturas no muertas, y a veces los gatos lo traen como regalo a la mañana. Es la base de casi todo lo que fabrica Tombstone: mármol, tumbas decorativas, pergaminos, tablillas, libros y el Anj.\n\nGuardá unos cuantos en un cofre; más adelante los vas a querer."
+      ],
+      "sources": [
+        "jar:tombstone-neoforge-1.21.1-9.5.5.jar:assets/tombstone/lang/en_us.json",
+        "jar:tombstone-neoforge-1.21.1-9.5.5.jar:data/tombstone/recipe/strange_scroll.json",
+        "jar:tombstone-neoforge-1.21.1-9.5.5.jar:data/tombstone/recipe/ankh_of_prayer.json"
+      ]
+    },
+    {
+      "key": "tombstone_soulbound",
+      "deps": [
+        "tombstone_dust"
+      ],
+      "type": "item",
+      "item": "tombstone:book_of_soulbound",
+      "layout": {
+        "x": 9,
+        "y": 3,
+        "size": 1.0,
+        "shape": "square"
+      },
+      "en_us": [
+        "Soulbound: keep it when you die",
+        "A Book of Soulbound (book, diamond, lapis and grave dust) puts a Soulbound rune on a non-stackable item: it stays in your inventory when you die. Use it on a soul-haunted decorative grave with the book in your off hand and the item in your main hand.\n\nPut it on your pickaxe and your Heliodor Compass first."
+      ],
+      "es_es": [
+        "Soulbound: conservalo al morir",
+        "El Libro de Soulbound (libro, diamante, lapislázuli y polvo de tumba) le pone una runa Soulbound a un ítem que no se apila: se queda en tu inventario cuando morís. Usalo sobre una tumba decorativa con alma, con el libro en la mano secundaria y el ítem en la principal.\n\nPonésela primero a tu pico y a tu Brújula de Heliodor."
+      ],
+      "sources": [
+        "jar:tombstone-neoforge-1.21.1-9.5.5.jar:data/tombstone/recipe/book_of_soulbound.json",
+        "jar:tombstone-neoforge-1.21.1-9.5.5.jar:assets/tombstone/lang/en_us.json"
+      ]
+    },
+    {
+      "key": "tombstone_graves",
+      "deps": [
+        "tombstone_dust"
+      ],
+      "type": "item",
+      "tag": "tombstone:grave_marbles",
+      "icon": "tombstone:decorative_grave_simple",
+      "layout": {
+        "x": 9,
+        "y": 0,
+        "size": 1.0,
+        "shape": "square"
+      },
+      "en_us": [
+        "Decorative graves and souls",
+        "Marble (stone plus grave dust, colored with lapis, emerald, red sand or bone meal) crafts decorative graves. At night they smoke, and sometimes a soul haunts one: that soul powers Tombstone's magic (enchanting the Grave Key, scrolls, tablets and the Soulbound book).\n\nDo not overuse the same grave: too much corruption turns it into a Screaming Grave that throws bones and refuses rituals until it calms down."
+      ],
+      "es_es": [
+        "Tumbas decorativas y almas",
+        "El mármol (piedra más polvo de tumba, teñido con lapislázuli, esmeralda, arena roja o harina de hueso) fabrica tumbas decorativas. De noche echan humo, y a veces un alma ronda una: esa alma alimenta la magia de Tombstone (encantar la Llave de tumba, los pergaminos, las tablillas y el libro de Soulbound).\n\nNo abuses de la misma tumba: demasiada corrupción la vuelve una Tumba que grita, que tira huesos y rechaza rituales hasta calmarse."
+      ],
+      "sources": [
+        "jar:tombstone-neoforge-1.21.1-9.5.5.jar:data/tombstone/recipe/dark_marble.json",
+        "jar:tombstone-neoforge-1.21.1-9.5.5.jar:data/tombstone/recipe/white_marble.json",
+        "jar:tombstone-neoforge-1.21.1-9.5.5.jar:data/tombstone/recipe/white_grave_simple.json",
+        "jar:tombstone-neoforge-1.21.1-9.5.5.jar:assets/tombstone/lang/en_us.json"
+      ]
+    },
+    {
+      "key": "tombstone_tablets",
+      "deps": [
+        "tombstone_graves"
+      ],
+      "type": "item",
+      "item": "tombstone:tablet_of_home",
+      "optional": true,
+      "layout": {
+        "x": 12,
+        "y": 0,
+        "size": 1.0,
+        "shape": "square"
+      },
+      "en_us": [
+        "Tablets: home and recall",
+        "From a Strange Tablet (marble and grave dust) come the travel tablets, charged on a soul-haunted grave:\n- Tablet of Home: teleports you to your respawn point.\n- Tablet of Recall: teleports you to a memorized place.\n- Tablet of Assistance: toward another player.\nAncient versions also bring the creatures around you. Lost Tablets found in the world lead to distant places."
+      ],
+      "es_es": [
+        "Tablillas: casa y recuerdo",
+        "De una Tablilla extraña (mármol y polvo de tumba) salen las tablillas de viaje, que se cargan en una tumba con alma:\n- Tablilla de casa: te lleva a tu punto de reaparición.\n- Tablilla de recuerdo: te lleva a un lugar memorizado.\n- Tablilla de asistencia: hacia otro jugador.\nLas versiones antiguas además se llevan a las criaturas que tenés alrededor. Las Tablillas perdidas que se encuentran en el mundo llevan a lugares lejanos."
+      ],
+      "sources": [
+        "jar:tombstone-neoforge-1.21.1-9.5.5.jar:data/tombstone/recipe/strange_tablet.json",
+        "jar:tombstone-neoforge-1.21.1-9.5.5.jar:data/tombstone/recipe/tablet_of_home.json",
+        "jar:tombstone-neoforge-1.21.1-9.5.5.jar:data/tombstone/recipe/tablet_of_recall.json",
+        "jar:tombstone-neoforge-1.21.1-9.5.5.jar:data/tombstone/recipe/tablet_of_assistance.json",
+        "jar:tombstone-neoforge-1.21.1-9.5.5.jar:assets/tombstone/lang/en_us.json",
+        "repo:docs/design/ark-exploration-charts.md"
+      ]
+    },
+    {
+      "key": "tombstone_scrolls",
+      "deps": [
+        "tombstone_tablets"
+      ],
+      "type": "checkmark",
+      "optional": true,
+      "icon": "tombstone:scroll_of_knowledge",
+      "layout": {
+        "x": 15,
+        "y": 3,
+        "size": 0.85,
+        "shape": "circle"
+      },
+      "en_us": [
+        "Scrolls and books",
+        "Strange Scrolls become magic scrolls with one extra ingredient: Knowledge (store your experience, some is lost), Feather Fall, Aquatic Life, Frost and Lightning Resistance, Reach, True Sight, Preservation and more.\n\nTombstone's books repair, disenchant, recycle or move enchantments. EMI lists every recipe."
+      ],
+      "es_es": [
+        "Pergaminos y libros",
+        "Los Pergaminos extraños se vuelven pergaminos mágicos con un ingrediente más: de Conocimiento (guarda tu experiencia, se pierde una parte), Caída de pluma, Vida acuática, Resistencia al frío y al rayo, Alcance, Visión verdadera, Preservación y más.\n\nLos libros de Tombstone reparan, desencantan, reciclan o mueven encantamientos. EMI muestra todas las recetas."
+      ],
+      "sources": [
+        "jar:tombstone-neoforge-1.21.1-9.5.5.jar:data/tombstone/recipe/scroll_of_knowledge.json",
+        "jar:tombstone-neoforge-1.21.1-9.5.5.jar:data/tombstone/recipe/scroll_of_feather_fall.json",
+        "jar:tombstone-neoforge-1.21.1-9.5.5.jar:data/tombstone/recipe/book_of_repairing.json",
+        "jar:tombstone-neoforge-1.21.1-9.5.5.jar:data/tombstone/recipe/book_of_disenchantment.json",
+        "jar:tombstone-neoforge-1.21.1-9.5.5.jar:assets/tombstone/lang/en_us.json"
+      ]
+    },
+    {
+      "key": "tombstone_ankh",
+      "deps": [
+        "tombstone_graves"
+      ],
+      "type": "item",
+      "item": "tombstone:ankh_of_prayer",
+      "optional": true,
+      "layout": {
+        "x": 12,
+        "y": 3,
+        "size": 1.0,
+        "shape": "square"
+      },
+      "en_us": [
+        "The Ankh and the Knowledge of Death",
+        "The Ankh of Prayer (gold, a stick and grave dust) lets you pray at decorative graves, with a cooldown, to earn Knowledge of Death. Knowledge buys perks, for example Memento Mori, which reduces the experience lost on death by 20% per level up to 100%, and Jailer, which raises by 20% per level the chance that your Grave Key is born enchanted."
+      ],
+      "es_es": [
+        "El Anj y el Conocimiento de la muerte",
+        "El Anj de oración (oro, un palo y polvo de tumba) te deja rezar en las tumbas decorativas, con tiempo de espera, para ganar Conocimiento de la muerte. El conocimiento compra ventajas, por ejemplo Memento Mori, que reduce la experiencia perdida al morir un 20% por nivel hasta el 100%, y Jailer, que sube un 20% por nivel la chance de que tu Llave de tumba nazca encantada."
+      ],
+      "sources": [
+        "jar:tombstone-neoforge-1.21.1-9.5.5.jar:data/tombstone/recipe/ankh_of_prayer.json",
+        "jar:tombstone-neoforge-1.21.1-9.5.5.jar:assets/tombstone/lang/en_us.json"
+      ]
+    },
+    {
+      "key": "tombstone_other",
+      "deps": [
+        "tombstone_key"
+      ],
+      "type": "checkmark",
+      "optional": true,
+      "icon": "minecraft:totem_of_undying",
+      "layout": {
+        "x": 6,
+        "y": -3,
+        "size": 0.85,
+        "shape": "circle"
+      },
+      "en_us": [
+        "Other ways to keep your things",
+        "Tombstone is the safety net, but other mods help:\n- Twilight Forest's Charms of Keeping keep armor, hotbar or everything; Phantom armor is never lost.\n- Charms of Life, the vanilla Totem of Undying and Friends and Foes' totems stop the death itself.\n- Cataclysm's Cursium chestplate revives you once.\n- Tombstone's own Receptacle of Soul and Voodoo Poppet can also prevent a death."
+      ],
+      "es_es": [
+        "Otras formas de conservar tus cosas",
+        "Tombstone es la red de seguridad, pero otros mods ayudan:\n- Los Amuletos de conservación de Twilight Forest guardan la armadura, la barra rápida o todo; la armadura Fantasma nunca se pierde.\n- Los Amuletos de vida, el Tótem de la inmortalidad vanilla y los tótems de Friends and Foes evitan la muerte misma.\n- La pechera de Cursium de Cataclysm te revive una vez.\n- El Receptáculo de alma y el Muñeco vudú del propio Tombstone también pueden evitar una muerte."
+      ],
+      "sources": [
+        "jar:twilightforest-1.21.1-4.8.3345-universal.jar:assets/twilightforest/lang/en_us.json",
+        "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:assets/cataclysm/lang/en_us.json",
+        "jar:tombstone-neoforge-1.21.1-9.5.5.jar:assets/tombstone/lang/en_us.json",
+        "https://twilightforest.fandom.com/wiki/Charm_of_Keeping"
+      ]
+    },
+    {
+      "key": "tombstone_admin",
+      "deps": [
+        "tombstone_welcome"
+      ],
+      "type": "checkmark",
+      "icon": "minecraft:command_block",
+      "layout": {
+        "x": 0,
+        "y": 3,
+        "size": 1.0,
+        "shape": "rsquare"
+      },
+      "en_us": [
+        "For the server owner",
+        "If something goes wrong, operators have tools: /tbshowlastgrave shows where a player's last grave is, /tbteleport death takes you to your last death spot, and /tbrecovery saves and restores player backups.\n\nThe pack keeps Tombstone's defaults: no random item loss, graves fill up instead of multiplying, and the grave of a player killed by another player is left unlocked."
+      ],
+      "es_es": [
+        "Para quien administra el servidor",
+        "Si algo sale mal, los operadores tienen herramientas: /tbshowlastgrave muestra dónde está la última tumba de un jugador, /tbteleport death te lleva al último lugar donde moriste y /tbrecovery guarda y restaura copias de jugadores.\n\nEl pack conserva los valores de Tombstone: sin pérdida de ítems al azar, las tumbas se llenan en vez de multiplicarse y la tumba de un jugador muerto a manos de otro jugador queda abierta."
+      ],
+      "sources": [
+        "jar:tombstone-neoforge-1.21.1-9.5.5.jar:assets/tombstone/lang/en_us.json",
+        "jar:tombstone-neoforge-1.21.1-9.5.5.jar:ovh/corail/tombstone/config/ConfigTombstone$PlayerDeath.class",
+        "repo:docs/design/qol-parity.md"
+      ]
+    },
+    {
+      "key": "tombstone_mastery",
+      "deps": [
+        "tombstone_ankh",
+        "tombstone_soulbound"
+      ],
+      "type": "checkmark",
+      "icon": "tombstone:ankh_of_prayer",
+      "layout": {
+        "x": 18,
+        "y": 0,
+        "size": 2.25,
+        "shape": "pentagon"
+      },
+      "en_us": [
+        "Knowledge of Death",
+        "A key that teleports, soulbound tools, tablets home and a few perks from the Ankh: death is now an inconvenience, not a disaster. Go take the risks the story asks for."
+      ],
+      "es_es": [
+        "Conocimiento de la muerte",
+        "Una llave que teletransporta, herramientas con Soulbound, tablillas para volver a casa y algunas ventajas del Anj: morir ahora es una molestia, no un desastre. Andá a tomar los riesgos que pide la historia."
+      ],
+      "sources": [
+        "jar:tombstone-neoforge-1.21.1-9.5.5.jar:assets/tombstone/lang/en_us.json"
+      ]
+    },
+    {
+      "key": "tombstone_poppet",
+      "deps": [
+        "tombstone_dust"
+      ],
+      "type": "item",
+      "item": "tombstone:voodoo_poppet",
+      "optional": true,
+      "layout": {
+        "x": 9,
+        "y": -3,
+        "size": 1.0,
+        "shape": "square"
+      },
+      "en_us": [
+        "A Voodoo Poppet",
+        "Leather, string, a clay ball, a dead bush and grave dust make a Voodoo Poppet. Enchant it on a soul-haunted grave and it protects you from your next death (\"Not Today, Grim Reaper\"). The Witch Doctor perk gives a chance to keep the poppet after it triggers.\n\nOne active poppet in your inventory is cheap insurance before a boss."
+      ],
+      "es_es": [
+        "Un Muñeco vudú",
+        "Cuero, hilo, una bola de arcilla, un arbusto seco y polvo de tumba hacen un Muñeco vudú. Encantalo en una tumba con alma y te protege de tu próxima muerte («Not Today, Grim Reaper»). La ventaja Witch Doctor da una chance de conservar el muñeco después de que se activa.\n\nUn muñeco activo en el inventario es un seguro barato antes de un jefe."
+      ],
+      "sources": [
+        "jar:tombstone-neoforge-1.21.1-9.5.5.jar:data/tombstone/recipe/voodoo_poppet.json",
+        "jar:tombstone-neoforge-1.21.1-9.5.5.jar:assets/tombstone/lang/en_us.json"
+      ]
+    },
+    {
+      "key": "tombstone_familiar",
+      "deps": [
+        "tombstone_poppet"
+      ],
+      "type": "item",
+      "item": "tombstone:receptacle_of_familiar",
+      "optional": true,
+      "layout": {
+        "x": 12,
+        "y": -3,
+        "size": 1.0,
+        "shape": "square"
+      },
+      "en_us": [
+        "Bring your pet back",
+        "A Receptacle of Familiar (iron, a ghast tear and an impregnated diamond) captures the soul of one of your pets when it dies, together with what it carried. The soul recovers slowly by absorbing some of your vital essence while you carry it; then use it on a soul-haunted grave to revive your familiar (\"Bound Forever\")."
+      ],
+      "es_es": [
+        "Traé de vuelta a tu mascota",
+        "Un Receptáculo de familiar (hierro, una lágrima de ghast y un diamante impregnado) captura el alma de una de tus mascotas cuando muere, junto con lo que llevaba. El alma se recupera de a poco absorbiendo algo de tu esencia vital mientras la llevás encima; después usalo en una tumba con alma para revivir a tu familiar («Bound Forever»)."
+      ],
+      "sources": [
+        "jar:tombstone-neoforge-1.21.1-9.5.5.jar:data/tombstone/recipe/receptacle_of_familiar.json",
+        "jar:tombstone-neoforge-1.21.1-9.5.5.jar:data/tombstone/recipe/impregnated_diamond.json",
+        "jar:tombstone-neoforge-1.21.1-9.5.5.jar:assets/tombstone/lang/en_us.json"
+      ]
+    }
+  ]
+}

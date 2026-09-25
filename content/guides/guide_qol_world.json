@@ -1,0 +1,434 @@
+{
+  "chapter": "guide_qol_world",
+  "group": "qol",
+  "act": "any",
+  "icon": "minecraft:iron_pickaxe",
+  "title": {
+    "en_us": "Helpers in the World",
+    "es_es": "Ayudas en el mundo"
+  },
+  "subtitle": {
+    "en_us": "Ultimine, Carry On, pocket villagers, elevators, lights, beds for the road and small fixes.",
+    "es_es": "Ultimine, Carry On, aldeanos de bolsillo, ascensores, luces, camas de viaje y arreglos chicos."
+  },
+  "quests": [
+    {
+      "key": "qol_world_welcome",
+      "deps": [],
+      "type": "checkmark",
+      "layout": {
+        "x": 0,
+        "y": 0,
+        "size": 2.0,
+        "shape": "hexagon"
+      },
+      "en_us": [
+        "Work Smarter Outside",
+        "Inventory helpers save clicks; these save hours. This chapter covers the tools that change how you mine, move things, keep villagers, climb, light areas and sleep far from home.\n\nEach one also has a limit set by the pack. Knowing the limit avoids surprises."
+      ],
+      "es_es": [
+        "Trabajá mejor afuera",
+        "Las ayudas de inventario ahorran clics; estas ahorran horas. Este capítulo cubre las herramientas que cambian cómo minás, movés cosas, guardás aldeanos, subís, iluminás y dormís lejos de casa.\n\nCada una tiene además un límite que fija el pack. Conocerlo evita sorpresas."
+      ],
+      "sources": [
+        "repo:docs/design/qol-parity.md"
+      ]
+    },
+    {
+      "key": "qol_world_ultimine",
+      "deps": [
+        "qol_world_welcome"
+      ],
+      "type": "checkmark",
+      "icon": "minecraft:diamond_pickaxe",
+      "layout": {
+        "x": 3,
+        "y": -2,
+        "size": 1.5,
+        "shape": "square"
+      },
+      "en_us": [
+        "Ultimine: One Swing, a Whole Vein",
+        "Hold &eV&r and break a block: every connected block of the same kind breaks with it, up to the server's limit, &e64&r per swing by default. Each extra block costs hunger, so eat well before a big vein; the HUD warns when you are too hungry.\n\nBring a good tool: the tool loses durability for every block. Ultimine also respects claims and ruins."
+      ],
+      "es_es": [
+        "Ultimine: un golpe, una veta entera",
+        "Mantené &eV&r y rompé un bloque: todos los bloques conectados del mismo tipo se rompen con él, hasta el límite del servidor, &e64&r por golpe por defecto. Cada bloque extra cuesta hambre, así que comé bien antes de una veta grande; el HUD avisa cuando tenés demasiada hambre.\n\nLlevá una buena herramienta: pierde durabilidad por cada bloque. Ultimine también respeta los reclamos y las ruinas."
+      ],
+      "sources": [
+        "jar:ftb-ultimine-neoforge-2101.1.15.jar:dev/ftb/mods/ftbultimine/config/FTBUltimineServerConfig.class",
+        "jar:ftb-ultimine-neoforge-2101.1.15.jar:assets/ftbultimine/lang/en_us.json",
+        "repo:pack/config/defaultoptions/keybindings.txt",
+        "note:Ultimine limit is the pinned FTB Ultimine default today; Elias approved a six-tier Ultimine curio (16 to 96 blocks) in docs/research/reference-packs.md, not implemented yet"
+      ]
+    },
+    {
+      "key": "qol_world_ultimine_shapes",
+      "deps": [
+        "qol_world_ultimine"
+      ],
+      "type": "checkmark",
+      "optional": true,
+      "layout": {
+        "x": 6,
+        "y": -4,
+        "size": 1.0,
+        "shape": "diamond"
+      },
+      "en_us": [
+        "Ultimine Shapes",
+        "With V held, hold &eShift&r and scroll (or press up and down) to cycle shapes:\n\n- &eShapeless&r: follows the vein, ideal for ores and trees.\n- &eSmall tunnel&r and &eLarge tunnel (3x3)&r: dig straight corridors.\n- &eSmall square (3x3)&r: clear a flat area.\n- &eMining tunnel&r and &eEscape tunnel&r: branch mining and a staircase up.\n\nThe outline shows what will break before you swing."
+      ],
+      "es_es": [
+        "Formas de Ultimine",
+        "Con V apretada, mantené &eShift&r y girá la rueda (o apretá arriba y abajo) para cambiar de forma:\n\n- &eSin forma&r: sigue la veta, ideal para minerales y árboles.\n- &eTúnel chico&r y &eTúnel grande (3x3)&r: cavan pasillos rectos.\n- &eCuadrado chico (3x3)&r: limpia un área plana.\n- &eTúnel minero&r y &eTúnel de escape&r: minería en ramas y una escalera hacia arriba.\n\nEl contorno muestra lo que se va a romper antes del golpe."
+      ],
+      "sources": [
+        "jar:ftb-ultimine-neoforge-2101.1.15.jar:assets/ftbultimine/lang/en_us.json"
+      ]
+    },
+    {
+      "key": "qol_world_ultimine_rightclick",
+      "deps": [
+        "qol_world_ultimine"
+      ],
+      "type": "checkmark",
+      "icon": "minecraft:iron_hoe",
+      "layout": {
+        "x": 6,
+        "y": -1,
+        "size": 1.0,
+        "shape": "circle"
+      },
+      "en_us": [
+        "Ultimine With Right Click",
+        "Ultimine also multiplies right-click actions while V is held:\n\n- an &eaxe&r strips many logs, or scrapes and unwaxes copper;\n- a &eshovel&r turns grass into paths;\n- a &ehoe&r tills a whole field;\n- on crops, it harvests many ripe crops at once.\n\nEven without V, right-clicking a ripe crop harvests it."
+      ],
+      "es_es": [
+        "Ultimine con clic derecho",
+        "Ultimine también multiplica las acciones de clic derecho mientras mantenés V:\n\n- un &ehacha&r descorteza muchos troncos, o raspa y desencera cobre;\n- una &epala&r convierte pasto en caminos;\n- una &eazada&r ara un campo entero;\n- sobre cultivos, cosecha muchos maduros a la vez.\n\nAun sin V, clic derecho en un cultivo maduro lo cosecha."
+      ],
+      "sources": [
+        "jar:ftb-ultimine-neoforge-2101.1.15.jar:dev/ftb/mods/ftbultimine/config/FTBUltimineServerConfig.class"
+      ]
+    },
+    {
+      "key": "qol_world_carry",
+      "deps": [
+        "qol_world_welcome"
+      ],
+      "type": "checkmark",
+      "icon": "minecraft:chest",
+      "layout": {
+        "x": 3,
+        "y": 2,
+        "size": 1.5,
+        "shape": "square"
+      },
+      "en_us": [
+        "Carry On: Pick Up a Chest",
+        "With an &eempty hand&r, &esneak and right-click&r a chest, furnace or barrel to lift it with everything inside. Right-click again to put it down. You can also carry passive animals and villagers.\n\nWhile carrying you are slower, heavier blocks slow you more, and you cannot attack. Only blocks that hold an inventory can be lifted."
+      ],
+      "es_es": [
+        "Carry On: levantá un cofre",
+        "Con la &emano vacía&r, &eagachate y hacé clic derecho&r en un cofre, horno o barril para levantarlo con todo adentro. Clic derecho otra vez para apoyarlo. También podés cargar animales pacíficos y aldeanos.\n\nMientras cargás vas más lento, los bloques más pesados te frenan más y no podés atacar. Sólo se levantan bloques que guardan inventario."
+      ],
+      "sources": [
+        "repo:pack/config/carryon-common.toml",
+        "jar:carryon-neoforge-1.21.1-2.2.6.13.jar:META-INF/neoforge.mods.toml"
+      ]
+    },
+    {
+      "key": "qol_world_carry_limits",
+      "deps": [
+        "qol_world_carry"
+      ],
+      "type": "checkmark",
+      "icon": "minecraft:barrier",
+      "layout": {
+        "x": 6,
+        "y": 2,
+        "size": 1.0,
+        "shape": "pentagon"
+      },
+      "en_us": [
+        "What Carry On Refuses",
+        "The pack keeps a long blacklist so nothing breaks when lifted:\n\n- every ENTRELUMEN block, spawners, vaults and Lootr chests;\n- whole mods with multiblocks or networks: Create, AE2, Refined Storage, Modern Industrialization, Oritech, Immersive Engineering, Industrial Foregoing, Powah, Functional and Sophisticated Storage, Ender Storage, Farmer's Delight, FramedBlocks, LittleTiles, Waystones;\n- Mekanism casings, valves and ports, and Ender IO conduits;\n- hostile mobs, bosses, item frames and armor stands.\n\nProtected ruins also refuse it."
+      ],
+      "es_es": [
+        "Lo que Carry On no levanta",
+        "El pack tiene una lista negra larga para que nada se rompa al levantarlo:\n\n- todos los bloques de ENTRELUMEN, spawners, bóvedas y cofres de Lootr;\n- mods enteros con multibloques o redes: Create, AE2, Refined Storage, Modern Industrialization, Oritech, Immersive Engineering, Industrial Foregoing, Powah, Functional y Sophisticated Storage, Ender Storage, Farmer's Delight, FramedBlocks, LittleTiles, Waystones;\n- carcasas, válvulas y puertos de Mekanism, y conductos de Ender IO;\n- mobs hostiles, jefes, marcos y soportes de armadura.\n\nLas ruinas protegidas también lo rechazan."
+      ],
+      "sources": [
+        "repo:pack/config/carryon-common.toml",
+        "repo:docs/design/mod-pingpong.md"
+      ]
+    },
+    {
+      "key": "qol_world_carry_stack",
+      "deps": [
+        "qol_world_carry_limits"
+      ],
+      "type": "checkmark",
+      "optional": true,
+      "layout": {
+        "x": 9,
+        "y": 3.5,
+        "size": 1.0,
+        "shape": "diamond"
+      },
+      "en_us": [
+        "Quirk: Stacks, Players and Reach",
+        "A few surprises in the pack's Carry On settings:\n\n- carried animals can be stacked on top of each other, up to 10;\n- players can be picked up too, so be nice in co-op;\n- pick-up distance scales with your reach, so anything that raises reach, like Terra's Arm, also lets you lift from farther away."
+      ],
+      "es_es": [
+        "Particularidad: pilas, jugadores y alcance",
+        "Algunas sorpresas en la configuración de Carry On del pack:\n\n- los animales cargados se pueden apilar uno encima del otro, hasta 10;\n- también se puede levantar a otros jugadores, así que portate bien en cooperativo;\n- la distancia para levantar escala con tu alcance, así que todo lo que lo aumenta, como el Brazo de Terra, también te deja levantar desde más lejos."
+      ],
+      "sources": [
+        "repo:pack/config/carryon-common.toml"
+      ]
+    },
+    {
+      "key": "qol_world_villagers",
+      "deps": [
+        "qol_world_carry"
+      ],
+      "type": "item",
+      "item": "easy_villagers:trader",
+      "layout": {
+        "x": 3,
+        "y": 6,
+        "size": 1.25,
+        "shape": "circle"
+      },
+      "en_us": [
+        "Villagers in Your Pocket",
+        "&eEasy Villagers&r turns villagers into items. Look at one and press &eShift+V&r to pick it up; place it back anywhere, or put it inside one of its blocks:\n\n- &eTrader&r: trade from a compact block;\n- &eFarmer&r: a villager that grows crops;\n- &eBreeder&r, &eIncubator&r and &eConverter&r: more villagers, grown babies and cured zombie villagers.\n\nInside a trading screen, &eC&r cycles a villager's trades."
+      ],
+      "es_es": [
+        "Aldeanos de bolsillo",
+        "&eEasy Villagers&r convierte a los aldeanos en ítems. Miralo y apretá &eShift+V&r para levantarlo; soltalo en cualquier lado o ponelo en uno de sus bloques:\n\n- &eTrader&r: comerciar desde un bloque compacto;\n- &eFarmer&r: un aldeano que cultiva;\n- &eBreeder&r, &eIncubator&r y &eConverter&r: más aldeanos, bebés que crecen y aldeanos zombi curados.\n\nDentro de la pantalla de comercio, &eC&r rota las ofertas del aldeano."
+      ],
+      "sources": [
+        "jar:easy-villagers-neoforge-1.21.1-1.1.42.jar:assets/easy_villagers/lang/en_us.json",
+        "repo:docs/design/qol-functional-decor-family.md",
+        "repo:pack/config/defaultoptions/keybindings.txt"
+      ]
+    },
+    {
+      "key": "qol_world_villagers_gated",
+      "deps": [
+        "qol_world_villagers"
+      ],
+      "type": "checkmark",
+      "icon": "easy_villagers:iron_farm",
+      "layout": {
+        "x": 6,
+        "y": 7,
+        "size": 1.0,
+        "shape": "pentagon"
+      },
+      "en_us": [
+        "Pack Change: Two Villager Blocks Wait",
+        "Two Easy Villagers blocks carry an act component in one slot: the &eIron Farm&r needs a Living Matrix (act II) and the &eAuto Trader&r a Routing Matrix (act III). The other blocks keep their native recipes.\n\nMoving villagers matters later too: villagers settled in Solsticio's trading hall trade cheaper forever."
+      ],
+      "es_es": [
+        "Cambio del pack: dos bloques de aldeanos esperan",
+        "Dos bloques de Easy Villagers llevan un componente de acto en un casillero: la &eIron Farm&r pide una Matriz viva (acto II) y el &eAuto Trader&r una Matriz de distribución (acto III). Los demás bloques conservan sus recetas nativas.\n\nMover aldeanos también importa más adelante: los que se asientan en la sala de comercio de Solsticio comercian más barato para siempre."
+      ],
+      "sources": [
+        "repo:pack/kubejs/server_scripts/entrelumen_qol_balance.js",
+        "repo:docs/design/solsticio-commerce.md"
+      ]
+    },
+    {
+      "key": "qol_world_elevators",
+      "deps": [
+        "qol_world_ultimine_rightclick",
+        "qol_world_carry"
+      ],
+      "type": "item",
+      "item": "elevatorid:elevator_white",
+      "layout": {
+        "x": 9,
+        "y": 0,
+        "size": 1.0,
+        "shape": "circle"
+      },
+      "en_us": [
+        "Elevators",
+        "Place two &eElevator&r blocks in the same column, with room to stand on each. Stand on one and &ejump&r to go up, or &esneak&r to go down, instantly.\n\nElevators come in all sixteen dye colors. If one refuses to teleport, try two of the same color: the server setting can require it."
+      ],
+      "es_es": [
+        "Ascensores",
+        "Poné dos bloques de &eAscensor&r en la misma columna, con lugar para pararse sobre cada uno. Parate en uno y &esaltá&r para subir, o &eagachate&r para bajar, al instante.\n\nHay ascensores de los dieciséis colores de tinte. Si alguno no te teletransporta, probá con dos del mismo color: la configuración del servidor puede exigirlo."
+      ],
+      "sources": [
+        "jar:elevatorid-neoforge-1.21.1-1.11.4.jar:assets/elevatorid/lang/en_us.json",
+        "jar:elevatorid-neoforge-1.21.1-1.11.4.jar:com/vsngarcia/Config$CommonGeneral.class"
+      ]
+    },
+    {
+      "key": "qol_world_torchmaster",
+      "deps": [
+        "qol_world_elevators"
+      ],
+      "type": "item",
+      "item": "torchmaster:feral_flare_lantern",
+      "layout": {
+        "x": 12,
+        "y": -2,
+        "size": 1.0,
+        "shape": "circle"
+      },
+      "en_us": [
+        "Light Without Torches Everywhere",
+        "&eTorchmaster&r keeps three tools:\n\n- the &eFeral Flare Lantern&r places invisible lights around itself in dark areas, great for caves;\n- the &eFrozen Pearl&r clears the lights a lantern left;\n- the &eDread Lamp&r stops passive animals like bats and squid from spawning around it.\n\nIts Mega Torch is removed in this pack: the Altar of Peace takes its place."
+      ],
+      "es_es": [
+        "Luz sin antorchas por todos lados",
+        "&eTorchmaster&r conserva tres herramientas:\n\n- la &eFeral Flare Lantern&r pone luces invisibles a su alrededor en zonas oscuras, ideal para cuevas;\n- la &eFrozen Pearl&r borra las luces que dejó una linterna;\n- la &eDread Lamp&r evita que aparezcan animales pacíficos como murciélagos y calamares a su alrededor.\n\nSu Mega Torch está quitada en este pack: el Altar de Paz ocupa su lugar."
+      ],
+      "sources": [
+        "jar:torchmaster-neoforge-1.21.1-21.1.9.jar:assets/torchmaster/lang/en_us.json",
+        "repo:pack/kubejs/server_scripts/entrelumen_qol_balance.js",
+        "repo:docs/design/ark-altars.md"
+      ]
+    },
+    {
+      "key": "qol_world_sleep",
+      "deps": [
+        "qol_world_elevators"
+      ],
+      "type": "item",
+      "item": "comforts:sleeping_bag_red",
+      "layout": {
+        "x": 12,
+        "y": 2,
+        "size": 1.0,
+        "shape": "circle"
+      },
+      "en_us": [
+        "Beds for the Road",
+        "&eComforts&r adds two portable beds:\n\n- the &eSleeping Bag&r, for sleeping at night far from home; it can break with use;\n- the &eHammock&r, hung between two &eRope and Nail&r blocks, for sleeping through the day.\n\nThe server decides how many players must sleep to skip time."
+      ],
+      "es_es": [
+        "Camas para el camino",
+        "&eComforts&r agrega dos camas portátiles:\n\n- la &eBolsa de dormir&r, para dormir de noche lejos de casa; puede romperse con el uso;\n- la &eHamaca&r, colgada entre dos bloques de &eSoga y clavo&r, para dormir durante el día.\n\nEl servidor decide cuántos jugadores tienen que dormir para saltar el tiempo."
+      ],
+      "sources": [
+        "jar:comforts-neoforge-9.0.5+1.21.1.jar:assets/comforts/lang/en_us.json",
+        "jar:comforts-neoforge-9.0.5+1.21.1.jar:com/illusivesoulworks/comforts/common/ComfortsConfig$Server.class"
+      ]
+    },
+    {
+      "key": "qol_world_small_fixes",
+      "deps": [
+        "qol_world_torchmaster",
+        "qol_world_sleep"
+      ],
+      "type": "checkmark",
+      "icon": "minecraft:sweet_berries",
+      "layout": {
+        "x": 15,
+        "y": 0,
+        "size": 1.25,
+        "shape": "square"
+      },
+      "en_us": [
+        "Small Fixes You Will Notice",
+        "Tiny mods that fix old annoyances:\n\n- &eClean Swing&r: attack a mob through tall grass instead of hitting the grass.\n- &eHey Berry Shut Up&r: leggings and boots protect you from berry bushes and cactus.\n- &eAccelerated Decay&r: leaves fall quickly after you cut a tree.\n- &eJump Boat&r: boats hop onto the shore.\n- &eFireproof Boats&r: boats made of Nether wood survive lava.\n- &eJust Zoom&r: hold &eZ&r to zoom."
+      ],
+      "es_es": [
+        "Arreglos chicos que vas a notar",
+        "Mods diminutos que arreglan molestias viejas:\n\n- &eClean Swing&r: golpeás al mob a través del pasto alto en vez de pegarle al pasto.\n- &eHey Berry Shut Up&r: pantalones y botas te protegen de los arbustos de bayas y los cactus.\n- &eAccelerated Decay&r: las hojas caen rápido después de talar un árbol.\n- &eJump Boat&r: los botes saltan a la orilla.\n- &eFireproof Boats&r: los botes de madera del Nether resisten la lava.\n- &eJust Zoom&r: mantené &eZ&r para hacer zoom."
+      ],
+      "sources": [
+        "repo:docs/design/small-qol-family.md",
+        "repo:docs/design/qol-batch-one.md",
+        "jar:heyberryshutup-1.21.0-2.0.4.jar:cy/jdkdigital/heyberryshutup/Config$Common.class",
+        "jar:justzoom_neoforge_2.1.0_MC_1.21.1.jar:de/keksuccino/justzoom/KeyMappings.class"
+      ]
+    },
+    {
+      "key": "qol_world_dummy",
+      "deps": [
+        "qol_world_small_fixes"
+      ],
+      "type": "item",
+      "item": "dummmmmmy:target_dummy",
+      "optional": true,
+      "layout": {
+        "x": 15,
+        "y": 3.5,
+        "size": 1.0,
+        "shape": "circle"
+      },
+      "en_us": [
+        "Tip: Test Your Damage",
+        "Place a &eTarget Dummy&r and hit it: it shows the damage of every hit and your damage per second. Use it to compare weapons, enchantments and Apotheosis gems before a boss."
+      ],
+      "es_es": [
+        "Truco: probá tu daño",
+        "Poné un &eMuñeco de práctica&r y pegale: muestra el daño de cada golpe y tu daño por segundo. Sirve para comparar armas, encantamientos y gemas de Apotheosis antes de un jefe."
+      ],
+      "sources": [
+        "jar:dummmmmmy-neoforge-1.21-2.1.0.jar:assets/dummmmmmy/lang/en_us.json"
+      ]
+    },
+    {
+      "key": "qol_world_peace_link",
+      "deps": [
+        "qol_world_torchmaster"
+      ],
+      "type": "checkmark",
+      "optional": true,
+      "icon": "entrelumen:peace_altar",
+      "layout": {
+        "x": 15,
+        "y": -3.5,
+        "size": 1.0,
+        "shape": "diamond"
+      },
+      "en_us": [
+        "Tip: Safe Areas Come Later",
+        "Want a whole base free of natural hostile spawns? That is the &eAltar of Peace&r, an act III reward that burns candles and protects a 129-block cube around itself. It leaves spawners, raids and bosses alone.\n\nUntil then, light is your friend: F7 shows where mobs can spawn."
+      ],
+      "es_es": [
+        "Truco: las zonas seguras llegan después",
+        "¿Querés una base entera sin mobs hostiles naturales? Eso es el &eAltar de Paz&r, recompensa del acto III que quema velas y protege un cubo de 129 bloques a su alrededor. No toca spawners, asaltos ni jefes.\n\nHasta entonces, la luz es tu amiga: F7 muestra dónde pueden aparecer mobs."
+      ],
+      "sources": [
+        "repo:docs/design/ark-altars.md",
+        "repo:companion/src/main/java/dev/entrelumen/PeaceAltarEntity.java"
+      ]
+    },
+    {
+      "key": "qol_world_close",
+      "deps": [
+        "qol_world_small_fixes",
+        "qol_world_villagers_gated"
+      ],
+      "type": "checkmark",
+      "icon": "minecraft:lantern",
+      "layout": {
+        "x": 18,
+        "y": 0,
+        "size": 2.0,
+        "shape": "hexagon"
+      },
+      "en_us": [
+        "A Lighter World",
+        "You can now mine veins in one swing, carry your chests to a new base, keep villagers in your pocket, ride elevators, light caves and sleep anywhere.\n\nNext: the Teams chapter, if you play with friends, or the Storage chapter to organize everything you just collected."
+      ],
+      "es_es": [
+        "Un mundo más liviano",
+        "Ya podés minar vetas de un golpe, llevar tus cofres a una base nueva, guardar aldeanos en el bolsillo, usar ascensores, iluminar cuevas y dormir en cualquier lado.\n\nLo que sigue: el capítulo de Equipos, si jugás con amigos, o el de Almacenamiento para ordenar todo lo que juntaste."
+      ],
+      "sources": [
+        "repo:content/guides/README.md"
+      ]
+    }
+  ]
+}

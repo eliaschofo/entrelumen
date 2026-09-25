@@ -1,0 +1,432 @@
+{
+  "chapter": "guide_farming_resources",
+  "group": "qol",
+  "act": "II",
+  "icon": "mysticalagriculture:inferium_essence",
+  "title": {
+    "en_us": "Resource Farming: Seeds, Bees and Fish",
+    "es_es": "Granjas de recursos: semillas, abejas y peces"
+  },
+  "subtitle": {
+    "en_us": "Mystical Agriculture, Productive and Modular Bees, and Aquaculture: growing iron, catching treasure.",
+    "es_es": "Mystical Agriculture, Productive y Modular Bees, y Aquaculture: cultivar hierro y pescar tesoros."
+  },
+  "quests": [
+    {
+      "key": "farming_resources_welcome",
+      "deps": [],
+      "type": "checkmark",
+      "layout": {
+        "x": 0,
+        "y": 0,
+        "size": 2.0,
+        "shape": "hexagon"
+      },
+      "en_us": [
+        "When Crops Become Ore",
+        "Some farms grow more than food. Mystical Agriculture grows seeds that yield metals, gems and mob drops; Productive Bees keep bees that bring back resource combs; Aquaculture fishes up metal, treasure and fillets.\n\nThey are slow to start and endless once running. Several act components come from them, so it pays to start early."
+      ],
+      "es_es": [
+        "Cuando los cultivos se vuelven mineral",
+        "Algunas granjas dan más que comida. Mystical Agriculture cultiva semillas que rinden metales, gemas y drops de mobs; Productive Bees cría abejas que traen panales de recursos; Aquaculture pesca metal, tesoros y filetes.\n\nArrancan lento y, una vez andando, no se agotan. Varios componentes de acto salen de acá, así que conviene empezar temprano."
+      ],
+      "sources": [
+        "repo:content/integration-design.json"
+      ]
+    },
+    {
+      "key": "farming_resources_inferium",
+      "deps": [
+        "farming_resources_welcome"
+      ],
+      "type": "item",
+      "item": "mysticalagriculture:inferium_essence",
+      "layout": {
+        "x": 3,
+        "y": -3,
+        "size": 1.25,
+        "shape": "circle"
+      },
+      "en_us": [
+        "Inferium and Prosperity",
+        "Mystical Agriculture starts with two base materials. &eInferium Essence&r drops from mobs, is mined from Inferium Ore (usually between Y -32 and 64) and is grown from Inferium Seeds. &eProsperity Shards&r come from Prosperity Ore (usually between Y -60 and 24).\n\nThe mod's &eguide book&r is craftable and explains every block."
+      ],
+      "es_es": [
+        "Inferium y prosperidad",
+        "Mystical Agriculture arranca con dos materiales base. La &eEsencia de inferium&r cae de los mobs, se mina del Mineral de inferium (normalmente entre Y -32 y 64) y se cultiva con Semillas de inferium. Los &eFragmentos de prosperidad&r salen del Mineral de prosperidad (normalmente entre Y -60 y 24).\n\nEl &elibro guía&r del mod se fabrica y explica cada bloque."
+      ],
+      "sources": [
+        "jar:MysticalAgriculture-1.21.1-8.0.27.jar:assets/mysticalagriculture/lang/en_us.json"
+      ]
+    },
+    {
+      "key": "farming_resources_tiers",
+      "deps": [
+        "farming_resources_inferium"
+      ],
+      "type": "item",
+      "item": "mysticalagriculture:infusion_crystal",
+      "layout": {
+        "x": 6,
+        "y": -4.5,
+        "size": 1.0,
+        "shape": "circle"
+      },
+      "en_us": [
+        "Essence Tiers",
+        "Essences climb in tiers: &einferium, prudentium, tertium, imperium and supremium&r. Each step combines the lower essence with an &eInfusion Crystal&r, which is reused many times; the Master Infusion Crystal never breaks.\n\nThe pack uses two of them in the story: prudentium in the &ePropagation Core&r (act III) and imperium in the &eRenewal Engine&r (act V)."
+      ],
+      "es_es": [
+        "Niveles de esencia",
+        "Las esencias suben por niveles: &einferium, prudentium, tertium, imperium y supremium&r. Cada paso combina la esencia menor con un &eCristal de infusión&r, que se reusa muchas veces; el Cristal de infusión maestro nunca se rompe.\n\nEl pack usa dos en la historia: prudentium en el &eNúcleo de propagación&r (acto III) e imperium en el &eMotor de renovación&r (acto V)."
+      ],
+      "sources": [
+        "jar:MysticalAgriculture-1.21.1-8.0.27.jar:assets/mysticalagriculture/lang/en_us.json",
+        "repo:content/integration-design.json"
+      ]
+    },
+    {
+      "key": "farming_resources_altar",
+      "deps": [
+        "farming_resources_inferium"
+      ],
+      "type": "item",
+      "item": "mysticalagriculture:infusion_altar",
+      "layout": {
+        "x": 6,
+        "y": -1.5,
+        "size": 1.25,
+        "shape": "circle"
+      },
+      "en_us": [
+        "The Infusion Altar",
+        "Resource seeds are made on the &eInfusion Altar&r: one altar and eight &eInfusion Pedestals&r around it (placing the altar shows where they go). Put the seed base on the altar and the ingredients on the pedestals, then activate it with a redstone signal or a wand.\n\nEMI shows every seed's ingredients."
+      ],
+      "es_es": [
+        "El Altar de infusión",
+        "Las semillas de recursos se hacen en el &eAltar de infusión&r: un altar y ocho &ePedestales de infusión&r alrededor (al colocar el altar se ve dónde van). Poné la base de la semilla en el altar y los ingredientes en los pedestales, y activalo con una señal de redstone o una varita.\n\nEMI muestra los ingredientes de cada semilla."
+      ],
+      "sources": [
+        "jar:MysticalAgriculture-1.21.1-8.0.27.jar:assets/mysticalagriculture/lang/en_us.json",
+        "jar:MysticalAgriculture-1.21.1-8.0.27.jar:assets/mysticalagriculture/patchouli_books/guide/en_us/entries/basics/infusion_altar.json"
+      ]
+    },
+    {
+      "key": "farming_resources_resource_crops",
+      "deps": [
+        "farming_resources_altar",
+        "farming_resources_tiers"
+      ],
+      "type": "item",
+      "item": "mysticalagriculture:iron_seeds",
+      "layout": {
+        "x": 9,
+        "y": -3,
+        "size": 1.0,
+        "shape": "circle"
+      },
+      "en_us": [
+        "Resource Crops",
+        "Plant a resource seed and harvest essence, then craft the essence into the resource: iron essence into iron ingots, for example. Remember:\n\n- bone meal does not work on resource crops, but &eFertilized Essence&r, which they sometimes drop, does;\n- they only drop a second seed on &eEssence Farmland&r (right-click farmland with an essence);\n- farmland of the crop's own tier adds another seed chance, and inferium seeds drop more on higher tiers."
+      ],
+      "es_es": [
+        "Cultivos de recursos",
+        "Plantá una semilla de recurso, cosechá su esencia y convertila en el recurso: esencia de hierro en lingotes de hierro, por ejemplo. Acordate:\n\n- el polvo de hueso no sirve en los cultivos de recursos, pero la &eEsencia fertilizada&r, que a veces sueltan, sí;\n- sólo sueltan una segunda semilla sobre &eTierra de esencia&r (clic derecho a la tierra de cultivo con una esencia);\n- la tierra del mismo nivel que el cultivo suma otra chance de semilla, y las semillas de inferium dan más en niveles altos."
+      ],
+      "sources": [
+        "jar:MysticalAgriculture-1.21.1-8.0.27.jar:assets/mysticalagriculture/lang/en_us.json"
+      ]
+    },
+    {
+      "key": "farming_resources_speed",
+      "deps": [
+        "farming_resources_resource_crops"
+      ],
+      "type": "item",
+      "item": "mysticalagriculture:inferium_growth_accelerator",
+      "optional": true,
+      "layout": {
+        "x": 12,
+        "y": -4.5,
+        "size": 1.0,
+        "shape": "circle"
+      },
+      "en_us": [
+        "Speeding Up Mystical Crops",
+        "Three ways to grow faster:\n\n- &eGrowth Accelerators&r under the farmland give random growth ticks to the plant above; they stack.\n- &eWatering Cans&r filled at a water source speed up crops by hand.\n- &eMystical Fertilizer&r grows crops instantly.\n\nThe pack's Altar of Growth also speeds them up, but it never multiplies essence."
+      ],
+      "es_es": [
+        "Acelerar los cultivos místicos",
+        "Tres formas de crecer más rápido:\n\n- los &eAceleradores de crecimiento&r debajo de la tierra dan ticks de crecimiento a la planta de arriba y se apilan;\n- las &eRegaderas&r llenadas en una fuente de agua aceleran los cultivos a mano;\n- el &eFertilizante místico&r hace crecer los cultivos al instante.\n\nEl Altar de Crecimiento del pack también los acelera, pero nunca multiplica la esencia."
+      ],
+      "sources": [
+        "jar:MysticalAgriculture-1.21.1-8.0.27.jar:assets/mysticalagriculture/lang/en_us.json",
+        "repo:docs/design/ark-altars.md"
+      ]
+    },
+    {
+      "key": "farming_resources_ma_changes",
+      "deps": [
+        "farming_resources_resource_crops"
+      ],
+      "type": "checkmark",
+      "icon": "mysticalagriculture:prosperity_shard",
+      "layout": {
+        "x": 12,
+        "y": -1.5,
+        "size": 1.0,
+        "shape": "pentagon"
+      },
+      "en_us": [
+        "Pack Change: No Essence Shortcuts",
+        "Two routes that would multiply essence are closed in ENTRELUMEN:\n\n- the Altar of Growth speeds Mystical crops but leaves their drops untouched (tested with the real mod);\n- Mekanism More Machine's planting recipes for Mystical Agriculture seeds are removed.\n\nEssence stays a real farm, which keeps the act components that use it meaningful."
+      ],
+      "es_es": [
+        "Cambio del pack: sin atajos de esencia",
+        "Dos rutas que multiplicarían la esencia están cerradas en ENTRELUMEN:\n\n- el Altar de Crecimiento acelera los cultivos místicos pero no toca sus drops (probado con el mod real);\n- se quitaron las recetas de plantado de semillas de Mystical Agriculture de Mekanism More Machine.\n\nLa esencia sigue siendo una granja de verdad, y eso le da sentido a los componentes de acto que la usan."
+      ],
+      "sources": [
+        "repo:docs/design/ark-altars.md",
+        "repo:pack/kubejs/server_scripts/entrelumen_more_machine_balance.js"
+      ]
+    },
+    {
+      "key": "farming_resources_bees",
+      "deps": [
+        "farming_resources_welcome"
+      ],
+      "type": "item",
+      "item": "productivebees:advanced_oak_beehive",
+      "layout": {
+        "x": 3,
+        "y": 2,
+        "size": 1.25,
+        "shape": "circle"
+      },
+      "en_us": [
+        "Productive Bees: First Hive",
+        "Productive Bees builds on vanilla bees. Find a bee nest for honey and honeycomb, craft &eBee Cages&r (they use honey bottles) to carry bees home, and build an &eAdvanced Beehive&r: you can look inside, take out what bees produce, and move it with the bees still inside.\n\nNew bees live in hidden nests across biomes, in other dimensions or come from breeding. The mod's guide book is craftable."
+      ],
+      "es_es": [
+        "Productive Bees: la primera colmena",
+        "Productive Bees se apoya en las abejas de vanilla. Buscá un nido para miel y panal, fabricá &eJaulas para abejas&r (llevan botellas de miel) para llevarlas a casa, y armá una &eColmena avanzada&r: podés mirar adentro, sacar lo que producen y moverla con las abejas adentro.\n\nLas abejas nuevas viven en nidos escondidos en distintos biomas, en otras dimensiones o salen de la cría. El libro guía del mod se fabrica."
+      ],
+      "sources": [
+        "jar:productivebees-1.21.1-13.13.5.jar:assets/productivebees/patchouli_books/guide/en_us/entries/guide/start.json",
+        "jar:productivebees-1.21.1-13.13.5.jar:assets/productivebees/patchouli_books/guide/en_us/entries/hives/advanced_hives.json"
+      ]
+    },
+    {
+      "key": "farming_resources_centrifuge",
+      "deps": [
+        "farming_resources_bees"
+      ],
+      "type": "item",
+      "item": "productivebees:centrifuge",
+      "layout": {
+        "x": 6,
+        "y": 3.5,
+        "size": 1.0,
+        "shape": "circle"
+      },
+      "en_us": [
+        "Combs Into Resources",
+        "Resource bees bring back &ecombs&r. A &eCentrifuge&r separates them into resources, wax and honey, and pushes honey into any tank next to it; the &ePowered Centrifuge&r uses FE to go faster. An &eExpansion Box&r on a hive raises its capacity from 3 to 5 bees and lets it take upgrades.\n\nWax from the centrifuge goes into the Propagation Core (act III) and the Ecosystem Capsule (act IV)."
+      ],
+      "es_es": [
+        "Panales en recursos",
+        "Las abejas de recursos traen &epanales&r. Una &eCentrifugadora&r los separa en recursos, cera y miel, y empuja la miel a cualquier tanque de al lado; la &eCentrifugadora con energía&r usa FE para ir más rápido. Una &eCaja de expansión&r en una colmena sube su capacidad de 3 a 5 abejas y le permite mejoras.\n\nLa cera de la centrifugadora va al Núcleo de propagación (acto III) y a la Cápsula de ecosistema (acto IV)."
+      ],
+      "sources": [
+        "jar:productivebees-1.21.1-13.13.5.jar:assets/productivebees/patchouli_books/guide/en_us/entries/blocks/centrifuge.json",
+        "jar:productivebees-1.21.1-13.13.5.jar:assets/productivebees/patchouli_books/guide/en_us/entries/hives/advanced_hives.json",
+        "repo:content/integration-design.json"
+      ]
+    },
+    {
+      "key": "farming_resources_breeding",
+      "deps": [
+        "farming_resources_centrifuge"
+      ],
+      "type": "item",
+      "item": "productivebees:honey_treat",
+      "optional": true,
+      "layout": {
+        "x": 9,
+        "y": 2,
+        "size": 1.0,
+        "shape": "circle"
+      },
+      "en_us": [
+        "Breeding and Genes",
+        "New species come from breeding two bees with their favorite items, by hand or in a powered &eBreeding Chamber&r. A &eCatcher&r with cages collects bees that fly over it.\n\nBees have traits: productivity, weather tolerance and day or night activity. Genes can be extracted and moved to another bee with a honey treat. The guide book explains each trait."
+      ],
+      "es_es": [
+        "Cría y genes",
+        "Las especies nuevas salen de cruzar dos abejas con sus ítems favoritos, a mano o en una &eCámara de cría&r con energía. Un &eAtrapador&r con jaulas junta las abejas que vuelan por encima.\n\nLas abejas tienen rasgos: productividad, tolerancia al clima y actividad de día o de noche. Los genes se pueden extraer y pasar a otra abeja con una golosina de miel. El libro guía explica cada rasgo."
+      ],
+      "sources": [
+        "jar:productivebees-1.21.1-13.13.5.jar:assets/productivebees/patchouli_books/guide/en_us/entries/blocks/breeding_chamber.json",
+        "jar:productivebees-1.21.1-13.13.5.jar:assets/productivebees/patchouli_books/guide/en_us/entries/genetics/attributes.json",
+        "jar:productivebees-1.21.1-13.13.5.jar:assets/productivebees/patchouli_books/guide/en_us/entries/blocks/catcher.json"
+      ]
+    },
+    {
+      "key": "farming_resources_bee_tip",
+      "deps": [
+        "farming_resources_breeding"
+      ],
+      "type": "checkmark",
+      "optional": true,
+      "icon": "minecraft:stick",
+      "layout": {
+        "x": 9,
+        "y": 5,
+        "size": 1.0,
+        "shape": "diamond"
+      },
+      "en_us": [
+        "Tip: Hurry a Bee",
+        "Tired of waiting? Whack a hive or nest with a stick to force the bees out, losing their current progress; it only works when it is safe for them to leave. Bees normally hide during rain: leash them outside in bad weather and some become weather tolerant, at a risk."
+      ],
+      "es_es": [
+        "Truco: apurar a una abeja",
+        "¿Cansado de esperar? Golpeá una colmena o nido con un palo para obligar a las abejas a salir, perdiendo el progreso actual; sólo funciona si es seguro que salgan. Las abejas se esconden con lluvia: atalas afuera con mal clima y algunas se vuelven tolerantes, con riesgo."
+      ],
+      "sources": [
+        "jar:productivebees-1.21.1-13.13.5.jar:assets/productivebees/patchouli_books/guide/en_us/entries/hives/advanced_hives.json",
+        "jar:productivebees-1.21.1-13.13.5.jar:assets/productivebees/patchouli_books/guide/en_us/entries/genetics/attributes.json"
+      ]
+    },
+    {
+      "key": "farming_resources_modular_bees",
+      "deps": [
+        "farming_resources_centrifuge"
+      ],
+      "type": "item",
+      "item": "modularbees:modular_beehive_core",
+      "layout": {
+        "x": 12,
+        "y": 2,
+        "size": 1.0,
+        "shape": "pentagon"
+      },
+      "en_us": [
+        "Modular Bees: Industrial Apiaries",
+        "&eModular Bees&r builds multiblock beehives and centrifuges from parts: a core, casing parts, feeders, stackers, overclockers and heaters, with ME export and import blocks for AE2.\n\nIn this pack its parts and cores carry an &eEcosystem Capsule&r (act IV), its overclockers and stacker a Power Regulator, its ME blocks a Routing Matrix, and the dragon hive a Renewal Engine: it is the late-game version of beekeeping."
+      ],
+      "es_es": [
+        "Modular Bees: apiarios industriales",
+        "&eModular Bees&r arma colmenas y centrifugadoras multibloque con piezas: un núcleo, partes de carcasa, alimentadores, apiladores, overclockers y calentadores, con bloques de exportación e importación ME para AE2.\n\nEn este pack sus partes y núcleos llevan una &eCápsula de ecosistema&r (acto IV), sus overclockers y el apilador un Regulador de energía, sus bloques ME una Matriz de distribución y la colmena de dragón un Motor de renovación: es la versión avanzada de la apicultura."
+      ],
+      "sources": [
+        "repo:docs/design/resource-balance.md",
+        "repo:pack/kubejs/server_scripts/entrelumen_resource_balance.js"
+      ]
+    },
+    {
+      "key": "farming_resources_fishing",
+      "deps": [
+        "farming_resources_bees"
+      ],
+      "type": "item",
+      "item": "aquaculture:iron_fishing_rod",
+      "layout": {
+        "x": 3,
+        "y": 6,
+        "size": 1.25,
+        "shape": "circle"
+      },
+      "en_us": [
+        "Aquaculture: Better Fishing",
+        "&eAquaculture&r adds dozens of fish across biomes, better rods (iron, gold, diamond, neptunium), hooks, bait such as worms, lines and bobbers, and a &eTackle Box&r to keep your gear. A &eFillet Knife&r turns fish into fillets.\n\nFishing also brings up treasure: &eNeptune's Bounty&r chests hold neptunium, a metal for underwater gear."
+      ],
+      "es_es": [
+        "Aquaculture: mejor pesca",
+        "&eAquaculture&r agrega decenas de peces según el bioma, mejores cañas (hierro, oro, diamante, neptunio), anzuelos, carnada como gusanos, líneas y boyas, y una &eCaja de aparejos&r para guardar tu equipo. Un &eCuchillo de fileteo&r convierte los peces en filetes.\n\nLa pesca también trae tesoros: los cofres de &eNeptune's Bounty&r tienen neptunio, un metal para equipo submarino."
+      ],
+      "sources": [
+        "jar:Aquaculture-1.21.1-2.7.21.jar:assets/aquaculture/lang/en_us.json"
+      ]
+    },
+    {
+      "key": "farming_resources_neptunium",
+      "deps": [
+        "farming_resources_fishing"
+      ],
+      "type": "item",
+      "item": "aquaculture:neptunium_ingot",
+      "optional": true,
+      "layout": {
+        "x": 6,
+        "y": 7.5,
+        "size": 1.0,
+        "shape": "circle"
+      },
+      "en_us": [
+        "Neptunium Gear",
+        "Neptunium tools and armor shine underwater: the rod makes fish bite sooner, the helmet improves underwater vision, the chestplate lets you breathe, the leggings make you weightless, the boots swim faster, the pickaxe and shovel lose no speed underwater, and the hoe keeps farmland moist.\n\nPerfect for ocean monuments."
+      ],
+      "es_es": [
+        "Equipo de neptunio",
+        "Las herramientas y armaduras de neptunio brillan bajo el agua: la caña hace que piquen antes, el casco mejora la visión submarina, la pechera deja respirar, los pantalones te hacen ingrávido, las botas nadan más rápido, el pico y la pala no pierden velocidad bajo el agua y la azada mantiene húmeda la tierra.\n\nIdeal para los monumentos oceánicos."
+      ],
+      "sources": [
+        "jar:Aquaculture-1.21.1-2.7.21.jar:assets/aquaculture/lang/en_us.json"
+      ]
+    },
+    {
+      "key": "farming_resources_fillets",
+      "deps": [
+        "farming_resources_fishing"
+      ],
+      "type": "item",
+      "item": "aquaculture:fish_fillet_cooked",
+      "layout": {
+        "x": 9,
+        "y": 7.5,
+        "size": 1.0,
+        "shape": "pentagon"
+      },
+      "en_us": [
+        "Fillets for the Story",
+        "Cooked fish fillets are half of the first &eTravel Rations&r: two vegetable soups and two cooked Aquaculture fillets make the pack's travel food, delivered to the Atlas in act II.\n\nA &eWorm Farm&r keeps you supplied with bait."
+      ],
+      "es_es": [
+        "Filetes para la historia",
+        "Los filetes de pescado cocidos son la mitad de las primeras &eProvisiones de viaje&r: dos sopas de verduras y dos filetes cocidos de Aquaculture forman la comida de viaje del pack, que se entrega al Atlas en el acto II.\n\nUna &eGranja de gusanos&r te mantiene abastecido de carnada."
+      ],
+      "sources": [
+        "repo:content/integration-design.json",
+        "repo:docs/design/cooking-provisions-family.md"
+      ]
+    },
+    {
+      "key": "farming_resources_close",
+      "deps": [
+        "farming_resources_ma_changes",
+        "farming_resources_modular_bees",
+        "farming_resources_fillets"
+      ],
+      "type": "checkmark",
+      "icon": "minecraft:honeycomb",
+      "layout": {
+        "x": 15,
+        "y": 0,
+        "size": 2.0,
+        "shape": "hexagon"
+      },
+      "en_us": [
+        "Endless Supplies",
+        "Essence climbing from inferium to supremium, bees bringing resources home, and a fishing line that pays in treasure. These farms keep producing while you explore.\n\nNext: cook everything you grow in the Kitchen chapter."
+      ],
+      "es_es": [
+        "Suministro sin fin",
+        "Esencias que suben de inferium a supremium, abejas que traen recursos a casa y una caña que paga en tesoros. Estas granjas siguen produciendo mientras explorás.\n\nLo que sigue: cocinar todo lo que cultivás en el capítulo de Cocina."
+      ],
+      "sources": [
+        "repo:content/guides/README.md"
+      ]
+    }
+  ]
+}

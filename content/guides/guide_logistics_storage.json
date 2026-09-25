@@ -1,0 +1,531 @@
+{
+  "chapter": "guide_logistics_storage",
+  "group": "qol",
+  "act": "any",
+  "icon": "sophisticatedbackpacks:backpack",
+  "title": {
+    "en_us": "Storage: Backpacks, Chests and Drawers",
+    "es_es": "Almacenamiento: mochilas, cofres y cajones"
+  },
+  "subtitle": {
+    "en_us": "From the first backpack to a wall of drawers, and when a storage network starts to make sense.",
+    "es_es": "De la primera mochila a una pared de cajones, y cuándo empieza a convenir una red de almacenamiento."
+  },
+  "quests": [
+    {
+      "key": "logistics_storage_welcome",
+      "deps": [],
+      "type": "checkmark",
+      "layout": {
+        "x": 0,
+        "y": 0,
+        "size": 2.0,
+        "shape": "hexagon"
+      },
+      "en_us": [
+        "Where Does It All Go?",
+        "Modded Minecraft produces piles of items. The pack gives you three storage families, each good at something:\n\n- &eSophisticated Backpacks&r: storage you carry, with upgrades that work for you.\n- &eSophisticated Storage&r: chests, barrels and shulker boxes that grow in tiers.\n- &eFunctional Storage&r: drawers that hold huge amounts of few item types.\n\nLater, AE2 or Refined Storage tie it all together. This chapter goes in that order."
+      ],
+      "es_es": [
+        "¿Dónde meto todo esto?",
+        "Minecraft con mods produce montañas de ítems. El pack te da tres familias de almacenamiento, cada una buena para algo:\n\n- &eSophisticated Backpacks&r: almacenamiento que llevás encima, con mejoras que trabajan por vos.\n- &eSophisticated Storage&r: cofres, barriles y cajas de shulker que crecen por niveles.\n- &eFunctional Storage&r: cajones que guardan cantidades enormes de pocos tipos de ítem.\n\nDespués, AE2 o Refined Storage lo unen todo. Este capítulo va en ese orden."
+      ],
+      "sources": [
+        "repo:catalog/curated.json",
+        "repo:docs/design/inventory-that-remembers.md"
+      ]
+    },
+    {
+      "key": "logistics_storage_backpack",
+      "deps": [
+        "logistics_storage_welcome"
+      ],
+      "type": "item",
+      "item": "sophisticatedbackpacks:backpack",
+      "layout": {
+        "x": 3,
+        "y": -2,
+        "size": 1.5,
+        "shape": "square"
+      },
+      "en_us": [
+        "Your First Backpack",
+        "Craft a &eBackpack&r. Carry it in your inventory or wear it in the back slot, and press &eB&r to open it from anywhere. Sneak and right-click a block to set it down as a block; pick it up again with an empty hand.\n\nHold Shift over a backpack in any inventory to see what it contains."
+      ],
+      "es_es": [
+        "Tu primera mochila",
+        "Fabricá una &eMochila&r. Llevala en el inventario o puesta en la ranura de espalda, y apretá &eB&r para abrirla desde cualquier lado. Agachate y hacé clic derecho en un bloque para apoyarla como bloque; levantala de nuevo con la mano vacía.\n\nMantené Shift sobre una mochila en cualquier inventario para ver lo que tiene."
+      ],
+      "sources": [
+        "jar:sophisticatedbackpacks-1.21.1-3.25.78.2107.jar:assets/sophisticatedbackpacks/lang/en_us.json",
+        "repo:pack/config/defaultoptions/keybindings.txt",
+        "repo:docs/design/qol-tooltips.md"
+      ]
+    },
+    {
+      "key": "logistics_storage_backpack_tiers",
+      "deps": [
+        "logistics_storage_backpack"
+      ],
+      "type": "item",
+      "item": "sophisticatedbackpacks:iron_backpack",
+      "layout": {
+        "x": 6,
+        "y": -4,
+        "size": 1.0,
+        "shape": "circle"
+      },
+      "en_us": [
+        "Bigger Backpacks, Same Contents",
+        "Surround a backpack with eight ingots or gems in a crafting grid to raise its tier. A basic backpack becomes copper or iron; iron then goes to gold, gold to diamond, and diamond to netherite on a smithing table. The contents and upgrades stay inside.\n\nEach tier adds rows and more upgrade slots. Check EMI for the exact recipe of each step."
+      ],
+      "es_es": [
+        "Mochilas más grandes, mismo contenido",
+        "Rodeá una mochila con ocho lingotes o gemas en la grilla para subirla de nivel. La básica pasa a cobre o a hierro; la de hierro después a oro, la de oro a diamante y la de diamante, en la mesa de herrería, a netherita. El contenido y las mejoras se quedan adentro.\n\nCada nivel suma filas y más ranuras de mejora. Mirá en EMI la receta exacta de cada paso."
+      ],
+      "sources": [
+        "jar:sophisticatedbackpacks-1.21.1-3.25.78.2107.jar:data/sophisticatedbackpacks/recipe/iron_backpack.json"
+      ]
+    },
+    {
+      "key": "logistics_storage_backpack_upgrades",
+      "deps": [
+        "logistics_storage_backpack"
+      ],
+      "type": "item",
+      "item": "sophisticatedbackpacks:upgrade_base",
+      "layout": {
+        "x": 6,
+        "y": -1,
+        "size": 1.25,
+        "shape": "circle"
+      },
+      "en_us": [
+        "Upgrades That Work for You",
+        "Start from an &eUpgrade Base&r and put upgrades in the backpack's side slots:\n\n- &ePickup&r and &eMagnet&r: items go straight into the backpack, with a filter.\n- &eFeeding&r: eats from the backpack when you are hungry.\n- &eCompacting&r: turns nuggets into ingots and ingots into blocks; &eVoid&r: deletes junk you filter.\n- &eRefill&r: keeps a hotbar stack topped up.\n- &eTool Swapper&r: switches to the right tool when you hit a block.\n- &eCrafting&r, &eStonecutter&r and &eSmelting&r: stations inside a tab."
+      ],
+      "es_es": [
+        "Mejoras que trabajan por vos",
+        "Empezá con una &eBase de mejora&r y poné las mejoras en las ranuras del costado de la mochila:\n\n- &eRecogida&r e &eImán&r: los ítems van directo a la mochila, con filtro.\n- &eAlimentación&r: come de la mochila cuando tenés hambre.\n- &eCompactado&r: pasa pepitas a lingotes y lingotes a bloques; &eVacío&r: borra la basura que filtres.\n- &eRecarga&r: mantiene llena una pila de la barra rápida.\n- &eIntercambio de herramientas&r: cambia a la herramienta correcta cuando golpeás un bloque.\n- &eCrafteo&r, &eCortapiedras&r y &eFundición&r: estaciones dentro de una pestaña."
+      ],
+      "sources": [
+        "jar:sophisticatedbackpacks-1.21.1-3.25.78.2107.jar:assets/sophisticatedbackpacks/lang/en_us.json"
+      ]
+    },
+    {
+      "key": "logistics_storage_restock_deposit",
+      "deps": [
+        "logistics_storage_backpack_upgrades"
+      ],
+      "type": "item",
+      "item": "sophisticatedbackpacks:deposit_upgrade",
+      "optional": true,
+      "layout": {
+        "x": 9,
+        "y": -3,
+        "size": 1.0,
+        "shape": "circle"
+      },
+      "en_us": [
+        "Restock and Deposit",
+        "Two upgrades turn a trip home into one click: with &eDeposit&r, sneak and right-click a chest with the backpack to unload into it; with &eRestock&r, do the same to refill the backpack from the chest. Both use filters.\n\nSet Deposit to ores and drops, and Restock to torches and food."
+      ],
+      "es_es": [
+        "Reponer y depositar",
+        "Dos mejoras convierten la vuelta a casa en un clic: con &eDepósito&r, agachate y hacé clic derecho en un cofre con la mochila para descargarla; con &eReposición&r, hacé lo mismo para rellenar la mochila desde el cofre. Las dos usan filtros.\n\nPoné Depósito para minerales y drops, y Reposición para antorchas y comida."
+      ],
+      "sources": [
+        "jar:sophisticatedbackpacks-1.21.1-3.25.78.2107.jar:assets/sophisticatedbackpacks/lang/en_us.json"
+      ]
+    },
+    {
+      "key": "logistics_storage_backpack_special",
+      "deps": [
+        "logistics_storage_backpack_upgrades"
+      ],
+      "type": "item",
+      "item": "sophisticatedbackpacks:stack_upgrade_starter_tier",
+      "optional": true,
+      "layout": {
+        "x": 9,
+        "y": 0,
+        "size": 1.0,
+        "shape": "circle"
+      },
+      "en_us": [
+        "Special Upgrades",
+        "A few upgrades change the rules:\n\n- &eStack upgrades&r (Starter, tiers 1 to 4, Omega) multiply how much each slot holds.\n- &eTank&r and &eBattery&r turn part of the space into fluid or energy storage; the &ePump&r and &eExperience Pump&r move fluid and XP.\n- &eInception&r lets backpacks go inside the backpack.\n- &eEverlasting&r makes it indestructible: it cannot burn, despawn or fall into the void.\n- The &eMob Catcher&r stores passive mobs with a sneak right-click."
+      ],
+      "es_es": [
+        "Mejoras especiales",
+        "Algunas mejoras cambian las reglas:\n\n- Las &emejoras de pila&r (Inicial, niveles 1 a 4 y Omega) multiplican cuánto guarda cada casillero.\n- &eTanque&r y &eBatería&r convierten parte del espacio en almacenamiento de fluido o energía; la &eBomba&r y la &eBomba de experiencia&r mueven fluido y XP.\n- &eIncepción&r permite meter mochilas dentro de la mochila.\n- &eEterna&r la vuelve indestructible: no se quema, no desaparece ni cae al vacío.\n- El &eAtrapamobs&r guarda mobs pacíficos con clic derecho agachado."
+      ],
+      "sources": [
+        "jar:sophisticatedbackpacks-1.21.1-3.25.78.2107.jar:assets/sophisticatedbackpacks/lang/en_us.json"
+      ]
+    },
+    {
+      "key": "logistics_storage_chests",
+      "deps": [
+        "logistics_storage_welcome"
+      ],
+      "type": "item",
+      "item": "sophisticatedstorage:chest",
+      "layout": {
+        "x": 3,
+        "y": 2,
+        "size": 1.5,
+        "shape": "square"
+      },
+      "en_us": [
+        "Chests and Barrels That Grow",
+        "&eSophisticated Storage&r makes chests, barrels and shulker boxes in six tiers, from wood to netherite. Upgrade them in place: right-click a placed one with a &etier upgrade&r item. A &eBasic Tier Upgrade&r even turns a vanilla chest or barrel into its sophisticated version, contents included.\n\nThey take the same kind of upgrades as backpacks: pickup, void, compacting, smelting and more."
+      ],
+      "es_es": [
+        "Cofres y barriles que crecen",
+        "&eSophisticated Storage&r hace cofres, barriles y cajas de shulker en seis niveles, de madera a netherita. Mejoralos en el lugar: clic derecho sobre uno colocado con un ítem de &emejora de nivel&r. La &eMejora de nivel básica&r incluso convierte un cofre o barril de vanilla en su versión sofisticada, con el contenido.\n\nAceptan el mismo tipo de mejoras que las mochilas: recogida, vacío, compactado, fundición y más."
+      ],
+      "sources": [
+        "jar:sophisticatedstorage-1.21.1-1.5.91.2127.jar:assets/sophisticatedstorage/lang/en_us.json"
+      ]
+    },
+    {
+      "key": "logistics_storage_packing",
+      "deps": [
+        "logistics_storage_chests"
+      ],
+      "type": "item",
+      "item": "sophisticatedstorage:packing_tape",
+      "layout": {
+        "x": 6,
+        "y": 2,
+        "size": 1.0,
+        "shape": "circle"
+      },
+      "en_us": [
+        "Moving House With Packing Tape",
+        "Carry On cannot lift Sophisticated Storage blocks. Use &ePacking Tape&r instead: tape a chest or barrel and break it, and it drops as one item with everything inside. The tape has limited uses; the Super Packing Tape lasts longer.\n\nA taped shulker box is not needed: shulker boxes always keep their contents."
+      ],
+      "es_es": [
+        "Mudanza con cinta de embalar",
+        "Carry On no puede levantar los bloques de Sophisticated Storage. Usá &eCinta de embalar&r: encintá un cofre o barril, rompelo y cae como un solo ítem con todo adentro. La cinta tiene usos limitados; la Súper cinta dura más.\n\nLas cajas de shulker no la necesitan: siempre conservan su contenido."
+      ],
+      "sources": [
+        "jar:sophisticatedstorage-1.21.1-1.5.91.2127.jar:assets/sophisticatedstorage/lang/en_us.json",
+        "repo:pack/config/carryon-common.toml"
+      ]
+    },
+    {
+      "key": "logistics_storage_limited",
+      "deps": [
+        "logistics_storage_chests"
+      ],
+      "type": "item",
+      "item": "sophisticatedstorage:limited_barrel_1",
+      "optional": true,
+      "layout": {
+        "x": 6,
+        "y": 5,
+        "size": 1.0,
+        "shape": "circle"
+      },
+      "en_us": [
+        "Limited Barrels",
+        "A &eLimited Barrel&r has one to four slots, each holding far more than a stack. Put one per material at the end of a mining line: the barrel's face shows the item and the count.\n\nThey behave like drawers from the Sophisticated family, and they take tier upgrades too."
+      ],
+      "es_es": [
+        "Barriles limitados",
+        "Un &eBarril limitado&r tiene de uno a cuatro casilleros, cada uno con mucho más que una pila. Poné uno por material al final de una línea de minería: la cara del barril muestra el ítem y la cantidad.\n\nFuncionan como los cajones de la familia Sophisticated y también aceptan mejoras de nivel."
+      ],
+      "sources": [
+        "jar:sophisticatedstorage-1.21.1-1.5.91.2127.jar:assets/sophisticatedstorage/lang/en_us.json"
+      ]
+    },
+    {
+      "key": "logistics_storage_ss_controller",
+      "deps": [
+        "logistics_storage_packing"
+      ],
+      "type": "item",
+      "item": "sophisticatedstorage:controller",
+      "layout": {
+        "x": 9,
+        "y": 3.5,
+        "size": 1.0,
+        "shape": "circle"
+      },
+      "en_us": [
+        "One Face for Many Chests",
+        "A &eStorage Controller&r joins every Sophisticated chest and barrel touching it, or touching each other, into one inventory: open the controller and you see them all, and pipes can insert and extract through it. A &eStorage Link&r connects a separate group, bound with the &eStorage Tool&r.\n\n&eStorage Input&r, &eOutput&r and &eI/O&r blocks give automation a single access point."
+      ],
+      "es_es": [
+        "Una sola cara para muchos cofres",
+        "Un &eControlador de almacenamiento&r une en un solo inventario todos los cofres y barriles de Sophisticated que lo tocan, o que se tocan entre sí: abrís el controlador y los ves a todos, y los caños pueden meter y sacar a través de él. Un &eEnlace de almacenamiento&r conecta un grupo aparte, vinculado con la &eHerramienta de almacenamiento&r.\n\nLos bloques de &eEntrada&r, &eSalida&r y &eE/S&r dan a la automatización un único punto de acceso."
+      ],
+      "sources": [
+        "jar:sophisticatedstorage-1.21.1-1.5.91.2127.jar:assets/sophisticatedstorage/lang/en_us.json"
+      ]
+    },
+    {
+      "key": "logistics_storage_in_motion",
+      "deps": [
+        "logistics_storage_limited"
+      ],
+      "type": "checkmark",
+      "optional": true,
+      "icon": "minecraft:chest_minecart",
+      "layout": {
+        "x": 9,
+        "y": 6.5,
+        "size": 1.0,
+        "shape": "diamond"
+      },
+      "en_us": [
+        "Storage on Wheels",
+        "&eSophisticated Storage in Motion&r puts storage on the move: minecarts, boats and rafts carrying a Sophisticated chest, barrel or shulker box.\n\nUseful for a mining cart or a trading boat."
+      ],
+      "es_es": [
+        "Almacenamiento sobre ruedas",
+        "&eSophisticated Storage in Motion&r pone el almacenamiento en movimiento: vagonetas, botes y balsas que llevan un cofre, barril o caja de shulker de Sophisticated.\n\nSirve para una vagoneta minera o un bote de comercio."
+      ],
+      "sources": [
+        "jar:sophisticatedstorageinmotion-1.21.1-0.10.34.358.jar:assets/sophisticatedstorageinmotion/lang/en_us.json"
+      ]
+    },
+    {
+      "key": "logistics_storage_drawers",
+      "deps": [
+        "logistics_storage_backpack_special",
+        "logistics_storage_ss_controller"
+      ],
+      "type": "item",
+      "item": "functionalstorage:oak_1",
+      "layout": {
+        "x": 12,
+        "y": 0,
+        "size": 1.5,
+        "shape": "hexagon"
+      },
+      "en_us": [
+        "Drawers: Lots of Few Things",
+        "&eFunctional Storage&r drawers come in 1, 2 and 4 compartments for every wood type. Each compartment holds one kind of item in large amounts, shown on the front. Right-click with the item to insert it, double right-click to insert all you carry, and left-click to take items out.\n\nPerfect for cobblestone, ores, crops and mob drops."
+      ],
+      "es_es": [
+        "Cajones: mucho de pocas cosas",
+        "Los cajones de &eFunctional Storage&r vienen de 1, 2 y 4 compartimientos para cada madera. Cada compartimiento guarda un solo tipo de ítem en grandes cantidades, que se ve en el frente. Clic derecho con el ítem para meterlo, doble clic derecho para meter todo lo que llevás y clic izquierdo para sacar.\n\nIdeales para piedra, minerales, cultivos y drops de mobs."
+      ],
+      "sources": [
+        "jar:functionalstorage-1.21.1-1.5.8.jar:assets/functionalstorage/lang/en_us.json",
+        "https://www.curseforge.com/minecraft/mc-mods/functional-storage"
+      ]
+    },
+    {
+      "key": "logistics_storage_compacting",
+      "deps": [
+        "logistics_storage_drawers"
+      ],
+      "type": "item",
+      "item": "functionalstorage:compacting_drawer",
+      "layout": {
+        "x": 15,
+        "y": -3,
+        "size": 1.0,
+        "shape": "circle"
+      },
+      "en_us": [
+        "Compacting Drawers",
+        "A &eCompacting Drawer&r stores one material in up to three forms at once: put in iron ingots and it also offers nuggets and blocks, converting automatically. The Simple Compacting Drawer handles two forms.\n\nPlace one at the end of an ore line and never craft blocks by hand again."
+      ],
+      "es_es": [
+        "Cajones compactadores",
+        "Un &eCajón compactador&r guarda un material en hasta tres formas a la vez: metés lingotes de hierro y también ofrece pepitas y bloques, convirtiéndolos solo. El Cajón compactador simple maneja dos formas.\n\nPoné uno al final de una línea de minerales y no vuelvas a fabricar bloques a mano."
+      ],
+      "sources": [
+        "jar:functionalstorage-1.21.1-1.5.8.jar:assets/functionalstorage/lang/en_us.json"
+      ]
+    },
+    {
+      "key": "logistics_storage_drawer_upgrades",
+      "deps": [
+        "logistics_storage_drawers"
+      ],
+      "type": "item",
+      "item": "functionalstorage:copper_upgrade",
+      "layout": {
+        "x": 15,
+        "y": -0.5,
+        "size": 1.0,
+        "shape": "circle"
+      },
+      "en_us": [
+        "Drawer Upgrades",
+        "Drawers take upgrades in their menu:\n\n- &eStorage upgrades&r (copper, gold, diamond, netherite and max) multiply capacity; the &eIron Downgrade&r reduces it.\n- &eVoid&r deletes what does not fit, so a full drawer never blocks a farm.\n- &ePusher&r, &ePuller&r and &eCollector&r move items without pipes.\n- &eRedstone&r outputs a signal by fill level.\n- Water and Obsidian generator upgrades produce those resources."
+      ],
+      "es_es": [
+        "Mejoras de cajones",
+        "Los cajones aceptan mejoras en su menú:\n\n- Las &emejoras de almacenamiento&r (cobre, oro, diamante, netherita y máxima) multiplican la capacidad; la &eReducción de hierro&r la baja.\n- &eVacío&r borra lo que no entra, así un cajón lleno nunca traba una granja.\n- &eEmpujador&r, &eExtractor&r y &eColector&r mueven ítems sin caños.\n- &eRedstone&r emite una señal según lo lleno que está.\n- Las mejoras generadoras de agua y obsidiana producen esos recursos."
+      ],
+      "sources": [
+        "jar:functionalstorage-1.21.1-1.5.8.jar:assets/functionalstorage/lang/en_us.json"
+      ]
+    },
+    {
+      "key": "logistics_storage_drawer_controller",
+      "deps": [
+        "logistics_storage_drawers"
+      ],
+      "type": "item",
+      "item": "functionalstorage:storage_controller",
+      "layout": {
+        "x": 15,
+        "y": 2.5,
+        "size": 1.25,
+        "shape": "circle"
+      },
+      "en_us": [
+        "The Drawer Wall",
+        "A &eStorage Controller&r gathers the drawers around it into one access point: insert anything into the controller and it finds the right drawer. Link distant drawers with the &eLinking Tool&r, and extend reach with a &eController Access Point&r.\n\nThe &eConfiguration Tool&r locks a drawer to its item, so it keeps its slot even when empty."
+      ],
+      "es_es": [
+        "La pared de cajones",
+        "Un &eControlador de almacenamiento&r junta los cajones de alrededor en un solo punto de acceso: metés cualquier cosa en el controlador y encuentra el cajón correcto. Vinculá cajones lejanos con la &eHerramienta de vinculación&r y extendé el alcance con un &ePunto de acceso del controlador&r.\n\nLa &eHerramienta de configuración&r bloquea un cajón a su ítem, así conserva el lugar aunque se vacíe."
+      ],
+      "sources": [
+        "jar:functionalstorage-1.21.1-1.5.8.jar:assets/functionalstorage/lang/en_us.json"
+      ]
+    },
+    {
+      "key": "logistics_storage_drawer_more",
+      "deps": [
+        "logistics_storage_compacting"
+      ],
+      "type": "item",
+      "item": "functionalstorage:armory_cabinet",
+      "optional": true,
+      "layout": {
+        "x": 18,
+        "y": -2,
+        "size": 1.0,
+        "shape": "diamond"
+      },
+      "en_us": [
+        "More Drawer Tricks",
+        "Other Functional Storage blocks:\n\n- &eFluid drawers&r store fluids the same way.\n- The &eEnder Drawer&r shares its content with every Ender Drawer on the same frequency, set with the Linking Tool.\n- The &eArmory Cabinet&r holds many unstackable items such as tools and armor.\n- &eFramed&r drawers take the look of any block, for builds where storage should blend in."
+      ],
+      "es_es": [
+        "Más trucos de cajones",
+        "Otros bloques de Functional Storage:\n\n- Los &ecajones de fluidos&r guardan fluidos del mismo modo.\n- El &eCajón de ender&r comparte su contenido con todos los Cajones de ender de la misma frecuencia, que se fija con la Herramienta de vinculación.\n- El &eArmario de armería&r guarda muchos ítems que no se apilan, como herramientas y armaduras.\n- Los cajones &eenmarcados&r toman el aspecto de cualquier bloque, para construcciones donde el almacenamiento tiene que pasar desapercibido."
+      ],
+      "sources": [
+        "jar:functionalstorage-1.21.1-1.5.8.jar:assets/functionalstorage/lang/en_us.json"
+      ]
+    },
+    {
+      "key": "logistics_storage_ender",
+      "deps": [
+        "logistics_storage_drawer_controller"
+      ],
+      "type": "item",
+      "item": "enderstorage:ender_chest",
+      "layout": {
+        "x": 18,
+        "y": 1,
+        "size": 1.0,
+        "shape": "pentagon"
+      },
+      "en_us": [
+        "Ender Storage for the Team",
+        "&eEnder Storage&r chests, tanks and pouches share contents with every other one set to the same three colors, in any dimension. Dye the three stripes to choose a frequency; a diamond makes it private to you.\n\nIn this pack their recipes carry a Routing Matrix, an act III component. Until then, the vanilla ender chest is your personal cross-dimension storage."
+      ],
+      "es_es": [
+        "Ender Storage para el equipo",
+        "Los cofres, tanques y bolsas de &eEnder Storage&r comparten el contenido con todos los que tengan los mismos tres colores, en cualquier dimensión. Teñí las tres franjas para elegir la frecuencia; un diamante la vuelve privada para vos.\n\nEn este pack sus recetas llevan una Matriz de distribución, un componente del acto III. Hasta entonces, el cofre de ender de vanilla es tu almacenamiento personal entre dimensiones."
+      ],
+      "sources": [
+        "repo:pack/kubejs/server_scripts/entrelumen_qol_balance.js",
+        "jar:EnderStorage-1.21.1-2.13.0.191.jar:assets/enderstorage/lang/en_us.json",
+        "https://www.curseforge.com/minecraft/mc-mods/ender-storage-1-8"
+      ]
+    },
+    {
+      "key": "logistics_storage_network_when",
+      "deps": [
+        "logistics_storage_ender",
+        "logistics_storage_drawer_more"
+      ],
+      "type": "checkmark",
+      "icon": "ae2:controller",
+      "layout": {
+        "x": 21,
+        "y": 0,
+        "size": 2.0,
+        "shape": "hexagon"
+      },
+      "en_us": [
+        "When a Storage Network Pays Off",
+        "Drawers and chests stop scaling when you spend more time looking for items than using them. That is the moment for a storage network: one terminal that searches everything, crafts on request and feeds machines.\n\nThe next chapter compares &eAE2&r and &eRefined Storage&r and explains the act gates. Mark this quest when you are ready to plan it."
+      ],
+      "es_es": [
+        "Cuándo conviene una red de almacenamiento",
+        "Los cajones y cofres dejan de escalar cuando pasás más tiempo buscando ítems que usándolos. Ese es el momento de una red de almacenamiento: una terminal que busca en todo, fabrica a pedido y alimenta máquinas.\n\nEl capítulo siguiente compara &eAE2&r y &eRefined Storage&r y explica las puertas de cada acto. Marcá esta quest cuando estés listo para planearla."
+      ],
+      "sources": [
+        "repo:docs/research/reference-packs.md",
+        "repo:docs/design/mod-pingpong.md"
+      ]
+    },
+    {
+      "key": "logistics_storage_tip_sort",
+      "deps": [
+        "logistics_storage_drawers"
+      ],
+      "type": "checkmark",
+      "optional": true,
+      "layout": {
+        "x": 12,
+        "y": -4,
+        "size": 1.0,
+        "shape": "diamond"
+      },
+      "en_us": [
+        "Tip: Sort Once, Then Automate",
+        "Use drawers for the ten items you have thousands of, Sophisticated chests for everything else, and a backpack with Deposit for the trip home. Keep a Void upgrade on cobblestone drawers so farms and quarries never stall."
+      ],
+      "es_es": [
+        "Truco: ordená una vez y después automatizá",
+        "Usá cajones para los diez ítems de los que tenés miles, cofres de Sophisticated para todo lo demás y una mochila con Depósito para la vuelta a casa. Poné una mejora de Vacío en los cajones de piedra para que las granjas y canteras nunca se traben."
+      ],
+      "sources": [
+        "jar:functionalstorage-1.21.1-1.5.8.jar:assets/functionalstorage/lang/en_us.json",
+        "jar:sophisticatedbackpacks-1.21.1-3.25.78.2107.jar:assets/sophisticatedbackpacks/lang/en_us.json"
+      ]
+    },
+    {
+      "key": "logistics_storage_pack_infinity",
+      "deps": [
+        "logistics_storage_chests"
+      ],
+      "type": "checkmark",
+      "optional": true,
+      "icon": "minecraft:barrier",
+      "layout": {
+        "x": 3,
+        "y": 5,
+        "size": 1.0,
+        "shape": "pentagon"
+      },
+      "en_us": [
+        "Pack Change: No Infinity",
+        "The infinity upgrades of Sophisticated Backpacks and Storage and Functional Storage's Creative Vending Upgrade have no recipe in ENTRELUMEN. They copy any item, which would break Solsticio's economy and the Luminosities.\n\nEverything else in these mods keeps its native recipe."
+      ],
+      "es_es": [
+        "Cambio del pack: nada infinito",
+        "Las mejoras de infinito de Sophisticated Backpacks y Storage y la Creative Vending Upgrade de Functional Storage no tienen receta en ENTRELUMEN. Copian cualquier ítem, y eso rompería la economía de Solsticio y las Luminosidades.\n\nTodo lo demás de estos mods conserva su receta nativa."
+      ],
+      "sources": [
+        "repo:pack/kubejs/server_scripts/entrelumen_luminous_balance.js",
+        "repo:docs/design/luminous-gear.md"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,706 @@
+{
+  "chapter": "guide_ad_astra",
+  "group": "exploration",
+  "act": "V",
+  "icon": "ad_astra:tier_1_rocket",
+  "title": {
+    "en_us": "Ad Astra: rockets and planets",
+    "es_es": "Ad Astra: cohetes y planetas"
+  },
+  "subtitle": {
+    "en_us": "Steel, oxygen and fuel: from the first launch to another solar system.",
+    "es_es": "Acero, oxígeno y combustible: del primer lanzamiento a otro sistema solar."
+  },
+  "quests": [
+    {
+      "key": "adastra_welcome",
+      "deps": [],
+      "type": "checkmark",
+      "layout": {
+        "x": 0,
+        "y": 0,
+        "size": 2.0,
+        "shape": "hexagon"
+      },
+      "en_us": [
+        "Beyond the sky",
+        "Ad Astra adds rockets, space suits, oxygen machines and a set of worlds: the Moon, Mars, Venus, Mercury, their orbits and, in another solar system, Glacio. Each rocket tier unlocks the next planet and each planet gives the metal for the next rocket: steel, then Desh, Ostrum and Calorite.\n\nIn ENTRELUMEN space belongs to act V, the Ark: the NASA Workbench that builds every rocket needs an Ark Connection Bus. Before that you can already prepare steel, energy, oil and oxygen."
+      ],
+      "es_es": [
+        "Más allá del cielo",
+        "Ad Astra suma cohetes, trajes espaciales, máquinas de oxígeno y un conjunto de mundos: la Luna, Marte, Venus, Mercurio, sus órbitas y, en otro sistema solar, Glacio. Cada nivel de cohete abre el planeta siguiente y cada planeta da el metal del cohete siguiente: acero, después Desh, Ostrum y Calorite.\n\nEn ENTRELUMEN el espacio pertenece al acto V, el del Arca: el Banco de trabajo NASA que construye todos los cohetes pide un Bus de conexión del Arca. Antes de eso ya podés ir preparando acero, energía, petróleo y oxígeno."
+      ],
+      "sources": [
+        "repo:pack/kubejs/server_scripts/entrelumen_pingpong_balance.js",
+        "repo:docs/design/mod-pingpong.md",
+        "jar:adastra-1.21.1-1.16.19-neoforge.jar:assets/ad_astra/patchouli_books/astrodux/en_us/entries/the_first_launch/your_first_rocket.json"
+      ]
+    },
+    {
+      "key": "adastra_astrodux",
+      "deps": [
+        "adastra_welcome"
+      ],
+      "type": "checkmark",
+      "optional": true,
+      "icon": "ad_astra:astrodux",
+      "layout": {
+        "x": 0,
+        "y": -3,
+        "size": 1.0,
+        "shape": "square"
+      },
+      "en_us": [
+        "The Astrodux",
+        "Ad Astra's own guide is a Patchouli book: a book surrounded by iron ingots and blue dye. Its chapters (The First Launch, The Moon, Surviving Mars, The Hot Planets) walk the same route as this chapter with recipes and pictures.\n\nPack note: no mod hands out books when you join, so craft it yourself."
+      ],
+      "es_es": [
+        "El Astrodux",
+        "La guía propia de Ad Astra es un libro de Patchouli: un libro rodeado de lingotes de hierro y tinte azul. Sus capítulos (The First Launch, The Moon, Surviving Mars, The Hot Planets) recorren la misma ruta que este capítulo, con recetas e imágenes.\n\nNota del pack: ningún mod regala libros al entrar, así que fabricalo vos."
+      ],
+      "sources": [
+        "jar:adastra-1.21.1-1.16.19-neoforge.jar:data/ad_astra/recipe/astrodux.json",
+        "jar:adastra-1.21.1-1.16.19-neoforge.jar:data/ad_astra/patchouli_books/astrodux/book.json",
+        "repo:docs/design/heliodor-compass.md"
+      ]
+    },
+    {
+      "key": "adastra_energy",
+      "deps": [
+        "adastra_welcome"
+      ],
+      "type": "item",
+      "item": "ad_astra:coal_generator",
+      "layout": {
+        "x": 3,
+        "y": 0,
+        "size": 1.0,
+        "shape": "square"
+      },
+      "en_us": [
+        "Carbon Footprint",
+        "Ad Astra machines run on energy (FE). The simplest source is its Coal Generator, which burns wood or coal; any FE generator from another mod works too. Later, Solar Panels produce more and do better closer to the sun and in orbit.\n\nThe Etrionic Capacitor is a portable battery for machines and your inventory."
+      ],
+      "es_es": [
+        "Huella de carbono",
+        "Las máquinas de Ad Astra funcionan con energía (FE). La fuente más simple es su Generador a carbón, que quema madera o carbón; cualquier generador de FE de otro mod también sirve. Más adelante los Paneles solares producen más y rinden mejor cerca del sol y en órbita.\n\nEl Etrionic Capacitor es una batería portátil para máquinas y para tu inventario."
+      ],
+      "sources": [
+        "jar:adastra-1.21.1-1.16.19-neoforge.jar:assets/ad_astra/patchouli_books/astrodux/en_us/entries/the_first_launch/generating_energy.json",
+        "jar:adastra-1.21.1-1.16.19-neoforge.jar:assets/ad_astra/patchouli_books/astrodux/en_us/entries/the_moon/solar_panel.json",
+        "jar:adastra-1.21.1-1.16.19-neoforge.jar:assets/ad_astra/patchouli_books/astrodux/en_us/entries/the_first_launch/portable_resources.json",
+        "jar:adastra-1.21.1-1.16.19-neoforge.jar:data/ad_astra/advancement/carbon_footprint.json"
+      ]
+    },
+    {
+      "key": "adastra_compressor",
+      "deps": [
+        "adastra_energy"
+      ],
+      "type": "item",
+      "item": "ad_astra:steel_ingot",
+      "count": 16,
+      "layout": {
+        "x": 6,
+        "y": 0,
+        "size": 1.0,
+        "shape": "square"
+      },
+      "en_us": [
+        "Plates and steel",
+        "A Compressor presses ingots and blocks into plates, needed almost everywhere (\"Under Pressure\"). The Etrionic Blast Furnace has two modes: blasting (four slots at once) and alloying; in alloying mode one iron plus one coal makes one Steel Ingot (\"Smart Blasting\").\n\nSteel is the material of the first rocket, the space suit and the launch pad."
+      ],
+      "es_es": [
+        "Placas y acero",
+        "El Compresor prensa lingotes y bloques en placas, que se usan en casi todo («Under Pressure»). El Etrionic Blast Furnace tiene dos modos: fundición (cuatro casilleros a la vez) y aleación; en modo aleación un hierro más un carbón hacen un Lingote de acero («Smart Blasting»).\n\nEl acero es el material del primer cohete, del traje espacial y de la plataforma de lanzamiento."
+      ],
+      "sources": [
+        "jar:adastra-1.21.1-1.16.19-neoforge.jar:assets/ad_astra/patchouli_books/astrodux/en_us/entries/the_first_launch/creating_plates.json",
+        "jar:adastra-1.21.1-1.16.19-neoforge.jar:assets/ad_astra/patchouli_books/astrodux/en_us/entries/the_first_launch/making_steel.json",
+        "jar:adastra-1.21.1-1.16.19-neoforge.jar:data/ad_astra/advancement/under_pressure.json",
+        "jar:adastra-1.21.1-1.16.19-neoforge.jar:data/ad_astra/advancement/smart_blasting.json"
+      ]
+    },
+    {
+      "key": "adastra_oil",
+      "deps": [
+        "adastra_compressor"
+      ],
+      "type": "item",
+      "item": "ad_astra:oil_bucket",
+      "layout": {
+        "x": 9,
+        "y": -3,
+        "size": 1.0,
+        "shape": "circle"
+      },
+      "en_us": [
+        "Ocean Cleanup",
+        "Oil comes from oil wells spouting over ocean biomes in the Overworld; fill buckets there (\"Ocean Cleanup\"). Oil does not renew, and one round trip to the Moon takes six buckets of fuel, so collect plenty.\n\nA powered Fuel Refinery turns oil into rocket fuel."
+      ],
+      "es_es": [
+        "Limpieza del océano",
+        "El petróleo sale de pozos que brotan sobre los biomas de océano del Overworld; llená baldes ahí («Ocean Cleanup»). El petróleo no se renueva y un viaje de ida y vuelta a la Luna lleva seis baldes de combustible, así que juntá bastante.\n\nUna Refinería de combustible con energía convierte el petróleo en combustible para cohetes."
+      ],
+      "sources": [
+        "jar:adastra-1.21.1-1.16.19-neoforge.jar:data/ad_astra/worldgen/structure/oil_well.json",
+        "jar:adastra-1.21.1-1.16.19-neoforge.jar:data/ad_astra/tags/worldgen/biome/has_structure/oil_well.json",
+        "jar:adastra-1.21.1-1.16.19-neoforge.jar:assets/ad_astra/patchouli_books/astrodux/en_us/entries/the_first_launch/fuel.json",
+        "jar:adastra-1.21.1-1.16.19-neoforge.jar:data/ad_astra/advancement/ocean_cleanup.json"
+      ]
+    },
+    {
+      "key": "adastra_fuel",
+      "deps": [
+        "adastra_oil"
+      ],
+      "type": "item",
+      "item": "ad_astra:fuel_bucket",
+      "count": 6,
+      "layout": {
+        "x": 12,
+        "y": -3,
+        "size": 1.0,
+        "shape": "square"
+      },
+      "en_us": [
+        "Refined fuel",
+        "Craft and power a Fuel Refinery, put oil in its left slot and collect fuel. You need 3 buckets to launch and 3 more for the way back; they go in the rocket's own inventory.\n\nOn Mars you will find a better option: Cryo Fuel."
+      ],
+      "es_es": [
+        "Combustible refinado",
+        "Fabricá y alimentá una Refinería de combustible, poné el petróleo en el casillero izquierdo y juntá el combustible. Hacen falta 3 baldes para despegar y otros 3 para la vuelta; van en el inventario del propio cohete.\n\nEn Marte vas a encontrar una opción mejor: el Cryo Fuel."
+      ],
+      "sources": [
+        "jar:adastra-1.21.1-1.16.19-neoforge.jar:assets/ad_astra/patchouli_books/astrodux/en_us/entries/the_first_launch/fuel.json",
+        "jar:adastra-1.21.1-1.16.19-neoforge.jar:assets/ad_astra/patchouli_books/astrodux/en_us/entries/the_first_launch/preparing_to_launch.json"
+      ]
+    },
+    {
+      "key": "adastra_suit",
+      "deps": [
+        "adastra_compressor"
+      ],
+      "type": "item",
+      "item": "ad_astra:space_helmet",
+      "layout": {
+        "x": 9,
+        "y": 3,
+        "size": 1.0,
+        "shape": "square"
+      },
+      "en_us": [
+        "Astronaut",
+        "Craft the full space suit (helmet, suit, pants and boots): steel plates, wool, a glass pane for the helmet, and a gas tank and oxygen gear for the suit (\"Astronaut\"). The suit stores oxygen; without it, the Moon kills you quickly.\n\nThe TI-69, a pocket device, shows the local oxygen, temperature and gravity: check it before taking your helmet off."
+      ],
+      "es_es": [
+        "Astronauta",
+        "Fabricá el traje espacial completo (casco, traje, pantalones y botas): placas de acero, lana, un panel de vidrio para el casco y un tanque de gas y engranaje de oxígeno para el traje («Astronaut»). El traje guarda oxígeno; sin él la Luna te mata rápido.\n\nEl TI-69, un aparatito de bolsillo, muestra el oxígeno, la temperatura y la gravedad del lugar: miralo antes de sacarte el casco."
+      ],
+      "sources": [
+        "jar:adastra-1.21.1-1.16.19-neoforge.jar:data/ad_astra/recipe/space_helmet.json",
+        "jar:adastra-1.21.1-1.16.19-neoforge.jar:data/ad_astra/advancement/astronaut.json",
+        "jar:adastra-1.21.1-1.16.19-neoforge.jar:assets/ad_astra/patchouli_books/astrodux/en_us/entries/the_moon/ti_69.json"
+      ]
+    },
+    {
+      "key": "adastra_oxygen",
+      "deps": [
+        "adastra_suit"
+      ],
+      "type": "item",
+      "item": "ad_astra:oxygen_loader",
+      "layout": {
+        "x": 12,
+        "y": 3,
+        "size": 1.0,
+        "shape": "square"
+      },
+      "en_us": [
+        "Oxygen from water",
+        "An Oxygen Loader extracts oxygen from water: water in the left tank, oxygen comes out. Fill your suit and several Gas Tanks. Holding right click with a full tank shares its oxygen into your inventory, armor first.\n\nBring more oxygen than you think you need: the first trip is the one that goes wrong."
+      ],
+      "es_es": [
+        "Oxígeno a partir de agua",
+        "El Cargador de oxígeno saca oxígeno del agua: agua en el tanque izquierdo, sale oxígeno. Llená el traje y varios Tanques de gas. Manteniendo el clic derecho con un tanque lleno se reparte su oxígeno en tu inventario, primero en la armadura.\n\nLlevá más oxígeno del que creés necesitar: el primer viaje es el que sale mal."
+      ],
+      "sources": [
+        "jar:adastra-1.21.1-1.16.19-neoforge.jar:data/ad_astra/recipe/oxygen_loader.json",
+        "jar:adastra-1.21.1-1.16.19-neoforge.jar:assets/ad_astra/patchouli_books/astrodux/en_us/entries/the_first_launch/oxygen.json",
+        "jar:adastra-1.21.1-1.16.19-neoforge.jar:assets/ad_astra/patchouli_books/astrodux/en_us/entries/the_first_launch/portable_resources.json"
+      ]
+    },
+    {
+      "key": "adastra_nasa",
+      "deps": [
+        "adastra_fuel",
+        "adastra_oxygen"
+      ],
+      "type": "item",
+      "item": "ad_astra:nasa_workbench",
+      "layout": {
+        "x": 15,
+        "y": 0,
+        "size": 1.0,
+        "shape": "square"
+      },
+      "en_us": [
+        "The NASA Workbench",
+        "Every rocket is assembled in the NASA Workbench (\"Rocket Science\"). In ENTRELUMEN its recipe has an Ark Connection Bus in the bottom-left slot, so space opens with act V. The rest is steel: plates, iron rods, steel blocks, a crafting table and redstone torches.\n\nThe workbench is where the parts come together: nose cone, fins, tanks and engine."
+      ],
+      "es_es": [
+        "El Banco de trabajo NASA",
+        "Todos los cohetes se arman en el Banco de trabajo NASA («Rocket Science»). En ENTRELUMEN su receta lleva un Bus de conexión del Arca en el casillero de abajo a la izquierda, así que el espacio se abre con el acto V. El resto es acero: placas, varillas de hierro, bloques de acero, una mesa de trabajo y antorchas de redstone.\n\nEn el banco se juntan las piezas: cono, aletas, tanques y motor."
+      ],
+      "sources": [
+        "repo:pack/kubejs/server_scripts/entrelumen_pingpong_balance.js",
+        "jar:adastra-1.21.1-1.16.19-neoforge.jar:data/ad_astra/advancement/rocket_science.json",
+        "jar:adastra-1.21.1-1.16.19-neoforge.jar:assets/ad_astra/patchouli_books/astrodux/en_us/entries/the_first_launch/your_first_rocket.json"
+      ]
+    },
+    {
+      "key": "adastra_rocket1",
+      "deps": [
+        "adastra_nasa"
+      ],
+      "type": "item",
+      "item": "ad_astra:tier_1_rocket",
+      "layout": {
+        "x": 18,
+        "y": 0,
+        "size": 1.0,
+        "shape": "square"
+      },
+      "en_us": [
+        "Baby's First Rocket",
+        "Craft the Tier 1 Rocket: nose cone, six steel blocks, four fins, two steel tanks and a steel engine. Then build a Launch Pad (steel plates and rods) and place the rocket in its centre. Powering the pad with redstone launches the rocket automatically once fueled.\n\nShift-right-click the rocket to open its inventory and load the fuel."
+      ],
+      "es_es": [
+        "Tu primer cohete",
+        "Fabricá el Cohete de nivel 1: cono, seis bloques de acero, cuatro aletas, dos tanques de acero y un motor de acero. Después armá una Plataforma de lanzamiento (placas y varillas de acero) y poné el cohete en el centro. Si le das redstone a la plataforma, el cohete despega solo cuando tiene combustible.\n\nCon Shift y clic derecho sobre el cohete se abre su inventario para cargar el combustible."
+      ],
+      "sources": [
+        "jar:adastra-1.21.1-1.16.19-neoforge.jar:data/ad_astra/recipe/nasa_workbench/tier_1_rocket_from_nasa_workbench.json",
+        "jar:adastra-1.21.1-1.16.19-neoforge.jar:data/ad_astra/recipe/launch_pad.json",
+        "jar:adastra-1.21.1-1.16.19-neoforge.jar:assets/ad_astra/patchouli_books/astrodux/en_us/entries/the_first_launch/your_first_rocket.json",
+        "jar:adastra-1.21.1-1.16.19-neoforge.jar:data/ad_astra/advancement/tier_1_rocket.json"
+      ]
+    },
+    {
+      "key": "adastra_checklist",
+      "deps": [
+        "adastra_rocket1"
+      ],
+      "type": "checkmark",
+      "icon": "ad_astra:launch_pad",
+      "layout": {
+        "x": 18,
+        "y": -3,
+        "size": 0.85,
+        "shape": "circle"
+      },
+      "en_us": [
+        "The pre-launch checklist",
+        "The Astrodux puts it in red for a reason: missing one item can strand you on the Moon. Before pressing jump inside the rocket, check:\n- 3 buckets of fuel in the tank slot and 3 more plus a Launch Pad in the rocket inventory, for the return.\n- A full space suit with oxygen and several full Gas Tanks.\n- Food, weapons and tools.\n- Soul torches or glowstone: normal torches go out without oxygen."
+      ],
+      "es_es": [
+        "La lista antes de despegar",
+        "El Astrodux lo pone en rojo por algo: olvidarte una sola cosa te puede dejar varado en la Luna. Antes de apretar saltar adentro del cohete, revisá:\n- 3 baldes de combustible en el casillero del tanque y otros 3 más una Plataforma de lanzamiento en el inventario del cohete, para volver.\n- El traje espacial completo con oxígeno y varios Tanques de gas llenos.\n- Comida, armas y herramientas.\n- Antorchas de almas o piedra luminosa: las antorchas comunes se apagan sin oxígeno."
+      ],
+      "sources": [
+        "jar:adastra-1.21.1-1.16.19-neoforge.jar:assets/ad_astra/patchouli_books/astrodux/en_us/entries/the_first_launch/preparing_to_launch.json",
+        "jar:adastra-1.21.1-1.16.19-neoforge.jar:assets/ad_astra/patchouli_books/astrodux/en_us/entries/the_first_launch/the_moon.json"
+      ]
+    },
+    {
+      "key": "adastra_moon",
+      "deps": [
+        "adastra_rocket1"
+      ],
+      "type": "dimension",
+      "dimension": "ad_astra:moon",
+      "icon": "ad_astra:moon_globe",
+      "layout": {
+        "x": 21,
+        "y": 0,
+        "size": 1.75,
+        "shape": "diamond"
+      },
+      "en_us": [
+        "One Small Step",
+        "Launch, choose the Moon on the planet screen and land. The Moon has no oxygen and is freezing: water freezes, torches break and plants die. Underground you find Desh, the next metal.\n\nTo go home, open the lander (Shift and right click) to take back the rocket, fuel and launch pad, punch the lander away, set the pad up, place and fuel the rocket and press jump."
+      ],
+      "es_es": [
+        "Un pequeño paso",
+        "Despegá, elegí la Luna en la pantalla de planetas y aterrizá. La Luna no tiene oxígeno y es helada: el agua se congela, las antorchas se rompen y las plantas se mueren. Bajo tierra está el Desh, el metal siguiente.\n\nPara volver, abrí el módulo de aterrizaje (Shift y clic derecho) y sacá el cohete, el combustible y la plataforma, rompé el módulo a golpes, armá la plataforma, poné el cohete, cargalo y apretá saltar."
+      ],
+      "sources": [
+        "jar:adastra-1.21.1-1.16.19-neoforge.jar:assets/ad_astra/patchouli_books/astrodux/en_us/entries/the_first_launch/the_moon.json",
+        "jar:adastra-1.21.1-1.16.19-neoforge.jar:data/ad_astra/advancement/moon.json"
+      ]
+    },
+    {
+      "key": "adastra_lunarians",
+      "deps": [
+        "adastra_moon"
+      ],
+      "type": "checkmark",
+      "icon": "ad_astra:moon_globe",
+      "layout": {
+        "x": 21,
+        "y": -3,
+        "size": 0.85,
+        "shape": "circle"
+      },
+      "en_us": [
+        "Lunarians and their traders",
+        "Large underground villages on the Moon are home to Lunarians, alien villagers that need no oxygen. They trade planet materials, space suits and oxygen gear. Lunarian Wandering Traders appear on every moon and planet and sell launch pads, oxygen, fuel, soul torches and water, all for emeralds found in space structures.\n\nIf a trip goes wrong, a wandering trader can be your ticket home."
+      ],
+      "es_es": [
+        "Los Lunarians y sus comerciantes",
+        "En la Luna hay aldeas subterráneas grandes donde viven los Lunarians, aldeanos alienígenas que no necesitan oxígeno. Venden materiales de los planetas, trajes espaciales y equipo de oxígeno. Los Comerciantes errantes lunarians aparecen en todas las lunas y planetas y venden plataformas de lanzamiento, oxígeno, combustible, antorchas de almas y agua, todo por esmeraldas que se encuentran en las estructuras espaciales.\n\nSi un viaje sale mal, un comerciante errante puede ser tu pasaje de vuelta."
+      ],
+      "sources": [
+        "jar:adastra-1.21.1-1.16.19-neoforge.jar:assets/ad_astra/patchouli_books/astrodux/en_us/entries/the_moon/lunarians.json",
+        "jar:adastra-1.21.1-1.16.19-neoforge.jar:data/ad_astra/worldgen/structure/lunarian_village.json"
+      ]
+    },
+    {
+      "key": "adastra_distributor",
+      "deps": [
+        "adastra_moon"
+      ],
+      "type": "item",
+      "item": "ad_astra:oxygen_distributor",
+      "layout": {
+        "x": 24,
+        "y": 3,
+        "size": 1.0,
+        "shape": "square"
+      },
+      "en_us": [
+        "A room with air",
+        "The Oxygen Distributor fills a sealed room with oxygen (\"Take a Deep Breath\"). Feed it water continuously with a Water Pump placed over an infinite water source, give both energy, and press \"show\" in its screen to see the covered area.\n\nThe room must be fully sealed: cables and pipes leak, use their duct blocks; 3×3 Sliding Doors seal and make good airlocks. The Gravity Normalizer does the same with gravity, from 0 to 2 g."
+      ],
+      "es_es": [
+        "Un cuarto con aire",
+        "El Distribuidor de oxígeno llena de oxígeno un cuarto sellado («Take a Deep Breath»). Dale agua sin parar con una Bomba de agua sobre una fuente infinita, alimentá los dos con energía y apretá «show» en su pantalla para ver la zona cubierta.\n\nEl cuarto tiene que estar sellado del todo: los cables y caños pierden, usá sus bloques de ducto; las Puertas corredizas de 3×3 sellan y sirven de esclusa. El Normalizador de gravedad hace lo mismo con la gravedad, de 0 a 2 g."
+      ],
+      "sources": [
+        "jar:adastra-1.21.1-1.16.19-neoforge.jar:assets/ad_astra/patchouli_books/astrodux/en_us/entries/the_moon/oxygen_distributor.json",
+        "jar:adastra-1.21.1-1.16.19-neoforge.jar:assets/ad_astra/patchouli_books/astrodux/en_us/entries/the_moon/cables.json",
+        "jar:adastra-1.21.1-1.16.19-neoforge.jar:assets/ad_astra/patchouli_books/astrodux/en_us/entries/surviving_mars/sliding_doors.json",
+        "jar:adastra-1.21.1-1.16.19-neoforge.jar:assets/ad_astra/patchouli_books/astrodux/en_us/entries/the_moon/gravity_normalizer.json",
+        "jar:adastra-1.21.1-1.16.19-neoforge.jar:data/ad_astra/advancement/oxygen_distributor.json"
+      ]
+    },
+    {
+      "key": "adastra_station",
+      "deps": [
+        "adastra_moon"
+      ],
+      "type": "dimension",
+      "dimension": "ad_astra:earth_orbit",
+      "optional": true,
+      "icon": "ad_astra:zip_gun",
+      "layout": {
+        "x": 24,
+        "y": -3,
+        "size": 1.0,
+        "shape": "circle"
+      },
+      "en_us": [
+        "Space stations",
+        "From the planet screen you can build a space station in a moon or planet's orbit if you carry the materials it lists. Nobody else can build one in the same spot, and it is the base for building in orbit, where Solar Panels work best.\n\nIn zero gravity you float without friction; the Zip Gun burns oxygen to push you around (\"Unconventional Flight\")."
+      ],
+      "es_es": [
+        "Estaciones espaciales",
+        "Desde la pantalla de planetas podés construir una estación espacial en la órbita de una luna o planeta si llevás los materiales que pide. Nadie más puede construir otra en el mismo lugar, y es la base para construir en órbita, donde los Paneles solares rinden más.\n\nEn gravedad cero flotás sin fricción; la Zip Gun quema oxígeno para impulsarte («Unconventional Flight»)."
+      ],
+      "sources": [
+        "jar:adastra-1.21.1-1.16.19-neoforge.jar:assets/ad_astra/patchouli_books/astrodux/en_us/entries/the_moon/space_station.json",
+        "jar:adastra-1.21.1-1.16.19-neoforge.jar:data/ad_astra/advancement/zip_gun.json"
+      ]
+    },
+    {
+      "key": "adastra_desh",
+      "deps": [
+        "adastra_moon"
+      ],
+      "type": "item",
+      "item": "ad_astra:desh_ingot",
+      "count": 8,
+      "layout": {
+        "x": 24,
+        "y": 0,
+        "size": 1.0,
+        "shape": "circle"
+      },
+      "en_us": [
+        "Desh and the Tier 2 Rocket",
+        "Mine Desh on the Moon: it makes advanced machines, Desh cables (faster than steel), space station parts and the Tier 2 Rocket, built like the first one with Desh instead of steel (\"The Next Step\").\n\nMoon cheese is real here, and so is its advancement."
+      ],
+      "es_es": [
+        "Desh y el cohete de nivel 2",
+        "Picá Desh en la Luna: con él se hacen máquinas avanzadas, cables de Desh (más rápidos que los de acero), piezas de estaciones espaciales y el Cohete de nivel 2, que se arma como el primero pero con Desh en lugar de acero («The Next Step»).\n\nEl queso lunar existe, y tiene su logro."
+      ],
+      "sources": [
+        "jar:adastra-1.21.1-1.16.19-neoforge.jar:assets/ad_astra/patchouli_books/astrodux/en_us/entries/the_first_launch/the_moon.json",
+        "jar:adastra-1.21.1-1.16.19-neoforge.jar:assets/ad_astra/patchouli_books/astrodux/en_us/entries/the_moon/mars.json",
+        "jar:adastra-1.21.1-1.16.19-neoforge.jar:data/ad_astra/advancement/tier_2_rocket.json",
+        "jar:adastra-1.21.1-1.16.19-neoforge.jar:data/ad_astra/advancement/moon_cheese.json"
+      ]
+    },
+    {
+      "key": "adastra_rover",
+      "deps": [
+        "adastra_moon"
+      ],
+      "type": "item",
+      "item": "ad_astra:tier_1_rover",
+      "optional": true,
+      "layout": {
+        "x": 21,
+        "y": 6,
+        "size": 1.0,
+        "shape": "square"
+      },
+      "en_us": [
+        "A rover",
+        "The Rover is a fast land vehicle for rough planetary terrain: two seats, 16 slots of storage, fuel in its left slot, and it hurts mobs it runs over. It has a built-in radio that plays real internet radio stations; open it with Alt+R in this pack.\n\nThe standalone Radio block is also craftable (\"DJ\")."
+      ],
+      "es_es": [
+        "Un rover",
+        "El Rover es un vehículo terrestre rápido para el terreno áspero de los planetas: dos asientos, 16 casilleros de carga, combustible en el casillero izquierdo, y lastima a los mobs que atropella. Tiene una radio incorporada que pasa emisoras reales de internet; en este pack se abre con Alt+R.\n\nEl bloque Radio también se puede fabricar («DJ»)."
+      ],
+      "sources": [
+        "jar:adastra-1.21.1-1.16.19-neoforge.jar:assets/ad_astra/patchouli_books/astrodux/en_us/entries/the_moon/rover.json",
+        "jar:adastra-1.21.1-1.16.19-neoforge.jar:assets/ad_astra/patchouli_books/astrodux/en_us/entries/the_first_launch/radio.json",
+        "jar:adastra-1.21.1-1.16.19-neoforge.jar:data/ad_astra/advancement/rover.json",
+        "repo:pack/config/defaultoptions/keybindings.txt"
+      ]
+    },
+    {
+      "key": "adastra_mars",
+      "deps": [
+        "adastra_desh"
+      ],
+      "type": "dimension",
+      "dimension": "ad_astra:mars",
+      "icon": "ad_astra:mars_globe",
+      "layout": {
+        "x": 27,
+        "y": 0,
+        "size": 1.75,
+        "shape": "diamond"
+      },
+      "en_us": [
+        "The Martian",
+        "Fly the Tier 2 Rocket to Mars. The next metal is Ostrum: it makes stronger space armor, better machines and the heat-proof Tier 3 Rocket. The Martian polar caps also hold Ice Shard ore, the base of Cryo Fuel.\n\nKeep a spare launch pad and fuel for the way back, as always."
+      ],
+      "es_es": [
+        "El marciano",
+        "Volá a Marte con el Cohete de nivel 2. El metal siguiente es el Ostrum: con él se hacen armaduras espaciales más fuertes, mejores máquinas y el Cohete de nivel 3, resistente al calor. Los casquetes polares de Marte además tienen mena de Fragmentos de hielo, la base del Cryo Fuel.\n\nComo siempre, guardá una plataforma y combustible para volver."
+      ],
+      "sources": [
+        "jar:adastra-1.21.1-1.16.19-neoforge.jar:assets/ad_astra/patchouli_books/astrodux/en_us/entries/the_moon/mars.json",
+        "jar:adastra-1.21.1-1.16.19-neoforge.jar:data/ad_astra/advancement/mars.json"
+      ]
+    },
+    {
+      "key": "adastra_cryo",
+      "deps": [
+        "adastra_mars"
+      ],
+      "type": "item",
+      "item": "ad_astra:cryo_freezer",
+      "optional": true,
+      "layout": {
+        "x": 27,
+        "y": 3,
+        "size": 1.0,
+        "shape": "square"
+      },
+      "en_us": [
+        "Cryo Fuel",
+        "The Cryo Freezer turns Ice Shards (an ore on the Moon, Mars and Glacio) into Cryo Fuel, 25 mB each; ice, packed ice and blue ice also work. Cryo Fuel is about three times as efficient as refined fuel: one bucket launches a rocket, so two buckets cover a round trip.\n\nPlaced as a liquid it hurts like lava and freezes water."
+      ],
+      "es_es": [
+        "Cryo Fuel",
+        "El Cryo Freezer convierte Fragmentos de hielo (una mena de la Luna, Marte y Glacio) en Cryo Fuel, 25 mB cada uno; también sirven el hielo, el hielo compacto y el hielo azul. El Cryo Fuel rinde unas tres veces más que el combustible refinado: un balde alcanza para un despegue, así que dos cubren ida y vuelta.\n\nPuesto como líquido lastima como la lava y congela el agua."
+      ],
+      "sources": [
+        "jar:adastra-1.21.1-1.16.19-neoforge.jar:assets/ad_astra/patchouli_books/astrodux/en_us/entries/surviving_mars/better_fuel.json",
+        "jar:adastra-1.21.1-1.16.19-neoforge.jar:data/ad_astra/advancement/cryo_freezer.json",
+        "jar:adastra-1.21.1-1.16.19-neoforge.jar:data/ad_astra/advancement/cryo_fuel.json"
+      ]
+    },
+    {
+      "key": "adastra_netherite_suit",
+      "deps": [
+        "adastra_mars"
+      ],
+      "type": "item",
+      "item": "ad_astra:netherite_space_helmet",
+      "layout": {
+        "x": 30,
+        "y": 3,
+        "size": 1.0,
+        "shape": "square"
+      },
+      "en_us": [
+        "Doom Slayer",
+        "Venus and Mercury burn anyone in a normal suit within seconds. The Netherite Space Suit adds permanent fire resistance and more protection (\"Doom Slayer\"); craft the full set before the Tier 3 Rocket takes you there."
+      ],
+      "es_es": [
+        "Doom Slayer",
+        "Venus y Mercurio queman en segundos a cualquiera con un traje normal. El Traje espacial de netherite suma resistencia al fuego permanente y más protección («Doom Slayer»); fabricá el set completo antes de que el Cohete de nivel 3 te lleve."
+      ],
+      "sources": [
+        "jar:adastra-1.21.1-1.16.19-neoforge.jar:assets/ad_astra/patchouli_books/astrodux/en_us/entries/surviving_mars/netherite_space_suit.json",
+        "jar:adastra-1.21.1-1.16.19-neoforge.jar:assets/ad_astra/patchouli_books/astrodux/en_us/entries/surviving_mars/venus_and_mercury.json",
+        "jar:adastra-1.21.1-1.16.19-neoforge.jar:data/ad_astra/advancement/doom_slayer.json"
+      ]
+    },
+    {
+      "key": "adastra_hot",
+      "deps": [
+        "adastra_mars",
+        "adastra_netherite_suit"
+      ],
+      "type": "dimension",
+      "dimension": "ad_astra:venus",
+      "icon": "ad_astra:venus_globe",
+      "layout": {
+        "x": 30,
+        "y": 0,
+        "size": 1.75,
+        "shape": "diamond"
+      },
+      "en_us": [
+        "The hot planets",
+        "With the Tier 3 Rocket and the netherite suit, visit Venus (\"Venusian\") and Mercury (\"Quite the Sun Tan\"). The material you want there is Calorite, for the Tier 4 Rocket.\n\nSolar Panels on Mercury, so close to the sun, produce the most."
+      ],
+      "es_es": [
+        "Los planetas calientes",
+        "Con el Cohete de nivel 3 y el traje de netherite, visitá Venus («Venusian») y Mercurio («Quite the Sun Tan»). El material que buscás ahí es el Calorite, para el Cohete de nivel 4.\n\nLos Paneles solares en Mercurio, tan cerca del sol, son los que más producen."
+      ],
+      "sources": [
+        "jar:adastra-1.21.1-1.16.19-neoforge.jar:assets/ad_astra/patchouli_books/astrodux/en_us/entries/surviving_mars/venus_and_mercury.json",
+        "jar:adastra-1.21.1-1.16.19-neoforge.jar:assets/ad_astra/patchouli_books/astrodux/en_us/entries/the_moon/solar_panel.json",
+        "jar:adastra-1.21.1-1.16.19-neoforge.jar:data/ad_astra/advancement/venus.json",
+        "jar:adastra-1.21.1-1.16.19-neoforge.jar:data/ad_astra/advancement/mercury.json"
+      ]
+    },
+    {
+      "key": "adastra_jet_suit",
+      "deps": [
+        "adastra_hot"
+      ],
+      "type": "item",
+      "item": "ad_astra:jet_suit_helmet",
+      "optional": true,
+      "layout": {
+        "x": 33,
+        "y": 3,
+        "size": 1.0,
+        "shape": "square"
+      },
+      "en_us": [
+        "Rocket Man",
+        "The Jet Suit upgrades the netherite suit with more protection, more oxygen and flight (\"Rocket Man\"): jump to rise, jump plus sprint to boost like a rocket-powered elytra. It runs on energy; charge it on an Energizer. Toggle its flight with Ctrl+F4 in this pack."
+      ],
+      "es_es": [
+        "Rocket Man",
+        "El Jet Suit mejora el traje de netherite con más protección, más oxígeno y vuelo («Rocket Man»): saltar para subir, saltar más correr para impulsarte como unos élitros con cohetes. Funciona con energía; cargalo en un Energizer. En este pack su vuelo se alterna con Ctrl+F4."
+      ],
+      "sources": [
+        "jar:adastra-1.21.1-1.16.19-neoforge.jar:assets/ad_astra/patchouli_books/astrodux/en_us/entries/the_hot_planets/jet_suit.json",
+        "jar:adastra-1.21.1-1.16.19-neoforge.jar:assets/ad_astra/patchouli_books/astrodux/en_us/entries/surviving_mars/energizer.json",
+        "jar:adastra-1.21.1-1.16.19-neoforge.jar:data/ad_astra/advancement/rocket_man.json",
+        "repo:pack/config/defaultoptions/keybindings.txt"
+      ]
+    },
+    {
+      "key": "adastra_glacio",
+      "deps": [
+        "adastra_hot"
+      ],
+      "type": "dimension",
+      "dimension": "ad_astra:glacio",
+      "icon": "ad_astra:glacio_globe",
+      "layout": {
+        "x": 36,
+        "y": 0,
+        "size": 1.75,
+        "shape": "diamond"
+      },
+      "en_us": [
+        "Interstellar",
+        "Calorite builds the Tier 4 Rocket, the only one able to leave the solar system (\"To Infinity and Beyond\"). Its first stop in Proxima Centauri is Glacio: brutally cold, but it has oxygen, so you can breathe without a suit (\"Interstellar\").\n\nThe Astrodux says it plainly: this is the end of Ad Astra's progression for now."
+      ],
+      "es_es": [
+        "Interestelar",
+        "El Calorite construye el Cohete de nivel 4, el único capaz de salir del sistema solar («To Infinity and Beyond»). Su primera parada en Próxima Centauri es Glacio: frío brutal, pero con oxígeno, así que ahí se respira sin traje («Interstellar»).\n\nEl Astrodux lo dice claro: por ahora ahí termina la progresión de Ad Astra."
+      ],
+      "sources": [
+        "jar:adastra-1.21.1-1.16.19-neoforge.jar:assets/ad_astra/patchouli_books/astrodux/en_us/entries/the_hot_planets/proxima_centauri.json",
+        "jar:adastra-1.21.1-1.16.19-neoforge.jar:data/ad_astra/advancement/tier_4_rocket.json",
+        "jar:adastra-1.21.1-1.16.19-neoforge.jar:data/ad_astra/advancement/interstellar.json"
+      ]
+    },
+    {
+      "key": "adastra_pack",
+      "deps": [
+        "adastra_welcome"
+      ],
+      "type": "checkmark",
+      "icon": "entrelumen:ark_bus",
+      "layout": {
+        "x": 3,
+        "y": 3,
+        "size": 1.0,
+        "shape": "rsquare"
+      },
+      "en_us": [
+        "What ENTRELUMEN changes in space",
+        "Pack specifics:\n- The NASA Workbench needs an Ark Connection Bus: rockets and planets open while you build the Ark (act V).\n- Everything before the workbench (steel, compressor, oil, fuel, suits, oxygen) is free to prepare earlier.\n- Ad Astra's old-format compatibility recipes with Create, Mekanism and Immersive Engineering do not load in 1.21.1 and are disabled; Ad Astra metals take part in Almost Unified.\n- Keys: radio on Alt+R, suit flight toggle on Ctrl+F4."
+      ],
+      "es_es": [
+        "Qué cambia ENTRELUMEN en el espacio",
+        "Particularidades del pack:\n- El Banco de trabajo NASA pide un Bus de conexión del Arca: los cohetes y los planetas se abren mientras construís el Arca (acto V).\n- Todo lo anterior al banco (acero, compresor, petróleo, combustible, trajes, oxígeno) se puede preparar antes.\n- Las recetas de compatibilidad de Ad Astra con Create, Mekanism e Immersive Engineering, en formato viejo, no cargan en 1.21.1 y están desactivadas; los metales de Ad Astra entran en Almost Unified.\n- Teclas: radio en Alt+R y vuelo del traje en Ctrl+F4."
+      ],
+      "sources": [
+        "repo:pack/kubejs/server_scripts/entrelumen_pingpong_balance.js",
+        "repo:docs/design/mod-pingpong.md",
+        "repo:pack/config/almostunified/unification/materials.json",
+        "repo:pack/config/defaultoptions/keybindings.txt"
+      ]
+    },
+    {
+      "key": "adastra_mastery",
+      "deps": [
+        "adastra_glacio"
+      ],
+      "type": "checkmark",
+      "icon": "ad_astra:glacio_globe",
+      "layout": {
+        "x": 39,
+        "y": 0,
+        "size": 2.25,
+        "shape": "pentagon"
+      },
+      "en_us": [
+        "Ad astra",
+        "From a coal generator to another star: steel, Desh, Ostrum and Calorite, oxygen rooms and space stations. Heliodor looked at the sky through a telescope; you went."
+      ],
+      "es_es": [
+        "Ad astra",
+        "De un generador a carbón a otra estrella: acero, Desh, Ostrum y Calorite, cuartos con oxígeno y estaciones espaciales. Heliodor miraba el cielo por un telescopio; vos fuiste."
+      ],
+      "sources": [
+        "jar:adastra-1.21.1-1.16.19-neoforge.jar:data/ad_astra/advancement/interstellar.json"
+      ]
+    }
+  ]
+}

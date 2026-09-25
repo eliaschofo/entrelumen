@@ -67,13 +67,23 @@ public final class CampaignTask extends Task {
 
   @Override
   public net.minecraft.network.chat.MutableComponent getButtonText() {
-    return net.minecraft.network.chat.Component.translatable("entrelumen.atlas.open");
+    return net.minecraft.network.chat.Component.translatable("entrelumen.atlas.task", projectName());
+  }
+
+  @Override
+  public net.minecraft.network.chat.MutableComponent getAltTitle() {
+    return getButtonText();
+  }
+
+  /** The Atlas project this task mirrors, by the same name the Atlas shows. */
+  private net.minecraft.network.chat.MutableComponent projectName() {
+    return net.minecraft.network.chat.Component.translatable("entrelumen.project." + milestone);
   }
 
   @Override
   public void addMouseOverText(dev.ftb.mods.ftblibrary.util.TooltipList tooltip, TeamData data) {
     super.addMouseOverText(tooltip, data);
-    tooltip.add(net.minecraft.network.chat.Component.translatable("entrelumen.atlas.open_hint"));
+    tooltip.add(net.minecraft.network.chat.Component.translatable("entrelumen.atlas.open_hint", projectName()));
     if (CampaignMilestones.LAST_HORIZON.equals(milestone) && data.getProgress(this) == 1)
       tooltip.add(net.minecraft.network.chat.Component.translatable("entrelumen.ark.ending"));
   }

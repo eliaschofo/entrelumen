@@ -1,0 +1,582 @@
+{
+ "chapter": "guide_apotheosis_enchanting",
+ "group": "magic",
+ "act": "II",
+ "icon": "minecraft:enchanting_table",
+ "title": {
+  "en_us": "Apothic Enchanting",
+  "es_es": "Encantamientos de Apothic"
+ },
+ "subtitle": {
+  "en_us": "Eterna, Quanta and Arcana, the shelf ladder by act, infusion, tomes and the Atlas Library.",
+  "es_es": "Eterna, Quanta y Arcana, la escalera de estantes por acto, infusión, tomos y la Biblioteca del Atlas."
+ },
+ "quests": [
+  {
+   "key": "aench_welcome",
+   "deps": [],
+   "type": "checkmark",
+   "icon": "minecraft:enchanting_table",
+   "layout": {
+    "x": 0,
+    "y": 0,
+    "size": 2.0,
+    "shape": "hexagon"
+   },
+   "en_us": [
+    "Apothic Enchanting: the table grows up",
+    "Apothic Enchanting rebuilds the enchanting table. Instead of fifteen bookshelves and level 30, the shelves around the table give three stats: Eterna (how high the table can go, up to level 100), Quanta (how much the result varies) and Arcana (how rare the picks are and how many you get). Special shelves add clues, stability and filters, and the table itself crafts by Infusion.\n\nIn ENTRELUMEN the shelf ladder follows the acts, from level 45 in Act II to level 100 in Act V, with four shelves of the pack's own and the Atlas Library at the top."
+   ],
+   "es_es": [
+    "Apothic Enchanting: la mesa crece",
+    "Apothic Enchanting rehace la mesa de encantamientos. En vez de quince bibliotecas y nivel 30, los estantes alrededor de la mesa dan tres valores: Eterna (hasta qué nivel llega la mesa, hasta 100), Quanta (cuánto varía el resultado) y Arcana (qué tan raros son los encantamientos y cuántos salen). Estantes especiales suman pistas, estabilidad y filtros, y la propia mesa craftea por Infusión.\n\nEn ENTRELUMEN la escalera de estantes sigue a los actos, del nivel 45 en el acto II al nivel 100 en el acto V, con cuatro estantes propios del pack y la Biblioteca del Atlas en la cima."
+   ],
+   "sources": [
+    "jar:Apotheosis-1.21.1-8.7.0.jar:assets/apotheosis/patchouli_books/apoth_chronicle/en_us/entries/enchanting/table/stats.json",
+    "jar:Apotheosis-1.21.1-8.7.0.jar:assets/apotheosis/patchouli_books/apoth_chronicle/en_us/entries/enchanting/table/infusion.json",
+    "repo:docs/design/apotheosis-family.md#Enchanting: four ENTRELUMEN shelves and a staged ladder"
+   ]
+  },
+  {
+   "key": "aench_book",
+   "deps": [
+    "aench_welcome"
+   ],
+   "type": "checkmark",
+   "icon": "minecraft:book",
+   "layout": {
+    "x": 0,
+    "y": -3,
+    "size": 1.0,
+    "shape": "circle"
+   },
+   "en_us": [
+    "The Chronicle of Shadows",
+    "Apotheosis's guide, the Chronicle of Shadows, is a book plus a gold ingot, shapeless. It covers the four modules the pack uses: enchanting, adventure (affixes, gems, World Tiers), spawners and potion charms.\n\nThe table's info screen is the other manual: put an item in the table and click the question mark at the top right."
+   ],
+   "es_es": [
+    "La Crónica de las sombras",
+    "La guía de Apotheosis, la Chronicle of Shadows, es un libro más un lingote de oro, sin forma. Cubre los cuatro módulos que usa el pack: encantamientos, aventura (afijos, gemas, Niveles de mundo), spawners y amuletos de poción.\n\nLa pantalla de información de la mesa es el otro manual: poné un ítem en la mesa y hacé clic en el signo de pregunta arriba a la derecha."
+   ],
+   "sources": [
+    "jar:Apotheosis-1.21.1-8.7.0.jar:data/apotheosis/recipe/book.json",
+    "jar:Apotheosis-1.21.1-8.7.0.jar:assets/apotheosis/patchouli_books/apoth_chronicle/en_us/entries/enchanting/table/info.json"
+   ]
+  },
+  {
+   "key": "aench_stats",
+   "deps": [
+    "aench_welcome"
+   ],
+   "type": "item",
+   "item": "minecraft:enchanting_table",
+   "layout": {
+    "x": 3,
+    "y": 0,
+    "size": 1.25,
+    "shape": "square"
+   },
+   "en_us": [
+    "Eterna, Quanta and Arcana",
+    "Eterna sets the highest level the table offers; every shelf adds some, but only up to its own cap, so better shelves are needed to go higher. Quanta widens the random swing of each enchant's power: more Quanta, less predictable results. Arcana tilts the weights toward rare enchantments; at 25% you always get at least two enchantments, at 75% three.\n\nClues let you preview more of the result, and Quantic Stability stops negative Quanta rolls. Hover a shelf to see what it gives."
+   ],
+   "es_es": [
+    "Eterna, Quanta y Arcana",
+    "La Eterna fija el nivel más alto que ofrece la mesa; cada estante suma un poco, pero sólo hasta su propio tope, así que para subir hacen falta estantes mejores. La Quanta amplía la oscilación al azar de la potencia de cada encantamiento: más Quanta, resultados menos predecibles. La Arcana inclina los pesos hacia encantamientos raros; con 25% siempre salen al menos dos, con 75%, tres.\n\nLas Pistas te dejan ver más del resultado, y la Estabilidad cuántica evita tiradas negativas de Quanta. Pasá el mouse por un estante para ver qué da."
+   ],
+   "sources": [
+    "jar:Apotheosis-1.21.1-8.7.0.jar:assets/apotheosis/patchouli_books/apoth_chronicle/en_us/entries/enchanting/table/stats.json",
+    "jar:Apotheosis-1.21.1-8.7.0.jar:assets/apotheosis/patchouli_books/apoth_chronicle/en_us/entries/enchanting/table/power.json",
+    "jar:ApothicEnchanting-1.21.1-1.6.1.jar:assets/apothic_enchanting/lang/en_us.json#info.apothic_enchanting.eterna.p"
+   ]
+  },
+  {
+   "key": "aench_hellshelf",
+   "deps": [
+    "aench_stats"
+   ],
+   "type": "item",
+   "item": "apothic_enchanting:hellshelf",
+   "count": 8,
+   "layout": {
+    "x": 6,
+    "y": 0,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Level 45: Hellshelves and Seashelves",
+    "Fifteen bookshelves still reach level 30. For 45, build Hellshelves (nether bricks, a bookshelf, a blaze rod and a potion) or, if you prefer the sea, Seashelves (prismarine bricks, a bookshelf, a pufferfish and a potion). Hellshelves add Quanta; Seashelves add Arcana.\n\nSkulls around the table also add Quanta."
+   ],
+   "es_es": [
+    "Nivel 45: estantes infernales y marinos",
+    "Quince bibliotecas siguen llegando al nivel 30. Para 45, armá Hellshelves (ladrillos del Nether, una biblioteca, una vara de blaze y una poción) o, si preferís el mar, Seashelves (ladrillos de prismarina, una biblioteca, un pez globo y una poción). Las Hellshelves suman Quanta; las Seashelves, Arcana.\n\nLas calaveras alrededor de la mesa también suman Quanta."
+   ],
+   "sources": [
+    "jar:Apotheosis-1.21.1-8.7.0.jar:assets/apotheosis/patchouli_books/apoth_chronicle/en_us/entries/enchanting/progression/levels1_30.json",
+    "jar:Apotheosis-1.21.1-8.7.0.jar:assets/apotheosis/patchouli_books/apoth_chronicle/en_us/entries/enchanting/progression/levels30_60.json",
+    "jar:ApothicEnchanting-1.21.1-1.6.1.jar:data/apothic_enchanting/recipe/hellshelf.json",
+    "jar:ApothicEnchanting-1.21.1-1.6.1.jar:data/apothic_enchanting/recipe/seashelf.json",
+    "jar:ApothicEnchanting-1.21.1-1.6.1.jar:data/apothic_enchanting/enchanting_stats/hellshelf.json",
+    "jar:ApothicEnchanting-1.21.1-1.6.1.jar:data/apothic_enchanting/enchanting_stats/seashelf.json",
+    "jar:ApothicEnchanting-1.21.1-1.6.1.jar:data/apothic_enchanting/enchanting_stats/basic_skulls.json"
+   ]
+  },
+  {
+   "key": "aench_cartographer",
+   "deps": [
+    "aench_hellshelf"
+   ],
+   "type": "item",
+   "item": "entrelumen:cartographer_shelf",
+   "count": 2,
+   "layout": {
+    "x": 6,
+    "y": -3,
+    "size": 1.0,
+    "shape": "diamond"
+   },
+   "en_us": [
+    "ENTRELUMEN: Cartographer's Shelf",
+    "The pack's first shelf (Act II): four planks, two empty maps, two bookshelves and a Calibration Frame give two. Each adds 3 Eterna, up to level 40.\n\nIt is a bridge between plain bookshelves and hellshelves, made from things a mapmaker has at hand."
+   ],
+   "es_es": [
+    "ENTRELUMEN: Estante del cartógrafo",
+    "El primer estante del pack (acto II): cuatro tablones, dos mapas vacíos, dos bibliotecas y un Marco de calibración dan dos. Cada uno suma 3 de Eterna, hasta el nivel 40.\n\nEs un puente entre las bibliotecas comunes y los estantes infernales, hecho con lo que tiene a mano un cartógrafo."
+   ],
+   "sources": [
+    "repo:pack/kubejs/data/entrelumen/recipe/cartographer_shelf.json",
+    "repo:companion/src/main/resources/data/entrelumen/enchanting_stats/cartographer_shelf.json",
+    "repo:docs/design/apotheosis-family.md#Enchanting: four ENTRELUMEN shelves and a staged ladder"
+   ]
+  },
+  {
+   "key": "aench_infusion",
+   "deps": [
+    "aench_hellshelf"
+   ],
+   "type": "item",
+   "item": "apothic_enchanting:infused_hellshelf",
+   "count": 4,
+   "layout": {
+    "x": 9,
+    "y": 0,
+    "size": 1.25,
+    "shape": "hexagon"
+   },
+   "en_us": [
+    "Infusion and level 60",
+    "Infusion is crafting with the table: put a single item in, and if the table's stats fall inside the recipe's range, the third slot lights up. Infusing a Hellshelf or Seashelf (45 Eterna, 30 Quanta) makes its infused version, which goes up to level 60.\n\nEMI shows every infusion with its stat requirements; some also set a maximum, so more is not always better."
+   ],
+   "es_es": [
+    "Infusión y nivel 60",
+    "La Infusión es craftear con la mesa: ponés un solo ítem y, si los valores de la mesa caen dentro del rango de la receta, se enciende el tercer casillero. Infundir una Hellshelf o una Seashelf (45 de Eterna, 30 de Quanta) da su versión infundida, que llega al nivel 60.\n\nEMI muestra cada infusión con sus requisitos; algunas además ponen un máximo, así que más no siempre es mejor."
+   ],
+   "sources": [
+    "jar:Apotheosis-1.21.1-8.7.0.jar:assets/apotheosis/patchouli_books/apoth_chronicle/en_us/entries/enchanting/table/infusion.json",
+    "jar:ApothicEnchanting-1.21.1-1.6.1.jar:data/apothic_enchanting/recipe/infusion/infused_hellshelf.json",
+    "jar:ApothicEnchanting-1.21.1-1.6.1.jar:data/apothic_enchanting/recipe/infusion/infused_seashelf.json",
+    "jar:ApothicEnchanting-1.21.1-1.6.1.jar:data/apothic_enchanting/enchanting_stats/infused_hellshelf.json"
+   ]
+  },
+  {
+   "key": "aench_patina",
+   "deps": [
+    "aench_infusion"
+   ],
+   "type": "item",
+   "item": "entrelumen:patina_shelf",
+   "count": 4,
+   "layout": {
+    "x": 9,
+    "y": -3,
+    "size": 1.0,
+    "shape": "diamond"
+   },
+   "en_us": [
+    "ENTRELUMEN: Patina Shelf",
+    "Act III brings the Patina Shelf: four oxidized copper, four hellshelves and a Power Regulator give four. Each adds 4 Eterna up to level 60 and 12 Quanta.\n\nUse it next to your infused shelves to fill the ring faster."
+   ],
+   "es_es": [
+    "ENTRELUMEN: Estante de pátina",
+    "El acto III trae el Estante de pátina: cuatro cobres oxidados, cuatro hellshelves y un Regulador de energía dan cuatro. Cada uno suma 4 de Eterna hasta el nivel 60 y 12 de Quanta.\n\nUsalo junto a tus estantes infundidos para llenar el anillo más rápido."
+   ],
+   "sources": [
+    "repo:pack/kubejs/data/entrelumen/recipe/patina_shelf.json",
+    "repo:companion/src/main/resources/data/entrelumen/enchanting_stats/patina_shelf.json",
+    "repo:docs/design/apotheosis-family.md#Enchanting: four ENTRELUMEN shelves and a staged ladder"
+   ]
+  },
+  {
+   "key": "aench_utility_shelves",
+   "deps": [
+    "aench_infusion"
+   ],
+   "type": "item",
+   "item": "apothic_enchanting:filtering_shelf",
+   "optional": true,
+   "layout": {
+    "x": 9,
+    "y": 3,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Clues, stability and filters",
+    "Utility shelves change the table's behavior. The Hellshelf of Sight adds a clue. The Geode-Encased Bookshelf of Stability (calcite and a budding amethyst, which you make by infusion) removes negative Quanta rolls. The Seashelf of Aquatic Filtration holds up to six single-enchantment books and bans those enchantments from the table. The Deepshelf of Arcane Treasures lets treasure enchantments appear, curses included.\n\nThey must sit in a valid bookshelf position to work."
+   ],
+   "es_es": [
+    "Pistas, estabilidad y filtros",
+    "Los estantes utilitarios cambian el comportamiento de la mesa. El Hellshelf of Sight suma una pista. El Geode-Encased Bookshelf of Stability (calcita y una amatista brotante, que se hace por infusión) elimina las tiradas negativas de Quanta. El Seashelf of Aquatic Filtration guarda hasta seis libros de un solo encantamiento y los prohíbe en la mesa. El Deepshelf of Arcane Treasures deja aparecer encantamientos de tesoro, maldiciones incluidas.\n\nTienen que estar en una posición válida de biblioteca para funcionar."
+   ],
+   "sources": [
+    "jar:Apotheosis-1.21.1-8.7.0.jar:assets/apotheosis/patchouli_books/apoth_chronicle/en_us/entries/enchanting/progression/levels30_60.json",
+    "jar:ApothicEnchanting-1.21.1-1.6.1.jar:data/apothic_enchanting/recipe/sightshelf.json",
+    "jar:ApothicEnchanting-1.21.1-1.6.1.jar:data/apothic_enchanting/recipe/geode_shelf.json",
+    "jar:ApothicEnchanting-1.21.1-1.6.1.jar:data/apothic_enchanting/recipe/filtering_shelf.json",
+    "jar:ApothicEnchanting-1.21.1-1.6.1.jar:data/apothic_enchanting/recipe/treasure_shelf.json",
+    "jar:Apotheosis-1.21.1-8.7.0.jar:assets/apotheosis/patchouli_books/apoth_chronicle/en_us/entries/enchanting/utility/filtering.json",
+    "jar:Apotheosis-1.21.1-8.7.0.jar:assets/apotheosis/patchouli_books/apoth_chronicle/en_us/entries/enchanting/utility/treasure.json"
+   ]
+  },
+  {
+   "key": "aench_deep",
+   "deps": [
+    "aench_infusion"
+   ],
+   "type": "item",
+   "item": "apothic_enchanting:echoing_sculkshelf",
+   "layout": {
+    "x": 12,
+    "y": 0,
+    "size": 1.25,
+    "shape": "square"
+   },
+   "en_us": [
+    "Levels 70 to 80: the deep shelves",
+    "A Dormant Deepshelf (cracked deepslate tiles and books) infused at a level-60 table becomes a Deepshelf (up to 70). An echo shard or a soul lantern upgrades it to 75. The last step, the Sculkshelves (up to 80), needs a Warden Tendril from a slain Warden.\n\nIn ENTRELUMEN both Sculkshelves also need an Act IV Spectral Lens in their recipe."
+   ],
+   "es_es": [
+    "Niveles 70 a 80: los estantes profundos",
+    "Un Dormant Deepshelf (baldosas de pizarra profunda agrietadas y libros) infundido en una mesa de nivel 60 se vuelve Deepshelf (hasta 70). Un fragmento de eco o una linterna de almas lo mejoran a 75. El último paso, las Sculkshelves (hasta 80), pide un Warden Tendril de un Warden muerto.\n\nEn ENTRELUMEN las dos Sculkshelves además llevan una Lente espectral del acto IV en la receta."
+   ],
+   "sources": [
+    "jar:Apotheosis-1.21.1-8.7.0.jar:assets/apotheosis/patchouli_books/apoth_chronicle/en_us/entries/enchanting/progression/levels60_80.json",
+    "jar:ApothicEnchanting-1.21.1-1.6.1.jar:data/apothic_enchanting/recipe/dormant_deepshelf.json",
+    "jar:ApothicEnchanting-1.21.1-1.6.1.jar:data/apothic_enchanting/recipe/infusion/deepshelf.json",
+    "jar:ApothicEnchanting-1.21.1-1.6.1.jar:data/apothic_enchanting/recipe/echoing_deepshelf.json",
+    "repo:pack/kubejs/server_scripts/entrelumen_apotheosis_balance.js#apothic_enchanting:echoing_sculkshelf",
+    "jar:ApothicEnchanting-1.21.1-1.6.1.jar:data/apothic_enchanting/enchanting_stats/echoing_sculkshelf.json"
+   ]
+  },
+  {
+   "key": "aench_lumen",
+   "deps": [
+    "aench_deep"
+   ],
+   "type": "item",
+   "item": "entrelumen:lumen_shelf",
+   "count": 4,
+   "layout": {
+    "x": 12,
+    "y": -3,
+    "size": 1.0,
+    "shape": "diamond"
+   },
+   "en_us": [
+    "ENTRELUMEN: Lumen Shelf",
+    "The Act IV shelf: four glowstone, four infused seashelves and a Spectral Lens give four. Each adds 7.5 Eterna up to level 80, 15 Arcana and one clue.\n\nIt is an easier road to 80 than hunting Wardens, and the key ingredient of the Horizon Shelf later."
+   ],
+   "es_es": [
+    "ENTRELUMEN: Estante de lumen",
+    "El estante del acto IV: cuatro piedras luminosas, cuatro seashelves infundidas y una Lente espectral dan cuatro. Cada uno suma 7,5 de Eterna hasta el nivel 80, 15 de Arcana y una pista.\n\nEs un camino más fácil al 80 que cazar Wardens, y el ingrediente clave del Estante del horizonte más adelante."
+   ],
+   "sources": [
+    "repo:pack/kubejs/data/entrelumen/recipe/lumen_shelf.json",
+    "repo:companion/src/main/resources/data/entrelumen/enchanting_stats/lumen_shelf.json",
+    "repo:docs/design/apotheosis-family.md#Enchanting: four ENTRELUMEN shelves and a staged ladder"
+   ]
+  },
+  {
+   "key": "aench_end",
+   "deps": [
+    "aench_deep"
+   ],
+   "type": "item",
+   "item": "apothic_enchanting:endshelf",
+   "layout": {
+    "x": 15,
+    "y": 0,
+    "size": 1.25,
+    "shape": "square"
+   },
+   "en_us": [
+    "Levels 90 and 100: End shelves",
+    "At a level-80 table, infuse dragon's breath into Infused Dragon's Breath, the core of the Endshelf (up to 90). A single Draconic Endshelf, made with a dragon head from the outer End, lifts a table from 90 to 100.\n\nIn ENTRELUMEN the Endshelf swaps one end stone brick for an Act IV Containment Seal (the Pearl Endshelf inherits it), and the Draconic Endshelf needs an Act V Ark Connection Bus."
+   ],
+   "es_es": [
+    "Niveles 90 y 100: estantes del End",
+    "En una mesa de nivel 80, infundí aliento de dragón para obtener Infused Dragon's Breath, el núcleo del Endshelf (hasta 90). Un solo Draconic Endshelf, hecho con una cabeza de dragón del End exterior, sube una mesa de 90 a 100.\n\nEn ENTRELUMEN el Endshelf cambia un ladrillo de piedra del End por un Sello de contención del acto IV (el Pearl Endshelf lo hereda), y el Draconic Endshelf pide un Bus de conexión del Arca del acto V."
+   ],
+   "sources": [
+    "jar:Apotheosis-1.21.1-8.7.0.jar:assets/apotheosis/patchouli_books/apoth_chronicle/en_us/entries/enchanting/progression/levels80_100.json",
+    "jar:ApothicEnchanting-1.21.1-1.6.1.jar:data/apothic_enchanting/recipe/infusion/infused_breath.json",
+    "repo:pack/kubejs/server_scripts/entrelumen_apotheosis_balance.js#apothic_enchanting:endshelf",
+    "repo:pack/kubejs/server_scripts/entrelumen_apotheosis_balance.js#apothic_enchanting:draconic_endshelf",
+    "jar:ApothicEnchanting-1.21.1-1.6.1.jar:data/apothic_enchanting/enchanting_stats/draconic_endshelf.json"
+   ]
+  },
+  {
+   "key": "aench_horizon",
+   "deps": [
+    "aench_end",
+    "aench_lumen"
+   ],
+   "type": "item",
+   "item": "entrelumen:horizon_shelf",
+   "count": 4,
+   "layout": {
+    "x": 18,
+    "y": -3,
+    "size": 1.0,
+    "shape": "diamond"
+   },
+   "en_us": [
+    "ENTRELUMEN: Horizon Shelf",
+    "The Act V shelf: four deepshelves, two Horizon Charts, two lumen shelves and a Renewal Engine give four. Each adds 12.5 Eterna up to level 100, plus 10 Quanta and 10 Arcana.\n\nWith these the table reaches 100 without depending on a single draconic shelf, and they feed the Atlas Library."
+   ],
+   "es_es": [
+    "ENTRELUMEN: Estante del horizonte",
+    "El estante del acto V: cuatro deepshelves, dos Cartas de horizontes, dos estantes de lumen y un Motor de renovación dan cuatro. Cada uno suma 12,5 de Eterna hasta el nivel 100, más 10 de Quanta y 10 de Arcana.\n\nCon ellos la mesa llega a 100 sin depender de un solo estante dracónico, y alimentan la Biblioteca del Atlas."
+   ],
+   "sources": [
+    "repo:pack/kubejs/data/entrelumen/recipe/horizon_shelf.json",
+    "repo:companion/src/main/resources/data/entrelumen/enchanting_stats/horizon_shelf.json",
+    "repo:docs/design/apotheosis-family.md#Enchanting: four ENTRELUMEN shelves and a staged ladder"
+   ]
+  },
+  {
+   "key": "aench_ladder",
+   "deps": [
+    "aench_deep"
+   ],
+   "type": "checkmark",
+   "optional": true,
+   "icon": "apothic_enchanting:deepshelf",
+   "layout": {
+    "x": 12,
+    "y": 3,
+    "size": 1.0,
+    "shape": "circle"
+   },
+   "en_us": [
+    "Tip: the pack's enchanting ladder",
+    "The whole ladder at a glance: up to 45 in Acts I and II (bookshelves, hell and sea shelves, cartographer); 60 to 65 in Act III (infused shelves, patina); 70 to 80 in Acts III and IV (deep and sculk shelves, lumen); 90 in Act IV (endshelves); 100 in Act V (draconic endshelf, horizon).\n\nMaximum enchantment levels keep Apothic's defaults; the ladder only decides which levels the table can roll in each act."
+   ],
+   "es_es": [
+    "Tip: la escalera de encantamientos del pack",
+    "Toda la escalera de un vistazo: hasta 45 en los actos I y II (bibliotecas, estantes infernales y marinos, cartógrafo); 60 a 65 en el acto III (estantes infundidos, pátina); 70 a 80 en los actos III y IV (estantes profundos y de sculk, lumen); 90 en el acto IV (estantes del End); 100 en el acto V (estante dracónico, horizonte).\n\nLos niveles máximos de cada encantamiento son los de Apothic; la escalera sólo decide qué niveles puede tirar la mesa en cada acto."
+   ],
+   "sources": [
+    "repo:docs/design/apotheosis-family.md#Enchanting: four ENTRELUMEN shelves and a staged ladder"
+   ]
+  },
+  {
+   "key": "aench_changes",
+   "deps": [
+    "aench_stats"
+   ],
+   "type": "checkmark",
+   "optional": true,
+   "icon": "minecraft:anvil",
+   "layout": {
+    "x": 3,
+    "y": 3,
+    "size": 1.0,
+    "shape": "circle"
+   },
+   "en_us": [
+    "Quirk: vanilla rules that changed",
+    "Protection now stacks with one specialized protection, and Sharpness with one other damage enchantment; each protection point is worth a bit less to compensate. Tables and anvils charge the optimal amount of experience instead of flat levels, and the anvil's 'Too Expensive' cap is gone. Shears and tridents accept more enchantments.\n\nEnchantments with colored names are Masterwork, Twisted (one upside, one downside) or Corrupted (costs health and counts as a curse)."
+   ],
+   "es_es": [
+    "Particularidad: reglas vainilla que cambiaron",
+    "Protección ahora se combina con una protección especializada, y Filo con otro encantamiento de daño; cada punto de protección vale un poco menos para compensar. Las mesas y los yunques cobran la experiencia justa en vez de niveles fijos, y el tope de 'Demasiado caro' del yunque ya no existe. Las tijeras y los tridentes aceptan más encantamientos.\n\nLos encantamientos con nombre de color son Masterwork, Twisted (una ventaja y una desventaja) o Corrupted (cuestan vida y cuentan como maldición)."
+   ],
+   "sources": [
+    "jar:Apotheosis-1.21.1-8.7.0.jar:assets/apotheosis/patchouli_books/apoth_chronicle/en_us/entries/enchanting/changes/protection.json",
+    "jar:Apotheosis-1.21.1-8.7.0.jar:assets/apotheosis/patchouli_books/apoth_chronicle/en_us/entries/enchanting/changes/sharpness.json",
+    "jar:Apotheosis-1.21.1-8.7.0.jar:assets/apotheosis/patchouli_books/apoth_chronicle/en_us/entries/enchanting/changes/experience_costs.json",
+    "jar:Apotheosis-1.21.1-8.7.0.jar:assets/apotheosis/patchouli_books/apoth_chronicle/en_us/entries/enchanting/changes/shears.json",
+    "jar:Apotheosis-1.21.1-8.7.0.jar:assets/apotheosis/patchouli_books/apoth_chronicle/en_us/entries/enchanting/changes/tridents.json",
+    "jar:Apotheosis-1.21.1-8.7.0.jar:assets/apotheosis/patchouli_books/apoth_chronicle/en_us/entries/enchanting/enchantments/types.json",
+    "repo:docs/design/arcane-library.md#Why the service changed"
+   ]
+  },
+  {
+   "key": "aench_tomes",
+   "deps": [
+    "aench_end"
+   ],
+   "type": "item",
+   "item": "apothic_enchanting:extraction_tome",
+   "optional": true,
+   "layout": {
+    "x": 15,
+    "y": 3,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Tomes and the prismatic web",
+    "The Tome of Scrapping (eight books around an anvil gives eight) is combined with an item in an anvil: the item is destroyed and you get a book with half its enchantments. The Tome of Superior Scrapping, infused from it, takes them all. The Tome of Extraction, infused again, takes them all and keeps the item.\n\nA Prismatic Cobweb (a cobweb and prismarine shards) in the anvil removes every curse from an item. Themed tomes (helmet, weapon, fishing and more) enchant like books but only receive fitting enchantments."
+   ],
+   "es_es": [
+    "Tomos y la telaraña prismática",
+    "El Tome of Scrapping (ocho libros alrededor de un yunque dan ocho) se combina con un ítem en el yunque: el ítem se destruye y te queda un libro con la mitad de sus encantamientos. El Tome of Superior Scrapping, infundido desde ese, se los lleva todos. El Tome of Extraction, infundido otra vez, se los lleva todos y conserva el ítem.\n\nUna Prismatic Cobweb (telaraña y fragmentos de prismarina) en el yunque le saca todas las maldiciones a un ítem. Los tomos temáticos (casco, arma, pesca y más) se encantan como libros pero sólo reciben encantamientos que corresponden."
+   ],
+   "sources": [
+    "jar:Apotheosis-1.21.1-8.7.0.jar:assets/apotheosis/patchouli_books/apoth_chronicle/en_us/entries/enchanting/utility/scrapping.json",
+    "jar:Apotheosis-1.21.1-8.7.0.jar:assets/apotheosis/patchouli_books/apoth_chronicle/en_us/entries/enchanting/utility/tomes.json",
+    "jar:Apotheosis-1.21.1-8.7.0.jar:assets/apotheosis/patchouli_books/apoth_chronicle/en_us/entries/enchanting/utility/cobwebs.json",
+    "jar:ApothicEnchanting-1.21.1-1.6.1.jar:data/apothic_enchanting/recipe/scrap_tome.json",
+    "jar:ApothicEnchanting-1.21.1-1.6.1.jar:data/apothic_enchanting/recipe/infusion/improved_scrap_tome.json",
+    "jar:ApothicEnchanting-1.21.1-1.6.1.jar:data/apothic_enchanting/recipe/infusion/extraction_tome.json",
+    "jar:ApothicEnchanting-1.21.1-1.6.1.jar:data/apothic_enchanting/recipe/prismatic_web.json"
+   ]
+  },
+  {
+   "key": "aench_library",
+   "deps": [
+    "aench_end"
+   ],
+   "type": "item",
+   "item": "apothic_enchanting:library",
+   "layout": {
+    "x": 18,
+    "y": 0,
+    "size": 1.25,
+    "shape": "square"
+   },
+   "en_us": [
+    "Enchantment libraries",
+    "The Enchantment Library (ender chests, four infused shelves and an enchanting table) stores enchantments as points: deposit books, then click an enchantment to pull one level or shift-click for as many as possible. It holds up to level XVI, and for each enchantment it only gives up to the highest level you have ever deposited.\n\nThe Library of Alexandria (XXXI) is not crafted: you infuse an Enchantment Library at 100 Eterna, 45 to 50 Quanta and 100 Arcana, which in ENTRELUMEN means Act V. Infusing keeps the stored points."
+   ],
+   "es_es": [
+    "Bibliotecas de encantamientos",
+    "La Enchantment Library (cofres de ender, cuatro estantes infundidos y una mesa de encantamientos) guarda encantamientos como puntos: depositá libros y después hacé clic en un encantamiento para sacar un nivel, o Shift-clic para sacar todo lo posible. Llega hasta el nivel XVI y, de cada encantamiento, sólo da hasta el nivel más alto que hayas depositado alguna vez.\n\nLa Library of Alexandria (XXXI) no se craftea: se infunde una Enchantment Library con 100 de Eterna, 45 a 50 de Quanta y 100 de Arcana, lo que en ENTRELUMEN significa acto V. La infusión conserva los puntos guardados."
+   ],
+   "sources": [
+    "jar:Apotheosis-1.21.1-8.7.0.jar:assets/apotheosis/patchouli_books/apoth_chronicle/en_us/entries/enchanting/utility/library.json",
+    "jar:ApothicEnchanting-1.21.1-1.6.1.jar:data/apothic_enchanting/recipe/library.json",
+    "jar:ApothicEnchanting-1.21.1-1.6.1.jar:data/apothic_enchanting/recipe/infusion/ender_library.json"
+   ]
+  },
+  {
+   "key": "aench_atlas",
+   "deps": [
+    "aench_library",
+    "aench_horizon"
+   ],
+   "type": "item",
+   "item": "entrelumen:atlas_library",
+   "layout": {
+    "x": 21,
+    "y": 0,
+    "size": 1.75,
+    "shape": "diamond"
+   },
+   "en_us": [
+    "ENTRELUMEN: the Atlas Library",
+    "The Atlas Library (Act V: a Library of Alexandria, two Horizon Shelves, four Containment Seals, an Ark Connection Bus and a Renewal Engine) improves on it twice. Its cap is level XL, set by the Eterna around it exactly as a table would read it (100 Eterna reaches 40). And it can write any eligible enchantment, even ones never deposited.\n\nBooks pay into one shared pool of lumen. A deposit is worth at most half of what the same level costs, and each extra level doubles the price, so high levels are an investment. Curses are refused."
+   ],
+   "es_es": [
+    "ENTRELUMEN: la Biblioteca del Atlas",
+    "La Biblioteca del Atlas (acto V: una Library of Alexandria, dos Estantes del horizonte, cuatro Sellos de contención, un Bus de conexión del Arca y un Motor de renovación) la mejora dos veces. Su tope es el nivel XL, fijado por la Eterna que tenga alrededor, medida igual que una mesa (100 de Eterna llegan a 40). Y puede escribir cualquier encantamiento válido, aunque nunca lo hayas depositado.\n\nLos libros pagan a un fondo común de lumen. Un depósito vale como mucho la mitad de lo que cuesta ese mismo nivel, y cada nivel extra duplica el precio, así que los niveles altos son una inversión. Las maldiciones se rechazan."
+   ],
+   "sources": [
+    "repo:pack/kubejs/data/entrelumen/recipe/atlas_library.json",
+    "repo:docs/design/apotheosis-family.md#Atlas Library"
+   ]
+  },
+  {
+   "key": "aench_atlas_tips",
+   "deps": [
+    "aench_atlas"
+   ],
+   "type": "checkmark",
+   "optional": true,
+   "icon": "minecraft:enchanted_book",
+   "layout": {
+    "x": 21,
+    "y": 3,
+    "size": 1.0,
+    "shape": "circle"
+   },
+   "en_us": [
+    "Tip: using the Atlas Library well",
+    "Hoppers and ME buses can insert books; taking books out is only through its screen. Breaking the library drops it with the pool inside, so you can move it. Single-level enchantments stay at I, and Quick Charge and Lure stop at V because higher levels break in vanilla.\n\nAs a guide: a Sharpness V book deposits 8 lumen and Sharpness X costs 512, so about 64 books; Mending costs 10 and returns 2."
+   ],
+   "es_es": [
+    "Tip: usar bien la Biblioteca del Atlas",
+    "Las tolvas y los buses de ME pueden meter libros; sacar libros sólo se puede desde su pantalla. Si rompés la biblioteca, cae con el fondo adentro, así que la podés mudar. Los encantamientos de un solo nivel quedan en I, y Carga rápida y Atracción frenan en V porque más arriba se rompen en el juego base.\n\nComo referencia: un libro de Filo V deposita 8 de lumen y Filo X cuesta 512, o sea unos 64 libros; Reparación cuesta 10 y devuelve 2."
+   ],
+   "sources": [
+    "repo:docs/design/apotheosis-family.md#Atlas Library"
+   ]
+  },
+  {
+   "key": "aench_ark",
+   "deps": [
+    "aench_tomes"
+   ],
+   "type": "item",
+   "item": "entrelumen:arcane_module",
+   "optional": true,
+   "layout": {
+    "x": 18,
+    "y": 3,
+    "size": 1.0,
+    "shape": "diamond"
+   },
+   "en_us": [
+    "ENTRELUMEN: the Ark restores forging history",
+    "Every anvil operation doubles an item's prior-work penalty. The Ark's arcane module (Act V) resets it to zero and keeps everything else: enchantments, curses, name, Apotheosis affixes and sockets. Hold the item in your main hand and ordinary books in your offhand, and use the module of a complete Ark.\n\nIt costs one book and five levels per anvil operation the item went through."
+   ],
+   "es_es": [
+    "ENTRELUMEN: el Arca restaura la historia de forja",
+    "Cada operación de yunque duplica la penalización por trabajo previo de un ítem. El módulo arcano del Arca (acto V) la vuelve a cero y conserva todo lo demás: encantamientos, maldiciones, nombre, afijos y engarces de Apotheosis. Sostené el ítem en la mano principal y libros comunes en la secundaria, y usá el módulo de un Arca completa.\n\nCuesta un libro y cinco niveles por cada operación de yunque que tuvo el ítem."
+   ],
+   "sources": [
+    "repo:docs/design/arcane-library.md#Use",
+    "repo:docs/design/apotheosis-family.md#Ark arcane service"
+   ]
+  },
+  {
+   "key": "aench_mastery",
+   "deps": [
+    "aench_atlas"
+   ],
+   "type": "checkmark",
+   "icon": "entrelumen:horizon_shelf",
+   "layout": {
+    "x": 24,
+    "y": 0,
+    "size": 2.0,
+    "shape": "gear"
+   },
+   "en_us": [
+    "Mastery: level 100",
+    "A table at 100 Eterna with Quanta and Arcana tuned to what you want, filters for what you do not, and an Atlas Library that writes level XL books from a pool of lumen. The enchanting ladder of ENTRELUMEN climbs with the whole story: every act adds a rung."
+   ],
+   "es_es": [
+    "Maestría: nivel 100",
+    "Una mesa con 100 de Eterna, Quanta y Arcana ajustadas a lo que buscás, filtros para lo que no, y una Biblioteca del Atlas que escribe libros de nivel XL desde un fondo de lumen. La escalera de encantamientos de ENTRELUMEN sube con toda la historia: cada acto suma un escalón."
+   ],
+   "sources": [
+    "repo:docs/design/apotheosis-family.md#Enchanting: four ENTRELUMEN shelves and a staged ladder",
+    "jar:Apotheosis-1.21.1-8.7.0.jar:assets/apotheosis/patchouli_books/apoth_chronicle/en_us/entries/enchanting/progression/levels80_100.json"
+   ]
+  }
+ ]
+}

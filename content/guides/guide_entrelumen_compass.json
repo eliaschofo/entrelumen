@@ -1,0 +1,414 @@
+{
+  "chapter": "guide_entrelumen_compass",
+  "group": "entrelumen",
+  "act": "any",
+  "icon": "entrelumen:heliodor_compass",
+  "title": {
+    "en_us": "The Heliodor Compass",
+    "es_es": "La Brújula de Heliodor"
+  },
+  "subtitle": {
+    "en_us": "Your guide through the story: where it points, what its colors mean, and why it sometimes rests.",
+    "es_es": "Tu guía por la historia: adónde apunta, qué significan sus colores y por qué a veces se queda quieta."
+  },
+  "quests": [
+    {
+      "key": "entrelumen_compass_welcome",
+      "deps": [],
+      "type": "checkmark",
+      "layout": {
+        "x": 0,
+        "y": 0,
+        "size": 2.0,
+        "shape": "hexagon"
+      },
+      "en_us": [
+        "Never Lost",
+        "The Heliodor Compass is the pack's main guide. It always points to the next place the story needs: a structure, a dungeon, a guardian or another world. When you meet the condition, it turns to the next destination on its own.\n\nIt is designed never to send you thousands of blocks away and never to spin in vain."
+      ],
+      "es_es": [
+        "Nunca perdido",
+        "La Brújula de Heliodor es la guía principal del pack. Siempre apunta al próximo lugar que necesita la historia: una estructura, una mazmorra, un guardián u otro mundo. Cuando cumplís la condición, gira sola hacia el siguiente destino.\n\nEstá pensada para no mandarte nunca a miles de bloques y para no girar en vano."
+      ],
+      "sources": [
+        "repo:docs/design/heliodor-compass.md",
+        "repo:docs/design/story-bible.md"
+      ]
+    },
+    {
+      "key": "entrelumen_compass_pedestal",
+      "deps": [
+        "entrelumen_compass_welcome"
+      ],
+      "type": "item",
+      "item": "entrelumen:heliodor_compass",
+      "layout": {
+        "x": 3,
+        "y": 0,
+        "size": 1.5,
+        "shape": "square"
+      },
+      "en_us": [
+        "Take It From the Pedestal",
+        "The compass waits on the &eHeliodor Pedestal&r in the middle of the ruin where you wake. Use the pedestal, with anything or an empty hand, and it gives you your compass. Each player gets &eone&r, ever, per world; a second try only reminds you that the pedestal already gave you yours.\n\nNo recipe makes a new one yet. Keep it safe: on death, Tombstone keeps it in your grave with the rest of your items."
+      ],
+      "es_es": [
+        "Tomala del pedestal",
+        "La brújula espera en el &ePedestal de Heliodor&r, en el centro de la ruina donde despertás. Usá el pedestal, con cualquier cosa o con la mano vacía, y te da tu brújula. Cada jugador recibe &euna&r, para siempre, por mundo; un segundo intento sólo te recuerda que el pedestal ya te dio la tuya.\n\nTodavía no hay receta para hacer otra. Cuidala: al morir, Tombstone la guarda en tu tumba con el resto de tus cosas."
+      ],
+      "sources": [
+        "repo:docs/design/heliodor-compass.md",
+        "repo:companion/src/main/java/dev/entrelumen/CompassData.java",
+        "repo:companion/src/main/resources/assets/entrelumen/lang/en_us.json",
+        "repo:docs/design/story-bible.md"
+      ]
+    },
+    {
+      "key": "entrelumen_compass_carry",
+      "deps": [
+        "entrelumen_compass_pedestal"
+      ],
+      "type": "checkmark",
+      "icon": "minecraft:compass",
+      "layout": {
+        "x": 6,
+        "y": -2,
+        "size": 1.0,
+        "shape": "circle"
+      },
+      "en_us": [
+        "Carry It to Attune It",
+        "A fresh compass says it is not attuned yet: carry it for a moment. While you carry it, the server refreshes it about once a second, so it follows you as you walk.\n\nHover it to read its state line, and open the Atlas: its first entry is the compass, with the objective's name, why it matters and the fragments you have recovered."
+      ],
+      "es_es": [
+        "Llevala para sintonizarla",
+        "Una brújula nueva dice que todavía no está sintonizada: llevala encima un momento. Mientras la llevás, el servidor la actualiza más o menos una vez por segundo, así que te acompaña mientras caminás.\n\nPasale el mouse para leer su estado, y abrí el Atlas: su primera entrada es la brújula, con el nombre del objetivo, por qué importa y los fragmentos que recuperaste."
+      ],
+      "sources": [
+        "repo:docs/design/heliodor-compass.md",
+        "repo:companion/src/main/resources/assets/entrelumen/lang/en_us.json"
+      ]
+    },
+    {
+      "key": "entrelumen_compass_colors",
+      "deps": [
+        "entrelumen_compass_pedestal"
+      ],
+      "type": "checkmark",
+      "icon": "minecraft:recovery_compass",
+      "layout": {
+        "x": 6,
+        "y": 2,
+        "size": 1.25,
+        "shape": "circle"
+      },
+      "en_us": [
+        "Needle Colors",
+        "The needle's color tells you where the destination is:\n\n- &3turquoise&r: the Overworld;\n- &4red&r: the Nether;\n- &5violet&r: the End;\n- &6gold&r: the Aether;\n- &2green&r: the Twilight Forest;\n- &bsky blue&r: another world, such as the Bumblezone or Solsticio;\n- &7grey&r: no trace, locked or nothing left for now."
+      ],
+      "es_es": [
+        "Colores de la aguja",
+        "El color de la aguja te dice dónde está el destino:\n\n- &3turquesa&r: el Overworld;\n- &4rojo&r: el Nether;\n- &5violeta&r: el End;\n- &6dorado&r: el Aether;\n- &2verde&r: el Twilight Forest;\n- &bceleste&r: otro mundo, como la Bumblezone o Solsticio;\n- &7gris&r: sin rastro, bloqueado o nada pendiente por ahora."
+      ],
+      "sources": [
+        "repo:art/authoring/trace_compass.py",
+        "repo:docs/design/heliodor-compass.md",
+        "repo:docs/design/story-bible.md"
+      ]
+    },
+    {
+      "key": "entrelumen_compass_states",
+      "deps": [
+        "entrelumen_compass_carry",
+        "entrelumen_compass_colors"
+      ],
+      "type": "checkmark",
+      "icon": "minecraft:clock",
+      "layout": {
+        "x": 9,
+        "y": 0,
+        "size": 1.5,
+        "shape": "hexagon"
+      },
+      "en_us": [
+        "What the Needle Is Saying",
+        "Five states, shown in the tooltip:\n\n- &ePointing&r: the needle shows the way.\n- &eAnother dimension&r: the needle rests; travel there first.\n- &eSearching&r: it spins briefly while the server looks.\n- &eNo trace nearby&r: nothing within range; keep advancing the Atlas or explore another region.\n- &eLocked&r: the next destination opens with the next act; complete the Atlas projects.\n\nWhen there is nothing more for now, it says so."
+      ],
+      "es_es": [
+        "Lo que dice la aguja",
+        "Cinco estados, que se ven en el tooltip:\n\n- &eSeñala&r: la aguja marca el camino.\n- &eOtra dimensión&r: la aguja descansa; primero viajá allá.\n- &eBuscando&r: gira un momento mientras el servidor busca.\n- &eSin rastro cerca&r: no hay nada al alcance; seguí con el Atlas o explorá otra zona.\n- &eBloqueada&r: el próximo destino se abre con el siguiente acto; completá los proyectos del Atlas.\n\nCuando no queda nada por ahora, también lo dice."
+      ],
+      "sources": [
+        "repo:companion/src/main/resources/assets/entrelumen/lang/en_us.json",
+        "repo:docs/design/heliodor-compass.md"
+      ]
+    },
+    {
+      "key": "entrelumen_compass_radius",
+      "deps": [
+        "entrelumen_compass_states"
+      ],
+      "type": "checkmark",
+      "icon": "minecraft:map",
+      "layout": {
+        "x": 12,
+        "y": -2.5,
+        "size": 1.0,
+        "shape": "pentagon"
+      },
+      "en_us": [
+        "Never Thousands of Blocks",
+        "The compass searches at most &e1,500 blocks&r around you. If the destination is farther, it says there is no trace nearby instead of dragging you across the map. Walk more than 512 blocks from where a search found nothing and it searches again.\n\nThe story never requires long treks, jetpacks or chunk-loading to find the next step."
+      ],
+      "es_es": [
+        "Nunca miles de bloques",
+        "La brújula busca como mucho a &e1.500 bloques&r a tu alrededor. Si el destino está más lejos, dice que no hay rastro cerca en vez de arrastrarte por todo el mapa. Si te alejás más de 512 bloques de donde una búsqueda no encontró nada, vuelve a buscar.\n\nLa historia nunca exige caminatas larguísimas, jetpacks ni cargar chunks para encontrar el próximo paso."
+      ],
+      "sources": [
+        "repo:docs/design/heliodor-compass.md",
+        "repo:companion/src/main/java/dev/entrelumen/CompassLocator.java"
+      ]
+    },
+    {
+      "key": "entrelumen_compass_team",
+      "deps": [
+        "entrelumen_compass_states"
+      ],
+      "type": "checkmark",
+      "icon": "minecraft:player_head",
+      "layout": {
+        "x": 12,
+        "y": 0,
+        "size": 1.25,
+        "shape": "circle"
+      },
+      "en_us": [
+        "The Compass Follows the Team",
+        "The compass belongs to your team's campaign, not to you alone: every member sees the same objective, and a new destination is announced to all of them. A condition met by any online member counts for everyone. A new party inherits its founder's progress.\n\nOnce reached, a destination stays reached: losing an item never rewinds the compass."
+      ],
+      "es_es": [
+        "La brújula sigue al equipo",
+        "La brújula pertenece a la campaña de tu equipo, no sólo a vos: todos los integrantes ven el mismo objetivo, y un destino nuevo se les anuncia a todos. Una condición que cumple cualquier integrante conectado cuenta para todos. Un grupo nuevo hereda el progreso de su fundador.\n\nUna vez alcanzado, un destino queda alcanzado: perder un ítem nunca rebobina la brújula."
+      ],
+      "sources": [
+        "repo:docs/design/heliodor-compass.md",
+        "repo:companion/src/main/java/dev/entrelumen/CompassProgress.java"
+      ]
+    },
+    {
+      "key": "entrelumen_compass_shared_sites",
+      "deps": [
+        "entrelumen_compass_team"
+      ],
+      "type": "checkmark",
+      "optional": true,
+      "icon": "minecraft:lodestone",
+      "layout": {
+        "x": 12,
+        "y": 2.5,
+        "size": 1.0,
+        "shape": "diamond"
+      },
+      "en_us": [
+        "Quirk: Found Places Are Shared",
+        "Every place a search finds is remembered for the whole world. If another team already found a village or a fortress near you, your compass points to it without searching again.\n\nSearches run a little each tick and never wait for chunks, so a search in progress does not freeze the server."
+      ],
+      "es_es": [
+        "Particularidad: los lugares encontrados se comparten",
+        "Cada lugar que encuentra una búsqueda queda recordado para todo el mundo. Si otro equipo ya encontró una aldea o una fortaleza cerca tuyo, tu brújula apunta ahí sin volver a buscar.\n\nLas búsquedas avanzan un poco en cada tick y nunca esperan a los chunks, así que una búsqueda en curso no congela al servidor."
+      ],
+      "sources": [
+        "repo:docs/design/heliodor-compass.md"
+      ]
+    },
+    {
+      "key": "entrelumen_compass_route_1",
+      "deps": [
+        "entrelumen_compass_radius"
+      ],
+      "type": "checkmark",
+      "icon": "minecraft:brush",
+      "layout": {
+        "x": 15,
+        "y": -4.5,
+        "size": 1.0,
+        "shape": "circle"
+      },
+      "en_us": [
+        "The Route: Acts I and II",
+        "Early destinations:\n\n- &eThe Ruin Where You Woke&r, until the Atlas awakens;\n- &eThose Who Stayed&r, a village, until the Field Survey is delivered;\n- &eThe Proving Halls&r, the trial chambers, until the First Signal;\n- &eBuried Streets&r, trail ruins, until the Workshop Archive closes act II."
+      ],
+      "es_es": [
+        "La ruta: actos I y II",
+        "Los primeros destinos:\n\n- &eLa ruina donde despertaste&r, hasta que despierta el Atlas;\n- &eLos que se quedaron&r, una aldea, hasta entregar el Relevamiento de campo;\n- &eLas salas de prueba&r, las cámaras de desafío, hasta la Primera señal;\n- &eCalles enterradas&r, las ruinas de senderos, hasta que el Archivo del taller cierra el acto II."
+      ],
+      "sources": [
+        "repo:content/compass_targets.json",
+        "repo:companion/src/main/resources/assets/entrelumen/lang/es_es.json"
+      ]
+    },
+    {
+      "key": "entrelumen_compass_route_2",
+      "deps": [
+        "entrelumen_compass_radius"
+      ],
+      "type": "checkmark",
+      "icon": "minecraft:blaze_rod",
+      "layout": {
+        "x": 15,
+        "y": -1.5,
+        "size": 1.25,
+        "shape": "circle"
+      },
+      "en_us": [
+        "The Route: Acts III and IV",
+        "Then the other worlds:\n\n- act III: a &eNether fortress&r (until someone carries a blaze rod), the &eTwilight Forest&r and the &eNaga's Courtyard&r;\n- act IV: the &eAether&r, the Slider's &eBronze Dungeon&r, the &eLich's Tower&r, the &eBumblezone&r, the Valkyrie Queen's &eSilver Dungeon&r and the &eGolden Dungeon&r, where the Sun Spirit holds the Heart of Heliodor.\n\nGuardian destinations advance when the boss falls."
+      ],
+      "es_es": [
+        "La ruta: actos III y IV",
+        "Después, los otros mundos:\n\n- acto III: una &efortaleza del Nether&r (hasta que alguien lleve una vara de blaze), el &eBosque Crepuscular&r y el &epatio de la Naga&r;\n- acto IV: el &eAether&r, la &emazmorra de bronce&r del Slider, la &etorre del Liche&r, la &eBumblezone&r, la &emazmorra de plata&r de la Reina Valquiria y la &emazmorra dorada&r, donde el Espíritu del Sol guarda el Corazón de Heliodor.\n\nLos destinos de guardián avanzan cuando cae el jefe."
+      ],
+      "sources": [
+        "repo:content/compass_targets.json",
+        "repo:content/compass_targets.json",
+        "note:reflects feature/acts-renumber, merged into main on 24/9 (objective acts renumbered, Solsticio objective)"
+      ]
+    },
+    {
+      "key": "entrelumen_compass_route_3",
+      "deps": [
+        "entrelumen_compass_route_2"
+      ],
+      "type": "checkmark",
+      "icon": "minecraft:wet_sponge",
+      "layout": {
+        "x": 15,
+        "y": 1.5,
+        "size": 1.0,
+        "shape": "circle"
+      },
+      "en_us": [
+        "The Route: Acts V and VI",
+        "Last stretch:\n\n- act V: the &eDrowned Monument&r (until someone carries a wet sponge from the Elder Guardian), the &eStronghold&r (until your team reaches the End) and &eThe End&r itself (until the dragon falls);\n- act VI: &eSolsticio&r, until your team crosses into the city.\n\nThe Wither, the dragon and the Elder Guardian matter for their drops: their materials are needed later."
+      ],
+      "es_es": [
+        "La ruta: actos V y VI",
+        "El último tramo:\n\n- acto V: el &emonumento sumergido&r (hasta que alguien lleve una esponja mojada del Guardián Anciano), la &efortaleza&r (hasta que tu equipo llegue al End) y &eel End&r en sí (hasta que caiga el dragón);\n- acto VI: &eSolsticio&r, hasta que tu equipo cruce a la ciudad.\n\nEl Wither, el dragón y el Guardián Anciano importan por sus drops: sus materiales hacen falta más adelante."
+      ],
+      "sources": [
+        "repo:content/compass_targets.json",
+        "repo:content/compass_targets.json",
+        "note:reflects feature/acts-renumber, merged into main on 24/9 (objective acts renumbered, Solsticio objective)",
+        "repo:docs/design/story-bible.md"
+      ]
+    },
+    {
+      "key": "entrelumen_compass_early_skip",
+      "deps": [
+        "entrelumen_compass_route_1"
+      ],
+      "type": "checkmark",
+      "optional": true,
+      "icon": "minecraft:feather",
+      "layout": {
+        "x": 18,
+        "y": -3,
+        "size": 1.0,
+        "shape": "diamond"
+      },
+      "en_us": [
+        "Tip: Early Work Counts",
+        "If your team already met a later condition, for example you reached the Twilight Forest early, the compass skips that destination the moment its act opens. Nothing done early is wasted."
+      ],
+      "es_es": [
+        "Truco: lo hecho antes cuenta",
+        "Si tu equipo ya cumplió una condición posterior, por ejemplo llegó antes al Twilight Forest, la brújula saltea ese destino apenas se abre su acto. Nada de lo que hagas antes se desperdicia."
+      ],
+      "sources": [
+        "repo:docs/design/heliodor-compass.md",
+        "repo:companion/src/main/java/dev/entrelumen/CompassProgress.java"
+      ]
+    },
+    {
+      "key": "entrelumen_compass_other_compasses",
+      "deps": [
+        "entrelumen_compass_route_3"
+      ],
+      "type": "item",
+      "item": "naturescompass:naturescompass",
+      "optional": true,
+      "layout": {
+        "x": 18,
+        "y": 3,
+        "size": 1.0,
+        "shape": "diamond"
+      },
+      "en_us": [
+        "Other Compasses in the Pack",
+        "For everything off the story path, the pack has &eNature's Compass&r (finds biomes) and &eExplorer's Compass&r (finds structures). The Heliodor Compass stays focused on the story.\n\nSolsticio's cartographer also sells survey maps and both compasses."
+      ],
+      "es_es": [
+        "Otras brújulas del pack",
+        "Para todo lo que queda fuera de la historia, el pack tiene la &eNature's Compass&r (encuentra biomas) y la &eExplorer's Compass&r (encuentra estructuras). La Brújula de Heliodor se concentra en la historia.\n\nEl cartógrafo de Solsticio también vende mapas de relevamiento y las dos brújulas."
+      ],
+      "sources": [
+        "repo:catalog/curated.json",
+        "repo:docs/design/solsticio-commerce.md"
+      ]
+    },
+    {
+      "key": "entrelumen_compass_lore",
+      "deps": [
+        "entrelumen_compass_colors"
+      ],
+      "type": "checkmark",
+      "optional": true,
+      "icon": "minecraft:paper",
+      "layout": {
+        "x": 9,
+        "y": 4,
+        "size": 1.0,
+        "shape": "diamond"
+      },
+      "en_us": [
+        "Fragments of Lore",
+        "Many destinations carry a lore fragment for the Atlas. The early ones keep the mystery; the full truth arrives with the Heart of Heliodor. Read them in the Atlas's compass entry, newest first."
+      ],
+      "es_es": [
+        "Fragmentos de lore",
+        "Muchos destinos traen un fragmento de lore para el Atlas. Los primeros guardan el misterio; la verdad completa llega con el Corazón de Heliodor. Leelos en la entrada de la brújula del Atlas, del más nuevo al más viejo."
+      ],
+      "sources": [
+        "repo:docs/design/heliodor-compass.md",
+        "repo:companion/src/main/resources/assets/entrelumen/lang/en_us.json"
+      ]
+    },
+    {
+      "key": "entrelumen_compass_close",
+      "deps": [
+        "entrelumen_compass_early_skip",
+        "entrelumen_compass_other_compasses",
+        "entrelumen_compass_shared_sites"
+      ],
+      "type": "item",
+      "item": "entrelumen:heliodor_compass",
+      "layout": {
+        "x": 21,
+        "y": 0,
+        "size": 2.0,
+        "shape": "hexagon"
+      },
+      "en_us": [
+        "Follow the Light",
+        "You know where the compass comes from, what its colors and states mean, how far it looks and the route it follows. When in doubt, hover it and read.\n\nThe next chapters explain the rewards on that road: the altars."
+      ],
+      "es_es": [
+        "Seguí la luz",
+        "Ya sabés de dónde sale la brújula, qué significan sus colores y estados, hasta dónde busca y qué ruta sigue. Ante la duda, pasale el mouse y leé.\n\nLos capítulos siguientes explican las recompensas de ese camino: los altares."
+      ],
+      "sources": [
+        "repo:docs/design/heliodor-compass.md"
+      ]
+    }
+  ]
+}

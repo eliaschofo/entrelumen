@@ -1,0 +1,409 @@
+{
+  "chapter": "guide_logistics_networks",
+  "group": "qol",
+  "act": "III",
+  "icon": "ae2:controller",
+  "title": {
+    "en_us": "Storage Networks: AE2 or Refined Storage",
+    "es_es": "Redes de almacenamiento: AE2 o Refined Storage"
+  },
+  "subtitle": {
+    "en_us": "One terminal for everything you own: how the two networks differ, where the pack gates them, and how to start.",
+    "es_es": "Una terminal para todo lo que tenés: en qué se diferencian las dos redes, dónde las escalona el pack y cómo empezar."
+  },
+  "quests": [
+    {
+      "key": "logistics_networks_welcome",
+      "deps": [],
+      "type": "checkmark",
+      "layout": {
+        "x": 0,
+        "y": 0,
+        "size": 2.0,
+        "shape": "hexagon"
+      },
+      "en_us": [
+        "A Terminal That Knows Everything",
+        "A storage network turns items into data: you insert them once, then search, count, pull and auto-craft from a single terminal. ENTRELUMEN offers two, side by side: &eApplied Energistics 2&r and &eRefined Storage&r. Both are complete; pick one per base.\n\nThis chapter compares them and gets you to a first working network. The tech guides go deeper into autocrafting."
+      ],
+      "es_es": [
+        "Una terminal que sabe todo",
+        "Una red de almacenamiento convierte los ítems en datos: los metés una vez y después buscás, contás, sacás y fabricás automáticamente desde una sola terminal. ENTRELUMEN ofrece dos, una al lado de la otra: &eApplied Energistics 2&r y &eRefined Storage&r. Las dos son completas; elegí una por base.\n\nEste capítulo las compara y te lleva a una primera red funcionando. Las guías técnicas profundizan en el autocrafteo."
+      ],
+      "sources": [
+        "repo:docs/design/mod-pingpong.md",
+        "repo:docs/research/reference-packs.md"
+      ]
+    },
+    {
+      "key": "logistics_networks_compare",
+      "deps": [
+        "logistics_networks_welcome"
+      ],
+      "type": "checkmark",
+      "icon": "minecraft:comparator",
+      "layout": {
+        "x": 3,
+        "y": 0,
+        "size": 1.5,
+        "shape": "diamond"
+      },
+      "en_us": [
+        "AE2 or RS?",
+        "Short version:\n\n- &eAE2&r: deeper and more rewarding. Cables carry a limited number of &echannels&r (8 per normal cable, 32 per dense cable), so layout matters. Huge add-on support in the pack.\n- &eRefined Storage&r: simpler. No channels to plan; blocks just need to be connected and powered. Faster to set up, fewer surprises.\n\nBoth store items, fluids and, with their Mekanism add-ons, chemicals. Both craft on request."
+      ],
+      "es_es": [
+        "¿AE2 o RS?",
+        "Versión corta:\n\n- &eAE2&r: más profundo y más gratificante. Los cables llevan una cantidad limitada de &ecanales&r (8 por cable normal, 32 por cable denso), así que el diseño importa. Mucho soporte de complementos en el pack.\n- &eRefined Storage&r: más simple. No hay canales que planear; los bloques sólo tienen que estar conectados y con energía. Se arma más rápido y con menos sorpresas.\n\nLas dos guardan ítems, fluidos y, con sus complementos de Mekanism, químicos. Las dos fabrican a pedido."
+      ],
+      "sources": [
+        "repo:docs/design/mod-pingpong.md",
+        "https://guide.appliedenergistics.org/1.21.1/ae2-mechanics/channels",
+        "https://refinedmods.com/refined-storage/"
+      ]
+    },
+    {
+      "key": "logistics_networks_gates",
+      "deps": [
+        "logistics_networks_compare"
+      ],
+      "type": "checkmark",
+      "icon": "entrelumen:routing_matrix",
+      "layout": {
+        "x": 3,
+        "y": 3.5,
+        "size": 1.0,
+        "shape": "pentagon"
+      },
+      "en_us": [
+        "Pack Change: When Each One Opens",
+        "The pack gives both networks the same entry in act III:\n\n- the Refined Storage &eController&r carries a &eRouting Matrix&r and its &eAutocrafter&r a &eHandling Core&r;\n- AE2 needs the &eLogic Processors&r of its inscriber, the same processors the Routing Matrix itself is made from.\n\nThe AE2 controller has no extra component, so a small AE2 network can start a little earlier."
+      ],
+      "es_es": [
+        "Cambio del pack: cuándo se abre cada una",
+        "El pack les da a las dos redes la misma entrada en el acto III:\n\n- el &eControlador&r de Refined Storage lleva una &eMatriz de distribución&r y su &eAutocrafter&r un &eNúcleo de manipulación&r;\n- AE2 necesita los &eProcesadores lógicos&r de su inscriptor, los mismos con los que se fabrica la propia Matriz de distribución.\n\nEl controlador de AE2 no lleva ningún componente extra, así que una red chica de AE2 puede empezar un poco antes."
+      ],
+      "sources": [
+        "repo:pack/kubejs/server_scripts/entrelumen_pingpong_balance.js",
+        "repo:content/integration-design.json",
+        "repo:docs/research/reference-packs.md"
+      ]
+    },
+    {
+      "key": "logistics_networks_ae2_meteor",
+      "deps": [
+        "logistics_networks_compare"
+      ],
+      "type": "item",
+      "item": "ae2:inscriber",
+      "layout": {
+        "x": 6,
+        "y": -3,
+        "size": 1.0,
+        "shape": "circle"
+      },
+      "en_us": [
+        "AE2 Step 1: Find a Meteorite",
+        "AE2 starts in a crater. Meteorites hold a &eMysterious Cube&r with the four &einscriber presses&r (calculation, engineering, logic and silicon), plus sky stone. Look for craters in the landscape.\n\nWith the presses and an &eInscriber&r you print processors. Certus quartz grows from budding certus blocks; charge it in a &eCharger&r and combine it with redstone and nether quartz in water to get fluix."
+      ],
+      "es_es": [
+        "AE2 paso 1: encontrá un meteorito",
+        "AE2 empieza en un cráter. Los meteoritos tienen un &eCubo misterioso&r con las cuatro &eprensas del inscriptor&r (cálculo, ingeniería, lógica y silicio), además de piedra celeste. Buscá cráteres en el paisaje.\n\nCon las prensas y un &eInscriptor&r imprimís procesadores. El cuarzo de certus crece de bloques de certus en brote; cargalo en un &eCargador&r y combinalo con redstone y cuarzo del Nether en agua para obtener fluix."
+      ],
+      "sources": [
+        "https://guide.appliedenergistics.org/1.21.1/getting-started",
+        "jar:appliedenergistics2-19.2.17.jar:assets/ae2/lang/en_us.json"
+      ]
+    },
+    {
+      "key": "logistics_networks_ae2_first",
+      "deps": [
+        "logistics_networks_ae2_meteor"
+      ],
+      "type": "item",
+      "item": "ae2:terminal",
+      "layout": {
+        "x": 9,
+        "y": -3,
+        "size": 1.25,
+        "shape": "circle"
+      },
+      "en_us": [
+        "AE2 Step 2: a First Network",
+        "A minimal AE2 network: an &eME Drive&r with a &e1k storage cell&r, a &eterminal&r and power from an energy acceptor or a controller. Without a controller, a network supports up to 8 channel-using devices. With a &eController&r and cables you can grow far beyond that.\n\nCraft an ME terminal to mark this quest."
+      ],
+      "es_es": [
+        "AE2 paso 2: una primera red",
+        "Una red mínima de AE2: un &eME Drive&r con una &ecelda de almacenamiento de 1k&r, una &eterminal&r y energía desde un aceptador de energía o un controlador. Sin controlador, una red admite hasta 8 dispositivos que usan canales. Con un &eControlador&r y cables podés crecer mucho más.\n\nFabricá una terminal ME para marcar esta quest."
+      ],
+      "sources": [
+        "https://guide.appliedenergistics.org/1.21.1/getting-started",
+        "https://guide.appliedenergistics.org/1.21.1/ae2-mechanics/channels"
+      ]
+    },
+    {
+      "key": "logistics_networks_ae2_guide",
+      "deps": [
+        "logistics_networks_ae2_meteor"
+      ],
+      "type": "item",
+      "item": "ae2:guide",
+      "optional": true,
+      "layout": {
+        "x": 9,
+        "y": -5.5,
+        "size": 1.0,
+        "shape": "diamond"
+      },
+      "en_us": [
+        "Tip: AE2 Has Its Own Guide",
+        "AE2 ships an in-game guide with pictures and 3D scenes of every block. Craft the &eGuide&r item, or look for &eOpen Guide for Items&r in Controls to jump from any AE2 item straight to its page."
+      ],
+      "es_es": [
+        "Truco: AE2 trae su propia guía",
+        "AE2 trae una guía dentro del juego con imágenes y escenas 3D de cada bloque. Fabricá el ítem &eGuía&r, o buscá &eOpen Guide for Items&r en Controles para saltar de cualquier ítem de AE2 directo a su página."
+      ],
+      "sources": [
+        "jar:appliedenergistics2-19.2.17.jar:assets/ae2/lang/en_us.json",
+        "jar:guideme-21.1.17.jar:META-INF/neoforge.mods.toml"
+      ]
+    },
+    {
+      "key": "logistics_networks_ae2_addons",
+      "deps": [
+        "logistics_networks_ae2_first"
+      ],
+      "type": "checkmark",
+      "optional": true,
+      "icon": "ae2:wireless_terminal",
+      "layout": {
+        "x": 12,
+        "y": -4.5,
+        "size": 1.0,
+        "shape": "circle"
+      },
+      "en_us": [
+        "AE2 Add-ons in the Pack",
+        "The pack adds a lot on top of AE2:\n\n- &eMEGA Cells&r: much bigger storage cells;\n- &eExtendedAE&r and &eAdvancedAE&r: better pattern providers, interfaces and crafting;\n- &eApplied Mekanistics&r: Mekanism chemicals in the network;\n- &eAE2WTLib&r: a wireless universal terminal;\n- &eME Requester&r: keeps chosen items in stock by crafting them;\n- &eAE2 Network Analyzer&r: see your channels and cables;\n- &eArsEng&r: Ars Nouveau source handled by the network."
+      ],
+      "es_es": [
+        "Complementos de AE2 en el pack",
+        "El pack suma mucho encima de AE2:\n\n- &eMEGA Cells&r: celdas de almacenamiento mucho más grandes;\n- &eExtendedAE&r y &eAdvancedAE&r: mejores proveedores de patrones, interfaces y fabricación;\n- &eApplied Mekanistics&r: químicos de Mekanism en la red;\n- &eAE2WTLib&r: una terminal inalámbrica universal;\n- &eME Requester&r: mantiene en stock los ítems que elijas fabricándolos;\n- &eAE2 Network Analyzer&r: ver tus canales y cables;\n- &eArsEng&r: la fuente de Ars Nouveau manejada por la red."
+      ],
+      "sources": [
+        "repo:catalog/curated.json"
+      ]
+    },
+    {
+      "key": "logistics_networks_rs_first",
+      "deps": [
+        "logistics_networks_compare"
+      ],
+      "type": "item",
+      "item": "refinedstorage:grid",
+      "layout": {
+        "x": 6,
+        "y": 3,
+        "size": 1.25,
+        "shape": "circle"
+      },
+      "en_us": [
+        "RS: a First Network",
+        "A minimal Refined Storage network: a &eController&r with power, a &eDisk Drive&r with a storage disk, and a &eGrid&r or &eCrafting Grid&r to use it, all connected by cables or touching. No channels: add as many devices as you want.\n\nThe controller needs a Routing Matrix in this pack, so RS starts in act III."
+      ],
+      "es_es": [
+        "RS: una primera red",
+        "Una red mínima de Refined Storage: un &eControlador&r con energía, un &eDisk Drive&r con un disco de almacenamiento y una &eGrid&r o &eCrafting Grid&r para usarla, todo unido por cables o tocándose. Sin canales: sumá todos los dispositivos que quieras.\n\nEl controlador pide una Matriz de distribución en este pack, así que RS empieza en el acto III."
+      ],
+      "sources": [
+        "https://refinedmods.com/refined-storage/",
+        "jar:refinedstorage-neoforge-2.0.9.jar:assets/refinedstorage/lang/en_us.json",
+        "repo:pack/kubejs/server_scripts/entrelumen_pingpong_balance.js"
+      ]
+    },
+    {
+      "key": "logistics_networks_rs_more",
+      "deps": [
+        "logistics_networks_rs_first"
+      ],
+      "type": "item",
+      "item": "refinedstorage:crafting_grid",
+      "optional": true,
+      "layout": {
+        "x": 9,
+        "y": 3,
+        "size": 1.0,
+        "shape": "circle"
+      },
+      "en_us": [
+        "RS: Growing the Network",
+        "Refined Storage blocks to learn next:\n\n- &eImporter&r and &eExporter&r move items in and out of machines;\n- &eConstructor&r and &eDestructor&r place and break blocks;\n- &eDetector&r emits redstone by amount;\n- &eWireless Transmitter&r plus a wireless grid for remote access;\n- &eNetwork Transmitter&r and &eReceiver&r link distant parts;\n- the &eAutocrafter&r with patterns from the &ePattern Grid&r crafts on request.\n\nRefined Storage Mekanism Integration adds chemicals."
+      ],
+      "es_es": [
+        "RS: hacer crecer la red",
+        "Bloques de Refined Storage para aprender después:\n\n- &eImporter&r y &eExporter&r meten y sacan ítems de las máquinas;\n- &eConstructor&r y &eDestructor&r ponen y rompen bloques;\n- &eDetector&r emite redstone según la cantidad;\n- &eWireless Transmitter&r y una grid inalámbrica para acceso remoto;\n- &eNetwork Transmitter&r y &eReceiver&r unen partes lejanas;\n- el &eAutocrafter&r con patrones de la &ePattern Grid&r fabrica a pedido.\n\nRefined Storage Mekanism Integration agrega químicos."
+      ],
+      "sources": [
+        "jar:refinedstorage-neoforge-2.0.9.jar:assets/refinedstorage/lang/en_us.json",
+        "jar:refinedstorage-mekanism-integration-1.1.1.jar:META-INF/neoforge.mods.toml"
+      ]
+    },
+    {
+      "key": "logistics_networks_external",
+      "deps": [
+        "logistics_networks_ae2_first",
+        "logistics_networks_rs_first"
+      ],
+      "type": "checkmark",
+      "icon": "functionalstorage:storage_controller",
+      "layout": {
+        "x": 12,
+        "y": 0,
+        "size": 1.5,
+        "shape": "hexagon"
+      },
+      "en_us": [
+        "Keep Your Drawers",
+        "You do not have to empty your chests into the network. AE2's &eStorage Bus&r and RS's &eExternal Storage&r read any inventory they face, including drawers, a drawer controller or a Sophisticated storage controller. The terminal then shows those items too.\n\nThis is the best way to connect the drawer wall from the previous chapter."
+      ],
+      "es_es": [
+        "Conservá tus cajones",
+        "No hace falta vaciar tus cofres en la red. El &eStorage Bus&r de AE2 y el &eExternal Storage&r de RS leen cualquier inventario al que apunten, incluidos cajones, un controlador de cajones o un controlador de Sophisticated. La terminal muestra esos ítems también.\n\nEs la mejor forma de conectar la pared de cajones del capítulo anterior."
+      ],
+      "sources": [
+        "https://guide.appliedenergistics.org/1.21.1/items-blocks-machines/storage_bus",
+        "jar:refinedstorage-neoforge-2.0.9.jar:assets/refinedstorage/lang/en_us.json"
+      ]
+    },
+    {
+      "key": "logistics_networks_autocraft",
+      "deps": [
+        "logistics_networks_external"
+      ],
+      "type": "item",
+      "item": "ae2:pattern_provider",
+      "layout": {
+        "x": 15,
+        "y": -2,
+        "size": 1.0,
+        "shape": "circle"
+      },
+      "en_us": [
+        "Autocrafting in One Paragraph",
+        "Encode a recipe into a &epattern&r, give the network a place that can run it (an AE2 pattern provider with a molecular assembler or a machine, or an RS autocrafter) and a crafting CPU in AE2. Then ask the terminal for 64 of anything: the network crafts the intermediate steps too.\n\nAct components are ordinary shapeless recipes, so they can be autocrafted like anything else."
+      ],
+      "es_es": [
+        "Autocrafteo en un párrafo",
+        "Guardá una receta en un &epatrón&r, dale a la red un lugar que pueda ejecutarla (en AE2, un proveedor de patrones con un ensamblador molecular o una máquina; en RS, un autocrafter) y, en AE2, una CPU de fabricación. Después pedile 64 de lo que sea a la terminal: la red también fabrica los pasos intermedios.\n\nLos componentes de acto son recetas sin forma comunes, así que se autocraftean como cualquier otra cosa."
+      ],
+      "sources": [
+        "https://guide.appliedenergistics.org/1.21.1/ae2-mechanics/autocrafting",
+        "repo:docs/design/ae2-autocrafting-cases.md",
+        "repo:content/integration-design.json"
+      ]
+    },
+    {
+      "key": "logistics_networks_mixing",
+      "deps": [
+        "logistics_networks_external"
+      ],
+      "type": "checkmark",
+      "optional": true,
+      "icon": "minecraft:chest",
+      "layout": {
+        "x": 15,
+        "y": 2,
+        "size": 1.0,
+        "shape": "diamond"
+      },
+      "en_us": [
+        "Quirk: Both Networks Can Coexist",
+        "Nothing stops you from having AE2 in one base and Refined Storage in another, but they do not share storage directly. If you want both, link them through an inventory in the middle, like a drawer or chest both can read.\n\nFor one team, one network is almost always easier."
+      ],
+      "es_es": [
+        "Particularidad: las dos redes pueden convivir",
+        "Nada impide tener AE2 en una base y Refined Storage en otra, pero no comparten almacenamiento directamente. Si querés las dos, unilas a través de un inventario en el medio, como un cajón o cofre que ambas puedan leer.\n\nPara un solo equipo, una sola red casi siempre es más fácil."
+      ],
+      "sources": [
+        "repo:docs/design/mod-pingpong.md"
+      ]
+    },
+    {
+      "key": "logistics_networks_tip_channels",
+      "deps": [
+        "logistics_networks_ae2_first"
+      ],
+      "type": "item",
+      "item": "ae2:fluix_crystal",
+      "optional": true,
+      "layout": {
+        "x": 13.5,
+        "y": -6.5,
+        "size": 1.0,
+        "shape": "diamond"
+      },
+      "en_us": [
+        "Tip: Channels Without Tears",
+        "In AE2, each device that talks to the network uses one channel. A normal cable carries 8, a dense cable 32. Run dense cables as the backbone from the controller and branch with normal ones; the controller's faces each feed 32.\n\nIf a device stops working while the network has power, it probably ran out of channels. The Network Analyzer shows where."
+      ],
+      "es_es": [
+        "Truco: canales sin lágrimas",
+        "En AE2, cada dispositivo que habla con la red usa un canal. Un cable normal lleva 8 y uno denso 32. Usá cables densos como columna vertebral desde el controlador y ramificá con los normales; cada cara del controlador alimenta 32.\n\nSi un dispositivo deja de funcionar mientras la red tiene energía, probablemente se quedó sin canales. El Network Analyzer muestra dónde."
+      ],
+      "sources": [
+        "https://guide.appliedenergistics.org/1.21.1/ae2-mechanics/channels"
+      ]
+    },
+    {
+      "key": "logistics_networks_components_link",
+      "deps": [
+        "logistics_networks_autocraft",
+        "logistics_networks_mixing"
+      ],
+      "type": "checkmark",
+      "icon": "entrelumen:inventory_sensor",
+      "layout": {
+        "x": 18,
+        "y": 0,
+        "size": 1.0,
+        "shape": "pentagon"
+      },
+      "en_us": [
+        "The Network Feeds the Story",
+        "Several act components are built from network parts: the Routing Matrix from logic processors and a printed circuit board, the Habitation Charter from a calculation processor, the Inventory Sensor from LaserIO logic chips. A network that autocrafts processors makes acts III and V much lighter.\n\nThe Atlas chapter lists every component and what it asks for."
+      ],
+      "es_es": [
+        "La red alimenta la historia",
+        "Varios componentes de acto se hacen con piezas de redes: la Matriz de distribución con procesadores lógicos y una placa de circuito impreso, el Carta de habitabilidad con un procesador de cálculo, el Sensor de inventario con chips lógicos de LaserIO. Una red que autofabrica procesadores aliviana mucho los actos III y V.\n\nEl capítulo del Atlas lista cada componente y lo que pide."
+      ],
+      "sources": [
+        "repo:content/integration-design.json"
+      ]
+    },
+    {
+      "key": "logistics_networks_close",
+      "deps": [
+        "logistics_networks_components_link"
+      ],
+      "type": "item",
+      "item": "ae2:item_storage_cell_1k",
+      "layout": {
+        "x": 21,
+        "y": 0,
+        "size": 2.0,
+        "shape": "hexagon"
+      },
+      "en_us": [
+        "Everything in One Place",
+        "With a network, the whole base is one searchable inventory. From here on, logistics is about feeding machines, not finding items.\n\nNext: build something beautiful to put it in. The Building chapters are waiting."
+      ],
+      "es_es": [
+        "Todo en un solo lugar",
+        "Con una red, toda la base es un inventario donde se puede buscar. Desde acá, la logística se trata de alimentar máquinas, no de encontrar ítems.\n\nLo que sigue: construir algo lindo donde meterla. Los capítulos de Construcción te esperan."
+      ],
+      "sources": [
+        "repo:content/guides/README.md"
+      ]
+    }
+  ]
+}
