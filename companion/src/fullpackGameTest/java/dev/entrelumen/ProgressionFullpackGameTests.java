@@ -131,64 +131,70 @@ public final class ProgressionFullpackGameTests {
     helper.succeed();
   }
 
-  private static final List<net.minecraft.core.Direction> SIDES = new ArrayList<>();
-  static {
-    SIDES.add(null);
-    SIDES.addAll(List.of(net.minecraft.core.Direction.values()));
+  /**
+   * The infuser's own slots, through Mekanism's public inventory API ({@code TileEntityMekanism#getInventorySlots}
+   * and {@code IInventorySlot}), by reflection: pipes and hoppers only reach the faces its side
+   * configuration opens, which a fresh machine keeps closed.
+   */
+  private static List<Object> slots(Object tile) throws ReflectiveOperationException {
+    List<Object> slots = new ArrayList<>();
+    for (Object slot : (List<?>) tile.getClass().getMethod("getInventorySlots", net.minecraft.core.Direction.class)
+        .invoke(tile, (Object) null)) slots.add(slot);
+    return slots;
   }
 
-  /**
-   * Inserts through whichever face Mekanism's default side configuration opens for the stack, as a pipe
-   * would; returns the face and slot used, or null.
-   */
-  private static String insert(GameTestHelper helper, BlockPos absolute, ItemStack stack) {
-    for (var side : SIDES) {
-      var handler = helper.getLevel().getCapability(Capabilities.ItemHandler.BLOCK, absolute, side);
-      if (handler == null) continue;
-      for (int slot = 0; slot < handler.getSlots(); slot++) {
-        if (handler.insertItem(slot, stack.copy(), true).getCount() >= stack.getCount()) continue;
-        handler.insertItem(slot, stack.copy(), false);
-        return side + "#" + slot;
+  private static ItemStack slotStack(Object slot) throws ReflectiveOperationException {
+    return (ItemStack) slot.getClass().getMethod("getStack").invoke(slot);
+  }
+
+  /** Puts the stack into the first empty slot that accepts it; returns that slot's index or -1. */
+  private static int place(Object tile, ItemStack stack) throws ReflectiveOperationException {
+    var slots = slots(tile);
+    for (int i = 0; i < slots.size(); i++) {
+      Object slot = slots.get(i);
+      if (!slotStack(slot).isEmpty()) continue;
+      if ((boolean) slot.getClass().getMethod("isItemValid", ItemStack.class).invoke(slot, stack)) {
+        slot.getClass().getMethod("setStack", ItemStack.class).invoke(slot, stack);
+        return i;
       }
     }
-    return null;
-  }
-
-  private static boolean holdsFrame(GameTestHelper helper, BlockPos absolute) {
-    for (var side : SIDES) {
-      var handler = helper.getLevel().getCapability(Capabilities.ItemHandler.BLOCK, absolute, side);
-      if (handler == null) continue;
-      for (int slot = 0; slot < handler.getSlots(); slot++)
-        if (handler.getStackInSlot(slot).is(item(FRAME))) return true;
-    }
-    return false;
+    return -1;
   }
 
   @GameTest(template = "empty", timeoutTicks = 900)
-  public static void realInfuserCopiesTheFrame(GameTestHelper helper) {
+  public static void realInfuserCopiesTheFrame(GameTestHelper helper) throws ReflectiveOperationException {
     requireSuite();
     var pos = new BlockPos(2, 1, 2);
     helper.setBlock(pos, BuiltInRegistries.BLOCK.get(ResourceLocation.parse("mekanism:metallurgic_infuser")));
-    var absolute = helper.absolutePos(pos);
-    String lens = insert(helper, absolute, stack("entrelumen:raw_lens"));
-    String dust = insert(helper, absolute, new ItemStack(Items.REDSTONE, 8));
-    helper.assertTrue(lens != null && dust != null,
-        "The infuser refused its inputs on every face: lens " + lens + ", redstone " + dust);
-    net.neoforged.neoforge.energy.IEnergyStorage[] energy = {null};
-    for (var side : SIDES) {
-      var storage = helper.getLevel().getCapability(Capabilities.EnergyStorage.BLOCK, absolute, side);
-      if (storage != null && storage.receiveEnergy(1000, true) > 0) {
-        energy[0] = storage;
-        break;
+    Object tile = helper.getLevel().getBlockEntity(helper.absolutePos(pos));
+    helper.assertTrue(tile != null, "No metallurgic infuser block entity");
+    int lens = place(tile, stack("entrelumen:raw_lens"));
+    int dust = place(tile, new ItemStack(Items.REDSTONE, 8));
+    helper.assertTrue(lens >= 0 && dust >= 0 && lens != dust,
+        "The infuser has no slot for the lens (" + lens + ") or the redstone (" + dust + ")");
+    List<Object> energy = new ArrayList<>();
+    for (Object container : (List<?>) tile.getClass().getMethod("getEnergyContainers", net.minecraft.core.Direction.class)
+        .invoke(tile, (Object) null)) energy.add(container);
+    helper.assertTrue(!energy.isEmpty(), "The infuser has no energy container");
+    helper.onEachTick(() -> {
+      try {
+        for (Object container : energy)
+          container.getClass().getMethod("setEnergy", long.class).invoke(container,
+              container.getClass().getMethod("getMaxEnergy").invoke(container));
+      } catch (ReflectiveOperationException error) {
+        throw new IllegalStateException(error);
       }
-    }
-    helper.assertTrue(energy[0] != null, "The infuser takes energy on no face");
-    long[] charged = {0};
-    helper.onEachTick(() -> charged[0] += energy[0].receiveEnergy(Integer.MAX_VALUE, false));
+    });
     helper.succeedWhen(() -> {
-      helper.assertTrue(holdsFrame(helper, absolute), "No frame yet (energy " + charged[0] + ")");
-      LOGGER.info("ENTRELUMEN_FRAME_INFUSION copied a frame from a raw lens ({}) and redstone ({}); energy received {}",
-          lens, dust, charged[0]);
+      boolean copied = false;
+      try {
+        for (Object slot : slots(tile)) if (slotStack(slot).is(item(FRAME))) copied = true;
+      } catch (ReflectiveOperationException error) {
+        throw new IllegalStateException(error);
+      }
+      helper.assertTrue(copied, "No frame yet");
+      LOGGER.info("ENTRELUMEN_FRAME_INFUSION a powered metallurgic infuser copied a frame from a raw lens (slot {}) "
+          + "and redstone (slot {})", lens, dust);
     });
   }
 
