@@ -1,0 +1,430 @@
+{
+ "chapter": "guide_powah",
+ "group": "tech",
+ "act": "II",
+ "icon": "powah:energizing_orb",
+ "title": {
+  "en_us": "Powah!",
+  "es_es": "Powah!"
+ },
+ "subtitle": {
+  "en_us": "Energizing, tiered generators from Starter to Nitro, energy cells, the Ender network and wireless charging.",
+  "es_es": "Energizado, generadores por niveles de Starter a Nitro, celdas de energía, la red Ender y carga inalámbrica."
+ },
+ "quests": [
+  {
+   "key": "pow_welcome",
+   "deps": [],
+   "type": "checkmark",
+   "icon": "powah:furnator_starter",
+   "layout": {
+    "x": 0,
+    "y": 0,
+    "size": 2.0,
+    "shape": "hexagon"
+   },
+   "en_us": [
+    "Seven tiers of FE",
+    "Compact FE generation. Every machine comes in seven tiers (Starter, Basic, Hardened, Blazing, Niotic, Spirited, Nitro), each making, storing and moving more. The signature trick is energizing: charging items into new materials. The in-game book lists stats per tier."
+   ],
+   "es_es": [
+    "Siete niveles de FE",
+    "Generación de FE compacta. Cada máquina viene en siete niveles (Starter, Basic, Hardened, Blazing, Niotic, Spirited, Nitro), cada uno genera, guarda y mueve más. El truco estrella es energizar: cargar ítems hasta volverlos materiales nuevos. El libro del juego lista estadísticas por nivel."
+   ],
+   "sources": [
+    "jar:Powah-6.2.10.jar:assets/powah/guides/powah/book/index.md",
+    "jar:Powah-6.2.10.jar:assets/powah/guides/powah/book/generators/furnator.md"
+   ]
+  },
+  {
+   "key": "pow_paste",
+   "deps": [
+    "pow_welcome"
+   ],
+   "type": "item",
+   "item": "powah:dielectric_paste",
+   "count": 16,
+   "layout": {
+    "x": 3,
+    "y": 0,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Dielectric paste",
+    "Shapeless: three coal or charcoal, two clay and a lava bucket (or two coal, a clay and blaze powder). It makes the dielectric casings and rods behind every Powah block. Starter machines only need basics."
+   ],
+   "es_es": [
+    "Pasta dieléctrica",
+    "Sin forma: tres carbones o carbón vegetal, dos arcillas y un balde de lava (o dos carbones, una arcilla y polvo de blaze). Hace las carcasas y varillas dieléctricas de todo bloque de Powah. Las máquinas Starter sólo piden lo básico."
+   ],
+   "sources": [
+    "jar:Powah-6.2.10.jar:data/powah/recipe/crafting/dielectric_paste.json",
+    "jar:Powah-6.2.10.jar:data/powah/recipe/crafting/dielectric_paste_2.json"
+   ]
+  },
+  {
+   "key": "pow_generators",
+   "deps": [
+    "pow_paste"
+   ],
+   "type": "item",
+   "item": "powah:magmator_starter",
+   "layout": {
+    "x": 5.5,
+    "y": 0,
+    "size": 1.5,
+    "shape": "hexagon"
+   },
+   "en_us": [
+    "Generators",
+    "Furnator burns solid fuel, Magmator hot fluids like lava, the Thermo Generator sits on a hot block with a coolant, the Solar Panel wants sun (a Lens of Ender lets it see through blocks). Higher tiers produce more. A Starter Furnator plus a Magmator on a lava pump: solid Act II power."
+   ],
+   "es_es": [
+    "Generadores",
+    "El Furnator quema combustible sólido, el Magmator fluidos calientes como lava, el Generador térmico va sobre un bloque caliente con refrigerante, el Panel solar pide sol (una Lente de Ender le deja ver a través de bloques). Los niveles altos producen más. Un Furnator Starter y un Magmator con bomba de lava: energía firme de acto II."
+   ],
+   "sources": [
+    "jar:Powah-6.2.10.jar:assets/powah/guides/powah/book/generators/furnator.md",
+    "jar:Powah-6.2.10.jar:assets/powah/guides/powah/book/generators/magmator.md",
+    "jar:Powah-6.2.10.jar:assets/powah/guides/powah/book/generators/thermo_generator.md",
+    "jar:Powah-6.2.10.jar:assets/powah/guides/powah/book/generators/solar_panel.md",
+    "jar:Powah-6.2.10.jar:assets/powah/guides/powah/book/items/lens_of_ender.md"
+   ]
+  },
+  {
+   "key": "pow_orb",
+   "deps": [
+    "pow_generators"
+   ],
+   "type": "item",
+   "item": "powah:energizing_orb",
+   "layout": {
+    "x": 8,
+    "y": 0,
+    "size": 1.5,
+    "shape": "hexagon"
+   },
+   "en_us": [
+    "Energizing Orb and rods",
+    "The Orb needs no power: Energizing Rods within 9x9, sitting on cables or FE blocks, feed it. More and better rods, faster. Link rods with the Powah Wrench in Link mode (its other modes: Config and Rotate)."
+   ],
+   "es_es": [
+    "Orbe energizante y varillas",
+    "El Orbe no pide energía: lo alimentan Varillas energizantes a 9x9, apoyadas en cables o bloques de FE. Más y mejores varillas, más rápido. Vinculá las varillas con la Llave de Powah en modo Vincular (sus otros modos: Configurar y Girar)."
+   ],
+   "sources": [
+    "jar:Powah-6.2.10.jar:assets/powah/guides/powah/book/energy_blocks/energizing.md",
+    "jar:Powah-6.2.10.jar:assets/powah/guides/powah/book/items/wrench.md",
+    "jar:Powah-6.2.10.jar:data/powah/recipe/crafting/energizing_orb.json",
+    "jar:Powah-6.2.10.jar:data/powah/recipe/crafting/energizing_rod_starter.json"
+   ]
+  },
+  {
+   "key": "pow_steel",
+   "deps": [
+    "pow_orb"
+   ],
+   "type": "item",
+   "item": "powah:steel_energized",
+   "count": 8,
+   "layout": {
+    "x": 10.5,
+    "y": 0,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Energized Steel and crystals",
+    "Iron and gold become Energized Steel, blaze into Blazing Crystals, diamonds into Niotic (300,000 FE), emeralds into Spirited (1,000,000 FE). Each tier is built from its material. Nitro: a Nether Star, two redstone blocks and a blazing block, 20,000,000 FE for 16 crystals."
+   ],
+   "es_es": [
+    "Acero energizado y cristales",
+    "Hierro y oro se vuelven Acero energizado, el blaze Cristales ardientes, los diamantes Niotic (300.000 FE), las esmeraldas Spirited (1.000.000 FE). Cada nivel se arma con su material. Nitro: una Estrella del Nether, dos bloques de redstone y uno ardiente, 20.000.000 FE por 16 cristales."
+   ],
+   "sources": [
+    "jar:Powah-6.2.10.jar:data/powah/recipe/energizing/energized_steel.json",
+    "jar:Powah-6.2.10.jar:data/powah/recipe/energizing/blazing_crystal.json",
+    "jar:Powah-6.2.10.jar:data/powah/recipe/energizing/niotic_crystal.json",
+    "jar:Powah-6.2.10.jar:data/powah/recipe/energizing/spirited_crystal.json",
+    "jar:Powah-6.2.10.jar:data/powah/recipe/energizing/nitro_crystal.json"
+   ]
+  },
+  {
+   "key": "pow_tiers",
+   "deps": [
+    "pow_steel"
+   ],
+   "type": "checkmark",
+   "icon": "powah:capacitor_niotic",
+   "layout": {
+    "x": 10.5,
+    "y": -2.5,
+    "size": 1.0,
+    "shape": "gear"
+   },
+   "en_us": [
+    "Pack change: tier capacitors",
+    "Every machine needs its tier's capacitor, and each takes an act material instead of one paste: Niotic an Ironwood Ingot (IV), Spirited a Sky Ingot (V), Nitro Atomic Alloy (V). A 36-block Niotic reactor costs 36 ironwood. Starter to Blazing stay native."
+   ],
+   "es_es": [
+    "Cambio del pack: capacitores de nivel",
+    "Cada máquina pide el capacitor de su nivel, y cada uno lleva un material de acto en lugar de una pasta: Niotic un Lingote de palohierro (IV), Spirited un Lingote celeste (V), Nitro Aleación atómica (V). Un reactor Niotic de 36 bloques cuesta 36 de palohierro. De Starter a Blazing, nativos."
+   ],
+   "sources": [
+    "repo:pack/kubejs/server_scripts/entrelumen_industrial_balance.js",
+    "repo:docs/design/industrial-expansion-family.md"
+   ]
+  },
+  {
+   "key": "pow_storage",
+   "deps": [
+    "pow_orb"
+   ],
+   "type": "item",
+   "item": "powah:energy_cell_basic",
+   "layout": {
+    "x": 8,
+    "y": 2.5,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Cables and Energy Cells",
+    "Energy Cables move power; the wrench in Config mode sets each side. Energy Cells store FE in tiers. Batteries charge the items in your inventory."
+   ],
+   "es_es": [
+    "Cables y Celdas de energía",
+    "Los Cables mueven energía; la llave en modo Configurar fija cada lado. Las Celdas guardan FE por niveles. Las Baterías cargan los ítems de tu inventario."
+   ],
+   "sources": [
+    "jar:Powah-6.2.10.jar:assets/powah/guides/powah/book/storage_transfer/energy_cable.md",
+    "jar:Powah-6.2.10.jar:assets/powah/guides/powah/book/storage_transfer/energy_cell.md",
+    "jar:Powah-6.2.10.jar:assets/powah/guides/powah/book/energy_blocks/energy_discharger.md",
+    "jar:Powah-6.2.10.jar:assets/powah/guides/powah/book/energy_blocks/energy_hopper.md",
+    "jar:Powah-6.2.10.jar:assets/powah/guides/powah/book/items/battery.md"
+   ]
+  },
+  {
+   "key": "pow_hopper",
+   "deps": [
+    "pow_storage"
+   ],
+   "type": "item",
+   "item": "powah:energy_hopper_starter",
+   "optional": true,
+   "layout": {
+    "x": 5.5,
+    "y": 2.5,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Energy Hopper and Discharger",
+    "The Hopper charges chargeable items inside the inventory next to it, like a chest of tools. The Discharger drains charged items back into cables. Chest plus Energy Hopper: a team charging station."
+   ],
+   "es_es": [
+    "Tolva de energía y Descargador",
+    "La Tolva carga los ítems cargables del inventario de al lado, como un cofre de herramientas. El Descargador vacía ítems cargados de vuelta a los cables. Cofre más Tolva de energía: estación de carga para todo el equipo."
+   ],
+   "sources": [
+    "jar:Powah-6.2.10.jar:assets/powah/guides/powah/book/energy_blocks/energy_hopper.md",
+    "jar:Powah-6.2.10.jar:assets/powah/guides/powah/book/energy_blocks/energy_discharger.md"
+   ]
+  },
+  {
+   "key": "pow_ender",
+   "deps": [
+    "pow_storage"
+   ],
+   "type": "item",
+   "item": "powah:ender_cell_starter",
+   "optional": true,
+   "layout": {
+    "x": 10.5,
+    "y": 2.5,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Ender network",
+    "Ender Cells store energy in a channel of your personal network, reachable anywhere; Ender Gates connect blocks to it. Shift-click cells or batteries into an Ender Cell to add their capacity. A wireless battery between bases."
+   ],
+   "es_es": [
+    "Red Ender",
+    "Las Celdas Ender guardan energía en un canal de tu red personal, accesible desde cualquier lado; las Compuertas Ender conectan bloques a ella. Shift-clic con celdas o baterías sobre una Celda Ender suma su capacidad. Una batería inalámbrica entre bases."
+   ],
+   "sources": [
+    "jar:Powah-6.2.10.jar:assets/powah/guides/powah/book/storage_transfer/ender_cell.md",
+    "jar:Powah-6.2.10.jar:assets/powah/guides/powah/book/storage_transfer/ender_gate.md"
+   ]
+  },
+  {
+   "key": "pow_transmitter",
+   "deps": [
+    "pow_ender"
+   ],
+   "type": "item",
+   "item": "powah:player_transmitter_starter",
+   "optional": true,
+   "layout": {
+    "x": 13,
+    "y": 2.5,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Player Transmitter",
+    "Charges your inventory, armour and off-hand wirelessly: same dimension with a Binding Card, any dimension with a Dimensional one (right-click to bind it to yourself). Needs a Player Aerial Pearl, an Aerial Pearl used on a zombie or husk. Forget chargers forever."
+   ],
+   "es_es": [
+    "Transmisor de jugador",
+    "Carga tu inventario, armadura y mano izquierda sin cables: misma dimensión con una Tarjeta de vínculo, cualquier dimensión con una Dimensional (clic derecho para vincularla a vos). Pide una Perla aérea de jugador, una Perla aérea usada en un zombi o momia. Olvidate de los cargadores."
+   ],
+   "sources": [
+    "jar:Powah-6.2.10.jar:assets/powah/guides/powah/book/energy_blocks/player_transmitter.md",
+    "jar:Powah-6.2.10.jar:assets/powah/guides/powah/book/items/binding_card.md",
+    "jar:Powah-6.2.10.jar:assets/powah/guides/powah/book/items/player_aerial_pearl.md"
+   ]
+  },
+  {
+   "key": "pow_uraninite",
+   "deps": [
+    "pow_steel"
+   ],
+   "type": "item",
+   "item": "powah:uraninite",
+   "count": 16,
+   "layout": {
+    "x": 13,
+    "y": 0,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Uraninite",
+    "Poor, normal and dense ore below Y 64, 20 and 0. Energizing silk-touched ore gives 3, 5 or 10, a little more than Fortune raw; uranium ingots from other mods energize into uraninite too. Dry Ice, the reactor coolant, is found underground or energized from two blue ice."
+   ],
+   "es_es": [
+    "Uraninita",
+    "Mineral pobre, normal y denso bajo Y 64, 20 y 0. Energizar el mineral con Toque de seda da 3, 5 o 10, un poco más que el crudo con Fortuna; los lingotes de uranio de otros mods también se energizan en uraninita. El Hielo seco, refrigerante del reactor, está bajo tierra o se energiza con dos de hielo azul."
+   ],
+   "sources": [
+    "jar:Powah-6.2.10.jar:assets/powah/guides/powah/book/materials/uraninite.md",
+    "jar:Powah-6.2.10.jar:assets/powah/guides/powah/book/materials/dry_ice.md",
+    "jar:Powah-6.2.10.jar:data/powah/recipe/energizing/uraninite_from_ore.json",
+    "jar:Powah-6.2.10.jar:data/powah/recipe/energizing/uraninite_from_ore_dense.json",
+    "jar:Powah-6.2.10.jar:data/powah/recipe/energizing/uraninite_from_uranium.json",
+    "jar:Powah-6.2.10.jar:data/powah/recipe/energizing/dry_ice.json"
+   ]
+  },
+  {
+   "key": "pow_reactor",
+   "deps": [
+    "pow_uraninite"
+   ],
+   "type": "item",
+   "item": "powah:reactor_starter",
+   "count": 36,
+   "layout": {
+    "x": 15.5,
+    "y": 0,
+    "size": 1.5,
+    "shape": "hexagon"
+   },
+   "en_us": [
+    "Powah Reactor",
+    "Hold 36 reactor blocks and place them on a free 3x4 area: it builds itself. It burns uraninite, takes carbon and redstone boosts and a solid coolant like dry ice, and in Auto mode stops when full and restarts below 70%. A Niotic or better one pays the act material 36 times."
+   ],
+   "es_es": [
+    "Reactor de Powah",
+    "Sostené 36 bloques de reactor y ponelos en un espacio libre de 3x4: se arma solo. Quema uraninita, acepta refuerzos de carbono y redstone y un refrigerante sólido como hielo seco, y en modo Auto para cuando se llena y arranca bajo 70%. Uno Niotic o mejor paga el material de acto 36 veces."
+   ],
+   "sources": [
+    "jar:Powah-6.2.10.jar:assets/powah/guides/powah/book/generators/reactor.md",
+    "jar:Powah-6.2.10.jar:assets/powah/lang/en_us.json#info.powah.gen.mode.desc",
+    "jar:Powah-6.2.10.jar:assets/powah/lang/en_us.json#info.powah.solid.coolant",
+    "repo:pack/kubejs/server_scripts/entrelumen_industrial_balance.js"
+   ]
+  },
+  {
+   "key": "pow_snowball",
+   "deps": [
+    "pow_orb"
+   ],
+   "type": "item",
+   "item": "powah:charged_snowball",
+   "count": 4,
+   "optional": true,
+   "layout": {
+    "x": 8,
+    "y": -2.5,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Charged Snowball",
+    "Energize a snowball (500,000 FE) and throw it: lightning where it lands. Charged creepers on demand, or lightning for recipes that want it."
+   ],
+   "es_es": [
+    "Bola de nieve cargada",
+    "Energizá una bola de nieve (500.000 FE) y tirala: cae un rayo donde pega. Creepers cargados a pedido, o rayos para las recetas que los piden."
+   ],
+   "sources": [
+    "jar:Powah-6.2.10.jar:assets/powah/guides/powah/book/items/charged_snowball.md",
+    "jar:Powah-6.2.10.jar:data/powah/recipe/energizing/charged_snowball.json"
+   ]
+  },
+  {
+   "key": "pow_creative",
+   "deps": [
+    "pow_reactor"
+   ],
+   "type": "checkmark",
+   "icon": "powah:energy_cell_creative",
+   "layout": {
+    "x": 15.5,
+    "y": -2.5,
+    "size": 1.0,
+    "shape": "gear"
+   },
+   "en_us": [
+    "Creative Energy Cell",
+    "Two Luminosities (engineering and habitation, Act VI). Until then, Nitro is the ceiling."
+   ],
+   "es_es": [
+    "Celda de energía creativa",
+    "Dos Luminosidades (ingeniería y habitabilidad, acto VI). Hasta entonces, Nitro es el techo."
+   ],
+   "sources": [
+    "repo:pack/kubejs/server_scripts/entrelumen_luminous_balance.js"
+   ]
+  },
+  {
+   "key": "pow_mastery",
+   "deps": [
+    "pow_reactor"
+   ],
+   "type": "item",
+   "item": "powah:capacitor_nitro",
+   "layout": {
+    "x": 18,
+    "y": 0,
+    "size": 2.0,
+    "shape": "octagon"
+   },
+   "en_us": [
+    "Mastery: Nitro",
+    "Nitro crystals, a Nitro capacitor with its atomic alloy, and a Nitro reactor or generators. Add a Player Transmitter and an Ender network: power anywhere."
+   ],
+   "es_es": [
+    "Maestría: Nitro",
+    "Cristales Nitro, un capacitor Nitro con su aleación atómica, y un reactor o generadores Nitro. Sumale un Transmisor de jugador y una red Ender: energía en todos lados."
+   ],
+   "sources": [
+    "jar:Powah-6.2.10.jar:data/powah/recipe/energizing/nitro_crystal.json",
+    "repo:pack/kubejs/server_scripts/entrelumen_industrial_balance.js"
+   ]
+  }
+ ]
+}

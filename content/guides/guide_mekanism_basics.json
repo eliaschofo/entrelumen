@@ -1,0 +1,674 @@
+{
+ "chapter": "guide_mekanism_basics",
+ "group": "tech",
+ "act": "II",
+ "icon": "mekanism:metallurgic_infuser",
+ "title": {
+  "en_us": "Mekanism: machines and infusion",
+  "es_es": "Mekanism: máquinas e infusión"
+ },
+ "subtitle": {
+  "en_us": "Osmium, steel, the Metallurgic Infuser, circuits and alloys, upgrades, factories and the addons that extend Mekanism.",
+  "es_es": "Osmio, acero, el Infusor metalúrgico, circuitos y aleaciones, mejoras, fábricas y los addons que estiran Mekanism."
+ },
+ "quests": [
+  {
+   "key": "mkb_welcome",
+   "deps": [],
+   "type": "checkmark",
+   "icon": "mekanism:steel_casing",
+   "layout": {
+    "x": 0,
+    "y": 0,
+    "size": 2.0,
+    "shape": "hexagon"
+   },
+   "en_us": [
+    "Heavy industry",
+    "Electric machines, chemicals piped like fluids, ore processing up to five ingots per ore, its own logistics, reactors and the MekaSuit. Mekanism machines take FE from any mod. Ores, energy and logistics each have their own chapter."
+   ],
+   "es_es": [
+    "Industria pesada",
+    "Máquinas eléctricas, químicos por caño como fluidos, procesamiento de hasta cinco lingotes por mineral, logística propia, reactores y la MekaSuit. Las máquinas de Mekanism toman FE de cualquier mod. Minerales, energía y logística tienen su propio capítulo."
+   ],
+   "sources": [
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:assets/mekanism/lang/en_us.json#advancements.mekanism.root.description",
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:assets/mekanism/lang/en_us.json#description.mekanism.chargepad"
+   ]
+  },
+  {
+   "key": "mkb_osmium",
+   "deps": [
+    "mkb_welcome"
+   ],
+   "type": "item",
+   "item": "mekanism:ingot_osmium",
+   "count": 16,
+   "layout": {
+    "x": 3,
+    "y": 0,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Osmium and friends",
+    "Osmium ore shows up at almost any height; Mekanism also adds tin, lead, uranium and fluorite. Mine plenty of osmium: nearly every machine, starting with the Infuser, eats it."
+   ],
+   "es_es": [
+    "Osmio y compañía",
+    "El mineral de osmio aparece a casi cualquier altura; Mekanism también suma estaño, plomo, uranio y fluorita. Picá mucho osmio: casi toda máquina, empezando por el Infusor, lo come."
+   ],
+   "sources": [
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:assets/mekanism/lang/en_us.json#description.mekanism.osmium_ore",
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:assets/mekanism/lang/en_us.json#description.mekanism.tin_ore",
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:assets/mekanism/lang/en_us.json#description.mekanism.lead_ore",
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:assets/mekanism/lang/en_us.json#description.mekanism.uranium_ore",
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:assets/mekanism/lang/en_us.json#description.mekanism.fluorite_ore",
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:assets/mekanism/lang/en_us.json#advancements.mekanism.materials.description"
+   ]
+  },
+  {
+   "key": "mkb_infuser",
+   "deps": [
+    "mkb_osmium"
+   ],
+   "type": "item",
+   "item": "mekanism:metallurgic_infuser",
+   "layout": {
+    "x": 5.5,
+    "y": 0,
+    "size": 1.5,
+    "shape": "hexagon"
+   },
+   "en_us": [
+    "Metallurgic Infuser",
+    "Furnace, iron, osmium and redstone. It combines an item with a stored infuse type (carbon, redstone, diamond, refined obsidian): material on the left, item in the middle. Steel, circuits and every alloy come from here. Left ungated so Mekanism can start in Act II."
+   ],
+   "es_es": [
+    "Infusor metalúrgico",
+    "Horno, hierro, osmio y redstone. Combina un ítem con un tipo de infusión guardado (carbono, redstone, diamante, obsidiana refinada): material a la izquierda, ítem en el medio. Acero, circuitos y toda aleación salen de acá. Queda libre para que Mekanism arranque en el acto II."
+   ],
+   "sources": [
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/metallurgic_infuser.json",
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:assets/mekanism/lang/en_us.json#description.mekanism.metallurgic_infuser",
+    "repo:docs/research/reference-packs.md"
+   ]
+  },
+  {
+   "key": "mkb_enriched",
+   "deps": [
+    "mkb_infuser"
+   ],
+   "type": "item",
+   "item": "mekanism:enriched_carbon",
+   "count": 8,
+   "layout": {
+    "x": 5.5,
+    "y": -2.5,
+    "size": 1.0,
+    "shape": "circle"
+   },
+   "en_us": [
+    "Enrich first",
+    "One coal gives 10 carbon in the Infuser; enriched in an Enrichment Chamber it gives 80. Same for redstone, diamond and obsidian. Once you have the chamber, feed the Infuser enriched materials: eight times less mining."
+   ],
+   "es_es": [
+    "Primero enriquecé",
+    "Un carbón da 10 de carbono en el Infusor; enriquecido en una Cámara de enriquecimiento da 80. Igual con redstone, diamante y obsidiana. Apenas tengas la cámara, dale al Infusor materiales enriquecidos: ocho veces menos minería."
+   ],
+   "sources": [
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/chemical_conversion/carbon/from_coal.json",
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/chemical_conversion/carbon/from_enriched.json",
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/enriching/enriched/carbon.json",
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/chemical_conversion/redstone/from_dust.json",
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/chemical_conversion/redstone/from_enriched.json",
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:assets/mekanism/lang/en_us.json#advancements.mekanism.infusing_efficiency.description"
+   ]
+  },
+  {
+   "key": "mkb_steel",
+   "deps": [
+    "mkb_infuser"
+   ],
+   "type": "item",
+   "tag": "c:ingots/steel",
+   "count": 8,
+   "icon": "mekanism:ingot_steel",
+   "layout": {
+    "x": 8,
+    "y": 0,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Steel",
+    "Iron plus carbon makes Enriched Iron; that plus carbon makes Steel Dust; smelt it. Any steel ingot works where a recipe asks for steel (Almost Unified shows IE's)."
+   ],
+   "es_es": [
+    "Acero",
+    "Hierro más carbono da Hierro enriquecido; eso más carbono da Polvo de acero; fundilo. Cualquier lingote de acero sirve donde una receta pide acero (Almost Unified muestra el de IE)."
+   ],
+   "sources": [
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/processing/iron/enriched.json",
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/processing/steel/enriched_iron_to_dust.json",
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:assets/mekanism/lang/en_us.json#advancements.mekanism.steel_ingot.description",
+    "repo:pack/config/almostunified/unification/materials.json"
+   ]
+  },
+  {
+   "key": "mkb_casing",
+   "deps": [
+    "mkb_steel"
+   ],
+   "type": "item",
+   "item": "mekanism:steel_casing",
+   "count": 4,
+   "layout": {
+    "x": 10.5,
+    "y": 0,
+    "size": 1.5,
+    "shape": "hexagon"
+   },
+   "en_us": [
+    "Steel Casing",
+    "Steel, glass and an osmium ingot: the frame of almost every Mekanism machine. Make a few at once."
+   ],
+   "es_es": [
+    "Carcasa de acero",
+    "Acero, vidrio y un lingote de osmio: el armazón de casi toda máquina de Mekanism. Hacé varias de una."
+   ],
+   "sources": [
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/steel_casing.json",
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:assets/mekanism/lang/en_us.json#description.mekanism.steel_casing",
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:assets/mekanism/lang/en_us.json#advancements.mekanism.steel_casing.description"
+   ]
+  },
+  {
+   "key": "mkb_circuit",
+   "deps": [
+    "mkb_infuser"
+   ],
+   "type": "item",
+   "item": "mekanism:basic_control_circuit",
+   "count": 4,
+   "layout": {
+    "x": 8,
+    "y": 2.5,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Control circuits",
+    "Osmium infused with redstone is a Basic Control Circuit. Each tier up: the previous circuit plus two alloys, or infused (Advanced redstone, Elite diamond, Ultimate refined obsidian). Pack change: two basic circuits go into the Power Regulator (Act III)."
+   ],
+   "es_es": [
+    "Circuitos de control",
+    "Osmio infusionado con redstone es un Circuito de control básico. Cada nivel: el anterior más dos aleaciones, o infusionado (Avanzado redstone, Élite diamante, Definitivo obsidiana refinada). Cambio del pack: dos circuitos básicos van en el Regulador de energía (acto III)."
+   ],
+   "sources": [
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/control_circuit/basic.json",
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/control_circuit/advanced.json",
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/control_circuit/infused_advanced.json",
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/control_circuit/infused_elite.json",
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/control_circuit/infused_ultimate.json",
+    "repo:pack/kubejs/server_scripts/entrelumen_integration_recipes.js"
+   ]
+  },
+  {
+   "key": "mkb_alloys",
+   "deps": [
+    "mkb_circuit"
+   ],
+   "type": "item",
+   "item": "mekanism:alloy_infused",
+   "count": 8,
+   "layout": {
+    "x": 10.5,
+    "y": 2.5,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "The alloy chain",
+    "Infused Alloy is copper plus redstone; Reinforced is that plus diamond; Atomic is that plus refined obsidian. Each tier of circuits, installers and cables wants its alloy. Pack change: Atomic Alloy is Act V material: two go into the Ark Connection Bus, and it gates the ultimate jetpack coil and Powah's nitro capacitor."
+   ],
+   "es_es": [
+    "La cadena de aleaciones",
+    "La Aleación infusionada es cobre más redstone; la Reforzada, eso más diamante; la Atómica, eso más obsidiana refinada. Cada nivel de circuitos, instaladores y cables pide su aleación. Cambio del pack: la Atómica es material del acto V: dos van en el Bus de conexión del Arca, y frena la bobina definitiva de jetpack y el capacitor nitro de Powah."
+   ],
+   "sources": [
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/metallurgic_infusing/alloy/infused.json",
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/metallurgic_infusing/alloy/reinforced.json",
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/metallurgic_infusing/alloy/atomic.json",
+    "repo:pack/kubejs/server_scripts/entrelumen_integration_recipes.js",
+    "repo:pack/kubejs/server_scripts/entrelumen_industrial_balance.js"
+   ]
+  },
+  {
+   "key": "mkb_enricher",
+   "deps": [
+    "mkb_casing"
+   ],
+   "type": "item",
+   "item": "mekanism:enrichment_chamber",
+   "layout": {
+    "x": 13,
+    "y": 0,
+    "size": 1.5,
+    "shape": "hexagon"
+   },
+   "en_us": [
+    "Enrichment Chamber",
+    "Your first ore doubler: one ore block, two dusts. It also enriches infuse materials and turns gravel into flint. Pair it with an Energized Smelter."
+   ],
+   "es_es": [
+    "Cámara de enriquecimiento",
+    "Tu primer duplicador: un bloque de mineral, dos polvos. También enriquece materiales de infusión y convierte grava en pedernal. Juntala con una Fundidora energizada."
+   ],
+   "sources": [
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/enrichment_chamber.json",
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:assets/mekanism/lang/en_us.json#description.mekanism.enrichment_chamber",
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/processing/iron/dust/from_ore.json",
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:assets/mekanism/lang/en_us.json#advancements.mekanism.enricher.description"
+   ]
+  },
+  {
+   "key": "mkb_machines",
+   "deps": [
+    "mkb_enricher"
+   ],
+   "type": "item",
+   "item": "mekanism:energized_smelter",
+   "optional": true,
+   "layout": {
+    "x": 13,
+    "y": -2.5,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "The basic set",
+    "Energized Smelter (electric furnace), Crusher (ingots to dust), Precision Sawmill (more planks plus sawdust), Combiner (raw ore and cobble back into ore blocks), Osmium Compressor (dusts into special ingots like refined obsidian). Same GUI everywhere: energy, sides, upgrades."
+   ],
+   "es_es": [
+    "El juego básico",
+    "Fundidora energizada (horno eléctrico), Trituradora (lingotes a polvo), Aserradero de precisión (más tablones y aserrín), Combinador (crudo y adoquín de vuelta a bloque de mineral), Compresor de osmio (polvos a lingotes especiales como obsidiana refinada). Misma interfaz en todas: energía, lados, mejoras."
+   ],
+   "sources": [
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:assets/mekanism/lang/en_us.json#description.mekanism.energized_smelter",
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:assets/mekanism/lang/en_us.json#description.mekanism.crusher",
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:assets/mekanism/lang/en_us.json#description.mekanism.precision_sawmill",
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:assets/mekanism/lang/en_us.json#description.mekanism.combiner",
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:assets/mekanism/lang/en_us.json#description.mekanism.osmium_compressor"
+   ]
+  },
+  {
+   "key": "mkb_config",
+   "deps": [
+    "mkb_enricher"
+   ],
+   "type": "checkmark",
+   "icon": "mekanism:configurator",
+   "layout": {
+    "x": 15.5,
+    "y": -2.5,
+    "size": 1.0,
+    "shape": "circle"
+   },
+   "en_us": [
+    "Side configuration",
+    "Each face gets a colour (input, output, energy or nothing), and auto-eject pushes results out by itself. The Configurator does it in the world and rotates blocks; a Configuration Card copies settings between machines. Most «my machine does nothing» is a side set wrong."
+   ],
+   "es_es": [
+    "Configuración de lados",
+    "Cada cara tiene un color (entrada, salida, energía o nada), y la expulsión automática empuja los resultados sola. El Configurador lo hace en el mundo y además gira bloques; una Tarjeta de configuración copia ajustes entre máquinas. Casi todo «mi máquina no hace nada» es un lado mal puesto."
+   ],
+   "sources": [
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/configurator.json",
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:assets/mekanism/lang/en_us.json#configurator.mekanism.toggle_mode",
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:assets/mekanism/lang/en_us.json#advancements.mekanism.configuration_copying.description",
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:assets/mekanism/lang/en_us.json#advancements.mekanism.configurator.description"
+   ]
+  },
+  {
+   "key": "mkb_upgrades",
+   "deps": [
+    "mkb_enricher"
+   ],
+   "type": "item",
+   "item": "mekanism:upgrade_speed",
+   "count": 2,
+   "layout": {
+    "x": 15.5,
+    "y": 0,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Upgrades",
+    "Speed (faster), Energy (efficiency and capacity), Chemical, Muffling, Filter (heavy water pumping), Stone Generator and Anchor (keeps the chunk loaded), each with a maximum. Speed without Energy drinks power: add both."
+   ],
+   "es_es": [
+    "Mejoras",
+    "Velocidad (más rápido), Energía (eficiencia y capacidad), Química, Silenciador, Filtro (bombeo de agua pesada), Generador de piedra y Ancla (mantiene el chunk cargado), cada una con su máximo. Velocidad sin Energía se toma la energía: poné las dos."
+   ],
+   "sources": [
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/upgrade/speed.json",
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:assets/mekanism/lang/en_us.json#upgrade.mekanism.speed.description",
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:assets/mekanism/lang/en_us.json#upgrade.mekanism.energy.description",
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:assets/mekanism/lang/en_us.json#upgrade.mekanism.filter.description",
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:assets/mekanism/lang/en_us.json#upgrade.mekanism.anchor.description",
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:assets/mekanism/lang/en_us.json#upgrade.mekanism.max_installed"
+   ]
+  },
+  {
+   "key": "mkb_factory",
+   "deps": [
+    "mkb_upgrades"
+   ],
+   "type": "item",
+   "item": "mekanism:basic_enriching_factory",
+   "layout": {
+    "x": 18,
+    "y": 0,
+    "size": 1.5,
+    "shape": "hexagon"
+   },
+   "en_us": [
+    "Factories and tier installers",
+    "Factories run several jobs at once: Basic 3, Advanced 5, Elite 7, Ultimate 9. Craft one from a machine, or click a placed machine with a Tier Installer to upgrade it in place, contents kept. Most processing machines have one. One upgraded factory replaces a row of machines."
+   ],
+   "es_es": [
+    "Fábricas e instaladores de nivel",
+    "Las fábricas hacen varios trabajos a la vez: Básica 3, Avanzada 5, Élite 7, Definitiva 9. Crafteala desde una máquina, o clic con un Instalador de nivel sobre una máquina puesta para mejorarla ahí mismo, sin perder el contenido. Casi toda máquina de proceso tiene una. Una fábrica mejorada reemplaza una fila de máquinas."
+   ],
+   "sources": [
+    "https://github.com/mekanism/Mekanism/blob/1.21.x/src/main/java/mekanism/common/tier/FactoryTier.java",
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/factory/basic/smelting.json",
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/tier_installer/basic.json",
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:assets/mekanism/lang/en_us.json#description.mekanism.factory",
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:assets/mekanism/lang/en_us.json#advancements.mekanism.installer.description"
+   ]
+  },
+  {
+   "key": "mkb_bin",
+   "deps": [
+    "mkb_casing"
+   ],
+   "type": "item",
+   "item": "mekanism:basic_bin",
+   "optional": true,
+   "layout": {
+    "x": 10.5,
+    "y": -2.5,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Bins and personal storage",
+    "A Bin holds a big stack of one item, in tiers. Personal Chests and Barrels hold 54 slots, open from your inventory and can be locked to you. The Cardboard Box picks up a whole block with its contents."
+   ],
+   "es_es": [
+    "Contenedores y almacenamiento personal",
+    "Un Contenedor guarda un montón de un solo ítem, por niveles. Los Cofres y Barriles personales tienen 54 ranuras, se abren desde tu inventario y se pueden trabar para vos. La Caja de cartón levanta un bloque entero con su contenido."
+   ],
+   "sources": [
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:assets/mekanism/lang/en_us.json#description.mekanism.bin",
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:assets/mekanism/lang/en_us.json#description.mekanism.personal_chest",
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:assets/mekanism/lang/en_us.json#description.mekanism.personal_barrel",
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:assets/mekanism/lang/en_us.json#advancements.mekanism.moving_blocks.description"
+   ]
+  },
+  {
+   "key": "mkb_assemblicator",
+   "deps": [
+    "mkb_factory"
+   ],
+   "type": "item",
+   "item": "mekanism:formulaic_assemblicator",
+   "optional": true,
+   "layout": {
+    "x": 18,
+    "y": -2.5,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Formulaic Assemblicator",
+    "An electric crafting table: write a recipe onto a Crafting Formula and it crafts from what you feed it. Great for small automated recipes before AE2 or Refined Storage."
+   ],
+   "es_es": [
+    "Ensamblador formulaico",
+    "Una mesa de crafteo eléctrica: escribí una receta en una Fórmula y craftea con lo que le des. Ideal para recetas chicas automatizadas antes de AE2 o Refined Storage."
+   ],
+   "sources": [
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:assets/mekanism/lang/en_us.json#description.mekanism.formulaic_assemblicator",
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:assets/mekanism/lang/en_us.json#advancements.mekanism.automated_crafting.description"
+   ]
+  },
+  {
+   "key": "mkb_tools",
+   "deps": [
+    "mkb_alloys"
+   ],
+   "type": "item",
+   "item": "mekanismtools:osmium_paxel",
+   "optional": true,
+   "layout": {
+    "x": 10.5,
+    "y": 5,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Mekanism Tools",
+    "Tools and armour in osmium, bronze, steel, lapis, refined glowstone and refined obsidian, plus a Paxel (pickaxe, axe and shovel) for every material, vanilla included. The Atomic Disassembler is a powered all-in-one with several mining modes."
+   ],
+   "es_es": [
+    "Mekanism Tools",
+    "Herramientas y armaduras de osmio, bronce, acero, lapislázuli, glowstone refinada y obsidiana refinada, más un Paxel (pico, hacha y pala) para cada material, vanilla incluido. El Desensamblador atómico es un todo en uno con energía y varios modos de minado."
+   ],
+   "sources": [
+    "jar:MekanismTools-1.21.1-10.7.19.85.jar:assets/mekanismtools/lang/en_us.json",
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:assets/mekanism/lang/en_us.json#advancements.mekanism.disassembler.description"
+   ]
+  },
+  {
+   "key": "mkb_jetpack",
+   "deps": [
+    "mkb_tools"
+   ],
+   "type": "item",
+   "item": "mekanism:jetpack",
+   "optional": true,
+   "layout": {
+    "x": 13,
+    "y": 5,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Jetpack and gear",
+    "The Jetpack burns hydrogen from an Electrolytic Separator and switches between Regular, Hover and off. Scuba gear and Free Runners cover water and falls. In this pack, Mekanism mode keys are Alt plus the arrow keys."
+   ],
+   "es_es": [
+    "Jetpack y equipo",
+    "El Jetpack quema hidrógeno de un Separador electrolítico y alterna entre Normal, Flotar y apagado. El equipo de buceo y las Zapatillas cubren agua y caídas. En este pack, las teclas de modo de Mekanism son Alt más las flechas."
+   ],
+   "sources": [
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:assets/mekanism/lang/en_us.json#jetpack.mekanism.hover",
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:assets/mekanism/lang/en_us.json#advancements.mekanism.hydrogen_powered_flight.description",
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:assets/mekanism/lang/en_us.json#advancements.mekanism.breathing_assistance.description",
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:assets/mekanism/lang/en_us.json#advancements.mekanism.running_free.description",
+    "repo:pack/config/defaultoptions/keybindings.txt"
+   ]
+  },
+  {
+   "key": "mkb_meka",
+   "deps": [
+    "mkb_jetpack"
+   ],
+   "type": "item",
+   "item": "mekanism:modification_station",
+   "optional": true,
+   "layout": {
+    "x": 15.5,
+    "y": 5,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "MekaSuit and Meka-Tool",
+    "Powered armour and tool that take modules (jetpack, gravitational modulation, vision, fortune, silk touch, vein mining and more) at a Modification Station; many stack. Expensive: plan it after fission and atomic alloy."
+   ],
+   "es_es": [
+    "MekaSuit y Meka-Tool",
+    "Armadura y herramienta con energía que aceptan módulos (jetpack, modulación gravitacional, visión, fortuna, toque de seda, minado de vetas y más) en una Estación de modificación; muchos se apilan. Cara: planeala después de la fisión y la aleación atómica."
+   ],
+   "sources": [
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:assets/mekanism/lang/en_us.json#description.mekanism.modification_station",
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:assets/mekanism/lang/en_us.json#description.mekanism.jetpack_unit",
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:assets/mekanism/lang/en_us.json#description.mekanism.gravitational_modulating_unit",
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:assets/mekanism/lang/en_us.json#description.mekanism.vein_mining_unit",
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:assets/mekanism/lang/en_us.json#advancements.mekanism.mekasuit.description"
+   ]
+  },
+  {
+   "key": "mkb_extras",
+   "deps": [
+    "mkb_factory"
+   ],
+   "type": "item",
+   "item": "mekanism_extras:absolute_tier_installer",
+   "optional": true,
+   "layout": {
+    "x": 20.5,
+    "y": -2.5,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Mekanism Extras",
+    "Goes past Ultimate with Absolute, Supreme, Cosmic and Infinite factories, cubes, cables, tanks, bins and induction parts. Adds Naquadah ore (rare near bedrock, commoner in the End near the void), a Naquadah Reactor and a Stack Upgrade. Its Creative Upgrade has no recipe here."
+   ],
+   "es_es": [
+    "Mekanism Extras",
+    "Va más allá de Definitivo con fábricas, cubos, cables, tanques, contenedores y piezas de inducción Absolutas, Supremas, Cósmicas e Infinitas. Suma mineral de Naquadah (raro cerca de la roca madre, más común en el End junto al vacío), un Reactor de naquadah y una Mejora de stack. Su Mejora creativa no tiene receta acá."
+   ],
+   "sources": [
+    "jar:mekanism_extras-1.21.1-1.4.1.jar:assets/mekanism_extras/lang/en_us.json#description.mekanism_extras.naquadah_ore",
+    "jar:mekanism_extras-1.21.1-1.4.1.jar:assets/mekanism_extras/lang/en_us.json#block.mekanism_extras.naquadah_reactor_controller",
+    "jar:mekanism_extras-1.21.1-1.4.1.jar:data/mekanism_extras/recipe/tier_installer/absolute.json",
+    "jar:mekanism_extras-1.21.1-1.4.1.jar:assets/mekanism_extras/lang/en_us.json#advancements.mekanism_extras.creative_upgrade.description"
+   ]
+  },
+  {
+   "key": "mkb_moremachine",
+   "deps": [
+    "mkb_factory"
+   ],
+   "type": "item",
+   "item": "mekmm:planting_station",
+   "optional": true,
+   "layout": {
+    "x": 20.5,
+    "y": 2.5,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Mekanism: More Machine",
+    "Planting Station, CNC Stamper, Lathe, Rolling Mill, Presser, Recycler, Ambient Gas Collector, wireless charging and transmission, large machines and more factories. Pack change: replicators removed and their data emptied, planting compat off, so nothing copies items or seeds from thin air."
+   ],
+   "es_es": [
+    "Mekanism: More Machine",
+    "Estación de plantado, Estampadora CNC, Torno, Laminadora, Prensa, Recicladora, Colector de gases, carga y transmisión inalámbricas, máquinas grandes y más fábricas. Cambio del pack: replicadores quitados y sus datos vaciados, compatibilidad de plantado apagada, así nada copia ítems o semillas de la nada."
+   ],
+   "sources": [
+    "jar:mekmm-1.21.1-1.4.1.jar:assets/mekmm/lang/en_us.json#description.mekmm.planting_station",
+    "jar:mekmm-1.21.1-1.4.1.jar:assets/mekmm/lang/en_us.json#description.mekmm.wireless_charging_station",
+    "repo:pack/kubejs/server_scripts/entrelumen_more_machine_balance.js",
+    "repo:pack/kubejs/data/mekmm/data_maps/item/item_replicator.json",
+    "repo:docs/design/more-machine-audit.md"
+   ]
+  },
+  {
+   "key": "mkb_dictionary",
+   "deps": [
+    "mkb_welcome"
+   ],
+   "type": "checkmark",
+   "icon": "mekanism:dictionary",
+   "layout": {
+    "x": 0,
+    "y": -2.5,
+    "size": 1.0,
+    "shape": "circle"
+   },
+   "en_us": [
+    "Dictionary and tags",
+    "Point it at any item, block or fluid to see its tags. With Almost Unified and several mods making the same metal, tags are what recipes really ask for. A machine refuses an ingot? Check its tags."
+   ],
+   "es_es": [
+    "Diccionario y tags",
+    "Apuntalo a cualquier ítem, bloque o fluido para ver sus tags. Con Almost Unified y varios mods haciendo el mismo metal, los tags son lo que las recetas piden en serio. ¿Una máquina rechaza un lingote? Mirá sus tags."
+   ],
+   "sources": [
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:assets/mekanism/lang/en_us.json#description.mekanism.dictionary",
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:assets/mekanism/lang/en_us.json#advancements.mekanism.dictionary.description"
+   ]
+  },
+  {
+   "key": "mkb_creative",
+   "deps": [
+    "mkb_factory"
+   ],
+   "type": "checkmark",
+   "icon": "mekanism:creative_energy_cube",
+   "layout": {
+    "x": 18,
+    "y": 2.5,
+    "size": 1.0,
+    "shape": "gear"
+   },
+   "en_us": [
+    "Creative Mekanism",
+    "Creative Energy Cube, Fluid Tank and Chemical Tank cost two Luminosities each (Act VI); the Creative Bin cannot be crafted. The rest of Mekanism stays native, apart from the components noted here."
+   ],
+   "es_es": [
+    "Mekanism creativo",
+    "El Cubo de energía, el Tanque de fluidos y el Tanque químico creativos cuestan dos Luminosidades cada uno (acto VI); el Contenedor creativo no se craftea. El resto de Mekanism queda nativo, salvo los componentes anotados acá."
+   ],
+   "sources": [
+    "repo:pack/kubejs/server_scripts/entrelumen_luminous_balance.js"
+   ]
+  },
+  {
+   "key": "mkb_mastery",
+   "deps": [
+    "mkb_factory",
+    "mkb_alloys"
+   ],
+   "type": "item",
+   "item": "mekanism:ultimate_tier_installer",
+   "layout": {
+    "x": 23,
+    "y": 0,
+    "size": 2.0,
+    "shape": "octagon"
+   },
+   "en_us": [
+    "Mastery: Ultimate tier",
+    "Ultimate Tier Installers need Atomic Alloy and Ultimate circuits. Push your main factories to Ultimate and they run 9 at a time. Extras goes further, and the reactors pay for it all."
+   ],
+   "es_es": [
+    "Maestría: nivel Definitivo",
+    "Los Instaladores definitivos piden Aleación atómica y circuitos Definitivos. Llevá tus fábricas principales a Definitivo y corren 9 a la vez. Extras va más lejos, y los reactores pagan todo."
+   ],
+   "sources": [
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/tier_installer/ultimate.json",
+    "https://github.com/mekanism/Mekanism/blob/1.21.x/src/main/java/mekanism/common/tier/FactoryTier.java"
+   ]
+  }
+ ]
+}

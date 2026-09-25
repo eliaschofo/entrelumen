@@ -1,0 +1,439 @@
+{
+ "chapter": "guide_refined_storage",
+ "group": "tech",
+ "act": "III",
+ "icon": "refinedstorage:controller",
+ "title": {
+  "en_us": "Refined Storage",
+  "es_es": "Refined Storage"
+ },
+ "subtitle": {
+  "en_us": "The AE2 alternative: disks, grids and autocrafting with no channels. Same act, same components.",
+  "es_es": "La alternativa a AE2: discos, grillas y autocrafteo sin canales. Mismo acto, mismos componentes."
+ },
+ "quests": [
+  {
+   "key": "rs_welcome",
+   "deps": [],
+   "type": "checkmark",
+   "icon": "refinedstorage:grid",
+   "layout": {
+    "x": 0,
+    "y": 0,
+    "size": 2.0,
+    "shape": "hexagon"
+   },
+   "en_us": [
+    "The other network",
+    "Refined Storage 2 does AE2's job with a simpler model: no channels, no meteorites, devices just touch the network. Optional: use it instead of AE2, or skip it. Pack change: Controller needs a Routing Matrix and Autocrafter a Handling Core, both Act III."
+   ],
+   "es_es": [
+    "La otra red",
+    "Refined Storage 2 hace el trabajo de AE2 con un modelo más simple: sin canales, sin meteoritos, los dispositivos sólo tienen que tocar la red. Opcional: usalo en lugar de AE2, o salteatelo. Cambio del pack: el Controlador pide una Matriz de distribución y el Autocrafteador un Núcleo de manipulación, los dos del acto III."
+   ],
+   "sources": [
+    "jar:refinedstorage-neoforge-2.0.9.jar:assets/refinedstorage/lang/en_us.json#advancements.refinedstorage.root.description",
+    "repo:pack/kubejs/server_scripts/entrelumen_pingpong_balance.js",
+    "repo:docs/design/mod-pingpong.md"
+   ]
+  },
+  {
+   "key": "rs_qei",
+   "deps": [
+    "rs_welcome"
+   ],
+   "type": "item",
+   "item": "refinedstorage:quartz_enriched_iron",
+   "count": 16,
+   "layout": {
+    "x": 3,
+    "y": 0,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Quartz Enriched Iron and silicon",
+    "Three iron and one quartz make Quartz Enriched Iron; smelting quartz gives Silicon; eight QEI around stone make a Machine Casing. All plain crafting."
+   ],
+   "es_es": [
+    "Hierro enriquecido con cuarzo y silicio",
+    "Tres de hierro y un cuarzo hacen Hierro enriquecido con cuarzo; fundir cuarzo da Silicio; ocho de ese hierro alrededor de piedra hacen una Carcasa de máquina. Todo crafteo común."
+   ],
+   "sources": [
+    "jar:refinedstorage-neoforge-2.0.9.jar:data/refinedstorage/recipe/quartz_enriched_iron.json",
+    "jar:refinedstorage-neoforge-2.0.9.jar:data/refinedstorage/recipe/silicon.json",
+    "jar:refinedstorage-neoforge-2.0.9.jar:data/refinedstorage/recipe/machine_casing.json"
+   ]
+  },
+  {
+   "key": "rs_processors",
+   "deps": [
+    "rs_qei"
+   ],
+   "type": "item",
+   "item": "refinedstorage:advanced_processor",
+   "count": 4,
+   "layout": {
+    "x": 5.5,
+    "y": 0,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Processors",
+    "Binding (string, slime), silicon, redstone and iron, gold or diamond make Basic, Improved or Advanced raw processors: smelt to finish. Basic plus glowstone or quartz gives Construction and Destruction Cores. Most blocks want Advanced: save diamonds."
+   ],
+   "es_es": [
+    "Procesadores",
+    "Unión (hilo, slime), silicio, redstone y hierro, oro o diamante hacen procesadores crudos Básico, Mejorado o Avanzado: fundilos para terminarlos. Básico con glowstone o cuarzo da Núcleos de construcción y destrucción. Casi todo pide Avanzados: guardá diamantes."
+   ],
+   "sources": [
+    "jar:refinedstorage-neoforge-2.0.9.jar:data/refinedstorage/recipe/raw_basic_processor.json",
+    "jar:refinedstorage-neoforge-2.0.9.jar:data/refinedstorage/recipe/raw_improved_processor.json",
+    "jar:refinedstorage-neoforge-2.0.9.jar:data/refinedstorage/recipe/raw_advanced_processor.json",
+    "jar:refinedstorage-neoforge-2.0.9.jar:data/refinedstorage/recipe/basic_processor.json",
+    "jar:refinedstorage-neoforge-2.0.9.jar:data/refinedstorage/recipe/processor_binding.json",
+    "jar:refinedstorage-neoforge-2.0.9.jar:data/refinedstorage/recipe/construction_core.json",
+    "jar:refinedstorage-neoforge-2.0.9.jar:data/refinedstorage/recipe/destruction_core.json"
+   ]
+  },
+  {
+   "key": "rs_controller",
+   "deps": [
+    "rs_processors"
+   ],
+   "type": "item",
+   "item": "refinedstorage:controller",
+   "layout": {
+    "x": 8,
+    "y": 0,
+    "size": 1.5,
+    "shape": "hexagon"
+   },
+   "en_us": [
+    "Controller",
+    "Powers the network with FE; several can share one network. Devices connect by touching or through cables; coloured cables only join their colour or grey, full blocks join any. Pack change: one QEI becomes a Routing Matrix (Act III)."
+   ],
+   "es_es": [
+    "Controlador",
+    "Alimenta la red con FE; varios pueden compartir una. Los dispositivos se conectan tocándose o por cables; los cables de color sólo se unen con su color o el gris, los bloques enteros con cualquiera. Cambio del pack: un hierro enriquecido pasa a ser una Matriz de distribución (acto III)."
+   ],
+   "sources": [
+    "jar:refinedstorage-neoforge-2.0.9.jar:assets/refinedstorage/lang/en_us.json#item.refinedstorage.controller.help",
+    "jar:refinedstorage-neoforge-2.0.9.jar:assets/refinedstorage/lang/en_us.json#item.refinedstorage.cable.help",
+    "repo:pack/kubejs/server_scripts/entrelumen_pingpong_balance.js"
+   ]
+  },
+  {
+   "key": "rs_drive",
+   "deps": [
+    "rs_controller"
+   ],
+   "type": "item",
+   "item": "refinedstorage:4k_storage_disk",
+   "layout": {
+    "x": 10.5,
+    "y": 0,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Disk Drive and disks",
+    "Storage Disks hold 1k to 64k items (fluid disks in buckets), counting items, not types. Upgrade by crafting with a bigger part; an empty disk used in hand returns its part. Storage Blocks are the placeable version."
+   ],
+   "es_es": [
+    "Unidad de discos y discos",
+    "Los Discos guardan de 1k a 64k ítems (los de fluidos en baldes), contando ítems, no tipos. Se mejoran crafteando con una pieza más grande; un disco vacío usado en la mano devuelve su pieza. Los Bloques de almacenamiento son la versión colocable."
+   ],
+   "sources": [
+    "jar:refinedstorage-neoforge-2.0.9.jar:assets/refinedstorage/lang/en_us.json#item.refinedstorage.disk_drive.help",
+    "jar:refinedstorage-neoforge-2.0.9.jar:assets/refinedstorage/lang/en_us.json#item.refinedstorage.storage_disk.help",
+    "jar:refinedstorage-neoforge-2.0.9.jar:assets/refinedstorage/lang/en_us.json#item.refinedstorage.fluid_storage_disk.help",
+    "jar:refinedstorage-neoforge-2.0.9.jar:assets/refinedstorage/lang/en_us.json#item.refinedstorage.disk_interface.help"
+   ]
+  },
+  {
+   "key": "rs_grid",
+   "deps": [
+    "rs_drive"
+   ],
+   "type": "item",
+   "item": "refinedstorage:crafting_grid",
+   "layout": {
+    "x": 13,
+    "y": 0,
+    "size": 1.5,
+    "shape": "hexagon"
+   },
+   "en_us": [
+    "Grids",
+    "A Grid searches the whole network; with a crafting table it is a Crafting Grid, with a pattern a Pattern Grid. The Wireless Grid needs a Wireless Transmitter. The Portable Grid reads one disk with no network at all."
+   ],
+   "es_es": [
+    "Grillas",
+    "Una Grilla busca en toda la red; con una mesa de crafteo es Grilla de crafteo, con un patrón Grilla de patrones. La Grilla inalámbrica pide un Transmisor inalámbrico. La Grilla portátil lee un disco sin red."
+   ],
+   "sources": [
+    "jar:refinedstorage-neoforge-2.0.9.jar:assets/refinedstorage/lang/en_us.json#item.refinedstorage.grid.help",
+    "jar:refinedstorage-neoforge-2.0.9.jar:data/refinedstorage/recipe/crafting_grid.json",
+    "jar:refinedstorage-neoforge-2.0.9.jar:data/refinedstorage/recipe/pattern_grid.json",
+    "jar:refinedstorage-neoforge-2.0.9.jar:assets/refinedstorage/lang/en_us.json#item.refinedstorage.wireless_transmitter.help",
+    "jar:refinedstorage-neoforge-2.0.9.jar:assets/refinedstorage/lang/en_us.json#item.refinedstorage.portable_grid.help"
+   ]
+  },
+  {
+   "key": "rs_io",
+   "deps": [
+    "rs_grid"
+   ],
+   "type": "item",
+   "item": "refinedstorage:exporter",
+   "layout": {
+    "x": 15.5,
+    "y": -2.5,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Importer, Exporter, External Storage",
+    "Importers pull in, Exporters push filtered resources out, External Storage adds any chest, drawer or tank with priority and filters. Upgrades: Speed, Stack, Regulator (export only while the target is below a set amount), Silk Touch, Fortune, Autocrafting."
+   ],
+   "es_es": [
+    "Importador, Exportador, Almacenamiento externo",
+    "Los Importadores meten, los Exportadores sacan recursos filtrados, el Almacenamiento externo suma cualquier cofre, cajón o tanque con prioridad y filtros. Mejoras: Velocidad, Stack, Regulador (exporta sólo mientras el destino tenga menos de lo fijado), Toque de seda, Fortuna, Autocrafteo."
+   ],
+   "sources": [
+    "jar:refinedstorage-neoforge-2.0.9.jar:assets/refinedstorage/lang/en_us.json#item.refinedstorage.importer.help",
+    "jar:refinedstorage-neoforge-2.0.9.jar:assets/refinedstorage/lang/en_us.json#item.refinedstorage.exporter.help",
+    "jar:refinedstorage-neoforge-2.0.9.jar:assets/refinedstorage/lang/en_us.json#item.refinedstorage.external_storage.help",
+    "jar:refinedstorage-neoforge-2.0.9.jar:assets/refinedstorage/lang/en_us.json#item.refinedstorage.interface.help",
+    "jar:refinedstorage-neoforge-2.0.9.jar:assets/refinedstorage/lang/en_us.json#item.refinedstorage.regulator_upgrade.help",
+    "jar:refinedstorage-neoforge-2.0.9.jar:assets/refinedstorage/lang/en_us.json#item.refinedstorage.stack_upgrade.help"
+   ]
+  },
+  {
+   "key": "rs_world",
+   "deps": [
+    "rs_io"
+   ],
+   "type": "item",
+   "item": "refinedstorage:destructor",
+   "optional": true,
+   "layout": {
+    "x": 18,
+    "y": -2.5,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Constructor, Destructor, Detector",
+    "Constructors place blocks from the network, Destructors break blocks into it (Silk Touch or Fortune upgrades), Detectors emit redstone by amount. A destructor on a cobble generator: infinite cobble."
+   ],
+   "es_es": [
+    "Constructor, Destructor, Detector",
+    "Los Constructores ponen bloques de la red, los Destructores rompen bloques hacia ella (mejoras de Toque de seda o Fortuna), los Detectores dan redstone según cantidad. Un destructor en un generador de adoquín: adoquín infinito."
+   ],
+   "sources": [
+    "jar:refinedstorage-neoforge-2.0.9.jar:assets/refinedstorage/lang/en_us.json#item.refinedstorage.constructor.help",
+    "jar:refinedstorage-neoforge-2.0.9.jar:assets/refinedstorage/lang/en_us.json#item.refinedstorage.destructor.help",
+    "jar:refinedstorage-neoforge-2.0.9.jar:assets/refinedstorage/lang/en_us.json#item.refinedstorage.detector.help",
+    "jar:refinedstorage-neoforge-2.0.9.jar:assets/refinedstorage/lang/en_us.json#item.refinedstorage.fortune_upgrade.help"
+   ]
+  },
+  {
+   "key": "rs_autocrafter",
+   "deps": [
+    "rs_grid"
+   ],
+   "type": "item",
+   "item": "refinedstorage:autocrafter",
+   "layout": {
+    "x": 15.5,
+    "y": 0,
+    "size": 1.5,
+    "shape": "hexagon"
+   },
+   "en_us": [
+    "Autocrafter",
+    "Pattern Grid patterns go into an Autocrafter facing a machine or station. Processing patterns list inputs out and outputs back; fuzzy mode accepts tag alternatives; higher priority wins. Pack change: needs a Handling Core (Act III)."
+   ],
+   "es_es": [
+    "Autocrafteador",
+    "Los patrones de la Grilla van en un Autocrafteador que mira a una máquina o mesa. Los de procesamiento listan qué sale y qué vuelve; el modo difuso acepta alternativas por tag; gana la prioridad más alta. Cambio del pack: pide un Núcleo de manipulación (acto III)."
+   ],
+   "sources": [
+    "jar:refinedstorage-neoforge-2.0.9.jar:assets/refinedstorage/lang/en_us.json#item.refinedstorage.autocrafter.help",
+    "jar:refinedstorage-neoforge-2.0.9.jar:assets/refinedstorage/lang/en_us.json#gui.refinedstorage.pattern_grid.processing.output_slots_help",
+    "jar:refinedstorage-neoforge-2.0.9.jar:assets/refinedstorage/lang/en_us.json#gui.refinedstorage.pattern_grid.fuzzy_mode.on.help",
+    "jar:refinedstorage-neoforge-2.0.9.jar:assets/refinedstorage/lang/en_us.json#gui.refinedstorage.priority.autocrafter_help",
+    "repo:pack/kubejs/server_scripts/entrelumen_pingpong_balance.js"
+   ]
+  },
+  {
+   "key": "rs_ondemand",
+   "deps": [
+    "rs_autocrafter"
+   ],
+   "type": "item",
+   "item": "refinedstorage:autocrafting_upgrade",
+   "layout": {
+    "x": 15.5,
+    "y": 2.5,
+    "size": 1.0,
+    "shape": "circle"
+   },
+   "en_us": [
+    "Autocrafting on demand",
+    "An Autocrafting Upgrade in an Interface, Exporter or Constructor crafts whatever is missing. The Autocrafter Manager lists every pattern; the Autocrafting Monitor shows running jobs. Exporter plus Regulator plus Autocrafting keeps a chest topped up."
+   ],
+   "es_es": [
+    "Autocrafteo a pedido",
+    "Una Mejora de autocrafteo en una Interfaz, Exportador o Constructor craftea lo que falte. El Administrador lista todos los patrones; el Monitor muestra los trabajos en curso. Exportador con Regulador y Autocrafteo mantiene un cofre lleno."
+   ],
+   "sources": [
+    "jar:refinedstorage-neoforge-2.0.9.jar:assets/refinedstorage/lang/en_us.json#item.refinedstorage.autocrafting_upgrade.help",
+    "jar:refinedstorage-neoforge-2.0.9.jar:assets/refinedstorage/lang/en_us.json#advancements.refinedstorage.managing_patterns.description",
+    "jar:refinedstorage-neoforge-2.0.9.jar:assets/refinedstorage/lang/en_us.json#advancements.refinedstorage.monitoring.description",
+    "jar:refinedstorage-neoforge-2.0.9.jar:assets/refinedstorage/lang/en_us.json#advancements.refinedstorage.autocrafting_on_demand.description"
+   ]
+  },
+  {
+   "key": "rs_wireless_net",
+   "deps": [
+    "rs_grid"
+   ],
+   "type": "item",
+   "item": "refinedstorage:network_transmitter",
+   "optional": true,
+   "layout": {
+    "x": 13,
+    "y": 2.5,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Networks without cables",
+    "A Network Transmitter and Receiver paired by a Network Card link a far section without cables. A Relay switches sections on or off and can expose only part of the network. The Security Manager with Security Cards sets permissions per player."
+   ],
+   "es_es": [
+    "Redes sin cables",
+    "Un Transmisor y un Receptor de red emparejados con una Tarjeta de red unen una sección lejana sin cables. Un Relé prende o apaga secciones y puede mostrar sólo parte de la red. El Administrador de seguridad con Tarjetas fija permisos por jugador."
+   ],
+   "sources": [
+    "jar:refinedstorage-neoforge-2.0.9.jar:assets/refinedstorage/lang/en_us.json#item.refinedstorage.network_transmitter.help",
+    "jar:refinedstorage-neoforge-2.0.9.jar:assets/refinedstorage/lang/en_us.json#item.refinedstorage.network_receiver.help",
+    "jar:refinedstorage-neoforge-2.0.9.jar:assets/refinedstorage/lang/en_us.json#item.refinedstorage.relay.help",
+    "jar:refinedstorage-neoforge-2.0.9.jar:assets/refinedstorage/lang/en_us.json#block.refinedstorage.security_manager.help"
+   ]
+  },
+  {
+   "key": "rs_mek",
+   "deps": [
+    "rs_drive"
+   ],
+   "type": "item",
+   "item": "refinedstorage_mekanism_integration:64b_chemical_storage_disk",
+   "optional": true,
+   "layout": {
+    "x": 10.5,
+    "y": -2.5,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Chemicals in Refined Storage",
+    "The Mekanism integration adds Chemical Storage Disks and Blocks (64B to 8192B), so importers, exporters and grids handle chemicals, like Applied Mekanistics does for AE2. EMI moves recipes straight into grids."
+   ],
+   "es_es": [
+    "Químicos en Refined Storage",
+    "La integración con Mekanism suma Discos y Bloques de almacenamiento químico (de 64B a 8192B), así importadores, exportadores y grillas manejan químicos, como Applied Mekanistics en AE2. EMI pasa recetas directo a las grillas."
+   ],
+   "sources": [
+    "jar:refinedstorage-mekanism-integration-1.1.1.jar:assets/refinedstorage_mekanism_integration/lang/en_us.json#item.refinedstorage_mekanism_integration.chemical_storage_disk.help",
+    "jar:refinedstorage-neoforge-2.0.9.jar:assets/refinedstorage/lang/en_us.json",
+    "jar:refinedstorage-emi-integration-neoforge-1.0.0.jar:assets/refinedstorage_emi_integration/lang/en_us.json"
+   ]
+  },
+  {
+   "key": "rs_or_ae2",
+   "deps": [
+    "rs_welcome"
+   ],
+   "type": "checkmark",
+   "icon": "ae2:controller",
+   "layout": {
+    "x": 0,
+    "y": -2.5,
+    "size": 1.0,
+    "shape": "circle"
+   },
+   "en_us": [
+    "AE2 or Refined Storage?",
+    "Same act, same bases. RS: no channels, disks count items, easy layout. AE2: channels to plan, but more addons here and the processors the Routing Matrix needs. Run both if you like, but keep one main storage."
+   ],
+   "es_es": [
+    "¿AE2 o Refined Storage?",
+    "Mismo acto, mismas bases. RS: sin canales, los discos cuentan ítems, fácil de armar. AE2: canales para planear, pero más addons acá y los procesadores que pide la Matriz de distribución. Podés usar los dos, pero con un almacenamiento principal."
+   ],
+   "sources": [
+    "repo:docs/design/mod-pingpong.md",
+    "jar:appliedenergistics2-19.2.17.jar:assets/ae2/ae2guide/ae2-mechanics/channels.md",
+    "jar:refinedstorage-neoforge-2.0.9.jar:assets/refinedstorage/lang/en_us.json#item.refinedstorage.storage_disk.help"
+   ]
+  },
+  {
+   "key": "rs_creative",
+   "deps": [
+    "rs_drive"
+   ],
+   "type": "checkmark",
+   "icon": "refinedstorage:creative_controller",
+   "layout": {
+    "x": 10.5,
+    "y": 2.5,
+    "size": 1.0,
+    "shape": "gear"
+   },
+   "en_us": [
+    "Creative parts",
+    "The creative controller and disks have no survival recipe. The only pack gates are the Controller (Routing Matrix) and the Autocrafter (Handling Core). The Wrench rotates, and sneak-use dismantles."
+   ],
+   "es_es": [
+    "Piezas creativas",
+    "El controlador y los discos creativos no tienen receta en supervivencia. Las únicas puertas del pack son el Controlador (Matriz de distribución) y el Autocrafteador (Núcleo de manipulación). La Llave gira, y agachado desarma."
+   ],
+   "sources": [
+    "repo:pack/kubejs/server_scripts/entrelumen_pingpong_balance.js",
+    "jar:refinedstorage-neoforge-2.0.9.jar:assets/refinedstorage/lang/en_us.json#item.refinedstorage.creative_controller.help",
+    "jar:refinedstorage-neoforge-2.0.9.jar:assets/refinedstorage/lang/en_us.json#item.refinedstorage.wrench.help"
+   ]
+  },
+  {
+   "key": "rs_mastery",
+   "deps": [
+    "rs_autocrafter",
+    "rs_world"
+   ],
+   "type": "item",
+   "item": "refinedstorage:64k_storage_disk",
+   "layout": {
+    "x": 20.5,
+    "y": 0,
+    "size": 2.0,
+    "shape": "octagon"
+   },
+   "en_us": [
+    "Mastery: one search box",
+    "Controller, a wall of 64k disks, a crafting grid, a wireless grid and autocrafters feeding your machines. Moving to AE2 later? External Storage bridges the two while you migrate."
+   ],
+   "es_es": [
+    "Maestría: un solo buscador",
+    "Controlador, una pared de discos de 64k, una grilla de crafteo, una inalámbrica y autocrafteadores alimentando tus máquinas. ¿Te pasás a AE2 después? El Almacenamiento externo une las dos mientras migrás."
+   ],
+   "sources": [
+    "jar:refinedstorage-neoforge-2.0.9.jar:assets/refinedstorage/lang/en_us.json#advancements.refinedstorage.autocrafting.description",
+    "jar:refinedstorage-neoforge-2.0.9.jar:assets/refinedstorage/lang/en_us.json#advancements.refinedstorage.wireless.description"
+   ]
+  }
+ ]
+}

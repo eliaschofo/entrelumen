@@ -1,0 +1,601 @@
+{
+ "chapter": "guide_justdirethings",
+ "group": "tech",
+ "act": "II",
+ "icon": "justdirethings:gooblock_tier1",
+ "title": {
+  "en_us": "Just Dire Things",
+  "es_es": "Just Dire Things"
+ },
+ "subtitle": {
+  "en_us": "Goo that transforms blocks, four material tiers with upgradable tools and armour, simple and advanced machines, portals and time.",
+  "es_es": "Goo que transforma bloques, cuatro niveles de material con herramientas y armaduras mejorables, máquinas simples y avanzadas, portales y tiempo."
+ },
+ "quests": [
+  {
+   "key": "jdt_welcome",
+   "deps": [],
+   "type": "checkmark",
+   "icon": "justdirethings:ferricore_ingot",
+   "layout": {
+    "x": 0,
+    "y": 0,
+    "size": 2.0,
+    "shape": "hexagon"
+   },
+   "en_us": [
+    "Goo-driven progression",
+    "Goo blocks transform the blocks beside them. Each of four goo tiers unlocks a material (Ferricore, Blazegold, Celestigem, Eclipse Alloy) with upgradable tools and armour, plus simple (no power) and advanced (FE) machines. The guide book is craftable; JEI has a Goo Spreading tab."
+   ],
+   "es_es": [
+    "Progresión a base de goo",
+    "Los bloques de goo transforman los bloques de al lado. Cada uno de los cuatro niveles de goo habilita un material (Ferricore, Blazegold, Celestigem, Eclipse Alloy) con herramientas y armaduras mejorables, más máquinas simples (sin energía) y avanzadas (FE). El libro guía se craftea; JEI tiene una pestaña Goo Spreading."
+   ],
+   "sources": [
+    "jar:justdirethings-1.5.7.jar:assets/justdirethings/patchouli_books/justdirethingsbook/en_us/entries/goo_basics.json",
+    "jar:justdirethings-1.5.7.jar:assets/justdirethings/patchouli_books/justdirethingsbook/en_us/entries/mach_basics.json",
+    "jar:justdirethings-1.5.7.jar:assets/justdirethings/patchouli_books/justdirethingsbook/en_us/entries/tool_basics.json",
+    "jar:justdirethings-1.5.7.jar:assets/justdirethings/lang/en_us.json#justdirethings.goospreadrecipe.title",
+    "jar:justdirethings-1.5.7.jar:data/justdirethings/recipe/my_book_recipe_shapeless.json"
+   ]
+  },
+  {
+   "key": "jdt_goo1",
+   "deps": [
+    "jdt_welcome"
+   ],
+   "type": "item",
+   "item": "justdirethings:gooblock_tier1",
+   "layout": {
+    "x": 3,
+    "y": 0,
+    "size": 1.5,
+    "shape": "hexagon"
+   },
+   "en_us": [
+    "Primogel Goo",
+    "Clay, dirt, rotten flesh and sugar make Primogel Goo. Place it and right-click it with its food to activate it (the block tells you which). Then put an iron block next to it: the goo turns it into a Raw Ferricore Block. Goo that runs out goes Exhausted and needs feeding again."
+   ],
+   "es_es": [
+    "Goo Primogel",
+    "Arcilla, tierra, carne podrida y azúcar hacen el Goo Primogel. Ponelo y hacele clic derecho con su comida para activarlo (el bloque te dice cuál). Después poné un bloque de hierro al lado: el goo lo convierte en un Bloque de Ferricore crudo. El goo que se agota queda Exhausted y hay que volver a alimentarlo."
+   ],
+   "sources": [
+    "jar:justdirethings-1.5.7.jar:data/justdirethings/recipe/gooblock_tier1.json",
+    "jar:justdirethings-1.5.7.jar:assets/justdirethings/patchouli_books/justdirethingsbook/en_us/entries/goo_tier1.json",
+    "jar:justdirethings-1.5.7.jar:assets/justdirethings/patchouli_books/justdirethingsbook/en_us/entries/goo_basics.json",
+    "jar:justdirethings-1.5.7.jar:assets/justdirethings/lang/en_us.json#justdirethings.requiresfeeding",
+    "jar:justdirethings-1.5.7.jar:assets/justdirethings/lang/en_us.json#Block{justdirethings:gooblock_tier1}_dead",
+    "jar:justdirethings-1.5.7.jar:assets/justdirethings/patchouli_books/justdirethingsbook/en_us/entries/res_ferricore_raw.json"
+   ]
+  },
+  {
+   "key": "jdt_ferricore",
+   "deps": [
+    "jdt_goo1"
+   ],
+   "type": "item",
+   "item": "justdirethings:ferricore_ingot",
+   "count": 8,
+   "layout": {
+    "x": 6,
+    "y": 0,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Ferricore",
+    "Mine the Raw Ferricore Block for Raw Ferricore and smelt it into Ferricore Ingots, a sturdier iron. They make the first tools and armour, the Ferricore Wrench (rotates blocks, links swappers) and Blank Upgrades."
+   ],
+   "es_es": [
+    "Ferricore",
+    "Picá el Bloque de Ferricore crudo para sacar Ferricore crudo y fundilo en Lingotes de Ferricore, un hierro más resistente. Hacen las primeras herramientas y armaduras, la Llave de Ferricore (gira bloques, vincula intercambiadores) y las Mejoras en blanco."
+   ],
+   "sources": [
+    "jar:justdirethings-1.5.7.jar:assets/justdirethings/patchouli_books/justdirethingsbook/en_us/entries/res_ferricore.json",
+    "jar:justdirethings-1.5.7.jar:assets/justdirethings/patchouli_books/justdirethingsbook/en_us/entries/res_ferricore_raw.json",
+    "jar:justdirethings-1.5.7.jar:assets/justdirethings/patchouli_books/justdirethingsbook/en_us/entries/item_ferricore_wrench.json",
+    "jar:justdirethings-1.5.7.jar:data/justdirethings/recipe/upgrade_blank.json"
+   ]
+  },
+  {
+   "key": "jdt_coal",
+   "deps": [
+    "jdt_goo1"
+   ],
+   "type": "item",
+   "item": "justdirethings:coalblock_t1",
+   "optional": true,
+   "layout": {
+    "x": 3,
+    "y": -2.5,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Better coal",
+    "A coal block next to Primogel Goo becomes Primal Coal, which lasts longer and gives more FE in generators. Each higher goo upgrades the previous coal: Blaze Ember, Voidflame Coal and Eclipse Ember, the densest fuel of all."
+   ],
+   "es_es": [
+    "Mejor carbón",
+    "Un bloque de carbón al lado del Goo Primogel se vuelve Carbón primordial, que dura más y da más FE en generadores. Cada goo superior mejora el carbón anterior: Brasa de blaze, Carbón de llama del vacío y Brasa eclipse, el combustible más denso de todos."
+   ],
+   "sources": [
+    "jar:justdirethings-1.5.7.jar:assets/justdirethings/patchouli_books/justdirethingsbook/en_us/entries/res_coal_t1.json",
+    "jar:justdirethings-1.5.7.jar:assets/justdirethings/patchouli_books/justdirethingsbook/en_us/entries/res_coal_t2.json",
+    "jar:justdirethings-1.5.7.jar:assets/justdirethings/patchouli_books/justdirethingsbook/en_us/entries/res_coal_t3.json",
+    "jar:justdirethings-1.5.7.jar:assets/justdirethings/patchouli_books/justdirethingsbook/en_us/entries/res_coal_t4.json"
+   ]
+  },
+  {
+   "key": "jdt_tools",
+   "deps": [
+    "jdt_ferricore"
+   ],
+   "type": "item",
+   "item": "justdirethings:ferricore_pickaxe",
+   "layout": {
+    "x": 9,
+    "y": 0,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Tools and their keys",
+    "Each material has pickaxe, axe, shovel, hoe, sword, bow (and paxel at the top tiers). Hold Shift over a tool to see which upgrades it takes. In this pack, Alt+T switches all of a tool's abilities on or off and Shift+T opens its settings, where you toggle each upgrade and bind hotkeys; you can also Shift-click the tool in hand."
+   ],
+   "es_es": [
+    "Herramientas y sus teclas",
+    "Cada material tiene pico, hacha, pala, azada, espada, arco (y paxel en los niveles altos). Mantené Shift sobre una herramienta para ver qué mejoras acepta. En este pack, Alt+T prende o apaga todas las habilidades de una herramienta y Shift+T abre su configuración, donde activás cada mejora y asignás teclas; también podés hacer Shift-clic con la herramienta en la mano."
+   ],
+   "sources": [
+    "jar:justdirethings-1.5.7.jar:assets/justdirethings/patchouli_books/justdirethingsbook/en_us/entries/tool_basics.json",
+    "repo:pack/config/entrelumen/client-preset.json",
+    "repo:docs/design/keybinding-review.md",
+    "jar:justdirethings-1.5.7.jar:assets/justdirethings/lang/en_us.json#justdirethings.key.toggle_tool",
+    "jar:justdirethings-1.5.7.jar:assets/justdirethings/lang/en_us.json#justdirethings.key.toolUI"
+   ]
+  },
+  {
+   "key": "jdt_upgrades",
+   "deps": [
+    "jdt_tools"
+   ],
+   "type": "item",
+   "item": "justdirethings:upgrade_blank",
+   "count": 2,
+   "layout": {
+    "x": 12,
+    "y": 0,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Upgrades",
+    "Upgrades are crafted from a Blank Upgrade and installed with the tool in a Smithing Table. Some are passive (Ore Miner mines connected ores, Tree Feller fells whole trees), some are used on demand (Ore Scanner shows ores through walls), and some cost durability or FE (Smelter smelts drops). The Hammer upgrade mines 3x3 on blazegold, 5x5 on celestigem and 7x7 on eclipse alloy."
+   ],
+   "es_es": [
+    "Mejoras",
+    "Las mejoras se craftean desde una Mejora en blanco y se instalan con la herramienta en una Mesa de herrería. Algunas son pasivas (Ore Miner pica los minerales conectados, Tree Feller tala árboles enteros), otras se usan a pedido (Ore Scanner muestra minerales a través de paredes), y algunas gastan durabilidad o FE (Smelter funde los drops). La mejora Hammer pica 3x3 en blazegold, 5x5 en celestigem y 7x7 en eclipse alloy."
+   ],
+   "sources": [
+    "jar:justdirethings-1.5.7.jar:assets/justdirethings/patchouli_books/justdirethingsbook/en_us/entries/upgrade_basics.json",
+    "jar:justdirethings-1.5.7.jar:assets/justdirethings/patchouli_books/justdirethingsbook/en_us/entries/upgrade_oreminer.json",
+    "jar:justdirethings-1.5.7.jar:assets/justdirethings/patchouli_books/justdirethingsbook/en_us/entries/upgrade_treefeller.json",
+    "jar:justdirethings-1.5.7.jar:assets/justdirethings/patchouli_books/justdirethingsbook/en_us/entries/upgrade_orescanner.json",
+    "jar:justdirethings-1.5.7.jar:assets/justdirethings/patchouli_books/justdirethingsbook/en_us/entries/upgrade_smelter.json",
+    "jar:justdirethings-1.5.7.jar:assets/justdirethings/patchouli_books/justdirethingsbook/en_us/entries/upgrade_hammer.json",
+    "jar:justdirethings-1.5.7.jar:data/justdirethings/recipe/upgrade_oreminer.json"
+   ]
+  },
+  {
+   "key": "jdt_armor",
+   "deps": [
+    "jdt_upgrades"
+   ],
+   "type": "item",
+   "item": "justdirethings:ferricore_chestplate",
+   "optional": true,
+   "layout": {
+    "x": 12,
+    "y": -2.5,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Armour and its upgrades",
+    "Every tier has armour with its own upgrades, installed the same way: night vision, step height, negate fall damage, run and swim speed, lava immunity, elytra wings and more. Open the tool settings with a tool in hand and click a worn piece to toggle its abilities."
+   ],
+   "es_es": [
+    "Armadura y sus mejoras",
+    "Cada nivel tiene armadura con sus propias mejoras, instaladas igual: visión nocturna, altura de paso, anular daño de caída, velocidad al correr y nadar, inmunidad a lava, alas de élitro y más. Abrí la configuración con una herramienta en la mano y hacé clic en una pieza puesta para prender o apagar sus habilidades."
+   ],
+   "sources": [
+    "jar:justdirethings-1.5.7.jar:assets/justdirethings/patchouli_books/justdirethingsbook/en_us/entries/armor_basics.json",
+    "jar:justdirethings-1.5.7.jar:assets/justdirethings/patchouli_books/justdirethingsbook/en_us/entries/upgrade_nightvision.json",
+    "jar:justdirethings-1.5.7.jar:assets/justdirethings/patchouli_books/justdirethingsbook/en_us/entries/upgrade_negatefalldamage.json",
+    "jar:justdirethings-1.5.7.jar:assets/justdirethings/patchouli_books/justdirethingsbook/en_us/entries/upgrade_elytra.json"
+   ]
+  },
+  {
+   "key": "jdt_goo2",
+   "deps": [
+    "jdt_ferricore"
+   ],
+   "type": "item",
+   "item": "justdirethings:blazegold_ingot",
+   "count": 8,
+   "layout": {
+    "x": 6,
+    "y": 3,
+    "size": 1.5,
+    "shape": "hexagon"
+   },
+   "en_us": [
+    "Blazebloom Goo and Blazegold",
+    "Primogel Goo with blaze powder, redstone and nether wart makes Blazebloom Goo. It turns a gold block into Raw Blazegold, smelted into Blazegold Ingots for the second tier."
+   ],
+   "es_es": [
+    "Goo Blazebloom y Blazegold",
+    "Goo Primogel con polvo de blaze, redstone y verruga del Nether hace el Goo Blazebloom. Convierte un bloque de oro en Blazegold crudo, que se funde en Lingotes de Blazegold para el segundo nivel."
+   ],
+   "sources": [
+    "jar:justdirethings-1.5.7.jar:data/justdirethings/recipe/gooblock_tier2.json",
+    "jar:justdirethings-1.5.7.jar:assets/justdirethings/patchouli_books/justdirethingsbook/en_us/entries/goo_tier2.json",
+    "jar:justdirethings-1.5.7.jar:assets/justdirethings/patchouli_books/justdirethingsbook/en_us/entries/res_blazegold_raw.json",
+    "jar:justdirethings-1.5.7.jar:assets/justdirethings/patchouli_books/justdirethingsbook/en_us/entries/res_blazegold.json"
+   ]
+  },
+  {
+   "key": "jdt_templates",
+   "deps": [
+    "jdt_goo2",
+    "jdt_tools"
+   ],
+   "type": "item",
+   "item": "justdirethings:template_blazegold",
+   "optional": true,
+   "layout": {
+    "x": 9,
+    "y": 5.5,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Tier templates",
+    "Upgrade Templates move a tool or armour piece to the next tier in a Smithing Table without losing its installed upgrades. A template can be copied with two ingots of its material."
+   ],
+   "es_es": [
+    "Plantillas de nivel",
+    "Las Plantillas de mejora pasan una herramienta o pieza de armadura al siguiente nivel en una Mesa de herrería sin perder las mejoras instaladas. Una plantilla se copia con dos lingotes de su material."
+   ],
+   "sources": [
+    "jar:justdirethings-1.5.7.jar:assets/justdirethings/patchouli_books/justdirethingsbook/en_us/entries/tool_basics.json",
+    "jar:justdirethings-1.5.7.jar:data/justdirethings/recipe/template_ferricore.json",
+    "jar:justdirethings-1.5.7.jar:data/justdirethings/recipe/blazegold_pickaxe-templateupgrade.json"
+   ]
+  },
+  {
+   "key": "jdt_simple",
+   "deps": [
+    "jdt_ferricore"
+   ],
+   "type": "item",
+   "item": "justdirethings:blockbreakert1",
+   "layout": {
+    "x": 6,
+    "y": -2.5,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Simple machines",
+    "Simple machines need no power and act on the block or entity in front: Block Breaker (uses a tool you give it), Block Placer, Clicker (right, left or held clicks with an item, even on mobs), Dropper, Sensor, Swapper and fluid machines. Set their speed in ticks and their redstone mode, including one action per pulse."
+   ],
+   "es_es": [
+    "Máquinas simples",
+    "Las máquinas simples no usan energía y actúan sobre el bloque o entidad de enfrente: Rompedor (usa una herramienta que le des), Colocador, Clicker (clics derecho, izquierdo o sostenidos con un ítem, incluso sobre mobs), Dropper, Sensor, Intercambiador y máquinas de fluidos. Ajustá su velocidad en ticks y su modo de redstone, incluido una acción por pulso."
+   ],
+   "sources": [
+    "jar:justdirethings-1.5.7.jar:assets/justdirethings/patchouli_books/justdirethingsbook/en_us/entries/mach_basics.json",
+    "jar:justdirethings-1.5.7.jar:assets/justdirethings/patchouli_books/justdirethingsbook/en_us/entries/mach_simple_controls.json",
+    "jar:justdirethings-1.5.7.jar:assets/justdirethings/patchouli_books/justdirethingsbook/en_us/entries/mach_blockbreakert1.json",
+    "jar:justdirethings-1.5.7.jar:assets/justdirethings/patchouli_books/justdirethingsbook/en_us/entries/mach_clickert1.json",
+    "jar:justdirethings-1.5.7.jar:assets/justdirethings/patchouli_books/justdirethingsbook/en_us/entries/mach_sensort1.json"
+   ]
+  },
+  {
+   "key": "jdt_advanced",
+   "deps": [
+    "jdt_simple",
+    "jdt_goo2"
+   ],
+   "type": "item",
+   "item": "justdirethings:generatort1",
+   "optional": true,
+   "layout": {
+    "x": 9,
+    "y": -5,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Advanced machines and power",
+    "Advanced machines run on FE, cover a set area, filter, and charge FE items inside them. Power them with the coal generator (special coals give more) or the Fuel Generator. The Energy Transmitter beams FE to machines in its area, with a small intended loss."
+   ],
+   "es_es": [
+    "Máquinas avanzadas y energía",
+    "Las máquinas avanzadas funcionan con FE, cubren un área fijada, filtran y cargan los ítems de FE que tengan adentro. Alimentalas con el generador a carbón (los carbones especiales dan más) o el Generador de combustible. El Transmisor de energía manda FE a las máquinas de su área, con una pequeña pérdida a propósito."
+   ],
+   "sources": [
+    "jar:justdirethings-1.5.7.jar:assets/justdirethings/patchouli_books/justdirethingsbook/en_us/entries/mach_basics.json",
+    "jar:justdirethings-1.5.7.jar:assets/justdirethings/patchouli_books/justdirethingsbook/en_us/entries/mach_generatort1.json",
+    "jar:justdirethings-1.5.7.jar:assets/justdirethings/patchouli_books/justdirethingsbook/en_us/entries/mach_generatorfluidt1.json",
+    "jar:justdirethings-1.5.7.jar:assets/justdirethings/patchouli_books/justdirethingsbook/en_us/entries/mach_energytransmitter.json",
+    "jar:justdirethings-1.5.7.jar:assets/justdirethings/patchouli_books/justdirethingsbook/en_us/entries/mach_itemcollector.json"
+   ]
+  },
+  {
+   "key": "jdt_pocket",
+   "deps": [
+    "jdt_ferricore"
+   ],
+   "type": "item",
+   "item": "justdirethings:pocket_generator",
+   "optional": true,
+   "layout": {
+    "x": 3,
+    "y": 2.5,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Pocket Generator and canisters",
+    "The Pocket Generator burns coal (better with the special coals) to keep your FE tools and armour charged on the go. The Fluid Canister holds 8 buckets and can auto-fill other containers; the Fuel Canister feeds the pocket generator."
+   ],
+   "es_es": [
+    "Generador de bolsillo y bidones",
+    "El Generador de bolsillo quema carbón (mejor con los carbones especiales) para mantener cargadas tus herramientas y armaduras de FE en movimiento. El Bidón de fluidos guarda 8 baldes y puede llenar otros recipientes solo; el Bidón de combustible alimenta al generador de bolsillo."
+   ],
+   "sources": [
+    "jar:justdirethings-1.5.7.jar:assets/justdirethings/patchouli_books/justdirethingsbook/en_us/entries/item_pocket_generator.json",
+    "jar:justdirethings-1.5.7.jar:assets/justdirethings/patchouli_books/justdirethingsbook/en_us/entries/item_fluid_canister.json",
+    "jar:justdirethings-1.5.7.jar:assets/justdirethings/patchouli_books/justdirethingsbook/en_us/entries/item_fuel_canister.json",
+    "jar:justdirethings-1.5.7.jar:data/justdirethings/recipe/pocket_generator.json"
+   ]
+  },
+  {
+   "key": "jdt_fluids",
+   "deps": [
+    "jdt_goo2"
+   ],
+   "type": "item",
+   "item": "justdirethings:polymorphic_catalyst",
+   "optional": true,
+   "layout": {
+    "x": 6,
+    "y": 5.5,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Polymorphic fluid and refined fuels",
+    "Drop a Polymorphic Catalyst (blazegold and nether wart) into water to get Polymorphic Fluid, the base of JDT fluids. Drop Blaze Ember into it and let Blazebloom Goo refine it into a fuel; higher coals and goos make better refined fuels for the Fuel Generator."
+   ],
+   "es_es": [
+    "Fluido polimórfico y combustibles refinados",
+    "Tirá un Catalizador polimórfico (blazegold y verruga del Nether) en agua para sacar Fluido polimórfico, la base de los fluidos de JDT. Tirale Brasa de blaze y dejá que el Goo Blazebloom lo refine en combustible; los carbones y goos superiores hacen mejores combustibles refinados para el Generador de combustible."
+   ],
+   "sources": [
+    "jar:justdirethings-1.5.7.jar:assets/justdirethings/patchouli_books/justdirethingsbook/en_us/entries/res_polymorphic_catalyst.json",
+    "jar:justdirethings-1.5.7.jar:assets/justdirethings/patchouli_books/justdirethingsbook/en_us/entries/res_polymorphic_fluid.json",
+    "jar:justdirethings-1.5.7.jar:assets/justdirethings/patchouli_books/justdirethingsbook/en_us/entries/res_refined_fuel_t2.json",
+    "jar:justdirethings-1.5.7.jar:assets/justdirethings/patchouli_books/justdirethingsbook/en_us/entries/res_refined_fuel_t3.json",
+    "jar:justdirethings-1.5.7.jar:data/justdirethings/recipe/polymorphic_catalyst.json"
+   ]
+  },
+  {
+   "key": "jdt_goo3",
+   "deps": [
+    "jdt_goo2"
+   ],
+   "type": "item",
+   "item": "justdirethings:celestigem",
+   "count": 4,
+   "layout": {
+    "x": 12,
+    "y": 3,
+    "size": 1.5,
+    "shape": "hexagon"
+   },
+   "en_us": [
+    "VoidShimmer Goo and Celestigem",
+    "Blazebloom Goo with ender pearls, end stone and dragon's breath makes VoidShimmer Goo, so you need the End first. It turns a diamond block into Raw Celestigem, used for energy storage and teleportation."
+   ],
+   "es_es": [
+    "Goo VoidShimmer y Celestigem",
+    "Goo Blazebloom con perlas de ender, piedra del End y aliento de dragón hace el Goo VoidShimmer, así que primero necesitás el End. Convierte un bloque de diamante en Celestigem crudo, que se usa para almacenar energía y teletransportarse."
+   ],
+   "sources": [
+    "jar:justdirethings-1.5.7.jar:data/justdirethings/recipe/gooblock_tier3.json",
+    "jar:justdirethings-1.5.7.jar:assets/justdirethings/patchouli_books/justdirethingsbook/en_us/entries/goo_tier3.json",
+    "jar:justdirethings-1.5.7.jar:assets/justdirethings/patchouli_books/justdirethingsbook/en_us/entries/res_celestigem_raw.json",
+    "jar:justdirethings-1.5.7.jar:assets/justdirethings/patchouli_books/justdirethingsbook/en_us/entries/res_celestigem.json"
+   ]
+  },
+  {
+   "key": "jdt_portal",
+   "deps": [
+    "jdt_goo3"
+   ],
+   "type": "item",
+   "item": "justdirethings:portalgun",
+   "optional": true,
+   "layout": {
+    "x": 12,
+    "y": 5.5,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Portal Guns",
+    "Left-click fires a blue portal and right-click an orange one; players and items pass between them. The Advanced Portal Gun adds a favourites menu to open a portal to a saved spot from anywhere, and runs on Portal Fluid, which must be stabilised with VoidShimmer Goo to exist outside the End.\n\nENTRELUMEN change: both guns need a Routing Matrix (Act III)."
+   ],
+   "es_es": [
+    "Pistolas de portales",
+    "Clic izquierdo dispara un portal azul y clic derecho uno naranja; jugadores e ítems pasan entre ellos. La Pistola de portales avanzada agrega un menú de favoritos para abrir un portal a un lugar guardado desde cualquier parte, y funciona con Fluido de portal, que hay que estabilizar con Goo VoidShimmer para que exista fuera del End.\n\nCambio de ENTRELUMEN: las dos pistolas piden una Matriz de distribución (acto III)."
+   ],
+   "sources": [
+    "repo:pack/kubejs/server_scripts/entrelumen_industrial_balance.js",
+    "repo:docs/design/industrial-expansion-family.md",
+    "jar:justdirethings-1.5.7.jar:assets/justdirethings/patchouli_books/justdirethingsbook/en_us/entries/item_portal_gun.json",
+    "jar:justdirethings-1.5.7.jar:assets/justdirethings/patchouli_books/justdirethingsbook/en_us/entries/item_portal_gun_v2.json",
+    "jar:justdirethings-1.5.7.jar:assets/justdirethings/patchouli_books/justdirethingsbook/en_us/entries/res_portal_fluid.json"
+   ]
+  },
+  {
+   "key": "jdt_goo4",
+   "deps": [
+    "jdt_goo3"
+   ],
+   "type": "item",
+   "item": "justdirethings:eclipsealloy_ingot",
+   "count": 4,
+   "layout": {
+    "x": 15,
+    "y": 3,
+    "size": 1.5,
+    "shape": "hexagon"
+   },
+   "en_us": [
+    "Shadowpulse Goo and Eclipse Alloy",
+    "VoidShimmer Goo with sculk, a sculk shrieker and echo shards makes Shadowpulse Goo: a trip to the Deep Dark. It turns a netherite block into Raw Eclipse Alloy, the strongest material of the mod."
+   ],
+   "es_es": [
+    "Goo Shadowpulse y Eclipse Alloy",
+    "Goo VoidShimmer con sculk, un chillador de sculk y fragmentos de eco hace el Goo Shadowpulse: un viaje a la Oscuridad Profunda. Convierte un bloque de netherita en Eclipse Alloy crudo, el material más fuerte del mod."
+   ],
+   "sources": [
+    "jar:justdirethings-1.5.7.jar:data/justdirethings/recipe/gooblock_tier4.json",
+    "jar:justdirethings-1.5.7.jar:assets/justdirethings/patchouli_books/justdirethingsbook/en_us/entries/goo_tier4.json",
+    "jar:justdirethings-1.5.7.jar:assets/justdirethings/patchouli_books/justdirethingsbook/en_us/entries/res_eclipsealloy_raw.json",
+    "jar:justdirethings-1.5.7.jar:assets/justdirethings/patchouli_books/justdirethingsbook/en_us/entries/res_eclipsealloy.json"
+   ]
+  },
+  {
+   "key": "jdt_flight",
+   "deps": [
+    "jdt_goo3"
+   ],
+   "type": "item",
+   "item": "justdirethings:upgrade_flight",
+   "optional": true,
+   "layout": {
+    "x": 15,
+    "y": -2.5,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Flight upgrade",
+    "The Flight upgrade gives creative-style flight in survival for your armour, draining FE to keep you up: carry a Pocket Generator.\n\nENTRELUMEN change: it needs a Horizon Chart (Act IV)."
+   ],
+   "es_es": [
+    "Mejora de vuelo",
+    "La mejora de Vuelo da vuelo tipo creativo en supervivencia para tu armadura, gastando FE para mantenerte arriba: llevá un Generador de bolsillo.\n\nCambio de ENTRELUMEN: pide una Carta de horizontes (acto IV)."
+   ],
+   "sources": [
+    "repo:pack/kubejs/server_scripts/entrelumen_industrial_balance.js",
+    "repo:docs/design/industrial-expansion-family.md",
+    "jar:justdirethings-1.5.7.jar:assets/justdirethings/patchouli_books/justdirethingsbook/en_us/entries/upgrade_flight.json"
+   ]
+  },
+  {
+   "key": "jdt_time",
+   "deps": [
+    "jdt_goo4"
+   ],
+   "type": "item",
+   "item": "justdirethings:time_crystal",
+   "optional": true,
+   "layout": {
+    "x": 18,
+    "y": 3,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Time Crystals and the Time Wand",
+    "Shadowpulse Goo turns budding amethyst into a Budding Time Crystal that must soak time energy in the Overworld, Nether and End, in that order; it shatters if mined, so move it some other way. The Time Wand speeds any ticking block for 30 seconds. Pack change: the wand needs a Renewal Engine (V)."
+   ],
+   "es_es": [
+    "Cristales del tiempo y la Varita",
+    "El Goo Shadowpulse convierte amatista brotante en un Cristal del tiempo brotante que tiene que absorber energía del tiempo en el Overworld, el Nether y el End, en ese orden; se rompe si lo picás, así que movelo de otra forma. La Varita del tiempo acelera cualquier bloque que tickea por 30 segundos. Cambio del pack: la varita pide un Motor de renovación (V)."
+   ],
+   "sources": [
+    "jar:justdirethings-1.5.7.jar:assets/justdirethings/patchouli_books/justdirethingsbook/en_us/entries/res_time_crystal.json",
+    "jar:justdirethings-1.5.7.jar:assets/justdirethings/patchouli_books/justdirethingsbook/en_us/entries/res_time_fluid.json",
+    "jar:justdirethings-1.5.7.jar:assets/justdirethings/patchouli_books/justdirethingsbook/en_us/entries/item_time_wand.json",
+    "repo:pack/kubejs/server_scripts/entrelumen_industrial_balance.js",
+    "repo:docs/design/industrial-expansion-family.md"
+   ]
+  },
+  {
+   "key": "jdt_paradox",
+   "deps": [
+    "jdt_time"
+   ],
+   "type": "item",
+   "item": "justdirethings:paradoxmachine",
+   "optional": true,
+   "layout": {
+    "x": 18,
+    "y": 5.5,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Paradox Machine",
+    "Takes a snapshot of an area (raw ore blocks and entities) and can later rewind it to that moment. Overusing it creates a Paradox that grows and devours blocks, items and entities for good: read the book before experimenting.\n\nENTRELUMEN change: it needs an Ark Bus (Act V)."
+   ],
+   "es_es": [
+    "Máquina de paradojas",
+    "Saca una foto de un área (bloques de mineral crudo y entidades) y después puede rebobinarla a ese momento. Abusar de ella crea una Paradoja que crece y devora bloques, ítems y entidades para siempre: leé el libro antes de experimentar.\n\nCambio de ENTRELUMEN: pide un Bus de conexión del Arca (acto V)."
+   ],
+   "sources": [
+    "jar:justdirethings-1.5.7.jar:assets/justdirethings/patchouli_books/justdirethingsbook/en_us/entries/mach_paradox.json",
+    "jar:justdirethings-1.5.7.jar:assets/justdirethings/patchouli_books/justdirethingsbook/en_us/entries/misc_paradox.json",
+    "repo:pack/kubejs/server_scripts/entrelumen_industrial_balance.js",
+    "repo:docs/design/industrial-expansion-family.md"
+   ]
+  },
+  {
+   "key": "jdt_mastery",
+   "deps": [
+    "jdt_goo4",
+    "jdt_upgrades"
+   ],
+   "type": "item",
+   "item": "justdirethings:eclipsealloy_pickaxe",
+   "layout": {
+    "x": 21,
+    "y": 0,
+    "size": 2.0,
+    "shape": "octagon"
+   },
+   "en_us": [
+    "Mastery: Eclipse Alloy gear",
+    "Carry your favourite pickaxe through all four tiers with templates, keeping every upgrade, and finish it in Eclipse Alloy: 7x7 hammer, ore miner, smelter, and drops sent straight to a bound chest if your tool takes Drop Teleport."
+   ],
+   "es_es": [
+    "Maestría: equipo de Eclipse Alloy",
+    "Llevá tu pico favorito por los cuatro niveles con plantillas, conservando cada mejora, y terminalo en Eclipse Alloy: martillo de 7x7, minero de vetas, fundidor, y drops mandados directo a un cofre vinculado si tu herramienta acepta Drop Teleport."
+   ],
+   "sources": [
+    "jar:justdirethings-1.5.7.jar:assets/justdirethings/patchouli_books/justdirethingsbook/en_us/entries/upgrade_hammer.json",
+    "jar:justdirethings-1.5.7.jar:assets/justdirethings/patchouli_books/justdirethingsbook/en_us/entries/upgrade_dropteleport.json",
+    "jar:justdirethings-1.5.7.jar:assets/justdirethings/patchouli_books/justdirethingsbook/en_us/entries/tool_basics.json"
+   ]
+  }
+ ]
+}

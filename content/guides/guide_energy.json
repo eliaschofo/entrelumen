@@ -1,0 +1,443 @@
+{
+ "chapter": "guide_energy",
+ "group": "tech",
+ "act": "any",
+ "icon": "mekanism:basic_energy_cube",
+ "title": {
+  "en_us": "Energy in ENTRELUMEN",
+  "es_es": "Energía en ENTRELUMEN"
+ },
+ "subtitle": {
+  "en_us": "One currency, many names: first generators, units, bridges to rotation and pressure, storage, cables and act gates.",
+  "es_es": "Una moneda, muchos nombres: primeros generadores, unidades, puentes con rotación y presión, almacenamiento, cables y actos."
+ },
+ "quests": [
+  {
+   "key": "en_welcome",
+   "deps": [],
+   "type": "checkmark",
+   "icon": "minecraft:redstone",
+   "layout": {
+    "x": 0,
+    "y": 0,
+    "size": 2.0,
+    "shape": "hexagon"
+   },
+   "en_us": [
+    "FE: one currency",
+    "Almost every tech mod runs on Forge Energy (FE), sometimes under another name: RF in Oritech and Industrial Foregoing, OP in Draconic, µI in Ender IO. Any of them powers the others with a plain cable.\n\nThe odd ones out: Mekanism (Joules inside), AE2 (AE), Modern Industrialization (EU), Create (rotation) and PneumaticCraft (pressure)."
+   ],
+   "es_es": [
+    "FE: una sola moneda",
+    "Casi todo mod técnico funciona con Forge Energy (FE), a veces con otro nombre: RF en Oritech e Industrial Foregoing, OP en Draconic, µI en Ender IO. Cualquiera alimenta a los otros con un cable común.\n\nLos raros: Mekanism (Joules por dentro), AE2 (AE), Modern Industrialization (EU), Create (rotación) y PneumaticCraft (presión)."
+   ],
+   "sources": [
+    "jar:enderio-8.2.11-beta.jar:assets/enderio/lang/en_us.json",
+    "jar:oritech-neoforge-1.21.1-1.2.11.jar:assets/oracle_index/books/oritech/docs/getting_started/first_generator.mdx",
+    "jar:industrialforegoing-1.21-3.6.39.jar:assets/industrialforegoing/patchouli_books/industrial_foregoing/en_us/entries/generators/biofuel_generator.json",
+    "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:assets/draconicevolution/lang/en_us.json#gui.draconicevolution.reactor.gen_rate.info"
+   ]
+  },
+  {
+   "key": "en_first",
+   "deps": [
+    "en_welcome"
+   ],
+   "type": "item",
+   "item": "actuallyadditions:coal_generator",
+   "layout": {
+    "x": 3,
+    "y": 0,
+    "size": 1.5,
+    "shape": "hexagon"
+   },
+   "en_us": [
+    "Free first power",
+    "Early generators need no campaign component, on purpose: the Actually Additions and RFTools Coal Generators, the Powah Furnator, the Just Dire Things coal generator, and an Immersive Engineering water wheel or windmill on a Kinetic Dynamo. Throw coal in and your first machines hum."
+   ],
+   "es_es": [
+    "Primera energía, gratis",
+    "Los generadores iniciales no piden componentes de campaña, a propósito: los Generadores a carbón de Actually Additions y RFTools, el Furnator de Powah, el generador a carbón de Just Dire Things, y una rueda hidráulica o molino de Immersive Engineering sobre un Dínamo cinético. Carbón adentro y tus primeras máquinas arrancan."
+   ],
+   "sources": [
+    "jar:actuallyadditions-1.3.26+mc1.21.1.jar:assets/actuallyadditions/lang/en_us.json#booklet.actuallyadditions.chapter.coalGen.text.1",
+    "jar:rftoolspower-1.21-7.0.6.jar:assets/rftoolsbase/patchouli_books/manual/en_us/entries/powergeneration/coalgenerator.json",
+    "jar:Powah-6.2.10.jar:assets/powah/guides/powah/book/generators/furnator.md",
+    "jar:ImmersiveEngineering-1.21.1-12.4.2-194.jar:assets/immersiveengineering/manual/en_us/kinetic_generators.txt",
+    "jar:justdirethings-1.5.7.jar:assets/justdirethings/patchouli_books/justdirethingsbook/en_us/entries/mach_generatort1.json",
+    "repo:docs/design/rftools-family.md"
+   ]
+  },
+  {
+   "key": "en_units",
+   "deps": [
+    "en_first"
+   ],
+   "type": "checkmark",
+   "icon": "ae2:energy_acceptor",
+   "layout": {
+    "x": 3,
+    "y": -3,
+    "size": 1.0,
+    "shape": "circle"
+   },
+   "en_us": [
+    "Units that convert",
+    "Mekanism counts Joules inside (1 FE = 2.5 J) but shows FE by default. AE2 turns FE into AE one way: 2 FE per AE, via an Energy Acceptor or the controller. MI's EU is worth 10 FE here and converts one way only, so keep MI power inside MI."
+   ],
+   "es_es": [
+    "Unidades que convierten",
+    "Mekanism cuenta Joules por dentro (1 FE = 2,5 J) pero muestra FE por defecto. AE2 pasa FE a AE en un solo sentido: 2 FE por AE, con un Aceptador de energía o el controlador. El EU de MI vale 10 FE acá y convierte en un solo sentido, así que la energía de MI se queda en MI."
+   ],
+   "sources": [
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:mekanism/common/config/GeneralConfig.class",
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:mekanism/common/config/CommonConfig.class",
+    "jar:appliedenergistics2-19.2.17.jar:assets/ae2/ae2guide/ae2-mechanics/energy.md",
+    "repo:pack/config/modern_industrialization-server.toml",
+    "jar:Modern-Industrialization-2.5.6.jar:aztech/modern_industrialization/api/energy/EnergyApi.class",
+    "jar:Modern-Industrialization-2.5.6.jar:assets/modern_industrialization/lang/en_us.json#modern_industrialization.configuration.bidirectionalEnergyCompat.tooltip"
+   ]
+  },
+  {
+   "key": "en_create",
+   "deps": [
+    "en_first"
+   ],
+   "type": "item",
+   "item": "createaddition:alternator",
+   "layout": {
+    "x": 6,
+    "y": 0,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Rotation to FE and back",
+    "The Crafts and Additions Alternator makes FE from 32 RPM or more; its Electric Motor spins at the speed you set, paid in FE. Create: New Age makes power with Generator Coils ringed by magnets. Pack note: New Age's coil takes an Energy Coupler (Act II)."
+   ],
+   "es_es": [
+    "De rotación a FE y de vuelta",
+    "El Alternador de Crafts and Additions hace FE desde 32 RPM; su Motor eléctrico gira a la velocidad que elijas, pagando en FE. Create: New Age genera con Bobinas rodeadas de imanes. Nota del pack: la bobina de New Age pide un Acoplador de energía (acto II)."
+   ],
+   "sources": [
+    "jar:createaddition-1.7.0.jar:assets/createaddition/lang/en_us.json#createaddition.ponder.alternator.text_1",
+    "jar:createaddition-1.7.0.jar:assets/createaddition/lang/en_us.json#createaddition.ponder.electric_motor.text_2",
+    "jar:create-new-age-1.2.0+neoforge-mc1.21.1.jar:assets/create_new_age/lang/en_us.json#create_new_age.ponder.generation.text_1",
+    "repo:pack/kubejs/server_scripts/entrelumen_pingpong4_balance.js"
+   ]
+  },
+  {
+   "key": "en_pressure",
+   "deps": [
+    "en_create"
+   ],
+   "type": "item",
+   "item": "pneumaticcraft:flux_compressor",
+   "optional": true,
+   "layout": {
+    "x": 6,
+    "y": -3,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Pressure and FE",
+    "PneumaticCraft's Flux Compressor turns FE into air pressure; the Pneumatic Dynamo turns pressure back into FE. Both run hot: give them cooling or they slow down."
+   ],
+   "es_es": [
+    "Presión y FE",
+    "El Compresor de flux de PneumaticCraft convierte FE en presión de aire; el Dínamo neumático la vuelve FE. Los dos se calientan: enfrialos o bajan el ritmo."
+   ],
+   "sources": [
+    "jar:pneumaticcraft-repressurized-8.2.23+mc1.21.1.jar:assets/pneumaticcraft/patchouli_books/book/en_us/entries/compressors/flux_compressor.json",
+    "jar:pneumaticcraft-repressurized-8.2.23+mc1.21.1.jar:assets/pneumaticcraft/patchouli_books/book/en_us/entries/machines/pneumatic_dynamo.json"
+   ]
+  },
+  {
+   "key": "en_mid",
+   "deps": [
+    "en_create"
+   ],
+   "type": "item",
+   "item": "mekanismgenerators:gas_burning_generator",
+   "layout": {
+    "x": 9,
+    "y": 0,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Mid-game generators",
+    "Pick one that eats something you already farm: Mekanism's Heat, Solar, Wind, Bio or Gas-Burning generators, Powah's Magmator, IF's Biofuel Generator (160 RF/t), Oritech's basic generator (32 RF/t), Ender IO's Stirling, IE's diesel generator."
+   ],
+   "es_es": [
+    "Generadores de mitad de juego",
+    "Elegí uno que coma algo que ya producís: los generadores de Calor, Solar, Eólico, Bio o de Gas de Mekanism, el Magmator de Powah, el Generador de biocombustible de IF (160 RF/t), el básico de Oritech (32 RF/t), el Stirling de Ender IO, el diésel de IE."
+   ],
+   "sources": [
+    "jar:MekanismGenerators-1.21.1-10.7.19.85.jar:assets/mekanismgenerators/lang/en_us.json#description.mekanismgenerators.heat_generator",
+    "jar:MekanismGenerators-1.21.1-10.7.19.85.jar:assets/mekanismgenerators/lang/en_us.json#description.mekanismgenerators.gas_burning_generator",
+    "jar:Powah-6.2.10.jar:assets/powah/guides/powah/book/generators/magmator.md",
+    "jar:industrialforegoing-1.21-3.6.39.jar:assets/industrialforegoing/patchouli_books/industrial_foregoing/en_us/entries/generators/biofuel_generator.json",
+    "jar:oritech-neoforge-1.21.1-1.2.11.jar:assets/oracle_index/books/oritech/docs/getting_started/first_generator.mdx",
+    "jar:ImmersiveEngineering-1.21.1-12.4.2-194.jar:assets/immersiveengineering/manual/en_us/thermoelectric_generator.txt"
+   ]
+  },
+  {
+   "key": "en_big",
+   "deps": [
+    "en_mid"
+   ],
+   "type": "item",
+   "item": "powah:reactor_starter",
+   "layout": {
+    "x": 12,
+    "y": 0,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Big power",
+    "Late-game plants, each with its own chapter: Oritech's Steam Engine (up to 50,000 RF/t), Mekanism fission with a turbine and later fusion, the Powah Reactor, MI's large boilers and turbines, and the Draconic Reactor for the brave."
+   ],
+   "es_es": [
+    "Mucha energía",
+    "Centrales del final, cada una con su capítulo: la Máquina de vapor de Oritech (hasta 50.000 RF/t), la fisión de Mekanism con turbina y después la fusión, el Reactor de Powah, las calderas y turbinas grandes de MI, y el Reactor de Draconic para valientes."
+   ],
+   "sources": [
+    "jar:oritech-neoforge-1.21.1-1.2.11.jar:assets/oracle_index/books/oritech/content/machines/powergen/steam_engine_block.mdx",
+    "jar:MekanismGenerators-1.21.1-10.7.19.85.jar:assets/mekanismgenerators/lang/en_us.json#description.mekanismgenerators.fusion_reactor_controller",
+    "jar:Powah-6.2.10.jar:assets/powah/guides/powah/book/generators/reactor.md",
+    "jar:Modern-Industrialization-2.5.6.jar:assets/modern_industrialization/mi_guidebook/electric_age/large_steam_boiler.md",
+    "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:assets/draconicevolution/lang/en_us.json#gui.draconicevolution.reactor.gen_rate.info"
+   ]
+  },
+  {
+   "key": "en_storage",
+   "deps": [
+    "en_mid"
+   ],
+   "type": "item",
+   "item": "mekanism:basic_energy_cube",
+   "layout": {
+    "x": 9,
+    "y": 3,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Storing energy",
+    "A buffer between generators and machines smooths every spike: Mekanism Energy Cubes and the Induction Matrix, Powah Energy Cells, RFTools Powercells, Flux Storage, and Draconic's Energy Core at the top. AE2 keeps its own Energy Cells."
+   ],
+   "es_es": [
+    "Guardar energía",
+    "Un buffer entre generadores y máquinas suaviza cada pico: Cubos de energía y Matriz de inducción de Mekanism, Celdas de Powah, Celdas de RFTools, Almacenamiento de flux, y el Núcleo de energía de Draconic arriba de todo. AE2 usa sus propias Celdas de energía."
+   ],
+   "sources": [
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:assets/mekanism/lang/en_us.json#description.mekanism.energy_cube",
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:assets/mekanism/lang/en_us.json#description.mekanism.induction_casing",
+    "jar:Powah-6.2.10.jar:assets/powah/guides/powah/book/storage_transfer/energy_cell.md",
+    "jar:rftoolspower-1.21-7.0.6.jar:assets/rftoolsbase/patchouli_books/manual/en_us/entries/powerstorage/powercell.json",
+    "jar:appliedenergistics2-19.2.17.jar:assets/ae2/ae2guide/items-blocks-machines/energy_cells.md",
+    "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:assets/draconicevolution/lang/en_us.json#gui.draconicevolution.energy_core.title"
+   ]
+  },
+  {
+   "key": "en_transport",
+   "deps": [
+    "en_storage"
+   ],
+   "type": "item",
+   "item": "pipez:energy_pipe",
+   "count": 16,
+   "layout": {
+    "x": 12,
+    "y": 3,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Moving energy",
+    "Cables: Mekanism Universal Cables, Pipez Energy Pipes, Powah cables, Ender IO conduits, IE wires. No cables: Flux Networks (even across dimensions), LaserIO energy cards (up to 1,000,000 FE/t), XNet channels, the JDT Energy Transmitter."
+   ],
+   "es_es": [
+    "Mover energía",
+    "Con cable: Cables universales de Mekanism, Caños de energía de Pipez, cables de Powah, conductos de Ender IO, cables de IE. Sin cable: Flux Networks (incluso entre dimensiones), tarjetas de energía de LaserIO (hasta 1.000.000 FE/t), canales de XNet, el Transmisor de JDT."
+   ],
+   "sources": [
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:assets/mekanism/lang/en_us.json#description.mekanism.cable",
+    "jar:Powah-6.2.10.jar:assets/powah/guides/powah/book/storage_transfer/energy_cable.md",
+    "jar:ImmersiveEngineering-1.21.1-12.4.2-194.jar:assets/immersiveengineering/manual/en_us/basic_wiring.txt",
+    "jar:laserio-1.9.11.jar:assets/laserio/patchouli_books/laseriobook/en_us/entries/card_energy.json",
+    "jar:FluxNetworks-1.21.1-8.0.0.jar:assets/fluxnetworks/lang/en_us.json#tooltip.fluxnetworks.flux_point",
+    "https://www.curseforge.com/minecraft/mc-mods/flux-networks"
+   ]
+  },
+  {
+   "key": "en_meter",
+   "deps": [
+    "en_transport"
+   ],
+   "type": "item",
+   "item": "energymeter:meter",
+   "optional": true,
+   "layout": {
+    "x": 15,
+    "y": 3,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Energy Meter",
+    "Drop it into a cable line to read the flow, instant or smoothed. It can also cap the flow, and computers can read it. The fastest bottleneck hunter in the pack."
+   ],
+   "es_es": [
+    "Medidor de energía",
+    "Metelo en una línea de cable y leé el flujo, instantáneo o suavizado. También puede limitarlo, y las computadoras lo leen. El cazador de cuellos de botella más rápido del pack."
+   ],
+   "sources": [
+    "jar:energymeter-neoforge-1.21.1-0.5.2.jar:assets/energymeter/lang/en_us.json#label.energymeter.setting_limit",
+    "jar:energymeter-neoforge-1.21.1-0.5.2.jar:assets/energymeter/lang/en_us.json#measure_mode.energymeter.smoothed",
+    "jar:energymeter-neoforge-1.21.1-0.5.2.jar:com/almostreliable/energymeter/compat/cct/MeterPeripheral.class"
+   ]
+  },
+  {
+   "key": "en_charging",
+   "deps": [
+    "en_storage"
+   ],
+   "type": "item",
+   "item": "mekanism:chargepad",
+   "optional": true,
+   "layout": {
+    "x": 9,
+    "y": 5.5,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Charging your gear",
+    "Stand on a Mekanism Chargepad to charge any mod's FE items. The Powah Player Transmitter charges your whole inventory wirelessly through a Binding Card (the dimensional card works anywhere), and a Flux Controller charges its network members."
+   ],
+   "es_es": [
+    "Cargar tu equipo",
+    "Pará arriba de un Chargepad de Mekanism y carga los ítems de FE de cualquier mod. El Transmisor de jugador de Powah carga todo tu inventario sin cables con una Tarjeta de vínculo (la dimensional sirve en cualquier lado), y un Controlador de flux carga a los miembros de su red."
+   ],
+   "sources": [
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:assets/mekanism/lang/en_us.json#description.mekanism.chargepad",
+    "jar:Powah-6.2.10.jar:assets/powah/guides/powah/book/energy_blocks/player_transmitter.md",
+    "jar:Powah-6.2.10.jar:assets/powah/guides/powah/book/items/binding_card_dim.md",
+    "jar:FluxNetworks-1.21.1-8.0.0.jar:assets/fluxnetworks/lang/en_us.json#tooltip.fluxnetworks.flux_controller"
+   ]
+  },
+  {
+   "key": "en_gates",
+   "deps": [
+    "en_first"
+   ],
+   "type": "item",
+   "item": "entrelumen:power_regulator",
+   "layout": {
+    "x": 3,
+    "y": 3,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Energy and the acts",
+    "The Power Regulator (Act III: two Mekanism basic circuits, two steel plates and an Energy Coupler) gates wireless and portable power: Flux plugs and points, RFTools Dimensional Cells, jetpack straps, mining gadgets, the aircraft engine. Generators are never gated."
+   ],
+   "es_es": [
+    "La energía y los actos",
+    "El Regulador de energía (acto III: dos circuitos básicos de Mekanism, dos placas de acero y un Acoplador de energía) frena la energía inalámbrica y portátil: enchufes y puntos de Flux, Celdas dimensionales de RFTools, correas de jetpack, gadgets de minería, el motor de las aeronaves. Los generadores nunca se frenan."
+   ],
+   "sources": [
+    "repo:pack/kubejs/server_scripts/entrelumen_integration_recipes.js",
+    "repo:pack/kubejs/server_scripts/entrelumen_industrial_balance.js",
+    "repo:pack/kubejs/server_scripts/entrelumen_rftools_balance.js",
+    "repo:pack/kubejs/server_scripts/entrelumen_aircraft_balance.js"
+   ]
+  },
+  {
+   "key": "en_tips",
+   "deps": [
+    "en_units"
+   ],
+   "type": "checkmark",
+   "icon": "minecraft:comparator",
+   "layout": {
+    "x": 6,
+    "y": -5.5,
+    "size": 1.0,
+    "shape": "circle"
+   },
+   "en_us": [
+    "Quirks worth knowing",
+    "An AE2 network only spends what it has stored per tick: add an Energy Cell before big imports. Oritech power is push-only, so generators must push into pipes. IE wires carry one voltage each; put transformers between LV, MV and HV."
+   ],
+   "es_es": [
+    "Mañas que conviene saber",
+    "Una red de AE2 sólo gasta por tick lo que tiene guardado: sumá una Celda de energía antes de importar mucho. La energía de Oritech sólo se empuja, así que los generadores tienen que empujar a los caños. Los cables de IE llevan un voltaje cada uno; transformadores entre LV, MV y HV."
+   ],
+   "sources": [
+    "jar:appliedenergistics2-19.2.17.jar:assets/ae2/ae2guide/ae2-mechanics/energy.md",
+    "jar:oritech-neoforge-1.21.1-1.2.11.jar:assets/oracle_index/books/oritech/content/logistics/energy_pipe.mdx",
+    "jar:ImmersiveEngineering-1.21.1-12.4.2-194.jar:assets/immersiveengineering/manual/en_us/transformers.txt"
+   ]
+  },
+  {
+   "key": "en_creative",
+   "deps": [
+    "en_big"
+   ],
+   "type": "item",
+   "item": "mekanism:creative_energy_cube",
+   "optional": true,
+   "layout": {
+    "x": 15,
+    "y": 0,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Creative power",
+    "Infinite energy waits at the very end: Mekanism's Creative Energy Cube, Powah's Creative Cell, Create's Creative Motor, AE2's Creative Energy Cell and Draconic's Creative Capacitor each cost two Luminosities (Act VI)."
+   ],
+   "es_es": [
+    "Energía creativa",
+    "La energía infinita espera al final de todo: el Cubo de energía creativo de Mekanism, la Celda creativa de Powah, el Motor creativo de Create, la Celda de energía creativa de AE2 y el Capacitor creativo de Draconic cuestan dos Luminosidades cada uno (acto VI)."
+   ],
+   "sources": [
+    "repo:pack/kubejs/server_scripts/entrelumen_luminous_balance.js",
+    "repo:docs/design/luminous-gear.md"
+   ]
+  },
+  {
+   "key": "en_mastery",
+   "deps": [
+    "en_big",
+    "en_meter"
+   ],
+   "type": "item",
+   "item": "mekanism:ultimate_energy_cube",
+   "layout": {
+    "x": 18,
+    "y": 1.5,
+    "size": 2.0,
+    "shape": "octagon"
+   },
+   "en_us": [
+    "Mastery: a power plant",
+    "One big plant, one big buffer, one wireless link to every corner of the base and to outposts in other dimensions. An Energy Meter on the main line, always in the green."
+   ],
+   "es_es": [
+    "Maestría: una central",
+    "Una central grande, un buffer grande, un enlace inalámbrico a cada rincón de la base y a puestos en otras dimensiones. Un Medidor de energía en la línea principal, siempre en verde."
+   ],
+   "sources": [
+    "jar:MekanismGenerators-1.21.1-10.7.19.85.jar:assets/mekanismgenerators/lang/en_us.json#description.mekanismgenerators.fusion_reactor_controller",
+    "jar:FluxNetworks-1.21.1-8.0.0.jar:assets/fluxnetworks/lang/en_us.json#tooltip.fluxnetworks.flux_point"
+   ]
+  }
+ ]
+}
