@@ -319,7 +319,12 @@ public final class RuntimeGameTestsStory {
     else BuiltInRegistries.ITEM.forEach(candidates::add);
     for (Item item : candidates) {
       ItemStack stack = new ItemStack(item);
-      var energy = stack.getCapability(Capabilities.EnergyStorage.ITEM);
+      net.neoforged.neoforge.energy.IEnergyStorage energy;
+      try {
+        energy = stack.getCapability(Capabilities.EnergyStorage.ITEM);
+      } catch (RuntimeException odd) {
+        continue; // some mod's item that cannot answer outside its own context
+      }
       if (energy == null || energy.getMaxEnergyStored() < SolsticioStoryRules.BATTERY_CAPACITY
           || SolsticioStoryRules.charged(energy.getEnergyStored(), energy.getMaxEnergyStored())) continue;
       if (!charged) return stack;
