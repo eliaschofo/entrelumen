@@ -1,0 +1,443 @@
+{
+ "chapter": "guide_ore_processing",
+ "group": "tech",
+ "act": "any",
+ "icon": "minecraft:raw_iron",
+ "title": {
+  "en_us": "Ore processing",
+  "es_es": "Procesamiento de minerales"
+ },
+ "subtitle": {
+  "en_us": "Fortune or Silk Touch, and which machine turns one ore into the most ingots, with real numbers for iron.",
+  "es_es": "Fortuna o Toque de seda, y qué máquina saca más lingotes por mineral, con números reales para el hierro."
+ },
+ "quests": [
+  {
+   "key": "op_welcome",
+   "deps": [],
+   "type": "checkmark",
+   "icon": "minecraft:diamond_pickaxe",
+   "layout": {
+    "x": 0,
+    "y": 0,
+    "size": 2.0,
+    "shape": "hexagon"
+   },
+   "en_us": [
+    "Ore, raw or block?",
+    "Fortune gives raw ore (Fortune III: 2.2 raw iron or gold per ore on average). Silk Touch gives the ore block. Every machine pays differently for each, so pick your pickaxe by the machine you will feed. All numbers here are for iron."
+   ],
+   "es_es": [
+    "¿Mineral, crudo o bloque?",
+    "Fortuna da mineral crudo (Fortuna III: 2,2 de hierro u oro crudo por mineral en promedio). Toque de seda da el bloque. Cada máquina paga distinto por cada uno, así que elegí el pico según la máquina que vas a alimentar. Todos los números acá son del hierro."
+   ],
+   "sources": [
+    "https://minecraft.wiki/w/Fortune",
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/processing/iron/dust/from_raw_ore.json",
+    "repo:docs/design/mod-pingpong.md"
+   ]
+  },
+  {
+   "key": "op_create",
+   "deps": [
+    "op_welcome"
+   ],
+   "type": "item",
+   "item": "create:crushed_raw_iron",
+   "count": 8,
+   "layout": {
+    "x": 3,
+    "y": 0,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Create: crush and wash",
+    "Crushing Wheels turn raw iron into 1 Crushed Raw Iron (plus a 75% chance of an XP nugget). Smelt it for 1 ingot, or wash it with a fan for 9 nuggets and a 75% chance of redstone. Silk-touched blocks crush a bit better: 1.75 per stone ore, 2.25 per deepslate ore."
+   ],
+   "es_es": [
+    "Create: triturar y lavar",
+    "Las Ruedas trituradoras convierten hierro crudo en 1 Hierro crudo triturado (más 75% de chance de una pepita de XP). Fundilo por 1 lingote, o lavalo con un ventilador por 9 pepitas y 75% de chance de redstone. Los bloques con Toque de seda rinden un poco más: 1,75 por mineral de piedra, 2,25 por el de pizarra."
+   ],
+   "sources": [
+    "jar:create-1.21.1-6.0.10.jar:data/create/recipe/crushing/raw_iron.json",
+    "jar:create-1.21.1-6.0.10.jar:data/create/recipe/splashing/crushed_raw_iron.json",
+    "jar:create-1.21.1-6.0.10.jar:data/create/recipe/crushing/iron_ore.json",
+    "jar:create-1.21.1-6.0.10.jar:data/create/recipe/crushing/deepslate_iron_ore.json"
+   ]
+  },
+  {
+   "key": "op_ie",
+   "deps": [
+    "op_create"
+   ],
+   "type": "item",
+   "item": "immersiveengineering:dust_iron",
+   "count": 8,
+   "layout": {
+    "x": 6,
+    "y": 0,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Immersive Engineering",
+    "The Crusher makes 2 dusts per ore block but only 1.33 per raw ore. The Arc Furnace smelts an ore block into 2 ingots plus slag, and a raw ore into 1.5 ingots on average: with Fortune that is 3.3 ingots per ore, no dust step."
+   ],
+   "es_es": [
+    "Immersive Engineering",
+    "La Trituradora da 2 polvos por bloque de mineral pero sólo 1,33 por crudo. El Horno de arco funde un bloque en 2 lingotes más escoria, y un crudo en 1,5 lingotes en promedio: con Fortuna son 3,3 lingotes por mineral, sin pasar por polvo."
+   ],
+   "sources": [
+    "jar:ImmersiveEngineering-1.21.1-12.4.2-194.jar:data/immersiveengineering/recipe/crusher/ore_iron.json",
+    "jar:ImmersiveEngineering-1.21.1-12.4.2-194.jar:data/immersiveengineering/recipe/crusher/raw_ore_iron.json",
+    "jar:ImmersiveEngineering-1.21.1-12.4.2-194.jar:data/immersiveengineering/recipe/arcfurnace/ore_iron.json",
+    "jar:ImmersiveEngineering-1.21.1-12.4.2-194.jar:data/immersiveengineering/recipe/arcfurnace/raw_ore_iron.json"
+   ]
+  },
+  {
+   "key": "op_mi",
+   "deps": [
+    "op_ie"
+   ],
+   "type": "item",
+   "item": "modern_industrialization:iron_dust",
+   "count": 8,
+   "layout": {
+    "x": 9,
+    "y": 0,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Modern Industrialization: Silk Touch wins",
+    "The Macerator turns an ore block into 3 raw ores, and each raw into 1.5 dust on average. Silk Touch: 4.5 dust per ore. Fortune: 3.3. The steam Forge Hammer gives 2 raw per ore, 3 with a Hammer tool in its slot."
+   ],
+   "es_es": [
+    "Modern Industrialization: gana el Toque de seda",
+    "El Macerador convierte un bloque en 3 crudos, y cada crudo en 1,5 polvos en promedio. Toque de seda: 4,5 polvos por mineral. Fortuna: 3,3. El Martillo de forja a vapor da 2 crudos por mineral, 3 con un Martillo en su ranura."
+   ],
+   "sources": [
+    "jar:Modern-Industrialization-2.5.6.jar:data/modern_industrialization/recipe/materials/iron/macerator/ore_to_raw.json",
+    "jar:Modern-Industrialization-2.5.6.jar:data/modern_industrialization/recipe/materials/iron/macerator/raw_metal.json",
+    "jar:Modern-Industrialization-2.5.6.jar:data/modern_industrialization/recipe/materials/iron/forge_hammer/ore_to_raw_metal.json",
+    "jar:Modern-Industrialization-2.5.6.jar:data/modern_industrialization/recipe/materials/iron/forge_hammer/ore_to_raw_metal_with_tool.json"
+   ]
+  },
+  {
+   "key": "op_eio",
+   "deps": [
+    "op_create"
+   ],
+   "type": "item",
+   "item": "enderio:sag_mill",
+   "optional": true,
+   "layout": {
+    "x": 6,
+    "y": -2.5,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Ender IO SAG Mill",
+    "A raw ore gives 1.8 powder on average (Fortune: about 4 per ore), while an ore block only gives 1.33 raw. Grinding Balls in the mill add bonus output and speed. Keep Fortune for this one."
+   ],
+   "es_es": [
+    "Molino SAG de Ender IO",
+    "Un crudo da 1,8 polvos en promedio (con Fortuna, unos 4 por mineral), mientras que un bloque sólo da 1,33 crudos. Las Bolas de molienda suman salida extra y velocidad. Acá conviene Fortuna."
+   ],
+   "sources": [
+    "jar:enderio-8.2.11-beta.jar:data/enderio/recipe/sag_milling/raw_iron.json",
+    "jar:enderio-8.2.11-beta.jar:data/enderio/recipe/sag_milling/iron_ore.json",
+    "jar:enderio-8.2.11-beta.jar:assets/enderio/lang/en_us.json#item.enderio.dark_steel_grinding_ball"
+   ]
+  },
+  {
+   "key": "op_aa",
+   "deps": [
+    "op_create"
+   ],
+   "type": "item",
+   "item": "actuallyadditions:crusher",
+   "optional": true,
+   "layout": {
+    "x": 3,
+    "y": -2.5,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Actually Additions Crusher",
+    "An early electric option: an iron ore block becomes 2 raw iron with a 20% chance of raw gold. Fine before Fortune III, then outgrown."
+   ],
+   "es_es": [
+    "Trituradora de Actually Additions",
+    "Una opción eléctrica temprana: un bloque de hierro da 2 crudos con 20% de chance de oro crudo. Sirve antes de Fortuna III; después queda chica."
+   ],
+   "sources": [
+    "jar:actuallyadditions-1.3.26+mc1.21.1.jar:data/actuallyadditions/recipe/crushing/iron_ore.json",
+    "jar:actuallyadditions-1.3.26+mc1.21.1.jar:data/actuallyadditions/recipe/crusher.json"
+   ]
+  },
+  {
+   "key": "op_mek",
+   "deps": [
+    "op_mi"
+   ],
+   "type": "item",
+   "item": "mekanism:enrichment_chamber",
+   "layout": {
+    "x": 12,
+    "y": 0,
+    "size": 1.5,
+    "shape": "hexagon"
+   },
+   "en_us": [
+    "Mekanism: 2 to 5 per ore",
+    "Per ore block Mekanism gives 2, 3, 4 or 5 ingots by tier; per raw ore about 1.33, 2, 2.67 or 3.33. With Fortune III that is roughly 2.9, 4.4, 5.9 or 7.3 per ore: raw wins at every tier. The details live in the Mekanism ore chapter."
+   ],
+   "es_es": [
+    "Mekanism: de 2 a 5 por mineral",
+    "Por bloque Mekanism da 2, 3, 4 o 5 lingotes según el nivel; por crudo, unos 1,33, 2, 2,67 o 3,33. Con Fortuna III son más o menos 2,9, 4,4, 5,9 o 7,3 por mineral: el crudo gana en todos los niveles. El detalle está en el capítulo de minerales de Mekanism."
+   ],
+   "sources": [
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/processing/iron/dust/from_ore.json",
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/processing/iron/dust/from_raw_ore.json",
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/processing/iron/clump/from_raw_ore.json",
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/processing/iron/shard/from_raw_ore.json",
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/processing/iron/slurry/dirty/from_raw_ore.json"
+   ]
+  },
+  {
+   "key": "op_ori",
+   "deps": [
+    "op_mek"
+   ],
+   "type": "item",
+   "item": "oritech:iron_gem",
+   "count": 8,
+   "layout": {
+    "x": 15,
+    "y": 0,
+    "size": 1.5,
+    "shape": "hexagon"
+   },
+   "en_us": [
+    "Oritech: the gem route",
+    "The Fragment Forge turns a raw ore into 1.33 clumps. The Centrifuge makes 1 gem per clump dry, 2 with water, 3 with sulfuric acid, and the Foundry turns 2 gems into 3 ingots. Top of the line: about 6 ingots per raw iron, the richest route in the pack."
+   ],
+   "es_es": [
+    "Oritech: la ruta de las gemas",
+    "La Forja de fragmentos convierte un crudo en 1,33 grumos. La Centrífuga hace 1 gema por grumo en seco, 2 con agua, 3 con ácido sulfúrico, y la Fundición convierte 2 gemas en 3 lingotes. En su punto más alto: unos 6 lingotes por hierro crudo, la ruta más rica del pack."
+   ],
+   "sources": [
+    "jar:oritech-neoforge-1.21.1-1.2.11.jar:data/oritech/recipe/grinder/raw/iron.json",
+    "jar:oritech-neoforge-1.21.1-1.2.11.jar:data/oritech/recipe/centrifuge/clump/iron.json",
+    "jar:oritech-neoforge-1.21.1-1.2.11.jar:data/oritech/recipe/centrifuge/fluid/clump/iron.json",
+    "jar:oritech-neoforge-1.21.1-1.2.11.jar:data/oritech/recipe/centrifuge/fluid/clumpacid/iron.json",
+    "jar:oritech-neoforge-1.21.1-1.2.11.jar:data/oritech/recipe/foundry/alloy/gem/iron.json",
+    "jar:oritech-neoforge-1.21.1-1.2.11.jar:assets/oracle_index/books/oritech/docs/getting_started/fragmenting.mdx"
+   ]
+  },
+  {
+   "key": "op_cheat",
+   "deps": [
+    "op_welcome"
+   ],
+   "type": "checkmark",
+   "icon": "minecraft:paper",
+   "layout": {
+    "x": 0,
+    "y": 3,
+    "size": 1.0,
+    "shape": "circle"
+   },
+   "en_us": [
+    "Cheat sheet",
+    "Ingots per iron ore, Fortune III raw vs Silk Touch block: furnace 2.2 vs 1; Create 2.2 vs 1.75-2.25; IE Arc Furnace 3.3 vs 2; MI Macerator 3.3 vs 4.5; Ender IO about 4 vs 2.4; Mekanism x5 7.3 vs 5; Oritech with acid about 13 vs 12."
+   ],
+   "es_es": [
+    "Machete",
+    "Lingotes por mineral de hierro, crudo con Fortuna III contra bloque con Toque de seda: horno 2,2 contra 1; Create 2,2 contra 1,75-2,25; Horno de arco de IE 3,3 contra 2; Macerador de MI 3,3 contra 4,5; Ender IO unos 4 contra 2,4; Mekanism x5 7,3 contra 5; Oritech con ácido unos 13 contra 12."
+   ],
+   "sources": [
+    "https://minecraft.wiki/w/Fortune",
+    "jar:create-1.21.1-6.0.10.jar:data/create/recipe/crushing/raw_iron.json",
+    "jar:ImmersiveEngineering-1.21.1-12.4.2-194.jar:data/immersiveengineering/recipe/arcfurnace/raw_ore_iron.json",
+    "jar:Modern-Industrialization-2.5.6.jar:data/modern_industrialization/recipe/materials/iron/macerator/ore_to_raw.json",
+    "jar:enderio-8.2.11-beta.jar:data/enderio/recipe/sag_milling/raw_iron.json",
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/processing/iron/slurry/dirty/from_raw_ore.json",
+    "jar:oritech-neoforge-1.21.1-1.2.11.jar:data/oritech/recipe/grinder/ore/iron.json"
+   ]
+  },
+  {
+   "key": "op_byproducts",
+   "deps": [
+    "op_ie"
+   ],
+   "type": "item",
+   "item": "create:crushed_raw_gold",
+   "optional": true,
+   "layout": {
+    "x": 6,
+    "y": 2.5,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Byproducts",
+    "Processing pays extras: Create washing gives redstone from iron, quartz from gold, clay from copper; the IE Crusher sometimes drops nickel dust from iron; Oritech iron yields nickel, and nickel fragmenting is an early platinum source; the AA Crusher gives raw gold from iron."
+   ],
+   "es_es": [
+    "Subproductos",
+    "Procesar paga extras: el lavado de Create da redstone del hierro, cuarzo del oro, arcilla del cobre; la Trituradora de IE a veces da polvo de níquel del hierro; el hierro de Oritech rinde níquel, y fragmentar níquel es una fuente temprana de platino; la Trituradora de AA da oro crudo del hierro."
+   ],
+   "sources": [
+    "jar:create-1.21.1-6.0.10.jar:data/create/recipe/splashing/crushed_raw_iron.json",
+    "jar:create-1.21.1-6.0.10.jar:data/create/recipe/splashing/crushed_raw_gold.json",
+    "jar:ImmersiveEngineering-1.21.1-12.4.2-194.jar:data/immersiveengineering/recipe/crusher/ore_iron.json",
+    "jar:oritech-neoforge-1.21.1-1.2.11.jar:data/oritech/recipe/grinder/ore/iron.json",
+    "jar:oritech-neoforge-1.21.1-1.2.11.jar:assets/oracle_index/books/oritech/docs/getting_started/fragmenting.mdx"
+   ]
+  },
+  {
+   "key": "op_unify",
+   "deps": [
+    "op_welcome"
+   ],
+   "type": "checkmark",
+   "icon": "minecraft:iron_ingot",
+   "layout": {
+    "x": 3,
+    "y": 3,
+    "size": 1.0,
+    "shape": "circle"
+   },
+   "en_us": [
+    "One ingot per metal",
+    "Almost Unified makes every machine output the same ingot, dust or plate for each metal, preferring vanilla, then Create, IE, Mekanism, Oritech, Ender IO, Ad Astra and MI. JEI hides the duplicates. Loot is not unified, but all copies share tags, so they still work in recipes."
+   ],
+   "es_es": [
+    "Un lingote por metal",
+    "Almost Unified hace que toda máquina entregue el mismo lingote, polvo o placa para cada metal, prefiriendo vanilla, después Create, IE, Mekanism, Oritech, Ender IO, Ad Astra y MI. JEI esconde los duplicados. El botín no se unifica, pero todas las copias comparten tags, así que igual sirven en recetas."
+   ],
+   "sources": [
+    "repo:pack/config/almostunified/unification/materials.json"
+   ]
+  },
+  {
+   "key": "op_uraninite",
+   "deps": [
+    "op_byproducts"
+   ],
+   "type": "item",
+   "item": "powah:uraninite",
+   "count": 16,
+   "optional": true,
+   "layout": {
+    "x": 9,
+    "y": 2.5,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Uraninite: energize the ore",
+    "Powah’s Energizing Orb turns a silk-touched uraninite ore into 5 uraninite (dense 10, poor 3). Mined normally, the ore drops 2 raw, about 4.4 with Fortune III, one uraninite each. Energizing wins, by a nose."
+   ],
+   "es_es": [
+    "Uraninita: energizá el mineral",
+    "El Orbe energizante de Powah convierte un mineral de uraninita con Toque de seda en 5 uraninitas (el denso 10, el pobre 3). Picado normal, el mineral suelta 2 crudos, unos 4,4 con Fortuna III, una uraninita cada uno. Energizar gana, por una nariz."
+   ],
+   "sources": [
+    "jar:Powah-6.2.10.jar:data/powah/recipe/energizing/uraninite_from_ore.json",
+    "jar:Powah-6.2.10.jar:data/powah/recipe/energizing/uraninite_from_ore_dense.json",
+    "jar:Powah-6.2.10.jar:data/powah/loot_table/blocks/uraninite_ore.json",
+    "jar:Powah-6.2.10.jar:data/powah/recipe/smelting/uraninite_from_raw.json",
+    "jar:Powah-6.2.10.jar:assets/powah/guides/powah/book/materials/uraninite.md"
+   ]
+  },
+  {
+   "key": "op_dims",
+   "deps": [
+    "op_unify"
+   ],
+   "type": "item",
+   "item": "jamd:portal_block",
+   "optional": true,
+   "layout": {
+    "x": 3,
+    "y": 5.5,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Mining dimensions",
+    "JAMD portals open throwaway mining worlds so your home stays intact. Pack gates: the Overworld mine needs a Calibration Frame (Act II), the Nether mine a Containment Seal (Act IV), the End mine a Horizon Chart (Act IV)."
+   ],
+   "es_es": [
+    "Dimensiones mineras",
+    "Los portales de JAMD abren mundos mineros descartables para que tu casa quede intacta. Puertas del pack: la mina del Overworld pide un Marco de calibración (acto II), la del Nether un Sello de contención (acto IV), la del End una Carta de horizontes (acto IV)."
+   ],
+   "sources": [
+    "repo:pack/kubejs/server_scripts/entrelumen_resource_balance.js",
+    "repo:content/guides/guide_deep_worlds.json"
+   ]
+  },
+  {
+   "key": "op_quarries",
+   "deps": [
+    "op_dims"
+   ],
+   "type": "item",
+   "item": "mekanism:digital_miner",
+   "optional": true,
+   "layout": {
+    "x": 6,
+    "y": 5.5,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Quarries and their gates",
+    "Automated mining comes later: MI's Electric Quarry, IF's Ore Laser Drill and Oritech's Bedrock Extractor need a Spectral Lens (Act IV); the RFTools quarry card and the Mining Gadgets a Power Regulator (Act III). Mekanism's Digital Miner stays native."
+   ],
+   "es_es": [
+    "Canteras y sus puertas",
+    "La minería automática llega después: la Cantera eléctrica de MI, el Taladro láser de IF y el Extractor de roca madre de Oritech piden una Lente espectral (acto IV); la tarjeta de cantera de RFTools y los Mining Gadgets, un Regulador de energía (acto III). El Minero digital de Mekanism queda nativo."
+   ],
+   "sources": [
+    "repo:pack/kubejs/server_scripts/entrelumen_pingpong_balance.js",
+    "repo:pack/kubejs/server_scripts/entrelumen_industrial_balance.js",
+    "repo:pack/kubejs/server_scripts/entrelumen_rftools_balance.js",
+    "repo:docs/research/reference-packs.md"
+   ]
+  },
+  {
+   "key": "op_mastery",
+   "deps": [
+    "op_ori"
+   ],
+   "type": "item",
+   "item": "minecraft:iron_block",
+   "count": 16,
+   "layout": {
+    "x": 18,
+    "y": 0,
+    "size": 2.0,
+    "shape": "octagon"
+   },
+   "en_us": [
+    "Mastery: never smelt raw ore again",
+    "Pick your top route, automate it end to end and feed it with Fortune-mined raw ore (or silk-touched blocks for MI). A chest of raw iron should come out as a small mountain of ingots."
+   ],
+   "es_es": [
+    "Maestría: nunca más fundir crudo",
+    "Elegí tu ruta más alta, automatizala de punta a punta y alimentala con crudo minado con Fortuna (o bloques con Toque de seda para MI). Un cofre de hierro crudo tiene que salir como una montaña de lingotes."
+   ],
+   "sources": [
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/processing/iron/crystal/from_slurry.json",
+    "jar:oritech-neoforge-1.21.1-1.2.11.jar:data/oritech/recipe/foundry/alloy/gem/iron.json"
+   ]
+  }
+ ]
+}

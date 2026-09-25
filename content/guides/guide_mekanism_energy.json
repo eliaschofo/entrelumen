@@ -1,0 +1,561 @@
+{
+ "chapter": "guide_mekanism_energy",
+ "group": "tech",
+ "act": "III",
+ "icon": "mekanismgenerators:turbine_rotor",
+ "title": {
+  "en_us": "Mekanism: energy and reactors",
+  "es_es": "Mekanism: energía y reactores"
+ },
+ "subtitle": {
+  "en_us": "Mekanism Generators from the first heat generator to fission, turbines, fusion and antimatter, plus how to store it all.",
+  "es_es": "Mekanism Generators, del primer generador de calor a la fisión, turbinas, fusión y antimateria, y cómo guardar todo."
+ },
+ "quests": [
+  {
+   "key": "mke_welcome",
+   "deps": [],
+   "type": "checkmark",
+   "icon": "mekanismgenerators:heat_generator",
+   "layout": {
+    "x": 0,
+    "y": 0,
+    "size": 2.0,
+    "shape": "hexagon"
+   },
+   "en_us": [
+    "Power, Mekanism style",
+    "From day-one generators to base-powering reactors. Energy moves through Universal Cables and waits in Energy Cubes or an Induction Matrix. Start small, keep old generators as backup, and plan big reactors in EMI's multiblock planner."
+   ],
+   "es_es": [
+    "Energía al estilo Mekanism",
+    "De generadores del primer día a reactores que mueven una base. La energía viaja por Cables universales y espera en Cubos de energía o una Matriz de inducción. Arrancá chico, guardá los generadores viejos de respaldo y planeá los reactores grandes en el planificador de EMI."
+   ],
+   "sources": [
+    "jar:MekanismGenerators-1.21.1-10.7.19.85.jar:assets/mekanismgenerators/lang/en_us.json#advancements.mekanismgenerators.heat_generator.description",
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:assets/mekanism/lang/en_us.json#description.mekanism.cable",
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:assets/mekanism/lang/en_us.json#description.mekanism.energy_cube"
+   ]
+  },
+  {
+   "key": "mke_heat",
+   "deps": [
+    "mke_welcome"
+   ],
+   "type": "item",
+   "item": "mekanismgenerators:heat_generator",
+   "layout": {
+    "x": 3,
+    "y": 0,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Heat Generator",
+    "Burns lava or any fuel item. Pipe lava in and forget it: a Create Hose Pulley in a lava lake makes it endless."
+   ],
+   "es_es": [
+    "Generador de calor",
+    "Quema lava o cualquier combustible. Metele lava por caño y olvidate: una Polea de manguera de Create en un lago de lava lo vuelve infinito."
+   ],
+   "sources": [
+    "jar:MekanismGenerators-1.21.1-10.7.19.85.jar:assets/mekanismgenerators/lang/en_us.json#description.mekanismgenerators.heat_generator",
+    "jar:MekanismGenerators-1.21.1-10.7.19.85.jar:assets/mekanismgenerators/lang/en_us.json#advancements.mekanismgenerators.heat_generator.description"
+   ]
+  },
+  {
+   "key": "mke_solar",
+   "deps": [
+    "mke_heat"
+   ],
+   "type": "item",
+   "item": "mekanismgenerators:wind_generator",
+   "layout": {
+    "x": 5.5,
+    "y": -2.5,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Solar and wind",
+    "Solar Generators need daylight and open sky; the Advanced one catches more. Wind Generators produce more the higher you build them. No fuel, no babysitting: plant a field early."
+   ],
+   "es_es": [
+    "Solar y eólica",
+    "Los Generadores solares piden luz de día y cielo abierto; el Avanzado junta más. Los Eólicos producen más cuanto más alto los pongas. Sin combustible, sin niñera: plantá un campo temprano."
+   ],
+   "sources": [
+    "jar:MekanismGenerators-1.21.1-10.7.19.85.jar:assets/mekanismgenerators/lang/en_us.json#description.mekanismgenerators.solar_generator",
+    "jar:MekanismGenerators-1.21.1-10.7.19.85.jar:assets/mekanismgenerators/lang/en_us.json#description.mekanismgenerators.advanced_solar_generator",
+    "jar:MekanismGenerators-1.21.1-10.7.19.85.jar:assets/mekanismgenerators/lang/en_us.json#description.mekanismgenerators.wind_generator"
+   ]
+  },
+  {
+   "key": "mke_bio",
+   "deps": [
+    "mke_heat"
+   ],
+   "type": "item",
+   "item": "mekanismgenerators:bio_generator",
+   "optional": true,
+   "layout": {
+    "x": 3,
+    "y": -2.5,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Bio Generator",
+    "The Crusher turns crops, seeds, saplings, flowers and food into Bio Fuel for the Bio Generator. A farm feeding a crusher is renewable power, and bio fuel is also the base of ethene."
+   ],
+   "es_es": [
+    "Generador bio",
+    "La Trituradora convierte cultivos, semillas, brotes, flores y comida en Biocombustible para el Generador bio. Una granja que alimenta una trituradora es energía renovable, y el biocombustible también es la base del etileno."
+   ],
+   "sources": [
+    "jar:MekanismGenerators-1.21.1-10.7.19.85.jar:assets/mekanismgenerators/lang/en_us.json#description.mekanismgenerators.bio_generator",
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/crushing/biofuel/seeds.json",
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/crushing/biofuel/saplings.json"
+   ]
+  },
+  {
+   "key": "mke_gas",
+   "deps": [
+    "mke_heat"
+   ],
+   "type": "item",
+   "item": "mekanismgenerators:gas_burning_generator",
+   "layout": {
+    "x": 5.5,
+    "y": 0,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Gas-Burning Generator",
+    "Burns hydrogen and, much better, ethene: a Pressurized Reaction Chamber turns 2 bio fuel, 10 mB water and 100 mB hydrogen into 100 mB ethene and Substrate. Farm, separator and chamber: a compact fuel plant."
+   ],
+   "es_es": [
+    "Generador a gas",
+    "Quema hidrógeno y, mucho mejor, etileno: una Cámara de reacción presurizada convierte 2 biocombustibles, 10 mB de agua y 100 mB de hidrógeno en 100 mB de etileno y Sustrato. Granja, separador y cámara: una central compacta."
+   ],
+   "sources": [
+    "jar:MekanismGenerators-1.21.1-10.7.19.85.jar:assets/mekanismgenerators/lang/en_us.json#description.mekanismgenerators.gas_burning_generator",
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/reaction/substrate/water_hydrogen.json",
+    "jar:MekanismGenerators-1.21.1-10.7.19.85.jar:assets/mekanismgenerators/lang/en_us.json#advancements.mekanismgenerators.burn_the_gas.description"
+   ]
+  },
+  {
+   "key": "mke_cable",
+   "deps": [
+    "mke_gas"
+   ],
+   "type": "item",
+   "item": "mekanism:basic_energy_cube",
+   "layout": {
+    "x": 8,
+    "y": 0,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Universal Cables and Energy Cubes",
+    "Cables move FE and come in tiers; right-click placed cables with the next alloy to upgrade them. Cubes store energy, charge items and set which sides take or give. A cube by each generator group smooths day and night."
+   ],
+   "es_es": [
+    "Cables universales y Cubos de energía",
+    "Los cables mueven FE y tienen niveles; clic derecho con la aleación siguiente sobre los cables puestos los mejora. Los cubos guardan energía, cargan ítems y eligen qué lados reciben o entregan. Un cubo junto a cada grupo de generadores suaviza día y noche."
+   ],
+   "sources": [
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:assets/mekanism/lang/en_us.json#description.mekanism.cable",
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:assets/mekanism/lang/en_us.json#advancements.mekanism.alloy_upgrading.description",
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:assets/mekanism/lang/en_us.json#description.mekanism.energy_cube",
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:assets/mekanism/lang/en_us.json#advancements.mekanism.energy_cube.description"
+   ]
+  },
+  {
+   "key": "mke_matrix",
+   "deps": [
+    "mke_cable"
+   ],
+   "type": "item",
+   "item": "mekanism:induction_casing",
+   "count": 8,
+   "layout": {
+    "x": 10.5,
+    "y": 0,
+    "size": 1.5,
+    "shape": "hexagon"
+   },
+   "en_us": [
+    "Energized Induction Matrix",
+    "A hollow box of Induction Casing and glass with Induction Ports; Cells inside add capacity, Providers add transfer rate. A configurator flips a port between input and output. The long-term battery; Extras adds higher tiers."
+   ],
+   "es_es": [
+    "Matriz de inducción energizada",
+    "Una caja hueca de Carcasa de inducción y vidrio con Puertos; las Celdas de adentro suman capacidad, los Proveedores suman velocidad. Un configurador alterna un puerto entre entrada y salida. La batería de largo plazo; Extras suma niveles más altos."
+   ],
+   "sources": [
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:assets/mekanism/lang/en_us.json#description.mekanism.induction_casing",
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:assets/mekanism/lang/en_us.json#description.mekanism.induction_cell",
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:assets/mekanism/lang/en_us.json#description.mekanism.induction_provider",
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:assets/mekanism/lang/en_us.json#description.mekanism.induction_port",
+    "jar:mekanism_extras-1.21.1-1.4.1.jar:assets/mekanism_extras/lang/en_us.json#block.mekanism_extras.reinforced_induction_casing"
+   ]
+  },
+  {
+   "key": "mke_jemm",
+   "deps": [
+    "mke_matrix"
+   ],
+   "type": "checkmark",
+   "icon": "mekanism:structural_glass",
+   "layout": {
+    "x": 10.5,
+    "y": -2.5,
+    "size": 1.0,
+    "shape": "circle"
+   },
+   "en_us": [
+    "Plan multiblocks in EMI",
+    "Just Enough Mekanism Multiblocks plans any Mekanism structure in EMI: pick one, set its size, see the block cost, layout and stats (burn rate, steam flow, capacity). A turbine with wrong proportions will not even form, so plan first."
+   ],
+   "es_es": [
+    "Planeá multibloques en EMI",
+    "Just Enough Mekanism Multiblocks planifica cualquier estructura de Mekanism en EMI: elegí una, fijá el tamaño y mirá costo, disposición y estadísticas (consumo, flujo de vapor, capacidad). Una turbina mal proporcionada ni se forma, así que planeá primero."
+   ],
+   "sources": [
+    "jar:JustEnoughMekanismMultiblocks-1.21.1-7.18.jar:assets/jei_mekanism_multiblocks/lang/en_us.json"
+   ]
+  },
+  {
+   "key": "mke_heaters",
+   "deps": [
+    "mke_matrix"
+   ],
+   "type": "item",
+   "item": "mekanism:resistive_heater",
+   "optional": true,
+   "layout": {
+    "x": 13,
+    "y": -2.5,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Heat as a resource",
+    "A Resistive Heater turns power into heat, a Fuelwood Heater burns items, Thermodynamic Conductors carry it. Heat drives the Thermoelectric Boiler. Keep heat blocks away from anything flammable."
+   ],
+   "es_es": [
+    "El calor como recurso",
+    "Un Calentador resistivo convierte energía en calor, un Calentador de leña quema ítems, los Conductores termodinámicos lo llevan. El calor mueve la Caldera termoeléctrica. Mantené los bloques de calor lejos de lo inflamable."
+   ],
+   "sources": [
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:assets/mekanism/lang/en_us.json#description.mekanism.resistive_heater",
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:assets/mekanism/lang/en_us.json#description.mekanism.fuelwood_heater",
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:assets/mekanism/lang/en_us.json#description.mekanism.conductor",
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:assets/mekanism/lang/en_us.json#advancements.mekanism.heat_transport.description"
+   ]
+  },
+  {
+   "key": "mke_boiler",
+   "deps": [
+    "mke_heaters"
+   ],
+   "type": "item",
+   "item": "mekanism:boiler_casing",
+   "count": 8,
+   "optional": true,
+   "layout": {
+    "x": 15.5,
+    "y": -2.5,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Thermoelectric Boiler",
+    "Turns water into steam with Superheating Elements or hot coolant from fission. A full layer of Pressure Dispersers splits water and steam sections; valves are set to input, steam or coolant output. Its steam feeds a turbine."
+   ],
+   "es_es": [
+    "Caldera termoeléctrica",
+    "Convierte agua en vapor con Elementos sobrecalentadores o refrigerante caliente de la fisión. Una capa completa de Dispersores de presión separa agua y vapor; las válvulas se fijan como entrada, salida de vapor o de refrigerante. Su vapor alimenta una turbina."
+   ],
+   "sources": [
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:assets/mekanism/lang/en_us.json#description.mekanism.boiler_casing",
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:assets/mekanism/lang/en_us.json#description.mekanism.boiler_valve",
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:assets/mekanism/lang/en_us.json#description.mekanism.superheating_element",
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:assets/mekanism/lang/en_us.json#description.mekanism.pressure_disperser",
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:assets/mekanism/lang/en_us.json#boiler.mekanism.valve_mode_output_steam"
+   ]
+  },
+  {
+   "key": "mke_turbine",
+   "deps": [
+    "mke_matrix"
+   ],
+   "type": "item",
+   "item": "mekanismgenerators:turbine_rotor",
+   "count": 4,
+   "layout": {
+    "x": 13,
+    "y": 0,
+    "size": 1.5,
+    "shape": "hexagon"
+   },
+   "en_us": [
+    "Industrial Turbine",
+    "Odd width and length; rotors with blades in the middle, a Rotational Complex on top, a full layer of Pressure Dispersers around it, Electromagnetic Coils touching the complex, vents at or above it, Condensers above to return water. Feed it steam from a boiler or a water-cooled reactor."
+   ],
+   "es_es": [
+    "Turbina industrial",
+    "Ancho y largo impares; rotores con aspas en el centro, un Complejo rotacional arriba, una capa completa de Dispersores alrededor, Bobinas electromagnéticas tocando el complejo, ventilaciones a su altura o arriba, Condensadores encima para devolver agua. Dale vapor de una caldera o de un reactor enfriado con agua."
+   ],
+   "sources": [
+    "jar:MekanismGenerators-1.21.1-10.7.19.85.jar:assets/mekanismgenerators/lang/en_us.json#description.mekanismgenerators.turbine_rotor",
+    "jar:MekanismGenerators-1.21.1-10.7.19.85.jar:assets/mekanismgenerators/lang/en_us.json#description.mekanismgenerators.rotational_complex",
+    "jar:MekanismGenerators-1.21.1-10.7.19.85.jar:assets/mekanismgenerators/lang/en_us.json#description.mekanismgenerators.electromagnetic_coil",
+    "jar:MekanismGenerators-1.21.1-10.7.19.85.jar:assets/mekanismgenerators/lang/en_us.json#description.mekanismgenerators.turbine_vent",
+    "jar:MekanismGenerators-1.21.1-10.7.19.85.jar:assets/mekanismgenerators/lang/en_us.json#description.mekanismgenerators.saturating_condenser",
+    "jar:MekanismGenerators-1.21.1-10.7.19.85.jar:assets/mekanismgenerators/lang/en_us.json#turbine.mekanismgenerators.invalid_even_length",
+    "jar:MekanismGenerators-1.21.1-10.7.19.85.jar:assets/mekanismgenerators/lang/en_us.json#turbine.mekanismgenerators.invalid_malformed_dispersers"
+   ]
+  },
+  {
+   "key": "mke_uranium",
+   "deps": [
+    "mke_turbine"
+   ],
+   "type": "item",
+   "item": "mekanism:yellow_cake_uranium",
+   "count": 8,
+   "layout": {
+    "x": 15.5,
+    "y": 0,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Fission fuel",
+    "Uranium becomes Yellow Cake (enrichment), Uranium Oxide (oxidizer), Uranium Hexafluoride (infuser with hydrofluoric acid from fluorite and sulfuric acid) and finally Fissile Fuel (Isotopic Centrifuge). Fluorite sits deep: plan a steady supply."
+   ],
+   "es_es": [
+    "Combustible de fisión",
+    "El uranio pasa a Torta amarilla (enriquecimiento), Óxido de uranio (oxidador), Hexafluoruro de uranio (infusor con ácido fluorhídrico de fluorita y ácido sulfúrico) y al final Combustible fisible (Centrífuga isotópica). La fluorita está profunda: asegurate provisión."
+   ],
+   "sources": [
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/processing/uranium/yellow_cake_uranium.json",
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/processing/uranium/uranium_oxide.json",
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/processing/uranium/hydrofluoric_acid.json",
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/processing/uranium/sulfuric_acid.json",
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/processing/uranium/fissile_fuel.json",
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:assets/mekanism/lang/en_us.json#description.mekanism.fluorite_ore"
+   ]
+  },
+  {
+   "key": "mke_fission",
+   "deps": [
+    "mke_uranium"
+   ],
+   "type": "item",
+   "item": "mekanismgenerators:fission_reactor_casing",
+   "count": 16,
+   "layout": {
+    "x": 18,
+    "y": 0,
+    "size": 1.5,
+    "shape": "hexagon"
+   },
+   "en_us": [
+    "Fission Reactor",
+    "Casing and glass around towers of Fuel Assemblies, each capped by a Control Rod. Ports switch with a configurator between input, coolant and waste. Water gives steam; sodium goes through a boiler. Start low, raise slowly, know where SCRAM is: past 100% damage it melts down."
+   ],
+   "es_es": [
+    "Reactor de fisión",
+    "Carcasa y vidrio alrededor de torres de Ensambles de combustible, cada una con una Barra de control arriba. Los puertos se alternan con configurador entre entrada, refrigerante y residuos. El agua da vapor; el sodio pasa por una caldera. Arrancá bajo, subí despacio y sabé dónde está el SCRAM: pasado el 100% de daño, se funde."
+   ],
+   "sources": [
+    "jar:MekanismGenerators-1.21.1-10.7.19.85.jar:assets/mekanismgenerators/lang/en_us.json#description.mekanismgenerators.fission_reactor_casing",
+    "jar:MekanismGenerators-1.21.1-10.7.19.85.jar:assets/mekanismgenerators/lang/en_us.json#description.mekanismgenerators.fission_fuel_assembly",
+    "jar:MekanismGenerators-1.21.1-10.7.19.85.jar:assets/mekanismgenerators/lang/en_us.json#description.mekanismgenerators.control_rod_assembly",
+    "jar:MekanismGenerators-1.21.1-10.7.19.85.jar:assets/mekanismgenerators/lang/en_us.json#description.mekanismgenerators.fission_reactor_port",
+    "jar:MekanismGenerators-1.21.1-10.7.19.85.jar:assets/mekanismgenerators/lang/en_us.json#fission.mekanismgenerators.scram",
+    "jar:MekanismGenerators-1.21.1-10.7.19.85.jar:assets/mekanismgenerators/lang/en_us.json#fission.mekanismgenerators.port_mode_output_waste",
+    "jar:MekanismGenerators-1.21.1-10.7.19.85.jar:assets/mekanismgenerators/lang/en_us.json#description.mekanismgenerators.reactor.logic.damaged"
+   ]
+  },
+  {
+   "key": "mke_waste",
+   "deps": [
+    "mke_fission"
+   ],
+   "type": "item",
+   "item": "mekanism:radioactive_waste_barrel",
+   "layout": {
+    "x": 18,
+    "y": 2.5,
+    "size": 1.0,
+    "shape": "circle"
+   },
+   "en_us": [
+    "Nuclear waste and radiation",
+    "Never let waste pile up: pipe it to a Radioactive Waste Barrel or process it into Plutonium and Polonium. A Logic Adapter can stop the reactor at a critical waste level. Geiger Counter for the area, Dosimeter for you, Hazmat Suit to survive leaks."
+   ],
+   "es_es": [
+    "Residuos nucleares y radiación",
+    "Nunca dejes que se acumulen residuos: mandalos por caño a un Barril de residuos o procesalos en Plutonio y Polonio. Un Adaptador lógico puede frenar el reactor con residuos críticos. Contador Geiger para la zona, Dosímetro para vos, Traje hazmat para sobrevivir fugas."
+   ],
+   "sources": [
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:assets/mekanism/lang/en_us.json#description.mekanism.radioactive_waste_barrel",
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/processing/lategame/plutonium.json",
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/processing/lategame/polonium.json",
+    "jar:MekanismGenerators-1.21.1-10.7.19.85.jar:assets/mekanismgenerators/lang/en_us.json#description.mekanismgenerators.reactor.logic.critical_waste_level",
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:assets/mekanism/lang/en_us.json#advancements.mekanism.radiation_prevention.description",
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:assets/mekanism/lang/en_us.json#advancements.mekanism.personal_radiation.description"
+   ]
+  },
+  {
+   "key": "mke_fusion",
+   "deps": [
+    "mke_fission"
+   ],
+   "type": "item",
+   "item": "mekanismgenerators:fusion_reactor_controller",
+   "layout": {
+    "x": 20.5,
+    "y": 0,
+    "size": 1.5,
+    "shape": "hexagon"
+   },
+   "en_us": [
+    "Fusion Reactor",
+    "Deuterium from heavy water (pump plus Filter Upgrade, then separator), tritium from lithium (Solar Neutron Activator), mixed into D-T fuel. A Hohlraum (gold dust infused with carbon) holding that fuel goes into the controller; charged lasers into the Laser Focus Matrix ignite it."
+   ],
+   "es_es": [
+    "Reactor de fusión",
+    "Deuterio del agua pesada (bomba con Mejora de filtro, después separador), tritio del litio (Activador de neutrones solar), mezclados en combustible D-T. Un Hohlraum (polvo de oro infusionado con carbono) con ese combustible va en el controlador; láseres cargados en la Matriz de enfoque lo encienden."
+   ],
+   "sources": [
+    "jar:MekanismGenerators-1.21.1-10.7.19.85.jar:assets/mekanismgenerators/lang/en_us.json#description.mekanismgenerators.fusion_reactor_controller",
+    "jar:MekanismGenerators-1.21.1-10.7.19.85.jar:assets/mekanismgenerators/lang/en_us.json#description.mekanismgenerators.laser_focus_matrix",
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:assets/mekanism/lang/en_us.json#info.mekanism.jei.heavy_water",
+    "jar:MekanismGenerators-1.21.1-10.7.19.85.jar:data/mekanismgenerators/recipe/activating/tritium.json",
+    "jar:MekanismGenerators-1.21.1-10.7.19.85.jar:data/mekanismgenerators/recipe/chemical_infusing/fusion_fuel.json",
+    "jar:MekanismGenerators-1.21.1-10.7.19.85.jar:data/mekanismgenerators/recipe/hohlraum.json",
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:assets/mekanism/lang/en_us.json#description.mekanism.laser_amplifier",
+    "jar:MekanismGenerators-1.21.1-10.7.19.85.jar:assets/mekanismgenerators/lang/en_us.json#reactor.mekanismgenerators.stats.active"
+   ]
+  },
+  {
+   "key": "mke_sps",
+   "deps": [
+    "mke_fusion"
+   ],
+   "type": "item",
+   "item": "mekanism:sps_casing",
+   "count": 8,
+   "optional": true,
+   "layout": {
+    "x": 20.5,
+    "y": -2.5,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Supercritical Phase Shifter",
+    "Turns polonium into antimatter with enormous energy through Supercharged Coils on its ports. Antimatter feeds the Nucleosynthesizer and the MekaSuit's gravitational module. Build it only with a serious power plant behind."
+   ],
+   "es_es": [
+    "Desplazador de fase supercrítico",
+    "Convierte polonio en antimateria con muchísima energía a través de Bobinas sobrecargadas en sus puertos. La antimateria alimenta el Nucleosintetizador y el módulo gravitacional de la MekaSuit. Armalo sólo con una central seria atrás."
+   ],
+   "sources": [
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:assets/mekanism/lang/en_us.json#description.mekanism.sps_casing",
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:assets/mekanism/lang/en_us.json#description.mekanism.sps_port",
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:assets/mekanism/lang/en_us.json#description.mekanism.supercharged_coil",
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:assets/mekanism/lang/en_us.json#description.mekanism.antiprotonic_nucleosynthesizer",
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:assets/mekanism/lang/en_us.json#description.mekanism.gravitational_modulating_unit",
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:assets/mekanism/lang/en_us.json#advancements.mekanism.antimatter.description"
+   ]
+  },
+  {
+   "key": "mke_naquadah",
+   "deps": [
+    "mke_fusion"
+   ],
+   "type": "item",
+   "item": "mekanism_extras:naquadah_reactor_controller",
+   "optional": true,
+   "layout": {
+    "x": 20.5,
+    "y": 2.5,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Naquadah Reactor (Extras)",
+    "Its own casing, ports and radiation-proof glass, running on naquadah fuel from the Extras ore line. An optional late alternative to fusion; check the planner before building."
+   ],
+   "es_es": [
+    "Reactor de naquadah (Extras)",
+    "Con carcasa, puertos y vidrio antirradiación propios, funciona con combustible de naquadah de la línea de Extras. Una alternativa tardía y opcional a la fusión; mirá el planificador antes de armarlo."
+   ],
+   "sources": [
+    "jar:mekanism_extras-1.21.1-1.4.1.jar:assets/mekanism_extras/lang/en_us.json#description.mekanism_extras.naquadah_reactor_controller",
+    "jar:mekanism_extras-1.21.1-1.4.1.jar:assets/mekanism_extras/lang/en_us.json#description.mekanism_extras.lead_coated_glass"
+   ]
+  },
+  {
+   "key": "mke_pack",
+   "deps": [
+    "mke_cable"
+   ],
+   "type": "checkmark",
+   "icon": "mekanism:creative_energy_cube",
+   "layout": {
+    "x": 8,
+    "y": 2.5,
+    "size": 1.0,
+    "shape": "gear"
+   },
+   "en_us": [
+    "Mekanism power in this pack",
+    "Generators, matrix and reactors are native: no act component needed. Only the Creative Energy Cube costs Luminosities. The Energy chapter compares Mekanism with the other power mods."
+   ],
+   "es_es": [
+    "La energía de Mekanism en este pack",
+    "Generadores, matriz y reactores son nativos: no piden componentes de acto. Sólo el Cubo creativo cuesta Luminosidades. El capítulo de Energía compara Mekanism con los otros mods de energía."
+   ],
+   "sources": [
+    "repo:pack/kubejs/server_scripts/entrelumen_luminous_balance.js",
+    "repo:docs/research/reference-packs.md"
+   ]
+  },
+  {
+   "key": "mke_mastery",
+   "deps": [
+    "mke_fusion",
+    "mke_boiler"
+   ],
+   "type": "item",
+   "item": "mekanismgenerators:laser_focus_matrix",
+   "layout": {
+    "x": 23.5,
+    "y": 0,
+    "size": 2.0,
+    "shape": "octagon"
+   },
+   "en_us": [
+    "Mastery: fusion",
+    "Fusion with a turbine on its steam and a matrix storing the output: energy stops being a problem. Keep the old fission reactor for plutonium and polonium; the SPS still needs them."
+   ],
+   "es_es": [
+    "Maestría: fusión",
+    "Fusión con una turbina en su vapor y una matriz guardando la salida: la energía deja de ser un problema. Guardá el reactor de fisión viejo para plutonio y polonio; el SPS los sigue necesitando."
+   ],
+   "sources": [
+    "jar:MekanismGenerators-1.21.1-10.7.19.85.jar:assets/mekanismgenerators/lang/en_us.json#description.mekanismgenerators.fusion_reactor_controller",
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:assets/mekanism/lang/en_us.json#description.mekanism.induction_cell"
+   ]
+  }
+ ]
+}

@@ -1,0 +1,544 @@
+{
+ "chapter": "guide_pneumaticcraft",
+ "group": "tech",
+ "act": "III",
+ "icon": "pneumaticcraft:pressure_chamber_valve",
+ "title": {
+  "en_us": "PneumaticCraft: Repressurized",
+  "es_es": "PneumaticCraft: Repressurized"
+ },
+ "subtitle": {
+  "en_us": "Compressed air as power, the Pressure Chamber, heat, oil, printed circuit boards, drones and logistics frames.",
+  "es_es": "Aire comprimido como energía, la Cámara de presión, calor, petróleo, placas de circuito, drones y marcos logísticos."
+ },
+ "quests": [
+  {
+   "key": "pnc_welcome",
+   "deps": [],
+   "type": "checkmark",
+   "icon": "pneumaticcraft:pressure_gauge",
+   "layout": {
+    "x": 0,
+    "y": 0,
+    "size": 2.0,
+    "shape": "hexagon"
+   },
+   "en_us": [
+    "Running on air",
+    "Compressors make air (measured in bar), tubes carry it, machines spend it. Add real heat, crude oil, a chemistry line to plastic and circuit boards, and programmable drones. The manual (book plus compressed iron) unlocks pages with advancements. Its PCB goes into the Routing Matrix (III) and the Ark Bus (V)."
+   ],
+   "es_es": [
+    "Andar a aire",
+    "Los compresores hacen aire (medido en bar), los tubos lo llevan, las máquinas lo gastan. Sumale calor real, petróleo, una línea química hasta plástico y placas de circuito, y drones programables. El manual (libro más hierro comprimido) desbloquea páginas con logros. Su placa va en la Matriz de distribución (III) y el Bus del Arca (V)."
+   ],
+   "sources": [
+    "jar:pneumaticcraft-repressurized-8.2.23+mc1.21.1.jar:assets/pneumaticcraft/patchouli_books/book/en_us/entries/base_concepts/getting_started.json",
+    "jar:pneumaticcraft-repressurized-8.2.23+mc1.21.1.jar:data/patchouli/recipe/guide_book.json",
+    "repo:pack/kubejs/server_scripts/entrelumen_integration_recipes.js"
+   ]
+  },
+  {
+   "key": "pnc_iron",
+   "deps": [
+    "pnc_welcome"
+   ],
+   "type": "item",
+   "item": "pneumaticcraft:ingot_iron_compressed",
+   "count": 16,
+   "layout": {
+    "x": 3,
+    "y": 0,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Compressed Iron: blow it up",
+    "No ores here. Throw iron ingots on the ground and blow them up with TNT: they become Compressed Iron, losing about 20%. The Pressure Chamber later does it without loss. Start with a stack of iron and a stack of stone."
+   ],
+   "es_es": [
+    "Hierro comprimido: hacelo volar",
+    "Acá no hay minerales. Tirá lingotes de hierro al piso y volalos con TNT: se vuelven Hierro comprimido, perdiendo cerca del 20%. Después la Cámara de presión lo hace sin pérdida. Arrancá con un stack de hierro y uno de piedra."
+   ],
+   "sources": [
+    "jar:pneumaticcraft-repressurized-8.2.23+mc1.21.1.jar:assets/pneumaticcraft/patchouli_books/book/en_us/entries/base_concepts/basic_materials.json",
+    "jar:pneumaticcraft-repressurized-8.2.23+mc1.21.1.jar:assets/pneumaticcraft/patchouli_books/book/en_us/entries/base_concepts/getting_started.json"
+   ]
+  },
+  {
+   "key": "pnc_pressure",
+   "deps": [
+    "pnc_iron"
+   ],
+   "type": "checkmark",
+   "icon": "pneumaticcraft:pressure_tube",
+   "layout": {
+    "x": 3,
+    "y": -2.5,
+    "size": 1.0,
+    "shape": "circle"
+   },
+   "en_us": [
+    "How pressure works",
+    "Pressure is air divided by volume, minus one, in bar; air flows high to low. Open faces leak with a hiss: close them with the Pneumatic Wrench. Tier 1 machines resist 5 bar, tier 1.5 up to 10, tier 2 up to 20. Volume Upgrades add capacity."
+   ],
+   "es_es": [
+    "Cómo funciona la presión",
+    "La presión es aire dividido volumen, menos uno, en bar; el aire va de alta a baja. Las caras abiertas pierden con un siseo: cerralas con la Llave neumática. Las máquinas de nivel 1 aguantan 5 bar, las de 1,5 hasta 10, las de 2 hasta 20. Las Mejoras de volumen suman capacidad."
+   ],
+   "sources": [
+    "jar:pneumaticcraft-repressurized-8.2.23+mc1.21.1.jar:assets/pneumaticcraft/patchouli_books/book/en_us/entries/base_concepts/pressure.json",
+    "jar:pneumaticcraft-repressurized-8.2.23+mc1.21.1.jar:assets/pneumaticcraft/patchouli_books/book/en_us/entries/base_concepts/pressure_tiers.json",
+    "jar:pneumaticcraft-repressurized-8.2.23+mc1.21.1.jar:assets/pneumaticcraft/patchouli_books/book/en_us/entries/tubes/pressure_tubes.json"
+   ]
+  },
+  {
+   "key": "pnc_compressor",
+   "deps": [
+    "pnc_iron"
+   ],
+   "type": "item",
+   "item": "pneumaticcraft:air_compressor",
+   "layout": {
+    "x": 5.5,
+    "y": 0,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Air Compressor and tubes",
+    "Burns any furnace fuel for a base 10 mL of air per tick (lava goes to the Liquid Compressor). Pressure Tubes carry air; a Pressure Gauge reads it. Other compressors: Flux (FE in, needs cooling), Thermal, Solar, Liquid, Advanced."
+   ],
+   "es_es": [
+    "Compresor de aire y tubos",
+    "Quema cualquier combustible de horno por 10 mL de aire por tick de base (la lava va al Compresor líquido). Los Tubos de presión llevan el aire; un Manómetro lo lee. Otros compresores: de Flux (entra FE, pide refrigeración), Térmico, Solar, Líquido, Avanzado."
+   ],
+   "sources": [
+    "jar:pneumaticcraft-repressurized-8.2.23+mc1.21.1.jar:assets/pneumaticcraft/patchouli_books/book/en_us/entries/compressors/air_compressor.json",
+    "jar:pneumaticcraft-repressurized-8.2.23+mc1.21.1.jar:assets/pneumaticcraft/patchouli_books/book/en_us/entries/compressors/flux_compressor.json",
+    "jar:pneumaticcraft-repressurized-8.2.23+mc1.21.1.jar:assets/pneumaticcraft/patchouli_books/book/en_us/entries/compressors/thermal_compressor.json",
+    "jar:pneumaticcraft-repressurized-8.2.23+mc1.21.1.jar:assets/pneumaticcraft/patchouli_books/book/en_us/entries/tubes/pressure_tubes.json"
+   ]
+  },
+  {
+   "key": "pnc_chamber",
+   "deps": [
+    "pnc_compressor"
+   ],
+   "type": "item",
+   "item": "pneumaticcraft:pressure_chamber_valve",
+   "layout": {
+    "x": 8,
+    "y": 0,
+    "size": 1.5,
+    "shape": "hexagon"
+   },
+   "en_us": [
+    "Pressure Chamber",
+    "A hollow 3x3x3 to 5x5x5 box of walls or glass, with a Valve for air and two Interfaces for items in and out. Under pressure it makes lossless Compressed Iron, etching acid, Empty PCBs and more. It stores a lot of air: a battery too."
+   ],
+   "es_es": [
+    "Cámara de presión",
+    "Una caja hueca de 3x3x3 a 5x5x5 de paredes o vidrio, con una Válvula para el aire y dos Interfaces para meter y sacar ítems. Con presión hace Hierro comprimido sin pérdida, ácido de grabado, Placas vacías y más. Guarda mucho aire: también sirve de batería."
+   ],
+   "sources": [
+    "jar:pneumaticcraft-repressurized-8.2.23+mc1.21.1.jar:assets/pneumaticcraft/patchouli_books/book/en_us/entries/manufacturing/pressure_chamber.json",
+    "jar:pneumaticcraft-repressurized-8.2.23+mc1.21.1.jar:data/pneumaticcraft/recipe/pressure_chamber/compressed_iron_ingot.json",
+    "jar:pneumaticcraft-repressurized-8.2.23+mc1.21.1.jar:assets/pneumaticcraft/patchouli_books/book/en_us/entries/base_concepts/basic_materials.json"
+   ]
+  },
+  {
+   "key": "pnc_heat",
+   "deps": [
+    "pnc_chamber"
+   ],
+   "type": "checkmark",
+   "icon": "pneumaticcraft:heat_sink",
+   "layout": {
+    "x": 8,
+    "y": -2.5,
+    "size": 1.0,
+    "shape": "circle"
+   },
+   "en_us": [
+    "Heat",
+    "Heat flows hot to cold, faster across big gaps and through conductive blocks like Compressed Iron Blocks. Lava, magma, ice and water are sources that change when drained. Heat Sinks cool, the Vortex Tube splits hot and cold. Some machines like heat, compressors and the dynamo hate it."
+   ],
+   "es_es": [
+    "Calor",
+    "El calor va de caliente a frío, más rápido con diferencias grandes y por bloques conductores como los de Hierro comprimido. Lava, magma, hielo y agua son fuentes que cambian al vaciarse. Los Disipadores enfrían, el Tubo vórtice separa caliente y frío. Algunas máquinas quieren calor; los compresores y el dínamo lo odian."
+   ],
+   "sources": [
+    "jar:pneumaticcraft-repressurized-8.2.23+mc1.21.1.jar:assets/pneumaticcraft/patchouli_books/book/en_us/entries/base_concepts/heat.json",
+    "jar:pneumaticcraft-repressurized-8.2.23+mc1.21.1.jar:assets/pneumaticcraft/patchouli_books/book/en_us/entries/base_concepts/heat_sources.json",
+    "jar:pneumaticcraft-repressurized-8.2.23+mc1.21.1.jar:assets/pneumaticcraft/patchouli_books/book/en_us/entries/machines/heat_sink.json",
+    "jar:pneumaticcraft-repressurized-8.2.23+mc1.21.1.jar:assets/pneumaticcraft/patchouli_books/book/en_us/entries/machines/vortex_tube.json"
+   ]
+  },
+  {
+   "key": "pnc_oil",
+   "deps": [
+    "pnc_chamber"
+   ],
+   "type": "item",
+   "item": "pneumaticcraft:seismic_sensor",
+   "layout": {
+    "x": 10.5,
+    "y": 0,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Crude oil",
+    "PneumaticCraft's only worldgen: oil lakes, mostly deep. A Seismic Sensor on the ground says if oil is below and how deep; a Gas Lift drills down and pumps it up. Oil becomes fuels, plastic and lubricant."
+   ],
+   "es_es": [
+    "Petróleo crudo",
+    "La única generación de mundo de PneumaticCraft: lagos de petróleo, casi siempre profundos. Un Sensor sísmico en el piso dice si hay petróleo abajo y a qué profundidad; un Elevador de gas perfora y lo bombea. El petróleo se vuelve combustibles, plástico y lubricante."
+   ],
+   "sources": [
+    "jar:pneumaticcraft-repressurized-8.2.23+mc1.21.1.jar:assets/pneumaticcraft/patchouli_books/book/en_us/entries/base_concepts/oil.json",
+    "jar:pneumaticcraft-repressurized-8.2.23+mc1.21.1.jar:assets/pneumaticcraft/patchouli_books/book/en_us/entries/tools/seismic_sensor.json",
+    "jar:pneumaticcraft-repressurized-8.2.23+mc1.21.1.jar:assets/pneumaticcraft/patchouli_books/book/en_us/entries/machines/gas_lift.json"
+   ]
+  },
+  {
+   "key": "pnc_refinery",
+   "deps": [
+    "pnc_oil"
+   ],
+   "type": "item",
+   "item": "pneumaticcraft:plastic",
+   "count": 16,
+   "layout": {
+    "x": 13,
+    "y": 0,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Refinery and plastic",
+    "The Refinery (controller plus 2 to 4 stacked outputs) needs 100 C or more; more outputs, more products. The Thermopneumatic Processing Plant turns LPG and coal, or biodiesel and charcoal, into molten plastic that hardens into sheets. No oil nearby? Biodiesel from yeast, vegetable oil and ethanol."
+   ],
+   "es_es": [
+    "Refinería y plástico",
+    "La Refinería (controlador más 2 a 4 salidas apiladas) pide 100 C o más; más salidas, más productos. La Planta termoneumática convierte GLP y carbón, o biodiésel y carbón vegetal, en plástico fundido que se endurece en láminas. ¿Sin petróleo cerca? Biodiésel de levadura, aceite vegetal y etanol."
+   ],
+   "sources": [
+    "jar:pneumaticcraft-repressurized-8.2.23+mc1.21.1.jar:assets/pneumaticcraft/patchouli_books/book/en_us/entries/manufacturing/refinery.json",
+    "jar:pneumaticcraft-repressurized-8.2.23+mc1.21.1.jar:assets/pneumaticcraft/patchouli_books/book/en_us/entries/components/plastic.json",
+    "jar:pneumaticcraft-repressurized-8.2.23+mc1.21.1.jar:assets/pneumaticcraft/patchouli_books/book/en_us/entries/renewables/overview.json",
+    "jar:pneumaticcraft-repressurized-8.2.23+mc1.21.1.jar:assets/pneumaticcraft/patchouli_books/book/en_us/entries/renewables/vegetable_oil.json"
+   ]
+  },
+  {
+   "key": "pnc_pcb",
+   "deps": [
+    "pnc_refinery"
+   ],
+   "type": "item",
+   "item": "pneumaticcraft:printed_circuit_board",
+   "count": 4,
+   "layout": {
+    "x": 15.5,
+    "y": 0,
+    "size": 1.5,
+    "shape": "hexagon"
+   },
+   "en_us": [
+    "Printed Circuit Board",
+    "Empty PCB from the Pressure Chamber, exposed in a UV Light Box, etched in an Etching Tank, then crafted with capacitors and transistors. The UV box needs a PCB Blueprint, never crafted: trade for it via Amadron or a Mechanic villager. Failed boards go back to empty in a blast furnace."
+   ],
+   "es_es": [
+    "Placa de circuito impreso",
+    "Placa vacía de la Cámara de presión, expuesta en una Caja de luz UV, grabada en un Tanque de grabado y crafteada con capacitores y transistores. La caja UV pide un Plano de placa que nunca se craftea: se consigue con Amadron o un aldeano Mecánico. Las placas fallidas vuelven a vacías en un alto horno."
+   ],
+   "sources": [
+    "jar:pneumaticcraft-repressurized-8.2.23+mc1.21.1.jar:assets/pneumaticcraft/patchouli_books/book/en_us/entries/components/pcb.json",
+    "jar:pneumaticcraft-repressurized-8.2.23+mc1.21.1.jar:assets/pneumaticcraft/patchouli_books/book/en_us/entries/components/pcb_blueprint.json",
+    "jar:pneumaticcraft-repressurized-8.2.23+mc1.21.1.jar:assets/pneumaticcraft/patchouli_books/book/en_us/entries/manufacturing/uv_light_box.json",
+    "jar:pneumaticcraft-repressurized-8.2.23+mc1.21.1.jar:assets/pneumaticcraft/patchouli_books/book/en_us/entries/manufacturing/etching_tank.json",
+    "jar:pneumaticcraft-repressurized-8.2.23+mc1.21.1.jar:data/pneumaticcraft/recipe/printed_circuit_board.json",
+    "jar:pneumaticcraft-repressurized-8.2.23+mc1.21.1.jar:data/pneumaticcraft/recipe/pressure_chamber/empty_pcb.json"
+   ]
+  },
+  {
+   "key": "pnc_pack",
+   "deps": [
+    "pnc_pcb"
+   ],
+   "type": "checkmark",
+   "icon": "entrelumen:routing_matrix",
+   "layout": {
+    "x": 15.5,
+    "y": -2.5,
+    "size": 1.0,
+    "shape": "gear"
+   },
+   "en_us": [
+    "PCBs in the act components",
+    "One PCB goes into the Routing Matrix (III), two into the Ark Bus (V); the mod itself is native, so start the plastic and PCB line early. The pack also fixed the manual clashing with Psi's book: both are craftable."
+   ],
+   "es_es": [
+    "Placas en los componentes de acto",
+    "Una placa va en la Matriz de distribución (III), dos en el Bus del Arca (V); el mod en sí es nativo, así que arrancá temprano la línea de plástico y placas. El pack además arregló el choque del manual con el libro de Psi: los dos se craftean."
+   ],
+   "sources": [
+    "repo:pack/kubejs/server_scripts/entrelumen_integration_recipes.js",
+    "repo:docs/design/mod-pingpong.md",
+    "repo:pack/kubejs/data/psi/recipe/encyclopaedia_psionica.json"
+   ]
+  },
+  {
+   "key": "pnc_amadron",
+   "deps": [
+    "pnc_pcb"
+   ],
+   "type": "item",
+   "item": "pneumaticcraft:amadron_tablet",
+   "optional": true,
+   "layout": {
+    "x": 15.5,
+    "y": 2.5,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Amadron and Mechanic villagers",
+    "The Amadron Tablet orders drone deliveries, paid from a bound chest: things you cannot craft (PCB Blueprint, Assembly Programs), daily villager deals and player trades. Mechanic villagers live in their own houses; a Charging Station can turn a jobless villager into one."
+   ],
+   "es_es": [
+    "Amadron y aldeanos Mecánicos",
+    "La Tableta Amadron pide entregas por dron, pagadas desde un cofre vinculado: cosas que no se craftean (Plano de placa, Programas de ensamblaje), ofertas diarias de aldeanos y comercio entre jugadores. Los Mecánicos viven en sus propias casas; una Estación de carga puede convertir en uno a un aldeano sin trabajo."
+   ],
+   "sources": [
+    "jar:pneumaticcraft-repressurized-8.2.23+mc1.21.1.jar:assets/pneumaticcraft/patchouli_books/book/en_us/entries/tools/amadron_tablet.json",
+    "jar:pneumaticcraft-repressurized-8.2.23+mc1.21.1.jar:assets/pneumaticcraft/patchouli_books/book/en_us/entries/base_concepts/villagers.json",
+    "jar:pneumaticcraft-repressurized-8.2.23+mc1.21.1.jar:data/pneumaticcraft/recipe/amadron_tablet.json"
+   ]
+  },
+  {
+   "key": "pnc_assembly",
+   "deps": [
+    "pnc_pcb"
+   ],
+   "type": "item",
+   "item": "pneumaticcraft:assembly_controller",
+   "optional": true,
+   "layout": {
+    "x": 18,
+    "y": 0,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Assembly System",
+    "Controller (the only part needing air), Platform, IO Units, Drill and Laser, side by side. Programs are traded, not crafted. The Laser program takes an Empty PCB straight to Unassembled, skipping UV and etching: the mass-production route."
+   ],
+   "es_es": [
+    "Sistema de ensamblaje",
+    "Controlador (la única pieza que pide aire), Plataforma, Unidades de E/S, Taladro y Láser, uno al lado del otro. Los programas se comercian, no se craftean. El programa Láser lleva una Placa vacía directo a sin ensamblar, salteando UV y grabado: la ruta de producción en masa."
+   ],
+   "sources": [
+    "jar:pneumaticcraft-repressurized-8.2.23+mc1.21.1.jar:assets/pneumaticcraft/patchouli_books/book/en_us/entries/manufacturing/assembly_system.json",
+    "jar:pneumaticcraft-repressurized-8.2.23+mc1.21.1.jar:assets/pneumaticcraft/patchouli_books/book/en_us/entries/manufacturing/assembly_programs.json",
+    "jar:pneumaticcraft-repressurized-8.2.23+mc1.21.1.jar:assets/pneumaticcraft/patchouli_books/book/en_us/entries/components/pcb.json"
+   ]
+  },
+  {
+   "key": "pnc_charging",
+   "deps": [
+    "pnc_compressor"
+   ],
+   "type": "item",
+   "item": "pneumaticcraft:charging_station",
+   "layout": {
+    "x": 5.5,
+    "y": 2.5,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Charging Station and upgrades",
+    "Pressurizes pneumatic items (usually to 10 bar) and installs upgrades: Volume, Speed, Dispenser, Inventory, Item Life, trackers and more; each GUI explains them. With a Dispenser Upgrade it recharges drones."
+   ],
+   "es_es": [
+    "Estación de carga y mejoras",
+    "Presuriza ítems neumáticos (casi siempre a 10 bar) e instala mejoras: Volumen, Velocidad, Dispensador, Inventario, Vida útil, rastreadores y más; cada interfaz las explica. Con una Mejora de dispensador recarga drones."
+   ],
+   "sources": [
+    "jar:pneumaticcraft-repressurized-8.2.23+mc1.21.1.jar:assets/pneumaticcraft/patchouli_books/book/en_us/entries/machines/charging_station.json",
+    "jar:pneumaticcraft-repressurized-8.2.23+mc1.21.1.jar:assets/pneumaticcraft/patchouli_books/book/en_us/entries/base_concepts/upgrades.json"
+   ]
+  },
+  {
+   "key": "pnc_armor",
+   "deps": [
+    "pnc_charging"
+   ],
+   "type": "item",
+   "item": "pneumaticcraft:pneumatic_helmet",
+   "optional": true,
+   "layout": {
+    "x": 5.5,
+    "y": 5,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Pneumatic Armor",
+    "Barely better than iron until upgraded at the Charging Station: the helmet tracks mobs and blocks through walls, the boots cancel fall damage, give step assist and, with Jet Boots, flight. The armour key opens its settings."
+   ],
+   "es_es": [
+    "Armadura neumática",
+    "Apenas mejor que el hierro hasta mejorarla en la Estación de carga: el casco rastrea mobs y bloques a través de paredes, las botas anulan caídas, dan asistencia de escalón y, con Botas propulsoras, vuelo. La tecla de armadura abre su configuración."
+   ],
+   "sources": [
+    "jar:pneumaticcraft-repressurized-8.2.23+mc1.21.1.jar:assets/pneumaticcraft/patchouli_books/book/en_us/entries/armor/overview.json",
+    "jar:pneumaticcraft-repressurized-8.2.23+mc1.21.1.jar:assets/pneumaticcraft/patchouli_books/book/en_us/entries/armor/pneumatic_helmet.json",
+    "jar:pneumaticcraft-repressurized-8.2.23+mc1.21.1.jar:assets/pneumaticcraft/patchouli_books/book/en_us/entries/armor/pneumatic_boots.json"
+   ]
+  },
+  {
+   "key": "pnc_drones",
+   "deps": [
+    "pnc_charging"
+   ],
+   "type": "item",
+   "item": "pneumaticcraft:harvesting_drone",
+   "layout": {
+    "x": 8,
+    "y": 2.5,
+    "size": 1.5,
+    "shape": "hexagon"
+   },
+   "en_us": [
+    "Drones",
+    "Simple drones need no code: Collector (items to a chest, 17x17x17), Harvesting (give it a hoe to replant), Guard, Logistics. Programmable Drones run puzzle-piece programs. Low on air, they fly to a Charging Station with a Dispenser Upgrade within 80 blocks."
+   ],
+   "es_es": [
+    "Drones",
+    "Los drones simples no piden código: Recolector (ítems a un cofre, 17x17x17), Cosechador (dale una azada para replantar), Guardia, Logístico. Los Programables corren programas de piezas de rompecabezas. Con poco aire vuelan a una Estación de carga con Mejora de dispensador a 80 bloques."
+   ],
+   "sources": [
+    "jar:pneumaticcraft-repressurized-8.2.23+mc1.21.1.jar:assets/pneumaticcraft/patchouli_books/book/en_us/entries/tools/drone.json",
+    "jar:pneumaticcraft-repressurized-8.2.23+mc1.21.1.jar:assets/pneumaticcraft/patchouli_books/book/en_us/entries/tools/collector_drone.json",
+    "jar:pneumaticcraft-repressurized-8.2.23+mc1.21.1.jar:assets/pneumaticcraft/patchouli_books/book/en_us/entries/tools/harvesting_drone.json",
+    "jar:pneumaticcraft-repressurized-8.2.23+mc1.21.1.jar:assets/pneumaticcraft/patchouli_books/book/en_us/entries/tools/guard_drone.json"
+   ]
+  },
+  {
+   "key": "pnc_programming",
+   "deps": [
+    "pnc_drones"
+   ],
+   "type": "item",
+   "item": "pneumaticcraft:programmable_controller",
+   "optional": true,
+   "layout": {
+    "x": 10.5,
+    "y": 2.5,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Programmer and Programmable Controller",
+    "Programs are puzzle-piece widgets (areas, conditions, dig, place, import, export and more; one manual page each). The Programmable Controller runs them with a non-entity mini-drone: no pathfinding, through walls, kinder to servers, more air. Prefer it for stationary jobs."
+   ],
+   "es_es": [
+    "Programador y Controlador programable",
+    "Los programas se arman con piezas de rompecabezas (áreas, condiciones, cavar, poner, importar, exportar y más; una página del manual cada una). El Controlador programable los corre con un minidron que no es entidad: sin buscar caminos, atraviesa paredes, cuida al servidor, gasta más aire. Preferilo para trabajos fijos."
+   ],
+   "sources": [
+    "jar:pneumaticcraft-repressurized-8.2.23+mc1.21.1.jar:assets/pneumaticcraft/patchouli_books/book/en_us/entries/programming/programmable_controller.json",
+    "jar:pneumaticcraft-repressurized-8.2.23+mc1.21.1.jar:assets/pneumaticcraft/patchouli_books/book/en_us/entries/tools/drone.json"
+   ]
+  },
+  {
+   "key": "pnc_logistics",
+   "deps": [
+    "pnc_drones"
+   ],
+   "type": "item",
+   "item": "pneumaticcraft:logistics_drone",
+   "optional": true,
+   "layout": {
+    "x": 8,
+    "y": 5,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Logistics frames",
+    "Frames on chests and tanks say what to provide, store or request; Logistics Drones (33x33x33) or tubes with Logistics Modules move items and fluids between them. Factorio-style, on your existing inventories."
+   ],
+   "es_es": [
+    "Marcos logísticos",
+    "Los marcos en cofres y tanques dicen qué proveer, guardar o pedir; los Drones logísticos (33x33x33) o tubos con Módulos logísticos mueven ítems y fluidos entre ellos. Estilo Factorio, sobre tus inventarios de siempre."
+   ],
+   "sources": [
+    "jar:pneumaticcraft-repressurized-8.2.23+mc1.21.1.jar:assets/pneumaticcraft/patchouli_books/book/en_us/entries/logistics/overview.json",
+    "jar:pneumaticcraft-repressurized-8.2.23+mc1.21.1.jar:assets/pneumaticcraft/patchouli_books/book/en_us/entries/logistics/logistics_drone.json",
+    "jar:pneumaticcraft-repressurized-8.2.23+mc1.21.1.jar:assets/pneumaticcraft/patchouli_books/book/en_us/entries/logistics/frames.json"
+   ]
+  },
+  {
+   "key": "pnc_utility",
+   "deps": [
+    "pnc_heat"
+   ],
+   "type": "item",
+   "item": "pneumaticcraft:omnidirectional_hopper",
+   "optional": true,
+   "layout": {
+    "x": 10.5,
+    "y": -2.5,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Handy machines",
+    "The Elevator lifts any entity, the Pneumatic Dynamo turns air into FE (keep it cool), Omnidirectional and Liquid Hoppers move things any direction, the Heat Frame smelts or freezes any inventory's contents, and the Security Station locks an area. The Jackhammer and Minigun run on air."
+   ],
+   "es_es": [
+    "Máquinas útiles",
+    "El Ascensor sube cualquier entidad, el Dínamo neumático convierte aire en FE (mantenelo frío), las Tolvas omnidireccional y líquida mueven en cualquier dirección, el Marco térmico funde o congela el contenido de cualquier inventario, y la Estación de seguridad cierra un área. El Martillo neumático y la Minigun andan a aire."
+   ],
+   "sources": [
+    "jar:pneumaticcraft-repressurized-8.2.23+mc1.21.1.jar:assets/pneumaticcraft/patchouli_books/book/en_us/entries/machines/elevators.json",
+    "jar:pneumaticcraft-repressurized-8.2.23+mc1.21.1.jar:assets/pneumaticcraft/patchouli_books/book/en_us/entries/machines/pneumatic_dynamo.json",
+    "jar:pneumaticcraft-repressurized-8.2.23+mc1.21.1.jar:assets/pneumaticcraft/patchouli_books/book/en_us/entries/machines/omnidirectional_hopper.json",
+    "jar:pneumaticcraft-repressurized-8.2.23+mc1.21.1.jar:assets/pneumaticcraft/patchouli_books/book/en_us/entries/semiblocks/heat_frame.json",
+    "jar:pneumaticcraft-repressurized-8.2.23+mc1.21.1.jar:assets/pneumaticcraft/patchouli_books/book/en_us/entries/machines/security_station.json",
+    "jar:pneumaticcraft-repressurized-8.2.23+mc1.21.1.jar:assets/pneumaticcraft/patchouli_books/book/en_us/entries/tools/jackhammer.json"
+   ]
+  },
+  {
+   "key": "pnc_mastery",
+   "deps": [
+    "pnc_assembly",
+    "pnc_programming"
+   ],
+   "type": "item",
+   "item": "pneumaticcraft:printed_circuit_board",
+   "count": 16,
+   "layout": {
+    "x": 20.5,
+    "y": 0,
+    "size": 2.0,
+    "shape": "octagon"
+   },
+   "en_us": [
+    "Mastery: a factory on air",
+    "An assembly line making PCBs, a refinery on a gas lift, a controller doing chores and jet boots on your feet. Keep PCBs flowing: the Ark Bus needs them later."
+   ],
+   "es_es": [
+    "Maestría: una fábrica a aire",
+    "Una línea de ensamblaje haciendo placas, una refinería sobre un elevador de gas, un controlador haciendo tareas y botas propulsoras en los pies. Que no paren las placas: el Bus del Arca las pide después."
+   ],
+   "sources": [
+    "jar:pneumaticcraft-repressurized-8.2.23+mc1.21.1.jar:assets/pneumaticcraft/patchouli_books/book/en_us/entries/manufacturing/assembly_system.json",
+    "repo:pack/kubejs/server_scripts/entrelumen_integration_recipes.js"
+   ]
+  }
+ ]
+}
