@@ -227,7 +227,17 @@ def stairs():
                 if width >= 7:                      # water stairs: a fall into a basin on each side
                     for sgn in (-1, 1):
                         cu = sgn * (hw + 5)
-                        pool = [(c[0] + v[0] * i + e[0] * (cu + du), c[1] + v[1] * i + e[1] * (cu + du), i, du)
+                        # the wall may sit a little in or out here: find its foot along the axis
+                        base = None
+                        for j in range(-4, 5):
+                            q = (c[0] + v[0] * j + e[0] * cu, c[1] + v[1] * j + e[1] * cu)
+                            back_q = (q[0] - v[0], q[1] - v[1])
+                            if TOP.get(q) == TOP[c] and TOP.get(back_q) == hi:
+                                base = q
+                                break
+                        if base is None:
+                            continue
+                        pool = [(base[0] + v[0] * i + e[0] * du, base[1] + v[1] * i + e[1] * du, i, du)
                                 for i in range(0, 4) for du in range(-3, 4)]
                         if not all(p[:2] in TOP and TOP[p[:2]] == TOP[c] and p[:2] not in USED for p in pool):
                             continue
@@ -240,7 +250,7 @@ def stairs():
                             V[(px, t - 1, pz)] = B('sea_lantern') if (i, du) == (1, 0) else B('prismarine_bricks')
                             if rim:
                                 V[(px, t + 1, pz)] = B('calcite_slab[type=bottom,waterlogged=false]'.replace('calcite_slab', 'smooth_quartz_slab'))
-                        sx, sz = c[0] + e[0] * cu, c[1] + e[1] * cu
+                        sx, sz = base
                         V[(sx, hi, sz)] = B('water')           # the fall: a source over the basin
                         wx, wz = sx - v[0], sz - v[1]           # the spout in the parapet above
                         RESERVED.add((wx, wz))
