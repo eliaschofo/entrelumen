@@ -1,0 +1,469 @@
+{
+ "chapter": "guide_mekanism_logistics",
+ "group": "tech",
+ "act": "III",
+ "icon": "mekanism:qio_drive_array",
+ "title": {
+  "en_us": "Mekanism: logistics",
+  "es_es": "Mekanism: logística"
+ },
+ "subtitle": {
+  "en_us": "Transmitters, sorting, QIO storage, teleporters, the Digital Miner and the addons for covers and routers.",
+  "es_es": "Transmisores, clasificación, almacenamiento QIO, teletransportadores, el Minero digital y los addons de tapas y routers."
+ },
+ "quests": [
+  {
+   "key": "mkl_welcome",
+   "deps": [],
+   "type": "checkmark",
+   "icon": "mekanism:basic_logistical_transporter",
+   "layout": {
+    "x": 0,
+    "y": 0,
+    "size": 2.0,
+    "shape": "hexagon"
+   },
+   "en_us": [
+    "A transmitter for everything",
+    "Logistical Transporters for items, Mechanical Pipes for fluids, Pressurized Tubes for chemicals, Universal Cables for energy, Thermodynamic Conductors for heat. All tiered, all upgradable in place with the next alloy."
+   ],
+   "es_es": [
+    "Un transmisor para cada cosa",
+    "Transportadores logísticos para ítems, Caños mecánicos para fluidos, Tubos presurizados para químicos, Cables universales para energía, Conductores termodinámicos para calor. Todos con niveles, todos mejorables en el lugar con la aleación siguiente."
+   ],
+   "sources": [
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:assets/mekanism/lang/en_us.json#description.mekanism.transporter",
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:assets/mekanism/lang/en_us.json#description.mekanism.pipe",
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:assets/mekanism/lang/en_us.json#description.mekanism.tube",
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:assets/mekanism/lang/en_us.json#description.mekanism.cable",
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:assets/mekanism/lang/en_us.json#description.mekanism.conductor",
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:assets/mekanism/lang/en_us.json#advancements.mekanism.alloy_upgrading.description"
+   ]
+  },
+  {
+   "key": "mkl_transporter",
+   "deps": [
+    "mkl_welcome"
+   ],
+   "type": "item",
+   "item": "mekanism:basic_logistical_transporter",
+   "count": 16,
+   "layout": {
+    "x": 3,
+    "y": 0,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Logistical Transporter",
+    "Pulls from inventories whose connection is set to pull (configurator) and delivers to the nearest inventory that accepts. The configurator colour-codes items so only matching paths take them. Diversion Transporters obey redstone; Restrictive ones are a last resort route."
+   ],
+   "es_es": [
+    "Transportador logístico",
+    "Saca de los inventarios cuya conexión está en tirar (configurador) y entrega al inventario más cercano que acepte. El configurador pinta ítems de colores para que sólo los caminos que coinciden los tomen. Los de Desvío obedecen redstone; los Restrictivos son la ruta de último recurso."
+   ],
+   "sources": [
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:assets/mekanism/lang/en_us.json#description.mekanism.transporter",
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:assets/mekanism/lang/en_us.json#description.mekanism.diversion",
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:assets/mekanism/lang/en_us.json#description.mekanism.restrictive",
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:assets/mekanism/lang/en_us.json#advancements.mekanism.item_transport.description",
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:assets/mekanism/lang/en_us.json#configurator.mekanism.mode_change"
+   ]
+  },
+  {
+   "key": "mkl_pipes",
+   "deps": [
+    "mkl_welcome"
+   ],
+   "type": "item",
+   "item": "mekanism:basic_mechanical_pipe",
+   "count": 16,
+   "layout": {
+    "x": 3,
+    "y": -2.5,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Pipes, tubes and tanks",
+    "Pipes move fluids, Pressurized Tubes move chemicals, never mixed. Portable tanks carry them; a Dynamic Tank multiblock stores tons. The Electric Pump drains fluids (heavy water with a Filter Upgrade), the Fluidic Plenisher puts them back."
+   ],
+   "es_es": [
+    "Caños, tubos y tanques",
+    "Los caños mueven fluidos, los Tubos presurizados químicos, nunca mezclados. Los tanques portátiles los llevan; un Tanque dinámico multibloque guarda toneladas. La Bomba eléctrica drena fluidos (agua pesada con Mejora de filtro), el Plenificador los devuelve."
+   ],
+   "sources": [
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:assets/mekanism/lang/en_us.json#description.mekanism.pipe",
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:assets/mekanism/lang/en_us.json#description.mekanism.tube",
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:assets/mekanism/lang/en_us.json#description.mekanism.fluid_tank",
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:assets/mekanism/lang/en_us.json#description.mekanism.chemical_tank",
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:assets/mekanism/lang/en_us.json#description.mekanism.dynamic_tank",
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:assets/mekanism/lang/en_us.json#description.mekanism.electric_pump",
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:assets/mekanism/lang/en_us.json#description.mekanism.fluidic_plenisher"
+   ]
+  },
+  {
+   "key": "mkl_sorter",
+   "deps": [
+    "mkl_transporter"
+   ],
+   "type": "item",
+   "item": "mekanism:logistical_sorter",
+   "layout": {
+    "x": 5.5,
+    "y": 0,
+    "size": 1.5,
+    "shape": "hexagon"
+   },
+   "en_us": [
+    "Logistical Sorter",
+    "Against an inventory, it pulls items matching its filters (item, tag or mod) into the transporter behind it, each filter with its own colour; unmatched items can leave with a default colour. One per loot chest keeps a base tidy without digital storage."
+   ],
+   "es_es": [
+    "Clasificador logístico",
+    "Contra un inventario, saca los ítems que coinciden con sus filtros (ítem, tag o mod) hacia el transportador de atrás, cada filtro con su color; lo que no coincide puede salir con un color por defecto. Uno por cofre de botín ordena una base sin almacenamiento digital."
+   ],
+   "sources": [
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:assets/mekanism/lang/en_us.json#description.mekanism.logistical_sorter",
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:assets/mekanism/lang/en_us.json#advancements.mekanism.logistical_sorter.description"
+   ]
+  },
+  {
+   "key": "mkl_reader",
+   "deps": [
+    "mkl_sorter"
+   ],
+   "type": "checkmark",
+   "icon": "mekanism:network_reader",
+   "layout": {
+    "x": 5.5,
+    "y": -2.5,
+    "size": 1.0,
+    "shape": "circle"
+   },
+   "en_us": [
+    "Debugging a network",
+    "The Network Reader shows what a transmitter network holds and moves. The configurator sets each side to normal, push, pull or none. Items bouncing back and forth? One side is pulling where it should push."
+   ],
+   "es_es": [
+    "Depurar una red",
+    "El Lector de red muestra qué guarda y mueve una red de transmisores. El configurador pone cada lado en normal, empujar, tirar o nada. ¿Ítems que van y vienen? Un lado tira donde debería empujar."
+   ],
+   "sources": [
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:assets/mekanism/lang/en_us.json#advancements.mekanism.network_reader.description",
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:assets/mekanism/lang/en_us.json#configurator.mekanism.mode_change"
+   ]
+  },
+  {
+   "key": "mkl_qio",
+   "deps": [
+    "mkl_sorter"
+   ],
+   "type": "item",
+   "item": "mekanism:qio_drive_array",
+   "layout": {
+    "x": 8,
+    "y": 0,
+    "size": 1.5,
+    "shape": "hexagon"
+   },
+   "en_us": [
+    "QIO: Quantum Item Orchestration",
+    "Mekanism's digital storage: a Drive Array holds QIO Drives (Drive, Hyper-Dense, Time-Dilating, Supermassive), and Dashboards, Importers, Exporters and Redstone Adapters reach it by frequency, no cables. The Portable Dashboard is a terminal in your pocket. Extras adds bigger drives."
+   ],
+   "es_es": [
+    "QIO: orquestación cuántica de ítems",
+    "El almacenamiento digital de Mekanism: una Matriz de discos guarda Discos QIO (Disco, Hiperdenso, Dilatador temporal, Supermasivo), y Tableros, Importadores, Exportadores y Adaptadores de redstone llegan por frecuencia, sin cables. El Tablero portátil es una terminal de bolsillo. Extras suma discos más grandes."
+   ],
+   "sources": [
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:assets/mekanism/lang/en_us.json#description.mekanism.qio_drive_array",
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:assets/mekanism/lang/en_us.json#description.mekanism.qio_dashboard",
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:assets/mekanism/lang/en_us.json#description.mekanism.qio_importer",
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:assets/mekanism/lang/en_us.json#description.mekanism.qio_exporter",
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:assets/mekanism/lang/en_us.json#description.mekanism.qio_redstone_adapter",
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/qio_drive_base.json",
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:assets/mekanism/lang/en_us.json#advancements.mekanism.qio_drive_array.description"
+   ]
+  },
+  {
+   "key": "mkl_qio_tip",
+   "deps": [
+    "mkl_qio"
+   ],
+   "type": "checkmark",
+   "icon": "mekanism:qio_drive_base",
+   "layout": {
+    "x": 8,
+    "y": -2.5,
+    "size": 1.0,
+    "shape": "circle"
+   },
+   "en_us": [
+    "QIO or AE2?",
+    "QIO has no channels or cables, but its first drive already wants Ultimate circuits. AE2 is cheaper to start and has deeper autocrafting. Bridges exist (Applied Mekanistics, RS Mekanism integration): pick one main system and let the others feed it."
+   ],
+   "es_es": [
+    "¿QIO o AE2?",
+    "QIO no tiene canales ni cables, pero su primer disco ya pide circuitos Definitivos. AE2 es más barato de arrancar y tiene autocrafteo más profundo. Hay puentes (Applied Mekanistics, integración de RS con Mekanism): elegí un sistema principal y que los otros lo alimenten."
+   ],
+   "sources": [
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/qio_drive_base.json",
+    "jar:Applied-Mekanistics-1.6.3.jar:assets/appmek/lang/en_us.json",
+    "jar:refinedstorage-mekanism-integration-1.1.1.jar:assets/refinedstorage_mekanism_integration/lang/en_us.json"
+   ]
+  },
+  {
+   "key": "mkl_teleporter",
+   "deps": [
+    "mkl_qio"
+   ],
+   "type": "item",
+   "item": "mekanism:teleporter",
+   "layout": {
+    "x": 10.5,
+    "y": 0,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Teleporter",
+    "A frame of Teleporter Frame blocks around an empty space with the Teleporter in it. Same frequency on two of them, walk through, pay energy per jump. The Portable Teleporter does it from your hand."
+   ],
+   "es_es": [
+    "Teletransportador",
+    "Un marco de bloques de Marco de teletransporte alrededor de un hueco, con el Teletransportador en el marco. Misma frecuencia en dos, caminá a través y pagá energía por salto. El Teletransportador portátil lo hace desde la mano."
+   ],
+   "sources": [
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:assets/mekanism/lang/en_us.json#description.mekanism.teleporter",
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:assets/mekanism/lang/en_us.json#description.mekanism.teleporter_frame",
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/teleporter.json",
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:assets/mekanism/lang/en_us.json#advancements.mekanism.teleporter.description",
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:assets/mekanism/lang/en_us.json#advancements.mekanism.portable_teleporter.description"
+   ]
+  },
+  {
+   "key": "mkl_entangloporter",
+   "deps": [
+    "mkl_teleporter"
+   ],
+   "type": "item",
+   "item": "mekanism:quantum_entangloporter",
+   "optional": true,
+   "layout": {
+    "x": 13,
+    "y": -2.5,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Quantum Entangloporter",
+    "Entangloporters on one frequency share items, fluids, chemicals, energy and heat instantly, at any distance and across dimensions. Configure sides like a machine. Power in, ores out, from any outpost."
+   ],
+   "es_es": [
+    "Entrelazador cuántico",
+    "Los Entrelazadores en una misma frecuencia comparten ítems, fluidos, químicos, energía y calor al instante, a cualquier distancia y entre dimensiones. Los lados se configuran como una máquina. Energía que entra, minerales que salen, desde cualquier puesto."
+   ],
+   "sources": [
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:assets/mekanism/lang/en_us.json#description.mekanism.quantum_entangloporter",
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/quantum_entangloporter.json",
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:assets/mekanism/lang/en_us.json#advancements.mekanism.quantum_entangloporter.description"
+   ]
+  },
+  {
+   "key": "mkl_miner",
+   "deps": [
+    "mkl_teleporter"
+   ],
+   "type": "item",
+   "item": "mekanism:digital_miner",
+   "layout": {
+    "x": 13,
+    "y": 0,
+    "size": 1.5,
+    "shape": "hexagon"
+   },
+   "en_us": [
+    "Digital Miner",
+    "Mines the blocks you filter within a radius of up to 32, between the Y levels you set, into an inventory. Expensive (atomic alloy, a robit, a teleportation core) and power-hungry. Tag filters for ores; with Silk Touch and a good line, one miner feeds the base."
+   ],
+   "es_es": [
+    "Minero digital",
+    "Pica los bloques que filtres en un radio de hasta 32, entre las alturas que fijes, hacia un inventario. Caro (aleación atómica, un robit, un núcleo de teletransporte) y glotón de energía. Filtros por tag para minerales; con Toque de seda y una buena línea, un minero alimenta la base."
+   ],
+   "sources": [
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:assets/mekanism/lang/en_us.json#description.mekanism.digital_miner",
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/digital_miner.json",
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:assets/mekanism/lang/en_us.json#gui.mekanism.digital_miner.min",
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:assets/mekanism/lang/en_us.json#advancements.mekanism.digital_miner.description"
+   ]
+  },
+  {
+   "key": "mkl_robit",
+   "deps": [
+    "mkl_miner"
+   ],
+   "type": "item",
+   "item": "mekanism:robit",
+   "optional": true,
+   "layout": {
+    "x": 15.5,
+    "y": -2.5,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Robit and Chargepad",
+    "The Robit follows you, picks up items, crafts and smelts, and recharges on a Chargepad, which charges any mod's powered items while you stand on it. It is also a Digital Miner ingredient."
+   ],
+   "es_es": [
+    "Robit y Chargepad",
+    "El Robit te sigue, junta ítems, craftea y funde, y se recarga en un Chargepad, que también carga los ítems con energía de cualquier mod mientras estás arriba. Además es ingrediente del Minero digital."
+   ],
+   "sources": [
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:assets/mekanism/lang/en_us.json#description.mekanism.chargepad",
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:assets/mekanism/lang/en_us.json#advancements.mekanism.robit.description",
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/digital_miner.json"
+   ]
+  },
+  {
+   "key": "mkl_covers",
+   "deps": [
+    "mkl_transporter"
+   ],
+   "type": "item",
+   "item": "mekanismcovers:empty_cover",
+   "count": 4,
+   "optional": true,
+   "layout": {
+    "x": 3,
+    "y": 2.5,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Mekanism Covers",
+    "Craft Empty Covers (osmium nuggets, sawdust, glass; four at a time) and combine one with a block to get a Cover of it. Covers hide transmitters behind the look of your walls: neat factories, cables still inside."
+   ],
+   "es_es": [
+    "Tapas de Mekanism",
+    "Crafteá Tapas vacías (pepitas de osmio, aserrín, vidrio; cuatro por vez) y combiná una con un bloque para sacar una Tapa de ese bloque. Las tapas esconden transmisores con el aspecto de tus paredes: fábricas prolijas, cables adentro igual."
+   ],
+   "sources": [
+    "jar:mekanismcovers-1.3-BETA+1.21.jar:data/mekanismcovers/recipe/cover.json",
+    "jar:mekanismcovers-1.3-BETA+1.21.jar:data/mekanismcovers/recipe/cover_special.json",
+    "jar:mekanismcovers-1.3-BETA+1.21.jar:assets/mekanismcovers/lang/en_us.json"
+   ]
+  },
+  {
+   "key": "mkl_routers",
+   "deps": [
+    "mkl_covers"
+   ],
+   "type": "item",
+   "item": "mekanisticrouters:chemical_module_mk1",
+   "optional": true,
+   "layout": {
+    "x": 5.5,
+    "y": 2.5,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Mekanistic Routers",
+    "Chemical modules for Modular Routers: Mk1 moves chemicals to or from the block ahead, Mk2 reaches any nearby block, and the Refill Module tops up chemical items (like jetpacks) in your inventory wirelessly. The router needs a chemical container in its buffer."
+   ],
+   "es_es": [
+    "Mekanistic Routers",
+    "Módulos químicos para Modular Routers: el Mk1 mueve químicos desde o hacia el bloque de enfrente, el Mk2 llega a cualquier bloque cercano, y el Módulo de recarga rellena sin cables los ítems químicos (como jetpacks) de tu inventario. El router necesita un contenedor químico en su buffer."
+   ],
+   "sources": [
+    "jar:mekanisticrouters-1.2.0.jar:assets/mekanisticrouters/lang/en_us.json#mekanisticrouters.itemText.usage.item.chemical_module_mk1",
+    "jar:mekanisticrouters-1.2.0.jar:assets/mekanisticrouters/lang/en_us.json#mekanisticrouters.itemText.usage.item.chemical_module_mk2",
+    "jar:mekanisticrouters-1.2.0.jar:assets/mekanisticrouters/lang/en_us.json#mekanisticrouters.itemText.usage.item.chemical_refill_module",
+    "jar:mekanisticrouters-1.2.0.jar:assets/mekanisticrouters/lang/en_us.json#mekanisticrouters.itemText.usage.item.chemical_upgrade"
+   ]
+  },
+  {
+   "key": "mkl_chunks",
+   "deps": [
+    "mkl_miner"
+   ],
+   "type": "checkmark",
+   "icon": "mekanism:dimensional_stabilizer",
+   "layout": {
+    "x": 15.5,
+    "y": 2.5,
+    "size": 1.0,
+    "shape": "circle"
+   },
+   "en_us": [
+    "Keeping machines running",
+    "Machines only work in loaded chunks. Mekanism has the Anchor Upgrade and the Dimensional Stabilizer; FTB Chunks lets your team force-load claimed chunks. Load only what must run alone: every chunk costs the server."
+   ],
+   "es_es": [
+    "Mantener las máquinas andando",
+    "Las máquinas sólo trabajan en chunks cargados. Mekanism tiene la Mejora de ancla y el Estabilizador dimensional; FTB Chunks deja que tu equipo fuerce la carga de chunks reclamados. Cargá sólo lo que tiene que andar solo: cada chunk le cuesta al servidor."
+   ],
+   "sources": [
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:assets/mekanism/lang/en_us.json#upgrade.mekanism.anchor.description",
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:assets/mekanism/lang/en_us.json#description.mekanism.dimensional_stabilizer",
+    "repo:docs/research/reference-packs.md"
+   ]
+  },
+  {
+   "key": "mkl_oredict",
+   "deps": [
+    "mkl_sorter"
+   ],
+   "type": "item",
+   "item": "mekanism:oredictionificator",
+   "optional": true,
+   "layout": {
+    "x": 8,
+    "y": 2.5,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Oredictionificator",
+    "Converts items into the tag-equivalent item, say one mod's ingot into another's. Almost Unified already handles recipes; this cleans up drops and old chests. Filters go by tag."
+   ],
+   "es_es": [
+    "Oredictionificador",
+    "Convierte ítems en su equivalente por tag, por ejemplo el lingote de un mod en el de otro. Almost Unified ya resuelve las recetas; esto limpia drops y cofres viejos. Los filtros van por tag."
+   ],
+   "sources": [
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:assets/mekanism/lang/en_us.json#description.mekanism.oredictionificator",
+    "repo:pack/config/almostunified/unification/materials.json"
+   ]
+  },
+  {
+   "key": "mkl_mastery",
+   "deps": [
+    "mkl_miner",
+    "mkl_entangloporter"
+   ],
+   "type": "item",
+   "item": "mekanism:portable_qio_dashboard",
+   "layout": {
+    "x": 18,
+    "y": 0,
+    "size": 2.0,
+    "shape": "octagon"
+   },
+   "en_us": [
+    "Mastery: miner to vault",
+    "A Digital Miner in a mining area, an Entangloporter carrying its output home, a QIO system sorting it and your ore line processing it. A Portable Dashboard puts the whole base in your pocket."
+   ],
+   "es_es": [
+    "Maestría: del minero a la bóveda",
+    "Un Minero digital en una zona de minería, un Entrelazador llevando su salida a casa, un sistema QIO ordenándola y tu línea de minerales procesándola. Un Tablero portátil te pone la base entera en el bolsillo."
+   ],
+   "sources": [
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:assets/mekanism/lang/en_us.json#advancements.mekanism.portable_qio_dashboard.description",
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:assets/mekanism/lang/en_us.json#description.mekanism.digital_miner",
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:assets/mekanism/lang/en_us.json#description.mekanism.quantum_entangloporter"
+   ]
+  }
+ ]
+}

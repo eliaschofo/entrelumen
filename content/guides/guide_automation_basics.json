@@ -1,0 +1,430 @@
+{
+ "chapter": "guide_automation_basics",
+ "group": "tech",
+ "act": "I",
+ "icon": "minecraft:hopper",
+ "title": {
+  "en_us": "Automation basics",
+  "es_es": "Automatización básica"
+ },
+ "subtitle": {
+  "en_us": "Hoppers, pipes, machine sides, filters, redstone, buffers and crafting: the habits every factory needs.",
+  "es_es": "Tolvas, caños, lados de máquina, filtros, redstone, buffers y crafteo: los hábitos que toda fábrica necesita."
+ },
+ "quests": [
+  {
+   "key": "au_welcome",
+   "deps": [],
+   "type": "checkmark",
+   "icon": "minecraft:repeater",
+   "layout": {
+    "x": 0,
+    "y": 0,
+    "size": 2.0,
+    "shape": "hexagon"
+   },
+   "en_us": [
+    "The automation loop",
+    "Every factory is the same loop: input, machine, output, storage. Build one line, watch it run for a minute, then copy it. If something stops, follow the items: they always pile up right before the problem."
+   ],
+   "es_es": [
+    "El ciclo de la automatización",
+    "Toda fábrica es el mismo ciclo: entrada, máquina, salida, almacenamiento. Armá una línea, mirala andar un minuto y después copiala. Si algo se frena, seguí los ítems: siempre se amontonan justo antes del problema."
+   ],
+   "sources": [
+    "https://minecraft.wiki/w/Hopper",
+    "repo:docs/design/mod-integration.md"
+   ]
+  },
+  {
+   "key": "au_hopper",
+   "deps": [
+    "au_welcome"
+   ],
+   "type": "item",
+   "item": "minecraft:hopper",
+   "count": 4,
+   "layout": {
+    "x": 3,
+    "y": 0,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Hoppers",
+    "A hopper moves one item every 8 ticks (2.5 per second) into whatever it points at. Chest, hopper, furnace, hopper, chest: your first automatic smelter. A comparator next to a container reads how full it is."
+   ],
+   "es_es": [
+    "Tolvas",
+    "Una tolva mueve un ítem cada 8 ticks (2,5 por segundo) hacia donde apunta. Cofre, tolva, horno, tolva, cofre: tu primera fundición automática. Un comparador al lado de un contenedor lee qué tan lleno está."
+   ],
+   "sources": [
+    "https://minecraft.wiki/w/Hopper",
+    "https://minecraft.wiki/w/Redstone_Comparator"
+   ]
+  },
+  {
+   "key": "au_pipes",
+   "deps": [
+    "au_hopper"
+   ],
+   "type": "item",
+   "item": "pipez:item_pipe",
+   "count": 16,
+   "layout": {
+    "x": 6,
+    "y": 0,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Pipes that pull",
+    "Pipez pipes connect to anything, but only pull where you say: click the end touching the source with the Pipe Wrench to make it extract; sneak-click cuts a connection. The extract menu sets distribution, redstone mode and filters."
+   ],
+   "es_es": [
+    "Caños que tiran",
+    "Los caños de Pipez se conectan a todo, pero sólo tiran donde vos digas: clic con la Llave de caños en la punta que toca la fuente para que extraiga; agachado corta una conexión. El menú de extracción fija reparto, modo de redstone y filtros."
+   ],
+   "sources": [
+    "jar:pipez-neoforge-1.21.1-1.2.31.jar:de/maxhenkel/pipez/blocks/PipeBlock.class",
+    "jar:pipez-neoforge-1.21.1-1.2.31.jar:assets/pipez/lang/en_us.json#tooltip.pipez.wrench",
+    "jar:pipez-neoforge-1.21.1-1.2.31.jar:assets/pipez/lang/en_us.json#tooltip.pipez.distribution.round_robin",
+    "jar:pipez-neoforge-1.21.1-1.2.31.jar:assets/pipez/lang/en_us.json#tooltip.pipez.filter.item_tag.description"
+   ]
+  },
+  {
+   "key": "au_fluids",
+   "deps": [
+    "au_pipes"
+   ],
+   "type": "item",
+   "item": "pipez:fluid_pipe",
+   "count": 8,
+   "optional": true,
+   "layout": {
+    "x": 3,
+    "y": 3,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Fluids",
+    "Pipez Fluid Pipes and Mekanism Mechanical Pipes move fluids like items, wrench and all. Create pipes need a Mechanical Pump; its arrow shows the flow. The Ranged Pumps Pump drains a whole lake with FE, scanning outwards block by block."
+   ],
+   "es_es": [
+    "Fluidos",
+    "Los Caños de fluidos de Pipez y los Caños mecánicos de Mekanism mueven fluidos como ítems, llave incluida. Los caños de Create necesitan una Bomba mecánica; su flecha marca el sentido. La Bomba de Ranged Pumps vacía un lago entero con FE, escaneando hacia afuera bloque por bloque."
+   ],
+   "sources": [
+    "jar:pipez-neoforge-1.21.1-1.2.31.jar:assets/pipez/lang/en_us.json#tooltip.pipez.wrench",
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:assets/mekanism/lang/en_us.json#description.mekanism.pipe",
+    "jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#create.ponder.mechanical_pump_flow.text_2",
+    "jar:rangedpumps-1.3.0.jar:assets/rangedpumps/lang/en_us.json#block.rangedpumps.pump.state.working"
+   ]
+  },
+  {
+   "key": "au_sides",
+   "deps": [
+    "au_pipes"
+   ],
+   "type": "item",
+   "item": "mekanism:configurator",
+   "layout": {
+    "x": 9,
+    "y": 0,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Machine sides",
+    "Most tech machines choose what goes in and out by side. In Mekanism, open the side tab or right-click with the Configurator, and turn on auto-eject so output pushes itself into the next pipe. Other mods have the same idea in their I/O tabs."
+   ],
+   "es_es": [
+    "Lados de las máquinas",
+    "La mayoría de las máquinas técnicas eligen qué entra y sale por cada lado. En Mekanism abrí la pestaña de lados o hacé clic derecho con el Configurador, y activá la expulsión automática para que la salida se empuje sola al caño siguiente. Otros mods tienen la misma idea en sus pestañas de E/S."
+   ],
+   "sources": [
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/configurator.json",
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:assets/mekanism/lang/en_us.json#configurator.mekanism.toggle_mode",
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:assets/mekanism/lang/en_us.json#advancements.mekanism.configurator.description"
+   ]
+  },
+  {
+   "key": "au_create",
+   "deps": [
+    "au_hopper"
+   ],
+   "type": "item",
+   "item": "create:mechanical_arm",
+   "layout": {
+    "x": 6,
+    "y": 3,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Belts, funnels and arms",
+    "In Create, belts carry items, funnels put them on and take them off, and depots hold one stack for a machine to work on. The brass Mechanical Arm picks from and drops into many targets around it, no belts needed."
+   ],
+   "es_es": [
+    "Cintas, embudos y brazos",
+    "En Create, las cintas llevan ítems, los embudos los ponen y los sacan, y los depósitos sostienen un stack para que una máquina trabaje. El Brazo mecánico de bronce toma de y deja en muchos destinos a su alrededor, sin cintas."
+   ],
+   "sources": [
+    "jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#create.ponder.belt_transport.header",
+    "jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#create.ponder.funnel_transfer.header",
+    "jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#create.ponder.mechanical_arm.header"
+   ]
+  },
+  {
+   "key": "au_filters",
+   "deps": [
+    "au_pipes"
+   ],
+   "type": "item",
+   "item": "create:filter",
+   "optional": true,
+   "layout": {
+    "x": 6,
+    "y": -3,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Filters everywhere",
+    "Almost every mover takes a filter: Create funnels and arms, Pipez extract menus (item IDs or #tags), LaserIO filter cards, Modular Routers module slots, the Mekanism Logistical Sorter. Filter at the source and the rest of the line stays clean."
+   ],
+   "es_es": [
+    "Filtros por todos lados",
+    "Casi todo lo que mueve ítems acepta filtro: embudos y brazos de Create, menús de extracción de Pipez (IDs o #tags), tarjetas de filtro de LaserIO, las ranuras de los módulos de Modular Routers, el Clasificador logístico de Mekanism. Filtrá en el origen y el resto de la línea queda limpia."
+   ],
+   "sources": [
+    "jar:create-1.21.1-6.0.10.jar:data/create/recipe/crafting/logistics/filter.json",
+    "jar:pipez-neoforge-1.21.1-1.2.31.jar:assets/pipez/lang/en_us.json#tooltip.pipez.filter.item_tag.description",
+    "jar:laserio-1.9.11.jar:assets/laserio/patchouli_books/laseriobook/en_us/entries/filter_basics.json",
+    "jar:modular-routers-13.2.7+mc1.21.1.jar:assets/modularrouters/patchouli_books/book/en_us/entries/intro/modules.json",
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:assets/mekanism/lang/en_us.json#description.mekanism.logistical_sorter"
+   ]
+  },
+  {
+   "key": "au_redstone",
+   "deps": [
+    "au_sides"
+   ],
+   "type": "item",
+   "item": "utilitarian:redstone_clock",
+   "optional": true,
+   "layout": {
+    "x": 9,
+    "y": -3,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Redstone control",
+    "Run machines only when needed: most have a redstone mode (ignored, on or off when powered). A comparator on a chest turns fill level into a signal, Functional Storage drawers do the same with a Redstone Upgrade, and Utilitarian's Redstone Clock pulses at a rate you set by right-clicking it."
+   ],
+   "es_es": [
+    "Control por redstone",
+    "Hacé andar las máquinas sólo cuando hace falta: la mayoría tiene modo de redstone (ignorado, con o sin señal). Un comparador en un cofre convierte el nivel de llenado en señal, los cajones de Functional Storage hacen lo mismo con una Mejora de redstone, y el Reloj de redstone de Utilitarian pulsa al ritmo que elegís con clic derecho."
+   ],
+   "sources": [
+    "jar:pipez-neoforge-1.21.1-1.2.31.jar:assets/pipez/lang/en_us.json#tooltip.pipez.redstone_mode.on_when_powered",
+    "jar:utilitarian-1.21.1-0.19.2.jar:assets/utilitarian/lang/en_us.json#block.utilitarian.redstone_clock.description",
+    "jar:functionalstorage-1.21.1-1.5.8.jar:assets/functionalstorage/lang/en_us.json#item.functionalstorage.redstone_upgrade",
+    "https://minecraft.wiki/w/Redstone_Comparator"
+   ]
+  },
+  {
+   "key": "au_buffer",
+   "deps": [
+    "au_sides"
+   ],
+   "type": "checkmark",
+   "icon": "trashcans:item_trash_can",
+   "layout": {
+    "x": 12,
+    "y": 0,
+    "size": 1.0,
+    "shape": "circle"
+   },
+   "en_us": [
+    "Buffers and overflow",
+    "Put a chest or drawer between machines so a slow step never stalls the fast one. Then decide what happens when storage fills: a Void Upgrade on a drawer or a Trash Can at the end of the line deletes the excess instead of jamming everything."
+   ],
+   "es_es": [
+    "Buffers y desborde",
+    "Poné un cofre o cajón entre máquinas para que un paso lento nunca frene al rápido. Después decidí qué pasa cuando se llena: una Mejora de vacío en un cajón o un Tacho de basura al final de la línea borra lo que sobra en lugar de trabar todo."
+   ],
+   "sources": [
+    "jar:functionalstorage-1.21.1-1.5.8.jar:assets/functionalstorage/lang/en_us.json#drawer_upgrade.functionalstorage.void.item",
+    "jar:trashcans-1.1.0-neoforge-mc1.21.jar:assets/trashcans/lang/en_us.json#trashcans.item_trash_can.info",
+    "jar:trashcans-1.1.0-neoforge-mc1.21.jar:assets/trashcans/lang/en_us.json#trashcans.ultimate_trash_can.info"
+   ]
+  },
+  {
+   "key": "au_crafting",
+   "deps": [
+    "au_create",
+    "au_sides"
+   ],
+   "type": "item",
+   "item": "rftoolsutility:crafter1",
+   "layout": {
+    "x": 9,
+    "y": 3,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Automatic crafting",
+    "Pick by what you already run: Create Mechanical Crafters for big shaped recipes, the RFTools Crafter (up to 8 recipes in one block), MI's Assembler, or AE2 and Refined Storage patterns once you have a network."
+   ],
+   "es_es": [
+    "Crafteo automático",
+    "Elegí según lo que ya tenés andando: los Crafteadores mecánicos de Create para recetas grandes, el Crafteador de RFTools (hasta 8 recetas en un bloque), el Ensamblador de MI, o los patrones de AE2 y Refined Storage cuando ya tengas red."
+   ],
+   "sources": [
+    "jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#create.ponder.mechanical_crafter.header",
+    "jar:rftoolsutility-1.21-7.0.12.jar:assets/rftoolsbase/patchouli_books/manual/en_us/entries/machines/crafter.json",
+    "jar:Modern-Industrialization-2.5.6.jar:assets/modern_industrialization/mi_guidebook/electric_age/basic_machines.md",
+    "jar:appliedenergistics2-19.2.17.jar:assets/ae2/ae2guide/ae2-mechanics/autocrafting.md"
+   ]
+  },
+  {
+   "key": "au_farms",
+   "deps": [
+    "au_crafting"
+   ],
+   "type": "item",
+   "item": "industrialforegoing:plant_gatherer",
+   "optional": true,
+   "layout": {
+    "x": 12,
+    "y": 3,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Farms that feed the line",
+    "A farm is automation with a field attached: Industrial Foregoing's Plant Sower and Plant Gatherer, Create harvesters on a moving contraption, Mekanism or Powah generators fed by what grows. Always collect the drops: items on the ground are lag."
+   ],
+   "es_es": [
+    "Granjas que alimentan la línea",
+    "Una granja es automatización con un campo pegado: el Sembrador y el Recolector de plantas de Industrial Foregoing, cosechadoras de Create en un artefacto móvil, generadores de Mekanism o Powah alimentados con lo que crece. Siempre juntá los drops: los ítems en el piso son lag."
+   ],
+   "sources": [
+    "jar:industrialforegoing-1.21-3.6.39.jar:assets/industrialforegoing/patchouli_books/industrial_foregoing/en_us/entries/agr_hus/plant_gatherer.json",
+    "jar:industrialforegoing-1.21-3.6.39.jar:assets/industrialforegoing/patchouli_books/industrial_foregoing/en_us/entries/agr_hus/plant_sower.json",
+    "jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#create.ponder.mechanical_harvester.text_2"
+   ]
+  },
+  {
+   "key": "au_network",
+   "deps": [
+    "au_buffer"
+   ],
+   "type": "item",
+   "item": "ae2:import_bus",
+   "optional": true,
+   "layout": {
+    "x": 15,
+    "y": 0,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "When lines become a network",
+    "With many lines, a storage network pays off: AE2 or Refined Storage import and export buses feed machines straight from storage, and autocrafting orders the rest. LaserIO and XNet do the same between machines without a central storage."
+   ],
+   "es_es": [
+    "Cuando las líneas se vuelven red",
+    "Con muchas líneas conviene una red de almacenamiento: los buses de importación y exportación de AE2 o Refined Storage alimentan las máquinas directo desde el almacén, y el autocrafteo pide el resto. LaserIO y XNet hacen lo mismo entre máquinas sin almacén central."
+   ],
+   "sources": [
+    "jar:appliedenergistics2-19.2.17.jar:assets/ae2/ae2guide/items-blocks-machines/import_bus.md",
+    "jar:appliedenergistics2-19.2.17.jar:assets/ae2/ae2guide/items-blocks-machines/export_bus.md",
+    "jar:laserio-1.9.11.jar:assets/laserio/patchouli_books/laseriobook/en_us/entries/modes.json"
+   ]
+  },
+  {
+   "key": "au_lag",
+   "deps": [
+    "au_network"
+   ],
+   "type": "item",
+   "item": "utilitarian:tps_meter",
+   "layout": {
+    "x": 15,
+    "y": -3,
+    "size": 1.0,
+    "shape": "circle"
+   },
+   "en_us": [
+    "Keep the server happy",
+    "Fewer entities, fewer ticks: collect drops, prefer bigger stacks per operation over faster ticking (Modular Routers says it outright), and let idle machines sleep on redstone. Utilitarian's TPS Meter outputs redstone by the dimension's TPS, so a line can pause itself when the server struggles."
+   ],
+   "es_es": [
+    "Cuidá al servidor",
+    "Menos entidades, menos ticks: juntá los drops, preferí stacks más grandes por operación antes que ticks más rápidos (Modular Routers lo dice tal cual), y dejá dormir con redstone las máquinas ociosas. El Medidor de TPS de Utilitarian emite redstone según el TPS de la dimensión, así una línea puede pausarse sola cuando el servidor sufre."
+   ],
+   "sources": [
+    "jar:modular-routers-13.2.7+mc1.21.1.jar:assets/modularrouters/patchouli_books/book/en_us/entries/upgrades/speed.json",
+    "jar:utilitarian-1.21.1-0.19.2.jar:assets/utilitarian/lang/en_us.json#item.utilitarian.tps_meter_description"
+   ]
+  },
+  {
+   "key": "au_chunks",
+   "deps": [
+    "au_welcome"
+   ],
+   "type": "checkmark",
+   "icon": "minecraft:filled_map",
+   "layout": {
+    "x": 3,
+    "y": -3,
+    "size": 1.0,
+    "shape": "circle"
+   },
+   "en_us": [
+    "Machines sleep when nobody is near",
+    "Blocks only work in loaded chunks. Claim your base and force-load the machine chunks with FTB Chunks (see the teams chapter), and keep the count small: every loaded chunk costs the server."
+   ],
+   "es_es": [
+    "Las máquinas duermen sin nadie cerca",
+    "Los bloques sólo trabajan en chunks cargados. Reclamá tu base y forzá la carga de los chunks de máquinas con FTB Chunks (mirá el capítulo de equipos), y mantené pocos: cada chunk cargado le cuesta al servidor."
+   ],
+   "sources": [
+    "jar:ftb-chunks-neoforge-2101.1.21.jar:assets/ftbchunks/lang/en_us.json#ftbchunks.gui.chunk_info.text",
+    "jar:ftb-chunks-neoforge-2101.1.21.jar:assets/ftbchunks/lang/en_us.json#ftbchunks.config.server.force_loading.force_load_mode.tooltip"
+   ]
+  },
+  {
+   "key": "au_mastery",
+   "deps": [
+    "au_farms",
+    "au_lag"
+   ],
+   "type": "item",
+   "item": "functionalstorage:storage_controller",
+   "layout": {
+    "x": 18,
+    "y": 1.5,
+    "size": 2.0,
+    "shape": "octagon"
+   },
+   "en_us": [
+    "Mastery: a line that runs while you sleep",
+    "Raw materials in, finished goods out, overflow handled, no hands. Leave it for a night in-game and come back to full chests and an empty trash log."
+   ],
+   "es_es": [
+    "Maestría: una línea que anda mientras dormís",
+    "Materia prima adentro, productos terminados afuera, desborde resuelto, sin manos. Dejala una noche del juego y volvé a cofres llenos y un tacho que no tuvo que borrar nada."
+   ],
+   "sources": [
+    "jar:functionalstorage-1.21.1-1.5.8.jar:assets/functionalstorage/lang/en_us.json#block.functionalstorage.storage_controller",
+    "jar:trashcans-1.1.0-neoforge-mc1.21.jar:assets/trashcans/lang/en_us.json#trashcans.gui.item_trash_can.deleted_items.show"
+   ]
+  }
+ ]
+}

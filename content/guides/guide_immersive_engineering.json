@@ -1,0 +1,479 @@
+{
+ "chapter": "guide_immersive_engineering",
+ "group": "tech",
+ "act": "II",
+ "icon": "immersiveengineering:hammer",
+ "title": {
+  "en_us": "Immersive Engineering",
+  "es_es": "Immersive Engineering"
+ },
+ "subtitle": {
+  "en_us": "Hammers and multiblocks, wires on poles, coke, steel, the metal press and crusher, oil, diesel and the excavator.",
+  "es_es": "Martillos y multibloques, cables en postes, coque, acero, prensa y trituradora, aceite, diésel y la excavadora."
+ },
+ "quests": [
+  {
+   "key": "ie_welcome",
+   "deps": [],
+   "type": "checkmark",
+   "icon": "immersiveengineering:manual",
+   "layout": {
+    "x": 0,
+    "y": 0,
+    "size": 2.0,
+    "shape": "hexagon"
+   },
+   "en_us": [
+    "Industry by hand",
+    "Multiblocks built from blocks and formed with a hammer, power over visible wires on poles, and a chain from coke to steel to oil, all on FE. Its manual (a book and a lever) is complete. IE supplies the Calibration Frame's copper wire (II) and the Power Regulator's steel plates (III)."
+   ],
+   "es_es": [
+    "Industria a mano",
+    "Multibloques armados con bloques y formados a martillazos, energía por cables visibles en postes, y una cadena del coque al acero y al petróleo, todo con FE. Su manual (un libro y una palanca) está completo. IE aporta el cable de cobre del Marco de calibración (II) y las placas de acero del Regulador de energía (III)."
+   ],
+   "sources": [
+    "jar:ImmersiveEngineering-1.21.1-12.4.2-194.jar:assets/immersiveengineering/manual/en_us/introduction.txt",
+    "jar:ImmersiveEngineering-1.21.1-12.4.2-194.jar:data/immersiveengineering/recipe/crafting/manual.json",
+    "repo:pack/kubejs/server_scripts/entrelumen_integration_recipes.js"
+   ]
+  },
+  {
+   "key": "ie_hammer",
+   "deps": [
+    "ie_welcome"
+   ],
+   "type": "item",
+   "item": "immersiveengineering:hammer",
+   "layout": {
+    "x": 3,
+    "y": 0,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Engineer's Hammer and tools",
+    "The Hammer forms multiblocks, configures blocks and turns an ingot into a plate. Wire Cutters remove wires and turn a plate into wire. The Screwdriver fine-tunes machines, the Voltmeter reads energy and redstone. Build a shape, then hammer the right block."
+   ],
+   "es_es": [
+    "Martillo de ingeniero y herramientas",
+    "El Martillo forma multibloques, configura bloques y convierte un lingote en placa. Las Pinzas sacan cables y convierten una placa en cable. El Destornillador ajusta máquinas y el Voltímetro lee energía y redstone. Armá la forma y martillá el bloque correcto."
+   ],
+   "sources": [
+    "jar:ImmersiveEngineering-1.21.1-12.4.2-194.jar:assets/immersiveengineering/manual/en_us/basic_tools.txt",
+    "jar:ImmersiveEngineering-1.21.1-12.4.2-194.jar:data/immersiveengineering/recipe/crafting/hammer.json",
+    "jar:ImmersiveEngineering-1.21.1-12.4.2-194.jar:data/immersiveengineering/recipe/crafting/plate_copper_hammering.json",
+    "jar:ImmersiveEngineering-1.21.1-12.4.2-194.jar:data/immersiveengineering/recipe/crafting/wire_copper.json"
+   ]
+  },
+  {
+   "key": "ie_frame",
+   "deps": [
+    "ie_hammer"
+   ],
+   "type": "checkmark",
+   "icon": "entrelumen:calibration_frame",
+   "layout": {
+    "x": 3,
+    "y": -2.5,
+    "size": 1.0,
+    "shape": "gear"
+   },
+   "en_us": [
+    "Copper wire for the Calibration Frame",
+    "The Calibration Frame (II) takes 2 IE Copper Wires: copper plate plus wire cutters, or an upward Create Saw cutting plates into wire. The Power Regulator (III) takes 2 IE Steel Plates, hammered from steel ingots."
+   ],
+   "es_es": [
+    "Cable de cobre para el Marco de calibración",
+    "El Marco de calibración (II) lleva 2 Cables de cobre de IE: placa de cobre más pinzas, o una Sierra de Create mirando arriba que corta placas en cable. El Regulador de energía (III) lleva 2 Placas de acero de IE, martilladas de lingotes."
+   ],
+   "sources": [
+    "repo:pack/kubejs/server_scripts/entrelumen_integration_recipes.js",
+    "jar:ImmersiveEngineering-1.21.1-12.4.2-194.jar:data/immersiveengineering/recipe/crafting/wire_copper.json",
+    "jar:create-1.21.1-6.0.10.jar:data/create/recipe/cutting/compat/immersiveengineering/wire_copper.json"
+   ]
+  },
+  {
+   "key": "ie_coke",
+   "deps": [
+    "ie_hammer"
+   ],
+   "type": "item",
+   "item": "immersiveengineering:coal_coke",
+   "count": 16,
+   "layout": {
+    "x": 5.5,
+    "y": 0,
+    "size": 1.5,
+    "shape": "hexagon"
+   },
+   "en_us": [
+    "Coke Oven",
+    "27 Coke Bricks in a 3x3x3 cube, hammered on a side centre. Coal becomes Coal Coke, logs become charcoal, and Creosote Oil builds up: pull it with a bucket or pipe, the oven will not push it. Creosote makes Treated Wood."
+   ],
+   "es_es": [
+    "Horno de coque",
+    "27 Ladrillos de coque en un cubo de 3x3x3, martillado en el centro de un lado. El carbón se vuelve Coque, los troncos carbón vegetal, y se junta Aceite de creosota: sacalo con balde o caño, el horno no lo empuja. La creosota hace Madera tratada."
+   ],
+   "sources": [
+    "jar:ImmersiveEngineering-1.21.1-12.4.2-194.jar:assets/immersiveengineering/manual/en_us/coke_oven.txt",
+    "jar:ImmersiveEngineering-1.21.1-12.4.2-194.jar:assets/immersiveengineering/manual/en_us/treated_wood.txt"
+   ]
+  },
+  {
+   "key": "ie_steel",
+   "deps": [
+    "ie_coke"
+   ],
+   "type": "item",
+   "item": "immersiveengineering:ingot_steel",
+   "count": 8,
+   "layout": {
+    "x": 8,
+    "y": 0,
+    "size": 1.5,
+    "shape": "hexagon"
+   },
+   "en_us": [
+    "Blast Furnace and steel",
+    "The Crude Blast Furnace (27 blast bricks) turns iron and coke into steel and slag, which must be emptied, and it cannot be automated. The Improved one (reinforced bricks) takes a hopper on top, outputs by itself and speeds up with two powered preheaters."
+   ],
+   "es_es": [
+    "Alto horno y acero",
+    "El Alto horno rústico (27 ladrillos refractarios) convierte hierro y coque en acero y escoria, que hay que vaciar, y no se puede automatizar. El Mejorado (ladrillos reforzados) toma una tolva arriba, entrega solo y acelera con dos precalentadores con energía."
+   ],
+   "sources": [
+    "jar:ImmersiveEngineering-1.21.1-12.4.2-194.jar:assets/immersiveengineering/manual/en_us/crude_blast_furnace.txt",
+    "jar:ImmersiveEngineering-1.21.1-12.4.2-194.jar:assets/immersiveengineering/manual/en_us/improved_blast_furnace.txt",
+    "repo:pack/config/almostunified/unification/materials.json"
+   ]
+  },
+  {
+   "key": "ie_kiln",
+   "deps": [
+    "ie_coke"
+   ],
+   "type": "item",
+   "item": "immersiveengineering:alloybrick",
+   "count": 8,
+   "optional": true,
+   "layout": {
+    "x": 5.5,
+    "y": -2.5,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Alloy Kiln",
+    "Eight kiln bricks in a 2x2x2 cube: melts metals into Electrum and Constantan without dust, and makes insulating glass. Normal fuel, no power."
+   ],
+   "es_es": [
+    "Horno de aleación",
+    "Ocho ladrillos de horno en un cubo de 2x2x2: funde metales en Electro y Constantán sin polvos, y hace vidrio aislante. Combustible común, sin energía."
+   ],
+   "sources": [
+    "jar:ImmersiveEngineering-1.21.1-12.4.2-194.jar:assets/immersiveengineering/manual/en_us/alloy_kiln.txt"
+   ]
+  },
+  {
+   "key": "ie_ores",
+   "deps": [
+    "ie_welcome"
+   ],
+   "type": "item",
+   "item": "immersiveengineering:raw_lead",
+   "count": 4,
+   "layout": {
+    "x": 0,
+    "y": 2.5,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "IE ores",
+    "Bauxite, lead, silver, nickel and uranium, at the heights in the manual's Ores page. Almost Unified ranks IE right after Create, so shared metals often come out as IE's. Industrial Hemp seeds drop from tall grass; hemp makes Tough Fabric."
+   ],
+   "es_es": [
+    "Minerales de IE",
+    "Bauxita, plomo, plata, níquel y uranio, a las alturas de la página de Minerales del manual. Almost Unified pone a IE justo después de Create, así los metales compartidos suelen salir como los de IE. Las semillas de Cáñamo industrial caen del pasto alto; el cáñamo hace Tela resistente."
+   ],
+   "sources": [
+    "jar:ImmersiveEngineering-1.21.1-12.4.2-194.jar:assets/immersiveengineering/manual/en_us/ores.txt",
+    "jar:ImmersiveEngineering-1.21.1-12.4.2-194.jar:assets/immersiveengineering/manual/en_us/industrial_hemp.txt",
+    "repo:pack/config/almostunified/unification/materials.json"
+   ]
+  },
+  {
+   "key": "ie_power",
+   "deps": [
+    "ie_steel"
+   ],
+   "type": "item",
+   "item": "immersiveengineering:dynamo",
+   "layout": {
+    "x": 10.5,
+    "y": 0,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Kinetic Dynamo and first power",
+    "The Kinetic Dynamo turns IE windmills and waterwheels into power (other mods' rotation does not count). Windmills like open space and storms, and cloth sails; up to three waterwheels share a shaft. The Thermoelectric Generator runs on a hot and a cold block."
+   ],
+   "es_es": [
+    "Dínamo cinético y primera energía",
+    "El Dínamo cinético convierte molinos y ruedas hidráulicas de IE en energía (la rotación de otros mods no cuenta). Los molinos quieren espacio abierto y tormentas, y velas de tela; hasta tres ruedas comparten un eje. El Generador termoeléctrico anda con un bloque caliente y uno frío."
+   ],
+   "sources": [
+    "jar:ImmersiveEngineering-1.21.1-12.4.2-194.jar:assets/immersiveengineering/manual/en_us/kinetic_generators.txt",
+    "jar:ImmersiveEngineering-1.21.1-12.4.2-194.jar:assets/immersiveengineering/manual/en_us/thermoelectric_generator.txt"
+   ]
+  },
+  {
+   "key": "ie_wires",
+   "deps": [
+    "ie_power"
+   ],
+   "type": "item",
+   "item": "immersiveengineering:wirecoil_copper",
+   "count": 8,
+   "layout": {
+    "x": 13,
+    "y": 0,
+    "size": 1.5,
+    "shape": "hexagon"
+   },
+   "en_us": [
+    "Wires, connectors and relays",
+    "Click a coil on one connector, then another; blocks in the way break it. Connectors feed in or out, relays only join, transformers change voltage. The weakest wire sets the limit, and too many connectors on one wire burn it. Insulate LV and MV near paths."
+   ],
+   "es_es": [
+    "Cables, conectores y relés",
+    "Clic con una bobina en un conector y después en otro; un bloque en el medio lo corta. Los conectores meten o sacan, los relés sólo unen, los transformadores cambian voltaje. El cable más débil fija el límite, y demasiados conectores en un cable lo queman. Aislá LV y MV cerca de caminos."
+   ],
+   "sources": [
+    "jar:ImmersiveEngineering-1.21.1-12.4.2-194.jar:assets/immersiveengineering/manual/en_us/basic_wiring.txt",
+    "jar:ImmersiveEngineering-1.21.1-12.4.2-194.jar:assets/immersiveengineering/manual/en_us/transformers.txt",
+    "jar:ImmersiveEngineering-1.21.1-12.4.2-194.jar:assets/immersiveengineering/manual/en_us/accumulators.txt"
+   ]
+  },
+  {
+   "key": "ie_workbench",
+   "deps": [
+    "ie_steel"
+   ],
+   "type": "item",
+   "item": "immersiveengineering:workbench",
+   "layout": {
+    "x": 8,
+    "y": 2.5,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Engineer's Workbench and blueprints",
+    "Crafts from Blueprints (molds, components, ammo) and upgrades the drill and revolver. Some blueprints are only found or bought from villagers. Metal Press molds come from here."
+   ],
+   "es_es": [
+    "Mesa de ingeniero y planos",
+    "Craftea con Planos (moldes, componentes, munición) y mejora el taladro y el revólver. Algunos planos sólo se encuentran o se compran a aldeanos. Los moldes de la Prensa salen de acá."
+   ],
+   "sources": [
+    "jar:ImmersiveEngineering-1.21.1-12.4.2-194.jar:assets/immersiveengineering/manual/en_us/engineers_workbench.txt",
+    "jar:ImmersiveEngineering-1.21.1-12.4.2-194.jar:assets/immersiveengineering/manual/en_us/blueprints.txt"
+   ]
+  },
+  {
+   "key": "ie_press",
+   "deps": [
+    "ie_wires"
+   ],
+   "type": "item",
+   "item": "immersiveengineering:heavy_engineering",
+   "count": 4,
+   "layout": {
+    "x": 15.5,
+    "y": 0,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Metal Press and Crusher",
+    "The Press shapes plates, rods and wire with molds and packs 4 or 9 items into blocks. The Crusher turns ores to dust (2 per ore block) and crushes anything alive that falls in. Both take power on top; a screwdriver inverts their redstone."
+   ],
+   "es_es": [
+    "Prensa y Trituradora",
+    "La Prensa da forma a placas, varillas y cables con moldes y compacta de a 4 o 9 en bloques. La Trituradora hace polvo de minerales (2 por bloque) y tritura cualquier cosa viva que caiga. Las dos toman energía arriba; un destornillador invierte su redstone."
+   ],
+   "sources": [
+    "jar:ImmersiveEngineering-1.21.1-12.4.2-194.jar:assets/immersiveengineering/manual/en_us/metal_press.txt",
+    "jar:ImmersiveEngineering-1.21.1-12.4.2-194.jar:assets/immersiveengineering/manual/en_us/crusher.txt"
+   ]
+  },
+  {
+   "key": "ie_arc",
+   "deps": [
+    "ie_press"
+   ],
+   "type": "item",
+   "item": "immersiveengineering:graphite_electrode",
+   "optional": true,
+   "layout": {
+    "x": 18,
+    "y": -2.5,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Arc Furnace",
+    "A huge multiblock for big smelting and alloy batches, fast but power-hungry: an ore block gives 2 ingots plus slag. Its graphite electrodes wear out after about four days of nonstop use."
+   ],
+   "es_es": [
+    "Horno de arco",
+    "Un multibloque enorme para tandas grandes de fundición y aleación, rápido pero glotón: un bloque de mineral da 2 lingotes más escoria. Sus electrodos de grafito se gastan tras unos cuatro días de uso continuo."
+   ],
+   "sources": [
+    "jar:ImmersiveEngineering-1.21.1-12.4.2-194.jar:assets/immersiveengineering/manual/en_us/arc_furnace.txt"
+   ]
+  },
+  {
+   "key": "ie_excavator",
+   "deps": [
+    "ie_press"
+   ],
+   "type": "item",
+   "item": "immersiveengineering:survey_tools",
+   "optional": true,
+   "layout": {
+    "x": 18,
+    "y": 2.5,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Mineral veins and the Excavator",
+    "Survey Tools on natural rock point to hidden veins; a Core Sample Drill tells contents and yield. The Excavator, a giant bucket wheel, digs the vein out slowly. A steady mixed-ore source near home."
+   ],
+   "es_es": [
+    "Vetas minerales y la Excavadora",
+    "Las Herramientas de prospección sobre roca natural apuntan a vetas escondidas; un Taladro de muestras dice contenido y rendimiento. La Excavadora, una rueda de cangilones gigante, las vacía despacio. Mineral mixto constante cerca de casa."
+   ],
+   "sources": [
+    "jar:ImmersiveEngineering-1.21.1-12.4.2-194.jar:assets/immersiveengineering/manual/en_us/mineral_deposits.txt",
+    "jar:ImmersiveEngineering-1.21.1-12.4.2-194.jar:assets/immersiveengineering/manual/en_us/excavator.txt"
+   ]
+  },
+  {
+   "key": "ie_oil",
+   "deps": [
+    "ie_press"
+   ],
+   "type": "item",
+   "item": "immersiveengineering:biodiesel_bucket",
+   "layout": {
+    "x": 20.5,
+    "y": 0,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Plant oil, ethanol and diesel",
+    "The Squeezer presses plant oil, the Fermenter makes ethanol, the Refinery mixes them into biodiesel. The Diesel Generator, IE's main high-voltage source, burns it fast. IE plant oil also fuels Create's liquid burner."
+   ],
+   "es_es": [
+    "Aceite vegetal, etanol y diésel",
+    "La Prensa exprimidora saca aceite vegetal, el Fermentador hace etanol, la Refinería los mezcla en biodiésel. El Generador diésel, la fuente principal de alto voltaje de IE, lo quema rápido. El aceite vegetal de IE también alimenta el quemador líquido de Create."
+   ],
+   "sources": [
+    "jar:ImmersiveEngineering-1.21.1-12.4.2-194.jar:assets/immersiveengineering/manual/en_us/squeezer.txt",
+    "jar:ImmersiveEngineering-1.21.1-12.4.2-194.jar:assets/immersiveengineering/manual/en_us/fermenter.txt",
+    "jar:ImmersiveEngineering-1.21.1-12.4.2-194.jar:assets/immersiveengineering/manual/en_us/refinery.txt",
+    "jar:ImmersiveEngineering-1.21.1-12.4.2-194.jar:assets/immersiveengineering/manual/en_us/diesel_generator.txt",
+    "jar:ImmersiveEngineering-1.21.1-12.4.2-194.jar:data/c/tags/fluid/plantoil.json"
+   ]
+  },
+  {
+   "key": "ie_logistics",
+   "deps": [
+    "ie_power"
+   ],
+   "type": "item",
+   "item": "immersiveengineering:cloche",
+   "optional": true,
+   "layout": {
+    "x": 10.5,
+    "y": -2.5,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Conveyors and cloches",
+    "IE conveyors move items and mobs with no power; the hammer turns or tilts them. The Garden Cloche grows crops with power and water, faster with fertilizer, and outputs the harvest."
+   ],
+   "es_es": [
+    "Cintas y campanas",
+    "Las cintas de IE mueven ítems y mobs sin energía; el martillo las gira o inclina. La Campana de jardín cultiva con energía y agua, más rápido con fertilizante, y entrega la cosecha."
+   ],
+   "sources": [
+    "jar:ImmersiveEngineering-1.21.1-12.4.2-194.jar:assets/immersiveengineering/manual/en_us/conveyor_belts.txt",
+    "jar:ImmersiveEngineering-1.21.1-12.4.2-194.jar:assets/immersiveengineering/manual/en_us/garden_cloche.txt"
+   ]
+  },
+  {
+   "key": "ie_gear",
+   "deps": [
+    "ie_workbench"
+   ],
+   "type": "item",
+   "item": "immersiveengineering:toolbox",
+   "optional": true,
+   "layout": {
+    "x": 8,
+    "y": 5,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Drill, revolver and toolbox",
+    "The fuel-powered Mining Drill takes Workbench upgrades; the Revolver fires crafted cartridges; the Toolbox carries tools as a placeable box. The skyhook zips you along your power lines."
+   ],
+   "es_es": [
+    "Taladro, revólver y caja de herramientas",
+    "El Taladro a combustible acepta mejoras de la Mesa; el Revólver dispara cartuchos crafteados; la Caja lleva herramientas y se puede apoyar. El gancho aéreo te hace deslizar por tus líneas de energía."
+   ],
+   "sources": [
+    "jar:ImmersiveEngineering-1.21.1-12.4.2-194.jar:assets/immersiveengineering/manual/en_us/mining_drill.txt",
+    "jar:ImmersiveEngineering-1.21.1-12.4.2-194.jar:assets/immersiveengineering/manual/en_us/revolver.txt",
+    "jar:ImmersiveEngineering-1.21.1-12.4.2-194.jar:assets/immersiveengineering/manual/en_us/engineers_toolbox.txt",
+    "jar:ImmersiveEngineering-1.21.1-12.4.2-194.jar:assets/immersiveengineering/manual/en_us/engineers_skyhook.txt"
+   ]
+  },
+  {
+   "key": "ie_mastery",
+   "deps": [
+    "ie_oil",
+    "ie_excavator"
+   ],
+   "type": "item",
+   "item": "immersiveengineering:plate_steel",
+   "count": 32,
+   "layout": {
+    "x": 23,
+    "y": 0,
+    "size": 2.0,
+    "shape": "octagon"
+   },
+   "en_us": [
+    "Mastery: high voltage",
+    "HV lines across the base, a diesel plant fed by squeezer and fermenter, an excavator on a rich vein and a press making plates on demand. Steel plates, wire and treated wood are worth mass-producing."
+   ],
+   "es_es": [
+    "Maestría: alta tensión",
+    "Líneas HV por toda la base, una central diésel alimentada por exprimidora y fermentador, una excavadora en una veta rica y una prensa haciendo placas a pedido. Placas de acero, cable y madera tratada conviene hacerlos por mayor."
+   ],
+   "sources": [
+    "jar:ImmersiveEngineering-1.21.1-12.4.2-194.jar:assets/immersiveengineering/manual/en_us/diesel_generator.txt",
+    "jar:ImmersiveEngineering-1.21.1-12.4.2-194.jar:assets/immersiveengineering/manual/en_us/excavator.txt"
+   ]
+  }
+ ]
+}

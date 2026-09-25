@@ -1,0 +1,437 @@
+{
+ "chapter": "guide_enderio",
+ "group": "tech",
+ "act": "II",
+ "icon": "enderio:sag_mill",
+ "title": {
+  "en_us": "Ender IO",
+  "es_es": "Ender IO"
+ },
+ "subtitle": {
+  "en_us": "Grains of Infinity, alloys, capacitors, the SAG Mill, compact conduits, soul binding and travel anchors.",
+  "es_es": "Granos de infinito, aleaciones, capacitores, el Molino SAG, conductos compactos, vinculación de almas y anclas de viaje."
+ },
+ "quests": [
+  {
+   "key": "eio_welcome",
+   "deps": [],
+   "type": "checkmark",
+   "icon": "enderio:conduit_binder",
+   "layout": {
+    "x": 0,
+    "y": 0,
+    "size": 2.0,
+    "shape": "hexagon"
+   },
+   "en_us": [
+    "Compact tech",
+    "Capacitor-driven machines, special alloys, conduits that carry items, fluids, energy and redstone in one block, and soul devices. Its Micro Infinity (µI) is plain FE. The pack runs 8.2.11-beta, whose manual is a placeholder: EMI and tooltips are your guide."
+   ],
+   "es_es": [
+    "Tecnología compacta",
+    "Máquinas con capacitores, aleaciones especiales, conductos que llevan ítems, fluidos, energía y redstone en un bloque, y aparatos de almas. Su Micro Infinito (µI) es FE común. El pack usa la 8.2.11-beta, cuyo manual es un borrador: EMI y las descripciones son tu guía."
+   ],
+   "sources": [
+    "jar:enderio-8.2.11-beta.jar:assets/enderio/lang/en_us.json#tooltip.enderio.energy_equivalence",
+    "jar:enderio-8.2.11-beta.jar:assets/enderio/patchouli_books/guide/en_us/entries/test_entry.json"
+   ]
+  },
+  {
+   "key": "eio_grains",
+   "deps": [
+    "eio_welcome"
+   ],
+   "type": "item",
+   "item": "enderio:grains_of_infinity",
+   "count": 8,
+   "layout": {
+    "x": 3,
+    "y": 0,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Grains of Infinity",
+    "Light a fire on bedrock or deepslate in the Overworld: bedrock gives 1 to 3 grains 80% of the time, deepslate one grain 40% of the time and turns to cobble. Flint and steel at the world floor is the classic farm."
+   ],
+   "es_es": [
+    "Granos de infinito",
+    "Prendé fuego sobre roca madre o pizarra profunda en el Overworld: la roca madre da de 1 a 3 granos el 80% de las veces, la pizarra un grano el 40% y se vuelve adoquín. Mechero en el fondo del mundo: la granja clásica."
+   ],
+   "sources": [
+    "jar:enderio-8.2.11-beta.jar:data/enderio/recipe/fire_crafting/bedrock_infinity.json",
+    "jar:enderio-8.2.11-beta.jar:data/enderio/recipe/fire_crafting/deepslate_infinity.json",
+    "jar:enderio-8.2.11-beta.jar:assets/enderio/lang/en_us.json#jei.enderio.fire_crafting.title"
+   ]
+  },
+  {
+   "key": "eio_chassis",
+   "deps": [
+    "eio_grains"
+   ],
+   "type": "item",
+   "item": "enderio:basic_capacitor",
+   "count": 4,
+   "layout": {
+    "x": 5.5,
+    "y": 0,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Void Chassis and capacitors",
+    "Iron and grains make the Void Chassis. Every machine needs a capacitor inside or it will not run: Basic, then Double-Layer and Octadic for speed and efficiency. Loot capacitors from dungeons carry random bonuses."
+   ],
+   "es_es": [
+    "Chasis del vacío y capacitores",
+    "Hierro y granos hacen el Chasis del vacío. Toda máquina necesita un capacitor adentro o no anda: Básico, después de Doble capa y Octádico para velocidad y eficiencia. Los capacitores de botín de mazmorras traen bonos al azar."
+   ],
+   "sources": [
+    "jar:enderio-8.2.11-beta.jar:data/enderio/recipe/void_chassis.json",
+    "jar:enderio-8.2.11-beta.jar:data/enderio/recipe/basic_capacitor.json",
+    "jar:enderio-8.2.11-beta.jar:assets/enderio/lang/en_us.json#tooltip.enderio.machine.status.no_capacitor",
+    "jar:enderio-8.2.11-beta.jar:assets/enderio/lang/en_us.json#enderio.capacitor.loot.type.fuel_efficiency"
+   ]
+  },
+  {
+   "key": "eio_stirling",
+   "deps": [
+    "eio_chassis"
+   ],
+   "type": "item",
+   "item": "enderio:stirling_generator",
+   "layout": {
+    "x": 8,
+    "y": -2.5,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Stirling Generator and solar",
+    "The Stirling Generator burns furnace fuel, more efficiently with better capacitors. Photovoltaic Modules make power under open daylight. Capacitor Banks store it and grow when placed together."
+   ],
+   "es_es": [
+    "Generador Stirling y solar",
+    "El Generador Stirling quema combustible de horno, más eficiente con mejores capacitores. Los Módulos fotovoltaicos generan con luz de día y cielo abierto. Los Bancos de capacitores la guardan y crecen si los ponés juntos."
+   ],
+   "sources": [
+    "jar:enderio-8.2.11-beta.jar:data/enderio/recipe/stirling_generator.json",
+    "jar:enderio-8.2.11-beta.jar:assets/enderio/lang/en_us.json#tooltip.enderio.machine.photovoltaic_cell.advanced2",
+    "jar:enderio-8.2.11-beta.jar:assets/enderio/lang/en_us.json#enderio.capacitor.modifier.burning_energy_generation.tooltip"
+   ]
+  },
+  {
+   "key": "eio_smelter",
+   "deps": [
+    "eio_chassis"
+   ],
+   "type": "item",
+   "item": "enderio:energetic_alloy_ingot",
+   "count": 8,
+   "layout": {
+    "x": 8,
+    "y": 0,
+    "size": 1.5,
+    "shape": "hexagon"
+   },
+   "en_us": [
+    "Alloy Smelter",
+    "Makes Ender IO's alloys: Conductive, Energetic, Vibrant, Pulsating, Redstone, Dark Steel, Soularium and more (Dark Steel is iron, coal and obsidian). Everything later needs them: automate it early."
+   ],
+   "es_es": [
+    "Fundidora de aleaciones",
+    "Hace las aleaciones de Ender IO: Conductora, Energética, Vibrante, Pulsante, Redstone, Acero oscuro, Soularium y más (el Acero oscuro es hierro, carbón y obsidiana). Todo lo que viene las pide: automatizala temprano."
+   ],
+   "sources": [
+    "jar:enderio-8.2.11-beta.jar:data/enderio/recipe/alloy_smelter.json",
+    "jar:enderio-8.2.11-beta.jar:data/enderio/recipe/alloy_smelting/energetic_alloy_ingot.json",
+    "jar:enderio-8.2.11-beta.jar:data/enderio/recipe/dark_steel_ingot_with_coal.json",
+    "jar:enderio-8.2.11-beta.jar:assets/enderio/lang/en_us.json#jei.enderio.alloy_smelting.title"
+   ]
+  },
+  {
+   "key": "eio_sag",
+   "deps": [
+    "eio_smelter"
+   ],
+   "type": "item",
+   "item": "enderio:sag_mill",
+   "layout": {
+    "x": 10.5,
+    "y": 0,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "SAG Mill and grinding balls",
+    "Grinds ores with chance-based bonuses: a raw ore gives 1.8 dust on average. Grinding balls (Dark Steel, Energetic, Vibrant) raise output or cut power until they wear out. EMI shows the chances."
+   ],
+   "es_es": [
+    "Molino SAG y bolas de molienda",
+    "Muele minerales con bonos por chance: un crudo da 1,8 polvos en promedio. Las bolas de molienda (Acero oscuro, Energética, Vibrante) suben la salida o bajan el consumo hasta gastarse. EMI muestra las chances."
+   ],
+   "sources": [
+    "jar:enderio-8.2.11-beta.jar:data/enderio/recipe/sag_mill.json",
+    "jar:enderio-8.2.11-beta.jar:assets/enderio/lang/en_us.json#tooltip.enderio.grinding_ball_main_output",
+    "jar:enderio-8.2.11-beta.jar:assets/enderio/lang/en_us.json#tooltip.enderio.grinding_ball_bonus_output",
+    "jar:enderio-8.2.11-beta.jar:assets/enderio/lang/en_us.json#tooltip.enderio.machine.sag_mill.grinding_ball.remaining"
+   ]
+  },
+  {
+   "key": "eio_conduits",
+   "deps": [
+    "eio_smelter"
+   ],
+   "type": "item",
+   "item": "enderio:conduit_binder",
+   "count": 16,
+   "icon": "enderio:conduit",
+   "layout": {
+    "x": 10.5,
+    "y": -2.5,
+    "size": 1.5,
+    "shape": "hexagon"
+   },
+   "en_us": [
+    "Conduits",
+    "Item, fluid, energy and redstone conduits share one block. Eight at a time from Conduit Binder and alloys, upgradable with more alloy. Each connection has its own screen: insert, extract, channel colour, priority, round robin, filters. Facades hide them behind any block."
+   ],
+   "es_es": [
+    "Conductos",
+    "Los conductos de ítems, fluidos, energía y redstone comparten un bloque. Ocho por vez con Aglutinante y aleaciones, mejorables con más aleación. Cada conexión tiene su pantalla: insertar, extraer, color de canal, prioridad, round robin, filtros. Las fachadas los esconden tras cualquier bloque."
+   ],
+   "sources": [
+    "jar:enderio-8.2.11-beta.jar:data/enderio/recipe/conduit_binder_composite.json",
+    "jar:enderio-8.2.11-beta.jar:data/enderio/recipe/conduit_binder_from_smelting.json",
+    "jar:enderio-8.2.11-beta.jar:data/enderio/recipe/item_conduit.json",
+    "jar:enderio-8.2.11-beta.jar:data/enderio/recipe/enhanced_energy_conduit.json",
+    "jar:enderio-8.2.11-beta.jar:data/enderio/recipe/energetic_item_conduit_upgrade.json",
+    "jar:enderio-8.2.11-beta.jar:assets/enderio/lang/en_us.json#gui.enderio.conduit.channel",
+    "jar:enderio-8.2.11-beta.jar:assets/enderio/lang/en_us.json#gui.enderio.conduit.round_robin.enabled",
+    "jar:enderio-8.2.11-beta.jar:assets/enderio/lang/en_us.json#tooltip.enderio.conduit.facade.blast_resist"
+   ]
+  },
+  {
+   "key": "eio_probe",
+   "deps": [
+    "eio_conduits"
+   ],
+   "type": "checkmark",
+   "icon": "enderio:conduit_probe",
+   "layout": {
+    "x": 13,
+    "y": -2.5,
+    "size": 1.0,
+    "shape": "circle"
+   },
+   "en_us": [
+    "Conduit Probe and Yeta Wrench",
+    "The Probe copies one connection's settings onto another; the Yeta Wrench rotates and configures. Crafting a configured machine alone in the grid wipes its settings: the fastest reset."
+   ],
+   "es_es": [
+    "Sonda y Llave Yeta",
+    "La Sonda copia los ajustes de una conexión a otra; la Llave Yeta gira y configura. Craftear sola en la grilla una máquina configurada borra sus ajustes: el reinicio más rápido."
+   ],
+   "sources": [
+    "jar:enderio-8.2.11-beta.jar:assets/enderio/lang/en_us.json#tooltip.enderio.conduit.probe.copy_paste",
+    "jar:enderio-8.2.11-beta.jar:data/enderio/recipe/erase_sag_mill.json",
+    "jar:enderio-8.2.11-beta.jar:data/enderio/recipe/erase_alloy_smelter.json"
+   ]
+  },
+  {
+   "key": "eio_machines",
+   "deps": [
+    "eio_sag"
+   ],
+   "type": "item",
+   "item": "enderio:painting_machine",
+   "optional": true,
+   "layout": {
+    "x": 13,
+    "y": 0,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "More machines",
+    "Slice'N'Splice makes parts like the Zombie Electrode from heads and alloys, the VAT ferments fluids, the Painting Machine re-skins blocks, the Enchanter makes chosen enchanted books, the Farming Station tends crops, chargers top up gear, and the Crafter automates recipes."
+   ],
+   "es_es": [
+    "Más máquinas",
+    "Slice'N'Splice hace piezas como el Electrodo zombi con cabezas y aleaciones, la Cuba fermenta fluidos, la Pintora cambia la piel de bloques, el Encantador hace libros a elección, la Estación de cultivo atiende cultivos, los cargadores llenan tu equipo, y el Crafteador automatiza recetas."
+   ],
+   "sources": [
+    "jar:enderio-8.2.11-beta.jar:data/enderio/recipe/slicing/zombie_electrode.json",
+    "jar:enderio-8.2.11-beta.jar:data/enderio/recipe/fermenting/fluid_liquid_sunshine_still.json",
+    "jar:enderio-8.2.11-beta.jar:data/enderio/recipe/enchanting/sweeping_edge.json",
+    "jar:enderio-8.2.11-beta.jar:assets/enderio/lang/en_us.json#jei.enderio.vat.title",
+    "jar:enderio-8.2.11-beta.jar:assets/enderio/lang/en_us.json"
+   ]
+  },
+  {
+   "key": "eio_souls",
+   "deps": [
+    "eio_machines"
+   ],
+   "type": "item",
+   "item": "enderio:soul_vial",
+   "count": 4,
+   "layout": {
+    "x": 15.5,
+    "y": 0,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Soul Vials and the Soul Binder",
+    "A Soul Vial captures a mob's soul (the tooltip says which mobs work). The Soul Binder joins souls with items into mob-specific parts. Soularium, made with soul sand or soil, frames these machines."
+   ],
+   "es_es": [
+    "Frascos de almas y el Vinculador",
+    "Un Frasco de almas captura el alma de un mob (la descripción dice cuáles sirven). El Vinculador de almas une almas con ítems en piezas específicas de cada mob. El Soularium, hecho con arena o tierra de almas, arma estas máquinas."
+   ],
+   "sources": [
+    "jar:enderio-8.2.11-beta.jar:data/enderio/recipe/soul_binder.json",
+    "jar:enderio-8.2.11-beta.jar:data/enderio/recipe/alloy_smelting/soularium_ingot.json",
+    "jar:enderio-8.2.11-beta.jar:assets/enderio/lang/en_us.json#jei.enderio.soul_binding.title",
+    "jar:enderio-8.2.11-beta.jar:assets/enderio/lang/en_us.json#tooltip.enderio.no_soul_bound"
+   ]
+  },
+  {
+   "key": "eio_travel",
+   "deps": [
+    "eio_conduits"
+   ],
+   "type": "item",
+   "item": "enderio:travel_anchor",
+   "optional": true,
+   "layout": {
+    "x": 10.5,
+    "y": -5,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Travel Anchors and the Staff",
+    "Anchors let you teleport between anchors you look at; the Staff of Travelling blinks you forward or to anchors (G in this pack). Pack change: both need a Routing Matrix (Act III), like the other teleporters."
+   ],
+   "es_es": [
+    "Anclas de viaje y el Bastón",
+    "Las anclas te teletransportan entre anclas que mirás; el Bastón de viaje te hace saltar hacia adelante o a anclas (G en este pack). Cambio del pack: los dos piden una Matriz de distribución (acto III), como los demás teletransportes."
+   ],
+   "sources": [
+    "jar:enderio-8.2.11-beta.jar:data/enderio/recipe/staff_of_travelling.json",
+    "repo:pack/kubejs/server_scripts/entrelumen_pingpong_balance.js",
+    "repo:pack/config/entrelumen/client-preset.json"
+   ]
+  },
+  {
+   "key": "eio_pack",
+   "deps": [
+    "eio_souls"
+   ],
+   "type": "checkmark",
+   "icon": "enderio:octadic_capacitor",
+   "layout": {
+    "x": 15.5,
+    "y": -2.5,
+    "size": 1.0,
+    "shape": "gear"
+   },
+   "en_us": [
+    "Pack changes to Ender IO",
+    "Travel Anchor and Staff (III), Powered Spawner (IV), Octadic Capacitor (V). A data fix makes Enchantment Industry accept Ender IO's XP Juice. Unique alloys are untouched by Almost Unified."
+   ],
+   "es_es": [
+    "Cambios del pack a Ender IO",
+    "Ancla y Bastón (III), Generador con energía (IV), Capacitor octádico (V). Un arreglo de datos hace que Enchantment Industry acepte el Jugo de XP de Ender IO. Almost Unified no toca las aleaciones únicas."
+   ],
+   "sources": [
+    "repo:pack/kubejs/server_scripts/entrelumen_pingpong_balance.js",
+    "repo:pack/kubejs/data/create_enchantment_industry/data_maps/fluid/unit/experience.json",
+    "repo:pack/config/almostunified/unification/materials.json"
+   ]
+  },
+  {
+   "key": "eio_spawner",
+   "deps": [
+    "eio_pack"
+   ],
+   "type": "item",
+   "item": "enderio:powered_spawner",
+   "optional": true,
+   "layout": {
+    "x": 18,
+    "y": -2.5,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Powered Spawner",
+    "A Broken Spawner, an ensouled chassis, soularium, vibrant crystals and a Z-Logic Controller: it spawns or clones its bound mob with energy. Pack change: needs an Ecosystem Capsule (IV)."
+   ],
+   "es_es": [
+    "Generador con energía",
+    "Un Generador roto, un chasis con alma, soularium, cristales vibrantes y un Controlador lógico Z: genera o clona su mob vinculado con energía. Cambio del pack: pide una Cápsula de ecosistema (IV)."
+   ],
+   "sources": [
+    "repo:pack/kubejs/server_scripts/entrelumen_pingpong_balance.js",
+    "repo:docs/design/mod-pingpong.md"
+   ]
+  },
+  {
+   "key": "eio_misc",
+   "deps": [
+    "eio_welcome"
+   ],
+   "type": "item",
+   "item": "enderio:fused_quartz",
+   "count": 8,
+   "optional": true,
+   "layout": {
+    "x": 0,
+    "y": 2.5,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Handy blocks",
+    "Fused Quartz and Clear Glass (some glow, some block light), Dark Steel doors, bars and a fast ladder, timed Resetting Levers, silent pressure plates, obelisks (attractor, aversion, inhibitor, relocator, weather, XP) and the Vacuum Chest that sucks up items."
+   ],
+   "es_es": [
+    "Bloques útiles",
+    "Cuarzo fundido y Vidrio claro (algunos brillan, otros tapan la luz), puertas, barrotes y una escalera rápida de Acero oscuro, Palancas con temporizador, placas de presión silenciosas, obeliscos (atractor, aversión, inhibidor, reubicador, clima, XP) y el Cofre aspirador que chupa ítems."
+   ],
+   "sources": [
+    "jar:enderio-8.2.11-beta.jar:assets/enderio/lang/en_us.json#tooltip.enderio.glass.emits_light",
+    "jar:enderio-8.2.11-beta.jar:assets/enderio/lang/en_us.json#tooltip.enderio.dark_steel_ladder.faster",
+    "jar:enderio-8.2.11-beta.jar:assets/enderio/lang/en_us.json"
+   ]
+  },
+  {
+   "key": "eio_mastery",
+   "deps": [
+    "eio_souls"
+   ],
+   "type": "item",
+   "item": "enderio:octadic_capacitor",
+   "layout": {
+    "x": 18,
+    "y": 0,
+    "size": 2.0,
+    "shape": "octagon"
+   },
+   "en_us": [
+    "Mastery: a base on conduits",
+    "Octadic-capacitor machines, automatic alloys, Soul Binder parts and travel anchors in every room. Octadics need the Ark Bus (V): a good long-term goal."
+   ],
+   "es_es": [
+    "Maestría: una base de conductos",
+    "Máquinas con capacitores octádicos, aleaciones automáticas, piezas del Vinculador y anclas en cada habitación. Los octádicos piden el Bus del Arca (V): una buena meta de largo plazo."
+   ],
+   "sources": [
+    "repo:pack/kubejs/server_scripts/entrelumen_pingpong_balance.js"
+   ]
+  }
+ ]
+}

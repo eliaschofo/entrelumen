@@ -1,0 +1,427 @@
+{
+ "chapter": "guide_integrated_dynamics",
+ "group": "tech",
+ "act": "III",
+ "icon": "integrateddynamics:logic_programmer",
+ "title": {
+  "en_us": "Integrated Dynamics and Tunnels",
+  "es_es": "Integrated Dynamics y Tunnels"
+ },
+ "subtitle": {
+  "en_us": "Menril, logic networks, readers, variable cards and operators, and Integrated Tunnels to move anything with logic filters.",
+  "es_es": "Menril, redes lógicas, lectores, tarjetas de variable y operadores, e Integrated Tunnels para mover cualquier cosa con filtros lógicos."
+ },
+ "quests": [
+  {
+   "key": "idy_welcome",
+   "deps": [],
+   "type": "checkmark",
+   "icon": "integrateddynamics:on_the_dynamics_of_integration",
+   "layout": {
+    "x": 0,
+    "y": 0,
+    "size": 2.0,
+    "shape": "hexagon"
+   },
+   "en_us": [
+    "Logic instead of redstone",
+    "Readers read values from the world, the Logic Programmer combines them with operators, writers act on the result. Integrated Tunnels uses the same networks to move items, fluids and energy with filters as smart as you like. Its book (book plus two crystallized menril chunks) has tutorials with rewards; craftable, not given on spawn."
+   ],
+   "es_es": [
+    "Lógica en lugar de redstone",
+    "Los lectores leen valores del mundo, el Programador lógico los combina con operadores, los escritores actúan con el resultado. Integrated Tunnels usa las mismas redes para mover ítems, fluidos y energía con filtros tan listos como quieras. Su libro (libro más dos trozos de menril cristalizado) trae tutoriales con premios; se craftea, no se entrega al entrar."
+   ],
+   "sources": [
+    "jar:integrateddynamics-1.21.1-neoforge-1.35.0-1981.jar:assets/integrateddynamics/lang/en_us.json#info_book.integrateddynamics.introduction.text1",
+    "jar:integrateddynamics-1.21.1-neoforge-1.35.0-1981.jar:data/integrateddynamics/recipe/crafting/on_the_dynamics_of_integration.json",
+    "repo:pack/config/integrateddynamics-common.toml"
+   ]
+  },
+  {
+   "key": "idy_menril",
+   "deps": [
+    "idy_welcome"
+   ],
+   "type": "item",
+   "item": "integrateddynamics:menril_log",
+   "count": 8,
+   "layout": {
+    "x": 3,
+    "y": 0,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Menril trees",
+    "Tall blue trees with glowing, edible berries: rare, but common in the Meneglin biome. Their wood holds Menril Resin, the base of almost everything. Plant saplings at home the moment you find one."
+   ],
+   "es_es": [
+    "Árboles de menril",
+    "Árboles azules altos con bayas brillantes y comestibles: raros, pero comunes en el bioma Meneglin. Su madera guarda Resina de menril, la base de casi todo. Plantá brotes en casa apenas encuentres uno."
+   ],
+   "sources": [
+    "jar:integrateddynamics-1.21.1-neoforge-1.35.0-1981.jar:assets/integrateddynamics/lang/en_us.json#info_book.integrateddynamics.manual.prerequisites.menril_trees.text1",
+    "jar:integrateddynamics-1.21.1-neoforge-1.35.0-1981.jar:assets/integrateddynamics/lang/en_us.json#info_book.integrateddynamics.manual.prerequisites.meneglin_biome.text1"
+   ]
+  },
+  {
+   "key": "idy_squeezer",
+   "deps": [
+    "idy_menril"
+   ],
+   "type": "item",
+   "item": "integrateddynamics:crystalized_menril_chunk",
+   "count": 16,
+   "layout": {
+    "x": 5.5,
+    "y": 0,
+    "size": 1.5,
+    "shape": "hexagon"
+   },
+   "en_us": [
+    "Squeezer and Drying Basin",
+    "Put a menril log in the Squeezer and jump on it until flat: resin flows out the sides into a Drying Basin, which makes Crystallized Menril. A redstone pulse resets the Squeezer; mechanical versions automate it. Never pour hot fluids into a basin."
+   ],
+   "es_es": [
+    "Exprimidora y Pileta de secado",
+    "Poné un tronco de menril en la Exprimidora y saltá encima hasta aplastarlo: la resina sale por los costados a una Pileta de secado, que hace Menril cristalizado. Un pulso de redstone reinicia la Exprimidora; las versiones mecánicas la automatizan. Nunca metas fluidos calientes en una pileta."
+   ],
+   "sources": [
+    "jar:integrateddynamics-1.21.1-neoforge-1.35.0-1981.jar:assets/integrateddynamics/lang/en_us.json#info_book.integrateddynamics.tutorials.menrilBasics.text2",
+    "jar:integrateddynamics-1.21.1-neoforge-1.35.0-1981.jar:assets/integrateddynamics/lang/en_us.json#info_book.integrateddynamics.tutorials.menrilBasics.text3",
+    "jar:integrateddynamics-1.21.1-neoforge-1.35.0-1981.jar:assets/integrateddynamics/lang/en_us.json#info_book.integrateddynamics.tutorials.menrilBasics.text4",
+    "jar:integrateddynamics-1.21.1-neoforge-1.35.0-1981.jar:assets/integrateddynamics/lang/en_us.json#info_book.integrateddynamics.manual.prerequisites.drying_basin.text2"
+   ]
+  },
+  {
+   "key": "idy_sensor",
+   "deps": [
+    "idy_squeezer"
+   ],
+   "type": "checkmark",
+   "icon": "entrelumen:inventory_sensor",
+   "layout": {
+    "x": 5.5,
+    "y": -2.5,
+    "size": 1.0,
+    "shape": "gear"
+   },
+   "en_us": [
+    "Menril in the Inventory Sensor",
+    "Two Crystallized Menril Chunks go into the Inventory Sensor (Act III) with two LaserIO logic chips and a Routing Matrix. ID itself is not gated; a small menril farm covers everything."
+   ],
+   "es_es": [
+    "Menril en el Sensor de inventario",
+    "Dos Trozos de menril cristalizado van en el Sensor de inventario (acto III) con dos chips lógicos de LaserIO y una Matriz de distribución. ID en sí no está frenado; una granjita de menril cubre todo."
+   ],
+   "sources": [
+    "repo:pack/kubejs/server_scripts/entrelumen_integration_recipes.js",
+    "repo:docs/research/reference-packs.md"
+   ]
+  },
+  {
+   "key": "idy_network",
+   "deps": [
+    "idy_squeezer"
+   ],
+   "type": "item",
+   "item": "integrateddynamics:cable",
+   "count": 10,
+   "layout": {
+    "x": 8,
+    "y": 0,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Logic cables",
+    "A network is connected Logic Cables with parts on them. With the wrench, sneak-right-click removes, right-click disconnects. Facades hide cables behind any material."
+   ],
+   "es_es": [
+    "Cables lógicos",
+    "Una red son Cables lógicos conectados con partes encima. Con la llave, agachado y clic derecho saca, clic derecho desconecta. Las fachadas esconden cables tras cualquier material."
+   ],
+   "sources": [
+    "jar:integrateddynamics-1.21.1-neoforge-1.35.0-1981.jar:assets/integrateddynamics/lang/en_us.json#info_book.integrateddynamics.manual.networks.text1",
+    "jar:integrateddynamics-1.21.1-neoforge-1.35.0-1981.jar:assets/integrateddynamics/lang/en_us.json#info_book.integrateddynamics.manual.networks.text2",
+    "jar:integrateddynamics-1.21.1-neoforge-1.35.0-1981.jar:assets/integrateddynamics/lang/en_us.json#info_book.integrateddynamics.tutorials.networkFoundations.text1"
+   ]
+  },
+  {
+   "key": "idy_readers",
+   "deps": [
+    "idy_network"
+   ],
+   "type": "item",
+   "item": "integrateddynamics:part_redstone_reader",
+   "layout": {
+    "x": 10.5,
+    "y": 0,
+    "size": 1.5,
+    "shape": "hexagon"
+   },
+   "en_us": [
+    "Readers, cards and panels",
+    "Readers on cables read aspects of what they face: redstone, chest contents, the block or entity ahead. Bind an aspect to a Variable Card and a Display Panel shows its value. First tutorial: read a redstone torch and show it."
+   ],
+   "es_es": [
+    "Lectores, tarjetas y paneles",
+    "Los lectores sobre cables leen aspectos de lo que miran: redstone, contenido de un cofre, el bloque o entidad de enfrente. Vinculá un aspecto a una Tarjeta de variable y un Panel la muestra. Primer tutorial: leer una antorcha de redstone y mostrarla."
+   ],
+   "sources": [
+    "jar:integrateddynamics-1.21.1-neoforge-1.35.0-1981.jar:assets/integrateddynamics/lang/en_us.json#info_book.integrateddynamics.tutorials.networkFoundations.text2",
+    "jar:integrateddynamics-1.21.1-neoforge-1.35.0-1981.jar:assets/integrateddynamics/lang/en_us.json#info_book.integrateddynamics.tutorials.basicNetworkComponents.text1",
+    "jar:integrateddynamics-1.21.1-neoforge-1.35.0-1981.jar:assets/integrateddynamics/lang/en_us.json#info_book.integrateddynamics.tutorials.aspects.text3",
+    "jar:integrateddynamics-1.21.1-neoforge-1.35.0-1981.jar:assets/integrateddynamics/lang/en_us.json#info_book.integrateddynamics.tutorials.aspects.text4"
+   ]
+  },
+  {
+   "key": "idy_programmer",
+   "deps": [
+    "idy_readers"
+   ],
+   "type": "item",
+   "item": "integrateddynamics:logic_programmer",
+   "layout": {
+    "x": 13,
+    "y": 0,
+    "size": 1.5,
+    "shape": "hexagon"
+   },
+   "en_us": [
+    "Logic Programmer and operators",
+    "Holds every operator: make static values or combine cards (Addition and friends) into a new card. Evaluation is lazy, so referenced cards must stay reachable: that is the Variable Store's job. Operators are values too: store them, partially apply them, pass them to filters."
+   ],
+   "es_es": [
+    "Programador lógico y operadores",
+    "Tiene todos los operadores: hacé valores estáticos o combiná tarjetas (Suma y compañía) en una nueva. La evaluación es perezosa, así que las tarjetas referidas tienen que seguir alcanzables: para eso está el Almacén de variables. Los operadores también son valores: guardalos, aplicalos a medias, pasalos a filtros."
+   ],
+   "sources": [
+    "jar:integrateddynamics-1.21.1-neoforge-1.35.0-1981.jar:assets/integrateddynamics/lang/en_us.json#info_book.integrateddynamics.tutorials.logicOperations.text2",
+    "jar:integrateddynamics-1.21.1-neoforge-1.35.0-1981.jar:assets/integrateddynamics/lang/en_us.json#info_book.integrateddynamics.tutorials.logicOperations.text6",
+    "jar:integrateddynamics-1.21.1-neoforge-1.35.0-1981.jar:assets/integrateddynamics/lang/en_us.json#info_book.integrateddynamics.tutorials.theValueOfOperators.text1",
+    "jar:integrateddynamics-1.21.1-neoforge-1.35.0-1981.jar:assets/integrateddynamics/lang/en_us.json#info_book.integrateddynamics.manual.logic.value_types.operator.text1"
+   ]
+  },
+  {
+   "key": "idy_types",
+   "deps": [
+    "idy_programmer"
+   ],
+   "type": "checkmark",
+   "icon": "integrateddynamics:variable",
+   "layout": {
+    "x": 13,
+    "y": -2.5,
+    "size": 1.0,
+    "shape": "circle"
+   },
+   "en_us": [
+    "Value types",
+    "Boolean, Integer, Long, Double, String, List, Operator, NBT, Block, Item, Entity, Fluid, Ingredients, Recipe. Integers span about plus or minus two billion, Longs far more; lists hold one type. Operators only take matching types: read the type colour."
+   ],
+   "es_es": [
+    "Tipos de valor",
+    "Booleano, Entero, Largo, Doble, Texto, Lista, Operador, NBT, Bloque, Ítem, Entidad, Fluido, Ingredientes, Receta. Los Enteros van de unos menos a más dos mil millones, los Largos mucho más; las listas guardan un solo tipo. Los operadores sólo aceptan tipos que coinciden: mirá el color del tipo."
+   ],
+   "sources": [
+    "jar:integrateddynamics-1.21.1-neoforge-1.35.0-1981.jar:assets/integrateddynamics/lang/en_us.json#info_book.integrateddynamics.manual.logic.value_types.integer.text2",
+    "jar:integrateddynamics-1.21.1-neoforge-1.35.0-1981.jar:assets/integrateddynamics/lang/en_us.json#info_book.integrateddynamics.manual.logic.value_types.long.text1",
+    "jar:integrateddynamics-1.21.1-neoforge-1.35.0-1981.jar:assets/integrateddynamics/lang/en_us.json#info_book.integrateddynamics.manual.logic.value_types.list.text1",
+    "jar:integrateddynamics-1.21.1-neoforge-1.35.0-1981.jar:assets/integrateddynamics/lang/en_us.json#info_book.integrateddynamics.manual.logic.value_types.ingredients.text1"
+   ]
+  },
+  {
+   "key": "idy_writers",
+   "deps": [
+    "idy_programmer"
+   ],
+   "type": "item",
+   "item": "integrateddynamics:part_redstone_writer",
+   "layout": {
+    "x": 15.5,
+    "y": -2.5,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Writers",
+    "Writers act on the world from a card: a Redstone Writer outputs the level a card holds. Reader, operator, writer: a logic gate of any complexity in three blocks."
+   ],
+   "es_es": [
+    "Escritores",
+    "Los escritores actúan en el mundo según una tarjeta: un Escritor de redstone da el nivel que tenga la tarjeta. Lector, operador, escritor: una compuerta lógica de cualquier complejidad en tres bloques."
+   ],
+   "sources": [
+    "jar:integrateddynamics-1.21.1-neoforge-1.35.0-1981.jar:assets/integrateddynamics/lang/en_us.json#info_book.integrateddynamics.tutorials.aspects.text5"
+   ]
+  },
+  {
+   "key": "idy_advanced",
+   "deps": [
+    "idy_programmer"
+   ],
+   "type": "item",
+   "item": "integrateddynamics:materializer",
+   "optional": true,
+   "layout": {
+    "x": 15.5,
+    "y": 2.5,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Materializer, Proxy and recipes",
+    "The Materializer freezes a dynamic value into a static card; the Proxy adds indirection so values can change later. Machine Readers read recipes from blocks, and Recipe and Ingredients values work with them. NBT is the fallback."
+   ],
+   "es_es": [
+    "Materializador, Proxy y recetas",
+    "El Materializador congela un valor dinámico en una tarjeta estática; el Proxy agrega indirección para cambiar valores después. Los Lectores de máquina leen recetas de bloques, y los valores Receta e Ingredientes trabajan con ellas. El NBT es el último recurso."
+   ],
+   "sources": [
+    "jar:integrateddynamics-1.21.1-neoforge-1.35.0-1981.jar:assets/integrateddynamics/lang/en_us.json#info_book.integrateddynamics.tutorials.advancedNetworkComponents.text3",
+    "jar:integrateddynamics-1.21.1-neoforge-1.35.0-1981.jar:assets/integrateddynamics/lang/en_us.json#info_book.integrateddynamics.tutorials.advancedNetworkComponents.text4",
+    "jar:integrateddynamics-1.21.1-neoforge-1.35.0-1981.jar:assets/integrateddynamics/lang/en_us.json#info_book.integrateddynamics.tutorials.recipe_handling.text2",
+    "jar:integrateddynamics-1.21.1-neoforge-1.35.0-1981.jar:assets/integrateddynamics/lang/en_us.json#info_book.integrateddynamics.manual.logic.value_types.nbt.text3"
+   ]
+  },
+  {
+   "key": "idy_tunnels",
+   "deps": [
+    "idy_readers"
+   ],
+   "type": "item",
+   "item": "integratedtunnels:part_exporter_item",
+   "layout": {
+    "x": 10.5,
+    "y": 2.5,
+    "size": 1.5,
+    "shape": "hexagon"
+   },
+   "en_us": [
+    "Integrated Tunnels",
+    "Importers (blue) pull into the network, Exporters (orange) push out, Interfaces (white) are where it stores and takes, for items, fluids and energy, with priorities. A blank card means «move everything». Use logic as filter: «3 pickaxes under 10 durability into this chest every tick»."
+   ],
+   "es_es": [
+    "Integrated Tunnels",
+    "Los Importadores (azules) meten a la red, los Exportadores (naranjas) sacan, las Interfaces (blancas) son donde guarda y toma, para ítems, fluidos y energía, con prioridades. Una tarjeta vacía significa «mover todo». Usá lógica de filtro: «3 picos con menos de 10 de durabilidad a este cofre cada tick»."
+   ],
+   "sources": [
+    "jar:integratedtunnels-1.21.1-neoforge-1.10.0-729.jar:assets/integratedtunnels/lang/en_us.json#info_book.integratedtunnels.concepts.text1",
+    "jar:integratedtunnels-1.21.1-neoforge-1.10.0-729.jar:assets/integratedtunnels/lang/en_us.json#info_book.integratedtunnels.concepts.text2",
+    "jar:integratedtunnels-1.21.1-neoforge-1.10.0-729.jar:assets/integratedtunnels/lang/en_us.json#info_book.integratedtunnels.concepts.text3",
+    "jar:integratedtunnels-1.21.1-neoforge-1.10.0-729.jar:assets/integratedtunnels/lang/en_us.json#info_book.integratedtunnels.concepts.text5",
+    "jar:integratedtunnels-1.21.1-neoforge-1.10.0-729.jar:assets/integratedtunnels/lang/en_us.json#info_book.integratedtunnels.concepts.text7",
+    "jar:integratedtunnels-1.21.1-neoforge-1.10.0-729.jar:assets/integratedtunnels/lang/en_us.json#info_book.integratedtunnels.introduction.text2"
+   ]
+  },
+  {
+   "key": "idy_world",
+   "deps": [
+    "idy_tunnels"
+   ],
+   "type": "item",
+   "item": "integratedtunnels:part_importer_item",
+   "optional": true,
+   "layout": {
+    "x": 13,
+    "y": 5,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "World interaction and player simulation",
+    "World importers and exporters place and pick up items, fluids and blocks, break blocks (silk touch available) and talk to entity inventories. The Player Simulator clicks with any item. Breaker plus placer: a two-part farm with any filter."
+   ],
+   "es_es": [
+    "Interacción con el mundo y simulación",
+    "Los importadores y exportadores de mundo ponen y levantan ítems, fluidos y bloques, rompen bloques (con toque de seda) y hablan con inventarios de entidades. El Simulador de jugador hace clic con cualquier ítem. Rompedor más colocador: una granja de dos partes con el filtro que quieras."
+   ],
+   "sources": [
+    "jar:integratedtunnels-1.21.1-neoforge-1.10.0-729.jar:assets/integratedtunnels/lang/en_us.json#info_book.integratedtunnels.world.item.text1",
+    "jar:integratedtunnels-1.21.1-neoforge-1.10.0-729.jar:assets/integratedtunnels/lang/en_us.json#info_book.integratedtunnels.world.block.text1",
+    "jar:integratedtunnels-1.21.1-neoforge-1.10.0-729.jar:assets/integratedtunnels/lang/en_us.json#info_book.integratedtunnels.player.text1"
+   ]
+  },
+  {
+   "key": "idy_energy",
+   "deps": [
+    "idy_tunnels"
+   ],
+   "type": "item",
+   "item": "integrateddynamics:energy_battery",
+   "optional": true,
+   "layout": {
+    "x": 10.5,
+    "y": 5,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Energy on the network",
+    "ID has its own Coal Generator and Energy Battery, and Tunnels moves energy with filtered importers, exporters and interfaces. One network can carry logic, items, fluids and power at once."
+   ],
+   "es_es": [
+    "Energía en la red",
+    "ID tiene su propio Generador a carbón y Batería, y Tunnels mueve energía con importadores, exportadores e interfaces filtrados. Una red puede llevar lógica, ítems, fluidos y energía a la vez."
+   ],
+   "sources": [
+    "jar:integratedtunnels-1.21.1-neoforge-1.10.0-729.jar:assets/integratedtunnels/lang/en_us.json#info_book.integratedtunnels.energy.text1",
+    "jar:integrateddynamics-1.21.1-neoforge-1.35.0-1981.jar:assets/integrateddynamics/lang/en_us.json"
+   ]
+  },
+  {
+   "key": "idy_challenge",
+   "deps": [
+    "idy_writers"
+   ],
+   "type": "checkmark",
+   "icon": "integrateddynamics:part_display_panel",
+   "layout": {
+    "x": 18,
+    "y": -2.5,
+    "size": 1.0,
+    "shape": "circle"
+   },
+   "en_us": [
+    "Challenges",
+    "The book ends with hintless challenges; every tutorial step grants an advancement and a small reward. Program misbehaving? Put its cards on Display Panels one by one until you find the wrong value."
+   ],
+   "es_es": [
+    "Desafíos",
+    "El libro termina con desafíos sin pistas; cada paso de tutorial da un logro y un premio chico. ¿Un programa se porta mal? Poné sus tarjetas en Paneles una por una hasta encontrar el valor equivocado."
+   ],
+   "sources": [
+    "jar:integrateddynamics-1.21.1-neoforge-1.35.0-1981.jar:assets/integrateddynamics/lang/en_us.json#info_book.integrateddynamics.tutorials.challenges.text1",
+    "jar:integrateddynamics-1.21.1-neoforge-1.35.0-1981.jar:assets/integrateddynamics/lang/en_us.json#info_book.integrateddynamics.tutorials.introduction.text1"
+   ]
+  },
+  {
+   "key": "idy_mastery",
+   "deps": [
+    "idy_challenge",
+    "idy_tunnels"
+   ],
+   "type": "item",
+   "item": "integrateddynamics:variablestore",
+   "layout": {
+    "x": 18,
+    "y": 1,
+    "size": 2.0,
+    "shape": "octagon"
+   },
+   "en_us": [
+    "Mastery: a network that decides",
+    "Watch a storage chest, decide with operators what is missing, and export exactly that from another inventory, without a speck of redstone dust. Same pattern for farms, sorting and machine control."
+   ],
+   "es_es": [
+    "Maestría: una red que decide",
+    "Vigilá un cofre, decidí con operadores qué falta y exportá exactamente eso desde otro inventario, sin un grano de redstone. El mismo patrón sirve para granjas, clasificación y control de máquinas."
+   ],
+   "sources": [
+    "jar:integratedtunnels-1.21.1-neoforge-1.10.0-729.jar:assets/integratedtunnels/lang/en_us.json#info_book.integratedtunnels.introduction.text2",
+    "jar:integrateddynamics-1.21.1-neoforge-1.35.0-1981.jar:assets/integrateddynamics/lang/en_us.json#info_book.integrateddynamics.tutorials.theValueOfOperators.text3"
+   ]
+  }
+ ]
+}

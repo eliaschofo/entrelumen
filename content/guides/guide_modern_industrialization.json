@@ -1,0 +1,634 @@
+{
+ "chapter": "guide_modern_industrialization",
+ "group": "tech",
+ "act": "II",
+ "icon": "modern_industrialization:forge_hammer",
+ "title": {
+  "en_us": "Modern Industrialization",
+  "es_es": "Modern Industrialization"
+ },
+ "subtitle": {
+  "en_us": "From the Forge Hammer and steam to electricity, oil, nuclear power and the quantum tier: a factory that never stops.",
+  "es_es": "Del Martillo de forja y el vapor a la electricidad, el petróleo, lo nuclear y el nivel cuántico: una fábrica que nunca para."
+ },
+ "quests": [
+  {
+   "key": "mi_welcome",
+   "deps": [],
+   "type": "checkmark",
+   "icon": "modern_industrialization:guidebook",
+   "layout": {
+    "x": 0,
+    "y": 0,
+    "size": 2.0,
+    "shape": "hexagon"
+   },
+   "en_us": [
+    "A factory in ages",
+    "Steam Age with bronze and steel, Electric Age with cables, voltage tiers, oil and multiblocks, then nuclear, fusion and quantum. MI's guidebook (a book and copper nuggets) explains every step; it is not given on join, but it is craftable. MI thinks in continuous lines, not one-off crafts."
+   ],
+   "es_es": [
+    "Una fábrica por eras",
+    "Era del vapor con bronce y acero, era eléctrica con cables, voltajes, petróleo y multibloques, después nuclear, fusión y cuántico. El libro guía de MI (un libro y pepitas de cobre) explica cada paso; no se entrega al entrar, pero se craftea. MI piensa en líneas continuas, no en crafteos sueltos."
+   ],
+   "sources": [
+    "jar:Modern-Industrialization-2.5.6.jar:assets/modern_industrialization/mi_guidebook/index.md",
+    "jar:Modern-Industrialization-2.5.6.jar:data/modern_industrialization/recipe/guide_book.json",
+    "repo:pack/config/modern_industrialization-server.toml"
+   ]
+  },
+  {
+   "key": "mi_on_demand",
+   "deps": [
+    "mi_welcome"
+   ],
+   "type": "checkmark",
+   "icon": "modern_industrialization:overdrive_module",
+   "layout": {
+    "x": 0,
+    "y": -2.5,
+    "size": 1.0,
+    "shape": "circle"
+   },
+   "en_us": [
+    "Run machines nonstop",
+    "Electric MI machines overclock the longer they run and lose it when idle, so MI's own guide warns against driving them on demand from AE2 or RS. Run lines constantly into buffers and let storage pull from the buffers."
+   ],
+   "es_es": [
+    "Máquinas que no paran",
+    "Las máquinas eléctricas de MI se aceleran cuanto más tiempo corren y lo pierden al frenar, así que la propia guía de MI desaconseja manejarlas a pedido desde AE2 o RS. Hacé andar las líneas siempre hacia buffers y que el almacenamiento saque de ahí."
+   ],
+   "sources": [
+    "jar:Modern-Industrialization-2.5.6.jar:assets/modern_industrialization/mi_guidebook/index.md",
+    "jar:Modern-Industrialization-2.5.6.jar:assets/modern_industrialization/mi_guidebook/electric_age/basic_machines.md",
+    "jar:Modern-Industrialization-2.5.6.jar:assets/modern_industrialization/mi_guidebook/midgame/upgrades.md"
+   ]
+  },
+  {
+   "key": "mi_hammer",
+   "deps": [
+    "mi_welcome"
+   ],
+   "type": "item",
+   "item": "modern_industrialization:forge_hammer",
+   "layout": {
+    "x": 3,
+    "y": 0,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Forge Hammer",
+    "Your first MI machine, by hand: an ore block gives 2 raw (3 with a Hammer tool in its slot), double ingots become plates, rods, rings and bolts. The Steam Mining Drill mines 3x3 with Silk Touch, the perfect partner."
+   ],
+   "es_es": [
+    "Martillo de forja",
+    "Tu primera máquina de MI, a mano: un bloque de mineral da 2 crudos (3 con un Martillo en su ranura), los lingotes dobles se vuelven placas, varillas, anillos y tornillos. El Taladro minero a vapor pica 3x3 con Toque de seda: el compañero ideal."
+   ],
+   "sources": [
+    "jar:Modern-Industrialization-2.5.6.jar:assets/modern_industrialization/mi_guidebook/steam_age/forge_hammer.md",
+    "jar:Modern-Industrialization-2.5.6.jar:data/modern_industrialization/recipe/materials/iron/forge_hammer/ore_to_raw_metal.json",
+    "jar:Modern-Industrialization-2.5.6.jar:data/modern_industrialization/recipe/materials/iron/forge_hammer/ore_to_raw_metal_with_tool.json"
+   ]
+  },
+  {
+   "key": "mi_bronze",
+   "deps": [
+    "mi_hammer"
+   ],
+   "type": "item",
+   "item": "modern_industrialization:bronze_ingot",
+   "count": 16,
+   "layout": {
+    "x": 5.5,
+    "y": 0,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Bronze",
+    "Hammer copper and tin into dusts, combine into bronze dust, smelt. A Mixer gives a better ratio later; nine tiny dusts make one. Build a Bronze Compressor before the boiler: plates get much cheaper."
+   ],
+   "es_es": [
+    "Bronce",
+    "Martillá cobre y estaño en polvo, combinalos en polvo de bronce y fundilo. Después un Mezclador da mejor proporción; nueve polvitos hacen un polvo. Armá un Compresor de bronce antes de la caldera: las placas salen mucho más baratas."
+   ],
+   "sources": [
+    "jar:Modern-Industrialization-2.5.6.jar:assets/modern_industrialization/mi_guidebook/steam_age/making_bronze.md",
+    "jar:Modern-Industrialization-2.5.6.jar:assets/modern_industrialization/mi_guidebook/steam_age/bronze_boiler.md"
+   ]
+  },
+  {
+   "key": "mi_boiler",
+   "deps": [
+    "mi_bronze"
+   ],
+   "type": "item",
+   "item": "modern_industrialization:bronze_boiler",
+   "layout": {
+    "x": 8,
+    "y": 0,
+    "size": 1.5,
+    "shape": "hexagon"
+   },
+   "en_us": [
+    "Bronze Boiler and steam machines",
+    "The boiler heats up and feeds steam to adjacent machines. Bronze machines run up to 2 EU/t and 1 mB of steam is 1 EU, so a hot boiler feeds four. Compressor, Macerator, Mixer, Cutting Machine, and a steam Furnace that uses ten times less fuel than vanilla. A Water Pump keeps it full."
+   ],
+   "es_es": [
+    "Caldera de bronce y máquinas a vapor",
+    "La caldera se calienta y manda vapor a las máquinas vecinas. Las de bronce corren hasta 2 EU/t y 1 mB de vapor es 1 EU, así que una caldera caliente alimenta cuatro. Compresor, Macerador, Mezclador, Cortadora, y un Horno a vapor que gasta diez veces menos que el vanilla. Una Bomba de agua la mantiene llena."
+   ],
+   "sources": [
+    "jar:Modern-Industrialization-2.5.6.jar:assets/modern_industrialization/mi_guidebook/steam_age/bronze_boiler.md",
+    "jar:Modern-Industrialization-2.5.6.jar:assets/modern_industrialization/mi_guidebook/steam_age/steam_machines.md",
+    "jar:Modern-Industrialization-2.5.6.jar:assets/modern_industrialization/mi_guidebook/steam_age/water_pump.md"
+   ]
+  },
+  {
+   "key": "mi_machine_tips",
+   "deps": [
+    "mi_boiler"
+   ],
+   "type": "checkmark",
+   "icon": "modern_industrialization:wrench",
+   "layout": {
+    "x": 8,
+    "y": -2.5,
+    "size": 1.0,
+    "shape": "circle"
+   },
+   "en_us": [
+    "Machine handling",
+    "Steam machines take inputs from any side. Lock a slot to one item, scroll to cap it, turn on auto-eject. A wrench rotates, and sneaking sets the output side; break machines with a pickaxe, not the wrench. Hold a wrench near a multiblock controller to see what is missing."
+   ],
+   "es_es": [
+    "Manejo de máquinas",
+    "Las máquinas a vapor aceptan entradas por cualquier lado. Trabá una ranura a un ítem, usá la rueda para limitarla, activá la expulsión automática. La llave gira, y agachado fija el lado de salida; rompé las máquinas con pico, no con la llave. Sostené una llave cerca de un controlador multibloque para ver qué falta."
+   ],
+   "sources": [
+    "jar:Modern-Industrialization-2.5.6.jar:assets/modern_industrialization/mi_guidebook/steam_age/steam_machines.md",
+    "jar:Modern-Industrialization-2.5.6.jar:assets/modern_industrialization/mi_guidebook/steam_age/coke_oven.md"
+   ]
+  },
+  {
+   "key": "mi_pipes",
+   "deps": [
+    "mi_boiler"
+   ],
+   "type": "item",
+   "item": "modern_industrialization:item_pipe",
+   "count": 8,
+   "optional": true,
+   "layout": {
+    "x": 8,
+    "y": 2.5,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "MI pipes",
+    "Three pipes fit in one block; colours do not mix. Fluid pipes carry one fluid and connect to blocks only when wrenched. Item pipes start as whitelists, so nothing moves until you set the filter or switch to blacklist. Motors speed item pipes up."
+   ],
+   "es_es": [
+    "Caños de MI",
+    "Entran tres caños por bloque; los colores no se mezclan. Los de fluidos llevan un solo fluido y se conectan a bloques sólo con la llave. Los de ítems arrancan como lista blanca, así que nada se mueve hasta que fijes el filtro o pases a lista negra. Los motores aceleran los de ítems."
+   ],
+   "sources": [
+    "jar:Modern-Industrialization-2.5.6.jar:assets/modern_industrialization/mi_guidebook/steam_age/pipes.md",
+    "repo:pack/config/modern_industrialization-server.toml"
+   ]
+  },
+  {
+   "key": "mi_coke",
+   "deps": [
+    "mi_boiler"
+   ],
+   "type": "item",
+   "item": "modern_industrialization:coke_oven",
+   "layout": {
+    "x": 10.5,
+    "y": 0,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Coke Oven",
+    "Controller, 21 bricks and three hatches (items in, items out, steam in) turn coal into coke; a fluid output hatch catches creosote. Hatches replace bricks anywhere. Coke burns four times longer than coal and leads to steel."
+   ],
+   "es_es": [
+    "Horno de coque",
+    "Controlador, 21 ladrillos y tres escotillas (ítems entran, ítems salen, vapor entra) convierten carbón en coque; una escotilla de fluidos junta creosota. Las escotillas reemplazan ladrillos en cualquier lugar. El coque dura cuatro veces más que el carbón y lleva al acero."
+   ],
+   "sources": [
+    "jar:Modern-Industrialization-2.5.6.jar:assets/modern_industrialization/mi_guidebook/steam_age/coke_oven.md"
+   ]
+  },
+  {
+   "key": "mi_steel",
+   "deps": [
+    "mi_coke"
+   ],
+   "type": "item",
+   "item": "modern_industrialization:steel_upgrade",
+   "layout": {
+    "x": 13,
+    "y": 0,
+    "size": 1.5,
+    "shape": "hexagon"
+   },
+   "en_us": [
+    "Steel and the Steam Blast Furnace",
+    "Coke dust plus iron gives Uncooked Steel Dust, cooked in a Steam Blast Furnace (coke oven shape in fire clay bricks, one extra hollow layer). Steel machines are twice as fast with new recipes; sneak-click a bronze machine with a Steel Upgrade to convert it."
+   ],
+   "es_es": [
+    "Acero y el Alto horno a vapor",
+    "Polvo de coque más hierro da Polvo de acero crudo, que se cocina en un Alto horno a vapor (forma del horno de coque en ladrillos refractarios, con una capa hueca más). Las máquinas de acero van al doble y con recetas nuevas; agachado y clic con una Mejora de acero convierte una de bronce."
+   ],
+   "sources": [
+    "jar:Modern-Industrialization-2.5.6.jar:assets/modern_industrialization/mi_guidebook/steam_age/steel.md",
+    "jar:Modern-Industrialization-2.5.6.jar:assets/modern_industrialization/mi_guidebook/steam_age/steel_machines.md"
+   ]
+  },
+  {
+   "key": "mi_quarry",
+   "deps": [
+    "mi_steel"
+   ],
+   "type": "item",
+   "item": "modern_industrialization:steam_quarry",
+   "optional": true,
+   "layout": {
+    "x": 13,
+    "y": -2.5,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Steam Quarry",
+    "A steam multiblock that eats bronze drills to dig below bedrock and returns ores (EMI lists them). Steel-hungry: build it after a few blast furnaces. Pack change: the Electric Quarry needs a Spectral Lens (Act IV)."
+   ],
+   "es_es": [
+    "Cantera a vapor",
+    "Un multibloque a vapor que consume taladros de bronce para cavar bajo la roca madre y devuelve minerales (EMI los lista). Come mucho acero: armala después de algunos altos hornos. Cambio del pack: la Cantera eléctrica pide una Lente espectral (acto IV)."
+   ],
+   "sources": [
+    "jar:Modern-Industrialization-2.5.6.jar:assets/modern_industrialization/mi_guidebook/steam_age/quarry.md",
+    "jar:Modern-Industrialization-2.5.6.jar:assets/modern_industrialization/mi_guidebook/electric_age/electric_quarry.md",
+    "repo:pack/kubejs/server_scripts/entrelumen_pingpong_balance.js"
+   ]
+  },
+  {
+   "key": "mi_electricity",
+   "deps": [
+    "mi_steel"
+   ],
+   "type": "item",
+   "item": "modern_industrialization:lv_steam_turbine",
+   "layout": {
+    "x": 15.5,
+    "y": 0,
+    "size": 1.5,
+    "shape": "hexagon"
+   },
+   "en_us": [
+    "Electric Age",
+    "The Steam Turbine turns 1 mB of steam into 1 EU (up to 32 mB/t) and outputs only to cables on its output side. Cables have tiers (copper, silver, tin LV; cupronickel, electrum MV); single-block machines take LV only; transformers step between. Here 1 EU = 10 FE."
+   ],
+   "es_es": [
+    "Era eléctrica",
+    "La Turbina de vapor convierte 1 mB de vapor en 1 EU (hasta 32 mB/t) y sólo entrega a cables de su lado de salida. Los cables tienen niveles (cobre, plata, estaño LV; cuproníquel, electro MV); las máquinas de un bloque sólo toman LV; los transformadores pasan de uno a otro. Acá 1 EU = 10 FE."
+   ],
+   "sources": [
+    "jar:Modern-Industrialization-2.5.6.jar:assets/modern_industrialization/mi_guidebook/electric_age/electricity.md",
+    "repo:pack/config/modern_industrialization-server.toml"
+   ]
+  },
+  {
+   "key": "mi_cables",
+   "deps": [
+    "mi_electricity"
+   ],
+   "type": "item",
+   "item": "modern_industrialization:rubber_sheet",
+   "count": 16,
+   "layout": {
+    "x": 18,
+    "y": 0,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Rubber and cables",
+    "Coke dust and water mix into Raw Synthetic Oil, the blast furnace cooks it, and with paper it becomes Rubber Sheets. A Wiremill makes wires; wire plus rubber is cable. Automate rubber early: every machine needs cables."
+   ],
+   "es_es": [
+    "Goma y cables",
+    "Polvo de coque y agua se mezclan en Aceite sintético crudo, el alto horno lo cocina, y con papel se vuelve Lámina de goma. Una Trefiladora hace alambres; alambre más goma es cable. Automatizá la goma temprano: toda máquina pide cables."
+   ],
+   "sources": [
+    "jar:Modern-Industrialization-2.5.6.jar:assets/modern_industrialization/mi_guidebook/electric_age/making_cables.md"
+   ]
+  },
+  {
+   "key": "mi_assembler",
+   "deps": [
+    "mi_cables"
+   ],
+   "type": "item",
+   "item": "modern_industrialization:assembler",
+   "layout": {
+    "x": 20.5,
+    "y": 0,
+    "size": 1.5,
+    "shape": "hexagon"
+   },
+   "en_us": [
+    "Assembler and electric machines",
+    "Electric machines overclock up to 32 EU/t. The Assembler automates almost any crafting recipe, 3 per machine with slot locks: hulls, circuits, motors, pistons, robot arms and conveyors first. Lubricant (creosote and redstone) poured on a machine overclocks it by hand."
+   ],
+   "es_es": [
+    "Ensamblador y máquinas eléctricas",
+    "Las máquinas eléctricas aceleran hasta 32 EU/t. El Ensamblador automatiza casi cualquier receta, 3 por máquina con ranuras trabadas: carcasas, circuitos, motores, pistones, brazos robot y cintas primero. Lubricante (creosota y redstone) volcado sobre una máquina la acelera a mano."
+   ],
+   "sources": [
+    "jar:Modern-Industrialization-2.5.6.jar:assets/modern_industrialization/mi_guidebook/electric_age/basic_machines.md"
+   ]
+  },
+  {
+   "key": "mi_ore",
+   "deps": [
+    "mi_hammer"
+   ],
+   "type": "checkmark",
+   "icon": "minecraft:raw_iron",
+   "layout": {
+    "x": 3,
+    "y": 2.5,
+    "size": 1.0,
+    "shape": "circle"
+   },
+   "en_us": [
+    "MI ore numbers",
+    "Forge Hammer: an ore block gives 2 raw, 3 with the tool. Macerator: an ore block gives 3 raw, each raw 1.5 dust on average, so silk-touched ore pays best here (4.5 per ore). Hammering 3 raw with the tool gives 4 dusts."
+   ],
+   "es_es": [
+    "Números de mineral en MI",
+    "Martillo de forja: un bloque da 2 crudos, 3 con la herramienta. Macerador: un bloque da 3 crudos y cada crudo 1,5 polvos en promedio, así que acá rinde más el mineral con Toque de seda (4,5 por mineral). Martillar 3 crudos con la herramienta da 4 polvos."
+   ],
+   "sources": [
+    "jar:Modern-Industrialization-2.5.6.jar:data/modern_industrialization/recipe/materials/iron/forge_hammer/ore_to_raw_metal.json",
+    "jar:Modern-Industrialization-2.5.6.jar:data/modern_industrialization/recipe/materials/iron/macerator/ore_to_raw.json",
+    "jar:Modern-Industrialization-2.5.6.jar:data/modern_industrialization/recipe/materials/iron/macerator/raw_metal.json",
+    "jar:Modern-Industrialization-2.5.6.jar:data/modern_industrialization/recipe/materials/iron/forge_hammer/raw_metal_to_dust_with_tool.json"
+   ]
+  },
+  {
+   "key": "mi_storage",
+   "deps": [
+    "mi_boiler"
+   ],
+   "type": "item",
+   "item": "modern_industrialization:bronze_barrel",
+   "optional": true,
+   "layout": {
+    "x": 10.5,
+    "y": 2.5,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Tanks, barrels, trash",
+    "Bronze tanks hold 4 buckets, bronze barrels 32 stacks of one item; both keep contents when broken and stack when equal. Steel tanks hold 16 buckets. The Automatic Trash Can deletes whatever you pipe in."
+   ],
+   "es_es": [
+    "Tanques, barriles, basura",
+    "Los tanques de bronce guardan 4 baldes, los barriles de bronce 32 stacks de un ítem; los dos conservan el contenido al romperlos y se apilan si son iguales. Los tanques de acero guardan 16 baldes. El Tacho automático borra lo que le mandes por caño."
+   ],
+   "sources": [
+    "jar:Modern-Industrialization-2.5.6.jar:assets/modern_industrialization/mi_guidebook/steam_age/tanks.md",
+    "jar:Modern-Industrialization-2.5.6.jar:assets/modern_industrialization/mi_guidebook/steam_age/steel_machines.md"
+   ]
+  },
+  {
+   "key": "mi_ebf",
+   "deps": [
+    "mi_assembler"
+   ],
+   "type": "item",
+   "item": "modern_industrialization:electric_blast_furnace",
+   "layout": {
+    "x": 20.5,
+    "y": -2.5,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Electric Blast Furnace and aluminium",
+    "Heatproof casings, two hollow layers of cupronickel coils, heatproof again; controller at the bottom and at least one energy hatch. It unlocks aluminium from electrolyzed bauxite. Multiblocks overclock to 128 EU/t, more with overclock upgrades."
+   ],
+   "es_es": [
+    "Alto horno eléctrico y aluminio",
+    "Carcasas refractarias, dos capas huecas de bobinas de cuproníquel y refractarias otra vez; controlador abajo y al menos una escotilla de energía. Habilita el aluminio a partir de bauxita electrolizada. Los multibloques aceleran hasta 128 EU/t, más con mejoras de overclock."
+   ],
+   "sources": [
+    "jar:Modern-Industrialization-2.5.6.jar:assets/modern_industrialization/mi_guidebook/electric_age/ebf.md",
+    "jar:Modern-Industrialization-2.5.6.jar:assets/modern_industrialization/mi_guidebook/electric_age/advanced_machines.md",
+    "jar:Modern-Industrialization-2.5.6.jar:assets/modern_industrialization/mi_guidebook/electric_age/basic_machines.md"
+   ]
+  },
+  {
+   "key": "mi_oil",
+   "deps": [
+    "mi_ebf"
+   ],
+   "type": "item",
+   "item": "modern_industrialization:oil_drilling_rig",
+   "optional": true,
+   "layout": {
+    "x": 23,
+    "y": -2.5,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Oil and diesel",
+    "The Oil Drilling Rig pumps crude from below bedrock; a Distillery or Distillation Tower splits it into fuels. Diesel Generators burn only when needed; a hot Large Steam Boiler gets about twice the energy from the same fuel. Pack change: the Diesel Jetpack needs a Power Regulator (III)."
+   ],
+   "es_es": [
+    "Petróleo y diésel",
+    "La Plataforma petrolera saca crudo de bajo la roca madre; una Destilería o Torre de destilación lo separa en combustibles. Los Generadores diésel queman sólo cuando hace falta; una Caldera grande caliente saca el doble del mismo combustible. Cambio del pack: el Jetpack diésel pide un Regulador de energía (III)."
+   ],
+   "sources": [
+    "jar:Modern-Industrialization-2.5.6.jar:assets/modern_industrialization/mi_guidebook/electric_age/oil_processing.md",
+    "jar:Modern-Industrialization-2.5.6.jar:assets/modern_industrialization/mi_guidebook/midgame/stainless_steel.md",
+    "jar:Modern-Industrialization-2.5.6.jar:assets/modern_industrialization/mi_guidebook/electric_age/jetpack.md",
+    "repo:pack/kubejs/server_scripts/entrelumen_pingpong_balance.js"
+   ]
+  },
+  {
+   "key": "mi_boilers",
+   "deps": [
+    "mi_assembler"
+   ],
+   "type": "item",
+   "item": "modern_industrialization:large_steam_boiler",
+   "optional": true,
+   "layout": {
+    "x": 20.5,
+    "y": 2.5,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Large boilers and turbines",
+    "The Large Steam Boiler makes 256 mB/t fully heated but wastes unused heat: run it at full output. Then Advanced and High Pressure boilers (1 mB of HP steam = 8 EU) and the Large Steam Turbine, up to 16384 EU/t, with a Heat Exchanger to recover water."
+   ],
+   "es_es": [
+    "Calderas y turbinas grandes",
+    "La Caldera grande hace 256 mB/t caliente pero desperdicia el calor que no usa: hacela andar al máximo. Después vienen las calderas Avanzada y de Alta presión (1 mB de vapor AP = 8 EU) y la Turbina grande, hasta 16384 EU/t, con un Intercambiador de calor para recuperar agua."
+   ],
+   "sources": [
+    "jar:Modern-Industrialization-2.5.6.jar:assets/modern_industrialization/mi_guidebook/electric_age/large_steam_boiler.md",
+    "jar:Modern-Industrialization-2.5.6.jar:assets/modern_industrialization/mi_guidebook/midgame/high_pressure.md"
+   ]
+  },
+  {
+   "key": "mi_nuclear",
+   "deps": [
+    "mi_oil"
+   ],
+   "type": "item",
+   "item": "modern_industrialization:nuclear_reactor",
+   "layout": {
+    "x": 25.5,
+    "y": -2.5,
+    "size": 1.5,
+    "shape": "hexagon"
+   },
+   "en_us": [
+    "Nuclear Reactor",
+    "Nuclear casings with hatches on top forming the grid; fuel releases fast and thermal neutrons and water hatches make steam. It breeds plutonium, deuterium and tritium, and cannot explode or irradiate the map: overheating only damages what is inside. Pack change: the controller needs an Ark Bus (V)."
+   ],
+   "es_es": [
+    "Reactor nuclear",
+    "Carcasas nucleares con escotillas arriba formando la grilla; el combustible libera neutrones rápidos y térmicos y las escotillas de agua hacen vapor. Produce plutonio, deuterio y tritio, y no puede explotar ni irradiar el mapa: sobrecalentarse sólo daña lo de adentro. Cambio del pack: el controlador pide un Bus del Arca (V)."
+   ],
+   "sources": [
+    "jar:Modern-Industrialization-2.5.6.jar:assets/modern_industrialization/mi_guidebook/midgame/nuclear_reactor.md",
+    "jar:Modern-Industrialization-2.5.6.jar:assets/modern_industrialization/mi_guidebook/midgame/implosion_compressor.md",
+    "repo:pack/kubejs/server_scripts/entrelumen_pingpong_balance.js"
+   ]
+  },
+  {
+   "key": "mi_upgrades",
+   "deps": [
+    "mi_ebf"
+   ],
+   "type": "item",
+   "item": "modern_industrialization:advanced_machine_hull",
+   "optional": true,
+   "layout": {
+    "x": 23,
+    "y": 0,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Machine upgrades",
+    "An Advanced Machine Hull moves a machine to MV (MV cables only then). Overdrive Modules keep efficiency through pauses at an energy cost; Redstone Control Modules let redstone drive machines. Configurable Chests and Tanks auto-eject into lines."
+   ],
+   "es_es": [
+    "Mejoras de máquina",
+    "Una Carcasa avanzada pasa una máquina a MV (desde ahí sólo cables MV). Los Módulos de sobremarcha conservan la eficiencia en las pausas a cambio de energía; los de Control por redstone dejan que la redstone maneje máquinas. Los Cofres y Tanques configurables expulsan solos a las líneas."
+   ],
+   "sources": [
+    "jar:Modern-Industrialization-2.5.6.jar:assets/modern_industrialization/mi_guidebook/midgame/upgrades.md",
+    "jar:Modern-Industrialization-2.5.6.jar:assets/modern_industrialization/mi_guidebook/electric_age/basic_machines.md",
+    "jar:Modern-Industrialization-2.5.6.jar:assets/modern_industrialization/mi_guidebook/electric_age/advanced_machines.md",
+    "jar:Modern-Industrialization-2.5.6.jar:assets/modern_industrialization/mi_guidebook/electric_age/portable_storage_unit.md"
+   ]
+  },
+  {
+   "key": "mi_endgame",
+   "deps": [
+    "mi_nuclear"
+   ],
+   "type": "item",
+   "item": "modern_industrialization:singularity",
+   "optional": true,
+   "layout": {
+    "x": 28,
+    "y": -2.5,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Fusion and the quantum tier",
+    "The Fusion Reactor turns deuterium, tritium and helium-3 into helium plasma for the Plasma Turbine (about 1 MEU/t). The Singularity opens quantum gear: upgrade, sword, armour, barrel and tank. The Gravichestplate flies and cancels fall damage."
+   ],
+   "es_es": [
+    "Fusión y nivel cuántico",
+    "El Reactor de fusión convierte deuterio, tritio y helio-3 en plasma de helio para la Turbina de plasma (cerca de 1 MEU/t). La Singularidad abre el equipo cuántico: mejora, espada, armadura, barril y tanque. La Gravipechera vuela y anula el daño de caída."
+   ],
+   "sources": [
+    "jar:Modern-Industrialization-2.5.6.jar:assets/modern_industrialization/mi_guidebook/lategame/fusion_reactor.md",
+    "jar:Modern-Industrialization-2.5.6.jar:assets/modern_industrialization/mi_guidebook/lategame/quantum_tier.md",
+    "jar:Modern-Industrialization-2.5.6.jar:assets/modern_industrialization/mi_guidebook/lategame/gravichestplate.md"
+   ]
+  },
+  {
+   "key": "mi_pack",
+   "deps": [
+    "mi_nuclear"
+   ],
+   "type": "checkmark",
+   "icon": "modern_industrialization:quantum_circuit",
+   "layout": {
+    "x": 25.5,
+    "y": -5,
+    "size": 1.0,
+    "shape": "gear"
+   },
+   "en_us": [
+    "Pack changes to MI",
+    "Replicator removed, Nether Star from the Implosion Compressor removed (the Wither stays the only source). Gated: Diesel Jetpack (III), Gravichestplate (IV), Electric Quarry (IV), Nuclear Reactor (V), Quantum Circuits (V), with their assembler twins removed. MI has the lowest metal priority in Almost Unified."
+   ],
+   "es_es": [
+    "Cambios del pack a MI",
+    "Replicador quitado, Estrella del Nether del Compresor de implosión quitada (el Wither sigue siendo la única fuente). Frenados: Jetpack diésel (III), Gravipechera (IV), Cantera eléctrica (IV), Reactor nuclear (V), Circuitos cuánticos (V), con sus gemelos del ensamblador quitados. MI tiene la menor prioridad de metales en Almost Unified."
+   ],
+   "sources": [
+    "repo:pack/kubejs/server_scripts/entrelumen_pingpong_balance.js",
+    "repo:docs/design/mod-pingpong.md",
+    "repo:pack/config/almostunified/unification/materials.json"
+   ]
+  },
+  {
+   "key": "mi_mastery",
+   "deps": [
+    "mi_endgame"
+   ],
+   "type": "item",
+   "item": "modern_industrialization:plasma_turbine",
+   "layout": {
+    "x": 30.5,
+    "y": -2.5,
+    "size": 2.0,
+    "shape": "octagon"
+   },
+   "en_us": [
+    "Mastery: day and night",
+    "A working fusion setup or the quantum tier: by then the factory runs on its own, as MI intends. The pack's best armour is still the Luminous set, not the Quantum one."
+   ],
+   "es_es": [
+    "Maestría: de día y de noche",
+    "Una fusión andando o el nivel cuántico: para entonces la fábrica corre sola, como quiere MI. La mejor armadura del pack sigue siendo el set luminoso, no la cuántica."
+   ],
+   "sources": [
+    "jar:Modern-Industrialization-2.5.6.jar:assets/modern_industrialization/mi_guidebook/endgame.md",
+    "repo:docs/design/story-bible.md"
+   ]
+  }
+ ]
+}

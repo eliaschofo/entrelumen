@@ -1,0 +1,442 @@
+{
+ "chapter": "guide_mekanism_ores",
+ "group": "tech",
+ "act": "II",
+ "icon": "mekanism:crystal_iron",
+ "title": {
+  "en_us": "Mekanism: ore processing",
+  "es_es": "Mekanism: procesamiento de minerales"
+ },
+ "subtitle": {
+  "en_us": "From two to five ingots per ore: enrichment, purification, injection and dissolution, and when raw ore beats Silk Touch.",
+  "es_es": "De dos a cinco lingotes por mineral: enriquecimiento, purificación, inyección y disolución, y cuándo el crudo le gana al Toque de seda."
+ },
+ "quests": [
+  {
+   "key": "mko_welcome",
+   "deps": [],
+   "type": "checkmark",
+   "icon": "mekanism:enrichment_chamber",
+   "layout": {
+    "x": 0,
+    "y": 0,
+    "size": 2.0,
+    "shape": "hexagon"
+   },
+   "en_us": [
+    "Four stacked tiers",
+    "Each tier puts one machine in front of the last chain: Enrichment (2 per ore), Purification (3), Chemical Injection (4), Dissolution with washing and crystallizing (5). Build in order; nothing from an earlier tier is wasted."
+   ],
+   "es_es": [
+    "Cuatro niveles apilados",
+    "Cada nivel pone una máquina delante de la cadena anterior: Enriquecimiento (2 por mineral), Purificación (3), Inyección química (4), Disolución con lavado y cristalización (5). Armalos en orden; nada de un nivel anterior se desperdicia."
+   ],
+   "sources": [
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:assets/mekanism/lang/en_us.json#description.mekanism.enrichment_chamber",
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:assets/mekanism/lang/en_us.json#description.mekanism.purification_chamber",
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:assets/mekanism/lang/en_us.json#description.mekanism.chemical_injection_chamber",
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:assets/mekanism/lang/en_us.json#description.mekanism.chemical_dissolution_chamber"
+   ]
+  },
+  {
+   "key": "mko_x2",
+   "deps": [
+    "mko_welcome"
+   ],
+   "type": "item",
+   "item": "mekanism:dust_iron",
+   "count": 16,
+   "layout": {
+    "x": 3,
+    "y": 0,
+    "size": 1.5,
+    "shape": "hexagon"
+   },
+   "en_us": [
+    "Tier 1: Enrichment (x2)",
+    "One ore block gives 2 dusts; 3 raw ores give 4, a raw block 12. Smelt the dust anywhere. Auto-eject the chamber into an Energized Smelter and every ore doubles."
+   ],
+   "es_es": [
+    "Nivel 1: Enriquecimiento (x2)",
+    "Un bloque de mineral da 2 polvos; 3 crudos dan 4, un bloque de crudo 12. Fundí el polvo donde quieras. Expulsión automática de la cámara a una Fundidora energizada y cada mineral se duplica."
+   ],
+   "sources": [
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/processing/iron/dust/from_ore.json",
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/processing/iron/dust/from_raw_ore.json",
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/processing/iron/dust/from_raw_block.json",
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:assets/mekanism/lang/en_us.json#advancements.mekanism.enricher.description"
+   ]
+  },
+  {
+   "key": "mko_math",
+   "deps": [
+    "mko_x2"
+   ],
+   "type": "checkmark",
+   "icon": "minecraft:raw_iron",
+   "layout": {
+    "x": 3,
+    "y": -2.5,
+    "size": 1.0,
+    "shape": "circle"
+   },
+   "en_us": [
+    "Raw ore or Silk Touch?",
+    "Per ore block: 2, 3, 4 or 5 ingots. Per raw ore: about 1.33, 2, 2.67 or 3.33. Fortune III averages 2.2 raw per iron or gold ore, so roughly 2.9, 4.4, 5.9 or 7.3: raw wins at every tier. Never Combine raw back into ore blocks (8 raw per block)."
+   ],
+   "es_es": [
+    "¿Crudo o Toque de seda?",
+    "Por bloque: 2, 3, 4 o 5 lingotes. Por crudo: unos 1,33, 2, 2,67 o 3,33. Fortuna III promedia 2,2 crudos por mineral de hierro u oro, así que más o menos 2,9, 4,4, 5,9 o 7,3: el crudo gana en todos los niveles. Nunca combines crudo de vuelta a bloque (8 crudos por bloque)."
+   ],
+   "sources": [
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/processing/iron/dust/from_raw_ore.json",
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/processing/iron/clump/from_raw_ore.json",
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/processing/iron/shard/from_raw_ore.json",
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/processing/iron/slurry/dirty/from_raw_ore.json",
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/processing/iron/ore/from_raw.json",
+    "jar:minecraft_1.21.1_client.jar:data/minecraft/loot_table/blocks/iron_ore.json"
+   ]
+  },
+  {
+   "key": "mko_oxygen",
+   "deps": [
+    "mko_x2"
+   ],
+   "type": "item",
+   "item": "mekanism:electrolytic_separator",
+   "layout": {
+    "x": 5.5,
+    "y": -2.5,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Oxygen",
+    "An Electrolytic Separator splits water into hydrogen and oxygen; send the oxygen by Pressurized Tube. Hydrogen fuels jetpacks and gas generators, or gets dumped. Shortcut: flint in a machine's chemical slot becomes oxygen."
+   ],
+   "es_es": [
+    "Oxígeno",
+    "Un Separador electrolítico parte el agua en hidrógeno y oxígeno; mandá el oxígeno por Tubo presurizado. El hidrógeno alimenta jetpacks y generadores a gas, o se descarta. Atajo: pedernal en la ranura química de una máquina se vuelve oxígeno."
+   ],
+   "sources": [
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:assets/mekanism/lang/en_us.json#description.mekanism.electrolytic_separator",
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/chemical_conversion/flint_to_oxygen.json",
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:assets/mekanism/lang/en_us.json#advancements.mekanism.chemical_transport.description"
+   ]
+  },
+  {
+   "key": "mko_x3",
+   "deps": [
+    "mko_oxygen"
+   ],
+   "type": "item",
+   "item": "mekanism:purification_chamber",
+   "layout": {
+    "x": 8,
+    "y": -2.5,
+    "size": 1.5,
+    "shape": "hexagon"
+   },
+   "en_us": [
+    "Tier 2: Purification (x3)",
+    "Oxygen turns one ore block into 3 Clumps (a raw ore into 2). A Crusher makes Dirty Dust, the Enrichment Chamber cleans it. Chain: ore, purification, crusher, enrichment, smelter."
+   ],
+   "es_es": [
+    "Nivel 2: Purificación (x3)",
+    "El oxígeno convierte un bloque en 3 Grumos (un crudo en 2). Una Trituradora hace Polvo sucio y la Cámara de enriquecimiento lo limpia. Cadena: mineral, purificación, trituradora, enriquecimiento, fundidora."
+   ],
+   "sources": [
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/processing/iron/clump/from_ore.json",
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/processing/iron/clump/from_raw_ore.json",
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/processing/iron/dirty_dust/from_clump.json",
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/processing/iron/dust/from_dirty_dust.json",
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:assets/mekanism/lang/en_us.json#advancements.mekanism.purification_chamber.description"
+   ]
+  },
+  {
+   "key": "mko_hcl",
+   "deps": [
+    "mko_x3"
+   ],
+   "type": "item",
+   "item": "mekanism:chemical_infuser",
+   "layout": {
+    "x": 10.5,
+    "y": -2.5,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Hydrogen chloride",
+    "Brine (from a Thermal Evaporation Plant) splits into sodium and chlorine in a separator; a Chemical Infuser joins chlorine and hydrogen. Easier start: salt dust in the machine's chemical slot turns straight into hydrogen chloride."
+   ],
+   "es_es": [
+    "Cloruro de hidrógeno",
+    "La salmuera (de una Planta de evaporación térmica) se parte en sodio y cloro en un separador; un Infusor químico une cloro e hidrógeno. Arranque fácil: polvo de sal en la ranura química se vuelve cloruro de hidrógeno directo."
+   ],
+   "sources": [
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/evaporating/brine.json",
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/oxidizing/brine.json",
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/separator/brine.json",
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/chemical_infusing/hydrogen_chloride.json",
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/chemical_conversion/salt_to_hydrogen_chloride.json",
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/crystallizing/salt.json"
+   ]
+  },
+  {
+   "key": "mko_x4",
+   "deps": [
+    "mko_hcl"
+   ],
+   "type": "item",
+   "item": "mekanism:chemical_injection_chamber",
+   "layout": {
+    "x": 13,
+    "y": -2.5,
+    "size": 1.5,
+    "shape": "hexagon"
+   },
+   "en_us": [
+    "Tier 3: Chemical Injection (x4)",
+    "Hydrogen chloride turns one ore block into 4 Shards (3 raw ores into 8). Shards go into purification as clumps and down the chain. It is an elite machine: better circuits and alloys."
+   ],
+   "es_es": [
+    "Nivel 3: Inyección química (x4)",
+    "El cloruro de hidrógeno convierte un bloque en 4 Fragmentos (3 crudos en 8). Los fragmentos pasan a purificación como grumos y siguen la cadena. Es una máquina élite: mejores circuitos y aleaciones."
+   ],
+   "sources": [
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/processing/iron/shard/from_ore.json",
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/processing/iron/shard/from_raw_ore.json",
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/processing/iron/clump/from_shard.json",
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:assets/mekanism/lang/en_us.json#advancements.mekanism.injection_chamber.description"
+   ]
+  },
+  {
+   "key": "mko_sulfuric",
+   "deps": [
+    "mko_x4"
+   ],
+   "type": "item",
+   "item": "mekanism:dust_sulfur",
+   "count": 8,
+   "layout": {
+    "x": 15.5,
+    "y": -2.5,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Sulfuric acid",
+    "Oxidize sulfur dust, infuse with oxygen, then with water vapour. Or shortcut: sulfur dust in the Dissolution Chamber's chemical slot becomes acid. Sulfur comes from gunpowder injected with HCl, or coal gasified in a Pressurized Reaction Chamber."
+   ],
+   "es_es": [
+    "Ácido sulfúrico",
+    "Oxidá polvo de azufre, infusionalo con oxígeno y después con vapor de agua. O atajo: polvo de azufre en la ranura química de la Cámara de disolución se vuelve ácido. El azufre sale de pólvora inyectada con HCl, o de carbón gasificado en una Cámara de reacción presurizada."
+   ],
+   "sources": [
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/oxidizing/sulfur_dioxide.json",
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/chemical_infusing/sulfur_trioxide.json",
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/chemical_infusing/sulfuric_acid.json",
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/chemical_conversion/sulfur_to_sulfuric_acid.json",
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/injecting/gunpowder_to_sulfur.json",
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/reaction/coal_gasification/coals.json"
+   ]
+  },
+  {
+   "key": "mko_x5",
+   "deps": [
+    "mko_sulfuric"
+   ],
+   "type": "item",
+   "item": "mekanism:chemical_crystallizer",
+   "layout": {
+    "x": 18,
+    "y": -2.5,
+    "size": 1.5,
+    "shape": "hexagon"
+   },
+   "en_us": [
+    "Tier 4: Dissolution (x5)",
+    "Sulfuric acid dissolves an ore block into 1000 mB of dirty slurry (3 raw give 2000). A Chemical Washer cleans it, a Crystallizer makes one crystal per 200 mB: 5 per ore. Crystals enter injection and continue down. Three ultimate machines: plan the space."
+   ],
+   "es_es": [
+    "Nivel 4: Disolución (x5)",
+    "El ácido sulfúrico disuelve un bloque en 1000 mB de lodo sucio (3 crudos dan 2000). Un Lavador químico lo limpia y un Cristalizador hace un cristal cada 200 mB: 5 por mineral. Los cristales entran a inyección y siguen. Tres máquinas definitivas: planeá el espacio."
+   ],
+   "sources": [
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/processing/iron/slurry/dirty/from_ore.json",
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/processing/iron/slurry/dirty/from_raw_ore.json",
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/processing/iron/slurry/clean.json",
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/processing/iron/crystal/from_slurry.json",
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/processing/iron/shard/from_crystal.json",
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:assets/mekanism/lang/en_us.json#advancements.mekanism.chemical_crystallizer.description"
+   ]
+  },
+  {
+   "key": "mko_layout",
+   "deps": [
+    "mko_x3"
+   ],
+   "type": "checkmark",
+   "icon": "mekanism:basic_logistical_transporter",
+   "layout": {
+    "x": 8,
+    "y": 0,
+    "size": 1.0,
+    "shape": "circle"
+   },
+   "en_us": [
+    "Laying out the chain",
+    "Build backwards from the smelter, auto-ejecting each machine into the next. Items by Logistical Transporter, chemicals by Pressurized Tube, water by Mechanical Pipe. When one stage bottlenecks, upgrade it to a factory in place."
+   ],
+   "es_es": [
+    "Armar la cadena",
+    "Armá desde la fundidora hacia atrás, con cada máquina expulsando a la siguiente. Ítems por Transportador logístico, químicos por Tubo presurizado, agua por Caño mecánico. Cuando una etapa se atora, mejorala a fábrica ahí mismo."
+   ],
+   "sources": [
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:assets/mekanism/lang/en_us.json#description.mekanism.factory",
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:assets/mekanism/lang/en_us.json#description.mekanism.transporter",
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:assets/mekanism/lang/en_us.json#description.mekanism.tube",
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:assets/mekanism/lang/en_us.json#description.mekanism.pipe"
+   ]
+  },
+  {
+   "key": "mko_evaporation",
+   "deps": [
+    "mko_hcl"
+   ],
+   "type": "item",
+   "item": "mekanism:thermal_evaporation_controller",
+   "optional": true,
+   "layout": {
+    "x": 10.5,
+    "y": 0,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Thermal Evaporation Plant",
+    "A tower of Thermal Evaporation Blocks with one Controller and Valves: water in, brine out; brine in, lithium out. It runs faster when hotter. Brine feeds HCl and salt; lithium feeds tritium for fusion."
+   ],
+   "es_es": [
+    "Planta de evaporación térmica",
+    "Una torre de Bloques de evaporación con un Controlador y Válvulas: entra agua, sale salmuera; entra salmuera, sale litio. Anda más rápido cuanto más caliente. La salmuera da HCl y sal; el litio, tritio para la fusión."
+   ],
+   "sources": [
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:assets/mekanism/lang/en_us.json#description.mekanism.thermal_evaporation_controller",
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:assets/mekanism/lang/en_us.json#description.mekanism.thermal_evaporation_block",
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/evaporating/brine.json",
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/evaporating/lithium.json"
+   ]
+  },
+  {
+   "key": "mko_tags",
+   "deps": [
+    "mko_x2"
+   ],
+   "type": "checkmark",
+   "icon": "mekanism:dictionary",
+   "layout": {
+    "x": 3,
+    "y": 2.5,
+    "size": 1.0,
+    "shape": "circle"
+   },
+   "en_us": [
+    "Every ore in the pack counts",
+    "Recipes use common tags (c:ores/iron, c:raw_materials/iron), so other mods' ores run the same chain and Almost Unified hands you the pack's ingot at the end. New Age thorium has no common ore tag on purpose."
+   ],
+   "es_es": [
+    "Todo mineral del pack cuenta",
+    "Las recetas usan tags comunes (c:ores/iron, c:raw_materials/iron), así los minerales de otros mods pasan por la misma cadena y Almost Unified te da el lingote del pack al final. El torio de New Age no tiene tag común a propósito."
+   ],
+   "sources": [
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/processing/iron/dust/from_ore.json",
+    "repo:pack/config/almostunified/unification/materials.json",
+    "repo:docs/design/mod-pingpong.md"
+   ]
+  },
+  {
+   "key": "mko_factories",
+   "deps": [
+    "mko_layout"
+   ],
+   "type": "item",
+   "item": "mekanism:basic_purifying_factory",
+   "optional": true,
+   "layout": {
+    "x": 5.5,
+    "y": 2.5,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Processing factories",
+    "Enriching, purifying and injecting have factories: an Ultimate Purifying Factory handles 9 ores on one oxygen supply. One Speed and one Energy upgrade per stage; raise the tier where the queue grows."
+   ],
+   "es_es": [
+    "Fábricas de proceso",
+    "Enriquecer, purificar e inyectar tienen fábricas: una Fábrica purificadora definitiva procesa 9 minerales con un solo suministro de oxígeno. Una mejora de Velocidad y una de Energía por etapa; subí el nivel donde se forma la cola."
+   ],
+   "sources": [
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:assets/mekanism/lang/en_us.json#description.mekanism.factory",
+    "https://github.com/mekanism/Mekanism/blob/1.21.x/src/main/java/mekanism/common/tier/FactoryTier.java"
+   ]
+  },
+  {
+   "key": "mko_extras_ore",
+   "deps": [
+    "mko_x5"
+   ],
+   "type": "item",
+   "item": "mekanism_extras:raw_naquadah",
+   "optional": true,
+   "layout": {
+    "x": 18,
+    "y": 0,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Naquadah and silver",
+    "Extras adds Naquadah ore (rare near bedrock, commoner in the End near the void) with its own dust, clump, shard and crystal steps; More Machine adds silver. Same chain. Naquadah fuels the Extras reactor."
+   ],
+   "es_es": [
+    "Naquadah y plata",
+    "Extras suma mineral de Naquadah (raro cerca de la roca madre, más común en el End junto al vacío) con sus pasos de polvo, grumo, fragmento y cristal; More Machine suma plata. Misma cadena. El naquadah alimenta el reactor de Extras."
+   ],
+   "sources": [
+    "jar:mekanism_extras-1.21.1-1.4.1.jar:assets/mekanism_extras/lang/en_us.json#description.mekanism_extras.naquadah_ore",
+    "jar:mekanism_extras-1.21.1-1.4.1.jar:assets/mekanism_extras/lang/en_us.json#description.mekanism_extras.end_naquadah_ore",
+    "jar:mekmm-1.21.1-1.4.1.jar:assets/mekmm/lang/en_us.json#block.mekmm.silver_ore"
+   ]
+  },
+  {
+   "key": "mko_mastery",
+   "deps": [
+    "mko_x5"
+   ],
+   "type": "item",
+   "item": "mekanism:crystal_iron",
+   "count": 32,
+   "layout": {
+    "x": 21,
+    "y": -2.5,
+    "size": 2.0,
+    "shape": "octagon"
+   },
+   "en_us": [
+    "Mastery: five per ore",
+    "Automate the whole x5 line, dissolution to smelter. It is the richest per ore block among the classic chains; Oritech's acid gem route goes further per raw ore (see Ore processing)."
+   ],
+   "es_es": [
+    "Maestría: cinco por mineral",
+    "Automatizá toda la línea x5, de la disolución a la fundidora. Es la más rica por bloque entre las cadenas clásicas; la ruta de gemas con ácido de Oritech va más lejos por crudo (mirá Procesamiento de minerales)."
+   ],
+   "sources": [
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/processing/iron/crystal/from_slurry.json",
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:assets/mekanism/lang/en_us.json#advancements.mekanism.chemical_crystallizer.description"
+   ]
+  }
+ ]
+}

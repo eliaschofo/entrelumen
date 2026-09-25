@@ -1,0 +1,684 @@
+{
+ "chapter": "guide_computercraft",
+ "group": "tech",
+ "act": "III",
+ "icon": "computercraft:computer_advanced",
+ "title": {
+  "en_us": "CC: Tweaked",
+  "es_es": "CC: Tweaked"
+ },
+ "subtitle": {
+  "en_us": "Computers, turtles and monitors programmed in Lua: optional, but they can read and drive half of the pack.",
+  "es_es": "Computadoras, tortugas y monitores programados en Lua: opcionales, pero pueden leer y manejar medio pack."
+ },
+ "quests": [
+  {
+   "key": "cc_welcome",
+   "deps": [],
+   "type": "checkmark",
+   "icon": "computercraft:computer_normal",
+   "layout": {
+    "x": 0,
+    "y": 0,
+    "size": 2.0,
+    "shape": "hexagon"
+   },
+   "en_us": [
+    "Computers, optional and powerful",
+    "Lua computers, robotic turtles, monitors, modems and printers. Fully optional: no quest needs code, and the Act V network milestone accepts a computer panel as one route among others. Never programmed? The built-in programs (help, edit, go, excavate) already do a lot."
+   ],
+   "es_es": [
+    "Computadoras, opcionales y potentes",
+    "Computadoras en Lua, tortugas robot, monitores, módems e impresoras. Totalmente opcional: ninguna quest pide código, y el hito de red del acto V acepta un panel de computadora como una ruta entre otras. ¿Nunca programaste? Los programas incluidos (help, edit, go, excavate) ya hacen bastante."
+   ],
+   "sources": [
+    "repo:docs/design/mod-integration.md",
+    "jar:cc-tweaked-1.21.1-forge-1.120.2.jar:data/computercraft/lua/rom/help/intro.txt"
+   ]
+  },
+  {
+   "key": "cc_computer",
+   "deps": [
+    "cc_welcome"
+   ],
+   "type": "item",
+   "item": "computercraft:computer_normal",
+   "layout": {
+    "x": 3,
+    "y": 0,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Your first Computer",
+    "Stone, redstone and a glass pane. Right-click to open the terminal: \"help\" lists topics, \"programs\" lists commands, \"edit name\" opens the editor and \"lua\" gives you a live prompt to try code.\n\nHold Ctrl+T for a second to stop a stuck program, Ctrl+R to reboot and Ctrl+S to shut down. A file called startup runs by itself when the computer boots."
+   ],
+   "es_es": [
+    "Tu primer Ordenador",
+    "El Ordenador (así se llama en el juego) sale de piedra, redstone y un panel de vidrio. Clic derecho abre la terminal: \"help\" lista temas, \"programs\" lista comandos, \"edit nombre\" abre el editor y \"lua\" te da una consola para probar código.\n\nMantené Ctrl+T un segundo para cortar un programa trabado, Ctrl+R para reiniciar y Ctrl+S para apagar. Un archivo llamado startup se ejecuta solo cuando la computadora arranca."
+   ],
+   "sources": [
+    "jar:cc-tweaked-1.21.1-forge-1.120.2.jar:data/computercraft/recipe/computer_normal.json",
+    "jar:cc-tweaked-1.21.1-forge-1.120.2.jar:data/computercraft/lua/rom/help/programming.txt",
+    "jar:cc-tweaked-1.21.1-forge-1.120.2.jar:data/computercraft/lua/rom/help/intro.txt"
+   ]
+  },
+  {
+   "key": "cc_label",
+   "deps": [
+    "cc_computer"
+   ],
+   "type": "checkmark",
+   "optional": true,
+   "icon": "minecraft:name_tag",
+   "layout": {
+    "x": 3,
+    "y": -2.5,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "IDs and labels",
+    "Every computer has a numeric ID (\"id\") and keeps it when broken, so its files travel with it. \"label set Name\" names it; a Name Tag or an anvil also works. Labelled turtles keep their fuel when picked up.\n\nCrafting a computer into a turtle or an advanced model keeps its ID and data."
+   ],
+   "es_es": [
+    "IDs y etiquetas",
+    "Cada computadora tiene un ID numérico (\"id\") y lo conserva al romperla, así que sus archivos viajan con ella. \"label set Nombre\" le pone nombre; también sirve una etiqueta o un yunque. Las tortugas etiquetadas conservan el combustible al levantarlas.\n\nCraftear una computadora dentro de una tortuga o de un modelo avanzado conserva su ID y sus datos."
+   ],
+   "sources": [
+    "jar:cc-tweaked-1.21.1-forge-1.120.2.jar:data/computercraft/lua/rom/help/label.txt",
+    "jar:cc-tweaked-1.21.1-forge-1.120.2.jar:data/computercraft/lua/rom/help/changelog.md",
+    "jar:cc-tweaked-1.21.1-forge-1.120.2.jar:data/computercraft/recipe/turtle_normal.json"
+   ]
+  },
+  {
+   "key": "cc_advanced",
+   "deps": [
+    "cc_computer"
+   ],
+   "type": "item",
+   "item": "computercraft:computer_advanced",
+   "optional": true,
+   "layout": {
+    "x": 3,
+    "y": 2.5,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Advanced Computer",
+    "Gold instead of stone. The advanced models show colour and accept mouse clicks, which makes menus and buttons possible. You can upgrade a normal computer in place by surrounding it with gold: it keeps its ID and files.\n\nThe same gold upgrade exists for pocket computers."
+   ],
+   "es_es": [
+    "Ordenador avanzado",
+    "Oro en lugar de piedra. Los modelos avanzados muestran color y aceptan clics del mouse, lo que permite menús y botones. Podés mejorar un Ordenador normal rodeándolo de oro: conserva su ID y sus archivos.\n\nLa misma mejora con oro existe para los Ordenadores de bolsillo."
+   ],
+   "sources": [
+    "jar:cc-tweaked-1.21.1-forge-1.120.2.jar:data/computercraft/recipe/computer_advanced.json",
+    "jar:cc-tweaked-1.21.1-forge-1.120.2.jar:data/computercraft/recipe/computer_advanced_upgrade.json",
+    "jar:cc-tweaked-1.21.1-forge-1.120.2.jar:data/computercraft/recipe/pocket_computer_advanced_upgrade.json"
+   ]
+  },
+  {
+   "key": "cc_disk",
+   "deps": [
+    "cc_computer"
+   ],
+   "type": "item",
+   "item": "computercraft:disk_drive",
+   "optional": true,
+   "layout": {
+    "x": 6,
+    "y": -2.5,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Disk Drive and floppies",
+    "A Disk Drive beside a computer mounts a floppy as the folder \"disk\". Floppies carry programs between computers, and a startup file on a disk runs at boot. Craft floppies from paper, redstone and a dye.\n\nSpace: 1 MB per computer or turtle and 125 KB per floppy by default. Music discs in a drive can be played too."
+   ],
+   "es_es": [
+    "Disquetera y disquetes",
+    "La Disquetera (en el juego figura como «Disco duro») al lado de una computadora monta el disquete como la carpeta \"disk\". Los disquetes llevan programas entre computadoras, y un archivo startup en un disco corre al arrancar. Los disquetes se craftean con papel, redstone y un tinte.\n\nEspacio: 1 MB por computadora o tortuga y 125 KB por disquete por defecto. Los discos de música en una disquetera también se pueden reproducir."
+   ],
+   "sources": [
+    "jar:cc-tweaked-1.21.1-forge-1.120.2.jar:data/computercraft/recipe/disk_drive.json",
+    "jar:cc-tweaked-1.21.1-forge-1.120.2.jar:data/computercraft/recipe/disk.json",
+    "jar:cc-tweaked-1.21.1-forge-1.120.2.jar:data/computercraft/lua/rom/help/drives.txt",
+    "jar:cc-tweaked-1.21.1-forge-1.120.2.jar:data/computercraft/lua/rom/help/disk.txt",
+    "jar:cc-tweaked-1.21.1-forge-1.120.2.jar:data/computercraft/lua/rom/help/programming.txt",
+    "jar:cc-tweaked-1.21.1-forge-1.120.2.jar:dan200/computercraft/shared/config/ConfigSpec.class"
+   ]
+  },
+  {
+   "key": "cc_redstone",
+   "deps": [
+    "cc_computer"
+   ],
+   "type": "item",
+   "item": "computercraft:redstone_relay",
+   "layout": {
+    "x": 6,
+    "y": 0,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Redstone from a computer",
+    "Computers read and emit redstone on all six sides with no extra block: \"redstone probe\" lists inputs, \"redstone set left true\" turns a side on and \"redstone pulse\" sends pulses. In Lua, the rs API does the same with analog levels.\n\nThe Redstone Relay is a separate block with six sides of its own that a computer controls through a wired modem, for when you need many signals far away."
+   ],
+   "es_es": [
+    "Redstone desde la computadora",
+    "Las computadoras leen y emiten redstone por sus seis caras sin bloque extra: \"redstone probe\" lista entradas, \"redstone set left true\" enciende un lado y \"redstone pulse\" manda pulsos. En Lua, la API rs hace lo mismo con niveles analógicos.\n\nEl Relevador de Redstone es un bloque aparte con seis caras propias que una computadora controla a través de un módem cableado, para cuando necesitás muchas señales lejos."
+   ],
+   "sources": [
+    "jar:cc-tweaked-1.21.1-forge-1.120.2.jar:data/computercraft/lua/rom/help/redstone.txt",
+    "jar:cc-tweaked-1.21.1-forge-1.120.2.jar:data/computercraft/lua/rom/help/redstoneapi.txt",
+    "jar:cc-tweaked-1.21.1-forge-1.120.2.jar:data/computercraft/recipe/redstone_relay.json",
+    "https://tweaked.cc/peripheral/redstone_relay.html"
+   ]
+  },
+  {
+   "key": "cc_monitor",
+   "deps": [
+    "cc_redstone"
+   ],
+   "type": "item",
+   "item": "computercraft:monitor_normal",
+   "count": 4,
+   "layout": {
+    "x": 9,
+    "y": 0,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Monitors",
+    "Monitors placed together join into one big screen, up to 8 wide and 6 tall by default. \"monitor right edit notes\" runs any program on the monitor at that side; in Lua, wrap the monitor and use term.redirect or write to it directly.\n\nMonitors can also be reached through a wired modem, so the screen does not have to touch the computer."
+   ],
+   "es_es": [
+    "Monitores",
+    "Los monitores puestos juntos se unen en una pantalla grande, de hasta 8 de ancho y 6 de alto por defecto. \"monitor right edit notas\" corre cualquier programa en el monitor de ese lado; en Lua, envolvé el monitor y usá term.redirect o escribí directo.\n\nLos monitores también se alcanzan con un módem cableado, así que la pantalla no tiene que tocar la computadora."
+   ],
+   "sources": [
+    "jar:cc-tweaked-1.21.1-forge-1.120.2.jar:data/computercraft/recipe/monitor_normal.json",
+    "jar:cc-tweaked-1.21.1-forge-1.120.2.jar:data/computercraft/lua/rom/help/monitor.txt",
+    "jar:cc-tweaked-1.21.1-forge-1.120.2.jar:data/computercraft/lua/rom/help/monitors.txt",
+    "jar:cc-tweaked-1.21.1-forge-1.120.2.jar:dan200/computercraft/shared/config/ConfigSpec.class"
+   ]
+  },
+  {
+   "key": "cc_adv_monitor",
+   "deps": [
+    "cc_monitor"
+   ],
+   "type": "item",
+   "item": "computercraft:monitor_advanced",
+   "count": 4,
+   "optional": true,
+   "layout": {
+    "x": 9,
+    "y": -2.5,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Advanced Monitors",
+    "Gold monitors, four per craft. They show colour and fire a monitor_touch event with the X and Y of every right-click, so a wall of them becomes a touch panel with buttons.\n\nKeep text short: the bigger the screen, the more data the server sends when it changes."
+   ],
+   "es_es": [
+    "Monitores avanzados",
+    "Monitores de oro, cuatro por crafteo. Muestran color y disparan un evento monitor_touch con la X y la Y de cada clic derecho, así que una pared de ellos se vuelve un panel táctil con botones.\n\nMantené el texto corto: cuanto más grande la pantalla, más datos manda el servidor cada vez que cambia."
+   ],
+   "sources": [
+    "jar:cc-tweaked-1.21.1-forge-1.120.2.jar:data/computercraft/recipe/monitor_advanced.json",
+    "jar:cc-tweaked-1.21.1-forge-1.120.2.jar:data/computercraft/lua/rom/help/monitors.txt",
+    "jar:cc-tweaked-1.21.1-forge-1.120.2.jar:assets/computercraft/lang/en_us.json"
+   ]
+  },
+  {
+   "key": "cc_wired",
+   "deps": [
+    "cc_monitor"
+   ],
+   "type": "item",
+   "item": "computercraft:wired_modem",
+   "layout": {
+    "x": 12,
+    "y": 0,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Wired Modems and cables",
+    "Networking Cable (six per craft) links Wired Modems. Put a modem on a machine or chest and right-click it: the chat confirms the peripheral name, and every computer on the cable can wrap it by that name.\n\nAny inventory becomes a peripheral: list its items and push or pull stacks between chests. On NeoForge, tanks and energy storage are readable too."
+   ],
+   "es_es": [
+    "Módems cableados y cables",
+    "El Cable de red (seis por crafteo) une Módems cableados. Poné un módem sobre una máquina o cofre y hacele clic derecho: el chat confirma el nombre del periférico, y cualquier computadora del cable puede envolverlo con ese nombre.\n\nCualquier inventario se vuelve periférico: listá sus ítems y empujá o tirá stacks entre cofres. En NeoForge también se leen tanques y almacenamiento de energía."
+   ],
+   "sources": [
+    "jar:cc-tweaked-1.21.1-forge-1.120.2.jar:data/computercraft/recipe/wired_modem.json",
+    "jar:cc-tweaked-1.21.1-forge-1.120.2.jar:data/computercraft/recipe/cable.json",
+    "jar:cc-tweaked-1.21.1-forge-1.120.2.jar:data/computercraft/lua/rom/help/peripheral.txt",
+    "https://tweaked.cc/peripheral/modem.html",
+    "jar:cc-tweaked-1.21.1-forge-1.120.2.jar:assets/computercraft/lang/en_us.json#chat.computercraft.wired_modem.peripheral_connected",
+    "jar:cc-tweaked-1.21.1-forge-1.120.2.jar:assets/computercraft/lang/en_us.json#gui.computercraft.config.disabled_generic_methods.tooltip"
+   ]
+  },
+  {
+   "key": "cc_wireless",
+   "deps": [
+    "cc_wired"
+   ],
+   "type": "item",
+   "item": "computercraft:wireless_modem_normal",
+   "layout": {
+    "x": 15,
+    "y": 0,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Wireless Modems and rednet",
+    "Stone around an ender pearl. A Wireless Modem reaches 64 blocks near the ground, growing above Y 96 up to 384 at the build limit. The rednet API sends to an ID or broadcasts, and \"rednet.host\" plus \"rednet.lookup\" let programs find each other by name.\n\nOpen the modem first: rednet.open with its side."
+   ],
+   "es_es": [
+    "Módems sin cables y rednet",
+    "Piedra alrededor de una perla de ender. Un Módem sin cables llega a 64 bloques cerca del suelo y crece por encima de Y 96 hasta 384 en el límite de construcción. La API rednet envía a un ID o difunde a todos, y \"rednet.host\" más \"rednet.lookup\" permiten que los programas se encuentren por nombre.\n\nPrimero abrí el módem: rednet.open con su lado."
+   ],
+   "sources": [
+    "jar:cc-tweaked-1.21.1-forge-1.120.2.jar:data/computercraft/recipe/wireless_modem_normal.json",
+    "jar:cc-tweaked-1.21.1-forge-1.120.2.jar:data/computercraft/lua/rom/help/rednet.txt",
+    "jar:cc-tweaked-1.21.1-forge-1.120.2.jar:data/computercraft/lua/rom/help/modems.txt",
+    "https://tweaked.cc/peripheral/modem.html",
+    "jar:cc-tweaked-1.21.1-forge-1.120.2.jar:dan200/computercraft/shared/config/ConfigSpec.class"
+   ]
+  },
+  {
+   "key": "cc_ender",
+   "deps": [
+    "cc_wireless"
+   ],
+   "type": "item",
+   "item": "computercraft:wireless_modem_advanced",
+   "optional": true,
+   "layout": {
+    "x": 15,
+    "y": -2.5,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Ender Modem",
+    "Gold around an eye of ender. It works like a wireless modem with no distance limit, and messages cross dimensions, so a base in the Overworld can talk to a mine elsewhere.\n\nIt also fits turtles and pocket computers as an upgrade."
+   ],
+   "es_es": [
+    "Módem de ender",
+    "Oro alrededor de un ojo de ender. Funciona como un Módem sin cables sin límite de distancia, y los mensajes cruzan dimensiones, así que una base en el Overworld puede hablar con una mina en otro lado.\n\nTambién entra en tortugas y Ordenadores de bolsillo como mejora."
+   ],
+   "sources": [
+    "jar:cc-tweaked-1.21.1-forge-1.120.2.jar:data/computercraft/recipe/wireless_modem_advanced.json",
+    "https://tweaked.cc/peripheral/modem.html",
+    "jar:cc-tweaked-1.21.1-forge-1.120.2.jar:data/computercraft/lua/rom/help/changelog.md",
+    "jar:cc-tweaked-1.21.1-forge-1.120.2.jar:data/computercraft/computercraft/turtle_upgrade/wireless_modem_advanced.json"
+   ]
+  },
+  {
+   "key": "cc_gps",
+   "deps": [
+    "cc_ender"
+   ],
+   "type": "checkmark",
+   "optional": true,
+   "icon": "minecraft:compass",
+   "layout": {
+    "x": 15,
+    "y": -5,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "GPS cluster",
+    "Four computers with ender modems at the corners of a small cube, three on one level and one above, each running «gps host x y z» with its exact coordinates in startup. Anything in range then finds itself with «gps locate». One wrong coordinate breaks everyone's answer."
+   ],
+   "es_es": [
+    "Clúster de GPS",
+    "Cuatro computadoras con Módems de Ender en las esquinas de un cubo chico, tres a un nivel y una arriba, cada una con «gps host x y z» y sus coordenadas exactas en startup. Todo lo que esté en rango se ubica con «gps locate». Una coordenada mal cargada rompe la respuesta de todos."
+   ],
+   "sources": [
+    "jar:cc-tweaked-1.21.1-forge-1.120.2.jar:data/computercraft/lua/rom/help/gps.txt",
+    "jar:cc-tweaked-1.21.1-forge-1.120.2.jar:data/computercraft/lua/rom/help/gpsapi.txt",
+    "https://tweaked.cc/guide/gps_setup.html"
+   ]
+  },
+  {
+   "key": "cc_turtle",
+   "deps": [
+    "cc_computer"
+   ],
+   "type": "item",
+   "item": "computercraft:turtle_normal",
+   "layout": {
+    "x": 6,
+    "y": 3,
+    "size": 1.5,
+    "shape": "hexagon"
+   },
+   "en_us": [
+    "Turtles",
+    "A computer, iron and a chest make a Turtle: a computer that moves, digs and places blocks. Turtles need fuel: put coal or a lava bucket in its inventory and run \"refuel\". The tank holds 20,000 fuel on a normal turtle and 100,000 on an advanced one, and each move spends some.\n\n\"go forward 3 up\" and \"turn left\" drive it without code."
+   ],
+   "es_es": [
+    "Tortugas",
+    "Una computadora, hierro y un cofre hacen una Tortuga: una computadora que se mueve, cava y pone bloques. Las tortugas necesitan combustible: poné carbón o un balde de lava en su inventario y corré \"refuel\". El tanque guarda 20.000 de combustible en una tortuga normal y 100.000 en una avanzada, y cada movimiento gasta.\n\n\"go forward 3 up\" y \"turn left\" la manejan sin código."
+   ],
+   "sources": [
+    "jar:cc-tweaked-1.21.1-forge-1.120.2.jar:data/computercraft/recipe/turtle_normal.json",
+    "jar:cc-tweaked-1.21.1-forge-1.120.2.jar:data/computercraft/lua/rom/help/refuel.txt",
+    "jar:cc-tweaked-1.21.1-forge-1.120.2.jar:data/computercraft/lua/rom/help/go.txt",
+    "jar:cc-tweaked-1.21.1-forge-1.120.2.jar:data/computercraft/lua/rom/help/turn.txt",
+    "https://tweaked.cc/module/turtle.html",
+    "jar:cc-tweaked-1.21.1-forge-1.120.2.jar:dan200/computercraft/shared/config/ConfigSpec.class"
+   ]
+  },
+  {
+   "key": "cc_mining",
+   "deps": [
+    "cc_turtle"
+   ],
+   "type": "item",
+   "item": "minecraft:diamond_pickaxe",
+   "icon": "computercraft:turtle_normal",
+   "layout": {
+    "x": 9,
+    "y": 3,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Mining Turtle",
+    "Craft a turtle beside a diamond pickaxe (or use \"equip\" from its inventory) to get a Mining Turtle. \"tunnel 20\" digs a 3x2 tunnel, and \"excavate 5\" mines a 5x5 shaft down to bedrock and brings the loot back up.\n\nOther diamond tools give other turtles: axe (Felling), shovel (Digging), hoe (Farming) and sword (Melee). Only diamond tools work by default."
+   ],
+   "es_es": [
+    "Tortuga minera",
+    "Crafteá una tortuga al lado de un pico de diamante (o usá \"equip\" desde su inventario) para tener una Tortuga minera. \"tunnel 20\" cava un túnel de 3x2, y \"excavate 5\" mina un pozo de 5x5 hasta la roca madre y sube con el botín.\n\nOtras herramientas de diamante dan otras tortugas: hacha (taladora), pala (excavadora), azada (granjera) y espada (guerrera). Por defecto sólo sirven las de diamante."
+   ],
+   "sources": [
+    "jar:cc-tweaked-1.21.1-forge-1.120.2.jar:data/computercraft/recipe/turtle_normal/minecraft/diamond_pickaxe.json",
+    "jar:cc-tweaked-1.21.1-forge-1.120.2.jar:data/computercraft/lua/rom/help/excavate.txt",
+    "jar:cc-tweaked-1.21.1-forge-1.120.2.jar:data/computercraft/lua/rom/help/tunnel.txt",
+    "jar:cc-tweaked-1.21.1-forge-1.120.2.jar:data/computercraft/lua/rom/help/equip.txt",
+    "https://tweaked.cc/module/turtle.html",
+    "jar:cc-tweaked-1.21.1-forge-1.120.2.jar:assets/computercraft/lang/en_us.json"
+   ]
+  },
+  {
+   "key": "cc_crafty",
+   "deps": [
+    "cc_mining"
+   ],
+   "type": "item",
+   "item": "minecraft:crafting_table",
+   "optional": true,
+   "icon": "computercraft:turtle_normal",
+   "layout": {
+    "x": 9,
+    "y": 5.5,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Crafty Turtle",
+    "A crafting table as upgrade makes a Crafty Turtle. Lay out a recipe in its inventory and run \"craft all\" or call turtle.craft in Lua. A turtle has two upgrade sides, so a mining and crafty turtle is possible."
+   ],
+   "es_es": [
+    "Tortuga crafteadora",
+    "Una mesa de crafteo como mejora hace una Tortuga crafteadora. Armá la receta en su inventario y corré \"craft all\" o llamá turtle.craft en Lua. Una tortuga tiene dos lados de mejora, así que se puede tener una minera y crafteadora a la vez."
+   ],
+   "sources": [
+    "jar:cc-tweaked-1.21.1-forge-1.120.2.jar:data/computercraft/recipe/turtle_normal/minecraft/crafting_table.json",
+    "jar:cc-tweaked-1.21.1-forge-1.120.2.jar:data/computercraft/lua/rom/help/craft.txt",
+    "jar:cc-tweaked-1.21.1-forge-1.120.2.jar:data/computercraft/lua/rom/help/workbench.txt",
+    "https://tweaked.cc/module/turtle.html"
+   ]
+  },
+  {
+   "key": "cc_pocket",
+   "deps": [
+    "cc_turtle"
+   ],
+   "type": "item",
+   "item": "computercraft:pocket_computer_normal",
+   "optional": true,
+   "layout": {
+    "x": 6,
+    "y": 5.5,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Pocket Computer",
+    "A computer you carry: stone, a golden apple and a glass pane. Use it to talk to your base over rednet or to run \"gps locate\" on the move. It takes one upgrade: wireless or ender modem, or a speaker; \"equip\" puts on the first valid item from your inventory."
+   ],
+   "es_es": [
+    "Ordenador de bolsillo",
+    "Un Ordenador que llevás encima: piedra, una manzana dorada y un panel de vidrio. Sirve para hablar con tu base por rednet o correr \"gps locate\" en movimiento. Acepta una mejora: Módem sin cables o de Ender, o un Altavoz; \"equip\" pone el primer ítem válido de tu inventario."
+   ],
+   "sources": [
+    "jar:cc-tweaked-1.21.1-forge-1.120.2.jar:data/computercraft/recipe/pocket_computer_normal.json",
+    "jar:cc-tweaked-1.21.1-forge-1.120.2.jar:data/computercraft/lua/rom/help/pocket.txt",
+    "jar:cc-tweaked-1.21.1-forge-1.120.2.jar:data/computercraft/lua/rom/help/equip.txt",
+    "jar:cc-tweaked-1.21.1-forge-1.120.2.jar:data/computercraft/computercraft/pocket_upgrade/speaker.json"
+   ]
+  },
+  {
+   "key": "cc_printer",
+   "deps": [
+    "cc_disk"
+   ],
+   "type": "item",
+   "item": "computercraft:printer",
+   "optional": true,
+   "layout": {
+    "x": 6,
+    "y": -5,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Printer",
+    "The Printer takes paper and dye as ink and prints pages from code. Join two or more printed pages with string into Printed Pages, or add leather for a Printed Book. Handy for logbooks and base maps."
+   ],
+   "es_es": [
+    "Impresora",
+    "La Impresora usa papel y tinte como tinta e imprime páginas desde código. Uní dos o más páginas impresas con hilo para hacer Páginas impresas, o sumá cuero para un Libro impreso. Sirve para bitácoras y mapas de base."
+   ],
+   "sources": [
+    "jar:cc-tweaked-1.21.1-forge-1.120.2.jar:data/computercraft/recipe/printer.json",
+    "jar:cc-tweaked-1.21.1-forge-1.120.2.jar:data/computercraft/recipe/printed_pages.json",
+    "jar:cc-tweaked-1.21.1-forge-1.120.2.jar:data/computercraft/recipe/printed_book.json",
+    "jar:cc-tweaked-1.21.1-forge-1.120.2.jar:data/computercraft/lua/rom/help/printers.txt"
+   ]
+  },
+  {
+   "key": "cc_speaker",
+   "deps": [
+    "cc_computer"
+   ],
+   "type": "item",
+   "item": "computercraft:speaker",
+   "optional": true,
+   "layout": {
+    "x": 0,
+    "y": 5.5,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Speaker",
+    "Stone, a note block and redstone. A speaker plays note block instruments, any game sound by name, or audio: \"speaker play file.dfpwm\" handles DFPWM and mono 8-bit WAV at 48 kHz. Up to 8 notes per tick by default.\n\nTurtles and pocket computers accept it as an upgrade."
+   ],
+   "es_es": [
+    "Altavoz",
+    "Piedra, un bloque musical y redstone. Un Altavoz toca instrumentos de bloque musical, cualquier sonido del juego por nombre, o audio: \"speaker play archivo.dfpwm\" maneja DFPWM y WAV mono de 8 bits a 48 kHz. Hasta 8 notas por tick por defecto.\n\nLas tortugas y computadoras de bolsillo lo aceptan como mejora."
+   ],
+   "sources": [
+    "jar:cc-tweaked-1.21.1-forge-1.120.2.jar:data/computercraft/recipe/speaker.json",
+    "jar:cc-tweaked-1.21.1-forge-1.120.2.jar:data/computercraft/lua/rom/help/speakers.txt",
+    "jar:cc-tweaked-1.21.1-forge-1.120.2.jar:data/computercraft/lua/rom/help/speaker.md",
+    "jar:cc-tweaked-1.21.1-forge-1.120.2.jar:dan200/computercraft/shared/config/ConfigSpec.class"
+   ]
+  },
+  {
+   "key": "cc_http",
+   "deps": [
+    "cc_computer"
+   ],
+   "type": "checkmark",
+   "icon": "computercraft:disk",
+   "layout": {
+    "x": 0,
+    "y": 3,
+    "size": 1.0,
+    "shape": "circle"
+   },
+   "en_us": [
+    "Internet programs",
+    "The HTTP API is on: \"wget\" and \"pastebin get\" download programs and \"pastebin run\" runs one directly. Requests to private and local network addresses are blocked by default.\n\nRead any downloaded code before running it: a program has full control of the computer and whatever it is wired to."
+   ],
+   "es_es": [
+    "Programas de internet",
+    "La API HTTP está activa: \"wget\" y \"pastebin get\" bajan programas y \"pastebin run\" corre uno directo. Las conexiones a direcciones de red privadas y locales están bloqueadas por defecto.\n\nLeé cualquier código descargado antes de correrlo: un programa tiene control total de la computadora y de todo lo que tenga conectado."
+   ],
+   "sources": [
+    "jar:cc-tweaked-1.21.1-forge-1.120.2.jar:data/computercraft/lua/rom/help/http.txt",
+    "jar:cc-tweaked-1.21.1-forge-1.120.2.jar:data/computercraft/lua/rom/help/wget.txt",
+    "jar:cc-tweaked-1.21.1-forge-1.120.2.jar:data/computercraft/lua/rom/help/pastebin.txt",
+    "jar:cc-tweaked-1.21.1-forge-1.120.2.jar:assets/computercraft/lang/en_us.json#gui.computercraft.config.http.rules.tooltip",
+    "jar:cc-tweaked-1.21.1-forge-1.120.2.jar:dan200/computercraft/shared/config/ConfigSpec.class"
+   ]
+  },
+  {
+   "key": "cc_create",
+   "deps": [
+    "cc_wired"
+   ],
+   "type": "item",
+   "item": "createaddition:digital_adapter",
+   "layout": {
+    "x": 12,
+    "y": 3,
+    "size": 1.5,
+    "shape": "hexagon"
+   },
+   "en_us": [
+    "Create and computers",
+    "Speedometer, Stressometer, Sequenced Gearshift, speed controller, train Station, Signal and Track Observer, Stock Ticker and Packager are peripherals; a Display Link can print «From Computer» on boards. Crafts and Additions' Digital Adapter reaches pulleys, pistons and bearings."
+   ],
+   "es_es": [
+    "Create y las computadoras",
+    "Velocímetro, Estresómetro, Caja de cambios secuenciada, controlador de velocidad, Estación de tren, Señal y Observador de vía, Stock Ticker y Empaquetador son periféricos; un Enlace de pantalla puede escribir «Desde computadora» en tableros. El Adaptador digital de Crafts and Additions llega a poleas, pistones y rodamientos."
+   ],
+   "sources": [
+    "jar:create-1.21.1-6.0.10.jar:com/simibubi/create/compat/computercraft/implementation/peripherals/DisplayLinkPeripheral.class",
+    "jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#create.display_source.computer",
+    "jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#create.gui.attached_computer.controlled",
+    "jar:createaddition-1.7.0.jar:assets/createaddition/lang/en_us.json#block.createaddition.digital_adapter.tooltip.summary",
+    "jar:createaddition-1.7.0.jar:data/createaddition/recipe/crafting/digital_adapter.json"
+   ]
+  },
+  {
+   "key": "cc_mods",
+   "deps": [
+    "cc_create"
+   ],
+   "type": "item",
+   "item": "energymeter:meter",
+   "optional": true,
+   "layout": {
+    "x": 15,
+    "y": 3,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Other mods on the wire",
+    "Mekanism machines and multiblock ports, Immersive Engineering, PneumaticCraft, the Energy Meter, New Age and Crafts and Additions parts, and Draconic Evolution all answer computers; Ender IO redstone conduits show up as bundled redstone. «peripheral.getMethods» lists what each offers."
+   ],
+   "es_es": [
+    "Otros mods en la red",
+    "Las máquinas y puertos de multibloque de Mekanism, Immersive Engineering, PneumaticCraft, el Medidor de energía, piezas de New Age y Crafts and Additions, y Draconic Evolution responden a computadoras; los conductos de redstone de Ender IO aparecen como redstone agrupada. «peripheral.getMethods» lista qué ofrece cada uno."
+   ],
+   "sources": [
+    "jar:Mekanism-1.21.1-10.7.19.85.jar:mekanism/common/integration/computer/computercraft/CCApiObject.class",
+    "jar:ImmersiveEngineering-1.21.1-12.4.2-194.jar:blusunrize/immersiveengineering/common/util/compat/computers/cctweaked/GenericPeripheral.class",
+    "jar:pneumaticcraft-repressurized-8.2.23+mc1.21.1.jar:me/desht/pneumaticcraft/common/thirdparty/computercraft/PneumaticTilePeripheral.class",
+    "jar:energymeter-neoforge-1.21.1-0.5.2.jar:com/almostreliable/energymeter/compat/cct/MeterPeripheral.class",
+    "jar:create-new-age-1.2.0+neoforge-mc1.21.1.jar:org/antarcticgardens/cna/compat/computercraft/MotorBlockEntityPeripheral.class",
+    "jar:enderio-8.2.11-beta.jar:com/enderio/enderio/compat/cctweaked/EIOBundledRedstoneProvider.class",
+    "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:com/brandon3055/draconicevolution/integration/computers/ComputerCraftCompatEventHandler.class",
+    "jar:cc-tweaked-1.21.1-forge-1.120.2.jar:data/computercraft/lua/rom/help/peripheral.txt"
+   ]
+  },
+  {
+   "key": "cc_tips",
+   "deps": [
+    "cc_welcome"
+   ],
+   "type": "checkmark",
+   "icon": "computercraft:computer_command",
+   "layout": {
+    "x": 0,
+    "y": -2.5,
+    "size": 1.0,
+    "shape": "circle"
+   },
+   "en_us": [
+    "Tips and limits",
+    "Command Computers are creative-only: they need an operator in creative, and survival players cannot break them. By default all computers share a single server thread, so an endless loop without a sleep or os.pullEvent slows everyone; use events and timers instead of busy loops.\n\nThe in-game \"help\" is short but accurate for this version."
+   ],
+   "es_es": [
+    "Consejos y límites",
+    "Los Ordenadores de comandos son sólo de creativo: piden un operador en creativo, y los jugadores en supervivencia no pueden romperlos. Por defecto todas las computadoras comparten un solo hilo del servidor, así que un bucle infinito sin sleep ni os.pullEvent frena a todos; usá eventos y temporizadores en lugar de bucles ocupados.\n\nEl \"help\" del juego es corto pero correcto para esta versión."
+   ],
+   "sources": [
+    "jar:cc-tweaked-1.21.1-forge-1.120.2.jar:assets/computercraft/lang/en_us.json#gui.computercraft.config.command_require_creative.tooltip",
+    "jar:cc-tweaked-1.21.1-forge-1.120.2.jar:data/computercraft/lua/rom/help/changelog.md",
+    "jar:cc-tweaked-1.21.1-forge-1.120.2.jar:assets/computercraft/lang/en_us.json#gui.computercraft.config.execution.computer_threads.tooltip",
+    "jar:cc-tweaked-1.21.1-forge-1.120.2.jar:data/computercraft/lua/rom/help/events.txt"
+   ]
+  },
+  {
+   "key": "cc_mastery",
+   "deps": [
+    "cc_adv_monitor",
+    "cc_wireless",
+    "cc_create"
+   ],
+   "type": "item",
+   "item": "computercraft:monitor_advanced",
+   "count": 12,
+   "layout": {
+    "x": 19,
+    "y": 0,
+    "size": 2.0,
+    "shape": "octagon"
+   },
+   "en_us": [
+    "Mastery: the base panel",
+    "Tie it together: an advanced computer on a wired network reads your energy storage and main chests, shows the numbers on an advanced monitor wall with touch buttons, and hears remote turtles or outposts over an ender modem.\n\nThe same panel is a valid, optional way to watch the Act V network, never a requirement."
+   ],
+   "es_es": [
+    "Maestría: el panel de la base",
+    "Juntá todo: un Ordenador avanzado en una red cableada lee tu almacenamiento de energía y tus cofres principales, muestra los números en una pared de monitores avanzados con botones táctiles, y escucha tortugas o puestos lejanos por un módem de ender.\n\nEse mismo panel es una forma válida y opcional de vigilar la red del acto V, nunca un requisito."
+   ],
+   "sources": [
+    "repo:docs/design/mod-integration.md",
+    "jar:cc-tweaked-1.21.1-forge-1.120.2.jar:data/computercraft/lua/rom/help/monitors.txt",
+    "https://tweaked.cc/peripheral/modem.html",
+    "jar:cc-tweaked-1.21.1-forge-1.120.2.jar:assets/computercraft/lang/en_us.json#gui.computercraft.config.disabled_generic_methods.tooltip"
+   ]
+  }
+ ]
+}

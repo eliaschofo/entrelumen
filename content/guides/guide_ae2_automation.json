@@ -1,0 +1,478 @@
+{
+ "chapter": "guide_ae2_automation",
+ "group": "tech",
+ "act": "III",
+ "icon": "ae2:molecular_assembler",
+ "title": {
+  "en_us": "AE2: autocrafting and addons",
+  "es_es": "AE2: autocrafteo y addons"
+ },
+ "subtitle": {
+  "en_us": "Patterns, pattern providers, crafting CPUs and the pack's AE2 addons: Extended AE, Advanced AE, MEGA Cells, AE2WTLib, Applied Mekanistics and more.",
+  "es_es": "Patrones, proveedores, CPUs de crafteo y los addons de AE2 del pack: Extended AE, Advanced AE, MEGA Cells, AE2WTLib, Applied Mekanistics y más."
+ },
+ "quests": [
+  {
+   "key": "aea_welcome",
+   "deps": [],
+   "type": "checkmark",
+   "icon": "ae2:pattern_provider",
+   "layout": {
+    "x": 0,
+    "y": 0,
+    "size": 2.0,
+    "shape": "hexagon"
+   },
+   "en_us": [
+    "Let the network craft",
+    "Three pieces: patterns (recipes on items), pattern providers that push ingredients to machines, and crafting CPUs that plan the job. Ask the terminal for 64 of something and the network crafts every step. The addons then remove the limits."
+   ],
+   "es_es": [
+    "Que la red craftee",
+    "Tres piezas: patrones (recetas en ítems), proveedores que empujan ingredientes a las máquinas, y CPUs de crafteo que planean el trabajo. Pedile 64 de algo a la terminal y la red craftea cada paso. Después los addons sacan los límites."
+   ],
+   "sources": [
+    "jar:appliedenergistics2-19.2.17.jar:assets/ae2/ae2guide/ae2-mechanics/autocrafting.md"
+   ]
+  },
+  {
+   "key": "aea_patterns",
+   "deps": [
+    "aea_welcome"
+   ],
+   "type": "item",
+   "item": "ae2:pattern_encoding_terminal",
+   "layout": {
+    "x": 3,
+    "y": 0,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Patterns",
+    "Encode Blank Patterns in a Pattern Encoding Terminal: crafting patterns for the crafting table, processing patterns for anything else (furnace, Mekanism, a Create line), plus smithing and stonecutting ones. Stick to one wood type in every pattern: fewer headaches."
+   ],
+   "es_es": [
+    "Patrones",
+    "Codificá Patrones en blanco en una Terminal de codificación: de crafteo para la mesa, de procesamiento para todo lo demás (horno, Mekanism, una línea de Create), más los de herrería y cortapiedras. Usá un solo tipo de madera en todos: menos dolores de cabeza."
+   ],
+   "sources": [
+    "jar:appliedenergistics2-19.2.17.jar:assets/ae2/ae2guide/items-blocks-machines/patterns.md",
+    "jar:appliedenergistics2-19.2.17.jar:assets/ae2/ae2guide/ae2-mechanics/autocrafting.md",
+    "jar:appliedenergistics2-19.2.17.jar:assets/ae2/ae2guide/tips-and-tricks.md"
+   ]
+  },
+  {
+   "key": "aea_provider",
+   "deps": [
+    "aea_patterns"
+   ],
+   "type": "item",
+   "item": "ae2:pattern_provider",
+   "count": 2,
+   "layout": {
+    "x": 5.5,
+    "y": 0,
+    "size": 1.5,
+    "shape": "hexagon"
+   },
+   "en_us": [
+    "Pattern Provider",
+    "Pushes a complete batch of ingredients to adjacent machines, round-robin across faces; results can come back into the provider. It never holds ingredients, so you cannot pipe out of it. Results must enter the system (provider, interface, import bus), not a chest behind a storage bus."
+   ],
+   "es_es": [
+    "Proveedor de patrones",
+    "Empuja un lote completo de ingredientes a las máquinas vecinas, rotando entre caras; los resultados pueden volver al proveedor. Nunca guarda ingredientes, así que no se puede sacar por caño. Los resultados tienen que entrar al sistema (proveedor, interfaz, bus de importación), no a un cofre tras un bus de almacenamiento."
+   ],
+   "sources": [
+    "jar:appliedenergistics2-19.2.17.jar:assets/ae2/ae2guide/items-blocks-machines/pattern_provider.md",
+    "jar:appliedenergistics2-19.2.17.jar:assets/ae2/ae2guide/ae2-mechanics/autocrafting.md"
+   ]
+  },
+  {
+   "key": "aea_assembler",
+   "deps": [
+    "aea_provider"
+   ],
+   "type": "item",
+   "item": "ae2:molecular_assembler",
+   "count": 2,
+   "layout": {
+    "x": 8,
+    "y": 0,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Molecular Assembler",
+    "Against a provider, it receives the crafting pattern and ingredients and ejects the result back. Surround a provider with assemblers to craft in parallel."
+   ],
+   "es_es": [
+    "Ensamblador molecular",
+    "Pegado a un proveedor, recibe el patrón de crafteo y los ingredientes y devuelve el resultado. Rodeá un proveedor de ensambladores para craftear en paralelo."
+   ],
+   "sources": [
+    "jar:appliedenergistics2-19.2.17.jar:assets/ae2/ae2guide/items-blocks-machines/molecular_assembler.md",
+    "jar:appliedenergistics2-19.2.17.jar:assets/ae2/ae2guide/ae2-mechanics/autocrafting.md"
+   ]
+  },
+  {
+   "key": "aea_cpu",
+   "deps": [
+    "aea_assembler"
+   ],
+   "type": "item",
+   "item": "ae2:1k_crafting_storage",
+   "layout": {
+    "x": 10.5,
+    "y": 0,
+    "size": 1.5,
+    "shape": "hexagon"
+   },
+   "en_us": [
+    "Crafting CPU",
+    "A solid box with at least one Crafting Storage (1k to 256k); Co-Processing Units add parallel steps. One job per CPU, so build two to ask for two things at once. Middle-click in the terminal requests crafts of items you already hold."
+   ],
+   "es_es": [
+    "CPU de crafteo",
+    "Una caja maciza con al menos un Almacenamiento de crafteo (1k a 256k); las Unidades de coprocesamiento suman pasos en paralelo. Un trabajo por CPU, así que armá dos para pedir dos cosas a la vez. Clic del medio en la terminal pide crafteos de ítems que ya tenés."
+   ],
+   "sources": [
+    "jar:appliedenergistics2-19.2.17.jar:assets/ae2/ae2guide/items-blocks-machines/crafting_cpu_multiblock.md",
+    "jar:appliedenergistics2-19.2.17.jar:assets/ae2/ae2guide/ae2-mechanics/autocrafting.md"
+   ]
+  },
+  {
+   "key": "aea_limits",
+   "deps": [
+    "aea_cpu"
+   ],
+   "type": "checkmark",
+   "icon": "ae2:interface",
+   "layout": {
+    "x": 10.5,
+    "y": -2.5,
+    "size": 1.0,
+    "shape": "circle"
+   },
+   "en_us": [
+    "What it cannot do",
+    "No recursive recipes (an item that makes more of itself); the guide has a workaround. Providers push to one side per batch: for machines that want inputs on different faces, use an interface subnetwork or Advanced AE's provider. Keep an Energy Cell: big jobs spike power."
+   ],
+   "es_es": [
+    "Lo que no puede hacer",
+    "Nada de recetas recursivas (un ítem que hace más de sí mismo); la guía tiene un rodeo. Los proveedores empujan a un lado por lote: para máquinas que piden entradas en caras distintas, usá una subred con interfaz o el proveedor de Advanced AE. Tené una Celda de energía: los trabajos grandes dan picos."
+   ],
+   "sources": [
+    "jar:appliedenergistics2-19.2.17.jar:assets/ae2/ae2guide/ae2-mechanics/autocrafting.md",
+    "jar:appliedenergistics2-19.2.17.jar:assets/ae2/ae2guide/example-setups/recursive-crafting-setup.md",
+    "jar:appliedenergistics2-19.2.17.jar:assets/ae2/ae2guide/tips-and-tricks.md"
+   ]
+  },
+  {
+   "key": "aea_stock",
+   "deps": [
+    "aea_cpu"
+   ],
+   "type": "item",
+   "item": "merequester:requester",
+   "optional": true,
+   "layout": {
+    "x": 13,
+    "y": -2.5,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Keeping things in stock",
+    "An export bus or interface with a Crafting Card orders crafts of what it should export or stock. A Level Emitter with one signals while an item crafts or runs low. ME Requester does it for you: set an amount per item and it keeps that much."
+   ],
+   "es_es": [
+    "Mantener stock",
+    "Un bus de exportación o interfaz con Tarjeta de crafteo pide crafteos de lo que debe exportar o mantener. Un Emisor de nivel con una avisa mientras un ítem se craftea o escasea. ME Requester lo hace por vos: fijá una cantidad por ítem y la mantiene."
+   ],
+   "sources": [
+    "jar:appliedenergistics2-19.2.17.jar:assets/ae2/ae2guide/items-blocks-machines/level_emitter.md",
+    "jar:appliedenergistics2-19.2.17.jar:assets/ae2/ae2guide/example-setups/interface-autostocking.md",
+    "jar:merequester-neoforge-1.21.1-1.4.3.jar:assets/merequester/ae2guide/merequester.md"
+   ]
+  },
+  {
+   "key": "aea_eae",
+   "deps": [
+    "aea_cpu"
+   ],
+   "type": "item",
+   "item": "extendedae:ex_pattern_provider",
+   "layout": {
+    "x": 13,
+    "y": 0,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Extended AE",
+    "Bigger devices: Extended Pattern Provider, Drives, Interfaces and IO buses, an Extended Pattern Access Terminal, plus the Circuit Cutter and Crystal Assembler for bulk processors and crystals. Its Entro crystal is a second crystal line with budding blocks."
+   ],
+   "es_es": [
+    "Extended AE",
+    "Dispositivos más grandes: Proveedor de patrones extendido, Unidades, Interfaces y buses de E/S, una Terminal de acceso extendida, más el Cortador de circuitos y el Ensamblador de cristales para procesadores y cristales al por mayor. Su cristal Entro es una segunda línea con bloques brotantes."
+   ],
+   "sources": [
+    "jar:ExtendedAE-1.21-2.2.35-neoforge.jar:assets/extendedae/ae2guide/epp_intro/epp_intro-index.md",
+    "jar:ExtendedAE-1.21-2.2.35-neoforge.jar:assets/extendedae/ae2guide/epp_intro/extended_pattern_provider.md",
+    "jar:ExtendedAE-1.21-2.2.35-neoforge.jar:assets/extendedae/ae2guide/epp_intro/circuit_cutter.md",
+    "jar:ExtendedAE-1.21-2.2.35-neoforge.jar:assets/extendedae/ae2guide/epp_intro/crystal_assembler.md",
+    "jar:ExtendedAE-1.21-2.2.35-neoforge.jar:assets/extendedae/ae2guide/epp_intro/entro_budding.md"
+   ]
+  },
+  {
+   "key": "aea_matrix",
+   "deps": [
+    "aea_eae"
+   ],
+   "type": "item",
+   "item": "extendedae:assembler_matrix_frame",
+   "optional": true,
+   "layout": {
+    "x": 13,
+    "y": 2.5,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Assembler Matrix",
+    "An Extended AE multiblock of assemblers and providers: a solid box 3 to 7 per side with at least one Pattern Core and one Craft Core. Many jobs at once, few channels. It replaces walls of providers and assemblers."
+   ],
+   "es_es": [
+    "Matriz ensambladora",
+    "Un multibloque de Extended AE de ensambladores y proveedores: una caja maciza de 3 a 7 por lado con al menos un Núcleo de patrones y uno de crafteo. Muchos trabajos a la vez, pocos canales. Reemplaza paredes de proveedores y ensambladores."
+   ],
+   "sources": [
+    "jar:ExtendedAE-1.21-2.2.35-neoforge.jar:assets/extendedae/ae2guide/epp_intro/assembler_matrix.md"
+   ]
+  },
+  {
+   "key": "aea_aae",
+   "deps": [
+    "aea_eae"
+   ],
+   "type": "item",
+   "item": "advanced_ae:adv_pattern_provider",
+   "layout": {
+    "x": 15.5,
+    "y": 0,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Advanced AE",
+    "The Advanced Pattern Provider picks the face each ingredient goes to, so one block feeds sided machines (hello, Mekanism) with no pipes. Also: a Quantum Crafter that crafts straight from the network, a Reaction Chamber, advanced IO buses and Quantum Armor. Upgrade providers in place."
+   ],
+   "es_es": [
+    "Advanced AE",
+    "El Proveedor avanzado elige la cara de cada ingrediente, así un solo bloque alimenta máquinas con lados (hola, Mekanism) sin caños. Además: un Crafteador cuántico que craftea directo de la red, una Cámara de reacción, buses de E/S avanzados y la Armadura cuántica. Los proveedores se mejoran en el lugar."
+   ],
+   "sources": [
+    "jar:AdvancedAE-1.6.12-1.21.1.jar:assets/advanced_ae/ae2guide/aae_intro/advanced_pattern_provider.md",
+    "jar:AdvancedAE-1.6.12-1.21.1.jar:assets/advanced_ae/ae2guide/aae_intro/quantum_crafter.md",
+    "jar:AdvancedAE-1.6.12-1.21.1.jar:assets/advanced_ae/ae2guide/aae_intro/reaction_chamber.md",
+    "jar:AdvancedAE-1.6.12-1.21.1.jar:assets/advanced_ae/ae2guide/aae_intro/quantum_armor.md",
+    "jar:AdvancedAE-1.6.12-1.21.1.jar:assets/advanced_ae/ae2guide/aae_intro/aae_intro-index.md"
+   ]
+  },
+  {
+   "key": "aea_qc",
+   "deps": [
+    "aea_aae"
+   ],
+   "type": "item",
+   "item": "advanced_ae:quantum_core",
+   "optional": true,
+   "layout": {
+    "x": 15.5,
+    "y": -2.5,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Quantum Computer",
+    "Runs unlimited jobs at once while it has crafting storage. The Quantum Core alone is 256M of storage and 8 threads; as a multiblock with more blocks it goes further. One computer replaces a room of CPUs."
+   ],
+   "es_es": [
+    "Computadora cuántica",
+    "Corre trabajos ilimitados a la vez mientras le quede almacenamiento de crafteo. El Núcleo cuántico solo ya son 256M y 8 hilos; como multibloque con más bloques va más lejos. Una computadora reemplaza una sala de CPUs."
+   ],
+   "sources": [
+    "jar:AdvancedAE-1.6.12-1.21.1.jar:assets/advanced_ae/ae2guide/aae_intro/quantum_computer.md"
+   ]
+  },
+  {
+   "key": "aea_mega",
+   "deps": [
+    "aea_aae"
+   ],
+   "type": "item",
+   "item": "megacells:item_storage_cell_1m",
+   "layout": {
+    "x": 18,
+    "y": 0,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "MEGA Cells",
+    "Cells from 1M to 256M for items, fluids and chemicals, plus matching crafting storage and co-processors (four threads each). Starts with Sky Steel (sky stone, iron, charged certus in an Extended or Advanced AE machine). The Bulk Cell stores one item with no type limit: perfect for cobble."
+   ],
+   "es_es": [
+    "MEGA Cells",
+    "Celdas de 1M a 256M para ítems, fluidos y químicos, más almacenamiento de crafteo y coprocesadores a juego (cuatro hilos cada uno). Arranca con Acero celeste (piedra celeste, hierro, certus cargado en una máquina de Extended o Advanced AE). La Celda a granel guarda un solo ítem sin límite de tipo: ideal para adoquín."
+   ],
+   "sources": [
+    "jar:megacells-4.11.0.jar:assets/megacells/ae2guide/index.md",
+    "jar:megacells-4.11.0.jar:assets/megacells/ae2guide/crafting.md",
+    "jar:megacells-4.11.0.jar:assets/megacells/ae2guide/bulk_cell.md",
+    "jar:ExtendedAE-1.21-2.2.35-neoforge.jar:data/extendedae/recipe/assembler/sky_steel.json",
+    "jar:AdvancedAE-1.6.12-1.21.1.jar:data/advanced_ae/recipe/skysteel.json"
+   ]
+  },
+  {
+   "key": "aea_appmek",
+   "deps": [
+    "aea_welcome"
+   ],
+   "type": "item",
+   "item": "appmek:chemical_storage_cell_1k",
+   "layout": {
+    "x": 3,
+    "y": 2.5,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Applied Mekanistics",
+    "Mekanism chemicals in AE2: chemical cells 1k to 256k, portable cells and a chemical P2P tunnel. Buses, interfaces and providers handle chemicals, so AE2 autocrafts through Mekanism. Normal chemical cells refuse radioactive chemicals; MEGA has a cell for those."
+   ],
+   "es_es": [
+    "Applied Mekanistics",
+    "Químicos de Mekanism en AE2: celdas químicas de 1k a 256k, celdas portátiles y un túnel P2P químico. Buses, interfaces y proveedores manejan químicos, así AE2 autocraftea a través de Mekanism. Las celdas químicas comunes rechazan químicos radiactivos; MEGA tiene una celda para eso."
+   ],
+   "sources": [
+    "jar:Applied-Mekanistics-1.6.3.jar:assets/appmek/lang/en_us.json",
+    "jar:megacells-4.11.0.jar:assets/megacells/ae2guide/radioactive_cell.md",
+    "repo:docs/design/ae2-mekanism-expansion.md"
+   ]
+  },
+  {
+   "key": "aea_wtlib",
+   "deps": [
+    "aea_welcome"
+   ],
+   "type": "item",
+   "item": "ae2wtlib:wireless_universal_terminal",
+   "layout": {
+    "x": 3,
+    "y": -2.5,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "AE2WTLib wireless terminals",
+    "Wireless crafting, pattern and other terminals, combinable into one Universal Terminal. Upgrades: Restock tops up the stack in your hand, Magnet Card pulls items into the network, Quantum Bridge Card reaches home from any dimension if loaded. The best quality-of-life item in AE2."
+   ],
+   "es_es": [
+    "Terminales inalámbricas de AE2WTLib",
+    "Terminales inalámbricas de crafteo, patrones y más, combinables en una Terminal universal. Mejoras: Reponer mantiene lleno el stack de la mano, la Tarjeta imán manda ítems a la red, la Tarjeta de puente cuántico llega a casa desde cualquier dimensión si está cargada. El mejor ítem de comodidad de AE2."
+   ],
+   "sources": [
+    "jar:ae2wtlib-19.5.1.jar:assets/ae2wtlib/ae2guide/ae2wtlib/wireless_universal_terminal.md",
+    "jar:ae2wtlib-19.5.1.jar:assets/ae2wtlib/ae2guide/ae2wtlib/restock.md",
+    "jar:ae2wtlib-19.5.1.jar:assets/ae2wtlib/ae2guide/ae2wtlib/magnet_card.md",
+    "jar:ae2wtlib-19.5.1.jar:assets/ae2wtlib/ae2guide/ae2wtlib/quantum_bridge_card.md"
+   ]
+  },
+  {
+   "key": "aea_small",
+   "deps": [
+    "aea_wtlib"
+   ],
+   "type": "item",
+   "item": "ae2netanalyser:network_analyser",
+   "optional": true,
+   "layout": {
+    "x": 3,
+    "y": -5,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Small helpers",
+    "Import and Export Cards move items between chosen inventory slots and the network. The ME Network Analyser lists every device and its status: the fastest way to find a missing channel. Ars Energistique stores Ars Nouveau source in AE2."
+   ],
+   "es_es": [
+    "Ayudantes chicos",
+    "Las Tarjetas de importación y exportación mueven ítems entre ranuras elegidas de tu inventario y la red. El Analizador de red ME lista cada dispositivo y su estado: la forma más rápida de encontrar un canal perdido. Ars Energistique guarda fuente de Ars Nouveau en AE2."
+   ],
+   "sources": [
+    "jar:ae2importexportcard-1.21.1-1.5.0.jar:assets/ae2/ae2guide/ae2importexportcard-index.md",
+    "jar:AE2NetworkAnalyzer-1.21-2.1.5-neoforge.jar:assets/ae2netanalyser/ae2guide/ae2_network_analyser.md",
+    "jar:arseng-2.1.1-beta.jar:assets/arseng/ae2guide/arseng-index.md"
+   ]
+  },
+  {
+   "key": "aea_pack",
+   "deps": [
+    "aea_mega"
+   ],
+   "type": "checkmark",
+   "icon": "entrelumen:routing_matrix",
+   "layout": {
+    "x": 18,
+    "y": 2.5,
+    "size": 1.0,
+    "shape": "gear"
+   },
+   "en_us": [
+    "AE2 in this pack",
+    "AE2 and its addons are native. Refined Storage, the alternative, has its controller and autocrafter gated in Act III; AE2 feeds the story instead through its processors. Quantum Armor is late gear, but the Luminous set stays the best."
+   ],
+   "es_es": [
+    "AE2 en este pack",
+    "AE2 y sus addons son nativos. Refined Storage, la alternativa, tiene controlador y autocrafteador frenados en el acto III; AE2 en cambio alimenta la historia con sus procesadores. La Armadura cuántica es equipo tardío, pero el set luminoso sigue siendo el mejor."
+   ],
+   "sources": [
+    "repo:pack/kubejs/server_scripts/entrelumen_pingpong_balance.js",
+    "repo:pack/kubejs/server_scripts/entrelumen_integration_recipes.js",
+    "repo:docs/design/story-bible.md"
+   ]
+  },
+  {
+   "key": "aea_mastery",
+   "deps": [
+    "aea_qc",
+    "aea_mega"
+   ],
+   "type": "item",
+   "item": "ae2:crafting_accelerator",
+   "count": 4,
+   "layout": {
+    "x": 20.5,
+    "y": 0,
+    "size": 2.0,
+    "shape": "octagon"
+   },
+   "en_us": [
+    "Mastery: the base builds itself",
+    "Ask for a stack of Ultimate Control Circuits and watch: processing patterns through Mekanism, crafting in assemblers, planned by a Quantum Computer, stored in MEGA cells. Your job now is adding patterns."
+   ],
+   "es_es": [
+    "Maestría: la base se construye sola",
+    "Pedí un stack de Circuitos de control definitivos y mirá: patrones de procesamiento por Mekanism, crafteos en ensambladores, planeado por una Computadora cuántica, guardado en celdas MEGA. Tu trabajo ahora es sumar patrones."
+   ],
+   "sources": [
+    "jar:appliedenergistics2-19.2.17.jar:assets/ae2/ae2guide/ae2-mechanics/autocrafting.md",
+    "jar:AdvancedAE-1.6.12-1.21.1.jar:assets/advanced_ae/ae2guide/aae_intro/quantum_computer.md"
+   ]
+  }
+ ]
+}
