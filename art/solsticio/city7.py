@@ -24,6 +24,8 @@ import city5  # noqa: E402
 import city6  # noqa: E402,F401  (dresses city5.building with the pack's decorative mods)
 import houses  # noqa: E402
 from voxkit import Voxels, orient  # noqa: E402
+from modblocks import palette as mp  # noqa: E402
+mp_state = mp.state
 
 B = city5.B
 AIR = city5.AIR
@@ -35,10 +37,10 @@ _h, vnoise = city5._h, city5.vnoise
 N4 = ((1, 0), (-1, 0), (0, 1), (0, -1))
 
 LEVELS = [40, 30, 20, 10, 0]            # summit, terraces 1..3, lower town (top block y)
-RADII = [38, 58, 78, 98]                # outer contour of summit and terraces 1..3
+RADII = [52, 72, 92, 110]                # outer contour of summit and terraces 1..3
 CENTRES = [(0, -12), (0, -8), (0, -5), (0, -2)]
 SQUARE = 2.7                            # superellipse exponent: squarish, with rounded corners
-EXT = 140
+EXT = 150
 PROMENADE = 5                           # balustrade + promenade width on each terrace
 DEPTH = 10                              # building depth
 
@@ -46,7 +48,7 @@ DEPTH = 10                              # building depth
 # ---------------- plan ----------------
 def island_edge(x, z):
     th = math.atan2(z, x)
-    return 120 + 5 * math.sin(3 * th + 0.7) + 4 * math.sin(5 * th + 2.0) + 8 * (vnoise(math.cos(th) * 30, math.sin(th) * 30, 13, 91) - 0.5)
+    return 130 + 5 * math.sin(3 * th + 0.7) + 4 * math.sin(5 * th + 2.0) + 8 * (vnoise(math.cos(th) * 30, math.sin(th) * 30, 13, 91) - 0.5)
 
 
 def inside(x, z):
@@ -64,6 +66,8 @@ def contour(k, x, z):
 
 
 def level(x, z):
+    if not inside(x, z):
+        return None
     for k in range(4):
         if contour(k, x, z) < 0:
             return k
@@ -72,9 +76,8 @@ def level(x, z):
 
 def depth_in(k, x, z):
     """Blocks from the outer edge of step k inward."""
-    if k == 4:
-        return island_edge(x, z) - math.hypot(x, z)
-    return -contour(k, x, z)
+    shore = island_edge(x, z) - math.hypot(x, z)
+    return shore if k == 4 else min(-contour(k, x, z), shore)
 
 
 def outward(k, x, z):
@@ -100,7 +103,7 @@ def plan():
 
 
 # ---------------- ground ----------------
-WALL = ('tuff_bricks', 'tuff_bricks', 'polished_tuff', 'tuff_bricks', 'chiseled_tuff_bricks')
+WALL = ('polished_tuff', 'calcite', 'calcite', 'calcite', 'tuff_bricks')
 
 
 def depth_at(c):
@@ -305,15 +308,23 @@ def place_lots():
 
 
 def lanes():
-    """Whatever is left on a terrace is a lane: paving with planters and lamps."""
-    for (x, z), k in LEVEL.items():
-        if (x, z) in USED or (x, z) in RESERVED or k == 0:
-            continue
+    """What the rows leave is a lane under the wall or, where it opens up, a little garden square
+    with flowering trees, flower beds and benches."""
+    free = {c for c, k in LEVEL.items() if c not in USED and c not in RESERVED and k != 0}
+    for (x, z) in free:
         top = TOP[(x, z)]
         if V.get((x, top + 1, z)) not in (None, AIR):
             continue
-        V[(x, top, z)] = B('mossy_stone_bricks' if _h(x, z, 3) < 0.25 else 'stone_bricks')
+        open_ground = sum((x + dx, z + dz) in free for dx in range(-3, 4) for dz in range(-3, 4)) >= 40
         r = _h(x, z, 5)
+        if open_ground:
+            V[(x, top, z)] = B('grass_block' if (x // 3 + z // 3) % 3 else 'mcwpaths:mossy_stone_running_bond_path' and 'moss_block')
+            if r < 0.02:
+                tree(x, z, top, 5 + int(r * 200) % 3, 2)
+            elif r < 0.2:
+                V[(x, top + 1, z)] = B(('azure_bluet', 'allium', 'oxeye_daisy', 'short_grass', 'pink_petals[facing=north,flower_amount=3]')[int(r * 25) % 5])
+            continue
+        V[(x, top, z)] = B('mossy_stone_bricks' if _h(x, z, 3) < 0.25 else 'stone_bricks')
         if r < 0.04:
             V[(x, top + 1, z)] = B('potted_flowering_azalea_bush')
         elif r < 0.06:
@@ -321,9 +332,10 @@ def lanes():
 
 
 # ---------------- the palace ----------------
-PAL_C = (0, -16)
+PAL_C = (0, -8)
 PAL_HX, PAL_HZ = 22, 18
-PLINTH = 3
+PLINTH = 5
+DRUM = 7
 BODY = 18
 DOME_R = 15
 TOWER_H = 22
@@ -346,6 +358,25 @@ def palace():
                 V[(x, yy, z)] = B('tuff_bricks')
             V[(x, y, z)] = B('quartz_stairs[facing=north,half=bottom,shape=straight,waterlogged=false]')
             RESERVED.add((x, z))
+    for sgn in (-1, 1):
+        fx0, fz0 = cx + sgn * 20, cz + PAL_HZ + 8
+        for dx in range(-3, 4):
+            for dz in range(-3, 4):
+                ring = max(abs(dx), abs(dz)) == 3
+                V[(fx0 + dx, y0 + 1, fz0 + dz)] = B('calcite' if ring else 'water')
+                V[(fx0 + dx, y0, fz0 + dz)] = B('prismarine_bricks')
+                RESERVED.add((fx0 + dx, fz0 + dz))
+                USED.add((fx0 + dx, fz0 + dz))
+        for y in range(y0 + 1, y0 + 5):
+            V[(fx0, y, fz0)] = B('waxed_chiseled_copper')
+        V[(fx0, y0 + 5, fz0)] = B('ochre_froglight')
+        for (dx, dz) in N4:
+            V[(fx0 + dx, y0 + 5, fz0 + dz)] = B('waxed_cut_copper_slab[type=bottom,waterlogged=false]')
+        for dz in (0, 6):
+            lx = cx + sgn * 13
+            for y in range(fy - PLINTH + 1, fy - PLINTH + 5):
+                V[(lx, y, cz + PAL_HZ + 5 + dz)] = B('quartz_pillar[axis=y]')
+            V[(lx, fy - PLINTH + 5, cz + PAL_HZ + 5 + dz)] = B('ochre_froglight')
     # body: calcite walls, tall windows of stained glass, copper cornice
     for x in range(cx - PAL_HX, cx + PAL_HX + 1):
         for z in range(cz - PAL_HZ, cz + PAL_HZ + 1):
@@ -387,8 +418,34 @@ def palace():
             rr = math.hypot(dx - 0.5, dy)
             if rr <= 3.2:
                 V[(cx + dx, fy + 21 + dy, pz + 3)] = B('ochre_froglight' if rr < 1.6 else 'yellow_stained_glass')
+    # the drum: a ring of columns and tall windows that lifts the dome over the roof balustrade
+    for x in range(-DOME_R - 1, DOME_R + 2):
+        for z in range(-DOME_R - 1, DOME_R + 2):
+            rho = math.hypot(x, z)
+            if not (DOME_R - 1.1 <= rho <= DOME_R + 0.3):
+                continue
+            th = math.degrees(math.atan2(z, x)) % 360
+            column = int(th // 7.5) % 3 == 0
+            for y in range(fy + BODY + 1, fy + BODY + DRUM + 1):
+                top_band = y == fy + BODY + DRUM
+                V[(cx + x, y, cz + z)] = B('waxed_cut_copper' if top_band else 'quartz_pillar[axis=y]' if column else
+                                           ('yellow_stained_glass' if (y - fy - BODY) % 3 else 'white_stained_glass'))
+    for x in range(-DOME_R + 1, DOME_R):
+        for z in range(-DOME_R + 1, DOME_R):
+            if math.hypot(x, z) < DOME_R - 1.1:
+                V[(cx + x, fy + BODY + DRUM, cz + z)] = AIR
+    # the roof: a balustrade with urns all round
+    for x in range(cx - PAL_HX, cx + PAL_HX + 1):
+        for z in range(cz - PAL_HZ, cz + PAL_HZ + 1):
+            if x in (cx - PAL_HX, cx + PAL_HX) or z in (cz - PAL_HZ, cz + PAL_HZ):
+                post = (x - cx) % 4 == 0 and (z - cz) % 4 == 0 or (x in (cx - PAL_HX, cx + PAL_HX) and z in (cz - PAL_HZ, cz + PAL_HZ))
+                ew = z in (cz - PAL_HZ, cz + PAL_HZ)
+                V[(x, fy + BODY + 1, z)] = B('polished_diorite_wall[east=%s,north=%s,south=%s,up=%s,waterlogged=false,west=%s]' % (
+                    'low' if ew else 'none', 'none' if ew else 'low', 'none' if ew else 'low', 'true' if post else 'false', 'low' if ew else 'none'))
+                if post:
+                    V[(x, fy + BODY + 2, z)] = B('lantern[hanging=false,waterlogged=false]') if (x + z) % 8 else B('potted_flowering_azalea_bush')
     # the dome: a copper-gold shell with ribs, a ring of glass and the sun oculus on top
-    dy0 = fy + BODY
+    dy0 = fy + BODY + DRUM
     for x in range(-DOME_R - 1, DOME_R + 2):
         for z in range(-DOME_R - 1, DOME_R + 2):
             for y in range(0, DOME_R + 2):
@@ -455,12 +512,17 @@ def palace():
                                          ('yellow_stained_glass' if (y - fy) % 6 in (2, 3, 4) and (x + z) % 2 == 0 else 'calcite'))
                     else:
                         V[(x, y, z)] = AIR if y < fy + BODY + 7 else B('smooth_quartz')
-            for r in range(6):
-                for x in range(px - 5 + r, px + 6 - r):
-                    for z in range(pz2 - 5 + r, pz2 + 6 - r):
-                        if max(abs(x - px), abs(z - pz2)) == 5 - r:
-                            V[(x, fy + BODY + 8 + r, z)] = B('waxed_cut_copper')
-        V[(px, fy + BODY + 14, pz2)] = B('lightning_rod[facing=up,powered=false,waterlogged=false]')
+        base = fy + BODY + 8
+        for x in range(-6, 7):
+            for z in range(-6, 7):
+                for y in range(0, 7):
+                    rho = math.sqrt(x * x + y * y + z * z)
+                    if 5.0 <= rho <= 6.1:
+                        rib = x == 0 or z == 0
+                        V[(px + x, base + y, pz2 + z)] = B('gold_block' if rib and y > 1 else 'waxed_copper_block' if (x + z + y) % 2 else 'waxed_cut_copper')
+        for y in range(base + 6, base + 9):
+            V[(px, y, pz2)] = B('yellow_stained_glass' if y < base + 8 else 'ochre_froglight')
+        V[(px, base + 9, pz2)] = B('lightning_rod[facing=up,powered=false,waterlogged=false]')
         MARKERS.append((name, (px, fy + 1, pz2)))
     # the hall under the dome: the portal, the waystone, the arrival on the stair
     for x in range(cx - PAL_HX + 1, cx + PAL_HX):
@@ -484,12 +546,14 @@ def plots():
     """Four player plots on the summit's free ground around the palace, nearest first."""
     cx, cz = PAL_C
     done = 0
-    cands = sorted(((x, z) for (x, z), k in LEVEL.items() if k == 0), key=lambda c: math.hypot(c[0] - cx, c[1] - cz))
+    cands = sorted(((x, z) for (x, z), k in LEVEL.items() if k == 0 and z + 16 < cz - PAL_HZ - 3),
+                   key=lambda c: (abs(c[1] + 8 - (cz - PAL_HZ - 14)), abs(c[0] + 8 - cx)))
     for (x, z) in cands:
         if done == 4:
             break
+        k = LEVEL[(x, z)]
         cells = [(x + i, z + j) for i in range(-1, 17) for j in range(-1, 17)]
-        if all(LEVEL.get(c) == 0 and c not in USED for c in cells):
+        if all(LEVEL.get(c) == k and c not in USED and (k == 0 or depth_in(k, *c) >= 2) for c in cells):
             for c in cells:
                 USED.add(c)
                 RESERVED.add(c)
@@ -498,13 +562,64 @@ def plots():
     return done
 
 
+def tree(x, z, y0, h=6, r=3, leaves='flowering_azalea_leaves'):
+    for y in range(y0 + 1, y0 + h):
+        V[(x, y, z)] = B('stripped_cherry_log[axis=y]')
+    for dx in range(-r, r + 1):
+        for dz in range(-r, r + 1):
+            for dy in range(-1, 3):
+                if dx * dx + dz * dz + (dy * 1.6) ** 2 <= r * r + 0.5:
+                    V.setdefault((x + dx, y0 + h + dy, z + dz), B(leaves + '[distance=1,persistent=true,waterlogged=false]'))
+
+
 def summit():
+    """The palace square: four avenues on the axes with lamp rows, gardens between them with
+    flower beds, hedges and flowering trees, and a basin on each diagonal."""
+    cx, cz = PAL_C
     for (x, z), k in LEVEL.items():
         if k != 0 or (x, z) in USED:
             continue
         top = TOP[(x, z)]
-        r = math.hypot(x - PAL_C[0], z - PAL_C[1])
-        V[(x, top, z)] = B('calcite' if int(r) % 6 else 'waxed_cut_copper')
+        dx, dz = x - cx, z - cz
+        avenue = abs(dx) <= 4 or abs(dz) <= 4
+        r = math.hypot(dx, dz)
+        if avenue or depth_in(0, x, z) < PROMENADE + 1:
+            edge = abs(dx) in (4,) or abs(dz) in (4,)
+            V[(x, top, z)] = B('waxed_cut_copper' if edge and avenue else 'calcite' if (x + z) % 3 else 'polished_diorite')
+            if avenue and edge and (x + z) % 6 == 0 and depth_in(0, x, z) > PROMENADE + 1:
+                V[(x, top + 1, z)] = B('tuff_brick_wall[east=none,north=none,south=none,up=true,waterlogged=false,west=none]')
+                V[(x, top + 2, z)] = B('tuff_brick_wall[east=none,north=none,south=none,up=true,waterlogged=false,west=none]')
+                V[(x, top + 3, z)] = B('waxed_copper_grate')
+                V[(x, top + 4, z)] = B('ochre_froglight')
+            continue
+        # gardens
+        bed = (int(r) % 7) in (0, 1)
+        V[(x, top, z)] = B('grass_block')
+        hh = _h(x, z, 17)
+        if bed:
+            V[(x, top + 1, z)] = B(('azure_bluet', 'allium', 'cornflower', 'oxeye_daisy', 'lily_of_the_valley', 'pink_petals[facing=north,flower_amount=4]')[int(hh * 6)])
+        elif int(r) % 7 == 3:
+            V[(x, top + 1, z)] = mp_state('mcwfences:flowering_azalea_hedge')
+        elif hh < 0.012:
+            tree(x, z, top, 6 + int(hh * 300) % 3, 3)
+    for (sx, sz) in ((1, 1), (1, -1), (-1, 1), (-1, -1)):
+        fx0, fz0 = cx + sx * 36, cz + sz * 30
+        if LEVEL.get((fx0, fz0)) != 0 or (fx0, fz0) in USED:
+            continue
+        top = TOP[(fx0, fz0)]
+        for dx in range(-4, 5):
+            for dz in range(-4, 5):
+                rr = math.hypot(dx, dz)
+                if rr <= 4.4:
+                    V[(fx0 + dx, top, fz0 + dz)] = B('prismarine_bricks')
+                    V[(fx0 + dx, top + 1, fz0 + dz)] = B('calcite' if rr > 3.4 else 'water')
+                    for y in range(top + 2, top + 8):
+                        if (fx0 + dx, y, fz0 + dz) in V and V[(fx0 + dx, y, fz0 + dz)].endswith('leaves[distance=1,persistent=true,waterlogged=false]'):
+                            del V[(fx0 + dx, y, fz0 + dz)]
+        for y in range(top + 1, top + 5):
+            V[(fx0, y, fz0)] = B('quartz_pillar[axis=y]')
+        V[(fx0, top + 5, fz0)] = B('gold_block')
+        V[(fx0, top + 6, fz0)] = B('ochre_froglight')
 
 
 def build():
