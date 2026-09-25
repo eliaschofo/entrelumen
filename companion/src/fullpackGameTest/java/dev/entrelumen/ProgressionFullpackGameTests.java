@@ -147,18 +147,13 @@ public final class ProgressionFullpackGameTests {
     return (ItemStack) slot.getClass().getMethod("getStack").invoke(slot);
   }
 
-  /** Puts the stack into the first empty slot that accepts it; returns that slot's index or -1. */
-  private static int place(Object tile, ItemStack stack) throws ReflectiveOperationException {
-    var slots = slots(tile);
-    for (int i = 0; i < slots.size(); i++) {
-      Object slot = slots.get(i);
-      if (!slotStack(slot).isEmpty()) continue;
-      if ((boolean) slot.getClass().getMethod("isItemValid", ItemStack.class).invoke(slot, stack)) {
-        slot.getClass().getMethod("setStack", ItemStack.class).invoke(slot, stack);
-        return i;
-      }
-    }
-    return -1;
+  /** Sets the machine's named slot to the stack; returns that slot's index in the inventory or -1. */
+  private static int put(Object tile, String field, ItemStack stack) throws ReflectiveOperationException {
+    var declared = tile.getClass().getDeclaredField(field);
+    declared.setAccessible(true);
+    Object slot = declared.get(tile);
+    slot.getClass().getMethod("setStack", ItemStack.class).invoke(slot, stack);
+    return slots(tile).indexOf(slot);
   }
 
   @GameTest(template = "empty", timeoutTicks = 900)
@@ -168,8 +163,10 @@ public final class ProgressionFullpackGameTests {
     helper.setBlock(pos, BuiltInRegistries.BLOCK.get(ResourceLocation.parse("mekanism:metallurgic_infuser")));
     Object tile = helper.getLevel().getBlockEntity(helper.absolutePos(pos));
     helper.assertTrue(tile != null, "No metallurgic infuser block entity");
-    int lens = place(tile, stack("entrelumen:raw_lens"));
-    int dust = place(tile, new ItemStack(Items.REDSTONE, 8));
+    // The slots' own validators accept almost anything; the machine's named slots say which is which
+    // (TileEntityMetallurgicInfuser.inputSlot and .infusionSlot, package-private).
+    int lens = put(tile, "inputSlot", stack("entrelumen:raw_lens"));
+    int dust = put(tile, "infusionSlot", new ItemStack(Items.REDSTONE, 8));
     helper.assertTrue(lens >= 0 && dust >= 0 && lens != dust,
         "The infuser has no slot for the lens (" + lens + ") or the redstone (" + dust + ")");
     List<Object> energy = new ArrayList<>();
@@ -187,12 +184,24 @@ public final class ProgressionFullpackGameTests {
     });
     helper.succeedWhen(() -> {
       boolean copied = false;
+      StringBuilder state = new StringBuilder();
       try {
-        for (Object slot : slots(tile)) if (slotStack(slot).is(item(FRAME))) copied = true;
+        var slots = slots(tile);
+        for (int i = 0; i < slots.size(); i++) {
+          var held = slotStack(slots.get(i));
+          if (held.is(item(FRAME))) copied = true;
+          state.append(i).append('=').append(held.getCount()).append('x')
+              .append(BuiltInRegistries.ITEM.getKey(held.getItem())).append(' ');
+        }
+        Object tank = tile.getClass().getField("infusionTank").get(tile);
+        state.append("tank=").append(tank.getClass().getMethod("getStack").invoke(tank));
+        for (Object container : energy)
+          state.append(" energy=").append(container.getClass().getMethod("getEnergy").invoke(container));
+        state.append(" active=").append(tile.getClass().getMethod("getActive").invoke(tile));
       } catch (ReflectiveOperationException error) {
-        throw new IllegalStateException(error);
+        state.append("state unreadable: ").append(error);
       }
-      helper.assertTrue(copied, "No frame yet");
+      helper.assertTrue(copied, "No frame yet: " + state);
       LOGGER.info("ENTRELUMEN_FRAME_INFUSION a powered metallurgic infuser copied a frame from a raw lens (slot {}) "
           + "and redstone (slot {})", lens, dust);
     });

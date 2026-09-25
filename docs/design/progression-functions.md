@@ -153,7 +153,29 @@ Lo que este lote tocó y todavía choca con el playtest, porque arreglarlo no er
 
 ## Validación
 
-(Ver abajo el recibo de QA.)
+Recibo: [`docs/verification/progression-runtime.json`](../verification/progression-runtime.json). Scripts, logs y JARs en `E:/Elias/Codex/Entrelumen-ssd/progression-20260924`.
+
+- **Build y tests.** `gradlew test build runGameTestServer qaJar`: 211 JUnit y 99 GameTests aisladas. Las pruebas de ruido y de regeneración del altar a veces no terminan a tiempo con la máquina cargada; al repetirlas pasan.
+- **Chequeos de Python.** Los 28: los de `verify.yml` (incluidos los de teclas que trajo `main`) más las familias con `--check`, `generate_rftools_balance --check`, `check_guides` y `curate_pack --check`: todos dan 0.
+- **QA de pack completo** en servidores propios y nuevos (`server-progression-qa*`): las librerías de `server-slice`, los 272 JAR de servidor del lock, `pack/` y el JAR de QA, con mundo nuevo y `-Dentrelumen.qa=true`. La máquina estaba muy cargada: Elias jugando, el QA del acto VI y un `chrome-headless-shell` ajeno usando unos 12 núcleos.
+  - **A** (79df9d8): el arranque tardó 33 minutos y el watchdog de 60 s lo cortó en la reconstrucción de pestañas creativas de Silent Gear que hace ComputerCraft al iniciar, antes de la primera prueba. Es carga, no el lote.
+  - **B** (3ee1f2d, tolerancia de 180 s sólo para QA): pasaron las pruebas de recetas, jefes del Arca, cadena de resonadores y Ultimine real. El test del infusor real no encontró cara abierta y el de tiers leyó el límite antes de que Curios aplicara el cambio (se corrigieron los dos tests). La corrida terminó por el watchdog en la prueba de recarga de datapacks.
+  - **C** (e40b3a5): pasaron 129 de 131, con arranque limpio. Resultados:
+    - las recetas cargan: `loaded`, `loaded-ingredient-check` y `additions-loaded` sin fallas en todas las familias;
+    - el Marco sólo sale de la infusión y la infusión nativa de Mekanism acepta lente en bruto más 40 de redstone;
+    - el infusor pide el Marco en el centro y la receta de dos hornos con osmio ya no sirve;
+    - las 22 puertas consumen su componente sin otra receta que las saltee;
+    - los tres módulos llevan su drop de jefe;
+    - las seis recetas del resonador encadenan los tiers;
+    - `max_blocks` quedó en 0 y el límite real de Ultimine da 16, 32, 48, 64, 80 y 96 con cada tier en el slot de amuleto (el jugador tiene 3). Dos resonadores cuentan como el mejor, sin resonador es 0 y en slots vanilla también;
+    - una rotura real con la tecla de Ultimine rompe 1 bloque sin resonador y 16 de una veta de 50 con el tier I;
+    - la prueba del altar falló una vez por tiempo y pasó al repetirla, y la de recarga de datapacks pasó.
+
+    Fallaron dos. El infusor real rechazó los ítems por las caras: una máquina nueva de Mekanism tiene los lados cerrados. El test ahora usa la API de slots de Mekanism y se repitió en la corrida D. La otra es la paleta de Solsticio: `minecraft:polished_diorite_wall` (13 bloques) del `city.nbt` nuevo de `main` no existe en 1.21.1. No es de este lote.
+  - **D a F** repitieron la prueba del infusor real sobre el mundo de C:
+    - **D:** llenar el primer slot que acepte cada ítem no sirve, porque los validadores de Mekanism aceptan casi cualquier cosa y la lente cayó en el slot de infusión.
+    - **E:** se agregó un diagnóstico.
+    - **F:** el test pone la lente y la redstone en los slots con nombre de la máquina (`inputSlot`, `infusionSlot`). **Pasa:** un infusor metalúrgico real, con energía, copió un Marco a partir de una lente en bruto y redstone.
 
 ## Pendiente
 
