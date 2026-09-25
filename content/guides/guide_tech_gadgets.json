@@ -1,0 +1,487 @@
+{
+ "chapter": "guide_tech_gadgets",
+ "group": "tech",
+ "act": "III",
+ "icon": "mininggadgets:mininggadget",
+ "title": {
+  "en_us": "Gadgets: lasers, jetpacks, rooms, simulations",
+  "es_es": "Aparatos: láseres, jetpacks, salas, simulaciones"
+ },
+ "subtitle": {
+  "en_us": "Mining Gadgets, Iron Jetpacks, Compact Machines and Hostile Neural Networks: four powerful tools and the pack rules around them.",
+  "es_es": "Mining Gadgets, Iron Jetpacks, Compact Machines y Hostile Neural Networks: cuatro herramientas poderosas y las reglas del pack alrededor."
+ },
+ "quests": [
+  {
+   "key": "gd_welcome",
+   "deps": [],
+   "type": "checkmark",
+   "icon": "entrelumen:power_regulator",
+   "layout": {
+    "x": 0,
+    "y": 0,
+    "size": 2.0,
+    "shape": "hexagon"
+   },
+   "en_us": [
+    "Four big gadgets",
+    "This chapter covers four tools that change how you play once you have power: a mining laser, FE jetpacks, pocket rooms you build inside a single block, and simulated mob farms. All four open around Act III, each behind one campaign component, and their later tiers ask for later acts."
+   ],
+   "es_es": [
+    "Cuatro aparatos grandes",
+    "Este capítulo cubre cuatro herramientas que cambian cómo jugás una vez que tenés energía: un láser minero, jetpacks de FE, salas de bolsillo que armás dentro de un solo bloque, y granjas de mobs simuladas. Las cuatro abren cerca del acto III, cada una detrás de un componente de campaña, y sus niveles altos piden actos posteriores."
+   ],
+   "sources": [
+    "repo:docs/design/industrial-expansion-family.md",
+    "repo:pack/kubejs/server_scripts/entrelumen_industrial_balance.js"
+   ]
+  },
+  {
+   "key": "gd_mg",
+   "deps": [
+    "gd_welcome"
+   ],
+   "type": "item",
+   "item": "mininggadgets:mininggadget_simple",
+   "layout": {
+    "x": 3,
+    "y": -3,
+    "size": 1.5,
+    "shape": "hexagon"
+   },
+   "en_us": [
+    "Mining Gadget",
+    "A mining laser that runs on FE: hold use to carve blocks away, many at once with size upgrades. Three models exist, MK1 to MK3. Sneak and use it to open its settings (range, filters, which blocks to void).\n\nENTRELUMEN change: all three models need a Power Regulator (Act III)."
+   ],
+   "es_es": [
+    "Mining Gadget",
+    "Un láser minero que funciona con FE: mantené el uso para ir desarmando bloques, muchos a la vez con mejoras de tamaño. Hay tres modelos, MK1 a MK3. Agachado y usarlo abre su configuración (alcance, filtros, qué bloques anular).\n\nCambio de ENTRELUMEN: los tres modelos piden un Regulador de energía (acto III)."
+   ],
+   "sources": [
+    "repo:pack/kubejs/server_scripts/entrelumen_industrial_balance.js",
+    "jar:mininggadgets-1.18.7.jar:assets/mininggadgets/lang/en_us.json#item.mininggadgets.mininggadget_simple",
+    "jar:mininggadgets-1.18.7.jar:assets/mininggadgets/lang/en_us.json#mininggadgets.text.open_gui",
+    "jar:mininggadgets-1.18.7.jar:com/direwolf20/mininggadgets/common/items/MiningGadget.class",
+    "jar:mininggadgets-1.18.7.jar:assets/mininggadgets/lang/en_us.json#mininggadgets.tooltip.item.break_cost"
+   ]
+  },
+  {
+   "key": "gd_mg_table",
+   "deps": [
+    "gd_mg"
+   ],
+   "type": "item",
+   "item": "mininggadgets:modificationtable",
+   "layout": {
+    "x": 6,
+    "y": -3,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Modification Table and upgrades",
+    "Upgrades start from a Blank Upgrade Module and go in through the Modification Table (shift-click or drop them on the screen; click one to take it out). Options: 3x3, 5x5 and 7x7 size, range (+5 per tier), efficiency, fortune, silk touch, magnet (drops straight to your inventory), void junk with filters, freezing for water and lava, a light placer and bigger batteries.\n\nEach upgrade raises the FE cost per block."
+   ],
+   "es_es": [
+    "Mesa de modificación y mejoras",
+    "Las mejoras arrancan de un Módulo de mejora en blanco y entran por la Mesa de modificación (shift-clic o soltalas en la pantalla; clic en una para sacarla). Opciones: tamaño 3x3, 5x5 y 7x7, alcance (+5 por nivel), eficiencia, fortuna, toque de seda, imán (los drops van directo a tu inventario), anular basura con filtros, congelamiento para agua y lava, un colocador de luces y baterías más grandes.\n\nCada mejora sube el costo de FE por bloque."
+   ],
+   "sources": [
+    "jar:mininggadgets-1.18.7.jar:data/mininggadgets/recipe/modificationtable.json",
+    "jar:mininggadgets-1.18.7.jar:data/mininggadgets/recipe/upgrade_empty.json",
+    "jar:mininggadgets-1.18.7.jar:assets/mininggadgets/lang/en_us.json#mininggadgets.text.empty_table_helper",
+    "jar:mininggadgets-1.18.7.jar:assets/mininggadgets/lang/en_us.json#tooltop.mininggadgets.range",
+    "jar:mininggadgets-1.18.7.jar:assets/mininggadgets/lang/en_us.json#tooltop.mininggadgets.magnet",
+    "jar:mininggadgets-1.18.7.jar:assets/mininggadgets/lang/en_us.json#tooltop.mininggadgets.void_junk",
+    "jar:mininggadgets-1.18.7.jar:assets/mininggadgets/lang/en_us.json#tooltop.mininggadgets.freezing",
+    "jar:mininggadgets-1.18.7.jar:assets/mininggadgets/lang/en_us.json#mininggadgets.tooltip.item.upgrade_cost"
+   ]
+  },
+  {
+   "key": "gd_ij",
+   "deps": [
+    "gd_welcome"
+   ],
+   "type": "item",
+   "item": "ironjetpacks:strap",
+   "layout": {
+    "x": 3,
+    "y": 0,
+    "size": 1.5,
+    "shape": "hexagon"
+   },
+   "en_us": [
+    "Iron Jetpacks",
+    "FE jetpacks in a ladder of materials, from wood and stone through copper, iron, bronze, silver, gold, steel and diamond up to emerald. Each tier is built from that material's cell, thrusters and capacitor, starting from a Leather Strap, and flies faster with a bigger battery.\n\nENTRELUMEN change: the Leather Strap needs a Power Regulator (Act III), so every jetpack chain starts there."
+   ],
+   "es_es": [
+    "Iron Jetpacks",
+    "Jetpacks de FE en una escalera de materiales, desde madera y piedra, pasando por cobre, hierro, bronce, plata, oro, acero y diamante, hasta esmeralda. Cada nivel se arma con la celda, los propulsores y el capacitor de ese material, arrancando por una Correa de cuero, y vuela más rápido con una batería más grande.\n\nCambio de ENTRELUMEN: la Correa de cuero pide un Regulador de energía (acto III), así que toda cadena de jetpacks arranca ahí."
+   ],
+   "sources": [
+    "repo:pack/kubejs/server_scripts/entrelumen_industrial_balance.js",
+    "repo:docs/design/industrial-expansion-family.md",
+    "jar:IronJetpacks-1.21.1-8.0.11.jar:assets/ironjetpacks/lang/en_us.json#item.ironjetpacks.jetpack",
+    "jar:IronJetpacks-1.21.1-8.0.11.jar:data/ironjetpacks/recipe/strap.json"
+   ]
+  },
+  {
+   "key": "gd_ij_fly",
+   "deps": [
+    "gd_ij"
+   ],
+   "type": "item",
+   "item": "ironjetpacks:jetpack",
+   "layout": {
+    "x": 6,
+    "y": 0,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Flying a jetpack",
+    "Wear it on your chest or in the back accessory slot and charge it like any FE item. In this pack F4 toggles the engine and Alt+H toggles hover, which holds your height and lets you drift down slowly. Ascend, descend, throttle and HUD have their own keys under Controls; sprinting goes faster but burns more."
+   ],
+   "es_es": [
+    "Volar un jetpack",
+    "Ponételo en el pecho o en la ranura de accesorio de espalda y cargalo como cualquier ítem de FE. En este pack F4 prende el motor y Alt+H prende el modo flotar, que mantiene tu altura y te deja bajar despacio. Subir, bajar, acelerador y HUD tienen sus teclas en Controles; correr va más rápido pero gasta más."
+   ],
+   "sources": [
+    "repo:pack/config/entrelumen/client-preset.json",
+    "jar:IronJetpacks-1.21.1-8.0.11.jar:assets/ironjetpacks/lang/en_us.json#keybind.ironjetpacks.engine",
+    "jar:IronJetpacks-1.21.1-8.0.11.jar:assets/ironjetpacks/lang/en_us.json#keybind.ironjetpacks.hover",
+    "jar:IronJetpacks-1.21.1-8.0.11.jar:assets/ironjetpacks/lang/en_us.json#keybind.ironjetpacks.increment_throttle",
+    "jar:IronJetpacks-1.21.1-8.0.11.jar:assets/ironjetpacks/lang/en_us.json#tooltip.ironjetpacks.sprint_fuel_modifier",
+    "jar:IronJetpacks-1.21.1-8.0.11.jar:data/curios/tags/item/back.json"
+   ]
+  },
+  {
+   "key": "gd_ij_coils",
+   "deps": [
+    "gd_ij_fly"
+   ],
+   "type": "item",
+   "item": "ironjetpacks:elite_coil",
+   "optional": true,
+   "layout": {
+    "x": 9,
+    "y": 0,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Coils and top tiers",
+    "Coils go into the thrusters: basic (iron), advanced (gold), elite (diamond) and ultimate (emerald).\n\nENTRELUMEN change: the Elite Coil needs a zanite gemstone from the Aether (Act IV) and the Ultimate Coil atomic alloy from Mekanism (Act V), which gates the diamond, platinum and emerald jetpacks."
+   ],
+   "es_es": [
+    "Bobinas y niveles altos",
+    "Las bobinas van en los propulsores: básica (hierro), avanzada (oro), élite (diamante) y definitiva (esmeralda).\n\nCambio de ENTRELUMEN: la Bobina élite pide una gema de zanita del Aether (acto IV) y la Bobina definitiva aleación atómica de Mekanism (acto V), lo que frena los jetpacks de diamante, platino y esmeralda."
+   ],
+   "sources": [
+    "repo:pack/kubejs/server_scripts/entrelumen_industrial_balance.js",
+    "repo:docs/design/industrial-expansion-family.md",
+    "jar:IronJetpacks-1.21.1-8.0.11.jar:data/ironjetpacks/recipe/elite_coil.json",
+    "jar:IronJetpacks-1.21.1-8.0.11.jar:data/ironjetpacks/recipe/ultimate_coil.json"
+   ]
+  },
+  {
+   "key": "gd_cm",
+   "deps": [
+    "gd_welcome"
+   ],
+   "type": "item",
+   "item": "compactmachines:wall",
+   "count": 16,
+   "layout": {
+    "x": 3,
+    "y": 3,
+    "size": 1.5,
+    "shape": "hexagon"
+   },
+   "en_us": [
+    "Compact Machine parts",
+    "A Compact Machine is a block with a whole room inside. Its parts: Compact Machine Walls (eight from polished deepslate), an Atom Shrinking Module (sticky piston) and an Atom Enlarging Module (piston), both around an eye of ender. The walls are also a building block you can break and reuse."
+   ],
+   "es_es": [
+    "Piezas de Compact Machine",
+    "Una Compact Machine es un bloque con una sala entera adentro. Sus piezas: Paredes de Compact Machine (ocho con pizarra profunda pulida), un Módulo reductor de átomos (pistón pegajoso) y un Módulo ampliador de átomos (pistón), los dos alrededor de un ojo de ender. Las paredes también son un bloque de construcción que se puede romper y reusar."
+   ],
+   "sources": [
+    "jar:compactmachines-neoforge-7.0.81.jar:data/compactmachines/recipe/wall.json",
+    "jar:compactmachines-neoforge-7.0.81.jar:data/compactmachines/recipe/shrinking_module.json",
+    "jar:compactmachines-neoforge-7.0.81.jar:data/compactmachines/recipe/enlarging_module.json",
+    "jar:compactmachines-neoforge-7.0.81.jar:assets/compactmachines/lang/en_us.json#advancement.compactmachines.foundations.desc"
+   ]
+  },
+  {
+   "key": "gd_cm_machine",
+   "deps": [
+    "gd_cm"
+   ],
+   "type": "item",
+   "item": "compactmachines:new_machine",
+   "layout": {
+    "x": 6,
+    "y": 3,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Room sizes",
+    "Walls, both modules and a core material make the machine, and the core sets the room: copper 3, iron 5, gold 7, diamond 9, obsidian 11 and netherite 13 blocks across, while a nether star gives a huge 45 room. A diamond hoe makes a 21x21 farming room with a grass floor.\n\nIf machines have no recipes in JEI, an operator must enable the built-in room templates: the mod shows ops a clickable warning when they log in, and the game needs a restart afterwards."
+   ],
+   "es_es": [
+    "Tamaños de sala",
+    "Paredes, los dos módulos y un material central hacen la máquina, y el centro fija la sala: cobre 3, hierro 5, oro 7, diamante 9, obsidiana 11 y netherita 13 bloques de lado, mientras que una estrella del Nether da una sala enorme de 45. Una azada de diamante hace una sala de cultivo de 21x21 con piso de pasto.\n\nSi las máquinas no tienen recetas en JEI, un operador tiene que activar las plantillas de sala incluidas: el mod les muestra a los ops un aviso clickeable al entrar, y después hay que reiniciar el juego."
+   ],
+   "sources": [
+    "jar:compactmachines-neoforge-7.0.81.jar:data/compactmachines/datapacks/basic_templates/data/compactmachines/recipe/new_machine_small.json",
+    "jar:compactmachines-neoforge-7.0.81.jar:data/compactmachines/datapacks/basic_templates/data/compactmachines/compactmachines/room_templates/soaryn.json",
+    "jar:compactmachines-neoforge-7.0.81.jar:data/compactmachines/datapacks/basic_templates/data/compactmachines/compactmachines/room_templates/farming.json",
+    "jar:compactmachines-neoforge-7.0.81.jar:dev/compactmods/machines/feature/RoomTemplatePackSource.class",
+    "jar:compactmachines-neoforge-7.0.81.jar:dev/compactmods/machines/server/event/RoomTemplatesCheckEventHandler.class",
+    "jar:compactmachines-neoforge-7.0.81.jar:dev/compactmods/machines/command/EnableBasicTemplatesSubcommand.class",
+    "jar:compactmachines-neoforge-7.0.81.jar:assets/compactmachines/lang/en_us.json#jei.compactmachines.machines"
+   ]
+  },
+  {
+   "key": "gd_psd",
+   "deps": [
+    "gd_cm_machine"
+   ],
+   "type": "item",
+   "item": "compactmachines:personal_shrinking_device",
+   "layout": {
+    "x": 9,
+    "y": 3,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Personal Shrinking Device",
+    "Use the PSD on a machine to shrink into its room; it has its own accessory slot. Inside there is no weather, beds do not work and the walls cannot be broken. A key under Controls quick-exits the room. Machines can hold machines, room inside room.\n\nENTRELUMEN change: the PSD needs a Handling Core (Act III)."
+   ],
+   "es_es": [
+    "Dispositivo reductor personal",
+    "Usá el PSD sobre una máquina para achicarte y entrar a su sala; tiene su propia ranura de accesorio. Adentro no hay clima, las camas no funcionan y las paredes no se pueden romper. Una tecla en Controles sale rápido de la sala. Las máquinas pueden tener máquinas adentro, sala dentro de sala.\n\nCambio de ENTRELUMEN: el PSD pide un Núcleo de manipulación (acto III)."
+   ],
+   "sources": [
+    "repo:pack/kubejs/server_scripts/entrelumen_industrial_balance.js",
+    "repo:docs/design/industrial-expansion-family.md",
+    "jar:compactmachines-neoforge-7.0.81.jar:assets/compactmachines/lang/en_us.json#jei.compactmachines.shrinking_device",
+    "jar:compactmachines-neoforge-7.0.81.jar:assets/compactmachines/lang/en_us.json#curios.identifier.psd",
+    "jar:compactmachines-neoforge-7.0.81.jar:assets/compactmachines/lang/en_us.json#key.mapping.compactmachines.exit_room",
+    "jar:compactmachines-neoforge-7.0.81.jar:assets/compactmachines/lang/en_us.json#messages.compactmachines.solid_wall",
+    "jar:compactmachines-neoforge-7.0.81.jar:assets/compactmachines/lang/en_us.json#advancement.compactmachines.recursion.desc",
+    "jar:compactmachines-neoforge-7.0.81.jar:data/compactmachines/dimension_type/compact_world.json"
+   ]
+  },
+  {
+   "key": "gd_cm_tips",
+   "deps": [
+    "gd_psd"
+   ],
+   "type": "checkmark",
+   "icon": "compactmachines:new_machine",
+   "layout": {
+    "x": 12,
+    "y": 3,
+    "size": 1.0,
+    "shape": "circle"
+   },
+   "en_us": [
+    "Working inside a room",
+    "Rooms live in their own dimension and load with the machine chunk outside. Plan how power and items get in: cross-dimension tools work well, such as Flux Networks, LaserIO Advanced Connectors or ender chests. Jade shows a machine's owner and bound room."
+   ],
+   "es_es": [
+    "Trabajar dentro de una sala",
+    "Las salas viven en su propia dimensión y se cargan con el chunk de la máquina de afuera. Planeá cómo entran energía e ítems: las herramientas entre dimensiones andan bien, como Flux Networks, los Conectores avanzados de LaserIO o los cofres de ender. Jade muestra el dueño de una máquina y su sala vinculada."
+   ],
+   "sources": [
+    "repo:docs/design/industrial-expansion-family.md",
+    "jar:compactmachines-neoforge-7.0.81.jar:data/compactmachines/dimension/compact_world.json",
+    "jar:compactmachines-neoforge-7.0.81.jar:assets/compactmachines/lang/en_us.json#config.jade.plugin_compactmachines.show_owner",
+    "jar:laserio-1.9.11.jar:assets/laserio/patchouli_books/laseriobook/en_us/entries/laser_connector_advanced.json"
+   ]
+  },
+  {
+   "key": "gd_hnn_model",
+   "deps": [
+    "gd_welcome"
+   ],
+   "type": "item",
+   "item": "hostilenetworks:blank_data_model",
+   "layout": {
+    "x": 3,
+    "y": 6,
+    "size": 1.5,
+    "shape": "hexagon"
+   },
+   "en_us": [
+    "Data Models",
+    "Craft a Model Framework and right-click a mob with it: it attunes into a Data Model of that mob. One model per mob type; the model is what every other Hostile Neural Networks machine works with."
+   ],
+   "es_es": [
+    "Modelos de datos",
+    "Crafteá un Marco de modelo y hacé clic derecho a un mob con él: se sintoniza en un Modelo de datos de ese mob. Un modelo por tipo de mob; el modelo es con lo que trabajan todas las demás máquinas de Hostile Neural Networks."
+   ],
+   "sources": [
+    "jar:HostileNeuralNetworks-1.21.1-6.5.1.jar:data/hostilenetworks/recipe/framework.json",
+    "jar:HostileNeuralNetworks-1.21.1-6.5.1.jar:dev/shadowsoffire/hostilenetworks/HostileConfig.class",
+    "jar:HostileNeuralNetworks-1.21.1-6.5.1.jar:assets/hostilenetworks/lang/en_us.json#item.hostilenetworks.data_model"
+   ]
+  },
+  {
+   "key": "gd_hnn",
+   "deps": [
+    "gd_hnn_model"
+   ],
+   "type": "item",
+   "item": "hostilenetworks:deep_learner",
+   "layout": {
+    "x": 6,
+    "y": 6,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Deep Learner",
+    "Put models in the Deep Learner, worn as an accessory, and kill that mob yourself: each kill adds data, and the model climbs from Faulty to Basic, Advanced, Superior and Self Aware. A HUD shows the kills left for the next tier. In this pack Alt+U opens the Deep Learner."
+   ],
+   "es_es": [
+    "Deep Learner",
+    "Poné los modelos en el Deep Learner, puesto como accesorio, y matá vos ese mob: cada muerte suma datos, y el modelo sube de Defectuoso a Básico, Avanzado, Superior y Consciente. Un HUD muestra cuántas muertes faltan para el nivel siguiente. En este pack Alt+U abre el Deep Learner."
+   ],
+   "sources": [
+    "jar:HostileNeuralNetworks-1.21.1-6.5.1.jar:data/hostilenetworks/recipe/deep_learner.json",
+    "jar:HostileNeuralNetworks-1.21.1-6.5.1.jar:assets/hostilenetworks/lang/en_us.json#hostilenetworks.gui.learner_empty.6",
+    "jar:HostileNeuralNetworks-1.21.1-6.5.1.jar:assets/hostilenetworks/lang/en_us.json#hostilenetworks.tier.self_aware",
+    "jar:HostileNeuralNetworks-1.21.1-6.5.1.jar:assets/hostilenetworks/lang/en_us.json#hostilenetworks.hud.kills",
+    "jar:HostileNeuralNetworks-1.21.1-6.5.1.jar:assets/hostilenetworks/lang/en_us.json#key.hostilenetworks.open_deep_learner",
+    "jar:HostileNeuralNetworks-1.21.1-6.5.1.jar:dev/shadowsoffire/hostilenetworks/HostileConfig.class",
+    "repo:pack/config/entrelumen/client-preset.json"
+   ]
+  },
+  {
+   "key": "gd_sim",
+   "deps": [
+    "gd_hnn"
+   ],
+   "type": "item",
+   "item": "hostilenetworks:prediction_matrix",
+   "count": 16,
+   "layout": {
+    "x": 9,
+    "y": 6,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Simulation Chamber",
+    "The Sim Chamber runs a model on FE and Prediction Matrices: each simulation gives a Generalized Prediction of the mob's world and, depending on the model's accuracy, a mob Prediction. It can run in Inference mode (outputs, no data) or Training mode (data, no outputs).\n\nENTRELUMEN change: the chamber needs an Ecosystem Capsule (Act IV)."
+   ],
+   "es_es": [
+    "Cámara de simulación",
+    "La Cámara de simulación corre un modelo con FE y Matrices de predicción: cada simulación da una Predicción generalizada del mundo del mob y, según la precisión del modelo, una Predicción del mob. Puede trabajar en modo Inferencia (salidas, sin datos) o Entrenamiento (datos, sin salidas).\n\nCambio de ENTRELUMEN: la cámara pide una Cápsula de ecosistema (acto IV)."
+   ],
+   "sources": [
+    "repo:pack/kubejs/server_scripts/entrelumen_industrial_balance.js",
+    "repo:docs/design/industrial-expansion-family.md",
+    "jar:HostileNeuralNetworks-1.21.1-6.5.1.jar:assets/hostilenetworks/lang/en_us.json#block.hostilenetworks.sim_chamber.desc",
+    "jar:HostileNeuralNetworks-1.21.1-6.5.1.jar:assets/hostilenetworks/lang/en_us.json#hostilenetworks.gui.mode.inference.desc",
+    "jar:HostileNeuralNetworks-1.21.1-6.5.1.jar:assets/hostilenetworks/lang/en_us.json#hostilenetworks.gui.mode.training.desc",
+    "jar:HostileNeuralNetworks-1.21.1-6.5.1.jar:assets/hostilenetworks/lang/en_us.json#hostilenetworks.gui.accuracy",
+    "jar:HostileNeuralNetworks-1.21.1-6.5.1.jar:data/hostilenetworks/recipe/prediction_matrix.json",
+    "jar:HostileNeuralNetworks-1.21.1-6.5.1.jar:dev/shadowsoffire/hostilenetworks/HostileConfig.class"
+   ]
+  },
+  {
+   "key": "gd_fab",
+   "deps": [
+    "gd_sim"
+   ],
+   "type": "item",
+   "item": "hostilenetworks:loot_fabricator",
+   "layout": {
+    "x": 12,
+    "y": 6,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Loot Fabricator",
+    "Turns Predictions into real drops, using FE. Pick which drop each prediction becomes, in fixed or queue mode; a Fabrication Directive copies those choices to other fabricators (right-click to copy, sneak-right-click to apply)."
+   ],
+   "es_es": [
+    "Fabricador de botín",
+    "Convierte las Predicciones en drops reales, usando FE. Elegí en qué drop se convierte cada predicción, en modo fijo o en cola; una Directiva de fabricación copia esas elecciones a otros fabricadores (clic derecho para copiar, agachado y clic derecho para aplicar)."
+   ],
+   "sources": [
+    "jar:HostileNeuralNetworks-1.21.1-6.5.1.jar:data/hostilenetworks/recipe/loot_fabricator.json",
+    "jar:HostileNeuralNetworks-1.21.1-6.5.1.jar:assets/hostilenetworks/lang/en_us.json#block.hostilenetworks.loot_fabricator.desc",
+    "jar:HostileNeuralNetworks-1.21.1-6.5.1.jar:assets/hostilenetworks/lang/en_us.json#hostilenetworks.gui.fab_mode.queue",
+    "jar:HostileNeuralNetworks-1.21.1-6.5.1.jar:assets/hostilenetworks/lang/en_us.json#item.hostilenetworks.fab_directive.desc2"
+   ]
+  },
+  {
+   "key": "gd_dc",
+   "deps": [
+    "gd_fab"
+   ],
+   "type": "item",
+   "item": "hostilenetworks:data_center",
+   "optional": true,
+   "layout": {
+    "x": 15,
+    "y": 6,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Data Center",
+    "The top of the line runs up to 25 Self Aware models at once, one drop each per cycle. It sits in a 7x7x7 hollow shell: obsidian floor, black stained glass walls and ceiling, the controller facing out from the bottom wall. IO Ports replace shell blocks and cycle between Energy, Models, Inputs and Outputs with a right-click."
+   ],
+   "es_es": [
+    "Centro de datos",
+    "Lo más alto de la línea corre hasta 25 modelos Conscientes a la vez, un drop cada uno por ciclo. Va en un cascarón hueco de 7x7x7: piso de obsidiana, paredes y techo de vidrio teñido negro, y el controlador mirando hacia afuera desde la pared de abajo. Los Puertos de E/S reemplazan bloques del cascarón y alternan entre Energía, Modelos, Entradas y Salidas con clic derecho."
+   ],
+   "sources": [
+    "jar:HostileNeuralNetworks-1.21.1-6.5.1.jar:data/hostilenetworks/recipe/data_center.json",
+    "jar:HostileNeuralNetworks-1.21.1-6.5.1.jar:assets/hostilenetworks/lang/en_us.json#hostilenetworks.jei.data_center.intro",
+    "jar:HostileNeuralNetworks-1.21.1-6.5.1.jar:assets/hostilenetworks/lang/en_us.json#hostilenetworks.jei.data_center.shell",
+    "jar:HostileNeuralNetworks-1.21.1-6.5.1.jar:assets/hostilenetworks/lang/en_us.json#hostilenetworks.jei.data_center.io_port"
+   ]
+  },
+  {
+   "key": "gd_mastery",
+   "deps": [
+    "gd_mg_table",
+    "gd_ij_coils",
+    "gd_cm_tips",
+    "gd_dc"
+   ],
+   "type": "item",
+   "item": "mininggadgets:upgrade_size_3",
+   "layout": {
+    "x": 18,
+    "y": 1.5,
+    "size": 2.0,
+    "shape": "octagon"
+   },
+   "en_us": [
+    "Mastery: the compact workshop",
+    "Fly in with an emerald jetpack, clear a site with a 7x7 Mining Gadget, and hide a simulation farm inside a Compact Machine, powered from outside through a cross-dimension link. That is a whole production line in one block."
+   ],
+   "es_es": [
+    "Maestría: el taller compacto",
+    "Llegá volando con un jetpack de esmeralda, despejá un terreno con un Mining Gadget de 7x7, y escondé una granja de simulación dentro de una Compact Machine, alimentada desde afuera por un enlace entre dimensiones. Eso es una línea de producción entera en un solo bloque."
+   ],
+   "sources": [
+    "repo:docs/design/industrial-expansion-family.md",
+    "jar:mininggadgets-1.18.7.jar:assets/mininggadgets/lang/en_us.json#item.mininggadgets.upgrade_size_3",
+    "jar:compactmachines-neoforge-7.0.81.jar:assets/compactmachines/lang/en_us.json#jei.compactmachines.machines",
+    "jar:HostileNeuralNetworks-1.21.1-6.5.1.jar:assets/hostilenetworks/lang/en_us.json#block.hostilenetworks.sim_chamber.desc"
+   ]
+  }
+ ]
+}
