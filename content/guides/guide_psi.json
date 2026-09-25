@@ -1,0 +1,551 @@
+{
+ "chapter": "guide_psi",
+ "group": "magic",
+ "act": "III",
+ "icon": "psi:cad_assembler",
+ "title": {
+  "en_us": "Psi: Programmable Spells",
+  "es_es": "Psi: hechizos programables"
+ },
+ "subtitle": {
+  "en_us": "The CAD, the Spell Programmer, bullets, psimetal and the Exosuit.",
+  "es_es": "El CAD, el Programador de hechizos, las balas, el psimetal y el Exosuit."
+ },
+ "quests": [
+  {
+   "key": "psi_welcome",
+   "deps": [],
+   "type": "checkmark",
+   "icon": "psi:cad_assembler",
+   "layout": {
+    "x": 0,
+    "y": 0,
+    "size": 2.0,
+    "shape": "hexagon"
+   },
+   "en_us": [
+    "Psi: spells you program",
+    "Psi is programmable magic. You build a Casting Assistant Device (CAD) from components, write spells on a 9x9 grid out of small pieces (tricks that act on the world, selectors that read it, operators that do the math), copy them into Spell Bullets and cast them from the CAD.\n\nIn ENTRELUMEN, Psi belongs entirely to Act III: the CAD Assembler needs a Power Regulator. It is Terra's kind of magic, a machine you teach to think."
+   ],
+   "es_es": [
+    "Psi: hechizos que programás",
+    "Psi es magia programable. Armás un Dispositivo de asistencia de lanzamiento (CAD) con componentes, escribís hechizos en una grilla de 9x9 con piezas chicas (trucos que actúan sobre el mundo, selectores que lo leen, operadores que hacen las cuentas), los copiás en Balas de hechizo y los lanzás desde el CAD.\n\nEn ENTRELUMEN, Psi es entero del acto III: el Ensamblador de CAD pide un Regulador de energía. Es la magia de Terra, una máquina a la que le enseñás a pensar."
+   ],
+   "sources": [
+    "jar:Psi-neoforge-1.21.1-110.jar:assets/psi/patchouli_books/encyclopaedia_psionica/en_us/entries/basics/introduction.json",
+    "jar:Psi-neoforge-1.21.1-110.jar:assets/psi/patchouli_books/encyclopaedia_psionica/en_us/entries/basics/cad_assembler.json",
+    "repo:pack/kubejs/server_scripts/entrelumen_pingpong4_balance.js#psi:assembler",
+    "repo:docs/design/mod-pingpong.md#Psi"
+   ]
+  },
+  {
+   "key": "psi_assembler",
+   "deps": [
+    "psi_welcome"
+   ],
+   "type": "item",
+   "item": "psi:cad_assembler",
+   "layout": {
+    "x": 3,
+    "y": 0,
+    "size": 1.25,
+    "shape": "square"
+   },
+   "en_us": [
+    "CAD Assembler",
+    "In ENTRELUMEN the CAD Assembler is iron, a piston and a Power Regulator (Act III). It builds a CAD out of its components and loads Spell Bullets into it (and into Psimetal tools and armor).\n\nWithout it there is no CAD and no spell, so this is the true start of Psi."
+   ],
+   "es_es": [
+    "Ensamblador de CAD",
+    "En ENTRELUMEN el Ensamblador de CAD lleva hierro, un pistón y un Regulador de energía (acto III). Arma un CAD con sus componentes y le carga Balas de hechizo (también a las herramientas y armaduras de psimetal).\n\nSin él no hay CAD ni hechizo, así que este es el verdadero comienzo de Psi."
+   ],
+   "sources": [
+    "repo:pack/kubejs/server_scripts/entrelumen_pingpong4_balance.js#psi:assembler",
+    "jar:Psi-neoforge-1.21.1-110.jar:assets/psi/patchouli_books/encyclopaedia_psionica/en_us/entries/basics/cad_assembler.json"
+   ]
+  },
+  {
+   "key": "psi_first_cad",
+   "deps": [
+    "psi_assembler"
+   ],
+   "type": "item",
+   "item": "psi:psidust",
+   "count": 16,
+   "layout": {
+    "x": 6,
+    "y": 0,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "A bare CAD and Psidust",
+    "Craft an Iron CAD Assembly (four iron ingots in a sideways L) and put it alone in the Assembler: that is a bare-bones CAD. It cannot cast spells yet, but it can make Psidust.\n\nDrop Redstone Dust on the ground, hold the CAD with no spell selected, point at the dust and cast (right-click). The redstone turns into Psidust, the base of every early component."
+   ],
+   "es_es": [
+    "Un CAD pelado y Psipolvo",
+    "Crafteá un Iron CAD Assembly (cuatro lingotes de hierro en forma de L acostada) y ponelo solo en el Ensamblador: eso ya es un CAD mínimo. Todavía no lanza hechizos, pero hace Psidust.\n\nTirá polvo de redstone al piso, sostené el CAD sin hechizo elegido, apuntá al polvo y lanzá (clic derecho). La redstone se vuelve Psidust, la base de todos los componentes tempranos."
+   ],
+   "sources": [
+    "jar:Psi-neoforge-1.21.1-110.jar:data/psi/recipe/cad_assembly_iron.json",
+    "jar:Psi-neoforge-1.21.1-110.jar:data/psi/recipe/psidust.json",
+    "jar:Psi-neoforge-1.21.1-110.jar:assets/psi/patchouli_books/encyclopaedia_psionica/en_us/entries/components/psidust.json",
+    "jar:Psi-neoforge-1.21.1-110.jar:assets/psi/patchouli_books/encyclopaedia_psionica/en_us/entries/basics/introduction.json"
+   ]
+  },
+  {
+   "key": "psi_components",
+   "deps": [
+    "psi_first_cad"
+   ],
+   "type": "item",
+   "item": "psi:cad_core_basic",
+   "layout": {
+    "x": 9,
+    "y": 0,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Core, Socket and Bullets",
+    "A CAD that casts needs an Assembly, a Core and a Socket. Craft a Basic CAD Core (iron around psidust) and a Basic CAD Socket (psidust on iron), plus a few Spell Bullets (an iron ingot beside psidust). You can put your bare CAD back in a crafting grid to get the Assembly back.\n\nA Battery (psidust between iron and gold) is optional but recommended; a Colorizer only changes the color of your spells."
+   ],
+   "es_es": [
+    "Núcleo, Zócalo y Balas",
+    "Un CAD que lanza necesita un Assembly, un Core y un Socket. Crafteá un Basic CAD Core (hierro alrededor de psidust) y un Basic CAD Socket (psidust sobre hierro), más algunas Spell Bullets (un lingote de hierro al lado de psidust). Tu CAD pelado vuelve a ser Assembly si lo ponés en la mesa de crafteo.\n\nUna Battery (psidust entre hierro y oro) es opcional pero conviene; un Colorizer sólo cambia el color de tus hechizos."
+   ],
+   "sources": [
+    "jar:Psi-neoforge-1.21.1-110.jar:data/psi/recipe/cad_core_basic.json",
+    "jar:Psi-neoforge-1.21.1-110.jar:data/psi/recipe/cad_socket_basic.json",
+    "jar:Psi-neoforge-1.21.1-110.jar:data/psi/recipe/spell_bullet_basic.json",
+    "jar:Psi-neoforge-1.21.1-110.jar:data/psi/recipe/cad_battery_basic.json",
+    "jar:Psi-neoforge-1.21.1-110.jar:assets/psi/patchouli_books/encyclopaedia_psionica/en_us/entries/components/core.json",
+    "jar:Psi-neoforge-1.21.1-110.jar:assets/psi/patchouli_books/encyclopaedia_psionica/en_us/entries/components/socket.json",
+    "jar:Psi-neoforge-1.21.1-110.jar:assets/psi/patchouli_books/encyclopaedia_psionica/en_us/entries/components/battery.json",
+    "jar:Psi-neoforge-1.21.1-110.jar:assets/psi/patchouli_books/encyclopaedia_psionica/en_us/entries/components/colorizer.json"
+   ]
+  },
+  {
+   "key": "psi_programmer",
+   "deps": [
+    "psi_components"
+   ],
+   "type": "item",
+   "item": "psi:programmer",
+   "layout": {
+    "x": 12,
+    "y": 0,
+    "size": 1.5,
+    "shape": "hexagon"
+   },
+   "en_us": [
+    "Spell Programmer",
+    "The Spell Programmer (iron and psidust) opens a 9x9 grid. Right-click a cell to add a piece: type to search and press Enter to place the first result. Left-click a piece to point its inputs at neighboring pieces. When the X in the corner becomes a check mark, the spell compiles.\n\nThe book's tutorials walk you through a first Debug spell, a forward push and an explosion at the point you look at. Do them in order: they teach the whole system."
+   ],
+   "es_es": [
+    "Programador de hechizos",
+    "El Spell Programmer (hierro y psidust) abre una grilla de 9x9. Clic derecho en una celda agrega una pieza: escribí para buscar y Enter pone el primer resultado. Clic izquierdo en una pieza te deja apuntar sus entradas a piezas vecinas. Cuando la X de la esquina se vuelve un tilde, el hechizo compila.\n\nLos tutoriales del libro te llevan por un primer hechizo Debug, un empujón hacia adelante y una explosión donde mirás. Hacelos en orden: enseñan todo el sistema."
+   ],
+   "sources": [
+    "jar:Psi-neoforge-1.21.1-110.jar:data/psi/recipe/programmer.json",
+    "jar:Psi-neoforge-1.21.1-110.jar:assets/psi/patchouli_books/encyclopaedia_psionica/en_us/entries/basics/spell_programmer.json",
+    "jar:Psi-neoforge-1.21.1-110.jar:assets/psi/patchouli_books/encyclopaedia_psionica/en_us/entries/basics/tutorial_1.json",
+    "jar:Psi-neoforge-1.21.1-110.jar:assets/psi/patchouli_books/encyclopaedia_psionica/en_us/entries/basics/tutorial_4.json",
+    "jar:Psi-neoforge-1.21.1-110.jar:assets/psi/patchouli_books/encyclopaedia_psionica/en_us/entries/basics/tutorial_6.json"
+   ]
+  },
+  {
+   "key": "psi_cast",
+   "deps": [
+    "psi_programmer"
+   ],
+   "type": "item",
+   "item": "psi:spell_bullet",
+   "count": 4,
+   "layout": {
+    "x": 15,
+    "y": 0,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Load and cast",
+    "Use a Spell Bullet on the Programmer to copy the spell into it. In the Assembler, put your CAD in the left slot and the bullet in one of the slots that open. Then hold the CAD, hold the Psi key (Alt+C in ENTRELUMEN) to pick the spell on the radial menu, and right-click to cast.\n\nShortcut: with the spell selected, sneak-use the CAD on the Programmer to update the loaded bullet with the grid's current version."
+   ],
+   "es_es": [
+    "Cargar y lanzar",
+    "Usá una Spell Bullet sobre el Programador para copiarle el hechizo. En el Ensamblador, poné tu CAD en el casillero izquierdo y la bala en uno de los casilleros que se abren. Después sostené el CAD, mantené la tecla de Psi (Alt+C en ENTRELUMEN) para elegir el hechizo en el menú radial y clic derecho para lanzar.\n\nAtajo: con el hechizo elegido, usá el CAD agachado sobre el Programador para actualizar la bala cargada con la versión actual de la grilla."
+   ],
+   "sources": [
+    "jar:Psi-neoforge-1.21.1-110.jar:assets/psi/patchouli_books/encyclopaedia_psionica/en_us/entries/basics/tutorial_2.json",
+    "jar:Psi-neoforge-1.21.1-110.jar:assets/psi/patchouli_books/encyclopaedia_psionica/en_us/entries/basics/tutorial_3.json",
+    "repo:pack/config/defaultoptions/keybindings.txt#key_psimisc.keybind"
+   ]
+  },
+  {
+   "key": "psi_limits",
+   "deps": [
+    "psi_cast"
+   ],
+   "type": "checkmark",
+   "optional": true,
+   "icon": "psi:cad_battery_basic",
+   "layout": {
+    "x": 15,
+    "y": 3,
+    "size": 1.0,
+    "shape": "circle"
+   },
+   "en_us": [
+    "Tip: the five limits",
+    "Every compiled spell shows five stats. Complexity (pieces used) and Projection (tricks at once) are capped by the Core; Potency by the Assembly; Bandwidth (spell width or height) by the Socket. Cost is paid from your own Psi energy, which regenerates at about 500 per second.\n\nCasting without enough energy is overdrawing: the rest comes out of your health and the CAD shuts down until you refill. A Battery is a safety net. No trick can reach more than 32 blocks from its focal point."
+   ],
+   "es_es": [
+    "Tip: los cinco límites",
+    "Cada hechizo compilado muestra cinco valores. La Complejidad (piezas usadas) y la Proyección (trucos a la vez) las limita el Core; la Potencia, el Assembly; el Ancho de banda (ancho o alto del hechizo), el Socket. El Costo se paga con tu propia energía Psi, que se regenera a unos 500 por segundo.\n\nLanzar sin energía suficiente es sobregirar: el resto sale de tu vida y el CAD se apaga hasta que te recargues. Una Battery es la red de seguridad. Ningún truco llega a más de 32 bloques de su punto focal."
+   ],
+   "sources": [
+    "jar:Psi-neoforge-1.21.1-110.jar:assets/psi/patchouli_books/encyclopaedia_psionica/en_us/entries/basics/tutorial_5.json",
+    "jar:Psi-neoforge-1.21.1-110.jar:assets/psi/patchouli_books/encyclopaedia_psionica/en_us/entries/components/battery.json"
+   ]
+  },
+  {
+   "key": "psi_jamming",
+   "deps": [
+    "psi_cast"
+   ],
+   "type": "checkmark",
+   "optional": true,
+   "icon": "psi:cad_assembly_iron",
+   "layout": {
+    "x": 12,
+    "y": 3,
+    "size": 1.0,
+    "shape": "circle"
+   },
+   "en_us": [
+    "Quirk: one CAD per mage",
+    "Carry a single CAD. With two or more in your inventory their energies interfere and every spell shorts out; the book calls it cast jamming.\n\nKeep spare CADs in a chest, not in your pockets."
+   ],
+   "es_es": [
+    "Particularidad: un CAD por mago",
+    "Llevá un solo CAD. Con dos o más en el inventario sus energías interfieren y todo hechizo falla; el libro lo llama bloqueo de lanzamiento.\n\nGuardá los CAD de repuesto en un cofre, no en los bolsillos."
+   ],
+   "sources": [
+    "jar:Psi-neoforge-1.21.1-110.jar:assets/psi/patchouli_books/encyclopaedia_psionica/en_us/entries/basics/tutorial_2.json"
+   ]
+  },
+  {
+   "key": "psi_psimetal",
+   "deps": [
+    "psi_cast"
+   ],
+   "type": "item",
+   "item": "psi:psimetal",
+   "count": 8,
+   "layout": {
+    "x": 18,
+    "y": 0,
+    "size": 1.25,
+    "shape": "square"
+   },
+   "en_us": [
+    "Psimetal",
+    "Write a spell with Trick: Infusion, drop gold ingots on the ground and cast it nearby: the gold turns into Psimetal. It makes better cores, sockets and batteries, the Psimetal Assembly, spell drives, tools and armor.\n\nTip: Infusion also turns a Gold CAD Assembly on the ground into a Psimetal Assembly, so you do not waste the gold one."
+   ],
+   "es_es": [
+    "Psimetal",
+    "Escribí un hechizo con Trick: Infusion, tirá lingotes de oro al piso y lanzalo cerca: el oro se vuelve Psimetal. Hace núcleos, zócalos y baterías mejores, el Psimetal Assembly, discos de hechizo, herramientas y armadura.\n\nTip: Infusion también convierte un Gold CAD Assembly tirado en el piso en un Psimetal Assembly, así no desperdiciás el de oro."
+   ],
+   "sources": [
+    "jar:Psi-neoforge-1.21.1-110.jar:data/psi/recipe/psimetal.json",
+    "jar:Psi-neoforge-1.21.1-110.jar:data/psi/recipe/gold_to_psimetal_assembly_upgrade.json",
+    "jar:Psi-neoforge-1.21.1-110.jar:assets/psi/patchouli_books/encyclopaedia_psionica/en_us/entries/components/psimetal.json",
+    "jar:Psi-neoforge-1.21.1-110.jar:assets/psi/patchouli_books/encyclopaedia_psionica/en_us/entries/components/assembly.json"
+   ]
+  },
+  {
+   "key": "psi_bullets",
+   "deps": [
+    "psi_psimetal"
+   ],
+   "type": "item",
+   "item": "psi:spell_bullet_projectile",
+   "optional": true,
+   "layout": {
+    "x": 18,
+    "y": -3,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Bullet types",
+    "Every bullet is an iron ingot beside psidust; one extra ingredient changes its type. Arrow: Projectile, runs its spell where it hits. String: Loopcast, repeats four times a second while held. Snowball or slimeball: Circle, a spell circle that runs twenty times for the cost of fifteen. Gunpowder: Grenade, three seconds after landing. Redstone: Charge, waits for a Spell Detonator. Button: Mine, triggers when stepped off.\n\nEach type multiplies the cost shown in the Programmer and moves the focal point."
+   ],
+   "es_es": [
+    "Tipos de bala",
+    "Toda bala es un lingote de hierro al lado de psidust; un ingrediente extra le cambia el tipo. Flecha: Projectile, ejecuta el hechizo donde pega. Hilo: Loopcast, se repite cuatro veces por segundo mientras la tenés. Bola de nieve o de slime: Circle, un círculo que se ejecuta veinte veces al costo de quince. Pólvora: Grenade, tres segundos después de caer. Redstone: Charge, espera a un Spell Detonator. Botón: Mine, se dispara cuando se bajan de ella.\n\nCada tipo multiplica el costo que muestra el Programador y mueve el punto focal."
+   ],
+   "sources": [
+    "jar:Psi-neoforge-1.21.1-110.jar:assets/psi/patchouli_books/encyclopaedia_psionica/en_us/entries/items/spell_bullet.json",
+    "jar:Psi-neoforge-1.21.1-110.jar:assets/psi/patchouli_books/encyclopaedia_psionica/en_us/entries/items/projectile_bullet.json",
+    "jar:Psi-neoforge-1.21.1-110.jar:assets/psi/patchouli_books/encyclopaedia_psionica/en_us/entries/items/loopcast_bullet.json",
+    "jar:Psi-neoforge-1.21.1-110.jar:assets/psi/patchouli_books/encyclopaedia_psionica/en_us/entries/items/circle_bullet.json",
+    "jar:Psi-neoforge-1.21.1-110.jar:assets/psi/patchouli_books/encyclopaedia_psionica/en_us/entries/items/grenade_bullet.json",
+    "jar:Psi-neoforge-1.21.1-110.jar:assets/psi/patchouli_books/encyclopaedia_psionica/en_us/entries/items/charge_bullet.json",
+    "jar:Psi-neoforge-1.21.1-110.jar:assets/psi/patchouli_books/encyclopaedia_psionica/en_us/entries/items/mine_bullet.json"
+   ]
+  },
+  {
+   "key": "psi_upgrades",
+   "deps": [
+    "psi_psimetal"
+   ],
+   "type": "item",
+   "item": "psi:cad_core_overclocked",
+   "layout": {
+    "x": 21,
+    "y": 0,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Better cores and sockets",
+    "With Psimetal as the shell, the dust in the middle picks the model. Redstone: Overclocked Core (twice the Complexity, three tricks at once) and Signaling Socket (six bullets, 7x7 spells). Glowstone: Conductive Core (four tricks at once) and Large Socket (eight bullets, 6x6).\n\nA Psimetal Assembly has more Potency than gold and is required for Greater Infusion and Ebony and Ivory."
+   ],
+   "es_es": [
+    "Mejores núcleos y zócalos",
+    "Con Psimetal como carcasa, el polvo del medio elige el modelo. Redstone: Overclocked Core (el doble de Complejidad, tres trucos a la vez) y Signaling Socket (seis balas, hechizos de 7x7). Piedra luminosa: Conductive Core (cuatro trucos a la vez) y Large Socket (ocho balas, 6x6).\n\nUn Psimetal Assembly tiene más Potencia que el de oro y es obligatorio para Greater Infusion y Ebony and Ivory."
+   ],
+   "sources": [
+    "jar:Psi-neoforge-1.21.1-110.jar:data/psi/recipe/cad_core_overclocked.json",
+    "jar:Psi-neoforge-1.21.1-110.jar:assets/psi/patchouli_books/encyclopaedia_psionica/en_us/entries/components/core.json",
+    "jar:Psi-neoforge-1.21.1-110.jar:assets/psi/patchouli_books/encyclopaedia_psionica/en_us/entries/components/socket.json",
+    "jar:Psi-neoforge-1.21.1-110.jar:assets/psi/patchouli_books/encyclopaedia_psionica/en_us/entries/components/assembly.json"
+   ]
+  },
+  {
+   "key": "psi_psigem",
+   "deps": [
+    "psi_upgrades"
+   ],
+   "type": "item",
+   "item": "psi:psigem",
+   "count": 4,
+   "layout": {
+    "x": 24,
+    "y": 0,
+    "size": 1.25,
+    "shape": "square"
+   },
+   "en_us": [
+    "Psigems",
+    "With a Psimetal Assembly in your CAD, cast Trick: Greater Infusion near diamonds on the ground: they become Psigems. They go into the top cores and sockets, Psimetal tools and the Exosuit.\n\nPsigem sockets are the Transmissive (ten bullets, any spell size) and the Huge (twelve bullets, 8x8)."
+   ],
+   "es_es": [
+    "Psigemas",
+    "Con un Psimetal Assembly en tu CAD, lanzá Trick: Greater Infusion cerca de diamantes en el piso: se vuelven Psigems. Van en los mejores núcleos y zócalos, en las herramientas de psimetal y en el Exosuit.\n\nLos zócalos con psigema son el Transmissive (diez balas, cualquier tamaño de hechizo) y el Huge (doce balas, 8x8)."
+   ],
+   "sources": [
+    "jar:Psi-neoforge-1.21.1-110.jar:data/psi/recipe/psigem.json",
+    "jar:Psi-neoforge-1.21.1-110.jar:assets/psi/patchouli_books/encyclopaedia_psionica/en_us/entries/components/psigem.json",
+    "jar:Psi-neoforge-1.21.1-110.jar:assets/psi/patchouli_books/encyclopaedia_psionica/en_us/entries/components/socket.json"
+   ]
+  },
+  {
+   "key": "psi_gate_cores",
+   "deps": [
+    "psi_psigem"
+   ],
+   "type": "item",
+   "item": "psi:cad_core_radiative",
+   "optional": true,
+   "layout": {
+    "x": 24,
+    "y": 3,
+    "size": 1.0,
+    "shape": "diamond"
+   },
+   "en_us": [
+    "ENTRELUMEN: psigem cores",
+    "The two psigem cores are gated in the pack: the Hyperclocked Core (redstone; double Complexity of a Conductive, double Projection of an Overclocked) and the Radiative Core (glowstone; seven tricks at once) each need a Routing Matrix (Act III) in the recipe, besides psimetal and two psigems.\n\nEverything else in Psi keeps its native recipe."
+   ],
+   "es_es": [
+    "ENTRELUMEN: núcleos de psigema",
+    "Los dos núcleos de psigema están escalonados en el pack: el Hyperclocked Core (redstone; el doble de Complejidad que un Conductive y el doble de Proyección que un Overclocked) y el Radiative Core (piedra luminosa; siete trucos a la vez) piden una Matriz de distribución (acto III) en la receta, además de psimetal y dos psigemas.\n\nTodo lo demás de Psi mantiene su receta nativa."
+   ],
+   "sources": [
+    "repo:pack/kubejs/server_scripts/entrelumen_pingpong4_balance.js#psi:cad_core_hyperclocked",
+    "repo:pack/kubejs/server_scripts/entrelumen_pingpong4_balance.js#psi:cad_core_radiative",
+    "jar:Psi-neoforge-1.21.1-110.jar:assets/psi/patchouli_books/encyclopaedia_psionica/en_us/entries/components/core.json",
+    "repo:docs/design/mod-pingpong.md#Psi"
+   ]
+  },
+  {
+   "key": "psi_ebony",
+   "deps": [
+    "psi_psigem"
+   ],
+   "type": "item",
+   "item": "psi:ebony_substance",
+   "optional": true,
+   "layout": {
+    "x": 27,
+    "y": -3,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Ebony and Ivory",
+    "In the End, drop coal and nether quartz on the ground and cast Trick: Ebony and Ivory nearby (Psimetal Assembly required): coal becomes Ebony Substance and quartz becomes Ivory Substance. Coat psimetal ingots with them for the top Assemblies: Ebony handles more Potency, Ivory is more efficient.\n\nIt only works in the End."
+   ],
+   "es_es": [
+    "Ébano y Marfil",
+    "En el End, tirá carbón y cuarzo del Nether al piso y lanzá Trick: Ebony and Ivory cerca (hace falta el Psimetal Assembly): el carbón se vuelve Ebony Substance y el cuarzo, Ivory Substance. Recubrí lingotes de psimetal con ellas para los mejores Assemblies: el de ébano aguanta más Potencia, el de marfil es más eficiente.\n\nSólo funciona en el End."
+   ],
+   "sources": [
+    "jar:Psi-neoforge-1.21.1-110.jar:data/psi/recipe/ebony_substance.json",
+    "jar:Psi-neoforge-1.21.1-110.jar:data/psi/recipe/ivory_substance.json",
+    "jar:Psi-neoforge-1.21.1-110.jar:assets/psi/patchouli_books/encyclopaedia_psionica/en_us/entries/components/ebony_ivory.json",
+    "jar:Psi-neoforge-1.21.1-110.jar:assets/psi/patchouli_books/encyclopaedia_psionica/en_us/entries/components/assembly.json"
+   ]
+  },
+  {
+   "key": "psi_tools",
+   "deps": [
+    "psi_psigem"
+   ],
+   "type": "item",
+   "item": "psi:psimetal_pickaxe",
+   "layout": {
+    "x": 27,
+    "y": 0,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Psimetal tools",
+    "Psimetal tools (psimetal, one psigem and iron ingots instead of sticks) are about diamond grade and cast their selected spell every time they break a block; the sword casts on every hit. Each holds up to three bullets, loaded in the Assembler and picked with the Psi key.\n\nThey repair themselves with your spare Psi energy. For example, a pickaxe can carry a spell that also breaks the blocks around the one you mined."
+   ],
+   "es_es": [
+    "Herramientas de psimetal",
+    "Las herramientas de psimetal (psimetal, una psigema y lingotes de hierro en vez de palos) son más o menos de nivel diamante y lanzan su hechizo elegido cada vez que rompen un bloque; la espada lanza con cada golpe. Cada una lleva hasta tres balas, cargadas en el Ensamblador y elegidas con la tecla de Psi.\n\nSe reparan solas con tu energía Psi sobrante. Por ejemplo, un pico puede llevar un hechizo que además rompa los bloques alrededor del que picaste."
+   ],
+   "sources": [
+    "jar:Psi-neoforge-1.21.1-110.jar:data/psi/recipe/psimetal_pickaxe.json",
+    "jar:Psi-neoforge-1.21.1-110.jar:assets/psi/patchouli_books/encyclopaedia_psionica/en_us/entries/items/tools.json"
+   ]
+  },
+  {
+   "key": "psi_exosuit",
+   "deps": [
+    "psi_tools"
+   ],
+   "type": "item",
+   "item": "psi:psimetal_exosuit_helmet",
+   "layout": {
+    "x": 30,
+    "y": 0,
+    "size": 1.25,
+    "shape": "square"
+   },
+   "en_us": [
+    "The Psimetal Exosuit",
+    "Each Exosuit piece (psimetal and two psigems) holds three bullets and casts on its own trigger: the Helmet when its Sensor fires (light, heat, stress, water or detonation), the Chestplate when you take damage, the Leggings every tick and the Boots when you jump. Pick the spell of each piece with an Exosuit Controller.\n\nIt is a little better than iron armor and repairs itself with spare Psi energy. The usual CAD limits apply."
+   ],
+   "es_es": [
+    "El Exosuit de psimetal",
+    "Cada pieza del Exosuit (psimetal y dos psigemas) lleva tres balas y lanza con su propio disparador: el Casco cuando salta su Sensor (luz, calor, estrés, agua o detonación), la Pechera cuando recibís daño, las Grebas cada tick y las Botas cuando saltás. Elegí el hechizo de cada pieza con un Exosuit Controller.\n\nEs un poco mejor que la armadura de hierro y se repara sola con energía Psi sobrante. Aplican los límites de siempre del CAD."
+   ],
+   "sources": [
+    "jar:Psi-neoforge-1.21.1-110.jar:data/psi/recipe/psimetal_exosuit_helmet.json",
+    "jar:Psi-neoforge-1.21.1-110.jar:assets/psi/patchouli_books/encyclopaedia_psionica/en_us/entries/items/exosuit.json",
+    "jar:Psi-neoforge-1.21.1-110.jar:assets/psi/patchouli_books/encyclopaedia_psionica/en_us/entries/items/exosuit_sensor.json"
+   ]
+  },
+  {
+   "key": "psi_library",
+   "deps": [
+    "psi_upgrades"
+   ],
+   "type": "item",
+   "item": "psi:spell_drive",
+   "optional": true,
+   "layout": {
+    "x": 21,
+    "y": 3,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Tip: keep a spell library",
+    "A Spell Drive (psimetal and redstone) stores one spell: sneak-use an empty drive on the Programmer to save, and sneak-use it again to load. A drive with a spell copies it to an empty drive or bullet in a crafting grid.\n\nA Vector Ruler (iron and psidust) stores a block position or an offset that your spells can read; handy for building and area spells."
+   ],
+   "es_es": [
+    "Tip: armá una biblioteca de hechizos",
+    "Un Spell Drive (psimetal y redstone) guarda un hechizo: usá un disco vacío agachado sobre el Programador para guardar, y otra vez agachado para cargar. Un disco con hechizo lo copia a un disco o bala vacíos en la mesa de crafteo.\n\nUna Vector Ruler (hierro y psidust) guarda una posición de bloque o un desplazamiento que tus hechizos pueden leer; útil para construir y para hechizos de área."
+   ],
+   "sources": [
+    "jar:Psi-neoforge-1.21.1-110.jar:data/psi/recipe/spell_drive.json",
+    "jar:Psi-neoforge-1.21.1-110.jar:data/psi/recipe/vector_ruler.json",
+    "jar:Psi-neoforge-1.21.1-110.jar:assets/psi/patchouli_books/encyclopaedia_psionica/en_us/entries/items/spell_drive.json",
+    "jar:Psi-neoforge-1.21.1-110.jar:assets/psi/patchouli_books/encyclopaedia_psionica/en_us/entries/items/vector_ruler.json"
+   ]
+  },
+  {
+   "key": "psi_keys",
+   "deps": [
+    "psi_assembler"
+   ],
+   "type": "checkmark",
+   "optional": true,
+   "icon": "minecraft:book",
+   "layout": {
+    "x": 3,
+    "y": -3,
+    "size": 1.0,
+    "shape": "diamond"
+   },
+   "en_us": [
+    "ENTRELUMEN: the Psi key and the book",
+    "Psi's master key comes on C, which vanilla uses to save hotbars; the pack moves it to Alt+C. Without a CAD in hand, the key opens the Encyclopaedia Psionica.\n\nPsi and PneumaticCraft ship their book under the same ID, so the pack keeps PneumaticCraft's and copies Psi's to its own ID. To get Psi's book as an item, drop a normal book on the ground and cast at it with a CAD, the same way you make psidust."
+   ],
+   "es_es": [
+    "ENTRELUMEN: la tecla de Psi y el libro",
+    "La tecla maestra de Psi viene en C, que el juego base usa para guardar barras rápidas; el pack la pasa a Alt+C. Sin un CAD en la mano, la tecla abre la Encyclopaedia Psionica.\n\nPsi y PneumaticCraft traen su libro con el mismo ID, así que el pack conserva el de PneumaticCraft y copia el de Psi a un ID propio. Para tener el libro de Psi como ítem, tirá un libro común al piso y lanzá sobre él con un CAD, igual que para hacer psidust."
+   ],
+   "sources": [
+    "repo:pack/config/defaultoptions/keybindings.txt#key_psimisc.keybind",
+    "repo:pack/kubejs/data/psi/recipe/encyclopaedia_psionica.json",
+    "repo:docs/design/mod-pingpong.md#Otras integraciones"
+   ]
+  },
+  {
+   "key": "psi_mastery",
+   "deps": [
+    "psi_exosuit",
+    "psi_gate_cores"
+   ],
+   "type": "checkmark",
+   "icon": "psi:cad_core_radiative",
+   "layout": {
+    "x": 33,
+    "y": 0,
+    "size": 2.0,
+    "shape": "gear"
+   },
+   "en_us": [
+    "Mastery: a spellslinger",
+    "A CAD with a psigem core, an Exosuit that reacts on its own, tools that cast as they work and a drive full of spells you wrote yourself. Psi has no ceiling but your ingenuity: compress, chain tricks and share spells with friends."
+   ],
+   "es_es": [
+    "Maestría: un lanzahechizos",
+    "Un CAD con núcleo de psigema, un Exosuit que reacciona solo, herramientas que lanzan mientras trabajan y un disco lleno de hechizos que escribiste vos. Psi no tiene más techo que tu ingenio: comprimí, encadená trucos y compartí hechizos con amigos."
+   ],
+   "sources": [
+    "jar:Psi-neoforge-1.21.1-110.jar:assets/psi/patchouli_books/encyclopaedia_psionica/en_us/entries/basics/tutorial_6.json",
+    "jar:Psi-neoforge-1.21.1-110.jar:assets/psi/patchouli_books/encyclopaedia_psionica/en_us/entries/items/exosuit.json"
+   ]
+  }
+ ]
+}

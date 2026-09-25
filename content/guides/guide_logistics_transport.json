@@ -1,0 +1,483 @@
+{
+  "chapter": "guide_logistics_transport",
+  "group": "qol",
+  "act": "any",
+  "icon": "pipez:item_pipe",
+  "title": {
+    "en_us": "Moving Items, Fluids and Energy",
+    "es_es": "Mover ítems, fluidos y energía"
+  },
+  "subtitle": {
+    "en_us": "Pipes, filters, laser nodes, routers and cables: which one to use and how energy crosses between mods.",
+    "es_es": "Caños, filtros, nodos láser, routers y cables: cuál usar y cómo pasa la energía de un mod a otro."
+  },
+  "quests": [
+    {
+      "key": "logistics_transport_welcome",
+      "deps": [],
+      "type": "checkmark",
+      "layout": {
+        "x": 0,
+        "y": 0,
+        "size": 2.0,
+        "shape": "hexagon"
+      },
+      "en_us": [
+        "Stop Carrying, Start Piping",
+        "Sooner or later every base needs items to flow on their own: ore into the crusher, ingots into chests, fuel into generators, power into machines.\n\nThe pack has several transport systems. They overlap on purpose: pick the one whose style you like. This chapter shows each, from the simplest to the most flexible."
+      ],
+      "es_es": [
+        "Dejá de cargar, empezá a entubar",
+        "Tarde o temprano toda base necesita que los ítems fluyan solos: mineral a la trituradora, lingotes a los cofres, combustible a los generadores, energía a las máquinas.\n\nEl pack tiene varios sistemas de transporte. Se superponen a propósito: elegí el que te guste. Este capítulo muestra cada uno, del más simple al más flexible."
+      ],
+      "sources": [
+        "repo:catalog/curated.json"
+      ]
+    },
+    {
+      "key": "logistics_transport_early",
+      "deps": [
+        "logistics_transport_welcome"
+      ],
+      "type": "item",
+      "item": "minecraft:hopper",
+      "optional": true,
+      "layout": {
+        "x": 3,
+        "y": -3,
+        "size": 1.0,
+        "shape": "circle"
+      },
+      "en_us": [
+        "Early Transport: Hoppers and Create",
+        "Before pipes, you already have options: vanilla hoppers and droppers, and Create's belts, chutes, funnels and mechanical arm, which move items with rotation and look great doing it.\n\nThe Create chapter covers its logistics in detail. Here we focus on pipes and networks."
+      ],
+      "es_es": [
+        "Transporte temprano: tolvas y Create",
+        "Antes de los caños ya tenés opciones: tolvas y soltadores de vanilla, y las cintas, tolvas inclinadas, embudos y el brazo mecánico de Create, que mueven ítems con rotación y quedan hermosos.\n\nEl capítulo de Create cubre su logística en detalle. Acá nos enfocamos en caños y redes."
+      ],
+      "sources": [
+        "https://wiki.createmod.net/users/getting-started"
+      ]
+    },
+    {
+      "key": "logistics_transport_pipez",
+      "deps": [
+        "logistics_transport_welcome"
+      ],
+      "type": "item",
+      "item": "pipez:item_pipe",
+      "layout": {
+        "x": 3,
+        "y": 0,
+        "size": 1.5,
+        "shape": "square"
+      },
+      "en_us": [
+        "Pipez: the Everyday Pipe",
+        "&ePipez&r has item, fluid, energy and gas pipes, plus a &eUniversal Pipe&r that carries all four. Pipes connect on their own to any inventory or machine they touch.\n\nPipes do not pull by themselves: right-click the pipe end that touches the source with the &ePipe Wrench&r to make it extract. Sneak and right-click with the wrench to cut a connection you do not want."
+      ],
+      "es_es": [
+        "Pipez: el caño de todos los días",
+        "&ePipez&r tiene caños de ítems, fluidos, energía y gas, y un &eCaño universal&r que lleva los cuatro. Los caños se conectan solos a cualquier inventario o máquina que toquen.\n\nLos caños no extraen solos: hacé clic derecho con la &eLlave de caños&r en el extremo que toca la fuente para que extraiga. Agachate y hacé clic derecho con la llave para cortar una conexión que no querés."
+      ],
+      "sources": [
+        "jar:pipez-neoforge-1.21.1-1.2.31.jar:assets/pipez/lang/en_us.json",
+        "jar:pipez-neoforge-1.21.1-1.2.31.jar:de/maxhenkel/pipez/blocks/PipeBlock.class"
+      ]
+    },
+    {
+      "key": "logistics_transport_pipez_menu",
+      "deps": [
+        "logistics_transport_pipez"
+      ],
+      "type": "item",
+      "item": "pipez:wrench",
+      "layout": {
+        "x": 6,
+        "y": -1.5,
+        "size": 1.0,
+        "shape": "circle"
+      },
+      "en_us": [
+        "The Extraction Menu",
+        "Right-click an extracting pipe end to open its menu. There you set:\n\n- &edistribution&r: nearest first, furthest first, round robin or random;\n- &eredstone mode&r: ignored, on or off when powered, or always off;\n- &efilters&r: item IDs or tags starting with #, with data matching and inverted filters, and a destination picked with the &eFilter Destination Tool&r.\n\nThe menu shows how much the pipe moves per tick."
+      ],
+      "es_es": [
+        "El menú de extracción",
+        "Clic derecho en el extremo que extrae para abrir su menú. Ahí configurás:\n\n- el &ereparto&r: primero el más cercano, primero el más lejano, por turnos o al azar;\n- el &emodo de redstone&r: ignorado, prendido o apagado con señal, o siempre apagado;\n- los &efiltros&r: IDs de ítem o tags que empiezan con #, con coincidencia de datos y filtros invertidos, y un destino elegido con la &eHerramienta de destino de filtro&r.\n\nEl menú muestra cuánto mueve el caño por tick."
+      ],
+      "sources": [
+        "jar:pipez-neoforge-1.21.1-1.2.31.jar:assets/pipez/lang/en_us.json"
+      ]
+    },
+    {
+      "key": "logistics_transport_pipez_upgrades",
+      "deps": [
+        "logistics_transport_pipez"
+      ],
+      "type": "item",
+      "item": "pipez:basic_upgrade",
+      "layout": {
+        "x": 6,
+        "y": 1.5,
+        "size": 1.0,
+        "shape": "circle"
+      },
+      "en_us": [
+        "Faster Pipes",
+        "Put a &epipe upgrade&r in the extraction menu to raise the speed: Basic, Improved, Advanced and Ultimate. Better upgrades also unlock more of the menu's options.\n\nOne upgrade per extracting side, not per pipe: upgrade only where items enter the line."
+      ],
+      "es_es": [
+        "Caños más rápidos",
+        "Poné una &emejora de caño&r en el menú de extracción para subir la velocidad: Básica, Mejorada, Avanzada y Definitiva. Las mejores mejoras también habilitan más opciones del menú.\n\nUna mejora por lado que extrae, no por caño: mejorá sólo donde los ítems entran a la línea."
+      ],
+      "sources": [
+        "jar:pipez-neoforge-1.21.1-1.2.31.jar:assets/pipez/lang/en_us.json"
+      ]
+    },
+    {
+      "key": "logistics_transport_fluids",
+      "deps": [
+        "logistics_transport_pipez_menu"
+      ],
+      "type": "item",
+      "item": "mekanism:basic_mechanical_pipe",
+      "optional": true,
+      "layout": {
+        "x": 9,
+        "y": -3,
+        "size": 1.0,
+        "shape": "circle"
+      },
+      "en_us": [
+        "Fluids",
+        "Fluid pipes work like item pipes: extract from a tank or machine and deliver to anything that accepts the fluid. Options in the pack: Pipez fluid pipes, Mekanism mechanical pipes, Create fluid pipes (driven by a mechanical pump) and Ender Storage tanks for long distances.\n\nA Fluid Trash Can at the end of a line voids overflow."
+      ],
+      "es_es": [
+        "Fluidos",
+        "Los caños de fluidos funcionan como los de ítems: extraen de un tanque o máquina y entregan a lo que acepte el fluido. Opciones en el pack: caños de fluidos de Pipez, tubos mecánicos de Mekanism, caños de fluidos de Create (movidos por una bomba mecánica) y tanques de Ender Storage para distancias largas.\n\nUna papelera de fluidos al final de la línea elimina el sobrante."
+      ],
+      "sources": [
+        "jar:pipez-neoforge-1.21.1-1.2.31.jar:assets/pipez/lang/en_us.json",
+        "jar:trashcans-1.1.0-neoforge-mc1.21.jar:assets/trashcans/lang/en_us.json"
+      ]
+    },
+    {
+      "key": "logistics_transport_energy",
+      "deps": [
+        "logistics_transport_pipez_menu",
+        "logistics_transport_pipez_upgrades"
+      ],
+      "type": "item",
+      "item": "energymeter:meter",
+      "layout": {
+        "x": 9,
+        "y": 0,
+        "size": 1.5,
+        "shape": "hexagon"
+      },
+      "en_us": [
+        "Energy Between Mods",
+        "Most tech mods here speak &eFE&r (Forge Energy), so one cable feeds machines from different mods: Pipez energy pipes, Mekanism universal cables or Immersive Engineering wires. An &eEnergy Meter&r placed in a line shows how much flows.\n\nThe exception is &eCreate&r: it runs on rotation, not energy. The next quest covers the bridges."
+      ],
+      "es_es": [
+        "Energía entre mods",
+        "La mayoría de los mods técnicos del pack hablan &eFE&r (Forge Energy), así que un mismo cable alimenta máquinas de mods distintos: caños de energía de Pipez, cables universales de Mekanism o cables de Immersive Engineering. Un &eMedidor de energía&r puesto en una línea muestra cuánto pasa.\n\nLa excepción es &eCreate&r: funciona con rotación, no con energía. La quest siguiente cubre los puentes."
+      ],
+      "sources": [
+        "jar:energymeter-neoforge-1.21.1-0.5.2.jar:assets/energymeter/lang/en_us.json",
+        "jar:pipez-neoforge-1.21.1-1.2.31.jar:assets/pipez/lang/en_us.json"
+      ]
+    },
+    {
+      "key": "logistics_transport_create_bridge",
+      "deps": [
+        "logistics_transport_energy"
+      ],
+      "type": "item",
+      "item": "createaddition:alternator",
+      "layout": {
+        "x": 12,
+        "y": -1.5,
+        "size": 1.0,
+        "shape": "circle"
+      },
+      "en_us": [
+        "Rotation and Electricity",
+        "To cross between Create and FE:\n\n- &eCreate: Crafts and Additions&r has the &eAlternator&r (rotation into FE) and the &eElectric Motor&r (FE into rotation), plus wires and connectors.\n- &eCreate: New Age&r, Heliodor's own technology, makes electricity with a &eGenerator Coil&r spinning between magnets, collected with carbon brushes, and turns it back into rotation with motors.\n\nIn this pack New Age's coil carries an Energy Coupler (act II) and its better motors carry later act components."
+      ],
+      "es_es": [
+        "Rotación y electricidad",
+        "Para pasar entre Create y FE:\n\n- &eCreate: Crafts and Additions&r tiene el &eAlternador&r (rotación a FE) y el &eMotor eléctrico&r (FE a rotación), además de cables y conectores.\n- &eCreate: New Age&r, la tecnología propia de Heliodor, genera electricidad con una &eBobina generadora&r que gira entre imanes, la junta con escobillas de carbón y la vuelve a convertir en rotación con motores.\n\nEn este pack la bobina de New Age lleva un Acoplador de energía (acto II) y sus mejores motores llevan componentes de actos posteriores."
+      ],
+      "sources": [
+        "jar:createaddition-1.7.0.jar:assets/createaddition/lang/en_us.json",
+        "repo:docs/design/mod-pingpong.md",
+        "repo:pack/kubejs/server_scripts/entrelumen_pingpong4_balance.js"
+      ]
+    },
+    {
+      "key": "logistics_transport_flux",
+      "deps": [
+        "logistics_transport_energy"
+      ],
+      "type": "item",
+      "item": "fluxnetworks:flux_point",
+      "layout": {
+        "x": 12,
+        "y": 1.5,
+        "size": 1.0,
+        "shape": "pentagon"
+      },
+      "en_us": [
+        "Wireless Energy (Act III)",
+        "&eFlux Networks&r sends energy without cables: &eFlux Plugs&r take energy into a network and &eFlux Points&r give it out wherever the same network reaches.\n\nIn ENTRELUMEN, plugs and points carry a Power Regulator and the controller a Routing Matrix, both act III components."
+      ],
+      "es_es": [
+        "Energía inalámbrica (acto III)",
+        "&eFlux Networks&r manda energía sin cables: los &eFlux Plugs&r meten energía en una red y los &eFlux Points&r la entregan donde llegue la misma red.\n\nEn ENTRELUMEN, los plugs y points llevan un Regulador de energía y el controlador una Matriz de distribución, ambos componentes del acto III."
+      ],
+      "sources": [
+        "repo:pack/kubejs/server_scripts/entrelumen_industrial_balance.js",
+        "repo:docs/design/industrial-expansion-family.md"
+      ]
+    },
+    {
+      "key": "logistics_transport_mekanism",
+      "deps": [
+        "logistics_transport_pipez_upgrades"
+      ],
+      "type": "item",
+      "item": "mekanism:basic_logistical_transporter",
+      "layout": {
+        "x": 6,
+        "y": 4.5,
+        "size": 1.0,
+        "shape": "circle"
+      },
+      "en_us": [
+        "Mekanism Transmitters",
+        "Mekanism has its own family: &elogistical transporters&r for items, &emechanical pipes&r for fluids, &epressurized tubes&r for chemicals and &euniversal cables&r for energy, each in four tiers. Transporters can be color-coded and sorted with a &eLogistical Sorter&r.\n\nMekanism machines choose which side does what in their &eside configuration&r tab. &eMekanism Covers&r hide transmitters behind a block's look."
+      ],
+      "es_es": [
+        "Transmisores de Mekanism",
+        "Mekanism tiene su propia familia: &etransportadores logísticos&r para ítems, &etubos mecánicos&r para fluidos, &etubos presurizados&r para químicos y &ecables universales&r para energía, cada uno en cuatro niveles. Los transportadores se pueden colorear y ordenar con un &eClasificador logístico&r.\n\nLas máquinas de Mekanism eligen qué hace cada cara en su pestaña de &econfiguración de lados&r. &eMekanism Covers&r esconde los transmisores detrás del aspecto de un bloque."
+      ],
+      "sources": [
+        "jar:Mekanism-1.21.1-10.7.19.85.jar:assets/mekanism/lang/en_us.json",
+        "jar:mekanismcovers-1.3-BETA+1.21.jar:assets/mekanismcovers/lang/en_us.json"
+      ]
+    },
+    {
+      "key": "logistics_transport_laserio",
+      "deps": [
+        "logistics_transport_create_bridge"
+      ],
+      "type": "item",
+      "item": "laserio:laser_node",
+      "layout": {
+        "x": 15,
+        "y": -3,
+        "size": 1.0,
+        "shape": "circle"
+      },
+      "en_us": [
+        "LaserIO: Beams Instead of Pipes",
+        "&eLaserIO&r uses &eLaser Nodes&r next to machines, linked by beams with the &eLaser Wrench&r instead of pipes. Each side of a node takes &ecards&r: item, fluid, energy, chemical and redstone.\n\nEach card has a mode (&eExtract&r, &eInsert&r, &eStock&r or &eSensor&r), a channel color and an optional filter: basic, tag, mod, counting or data. Node and card overclockers make it faster. Great for compact machine rooms."
+      ],
+      "es_es": [
+        "LaserIO: rayos en vez de caños",
+        "&eLaserIO&r usa &eNodos láser&r al lado de las máquinas, unidos por rayos con la &eLlave láser&r en lugar de caños. Cada cara de un nodo recibe &etarjetas&r: de ítems, fluidos, energía, químicos y redstone.\n\nCada tarjeta tiene un modo (&eExtraer&r, &eInsertar&r, &eAbastecer&r o &eSensor&r), un color de canal y un filtro opcional: básico, por tag, por mod, de conteo o de datos. Los overclockers de nodo y de tarjeta la aceleran. Ideal para salas de máquinas compactas."
+      ],
+      "sources": [
+        "jar:laserio-1.9.11.jar:assets/laserio/lang/en_us.json"
+      ]
+    },
+    {
+      "key": "logistics_transport_xnet",
+      "deps": [
+        "logistics_transport_create_bridge",
+        "logistics_transport_flux"
+      ],
+      "type": "item",
+      "item": "xnet:connector_blue",
+      "layout": {
+        "x": 15,
+        "y": 0,
+        "size": 1.0,
+        "shape": "pentagon"
+      },
+      "en_us": [
+        "XNet: One Controller, Many Channels (Act III)",
+        "&eXNet&r hides a whole logistics network in thin cables. Connectors touch the machines, cables join them to a &eController&r, and the controller's menu defines up to eight channels: item, fluid, energy or logic, each with its own rules per connector.\n\nIn this pack the controller and the routers carry a Routing Matrix, so XNet is an act III tool. The XNet Manual is craftable."
+      ],
+      "es_es": [
+        "XNet: un controlador, muchos canales (acto III)",
+        "&eXNet&r esconde una red logística entera en cables finitos. Los conectores tocan las máquinas, los cables los unen a un &eControlador&r, y el menú del controlador define hasta ocho canales: de ítems, fluidos, energía o lógica, cada uno con sus reglas por conector.\n\nEn este pack el controlador y los routers llevan una Matriz de distribución, así que XNet es una herramienta del acto III. El manual de XNet se fabrica."
+      ],
+      "sources": [
+        "jar:xnet-1.21-7.0.7.jar:assets/xnet/lang/en_us.json",
+        "repo:pack/kubejs/server_scripts/entrelumen_rftools_balance.js"
+      ]
+    },
+    {
+      "key": "logistics_transport_routers",
+      "deps": [
+        "logistics_transport_mekanism"
+      ],
+      "type": "item",
+      "item": "modularrouters:modular_router",
+      "layout": {
+        "x": 15,
+        "y": 3,
+        "size": 1.0,
+        "shape": "circle"
+      },
+      "en_us": [
+        "Modular Routers",
+        "A &eModular Router&r is a block that does whatever its modules say: &eSender&r modules push items to other inventories, &ePuller&r pulls, &eDropper&r and &eFlinger&r throw, &ePlacer&r and &eBreaker&r place and break blocks, &eVacuum&r collects drops, &eExtruder&r builds lines of blocks, and more. Upgrades add speed and range.\n\nMekanistic Routers adds Mekanism chemical handling. Every module starts from a Blank Module."
+      ],
+      "es_es": [
+        "Modular Routers",
+        "Un &eModular Router&r es un bloque que hace lo que digan sus módulos: los &eSender&r empujan ítems a otros inventarios, el &ePuller&r tira de ellos, &eDropper&r y &eFlinger&r los arrojan, &ePlacer&r y &eBreaker&r ponen y rompen bloques, &eVacuum&r junta drops, &eExtruder&r arma filas de bloques, y más. Las mejoras suman velocidad y alcance.\n\nMekanistic Routers agrega manejo de químicos de Mekanism. Todos los módulos salen de un Módulo en blanco."
+      ],
+      "sources": [
+        "jar:modular-routers-13.2.7+mc1.21.1.jar:assets/modularrouters/lang/en_us.json",
+        "jar:mekanisticrouters-1.2.0.jar:assets/mekanisticrouters/lang/en_us.json"
+      ]
+    },
+    {
+      "key": "logistics_transport_tunnels",
+      "deps": [
+        "logistics_transport_routers"
+      ],
+      "type": "item",
+      "item": "integratedtunnels:part_importer_item",
+      "optional": true,
+      "layout": {
+        "x": 18,
+        "y": 3,
+        "size": 1.0,
+        "shape": "circle"
+      },
+      "en_us": [
+        "Integrated Tunnels",
+        "For the programmers: &eIntegrated Tunnels&r moves items, fluids and energy through Integrated Dynamics networks, with importers and exporters driven by variable cards and logic. It is the most flexible system and the slowest to learn.\n\nIts guide is the Integrated Dynamics manual, craftable from the start."
+      ],
+      "es_es": [
+        "Integrated Tunnels",
+        "Para quienes programan: &eIntegrated Tunnels&r mueve ítems, fluidos y energía por redes de Integrated Dynamics, con importadores y exportadores controlados por tarjetas de variables y lógica. Es el sistema más flexible y el más lento de aprender.\n\nSu guía es el manual de Integrated Dynamics, que se fabrica desde el principio."
+      ],
+      "sources": [
+        "jar:integratedtunnels-1.21.1-neoforge-1.10.0-729.jar:META-INF/neoforge.mods.toml",
+        "repo:pack/config/integrateddynamics-common.toml"
+      ]
+    },
+    {
+      "key": "logistics_transport_which",
+      "deps": [
+        "logistics_transport_laserio",
+        "logistics_transport_xnet"
+      ],
+      "type": "checkmark",
+      "icon": "minecraft:comparator",
+      "layout": {
+        "x": 18,
+        "y": -1,
+        "size": 1.25,
+        "shape": "diamond"
+      },
+      "en_us": [
+        "Which One Should I Use?",
+        "A rule of thumb:\n\n- A few machines: &ePipez&r, extracting only where needed.\n- A dense room: &eLaserIO&r, no pipes in the way.\n- A big, tidy base: &eXNet&r from act III, or a storage network (next chapter).\n- Block placing and breaking, odd jobs: &eModular Routers&r.\n- A factory you want to watch: &eCreate&r.\n\nMixing is fine: most bases end with three of them."
+      ],
+      "es_es": [
+        "¿Cuál uso?",
+        "Una regla práctica:\n\n- Pocas máquinas: &ePipez&r, extrayendo sólo donde hace falta.\n- Una sala densa: &eLaserIO&r, sin caños en el medio.\n- Una base grande y prolija: &eXNet&r desde el acto III, o una red de almacenamiento (capítulo siguiente).\n- Poner y romper bloques, trabajos raros: &eModular Routers&r.\n- Una fábrica que da gusto mirar: &eCreate&r.\n\nMezclar está bien: la mayoría de las bases terminan con tres de estos."
+      ],
+      "sources": [
+        "repo:docs/design/qol-parity.md"
+      ]
+    },
+    {
+      "key": "logistics_transport_tip_filters",
+      "deps": [
+        "logistics_transport_mekanism"
+      ],
+      "type": "checkmark",
+      "optional": true,
+      "icon": "minecraft:name_tag",
+      "layout": {
+        "x": 12,
+        "y": 4.5,
+        "size": 1.0,
+        "shape": "diamond"
+      },
+      "en_us": [
+        "Tip: Filter With Tags",
+        "Filters that accept tags save a lot of work: &e#c:ores&r catches every ore from every mod, &e#c:ingots&r every ingot. Pipez filters take a tag prefixed with #, and LaserIO has a dedicated Tag Filter.\n\nFind an item's tags in its tooltip with F3+H, or search them in EMI with #."
+      ],
+      "es_es": [
+        "Truco: filtrá con tags",
+        "Los filtros que aceptan tags ahorran mucho trabajo: &e#c:ores&r atrapa todos los minerales de todos los mods, &e#c:ingots&r todos los lingotes. Los filtros de Pipez aceptan un tag con # adelante, y LaserIO tiene un Filtro de tags propio.\n\nMirá los tags de un ítem en su tooltip con F3+H, o buscalos en EMI con #."
+      ],
+      "sources": [
+        "jar:pipez-neoforge-1.21.1-1.2.31.jar:assets/pipez/lang/en_us.json",
+        "jar:laserio-1.9.11.jar:assets/laserio/lang/en_us.json"
+      ]
+    },
+    {
+      "key": "logistics_transport_tip_overflow",
+      "deps": [
+        "logistics_transport_pipez_upgrades"
+      ],
+      "type": "checkmark",
+      "optional": true,
+      "icon": "minecraft:barrel",
+      "layout": {
+        "x": 9,
+        "y": 3,
+        "size": 1.0,
+        "shape": "diamond"
+      },
+      "en_us": [
+        "Quirk: a Full Chest Stops Everything",
+        "When the destination fills, a pipe line backs up and the machine upstream stops. Plan for overflow: a Void upgrade in a drawer, a Trash Can at the end of the line, or a second destination further down the line."
+      ],
+      "es_es": [
+        "Particularidad: un cofre lleno frena todo",
+        "Cuando el destino se llena, la línea se tranca y la máquina de antes se detiene. Planeá el sobrante: una mejora de Vacío en un cajón, una papelera al final de la línea o un segundo destino más adelante en la línea."
+      ],
+      "sources": [
+        "jar:pipez-neoforge-1.21.1-1.2.31.jar:assets/pipez/lang/en_us.json"
+      ]
+    },
+    {
+      "key": "logistics_transport_close",
+      "deps": [
+        "logistics_transport_which",
+        "logistics_transport_tunnels"
+      ],
+      "type": "checkmark",
+      "icon": "ae2:controller",
+      "layout": {
+        "x": 21,
+        "y": 0,
+        "size": 2.0,
+        "shape": "hexagon"
+      },
+      "en_us": [
+        "Things Flow on Their Own",
+        "Items, fluids and energy now move without you. The last logistics step is a storage network that knows where everything is and crafts on request.\n\nContinue with the Storage Networks chapter."
+      ],
+      "es_es": [
+        "Las cosas fluyen solas",
+        "Ítems, fluidos y energía ya se mueven sin vos. El último paso de la logística es una red de almacenamiento que sabe dónde está todo y fabrica a pedido.\n\nSeguí con el capítulo de Redes de almacenamiento."
+      ],
+      "sources": [
+        "repo:content/guides/README.md"
+      ]
+    }
+  ]
+}

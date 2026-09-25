@@ -1,0 +1,466 @@
+{
+  "chapter": "guide_building_palette",
+  "group": "qol",
+  "act": "any",
+  "icon": "chipped:mason_table",
+  "title": {
+    "en_us": "Building: Blocks and Variants",
+    "es_es": "Construcción: bloques y variantes"
+  },
+  "subtitle": {
+    "en_us": "Chipped, Rechiseled, Macaw's, Create Deco and functional glass: where every variant comes from and how to find it.",
+    "es_es": "Chipped, Rechiseled, Macaw's, Create Deco y vidrios funcionales: de dónde sale cada variante y cómo encontrarla."
+  },
+  "quests": [
+    {
+      "key": "building_palette_welcome",
+      "deps": [],
+      "type": "checkmark",
+      "layout": {
+        "x": 0,
+        "y": 0,
+        "size": 2.0,
+        "shape": "hexagon"
+      },
+      "en_us": [
+        "Thousands of Blocks, One Idea",
+        "The pack has thousands of decorative blocks. You do not need to learn them one by one: most come from a few sources, a workbench, a chisel, the stonecutter or the crafting table.\n\nThis chapter shows each source, how to find a block's variants in seconds, and a few tips to make builds look good. None of these blocks is required by the story: build however you like."
+      ],
+      "es_es": [
+        "Miles de bloques, una sola idea",
+        "El pack tiene miles de bloques decorativos. No hace falta aprenderlos uno por uno: la mayoría sale de unas pocas fuentes, una mesa de trabajo, un cincel, el cortapiedras o la mesa de crafteo.\n\nEste capítulo muestra cada fuente, cómo encontrar las variantes de un bloque en segundos y algunos consejos para que lo que construís se vea bien. Ninguno de estos bloques lo exige la historia: construí como quieras."
+      ],
+      "sources": [
+        "repo:docs/design/settlement-architecture-family.md",
+        "repo:docs/design/builder-utilities-family.md"
+      ]
+    },
+    {
+      "key": "building_palette_find_variants",
+      "deps": [
+        "building_palette_welcome"
+      ],
+      "type": "checkmark",
+      "icon": "minecraft:spyglass",
+      "layout": {
+        "x": 3,
+        "y": 0,
+        "size": 1.5,
+        "shape": "diamond"
+      },
+      "en_us": [
+        "Find Every Variant",
+        "Hover a block and press &eU&r in EMI: every recipe that uses it appears, including every Chipped workbench, chisel and stonecutter variant made from it. Search &e@chipped&r, &e@mcw&r or &e@createdeco&r to browse a whole mod.\n\nThis single trick replaces most building wikis."
+      ],
+      "es_es": [
+        "Encontrá todas las variantes",
+        "Pasá el mouse sobre un bloque y apretá &eU&r en EMI: aparecen todas las recetas que lo usan, incluidas las variantes de cada mesa de Chipped, del cincel y del cortapiedras. Buscá &e@chipped&r, &e@mcw&r o &e@createdeco&r para recorrer un mod entero.\n\nEste solo truco reemplaza la mayoría de las wikis de construcción."
+      ],
+      "sources": [
+        "repo:content/guides/guide_qol_recipes.json",
+        "jar:emi-1.1.24+1.21.1+neoforge.jar:dev/emi/emi/search/QueryType.class"
+      ]
+    },
+    {
+      "key": "building_palette_chipped",
+      "deps": [
+        "building_palette_find_variants"
+      ],
+      "type": "item",
+      "item": "chipped:mason_table",
+      "layout": {
+        "x": 6,
+        "y": -3,
+        "size": 1.25,
+        "shape": "circle"
+      },
+      "en_us": [
+        "Chipped Workbenches",
+        "&eChipped&r adds hundreds of variants of vanilla blocks, made one to one in seven workbenches:\n\n- &eMason Table&r: stone, bricks, concrete and terracotta;\n- &eCarpenters Table&r: planks, logs, doors, trapdoors, barrels and bookshelves;\n- &eGlassblower&r: glass and panes;\n- &eLoom Table&r: wool and carpets;\n- &eBotanist Workbench&r: dirt, sand, gravel, clay, leaves, mushrooms, ice and pumpkins;\n- &eAlchemy Bench&r: mineral blocks, glowstone, amethyst and waxed copper;\n- &eTinkering Table&r: lanterns, redstone lamps, iron bars and redstone blocks.\n\nPut blocks in, pick a variant, take them out: nothing is lost."
+      ],
+      "es_es": [
+        "Mesas de Chipped",
+        "&eChipped&r agrega cientos de variantes de bloques vanilla, que se hacen uno a uno en siete mesas:\n\n- &eMason Table&r: piedra, ladrillos, hormigón y terracota;\n- &eCarpenters Table&r: tablones, troncos, puertas, trampillas, barriles y bibliotecas;\n- &eGlassblower&r: vidrio y paneles;\n- &eLoom Table&r: lana y alfombras;\n- &eBotanist Workbench&r: tierra, arena, grava, arcilla, hojas, hongos, hielo y calabazas;\n- &eAlchemy Bench&r: bloques minerales, piedra luminosa, amatista y cobre encerado;\n- &eTinkering Table&r: faroles, lámparas de redstone, barrotes de hierro y bloques de redstone.\n\nMetés bloques, elegís una variante y los sacás: no se pierde nada."
+      ],
+      "sources": [
+        "jar:chipped-neoforge-1.21.1-4.0.2.jar:assets/chipped/lang/en_us.json",
+        "jar:chipped-neoforge-1.21.1-4.0.2.jar:data/chipped/recipe/mason_table.json"
+      ]
+    },
+    {
+      "key": "building_palette_rechiseled",
+      "deps": [
+        "building_palette_find_variants"
+      ],
+      "type": "item",
+      "item": "rechiseled:chisel",
+      "layout": {
+        "x": 6,
+        "y": 0,
+        "size": 1.0,
+        "shape": "circle"
+      },
+      "en_us": [
+        "The Rechiseled Chisel",
+        "The &eChisel&r from Rechiseled converts blocks into their chiseled variants, many with connected textures. Right-click with it to open its screen, put blocks in, choose a variant and take them out; preview modes show 1x1, 3x1 or 3x3.\n\nIn this pack the chisel also reaches Chipped's variants through Rechiseled: Chipped, so one tool covers both families."
+      ],
+      "es_es": [
+        "El cincel de Rechiseled",
+        "El &eCincel&r de Rechiseled convierte bloques en sus variantes cinceladas, muchas con texturas conectadas. Clic derecho con él para abrir su pantalla, meter bloques, elegir una variante y sacarlos; los modos de vista previa muestran 1x1, 3x1 o 3x3.\n\nEn este pack el cincel también llega a las variantes de Chipped gracias a Rechiseled: Chipped, así que una sola herramienta cubre las dos familias."
+      ],
+      "sources": [
+        "jar:rechiseled-1.2.5-neoforge-mc1.21.jar:assets/rechiseled/lang/en_us.json",
+        "repo:docs/design/builder-utilities-family.md"
+      ]
+    },
+    {
+      "key": "building_palette_mech_chisel",
+      "deps": [
+        "building_palette_rechiseled"
+      ],
+      "type": "item",
+      "item": "rechiseledcreate:mechanical_chisel",
+      "optional": true,
+      "layout": {
+        "x": 9,
+        "y": -1.5,
+        "size": 1.0,
+        "shape": "circle"
+      },
+      "en_us": [
+        "Chiseling by the Stack",
+        "From your Create workshop on, the &eMechanical Chisel&r (Rechiseled: Create) converts blocks automatically: give it rotation, set the output filter to the variant you want and feed it by belt or funnel.\n\nUseful when a build needs a few thousand of the same chiseled brick."
+      ],
+      "es_es": [
+        "Cincelar por pilas",
+        "Desde que tenés taller de Create, el &eCincel mecánico&r (Rechiseled: Create) convierte bloques solo: dale rotación, poné en el filtro de salida la variante que querés y alimentalo con cinta o embudo.\n\nÚtil cuando una obra necesita unos miles del mismo ladrillo cincelado."
+      ],
+      "sources": [
+        "repo:docs/design/builder-utilities-family.md",
+        "jar:rechiseledcreate-1.1.1-neoforge-mc1.21.jar:META-INF/neoforge.mods.toml"
+      ]
+    },
+    {
+      "key": "building_palette_macaw",
+      "deps": [
+        "building_palette_find_variants"
+      ],
+      "type": "item",
+      "item": "mcwroofs:oak_roof",
+      "layout": {
+        "x": 6,
+        "y": 3,
+        "size": 1.25,
+        "shape": "circle"
+      },
+      "en_us": [
+        "Macaw's: Nine Families",
+        "The pack includes nine Macaw's mods, all for construction details: &eRoofs&r, &eWindows&r, &eDoors&r, &eTrapdoors&r, &eFences and Walls&r, &eBridges&r, &eStairs and Balconies&r, &ePaths and Pavings&r and &eLights and Lamps&r.\n\nWooden pieces are crafted; most stone roofs, stairs, fences, bridges and nearly all paths come from the &estonecutter&r. Put stone in a stonecutter and scroll: dozens of Macaw's options appear."
+      ],
+      "es_es": [
+        "Macaw's: nueve familias",
+        "El pack incluye nueve mods de Macaw's, todos para detalles de construcción: &eRoofs&r (techos), &eWindows&r (ventanas), &eDoors&r (puertas), &eTrapdoors&r (trampillas), &eFences and Walls&r (cercos y muros), &eBridges&r (puentes), &eStairs and Balconies&r (escaleras y balcones), &ePaths and Pavings&r (caminos y adoquines) y &eLights and Lamps&r (luces).\n\nLas piezas de madera se fabrican; la mayoría de los techos, escaleras, cercos y puentes de piedra y casi todos los caminos salen del &ecortapiedras&r. Poné piedra en un cortapiedras y recorré la lista: aparecen decenas de opciones de Macaw's."
+      ],
+      "sources": [
+        "repo:docs/design/qol-functional-decor-family.md",
+        "repo:docs/design/settlement-architecture-family.md",
+        "repo:catalog/curated.json"
+      ]
+    },
+    {
+      "key": "building_palette_macaw_tips",
+      "deps": [
+        "building_palette_macaw"
+      ],
+      "type": "item",
+      "item": "mcwwindows:oak_window",
+      "optional": true,
+      "layout": {
+        "x": 9,
+        "y": 1.5,
+        "size": 1.0,
+        "shape": "circle"
+      },
+      "en_us": [
+        "Macaw's Moving Parts",
+        "Many Macaw's pieces do something:\n\n- windows open and some resize to fit bigger openings; shutters and blinds open with a click;\n- gates stack two high into a tall gate;\n- trapdoors and barn doors open like vanilla ones, with more styles;\n- many lights can be switched on and off.\n\nRight-click things before you decide they are only decoration."
+      ],
+      "es_es": [
+        "Las partes móviles de Macaw's",
+        "Muchas piezas de Macaw's hacen algo:\n\n- las ventanas se abren y algunas se agrandan para llenar aberturas más grandes; los postigos y persianas se abren con un clic;\n- los portones se apilan de a dos para formar un portón alto;\n- las trampillas y puertas de granero se abren como las de vanilla, con más estilos;\n- muchas luces se pueden prender y apagar.\n\nHacé clic derecho en las cosas antes de decidir que son sólo decoración."
+      ],
+      "sources": [
+        "repo:docs/design/settlement-architecture-family.md",
+        "repo:docs/design/qol-functional-decor-family.md"
+      ]
+    },
+    {
+      "key": "building_palette_createdeco",
+      "deps": [
+        "building_palette_macaw"
+      ],
+      "type": "item",
+      "item": "createdeco:andesite_catwalk",
+      "layout": {
+        "x": 9,
+        "y": 4.5,
+        "size": 1.0,
+        "shape": "circle"
+      },
+      "en_us": [
+        "Create Deco: Industrial Style",
+        "&eCreate Deco&r completes Create's look: colored bricks, sheet metal, catwalks with railings and stairs, bars, mesh fences, supports, industrial doors and windows, hull blocks, placards, shipping containers and lamps in several metals.\n\nAlmost all of it comes from the stonecutter, starting from bricks, andesite alloy, iron, copper, brass or zinc."
+      ],
+      "es_es": [
+        "Create Deco: estilo industrial",
+        "&eCreate Deco&r completa la estética de Create: ladrillos de colores, chapas, pasarelas con barandas y escaleras, barrotes, cercos de malla, soportes, puertas y ventanas industriales, bloques de casco, placas, contenedores y lámparas de varios metales.\n\nCasi todo sale del cortapiedras, partiendo de ladrillos, aleación de andesita, hierro, cobre, latón o zinc."
+      ],
+      "sources": [
+        "jar:createdeco-2.1.3.jar:META-INF/neoforge.mods.toml",
+        "repo:docs/design/mod-pingpong.md"
+      ]
+    },
+    {
+      "key": "building_palette_glass",
+      "deps": [
+        "building_palette_mech_chisel"
+      ],
+      "type": "item",
+      "item": "glassential:glass_ghostly",
+      "layout": {
+        "x": 12,
+        "y": -3,
+        "size": 1.0,
+        "shape": "circle"
+      },
+      "en_us": [
+        "Glass That Does Things",
+        "&eGlassential&r adds functional glass:\n\n- &eRedstone glass&r gives off a full redstone signal;\n- &eLight glass&r glows at full brightness;\n- &eGhostly glass&r looks solid but anything can walk through it;\n- &eEthereal&r glass lets players through and stops mobs; the &ereverse&r kind does the opposite; &edark&r versions also block light;\n- &eone-way&r glass is a secret window, clear from one side; &esmart&r glass frosts over with a redstone signal; &eprotected&r glass resists explosions;\n- plus glass doors and trapdoors in every wood and color.\n\nPerfect for secret doors and mob-proof windows."
+      ],
+      "es_es": [
+        "Vidrio que hace cosas",
+        "&eGlassential&r agrega vidrios funcionales:\n\n- el &evidrio de redstone&r emite una señal completa;\n- el &evidrio de luz&r brilla al máximo;\n- el &evidrio fantasmal&r parece sólido pero cualquier cosa lo atraviesa;\n- el vidrio &eetéreo&r deja pasar a los jugadores y frena a los mobs; el &einverso&r hace lo contrario, y las versiones &eoscuras&r además tapan la luz;\n- el vidrio &eunidireccional&r es una ventana secreta, transparente de un solo lado; el vidrio &einteligente&r se esmerila con redstone; el &eprotegido&r resiste explosiones;\n- y puertas y trampillas de vidrio de todas las maderas y colores.\n\nIdeal para puertas secretas y ventanas a prueba de mobs."
+      ],
+      "sources": [
+        "repo:docs/design/builder-utilities-family.md",
+        "repo:docs/verification/arcane-building-runtime.json",
+        "jar:Glassential-renewed-1.21.1-3.4.6.jar:assets/glassential/lang/en_us.json"
+      ]
+    },
+    {
+      "key": "building_palette_lights",
+      "deps": [
+        "building_palette_mech_chisel",
+        "building_palette_macaw_tips"
+      ],
+      "type": "item",
+      "item": "simplylight:edge_light",
+      "layout": {
+        "x": 12,
+        "y": 0,
+        "size": 1.25,
+        "shape": "circle"
+      },
+      "en_us": [
+        "Light as a Material",
+        "Lighting is half of a good build. Options in the pack:\n\n- &eMacaw's Lights and Lamps&r: garden, wall and ceiling lights, chandeliers, fans with lights;\n- &eSimply Light&r: thin edge strips and flush light blocks that switch with redstone;\n- &eSupplementaries&r sconces and candle holders;\n- Create Deco lamps and Glassential light glass.\n\nHide light sources inside floors and ceilings instead of placing torches everywhere."
+      ],
+      "es_es": [
+        "La luz como material",
+        "La iluminación es la mitad de una buena construcción. Opciones en el pack:\n\n- &eMacaw's Lights and Lamps&r: luces de jardín, de pared y de techo, arañas y ventiladores con luz;\n- &eSimply Light&r: tiras finas para bordes y bloques de luz empotrados que se prenden con redstone;\n- apliques y portavelas de &eSupplementaries&r;\n- lámparas de Create Deco y vidrio de luz de Glassential.\n\nEscondé las fuentes de luz en pisos y techos en vez de poner antorchas por todos lados."
+      ],
+      "sources": [
+        "repo:docs/design/builder-utilities-family.md",
+        "repo:docs/design/settlement-architecture-family.md",
+        "jar:simplylight-1.5.3+1.21.1-b4.jar:META-INF/neoforge.mods.toml"
+      ]
+    },
+    {
+      "key": "building_palette_copycats",
+      "deps": [
+        "building_palette_createdeco"
+      ],
+      "type": "item",
+      "item": "copycats:copycat_block",
+      "optional": true,
+      "layout": {
+        "x": 12,
+        "y": 3,
+        "size": 1.0,
+        "shape": "circle"
+      },
+      "en_us": [
+        "Copycat Blocks",
+        "&eCopycats+&r adds Create copycat shapes (slabs, stairs, beams, panels and more) that take the look of any block you right-click them with. Together with FramedBlocks, they let you build curves and thin details in any material.\n\nThe Building Tools chapter covers FramedBlocks and LittleTiles."
+      ],
+      "es_es": [
+        "Bloques imitadores",
+        "&eCopycats+&r agrega formas imitadoras de Create (losas, escaleras, vigas, paneles y más) que toman el aspecto de cualquier bloque con el que les hagas clic derecho. Junto con FramedBlocks, permiten hacer curvas y detalles finos en cualquier material.\n\nEl capítulo de Herramientas de construcción cubre FramedBlocks y LittleTiles."
+      ],
+      "sources": [
+        "jar:copycats-3.0.9+mc.1.21.1-neoforge.jar:META-INF/neoforge.mods.toml",
+        "repo:docs/design/settlement-architecture-family.md"
+      ]
+    },
+    {
+      "key": "building_palette_laser",
+      "deps": [
+        "building_palette_glass"
+      ],
+      "type": "item",
+      "item": "laserbridges:laser_source_block",
+      "optional": true,
+      "layout": {
+        "x": 15,
+        "y": -3,
+        "size": 1.0,
+        "shape": "circle"
+      },
+      "en_us": [
+        "Hard-Light Bridges",
+        "&eLaser Bridges and Doors&r adds source blocks that, when powered by redstone, project a solid bridge or fence of light. Cut the signal and it vanishes.\n\nGreat for drawbridges, hangar doors and gates that open with a lever."
+      ],
+      "es_es": [
+        "Puentes de luz sólida",
+        "&eLaser Bridges and Doors&r agrega bloques fuente que, con señal de redstone, proyectan un puente o cerco de luz sólida. Cortás la señal y desaparece.\n\nIdeal para puentes levadizos, puertas de hangar y portones que se abren con una palanca."
+      ],
+      "sources": [
+        "repo:docs/design/qol-functional-decor-family.md",
+        "jar:laserbridges-1.21.1-neoforge-6.jar:META-INF/neoforge.mods.toml"
+      ]
+    },
+    {
+      "key": "building_palette_aesthetic_palette",
+      "deps": [
+        "building_palette_lights"
+      ],
+      "type": "checkmark",
+      "icon": "minecraft:tuff",
+      "layout": {
+        "x": 15,
+        "y": 0,
+        "size": 1.25,
+        "shape": "diamond"
+      },
+      "en_us": [
+        "Tip: Three Materials and Depth",
+        "Two habits improve any build:\n\n- &ePick a palette&r of two or three main materials plus one accent, and repeat it. Heliodor's own palette is tuff, calcite, quartz and waxed oxidized copper.\n- &eAdd depth&r: set windows one block back, frame walls with logs or pillars, add trims, and give roofs an overhang.\n\nAvoid flat walls of a single block; a stair or slab row at the base changes a lot."
+      ],
+      "es_es": [
+        "Truco: tres materiales y profundidad",
+        "Dos costumbres mejoran cualquier construcción:\n\n- &eElegí una paleta&r de dos o tres materiales principales más un acento, y repetila. La propia paleta de Heliodor es toba, calcita, cuarzo y cobre oxidado encerado.\n- &eSumá profundidad&r: meté las ventanas un bloque hacia adentro, enmarcá las paredes con troncos o pilares, agregá molduras y dale alero a los techos.\n\nEvitá las paredes planas de un solo bloque; una fila de escalones o losas en la base cambia mucho."
+      ],
+      "sources": [
+        "repo:docs/design/heliodor-ruins.md"
+      ]
+    },
+    {
+      "key": "building_palette_aesthetic_roofs",
+      "deps": [
+        "building_palette_copycats"
+      ],
+      "type": "item",
+      "item": "mcwpaths:cobblestone_basket_weave_paving",
+      "optional": true,
+      "layout": {
+        "x": 15,
+        "y": 3,
+        "size": 1.0,
+        "shape": "diamond"
+      },
+      "en_us": [
+        "Tip: Roofs and Paths",
+        "Roofs define silhouettes: Macaw's Roofs has steep, lower, attic and rounded roofs in wood, stone and terracotta, so mix two slopes on one house. Paths define a village: Macaw's Paths and Pavings gives patterned stone paths, and dirt paths with a shovel still look great beside them.\n\nFor slopes that meet the terrain smoothly, look at the Altar of Levelling."
+      ],
+      "es_es": [
+        "Truco: techos y caminos",
+        "Los techos definen la silueta: Macaw's Roofs tiene techos empinados, bajos, de ático y redondeados en madera, piedra y terracota, así que mezclá dos pendientes en una casa. Los caminos definen un pueblo: Macaw's Paths and Pavings da caminos de piedra con dibujos, y los caminos de tierra hechos con pala quedan muy bien al lado.\n\nPara pendientes que empalmen suave con el terreno, mirá el Altar de Nivelación."
+      ],
+      "sources": [
+        "repo:docs/design/settlement-architecture-family.md",
+        "repo:docs/design/qol-functional-decor-family.md",
+        "repo:docs/design/ark-altars.md"
+      ]
+    },
+    {
+      "key": "building_palette_solsticio_ref",
+      "deps": [
+        "building_palette_aesthetic_palette"
+      ],
+      "type": "checkmark",
+      "optional": true,
+      "icon": "minecraft:calcite",
+      "layout": {
+        "x": 18,
+        "y": -2,
+        "size": 1.0,
+        "shape": "pentagon"
+      },
+      "en_us": [
+        "Look at Solsticio",
+        "Solsticio, the city at the end of the story, was built with the same mods you have: Macaw's, Chipped, Handcrafted, Supplementaries and Refurbished Furniture, around a copper, glass and calcite palette. When you get there, look closely: it is the pack's own showcase of these blocks.\n\nYour plot there is 16 by 16, and it is yours to fill."
+      ],
+      "es_es": [
+        "Mirá Solsticio",
+        "Solsticio, la ciudad del final de la historia, se construyó con los mismos mods que tenés: Macaw's, Chipped, Handcrafted, Supplementaries y Refurbished Furniture, alrededor de una paleta de cobre, vidrio y calcita. Cuando llegues, mirá con atención: es la vidriera del pack para estos bloques.\n\nTu lote ahí es de 16 por 16, y lo llenás vos."
+      ],
+      "sources": [
+        "repo:docs/design/solsticio.md",
+        "repo:docs/design/story-bible.md"
+      ]
+    },
+    {
+      "key": "building_palette_pack_free",
+      "deps": [
+        "building_palette_aesthetic_roofs"
+      ],
+      "type": "checkmark",
+      "icon": "minecraft:bricks",
+      "layout": {
+        "x": 18,
+        "y": 2,
+        "size": 1.0,
+        "shape": "pentagon"
+      },
+      "en_us": [
+        "Pack Change: Building Is Never Gated",
+        "No decorative block, workbench or chisel carries an act component, and no quest or Atlas project requires a specific decorative block. Everything in this chapter is available from the first day, with ordinary materials.\n\nBuild the house you want before the story asks anything of you."
+      ],
+      "es_es": [
+        "Cambio del pack: construir nunca está escalonado",
+        "Ningún bloque decorativo, mesa ni cincel lleva un componente de acto, y ninguna quest ni proyecto del Atlas exige un bloque decorativo en particular. Todo lo de este capítulo está disponible desde el primer día, con materiales comunes.\n\nConstruí la casa que quieras antes de que la historia te pida nada."
+      ],
+      "sources": [
+        "repo:docs/design/settlement-architecture-family.md",
+        "repo:docs/design/builder-utilities-family.md",
+        "repo:docs/research/reference-packs.md"
+      ]
+    },
+    {
+      "key": "building_palette_close",
+      "deps": [
+        "building_palette_solsticio_ref",
+        "building_palette_pack_free"
+      ],
+      "type": "checkmark",
+      "icon": "minecraft:stonecutter",
+      "layout": {
+        "x": 21,
+        "y": 0,
+        "size": 2.0,
+        "shape": "hexagon"
+      },
+      "en_us": [
+        "A Palette in Your Hands",
+        "You know where variants live (U in EMI), the seven Chipped workbenches, the chisel, the stonecutter for Macaw's and Create Deco, functional glass and light.\n\nNext: fill the rooms in the Furniture chapter, and shape details in the Building Tools chapter."
+      ],
+      "es_es": [
+        "Una paleta en tus manos",
+        "Ya sabés dónde viven las variantes (U en EMI), las siete mesas de Chipped, el cincel, el cortapiedras para Macaw's y Create Deco, los vidrios funcionales y la luz.\n\nLo que sigue: amueblar los cuartos en el capítulo de Muebles, y trabajar los detalles en el de Herramientas de construcción."
+      ],
+      "sources": [
+        "repo:content/guides/README.md"
+      ]
+    }
+  ]
+}

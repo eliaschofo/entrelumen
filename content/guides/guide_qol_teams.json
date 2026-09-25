@@ -1,0 +1,443 @@
+{
+  "chapter": "guide_qol_teams",
+  "group": "qol",
+  "act": "any",
+  "icon": "minecraft:white_banner",
+  "title": {
+    "en_us": "Teams and Claims",
+    "es_es": "Equipos y reclamos"
+  },
+  "subtitle": {
+    "en_us": "Play together with FTB Teams, protect your land with FTB Chunks, and know what the team shares.",
+    "es_es": "Jugá en grupo con FTB Teams, protegé tu terreno con FTB Chunks y sabé qué comparte el equipo."
+  },
+  "quests": [
+    {
+      "key": "qol_teams_welcome",
+      "deps": [],
+      "type": "checkmark",
+      "layout": {
+        "x": 0,
+        "y": 0,
+        "size": 2.0,
+        "shape": "hexagon"
+      },
+      "en_us": [
+        "Solo First, Better Together",
+        "Everything in ENTRELUMEN can be done alone. With friends, the campaign, the compass and the World Tier become shared, so you can split branches: one player cooks, another builds machines, a third explores.\n\nThis chapter shows how to form a team, claim land, and what changes for the story when you join or leave one."
+      ],
+      "es_es": [
+        "Primero solo, mejor en equipo",
+        "Todo en ENTRELUMEN se puede hacer solo. Con amigos, la campaña, la brújula y el World Tier pasan a ser compartidos, así que pueden repartirse ramas: uno cocina, otro arma máquinas y un tercero explora.\n\nEste capítulo muestra cómo formar un equipo, reclamar terreno y qué cambia en la historia al entrar o salir de uno."
+      ],
+      "sources": [
+        "repo:docs/design/story-bible.md",
+        "repo:docs/design/team-lifecycle-runtime-cases.md"
+      ]
+    },
+    {
+      "key": "qol_teams_party",
+      "deps": [
+        "qol_teams_welcome"
+      ],
+      "type": "checkmark",
+      "icon": "minecraft:player_head",
+      "layout": {
+        "x": 3,
+        "y": 0,
+        "size": 1.5,
+        "shape": "square"
+      },
+      "en_us": [
+        "Create a Party",
+        "Open your inventory and click the &eMy Team&r button on the side. From there you can create a party, name it, and invite players who are online. Invited players accept from their own My Team screen or the chat message.\n\nWithout a party you still have a personal team of one."
+      ],
+      "es_es": [
+        "Creá un grupo",
+        "Abrí el inventario y hacé clic en el botón &eMy Team&r del costado. Desde ahí creás un grupo, le ponés nombre e invitás a jugadores conectados. Los invitados aceptan desde su propia pantalla de My Team o desde el mensaje del chat.\n\nSin grupo igual tenés un equipo personal de uno."
+      ],
+      "sources": [
+        "jar:ftb-teams-neoforge-2101.1.11.jar:assets/ftbteams/lang/en_us.json"
+      ]
+    },
+    {
+      "key": "qol_teams_shared",
+      "deps": [
+        "qol_teams_party"
+      ],
+      "type": "checkmark",
+      "icon": "entrelumen:atlas",
+      "layout": {
+        "x": 6,
+        "y": -2.5,
+        "size": 1.25,
+        "shape": "circle"
+      },
+      "en_us": [
+        "What the Team Shares",
+        "The ENTRELUMEN campaign belongs to the team:\n\n- Atlas projects, acts and milestones are shared; any member can deliver.\n- The Heliodor Compass points every member to the same objective.\n- The World Tier follows the team's progress.\n- In Solsticio, a team claims one plot.\n\nItems are not shared: each member keeps their own inventory, and a reward goes to whoever delivered."
+      ],
+      "es_es": [
+        "Lo que comparte el equipo",
+        "La campaña de ENTRELUMEN pertenece al equipo:\n\n- Los proyectos del Atlas, los actos y los hitos son compartidos; cualquier integrante puede entregar.\n- La Brújula de Heliodor apunta a todos al mismo objetivo.\n- El World Tier sigue el progreso del equipo.\n- En Solsticio, cada equipo reclama un lote.\n\nLos ítems no se comparten: cada integrante tiene su inventario, y una recompensa va a quien entregó."
+      ],
+      "sources": [
+        "repo:companion/src/main/java/dev/entrelumen/Campaigns.java",
+        "repo:docs/design/heliodor-compass.md",
+        "repo:docs/design/apotheosis-family.md",
+        "repo:docs/design/solsticio.md",
+        "repo:docs/design/ark-altars.md"
+      ]
+    },
+    {
+      "key": "qol_teams_join_rules",
+      "deps": [
+        "qol_teams_shared"
+      ],
+      "type": "checkmark",
+      "icon": "minecraft:oak_door",
+      "layout": {
+        "x": 9,
+        "y": -4,
+        "size": 1.0,
+        "shape": "pentagon"
+      },
+      "en_us": [
+        "Joining and Leaving",
+        "Know this before you switch teams:\n\n- Creating a party copies the founder's campaign once.\n- Joining someone's party does not merge your history: you play theirs, and your personal campaign waits.\n- Leaving a party brings you back to your personal campaign.\n- When the last owner leaves, the party's campaign is archived. An operator can restore it with &e/entrelumen admin recover&r.\n\nYour World Tier only rises: leaving never lowers it."
+      ],
+      "es_es": [
+        "Entrar y salir",
+        "Sabé esto antes de cambiar de equipo:\n\n- Crear un grupo copia una vez la campaña del fundador.\n- Entrar al grupo de otro no fusiona tu historia: jugás la del grupo y tu campaña personal espera.\n- Salir de un grupo te devuelve a tu campaña personal.\n- Cuando sale el último dueño, la campaña del grupo se archiva. Un operador puede restaurarla con &e/entrelumen admin recover&r.\n\nTu World Tier sólo sube: salir nunca lo baja."
+      ],
+      "sources": [
+        "repo:docs/design/team-lifecycle-runtime-cases.md",
+        "repo:companion/src/main/java/dev/entrelumen/Campaigns.java",
+        "repo:docs/design/apotheosis-family.md"
+      ]
+    },
+    {
+      "key": "qol_teams_allies",
+      "deps": [
+        "qol_teams_shared"
+      ],
+      "type": "checkmark",
+      "optional": true,
+      "icon": "minecraft:emerald",
+      "layout": {
+        "x": 9,
+        "y": -1,
+        "size": 1.0,
+        "shape": "circle"
+      },
+      "en_us": [
+        "Allies",
+        "From My Team you can mark other teams as &eallies&r. Allies can interact with your claimed land according to your team settings, without joining your campaign.\n\nUse alliances for neighbors on a server, and parties for people who play the same story."
+      ],
+      "es_es": [
+        "Aliados",
+        "Desde My Team podés marcar a otros equipos como &ealiados&r. Los aliados pueden interactuar con tu terreno reclamado según la configuración del equipo, sin entrar en tu campaña.\n\nUsá alianzas para vecinos en un servidor y grupos para quienes juegan la misma historia."
+      ],
+      "sources": [
+        "jar:ftb-teams-neoforge-2101.1.11.jar:assets/ftbteams/lang/en_us.json",
+        "jar:ftb-chunks-neoforge-2101.1.21.jar:assets/ftbchunks/lang/en_us.json"
+      ]
+    },
+    {
+      "key": "qol_teams_claims",
+      "deps": [
+        "qol_teams_party"
+      ],
+      "type": "checkmark",
+      "icon": "minecraft:shield",
+      "layout": {
+        "x": 6,
+        "y": 2.5,
+        "size": 1.5,
+        "shape": "square"
+      },
+      "en_us": [
+        "Claim Your Land",
+        "Press &eK&r to open the claim manager, a map of chunks around you.\n\n- &eLeft-drag&r claims an area; &eright-drag&r unclaims it.\n- Hold &eTab&r to hide the grid, &eAlt&r to see when each claim was made.\n\nClaimed chunks are protected: other teams cannot break, place or open containers there unless you allow it. Each player can claim up to 500 chunks by default."
+      ],
+      "es_es": [
+        "Reclamá tu terreno",
+        "Apretá &eK&r para abrir el administrador de reclamos, un mapa de los chunks que te rodean.\n\n- &eArrastrar con clic izquierdo&r reclama un área; &earrastrar con clic derecho&r la libera.\n- Mantené &eTab&r para ocultar la grilla y &eAlt&r para ver cuándo se hizo cada reclamo.\n\nLos chunks reclamados quedan protegidos: otros equipos no pueden romper, poner ni abrir contenedores ahí salvo que lo permitas. Cada jugador puede reclamar hasta 500 chunks por defecto."
+      ],
+      "sources": [
+        "jar:ftb-chunks-neoforge-2101.1.21.jar:assets/ftbchunks/lang/en_us.json",
+        "jar:ftb-chunks-neoforge-2101.1.21.jar:dev/ftb/mods/ftbchunks/FTBChunksWorldConfig.class",
+        "repo:pack/config/defaultoptions/keybindings.txt"
+      ]
+    },
+    {
+      "key": "qol_teams_forceload",
+      "deps": [
+        "qol_teams_claims"
+      ],
+      "type": "checkmark",
+      "icon": "minecraft:redstone_block",
+      "layout": {
+        "x": 9,
+        "y": 2,
+        "size": 1.0,
+        "shape": "circle"
+      },
+      "en_us": [
+        "Keep Machines Running",
+        "In the claim manager, &eShift+left-drag&r force-loads claimed chunks so machines and farms keep working while you are away; &eShift+right-drag&r stops it. Scroll the mouse wheel over a force-loaded chunk to set when it expires. The default limit is 25 per player.\n\nWhether they stay loaded with nobody online depends on the server's offline force-load setting. Ask the admin, and force-load only what really needs it: every loaded chunk costs server time."
+      ],
+      "es_es": [
+        "Que las máquinas sigan andando",
+        "En el administrador de reclamos, &eShift+arrastrar con clic izquierdo&r fuerza la carga de chunks reclamados para que las máquinas y granjas sigan funcionando mientras no estás; &eShift+arrastrar con clic derecho&r lo quita. Con la rueda sobre un chunk forzado elegís cuándo vence. El límite por defecto es 25 por jugador.\n\nQue sigan cargados sin nadie conectado depende de la configuración del servidor para la carga sin conexión. Preguntale al admin y forzá sólo lo necesario: cada chunk cargado le cuesta tiempo al servidor."
+      ],
+      "sources": [
+        "jar:ftb-chunks-neoforge-2101.1.21.jar:assets/ftbchunks/lang/en_us.json",
+        "jar:ftb-chunks-neoforge-2101.1.21.jar:dev/ftb/mods/ftbchunks/FTBChunksWorldConfig.class",
+        "repo:docs/research/reference-packs.md"
+      ]
+    },
+    {
+      "key": "qol_teams_settings",
+      "deps": [
+        "qol_teams_forceload"
+      ],
+      "type": "checkmark",
+      "optional": true,
+      "icon": "minecraft:tnt",
+      "layout": {
+        "x": 9,
+        "y": 5,
+        "size": 1.0,
+        "shape": "circle"
+      },
+      "en_us": [
+        "Team Protection Settings",
+        "My Team also holds claim settings: whether explosions can damage your land, whether mobs can grief it, who can see your claims on the map, and which fake players (machines that act as players, like Create deployers or block breakers) count as friends.\n\nIf a machine in your base suddenly refuses to work, check the fake player setting first."
+      ],
+      "es_es": [
+        "Ajustes de protección del equipo",
+        "My Team también guarda la configuración de los reclamos: si las explosiones dañan tu terreno, si los mobs pueden romperlo, quién ve tus reclamos en el mapa y qué jugadores falsos (máquinas que actúan como jugadores, como los desplegadores de Create o los rompedores de bloques) cuentan como amigos.\n\nSi una máquina de tu base de pronto no funciona, revisá primero lo de los jugadores falsos."
+      ],
+      "sources": [
+        "jar:ftb-chunks-neoforge-2101.1.21.jar:assets/ftbchunks/lang/en_us.json"
+      ]
+    },
+    {
+      "key": "qol_teams_map_quirk",
+      "deps": [
+        "qol_teams_claims"
+      ],
+      "type": "checkmark",
+      "optional": true,
+      "icon": "minecraft:map",
+      "layout": {
+        "x": 3,
+        "y": 4,
+        "size": 1.0,
+        "shape": "diamond"
+      },
+      "en_us": [
+        "Quirk: Two Maps, One Visible",
+        "FTB Chunks has its own map and minimap, but in this pack the minimap is off and the map key is unbound: &eJourneyMap&r is the map you see. FTB Chunks only manages teams and claims, reachable with K or the side button in your inventory.\n\nIf you prefer the FTB minimap, your personal settings file can turn it back on."
+      ],
+      "es_es": [
+        "Particularidad: dos mapas, uno visible",
+        "FTB Chunks tiene su propio mapa y minimapa, pero en este pack el minimapa está apagado y la tecla del mapa sin asignar: el mapa que ves es &eJourneyMap&r. FTB Chunks sólo administra equipos y reclamos, con K o con el botón lateral del inventario.\n\nSi preferís el minimapa de FTB, tu archivo de configuración personal puede volver a prenderlo."
+      ],
+      "sources": [
+        "repo:pack/config/ftbchunks-client.snbt",
+        "repo:docs/design/qol-parity.md"
+      ]
+    },
+    {
+      "key": "qol_teams_altars_claims",
+      "deps": [
+        "qol_teams_forceload",
+        "qol_teams_shared"
+      ],
+      "type": "checkmark",
+      "icon": "entrelumen:terraform_altar",
+      "layout": {
+        "x": 12,
+        "y": 0,
+        "size": 1.0,
+        "shape": "pentagon"
+      },
+      "en_us": [
+        "Claims Protect Against Altars Too",
+        "The pack's land-shaping altars act as their owner. An Altar of Renewal or Levelling placed by another team will not touch your claimed chunks: the claim refuses the change and the altar skips those blocks and charges nothing for them.\n\nThe same goes for Ultimine and other tools used by players outside your team."
+      ],
+      "es_es": [
+        "Los reclamos también frenan a los altares",
+        "Los altares del pack que modifican el terreno actúan en nombre de su dueño. Un Altar de Renovación o de Nivelación colocado por otro equipo no toca tus chunks reclamados: el reclamo rechaza el cambio y el altar saltea esos bloques y no cobra nada por ellos.\n\nLo mismo vale para Ultimine y otras herramientas usadas por jugadores de otros equipos."
+      ],
+      "sources": [
+        "repo:docs/design/ark-altars.md",
+        "repo:companion/src/main/java/dev/entrelumen/LandWorks.java"
+      ]
+    },
+    {
+      "key": "qol_teams_split",
+      "deps": [
+        "qol_teams_shared"
+      ],
+      "type": "checkmark",
+      "optional": true,
+      "layout": {
+        "x": 12,
+        "y": -3,
+        "size": 1.0,
+        "shape": "diamond"
+      },
+      "en_us": [
+        "Tip: Split the Branches",
+        "Each act asks for several Atlas projects at once, and each one comes from a different discipline. A team of three can take one each: engineering, nature and logistics in act III, for example.\n\nDeliveries count for the whole team the moment anyone makes them, so there is no need to pass items around first."
+      ],
+      "es_es": [
+        "Truco: repartan las ramas",
+        "Cada acto pide varios proyectos del Atlas a la vez, y cada uno viene de una disciplina distinta. Un equipo de tres puede tomar uno cada uno: ingeniería, naturaleza y logística en el acto III, por ejemplo.\n\nLas entregas cuentan para todo el equipo apenas alguien las hace, así que no hace falta pasarse los ítems antes."
+      ],
+      "sources": [
+        "repo:companion/src/main/resources/data/entrelumen/campaign/projects.json"
+      ]
+    },
+    {
+      "key": "qol_teams_chat",
+      "deps": [
+        "qol_teams_party"
+      ],
+      "type": "checkmark",
+      "optional": true,
+      "icon": "minecraft:writable_book",
+      "layout": {
+        "x": 3,
+        "y": -4,
+        "size": 1.0,
+        "shape": "diamond"
+      },
+      "en_us": [
+        "Co-op Comforts",
+        "Small client helpers for playing together:\n\n- &eChat Heads&r shows each player's face beside their messages.\n- &eBetter Ping Display&r turns the connection bars in the Tab list into a number in milliseconds.\n- &eNo Chat Reports&r strips the signed-report data from server chat.\n\nNone of them changes the game; they just make a shared server easier to read."
+      ],
+      "es_es": [
+        "Comodidades para jugar juntos",
+        "Ayudas chicas del cliente para jugar en grupo:\n\n- &eChat Heads&r muestra la cara de cada jugador al lado de sus mensajes.\n- &eBetter Ping Display&r cambia las barras de conexión de la lista del Tab por un número en milisegundos.\n- &eNo Chat Reports&r quita los datos de reporte firmado del chat del servidor.\n\nNinguno cambia el juego; sólo hacen más legible un servidor compartido."
+      ],
+      "sources": [
+        "repo:docs/design/qol-batch-one.md",
+        "repo:docs/design/qol-functional-decor-family.md"
+      ]
+    },
+    {
+      "key": "qol_teams_lootr",
+      "deps": [
+        "qol_teams_claims"
+      ],
+      "type": "checkmark",
+      "optional": true,
+      "icon": "minecraft:chest",
+      "layout": {
+        "x": 6,
+        "y": 5.5,
+        "size": 1.0,
+        "shape": "diamond"
+      },
+      "en_us": [
+        "Quirk: Loot Chests Are Per Player",
+        "Dungeon and structure chests are handled by &eLootr&r: each player who opens one gets their own loot. Nobody on the team steals the others' rewards by opening first, and it is fine to explore the same ruin together.\n\nTip: a Lootr chest you already opened looks different from a fresh one."
+      ],
+      "es_es": [
+        "Particularidad: los cofres de botín son por jugador",
+        "Los cofres de mazmorras y estructuras los maneja &eLootr&r: cada jugador que abre uno recibe su propio botín. Nadie del equipo se queda con la recompensa de los demás por abrir primero, y está bien explorar la misma ruina juntos.\n\nTruco: un cofre de Lootr que ya abriste se ve distinto de uno nuevo."
+      ],
+      "sources": [
+        "jar:lootr-neoforge-1.21.1-1.11.38.124.jar:META-INF/neoforge.mods.toml",
+        "repo:docs/design/qol-parity.md"
+      ]
+    },
+    {
+      "key": "qol_teams_gifts",
+      "deps": [
+        "qol_teams_join_rules"
+      ],
+      "type": "checkmark",
+      "optional": true,
+      "icon": "entrelumen:heart_of_heliodor",
+      "layout": {
+        "x": 12,
+        "y": -5.5,
+        "size": 1.0,
+        "shape": "pentagon"
+      },
+      "en_us": [
+        "Gifts Help, Milestones Do Not Travel",
+        "You can hand any item to another team: materials, act components, even a finished prototype, and they can deliver it to their own Atlas. What cannot be given is progress: arrivals in a dimension, boss milestones and completed projects stay with the campaign that earned them.\n\nLikewise, the Heart of Heliodor only counts for the team whose member recovered it from the Sun Spirit."
+      ],
+      "es_es": [
+        "Los regalos ayudan, los hitos no viajan",
+        "Podés darle cualquier ítem a otro equipo: materiales, componentes de acto, incluso un prototipo terminado, y pueden entregarlo en su propio Atlas. Lo que no se regala es el progreso: llegar a una dimensión, los hitos de jefes y los proyectos completos quedan en la campaña que los ganó.\n\nDel mismo modo, el Corazón de Heliodor sólo cuenta para el equipo cuyo integrante se lo sacó al Espíritu del Sol."
+      ],
+      "sources": [
+        "repo:docs/design/resource-balance.md",
+        "repo:docs/design/ark-altars.md",
+        "repo:docs/design/act-renumbering.md",
+        "note:reflects feature/acts-renumber, merged into main on 24/9 (Heart of Heliodor)"
+      ]
+    },
+    {
+      "key": "qol_teams_ender_team",
+      "deps": [
+        "qol_teams_altars_claims"
+      ],
+      "type": "item",
+      "item": "enderstorage:ender_pouch",
+      "optional": true,
+      "layout": {
+        "x": 15,
+        "y": 3,
+        "size": 1.0,
+        "shape": "diamond"
+      },
+      "en_us": [
+        "Tip: a Team Frequency",
+        "From act III, &eEnder Storage&r chests, tanks and pouches share their contents with every other one set to the same three colors, even across dimensions. Pick a team color code and keep a supply chest at home and a pouch on each explorer.\n\nTheir recipes carry a Routing Matrix, so they arrive with act III logistics; the vanilla ender chest remains the early personal option."
+      ],
+      "es_es": [
+        "Truco: una frecuencia de equipo",
+        "Desde el acto III, los cofres, tanques y bolsas de &eEnder Storage&r comparten su contenido con todos los que tengan los mismos tres colores, incluso entre dimensiones. Elijan un código de colores del equipo y dejen un cofre de suministros en casa y una bolsa en cada explorador.\n\nSus recetas llevan una Matriz de distribución, así que llegan con la logística del acto III; el cofre de ender de vanilla sigue siendo la opción personal temprana."
+      ],
+      "sources": [
+        "repo:pack/kubejs/server_scripts/entrelumen_qol_balance.js",
+        "repo:docs/design/qol-functional-decor-family.md",
+        "jar:EnderStorage-1.21.1-2.13.0.191.jar:assets/enderstorage/lang/en_us.json"
+      ]
+    },
+    {
+      "key": "qol_teams_close",
+      "deps": [
+        "qol_teams_altars_claims",
+        "qol_teams_ender_team"
+      ],
+      "type": "checkmark",
+      "icon": "minecraft:bell",
+      "layout": {
+        "x": 18,
+        "y": 0,
+        "size": 2.0,
+        "shape": "hexagon"
+      },
+      "en_us": [
+        "A Team With a Home",
+        "Party created, land claimed, machines loaded, allies set. From here, the story moves at the speed of the whole team.\n\nThe Atlas chapter explains projects and acts, and the Solsticio chapter explains the plot each team gets at the end."
+      ],
+      "es_es": [
+        "Un equipo con casa",
+        "Grupo creado, terreno reclamado, máquinas cargadas y aliados definidos. Desde acá, la historia avanza a la velocidad de todo el equipo.\n\nEl capítulo del Atlas explica los proyectos y los actos, y el de Solsticio, el lote que recibe cada equipo al final."
+      ],
+      "sources": [
+        "repo:content/guides/README.md"
+      ]
+    }
+  ]
+}

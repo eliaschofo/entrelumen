@@ -1,0 +1,416 @@
+{
+  "chapter": "guide_farming_satiety",
+  "group": "qol",
+  "act": "any",
+  "icon": "minecraft:golden_carrot",
+  "title": {
+    "en_us": "Satiety: When Food Overflows",
+    "es_es": "Saciedad: cuando la comida desborda"
+  },
+  "subtitle": {
+    "en_us": "An ENTRELUMEN system: variety gives hearts, and food past a full bar becomes short random buffs.",
+    "es_es": "Un sistema de ENTRELUMEN: la variedad da corazones y la comida que pasa de la barra llena se vuelve buffs aleatorios cortos."
+  },
+  "quests": [
+    {
+      "key": "farming_satiety_welcome",
+      "deps": [],
+      "type": "checkmark",
+      "layout": {
+        "x": 0,
+        "y": 0,
+        "size": 2.0,
+        "shape": "hexagon"
+      },
+      "en_us": [
+        "Nothing Eaten Is Wasted",
+        "In vanilla, hunger stops at 20 and saturation cannot exceed hunger: whatever a meal adds beyond that is lost. In ENTRELUMEN that surplus is not wasted. The bigger it is, the more and the longer the random buffs you get.\n\nVariety is rewarded separately, with extra hearts. This chapter explains both, with real numbers."
+      ],
+      "es_es": [
+        "Nada de lo que comés se pierde",
+        "En vanilla, el hambre se corta en 20 y la saturación no puede superar al hambre: lo que una comida suma por encima se pierde. En ENTRELUMEN ese sobrante no se desperdicia. Cuanto más grande, más buffs aleatorios y más largos te da.\n\nLa variedad se premia aparte, con corazones extra. Este capítulo explica las dos cosas, con números reales."
+      ],
+      "sources": [
+        "repo:docs/design/satiety-overflow.md",
+        "repo:docs/design/story-bible.md"
+      ]
+    },
+    {
+      "key": "farming_satiety_hearts",
+      "deps": [
+        "farming_satiety_welcome"
+      ],
+      "type": "item",
+      "item": "solcarrot:food_book",
+      "layout": {
+        "x": 3,
+        "y": -2.5,
+        "size": 1.25,
+        "shape": "circle"
+      },
+      "en_us": [
+        "Spice of Life: Hearts for Variety",
+        "&eSpice of Life: Carrot Edition&r counts the different foods you have eaten. In this pack you gain one extra heart at &e10, 25, 45, 70 and 100&r unique foods: five hearts on top of the base ten. Progress is kept when you die.\n\nThe food book tracks your list, and a message above the hotbar shows your progress when you eat something new."
+      ],
+      "es_es": [
+        "Spice of Life: corazones por variedad",
+        "&eSpice of Life: Carrot Edition&r cuenta las comidas distintas que comiste. En este pack ganás un corazón extra a las &e10, 25, 45, 70 y 100&r comidas únicas: cinco corazones sobre los diez base. El progreso se conserva al morir.\n\nEl libro de comidas lleva tu lista, y un mensaje sobre la barra rápida muestra el progreso cuando comés algo nuevo."
+      ],
+      "sources": [
+        "repo:pack/defaultconfigs/solcarrot-server.toml",
+        "repo:docs/design/qol-functional-decor-family.md",
+        "jar:solcarrot-1.21.1-1.16.6.jar:META-INF/neoforge.mods.toml"
+      ]
+    },
+    {
+      "key": "farming_satiety_surplus",
+      "deps": [
+        "farming_satiety_welcome"
+      ],
+      "type": "checkmark",
+      "icon": "minecraft:cooked_beef",
+      "layout": {
+        "x": 3,
+        "y": 2.5,
+        "size": 1.25,
+        "shape": "circle"
+      },
+      "en_us": [
+        "What Counts as Surplus",
+        "The surplus of a meal is the hunger that did not fit under 20, plus the saturation that did not fit under your new hunger level. It is measured in vanilla food points (one point is half a drumstick) and never exceeds what the food provides.\n\nBecause vanilla only lets you eat below 20 hunger, most surplus is &esaturation&r: a rich meal eaten when you are not very hungry."
+      ],
+      "es_es": [
+        "Qué cuenta como sobrante",
+        "El sobrante de una comida es el hambre que no entró debajo de 20, más la saturación que no entró debajo de tu nuevo nivel de hambre. Se mide en puntos de comida de vanilla (un punto es medio muslito) y nunca supera lo que aporta la comida.\n\nComo vanilla sólo te deja comer con menos de 20 de hambre, casi todo el sobrante es &esaturación&r: una comida rica que comés sin mucha hambre."
+      ],
+      "sources": [
+        "repo:docs/design/satiety-overflow.md",
+        "repo:companion/src/main/java/dev/entrelumen/SatietyOverflow.java"
+      ]
+    },
+    {
+      "key": "farming_satiety_rules",
+      "deps": [
+        "farming_satiety_surplus"
+      ],
+      "type": "checkmark",
+      "icon": "minecraft:experience_bottle",
+      "layout": {
+        "x": 6,
+        "y": 2.5,
+        "size": 1.25,
+        "shape": "circle"
+      },
+      "en_us": [
+        "How Many Buffs, How Long",
+        "After a meal, its surplus becomes a &eworth&r:\n\n- below 2 points, nothing happens;\n- from 2, you get one buff; one more for every 10 points, up to three;\n- durations scale with the worth and reach their maximum at 20 points;\n- at 16 points or more, buffs that allow it come at level II.\n\nA line on the action bar lists what you got, with a few sparkles."
+      ],
+      "es_es": [
+        "Cuántos buffs y cuánto duran",
+        "Después de comer, el sobrante se convierte en un &evalor&r:\n\n- por debajo de 2 puntos, no pasa nada;\n- desde 2, recibís un buff; uno más cada 10 puntos, hasta tres;\n- las duraciones crecen con el valor y llegan a su máximo a los 20 puntos;\n- con 16 puntos o más, los buffs que lo permiten salen en nivel II.\n\nUna línea en la barra de acción lista lo que recibiste, con unos destellos."
+      ],
+      "sources": [
+        "repo:docs/design/satiety-overflow.md",
+        "repo:companion/src/main/resources/data/entrelumen/satiety/overflow.json",
+        "repo:companion/src/main/java/dev/entrelumen/SatietyOverflow.java",
+        "repo:companion/src/main/resources/assets/entrelumen/lang/en_us.json"
+      ]
+    },
+    {
+      "key": "farming_satiety_pool",
+      "deps": [
+        "farming_satiety_rules"
+      ],
+      "type": "item",
+      "item": "minecraft:potion",
+      "layout": {
+        "x": 9,
+        "y": 2.5,
+        "size": 1.25,
+        "shape": "circle"
+      },
+      "en_us": [
+        "The Buff Pool",
+        "Buffs are drawn at random, weighted, without repeats:\n\n- &eHaste&r and &eSpeed&r (most common, up to II, 30 to 180 s);\n- &eAbsorption&r (up to II, 30 to 120 s) and &eRegeneration&r (I, 5 to 20 s);\n- &eStrength&r (I, 20 to 90 s) and &eResistance&r (I, 20 to 60 s);\n- &eWater Breathing&r and &eNight Vision&r (I, 60 to 300 s);\n- &eLuck&r (up to II, 60 to 300 s).\n\nA buff never replaces a stronger or longer one you already have; it only adds or extends."
+      ],
+      "es_es": [
+        "La bolsa de buffs",
+        "Los buffs se sortean al azar, con pesos y sin repetir:\n\n- &ePrisa&r y &eVelocidad&r (los más comunes, hasta II, de 30 a 180 s);\n- &eAbsorción&r (hasta II, de 30 a 120 s) y &eRegeneración&r (I, de 5 a 20 s);\n- &eFuerza&r (I, de 20 a 90 s) y &eResistencia&r (I, de 20 a 60 s);\n- &eRespiración acuática&r y &eVisión nocturna&r (I, de 60 a 300 s);\n- &eSuerte&r (hasta II, de 60 a 300 s).\n\nUn buff nunca reemplaza a uno más fuerte o más largo que ya tengas; sólo agrega o extiende."
+      ],
+      "sources": [
+        "repo:companion/src/main/resources/data/entrelumen/satiety/overflow.json",
+        "repo:docs/design/satiety-overflow.md"
+      ]
+    },
+    {
+      "key": "farming_satiety_examples",
+      "deps": [
+        "farming_satiety_rules"
+      ],
+      "type": "item",
+      "item": "farmersdelight:roast_chicken",
+      "optional": true,
+      "layout": {
+        "x": 9,
+        "y": -0.5,
+        "size": 1.0,
+        "shape": "diamond"
+      },
+      "en_us": [
+        "Worked Examples",
+        "Real numbers with no recent overeating:\n\n- Bread at 19 hunger and 15 saturation: 5 points, one level I buff (for example Speed for about a minute).\n- Farmer's Delight roast chicken at 14 hunger and 8 saturation: 17 points, two buffs, level II where allowed.\n- A golden carrot at 16 and 10: about 6 points, one buff.\n- A cookie at 19 and 19: 1 point, nothing.\n\nBig meals when you are mostly full pay the best."
+      ],
+      "es_es": [
+        "Ejemplos con números",
+        "Números reales sin haber comido de más hace poco:\n\n- Pan con 19 de hambre y 15 de saturación: 5 puntos, un buff de nivel I (por ejemplo Velocidad durante un minuto, más o menos).\n- Pollo asado de Farmer's Delight con 14 de hambre y 8 de saturación: 17 puntos, dos buffs, de nivel II donde se permite.\n- Una zanahoria dorada con 16 y 10: unos 6 puntos, un buff.\n- Una galletita con 19 y 19: 1 punto, nada.\n\nLas comidas grandes cuando estás casi lleno son las que más rinden."
+      ],
+      "sources": [
+        "repo:docs/design/satiety-overflow.md"
+      ]
+    },
+    {
+      "key": "farming_satiety_glut",
+      "deps": [
+        "farming_satiety_pool"
+      ],
+      "type": "item",
+      "item": "minecraft:honey_bottle",
+      "layout": {
+        "x": 12,
+        "y": 2.5,
+        "size": 1.25,
+        "shape": "square"
+      },
+      "en_us": [
+        "Glut and Cooldown",
+        "Two rules stop cheap spam:\n\n- &eCooldown&r: after a buff, nothing more is granted for 10 seconds.\n- &eGlut&r: every surplus adds to a hidden glut that halves every 5 minutes. The more glut you carry, the less a new surplus is worth. Surplus during the cooldown still adds glut.\n\nIn practice: one good meal every few minutes keeps most of its value; five honey bottles in a row give one buff and a lot of glut. Glut is cleared when you die."
+      ],
+      "es_es": [
+        "Empacho y enfriamiento",
+        "Dos reglas frenan el abuso barato:\n\n- &eEnfriamiento&r: después de un buff, no se da otro durante 10 segundos.\n- &eEmpacho&r: cada sobrante suma a un empacho oculto que se reduce a la mitad cada 5 minutos. Cuanto más empacho tenés, menos vale un sobrante nuevo. El sobrante durante el enfriamiento igual suma empacho.\n\nEn la práctica: una buena comida cada algunos minutos conserva casi todo su valor; cinco botellas de miel seguidas dan un buff y mucho empacho. El empacho se borra al morir."
+      ],
+      "sources": [
+        "repo:docs/design/satiety-overflow.md",
+        "repo:companion/src/main/resources/data/entrelumen/satiety/overflow.json",
+        "repo:companion/src/main/java/dev/entrelumen/SatietyOverflow.java"
+      ]
+    },
+    {
+      "key": "farming_satiety_try_it",
+      "deps": [
+        "farming_satiety_examples"
+      ],
+      "type": "item",
+      "item": "farmersdelight:beef_stew",
+      "layout": {
+        "x": 12,
+        "y": -5,
+        "size": 1.0,
+        "shape": "square"
+      },
+      "en_us": [
+        "Try It Yourself",
+        "Eat until your hunger bar is almost full, then eat a big Farmer's Delight meal such as a stew or a roast. Watch the action bar: it names the buffs you received, and their icons appear with the other effects.\n\nMark this quest after your first surplus buff."
+      ],
+      "es_es": [
+        "Probalo vos",
+        "Comé hasta que la barra de hambre esté casi llena y después comé una comida grande de Farmer's Delight, como un guiso o un asado. Mirá la barra de acción: nombra los buffs que recibiste, y sus íconos aparecen con los demás efectos.\n\nMarcá esta quest después de tu primer buff por sobrante."
+      ],
+      "sources": [
+        "repo:docs/design/satiety-overflow.md",
+        "repo:companion/src/main/resources/assets/entrelumen/lang/es_es.json"
+      ]
+    },
+    {
+      "key": "farming_satiety_blocks",
+      "deps": [
+        "farming_satiety_hearts",
+        "farming_satiety_surplus"
+      ],
+      "type": "item",
+      "item": "farmersdelight:apple_pie",
+      "layout": {
+        "x": 6,
+        "y": -2.5,
+        "size": 1.0,
+        "shape": "pentagon"
+      },
+      "en_us": [
+        "Cakes and Pies Count",
+        "Food eaten straight from a block counts too: vanilla cake and candle cakes, Farmer's Delight pies and cheesecakes, and any modded block that feeds you. The game measures the bite itself, so it works even when Amendments turns a cake into its directional version.\n\nA Farmer's Delight pie slice at 19 hunger and 19 saturation is worth 2.8 points: one buff."
+      ],
+      "es_es": [
+        "Las tortas y los pasteles cuentan",
+        "La comida que se come directo de un bloque también cuenta: la torta de vanilla y las tortas con vela, los pasteles y cheesecakes de Farmer's Delight y cualquier bloque de otro mod que te alimente. El juego mide el bocado en sí, así que funciona aunque Amendments convierta la torta en su versión direccional.\n\nUna porción de pastel de Farmer's Delight con 19 de hambre y 19 de saturación vale 2,8 puntos: un buff."
+      ],
+      "sources": [
+        "repo:docs/design/satiety-overflow.md",
+        "repo:companion/src/main/java/dev/entrelumen/SatietyOverflowEvents.java",
+        "repo:companion/src/main/java/dev/entrelumen/mixin/common/FoodDataMixin.java"
+      ]
+    },
+    {
+      "key": "farming_satiety_not_counted",
+      "deps": [
+        "farming_satiety_blocks"
+      ],
+      "type": "checkmark",
+      "optional": true,
+      "icon": "minecraft:barrier",
+      "layout": {
+        "x": 9,
+        "y": -3.5,
+        "size": 1.0,
+        "shape": "diamond"
+      },
+      "en_us": [
+        "What Does Not Count",
+        "No buffs for players in creative or spectator mode, and none for machines that eat as fake players, such as Create deployers. A plain cake bite at 19 hunger is only 1 point: it adds glut but no buff.\n\nThe system never looks at which food you ate, only at how much overflowed, so it does not interfere with Spice of Life's list."
+      ],
+      "es_es": [
+        "Lo que no cuenta",
+        "No hay buffs para jugadores en modo creativo o espectador, ni para máquinas que comen como jugadores falsos, como los desplegadores de Create. Un bocado de torta común con 19 de hambre vale sólo 1 punto: suma empacho pero no da buff.\n\nEl sistema nunca mira qué comiste, sólo cuánto desbordó, así que no interfiere con la lista de Spice of Life."
+      ],
+      "sources": [
+        "repo:docs/design/satiety-overflow.md"
+      ]
+    },
+    {
+      "key": "farming_satiety_always_edible",
+      "deps": [
+        "farming_satiety_glut",
+        "farming_satiety_not_counted"
+      ],
+      "type": "item",
+      "item": "minecraft:golden_apple",
+      "optional": true,
+      "layout": {
+        "x": 12,
+        "y": -2,
+        "size": 1.0,
+        "shape": "diamond"
+      },
+      "en_us": [
+        "Tip: Foods You Can Always Eat",
+        "A few foods can be eaten even at full hunger: golden apples, chorus fruit, suspicious stew, the honey bottle and some drinks. They are the only way to overflow hunger itself, not just saturation.\n\nCombine them with the glut rule: space them out, do not chain them."
+      ],
+      "es_es": [
+        "Truco: comidas que siempre se pueden comer",
+        "Algunas comidas se pueden comer aunque el hambre esté llena: las manzanas doradas, la fruta de chorus, el guiso sospechoso, la botella de miel y algunas bebidas. Son la única forma de desbordar el hambre en sí y no sólo la saturación.\n\nCombinalas con la regla del empacho: espacialas, no las encadenes."
+      ],
+      "sources": [
+        "repo:docs/design/satiety-overflow.md",
+        "https://minecraft.wiki/w/Food"
+      ]
+    },
+    {
+      "key": "farming_satiety_bakery",
+      "deps": [
+        "farming_satiety_always_edible"
+      ],
+      "type": "item",
+      "item": "minecraft:bread",
+      "optional": true,
+      "layout": {
+        "x": 15,
+        "y": -2,
+        "size": 1.0,
+        "shape": "diamond"
+      },
+      "en_us": [
+        "Tip: Solsticio's Bakery",
+        "In Solsticio, Miga the baker sells bread, cake, pies, cookies, golden carrots and Farmer's Delight sweets. It is the shop built for this system: food variety for Spice of Life and rich meals to overflow."
+      ],
+      "es_es": [
+        "Truco: la panadería de Solsticio",
+        "En Solsticio, Miga, la panadera, vende pan, tortas, pasteles, galletitas, zanahorias doradas y dulces de Farmer's Delight. Es la tienda pensada para este sistema: variedad para Spice of Life y comidas ricas para desbordar."
+      ],
+      "sources": [
+        "repo:docs/design/solsticio-commerce.md",
+        "repo:companion/src/main/resources/data/entrelumen/solsticio_shops/bakery.json"
+      ]
+    },
+    {
+      "key": "farming_satiety_datapack",
+      "deps": [
+        "farming_satiety_glut"
+      ],
+      "type": "checkmark",
+      "optional": true,
+      "icon": "minecraft:command_block",
+      "layout": {
+        "x": 15,
+        "y": 1,
+        "size": 1.0,
+        "shape": "pentagon"
+      },
+      "en_us": [
+        "For Server Owners",
+        "Every number here lives in one datapack file, &edata/entrelumen/satiety/overflow.json&r: the floor, the buff count, level II threshold, glut softness and half-life, cooldown, the announcement and the pool. A datapack can replace it and &e/reload&r applies it.\n\nHard limits the file cannot exceed: level II, 600 seconds per buff, five buffs per meal. Harmful or instant effects are skipped."
+      ],
+      "es_es": [
+        "Para quienes administran servidores",
+        "Todos los números de acá viven en un archivo de datapack, &edata/entrelumen/satiety/overflow.json&r: el mínimo, la cantidad de buffs, el umbral de nivel II, la suavidad y la vida media del empacho, el enfriamiento, el aviso y la bolsa. Un datapack puede reemplazarlo y &e/reload&r lo aplica.\n\nTopes que el archivo no puede superar: nivel II, 600 segundos por buff y cinco buffs por comida. Los efectos dañinos o instantáneos se ignoran."
+      ],
+      "sources": [
+        "repo:docs/design/satiety-overflow.md",
+        "repo:companion/src/main/resources/data/entrelumen/satiety/overflow.json",
+        "repo:companion/src/main/java/dev/entrelumen/SatietyOverflow.java"
+      ]
+    },
+    {
+      "key": "farming_satiety_hud",
+      "deps": [
+        "farming_satiety_glut"
+      ],
+      "type": "checkmark",
+      "optional": true,
+      "icon": "minecraft:carrot",
+      "layout": {
+        "x": 15,
+        "y": 4,
+        "size": 1.0,
+        "shape": "diamond"
+      },
+      "en_us": [
+        "Quirk: Two Messages at Once",
+        "When a new food gives Spice of Life progress and also overflows, both mods want the line above the hotbar. The overflow runs first, so Spice of Life's progress message is the one you read; the buff icons and sparkles still show what you got.\n\nAppleSkin shows the hunger and saturation a food will add before you eat it: use it to aim for surplus."
+      ],
+      "es_es": [
+        "Particularidad: dos mensajes a la vez",
+        "Cuando una comida nueva da progreso en Spice of Life y además desborda, los dos mods quieren la línea sobre la barra rápida. El desborde corre primero, así que el mensaje que leés es el de Spice of Life; los íconos de los buffs y los destellos igual muestran lo que recibiste.\n\nAppleSkin muestra el hambre y la saturación que va a sumar una comida antes de comerla: usala para apuntar al sobrante."
+      ],
+      "sources": [
+        "repo:docs/design/satiety-overflow.md",
+        "jar:appleskin-neoforge-mc1.21-3.0.9.jar:META-INF/neoforge.mods.toml"
+      ]
+    },
+    {
+      "key": "farming_satiety_close",
+      "deps": [
+        "farming_satiety_bakery",
+        "farming_satiety_datapack",
+        "farming_satiety_hud"
+      ],
+      "type": "item",
+      "item": "minecraft:cake",
+      "layout": {
+        "x": 18,
+        "y": 1,
+        "size": 2.0,
+        "shape": "hexagon"
+      },
+      "en_us": [
+        "A Full Belly Pays",
+        "Eat many different foods for hearts, eat rich meals when you are nearly full for buffs, and space them out so glut stays low. Cakes and pies from the table count too.\n\nFrom here, the ENTRELUMEN chapters explain the rest of the pack's own systems: the Atlas, the compass, the altars and the city at the end."
+      ],
+      "es_es": [
+        "La panza llena rinde",
+        "Comé muchas comidas distintas para ganar corazones, comidas ricas cuando estés casi lleno para ganar buffs, y espacialas para que el empacho quede bajo. Las tortas y pasteles de la mesa también cuentan.\n\nDesde acá, los capítulos de ENTRELUMEN explican el resto de los sistemas propios del pack: el Atlas, la brújula, los altares y la ciudad del final."
+      ],
+      "sources": [
+        "repo:docs/design/satiety-overflow.md"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,536 @@
+{
+ "chapter": "guide_ars_rituals",
+ "group": "magic",
+ "act": "II",
+ "icon": "ars_nouveau:ritual_brazier",
+ "title": {
+  "en_us": "Ars Nouveau III: Rituals and Familiars",
+  "es_es": "Ars Nouveau III: rituales y familiares"
+ },
+ "subtitle": {
+  "en_us": "The brazier, the most useful tablets, mob jars and companions bound to you.",
+  "es_es": "El brasero, las tablas más útiles, los tarros de criaturas y los compañeros atados a vos."
+ },
+ "quests": [
+  {
+   "key": "arsrit_welcome",
+   "deps": [],
+   "type": "checkmark",
+   "icon": "ars_nouveau:ritual_brazier",
+   "layout": {
+    "x": 0,
+    "y": 0,
+    "size": 2.0,
+    "shape": "hexagon"
+   },
+   "en_us": [
+    "Rituals and familiars",
+    "Rituals are big, slow spells cast by a brazier: change the weather, make it day, stop monsters spawning around your base, capture creatures in jars, harvest crops for you. Familiars are small companions bound to you that give passive bonuses.\n\nYou need the Source setup from the previous chapter: many rituals draw Source from jars within 6 blocks of the brazier while they run."
+   ],
+   "es_es": [
+    "Rituales y familiares",
+    "Los rituales son hechizos grandes y lentos que lanza un brasero: cambian el clima, hacen de día, frenan la aparición de monstruos alrededor de tu base, meten criaturas en frascos, cosechan por vos. Los familiares son compañeros chicos atados a vos que dan bonos pasivos.\n\nNecesitás la red de Fuente del capítulo anterior: muchos rituales toman Fuente de frascos a 6 bloques del brasero mientras funcionan."
+   ],
+   "sources": [
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:assets/ars_nouveau/lang/en_us.json#ars_nouveau.page1.performing_rituals",
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:assets/ars_nouveau/lang/en_us.json#ars_nouveau.page2.performing_rituals"
+   ]
+  },
+  {
+   "key": "arsrit_brazier",
+   "deps": [
+    "arsrit_welcome"
+   ],
+   "type": "item",
+   "item": "ars_nouveau:ritual_brazier",
+   "layout": {
+    "x": 3,
+    "y": 0,
+    "size": 1.25,
+    "shape": "square"
+   },
+   "en_us": [
+    "Ritual Brazier",
+    "Craft the Ritual Brazier: shapeless, an Arcane Pedestal, a Source Gem Block and three gold ingots. Casting Conjure Magelight on it lights it as decoration in your spell color.\n\nA redstone signal on the brazier stops a running ritual, which is how you pause long rituals such as Sanctuary or Harvest."
+   ],
+   "es_es": [
+    "Brasero ritual",
+    "Crafteá el Brasero ritual: sin forma, un Pedestal arcano, un Bloque de gemas fuente y tres lingotes de oro. Si le lanzás Conjurar luz se enciende como decoración con el color de tu hechizo.\n\nUna señal de redstone sobre el brasero detiene el ritual en curso; así pausás rituales largos como Santuario o Cosecha."
+   ],
+   "sources": [
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:data/ars_nouveau/recipe/ritual_brazier.json",
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:assets/ars_nouveau/lang/en_us.json#ars_nouveau.page.ritual_brazier",
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:assets/ars_nouveau/patchouli_books/worn_notebook/en_us/entries/machines/ritual_brazier.json"
+   ]
+  },
+  {
+   "key": "arsrit_how",
+   "deps": [
+    "arsrit_brazier"
+   ],
+   "type": "checkmark",
+   "layout": {
+    "x": 6,
+    "y": 0,
+    "size": 1.0,
+    "shape": "circle"
+   },
+   "en_us": [
+    "How a ritual runs",
+    "Each ritual is a tablet crafted from an archwood log of a given color plus ingredients. Use the tablet on the brazier: it ignites and waits. Now throw augment items on top if the ritual accepts them. Finally interact with an empty hand to start it; the tablet is consumed and the ritual can no longer be augmented.\n\nLog colors hint at the theme: flourishing (green) for growth, blazing (red) for fire and day, cascading (blue) for water and sky, vexing (purple) for binding and control."
+   ],
+   "es_es": [
+    "Cómo corre un ritual",
+    "Cada ritual es una tabla crafteada con un tronco de Archwood de cierto color más ingredientes. Usá la tabla sobre el brasero: se enciende y espera. Ahora tirá encima los ítems de aumento si el ritual los acepta. Por último interactuá con la mano vacía para arrancarlo; la tabla se gasta y ya no se puede aumentar.\n\nEl color del tronco da una pista del tema: floreciente (verde) para crecimiento, flameante (rojo) para fuego y día, cascadeante (azul) para agua y cielo, irritante (violeta) para vínculos y control."
+   ],
+   "sources": [
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:assets/ars_nouveau/lang/en_us.json#ars_nouveau.page1.performing_rituals",
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:data/ars_nouveau/recipe/ritual_sunrise.json",
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:data/ars_nouveau/recipe/ritual_binding.json",
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:data/ars_nouveau/recipe/ritual_sanctuary.json",
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:data/ars_nouveau/recipe/ritual_harvest.json"
+   ]
+  },
+  {
+   "key": "arsrit_sunrise",
+   "deps": [
+    "arsrit_how"
+   ],
+   "type": "item",
+   "item": "ars_nouveau:ritual_sunrise",
+   "layout": {
+    "x": 9,
+    "y": 0,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "First ritual: Sunrise",
+    "Craft a Sunrise tablet (a blazing archwood log, three dandelions and a clock) and run it: it sets the time to day. Its twin, Moonfall (cascading log, ink sac, coal block, clock), sets it to night.\n\nCheap and instant, they teach the brazier loop. Night-only rituals and mob hunts get much easier when you choose the hour."
+   ],
+   "es_es": [
+    "Primer ritual: Amanecer",
+    "Crafteá la tabla de Amanecer (un tronco de Archwood flameante, tres dientes de león y un reloj) y correla: pone la hora en de día. Su gemela, Caída de luna (tronco cascadeante, saco de tinta, bloque de carbón, reloj), la pone de noche.\n\nBaratas e instantáneas, te enseñan el ciclo del brasero. Los rituales nocturnos y las cacerías se facilitan mucho cuando elegís la hora."
+   ],
+   "sources": [
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:data/ars_nouveau/recipe/ritual_sunrise.json",
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:data/ars_nouveau/recipe/ritual_moonfall.json",
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:assets/ars_nouveau/patchouli_books/worn_notebook/en_us/entries/rituals/ritual_sunrise.json",
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:assets/ars_nouveau/patchouli_books/worn_notebook/en_us/entries/rituals/ritual_moonfall.json"
+   ]
+  },
+  {
+   "key": "arsrit_sanctuary",
+   "deps": [
+    "arsrit_sunrise"
+   ],
+   "type": "item",
+   "item": "ars_nouveau:ritual_sanctuary",
+   "layout": {
+    "x": 12,
+    "y": -3,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Sanctuary: a safe base",
+    "Craft Sanctuary (a cascading archwood log, a water essence and a sea lantern). While it runs, hostile mobs cannot spawn naturally within 32 blocks. Throw rotten flesh on the brazier before starting it: each piece adds 1 block of radius, up to 128.\n\nIt only charges Source (once a minute) when it actually denies a spawn. With World Tiers raising mob strength as the story advances, a quiet base is worth it."
+   ],
+   "es_es": [
+    "Santuario: una base segura",
+    "Crafteá Santuario (un tronco de Archwood cascadeante, una esencia de agua y un farol marino). Mientras corre, los monstruos no aparecen naturalmente a 32 bloques. Tirá carne podrida sobre el brasero antes de arrancarlo: cada pedazo suma 1 bloque de radio, hasta 128.\n\nSólo cobra Fuente (una vez por minuto) cuando realmente impide una aparición. Con los Niveles de Mundo subiendo la fuerza de los monstruos a medida que avanza la historia, una base tranquila vale la pena."
+   ],
+   "sources": [
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:data/ars_nouveau/recipe/ritual_sanctuary.json",
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:assets/ars_nouveau/patchouli_books/worn_notebook/en_us/entries/rituals/ritual_sanctuary.json",
+    "repo:docs/design/apotheosis-family.md#story-set-world-tiers"
+   ]
+  },
+  {
+   "key": "arsrit_harvest",
+   "deps": [
+    "arsrit_sunrise"
+   ],
+   "type": "item",
+   "item": "ars_nouveau:ritual_harvest",
+   "optional": true,
+   "layout": {
+    "x": 12,
+    "y": 3,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Harvest: hands-free crops",
+    "Craft Harvest (a flourishing archwood log, an earth essence and an iron hoe). It casts the Harvest effect on grown crops around the brazier, spending a bit of Source per harvest, and puts the drops into an inventory next to the brazier if there is one.\n\nPair it with Overgrowth (bonemeal around the brazier) for a compact farm. Remember that crops ripened with bonemeal do not feed an Agronomic Sourcelink."
+   ],
+   "es_es": [
+    "Cosecha: cultivos sin manos",
+    "Crafteá Cosecha (un tronco de Archwood floreciente, una esencia de tierra y una azada de hierro). Aplica el efecto Cosecha a los cultivos maduros alrededor del brasero, gasta un poco de Fuente por cosecha y deja los drops en un inventario pegado al brasero si lo hay.\n\nCombinalo con Crecimiento excesivo (polvo de hueso alrededor del brasero) para una granja compacta. Acordate de que lo que madura con polvo de hueso no alimenta al Generador Agrónomo."
+   ],
+   "sources": [
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:data/ars_nouveau/recipe/ritual_harvest.json",
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:data/ars_nouveau/recipe/ritual_overgrowth.json",
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:assets/ars_nouveau/patchouli_books/worn_notebook/en_us/entries/rituals/ritual_harvest.json",
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:assets/ars_nouveau/patchouli_books/worn_notebook/en_us/entries/rituals/ritual_overgrowth.json"
+   ]
+  },
+  {
+   "key": "arsrit_scrying",
+   "deps": [
+    "arsrit_sanctuary"
+   ],
+   "type": "item",
+   "item": "ars_nouveau:ritual_scrying",
+   "optional": true,
+   "layout": {
+    "x": 15,
+    "y": -3,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Scrying: see through stone",
+    "Craft Scrying (a vexing archwood log, three spider eyes, glowstone and a Source Gem Block). Before starting it, throw one block of the kind you want to find onto the brazier. For a while you see that block through everything around you: white particles mean very close, green medium, blue far.\n\nAdd a Manipulation Essence as augment to stretch it to 15 minutes. It is excellent for ores the story asks for, like Occultism's iesnium in the Nether or Malum's soulstone."
+   ],
+   "es_es": [
+    "Escudriñar: ver a través de la piedra",
+    "Crafteá Escudriñar (un tronco de Archwood irritante, tres ojos de araña, piedra luminosa y un Bloque de gemas fuente). Antes de arrancarlo, tirá sobre el brasero un bloque del tipo que querés encontrar. Por un rato ves ese bloque a través de todo: partículas blancas es muy cerca, verdes medio, azules lejos.\n\nSumá una esencia de manipulación como aumento para estirarlo a 15 minutos. Es excelente para menas que pide la historia, como la iesnia de Occultism en el Nether o la piedra de alma de Malum."
+   ],
+   "sources": [
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:data/ars_nouveau/recipe/ritual_scrying.json",
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:assets/ars_nouveau/patchouli_books/worn_notebook/en_us/entries/rituals/ritual_scrying.json"
+   ]
+  },
+  {
+   "key": "arsrit_restoration",
+   "deps": [
+    "arsrit_harvest"
+   ],
+   "type": "item",
+   "item": "ars_nouveau:ritual_restoration",
+   "optional": true,
+   "layout": {
+    "x": 15,
+    "y": 3,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Restoration: cheap villager cures",
+    "Craft Restoration (a flourishing archwood log, a golden apple and an abjuration essence). It heals living things nearby and harms undead over time. Zombie Villagers nearby are cured instantly, and if you are close the cured villager gives discounts.\n\nThat makes it a clean way to get cheap trades without potions of weakness. Useful before you move villagers into Solsticio's trading hall later."
+   ],
+   "es_es": [
+    "Restauración: curar aldeanos barato",
+    "Crafteá Restauración (un tronco de Archwood floreciente, una manzana dorada y una esencia de abjuración). Cura a los seres vivos cercanos y daña a los no-muertos con el tiempo. Los aldeanos zombi cercanos se curan al instante y, si estás cerca, el aldeano curado te hace descuentos.\n\nEs una forma limpia de conseguir tratos baratos sin pociones de debilidad. Útil antes de mudar aldeanos a la sala de comercio de Solsticio más adelante."
+   ],
+   "sources": [
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:data/ars_nouveau/recipe/ritual_restoration.json",
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:assets/ars_nouveau/patchouli_books/worn_notebook/en_us/entries/rituals/ritual_restoration.json",
+    "repo:docs/design/story-bible.md#Decisiones del 24 de septiembre"
+   ]
+  },
+  {
+   "key": "arsrit_containment",
+   "deps": [
+    "arsrit_sunrise"
+   ],
+   "type": "item",
+   "item": "ars_nouveau:mob_jar",
+   "layout": {
+    "x": 18,
+    "y": 0,
+    "size": 1.5,
+    "shape": "hexagon"
+   },
+   "en_us": [
+    "Containment: mobs in jars",
+    "Craft Containment Jars (archwood slabs over glass) and the Containment ritual (a vexing archwood log, a manipulation essence and three glass bottles). Place empty jars and the target within 3 blocks of the brazier: the ritual captures the creature into a jar. After the first capture it needs more Source to continue.\n\nJarred creatures keep living: chickens lay eggs, sheep can be sheared, cows milked, villagers keep trading and a Blaze turns the jar into a lamp. Dispel on the jar releases the creature above it."
+   ],
+   "es_es": [
+    "Contención: criaturas en frascos",
+    "Crafteá Tarros de contención (losas de Archwood sobre vidrio) y el ritual de Contención (un tronco de Archwood irritante, una esencia de manipulación y tres botellas). Poné tarros vacíos y la criatura a 3 bloques del brasero: el ritual la mete en un tarro. Después de la primera captura necesita más Fuente para seguir.\n\nLas criaturas en frasco siguen viviendo: las gallinas ponen huevos, las ovejas se esquilan, las vacas se ordeñan, los aldeanos siguen comerciando y un Blaze vuelve el tarro una lámpara. Disipar sobre el tarro suelta la criatura arriba."
+   ],
+   "sources": [
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:data/ars_nouveau/recipe/mob_jar.json",
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:data/ars_nouveau/recipe/ritual_containment.json",
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:assets/ars_nouveau/lang/en_us.json#ars_nouveau.page1.mob_jar",
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:assets/ars_nouveau/lang/en_us.json#ars_nouveau.page2.mob_jar"
+   ]
+  },
+  {
+   "key": "arsrit_jar_tricks",
+   "deps": [
+    "arsrit_containment"
+   ],
+   "type": "checkmark",
+   "optional": true,
+   "layout": {
+    "x": 18,
+    "y": 3,
+    "size": 1.0,
+    "shape": "circle"
+   },
+   "en_us": [
+    "Tip: what jars can do",
+    "Some jarred creatures do more than decorate. A villager in a jar trades and its trades reset over time. Throw gold ingots at a jarred piglin to barter. A jarred allay picks up items within 5 blocks and puts them in an adjacent inventory. A pufferfish outputs redstone when mobs are near. A note block above a jar plays the mob's sound.\n\nA Drygmy also counts jars as nearby creatures, which is the core of a compact mob-drop farm (automation chapter)."
+   ],
+   "es_es": [
+    "Tip: lo que pueden hacer los frascos",
+    "Algunas criaturas en frasco hacen más que decorar. Un aldeano en frasco comercia y sus tratos se renuevan con el tiempo. A un piglin en frasco le tirás lingotes de oro para trueque. Un allay en frasco junta ítems a 5 bloques y los deja en un inventario pegado. Un pez globo da redstone cuando hay monstruos cerca. Un bloque musical arriba del frasco reproduce el sonido de la criatura.\n\nUn Drygmy también cuenta los frascos como criaturas cercanas, y eso es la base de una granja compacta de drops (capítulo de automatización)."
+   ],
+   "sources": [
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:assets/ars_nouveau/lang/en_us.json#ars_nouveau.page2.mob_jar",
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:assets/ars_nouveau/patchouli_books/worn_notebook/en_us/entries/machines/mob_jar.json"
+   ]
+  },
+  {
+   "key": "arsrit_awakening",
+   "deps": [
+    "arsrit_scrying"
+   ],
+   "type": "item",
+   "item": "ars_nouveau:ritual_awakening",
+   "optional": true,
+   "layout": {
+    "x": 21,
+    "y": -3,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Awakening: Weald Walkers and golems",
+    "Craft Awakening (a flourishing archwood log, the four archwood saplings and four Source Gems). Run next to the base of an archwood tree and it becomes a Weald Walker, a living tree that guards the spot you assign with the Dominion Wand. Near Budding Amethyst it gives an Amethyst Golem charm instead.\n\nAugmented with a book and quill it creates Bookwyrm charms for the Storage Lectern. A dead Weald Walker becomes a Weald Waddler that regrows; bonemeal speeds it up."
+   ],
+   "es_es": [
+    "Despertar: caminantes del bosque y golems",
+    "Crafteá Despertar (un tronco de Archwood floreciente, los cuatro brotes de Archwood y cuatro gemas fuente). Corrido junto a la base de un árbol de Archwood, lo convierte en un Weald Walker, un árbol vivo que custodia el lugar que le asignás con la Varita de Dominio. Cerca de amatista brotante da en cambio un amuleto de Golem de amatista.\n\nAumentado con un libro y pluma crea amuletos de Bookwyrm para el Atril de almacenamiento. Un Weald Walker muerto se vuelve un Weald Waddler que vuelve a crecer; el polvo de hueso lo acelera."
+   ],
+   "sources": [
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:data/ars_nouveau/recipe/ritual_awakening.json",
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:assets/ars_nouveau/patchouli_books/worn_notebook/en_us/entries/rituals/ritual_awakening.json",
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:assets/ars_nouveau/lang/en_us.json#ars_nouveau.page1.weald_walker",
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:assets/ars_nouveau/lang/en_us.json#ars_nouveau.page1.weald_waddler"
+   ]
+  },
+  {
+   "key": "arsrit_more_rituals",
+   "deps": [
+    "arsrit_harvest"
+   ],
+   "type": "checkmark",
+   "optional": true,
+   "layout": {
+    "x": 21,
+    "y": 3,
+    "size": 1.0,
+    "shape": "circle"
+   },
+   "en_us": [
+    "Other rituals worth knowing",
+    "Cloudshaping clears the weather; gunpowder makes rain, a lapis block a storm. Fertility breeds animals nearby unless there are twenty or more. Disintegration kills monsters for Experience Gems worth double XP but no item drops. Burrowing digs four holes to bedrock. Challenge starts a raid in a village (an emerald raises it to maximum difficulty). Forestation, Flowering and the Conjure Island rituals reshape land.\n\nEvery one has a notebook page with its exact ingredients and augments."
+   ],
+   "es_es": [
+    "Otros rituales que conviene conocer",
+    "Formanubes despeja el clima; con pólvora hace llover, con un bloque de lapislázuli, tormenta. Fertilidad cría a los animales cercanos salvo que haya veinte o más. Desintegración mata monstruos a cambio de Gemas de experiencia que valen el doble de XP, sin drops. Excavación cava cuatro pozos hasta la roca madre. Reto arranca una invasión en una aldea (una esmeralda la sube a la dificultad máxima). Forestación, Floración y las Islas conjuradas remodelan el terreno.\n\nCada uno tiene su página en el cuaderno con ingredientes y aumentos exactos."
+   ],
+   "sources": [
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:assets/ars_nouveau/patchouli_books/worn_notebook/en_us/entries/rituals/ritual_cloudshaping.json",
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:assets/ars_nouveau/patchouli_books/worn_notebook/en_us/entries/rituals/ritual_fertility.json",
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:assets/ars_nouveau/patchouli_books/worn_notebook/en_us/entries/rituals/ritual_disintegration.json",
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:assets/ars_nouveau/patchouli_books/worn_notebook/en_us/entries/rituals/ritual_burrowing.json",
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:assets/ars_nouveau/patchouli_books/worn_notebook/en_us/entries/rituals/ritual_challenge.json",
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:assets/ars_nouveau/patchouli_books/worn_notebook/en_us/entries/rituals/ritual_forestation.json"
+   ]
+  },
+  {
+   "key": "arsrit_flight_quirk",
+   "deps": [
+    "arsrit_awakening"
+   ],
+   "type": "item",
+   "item": "ars_nouveau:ritual_flight",
+   "optional": true,
+   "layout": {
+    "x": 24,
+    "y": -3,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Quirk: the Flight ritual is local",
+    "The Flight ritual (a vexing archwood log, three Wilden wings, two diamonds and an ender pearl) gives creative-style flight to players near the brazier when they jump, and refreshes it while they stay close, spending Source each time.\n\nIt is a building aid, not travel: leave the area and you fall. ENTRELUMEN keeps it native. Portable flight in the pack (Rending Gale, elite jetpacks, flight upgrades) is staged to Act IV with a Horizon Chart."
+   ],
+   "es_es": [
+    "Particularidad: el ritual de Vuelo es local",
+    "El ritual de Vuelo (un tronco de Archwood irritante, tres alas de Wilden, dos diamantes y una perla de ender) da vuelo estilo creativo a los jugadores cerca del brasero cuando saltan, y lo renueva mientras sigan cerca, gastando Fuente cada vez.\n\nEs una ayuda para construir, no para viajar: si te alejás, caés. ENTRELUMEN lo deja nativo. El vuelo portátil del pack (Rending Gale, jetpacks de élite, mejoras de vuelo) está escalonado al acto IV con una Carta de horizontes."
+   ],
+   "sources": [
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:data/ars_nouveau/recipe/ritual_flight.json",
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:assets/ars_nouveau/patchouli_books/worn_notebook/en_us/entries/rituals/ritual_flight.json",
+    "repo:docs/design/arcane-expansion-family.md#staged-acquisition-and-removed-duplication"
+   ]
+  },
+  {
+   "key": "arsrit_binding",
+   "deps": [
+    "arsrit_containment"
+   ],
+   "type": "item",
+   "item": "ars_nouveau:familiar_starbuncle",
+   "layout": {
+    "x": 24,
+    "y": 0,
+    "size": 1.5,
+    "shape": "hexagon"
+   },
+   "en_us": [
+    "Binding: your first familiar",
+    "Craft the Binding ritual (a vexing archwood log, Blank Parchment, an ender pearl and three Source Gems). Run it near an eligible creature, a Starbuncle for your first one, and it turns the creature into a Bound Script. Use the script to learn that familiar.\n\nOpen your spell book's crafting menu, go to the Familiars section and pick one: it appears next to you and you get Familiar Sickness for a short time, so you cannot swap instantly."
+   ],
+   "es_es": [
+    "Vinculación: tu primer familiar",
+    "Crafteá el ritual de Vinculación (un tronco de Archwood irritante, Pergamino vacío, una perla de ender y tres gemas fuente). Corrido cerca de una criatura válida, un Carbuncle para el primero, la convierte en una Escritura vinculada. Usala para aprender ese familiar.\n\nAbrí el menú de creación del grimorio, andá a la sección de Familiares y elegí uno: aparece a tu lado y te da Mareo de familiar por un rato, así que no podés cambiarlo al instante."
+   ],
+   "sources": [
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:data/ars_nouveau/recipe/ritual_binding.json",
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:assets/ars_nouveau/lang/en_us.json#ars_nouveau.page1.summoning_familiars",
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:assets/ars_nouveau/lang/en_us.json#ars_nouveau.page2.summoning_familiars"
+   ]
+  },
+  {
+   "key": "arsrit_familiars",
+   "deps": [
+    "arsrit_binding"
+   ],
+   "type": "checkmark",
+   "layout": {
+    "x": 27,
+    "y": 0,
+    "size": 1.0,
+    "shape": "circle"
+   },
+   "en_us": [
+    "Which familiar does what",
+    "Starbuncle: Speed II; feed it a gold nugget for a short Scrying on gold ore. Bookwyrm: picks up items and XP within 5 blocks (toggle it with the familiar hotkey). Drygmy: +2 damage to Earth spells and extra looting. Whirlisprig: Earth glyphs cost half and food saturates more. Wixie: longer potion effects, and it throws harmful potions at enemies. Amethyst Golem: halves knockback; give it an amethyst shard for Shielding.\n\nArs Elemental adds three more: Flarecannon (fire), Siren (water) and Flashjack (lightning)."
+   ],
+   "es_es": [
+    "Qué hace cada familiar",
+    "Carbuncle: Velocidad II; dale una pepita de oro y te da un rato de Escudriñar sobre mena de oro. Bookwyrm: junta ítems y XP a 5 bloques (activalo y apagalo con la tecla de familiar). Drygmy: +2 de daño a los hechizos de Tierra y botín extra. Whirlisprig: los glifos de Tierra cuestan la mitad y la comida sacia más. Wixie: efectos de poción más largos y tira pociones dañinas a los enemigos. Golem de amatista: reduce el empuje a la mitad; dale un fragmento de amatista y te da Escudo.\n\nArs Elemental suma tres más: Flarecannon (fuego), Sirena (agua) y Flashjack (rayo)."
+   ],
+   "sources": [
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:assets/ars_nouveau/patchouli_books/worn_notebook/en_us/entries/familiars/familiar_starbuncle.json",
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:assets/ars_nouveau/patchouli_books/worn_notebook/en_us/entries/familiars/familiar_bookwyrm.json",
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:assets/ars_nouveau/patchouli_books/worn_notebook/en_us/entries/familiars/familiar_drygmy.json",
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:assets/ars_nouveau/patchouli_books/worn_notebook/en_us/entries/familiars/familiar_whirlisprig.json",
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:assets/ars_nouveau/patchouli_books/worn_notebook/en_us/entries/familiars/familiar_wixie.json",
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:assets/ars_nouveau/patchouli_books/worn_notebook/en_us/entries/familiars/familiar_amethyst_golem.json",
+    "jar:ars_elemental-1.21.1-0.7.10.1.jar:assets/ars_elemental/lang/en_us.json#ars_elemental.familiar_desc.firenando_familiar"
+   ]
+  },
+  {
+   "key": "arsrit_familiar_cost",
+   "deps": [
+    "arsrit_familiars"
+   ],
+   "type": "checkmark",
+   "optional": true,
+   "layout": {
+    "x": 27,
+    "y": 3,
+    "size": 1.0,
+    "shape": "circle"
+   },
+   "en_us": [
+    "Quirk: familiars reserve mana",
+    "A familiar reserves part of your maximum mana while it is out, so your mana bar looks shorter. Only one familiar is out at a time: summoning another dismisses the first. Cast Dispel on your own familiar to send it away.\n\nBound Scripts are tied to you: another player cannot learn your familiar from your book, they need their own Binding ritual."
+   ],
+   "es_es": [
+    "Particularidad: los familiares reservan maná",
+    "Un familiar reserva parte de tu maná máximo mientras está afuera, así que la barra se ve más corta. Sólo hay un familiar a la vez: invocar otro despide al primero. Lanzá Disipar sobre tu propio familiar para mandarlo de vuelta.\n\nLas Escrituras vinculadas quedan atadas a vos: otro jugador no puede aprender tu familiar de tu grimorio, necesita su propio ritual de Vinculación."
+   ],
+   "sources": [
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:assets/ars_nouveau/lang/en_us.json#ars_nouveau.page3.summoning_familiars",
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:assets/ars_nouveau/lang/en_us.json#ars_nouveau.page2.summoning_familiars"
+   ]
+  },
+  {
+   "key": "arsrit_bookwyrm_fam",
+   "deps": [
+    "arsrit_familiars"
+   ],
+   "type": "item",
+   "item": "ars_nouveau:familiar_bookwyrm",
+   "optional": true,
+   "layout": {
+    "x": 30,
+    "y": -3,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "A second familiar: Bookwyrm",
+    "Summon a Bookwyrm from a Bookwyrm charm (the Awakening ritual makes them when augmented with a book and quill), run Binding next to it and learn the script. As a familiar it works as an item and XP magnet within 5 blocks, ignoring items you throw.\n\nIt is the best travel familiar for mining trips; swap to the Starbuncle for speed on the surface."
+   ],
+   "es_es": [
+    "Un segundo familiar: Bookwyrm",
+    "Invocá un Bookwyrm con su amuleto (el ritual de Despertar los hace si lo aumentás con libro y pluma), corré Vinculación al lado y aprendé la escritura. Como familiar funciona de imán de ítems y XP a 5 bloques, ignorando lo que tirás vos.\n\nEs el mejor familiar para expediciones de minería; cambiá al Carbuncle para correr en la superficie."
+   ],
+   "sources": [
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:assets/ars_nouveau/patchouli_books/worn_notebook/en_us/entries/familiars/familiar_bookwyrm.json",
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:assets/ars_nouveau/patchouli_books/worn_notebook/en_us/entries/rituals/ritual_awakening.json"
+   ]
+  },
+  {
+   "key": "arsrit_brazier_relay",
+   "deps": [
+    "arsrit_familiar_cost"
+   ],
+   "type": "item",
+   "item": "ars_nouveau:brazier_relay",
+   "optional": true,
+   "layout": {
+    "x": 30,
+    "y": 3,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Tip: Ritual Brazier Relay",
+    "Upgrade a brazier into a Ritual Brazier Relay in the apparatus (three manipulation essences). Link the original brazier to the relay with the Dominion Wand and the ritual's effect happens around the relay instead, up to 15 blocks away; Source is still paid at the original brazier.\n\nUse it to keep the brazier and its jars inside your workshop while Sanctuary or Harvest act on a field outside."
+   ],
+   "es_es": [
+    "Tip: Relevo de brasero ritual",
+    "Mejorá un brasero a Relevo de brasero ritual en el aparato (tres esencias de manipulación). Enlazá el brasero original al relevo con la Varita de Dominio y el efecto del ritual ocurre alrededor del relevo, hasta 15 bloques; la Fuente se sigue pagando en el brasero original.\n\nSirve para dejar el brasero y sus frascos dentro del taller mientras Santuario o Cosecha actúan sobre un campo afuera."
+   ],
+   "sources": [
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:data/ars_nouveau/recipe/brazier_relay.json",
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:assets/ars_nouveau/patchouli_books/worn_notebook/en_us/entries/machines/brazier_relay.json"
+   ]
+  },
+  {
+   "key": "arsrit_mastery",
+   "deps": [
+    "arsrit_familiars"
+   ],
+   "type": "checkmark",
+   "layout": {
+    "x": 33,
+    "y": 0,
+    "size": 2.0,
+    "shape": "gear"
+   },
+   "en_us": [
+    "Mastery: a ritual circle",
+    "A mature Ars base runs several braziers at once: Sanctuary over the base, Harvest on the fields, a Containment bench for helpers, and a Binding tablet ready for the next familiar.\n\nNext stop: chapter IV, where the creatures you captured or befriended start doing real work."
+   ],
+   "es_es": [
+    "Maestría: un círculo ritual",
+    "Una base madura de Ars corre varios braseros a la vez: Santuario sobre la base, Cosecha en los campos, un banco de Contención para los ayudantes y una tabla de Vinculación lista para el próximo familiar.\n\nPróxima parada: el capítulo IV, donde las criaturas que capturaste o amigaste empiezan a trabajar de verdad."
+   ],
+   "sources": [
+    "jar:ars_nouveau-1.21.1-5.13.1.jar:assets/ars_nouveau/lang/en_us.json#ars_nouveau.page1.magical_automation"
+   ]
+  }
+ ]
+}
