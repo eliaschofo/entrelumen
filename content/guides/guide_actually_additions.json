@@ -1,0 +1,447 @@
+{
+ "chapter": "guide_actually_additions",
+ "group": "tech",
+ "act": "II",
+ "icon": "actuallyadditions:atomic_reconstructor",
+ "title": {
+  "en_us": "Actually Additions",
+  "es_es": "Actually Additions"
+ },
+ "subtitle": {
+  "en_us": "Black quartz, the Atomic Reconstructor and its crystals, generators, laser relays, phantomfaces and handy gadgets.",
+  "es_es": "Cuarzo negro, el Reconstructor atómico y sus cristales, generadores, relés láser, phantomfaces y aparatos útiles."
+ },
+ "quests": [
+  {
+   "key": "aa_welcome",
+   "deps": [],
+   "type": "checkmark",
+   "icon": "actuallyadditions:booklet",
+   "layout": {
+    "x": 0,
+    "y": 0,
+    "size": 2.0,
+    "shape": "hexagon"
+   },
+   "en_us": [
+    "A laser that makes crystals",
+    "A grab bag of automation around the Atomic Reconstructor, whose laser turns materials into crystals. Its Crystal Flux (CF) is plain FE. The Manual (paper and a canola seed) covers everything; craftable, not free. AA crystals go into two act components."
+   ],
+   "es_es": [
+    "Un láser que hace cristales",
+    "Una bolsa de sorpresas de automatización alrededor del Reconstructor atómico, cuyo láser convierte materiales en cristales. Su Flujo cristalino (CF) es FE común. El Manual (papel y una semilla de canola) cubre todo; se craftea, no es gratis. Los cristales de AA van en dos componentes de acto."
+   ],
+   "sources": [
+    "jar:actuallyadditions-1.3.26+mc1.21.1.jar:assets/actuallyadditions/lang/en_us.json#booklet.actuallyadditions.chapter.rf.text.1",
+    "jar:actuallyadditions-1.3.26+mc1.21.1.jar:data/actuallyadditions/recipe/booklet.json",
+    "repo:pack/config/actuallyadditions-common.toml"
+   ]
+  },
+  {
+   "key": "aa_quartz",
+   "deps": [
+    "aa_welcome"
+   ],
+   "type": "item",
+   "item": "actuallyadditions:iron_casing",
+   "count": 4,
+   "layout": {
+    "x": 3,
+    "y": 0,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Black Quartz and the Iron Casing",
+    "Black Quartz ore spawns underground; smelt or crush it. Four iron, four sticks and a black quartz make the Iron Casing, frame of AA machines. Keep a few: the Energy Coupler (II) takes one."
+   ],
+   "es_es": [
+    "Cuarzo negro y la Carcasa de hierro",
+    "El mineral de Cuarzo negro aparece bajo tierra; fundilo o trituralo. Cuatro de hierro, cuatro palos y un cuarzo negro hacen la Carcasa de hierro, el armazón de las máquinas de AA. Guardá algunas: el Acoplador de energía (II) lleva una."
+   ],
+   "sources": [
+    "jar:actuallyadditions-1.3.26+mc1.21.1.jar:data/actuallyadditions/recipe/black_quartz_ore_smelting.json",
+    "jar:actuallyadditions-1.3.26+mc1.21.1.jar:data/actuallyadditions/recipe/iron_casing.json",
+    "repo:pack/kubejs/server_scripts/entrelumen_integration_recipes.js"
+   ]
+  },
+  {
+   "key": "aa_coalgen",
+   "deps": [
+    "aa_quartz"
+   ],
+   "type": "item",
+   "item": "actuallyadditions:coal_generator",
+   "layout": {
+    "x": 5.5,
+    "y": -2.5,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Coal Generator",
+    "Iron casing, coal and cobble. Burns anything a furnace burns, only starting new fuel when not full; redstone stops it, a comparator reads it. One runs a reconstructor. The Leaf Generator eats nearby leaves for CF."
+   ],
+   "es_es": [
+    "Generador a carbón",
+    "Carcasa de hierro, carbón y adoquín. Quema lo que quema un horno, y sólo arranca combustible nuevo si no está lleno; la redstone lo frena y un comparador lo lee. Uno alcanza para un reconstructor. El Generador de hojas come las hojas cercanas por CF."
+   ],
+   "sources": [
+    "jar:actuallyadditions-1.3.26+mc1.21.1.jar:data/actuallyadditions/recipe/coal_generator.json",
+    "jar:actuallyadditions-1.3.26+mc1.21.1.jar:assets/actuallyadditions/lang/en_us.json#booklet.actuallyadditions.chapter.coalGen.text.1",
+    "jar:actuallyadditions-1.3.26+mc1.21.1.jar:assets/actuallyadditions/lang/en_us.json#booklet.actuallyadditions.chapter.leafGen.text.1"
+   ]
+  },
+  {
+   "key": "aa_reconstructor",
+   "deps": [
+    "aa_quartz"
+   ],
+   "type": "item",
+   "item": "actuallyadditions:atomic_reconstructor",
+   "layout": {
+    "x": 5.5,
+    "y": 0,
+    "size": 1.5,
+    "shape": "hexagon"
+   },
+   "en_us": [
+    "Atomic Reconstructor",
+    "Each laser shot (1000 CF) converts what it hits: redstone to Restonia, lapis to Palis, diamond to Diamatine, emerald to Emeradic, iron to Enori, coal to Void. A redstone torch click toggles redstone-off and pulse modes."
+   ],
+   "es_es": [
+    "Reconstructor atómico",
+    "Cada disparo láser (1000 CF) convierte lo que toca: redstone en Restonia, lapislázuli en Palis, diamante en Diamatine, esmeralda en Emeradic, hierro en Enori, carbón en Void. Clic con una antorcha de redstone alterna los modos apagado por redstone y pulso."
+   ],
+   "sources": [
+    "jar:actuallyadditions-1.3.26+mc1.21.1.jar:data/actuallyadditions/recipe/atomic_reconstructor.json",
+    "jar:actuallyadditions-1.3.26+mc1.21.1.jar:assets/actuallyadditions/lang/en_us.json#booklet.actuallyadditions.chapter.crystals.text.1",
+    "jar:actuallyadditions-1.3.26+mc1.21.1.jar:assets/actuallyadditions/lang/en_us.json#booklet.actuallyadditions.chapter.crystals.text.2",
+    "jar:actuallyadditions-1.3.26+mc1.21.1.jar:assets/actuallyadditions/lang/en_us.json#booklet.actuallyadditions.chapter.crystals.text.3",
+    "jar:actuallyadditions-1.3.26+mc1.21.1.jar:data/actuallyadditions/recipe/laser/crystalize_restonia_crystal.json",
+    "jar:actuallyadditions-1.3.26+mc1.21.1.jar:data/actuallyadditions/recipe/laser/crystalize_palis_crystal.json",
+    "jar:actuallyadditions-1.3.26+mc1.21.1.jar:data/actuallyadditions/recipe/laser/crystalize_void_crystal.json"
+   ]
+  },
+  {
+   "key": "aa_components",
+   "deps": [
+    "aa_reconstructor"
+   ],
+   "type": "checkmark",
+   "icon": "entrelumen:energy_coupler",
+   "layout": {
+    "x": 5.5,
+    "y": 2.5,
+    "size": 1.0,
+    "shape": "gear"
+   },
+   "en_us": [
+    "Crystals in the act components",
+    "Energy Coupler (II): 2 Restonia, an Iron Casing and 2 Create andesite alloys. Routing Matrix (III): 2 Palis. AA itself is native and one of the pack's free early power sources; a coal generator and a reconstructor cover both."
+   ],
+   "es_es": [
+    "Cristales en los componentes de acto",
+    "Acoplador de energía (II): 2 Restonia, una Carcasa de hierro y 2 aleaciones de andesita de Create. Matriz de distribución (III): 2 Palis. AA en sí es nativo y una de las fuentes de energía temprana libres del pack; un generador a carbón y un reconstructor cubren las dos."
+   ],
+   "sources": [
+    "repo:pack/kubejs/server_scripts/entrelumen_integration_recipes.js",
+    "repo:docs/research/reference-packs.md"
+   ]
+  },
+  {
+   "key": "aa_lenses",
+   "deps": [
+    "aa_reconstructor"
+   ],
+   "type": "item",
+   "item": "actuallyadditions:lens_of_the_miner",
+   "optional": true,
+   "layout": {
+    "x": 8,
+    "y": -2.5,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Reconstructor lenses",
+    "Right-click it with a lens: Color recolours, the Miner turns stone into ores (netherrack into nether ores), Disenchanting moves one enchantment to a book, Detonation explodes, Certain Death kills, players included: fence it off. Without a lens it splits multi-enchantment books (155,000 CF each)."
+   ],
+   "es_es": [
+    "Lentes del reconstructor",
+    "Clic derecho con una lente: Color recolorea, Minero convierte piedra en minerales (netherrack en minerales del Nether), Desencantar pasa un encantamiento a un libro, Detonación explota, Muerte segura mata, jugadores incluidos: cercala. Sin lente separa libros con varios encantamientos (155.000 CF cada uno)."
+   ],
+   "sources": [
+    "jar:actuallyadditions-1.3.26+mc1.21.1.jar:assets/actuallyadditions/lang/en_us.json#booklet.actuallyadditions.chapter.reconstructorLenses.text.1",
+    "jar:actuallyadditions-1.3.26+mc1.21.1.jar:assets/actuallyadditions/lang/en_us.json#booklet.actuallyadditions.chapter.lensColor.text.1",
+    "jar:actuallyadditions-1.3.26+mc1.21.1.jar:assets/actuallyadditions/lang/en_us.json#booklet.actuallyadditions.chapter.lensMining.text.1",
+    "jar:actuallyadditions-1.3.26+mc1.21.1.jar:assets/actuallyadditions/lang/en_us.json#booklet.actuallyadditions.chapter.lensDisenchanting.text.1",
+    "jar:actuallyadditions-1.3.26+mc1.21.1.jar:assets/actuallyadditions/lang/en_us.json#booklet.actuallyadditions.chapter.lensDetonation.text.1",
+    "jar:actuallyadditions-1.3.26+mc1.21.1.jar:assets/actuallyadditions/lang/en_us.json#booklet.actuallyadditions.chapter.lensDeath.text.1",
+    "jar:actuallyadditions-1.3.26+mc1.21.1.jar:assets/actuallyadditions/lang/en_us.json#booklet.actuallyadditions.chapter.bookSplitting.text.1"
+   ]
+  },
+  {
+   "key": "aa_empowerer",
+   "deps": [
+    "aa_reconstructor"
+   ],
+   "type": "item",
+   "item": "actuallyadditions:empowerer",
+   "layout": {
+    "x": 8,
+    "y": 0,
+    "size": 1.5,
+    "shape": "hexagon"
+   },
+   "en_us": [
+    "Empowerer",
+    "Crystal on the Empowerer, the four listed modifiers on Display Stands around it, power: Empowered crystal. Empowered Restonia wants red dye, a nether brick, redstone and a brick. Item laser relays can deliver the modifiers automatically."
+   ],
+   "es_es": [
+    "Potenciador",
+    "Cristal sobre el Potenciador, los cuatro modificadores listados en Exhibidores alrededor, energía: cristal Potenciado. La Restonia potenciada pide tinte rojo, un ladrillo del Nether, redstone y un ladrillo. Los relés láser de ítems pueden llevar los modificadores solos."
+   ],
+   "sources": [
+    "jar:actuallyadditions-1.3.26+mc1.21.1.jar:data/actuallyadditions/recipe/empowerer.json",
+    "jar:actuallyadditions-1.3.26+mc1.21.1.jar:data/actuallyadditions/recipe/empowering/restonia.json",
+    "jar:actuallyadditions-1.3.26+mc1.21.1.jar:assets/actuallyadditions/lang/en_us.json#booklet.actuallyadditions.trials.empowererAutomation.text.1"
+   ]
+  },
+  {
+   "key": "aa_canola",
+   "deps": [
+    "aa_coalgen"
+   ],
+   "type": "item",
+   "item": "actuallyadditions:canola_press",
+   "optional": true,
+   "layout": {
+    "x": 5.5,
+    "y": -5,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Canola power",
+    "Wild canola, a Canola Press for oil, a Fermenting Barrel to refine it, an Oil Generator to burn either; crystallized oil burns better. A renewable early power plant."
+   ],
+   "es_es": [
+    "Energía de canola",
+    "Canola silvestre, una Prensa para el aceite, un Barril fermentador para refinarlo y un Generador de aceite que quema cualquiera de los dos; el aceite cristalizado rinde más. Una central temprana y renovable."
+   ],
+   "sources": [
+    "jar:actuallyadditions-1.3.26+mc1.21.1.jar:assets/actuallyadditions/lang/en_us.json#booklet.actuallyadditions.chapter.canola.text.1",
+    "jar:actuallyadditions-1.3.26+mc1.21.1.jar:assets/actuallyadditions/lang/en_us.json#booklet.actuallyadditions.chapter.canola.text.2",
+    "jar:actuallyadditions-1.3.26+mc1.21.1.jar:assets/actuallyadditions/lang/en_us.json#booklet.actuallyadditions.chapter.canola.text.5"
+   ]
+  },
+  {
+   "key": "aa_lasers",
+   "deps": [
+    "aa_empowerer"
+   ],
+   "type": "item",
+   "item": "actuallyadditions:laser_relay",
+   "count": 4,
+   "layout": {
+    "x": 10.5,
+    "y": 0,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Laser relays",
+    "Link relays with the Laser Wrench (click one, then the other; again to unlink). Energy relays move CF wirelessly in three tiers; Fluid relays move liquids; Item relays plus an Item Interface turn every linked container into one inventory, Advanced ones filtering."
+   ],
+   "es_es": [
+    "Relés láser",
+    "Uní relés con la Llave láser (clic en uno y después en otro; otra vez para desunir). Los de energía mueven CF sin cables en tres niveles; los de fluidos mueven líquidos; los de ítems con una Interfaz convierten todo contenedor unido en un solo inventario, y los Avanzados filtran."
+   ],
+   "sources": [
+    "jar:actuallyadditions-1.3.26+mc1.21.1.jar:assets/actuallyadditions/lang/en_us.json#booklet.actuallyadditions.chapter.laserIntro.text.1",
+    "jar:actuallyadditions-1.3.26+mc1.21.1.jar:assets/actuallyadditions/lang/en_us.json#booklet.actuallyadditions.chapter.laserIntro.text.3",
+    "jar:actuallyadditions-1.3.26+mc1.21.1.jar:assets/actuallyadditions/lang/en_us.json#booklet.actuallyadditions.chapter.laserRelays.text.1",
+    "jar:actuallyadditions-1.3.26+mc1.21.1.jar:assets/actuallyadditions/lang/en_us.json#booklet.actuallyadditions.chapter.laserRelays.text.2",
+    "jar:actuallyadditions-1.3.26+mc1.21.1.jar:assets/actuallyadditions/lang/en_us.json#booklet.actuallyadditions.chapter.itemRelays.text.1",
+    "jar:actuallyadditions-1.3.26+mc1.21.1.jar:assets/actuallyadditions/lang/en_us.json#booklet.actuallyadditions.chapter.itemInterfaces.text.1",
+    "jar:actuallyadditions-1.3.26+mc1.21.1.jar:assets/actuallyadditions/lang/en_us.json#booklet.actuallyadditions.chapter.itemRelaysAdvanced.text.1"
+   ]
+  },
+  {
+   "key": "aa_phantom",
+   "deps": [
+    "aa_lasers"
+   ],
+   "type": "item",
+   "item": "actuallyadditions:phantom_itemface",
+   "optional": true,
+   "layout": {
+    "x": 10.5,
+    "y": 2.5,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Phantomfaces",
+    "A Phantomface acts as a linked block's inventory from a distance: pipe into a machine with no free faces. Liquiface and Energyface do fluids and CF; Phantom Boosters extend the range. Phantom Breakers and Placers work at a distance; the Player Interface reaches a player's inventory."
+   ],
+   "es_es": [
+    "Phantomfaces",
+    "Un Phantomface hace de inventario de un bloque vinculado a distancia: meté por caño a una máquina sin caras libres. El Liquiface y el Energyface hacen fluidos y CF; los Amplificadores fantasma estiran el alcance. Los Rompedores y Colocadores fantasma trabajan a distancia; la Interfaz de jugador llega al inventario de un jugador."
+   ],
+   "sources": [
+    "jar:actuallyadditions-1.3.26+mc1.21.1.jar:assets/actuallyadditions/lang/en_us.json#booklet.actuallyadditions.chapter.phantomfaces.text.1",
+    "jar:actuallyadditions-1.3.26+mc1.21.1.jar:assets/actuallyadditions/lang/en_us.json#booklet.actuallyadditions.chapter.phantomfaces.text.2",
+    "jar:actuallyadditions-1.3.26+mc1.21.1.jar:assets/actuallyadditions/lang/en_us.json#booklet.actuallyadditions.chapter.phantomfaces.text.7",
+    "jar:actuallyadditions-1.3.26+mc1.21.1.jar:assets/actuallyadditions/lang/en_us.json#booklet.actuallyadditions.chapter.phantomBreaker.text.1",
+    "jar:actuallyadditions-1.3.26+mc1.21.1.jar:assets/actuallyadditions/lang/en_us.json#booklet.actuallyadditions.chapter.playerInterface.text.1"
+   ]
+  },
+  {
+   "key": "aa_machines",
+   "deps": [
+    "aa_empowerer"
+   ],
+   "type": "item",
+   "item": "actuallyadditions:vertical_digger",
+   "optional": true,
+   "layout": {
+    "x": 8,
+    "y": 2.5,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Block machines",
+    "Breakers, Placers, Fluid Placers and Collectors act on the block ahead; the Long-Range Breaker reaches farther; the Vertical Digger mines down, ores only or everything. The Energizer charges CF items, the Enervator drains them, the Experience Solidifier bottles your levels as items."
+   ],
+   "es_es": [
+    "Máquinas de bloque",
+    "Rompedores, Colocadores, Colocadores y Colectores de fluidos actúan sobre el bloque de enfrente; el Rompedor de largo alcance llega más lejos; el Excavador vertical cava hacia abajo, sólo minerales o todo. El Energizador carga ítems de CF, el Enervador los descarga, el Solidificador de experiencia guarda tus niveles en ítems."
+   ],
+   "sources": [
+    "jar:actuallyadditions-1.3.26+mc1.21.1.jar:assets/actuallyadditions/lang/en_us.json#booklet.actuallyadditions.chapter.breaker.text.1",
+    "jar:actuallyadditions-1.3.26+mc1.21.1.jar:assets/actuallyadditions/lang/en_us.json#booklet.actuallyadditions.chapter.breaker.text.3",
+    "jar:actuallyadditions-1.3.26+mc1.21.1.jar:assets/actuallyadditions/lang/en_us.json#booklet.actuallyadditions.chapter.longRangeBreaker.text.1",
+    "jar:actuallyadditions-1.3.26+mc1.21.1.jar:assets/actuallyadditions/lang/en_us.json#booklet.actuallyadditions.chapter.miner.text.1",
+    "jar:actuallyadditions-1.3.26+mc1.21.1.jar:assets/actuallyadditions/lang/en_us.json#booklet.actuallyadditions.chapter.energizer.text.1",
+    "jar:actuallyadditions-1.3.26+mc1.21.1.jar:assets/actuallyadditions/lang/en_us.json#booklet.actuallyadditions.chapter.energizer.text.2",
+    "jar:actuallyadditions-1.3.26+mc1.21.1.jar:assets/actuallyadditions/lang/en_us.json#booklet.actuallyadditions.chapter.xpSolidifier.text.1"
+   ]
+  },
+  {
+   "key": "aa_drill",
+   "deps": [
+    "aa_machines"
+   ],
+   "type": "item",
+   "item": "actuallyadditions:drill_light_blue",
+   "optional": true,
+   "layout": {
+    "x": 8,
+    "y": 5,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Drill and rings",
+    "A CF pickaxe-shovel; sneak-right-click adds upgrades (speed, area, fortune, silk touch, block placing), each tier needing the one below. Rings: Magnetism pulls items, Growth speeds plants, Liquid Banning clears water and lava. The Teleport Staff jumps where you look."
+   ],
+   "es_es": [
+    "Taladro y anillos",
+    "Un pico-pala con CF; agachado y clic derecho suma mejoras (velocidad, área, fortuna, toque de seda, poner bloques), cada nivel pidiendo el anterior. Anillos: Magnetismo atrae ítems, Crecimiento acelera plantas, Prohibición de líquidos saca agua y lava. El Bastón de teletransporte te lleva a donde mirás."
+   ],
+   "sources": [
+    "jar:actuallyadditions-1.3.26+mc1.21.1.jar:assets/actuallyadditions/lang/en_us.json#booklet.actuallyadditions.chapter.drill.text.1",
+    "jar:actuallyadditions-1.3.26+mc1.21.1.jar:assets/actuallyadditions/lang/en_us.json#booklet.actuallyadditions.chapter.drill.text.2",
+    "jar:actuallyadditions-1.3.26+mc1.21.1.jar:assets/actuallyadditions/lang/en_us.json#booklet.actuallyadditions.chapter.magnetRing.text.1",
+    "jar:actuallyadditions-1.3.26+mc1.21.1.jar:assets/actuallyadditions/lang/en_us.json#booklet.actuallyadditions.chapter.growthRing.text.1",
+    "jar:actuallyadditions-1.3.26+mc1.21.1.jar:assets/actuallyadditions/lang/en_us.json#booklet.actuallyadditions.chapter.waterRemovalRing.text.1",
+    "jar:actuallyadditions-1.3.26+mc1.21.1.jar:assets/actuallyadditions/lang/en_us.json#booklet.actuallyadditions.chapter.staff.text.1"
+   ]
+  },
+  {
+   "key": "aa_auto",
+   "deps": [
+    "aa_reconstructor"
+   ],
+   "type": "checkmark",
+   "icon": "actuallyadditions:ranged_collector",
+   "layout": {
+    "x": 3,
+    "y": -2.5,
+    "size": 1.0,
+    "shape": "circle"
+   },
+   "en_us": [
+    "Automating crystals",
+    "Face the reconstructor into an Automatic Precision Dropper and put a Ranged Collector nearby with the crystals allow-listed. Drop raw materials in the dropper; the collector gathers the results. Works for any conversion."
+   ],
+   "es_es": [
+    "Automatizar cristales",
+    "Hacé que el reconstructor mire a un Dispensador de precisión automático y poné un Colector a distancia cerca con los cristales en su lista permitida. Tirá materiales en el dispensador; el colector junta los resultados. Sirve para cualquier conversión."
+   ],
+   "sources": [
+    "jar:actuallyadditions-1.3.26+mc1.21.1.jar:assets/actuallyadditions/lang/en_us.json#booklet.actuallyadditions.chapter.crystals.text.5",
+    "jar:actuallyadditions-1.3.26+mc1.21.1.jar:assets/actuallyadditions/lang/en_us.json#booklet.actuallyadditions.chapter.dropper.text.1"
+   ]
+  },
+  {
+   "key": "aa_farm",
+   "deps": [
+    "aa_machines"
+   ],
+   "type": "item",
+   "item": "actuallyadditions:farmer",
+   "optional": true,
+   "layout": {
+    "x": 10.5,
+    "y": 5,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Farmer and Feeder",
+    "The Farmer tills, plants and harvests a 9x9 in front: crops, cactus and cane on sand, wart on soul sand, melons and pumpkins in a checkerboard. The Feeder breeds animals with the right food and stops when the pen is full."
+   ],
+   "es_es": [
+    "Granjero y Alimentador",
+    "El Granjero ara, planta y cosecha un 9x9 al frente: cultivos, cactus y caña en arena, verruga en arena de almas, melones y zapallos en damero. El Alimentador cruza animales con la comida correcta y para cuando el corral está lleno."
+   ],
+   "sources": [
+    "jar:actuallyadditions-1.3.26+mc1.21.1.jar:assets/actuallyadditions/lang/en_us.json#booklet.actuallyadditions.chapter.farmer.text.1",
+    "jar:actuallyadditions-1.3.26+mc1.21.1.jar:assets/actuallyadditions/lang/en_us.json#booklet.actuallyadditions.chapter.farmer.text.3",
+    "jar:actuallyadditions-1.3.26+mc1.21.1.jar:assets/actuallyadditions/lang/en_us.json#booklet.actuallyadditions.chapter.farmer.text.6",
+    "jar:actuallyadditions-1.3.26+mc1.21.1.jar:assets/actuallyadditions/lang/en_us.json#booklet.actuallyadditions.chapter.feeder.text.1"
+   ]
+  },
+  {
+   "key": "aa_mastery",
+   "deps": [
+    "aa_lasers"
+   ],
+   "type": "item",
+   "item": "actuallyadditions:empowered_restonia_crystal",
+   "count": 4,
+   "layout": {
+    "x": 13,
+    "y": 0,
+    "size": 2.0,
+    "shape": "octagon"
+   },
+   "en_us": [
+    "Mastery: every crystal, empowered",
+    "An automated reconstructor line making every crystal, an Empowerer fed by item relays, and energy relays carrying CF across the base with no cables."
+   ],
+   "es_es": [
+    "Maestría: todos los cristales, potenciados",
+    "Una línea automática de reconstructor haciendo cada cristal, un Potenciador alimentado por relés de ítems, y relés de energía llevando CF por toda la base sin cables."
+   ],
+   "sources": [
+    "jar:actuallyadditions-1.3.26+mc1.21.1.jar:assets/actuallyadditions/lang/en_us.json#booklet.actuallyadditions.trials.empowererAutomation.text.1",
+    "jar:actuallyadditions-1.3.26+mc1.21.1.jar:assets/actuallyadditions/lang/en_us.json#booklet.actuallyadditions.chapter.laserRelays.text.1"
+   ]
+  }
+ ]
+}

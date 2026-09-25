@@ -1,0 +1,722 @@
+{
+ "chapter": "guide_create_brass",
+ "group": "tech",
+ "act": "II",
+ "icon": "create:precision_mechanism",
+ "title": {
+  "en_us": "Create: brass and automation",
+  "es_es": "Create: bronce y automatización"
+ },
+ "subtitle": {
+  "en_us": "Filters, deployers, mechanical arms, crafters and sequenced assembly: the second Create age.",
+  "es_es": "Filtros, desplegadores, brazos mecánicos, crafteadores y ensamblaje secuencial: la segunda era de Create."
+ },
+ "quests": [
+  {
+   "key": "cbr_welcome",
+   "deps": [],
+   "type": "checkmark",
+   "icon": "create:brass_ingot",
+   "layout": {
+    "x": 0,
+    "y": 0,
+    "size": 2.0,
+    "shape": "hexagon"
+   },
+   "en_us": [
+    "The brass age",
+    "Brass is where you stop moving items by hand: filtered logistics, the Deployer (a robot copy of you), the Mechanical Arm, Mechanical Crafters, Crushing Wheels and sequenced assembly, which chains machines to build one complex part."
+   ],
+   "es_es": [
+    "La era del bronce",
+    "Con bronce dejás de mover ítems a mano: logística con filtros, el Desplegador (una copia robot tuya), el Brazo mecánico, los Crafteadores mecánicos, las Ruedas trituradoras y el ensamblaje secuencial, que encadena máquinas para armar una pieza compleja."
+   ],
+   "sources": [
+    "jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#advancement.create.brass",
+    "jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#advancement.create.brass_casing"
+   ]
+  },
+  {
+   "key": "cbr_casing",
+   "deps": [
+    "cbr_welcome"
+   ],
+   "type": "item",
+   "item": "create:brass_casing",
+   "count": 8,
+   "layout": {
+    "x": 3,
+    "y": 0,
+    "size": 1.5,
+    "shape": "hexagon"
+   },
+   "en_us": [
+    "Brass Casing",
+    "A Brass Ingot on stripped wood: the body of the smart machines (crafters, arms, the speed controller, logistics blocks). A Deployer can apply it for you."
+   ],
+   "es_es": [
+    "Carcasa de bronce",
+    "Un Lingote de bronce sobre madera pelada: el cuerpo de las máquinas inteligentes (crafteadores, brazos, el controlador de velocidad, los bloques de logística). Un Desplegador te la puede aplicar."
+   ],
+   "sources": [
+    "jar:create-1.21.1-6.0.10.jar:data/create/recipe/item_application/brass_casing_from_log.json",
+    "jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#advancement.create.brass_casing"
+   ]
+  },
+  {
+   "key": "cbr_rose",
+   "deps": [
+    "cbr_casing"
+   ],
+   "type": "item",
+   "item": "create:polished_rose_quartz",
+   "count": 4,
+   "layout": {
+    "x": 5.5,
+    "y": 0,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Polished Rose Quartz",
+    "One quartz and eight redstone make Rose Quartz. Polish it with Sand Paper in hand (quartz in the off-hand or on the floor), or let a Deployer do it. Mekanism shortcut: the Enrichment Chamber polishes it and the Metallurgic Infuser makes it."
+   ],
+   "es_es": [
+    "Cuarzo rosa pulido",
+    "Un cuarzo y ocho redstone hacen Cuarzo rosa. Pulilo con Papel de lija en la mano (el cuarzo en la otra mano o en el piso), o dejá que lo haga un Desplegador. Atajo con Mekanism: la Cámara de enriquecimiento lo pule y el Infusor metalúrgico lo fabrica."
+   ],
+   "sources": [
+    "jar:create-1.21.1-6.0.10.jar:data/create/recipe/crafting/materials/rose_quartz.json",
+    "jar:create-1.21.1-6.0.10.jar:data/create/recipe/sandpaper_polishing/rose_quartz.json",
+    "jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#item.create.sand_paper.tooltip.behaviour1",
+    "jar:createaddition-1.7.0.jar:data/createaddition/recipe/compat/mekanism/rose_quartz_enriching.json",
+    "jar:createaddition-1.7.0.jar:data/createaddition/recipe/compat/mekanism/rose_quartz_metallurgic_infusing.json"
+   ]
+  },
+  {
+   "key": "cbr_tube",
+   "deps": [
+    "cbr_rose"
+   ],
+   "type": "item",
+   "item": "create:electron_tube",
+   "count": 8,
+   "layout": {
+    "x": 8,
+    "y": 0,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Electron Tube",
+    "Polished Rose Quartz on an Iron Sheet. The brain of every smart block: brass funnels and tunnels, deployers, crafters, smart chutes and observers. Make a handful; they go fast."
+   ],
+   "es_es": [
+    "Tubo de electrones",
+    "Cuarzo rosa pulido sobre una Placa de hierro. El cerebro de todo bloque inteligente: embudos y túneles de bronce, desplegadores, crafteadores, toboganes y observadores inteligentes. Hacé un puñado; vuelan."
+   ],
+   "sources": [
+    "jar:create-1.21.1-6.0.10.jar:data/create/recipe/crafting/materials/electron_tube.json"
+   ]
+  },
+  {
+   "key": "cbr_funnel",
+   "deps": [
+    "cbr_tube"
+   ],
+   "type": "item",
+   "item": "create:brass_funnel",
+   "count": 2,
+   "layout": {
+    "x": 8,
+    "y": 2.5,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Brass Funnel and Tunnel",
+    "A Brass Funnel moves up to a full stack, with an exact amount on its panel and a filter. A Brass Tunnel on a belt has a filter per side: inbound blocks, outbound sorts. Tunnels on side-by-side belts group up and spread items over every exit."
+   ],
+   "es_es": [
+    "Embudo y Túnel de bronce",
+    "Un Embudo de bronce mueve hasta un stack entero, con cantidad exacta en su panel y un filtro. Un Túnel de bronce sobre una cinta tiene filtro por lado: el de entrada bloquea, el de salida clasifica. Túneles en cintas vecinas se agrupan y reparten por todas las salidas."
+   ],
+   "sources": [
+    "jar:create-1.21.1-6.0.10.jar:data/create/recipe/crafting/logistics/brass_funnel.json",
+    "jar:create-1.21.1-6.0.10.jar:data/create/recipe/crafting/logistics/brass_tunnel.json",
+    "jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#create.ponder.brass_funnel",
+    "jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#create.ponder.brass_tunnel"
+   ]
+  },
+  {
+   "key": "cbr_tunnel_modes",
+   "deps": [
+    "cbr_funnel"
+   ],
+   "type": "checkmark",
+   "icon": "create:brass_tunnel",
+   "layout": {
+    "x": 8,
+    "y": 5,
+    "size": 1.0,
+    "shape": "circle"
+   },
+   "en_us": [
+    "Tunnel modes",
+    "Split spreads a stack evenly and skips full exits; Forced Split waits instead. Round Robin keeps stacks whole and cycles; Prefer Nearest favours the closest exit; Randomize picks at random; Synchronize Inputs waits for every belt. Prefer Nearest plus a Weighted Ejector splits exact amounts off a line."
+   ],
+   "es_es": [
+    "Modos del túnel",
+    "Dividir reparte un stack parejo y saltea salidas llenas; Dividir forzado espera. Round Robin mantiene los stacks enteros y rota; Preferir cercano favorece la salida más próxima; Aleatorio elige al azar; Sincronizar espera a todas las cintas. Preferir cercano con un Eyector separa cantidades exactas de una línea."
+   ],
+   "sources": [
+    "jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#create.ponder.brass_tunnel_modes",
+    "jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#create.ponder.weighted_ejector_tunnel"
+   ]
+  },
+  {
+   "key": "cbr_filters",
+   "deps": [
+    "cbr_funnel"
+   ],
+   "type": "item",
+   "item": "create:attribute_filter",
+   "optional": true,
+   "layout": {
+    "x": 10.5,
+    "y": 2.5,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Filters",
+    "A List Filter (iron nuggets and wool) matches a set of items; an Attribute Filter (brass nuggets and wool) matches by attribute, like «can be smelted» or a tag. Either one fits any Create filter slot and replaces a dozen single-item slots."
+   ],
+   "es_es": [
+    "Filtros",
+    "Un Filtro de lista (pepitas de hierro y lana) coincide con un grupo de ítems; un Filtro de atributos (pepitas de bronce y lana) coincide por atributo, como «se puede fundir» o un tag. Cualquiera entra en toda ranura de filtro de Create y reemplaza una docena de ranuras sueltas."
+   ],
+   "sources": [
+    "jar:create-1.21.1-6.0.10.jar:data/create/recipe/crafting/kinetics/filter.json",
+    "jar:create-1.21.1-6.0.10.jar:data/create/recipe/crafting/kinetics/attribute_filter.json",
+    "jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#create.item_attributes.crushable",
+    "jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#item.create.attribute_filter.tooltip.summary",
+    "jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#item.create.filter.tooltip.summary"
+   ]
+  },
+  {
+   "key": "cbr_smart",
+   "deps": [
+    "cbr_filters"
+   ],
+   "type": "item",
+   "item": "create:stockpile_switch",
+   "optional": true,
+   "layout": {
+    "x": 13,
+    "y": 2.5,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Smart Chute, Smart Observer, Threshold Switch",
+    "The Smart Chute adds a filter and stack size to a chute. The Smart Observer fires redstone when a container, belt, chute or pipe holds its filter item. The Threshold Switch turns on above an upper fill level and off below a lower one: wire it to a clutch for «stop when the chest is full»."
+   ],
+   "es_es": [
+    "Tobogán, Observador inteligente, Interruptor de umbral",
+    "El Tobogán inteligente le suma filtro y tamaño de stack a un tobogán. El Observador inteligente da redstone cuando un contenedor, cinta, tobogán o caño tiene su ítem de filtro. El Interruptor de umbral se prende sobre un nivel alto y se apaga bajo uno bajo: con un embrague, «parar cuando el cofre se llena»."
+   ],
+   "sources": [
+    "jar:create-1.21.1-6.0.10.jar:data/create/recipe/crafting/kinetics/smart_chute.json",
+    "jar:create-1.21.1-6.0.10.jar:data/create/recipe/crafting/logistics/content_observer.json",
+    "jar:create-1.21.1-6.0.10.jar:data/create/recipe/crafting/logistics/stockpile_switch.json",
+    "jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#create.ponder.smart_chute",
+    "jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#create.ponder.smart_observer",
+    "jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#create.ponder.threshold_switch"
+   ]
+  },
+  {
+   "key": "cbr_deployer",
+   "deps": [
+    "cbr_tube"
+   ],
+   "type": "item",
+   "item": "create:deployer",
+   "layout": {
+    "x": 10.5,
+    "y": 0,
+    "size": 1.5,
+    "shape": "hexagon"
+   },
+   "en_us": [
+    "Deployer",
+    "A mechanical player: it places, uses, activates, harvests and attacks at the spot two blocks ahead. Right-click by default; a wrench switches to left-click. With an item in hand it processes whatever sits below on a Depot or belt: sanding, casings, sequenced assembly steps."
+   ],
+   "es_es": [
+    "Desplegador",
+    "Un jugador mecánico: pone, usa, activa, cosecha y ataca en el lugar dos bloques adelante. Clic derecho por defecto; una llave lo pasa a izquierdo. Con un ítem en la mano procesa lo que haya abajo en un Depósito o cinta: lijado, carcasas, pasos de ensamblaje secuencial."
+   ],
+   "sources": [
+    "jar:create-1.21.1-6.0.10.jar:data/create/recipe/crafting/kinetics/deployer.json",
+    "jar:create-1.21.1-6.0.10.jar:data/create/recipe/crafting/kinetics/brass_hand.json",
+    "jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#create.ponder.deployer",
+    "jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#create.ponder.deployer_modes",
+    "jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#create.ponder.deployer_processing"
+   ]
+  },
+  {
+   "key": "cbr_deployer_tip",
+   "deps": [
+    "cbr_deployer"
+   ],
+   "type": "checkmark",
+   "icon": "create:brass_hand",
+   "layout": {
+    "x": 10.5,
+    "y": -2.5,
+    "size": 1.0,
+    "shape": "circle"
+   },
+   "en_us": [
+    "Deployer tricks",
+    "With a filter, a Deployer only acts while holding the matching item and only accepts that item. Redstone stops it after the current swing, so a short pulse off gives exactly one use. On a moving contraption it acts at every spot it passes. Two facing deployers fist-bump."
+   ],
+   "es_es": [
+    "Trucos del desplegador",
+    "Con filtro, un Desplegador sólo actúa si tiene el ítem que coincide y sólo acepta ese ítem. La redstone lo frena al terminar el golpe, así que un pulso corto da exactamente un uso. En un artefacto móvil actúa en cada lugar que cruza. Dos enfrentados chocan los puños."
+   ],
+   "sources": [
+    "jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#create.ponder.deployer",
+    "jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#create.ponder.deployer_redstone",
+    "jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#create.ponder.deployer_contraption",
+    "jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#advancement.create.fist_bump"
+   ]
+  },
+  {
+   "key": "cbr_arm",
+   "deps": [
+    "cbr_deployer"
+   ],
+   "type": "item",
+   "item": "create:mechanical_arm",
+   "layout": {
+    "x": 13,
+    "y": 0,
+    "size": 1.5,
+    "shape": "hexagon"
+   },
+   "en_us": [
+    "Mechanical Arm",
+    "Before placing it, right-click its targets with the arm in hand: blue is input, click again for yellow output. It then shuttles items between any number of them. Depots and funnels bridge blocks it cannot reach, and a Brass Funnel target lends the arm its filter."
+   ],
+   "es_es": [
+    "Brazo mecánico",
+    "Antes de ponerlo, hacé clic derecho en sus destinos con el brazo en la mano: azul es entrada, otro clic amarillo es salida. Después mueve ítems entre todos. Depósitos y embudos cubren los bloques que no alcanza, y un Embudo de bronce como destino le presta su filtro."
+   ],
+   "sources": [
+    "jar:create-1.21.1-6.0.10.jar:data/create/recipe/crafting/kinetics/mechanical_arm.json",
+    "jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#create.ponder.mechanical_arm",
+    "jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#create.ponder.mechanical_arm_filtering",
+    "jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#advancement.create.mechanical_arm"
+   ]
+  },
+  {
+   "key": "cbr_arm_modes",
+   "deps": [
+    "cbr_arm"
+   ],
+   "type": "checkmark",
+   "icon": "create:blaze_burner",
+   "layout": {
+    "x": 13,
+    "y": -2.5,
+    "size": 1.0,
+    "shape": "circle"
+   },
+   "en_us": [
+    "Arm modes",
+    "With several outputs: Round Robin cycles and skips full targets, Forced Round Robin waits, Prefer First fills the first target first. Redstone pauses it. Great first jobs: feeding Blaze Burners and serving Farmer's Delight pots and cutting boards."
+   ],
+   "es_es": [
+    "Modos del brazo",
+    "Con varias salidas: Round Robin rota y saltea destinos llenos, Round Robin forzado espera, Preferir primero llena el primero antes. La redstone lo pausa. Buenos primeros trabajos: alimentar Quemadores de blaze y atender ollas y tablas de cortar de Farmer's Delight."
+   ],
+   "sources": [
+    "jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#create.ponder.mechanical_arm_modes",
+    "jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#create.ponder.mechanical_arm_redstone",
+    "jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#advancement.create.arm_blaze_burner",
+    "jar:create-central-kitchen-2.6.2.jar:assets/create_central_kitchen/lang/en_us.json#create_central_kitchen.ponder.cutting_board.text_2"
+   ]
+  },
+  {
+   "key": "cbr_seq_tip",
+   "deps": [
+    "cbr_arm"
+   ],
+   "type": "checkmark",
+   "icon": "create:incomplete_precision_mechanism",
+   "layout": {
+    "x": 15.5,
+    "y": -2.5,
+    "size": 1.0,
+    "shape": "circle"
+   },
+   "en_us": [
+    "Sequenced assembly",
+    "Some parts are built in steps: the base becomes an unfinished item that passes a list of machines (deployers, press, spout, saw) a set number of times. EMI shows the steps and loops. A belt looping back to its start runs it hands-free; failed runs drop scrap."
+   ],
+   "es_es": [
+    "Ensamblaje secuencial",
+    "Algunas piezas se arman por pasos: la base se vuelve un ítem sin terminar que pasa por una lista de máquinas (desplegadores, prensa, surtidor, sierra) una cantidad fija de veces. EMI muestra pasos y vueltas. Una cinta que vuelve al inicio lo hace sola; las corridas fallidas tiran chatarra."
+   ],
+   "sources": [
+    "jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#create.recipe.assembly.repeat",
+    "jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#create.recipe.assembly.junk"
+   ]
+  },
+  {
+   "key": "cbr_precision",
+   "deps": [
+    "cbr_arm"
+   ],
+   "type": "item",
+   "item": "create:precision_mechanism",
+   "count": 4,
+   "layout": {
+    "x": 15.5,
+    "y": 0,
+    "size": 1.5,
+    "shape": "hexagon"
+   },
+   "en_us": [
+    "Precision Mechanism",
+    "Golden Sheet, then 5 loops of: deploy a Cogwheel, a Large Cogwheel and an Iron Nugget. About 80% become Precision Mechanisms, the rest scrap. It unlocks the Mechanical Arm, speed controller, train controls and Factory Gauge, and feeds two act components."
+   ],
+   "es_es": [
+    "Mecanismo de precisión",
+    "Placa de oro y 5 vueltas de: desplegar un Engranaje, un Engranaje grande y una Pepita de hierro. Cerca del 80% salen Mecanismos de precisión, el resto chatarra. Habilita el Brazo mecánico, el controlador de velocidad, los controles de tren y el Medidor de fábrica, y va en dos componentes de acto."
+   ],
+   "sources": [
+    "jar:create-1.21.1-6.0.10.jar:data/create/recipe/sequenced_assembly/precision_mechanism.json",
+    "jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#advancement.create.precision_mechanism"
+   ]
+  },
+  {
+   "key": "cbr_handling",
+   "deps": [
+    "cbr_precision"
+   ],
+   "type": "checkmark",
+   "icon": "entrelumen:handling_core",
+   "layout": {
+    "x": 15.5,
+    "y": 2.5,
+    "size": 1.0,
+    "shape": "gear"
+   },
+   "en_us": [
+    "Precision in the act components",
+    "Handling Core (Act III): 2 Modular Routers blank modules, a Precision Mechanism and a Power Regulator. The Spectral Lens (IV) takes one too. The Handling Core gates the RFTools Builder, the Refined Storage Autocrafter, the Compact Machines shrinking device and the Gyrodyne. Automate mechanisms early."
+   ],
+   "es_es": [
+    "Precisión en los componentes de acto",
+    "Núcleo de manipulación (acto III): 2 módulos en blanco de Modular Routers, un Mecanismo de precisión y un Regulador de energía. La Lente espectral (IV) también lleva uno. El Núcleo frena el Constructor de RFTools, el Autocrafteador de Refined Storage, el reductor de Compact Machines y el Girodino. Automatizá mecanismos temprano."
+   ],
+   "sources": [
+    "repo:pack/kubejs/server_scripts/entrelumen_integration_recipes.js",
+    "repo:pack/kubejs/server_scripts/entrelumen_rftools_balance.js",
+    "repo:pack/kubejs/server_scripts/entrelumen_pingpong_balance.js",
+    "repo:pack/kubejs/server_scripts/entrelumen_aircraft_balance.js",
+    "repo:pack/kubejs/server_scripts/entrelumen_industrial_balance.js"
+   ]
+  },
+  {
+   "key": "cbr_speed",
+   "deps": [
+    "cbr_precision"
+   ],
+   "type": "item",
+   "item": "create:rotation_speed_controller",
+   "optional": true,
+   "layout": {
+    "x": 18,
+    "y": -2.5,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Rotation Speed Controller",
+    "Brass casing and a precision mechanism: it drives a Large Cogwheel on top at the speed set on its panel. The Sequenced Gearshift instead runs a timed list of turns on each redstone pulse. Use the controller to run a line at exactly the speed a recipe or stress budget needs."
+   ],
+   "es_es": [
+    "Controlador de velocidad",
+    "Carcasa de bronce y un mecanismo de precisión: mueve un Engranaje grande arriba a la velocidad de su panel. La Caja de cambios secuenciada, en cambio, sigue una lista de giros con cada pulso de redstone. Usá el controlador para que una línea gire justo a lo que pide una receta o el estrés."
+   ],
+   "sources": [
+    "jar:create-1.21.1-6.0.10.jar:data/create/recipe/crafting/kinetics/rotation_speed_controller.json",
+    "jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#create.ponder.rotation_speed_controller",
+    "jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#create.ponder.sequenced_gearshift"
+   ]
+  },
+  {
+   "key": "cbr_crafter",
+   "deps": [
+    "cbr_precision"
+   ],
+   "type": "item",
+   "item": "create:mechanical_crafter",
+   "count": 9,
+   "layout": {
+    "x": 18,
+    "y": 0,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Mechanical Crafters",
+    "A grid of crafters automates any recipe, plus big ones like the 5x5 Crushing Wheels. Wrench their arrows so every path ends at one exit. Crafting starts when every slot is filled, or on a redstone pulse for smaller recipes. Slot Covers mark empty slots; linked backs share one input."
+   ],
+   "es_es": [
+    "Crafteadores mecánicos",
+    "Una grilla de crafteadores automatiza cualquier receta, más las grandes como las Ruedas trituradoras de 5x5. Con la llave, apuntá sus flechas para que todo camino termine en una salida. Craftean cuando cada ranura está llena, o con un pulso para recetas chicas. Las Tapas marcan ranuras vacías; los fondos unidos comparten entrada."
+   ],
+   "sources": [
+    "jar:create-1.21.1-6.0.10.jar:data/create/recipe/crafting/kinetics/mechanical_crafter.json",
+    "jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#create.ponder.mechanical_crafter",
+    "jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#create.ponder.mechanical_crafter_covers",
+    "jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#create.ponder.mechanical_crafter_connect"
+   ]
+  },
+  {
+   "key": "cbr_crushing",
+   "deps": [
+    "cbr_crafter"
+   ],
+   "type": "item",
+   "item": "create:crushing_wheel",
+   "count": 2,
+   "layout": {
+    "x": 20.5,
+    "y": 0,
+    "size": 1.5,
+    "shape": "hexagon"
+   },
+   "en_us": [
+    "Crushing Wheels",
+    "A pair from a 5x5 mechanical recipe (alloy, planks, stone). Place them side by side spinning into each other and drop items on top. Raw ore becomes Crushed Ore with a chance of XP nuggets; netherrack becomes Cinder Flour for Blaze Cakes. Speed is throughput."
+   ],
+   "es_es": [
+    "Ruedas trituradoras",
+    "Un par de una receta mecánica de 5x5 (aleación, tablones, piedra). Ponelas lado a lado girando hacia adentro y tirá ítems arriba. El mineral crudo sale triturado con chance de pepitas de XP; el netherrack, Harina de ceniza para Tortas de blaze. La velocidad es producción."
+   ],
+   "sources": [
+    "jar:create-1.21.1-6.0.10.jar:data/create/recipe/mechanical_crafting/crushing_wheel.json",
+    "jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#create.ponder.crushing_wheels",
+    "jar:create-1.21.1-6.0.10.jar:data/create/recipe/crushing/raw_iron.json",
+    "jar:create-1.21.1-6.0.10.jar:data/create/recipe/crushing/netherrack.json"
+   ]
+  },
+  {
+   "key": "cbr_ore_math",
+   "deps": [
+    "cbr_crushing"
+   ],
+   "type": "checkmark",
+   "icon": "create:crushed_raw_iron",
+   "layout": {
+    "x": 20.5,
+    "y": 2.5,
+    "size": 1.0,
+    "shape": "circle"
+   },
+   "en_us": [
+    "Create ore math",
+    "Raw iron gives 1 crushed (plus 75% of an XP nugget): smelt it for 1 ingot or wash it for 9 nuggets and 75% redstone. Gold washes into quartz, copper clay, zinc gunpowder. Silk-touched ores give 1.75 (stone) or 2.25 (deepslate). Other mods multiply more: see Ore processing."
+   ],
+   "es_es": [
+    "Cuentas de mineral en Create",
+    "El hierro crudo da 1 triturado (más 75% de una pepita de XP): fundilo por 1 lingote o lavalo por 9 pepitas y 75% de redstone. El oro lavado da cuarzo, el cobre arcilla, el zinc pólvora. Con Toque de seda: 1,75 (piedra) o 2,25 (pizarra). Otros mods multiplican más: mirá Procesamiento de minerales."
+   ],
+   "sources": [
+    "jar:create-1.21.1-6.0.10.jar:data/create/recipe/crushing/raw_iron.json",
+    "jar:create-1.21.1-6.0.10.jar:data/create/recipe/smelting/iron_ingot_from_crushed.json",
+    "jar:create-1.21.1-6.0.10.jar:data/create/recipe/splashing/crushed_raw_iron.json",
+    "jar:create-1.21.1-6.0.10.jar:data/create/recipe/splashing/crushed_raw_gold.json",
+    "jar:create-1.21.1-6.0.10.jar:data/create/recipe/splashing/crushed_raw_copper.json",
+    "jar:create-1.21.1-6.0.10.jar:data/create/recipe/splashing/crushed_raw_zinc.json",
+    "jar:create-1.21.1-6.0.10.jar:data/create/recipe/crushing/iron_ore.json",
+    "jar:create-1.21.1-6.0.10.jar:data/create/recipe/crushing/deepslate_iron_ore.json"
+   ]
+  },
+  {
+   "key": "cbr_spout",
+   "deps": [
+    "cbr_crushing"
+   ],
+   "type": "item",
+   "item": "create:spout",
+   "layout": {
+    "x": 23,
+    "y": -2.5,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Spout and Item Drain",
+    "A pipe-fed Spout fills whatever sits below: buckets, bottles, potions, honey, the lava in a Blaze Cake. An Item Drain does the reverse, pouring items' fluid into its buffer. Both are pipe-only machines."
+   ],
+   "es_es": [
+    "Surtidor y Drenaje",
+    "Un Surtidor alimentado por caño llena lo que tenga abajo: baldes, botellas, pociones, miel, la lava de una Torta de blaze. Un Drenaje hace lo contrario, vuelca el fluido de los ítems en su buffer. Los dos funcionan sólo con caños."
+   ],
+   "sources": [
+    "jar:create-1.21.1-6.0.10.jar:data/create/recipe/crafting/kinetics/spout.json",
+    "jar:create-1.21.1-6.0.10.jar:data/create/recipe/crafting/kinetics/item_drain.json",
+    "jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#create.ponder.spout_filling",
+    "jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#create.ponder.item_drain",
+    "jar:create-1.21.1-6.0.10.jar:data/create/recipe/filling/blaze_cake.json"
+   ]
+  },
+  {
+   "key": "cbr_cake",
+   "deps": [
+    "cbr_spout"
+   ],
+   "type": "item",
+   "item": "create:blaze_cake",
+   "count": 2,
+   "optional": true,
+   "layout": {
+    "x": 25.5,
+    "y": -2.5,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Blaze Cake",
+    "Compact egg, sugar and Cinder Flour into a Blaze Cake Base, then fill it with lava from a Spout. A Blaze Burner that eats it goes super-heated, which some recipes need. Arms or deployers keep cakes coming."
+   ],
+   "es_es": [
+    "Torta de blaze",
+    "Compactá huevo, azúcar y Harina de ceniza en una Base de torta, y llenala con lava de un Surtidor. Un Quemador que se la come queda sobrecalentado, lo que piden algunas recetas. Brazos o desplegadores mantienen el suministro."
+   ],
+   "sources": [
+    "jar:create-1.21.1-6.0.10.jar:data/create/recipe/compacting/blaze_cake.json",
+    "jar:create-1.21.1-6.0.10.jar:data/create/recipe/filling/blaze_cake.json",
+    "jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#create.ponder.blaze_burner",
+    "jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#create.recipe.heat_requirement.superheated"
+   ]
+  },
+  {
+   "key": "cbr_ejector",
+   "deps": [
+    "cbr_crafter"
+   ],
+   "type": "item",
+   "item": "create:weighted_ejector",
+   "optional": true,
+   "layout": {
+    "x": 18,
+    "y": 2.5,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Weighted Ejector",
+    "Sneak-click to aim it, then place it: anything set on it (items, mobs, you) gets launched to the target, straight ahead at any height. Aimed at an inventory it waits for space, and it can hold items until a stack size is reached."
+   ],
+   "es_es": [
+    "Eyector con peso",
+    "Agachado y clic para apuntarlo, después ponelo: lo que caiga encima (ítems, mobs, vos) sale disparado al objetivo, derecho adelante a cualquier altura. Si apunta a un inventario espera lugar, y puede juntar ítems hasta un tamaño de stack."
+   ],
+   "sources": [
+    "jar:create-1.21.1-6.0.10.jar:data/create/recipe/crafting/kinetics/weighted_ejector.json",
+    "jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#create.ponder.weighted_ejector"
+   ]
+  },
+  {
+   "key": "cbr_display",
+   "deps": [
+    "cbr_smart"
+   ],
+   "type": "item",
+   "item": "create:display_link",
+   "optional": true,
+   "layout": {
+    "x": 15.5,
+    "y": 5,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Display Links and Boards",
+    "A Display Link reads a source (stock, boiler status, train arrivals, stress) and writes it on a Display Board, Nixie Tubes or a sign. Click the display first, then place the link on the source. Boards need rotation and grow as big as you build them."
+   ],
+   "es_es": [
+    "Enlaces y Tableros de pantalla",
+    "Un Enlace de pantalla lee una fuente (stock, estado de caldera, llegadas de tren, estrés) y lo escribe en un Tablero, Tubos nixie o un cartel. Clic primero en la pantalla, después poné el enlace en la fuente. Los tableros necesitan rotación y crecen tanto como los armes."
+   ],
+   "sources": [
+    "jar:create-1.21.1-6.0.10.jar:data/create/recipe/crafting/logistics/display_link.json",
+    "jar:create-1.21.1-6.0.10.jar:data/create/recipe/crafting/kinetics/display_board.json",
+    "jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#create.ponder.display_link",
+    "jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#create.ponder.display_board"
+   ]
+  },
+  {
+   "key": "cbr_kitchen",
+   "deps": [
+    "cbr_arm_modes"
+   ],
+   "type": "checkmark",
+   "icon": "sliceanddice:slicer",
+   "layout": {
+    "x": 13,
+    "y": -5,
+    "size": 1.0,
+    "shape": "gear"
+   },
+   "en_us": [
+    "Automated kitchen",
+    "Central Kitchen automates Farmer's Delight pots, skillets, stoves and feasts; Slice and Dice's Slicer does the cutting board and its sprinklers water and fertilize. Pack config turns off the overlaps: no Slice and Dice basin cooking, no cutting-board recipes copied onto saws or deployers."
+   ],
+   "es_es": [
+    "Cocina automatizada",
+    "Central Kitchen automatiza ollas, sartenes, hornallas y banquetes de Farmer's Delight; el Rebanador de Slice and Dice hace la tabla de cortar y sus aspersores riegan y fertilizan. La config del pack apaga lo repetido: nada de cocina en cuenca de Slice and Dice, ni recetas de tabla copiadas a sierras o desplegadores."
+   ],
+   "sources": [
+    "repo:pack/config/sliceanddice-common.toml",
+    "repo:pack/config/create_central_kitchen-common.toml",
+    "repo:docs/design/mod-pingpong.md",
+    "jar:sliceanddice-4.3.4-neoforge.jar:assets/sliceanddice/lang/en_us.json#sliceanddice.ponder.slicer.header"
+   ]
+  },
+  {
+   "key": "cbr_mastery",
+   "deps": [
+    "cbr_crushing"
+   ],
+   "type": "item",
+   "item": "create:precision_mechanism",
+   "count": 16,
+   "layout": {
+    "x": 23,
+    "y": 1,
+    "size": 2.0,
+    "shape": "octagon"
+   },
+   "en_us": [
+    "Mastery: a self-running line",
+    "Precision Mechanisms with no hands: golden sheets in, one deployer per part, a belt that loops back, a funnel catching mechanisms and scrap. The same belt-machines-loop pattern builds every sequenced part in Create and its addons."
+   ],
+   "es_es": [
+    "Maestría: una línea que anda sola",
+    "Mecanismos de precisión sin manos: placas de oro adentro, un desplegador por pieza, una cinta que vuelve, un embudo que junta mecanismos y chatarra. El mismo patrón de cinta, máquinas y vuelta arma toda pieza secuencial de Create y sus addons."
+   ],
+   "sources": [
+    "jar:create-1.21.1-6.0.10.jar:data/create/recipe/sequenced_assembly/precision_mechanism.json",
+    "jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#advancement.create.precision_mechanism"
+   ]
+  }
+ ]
+}

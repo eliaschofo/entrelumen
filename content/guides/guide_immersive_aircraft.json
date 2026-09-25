@@ -1,0 +1,532 @@
+{
+ "chapter": "guide_immersive_aircraft",
+ "group": "tech",
+ "act": "III",
+ "icon": "immersive_aircraft:biplane",
+ "title": {
+  "en_us": "Immersive Aircraft",
+  "es_es": "Immersive Aircraft"
+ },
+ "subtitle": {
+  "en_us": "Airships, biplanes, a gyrodyne and more: parts, fuel, controls, repairs, upgrades and weapons.",
+  "es_es": "Dirigibles, biplanos, un girodino y más: piezas, combustible, controles, reparaciones, mejoras y armas."
+ },
+ "quests": [
+  {
+   "key": "ia_welcome",
+   "deps": [],
+   "type": "checkmark",
+   "icon": "immersive_aircraft:airship",
+   "layout": {
+    "x": 0,
+    "y": 0,
+    "size": 2.0,
+    "shape": "hexagon"
+   },
+   "en_us": [
+    "Seven flying machines",
+    "All crafted from a handful of parts on a crafting table. They fly in any dimension by default, carry cargo, take upgrades and mount weapons. Pack pacing: the Engine needs a Power Regulator and the Gyrodyne a Handling Core (Act III), which covers every aircraft. A gifted aircraft flies normally."
+   ],
+   "es_es": [
+    "Siete máquinas voladoras",
+    "Todas se craftean con unas pocas piezas en la mesa. Por defecto vuelan en cualquier dimensión, llevan carga, aceptan mejoras y montan armas. Ritmo del pack: el Motor pide un Regulador de energía y el Girodino un Núcleo de manipulación (acto III), lo que cubre todas las aeronaves. Una regalada vuela igual."
+   ],
+   "sources": [
+    "repo:pack/kubejs/server_scripts/entrelumen_aircraft_balance.js",
+    "repo:docs/design/aircraft-balance.md",
+    "jar:immersive_aircraft-1.5.2+1.21.1-neoforge.jar:immersive_aircraft/entity/VehicleEntity.class",
+    "jar:immersive_aircraft-1.5.2+1.21.1-neoforge.jar:immersive_aircraft/config/Config.class"
+   ]
+  },
+  {
+   "key": "ia_controls",
+   "deps": [
+    "ia_welcome"
+   ],
+   "type": "checkmark",
+   "icon": "minecraft:lever",
+   "layout": {
+    "x": 0,
+    "y": -2.5,
+    "size": 1.0,
+    "shape": "circle"
+   },
+   "en_us": [
+    "Controls and keys",
+    "W and S push and pull the controls, A and D turn, Space climbs and Left Shift descends; B fires a rocket boost on aircraft with a booster slot. In this pack Dismount is F12 (R is taken): press it twice in the air to jump out.\n\nThe camera switches to third person in an aircraft by default."
+   ],
+   "es_es": [
+    "Controles y teclas",
+    "W y S empujan y tiran de los controles, A y D giran, Espacio sube y Shift izquierdo baja; B dispara un impulso de cohete en las aeronaves con ranura de propulsor. En este pack, Bajarse es F12 (la R está ocupada): apretala dos veces en el aire para saltar.\n\nPor defecto la cámara pasa a tercera persona dentro de una aeronave."
+   ],
+   "sources": [
+    "jar:immersive_aircraft-1.5.2+1.21.1-neoforge.jar:immersive_aircraft/client/KeyBindings.class",
+    "repo:pack/config/entrelumen/client-preset.json",
+    "repo:docs/design/keybinding-review.md",
+    "jar:immersive_aircraft-1.5.2+1.21.1-neoforge.jar:assets/immersive_aircraft/lang/en_us.json#immersive_aircraft.tried_dismount",
+    "jar:immersive_aircraft-1.5.2+1.21.1-neoforge.jar:immersive_aircraft/config/Config.class"
+   ]
+  },
+  {
+   "key": "ia_hull",
+   "deps": [
+    "ia_welcome"
+   ],
+   "type": "item",
+   "item": "immersive_aircraft:hull",
+   "count": 2,
+   "layout": {
+    "x": 3,
+    "y": 0,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Hulls",
+    "Logs and iron ingots make the Hull, the frame of every aircraft. Most designs take two or more, and so does the Hull Reinforcement upgrade."
+   ],
+   "es_es": [
+    "Cascos",
+    "Troncos y lingotes de hierro hacen el Casco, el armazón de cada aeronave. La mayoría de los diseños pide dos o más, igual que la mejora de Refuerzo de casco."
+   ],
+   "sources": [
+    "jar:immersive_aircraft-1.5.2+1.21.1-neoforge.jar:data/immersive_aircraft/recipe/hull.json",
+    "jar:immersive_aircraft-1.5.2+1.21.1-neoforge.jar:data/immersive_aircraft/recipe/airship.json",
+    "jar:immersive_aircraft-1.5.2+1.21.1-neoforge.jar:data/immersive_aircraft/recipe/hull_reinforcement.json"
+   ]
+  },
+  {
+   "key": "ia_sail",
+   "deps": [
+    "ia_hull"
+   ],
+   "type": "item",
+   "item": "immersive_aircraft:sail",
+   "count": 6,
+   "optional": true,
+   "layout": {
+    "x": 3,
+    "y": -2.5,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Sails and propellers",
+    "Sails are white carpet and string; propellers are iron bent into shape. The airship wants six sails, the biplane one propeller, the quadrocopter four."
+   ],
+   "es_es": [
+    "Velas y hélices",
+    "Las Velas son alfombra blanca e hilo; las Hélices son hierro doblado. El dirigible quiere seis velas, el biplano una hélice y el cuadricóptero cuatro."
+   ],
+   "sources": [
+    "jar:immersive_aircraft-1.5.2+1.21.1-neoforge.jar:data/immersive_aircraft/recipe/sail.json",
+    "jar:immersive_aircraft-1.5.2+1.21.1-neoforge.jar:data/immersive_aircraft/recipe/propeller.json",
+    "jar:immersive_aircraft-1.5.2+1.21.1-neoforge.jar:data/immersive_aircraft/recipe/airship.json",
+    "jar:immersive_aircraft-1.5.2+1.21.1-neoforge.jar:data/immersive_aircraft/recipe/biplane.json",
+    "jar:immersive_aircraft-1.5.2+1.21.1-neoforge.jar:data/immersive_aircraft/recipe/quadrocopter.json"
+   ]
+  },
+  {
+   "key": "ia_boiler",
+   "deps": [
+    "ia_hull"
+   ],
+   "type": "item",
+   "item": "immersive_aircraft:boiler",
+   "layout": {
+    "x": 6,
+    "y": 0,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Boiler",
+    "Copper around a furnace makes the Boiler, heart of the Engine. The fuel slot of each aircraft is its boiler: it burns normal furnace fuels, and blaze powder counts as a strong fuel."
+   ],
+   "es_es": [
+    "Caldera",
+    "Cobre alrededor de un horno hace la Caldera, el corazón del Motor. La ranura de combustible de cada aeronave es su caldera: quema los combustibles normales del horno, y el polvo de blaze cuenta como un combustible fuerte."
+   ],
+   "sources": [
+    "jar:immersive_aircraft-1.5.2+1.21.1-neoforge.jar:data/immersive_aircraft/recipe/boiler.json",
+    "jar:immersive_aircraft-1.5.2+1.21.1-neoforge.jar:immersive_aircraft/config/Config.class",
+    "jar:immersive_aircraft-1.5.2+1.21.1-neoforge.jar:assets/immersive_aircraft/lang/en_us.json#immersive_aircraft.slot.boiler"
+   ]
+  },
+  {
+   "key": "ia_engine",
+   "deps": [
+    "ia_boiler"
+   ],
+   "type": "item",
+   "item": "immersive_aircraft:engine",
+   "layout": {
+    "x": 9,
+    "y": 0,
+    "size": 1.5,
+    "shape": "hexagon"
+   },
+   "en_us": [
+    "Engine",
+    "Boiler, pistons, a blast furnace and cobblestone make the Engine for the airship, biplane and quadrocopter.\n\nENTRELUMEN change: one cobblestone is replaced by a Power Regulator (Act III). Everything else in the recipe is native."
+   ],
+   "es_es": [
+    "Motor",
+    "Caldera, pistones, un alto horno y adoquín hacen el Motor para el dirigible, el biplano y el cuadricóptero.\n\nCambio de ENTRELUMEN: un adoquín se reemplaza por un Regulador de energía (acto III). El resto de la receta es nativa."
+   ],
+   "sources": [
+    "repo:pack/kubejs/server_scripts/entrelumen_aircraft_balance.js",
+    "repo:docs/design/aircraft-balance.md",
+    "jar:immersive_aircraft-1.5.2+1.21.1-neoforge.jar:data/immersive_aircraft/recipe/engine.json"
+   ]
+  },
+  {
+   "key": "ia_gyrodyne",
+   "deps": [
+    "ia_hull"
+   ],
+   "type": "item",
+   "item": "immersive_aircraft:gyrodyne",
+   "layout": {
+    "x": 3,
+    "y": 3,
+    "size": 1.5,
+    "shape": "hexagon"
+   },
+   "en_us": [
+    "Gyrodyne",
+    "A muscle-powered copter with no engine: two sails, two hulls and a propeller. Keep pushing forward on the ground until the rotor reaches minimum speed, then lift off. It burns your hunger, not fuel, so eat before a trip.\n\nENTRELUMEN change: the recipe adds a Handling Core (Act III) in a free slot."
+   ],
+   "es_es": [
+    "Girodino",
+    "Un helicóptero a pulmón, sin motor: dos velas, dos cascos y una hélice. Seguí empujando hacia adelante en el suelo hasta que el rotor llegue a la velocidad mínima, y despegá. Gasta tu hambre, no combustible, así que comé antes de salir.\n\nCambio de ENTRELUMEN: la receta suma un Núcleo de manipulación (acto III) en un hueco libre."
+   ],
+   "sources": [
+    "repo:pack/kubejs/server_scripts/entrelumen_aircraft_balance.js",
+    "repo:docs/design/aircraft-balance.md",
+    "jar:immersive_aircraft-1.5.2+1.21.1-neoforge.jar:data/immersive_aircraft/aircraft/gyrodyne.json",
+    "jar:immersive_aircraft-1.5.2+1.21.1-neoforge.jar:assets/immersive_aircraft/lang/en_us.json#item.immersive_aircraft.gyrodyne.description",
+    "jar:immersive_aircraft-1.5.2+1.21.1-neoforge.jar:assets/immersive_aircraft/lang/en_us.json#immersive_aircraft.gyrodyne_target_reached",
+    "jar:immersive_aircraft-1.5.2+1.21.1-neoforge.jar:assets/immersive_aircraft/lang/en_us.json#immersive_aircraft.fat.out"
+   ]
+  },
+  {
+   "key": "ia_airship",
+   "deps": [
+    "ia_engine"
+   ],
+   "type": "item",
+   "item": "immersive_aircraft:airship",
+   "layout": {
+    "x": 12,
+    "y": -2.5,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Airship",
+    "Six sails, two hulls and an engine. Slow and forgiving: it climbs and descends straight up and down and holds position, with a weapon slot, three upgrade slots and a 16-slot hold. The best first aircraft."
+   ],
+   "es_es": [
+    "Dirigible",
+    "Seis velas, dos cascos y un motor. Lento y amable: sube y baja en vertical y se queda quieto, con una ranura de arma, tres de mejora y una bodega de 16 ranuras. La mejor primera aeronave."
+   ],
+   "sources": [
+    "jar:immersive_aircraft-1.5.2+1.21.1-neoforge.jar:data/immersive_aircraft/recipe/airship.json",
+    "jar:immersive_aircraft-1.5.2+1.21.1-neoforge.jar:data/immersive_aircraft/aircraft/airship.json",
+    "jar:immersive_aircraft-1.5.2+1.21.1-neoforge.jar:assets/immersive_aircraft/lang/en_us.json#item.immersive_aircraft.airship.description"
+   ]
+  },
+  {
+   "key": "ia_biplane",
+   "deps": [
+    "ia_engine"
+   ],
+   "type": "item",
+   "item": "immersive_aircraft:biplane",
+   "layout": {
+    "x": 12,
+    "y": 0,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Biplane",
+    "Three hulls, an engine and a propeller. Fast and reliable, but it needs a runway: speed up on flat ground before pulling up, and land the same way. It has a booster slot for rockets."
+   ],
+   "es_es": [
+    "Biplano",
+    "Tres cascos, un motor y una hélice. Rápido y confiable, pero necesita pista: acelerá en terreno plano antes de levantar, y aterrizá igual. Tiene ranura de propulsor para cohetes."
+   ],
+   "sources": [
+    "jar:immersive_aircraft-1.5.2+1.21.1-neoforge.jar:data/immersive_aircraft/recipe/biplane.json",
+    "jar:immersive_aircraft-1.5.2+1.21.1-neoforge.jar:data/immersive_aircraft/aircraft/biplane.json",
+    "jar:immersive_aircraft-1.5.2+1.21.1-neoforge.jar:assets/immersive_aircraft/lang/en_us.json#item.immersive_aircraft.biplane.description"
+   ]
+  },
+  {
+   "key": "ia_quad",
+   "deps": [
+    "ia_engine"
+   ],
+   "type": "item",
+   "item": "immersive_aircraft:quadrocopter",
+   "optional": true,
+   "layout": {
+    "x": 12,
+    "y": 2.5,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Quadrocopter",
+    "An engine, four propellers and bamboo. Slow and precise, it hovers and barely feels the wind: great for building high up, not for travel. It sips fuel."
+   ],
+   "es_es": [
+    "Cuadricóptero",
+    "Un motor, cuatro hélices y bambú. Lento y preciso, flota quieto y casi no siente el viento: ideal para construir en altura, no para viajar. Gasta poco combustible."
+   ],
+   "sources": [
+    "jar:immersive_aircraft-1.5.2+1.21.1-neoforge.jar:data/immersive_aircraft/recipe/quadrocopter.json",
+    "jar:immersive_aircraft-1.5.2+1.21.1-neoforge.jar:data/immersive_aircraft/aircraft/quadrocopter.json",
+    "jar:immersive_aircraft-1.5.2+1.21.1-neoforge.jar:assets/immersive_aircraft/lang/en_us.json#item.immersive_aircraft.quadrocopter.description"
+   ]
+  },
+  {
+   "key": "ia_cargo",
+   "deps": [
+    "ia_airship"
+   ],
+   "type": "item",
+   "item": "immersive_aircraft:cargo_airship",
+   "layout": {
+    "x": 15,
+    "y": -2.5,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Cargo Airship",
+    "An airship plus chests and a hull: extra boxed storage on both sides for moving a whole base, at the cost of more fuel and even less speed."
+   ],
+   "es_es": [
+    "Dirigible de carga",
+    "Un dirigible más cofres y un casco: almacenamiento extra en cajas a los dos lados para mudar una base entera, a cambio de más combustible y todavía menos velocidad."
+   ],
+   "sources": [
+    "jar:immersive_aircraft-1.5.2+1.21.1-neoforge.jar:data/immersive_aircraft/recipe/cargo_airship.json",
+    "jar:immersive_aircraft-1.5.2+1.21.1-neoforge.jar:data/immersive_aircraft/aircraft/cargo_airship.json",
+    "jar:immersive_aircraft-1.5.2+1.21.1-neoforge.jar:assets/immersive_aircraft/lang/en_us.json#item.immersive_aircraft.cargo_airship.description"
+   ]
+  },
+  {
+   "key": "ia_hopper",
+   "deps": [
+    "ia_biplane"
+   ],
+   "type": "item",
+   "item": "immersive_aircraft:bamboo_hopper",
+   "optional": true,
+   "layout": {
+    "x": 15,
+    "y": 0,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Bamboo Hopper",
+    "Built from two biplanes, five bamboo blocks, a hull and another engine. Three seats and pontoons let it land safely on water, with two weapon slots and a booster slot."
+   ],
+   "es_es": [
+    "Saltamontes de bambú",
+    "Se arma con dos biplanos, cinco bloques de bambú, un casco y otro motor. Tres asientos y flotadores le permiten acuatizar sin problemas, con dos ranuras de arma y una de propulsor."
+   ],
+   "sources": [
+    "jar:immersive_aircraft-1.5.2+1.21.1-neoforge.jar:data/immersive_aircraft/recipe/bamboo_hopper.json",
+    "jar:immersive_aircraft-1.5.2+1.21.1-neoforge.jar:data/immersive_aircraft/aircraft/bamboo_hopper.json",
+    "jar:immersive_aircraft-1.5.2+1.21.1-neoforge.jar:assets/immersive_aircraft/lang/en_us.json#item.immersive_aircraft.bamboo_hopper.description"
+   ]
+  },
+  {
+   "key": "ia_fuel",
+   "deps": [
+    "ia_boiler"
+   ],
+   "type": "checkmark",
+   "icon": "minecraft:blaze_powder",
+   "layout": {
+    "x": 6,
+    "y": -2.5,
+    "size": 1.0,
+    "shape": "circle"
+   },
+   "en_us": [
+    "Fuel and wind",
+    "Put fuel in the boiler slot before takeoff; the hotbar gauge shows the engine. Aircraft warn when fuel runs low. Wind pushes you around, three times harder in rain or thunder; the Gyroscope upgrades cancel it.\n\nUpgrades change fuel use: the Eco Engine saves a lot, the Nether Engine and Steel Boiler burn more for more power."
+   ],
+   "es_es": [
+    "Combustible y viento",
+    "Cargá combustible en la ranura de caldera antes de despegar; el indicador sobre la barra rápida muestra el motor. Las aeronaves avisan cuando queda poco. El viento te empuja, tres veces más con lluvia o tormenta; las mejoras de Giroscopio lo anulan.\n\nLas mejoras cambian el consumo: el Motor eco ahorra mucho, el Motor del Nether y la Caldera de acero queman más a cambio de más potencia."
+   ],
+   "sources": [
+    "jar:immersive_aircraft-1.5.2+1.21.1-neoforge.jar:immersive_aircraft/config/Config.class",
+    "jar:immersive_aircraft-1.5.2+1.21.1-neoforge.jar:assets/immersive_aircraft/lang/en_us.json#immersive_aircraft.fuel.low",
+    "jar:immersive_aircraft-1.5.2+1.21.1-neoforge.jar:assets/immersive_aircraft/lang/en_us.json#option.immersive_aircraft.showHotbarEngineGauge",
+    "jar:immersive_aircraft-1.5.2+1.21.1-neoforge.jar:data/immersive_aircraft/aircraft_upgrades/eco_engine.json",
+    "jar:immersive_aircraft-1.5.2+1.21.1-neoforge.jar:data/immersive_aircraft/aircraft_upgrades/nether_engine.json",
+    "jar:immersive_aircraft-1.5.2+1.21.1-neoforge.jar:data/immersive_aircraft/aircraft_upgrades/steel_boiler.json",
+    "jar:immersive_aircraft-1.5.2+1.21.1-neoforge.jar:data/immersive_aircraft/aircraft_upgrades/gyroscope.json"
+   ]
+  },
+  {
+   "key": "ia_repair",
+   "deps": [
+    "ia_welcome"
+   ],
+   "type": "checkmark",
+   "icon": "minecraft:iron_ingot",
+   "layout": {
+    "x": 0,
+    "y": 2.5,
+    "size": 1.0,
+    "shape": "circle"
+   },
+   "en_us": [
+    "Damage, repair and crashes",
+    "Right-click a damaged aircraft to repair it a little each click, at the cost of some hunger. Crashes make a small explosion that breaks no blocks and starts no fires, and by default a crash cannot kill you.\n\nBreaking an aircraft returns it as an item: its upgrades stay inside, its cargo drops on the ground."
+   ],
+   "es_es": [
+    "Daño, reparación y choques",
+    "Clic derecho en una aeronave dañada la repara un poco por clic, a cambio de algo de hambre. Los choques hacen una explosión chica que no rompe bloques ni prende fuego, y por defecto un choque no te puede matar.\n\nRomper una aeronave la devuelve como ítem: sus mejoras quedan adentro y su carga cae al piso."
+   ],
+   "sources": [
+    "jar:immersive_aircraft-1.5.2+1.21.1-neoforge.jar:immersive_aircraft/config/Config.class",
+    "jar:immersive_aircraft-1.5.2+1.21.1-neoforge.jar:assets/immersive_aircraft/lang/en_us.json#immersive_aircraft.repair",
+    "jar:immersive_aircraft-1.5.2+1.21.1-neoforge.jar:assets/immersive_aircraft/lang/en_us.json#option.immersive_aircraft.preventKillThroughCrash",
+    "jar:immersive_aircraft-1.5.2+1.21.1-neoforge.jar:assets/immersive_aircraft/lang/en_us.json#option.immersive_aircraft.dropInventory",
+    "jar:immersive_aircraft-1.5.2+1.21.1-neoforge.jar:assets/immersive_aircraft/lang/en_us.json#option.immersive_aircraft.dropUpgrades"
+   ]
+  },
+  {
+   "key": "ia_upgrades",
+   "deps": [
+    "ia_engine"
+   ],
+   "type": "item",
+   "item": "immersive_aircraft:industrial_gears",
+   "optional": true,
+   "layout": {
+    "x": 9,
+    "y": -2.5,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Engine upgrades",
+    "Upgrade slots accept parts that change stats: Sturdy Pipes (+10% power), Industrial Gears (-20% fuel), Steel Boiler (+25% power, +50% fuel), Eco Engine (-20% power, -75% fuel), Nether Engine (+40% power, +30% fuel) and the Enhanced Propeller (much less air friction).\n\nThe tooltip of each upgrade lists its numbers."
+   ],
+   "es_es": [
+    "Mejoras de motor",
+    "Las ranuras de mejora aceptan piezas que cambian estadísticas: Tuberías resistentes (+10 % de potencia), Engranajes industriales (-20 % de combustible), Caldera de acero (+25 % de potencia, +50 % de combustible), Motor eco (-20 % de potencia, -75 % de combustible), Motor del Nether (+40 % de potencia, +30 % de combustible) y la Hélice mejorada (mucha menos fricción del aire).\n\nLa descripción de cada mejora lista sus números."
+   ],
+   "sources": [
+    "jar:immersive_aircraft-1.5.2+1.21.1-neoforge.jar:data/immersive_aircraft/aircraft_upgrades/sturdy_pipes.json",
+    "jar:immersive_aircraft-1.5.2+1.21.1-neoforge.jar:data/immersive_aircraft/aircraft_upgrades/industrial_gears.json",
+    "jar:immersive_aircraft-1.5.2+1.21.1-neoforge.jar:data/immersive_aircraft/aircraft_upgrades/steel_boiler.json",
+    "jar:immersive_aircraft-1.5.2+1.21.1-neoforge.jar:data/immersive_aircraft/aircraft_upgrades/eco_engine.json",
+    "jar:immersive_aircraft-1.5.2+1.21.1-neoforge.jar:data/immersive_aircraft/aircraft_upgrades/nether_engine.json",
+    "jar:immersive_aircraft-1.5.2+1.21.1-neoforge.jar:data/immersive_aircraft/aircraft_upgrades/enhanced_propeller.json",
+    "jar:immersive_aircraft-1.5.2+1.21.1-neoforge.jar:data/immersive_aircraft/recipe/nether_engine.json"
+   ]
+  },
+  {
+   "key": "ia_gyro",
+   "deps": [
+    "ia_upgrades"
+   ],
+   "type": "item",
+   "item": "immersive_aircraft:gyroscope",
+   "optional": true,
+   "layout": {
+    "x": 9,
+    "y": -5,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Gyroscopes and handling",
+    "The Gyroscope removes wind and adds stability; the Advanced Gyroscope adds a mechanical dashboard and the Electronic Gyroscope a HUD. Hull Reinforcement doubles durability and the Improved Landing Gear gives 50% faster takeoff."
+   ],
+   "es_es": [
+    "Giroscopios y manejo",
+    "El Giroscopio elimina el viento y suma estabilidad; el Giroscopio avanzado agrega un tablero mecánico y el Giroscopio electrónico un HUD. El Refuerzo de casco duplica la durabilidad y el Tren de aterrizaje mejorado despega un 50 % más rápido."
+   ],
+   "sources": [
+    "jar:immersive_aircraft-1.5.2+1.21.1-neoforge.jar:data/immersive_aircraft/aircraft_upgrades/gyroscope.json",
+    "jar:immersive_aircraft-1.5.2+1.21.1-neoforge.jar:data/immersive_aircraft/aircraft_upgrades/gyroscope_dials.json",
+    "jar:immersive_aircraft-1.5.2+1.21.1-neoforge.jar:data/immersive_aircraft/aircraft_upgrades/gyroscope_hud.json",
+    "jar:immersive_aircraft-1.5.2+1.21.1-neoforge.jar:data/immersive_aircraft/aircraft_upgrades/hull_reinforcement.json",
+    "jar:immersive_aircraft-1.5.2+1.21.1-neoforge.jar:data/immersive_aircraft/aircraft_upgrades/improved_landing_gear.json",
+    "jar:immersive_aircraft-1.5.2+1.21.1-neoforge.jar:data/immersive_aircraft/recipe/gyroscope.json"
+   ]
+  },
+  {
+   "key": "ia_weapons",
+   "deps": [
+    "ia_airship"
+   ],
+   "type": "item",
+   "item": "immersive_aircraft:rotary_cannon",
+   "optional": true,
+   "layout": {
+    "x": 12,
+    "y": -5,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Weapons",
+    "Weapon slots take the Rotary Cannon (fires gunpowder), the Heavy Crossbow (arrows), the Bomb Bay (drops TNT that hurts but breaks no blocks) or the Telescope. Fire with the use key; by default weapons never destroy terrain."
+   ],
+   "es_es": [
+    "Armas",
+    "Las ranuras de arma aceptan el Cañón rotativo (dispara pólvora), la Ballesta pesada (flechas), la Bodega de bombas (suelta TNT que lastima pero no rompe bloques) o el Telescopio. Se dispara con la tecla de uso; por defecto las armas nunca destruyen terreno."
+   ],
+   "sources": [
+    "jar:immersive_aircraft-1.5.2+1.21.1-neoforge.jar:data/immersive_aircraft/recipe/rotary_cannon.json",
+    "jar:immersive_aircraft-1.5.2+1.21.1-neoforge.jar:data/immersive_aircraft/recipe/heavy_crossbow.json",
+    "jar:immersive_aircraft-1.5.2+1.21.1-neoforge.jar:data/immersive_aircraft/recipe/bomb_bay.json",
+    "jar:immersive_aircraft-1.5.2+1.21.1-neoforge.jar:data/immersive_aircraft/recipe/telescope.json",
+    "jar:immersive_aircraft-1.5.2+1.21.1-neoforge.jar:assets/immersive_aircraft/lang/en_us.json#item.immersive_aircraft.bomb_bay.description",
+    "jar:immersive_aircraft-1.5.2+1.21.1-neoforge.jar:immersive_aircraft/config/Config.class"
+   ]
+  },
+  {
+   "key": "ia_mastery",
+   "deps": [
+    "ia_cargo"
+   ],
+   "type": "item",
+   "item": "immersive_aircraft:warship",
+   "layout": {
+    "x": 19,
+    "y": -2.5,
+    "size": 2.0,
+    "shape": "octagon"
+   },
+   "en_us": [
+    "Mastery: Warship",
+    "The Warship is built from a Cargo Airship plus sails, hulls, two engines and industrial gears: a slow flying fortress with three times the durability, several weapon and upgrade slots and a booster. Fit it with a gyroscope, reinforcement and your weapons of choice."
+   ],
+   "es_es": [
+    "Maestría: Acorazado",
+    "El Acorazado se arma con un Dirigible de carga más velas, cascos, dos motores y engranajes industriales: una fortaleza voladora lenta con el triple de durabilidad, varias ranuras de arma y mejora y un propulsor. Equipalo con giroscopio, refuerzo y las armas que prefieras."
+   ],
+   "sources": [
+    "jar:immersive_aircraft-1.5.2+1.21.1-neoforge.jar:data/immersive_aircraft/recipe/warship.json",
+    "jar:immersive_aircraft-1.5.2+1.21.1-neoforge.jar:data/immersive_aircraft/aircraft/warship.json",
+    "jar:immersive_aircraft-1.5.2+1.21.1-neoforge.jar:assets/immersive_aircraft/lang/en_us.json#item.immersive_aircraft.warship.description"
+   ]
+  }
+ ]
+}
