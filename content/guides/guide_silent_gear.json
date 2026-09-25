@@ -1,0 +1,608 @@
+{
+ "chapter": "guide_silent_gear",
+ "group": "tech",
+ "act": "I",
+ "icon": "silentgear:pickaxe_blueprint",
+ "title": {
+  "en_us": "Silent Gear",
+  "es_es": "Silent Gear"
+ },
+ "subtitle": {
+  "en_us": "Tools, weapons and armour built from parts: blueprints, materials and traits, repair kits, alloys and the luminous material.",
+  "es_es": "Herramientas, armas y armaduras armadas por partes: planos, materiales y rasgos, kits de reparación, aleaciones y el material luminoso."
+ },
+ "quests": [
+  {
+   "key": "sg_welcome",
+   "deps": [],
+   "type": "checkmark",
+   "icon": "silentgear:material_book",
+   "layout": {
+    "x": 0,
+    "y": 0,
+    "size": 2.0,
+    "shape": "hexagon"
+   },
+   "en_us": [
+    "Welcome to Silent Gear",
+    "Silent Gear builds gear from parts: a head or blade made from main materials, a rod, and optional extras. Every material brings its own stats and traits, and mixing them changes the result. Broken gear does not vanish; it waits to be repaired.\n\nIn ENTRELUMEN nobody spawns with free blueprints or the material book; both are cheap to craft."
+   ],
+   "es_es": [
+    "Bienvenida a Silent Gear",
+    "Silent Gear arma el equipo por partes: una cabeza u hoja hecha con materiales principales, una vara y extras opcionales. Cada material trae sus propias estadísticas y rasgos, y mezclarlos cambia el resultado. El equipo roto no desaparece; espera que lo repares.\n\nEn ENTRELUMEN nadie aparece con planos ni con el libro de materiales gratis; los dos se craftean barato."
+   ],
+   "sources": [
+    "repo:pack/config/silentgear-common.toml",
+    "jar:silent-gear-1.21.1-neoforge-4.2.1.1.jar:assets/silentgear/lang/en_us.json#jei.silentgear.tool_head.desc",
+    "jar:silent-gear-1.21.1-neoforge-4.2.1.1.jar:assets/silentgear/lang/en_us.json#misc.silentgear.notifyOnBreak",
+    "jar:silent-gear-1.21.1-neoforge-4.2.1.1.jar:data/silentgear/recipe/material_book.json"
+   ]
+  },
+  {
+   "key": "sg_anvil",
+   "deps": [
+    "sg_welcome"
+   ],
+   "type": "item",
+   "item": "silentgear:stone_anvil",
+   "layout": {
+    "x": 3,
+    "y": 0,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Stone Anvil and crude knife",
+    "Start in the Stone Age: cobblestone and dirt make the Stone Anvil and the Crude Tool Parts, which become a Crude Knife. Put a log on the anvil and use the knife on it to get six Template Boards.\n\nAny knife or dagger works on the anvil, including the Silent Gear ones later."
+   ],
+   "es_es": [
+    "Yunque de piedra y cuchillo tosco",
+    "Arrancá en la edad de piedra: adoquín y tierra hacen el Yunque de piedra y las Partes de herramienta toscas, que se convierten en un Cuchillo tosco. Poné un tronco sobre el yunque y usá el cuchillo encima para sacar seis Tablas de plantilla.\n\nCualquier cuchillo o daga sirve en el yunque, incluidos los de Silent Gear más adelante."
+   ],
+   "sources": [
+    "jar:silent-gear-1.21.1-neoforge-4.2.1.1.jar:data/silentgear/recipe/stone_anvil.json",
+    "jar:silent-gear-1.21.1-neoforge-4.2.1.1.jar:data/silentgear/recipe/crude_tool_parts.json",
+    "jar:silent-gear-1.21.1-neoforge-4.2.1.1.jar:data/silentgear/recipe/crude_knife.json",
+    "jar:silent-gear-1.21.1-neoforge-4.2.1.1.jar:data/silentgear/recipe/template_board.json",
+    "jar:silent-gear-1.21.1-neoforge-4.2.1.1.jar:data/silentgear/advancement/stone_anvil.json"
+   ]
+  },
+  {
+   "key": "sg_templates",
+   "deps": [
+    "sg_anvil"
+   ],
+   "type": "item",
+   "item": "silentgear:pickaxe_template",
+   "layout": {
+    "x": 6,
+    "y": 0,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Templates",
+    "Template Boards around a stick shape a Template for each gear type (pickaxe, sword, helmet...). A template is used up in one craft. Its tooltip tells how many main materials the part needs."
+   ],
+   "es_es": [
+    "Plantillas",
+    "Tablas de plantilla alrededor de un palo forman una Plantilla para cada tipo de equipo (pico, espada, casco...). Una plantilla se gasta en un solo crafteo. Su descripción dice cuántos materiales principales pide la parte."
+   ],
+   "sources": [
+    "jar:silent-gear-1.21.1-neoforge-4.2.1.1.jar:data/silentgear/recipe/pickaxe_template.json",
+    "jar:silent-gear-1.21.1-neoforge-4.2.1.1.jar:assets/silentgear/lang/en_us.json#item.silentgear.blueprint.singleUse",
+    "jar:silent-gear-1.21.1-neoforge-4.2.1.1.jar:assets/silentgear/lang/en_us.json#item.silentgear.blueprint.materialAmount",
+    "jar:silent-gear-1.21.1-neoforge-4.2.1.1.jar:assets/silentgear/lang/en_us.json#jei.silentgear.blueprint.desc"
+   ]
+  },
+  {
+   "key": "sg_first",
+   "deps": [
+    "sg_templates"
+   ],
+   "type": "item",
+   "item": "silentgear:pickaxe",
+   "layout": {
+    "x": 9,
+    "y": 0,
+    "size": 1.5,
+    "shape": "hexagon"
+   },
+   "en_us": [
+    "Your first Silent Gear tool",
+    "Craft a template with the main materials to get a head, then the head with a rod to get the tool. A quick recipe does both in one step: template, materials and rod together.\n\nStone, flint, iron, copper, gems, bone and many modded metals are valid materials: check a material tooltip for its stats."
+   ],
+   "es_es": [
+    "Tu primera herramienta de Silent Gear",
+    "Crafteá una plantilla con los materiales principales para sacar una cabeza, y después la cabeza con una vara para tener la herramienta. Una receta rápida hace las dos cosas en un paso: plantilla, materiales y vara juntos.\n\nPiedra, pedernal, hierro, cobre, gemas, hueso y muchos metales de otros mods son materiales válidos: mirá la descripción de un material para ver sus estadísticas."
+   ],
+   "sources": [
+    "jar:silent-gear-1.21.1-neoforge-4.2.1.1.jar:data/silentgear/recipe/gear/pickaxe.json",
+    "jar:silent-gear-1.21.1-neoforge-4.2.1.1.jar:data/silentgear/recipe/gear/pickaxe_quick.json",
+    "jar:silent-gear-1.21.1-neoforge-4.2.1.1.jar:data/silentgear/recipe/gear/pickaxe_head.json",
+    "jar:silent-gear-1.21.1-neoforge-4.2.1.1.jar:assets/silentgear/lang/en_us.json#misc.silentgear.tooltip.material"
+   ]
+  },
+  {
+   "key": "sg_blueprint",
+   "deps": [
+    "sg_first"
+   ],
+   "type": "item",
+   "item": "silentgear:pickaxe_blueprint",
+   "layout": {
+    "x": 12,
+    "y": 0,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Blueprints",
+    "Four paper and a blue dye make Blueprint Paper; shape it like a template to get a Blueprint, which is never used up. A Blueprint Book holds many blueprints and works as the selected one; cycle it with the keys its tooltip shows.\n\nMove from templates to blueprints once you craft the same part often."
+   ],
+   "es_es": [
+    "Planos",
+    "Cuatro papeles y un tinte azul hacen Papel de plano; dale forma como a una plantilla para sacar un Plano, que nunca se gasta. Un Libro de planos guarda muchos planos y funciona como el seleccionado; se recorre con las teclas que muestra su descripción.\n\nPasate de plantillas a planos cuando craftees seguido la misma parte."
+   ],
+   "sources": [
+    "jar:silent-gear-1.21.1-neoforge-4.2.1.1.jar:data/silentgear/recipe/blueprint_paper.json",
+    "jar:silent-gear-1.21.1-neoforge-4.2.1.1.jar:data/silentgear/recipe/pickaxe_blueprint.json",
+    "jar:silent-gear-1.21.1-neoforge-4.2.1.1.jar:data/silentgear/recipe/blueprint_book.json",
+    "jar:silent-gear-1.21.1-neoforge-4.2.1.1.jar:assets/silentgear/lang/en_us.json#item.silentgear.blueprint.multiUse",
+    "jar:silent-gear-1.21.1-neoforge-4.2.1.1.jar:assets/silentgear/lang/en_us.json#item.silentgear.blueprint_book.keyHint"
+   ]
+  },
+  {
+   "key": "sg_parts",
+   "deps": [
+    "sg_first"
+   ],
+   "type": "item",
+   "item": "silentgear:iron_rod",
+   "optional": true,
+   "layout": {
+    "x": 9,
+    "y": -2.5,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Parts beyond the head",
+    "Rods (wood, stone, iron...), Bindings, Grips, Tips and Coatings each add stats or traits. Netherite only works as a coating, and a netherite coating on diamond behaves almost like vanilla netherite. The Gear Mod Kit removes or repaints parts; cycle the part type with its keys.\n\nHold Ctrl on an upgrade or part to see its stat changes."
+   ],
+   "es_es": [
+    "Partes además de la cabeza",
+    "Las Varas (madera, piedra, hierro...), Ataduras, Empuñaduras, Puntas y Recubrimientos suman estadísticas o rasgos. La netherita sólo funciona como recubrimiento, y un recubrimiento de netherita sobre diamante se comporta casi igual que la netherita vanilla. El Kit de modificación saca o repinta partes; recorré el tipo de parte con sus teclas.\n\nMantené Ctrl sobre una mejora o parte para ver cómo cambia las estadísticas."
+   ],
+   "sources": [
+    "jar:silent-gear-1.21.1-neoforge-4.2.1.1.jar:data/silentgear/recipe/iron_rod.json",
+    "jar:silent-gear-1.21.1-neoforge-4.2.1.1.jar:data/silentgear/recipe/part/coating.json",
+    "jar:silent-gear-1.21.1-neoforge-4.2.1.1.jar:assets/silentgear/lang/en_us.json#material.silentgear.netherite.book_desc",
+    "jar:silent-gear-1.21.1-neoforge-4.2.1.1.jar:data/silentgear/recipe/mod_kit.json",
+    "jar:silent-gear-1.21.1-neoforge-4.2.1.1.jar:assets/silentgear/lang/en_us.json#item.silentgear.mod_kit.keyHint",
+    "jar:silent-gear-1.21.1-neoforge-4.2.1.1.jar:assets/silentgear/lang/en_us.json#jei.silentgear.tip_upgrade.desc"
+   ]
+  },
+  {
+   "key": "sg_roster",
+   "deps": [
+    "sg_blueprint"
+   ],
+   "type": "item",
+   "item": "silentgear:hammer",
+   "optional": true,
+   "layout": {
+    "x": 12,
+    "y": -2.5,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "The gear roster",
+    "Beyond pickaxes and swords: the Hammer mines stone 3x3 (it only breaks ores when you aim at one), the Excavator digs soil 3x3, the Saw fells whole trees, the Sickle clears plants and replants crops, the Mattock tills, digs and chops, and the Paxel is three tools in one. Weapons include katana, machete, dagger, knife, spear and mace, plus bows, crossbows and a slingshot.\n\nThe Prospector Hammer scans ahead for ores when you right-click a block."
+   ],
+   "es_es": [
+    "El catálogo de equipo",
+    "Además de picos y espadas: el Martillo pica piedra en 3x3 (sólo rompe minerales si apuntás a uno), el Excavador cava tierra en 3x3, la Sierra tala árboles enteros, la Hoz limpia plantas y replanta cultivos, el Azadón ara, cava y tala, y el Paxel es tres herramientas en una. Entre las armas hay katana, machete, daga, cuchillo, lanza y maza, más arcos, ballestas y una honda.\n\nEl Martillo de prospector busca minerales hacia adelante al hacer clic derecho en un bloque."
+   ],
+   "sources": [
+    "jar:silent-gear-1.21.1-neoforge-4.2.1.1.jar:assets/silentgear/lang/en_us.json#jei.silentgear.hammer.desc",
+    "jar:silent-gear-1.21.1-neoforge-4.2.1.1.jar:assets/silentgear/lang/en_us.json#jei.silentgear.excavator.desc",
+    "jar:silent-gear-1.21.1-neoforge-4.2.1.1.jar:assets/silentgear/lang/en_us.json#jei.silentgear.saw.desc",
+    "jar:silent-gear-1.21.1-neoforge-4.2.1.1.jar:assets/silentgear/lang/en_us.json#jei.silentgear.sickle.desc",
+    "jar:silent-gear-1.21.1-neoforge-4.2.1.1.jar:assets/silentgear/lang/en_us.json#jei.silentgear.mattock.desc",
+    "jar:silent-gear-1.21.1-neoforge-4.2.1.1.jar:assets/silentgear/lang/en_us.json#jei.silentgear.paxel.desc",
+    "jar:silent-gear-1.21.1-neoforge-4.2.1.1.jar:assets/silentgear/lang/en_us.json#jei.silentgear.prospector_hammer.desc"
+   ]
+  },
+  {
+   "key": "sg_armor",
+   "deps": [
+    "sg_blueprint"
+   ],
+   "type": "item",
+   "item": "silentgear:helmet",
+   "optional": true,
+   "layout": {
+    "x": 15,
+    "y": -2.5,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Armour",
+    "Helmet, chestplate, leggings and boots come from their own blueprints or templates, built from plates of any armour-capable material. Linings made of fabrics add traits. Armour follows the same rules: it breaks into a repairable state and mixes materials."
+   ],
+   "es_es": [
+    "Armadura",
+    "Casco, pechera, grebas y botas salen de sus propios planos o plantillas, armados con placas de cualquier material apto para armadura. Los forros de tela suman rasgos. La armadura sigue las mismas reglas: se rompe quedando reparable y mezcla materiales."
+   ],
+   "sources": [
+    "jar:silent-gear-1.21.1-neoforge-4.2.1.1.jar:data/silentgear/recipe/helmet_blueprint.json",
+    "jar:silent-gear-1.21.1-neoforge-4.2.1.1.jar:data/silentgear/recipe/gear/helmet.json",
+    "jar:silent-gear-1.21.1-neoforge-4.2.1.1.jar:assets/silentgear/lang/en_us.json#item.silentgear.blueprint.armorDurability"
+   ]
+  },
+  {
+   "key": "sg_repair",
+   "deps": [
+    "sg_first"
+   ],
+   "type": "item",
+   "item": "silentgear:crude_repair_kit",
+   "layout": {
+    "x": 9,
+    "y": 2.5,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Broken gear and repair kits",
+    "When durability runs out the item becomes broken, not destroyed. Fill a repair kit by crafting it with materials, then craft the kit with the gear to repair it; a stick empties the kit. Better kits (very crude, crude, sturdy, crimson, azure) hold more and waste less.\n\nA Red Card upgrade makes an item break for good, like vanilla, if you prefer that."
+   ],
+   "es_es": [
+    "Equipo roto y kits de reparación",
+    "Cuando se acaba la durabilidad, el ítem queda roto, no destruido. Llená un kit de reparación crafteándolo con materiales, y después crafteá el kit con el equipo para repararlo; un palo vacía el kit. Los kits mejores (muy tosco, tosco, resistente, carmesí, azur) guardan más y desperdician menos.\n\nUna mejora Tarjeta roja hace que el ítem se rompa del todo, como en vanilla, si lo preferís."
+   ],
+   "sources": [
+    "jar:silent-gear-1.21.1-neoforge-4.2.1.1.jar:data/silentgear/recipe/crude_repair_kit.json",
+    "jar:silent-gear-1.21.1-neoforge-4.2.1.1.jar:data/silentgear/recipe/very_crude_repair_kit.json",
+    "jar:silent-gear-1.21.1-neoforge-4.2.1.1.jar:data/silentgear/recipe/sturdy_repair_kit.json",
+    "jar:silent-gear-1.21.1-neoforge-4.2.1.1.jar:assets/silentgear/lang/en_us.json#item.silentgear.repair_kit.hint2",
+    "jar:silent-gear-1.21.1-neoforge-4.2.1.1.jar:assets/silentgear/lang/en_us.json#item.silentgear.repair_kit.hint3",
+    "jar:silent-gear-1.21.1-neoforge-4.2.1.1.jar:assets/silentgear/lang/en_us.json#jei.silentgear.red_card_upgrade.desc",
+    "jar:silent-gear-1.21.1-neoforge-4.2.1.1.jar:data/silentgear/advancement/repair_from_broken.json"
+   ]
+  },
+  {
+   "key": "sg_upgrades",
+   "deps": [
+    "sg_repair"
+   ],
+   "type": "item",
+   "item": "silentgear:upgrade_base",
+   "optional": true,
+   "layout": {
+    "x": 6,
+    "y": 2.5,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Upgrades",
+    "Upgrade Base (paper, planks and stone) and its advanced version start the upgrades: Spoon lets a pickaxe dig like a shovel, Wide Plate adds 1 to the radius of hammers and excavators, Road Maker makes paths with an excavator, and Red Card allows permanent breaking. Craft the upgrade together with the gear."
+   ],
+   "es_es": [
+    "Mejoras",
+    "La Base de mejora (papel, tablones y piedra) y su versión avanzada arrancan las mejoras: Cuchara deja que un pico cave como pala, Placa ancha suma 1 al radio de martillos y excavadores, Constructor de caminos hace senderos con un excavador, y Tarjeta roja permite la rotura permanente. Crafteá la mejora junto con el equipo."
+   ],
+   "sources": [
+    "jar:silent-gear-1.21.1-neoforge-4.2.1.1.jar:data/silentgear/recipe/upgrade_base.json",
+    "jar:silent-gear-1.21.1-neoforge-4.2.1.1.jar:data/silentgear/recipe/advanced_upgrade_base.json",
+    "jar:silent-gear-1.21.1-neoforge-4.2.1.1.jar:assets/silentgear/lang/en_us.json#item.silentgear.spoon_upgrade.desc",
+    "jar:silent-gear-1.21.1-neoforge-4.2.1.1.jar:assets/silentgear/lang/en_us.json#item.silentgear.wide_plate_upgrade.desc",
+    "jar:silent-gear-1.21.1-neoforge-4.2.1.1.jar:assets/silentgear/lang/en_us.json#item.silentgear.road_maker_upgrade.desc",
+    "jar:silent-gear-1.21.1-neoforge-4.2.1.1.jar:assets/silentgear/lang/en_us.json#item.silentgear.red_card_upgrade.desc"
+   ]
+  },
+  {
+   "key": "sg_fibers",
+   "deps": [
+    "sg_welcome"
+   ],
+   "type": "item",
+   "item": "silentgear:flax_string",
+   "count": 8,
+   "optional": true,
+   "layout": {
+    "x": 3,
+    "y": 2.5,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Fibres and drops",
+    "Wild flax and fluffy plants grow in the world; their fibres make strings and fabrics for bowstrings, cords and linings. Animals sometimes drop sinew and spiders rarely drop fine silk, both better cord materials. Leather scraps drop too."
+   ],
+   "es_es": [
+    "Fibras y drops",
+    "El lino y las plantas esponjosas silvestres crecen por el mundo; sus fibras hacen hilos y telas para cuerdas de arco, cordones y forros. Los animales a veces sueltan tendón y las arañas rara vez sueltan seda fina, los dos mejores materiales de cuerda. También caen retazos de cuero."
+   ],
+   "sources": [
+    "jar:silent-gear-1.21.1-neoforge-4.2.1.1.jar:data/silentgear/worldgen/placed_feature/wild_flax.json",
+    "jar:silent-gear-1.21.1-neoforge-4.2.1.1.jar:data/silentgear/worldgen/placed_feature/wild_fluffy.json",
+    "jar:silent-gear-1.21.1-neoforge-4.2.1.1.jar:data/silentgear/recipe/flax_string.json",
+    "jar:silent-gear-1.21.1-neoforge-4.2.1.1.jar:assets/silentgear/lang/en_us.json#item.silentgear.sinew.desc",
+    "jar:silent-gear-1.21.1-neoforge-4.2.1.1.jar:assets/silentgear/lang/en_us.json#item.silentgear.fine_silk.desc",
+    "jar:silent-gear-1.21.1-neoforge-4.2.1.1.jar:data/silentgear/loot_modifiers/add_mob_drops/leather_scraps_low.json"
+   ]
+  },
+  {
+   "key": "sg_ores",
+   "deps": [
+    "sg_blueprint"
+   ],
+   "type": "item",
+   "item": "silentgear:crimson_iron_ingot",
+   "count": 8,
+   "layout": {
+    "x": 15,
+    "y": 0,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Silent Gear ores",
+    "Three ores of its own: Bort, a hard gem deep in the Overworld (Y -60 to 10); Crimson Iron all through the Nether; and Azure Silver in the End (Y 16 to 92). They feed the alloys that come next."
+   ],
+   "es_es": [
+    "Minerales de Silent Gear",
+    "Tres minerales propios: Bort, una gema dura en lo profundo del Overworld (Y -60 a 10); Hierro carmesí en todo el Nether; y Plata azur en el End (Y 16 a 92). Alimentan las aleaciones que vienen después."
+   ],
+   "sources": [
+    "jar:silent-gear-1.21.1-neoforge-4.2.1.1.jar:data/silentgear/worldgen/placed_feature/bort_ore.json",
+    "jar:silent-gear-1.21.1-neoforge-4.2.1.1.jar:data/silentgear/worldgen/placed_feature/crimson_iron_ore.json",
+    "jar:silent-gear-1.21.1-neoforge-4.2.1.1.jar:data/silentgear/worldgen/placed_feature/azure_silver_ore.json",
+    "jar:silent-gear-1.21.1-neoforge-4.2.1.1.jar:assets/silentgear/lang/en_us.json#material.silentgear.crimson_iron.book_desc",
+    "jar:silent-gear-1.21.1-neoforge-4.2.1.1.jar:assets/silentgear/lang/en_us.json#material.silentgear.azure_silver.book_desc"
+   ]
+  },
+  {
+   "key": "sg_alloys",
+   "deps": [
+    "sg_ores"
+   ],
+   "type": "item",
+   "item": "silentgear:crimson_steel_ingot",
+   "count": 4,
+   "layout": {
+    "x": 18,
+    "y": 0,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Alloys",
+    "Blaze Gold (gold and blaze powder), Crimson Steel (crimson iron, blaze rods and magma cream) and Azure Electrum (azure silver, gold and an ender pearl) can be crafted at a crafting table. Crimson steel is strong all around and fire-resistant; azure electrum is fast but fragile."
+   ],
+   "es_es": [
+    "Aleaciones",
+    "El Oro de blaze (oro y polvo de blaze), el Acero carmesí (hierro carmesí, varas de blaze y crema de magma) y el Electro azur (plata azur, oro y una perla de ender) se pueden craftear en una mesa. El acero carmesí es fuerte en todo y resiste el fuego; el electro azur es rápido pero frágil."
+   ],
+   "sources": [
+    "jar:silent-gear-1.21.1-neoforge-4.2.1.1.jar:assets/silentgear/lang/en_us.json#material.silentgear.blaze_gold.book_desc",
+    "jar:silent-gear-1.21.1-neoforge-4.2.1.1.jar:assets/silentgear/lang/en_us.json#material.silentgear.crimson_steel.book_desc",
+    "jar:silent-gear-1.21.1-neoforge-4.2.1.1.jar:assets/silentgear/lang/en_us.json#material.silentgear.azure_electrum.book_desc",
+    "jar:silent-gear-1.21.1-neoforge-4.2.1.1.jar:data/silentgear/recipe/alloying/metal/crimson_steel_ingot.json"
+   ]
+  },
+  {
+   "key": "sg_forge",
+   "deps": [
+    "sg_alloys"
+   ],
+   "type": "item",
+   "item": "silentgear:tyrian_steel_ingot",
+   "layout": {
+    "x": 21,
+    "y": 0,
+    "size": 1.5,
+    "shape": "hexagon"
+   },
+   "en_us": [
+    "Alloy Forge and Tyrian Steel",
+    "The Alloy Forge (blackstone, crimson steel and an iron block) makes the same alloys more efficiently than the crafting table, and it is the only way to make Tyrian Steel: crimson steel, azure electrum, crushed shulker shell and netherite scrap. Tyrian steel is the strongest basic material in Silent Gear."
+   ],
+   "es_es": [
+    "Forja de aleaciones y Acero tirio",
+    "La Forja de aleaciones (piedra negra, acero carmesí y un bloque de hierro) hace las mismas aleaciones con más rendimiento que la mesa de crafteo, y es la única forma de hacer Acero tirio: acero carmesí, electro azur, caparazón de shulker triturado y chatarra de netherita. El acero tirio es el material básico más fuerte de Silent Gear."
+   ],
+   "sources": [
+    "jar:silent-gear-1.21.1-neoforge-4.2.1.1.jar:data/silentgear/recipe/alloy_forge.json",
+    "jar:silent-gear-1.21.1-neoforge-4.2.1.1.jar:data/silentgear/recipe/alloying/metal/tyrian_steel_ingot.json",
+    "jar:silent-gear-1.21.1-neoforge-4.2.1.1.jar:assets/silentgear/lang/en_us.json#material.silentgear.tyrian_steel.book_desc",
+    "jar:silent-gear-1.21.1-neoforge-4.2.1.1.jar:assets/silentgear/lang/en_us.json#material.silentgear.blaze_gold.book_desc"
+   ]
+  },
+  {
+   "key": "sg_compound",
+   "deps": [
+    "sg_forge"
+   ],
+   "type": "item",
+   "item": "silentgear:crude_mixer",
+   "optional": true,
+   "layout": {
+    "x": 21,
+    "y": -2.5,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Compound materials",
+    "Machines that fuse materials into new ones: the Crude Mixer takes anything but marks the result Crude (weaker); the Recrystallizer makes hybrid gems; the Refabricator blends fabrics; the Super Mixer takes any material with no penalty. The result keeps a mix of its inputs' properties."
+   ],
+   "es_es": [
+    "Materiales compuestos",
+    "Máquinas que funden materiales en otros nuevos: el Mezclador tosco acepta cualquier cosa pero marca el resultado como Tosco (más débil); el Recristalizador hace gemas híbridas; el Refabricador mezcla telas; el Súper mezclador acepta cualquier material sin penalización. El resultado conserva una mezcla de las propiedades de sus entradas."
+   ],
+   "sources": [
+    "jar:silent-gear-1.21.1-neoforge-4.2.1.1.jar:assets/silentgear/lang/en_us.json#material.silentgear.crude_alloy.book_desc",
+    "jar:silent-gear-1.21.1-neoforge-4.2.1.1.jar:assets/silentgear/lang/en_us.json#material.silentgear.hybrid_gem.book_desc",
+    "jar:silent-gear-1.21.1-neoforge-4.2.1.1.jar:assets/silentgear/lang/en_us.json#material.silentgear.mixed_fabric.book_desc",
+    "jar:silent-gear-1.21.1-neoforge-4.2.1.1.jar:assets/silentgear/lang/en_us.json#material.silentgear.super_alloy.book_desc",
+    "jar:silent-gear-1.21.1-neoforge-4.2.1.1.jar:data/silentgear/recipe/crude_mixer.json",
+    "jar:silent-gear-1.21.1-neoforge-4.2.1.1.jar:data/silentgear/recipe/super_mixer.json"
+   ]
+  },
+  {
+   "key": "sg_grader",
+   "deps": [
+    "sg_alloys"
+   ],
+   "type": "item",
+   "item": "silentgear:material_grader",
+   "optional": true,
+   "layout": {
+    "x": 18,
+    "y": 2.5,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Material Grader",
+    "Grades a material with a catalyst, raising its stats: grades go from E up to SSS and MAX. Catalyst tiers are Glowing Dust (tier 1), Blazing Dust (tier 2) and Glittery Dust (tier 3); higher tiers reach higher grades. Grade the stack before you use it as a main material."
+   ],
+   "es_es": [
+    "Clasificador de materiales",
+    "Clasifica un material con un catalizador y le sube las estadísticas: los grados van de E hasta SSS y MAX. Los catalizadores son Polvo brillante (nivel 1), Polvo llameante (nivel 2) y Polvo reluciente (nivel 3); los niveles altos llegan a grados más altos. Clasificá el stack antes de usarlo como material principal."
+   ],
+   "sources": [
+    "jar:silent-gear-1.21.1-neoforge-4.2.1.1.jar:data/silentgear/recipe/material_grader.json",
+    "jar:silent-gear-1.21.1-neoforge-4.2.1.1.jar:data/silentgear/recipe/glowing_dust.json",
+    "jar:silent-gear-1.21.1-neoforge-4.2.1.1.jar:data/silentgear/recipe/blazing_dust.json",
+    "jar:silent-gear-1.21.1-neoforge-4.2.1.1.jar:data/silentgear/recipe/glittery_dust.json",
+    "jar:silent-gear-1.21.1-neoforge-4.2.1.1.jar:data/silentgear/tags/item/grader_catalysts/tier1.json",
+    "jar:silent-gear-1.21.1-neoforge-4.2.1.1.jar:assets/silentgear/lang/en_us.json#grade.silentgear.SSS",
+    "jar:silent-gear-1.21.1-neoforge-4.2.1.1.jar:data/silentgear/advancement/material_grader.json"
+   ]
+  },
+  {
+   "key": "sg_starlight",
+   "deps": [
+    "sg_grader"
+   ],
+   "type": "item",
+   "item": "silentgear:starlight_charger",
+   "optional": true,
+   "layout": {
+    "x": 21,
+    "y": 2.5,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Starlight Charger",
+    "Builds charge under the night sky and applies Starcharged to materials, which raises their stats a lot. It takes a catalyst (blaze gold dust first, then azure silver dust) and its surrounding structure level can take up to 30 seconds to update."
+   ],
+   "es_es": [
+    "Cargador estelar",
+    "Junta carga bajo el cielo nocturno y le aplica Cargado de estrellas a los materiales, lo que les sube mucho las estadísticas. Usa un catalizador (primero polvo de oro de blaze, después polvo de plata azur) y el nivel de su estructura alrededor puede tardar hasta 30 segundos en actualizarse."
+   ],
+   "sources": [
+    "jar:silent-gear-1.21.1-neoforge-4.2.1.1.jar:data/silentgear/recipe/starlight_charger.json",
+    "jar:silent-gear-1.21.1-neoforge-4.2.1.1.jar:assets/silentgear/lang/en_us.json#enchantment.silentgear.star_charged.desc",
+    "jar:silent-gear-1.21.1-neoforge-4.2.1.1.jar:assets/silentgear/lang/en_us.json#container.silentgear.material_charger.charge.hint",
+    "jar:silent-gear-1.21.1-neoforge-4.2.1.1.jar:assets/silentgear/lang/en_us.json#container.silentgear.material_charger.structure_level.hint",
+    "jar:silent-gear-1.21.1-neoforge-4.2.1.1.jar:data/silentgear/tags/item/starlight_charger_catalysts/tier1.json"
+   ]
+  },
+  {
+   "key": "sg_salvager",
+   "deps": [
+    "sg_forge"
+   ],
+   "type": "item",
+   "item": "silentgear:salvager",
+   "optional": true,
+   "layout": {
+    "x": 24,
+    "y": -2.5,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Salvager",
+    "Breaks gear you no longer need back into parts and some of its materials. The luminous material has salvage disabled on purpose, so it never returns Luminosities."
+   ],
+   "es_es": [
+    "Desguazador",
+    "Desarma el equipo que ya no usás y devuelve partes y algo de sus materiales. El material luminoso tiene el desguace desactivado a propósito, así nunca devuelve Luminosidades."
+   ],
+   "sources": [
+    "jar:silent-gear-1.21.1-neoforge-4.2.1.1.jar:data/silentgear/recipe/salvager.json",
+    "jar:silent-gear-1.21.1-neoforge-4.2.1.1.jar:assets/silentgear/lang/en_us.json#block.silentgear.salvager.desc",
+    "repo:docs/design/luminous-gear.md",
+    "repo:companion/src/main/resources/data/entrelumen/silentgear_materials/luminous.json"
+   ]
+  },
+  {
+   "key": "sg_jewelry",
+   "deps": [
+    "sg_blueprint"
+   ],
+   "type": "item",
+   "item": "silentgear:jeweler_tools",
+   "optional": true,
+   "layout": {
+    "x": 12,
+    "y": 2.5,
+    "size": 1.0,
+    "shape": "square"
+   },
+   "en_us": [
+    "Jewellery",
+    "Jeweler Tools make rings, bracelets and necklaces, optionally with a gem setting. They sit in accessory slots and carry the traits of their materials, so a ring can add a trait your armour lacks."
+   ],
+   "es_es": [
+    "Joyería",
+    "Las Herramientas de joyero hacen anillos, pulseras y collares, opcionalmente con un engarce de gema. Van en las ranuras de accesorios y llevan los rasgos de sus materiales, así que un anillo puede sumar un rasgo que tu armadura no tiene."
+   ],
+   "sources": [
+    "jar:silent-gear-1.21.1-neoforge-4.2.1.1.jar:data/silentgear/recipe/jeweler_tools.json",
+    "jar:silent-gear-1.21.1-neoforge-4.2.1.1.jar:data/silentgear/recipe/gear/ring.json",
+    "jar:silent-gear-1.21.1-neoforge-4.2.1.1.jar:data/silentgear/recipe/gear/ring_with_gem.json",
+    "jar:silent-gear-1.21.1-neoforge-4.2.1.1.jar:data/silentgear/recipe/part/adornment.json",
+    "jar:silent-gear-1.21.1-neoforge-4.2.1.1.jar:assets/silentgear/lang/en_us.json#misc.silentgear.curiosNotInstalled"
+   ]
+  },
+  {
+   "key": "sg_luminous",
+   "deps": [
+    "sg_forge"
+   ],
+   "type": "item",
+   "item": "entrelumen:luminous_ingot",
+   "layout": {
+    "x": 25,
+    "y": 0,
+    "size": 2.0,
+    "shape": "octagon"
+   },
+   "en_us": [
+    "Mastery: the luminous material",
+    "ENTRELUMEN adds the Luminous Ingot (Act VI) as a Silent Gear main material with absurd stats. Its gear carries Radiant, Holy V, Lustrous V, Refractive and Kitty Vision, and is fireproof. Radiant pieces are repaired by light, glow around you, and four worn pieces (mixing with the luminous armour is fine) give flight, night vision and no fall damage.\n\nA luminous tip and coating also exist for your best tools."
+   ],
+   "es_es": [
+    "Maestría: el material luminoso",
+    "ENTRELUMEN agrega el Lingote Luminoso (acto VI) como material principal de Silent Gear con estadísticas absurdas. Su equipo lleva Radiante, Sagrado V, Lustroso V, Refractivo y Visión felina, y es ignífugo. Las piezas radiantes se reparan con la luz, iluminan a tu alrededor, y cuatro piezas puestas (se pueden mezclar con la armadura luminosa) dan vuelo, visión nocturna y sin daño de caída.\n\nTambién hay una punta y un recubrimiento luminosos para tus mejores herramientas."
+   ],
+   "sources": [
+    "repo:docs/design/luminous-gear.md",
+    "repo:companion/src/main/resources/data/entrelumen/silentgear_materials/luminous.json",
+    "repo:companion/src/main/resources/data/entrelumen/silentgear_traits/radiant.json",
+    "repo:pack/kubejs/server_scripts/entrelumen_luminous_balance.js"
+   ]
+  }
+ ]
+}
