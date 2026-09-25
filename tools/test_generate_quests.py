@@ -376,9 +376,10 @@ class ChapterContracts(unittest.TestCase):
          'exploration_module':'ark_exploration','logistics_module':'ark_logistics','habitation_module':'ark_habitation'}
   exact={
    'engineering_module':{'entrelumen:calibration_frame':2,'entrelumen:energy_coupler':2,'entrelumen:ark_bus':1,'mekanism:alloy_atomic':2},
-   'arcane_module':{'entrelumen:spectral_lens':2,'entrelumen:containment_seal':2,'occultism:iesnium_ingot':2},
-   'nature_module':{'entrelumen:renewal_engine':1,'entrelumen:ecosystem_capsule':2,'entrelumen:living_matrix':2},
-   'exploration_module':{'entrelumen:horizon_chart':1,'entrelumen:spectral_lens':1,'twilightforest:steeleaf_ingot':2,'aether:zanite_gemstone':2},
+   # Boss drops since 24 September 2026 (Wither, Elder Guardian, dragon), one unit in place of another.
+   'arcane_module':{'entrelumen:spectral_lens':2,'entrelumen:containment_seal':2,'occultism:iesnium_ingot':1,'minecraft:nether_star':1},
+   'nature_module':{'entrelumen:renewal_engine':1,'entrelumen:ecosystem_capsule':2,'entrelumen:living_matrix':1,'minecraft:wet_sponge':1},
+   'exploration_module':{'entrelumen:horizon_chart':1,'entrelumen:spectral_lens':1,'twilightforest:steeleaf_ingot':2,'aether:zanite_gemstone':1,'minecraft:dragon_breath':1},
    'logistics_module':{'entrelumen:routing_matrix':2,'entrelumen:handling_core':2,'entrelumen:ark_bus':1},
    'habitation_module':{'entrelumen:habitation_contract':1,'entrelumen:ration_bundle':2,'entrelumen:living_matrix':2}}
   for milestone,recipe_name in names.items():
@@ -417,8 +418,9 @@ class ChapterContracts(unittest.TestCase):
    else:self.assertEqual((task['type'],q.get('optional')),('checkmark',True))
   required={'horizon_controller':('lodestone','magnetita'),
    'horizon_engineering':('two energy couplers','dos acopladores de energía'),
-   'horizon_arcane':('two Occultism iesnium ingots','dos lingotes de iesnium de Occultism'),
-   'horizon_exploration':('two Twilight Forest steeleaf ingots','dos lingotes de steeleaf de Twilight Forest'),
+   'horizon_arcane':('one nether star from the Wither','una estrella del Nether del Wither'),
+   'horizon_nature':('one wet sponge from an Elder Guardian','una esponja mojada de un guardián anciano'),
+   'horizon_exploration':("one bottle of the dragon's breath",'una botella de aliento de dragón'),
    'horizon_end_arrival':('server witnesses real entry','servidor observa la entrada'),
    'horizon_calibrated':('four additional calibration frames','otros cuatro marcos de calibración'),
    'horizon_contained':('two additional containment seals','otros dos sellos de contención'),

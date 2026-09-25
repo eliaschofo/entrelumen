@@ -1,10 +1,12 @@
 # Recetas estáticas de integración
 
-`tools/generate_integration_recipes.py --write` genera exclusivamente `pack/kubejs/server_scripts/entrelumen_integration_recipes.js` a partir de `content/integration-design.json`. `--check` exige paridad exacta, 22 recetas, cantidades enteras positivas, hasta nueve casillas, resultados propios únicos, títulos de proyecto EN/ES y grafo acíclico de componentes. Verifica además colisiones en los recursos de recetas del companion y KubeJS. No equivale a comprobar las traducciones de los 16 objetos por registrar.
+`tools/generate_integration_recipes.py --write` genera exclusivamente `pack/kubejs/server_scripts/entrelumen_integration_recipes.js` a partir de `content/integration-design.json`. `--check` exige paridad exacta, 22 recetas, cantidades enteras positivas, hasta nueve casillas, resultados propios únicos, títulos de proyecto EN/ES y grafo acíclico de componentes.
+
+Desde el 24 de septiembre de 2026 son 21 recetas sin forma y una de infusión: el Marco de Calibración (`precision_bench`) ya no tiene receta de mesa y es `mekanism:metallurgic_infusing` (una lente en bruto y 40 de infusión de redstone). El chequeo exige que sea la única de infusión, con una sola entrada de ítem y un químico por tag, y que la campaña entregue al menos dos Marcos (`first_signal`, `extraRewards`), porque el infusor metalúrgico pide uno. Ver [progression-functions](progression-functions.md). Verifica además colisiones en los recursos de recetas del companion y KubeJS. No equivale a comprobar las traducciones de los 16 objetos por registrar.
 
 ## Carga y fallos
 
-El script usa `ServerEvents.recipes`, `event.custom(json).id(id)` y JSON nativo `minecraft:crafting_shapeless` con `result.id/count`; expande cada cantidad en entradas individuales de ingredientes. No cambia recetas ajenas ni consulta acto, equipo o procedencia. Las recetas normales quedan disponibles para mesa de crafteo y automatización.
+El script usa `ServerEvents.recipes`, `event.custom(json).id(id)` y JSON nativo `minecraft:crafting_shapeless` con `result.id/count`; expande cada cantidad en entradas individuales de ingredientes. La fila del Marco usa el JSON nativo de Mekanism 10.7 (`chemical_input`, `item_input`, `output`). No cambia recetas ajenas ni consulta acto, equipo o procedencia. Las recetas normales quedan disponibles para mesa de crafteo y automatización.
 
 Antes de añadir cualquiera de las 22, comprueba todos los ingredientes/resultados con `Item.exists` y cada ID con `event.containsRecipe({id})`. Una ausencia o colisión registra el contexto y lanza un error sin registrar ninguna receta de este conjunto. No impide que Minecraft continúe cargando otros datos: un servidor que arranca con ese error NO pasa aceptación. Primero deben estar registrados los 16 componentes propios. Otro script posterior aún podría alterar una receta; el recibo de `afterRecipes` comprueba los 22 pares ID/salida efectivamente cargados.
 
@@ -12,7 +14,7 @@ Los recibos `[ENTRELUMEN_INTEGRATION]` incluyen firma del conjunto: se exige `re
 
 ## IDs reservados
 
-- `entrelumen:integration/precision_bench` → `entrelumen:calibration_frame` × 1
+- `entrelumen:integration/precision_bench` → `entrelumen:calibration_frame` × 1 (infusión metalúrgica)
 - `entrelumen:integration/crystal_grid` → `entrelumen:energy_coupler` × 1
 - `entrelumen:integration/living_workshop` → `entrelumen:living_matrix` × 1
 - `entrelumen:integration/travelling_pantry` → `entrelumen:ration_bundle` × 1

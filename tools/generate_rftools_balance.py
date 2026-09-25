@@ -22,7 +22,8 @@ FAMILY = MODS | {'rftoolsbase', 'mcjtylib'}
 # (component, row, column, original pattern, original ingredient at that slot)
 CHANGES = {
     'rftoolsbuilder:builder': ('entrelumen:handling_core', 2, 1, ('BoB', 'rFr', 'BrB'), {'item': 'minecraft:redstone'}),
-    'rftoolsbuilder:shape_card_quarry': ('entrelumen:power_regulator', 0, 0, ('rPr', 'iMi', 'rSr'), {'item': 'minecraft:redstone'}),
+    # Quarries are a spectral lens function (Act IV) since 24 September 2026, like the other quarries.
+    'rftoolsbuilder:shape_card_quarry': ('entrelumen:spectral_lens', 0, 0, ('rPr', 'iMi', 'rSr'), {'item': 'minecraft:redstone'}),
     'rftoolsutility:spawner': ('entrelumen:ecosystem_capsule', 2, 0, ('rzr', 'oFX', 'rPr'), {'item': 'minecraft:redstone'}),
     'rftoolsutility:matter_receiver': ('entrelumen:routing_matrix', 1, 0, ('iii', 'rFr', 'ooo'), {'item': 'minecraft:redstone'}),
     'rftoolsutility:charged_porter': ('entrelumen:routing_matrix', 0, 0, (' o ', 'oRo', 'ioi'), None),

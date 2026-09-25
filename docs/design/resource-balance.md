@@ -10,7 +10,7 @@ La revisión de las cadenas fijadas del 23 de septiembre no encontró un salto d
 
 Tres comprobaciones concretas de fuentes upstream e integración:
 
-- JAMD minería conserva siete obsidianas y pico de diamante además del `calibration_frame`. El frame requiere dos iron sheets de Create, dos copper wires de IE y el lente propio. Ningún ingrediente exige entrar primero en JAMD.
+- JAMD minería conserva siete obsidianas y pico de diamante además del `calibration_frame`. Desde el 24 de septiembre el frame no tiene receta de mesa: los dos primeros los entrega First Signal (acto I) y el resto se copia por infusión (lente en bruto y redstone) en el infusor metalúrgico, que a su vez pide un frame ([progression-functions](progression-functions.md)). Ningún ingrediente exige entrar primero en JAMD.
 - Elite usa `propagation_core`, que combina esencias iniciales, cera y la matriz de Ars/Create/IE. Las 366 recetas shaped Ultra conservan una maceta Elite y las 366 Mega, una Ultra. Los ítems de mejora también conservan la condición nativa de tier previo en `useOn`. La cápsula Ultra incorpora materiales de Bumblezone; el motor Mega incorpora Nature's Aura, incluidas botellas de aura Overworld y Nether. No hace falta que la cápsula contenga otro núcleo de propagación para conservar la secuencia.
 - El core modular conserva advanced beehive, simulator y adult upgrade. El simulator requiere anti-teleport upgrade, blaze rods, perla y bloques de panal; fabricar partes modulares sueltas no evita esa cadena. La cera inicial se obtiene en la centrifugadora básica, sin exigir previamente el apiario modular.
 

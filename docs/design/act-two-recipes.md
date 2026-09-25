@@ -4,7 +4,7 @@ Source implementation for the four Act II prototypes; not acceptance of the full
 
 | Project | Ingredients |
 |---|---|
-| precision_bench | 2 create:iron_sheet + 2 immersiveengineering:wire_copper + 1 entrelumen:raw_lens |
+| precision_bench | Infusión metalúrgica de Mekanism: 1 entrelumen:raw_lens + 40 de infusión `mekanism:redstone` (desde el 24/9/2026; antes 2 create:iron_sheet + 2 immersiveengineering:wire_copper + 1 entrelumen:raw_lens en la mesa). Los dos primeros Marcos los entrega First Signal |
 | crystal_grid | 2 actuallyadditions:restonia_crystal + 1 actuallyadditions:iron_casing + 2 create:andesite_alloy |
 | living_workshop | 2 ars_nouveau:magebloom_fiber + 2 ars_nouveau:source_gem + 1 entrelumen:calibration_frame |
 | travelling_pantry | 2 farmersdelight:vegetable_soup + 2 aquaculture:fish_fillet_cooked (unchanged) |

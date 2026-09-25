@@ -207,7 +207,7 @@ New Age 1.2.0 no tiene paneles fotovoltaicos. Sus «paneles solares» son **plac
 - Las **farolas** (street light) se cargan con electricidad y alumbran según la luz del lugar.
 - Genera torio y magnetita en el Overworld (ver las mediciones).
 
-Las piezas clave llevan los componentes de acto que ya usa el pack; son materiales de Heliodor. El Marco de Calibración contiene la lente en bruto de la ruina, más cobre e hierro.
+Las piezas clave llevan los componentes de acto que ya usa el pack; son materiales de Heliodor. El Marco de Calibración contiene la lente en bruto de la ruina; desde el 24 de septiembre no tiene receta de mesa y se copia en el infusor metalúrgico ([progression-functions](progression-functions.md)).
 
 | Pieza | Acto | Componente | Por qué |
 |---|---|---|---|

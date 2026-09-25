@@ -1,6 +1,11 @@
 package dev.entrelumen;
 
 import java.util.List;
+import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
 /** Portable, freely tradable components shared by the pack's static recipes. */
@@ -26,7 +31,26 @@ public final class IntegrationItems {
 
   private IntegrationItems() {}
 
+  /** Since 24 September 2026 the frame has no crafting recipe; its tooltip says how to copy it. */
+  public static final String FRAME = "calibration_frame";
+
   public static void register(DeferredRegister.Items items) {
-    IDS.forEach(items::registerSimpleItem);
+    for (String id : IDS) {
+      if (id.equals(FRAME)) items.register(id, () -> new Frame(new Item.Properties()));
+      else items.registerSimpleItem(id);
+    }
+  }
+
+  /** The calibration frame: a plain component with one line on how the infuser copies it. */
+  public static final class Frame extends Item {
+    public Frame(Properties properties) {
+      super(properties);
+    }
+
+    @Override
+    public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltip,
+        TooltipFlag flag) {
+      tooltip.add(Component.translatable("entrelumen.calibration_frame.tooltip").withStyle(ChatFormatting.GRAY));
+    }
   }
 }

@@ -143,11 +143,11 @@ Apotheosis 8.7.0 disables all 32 Apothic Spawners modifier recipes (`neoforge:fa
 
 The inverse still consumes the augment and keeps the quartz, as the original consumed its item. Apotheosis's 26 rune modifiers and 20 rune crafting recipes (including three inactive fallbacks) are removed, so runes are not a second, cheaper route. Spawner chains still drop but no longer craft anything.
 
-Each augment is a copper medallion: 4 Create copper sheets, 1 Apotheosis gem dust, 2 rarity materials, the original Apothic Spawners item as its core and one ENTRELUMEN component. There are no rune slates. The original core, such as fermented spider eye for spawn count or the clock for maximum delay, keeps the Apothic concept recognisable. The rarity material follows World Tier drop tables:
+Each augment is a copper medallion: the original Apothic Spawners item as its core, one ENTRELUMEN component above it and 3 Create copper sheets around it (` K / SOS / S `). There are no rune slates. The original core, such as fermented spider eye for spawn count or the clock for maximum delay, keeps the Apothic concept recognisable. Until 24 September the medallion also took 1 Apotheosis gem dust and 2 rarity materials; Elias's first playtest ([playtest-2026-09-24](playtest-2026-09-24.md)) asked to swap Apotheosis's materials for ENTRELUMEN's at a similar cost instead of adding them up, so the component alone now sets the act:
 
-- **Act III**, timeworn fabric (uncommon, from Haven): min delay (power regulator), max delay (power regulator), spawn range (routing matrix), player range (inventory sensor), silent (handling core), youthful (propagation core).
-- **Act IV**, luminous crystal shard (rare): spawn count and max nearby (ecosystem capsule), initial health (spectral lens), burning (containment seal).
-- **Act V**, arcane sands (epic, weight 100 from Ascent): echoing, ignore conditions and ignore light (renewal engine); ignore players, no AI and redstone control (Ark bus).
+- **Act III:** min delay and max delay (power regulator), spawn range (routing matrix), player range (inventory sensor), silent (handling core), youthful (propagation core).
+- **Act IV:** spawn count and max nearby (ecosystem capsule), initial health (spectral lens), burning (containment seal).
+- **Act V:** echoing, ignore conditions and ignore light (renewal engine); ignore players, no AI and redstone control (Ark bus).
 
 Silk-touch spawner harvesting is disabled (`Spawner Silk Level = -1` in `pack/config/apothic_spawners.cfg`). The only Silk Touch available is level I, which is early. Portable spawners would move mob farms ahead of the Act IV Hostile Neural Networks and Industrial Foregoing routes. Augments therefore improve spawners where they are found: dungeons and Apotheosis rogue spawners. Capturing spawn eggs keep their native 0.5 % per level.
 
