@@ -159,7 +159,7 @@ def balcony(P, hw, floor, pal):
               if 'cut_copper' in pal['band'] else 'smooth_quartz_slab[type=top,waterlogged=false]')
         P.put(u, y0 + 1, -2, st('mcwstairs:quartz_balcony', east=str(abs(u) < hw - 1 or u < 0).lower(),
                                  west=str(abs(u) < hw - 1 or u > 0).lower()) if False else
-              'polished_diorite_wall[east=low,north=none,south=none,up=%s,waterlogged=false,west=low]' % ('true' if abs(u) == hw - 1 else 'false'))
+              'diorite_wall[east=low,north=none,south=none,up=%s,waterlogged=false,west=low]' % ('true' if abs(u) == hw - 1 else 'false'))
         P.put(u, y0, -2, 'smooth_quartz_slab[type=top,waterlogged=false]')
     P.put(0, y0 + 1, 0, 'waxed_copper_door[facing=south,half=lower,hinge=left,open=false,powered=false]')
     P.put(0, y0 + 2, 0, 'waxed_copper_door[facing=south,half=upper,hinge=left,open=false,powered=false]')
@@ -212,10 +212,10 @@ def roof_terrace(P, hw, D, top, pal):
     for u in range(-hw, hw + 1):
         for w in range(0, D):
             edge = abs(u) == hw or w in (0, back)
-            P.put(u, top + 1, w, 'polished_diorite_wall[east=low,north=none,south=none,up=false,waterlogged=false,west=low]'
+            P.put(u, top + 1, w, 'diorite_wall[east=low,north=none,south=none,up=false,waterlogged=false,west=low]'
                   if edge and w in (0, back) and abs(u) < hw else
-                  'polished_diorite_wall[east=none,north=low,south=low,up=false,waterlogged=false,west=none]' if edge and abs(u) == hw and w not in (0, back) else
-                  'polished_diorite_wall[east=none,north=none,south=none,up=true,waterlogged=false,west=none]' if edge else AIR)
+                  'diorite_wall[east=none,north=low,south=low,up=false,waterlogged=false,west=none]' if edge and abs(u) == hw and w not in (0, back) else
+                  'diorite_wall[east=none,north=none,south=none,up=true,waterlogged=false,west=none]' if edge else AIR)
     for u in (-(hw - 1), hw - 1):
         for w in range(1, back):
             P.put(u, top + 1, w, st('supplementaries:planter') if w % 2 else 'moss_block')

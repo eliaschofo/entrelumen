@@ -151,7 +151,7 @@ def wall_state(x, y, z, cells, post):
     straight = (conn['east'] == conn['west'] == 'low' and conn['north'] == conn['south'] == 'none') or \
                (conn['north'] == conn['south'] == 'low' and conn['east'] == conn['west'] == 'none')
     up = 'true' if post or not straight else 'false'
-    return B('polished_diorite_wall[east=%s,north=%s,south=%s,up=%s,waterlogged=false,west=%s]' % (
+    return B('diorite_wall[east=%s,north=%s,south=%s,up=%s,waterlogged=false,west=%s]' % (
         conn['east'], conn['north'], conn['south'], up, conn['west']))
 
 
@@ -213,7 +213,7 @@ def stairs():
                         if abs(u) == hw + 1:
                             for yy in range(TOP[cc] + 1, y + 1):
                                 V[(cc[0], yy, cc[1])] = B('tuff_bricks')
-                            V[(cc[0], y + 1, cc[1])] = B('polished_diorite_wall[east=none,north=none,south=none,up=true,waterlogged=false,west=none]')
+                            V[(cc[0], y + 1, cc[1])] = B('diorite_wall[east=none,north=none,south=none,up=true,waterlogged=false,west=none]')
                             if i % 4 == 0:
                                 V[(cc[0], y + 2, cc[1])] = B('lantern[hanging=false,waterlogged=false]')
                             continue
@@ -474,7 +474,7 @@ def palace():
             if x in (cx - PAL_HX, cx + PAL_HX) or z in (cz - PAL_HZ, cz + PAL_HZ):
                 post = (x - cx) % 4 == 0 and (z - cz) % 4 == 0 or (x in (cx - PAL_HX, cx + PAL_HX) and z in (cz - PAL_HZ, cz + PAL_HZ))
                 ew = z in (cz - PAL_HZ, cz + PAL_HZ)
-                V[(x, fy + BODY + 1, z)] = B('polished_diorite_wall[east=%s,north=%s,south=%s,up=%s,waterlogged=false,west=%s]' % (
+                V[(x, fy + BODY + 1, z)] = B('diorite_wall[east=%s,north=%s,south=%s,up=%s,waterlogged=false,west=%s]' % (
                     'low' if ew else 'none', 'none' if ew else 'low', 'none' if ew else 'low', 'true' if post else 'false', 'low' if ew else 'none'))
                 if post:
                     V[(x, fy + BODY + 2, z)] = B('lantern[hanging=false,waterlogged=false]') if (x + z) % 8 else B('potted_flowering_azalea_bush')
@@ -577,7 +577,7 @@ def palace():
         for z in range(-DOME_R + 1, DOME_R):
             rr = math.hypot(x, z)
             if DOME_R - 1.6 < rr <= DOME_R - 0.6:
-                V[(cx + x, fy + BODY + 1, cz + z)] = B('polished_diorite_wall[east=none,north=none,south=none,up=true,waterlogged=false,west=none]')                     if (x + z) % 3 == 0 else B('waxed_copper_grate')
+                V[(cx + x, fy + BODY + 1, cz + z)] = B('diorite_wall[east=none,north=none,south=none,up=true,waterlogged=false,west=none]')                     if (x + z) % 3 == 0 else B('waxed_copper_grate')
     # eight columns round the portal, benches between them, lanterns hung from the dome
     for k in range(8):
         th = math.radians(22.5 + 45 * k)
