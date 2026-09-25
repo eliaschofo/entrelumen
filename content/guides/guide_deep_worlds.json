@@ -1,0 +1,434 @@
+{
+  "chapter": "guide_deep_worlds",
+  "group": "exploration",
+  "act": "any",
+  "icon": "deeperdarker:heart_of_the_deep",
+  "title": {
+    "en_us": "The Otherside and the mining worlds",
+    "es_es": "El Otherside y los mundos mineros"
+  },
+  "subtitle": {
+    "en_us": "Deeper and Darker's sculk dimension below the ancient cities, and JAMD's disposable mining dimensions.",
+    "es_es": "La dimensión de sculk de Deeper and Darker bajo las ciudades antiguas, y las dimensiones mineras descartables de JAMD."
+  },
+  "quests": [
+    {
+      "key": "dw_welcome",
+      "deps": [],
+      "type": "checkmark",
+      "layout": {
+        "x": 0,
+        "y": 0,
+        "size": 2.0,
+        "shape": "hexagon"
+      },
+      "en_us": [
+        "Worlds below",
+        "Two more dimensions live below your feet:\n- The Otherside, from Deeper and Darker: a dark sculk world reached through the ancient cities, with the Warden's best gear.\n- The mining worlds, from JAMD: flat, ore-rich dimensions made for mining without scarring your home world, opened with act components in this pack.\n\nNeither is part of the story; both make the rest easier."
+      ],
+      "es_es": [
+        "Mundos de abajo",
+        "Debajo de tus pies viven dos dimensiones más:\n- El Otherside, de Deeper and Darker: un mundo oscuro de sculk al que se llega por las ciudades antiguas, con el mejor equipo del Warden.\n- Los mundos mineros, de JAMD: dimensiones llenas de mineral pensadas para minar sin arruinar tu mundo, que en este pack se abren con componentes de acto.\n\nNinguna es parte de la historia; las dos hacen más fácil todo lo demás."
+      ],
+      "sources": [
+        "repo:docs/design/exploration-structures-family.md",
+        "repo:docs/design/resource-balance.md"
+      ]
+    },
+    {
+      "key": "dw_city",
+      "deps": [
+        "dw_welcome"
+      ],
+      "type": "advancement",
+      "advancement": "deeperdarker:main/find_ancient_city",
+      "icon": "minecraft:sculk_shrieker",
+      "layout": {
+        "x": 3,
+        "y": -3,
+        "size": 1.0,
+        "shape": "circle"
+      },
+      "en_us": [
+        "A Metropolis of Restless Souls",
+        "Find an ancient city in the Deep Dark. Sculk sensors and shriekers call the Warden: sneak, avoid stepping on sculk, and use wool to muffle your steps. Deeper and Darker adds more to the cities, including Warden Carapaces and the Warden upgrade template in their loot."
+      ],
+      "es_es": [
+        "Una metrópolis de almas inquietas",
+        "Encontrá una ciudad antigua en la Oscuridad profunda. Los sensores y chilladores de sculk llaman al Warden: andá agachado, no pises el sculk y usá lana para amortiguar tus pasos. Deeper and Darker les suma cosas a las ciudades, entre ellas Caparazones de Warden y la plantilla de mejora del Warden en su botín."
+      ],
+      "sources": [
+        "jar:deeperdarker-neoforge-1.21.1-1.4.1.jar:data/deeperdarker/advancement/main/find_ancient_city.json",
+        "jar:deeperdarker-neoforge-1.21.1-1.4.1.jar:data/deeperdarker/loot_modifiers/warden_carapace_from_ancient_city.json",
+        "jar:deeperdarker-neoforge-1.21.1-1.4.1.jar:data/deeperdarker/loot_modifiers/warden_upgrade_from_ancient_city.json"
+      ]
+    },
+    {
+      "key": "dw_heart",
+      "deps": [
+        "dw_city"
+      ],
+      "type": "advancement",
+      "advancement": "deeperdarker:main/kill_warden",
+      "icon": "deeperdarker:heart_of_the_deep",
+      "layout": {
+        "x": 6,
+        "y": -3,
+        "size": 2.0,
+        "shape": "gear"
+      },
+      "en_us": [
+        "The Heart of the Deep",
+        "Slay the Warden and take its heart (\"Phantom Thief\"): with Deeper and Darker, the Warden drops a Heart of the Deep and Warden Carapaces. It is the hardest vanilla creature; fight it with a plan (ranged damage, strong armor, potions), or skip it until later.\n\nThe heart opens the way to the Otherside."
+      ],
+      "es_es": [
+        "El Corazón de las profundidades",
+        "Matá al Warden y quedate con su corazón («Phantom Thief»): con Deeper and Darker, el Warden suelta un Corazón de las profundidades y Caparazones de Warden. Es la criatura vanilla más difícil; peleala con un plan (daño a distancia, buena armadura, pociones), o dejala para más adelante.\n\nEl corazón abre el camino al Otherside."
+      ],
+      "sources": [
+        "jar:deeperdarker-neoforge-1.21.1-1.4.1.jar:data/deeperdarker/advancement/main/kill_warden.json",
+        "jar:deeperdarker-neoforge-1.21.1-1.4.1.jar:data/deeperdarker/loot_modifiers/warden_heart_from_warden.json",
+        "jar:deeperdarker-neoforge-1.21.1-1.4.1.jar:data/deeperdarker/loot_modifiers/warden_carapace_from_warden.json"
+      ]
+    },
+    {
+      "key": "dw_otherside",
+      "deps": [
+        "dw_heart"
+      ],
+      "type": "dimension",
+      "dimension": "deeperdarker:otherside",
+      "icon": "minecraft:reinforced_deepslate",
+      "layout": {
+        "x": 9,
+        "y": -3,
+        "size": 1.75,
+        "shape": "diamond"
+      },
+      "en_us": [
+        "Below the Bedrock",
+        "Use the Heart of the Deep on the portal frame of an ancient city (in the Overworld) to open a portal to the Otherside (\"Below the Bedrock\"). It is dark, hostile and full of sculk creatures; bring light, food and a way back.\n\nExploring every Otherside biome is \"Echolocation\", and killing one of every sculk monster is \"Sculk Slayer\"."
+      ],
+      "es_es": [
+        "Debajo del lecho de roca",
+        "Usá el Corazón de las profundidades sobre el marco del portal de una ciudad antigua (en el Overworld) para abrir un portal al Otherside («Below the Bedrock»). Es oscuro, hostil y está lleno de criaturas de sculk; llevá luz, comida y una forma de volver.\n\nExplorar todos los biomas del Otherside es «Echolocation», y matar uno de cada monstruo de sculk es «Sculk Slayer»."
+      ],
+      "sources": [
+        "jar:deeperdarker-neoforge-1.21.1-1.4.1.jar:data/deeperdarker/advancement/main/enter_otherside.json",
+        "jar:deeperdarker-neoforge-1.21.1-1.4.1.jar:data/deeperdarker/advancement/main/explore_otherside.json",
+        "jar:deeperdarker-neoforge-1.21.1-1.4.1.jar:data/deeperdarker/advancement/main/kill_all_sculk_mobs.json",
+        "jar:deeperdarker-neoforge-1.21.1-1.4.1.jar:com/kyanite/deeperdarker/content/items/WardenHeartItem.class"
+      ]
+    },
+    {
+      "key": "dw_temple",
+      "deps": [
+        "dw_otherside"
+      ],
+      "type": "advancement",
+      "advancement": "deeperdarker:main/find_ancient_temple",
+      "optional": true,
+      "icon": "deeperdarker:sonorous_staff",
+      "layout": {
+        "x": 12,
+        "y": -3,
+        "size": 1.0,
+        "shape": "circle"
+      },
+      "en_us": [
+        "Abyssal Descent",
+        "The Otherside hides ancient temples in its depths (\"Abyssal Descent\"). They hold the rarest Deeper and Darker loot, including the Sonorous Staff (\"Noise Complaint\"), a weapon that fires sonic blasts like the Warden's; the Reverberation and Volume enchantments improve them."
+      ],
+      "es_es": [
+        "Descenso abisal",
+        "El Otherside esconde templos antiguos en sus profundidades («Abyssal Descent»). Guardan el botín más raro de Deeper and Darker, como el Bastón sonoro («Noise Complaint»), un arma que dispara ráfagas sónicas como las del Warden; los encantamientos Reverberation y Volume las mejoran."
+      ],
+      "sources": [
+        "jar:deeperdarker-neoforge-1.21.1-1.4.1.jar:data/deeperdarker/advancement/main/find_ancient_temple.json",
+        "jar:deeperdarker-neoforge-1.21.1-1.4.1.jar:data/deeperdarker/advancement/main/obtain_sonorous_staff.json",
+        "jar:deeperdarker-neoforge-1.21.1-1.4.1.jar:data/deeperdarker/worldgen/structure/ancient_temple.json",
+        "jar:deeperdarker-neoforge-1.21.1-1.4.1.jar:assets/deeperdarker/lang/en_us.json"
+      ]
+    },
+    {
+      "key": "dw_armor",
+      "deps": [
+        "dw_heart"
+      ],
+      "type": "advancement",
+      "advancement": "deeperdarker:main/warden_armor",
+      "optional": true,
+      "icon": "deeperdarker:warden_chestplate",
+      "layout": {
+        "x": 9,
+        "y": 0,
+        "size": 1.0,
+        "shape": "circle"
+      },
+      "en_us": [
+        "Cover Me with Sculk",
+        "Two upgrade paths: Resonarium plates upgrade iron gear into Resonarium, and Reinforced Echo Shards (\"Sculk Engineer\") upgrade netherite gear into Warden gear with the Warden upgrade template. A full Warden set is \"Cover Me with Sculk\".\n\nSculk Smite adds damage against sculk mobs and the Warden."
+      ],
+      "es_es": [
+        "Cubrime de sculk",
+        "Dos caminos de mejora: las placas de Resonarium convierten el equipo de hierro en Resonarium, y los Fragmentos de eco reforzados («Sculk Engineer») convierten el equipo de netherite en equipo de Warden con la plantilla de mejora del Warden. El set completo de Warden es «Cover Me with Sculk».\n\nSculk Smite suma daño contra los mobs de sculk y el Warden."
+      ],
+      "sources": [
+        "jar:deeperdarker-neoforge-1.21.1-1.4.1.jar:data/deeperdarker/advancement/main/obtain_reinforced_echo_shard.json",
+        "jar:deeperdarker-neoforge-1.21.1-1.4.1.jar:data/deeperdarker/advancement/main/warden_armor.json",
+        "jar:deeperdarker-neoforge-1.21.1-1.4.1.jar:assets/deeperdarker/lang/en_us.json"
+      ]
+    },
+    {
+      "key": "dw_tools",
+      "deps": [
+        "dw_armor"
+      ],
+      "type": "checkmark",
+      "optional": true,
+      "icon": "deeperdarker:sculk_transmitter",
+      "layout": {
+        "x": 12,
+        "y": 0,
+        "size": 0.85,
+        "shape": "circle"
+      },
+      "en_us": [
+        "Sculk gadgets",
+        "- Sculk Transmitter (\"Remote Storage\"): link it to a container and open that container from far away.\n- Soul Elytra: elytra with a boost on a cooldown; in this pack the boost key is Alt+B and the transmitter key Alt+N, moved off the backpack and Ultimine keys."
+      ],
+      "es_es": [
+        "Artefactos de sculk",
+        "- Transmisor de sculk («Remote Storage»): vinculalo a un contenedor y abrilo desde lejos.\n- Élitros de alma: élitros con un impulso que tiene tiempo de espera; en este pack la tecla de impulso es Alt+B y la del transmisor Alt+N, movidas para no chocar con la mochila ni con Ultimine."
+      ],
+      "sources": [
+        "jar:deeperdarker-neoforge-1.21.1-1.4.1.jar:data/deeperdarker/advancement/main/obtain_sculk_transmitter.json",
+        "jar:deeperdarker-neoforge-1.21.1-1.4.1.jar:assets/deeperdarker/lang/en_us.json",
+        "repo:pack/config/defaultoptions/keybindings.txt",
+        "repo:docs/design/exploration-structures-family.md"
+      ]
+    },
+    {
+      "key": "dw_jamd",
+      "deps": [
+        "dw_welcome"
+      ],
+      "type": "item",
+      "item": "jamd:portal_block",
+      "layout": {
+        "x": 3,
+        "y": 3,
+        "size": 1.0,
+        "shape": "square"
+      },
+      "en_us": [
+        "A mining portal (act II)",
+        "JAMD's Mining Portal takes you to a separate mining dimension, so your base world stays intact. In ENTRELUMEN its recipe is seven obsidian, a diamond pickaxe and a Calibration Frame, the act II component. Place it and use it to travel; return through the portal on the other side."
+      ],
+      "es_es": [
+        "Un portal minero (acto II)",
+        "El Portal minero de JAMD te lleva a una dimensión de minería aparte, así tu mundo base queda intacto. En ENTRELUMEN su receta es siete obsidianas, un pico de diamante y un Marco de calibración, el componente del acto II. Colocalo y usalo para viajar; volvés por el portal del otro lado."
+      ],
+      "sources": [
+        "repo:pack/kubejs/server_scripts/entrelumen_resource_balance.js",
+        "repo:docs/design/resource-balance.md",
+        "jar:jamd-neo-21.1.1+mc1.21.1.jar:assets/jamd/lang/en_us.json"
+      ]
+    },
+    {
+      "key": "dw_mining",
+      "deps": [
+        "dw_jamd"
+      ],
+      "type": "dimension",
+      "dimension": "jamd:mining",
+      "icon": "minecraft:diamond_pickaxe",
+      "layout": {
+        "x": 6,
+        "y": 3,
+        "size": 1.75,
+        "shape": "diamond"
+      },
+      "en_us": [
+        "To Infinity and Underground",
+        "Enter the Mining dimension (\"To Infinity and Underground\"). Mine freely: it is meant to be dug up. Bring torches, and mark your portal on JourneyMap before going far.\n\nOres here also feed your processing lines; the pack's mining gadgets and Ultimine shine in this place."
+      ],
+      "es_es": [
+        "Al infinito y bajo tierra",
+        "Entrá a la dimensión de Minería («To Infinity and Underground»). Picá sin culpa: está hecha para eso. Llevá antorchas, y marcá tu portal en JourneyMap antes de alejarte.\n\nLos minerales de acá también alimentan tus líneas de procesamiento; los aparatos de minería del pack y Ultimine lucen en este lugar."
+      ],
+      "sources": [
+        "jar:jamd-neo-21.1.1+mc1.21.1.jar:data/jamd/advancement/mining.json",
+        "jar:jamd-neo-21.1.1+mc1.21.1.jar:assets/jamd/lang/en_us.json",
+        "repo:docs/design/industrial-expansion-family.md"
+      ]
+    },
+    {
+      "key": "dw_jamd_nether",
+      "deps": [
+        "dw_mining"
+      ],
+      "type": "item",
+      "item": "jamd:nether_portal",
+      "optional": true,
+      "layout": {
+        "x": 9,
+        "y": 3,
+        "size": 1.0,
+        "shape": "square"
+      },
+      "en_us": [
+        "Nether and End mining portals (act IV)",
+        "JAMD also has Nether and End mining dimensions. In this pack the Nether Mining Portal needs seven Nether bricks, a netherite pickaxe and a Containment Seal, and the End Mining Portal seven End stone, a diamond pickaxe and a Horizon Chart: both act IV components.\n\nThey are a safe source of Nether and End blocks and ores without the dangers of the real dimensions."
+      ],
+      "es_es": [
+        "Portales mineros del Nether y del End (acto IV)",
+        "JAMD también tiene dimensiones mineras del Nether y del End. En este pack el Portal minero del Nether pide siete ladrillos del Nether, un pico de netherite y un Sello de contención, y el Portal minero del End siete piedras del End, un pico de diamante y una Carta de horizontes: los dos son componentes del acto IV.\n\nSon una fuente segura de bloques y minerales del Nether y del End sin los peligros de las dimensiones reales."
+      ],
+      "sources": [
+        "repo:pack/kubejs/server_scripts/entrelumen_resource_balance.js",
+        "repo:docs/design/resource-balance.md",
+        "jar:jamd-neo-21.1.1+mc1.21.1.jar:assets/jamd/lang/en_us.json"
+      ]
+    },
+    {
+      "key": "dw_nether_mining",
+      "deps": [
+        "dw_jamd_nether"
+      ],
+      "type": "dimension",
+      "dimension": "jamd:nether",
+      "optional": true,
+      "icon": "minecraft:netherrack",
+      "layout": {
+        "x": 12,
+        "y": 3,
+        "size": 1.75,
+        "shape": "diamond"
+      },
+      "en_us": [
+        "Nether Mining",
+        "Visit the Nether Mining dimension through its portal. Pack the same things you would for the real Nether: fire resistance and a way home."
+      ],
+      "es_es": [
+        "Minería del Nether",
+        "Visitá la dimensión de Minería del Nether por su portal. Llevá lo mismo que para el Nether de verdad: resistencia al fuego y una forma de volver."
+      ],
+      "sources": [
+        "jar:jamd-neo-21.1.1+mc1.21.1.jar:assets/jamd/lang/en_us.json",
+        "jar:jamd-neo-21.1.1+mc1.21.1.jar:data/jamd/dimension/nether.json"
+      ]
+    },
+    {
+      "key": "dw_pack",
+      "deps": [
+        "dw_welcome"
+      ],
+      "type": "checkmark",
+      "icon": "entrelumen:calibration_frame",
+      "layout": {
+        "x": 0,
+        "y": 3,
+        "size": 1.0,
+        "shape": "rsquare"
+      },
+      "en_us": [
+        "How these fit in ENTRELUMEN",
+        "- The Otherside is optional and native; the Warden's heart is its key.\n- The JAMD portals are staged with act components: Calibration Frame (II), Containment Seal and Horizon Chart (IV). Everything else in their recipes is the mod's own.\n- Deeper and Darker keys were moved to Alt+B and Alt+N.\n- The Undergarden, the other underground dimension, has its own chapter."
+      ],
+      "es_es": [
+        "Cómo encajan en ENTRELUMEN",
+        "- El Otherside es opcional y viene nativo; el corazón del Warden es su llave.\n- Los portales de JAMD están escalonados con componentes de acto: Marco de calibración (II), Sello de contención y Carta de horizontes (IV). El resto de sus recetas es del mod.\n- Las teclas de Deeper and Darker pasaron a Alt+B y Alt+N.\n- El Undergarden, la otra dimensión subterránea, tiene su propio capítulo."
+      ],
+      "sources": [
+        "repo:pack/kubejs/server_scripts/entrelumen_resource_balance.js",
+        "repo:docs/design/resource-balance.md",
+        "repo:pack/config/defaultoptions/keybindings.txt",
+        "repo:docs/design/exploration-structures-family.md"
+      ]
+    },
+    {
+      "key": "dw_mining_end",
+      "deps": [
+        "dw_jamd_nether"
+      ],
+      "type": "dimension",
+      "dimension": "jamd:end",
+      "optional": true,
+      "icon": "minecraft:end_stone",
+      "layout": {
+        "x": 15,
+        "y": 3,
+        "size": 1.75,
+        "shape": "diamond"
+      },
+      "en_us": [
+        "End Mining",
+        "The End Mining dimension gives End stone and End materials without Endermen raids around your ears. A good stop before building an End base."
+      ],
+      "es_es": [
+        "Minería del End",
+        "La dimensión de Minería del End da piedra del End y materiales del End sin tener a los Endermen alrededor. Una buena parada antes de armar una base en el End."
+      ],
+      "sources": [
+        "jar:jamd-neo-21.1.1+mc1.21.1.jar:assets/jamd/lang/en_us.json",
+        "jar:jamd-neo-21.1.1+mc1.21.1.jar:data/jamd/dimension/end.json"
+      ]
+    },
+    {
+      "key": "dw_echo",
+      "deps": [
+        "dw_tools"
+      ],
+      "type": "item",
+      "item": "minecraft:echo_shard",
+      "optional": true,
+      "layout": {
+        "x": 15,
+        "y": 0,
+        "size": 1.0,
+        "shape": "circle"
+      },
+      "en_us": [
+        "Echoes to spare",
+        "Echo shards from ancient cities become Reinforced Echo Shards, the core of Warden gear. They are also a luxury trade: Solsticio's dealer of rarities sells echo shards from act III."
+      ],
+      "es_es": [
+        "Ecos de sobra",
+        "Los fragmentos de eco de las ciudades antiguas se vuelven Fragmentos de eco reforzados, el núcleo del equipo de Warden. También son un intercambio de lujo: el comerciante de rarezas de Solsticio vende fragmentos de eco desde el acto III."
+      ],
+      "sources": [
+        "jar:deeperdarker-neoforge-1.21.1-1.4.1.jar:assets/deeperdarker/lang/en_us.json",
+        "repo:docs/design/solsticio-commerce.md",
+        "repo:companion/src/main/resources/data/entrelumen/solsticio_shops/rarities.json"
+      ]
+    },
+    {
+      "key": "dw_mastery",
+      "deps": [
+        "dw_echo",
+        "dw_mining"
+      ],
+      "type": "checkmark",
+      "icon": "deeperdarker:reinforced_echo_shard",
+      "layout": {
+        "x": 18,
+        "y": 0,
+        "size": 2.25,
+        "shape": "pentagon"
+      },
+      "en_us": [
+        "Deeper than deep",
+        "You stole the Warden's heart, crossed below the bedrock and opened portals to worlds made for digging. The deep is no longer a place to fear, only a place to mine."
+      ],
+      "es_es": [
+        "Más hondo que lo hondo",
+        "Le robaste el corazón al Warden, cruzaste por debajo del lecho de roca y abriste portales a mundos hechos para cavar. Lo profundo ya no da miedo: sólo es un lugar para minar."
+      ],
+      "sources": [
+        "jar:deeperdarker-neoforge-1.21.1-1.4.1.jar:assets/deeperdarker/lang/en_us.json",
+        "jar:jamd-neo-21.1.1+mc1.21.1.jar:assets/jamd/lang/en_us.json"
+      ]
+    }
+  ]
+}
