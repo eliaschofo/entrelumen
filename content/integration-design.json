@@ -149,30 +149,26 @@
       "output": {
         "id": "entrelumen:calibration_frame",
         "count": 1,
-        "registration": "Integration recipe output; verify companion registry on the loaded server"
+        "registration": "Infusion output; the first two frames come from the first_signal reward. Verify companion registry and the loaded infusing recipe on the server"
       },
       "recipe": {
         "id": "entrelumen:integration/precision_bench",
-        "type": "minecraft:crafting_shapeless",
-        "representation": "Expand each ingredient count into individual crafting-grid entries; total <=9. Native crafting remainders apply. Static recipe: no team/stage/player predicates.",
+        "type": "mekanism:metallurgic_infusing",
+        "representation": "Native Mekanism metallurgic infusing: one raw lens and 40 of redstone infusion make one frame, in the metallurgic infuser or an infusing factory. There is no crafting-table recipe: the first two frames are the Act I reward of first_signal, and the infuser itself needs one (see docs/design/progression-functions.md).",
+        "machine": "mekanism:metallurgic_infuser",
         "inputs": [
-          {
-            "id": "create:iron_sheet",
-            "count": 2
-          },
-          {
-            "id": "immersiveengineering:wire_copper",
-            "count": 2
-          },
           {
             "id": "entrelumen:raw_lens",
             "count": 1
           }
-        ]
+        ],
+        "chemical": {
+          "tag": "mekanism:redstone",
+          "amount": 40
+        }
       },
       "systems": [
-        "create",
-        "immersiveengineering"
+        "mekanism"
       ],
       "completion": "Entregar explícitamente un prototipo al servidor después de first_signal; se consume sólo ese prototipo. Las máquinas quedan instaladas. Fabricar, poseer o recibir regalos no avanza la historia; los ejercicios del tutorial son autodeclarados.",
       "evidenceRequirements": [
@@ -181,7 +177,7 @@
         "team delivery idempotency/restart",
         "manual tutorial playthrough"
       ],
-      "status": "Act II recipe source implemented; authoritative delivery integration and runtime verification tracked in docs/delivery/act-two",
+      "status": "Act II: frame by infusion since 24 September 2026 (no crafting recipe); first two frames are the Act I reward; authoritative delivery and runtime verification tracked in docs/delivery/act-two",
       "delivery": {
         "count": 1,
         "consume": true,
@@ -1066,7 +1062,11 @@
           },
           {
             "id": "occultism:iesnium_ingot",
-            "count": 2
+            "count": 1
+          },
+          {
+            "id": "minecraft:nether_star",
+            "count": 1
           }
         ]
       },
@@ -1085,14 +1085,15 @@
       "status": "implemented campaign construction delivery; full-pack verification and survival pacing pending",
       "delivery": {
         "projectId": "arcane_module",
-        "act": 6,
+        "act": 5,
         "requires": [
           "world_network"
         ],
         "items": {
           "entrelumen:spectral_lens": 2,
           "entrelumen:containment_seal": 2,
-          "occultism:iesnium_ingot": 2
+          "occultism:iesnium_ingot": 1,
+          "minecraft:nether_star": 1
         },
         "consume": true,
         "reward": {
@@ -1129,7 +1130,11 @@
           },
           {
             "id": "entrelumen:living_matrix",
-            "count": 2
+            "count": 1
+          },
+          {
+            "id": "minecraft:wet_sponge",
+            "count": 1
           }
         ]
       },
@@ -1149,14 +1154,15 @@
       "status": "implemented campaign construction delivery; full-pack verification and survival pacing pending",
       "delivery": {
         "projectId": "nature_module",
-        "act": 6,
+        "act": 5,
         "requires": [
           "world_network"
         ],
         "items": {
           "entrelumen:renewal_engine": 1,
           "entrelumen:ecosystem_capsule": 2,
-          "entrelumen:living_matrix": 2
+          "entrelumen:living_matrix": 1,
+          "minecraft:wet_sponge": 1
         },
         "consume": true,
         "reward": {
@@ -1197,7 +1203,11 @@
           },
           {
             "id": "aether:zanite_gemstone",
-            "count": 2
+            "count": 1
+          },
+          {
+            "id": "minecraft:dragon_breath",
+            "count": 1
           }
         ]
       },
@@ -1216,7 +1226,7 @@
       "status": "implemented campaign construction delivery; full-pack verification and survival pacing pending",
       "delivery": {
         "projectId": "exploration_module",
-        "act": 6,
+        "act": 5,
         "requires": [
           "world_network",
           "end_arrival"
@@ -1225,7 +1235,8 @@
           "entrelumen:horizon_chart": 1,
           "entrelumen:spectral_lens": 1,
           "twilightforest:steeleaf_ingot": 2,
-          "aether:zanite_gemstone": 2
+          "aether:zanite_gemstone": 1,
+          "minecraft:dragon_breath": 1
         },
         "consume": true,
         "reward": {
@@ -1546,7 +1557,6 @@
       "introduction": "Precision manufacturing",
       "laterUtility": "Produce mechanical instruments for Atlas projects",
       "concreteConnections": [
-        "entrelumen:precision_bench",
         "entrelumen:spectral_archive",
         "entrelumen:ark_engineering"
       ],
@@ -1656,7 +1666,6 @@
       "introduction": "Visible electrical engineering",
       "laterUtility": "Bulk materials and wiring for observatory infrastructure",
       "concreteConnections": [
-        "entrelumen:precision_bench",
         "entrelumen:distributed_power"
       ],
       "participation": "project system or interchangeable infrastructure; owning all mods not required",
@@ -1732,11 +1741,12 @@
     },
     {
       "modId": "mekanism",
-      "introducedAct": "III",
+      "introducedAct": "II",
       "anchorItem": "mekanism:alloy_atomic",
-      "introduction": "Chemical and industrial processing",
+      "introduction": "Metallurgic infusion replicates the calibration frame; chemical and industrial processing follow",
       "laterUtility": "Supply advanced alloys to the engineering Ark module",
       "concreteConnections": [
+        "entrelumen:precision_bench",
         "entrelumen:distributed_power",
         "entrelumen:resilient_backbone",
         "entrelumen:ark_engineering"
@@ -2838,6 +2848,12 @@
       "scope": "Act renumbering",
       "decision": "Elias merged the industrial preparation and the Ark into one Act V, The Ark: the six module projects moved from act 6 to act 5 with unchanged recipes and costs. The activation records last_horizon, forges the Light Key and moves the campaign to Act VI, Solsticio. Saved campaigns in act 6 without the activation migrate to act 5.",
       "evidence": "docs/design/act-renumbering.md"
+    },
+    {
+      "date": "2026-09-24",
+      "scope": "Progression batch",
+      "decision": "Elias: the calibration frame loses its crafting recipe. The Act I closure (first_signal) also grants two frames; the Mekanism metallurgic infuser needs one, and the infuser makes more (one raw lens and 40 redstone infusion each), which feed precision_bench and every frame gate. The arcane, exploration and nature modules take one Wither nether star, one bottle of dragon's breath and one wet sponge in place of one unit of an existing input; item counts stay the same.",
+      "evidence": "docs/design/progression-functions.md"
     }
   ]
 }

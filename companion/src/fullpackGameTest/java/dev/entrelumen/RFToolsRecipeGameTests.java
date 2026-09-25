@@ -37,7 +37,7 @@ public final class RFToolsRecipeGameTests {
           "minecraft:redstone", "rftoolsbase:machine_frame", "minecraft:redstone",
           "minecraft:bricks", "entrelumen:handling_core", "minecraft:bricks"),
       new RecipeCase(QUARRY, 0, "minecraft:redstone",
-          "entrelumen:power_regulator", "minecraft:diamond_pickaxe", "minecraft:redstone",
+          "entrelumen:spectral_lens", "minecraft:diamond_pickaxe", "minecraft:redstone",
           "minecraft:iron_ingot", "rftoolsbuilder:shape_card_def", "minecraft:iron_ingot",
           "minecraft:redstone", "minecraft:diamond_shovel", "minecraft:redstone"),
       new RecipeCase("rftoolsutility:spawner", 6, "minecraft:redstone",

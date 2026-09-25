@@ -7,8 +7,18 @@ import net.minecraft.resources.ResourceLocation;
 
 /** Immutable campaign definitions, replaced only after a complete validated resource reload. */
 public final class Projects {
+  /**
+   * One campaign project. {@code reward} is the single item granted once after a successful delivery;
+   * {@code extraRewards} are further stacks granted with it (24 September 2026: the Act I closure also
+   * hands out the first two calibration frames, which have no crafting recipe).
+   */
   public record Project(
-      int act, Map<String, Integer> items, Set<String> prerequisites, String reward) {}
+      int act, Map<String, Integer> items, Set<String> prerequisites, String reward,
+      Map<String, Integer> extraRewards) {
+    public Project(int act, Map<String, Integer> items, Set<String> prerequisites, String reward) {
+      this(act, items, prerequisites, reward, Map.of());
+    }
+  }
 
   static final Set<String> STABLE_IDS =
       Set.of(
@@ -71,7 +81,7 @@ public final class Projects {
               if (!entry.getValue().isJsonObject()) throw invalid(id, "expected a project object");
               JsonObject obj = entry.getValue().getAsJsonObject();
               for (String field : obj.keySet())
-                if (!Set.of("act", "items", "requires", "reward").contains(field))
+                if (!Set.of("act", "items", "requires", "reward", "extraRewards").contains(field))
                   throw invalid(id, "unknown field " + field);
               int act = positiveInteger(obj.get("act"), id + ".act");
               if (act > Campaigns.FINAL_ACT) throw invalid(id + ".act", "expected 1.." + Campaigns.FINAL_ACT);
@@ -105,13 +115,31 @@ public final class Projects {
                       ? validateItem(
                           string(obj.get("reward"), id + ".reward"), id + ".reward", itemExists)
                       : "";
+              Map<String, Integer> extraRewards = new LinkedHashMap<>();
+              if (obj.has("extraRewards")) {
+                if (!obj.get("extraRewards").isJsonObject()
+                    || obj.getAsJsonObject("extraRewards").isEmpty())
+                  throw invalid(id + ".extraRewards", "expected a nonempty item/count object");
+                obj.getAsJsonObject("extraRewards")
+                    .entrySet()
+                    .forEach(
+                        extra -> {
+                          String item = validateItem(extra.getKey(), id + ".extraRewards", itemExists);
+                          int count = positiveInteger(extra.getValue(), id + ".extraRewards." + item);
+                          if (count > 64)
+                            throw invalid(id + ".extraRewards." + item, "expected at most one stack (64)");
+                          if (item.equals(reward) || extraRewards.put(item, count) != null)
+                            throw invalid(id + ".extraRewards", "duplicate reward item " + item);
+                        });
+              }
               result.put(
                   id,
                   new Project(
                       act,
                       Collections.unmodifiableMap(items),
                       Collections.unmodifiableSet(prerequisites),
-                      reward));
+                      reward,
+                      Collections.unmodifiableMap(extraRewards)));
             });
     Set<String> missing = new TreeSet<>(STABLE_IDS);
     missing.removeAll(result.keySet());

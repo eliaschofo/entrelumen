@@ -1890,15 +1890,20 @@ public final class RuntimeGameTests {
     helper.assertTrue(campaign.completed.size() == 5
         && AtlasNetwork.handleOpen(player).canAdvance(), "Complete first act cannot advance");
     var atlas = BuiltInRegistries.ITEM.get(ResourceLocation.parse("entrelumen:atlas"));
+    // 24 September 2026: First Signal also grants the first two calibration frames, which have no
+    // crafting recipe (one builds the metallurgic infuser, one is spare).
+    var frame = BuiltInRegistries.ITEM.get(ResourceLocation.parse("entrelumen:calibration_frame"));
     helper.assertTrue(player.getInventory().countItem(atlas) == 1
-        && player.getInventory().items.stream().filter(s -> !s.isEmpty()).count() == 2
-          && player.getInventory().countItem(BuiltInRegistries.ITEM.get(ResourceLocation.parse("entrelumen:signal_core"))) == 1,
-        "First-act deliveries consumed incorrect amounts or lost the portable Atlas");
+        && player.getInventory().items.stream().filter(s -> !s.isEmpty()).count() == 3
+          && player.getInventory().countItem(BuiltInRegistries.ITEM.get(ResourceLocation.parse("entrelumen:signal_core"))) == 1
+          && player.getInventory().countItem(frame) == 2,
+        "First-act deliveries consumed incorrect amounts, lost the portable Atlas or missed the two frames");
     var replay = AtlasNetwork.handleRequest(player, new AtlasNetwork.Request(
         initial.campaign(), CampaignActions.Action.DELIVER, "first_signal"));
     helper.assertTrue(replay.message().equals("entrelumen.delivery.failed")
         && campaign.completed.size() == 5 && player.getInventory().countItem(atlas) == 1
-          && player.getInventory().countItem(BuiltInRegistries.ITEM.get(ResourceLocation.parse("entrelumen:signal_core"))) == 1,
+          && player.getInventory().countItem(BuiltInRegistries.ITEM.get(ResourceLocation.parse("entrelumen:signal_core"))) == 1
+          && player.getInventory().countItem(frame) == 2,
         "Completed signal replay changed progress or inventory");
     var advanced = AtlasNetwork.handleRequest(player, new AtlasNetwork.Request(
         initial.campaign(), CampaignActions.Action.ADVANCE, ""));

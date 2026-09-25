@@ -2,7 +2,7 @@
 
 Investigación del 24 de septiembre de 2026, pedida por Elias: mirar las quests de ATM10 y FTB Evolution, sacarles foto, revisar las recetas cambiadas de los packs de referencia (Craftoria y los otros dos) y proponer una progresión propia para ENTRELUMEN. Todo es inspiración y análisis propio. **No se copia narrativa, quests, scripts, recetas ni arte de ningún pack** (ver `AGENTS.md`). Este documento describe estructuras con palabras propias y cifras medidas; los nombres de ítems o capítulos aparecen sólo para ubicar el ejemplo.
 
-La propuesta del final no está implementada.
+La propuesta del final se implementó en parte el 24 de septiembre, con las respuestas de Elias: ver [progression-functions](../design/progression-functions.md).
 
 ## Fuentes y método
 
@@ -350,6 +350,8 @@ Son para quien escriba quests; `wt-acts` tiene hoy el libro y el mod.
    - El tooltip muestra el alcance.
    - Hay que ver cómo limita FTB Ultimine por jugador en la versión fijada: config, permisos o API.
 7. Sigue sin responder: la vitrina de trofeos.
+
+Implementado en `feature/progression` ([progression-functions](../design/progression-functions.md)): respuestas 1, 2, 3 y 6, más los gates de la propuesta que encajan con ellas, en una familia «funciones». Las brechas 1 a 4 quedan cerradas: el controlador ME pide la Matriz de Enrutamiento, todas las canteras la Lente Espectral, el Sensor de Inventario gatea la QIO, y Mekanism y AE2 tienen escalones propios. Las respuestas 4 y 5 (libro y guías) son de otros workers.
 
 ## Límites
 

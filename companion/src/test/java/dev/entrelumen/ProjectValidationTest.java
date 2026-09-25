@@ -77,13 +77,15 @@ class ProjectValidationTest {
         "engineering_module", java.util.Map.of("entrelumen:calibration_frame", 2,
             "entrelumen:energy_coupler", 2, "entrelumen:ark_bus", 1,
             "mekanism:alloy_atomic", 2),
+        // 24 September 2026: a boss drop replaces one unit of an existing input (Wither, Elder
+        // Guardian, dragon), so each module takes as many items as before.
         "arcane_module", java.util.Map.of("entrelumen:spectral_lens", 2,
-            "entrelumen:containment_seal", 2, "occultism:iesnium_ingot", 2),
+            "entrelumen:containment_seal", 2, "occultism:iesnium_ingot", 1, "minecraft:nether_star", 1),
         "nature_module", java.util.Map.of("entrelumen:renewal_engine", 1,
-            "entrelumen:ecosystem_capsule", 2, "entrelumen:living_matrix", 2),
+            "entrelumen:ecosystem_capsule", 2, "entrelumen:living_matrix", 1, "minecraft:wet_sponge", 1),
         "exploration_module", java.util.Map.of("entrelumen:horizon_chart", 1,
             "entrelumen:spectral_lens", 1, "twilightforest:steeleaf_ingot", 2,
-            "aether:zanite_gemstone", 2),
+            "aether:zanite_gemstone", 1, "minecraft:dragon_breath", 1),
         "logistics_module", java.util.Map.of("entrelumen:routing_matrix", 2,
             "entrelumen:handling_core", 2, "entrelumen:ark_bus", 1),
         "habitation_module", java.util.Map.of("entrelumen:habitation_contract", 1,
@@ -99,6 +101,43 @@ class ProjectValidationTest {
           ? java.util.Set.of("world_network", "end_arrival")
           : java.util.Set.of("world_network"), project.prerequisites());
     });
+  }
+
+  /**
+   * 24 September 2026: the calibration frame has no crafting recipe. First Signal, the Act I closure,
+   * grants the first two (one builds the metallurgic infuser that copies the rest, one is spare), and
+   * no other project hands out frames.
+   */
+  @Test
+  void firstSignalGrantsTheOnlyStoryFrames() throws Exception {
+    var projects = Projects.parse(defaults(), id -> true);
+    var signal = projects.get("first_signal");
+    assertEquals(1, signal.act());
+    assertEquals("entrelumen:signal_core", signal.reward());
+    assertEquals(java.util.Map.of("entrelumen:calibration_frame", 2), signal.extraRewards());
+    projects.forEach((id, project) -> {
+      if (!id.equals("first_signal")) {
+        assertTrue(project.extraRewards().isEmpty(), id);
+        assertNotEquals("entrelumen:calibration_frame", project.reward(), id);
+      }
+    });
+    assertThrows(UnsupportedOperationException.class,
+        () -> signal.extraRewards().put("minecraft:stone", 1));
+    assertEquals(java.util.Map.of(), new Projects.Project(1, java.util.Map.of(), java.util.Set.of(), "").extraRewards());
+  }
+
+  @Test
+  void extraRewardsRejectUnknownItemsBadCountsAndDuplicates() throws Exception {
+    for (var bad : java.util.List.of("{}", "[]", "{\"minecraft:stone\": 0}", "{\"minecraft:stone\": 65}",
+        "{\"minecraft:stone\": 1.5}", "{\"entrelumen:signal_core\": 1}", "{\"minecraft:missing\": 1}")) {
+      var definitions = defaults();
+      definitions.getAsJsonObject("first_signal").add("extraRewards", JsonParser.parseString(bad));
+      assertThrows(IllegalArgumentException.class,
+          () -> Projects.parse(definitions, id -> !id.toString().equals("minecraft:missing")), bad);
+    }
+    var valid = defaults();
+    valid.getAsJsonObject("first_signal").add("extraRewards", JsonParser.parseString("{\"minecraft:stone\": 64}"));
+    assertEquals(64, Projects.parse(valid, id -> true).get("first_signal").extraRewards().get("minecraft:stone"));
   }
 
   @Test

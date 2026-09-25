@@ -134,6 +134,7 @@ def targets():
         items.update(project['items'])
         if project.get('reward'):
             items.add(project['reward'])
+        items.update(project.get('extraRewards', {}))
     # Verify cross-mod ingredients and the implemented component recipes together.
     integration_recipes = []
     design_path = ROOT / 'content/integration-design.json'
