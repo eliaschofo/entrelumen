@@ -94,6 +94,10 @@ EXT = int(R0 * 1.35)
 HEIGHT = {}       # (x, z) -> ground top y outside the core
 ROAD = {}         # (x, z) -> (y, priority, kind)
 USED = set()      # cells taken by lots, plazas and features
+PADS = {}         # (x, z) -> ground height pinned under and around a building
+FILLED = {}       # (x, z) -> (top, bottom) as the ground was filled (for checks)
+AIRS = set()      # (x, y, z) kept open when the ground is filled (culverts under the streets)
+N4 = ((1, 0), (-1, 0), (0, 1), (0, -1))
 
 
 def inside(x, z, margin=0.0):
@@ -111,21 +115,92 @@ def ground():
         HEIGHT[(x, z)] = round(terrain(x, z))
 
 
+def reserve_lighthouses():
+    """Keep the lighthouse pads at the ends of the main streets free and level before any lot."""
+    for (pts, sm, width, kind) in PATHS:
+        if kind != 'main':
+            continue
+        cx, cz = round(pts[-1][0]), round(pts[-1][1])
+        base = HEIGHT.get((cx, cz))
+        if base is None:
+            continue
+        for dx in range(-5, 6):
+            for dz in range(-5, 6):
+                c = (cx + dx, cz + dz)
+                if math.hypot(dx, dz) <= 5.5 and c in HEIGHT and c not in ROAD and c not in RIVER:
+                    PADS[c] = base
+                    USED.add(c)
+
+
+def relax():
+    """Grade the ground so it reads as one surface: streets, plazas, rivers and building pads are
+    pinned; every other cell ends within one block of its neighbours (three on the shore cliffs),
+    so a street through a hill leaves banks, not walls, and a pad on a slope gets a graded apron."""
+    H = dict(HEIGHT)
+    for c, p in PADS.items():
+        H[c] = p
+    pinned = set(ROAD) | set(RIVER) | set(PADS)
+    free = [c for c in H if c not in pinned]
+    slope = {c: (1 if math.hypot(*c) / edge_radius(*c) < 0.9 else 3) for c in free}
+    for _ in range(400):
+        changed = 0
+        for c in free:
+            ns = [H[n] for n in ((c[0] + dx, c[1] + dz) for dx, dz in N4) if n in H]
+            if not ns:
+                continue
+            S = slope[c]
+            lo, hi = max(ns) - S, min(ns) + S
+            h = H[c]
+            v = (lo + hi) // 2 if lo > hi else min(max(h, lo), hi)
+            if v != h:
+                H[c] = v
+                changed += 1
+        if not changed:
+            break
+    HEIGHT.update(H)
+
+
+def top_at(c):
+    d = math.hypot(*c)
+    if d <= T1:
+        return Y1
+    if d <= T2:
+        return Y2
+    return HEIGHT.get(c)
+
+
+def depth_at(c):
+    e = math.hypot(*c) / edge_radius(*c)
+    return int(8 + (1 - e) ** 0.6 * 60)
+
+
 def fill_ground():
+    """Top soil over stone, hollow inside for size, but every face that could be seen is closed:
+    each column is solid down past its lowest neighbour's top and up past its highest neighbour's
+    bottom, so neither a cut nor a cliff nor the underside ever opens onto the hollow."""
     for x, z in everywhere(EXT):
         if not inside(x, z):
             continue
         d = math.hypot(x, z)
-        top = Y1 if d <= T1 else Y2 if d <= T2 else HEIGHT[(x, z)]
+        top = top_at((x, z))
         er = edge_radius(x, z)
         e = d / er
-        depth = int(8 + (1 - e) ** 0.6 * 60)
-        bottom = top - depth
+        bottom = top - depth_at((x, z))
+        tops, bottoms = [], []
+        for dx, dz in N4:
+            n = (x + dx, z + dz)
+            t = top_at(n) if inside(*n) else None
+            if t is not None:
+                bottoms.append(t - depth_at(n))
+                tops.append(min(t, RIVER[n]) if n in RIVER else t)   # culverts: close down to the water
+        FILLED[(x, z)] = (top, bottom)
+        face_top = (min(tops) - 2) if tops else top - 5
+        face_bottom = (max(bottoms) + 3) if bottoms else bottom + 3
         for y in range(bottom, top + 1):
             k = top - y
-            if k > 5 and y - bottom > 3 and e < 0.97:
+            if k > 5 and y < face_top and y - bottom > 3 and y > face_bottom and e < 0.97:
                 continue
-            if (x, y, z) in V:
+            if (x, y, z) in V or (x, y, z) in AIRS:
                 continue
             blk = 'grass_block' if k == 0 else 'dirt' if k <= 3 else \
                 ('calcite' if (y % 9 == 0) else 'tuff' if (x + z + y) % 5 == 0 else 'stone')
@@ -805,6 +880,12 @@ def infill():
             LOTS.append((fx, fz, s, e, pad, 'road:front' if dd <= 2 else 'infill', len(LOTS), hw, D))
             for c in cells:
                 USED.add(c)
+            # the pad and a one-block apron sit level; the ground grades away from there
+            for u in range(-hw - 1, hw + 2):
+                for w in range(-1, D + 1):
+                    c = (fx + u * e[0] + w * s[0], fz + u * e[1] + w * s[1])
+                    if c in HEIGHT and c not in ROAD and c not in RIVER:
+                        PADS.setdefault(c, pad)
             c = door
             steps = 0
             while c not in ROAD and steps < 40:
@@ -888,6 +969,8 @@ def river():
         r = _h(x, z, 41)
         V[(x, lvl - 1, z)] = B('sea_lantern') if r < 0.05 else B('calcite') if r < 0.35 else B('gravel')
         if on_road:
+            for y in range(lvl + 1, top):
+                AIRS.add((x, y, z))
             V[(x, top, z)] = B('waxed_cut_copper')
             if any((x + dx, z + dz) not in ROAD for dx, dz in ((1, 0), (-1, 0), (0, 1), (0, -1))):
                 V[(x, top + 1, z)] = B('waxed_copper_grate')
@@ -896,6 +979,15 @@ def river():
             if _h(x, z, 43) < 0.06:
                 V[(x, lvl + 1, z)] = B('lily_pad')
         USED.add((x, z))
+    for (x, z) in list(RIVER):
+        for dx, dz in N4:
+            n = (x + dx, z + dz)
+            if n not in RIVER and n not in ROAD and n in HEIGHT:
+                USED.add(n)
+
+
+def river_banks():
+    """Reeds and orchids on the banks, once the ground is final."""
     for (x, z), lvl in list(RIVER.items()):
         for dx, dz in ((1, 0), (-1, 0), (0, 1), (0, -1)):
             n = (x + dx, z + dz)
@@ -992,8 +1084,15 @@ def lighthouses():
         for dx in range(-4, 5):
             for dz in range(-4, 5):
                 if math.hypot(dx, dz) <= 4.5:
-                    V[(cx + dx, base, cz + dz)] = B('calcite')
-                    USED.add((cx + dx, cz + dz))
+                    c = (cx + dx, cz + dz)
+                    g = HEIGHT.get(c, base)
+                    for y in range(min(g, base) - 3, base):
+                        V.setdefault((c[0], y, c[1]), B('stone'))
+                    for y in range(base + 1, max(g, base) + 1):
+                        V.pop((c[0], y, c[1]), None)
+                    V[(c[0], base, c[1])] = B('calcite')
+                    HEIGHT[c] = base
+                    USED.add(c)
         for y in range(base + 1, base + 30):
             for dx in range(-2, 3):
                 for dz in range(-2, 3):
@@ -1035,9 +1134,28 @@ def falls():
                 break
 
 
+def rim_barrier(headroom=48):
+    """Solsticio ends where the light does: barriers around the whole shore, from below the island's
+    underside to high above the roofs, so nobody walks off the edge or under the island."""
+    ring = set()
+    for x, z in everywhere(EXT + 2):
+        if inside(x, z):
+            continue
+        if any(inside(x + dx, z + dz) for dx in (-1, 0, 1) for dz in (-1, 0, 1)):
+            ring.add((x, z))
+    for (x, z) in ring:
+        near = [(x + dx, z + dz) for dx in (-1, 0, 1) for dz in (-1, 0, 1) if inside(x + dx, z + dz)]
+        lo = min(top_at(c) - depth_at(c) for c in near) - 2
+        hi = max(top_at(c) for c in near) + headroom
+        for y in range(lo, hi + 1):
+            V.setdefault((x, y, z), B('barrier'))
+
+
 def build():
-    for d in (V, EXTRA, HEIGHT, ROAD, RIVER):
+    for d in (V, EXTRA, HEIGHT, ROAD, RIVER, PADS):
         d.clear()
+    AIRS.clear()
+    FILLED.clear()
     PATHCELLS.clear()
     RIVER_END.clear()
     PLAZAS.clear()
@@ -1049,10 +1167,13 @@ def build():
     core()
     streets()
     plazas()
+    reserve_lighthouses()
     river()
     infill()
     assign_kinds()
+    relax()
     fill_ground()
+    river_banks()
     place_lots()
     footpaths()
     footbridges()
@@ -1063,6 +1184,7 @@ def build():
     lighthouses()
     nature()
     falls()
+    rim_barrier()
     return V
 
 
