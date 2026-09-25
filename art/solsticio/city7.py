@@ -545,6 +545,7 @@ def palace():
         for y in range(base + 6, base + 9):
             V[(px, y, pz2)] = B('yellow_stained_glass' if y < base + 8 else 'ochre_froglight')
         V[(px, base + 9, pz2)] = B('lightning_rod[facing=up,powered=false,waterlogged=false]')
+        pavilion_room(name, px, pz2, fy)
         MARKERS.append((name, (px, fy + 1, pz2)))
     # the hall under the dome: the portal, the waystone, the arrival on the stair
     for x in range(cx - PAL_HX + 1, cx + PAL_HX):
@@ -555,6 +556,48 @@ def palace():
         for z in range(-4, 5):
             if math.hypot(x, z) <= 4.4:
                 V[(cx + x, fy, cz + z)] = B('gold_block' if math.hypot(x, z) > 3.4 else 'yellow_stained_glass')
+    # the hall opens up into the drum and the dome: the oculus lights the portal
+    for x in range(-DOME_R + 2, DOME_R - 1):
+        for z in range(-DOME_R + 2, DOME_R - 1):
+            if math.hypot(x, z) <= DOME_R - 1.6:
+                V[(cx + x, fy + BODY, cz + z)] = AIR
+    for x in range(-DOME_R + 1, DOME_R):              # a gallery ring where the ceiling opens
+        for z in range(-DOME_R + 1, DOME_R):
+            rr = math.hypot(x, z)
+            if DOME_R - 1.6 < rr <= DOME_R - 0.6:
+                V[(cx + x, fy + BODY + 1, cz + z)] = B('polished_diorite_wall[east=none,north=none,south=none,up=true,waterlogged=false,west=none]')                     if (x + z) % 3 == 0 else B('waxed_copper_grate')
+    # eight columns round the portal, benches between them, lanterns hung from the dome
+    for k in range(8):
+        th = math.radians(22.5 + 45 * k)
+        px, pz = cx + round(10 * math.cos(th)), cz + round(10 * math.sin(th))
+        for y in range(fy + 1, fy + BODY):
+            V[(px, y, pz)] = B('quartz_pillar[axis=y]')
+        V[(px, fy + BODY - 1, pz)] = B('chiseled_quartz_block')
+        V[(px, fy + BODY - 2, pz)] = mp_state('mcwlights:wall_lantern', facing='north') if False else B('ochre_froglight')
+    for k in range(8):
+        th = math.radians(45 * k)
+        bx, bz = cx + round(12 * math.cos(th)), cz + round(12 * math.sin(th))
+        if abs(bx - cx) <= 1 and bz > cz:
+            continue                                   # keep the way from the door clear
+        facing = 'north' if bz > cz + 3 else 'south' if bz < cz - 3 else ('west' if bx > cx else 'east')
+        V[(bx, fy + 1, bz)] = mp_state('handcrafted:birch_bench', facing=facing, shape='single') if mp.block('handcrafted:birch_bench') else B('smooth_quartz_slab[type=bottom,waterlogged=false]')
+    for k in range(4):
+        th = math.radians(45 + 90 * k)
+        hx, hz = cx + round(6 * math.cos(th)), cz + round(6 * math.sin(th))
+        for y in range(fy + BODY + DRUM - 6, fy + BODY + DRUM + 6):
+            V[(hx, y, hz)] = mp_state('mcwlights:copper_chain') if mp.block('mcwlights:copper_chain') else B('chain[axis=y,waterlogged=false]')
+        V[(hx, fy + BODY + DRUM - 7, hz)] = mp_state('mcwlights:copper_chandelier')
+    # the grand door in the south front, under the portico
+    for x in range(cx - 2, cx + 3):
+        for y in range(fy + 1, fy + 10):
+            V[(x, y, cz + PAL_HZ)] = AIR
+    for x in range(cx - 3, cx + 4):
+        V[(x, fy + 10, cz + PAL_HZ)] = B('chiseled_quartz_block')
+    for y in range(fy + 1, fy + 10):
+        for x in (cx - 3, cx + 3):
+            V[(x, y, cz + PAL_HZ)] = B('quartz_pillar[axis=y]')
+    for x in range(cx - 1, cx + 2):
+        V[(x, fy + 11, cz + PAL_HZ)] = B('ochre_froglight' if x == cx else 'yellow_stained_glass')
     MARKERS.append(('town_hall_portal', (cx, fy + 1, cz)))
     MARKERS.append(('town_hall_waystone', (cx + 6, fy + 1, cz + 8)))
     MARKERS.append(('arrival', (cx, fy + 1, cz + PAL_HZ + 8)))
@@ -562,6 +605,51 @@ def palace():
         for z in range(cz - PAL_HZ - 3, cz + PAL_HZ + 4 + PLINTH):
             USED.add((x, z))
             RESERVED.add((x, z))
+
+
+def pavilion_room(name, px, pz, fy):
+    """Each character's hall: a two-level room with furniture that says who works there."""
+    for x in range(px - 4, px + 5):
+        for z in range(pz - 4, pz + 5):
+            V[(x, fy, z)] = B('polished_diorite' if (x + z) % 2 else 'smooth_quartz')
+            if max(abs(x - px), abs(z - pz)) >= 3:
+                V[(x, fy + 8, z)] = B('birch_planks')           # a gallery round the room
+            if max(abs(x - px), abs(z - pz)) == 3:
+                V[(x, fy + 9, z)] = B('birch_fence[east=false,north=false,south=false,waterlogged=false,west=false]')
+    for y in range(fy + 1, fy + 9):
+        V[(px + 4, y, pz + 4)] = B('ladder[facing=north,waterlogged=false]')
+    V[(px, fy + 7, pz)] = mp_state('mcwlights:copper_chandelier')
+    ring = [(px + dx, pz + dz) for dx in range(-4, 5) for dz in range(-4, 5) if max(abs(dx), abs(dz)) == 4 and (dx, dz) != (4, 4)]
+    if name == 'mayor':
+        for i, (x, z) in enumerate(ring):
+            V[(x, fy + 1, z)] = B('bookshelf') if i % 3 else B('lectern[facing=north,has_book=false,powered=false]')
+        V[(px, fy + 1, pz - 1)] = mp_state('handcrafted:birch_table')
+        V[(px, fy + 2, pz - 1)] = B('candle[candles=3,lit=true,waterlogged=false]')
+        V[(px, fy + 1, pz - 2)] = mp_state('handcrafted:birch_chair', facing='south')
+        V[(px, fy + 1, pz + 2)] = B('yellow_carpet')
+    elif name == 'inventor':
+        for i, (x, z) in enumerate(ring):
+            V[(x, fy + 1, z)] = B(('crafter[crafting=false,orientation=north_up,triggered=false]', 'smithing_table', 'waxed_copper_grate', 'blast_furnace[facing=north,lit=true]')[i % 4])
+        V[(px, fy + 1, pz)] = B('crafting_table')
+        V[(px + 1, fy + 1, pz)] = mp_state('handcrafted:birch_counter', facing='west', counter='smooth_stone')
+        V[(px - 1, fy + 1, pz)] = mp_state('handcrafted:birch_counter', facing='east', counter='smooth_stone')
+        V[(px, fy + 2, pz)] = B('lightning_rod[facing=up,powered=false,waterlogged=false]')
+    elif name == 'gardener':
+        for i, (x, z) in enumerate(ring):
+            V[(x, fy + 1, z)] = mp_state('supplementaries:planter') if i % 2 else B('moss_block')
+            V[(x, fy + 2, z)] = B(('flowering_azalea', 'azure_bluet', 'allium', 'lily_of_the_valley')[i % 4])
+        V[(px, fy + 1, pz)] = B('composter[level=5]')
+        V[(px + 1, fy + 1, pz)] = B('potted_flowering_azalea_bush')
+        V[(px - 1, fy + 1, pz)] = B('potted_flowering_azalea_bush')
+    else:
+        for i, (x, z) in enumerate(ring):
+            V[(x, fy + 1, z)] = B('white_stained_glass') if i % 2 else B('candle[candles=4,lit=true,waterlogged=false]')
+        V[(px, fy + 1, pz - 2)] = B('lectern[facing=south,has_book=false,powered=false]')
+        for dx in (-1, 1):
+            V[(px + dx, fy + 1, pz - 2)] = B('candle[candles=2,lit=true,waterlogged=false]')
+        for dz in (0, 1, 2):
+            V[(px - 2, fy + 1, pz + dz)] = mp_state('handcrafted:birch_bench', facing='east', shape='single') if mp.block('handcrafted:birch_bench') else B('birch_stairs[facing=east,half=bottom,shape=straight,waterlogged=false]')
+            V[(px + 2, fy + 1, pz + dz)] = mp_state('handcrafted:birch_bench', facing='west', shape='single') if mp.block('handcrafted:birch_bench') else B('birch_stairs[facing=west,half=bottom,shape=straight,waterlogged=false]')
 
 
 def plots():
