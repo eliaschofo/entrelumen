@@ -1,0 +1,487 @@
+{
+  "chapter": "guide_nether_end",
+  "group": "exploration",
+  "act": "III",
+  "icon": "minecraft:blaze_rod",
+  "title": {
+    "en_us": "The Nether and the End",
+    "es_es": "El Nether y el End"
+  },
+  "subtitle": {
+    "en_us": "Two vanilla dimensions, rebuilt and crowded: what changes, what to look for and how to survive.",
+    "es_es": "Dos dimensiones vanilla, rehechas y pobladas: qué cambia, qué buscar y cómo sobrevivir."
+  },
+  "quests": [
+    {
+      "key": "ne_welcome",
+      "deps": [],
+      "type": "checkmark",
+      "layout": {
+        "x": 0,
+        "y": 0,
+        "size": 2.0,
+        "shape": "hexagon"
+      },
+      "en_us": [
+        "Familiar places, new rules",
+        "In ENTRELUMEN the Nether and the End are much busier than in vanilla: YUNG's rebuilds their big structures, Repurposed Structures, Dungeons and Taverns, Cataclysm, Friends and Foes and Hellish Trials add many more, and Enderman Overhaul fills them with biome endermen.\n\nThe Heliodor Compass sends you to a Nether fortress in act III and to the End in act V."
+      ],
+      "es_es": [
+        "Lugares conocidos, reglas nuevas",
+        "En ENTRELUMEN el Nether y el End están mucho más poblados que en vanilla: YUNG's rehace sus estructuras grandes, Repurposed Structures, Dungeons and Taverns, Cataclysm, Friends and Foes y Hellish Trials suman muchas más, y Enderman Overhaul los llena de endermen de bioma.\n\nLa Brújula de Heliodor te manda a una fortaleza del Nether en el acto III y al End en el acto V."
+      ],
+      "sources": [
+        "repo:docs/design/exploration-structures-family.md",
+        "repo:content/compass_targets.json",
+        "repo:docs/design/mod-pingpong.md"
+      ]
+    },
+    {
+      "key": "ne_portal",
+      "deps": [
+        "ne_welcome"
+      ],
+      "type": "dimension",
+      "dimension": "minecraft:the_nether",
+      "icon": "minecraft:obsidian",
+      "layout": {
+        "x": 3,
+        "y": 0,
+        "size": 1.75,
+        "shape": "diamond"
+      },
+      "en_us": [
+        "We Need to Go Deeper",
+        "Build an obsidian frame and light it. Nether Portal Fix makes the return portal link back to the one you came from, so two bases do not end up sharing a Nether exit.\n\nBefore going: fire resistance potions, gold armor (piglins leave you alone if you wear a piece), blocks to bridge and a way to put out fires."
+      ],
+      "es_es": [
+        "Tenemos que ir más profundo",
+        "Armá un marco de obsidiana y encendelo. Nether Portal Fix hace que el portal de vuelta se vincule con el portal del que saliste, así dos bases no terminan compartiendo la misma salida del Nether.\n\nAntes de ir: pociones de resistencia al fuego, armadura de oro (los piglins te dejan en paz si llevás una pieza), bloques para hacer puentes y algo para apagar incendios."
+      ],
+      "sources": [
+        "jar:minecraft_1.21.1_client.jar:data/minecraft/advancement/story/enter_the_nether.json",
+        "jar:netherportalfix-neoforge-1.21.1-21.1.1.jar:META-INF/neoforge.mods.toml",
+        "repo:catalog/curated.json"
+      ]
+    },
+    {
+      "key": "ne_fortress",
+      "deps": [
+        "ne_portal"
+      ],
+      "type": "item",
+      "item": "minecraft:blaze_rod",
+      "layout": {
+        "x": 6,
+        "y": 0,
+        "size": 1.0,
+        "shape": "circle"
+      },
+      "en_us": [
+        "A blaze rod from a fortress",
+        "YUNG's Better Nether Fortresses replaces the fortress with a larger, themed one. In act III the Heliodor Compass points to one and counts it done as soon as someone on your team carries a Blaze Rod.\n\nBlaze rods feed brewing, Powah and many mid-game recipes; wither skeletons here drop the skulls for the Wither."
+      ],
+      "es_es": [
+        "Una vara de blaze de una fortaleza",
+        "YUNG's Better Nether Fortresses reemplaza la fortaleza por una más grande y temática. En el acto III la Brújula de Heliodor apunta a una y la da por cumplida cuando alguien de tu equipo lleva una Vara de blaze.\n\nLas varas de blaze alimentan las pociones, Powah y muchas recetas de medio juego; los esqueletos wither de acá sueltan los cráneos para el Wither."
+      ],
+      "sources": [
+        "repo:content/compass_targets.json",
+        "jar:YungsBetterNetherFortresses-1.21.1-NeoForge-3.1.5.jar:data/betterfortresses/worldgen/structure/fortress.json",
+        "repo:docs/design/exploration-structures-family.md"
+      ]
+    },
+    {
+      "key": "ne_boats",
+      "deps": [
+        "ne_portal"
+      ],
+      "type": "item",
+      "item": "fireproofboats:crimson_boat",
+      "optional": true,
+      "layout": {
+        "x": 3,
+        "y": -3,
+        "size": 0.85,
+        "shape": "circle"
+      },
+      "en_us": [
+        "Crossing lava seas",
+        "The Fireproof Boats mod adds crimson and warped boats that survive lava like their planks. Build one from Nether wood to cross lava oceans and look for structures along the shore.\n\nStriders are the vanilla alternative: saddle one and steer it with a warped fungus on a stick."
+      ],
+      "es_es": [
+        "Cruzar mares de lava",
+        "El mod Fireproof Boats suma botes de madera carmesí y distorsionada que resisten la lava como sus tablas. Hacé uno con madera del Nether para cruzar los océanos de lava y buscar estructuras en la costa.\n\nLos Strider son la alternativa vanilla: ponele montura a uno y dirigilo con un hongo distorsionado en un palo."
+      ],
+      "sources": [
+        "jar:fireproofboats-1.21.1-1.0.4.jar:assets/fireproofboats/lang/en_us.json",
+        "jar:minecraft_1.21.1_client.jar:data/minecraft/advancement/nether/ride_strider.json"
+      ]
+    },
+    {
+      "key": "ne_structures",
+      "deps": [
+        "ne_fortress"
+      ],
+      "type": "checkmark",
+      "icon": "minecraft:nether_bricks",
+      "layout": {
+        "x": 9,
+        "y": -3,
+        "size": 0.85,
+        "shape": "circle"
+      },
+      "en_us": [
+        "What else lives in the Nether",
+        "- Dungeons and Taverns: Nether Keeps (opened with their own key), Nether Ports, skeleton towers and camps, and piglin camps, outstations, hamlets and donjons.\n- Repurposed Structures: Nether cities, underground bastions, Nether strongholds, pyramids, mineshafts, temples and crimson or warped villages and outposts.\n- Hellish Trials: Nether trial chambers.\n- Friends and Foes: the Citadel of the Wildfire.\n- Cataclysm: the Burning Arena and the Soul Forge."
+      ],
+      "es_es": [
+        "Qué más hay en el Nether",
+        "- Dungeons and Taverns: Fortines del Nether (Nether Keeps, con su propia llave), Puertos del Nether, torres y campamentos de esqueletos, y campamentos, puestos, aldeas y torreones de piglins.\n- Repurposed Structures: ciudades del Nether, bastiones subterráneos, fortalezas de ojos de ender (strongholds) del Nether, pirámides, minas, templos y aldeas y puestos carmesí o distorsionados.\n- Hellish Trials: cámaras de prueba del Nether.\n- Friends and Foes: la Ciudadela del Wildfire.\n- Cataclysm: la Arena Ardiente y la Forja de Almas."
+      ],
+      "sources": [
+        "jar:dungeons-and-taverns-v4.4.4.jar:data/nova_structures/advancement/nether/find_keep.json",
+        "jar:dungeons-and-taverns-v4.4.4.jar:assets/dnt/lang/en_us.json",
+        "jar:dungeons-and-taverns-v4.4.4.jar:data/nova_structures/advancement/nether/find_piglins.json",
+        "jar:repurposed_structures-7.5.22+1.21.1-neoforge.jar:data/repurposed_structures/worldgen/structure/city_nether.json",
+        "jar:HellishTrials-neoforge-1.0.5.jar:data/hellish_trials/worldgen/structure/nether_trial.json",
+        "jar:friendsandfoes-neoforge-4.0.27+mc1.21.1.jar:data/friendsandfoes/worldgen/structure/citadel.json",
+        "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:data/cataclysm/worldgen/structure/burning_arena.json"
+      ]
+    },
+    {
+      "key": "ne_keep",
+      "deps": [
+        "ne_structures"
+      ],
+      "type": "advancement",
+      "advancement": "nova_structures:nether/find_keep",
+      "optional": true,
+      "icon": "minecraft:skeleton_skull",
+      "layout": {
+        "x": 12,
+        "y": -3,
+        "size": 1.0,
+        "shape": "circle"
+      },
+      "en_us": [
+        "Concrete Halls",
+        "Stumble upon a Dungeons and Taverns Nether Keep (\"Concrete Halls\"). Keeps and ports are skeleton strongholds; exploring every skeleton camp, tower, port, fortress and keep is \"Skull Collector\". Bathing in powder snow inside a keep is an advancement of its own (\"Cool Off\")."
+      ],
+      "es_es": [
+        "Salones de concreto",
+        "Encontrate con un Fortín del Nether de Dungeons and Taverns («Concrete Halls»). Los fortines y los puertos son bastiones de esqueletos; explorar cada campamento y torre de esqueletos, puerto, fortaleza y fortín es «Skull Collector». Bañarte en nieve polvo adentro de un fortín es un logro aparte («Cool Off»)."
+      ],
+      "sources": [
+        "jar:dungeons-and-taverns-v4.4.4.jar:data/nova_structures/advancement/nether/find_keep.json",
+        "jar:dungeons-and-taverns-v4.4.4.jar:data/nova_structures/advancement/nether/find_nether_skeleton.json",
+        "jar:dungeons-and-taverns-v4.4.4.jar:data/nova_structures/advancement/nether/powder_snow_keep.json"
+      ]
+    },
+    {
+      "key": "ne_bastion",
+      "deps": [
+        "ne_fortress"
+      ],
+      "type": "advancement",
+      "advancement": "minecraft:nether/find_bastion",
+      "icon": "minecraft:gilded_blackstone",
+      "layout": {
+        "x": 9,
+        "y": 0,
+        "size": 1.0,
+        "shape": "circle"
+      },
+      "en_us": [
+        "Bastions and piglins",
+        "Bastion remnants hold gold, netherite upgrade templates and ancient debris nearby. Wear at least one gold piece, do not open their chests in sight of piglins, and watch out for the Piglin Brutes, which ignore gold.\n\nFor piglin lovers, Dungeons and Taverns adds four more piglin places (\"Hog Hunt\")."
+      ],
+      "es_es": [
+        "Bastiones y piglins",
+        "Los restos de bastión tienen oro, plantillas de mejora de netherite y restos antiguos cerca. Llevá al menos una pieza de oro, no abras sus cofres a la vista de los piglins y cuidate de los Piglins brutos, que ignoran el oro.\n\nPara los amantes de los piglins, Dungeons and Taverns suma cuatro lugares piglin más («Hog Hunt»)."
+      ],
+      "sources": [
+        "jar:minecraft_1.21.1_client.jar:data/minecraft/advancement/nether/find_bastion.json",
+        "jar:dungeons-and-taverns-v4.4.4.jar:data/nova_structures/advancement/nether/find_piglins.json"
+      ]
+    },
+    {
+      "key": "ne_debris",
+      "deps": [
+        "ne_bastion"
+      ],
+      "type": "advancement",
+      "advancement": "minecraft:nether/obtain_ancient_debris",
+      "icon": "minecraft:ancient_debris",
+      "layout": {
+        "x": 12,
+        "y": 0,
+        "size": 1.0,
+        "shape": "circle"
+      },
+      "en_us": [
+        "Hidden in the Depths",
+        "Ancient debris hides low in the Nether and resists explosions. Mine it with a diamond pickaxe, smelt it into netherite scrap, and with gold make netherite ingots.\n\nKeep your netherite gear: in this pack it is the base for Cataclysm's Ignitium and Cursium and for Luminous gear."
+      ],
+      "es_es": [
+        "Escondido en las profundidades",
+        "Los restos antiguos se esconden abajo en el Nether y resisten explosiones. Picalos con un pico de diamante, fundilos en chatarra de netherite y, con oro, hacé lingotes de netherite.\n\nGuardá tu equipo de netherite: en este pack es la base del Ignitium y el Cursium de Cataclysm y del equipo Luminoso."
+      ],
+      "sources": [
+        "jar:minecraft_1.21.1_client.jar:data/minecraft/advancement/nether/obtain_ancient_debris.json",
+        "repo:docs/design/luminous-gear.md"
+      ]
+    },
+    {
+      "key": "ne_endermen",
+      "deps": [
+        "ne_portal"
+      ],
+      "type": "checkmark",
+      "optional": true,
+      "icon": "endermanoverhaul:crimson_pearl",
+      "layout": {
+        "x": 6,
+        "y": 3,
+        "size": 0.85,
+        "shape": "circle"
+      },
+      "en_us": [
+        "Nether endermen and food",
+        "Enderman Overhaul gives each Nether biome its own enderman: the crimson one drops a pearl that grants Strength when you teleport, the warped one a pearl that grants Resistance, and the soul sand valley one a pearl that teleports a bound creature.\n\nMy Nether's Delight adds Nether cooking to Farmer's Delight: more variety for the pack's food system."
+      ],
+      "es_es": [
+        "Endermen y comida del Nether",
+        "Enderman Overhaul le da a cada bioma del Nether su enderman: el carmesí suelta una perla que da Fuerza al teletransportarte, el distorsionado una que da Resistencia, y el del valle de arena de almas una que teletransporta a una criatura vinculada.\n\nMy Nether's Delight suma cocina del Nether a Farmer's Delight: más variedad para el sistema de comida del pack."
+      ],
+      "sources": [
+        "jar:endermanoverhaul-neoforge-1.21.1-2.0.3.jar:assets/endermanoverhaul/lang/en_us.json",
+        "jar:endermanoverhaul-neoforge-1.21.1-2.0.3.jar:data/endermanoverhaul/loot_table/entities/crimson_forest_enderman.json",
+        "repo:docs/design/mod-pingpong.md"
+      ]
+    },
+    {
+      "key": "ne_stronghold",
+      "deps": [
+        "ne_welcome"
+      ],
+      "type": "advancement",
+      "advancement": "minecraft:story/follow_ender_eye",
+      "icon": "minecraft:ender_eye",
+      "layout": {
+        "x": 3,
+        "y": 6,
+        "size": 1.0,
+        "shape": "circle"
+      },
+      "en_us": [
+        "The stronghold",
+        "Eyes of Ender lead to the stronghold, rebuilt by YUNG's Better Strongholds. Bring spare eyes. In act V the compass counts the stronghold done when your team reaches the End."
+      ],
+      "es_es": [
+        "La fortaleza del End",
+        "Los Ojos de ender llevan a la fortaleza, rehecha por YUNG's Better Strongholds. Llevá ojos de repuesto. En el acto V la brújula da por cumplida la fortaleza cuando tu equipo llega al End."
+      ],
+      "sources": [
+        "jar:minecraft_1.21.1_client.jar:data/minecraft/advancement/story/follow_ender_eye.json",
+        "jar:YungsBetterStrongholds-1.21.1-NeoForge-5.1.3.jar:data/minecraft/tags/worldgen/structure/eye_of_ender_located.json",
+        "repo:content/compass_targets.json"
+      ]
+    },
+    {
+      "key": "ne_end",
+      "deps": [
+        "ne_stronghold"
+      ],
+      "type": "dimension",
+      "dimension": "minecraft:the_end",
+      "icon": "minecraft:end_stone",
+      "layout": {
+        "x": 6,
+        "y": 6,
+        "size": 1.75,
+        "shape": "diamond"
+      },
+      "en_us": [
+        "The End",
+        "YUNG's Better End Island rebuilds the central island and the Dragon arena. See the bosses chapter for the fight. After the Dragon, throw an ender pearl into an End Gateway to reach the outer islands (\"Remote Getaway\")."
+      ],
+      "es_es": [
+        "El End",
+        "YUNG's Better End Island rearma la isla central y la arena del Dragón. Mirá el capítulo de jefes para la pelea. Después del Dragón, tirá una perla de ender dentro de un Portal del End para llegar a las islas exteriores («Remote Getaway»)."
+      ],
+      "sources": [
+        "jar:YungsBetterEndIsland-1.21.1-NeoForge-3.1.2.jar:assets/betterendisland/lang/en_us.json",
+        "jar:minecraft_1.21.1_client.jar:data/minecraft/advancement/end/enter_end_gateway.json",
+        "repo:content/compass_targets.json"
+      ]
+    },
+    {
+      "key": "ne_end_city",
+      "deps": [
+        "ne_end"
+      ],
+      "type": "advancement",
+      "advancement": "minecraft:end/find_end_city",
+      "icon": "minecraft:purpur_block",
+      "layout": {
+        "x": 9,
+        "y": 6,
+        "size": 1.0,
+        "shape": "circle"
+      },
+      "en_us": [
+        "The City at the End of the Game",
+        "End cities rise on the outer islands, guarded by Shulkers: Levitation from their bullets can kill you when it wears off, so carry slow falling or a water bucket. Their ships hide Elytra, and their chests hold good enchanted gear."
+      ],
+      "es_es": [
+        "La ciudad al final del juego",
+        "Las ciudades del End se levantan en las islas exteriores, custodiadas por Shulkers: la Levitación de sus proyectiles te puede matar cuando se termina, así que llevá caída lenta o un balde de agua. Sus barcos esconden Élitros, y sus cofres tienen buen equipo encantado."
+      ],
+      "sources": [
+        "jar:minecraft_1.21.1_client.jar:data/minecraft/advancement/end/find_end_city.json",
+        "jar:minecraft_1.21.1_client.jar:data/minecraft/advancement/end/levitate.json"
+      ]
+    },
+    {
+      "key": "ne_end_more",
+      "deps": [
+        "ne_end_city"
+      ],
+      "type": "checkmark",
+      "icon": "minecraft:chorus_flower",
+      "layout": {
+        "x": 12,
+        "y": 6,
+        "size": 0.85,
+        "shape": "circle"
+      },
+      "en_us": [
+        "The busy outer End",
+        "- Dungeons and Taverns: the End Castle (a haunting boss), the End Lighthouse and lone End ships.\n- Repurposed Structures: End outposts, mineshafts, shipwrecks, pyramids, strongholds and an End ancient city.\n- Explorify: an End shipwreck.\n- Cataclysm: the Ruined Citadel and its Ender Guardian.\n- Enderman Overhaul: End endermen drop Corrupted Pearls and teeth; End island endermen drop Ancient Pearls that summon an ally.\n- End's Delight: End cooking."
+      ],
+      "es_es": [
+        "El End exterior poblado",
+        "- Dungeons and Taverns: el Castillo del End (con un jefe fantasma), el Faro del End y barcos del End solitarios.\n- Repurposed Structures: puestos, minas, naufragios, pirámides, fortalezas y una ciudad antigua del End.\n- Explorify: un naufragio en el End.\n- Cataclysm: la Ciudadela en Ruinas y su Guardián Ender.\n- Enderman Overhaul: los endermen del End sueltan Perlas corruptas y dientes; los de las islas del End, Perlas antiguas que invocan un aliado.\n- End's Delight: cocina del End."
+      ],
+      "sources": [
+        "jar:dungeons-and-taverns-v4.4.4.jar:data/nova_structures/advancement/end/find_end_castle.json",
+        "jar:dungeons-and-taverns-v4.4.4.jar:data/nova_structures/advancement/end/find_end_lighthouse.json",
+        "jar:repurposed_structures-7.5.22+1.21.1-neoforge.jar:data/repurposed_structures/worldgen/structure/ancient_city_end.json",
+        "jar:Explorify v1.6.5.mod.jar:data/explorify/worldgen/structure/end_shipwreck.json",
+        "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:data/cataclysm/worldgen/structure/ruined_citadel.json",
+        "jar:endermanoverhaul-neoforge-1.21.1-2.0.3.jar:assets/endermanoverhaul/lang/en_us.json",
+        "repo:docs/design/mod-pingpong.md"
+      ]
+    },
+    {
+      "key": "ne_lighthouse",
+      "deps": [
+        "ne_end_more"
+      ],
+      "type": "advancement",
+      "advancement": "nova_structures:end/find_end_lighthouse",
+      "optional": true,
+      "icon": "minecraft:sea_lantern",
+      "layout": {
+        "x": 15,
+        "y": 6,
+        "size": 1.0,
+        "shape": "circle"
+      },
+      "en_us": [
+        "The Light at the End of the Game",
+        "Find a Dungeons and Taverns End Lighthouse. It is a fitting landmark for a pack about light, and a good place for a waystone before exploring further."
+      ],
+      "es_es": [
+        "La luz al final del juego",
+        "Encontrá un Faro del End de Dungeons and Taverns. Es un punto de referencia muy a tono con un pack sobre la luz, y un buen lugar para una waystone antes de seguir explorando."
+      ],
+      "sources": [
+        "jar:dungeons-and-taverns-v4.4.4.jar:data/nova_structures/advancement/end/find_end_lighthouse.json"
+      ]
+    },
+    {
+      "key": "ne_waystones",
+      "deps": [
+        "ne_welcome"
+      ],
+      "type": "checkmark",
+      "icon": "waystones:red_nether_bricks_waystone",
+      "layout": {
+        "x": 0,
+        "y": 3,
+        "size": 1.0,
+        "shape": "rsquare"
+      },
+      "en_us": [
+        "Waystones in other dimensions",
+        "Build a Nether waystone (red Nether bricks) and an Ender waystone (End stone bricks) near each portal. Warping between dimensions costs a fixed amount of experience, more than a short trip within one, and it saves you the portal walk every time.\n\nWild waystones generate in the Overworld, the Nether and the End."
+      ],
+      "es_es": [
+        "Waystones en otras dimensiones",
+        "Construí una waystone del Nether (ladrillos rojos del Nether) y una del End (ladrillos de piedra del End) cerca de cada portal. Viajar entre dimensiones cuesta una cantidad fija de experiencia, más que un viaje corto dentro de una, y te ahorra la caminata hasta el portal cada vez.\n\nLas waystones salvajes aparecen en el Overworld, el Nether y el End."
+      ],
+      "sources": [
+        "jar:waystones-neoforge-1.21.1-21.1.41.jar:data/waystones/recipe/red_nether_bricks_waystone.json",
+        "jar:waystones-neoforge-1.21.1-21.1.41.jar:net/blay09/mods/waystones/config/WaystonesConfigData.class",
+        "jar:waystones-neoforge-1.21.1-21.1.41.jar:net/blay09/mods/waystones/config/WaystonesConfigData$WorldGen.class"
+      ]
+    },
+    {
+      "key": "ne_pack",
+      "deps": [
+        "ne_welcome"
+      ],
+      "type": "checkmark",
+      "icon": "entrelumen:heliodor_compass",
+      "layout": {
+        "x": 0,
+        "y": -3,
+        "size": 1.0,
+        "shape": "rsquare"
+      },
+      "en_us": [
+        "What ENTRELUMEN changes here",
+        "- Compass: act III, a YUNG's fortress (carry a blaze rod); act V, the ocean monument, the stronghold and the End (kill the Dragon).\n- The Wither is the only Nether Star source.\n- Structure mods are chosen so each role has one answer; in the pack's measurements Dungeons and Taverns adds fortresses, ports and towers to the Nether, which is worth checking on a modest PC.\n- Nether Portal Fix and Fireproof Boats are small pack QoL choices."
+      ],
+      "es_es": [
+        "Qué cambia ENTRELUMEN acá",
+        "- Brújula: acto III, una fortaleza de YUNG's (llevá una vara de blaze); acto V, el monumento oceánico, la fortaleza del End y el End (matá al Dragón).\n- El Wither es la única fuente de Estrellas del Nether.\n- Los mods de estructuras se eligieron para que cada rol tenga una sola respuesta; según las mediciones del pack, Dungeons and Taverns suma fortalezas, puertos y torres al Nether, algo a vigilar en una PC modesta.\n- Nether Portal Fix y Fireproof Boats son elecciones chicas de comodidad del pack."
+      ],
+      "sources": [
+        "repo:content/compass_targets.json",
+        "repo:docs/design/mod-pingpong.md",
+        "repo:docs/design/exploration-structures-family.md",
+        "repo:catalog/curated.json"
+      ]
+    },
+    {
+      "key": "ne_mastery",
+      "deps": [
+        "ne_debris",
+        "ne_end_more"
+      ],
+      "type": "checkmark",
+      "icon": "minecraft:end_crystal",
+      "layout": {
+        "x": 18,
+        "y": 3,
+        "size": 2.25,
+        "shape": "pentagon"
+      },
+      "en_us": [
+        "Both ends of the world",
+        "Fortresses, bastions and keeps below; cities, lighthouses and citadels beyond the void. The Heliodor ruins that the story places in the Nether and the End are still to come; when they appear, you will already know the way."
+      ],
+      "es_es": [
+        "Los dos extremos del mundo",
+        "Fortalezas, bastiones y fortines abajo; ciudades, faros y ciudadelas más allá del vacío. Las ruinas de Heliodor que la historia pone en el Nether y en el End todavía están por venir; cuando aparezcan, ya vas a conocer el camino."
+      ],
+      "sources": [
+        "repo:docs/design/story-bible.md",
+        "repo:docs/design/quest-lore.md"
+      ]
+    }
+  ]
+}
