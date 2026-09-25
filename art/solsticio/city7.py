@@ -224,6 +224,28 @@ def stairs():
                             if abs(u) < hw or width < 7 else B('calcite_slab[type=bottom,waterlogged=false]'.replace('calcite_slab', 'polished_diorite_slab'))
                         if abs(u) == hw and width >= 7:
                             V[(cc[0], y, cc[1])] = B('polished_diorite_stairs[facing=%s,half=bottom,shape=straight,waterlogged=false]' % facing)
+                if width >= 7:                      # water stairs: a fall into a basin on each side
+                    for sgn in (-1, 1):
+                        cu = sgn * (hw + 5)
+                        pool = [(c[0] + v[0] * i + e[0] * (cu + du), c[1] + v[1] * i + e[1] * (cu + du), i, du)
+                                for i in range(0, 4) for du in range(-3, 4)]
+                        if not all(p[:2] in TOP and TOP[p[:2]] == TOP[c] and p[:2] not in USED for p in pool):
+                            continue
+                        for (px, pz, i, du) in pool:
+                            RESERVED.add((px, pz))
+                            USED.add((px, pz))
+                            t = TOP[(px, pz)]
+                            rim = i == 3 or abs(du) == 3
+                            V[(px, t, pz)] = B('prismarine_bricks') if rim else B('water')
+                            V[(px, t - 1, pz)] = B('sea_lantern') if (i, du) == (1, 0) else B('prismarine_bricks')
+                            if rim:
+                                V[(px, t + 1, pz)] = B('calcite_slab[type=bottom,waterlogged=false]'.replace('calcite_slab', 'smooth_quartz_slab'))
+                        sx, sz = c[0] + e[0] * cu, c[1] + e[1] * cu
+                        V[(sx, hi, sz)] = B('water')           # the fall: a source over the basin
+                        wx, wz = sx - v[0], sz - v[1]           # the spout in the parapet above
+                        RESERVED.add((wx, wz))
+                        V[(wx, hi + 1, wz)] = B('waxed_chiseled_copper')
+                        V[(wx, hi + 2, wz)] = B('ochre_froglight')
                 # a gate arch at the foot of the flight
                 foot = (c[0] + v[0] * (steps + 1), c[1] + v[1] * (steps + 1))
                 ft = TOP.get(foot)
