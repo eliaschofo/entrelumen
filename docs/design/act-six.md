@@ -170,6 +170,14 @@ La relación es la cantidad de encargos cumplidos por el equipo: se guardan en s
   - **Pendiente de arte del controlador:** hoy son PNG transparentes de 64×64. Hay que dibujar el sello dorado y la banda de cobre de Aurelia, el guante mecánico de Terra, el delantal de jardinero de Juan y la estola turquesa de Bodhi, sobre la capa de profesión del aldeano vanilla.
   - Vanilla también dibuja la insignia de nivel (diamante, nivel 5) en el cinturón.
 
+### Tests y QA
+
+Recibo: [`docs/verification/solsticio-story-runtime.json`](../verification/solsticio-story-runtime.json). Scripts y logs en `E:/Elias/Codex/Entrelumen-ssd/act6-20260924`.
+
+- **JUnit** (`SolsticioStoryRulesTest`, 15): el grafo de misiones contra `content/act_six.json`, las compuertas (nada antes del cruce propio, prerequisitos, grupo archivado), los ocho encargos y la relación, la mesa en los dos órdenes, las reliquias por equipo, los huevos y el rumor, las elecciones a los tres días, las entregas (variedad, cantidad, batería al 90 %), las etapas de cada personaje, la herencia del grupo, los sitios de personajes para ciudades viejas, el guardado de `SolsticioData` y todas las líneas en EN y ES con los mismos `%s`. `CompassTargetsTest` cubre los objetivos `city_marker`.
+- **GameTests aisladas** (`RuntimeGameTestsStory`, 9, sobre la ciudad colocada): misiones 1–2 y la compuerta (con el clic real y la brújula contra los marcadores), Juan (3–4), Terra (5–6), los ocho encargos hasta la misión 7 (con la ruta real de clic de posadera y panadera), la bendición (8), la mesa y el portal con la liberación y un segundo equipo (9–10), las elecciones (11), los easter eggs y la ropa de Heliodor. El test del portal de `RuntimeGameTestsSolsticio` ahora pide el acuerdo.
+- **Pack completo**, en un servidor de QA propio y nuevo (`server-act6-qa`, mundo nuevo, borrado al terminar), con el head final: la suite de la historia también corre ahí, con las comidas de Farmer's Delight, las piezas de Create: New Age y una batería reales. `solsticioStoryDeliveriesResolveInTheFullPack` verifica que los tags y las piezas existan y que haya baterías de ≥100.000 FE.
+
 ### Comandos de operador
 
 - `/entrelumen admin solsticio story` muestra el estado del equipo del operador.
