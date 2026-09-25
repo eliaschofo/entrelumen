@@ -2,15 +2,21 @@
 
 This preset is applied once to a fresh profile. Player changes are preserved. The
 in-game Controls search (Controlling) remains the authority for your keyboard.
-Keys below are a starting layout and still require the full modpack conflict check.
+Keys below are a starting layout; the full 316-mod conflict review is in
+docs/design/keybinding-review.md and `python tools/check_keybinds.py` guards it.
+Players who already launched the pack keep their saved keys; Controls → Reset
+adopts the preset.
 
 Este preset se aplica una sola vez a un perfil nuevo y conserva los cambios del
 jugador. Buscá cada acción en Controles (Controlling), especialmente con un teclado
-español. Falta la revisión completa de conflictos dentro del juego.
+español. La revisión de conflictos con los 316 mods está en
+docs/design/keybinding-review.md. Un perfil ya jugado conserva sus teclas
+guardadas; Restablecer en Controles adopta el preset.
 
 | Action / Acción | Initial key / Tecla inicial |
 |---|---|
 | Quests / Misiones | F8, or inventory book icon / F8 o icono de libro del inventario |
+| Curios (Terra Arm, Ultimine curio / Brazo de Terra, curio de Ultimine) | G |
 | Ultimine | V |
 | Map / Mapa | J |
 | Waypoint / Marcador | M (world / mundo), B (inside map / dentro del mapa) |
@@ -20,6 +26,10 @@ español. Falta la revisión completa de conflictos dentro del juego.
 | Tool belt slot / Ranura del cinturón | Shift+R |
 | Ars spell selection / Selección de hechizos Ars | F6 |
 | Mekanism armor modes / Modos de armadura Mekanism | Alt+arrows / Alt+flechas |
+| Villager pickup / Levantar aldeano | Alt+O |
+| Ender IO travel staff / Bastón de viaje | Alt+E |
+| Iron's Spells wheel / Rueda de Iron's Spells | key left of 1 / tecla a la izquierda del 1 |
+| Psi | Alt+F |
 
 Recipe and use keys are handled by the recipe viewer in inventory context; do not
 use its inventory shortcuts as global world actions. FTB Chunks' extra full map
