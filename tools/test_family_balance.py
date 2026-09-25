@@ -355,6 +355,37 @@ class FamilyBalanceTest(unittest.TestCase):
         with self.assertRaises(AssertionError):
             balance.check_function_gate(loop, 'ae2:logic_processor', sources)
 
+    def test_drawn_gates_take_the_centre_or_axis_and_keep_symmetry(self):
+        # Elias's playtest of 24 September 2026: the 3x3 is a drawing.
+        machine = {'type': 'minecraft:crafting_shaped', 'pattern': ['I#I', 'ROR', 'I#I'],
+                   'key': {'I': {'item': 'x:iron'}, '#': {'item': 'x:furnace'}, 'R': {'item': 'x:red'},
+                           'O': {'item': 'x:core'}}, 'result': {'id': 'x:machine', 'count': 1}}
+        core = balance.function_gate('mekanism_entry', 'x:machine', 1, 1, {'item': 'x:core'}, '')
+        drawn = balance.transform(core, machine)
+        self.assertEqual(drawn['pattern'], ['I#I', 'RZR', 'I#I'])
+        self.assertNotIn('O', drawn['key'])  # a shaped key may not keep an unused symbol
+        self.assertTrue(balance.symmetric(drawn))
+        with self.assertRaises(AssertionError):  # off the axis: the drawing loses its symmetry
+            balance.transform(balance.function_gate('mekanism_entry', 'x:machine', 0, 1, {'item': 'x:furnace'}, '')
+                              | {'col': 0, 'expect': {'item': 'x:iron'}}, machine)
+        with self.assertRaises(AssertionError):  # only drawn gates may replace a single ingredient
+            balance.transform(balance.shaped('x:machine', 1, 1, {'item': 'x:core'}, balance.CF, 'II', ''), machine)
+        script = (ROOT / 'pack/kubejs/server_scripts/entrelumen_functions_balance.js').read_text(encoding='utf-8')
+        rows = json.loads(re.search(r'^const entrelumenFunctionsRows = (.*);$', script, re.M).group(1))
+        shaped_rows = [r for r in rows if 'pattern' in r['json']]
+        self.assertEqual(len(rows), len(balance.FAMILIES['functions']['changes']))
+        for row in shaped_rows:
+            self.assertTrue(balance.symmetric(row['json']), row['id'])
+            where = [(i, line.index('Z')) for i, line in enumerate(row['json']['pattern']) if 'Z' in line]
+            self.assertEqual(len(where), 1, row['id'])
+            self.assertEqual(where[0][1], 1, f"{row['id']}: the component is not on the vertical axis")
+        # Fewer, key recipes per component: the batch adds at most two gates to any existing component.
+        added = {}
+        for change in balance.FAMILIES['functions']['changes']:
+            if change['add'] not in balance.LUMINOSITY.values():
+                added[change['add']] = added.get(change['add'], 0) + 1
+        self.assertLessEqual(max(added.values()), 2, added)
+
     def test_top_armor_takes_one_luminosity_per_piece_in_act_six(self):
         armor = [c for c in balance.FAMILIES['functions']['changes'] if c['function'] == 'top_armor']
         self.assertEqual(len(armor), 12)

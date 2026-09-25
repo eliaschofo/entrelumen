@@ -13,7 +13,7 @@ This batch adds five distinct content mods and one required library for Minecraf
 
 Every JAR declares an MIT License link and has no embedded JarJar provider. CurseForge marks each file Client + Server, 1.21.1, NeoForge, with `allowModDistribution=true`. The JAR manifests require McJtyLib **at least 1.21-9.0.21** and Base **at least 1.21-6.0.11** for Builder, Utility, Power and XNet; Base itself requires McJtyLib. Installed CurseForge relationships name the same required projects. This six-file closure adds 4,845,367 compressed bytes. The metadata supports curation, not a launch or performance claim.
 
-AE2 remains the sole principal digital item store. RFTools Storage and RFTools Dimensions are intentionally absent. The latter would add another dimension stack; the former would duplicate AE2. RFTools Power cells store FE. JAMD remains the mining dimension. Builder's quarry is a powered project tool there, not an authority check: a gifted machine/card still works elsewhere. The first normal build requires the Act III `handling_core`; the base quarry card additionally consumes a `power_regulator`. Build an observatory shell with supplied blocks, then use a measured JAMD quarry for stone/ore batches rather than making a second resource dimension.
+AE2 remains the sole principal digital item store. RFTools Storage and RFTools Dimensions are intentionally absent. The latter would add another dimension stack; the former would duplicate AE2. RFTools Power cells store FE. JAMD remains the mining dimension. Builder's quarry is a powered project tool there, not an authority check: a gifted machine/card still works elsewhere. The first normal build requires the Act III `handling_core`; the base quarry card additionally consumes a `spectral_lens` (Act IV) since 24 September 2026, like every other quarry of the pack ([progression-functions](progression-functions.md)). Build an observatory shell with supplied blocks, then use a measured JAMD quarry for stone/ore batches rather than making a second resource dimension.
 
 XNet has a distinct reason to stay beside AE2, Pipez, LaserIO and Integrated Dynamics: one controller can use configurable item, fluid, FE and logic channels, while routers connect named local channels. McJty's [XNet documentation](https://mcjty.eu/docs/mods/xnet) describes the controller/connector network, eight local channels, power draw and router arrangement. The normal controller, router and wireless router recipes each consume an existing `routing_matrix`; cables and connectors remain cheap infrastructure. A useful Act III project is an FE-level sensor that feeds fuel only when the generator buffer is low, and routes output to the next workshop. This is a proposal for original projects, not a shipped quest.
 
@@ -28,7 +28,7 @@ The pinned Base has 12 recipe JSONs; Builder 42, Utility 137, Power 19 and XNet 
 | Native ID | Existing component | Purpose |
 | --- | --- | --- |
 | `rftoolsbuilder:builder` | `handling_core` | Act III construction machine |
-| `rftoolsbuilder:shape_card_quarry` | `power_regulator` | Separate powered extraction cost |
+| `rftoolsbuilder:shape_card_quarry` | `spectral_lens` | Quarries are a spectral lens function (Act IV) since 24 September 2026 |
 | `rftoolsutility:spawner` | `ecosystem_capsule` | Stage material-fed ecology service |
 | `rftoolsutility:matter_receiver`, `charged_porter` | `routing_matrix` | Powered destination and portable travel |
 | `rftoolsutility:environmental_controller` | `power_regulator` | Charged environmental modules |

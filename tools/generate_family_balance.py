@@ -355,7 +355,6 @@ LUMINOSITY_ACT = 'VI'
 FUNCTIONS = {
     # function: (component, act). 'luminosity' means one Luminosity (Solsticio only) per piece.
     'mekanism_entry': (CF, 'II'),       # the metallurgic infuser: every Mekanism circuit and alloy
-    'magic_automation': (LM, 'II'),     # automating Ars Nouveau, not learning it
     'storage_network': (RM, 'III'),     # controllers of AE2 and Refined Storage
     'teleport': (RM, 'III'),
     'wireless': (RM, 'III'),            # cross-dimension item, fluid and energy links
@@ -419,9 +418,21 @@ BOOTSTRAP = {('mekanism:metallurgic_infuser', CF): 'first_signal'}
 
 
 def function_gate(function, recipe_id, row, col, expect, why, *, add=None, alternates=()):
+    """A drawn gate (Elias's playtest of 24 September 2026, docs/design/playtest-2026-09-24.md): the
+    component takes a meaningful place of the 3x3 drawing, the centre or the vertical axis, and the
+    recipe stays as symmetric as it was. It may replace a single ingredient, such as a machine's core."""
     component, act = FUNCTIONS[function]
     change = shaped(recipe_id, row, col, expect, add or component, act, why, alternates=alternates)
-    return dict(change, function=function)
+    return dict(change, function=function, drawn=True)
+
+
+def symmetric(craft):
+    """The shaped drawing reads the same mirrored left to right, comparing ingredients, not letters."""
+    key = craft['key']
+
+    def ingredient(symbol):
+        return ' ' if symbol == ' ' else json.dumps(key[symbol], sort_keys=True)
+    return all([ingredient(c) for c in row] == [ingredient(c) for c in reversed(row)] for row in craft['pattern'])
 
 
 def function_listed(function, recipe_id, field, index, expect, why, *, add=None, alternates=()):
@@ -729,54 +740,38 @@ FAMILIES = {
         'tag': 'ENTRELUMEN_FUNCTIONS_BALANCE',
         'namespaces': set(),
         'changes': [
-            function_gate('mekanism_entry', 'mekanism:metallurgic_infuser', 0, 1, item('minecraft:furnace'),
-                          'The way into Mekanism goes through the workshop: the infuser copies the frame'),
-            function_listed('magic_automation', 'ars_nouveau:starbuncle_charm', 'pedestalItems', 0,
-                            tag('c:ingots/gold'), 'Item-carrying familiar',
-                            alternates=['ars_nouveau:clear_starbuncle_charm']),
-            function_listed('magic_automation', 'ars_nouveau:drygmy_charm', 'pedestalItems', 5,
-                            tag('c:gems/source'), 'Mob-drop familiar',
-                            alternates=['ars_nouveau:clear_drygmy_charm']),
-            function_appended('magic_automation', 'ars_nouveau:wixie_charm', 'pedestalItems',
-                              'Crafting and potion familiar; no repeated pedestal item, so one more pedestal',
-                              limit=8, alternates=['ars_nouveau:clear_wixie_charm']),
-            function_gate('storage_network', 'ae2:network/blocks/controller', 0, 1, item('ae2:fluix_crystal'),
-                          'ME controller: the same entry as the Refined Storage controller'),
-            function_gate('teleport', 'mekanism:teleporter', 0, 0, tag('c:circuits/basic'), 'Teleporter block'),
-            function_gate('teleport', 'mekanism:portable_teleporter', 1, 0, tag('c:circuits/basic'),
-                          'Handheld teleporter'),
-            function_gate('wireless', 'mekanism:quantum_entangloporter', 0, 0, tag('c:ingots/refined_obsidian'),
-                          'Cross-dimension item, fluid, chemical and energy link'),
+            # Each component sits on the drawing's centre or vertical axis and the recipe stays symmetric
+            # (Elias's playtest of 24 September 2026); few, key recipes per component.
+            function_gate('mekanism_entry', 'mekanism:metallurgic_infuser', 1, 1, tag('c:ingots/osmium'),
+                          "The frame is the infuser's calibrated core: the way into Mekanism goes through the workshop"),
+            function_gate('storage_network', 'ae2:network/blocks/controller', 1, 1, item('ae2:engineering_processor'),
+                          "The routing matrix is the ME controller's core, the same entry as Refined Storage's"),
+            function_gate('teleport', 'mekanism:teleporter', 0, 1, item('mekanism:steel_casing'),
+                          'Teleporter block; portable teleporters only reach these'),
             function_gate('jetpack', 'mekanism:jetpack', 2, 1, tag('c:ingots/tin'),
-                          'First powered flight; the armored jetpack upgrades it'),
-            function_gate('smart_storage', 'mekanism:qio_drive_array', 0, 0, item('mekanism:teleportation_core'),
-                          'QIO storage: the inventory sensor finally gates something'),
-        ] + [
-            function_gate('hands', f'pneumaticcraft:{drone}', 0, 1, item('pneumaticcraft:turbine_rotor'),
-                          'Drones are the workshop hands')
-            for drone in ('drone', 'logistics_drone', 'harvesting_drone', 'guard_drone', 'collector_drone')
-        ] + [
-            function_gate('quarry', 'mekanism:digital_miner', 2, 0, item('mekanism:teleportation_core'),
-                          'Ores from power without walking the world'),
+                          'First powered flight: the regulator at the nozzle; the armored jetpack upgrades it'),
+            function_gate('smart_storage', 'mekanism:qio_drive_array', 0, 1, tag('c:glass_panes'),
+                          'QIO storage: the inventory sensor looks out of the array'),
+            function_gate('quarry', 'mekanism:digital_miner', 0, 1, tag('c:circuits/basic'),
+                          'Ores from power without walking the world: the lens on top of the miner'),
             function_listed('quarry', 'occultism:ritual/craft_dimensional_mineshaft', 'ingredients', 0,
                             {'type': 'neoforge:compound',
                              'children': [item('occultism:otherstone'), item('occultism:otherrock')]},
                             'Mining spirits work from the mineshaft'),
-            function_gate('reactor', 'mekanismgenerators:fission_reactor/port', 0, 1,
-                          item('mekanismgenerators:fission_reactor_casing'), 'Fission reactor, echo of the Temple'),
+            function_gate('reactor', 'mekanismgenerators:fission_reactor/port', 1, 1, tag('c:circuits/elite'),
+                          "Fission reactor, echo of the Temple: the seal at the port's heart"),
             function_gate('endgame_reactor', 'mekanismgenerators:reactor/controller', 2, 1,
                           item('mekanismgenerators:fusion_reactor_frame'), 'Fusion reactor controller'),
-            function_gate('renewal', 'mekanism:sps_port', 0, 1, item('mekanism:sps_casing'), 'Antimatter'),
-            function_gate('renewal', 'mysticalagriculture:awakening_altar', 2, 1, item('mysticalagriculture:soulstone'),
-                          'Awakened essences'),
+            function_gate('renewal', 'mekanism:sps_port', 1, 1, tag('c:circuits/ultimate'),
+                          "Antimatter: the renewal engine at the SPS port's heart"),
         ] + [
-            function_gate('top_armor', f'mekanism:mekasuit_{piece}', 2, 0, tag('c:pellets/polonium'),
-                          'MekaSuit, Act VI', add=LUMINOSITY[TOP_ARMOR['mekanism']])
+            function_gate('top_armor', f'mekanism:mekasuit_{piece}', 0, 1, tag('c:circuits/ultimate'),
+                          'MekaSuit, Act VI: the Luminosity crowns the piece', add=LUMINOSITY[TOP_ARMOR['mekanism']])
             for piece in MEKASUIT
         ] + [
-            function_gate('top_armor', f'advanced_ae:{recipe_path}', 2, 0, item('advanced_ae:quantum_alloy_plate'),
-                          'Advanced AE quantum armor, Act VI', add=LUMINOSITY[TOP_ARMOR['advanced_ae']],
-                          alternates=[f'advanced_ae:quantum_{piece}_item_reset'])
+            function_gate('top_armor', f'advanced_ae:{recipe_path}', 0, 1, item('ae2:wireless_access_point'),
+                          'Advanced AE quantum armor, Act VI: the Luminosity is its link',
+                          add=LUMINOSITY[TOP_ARMOR['advanced_ae']], alternates=[f'advanced_ae:quantum_{piece}_item_reset'])
             for piece, recipe_path in AAE_QUANTUM.items()
         ] + [
             function_appended('top_armor', f'modern_industrialization:upgrade/packer/quantum/{piece}', 'item_inputs',
@@ -886,21 +881,29 @@ def transform(change, original):
         row, col = change['row'], change['col']
         assert row < len(pattern) and col < len(pattern[row]), f"{change['id']}: slot outside native pattern"
         symbol = pattern[row][col]
+        unique = False
         if change['expect'] is None:
             assert symbol == ' ', f"{change['id']}: intended empty slot changed"
         else:
             assert craft['key'][symbol] == change['expect'], f"{change['id']}: native ingredient changed"
-            assert sum(line.count(symbol) for line in pattern) > 1, f"{change['id']}: unique ingredient would be lost"
+            unique = sum(line.count(symbol) for line in pattern) == 1
+            # Only a drawn gate may replace a single ingredient (a machine's core on the centre or axis).
+            assert not unique or change.get('drawn'), f"{change['id']}: unique ingredient would be lost"
         letter = next(c for c in 'ZYXWQ' if c not in craft['key'] and all(c not in line for line in pattern))
         widths = [len(line) for line in pattern]
         craft['pattern'][row] = pattern[row][:col] + letter + pattern[row][col + 1:]
         craft['key'][letter] = {'item': add}
+        removed = craft['key'].pop(symbol) if unique else None  # a shaped key may not keep an unused symbol
         assert [len(line) for line in craft['pattern']] == widths
         reverse = copy.deepcopy(result)
         body = inner(reverse)
         body['pattern'][row] = body['pattern'][row][:col] + symbol + body['pattern'][row][col + 1:]
         del body['key'][letter]
+        if unique:
+            body['key'][symbol] = removed
         assert reverse == original, f"{change['id']}: an unrelated native field changed"
+        if change.get('drawn'):
+            assert symmetric(craft) or not symmetric(inner(original)), f"{change['id']}: the drawing lost its symmetry"
     elif change['op'] == 'list':
         values = result[change['field']]
         index = change['index']

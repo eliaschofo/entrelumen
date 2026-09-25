@@ -112,17 +112,18 @@ public final class ProgressionFullpackGameTests {
     var holder = helper.getLevel().getRecipeManager().byKey(ResourceLocation.parse("mekanism:metallurgic_infuser"));
     helper.assertTrue(holder.isPresent() && holder.get().value() instanceof CraftingRecipe, "Infuser recipe missing");
     var recipe = (CraftingRecipe) holder.get().value();
-    String[] slots = {"minecraft:iron_ingot", FRAME, "minecraft:iron_ingot",
-        "minecraft:redstone", "mekanism:ingot_osmium", "minecraft:redstone",
+    // A drawing (Elias's playtest of 24 September 2026): the frame is the infuser's core.
+    String[] slots = {"minecraft:iron_ingot", "minecraft:furnace", "minecraft:iron_ingot",
+        "minecraft:redstone", FRAME, "minecraft:redstone",
         "minecraft:iron_ingot", "minecraft:furnace", "minecraft:iron_ingot"};
     List<ItemStack> grid = new ArrayList<>();
     for (String slot : slots) grid.add(stack(slot));
     helper.assertTrue(recipe.matches(CraftingInput.of(3, 3, grid), helper.getLevel())
         && recipe.assemble(CraftingInput.of(3, 3, grid), helper.getLevel().registryAccess()).is(item("mekanism:metallurgic_infuser")),
-        "The infuser does not accept the frame in place of its top furnace");
-    grid.set(1, stack("minecraft:furnace"));
+        "The infuser does not take the frame as its core");
+    grid.set(4, stack("mekanism:ingot_osmium"));
     helper.assertTrue(!recipe.matches(CraftingInput.of(3, 3, grid), helper.getLevel()),
-        "The native two-furnace infuser still crafts without a frame");
+        "The native osmium-core infuser still crafts without a frame");
     int producers = 0;
     for (var other : helper.getLevel().getRecipeManager().getRecipes())
       if (result(helper, other).is(item("mekanism:metallurgic_infuser"))) producers++;
@@ -175,7 +176,7 @@ public final class ProgressionFullpackGameTests {
     requireSuite();
     var recipes = helper.getLevel().getRecipeManager();
     var rows = functionRows();
-    helper.assertTrue(rows.size() == 33, "The functions family has " + rows.size() + " rows");
+    helper.assertTrue(rows.size() == 22, "The functions family has " + rows.size() + " rows");
     List<String> problems = new ArrayList<>();
     Map<String, List<String>> producers = new LinkedHashMap<>();
     for (var holder : recipes.getRecipes()) {
