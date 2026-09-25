@@ -13,7 +13,7 @@
   },
   "quests": [
     {
-      "key": "tr_welcome",
+      "key": "travel_welcome",
       "deps": [],
       "type": "checkmark",
       "layout": {
@@ -36,9 +36,9 @@
       ]
     },
     {
-      "key": "tr_journeymap",
+      "key": "travel_journeymap",
       "deps": [
-        "tr_welcome"
+        "travel_welcome"
       ],
       "type": "checkmark",
       "icon": "minecraft:filled_map",
@@ -63,9 +63,9 @@
       ]
     },
     {
-      "key": "tr_waypoints",
+      "key": "travel_waypoints",
       "deps": [
-        "tr_journeymap"
+        "travel_journeymap"
       ],
       "type": "checkmark",
       "icon": "minecraft:compass",
@@ -90,9 +90,9 @@
       ]
     },
     {
-      "key": "tr_find_waystone",
+      "key": "travel_find_waystone",
       "deps": [
-        "tr_welcome"
+        "travel_welcome"
       ],
       "type": "checkmark",
       "icon": "waystones:mossy_waystone",
@@ -118,9 +118,9 @@
       ]
     },
     {
-      "key": "tr_warp_stone",
+      "key": "travel_warp_stone",
       "deps": [
-        "tr_find_waystone"
+        "travel_find_waystone"
       ],
       "type": "item",
       "item": "waystones:warp_stone",
@@ -145,9 +145,9 @@
       ]
     },
     {
-      "key": "tr_own_waystone",
+      "key": "travel_own_waystone",
       "deps": [
-        "tr_warp_stone"
+        "travel_warp_stone"
       ],
       "type": "item",
       "item": "waystones:waystone",
@@ -173,9 +173,9 @@
       ]
     },
     {
-      "key": "tr_costs",
+      "key": "travel_costs",
       "deps": [
-        "tr_own_waystone"
+        "travel_own_waystone"
       ],
       "type": "checkmark",
       "icon": "minecraft:experience_bottle",
@@ -200,9 +200,9 @@
       ]
     },
     {
-      "key": "tr_scrolls",
+      "key": "travel_scrolls",
       "deps": [
-        "tr_own_waystone"
+        "travel_own_waystone"
       ],
       "type": "item",
       "item": "waystones:return_scroll",
@@ -230,9 +230,9 @@
       ]
     },
     {
-      "key": "tr_sharestones",
+      "key": "travel_sharestones",
       "deps": [
-        "tr_scrolls"
+        "travel_scrolls"
       ],
       "type": "checkmark",
       "optional": true,
@@ -258,9 +258,9 @@
       ]
     },
     {
-      "key": "tr_solsticio",
+      "key": "travel_solsticio",
       "deps": [
-        "tr_scrolls"
+        "travel_scrolls"
       ],
       "type": "checkmark",
       "icon": "entrelumen:light_key",
@@ -284,9 +284,9 @@
       ]
     },
     {
-      "key": "tr_comforts",
+      "key": "travel_comforts",
       "deps": [
-        "tr_welcome"
+        "travel_welcome"
       ],
       "type": "item",
       "item": "comforts:sleeping_bag_white",
@@ -311,9 +311,9 @@
       ]
     },
     {
-      "key": "tr_boats",
+      "key": "travel_boats",
       "deps": [
-        "tr_comforts"
+        "travel_comforts"
       ],
       "type": "checkmark",
       "optional": true,
@@ -339,9 +339,9 @@
       ]
     },
     {
-      "key": "tr_aircraft",
+      "key": "travel_aircraft",
       "deps": [
-        "tr_boats"
+        "travel_boats"
       ],
       "type": "item",
       "item": "immersive_aircraft:engine",
@@ -367,9 +367,9 @@
       ]
     },
     {
-      "key": "tr_late",
+      "key": "travel_late",
       "deps": [
-        "tr_aircraft"
+        "travel_aircraft"
       ],
       "type": "checkmark",
       "optional": true,
@@ -394,10 +394,10 @@
       ]
     },
     {
-      "key": "tr_mastery",
+      "key": "travel_mastery",
       "deps": [
-        "tr_solsticio",
-        "tr_waypoints"
+        "travel_solsticio",
+        "travel_waypoints"
       ],
       "type": "checkmark",
       "icon": "waystones:warp_stone",

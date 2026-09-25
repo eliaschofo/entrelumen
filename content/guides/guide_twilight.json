@@ -13,7 +13,7 @@
   },
   "quests": [
     {
-      "key": "tf_welcome",
+      "key": "twilight_welcome",
       "deps": [],
       "type": "checkmark",
       "layout": {
@@ -38,9 +38,9 @@
       ]
     },
     {
-      "key": "tf_portal",
+      "key": "twilight_portal",
       "deps": [
-        "tf_welcome"
+        "twilight_welcome"
       ],
       "type": "item",
       "item": "minecraft:diamond",
@@ -67,9 +67,9 @@
       ]
     },
     {
-      "key": "tf_enter",
+      "key": "twilight_enter",
       "deps": [
-        "tf_portal"
+        "twilight_portal"
       ],
       "type": "dimension",
       "dimension": "twilightforest:twilight_forest",
@@ -96,9 +96,9 @@
       ]
     },
     {
-      "key": "tf_locks",
+      "key": "twilight_locks",
       "deps": [
-        "tf_enter"
+        "twilight_enter"
       ],
       "type": "checkmark",
       "icon": "minecraft:written_book",
@@ -122,9 +122,9 @@
       ]
     },
     {
-      "key": "tf_naga",
+      "key": "twilight_naga",
       "deps": [
-        "tf_enter"
+        "twilight_enter"
       ],
       "type": "advancement",
       "advancement": "twilightforest:progress_naga",
@@ -152,9 +152,9 @@
       ]
     },
     {
-      "key": "tf_naga_armor",
+      "key": "twilight_naga_armor",
       "deps": [
-        "tf_naga"
+        "twilight_naga"
       ],
       "type": "advancement",
       "advancement": "twilightforest:naga_armors",
@@ -181,9 +181,9 @@
       ]
     },
     {
-      "key": "tf_lich",
+      "key": "twilight_lich",
       "deps": [
-        "tf_naga"
+        "twilight_naga"
       ],
       "type": "advancement",
       "advancement": "twilightforest:progress_lich",
@@ -210,9 +210,9 @@
       ]
     },
     {
-      "key": "tf_scepters",
+      "key": "twilight_scepters",
       "deps": [
-        "tf_lich"
+        "twilight_lich"
       ],
       "type": "advancement",
       "advancement": "twilightforest:lich_scepters",
@@ -239,9 +239,9 @@
       ]
     },
     {
-      "key": "tf_labyrinth",
+      "key": "twilight_labyrinth",
       "deps": [
-        "tf_lich"
+        "twilight_lich"
       ],
       "type": "advancement",
       "advancement": "twilightforest:progress_labyrinth",
@@ -268,9 +268,9 @@
       ]
     },
     {
-      "key": "tf_hydra",
+      "key": "twilight_hydra",
       "deps": [
-        "tf_labyrinth"
+        "twilight_labyrinth"
       ],
       "type": "advancement",
       "advancement": "twilightforest:progress_hydra",
@@ -297,9 +297,9 @@
       ]
     },
     {
-      "key": "tf_fiery",
+      "key": "twilight_fiery",
       "deps": [
-        "tf_hydra"
+        "twilight_hydra"
       ],
       "type": "item",
       "item": "twilightforest:fiery_ingot",
@@ -325,9 +325,9 @@
       ]
     },
     {
-      "key": "tf_pedestal",
+      "key": "twilight_pedestal",
       "deps": [
-        "tf_lich"
+        "twilight_lich"
       ],
       "type": "advancement",
       "advancement": "twilightforest:progress_trophy_pedestal",
@@ -354,9 +354,9 @@
       ]
     },
     {
-      "key": "tf_knights",
+      "key": "twilight_knights",
       "deps": [
-        "tf_pedestal"
+        "twilight_pedestal"
       ],
       "type": "advancement",
       "advancement": "twilightforest:progress_knights",
@@ -382,9 +382,9 @@
       ]
     },
     {
-      "key": "tf_knightmetal",
+      "key": "twilight_knightmetal",
       "deps": [
-        "tf_knights"
+        "twilight_knights"
       ],
       "type": "item",
       "item": "twilightforest:knightmetal_ingot",
@@ -409,9 +409,9 @@
       ]
     },
     {
-      "key": "tf_ghast_trap",
+      "key": "twilight_ghast_trap",
       "deps": [
-        "tf_knights"
+        "twilight_knights"
       ],
       "type": "advancement",
       "advancement": "twilightforest:ghast_trap",
@@ -438,9 +438,9 @@
       ]
     },
     {
-      "key": "tf_ur_ghast",
+      "key": "twilight_ur_ghast",
       "deps": [
-        "tf_ghast_trap"
+        "twilight_ghast_trap"
       ],
       "type": "advancement",
       "advancement": "twilightforest:progress_ur_ghast",
@@ -466,9 +466,9 @@
       ]
     },
     {
-      "key": "tf_yeti",
+      "key": "twilight_yeti",
       "deps": [
-        "tf_lich"
+        "twilight_lich"
       ],
       "type": "advancement",
       "advancement": "twilightforest:progress_yeti",
@@ -495,9 +495,9 @@
       ]
     },
     {
-      "key": "tf_snow_queen",
+      "key": "twilight_snow_queen",
       "deps": [
-        "tf_yeti"
+        "twilight_yeti"
       ],
       "type": "advancement",
       "advancement": "twilightforest:progress_glacier",
@@ -523,11 +523,11 @@
       ]
     },
     {
-      "key": "tf_merge",
+      "key": "twilight_merge",
       "deps": [
-        "tf_hydra",
-        "tf_ur_ghast",
-        "tf_snow_queen"
+        "twilight_hydra",
+        "twilight_ur_ghast",
+        "twilight_snow_queen"
       ],
       "type": "advancement",
       "advancement": "twilightforest:progress_merge",
@@ -552,9 +552,9 @@
       ]
     },
     {
-      "key": "tf_beanstalk",
+      "key": "twilight_beanstalk",
       "deps": [
-        "tf_merge"
+        "twilight_merge"
       ],
       "type": "advancement",
       "advancement": "twilightforest:giants",
@@ -582,9 +582,9 @@
       ]
     },
     {
-      "key": "tf_lamp",
+      "key": "twilight_lamp",
       "deps": [
-        "tf_beanstalk"
+        "twilight_beanstalk"
       ],
       "type": "advancement",
       "advancement": "twilightforest:progress_troll",
@@ -611,9 +611,9 @@
       ]
     },
     {
-      "key": "tf_ironwood",
+      "key": "twilight_ironwood",
       "deps": [
-        "tf_enter"
+        "twilight_enter"
       ],
       "type": "item",
       "item": "twilightforest:ironwood_ingot",
@@ -639,9 +639,9 @@
       ]
     },
     {
-      "key": "tf_hills",
+      "key": "twilight_hills",
       "deps": [
-        "tf_enter"
+        "twilight_enter"
       ],
       "type": "advancement",
       "advancement": "twilightforest:hill1",
@@ -669,9 +669,9 @@
       ]
     },
     {
-      "key": "tf_charms",
+      "key": "twilight_charms",
       "deps": [
-        "tf_hills"
+        "twilight_hills"
       ],
       "type": "checkmark",
       "optional": true,
@@ -699,9 +699,9 @@
       ]
     },
     {
-      "key": "tf_magic_map",
+      "key": "twilight_magic_map",
       "deps": [
-        "tf_enter"
+        "twilight_enter"
       ],
       "type": "advancement",
       "advancement": "twilightforest:magic_map",
@@ -730,9 +730,9 @@
       ]
     },
     {
-      "key": "tf_uncrafting",
+      "key": "twilight_uncrafting",
       "deps": [
-        "tf_labyrinth"
+        "twilight_labyrinth"
       ],
       "type": "item",
       "item": "twilightforest:uncrafting_table",
@@ -758,9 +758,9 @@
       ]
     },
     {
-      "key": "tf_quest_ram",
+      "key": "twilight_quest_ram",
       "deps": [
-        "tf_enter"
+        "twilight_enter"
       ],
       "type": "advancement",
       "advancement": "twilightforest:quest_ram",
@@ -786,9 +786,9 @@
       ]
     },
     {
-      "key": "tf_trophies",
+      "key": "twilight_trophies",
       "deps": [
-        "tf_ur_ghast"
+        "twilight_ur_ghast"
       ],
       "type": "checkmark",
       "optional": true,
@@ -813,9 +813,9 @@
       ]
     },
     {
-      "key": "tf_pack",
+      "key": "twilight_pack",
       "deps": [
-        "tf_welcome"
+        "twilight_welcome"
       ],
       "type": "checkmark",
       "icon": "entrelumen:heliodor_compass",
@@ -844,9 +844,9 @@
       ]
     },
     {
-      "key": "tf_food",
+      "key": "twilight_food",
       "deps": [
-        "tf_welcome"
+        "twilight_welcome"
       ],
       "type": "advancement",
       "advancement": "twilightforest:twilight_dinner",
@@ -875,9 +875,9 @@
       ]
     },
     {
-      "key": "tf_mastery",
+      "key": "twilight_mastery",
       "deps": [
-        "tf_lamp"
+        "twilight_lamp"
       ],
       "type": "checkmark",
       "icon": "twilightforest:lich_trophy",

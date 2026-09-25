@@ -13,7 +13,7 @@
   },
   "quests": [
     {
-      "key": "cr_welcome",
+      "key": "creatures_welcome",
       "deps": [],
       "type": "checkmark",
       "layout": {
@@ -37,9 +37,9 @@
       ]
     },
     {
-      "key": "ff_copper_golem",
+      "key": "fnf_copper_golem",
       "deps": [
-        "cr_welcome"
+        "creatures_welcome"
       ],
       "type": "advancement",
       "advancement": "friendsandfoes:adventure/summon_copper_golem",
@@ -67,9 +67,9 @@
       ]
     },
     {
-      "key": "ff_glare",
+      "key": "fnf_glare",
       "deps": [
-        "ff_copper_golem"
+        "fnf_copper_golem"
       ],
       "type": "advancement",
       "advancement": "friendsandfoes:husbandry/tame_a_glare",
@@ -97,9 +97,9 @@
       ]
     },
     {
-      "key": "ff_crab",
+      "key": "fnf_crab",
       "deps": [
-        "ff_copper_golem"
+        "fnf_copper_golem"
       ],
       "type": "item",
       "item": "friendsandfoes:crab_claw",
@@ -125,9 +125,9 @@
       ]
     },
     {
-      "key": "ff_rascal",
+      "key": "fnf_rascal",
       "deps": [
-        "ff_glare"
+        "fnf_glare"
       ],
       "type": "advancement",
       "advancement": "friendsandfoes:adventure/complete_hide_and_seek_game",
@@ -154,9 +154,9 @@
       ]
     },
     {
-      "key": "ff_magicians",
+      "key": "fnf_magicians",
       "deps": [
-        "ff_copper_golem"
+        "fnf_copper_golem"
       ],
       "type": "advancement",
       "advancement": "friendsandfoes:adventure/the_magicians",
@@ -185,9 +185,9 @@
       ]
     },
     {
-      "key": "ff_wildfire",
+      "key": "fnf_wildfire",
       "deps": [
-        "ff_magicians"
+        "fnf_magicians"
       ],
       "type": "advancement",
       "advancement": "friendsandfoes:nether/kill_wildfire",
@@ -217,9 +217,9 @@
       ]
     },
     {
-      "key": "ff_small",
+      "key": "fnf_small",
       "deps": [
-        "ff_magicians"
+        "fnf_magicians"
       ],
       "type": "checkmark",
       "optional": true,
@@ -247,9 +247,9 @@
       ]
     },
     {
-      "key": "nat_intro",
+      "key": "naturalist_intro",
       "deps": [
-        "cr_welcome"
+        "creatures_welcome"
       ],
       "type": "checkmark",
       "icon": "naturalist:antler",
@@ -275,9 +275,9 @@
       ]
     },
     {
-      "key": "nat_net",
+      "key": "naturalist_net",
       "deps": [
-        "nat_intro"
+        "naturalist_intro"
       ],
       "type": "item",
       "item": "naturalist:capture_net",
@@ -301,9 +301,9 @@
       ]
     },
     {
-      "key": "nat_materials",
+      "key": "naturalist_materials",
       "deps": [
-        "nat_net"
+        "naturalist_net"
       ],
       "type": "checkmark",
       "icon": "naturalist:hide",
@@ -332,9 +332,9 @@
       ]
     },
     {
-      "key": "nat_danger",
+      "key": "naturalist_danger",
       "deps": [
-        "nat_intro"
+        "naturalist_intro"
       ],
       "type": "checkmark",
       "icon": "naturalist:scorpion_poison_gland",
@@ -359,9 +359,9 @@
       ]
     },
     {
-      "key": "co_creepers",
+      "key": "creeper_creepers",
       "deps": [
-        "cr_welcome"
+        "creatures_welcome"
       ],
       "type": "checkmark",
       "icon": "minecraft:creeper_head",
@@ -384,9 +384,9 @@
       ]
     },
     {
-      "key": "eo_endermen",
+      "key": "eoverhaul_endermen",
       "deps": [
-        "cr_welcome"
+        "creatures_welcome"
       ],
       "type": "checkmark",
       "icon": "minecraft:ender_pearl",
@@ -410,9 +410,9 @@
       ]
     },
     {
-      "key": "eo_hood",
+      "key": "eoverhaul_hood",
       "deps": [
-        "eo_endermen"
+        "eoverhaul_endermen"
       ],
       "type": "item",
       "item": "endermanoverhaul:snowy_hood",
@@ -439,9 +439,9 @@
       ]
     },
     {
-      "key": "eo_pearls",
+      "key": "eoverhaul_pearls",
       "deps": [
-        "eo_endermen"
+        "eoverhaul_endermen"
       ],
       "type": "checkmark",
       "optional": true,
@@ -471,9 +471,9 @@
       ]
     },
     {
-      "key": "eo_corrupted",
+      "key": "eoverhaul_corrupted",
       "deps": [
-        "eo_pearls"
+        "eoverhaul_pearls"
       ],
       "type": "item",
       "item": "endermanoverhaul:corrupted_pearl",
@@ -500,9 +500,9 @@
       ]
     },
     {
-      "key": "cr_pack",
+      "key": "creatures_pack",
       "deps": [
-        "cr_welcome"
+        "creatures_welcome"
       ],
       "type": "checkmark",
       "icon": "minecraft:lead",
@@ -528,11 +528,11 @@
       ]
     },
     {
-      "key": "cr_mastery",
+      "key": "creatures_mastery",
       "deps": [
-        "ff_magicians",
-        "nat_net",
-        "eo_pearls"
+        "fnf_magicians",
+        "naturalist_net",
+        "eoverhaul_pearls"
       ],
       "type": "checkmark",
       "icon": "friendsandfoes:totem_of_freezing",
