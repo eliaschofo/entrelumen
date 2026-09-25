@@ -22,6 +22,7 @@ sys.path.insert(0, os.path.join(HERE, '..', 'structures'))
 import city3  # noqa: E402
 import city5  # noqa: E402
 import city6  # noqa: E402,F401  (dresses city5.building with the pack's decorative mods)
+import houses  # noqa: E402
 from voxkit import Voxels, orient  # noqa: E402
 
 B = city5.B
@@ -292,9 +293,8 @@ def place_lots():
             kinds[cand[0]] = 'inn'
     for i, (fx, fz, s, e, pad, k, idx, hw) in enumerate(LOTS):
         kind = kinds.get(i) or ('resident' if i % 3 == 0 else 'house')
-        st = dict(city5.STYLES[idx % len(city5.STYLES)], variant=('gable', 'bay', 'greenhouse', 'turrets')[(idx * 7 + 3) % 4])
-        floors = 3 if kind.startswith('shop:') else 3 + (idx % 3 == 1)
-        L, marks = city5.building(kind, st, floors, hw, DEPTH)
+        floors = {1: 4, 2: 3 + (idx % 2), 3: 3, 4: 2 + (idx % 3 == 1)}[k]
+        L, marks = houses.building(kind, idx * 7 + k, hw, DEPTH, floors)
         f = lambda v: (v[0] * e[0] + v[1] * s[0], v[0] * e[1] + v[1] * s[1])
         for (u, y, w), state in L.items():
             x, z = fx + u * e[0] + w * s[0], fz + u * e[1] + w * s[1]
