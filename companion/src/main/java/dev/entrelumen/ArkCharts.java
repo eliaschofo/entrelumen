@@ -110,9 +110,11 @@ public final class ArkCharts {
     return new Outcome(Status.COMPILED, absorbed.filled(), sources.size(), absorbed.contributors(), skipped);
   }
 
-  /** Book rendering explains the gesture; the service keeps no team record. */
-  public static List<Component> journalLines() {
-    return List.of(Component.translatable("entrelumen.exploration.chart.journal"));
+  /** The module screen's chart-room row explains the gesture; the service keeps no team record. */
+  public static ArkFieldJournals.Service journalService() {
+    return new ArkFieldJournals.Service("minecraft:filled_map",
+        Component.translatable("entrelumen.journal.service.exploration"),
+        List.of(Component.translatable("entrelumen.exploration.chart.journal")));
   }
 
   static ArkChartRules.Grid grid(MapItemSavedData data) {

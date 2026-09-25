@@ -16,6 +16,8 @@ schema extends the story chapters' format (see content/act_two.json):
 Checks: schema, unique chapter ids and quest keys (globally, prefixed by the chapter), deps inside
 the chapter, EN/ES parity, text limits and formatting codes, sources on every quest, and that every
 item, icon and tag namespace exists in the pinned JARs (catalog/local-paths.json) or vanilla.
+Warnings, which never fail the run: descriptions over 500 characters and the meta phrases that the
+copy pass bans (see copy_warnings).
 
     python tools/check_guides.py            # all chapters
     python tools/check_guides.py create     # chapters whose id contains 'create'
@@ -194,18 +196,51 @@ def check_chapter(path, seen_chapters, seen_keys, errors):
     return len(quests)
 
 
+COPY_MAX_DESC = 500
+META_PHRASES = ('este capítulo', 'esta guía', 'en esta quest vas a', 'bienvenido a', 'aprenderás',
+                'confirmá al terminar')
+
+
+def copy_warnings(path):
+    """Copy-style warnings, never errors (docs/design/playtest-2026-09-24.md): descriptions longer
+    than COPY_MAX_DESC characters and the meta phrases the copy pass bans."""
+    warnings = []
+    try:
+        ch = json.loads(path.read_text(encoding='utf-8'))
+    except Exception:
+        return warnings
+    for q in ch.get('quests') or []:
+        for lang in ('en_us', 'es_es'):
+            pair = q.get(lang)
+            if not (isinstance(pair, list) and len(pair) == 2 and isinstance(pair[1], str)):
+                continue
+            where = f'{path.name}:{q.get("key", "")} {lang}'
+            plain = FORMAT_CODE.sub('', pair[1])
+            if len(plain) > COPY_MAX_DESC:
+                warnings.append(f'{where}: description {len(plain)} chars > {COPY_MAX_DESC}')
+            low = plain.lower()
+            for phrase in META_PHRASES:
+                if phrase in low:
+                    warnings.append(f'{where}: meta phrase "{phrase}"')
+    return warnings
+
+
 def main():
     flt = sys.argv[1] if len(sys.argv) > 1 else ''
-    errors, chapters, keys = [], set(), set()
+    errors, chapters, keys, warnings = [], set(), set(), []
     total = 0
     files = sorted(GUIDES.glob('*.json'))
     for p in files:
         if flt and flt not in p.stem:
             continue
         total += check_chapter(p, chapters, keys, errors)
+        warnings += copy_warnings(p)
+    for w in warnings:
+        print('WARN', w)
     for e in errors:
         print('ERROR', e)
-    print(f'{"FAIL" if errors else "PASS"}: {len(chapters)} guide chapters, {total} quests, {len(errors)} errors')
+    print(f'{"FAIL" if errors else "PASS"}: {len(chapters)} guide chapters, {total} quests, {len(errors)} errors, '
+          f'{len(warnings)} copy warnings')
     return 1 if errors else 0
 
 

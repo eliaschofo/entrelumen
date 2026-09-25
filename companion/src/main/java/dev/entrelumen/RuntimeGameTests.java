@@ -666,9 +666,16 @@ public final class RuntimeGameTests {
       helper.assertTrue(snapshot.player().equals(reader.getUUID())
           && snapshot.campaign().equals(team.getId()) && snapshot.kind() == kind
           && !snapshot.campaign().equals(outsiderSnapshot.campaign())
-          && !snapshot.lines().equals(outsiderSnapshot.lines())
-          && snapshot.lines().getFirst().getContents()
-              instanceof net.minecraft.network.chat.contents.TranslatableContents,
+          && !snapshot.entries().equals(outsiderSnapshot.entries())
+          && snapshot.statusLine().getContents()
+              instanceof net.minecraft.network.chat.contents.TranslatableContents
+          && snapshot.flavor().getContents()
+              instanceof net.minecraft.network.chat.contents.TranslatableContents
+          && !snapshot.entries(JournalBookNetwork.Section.PROJECTS).isEmpty()
+          && snapshot.entries(JournalBookNetwork.Section.ARK).size() == 1
+          && snapshot.entries(JournalBookNetwork.Section.ARK).getFirst().complete()
+          && snapshot.entries().stream().allMatch(entry ->
+              BuiltInRegistries.ITEM.containsKey(entry.icon())),
           "Journal packet lost team identity, distinct observations or translation keys");
       var buffer = new net.minecraft.network.RegistryFriendlyByteBuf(
           io.netty.buffer.Unpooled.buffer(), helper.getLevel().registryAccess());
@@ -676,7 +683,7 @@ public final class RuntimeGameTests {
         JournalBookNetwork.Snapshot.CODEC.encode(buffer, snapshot);
         var decoded = JournalBookNetwork.Snapshot.CODEC.decode(buffer);
         helper.assertTrue(decoded.equals(snapshot)
-            && decoded.lines().getFirst().getContents()
+            && decoded.statusLine().getContents()
                 instanceof net.minecraft.network.chat.contents.TranslatableContents,
             "Journal packet changed team identity or translated narrative on the wire");
       } finally {
@@ -684,8 +691,11 @@ public final class RuntimeGameTests {
       }
     }
     var oversized = new JournalBookNetwork.Snapshot(reader.getUUID(), team.getId(),
-        ArkFieldJournals.Kind.ARCANE, List.of(net.minecraft.network.chat.Component.literal(
-            "x".repeat(33 * 1024))));
+        ArkFieldJournals.Kind.ARCANE, ArkFieldJournals.Status.WAITING,
+        net.minecraft.network.chat.Component.literal("x".repeat(33 * 1024)),
+        net.minecraft.network.chat.Component.empty(), java.util.Optional.empty(),
+        List.of(new JournalBookNetwork.Entry(JournalBookNetwork.Section.ARK,
+            ResourceLocation.parse("minecraft:paper"), java.util.Optional.empty(), 0, 0, List.of())));
     var oversizedBuffer = new net.minecraft.network.RegistryFriendlyByteBuf(
         io.netty.buffer.Unpooled.buffer(), helper.getLevel().registryAccess());
     try {
@@ -2853,7 +2863,7 @@ public final class RuntimeGameTests {
         && beforeCampaign.equals(data.save(new CompoundTag(), level.registryAccess())),
         "Restoration dropped items or changed campaign progress");
     var journal = ArkFieldJournals.snapshot(player, module, ArkFieldJournals.Kind.NATURE);
-    helper.assertTrue(journal.lines().stream().anyMatch(line -> line.getContents()
+    helper.assertTrue(journal.texts().stream().anyMatch(line -> line.getContents()
             instanceof net.minecraft.network.chat.contents.TranslatableContents text
             && text.getKey().equals("entrelumen.nature.journal.site")),
         "Nature journal omitted the team's restoration site");
@@ -3054,7 +3064,7 @@ public final class RuntimeGameTests {
     guest.setItemInHand(main, new ItemStack(Items.BONE_MEAL, 64));
     helper.assertTrue(NatureRestoration.restore(guest, module, main).status() == NatureRestoration.Status.NO_SITE
         && guest.getMainHandItem().getCount() == 64
-        && ArkFieldJournals.snapshot(guest, module, ArkFieldJournals.Kind.NATURE).lines().stream()
+        && ArkFieldJournals.snapshot(guest, module, ArkFieldJournals.Kind.NATURE).texts().stream()
             .anyMatch(line -> line.getContents() instanceof net.minecraft.network.chat.contents.TranslatableContents text
                 && text.getKey().equals("entrelumen.nature.journal.none")),
         "Another team used or saw this team's restoration site");
@@ -3250,7 +3260,7 @@ public final class RuntimeGameTests {
           "A repeated compilation was not a no-op: " + repeat);
       helper.assertTrue(java.util.Arrays.equals(compiled, target.colors) && !target.isDirty()
           && chartInventoryUnchanged(beforeInventory, player), "A repeated compilation changed something");
-      helper.assertTrue(ArkFieldJournals.snapshot(player, module, ArkFieldJournals.Kind.EXPLORATION).lines()
+      helper.assertTrue(ArkFieldJournals.snapshot(player, module, ArkFieldJournals.Kind.EXPLORATION).texts()
           .stream().anyMatch(line -> line.getContents() instanceof net.minecraft.network.chat.contents.TranslatableContents text
               && text.getKey().equals("entrelumen.exploration.chart.journal")),
           "The exploration journal does not explain the chart room");
