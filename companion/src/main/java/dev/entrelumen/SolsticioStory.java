@@ -419,7 +419,7 @@ public final class SolsticioStory {
 
   private static void gardener(ServerPlayer player, Campaigns.Campaign c, String stage, Talk talk, Component name,
       String base, SolsticioStoryRules.World world) {
-    if (SolsticioStoryRules.done(c, SolsticioStoryRules.SEEDS)) basket(player, talk, name);
+    if (SolsticioStoryRules.arrived(c) && SolsticioStoryRules.done(c, SolsticioStoryRules.SEEDS)) basket(player, talk, name);
     switch (stage) {
       case "seeds" -> {
         List<String> kinds = new ArrayList<>();
