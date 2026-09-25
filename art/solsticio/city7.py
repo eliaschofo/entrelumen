@@ -612,7 +612,7 @@ def palace():
         V[(x, fy + 11, cz + PAL_HZ)] = B('ochre_froglight' if x == cx else 'yellow_stained_glass')
     MARKERS.append(('town_hall_portal', (cx, fy + 1, cz)))
     MARKERS.append(('town_hall_waystone', (cx + 6, fy + 1, cz + 8)))
-    MARKERS.append(('arrival', (cx, fy + 1, cz + PAL_HZ + 8)))
+    MARKERS.append(('arrival', (cx, LEVELS[0] + 1, cz + PAL_HZ + 4 + PLINTH + 2)))   # on the square, at the foot of the stair
     for x in range(cx - PAL_HX - 3, cx + PAL_HX + 4):
         for z in range(cz - PAL_HZ - 3, cz + PAL_HZ + 4 + PLINTH):
             USED.add((x, z))
