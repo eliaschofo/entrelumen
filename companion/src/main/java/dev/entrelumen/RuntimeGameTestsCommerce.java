@@ -409,11 +409,10 @@ public final class RuntimeGameTestsCommerce {
 
   /**
    * In the shared city: the six natives get spawned by the background population, and a villager
-   * brought straight into the trading hall settles as it arrives. It waits for the whole city like
-   * the other shared-city tests (Solsticio v8 is 1.35 million blocks: placing and populating it
-   * takes about a minute and a half of the test server's time).
+   * brought straight into the trading hall settles as it arrives. It waits for the whole city with
+   * the other shared-city tests' budget.
    */
-  @GameTest(template = "empty", timeoutTicks = 3600)
+  @GameTest(template = "empty", timeoutTicks = RuntimeGameTestsSolsticio.CITY_TICKS)
   public static void theCityHallHasItsNativesAndSettlesNewcomers(GameTestHelper helper) {
     var server = helper.getLevel().getServer();
     helper.assertTrue(server.getLevel(Solsticio.LEVEL) != null, "The Solsticio dimension is missing");
