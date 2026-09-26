@@ -49,7 +49,45 @@ Pedido de Elias del 24 de septiembre: un brazo ciborg hecho por Terra, curio, qu
 - **Cómo se consigue.** Sale garantizado de la loot table `entrelumen:chests/ruin_act2_workshop`, que queda lista para cuando se coloque el cofre del taller. Mientras las ruinas no estén en el mundo, es la recompensa del proyecto de campaña `lost_workshop`, que cierra el archivo del acto II; la quest `crafts_archive` refleja ese hito. El generador de quests no se tocó: no admite recompensas y el capítulo del acto II está congelado por hash.
 - **Pruebas.** `TerraArmDataTest` (JUnit) valida los datos. `RuntimeGameTestsTerraArm` corre en el servidor de GameTest sin Curios y prueba el ítem, el cofre del taller, que llevarlo o ponerlo en slots vanilla no hace nada, y la lógica del +3 llamada directo, además de la línea de efecto del tooltip. El test del acto II espera un brazo al cerrar `lost_workshop`. `TerraArmFullpackGameTests` pone uno o dos brazos en `hands` y comprueba el +3 en la QA de pack completo. Con +5, una copia temporal que no se commiteó corrió el 24/9 en el servidor de GameTest con sólo Curios 9.5.1 agregado y dos slots de manos, y pasó: el alcance quedó en 9,5 con uno o dos brazos, siguió en 9,5 al sacar uno y volvió a 4,5 sin ninguno; el de entidades quedó en 3,0. Con +3 el alcance esperado es 7,5.
 
+## Plan v2 (26 de septiembre de 2026)
+
+Decisiones de Elias del 25/9:
+- cada ruina guarda una **pieza clave obligatoria** de su acto;
+- los desafíos son **mixtos** (uno o varios por ruina);
+- la escala también es mixta: cada acto tiene **exactamente una ruina gigante** (landmark, 80+ bloques y visible de lejos) y puede sumar ruinas medianas (40–60 bloques, con interior);
+- todas son **indestructibles**.
+
+### Plantel
+
+| # | Ruina | Dónde | Acto | Escala | Pieza clave (ES / EN) | La pide | Desafío |
+|---|---|---|---|---|---|---|---|
+| 0 | Ruina inicial | Overworld, spawn | I | chica | — (el Atlas) | — | — |
+| 1 | Torre de la Señal | Overworld | I | **gigante** | Brasa de la Señal / Signal Ember | `signal` | Exploración (pisos derrumbados) + luz (cuatro braseros en el orden de los vitrales) |
+| 2 | Taller hundido | Overworld | II | **gigante** | Plano de Terra / Terra's Blueprint (+ Brazo de Terra) | `crafts_archive` | Mecanismo (reactivar el motor, vaciar el foso y abrir la bóveda) + combate liviano |
+| 3 | Viaducto | Overworld | III | **gigante** | Sello de Ruta / Route Seal | `exchange_archive` | Combate (Guardián del Peaje, jefe con barra) + exploración por los arcos |
+| 4 | Invernadero-domo | Overworld | III | mediana | Semilla Madre / Mother Seed | `exchange_nursery` | Ofrenda (plantar cuatro retoños en los canteros para abrir la cripta) |
+| 5 | Fundición bajo la lava | Nether | III | mediana | Crisol de Heliodor / Heliodor Crucible | `exchange_power` | Combate (oleada) + cerradura de redstone |
+| 6 | Observatorio del Risco | Overworld | IV | **gigante** | Ocular de las Voces / Eyepiece of Voices | `voices_lens` | Luz (orientar espejos hasta el telescopio) + exploración |
+| 7 | Santuario | Twilight Forest | IV | mediana | Testimonio del Bosque / Forest Testimony | `voices_spirits` | Exploración oculta (orden de menhires, bodega entre raíces) |
+| 8 | Antesala del Sol | Aether | IV | mediana | Llave del Sol / Sun Key | `voices_sun_spirit` | Ofrenda + parkour entre nubes |
+| 9 | Templo de la Luz Sagrada | Overworld | V | **gigante** | Llama Sagrada / Sacred Flame | `world_network` | Luz + ofrenda + combate (Custodio de la Luz) |
+| 10 | Observatorio sobre el vacío | End | V | mediana | Carta Estelar / Star Chart | `world_settlement` | Exploración y parkour sobre el vacío + combate |
+| 11 | Solsticio | su dimensión | VI | **gigante** | — | — | ciudad (sistema propio) |
+
+Los bocetos de `ruins_acts.py`, `ruins_dims.py` y `ruin_atlas.py` quedan como punto de partida: el arte final se redibuja a escala. El Patio del Atlas sale del plantel porque el acto I ya tiene su gigante y es la primera hora.
+
+### Reglas del sistema
+
+- **Colocación en el Overworld.** El companion coloca cada ruina una vez por mundo, cuando el primer equipo abre el acto. Busca sitio en un anillo alrededor del spawn: 250–500 bloques en el acto I y 400–1200 después. Pide terreno apto (pendiente, sin agua ni árboles grandes) y evita Solsticio y las otras ruinas. La colocación espera a que los chunks estén cargados. La ruina queda en `RuinData`, protegida por `StructureProtection`, y es ancla de la brújula.
+- **Colocación en dimensiones.** La primera llegada de cualquier jugador elige un sitio a 150–500 bloques del punto de llegada.
+- **Pieza clave.** Un pedestal la entrega una vez por equipo, después de que ese equipo resuelve el desafío. Si se pierde antes de entregarla al Atlas, el pedestal la devuelve. No tiene receta.
+- **Desafíos por equipo.** Cada equipo resuelve el suyo. La bóveda se abre para los miembros del equipo que la resolvió (bloque con puerta por equipo).
+- **Loot.** Cofres de Lootr, por jugador, con tablas por acto. Lore del Atlas que se desbloquea una vez al entrar.
+- **Indestructible.** Todo el volumen registrado. Sólo se usan palancas, botones, braseros, espejos y los mecanismos del desafío.
+- **Jefes.** Mobs con barra de jefe, nombre y atributos propios. Reaparecen para cada equipo que todavía no resolvió el desafío.
+- **Sin mod.** Una ruina de dimensión cuyo mod falta se saltea y su pieza pasa al pedestal de la gigante del mismo acto.
+
 ## Pendiente
 
-- Colocar las ruinas de los actos. Tienen que ser raras pero accesibles, sin caminatas de miles de bloques. Hay que conectarlas con la lista de objetivos de la brújula y con la protección de `feature/solsticio`.
-- Poner en cada ruina la pieza clave del acto, un minidesafío, su altar o artefacto, loot y lore que se desbloquea una sola vez.
+- Arte de las diez ruinas a escala final. Orden: Torre de la Señal, Taller hundido, Viaducto, Observatorio del Risco, Templo, y después las medianas.
+- Implementación del sistema (worker): colocación, pedestales, desafíos, jefes, loot, lore y cableado de las piezas en los proyectos de campaña.
