@@ -82,14 +82,14 @@ def build():
         sockets.append((x, 0, z))
     # the floor (Elias: «que tenga un PISO»): a disc of stone bricks with a tuff-brick rim, the
     # sun's eight rays in polished tuff, the orbit in calcite and amethyst on the diagonals
-    for x in range(-8, 9):
-        for z in range(-8, 9):
+    for x in range(-9, 10):
+        for z in range(-9, 10):
             r = math.hypot(x, z)
-            if r > 7.4 or (x, 0, z) in V:
+            if r > 8.5 or (x, 0, z) in V:
                 continue
             ang = (math.degrees(math.atan2(z, x)) + 360) % 45
             ray = 1.2 < r < 4.4 and (ang < 7 or ang > 38)
-            put(x, 0, z, 'tuff_bricks' if r > 6.5 else ('polished_tuff' if ray else 'stone_bricks'))
+            put(x, 0, z, 'tuff_bricks' if r > 7.5 else ('polished_tuff' if ray else 'stone_bricks'))
     ring(R_EQ, 0.0, 0.0, 'calcite', 0, floor=True)                 # the orbit, laid in the floor
     for p in list(V):
         if p[1] == 0 and abs(math.hypot(p[0], p[2]) - R_EQ) < 0.5 and V[p] != B('calcite') and p not in SLOTS:
@@ -106,28 +106,39 @@ def build():
             k = abs(x) + abs(z) + y
             V[(x, y, z)] = B('calcite') if y == 1 else (B('cut_copper') if k % 2 == 0 else B('tuff_bricks'))
     put(0, top, 0, 'amethyst_block')                              # the keystone where they cross
-    # four columns on the diagonals, where the arches give no support (Elias)
+    # four columns on the diagonals, where the arches give no support (Elias): a flared base of
+    # polished tuff, a shaft of calcite alone, a chiseled copper capital and a beacon on the peak.
+    # The beacon is optional: each one adds a level to the modules' effects (ark-modules-v2.md).
     for (cx, cz) in ((5, 5), (-5, 5), (5, -5), (-5, -5)):
-        put(cx, 1, cz, 'calcite')
-        for y in range(2, 6):
-            put(cx, y, cz, 'cut_copper' if y % 2 == 0 else 'tuff_bricks')
-        put(cx, 6, cz, 'chiseled_copper')
-        put(cx, 7, cz, 'amethyst_block')
+        for dx in (-1, 0, 1):
+            for dz in (-1, 0, 1):
+                put(cx + dx, 1, cz + dz, 'polished_tuff')
+        for (dx, dz) in ((1, 0), (-1, 0), (0, 1), (0, -1)):
+            put(cx + dx, 2, cz + dz, 'calcite')
+        for y in range(2, 8):
+            put(cx, y, cz, 'calcite')
+        put(cx, 8, cz, 'chiseled_copper')
+        put(cx, 9, cz, 'beacon', required=False)
+        SLOTS[(cx, 9, cz)] = 'beacon'
     # raise it all one level (Elias): the platform stands on the ground, a ring of stairs round it
     raised = {(x, y + 1, z): v for (x, y, z), v in V.items()}
     req = {(x, y + 1, z): v for (x, y, z), v in REQ.items()}
     slots = {(x, y + 1, z): v for (x, y, z), v in SLOTS.items()}
     V.clear(); REQ.clear(); SLOTS.clear()
     V.update(raised); REQ.update(req); SLOTS.update(slots)
-    for x in range(-9, 10):
-        for z in range(-9, 10):
+    floor = {(x, z) for (x, y, z) in V if y == 1}
+    border = []
+    for x in range(-10, 11):
+        for z in range(-10, 11):
             r = math.hypot(x, z)
-            if (x, 1, z) in V or not (7.4 < r <= 8.45):
+            if (x, z) in floor or not (8.5 < r <= 9.55):
                 continue
-            if not any((x + dx, 1, z + dz) in V for dx, dz in ((1, 0), (-1, 0), (0, 1), (0, -1))):
+            if not any((x + dx, z + dz) in floor for dx, dz in ((1, 0), (-1, 0), (0, 1), (0, -1))):
                 continue
-            inward = ('west' if x > 0 else 'east') if abs(x) >= abs(z) else ('north' if z > 0 else 'south')
-            put(x, 1, z, 'stone_brick_stairs[facing=%s,half=bottom,shape=straight,waterlogged=false]' % inward)
+            border.append((x, z))
+    for (x, z) in border:
+        inward = ('west' if x > 0 else 'east') if abs(x) >= abs(z) else ('north' if z > 0 else 'south')
+        put(x, 1, z, 'stone_brick_stairs[facing=%s,half=bottom,shape=straight,waterlogged=false]' % inward)
     return V
 
 

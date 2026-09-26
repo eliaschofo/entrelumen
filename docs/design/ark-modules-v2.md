@@ -11,15 +11,21 @@ Los efectos se definen de a uno con Elias. Esta tabla se completa a medida que s
 | Ingeniería | **Carga inalámbrica:** todos los ítems con energía (FE) del equipo se cargan solos, en cualquier dimensión: inventario, armadura y curios. | decidido |
 | Arcano | **Maná desbordado:** más maná máximo y más regeneración en todos los sistemas de magia que lo exponen como atributo (Ars Nouveau, Iron's Spells y los que haya). | decidido |
 | Naturaleza | **Vitalidad:** Regeneración I permanente y el hambre baja a la mitad de velocidad. | decidido |
-| Exploración | **Viajero:** Velocidad I y Salto I permanentes, las waystones no cobran experiencia y se habilita `/rtp`. | decidido |
+| Exploración | **Viajero:** las waystones no cobran experiencia y se habilita `/rtp`. Velocidad y Salto se sacaron (Elias, 25/9). | decidido |
 | Logística | **Comercio a distancia:** desde el Atlas se abre el catálogo de las tiendas de Solsticio que el equipo ya conoce y se compra desde cualquier lugar. Lo comprado llega al inventario, con los mismos precios y reposiciones que la tienda física. | decidido |
 | Habitabilidad | **Hogar:** habilita `/sethome` y `/home`, con una sola casa por jugador. | decidido |
 
 ## Detalles de rutina (decisión del controlador; Elias puede ajustarlos)
 
-- **Condición.** Todo funciona mientras el Arca del equipo esté completa: el controlador y los 6 módulos en su volumen. El estado se guarda por equipo, así que no hace falta tener el Arca cargada. Si se rompe un módulo, se apaga su efecto.
-- **Casa.** Una sola por jugador (Elias): `/sethome` reemplaza la anterior y `/home` va a ella. Funciona entre dimensiones. Enfriamiento de 30 s. No se puede marcar ni usar una casa en Solsticio, donde se entra y se sale con la Llave.
-- **Viaje aleatorio.** `/rtp` elige un punto seguro entre 1.000 y 5.000 bloques del spawn, en la dimensión actual. Funciona en el Overworld y en las dimensiones de exploración, no en Solsticio. Enfriamiento de 5 min.
+- **Condición.** Un módulo funciona si está en su lugar, el Arca obligatoria está completa y **hay un controlador** (Elias: como el controlador es fácil de hacer, es obligatorio). El estado se guarda por equipo, así que no hace falta tener el Arca cargada. Si se rompe un módulo, se apaga su efecto.
+- **Beacons en las columnas (Elias).**
+  - Las cuatro columnas tienen en la punta un lugar opcional para un beacon.
+  - Cada beacon colocado ahí suma **1 nivel** a los efectos de poción y a los buffs de los módulos: la Regeneración de Vitalidad, el Maná desbordado y el Héroe de la Aldea de Logística. Con 4 beacons son 4 niveles más.
+  - Los efectos particulares no cambian: carga, comercio, casa, `/rtp` y waystones.
+  - Esos beacons funcionan como beacons sin pirámide: se abren y se eligen sus buffs como siempre.
+  - No hace falta ningún beacon para que los módulos funcionen.
+- **Casa.** Una sola por jugador (Elias): `/sethome` reemplaza la anterior y `/home` va a ella. Funciona entre dimensiones. Enfriamiento de **15 minutos** y una espera de **5 segundos** sin moverse ni recibir daño; si te movés o te pegan, se cancela. Vale igual con trucos activados o no. **No hay `/back`**: si algún mod del pack lo trae, se desactiva. No se puede marcar ni usar una casa en Solsticio, donde se entra y se sale con la Llave.
+- **Viaje aleatorio.** `/rtp` elige un punto seguro entre 1.000 y 5.000 bloques del spawn, en la dimensión actual. Funciona en el Overworld y en las dimensiones de exploración, no en Solsticio. Enfriamiento de **1 hora** (Elias).
 - **Efectos.** Se aplican como modificadores de atributo o efectos ambientales sin partículas, así no ensucian la pantalla ni se pisan con los beacons.
 - **Servicios de la primera versión.** Se quitan: taller de reparación, biblioteca arcana, sala de cartas, depósito con kits y hospedaje. Los depósitos que tenga un equipo se devuelven al inventario o se sueltan al lado del módulo; nada se pierde.
 
@@ -29,14 +35,14 @@ La queja fue: «esas 6 cosas súper OP de late game sólo se desbloquean en late
 
 - **El Arca es un multibloque estético,** con un lugar definido para cada módulo y para el controlador. La forma la diseña el controlador de la sesión (arte) en `docs/design/ark-multiblock.md`. Se ve en el mundo con una guía fantasma que muestra dónde va cada bloque.
 - **Sin lotes.** Se eliminan las entregas por módulo.
-- **Un módulo conseguido ya está activo.** Colocarlo en su lugar, con el Arca bien armada, prende su efecto global, haya o no controlador. Poner más módulos o más Arcas no suma nada: cuenta una por equipo.
+- **Un módulo conseguido ya está activo.** Colocarlo en su lugar, con el Arca bien armada y el controlador puesto, prende su efecto global (revisión: el controlador es obligatorio). Poner más módulos o más Arcas no suma nada: cuenta una por equipo.
 - **El controlador** es la quilla del Arca. Hoy es una receta suelta de magnetita, Núcleo de señal y diamante; se hace desde el acto I porque el Núcleo sale del primer hito. Marca dónde se construye el Arca y hace falta para la activación final.
 - **Qué acto da cada módulo** (el proyecto del Atlas que lo entrega pasa a ese acto, con materiales de ese acto):
 
 | Acto | Módulo | Efecto |
 |---|---|---|
 | I | Habitabilidad | Casa: `/sethome` y `/home`, una por jugador |
-| II | Exploración | Viajero: Velocidad I, Salto I, waystones gratis, `/rtp` |
+| II | Exploración | Viajero: waystones gratis y `/rtp` |
 | III | Naturaleza | Vitalidad: Regeneración I y la mitad de hambre |
 | IV | Arcano | Maná desbordado |
 | V | Logística | Comercio a distancia con Solsticio y descuento con aldeanos (Héroe de la Aldea permanente; se puede ajustar) |
