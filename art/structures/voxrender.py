@@ -22,8 +22,8 @@ CROSS = {'allium', 'cornflower', 'lily_of_the_valley', 'azure_bluet', 'short_gra
          'weeping_vines', 'weeping_vines_plant', 'twisting_vines', 'twisting_vines_plant', 'chain',
          'lightning_rod', 'end_rod', 'candle', 'spore_blossom', 'tall_grass', 'large_fern', 'lilac',
          'peony', 'rose_bush', 'pitcher_plant', 'torchflower_crop', 'sugar_cane', 'bamboo', 'lantern',
-         'soul_lantern', 'pointed_dripstone', 'ladder', 'potatoes', 'beetroots'}
-CROSS_TEX = {'sugar_cane': 'sugar_cane', 'pink_petals': 'pink_petals', 'wheat': 'wheat_stage7', 'carrots': 'carrots_stage3', 'potatoes': 'potatoes_stage3',
+         'soul_lantern', 'pointed_dripstone', 'ladder', 'potatoes', 'beetroots', 'white_candle', 'candle'}
+CROSS_TEX = {'white_candle': 'white_candle', 'sugar_cane': 'sugar_cane', 'pink_petals': 'pink_petals', 'wheat': 'wheat_stage7', 'carrots': 'carrots_stage3', 'potatoes': 'potatoes_stage3',
              'pointed_dripstone': 'pointed_dripstone_down_tip', 'tall_grass': 'tall_grass_bottom',
              'large_fern': 'large_fern_bottom', 'candle': 'candle', 'beetroots': 'beetroots_stage3'}
 THIN = {'moss_carpet', 'pink_petals', 'daylight_detector', 'white_carpet', 'yellow_carpet',

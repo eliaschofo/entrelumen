@@ -646,20 +646,17 @@ public final class SolsticioCommerce {
       }
       case SHOP, NATIVE -> {
         if (!main || villager.isTrading()) return null;
+        // Talking to a shopkeeper makes the shop known to the team's remote trade (Ark, Logistics).
+        if (role == CommerceRules.Role.SHOP) ArkCommerce.know(player, data.getString("key"), data.getLong("site"));
         // An errand for this shop (act VI) takes the click before the trades open.
         if (role == CommerceRules.Role.SHOP && SolsticioStory.shopErrand(player, villager, data.getString("key")))
           return InteractionResult.SUCCESS;
         CommerceRules.Table table = (role == CommerceRules.Role.SHOP ? shops : natives).get(data.getString("key"));
         if (role == CommerceRules.Role.NATIVE) awaken(level, villager, data, table, player);
-        if (table == null) {
-          if (!villager.getOffers().isEmpty()) return null;
+        if (!prepareMerchant(level, villager, data, table)) {
           player.displayClientMessage(Component.translatable("entrelumen.solsticio.shop.closed"), true);
           return InteractionResult.SUCCESS;
         }
-        MerchantOffers current = villager.getOffers();
-        boolean aligned = !current.isEmpty() && data.getList("locks", Tag.TAG_COMPOUND).size() == current.size();
-        if (!aligned || CommerceRules.restockDue(level.getGameTime(), data.getLong("lastRestock"), restockTicks()))
-          restock(level, villager, data, table, aligned);
         return null;
       }
       case MOVED -> {
@@ -672,6 +669,19 @@ public final class SolsticioCommerce {
       }
     }
     return null;
+  }
+
+  /**
+   * Before a merchant's trades open, here or from afar (the Ark's remote trade): a lazy restock when
+   * due or when its offers lost their locks. False when the shop has no table and nothing to sell.
+   */
+  static boolean prepareMerchant(ServerLevel level, Villager villager, CompoundTag data, CommerceRules.Table table) {
+    if (table == null) return !villager.getOffers().isEmpty();
+    MerchantOffers current = villager.getOffers();
+    boolean aligned = !current.isEmpty() && data.getList("locks", Tag.TAG_COMPOUND).size() == current.size();
+    if (!aligned || CommerceRules.restockDue(level.getGameTime(), data.getLong("lastRestock"), restockTicks()))
+      restock(level, villager, data, table, aligned);
+    return true;
   }
 
   /** The side quest's hook, else the NPC's line; returns the line said, or null. */

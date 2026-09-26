@@ -24,6 +24,11 @@ public final class Expeditions {
 
   private Expeditions() {}
 
+  /** The dimensions whose first arrival the Atlas records: the exploration dimensions. */
+  public static Set<String> journeyDimensions() {
+    return DIMENSIONS.keySet();
+  }
+
   public static boolean record(Campaigns.Campaign campaign, String dimension) {
     if (campaign.archived || dimension == null) return false;
     if (SOLSTICIO.equals(dimension))

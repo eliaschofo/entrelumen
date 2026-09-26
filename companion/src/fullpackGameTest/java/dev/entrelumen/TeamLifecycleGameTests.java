@@ -38,10 +38,10 @@ public final class TeamLifecycleGameTests {
   private static final String FRAME = "entrelumen:calibration_frame";
   private static final String REGULATOR = "entrelumen:power_regulator";
 
-  private record CampaignState(int act, Set<String> completed, int arkPhase,
-      Map<String, Integer> deposits, boolean archived) {
+  private record CampaignState(int act, Set<String> completed, Map<String, Integer> refunds,
+      boolean archived) {
     CampaignState withArchived(boolean value) {
-      return new CampaignState(act, completed, arkPhase, deposits, value);
+      return new CampaignState(act, completed, refunds, value);
     }
   }
 
@@ -123,18 +123,12 @@ public final class TeamLifecycleGameTests {
           && founder.getInventory().countItem(Items.BOWL) == 0,
           "Party delivery did not consume exact materials into party-only progress");
 
-      // Seed valid, bounded Ark ledgers to inspect their lifecycle; this is not an Ark deposit test.
+      // Ark-act campaigns (Ark v2 keeps no batch ledger; refunds are paid at once to a member online).
       for (Campaigns.Campaign campaign : List.of(founderPersonal, guestPersonal, shared)) {
         campaign.act = CampaignMilestones.ARK_ACT;
         campaign.completed.addAll(Entrelumen.MODULES);
       }
-      founderPersonal.arkDeposits.put(FRAME, 1);
-      guestPersonal.arkDeposits.put(REGULATOR, 1);
-      shared.arkDeposits.put(FRAME, 2);
       data.setDirty();
-      helper.assertTrue(ArkCommissioning.eligible(founderPersonal)
-          && ArkCommissioning.eligible(guestPersonal)
-          && ArkCommissioning.eligible(shared), "Ark ledger fixtures are not valid Ark-act campaigns");
       CampaignState founderSnapshot = state(founderPersonal);
       CampaignState guestSnapshot = state(guestPersonal);
       CampaignState partySnapshot = state(shared);
@@ -205,15 +199,15 @@ public final class TeamLifecycleGameTests {
         LOGGER.info("ENTRELUMEN_TEAM_LIFECYCLE creationCopy=true joinNoMerge=true "
                 + "partyDelivery=true guestRestore=true reconnect=true archive=true "
                 + "adminDenied=true adminRecovered=true rewards=atlas:2,lens:1 "
-                + "deposits=founder:1,guest:1,party:2");
+                + "arkAct=founder,guest,party");
       }
     }
     helper.succeed();
   }
 
   private static CampaignState state(Campaigns.Campaign campaign) {
-    return new CampaignState(campaign.act, Set.copyOf(campaign.completed), campaign.arkPhase,
-        Map.copyOf(campaign.arkDeposits), campaign.archived);
+    return new CampaignState(campaign.act, Set.copyOf(campaign.completed), Map.copyOf(campaign.refunds),
+        campaign.archived);
   }
 
   private static Item item(String id) {

@@ -1,5 +1,7 @@
 # Practical Ark services: implementation boundary
 
+> **Replaced by [`ark-modules-v2.md`](ark-modules-v2.md) (25 September 2026).** The Ark's first version (the six module services) was removed: each module now gives a global effect to its team from its place in the Ark. This page is kept as the record of what existed; the companion no longer implements it.
+
 Engineering is an implemented material repair workshop. Arcana is an implemented compound-book library. Both require a complete physical Ark, operate only on deliberate interaction, preserve free gifts and do not award campaign progress. Habitation now offers temporary personal expedition lodging with conservative restoration of the previous home. Its complete physical Ark is checked at registration; an existing reservation then needs only its own module and a safe exit. Bounded evidence and limitations are in `ark-workshop-magic-runtime.json`, `arcane-building-runtime.json` and `habitation-restart-runtime.json`.
 
 Logistics now has a selected implementation contract: a persistent shared depot and exact personal expedition kits, prepared completely or left unchanged. See `ark-logistics-kits.md`; headless full-pack runtime and restart evidence passed on 2026-09-23, client acceptance is pending. Its native-overlap review found existing AE2 per-slot exports and Sophisticated refill/restock, so the contribution is shared departure preparation for different players, not a claim to have invented restocking. The earlier remote-parcel candidate is replaced.

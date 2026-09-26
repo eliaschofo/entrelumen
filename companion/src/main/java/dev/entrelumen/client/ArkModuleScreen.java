@@ -19,11 +19,11 @@ import net.minecraft.world.item.ItemStack;
 import org.lwjgl.glfw.GLFW;
 
 /**
- * Read-only status of one Ark module, drawn with vanilla parts only: the container panel
- * ({@code textures/gui/demo_background.png}), 18×18 item slots ({@code container/slot}), the
- * experience bar as progress ({@code hud/experience_bar_*}) and the vanilla checkmark
- * ({@code icon/checkmark}). Layout follows the advancement screen's done/missing reading and FTB
- * Quests' task icon with a completion check; see {@code docs/design/ark-field-journals.md}.
+ * Read-only status of the Ark (v2), opened from a module or the controller, drawn with vanilla parts
+ * only: the container panel ({@code textures/gui/demo_background.png}), 18×18 item slots
+ * ({@code container/slot}) and the vanilla checkmark ({@code icon/checkmark}). The clicked module's
+ * global effect, the six modules with their effects, and the activation checklist; hovering a row
+ * says where a missing piece comes from. See {@code docs/design/ark-modules-v2.md}.
  */
 public final class ArkModuleScreen extends Screen {
   static final int WIDTH = 220;
@@ -48,7 +48,7 @@ public final class ArkModuleScreen extends Screen {
   private double scroll;
 
   public ArkModuleScreen(JournalBookNetwork.Snapshot snapshot) {
-    super(Component.translatable("block.entrelumen." + snapshot.kind().module()));
+    super(Component.translatable("block.entrelumen." + snapshot.block()));
     this.snapshot = snapshot;
   }
 
@@ -68,31 +68,26 @@ public final class ArkModuleScreen extends Screen {
 
   private void layout() {
     blocks.clear();
-    var materials = snapshot.entries(Section.BATCH);
-    if (!materials.isEmpty()) {
-      blocks.add(section(Component.translatable("entrelumen.journal.section.batch"), null));
-      materials.forEach(entry -> blocks.add(new MaterialRow(entry)));
+    var effect = snapshot.entries(Section.EFFECT);
+    if (!effect.isEmpty()) {
+      blocks.add(section(Component.translatable("entrelumen.ark.screen.section.effect"), null));
+      effect.forEach(entry -> blocks.add(new CheckRow(entry)));
     }
-    var projects = snapshot.entries(Section.PROJECTS);
-    if (!projects.isEmpty()) {
-      blocks.add(section(Component.translatable("entrelumen.journal.section.projects"), count(projects)));
-      projects.forEach(entry -> blocks.add(new CheckRow(entry)));
+    var modules = snapshot.entries(Section.MODULES);
+    if (!modules.isEmpty()) {
+      blocks.add(new Separator());
+      blocks.add(section(Component.translatable("entrelumen.ark.screen.section.modules"), count(modules)));
+      modules.forEach(entry -> blocks.add(new CheckRow(entry)));
     }
-    var journeys = snapshot.entries(Section.JOURNEYS);
-    if (!journeys.isEmpty()) {
-      blocks.add(section(Component.translatable("entrelumen.journal.section.journeys"), count(journeys)));
-      blocks.add(new JourneyStrip(journeys));
+    var activation = snapshot.entries(Section.ACTIVATION);
+    if (!activation.isEmpty()) {
+      blocks.add(new Separator());
+      blocks.add(section(Component.translatable("entrelumen.ark.screen.section.activation"), count(activation)));
+      activation.forEach(entry -> blocks.add(new CheckRow(entry)));
     }
-    blocks.add(new Separator());
-    snapshot.entries(Section.ARK).forEach(entry -> blocks.add(new CheckRow(entry)));
-    snapshot.entries(Section.SERVICE).forEach(entry -> blocks.add(new CheckRow(entry)));
     blocks.add(new Separator());
     blocks.add(new Paragraph(snapshot.flavor(), COPPER));
-    snapshot.hint().ifPresent(hint -> blocks.add(new Paragraph(hint, switch (snapshot.status()) {
-      case BLOCKED -> RED;
-      case DELIVERING -> TEXT;
-      default -> MUTED;
-    })));
+    snapshot.hint().ifPresent(hint -> blocks.add(new Paragraph(hint, MUTED)));
     contentHeight = blocks.stream().mapToInt(Block::height).sum() + 2;
   }
 
@@ -110,8 +105,7 @@ public final class ArkModuleScreen extends Screen {
   @Override
   public void render(GuiGraphics graphics, int mouseX, int mouseY, float partialTick) {
     super.render(graphics, mouseX, mouseY, partialTick);
-    ItemStack module = stack(ResourceLocation.fromNamespaceAndPath("entrelumen",
-        snapshot.kind().module()));
+    ItemStack module = stack(ResourceLocation.fromNamespaceAndPath("entrelumen", snapshot.block()));
     graphics.renderItem(module, left + PAD, top + 8);
     graphics.drawString(font, fit(title, WIDTH - TEXT_X + 2 - PAD), left + TEXT_X - 2, top + 7, TEXT, false);
     graphics.drawString(font, fit(snapshot.statusLine(), WIDTH - TEXT_X + 2 - PAD), left + TEXT_X - 2,
@@ -165,10 +159,11 @@ public final class ArkModuleScreen extends Screen {
 
   private int statusColor() {
     return switch (snapshot.status()) {
-      case DELIVERING -> BLUE;
-      case DELIVERED -> GOLD;
-      case BLOCKED -> RED;
-      case WAITING, ARCHIVED -> MUTED;
+      case ACTIVE -> GREEN;
+      case STANDING -> BLUE;
+      case ACTIVATED -> GOLD;
+      case INACTIVE -> RED;
+      case BUILDING -> MUTED;
     };
   }
 
@@ -260,36 +255,7 @@ public final class ArkModuleScreen extends Screen {
     }
   }
 
-  /** A batch material: icon, name, {@code done / total} and the experience bar as progress. */
-  private final class MaterialRow implements Block {
-    private final Entry entry;
-
-    MaterialRow(Entry entry) { this.entry = entry; }
-
-    @Override public int height() { return MATERIAL_ROW; }
-
-    @Override public void render(GuiGraphics graphics, int x, int y) {
-      graphics.blitSprite(SLOT, x + PAD, y, 18, 18);
-      graphics.renderItem(stack(entry.icon()), x + PAD + 1, y + 1);
-      var count = Component.translatable("entrelumen.journal.amount", entry.done(), entry.total());
-      int countWidth = font.width(count);
-      graphics.drawString(font, fit(label(entry), BAR_WIDTH - countWidth - 4), x + TEXT_X, y + 1,
-          TEXT, false);
-      graphics.drawString(font, count, x + RIGHT - countWidth, y + 1,
-          entry.complete() ? GREEN : TEXT, false);
-      graphics.blitSprite(BAR, x + TEXT_X, y + 12, BAR_WIDTH, 5);
-      int filled = entry.total() == 0 ? 0 : BAR_WIDTH * entry.done() / entry.total();
-      if (filled > 0) graphics.blitSprite(BAR_FILL, BAR_WIDTH, 5, 0, 0, x + TEXT_X, y + 12, filled, 5);
-    }
-
-    @Override public List<Component> tooltip(int localX, int localY) {
-      return List.of(label(entry), entry.complete()
-          ? Component.translatable("entrelumen.journal.material_done")
-          : Component.translatable("entrelumen.journal.material_left", entry.total() - entry.done()));
-    }
-  }
-
-  /** A project, the Ark or a service: icon, label and a check, an empty box or nothing. */
+  /** A row: icon, label and a check, an empty box or nothing (total 0). */
   private final class CheckRow implements Block {
     private final Entry entry;
 
@@ -315,38 +281,6 @@ public final class ArkModuleScreen extends Screen {
         lines.add(Component.translatable(entry.complete()
             ? "entrelumen.journal.recorded" : "entrelumen.journal.pending"));
       return lines;
-    }
-  }
-
-  /** Witnessed journeys as dimension icons; a missing one is greyed, a witnessed one checked. */
-  private final class JourneyStrip implements Block {
-    private static final int STEP = 22;
-    private final List<Entry> journeys;
-
-    JourneyStrip(List<Entry> journeys) { this.journeys = List.copyOf(journeys); }
-
-    @Override public int height() { return ROW + 2; }
-
-    @Override public void render(GuiGraphics graphics, int x, int y) {
-      for (int i = 0; i < journeys.size(); i++) {
-        var entry = journeys.get(i);
-        int slotX = x + PAD + i * STEP;
-        graphics.blitSprite(SLOT, slotX, y, 18, 18);
-        graphics.renderItem(stack(entry.icon()), slotX + 1, y + 1);
-        graphics.pose().pushPose();
-        graphics.pose().translate(0, 0, 200);
-        if (entry.complete()) graphics.blitSprite(CHECK, slotX + 10, y + 11, 9, 8);
-        else graphics.fill(slotX + 1, y + 1, slotX + 17, y + 17, DIM);
-        graphics.pose().popPose();
-      }
-    }
-
-    @Override public List<Component> tooltip(int localX, int localY) {
-      int index = (localX - PAD) / STEP;
-      if (localX < PAD || index >= journeys.size() || (localX - PAD) % STEP >= 18) return List.of();
-      var entry = journeys.get(index);
-      return List.of(label(entry), Component.translatable(entry.complete()
-          ? "entrelumen.journal.witnessed" : "entrelumen.journal.not_witnessed"));
     }
   }
 

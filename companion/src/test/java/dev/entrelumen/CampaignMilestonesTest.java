@@ -15,57 +15,46 @@ class CampaignMilestonesTest {
     return campaign;
   }
 
+  private static final ArkRules.Status WHOLE =
+      new ArkRules.Status(true, true, true, Set.copyOf(ArkRules.moduleIds()), 0);
+
   @Test
-  void phasesAreDerivedFromCreditedStepsAndActiveCampaign() {
-    var campaign = ready();
-    for (int phase = 0; phase <= 6; phase++) {
-      campaign.arkPhase = phase;
-      for (int i = 0; i < CampaignMilestones.PHASE_IDS.size(); i++)
-        assertEquals(i < phase,
-            CampaignMilestones.isComplete(campaign, CampaignMilestones.PHASE_IDS.get(i)));
+  void moduleMilestonesAreTheirDeliveredProjects() {
+    var campaign = new Campaigns.Campaign();
+    for (String module : CampaignMilestones.MODULE_IDS) {
+      assertFalse(CampaignMilestones.isComplete(campaign, module), module);
+      campaign.completed.add(module);
+      assertTrue(CampaignMilestones.isComplete(campaign, module), module);
     }
-    campaign.completed.add(CampaignMilestones.PHASE_IDS.getFirst());
-    campaign.arkPhase = 0;
-    assertFalse(CampaignMilestones.isComplete(campaign, CampaignMilestones.PHASE_IDS.getFirst()));
-    campaign.arkPhase = 6;
-    campaign.act = 4;
-    assertFalse(CampaignMilestones.isComplete(campaign, CampaignMilestones.PHASE_IDS.getLast()));
-    // The phases stay complete once the activation moved the campaign on to act VI.
-    campaign.act = Campaigns.FINAL_ACT;
-    assertTrue(CampaignMilestones.isComplete(campaign, CampaignMilestones.PHASE_IDS.getLast()));
-    campaign.act = CampaignMilestones.ARK_ACT;
-    campaign.completed.remove("nature_module");
-    assertFalse(CampaignMilestones.isComplete(campaign, CampaignMilestones.PHASE_IDS.getLast()));
-    campaign.completed.add("nature_module");
-    campaign.archived = true;
-    assertFalse(CampaignMilestones.isComplete(campaign, CampaignMilestones.PHASE_IDS.getLast()));
-    assertEquals(Set.copyOf(CampaignMilestones.PHASE_IDS), CampaignMilestones.RESERVED_IDS);
+    assertEquals(Set.copyOf(ArkRules.moduleIds()), CampaignMilestones.MODULE_IDS);
   }
 
   @Test
-  void endingRequiresAllAuthorityAndCannotReplay() {
+  void endingRequiresTheWholeArkTheLastProjectAndTheEndAndCannotReplay() {
     var campaign = ready();
-    assertFalse(CampaignMilestones.finish(campaign));
-    campaign.arkPhase = 6;
-    for (String required : Set.of("world_network", "end_arrival", "nature_module")) {
+    assertFalse(CampaignMilestones.finish(campaign, ArkRules.Status.NONE), "no Ark");
+    for (var partial : java.util.List.of(
+        new ArkRules.Status(true, false, true, Set.copyOf(ArkRules.moduleIds()), 0),
+        new ArkRules.Status(true, true, false, Set.copyOf(ArkRules.moduleIds()), 0),
+        new ArkRules.Status(true, true, true, Set.of("engineering_module", "arcane_module"), 4)))
+      assertFalse(CampaignMilestones.finish(campaign, partial), partial.toString());
+    for (String required : Set.of("world_network", "end_arrival")) {
       campaign.completed.remove(required);
-      assertFalse(CampaignMilestones.finish(campaign), required);
+      assertFalse(CampaignMilestones.finish(campaign, WHOLE), required);
       campaign.completed.add(required);
     }
     for (int act : new int[] {4, 6}) {
       campaign.act = act;
-      assertFalse(CampaignMilestones.finish(campaign), "act " + act);
+      assertFalse(CampaignMilestones.finish(campaign, WHOLE), "act " + act);
     }
     campaign.act = CampaignMilestones.ARK_ACT;
     campaign.archived = true;
-    assertFalse(CampaignMilestones.finish(campaign));
+    assertFalse(CampaignMilestones.finish(campaign, WHOLE));
     campaign.archived = false;
-    assertTrue(CampaignMilestones.finish(campaign));
+    assertTrue(CampaignMilestones.finish(campaign, WHOLE));
     // The activation opens act VI, Solsticio, in the same mutation.
     assertEquals(Campaigns.FINAL_ACT, campaign.act);
-    assertFalse(CampaignMilestones.finish(campaign));
-    assertEquals(6, campaign.arkPhase);
-    assertTrue(campaign.arkDeposits.isEmpty());
+    assertFalse(CampaignMilestones.finish(campaign, WHOLE));
     assertTrue(CampaignMilestones.isComplete(campaign, CampaignMilestones.LAST_HORIZON));
   }
 

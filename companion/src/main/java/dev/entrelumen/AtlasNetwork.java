@@ -2,6 +2,7 @@ package dev.entrelumen;
 
 import java.util.*;
 import java.util.function.Consumer;
+import net.minecraft.core.BlockPos;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
@@ -38,10 +39,78 @@ public final class AtlasNetwork {
     }
   }
 
+  /**
+   * The team's Ark as the Atlas shows it: where it is (for the guide), what stands, the modules in
+   * their slots, the beacons, and the two campaign items of the activation checklist.
+   */
+  public record ArkView(boolean registered, String dimension, BlockPos origin, int rotation, boolean core,
+      int missingCore, boolean controller, List<String> modules, int beacons, boolean lastProject,
+      boolean endJourney, boolean activated) {
+    public static final ArkView NONE =
+        new ArkView(false, "", BlockPos.ZERO, 0, false, -1, false, List.of(), 0, false, false, false);
+
+    public ArkView {
+      modules = List.copyOf(modules);
+    }
+
+    public ArkRules.Status status() {
+      return new ArkRules.Status(registered, core, controller, Set.copyOf(modules), beacons);
+    }
+
+    /** The campaign milestones the checklist reads. */
+    public Set<String> completed() {
+      Set<String> completed = new TreeSet<>();
+      if (lastProject) completed.add(ArkRules.LAST_PROJECT);
+      if (endJourney) completed.add(ArkRules.END_JOURNEY);
+      if (activated) completed.add(CampaignMilestones.LAST_HORIZON);
+      return completed;
+    }
+
+    void write(RegistryFriendlyByteBuf buf) {
+      buf.writeBoolean(registered);
+      buf.writeUtf(dimension, 256);
+      buf.writeBlockPos(origin);
+      buf.writeVarInt(rotation);
+      buf.writeBoolean(core);
+      buf.writeVarInt(missingCore + 1);
+      buf.writeBoolean(controller);
+      buf.writeVarInt(modules.size());
+      for (String module : modules) buf.writeUtf(module, 64);
+      buf.writeVarInt(beacons);
+      buf.writeBoolean(lastProject);
+      buf.writeBoolean(endJourney);
+      buf.writeBoolean(activated);
+    }
+
+    static ArkView read(RegistryFriendlyByteBuf buf) {
+      boolean registered = buf.readBoolean();
+      String dimension = buf.readUtf(256);
+      BlockPos origin = buf.readBlockPos();
+      int rotation = buf.readVarInt(), missing = buf.readVarInt() - 1;
+      boolean core = buf.readBoolean(), controller = buf.readBoolean();
+      int count = Snapshot.boundedCount(buf);
+      List<String> modules = new ArrayList<>(count);
+      for (int i = 0; i < count; i++) modules.add(buf.readUtf(64));
+      int beacons = buf.readVarInt();
+      return new ArkView(registered, dimension, origin, rotation, core, missing, controller, modules, beacons,
+          buf.readBoolean(), buf.readBoolean(), buf.readBoolean());
+    }
+
+    static ArkView of(ServerPlayer player, Campaigns.Campaign campaign) {
+      ArkData.Ark ark = ArkState.ark(player);
+      boolean last = campaign.completed.contains(ArkRules.LAST_PROJECT);
+      boolean end = campaign.completed.contains(ArkRules.END_JOURNEY);
+      boolean activated = campaign.completed.contains(CampaignMilestones.LAST_HORIZON);
+      if (ark == null) return new ArkView(false, "", BlockPos.ZERO, 0, false, -1, false, List.of(), 0, last, end, activated);
+      return new ArkView(true, ark.dimension.location().toString(), ark.anchor.origin(), ark.anchor.rotation(), ark.core,
+          ark.missingCore, ark.controller, List.copyOf(ark.modules), ark.beacons, last, end, activated);
+    }
+  }
+
   public record Snapshot(
       UUID campaign,
       int act,
-      int arkPhase,
+      ArkView ark,
       List<ProjectView> projects,
       boolean canAdvance,
       boolean open,
@@ -61,7 +130,7 @@ public final class AtlasNetwork {
     private void write(RegistryFriendlyByteBuf buf) {
       buf.writeUUID(campaign);
       buf.writeVarInt(act);
-      buf.writeVarInt(arkPhase);
+      ark.write(buf);
       buf.writeBoolean(canAdvance);
       buf.writeBoolean(open);
       buf.writeUtf(message, 128);
@@ -91,7 +160,8 @@ public final class AtlasNetwork {
 
     private static Snapshot read(RegistryFriendlyByteBuf buf) {
       UUID campaign = buf.readUUID();
-      int act = buf.readVarInt(), phase = buf.readVarInt();
+      int act = buf.readVarInt();
+      ArkView ark = ArkView.read(buf);
       boolean advance = buf.readBoolean(), open = buf.readBoolean();
       String message = buf.readUtf(128);
       int count = boundedCount(buf);
@@ -118,11 +188,11 @@ public final class AtlasNetwork {
       int loreCount = boundedCount(buf);
       List<String> lore = new ArrayList<>(loreCount);
       for (int i = 0; i < loreCount; i++) lore.add(buf.readUtf(128));
-      return new Snapshot(campaign, act, phase, List.copyOf(projects), advance, open, message,
+      return new Snapshot(campaign, act, ark, List.copyOf(projects), advance, open, message,
           new CompassView(objective, compassState, dimension, kind, lore));
     }
 
-    private static int boundedCount(RegistryFriendlyByteBuf buf) {
+    static int boundedCount(RegistryFriendlyByteBuf buf) {
       int count = buf.readVarInt();
       if (count < 0 || count > 4096)
         throw new IllegalArgumentException("Atlas snapshot collection exceeds limit");
@@ -167,12 +237,74 @@ public final class AtlasNetwork {
     }
   }
 
+  /**
+   * The Logistics module's remote trade: an empty {@code shop} asks for the catalog, a shop ID opens
+   * that shop's trades.
+   */
+  public record TradeRequest(String shop) implements CustomPacketPayload {
+    public static final Type<TradeRequest> TYPE =
+        new Type<>(ResourceLocation.fromNamespaceAndPath("entrelumen", "ark_trade_request"));
+    public static final StreamCodec<RegistryFriendlyByteBuf, TradeRequest> CODEC =
+        StreamCodec.ofMember((request, buf) -> buf.writeUtf(request.shop(), 256),
+            buf -> new TradeRequest(buf.readUtf(256)));
+
+    @Override
+    public Type<TradeRequest> type() {
+      return TYPE;
+    }
+  }
+
+  /** The catalog of the Solsticio shops the team knows; {@code active} while Logistics works. */
+  public record Catalog(boolean active, List<ArkCommerce.Shop> shops) implements CustomPacketPayload {
+    public static final Type<Catalog> TYPE =
+        new Type<>(ResourceLocation.fromNamespaceAndPath("entrelumen", "ark_trade_catalog"));
+    public static final StreamCodec<RegistryFriendlyByteBuf, Catalog> CODEC =
+        StreamCodec.ofMember(Catalog::write, Catalog::read);
+
+    public Catalog {
+      shops = List.copyOf(shops);
+    }
+
+    @Override
+    public Type<Catalog> type() {
+      return TYPE;
+    }
+
+    private void write(RegistryFriendlyByteBuf buf) {
+      buf.writeBoolean(active);
+      buf.writeVarInt(shops.size());
+      for (var shop : shops) {
+        buf.writeUtf(shop.id(), 256);
+        buf.writeUtf(shop.key(), 128);
+        buf.writeBoolean(shop.available());
+      }
+    }
+
+    private static Catalog read(RegistryFriendlyByteBuf buf) {
+      boolean active = buf.readBoolean();
+      int count = Snapshot.boundedCount(buf);
+      List<ArkCommerce.Shop> shops = new ArrayList<>(count);
+      for (int i = 0; i < count; i++) shops.add(new ArkCommerce.Shop(buf.readUtf(256), buf.readUtf(128), buf.readBoolean()));
+      return new Catalog(active, shops);
+    }
+  }
+
   /** Assigned only by the client-side mod subscriber; common/server code never loads a Screen. */
   public static Consumer<Snapshot> clientReceiver = snapshot -> {};
+  public static Consumer<Catalog> catalogReceiver = catalog -> {};
 
   public static void register(RegisterPayloadHandlersEvent event) {
-    // Version 2 adds the Heliodor compass view to the snapshot.
-    var registrar = event.registrar("2");
+    // Version 2 adds the Heliodor compass view to the snapshot; 3 (Ark v2) the team's Ark and trade.
+    var registrar = event.registrar("3");
+    registrar.playToServer(TradeRequest.TYPE, TradeRequest.CODEC, (request, context) -> context.enqueueWork(() -> {
+      if (!(context.player() instanceof ServerPlayer player)) return;
+      if (request.shop().isEmpty())
+        PacketDistributor.sendToPlayer(player, new Catalog(ArkState.status(player).active(ArkRules.Module.LOGISTICS),
+            ArkCommerce.catalog(player)));
+      else ArkCommerce.open(player, request.shop());
+    }));
+    registrar.playToClient(Catalog.TYPE, Catalog.CODEC,
+        (catalog, context) -> context.enqueueWork(() -> catalogReceiver.accept(catalog)));
     registrar.playToServer(
         OpenRequest.TYPE,
         OpenRequest.CODEC,
@@ -240,7 +372,7 @@ public final class AtlasNetwork {
     return new Snapshot(
         CampaignActions.campaignId(player),
         campaign.act,
-        campaign.arkPhase,
+        ArkView.of(player, campaign),
         List.copyOf(projects),
         campaign.act < Campaigns.FINAL_ACT
             && !projects.isEmpty()

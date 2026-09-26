@@ -1,5 +1,7 @@
 # Engineering workshop
 
+> **Replaced by [`ark-modules-v2.md`](ark-modules-v2.md) (25 September 2026).** The Ark's first version (the repair workshop) was removed: each module now gives a global effect to its team from its place in the Ark. This page is kept as the record of what existed; the companion no longer implements it.
+
 An assembled Ark is a shared repair workshop. Use its engineering module with a damaged tool in your main hand and its native anvil repair material in your offhand. Each use consumes exactly one material and repairs up to one quarter of maximum durability, rounded down as in vanilla. A partially damaged tool still costs one material. The workshop spends no experience and does not increase prior-work cost. Names, enchantments, prior-work cost and other components remain intact. It neither combines tools nor transfers enchantments. Bypassing the anvil's XP and too-expensive limits is the deliberate late-game benefit; material costs remain.
 
 A single controller and all six modules must be visible in loaded chunks. The check runs only on interaction: no block entity, ticking, chunk tickets, fuel buffer or offline upkeep. Missing or ambiguous structure, spectator mode, remote use, wrong hand, non-repairable items and unsuitable material take nothing. Full durability stops consumption. Creative mode also pays the material.

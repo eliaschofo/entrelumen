@@ -54,6 +54,23 @@ public final class GameTestFixture {
     LOGGER.warn("Entrelumen isolated GameTests use synthetic cross-mod item IDs; this is not full-pack compatibility evidence.");
     bus.addListener(this::registerItems);
     bus.addListener(this::registerCapabilities);
+    bus.addListener(this::addPlayerAttributes);
+  }
+
+  /**
+   * Ark v2 stand-ins: Rechiseled's polished amethyst and its stairs (the Ark's rim and columns) and Iron's
+   * Spells' mana attributes (the Arcane module's bonus), each only when its mod is absent.
+   */
+  static final ResourceLocation POLISHED_AMETHYST = ResourceLocation.fromNamespaceAndPath("rechiseled", "amethyst_block_polished");
+  static final ResourceLocation POLISHED_AMETHYST_STAIRS =
+      ResourceLocation.fromNamespaceAndPath("rechiseled", "amethyst_block_polished_stairs");
+  static final ResourceLocation MAX_MANA = ResourceLocation.fromNamespaceAndPath("irons_spellbooks", "max_mana");
+  static final ResourceLocation MANA_REGEN = ResourceLocation.fromNamespaceAndPath("irons_spellbooks", "mana_regen");
+  static net.minecraft.core.Holder<net.minecraft.world.entity.ai.attributes.Attribute> maxMana, manaRegen;
+
+  private void addPlayerAttributes(net.neoforged.neoforge.event.entity.EntityAttributeModificationEvent event) {
+    if (maxMana != null) event.add(net.minecraft.world.entity.EntityType.PLAYER, maxMana);
+    if (manaRegen != null) event.add(net.minecraft.world.entity.EntityType.PLAYER, manaRegen);
   }
 
   private void registerCapabilities(RegisterCapabilitiesEvent event) {
@@ -80,8 +97,26 @@ public final class GameTestFixture {
   }
 
   private void registerItems(RegisterEvent event) {
-    event.register(Registries.BLOCK, registry -> registry.register(
-        ResourceLocation.fromNamespaceAndPath("entrelumen_gametest_fixture", "bite_block"), new BiteBlock()));
+    event.register(Registries.BLOCK, registry -> {
+      registry.register(ResourceLocation.fromNamespaceAndPath("entrelumen_gametest_fixture", "bite_block"), new BiteBlock());
+      if (!ModList.get().isLoaded("rechiseled")) {
+        var amethyst = net.minecraft.world.level.block.Blocks.AMETHYST_BLOCK;
+        registry.register(POLISHED_AMETHYST, new Block(BlockBehaviour.Properties.ofFullCopy(amethyst)));
+        registry.register(POLISHED_AMETHYST_STAIRS, new net.minecraft.world.level.block.StairBlock(
+            amethyst.defaultBlockState(), BlockBehaviour.Properties.ofFullCopy(amethyst)));
+      }
+    });
+    event.register(Registries.ATTRIBUTE, registry -> {
+      if (ModList.get().isLoaded("irons_spellbooks")) return;
+      var max = new net.minecraft.world.entity.ai.attributes.RangedAttribute("attribute.irons_spellbooks.max_mana",
+          100.0, 0.0, 1_000_000.0).setSyncable(true);
+      var regen = new net.minecraft.world.entity.ai.attributes.RangedAttribute("attribute.irons_spellbooks.mana_regen",
+          1.0, 0.0, 100.0).setSyncable(true);
+      registry.register(MAX_MANA, max);
+      registry.register(MANA_REGEN, regen);
+      maxMana = net.neoforged.neoforge.registries.DeferredHolder.create(Registries.ATTRIBUTE, MAX_MANA);
+      manaRegen = net.neoforged.neoforge.registries.DeferredHolder.create(Registries.ATTRIBUTE, MANA_REGEN);
+    });
     event.register(Registries.DATA_COMPONENT_TYPE, registry -> {
       energy = DataComponentType.<Integer>builder().persistent(com.mojang.serialization.Codec.INT)
           .networkSynchronized(ByteBufCodecs.VAR_INT).build();

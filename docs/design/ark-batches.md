@@ -1,5 +1,7 @@
 # Recoverable Ark batches
 
+> **Replaced by [`ark-modules-v2.md`](ark-modules-v2.md) (25 September 2026).** The Ark's first version (the six commissioning batches; unfinished deposits are refunded) was removed: each module now gives a global effect to its team from its place in the Ark. This page is kept as the record of what existed; the companion no longer implements it.
+
 The controller now accepts partial supplies for one module at a time. Four narrative phases contain six module steps; the existing `arkPhase` counter remains 0–6 so earlier saves keep their credited steps.
 
 | Step | Module | Phase | Supplies consumed |

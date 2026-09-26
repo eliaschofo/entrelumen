@@ -17,8 +17,6 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.*;
 import net.minecraft.world.phys.BlockHitResult;
 import net.neoforged.bus.api.IEventBus;
-import net.neoforged.neoforge.capabilities.Capabilities;
-import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.RegisterCommandsEvent;
@@ -62,31 +60,16 @@ public final class Entrelumen {
             });
     for (String id : List.of("raw_lens", "survey_notes", "signal_core"))
       ITEMS.registerSimpleItem(id);
-    for (String id : MODULES) {
-      if (id.equals("engineering_module")) {
-        var engineering = BLOCKS.register(id, () -> new EngineeringModuleBlock(
-            BlockBehaviour.Properties.of().strength(3f).requiresCorrectToolForDrops()));
-        ITEMS.register(id, () -> new EngineeringModuleItem(engineering.get(), new Item.Properties()));
+    // The six Ark modules (Ark v2): each turns its global effect on in its slot of the team's Ark.
+    for (var kind : ArkFieldJournals.Kind.values()) {
+      String id = kind.module();
+      if (kind == ArkFieldJournals.Kind.LOGISTICS) {
+        ITEMS.register(id, () -> new ArkFieldJournalItem(LOGISTICS_MODULE.get(), new Item.Properties()));
         continue;
       }
-      if (id.equals("logistics_module")) {
-        ITEMS.register(id, () -> new LogisticsModuleItem(LOGISTICS_MODULE.get(), new Item.Properties()));
-        continue;
-      }
-      ArkFieldJournals.Kind journalKind = null;
-      for (var kind : ArkFieldJournals.Kind.values())
-        if (kind.module().equals(id)) journalKind = kind;
-      if (journalKind != null) {
-        var selected = journalKind;
-        var journal = BLOCKS.register(id, () -> new ArkFieldJournalBlock(selected,
-            BlockBehaviour.Properties.of().strength(3f).requiresCorrectToolForDrops()));
-        ITEMS.register(id, () -> new ArkFieldJournalItem(journal.get(), new Item.Properties()));
-        continue;
-      }
-      var block =
-          BLOCKS.registerSimpleBlock(
-              id, BlockBehaviour.Properties.of().strength(3f).requiresCorrectToolForDrops());
-      ITEMS.registerSimpleBlockItem(id, block);
+      var module = BLOCKS.register(id, () -> new ArkFieldJournalBlock(kind,
+          BlockBehaviour.Properties.of().strength(3f).requiresCorrectToolForDrops()));
+      ITEMS.register(id, () -> new ArkFieldJournalItem(module.get(), new Item.Properties()));
     }
     var surveyStation = BLOCKS.register("survey_station", () -> new SignalStationBlock(
         BlockBehaviour.Properties.of().strength(3f).sound(SoundType.WOOD).noOcclusion().requiresCorrectToolForDrops()));
@@ -111,25 +94,27 @@ public final class Entrelumen {
     VeinResonator.register(bus);
     HeliodorHeart.register(bus);
     Solsticio.register(bus, container);
-    bus.addListener(this::registerCapabilities);
+    if (container != null)
+      container.registerConfig(net.neoforged.fml.config.ModConfig.Type.SERVER, ArkEffects.SPEC,
+          "entrelumen-ark-server.toml");
+    ArkState.register();
+    ArkEffects.register(bus);
+    ArkCommands.register();
+    ArkCommerce.register();
+    ArkMigration.register();
+    bus.addListener((net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent event) ->
+        event.enqueueWork(WaystonesBridge::registerTraveller));
     NeoForge.EVENT_BUS.addListener(this::commands);
     NeoForge.EVENT_BUS.addListener(Expeditions::onDimensionChanged);
     NeoForge.EVENT_BUS.addListener(Expeditions::onLogin);
     NeoForge.EVENT_BUS.addListener(Expeditions::onRespawn);
-    NeoForge.EVENT_BUS.addListener(ArkHabitation::onLogin);
-    NeoForge.EVENT_BUS.addListener(net.neoforged.bus.api.EventPriority.LOWEST,
-        ArkHabitation::onRespawnPosition);
-    NeoForge.EVENT_BUS.addListener(net.neoforged.bus.api.EventPriority.LOWEST,
-        ArkHabitation::onPostRespawn);
-    NeoForge.EVENT_BUS.addListener(net.neoforged.bus.api.EventPriority.LOWEST,
-        ArkFieldJournalBlock::allowCrouchedBedUse);
     NeoForge.EVENT_BUS.addListener(net.neoforged.bus.api.EventPriority.LOWEST,
         ArkControllerBlock::allowEmptyHandDeposit);
-    NeoForge.EVENT_BUS.addListener(net.neoforged.bus.api.EventPriority.LOWEST,
-        LogisticsModuleBlock::allowCrouchedUse);
     NeoForge.EVENT_BUS.addListener(
-        (net.neoforged.neoforge.event.AddReloadListenerEvent event) ->
-            event.addListener(new ProjectReloadListener()));
+        (net.neoforged.neoforge.event.AddReloadListenerEvent event) -> {
+          event.addListener(new ProjectReloadListener());
+          event.addListener(new ArkMultiblockReloadListener());
+        });
     CampaignTask.register();
     NeoForge.EVENT_BUS.addListener(CampaignTask::tick);
     TeamEvent.CREATED.register(
@@ -148,11 +133,6 @@ public final class Entrelumen {
             data.setDirty();
           }
         });
-  }
-
-  private void registerCapabilities(RegisterCapabilitiesEvent event) {
-    event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, LOGISTICS_STOCK.get(),
-        (stock, side) -> stock.itemHandler());
   }
 
   public static Campaigns.Campaign current(ServerPlayer player) {
@@ -193,7 +173,8 @@ public final class Entrelumen {
     var c = current(player);
     var inventory = availableMaterials(player);
     List<Component> lines = new ArrayList<>();
-    lines.add(Component.translatable("entrelumen.status", c.act, c.completed.size(), c.arkPhase));
+    lines.add(Component.translatable("entrelumen.status", c.act, c.completed.size(),
+        ArkState.status(player).activeModules().size()));
     Projects.all()
         .forEach(
             (id, project) -> {
