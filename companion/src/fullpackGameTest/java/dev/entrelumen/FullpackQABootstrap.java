@@ -41,6 +41,7 @@ public final class FullpackQABootstrap {
     ProgressionFullpackGameTests.requireSuite();
     VeinResonatorFullpackGameTests.requireSuite();
     RecipeDesignFullpackGameTests.requireSuite();
+    JetpackBalanceFullpackGameTests.requireSuite();
     if (GameTestHooks.isGametestEnabled()) return;
     if (!registered) {
       GameTestRegistry.register(RuntimeGameTests.class);
@@ -86,6 +87,8 @@ public final class FullpackQABootstrap {
       GameTestRegistry.register(RuntimeGameTestsStory.class);
       // Recipe audit (25 September): drawn integration recipes, fan-out, Mekanism entry, Emperor's Cloth.
       GameTestRegistry.register(RecipeDesignFullpackGameTests.class);
+      // Jetpack balance (25 September): settings from pack/config and the KubeJS surcharge, 2.5 times per tick.
+      GameTestRegistry.register(JetpackBalanceFullpackGameTests.class);
       Set<String> expected = new TreeSet<>();
       for (Class<?> owner : List.of(RuntimeGameTests.class, FullpackGameTests.class,
           ResourceFarmGameTests.class, Ae2CraftingGameTests.class, RFToolsRecipeGameTests.class,
@@ -101,7 +104,7 @@ public final class FullpackQABootstrap {
           RuntimeGameTestsCompass.class, RuntimeGameTestsGameplay.class, SolsticioFullpackGameTests.class,
           RuntimeGameTestsActs.class, ActsFullpackGameTests.class,
           ProgressionFullpackGameTests.class, VeinResonatorFullpackGameTests.class, RuntimeGameTestsStory.class,
-          RecipeDesignFullpackGameTests.class))
+          RecipeDesignFullpackGameTests.class, JetpackBalanceFullpackGameTests.class))
         for (var method : owner.getDeclaredMethods())
           if (method.isAnnotationPresent(GameTest.class))
             expected.add(method.getName().toLowerCase(Locale.ROOT));

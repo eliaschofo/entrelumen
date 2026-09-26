@@ -164,11 +164,53 @@ Twilight Forest 4.8.3345 registra en EMI su receta especial de mesa bajo el ID d
 - **JEI 19.50** no tiene filtro por datos; sólo la API `IRecipeManager.hideRecipes`. KubeJS 2101.7.2 la llama desde `RecipeViewerEvents.removeRecipes` en los scripts de cliente (`KubeJSJEIPlugin.onRuntimeAvailable`): `pack/kubejs/client_scripts/entrelumen_recipe_viewer.js`. El plugin de EMI de KubeJS no recibe ese evento, por eso EMI usa su filtro propio.
 - Las recetas siguen cargadas: la GameTest `emperorsclothstillworkswhiletheviewershideit` tiñe una pechera real en la mesa y la acepta en la herrería.
 
+## Balance de jetpacks
+
+Elias pidió que todos los jetpacks del pack gasten 2,5 veces más energía por tick: los de FE y también el de hidrógeno de Mekanism, para que quede parejo. `tools/generate_jetpack_balance.py` lo escribe desde `content/jetpack-balance.json`, que guarda los valores de fábrica de los JAR fijados; `--check` corre en CI y también mantiene la tabla de abajo. Los ajustes enteros redondean para arriba (el de cobre, 212,5, queda en 213; el combustible del exo de Oritech, 37,5, en 38).
+
+- **Iron Jetpacks** lee cada tipo de `config/ironjetpacks/jetpacks` y escribe los de fábrica sólo si falta la carpeta, así que el pack trae los catorce tipos, iguales a los de fábrica salvo `usage`. El servidor manda los tipos a los clientes.
+- **Oritech y las botas de PneumaticCraft** van en TOML parciales; NeoForge completa el resto con sus valores de fábrica. Los jetpacks de Oritech gastan `fuelUsage` de combustible si tienen y, si no, `energyUsage`.
+- **Mekanism** (jetpack, blindado y MekaSuit), **el jetpack diésel de MI y el traje propulsor de Ad Astra** fijan el gasto en el código y no tienen ajuste. `entrelumen_jetpack_balance.js` mira después de cada tick cuánto perdió la pieza del pecho desde el tick anterior y le saca 1,5 veces eso, con arrastre de fracciones: el jetpack de Mekanism paga 1 y 2 mB alternados, 2,5 de promedio. Una pérdida mayor que el máximo nativo por tick es un cambio de pieza y no se cobra; un tick en que algo también cargó la pieza puesta, tampoco.
+- Capacidad, velocidad y recarga no cambian: cada carga dura 2,5 veces menos. La modulación gravitatoria y la unidad de élitros de la MekaSuit son vuelo, no jetpack, y quedan como están.
+- **Instalación:** en una instancia ya jugada estos archivos existen con los valores de fábrica y `sync_pack.py` los frena como cambio local; hay que adoptarlos con backup, como se hizo con `ftbultimine-server.snbt`.
+
+<!-- jetpack-table:start -->
+
+| Jetpack | Mod | Ajuste | Antes | Después |
+|---|---|---|---|---|
+| Madera (`ironjetpacks:jetpack`, tipo `wood`) | Iron Jetpacks 8.0.11 | `usage`, FE/t | 32 | 80 |
+| Piedra (`ironjetpacks:jetpack`, tipo `stone`) | Iron Jetpacks 8.0.11 | `usage`, FE/t | 70 | 175 |
+| Cobre (`ironjetpacks:jetpack`, tipo `copper`) | Iron Jetpacks 8.0.11 | `usage`, FE/t | 85 | 213 |
+| Hierro (`ironjetpacks:jetpack`, tipo `iron`) | Iron Jetpacks 8.0.11 | `usage`, FE/t | 120 | 300 |
+| Bronce (`ironjetpacks:jetpack`, tipo `bronze`) | Iron Jetpacks 8.0.11 | `usage`, FE/t | 120 | 300 |
+| Plata (`ironjetpacks:jetpack`, tipo `silver`) | Iron Jetpacks 8.0.11 | `usage`, FE/t | 150 | 375 |
+| Oro (`ironjetpacks:jetpack`, tipo `gold`) | Iron Jetpacks 8.0.11 | `usage`, FE/t | 300 | 750 |
+| Electrum (`ironjetpacks:jetpack`, tipo `electrum`) | Iron Jetpacks 8.0.11 | `usage`, FE/t | 310 | 775 |
+| Invar (`ironjetpacks:jetpack`, tipo `invar`) | Iron Jetpacks 8.0.11 | `usage`, FE/t | 350 | 875 |
+| Acero (`ironjetpacks:jetpack`, tipo `steel`) | Iron Jetpacks 8.0.11 | `usage`, FE/t | 350 | 875 |
+| Diamante (`ironjetpacks:jetpack`, tipo `diamond`) | Iron Jetpacks 8.0.11 | `usage`, FE/t | 650 | 1625 |
+| Platino (`ironjetpacks:jetpack`, tipo `platinum`) | Iron Jetpacks 8.0.11 | `usage`, FE/t | 720 | 1800 |
+| Esmeralda (`ironjetpacks:jetpack`, tipo `emerald`) | Iron Jetpacks 8.0.11 | `usage`, FE/t | 880 | 2200 |
+| Creativo (`ironjetpacks:jetpack`, tipo `creative`) | Iron Jetpacks 8.0.11 | `usage`, FE/t | 0 | 0 |
+| Jetpack (`oritech:jetpack`) | Oritech 1.2.11 | `energyUsage`, RF/t; `fuelUsage`, mB/t en `oritech-startup.toml` | 128; 10 | 320; 25 |
+| Jetpack con élitros (`oritech:jetpack_elytra`) | Oritech 1.2.11 | `energyUsage`, RF/t; `fuelUsage`, mB/t en `oritech-startup.toml` | 128; 10 | 320; 25 |
+| Exo jetpack (`oritech:exo_jetpack`) | Oritech 1.2.11 | `energyUsage`, RF/t; `fuelUsage`, mB/t en `oritech-startup.toml` | 256; 15 | 640; 38 |
+| Exo jetpack con élitros (`oritech:jetpack_exo_elytra`) | Oritech 1.2.11 | `energyUsage`, RF/t; `fuelUsage`, mB/t en `oritech-startup.toml` | 256; 15 | 640; 38 |
+| Botas neumáticas con mejora Jet Boots (`pneumaticcraft:pneumatic_boots`) | PneumaticCraft 8.2.23 | `jet_boots_air_usage`, mL de aire/t por mejora en `pneumaticcraft-common.toml` | 12 | 30 |
+| Jetpack de hidrógeno (`mekanism:jetpack`) | Mekanism 10.7.19 | fijo en el código; recargo del script | 1 mB de hidrógeno/t | 2,5 mB/t |
+| Jetpack blindado (`mekanism:jetpack_armored`) | Mekanism 10.7.19 | fijo en el código; recargo del script | 1 mB de hidrógeno/t | 2,5 mB/t |
+| MekaSuit con unidad jetpack (`mekanism:mekasuit_bodyarmor`) | Mekanism 10.7.19 | fijo en el código; recargo del script | 1 a 4 mB/t (según el empuje) | 2,5 a 10 mB/t |
+| Jetpack diésel (`modern_industrialization:diesel_jetpack`) | Modern Industrialization 2.5.6 | fijo en el código; recargo del script | 1 mB/t en el aire, 2 subiendo | 2,5 a 5 mB/t |
+| Traje propulsor (`ad_astra:jet_suit`) | Ad Astra 1.16.19 | fijo en el código; recargo del script | 50 FE/t subiendo, 100 a pleno | 125 a 250 FE/t |
+
+<!-- jetpack-table:end -->
+
 ## Verificación
 
 - `tools/check_recipe_design.py` (CI): hitos, abanico, forma, simetría, posición, medalla de aumentadores y los dos filtros. `--report` imprime el inventario completo de recetas con su forma, grilla, componentes y anidado.
 - Los generadores comprueban contra los JAR fijados lo que el chequeo no ve: que un escalón no rompa un dibujo nativo simétrico, que un componente sólo entre en uno simétrico y que la reversión recupere la receta nativa. `generate_integration_recipes.py` exige que cada dibujo use exactamente los insumos del diseño y que la entrega de cada módulo del Arca sea igual a su receta.
 - GameTests de pack completo: `RecipeDesignFullpackGameTests` (dibujos cargados, abanico cargado, entrada a Mekanism sin Oritech, Emperor's Cloth) y las pruebas de RFTools, Botany Pots, New Age, AE2, provisiones y módulos del Arca, ajustadas a las recetas nuevas.
+- Jetpacks: `tools/test_jetpack_balance.py` (CI) compara los archivos con los valores de fábrica y corre el script en Node con capacidades simuladas. `JetpackBalanceFullpackGameTests` lee en el servidor los valores cargados de Iron Jetpacks, Oritech y PneumaticCraft, y hace volar con el gasto nativo real el jetpack y el blindado de Mekanism, el diésel de MI y el traje de Ad Astra: tras cuatro ticks falta 2,5 veces lo nativo, y un cambio de pieza no cobra nada. La MekaSuit comparte el camino del hidrógeno y no se prueba aparte, porque pide instalar el módulo.
 
 Recibo: [`docs/verification/recipe-audit-runtime.json`](../verification/recipe-audit-runtime.json). Los 33 chequeos de Python dan 0; 225 JUnit y 108 GameTests aisladas pasan. En dos servidores propios y desechables con el pack completo y mundo nuevo pasaron las 145 GameTests de la corrida final (26f4986), con todas las familias de KubeJS en `loaded` sin fallas y la auditoría de contenido en PASS. La prueba de las cuatro recargas necesita la tolerancia de 180 s sólo para QA, como en los lotes anteriores.
 
