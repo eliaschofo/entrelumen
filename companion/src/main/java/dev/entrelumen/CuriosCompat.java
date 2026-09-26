@@ -51,6 +51,44 @@ public final class CuriosCompat {
     return Handles.INSTANCE != null;
   }
 
+  /**
+   * {@code ICuriosItemHandler.getEquippedCurios()}: the functional stacks of every active slot, as a
+   * NeoForge item handler whose stacks are the live ones (the Ark's wireless charging fills them in
+   * place). Resolved once, apart from the two handles above.
+   */
+  private record Equipped(MethodHandle handler) {
+    static final Equipped INSTANCE = resolve();
+
+    private static Equipped resolve() {
+      if (Handles.INSTANCE == null) return null;
+      try {
+        Class<?> handler = Class.forName("top.theillusivec4.curios.api.type.capability.ICuriosItemHandler");
+        return new Equipped(MethodHandles.publicLookup().findVirtual(handler, "getEquippedCurios",
+            MethodType.methodType(net.neoforged.neoforge.items.IItemHandlerModifiable.class)));
+      } catch (Throwable unavailable) {
+        com.mojang.logging.LogUtils.getLogger().warn("ENTRELUMEN Curios equipped items unavailable: {}", unavailable.toString());
+        return null;
+      }
+    }
+  }
+
+  /** The stacks in {@code entity}'s active Curios slots; empty without Curios or on any failure. */
+  public static java.util.List<net.minecraft.world.item.ItemStack> equippedStacks(LivingEntity entity) {
+    var handles = Handles.INSTANCE;
+    var equipped = Equipped.INSTANCE;
+    if (handles == null || equipped == null || entity == null) return java.util.List.of();
+    try {
+      Optional<?> inventory = (Optional<?>) handles.inventory.invoke(entity);
+      if (inventory.isEmpty()) return java.util.List.of();
+      var items = (net.neoforged.neoforge.items.IItemHandlerModifiable) equipped.handler.invoke(inventory.get());
+      java.util.List<net.minecraft.world.item.ItemStack> stacks = new java.util.ArrayList<>(items.getSlots());
+      for (int slot = 0; slot < items.getSlots(); slot++) stacks.add(items.getStackInSlot(slot));
+      return stacks;
+    } catch (Throwable error) {
+      return java.util.List.of();
+    }
+  }
+
   /** True while {@code item} sits in an active, functional Curios slot of {@code entity}. */
   public static boolean equipped(LivingEntity entity, Item item) {
     var handles = Handles.INSTANCE;

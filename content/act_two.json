@@ -19,6 +19,7 @@
     "crystal_grid",
     "living_workshop",
     "travelling_pantry",
+    "exploration_module",
     "lost_workshop"
   ],
   "layout_groups": {
@@ -466,6 +467,29 @@
       "icon": "entrelumen:ration_bundle"
     },
     {
+      "key": "crafts_exploration",
+      "deps": [
+        "signal"
+      ],
+      "milestone": "exploration_module",
+      "icon": "entrelumen:exploration_module",
+      "en_us": [
+        "The traveller's module",
+        "Deliver two packs of Travel Rations, a compass, four empty maps and a spyglass to Exploration Module in the Atlas. In its place in the Ark, waystones stop charging your team experience and /rtp opens, once an hour.\n\nA faded map in the Sunken Workshop, signed —T.: 'Roads were measured in days, not in lives. Travel light and come back.'"
+      ],
+      "es_es": [
+        "El módulo del viajero",
+        "Entregá dos provisiones de viaje, una brújula, cuatro mapas vacíos y un catalejo en Módulo de exploración desde el Atlas. En su lugar del Arca, las waystones dejan de cobrarle experiencia a tu equipo y se abre /rtp, una vez por hora.\n\nUn mapa gastado en el Taller hundido, firmado —T.: «Los caminos se medían en días, no en vidas. Viajá liviano y volvé»."
+      ],
+      "layout": {
+        "group": "pantry",
+        "x": 11.25,
+        "y": 9.5,
+        "size": 2.0,
+        "shape": "hexagon"
+      }
+    },
+    {
       "key": "crafts_repeatable_press",
       "deps": [
         "crafts_goggles",
@@ -522,7 +546,8 @@
         "crafts_precision",
         "crafts_crystal",
         "crafts_living",
-        "crafts_pantry"
+        "crafts_pantry",
+        "crafts_exploration"
       ],
       "layout": {
         "group": "archive",

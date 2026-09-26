@@ -1,5 +1,7 @@
 package dev.entrelumen.client;
 
+import dev.entrelumen.ArkFieldJournals;
+import dev.entrelumen.ArkRules;
 import dev.entrelumen.AtlasNetwork;
 import dev.entrelumen.CampaignActions;
 import java.util.*;
@@ -19,6 +21,8 @@ public final class AtlasScreen extends Screen {
       COPPER = 0xFF8B4C2D;
   /** Pseudo entry at the top of the list: the Heliodor compass's current objective. */
   private static final String COMPASS_ID = "#compass";
+  /** Pseudo entries: the team's Ark (checklist, modules, guide) and, with Logistics, the remote trade. */
+  private static final String ARK_ID = "#ark", TRADE_ID = "#trade";
   private static final net.minecraft.resources.ResourceLocation BOOK =
       net.minecraft.resources.ResourceLocation.parse("entrelumen:textures/gui/atlas_book.png");
   private int bookY;
@@ -94,10 +98,9 @@ public final class AtlasScreen extends Screen {
         Component.translatable("entrelumen.atlas.advance"),
         button -> request(CampaignActions.Action.ADVANCE, "")));
     deliver = addRenderableWidget(new BookButton(detailX + 10, bookY + 158, 86,
-        Component.translatable("entrelumen.atlas.deliver"),
-        button -> request(CampaignActions.Action.DELIVER, selectedId)));
+        Component.translatable("entrelumen.atlas.deliver"), button -> action()));
     projects.populate();
-    if (!selectedId.equals(COMPASS_ID)
+    if (!selectedId.startsWith("#")
         && snapshot.projects().stream().noneMatch(project -> project.id().equals(selectedId)))
       selectedId =
           snapshot.projects().stream()
@@ -117,6 +120,24 @@ public final class AtlasScreen extends Screen {
   private void repopulateDetails() {
     if (selected() != null) details.populate(selected());
     else if (selectedId.equals(COMPASS_ID)) details.populateCompass();
+    else if (selectedId.equals(ARK_ID)) details.populateArk();
+    else if (selectedId.equals(TRADE_ID)) details.populateTrade();
+  }
+
+  private boolean tradeOpen() {
+    return snapshot.ark().status().active(ArkRules.Module.LOGISTICS);
+  }
+
+  /** The detail page's button: deliver a project, toggle the Ark's guide or open the catalog. */
+  private void action() {
+    if (ARK_ID.equals(selectedId)) {
+      if (ArkGuideClient.toggle(snapshot.ark())) onClose();
+      else updateButtons();
+    } else if (TRADE_ID.equals(selectedId)) {
+      PacketDistributor.sendToServer(new AtlasNetwork.TradeRequest(""));
+    } else {
+      request(CampaignActions.Action.DELIVER, selectedId);
+    }
   }
 
   private AtlasNetwork.ProjectView selected() {
@@ -128,7 +149,16 @@ public final class AtlasScreen extends Screen {
   private void updateButtons() {
     if (deliver == null) return;
     var selected = selected();
-    deliver.active = !waiting && selected != null && selected.ready();
+    if (ARK_ID.equals(selectedId)) {
+      deliver.setMessage(Component.translatable(ArkGuideClient.shown() ? "entrelumen.atlas.guide_hide" : "entrelumen.atlas.guide_show"));
+      deliver.active = true;
+    } else if (TRADE_ID.equals(selectedId)) {
+      deliver.setMessage(Component.translatable("entrelumen.atlas.trade_open"));
+      deliver.active = !waiting && tradeOpen();
+    } else {
+      deliver.setMessage(Component.translatable("entrelumen.atlas.deliver"));
+      deliver.active = !waiting && selected != null && selected.ready();
+    }
     advance.active = !waiting && snapshot.canAdvance();
     refresh.active = !waiting;
   }
@@ -221,9 +251,13 @@ public final class AtlasScreen extends Screen {
 
   private int projectRowHeight(int width) {
     int textWidth = width - 14;
-    int lines = Math.max(
+    int lines = Math.max(Math.max(Math.max(
         font.split(Component.translatable("entrelumen.atlas.compass"), textWidth).size()
             + font.split(compassStatus(), textWidth).size(),
+        font.split(Component.translatable("entrelumen.atlas.ark"), textWidth).size()
+            + font.split(arkStatus(), textWidth).size()),
+        font.split(Component.translatable("entrelumen.atlas.trade"), textWidth).size()
+            + font.split(Component.translatable("entrelumen.atlas.trade.status"), textWidth).size()),
         snapshot.projects().stream()
             .mapToInt(project -> font.split(projectName(project.id()), textWidth).size()
                 + font.split(status(project), textWidth).size())
@@ -231,6 +265,16 @@ public final class AtlasScreen extends Screen {
     // Native lists use equal-height hit targets. Size them to the longest translated
     // entry, including its status, with 2px padding/gap and the native 4px row gap.
     return 10 + lines * font.lineHeight;
+  }
+
+  /** The Ark entry's status: its level and active modules, or what it lacks. */
+  private Component arkStatus() {
+    var ark = snapshot.ark();
+    var status = ark.status();
+    if (!ark.registered()) return Component.translatable("entrelumen.atlas.ark.none");
+    if (!status.standing()) return Component.translatable("entrelumen.atlas.ark.building");
+    return Component.translatable("entrelumen.atlas.ark.standing", status.activeModules().size(),
+        ArkRules.Module.values().length, status.level());
   }
 
   private Component compassStatus() {
@@ -266,8 +310,10 @@ public final class AtlasScreen extends Screen {
 
     void populate() {
       clearEntries();
-      addEntry(new ProjectEntry(null));
-      snapshot.projects().forEach(project -> addEntry(new ProjectEntry(project)));
+      addEntry(new ProjectEntry(null, COMPASS_ID));
+      addEntry(new ProjectEntry(null, ARK_ID));
+      if (tradeOpen()) addEntry(new ProjectEntry(null, TRADE_ID));
+      snapshot.projects().forEach(project -> addEntry(new ProjectEntry(project, "")));
     }
 
     @Override
@@ -329,8 +375,7 @@ public final class AtlasScreen extends Screen {
       super.setSelected(entry);
       if (entry != null) {
         selectedId = entry.id();
-        if (entry.project == null) details.populateCompass();
-        else details.populate(entry.project);
+        repopulateDetails();
         updateButtons();
       }
     }
@@ -338,21 +383,33 @@ public final class AtlasScreen extends Screen {
 
   private final class ProjectEntry extends ObjectSelectionList.Entry<ProjectEntry> {
     final AtlasNetwork.ProjectView project;
+    final String pseudo;
     final Component name, label;
     final List<FormattedCharSequence> nameLines, labelLines;
 
-    /** A null project is the compass entry. */
-    ProjectEntry(AtlasNetwork.ProjectView project) {
+    /** A null project is a pseudo entry: the compass, the Ark or the remote trade. */
+    ProjectEntry(AtlasNetwork.ProjectView project, String pseudo) {
       this.project = project;
-      name = project == null
-          ? Component.translatable("entrelumen.atlas.compass") : projectName(project.id());
-      label = project == null ? compassStatus() : status(project);
+      this.pseudo = pseudo;
+      if (project != null) {
+        name = projectName(project.id());
+        label = status(project);
+      } else if (ARK_ID.equals(pseudo)) {
+        name = Component.translatable("entrelumen.atlas.ark");
+        label = arkStatus();
+      } else if (TRADE_ID.equals(pseudo)) {
+        name = Component.translatable("entrelumen.atlas.trade");
+        label = Component.translatable("entrelumen.atlas.trade.status");
+      } else {
+        name = Component.translatable("entrelumen.atlas.compass");
+        label = compassStatus();
+      }
       nameLines = font.split(name, projects.getRowWidth() - 6);
       labelLines = font.split(label, projects.getRowWidth() - 6);
     }
 
     String id() {
-      return project == null ? COMPASS_ID : project.id();
+      return project == null ? pseudo : project.id();
     }
 
     @Override
@@ -388,9 +445,9 @@ public final class AtlasScreen extends Screen {
       }
       textY += 2;
       for (var line : labelLines) {
-        boolean highlight = project == null
-            ? snapshot.compass().state() == dev.entrelumen.CompassState.POINTING
-            : project.ready();
+        boolean highlight = project != null ? project.ready()
+            : ARK_ID.equals(pseudo) ? snapshot.ark().status().standing()
+            : TRADE_ID.equals(pseudo) || snapshot.compass().state() == dev.entrelumen.CompassState.POINTING;
         graphics.drawString(font, line, x + 3, textY, highlight ? COPPER : MUTED, false);
         textY += font.lineHeight;
       }
@@ -475,6 +532,58 @@ public final class AtlasScreen extends Screen {
         }
       }
       if (!feedback.isEmpty()) addText(Component.translatable(feedback), MUTED);
+      restorePosition(scroll, selection, hadFocus);
+    }
+
+    /** The team's Ark: its state, the activation checklist and the six modules with their effects. */
+    void populateArk() {
+      boolean same = ARK_ID.equals(projectId);
+      boolean hadFocus = isFocused();
+      double scroll = same ? getScrollAmount() : 0;
+      int selection = same ? children().indexOf(getSelected()) : -1;
+      setFocused(null);
+      clearEntries();
+      projectId = ARK_ID;
+      var ark = snapshot.ark();
+      var status = ark.status();
+      addText(Component.translatable("entrelumen.atlas.ark"), PAPER);
+      addText(arkStatus(), COPPER);
+      addGap();
+      addText(Component.translatable("entrelumen.atlas.ark.checklist"), PAPER);
+      for (var item : ArkRules.checklist(status, ark.completed())) {
+        addText(Component.translatable(item.done() ? "entrelumen.atlas.ark.done" : "entrelumen.atlas.ark.todo",
+            ArkFieldJournals.checkLabel(item, ark.missingCore())), item.done() ? MUTED : COPPER);
+        if (!item.done()) addText(ArkFieldJournals.where(item, ark.missingCore()), MUTED);
+      }
+      addGap();
+      addText(Component.translatable("entrelumen.atlas.ark.modules"), PAPER);
+      for (var module : ArkRules.Module.values()) {
+        addText(Component.translatable("entrelumen.ark.screen.module", ArkFieldJournals.moduleName(module),
+            ArkFieldJournals.effectName(module)), status.active(module) ? COPPER : MUTED);
+        addText(Component.translatable(status.active(module) ? "entrelumen.ark.screen.effect_on"
+            : "entrelumen.ark.screen.effect_off"), MUTED);
+      }
+      addGap();
+      addText(Component.translatable("entrelumen.atlas.ark.guide"), MUTED);
+      if (!feedback.isEmpty()) addText(Component.translatable(feedback), MUTED);
+      restorePosition(scroll, selection, hadFocus);
+    }
+
+    /** The remote trade: what it does and how to open the catalog. */
+    void populateTrade() {
+      boolean same = TRADE_ID.equals(projectId);
+      boolean hadFocus = isFocused();
+      double scroll = same ? getScrollAmount() : 0;
+      int selection = same ? children().indexOf(getSelected()) : -1;
+      setFocused(null);
+      clearEntries();
+      projectId = TRADE_ID;
+      addText(Component.translatable("entrelumen.atlas.trade"), PAPER);
+      addText(Component.translatable("entrelumen.atlas.trade.status"), COPPER);
+      addGap();
+      addText(Component.translatable("entrelumen.atlas.trade.detail"), PAPER);
+      addGap();
+      addText(Component.translatable("entrelumen.atlas.trade.known"), MUTED);
       restorePosition(scroll, selection, hadFocus);
     }
 

@@ -10,6 +10,9 @@ import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 public final class AtlasClient {
   @SubscribeEvent
   public static void setup(FMLClientSetupEvent event) {
-    event.enqueueWork(() -> AtlasNetwork.clientReceiver = AtlasScreen::receive);
+    event.enqueueWork(() -> {
+      AtlasNetwork.clientReceiver = AtlasScreen::receive;
+      AtlasNetwork.catalogReceiver = ArkCatalogScreen::receive;
+    });
   }
 }

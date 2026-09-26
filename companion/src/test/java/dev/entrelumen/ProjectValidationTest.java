@@ -71,36 +71,41 @@ class ProjectValidationTest {
   }
 
   @Test
-  void actSixUsesExactCrossModCostsAndPreservesOneModuleRewards() throws Exception {
+  void eachActDeliversItsModuleWithThatActsMaterials() throws Exception {
     var projects = Projects.parse(defaults(), id -> true);
+    // Ark v2 (25 September 2026): one module per act, costed with that act's materials, at most one
+    // ENTRELUMEN component each (the playtest's recipe rules: little fan-in, nothing nested).
     var expected = java.util.Map.of(
-        "engineering_module", java.util.Map.of("entrelumen:calibration_frame", 2,
-            "entrelumen:energy_coupler", 2, "entrelumen:ark_bus", 1,
-            "mekanism:alloy_atomic", 2),
-        // 24 September 2026: a boss drop replaces one unit of an existing input (Wither, Elder
-        // Guardian, dragon), so each module takes as many items as before.
-        "arcane_module", java.util.Map.of("entrelumen:spectral_lens", 2,
-            "entrelumen:containment_seal", 2, "occultism:iesnium_ingot", 1, "minecraft:nether_star", 1),
-        "nature_module", java.util.Map.of("entrelumen:renewal_engine", 1,
-            "entrelumen:ecosystem_capsule", 2, "entrelumen:living_matrix", 1, "minecraft:wet_sponge", 1),
-        "exploration_module", java.util.Map.of("entrelumen:horizon_chart", 1,
-            "entrelumen:spectral_lens", 1, "twilightforest:steeleaf_ingot", 2,
-            "aether:zanite_gemstone", 1, "minecraft:dragon_breath", 1),
-        "logistics_module", java.util.Map.of("entrelumen:routing_matrix", 2,
-            "entrelumen:handling_core", 2, "entrelumen:ark_bus", 1),
-        "habitation_module", java.util.Map.of("entrelumen:habitation_contract", 1,
-            "entrelumen:ration_bundle", 2, "entrelumen:living_matrix", 2));
+        "habitation_module", java.util.Map.of("minecraft:white_bed", 1, "minecraft:campfire", 1,
+            "minecraft:lantern", 2, "minecraft:bread", 4),
+        "exploration_module", java.util.Map.of("entrelumen:ration_bundle", 2, "minecraft:compass", 1,
+            "minecraft:map", 4, "minecraft:spyglass", 1),
+        "nature_module", java.util.Map.of("entrelumen:propagation_core", 1, "minecraft:moss_block", 8,
+            "minecraft:glistering_melon_slice", 4),
+        "arcane_module", java.util.Map.of("entrelumen:spectral_lens", 1, "minecraft:amethyst_shard", 16,
+            "minecraft:lapis_lazuli", 16),
+        "logistics_module", java.util.Map.of("entrelumen:routing_matrix", 1, "minecraft:emerald", 16,
+            "minecraft:ender_pearl", 8),
+        "engineering_module", java.util.Map.of("entrelumen:ark_bus", 1, "minecraft:redstone_block", 8,
+            "minecraft:copper_block", 8));
+    var requires = java.util.Map.of("habitation_module", java.util.Set.of("travellers_table"),
+        "exploration_module", java.util.Set.of("first_signal"), "nature_module", java.util.Set.of("lost_workshop"),
+        "arcane_module", java.util.Set.of("exchange_route"), "logistics_module", java.util.Set.of("atlas_voices"),
+        "engineering_module", java.util.Set.of("atlas_voices"));
     assertEquals(expected.keySet(), CampaignMilestones.MODULE_IDS);
-    expected.forEach((id, items) -> {
-      var project = projects.get(id);
-      // The six modules are act V since the renumbering of 24 September 2026.
-      assertEquals(CampaignMilestones.ARK_ACT, project.act());
-      assertEquals(items, project.items());
-      assertEquals("entrelumen:" + id, project.reward());
-      assertEquals(id.equals("exploration_module")
-          ? java.util.Set.of("world_network", "end_arrival")
-          : java.util.Set.of("world_network"), project.prerequisites());
-    });
+    for (var module : ArkRules.Module.values()) {
+      var project = projects.get(module.id);
+      assertEquals(module.act, project.act(), module.id);
+      assertEquals(expected.get(module.id), project.items(), module.id);
+      assertEquals("entrelumen:" + module.id, project.reward());
+      assertEquals(requires.get(module.id), project.prerequisites(), module.id);
+      assertTrue(project.items().keySet().stream().filter(item -> item.startsWith("entrelumen:")).count() <= 1);
+    }
+    // The finales of acts I-IV wait for their act's module; act V's modules close before the activation.
+    assertTrue(projects.get("first_signal").prerequisites().contains("habitation_module"));
+    assertTrue(projects.get("lost_workshop").prerequisites().contains("exploration_module"));
+    assertTrue(projects.get("exchange_route").prerequisites().contains("nature_module"));
+    assertTrue(projects.get("atlas_voices").prerequisites().contains("arcane_module"));
   }
 
   /**
@@ -141,10 +146,9 @@ class ProjectValidationTest {
   }
 
   @Test
-  void phaseAndEndingIdsCannotBecomeDeliverableProjects() throws Exception {
-    for (String id : java.util.stream.Stream.concat(CampaignMilestones.PHASE_IDS.stream(),
-        java.util.stream.Stream.of(CampaignMilestones.LAST_HORIZON, "end_arrival",
-            HeliodorHeartRules.RECOVERED, Expeditions.SOLSTICIO_ARRIVAL)).toList()) {
+  void endingAndObservedIdsCannotBecomeDeliverableProjects() throws Exception {
+    for (String id : java.util.List.of(CampaignMilestones.LAST_HORIZON, "end_arrival",
+        HeliodorHeartRules.RECOVERED, Expeditions.SOLSTICIO_ARRIVAL)) {
       var collision = defaults();
       collision.add(id, collision.getAsJsonObject("atlas_awakened").deepCopy());
       assertThrows(IllegalArgumentException.class, () -> Projects.parse(collision, key -> true), id);

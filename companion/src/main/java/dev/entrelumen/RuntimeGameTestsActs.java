@@ -243,16 +243,18 @@ public final class RuntimeGameTestsActs {
     helper.assertTrue(CampaignMilestones.ARK_ACT == 5 && Campaigns.FINAL_ACT == 6 && Solsticio.ACT == 6
         && Solsticio.GATE.equals(new ProtectionRules.ActGate(6, CampaignMilestones.LAST_HORIZON)),
         "The act constants or Solsticio's gate changed");
-    helper.assertTrue(CampaignMilestones.MODULE_IDS.stream().allMatch(id -> Projects.all().get(id).act() == 5)
+    // Ark v2: one module per act (I habitation, II exploration, III nature, IV arcane, V logistics and
+    // engineering), each delivered by the Atlas project of the same ID.
+    helper.assertTrue(java.util.Arrays.stream(ArkRules.Module.values())
+            .allMatch(module -> Projects.all().get(module.project()).act() == module.act)
         && Projects.forAct(6).isEmpty() && Projects.forAct(4).contains(HeliodorHeartRules.PROJECT),
-        "The loaded projects are not renumbered");
+        "The loaded projects do not give one module per act");
     try (var qa = new QaPlayer(helper, "ArkActQA")) {
       var player = qa.player;
       var campaign = Entrelumen.current(player);
       campaign.act = CampaignMilestones.ARK_ACT;
       campaign.completed.addAll(Projects.forAct(5));
       campaign.completed.add("end_arrival");
-      campaign.arkPhase = CampaignMilestones.PHASE_IDS.size();
       var actor = StructureProtection.actor(player);
       helper.assertTrue(!Solsticio.GATE.satisfiedBy(actor) && Entrelumen.advance(player) == 0
           && campaign.act == CampaignMilestones.ARK_ACT && !AtlasNetwork.handleOpen(player).canAdvance(),
@@ -260,7 +262,10 @@ public final class RuntimeGameTestsActs {
       var key = new ItemStack(Solsticio.LIGHT_KEY.get());
       helper.assertTrue(LightKeyItem.cross(player, key) == key && key.is(Solsticio.LIGHT_KEY.get())
           && player.level() == helper.getLevel(), "A crafted Light Key crossed before the activation");
-      helper.assertTrue(CampaignMilestones.finish(campaign) && campaign.act == Campaigns.FINAL_ACT
+      helper.assertTrue(!CampaignMilestones.finish(campaign, new ArkRules.Status(true, true, false,
+              java.util.Set.copyOf(ArkRules.moduleIds()), 0)),
+          "The activation passed without the controller");
+      helper.assertTrue(CampaignMilestones.finish(campaign, new ArkRules.Status(true, true, true, java.util.Set.copyOf(ArkRules.moduleIds()), 0)) && campaign.act == Campaigns.FINAL_ACT
           && Solsticio.GATE.satisfiedBy(StructureProtection.actor(player)) && Entrelumen.advance(player) == 0,
           "The activation did not open act VI and its gate");
     }

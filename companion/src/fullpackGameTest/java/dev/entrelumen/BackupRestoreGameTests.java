@@ -73,7 +73,7 @@ public final class BackupRestoreGameTests {
         var ownerB = TeamRestartGameTests.connect(helper, fixture.ownerB(), false);
         var guest = TeamRestartGameTests.connect(helper, fixture.guestA(), false)) {
       assertRoutes(helper, fixture, ownerA.player, ownerB.player, guest.player);
-      arkMutation = depositOnePartialArkItem(helper, campaigns, fixture.teamA(), ownerA.player);
+      arkMutation = markOneArkHome(ownerA.player);
       counts.put(ownerA.player.getUUID(), TeamRestartGameTests.inventory(ownerA.player));
       counts.put(ownerB.player.getUUID(), TeamRestartGameTests.inventory(ownerB.player));
       counts.put(guest.player.getUUID(), TeamRestartGameTests.inventory(guest.player));
@@ -119,7 +119,7 @@ public final class BackupRestoreGameTests {
     data.receipt = receipt;
     data.setDirty();
     helper.assertTrue(data.isDirty() && ars.isDirty()
-            && (arkMutation.equals("skipped") || campaigns.isDirty()),
+            && ArkData.get(server).isDirty(),
         "Expected SavedData is not dirty immediately before live backup");
     LOGGER.info("ENTRELUMEN_LIVE_BACKUP_PREPARE nonce={} semanticDigest={} preparedStart={} "
             + "preparedPid={} arkMutation={} probe={} sourceWorld={} receipt={} "
@@ -207,39 +207,16 @@ public final class BackupRestoreGameTests {
     helper.succeed();
   }
 
-  private static String depositOnePartialArkItem(GameTestHelper helper, CampaignData data,
-      UUID teamId, ServerPlayer owner) {
-    Campaigns.Campaign campaign = data.campaigns.parties.get(teamId);
-    if (!ArkCommissioning.eligible(campaign)) {
-      data.setDirty();
-      return "skipped";
-    }
-    int phase = campaign.arkPhase;
-    var step = ArkCommissioning.STEPS.get(phase);
-    Map<String, Integer> before = TeamRestartGameTests.inventory(owner);
-    boolean inventoryHasStepMaterial = step.requirements().keySet().stream()
-        .anyMatch(id -> before.getOrDefault(id, 0) > 0);
-    var candidate = step.requirements().entrySet().stream()
-        .filter(entry -> entry.getValue() - campaign.arkDeposits.getOrDefault(entry.getKey(), 0) >= 2)
-        .sorted(Map.Entry.comparingByKey()).findFirst();
-    if (inventoryHasStepMaterial || candidate.isEmpty()) {
-      data.setDirty();
-      return "skipped";
-    }
-    String id = candidate.orElseThrow().getKey();
-    Item item = BuiltInRegistries.ITEM.get(ResourceLocation.parse(id));
-    helper.assertTrue(item != Items.AIR, "Ark step material is absent: " + id);
-    int depositedBefore = campaign.arkDeposits.getOrDefault(id, 0);
-    var controller = TeamRestartGameTests.ark(helper);
-    TeamRestartGameTests.nearController(owner, controller);
-    helper.assertTrue(owner.getInventory().add(new ItemStack(item)),
-        "Could not stage one real Ark partial deposit item");
-    helper.assertTrue(ArkActions.deposit(owner, teamId, controller, phase)
-            && campaign.arkPhase == phase
-            && campaign.arkDeposits.getOrDefault(id, 0) == depositedBefore + 1
-            && TeamRestartGameTests.inventory(owner).equals(before),
-        "Real Ark deposit did not persist one partial item and preserve player inventory");
-    return "phase=" + phase + ",item=" + id + ",count=" + (depositedBefore + 1);
+  /**
+   * One real Ark v2 mutation for the backup to capture: owner A's home in the Ark's SavedData (the
+   * batches and their deposits no longer exist).
+   */
+  private static String markOneArkHome(ServerPlayer owner) {
+    ArkData ark = ArkData.get(owner.server);
+    ark.homes.put(owner.getUUID(), new ArkData.Home(owner.level().dimension(), owner.getX(), owner.getY(),
+        owner.getZ(), owner.getYRot(), owner.getXRot()));
+    ark.setDirty();
+    return "home=" + owner.blockPosition().toShortString();
   }
 
   private static void assertFixtureTeams(GameTestHelper helper,

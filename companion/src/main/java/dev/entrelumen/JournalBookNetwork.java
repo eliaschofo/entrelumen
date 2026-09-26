@@ -15,14 +15,14 @@ import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 
-/** One bounded, read-only server snapshot of a module's status per interaction. */
+/** One bounded, read-only server snapshot of the Ark's status screen per interaction. */
 public final class JournalBookNetwork {
   static final int MAX_ENTRIES = 24;
   static final int MAX_DETAILS = 8;
   private static final int MAX_BYTES = 32 * 1024;
 
-  /** Where a row goes on the module screen. */
-  public enum Section { BATCH, PROJECTS, JOURNEYS, ARK, SERVICE }
+  /** Where a row goes on the Ark screen. */
+  public enum Section { EFFECT, MODULES, ACTIVATION }
 
   /**
    * One row: an item icon, an optional label (a batch material is named by its item), progress as
@@ -72,7 +72,8 @@ public final class JournalBookNetwork {
     }
   }
 
-  public record Snapshot(UUID player, UUID campaign, ArkFieldJournals.Kind kind,
+  /** {@code block} is the clicked module's ID or {@code ark_controller}. */
+  public record Snapshot(UUID player, UUID campaign, String block,
       ArkFieldJournals.Status status, Component statusLine, Component flavor,
       Optional<Component> hint, List<Entry> entries) implements CustomPacketPayload {
     public static final Type<Snapshot> TYPE = new Type<>(
@@ -83,7 +84,7 @@ public final class JournalBookNetwork {
     public Snapshot {
       Objects.requireNonNull(player);
       Objects.requireNonNull(campaign);
-      Objects.requireNonNull(kind);
+      Objects.requireNonNull(block);
       Objects.requireNonNull(status);
       Objects.requireNonNull(statusLine);
       Objects.requireNonNull(flavor);
@@ -112,7 +113,7 @@ public final class JournalBookNetwork {
       int start = buf.writerIndex();
       buf.writeUUID(player);
       buf.writeUUID(campaign);
-      buf.writeEnum(kind);
+      buf.writeUtf(block, 64);
       buf.writeEnum(status);
       ComponentSerialization.STREAM_CODEC.encode(buf, statusLine);
       ComponentSerialization.STREAM_CODEC.encode(buf, flavor);
@@ -136,7 +137,7 @@ public final class JournalBookNetwork {
         throw new IllegalArgumentException("Journal payload exceeds limit");
       UUID player = buf.readUUID();
       UUID campaign = buf.readUUID();
-      var kind = buf.readEnum(ArkFieldJournals.Kind.class);
+      String block = buf.readUtf(64);
       var status = buf.readEnum(ArkFieldJournals.Status.class);
       Component statusLine = ComponentSerialization.STREAM_CODEC.decode(buf);
       Component flavor = ComponentSerialization.STREAM_CODEC.decode(buf);
@@ -147,7 +148,7 @@ public final class JournalBookNetwork {
         throw new IllegalArgumentException("Journal entry count exceeds limit");
       List<Entry> entries = new ArrayList<>(count);
       for (int i = 0; i < count; i++) entries.add(Entry.read(buf));
-      return new Snapshot(player, campaign, kind, status, statusLine, flavor, hint, entries);
+      return new Snapshot(player, campaign, block, status, statusLine, flavor, hint, entries);
     }
   }
 
@@ -157,7 +158,8 @@ public final class JournalBookNetwork {
   private JournalBookNetwork() {}
 
   public static void register(RegisterPayloadHandlersEvent event) {
-    event.registrar("2").playToClient(Snapshot.TYPE, Snapshot.CODEC,
+    // Version 3 (Ark v2): the clicked block by ID, effect/modules/activation sections.
+    event.registrar("3").playToClient(Snapshot.TYPE, Snapshot.CODEC,
         (snapshot, context) -> context.enqueueWork(() -> clientReceiver.accept(snapshot)));
   }
 }

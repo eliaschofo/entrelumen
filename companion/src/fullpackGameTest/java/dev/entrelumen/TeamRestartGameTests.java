@@ -65,14 +65,14 @@ public final class TeamRestartGameTests {
       "entrelumen:atlas", 1, "entrelumen:raw_lens", 1, FRAME, 6,
       REGULATOR, 4, "minecraft:diamond", 4);
   private static final Map<String, Integer> INVENTORY_GUEST = Map.of("minecraft:emerald", 2);
-  private static final Map<String, Integer> TOPPED_UP_A = Map.of(
-      "entrelumen:atlas", 1, FRAME, 3, REGULATOR, 2, "minecraft:diamond", 3);
-  private static final Map<String, Integer> TOPPED_UP_B = Map.of(
-      "entrelumen:atlas", 1, "entrelumen:raw_lens", 1, FRAME, 2,
-      REGULATOR, 3, "minecraft:diamond", 4);
+  /** After login each owner holds the refund of the Ark batch its team had left unfinished (Ark v2). */
+  private static final Map<String, Integer> REFUNDED_A = Map.of(
+      "entrelumen:atlas", 1, FRAME, 7, REGULATOR, 4, "minecraft:diamond", 3);
+  private static final Map<String, Integer> REFUNDED_B = Map.of(
+      "entrelumen:atlas", 1, "entrelumen:raw_lens", 1, FRAME, 6,
+      REGULATOR, 5, "minecraft:diamond", 4);
 
-  private record State(int act, Set<String> completed, int phase,
-      Map<String, Integer> deposits, boolean archived) {}
+  private record State(int act, Set<String> completed, Map<String, Integer> refunds, boolean archived) {}
 
   record Receipt(UUID nonce, long preparedStart, long preparedPid,
       GameProfile ownerA, GameProfile ownerB, GameProfile guestA, UUID teamA, UUID teamB) {}
@@ -150,24 +150,14 @@ public final class TeamRestartGameTests {
       sharedB.act = CampaignMilestones.ARK_ACT;
       sharedB.completed.addAll(Entrelumen.MODULES);
       data.setDirty();
-      assertState(helper, sharedA, teamAPartialBeforeDeposit(), "team A before deposit");
-      assertState(helper, sharedB, teamBPartialBeforeDeposit(), "team B before deposit");
-      helper.assertTrue(ArkCommissioning.eligible(sharedA)
-              && ArkCommissioning.eligible(sharedB),
-          "Restart fixture teams are not eligible for the real Ark deposit route");
-
-      BlockPos controller = ark(helper);
-      nearController(ownerA, controller);
-      nearController(ownerB, controller);
-      ownerA.setItemInHand(InteractionHand.OFF_HAND, new ItemStack(item(FRAME), 2));
-      ownerB.setItemInHand(InteractionHand.OFF_HAND, new ItemStack(item(REGULATOR)));
-      helper.assertTrue(ArkActions.deposit(ownerA, teamAId, controller, 0)
-              && ArkActions.deposit(ownerB, teamBId, controller, 0),
-          "Real Ark controller did not accept distinct partial team deposits");
-      assertState(helper, sharedA, teamAPartial(), "team A partial");
-      assertState(helper, sharedB, teamBPartial(), "team B partial");
-      helper.assertTrue(ownerA.getOffhandItem().isEmpty() && ownerB.getOffhandItem().isEmpty(),
-          "Partial Ark deposits did not consume their exact offered items");
+      assertState(helper, sharedA, teamAPartialBeforeDeposit(), "team A before refund");
+      assertState(helper, sharedB, teamBPartialBeforeDeposit(), "team B before refund");
+      // Ark v2 removed the batches: what a team had deposited into an unfinished one is owed back.
+      sharedA.refunds.put(FRAME, 2);
+      sharedB.refunds.put(REGULATOR, 1);
+      data.setDirty();
+      assertState(helper, sharedA, teamAPartial(), "team A refund owed");
+      assertState(helper, sharedB, teamBPartial(), "team B refund owed");
 
       give(helper, ownerA, item(FRAME), 5);
       give(helper, ownerA, item(REGULATOR), 4);
@@ -245,6 +235,7 @@ public final class TeamRestartGameTests {
       ServerPlayer ownerB = ownerBSession.player;
       ServerPlayer guest = guestSession.player;
       CampaignData data = CampaignData.get(server);
+      // Each owner logged in first for its team, so the login paid the team's refund to that owner.
       helper.assertTrue(CampaignActions.campaignId(ownerA).equals(receipt.teamA())
               && CampaignActions.campaignId(ownerB).equals(receipt.teamB())
               && CampaignActions.campaignId(guest).equals(receipt.teamA())
@@ -254,48 +245,23 @@ public final class TeamRestartGameTests {
           "Reconnected .dat players lost their persisted FTB party identities");
       assertPersonalSnapshots(helper, data, receipt.ownerA().getId(), receipt.ownerB().getId(),
           receipt.guestA().getId());
-      assertState(helper, data.campaigns.parties.get(receipt.teamA()), teamAPartial(),
-          "team A restored partial ledger");
-      assertState(helper, data.campaigns.parties.get(receipt.teamB()), teamBPartial(),
-          "team B restored partial ledger");
-      assertInventory(helper, ownerA, INVENTORY_A, "owner A restored .dat");
-      assertInventory(helper, ownerB, INVENTORY_B, "owner B restored .dat");
-      assertInventory(helper, guest, INVENTORY_GUEST, "guest restored .dat");
-
-      BlockPos controller = ark(helper);
-      nearController(ownerA, controller);
-      nearController(ownerB, controller);
-      helper.assertTrue(!ArkActions.deposit(ownerA, receipt.teamB(), controller, 0),
-          "Stale identity deposited into the other restored team");
-      assertInventory(helper, ownerA, INVENTORY_A, "stale identity A");
-      assertState(helper, data.campaigns.parties.get(receipt.teamB()), teamBPartial(),
-          "team B after stale identity");
-
-      helper.assertTrue(ArkActions.deposit(ownerA, receipt.teamA(), controller, 0),
-          "Team A could not resume its persisted partial Ark deposit");
       assertState(helper, data.campaigns.parties.get(receipt.teamA()), teamACompleted(),
-          "team A completed step zero");
-      assertInventory(helper, ownerA, TOPPED_UP_A, "team A exact topup");
-      helper.assertTrue(!ArkActions.deposit(ownerA, receipt.teamA(), controller, 0),
-          "Team A accepted a replay of the completed step");
-      assertInventory(helper, ownerA, TOPPED_UP_A, "team A replay");
-      assertState(helper, data.campaigns.parties.get(receipt.teamB()), teamBPartial(),
-          "team B independence after team A topup");
-      assertInventory(helper, ownerB, INVENTORY_B, "owner B independence");
-
-      helper.assertTrue(ArkActions.deposit(ownerB, receipt.teamB(), controller, 0),
-          "Team B could not resume its distinct partial Ark deposit");
+          "team A refund paid at login");
       assertState(helper, data.campaigns.parties.get(receipt.teamB()), teamBCompleted(),
-          "team B completed step zero");
-      assertInventory(helper, ownerB, TOPPED_UP_B, "team B exact topup");
-      helper.assertTrue(!ArkActions.deposit(ownerB, receipt.teamB(), controller, 0),
-          "Team B accepted a replay of the completed step");
-      assertInventory(helper, ownerB, TOPPED_UP_B, "team B replay");
-      assertInventory(helper, guest, INVENTORY_GUEST, "guest after both topups");
+          "team B refund paid at login");
+      assertInventory(helper, ownerA, REFUNDED_A, "owner A restored .dat plus refund");
+      assertInventory(helper, ownerB, REFUNDED_B, "owner B restored .dat plus refund");
+      assertInventory(helper, guest, INVENTORY_GUEST, "guest restored .dat");
+      helper.assertTrue(!ArkMigration.deliverRefunds(ownerA) && !ArkMigration.deliverRefunds(guest)
+              && !ArkMigration.deliverRefunds(ownerB),
+          "A refund was paid twice");
+      assertInventory(helper, ownerA, REFUNDED_A, "owner A after replay");
+      assertInventory(helper, ownerB, REFUNDED_B, "owner B after replay");
+      assertInventory(helper, guest, INVENTORY_GUEST, "guest after both refunds");
       assertPersonalSnapshots(helper, data, receipt.ownerA().getId(), receipt.ownerB().getId(),
           receipt.guestA().getId());
       helper.assertTrue(Entrelumen.current(guest) == data.campaigns.parties.get(receipt.teamA()),
-          "Persisted guest membership changed during the other team's Ark topup");
+          "Persisted guest membership changed during the refunds");
     }
 
     server.overworld().getDataStorage().save();
@@ -304,7 +270,7 @@ public final class TeamRestartGameTests {
     assertDiskCampaigns(helper, server, receipt.ownerA().getId(), receipt.ownerB().getId(),
         receipt.guestA().getId(), receipt.teamA(), receipt.teamB(), true);
     LOGGER.info("ENTRELUMEN_TEAM_RESTART_VERIFY nonce={} proof={} preparedStart={} "
-            + "verifiedStart={} teams=2 players=3 step0=both replayDuplicate=false",
+            + "verifiedStart={} teams=2 players=3 refunds=both replayDuplicate=false",
         receipt.nonce(), proof(receipt), receipt.preparedStart(), processStart());
     helper.succeed();
   }
@@ -312,45 +278,44 @@ public final class TeamRestartGameTests {
   private static void assertFixedCosts(GameTestHelper helper) {
     helper.assertTrue(Entrelumen.MODULES.equals(Set.of("engineering_module", "arcane_module",
             "nature_module", "logistics_module", "habitation_module", "exploration_module"))
-            && ArkCommissioning.STEPS.getFirst().requirements().equals(
-                Map.of(FRAME, 4, REGULATOR, 2)),
-        "Production Ark modules or first-step costs differ from the independent QA fixture");
+            && CampaignData.LEGACY_BATCHES.getFirst().equals(Map.of(FRAME, 4, REGULATOR, 2)),
+        "Production Ark modules or the legacy first batch differ from the independent QA fixture");
   }
 
   private static State personalA() {
-    return new State(1, Set.of("atlas_awakened"), 0, Map.of(), false);
+    return new State(1, Set.of("atlas_awakened"), Map.of(), false);
   }
 
   private static State personalB() {
-    return new State(1, Set.of("atlas_awakened", "lens_assembled"), 0, Map.of(), false);
+    return new State(1, Set.of("atlas_awakened", "lens_assembled"), Map.of(), false);
   }
 
   private static State guestPersonal() {
-    return new State(1, Set.of(), 0, Map.of(), false);
+    return new State(1, Set.of(), Map.of(), false);
   }
 
   private static State teamAPartialBeforeDeposit() {
-    return new State(CampaignMilestones.ARK_ACT, TEAM_A_COMPLETED, 0, Map.of(), false);
+    return new State(CampaignMilestones.ARK_ACT, TEAM_A_COMPLETED, Map.of(), false);
   }
 
   private static State teamBPartialBeforeDeposit() {
-    return new State(CampaignMilestones.ARK_ACT, TEAM_B_COMPLETED, 0, Map.of(), false);
+    return new State(CampaignMilestones.ARK_ACT, TEAM_B_COMPLETED, Map.of(), false);
   }
 
   private static State teamAPartial() {
-    return new State(CampaignMilestones.ARK_ACT, TEAM_A_COMPLETED, 0, Map.of(FRAME, 2), false);
+    return new State(CampaignMilestones.ARK_ACT, TEAM_A_COMPLETED, Map.of(FRAME, 2), false);
   }
 
   private static State teamBPartial() {
-    return new State(CampaignMilestones.ARK_ACT, TEAM_B_COMPLETED, 0, Map.of(REGULATOR, 1), false);
+    return new State(CampaignMilestones.ARK_ACT, TEAM_B_COMPLETED, Map.of(REGULATOR, 1), false);
   }
 
   private static State teamACompleted() {
-    return new State(CampaignMilestones.ARK_ACT, TEAM_A_COMPLETED, 1, Map.of(), false);
+    return new State(CampaignMilestones.ARK_ACT, TEAM_A_COMPLETED, Map.of(), false);
   }
 
   private static State teamBCompleted() {
-    return new State(CampaignMilestones.ARK_ACT, TEAM_B_COMPLETED, 1, Map.of(), false);
+    return new State(CampaignMilestones.ARK_ACT, TEAM_B_COMPLETED, Map.of(), false);
   }
 
   private static void assertPersonalSnapshots(GameTestHelper helper, CampaignData data,
@@ -361,8 +326,8 @@ public final class TeamRestartGameTests {
   }
 
   private static State state(Campaigns.Campaign campaign) {
-    return new State(campaign.act, Set.copyOf(campaign.completed), campaign.arkPhase,
-        Map.copyOf(campaign.arkDeposits), campaign.archived);
+    return new State(campaign.act, Set.copyOf(campaign.completed), Map.copyOf(campaign.refunds),
+        campaign.archived);
   }
 
   private static void assertState(GameTestHelper helper, Campaigns.Campaign campaign,

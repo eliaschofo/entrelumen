@@ -14,16 +14,18 @@ public final class Campaigns {
   public static final class Campaign {
     public int act = 1;
     public final Set<String> completed = new TreeSet<>();
-    public int arkPhase;
-    public final Map<String, Integer> arkDeposits = new TreeMap<>();
+    /**
+     * Supplies deposited into an Ark batch that was never finished, owed back to the team since the
+     * batches were removed (Ark v2, 25 September 2026). Paid to the first member online, then cleared.
+     */
+    public final Map<String, Integer> refunds = new TreeMap<>();
     public boolean archived;
 
+    /** A copy for a new party: its progress, never its refunds (those stay with the original). */
     public Campaign copy() {
       Campaign copy = new Campaign();
       copy.act = act;
       copy.completed.addAll(completed);
-      copy.arkPhase = arkPhase;
-      copy.arkDeposits.putAll(arkDeposits);
       return copy;
     }
   }

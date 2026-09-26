@@ -64,18 +64,4 @@ class CampaignsTest {
     assertFalse(d.recover(team));
   }
 
-  @Test
-  void arkDepositsAreIndependentInFounderSnapshot() {
-    var campaigns = new Campaigns();
-    UUID founder = UUID.randomUUID(), team = UUID.randomUUID();
-    var personal = campaigns.personal(founder);
-    personal.arkPhase = 2;
-    personal.arkDeposits.put("entrelumen:ecosystem_capsule", 1);
-    var party = campaigns.party(team, founder);
-    assertEquals(personal.arkDeposits, party.arkDeposits);
-    party.arkDeposits.clear();
-    party.arkPhase++;
-    assertEquals(1, personal.arkDeposits.get("entrelumen:ecosystem_capsule"));
-    assertEquals(2, campaigns.current(founder, null, founder).arkPhase);
-  }
 }

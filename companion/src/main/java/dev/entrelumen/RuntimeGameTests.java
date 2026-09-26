@@ -17,222 +17,6 @@ import net.neoforged.neoforge.gametest.*;
 @GameTestHolder("entrelumen")
 @PrefixGameTestTemplate(false)
 public final class RuntimeGameTests {
-  @GameTest(template = "empty", timeoutTicks = 200)
-  public static void arcaneRestorationResetsForgingHistoryAndKeepsEverythingElse(GameTestHelper helper)
-      throws Exception {
-    try (var session = new WorkshopPlayer(helper)) {
-      var player = session.player;
-      var controller = ark(helper, player);
-      var module = arkModule(helper, controller, "arcane_module");
-      // An early-campaign visitor using a gifted, heavily forged sword.
-      var campaign = Entrelumen.current(player);
-      campaign.act = 1;
-      campaign.completed.clear();
-      var data = CampaignData.get(player.server);
-      var beforeCampaign = data.save(new CompoundTag(), helper.getLevel().registryAccess());
-      var source = forgedSword(helper, 31);
-      var expected = source.copy();
-      expected.set(net.minecraft.core.component.DataComponents.REPAIR_COST, 0);
-      player.setItemInHand(net.minecraft.world.InteractionHand.MAIN_HAND, source);
-      player.setItemInHand(net.minecraft.world.InteractionHand.OFF_HAND, new ItemStack(Items.BOOK, 7));
-      player.giveExperienceLevels(30);
-      var result = player.gameMode.useItemOn(player, helper.getLevel(), source,
-          net.minecraft.world.InteractionHand.MAIN_HAND, arkHit(module));
-      helper.assertTrue(result.consumesAction(), "Native interaction did not run");
-      helper.assertTrue(ItemStack.matches(player.getMainHandItem(), expected)
-          && player.getMainHandItem().getOrDefault(net.minecraft.core.component.DataComponents.REPAIR_COST, -1) == 0,
-          "Restoration changed more than the forging history");
-      helper.assertTrue(player.getOffhandItem().getCount() == 2 && player.experienceLevel == 5,
-          "Five recorded operations did not cost exactly five books and 25 levels");
-      helper.assertTrue(beforeCampaign.equals(data.save(new CompoundTag(), helper.getLevel().registryAccess())),
-          "Restoration changed campaign state");
-      // Replay: nothing left to restore, nothing paid.
-      helper.assertTrue(!ArcaneRestoration.restore(player, module, net.minecraft.world.InteractionHand.MAIN_HAND)
-          && player.getOffhandItem().getCount() == 2 && player.experienceLevel == 5, "Replay charged again");
-    }
-    helper.succeed();
-  }
-
-  @GameTest(template = "empty", timeoutTicks = 200)
-  public static void arcaneRestorationRejectsWithoutPartialPayment(GameTestHelper helper) throws Exception {
-    try (var session = new WorkshopPlayer(helper)) {
-      var player = session.player;
-      var controller = ark(helper, player);
-      var module = arkModule(helper, controller, "arcane_module");
-      var hand = net.minecraft.world.InteractionHand.MAIN_HAND;
-      var book = new ItemStack(Items.ENCHANTED_BOOK);
-      book.set(net.minecraft.core.component.DataComponents.REPAIR_COST, 7);
-      player.setItemInHand(hand, book);
-      player.setItemInHand(net.minecraft.world.InteractionHand.OFF_HAND, new ItemStack(Items.BOOK, 3));
-      player.giveExperienceLevels(15);
-      helper.assertTrue(!ArcaneRestoration.restore(player, module, hand), "Enchanted book accepted");
-      var sword = forgedSword(helper, 7);
-      var original = sword.copy();
-      player.setItemInHand(hand, sword);
-      player.getOffhandItem().setCount(2);
-      helper.assertTrue(!ArcaneRestoration.restore(player, module, hand), "Insufficient books accepted");
-      player.getOffhandItem().setCount(3);
-      player.giveExperienceLevels(-1);
-      helper.assertTrue(!ArcaneRestoration.restore(player, module, hand), "Insufficient levels accepted");
-      player.giveExperienceLevels(1);
-      helper.assertTrue(!ArcaneRestoration.restore(player, module, net.minecraft.world.InteractionHand.OFF_HAND),
-          "Wrong hand accepted");
-      var missing = arkModule(helper, controller, "nature_module");
-      var state = helper.getLevel().getBlockState(missing);
-      helper.getLevel().removeBlock(missing, false);
-      helper.assertTrue(!ArcaneRestoration.restore(player, module, hand), "Incomplete Ark accepted");
-      helper.getLevel().setBlockAndUpdate(missing, state);
-      helper.getLevel().setBlockAndUpdate(controller.above(), helper.getLevel().getBlockState(controller));
-      helper.assertTrue(!ArcaneRestoration.restore(player, module, hand), "Ambiguous Ark accepted");
-      helper.getLevel().removeBlock(controller.above(), false);
-      player.setGameMode(net.minecraft.world.level.GameType.SPECTATOR);
-      helper.assertTrue(!ArcaneRestoration.restore(player, module, hand), "Spectator accepted");
-      player.setGameMode(net.minecraft.world.level.GameType.SURVIVAL);
-      player.teleportTo(module.getX() + 30.0, module.getY(), module.getZ());
-      helper.assertTrue(!ArcaneRestoration.restore(player, module, hand), "Remote interaction accepted");
-      player.teleportTo(controller.getX() + 0.5, controller.getY() + 1.0, controller.getZ() + 0.5);
-      helper.assertTrue(ItemStack.matches(original, player.getMainHandItem())
-          && player.getOffhandItem().getCount() == 3 && player.experienceLevel == 15,
-          "A rejected request partially mutated the item, books or levels");
-      player.setGameMode(net.minecraft.world.level.GameType.CREATIVE);
-      helper.assertTrue(ArcaneRestoration.restore(player, module, hand) && player.getOffhandItem().isEmpty()
-          && player.experienceLevel == 0
-          && player.getMainHandItem().getOrDefault(net.minecraft.core.component.DataComponents.REPAIR_COST, -1) == 0,
-          "Exact payment failed or creative did not pay");
-    }
-    helper.succeed();
-  }
-
-  private static ItemStack forgedSword(GameTestHelper helper, int repairCost) {
-    var sword = new ItemStack(Items.DIAMOND_SWORD);
-    var registry = helper.getLevel().registryAccess().lookupOrThrow(net.minecraft.core.registries.Registries.ENCHANTMENT);
-    var enchantments = new net.minecraft.world.item.enchantment.ItemEnchantments.Mutable(
-        net.minecraft.world.item.enchantment.ItemEnchantments.EMPTY);
-    enchantments.set(registry.getOrThrow(net.minecraft.world.item.enchantment.Enchantments.SHARPNESS), 5);
-    enchantments.set(registry.getOrThrow(net.minecraft.world.item.enchantment.Enchantments.UNBREAKING), 3);
-    enchantments.set(registry.getOrThrow(net.minecraft.world.item.enchantment.Enchantments.VANISHING_CURSE), 1);
-    sword.set(net.minecraft.core.component.DataComponents.ENCHANTMENTS, enchantments.toImmutable());
-    sword.set(net.minecraft.core.component.DataComponents.REPAIR_COST, repairCost);
-    sword.set(net.minecraft.core.component.DataComponents.DAMAGE, 321);
-    sword.set(net.minecraft.core.component.DataComponents.CUSTOM_NAME, net.minecraft.network.chat.Component.literal("Borrowed history"));
-    sword.set(net.minecraft.core.component.DataComponents.LORE, new net.minecraft.world.item.component.ItemLore(
-        List.of(net.minecraft.network.chat.Component.literal("Forged by many hands"))));
-    var custom = new CompoundTag();
-    custom.putString("provenance", "gifted-qa");
-    sword.set(net.minecraft.core.component.DataComponents.CUSTOM_DATA, net.minecraft.world.item.component.CustomData.of(custom));
-    return sword;
-  }
-
-  @GameTest(template = "empty", timeoutTicks = 200)
-  public static void engineeringWorkshopRepairsGiftedToolsWithoutCampaignOrComponentChanges(GameTestHelper helper)
-      throws Exception {
-    try (var session = new WorkshopPlayer(helper)) {
-      var player = session.player;
-      var controller = ark(helper, player);
-      var module = arkModule(helper, controller, "engineering_module");
-      // A recipient at the start of the story can use gifted infrastructure.
-      var campaign = Entrelumen.current(player);
-      campaign.act = 1;
-      campaign.completed.clear();
-      var data = CampaignData.get(player.server);
-      var beforeCampaign = data.save(new CompoundTag(), helper.getLevel().registryAccess());
-      var tool = new ItemStack(Items.DIAMOND_PICKAXE);
-      tool.setDamageValue(500);
-      tool.set(net.minecraft.core.component.DataComponents.CUSTOM_NAME,
-          net.minecraft.network.chat.Component.literal("Gift from another horizon"));
-      tool.set(net.minecraft.core.component.DataComponents.REPAIR_COST, 31);
-      tool.enchant(helper.getLevel().registryAccess().lookupOrThrow(
-          net.minecraft.core.registries.Registries.ENCHANTMENT).getOrThrow(
-              net.minecraft.world.item.enchantment.Enchantments.UNBREAKING), 3);
-      player.setItemInHand(net.minecraft.world.InteractionHand.MAIN_HAND, tool);
-      player.setItemInHand(net.minecraft.world.InteractionHand.OFF_HAND, new ItemStack(Items.DIAMOND, 3));
-      player.giveExperienceLevels(7);
-      int levels = player.experienceLevel;
-      var expected = tool.copy();
-      expected.setDamageValue(500 - tool.getMaxDamage() / 4);
-      var used = player.gameMode.useItemOn(player, helper.getLevel(), tool,
-          net.minecraft.world.InteractionHand.MAIN_HAND, arkHit(module));
-      helper.assertTrue(used.consumesAction() && ItemStack.matches(tool, expected)
-          && player.getOffhandItem().getCount() == 2, "Native interaction did not pay exactly one material per quarter repair");
-      player.gameMode.useItemOn(player, helper.getLevel(), tool,
-          net.minecraft.world.InteractionHand.MAIN_HAND, arkHit(module));
-      expected.setDamageValue(0);
-      helper.assertTrue(ItemStack.matches(tool, expected) && player.getOffhandItem().getCount() == 1,
-          "Partial final repair changed components or material cost");
-      player.gameMode.useItemOn(player, helper.getLevel(), tool,
-          net.minecraft.world.InteractionHand.MAIN_HAND, arkHit(module));
-      helper.assertTrue(ItemStack.matches(tool, expected) && player.getOffhandItem().getCount() == 1
-          && player.experienceLevel == levels, "Full-durability replay spent material or XP");
-      helper.assertTrue(beforeCampaign.equals(data.save(new CompoundTag(), helper.getLevel().registryAccess())),
-          "Workshop changed campaign state or rewarded a milestone");
-      // Native repair ingredients differ by equipment, not an Entrelumen whitelist.
-      for (var pair : List.of(new Item[] {Items.LEATHER_CHESTPLATE, Items.LEATHER},
-          new Item[] {Items.ELYTRA, Items.PHANTOM_MEMBRANE}, new Item[] {Items.IRON_PICKAXE, Items.IRON_INGOT})) {
-        var equipment = new ItemStack(pair[0]);
-        equipment.setDamageValue(1);
-        player.setItemInHand(net.minecraft.world.InteractionHand.MAIN_HAND, equipment);
-        player.setItemInHand(net.minecraft.world.InteractionHand.OFF_HAND, new ItemStack(pair[1]));
-        helper.assertTrue(EngineeringWorkshop.repair(player, module, net.minecraft.world.InteractionHand.MAIN_HAND)
-            && equipment.getDamageValue() == 0 && player.getOffhandItem().isEmpty(),
-            "Native equipment repair failed: " + pair[0]);
-      }
-    }
-    helper.succeed();
-  }
-
-  @GameTest(template = "empty", timeoutTicks = 200)
-  public static void engineeringWorkshopRejectsInvalidStructureAndUseWithoutConsumption(GameTestHelper helper)
-      throws Exception {
-    try (var session = new WorkshopPlayer(helper)) {
-      var player = session.player;
-      var controller = ark(helper, player);
-      var module = arkModule(helper, controller, "engineering_module");
-      var tool = new ItemStack(Items.IRON_PICKAXE);
-      tool.setDamageValue(100);
-      player.setItemInHand(net.minecraft.world.InteractionHand.MAIN_HAND, tool);
-      player.setItemInHand(net.minecraft.world.InteractionHand.OFF_HAND, new ItemStack(Items.DIAMOND, 3));
-      helper.assertTrue(!EngineeringWorkshop.repair(player, module, net.minecraft.world.InteractionHand.MAIN_HAND)
-          && player.getOffhandItem().getCount() == 3, "Wrong material was accepted");
-      player.setItemInHand(net.minecraft.world.InteractionHand.OFF_HAND, new ItemStack(Items.IRON_INGOT, 3));
-      var missing = arkModule(helper, controller, "nature_module");
-      var missingState = helper.getLevel().getBlockState(missing);
-      helper.getLevel().removeBlock(missing, false);
-      helper.assertTrue(!EngineeringWorkshop.repair(player, module, net.minecraft.world.InteractionHand.MAIN_HAND),
-          "Incomplete Ark repaired a tool");
-      helper.getLevel().setBlockAndUpdate(missing, missingState);
-      var duplicate = controller.above();
-      helper.getLevel().setBlockAndUpdate(duplicate, helper.getLevel().getBlockState(controller));
-      helper.assertTrue(!EngineeringWorkshop.repair(player, module, net.minecraft.world.InteractionHand.MAIN_HAND),
-          "Ambiguous controllers repaired a tool");
-      helper.getLevel().removeBlock(duplicate, false);
-      helper.assertTrue(!EngineeringWorkshop.repair(player, module, net.minecraft.world.InteractionHand.OFF_HAND),
-          "Offhand repaired a tool");
-      player.setGameMode(net.minecraft.world.level.GameType.SPECTATOR);
-      helper.assertTrue(!EngineeringWorkshop.repair(player, module, net.minecraft.world.InteractionHand.MAIN_HAND),
-          "Spectator repaired a tool");
-      player.setGameMode(net.minecraft.world.level.GameType.SURVIVAL);
-      player.teleportTo(module.getX() + 30.0, module.getY(), module.getZ());
-      helper.assertTrue(!EngineeringWorkshop.repair(player, module, net.minecraft.world.InteractionHand.MAIN_HAND),
-          "Remote use repaired a tool");
-      player.teleportTo(controller.getX() + 0.5, controller.getY() + 1.0, controller.getZ() + 0.5);
-      tool.setCount(2);
-      helper.assertTrue(!EngineeringWorkshop.repair(player, module, net.minecraft.world.InteractionHand.MAIN_HAND),
-          "Stacked damageable items repaired for a single payment");
-      tool.setCount(1);
-      helper.assertTrue(tool.getDamageValue() == 100 && player.getOffhandItem().getCount() == 3,
-          "Rejected repair changed tool or material");
-      player.setGameMode(net.minecraft.world.level.GameType.CREATIVE);
-      player.gameMode.useItemOn(player, helper.getLevel(), tool,
-          net.minecraft.world.InteractionHand.MAIN_HAND, arkHit(module));
-      helper.assertTrue(tool.getDamageValue() == 100 - tool.getMaxDamage() / 4
-          && player.getOffhandItem().getCount() == 2, "Creative repair bypassed material cost");
-      helper.getLevel().removeBlock(module, false);
-      helper.assertTrue(!EngineeringWorkshop.repair(player, module, net.minecraft.world.InteractionHand.MAIN_HAND)
-          && player.getOffhandItem().getCount() == 2, "Removed workshop still consumed material");
-    }
-    helper.succeed();
-  }
-
   private static final class WorkshopPlayer implements AutoCloseable {
     final ServerPlayer player;
     final net.minecraft.network.Connection connection;
@@ -267,808 +51,34 @@ public final class RuntimeGameTests {
 
 
   @GameTest(template = "empty", timeoutTicks = 200)
-  public static void habitationBedClickChecksInAndOutWithoutChangingCampaign(GameTestHelper helper)
-      throws Exception {
-    try (var session = new WorkshopPlayer(helper)) {
-      var player = session.player;
-      var level = helper.getLevel();
-      var controller = ark(helper, player);
-      var module = arkModule(helper, controller, "habitation_module");
-      var missing = arkModule(helper, controller, "nature_module");
-      var campaign = Entrelumen.current(player);
-      campaign.act = 1;
-      campaign.completed.clear();
-      var home = controller.offset(12, 0, 0);
-      player.setRespawnPosition(net.minecraft.world.level.Level.OVERWORLD, home, 37.5F, true, false);
-      var bed = new ItemStack(Items.RED_BED);
-      player.setItemInHand(net.minecraft.world.InteractionHand.MAIN_HAND, bed);
-      var before = CampaignData.get(player.server).save(new CompoundTag(), level.registryAccess());
-
-      var missingState = level.getBlockState(missing);
-      level.removeBlock(missing, false);
-      habitationClick(player, module, false);
-      helper.assertTrue(home.equals(player.getRespawnPosition()) && !habitationBooked(player),
-          "Incomplete physical Ark registered lodging");
-      level.setBlockAndUpdate(missing, missingState);
-
-      var overhead = new HashMap<net.minecraft.core.BlockPos,
-          net.minecraft.world.level.block.state.BlockState>();
-      for (int dx = -1; dx <= 1; dx++) for (int dz = -1; dz <= 1; dz++) {
-        var pos = module.offset(dx, 1, dz);
-        overhead.put(pos, level.getBlockState(pos));
-        level.setBlockAndUpdate(pos, net.minecraft.world.level.block.Blocks.STONE.defaultBlockState());
-      }
-      habitationClick(player, module, false);
-      helper.assertTrue(home.equals(player.getRespawnPosition()) && player.isRespawnForced()
-          && !habitationBooked(player) && bed.getCount() == 1,
-          "Fully obstructed lodging changed home or reserved a false spawn");
-      overhead.forEach(level::setBlockAndUpdate);
-
-      habitationClick(player, module, false);
-      helper.assertTrue(module.equals(player.getRespawnPosition())
-          && !player.isRespawnForced() && habitationBooked(player) && bed.getCount() == 1,
-          "Native bed click failed to register non-forced lodging");
-      var booking = player.getPersistentData().copy();
-      habitationClick(player, module, false);
-      helper.assertTrue(booking.equals(player.getPersistentData()) && bed.getCount() == 1,
-          "Repeated check-in changed backup or consumed bed");
-      level.removeBlock(missing, false);
-      habitationClick(player, module, true);
-      helper.assertTrue(home.equals(player.getRespawnPosition())
-          && player.getRespawnDimension().equals(net.minecraft.world.level.Level.OVERWORLD)
-          && Float.compare(player.getRespawnAngle(), 37.5F) == 0
-          && player.isRespawnForced() && !habitationBooked(player) && bed.getCount() == 1,
-          "Checkout with incomplete Ark failed to restore original spawn tuple");
-      helper.assertTrue(campaign.act == 1 && campaign.completed.isEmpty()
-          && before.equals(CampaignData.get(player.server).save(new CompoundTag(), level.registryAccess())),
-          "Lodging changed campaign progress or rewards");
-    }
-    helper.succeed();
-  }
-
-  @GameTest(template = "empty", timeoutTicks = 200)
-  public static void habitationUsesNativeNonForcedRespawnAndRejectsUnsafeSpaces(GameTestHelper helper)
-      throws Exception {
-    try (var session = new WorkshopPlayer(helper)) {
-      var player = session.player;
-      var level = helper.getLevel();
-      var controller = ark(helper, player);
-      var module = arkModule(helper, controller, "habitation_module");
-      var unrelated = arkModule(helper, controller, "arcane_module");
-      player.setItemInHand(net.minecraft.world.InteractionHand.MAIN_HAND, new ItemStack(Items.BLUE_BED));
-      habitationClick(player, module, false);
-      var initial = player.findRespawnPositionAndUseSpawnBlock(false,
-          net.minecraft.world.level.portal.DimensionTransition.DO_NOTHING);
-      helper.assertTrue(!initial.missingRespawnBlock() && initial.newLevel() == level
-          && !player.isRespawnForced()
-          && net.minecraft.core.BlockPos.containing(initial.pos()).equals(module.above()),
-          "Vanilla did not select safe space over lodging");
-      level.removeBlock(unrelated, false);
-      helper.assertTrue(!player.findRespawnPositionAndUseSpawnBlock(false,
-          net.minecraft.world.level.portal.DimensionTransition.DO_NOTHING).missingRespawnBlock(),
-          "Respawn required other Ark modules again");
-      for (int dx = -1; dx <= 1; dx++) for (int dz = -1; dz <= 1; dz++)
-        if (dx != 0 || dz != 0)
-          level.setBlockAndUpdate(module.offset(dx, 0, dz),
-              net.minecraft.world.level.block.Blocks.STONE.defaultBlockState());
-      level.setBlockAndUpdate(module.above(),
-          net.minecraft.world.level.block.Blocks.WATER.defaultBlockState());
-      helper.assertTrue(player.findRespawnPositionAndUseSpawnBlock(false,
-          net.minecraft.world.level.portal.DimensionTransition.DO_NOTHING).missingRespawnBlock(),
-          "Native respawn accepted fluid feet");
-      level.setBlockAndUpdate(module.above(),
-          net.minecraft.world.level.block.Blocks.STONE.defaultBlockState());
-      helper.assertTrue(player.findRespawnPositionAndUseSpawnBlock(false,
-          net.minecraft.world.level.portal.DimensionTransition.DO_NOTHING).missingRespawnBlock(),
-          "Native respawn accepted obstructed space");
-      var north = module.north();
-      level.setBlockAndUpdate(north.below(),
-          net.minecraft.world.level.block.Blocks.STONE.defaultBlockState());
-      level.setBlockAndUpdate(north, net.minecraft.world.level.block.Blocks.AIR.defaultBlockState());
-      level.setBlockAndUpdate(north.above(),
-          net.minecraft.world.level.block.Blocks.AIR.defaultBlockState());
-      var lateral = player.findRespawnPositionAndUseSpawnBlock(false,
-          net.minecraft.world.level.portal.DimensionTransition.DO_NOTHING);
-      helper.assertTrue(!lateral.missingRespawnBlock()
-          && net.minecraft.core.BlockPos.containing(lateral.pos()).equals(north),
-          "Vanilla did not select the safe lateral exit");
-      level.removeBlock(module, false);
-      helper.assertTrue(player.findRespawnPositionAndUseSpawnBlock(false,
-          net.minecraft.world.level.portal.DimensionTransition.DO_NOTHING).missingRespawnBlock(),
-          "Removed module still provided a respawn");
-    }
-    helper.succeed();
-  }
-
-  @GameTest(template = "empty", timeoutTicks = 200)
-  public static void habitationBrokenModuleFallsBackToNativeBedAndSurvivesClone(GameTestHelper helper)
-      throws Exception {
-    try (var session = new WorkshopPlayer(helper)) {
-      var player = session.player;
-      var level = helper.getLevel();
-      var controller = ark(helper, player);
-      var module = arkModule(helper, controller, "habitation_module");
-      var home = controller.offset(8, 0, 0);
-      habitationTestBed(level, home, net.minecraft.core.Direction.EAST,
-          net.minecraft.world.level.block.Blocks.WHITE_BED.defaultBlockState());
-      player.setRespawnPosition(net.minecraft.world.level.Level.OVERWORLD, home, 19.0F, false, false);
-      helper.assertTrue(!player.findRespawnPositionAndUseSpawnBlock(false,
-          net.minecraft.world.level.portal.DimensionTransition.DO_NOTHING).missingRespawnBlock(),
-          "Original bed fixture is not a native respawn");
-      player.setItemInHand(net.minecraft.world.InteractionHand.MAIN_HAND,
-          new ItemStack(Items.GREEN_BED));
-      habitationClick(player, module, false);
-      level.removeBlock(module, false);
-      var missing = player.findRespawnPositionAndUseSpawnBlock(false,
-          net.minecraft.world.level.portal.DimensionTransition.DO_NOTHING);
-      helper.assertTrue(missing.missingRespawnBlock(), "Vanilla did not detect missing lodging");
-      var event = new net.neoforged.neoforge.event.entity.player.PlayerRespawnPositionEvent(
-          player, missing, false);
-      net.neoforged.neoforge.common.NeoForge.EVENT_BUS.post(event);
-      helper.assertTrue(!event.getDimensionTransition().missingRespawnBlock()
-          && event.getDimensionTransition().newLevel() == level
-          && event.copyOriginalSpawnPosition() && home.equals(player.getRespawnPosition())
-          && Float.compare(player.getRespawnAngle(), 19.0F) == 0 && !player.isRespawnForced(),
-          "Respawn event did not restore original native bed");
-      var fresh = new ServerPlayer(player.server, level, player.getGameProfile(),
-          player.clientInformation());
-      fresh.connection = player.connection;
-      fresh.restoreFrom(player, false);
-      fresh.copyRespawnPosition(player);
-      net.neoforged.neoforge.common.NeoForge.EVENT_BUS.post(
-          new net.neoforged.neoforge.event.entity.player.PlayerEvent.PlayerRespawnEvent(fresh, false));
-      helper.assertTrue(home.equals(fresh.getRespawnPosition()) && !habitationBooked(fresh),
-          "Clone/post-respawn lost the home or retained stale booking");
-    }
-    helper.succeed();
-  }
-
-  @GameTest(template = "empty", timeoutTicks = 200)
-  public static void habitationNativeBedReplacingModuleRestoresOriginalHome(GameTestHelper helper)
-      throws Exception {
-    try (var session = new WorkshopPlayer(helper)) {
-      var player = session.player;
-      var level = helper.getLevel();
-      var controller = ark(helper, player);
-      var module = arkModule(helper, controller, "habitation_module");
-      var home = controller.offset(8, 0, 0);
-      habitationTestBed(level, home, net.minecraft.core.Direction.EAST,
-          net.minecraft.world.level.block.Blocks.WHITE_BED.defaultBlockState());
-      player.setRespawnPosition(net.minecraft.world.level.Level.OVERWORLD, home, 13.0F, false, false);
-      helper.assertTrue(!player.findRespawnPositionAndUseSpawnBlock(false,
-          net.minecraft.world.level.portal.DimensionTransition.DO_NOTHING).missingRespawnBlock(),
-          "Original bed fixture is not a native respawn");
-      player.setItemInHand(net.minecraft.world.InteractionHand.MAIN_HAND, new ItemStack(Items.BLUE_BED));
-      habitationClick(player, module, false);
-      habitationTestBed(level, module, net.minecraft.core.Direction.NORTH,
-          net.minecraft.world.level.block.Blocks.RED_BED.defaultBlockState());
-      var replacement = player.findRespawnPositionAndUseSpawnBlock(false,
-          net.minecraft.world.level.portal.DimensionTransition.DO_NOTHING);
-      helper.assertTrue(!replacement.missingRespawnBlock()
-          && level.getBlockState(module).is(net.minecraft.world.level.block.Blocks.RED_BED),
-          "Same-coordinate replacement is not a valid native bed");
-      var event = new net.neoforged.neoforge.event.entity.player.PlayerRespawnPositionEvent(
-          player, replacement, false);
-      net.neoforged.neoforge.common.NeoForge.EVENT_BUS.post(event);
-      var expectedHome = player.findRespawnPositionAndUseSpawnBlock(false,
-          net.minecraft.world.level.portal.DimensionTransition.DO_NOTHING);
-      helper.assertTrue(home.equals(player.getRespawnPosition())
-          && Float.compare(player.getRespawnAngle(), 13.0F) == 0
-          && !player.isRespawnForced() && event.copyOriginalSpawnPosition()
-          && !expectedHome.missingRespawnBlock()
-          && event.getDimensionTransition().pos().equals(expectedHome.pos())
-          && !event.getDimensionTransition().pos().equals(replacement.pos()),
-          "Replacement native bed stole lodging instead of restoring original home");
-    }
-    helper.succeed();
-  }
-
-  @GameTest(template = "empty", timeoutTicks = 200)
-  public static void habitationNewBedWinsAndBookingSurvivesPlayerSerialization(GameTestHelper helper)
-      throws Exception {
-    try (var session = new WorkshopPlayer(helper)) {
-      var player = session.player;
-      var controller = ark(helper, player);
-      var module = arkModule(helper, controller, "habitation_module");
-      var home = controller.offset(10, 0, 0);
-      player.setRespawnPosition(net.minecraft.world.level.Level.OVERWORLD, home, 27.0F, true, false);
-      player.setItemInHand(net.minecraft.world.InteractionHand.MAIN_HAND,
-          new ItemStack(Items.YELLOW_BED));
-      habitationClick(player, module, false);
-      var saved = player.saveWithoutId(new CompoundTag());
-      var fresh = new ServerPlayer(player.server, helper.getLevel(), player.getGameProfile(),
-          player.clientInformation());
-      fresh.connection = player.connection;
-      fresh.load(saved);
-      helper.assertTrue(module.equals(fresh.getRespawnPosition()) && !fresh.isRespawnForced()
-          && habitationBooked(fresh), "Player save/load lost lodging or native spawn");
-      ArkHabitation.onLogin(
-          new net.neoforged.neoforge.event.entity.player.PlayerEvent.PlayerLoggedInEvent(fresh));
-      helper.assertTrue(habitationBooked(fresh), "Reconnect discarded active booking");
-      fresh.setItemInHand(net.minecraft.world.InteractionHand.MAIN_HAND,
-          new ItemStack(Items.YELLOW_BED));
-      fresh.teleportTo(module.getX() + 0.5, module.getY() + 1.0, module.getZ() + 0.5);
-      fresh.setShiftKeyDown(true);
-      helper.assertTrue(ArkHabitation.use(fresh, module,
-          net.minecraft.world.InteractionHand.MAIN_HAND, true)
-          && home.equals(fresh.getRespawnPosition())
-          && Float.compare(fresh.getRespawnAngle(), 27.0F) == 0
-          && fresh.isRespawnForced() && !habitationBooked(fresh),
-          "Saved booking could not restore original tuple");
-      var newerBed = controller.offset(14, 0, 0);
-      player.setRespawnPosition(net.minecraft.world.level.Level.OVERWORLD,
-          newerBed, 64.0F, false, false);
-      ArkHabitation.onLogin(
-          new net.neoforged.neoforge.event.entity.player.PlayerEvent.PlayerLoggedInEvent(player));
-      helper.assertTrue(newerBed.equals(player.getRespawnPosition())
-          && Float.compare(player.getRespawnAngle(), 64.0F) == 0
-          && !habitationBooked(player), "Newer native bed lost to stale Ark booking");
-    }
-    helper.succeed();
-  }
-
-  @GameTest(template = "empty", timeoutTicks = 200)
-  public static void habitationCanceledSpawnSettersKeepBackupAndRecoverClone(GameTestHelper helper)
-      throws Exception {
-    try (var session = new WorkshopPlayer(helper)) {
-      var player = session.player;
-      var controller = ark(helper, player);
-      var module = arkModule(helper, controller, "habitation_module");
-      var home = controller.offset(11, 0, 0);
-      player.setRespawnPosition(net.minecraft.world.level.Level.OVERWORLD, home, 48.0F, true, false);
-      player.setItemInHand(net.minecraft.world.InteractionHand.MAIN_HAND,
-          new ItemStack(Items.ORANGE_BED));
-      var bus = net.neoforged.neoforge.common.NeoForge.EVENT_BUS;
-      java.util.function.Consumer<net.neoforged.neoforge.event.entity.player.PlayerSetSpawnEvent>
-          rejectEntry = event -> {
-            if (event.getEntity() == player && module.equals(event.getNewSpawn()))
-              event.setCanceled(true);
-          };
-      bus.addListener(net.neoforged.bus.api.EventPriority.HIGHEST,
-          net.neoforged.neoforge.event.entity.player.PlayerSetSpawnEvent.class, rejectEntry);
-      try {
-        habitationClick(player, module, false);
-        helper.assertTrue(home.equals(player.getRespawnPosition()) && !habitationBooked(player),
-            "Canceled check-in changed home or saved false booking");
-      } finally {
-        bus.unregister(rejectEntry);
-      }
-      habitationClick(player, module, false);
-      java.util.function.Consumer<net.neoforged.neoforge.event.entity.player.PlayerSetSpawnEvent>
-          rejectExit = event -> {
-            if (event.getEntity() == player && home.equals(event.getNewSpawn()))
-              event.setCanceled(true);
-          };
-      bus.addListener(net.neoforged.bus.api.EventPriority.HIGHEST,
-          net.neoforged.neoforge.event.entity.player.PlayerSetSpawnEvent.class, rejectExit);
-      try {
-        habitationClick(player, module, true);
-        helper.assertTrue(module.equals(player.getRespawnPosition()) && habitationBooked(player),
-            "Canceled checkout discarded active backup");
-      } finally {
-        bus.unregister(rejectExit);
-      }
-      player.setShiftKeyDown(false);
-      var selected = player.findRespawnPositionAndUseSpawnBlock(false,
-          net.minecraft.world.level.portal.DimensionTransition.DO_NOTHING);
-      helper.assertTrue(!selected.missingRespawnBlock(), "Fixture lodging is not native spawn");
-      bus.post(new net.neoforged.neoforge.event.entity.player.PlayerRespawnPositionEvent(
-          player, selected, false));
-      var fresh = new ServerPlayer(player.server, helper.getLevel(), player.getGameProfile(),
-          player.clientInformation());
-      fresh.connection = player.connection;
-      fresh.restoreFrom(player, false);
-      var firstCopy = new java.util.concurrent.atomic.AtomicBoolean(true);
-      java.util.function.Consumer<net.neoforged.neoforge.event.entity.player.PlayerSetSpawnEvent>
-          rejectClone = event -> {
-            if (event.getEntity() == fresh && module.equals(event.getNewSpawn())
-                && firstCopy.getAndSet(false)) event.setCanceled(true);
-          };
-      bus.addListener(net.neoforged.bus.api.EventPriority.HIGHEST,
-          net.neoforged.neoforge.event.entity.player.PlayerSetSpawnEvent.class, rejectClone);
-      try {
-        fresh.copyRespawnPosition(player);
-        helper.assertTrue(fresh.getRespawnPosition() == null && habitationBooked(fresh),
-            "Canceled clone setter lost persisted backup");
-        bus.post(new net.neoforged.neoforge.event.entity.player.PlayerEvent.PlayerRespawnEvent(
-            fresh, false));
-        helper.assertTrue(module.equals(fresh.getRespawnPosition())
-            && !fresh.isRespawnForced() && habitationBooked(fresh),
-            "Post-respawn failed to recover canceled clone setter");
-      } finally {
-        bus.unregister(rejectClone);
-      }
-
-      var vetoCopy = new net.neoforged.neoforge.event.entity.player.PlayerRespawnPositionEvent(
-          player, selected, false);
-      vetoCopy.setCopyOriginalSpawnPosition(false);
-      bus.post(vetoCopy);
-      var noCopy = new ServerPlayer(player.server, helper.getLevel(), player.getGameProfile(),
-          player.clientInformation());
-      noCopy.connection = player.connection;
-      noCopy.restoreFrom(player, false);
-      bus.post(new net.neoforged.neoforge.event.entity.player.PlayerEvent.PlayerRespawnEvent(
-          noCopy, false));
-      helper.assertTrue(noCopy.getRespawnPosition() == null && !habitationBooked(noCopy),
-          "Another listener's copy veto was overridden by habitation recovery");
-    }
-    helper.succeed();
-  }
-
-  private static void habitationClick(ServerPlayer player, net.minecraft.core.BlockPos module,
-      boolean crouched) {
-    player.setShiftKeyDown(crouched);
-    var result = player.gameMode.useItemOn(player, player.serverLevel(), player.getMainHandItem(),
-        net.minecraft.world.InteractionHand.MAIN_HAND, arkHit(module));
-    if (!result.consumesAction())
-      throw new IllegalStateException("Native habitation block interaction was not consumed");
-  }
-
-  private static boolean habitationBooked(ServerPlayer player) {
-    return player.getPersistentData().getCompound(
-        net.minecraft.world.entity.player.Player.PERSISTED_NBT_TAG)
-        .contains("entrelumen:habitation");
-  }
-
-  private static void habitationTestBed(net.minecraft.server.level.ServerLevel level,
-      net.minecraft.core.BlockPos foot, net.minecraft.core.Direction facing,
-      net.minecraft.world.level.block.state.BlockState bed) {
-    var stone = net.minecraft.world.level.block.Blocks.STONE.defaultBlockState();
-    var air = net.minecraft.world.level.block.Blocks.AIR.defaultBlockState();
-    level.setBlock(foot.below(), stone, 2);
-    level.setBlock(foot.relative(facing).below(), stone, 2);
-    for (var side : List.of(facing.getClockWise(), facing.getCounterClockWise())) {
-      var exit = foot.relative(side);
-      level.setBlock(exit.below(), stone, 2);
-      level.setBlock(exit, air, 2);
-      level.setBlock(exit.above(), air, 2);
-    }
-    bed = bed.setValue(net.minecraft.world.level.block.BedBlock.FACING, facing);
-    level.setBlock(foot, bed.setValue(net.minecraft.world.level.block.BedBlock.PART,
-        net.minecraft.world.level.block.state.properties.BedPart.FOOT), 2);
-    level.setBlock(foot.relative(facing),
-        bed.setValue(net.minecraft.world.level.block.BedBlock.PART,
-            net.minecraft.world.level.block.state.properties.BedPart.HEAD), 2);
-  }
-
-  @GameTest(template = "empty", timeoutTicks = 200)
-  public static void arkFieldJournalsReadCurrentTeamWithoutMutation(GameTestHelper helper)
-      throws Exception {
-    var reader = player(helper, "JournalReader");
-    var outsider = player(helper, "JournalOther");
-    var controller = ark(helper, reader);
-    var personal = Entrelumen.current(reader);
-    personal.completed.addAll(Set.of("spectral_archive", "sealed_memory", "atlas_voices",
-        "nursery_protocol", "horizon_survey", "aether_arrival", "travellers_table"));
-    personal.arkPhase = 2;
-    personal.arkDeposits.put("entrelumen:ecosystem_capsule", 1);
-    var other = Entrelumen.current(outsider);
-    other.act = CampaignMilestones.ARK_ACT;
-    var team = FTBTeamsAPI.api().getManager().createPartyTeam(reader,
-        "Journals " + reader.getUUID(), "", dev.ftb.mods.ftblibrary.icon.Color4I.WHITE);
-    var shared = Entrelumen.current(reader);
-    reader.setItemInHand(net.minecraft.world.InteractionHand.OFF_HAND,
-        new ItemStack(Items.DIAMOND, 3));
-    var inventory = Entrelumen.availableMaterials(reader);
-    var data = CampaignData.get(reader.server);
-    var before = data.save(new CompoundTag(), helper.getLevel().registryAccess());
-    var dirty = data.isDirty();
-    var blocks = new HashMap<net.minecraft.core.BlockPos, net.minecraft.world.level.block.state.BlockState>();
-    for (var kind : ArkFieldJournals.Kind.values()) {
-      var module = arkModule(helper, controller, kind.module());
-      blocks.put(module, helper.getLevel().getBlockState(module));
-      reader.teleportTo(module.getX() + 0.5, module.getY() + 1, module.getZ() + 0.5);
-      var result = reader.gameMode.useItemOn(reader, helper.getLevel(), reader.getMainHandItem(),
-          net.minecraft.world.InteractionHand.MAIN_HAND, arkHit(module));
-      helper.assertTrue(result.consumesAction(), "Field journal did not respond: " + kind.module());
-      var snapshot = ArkFieldJournals.snapshot(reader, module, kind);
-      var outsiderSnapshot = ArkFieldJournals.snapshot(outsider, module, kind);
-      helper.assertTrue(snapshot.player().equals(reader.getUUID())
-          && snapshot.campaign().equals(team.getId()) && snapshot.kind() == kind
-          && !snapshot.campaign().equals(outsiderSnapshot.campaign())
-          && !snapshot.entries().equals(outsiderSnapshot.entries())
-          && snapshot.statusLine().getContents()
-              instanceof net.minecraft.network.chat.contents.TranslatableContents
-          && snapshot.flavor().getContents()
-              instanceof net.minecraft.network.chat.contents.TranslatableContents
-          && !snapshot.entries(JournalBookNetwork.Section.PROJECTS).isEmpty()
-          && snapshot.entries(JournalBookNetwork.Section.ARK).size() == 1
-          && snapshot.entries(JournalBookNetwork.Section.ARK).getFirst().complete()
-          && snapshot.entries().stream().allMatch(entry ->
-              BuiltInRegistries.ITEM.containsKey(entry.icon())),
-          "Journal packet lost team identity, distinct observations or translation keys");
-      var buffer = new net.minecraft.network.RegistryFriendlyByteBuf(
-          io.netty.buffer.Unpooled.buffer(), helper.getLevel().registryAccess());
-      try {
-        JournalBookNetwork.Snapshot.CODEC.encode(buffer, snapshot);
-        var decoded = JournalBookNetwork.Snapshot.CODEC.decode(buffer);
-        helper.assertTrue(decoded.equals(snapshot)
-            && decoded.statusLine().getContents()
-                instanceof net.minecraft.network.chat.contents.TranslatableContents,
-            "Journal packet changed team identity or translated narrative on the wire");
-      } finally {
-        buffer.release();
-      }
-    }
-    var oversized = new JournalBookNetwork.Snapshot(reader.getUUID(), team.getId(),
-        ArkFieldJournals.Kind.ARCANE, ArkFieldJournals.Status.WAITING,
-        net.minecraft.network.chat.Component.literal("x".repeat(33 * 1024)),
-        net.minecraft.network.chat.Component.empty(), java.util.Optional.empty(),
-        List.of(new JournalBookNetwork.Entry(JournalBookNetwork.Section.ARK,
-            ResourceLocation.parse("minecraft:paper"), java.util.Optional.empty(), 0, 0, List.of())));
-    var oversizedBuffer = new net.minecraft.network.RegistryFriendlyByteBuf(
-        io.netty.buffer.Unpooled.buffer(), helper.getLevel().registryAccess());
-    try {
-      boolean rejected = false;
-      try {
-        JournalBookNetwork.Snapshot.CODEC.encode(oversizedBuffer, oversized);
-      } catch (IllegalArgumentException expected) {
-        rejected = true;
-      }
-      helper.assertTrue(rejected, "Oversized journal payload escaped the wire limit");
-    } finally {
-      oversizedBuffer.release();
-    }
-    helper.assertTrue(ArkFieldJournals.view(shared, ArkFieldJournals.Kind.ARCANE).narrative()
-            == ArkFieldJournals.Narrative.RECORDED
-        && ArkFieldJournals.view(other, ArkFieldJournals.Kind.ARCANE).narrative()
-            == ArkFieldJournals.Narrative.EMPTY
-        && ArkFieldJournals.view(shared, ArkFieldJournals.Kind.NATURE).materials().getFirst()
-            .deposited() == 1
-        && ArkFieldJournals.view(shared, ArkFieldJournals.Kind.EXPLORATION).journeys().stream()
-            .filter(ArkFieldJournals.Evidence::recorded).count() == 1
-        && Entrelumen.availableMaterials(reader).equals(inventory)
-        && data.isDirty() == dirty
-        && data.save(new CompoundTag(), helper.getLevel().registryAccess()).equals(before)
-        && blocks.entrySet().stream().allMatch(e -> helper.getLevel().getBlockState(e.getKey()).equals(e.getValue()))
-        && CampaignActions.campaignId(reader).equals(team.getId()),
-        "Journal read consumed supplies, changed team progress or confused recorded journeys");
-    var arcane = arkModule(helper, controller, "arcane_module");
-    reader.teleportTo(arcane.getX() + 20.5, arcane.getY() + 1, arcane.getZ() + 0.5);
-    helper.assertTrue(!ArkFieldJournals.inspect(reader, arcane), "Remote journal bypassed reach");
-    reader.teleportTo(arcane.getX() + 0.5, arcane.getY() + 1, arcane.getZ() + 0.5);
-    reader.setGameMode(net.minecraft.world.level.GameType.SPECTATOR);
-    helper.assertTrue(!ArkFieldJournals.inspect(reader, arcane), "Spectator read a journal");
-    reader.setGameMode(net.minecraft.world.level.GameType.SURVIVAL);
-    helper.getLevel().removeBlock(arcane, false);
-    helper.assertTrue(!ArkFieldJournals.inspect(reader, arcane), "Removed journal still responded");
-    helper.succeed();
-  }
-
-  @GameTest(template = "empty", timeoutTicks = 200)
-  public static void arkFieldJournalsDepositOnlyTheirOwnBatches(GameTestHelper helper)
-      throws Exception {
-    var keeper = player(helper, "JournalKeeper");
-    var outsider = player(helper, "JournalGuest");
-    var controller = ark(helper, keeper);
-    var team = FTBTeamsAPI.api().getManager().createPartyTeam(keeper,
-        "Journal deposit " + keeper.getUUID(), "", dev.ftb.mods.ftblibrary.icon.Color4I.WHITE);
-    var campaign = Entrelumen.current(keeper);
-    campaign.act = CampaignMilestones.ARK_ACT;
-    campaign.completed.addAll(CampaignMilestones.MODULE_IDS);
-    var other = Entrelumen.current(outsider);
-    other.act = CampaignMilestones.ARK_ACT;
-    other.completed.addAll(CampaignMilestones.MODULE_IDS);
-    keeper.setShiftKeyDown(true);
-    outsider.setShiftKeyDown(true);
-    var data = CampaignData.get(keeper.server);
-    for (var kind : ArkFieldJournals.Kind.values()) {
-      var module = arkModule(helper, controller, kind.module());
-      keeper.teleportTo(module.getX() + 0.5, module.getY() + 1, module.getZ() + 0.5);
-      outsider.teleportTo(module.getX() + 0.5, module.getY() + 1, module.getZ() + 0.5);
-      var requirement = ArkCommissioning.STEPS.get(kind.step()).requirements().entrySet()
-          .iterator().next();
-      var supply = arkItem(requirement.getKey().substring("entrelumen:".length()));
-      int required = requirement.getValue();
-      campaign.arkPhase = kind.step() - 1;
-      campaign.arkDeposits.clear();
-      keeper.getInventory().setItem(1, ItemStack.EMPTY);
-      keeper.setItemInHand(net.minecraft.world.InteractionHand.OFF_HAND,
-          new ItemStack(supply, required > 1 ? 1 : 2));
-      int before = keeper.getOffhandItem().getCount();
-      var wrongPhase = keeper.gameMode.useItemOn(keeper, helper.getLevel(),
-          keeper.getMainHandItem(), net.minecraft.world.InteractionHand.MAIN_HAND, arkHit(module));
-      helper.assertTrue(wrongPhase.consumesAction() && campaign.arkPhase == kind.step() - 1
-          && campaign.arkDeposits.isEmpty() && keeper.getOffhandItem().getCount() == before,
-          "An earlier Ark batch was charged through " + kind.module());
-
-      campaign.arkPhase = kind.step();
-      outsider.setItemInHand(net.minecraft.world.InteractionHand.OFF_HAND,
-          new ItemStack(supply, required));
-      helper.assertTrue(!ArkActions.depositFromJournal(outsider, team.getId(), module, kind)
-          && outsider.getOffhandItem().getCount() == required
-          && other.arkDeposits.isEmpty(),
-          "A foreign campaign deposited through " + kind.module());
-      var first = keeper.gameMode.useItemOn(keeper, helper.getLevel(),
-          keeper.getMainHandItem(), net.minecraft.world.InteractionHand.MAIN_HAND, arkHit(module));
-      helper.assertTrue(first.consumesAction() && keeper.getOffhandItem().getCount()
-          == (required > 1 ? 0 : 1)
-          && campaign.arkPhase == (required > 1 ? kind.step() : kind.step() + 1)
-          && campaign.arkDeposits.equals(required > 1
-              ? Map.of(requirement.getKey(), 1) : Map.of()),
-          "Journal did not take only the available offhand quantity: " + kind.module());
-      var restored = CampaignData.load(data.save(new CompoundTag(),
-          helper.getLevel().registryAccess()), helper.getLevel().registryAccess())
-          .campaigns.parties.get(team.getId());
-      helper.assertTrue(restored != null && restored.arkPhase == campaign.arkPhase
-          && restored.arkDeposits.equals(campaign.arkDeposits),
-          "Journal deposit did not persist: " + kind.module());
-      if (required > 1) {
-        keeper.getInventory().setItem(1, new ItemStack(supply, required));
-        var finish = keeper.gameMode.useItemOn(keeper, helper.getLevel(),
-            keeper.getMainHandItem(), net.minecraft.world.InteractionHand.MAIN_HAND, arkHit(module));
-        helper.assertTrue(finish.consumesAction() && campaign.arkPhase == kind.step() + 1
-            && campaign.arkDeposits.isEmpty() && keeper.getInventory().getItem(1).getCount() == 1,
-            "Journal top-up consumed surplus or advanced the wrong batch: " + kind.module());
-      }
-      var remaining = Entrelumen.availableMaterials(keeper);
-      var replay = keeper.gameMode.useItemOn(keeper, helper.getLevel(),
-          keeper.getMainHandItem(), net.minecraft.world.InteractionHand.MAIN_HAND, arkHit(module));
-      helper.assertTrue(replay.consumesAction() && campaign.arkPhase == kind.step() + 1
-          && campaign.arkDeposits.isEmpty()
-          && Entrelumen.availableMaterials(keeper).equals(remaining)
-          && !campaign.completed.contains(CampaignMilestones.LAST_HORIZON),
-          "Journal replay consumed supplies or activated the ending: " + kind.module());
-    }
-    helper.assertTrue(other.arkPhase == 0 && other.arkDeposits.isEmpty(),
-        "Journal deposits leaked into another team's campaign");
-    helper.succeed();
-  }
-
-  @GameTest(template = "empty", timeoutTicks = 200)
-  public static void arkFieldJournalDepositNeedsAUniqueCompleteReachableArk(GameTestHelper helper) {
-    var reader = player(helper, "JournalGuard");
-    var controller = ark(helper, reader);
-    var module = arkModule(helper, controller, "arcane_module");
-    var campaign = Entrelumen.current(reader);
-    campaign.arkPhase = ArkFieldJournals.Kind.ARCANE.step();
-    reader.teleportTo(module.getX() + 0.5, module.getY() + 1, module.getZ() + 0.5);
-    reader.setShiftKeyDown(true);
-    reader.setItemInHand(net.minecraft.world.InteractionHand.OFF_HAND,
-        new ItemStack(arkItem("containment_seal"), 2));
-    var id = CampaignActions.campaignId(reader);
-    var extra = module.above();
-    helper.getLevel().setBlockAndUpdate(extra, helper.getLevel().getBlockState(controller));
-    helper.assertTrue(!ArkActions.depositFromJournal(reader, id, module,
-        ArkFieldJournals.Kind.ARCANE) && reader.getOffhandItem().getCount() == 2,
-        "Ambiguous controllers accepted a journal deposit");
-    helper.getLevel().removeBlock(extra, false);
-    var missing = arkModule(helper, controller, "nature_module");
-    var state = helper.getLevel().getBlockState(missing);
-    helper.getLevel().removeBlock(missing, false);
-    helper.assertTrue(!ArkActions.depositFromJournal(reader, id, module,
-        ArkFieldJournals.Kind.ARCANE) && reader.getOffhandItem().getCount() == 2,
-        "Missing physical module accepted a journal deposit");
-    helper.getLevel().setBlockAndUpdate(missing, state);
-    reader.teleportTo(module.getX() + 20.5, module.getY() + 1, module.getZ() + 0.5);
-    helper.assertTrue(!ArkActions.depositFromJournal(reader, id, module,
-        ArkFieldJournals.Kind.ARCANE), "Remote journal deposited supplies");
-    reader.teleportTo(module.getX() + 0.5, module.getY() + 1, module.getZ() + 0.5);
-    reader.setGameMode(net.minecraft.world.level.GameType.SPECTATOR);
-    helper.assertTrue(!ArkActions.depositFromJournal(reader, id, module,
-        ArkFieldJournals.Kind.ARCANE), "Spectator deposited through a journal");
-    reader.setGameMode(net.minecraft.world.level.GameType.SURVIVAL);
-    helper.assertTrue(campaign.arkPhase == 1 && campaign.arkDeposits.isEmpty()
-        && reader.getOffhandItem().getCount() == 2,
-        "Rejected journal interactions mutated inventory or batch");
-    helper.succeed();
-  }
-
-  @GameTest(template = "empty", timeoutTicks = 200)
-  public static void logisticsModuleDepositsCurrentBatchFromTeamInventoryOnce(GameTestHelper helper)
-      throws Exception {
-    var player = player(helper, "LogisticsMain");
-    var outsider = player(helper, "LogisticsOther");
-    var controller = ark(helper, player);
-    var module = arkModule(helper, controller, "logistics_module");
-    player.teleportTo(module.getX() + 0.5, module.getY() + 1, module.getZ() + 0.5);
-    outsider.teleportTo(module.getX() + 0.5, module.getY() + 1, module.getZ() + 0.5);
-    var personal = Entrelumen.current(player);
-    personal.arkDeposits.put("entrelumen:calibration_frame", 1);
-    var other = Entrelumen.current(outsider);
-    other.act = CampaignMilestones.ARK_ACT;
-    other.completed.addAll(Entrelumen.MODULES);
-    other.arkDeposits.put("entrelumen:power_regulator", 1);
-    var team = FTBTeamsAPI.api().getManager().createPartyTeam(player,
-        "Logistics " + player.getUUID(), "", dev.ftb.mods.ftblibrary.icon.Color4I.WHITE);
+  public static void eachModuleComesFromItsActsDeliveryOnce(GameTestHelper helper) {
+    // Ark v2 (25 September 2026): I habitation, II exploration, III nature, IV arcane, V logistics and
+    // engineering; each needs its own act and its project's prerequisites, and rewards the module once.
+    var player = player(helper, "ModuleActs");
     var campaign = Entrelumen.current(player);
-    player.setItemInHand(net.minecraft.world.InteractionHand.OFF_HAND,
-        new ItemStack(arkItem("calibration_frame"), 2));
-    player.getInventory().setItem(1, new ItemStack(arkItem("power_regulator"), 3));
-    player.getInventory().setItem(2, new ItemStack(Items.DIAMOND, 5));
-    var blocks = Map.of(module, helper.getLevel().getBlockState(module),
-        controller, helper.getLevel().getBlockState(controller));
-    var materials = Entrelumen.availableMaterials(player);
-    var ordinary = player.gameMode.useItemOn(player, helper.getLevel(), player.getMainHandItem(),
-        net.minecraft.world.InteractionHand.MAIN_HAND, arkHit(module));
-    helper.assertTrue(ordinary.consumesAction() && Entrelumen.availableMaterials(player).equals(materials)
-        && campaign.arkDeposits.equals(Map.of("entrelumen:calibration_frame", 1)),
-        "Ordinary logistics inspection consumed or changed the current batch");
-
-    outsider.setShiftKeyDown(true);
-    outsider.setItemInHand(net.minecraft.world.InteractionHand.OFF_HAND,
-        new ItemStack(arkItem("calibration_frame"), 4));
-    helper.assertTrue(!ArkActions.depositFromModule(outsider, team.getId(), module, 0)
-        && outsider.getOffhandItem().getCount() == 4
-        && other.arkDeposits.equals(Map.of("entrelumen:power_regulator", 1)),
-        "Foreign campaign identity entered the team's logistics ledger");
-
-    player.setShiftKeyDown(true);
-    var accepted = player.gameMode.useItemOn(player, helper.getLevel(), player.getMainHandItem(),
-        net.minecraft.world.InteractionHand.MAIN_HAND, arkHit(module));
-    helper.assertTrue(accepted.consumesAction() && campaign.arkPhase == 0
-        && campaign.arkDeposits.equals(Map.of("entrelumen:calibration_frame", 3,
-            "entrelumen:power_regulator", 2))
-        && player.getOffhandItem().isEmpty()
-        && player.getInventory().getItem(1).getCount() == 1
-        && player.getInventory().countItem(Items.DIAMOND) == 5,
-        "Crouched logistics click failed to cap the partial batch to exact player inventory");
-    var restored = CampaignData.load(CampaignData.get(player.server).save(new CompoundTag(),
-        helper.getLevel().registryAccess()), helper.getLevel().registryAccess())
-        .campaigns.parties.get(team.getId());
-    helper.assertTrue(restored != null && restored.arkPhase == 0
-        && restored.arkDeposits.equals(campaign.arkDeposits),
-        "Partial logistics batch did not survive SavedData round trip");
-
-    player.getInventory().setItem(3, new ItemStack(arkItem("calibration_frame"), 4));
-    player.gameMode.useItemOn(player, helper.getLevel(), player.getMainHandItem(),
-        net.minecraft.world.InteractionHand.MAIN_HAND, arkHit(module));
-    helper.assertTrue(campaign.arkPhase == 1 && campaign.arkDeposits.isEmpty()
-        && player.getInventory().getItem(3).getCount() == 3,
-        "Top-up did not advance exactly one batch and retain surplus");
-    var afterTopup = Entrelumen.availableMaterials(player);
-    player.gameMode.useItemOn(player, helper.getLevel(), player.getMainHandItem(),
-        net.minecraft.world.InteractionHand.MAIN_HAND, arkHit(module));
-    helper.assertTrue(campaign.arkPhase == 1 && campaign.arkDeposits.isEmpty()
-        && Entrelumen.availableMaterials(player).equals(afterTopup)
-        && personal.arkDeposits.equals(Map.of("entrelumen:calibration_frame", 1))
-        && other.arkDeposits.equals(Map.of("entrelumen:power_regulator", 1)),
-        "Replay consumed surplus or crossed personal/team boundaries");
-    campaign.arkPhase = ArkCommissioning.STEPS.size();
-    campaign.completed.addAll(Set.of("world_network", "end_arrival"));
-    player.gameMode.useItemOn(player, helper.getLevel(), player.getMainHandItem(),
-        net.minecraft.world.InteractionHand.MAIN_HAND, arkHit(module));
-    helper.assertTrue(!campaign.completed.contains(CampaignMilestones.LAST_HORIZON)
-        && campaign.arkPhase == ArkCommissioning.STEPS.size()
-        && Entrelumen.availableMaterials(player).equals(afterTopup)
-        && blocks.entrySet().stream().allMatch(e -> helper.getLevel().getBlockState(e.getKey()).equals(e.getValue())),
-        "Logistics click activated the ending, consumed supplies or changed the structure");
-    helper.succeed();
-  }
-
-  @GameTest(template = "empty", timeoutTicks = 200)
-  public static void logisticsModuleRejectsAmbiguousMissingRemoteAndSpectator(GameTestHelper helper) {
-    var player = player(helper, "LogisticsGuard");
-    var controller = ark(helper, player);
-    var module = arkModule(helper, controller, "logistics_module");
-    player.teleportTo(module.getX() + 0.5, module.getY() + 1, module.getZ() + 0.5);
-    player.setShiftKeyDown(true);
-    player.setItemInHand(net.minecraft.world.InteractionHand.OFF_HAND,
-        new ItemStack(arkItem("calibration_frame"), 4));
-    var campaign = Entrelumen.current(player);
-    var id = CampaignActions.campaignId(player);
-    var extra = module.above();
-    helper.getLevel().setBlockAndUpdate(extra, helper.getLevel().getBlockState(controller));
-    helper.assertTrue(!ArkActions.depositFromModule(player, id, module, 0)
-        && player.getOffhandItem().getCount() == 4 && campaign.arkDeposits.isEmpty(),
-        "Ambiguous controllers accepted a logistics deposit");
-    helper.getLevel().removeBlock(extra, false);
-    var missing = arkModule(helper, controller, "nature_module");
-    var state = helper.getLevel().getBlockState(missing);
-    helper.getLevel().removeBlock(missing, false);
-    helper.assertTrue(!ArkActions.depositFromModule(player, id, module, 0)
-        && player.getOffhandItem().getCount() == 4 && campaign.arkDeposits.isEmpty(),
-        "Incomplete Ark accepted a logistics deposit");
-    helper.getLevel().setBlockAndUpdate(missing, state);
-    player.teleportTo(module.getX() + 20.5, module.getY() + 1, module.getZ() + 0.5);
-    helper.assertTrue(!ArkActions.depositFromModule(player, id, module, 0),
-        "Remote logistics interaction bypassed reach");
-    player.teleportTo(module.getX() + 0.5, module.getY() + 1, module.getZ() + 0.5);
-    player.setGameMode(net.minecraft.world.level.GameType.SPECTATOR);
-    helper.assertTrue(!ArkActions.depositFromModule(player, id, module, 0),
-        "Spectator deposited through logistics");
-    player.setGameMode(net.minecraft.world.level.GameType.SURVIVAL);
-    var denied = new net.neoforged.neoforge.event.entity.player.PlayerInteractEvent.RightClickBlock(
-        player, net.minecraft.world.InteractionHand.MAIN_HAND, module, arkHit(module));
-    denied.setUseBlock(net.neoforged.neoforge.common.util.TriState.FALSE);
-    LogisticsModuleBlock.allowCrouchedUse(denied);
-    helper.assertTrue(denied.getUseBlock() == net.neoforged.neoforge.common.util.TriState.FALSE,
-        "Logistics hook overrode another mod's explicit denial");
-    helper.assertTrue(campaign.arkPhase == 0 && campaign.arkDeposits.isEmpty()
-        && player.getOffhandItem().getCount() == 4,
-        "Denied logistics interactions consumed supplies or changed progress");
-    helper.succeed();
-  }
-
-  @GameTest(template = "empty", timeoutTicks = 200)
-  public static void engineeringModuleInspectionIsReadOnlyAndTeamScoped(GameTestHelper helper)
-      throws Exception {
-    var engineer = player(helper, "EngInspector");
-    var outsider = player(helper, "EngOutsider");
-    var pos = helper.absolutePos(new net.minecraft.core.BlockPos(1, 1, 1));
-    var controller = pos.offset(1, 0, 0);
-    helper.getLevel().setBlockAndUpdate(pos,
-        BuiltInRegistries.BLOCK.get(ResourceLocation.parse("entrelumen:engineering_module"))
-            .defaultBlockState());
-    helper.getLevel().setBlockAndUpdate(controller,
-        BuiltInRegistries.BLOCK.get(ResourceLocation.parse("entrelumen:ark_controller"))
-            .defaultBlockState());
-    engineer.teleportTo(pos.getX() + 0.5, pos.getY() + 1, pos.getZ() + 0.5);
-    outsider.teleportTo(pos.getX() + 0.5, pos.getY() + 1, pos.getZ() + 0.5);
-    var personal = Entrelumen.current(engineer);
-    personal.act = CampaignMilestones.ARK_ACT;
-    personal.completed.addAll(Set.of("world_network", "engineering_module"));
-    personal.arkDeposits.put("entrelumen:calibration_frame", 1);
-    var other = Entrelumen.current(outsider);
-    other.act = CampaignMilestones.ARK_ACT;
-    other.arkDeposits.put("entrelumen:calibration_frame", 3);
-    var team = FTBTeamsAPI.api().getManager().createPartyTeam(engineer,
-        "Engineering " + engineer.getUUID(), "", dev.ftb.mods.ftblibrary.icon.Color4I.WHITE);
-    var shared = Entrelumen.current(engineer);
-    engineer.setItemInHand(net.minecraft.world.InteractionHand.OFF_HAND,
-        new ItemStack(arkItem("calibration_frame"), 4));
-    var supplies = Entrelumen.availableMaterials(engineer);
-    var data = CampaignData.get(engineer.server);
-    var before = data.save(new CompoundTag(), helper.getLevel().registryAccess());
-    var dirty = data.isDirty();
-    var state = helper.getLevel().getBlockState(pos);
-    for (int i = 0; i < 2; i++) {
-      var result = engineer.gameMode.useItemOn(engineer, helper.getLevel(),
-          engineer.getMainHandItem(), net.minecraft.world.InteractionHand.MAIN_HAND, arkHit(pos));
-      helper.assertTrue(result.consumesAction(), "Engineering module empty-hand interaction failed");
-    }
-    helper.assertTrue(EngineeringDiagnostics.currentReadOnly(engineer) == shared
-        && EngineeringDiagnostics.currentReadOnly(outsider) == other
-        && EngineeringDiagnostics.campaignView(shared).materials().getFirst().deposited() == 1
-        && EngineeringDiagnostics.campaignView(other).materials().getFirst().deposited() == 3
-        && EngineeringDiagnostics.physicalView(helper.getLevel(), pos).state()
-            == EngineeringDiagnostics.ControllerState.FOUND
-        && Entrelumen.availableMaterials(engineer).equals(supplies)
-        && data.isDirty() == dirty
-        && data.save(new CompoundTag(), helper.getLevel().registryAccess()).equals(before)
-        && helper.getLevel().getBlockState(pos).equals(state)
-        && personal.arkDeposits.equals(Map.of("entrelumen:calibration_frame", 1))
-        && team.getId().equals(CampaignActions.campaignId(engineer)),
-        "Repeated inspection changed supplies, progress, party identity or physical structure");
-    engineer.teleportTo(pos.getX() + 20.5, pos.getY() + 1, pos.getZ() + 0.5);
-    helper.assertTrue(!EngineeringDiagnostics.inspect(engineer, pos),
-        "Remote engineering inspection bypassed reach");
-    engineer.teleportTo(pos.getX() + 0.5, pos.getY() + 1, pos.getZ() + 0.5);
-    engineer.setGameMode(net.minecraft.world.level.GameType.SPECTATOR);
-    helper.assertTrue(!EngineeringDiagnostics.inspect(engineer, pos),
-        "Spectator inspected the engineering module");
-    engineer.setGameMode(net.minecraft.world.level.GameType.SURVIVAL);
-    helper.getLevel().removeBlock(pos, false);
-    helper.assertTrue(!EngineeringDiagnostics.inspect(engineer, pos),
-        "Removed engineering module remained interactable");
-    helper.succeed();
-  }
-
-  @GameTest(template = "empty", timeoutTicks = 200)
-  public static void actSixDeliveriesUseCrossModCostsAndRewardOnce(GameTestHelper helper) {
-    var player = player(helper, "ActSixCosts");
-    var campaign = Entrelumen.current(player);
-    campaign.act = CampaignMilestones.ARK_ACT;
-    for (String id : Entrelumen.MODULES.stream().sorted().toList()) {
-      campaign.completed.remove("world_network");
+    for (var module : ArkRules.Module.values()) {
+      String id = module.id;
       var project = Projects.all().get(id);
-      helper.assertTrue(project != null, "Act VI project missing: " + id);
+      helper.assertTrue(project != null && project.act() == module.act, "Module project missing or in another act: " + id);
+      campaign.completed.clear();
+      campaign.act = module.act == 1 ? 2 : module.act - 1;
       player.getInventory().clearContent();
       project.items().forEach((item, count) -> player.getInventory().add(
           new ItemStack(BuiltInRegistries.ITEM.get(ResourceLocation.parse(item)), count)));
       var supplied = Entrelumen.availableMaterials(player);
+      campaign.completed.addAll(project.prerequisites());
       helper.assertTrue(command(player, "entrelumen deliver " + id) == 0
           && Entrelumen.availableMaterials(player).equals(supplied),
-          "Module delivery bypassed World Network: " + id);
-      campaign.completed.add("world_network");
-      if (id.equals("exploration_module")) {
+          "Module delivery accepted in another act: " + id);
+      campaign.act = module.act;
+      campaign.completed.clear();
+      if (!project.prerequisites().isEmpty())
         helper.assertTrue(command(player, "entrelumen deliver " + id) == 0
             && Entrelumen.availableMaterials(player).equals(supplied),
-            "Exploration delivery bypassed End observation");
-        campaign.completed.add("end_arrival");
-      }
+            "Module delivery bypassed its prerequisites: " + id);
+      campaign.completed.addAll(project.prerequisites());
       helper.assertTrue(command(player, "entrelumen deliver " + id) == 1,
-          "Cross-mod module delivery rejected: " + id);
+          "Module delivery rejected: " + id);
       helper.assertTrue(campaign.completed.contains(id)
           && player.getInventory().countItem(arkItem(id)) == 1,
           "Module delivery failed to credit one reward: " + id);
@@ -1081,64 +91,6 @@ public final class RuntimeGameTests {
           && player.getInventory().countItem(arkItem(id)) == 1,
           "Repeated module delivery consumed or rewarded again: " + id);
     }
-    helper.succeed();
-  }
-
-  @GameTest(template = "empty", timeoutTicks = 200)
-  public static void lastHorizonNeedsCurrentCampaignReachAndPhysicalArk(GameTestHelper helper) {
-    var player = player(helper, "LastHorizon");
-    var intruder = player(helper, "OtherTeam");
-    var pos = ark(helper, player);
-    var campaign = Entrelumen.current(player);
-    campaign.arkPhase = 6;
-    campaign.completed.add("world_network");
-    player.setShiftKeyDown(true);
-    intruder.setShiftKeyDown(true);
-    var id = CampaignActions.campaignId(player);
-    helper.assertTrue(!ArkActions.activate(player, id, pos)
-        && !campaign.completed.contains(CampaignMilestones.LAST_HORIZON),
-        "End observation was bypassed");
-    campaign.completed.add("end_arrival");
-    helper.assertTrue(!ArkActions.activate(player, UUID.randomUUID(), pos)
-        && !ArkActions.activate(intruder, id, pos),
-        "Stale or foreign campaign activated the Ark");
-    var removedPos = pos.offset(-1, 0, 1);
-    var module = helper.getLevel().getBlockState(removedPos);
-    helper.getLevel().removeBlock(removedPos, false);
-    helper.assertTrue(!ArkActions.activate(player, id, pos),
-        "Missing physical module activated the Ark");
-    helper.getLevel().setBlockAndUpdate(removedPos, module);
-    player.teleportTo(pos.getX() + 20.5, pos.getY() + 1.0, pos.getZ() + 0.5);
-    helper.assertTrue(!ArkActions.activate(player, id, pos),
-        "Out-of-reach controller activated the Ark");
-    player.teleportTo(pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.5);
-    var materials = Entrelumen.availableMaterials(player);
-    var actor = StructureProtection.actor(player);
-    helper.assertTrue(campaign.act == CampaignMilestones.ARK_ACT && !Solsticio.GATE.satisfiedBy(actor),
-        "The Ark act opened Solsticio before the activation");
-    player.setShiftKeyDown(true);
-    var clicked = player.gameMode.useItemOn(player, helper.getLevel(), player.getMainHandItem(),
-        net.minecraft.world.InteractionHand.MAIN_HAND, arkHit(pos));
-    // Since 24 September 2026 the activation also opens act VI, Solsticio, and its gate.
-    helper.assertTrue(campaign.act == Campaigns.FINAL_ACT
-        && Solsticio.GATE.satisfiedBy(StructureProtection.actor(player))
-        && CampaignMilestones.PHASE_IDS.stream().allMatch(phase -> CampaignMilestones.isComplete(campaign, phase)),
-        "The activation did not open act VI with the Ark phases still complete");
-    // Activation forges the team's one Light Key (act VI) and consumes nothing.
-    var forged = new HashMap<>(materials);
-    forged.merge("entrelumen:light_key", 1, Integer::sum);
-    helper.assertTrue(clicked.consumesAction()
-        && campaign.completed.contains(CampaignMilestones.LAST_HORIZON)
-        && campaign.arkPhase == 6 && campaign.arkDeposits.isEmpty()
-        && Entrelumen.availableMaterials(player).equals(forged),
-        "Explicit empty-hand controller activation failed, consumed supplies or forged no single Light Key");
-    var completed = Set.copyOf(campaign.completed);
-    player.gameMode.useItemOn(player, helper.getLevel(), player.getMainHandItem(),
-        net.minecraft.world.InteractionHand.MAIN_HAND, arkHit(pos));
-    helper.assertTrue(campaign.completed.equals(completed)
-        && Entrelumen.availableMaterials(player).equals(forged)
-        && helper.getLevel().getBlockState(removedPos).equals(module),
-        "Finished controller replay changed campaign, supplies, blocks or forged a second key");
     helper.succeed();
   }
 
@@ -1290,15 +242,13 @@ public final class RuntimeGameTests {
     Expeditions.record(original, "twilightforest:twilight_forest");
     Expeditions.record(original, "the_bumblezone:the_bumblezone");
     Expeditions.record(original, "minecraft:the_end");
-    original.arkPhase = 2;
-    original.arkDeposits.put("entrelumen:ecosystem_capsule", 1);
+    original.refunds.put("entrelumen:ecosystem_capsule", 1);
     UUID endingId = UUID.randomUUID();
     var ending = data.campaigns.personal(endingId);
     ending.act = CampaignMilestones.ARK_ACT;
     ending.completed.addAll(Entrelumen.MODULES);
     ending.completed.addAll(List.of("world_network", "end_arrival"));
-    ending.arkPhase = 6;
-    helper.assertTrue(CampaignMilestones.finish(ending), "Ending fixture failed");
+    helper.assertTrue(CampaignMilestones.finish(ending, new ArkRules.Status(true, true, true, java.util.Set.copyOf(ArkRules.moduleIds()), 0)), "Ending fixture failed");
     data.setDirty();
     server.overworld().getDataStorage().save();
     var path =
@@ -1317,16 +267,15 @@ public final class RuntimeGameTests {
             var restoredEnding = loaded.campaigns.personal(endingId);
             helper.assertTrue(
                 restored.act == 5
-                    && restored.arkPhase == 2
-                    && restored.arkDeposits.equals(Map.of("entrelumen:ecosystem_capsule", 1))
+                    && restored.refunds.equals(Map.of("entrelumen:ecosystem_capsule", 1))
                     && restored.completed.contains("field_survey")
                     && restored.completed.containsAll(
                         List.of("resilient_backbone", "renewal_engine", "settlement_supply"))
                     && restored.completed.containsAll(Expeditions.IDS)
-                    && restoredEnding.arkPhase == 6
+                    && restoredEnding.refunds.isEmpty()
                     && restoredEnding.act == Campaigns.FINAL_ACT
                     && restoredEnding.completed.contains(CampaignMilestones.LAST_HORIZON)
-                    && !CampaignMilestones.finish(restoredEnding)
+                    && !CampaignMilestones.finish(restoredEnding, new ArkRules.Status(true, true, true, java.util.Set.copyOf(ArkRules.moduleIds()), 0))
                     && !Expeditions.record(restored, "aether:the_aether"),
                 "Persisted campaign did not survive disk read");
           } catch (java.io.IOException e) {
@@ -1369,156 +318,6 @@ public final class RuntimeGameTests {
 
   private static Item arkItem(String id) {
     return BuiltInRegistries.ITEM.get(ResourceLocation.parse("entrelumen:" + id));
-  }
-
-  @GameTest(template = "empty", timeoutTicks = 200)
-  public static void arkControllerPartialOffhandTopupAndReplay(GameTestHelper helper) {
-    var player = player(helper, "ArkDepositTest");
-    var pos = ark(helper, player);
-    var campaign = Entrelumen.current(player);
-    var id = CampaignActions.campaignId(player);
-    var blocks = new HashMap<net.minecraft.core.BlockPos, net.minecraft.world.level.block.state.BlockState>();
-    net.minecraft.core.BlockPos.betweenClosed(pos.offset(-1, 0, 0), pos.offset(1, 0, 2))
-        .forEach(p -> blocks.put(p.immutable(), helper.getLevel().getBlockState(p)));
-    player.setItemInHand(net.minecraft.world.InteractionHand.OFF_HAND,
-        new ItemStack(arkItem("calibration_frame"), 2));
-    player.gameMode.useItemOn(player, helper.getLevel(), player.getMainHandItem(),
-        net.minecraft.world.InteractionHand.MAIN_HAND, arkHit(pos));
-    helper.assertTrue(player.getOffhandItem().getCount() == 2 && campaign.arkPhase == 0
-        && campaign.arkDeposits.isEmpty(), "Ordinary controller inspection consumed supplies");
-    player.setShiftKeyDown(true);
-    var result = player.gameMode.useItemOn(player, helper.getLevel(), player.getMainHandItem(),
-        net.minecraft.world.InteractionHand.MAIN_HAND, arkHit(pos));
-    helper.assertTrue(result.consumesAction() && player.getOffhandItem().isEmpty()
-        && campaign.arkPhase == 0
-        && campaign.arkDeposits.equals(Map.of("entrelumen:calibration_frame", 2))
-        && CampaignData.get(player.server).isDirty(), "Crouched offhand partial deposit failed");
-    var restored = CampaignData.load(CampaignData.get(player.server).save(new CompoundTag(),
-        helper.getLevel().registryAccess()), helper.getLevel().registryAccess()).campaigns.personal(id);
-    helper.assertTrue(restored.arkDeposits.equals(campaign.arkDeposits) && restored.arkPhase == 0,
-        "Partial controller ledger did not survive SavedData serialization");
-    player.getInventory().setItem(1, new ItemStack(arkItem("calibration_frame"), 5));
-    player.getInventory().setItem(2, new ItemStack(Items.DIAMOND, 3));
-    player.setItemInHand(net.minecraft.world.InteractionHand.OFF_HAND,
-        new ItemStack(arkItem("power_regulator"), 4));
-    player.gameMode.useItemOn(player, helper.getLevel(), player.getMainHandItem(),
-        net.minecraft.world.InteractionHand.MAIN_HAND, arkHit(pos));
-    helper.assertTrue(campaign.arkPhase == 1 && campaign.arkDeposits.isEmpty()
-        && player.getInventory().getItem(1).getCount() == 3 && player.getOffhandItem().getCount() == 2
-        && player.getInventory().countItem(Items.DIAMOND) == 3,
-        "Topup did not consume exactly the outstanding cost and preserve surplus");
-    player.getInventory().setItem(3, new ItemStack(arkItem("containment_seal"), 2));
-    helper.assertTrue(!ArkActions.deposit(player, id, pos, 0) && campaign.arkPhase == 1
-        && campaign.arkDeposits.isEmpty() && player.getInventory().getItem(3).getCount() == 2
-        && player.getInventory().getItem(1).getCount() == 3 && player.getOffhandItem().getCount() == 2,
-        "Stale expected step consumed supplies");
-    // Explicit acceptance costs, independent of the production commissioning table.
-    var remainingSteps = List.of(Map.entry("containment_seal", 2),
-        Map.entry("ecosystem_capsule", 2), Map.entry("routing_matrix", 2),
-        Map.entry("ration_bundle", 8), Map.entry("horizon_chart", 1));
-    int expectedPhase = 1;
-    for (var step : remainingSteps) {
-      player.getInventory().setItem(3, new ItemStack(arkItem(step.getKey()), step.getValue() + 3));
-      player.setItemInHand(net.minecraft.world.InteractionHand.MAIN_HAND, ItemStack.EMPTY);
-      player.setShiftKeyDown(true);
-      player.gameMode.useItemOn(player, helper.getLevel(), player.getMainHandItem(),
-          net.minecraft.world.InteractionHand.MAIN_HAND, arkHit(pos));
-      expectedPhase++;
-      helper.assertTrue(campaign.arkPhase == expectedPhase && campaign.arkDeposits.isEmpty()
-          && player.getInventory().getItem(3).is(arkItem(step.getKey()))
-          && player.getInventory().getItem(3).getCount() == 3,
-          "Controller did not complete the exact cost and preserve surplus for " + step.getKey());
-    }
-    var inventoryBeforeCompletedClick = Entrelumen.availableMaterials(player);
-    player.gameMode.useItemOn(player, helper.getLevel(), player.getMainHandItem(),
-        net.minecraft.world.InteractionHand.MAIN_HAND, arkHit(pos));
-    helper.assertTrue(campaign.arkPhase == 6 && campaign.arkDeposits.isEmpty()
-        && Entrelumen.availableMaterials(player).equals(inventoryBeforeCompletedClick)
-        && player.getInventory().getItem(1).getCount() == 3
-        && player.getInventory().getItem(3).getCount() == 3
-        && player.getOffhandItem().getCount() == 2
-        && player.getInventory().countItem(Items.DIAMOND) == 3,
-        "Completed controller click changed phase, ledger or remaining materials");
-    helper.assertTrue(blocks.entrySet().stream().allMatch(e ->
-        helper.getLevel().getBlockState(e.getKey()).equals(e.getValue())),
-        "Commissioning changed source blocks");
-    helper.succeed();
-  }
-
-  @GameTest(template = "empty", timeoutTicks = 200)
-  public static void arkMissingModuleAndDeniedHookPreserveSupplies(GameTestHelper helper) {
-    var player = player(helper, "ArkDeniedTest");
-    var pos = ark(helper, player);
-    player.setShiftKeyDown(true);
-    player.setItemInHand(net.minecraft.world.InteractionHand.OFF_HAND,
-        new ItemStack(arkItem("calibration_frame"), 4));
-    var denied = new net.neoforged.neoforge.event.entity.player.PlayerInteractEvent.RightClickBlock(
-        player, net.minecraft.world.InteractionHand.MAIN_HAND, pos, arkHit(pos));
-    denied.setUseBlock(net.neoforged.neoforge.common.util.TriState.FALSE);
-    ArkControllerBlock.allowEmptyHandDeposit(denied);
-    helper.assertTrue(denied.getUseBlock() == net.neoforged.neoforge.common.util.TriState.FALSE,
-        "Controller hook overwrote explicit block denial");
-    var canceled = new net.neoforged.neoforge.event.entity.player.PlayerInteractEvent.RightClickBlock(
-        player, net.minecraft.world.InteractionHand.MAIN_HAND, pos, arkHit(pos));
-    canceled.setCanceled(true);
-    var before = canceled.getUseBlock();
-    ArkControllerBlock.allowEmptyHandDeposit(canceled);
-    helper.assertTrue(canceled.isCanceled() && canceled.getUseBlock() == before,
-        "Controller hook overrode cancellation");
-    helper.getLevel().removeBlock(pos.offset(-1, 0, 1), false);
-    helper.assertTrue(ArkActions.missingModules(player, pos).size() == 1,
-        "Fixture must lack exactly one placed module");
-    player.gameMode.useItemOn(player, helper.getLevel(), player.getMainHandItem(),
-        net.minecraft.world.InteractionHand.MAIN_HAND, arkHit(pos));
-    helper.assertTrue(player.getOffhandItem().getCount() == 4
-        && Entrelumen.current(player).arkPhase == 0 && Entrelumen.current(player).arkDeposits.isEmpty(),
-        "Missing physical module permitted a deposit");
-    helper.succeed();
-  }
-
-  @GameTest(template = "empty", timeoutTicks = 200)
-  public static void arkPartyLedgerRejectsStaleIdentityAndRestoresPersonal(GameTestHelper helper)
-      throws Exception {
-    var founder = player(helper, "ArkFounder");
-    var guest = player(helper, "ArkGuest");
-    var pos = ark(helper, founder);
-    guest.teleportTo(pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.5);
-    var personal = Entrelumen.current(founder);
-    personal.arkDeposits.put("entrelumen:calibration_frame", 1);
-    var guestPersonal = Entrelumen.current(guest);
-    guestPersonal.act = CampaignMilestones.ARK_ACT;
-    guestPersonal.completed.addAll(Entrelumen.MODULES);
-    guestPersonal.arkDeposits.put("entrelumen:power_regulator", 1);
-    var team = (dev.ftb.mods.ftbteams.data.PartyTeam) FTBTeamsAPI.api().getManager()
-        .createPartyTeam(founder, "Ark " + founder.getUUID(), "",
-            dev.ftb.mods.ftblibrary.icon.Color4I.WHITE);
-    founder.setItemInHand(net.minecraft.world.InteractionHand.OFF_HAND,
-        new ItemStack(arkItem("calibration_frame"), 2));
-    helper.assertTrue(!ArkActions.deposit(founder, founder.getUUID(), pos, 0)
-        && founder.getOffhandItem().getCount() == 2, "Stale personal identity accepted after party creation");
-    guest.setItemInHand(net.minecraft.world.InteractionHand.OFF_HAND,
-        new ItemStack(arkItem("calibration_frame"), 2));
-    helper.assertTrue(!ArkActions.deposit(guest, team.getId(), pos, 0)
-        && guest.getOffhandItem().getCount() == 2
-        && guestPersonal.arkDeposits.equals(Map.of("entrelumen:power_regulator", 1)),
-        "Nonmember could target another team's ledger");
-    team.invite(founder, List.of(guest.getGameProfile()));
-    team.join(guest);
-    helper.assertTrue(ArkActions.deposit(founder, team.getId(), pos, 0)
-        && Entrelumen.current(guest).arkDeposits.equals(Map.of("entrelumen:calibration_frame", 3))
-        && personal.arkDeposits.equals(Map.of("entrelumen:calibration_frame", 1)),
-        "Team deposit did not share progress or mutated founder snapshot");
-    team.leave(guest.getUUID());
-    guest.setItemInHand(net.minecraft.world.InteractionHand.OFF_HAND,
-        new ItemStack(arkItem("calibration_frame"), 2));
-    helper.assertTrue(Entrelumen.current(guest).arkDeposits.equals(Map.of("entrelumen:power_regulator", 1))
-        && !ArkActions.deposit(guest, team.getId(), pos, 0) && guest.getOffhandItem().getCount() == 2,
-        "Leaving lost personal ledger or accepted stale party identity");
-    team.leave(founder.getUUID());
-    helper.assertTrue(Entrelumen.current(founder).arkDeposits.equals(Map.of("entrelumen:calibration_frame", 1))
-        && CampaignData.get(founder.server).campaigns.parties.get(team.getId()).archived,
-        "Dissolution did not preserve personal ledger and archive the party");
-    helper.succeed();
   }
 
   @GameTest(template = "empty", timeoutTicks = 200)
@@ -1868,10 +667,14 @@ public final class RuntimeGameTests {
     player.getInventory().add(new ItemStack(Items.BOOK));
     player.getInventory().add(new ItemStack(Items.COPPER_INGOT, 9));
     player.getInventory().add(new ItemStack(Items.GLASS, 4));
-    player.getInventory().add(new ItemStack(Items.BREAD, 3));
+    player.getInventory().add(new ItemStack(Items.BREAD, 7));
     player.getInventory().add(new ItemStack(Items.BOWL, 4));
     player.getInventory().add(new ItemStack(Items.PAPER, 3));
     player.getInventory().add(new ItemStack(Items.COMPASS));
+    // Ark v2: act I also delivers the Habitation Module (a bed, a campfire, two lanterns, four bread).
+    player.getInventory().add(new ItemStack(Items.WHITE_BED));
+    player.getInventory().add(new ItemStack(Items.CAMPFIRE));
+    player.getInventory().add(new ItemStack(Items.LANTERN, 2));
     // Supplies may be gifted: possession alone never grants a milestone.
     helper.assertTrue(campaign.completed.isEmpty(), "Supplies completed the story automatically");
     var denied = AtlasNetwork.handleRequest(player, new AtlasNetwork.Request(
@@ -1880,28 +683,30 @@ public final class RuntimeGameTests {
         && player.getInventory().countItem(Items.COPPER_INGOT) == 9,
         "Premature final delivery consumed supplies or advanced the story");
     for (String id : List.of("atlas_awakened", "travellers_table", "lens_assembled",
-        "field_survey", "first_signal")) {
+        "field_survey", "habitation_module", "first_signal")) {
       var delivered = AtlasNetwork.handleRequest(player, new AtlasNetwork.Request(
           initial.campaign(), CampaignActions.Action.DELIVER, id));
       helper.assertTrue(delivered.message().equals("entrelumen.atlas.delivered")
           && delivered.projects().stream().anyMatch(p -> p.id().equals(id) && p.completed()),
           "First-act delivery failed: " + id);
     }
-    helper.assertTrue(campaign.completed.size() == 5
+    helper.assertTrue(campaign.completed.size() == 6
         && AtlasNetwork.handleOpen(player).canAdvance(), "Complete first act cannot advance");
     var atlas = BuiltInRegistries.ITEM.get(ResourceLocation.parse("entrelumen:atlas"));
     // 24 September 2026: First Signal also grants the first two calibration frames, which have no
     // crafting recipe (one builds the metallurgic infuser, one is spare).
     var frame = BuiltInRegistries.ITEM.get(ResourceLocation.parse("entrelumen:calibration_frame"));
+    var habitation = BuiltInRegistries.ITEM.get(ResourceLocation.parse("entrelumen:habitation_module"));
     helper.assertTrue(player.getInventory().countItem(atlas) == 1
-        && player.getInventory().items.stream().filter(s -> !s.isEmpty()).count() == 3
+        && player.getInventory().countItem(habitation) == 1
+        && player.getInventory().items.stream().filter(s -> !s.isEmpty()).count() == 4
           && player.getInventory().countItem(BuiltInRegistries.ITEM.get(ResourceLocation.parse("entrelumen:signal_core"))) == 1
           && player.getInventory().countItem(frame) == 2,
         "First-act deliveries consumed incorrect amounts, lost the portable Atlas or missed the two frames");
     var replay = AtlasNetwork.handleRequest(player, new AtlasNetwork.Request(
         initial.campaign(), CampaignActions.Action.DELIVER, "first_signal"));
     helper.assertTrue(replay.message().equals("entrelumen.delivery.failed")
-        && campaign.completed.size() == 5 && player.getInventory().countItem(atlas) == 1
+        && campaign.completed.size() == 6 && player.getInventory().countItem(atlas) == 1
           && player.getInventory().countItem(BuiltInRegistries.ITEM.get(ResourceLocation.parse("entrelumen:signal_core"))) == 1
           && player.getInventory().countItem(frame) == 2,
         "Completed signal replay changed progress or inventory");
@@ -1981,6 +786,21 @@ public final class RuntimeGameTests {
         && !CampaignActions.perform(player, campaignId,
             CampaignActions.Action.ADVANCE, "").success(),
         "Four prototypes bypassed the closing archive");
+    // Ark v2: act II also delivers the Exploration Module, and the archive waits for it.
+    player.getInventory().add(new ItemStack(prototypes.get("travelling_pantry"), 2));
+    player.getInventory().add(new ItemStack(Items.COMPASS));
+    player.getInventory().add(new ItemStack(Items.MAP, 4));
+    player.getInventory().add(new ItemStack(Items.SPYGLASS));
+    helper.assertTrue(!CampaignActions.perform(player, campaignId,
+        CampaignActions.Action.DELIVER, "lost_workshop").success()
+        && player.getInventory().countItem(Items.PAPER) == 6,
+        "The archive closed before the Exploration Module");
+    var exploration = BuiltInRegistries.ITEM.get(ResourceLocation.parse("entrelumen:exploration_module"));
+    helper.assertTrue(CampaignActions.perform(player, campaignId,
+        CampaignActions.Action.DELIVER, "exploration_module").success()
+        && player.getInventory().countItem(exploration) == 1
+        && player.getInventory().countItem(Items.MAP) == 0 && player.getInventory().countItem(Items.SPYGLASS) == 0,
+        "The Exploration Module delivery did not take its act II materials and give the module");
     helper.assertTrue(CampaignActions.perform(player, campaignId,
         CampaignActions.Action.DELIVER, "lost_workshop").success()
         && player.getInventory().countItem(Items.PAPER) == 3
@@ -1990,13 +810,13 @@ public final class RuntimeGameTests {
         CampaignActions.Action.DELIVER, "lost_workshop").success()
         && player.getInventory().countItem(Items.PAPER) == 3
         && player.getInventory().countItem(Items.COPPER_INGOT) == 1
-        && campaign.completed.size() == 6,
+        && campaign.completed.size() == 7,
         "Archive replay changed supplies or progress");
     // The closing archive grants Terra's Arm once; the prototype deliveries grant nothing.
     helper.assertTrue(prototypes.values().stream().allMatch(item -> player.getInventory().countItem(item) == 1)
         && player.getInventory().countItem(Items.ANVIL) == 1
         && player.getInventory().countItem(TerraArm.ITEM.get()) == 1
-        && player.getInventory().items.stream().mapToInt(ItemStack::getCount).sum() == 10
+        && player.getInventory().items.stream().mapToInt(ItemStack::getCount).sum() == 11
         && helper.getLevel().getBlockState(installedPos).is(net.minecraft.world.level.block.Blocks.ENCHANTING_TABLE),
         "Deliveries granted items other than Terra's Arm or consumed infrastructure/unrelated supplies");
     helper.assertTrue(AtlasNetwork.handleOpen(player).canAdvance()
@@ -2101,7 +921,7 @@ public final class RuntimeGameTests {
   }
 
   @GameTest(template = "empty", timeoutTicks = 200)
-  public static void phaseAndEndingQuestTasksOnlyMirrorSavedAuthority(GameTestHelper helper) {
+  public static void moduleAndEndingQuestTasksOnlyMirrorSavedAuthority(GameTestHelper helper) {
     var player = player(helper, "ActSixMirror");
     var campaign = Entrelumen.current(player);
     var file = ServerQuestFile.getInstance().orElseThrow();
@@ -2115,37 +935,33 @@ public final class RuntimeGameTests {
     phaseQuest.addTask(phaseTask);
     endingQuest.addTask(endingTask);
     var phaseTag = new CompoundTag();
-    phaseTag.putString("milestone", CampaignMilestones.PHASE_IDS.getFirst());
+    phaseTag.putString("milestone", "habitation_module");
     phaseTask.readData(phaseTag, helper.getLevel().registryAccess());
     var endingTag = new CompoundTag();
     endingTag.putString("milestone", CampaignMilestones.LAST_HORIZON);
     endingTask.readData(endingTag, helper.getLevel().registryAccess());
     var teamData = file.getOrCreateTeamData(player);
-    campaign.completed.add(CampaignMilestones.PHASE_IDS.getFirst());
-    campaign.arkPhase = 1;
     phaseTask.submitTask(teamData, player, ItemStack.EMPTY);
     endingTask.submitTask(teamData, player, ItemStack.EMPTY);
     helper.assertTrue(teamData.getProgress(phaseTask) == 0
         && teamData.getProgress(endingTask) == 0,
-        "FTB accepted a fabricated phase or ending");
-    campaign.act = CampaignMilestones.ARK_ACT;
-    campaign.completed.addAll(Entrelumen.MODULES);
+        "FTB accepted a fabricated module project or ending");
+    campaign.completed.add("habitation_module");
     phaseTask.submitTask(teamData, player, ItemStack.EMPTY);
     helper.assertTrue(teamData.getProgress(phaseTask) == 1,
-        "Commissioning phase did not project to FTB");
-    campaign.arkPhase = 6;
+        "A delivered module project did not project to FTB");
+    campaign.act = CampaignMilestones.ARK_ACT;
+    campaign.completed.addAll(Entrelumen.MODULES);
     campaign.completed.addAll(List.of("world_network", "end_arrival"));
     endingTask.submitTask(teamData, player, ItemStack.EMPTY);
     helper.assertTrue(teamData.getProgress(endingTask) == 0,
         "FTB granted the ending from prerequisites alone");
-    helper.assertTrue(CampaignMilestones.finish(campaign), "Ending fixture rejected");
+    helper.assertTrue(!CampaignMilestones.finish(campaign, ArkRules.Status.NONE),
+        "The activation passed without an Ark");
+    helper.assertTrue(CampaignMilestones.finish(campaign, new ArkRules.Status(true, true, true, java.util.Set.copyOf(ArkRules.moduleIds()), 0)), "Ending fixture rejected");
     endingTask.submitTask(teamData, player, ItemStack.EMPTY);
     helper.assertTrue(teamData.getProgress(endingTask) == 1,
         "Persisted ending did not project to FTB");
-    campaign.completed.remove("nature_module");
-    phaseTask.submitTask(teamData, player, ItemStack.EMPTY);
-    helper.assertTrue(teamData.getProgress(phaseTask) == 0,
-        "FTB retained a derived phase after authority became invalid");
     helper.succeed();
   }
 
@@ -2203,7 +1019,9 @@ public final class RuntimeGameTests {
     }
     var closure = initial.projects().stream().filter(p -> p.id().equals("exchange_route")).findFirst().orElseThrow();
     helper.assertTrue(!closure.ready() && !closure.completed()
-        && closure.prerequisites().stream().map(AtlasNetwork.Prerequisite::id).collect(java.util.stream.Collectors.toSet()).equals(prototypes.keySet())
+        && closure.prerequisites().stream().map(AtlasNetwork.Prerequisite::id).collect(java.util.stream.Collectors.toSet())
+            .equals(java.util.stream.Stream.concat(prototypes.keySet().stream(), java.util.stream.Stream.of("nature_module"))
+                .collect(java.util.stream.Collectors.toSet()))
         && closure.prerequisites().stream().noneMatch(AtlasNetwork.Prerequisite::completed)
         && new HashSet<>(closure.materials()).equals(Set.of(
             new AtlasNetwork.Material(ResourceLocation.parse("minecraft:paper"), 6, 3),
@@ -2237,6 +1055,15 @@ public final class RuntimeGameTests {
         && !CampaignActions.perform(player, campaignId,
             CampaignActions.Action.ADVANCE, "").success(),
         "Five prototypes bypassed the closing archive");
+    // Ark v2: act III also delivers the Nature Module, and the route waits for it.
+    player.getInventory().add(new ItemStack(prototypes.get("nursery_protocol")));
+    player.getInventory().add(new ItemStack(Items.MOSS_BLOCK, 8));
+    player.getInventory().add(new ItemStack(Items.GLISTERING_MELON_SLICE, 4));
+    var nature = BuiltInRegistries.ITEM.get(ResourceLocation.parse("entrelumen:nature_module"));
+    helper.assertTrue(CampaignActions.perform(player, campaignId,
+        CampaignActions.Action.DELIVER, "nature_module").success()
+        && player.getInventory().countItem(nature) == 1 && player.getInventory().countItem(Items.MOSS_BLOCK) == 0,
+        "The Nature Module delivery did not take its act III materials and give the module");
     var readyClosure = AtlasNetwork.handleOpen(player).projects().stream()
         .filter(p -> p.id().equals("exchange_route")).findFirst().orElseThrow();
     helper.assertTrue(readyClosure.ready() && !readyClosure.completed()
@@ -2251,7 +1078,7 @@ public final class RuntimeGameTests {
         CampaignActions.Action.DELIVER, "exchange_route").success()
         && player.getInventory().countItem(Items.PAPER) == 3
         && player.getInventory().countItem(Items.COPPER_INGOT) == 1
-        && campaign.completed.size() == 7,
+        && campaign.completed.size() == 8,
         "Archive replay changed supplies or progress");
     // Signal exchange, nursery protocol and workshop hands each grant their altar, exactly once.
     var altarRewards = List.of(Altars.PEACE_ALTAR.get().asItem(), Altars.GROWTH_ALTAR.get().asItem(),
@@ -2259,7 +1086,7 @@ public final class RuntimeGameTests {
     helper.assertTrue(prototypes.values().stream().allMatch(item -> player.getInventory().countItem(item) == 1)
         && altarRewards.stream().allMatch(item -> player.getInventory().countItem(item) == 1)
         && player.getInventory().countItem(Items.ANVIL) == 1
-        && player.getInventory().items.stream().mapToInt(ItemStack::getCount).sum() == 10 + altarRewards.size()
+        && player.getInventory().items.stream().mapToInt(ItemStack::getCount).sum() == 11 + altarRewards.size()
         && helper.getLevel().getBlockState(installedPos).is(net.minecraft.world.level.block.Blocks.ENCHANTING_TABLE),
         "Deliveries granted items other than one altar each, or consumed infrastructure/unrelated supplies");
     helper.assertTrue(AtlasNetwork.handleOpen(player).canAdvance()
@@ -2311,6 +1138,7 @@ public final class RuntimeGameTests {
     var closure = initial.projects().stream().filter(p -> p.id().equals("atlas_voices")).findFirst().orElseThrow();
     var closurePrerequisites = new HashSet<>(prototypes.keySet());
     closurePrerequisites.add(HeliodorHeartRules.PROJECT);
+    closurePrerequisites.add("arcane_module");
     helper.assertTrue(!closure.ready() && !closure.completed()
         && closure.prerequisites().stream().map(AtlasNetwork.Prerequisite::id)
             .collect(java.util.stream.Collectors.toSet()).equals(closurePrerequisites)
@@ -2388,6 +1216,19 @@ public final class RuntimeGameTests {
         && HeliodorHeartRules.inAtlas(campaign) && !HeliodorHeartRules.canRelease(campaign),
         "The Heart delivery did not consume exactly the Heart into the Atlas");
     fourthActDenied(helper, player, HeliodorHeartRules.PROJECT);
+    // Ark v2: act IV also delivers the Arcane Module, and the voices wait for it.
+    fourthActDenied(helper, player, "atlas_voices");
+    player.getInventory().add(new ItemStack(Items.AMETHYST_SHARD, 16));
+    player.getInventory().add(new ItemStack(Items.LAPIS_LAZULI, 16));
+    var arcane = AtlasNetwork.handleRequest(player, new AtlasNetwork.Request(
+        initial.campaign(), CampaignActions.Action.DELIVER, "arcane_module"));
+    expectedInventory.compute("entrelumen:spectral_lens", (id, count) -> count - 1 == 0 ? null : count - 1);
+    expectedInventory.merge("entrelumen:arcane_module", 1, Integer::sum);
+    expectedCompleted.add("arcane_module");
+    helper.assertTrue(arcane.message().equals("entrelumen.atlas.delivered")
+        && campaign.completed.equals(expectedCompleted)
+        && Entrelumen.availableMaterials(player).equals(expectedInventory),
+        "The Arcane Module delivery did not take its act IV materials and give the module");
     var closed = AtlasNetwork.handleRequest(player, new AtlasNetwork.Request(
         initial.campaign(), CampaignActions.Action.DELIVER, "atlas_voices"));
     expectedInventory.compute("minecraft:paper", (id, count) -> count - 3);
@@ -2486,10 +1327,12 @@ public final class RuntimeGameTests {
 
     var initial = AtlasNetwork.handleOpen(player);
     var actFive = new HashSet<>(Set.of("resilient_backbone", "renewal_engine", "settlement_supply", "world_network"));
-    actFive.addAll(Entrelumen.MODULES);
+    // Ark v2: act V delivers the last two modules; the other four came with acts I-IV.
+    var actFiveModules = Set.of("logistics_module", "engineering_module");
+    actFive.addAll(actFiveModules);
     helper.assertTrue(initial.projects().stream().map(AtlasNetwork.ProjectView::id)
         .collect(java.util.stream.Collectors.toSet()).equals(actFive),
-        "Atlas omitted an Act V delivery (the plan and, since 24 September 2026, the six modules)");
+        "Atlas omitted an Act V delivery (the plan and, since Ark v2, the Logistics and Engineering modules)");
     for (var entry : prototypes.entrySet()) {
       var view = initial.projects().stream().filter(p -> p.id().equals(entry.getKey()))
           .findFirst().orElseThrow();
@@ -2564,10 +1407,10 @@ public final class RuntimeGameTests {
     // activation (not an Advance) leads to act VI.
     var advanced = AtlasNetwork.handleRequest(player, new AtlasNetwork.Request(
         campaignId, CampaignActions.Action.ADVANCE, ""));
-    campaign.completed.addAll(Entrelumen.MODULES);
+    campaign.completed.addAll(actFiveModules);
     boolean modulesAlone = CampaignActions.perform(player, campaignId, CampaignActions.Action.ADVANCE, "").success();
     boolean atlasOffersAdvance = AtlasNetwork.handleOpen(player).canAdvance();
-    campaign.completed.removeAll(Entrelumen.MODULES);
+    campaign.completed.removeAll(actFiveModules);
     helper.assertTrue(advanced.act() == 5 && campaign.act == 5 && !advanced.canAdvance()
         && advanced.message().equals("entrelumen.advance.failed")
         && !modulesAlone && !atlasOffersAdvance
@@ -3099,288 +1942,4 @@ public final class RuntimeGameTests {
         "A removed module still restored the site");
   }
 
-  // Exploration chart room: field maps compile into a held chart at a complete Ark.
-  private static byte chartColour(net.minecraft.world.level.material.MapColor colour) {
-    return colour.getPackedId(net.minecraft.world.level.material.MapColor.Brightness.NORMAL);
-  }
-
-  private static ItemStack chartMap(GameTestHelper helper, int x, int z, int scale) {
-    return net.minecraft.world.item.MapItem.create(helper.getLevel(), x, z, (byte) scale, true, false);
-  }
-
-  private static net.minecraft.world.level.saveddata.maps.MapItemSavedData chartData(
-      GameTestHelper helper, ItemStack map) {
-    return net.minecraft.world.item.MapItem.getSavedData(map, helper.getLevel());
-  }
-
-  private static void chartFill(net.minecraft.world.level.saveddata.maps.MapItemSavedData data,
-      int x0, int z0, int x1, int z1, byte colour) {
-    for (int x = x0; x < x1; x++)
-      for (int z = z0; z < z1; z++) data.colors[x + z * 128] = colour;
-  }
-
-  private static int chartAt(net.minecraft.world.level.saveddata.maps.MapItemSavedData data, int x, int z) {
-    return data.colors[x + z * 128];
-  }
-
-  private static List<ItemStack> chartInventory(ServerPlayer player) {
-    List<ItemStack> stacks = new ArrayList<>();
-    for (var stack : player.getInventory().items) stacks.add(stack.copy());
-    for (var stack : player.getInventory().armor) stacks.add(stack.copy());
-    for (var stack : player.getInventory().offhand) stacks.add(stack.copy());
-    return stacks;
-  }
-
-  private static boolean chartInventoryUnchanged(List<ItemStack> before, ServerPlayer player) {
-    var now = chartInventory(player);
-    if (now.size() != before.size()) return false;
-    for (int i = 0; i < now.size(); i++)
-      if (!ItemStack.matches(before.get(i), now.get(i))) return false;
-    return true;
-  }
-
-  private static ItemStack chartInDimension(GameTestHelper helper,
-      net.minecraft.resources.ResourceKey<net.minecraft.world.level.Level> dimension, int x, int z) {
-    var level = helper.getLevel();
-    var id = level.getFreeMapId();
-    level.setMapData(id, net.minecraft.world.level.saveddata.maps.MapItemSavedData.createFresh(
-        x, z, (byte) 0, true, false, dimension));
-    var map = new ItemStack(Items.FILLED_MAP);
-    map.set(net.minecraft.core.component.DataComponents.MAP_ID, id);
-    return map;
-  }
-
-  @GameTest(template = "empty", timeoutTicks = 200)
-  public static void explorationChartsCompileFieldMapsWithoutConsumingAnything(GameTestHelper helper)
-      throws Exception {
-    try (var session = new WorkshopPlayer(helper)) {
-      var player = session.player;
-      var level = helper.getLevel();
-      var main = net.minecraft.world.InteractionHand.MAIN_HAND;
-      var controller = ark(helper, player);
-      var module = arkModule(helper, controller, "exploration_module");
-      // An early visitor with gifted maps: the chart room never reads or writes the campaign.
-      var campaign = Entrelumen.current(player);
-      campaign.act = 1;
-      campaign.completed.clear();
-      var data = CampaignData.get(player.server);
-      var beforeCampaign = data.save(new CompoundTag(), level.registryAccess());
-
-      byte grass = chartColour(net.minecraft.world.level.material.MapColor.GRASS);
-      byte water = chartColour(net.minecraft.world.level.material.MapColor.WATER);
-      byte stone = chartColour(net.minecraft.world.level.material.MapColor.STONE);
-      byte sand = chartColour(net.minecraft.world.level.material.MapColor.SAND);
-      byte snow = chartColour(net.minecraft.world.level.material.MapColor.SNOW);
-      byte wood = chartColour(net.minecraft.world.level.material.MapColor.WOOD);
-      // A blank scale-1 chart, as a cartography table zoom-out leaves it, and its field tiles.
-      var chart = chartMap(helper, controller.getX(), controller.getZ(), 1);
-      var target = chartData(helper, chart);
-      var grid = ArkCharts.grid(target);
-      int ox = (int) grid.originX(), oz = (int) grid.originZ();
-      target.colors[0] = wood;
-      var northwest = chartMap(helper, ox + 10, oz + 10, 0);
-      chartFill(chartData(helper, northwest), 0, 0, 128, 128, grass);
-      var northeast = chartMap(helper, ox + 138, oz + 10, 0);
-      chartFill(chartData(helper, northeast), 0, 0, 64, 128, water);
-      var southwest = chartMap(helper, ox + 10, oz + 138, 0);
-      var southwestData = chartData(helper, southwest);
-      southwestData.colors[0] = stone;
-      southwestData.colors[1] = stone;
-      southwestData.colors[128] = sand;
-      southwestData.colors[2] = sand;
-      southwestData.colors[3] = stone;
-      var older = chartMap(helper, controller.getX(), controller.getZ(), 1);
-      var olderData = chartData(helper, older);
-      olderData.colors[120 + 120 * 128] = snow;
-      olderData.colors[127 + 127 * 128] = snow;
-      olderData.colors[0] = snow;
-      // Left out: another dimension, a coarser scale and a distant area.
-      var nether = chartInDimension(helper, net.minecraft.world.level.Level.NETHER, ox + 10, oz + 10);
-      chartFill(chartData(helper, nether), 0, 0, 128, 128, stone);
-      var coarse = chartMap(helper, controller.getX(), controller.getZ(), 2);
-      chartFill(chartData(helper, coarse), 0, 0, 128, 128, sand);
-      var distant = chartMap(helper, ox + 5000, oz, 0);
-      chartFill(chartData(helper, distant), 0, 0, 128, 128, sand);
-      List<net.minecraft.world.level.saveddata.maps.MapItemSavedData> sources = List.of(
-          chartData(helper, northwest), chartData(helper, northeast), southwestData, olderData,
-          chartData(helper, nether), chartData(helper, coarse), chartData(helper, distant));
-      List<byte[]> sourceColours = sources.stream().map(source -> source.colors.clone()).toList();
-
-      var inventory = player.getInventory();
-      inventory.selected = 0;
-      inventory.setItem(0, chart);
-      inventory.setItem(1, northwest);
-      inventory.setItem(2, northeast.copyWithCount(2));
-      inventory.setItem(3, older);
-      inventory.setItem(4, nether);
-      inventory.setItem(5, coarse);
-      inventory.setItem(6, distant);
-      inventory.setItem(7, chart.copy());
-      inventory.setItem(9, northeast.copy());
-      inventory.setItem(10, new ItemStack(Items.MAP, 3));
-      inventory.setItem(11, new ItemStack(Items.PAPER, 5));
-      player.setItemInHand(net.minecraft.world.InteractionHand.OFF_HAND, southwest);
-      var beforeInventory = chartInventory(player);
-      var beforeChart = target.colors.clone();
-      target.setDirty(false);
-
-      var result = player.gameMode.useItemOn(player, level, chart, main, arkHit(module));
-      helper.assertTrue(result.consumesAction(), "Native chart interaction did not run");
-      int changed = 0;
-      for (int i = 0; i < beforeChart.length; i++) if (beforeChart[i] != target.colors[i]) changed++;
-      // North-west quarter less the pre-drawn corner, the explored half of the north-east quarter,
-      // two south-west pixels and two south-east pixels from the older chart.
-      helper.assertTrue(changed == 64 * 64 - 1 + 32 * 64 + 2 + 2,
-          "Unexpected number of charted pixels: " + changed);
-      helper.assertTrue(chartAt(target, 0, 0) == wood && chartAt(target, 63, 63) == grass
-          && chartAt(target, 64, 0) == water && chartAt(target, 95, 63) == water
-          && chartAt(target, 96, 0) == 0 && chartAt(target, 0, 64) == stone
-          && chartAt(target, 1, 64) == (Byte.toUnsignedInt(stone) < Byte.toUnsignedInt(sand) ? stone : sand)
-          && chartAt(target, 2, 64) == 0 && chartAt(target, 120, 120) == snow
-          && chartAt(target, 127, 127) == snow && chartAt(target, 100, 100) == 0,
-          "Charted pixels do not follow their field maps");
-      helper.assertTrue(target.isDirty(), "The chart's saved data was not marked for saving");
-      var reloaded = net.minecraft.world.level.saveddata.maps.MapItemSavedData.load(
-          target.save(new CompoundTag(), level.registryAccess()), level.registryAccess());
-      helper.assertTrue(java.util.Arrays.equals(reloaded.colors, target.colors) && !reloaded.locked,
-          "The compiled chart did not survive a save round trip");
-      for (int i = 0; i < sources.size(); i++)
-        helper.assertTrue(java.util.Arrays.equals(sourceColours.get(i), sources.get(i).colors),
-            "A field map was changed by compiling");
-      helper.assertTrue(chartInventoryUnchanged(beforeInventory, player),
-          "Compiling consumed, created or changed an item");
-      helper.assertTrue(beforeCampaign.equals(data.save(new CompoundTag(), level.registryAccess())),
-          "Compiling changed campaign data");
-
-      var compiled = target.colors.clone();
-      target.setDirty(false);
-      var repeat = ArkCharts.compile(player, module, main);
-      helper.assertTrue(repeat.status() == ArkCharts.Status.NOTHING_NEW && repeat.matched() == 4
-          && repeat.skipped() == 3 && repeat.pixels() == 0,
-          "A repeated compilation was not a no-op: " + repeat);
-      helper.assertTrue(java.util.Arrays.equals(compiled, target.colors) && !target.isDirty()
-          && chartInventoryUnchanged(beforeInventory, player), "A repeated compilation changed something");
-      helper.assertTrue(ArkFieldJournals.snapshot(player, module, ArkFieldJournals.Kind.EXPLORATION).texts()
-          .stream().anyMatch(line -> line.getContents() instanceof net.minecraft.network.chat.contents.TranslatableContents text
-              && text.getKey().equals("entrelumen.exploration.chart.journal")),
-          "The exploration journal does not explain the chart room");
-      helper.assertTrue(beforeCampaign.equals(data.save(new CompoundTag(), level.registryAccess())),
-          "Reading or repeating changed campaign data");
-    }
-    helper.succeed();
-  }
-
-  @GameTest(template = "empty", timeoutTicks = 200)
-  public static void explorationChartsRefuseWithoutMutation(GameTestHelper helper) throws Exception {
-    try (var session = new WorkshopPlayer(helper)) {
-      var player = session.player;
-      var level = helper.getLevel();
-      var main = net.minecraft.world.InteractionHand.MAIN_HAND;
-      var controller = ark(helper, player);
-      var module = arkModule(helper, controller, "exploration_module");
-      byte grass = chartColour(net.minecraft.world.level.material.MapColor.GRASS);
-      var chart = chartMap(helper, controller.getX(), controller.getZ(), 0);
-      var target = chartData(helper, chart);
-      var field = chartMap(helper, controller.getX(), controller.getZ(), 0);
-      var fieldData = chartData(helper, field);
-      chartFill(fieldData, 0, 0, 128, 128, grass);
-      var fieldColours = fieldData.colors.clone();
-      var blank = target.colors.clone();
-      var inventory = player.getInventory();
-      inventory.selected = 0;
-      inventory.setItem(0, chart);
-
-      helper.assertTrue(ArkCharts.compile(player, module, main).status() == ArkCharts.Status.NO_SOURCES,
-          "A lone chart compiled");
-      var nether = chartInDimension(helper, net.minecraft.world.level.Level.NETHER,
-          controller.getX(), controller.getZ());
-      chartFill(chartData(helper, nether), 0, 0, 128, 128, grass);
-      var coarse = chartMap(helper, controller.getX(), controller.getZ(), 1);
-      chartFill(chartData(helper, coarse), 0, 0, 128, 128, grass);
-      inventory.setItem(1, nether);
-      inventory.setItem(2, coarse);
-      var onlySkipped = ArkCharts.compile(player, module, main);
-      helper.assertTrue(onlySkipped.status() == ArkCharts.Status.NO_SOURCES && onlySkipped.skipped() == 2,
-          "Another dimension or a coarser scale was used: " + onlySkipped);
-      inventory.setItem(3, field);
-      var before = chartInventory(player);
-
-      var locked = chart.copy();
-      net.minecraft.world.item.MapItem.lockMap(level, locked);
-      var lockedData = chartData(helper, locked);
-      helper.assertTrue(lockedData.locked, "Lock fixture failed");
-      inventory.setItem(0, locked);
-      helper.assertTrue(ArkCharts.compile(player, module, main).status() == ArkCharts.Status.LOCKED
-          && java.util.Arrays.equals(blank, lockedData.colors), "A locked chart changed");
-      var missing = new ItemStack(Items.FILLED_MAP);
-      inventory.setItem(0, missing);
-      helper.assertTrue(ArkCharts.compile(player, module, main).status() == ArkCharts.Status.NO_DATA,
-          "A map without an id compiled");
-      var unknown = new ItemStack(Items.FILLED_MAP);
-      unknown.set(net.minecraft.core.component.DataComponents.MAP_ID,
-          new net.minecraft.world.level.saveddata.maps.MapId(Integer.MAX_VALUE - 7));
-      inventory.setItem(0, unknown);
-      helper.assertTrue(ArkCharts.compile(player, module, main).status() == ArkCharts.Status.NO_DATA,
-          "A map without saved data compiled");
-      inventory.setItem(0, chart);
-
-      var engineering = arkModule(helper, controller, "engineering_module");
-      var engineeringState = level.getBlockState(engineering);
-      level.removeBlock(engineering, false);
-      helper.assertTrue(ArkCharts.compile(player, module, main).status() == ArkCharts.Status.STRUCTURE,
-          "An incomplete Ark compiled");
-      level.setBlockAndUpdate(engineering, engineeringState);
-      level.setBlockAndUpdate(controller.above(), level.getBlockState(controller));
-      helper.assertTrue(ArkCharts.compile(player, module, main).status() == ArkCharts.Status.STRUCTURE,
-          "Ambiguous controllers compiled");
-      level.removeBlock(controller.above(), false);
-      helper.assertTrue(ArkCharts.compile(player, module, net.minecraft.world.InteractionHand.OFF_HAND)
-          .status() == ArkCharts.Status.UNAVAILABLE, "The offhand compiled");
-      helper.assertTrue(ArkCharts.compile(player, arkModule(helper, controller, "nature_module"), main)
-          .status() == ArkCharts.Status.UNAVAILABLE, "Another module compiled");
-      player.setGameMode(net.minecraft.world.level.GameType.SPECTATOR);
-      helper.assertTrue(ArkCharts.compile(player, module, main).status() == ArkCharts.Status.UNAVAILABLE,
-          "A spectator compiled");
-      player.setGameMode(net.minecraft.world.level.GameType.SURVIVAL);
-      player.teleportTo(module.getX() + 30.5, module.getY() + 1, module.getZ() + 0.5);
-      helper.assertTrue(ArkCharts.compile(player, module, main).status() == ArkCharts.Status.UNAVAILABLE,
-          "A remote player compiled");
-      player.teleportTo(controller.getX() + 0.5, controller.getY() + 1.0, controller.getZ() + 0.5);
-
-      java.util.function.Consumer<net.neoforged.neoforge.event.entity.player.PlayerInteractEvent.RightClickBlock> deny =
-          event -> {
-            if (event.getEntity() == player) event.setCanceled(true);
-          };
-      net.neoforged.neoforge.common.NeoForge.EVENT_BUS.addListener(
-          net.neoforged.bus.api.EventPriority.NORMAL, false,
-          net.neoforged.neoforge.event.entity.player.PlayerInteractEvent.RightClickBlock.class, deny);
-      try {
-        player.gameMode.useItemOn(player, level, chart, main, arkHit(module));
-      } finally {
-        net.neoforged.neoforge.common.NeoForge.EVENT_BUS.unregister(deny);
-      }
-      // An empty main hand with the chart in the offhand keeps the journal gesture.
-      inventory.setItem(0, ItemStack.EMPTY);
-      player.setItemInHand(net.minecraft.world.InteractionHand.OFF_HAND, chart);
-      player.gameMode.useItemOn(player, level, ItemStack.EMPTY, main, arkHit(module));
-      player.gameMode.useItemOn(player, level, chart, net.minecraft.world.InteractionHand.OFF_HAND, arkHit(module));
-      player.setItemInHand(net.minecraft.world.InteractionHand.OFF_HAND, ItemStack.EMPTY);
-      inventory.setItem(0, chart);
-      helper.assertTrue(java.util.Arrays.equals(blank, target.colors)
-          && java.util.Arrays.equals(fieldColours, fieldData.colors)
-          && chartInventoryUnchanged(before, player),
-          "A refused or canceled request changed a chart or the inventory");
-
-      var accepted = ArkCharts.compile(player, module, main);
-      helper.assertTrue(accepted.status() == ArkCharts.Status.COMPILED && accepted.pixels() == 128 * 128
-          && accepted.matched() == 1 && accepted.contributed() == 1 && accepted.skipped() == 2
-          && java.util.Arrays.equals(fieldColours, target.colors)
-          && chartInventoryUnchanged(before, player),
-          "The same request failed once the Ark and gesture were valid: " + accepted);
-      level.removeBlock(module, false);
-      helper.assertTrue(ArkCharts.compile(player, module, main).status() == ArkCharts.Status.UNAVAILABLE,
-          "A removed module still compiled");
-    }
-    helper.succeed();
-  }
 }

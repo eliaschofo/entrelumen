@@ -20,6 +20,7 @@
     "distributed_power",
     "measured_logistics",
     "workshop_hands",
+    "nature_module",
     "exchange_route"
   ],
   "layout_groups": {
@@ -677,13 +678,37 @@
       "icon": "entrelumen:handling_core"
     },
     {
+      "key": "exchange_nature",
+      "deps": [
+        "crafts_archive"
+      ],
+      "milestone": "nature_module",
+      "icon": "entrelumen:nature_module",
+      "en_us": [
+        "A module that breathes",
+        "Deliver one propagation core, eight moss blocks and four glistering melon slices to Nature Module in the Atlas. In its place in the Ark it gives your whole team Regeneration and half the hunger, anywhere.\n\nJuan kept the greenhouse air warm through Heliodor's worst winter. He never asked the plants to grow faster; he asked them to last."
+      ],
+      "es_es": [
+        "Un módulo que respira",
+        "Entregá un núcleo de propagación, ocho bloques de musgo y cuatro rodajas de sandía reluciente en Módulo de naturaleza desde el Atlas. En su lugar del Arca le da a todo tu equipo Regeneración y la mitad de hambre, en cualquier lado.\n\nJuan mantuvo tibio el aire del invernadero en el peor invierno de Heliodor. Nunca les pidió a las plantas que crecieran más rápido; les pidió que duraran."
+      ],
+      "layout": {
+        "group": "hands",
+        "x": 13.5,
+        "y": 10,
+        "size": 2.0,
+        "shape": "hexagon"
+      }
+    },
+    {
       "key": "exchange_archive",
       "deps": [
         "exchange_signal",
         "exchange_nursery",
         "exchange_power",
         "exchange_logistics",
-        "exchange_hands"
+        "exchange_hands",
+        "exchange_nature"
       ],
       "layout": {
         "group": "archive",

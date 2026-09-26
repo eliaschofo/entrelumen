@@ -904,6 +904,7 @@ const entrelumenAuditTargets = {
     "minecraft:furnace",
     "minecraft:gilded_blackstone",
     "minecraft:glass",
+    "minecraft:glistering_melon_slice",
     "minecraft:glow_berries",
     "minecraft:glowstone",
     "minecraft:glowstone_dust",
@@ -927,6 +928,7 @@ const entrelumenAuditTargets = {
     "minecraft:knowledge_book",
     "minecraft:ladder",
     "minecraft:lantern",
+    "minecraft:lapis_lazuli",
     "minecraft:lead",
     "minecraft:leather_chestplate",
     "minecraft:lectern",
@@ -934,6 +936,7 @@ const entrelumenAuditTargets = {
     "minecraft:lightning_rod",
     "minecraft:lodestone",
     "minecraft:map",
+    "minecraft:moss_block",
     "minecraft:mossy_cobblestone",
     "minecraft:mossy_stone_bricks",
     "minecraft:name_tag",
@@ -997,6 +1000,7 @@ const entrelumenAuditTargets = {
     "minecraft:wheat",
     "minecraft:wheat_seeds",
     "minecraft:white_banner",
+    "minecraft:white_bed",
     "minecraft:wither_skeleton_skull",
     "minecraft:writable_book",
     "minecraft:written_book",
@@ -1508,7 +1512,7 @@ const entrelumenAuditTargets = {
       "output": "farmersdelight:flint_knife"
     }
   ],
-  "signature": "81f8ac9cd6399398"
+  "signature": "552517e99b875330"
 };
 
 ServerEvents.afterRecipes(event => {

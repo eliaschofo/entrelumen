@@ -391,6 +391,29 @@
       }
     },
     {
+      "key": "habitation",
+      "deps": [
+        "table"
+      ],
+      "milestone": "habitation_module",
+      "icon": "entrelumen:habitation_module",
+      "en_us": [
+        "A home to come back to",
+        "Deliver a white bed, a campfire, two lanterns and four bread to Habitation Module in the Atlas. Set it in its place in the Ark, with the controller there: /sethome marks your one home and /home brings you back to it from anywhere.\n\nJ.'s note, under a drawn doorway: 'Wherever the road ends, there has to be a door that opens from the inside.'"
+      ],
+      "es_es": [
+        "Un hogar al que volver",
+        "Entregá una cama blanca, una fogata, dos faroles y cuatro panes en Módulo de habitabilidad desde el Atlas. Ponelo en su lugar del Arca, con el controlador ahí: /sethome marca tu única casa y /home te lleva de vuelta desde cualquier lado.\n\nLa nota de J., bajo una puerta dibujada: «Donde sea que termine el camino, tiene que haber una puerta que se abra desde adentro»."
+      ],
+      "layout": {
+        "group": "shelter",
+        "x": -2.25,
+        "y": 15.75,
+        "size": 2.0,
+        "shape": "hexagon"
+      }
+    },
+    {
       "key": "copper",
       "deps": [
         "furnace"
@@ -567,7 +590,8 @@
       "deps": [
         "table",
         "lens",
-        "survey"
+        "survey",
+        "habitation"
       ],
       "milestone": "first_signal",
       "icon": "entrelumen:signal_core",
@@ -660,5 +684,13 @@
       "es_es": "Pequeñas costumbres útiles"
     }
   },
-  "autofocus": "arrival"
+  "autofocus": "arrival",
+  "milestones": [
+    "atlas_awakened",
+    "travellers_table",
+    "lens_assembled",
+    "field_survey",
+    "habitation_module",
+    "first_signal"
+  ]
 }

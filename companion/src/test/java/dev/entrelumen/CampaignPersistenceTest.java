@@ -2,58 +2,85 @@ package dev.entrelumen;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.StringTag;
 import org.junit.jupiter.api.Test;
 
 class CampaignPersistenceTest {
   @Test
-  void restartPreservesSnapshotsArchiveAndArkPhase() {
+  void restartPreservesSnapshotsArchiveAndRefunds() {
     var data = new CampaignData();
     UUID player = UUID.randomUUID(), team = UUID.randomUUID();
     data.campaigns.personal(player).completed.add("first_signal");
     var party = data.campaigns.party(team, player);
     party.act = 6;
-    party.arkPhase = 3;
     party.archived = true;
-    party.arkDeposits.put("entrelumen:routing_matrix", 1);
+    party.refunds.put("entrelumen:routing_matrix", 1);
     var loaded = CampaignData.load(data.save(new CompoundTag(), null), null);
     assertEquals(1, loaded.campaigns.personal(player).act);
     assertEquals(6, loaded.campaigns.parties.get(team).act);
-    assertEquals(3, loaded.campaigns.parties.get(team).arkPhase);
     assertTrue(loaded.campaigns.parties.get(team).archived);
-    assertEquals(party.arkDeposits, loaded.campaigns.parties.get(team).arkDeposits);
+    assertEquals(party.refunds, loaded.campaigns.parties.get(team).refunds);
     assertTrue(loaded.campaigns.personal(player).completed.contains("first_signal"));
+    assertFalse(loaded.isDirty());
   }
 
-  @Test
-  void legacySchemaPreservesEveryCreditedStepAndIgnoresLedger() {
-    for (int phase = 0; phase <= 6; phase++) {
-      var data = new CampaignData();
-      UUID player = UUID.randomUUID();
-      data.campaigns.personal(player).arkPhase = phase;
-      data.campaigns.personal(player).arkDeposits.put("entrelumen:calibration_frame", 3);
-      var tag = data.save(new CompoundTag(), null);
-      tag.putInt("version", 1);
-      var restored = CampaignData.load(tag, null).campaigns.personal(player);
-      assertEquals(phase, restored.arkPhase);
-      assertTrue(restored.arkDeposits.isEmpty());
-    }
+  /** A campaign as versions 1 to 3 wrote it, with the Ark batch it was on and its deposits. */
+  private static CompoundTag legacy(int version, UUID player, int act, int phase, Map<String, Integer> deposits,
+      Set<String> completed) {
+    CompoundTag value = new CompoundTag();
+    value.putInt("act", act);
+    value.putInt("arkPhase", phase);
+    value.putBoolean("archived", false);
+    CompoundTag ledger = new CompoundTag();
+    deposits.forEach(ledger::putInt);
+    value.put("arkDeposits", ledger);
+    ListTag list = new ListTag();
+    completed.forEach(id -> list.add(StringTag.valueOf(id)));
+    value.put("completed", list);
+    CompoundTag personal = new CompoundTag();
+    personal.put(player.toString(), value);
+    CompoundTag root = new CompoundTag();
+    root.putInt("version", version);
+    root.put("personal", personal);
+    root.put("parties", new CompoundTag());
+    return root;
   }
 
+  /** Ark v2 (25 September 2026): the unfinished batch's deposits are owed back; finished ones are not. */
   @Test
-  void boundsCurrentStepDepositsAndDiscardsUnknownAndFinishedEntries() {
-    var data = new CampaignData();
+  void version3BatchesBecomeRefundsOfTheUnfinishedBatchOnly() {
     UUID player = UUID.randomUUID();
-    var campaign = data.campaigns.personal(player);
-    campaign.arkDeposits.put("entrelumen:calibration_frame", 999);
-    campaign.arkDeposits.put("entrelumen:power_regulator", -2);
-    campaign.arkDeposits.put("unrelated", 9);
-    var restored = CampaignData.load(data.save(new CompoundTag(), null), null).campaigns.personal(player);
-    assertEquals(java.util.Map.of("entrelumen:calibration_frame", 4), restored.arkDeposits);
-    campaign.arkPhase = 6;
-    assertTrue(CampaignData.load(data.save(new CompoundTag(), null), null)
-        .campaigns.personal(player).arkDeposits.isEmpty());
+    var loaded = CampaignData.load(legacy(3, player, 5, 2,
+        Map.of("entrelumen:ecosystem_capsule", 1, "entrelumen:routing_matrix", 5), Set.of()), null);
+    assertTrue(loaded.isDirty(), "the refund must be written back");
+    assertEquals(Map.of("entrelumen:ecosystem_capsule", 1), loaded.campaigns.personal(player).refunds);
+    // Capped at the batch's cost, as the old reader capped it.
+    var capped = CampaignData.load(legacy(3, player, 5, 4, Map.of("entrelumen:ration_bundle", 99), Set.of()), null);
+    assertEquals(Map.of("entrelumen:ration_bundle", 8), capped.campaigns.personal(player).refunds);
+    // Every batch finished: nothing is owed.
+    var done = CampaignData.load(legacy(3, player, 5, 6, Map.of("entrelumen:horizon_chart", 1), Set.of()), null);
+    assertTrue(done.campaigns.personal(player).refunds.isEmpty());
+    // Version 1 kept no ledger.
+    var first = CampaignData.load(legacy(1, player, 5, 0, Map.of("entrelumen:calibration_frame", 3), Set.of()), null);
+    assertTrue(first.campaigns.personal(player).refunds.isEmpty());
+    // A refund is written as such and read back unchanged.
+    var again = CampaignData.load(loaded.save(new CompoundTag(), null), null);
+    assertEquals(Map.of("entrelumen:ecosystem_capsule", 1), again.campaigns.personal(player).refunds);
+    assertFalse(again.isDirty());
+  }
+
+  @Test
+  void aNewPartyNeverCopiesItsFoundersRefund() {
+    var campaigns = new Campaigns();
+    UUID founder = UUID.randomUUID(), team = UUID.randomUUID();
+    campaigns.personal(founder).refunds.put("entrelumen:ecosystem_capsule", 1);
+    assertTrue(campaigns.party(team, founder).refunds.isEmpty(), "a refund must be paid once");
+    assertEquals(1, campaigns.personal(founder).refunds.get("entrelumen:ecosystem_capsule"));
   }
 
   @Test
@@ -66,37 +93,23 @@ class CampaignPersistenceTest {
   /** Version 2 numbered the Ark act 6; since 24 September 2026 it is act 5 and act 6 is Solsticio. */
   @Test
   void version2CampaignsMoveTheArkToActFiveAndKeepTheActivatedInSix() {
-    var data = new CampaignData();
-    UUID building = UUID.randomUUID(), activated = UUID.randomUUID(), preparing = UUID.randomUUID(),
-        party = UUID.randomUUID();
-    var ark = data.campaigns.personal(building);
-    ark.act = 6;
-    ark.arkPhase = 3;
-    ark.completed.addAll(CampaignMilestones.MODULE_IDS);
-    ark.arkDeposits.put("entrelumen:routing_matrix", 1);
-    var done = data.campaigns.personal(activated);
-    done.act = 6;
-    done.arkPhase = 6;
-    done.completed.add(CampaignMilestones.LAST_HORIZON);
-    data.campaigns.personal(preparing).act = 5;
-    var archived = data.campaigns.party(party, building);
-    archived.archived = true;
-    var tag = data.save(new CompoundTag(), null);
-    assertEquals(CampaignData.VERSION, tag.getInt("version"));
-    tag.putInt("version", 2);
-    var loaded = CampaignData.load(tag, null);
+    UUID building = UUID.randomUUID();
+    var loaded = CampaignData.load(legacy(2, building, 6, 3, Map.of("entrelumen:routing_matrix", 1),
+        CampaignMilestones.MODULE_IDS), null);
     assertTrue(loaded.isDirty(), "the migrated numbering must be written back");
     var migrated = loaded.campaigns.personal(building);
     assertEquals(5, migrated.act);
-    assertEquals(3, migrated.arkPhase);
-    assertEquals(ark.completed, migrated.completed);
-    assertEquals(ark.arkDeposits, migrated.arkDeposits);
-    assertTrue(ArkCommissioning.eligible(migrated), "a migrated Ark keeps taking its batches");
-    assertEquals(6, loaded.campaigns.personal(activated).act);
-    assertEquals(5, loaded.campaigns.personal(preparing).act);
-    assertEquals(5, loaded.campaigns.parties.get(party).act);
-    assertTrue(loaded.campaigns.parties.get(party).archived);
+    assertEquals(CampaignMilestones.MODULE_IDS, migrated.completed);
+    assertEquals(Map.of("entrelumen:routing_matrix", 1), migrated.refunds);
+    UUID activated = UUID.randomUUID();
+    var done = CampaignData.load(legacy(2, activated, 6, 6, Map.of(), Set.of(CampaignMilestones.LAST_HORIZON)), null);
+    assertEquals(6, done.campaigns.personal(activated).act);
+    UUID preparing = UUID.randomUUID();
+    assertEquals(5, CampaignData.load(legacy(2, preparing, 5, 0, Map.of(), Set.of()), null)
+        .campaigns.personal(preparing).act);
     // Current saves are read as they are.
+    var data = new CampaignData();
+    data.campaigns.personal(building).act = 6;
     var current = CampaignData.load(data.save(new CompoundTag(), null), null);
     assertEquals(6, current.campaigns.personal(building).act);
     assertFalse(current.isDirty());
