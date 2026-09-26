@@ -29,7 +29,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
 from voxkit import Voxels, ab  # noqa: E402
 
-B = lambda n: 'minecraft:' + n
+B = lambda n: n if ':' in n.split('[')[0] else 'minecraft:' + n
 S2 = math.sqrt(2)
 WALL = 38                                   # perimeter wall (octagon apothem)
 PIT = ((0, 16), (-4, 14), (-8, 12))         # terraces: (top y, apothem)
@@ -37,7 +37,7 @@ FLOOR = -12                                 # pit floor
 WATER = -8                                  # water surface (top block)
 HALL_X = (19, 33)                           # wheelhouse extent along its axis
 HALL_Z = 8                                  # half width
-WHEEL_C, WHEEL_R = (26, 1), 6               # wheel centre (x, y) and radius
+WHEEL_C = (26, -2)                          # the Create large water wheel, axis z, in the channel
 
 
 def m(x, z):
@@ -134,8 +134,33 @@ def build():
                     v.put(x, y, z, blk)
                 elif y > ETOP and math.hypot(d, (y - ETOP) * 1.25) <= ER:
                     v.put(x, y, z, B('waxed_oxidized_cut_copper') if (y - ETOP) % 2 else B('waxed_oxidized_copper'))
-                elif ER < d <= ER + 1 and y in (0, 1, ETOP):
+                elif ER < d <= ER + 1 and y in (0, 1, ETOP) and not (y == 1 and ab(x, z)[1] <= 1):
                     v.put(x, y, z, B('waxed_oxidized_cut_copper'))     # collar flanges
+    # the engine room (Terra's bench): a round hall inside the boiler, the Create sandbox in the middle
+    for x in range(-7, 8):
+        for z in range(-7, 8):
+            d = math.hypot(x, z)
+            if d <= 5.2:
+                v.put(x, 1, z, B('waxed_cut_copper') if d > 4.2 else B('polished_tuff'))
+                for y in range(2, 7):
+                    v.put(x, y, z, B('air'))
+                v.put(x, 7, z, B('waxed_oxidized_cut_copper'))
+            if abs(d - 4.7) < 0.5 and ab(x, z)[1] > 1 and (ab(x, z)[0] + ab(x, z)[1]) % 3 == 0:
+                v.put(x, 6, z, B('lantern[hanging=true,waterlogged=false]'))
+    for a in (5, 6, 7):                                                 # doors from the four bridges
+        for b in (0, 1):
+            for y in (1, 2, 3):
+                v.sym(a, y, b, B('air'))
+            v.sym(a, 4, b, B('waxed_oxidized_cut_copper'))
+    mk['sandbox'] = [[-4, 2, -4], [4, 6, 4]]                            # cells with hypot <= 4.2 inside this box
+    mk['input_ports'] = [[4, 4, 0], [-4, 4, 0], [0, 4, 4], [0, 4, -4]]
+    mk['pump_ports'] = [[3, 1, 3], [-3, 1, 3], [3, 1, -3], [-3, 1, -3]]
+    mk['seal_port'] = [[0, 1, 0]]
+    mk['pumps'] = [[3, -3, 3], [-3, -3, 3], [3, -3, -3], [-3, -3, -3]]
+    mk['pump_intakes'] = [[5, WATER - 1, 5], [-5, WATER - 1, 5], [5, WATER - 1, -5], [-5, WATER - 1, -5]]
+    mk['seal_bearing'] = [[0, FLOOR - 1, 0]]
+    mk['notes'] = [[3, 2, 4]]                                           # Terra's engine note, on the walkway
+    v.put(3, 2, 4, B('lectern[facing=north,has_book=false,powered=false]'))
     for y in range(ETOP + 5, ETOP + 18):                                # the stack
         for x in range(-1, 2):
             for z in range(-1, 2):
@@ -158,6 +183,14 @@ def build():
         v.sym(a, 1, 2, B('chain[axis=y,waterlogged=false]') if a % 3 == 0 else B('air'))
     for a in range(7, PIT[0][1] + 1, 3):
         v.sym(a, 0, 2, B('spruce_slab[type=bottom,waterlogged=false]'))
+    for a in range(5, HALL_X[0] + 1):                                   # the drive line: wheelhouse to engine, overhead
+        v.sym(a, 4, 0, B('create:shaft[axis=x,waterlogged=false]'))
+    for a in range(8, PIT[0][1] + 1, 4):                                # brackets on posts over the deck
+        for y in (1, 2, 3):
+            v.sym(a, y, 2, B('spruce_fence[east=false,north=false,south=false,waterlogged=false,west=false]'))
+        v.sym(a, 4, 2, B('spruce_planks'))
+        v.sym(a, 4, 1, B('create:andesite_casing'))
+    mk['drive_lines'] = [[5, 4, 0], [HALL_X[0], 4, 0]]
 
     # --- wheelhouses on the axes ---
     x0, x1 = HALL_X
@@ -196,65 +229,54 @@ def build():
         for y in (3, 4, 5):
             v.sym(x, y, HALL_Z, B('glass'))
 
-    # the waterwheel in its channel
-    cx, cy = WHEEL_C
-    for x in range(cx - WHEEL_R - 1, cx + WHEEL_R + 2):
-        for y in range(cy - WHEEL_R - 1, cy + WHEEL_R + 2):
-            r = math.hypot(x - cx, y - cy)
-            ang = math.atan2(y - cy, x - cx)
-            spoke = min(abs(((ang / (math.pi / 4)) % 1) - 0.5) for _ in (0,)) > 0.35 and r < WHEEL_R - 0.5
-            for z in (0, 1):
-                if WHEEL_R - 0.9 <= r <= WHEEL_R + 0.4:
-                    v.sym(x, y, z, B('stripped_spruce_wood[axis=y]'))
-                elif spoke and r > 1.2:
-                    v.sym(x, y, z, B('spruce_planks'))
-                elif r <= 1.2:
-                    v.sym(x, y, z, B('waxed_oxidized_copper'))
-            if WHEEL_R + 0.4 < r <= WHEEL_R + 1.1 and (int(round(math.degrees(ang))) % 30 < 12):
-                v.sym(x, y, 0, B('spruce_slab[type=top,waterlogged=false]'))
-    for z in (2, 3):                                                   # the axle and its bearings
-        v.sym(cx, cy, z, B('stripped_spruce_log[axis=z]') if z == 2 else B('polished_basalt[axis=z]'))
-    # channel: water under the wheel, running from the outer wall to the pit edge
+    # the Create large water wheel in its channel (axis z), under a gantry; the drive rises to the overhead line
+    cx = WHEEL_C[0]
+    v.sym(cx, -2, 0, B('create:large_water_wheel[axis=z,extension=false,waterlogged=false]'))
+    mk['wheels'] = [[cx, -2, 0]]
+    for y in range(-1, 4):                                               # a gantry of posts over the wheel pit
+        for zz in (2, 3):
+            v.sym(cx - 2, y, zz, B('stripped_spruce_log[axis=y]'))
+            v.sym(cx + 2, y, zz, B('stripped_spruce_log[axis=y]'))
+    mk['wheel_to_line'] = [[cx, -2, 1], [cx, 4, 1]]                     # the worker routes axle -> overhead line here
+    v.sym(cx, 1, 6, B('create:speedometer[axis=z,facing=up,waterlogged=false]'))
+    mk['gauges'] = [[cx, 1, 6]]
+    mk['notes'] = mk.get('notes', []) + [[cx - 4, 1, 6]]
+    v.sym(cx - 4, 1, 6, B('lectern[facing=north,has_book=false,powered=false]'))
+    # channel: a basin upstream behind the sluice, a one-block drop past the wheel, a fall into the pit
     for z in (0, 1, 2):
-        for y in range(-5, 0):
+        for y in range(-7, 0):
             v.sym(WALL, y, z, B('tuff_bricks'))
     for x in range(PIT[0][1] + 1, WALL):
+        upstream = x > HALL_X[1]
+        bed = -5 if x >= cx - 2 else -6
         for z in (0, 1, 2):
-            v.sym(x, -5, z, B('tuff_bricks'))
-            for y in (-4, -3):
-                if z <= 1:
-                    v.sym(x, y, z, B('water'))
-                else:
+            for y in range(-7, 1):
+                if z == 2:
+                    v.sym(x, y, z, B('tuff_bricks') if y < 0 else B('polished_tuff'))
+                elif y < bed:
                     v.sym(x, y, z, B('tuff_bricks'))
-            if x > x1 or x < x0:
-                if z <= 1:
-                    v.sym(x, -2, z, B('air'))
-                    v.sym(x, -1, z, B('air'))
-                    v.sym(x, 0, z, B('air'))
-                v.sym(x, -2, 2, B('tuff_bricks'))
-                v.sym(x, -1, 2, B('tuff_bricks'))
-                v.sym(x, 0, 2, B('polished_tuff'))
-    for y in range(WATER + 1, -2):                                      # the fall into the pit
+                elif y == bed:
+                    v.sym(x, y, z, B('polished_tuff'))
+                elif upstream and y in (bed + 1, bed + 2):
+                    v.sym(x, y, z, B('water'))                          # the basin: still water behind the gate
+                elif HALL_X[0] <= x <= HALL_X[1] and y == 0:
+                    v.sym(x, y, z, B('polished_tuff') if abs(x - cx) > 2 else B('air'))
+                else:
+                    v.sym(x, y, z, B('air'))
+    for z in (0, 1):
+        for y in (-4, -3):
+            v.sym(HALL_X[1], y, z, B('waxed_copper_block'))              # the sluice gate the lever lifts
+    mk['sluice_gates'] = [[HALL_X[1], -4, 0], [HALL_X[1], -3, 0], [HALL_X[1], -4, 1], [HALL_X[1], -3, 1]]
+    for x in range(PIT[0][1] - 2, PIT[0][1] + 1):                        # cut through the pit wall for the fall
         for z in (0, 1):
-            v.sym(PIT[0][1] - 0, y, z, B('water'))
-    for x in range(x0 + 1, x1):                                         # the slot for the wheel in the floor
-        for z in (0, 1):
-            if abs(x - cx) <= WHEEL_R + 1:
-                for y in (-2, -1, 0):
-                    if (x, y, z) not in v or v[(x, y, z)] == B('polished_tuff'):
-                        v.sym(x, y, z, B('air'))
-    # re-draw the lower wheel inside the slot (the carving above ran after it)
-    for x in range(cx - WHEEL_R - 1, cx + WHEEL_R + 2):
-        for y in range(cy - WHEEL_R - 1, 1):
-            r = math.hypot(x - cx, y - cy)
-            for z in (0, 1):
-                if WHEEL_R - 0.9 <= r <= WHEEL_R + 0.4:
-                    v.sym(x, y, z, B('stripped_spruce_wood[axis=y]'))
+            for y in range(-6, 0):
+                v.sym(x, y, z, B('air'))
+    v.sym(cx, -2, 0, B('create:large_water_wheel[axis=z,extension=false,waterlogged=false]'))
 
     # sluice lever beside the wheel, on the inner wall
-    v.sym(cx, 1, 5, B('polished_tuff'))
-    v.sym(cx, 2, 5, B('lever[face=floor,facing=north,powered=false]'))
-    mk['levers'] = [[cx, 2, 5]]
+    v.sym(HALL_X[1] - 2, 1, 5, B('polished_tuff'))
+    v.sym(HALL_X[1] - 2, 2, 5, B('lever[face=floor,facing=north,powered=false]'))
+    mk['levers'] = [[HALL_X[1] - 2, 2, 5]]
     v.sym(x1 - 2, 1, 6, B('barrel[facing=up,open=false]'))
     v.sym(x0 + 2, 1, 6, B('smithing_table'))
     v.sym(x0 + 3, 1, 6, B('grindstone[face=floor,facing=north]'))
@@ -283,7 +305,8 @@ def build():
 
 if __name__ == '__main__':
     V, M = build()
-    assert V.is_symmetric(), 'not D4-symmetric'
+    probe = Voxels({k: (b if k != (3, 2, 4) else 'minecraft:air') for k, b in V.items()})   # Terra's engine note: the one exception
+    assert probe.is_symmetric(), 'not D4-symmetric'
     ys = [y for (_, y, _) in V]
     xs = [x for (x, _, _) in V]
     print('blocks', sum(1 for b in V.values() if not b.endswith(':air')), 'height', max(ys) - min(ys) + 1,
