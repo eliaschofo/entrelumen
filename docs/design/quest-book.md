@@ -2,6 +2,8 @@
 
 Rediseño del libro de FTB Quests después del [playtest del 24/9](playtest-2026-09-24.md): «todo lo de adentro se lee muy grande en muy poco espacio» (el panel de una quest abierta es angosto y el texto queda apretado, incluso en pantalla completa) y «la questline no es super visual». También cumple las respuestas de Elias en [reference-packs](../research/reference-packs.md): hub, capítulo final que dibuja el Sol de Heliodor, recompensas moderadas, imágenes y nodos grandes. Las 93 guías de `content/guides` entran al libro.
 
+Desde el 26/9, las diez guías de Create y Ars Nouveau son cuatro cadenas de la v3 ([quest-book-v3](quest-book-v3.md)); quedan 83 guías en este formato.
+
 Todo lo genera `tools/generate_quests.py` desde `content/*.json`, `content/guides/*.json` y `content/quest_book.json`. Nada se edita a mano en `pack/config/ftbquests`.
 
 ## Referencias inspeccionadas (hook de diseño)

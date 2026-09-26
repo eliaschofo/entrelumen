@@ -235,6 +235,19 @@ class Sectors(unittest.TestCase):
         task_titles = [k for k in self.lang["en_us"] if k.startswith("task.") and k.endswith(".title")]
         self.assertGreaterEqual(len(task_titles), 4)
 
+    def test_every_rich_text_helper_is_used(self):
+        # The catalogue marks these helpers as used (docs/research/ftbquests-2101-features.md, section 12).
+        raw = " ".join(p for data in self.sectors.values() for q in data["quests"]
+                       for lang in ("en_us", "es_es") for p in q[lang]["text"])
+        used = {m.group(1) for m in qe.TAG.finditer(raw)}
+        self.assertTrue({"item", "key", "quest", "chapter", "name", "hover", "hl", "b", "i", "warn", "good", "rune", "tip"} <= used,
+                        sorted(qe.TEXT_TAGS - used))
+        self.assertIn("{page}", raw)
+        self.assertIn("{image:", raw)
+        desc = json.dumps([v for k, v in self.lang["en_us"].items() if k.endswith(".quest_desc")])
+        for needle in ("change_page", "show_item", "show_text", "keybind", "translate", "minecraft:alt", "{@pagebreak}"):
+            self.assertIn(needle, desc)
+
     def test_dependencies_and_curves(self):
         for name in self.sectors:
             local = {q["id"]: q for q in self.sector_quests(name)}

@@ -28,11 +28,11 @@ Recuento al final del documento.
 | Archivo raíz | `data.snbt` | `BaseQuestFile.readDataFull` → `readData` | Ajustes globales (sección 2) | **Sí** |
 | Grupos | `chapter_groups.snbt`, lista `chapter_groups` | `BaseQuestFile.readChapterGroupsFile` | Carpetas de la barra lateral | **Sí**: cinco grupos |
 | Capítulos | `chapters/<filename>.snbt` | `BaseQuestFile.readDataFull` (listas `quests`, `quest_links`, `images`) | Un lienzo por archivo | **Sí** |
-| Tablas de recompensa | `reward_tables/<filename>.snbt` | `BaseQuestFile.loadRewardTableFile` | Tablas y cajas de loot | **Sí**: 14 tablas (sección 7) |
+| Tablas de recompensa | `reward_tables/<filename>.snbt` | `BaseQuestFile.loadRewardTableFile` | Tablas y cajas de loot | **Sí**: 18 tablas, tres por acto (sección 11) |
 | Idiomas | `lang/<locale>.snbt` | `quest/translation/TranslationManager.loadFromNBT`; claves `<tipo>.<ID>.<campo>` (`makeKey`) | Textos por idioma, con respaldo | **Sí**: `en_us` y `es_es` |
-| Tipos de objeto en claves | `file`, `chapter`, `quest`, `task`, `reward`, `reward_table`, `chapter_group`, `quest_link`, `image` | `quest/QuestObjectType` | Prefijo de cada clave de idioma | **Sí**: todos menos `file` y `quest_link` tienen texto nuestro |
+| Tipos de objeto en claves | `file`, `chapter`, `quest`, `task`, `reward`, `reward_table`, `chapter_group`, `quest_link`, `image` | `quest/QuestObjectType` | Prefijo de cada clave de idioma | **Sí**: todos menos `quest_link` tienen texto nuestro (`task`: títulos de observación; `reward`: avisos) |
 | Campos traducibles | `title`, `quest_subtitle`, `quest_desc` (lista), `chapter_subtitle` (lista) | `quest/translation/TranslationKey` | Título, subtítulo, descripción | **Sí**, los cuatro |
-| IDs | `id` hexadecimal de 16 cifras en cada objeto | `BaseQuestFile.readID` | Sin ID, FTB inventa uno y reescribe el archivo | **Sí**: `stable_id(clave semántica)` para todo objeto, recompensas de tabla incluidas |
+| IDs | `id` hexadecimal de 16 cifras en cada objeto | `BaseQuestFile.readID` | Sin ID, FTB inventa uno y reescribe el archivo | **Sí**: `stable_id(clave semántica)` para todo objeto, recompensas de tabla incluidas. Las tablas llevan un ID de 31 bits: `RandomReward.readData` lee `table_id` con `getLong`, y en SNBT un número sin sufijo fuera del rango de `int` se lee como double (`SNBTUtils.getNumberType`) y pierde los últimos dígitos |
 
 ## 2. `data.snbt` (archivo raíz)
 
@@ -42,7 +42,7 @@ Evidencia: `quest/BaseQuestFile.readData` (líneas 462–502 del descompilado).
 |---|---|---|---|
 | `version` | entero | Versión de formato; distinto de la actual marca el archivo para guardar | **Sí**: 13 |
 | `default_reward_team` | bool | Recompensas por equipo por defecto | **Sí**: `true` |
-| `default_consume_items` | bool | Tareas de ítem que consumen por defecto | **Sí**: `false`; sólo las recompensas «de encargo» consumen, con su propia clave |
+| `default_consume_items` | bool | Tareas de ítem que consumen por defecto | **Sí**: `false`; sólo las tareas de los encargos consumen, con su propia clave |
 | `default_autoclaim_rewards` | `disabled`, `enabled`, `no_toast`, `invisible` | Reclamo automático | **Sí**: `disabled`; los avisos y fanfarrias usan `auto` por recompensa |
 | `default_quest_shape` | nombre de forma | Forma cuando capítulo y quest no dicen nada | **No**: cada capítulo la fija |
 | `default_quest_disable_jei` | bool | Oculta quests del visor de recetas | **No**: hace falta FTB XMod Compat, que no está (sección 12) |
@@ -60,7 +60,7 @@ Evidencia: `quest/BaseQuestFile.readData` (líneas 462–502 del descompilado).
 | `fallback_locale` | locale | Idioma de respaldo | **Sí**: `en_us` |
 | `verify_on_load` | bool | Revisa dependencias al cargar | **No**: el generador ya lo valida |
 | `suppress_all_autoclaiming` | bool | Anula todo reclamo automático | **No** |
-| `presets` | mapa `nombre → {shape, size}` | Presets visuales (`quest/preset/VisualPresets`); los de fábrica son `normal`, `info`, `goal` | **Sí**: la gramática de nodos de las cadenas (sección 9) viaja como presets, más los tres de fábrica |
+| `presets` | mapa `nombre → {shape, size}` | Presets visuales (`quest/preset/VisualPresets`); los de fábrica son `normal`, `info`, `goal` | **Sí**: la gramática de nodos de las cadenas ([quest-book-v3](../design/quest-book-v3.md)) viaja como presets, más los tres de fábrica |
 | `preset` | nombre | Preset por defecto del libro | **No** |
 | `icon`, título `file.0000000000000001.title` | ítem, texto | Ícono y nombre del libro (`BaseQuestFile.getAltIcon` usa `modpack_icon` del tema) | **Sí**: el Atlas y «ENTRELUMEN» |
 
@@ -73,7 +73,7 @@ Evidencia: `quest/Chapter.readData`; el archivo lee `id`, `group`, `order_index`
 | `id`, `filename`, `group`, `order_index` | ID, nombre, ID de grupo, entero | Identidad y orden en la barra lateral | **Sí** |
 | `icon` | ítem (`id`, `components`) | Ícono en la barra lateral | **Sí**; las cadenas pueden usar una textura propia con `ftbquests:custom_icon` |
 | título, `chapter_subtitle` | idioma | Nombre y bajada del capítulo | **Sí** |
-| `tags` | lista | Selectores del tema (sección 10) | **Sí**: `entrelumen_motif_<motivo>` da a cada cadena sus colores de línea y de texto de panel |
+| `tags` | lista | Selectores del tema (sección 13) | **Sí**: `entrelumen_motif_<motivo>` da a cada cadena sus colores de línea y de texto de panel |
 | `default_quest_shape` | forma | Forma por defecto | **Sí** |
 | `default_quest_size` | double (tag 6) | Tamaño por defecto | **Motor**: la gramática da el tamaño a cada nodo |
 | `default_min_width` | entero | Ancho del panel de lectura (`client/gui/quests/ViewQuestPanel.addWidgets`) | **Sí**: 320 |
@@ -110,22 +110,22 @@ Evidencia: `quest/ChapterImage.readData`, dibujo en `client/gui/quests/ChapterIm
 | `rotation` | grados | Gira alrededor del centro, o de la esquina con `corner` | **Sí**: las líneas del motor (aros, rieles, rayos, rayos de engranaje) son rectángulos finos rotados |
 | `image` | cadena de ícono (sección 8) | Qué se dibuja | **Sí**: texturas de ENTRELUMEN, texturas de ítems de los JAR fijados y el píxel blanco `entrelumen:textures/gui/quests/px.png` para paneles y líneas |
 | `color` | entero RGB | Tiñe la imagen | **Sí**: paneles y líneas toman el color de la paleta del motivo |
-| `alpha` | 0–255 | Transparencia | **Sí**: paneles de 40 a 70, líneas de 90 a 160 |
-| `order` | entero | Orden de dibujo entre imágenes | **Sí**: paneles −3, figuras −2, arte −1, íconos 1, rótulos 5 |
+| `alpha` | 0–255 | Transparencia | **Sí**: 34 en los paneles de rama, de 45 a 150 en figuras y líneas; el arte va opaco |
+| `order` | entero | Orden de dibujo entre imágenes | **Sí**: paneles −3, figuras −2, arte −1, medallón de regreso 0 y su emblema 1, rótulos 5 |
 | título `image.<ID>.title` | idioma | Tooltip al pasar el mouse, o texto dibujado con `text_on_image` | **Sí**: rótulos y chistes al pasar el mouse sobre adornos |
 | `hover` | lista (formato viejo) | Se convierte en título (`readData`) | **No**: usamos el título por idioma |
-| `click_action` | `open_quest:<ID>[/<página>]`, `open_uri:`, `run_command:`, `custom_event:`, `show_recipe:`, `show_docs:` | Clic en la imagen (`quest/ImageClickAction`) | **Sí**: `open_quest` para puertas a capítulos y para saltar a una quest. **No** el resto: sin enlaces externos en un pack público, sin comandos por clic, `custom_event` necesita KubeJS de FTB, `show_recipe` y `show_docs` no tienen proveedor registrado sin FTB XMod Compat (`RecipeModHelper.NoOp`, `DocsModRegistry` vacío) |
+| `click_action` | `open_quest:<ID>[/<página>]`, `open_uri:`, `run_command:`, `custom_event:`, `show_recipe:`, `show_docs:` | Clic en la imagen (`quest/ImageClickAction`) | **Sí**: `open_quest` para puertas a capítulos (emblemas del hub, medallones de regreso). **No** el resto: sin enlaces externos en un pack público, sin comandos por clic, `custom_event` necesita KubeJS de FTB, `show_recipe` y `show_docs` no tienen proveedor registrado sin FTB XMod Compat (`RecipeModHelper.NoOp`, `DocsModRegistry` vacío) |
 | `click` | legado: `#id`, `http…`, `command:`, `custom:` | `ImageClickAction.fromLegacy` | **No**: usamos `click_action` |
 | `text_on_image` | bool | Dibuja el título escalado a la caja (`min(ancho/texto, alto/(9·líneas))`) | **Sí**: encabezados de rama y títulos de la cadena |
 | `text_shadow` | bool | Sombra del texto | **Sí** |
-| `text_h_align`, `text_v_align` | `start`, `middle`, `end` | Alineación dentro de la caja | **Sí**: los encabezados alineados a la izquierda de su panel usan `start` |
+| `text_h_align`, `text_v_align` | `start`, `middle`, `end` | Alineación dentro de la caja | **Sí**: `start` en un encabezado de Create I, pegado a la izquierda de su panel |
 | `text_inset` | porcentaje | Margen interno del texto | **Motor** |
-| `dependency` | ID de quest | La imagen aparece recién con esa quest completa (`ChapterImage.shouldShowImage`; para quien no edita, ni se crea el widget: `QuestPanel.addWidgets`) | **Sí**: el arte de cierre de cada cadena se revela al completar la cumbre |
+| `dependency` | ID de quest | La imagen aparece recién con esa quest completa (`ChapterImage.shouldShowImage`; para quien no edita, ni se crea el widget: `QuestPanel.addWidgets`) | **Sí**: el sol de Heliodor aparece al completar la cumbre (Create I, Ars) o el último hito (Create II) |
 | `corner` | bool | Pivote de rotación en la esquina | **No**: todas nuestras figuras giran sobre su centro |
 | `dev` | bool | Sólo visible en modo edición | **No** |
 | `position_locked` | bool | El editor no la puede arrastrar | **Sí**: todo adorno generado va bloqueado |
-| Literal `\n` en el título | `TextComponentParser.parse` lo convierte en salto de línea | Rótulos de varias líneas | **Sí** |
-| Título JSON (con `font`) | `TextUtils.parseRawText` | Rótulos con otra fuente | **Sí**: los rótulos rúnicos de Ars usan `minecraft:alt` (el alfabeto de la mesa de encantamientos) |
+| Literal `\n` en el título | `TextComponentParser.parse` lo convierte en salto de línea | Rótulos de varias líneas | **No**: rótulos de una línea; dos líneas son dos rótulos |
+| Título JSON (con `font`) | `TextUtils.parseRawText` | Rótulos con otra fuente | **Sí**: el rótulo rúnico de Ars usa `minecraft:alt` (el alfabeto de la mesa de encantamientos) |
 
 ## 6. Enlaces de quest
 
@@ -133,7 +133,7 @@ Evidencia: `quest/QuestLink.readData`, dibujo en `client/gui/quests/QuestLinkBut
 
 | Clave | Efecto | Decisión |
 |---|---|---|
-| `linked_quest` | Nodo que muestra el estado de una quest de otro capítulo y la abre | **Sí**: hub y cadenas (por ejemplo, el Marco de Calibración del acto II en Create, la Matriz Viva en Ars) |
+| `linked_quest` | Nodo que muestra el estado de una quest de otro capítulo y la abre | **Sí**: cada cadena enlaza dos quests de la historia o de otra cadena que usan lo que enseña (por ejemplo, «A Measure of Iron» del acto II en Create I y «Precision work» de Create I en Ars) |
 | `x`, `y`, `shape`, `size` | Posición, forma y tamaño propios | **Sí**: octógono 1 para todo enlace de cadena |
 | `icon`, `tags` | Heredados de `QuestObjectBase` | **No**: el enlace muestra el ícono de la quest destino |
 
@@ -152,24 +152,24 @@ Evidencia: `quest/Quest.readData` (líneas 403–464), `Quest.isVisible`, `Quest
 | `tags` | lista | Selectores del tema | **Sí**: una etiqueta de color por rol |
 | `custom_id` | texto | Se suma como etiqueta | **No** |
 | `dependencies` | lista de IDs | Dependencias | **Sí** |
-| `dependency_requirement` | `all_completed`, `one_completed`, `all_started`, `one_started` | Qué pide de las dependencias | **Sí**: `one_completed` en caminos alternativos (cualquier fuente de energía, cualquier elemento) |
-| `min_required_dependencies` | entero | Pide N de las dependencias (gana sobre el modo) | **Sí**: la cumbre de cada cadena pide N de sus ramas |
+| `dependency_requirement` | `all_completed`, `one_completed`, `all_started`, `one_started` | Qué pide de las dependencias | **Sí**: `one_completed` en Ars: la marca elemental se abre con cualquiera de los cuatro focos |
+| `min_required_dependencies` | entero | Pide N de las dependencias (gana sobre el modo) | **Sí**: la cumbre de Ars pide 3 de sus 4 escuelas |
 | `max_completable_dependents` | entero | Rama exclusiva: completar N hijos excluye al resto (2101.1.7) | **Sí**: en Ars, la escuela elemental (se elige una) |
-| `hide_dependency_lines` | tristate | Oculta las líneas hacia sus dependencias salvo al pasar el mouse | **Sí**: en cumbres con muchas dependencias y en encargos |
-| `hide_dependent_lines` | bool | Oculta las líneas hacia sus dependientes | **Sí**: la entrada no dibuja sus líneas largas hacia los consejos |
-| `dep_control_pts` | mapa `ID de dependencia → [x0, y0, x1, y1]` | Curva de Bézier cúbica entre nodos (2101.1.23; `QuestButton.getConnectionPoints`) | **Sí**: las ramas curvas del engranaje y del círculo de Ars. El motor compensa el corrimiento de `QuestButton.positionControlPoints` (−12·tamaño px) |
+| `hide_dependency_lines` | tristate | Oculta las líneas hacia sus dependencias salvo al pasar el mouse | **Sí**: cumbres, encargos y las quests de Ars cuyas dependencias están lejos |
+| `hide_dependent_lines` | bool | Oculta las líneas hacia sus dependientes | **Motor** (`hide_dependent_lines` en la quest) |
+| `dep_control_pts` | mapa `ID de dependencia → [x0, y0, x1, y1]` | Curva de Bézier cúbica entre nodos (2101.1.23; `QuestButton.getConnectionPoints`) | **Sí**: el aro del engranaje de Create I y una curva en Create II y III. El motor compensa el corrimiento de `QuestButton.positionControlPoints` (−12·tamaño px) |
 | `hide_until_deps_visible` (`hide` legado) | tristate | Oculta hasta que las dependencias se vean | **No**: con raíces visibles, todo se ve igual |
-| `hide_until_deps_complete` | tristate | Aparece recién con las dependencias completas | **Sí**: el segundo nodo en adelante de cada rama lateral; el árbol se revela a medida que avanzás, como ATM10 |
+| `hide_until_deps_complete` | tristate | Aparece recién con las dependencias completas | **Sí**: 18 nodos de las ramas laterales largas (Create I y III, Ars), que se revelan a medida que avanzás, como en ATM10 |
 | `invisible` | bool | Invisible hasta completarla (`Quest.isVisible`) | **Sí**: secretos |
 | `invisible_until_tasks` | entero | Se ve cuando se completan N tareas | **Motor** |
 | `hide_details_until_startable` | tristate | No abre el panel hasta poder empezarla (`QuestButton.onClicked`) | **Sí**: cumbres, para no arruinar el final |
-| `hide_text_until_complete` | tristate | Oculta la descripción hasta completarla | **Sí**: el remate de cada cumbre (una nota de Heliodor que se lee al final) |
+| `hide_text_until_complete` | tristate | Oculta la descripción hasta completarla | **Sí**: la nota de Terra que sigue a la cumbre de Create I |
 | `optional` | bool | No cuenta para el progreso | **Sí** |
 | `can_repeat` | tristate | Repetible | **Sí**: encargos |
 | `repeat_cooldown` | segundos (`TeamData`, `·1000L`) | Espera entre repeticiones | **Sí**: 1200 s (un día de juego) |
 | `min_width` | entero | Ancho propio del panel | **No**: el del capítulo |
-| `progression_mode` | `default`, `linear`, `flexible` | Modo propio | **No**: el del capítulo |
-| `require_sequential_tasks` | tristate | Tareas en orden | **Sí**: la cadena de montaje secuencial de Create (lámina → mecanismo incompleto → mecanismo) |
+| `progression_mode` | `default`, `linear`, `flexible` | Modo propio | **Sí**: `linear` en las cumbres. En `flexible`, `TeamData.canStartTasks` siempre da verdadero y `hide_details_until_startable` no tendría efecto |
+| `require_sequential_tasks` | tristate | Tareas en orden | **Sí**: el montaje secuencial de Create (lámina → mecanismo incompleto → mecanismo) y el amuleto de starbuncle de Ars (ficha → amuleto → verlo trabajar) |
 | `disable_recipe_mod` | tristate | Oculta en JEI/EMI | **No**: sin FTB XMod Compat no hay integración |
 | `guide_page` | texto | Botón «Abrir en la guía» (`ViewQuestPanel.OpenInGuideButton`) | **No**: no hay manejador de guía en el pack |
 | `ignore_reward_blocking` | bool | Ignora el bloqueo de recompensas | **No**: no bloqueamos recompensas |
@@ -195,8 +195,8 @@ Evidencia: `icon/Icon.getIcon` y `getIcon0` de FTB Library; `item/CustomIconItem
 | `http:`, `https:`, `file:` | — | Imagen remota (`URLImageIcon`) | **No**: un pack público no descarga imágenes |
 | Combinación `a + b` | — | Superpone íconos (`CombinedIcon`) | **No** |
 | Propiedades `; padding=`, `border=`, `border_round_edges=`, `color=`, `tint=` | — | Modificadores | **No**: el `color` de la imagen alcanza |
-| `ftbquests:custom_icon` con `ftbquests:icon` | textura | Cualquier textura como ícono de quest o capítulo | **Sí**: nodos de consejo, secretos y cumbres con arte propio (provisorio hasta el arte de Elias) |
-| `ftbquests:custom_icon` con `ftbquests:entity_face` | `ars_nouveau:starbuncle` | Cara de criatura (caras incluidas en FTB Library para vanilla, Ars Nouveau, Mekanism, PneumaticCraft, Undergarden, Iron's Spells y otros) | **Sí**: las quests de criaturas de Ars (Starbuncle, Whirlisprig) y el Wither |
+| `ftbquests:custom_icon` con `ftbquests:icon` | textura | Cualquier textura como ícono de quest o capítulo | **Motor** (`{"texture": …}`): los consejos toman el ícono del tema y los secretos, el de su logro |
+| `ftbquests:custom_icon` con `ftbquests:entity_face` | `ars_nouveau:starbuncle` | Cara de criatura (caras incluidas en FTB Library para vanilla, Ars Nouveau, Mekanism, PneumaticCraft, Undergarden, Iron's Spells y otros) | **Sí**: las quests de criaturas de Ars (Starbuncle, Whirlisprig) |
 | Tema `icon` por selector | `[#entrelumen_tip] icon: …` | Ícono por defecto de las quests sin ícono (`QuestObjectBase.getIcon`) | **Sí**: los consejos toman el ícono de consejo del tema |
 
 ## 9. Tareas
@@ -205,7 +205,7 @@ Evidencia: registro en `quest/task/TaskTypes` (y `neoforge/FTBQuestsNeoForge` pa
 
 | Tipo | Claves | Qué pide | Decisión |
 |---|---|---|---|
-| Comunes | `id`, `title` (idioma `task.<ID>.title`), `icon`, `optional_task`, `disable_toast` | Título e ícono propios de la tarea | **Sí**: `title` en observaciones y bajas («Mirá un Starbuncle trabajando»). **No** `optional_task` |
+| Comunes | `id`, `title` (idioma `task.<ID>.title`), `icon`, `optional_task`, `disable_toast` | Título e ícono propios de la tarea | **Sí**: `title` en observaciones y bajas («Mirá a tu starbuncle trabajando»). **No** `optional_task` |
 | `item` | `item` (ítem con componentes), `count` (long), `consume_items` (tristate), `only_from_crafting`, `match_components` (`none`, `fuzzy`, `strict`), `task_screen_only` | Tener o entregar ítems | **Sí**: casi todo; `consume_items: true` sólo en encargos. **No**: los filtros de ítem piden FTB Filter System (sólo hay `ItemMatchingSystem` sin adaptadores); `only_from_crafting` y `task_screen_only` |
 | `checkmark` | — | Un clic | **Sí**: consejos y notas, sin recompensa |
 | `advancement` | `advancement`, `criterion` (vacío = el logro entero) | Obtener un logro | **Sí**: logros de Create y Ars Nouveau que ya prueban un armado real |
@@ -214,7 +214,7 @@ Evidencia: registro en `quest/task/TaskTypes` (y `neoforge/FTBQuestsNeoForge` pa
 | `structure` | `structure` (`#tag` admitido) | Estar dentro de una estructura | **Sí**: secreto de Ars, una guarida de Wilden (`#ars_nouveau:wilden_den`, en bosques) |
 | `kill` | `entity`, `entityTypeTag`, `value`, `custom_name`, `nbt_filter` | Matar N criaturas | **Sí**: la Quimera Wilden (`ars_nouveau:wilden_boss`) |
 | `location` | `dimension`, `ignore_dimension`, `position`, `size` | Estar en una caja de coordenadas | **No**: el mundo no es fijo |
-| `observation` | `observation_type` (`block`, `block_tag`, `block_state`, `block_entity`, `block_entity_type`, `entity_type`, `entity_type_tag`), `to_observe`, `timer` (ticks de cliente, máx. 1200) | Mirar algo N ticks; barra de progreso en pantalla (`FTBQuestsClientEventHandler`) | **Sí**: mirar un tren en marcha (`create:carriage_contraption`), un Starbuncle, un contraption girando |
+| `observation` | `observation_type` (`block`, `block_tag`, `block_state`, `block_entity`, `block_entity_type`, `entity_type`, `entity_type_tag`), `to_observe`, `timer` (ticks de cliente, máx. 1200) | Mirar algo N ticks; barra de progreso en pantalla (`FTBQuestsClientEventHandler`) | **Sí**: mirar tu tren entrando a la estación (`create:carriage_contraption`), un buzón junto a una estación (`#create:postboxes`) y un Starbuncle trabajando |
 | `stat` | `stat`, `value` | Estadística de Minecraft | **Motor**: pensado para Exploración (distancia volada o nadada) |
 | `xp` | `value`, `points` | Entrega experiencia: la resta (`XPTask.submitTask`) | **No**: nada en el libro cobra experiencia |
 | `fluid` | `fluid`, `amount` | Fluido | **No**: se entrega en una Task Screen de FTB (`canInsertItem`), un bloque ajeno al pack; un balde se pide como ítem |
@@ -234,8 +234,8 @@ Evidencia: `quest/reward/RewardTypes`, cada `readData`; comunes en `Reward.readD
 | `xp` | `xp` | Puntos | **Sí** |
 | `xp_levels` | `xp_levels` | Niveles | **No**: los niveles valen distinto según el nivel del jugador; los puntos son parejos |
 | `choice` | `table_id` o `table_data` | Elegís uno de la tabla (`SelectChoiceRewardScreen`) | **Sí**: hitos de las cadenas |
-| `random` | tabla | Uno al azar, sin vacío | **Sí**: secretos y fin de rama |
-| `loot` | tabla | Uno al azar con peso vacío y `loot_size` | **Sí**: cumbres |
+| `random` | tabla | Uno al azar, sin vacío | **Sí**: secretos |
+| `loot` | tabla | Uno al azar con peso vacío y `loot_size` | **Sí**: el jefe de Ars. Las cumbres y los encargos dan la caja misma (`ftbquests:lootcrate` con su componente), que se abre con clic derecho |
 | `all_table` | tabla | Toda la tabla | **No**: un kit entero es demasiado |
 | `command` | `command`, `permission_level` (o `elevate_perms`), `silent`, `feedback_message`; variables `{p}`, `{x}`, `{y}`, `{z}`, `{chapter}`, `{quest}`, `{team}` | Corre un comando (`CommandReward.claim`) | **Sí**: la fanfarria de cada cumbre (`playsound`, nivel 2, silenciosa, automática). Nada que dé ítems ni poder |
 | `toast` | `description` (clave de idioma: `Component.translatable`) | Aviso en pantalla (`FTBQuestsNetClient.displayCustomToast`) | **Sí**: «Secreto encontrado» en cada secreto; las claves viven en el companion (`assets/ftbquests/lang`) |
@@ -252,8 +252,8 @@ Evidencia: `quest/loot/RewardTable.readData`, `LootCrate`, `item/LootCrateItem.u
 |---|---|---|---|
 | `id`, `order_index`, `icon`, título `reward_table.<ID>.title` | — | Identidad | **Sí** |
 | `rewards` | lista de recompensas con `weight` (float, 1 por defecto) e `id` | Contenido ponderado | **Sí**, con IDs estables |
-| `empty_weight` | float | Peso de «nada» (sólo `loot` y las cajas) | **Sí**: las cajas de encargo tienen algo de vacío |
-| `loot_size` | entero | Tiradas por apertura | **Sí**: 1 a 3 según el acto |
+| `empty_weight` | float | Peso de «nada» (sólo `loot` y las cajas) | **No**: peso 0, toda caja da algo |
+| `loot_size` | entero | Tiradas por apertura | **Sí**: 2 en las cajas de los actos I a IV, 3 en V y VI; 1 en las demás tablas |
 | `hide_tooltip` | bool | Oculta el contenido en el tooltip | **No**: se ve qué puede salir |
 | `use_title` | bool | La recompensa muestra el título de la tabla | **Sí** |
 | `loot_crate.string_id` | `[a-z0-9_]` | ID de la caja (componente `ftbquests:loot_crate`) | **Sí** |
@@ -264,7 +264,7 @@ Evidencia: `quest/loot/RewardTable.readData`, `LootCrate`, `item/LootCrateItem.u
 | `loot_table_id` | recurso | Se lee y se escribe, pero ningún código lo usa en 2101.1.34 | **No** |
 | Bloque abridor de cajas | `ftbquests:loot_crate_opener` | Abre cajas por automatización | **No**: no hace falta |
 
-Contenido: sección «Recompensas» de [quest-book-v3](../design/quest-book-v3.md).
+Contenido: sección «Recompensas y cajas» de [quest-book-v3](../design/quest-book-v3.md).
 
 ## 12. Texto enriquecido
 
@@ -274,22 +274,22 @@ Cada línea de `quest_desc` es un párrafo. `util/TextUtils.parseRawText`: si la
 |---|---|---|---|---|
 | Colores y formatos | `&0`–`&f`, `&k` `&l` `&m` `&n` `&o` `&r` | `TextComponentParser.CODE_TO_FORMATTING` | Color, negrita, tachado, subrayado, cursiva, ofuscado | **Sí**: la interferencia del Atlas (historia) y los párrafos simples |
 | Color exacto | `&#RRGGBB` | `TextComponentParser.parse` | Color hexadecimal | **Sí**: rótulos y acentos de cada motivo |
-| Arcoíris | `&z` | `SPECIAL_COLOR_CODES` (2101.1.3) | Color que cicla | **Sí**, una sola vez: el aviso del secreto más raro de cada cadena. Más sería ruido |
-| Escape | `\&` | `TextComponentParser.parse` | `&` literal | **Motor**: el compilador lo escapa solo |
+| Arcoíris | `&z` | `SPECIAL_COLOR_CODES` (2101.1.3) | Color que cicla | **No**: un color que cicla distrae, y los secretos ya tienen su aviso |
+| Escape | `\&` | `TextComponentParser.parse` | `&` literal | **No**: con `&`, el compilador escribe el párrafo como JSON, donde `&` es literal |
 | Sustituciones | `{clave.de.idioma}` | `defaultStringToComponent` → `I18n.get` | Texto traducido del cliente | **No**: usamos componentes `translate`, que además llevan hover |
-| Imagen en la descripción | `{image:<ícono> width:N height:N align:left|center|right fit:true click_action:… text:…}` | `ClientTextComponentUtils.defaultStringToComponent`, `ImageComponent`, `ViewQuestPanel.makeImageComponentWidget` | Una imagen por línea; `fit` la estira al ancho del panel | **Sí**: medallones y diagramas en páginas de cumbre (texturas provisorias) |
+| Imagen en la descripción | `{image:<ícono> width:N height:N align:left\|center\|right fit:true click_action:… text:…}` | `ClientTextComponentUtils.defaultStringToComponent`, `ImageComponent`, `ViewQuestPanel.makeImageComponentWidget` | Una imagen por línea; `fit` la estira al ancho del panel | **Sí**: un diagrama en la segunda página de tres cumbres (texturas provisorias) |
 | Enlace web | `{open_url:<url> text:<texto>}` | `defaultStringToComponent` | Enlace | **No**: sin enlaces externos |
-| Salto de página | línea `{@pagebreak}` exacta | `Quest.PAGEBREAK_CODE`, `Quest.buildDescriptionIndex`; botones de página en `ViewQuestPanel.addButtonBar` | Páginas con botones | **Sí**: cumbres y quests con segunda capa (la mecánica en la página 1, el detalle o el remate en la 2) |
+| Salto de página | línea `{@pagebreak}` exacta | `Quest.PAGEBREAK_CODE`, `Quest.buildDescriptionIndex`; botones de página en `ViewQuestPanel.addButtonBar` | Páginas con botones | **Sí**: las cumbres (la tarea en la página 1; el diagrama y el remate en la 2) |
 | Componente JSON | `["", {"text": …}, …]` | `TextUtils.parseRawText` → `Component.Serializer.fromJson` | Estilos por tramo | **Sí**: lo emite el compilador de texto del motor |
 | `hoverEvent` `show_item` | `{"action":"show_item","contents":{"id":…}}` | `ViewQuestPanel.QuestDescriptionField.addMouseOverText` | Tooltip real del ítem | **Sí**: todo ítem nombrado con `[item:…]` |
-| `hoverEvent` `show_text` | texto | ídem | Tooltip propio | **Sí**: aclaraciones cortas sin alargar el párrafo |
+| `hoverEvent` `show_text` | texto | ídem | Tooltip propio | **Sí**: aclaraciones cortas sin alargar el párrafo (qué es la capacidad de estrés, qué es la Fuente) |
 | `hoverEvent` `show_entity` | entidad | ídem (sólo con tooltips avanzados) | — | **No** |
-| `clickEvent` `change_page` | ID hex de quest o capítulo, con `/<página>` | `handleCustomClickEvent` → `ImageClickAction.openQuest` (2101.1.6) | Salta a otra quest, capítulo o página | **Sí**: `[quest:clave|texto]` y `[chapter:…]` |
+| `clickEvent` `change_page` | ID hex de quest o capítulo, con `/<página>` | `handleCustomClickEvent` → `ImageClickAction.openQuest` (2101.1.6) | Salta a otra quest, capítulo o página | **Sí**: `[quest:clave\|texto]` y `[chapter:…]` (de la prensa al mecanismo de precisión, del latón a los complementos) |
 | `clickEvent` `open_url` con `docs:` | — | `SHOW_DOCS` | Abre un libro de docs | **No**: `DocsModRegistry` vacío |
 | `clickEvent` `open_url`, `run_command`, `suggest_command`, `copy_to_clipboard` | — | Vanilla (`Screen.handleComponentClicked`) | — | **No** |
-| `keybind` | `{"keybind":"key.ponder.ponder"}` | Vanilla | Muestra la tecla que el jugador tiene asignada | **Sí**: nunca escribimos una tecla fija (Ponder, libro de Ars, radial, el propio libro de quests) |
-| `translate` | `{"translate":"block.create.shaft"}` | Vanilla | Nombre del ítem en el idioma del jugador | **Sí**: `[item:…]` sin texto propio |
-| `font` | `minecraft:alt`, `minecraft:illageralt`, `minecraft:uniform` | Vanilla | Otra fuente | **Sí**: `[rune|…]` en Ars (alfabeto de la mesa de encantamientos) |
+| `keybind` | `{"keybind":"key.ponder.ponder"}` | Vanilla | Muestra la tecla que el jugador tiene asignada | **Sí**: nunca escribimos una tecla fija (Ponder en Create, el libro de Ars) |
+| `translate` | `{"translate":"block.create.shaft"}` | Vanilla | Nombre del ítem en el idioma del jugador | **Sí**: `[name:…]` (el quemador de blaze en Create) |
+| `font` | `minecraft:alt`, `minecraft:illageralt`, `minecraft:uniform` | Vanilla | Otra fuente | **Sí**: `[rune\|…]` en la cumbre de Ars (alfabeto de la mesa de encantamientos) |
 | `bold`, `italic`, `underlined`, `strikethrough`, `obfuscated`, `color` | — | Vanilla | — | **Sí**, desde el marcado |
 | Escapes Unicode | `\u2022` | `TextUtils` (`UnicodeUnescaper`, 2101.1.3) | Caracteres | **No**: escribimos el carácter |
 | Subtítulo de quest y de capítulo | idioma | sección 7 | — | **Sí** |
@@ -302,12 +302,12 @@ Evidencia: `quest/theme/ThemeLoader` (apila todos los `assets/ftbquests/ftb_ques
 | Elemento | Sintaxis | Efecto | Decisión |
 |---|---|---|---|
 | Archivo | `assets/ftbquests/ftb_quests_theme.txt` en cualquier recurso | Se apila sobre el de FTB | **Sí**: en el companion, generado |
-| Selectores | `*`, `#etiqueta`, tipo (`quest`, `chapter`…), ID hex, `!selector`, `a & b`, `a | b` | Filtros | **Sí**: `#etiqueta`. **No** el resto: con etiquetas alcanza y el orden entre selectores del mismo tipo no está garantizado |
+| Selectores | `*`, `#etiqueta`, tipo (`quest`, `chapter`…), ID hex, `!selector`, `a & b`, `a \| b` | Filtros | **Sí**: `#etiqueta`. **No** el resto: con etiquetas alcanza y el orden entre selectores del mismo tipo no está garantizado |
 | Variables | `{{propiedad}}` | Reusar valores | **No** |
 | Herencia | quest → capítulo → archivo → `[*]` | Una etiqueta de capítulo tiñe todo el capítulo | **Sí**: colores de línea por motivo |
 | `quest_locked_color`, `quest_not_started_color` | ARGB | Contorno del nodo | **Sí**: por rol |
-| `quest_started_color`, `quest_completed_color` | ARGB | Contorno en curso y completo | **Sí**: los secretos completos quedan dorados; el resto con los de FTB |
-| `dependency_line_completed_color`, `_uncompleted_color`, `_unavailable_color`, `_requires_color`, `_required_for_color` | ARGB | Colores de línea | **Sí**: por motivo (cobre en Create, violeta en Ars) |
+| `quest_started_color`, `quest_completed_color` | ARGB | Contorno en curso y completo | **Sí**: secretos y cumbres completos quedan dorados; el resto, con los de FTB |
+| `dependency_line_completed_color`, `_uncompleted_color`, `_unavailable_color`, `_requires_color`, `_required_for_color` | ARGB | Colores de línea | **Sí**: completas, pendientes y no disponibles por motivo (cobre en Create, violeta en Ars); las de requisito, las de FTB |
 | `dependency_line_texture` | ícono | Textura de la línea | **No** hasta tener arte (pedido a Elias) |
 | `dependency_line_thickness` | double, 0,17 | Grosor | **Sí**: 0,2 en las cadenas |
 | `dependency_line_unselected_speed`, `_selected_speed` | double | Animación de la textura | **Sí**: Ars fluye despacio sin selección (0,15) |
@@ -320,7 +320,7 @@ Evidencia: `quest/theme/ThemeLoader` (apila todos los `assets/ftbquests/ftb_ques
 | `full_screen_quest` | 0/1 | Panel a pantalla completa | **No** (v2) |
 | Íconos de interfaz (`check_icon`, `lock_icon`, `alert_icon`, `pin_icon_*`…) | — | — | **No** |
 | `wiki_url`, `wiki_icon` | — | Botón de wiki | **No**: sin enlaces externos |
-| Formas propias | `assets/ftbquests/textures/shapes/<nombre>/{background,outline,shape}.png`, 128×128 blancas con `blur` | `ThemeLoader.findShapes` lista cualquier espacio de nombres, pero `QuestShape` carga siempre `ftbquests:` | **Sí**: seis formas `el_*` en el companion, con texturas provisorias hasta el arte de Elias; nombres en `ftbquests.quest.shape.<nombre>` |
+| Formas propias | `assets/ftbquests/textures/shapes/<nombre>/{background,outline,shape}.png`, 128×128 blancas con `blur` | `ThemeLoader.findShapes` lista cualquier espacio de nombres, pero `QuestShape` carga siempre `ftbquests:` | **Sí**: cinco formas `el_*` en el companion, con texturas provisorias hasta el arte de Elias; nombres en `ftbquests.quest.shape.<nombre>` |
 
 ## 14. Otros elementos del JAR
 
@@ -328,8 +328,8 @@ Evidencia: `quest/theme/ThemeLoader` (apila todos los `assets/ftbquests/ftb_ques
 |---|---|---|
 | Pantallas de tarea (`screen_1`…`screen_7`), barreras (`barrier`, `stage_barrier`), detector | `registry/ModBlocks`, `block/*` | **No**: bloques de mundo; el pack no los coloca |
 | Ítems `book`, `custom_icon`, `lootcrate`, `missing_item`, `task_screen_configurator` | `registry/ModItems` | **Sí** `custom_icon` (íconos) y `lootcrate` (cajas). El resto no |
-| Quests fijadas y rastreador | `ViewQuestPanel.PinViewQuestButton`, `pinned_quest_size` | Del jugador; la guía de calidad de vida la menciona |
-| Teclas de FTB Quests | `key.ftbquests.quests` y las del libro (buscar, recentrar, zoom) | **Sí**, en texto: `[key:key.ftbquests.quests]` en la historia |
+| Quests fijadas y rastreador | `ViewQuestPanel.PinViewQuestButton`, `pinned_quest_size` | **No**: es una función del jugador, que no hace falta explicar en el libro |
+| Teclas de FTB Quests | `key.ftbquests.quests` y las del libro (buscar, recentrar, zoom) | **No** en texto: quien lee el libro ya lo abrió |
 | Comandos `/ftbquests` | `FTBQuestsCommands` | **No** en el libro; el QA sólo mira el log de carga |
 | Eventos para scripts (`CustomTaskEvent`, `CustomRewardEvent`, `CustomClickEvent`, `ThemePropertyEvent`) | `events/*` | **No**: sin KubeJS de FTB |
 | Integración de visor de recetas y filtros | `integration/RecipeModHelper.NoOp`, `ItemMatchingSystem` | **No**: requieren FTB XMod Compat y FTB Filter System, fuera del set fijado |
@@ -339,20 +339,20 @@ Evidencia: `quest/theme/ThemeLoader` (apila todos los `assets/ftbquests/ftb_ques
 | | Sí | Motor | No |
 |---|---|---|---|
 | Archivos (1) | 9 | 0 | 0 |
-| `data.snbt` (2) | 9 | 0 | 14 |
+| `data.snbt` (2) | 10 | 0 | 13 |
 | Capítulo (3) | 10 | 1 | 10 |
 | Grupo (4) | 2 | 0 | 1 |
-| Imágenes (5) | 14 | 1 | 4 |
+| Imágenes (5) | 14 | 1 | 5 |
 | Enlaces (6) | 2 | 0 | 1 |
-| Quest (7) | 26 | 1 | 9 |
-| Íconos (8) | 4 | 0 | 9 |
-| Tareas (9) | 8 | 3 | 7 |
-| Recompensas (10) | 9 | 0 | 6 |
-| Tablas y cajas (11) | 9 | 0 | 3 |
-| Texto (12) | 14 | 1 | 6 |
-| Tema (13) | 11 | 0 | 10 |
-| Otros (14) | 2 | 0 | 5 |
-| **Total** | **129** | **7** | **85** |
+| Quest (7) | 26 | 2 | 7 |
+| Íconos (8) | 3 | 1 | 9 |
+| Tareas (9) | 9 | 2 | 6 |
+| Recompensas (10) | 8 | 0 | 6 |
+| Tablas y cajas (11) | 9 | 0 | 4 |
+| Texto (12) | 14 | 0 | 8 |
+| Tema (13) | 11 | 0 | 9 |
+| Otros (14) | 1 | 0 | 6 |
+| **Total** | **128** | **7** | **85** |
 
 Cada «No» tiene su motivo en la fila: casi todos piden un mod que no está (FTB XMod Compat, FTB Filter System, TerraBlender), un bloque ajeno al pack, un enlace externo o algo que el libro ya resuelve de otra forma.
 
