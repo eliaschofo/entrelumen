@@ -40,7 +40,7 @@ public final class EnvesClient {
   private static final Logger LOGGER = LogUtils.getLogger();
   public static final ResourceLocation EFFECTS = ResourceLocation.fromNamespaceAndPath("entrelumen", "enves");
   static final ResourceLocation HUD = ResourceLocation.fromNamespaceAndPath("entrelumen", "enves_map");
-  static final int HUD_CELL = 7, HUD_BORDER = 4, MARGIN = 4;
+  static final int HUD_CELL = 9, HUD_BORDER = 4, MARGIN = 4;
 
   private EnvesClient() {}
 

@@ -36,6 +36,9 @@ public final class EnvesMapRenderer {
   static void draw(GuiGraphics graphics, int x, int y, int cell, int border, boolean big) {
     int grid = EnvesLayout.W * cell;
     int size = grid + 2 * border;
+    // The fog, the blurs and the markers are translucent.
+    com.mojang.blaze3d.systems.RenderSystem.enableBlend();
+    com.mojang.blaze3d.systems.RenderSystem.defaultBlendFunc();
     graphics.blit(PARCHMENT, x, y, 0, 0, size, size, size, size);
     int gx = x + border, gy = y + border;
     EnvesNetwork.MapView map = EnvesClientState.map();
@@ -47,12 +50,13 @@ public final class EnvesMapRenderer {
       for (var known : map.cells()) if (known.explored()) drawIcon(graphics, gx, gy, cell, known, big);
       drawPlayers(graphics, gx, gy, cell, map, big);
     }
+    com.mojang.blaze3d.systems.RenderSystem.disableBlend();
   }
 
   private static void drawGlimpse(GuiGraphics graphics, int gx, int gy, int cell, int index) {
     int cx = gx + EnvesLayout.x(index) * cell, cy = gy + EnvesLayout.z(index) * cell;
     int pad = Math.max(1, cell / 5);
-    graphics.setColor(0.93f, 0.86f, 0.72f, 0.9f);
+    graphics.setColor(0.86f, 0.78f, 0.62f, 0.7f);
     graphics.blit(GLIMPSE, cx - pad, cy - pad, 0, 0, cell + 2 * pad, cell + 2 * pad, cell + 2 * pad, cell + 2 * pad);
     graphics.setColor(1f, 1f, 1f, 1f);
   }
