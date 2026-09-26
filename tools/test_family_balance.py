@@ -71,15 +71,19 @@ class FamilyBalanceTest(unittest.TestCase):
     def test_transform_rejects_unique_or_changed_ingredients(self):
         recipe = {'type': 'minecraft:crafting_shaped', 'pattern': ['AB ', 'AA '], 'key': {'A': {'item': 'x:a'}, 'B': {'item': 'x:b'}},
                   'result': {'id': 'x:out', 'count': 2}}
-        ok = balance.transform(balance.shaped('x:out', 1, 0, {'item': 'x:a'}, 'entrelumen:power_regulator', 'III', ''), recipe)
+        # An act material may keep an asymmetric native drawing as it was.
+        ok = balance.transform(balance.shaped('x:out', 1, 0, {'item': 'x:a'}, balance.ALLOY_III, 'III', ''), recipe)
         self.assertEqual(ok['pattern'], ['AB ', 'ZA '])
         self.assertEqual(ok['result'], recipe['result'])
         with self.assertRaises(AssertionError):
-            balance.transform(balance.shaped('x:out', 0, 1, {'item': 'x:b'}, 'entrelumen:power_regulator', 'III', ''), recipe)
+            balance.transform(balance.shaped('x:out', 0, 1, {'item': 'x:b'}, balance.ALLOY_III, 'III', ''), recipe)
         with self.assertRaises(AssertionError):
-            balance.transform(balance.shaped('x:out', 0, 0, {'item': 'x:b'}, 'entrelumen:power_regulator', 'III', ''), recipe)
-        filled = balance.transform(balance.shaped('x:out', 0, 2, None, 'entrelumen:power_regulator', 'III', ''), recipe)
+            balance.transform(balance.shaped('x:out', 0, 0, {'item': 'x:b'}, balance.ALLOY_III, 'III', ''), recipe)
+        filled = balance.transform(balance.shaped('x:out', 0, 2, None, balance.ALLOY_III, 'III', ''), recipe)
         self.assertEqual(filled['pattern'][0], 'ABZ')
+        # An ENTRELUMEN component never enters a drawing that is not symmetric (playtest rule 3).
+        with self.assertRaises(AssertionError):
+            balance.transform(balance.shaped('x:out', 1, 0, {'item': 'x:a'}, balance.PR, 'III', ''), recipe)
         listed = {'type': 'm:fusion', 'ingredients': [{'consume': True, 'ingredient': {'item': 'x:a'}}] * 2, 'result': {'id': 'x:o'}}
         changed = balance.transform(balance.listed('x:o', 'ingredients', 1, listed['ingredients'][0], 'entrelumen:ark_bus', 'V', '', wrap='fusion'), listed)
         self.assertEqual(changed['ingredients'][1], {'consume': True, 'ingredient': {'item': 'entrelumen:ark_bus'}})
@@ -146,6 +150,7 @@ class FamilyBalanceTest(unittest.TestCase):
 
     def test_additions_reject_wrong_acts_and_unknown_items(self):
         models = {'apothic_enchanting:hellshelf', 'apothic_enchanting:infused_seashelf', 'apothic_enchanting:deepshelf',
+                  balance.SKY,
                   'apothic_enchanting:ender_library', 'create:copper_sheet', 'apotheosis:gem_dust',
                   'apotheosis:timeworn_fabric', 'apotheosis:luminous_crystal_shard', 'apotheosis:arcane_sands'}
         self.assertEqual(len(balance.build_additions('apotheosis', models)), 21)
@@ -272,9 +277,14 @@ class FamilyBalanceTest(unittest.TestCase):
     def test_round_four_stages_heliodor_solar_tech_and_psi(self):
         family = balance.FAMILIES['pingpong4']
         by_id = {change['id']: change for change in family['changes']}
-        self.assertEqual(by_id['create_new_age:shaped/basic_solar_heating_plate']['add'], balance.CF)
-        self.assertEqual(by_id['create_new_age:shaped/generator_coil']['add'], balance.EN)
-        self.assertEqual(by_id['create_new_age:mechanical_crafting/reactor_rod']['add'], balance.CS)
+        # Playtest of 24 September 2026: plates and coils go by the dozen, so the plate takes the act II
+        # alloy, the coil stays native and the coupler moves to the carbon brushes, one per generator.
+        self.assertEqual(by_id['create_new_age:shaped/basic_solar_heating_plate']['add'], balance.ALLOY_II)
+        self.assertEqual(by_id['create_new_age:shaped/carbon_brushes']['add'], balance.EN)
+        self.assertNotIn('create_new_age:shaped/generator_coil', by_id)
+        self.assertEqual(balance.UPSTREAM['create_new_age:shaped/generator_coil'], 'create_new_age:shaped/carbon_brushes')
+        self.assertEqual(by_id['create_new_age:mechanical_crafting/reactor_rod']['add'], balance.IRONWOOD)
+        self.assertNotIn('psi:cad_core_hyperclocked', by_id)
         self.assertEqual(by_id['psi:assembler']['act'], 'III')
         self.assertEqual({change['act'] for change in family['changes']}, {'II', 'III', 'IV'})
         self.assertEqual({spec['op'] for spec in family['data']}, {'copy', 'disable'})
@@ -312,10 +322,12 @@ class FamilyBalanceTest(unittest.TestCase):
         ungated = balance.created_shaped('t:free', 't:free', ['XXX', 'XXX', 'XXX'], {'X': {'item': 't:metal'}}, '')
         self.assertTrue(any(c == 't:free' for c, _ in balance.find_loops([ungated], [], {}, {lum})))
 
-    def test_functions_use_one_component_per_function_across_families(self):
+    def test_functions_close_keystones_and_give_members_the_act_material(self):
         family = balance.FAMILIES['functions']
         for change in family['changes']:
-            component, act = balance.FUNCTIONS[change['function']]
+            if 'function' not in change:
+                continue
+            component, act, _ = balance.FUNCTIONS[change['function']]
             self.assertEqual(change['act'], act, change['id'])
             if component == 'luminosity':
                 self.assertIn(change['add'], balance.LUMINOSITY.values(), change['id'])
@@ -324,17 +336,57 @@ class FamilyBalanceTest(unittest.TestCase):
         spec = importlib.util.spec_from_file_location('rftools_under_test', Path(__file__).with_name('generate_rftools_balance.py'))
         rftools = importlib.util.module_from_spec(spec)
         spec.loader.exec_module(rftools)
-        gates = {c['id']: c['add'] for f in balance.FAMILIES.values() for c in f.get('changes', [])}
-        gates.update({rid: row[0] for rid, row in rftools.CHANGES.items()})
+        gates = {c['id']: c for f in balance.FAMILIES.values() for c in f.get('changes', [])}
+        adds = {rid: c['add'] for rid, c in gates.items()}
+        adds.update({rid: row[0] for rid, row in rftools.CHANGES.items()})
+        for function, keystones in balance.FUNCTION_KEYSTONES.items():
+            for keystone in keystones:
+                self.assertEqual(adds[keystone], balance.FUNCTIONS[function][0], f'{keystone} is a {function} keystone')
         for function, members in balance.FUNCTION_MEMBERS.items():
+            component, act, material = balance.FUNCTIONS[function]
+            self.assertEqual(balance.STAGE_MATERIALS[material], act, function)
             for member in members:
-                self.assertEqual(gates[member], balance.FUNCTIONS[function][0], f'{member} is a {function} gate')
-        # Gap 2 of reference-packs.md: every quarry, RFTools' card included, uses the spectral lens.
-        self.assertEqual(rftools.CHANGES['rftoolsbuilder:shape_card_quarry'][0], balance.SL)
-        # Gap 1: the AE2 controller now matches Refined Storage's.
-        self.assertEqual(gates['ae2:network/blocks/controller'], gates['refinedstorage:controller'])
+                self.assertEqual(adds[member], material, f'{member} takes the act {act} material of {function}')
+                if member in gates:
+                    self.assertEqual(gates[member]['act'], act, member)
+        # Members and keystones never overlap, and native recipes left on purpose are no gate at all.
+        keystones = {k for ks in balance.FUNCTION_KEYSTONES.values() for k in ks}
+        members = {m for ms in balance.FUNCTION_MEMBERS.values() for m in ms}
+        self.assertFalse(keystones & members)
+        self.assertFalse(set(balance.UPSTREAM) & set(adds))
+        self.assertTrue(set(balance.UPSTREAM.values()) <= set(adds))
+        # Gap 1 of reference-packs.md: the AE2 controller matches Refined Storage's.
+        self.assertEqual(adds['ae2:network/blocks/controller'], adds['refinedstorage:controller'])
         # Gap 3: the inventory sensor gates something.
-        self.assertIn(balance.IS, gates.values())
+        self.assertIn(balance.IS, adds.values())
+
+    def test_mekanism_alloys_and_circuits_only_come_from_the_infuser(self):
+        removals = balance.FAMILIES['functions']['removals']
+        self.assertEqual(removals, balance.MEKANISM_BYPASS)
+        self.assertEqual(len([r for r in removals if 'foundry/alloy' in r]), 3)
+        self.assertEqual(len([r for r in removals if 'atomicforge' in r]), 4)
+        for material, act in balance.STAGE_MATERIALS.items():
+            if material.startswith('mekanism:alloy_'):
+                self.assertIn(act, ('II', 'III', 'V'))
+
+    def test_paired_cells_keep_the_drawing_and_can_be_reversed(self):
+        shelf = {'type': 'minecraft:crafting_shaped', 'pattern': [' T ', 'SBS', 'SCS'],
+                 'key': {'T': {'item': 'x:tendril'}, 'S': {'item': 'x:sculk'}, 'B': {'item': 'x:deep'},
+                         'C': {'item': 'x:catalyst'}}, 'result': {'id': 'x:shelf', 'count': 1}}
+        drawn = balance.transform(balance.paired('x:shelf', [(0, 0), (0, 2)], None, balance.ZANITE, 'IV', ''), shelf)
+        self.assertEqual(drawn['pattern'], ['ZTZ', 'SBS', 'SCS'])
+        self.assertTrue(balance.symmetric(drawn))
+        with self.assertRaises(AssertionError):  # a single cell off the axis breaks the native symmetry
+            balance.transform(balance.shaped('x:shelf', 0, 0, None, balance.ZANITE, 'IV', ''), shelf)
+        with self.assertRaises(AssertionError):  # both cells must hold the same native ingredient
+            balance.transform(balance.paired('x:shelf', [(1, 0), (0, 2)], None, balance.ZANITE, 'IV', ''), shelf)
+
+    def test_recipe_design_rules_pass(self):
+        spec = importlib.util.spec_from_file_location('design_under_test', Path(__file__).with_name('check_recipe_design.py'))
+        design = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(design)
+        tree = design.Tree()
+        self.assertEqual(design.check(design.load(tree), tree), [])
 
     def test_no_gate_touches_what_makes_the_components(self):
         sources, _ = balance.component_sources()
@@ -392,7 +444,7 @@ class FamilyBalanceTest(unittest.TestCase):
         self.assertLessEqual(max(added.values()), 2, added)
 
     def test_top_armor_takes_one_luminosity_per_piece_in_act_six(self):
-        armor = [c for c in balance.FAMILIES['functions']['changes'] if c['function'] == 'top_armor']
+        armor = [c for c in balance.FAMILIES['functions']['changes'] if c.get('function') == 'top_armor']
         self.assertEqual(len(armor), 12)
         self.assertEqual({c['add'] for c in armor if c['id'].startswith('mekanism:mekasuit_')}, {balance.LUMINOSITY['engineering']})
         self.assertEqual({c['add'] for c in armor if c['id'].startswith('advanced_ae:')}, {balance.LUMINOSITY['logistics']})
@@ -437,7 +489,7 @@ class FamilyBalanceTest(unittest.TestCase):
         self.assertEqual(frame['type'], 'mekanism:metallurgic_infusing')
         self.assertEqual(frame['item_input'], {'count': 1, 'item': 'entrelumen:raw_lens'})
         self.assertEqual(frame['output'], {'count': 1, 'id': balance.CF})
-        self.assertEqual(sum(r['type'] == 'minecraft:crafting_shapeless' for r in rows.values()), 21)
+        self.assertEqual(sum(r['type'] == 'minecraft:crafting_shaped' for r in rows.values()), 21)
         self.assertFalse(any(balance.CF == r.get('result', {}).get('id') for r in rows.values()))
         with unittest.mock.patch.object(integration, 'STORY_FRAMES', 3):
             with self.assertRaises(ValueError):

@@ -1198,9 +1198,10 @@ public final class RuntimeGameTests {
           BuiltInRegistries.BLOCK.containsKey(
               ResourceLocation.fromNamespaceAndPath("entrelumen", id)),
           "Missing module block: " + id);
+    // Drawn since Elias's playtest of 24 September 2026: a copper clasp over the book.
     var input =
         CraftingInput.of(
-            2, 1, List.of(new ItemStack(Items.BOOK), new ItemStack(Items.COPPER_INGOT)));
+            1, 2, List.of(new ItemStack(Items.COPPER_INGOT), new ItemStack(Items.BOOK)));
     var recipe =
         helper
             .getLevel()

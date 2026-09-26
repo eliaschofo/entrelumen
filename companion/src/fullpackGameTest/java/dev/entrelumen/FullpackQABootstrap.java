@@ -40,6 +40,7 @@ public final class FullpackQABootstrap {
     ActsFullpackGameTests.requireSuite();
     ProgressionFullpackGameTests.requireSuite();
     VeinResonatorFullpackGameTests.requireSuite();
+    RecipeDesignFullpackGameTests.requireSuite();
     if (GameTestHooks.isGametestEnabled()) return;
     if (!registered) {
       GameTestRegistry.register(RuntimeGameTests.class);
@@ -83,6 +84,8 @@ public final class FullpackQABootstrap {
       GameTestRegistry.register(VeinResonatorFullpackGameTests.class);
       // Act VI, Solsticio (25 September): the missions with the pack's real meals, parts and batteries.
       GameTestRegistry.register(RuntimeGameTestsStory.class);
+      // Recipe audit (25 September): drawn integration recipes, fan-out, Mekanism entry, Emperor's Cloth.
+      GameTestRegistry.register(RecipeDesignFullpackGameTests.class);
       Set<String> expected = new TreeSet<>();
       for (Class<?> owner : List.of(RuntimeGameTests.class, FullpackGameTests.class,
           ResourceFarmGameTests.class, Ae2CraftingGameTests.class, RFToolsRecipeGameTests.class,
@@ -97,7 +100,8 @@ public final class FullpackQABootstrap {
           ModPingpongRound4FullpackGameTests.class,
           RuntimeGameTestsCompass.class, RuntimeGameTestsGameplay.class, SolsticioFullpackGameTests.class,
           RuntimeGameTestsActs.class, ActsFullpackGameTests.class,
-          ProgressionFullpackGameTests.class, VeinResonatorFullpackGameTests.class, RuntimeGameTestsStory.class))
+          ProgressionFullpackGameTests.class, VeinResonatorFullpackGameTests.class, RuntimeGameTestsStory.class,
+          RecipeDesignFullpackGameTests.class))
         for (var method : owner.getDeclaredMethods())
           if (method.isAnnotationPresent(GameTest.class))
             expected.add(method.getName().toLowerCase(Locale.ROOT));

@@ -32,7 +32,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.CraftingInput;
 import net.minecraft.world.item.crafting.CraftingRecipe;
 import net.minecraft.world.item.crafting.RecipeHolder;
-import net.minecraft.world.item.crafting.ShapelessRecipe;
+import net.minecraft.world.item.crafting.ShapedRecipe;
 import net.minecraft.world.phys.AABB;
 import net.neoforged.fml.ModList;
 import net.neoforged.neoforge.gametest.GameTestHolder;
@@ -53,6 +53,8 @@ public final class Ae2CraftingGameTests {
   private static final ResourceLocation RATION = ResourceLocation.parse("entrelumen:ration_bundle");
   private static final int[] INPUT_COUNTS = {2, 2, 1, 2};
   private static final ResourceLocation[] INPUT_IDS = {STEW, SALAD, PROCESSOR, RATION};
+  /** The drawing since Elias's playtest of 24 September 2026: FRF / SCS / _R_ (index into INPUT_IDS, -1 empty). */
+  private static final int[] GRID = {0, 3, 0, 1, 2, 1, -1, 3, -1};
 
   private Ae2CraftingGameTests() {}
 
@@ -65,14 +67,12 @@ public final class Ae2CraftingGameTests {
     Item[] inputs = Arrays.stream(INPUT_IDS).map(id -> item(helper, id)).toArray(Item[]::new);
     Item contract = item(helper, CONTRACT);
     var gridItems = new ItemStack[9];
-    Arrays.fill(gridItems, ItemStack.EMPTY);
-    int slot = 0;
-    for (int i = 0; i < inputs.length; i++)
-      for (int n = 0; n < INPUT_COUNTS[i]; n++) gridItems[slot++] = new ItemStack(inputs[i]);
+    for (int slot = 0; slot < 9; slot++)
+      gridItems[slot] = GRID[slot] < 0 ? ItemStack.EMPTY : new ItemStack(inputs[GRID[slot]]);
 
     var loaded = level.getRecipeManager().byKey(RECIPE);
-    helper.assertTrue(loaded.isPresent() && loaded.orElseThrow().value() instanceof ShapelessRecipe,
-        "Loaded settlement_supply is missing or no longer a native shapeless recipe");
+    helper.assertTrue(loaded.isPresent() && loaded.orElseThrow().value() instanceof ShapedRecipe,
+        "Loaded settlement_supply is missing or no longer a native shaped recipe");
     CraftingRecipe recipe = (CraftingRecipe) loaded.orElseThrow().value();
     helper.assertTrue(recipe.matches(CraftingInput.of(3, 3, Arrays.asList(gridItems)), level),
         "The seven real settlement_supply inputs no longer match the loaded recipe");

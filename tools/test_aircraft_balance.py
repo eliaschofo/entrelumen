@@ -20,7 +20,8 @@ VEHICLES = {
     'airship', 'biplane', 'gyrodyne', 'quadrocopter',
     'cargo_airship', 'warship', 'bamboo_hopper',
 }
-ACT_III_ITEMS = {'entrelumen:power_regulator', 'entrelumen:handling_core'}
+# The engine's power regulator (act III component) and the gyrodyne's reinforced alloy (act III material).
+ACT_III_ITEMS = {'entrelumen:power_regulator', 'mekanism:alloy_reinforced'}
 needs_jar = unittest.skipUnless(JAR.is_file(), f'Pinned Immersive Aircraft JAR unavailable: {JAR}')
 
 
@@ -68,10 +69,13 @@ class AircraftBalanceTest(unittest.TestCase):
             self.assertEqual(len(recipe['pattern']), 3)
             self.assertTrue(all(len(line) == 3 for line in recipe['pattern']))
         self.assertEqual(ingredient_ids(self.overrides['immersive_aircraft:engine'])['entrelumen:power_regulator'], 1)
-        self.assertEqual(ingredient_ids(self.overrides['immersive_aircraft:gyrodyne'])['entrelumen:handling_core'], 1)
+        self.assertEqual(ingredient_ids(self.overrides['immersive_aircraft:gyrodyne'])['mekanism:alloy_reinforced'], 1)
         design = json.loads((ROOT / 'content/integration-design.json').read_text(encoding='utf-8'))
         producers = {p['output']['id']: p['act'] for p in design['projects']}
-        self.assertEqual({producers[item] for item in ACT_III_ITEMS}, {3})
+        self.assertEqual(producers['entrelumen:power_regulator'], 3)
+        # Rule 3 of the playtest: both drawings stay symmetric.
+        for rid, recipe in self.overrides.items():
+            self.assertTrue(all(line == line[::-1] for line in recipe['pattern']), rid)
 
     def test_preflight_precedes_both_recipe_changes(self):
         source = SCRIPT.read_text(encoding='utf-8')
@@ -116,9 +120,10 @@ class AircraftBalanceTest(unittest.TestCase):
         self.assertIn('immersive_aircraft:engine', ingredient_ids(native['immersive_aircraft:quadrocopter']))
         self.assertEqual(ingredient_ids(self.overrides['immersive_aircraft:gyrodyne'])
                          - ingredient_ids(native['immersive_aircraft:gyrodyne']),
-                         Counter({'entrelumen:handling_core': 1}))
+                         Counter({'mekanism:alloy_reinforced': 1}))
         self.assertEqual(ingredient_ids(native['immersive_aircraft:gyrodyne'])
-                         - ingredient_ids(self.overrides['immersive_aircraft:gyrodyne']), Counter())
+                         - ingredient_ids(self.overrides['immersive_aircraft:gyrodyne']),
+                         Counter({'immersive_aircraft:sail': 1}))
 
     @needs_jar
     def test_native_costs_and_outputs_survive_and_components_are_act_iii(self):

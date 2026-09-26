@@ -294,7 +294,7 @@ class ChapterContracts(unittest.TestCase):
   material_quests={q['item']:q['count'] for q in chapter['quests'] if 'item' in q}
   for milestone,slots in [('resilient_backbone',7),('renewal_engine',8),('settlement_supply',7)]:
    recipe=designs[milestone]
-   self.assertEqual(recipe['type'],'minecraft:crafting_shapeless')
+   self.assertEqual(recipe['type'],'minecraft:crafting_shaped')  # drawn since the playtest of 24 September 2026
    self.assertEqual(sum(i['count'] for i in recipe['inputs']),slots)
    for ingredient in recipe['inputs']:
     self.assertEqual(material_quests[ingredient['id']],ingredient['count'])
@@ -379,7 +379,7 @@ class ChapterContracts(unittest.TestCase):
    # Boss drops since 24 September 2026 (Wither, Elder Guardian, dragon), one unit in place of another.
    'arcane_module':{'entrelumen:spectral_lens':2,'entrelumen:containment_seal':2,'occultism:iesnium_ingot':1,'minecraft:nether_star':1},
    'nature_module':{'entrelumen:renewal_engine':1,'entrelumen:ecosystem_capsule':2,'entrelumen:living_matrix':1,'minecraft:wet_sponge':1},
-   'exploration_module':{'entrelumen:horizon_chart':1,'entrelumen:spectral_lens':1,'twilightforest:steeleaf_ingot':2,'aether:zanite_gemstone':1,'minecraft:dragon_breath':1},
+   'exploration_module':{'entrelumen:horizon_chart':1,'entrelumen:spectral_lens':1,'twilightforest:steeleaf_ingot':2,'aether:zanite_gemstone':2,'minecraft:dragon_breath':1},
    'logistics_module':{'entrelumen:routing_matrix':2,'entrelumen:handling_core':2,'entrelumen:ark_bus':1},
    'habitation_module':{'entrelumen:habitation_contract':1,'entrelumen:ration_bundle':2,'entrelumen:living_matrix':2}}
   for milestone,recipe_name in names.items():
@@ -389,7 +389,7 @@ class ChapterContracts(unittest.TestCase):
    self.assertEqual(projects[milestone]['items'],expected)
    self.assertEqual(projects[milestone]['reward'],'entrelumen:'+milestone)
    self.assertEqual(projects[milestone]['act'],5)
-   self.assertEqual(recipe['type'],'minecraft:crafting_shapeless')
+   self.assertEqual(recipe['type'],'minecraft:crafting_shaped')  # drawn since the playtest of 24 September 2026
    self.assertEqual(sum(expected.values()),sum(i['count'] for i in recipe['inputs']))
   self.assertEqual({m:source[m]['deps'] for m in names},
    {'engineering_module':['world_network'],'arcane_module':['world_network'],'nature_module':['world_network'],

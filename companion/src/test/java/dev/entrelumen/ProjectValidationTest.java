@@ -78,14 +78,15 @@ class ProjectValidationTest {
             "entrelumen:energy_coupler", 2, "entrelumen:ark_bus", 1,
             "mekanism:alloy_atomic", 2),
         // 24 September 2026: a boss drop replaces one unit of an existing input (Wither, Elder
-        // Guardian, dragon), so each module takes as many items as before.
+        // Guardian, dragon). The exploration module takes its second zanite back so that its crafting
+        // recipe can be drawn symmetrically (docs/design/recipe-design-rules.md).
         "arcane_module", java.util.Map.of("entrelumen:spectral_lens", 2,
             "entrelumen:containment_seal", 2, "occultism:iesnium_ingot", 1, "minecraft:nether_star", 1),
         "nature_module", java.util.Map.of("entrelumen:renewal_engine", 1,
             "entrelumen:ecosystem_capsule", 2, "entrelumen:living_matrix", 1, "minecraft:wet_sponge", 1),
         "exploration_module", java.util.Map.of("entrelumen:horizon_chart", 1,
             "entrelumen:spectral_lens", 1, "twilightforest:steeleaf_ingot", 2,
-            "aether:zanite_gemstone", 1, "minecraft:dragon_breath", 1),
+            "aether:zanite_gemstone", 2, "minecraft:dragon_breath", 1),
         "logistics_module", java.util.Map.of("entrelumen:routing_matrix", 2,
             "entrelumen:handling_core", 2, "entrelumen:ark_bus", 1),
         "habitation_module", java.util.Map.of("entrelumen:habitation_contract", 1,

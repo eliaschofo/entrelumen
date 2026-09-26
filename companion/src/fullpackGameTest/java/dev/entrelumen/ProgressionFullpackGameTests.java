@@ -274,9 +274,10 @@ public final class ProgressionFullpackGameTests {
       if (holder.isEmpty() || holder.get().value().getIngredients().stream().filter(i -> i.test(dropStack)).count() != 1)
         problems.add(id + " does not take exactly one " + drop);
       var project = Projects.all().get(projects.get(id));
+      // Shaped since the playtest of 24 September 2026: empty cells are empty ingredients.
       if (project == null || project.items().getOrDefault(drop, 0) != 1
           || holder.isPresent() && project.items().values().stream().mapToInt(Integer::intValue).sum()
-              != holder.get().value().getIngredients().size())
+              != holder.get().value().getIngredients().stream().filter(i -> !i.isEmpty()).count())
         problems.add(projects.get(id) + " delivery does not match its recipe with one " + drop);
     });
     helper.assertTrue(problems.isEmpty(), "Ark boss drops: " + problems);

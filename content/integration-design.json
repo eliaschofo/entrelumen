@@ -18,7 +18,7 @@
   },
   "policies": {
     "gifts": "All components and mod items remain usable, transferable and craftable regardless of campaign. Receiving an item never completes a narrative milestone.",
-    "recipeMechanism": "22 static shapeless recipes are exported by tools/generate_integration_recipes.py; source generation is not evidence that all 22 narrative projects are implemented. Counts expand into <=9 occupied crafting slots with native remainders.",
+    "recipeMechanism": "21 static shaped, symmetric crafting recipes and the frame's infusion are exported by tools/generate_integration_recipes.py; source generation is not evidence that all 22 narrative projects are implemented. Counts expand into <=9 occupied crafting slots with native remainders.",
     "progression": "Narrative directed prerequisites are distinct from physical recipe dependencies. Act number means expected acquisition phase, never a use restriction.",
     "failureSafety": "Native static crafting retains container remainders. Acts II-IV and the first half of Act V consume prototypes without replacement; the Ark half of Act V consumes construction inputs and rewards one module once. Commissioning consumes only accepted batches. No timer decay or forced chunks.",
     "containers": "Preserve native recipe remainders for consumed soups/stews; verify bowls return normally in crafting and AE2 automation.",
@@ -198,8 +198,8 @@
       },
       "recipe": {
         "id": "entrelumen:integration/crystal_grid",
-        "type": "minecraft:crafting_shapeless",
-        "representation": "Expand each ingredient count into individual crafting-grid entries; total <=9. Native crafting remainders apply. Static recipe: no team/stage/player predicates.",
+        "type": "minecraft:crafting_shaped",
+        "representation": "Shaped and left-right symmetric (Elias's playtest, 24 September 2026): the pattern draws the component, with its ENTRELUMEN items on the axis, corners or middle row. Each ingredient count equals the grid cells it fills, so the inputs and the Atlas delivery stay equal. Native crafting remainders apply. Static recipe: no team/stage/player predicates.",
         "inputs": [
           {
             "id": "actuallyadditions:restonia_crystal",
@@ -213,7 +213,17 @@
             "id": "create:andesite_alloy",
             "count": 2
           }
-        ]
+        ],
+        "pattern": [
+          "R R",
+          " C ",
+          "A A"
+        ],
+        "key": {
+          "R": "actuallyadditions:restonia_crystal",
+          "C": "actuallyadditions:iron_casing",
+          "A": "create:andesite_alloy"
+        }
       },
       "systems": [
         "actuallyadditions",
@@ -247,8 +257,8 @@
       },
       "recipe": {
         "id": "entrelumen:integration/living_workshop",
-        "type": "minecraft:crafting_shapeless",
-        "representation": "Expand each ingredient count into individual crafting-grid entries; total <=9. Native crafting remainders apply. Static recipe: no team/stage/player predicates.",
+        "type": "minecraft:crafting_shaped",
+        "representation": "Shaped and left-right symmetric (Elias's playtest, 24 September 2026): the pattern draws the component, with its ENTRELUMEN items on the axis, corners or middle row. Each ingredient count equals the grid cells it fills, so the inputs and the Atlas delivery stay equal. Native crafting remainders apply. Static recipe: no team/stage/player predicates.",
         "inputs": [
           {
             "id": "ars_nouveau:magebloom_fiber",
@@ -262,7 +272,17 @@
             "id": "entrelumen:calibration_frame",
             "count": 1
           }
-        ]
+        ],
+        "pattern": [
+          " S ",
+          "FMF",
+          " S "
+        ],
+        "key": {
+          "S": "ars_nouveau:source_gem",
+          "F": "ars_nouveau:magebloom_fiber",
+          "M": "entrelumen:calibration_frame"
+        }
       },
       "systems": [
         "ars_nouveau",
@@ -297,8 +317,8 @@
       },
       "recipe": {
         "id": "entrelumen:integration/travelling_pantry",
-        "type": "minecraft:crafting_shapeless",
-        "representation": "Expand each ingredient count into individual crafting-grid entries; total <=9. Native crafting remainders apply. Static recipe: no team/stage/player predicates.",
+        "type": "minecraft:crafting_shaped",
+        "representation": "Shaped and left-right symmetric (Elias's playtest, 24 September 2026): the pattern draws the component, with its ENTRELUMEN items on the axis, corners or middle row. Each ingredient count equals the grid cells it fills, so the inputs and the Atlas delivery stay equal. Native crafting remainders apply. Static recipe: no team/stage/player predicates.",
         "inputs": [
           {
             "id": "farmersdelight:vegetable_soup",
@@ -308,7 +328,16 @@
             "id": "aquaculture:fish_fillet_cooked",
             "count": 2
           }
-        ]
+        ],
+        "pattern": [
+          " V ",
+          "F F",
+          " V "
+        ],
+        "key": {
+          "V": "farmersdelight:vegetable_soup",
+          "F": "aquaculture:fish_fillet_cooked"
+        }
       },
       "systems": [
         "farmersdelight",
@@ -343,8 +372,8 @@
       },
       "recipe": {
         "id": "entrelumen:integration/signal_exchange",
-        "type": "minecraft:crafting_shapeless",
-        "representation": "Expand each ingredient count into individual crafting-grid entries; total <=9. Native crafting remainders apply. Static recipe: no team/stage/player predicates.",
+        "type": "minecraft:crafting_shaped",
+        "representation": "Shaped and left-right symmetric (Elias's playtest, 24 September 2026): the pattern draws the component, with its ENTRELUMEN items on the axis, corners or middle row. Each ingredient count equals the grid cells it fills, so the inputs and the Atlas delivery stay equal. Native crafting remainders apply. Static recipe: no team/stage/player predicates.",
         "inputs": [
           {
             "id": "ae2:logic_processor",
@@ -362,7 +391,18 @@
             "id": "entrelumen:calibration_frame",
             "count": 1
           }
-        ]
+        ],
+        "pattern": [
+          " P ",
+          "LML",
+          "A A"
+        ],
+        "key": {
+          "P": "pneumaticcraft:printed_circuit_board",
+          "L": "ae2:logic_processor",
+          "M": "entrelumen:calibration_frame",
+          "A": "actuallyadditions:palis_crystal"
+        }
       },
       "systems": [
         "ae2",
@@ -397,8 +437,8 @@
       },
       "recipe": {
         "id": "entrelumen:integration/nursery_protocol",
-        "type": "minecraft:crafting_shapeless",
-        "representation": "Expand each ingredient count into individual crafting-grid entries; total <=9. Native crafting remainders apply. Static recipe: no team/stage/player predicates.",
+        "type": "minecraft:crafting_shaped",
+        "representation": "Shaped and left-right symmetric (Elias's playtest, 24 September 2026): the pattern draws the component, with its ENTRELUMEN items on the axis, corners or middle row. Each ingredient count equals the grid cells it fills, so the inputs and the Atlas delivery stay equal. Native crafting remainders apply. Static recipe: no team/stage/player predicates.",
         "inputs": [
           {
             "id": "mysticalagriculture:prudentium_essence",
@@ -412,7 +452,17 @@
             "id": "entrelumen:living_matrix",
             "count": 1
           }
-        ]
+        ],
+        "pattern": [
+          "E E",
+          " M ",
+          "W W"
+        ],
+        "key": {
+          "E": "mysticalagriculture:prudentium_essence",
+          "M": "entrelumen:living_matrix",
+          "W": "productivebees:wax"
+        }
       },
       "systems": [
         "mysticalagriculture",
@@ -447,8 +497,8 @@
       },
       "recipe": {
         "id": "entrelumen:integration/distributed_power",
-        "type": "minecraft:crafting_shapeless",
-        "representation": "Expand each ingredient count into individual crafting-grid entries; total <=9. Native crafting remainders apply. Static recipe: no team/stage/player predicates.",
+        "type": "minecraft:crafting_shaped",
+        "representation": "Shaped and left-right symmetric (Elias's playtest, 24 September 2026): the pattern draws the component, with its ENTRELUMEN items on the axis, corners or middle row. Each ingredient count equals the grid cells it fills, so the inputs and the Atlas delivery stay equal. Native crafting remainders apply. Static recipe: no team/stage/player predicates.",
         "inputs": [
           {
             "id": "mekanism:basic_control_circuit",
@@ -462,7 +512,17 @@
             "id": "entrelumen:energy_coupler",
             "count": 1
           }
-        ]
+        ],
+        "pattern": [
+          " C ",
+          "PKP",
+          " C "
+        ],
+        "key": {
+          "C": "mekanism:basic_control_circuit",
+          "P": "immersiveengineering:plate_steel",
+          "K": "entrelumen:energy_coupler"
+        }
       },
       "systems": [
         "mekanism",
@@ -497,8 +557,8 @@
       },
       "recipe": {
         "id": "entrelumen:integration/measured_logistics",
-        "type": "minecraft:crafting_shapeless",
-        "representation": "Expand each ingredient count into individual crafting-grid entries; total <=9. Native crafting remainders apply. Static recipe: no team/stage/player predicates.",
+        "type": "minecraft:crafting_shaped",
+        "representation": "Shaped and left-right symmetric (Elias's playtest, 24 September 2026): the pattern draws the component, with its ENTRELUMEN items on the axis, corners or middle row. Each ingredient count equals the grid cells it fills, so the inputs and the Atlas delivery stay equal. Native crafting remainders apply. Static recipe: no team/stage/player predicates.",
         "inputs": [
           {
             "id": "integrateddynamics:crystalized_menril_chunk",
@@ -512,7 +572,17 @@
             "id": "entrelumen:routing_matrix",
             "count": 1
           }
-        ]
+        ],
+        "pattern": [
+          " N ",
+          "LML",
+          " N "
+        ],
+        "key": {
+          "N": "integrateddynamics:crystalized_menril_chunk",
+          "L": "laserio:logic_chip",
+          "M": "entrelumen:routing_matrix"
+        }
       },
       "systems": [
         "integrateddynamics",
@@ -548,8 +618,8 @@
       },
       "recipe": {
         "id": "entrelumen:integration/workshop_hands",
-        "type": "minecraft:crafting_shapeless",
-        "representation": "Expand each ingredient count into individual crafting-grid entries; total <=9. Native crafting remainders apply. Static recipe: no team/stage/player predicates.",
+        "type": "minecraft:crafting_shaped",
+        "representation": "Shaped and left-right symmetric (Elias's playtest, 24 September 2026): the pattern draws the component, with its ENTRELUMEN items on the axis, corners or middle row. Each ingredient count equals the grid cells it fills, so the inputs and the Atlas delivery stay equal. Native crafting remainders apply. Static recipe: no team/stage/player predicates.",
         "inputs": [
           {
             "id": "modularrouters:blank_module",
@@ -563,7 +633,16 @@
             "id": "entrelumen:power_regulator",
             "count": 1
           }
-        ]
+        ],
+        "pattern": [
+          " P ",
+          "BRB"
+        ],
+        "key": {
+          "P": "create:precision_mechanism",
+          "B": "modularrouters:blank_module",
+          "R": "entrelumen:power_regulator"
+        }
       },
       "systems": [
         "modularrouters",
@@ -599,8 +678,8 @@
       },
       "recipe": {
         "id": "entrelumen:integration/spectral_archive",
-        "type": "minecraft:crafting_shapeless",
-        "representation": "Expand each ingredient count into individual crafting-grid entries; total <=9. Native crafting remainders apply. Static recipe: no team/stage/player predicates.",
+        "type": "minecraft:crafting_shaped",
+        "representation": "Shaped and left-right symmetric (Elias's playtest, 24 September 2026): the pattern draws the component, with its ENTRELUMEN items on the axis, corners or middle row. Each ingredient count equals the grid cells it fills, so the inputs and the Atlas delivery stay equal. Native crafting remainders apply. Static recipe: no team/stage/player predicates.",
         "inputs": [
           {
             "id": "occultism:spirit_attuned_crystal",
@@ -618,7 +697,18 @@
             "id": "entrelumen:calibration_frame",
             "count": 1
           }
-        ]
+        ],
+        "pattern": [
+          " C ",
+          "SMS",
+          " P "
+        ],
+        "key": {
+          "C": "occultism:spirit_attuned_crystal",
+          "S": "malum:arcane_spirit",
+          "M": "entrelumen:calibration_frame",
+          "P": "create:precision_mechanism"
+        }
       },
       "systems": [
         "occultism",
@@ -653,8 +743,8 @@
       },
       "recipe": {
         "id": "entrelumen:integration/horizon_survey",
-        "type": "minecraft:crafting_shapeless",
-        "representation": "Expand each ingredient count into individual crafting-grid entries; total <=9. Native crafting remainders apply. Static recipe: no team/stage/player predicates.",
+        "type": "minecraft:crafting_shaped",
+        "representation": "Shaped and left-right symmetric (Elias's playtest, 24 September 2026): the pattern draws the component, with its ENTRELUMEN items on the axis, corners or middle row. Each ingredient count equals the grid cells it fills, so the inputs and the Atlas delivery stay equal. Native crafting remainders apply. Static recipe: no team/stage/player predicates.",
         "inputs": [
           {
             "id": "aether:ambrosium_shard",
@@ -672,7 +762,18 @@
             "id": "entrelumen:ration_bundle",
             "count": 1
           }
-        ]
+        ],
+        "pattern": [
+          "A A",
+          "INI",
+          " R "
+        ],
+        "key": {
+          "A": "aether:ambrosium_shard",
+          "I": "twilightforest:ironwood_ingot",
+          "N": "entrelumen:survey_notes",
+          "R": "entrelumen:ration_bundle"
+        }
       },
       "systems": [
         "aether",
@@ -708,8 +809,8 @@
       },
       "recipe": {
         "id": "entrelumen:integration/pollinator_treaty",
-        "type": "minecraft:crafting_shapeless",
-        "representation": "Expand each ingredient count into individual crafting-grid entries; total <=9. Native crafting remainders apply. Static recipe: no team/stage/player predicates.",
+        "type": "minecraft:crafting_shaped",
+        "representation": "Shaped and left-right symmetric (Elias's playtest, 24 September 2026): the pattern draws the component, with its ENTRELUMEN items on the axis, corners or middle row. Each ingredient count equals the grid cells it fills, so the inputs and the Atlas delivery stay equal. Native crafting remainders apply. Static recipe: no team/stage/player predicates.",
         "inputs": [
           {
             "id": "the_bumblezone:pollen_puff",
@@ -723,7 +824,17 @@
             "id": "entrelumen:living_matrix",
             "count": 2
           }
-        ]
+        ],
+        "pattern": [
+          " M ",
+          "W W",
+          "PMP"
+        ],
+        "key": {
+          "M": "entrelumen:living_matrix",
+          "W": "productivebees:wax",
+          "P": "the_bumblezone:pollen_puff"
+        }
       },
       "systems": [
         "the_bumblezone",
@@ -758,8 +869,8 @@
       },
       "recipe": {
         "id": "entrelumen:integration/sealed_memory",
-        "type": "minecraft:crafting_shapeless",
-        "representation": "Expand each ingredient count into individual crafting-grid entries; total <=9. Native crafting remainders apply. Static recipe: no team/stage/player predicates.",
+        "type": "minecraft:crafting_shaped",
+        "representation": "Shaped and left-right symmetric (Elias's playtest, 24 September 2026): the pattern draws the component, with its ENTRELUMEN items on the axis, corners or middle row. Each ingredient count equals the grid cells it fills, so the inputs and the Atlas delivery stay equal. Native crafting remainders apply. Static recipe: no team/stage/player predicates.",
         "inputs": [
           {
             "id": "evilcraft:dark_gem",
@@ -773,7 +884,17 @@
             "id": "entrelumen:spectral_lens",
             "count": 1
           }
-        ]
+        ],
+        "pattern": [
+          "D D",
+          " L ",
+          "S S"
+        ],
+        "key": {
+          "D": "evilcraft:dark_gem",
+          "L": "entrelumen:spectral_lens",
+          "S": "malum:soul_stained_steel_ingot"
+        }
       },
       "systems": [
         "evilcraft",
@@ -807,8 +928,8 @@
       },
       "recipe": {
         "id": "entrelumen:integration/resilient_backbone",
-        "type": "minecraft:crafting_shapeless",
-        "representation": "Expand each ingredient count into individual crafting-grid entries; total <=9. Native crafting remainders apply. Static recipe: no team/stage/player predicates.",
+        "type": "minecraft:crafting_shaped",
+        "representation": "Shaped and left-right symmetric (Elias's playtest, 24 September 2026): the pattern draws the component, with its ENTRELUMEN items on the axis, corners or middle row. Each ingredient count equals the grid cells it fills, so the inputs and the Atlas delivery stay equal. Native crafting remainders apply. Static recipe: no team/stage/player predicates.",
         "inputs": [
           {
             "id": "mekanism:alloy_atomic",
@@ -826,7 +947,18 @@
             "id": "entrelumen:inventory_sensor",
             "count": 1
           }
-        ]
+        ],
+        "pattern": [
+          "AHA",
+          "PSP",
+          " H "
+        ],
+        "key": {
+          "A": "mekanism:alloy_atomic",
+          "H": "entrelumen:handling_core",
+          "P": "pneumaticcraft:printed_circuit_board",
+          "S": "entrelumen:inventory_sensor"
+        }
       },
       "systems": [
         "mekanism",
@@ -865,8 +997,8 @@
       },
       "recipe": {
         "id": "entrelumen:integration/renewal_engine",
-        "type": "minecraft:crafting_shapeless",
-        "representation": "Expand each ingredient count into individual crafting-grid entries; total <=9. Native crafting remainders apply. Static recipe: no team/stage/player predicates.",
+        "type": "minecraft:crafting_shaped",
+        "representation": "Shaped and left-right symmetric (Elias's playtest, 24 September 2026): the pattern draws the component, with its ENTRELUMEN items on the axis, corners or middle row. Each ingredient count equals the grid cells it fills, so the inputs and the Atlas delivery stay equal. Native crafting remainders apply. Static recipe: no team/stage/player predicates.",
         "inputs": [
           {
             "id": "naturesaura:sky_ingot",
@@ -884,7 +1016,18 @@
             "id": "entrelumen:propagation_core",
             "count": 2
           }
-        ]
+        ],
+        "pattern": [
+          "KCK",
+          "I I",
+          "PCP"
+        ],
+        "key": {
+          "K": "naturesaura:sky_ingot",
+          "C": "entrelumen:ecosystem_capsule",
+          "I": "mysticalagriculture:imperium_essence",
+          "P": "entrelumen:propagation_core"
+        }
       },
       "systems": [
         "naturesaura",
@@ -922,8 +1065,8 @@
       },
       "recipe": {
         "id": "entrelumen:integration/settlement_supply",
-        "type": "minecraft:crafting_shapeless",
-        "representation": "Expand each ingredient count into individual crafting-grid entries; total <=9. Native crafting remainders apply. Static recipe: no team/stage/player predicates.",
+        "type": "minecraft:crafting_shaped",
+        "representation": "Shaped and left-right symmetric (Elias's playtest, 24 September 2026): the pattern draws the component, with its ENTRELUMEN items on the axis, corners or middle row. Each ingredient count equals the grid cells it fills, so the inputs and the Atlas delivery stay equal. Native crafting remainders apply. Static recipe: no team/stage/player predicates.",
         "inputs": [
           {
             "id": "farmersdelight:fish_stew",
@@ -941,7 +1084,18 @@
             "id": "entrelumen:ration_bundle",
             "count": 2
           }
-        ]
+        ],
+        "pattern": [
+          "FRF",
+          "SCS",
+          " R "
+        ],
+        "key": {
+          "F": "farmersdelight:fish_stew",
+          "R": "entrelumen:ration_bundle",
+          "S": "farmersdelight:mixed_salad",
+          "C": "ae2:calculation_processor"
+        }
       },
       "systems": [
         "farmersdelight",
@@ -981,8 +1135,8 @@
       },
       "recipe": {
         "id": "entrelumen:integration/ark_engineering",
-        "type": "minecraft:crafting_shapeless",
-        "representation": "Expand each ingredient count into individual crafting-grid entries; total <=9. Native crafting remainders apply. Static recipe: no team/stage/player predicates.",
+        "type": "minecraft:crafting_shaped",
+        "representation": "Shaped and left-right symmetric (Elias's playtest, 24 September 2026): the pattern draws the component, with its ENTRELUMEN items on the axis, corners or middle row. Each ingredient count equals the grid cells it fills, so the inputs and the Atlas delivery stay equal. Native crafting remainders apply. Static recipe: no team/stage/player predicates.",
         "inputs": [
           {
             "id": "entrelumen:calibration_frame",
@@ -1000,7 +1154,18 @@
             "id": "mekanism:alloy_atomic",
             "count": 2
           }
-        ]
+        ],
+        "pattern": [
+          " F ",
+          "EBE",
+          "AFA"
+        ],
+        "key": {
+          "F": "entrelumen:calibration_frame",
+          "E": "entrelumen:energy_coupler",
+          "B": "entrelumen:ark_bus",
+          "A": "mekanism:alloy_atomic"
+        }
       },
       "systems": [
         "create",
@@ -1049,8 +1214,8 @@
       },
       "recipe": {
         "id": "entrelumen:integration/ark_arcana",
-        "type": "minecraft:crafting_shapeless",
-        "representation": "Expand each ingredient count into individual crafting-grid entries; total <=9. Native crafting remainders apply. Static recipe: no team/stage/player predicates.",
+        "type": "minecraft:crafting_shaped",
+        "representation": "Shaped and left-right symmetric (Elias's playtest, 24 September 2026): the pattern draws the component, with its ENTRELUMEN items on the axis, corners or middle row. Each ingredient count equals the grid cells it fills, so the inputs and the Atlas delivery stay equal. Native crafting remainders apply. Static recipe: no team/stage/player predicates.",
         "inputs": [
           {
             "id": "entrelumen:spectral_lens",
@@ -1068,7 +1233,18 @@
             "id": "minecraft:nether_star",
             "count": 1
           }
-        ]
+        ],
+        "pattern": [
+          " N ",
+          "LIL",
+          "S S"
+        ],
+        "key": {
+          "N": "minecraft:nether_star",
+          "L": "entrelumen:spectral_lens",
+          "I": "occultism:iesnium_ingot",
+          "S": "entrelumen:containment_seal"
+        }
       },
       "systems": [
         "occultism",
@@ -1117,8 +1293,8 @@
       },
       "recipe": {
         "id": "entrelumen:integration/ark_nature",
-        "type": "minecraft:crafting_shapeless",
-        "representation": "Expand each ingredient count into individual crafting-grid entries; total <=9. Native crafting remainders apply. Static recipe: no team/stage/player predicates.",
+        "type": "minecraft:crafting_shaped",
+        "representation": "Shaped and left-right symmetric (Elias's playtest, 24 September 2026): the pattern draws the component, with its ENTRELUMEN items on the axis, corners or middle row. Each ingredient count equals the grid cells it fills, so the inputs and the Atlas delivery stay equal. Native crafting remainders apply. Static recipe: no team/stage/player predicates.",
         "inputs": [
           {
             "id": "entrelumen:renewal_engine",
@@ -1136,7 +1312,18 @@
             "id": "minecraft:wet_sponge",
             "count": 1
           }
-        ]
+        ],
+        "pattern": [
+          " W ",
+          "CRC",
+          " M "
+        ],
+        "key": {
+          "W": "minecraft:wet_sponge",
+          "C": "entrelumen:ecosystem_capsule",
+          "R": "entrelumen:renewal_engine",
+          "M": "entrelumen:living_matrix"
+        }
       },
       "systems": [
         "naturesaura",
@@ -1186,8 +1373,8 @@
       },
       "recipe": {
         "id": "entrelumen:integration/ark_exploration",
-        "type": "minecraft:crafting_shapeless",
-        "representation": "Expand each ingredient count into individual crafting-grid entries; total <=9. Native crafting remainders apply. Static recipe: no team/stage/player predicates.",
+        "type": "minecraft:crafting_shaped",
+        "representation": "Shaped and left-right symmetric (Elias's playtest, 24 September 2026): the pattern draws the component, with its ENTRELUMEN items on the axis, corners or middle row. Each ingredient count equals the grid cells it fills, so the inputs and the Atlas delivery stay equal. Native crafting remainders apply. Static recipe: no team/stage/player predicates.",
         "inputs": [
           {
             "id": "entrelumen:horizon_chart",
@@ -1203,13 +1390,25 @@
           },
           {
             "id": "aether:zanite_gemstone",
-            "count": 1
+            "count": 2
           },
           {
             "id": "minecraft:dragon_breath",
             "count": 1
           }
-        ]
+        ],
+        "pattern": [
+          "SHS",
+          "ZLZ",
+          " D "
+        ],
+        "key": {
+          "S": "twilightforest:steeleaf_ingot",
+          "H": "entrelumen:horizon_chart",
+          "Z": "aether:zanite_gemstone",
+          "L": "entrelumen:spectral_lens",
+          "D": "minecraft:dragon_breath"
+        }
       },
       "systems": [
         "aether",
@@ -1235,7 +1434,7 @@
           "entrelumen:horizon_chart": 1,
           "entrelumen:spectral_lens": 1,
           "twilightforest:steeleaf_ingot": 2,
-          "aether:zanite_gemstone": 1,
+          "aether:zanite_gemstone": 2,
           "minecraft:dragon_breath": 1
         },
         "consume": true,
@@ -1260,8 +1459,8 @@
       },
       "recipe": {
         "id": "entrelumen:integration/ark_logistics",
-        "type": "minecraft:crafting_shapeless",
-        "representation": "Expand each ingredient count into individual crafting-grid entries; total <=9. Native crafting remainders apply. Static recipe: no team/stage/player predicates.",
+        "type": "minecraft:crafting_shaped",
+        "representation": "Shaped and left-right symmetric (Elias's playtest, 24 September 2026): the pattern draws the component, with its ENTRELUMEN items on the axis, corners or middle row. Each ingredient count equals the grid cells it fills, so the inputs and the Atlas delivery stay equal. Native crafting remainders apply. Static recipe: no team/stage/player predicates.",
         "inputs": [
           {
             "id": "entrelumen:routing_matrix",
@@ -1275,7 +1474,17 @@
             "id": "entrelumen:ark_bus",
             "count": 1
           }
-        ]
+        ],
+        "pattern": [
+          " R ",
+          "HBH",
+          " R "
+        ],
+        "key": {
+          "R": "entrelumen:routing_matrix",
+          "H": "entrelumen:handling_core",
+          "B": "entrelumen:ark_bus"
+        }
       },
       "systems": [
         "ae2",
@@ -1325,8 +1534,8 @@
       },
       "recipe": {
         "id": "entrelumen:integration/ark_habitation",
-        "type": "minecraft:crafting_shapeless",
-        "representation": "Expand each ingredient count into individual crafting-grid entries; total <=9. Native crafting remainders apply. Static recipe: no team/stage/player predicates.",
+        "type": "minecraft:crafting_shaped",
+        "representation": "Shaped and left-right symmetric (Elias's playtest, 24 September 2026): the pattern draws the component, with its ENTRELUMEN items on the axis, corners or middle row. Each ingredient count equals the grid cells it fills, so the inputs and the Atlas delivery stay equal. Native crafting remainders apply. Static recipe: no team/stage/player predicates.",
         "inputs": [
           {
             "id": "entrelumen:habitation_contract",
@@ -1340,7 +1549,17 @@
             "id": "entrelumen:living_matrix",
             "count": 2
           }
-        ]
+        ],
+        "pattern": [
+          " R ",
+          "MCM",
+          " R "
+        ],
+        "key": {
+          "R": "entrelumen:ration_bundle",
+          "M": "entrelumen:living_matrix",
+          "C": "entrelumen:habitation_contract"
+        }
       },
       "systems": [
         "cookingforblockheads",

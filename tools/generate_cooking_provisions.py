@@ -29,7 +29,11 @@ NO_FEATURE = '{"type":"neoforge:none"}\n'
 
 # Both paths cost two finished main dishes and two cooked bowl meals for one
 # bundle. Bowl return comes from the consumed Farmer's Delight items. No raw
-# crop/fish/meat directly enters an ENTRELUMEN ration recipe.
+# crop/fish/meat directly enters an ENTRELUMEN ration recipe. Since Elias's
+# playtest of 24 September 2026 every ration is the same drawing as the
+# travelling pantry (docs/design/recipe-design-rules.md): the bowl meals on the
+# axis, the main dishes on either side, a hollow bundle in the middle.
+PATTERN = [' A ', 'B B', ' A ']
 ALTERNATIVES = {
     'entrelumen:cooking_provisions/homestead_chicken': [
         ('farmersdelight:vegetable_soup', 2),
@@ -257,14 +261,13 @@ def rows():
     for recipe_id, inputs in ALTERNATIVES.items():
         if not ID.fullmatch(recipe_id) or sum(count for _, count in inputs) != 4:
             raise ValueError(f'Invalid alternative: {recipe_id}')
-        ingredients = []
         for item, count in inputs:
             if not ID.fullmatch(item) or item.startswith('minecraft:') or count != 2:
                 raise ValueError(f'Unbalanced alternative: {recipe_id}: {item}')
-            ingredients.extend({'item': item} for _ in range(count))
+        (axis, _), (sides, _) = inputs
         result.append({'id': recipe_id, 'json': {
-            'type': 'minecraft:crafting_shapeless', 'category': 'misc',
-            'ingredients': ingredients, 'result': {'id': OUTPUT, 'count': 1}}})
+            'type': 'minecraft:crafting_shaped', 'category': 'misc', 'pattern': PATTERN,
+            'key': {'A': {'item': axis}, 'B': {'item': sides}}, 'result': {'id': OUTPUT, 'count': 1}}})
     return result
 
 
@@ -284,7 +287,7 @@ RUNTIME = r'''ServerEvents.recipes(event => {
   const errors = [];
   entrelumenCookingRecipes.forEach(row => {
     if (event.containsRecipe({id: row.id})) errors.push({recipe: row.id, collision: true});
-    [row.json.result.id].concat(row.json.ingredients.map(i => i.item)).forEach(id => {
+    [row.json.result.id].concat(Object.keys(row.json.key).map(k => row.json.key[k].item)).forEach(id => {
       if (!Item.exists(id)) errors.push({recipe: row.id, missingItem: id});
     });
   });

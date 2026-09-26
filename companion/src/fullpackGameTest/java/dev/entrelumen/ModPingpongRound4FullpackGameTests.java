@@ -35,21 +35,26 @@ import org.slf4j.Logger;
 public final class ModPingpongRound4FullpackGameTests {
   static final List<String> BATCH = List.of("psi", "create_new_age", "create_central_kitchen", "sliceanddice",
       "mr_dungeons_andtaverns", "kotlinforforge");
-  /** Recipe ID and the act component it must consume (see tools/generate_family_balance.py, family pingpong4). */
+  /**
+   * Recipe ID and the act component or act material it must consume (see tools/generate_family_balance.py,
+   * family pingpong4). Since Elias's playtest of 24 September 2026 (docs/design/recipe-design-rules.md) the
+   * components close the keystones: the coupler the carbon brushes (one per generator), the regulator the
+   * CAD assembler. Pieces built by the dozen or tiers inside New Age take Mekanism's alloys or ironwood.
+   */
   static final Map<String, String> STAGED = new LinkedHashMap<>();
   static {
-    STAGED.put("create_new_age:shaped/basic_solar_heating_plate", "entrelumen:calibration_frame");
-    STAGED.put("create_new_age:shaped/generator_coil", "entrelumen:energy_coupler");
-    STAGED.put("create_new_age:shaped/advanced_solar_heating_plate", "entrelumen:power_regulator");
-    STAGED.put("create_new_age:shaped/advanced_energiser", "entrelumen:power_regulator");
-    STAGED.put("create_new_age:shaped/advanced_motor", "entrelumen:power_regulator");
-    STAGED.put("create_new_age:shaped/reinforced_energiser", "entrelumen:spectral_lens");
-    STAGED.put("create_new_age:mechanical_crafting/reinforced_motor", "entrelumen:spectral_lens");
-    STAGED.put("create_new_age:mechanical_crafting/reactor_rod", "entrelumen:containment_seal");
+    STAGED.put("create_new_age:shaped/basic_solar_heating_plate", "mekanism:alloy_infused");
+    STAGED.put("create_new_age:shaped/carbon_brushes", "entrelumen:energy_coupler");
+    STAGED.put("create_new_age:shaped/advanced_energiser", "mekanism:alloy_reinforced");
+    STAGED.put("create_new_age:shaped/advanced_motor", "mekanism:alloy_reinforced");
+    STAGED.put("create_new_age:shaped/reinforced_energiser", "twilightforest:ironwood_ingot");
+    STAGED.put("create_new_age:mechanical_crafting/reinforced_motor", "twilightforest:ironwood_ingot");
+    STAGED.put("create_new_age:mechanical_crafting/reactor_rod", "twilightforest:ironwood_ingot");
     STAGED.put("psi:assembler", "entrelumen:power_regulator");
-    STAGED.put("psi:cad_core_hyperclocked", "entrelumen:routing_matrix");
-    STAGED.put("psi:cad_core_radiative", "entrelumen:routing_matrix");
   }
+  /** Left native on purpose: they need a staged keystone to be of any use (rule 1 of the playtest). */
+  static final List<String> NATIVE = List.of("create_new_age:shaped/generator_coil",
+      "create_new_age:shaped/advanced_solar_heating_plate", "psi:cad_core_hyperclocked", "psi:cad_core_radiative");
   static final List<String> STRUCTURES = List.of("nova_structures:tavern_oak", "nova_structures:illager_manor",
       "nova_structures:piglin_outstation", "nova_structures:end_castle");
 
@@ -87,6 +92,17 @@ public final class ModPingpongRound4FullpackGameTests {
       if (holder.get().value().getIngredients().stream().noneMatch(ingredient -> ingredient.test(stack)))
         problems.add(recipe + " does not consume " + component);
     });
+    for (String recipe : NATIVE) {
+      var holder = recipes.byKey(id(recipe));
+      if (holder.isEmpty()) {
+        problems.add(recipe + " is not loaded");
+        continue;
+      }
+      for (var ingredient : holder.get().value().getIngredients())
+        for (ItemStack option : ingredient.getItems())
+          if (BuiltInRegistries.ITEM.getKey(option.getItem()).getNamespace().equals("entrelumen"))
+            problems.add(recipe + " still takes " + BuiltInRegistries.ITEM.getKey(option.getItem()));
+    }
     helper.assertTrue(problems.isEmpty(), "Unstaged round 4 pieces: " + problems);
     helper.succeed();
   }

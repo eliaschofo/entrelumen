@@ -22,18 +22,36 @@ DESIGN = ROOT / 'content/integration-design.json'
 SCRIPTS = ROOT / 'pack/kubejs/server_scripts'
 PACK_DATA = ROOT / 'pack/kubejs/data'
 
-# Stage materials that are not ENTRELUMEN components. Each must have a native
-# producer outside the family that consumes it (checked from the pinned JARs).
+# Act materials: mod materials that mark an act without being ENTRELUMEN components. Each must have a
+# native producer outside the family that consumes it (checked from the pinned JARs). Elias's playtest
+# of 24 September 2026 (docs/design/recipe-design-rules.md): components close a few milestones; the
+# other steps of an act take its material, so nothing basic asks for a component made of components.
+# Acts II, III and V follow Mekanism's alloy ladder, whose only source is the metallurgic infuser that
+# the calibration frame opens (Oritech's copies are removed by the functions family); act IV is a place.
+ALLOY_II, ALLOY_III, ATOMIC = 'mekanism:alloy_infused', 'mekanism:alloy_reinforced', 'mekanism:alloy_atomic'
+ZANITE, IRONWOOD, SKY = 'aether:zanite_gemstone', 'twilightforest:ironwood_ingot', 'naturesaura:sky_ingot'
 STAGE_MATERIALS = {
-    'aether:zanite_gemstone': 'IV',
-    'twilightforest:ironwood_ingot': 'IV',
-    'naturesaura:sky_ingot': 'V',
-    'mekanism:alloy_atomic': 'V',
+    ALLOY_II: 'II',
+    ALLOY_III: 'III',
+    ZANITE: 'IV',
+    IRONWOOD: 'IV',
+    SKY: 'V',
+    ATOMIC: 'V',
 }
 
 
-def shaped(recipe_id, row, col, expect, add, act, why, *, alternates=()):
-    return {'id': recipe_id, 'op': 'slot', 'row': row, 'col': col, 'expect': expect,
+def shaped(recipe_id, row, col, expect, add, act, why, *, alternates=(), drawn=False):
+    """One slot of a shaped recipe. `drawn` lets the gate replace a single ingredient on the drawing's axis,
+    usually the machine's core; otherwise the slot must be empty or hold a repeated ingredient."""
+    change = {'id': recipe_id, 'op': 'slot', 'row': row, 'col': col, 'expect': expect,
+              'add': add, 'act': act, 'why': why, 'alternates': list(alternates)}
+    return dict(change, drawn=True) if drawn else change
+
+
+def paired(recipe_id, cells, expect, add, act, why, *, alternates=()):
+    """The same ingredient in two mirrored slots (corners or the middle row), so the drawing stays
+    symmetric where the native recipe has no free cell on its axis. Costs two of the material."""
+    return {'id': recipe_id, 'op': 'cells', 'cells': [list(c) for c in cells], 'expect': expect,
             'add': add, 'act': act, 'why': why, 'alternates': list(alternates)}
 
 
@@ -207,13 +225,15 @@ def created_smithing(output, base, why):
             'addition': item(LUMINOUS_INGOT), 'why': why, 'components': None, 'disciplines': (), 'act': LUMINOUS_ACT}
 
 
-def creative(output, primary, secondary, boss, material, core, component, why, *, components=None):
-    """Top pair: primary Luminosity; bottom pair: secondary; boss drop, two late materials, the mod's
-    top non-creative counterpart at the centre and an Act V ENTRELUMEN component."""
+def creative(output, primary, secondary, boss, material, core, why, *, components=None):
+    """Top pair: primary Luminosity; bottom pair: secondary; two late materials beside the mod's top
+    non-creative counterpart, framed on the axis by two boss drops. Since the playtest of 24 September
+    2026 the Act V component that sat under the core is a second boss drop: the Luminosities already
+    make it Act VI, and the Ark bus and renewal engine keep their few milestones."""
     namespace, path = output.split(':', 1)
-    return created_shaped(f'entrelumen:creative/{namespace}/{path}', output, ['PXP', 'MCM', 'SRS'],
+    return created_shaped(f'entrelumen:creative/{namespace}/{path}', output, ['PXP', 'MCM', 'SXS'],
                           {'P': item(LUMINOSITY[primary]), 'X': item(boss), 'M': item(material), 'C': item(core),
-                           'S': item(LUMINOSITY[secondary]), 'R': item(component)}, why,
+                           'S': item(LUMINOSITY[secondary])}, why,
                           components=components, disciplines=(primary, secondary))
 
 
@@ -233,32 +253,32 @@ LUMINOUS_RECIPES = [
     for piece in ('helmet', 'chestplate', 'leggings', 'boots', 'sword', 'pickaxe', 'axe', 'shovel', 'hoe')
 ] + [
     creative('mekanism:creative_energy_cube', 'engineering', 'logistics', DRAGON_HEART, 'mekanism:pellet_antimatter',
-             'mekanism:ultimate_energy_cube', AB, 'Infinite energy; crafted full, like the creative-tab cube',
+             'mekanism:ultimate_energy_cube', 'Infinite energy; crafted full, like the creative-tab cube',
              components={'mekanism:energy': {'energy_containers': [9223372036854775807]}}),
     creative('powah:energy_cell_creative', 'engineering', 'habitation', DRAGON_HEART, 'powah:nitro_crystal_block',
-             'powah:energy_cell_nitro', AB, 'Infinite energy for a settlement grid'),
+             'powah:energy_cell_nitro', 'Infinite energy for a settlement grid'),
     creative('create:creative_motor', 'engineering', 'exploration', NETHER_STAR, 'create:precision_mechanism',
-             'create:steam_engine', AB, 'Infinite rotation for trains and contraptions'),
+             'create:steam_engine', 'Infinite rotation for trains and contraptions'),
     creative('ae2:creative_energy_cell', 'logistics', 'engineering', DRAGON_HEART, 'ae2:singularity',
-             'megacells:mega_energy_cell', AB, 'Infinite ME network power'),
+             'megacells:mega_energy_cell', 'Infinite ME network power'),
     creative('mekanism:creative_fluid_tank', 'logistics', 'nature', WET_SPONGE, 'mekanism:ultimate_control_circuit',
-             'mekanism:ultimate_fluid_tank', AB, 'Infinite supply of the first fluid poured in'),
+             'mekanism:ultimate_fluid_tank', 'Infinite supply of the first fluid poured in'),
     creative('mekanism:creative_chemical_tank', 'logistics', 'exploration', NETHER_STAR, 'mekanism:pellet_antimatter',
-             'mekanism:ultimate_chemical_tank', AB, 'Infinite chemical lines, hydrogen and oxygen for travel'),
+             'mekanism:ultimate_chemical_tank', 'Infinite chemical lines, hydrogen and oxygen for travel'),
     creative('ars_nouveau:creative_source_jar', 'nature', 'arcane', NETHER_STAR, 'ars_nouveau:source_gem_block',
-             'ars_nouveau:source_jar', RE, 'Infinite Source, the magic that living things give'),
+             'ars_nouveau:source_jar', 'Infinite Source, the magic that living things give'),
     creative('create:creative_fluid_tank', 'nature', 'habitation', WET_SPONGE, 'create:hose_pulley',
-             'create:fluid_tank', RE, 'A fountain that never runs dry'),
+             'create:fluid_tank', 'A fountain that never runs dry'),
     creative('evilcraft:creative_blood_drop', 'arcane', 'nature', NETHER_STAR, 'evilcraft:dark_power_gem_block',
-             'evilcraft:dark_tank', RE, 'Infinite blood'),
+             'evilcraft:dark_tank', 'Infinite blood'),
     creative('create_enchantment_industry:creative_bookshelf', 'arcane', 'habitation', NETHER_STAR,
-             'entrelumen:horizon_shelf', 'apothic_enchanting:draconic_endshelf', RE,
+             'entrelumen:horizon_shelf', 'apothic_enchanting:draconic_endshelf',
              'Any Eterna, Quanta and Arcana for a home library'),
     creative('draconicevolution:creative_capacitor', 'exploration', 'arcane', DRAGON_HEART,
-             'draconicevolution:awakened_draconium_ingot', 'draconicevolution:chaotic_capacitor', AB,
+             'draconicevolution:awakened_draconium_ingot', 'draconicevolution:chaotic_capacitor',
              'Keeps every carried tool and suit charged far from home'),
     creative('create:creative_blaze_cake', 'habitation', 'exploration', NETHER_STAR, 'create:blaze_burner',
-             'create:blaze_cake', RE, 'A hearth that never goes out'),
+             'create:blaze_cake', 'A hearth that never goes out'),
 ]
 
 # Found by the first dedicated boot with the mod ping-pong additions (mods-r123-20260924/after2).
@@ -349,53 +369,77 @@ PINGPONG_BROKEN_RECIPES = [
 
 
 # ---- functions family (24 September 2026): one component per game function -----------------------
-# docs/design/progression-functions.md. A function (quarries, teleportation, reactors...) has one gate,
-# so a mod that adds a quarry inherits the quarry gate instead of being decided case by case. One
-# component per foreign recipe, in one slot; tiers of the same function may use a later component.
+# docs/design/progression-functions.md. A function (quarries, teleportation, reactors...) keeps its act
+# in every mod, so a mod that adds a quarry inherits the quarry gate instead of being decided case by
+# case. Since Elias's playtest (docs/design/recipe-design-rules.md) the component closes only the
+# function's keystones, a few milestones; every other member takes the act's material instead.
 LUMINOSITY_ACT = 'VI'
 FUNCTIONS = {
-    # function: (component, act). 'luminosity' means one Luminosity (Solsticio only) per piece.
-    'mekanism_entry': (CF, 'II'),       # the metallurgic infuser: every Mekanism circuit and alloy
-    'storage_network': (RM, 'III'),     # controllers of AE2 and Refined Storage
-    'teleport': (RM, 'III'),
-    'wireless': (RM, 'III'),            # cross-dimension item, fluid and energy links
-    'jetpack': (PR, 'III'),             # first powered flight
-    'area_mining': (PR, 'III'),         # mining lasers, drills and the vein resonator's third tier
-    'smart_storage': (IS, 'III'),       # Mekanism QIO
-    'hands': (HC, 'III'),               # drones and autocrafters
-    'quarry': (SL, 'IV'),               # ores from power without walking the world
-    'flight': (HZ, 'IV'),               # creative-style flight
-    'mob_farm': (EC, 'IV'),
-    'reactor': (CS, 'IV'),              # fission and area destruction
-    'endgame_reactor': (AB, 'V'),       # fusion and nuclear power
-    'renewal': (RE, 'V'),               # antimatter, awakening, time
-    'top_armor': ('luminosity', LUMINOSITY_ACT),
+    # function: (component, act, material of the other members). 'luminosity': one Luminosity per piece.
+    'mekanism_entry': (CF, 'II', None),          # the metallurgic infuser: every Mekanism circuit and alloy
+    'storage_network': (RM, 'III', None),        # controllers of AE2 and Refined Storage
+    'teleport': (RM, 'III', ALLOY_III),          # Waystones stay free; the machines keep the act
+    'remote_inventory': (IS, 'III', ALLOY_III),  # Ender Storage chests and tanks: an inventory seen from afar
+    'wireless_energy': (PR, 'III', ALLOY_III),   # cross-dimension energy links
+    'jetpack': (PR, 'III', ALLOY_III),           # first powered flight
+    'area_mining': (PR, 'III', ALLOY_III),       # the vein resonator's third tier; lasers and drills
+    'smart_storage': (IS, 'III', None),          # Mekanism QIO
+    'hands': (HC, 'III', None),                  # autocrafters
+    'quarry': (SL, 'IV', IRONWOOD),              # ores from power without walking the world
+    'flight': (HZ, 'IV', ZANITE),                # creative-style flight: the Aether's gem
+    'mob_farm': (EC, 'IV', IRONWOOD),
+    'reactor': (CS, 'IV', IRONWOOD),             # fission and area destruction
+    'endgame_reactor': (AB, 'V', ATOMIC),        # fusion and nuclear power
+    'renewal': (RE, 'V', ATOMIC),                # antimatter and time
+    'top_armor': ('luminosity', LUMINOSITY_ACT, None),
 }
-# Gates of other families (and tools/generate_rftools_balance.py) that belong to a function; the tests
-# check that every member uses its function's component.
-FUNCTION_MEMBERS = {
+# Gates of other families (and tools/generate_rftools_balance.py) that are a function's keystones: they
+# take the function's component, like the functions family's own gates.
+FUNCTION_KEYSTONES = {
     'storage_network': ['refinedstorage:controller'],
+    'remote_inventory': ['enderstorage:ender_chest', 'enderstorage:ender_tank'],
+    'hands': ['refinedstorage:autocrafter'],
+    'flight': ['justdirethings:upgrade_flight', 'modern_industrialization:armor/gravichestplate'],
+    'mob_farm': ['hostilenetworks:sim_chamber', 'industrialforegoing:mob_duplicator', 'enderio:powered_spawner'],
+    'endgame_reactor': ['modern_industrialization:electric_age/machine/nuclear_reactor_asbl'],
+}
+# The other members: each takes its function's act material, never the component.
+FUNCTION_MEMBERS = {
     'teleport': ['justdirethings:portalgun', 'justdirethings:portalgun_v2', 'enderio:travel_anchor',
-                 'enderio:staff_of_travelling', 'draconicevolution:tools/dislocator',
-                 'rftoolsutility:matter_receiver', 'rftoolsutility:charged_porter'],
-    'wireless': ['enderstorage:ender_chest', 'enderstorage:ender_tank', 'enderstorage:ender_pouch',
-                 'fluxnetworks:flux_controller'],
+                 'enderio:staff_of_travelling', 'draconicevolution:tools/dislocator', 'rftoolsutility:matter_receiver'],
+    'remote_inventory': ['enderstorage:ender_pouch'],
+    'wireless_energy': ['fluxnetworks:flux_plug', 'rftoolspower:dimensionalcell_simple', 'rftoolspower:dimensionalcell'],
     'jetpack': ['ironjetpacks:strap', 'oritech:crafting/basicjetpack', 'oritech:crafting/basicjetpackalt',
                 'modern_industrialization:armor/diesel_jetpack'],
     'area_mining': ['mininggadgets:mininggadget_simple', 'mininggadgets:mininggadget', 'mininggadgets:mininggadget_fancy',
                     'industrialforegoing:dissolution_chamber/infinity_drill'],
-    'hands': ['refinedstorage:autocrafter'],
-    'quarry': ['industrialforegoing:ore_laser_base', 'oritech:crafting/deepdrill',
+    'quarry': ['occultism:ritual/craft_dimensional_mineshaft', 'industrialforegoing:ore_laser_base', 'oritech:crafting/deepdrill',
                'modern_industrialization:electric_age/machine/electric_quarry_asbl', 'rftoolsbuilder:shape_card_quarry'],
-    'flight': ['justdirethings:upgrade_flight', 'modern_industrialization:armor/gravichestplate',
-               'oritech:crafting/exojetpack', 'reliquary:rending_gale'],
-    'mob_farm': ['industrialforegoing:mob_duplicator', 'hostilenetworks:sim_chamber', 'enderio:powered_spawner',
-                 'oritech:crafting/spawner', 'rftoolsutility:spawner'],
+    'flight': ['oritech:crafting/exojetpack', 'reliquary:rending_gale'],
+    'mob_farm': ['oritech:crafting/spawner', 'rftoolsutility:spawner'],
     'reactor': ['create_new_age:mechanical_crafting/reactor_rod', 'industrialforegoing:dissolution_chamber/infinity_nuke',
                 'oritech:crafting/nuke', 'oritech:crafting/nukebetter'],
-    'endgame_reactor': ['modern_industrialization:electric_age/machine/nuclear_reactor_asbl'],
     'renewal': ['justdirethings:time_wand'],
 }
+# Recipes that are left native on purpose because another gate already covers them (they need a gated
+# piece to work) or because they are pieces built by the dozen; docs/design/recipe-design-rules.md.
+UPSTREAM = {
+    'fluxnetworks:flux_point': 'fluxnetworks:flux_plug', 'fluxnetworks:flux_controller': 'fluxnetworks:flux_plug',
+    'rftoolsutility:charged_porter': 'rftoolsutility:matter_receiver',
+    'xnet:router': 'xnet:controller', 'xnet:wireless_router': 'xnet:controller',
+    'psi:cad_core_hyperclocked': 'psi:assembler', 'psi:cad_core_radiative': 'psi:assembler',
+    'create_new_age:shaped/generator_coil': 'create_new_age:shaped/carbon_brushes',
+    'create_new_age:shaped/advanced_solar_heating_plate': 'create_new_age:shaped/carbon_brushes',
+}
+# Oritech 0.19 copies Mekanism's alloys in its foundry and its circuits in its atomic forge. Those routes
+# skipped the metallurgic infuser, the way into Mekanism that the calibration frame opens, and with it
+# every act material of the alloy ladder.
+MEKANISM_BYPASS = [
+    'oritech:foundry/alloy/compat/mekanism/infused_alloy', 'oritech:foundry/alloy/compat/mekanism/reinforced_alloy',
+    'oritech:foundry/alloy/compat/mekanism/atomic_alloy',
+    'oritech:atomicforge/compat/mekanism/basic_control_circuit', 'oritech:atomicforge/compat/mekanism/advanced_control_circuit',
+    'oritech:atomicforge/compat/mekanism/elite_control_circuit', 'oritech:atomicforge/compat/mekanism/ultimate_control_circuit',
+]
 # The "do not gate" list of docs/research/reference-packs.md: machines and tools that make the inputs of
 # the act components. No gate of any family may touch them, except the bootstrap below.
 PROTECTED = {
@@ -422,7 +466,7 @@ def function_gate(function, recipe_id, row, col, expect, why, *, add=None, alter
     """A drawn gate (Elias's playtest of 24 September 2026, docs/design/playtest-2026-09-24.md): the
     component takes a meaningful place of the 3x3 drawing, the centre or the vertical axis, and the
     recipe stays as symmetric as it was. It may replace a single ingredient, such as a machine's core."""
-    component, act = FUNCTIONS[function]
+    component, act, _ = FUNCTIONS[function]
     change = shaped(recipe_id, row, col, expect, add or component, act, why, alternates=alternates)
     return dict(change, function=function, drawn=True)
 
@@ -436,15 +480,21 @@ def symmetric(craft):
     return all([ingredient(c) for c in row] == [ingredient(c) for c in reversed(row)] for row in craft['pattern'])
 
 
+def well_placed(craft, row, col):
+    """The centre column, the corners or the middle row of the recipe's own drawing (rule 3)."""
+    height, width = len(craft['pattern']), len(craft['pattern'][0])
+    return (width % 2 == 1 and col == width // 2) or (row in (0, height - 1) and col in (0, width - 1))         or (height % 2 == 1 and row == height // 2)
+
+
 def function_listed(function, recipe_id, field, index, expect, why, *, add=None, alternates=()):
-    component, act = FUNCTIONS[function]
+    component, act, _ = FUNCTIONS[function]
     return dict(listed(recipe_id, field, index, expect, add or component, act, why, alternates=alternates),
                 function=function)
 
 
 def function_appended(function, recipe_id, field, why, *, limit, add=None, extra=None, runtime_field=None,
                       alternates=()):
-    component, act = FUNCTIONS[function]
+    component, act, _ = FUNCTIONS[function]
     return dict(appended(recipe_id, field, add or component, act, why, limit=limit, extra=extra,
                          runtime_field=runtime_field, alternates=alternates), function=function)
 
@@ -503,36 +553,42 @@ FAMILIES = {
                        'justdirethings', 'compactmachines', 'hostilenetworks', 'draconicevolution',
                        'brandonscore', 'codechickenlib'},
         'changes': [
-            shaped('ironjetpacks:strap', 0, 0, None, PR, 'III', 'Every jetpack chain starts from the lowest-tier strap'),
-            shaped('ironjetpacks:elite_coil', 0, 0, None, 'aether:zanite_gemstone', 'IV', 'Diamond/platinum-tier cells and thrusters'),
-            shaped('ironjetpacks:ultimate_coil', 0, 0, None, 'mekanism:alloy_atomic', 'V', 'Emerald-tier cells and thrusters'),
-            shaped('mininggadgets:mininggadget_simple', 2, 2, tag('c:ingots/iron'), PR, 'III', 'Laser area mining'),
-            shaped('mininggadgets:mininggadget', 2, 1, tag('c:ingots/iron'), PR, 'III', 'Laser area mining'),
-            shaped('mininggadgets:mininggadget_fancy', 0, 2, tag('c:ingots/iron'), PR, 'III', 'Laser area mining'),
-            shaped('powah:crafting/capacitor_niotic', 0, 0, item('powah:dielectric_paste'), 'twilightforest:ironwood_ingot', 'IV', 'Every niotic generator, cell and transmitter'),
-            shaped('powah:crafting/capacitor_spirited', 0, 0, item('powah:dielectric_paste'), 'naturesaura:sky_ingot', 'V', 'Every spirited generator, cell and transmitter'),
-            shaped('powah:crafting/capacitor_nitro', 0, 0, item('powah:dielectric_paste'), 'mekanism:alloy_atomic', 'V', 'Every nitro generator, cell and transmitter'),
-            shaped('industrialforegoing:mob_duplicator', 2, 0, item('minecraft:emerald'), EC, 'IV', 'Spawner-class mob duplication'),
-            shaped('industrialforegoing:ore_laser_base', 1, 0, tag('c:ores/iron'), SL, 'IV', 'Ores from power without world mining'),
-            shaped('industrialforegoing:fluid_laser_base', 1, 0, item('minecraft:bucket'), PR, 'III', 'Fluids from power'),
-            listed('industrialforegoing:dissolution_chamber/infinity_drill', 'input', 0, item('minecraft:diamond_block'), PR, 'III', 'Large-area powered mining tool'),
-            listed('industrialforegoing:dissolution_chamber/infinity_nuke', 'input', 0, item('minecraft:tnt'), CS, 'IV', 'Area-destruction tool'),
-            shaped('fluxnetworks:flux_plug', 0, 1, item('fluxnetworks:flux_core'), PR, 'III', 'Wireless cross-dimension FE input',
+            # Jetpacks: Mekanism's is the function's keystone (functions family); Iron Jetpacks' strap, the
+            # start of every tier, takes the act III alloy in the buckle.
+            shaped('ironjetpacks:strap', 1, 1, item('minecraft:leather'), ALLOY_III, 'III', 'Every jetpack chain starts from the lowest-tier strap'),
+            shaped('ironjetpacks:elite_coil', 0, 0, None, ZANITE, 'IV', 'Diamond/platinum-tier cells and thrusters'),
+            shaped('ironjetpacks:ultimate_coil', 0, 0, None, ATOMIC, 'V', 'Emerald-tier cells and thrusters'),
+            # Mining Gadgets draws its three gadgets asymmetrically; the alloy keeps the native slot.
+            shaped('mininggadgets:mininggadget_simple', 2, 2, tag('c:ingots/iron'), ALLOY_III, 'III', 'Laser area mining'),
+            shaped('mininggadgets:mininggadget', 2, 1, tag('c:ingots/iron'), ALLOY_III, 'III', 'Laser area mining'),
+            shaped('mininggadgets:mininggadget_fancy', 0, 2, tag('c:ingots/iron'), ALLOY_III, 'III', 'Laser area mining'),
+            # Powah capacitors: the act material replaces the crystal on top of the axis.
+            shaped('powah:crafting/capacitor_niotic', 0, 1, item('powah:crystal_niotic'), IRONWOOD, 'IV', 'Every niotic generator, cell and transmitter'),
+            shaped('powah:crafting/capacitor_spirited', 0, 1, item('powah:crystal_spirited'), SKY, 'V', 'Every spirited generator, cell and transmitter'),
+            shaped('powah:crafting/capacitor_nitro', 0, 1, item('powah:crystal_nitro'), ATOMIC, 'V', 'Every nitro generator, cell and transmitter'),
+            shaped('industrialforegoing:mob_duplicator', 0, 1, item('minecraft:nether_wart'), EC, 'IV',
+                   'Spawner-class mob duplication: the capsule is its living core', drawn=True),
+            # Every pair of the laser bases is its only copy; the material takes the redstone under the frame.
+            shaped('industrialforegoing:ore_laser_base', 2, 1, tag('c:dusts/redstone'), IRONWOOD, 'IV',
+                   'Ores from power without world mining', drawn=True),
+            shaped('industrialforegoing:fluid_laser_base', 2, 1, item('minecraft:redstone'), ALLOY_III, 'III',
+                   'Fluids from power', drawn=True),
+            listed('industrialforegoing:dissolution_chamber/infinity_drill', 'input', 0, item('minecraft:diamond_block'), ALLOY_III, 'III', 'Large-area powered mining tool'),
+            listed('industrialforegoing:dissolution_chamber/infinity_nuke', 'input', 0, item('minecraft:tnt'), IRONWOOD, 'IV', 'Area-destruction tool'),
+            # A Flux network carries nothing without a plug; points and the controller stay native.
+            shaped('fluxnetworks:flux_plug', 0, 1, item('fluxnetworks:flux_core'), ALLOY_III, 'III', 'Wireless cross-dimension FE input',
                    alternates=['fluxnetworks:wipe_flux_plug']),
-            shaped('fluxnetworks:flux_point', 0, 1, item('fluxnetworks:flux_core'), PR, 'III', 'Wireless cross-dimension FE output',
-                   alternates=['fluxnetworks:wipe_flux_point']),
-            shaped('fluxnetworks:flux_controller', 1, 1, None, RM, 'III', 'Network hub and wireless inventory charging',
-                   alternates=['fluxnetworks:wipe_flux_controller']),
-            shaped('justdirethings:portalgun', 0, 1, item('justdirethings:blazegold_ingot'), RM, 'III', 'Portal teleportation'),
-            shaped('justdirethings:portalgun_v2', 1, 0, item('justdirethings:blazegold_ingot'), RM, 'III', 'Persistent portal teleportation'),
-            shaped('justdirethings:upgrade_flight', 0, 0, item('minecraft:phantom_membrane'), HZ, 'IV', 'Creative-style flight upgrade'),
-            shaped('justdirethings:time_wand', 0, 1, item('justdirethings:blazegold_ingot'), RE, 'V', 'Block tick acceleration'),
-            shaped('justdirethings:paradoxmachine', 0, 0, item('justdirethings:eclipsealloy_ingot'), AB, 'V', 'Area snapshot and restoration machine'),
-            shaped('compactmachines:personal_shrinking_device', 2, 0, tag('c:ingots/iron'), HC, 'III', 'Entering and building compact rooms'),
-            shaped('hostilenetworks:sim_chamber', 1, 0, item('minecraft:ender_pearl'), EC, 'IV', 'Entity-free mob drop simulation'),
-            shaped('draconicevolution:components/wyvern_core', 0, 0, tag('c:ingots/draconium'), AB, 'V', 'Wyvern tier, energy core, flight module and reactor parts'),
-            listed('draconicevolution:components/awakened_core', 'ingredients', 2, {'consume': True, 'ingredient': tag('c:ingots/draconium_awakened')}, RE, 'V', 'Awakened tier', wrap='fusion'),
-            shaped('draconicevolution:tools/dislocator', 0, 0, item('minecraft:blaze_powder'), RM, 'III', 'Bound and player dislocator teleportation'),
+            shaped('justdirethings:portalgun', 0, 1, item('justdirethings:blazegold_ingot'), ALLOY_III, 'III', 'Portal teleportation'),
+            shaped('justdirethings:portalgun_v2', 1, 0, item('justdirethings:blazegold_ingot'), ALLOY_III, 'III', 'Persistent portal teleportation'),
+            shaped('justdirethings:upgrade_flight', 0, 1, item('minecraft:end_crystal'), HZ, 'IV', 'Creative-style flight upgrade'),
+            shaped('justdirethings:time_wand', 0, 1, item('justdirethings:blazegold_ingot'), ATOMIC, 'V', 'Block tick acceleration'),
+            shaped('justdirethings:paradoxmachine', 0, 1, item('justdirethings:time_crystal'), ATOMIC, 'V', 'Area snapshot and restoration machine'),
+            shaped('compactmachines:personal_shrinking_device', 2, 0, tag('c:ingots/iron'), ALLOY_III, 'III', 'Entering and building compact rooms'),
+            shaped('hostilenetworks:sim_chamber', 1, 1, tag('c:obsidians'), EC, 'IV',
+                   'Entity-free mob drop simulation: the capsule is the chamber', drawn=True),
+            shaped('draconicevolution:components/wyvern_core', 0, 1, item('draconicevolution:draconium_core'), ATOMIC, 'V', 'Wyvern tier, energy core, flight module and reactor parts'),
+            listed('draconicevolution:components/awakened_core', 'ingredients', 2, {'consume': True, 'ingredient': tag('c:ingots/draconium_awakened')}, ATOMIC, 'V', 'Awakened tier', wrap='fusion'),
+            shaped('draconicevolution:tools/dislocator', 0, 1, tag('c:dusts/draconium'), ALLOY_III, 'III', 'Bound and player dislocator teleportation'),
         ],
         'removals': [],
         'data': [
@@ -547,13 +603,14 @@ FAMILIES = {
         'tag': 'ENTRELUMEN_QOL_BALANCE',
         'namespaces': {'easy_villagers', 'enderstorage', 'codechickenlib'},
         'changes': [
-            shaped('easy_villagers:iron_farm', 0, 0, tag('c:glass_panes/colorless'), LM, 'II', 'Compact golem iron farm'),
-            shaped('easy_villagers:auto_trader', 0, 0, tag('c:glass_panes/colorless'), RM, 'III', 'Automated villager trading'),
-            shaped('enderstorage:ender_chest', 0, 0, item('minecraft:blaze_rod'), RM, 'III', 'Cross-dimension shared item storage',
-                   alternates=['enderstorage:recolour_ender_chest']),
-            shaped('enderstorage:ender_tank', 0, 0, item('minecraft:blaze_rod'), RM, 'III', 'Cross-dimension shared fluid storage',
-                   alternates=['enderstorage:recolour_ender_tank']),
-            shaped('enderstorage:ender_pouch', 0, 0, item('minecraft:blaze_powder'), RM, 'III', 'Remote access to a shared frequency',
+            shaped('easy_villagers:iron_farm', 0, 1, tag('c:glass_panes/colorless'), LM, 'II', 'Compact golem iron farm'),
+            shaped('easy_villagers:auto_trader', 0, 1, tag('c:glass_panes/colorless'), HC, 'III', 'Automated villager trading: the hands that trade'),
+            # The inventory sensor is the link between twin chests, in place of the ender pearl.
+            shaped('enderstorage:ender_chest', 2, 1, tag('c:ender_pearls'), IS, 'III', 'Cross-dimension shared item storage',
+                   alternates=['enderstorage:recolour_ender_chest'], drawn=True),
+            shaped('enderstorage:ender_tank', 2, 1, tag('c:ender_pearls'), IS, 'III', 'Cross-dimension shared fluid storage',
+                   alternates=['enderstorage:recolour_ender_tank'], drawn=True),
+            shaped('enderstorage:ender_pouch', 0, 1, tag('c:leathers'), ALLOY_III, 'III', 'Remote access to a shared frequency',
                    alternates=['enderstorage:recolour_ender_pouch']),
         ],
         # The Altar of Peace (companion, Act III reward) replaces the Mega Torch; the rest of
@@ -565,8 +622,8 @@ FAMILIES = {
         'tag': 'ENTRELUMEN_ARCANE_BALANCE',
         'namespaces': {'reliquary', 'theurgy', 'forbidden_arcanus', 'valhelsia_core'},
         'changes': [
-            shaped('reliquary:rending_gale', 1, 0, tag('c:ingots/gold'), HZ, 'IV', 'Rending Gale flight'),
-            shaped('theurgy:crafting/shaped/sulfuric_flux_emitter', 0, 0, None, CS, 'IV', 'Same-tier sulfur reformation'),
+            shaped('reliquary:rending_gale', 1, 0, tag('c:ingots/gold'), ZANITE, 'IV', 'Rending Gale flight'),
+            shaped('theurgy:crafting/shaped/sulfuric_flux_emitter', 2, 1, tag('c:stones'), CS, 'IV', 'Same-tier sulfur reformation'),
         ],
         'tag_removals': [
             ('block', 'c:ores_in_ground/deepslate', 'forbidden_arcanus:stella_arcanum'),
@@ -593,11 +650,11 @@ FAMILIES = {
         'tag': 'ENTRELUMEN_APOTHEOSIS_BALANCE',
         'namespaces': {'apotheosis', 'apothic_enchanting', 'apothic_spawners', 'apothic_attributes', 'placebo'},
         'changes': [
-            shaped('apothic_enchanting:echoing_sculkshelf', 0, 0, None, SL, 'IV', '80-Eterna sculkshelf'),
-            shaped('apothic_enchanting:soul_touched_sculkshelf', 0, 0, None, SL, 'IV', '80-Eterna sculkshelf'),
-            shaped('apothic_enchanting:endshelf', 0, 0, item('minecraft:end_stone_bricks'), CS, 'IV',
+            paired('apothic_enchanting:echoing_sculkshelf', [(0, 0), (0, 2)], None, ZANITE, 'IV', '80-Eterna sculkshelf'),
+            paired('apothic_enchanting:soul_touched_sculkshelf', [(0, 0), (0, 2)], None, ZANITE, 'IV', '80-Eterna sculkshelf'),
+            shaped('apothic_enchanting:endshelf', 0, 1, item('minecraft:end_stone_bricks'), ZANITE, 'IV',
                    '90-Eterna endshelf and, through it, the pearl endshelf'),
-            shaped('apothic_enchanting:draconic_endshelf', 0, 0, None, AB, 'V', '100-Eterna draconic endshelf'),
+            paired('apothic_enchanting:draconic_endshelf', [(0, 0), (0, 2)], None, SKY, 'V', '100-Eterna draconic endshelf'),
         ],
         # Apotheosis 8.7 replaces the Apothic Spawners modifiers with rune recipes; the pack keeps the
         # Apothic Spawners set on ENTRELUMEN augments instead, so the runes lose their recipes.
@@ -619,13 +676,13 @@ FAMILIES = {
             recipe('entrelumen:lumen_shelf', ['GSG', 'SLS', 'GSG'],
                    {'G': item('minecraft:glowstone'), 'S': item('apothic_enchanting:infused_seashelf'),
                     'L': item(SL)}, 'IV', 'Arcana shelf', count=4),
-            recipe('entrelumen:horizon_shelf', ['DHD', 'LRL', 'DHD'],
+            recipe('entrelumen:horizon_shelf', ['DHD', 'LKL', 'DHD'],
                    {'D': item('apothic_enchanting:deepshelf'), 'H': item(HZ), 'L': item('entrelumen:lumen_shelf'),
-                    'R': item(RE)}, 'V', 'Late shelf with high Eterna, Quanta and Arcana', count=4),
-            recipe('entrelumen:atlas_library', ['SAS', 'HEH', 'SRS'],
-                   {'S': item(CS), 'A': item(AB), 'H': item('entrelumen:horizon_shelf'),
-                    'E': item('apothic_enchanting:ender_library'), 'R': item(RE)}, 'V',
-                   'Pooled library beyond the Ender Library'),
+                    'K': item(SKY)}, 'V', 'Late shelf with high Eterna, Quanta and Arcana', count=4),
+            recipe('entrelumen:atlas_library', ['KSK', 'HEH', 'KSK'],
+                   {'K': item(SKY), 'S': item(CS), 'H': item('entrelumen:horizon_shelf'),
+                    'E': item('apothic_enchanting:ender_library')}, 'V',
+                   'Pooled library beyond the Ender Library: sealed memory above and below'),
         ] + [augment_recipe(m) for m in AUGMENTS],
     },
     # Rounds 1-3 of the mod ping-pong with Elias (docs/design/mod-pingpong.md): dimension access and
@@ -637,41 +694,42 @@ FAMILIES = {
         'namespaces': {'ad_astra', 'undergarden', 'eternal_starlight', 'refinedstorage', 'oritech', 'enderio',
                        'endercore', 'common_storage_lib', 'resourcefulconfig', 'modern_industrialization'},
         'changes': [
-            shaped('ad_astra:nasa_workbench', 2, 0, tag('ad_astra:steel_plates'), AB, 'V', 'Every rocket and so every planet'),
+            shaped('ad_astra:nasa_workbench', 0, 1, tag('ad_astra:steel_plates'), ATOMIC, 'V', 'Every rocket and so every planet'),
             shaped('undergarden:catalyst', 0, 1, tag('c:stones'), RM, 'III', 'Undergarden portal'),
-            shaped('eternal_starlight:orb_of_prophecy', 0, 0, item('minecraft:glass'), HZ, 'IV', 'Starlight portal and crest spells'),
-            shaped('refinedstorage:controller', 0, 0, item('refinedstorage:quartz_enriched_iron'), RM, 'III',
+            shaped('eternal_starlight:orb_of_prophecy', 0, 1, item('eternal_starlight:blue_starlight_crystal_shard'), HZ, 'IV',
+                   'Starlight portal and crest spells'),
+            shaped('refinedstorage:controller', 2, 1, tag('c:silicon'), RM, 'III',
                    'Refined Storage network, entering in Act III like AE2'),
-            shaped('refinedstorage:autocrafter', 0, 0, item('refinedstorage:quartz_enriched_iron'), HC, 'III',
-                   'Refined Storage autocrafting, like AE2 molecular assemblers'),
-            shaped('oritech:crafting/basicjetpack', 0, 0, None, PR, 'III', 'Powered flight, first tier',
+            shaped('refinedstorage:autocrafter', 1, 1, item('refinedstorage:machine_casing'), HC, 'III',
+                   'Refined Storage autocrafting: the handling core is its casing', drawn=True),
+            shaped('oritech:crafting/basicjetpack', 1, 1, tag('c:ingots/steel'), ALLOY_III, 'III', 'Powered flight, first tier',
                    alternates=['oritech:crafting/basicjetpackalt']),
-            shaped('oritech:crafting/basicjetpackalt', 0, 0, None, PR, 'III', 'Powered flight, first tier',
+            shaped('oritech:crafting/basicjetpackalt', 1, 1, tag('c:ingots/steel'), ALLOY_III, 'III', 'Powered flight, first tier',
                    alternates=['oritech:crafting/basicjetpack']),
-            shaped('oritech:crafting/exojetpack', 0, 0, item('oritech:ion_thruster'), HZ, 'IV', 'Exosuit flight'),
-            shaped('oritech:crafting/deepdrill', 2, 0, tag('oritech:plating'), SL, 'IV', 'Ores from power without world mining'),
-            shaped('oritech:crafting/spawner', 0, 0, item('oritech:spawner_cage_block'), EC, 'IV', 'Spawner-class mob production'),
-            shaped('oritech:crafting/nuke', 0, 0, item('oritech:uranium_pellet'), CS, 'IV', 'Area destruction'),
-            shaped('oritech:crafting/nukebetter', 0, 0, item('oritech:plutonium_pellet'), CS, 'IV', 'Area destruction'),
-            shaped('oritech:crafting/particlecontroller', 0, 0, item('oritech:duratium_ingot'), AB, 'V',
+            shaped('oritech:crafting/exojetpack', 0, 1, item('oritech:ion_thruster'), ZANITE, 'IV', 'Exosuit flight'),
+            shaped('oritech:crafting/deepdrill', 2, 1, tag('oritech:plating'), IRONWOOD, 'IV', 'Ores from power without world mining'),
+            shaped('oritech:crafting/spawner', 0, 1, item('oritech:spawner_cage_block'), IRONWOOD, 'IV', 'Spawner-class mob production'),
+            shaped('oritech:crafting/nuke', 0, 1, item('oritech:dubios_container'), IRONWOOD, 'IV', 'Area destruction'),
+            shaped('oritech:crafting/nukebetter', 0, 1, item('oritech:heisenberg_compensator'), IRONWOOD, 'IV', 'Area destruction'),
+            shaped('oritech:crafting/particlecontroller', 0, 1, item('oritech:duratium_ingot'), ATOMIC, 'V',
                    'Particle accelerator and its exotic materials'),
-            shaped('enderio:travel_anchor', 0, 0, tag('c:ingots/iron'), RM, 'III', 'Anchor-to-anchor teleportation',
+            shaped('enderio:travel_anchor', 0, 1, item('enderio:conduit_binder'), ALLOY_III, 'III', 'Anchor-to-anchor teleportation',
                    alternates=['enderio:erase_travel_anchor']),
-            shaped('enderio:staff_of_travelling', 0, 0, None, RM, 'III', 'Handheld teleportation'),
-            shaped('enderio:powered_spawner', 0, 0, tag('c:ingots/soularium'), EC, 'IV', 'Powered mob spawning',
+            shaped('enderio:staff_of_travelling', 0, 0, None, ALLOY_III, 'III', 'Handheld teleportation'),
+            shaped('enderio:powered_spawner', 2, 1, item('enderio:z_logic_controller'), EC, 'IV',
+                   'Powered mob spawning: the capsule is its logic', drawn=True,
                    alternates=['enderio:erase_powered_spawner', 'enderio:soulbinding/powered_spawner']),
-            shaped('enderio:octadic_capacitor', 0, 1, tag('c:ingots/vibrant_alloy'), AB, 'V', 'Highest Ender IO machine tier'),
+            shaped('enderio:octadic_capacitor', 0, 1, tag('c:ingots/vibrant_alloy'), ATOMIC, 'V', 'Highest Ender IO machine tier'),
             # Modern Industrialization: each staged controller keeps its shaped recipe; its assembler twin is removed.
-            shaped('modern_industrialization:armor/diesel_jetpack', 0, 0, item('modern_industrialization:pump'), PR, 'III',
-                   'Powered flight, first tier'),
-            shaped('modern_industrialization:armor/gravichestplate', 0, 0, item('modern_industrialization:superconductor_plate'),
+            shaped('modern_industrialization:armor/diesel_jetpack', 2, 1, None, ALLOY_III, 'III', 'Powered flight, first tier'),
+            shaped('modern_industrialization:armor/gravichestplate', 2, 1, item('modern_industrialization:superconductor_plate'),
                    HZ, 'IV', 'Creative-style flight'),
-            shaped('modern_industrialization:electric_age/machine/electric_quarry_asbl', 0, 0,
-                   item('modern_industrialization:large_motor'), SL, 'IV', 'Ores from power without world mining'),
-            shaped('modern_industrialization:electric_age/machine/nuclear_reactor_asbl', 0, 0,
-                   item('modern_industrialization:nuclear_alloy_large_plate'), AB, 'V', 'Nuclear power'),
-            shaped('modern_industrialization:electric_age/circuit/craft/quantum_circuit_asbl', 0, 0,
-                   item('modern_industrialization:processing_unit'), RE, 'V',
+            paired('modern_industrialization:electric_age/machine/electric_quarry_asbl', [(0, 0), (0, 2)],
+                   item('modern_industrialization:large_motor'), IRONWOOD, 'IV', 'Ores from power without world mining'),
+            shaped('modern_industrialization:electric_age/machine/nuclear_reactor_asbl', 0, 1,
+                   item('modern_industrialization:processing_unit'), AB, 'V', 'Nuclear power'),
+            shaped('modern_industrialization:electric_age/circuit/craft/quantum_circuit_asbl', 0, 1,
+                   item('modern_industrialization:cooling_cell'), ATOMIC, 'V',
                    'Every quantum item: fusion reactor, quantum hull, quantum upgrade and armour'),
         ],
         'removals': [
@@ -696,24 +754,22 @@ FAMILIES = {
         'tag': 'ENTRELUMEN_PINGPONG4_BALANCE',
         'namespaces': {'create_new_age', 'esl', 'psi', 'create_central_kitchen', 'sliceanddice', 'nova_structures'},
         'changes': [
-            shaped('create_new_age:shaped/basic_solar_heating_plate', 0, 1, tag('c:glass_blocks/colorless'), CF, 'II',
-                   'Solar heat for Create boilers: the Heliodor lens in the calibration frame'),
-            shaped('create_new_age:shaped/generator_coil', 0, 1, tag('c:ingots/copper'), EN, 'II',
-                   'Electricity from rotation: every New Age generator needs a coil'),
-            shaped('create_new_age:shaped/advanced_solar_heating_plate', 0, 1, tag('c:glass_blocks/colorless'), PR, 'III',
-                   'Stronger solar boiler heat'),
-            shaped('create_new_age:shaped/advanced_energiser', 1, 0, None, PR, 'III', 'Faster overcharging'),
-            shaped('create_new_age:shaped/advanced_motor', 0, 1, tag('c:nuggets/gold'), PR, 'III',
+            shaped('create_new_age:shaped/basic_solar_heating_plate', 0, 1, tag('c:glass_blocks/colorless'), ALLOY_II, 'II',
+                   'Solar heat for Create boilers: plates go by the dozen, so the act II alloy, not the frame'),
+            # One set of carbon brushes collects each generator's electricity; coils go by the dozen.
+            shaped('create_new_age:shaped/carbon_brushes', 0, 1, item('create:andesite_alloy'), EN, 'II',
+                   'Electricity from rotation: the coupler joins the brushes to the generator'),
+            shaped('create_new_age:shaped/advanced_energiser', 2, 1, item('minecraft:lightning_rod'), ALLOY_III, 'III',
+                   'Faster overcharging'),
+            shaped('create_new_age:shaped/advanced_motor', 0, 1, tag('c:nuggets/gold'), ALLOY_III, 'III',
                    'Second electric motor tier'),
-            shaped('create_new_age:shaped/reinforced_energiser', 2, 0, None, SL, 'IV', 'Fastest overcharging'),
-            shaped('create_new_age:mechanical_crafting/reinforced_motor', 0, 0, tag('c:gems/diamond'), SL, 'IV',
+            paired('create_new_age:shaped/reinforced_energiser', [(2, 0), (2, 2)], None, IRONWOOD, 'IV', 'Fastest overcharging'),
+            shaped('create_new_age:mechanical_crafting/reinforced_motor', 0, 0, tag('c:gems/diamond'), IRONWOOD, 'IV',
                    'Top electric motor tier and its extension'),
-            shaped('create_new_age:mechanical_crafting/reactor_rod', 1, 0, None, CS, 'IV',
+            shaped('create_new_age:mechanical_crafting/reactor_rod', 0, 2, tag('c:plates/gold'), IRONWOOD, 'IV',
                    'Thorium fission: every reactor needs rods'),
             # Elias, 24 September 2026: Psi opens whole in Act III (it was the calibration frame, Act II).
             shaped('psi:assembler', 1, 1, None, PR, 'III', 'Every CAD, and so every Psi spell'),
-            shaped('psi:cad_core_hyperclocked', 0, 0, None, RM, 'III', 'Highest spell complexity'),
-            shaped('psi:cad_core_radiative', 0, 0, None, RM, 'III', 'Psigem core with the highest potency'),
         ],
         'removals': [],
         'data': [
@@ -755,10 +811,10 @@ FAMILIES = {
                           'QIO storage: the inventory sensor looks out of the array'),
             function_gate('quarry', 'mekanism:digital_miner', 0, 1, tag('c:circuits/basic'),
                           'Ores from power without walking the world: the lens on top of the miner'),
-            function_listed('quarry', 'occultism:ritual/craft_dimensional_mineshaft', 'ingredients', 0,
-                            {'type': 'neoforge:compound',
-                             'children': [item('occultism:otherstone'), item('occultism:otherrock')]},
-                            'Mining spirits work from the mineshaft'),
+            # The Digital Miner is the quarries' keystone; Occultism's mineshaft takes the act IV material.
+            listed('occultism:ritual/craft_dimensional_mineshaft', 'ingredients', 0,
+                   {'type': 'neoforge:compound', 'children': [item('occultism:otherstone'), item('occultism:otherrock')]},
+                   IRONWOOD, 'IV', 'Mining spirits work from the mineshaft'),
             function_gate('reactor', 'mekanismgenerators:fission_reactor/port', 1, 1, tag('c:circuits/elite'),
                           "Fission reactor, echo of the Temple: the seal at the port's heart"),
             function_gate('endgame_reactor', 'mekanismgenerators:reactor/controller', 2, 1,
@@ -781,7 +837,7 @@ FAMILIES = {
                               add=LUMINOSITY[TOP_ARMOR['modern_industrialization']])
             for piece in MI_QUANTUM
         ],
-        'removals': [],
+        'removals': MEKANISM_BYPASS,
         'additions': RESONATOR_RECIPES,
     },
     'luminous': {
@@ -876,35 +932,46 @@ def inner(recipe):
 def transform(change, original):
     result = copy.deepcopy(original)
     add = change['add']
-    if change['op'] == 'slot':
+    if change['op'] in ('slot', 'cells'):
         craft = inner(result)
         pattern = craft['pattern']
-        row, col = change['row'], change['col']
-        assert row < len(pattern) and col < len(pattern[row]), f"{change['id']}: slot outside native pattern"
-        symbol = pattern[row][col]
+        cells = [(change['row'], change['col'])] if change['op'] == 'slot' else [tuple(c) for c in change['cells']]
+        assert len(set(cells)) == len(cells), f"{change['id']}: a cell is named twice"
+        symbols = set()
+        for row, col in cells:
+            assert row < len(pattern) and col < len(pattern[row]), f"{change['id']}: slot outside native pattern"
+            symbols.add(pattern[row][col])
+        assert len(symbols) == 1, f"{change['id']}: the cells hold different ingredients"
+        (symbol,) = symbols
         unique = False
         if change['expect'] is None:
             assert symbol == ' ', f"{change['id']}: intended empty slot changed"
         else:
             assert craft['key'][symbol] == change['expect'], f"{change['id']}: native ingredient changed"
-            unique = sum(line.count(symbol) for line in pattern) == 1
+            unique = sum(line.count(symbol) for line in pattern) == len(cells)
             # Only a drawn gate may replace a single ingredient (a machine's core on the centre or axis).
             assert not unique or change.get('drawn'), f"{change['id']}: unique ingredient would be lost"
         letter = next(c for c in 'ZYXWQ' if c not in craft['key'] and all(c not in line for line in pattern))
         widths = [len(line) for line in pattern]
-        craft['pattern'][row] = pattern[row][:col] + letter + pattern[row][col + 1:]
+        for row, col in cells:
+            craft['pattern'][row] = craft['pattern'][row][:col] + letter + craft['pattern'][row][col + 1:]
         craft['key'][letter] = {'item': add}
         removed = craft['key'].pop(symbol) if unique else None  # a shaped key may not keep an unused symbol
         assert [len(line) for line in craft['pattern']] == widths
         reverse = copy.deepcopy(result)
         body = inner(reverse)
-        body['pattern'][row] = body['pattern'][row][:col] + symbol + body['pattern'][row][col + 1:]
+        for row, col in cells:
+            body['pattern'][row] = body['pattern'][row][:col] + symbol + body['pattern'][row][col + 1:]
         del body['key'][letter]
         if unique:
             body['key'][symbol] = removed
         assert reverse == original, f"{change['id']}: an unrelated native field changed"
-        if change.get('drawn'):
-            assert symmetric(craft) or not symmetric(inner(original)), f"{change['id']}: the drawing lost its symmetry"
+        # Rule 3 of the playtest (docs/design/recipe-design-rules.md): no gate breaks a symmetric
+        # drawing, and an ENTRELUMEN item only enters a symmetric one, on its axis, corners or middle row.
+        assert symmetric(craft) or not symmetric(inner(original)), f"{change['id']}: the drawing lost its symmetry"
+        if add.startswith('entrelumen:'):
+            assert symmetric(craft), f"{change['id']}: an ENTRELUMEN item needs a symmetric drawing"
+            assert all(well_placed(craft, row, col) for row, col in cells), f"{change['id']}: component off the axis"
     elif change['op'] == 'list':
         values = result[change['field']]
         index = change['index']
@@ -966,7 +1033,7 @@ def check_function_gate(change, output, sources):
         assert (output, component) in BOOTSTRAP, f"{change['id']}: {output} is needed to make {component}"
         assert story_grants(component) >= 2, f"{change['id']}: the bootstrap needs two story {component}"
     if 'function' in change:
-        expected, act = FUNCTIONS[change['function']]
+        expected, act, _ = FUNCTIONS[change['function']]
         if expected == 'luminosity':
             assert component in LUMINOSITY.values(), f"{change['id']}: top armor takes one Luminosity"
         else:
