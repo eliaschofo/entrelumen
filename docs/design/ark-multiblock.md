@@ -17,11 +17,11 @@ Elias eligió el astrolabio en lugar del barco. Lo genera `art/structures/ark_mu
   - Ingeniería a 150°.
 - **Arcos:** dos, de radio 7, que se cruzan sobre el controlador, con franjas de cobre cortado y ladrillo de toba, pies de calcita y clave de amatista.
 - **Columnas:** cuatro en las diagonales, en los cuadrantes que no tienen apoyo de arco (Elias):
-  - base acampanada de toba pulida (3×3) con un escalón en cruz de calcita;
+  - base chica acampanada: cuatro escaleras de toba pulida alrededor del pie;
   - fuste de un solo material, calcita;
-  - capitel de cobre cincelado;
+  - capitel acampanado de cuatro escaleras invertidas de toba pulida, con un bloque de cobre cincelado bajo el beacon;
   - en la punta, un **lugar para un beacon**, opcional (ver `ark-modules-v2.md`).
-- **Cuenta:** 411 bloques obligatorios (116 stone_bricks, 74 calcite, 71 tuff_bricks, 56 polished_tuff, 52 stone_brick_stairs, 19 cut_copper, 11 chiseled_copper, 5 amethyst_block, 1 arcane_module, 1 logistics_module, 1 nature_module, 1 ark_controller, 1 engineering_module, 1 exploration_module, 1 habitation_module), más 4 lugares opcionales para beacons.
+- **Cuenta:** 395 bloques obligatorios (116 stone_bricks, 71 tuff_bricks, 62 calcite, 52 stone_brick_stairs, 32 polished_tuff_stairs, 20 polished_tuff, 19 cut_copper, 11 chiseled_copper, 5 amethyst_block, 1 arcane_module, 1 logistics_module, 1 nature_module, 1 ark_controller, 1 engineering_module, 1 exploration_module, 1 habitation_module), más 4 lugares opcionales para beacons.
 
 **Reglas de coincidencia para el código.**
 - El cobre coincide con cualquier oxidación y con su versión encerada.

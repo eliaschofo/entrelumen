@@ -106,16 +106,15 @@ def build():
             k = abs(x) + abs(z) + y
             V[(x, y, z)] = B('calcite') if y == 1 else (B('cut_copper') if k % 2 == 0 else B('tuff_bricks'))
     put(0, top, 0, 'amethyst_block')                              # the keystone where they cross
-    # four columns on the diagonals, where the arches give no support (Elias): a flared base of
-    # polished tuff, a shaft of calcite alone, a chiseled copper capital and a beacon on the peak.
+    # four columns on the diagonals, where the arches give no support (Elias): a small flared base
+    # and a flared capital of polished-tuff stairs, a shaft of calcite alone, a chiseled copper
+    # block under the beacon's place on the peak.
     # The beacon is optional: each one adds a level to the modules' effects (ark-modules-v2.md).
     for (cx, cz) in ((5, 5), (-5, 5), (5, -5), (-5, -5)):
-        for dx in (-1, 0, 1):
-            for dz in (-1, 0, 1):
-                put(cx + dx, 1, cz + dz, 'polished_tuff')
-        for (dx, dz) in ((1, 0), (-1, 0), (0, 1), (0, -1)):
-            put(cx + dx, 2, cz + dz, 'calcite')
-        for y in range(2, 8):
+        for (dx, dz, toward) in ((1, 0, 'west'), (-1, 0, 'east'), (0, 1, 'north'), (0, -1, 'south')):
+            put(cx + dx, 1, cz + dz, 'polished_tuff_stairs[facing=%s,half=bottom,shape=straight,waterlogged=false]' % toward)
+            put(cx + dx, 7, cz + dz, 'polished_tuff_stairs[facing=%s,half=top,shape=straight,waterlogged=false]' % toward)
+        for y in range(1, 8):
             put(cx, y, cz, 'calcite')
         put(cx, 8, cz, 'chiseled_copper')
         put(cx, 9, cz, 'beacon', required=False)
@@ -159,6 +158,31 @@ def export():
     print(len(blocks), 'positions,', req, 'required,', len(SLOTS), 'slots')
 
 
+def subdivided(vox):
+    """Each block as 2x2x2 sub-blocks, so stairs and slabs show their shape in the preview."""
+    out = {}
+    back = {'north': (None, 0), 'south': (None, 1), 'west': (0, None), 'east': (1, None)}
+    for (x, y, z), b in vox.items():
+        if b.endswith(':air'):
+            continue
+        name = b.split('[')[0]
+        props = dict(p.split('=') for p in b[:-1].split('[')[1].split(',')) if '[' in b else {}
+        for sx in (0, 1):
+            for sy in (0, 1):
+                for sz in (0, 1):
+                    keep = True
+                    if name.endswith('_slab'):
+                        keep = props.get('type') == 'double' or (sy == 0) == (props.get('type') == 'bottom')
+                    elif name.endswith('_stairs'):
+                        low = 0 if props.get('half') == 'bottom' else 1
+                        bx, bz = back.get(props.get('facing'), (None, None))
+                        on_back = (bx is None or sx == bx) and (bz is None or sz == bz)
+                        keep = sy == low or on_back
+                    if keep:
+                        out[(2 * x + sx, 2 * y + sy, 2 * z + sz)] = name if name.endswith(('_slab', '_stairs')) is False else                             name.replace('_stairs', '').replace('_slab', '').replace('brick', 'bricks').replace('brickss', 'bricks')
+    return out
+
+
 if __name__ == '__main__':
     build()
     for (x, y, z), b in V.items():
@@ -167,5 +191,4 @@ if __name__ == '__main__':
         assert ok or (x, y, z) in SLOTS or (-x, y, z) in SLOTS, ('asymmetric', (x, y, z), b, m)
     export()
     from voxrender import render
-    shown = {k: v for k, v in V.items() if not v.endswith(':air')}
-    render(shown, os.path.join(HERE, 'out', 'ark_multiblock.png'), scale=14, ground=14)
+    render(subdivided(V), os.path.join(HERE, 'out', 'ark_multiblock.png'), scale=9, ground=24)
