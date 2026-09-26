@@ -50,6 +50,8 @@ import net.neoforged.neoforge.gametest.PrefixGameTestTemplate;
  *       the crafting and smelting recipes the server actually loaded (KubeJS changes included).</li>
  *   <li>Its trees grow in the modded dimensions' biomes through the pinned mods' own features, and
  *       its ink caps and mod flowers live on ordinary soil.</li>
+ *   <li>On bare sand, stone, end stone and netherrack the garden lays its own soil, and what grew there
+ *       makes all sixteen dyes.</li>
  *   <li>The Altar of Levelling's repair rebuilds a pit dug in land made by the pack's real overworld
  *       generator, compared with an independent regeneration. Run it on untouched land away from the
  *       spawn test area, with the land 28-68 blocks east of the test loaded.</li>
@@ -138,6 +140,96 @@ public final class AltarFullpackGameTests {
     if (to >= biomes.size()) then.run();
     else helper.runAfterDelay(1, () -> dyeBatch(helper, level, biomes, to, closure, variants, failures, trees, worst,
         then));
+  }
+
+  /**
+   * The dye garden on bare ground with the pack's own plants: sand, stone, end stone and netherrack,
+   * no dirt anywhere. The altar lays the soil of its beds and ink caps, and what actually grew there,
+   * harvested by hand, makes all sixteen dyes with the recipes the server loaded.
+   */
+  @GameTest(template = "nature_restoration", timeoutTicks = 4000, skyAccess = true)
+  public static void renewalAltarGardenMakesEveryDyeOnBareGround(GameTestHelper helper) {
+    var level = helper.getLevel();
+    for (int x = 0; x < EXTENT; x++)
+      for (int z = 0; z < EXTENT; z++) {
+        Block bare = x < 20 ? (z < 20 ? Blocks.SAND : Blocks.END_STONE) : (z < 20 ? Blocks.STONE : Blocks.NETHERRACK);
+        level.setBlock(helper.absolutePos(new BlockPos(x, -2, z)), Blocks.STONE.defaultBlockState(), 2);
+        level.setBlock(helper.absolutePos(new BlockPos(x, -1, z)), bare.defaultBlockState(), 2);
+        level.setBlock(helper.absolutePos(new BlockPos(x, 0, z)), bare.defaultBlockState(), 2);
+      }
+    biome(helper, Biomes.THE_VOID, 0, 0, EXTENT - 1, EXTENT - 1);
+    int radius = 14;
+    BlockPos altarPos = helper.absolutePos(new BlockPos(20, 1, 20));
+    int cx = altarPos.getX(), cz = altarPos.getZ(), ground = helper.absolutePos(BlockPos.ZERO).getY();
+    int[] bounds = AltarRules.loadedBounds(cx, cz, radius);
+    List<ChunkPos> forced = new ArrayList<>();
+    for (int x = bounds[0]; x <= bounds[2]; x++)
+      for (int z = bounds[1]; z <= bounds[3]; z++)
+        if (level.setChunkForced(x, z, true)) forced.add(new ChunkPos(x, z));
+    Runnable release = () -> forced.forEach(chunk -> level.setChunkForced(chunk.x, chunk.z, false));
+    level.setBlockAndUpdate(altarPos, Altars.RENEWAL_ALTAR.get().defaultBlockState());
+    var altar = (RenewalAltarEntity) level.getBlockEntity(altarPos);
+    altar.configureRadius(radius);
+    altar.addFertilizer(new ItemStack(Items.BONE_MEAL, 64));
+    int[] given = {64};
+    await(helper, () -> {
+      if (altar.state() == RenewalAltarEntity.State.WAITING && altar.fertilizer().isEmpty()) {
+        altar.addFertilizer(new ItemStack(Items.BONE_MEAL, 64));
+        given[0] += 64;
+      }
+      return altar.state() == RenewalAltarEntity.State.DONE;
+    }, 0, 3600, "Bare-ground garden", () -> {
+      try {
+        var garden = AltarVegetation.garden(level.registryAccess());
+        Block capBlock = BuiltInRegistries.BLOCK.get(ResourceLocation.parse("undergarden:ink_mushroom_cap"));
+        Map<String, Integer> perSpecies = new TreeMap<>();
+        Set<BlockState> harvested = new java.util.LinkedHashSet<>();
+        int beds = 0, planted = 0, laid = 0;
+        for (int dx = -radius; dx <= radius; dx++)
+          for (int dz = -radius; dz <= radius; dz++) {
+            if (!VegetationRules.bed(dx, dz)) continue;
+            beds++;
+            BlockPos soil = new BlockPos(cx + dx, ground, cz + dz);
+            BlockState expected = garden.species().get(VegetationRules.bedSpecies(dx, dz, garden.species().size()));
+            BlockState plant = level.getBlockState(soil.above());
+            // No grass or podzol was there before: any under a bed was laid by the altar.
+            if (level.getBlockState(soil).is(Blocks.GRASS_BLOCK) || level.getBlockState(soil).is(Blocks.PODZOL)) laid++;
+            if (plant.is(expected.getBlock())) {
+              planted++;
+              harvested.add(plant);
+              perSpecies.merge(BuiltInRegistries.BLOCK.getKey(plant.getBlock()).toString(), 1, Integer::sum);
+            }
+          }
+        int caps = 0, capBlocks = 0;
+        int c = VegetationRules.inkCapOffset(radius);
+        for (int[] corner : new int[][] {{c, c}, {-c, c}, {c, -c}, {-c, -c}}) {
+          BlockPos stemGround = new BlockPos(cx + corner[0], ground, cz + corner[1]);
+          if (level.getBlockState(stemGround).is(Blocks.PODZOL) && !level.getBlockState(stemGround.above()).isAir()) caps++;
+        }
+        for (int x = cx - radius - 4; x <= cx + radius + 4; x++)
+          for (int z = cz - radius - 4; z <= cz + radius + 4; z++)
+            for (int y = ground + 1; y <= ground + 14; y++)
+              if (level.getBlockState(new BlockPos(x, y, z)).is(capBlock)) capBlocks++;
+        Set<String> items = new java.util.TreeSet<>();
+        for (BlockState plant : harvested) items.addAll(AltarVegetation.loot(level, plant, 4));
+        if (capBlocks > 0) items.addAll(AltarVegetation.loot(level, capBlock.defaultBlockState(), 64));
+        var missing = new VegetationRules.Closure(AltarVegetation.recipes(level)).missing(items);
+        com.mojang.logging.LogUtils.getLogger().info(
+            "ALTAR_BARE_GARDEN beds={} planted={} laid={} perSpecies={} inkCaps={} capBlocks={} soil={} charge={} fertilizer={} harvest={} missing={} guards={}",
+            beds, planted, laid, perSpecies, caps, capBlocks, altar.totals().soil, altar.totals().charge,
+            altar.totals().fertilizer, items, missing, altar.guards);
+        helper.assertTrue(planted == beds, "Beds left empty on bare ground: " + planted + " of " + beds);
+        helper.assertTrue(perSpecies.size() == AltarVegetation.GARDEN.size(), "Not every garden species grew: " + perSpecies);
+        helper.assertTrue(caps == 4 && capBlocks > 0, "The ink caps did not grow on bare ground: " + caps + " " + capBlocks);
+        helper.assertTrue(laid > 0 && altar.totals().soil == laid + caps,
+            "Soil laid " + altar.totals().soil + " for " + laid + " beds and " + caps + " caps");
+        helper.assertTrue(missing.isEmpty(), "The bare-ground garden misses " + missing + " from " + items);
+        level.removeBlock(altarPos, false);
+        helper.succeed();
+      } finally {
+        release.run();
+      }
+    }, release);
   }
 
   private static void biome(GameTestHelper helper, ResourceKey<Biome> biome, int fromX, int fromZ, int toX, int toZ) {

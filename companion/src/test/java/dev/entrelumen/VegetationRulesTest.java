@@ -178,6 +178,19 @@ class VegetationRulesTest {
   }
 
   @Test
+  void aBedPlantsLaysItsSoilOnPlainGroundOrStaysEmpty() {
+    // Grass that already holds the flower: plant, no soil.
+    assertEquals(VegetationRules.Planter.PLANT, VegetationRules.planter(true, true, true));
+    assertEquals(VegetationRules.Planter.PLANT, VegetationRules.planter(true, false, false));
+    // Sand, stone, netherrack or end stone: one block of soil, then the plant.
+    assertEquals(VegetationRules.Planter.LAY_SOIL, VegetationRules.planter(false, true, true));
+    // An ore, ice, a build, a block entity or a fluid under the bed: it stays empty.
+    assertEquals(VegetationRules.Planter.EMPTY, VegetationRules.planter(false, false, true));
+    // Soil that would not hold the plant either: empty, nothing laid for nothing.
+    assertEquals(VegetationRules.Planter.EMPTY, VegetationRules.planter(false, true, false));
+  }
+
+  @Test
   void theClosureNeedsEverySlotAndReachesThroughChains() {
     var recipes = List.of(
         new VegetationRules.Recipe(List.of(Set.of("a"), Set.of("b", "c")), "d"),

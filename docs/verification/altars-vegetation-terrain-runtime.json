@@ -211,5 +211,236 @@
       "ALTAR_FULLPACK claims repairRefusals={built=53, claim=135, protected=14} renewal=[plants=47 trees=3 guards={plant_claim=56, plant_entity=1, plant_margin=17, tree_claim=9}]",
       "ALTAR_FULLPACK repair totals filled=27 covered=0 refused=0 skipped=0 fuel=1 refusals={} reference=[terrain=16 decorated=4 terrainMillis=1284 decorationMillis=115 failures={pneumaticcraft:oil_lake_underground=1, waystones:waystone=4} unsupported=[getLevel]]"
     ]
+  },
+  "gardenSoilFollowUp": {
+    "checkedAt": "2026-09-26T19:33:16-0300",
+    "scope": "Elias's rule of 26 September: the dye garden lays the soil of its own beds and ink caps so it always yields every dye; and the variant GameTests made deterministic after a CI flake. Offline build, JUnit and isolated GameTests on the merged head, four consecutive isolated runs, the Python CI steps, and full-pack QA of the changed cases on server-slice with its world backed up and restored.",
+    "sourceCommit": "ef9df3b",
+    "junit": {
+      "tests": 220,
+      "failures": 0
+    },
+    "isolatedGameTests": {
+      "log": "E:\\Elias\\Codex\\Entrelumen-ssd\\altars3-20260925\\final-ef9df3b.log",
+      "summary": "All 111 required tests passed",
+      "bareGround": [
+        "ALTAR_PERF scenario=renewal-bare-garden workingTicks=15 wallWithoutGc=[mean=3313 p50=2258 p95=11496 max=11496]us gcTicks=0 maxGcMillis=0 actorMillis=0 maxTreeMicros=0 restedTicks=0 maxSoilCheckMicros=4825 treeMicros=[] paletteMicros=8468 totals=[trees=0 inkCaps=0 plants=28 dyeFlowers=28 guarded=6 fertilizer=14 charge=56] grown={minecraft:cornflower=6, minecraft:dandelion=4, minecraft:lily_of_the_valley=10, minecraft:poppy=8} guards={bed_ground=2, plant_claim=1, plant_entity=1, plant_margin=1, soil_claim=1}"
+      ],
+      "nether": [
+        "ALTAR_NETHER beds=36 planted=36 soil=36 plants=36 grown={minecraft:cornflower=8, minecraft:dandelion=4, minecraft:lily_of_the_valley=12, minecraft:poppy=12} guards={} roofKept=true"
+      ]
+    },
+    "determinism": {
+      "det-6": {
+        "summary": "All 121 required tests passed",
+        "variants": [
+          "ALTAR_VARIANT minecraft:huge_red_mushroom result=APPLIED guards={} treeMicros=[41169]",
+          "ALTAR_VARIANT minecraft:crimson_fungus_planted result=APPLIED guards={} treeMicros=[7303]",
+          "ALTAR_VARIANT entrelumen:giant_cactus result=APPLIED guards={} treeMicros=[]",
+          "ALTAR_VARIANT minecraft:mega_spruce result=APPLIED guards={} treeMicros=[8888]",
+          "ALTAR_VARIANT minecraft:cherry result=APPLIED guards={} treeMicros=[5648]",
+          "ALTAR_VARIANT minecraft:chorus_plant result=APPLIED guards={} treeMicros=[2821]",
+          "ALTAR_VARIANT minecraft:mangrove result=APPLIED guards={} treeMicros=[33086]",
+          "ALTAR_VARIANT minecraft:mega_jungle_tree result=APPLIED guards={} treeMicros=[8463]"
+        ]
+      },
+      "det-7": {
+        "summary": "All 121 required tests passed",
+        "variants": [
+          "ALTAR_VARIANT minecraft:huge_red_mushroom result=APPLIED guards={} treeMicros=[44162]",
+          "ALTAR_VARIANT minecraft:crimson_fungus_planted result=APPLIED guards={} treeMicros=[7856]",
+          "ALTAR_VARIANT entrelumen:giant_cactus result=APPLIED guards={} treeMicros=[]",
+          "ALTAR_VARIANT minecraft:mega_spruce result=APPLIED guards={} treeMicros=[14404]",
+          "ALTAR_VARIANT minecraft:cherry result=APPLIED guards={} treeMicros=[7411]",
+          "ALTAR_VARIANT minecraft:chorus_plant result=APPLIED guards={} treeMicros=[4838]",
+          "ALTAR_VARIANT minecraft:mangrove result=APPLIED guards={} treeMicros=[13859]",
+          "ALTAR_VARIANT minecraft:mega_jungle_tree result=APPLIED guards={} treeMicros=[5711]"
+        ]
+      },
+      "det-8": {
+        "summary": "All 121 required tests passed",
+        "variants": [
+          "ALTAR_VARIANT minecraft:huge_red_mushroom result=APPLIED guards={} treeMicros=[49615]",
+          "ALTAR_VARIANT minecraft:crimson_fungus_planted result=APPLIED guards={} treeMicros=[15308]",
+          "ALTAR_VARIANT entrelumen:giant_cactus result=APPLIED guards={} treeMicros=[]",
+          "ALTAR_VARIANT minecraft:mega_spruce result=APPLIED guards={} treeMicros=[7451]",
+          "ALTAR_VARIANT minecraft:cherry result=APPLIED guards={} treeMicros=[2332]",
+          "ALTAR_VARIANT minecraft:chorus_plant result=APPLIED guards={} treeMicros=[3500]",
+          "ALTAR_VARIANT minecraft:mangrove result=APPLIED guards={} treeMicros=[13365]",
+          "ALTAR_VARIANT minecraft:mega_jungle_tree result=APPLIED guards={} treeMicros=[8269]"
+        ]
+      },
+      "det-9": {
+        "summary": "All 121 required tests passed",
+        "variants": [
+          "ALTAR_VARIANT minecraft:huge_red_mushroom result=APPLIED guards={} treeMicros=[41158]",
+          "ALTAR_VARIANT minecraft:crimson_fungus_planted result=APPLIED guards={} treeMicros=[11144]",
+          "ALTAR_VARIANT entrelumen:giant_cactus result=APPLIED guards={} treeMicros=[]",
+          "ALTAR_VARIANT minecraft:mega_spruce result=APPLIED guards={} treeMicros=[7720]",
+          "ALTAR_VARIANT minecraft:cherry result=APPLIED guards={} treeMicros=[5577]",
+          "ALTAR_VARIANT minecraft:chorus_plant result=APPLIED guards={} treeMicros=[4361]",
+          "ALTAR_VARIANT minecraft:mangrove result=APPLIED guards={} treeMicros=[12262]",
+          "ALTAR_VARIANT minecraft:mega_jungle_tree result=APPLIED guards={} treeMicros=[7961]"
+        ]
+      }
+    },
+    "pythonChecks": {
+      "log": "E:\\Elias\\Codex\\Entrelumen-ssd\\altars3-20260925\\ci-checks-4.log",
+      "lines": [
+        "0 tools/generate_quests.py --check :: PASS: 102 chapters (8 story, 93 guides, hub), 1920 quests, 5 groups, global IDs/DAG, EN/ES parity; runtime not verified.",
+        "0 tools/test_generate_quests.py :: OK",
+        "0 tools/test_quest_book.py :: OK",
+        "0 tools/test_sync_pack.py :: OK",
+        "0 tools/test_curate_families.py :: Curated 1 JARs; missing requested IDs: ",
+        "0 tools/test_family_balance.py :: OK",
+        "0 tools/generate_client_defaults.py --check :: Default Options checked: 15 options, 105 bindings",
+        "0 tools/test_generate_client_defaults.py :: OK",
+        "0 tools/check_keybinds.py :: PASS: 302 keys from keybindings.txt, 0 clashes, 13 intended shares, 29 sneak/sprint shadows, 0 errors",
+        "0 tools/test_check_keybinds.py :: OK",
+        "0 tools/test_png_equivalence.py :: PASS identical PNG mode, size and pixels; encoding differs: logo.png",
+        "0 tools/generate_integration_recipes.py --check :: PASS: 22 static recipes (21 shapeless, the frame by metallurgic infusing), valid native grids/yields, bilingual project titles, component DAG, two story frames,",
+        "0 tools/build_survey_station_art.py --check :: PASS deterministic survey station:24 cuboids, native16 textures, integerUV; preview is software model, not in-game.",
+        "0 tools/build_atlas_book_art.py --check :: PASS native PixelLab book texture bytes and provenance; game QA is separate",
+        "0 art/build_art.py --check :: PASS: 65 item and 28 block grids render byte-identically into the resource pack and companion; models, EN/ES names and hash inventory current. In-game visual re",
+        "0 tools/build_heliodor_ruin_start.py --check :: heliodor_ruin_start.nbt matches its design",
+        "0 art/build_pixel_identity.py --check :: PASS: native scenes 243x139, 352x199 exported by integer nearest; classic logo 180x64; binary alpha. In-game review separate.",
+        "0 tools/check_runtime_content.py :: PASS source coverage only: 1357 item IDs, 37 recipe/output pairs. Runtime evidence still required with --log.",
+        "0 tools/benchmark.py --self-test :: PASS synthetic unit checks only: nearest-rank percentiles, FPS, strict 50ms/40FPS boundaries, short input and malformed CSV rejection.",
+        "0 tools/test_benchmark.py :: PASS synthetic unit checks only: nearest-rank percentiles, FPS, strict 50ms/40FPS boundaries, short input and malformed CSV rejection.",
+        "0 tools/test_benchmark_fixture.py :: OK",
+        "0 tools/check_more_machine_balance.py --self-test :: PASS synthetic receipt rejection tests; not runtime evidence",
+        "0 tools/test_optional_loot_compat.py :: OK",
+        "0 tools/test_aircraft_balance.py :: OK (skipped=4)",
+        "0 -W error::ResourceWarning tools/test_runtime_control.py :: OK",
+        "0 tools/generate_family_balance.py --check :: {\"family\": \"qol\", \"status\": \"static-PASS\", \"nativeRecipesIndexed\": 46464, \"changed\": 5, \"removed\": 1, \"dataOverrides\": 0, \"addedRecipes\": 0, \"creations\": 0, \"ac",
+        "0 tools/generate_rftools_balance.py --check :: {\"status\": \"static-PASS\", \"nativeRecipesAudited\": 235, \"changed\": 11, \"componentDAG\": [\"entrelumen:calibration_frame\", \"entrelumen:ecosystem_capsule\", \"entrelum",
+        "0 tools/check_guides.py :: PASS: 93 guide chapters, 1748 quests, 0 errors, 0 copy warnings",
+        "0 tools/generate_resource_balance.py --check --self-test :: {\"status\": \"static-PASS\", \"changed\": 1421, \"byReason\": {\"dimensional_material_and_integration\": 3, \"highest_electrode_native_smithing\": 1, \"hopper_automation\": ",
+        "0 tools/generate_cooking_provisions.py --check :: {\"status\": \"static-PASS\", \"newJars\": 5, \"nativeRecipesAudited\": 8, \"addedRoutes\": 2, \"marketBackedTrees\": 9, \"overlappingPlacementsDisabled\": 9, \"originalRoute\"",
+        "0 tools/generate_malum_compat.py --check :: PASS: five exact recipe IDs; source hash, native schema and all non-key semantics preserved.",
+        "0 tools/curate_pack.py --check :: PASS: 314 client JAR hashes, references and required dependency closure. Requested-but-unavailable: 0. Runtime/version compatibility still needs loader verifica",
+        "overall=0"
+      ]
+    },
+    "fullpack": {
+      "server": "E:/Elias/Codex/Entrelumen-ssd/server-slice",
+      "runs": {
+        "D": {
+          "tests": {},
+          "failureLines": {},
+          "serverEndedDuring": "renewalaltargardenmakeseverydyeonbareground",
+          "bootWallSeconds": 1122.2,
+          "exitCode": null,
+          "watchdog": null,
+          "cantKeepUp": null,
+          "worstCantKeepUpMs": null
+        },
+        "E": {
+          "tests": {},
+          "failureLines": {},
+          "serverEndedDuring": "renewalaltargardenmakeseverydyeonbareground",
+          "bootWallSeconds": 971.4,
+          "exitCode": null,
+          "watchdog": null,
+          "cantKeepUp": null,
+          "worstCantKeepUpMs": null
+        },
+        "F": {
+          "tests": {
+            "renewalaltargardenmakeseverydyeonbareground": "FAIL",
+            "renewalaltarharvestmakeseverydyeineverybiome": "PASS",
+            "renewalaltargrowsinkcapsandmodflowersonplainsoil": "PASS",
+            "altarsrespectforeignftbchunksclaims": "PASS"
+          },
+          "failureLines": {
+            "renewalaltargardenmakeseverydyeonbareground": [
+              "[16:16:45] [Server thread/ERROR] [minecraft/LogTestReporter]: renewalaltargardenmakeseverydyeonbareground failed at 0, 67, -13! Beds left empty on bare ground: 52 of 64",
+              "[16:16:45] [Server thread/INFO] [de.en.FullpackQABootstrap/]: ENTRELUMEN_QA_RESULT FAIL renewalaltargardenmakeseverydyeonbareground"
+            ]
+          },
+          "serverEndedDuring": null,
+          "bootWallSeconds": 540.1,
+          "exitCode": 0,
+          "watchdog": false,
+          "cantKeepUp": 9,
+          "worstCantKeepUpMs": 56710
+        },
+        "G": {
+          "tests": {
+            "renewalaltargardenmakeseverydyeonbareground": "PASS",
+            "renewalaltarharvestmakeseverydyeineverybiome": "PASS",
+            "renewalaltargrowsinkcapsandmodflowersonplainsoil": "PASS",
+            "renewalaltargrowsthetreesofmoddeddimensions": "PASS",
+            "altarsrespectforeignftbchunksclaims": "PASS"
+          },
+          "failureLines": {},
+          "serverEndedDuring": null,
+          "bootWallSeconds": 824.0,
+          "exitCode": 0,
+          "watchdog": false,
+          "cantKeepUp": 9,
+          "worstCantKeepUpMs": 11906
+        }
+      },
+      "bareGroundGarden": [
+        "ALTAR_BARE_GARDEN beds=64 planted=64 laid=64 perSpecies={eternal_starlight:conebloom=8, eternal_starlight:swamp_rose=4, minecraft:cornflower=8, minecraft:dandelion=8, minecraft:lily_of_the_valley=12, minecraft:poppy=16, undergarden:ink_mushroom=8} inkCaps=4 capBlocks=228 soil=68 charge=192 fertilizer=48 harvest=[eternal_starlight:conebloom, eternal_starlight:swamp_rose, minecraft:cornflower, minecraft:dandelion, minecraft:lily_of_the_valley, minecraft:poppy, undergarden:ink_mushroom] missing=[] guards={}"
+      ],
+      "moddedTrees": [
+        "ALTAR_MODDED_TREES results={aether:skyroot_forest=APPLIED [aether:golden_oak_tree=APPLIED], undergarden:smogstem_forest=APPLIED [undergarden:smogstem_tree=APPLIED], eternal_starlight:starlight_forest=APPLIED [eternal_starlight:lunar_cyan=APPLIED], twilightforest:dark_forest=APPLIED [twilightforest:tree/dark_forest_birch_tree=APPLIED]} guards={} grown={aether:golden_oak_tree=1, eternal_starlight:lunar_cyan=1, twilightforest:tree/dark_forest_birch_tree=1, undergarden:smogstem_tree=1}"
+      ],
+      "dyes": [
+        "ALTAR_DYES fullpack biomes=183 recipes=21878 indexMillis=1114 totalMillis=11458 worstBiomeMillis=142 variants={badlands=3, biome=142, birch_forest=2, cherry_grove=1, crimson_forest=1, dark_forest=1, desert=1, end=5, flower_forest=1, forest=1, jungle=4, mangrove_swamp=1, meadow=1, mushroom_fields=1, old_growth_taiga=2, plains=2, savanna=3, snowy=4, swamp=1, taiga=2, warped_forest=1, windswept=3} gardenHarvest=[eternal_starlight:conebloom, eternal_starlight:swamp_rose, minecraft:cornflower, minecraft:dandelion, minecraft:lily_of_the_valley, minecraft:poppy, undergarden:ink_mushroom] gardenMissing=[] treelessBiomes=65 failures={}"
+      ],
+      "claims": [
+        "ALTAR_FULLPACK claims repairRefusals={built=53, protected=14, claim=135} renewal=[plants=63 trees=1 guards={plant_claim=56, plant_entity=1, plant_margin=2, tree_claim=5}]"
+      ],
+      "installQa": {
+        "at": 1790453052.2435007,
+        "qaJar": "E:\\Elias\\Codex\\Entrelumen-ssd\\altars3-20260925\\entrelumen-0.1.0-qa-soil-2.jar",
+        "qaJarSha256": "4c49f82086276902f697e10f66f7f3eb1b1cc0a56d8c006fca65218f0418693e",
+        "installedSha256": "4c49f82086276902f697e10f66f7f3eb1b1cc0a56d8c006fca65218f0418693e"
+      },
+      "restoreAfterG": {
+        "at": 1790460148.2262456,
+        "restoredFiles": 1567,
+        "qaWorldKeptAt": "E:\\Elias\\Codex\\Entrelumen-ssd\\server-slice\\entrelumen-test.__after-altars3-qa-1790460135",
+        "jarSha256": "d442de83f7ccd6e98ef4589d8aac01a6f48d8786f00dafea45ef60313b9b0282"
+      },
+      "bootAllowance": [
+        {
+          "at": 1790449554.488459,
+          "server": "E:\\Elias\\Codex\\Entrelumen-ssd\\server-slice",
+          "before": "60000",
+          "after": 180000,
+          "label": "F-boot-allowance",
+          "why": "Runs D and E stopped at server start (Supplementaries onServerStart, first tick over 60 s) while another worker built on the same machine with 4 GB of RAM free; QA-only allowance as in act6-20260924, restored right after run F",
+          "originalSha256": "c07a96e133bdf4c934f80c2f1aa9213f0ecff2f31f2b65261db58f9c147022ec"
+        },
+        {
+          "at": 1790453051.7142084,
+          "server": "E:\\Elias\\Codex\\Entrelumen-ssd\\server-slice",
+          "before": "60000",
+          "after": 180000,
+          "label": "G-boot-allowance",
+          "why": "Same as F: another worker builds on this machine; restored right after run G"
+        }
+      ],
+      "runsDandE": "Stopped at server start inside Supplementaries onServerStart (first tick over 60 s) while another worker built on the same machine; world restored after each."
+    },
+    "simpleBackups": {
+      "rotatedDuringQa": [
+        "Successfully deleted \"entrelumen-test_2026-09-12_18-24-30.zip\"",
+        "Successfully deleted \"entrelumen-test_2026-09-22_21-32-26.zip\"",
+        "Successfully deleted \"entrelumen-test_2026-09-22_23-46-37.zip\"",
+        "Successfully deleted \"entrelumen-test_2026-09-23_02-11-22.zip\""
+      ],
+      "putBack": [
+        "entrelumen-test_2026-09-22_21-32-26.zip",
+        "entrelumen-test_2026-09-22_23-46-37.zip",
+        "entrelumen-test_2026-09-23_02-11-22.zip"
+      ],
+      "lost": "entrelumen-test_2026-09-12_18-24-30.zip (3.5 MB), rotated during run C on 25 September before copies were made; no other copy exists.",
+      "copies": "E:\\Elias\\Codex\\Entrelumen-ssd\\altars3-20260925\\simplebackups-kept"
+    }
   }
 }

@@ -398,6 +398,14 @@ final class AltarVegetation {
     return total / (double) samples;
   }
 
+  // ---- Garden soil ---------------------------------------------------------------------------
+
+  /** The soil a garden plant is given where the ground cannot hold it: podzol for mushrooms, grass for flowers. */
+  static BlockState soilFor(BlockState plant) {
+    return plant.getBlock() instanceof net.minecraft.world.level.block.MushroomBlock
+        ? Blocks.PODZOL.defaultBlockState() : Blocks.GRASS_BLOCK.defaultBlockState();
+  }
+
   // ---- Harvest and dyes ----------------------------------------------------------------------
 
   /**
