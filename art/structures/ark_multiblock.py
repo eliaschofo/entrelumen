@@ -65,9 +65,9 @@ def ring(radius, tilt, yaw, block, cy, required=True, floor=False):
 
 
 def build():
-    """Everything on the ground, full cubes only (Elias), with copper for colour: a stone-brick
-    orbit in the floor with chiseled copper sockets under the modules and the controller, and two
-    arches striped in cut copper and stone bricks, copper feet and a chiseled copper keystone."""
+    """Everything on the ground, full cubes only (Elias): a stone-brick orbit in the floor with
+    chiseled copper sockets under the modules and the controller; two arches striped in cut copper
+    and tuff bricks on calcite feet, with amethyst on their shoulders and at the keystone."""
     V.clear(); REQ.clear(); SLOTS.clear()
     put(0, 1, 0, 'entrelumen:ark_controller')
     SLOTS[(0, 1, 0)] = 'ark_controller'
@@ -84,11 +84,16 @@ def build():
         put(*p, 'chiseled_copper')
     ring(R_EQ + 2, math.pi / 2, 0.0, 'stone_bricks', 0)            # two arches over the controller
     ring(R_EQ + 2, math.pi / 2, math.pi / 2, 'stone_bricks', 0)
+    top = R_EQ + 2
     for (x, y, z), b in list(V.items()):                           # stripe the arches like voussoirs
         if y >= 1 and b == B('stone_bricks'):
             k = abs(x) + abs(z) + y
-            V[(x, y, z)] = B('copper_block') if y == 1 else (B('cut_copper') if k % 2 == 0 else B('stone_bricks'))
-    put(0, R_EQ + 2, 0, 'chiseled_copper')                         # the keystone where they cross
+            V[(x, y, z)] = B('calcite') if y == 1 else (B('cut_copper') if k % 2 == 0 else B('tuff_bricks'))
+    for (x, y, z), b in list(V.items()):                           # amethyst on the four shoulders
+        r = abs(x) + abs(z)
+        if y >= 1 and (x == 0 or z == 0) and abs(y - round(top * 0.707)) == 0 and abs(r - round(top * 0.707)) <= 0:
+            V[(x, y, z)] = B('amethyst_block')
+    put(0, top, 0, 'amethyst_block')                              # the keystone where they cross
     return V
 
 
