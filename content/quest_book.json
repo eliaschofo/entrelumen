@@ -1,0 +1,32 @@
+{
+  "_comment": "Presentation of the FTB quest book, compiled by tools/generate_quests.py. Scale, grammar, rewards, colours and the hub are documented in docs/design/quest-book.md.",
+  "min_width": 320,
+  "hub": {
+    "chapter": "sun_of_heliodor",
+    "icon": "entrelumen:atlas",
+    "title": {"en_us": "The Sun of Heliodor", "es_es": "El Sol de Heliodor"},
+    "subtitle": {"en_us": ["Six acts under one sun."], "es_es": ["Seis actos bajo un mismo sol."]}
+  },
+  "groups": [
+    {"id": "entrelumen", "icon": "entrelumen:heliodor_compass", "emblem_guide": "guide_entrelumen_start", "lead": ["guide_entrelumen_start", "guide_entrelumen_atlas", "guide_entrelumen_compass"], "title": {"en_us": "Heliodor's Legacy", "es_es": "Legado de Heliodor"}},
+    {"id": "qol", "icon": "sophisticatedbackpacks:backpack", "emblem_guide": "guide_qol_recipes", "lead": ["guide_qol_controls", "guide_qol_recipes", "guide_qol_inventory"], "title": {"en_us": "Quality of Life", "es_es": "Calidad de vida"}},
+    {"id": "tech", "icon": "create:cogwheel", "emblem_guide": "guide_create_basics", "lead": [], "title": {"en_us": "Technology", "es_es": "Tecnología"}},
+    {"id": "magic", "icon": "ars_nouveau:source_gem", "emblem_guide": "guide_ars_source", "lead": [], "title": {"en_us": "Magic", "es_es": "Magia"}},
+    {"id": "exploration", "icon": "waystones:waystone", "emblem_guide": "guide_travel", "lead": [], "title": {"en_us": "Exploration", "es_es": "Exploración"}}
+  ],
+  "rewards": {
+    "story": {
+      "task_xp": [5, 10, 15, 20, 25, 30],
+      "milestone_xp": [25, 50, 75, 100, 125, 150],
+      "finale_xp": [50, 100, 150, 200, 250, 300],
+      "milestone_item": [["minecraft:torch", 8], ["create:andesite_alloy", 8], ["minecraft:chest", 2], ["minecraft:golden_carrot", 8], ["minecraft:glowstone", 4], ["minecraft:firework_rocket", 8]],
+      "finale_item": [["minecraft:lantern", 2], ["farmersdelight:vegetable_soup", 4], ["minecraft:hopper", 2], ["minecraft:ender_pearl", 4], ["minecraft:golden_apple", 2], ["minecraft:cake", 1]]
+    },
+    "guides": {"xp": {"any": 5, "I": 5, "II": 8, "III": 10, "IV": 12, "V": 15, "VI": 15}}
+  },
+  "colors": {
+    "story": {"locked": "#FF8E4631", "available": "#FFECC866"},
+    "guide": {"locked": "#FF2B5E50", "available": "#FF72C49E"},
+    "optional": {"locked": "#FF7D6843", "available": "#FFE8DCB5"}
+  }
+}

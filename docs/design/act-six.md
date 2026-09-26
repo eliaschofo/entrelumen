@@ -79,7 +79,7 @@ Cada misión es un **hito de la campaña del equipo** (`campaign.completed`, el 
   - Una tarea de ítem de FTB no expresa «ocho especies distintas» ni «una batería cargada», y consumiría ítems de cualquiera del equipo.
   - Un comando o una recompensa de FTB dependen del orden de reclamo.
   - Los hitos se guardan con la campaña: un grupo los hereda del fundador y un grupo archivado los conserva.
-- **Recompensas:** las reliquias, el diagrama y la canasta los da el personaje en el mundo, una vez por campaña, al registrar el hito. Las quests no tienen recompensas de FTB (`rewards: []`, como el resto de los capítulos). Sus textos nombran lo que se recibe.
+- **Recompensas:** las reliquias, el diagrama y la canasta los da el personaje en el mundo, una vez por campaña, al registrar el hito. Las quests de FTB sólo suman el extra chico del libro (XP y un ítem del acto, por equipo y reclamado a mano; ver [quest-book](quest-book.md)), nunca una reliquia. Sus textos nombran lo que se recibe.
 - **El grafo:** `SolsticioStoryRules.REQUIRES` es el mismo grafo que las dependencias del capítulo, y lo comparan `SolsticioStoryRulesTest` y `tools/test_generate_quests.py`. Juan (3–4), Terra (5–6) y Bodhi (7–8) son tres ramas después de Aurelia, para que un equipo pueda repartírselas. La 9 pide las tres reliquias.
 - **Visitantes:** nada de esto corre para un equipo que no cruzó con su propia Llave de Luz. Un visitante escucha una línea de visitante.
 

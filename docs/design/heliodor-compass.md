@@ -19,7 +19,7 @@ All 272 pinned JARs (`catalog/curated.json`, local copies from `catalog/local-pa
 2. Every class that handles `PlayerLoggedInEvent` (also `EntityJoinLevelEvent`, player ticks and dimension changes, including listeners registered with `addListener`, which only name the event in a descriptor) and touches an inventory (`Inventory.add`, `setItem`, `giveItemToPlayer`, `ItemHandlerHelper`, `give*`/`addItem` helpers such as Silent Lib's). Each hit was disassembled with `javap`.
 3. Every bundled advancement whose reward is loot and whose trigger is `minecraft:tick`, a location or an unconditional inventory change. This is the datapack route to a first-join gift.
 
-Other sources were checked as well. Pack KubeJS scripts give nothing. Every FTB Quests reward in `pack/config/ftbquests` is empty, and `default_autoclaim_rewards` is `disabled`. Client-only mods cannot put items in a server inventory. The companion gives nothing on login.
+Other sources were checked as well. Pack KubeJS scripts give nothing. Every FTB Quests reward in `pack/config/ftbquests` was empty at the time, and `default_autoclaim_rewards` is `disabled`. Since 25 September 2026 the book has small rewards ([quest-book](quest-book.md)), claimed by hand after real progress; informative checkmarks, the only tasks a new player can tick at once, pay nothing, so there is still no first-join gift. Client-only mods cannot put items in a server inventory. The companion gives nothing on login.
 
 ### Findings and how the pack disables them
 

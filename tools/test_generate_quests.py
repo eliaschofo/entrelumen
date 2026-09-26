@@ -9,7 +9,38 @@ SOLSTICIO_STORY={'solsticio_mayor':['solsticio_arrival'],'solsticio_seeds':['sol
  'solsticio_good_works':['solsticio_mayor'],'solsticio_blessing':['solsticio_good_works'],
  'solsticio_accord':['solsticio_harvest','solsticio_terraprism','solsticio_blessing'],
  'solsticio_portal':['solsticio_accord'],'solsticio_elections':['solsticio_portal']}
+# The quest-book redesign of 25 September 2026 (docs/design/quest-book.md) moved every node, applied
+# the node grammar and added images, rewards, tags and the reading width, so the chapter files'
+# byte digests were replaced on purpose. What the old digests protected is frozen here instead: the
+# chapter ID and, per quest, its ID, tasks, dependencies, icon and optional flag. These values are
+# the ones origin/main produced before the redesign (c219dcb), so the campaign did not move.
+SEMANTIC={'a_light_among_ruins':'fef2013ffcac0a0576d9c9ac25bd5007eb05fd4096bb317b73e28cda8409d559',
+ 'the_lost_crafts':'06bc9bec33154e32fa86342bd0ad8d349e3618d58658314a9355171066226635',
+ 'routes_of_exchange':'a4b3bf1d00a895d22faaf7430a54a2f2aae79848665ebd0f53569bca1ab7b2a5',
+ 'voices_of_the_atlas':'2ba812e80ee682e80c6c512199a1adf46b2a0023591f33e55746b6c0a37b54df',
+ 'world_we_build':'9e0b57563392a48374cb3c6ae0431474bfbef478379d29098366d5738b36084e',
+ 'last_horizon':'88ae4429630778e975e54d79d0c733ee6e06820f9c3f612c8e8e5e0a80e3cfcf',
+ 'solsticio':'1ae1e4f01677868d322a848282598f20623a37c3bba1f0666069e9955b703f2d',
+ 'inventory_that_remembers':'6ba0b96efce3b81af9db8994bb6a83c9ff787b15679fd334f32507168529558c'}
+def semantic_digest(text):
+ c=json.loads(text)
+ rows=[c['id']]+[json.dumps({k:q.get(k) for k in ('id','tasks','dependencies','icon','optional')},sort_keys=True) for q in c['quests']]
+ return hashlib.sha256(chr(10).join(rows).encode()).hexdigest()
+def expected_rewards(q,act):
+ """content/quest_book.json: XP by act for tasks, XP and one act item for milestones; checkmarks nothing."""
+ from generate_quests import load_book
+ table=load_book()['rewards']['story'];task=q['tasks'][0]
+ if task['type']=='checkmark':return []
+ if task['type']=='item':return [('xp',table['task_xp'][act-1])]
+ finale=q['size']==3.0
+ item=(table['finale_item'] if finale else table['milestone_item'])[act-1]
+ return [('xp',(table['finale_xp'] if finale else table['milestone_xp'])[act-1]),('item',item[0],item[1])]
+def rewards_of(q):
+ return [('xp',r['xp']) if r['type']=='xp' else ('item',r['item']['id'],r['count']) for r in q['rewards']]
 class ChapterContracts(unittest.TestCase):
+ def assert_act_rewards(self,compiled,act):
+  for q in compiled['quests']:
+   with self.subTest(quest=q['id']):self.assertEqual(rewards_of(q),expected_rewards(q,act))
  def setUp(self):
   self.chapters=load_chapters()
  def test_optional_inventory_branch_preserves_campaign_and_prior_text(self):
@@ -26,7 +57,8 @@ class ChapterContracts(unittest.TestCase):
     self.assertEqual(before,{key:after[key] for key in before})
    else:self.assertEqual(content,out[path])
   compiled=json.loads(out[OUT/'chapters/inventory_that_remembers.snbt'])
-  self.assertTrue(all(q['optional'] and q['rewards']==[] for q in compiled['quests']))
+  self.assertTrue(all(q['optional'] for q in compiled['quests']))
+  self.assert_act_rewards(compiled,1)
   self.assertTrue(all(t.get('consume_items',False)==False for q in compiled['quests'] for t in q['tasks']))
  def synthetic_chapter(self,name,count):
   quests=[]
@@ -36,7 +68,7 @@ class ChapterContracts(unittest.TestCase):
     'type':'checkmark','optional':True,
     'en_us':[f'English title {i}',f'English chapter {name} node {i}: read this distinct account of the route and confirm this optional lesson after visiting its place in the Atlas.'],
     'es_es':[f'Título español {i}',f'Capítulo {name}, nodo {i}: leé este relato distinto del camino y confirmá esta lección opcional después de encontrar su lugar en el Atlas.'],
-    'layout':{'x':0,'y':i*2.5,'group':'route','shape':'square','size':1.0}})
+    'layout':{'x':0,'y':i*2.5,'group':'route','shape':'circle','size':0.75}})
   return {'chapter':name,'title':{'en_us':f'English {name}','es_es':f'Español {name}'},
    'layout_groups':{'route':{'en_us':'Route','es_es':'Camino'}},
    'autofocus':f'{name}_node_000','milestones':[],'quests':quests}
@@ -97,7 +129,7 @@ class ChapterContracts(unittest.TestCase):
   out=generate_all(self.chapters);second=json.loads(out[OUT/'chapters/the_lost_crafts.snbt'])
   self.assertEqual(len(second['quests']),22)
   self.assertEqual(sum(q['tasks'][0]['type']=='entrelumen:campaign' for q in second['quests']),5)
-  self.assertTrue(all(q['rewards']==[] for q in second['quests']))
+  self.assert_act_rewards(second,2)
   source={q['milestone']:q for q in self.chapters[1]['quests'] if 'milestone' in q}
   for m in ('precision_bench','crystal_grid','travelling_pantry'):self.assertEqual(source[m]['deps'],['signal'])
   self.assertEqual(source['living_workshop']['deps'],['signal','crafts_precision'])
@@ -122,7 +154,7 @@ class ChapterContracts(unittest.TestCase):
   files=generate_all(self.chapters)
   c=json.loads(files[OUT/'chapters/routes_of_exchange.snbt'])
   self.assertEqual(len(c['quests']),27)
-  self.assertTrue(all(q['rewards']==[] for q in c['quests']))
+  self.assert_act_rewards(c,3)
   for q in c['quests']:
    task=q['tasks'][0]
    if task['type']=='item':self.assertFalse(task['consume_items'])
@@ -190,6 +222,8 @@ class ChapterContracts(unittest.TestCase):
    keys.add(f"chapter.{compiled['id']}.title")
    if 'subtitle' in data:keys.add(f"chapter.{compiled['id']}.chapter_subtitle")
    keys.update(f'quest.{q["id"]}.{field}' for q in compiled['quests'] for field in ('title','quest_desc'))
+   # Chapter images with text: labels drawn on the canvas and the hover title of clickable emblems.
+   keys.update(f"image.{i['id']}.title" for i in compiled.get('images',[]) if i.get('text_on_image') or i.get('click_action'))
   for lang in ('en_us','es_es'):
    before=json.loads(prior[OUT/'lang'/(lang+'.snbt')]);after=json.loads(out[OUT/'lang'/(lang+'.snbt')])
    self.assertEqual(set(before),keys)
@@ -199,8 +233,8 @@ class ChapterContracts(unittest.TestCase):
   expected={'a_light_among_ruins':'28fdd2969fdd6829c2cad480e2a54b74c9d1ba7ab980e7203831f2fea5304bae',
    'the_lost_crafts':'26dcb9e26fa44e764b56f1667141abae1ea0d37f66ec671b4d2e7a3263aa57e5',
    'routes_of_exchange':'adb774f655ee0442b2ab825a8c634b55b137842b5e137177df7df21a1c46f38c'}
-  for chapter,digest in expected.items():
-   self.assertEqual(hashlib.sha256(out[OUT/'chapters'/(chapter+'.snbt')].encode()).hexdigest(),digest)
+  for chapter in expected:
+   self.assertEqual(semantic_digest(out[OUT/'chapters'/(chapter+'.snbt')]),SEMANTIC[chapter])
   self.assert_prefix_text_append_only(3,out)
  def test_act_three_ids_unchanged(self):
   c=json.loads(generate_all(self.chapters)[OUT/'chapters/routes_of_exchange.snbt'])
@@ -219,7 +253,7 @@ class ChapterContracts(unittest.TestCase):
   mapping=json.loads(out[ROOT/'content/campaign_task_ids.json'])
   self.assertEqual(len(json.loads(generate_all(self.chapters[:4])[ROOT/'content/campaign_task_ids.json'])),26)
   for q in c['quests']:
-   self.assertEqual(q['rewards'],[]);task=q['tasks'][0]
+   self.assertEqual(rewards_of(q),expected_rewards(q,4));task=q['tasks'][0]
    if task['type']=='entrelumen:campaign':self.assertEqual(mapping[task['milestone']],{'quest_id':q['id'],'task_id':task['id']})
    elif task['type']=='item':self.assertFalse(task['consume_items'])
    else:self.assertTrue(q['optional'])
@@ -250,8 +284,8 @@ class ChapterContracts(unittest.TestCase):
    'routes_of_exchange':'adb774f655ee0442b2ab825a8c634b55b137842b5e137177df7df21a1c46f38c',
    'voices_of_the_atlas':'7e5407195c10e48c213b4588b6fc8c06a1b2862d9c531fb14c0a3277b7d8733c'}
   self.assertEqual(sum(len(c['quests']) for c in self.chapters[:4]),106)
-  for chapter,digest in expected.items():
-   self.assertEqual(hashlib.sha256(out[OUT/'chapters'/(chapter+'.snbt')].encode()).hexdigest(),digest)
+  for chapter in expected:
+   self.assertEqual(semantic_digest(out[OUT/'chapters'/(chapter+'.snbt')]),SEMANTIC[chapter])
   prior=generate_all(self.chapters[:4])
   self.assert_prefix_text_append_only(4,out)
   mapping=json.loads(out[ROOT/'content/campaign_task_ids.json'])
@@ -301,7 +335,7 @@ class ChapterContracts(unittest.TestCase):
   out=generate_all(self.chapters);compiled=json.loads(out[OUT/'chapters/world_we_build.snbt'])
   self.assertEqual(len(compiled['quests']),24)
   self.assertEqual(sum(q['tasks'][0]['type']=='entrelumen:campaign' for q in compiled['quests']),4)
-  self.assertTrue(all(q['rewards']==[] for q in compiled['quests']))
+  self.assert_act_rewards(compiled,5)
   for q in compiled['quests']:
    task=q['tasks'][0]
    if task['type']=='item':self.assertFalse(task['consume_items'])
@@ -353,9 +387,9 @@ class ChapterContracts(unittest.TestCase):
    'routes_of_exchange':'adb774f655ee0442b2ab825a8c634b55b137842b5e137177df7df21a1c46f38c',
    'voices_of_the_atlas':'7e5407195c10e48c213b4588b6fc8c06a1b2862d9c531fb14c0a3277b7d8733c',
    'world_we_build':'f410b503d830631db65c1efdb7ceefe2ad2a27e6c18c6e646ab0807003341ad6'}
-  for chapter,digest in hashes.items():
+  for chapter in hashes:
    path=OUT/'chapters'/(chapter+'.snbt')
-   self.assertEqual(hashlib.sha256(out[path].encode()).hexdigest(),digest)
+   self.assertEqual(semantic_digest(out[path]),SEMANTIC[chapter])
    self.assertEqual(out[path],prior[path])
   self.assert_prefix_text_append_only(5,out)
   path=ROOT/'content/campaign_task_ids.json'
@@ -404,11 +438,10 @@ class ChapterContracts(unittest.TestCase):
   mapping=json.loads(out[ROOT/'content/campaign_task_ids.json'])
   self.assertEqual(len(compiled['quests']),27)
   # IDs, tasks, dependencies, icons and layout of the Ark chapter did not move with the renumbering.
-  self.assertEqual(hashlib.sha256(out[OUT/'chapters/last_horizon.snbt'].encode()).hexdigest(),
-                   '6bbf63247e4dde76927f2fbc0ef69a622f0aac3acf08e44d50377b2a7ecd63ec')
+  self.assertEqual(semantic_digest(out[OUT/'chapters/last_horizon.snbt']),SEMANTIC['last_horizon'])
   # 42 before 24 September 2026, plus heart_recovered, heliodor_heart and solsticio_arrival; plus act VI's ten missions.
   self.assertEqual(len(mapping),55)
-  self.assertTrue(all(q['rewards']==[] for q in compiled['quests']))
+  self.assert_act_rewards(compiled,5)
   source={q['key']:q for q in self.chapters[5]['quests']}
   for q in compiled['quests']:
    task=q['tasks'][0]

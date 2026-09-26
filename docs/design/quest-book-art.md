@@ -14,3 +14,4 @@ Adornos para poner **alrededor** de los nodos, como imágenes de capítulo de FT
 
 - Todo es simétrico salvo los numerales: IV y VI son espejo uno del otro.
 - Las texturas de otros mods se referencian por su ruta dentro del JAR del jugador. No se copian al repo.
+- Uso real desde el 25/9, colocado por el generador: [quest-book](quest-book.md). Los marcos `frame_*` no se usan: se estiran mal fuera de su proporción, y los paneles se arman con cuatro esquineros 1×, que calzan en cualquier tamaño.
