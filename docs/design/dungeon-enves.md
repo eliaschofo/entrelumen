@@ -20,7 +20,7 @@ Es el método de Diablo II. Hay dos niveles y cada uno hace lo que mejor le sale
 
 | Qué | Cómo | Costo |
 |---|---|---|
-| Forma del piso | Un generador de grilla (8×8 celdas) crece como un caminante con memoria: sigue de largo casi siempre, a veces abre una rama y al final cierra algunos bucles. Después elige la salida lejos, en un callejón, y reparte los roles. | Un algoritmo chico, sin arte |
+| Forma del piso | Un generador de grilla (11×11 celdas) crece como un caminante con memoria: sigue de largo casi siempre, a veces abre una rama y al final cierra algunos bucles. Después elige la salida lejos, en un callejón, y reparte los roles. | Un algoritmo chico, sin arte |
 | Aspecto de cada celda | Una plantilla de 19×19×12 por tileset × rol × máscara de puertas × variante, hecha por código: forma de la sala (cuadrada con pilares, octógono, cruz), piso, zócalos, nichos, luz. Se generan las 15 máscaras, así que el juego nunca rota nada. | Un script por tileset |
 
 Sale variado, porque cada descenso es otro, y bonito, porque cada sala está dirigida. Es barato de hacer: no hay un motor de tallado de voxels en tiempo de ejecución, sólo pegar plantillas. Un motor 100% procedural daría menos control del arte por más trabajo.
@@ -35,15 +35,16 @@ Invariantes que el port a Java hereda del prototipo, probados con 200 semillas:
 
 | Piso | Tileset | Salas | Carácter |
 |---|---|---|---|
-| I | Osarios | ~17 | Toba y calcita, nichos con huesos y velas, criptas de pilares |
-| II | Cisternas | ~20 | Canales de agua, caños de cobre, pasarelas |
-| III | Fundición | ~23 | Piedra negra, basalto, canales de lava, cadenas |
-| IV | Geodas | ~26 | Amatista, calcita, basalto liso, cristales que brillan |
+| I | Osarios | ~26 | Toba y calcita, nichos con huesos y velas, criptas de pilares |
+| II | Cisternas | ~31 | Canales de agua, caños de cobre, pasarelas |
+| III | Fundición | ~36 | Piedra negra, basalto, canales de lava, cadenas |
+| IV | Geodas | ~41 | Amatista, calcita, basalto liso, cristales que brillan |
 | V | El Eclipse | fijo | Acceso corto, antesala del campeón y arena de 3×3 celdas; al fondo, la salida |
 
 Roles por piso:
 - **inicio:** la bajada por donde llegaste;
-- **escalera:** oculta en un callejón lejano;
+- **escalera:** oculta en un callejón lejano; sellada hasta prender los sellos;
+- **sellos (Elias, 26/9: «más salas, más laberíntico, que tengas que sí o sí explorar»):** 2 en los pisos I–II y 3 en los III–IV, en callejones fuera del camino principal y lo más lejos posible entre sí. Si el piso no deja escondites, el generador brota una rama ciega nueva. Los sellos se ven en el mapa recién cuando los encontrás;
 - **guardia:** la sala antes de la escalera, con un campeón;
 - **encuentros:** alrededor del 40% de las salas;
 - **santuario:** en el 70% de los pisos, una bendición temporal;
@@ -91,33 +92,35 @@ Roles por piso:
   - sin perlas ni chorus;
   - sin waystones, `/home` ni `/rtp`.
   Los techos de 9 bloques tampoco dejan volar.
-- **Muerte (propuesta):**
-  - conservás el inventario y reaparecés al inicio del piso;
-  - tres caídas por descenso: a la tercera, el Envés te expulsa y el grupo sigue sin vos.
+- **Intento, caídas y muerte (Elias, 26/9):**
+  - la puerta se abre con una ofrenda de **1 bloque de netherita**, y cada ofrenda es un intento;
+  - adentro se conserva el inventario y se reaparece al inicio del piso;
+  - el grupo comparte una bolsa de caídas de 3 por integrante (dos jugadores, seis caídas), sin importar quién las gaste;
+  - cuando la bolsa se vacía, todos vuelven afuera, la puerta se cierra y pide otra ofrenda.
 
-## Jefe
+## Jefe (Elias, 26/9)
 
-- Piso V, en una arena propia. El jefe sale de un pool por tier: jefes con mecánicas y animaciones que el pack ya trae, con su loot reemplazado por el cofre del Envés.
-- Propuesta:
+Uno propio. Para la v1.0, y probablemente más allá, va un reemplazo provisorio: un **Wither blanco, luminoso**. El modelo propio queda para el futuro y no frena el lanzamiento.
 
-  | Tier | Jefe |
-  |---|---|
-  | Frontier | Ferrous Wroughtnaut, de Mowzie's (se le pega por la espalda) |
-  | Ascent | Frostmaw o Umvuthi |
-  | Summit | The Harbinger o Maledictus, de Cataclysm |
-  | Pinnacle | Netherite Monstrosity o Ignis |
-
-- Hay que probar que cada uno funciona fuera de su estructura.
-- Un jefe propio queda para después si el pool no alcanza.
+- **Movimiento:** casi no vuela. Levita unos bloques sobre el piso y se desliza.
+- **Ataques:**
+  - calaveras;
+  - una **embestida muy telegrafiada**: carga con aviso claro, marca en el piso el recorrido, embiste en línea recta y queda expuesto unos segundos.
+- **Sin grifeo.**
+- **Escalado:** vida y daño según el World Tier.
+- **Loot:** el cofre del Envés con la rareza alta del tier.
+- **Textura:** original, pintada sobre el UV del Wither.
 
 ## Acertijos y bóvedas
 
 Reusan los mecanismos de las ruinas: braseros en orden, espejos, palancas, ofrendas y el orden de piedras. Regla de diseño de Elias (26/9): divertidos y no obvios; ni aburridos, ni cliché, ni excesivamente difíciles. La pista siempre está en la sala o en la de al lado, nunca en una wiki.
 
-## Entrada (propuesta)
+## Entrada (Elias, 26/9)
 
-- **La Escalera Sellada**, en la ruina inicial, está desde el minuto uno y el Atlas no la sabe leer. Se abre con el World Tier Frontier (acto III).
-- Si se prefiere la Grieta que abre el Atlas en cualquier lado, cambia sólo la entrada.
+**La Escalera Sellada**, en la ruina inicial. Está desde el minuto uno y el Atlas no la sabe leer.
+- Se abre con el World Tier Frontier (acto III).
+- La puerta pide la ofrenda del intento.
+- Se puede elegir cualquier tier hasta el actual.
 
 ## Plan de implementación
 
@@ -135,8 +138,5 @@ Los puntos 1–3 y 5 son un worker; el 4 y el 6, otro, en paralelo, sobre la mis
 
 ## Para decidir
 
-- El nombre.
-- La entrada: Escalera Sellada en la ruina inicial, o Grieta.
-- La regla de muerte.
-- El pool de jefes, y si querés un jefe propio.
-- Si hay curios únicos por jefe.
+- El nombre del descenso y el del jefe.
+- Si hay curios únicos del jefe.
