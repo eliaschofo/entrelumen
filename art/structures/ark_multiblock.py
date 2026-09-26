@@ -107,15 +107,15 @@ def build():
             V[(x, y, z)] = B('calcite') if y == 1 else (B('cut_copper') if k % 2 == 0 else B('tuff_bricks'))
     put(0, top, 0, 'amethyst_block')                              # the keystone where they cross
     # four columns on the diagonals, where the arches give no support (Elias): a small flared base
-    # with corner stairs and a flared capital of polished-tuff stairs (no corners up there), a
+    # with corner stairs of polished amethyst (Rechiseled) and a flared capital of polished-tuff stairs (no corners up there), a
     # shaft of calcite alone, and the beacon's place right on the capital.
     # The beacon is optional: each one adds a level to the modules' effects (ark-modules-v2.md).
     for (cx, cz) in ((5, 5), (-5, 5), (5, -5), (-5, -5)):
         for (dx, dz, toward) in ((1, 0, 'west'), (-1, 0, 'east'), (0, 1, 'north'), (0, -1, 'south')):
-            put(cx + dx, 1, cz + dz, 'polished_tuff_stairs[facing=%s,half=bottom,shape=straight,waterlogged=false]' % toward)
+            put(cx + dx, 1, cz + dz, 'rechiseled:amethyst_block_polished_stairs[facing=%s,half=bottom,shape=straight,waterlogged=false]' % toward)
             put(cx + dx, 7, cz + dz, 'polished_tuff_stairs[facing=%s,half=top,shape=straight,waterlogged=false]' % toward)
         for (dx, dz) in ((1, 1), (-1, 1), (1, -1), (-1, -1)):   # the base's corners (the game shapes them)
-            put(cx + dx, 1, cz + dz, 'polished_tuff_stairs[facing=%s,half=bottom,shape=straight,waterlogged=false]'
+            put(cx + dx, 1, cz + dz, 'rechiseled:amethyst_block_polished_stairs[facing=%s,half=bottom,shape=straight,waterlogged=false]'
                 % ('north' if dz > 0 else 'south'))
         for y in range(1, 8):
             put(cx, y, cz, 'calcite')
@@ -132,11 +132,11 @@ def build():
     for x in range(-10, 11):
         for z in range(-10, 11):
             r = math.hypot(x, z)
-            if (x, z) in floor or not (8.5 < r <= 9.55):
+            if (x, z) in floor or not (8.5 < r <= 10.0):
                 continue
-            if not any((x + dx, z + dz) in floor for dx, dz in ((1, 0), (-1, 0), (0, 1), (0, -1))):
+            if not any((x + dx, z + dz) in floor for dx in (-1, 0, 1) for dz in (-1, 0, 1)):
                 continue
-            border.append((x, z))
+            border.append((x, z))                           # 8-connected: no notches, the game joins corners
     for (x, z) in border:
         inward = ('west' if x > 0 else 'east') if abs(x) >= abs(z) else ('north' if z > 0 else 'south')
         put(x, 1, z, 'stone_brick_stairs[facing=%s,half=bottom,shape=straight,waterlogged=false]' % inward)
@@ -206,6 +206,7 @@ def subdivided(vox):
         pr = _props(b)
         shape = stair_shape(vox, (x, y, z), b) if name.endswith('_stairs') else None
         texture = name.replace('_stairs', '').replace('_slab', '')
+        texture = 'minecraft:amethyst_block' if texture == 'rechiseled:amethyst_block_polished' else texture
         texture = texture.replace('stone_brick', 'stone_bricks') if texture.endswith('stone_brick') else texture
         for sx in (0, 1):
             for sy in (0, 1):
