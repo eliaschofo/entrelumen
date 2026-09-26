@@ -52,6 +52,9 @@ def _exists(t):
 def _texture(t):
     if t in _TEXCACHE:
         return _TEXCACHE[t]
+    if t.startswith('@@'):
+        _TEXCACHE[t] = _companion(t[2:]) or Image.new('RGBA', (16, 16), (200, 60, 200, 255))
+        return _TEXCACHE[t]
     if t.startswith('@') and _modpal:
         _TEXCACHE[t] = _modpal.image(t)
         return _TEXCACHE[t]
@@ -73,8 +76,29 @@ def _texture(t):
     return im
 
 
+COMPANION_TEX = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..', 'companion', 'src', 'main',
+                             'resources', 'assets', 'entrelumen', 'textures', 'block')
+
+
+def _companion(name):
+    """Textures of our own blocks (entrelumen:*), from the companion's assets."""
+    key = '@entrelumen/' + name
+    if key not in _TEXCACHE:
+        path = os.path.join(COMPANION_TEX, name + '.png')
+        try:
+            im = Image.open(path).convert('RGBA')
+            _TEXCACHE[key] = im.crop((0, 0, 16, 16)) if im.height > 16 else im.resize((16, 16), Image.NEAREST)
+        except Exception:
+            _TEXCACHE[key] = None
+    return _TEXCACHE[key]
+
+
 def face_textures(state):
     """(top, side) texture names for a block state, guessed from vanilla naming."""
+    if state.startswith('entrelumen:'):
+        n = _name(state)
+        top = n + '_top' if _companion(n + '_top') is not None else ('module_top' if n.endswith('_module') else n)
+        return '@@' + top, '@@' + n
     if _mod(state):
         return _modpal.faces(state)
     base = _name(state).replace('waxed_', '')
@@ -209,7 +233,7 @@ def render(vox, path, scale=6, ground=None, sky=((252, 238, 208), (200, 218, 240
             im.alpha_composite(_sprite(b, 'cross', s), (u - s, v + s2 - s))
             continue
         half = (mode == 'slab' and 'type=top' not in b and 'type=double' not in b) if mode else (
-            n.endswith('_slab') and 'type=bottom' in b)
+            (n.endswith('_slab') and 'type=bottom' in b) or (n.endswith('_stairs') and 'half=bottom' in b))
         thin = mode == 'thin' if mode else n in THIN
         dy = s if half else (s2 - max(1, s // 3) if thin else 0)
         if (x, y + 1, z) not in occ or half or thin:
