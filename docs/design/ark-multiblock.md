@@ -16,7 +16,8 @@ Elias eligió el astrolabio en lugar del barco. Lo genera `art/structures/ark_mu
   - Logística a 210°;
   - Ingeniería a 150°.
 - **Arcos:** dos, de radio 7, que se cruzan sobre el controlador, con franjas de cobre cortado y ladrillo de toba, pies de calcita y clave de amatista.
-- **Cuenta:** 275 bloques, todos obligatorios: 76 stone_bricks, 63 tuff_bricks, 44 stone_brick_stairs, 34 calcite, 20 polished_tuff, 19 cut_copper, 7 chiseled_copper, 5 amethyst_block, 1 arcane_module, 1 logistics_module, 1 nature_module, 1 ark_controller, 1 engineering_module, 1 exploration_module, 1 habitation_module.
+- **Columnas:** cuatro en las diagonales, sobre el borde del piso, en los cuadrantes que no tienen apoyo de arco (Elias). Base de calcita, fuste a franjas de toba y cobre, capitel de cobre cincelado y remate de amatista.
+- **Cuenta:** 303 bloques, todos obligatorios: 76 stone_bricks, 71 tuff_bricks, 44 stone_brick_stairs, 38 calcite, 27 cut_copper, 20 polished_tuff, 11 chiseled_copper, 9 amethyst_block, 1 arcane_module, 1 logistics_module, 1 nature_module, 1 ark_controller, 1 engineering_module, 1 exploration_module, 1 habitation_module.
 
 **Reglas de coincidencia para el código.**
 - El cobre coincide con cualquier oxidación y con su versión encerada.

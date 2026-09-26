@@ -106,6 +106,13 @@ def build():
             k = abs(x) + abs(z) + y
             V[(x, y, z)] = B('calcite') if y == 1 else (B('cut_copper') if k % 2 == 0 else B('tuff_bricks'))
     put(0, top, 0, 'amethyst_block')                              # the keystone where they cross
+    # four columns on the diagonals, where the arches give no support (Elias)
+    for (cx, cz) in ((5, 5), (-5, 5), (5, -5), (-5, -5)):
+        put(cx, 1, cz, 'calcite')
+        for y in range(2, 6):
+            put(cx, y, cz, 'cut_copper' if y % 2 == 0 else 'tuff_bricks')
+        put(cx, 6, cz, 'chiseled_copper')
+        put(cx, 7, cz, 'amethyst_block')
     # raise it all one level (Elias): the platform stands on the ground, a ring of stairs round it
     raised = {(x, y + 1, z): v for (x, y, z), v in V.items()}
     req = {(x, y + 1, z): v for (x, y, z), v in REQ.items()}
