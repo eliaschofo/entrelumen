@@ -351,6 +351,8 @@ Son para quien escriba quests; `wt-acts` tiene hoy el libro y el mod.
    - Hay que ver cómo limita FTB Ultimine por jugador en la versión fijada: config, permisos o API.
 7. Sigue sin responder: la vitrina de trofeos.
 
+La respuesta 4 (libro) y la integración de las guías de la 5 están en [quest-book](../design/quest-book.md) (25/9).
+
 Implementado en `feature/progression` ([progression-functions](../design/progression-functions.md)): respuestas 1, 2, 3 y 6, más los gates de la propuesta que encajan con ellas, en una familia «funciones». Las brechas 1 a 4 quedan cerradas: el controlador ME pide la Matriz de Enrutamiento, todas las canteras la Lente Espectral, el Sensor de Inventario gatea la QIO, y Mekanism y AE2 tienen escalones propios. Las respuestas 4 y 5 (libro y guías) son de otros workers.
 
 ## Límites
