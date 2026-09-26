@@ -3,7 +3,7 @@
 Elias eligió el astrolabio en lugar del barco. Lo genera `art/structures/ark_multiblock.py`, que escribe la definición en `art/structures/out/ark_multiblock.json`; el companion la carga desde `data/entrelumen/ark_multiblock.json`.
 
 **Forma (revisión final del 25/9, Elias: «todo en la tierra, con el arco pero sin adornos ni bloques raros; sólo bloques cúbicos, y los módulos y el controlador apoyados en el piso»).**
-- 90 bloques, todos obligatorios: 82 ladrillos de piedra, un ladrillo cincelado, los 6 módulos y el controlador.
+- 91 bloques, todos obligatorios: 53 ladrillos de piedra, 19 de cobre cortado, 8 de cobre cincelado, 4 bloques de cobre, los 6 módulos y el controlador. Es poco cobre, unos 280 lingotes. (Elias: «estaba bien el cobre; que no sea monótono ni feo»).
 - El controlador va en el centro, apoyado en el piso.
 - Los 6 módulos, también apoyados en el piso, van en un círculo de radio 5:
   - Habitabilidad a 90°, al sur;
@@ -13,7 +13,8 @@ Elias eligió el astrolabio en lugar del barco. Lo genera `art/structures/ark_mu
   - Logística a 210°;
   - Ingeniería a 150°.
 - La órbita es un anillo de ladrillos de piedra puesto en el suelo, a la altura del piso.
-- Dos arcos de ladrillos de piedra, de radio 7, se cruzan sobre el controlador. En la clave del cruce va un ladrillo cincelado.
+- Bajo cada módulo y bajo el controlador va un zócalo de cobre cincelado, a nivel del piso.
+- Dos arcos de radio 7 se cruzan sobre el controlador. Tienen franjas de cobre cortado y ladrillo, como las dovelas de un arco clásico, pies de bloque de cobre y la clave de cobre cincelado.
 
 **Reglas de coincidencia para el código.**
 - El cobre coincide con cualquier oxidación y con su versión encerada.

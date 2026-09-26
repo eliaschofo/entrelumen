@@ -65,21 +65,30 @@ def ring(radius, tilt, yaw, block, cy, required=True, floor=False):
 
 
 def build():
-    """Everything on the ground and only full cubes (Elias): a ring of stone bricks in the floor,
-    the six modules and the controller standing on the floor, and two stone-brick arches crossing
-    over the controller. All of it is required; there is no separate decoration."""
+    """Everything on the ground, full cubes only (Elias), with copper for colour: a stone-brick
+    orbit in the floor with chiseled copper sockets under the modules and the controller, and two
+    arches striped in cut copper and stone bricks, copper feet and a chiseled copper keystone."""
     V.clear(); REQ.clear(); SLOTS.clear()
     put(0, 1, 0, 'entrelumen:ark_controller')
     SLOTS[(0, 1, 0)] = 'ark_controller'
+    put(0, 0, 0, 'chiseled_copper')
+    sockets = []
     for name, deg in MODULES:
         th = math.radians(deg)
         x, z = rd(R_EQ * math.cos(th)), rd(R_EQ * math.sin(th))
         put(x, 1, z, 'entrelumen:%s_module' % name)
         SLOTS[(x, 1, z)] = '%s_module' % name
+        sockets.append((x, 0, z))
     ring(R_EQ, 0.0, 0.0, 'stone_bricks', 0, floor=True)            # the orbit, laid in the floor
+    for p in sockets:
+        put(*p, 'chiseled_copper')
     ring(R_EQ + 2, math.pi / 2, 0.0, 'stone_bricks', 0)            # two arches over the controller
     ring(R_EQ + 2, math.pi / 2, math.pi / 2, 'stone_bricks', 0)
-    put(0, R_EQ + 2, 0, 'chiseled_stone_bricks')                   # the keystone where they cross
+    for (x, y, z), b in list(V.items()):                           # stripe the arches like voussoirs
+        if y >= 1 and b == B('stone_bricks'):
+            k = abs(x) + abs(z) + y
+            V[(x, y, z)] = B('copper_block') if y == 1 else (B('cut_copper') if k % 2 == 0 else B('stone_bricks'))
+    put(0, R_EQ + 2, 0, 'chiseled_copper')                         # the keystone where they cross
     return V
 
 
