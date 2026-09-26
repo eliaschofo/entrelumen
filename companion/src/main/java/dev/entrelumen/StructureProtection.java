@@ -61,8 +61,8 @@ import net.neoforged.neoforge.event.server.ServerStoppedEvent;
  * not open anything the team has not unlocked. Pure decisions live in {@link ProtectionRules}.
  *
  * <p>Every ruin registered in {@link RuinData} is protected by its registered box (template plus
- * the foundation poured under it), gated at the ruin's act; {@code HeliodorRuins.place}
- * invalidates the index after registering one.
+ * the foundation poured under it), gated at the ruin's act; {@code HeliodorRuins.place} and
+ * {@link RuinPlacement} invalidate the index after registering one.
  */
 public final class StructureProtection {
   /** Blocks anyone may use inside a protected structure (doors, buttons, workstations...). */
@@ -219,6 +219,15 @@ public final class StructureProtection {
   }
 
   // ---- Queries ----------------------------------------------------------------------------
+
+  /** Every region in the level's dimension; ruin site searches keep away from them. */
+  public static List<ProtectionRules.Region> regions(ServerLevel level) {
+    DimensionIndex index = index(level);
+    if (index == null) return List.of();
+    Set<ProtectionRules.Region> all = new java.util.LinkedHashSet<>(index.wide);
+    index.byChunk.values().forEach(all::addAll);
+    return List.copyOf(all);
+  }
 
   public static List<ProtectionRules.Region> covering(ServerLevel level, int x, int y, int z) {
     DimensionIndex index = index(level);

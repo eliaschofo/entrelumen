@@ -1,0 +1,40 @@
+{
+  "act": 2,
+  "dimension": "minecraft:overworld",
+  "scale": "landmark",
+  "template": "entrelumen:ruins/sunken_workshop",
+  "placement": {
+    "mode": "surface",
+    "min": 400,
+    "max": 1200
+  },
+  "piece": "entrelumen:terra_blueprint",
+  "project": "lost_workshop",
+  "loot": "entrelumen:chests/ruin_act2_workshop_stores",
+  "challenges": {
+    "drowned": {
+      "type": "boss",
+      "entity": "minecraft:drowned",
+      "name": "entrelumen.ruin.boss.drowned_crew",
+      "count": 3,
+      "radius": 20,
+      "color": "blue",
+      "attributes": {
+        "minecraft:generic.max_health": 30,
+        "minecraft:generic.attack_damage": 4
+      }
+    },
+    "sluices": {
+      "type": "redstone"
+    }
+  },
+  "gates": {
+    "vault": [
+      "sluices"
+    ]
+  },
+  "pedestal": [
+    "drowned",
+    "sluices"
+  ]
+}

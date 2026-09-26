@@ -46,7 +46,12 @@ public final class CompassTargets {
   public enum ConditionType {
     ITEM,
     MILESTONE,
-    ADVANCEMENT
+    ADVANCEMENT,
+    /**
+     * A Heliodor ruin ({@code ruin}: its id): the team entered it, took its key piece or delivered
+     * the project that needs it (Plan v2, 26 September 2026).
+     */
+    RUIN
   }
 
   /**
@@ -106,8 +111,9 @@ public final class CompassTargets {
         throw invalid(path, "IDs use 1..64 lowercase letters, digits or underscores");
       if (!ids.add(id)) throw invalid(path, "duplicate objective ID");
       for (String field : entry.keySet())
-        if (!Set.of("id", "act", "kind", "target", "advance_when", "lore", "mods", "note")
+        if (!Set.of("id", "act", "kind", "target", "advance_when", "lore", "mods", "note", "draft")
             .contains(field)) throw invalid(path, "unknown field " + field);
+      if (entry.has("draft")) bool(entry.get("draft"), path + ".draft");
       int act = integer(entry, "act", path, 1, 6);
       if (act < previousAct) throw invalid(path + ".act", "objectives must be listed in act order");
       previousAct = act;
@@ -197,6 +203,7 @@ public final class CompassTargets {
           case ITEM -> Set.of("type", "item", "count");
           case MILESTONE -> Set.of("type", "milestone");
           case ADVANCEMENT -> Set.of("type", "advancement");
+          case RUIN -> Set.of("type", "ruin");
         };
     for (String field : condition.keySet())
       if (!allowed.contains(field)) throw invalid(path, "unknown field " + field + " for " + type);
@@ -218,6 +225,7 @@ public final class CompassTargets {
           new Condition(
               type, location(string(condition, "advancement", path), path + ".advancement", false),
               1);
+      case RUIN -> new Condition(type, location(string(condition, "ruin", path), path + ".ruin", false), 1);
     };
   }
 

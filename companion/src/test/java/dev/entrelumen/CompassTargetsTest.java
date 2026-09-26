@@ -32,7 +32,42 @@ class CompassTargetsTest {
     var authored = JsonParser.parseString(
         Files.readString(Path.of("..", "content", "compass_targets.json"), StandardCharsets.UTF_8));
     assertEquals(authored, shipped(), "processResources must copy content/compass_targets.json");
-    assertTrue(authored.getAsJsonObject().get("draft").getAsBoolean(), "The list stays a draft");
+    // Plan v2 (26 September): the ruin anchors are implemented; every other objective stays a draft.
+    Set<String> ruins = Set.of("signal_tower", "sunken_workshop", "viaduct", "dome_greenhouse", "nether_foundry",
+        "cliff_observatory", "twilight_sanctuary", "sun_antechamber", "light_temple", "void_observatory");
+    assertFalse(authored.getAsJsonObject().has("draft"));
+    Set<String> seen = new HashSet<>();
+    for (var element : authored.getAsJsonObject().getAsJsonArray("objectives")) {
+      var objective = element.getAsJsonObject();
+      String id = objective.get("id").getAsString();
+      boolean draft = objective.has("draft") && objective.get("draft").getAsBoolean();
+      assertEquals(!ruins.contains(id), draft, id);
+      if (ruins.contains(id)) {
+        seen.add(id);
+        assertEquals("anchor", objective.getAsJsonObject("target").get("type").getAsString(), id);
+        assertEquals("entrelumen:" + id, objective.getAsJsonObject("target").get("anchor").getAsString(), id);
+        assertEquals("ruin", objective.getAsJsonObject("advance_when").get("type").getAsString(), id);
+        assertTrue(objective.get("lore").getAsBoolean(), id);
+      }
+    }
+    assertEquals(ruins, seen);
+  }
+
+  @Test
+  void eachRuinComesBeforeTheObjectiveThatWaitsForItsProject() throws Exception {
+    var all = CompassTargets.parse(shipped(), mod -> true, item -> true);
+    var ids = all.stream().map(CompassTargets.Objective::id).toList();
+    assertTrue(ids.indexOf("signal_tower") < ids.indexOf("trial_chambers"), "first_signal needs the Signal Ember");
+    assertTrue(ids.indexOf("sunken_workshop") < ids.indexOf("trail_ruins"), "lost_workshop needs Terra's Blueprint");
+    assertTrue(ids.indexOf("void_observatory") > ids.indexOf("stronghold"), "The End ruin waits for the End");
+    var ruin = all.get(ids.indexOf("nether_foundry"));
+    assertEquals(new CompassTargets.Condition(CompassTargets.ConditionType.RUIN, "entrelumen:nether_foundry", 1),
+        ruin.advanceWhen());
+    assertEquals("minecraft:the_nether", ruin.target().dimension());
+    var vanilla = CompassTargets.parse(shipped(), mod -> false, item -> true).stream().map(CompassTargets.Objective::id).toList();
+    assertFalse(vanilla.contains("twilight_sanctuary") || vanilla.contains("sun_antechamber"),
+        "Ruins of absent mods have no objective (their pieces move to a landmark)");
+    assertTrue(vanilla.contains("nether_foundry") && vanilla.contains("void_observatory"));
   }
 
   @Test
@@ -131,6 +166,9 @@ class CompassTargetsTest {
         "{\"type\": \"anchor\", \"anchor\": \"entrelumen:heliodor_ruin_start\"}",
         "{\"type\": \"position\", \"dimension\": \"minecraft:overworld\", \"pos\": [1, 2]}"));
     invalid.put("lore type", RUIN.replace("\"lore\": true", "\"lore\": \"yes\""));
+    invalid.put("draft type", RUIN.replace("\"lore\": true", "\"draft\": 1"));
+    invalid.put("ruin tag", RUIN.replace("{\"type\": \"milestone\", \"milestone\": \"atlas_awakened\"}",
+        "{\"type\": \"ruin\", \"ruin\": \"#entrelumen:ruins\"}"));
     invalid.forEach((name, objectives) -> {
       var error = assertThrows(IllegalArgumentException.class,
           () -> CompassTargets.parse(document(objectives), mod -> true, item -> true), name);

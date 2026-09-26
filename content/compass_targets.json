@@ -1,6 +1,5 @@
 {
-  "draft": true,
-  "note": "DRAFT until Elias defines the anchor ruins. Order is campaign order (acts renumbered 24 September 2026: IV ends with the Sun Spirit, V is the Ark, VI Solsticio). advance_when prefers campaign milestones and story bosses so a missing nearby structure never blocks guidance. Radius is in blocks, at most 1500. Objectives whose mods are absent are skipped. Source of truth; the companion build copies it to data/entrelumen/compass/targets.json.",
+  "note": "Order is campaign order (acts renumbered 24 September 2026: IV ends with the Sun Spirit, V is the Ark, VI Solsticio). The Heliodor ruins (Plan v2, 26 September 2026) are anchors that advance once the team entered the ruin, took its key piece or delivered its project; each comes before the objective that waits for that project. Objectives marked draft wait for Elias's review. advance_when prefers campaign milestones and story bosses so a missing nearby structure never blocks guidance. Radius is in blocks, at most 1500. Objectives whose mods are absent are skipped. Source of truth; the companion build copies it to data/entrelumen/compass/targets.json.",
   "objectives": [
     {
       "id": "heliodor_ruin",
@@ -8,7 +7,8 @@
       "kind": "structure",
       "target": {"type": "anchor", "anchor": "entrelumen:heliodor_ruin_start"},
       "advance_when": {"type": "milestone", "milestone": "atlas_awakened"},
-      "lore": true
+      "lore": true,
+      "draft": true
     },
     {
       "id": "village_survey",
@@ -16,6 +16,15 @@
       "kind": "structure",
       "target": {"type": "structure", "structure": "#minecraft:village"},
       "advance_when": {"type": "milestone", "milestone": "field_survey"},
+      "lore": true,
+      "draft": true
+    },
+    {
+      "id": "signal_tower",
+      "act": 1,
+      "kind": "structure",
+      "target": {"type": "anchor", "anchor": "entrelumen:signal_tower"},
+      "advance_when": {"type": "ruin", "ruin": "entrelumen:signal_tower"},
       "lore": true
     },
     {
@@ -24,6 +33,15 @@
       "kind": "structure",
       "target": {"type": "structure", "structure": "minecraft:trial_chambers"},
       "advance_when": {"type": "milestone", "milestone": "first_signal"},
+      "lore": true,
+      "draft": true
+    },
+    {
+      "id": "sunken_workshop",
+      "act": 2,
+      "kind": "structure",
+      "target": {"type": "anchor", "anchor": "entrelumen:sunken_workshop"},
+      "advance_when": {"type": "ruin", "ruin": "entrelumen:sunken_workshop"},
       "lore": true
     },
     {
@@ -32,6 +50,31 @@
       "kind": "artifact",
       "target": {"type": "structure", "structure": "minecraft:trail_ruins"},
       "advance_when": {"type": "milestone", "milestone": "lost_workshop"},
+      "lore": true,
+      "draft": true
+    },
+    {
+      "id": "viaduct",
+      "act": 3,
+      "kind": "structure",
+      "target": {"type": "anchor", "anchor": "entrelumen:viaduct"},
+      "advance_when": {"type": "ruin", "ruin": "entrelumen:viaduct"},
+      "lore": true
+    },
+    {
+      "id": "dome_greenhouse",
+      "act": 3,
+      "kind": "structure",
+      "target": {"type": "anchor", "anchor": "entrelumen:dome_greenhouse"},
+      "advance_when": {"type": "ruin", "ruin": "entrelumen:dome_greenhouse"},
+      "lore": true
+    },
+    {
+      "id": "nether_foundry",
+      "act": 3,
+      "kind": "structure",
+      "target": {"type": "anchor", "anchor": "entrelumen:nether_foundry", "dimension": "minecraft:the_nether"},
+      "advance_when": {"type": "ruin", "ruin": "entrelumen:nether_foundry"},
       "lore": true
     },
     {
@@ -40,7 +83,8 @@
       "kind": "structure",
       "mods": ["betterfortresses"],
       "target": {"type": "structure", "structure": "betterfortresses:fortress", "dimension": "minecraft:the_nether"},
-      "advance_when": {"type": "item", "item": "minecraft:blaze_rod"}
+      "advance_when": {"type": "item", "item": "minecraft:blaze_rod"},
+      "draft": true
     },
     {
       "id": "twilight_forest",
@@ -49,7 +93,8 @@
       "mods": ["twilightforest"],
       "target": {"type": "dimension", "dimension": "twilightforest:twilight_forest"},
       "advance_when": {"type": "milestone", "milestone": "twilight_arrival"},
-      "lore": true
+      "lore": true,
+      "draft": true
     },
     {
       "id": "naga_courtyard",
@@ -57,7 +102,25 @@
       "kind": "boss",
       "mods": ["twilightforest"],
       "target": {"type": "structure", "structure": "twilightforest:naga_courtyard", "dimension": "twilightforest:twilight_forest"},
-      "advance_when": {"type": "advancement", "advancement": "twilightforest:progress_naga"}
+      "advance_when": {"type": "advancement", "advancement": "twilightforest:progress_naga"},
+      "draft": true
+    },
+    {
+      "id": "cliff_observatory",
+      "act": 4,
+      "kind": "structure",
+      "target": {"type": "anchor", "anchor": "entrelumen:cliff_observatory"},
+      "advance_when": {"type": "ruin", "ruin": "entrelumen:cliff_observatory"},
+      "lore": true
+    },
+    {
+      "id": "twilight_sanctuary",
+      "act": 4,
+      "kind": "structure",
+      "mods": ["twilightforest"],
+      "target": {"type": "anchor", "anchor": "entrelumen:twilight_sanctuary", "dimension": "twilightforest:twilight_forest"},
+      "advance_when": {"type": "ruin", "ruin": "entrelumen:twilight_sanctuary"},
+      "lore": true
     },
     {
       "id": "the_aether",
@@ -66,6 +129,16 @@
       "mods": ["aether"],
       "target": {"type": "dimension", "dimension": "aether:the_aether"},
       "advance_when": {"type": "milestone", "milestone": "aether_arrival"},
+      "lore": true,
+      "draft": true
+    },
+    {
+      "id": "sun_antechamber",
+      "act": 4,
+      "kind": "structure",
+      "mods": ["aether"],
+      "target": {"type": "anchor", "anchor": "entrelumen:sun_antechamber", "dimension": "aether:the_aether"},
+      "advance_when": {"type": "ruin", "ruin": "entrelumen:sun_antechamber"},
       "lore": true
     },
     {
@@ -74,7 +147,8 @@
       "kind": "boss",
       "mods": ["aether"],
       "target": {"type": "structure", "structure": "aether:bronze_dungeon", "dimension": "aether:the_aether"},
-      "advance_when": {"type": "advancement", "advancement": "aether:bronze_dungeon"}
+      "advance_when": {"type": "advancement", "advancement": "aether:bronze_dungeon"},
+      "draft": true
     },
     {
       "id": "lich_tower",
@@ -82,7 +156,8 @@
       "kind": "boss",
       "mods": ["twilightforest"],
       "target": {"type": "structure", "structure": "twilightforest:lich_tower", "dimension": "twilightforest:twilight_forest"},
-      "advance_when": {"type": "advancement", "advancement": "twilightforest:progress_lich"}
+      "advance_when": {"type": "advancement", "advancement": "twilightforest:progress_lich"},
+      "draft": true
     },
     {
       "id": "bumblezone",
@@ -91,7 +166,8 @@
       "mods": ["the_bumblezone"],
       "target": {"type": "dimension", "dimension": "the_bumblezone:the_bumblezone"},
       "advance_when": {"type": "milestone", "milestone": "bumblezone_arrival"},
-      "lore": true
+      "lore": true,
+      "draft": true
     },
     {
       "id": "silver_dungeon",
@@ -99,7 +175,8 @@
       "kind": "boss",
       "mods": ["aether"],
       "target": {"type": "structure", "structure": "aether:silver_dungeon", "dimension": "aether:the_aether"},
-      "advance_when": {"type": "advancement", "advancement": "aether:silver_dungeon"}
+      "advance_when": {"type": "advancement", "advancement": "aether:silver_dungeon"},
+      "draft": true
     },
     {
       "id": "gold_dungeon",
@@ -109,7 +186,16 @@
       "target": {"type": "structure", "structure": "aether:gold_dungeon", "dimension": "aether:the_aether"},
       "advance_when": {"type": "milestone", "milestone": "heart_recovered"},
       "lore": true,
+      "draft": true,
       "note": "The Sun Spirit drops the Heart of Heliodor once per campaign; delivering it closes act IV."
+    },
+    {
+      "id": "light_temple",
+      "act": 5,
+      "kind": "structure",
+      "target": {"type": "anchor", "anchor": "entrelumen:light_temple"},
+      "advance_when": {"type": "ruin", "ruin": "entrelumen:light_temple"},
+      "lore": true
     },
     {
       "id": "ocean_monument",
@@ -117,7 +203,8 @@
       "kind": "boss",
       "mods": ["betteroceanmonuments"],
       "target": {"type": "structure", "structure": "betteroceanmonuments:ocean_monument"},
-      "advance_when": {"type": "item", "item": "minecraft:wet_sponge"}
+      "advance_when": {"type": "item", "item": "minecraft:wet_sponge"},
+      "draft": true
     },
     {
       "id": "stronghold",
@@ -125,7 +212,16 @@
       "kind": "structure",
       "mods": ["betterstrongholds"],
       "target": {"type": "structure", "structure": "betterstrongholds:stronghold"},
-      "advance_when": {"type": "milestone", "milestone": "end_arrival"}
+      "advance_when": {"type": "milestone", "milestone": "end_arrival"},
+      "draft": true
+    },
+    {
+      "id": "void_observatory",
+      "act": 5,
+      "kind": "structure",
+      "target": {"type": "anchor", "anchor": "entrelumen:void_observatory", "dimension": "minecraft:the_end"},
+      "advance_when": {"type": "ruin", "ruin": "entrelumen:void_observatory"},
+      "lore": true
     },
     {
       "id": "the_end",
@@ -133,7 +229,8 @@
       "kind": "boss",
       "target": {"type": "dimension", "dimension": "minecraft:the_end"},
       "advance_when": {"type": "advancement", "advancement": "minecraft:end/kill_dragon"},
-      "lore": true
+      "lore": true,
+      "draft": true
     },
     {
       "id": "solsticio",
@@ -142,6 +239,7 @@
       "target": {"type": "dimension", "dimension": "entrelumen:solsticio"},
       "advance_when": {"type": "milestone", "milestone": "solsticio_arrival"},
       "lore": true,
+      "draft": true,
       "note": "Act VI: the Ark activation forges the Light Key; the team's own crossing records solsticio_arrival."
     },
     {
@@ -150,6 +248,7 @@
       "kind": "structure",
       "target": {"type": "city_marker", "marker": "mayor"},
       "advance_when": {"type": "milestone", "milestone": "solsticio_mayor"},
+      "draft": true,
       "note": "Act VI, mission 2: Aurelia's marker (mayor), read from the placed city, so any city template works."
     },
     {
@@ -158,6 +257,7 @@
       "kind": "structure",
       "target": {"type": "city_marker", "marker": "gardener"},
       "advance_when": {"type": "milestone", "milestone": "solsticio_harvest"},
+      "draft": true,
       "note": "Mission 2's reward marks the three halls: Juan's (gardener) until relic I."
     },
     {
@@ -166,6 +266,7 @@
       "kind": "structure",
       "target": {"type": "city_marker", "marker": "inventor"},
       "advance_when": {"type": "milestone", "milestone": "solsticio_terraprism"},
+      "draft": true,
       "note": "Terra's hall (inventor) until relic II."
     },
     {
@@ -174,6 +275,7 @@
       "kind": "structure",
       "target": {"type": "city_marker", "marker": "priest"},
       "advance_when": {"type": "milestone", "milestone": "solsticio_blessing"},
+      "draft": true,
       "note": "Bodhi's chapel (priest) until relic III."
     },
     {
@@ -182,6 +284,7 @@
       "kind": "artifact",
       "target": {"type": "city_marker", "marker": "town_hall_portal"},
       "advance_when": {"type": "milestone", "milestone": "solsticio_portal"},
+      "draft": true,
       "note": "Missions 9 and 10: the town hall portal (town_hall_portal marker)."
     }
   ]

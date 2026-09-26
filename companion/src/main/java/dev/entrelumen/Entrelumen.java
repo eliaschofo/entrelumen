@@ -90,6 +90,7 @@ public final class Entrelumen {
     Altars.register(bus);
     Luminous.register(bus);
     HeliodorContent.register(bus);
+    RuinContent.register(bus);
     TerraArm.register(bus);
     VeinResonator.register(bus);
     HeliodorHeart.register(bus);
@@ -155,9 +156,10 @@ public final class Entrelumen {
   }
 
   static List<ItemStack> deliveryStacks(ServerPlayer player) {
-    return java.util.stream.Stream.concat(
+    // Key pieces count only as the team's own current copy (docs/design/heliodor-ruins.md).
+    return KeyPieces.deliverable(player, java.util.stream.Stream.concat(
             player.getInventory().items.stream(), player.getInventory().offhand.stream())
-        .toList();
+        .toList());
   }
 
   static Map<String, Integer> availableMaterials(ServerPlayer player) {

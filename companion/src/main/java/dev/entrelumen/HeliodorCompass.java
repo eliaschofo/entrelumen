@@ -165,6 +165,12 @@ public final class HeliodorCompass {
             .anyMatch(member -> member.getAdvancements().getOrStartProgress(holder).isDone());
       }
       case ITEM -> context.members().stream().anyMatch(member -> count(member, condition) >= condition.count());
+      case RUIN -> {
+        var team = RuinProgress.get(context.player().server).team(context.campaignId(), context.founder());
+        var definition = RuinRegistry.get(condition.value()).orElse(null);
+        yield team.visited.contains(condition.value()) || team.piece(condition.value()) > 0
+            || (definition != null && CampaignMilestones.isComplete(context.campaign(), definition.project()));
+      }
     };
   }
 
