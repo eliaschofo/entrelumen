@@ -1,6 +1,6 @@
 # Progresión: Marco por infusión, funciones y resonador de vetas
 
-Lote del 24 de septiembre de 2026, rama `feature/progression`. Aplica las «Respuestas de Elias (24 de septiembre)» de [reference-packs](../research/reference-packs.md): el Marco de Calibración sale de la historia y se copia en el infusor metalúrgico, Ultimine pasa a ser un curio propio de seis tiers, el MekaSuit y las armaduras cuánticas quedan en el acto VI y tres drops de jefes entran en los módulos del Arca. Suma los gates de la propuesta que encajan con esas respuestas, en una sola familia, «funciones».
+Lote del 24 de septiembre de 2026, rama `feature/progression`. Aplica las «Respuestas de Elias (24 de septiembre)» de [reference-packs](../research/reference-packs.md): el Marco de Calibración sale de la historia y se copia en el infusor metalúrgico, Ultimine pasa a ser un curio propio (seis tiers al principio, cuatro desde el nerf del 25 de septiembre), el MekaSuit y las armaduras cuánticas quedan en el acto VI y tres drops de jefes entran en los módulos del Arca. Suma los gates de la propuesta que encajan con esas respuestas, en una sola familia, «funciones».
 
 ## Marco de Calibración
 
@@ -29,10 +29,12 @@ La lente es el hilo de la historia (lente en bruto → Marco) y la redstone es l
 
 ## Resonador de vetas: Ultimine como curio
 
-Seis ítems, `entrelumen:vein_resonator_1` a `_6`: «Resonador de vetas I–VI» / «Vein Resonator I–VI». Son el diapasón de Terra. Stack de 1; rareza común (I–II), poco común (III–IV), rara (V) y épica (VI, además resistente al fuego). Tooltip:
+**Nerf del 25 de septiembre (Elias):** de seis tiers a cuatro, con recetas más caras. Cada tier duplica el anterior: 8, 16, 32 y 64 bloques por uso de Ultimine. Los tiers V y VI ya no existen: ni ítem, ni receta, ni modelo, ni textura.
+
+Cuatro ítems, `entrelumen:vein_resonator_1` a `_4`: «Resonador de vetas I–IV» / «Vein Resonator I–IV». Son el diapasón de Terra. Stack de 1; rareza común (I), poco común (II), rara (III) y épica (IV, además resistente al fuego; es la que tenía el VI). Tooltip:
 
 - lore gris: «El diapasón de Terra. Zumba mientras la veta sigue.» / «Terra's tuning fork. It hums for as long as the vein runs on.»;
-- efecto en azul, como las líneas de atributos: «Ultimine: hasta 16 bloques» … «hasta 96 bloques».
+- efecto en azul, como las líneas de atributos: «Ultimine: hasta 8 bloques» … «hasta 64 bloques».
 
 ### Cómo limita FTB Ultimine 2101.1.15
 
@@ -45,7 +47,7 @@ Leído del JAR fijado (`ftb-ultimine-neoforge-2101.1.15.jar`, con `javap`):
 ### Implementación
 
 - `pack/config/ftbultimine-server.snbt` fija `max_blocks: 0`. Sin resonador, Ultimine está apagado para todos.
-- `VeinResonator` le pregunta a Curios, por reflexión y cada 10 ticks como el Brazo de Terra, cuál es el tier más alto puesto en un slot activo. Después ajusta un único modificador transitorio y aditivo, `entrelumen:vein_resonator`, sobre `ftbultimine:max_blocks_modifier`. Su valor es `16 × tier − max_blocks`, con `max_blocks` leído de la config de Ultimine (`UltimineCompat`, reflexión sobre miembros públicos). Así el límite queda exacto aunque un servidor suba `max_blocks` en su copia local, y queda en 0 sin resonador.
+- `VeinResonator` le pregunta a Curios, por reflexión y cada 10 ticks como el Brazo de Terra, cuál es el tier más alto puesto en un slot activo. Después ajusta un único modificador transitorio y aditivo, `entrelumen:vein_resonator`, sobre `ftbultimine:max_blocks_modifier`. Su valor es `alcance(tier) − max_blocks`, con el alcance explícito en `VeinResonatorRules` (8, 16, 32, 64; no es un múltiplo del tier), con `max_blocks` leído de la config de Ultimine (`UltimineCompat`, reflexión sobre miembros públicos). Así el límite queda exacto aunque un servidor suba `max_blocks` en su copia local, y queda en 0 sin resonador.
 - **Slot:** `charm` de Curios. El tag `curios:charm` hace que Curios lo acepte y `data/entrelumen/curios/entities/vein_resonator.json` le asigna el slot al jugador aunque los otros diez mods que lo usan salgan del pack.
 - **Dos resonadores no suman:** cuenta el mejor.
 - **En un slot vanilla** (mano, inventario, armadura) no pasa nada: el ítem no tiene atributos propios.
@@ -54,22 +56,25 @@ Leído del JAR fijado (`ftb-ultimine-neoforge-2101.1.15.jar`, con `javap`):
 
 ### Recetas
 
-Mesa con forma, simétricas de izquierda a derecha. Cada tier consume el anterior. El I es barato («que el de 16 no sea TAN difícil»). Después sube por acto hasta el VI, con Luminosidades sólo en el último.
+Mesa con forma, simétricas de izquierda a derecha, con silueta de horqueta. Cada tier consume el anterior en el centro. Son materiales vanilla caros y ningún componente del Atlas: el resonador ya no cierra hitos de componentes. El acto de cada tier es el de sus materiales:
 
-| Tier | Bloques | Acto | Receta |
-|---|---|---|---|
-| I | 16 | I | 4 lingotes de cobre, 1 fragmento de amatista, 1 lente en bruto (`C C / CAC / _L_`) |
-| II | 32 | II | Resonador I, 1 Marco de Calibración, 2 lingotes de latón de Create, 1 aleación infundida de Mekanism |
-| III | 48 | III | Resonador II, 1 Regulador de Energía, 2 diamantes, 1 procesador de ingeniería de AE2 |
-| IV | 64 | IV | Resonador III, 1 Lente Espectral, 2 gemas de zanita del Aether, 1 lingote de ironwood del Twilight Forest |
-| V | 80 | V | Resonador IV, 1 Bus del Arca, 2 aleaciones atómicas de Mekanism, 1 lingote celeste de Nature's Aura |
-| VI | 96 | VI | Resonador V, 1 Luminosidad de Exploración, 2 estrellas del Nether, 1 Luminosidad de Ingeniería |
+| Tier | Bloques | Acto | Dibujo | Receta |
+|---|---|---|---|---|
+| I | 8 | I | `G G / GDG / _G_` | 5 lingotes de oro, 1 diamante |
+| II | 16 | III | `E E / ERE / _N_` | Resonador I, 4 bloques de esmeralda, 1 lingote de netherita |
+| III | 32 | V | `X X / XRX / _S_` | Resonador II, 4 de piedra del End, 1 estrella del Nether |
+| IV | 64 | VI | `_A_ / _R_ / _B_` | Resonador III, 1 Luminosidad de Exploración, 1 Luminosidad de Ingeniería |
 
-Tiers II a VI siguen el mismo dibujo: `_T_ / SRS / _B_`. El componente del acto va arriba, el par de materiales de mod a los costados del resonador anterior y el tercer material abajo. El III lleva el Regulador porque la minería en área es una función del Regulador (Mining Gadgets, taladro infinito de Industrial Foregoing).
+- **I, acto I:** oro y diamante se consiguen desde el principio.
+- **II, acto III:** la netherita pide el Nether, al que la brújula lleva en el acto III (la fortaleza de YUNG).
+- **III, acto V:** la piedra del End pide el viaje al End y la estrella, el Wither; los dos son del acto V (la brújula y el módulo arcano).
+- **IV, acto VI:** las Luminosidades sólo las intercambian los nativos de Solsticio. Exploración (el mundo) y Ingeniería (las máquinas) son el par más coherente para un diapasón que lee vetas; el par que sugirió Elias se queda.
+
+Antes del nerf eran seis tiers de 16 a 96 bloques (16 por tier), con la lente en bruto, el Marco, el Regulador, la Lente Espectral y el Bus del Arca en los tiers I a V. Esos cinco componentes dejaron de cerrar un resonador (`tools/check_recipe_design.py` ya no los cuenta como hitos). La minería en área (`area_mining`) queda como función sin componente: Mining Gadgets y el taladro infinito siguen con la aleación del acto III.
 
 ### Arte
 
-Los seis íconos los dibujó el controlador (`art/authoring/draw_resonators.py`: un diapasón simétrico por tier, con la gema completa en la base). Las grillas pasaron de `resonator_<n>` a `vein_resonator_<n>` y `art/build_art.py` las registra, con procedencia, modelos y texturas en el acompañante y en el resource pack.
+Los íconos los dibujó el controlador (`art/authoring/draw_resonators.py`: un diapasón simétrico por tier). Para el nerf los redibujó en cuatro (oro y diamante, netherita y esmeralda, piedra del End y estrella, el azul de las Luminosidades alrededor de un núcleo luminoso); las grillas, modelos y texturas del V y el VI se borraron. Las grillas pasaron de `resonator_<n>` a `vein_resonator_<n>` y `art/build_art.py` las registra, con procedencia, modelos y texturas en el acompañante y en el resource pack.
 
 ## MekaSuit y armaduras cuánticas: acto VI
 
@@ -109,7 +114,7 @@ El controlador pasó la devolución del primer playtest de recetas ([playtest-20
 
 La comprobación de clausura es por ítem y no por mod: Mekanism y AE2 fabrican insumos de los componentes (circuitos, procesadores) y se gatean en su tope. Ningún gate de ninguna familia puede tocar la lista «no gatear» de la propuesta (prensa, deployer, pinza de cables, reconstructor, aparato de encantamiento, inscriptor, cámara de presión, caja UV, cristal de infusión, centrífuga, exprimidor, altares de espíritus, olla, etcétera), salvo el arranque del infusor.
 
-### Aplicados (22 recetas más las 6 del resonador)
+### Aplicados (22 recetas más las 4 del resonador)
 
 | Función | Componente | Acto | Receta y dibujo |
 |---|---|---|---|
@@ -123,7 +128,7 @@ La comprobación de clausura es por ítem y no por mod: Mekanism y AE2 fabrican 
 | Reactor final | Bus del Arca | V | controlador del reactor de fusión: el Bus en el eje de abajo (`CGC / FTF / FBF`) |
 | Renovación | Motor de Renovación | V | puerto del SPS (antimateria): el Motor en el corazón (`_#_ / #M# / _#_`) |
 | Armadura tope | una Luminosidad | VI | 12 piezas (ver arriba) |
-| Minería en área | por tier | I–VI | resonadores de vetas |
+| Minería en área | ninguno | I–VI | resonadores de vetas: materiales vanilla por tier y Luminosidades en el IV (ver arriba) |
 
 ### No aplicados
 
@@ -168,8 +173,8 @@ Recibo: [`docs/verification/progression-runtime.json`](../verification/progressi
     - el infusor pide el Marco en el centro y la receta de dos hornos con osmio ya no sirve;
     - las 22 puertas consumen su componente sin otra receta que las saltee;
     - los tres módulos llevan su drop de jefe;
-    - las seis recetas del resonador encadenan los tiers;
-    - `max_blocks` quedó en 0 y el límite real de Ultimine da 16, 32, 48, 64, 80 y 96 con cada tier en el slot de amuleto (el jugador tiene 3). Dos resonadores cuentan como el mejor, sin resonador es 0 y en slots vanilla también;
+    - las seis recetas del resonador encadenan los tiers (antes del nerf del 25 de septiembre);
+    - `max_blocks` quedó en 0 y el límite real de Ultimine da 16, 32, 48, 64, 80 y 96 con cada tier (seis tiers entonces; ahora 8, 16, 32 y 64) en el slot de amuleto (el jugador tiene 3). Dos resonadores cuentan como el mejor, sin resonador es 0 y en slots vanilla también;
     - una rotura real con la tecla de Ultimine rompe 1 bloque sin resonador y 16 de una veta de 50 con el tier I;
     - la prueba del altar falló una vez por tiempo y pasó al repetirla, y la de recarga de datapacks pasó.
 

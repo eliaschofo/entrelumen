@@ -34,8 +34,9 @@ import net.neoforged.neoforge.gametest.PrefixGameTestTemplate;
 /**
  * Installed-pack QA for the vein resonators with the real Curios 9.5.1 and FTB Ultimine 2101.1.15: the
  * pack config keeps Ultimine at zero blocks, a resonator worn in the player's charm slot sets Ultimine's
- * own limit to 16 per tier, two resonators count as the best one, vanilla slots do nothing, and a real
- * Ultimine break of a coal vein takes exactly the tier's reach. The six pack recipes chain the tiers.
+ * own limit to the tier's reach (8, 16, 32 and 64 since the nerf of 25 September 2026), two resonators count
+ * as the best one, vanilla slots do nothing, and a real Ultimine break of a coal vein takes exactly the tier's
+ * reach. The four pack recipes chain the tiers.
  * Curios and Ultimine are reached only by reflection.
  */
 @GameTestHolder("entrelumen")
@@ -121,7 +122,7 @@ public final class VeinResonatorFullpackGameTests {
   }
 
   @GameTest(template = "empty", timeoutTicks = 20)
-  public static void resonatorRecipesChainTheSixTiers(GameTestHelper helper) {
+  public static void resonatorRecipesChainTheFourTiers(GameTestHelper helper) {
     requireSuite();
     var level = helper.getLevel();
     List<String> problems = new ArrayList<>();
@@ -151,7 +152,7 @@ public final class VeinResonatorFullpackGameTests {
   }
 
   @GameTest(template = "empty", timeoutTicks = 200)
-  public static void wornResonatorSetsUltimineToSixteenBlocksPerTier(GameTestHelper helper) {
+  public static void wornResonatorSetsUltimineToEachTiersReach(GameTestHelper helper) {
     requireSuite();
     Curios curios;
     try {
@@ -175,8 +176,8 @@ public final class VeinResonatorFullpackGameTests {
           helper.assertTrue(UltimineCompat.effectiveMaxBlocks(player) == 0, "Ultimine works without a resonator: "
               + UltimineCompat.effectiveMaxBlocks(player));
           // Carried, held or in a vanilla slot: nothing.
-          player.getInventory().add(resonator(6));
-          player.setItemInHand(InteractionHand.MAIN_HAND, resonator(4));
+          player.getInventory().add(resonator(4));
+          player.setItemInHand(InteractionHand.MAIN_HAND, resonator(3));
           player.setItemInHand(InteractionHand.OFF_HAND, resonator(2));
           check(player);
           helper.assertTrue(VeinResonator.wornTier(player) == 0 && UltimineCompat.effectiveMaxBlocks(player) == 0,
@@ -202,8 +203,9 @@ public final class VeinResonatorFullpackGameTests {
             check(player);
             int limit = UltimineCompat.effectiveMaxBlocks(player);
             observed.add(tier + "=" + limit);
-            helper.assertTrue(VeinResonator.wornTier(player) == tier && limit == 16 * tier,
-                "Tier " + tier + " gives " + limit + " Ultimine blocks instead of " + 16 * tier);
+            int reach = new int[] {8, 16, 32, 64}[tier - 1];
+            helper.assertTrue(VeinResonator.wornTier(player) == tier && limit == reach,
+                "Tier " + tier + " gives " + limit + " Ultimine blocks instead of " + reach);
             if (tier == VeinResonator.TIERS) return;
             try {
               curios.equip(player, 0, resonator(tier + 1));
@@ -218,7 +220,7 @@ public final class VeinResonatorFullpackGameTests {
           if (charms[0] < 2) return;
           try {
             curios.equip(player, 0, resonator(2));
-            curios.equip(player, 1, resonator(5));
+            curios.equip(player, 1, resonator(3));
           } catch (Throwable error) {
             helper.fail("Equipping two resonators failed: " + error);
           }
@@ -227,7 +229,7 @@ public final class VeinResonatorFullpackGameTests {
         .thenExecute(() -> {
           check(player);
           if (charms[0] >= 2)
-            helper.assertTrue(UltimineCompat.effectiveMaxBlocks(player) == 80,
+            helper.assertTrue(UltimineCompat.effectiveMaxBlocks(player) == 32,
                 "Two resonators do not count as the best one: " + UltimineCompat.effectiveMaxBlocks(player));
           try {
             for (int i = 0; i < Math.min(charms[0], 2); i++) curios.equip(player, i, ItemStack.EMPTY);

@@ -50,7 +50,7 @@ ServerEvents.afterRecipes(event => {
   console.info('[ENTRELUMEN_FUNCTIONS_BALANCE] ' + JSON.stringify({status: failed.length ? 'failed-loaded-check' : 'loaded-ingredient-check',
     signature: entrelumenFunctionsSignature, checked: entrelumenFunctionsRows.length + entrelumenFunctionsRemovals.length, failed: failed}));
 });
-const entrelumenFunctionsAdditions = [{"id":"entrelumen:vein_resonator_1","output":"entrelumen:vein_resonator_1"},{"id":"entrelumen:vein_resonator_2","output":"entrelumen:vein_resonator_2"},{"id":"entrelumen:vein_resonator_3","output":"entrelumen:vein_resonator_3"},{"id":"entrelumen:vein_resonator_4","output":"entrelumen:vein_resonator_4"},{"id":"entrelumen:vein_resonator_5","output":"entrelumen:vein_resonator_5"},{"id":"entrelumen:vein_resonator_6","output":"entrelumen:vein_resonator_6"}];
+const entrelumenFunctionsAdditions = [{"id":"entrelumen:vein_resonator_1","output":"entrelumen:vein_resonator_1"},{"id":"entrelumen:vein_resonator_2","output":"entrelumen:vein_resonator_2"},{"id":"entrelumen:vein_resonator_3","output":"entrelumen:vein_resonator_3"},{"id":"entrelumen:vein_resonator_4","output":"entrelumen:vein_resonator_4"}];
 ServerEvents.afterRecipes(event => {
   var failed = [];
   entrelumenFunctionsAdditions.forEach(row => {

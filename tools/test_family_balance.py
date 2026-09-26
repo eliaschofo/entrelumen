@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import hashlib
+from collections import Counter
 import importlib.util
 import json
 from pathlib import Path
@@ -462,22 +463,28 @@ class FamilyBalanceTest(unittest.TestCase):
             balance.transform(change, full)
 
     def test_vein_resonator_tiers_chain_by_act(self):
+        # Elias's nerf of 25 September 2026: four tiers, each a fork with the previous tier in its centre.
         additions = balance.FAMILIES['functions']['additions']
-        self.assertEqual([a['id'] for a in additions], [balance.resonator(t) for t in range(1, 7)])
-        self.assertEqual([a['act'] for a in additions], ['I', 'II', 'III', 'IV', 'V', 'VI'])
+        self.assertEqual([a['id'] for a in additions], [balance.resonator(t) for t in range(1, 5)])
+        self.assertEqual([a['act'] for a in additions], ['I', 'III', 'V', 'VI'])
+        self.assertEqual([a['pattern'] for a in additions],
+                         [['G G', 'GDG', ' G '], ['E E', 'ERE', ' N '], ['X X', 'XRX', ' S '], [' A ', ' R ', ' B ']])
+        expected = [
+            {'minecraft:gold_ingot': 5, 'minecraft:diamond': 1},
+            {'minecraft:emerald_block': 4, balance.resonator(1): 1, 'minecraft:netherite_ingot': 1},
+            {'minecraft:end_stone': 4, balance.resonator(2): 1, 'minecraft:nether_star': 1},
+            {balance.LUMINOSITY['exploration']: 1, balance.resonator(3): 1, balance.LUMINOSITY['engineering']: 1},
+        ]
         for tier, addition in enumerate(additions, 1):
             inputs = [addition['key'][c]['item'] for row in addition['pattern'] for c in row if c != ' ']
             for row in addition['pattern']:
                 self.assertEqual(row, row[::-1], addition['id'])
+            self.assertEqual(dict(Counter(inputs)), expected[tier - 1], addition['id'])
             if tier > 1:
-                self.assertEqual(inputs.count(balance.resonator(tier - 1)), 1, addition['id'])
-            luminosities = [i for i in inputs if i in balance.LUMINOSITY.values()]
-            self.assertEqual(len(luminosities), 2 if tier == 6 else 0, addition['id'])
-            if tier == 1:
-                self.assertLessEqual(len(inputs), 6)
-                self.assertTrue(all(i.startswith('minecraft:') or i == 'entrelumen:raw_lens' for i in inputs))
-        # Area mining is a power regulator function: the third tier carries it.
-        self.assertEqual(additions[2]['key']['T'], {'item': balance.PR})
+                self.assertEqual(addition['key'][addition['pattern'][1][1]]['item'], balance.resonator(tier - 1))
+            # No act component any more: the resonators close no milestone of a component.
+            self.assertFalse([i for i in inputs if i in balance.component_sources()[1]], addition['id'])
+        self.assertIsNone(balance.FUNCTIONS['area_mining'][0])
 
     def test_frame_is_infused_and_seeded_by_the_story(self):
         spec = importlib.util.spec_from_file_location('integration_under_test', Path(__file__).with_name('generate_integration_recipes.py'))

@@ -34,11 +34,11 @@ Recetas que consumen cada componente (`python tools/check_recipe_design.py --rep
 | Motor de renovación | 383 | 6 | 6 | módulo de naturaleza, SPS, macetas Mega, 3 aumentadores |
 | Cápsula de ecosistema | 380 | 8 | 8 | Motor, módulo de naturaleza, macetas Ultra, 3 granjas de mobs, 2 aumentadores |
 | Núcleo de propagación | 371 | 5 | 6 | Motor, macetas Elite, 2 copias de altar, 1 aumentador |
-| Marco de calibración | 314 | 8 | 8 | Matriz viva, Matriz de distribución, Lente, módulo de ingeniería, infusor, portal minero, estante del II, Resonador II |
-| Regulador de energía | 28 | 8 | 8 | Núcleo de manipulación, jetpack de Mekanism, ensamblador de Psi, motor de avión, estante del III, Resonador III, 2 aumentadores |
+| Marco de calibración | 314 | 7 | 8 | Matriz viva, Matriz de distribución, Lente, módulo de ingeniería, infusor, portal minero, estante del II |
+| Regulador de energía | 28 | 7 | 8 | Núcleo de manipulación, jetpack de Mekanism, ensamblador de Psi, motor de avión, estante del III, 2 aumentadores |
 | Matriz de distribución | 28 | 8 | 8 | Sensor, módulo de logística, controladores de AE2 y RS, teletransportador, portal a Undergarden, copia de altar, 1 aumentador |
-| Bus del Arca | 22 | 8 | 8 | módulos de ingeniería y logística, reactor de fusión, reactor de MI, Resonador V, 3 aumentadores |
-| Lente espectral | 17 | 8 | 8 | Sello, módulos arcano y de exploración, Digital Miner, Llave de Luz, estante del IV, Resonador IV, 1 aumentador |
+| Bus del Arca | 22 | 7 | 8 | módulos de ingeniería y logística, reactor de fusión, reactor de MI, 3 aumentadores |
+| Lente espectral | 17 | 7 | 8 | Sello, módulos arcano y de exploración, Digital Miner, Llave de Luz, estante del IV, 1 aumentador |
 | Sello de contención | 14 | 8 | 8 | módulo arcano, reactor de fisión, portal minero del Nether, Estela eterna, emisor de Theurgy, biblioteca del Atlas, copia de altar, 1 aumentador |
 | Carta de horizontes | 10 | 8 | 8 | módulo de exploración, Llave de Luz, 2 vuelos creativos, portales a Eternal Starlight y minería del End, estante del V, copia de altar |
 | Núcleo de manipulación | 8 | 7 | 8 | Bus, módulo de logística, autocrafter de RS, constructor de RFTools, comercio automático, copia de altar, 1 aumentador |
@@ -46,10 +46,10 @@ Recetas que consumen cada componente (`python tools/check_recipe_design.py --rep
 | Sensor de inventario | 3 | 3 | 6 | Bus, QIO, 1 aumentador |
 | Acoplador de energía | 3 | 3 | 4 | Regulador, módulo de ingeniería, escobillas de New Age |
 | Provisiones de viaje | 3 | 3 | 4 | Carta de horizontes, Carta de habitabilidad, módulo de habitabilidad |
-| Lente en bruto, notas, núcleo de señal | 3, 2, 2 | 3, 2, 2 | 3, 2, 2 | el Marco, el núcleo de señal, la estación, el controlador del Arca y el Resonador I |
+| Lente en bruto, notas, núcleo de señal | 3, 2, 2 | 2, 2, 2 | 2, 2, 2 | el Marco, el núcleo de señal, la estación y el controlador del Arca |
 | Carta de habitabilidad | 1 | 1 | 2 | módulo de habitabilidad |
 
-La Matriz de distribución y el Regulador, que el lote de progresión dejó con cerca de veinte recetas cada uno, quedan en ocho. Antes había 273 recetas sin forma y 508 asimétricas con ítems de ENTRELUMEN; ahora ninguna.
+La Matriz de distribución y el Regulador, que el lote de progresión dejó con cerca de veinte recetas cada uno, quedan en ocho y siete. Desde el nerf del resonador de vetas (25 de septiembre: cuatro tiers de 8, 16, 32 y 64 bloques, con materiales vanilla y Luminosidades en el IV; ver [progression-functions](progression-functions.md#resonador-de-vetas-ultimine-como-curio)) ningún componente cierra un resonador, y el Marco, el Regulador, el Bus, la Lente espectral y la lente en bruto bajan uno. Antes había 273 recetas sin forma y 508 asimétricas con ítems de ENTRELUMEN; ahora ninguna.
 
 ## Inventario
 
@@ -60,7 +60,7 @@ La Matriz de distribución y el Regulador, que el lote de progresión dejó con 
 | Familias escalonadas (industrial, QoL, arcana, Apotheosis, ping-pong, funciones, RFTools, aeronaves) | 106 → 98 | 101 → 38 | 0 → 0 |
 | Recursos (Botany Pots, JAMD, Modular Bees) | 1.421 → 1.105 | 1.421 → 6 | 245 → 0 |
 | Integración y provisiones | 24 → 24 | 24 → 24 | 23 → 0 |
-| Datos del pack (estantes, aumentadores, creativos, resonadores, lingote, datos corregidos) | 90 → 90 | 82 → 82 | 1 → 1 |
+| Datos del pack (estantes, aumentadores, creativos, resonadores, lingote, datos corregidos) | 90 → 88 | 82 → 80 | 1 → 1 |
 | Companion | 13 → 13 | 13 → 13 | 5 → 0 |
 
 La receta sin forma que queda en los datos del pack es la copia sin cambios del manual de PneumaticCraft (`patchouli:guide_book`), sin ítems de ENTRELUMEN. Además, los scripts quitan 84 recetas nativas por ID (77 antes; las siete nuevas son las copias de Oritech).

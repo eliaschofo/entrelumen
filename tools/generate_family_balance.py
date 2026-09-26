@@ -382,7 +382,7 @@ FUNCTIONS = {
     'remote_inventory': (IS, 'III', ALLOY_III),  # Ender Storage: convenience, so every member takes the alloy
     'wireless_energy': (PR, 'III', ALLOY_III),   # cross-dimension energy links
     'jetpack': (PR, 'III', ALLOY_III),           # first powered flight
-    'area_mining': (PR, 'III', ALLOY_III),       # the vein resonator's third tier; lasers and drills
+    'area_mining': (None, 'III', ALLOY_III),     # lasers and drills; the vein resonators take vanilla materials
     'smart_storage': (IS, 'III', None),          # Mekanism QIO
     'hands': (HC, 'III', None),                  # autocrafters
     'quarry': (SL, 'IV', IRONWOOD),              # ores from power without walking the world
@@ -509,40 +509,40 @@ AAE_QUANTUM = {'helmet': 'quantum_helmet', 'chestplate': 'quantum_chest', 'leggi
                'boots': 'quantum_boots'}
 MI_QUANTUM = ('helmet', 'chestplate', 'leggings', 'boots')
 
-# The vein resonator: FTB Ultimine only works while one is worn (Curios charm slot); tier n allows
-# 16 * n blocks (companion VeinResonatorRules). Tier 1 is cheap and every later tier consumes the
-# previous one plus act materials.
+# The vein resonator: FTB Ultimine only works while one is worn (Curios charm slot). Elias's nerf of 25
+# September 2026 left four tiers of 8, 16, 32 and 64 blocks (companion VeinResonatorRules) with pricier,
+# vanilla-heavy recipes: a fork in each drawing, the previous tier in its centre. Their acts come from where
+# the materials become reachable: diamonds in act I, the Nether (netherite) in act III as the compass takes
+# the team there, the End and the Wither (end stone, nether star) in act V, and the Luminosities in act VI.
+# Vanilla items carry no act of their own, so VANILLA_ACTS gives these their campaign act.
+VANILLA_ACTS = {'minecraft:netherite_ingot': 'III', 'minecraft:end_stone': 'V', 'minecraft:nether_star': 'V'}
 
 
 def resonator(tier):
     return f'entrelumen:vein_resonator_{tier}'
 
 
-def resonator_recipe(tier, top, sides, bottom, act, why):
-    """Left-right symmetric: the act material on top, a pair of mod materials beside the previous tier
-    and a third material under it."""
-    return dict(recipe(resonator(tier), [' T ', 'SRS', ' B '],
-                       {'T': item(top), 'S': item(sides), 'R': item(resonator(tier - 1)), 'B': item(bottom)},
-                       act, why), function='area_mining')
+def resonator_fork(tier, prongs, handle, act, why):
+    """Tiers II and III, in Elias's letters: the prongs of the fork around the previous tier (R) and a
+    single material as the handle. prongs and handle are (letter, item)."""
+    (p, prong), (h, grip) = prongs, handle
+    return dict(recipe(resonator(tier), [f'{p} {p}', f'{p}R{p}', f' {h} '],
+                       {p: item(prong), 'R': item(resonator(tier - 1)), h: item(grip)}, act, why),
+                function='area_mining')
 
 
 RESONATOR_RECIPES = [
-    dict(recipe(resonator(1), ['C C', 'CAC', ' L '],
-                {'C': item('minecraft:copper_ingot'), 'A': item('minecraft:amethyst_shard'),
-                 'L': item('entrelumen:raw_lens')},
-                'I', 'A copper fork around an amethyst, tuned by a raw lens: cheap on purpose'), function='area_mining'),
-    resonator_recipe(2, CF, 'create:brass_ingot', 'mekanism:alloy_infused', 'II',
-                     'Workshop metals and the calibration frame'),
-    resonator_recipe(3, PR, 'minecraft:diamond', 'ae2:engineering_processor', 'III',
-                     'Area mining is a power regulator function'),
-    resonator_recipe(4, SL, 'aether:zanite_gemstone', 'twilightforest:ironwood_ingot', 'IV',
-                     'The quarry lens and two dimension materials'),
-    resonator_recipe(5, AB, 'mekanism:alloy_atomic', 'naturesaura:sky_ingot', 'V',
-                     'The Ark bus with atomic alloy and sky ingot'),
-    resonator_recipe(6, 'entrelumen:luminosity_exploration', 'minecraft:nether_star', 'entrelumen:luminosity_engineering',
-                     'VI', "Two Luminosities from Solsticio and two of the Wither's stars"),
+    dict(recipe(resonator(1), ['G G', 'GDG', ' G '], {'G': item('minecraft:gold_ingot'), 'D': item('minecraft:diamond')},
+                'I', 'A gold fork around a diamond'), function='area_mining'),
+    resonator_fork(2, ('E', 'minecraft:emerald_block'), ('N', 'minecraft:netherite_ingot'), 'III',
+                   'Emerald blocks round the first tier and a netherite handle from the Nether'),
+    resonator_fork(3, ('X', 'minecraft:end_stone'), ('S', 'minecraft:nether_star'), 'V',
+                   "End stone prongs and the Wither's star as the handle"),
+    dict(recipe(resonator(4), [' A ', ' R ', ' B '],
+                {'A': item(LUMINOSITY['exploration']), 'R': item(resonator(3)), 'B': item(LUMINOSITY['engineering'])},
+                'VI', 'The Luminosities of Exploration (the world) and Engineering (the machines) on the axis'),
+         function='area_mining'),
 ]
-
 
 FAMILIES = {
     'industrial': {
@@ -1293,6 +1293,8 @@ def build_additions(name, models=None):
                 assert item_id in models, f"{addition['id']}: no pinned item {item_id}"
                 if item_id in STAGE_MATERIALS:
                     latest = max(latest, ACTS[STAGE_MATERIALS[item_id]])
+            elif item_id in VANILLA_ACTS:
+                latest = max(latest, ACTS[VANILLA_ACTS[item_id]])
         assert latest == ACTS[addition['act']], \
             f"{addition['id']}: declared act {addition['act']} differs from inputs ({latest})"
         data = {'type': 'minecraft:crafting_shaped', 'category': 'misc', 'pattern': pattern, 'key': key,

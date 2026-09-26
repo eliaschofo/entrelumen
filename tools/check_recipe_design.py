@@ -62,7 +62,6 @@ HITOS = {
     'entrelumen:raw_lens': {
         'entrelumen:integration/precision_bench': 'Marco de Calibración (infusión)',
         'entrelumen:signal_core': 'núcleo de señal (acto I)',
-        'entrelumen:vein_resonator_1': 'Resonador I',
     },
     'entrelumen:survey_notes': {
         'entrelumen:signal_core': 'núcleo de señal (acto I)',
@@ -80,7 +79,6 @@ HITOS = {
         'mekanism:metallurgic_infuser': 'entrada a Mekanism (arranque de la historia)',
         'jamd:portal_block': 'portal a la dimensión minera',
         'entrelumen:cartographer_shelf': 'estante de Eterna del acto II',
-        'entrelumen:vein_resonator_2': 'Resonador II',
     },
     'entrelumen:energy_coupler': {
         'entrelumen:integration/distributed_power': 'Regulador de Energía',
@@ -120,7 +118,6 @@ HITOS = {
         'entrelumen:integration/workshop_hands': 'Núcleo de Manipulación',
         'entrelumen:augment_min_delay': 'aumentador de espera mínima',
         'entrelumen:augment_max_delay': 'aumentador de espera máxima',
-        'entrelumen:vein_resonator_3': 'Resonador III',
         'entrelumen:patina_shelf': 'estante de Quanta del acto III',
         'mekanism:jetpack': 'primer vuelo a motor',
         'psi:assembler': 'Psi entero (Elias, 24/9)',
@@ -148,7 +145,6 @@ HITOS = {
         'entrelumen:lumen_shelf': 'estante de Arcana del acto IV',
         'entrelumen:light_key': 'Llave de Luz',
         'mekanism:digital_miner': 'cantera: Digital Miner',
-        'entrelumen:vein_resonator_4': 'Resonador IV',
     },
     'entrelumen:horizon_chart': {
         'entrelumen:integration/ark_exploration': 'módulo de exploración',
@@ -183,7 +179,6 @@ HITOS = {
     'entrelumen:ark_bus': {
         'entrelumen:integration/ark_engineering': 'módulo de ingeniería',
         'entrelumen:integration/ark_logistics': 'módulo de logística',
-        'entrelumen:vein_resonator_5': 'Resonador V',
         'entrelumen:augment_ignore_players': 'aumentador sin jugadores',
         'entrelumen:augment_no_ai': 'aumentador sin IA',
         'entrelumen:augment_redstone_control': 'aumentador con redstone',
@@ -204,7 +199,7 @@ HITOS = {
 }
 # Fan-out goal per component: the playtest asks for few key recipes (six to eight).
 META = {c: 8 for c in HITOS}
-META.update({'entrelumen:raw_lens': 3, 'entrelumen:survey_notes': 2, 'entrelumen:signal_core': 2,
+META.update({'entrelumen:raw_lens': 2, 'entrelumen:survey_notes': 2, 'entrelumen:signal_core': 2,
              'entrelumen:energy_coupler': 4, 'entrelumen:living_matrix': 6, 'entrelumen:ration_bundle': 4,
              'entrelumen:propagation_core': 6, 'entrelumen:inventory_sensor': 6,
              'entrelumen:renewal_engine': 6, 'entrelumen:habitation_contract': 2})

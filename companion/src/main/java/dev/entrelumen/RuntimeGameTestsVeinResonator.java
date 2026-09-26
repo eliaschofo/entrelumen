@@ -57,21 +57,28 @@ public final class RuntimeGameTestsVeinResonator {
   }
 
   @GameTest(template = "empty", timeoutTicks = 100)
-  public static void sixResonatorTiersShowTheirUltimineReach(GameTestHelper helper) {
+  public static void fourResonatorTiersShowTheirUltimineReach(GameTestHelper helper) {
     helper.assertTrue(!CuriosCompat.loaded() && !UltimineCompat.loaded(),
         "This isolated suite expects a server without Curios and FTB Ultimine");
     var level = helper.getLevel();
+    // The nerf of 25 September 2026 left four tiers; the old fifth and sixth are gone.
+    helper.assertTrue(VeinResonator.TIERS == 4
+        && !BuiltInRegistries.ITEM.containsKey(ResourceLocation.fromNamespaceAndPath("entrelumen", "vein_resonator_5"))
+        && !BuiltInRegistries.ITEM.containsKey(ResourceLocation.fromNamespaceAndPath("entrelumen", "vein_resonator_6")),
+        "The resonator still has more than four tiers");
     for (int tier = 1; tier <= VeinResonator.TIERS; tier++) {
       var key = ResourceLocation.fromNamespaceAndPath("entrelumen", "vein_resonator_" + tier);
       helper.assertTrue(BuiltInRegistries.ITEM.containsKey(key) && BuiltInRegistries.ITEM.get(key) == VeinResonator.item(tier),
           key + " is not registered");
       var stack = new ItemStack(VeinResonator.item(tier));
-      var rarity = tier <= 2 ? Rarity.COMMON : tier <= 4 ? Rarity.UNCOMMON : tier == 5 ? Rarity.RARE : Rarity.EPIC;
+      var rarity = new Rarity[] {Rarity.COMMON, Rarity.UNCOMMON, Rarity.RARE, Rarity.EPIC}[tier - 1];
       helper.assertTrue(stack.getMaxStackSize() == 1 && stack.getRarity() == rarity && !stack.isDamageableItem()
           && stack.getAttributeModifiers().modifiers().isEmpty() && stack.is(VeinResonator.CURIOS_CHARM),
           "Tier " + tier + " is not a single, attribute-free charm of rarity " + rarity);
+      helper.assertTrue(stack.has(net.minecraft.core.component.DataComponents.FIRE_RESISTANT) == (tier == VeinResonator.TIERS),
+          "Only the last tier resists fire; tier " + tier);
       var lines = stack.getTooltipLines(Item.TooltipContext.of(level), null, TooltipFlag.NORMAL);
-      int reach = 16 * tier;
+      int reach = new int[] {8, 16, 32, 64}[tier - 1];
       long effect = lines.stream().filter(line -> line.getContents() instanceof TranslatableContents text
           && text.getKey().equals("entrelumen.vein_resonator.reach") && text.getArgs().length == 1
           && String.valueOf(reach).equals(String.valueOf(text.getArgs()[0]))
@@ -99,10 +106,10 @@ public final class RuntimeGameTestsVeinResonator {
     io.netty.channel.embedded.EmbeddedChannel[] channel = new io.netty.channel.embedded.EmbeddedChannel[1];
     var player = join(helper, "ResonatorQA", connection, channel);
     try {
-      player.getInventory().add(new ItemStack(VeinResonator.item(6)));
+      player.getInventory().add(new ItemStack(VeinResonator.item(4)));
       player.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(VeinResonator.item(3)));
       player.setItemInHand(InteractionHand.OFF_HAND, new ItemStack(VeinResonator.item(1)));
-      player.setItemSlot(EquipmentSlot.CHEST, new ItemStack(VeinResonator.item(5)));
+      player.setItemSlot(EquipmentSlot.CHEST, new ItemStack(VeinResonator.item(2)));
       for (int age = 0; age <= VeinResonator.INTERVAL_TICKS * 2; age++) {
         player.tickCount = age;
         player.doTick();
@@ -110,7 +117,7 @@ public final class RuntimeGameTestsVeinResonator {
       helper.assertTrue(VeinResonator.wornTier(player) == 0 && UltimineCompat.maxBlocksAttribute() == null
           && UltimineCompat.configuredMaxBlocks() == 0 && UltimineCompat.effectiveMaxBlocks(player) == -1,
           "A resonator counted as worn, or Ultimine answered, on a server without them");
-      helper.assertTrue(!VeinResonator.sync(player, 6, 0) && !VeinResonator.sync(player, 0, 64),
+      helper.assertTrue(!VeinResonator.sync(player, 4, 0) && !VeinResonator.sync(player, 0, 64),
           "The resonator changed a player without FTB Ultimine's attribute");
     } finally {
       connection[0].disconnect(Component.literal("Entrelumen resonator QA finished"));

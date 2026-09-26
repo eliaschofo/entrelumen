@@ -16,8 +16,9 @@ import java.util.Map;
 import org.junit.jupiter.api.Test;
 
 /**
- * Data of the vein resonators (Elias, 24 September 2026): six tiers of 16 to 96 Ultimine blocks, worn in
- * a Curios charm slot, named in EN/ES, and six pack recipes where each tier consumes the previous one.
+ * Data of the vein resonators (Elias, 24 September 2026; nerfed to four tiers on the 25th): 8, 16, 32 and 64
+ * Ultimine blocks, worn in a Curios charm slot, named in EN/ES, and four pack recipes where each tier
+ * consumes the previous one in the centre of a fork.
  */
 class VeinResonatorDataTest {
   private static final Path PACK_RECIPES = Path.of("../pack/kubejs/data/entrelumen/recipe");
@@ -38,17 +39,19 @@ class VeinResonatorDataTest {
   }
 
   @Test
-  void sixTiersReachSixteenMoreBlocksEachUpToNinetySix() {
-    assertEquals(6, VeinResonatorRules.TIERS);
-    for (int tier = 0; tier <= 6; tier++) assertEquals(16 * tier, VeinResonatorRules.reach(tier));
-    assertEquals(96, VeinResonatorRules.reach(VeinResonatorRules.TIERS));
-    assertThrows(IllegalArgumentException.class, () -> VeinResonatorRules.reach(7));
+  void fourTiersReachEightSixteenThirtyTwoAndSixtyFourBlocks() {
+    assertEquals(4, VeinResonatorRules.TIERS);
+    int[] reach = {0, 8, 16, 32, 64};
+    for (int tier = 0; tier <= 4; tier++) assertEquals(reach[tier], VeinResonatorRules.reach(tier));
+    assertThrows(IllegalArgumentException.class, () -> VeinResonatorRules.reach(5));
     assertThrows(IllegalArgumentException.class, () -> VeinResonatorRules.reach(-1));
+    assertThrows(IllegalArgumentException.class, () -> VeinResonatorRules.id(5));
     // The modifier always aims at the tier's reach, whatever max_blocks a server configured.
     assertEquals(0, VeinResonatorRules.modifierAmount(0, 0));
-    assertEquals(16, VeinResonatorRules.modifierAmount(1, 0));
+    assertEquals(8, VeinResonatorRules.modifierAmount(1, 0));
     assertEquals(-64, VeinResonatorRules.modifierAmount(0, 64));
-    assertEquals(32, VeinResonatorRules.modifierAmount(6, 64));
+    assertEquals(0, VeinResonatorRules.modifierAmount(4, 64));
+    assertEquals(-32, VeinResonatorRules.modifierAmount(3, 64));
     assertEquals("entrelumen:vein_resonator", VeinResonatorRules.MODIFIER_ID);
     assertEquals("ftbultimine:max_blocks_modifier", VeinResonatorRules.ULTIMINE_ATTRIBUTE_ID);
     assertThrows(IllegalArgumentException.class, () -> VeinResonatorRules.id(0));
@@ -69,10 +72,14 @@ class VeinResonatorDataTest {
   void namesLoreAndReachLineExistInEnglishAndSpanish() throws Exception {
     var en = resource("/assets/entrelumen/lang/en_us.json");
     var es = resource("/assets/entrelumen/lang/es_es.json");
-    String[] roman = {"I", "II", "III", "IV", "V", "VI"};
-    for (int tier = 1; tier <= 6; tier++) {
+    String[] roman = {"I", "II", "III", "IV"};
+    for (int tier = 1; tier <= 4; tier++) {
       assertEquals("Vein Resonator " + roman[tier - 1], en.get("item.entrelumen.vein_resonator_" + tier).getAsString());
       assertEquals("Resonador de vetas " + roman[tier - 1], es.get("item.entrelumen.vein_resonator_" + tier).getAsString());
+    }
+    for (int gone = 5; gone <= 6; gone++) {
+      assertFalse(en.has("item.entrelumen.vein_resonator_" + gone), "tier " + gone + " was removed");
+      assertFalse(es.has("item.entrelumen.vein_resonator_" + gone), "tier " + gone + " was removed");
     }
     assertEquals("Ultimine: up to %s blocks", en.get("entrelumen.vein_resonator.reach").getAsString());
     assertEquals("Ultimine: hasta %s bloques", es.get("entrelumen.vein_resonator.reach").getAsString());
@@ -83,21 +90,37 @@ class VeinResonatorDataTest {
     assertNotEquals(en.get("entrelumen.vein_resonator.tooltip"), es.get("entrelumen.vein_resonator.tooltip"));
   }
 
+  /** Elias's drawings (25 September 2026): a fork, the previous tier in the centre, the new materials around it. */
+  private static final Map<Integer, List<String>> PATTERNS = Map.of(
+      1, List.of("G G", "GDG", " G "), 2, List.of("E E", "ERE", " N "), 3, List.of("X X", "XRX", " S "),
+      4, List.of(" A ", " R ", " B "));
+  private static final Map<Integer, Map<String, Integer>> INPUTS = Map.of(
+      1, Map.of("minecraft:gold_ingot", 5, "minecraft:diamond", 1),
+      2, Map.of("minecraft:emerald_block", 4, "minecraft:netherite_ingot", 1, "entrelumen:vein_resonator_1", 1),
+      3, Map.of("minecraft:end_stone", 4, "minecraft:nether_star", 1, "entrelumen:vein_resonator_2", 1),
+      4, Map.of("entrelumen:luminosity_exploration", 1, "entrelumen:luminosity_engineering", 1,
+          "entrelumen:vein_resonator_3", 1));
+
   @Test
-  void eachTierConsumesThePreviousOneAndTheLastTwoLuminosities() throws Exception {
+  void eachTierIsAForkAroundThePreviousOne() throws Exception {
     for (int tier = 1; tier <= 6; tier++) {
+      var path = PACK_RECIPES.resolve("vein_resonator_" + tier + ".json");
+      if (tier > VeinResonatorRules.TIERS) {
+        assertFalse(Files.exists(path), "the pack still ships " + path.getFileName());
+        continue;
+      }
       JsonObject recipe;
-      try (var reader = Files.newBufferedReader(PACK_RECIPES.resolve("vein_resonator_" + tier + ".json"))) {
+      try (var reader = Files.newBufferedReader(path)) {
         recipe = JsonParser.parseReader(reader).getAsJsonObject();
       }
       assertEquals("minecraft:crafting_shaped", recipe.get("type").getAsString());
       assertEquals("entrelumen:vein_resonator_" + tier, recipe.getAsJsonObject("result").get("id").getAsString());
       assertEquals(1, recipe.getAsJsonObject("result").get("count").getAsInt());
+      List<String> pattern = recipe.getAsJsonArray("pattern").asList().stream().map(v -> v.getAsString()).toList();
+      assertEquals(PATTERNS.get(tier), pattern, "vein_resonator_" + tier);
       Map<String, Integer> items = new HashMap<>();
       var key = recipe.getAsJsonObject("key");
-      for (var row : recipe.getAsJsonArray("pattern")) {
-        String line = row.getAsString();
-        assertEquals(3, line.length());
+      for (String line : pattern) {
         for (int i = 0; i < 3; i++) {
           // Left-right symmetric, like every recipe the pack authors.
           assertEquals(line.charAt(i), line.charAt(2 - i), "vein_resonator_" + tier);
@@ -105,18 +128,8 @@ class VeinResonatorDataTest {
             items.merge(key.getAsJsonObject(String.valueOf(line.charAt(i))).get("item").getAsString(), 1, Integer::sum);
         }
       }
-      long previous = items.keySet().stream().filter(id -> id.startsWith("entrelumen:vein_resonator_")).count();
-      long luminosities = items.keySet().stream().filter(id -> id.startsWith("entrelumen:luminosity_")).count();
-      if (tier == 1) {
-        assertEquals(0, previous, "tier 1 starts the chain");
-        assertTrue(items.values().stream().mapToInt(Integer::intValue).sum() <= 6, "tier 1 stays cheap: " + items);
-        assertTrue(items.keySet().stream().allMatch(id -> id.startsWith("minecraft:") || id.equals("entrelumen:raw_lens")),
-            "tier 1 uses only vanilla materials and the raw lens: " + items);
-      } else {
-        assertEquals(1, items.get("entrelumen:vein_resonator_" + (tier - 1)), "tier " + tier);
-        assertEquals(1, previous, "tier " + tier);
-      }
-      assertEquals(tier == 6 ? 2 : 0, luminosities, "Luminosities only in the last tier: " + items);
+      assertEquals(INPUTS.get(tier), items, "vein_resonator_" + tier);
+      if (tier > 1) assertEquals('R', pattern.get(1).charAt(1), "the previous tier sits in the centre");
     }
   }
 
