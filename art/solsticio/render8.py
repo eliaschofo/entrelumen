@@ -43,7 +43,25 @@ TEXNAME.update({
     'pointed_dripstone': ('pointed_dripstone_down_tip',) * 2, 'hanging_roots': ('hanging_roots',) * 2,
     'dripstone_block': ('dripstone_block',) * 2, 'clay': ('clay',) * 2, 'sand': ('sand',) * 2,
     'spruce_fence': ('spruce_planks',) * 2, 'white_wool': ('white_wool',) * 2,
+    'birch_fence': ('birch_planks',) * 2, 'cherry_fence': ('cherry_planks',) * 2, 'dark_oak_fence': ('dark_oak_planks',) * 2,
+    'decorated_pot': ('terracotta',) * 2, 'big_dripleaf_stem': ('big_dripleaf_stem',) * 2,
+    'deepslate_tile_stairs': ('deepslate_tiles',) * 2, 'spruce_stairs': ('spruce_planks',) * 2,
+    'stone_brick_stairs': ('stone_bricks',) * 2, 'sandstone_stairs': ('sandstone',) * 2,
+    'polished_andesite_stairs': ('polished_andesite',) * 2, 'chiseled_sandstone': ('sandstone_top', 'chiseled_sandstone'),
+    'cut_sandstone': ('sandstone_top', 'cut_sandstone'), 'sandstone': ('sandstone_top', 'sandstone'),
+    'stripped_spruce_log': ('stripped_spruce_log_top', 'stripped_spruce_log'), 'bell': ('gold_block',) * 2,
+    'waxed_weathered_cut_copper': ('weathered_cut_copper',) * 2, 'waxed_weathered_cut_copper_stairs': ('weathered_cut_copper',) * 2,
+    'waxed_oxidized_cut_copper_stairs': ('oxidized_cut_copper',) * 2, 'waxed_copper_grate': ('copper_grate',) * 2,
+    'polished_blackstone_wall': ('polished_blackstone',) * 2,
 })
+for _c in ('white', 'orange', 'magenta', 'light_blue', 'yellow', 'lime', 'pink', 'gray', 'light_gray', 'cyan', 'purple',
+           'blue', 'brown', 'green', 'red', 'black'):
+    TEXNAME[_c + '_wall_banner'] = (_c + '_wool',) * 2
+    TEXNAME[_c + '_banner'] = (_c + '_wool',) * 2
+for _w in ('oak', 'spruce', 'birch', 'jungle', 'acacia', 'dark_oak', 'mangrove', 'cherry', 'bamboo', 'crimson', 'warped'):
+    TEXNAME[_w + '_wall_sign'] = (_w + '_planks',) * 2
+    TEXNAME[_w + '_sign'] = (_w + '_planks',) * 2
+    TEXNAME[_w + '_wall_hanging_sign'] = (_w + '_planks',) * 2
 VR.TINTED.update({'cherry_leaves': (255, 255, 255), 'flowering_azalea_leaves': (255, 255, 255), 'azalea_leaves': (255, 255, 255),
                   'jungle_leaves': (80, 160, 50)})
 SKIP = {'minecraft:barrier'}
@@ -52,7 +70,7 @@ EMIT = {'ochre_froglight', 'pearlescent_froglight', 'verdant_froglight', 'sea_la
 SEE = {'glass', 'water', 'yellow_stained_glass', 'white_stained_glass', 'pink_stained_glass', 'magenta_stained_glass',
        'light_blue_stained_glass', 'orange_stained_glass'}
 PLANTS = VR.CROSS | {'short_grass', 'azure_bluet', 'allium', 'cornflower', 'oxeye_daisy', 'lily_of_the_valley', 'flowering_azalea',
-                     'azalea', 'pointed_dripstone', 'hanging_roots', 'lightning_rod'}
+                     'azalea', 'pointed_dripstone', 'hanging_roots', 'lightning_rod', 'big_dripleaf_stem', 'large_fern', 'fern'}
 
 
 def name(st):
@@ -300,7 +318,43 @@ def boxes_for(st):
                  'east': (0, 0, 0, 0.1875, 1, 1), 'west': (0.8125, 0, 0, 1, 1, 1)}[f]]
     if n == 'dirt_path':
         return [(0, 0, 0, 1, 0.9375, 1)]
+    f = p.get('facing', 'north')
+    if n.endswith('_wall_sign') or n.endswith('_wall_banner'):
+        return [{'north': (0, 0.25, 0.875, 1, 0.75, 1), 'south': (0, 0.25, 0, 1, 0.75, 0.125),
+                 'east': (0, 0.25, 0, 0.125, 0.75, 1), 'west': (0.875, 0.25, 0, 1, 0.75, 1)}[f]]
+    if n.endswith('_sign'):
+        return [(0.4375, 0, 0.4375, 0.5625, 0.6, 0.5625), (0, 0.55, 0.45, 1, 1, 0.55)]
+    if n.endswith('_door'):
+        if p.get('open') == 'true':
+            f = {'north': 'east', 'east': 'south', 'south': 'west', 'west': 'north'}[f]
+        return [{'south': (0, 0, 0, 1, 1, 0.1875), 'north': (0, 0, 0.8125, 1, 1, 1),
+                 'east': (0, 0, 0, 0.1875, 1, 1), 'west': (0.8125, 0, 0, 1, 1, 1)}[f]]
+    if n.endswith('_trapdoor') and p.get('open') == 'true':
+        return [{'north': (0, 0, 0.8125, 1, 1, 1), 'south': (0, 0, 0, 1, 1, 0.1875),
+                 'east': (0, 0, 0, 0.1875, 1, 1), 'west': (0.8125, 0, 0, 1, 1, 1)}[f]]
+    if n == 'iron_bars' or n.endswith('glass_pane'):
+        return [(0.4375, 0, 0, 0.5625, 1, 1), (0, 0, 0.4375, 1, 1, 0.5625)]
+    if n == 'bell':
+        return [(0.25, 0.25, 0.25, 0.75, 0.9, 0.75)]
+    rec = VR._mod(st)
+    if rec and not rec.get('solid') and rec.get('bounds'):
+        a, b = rec['bounds']['from'], rec['bounds']['to']
+        box = tuple(max(0.0, min(1.0, v / 16)) for v in (a[0], a[1], a[2], b[0], b[1], b[2]))
+        if box[3] > box[0] and box[4] > box[1] and box[5] > box[2]:
+            return rotate_box(box, f) if 'facing' in p else [box]
     return None
+
+
+def rotate_box(box, facing):
+    """Palette bounds are given for facing=north; turn them about the block's centre."""
+    x0, y0, z0, x1, y1, z1 = box
+    if facing == 'south':
+        return [(1 - x1, y0, 1 - z1, 1 - x0, y1, 1 - z0)]
+    if facing == 'east':
+        return [(1 - z1, y0, x0, 1 - z0, y1, x1)]
+    if facing == 'west':
+        return [(z0, y0, 1 - x1, z1, y1, 1 - x0)]
+    return [box]
 
 
 def texinfo_for(palette):
@@ -318,7 +372,8 @@ def texinfo_for(palette):
         flag = 'plant' if (n in PLANTS or n.startswith('potted_')) else 'see' if (n in SEE or 'glass' in n or n == 'water') else \
             'leaf' if n.endswith('_leaves') else 'solid'
         bx = boxes_for(st) if flag in ('solid', 'plant') else None
-        if bx is not None and (flag == 'plant' or n.endswith(('_fence', '_wall', '_carpet'))):
+        if bx is not None and (flag == 'plant' or n.endswith(('_fence', '_wall', '_carpet', '_sign', '_banner', '_door'))
+                               or n in ('iron_bars', 'bell', 'lantern', 'chain') or VR._mod(st)):
             flag = 'thin'
         info.append((flag, t, s_, n in EMIT or 'froglight' in n, n == 'water', bx))
     return info
@@ -582,36 +637,50 @@ def renders(G, extra, N, out, which, markers):
     os.makedirs(out, exist_ok=True)
     t0 = time.time()
     all_ = 'all' in which
+    say = lambda k, v: print(k, v, round(time.time() - t0), 's', flush=True)
     if all_ or 'map' in which:
-        print('map', topdown(G, N, os.path.join(out, 'solsticio8_map.png'), markers), round(time.time() - t0), 's')
+        say('map', topdown(G, N, os.path.join(out, 'solsticio8_map.png'), markers))
     if all_ or 'iso' in which:
-        print('iso', iso(G, os.path.join(out, 'solsticio8_iso.png'), 2, extra=extra),
-              round(time.time() - t0), 's')
+        say('iso', iso(G, os.path.join(out, 'solsticio8_iso.png'), 2, extra=extra))
     if all_ or 'axis' in which:
         pl = next(p for p in N.PLAZAS if p[0] == 'Plaza del Portal')
         eye = (0.5, pl[3] + 2.6, 121.5)
-        print('axis', street(G, os.path.join(out, 'solsticio8_axis.png'), eye, (0.5, eye[1] + math.tan(math.radians(17)) * 168, -47), fov=80),
-              round(time.time() - t0), 's')
+        say('axis', street(G, os.path.join(out, 'solsticio8_axis.png'), eye, (0.5, eye[1] + math.tan(math.radians(17)) * 168, -47), fov=80))
     if all_ or 'market' in which:
         pl = next(p for p in N.PLAZAS if p[0] == 'Plaza del Mercado')
         (cx, cz) = pl[1]
         eye = (cx - 11.5, pl[3] + 2.6, cz + 6.5)
-        print('market', street(G, os.path.join(out, 'solsticio8_market.png'), eye, (cx + 22, pl[3] + 9, cz + 6), fov=84),
-              round(time.time() - t0), 's')
+        say('market', street(G, os.path.join(out, 'solsticio8_market.png'), eye, (cx + 22, pl[3] + 9, cz + 6), fov=84))
     if all_ or 'workshops' in which:
         eye, tgt = workshop_view(N)
-        print('workshops', street(G, os.path.join(out, 'solsticio8_workshops.png'), eye, tgt), round(time.time() - t0), 's')
-    if all_ or 'underside' in which:
-        print('underside', iso(G, os.path.join(out, 'solsticio8_underside.png'), 2, flip=True, turn=2,
-                               sky=((200, 218, 240), (252, 238, 208))), round(time.time() - t0), 's')
-    if all_ or 'iso-axis' in which:
-        print('iso-axis', iso(G, os.path.join(out, 'solsticio8_iso_axis.png'), 4, box=(-45, -10, -70, 45, G.y1, 135), turn=0),
-              round(time.time() - t0), 's')
-    if all_ or 'iso-market' in which:
+        say('workshops', street(G, os.path.join(out, 'solsticio8_workshops.png'), eye, tgt))
+    if all_ or 'close-workshops' in which:
+        tw = N.landmark('Plaza del Reloj')
+        say('close-workshops', iso(G, os.path.join(out, 'solsticio8_close_workshops.png'), 6,
+                                   box=(tw[0] - 34, -5, tw[1] - 12, tw[0] + 6, G.y1, tw[1] + 22), turn=1))
+    if all_ or 'close-temple' in which:
+        tx, tz = N.landmark('Templo del Alba')
+        say('close-temple', iso(G, os.path.join(out, 'solsticio8_close_temple.png'), 8,
+                                box=(tx - 10, -2, tz - 16, tx + 10, G.y1, tz + 14), turn=1))
+    if 'temple' in which:
+        tx, tz = N.landmark('Templo del Alba')
+        L = N.PADS['temple']
+        foot = max((c for c in N.CELL if N.CELL[c] == 'temple_ground' and c[0] == tx and c[1] > tz), key=lambda c: c[1])
+        eye = (tx + 0.5, N.LEVEL[foot] + 2.6, foot[1] + 0.5)          # at the foot of the approach stair
+        say('temple', street(G, os.path.join(out, 'solsticio8_temple.png'), eye, (tx + 0.5, L + 9, tz + 9), fov=80))
+    if 'underside' in which:
+        say('underside', iso(G, os.path.join(out, 'solsticio8_underside.png'), 2, flip=True, turn=2,
+                             sky=((200, 218, 240), (252, 238, 208))))
+    if 'close-falls' in which:
+        fx, fz = N.landmark('Cascada del Fin')
+        say('close-falls', iso(G, os.path.join(out, 'solsticio8_close_falls.png'), 6,
+                               box=(fx - 14, -45, fz - 14, fx + 10, G.y1, fz + 14)))
+    if 'iso-axis' in which:
+        say('iso-axis', iso(G, os.path.join(out, 'solsticio8_iso_axis.png'), 4, box=(-45, -10, -70, 45, G.y1, 135)))
+    if 'iso-market' in which:
         pl = next(p for p in N.PLAZAS if p[0] == 'Plaza del Mercado')
         (cx, cz) = pl[1]
-        print('iso-market', iso(G, os.path.join(out, 'solsticio8_iso_market.png'), 5, box=(cx - 22, -5, cz - 30, cx + 55, G.y1, cz + 30)),
-              round(time.time() - t0), 's')
+        say('iso-market', iso(G, os.path.join(out, 'solsticio8_iso_market.png'), 5, box=(cx - 22, -5, cz - 30, cx + 55, G.y1, cz + 30)))
 
 
 def workshop_view(N):

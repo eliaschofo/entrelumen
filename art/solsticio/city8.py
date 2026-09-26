@@ -17,8 +17,13 @@ stepping with the street they face); this file turns them into blocks:
     of Light (glass nave), the Temple of Dawn, Terra's Workshop, the palm house, the Clock Tower;
   - markers: everything CityLayout, CommerceSites and SolsticioStory read.
 
+Phase 2 dresses it (dress8: doors, windows, balconies, shopfronts, roofs, interiors from houses.py,
+lanterns, benches, planters, courtyard fountains, signposts), details the landmarks and builds the
+Last Falls as a real cascade (landmarks8), and exports the template (export8).
+
     python art/solsticio/city8.py                   # build, check, report
     python art/solsticio/city8.py --render [names]  # plus renders into SOLSTICIO8_OUT
+    python art/solsticio/city8.py --export          # write the companion's solsticio/city.nbt
 """
 import math
 import os
@@ -31,17 +36,79 @@ sys.path.insert(0, HERE)
 sys.path.insert(0, os.path.join(HERE, '..', 'structures'))
 import net8 as N  # noqa: E402
 from grid8 import Grid  # noqa: E402
+from modblocks import palette as mp  # noqa: E402
 
-OUT = os.environ.get('SOLSTICIO8_OUT', 'E:/Elias/Codex/Entrelumen-ssd/solsticio8'
+mp_state = mp.state
+
+OUT = os.environ.get('SOLSTICIO8_OUT', 'E:/Elias/Codex/Entrelumen-ssd/solsticio8/phase2'
                      if os.path.isdir('E:/Elias/Codex/Entrelumen-ssd') else os.path.join(HERE, 'preview', 'solsticio8'))
 EXT = 174
 YMIN, YMAX = -96, 174
 G = Grid(-EXT, EXT, YMIN, YMAX, -EXT, EXT, alloc=False)   # allocated by build()
 MARKERS = []
-EXTRA = {}               # preview-only voxels (the falls)
+EXTRA = {}               # preview-only voxels (none left: the falls are real water now)
 TOP = {}                 # (x, z) -> y of the top ground block
 N4, N8 = N.N4, N.N8
 REPORT = []
+BLOCK_NBT = {}           # (x, y, z) -> block entity data for the export (the signs' text)
+FALLS = set()            # (x, z) outside the island the Last Falls use (spill, column, catch basin)
+NOT_BARRIER = set()      # columns the shore barrier must leave to the falls
+WATER_OK = set()         # water cells that are meant to flow (the falls): never turned into weirs
+PLACE_KEYS = {           # plaza and landmark names -> lang key suffix (entrelumen.solsticio.place.*)
+    'Plaza Mayor': 'plaza_mayor', 'Plaza del Portal': 'plaza_portal', 'Plaza del Mercado': 'plaza_mercado',
+    'Plaza de las Fuentes': 'plaza_fuentes', 'Plaza del Reloj': 'plaza_reloj', 'Plaza de los Viajeros': 'plaza_viajeros',
+    'Plaza del Reloj de Sol': 'plaza_reloj_sol', 'Plazoleta de los Faroles': 'plazoleta_faroles',
+    'Plazoleta del Pan': 'plazoleta_pan',
+}
+PLACE_NAMES = {          # key -> (es_es, en_us), also the lang files' source
+    'plaza_mayor': ('Plaza Mayor', 'Main Square'), 'plaza_portal': ('Plaza del Portal', 'Portal Square'),
+    'plaza_mercado': ('Plaza del Mercado', 'Market Square'), 'plaza_fuentes': ('Plaza de las Fuentes', 'Fountain Square'),
+    'plaza_reloj': ('Plaza del Reloj', 'Clock Square'), 'plaza_viajeros': ('Plaza de los Viajeros', "Travellers' Square"),
+    'plaza_reloj_sol': ('Plaza del Reloj de Sol', 'Sundial Square'), 'plazoleta_faroles': ('Plazoleta de los Faroles', 'Lantern Close'),
+    'plazoleta_pan': ('Plazoleta del Pan', 'Bread Close'), 'palace': ('Palacio del Solsticio', 'Palace of the Solstice'),
+    'market': ('Gran Mercado de la Luz', 'Great Market of Light'), 'temple': ('Templo del Alba', 'Temple of Dawn'),
+    'workshop': ('Taller de Terra', "Terra's Workshop"), 'botanical': ('Jardín Botánico', 'Botanical Garden'),
+    'clock': ('Torre del Reloj', 'Clock Tower'),
+}
+TRADE_NAMES = {          # key -> (es_es, en_us): the trades on the shopfronts' signs
+    'bakery': ('Panadería', 'Bakery'), 'grocer': ('Almacén', 'Grocer'), 'jeweller': ('Joyería', 'Jeweller'),
+    'cafe': ('Café', 'Café'), 'inn': ('Posada', 'Inn'), 'tailor': ('Sastrería', 'Tailor'), 'florist': ('Florería', 'Florist'),
+    'cartographer': ('Cartografía', 'Cartographer'), 'chandler': ('Velería', 'Chandler'), 'forge': ('Forja', 'Forge'),
+    'carpenter': ('Carpintería', 'Carpenter'), 'glazier': ('Vidriería', 'Glazier'),
+}
+SHOP_KEYS = {'bookstore', 'rarities', 'parts', 'seeds', 'smithy', 'apothecary', 'maps', 'minerals', 'records', 'textiles',
+             'nursery', 'creatures', 'museum', 'bakery', 'apiary', 'curiosities'}
+SIGN_ROT = {'south': 0, 'west': 4, 'north': 8, 'east': 12}
+
+
+def text_json(line):
+    """A sign line as a JSON text component: '' empty, ('place', key) and ('shop', type)
+    translatable (with the Spanish name as fallback), ('text', s) literal."""
+    import json
+    if not line:
+        return '""'
+    kind_, v = line
+    if kind_ == 'place':
+        return json.dumps({'translate': 'entrelumen.solsticio.place.' + v, 'fallback': PLACE_NAMES[v][0]}, ensure_ascii=False)
+    if kind_ == 'shop':
+        assert v in SHOP_KEYS, v
+        return json.dumps({'translate': 'entrelumen.solsticio.shop.' + v}, ensure_ascii=False)
+    if kind_ == 'trade':
+        return json.dumps({'translate': 'entrelumen.solsticio.trade.' + v, 'fallback': TRADE_NAMES[v][0]}, ensure_ascii=False)
+    return json.dumps({'text': v}, ensure_ascii=False)
+
+
+def sign(x, y, z, facing, lines, wall=True, glow=True, wood='spruce'):
+    """A sign with its text: a wall sign on the block behind it (facing away from it) or a
+    standing sign; the text goes into BLOCK_NBT for the export."""
+    st = B('%s_wall_sign[facing=%s,waterlogged=false]' % (wood, facing)) if wall else \
+        B('%s_sign[rotation=%d,waterlogged=false]' % (wood, SIGN_ROT[facing]))
+    G.set(x, y, z, st)
+    msgs = [text_json(l) for l in (list(lines) + ['', '', '', ''])[:4]]
+    side = lambda m: (10, {'messages': (9, (8, m)), 'color': (8, 'black' if not glow else 'yellow'),
+                           'has_glowing_text': (1, 1 if glow else 0)})
+    BLOCK_NBT[(x, y, z)] = {'id': (8, 'minecraft:sign'), 'front_text': side(msgs), 'back_text': side(['""'] * 4),
+                            'is_waxed': (1, 1)}
 
 
 def B(n):
@@ -179,9 +246,9 @@ def fill_ground():
 
 
 # ---------------- surfaces ----------------
-STAIR_MAT = {'axis': 'smooth_quartz', 'trees': 'smooth_quartz', 'boulevard': 'polished_diorite', 'street': 'smooth_sandstone',
+STAIR_MAT = {'axis': 'smooth_quartz', 'trees': 'smooth_quartz', 'boulevard': 'stone_brick', 'street': 'polished_andesite',
              'lane': 'mud_brick', 'crafts': 'brick', 'promenade': 'polished_diorite', 'plaza': 'polished_diorite',
-             'path': 'mossy_stone_brick', 'palace': 'quartz', 'canal': 'smooth_sandstone', 'temple_ground': 'mossy_stone_brick'}
+             'path': 'mossy_stone_brick', 'palace': 'quartz', 'canal': 'polished_andesite', 'temple_ground': 'polished_diorite'}
 
 
 def cls(c):
@@ -224,7 +291,7 @@ APPROACH = set()
 def pave(c):
     x, z = c
     k = cls(c)
-    if k == 'axis':
+    if k == 'axis':                                  # pale polished stone, calcite bands, gold inlays
         part = axis_part(c)
         if part == 'trees':
             return B('grass_block')
@@ -233,20 +300,21 @@ def pave(c):
         if abs(x) >= 10:
             return B('polished_diorite')
         if z % 6 == 0:
-            return B('quartz_bricks')
-        return B('chiseled_quartz_block') if (abs(x) == 5 and z % 6 == 3) else B('smooth_quartz')
-    if k == 'boulevard':
+            return B('gold_block') if abs(x) == 5 else B('calcite')
+        return B('smooth_quartz')
+    if k == 'boulevard':                             # stone bricks and smooth stone, andesite curbs
         edge = any(cls((x + a, z + b)) != 'boulevard' for a, b in N4)
         if edge:
             return B('polished_andesite')
-        return B('polished_diorite' if (x + z) % 4 else 'calcite')
-    if k == 'street':
+        return B('stone_bricks' if (x + z) % 4 else 'smooth_stone')
+    if k == 'street':                                # andesite, tuff curbs
         edge = any(not walkable((x + a, z + b)) for a, b in N4)
         if edge:
-            return B('smooth_sandstone')
-        return B('cut_sandstone' if (x // 2 + z // 2) % 3 else 'sandstone')
-    if k == 'lane':
-        return B('mud_bricks' if (x + 2 * z) % 5 else 'packed_mud')
+            return B('polished_tuff')
+        return B('polished_andesite' if (x // 2 + z // 2) % 3 else 'andesite')
+    if k == 'lane':                                  # packed mud, mud bricks and cobbles
+        r = (x + 2 * z) % 7
+        return B('mud_bricks' if r < 4 else 'packed_mud' if r < 6 else 'cobblestone')
     if k == 'crafts':
         return B('bricks' if (x // 2 + z // 2) % 2 else 'terracotta')
     if k == 'promenade':
@@ -265,13 +333,13 @@ def pave(c):
 PLAZA_STYLE = {
     'Plaza Mayor': ('smooth_quartz', 'polished_diorite', 'gold_block'),
     'Plaza del Portal': ('calcite', 'smooth_quartz', 'gold_block'),
-    'Plaza del Mercado': ('cut_sandstone', 'white_terracotta', 'terracotta'),
+    'Plaza del Mercado': ('smooth_sandstone', 'white_terracotta', 'orange_terracotta'),
     'Plaza de las Fuentes': ('calcite', 'prismarine_bricks', 'polished_diorite'),
     'Plaza del Reloj': ('polished_diorite', 'calcite', 'waxed_cut_copper'),
     'Plaza de los Viajeros': ('calcite', 'polished_andesite', 'lapis_block'),
     'Plaza del Reloj de Sol': ('smooth_quartz', 'cut_sandstone', 'gold_block'),
     'Plazoleta de los Faroles': ('polished_andesite', 'calcite', 'polished_andesite'),
-    'Plazoleta del Pan': ('cut_sandstone', 'bricks', 'cut_sandstone'),
+    'Plazoleta del Pan': ('smooth_sandstone', 'bricks', 'smooth_sandstone'),
 }
 
 
@@ -299,7 +367,7 @@ def surfaces():
         t = TOP[c]
         lev = N.LEVEL[c]
         if k == 'lake':
-            G.set(x, t, z, B('sand' if h(x, z, 5) < 0.6 else 'clay'))
+            G.set(x, t, z, B('clay' if h(x, z, 5) < 0.6 else 'moss_block'))
             for y in range(t + 1, wl + 1):
                 G.set(x, y, z, B('water[level=0]'))
             continue
@@ -362,7 +430,7 @@ def contain_water():
         changed = False
         rounds += 1
         for (x, y, z) in cells:
-            if G.gid(x, y, z) != wid:
+            if G.gid(x, y, z) != wid or (x, y, z) in WATER_OK:
                 continue
             for (a, b, cc) in ((1, 0, 0), (-1, 0, 0), (0, 0, 1), (0, 0, -1), (0, -1, 0)):
                 if a or b:
@@ -428,11 +496,11 @@ def planting():
             if p.cls == 'boulevard':
                 off, every, tphase, lphase = 2.5, 9, 0, 4
             elif p.cls == 'promenade':
-                off, every, tphase, lphase = -1.5, 11, 0, 6
+                off, every, tphase, lphase = -1.5, 9, 0, 5
             elif p.cls == 'street' and p.width >= 7:
-                off, every, tphase, lphase = 3.0, 12, None, 6
-            elif p.cls == 'street':
-                off, every, tphase, lphase = 1.5, 14, None, 7
+                off, every, tphase, lphase = 3.0, 9, None, 4
+            elif p.cls in ('street', 'crafts'):
+                off, every, tphase, lphase = 1.5 if p.cls == 'street' else 3.0, 9, None, 4
             else:
                 continue
             for side in ((1, -1) if p.cls != 'promenade' else (1,)):
@@ -457,7 +525,7 @@ def greenery():
             continue
         x, z = c
         y = TOP[c]
-        if G.filled(x, y + 1, z):
+        if G.filled(x, y + 1, z) or G.get(x, y, z) != B('grass_block'):
             continue
         r = h(x, z, 31)
         dens = {'park': 0.02, 'court': 0.022, 'pocket': 0.04, 'temple_ground': 0.012}[k]
@@ -510,21 +578,24 @@ def rails():
 
 # ---------------- massing ----------------
 DMAT = {
-    'market': dict(walls=['white_terracotta', 'smooth_sandstone', 'calcite', 'white_terracotta'], trim='cut_sandstone',
-                   roof='waxed_cut_copper', floors=3, styles=['gable', 'gable', 'gable', 'flat']),
-    'inns': dict(walls=['cut_sandstone', 'smooth_sandstone', 'birch_planks', 'calcite'], trim='stripped_birch_log',
-                 roof='brick', floors=3, styles=['gable', 'gable', 'gable', 'gable', 'flat']),
-    'gardens': dict(walls=['calcite', 'smooth_quartz', 'calcite'], trim='quartz_bricks',
-                    roof='waxed_oxidized_cut_copper', floors=2, styles=['garden', 'gable']),
-    'travellers': dict(walls=['polished_diorite', 'calcite', 'smooth_quartz'], trim='quartz_bricks',
-                       roof='prismarine_brick', floors=2, styles=['gable', 'gable', 'flat']),
-    'temple': dict(walls=['white_terracotta', 'calcite', 'cherry_planks'], trim='stripped_cherry_log',
-                   roof='cherry', floors=2, styles=['gable', 'gable', 'gable', 'garden']),
-    'workshops': dict(walls=['calcite', 'polished_diorite', 'calcite', 'smooth_quartz'], trim='purpur_pillar',
-                      roof='purpur', floors=2, styles=['saw', 'saw', 'gable']),
+    'market': dict(walls=['smooth_sandstone', 'cut_sandstone', 'bricks', 'sandstone'], trim='chiseled_sandstone',
+                   roofs=[('mcwroofs:orange_terracotta_roof', 'orange_terracotta'), ('mcwroofs:orange_terracotta_roof', 'orange_terracotta'),
+                          ('waxed_cut_copper', 'waxed_cut_copper')], floors=3, styles=['gable', 'gable', 'gable', 'flat']),
+    'inns': dict(walls=['sandstone', 'cut_sandstone', 'smooth_sandstone', 'sandstone'], trim='stripped_spruce_log',
+                 roofs=[('spruce', 'spruce_planks'), ('brick', 'bricks'), ('spruce', 'spruce_planks')], floors=3,
+                 styles=['gable', 'gable', 'gable', 'gable', 'flat']),
+    'gardens': dict(walls=['calcite', 'smooth_quartz', 'calcite', 'quartz_bricks'], trim='quartz_pillar',
+                    roofs=[('waxed_weathered_cut_copper', 'waxed_weathered_cut_copper'), ('mossy_stone_brick', 'moss_block')],
+                    floors=2, styles=['garden', 'gable', 'garden']),
+    'travellers': dict(walls=['calcite', 'polished_diorite', 'smooth_quartz', 'calcite'], trim='quartz_bricks',
+                       roofs=[('waxed_oxidized_cut_copper', 'waxed_oxidized_cut_copper'), ('prismarine_brick', 'prismarine_bricks'),
+                              ('waxed_oxidized_cut_copper', 'waxed_oxidized_cut_copper')], floors=2, styles=['gable', 'gable', 'flat']),
+    'temple': dict(walls=['calcite', 'smooth_quartz', 'calcite', 'white_terracotta'], trim='stripped_cherry_log',
+                   roofs=[('cherry', 'cherry_planks')], floors=2, styles=['gable', 'gable', 'gable', 'garden']),
+    'workshops': dict(walls=['bricks', 'mud_bricks', 'tuff_bricks', 'bricks'], trim='waxed_cut_copper',
+                      roofs=[('deepslate_tile', 'deepslate_tiles'), ('polished_blackstone_brick', 'polished_blackstone_bricks'),
+                             ('deepslate_tile', 'deepslate_tiles')], floors=2, styles=['saw', 'saw', 'gable']),
 }
-ROOF_BLOCK = {'waxed_cut_copper': 'waxed_cut_copper', 'brick': 'bricks', 'waxed_oxidized_cut_copper': 'waxed_oxidized_cut_copper',
-              'prismarine_brick': 'prismarine_bricks', 'cherry': 'cherry_planks', 'purpur': 'purpur_block'}
 STOREY = 4
 LOT_TOP = {}
 LOT_INFO = {}
@@ -548,8 +619,10 @@ def lot_plan():
         floors = d['floors'] + (1 if street_seed % 3 == 0 else 0)
         if lot['prio'] >= 78:
             floors += 1
-        if seed % 5 == 0:
-            floors += 1 if seed % 2 else -1
+        floors += (0, 1, 0, 0, 1, 0, -1)[lot['id'] % 7]          # the rhythm along a street wall
+        corner = len({N.OWNER.get(N.FRONT[c][3]) for c in lot['front'] if c in N.FRONT}) >= 2
+        if corner:
+            floors += 1                                         # corners stand one higher
         mx = sum(c[0] for c in cs) / len(cs)
         mz = sum(c[1] for c in cs) / len(cs)
         cap = 5 if lot['prio'] >= 95 else 4
@@ -557,14 +630,16 @@ def lot_plan():
             cap = 3
         if len(cs) < 24:
             cap = min(cap, 3)
-        floors = max(2, min(floors, cap))
+        floors = max(2, min(floors, cap + (1 if corner else 0)))
         kinds = lot['kinds']
         style = d['styles'][seed % len(d['styles'])]
         if kinds.get('plaza', 0) >= 3 and len(kinds) >= 2 and len(cs) >= 30:
             style = 'dome'
         if lot['prio'] >= 90 and style == 'saw':
             style = 'gable'
-        LOT_INFO[lot['id']] = dict(floors=floors, style=style, wall=d['walls'][seed % len(d['walls'])], seed=seed)
+        roof_, roof_block = d['roofs'][street_seed % len(d['roofs'])]
+        LOT_INFO[lot['id']] = dict(floors=floors, style=style, wall=d['walls'][seed % len(d['walls'])], seed=seed,
+                                   corner=corner, roof=roof_, roof_block=roof_block)
         LOT_TOP[lot['id']] = lot['pad'] + floors * STOREY
 
 
@@ -701,14 +776,21 @@ def building(lot, info):
     if door is not None:
         for y in (pad + 1, pad + 2):
             G.clear(door[0], y, door[1])
+        f = N.FRONT[door][3]
+        info['door'] = (door, (f[0] - door[0], f[1] - door[1]), f)
     roof(lot, info, cs, top)
 
 
+def roof_stair(mat, facing):
+    if mat.startswith('mcwroofs:'):
+        return mp_state(mat, facing=facing, half='bottom', shape='straight')
+    return stairs(mat, facing)
+
+
 def roof(lot, info, cs, top):
-    d = DMAT[lot['district']]
     style = info['style']
-    mat = d['roof']
-    rb = B(ROOF_BLOCK[mat])
+    mat = info['roof']
+    rb = B(info['roof_block'])
     wallb = B(info['wall'])
     s = set(cs)
     if style in ('gable', 'dome'):
@@ -724,7 +806,7 @@ def roof(lot, info, cs, top):
                 if n in s and min(ext[n], cap) > r:
                     up = (a, b)
                     break
-            G.set(c[0], y, c[1], stairs(mat, FACING[up]) if up else rb)
+            G.set(c[0], y, c[1], roof_stair(mat, FACING[up]) if up else rb)
             if r and any((c[0] + a, c[1] + b) not in s for a, b in N4):
                 for yy in range(top + 1, y):                       # the gable end on a party wall
                     G.set(c[0], yy, c[1], wallb)
@@ -739,7 +821,7 @@ def roof(lot, info, cs, top):
         dist = lot_dist(cs)
         for c in cs:
             if dist[c] == 0:
-                G.set(c[0], top + 1, c[1], wall('diorite' if mat != 'brick' else 'brick', up='true'))
+                G.set(c[0], top + 1, c[1], wall('diorite' if lot['district'] != 'inns' else 'brick', up='true'))
             elif style == 'garden':
                 G.set(c[0], top, c[1], B('moss_block' if dist[c] > 1 else 'grass_block'))
                 if h(c[0], c[1], 44) < 0.12:
@@ -749,7 +831,7 @@ def roof(lot, info, cs, top):
         for c in cs:
             k = c[0] % 6
             if k < 4:
-                G.set(c[0], top + 1 + k, c[1], stairs(mat, 'east'))
+                G.set(c[0], top + 1 + k, c[1], roof_stair(mat, 'east'))
                 if dist[c] == 0:
                     for y in range(top + 1, top + 1 + k):
                         G.set(c[0], y, c[1], rb)
@@ -758,11 +840,6 @@ def roof(lot, info, cs, top):
                     G.set(c[0], y, c[1], B('glass') if dist[c] > 0 else rb)
             elif dist[c] == 0:
                 G.set(c[0], top + 1, c[1], rb)
-        if len(cs) > 60 and info['seed'] % 3 == 0:
-            peak = max(cs, key=lambda c: dist[c])
-            for y in range(top + 1, top + 8):
-                G.set(peak[0], y, peak[1], B('bricks'))
-            G.set(peak[0], top + 8, peak[1], B('campfire[facing=north,lit=true,signal_fire=false,waterlogged=false]'))
 
 
 # ---------------- landmarks ----------------
@@ -799,186 +876,6 @@ def dome(cx, cz, y0, R, shell='waxed_cut_copper', rib='gold_block', ribs=8, glas
                 G.set(cx + dx, y0 + dy, cz + dz, B(st))
 
 
-def palace():
-    """The Palace of the Solstice on its acropolis: a colonnaded front over a grand stair from the
-    Plaza Mayor, a three-storey body with corner pavilions, a golden dome on a windowed drum over
-    the portal hall, and the sun tower behind it, the highest thing on the island."""
-    L = N.PADS['palace']
-    cx, cz = 0, -47
-    X0, X1, Z0, Z1 = -20, 20, -60, -35
-    H = 24
-    # body
-    for x in range(X0, X1 + 1):
-        for z in range(Z0, Z1 + 1):
-            edge = x in (X0, X1) or z in (Z0, Z1)
-            for y in range(L + 1, L + H + 1):
-                k = y - L
-                if not edge:
-                    if k in (6, 12, 18) and math.hypot(x - cx, z - cz) > 11.5:
-                        G.set(x, y, z, B('birch_planks'))
-                    continue
-                along = z if x in (X0, X1) else x
-                if k == H:
-                    G.set(x, y, z, B('waxed_cut_copper'))
-                elif along % 4 == 0 or (x in (X0, X1) and z in (Z0, Z1)):
-                    G.set(x, y, z, B('quartz_pillar[axis=y]'))
-                elif k % 6 == 0:
-                    G.set(x, y, z, B('smooth_quartz'))
-                elif k % 6 in (2, 3, 4):
-                    G.set(x, y, z, B('yellow_stained_glass' if k % 6 != 4 else 'white_stained_glass'))
-                else:
-                    G.set(x, y, z, B('calcite'))
-    for x in range(X0, X1 + 1):
-        for z in range(Z0, Z1 + 1):
-            if math.hypot(x - cx, z - cz) > 12.5 or x in (X0, X1) or z in (Z0, Z1):
-                G.set(x, L + H, z, B('smooth_quartz') if not (x in (X0, X1) or z in (Z0, Z1)) else B('waxed_cut_copper'))
-            if x in (X0, X1) or z in (Z0, Z1):
-                post = (x % 4 == 0 and z in (Z0, Z1)) or (z % 4 == 0 and x in (X0, X1))
-                ew = z in (Z0, Z1)
-                G.set(x, L + H + 1, z, wall('diorite', 'low' if ew else 'none', 'none' if ew else 'low',
-                                            'none' if ew else 'low', 'low' if ew else 'none', 'true' if post else 'false'))
-    # the great door and the portico of paired columns before it
-    for x in range(-3, 4):
-        for y in range(L + 1, L + 11):
-            G.clear(x, y, Z1)
-    for x in range(-13, 14, 3):
-        for y in range(L + 1, L + 20):
-            G.set(x, y, -33, B('quartz_pillar[axis=y]'))
-    for x in range(-14, 15):
-        for z in range(-34, -31):
-            G.set(x, L + 20, z, B('smooth_quartz'))
-            G.set(x, L + 21, z, B('waxed_cut_copper'))
-    for r in range(0, 8):
-        for x in range(-14 + 2 * r, 15 - 2 * r):
-            G.set(x, L + 22 + r, -32, B('calcite'))
-            G.set(x, L + 22 + r, -34, B('calcite'))
-            G.set(x, L + 22 + r, -33, B('waxed_cut_copper' if abs(x) >= 13 - 2 * r else 'calcite'))
-    for dx in range(-3, 4):
-        for dy in range(-3, 4):
-            rr = math.hypot(dx, dy)
-            if rr <= 3.3:
-                G.set(dx, L + 25 + dy, -31, B('ochre_froglight[axis=y]' if rr < 1.5 else 'gold_block' if rr > 2.5 else 'yellow_stained_glass'))
-    # corner pavilions with little domes
-    for (px, pz) in ((-20, -35), (20, -35), (-20, -60), (20, -60)):
-        for x in range(px - 4, px + 5):
-            for z in range(pz - 4, pz + 5):
-                edge = abs(x - px) == 4 or abs(z - pz) == 4
-                for y in range(L + 1, L + 31):
-                    if edge:
-                        corner = abs(x - px) == 4 and abs(z - pz) == 4
-                        G.set(x, y, z, B('quartz_pillar[axis=y]' if corner else ('yellow_stained_glass' if (y - L) % 6 in (2, 3, 4) and (x + z) % 2 else 'calcite')))
-                    elif y == L + 30:
-                        G.set(x, y, z, B('smooth_quartz'))
-                    elif (y - L) % 6 == 0:
-                        G.set(x, y, z, B('birch_planks'))
-                    else:
-                        G.clear(x, y, z)
-        dome(px, pz, L + 31, 4, ribs=4)
-        G.set(px, L + 36, pz, B('lightning_rod[facing=up,powered=false,waterlogged=false]'))
-    # drum and dome over the portal hall
-    Rd = 12
-    for (x, z, rr, dx, dz) in ring_xz(cx, cz, Rd - 0.9, Rd + 0.4):
-        th = math.degrees(math.atan2(dz, dx)) % 360
-        col = int(th // 10) % 3 == 0
-        for y in range(L + H + 1, L + H + 9):
-            G.set(x, y, z, B('waxed_cut_copper' if y == L + H + 8 else 'quartz_pillar[axis=y]' if col else
-                               'yellow_stained_glass' if (y - L) % 3 else 'white_stained_glass'))
-    for (x, z, rr, dx, dz) in ring_xz(cx, cz, 0, 12.4):          # the hall opens into the dome
-        for y in range(L + 1, L + H + 1):
-            if rr < 11.5 and not (y == L + H and rr > 10.5):
-                G.clear(x, y, z)
-        G.set(x, L, z, B('gold_block' if 3.4 < rr <= 4.4 else 'yellow_stained_glass' if rr <= 3.4 else
-                          'chiseled_quartz_block' if int(rr) % 4 == 0 else 'smooth_quartz'))
-    dome(cx, cz, L + H + 9, Rd, glass_band=(3, 5), ribs=12, oculus=2.5)
-    top = L + H + 9 + Rd
-    for y in range(top - 1, top + 6):
-        for dx in (-1, 0, 1):
-            for dz in (-1, 0, 1):
-                if abs(dx) + abs(dz) == 2:
-                    G.set(cx + dx, y, cz + dz, B('gold_block'))
-                elif (dx, dz) != (0, 0):
-                    G.set(cx + dx, y, cz + dz, B('yellow_stained_glass'))
-    G.set(cx, top + 6, cz, B('gold_block'))
-    G.set(cx, top + 5, cz, B('ochre_froglight[axis=y]'))
-    for k in range(8):                                          # the columns round the portal
-        th = math.radians(22.5 + 45 * k)
-        px, pz = cx + round(8 * math.cos(th)), cz + round(8 * math.sin(th))
-        for y in range(L + 1, L + 12):
-            G.set(px, y, pz, B('quartz_pillar[axis=y]'))
-        G.set(px, L + 12, pz, B('ochre_froglight[axis=y]'))
-    # the sun tower behind the dome
-    tx, tz = 0, -61
-    TH = 80
-    for y in range(L + 1, L + TH + 1):
-        for dx in range(-3, 4):
-            for dz in range(-3, 4):
-                if max(abs(dx), abs(dz)) != 3:
-                    if y in (L + 1,):
-                        G.set(tx + dx, y - 1, tz + dz, B('smooth_quartz'))
-                    continue
-                corner = abs(dx) == 3 and abs(dz) == 3
-                k = y - L
-                if corner:
-                    st = 'quartz_pillar[axis=y]'
-                elif k % 12 == 0:
-                    st = 'waxed_cut_copper'
-                elif k > TH - 12 and abs(dx) <= 1 or k > TH - 12 and abs(dz) <= 1:
-                    st = 'air' if k < TH - 2 else 'calcite'
-                elif (dx == 0 or dz == 0) and k % 12 in (4, 5, 6, 7):
-                    st = 'yellow_stained_glass'
-                else:
-                    st = 'calcite'
-                G.set(tx + dx, y, tz + dz, B(st))
-    for y in range(L + 1, L + TH):
-        G.set(tx, y, tz + 2, B('ladder[facing=north,waterlogged=false]'))
-    ty = L + TH
-    for dx in range(-4, 5):
-        for dz in range(-4, 5):
-            if max(abs(dx), abs(dz)) <= 4:
-                G.set(tx + dx, ty + 1, tz + dz, B('waxed_cut_copper'))
-    for k in range(1, 7):                                       # a spire of gold
-        r = 4 - (k * 4) // 7
-        for dx in range(-r, r + 1):
-            for dz in range(-r, r + 1):
-                if max(abs(dx), abs(dz)) == r:
-                    G.set(tx + dx, ty + 1 + k, tz + dz, B('gold_block'))
-    sy = ty + 16                                                # the frozen sun
-    R = 5
-    for dx in range(-R - 1, R + 2):
-        for dy in range(-R - 1, R + 2):
-            for dz in range(-R - 1, R + 2):
-                rr = math.sqrt(dx * dx + dy * dy + dz * dz)
-                if rr <= R:
-                    G.set(tx + dx, sy + dy, tz + dz, B(('ochre_froglight[axis=y]', 'shroomlight', 'glowstone')[(abs(dx) + abs(dy) + abs(dz)) % 3]))
-    for y in range(ty + 7, sy - R):
-        G.set(tx, y, tz, B('gold_block'))
-    for k in range(R + 1, R + 6):
-        for (a, b) in N4:
-            G.set(tx + a * k, sy, tz + b * k, B('end_rod[facing=%s]' % FACING[(a, b)]))
-        G.set(tx, sy + k, tz, B('end_rod[facing=up]'))
-    for k in range(R + 1, R + 4):
-        for (a, b) in ((1, 1), (1, -1), (-1, 1), (-1, -1)):
-            G.set(tx + a * k, sy + (k if a > 0 else -k) // 2, tz + b * k, B('gold_block'))
-    # markers: the portal under the dome, the waystone by it, the mayor's hall in the west wing,
-    # the secret garden on the roof behind the dome
-    MARKERS.append(('town_hall_portal', (cx, L + 1, cz)))
-    MARKERS.append(('town_hall_waystone', (cx + 6, L + 1, cz + 7)))
-    for x in range(-18, -13):
-        for z in range(-50, -44):
-            G.set(x, L, z, B('polished_diorite'))
-    MARKERS.append(('mayor', (-15, L + 1, -47)))
-    gz = -58
-    for x in range(8, 15):
-        for z in range(-59, -55):
-            G.set(x, L + H, z, B('moss_block'))
-            if (x + z) % 3 == 0:
-                G.set(x, L + H + 1, z, B(['flowering_azalea', 'azure_bluet', 'allium', 'lily_of_the_valley'][(x * 7 + z) % 4]))
-    G.clear(12, L + H + 1, gz)
-    G.clear(12, L + H + 2, gz)
-    MARKERS.append(('easter:secret_garden', (12, L + H + 1, gz)))
-    return top
-
-
 def max_rect(cells):
     s = set(cells)
     xs = sorted({c[0] for c in cells})
@@ -998,268 +895,6 @@ def max_rect(cells):
                     if a > best[0]:
                         best = (a, (x0, z0, x1, z1))
     return best[1]
-
-
-def market_hall():
-    """The Great Market of Light: a nave under a glass barrel vault on copper ribs, clerestory of
-    glass over a calcite arcade, a sunburst in each end, a glass dome at the crossing."""
-    cells = cells_of('market')
-    x0, z0, x1, z1 = max_rect(cells)
-    L = N.PADS['market']
-    for c in cells:
-        G.set(c[0], TOP[c], c[1], B('polished_diorite' if (c[0] + c[1]) % 2 else 'calcite'))
-    W = 11
-    zc = (z0 + z1) / 2
-    R = (z1 - z0) / 2
-    for x in range(x0, x1 + 1):
-        for z in range(z0, z1 + 1):
-            side = z in (z0, z1)
-            end = x in (x0, x1)
-            if side or end:
-                along = x if side else z
-                for y in range(L + 1, L + W + 1):
-                    k = y - L
-                    pier = along % 4 == 0 or (side and end)
-                    if k == W:
-                        st = 'waxed_cut_copper'
-                    elif pier:
-                        st = 'waxed_copper_block' if k > 4 else 'quartz_pillar[axis=y]'
-                    elif k <= 4:
-                        st = 'calcite' if k == 4 or along % 8 in (1, 7) else 'air'
-                    else:
-                        st = 'glass'
-                    G.set(x, y, z, B(st))
-            dz = z - zc
-            yv = L + W + int(math.sqrt(max(0.0, R * R - dz * dz)) * 0.75)
-            rib = x % 4 == 0
-            G.set(x, yv, z, B('waxed_cut_copper' if rib or end else 'glass'))
-            if end:
-                for y in range(L + W + 1, yv):
-                    ray = int((math.degrees(math.atan2(y - L - W, dz)) + 360) // 15) % 2
-                    G.set(x, y, z, B('gold_block' if ray else 'yellow_stained_glass'))
-    # side aisles' lean-to roofs are part of the vault; a glass dome at the crossing
-    mx = (x0 + x1) // 2
-    top = L + W + int(R * 0.75)
-    dome(mx, round(zc), top - 2, 7, shell='glass', rib='waxed_cut_copper', ribs=8)
-    G.set(mx, top + 6, round(zc), B('gold_block'))
-    G.set(mx, top + 7, round(zc), B('lightning_rod[facing=up,powered=false,waterlogged=false]'))
-    # entrances: the west end opens onto the Plaza del Mercado
-    for z in range(round(zc) - 2, round(zc) + 3):
-        for y in range(L + 1, L + 6):
-            G.clear(x0, y, z)
-    MARKERS.append(('trading_hall', (mx, L + 1, round(zc))))
-    return (x0, z0, x1, z1)
-
-
-def temple():
-    """The Temple of Dawn on its knoll: a gabled nave facing the city, a rose window over the
-    door, a bell tower with a spire at the apse end."""
-    tx, tz = N.landmark('Templo del Alba')
-    L = N.PADS['temple']
-    X0, X1, Z0, Z1 = tx - 7, tx + 7, tz - 9, tz + 9
-    for x in range(X0, X1 + 1):
-        for z in range(Z0, Z1 + 1):
-            edge = x in (X0, X1) or z in (Z0, Z1)
-            for y in range(L + 1, L + 13):
-                if edge:
-                    along = z if x in (X0, X1) else x
-                    k = y - L
-                    st = 'quartz_pillar[axis=y]' if along % 3 == 0 else ('pink_stained_glass' if 3 <= k <= 10 else 'white_terracotta')
-                    G.set(x, y, z, B(st))
-            rr = 8 - abs(x - tx)
-            y = L + 13 + min(rr, 7)
-            if x - tx:
-                G.set(x, y, z, stairs('cherry', 'east' if x < tx else 'west'))
-            else:
-                G.set(x, y, z, B('cherry_planks'))
-            if z in (Z0, Z1):
-                for yy in range(L + 13, y):
-                    G.set(x, yy, z, B('white_terracotta'))
-    for a in range(-4, 5):
-        for b in range(-4, 5):
-            if a * a + b * b <= 16:
-                G.set(tx + a, L + 13 + b, Z1, B(['pink_stained_glass', 'yellow_stained_glass', 'magenta_stained_glass', 'white_stained_glass'][(abs(a) + abs(b)) % 4]))
-    for x in range(tx - 1, tx + 2):
-        for y in range(L + 1, L + 5):
-            G.clear(x, y, Z1)
-    for y in range(L + 1, L + 31):
-        for dx in range(-2, 3):
-            for dz in range(-2, 3):
-                if max(abs(dx), abs(dz)) == 2:
-                    k = y - L
-                    G.set(tx + dx, y, Z0 - 2 + dz, B('quartz_pillar[axis=y]' if abs(dx) == 2 and abs(dz) == 2 else
-                                                     'air' if (k > 24 and (dx == 0 or dz == 0)) else 'white_terracotta'))
-    for k in range(0, 9):
-        r = 3 - (k * 3) // 9
-        for dx in range(-r, r + 1):
-            for dz in range(-r, r + 1):
-                if max(abs(dx), abs(dz)) == r:
-                    G.set(tx + dx, L + 31 + k, Z0 - 2 + dz, B('purpur_block'))
-    G.set(tx, L + 40, Z0 - 2, B('gold_block'))
-    G.set(tx, L + 41, Z0 - 2, B('lightning_rod[facing=up,powered=false,waterlogged=false]'))
-    MARKERS.append(('priest', (tx, L + 1, tz)))
-    # an approach stair up the knoll from the south
-    for c, k in N.CELL.items():
-        if k == 'temple_ground' and abs(c[0] - tx) <= 2 and c[1] > Z1:
-            APPROACH.add(c)
-
-
-def workshop():
-    """Terra's workshop: a hall under a sawtooth of north lights, two copper stacks, a great gear."""
-    cells = cells_of('workshop')
-    x0, z0, x1, z1 = max_rect(cells)
-    L = N.PADS['workshop']
-    for x in range(x0, x1 + 1):
-        for z in range(z0, z1 + 1):
-            edge = x in (x0, x1) or z in (z0, z1)
-            if edge:
-                for y in range(L + 1, L + 11):
-                    along = x if z in (z0, z1) else z
-                    G.set(x, y, z, B('tuff_bricks' if along % 4 == 0 else 'glass' if 3 <= y - L <= 8 else 'calcite'))
-            k = (x - x0) % 6
-            if k < 4:
-                G.set(x, L + 11 + k, z, stairs('purpur', 'east'))
-                for y in range(L + 11, L + 11 + k):
-                    if edge:
-                        G.set(x, y, z, B('purpur_block'))
-            else:
-                for y in range(L + 11, L + 15):
-                    G.set(x, y, z, B('glass' if k == 4 else 'purpur_block') if edge or k == 4 else B('air'))
-            G.set(x, L + 10, z, B('waxed_cut_copper') if edge else B('air'))
-    for (sx, sz) in ((x0 + 4, z0 + 3), (x1 - 4, z0 + 3)):
-        for y in range(L + 11, L + 28):
-            for dx in (-1, 0, 1):
-                for dz in (-1, 0, 1):
-                    if (dx, dz) != (0, 0):
-                        G.set(sx + dx, y, sz + dz, B('waxed_copper_block' if (y - L) % 5 else 'waxed_cut_copper'))
-        G.set(sx, L + 28, sz, B('campfire[facing=north,lit=true,signal_fire=true,waterlogged=false]'))
-    gx, gz = x0 - 1, (z0 + z1) // 2
-    for k in range(40):
-        th = 2 * math.pi * k / 40
-        for rr in (5.0, 5.8):
-            G.set(gx, L + 8 + round(rr * math.sin(th)), gz + round(rr * math.cos(th)), B('gold_block'))
-    for k in range(10):
-        th = 2 * math.pi * k / 10
-        G.set(gx, L + 8 + round(7 * math.sin(th)), gz + round(7 * math.cos(th)), B('gold_block'))
-    for y in range(L + 1, L + 5):
-        for z in range((z0 + z1) // 2 - 1, (z0 + z1) // 2 + 2):
-            G.clear(x0, y, z)
-    MARKERS.append(('inventor', ((x0 + x1) // 2, L + 1, (z0 + z1) // 2)))
-
-
-def palm_house():
-    """Juan's botanical garden: a palm house of glass, barrel vault on gold ribs, a dome over the
-    great tree."""
-    cells = cells_of('greenhouse')
-    x0, z0, x1, z1 = max_rect(cells)
-    L = N.PADS['greenhouse']
-    zc = (z0 + z1) / 2
-    R = (z1 - z0) / 2
-    for x in range(x0, x1 + 1):
-        for z in range(z0, z1 + 1):
-            G.set(x, L, z, B('moss_block' if (x + z) % 3 else 'grass_block'))
-            if x in (x0, x1) or z in (z0, z1):
-                for y in range(L + 1, L + 4):
-                    G.set(x, y, z, B('calcite' if y == L + 1 else 'glass'))
-            dz = z - zc
-            yv = L + 4 + int(math.sqrt(max(0.0, R * R - dz * dz)))
-            G.set(x, yv, z, B('gold_block' if x % 3 == 0 else 'glass'))
-            if x in (x0, x1):
-                for y in range(L + 4, yv):
-                    G.set(x, y, z, B('glass'))
-    mx = (x0 + x1) // 2
-    dome(mx, round(zc), L + 4 + int(R) - 2, 6, shell='glass', rib='gold_block', ribs=8)
-    tree(mx, round(zc), L, 7, 3.2, 'jungle', 'jungle_log')
-    for z in range(round(zc) - 1, round(zc) + 2):
-        for y in (L + 1, L + 2, L + 3):
-            G.clear(x1, y, z)
-    MARKERS.append(('gardener', (mx + 3, L + 1, round(zc))))
-
-
-def clock_tower():
-    cells = cells_of('tower')
-    xs = [c[0] for c in cells]
-    zs = [c[1] for c in cells]
-    x0, x1, z0, z1 = min(xs), max(xs), min(zs), max(zs)
-    cx, cz = (x0 + x1) // 2, (z0 + z1) // 2
-    L = N.PADS['tower']
-    Ht = 38
-    for y in range(L + 1, L + Ht + 1):
-        k = y - L
-        for x in range(x0, x1 + 1):
-            for z in range(z0, z1 + 1):
-                if x in (x0, x1) or z in (z0, z1):
-                    corner = x in (x0, x1) and z in (z0, z1)
-                    open_ = k > Ht - 7 and not corner and k < Ht
-                    G.set(x, y, z, B('quartz_pillar[axis=y]' if corner else 'waxed_cut_copper' if k % 10 == 0 else
-                                     'air' if open_ else 'calcite'))
-    for (a, b) in N4:                                           # four clock faces
-        fx, fz = cx + a * 4, cz + b * 4
-        for u in range(-2, 3):
-            for v in range(-2, 3):
-                if u * u + v * v <= 6:
-                    px = fx if a else cx + u
-                    pz = fz if b else cz + u
-                    G.set(px, L + 26 + v, pz, B('gold_block' if u * u + v * v > 3 else 'white_concrete' if (u, v) != (0, 0) else 'ochre_froglight[axis=y]'))
-    for k in range(0, 12):
-        r = 4 - (k * 4) // 12
-        for x in range(cx - r, cx + r + 1):
-            for z in range(cz - r, cz + r + 1):
-                if max(abs(x - cx), abs(z - cz)) == r:
-                    G.set(x, L + Ht + 1 + k, z, B('waxed_oxidized_cut_copper'))
-    G.set(cx, L + Ht + 13, cz, B('gold_block'))
-    G.set(cx, L + Ht + 14, cz, B('lightning_rod[facing=up,powered=false,waterlogged=false]'))
-    for y in range(L + 1, L + 4):
-        G.clear(cx, y, z1)
-
-
-def templetes():
-    """A small domed templete on the promenade at the end of every radial: every street ends on
-    something to look at."""
-    for (es, en, x, z, k) in N.LANDMARKS:
-        if k != 'mirador':
-            continue
-        cands = [c for c in N.CELL if kind(c) == 'promenade' and math.hypot(c[0] - x, c[1] - z) < 7]
-        if not cands:
-            continue
-        ctr = min(cands, key=lambda c: math.hypot(c[0] - x * 0.97, c[1] - z * 0.97))
-        L = TOP[ctr]
-        for (px, pz, rr, dx, dz) in ring_xz(ctr[0], ctr[1], 0, 3.4):
-            if (px, pz) in TOP:
-                for y in range(TOP[(px, pz)] + 1, L + 1):
-                    G.set(px, y, pz, B('calcite'))
-                G.set(px, L, pz, B('smooth_quartz' if rr > 1 else 'gold_block'))
-        for kk in range(8):
-            th = 2 * math.pi * kk / 8
-            px, pz = ctr[0] + round(3 * math.cos(th)), ctr[1] + round(3 * math.sin(th))
-            for y in range(L + 1, L + 6):
-                G.set(px, y, pz, B('quartz_pillar[axis=y]'))
-        for (px, pz, rr, dx, dz) in ring_xz(ctr[0], ctr[1], 0, 3.4):
-            G.set(px, L + 6, pz, B('smooth_quartz'))
-        dome(ctr[0], ctr[1], L + 6, 3, shell='waxed_cut_copper', rib='gold_block', ribs=4)
-        G.set(ctr[0], L + 5, ctr[1], LANTERN.replace('hanging=false', 'hanging=true'))
-        G.set(ctr[0], L + 10, ctr[1], B('lightning_rod[facing=up,powered=false,waterlogged=false]'))
-
-
-def falls():
-    """The Last Falls: where the east canal leaves the rim, a preview column of falling water."""
-    lm = N.landmark('Cascada del Fin')
-    if not lm:
-        return
-    x, z = lm
-    cands = [c for c in N.CELL if kind(c) == 'canal' and math.hypot(c[0] - x, c[1] - z) < 5]
-    if not cands:
-        return
-    end = max(cands, key=lambda c: math.hypot(*c))
-    top = N.CANAL_LEVEL.get(end, TOP[end] + 2) - 1
-    ux, uz = end[0] / math.hypot(*end), end[1] / math.hypot(*end)
-    for k in range(1, 4):                                   # past the rim, over the edge
-        q = (round(end[0] + ux * k), round(end[1] + uz * k))
-        if q not in N.CELL:
-            break
-    for w in (-1, 0, 1):
-        for y in range(top - 70, top + 1):
-            EXTRA[(q[0] - round(uz * w), y, q[1] + round(ux * w))] = B('water[level=0]')
 
 
 # ---------------- plazas ----------------
@@ -1445,23 +1080,12 @@ def inside_spot(lot):
     return None
 
 
-def lot_markers():
+def choose_inns():
+    """The four side-quest inns: big lots of the Inns quarter, on plazas first, far apart."""
     live = [l for l in N.LOTS if l['cells']]
-    crafts = sorted([l for l in live if l['kinds'].get('crafts')], key=lambda l: (min(c[0] for c in l['cells'])))
-    market = sorted([l for l in live if l['kinds'].get('plaza') and l['district'] == 'market'], key=lambda l: l['id'])
-    shops = []
-    for l in crafts + market + sorted(live, key=lambda l: (-l['prio'], l['id'])):
-        if l['district'] in ('market', 'workshops') and l not in shops and len(l['cells']) >= 24:
-            shops.append(l)
-        if len(shops) == len(SHOP_TYPES):
-            break
-    used = set()
-    for l, t in zip(shops, SHOP_TYPES):
-        spot = inside_spot(l)
-        if spot:
-            MARKERS.append(('shop:' + t, spot))
-            used.add(l['id'])
-    inns = [l for l in live if l['district'] == 'inns' and l['id'] not in used and len(l['cells']) >= 30]
+    import dress8
+    inns = [l for l in live if l['district'] == 'inns' and len(l['cells']) >= 30 and LOT_INFO[l['id']].get('door')
+            and dress8.frame(l, LOT_INFO[l['id']]['door'])[0]]
     inns.sort(key=lambda l: (-l['kinds'].get('plaza', 0), -l['prio'], l['id']))
     chosen = []
     for l in inns:
@@ -1470,12 +1094,18 @@ def lot_markers():
             chosen.append(l)
         if len(chosen) == 4:
             break
-    for l in chosen:
-        spot = inside_spot(l)
+    return {l['id']: 'inn' for l in chosen}
+
+
+def lot_markers(inns):
+    used = set()
+    for lid in inns:
+        spot = inside_spot(N.LOTS[lid])
         if spot:
-            MARKERS.append(('sidequest:%d_inn' % l['id'], spot))
-            used.add(l['id'])
-    homes = [l for l in live if l['id'] not in used and len(l['cells']) >= 24]
+            MARKERS.append(('sidequest:%d_inn' % lid, spot))
+            used.add(lid)
+    live = [l for l in N.LOTS if l['cells']]
+    homes = [l for l in live if l['id'] not in used and len(l['cells']) >= 24 and LOT_INFO[l['id']].get('door')]
     homes.sort(key=lambda l: l['id'])
     for l in homes[::8]:
         spot = inside_spot(l)
@@ -1502,13 +1132,27 @@ def rim_barrier(headroom=64):
     for (x, z) in list(N.CELL):
         for a, b in N8:
             c = (x + a, z + b)
-            if c in N.CELL:
+            if c in N.CELL or c in NOT_BARRIER:
                 continue
             near = [q for q in ((c[0] + u, c[1] + v) for u in (-1, 0, 1) for v in (-1, 0, 1)) if q in N.CELL]
             lo = min(BOTTOM[q] for q in near) - 2
             hi = max(TOP[q] for q in near) + headroom
             for y in range(lo, hi + 1):
                 if G.setdefault(c[0], y, c[1], B('barrier')):
+                    n += 1
+    if FALLS:                                   # round the falls instead of across them
+        lo = min(y for (x, y, z) in WATER_OK) - 8
+        hi = max(TOP[q] for q in N.CELL if any((q[0] + a, q[1] + b) in FALLS for a, b in N8)) + headroom
+        for (x, z) in FALLS:
+            for a, b in N8:
+                c = (x + a, z + b)
+                if c in N.CELL or c in FALLS:
+                    continue
+                for y in range(lo, hi + 1):
+                    if G.setdefault(c[0], y, c[1], B('barrier')):
+                        n += 1
+            for y in range(lo, lo + 2):          # and under the catch basin
+                if G.setdefault(x, y, z, B('barrier')):
                     n += 1
     return n
 
@@ -1598,43 +1242,69 @@ def registry_check():
     except Exception as e:  # noqa: BLE001
         return ['registry not read: %s' % e]
     ids = {st.split('[')[0] for st in G.palette[1:]}
-    return sorted(i for i in ids if i not in items and i not in NOT_ITEMS)
+
+    def item_of(i):                     # blocks without an item of their own name
+        ns, n = i.split(':')
+        cands = [i]
+        if '_wall_' in n or n.startswith('wall_'):
+            cands.append(ns + ':' + n.replace('wall_', ''))
+        if n.startswith('potted_'):
+            cands.append(ns + ':flower_pot')
+        if n.endswith('_stem'):
+            cands.append(ns + ':' + n[:-5])
+        return cands
+    return sorted(i for i in ids if i not in NOT_ITEMS and not any(c in items for c in item_of(i)))
 
 
 # ---------------- build ----------------
 def build():
+    import dress8
+    import landmarks8 as LM
+    me = sys.modules[__name__]
+    LM.bind(me)
+    dress8.bind(me)
     t0 = time.time()
     G.reset()
-    MARKERS.clear()
-    ROOMS.clear()
-    EXTRA.clear()
-    TOP.clear()
-    BOTTOM.clear()
-    APPROACH.clear()
+    for d in (MARKERS, EXTRA, TOP, BOTTOM, BLOCK_NBT, LOT_INFO, LOT_TOP):
+        d.clear()
+    for d in (ROOMS, APPROACH, FALLS, NOT_BARRIER, WATER_OK):
+        d.clear()
+    dress8.STATS.clear()
+    dress8.WATER_HOLD.clear()
     corners = N.solve_all()
     N.contain()
     REPORT.append('levels solved %.0f s' % (time.time() - t0))
     ground_tops()
     hollow = fill_ground()
-    temple()                            # (its approach stair joins the walking cells)
+    LM.temple()                         # (its approach stair joins the walking cells)
     surfaces()
-    palace()
-    market_hall()
-    workshop()
-    palm_house()
-    clock_tower()
+    LM.palace()
+    LM.market_hall()
+    LM.workshop()
+    LM.palm_house()
+    LM.clock_tower()
     nb = massing()
-    templetes()
+    inns = choose_inns()
+    dress8.INNS.clear()
+    dress8.INNS.update(inns)
+    dress8.dress_lots()
+    dress8.interiors(inns)
+    LM.templetes()
     plaza_decor()
     planting()
+    dress8.street_life()
     greenery()
     plot_markers(corners)
     nr = rails()
-    lot_markers()
+    lot_markers(inns)
+    falls = LM.falls()
     weirs = contain_water()
-    falls()
     nbar = rim_barrier()
     REPORT.append('%d buildings, %d rail blocks, %d weirs, %d barrier blocks' % (nb, nr, weirs, nbar))
+    REPORT.append('dressing: ' + ', '.join('%s %d' % kv for kv in sorted(dress8.STATS.items())))
+    if falls:
+        REPORT.append('the Last Falls: water at %d falls %d blocks into its catch basin at %d' % (
+            falls['water'], falls['fall'], falls['ledge']))
     REPORT.append('built %.0f s' % (time.time() - t0))
     return hollow
 
@@ -1701,6 +1371,9 @@ def summary(hollow):
     for m in mi[:40]:
         print('   ', m)
     print('not in the registry:', registry_check())
+    gravity = sorted(st for st in G.palette[1:] if st.split('[')[0].split(':')[1] in (
+        'sand', 'red_sand', 'gravel', 'suspicious_sand', 'suspicious_gravel') or st.split('[')[0].endswith('_concrete_powder'))
+    print('gravity blocks:', gravity)
     print('palette:', len(G.palette) - 1, 'states; mod blocks:', sorted({s.split(':')[0] for s in G.palette[1:]} - {'minecraft'}))
     for r in REPORT + relief_stats():
         print(r)
@@ -1711,6 +1384,9 @@ def summary(hollow):
 if __name__ == '__main__':
     hollow = build()
     summary(hollow)
+    if '--export' in sys.argv:
+        import export8
+        print('export', export8.export(G, MARKERS, BLOCK_NBT, export8.CITY))
     if '--render' in sys.argv:
         import render8
         which = sys.argv[sys.argv.index('--render') + 1:] or ['all']

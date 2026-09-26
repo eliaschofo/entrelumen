@@ -527,6 +527,13 @@ def solve_paths():
                         pins[sj] = lev
         L = profile(g, pins, p.closed, p.q)
         groups = crossings(pi, order)
+        if 'axis' in p.kinds:
+            p.levels = L = axis_profile(g, pins, groups, L)
+            for c, o in OWNER.items():
+                if o == pi:
+                    LEVEL[c] = L[COV[c][pi][1]]
+                    UNIT[c] = 'net'
+            continue
         if groups:
             pins2 = dict(pins)
             for (a, b) in groups:
@@ -542,6 +549,85 @@ def solve_paths():
             if o == pi:
                 LEVEL[c] = L[COV[c][pi][1]]
                 UNIT[c] = 'net'
+
+
+AXIS_FLIGHT = 6          # the longest flight on the Axis
+AXIS_LANDING = 3         # the shortest landing on the Axis
+
+
+def axis_profile(g, pins, groups, first):
+    """The Axis of the Sun as a designed stair: flat where the plazas hold it and across every street
+    that crosses it (those landings take the level the first pass gave them), and between them
+    flights of at most AXIS_FLIGHT steps separated by landings of at least AXIS_LANDING blocks,
+    the spare length shared out evenly so the rhythm is regular."""
+    n = len(g)
+    fixed = dict(pins)
+    for (a, b) in groups:
+        span = [i for i in range(a, b + 1) if 0 <= i < n]
+        if any(i in pins for i in span):
+            continue
+        lev = first[(a + b) // 2]
+        for i in span:
+            fixed[i] = lev
+    zones = []                                   # runs of fixed samples: (start, end, level)
+    i = 0
+    while i < n:
+        if i in fixed:
+            j = i
+            while j + 1 < n and j + 1 in fixed and fixed[j + 1] == fixed[i]:
+                j += 1
+            zones.append([i, j, fixed[i], i in pins])
+            i = j + 1
+        else:
+            i += 1
+    # the crossings' landings share the fall evenly between the two plazas: each takes the level
+    # the free length before it calls for, so no stretch is steeper than the rest
+    held = [z for z in zones if z[3]]
+    if len(held) >= 2:
+        first_z, last_z = held[0], held[-1]
+        free_total = sum(z1[0] - z0[1] - 1 for z0, z1 in zip(zones, zones[1:])) or 1
+        before = 0
+        for z0, z1 in zip(zones, zones[1:]):
+            before += z1[0] - z0[1] - 1
+            if not z1[3] and first_z[0] <= z1[0] <= last_z[0]:
+                z1[2] = round(first_z[2] + (last_z[2] - first_z[2]) * before / free_total)
+    zones = [tuple(z[:3]) for z in zones]
+    L = list(first)
+    for (a, b, lev) in zones:
+        for k in range(a, b + 1):
+            L[k] = lev
+    for (a0, b0, l0), (a1, b1, l1) in zip(zones, zones[1:]):
+        free = list(range(b0 + 1, a1))
+        m, d = len(free), l1 - l0
+        if not free and d == 0:
+            continue
+        steps = abs(d)
+        s = 1 if d > 0 else -1
+        nf = max(1, math.ceil(steps / AXIS_FLIGHT)) if steps else 0
+        spare = m - steps - AXIS_LANDING * max(0, nf - 1)
+        if steps and spare < 0:                   # too steep for full landings: fewer, longer flights
+            nf = max(1, math.ceil(steps / (AXIS_FLIGHT + 2)))
+            spare = m - steps - AXIS_LANDING * max(0, nf - 1)
+            log('Axis: a stretch of %d blocks falls %d; flights up to %d steps there' % (m, steps, AXIS_FLIGHT + 2))
+        if steps and spare < 0:
+            log('Axis: a stretch of %d blocks cannot fall %d with landings; graded' % (m, steps))
+            continue
+        sizes = [steps // nf + (1 if k < steps % nf else 0) for k in range(nf)]
+        gaps = [spare // (nf + 1) + (1 if k < spare % (nf + 1) else 0) for k in range(nf + 1)] if nf else [m]
+        for k in range(1, nf):                    # the landings between flights keep their minimum
+            gaps[k] += AXIS_LANDING
+        lev, pos = l0, 0
+        seq = []
+        for k in range(nf):
+            seq += [lev] * gaps[k]
+            for t in range(sizes[k]):
+                lev += s
+                seq.append(lev)
+        seq += [lev] * gaps[nf] if nf else []
+        seq = seq[:m] + [l1] * max(0, m - len(seq))
+        for idx, v in zip(free, seq):
+            L[idx] = v
+    return L
 
 
 _LAKE = set()
