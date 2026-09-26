@@ -3,7 +3,7 @@
 Elias eligió el astrolabio en lugar del barco. Lo genera `art/structures/ark_multiblock.py`, que escribe la definición en `art/structures/out/ark_multiblock.json`; el companion la carga desde `data/entrelumen/ark_multiblock.json`.
 
 **Forma (final, 25/9, en varias rondas con Elias):** todo apoyado en la tierra, sólo bloques cúbicos más un borde de escaleras, sin adornos, con un poco de cobre, amatista y piedra.
-- **Plataforma:** un piso redondo de radio 8, elevado un nivel sobre el suelo, con un borde de escaleras de ladrillo de piedra alrededor. El piso es de ladrillo de piedra con borde de ladrillo de toba y tiene:
+- **Plataforma:** un piso redondo de radio 8, elevado un nivel sobre el suelo, con un borde de escaleras de ladrillo de piedra alrededor. El piso es de ladrillo de piedra con un borde de **amatista pulida** (`rechiseled:amethyst_block_polished`, que se hace con el cincel de Rechiseled desde bloques de amatista; Elias) y tiene:
   - los 8 rayos del sol en toba pulida;
   - la órbita en calcita, de radio 5;
   - 4 bloques de amatista en las diagonales.
@@ -17,14 +17,14 @@ Elias eligió el astrolabio en lugar del barco. Lo genera `art/structures/ark_mu
   - Ingeniería a 150°.
 - **Arcos:** dos, de radio 7, que se cruzan sobre el controlador, con franjas de cobre cortado y ladrillo de toba, pies de calcita y clave de amatista.
 - **Columnas:** cuatro en las diagonales, en los cuadrantes que no tienen apoyo de arco (Elias):
-  - base chica acampanada: ocho escaleras de amatista pulida alrededor del pie, con sus esquinas (`rechiseled:amethyst_block_polished_stairs`, que se hace con el cincel de Rechiseled desde bloques de amatista);
+  - base chica acampanada: ocho escaleras de toba pulida alrededor del pie, con sus esquinas;
   - fuste de un solo material, calcita;
   - capitel acampanado de cuatro escaleras invertidas de toba pulida, sin esquinas; el beacon va apoyado directo sobre el capitel;
   - en la punta, un **lugar para un beacon**, opcional (ver `ark-modules-v2.md`).
-- **Cuenta:** 427 bloques obligatorios (116 stone_bricks, 72 stone_brick_stairs, 71 tuff_bricks, 62 calcite, 32 amethyst_block_polished_stairs, 20 polished_tuff, 19 cut_copper, 16 polished_tuff_stairs, 7 chiseled_copper, 5 amethyst_block, 1 arcane_module, 1 logistics_module, 1 nature_module, 1 ark_controller, 1 engineering_module, 1 exploration_module, 1 habitation_module), más 4 lugares opcionales para beacons.
+- **Cuenta:** 427 bloques obligatorios (116 stone_bricks, 72 stone_brick_stairs, 62 calcite, 48 amethyst_block_polished, 48 polished_tuff_stairs, 23 tuff_bricks, 20 polished_tuff, 19 cut_copper, 7 chiseled_copper, 5 amethyst_block, 1 arcane_module, 1 logistics_module, 1 nature_module, 1 ark_controller, 1 engineering_module, 1 exploration_module, 1 habitation_module), más 4 lugares opcionales para beacons.
 
 **Reglas de coincidencia para el código.**
-- **Escaleras (para que sea fácil de construir):** en cada posición de escalera vale cualquier escalera del material pedido con el `half` correcto, sin importar `facing` ni `shape`. El juego arma solo las esquinas según las vecinas. El borde de la plataforma es un anillo continuo (8-conectado), para que se formen las esquinas. En las escaleras de Rechiseled vale también la variante `_connecting`.
+- **Escaleras (para que sea fácil de construir):** en cada posición de escalera vale cualquier escalera del material pedido con el `half` correcto, sin importar `facing` ni `shape`. El juego arma solo las esquinas según las vecinas. El borde de la plataforma es un anillo continuo (8-conectado). Cada escalera lleva la forma que le corresponde por geometría: recta donde el piso está de un lado, esquina interior en las muescas y esquina exterior en las puntas. Así queda en el fantasma. En las escaleras de Rechiseled vale también la variante `_connecting`.
 - El cobre coincide con cualquier oxidación y con su versión encerada.
 - Los bloques marcados `required: false` son decoración y no bloquean el Arca.
 - `slot` marca dónde va cada módulo y el controlador.

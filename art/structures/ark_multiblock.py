@@ -38,6 +38,17 @@ SUN_Y = 2         # the controller stands on the raised floor
 DECK = SUN_Y      # export anchor height
 
 
+DIRS = {'north': (0, -1), 'south': (0, 1), 'west': (-1, 0), 'east': (1, 0)}
+CCW = {'north': 'west', 'west': 'south', 'south': 'east', 'east': 'north'}
+CW = {v: k for k, v in CCW.items()}
+OPP = {'north': 'south', 'south': 'north', 'west': 'east', 'east': 'west'}
+
+
+def corner_shape(facing, other):
+    """Outer corner whose tall quarter lies toward `facing` and `other`."""
+    return 'outer_left' if other == CCW[facing] else 'outer_right'
+
+
 def rd(v):
     """Round half away from zero, so shapes stay mirror-symmetric."""
     return int(math.copysign(math.floor(abs(v) + 0.5), v))
@@ -89,7 +100,7 @@ def build():
                 continue
             ang = (math.degrees(math.atan2(z, x)) + 360) % 45
             ray = 1.2 < r < 4.4 and (ang < 7 or ang > 38)
-            put(x, 0, z, 'tuff_bricks' if r > 7.5 else ('polished_tuff' if ray else 'stone_bricks'))
+            put(x, 0, z, 'rechiseled:amethyst_block_polished' if r > 7.5 else ('polished_tuff' if ray else 'stone_bricks'))
     ring(R_EQ, 0.0, 0.0, 'calcite', 0, floor=True)                 # the orbit, laid in the floor
     for p in list(V):
         if p[1] == 0 and abs(math.hypot(p[0], p[2]) - R_EQ) < 0.5 and V[p] != B('calcite') and p not in SLOTS:
@@ -107,16 +118,16 @@ def build():
             V[(x, y, z)] = B('calcite') if y == 1 else (B('cut_copper') if k % 2 == 0 else B('tuff_bricks'))
     put(0, top, 0, 'amethyst_block')                              # the keystone where they cross
     # four columns on the diagonals, where the arches give no support (Elias): a small flared base
-    # with corner stairs of polished amethyst (Rechiseled) and a flared capital of polished-tuff stairs (no corners up there), a
+    # with corner stairs and a flared capital of polished-tuff stairs (no corners up there), a
     # shaft of calcite alone, and the beacon's place right on the capital.
     # The beacon is optional: each one adds a level to the modules' effects (ark-modules-v2.md).
     for (cx, cz) in ((5, 5), (-5, 5), (5, -5), (-5, -5)):
         for (dx, dz, toward) in ((1, 0, 'west'), (-1, 0, 'east'), (0, 1, 'north'), (0, -1, 'south')):
-            put(cx + dx, 1, cz + dz, 'rechiseled:amethyst_block_polished_stairs[facing=%s,half=bottom,shape=straight,waterlogged=false]' % toward)
+            put(cx + dx, 1, cz + dz, 'polished_tuff_stairs[facing=%s,half=bottom,shape=straight,waterlogged=false]' % toward)
             put(cx + dx, 7, cz + dz, 'polished_tuff_stairs[facing=%s,half=top,shape=straight,waterlogged=false]' % toward)
         for (dx, dz) in ((1, 1), (-1, 1), (1, -1), (-1, -1)):   # the base's corners (the game shapes them)
-            put(cx + dx, 1, cz + dz, 'rechiseled:amethyst_block_polished_stairs[facing=%s,half=bottom,shape=straight,waterlogged=false]'
-                % ('north' if dz > 0 else 'south'))
+            put(cx + dx, 1, cz + dz, 'polished_tuff_stairs[facing=%s,half=bottom,shape=%s,waterlogged=false]'
+                % (('north' if dz > 0 else 'south'), corner_shape('north' if dz > 0 else 'south', 'west' if dx > 0 else 'east')))
         for y in range(1, 8):
             put(cx, y, cz, 'calcite')
         put(cx, 8, cz, 'beacon', required=False)                  # the beacon sits right on the capital
@@ -138,8 +149,18 @@ def build():
                 continue
             border.append((x, z))                           # 8-connected: no notches, the game joins corners
     for (x, z) in border:
-        inward = ('west' if x > 0 else 'east') if abs(x) >= abs(z) else ('north' if z > 0 else 'south')
-        put(x, 1, z, 'stone_brick_stairs[facing=%s,half=bottom,shape=straight,waterlogged=false]' % inward)
+        orth = [d for d, (dx, dz) in DIRS.items() if (x + dx, z + dz) in floor]
+        if len(orth) == 1:
+            facing, shape = orth[0], 'straight'
+        elif len(orth) == 2 and orth[0] not in (orth[1], OPP[orth[1]]):
+            facing, shape = orth[0], 'inner_left' if orth[1] == CCW[orth[0]] else 'inner_right'
+        elif len(orth) >= 2:
+            facing, shape = orth[0], 'straight'
+        else:                                               # only a diagonal touches the floor: outer corner
+            dx, dz = next((a, c) for a in (-1, 1) for c in (-1, 1) if (x + a, z + c) in floor)
+            d1, d2 = ('east' if dx > 0 else 'west'), ('south' if dz > 0 else 'north')
+            facing, shape = d1, corner_shape(d1, d2)
+        put(x, 1, z, 'stone_brick_stairs[facing=%s,half=bottom,shape=%s,waterlogged=false]' % (facing, shape))
     return V
 
 
@@ -158,12 +179,6 @@ def export():
         json.dump(data, f, indent=1)
     req = sum(1 for b in blocks if b['required'] and b['block'] != 'minecraft:air')
     print(len(blocks), 'positions,', req, 'required,', len(SLOTS), 'slots')
-
-
-DIRS = {'north': (0, -1), 'south': (0, 1), 'west': (-1, 0), 'east': (1, 0)}
-CCW = {'north': 'west', 'west': 'south', 'south': 'east', 'east': 'north'}
-CW = {v: k for k, v in CCW.items()}
-OPP = {'north': 'south', 'south': 'north', 'west': 'east', 'east': 'west'}
 
 
 def _props(b):
@@ -204,9 +219,9 @@ def subdivided(vox):
             continue
         name = b.split('[')[0]
         pr = _props(b)
-        shape = stair_shape(vox, (x, y, z), b) if name.endswith('_stairs') else None
+        shape = (pr.get('shape') if pr.get('shape', 'straight') != 'straight' else stair_shape(vox, (x, y, z), b))             if name.endswith('_stairs') else None
         texture = name.replace('_stairs', '').replace('_slab', '')
-        texture = 'minecraft:amethyst_block' if texture == 'rechiseled:amethyst_block_polished' else texture
+
         texture = texture.replace('stone_brick', 'stone_bricks') if texture.endswith('stone_brick') else texture
         for sx in (0, 1):
             for sy in (0, 1):
@@ -229,7 +244,8 @@ def subdivided(vox):
                             part = _side(f, sx, sz) or _side(CW[f], sx, sz)
                         keep = full or part
                     if keep:
-                        out[(2 * x + sx, 2 * y + sy, 2 * z + sz)] = texture if name.endswith(('_slab', '_stairs')) else name
+                        t = texture if name.endswith(('_slab', '_stairs')) else name
+                        out[(2 * x + sx, 2 * y + sy, 2 * z + sz)] = 'minecraft:amethyst_block' if t.startswith('rechiseled:amethyst') else t
     return out
 
 
