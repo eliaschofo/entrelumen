@@ -686,11 +686,12 @@ public final class RuinPlacement {
     var mode = job.definition.placement().mode();
     int floor;
     int score;
+    boolean good;
     if (mode == RuinDefinitions.Mode.SURFACE) {
       int n = 7;
       int[] heights = new int[n * n];
       boolean[] water = new boolean[n * n];
-      int canopy = 0;
+      int canopy = 0, wet = 0;
       for (int i = 0; i < n; i++)
         for (int j = 0; j < n; j++) {
           int x = x0 + p.sizeX() / 8 + i * (p.sizeX() * 3 / 4) / (n - 1);
@@ -698,12 +699,18 @@ public final class RuinPlacement {
           int free = level.getHeight(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, x, z);
           heights[i * n + j] = free - 1;
           water[i * n + j] = !level.getBlockState(new BlockPos(x, free - 1, z)).getFluidState().isEmpty();
+          if (water[i * n + j]) wet++;
           if (level.getBlockState(new BlockPos(x, free, z)).is(BlockTags.LOGS)) canopy++;
         }
       floor = RuinRules.floor(heights);
+      int spread = Arrays.stream(heights).max().getAsInt() - Arrays.stream(heights).min().getAsInt();
+      int structures = structures(level, x0, z0, p, floor);
       score = RuinRules.score(new RuinRules.Sample(heights, water, true), MAX_SPREAD);
-      if (score != Integer.MAX_VALUE) score += canopy * 2 + structures(level, x0, z0, p, floor) * 100;
+      if (score != Integer.MAX_VALUE) score += canopy * 2 + structures * 100;
+      // Suitable: gentle ground, almost no water, no big trees, no village or outpost in the way.
+      good = spread <= MAX_SPREAD && wet * 8 <= heights.length && canopy * 4 <= heights.length && structures == 0;
     } else if (mode == RuinDefinitions.Mode.CAVERN) {
+      good = true;
       int[] floors = new int[9];
       for (int i = 0; i < 9; i++) {
         int x = x0 + p.sizeX() / 6 + (i % 3) * (p.sizeX() / 3), z = z0 + p.sizeZ() / 6 + (i / 3) * (p.sizeZ() / 3);
@@ -717,6 +724,7 @@ public final class RuinPlacement {
         score = (Arrays.stream(floors).max().getAsInt() - Arrays.stream(floors).min().getAsInt()) * 8;
       }
     } else {
+      good = true;
       floor = job.origin.getY() + p.ground();
       int crowded = 0;
       for (int x = x0; x < x0 + p.sizeX(); x += 4)
@@ -731,8 +739,8 @@ public final class RuinPlacement {
       job.bestScore = score;
       job.best = candidate;
     }
-    boolean good = switch (mode) {
-      case SURFACE -> score <= 400;
+    good = score != Integer.MAX_VALUE && switch (mode) {
+      case SURFACE -> good;
       case CAVERN -> score <= MAX_SPREAD * 8;
       case SKY -> score <= 24;
     };
