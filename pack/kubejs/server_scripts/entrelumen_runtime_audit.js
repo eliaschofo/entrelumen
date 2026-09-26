@@ -1376,30 +1376,6 @@ const entrelumenAuditTargets = {
       "output": "entrelumen:growth_altar"
     },
     {
-      "id": "entrelumen:integration/ark_arcana",
-      "output": "entrelumen:arcane_module"
-    },
-    {
-      "id": "entrelumen:integration/ark_engineering",
-      "output": "entrelumen:engineering_module"
-    },
-    {
-      "id": "entrelumen:integration/ark_exploration",
-      "output": "entrelumen:exploration_module"
-    },
-    {
-      "id": "entrelumen:integration/ark_habitation",
-      "output": "entrelumen:habitation_module"
-    },
-    {
-      "id": "entrelumen:integration/ark_logistics",
-      "output": "entrelumen:logistics_module"
-    },
-    {
-      "id": "entrelumen:integration/ark_nature",
-      "output": "entrelumen:nature_module"
-    },
-    {
       "id": "entrelumen:integration/crystal_grid",
       "output": "entrelumen:energy_coupler"
     },
@@ -1512,7 +1488,7 @@ const entrelumenAuditTargets = {
       "output": "farmersdelight:flint_knife"
     }
   ],
-  "signature": "552517e99b875330"
+  "signature": "99c97cccbc4a2c74"
 };
 
 ServerEvents.afterRecipes(event => {

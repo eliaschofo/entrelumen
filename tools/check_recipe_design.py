@@ -56,8 +56,9 @@ GRID = ('minecraft:crafting_shaped', 'minecraft:crafting_shapeless', 'create:mec
 
 # The milestones each component closes. Keys are recipe IDs; the text is the milestone. Every other
 # recipe that takes the component fails rule 1, and an entry that no recipe takes any more also fails,
-# so this table and the generators cannot drift apart. The Ark modules and the integration chain are
-# the story's spine: a component made of earlier ones is the act's milestone by definition.
+# so this table and the generators cannot drift apart. The integration chain is the story's spine: a
+# component made of earlier ones is the act's milestone by definition. Since Ark v2 the modules have no
+# table recipe (each is its act's Atlas reward), so no component closes a module here.
 HITOS = {
     'entrelumen:raw_lens': {
         'entrelumen:integration/precision_bench': 'Marco de Calibración (infusión)',
@@ -75,31 +76,25 @@ HITOS = {
         'entrelumen:integration/living_workshop': 'Matriz Viva',
         'entrelumen:integration/signal_exchange': 'Matriz de Enrutamiento',
         'entrelumen:integration/spectral_archive': 'Lente Espectral',
-        'entrelumen:integration/ark_engineering': 'módulo de ingeniería',
         'mekanism:metallurgic_infuser': 'entrada a Mekanism (arranque de la historia)',
         'jamd:portal_block': 'portal a la dimensión minera',
         'entrelumen:cartographer_shelf': 'estante de Eterna del acto II',
     },
     'entrelumen:energy_coupler': {
         'entrelumen:integration/distributed_power': 'Regulador de Energía',
-        'entrelumen:integration/ark_engineering': 'módulo de ingeniería',
         'create_new_age:shaped/carbon_brushes': 'electricidad de New Age (una escobilla por generador)',
     },
     'entrelumen:living_matrix': {
         'entrelumen:integration/nursery_protocol': 'Núcleo de Propagación',
         'entrelumen:integration/pollinator_treaty': 'Cápsula de Ecosistema',
-        'entrelumen:integration/ark_nature': 'módulo de naturaleza',
-        'entrelumen:integration/ark_habitation': 'módulo de habitabilidad',
         'easy_villagers:iron_farm': 'granja de hierro compacta',
     },
     'entrelumen:ration_bundle': {
         'entrelumen:integration/horizon_survey': 'Carta de Horizonte',
         'entrelumen:integration/settlement_supply': 'Contrato de Habitabilidad',
-        'entrelumen:integration/ark_habitation': 'módulo de habitabilidad',
     },
     'entrelumen:routing_matrix': {
         'entrelumen:integration/measured_logistics': 'Sensor de Inventario',
-        'entrelumen:integration/ark_logistics': 'módulo de logística',
         'ae2:network/blocks/controller': 'red ME de AE2',
         'refinedstorage:controller': 'red de Refined Storage',
         'mekanism:teleporter': 'teletransporte',
@@ -130,7 +125,6 @@ HITOS = {
     },
     'entrelumen:handling_core': {
         'entrelumen:integration/resilient_backbone': 'Bus del Arca',
-        'entrelumen:integration/ark_logistics': 'módulo de logística',
         'entrelumen:augment_silent': 'aumentador silencioso',
         'entrelumen:terraform_altar_duplication': 'copia del Altar de Nivelación',
         'refinedstorage:autocrafter': 'autocrafteo de Refined Storage',
@@ -139,15 +133,12 @@ HITOS = {
     },
     'entrelumen:spectral_lens': {
         'entrelumen:integration/sealed_memory': 'Sello de Contención',
-        'entrelumen:integration/ark_arcana': 'módulo arcano',
-        'entrelumen:integration/ark_exploration': 'módulo de exploración',
         'entrelumen:augment_initial_health': 'aumentador de vida inicial',
         'entrelumen:lumen_shelf': 'estante de Arcana del acto IV',
         'entrelumen:light_key': 'Llave de Luz',
         'mekanism:digital_miner': 'cantera: Digital Miner',
     },
     'entrelumen:horizon_chart': {
-        'entrelumen:integration/ark_exploration': 'módulo de exploración',
         'entrelumen:light_key': 'Llave de Luz',
         'entrelumen:repose_altar_duplication': 'copia del Altar de Reposo',
         'entrelumen:horizon_shelf': 'estante del acto V',
@@ -158,7 +149,6 @@ HITOS = {
     },
     'entrelumen:ecosystem_capsule': {
         'entrelumen:integration/renewal_engine': 'Motor de Renovación',
-        'entrelumen:integration/ark_nature': 'módulo de naturaleza',
         'entrelumen:augment_max_nearby': 'aumentador de entidades cercanas',
         'entrelumen:augment_spawn_count': 'aumentador de cantidad',
         'botanypotstiers:ultra_upgrade': 'macetas Ultra',
@@ -167,7 +157,6 @@ HITOS = {
         'enderio:powered_spawner': 'granja de mobs: spawner con energía',
     },
     'entrelumen:containment_seal': {
-        'entrelumen:integration/ark_arcana': 'módulo arcano',
         'entrelumen:augment_burning': 'aumentador ardiente',
         'entrelumen:time_altar_duplication': 'copia del Altar del Tiempo',
         'entrelumen:atlas_library': 'biblioteca del Atlas',
@@ -177,8 +166,6 @@ HITOS = {
         'theurgy:crafting/shaped/sulfuric_flux_emitter': 'réplica alquímica',
     },
     'entrelumen:ark_bus': {
-        'entrelumen:integration/ark_engineering': 'módulo de ingeniería',
-        'entrelumen:integration/ark_logistics': 'módulo de logística',
         'entrelumen:augment_ignore_players': 'aumentador sin jugadores',
         'entrelumen:augment_no_ai': 'aumentador sin IA',
         'entrelumen:augment_redstone_control': 'aumentador con redstone',
@@ -186,16 +173,14 @@ HITOS = {
         'modern_industrialization:electric_age/machine/nuclear_reactor_asbl': 'reactor nuclear de MI',
     },
     'entrelumen:renewal_engine': {
-        'entrelumen:integration/ark_nature': 'módulo de naturaleza',
         'entrelumen:augment_echoing': 'aumentador de eco',
         'entrelumen:augment_ignore_conditions': 'aumentador sin condiciones',
         'entrelumen:augment_ignore_light': 'aumentador sin luz',
         'mekanism:sps_port': 'antimateria (SPS)',
         'botanypotstiers:mega_upgrade': 'macetas Mega',
     },
-    'entrelumen:habitation_contract': {
-        'entrelumen:integration/ark_habitation': 'módulo de habitabilidad',
-    },
+    # Delivered to settlement_supply; since Ark v2 no recipe consumes it.
+    'entrelumen:habitation_contract': {},
 }
 # Fan-out goal per component: the playtest asks for few key recipes (six to eight).
 META = {c: 8 for c in HITOS}

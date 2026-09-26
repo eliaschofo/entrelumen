@@ -4,7 +4,7 @@ Auditoría del 25 de septiembre de 2026, rama `feature/recipe-audit`. Aplica la 
 
 ## Las cinco reglas
 
-1. **Menos anidado.** Un componente de ENTRELUMEN va en un hito: el controlador, el reactor, la máquina que abre una función o el módulo del Arca. Lo básico, lo que se fabrica por docenas y los escalones internos de un mod no piden componentes. Si tienen que seguir escalonados, llevan el **material del acto** (ver abajo), que no obliga a fabricar otro componente.
+1. **Menos anidado.** Un componente de ENTRELUMEN va en un hito: el controlador, el reactor o la máquina que abre una función. Lo básico, lo que se fabrica por docenas y los escalones internos de un mod no piden componentes. Si tienen que seguir escalonados, llevan el **material del acto** (ver abajo), que no obliga a fabricar otro componente.
 2. **Menos abanico.** Cada componente cierra a lo sumo ocho recetas (algunos, menos), y cada una está declarada con el hito que la justifica. Una receta nueva con un componente falla el chequeo hasta que se la declare, y declararla obliga a sacar otra si el componente ya está en su meta.
 3. **El crafteo es un arte.** Toda receta de mesa que lleva o fabrica un ítem de ENTRELUMEN tiene forma y se lee igual reflejada de izquierda a derecha. Sus ítems de ENTRELUMEN van en el eje vertical, en las esquinas o en la fila del medio, nunca en el casillero de un ingrediente cualquiera. Ningún escalón rompe un dibujo que el mod ya tenía simétrico. Las seis Luminosidades cuentan como una sola clase: el Lingote Luminoso las enfrenta por pares.
 4. **Aumentadores de spawner.** Siguen siendo la medalla de cobre de cinco ítems (`·K· / SOS / ·S·`) del lote de progresión, con el componente arriba. El chequeo lo exige para los 16.
@@ -31,25 +31,25 @@ Recetas que consumen cada componente (`python tools/check_recipe_design.py --rep
 
 | Componente | Antes | Ahora | Meta | Hitos |
 |---|---:|---:|---:|---|
-| Motor de renovación | 383 | 6 | 6 | módulo de naturaleza, SPS, macetas Mega, 3 aumentadores |
-| Cápsula de ecosistema | 380 | 8 | 8 | Motor, módulo de naturaleza, macetas Ultra, 3 granjas de mobs, 2 aumentadores |
+| Motor de renovación | 383 | 5 | 6 | SPS, macetas Mega, 3 aumentadores |
+| Cápsula de ecosistema | 380 | 7 | 8 | Motor, macetas Ultra, 3 granjas de mobs, 2 aumentadores |
 | Núcleo de propagación | 371 | 5 | 6 | Motor, macetas Elite, 2 copias de altar, 1 aumentador |
-| Marco de calibración | 314 | 7 | 8 | Matriz viva, Matriz de distribución, Lente, módulo de ingeniería, infusor, portal minero, estante del II |
+| Marco de calibración | 314 | 6 | 8 | Matriz viva, Matriz de distribución, Lente, infusor, portal minero, estante del II |
 | Regulador de energía | 28 | 7 | 8 | Núcleo de manipulación, jetpack de Mekanism, ensamblador de Psi, motor de avión, estante del III, 2 aumentadores |
-| Matriz de distribución | 28 | 8 | 8 | Sensor, módulo de logística, controladores de AE2 y RS, teletransportador, portal a Undergarden, copia de altar, 1 aumentador |
-| Bus del Arca | 22 | 7 | 8 | módulos de ingeniería y logística, reactor de fusión, reactor de MI, 3 aumentadores |
-| Lente espectral | 17 | 7 | 8 | Sello, módulos arcano y de exploración, Digital Miner, Llave de Luz, estante del IV, 1 aumentador |
-| Sello de contención | 14 | 8 | 8 | módulo arcano, reactor de fisión, portal minero del Nether, Estela eterna, emisor de Theurgy, biblioteca del Atlas, copia de altar, 1 aumentador |
-| Carta de horizontes | 10 | 8 | 8 | módulo de exploración, Llave de Luz, 2 vuelos creativos, portales a Eternal Starlight y minería del End, estante del V, copia de altar |
-| Núcleo de manipulación | 8 | 7 | 8 | Bus, módulo de logística, autocrafter de RS, constructor de RFTools, comercio automático, copia de altar, 1 aumentador |
-| Matriz viva | 5 | 5 | 6 | Núcleo de propagación, Cápsula, módulos de naturaleza y habitabilidad, granja de hierro |
+| Matriz de distribución | 28 | 7 | 8 | Sensor, controladores de AE2 y RS, teletransportador, portal a Undergarden, copia de altar, 1 aumentador |
+| Bus del Arca | 22 | 5 | 8 | reactor de fusión, reactor de MI, 3 aumentadores |
+| Lente espectral | 17 | 5 | 8 | Sello, Digital Miner, Llave de Luz, estante del IV, 1 aumentador |
+| Sello de contención | 14 | 7 | 8 | reactor de fisión, portal minero del Nether, Estela eterna, emisor de Theurgy, biblioteca del Atlas, copia de altar, 1 aumentador |
+| Carta de horizontes | 10 | 7 | 8 | Llave de Luz, 2 vuelos creativos, portales a Eternal Starlight y minería del End, estante del V, copia de altar |
+| Núcleo de manipulación | 8 | 6 | 8 | Bus, autocrafter de RS, constructor de RFTools, comercio automático, copia de altar, 1 aumentador |
+| Matriz viva | 5 | 3 | 6 | Núcleo de propagación, Cápsula, granja de hierro |
 | Sensor de inventario | 3 | 3 | 6 | Bus, QIO, 1 aumentador |
-| Acoplador de energía | 3 | 3 | 4 | Regulador, módulo de ingeniería, escobillas de New Age |
-| Provisiones de viaje | 3 | 3 | 4 | Carta de horizontes, Carta de habitabilidad, módulo de habitabilidad |
+| Acoplador de energía | 3 | 2 | 4 | Regulador, escobillas de New Age |
+| Provisiones de viaje | 3 | 2 | 4 | Carta de horizontes, Carta de habitabilidad |
 | Lente en bruto, notas, núcleo de señal | 3, 2, 2 | 2, 2, 2 | 2, 2, 2 | el Marco, el núcleo de señal, la estación y el controlador del Arca |
-| Carta de habitabilidad | 1 | 1 | 2 | módulo de habitabilidad |
+| Carta de habitabilidad | 1 | 0 | 2 | ninguno: se entrega en «Abastecer el asentamiento» |
 
-La Matriz de distribución y el Regulador, que el lote de progresión dejó con cerca de veinte recetas cada uno, quedan en ocho y siete. Desde el nerf del resonador de vetas (25 de septiembre: cuatro tiers de 8, 16, 32 y 64 bloques, con materiales vanilla y Luminosidades en el IV; ver [progression-functions](progression-functions.md#resonador-de-vetas-ultimine-como-curio)) ningún componente cierra un resonador, y el Marco, el Regulador, el Bus, la Lente espectral y la lente en bruto bajan uno. Antes había 273 recetas sin forma y 508 asimétricas con ítems de ENTRELUMEN; ahora ninguna.
+La Matriz de distribución y el Regulador, que el lote de progresión dejó con cerca de veinte recetas cada uno, quedan en ocho y siete. Desde el nerf del resonador de vetas (25 de septiembre: cuatro tiers de 8, 16, 32 y 64 bloques, con materiales vanilla y Luminosidades en el IV; ver [progression-functions](progression-functions.md#resonador-de-vetas-ultimine-como-curio)) ningún componente cierra un resonador, y el Marco, el Regulador, el Bus, la Lente espectral y la lente en bruto bajan uno. Con el Arca v2 (26 de septiembre) los módulos ya no tienen receta de mesa (ver abajo), así que ningún componente cierra un módulo. Antes había 273 recetas sin forma y 508 asimétricas con ítems de ENTRELUMEN; ahora ninguna.
 
 ## Inventario
 
@@ -59,7 +59,7 @@ La Matriz de distribución y el Regulador, que el lote de progresión dejó con 
 |---|---:|---:|---:|
 | Familias escalonadas (industrial, QoL, arcana, Apotheosis, ping-pong, funciones, RFTools, aeronaves) | 106 → 98 | 101 → 38 | 0 → 0 |
 | Recursos (Botany Pots, JAMD, Modular Bees) | 1.421 → 1.105 | 1.421 → 6 | 245 → 0 |
-| Integración y provisiones | 24 → 24 | 24 → 24 | 23 → 0 |
+| Integración y provisiones | 24 → 18 | 24 → 18 | 23 → 0 |
 | Datos del pack (estantes, aumentadores, creativos, resonadores, lingote, datos corregidos) | 90 → 88 | 82 → 80 | 1 → 1 |
 | Companion | 13 → 13 | 13 → 13 | 5 → 0 |
 
@@ -82,7 +82,7 @@ La receta sin forma que queda en los datos del pack es la copia sin cambios del 
 
 ## Dibujos
 
-`·` es un casillero vacío. Los conteos son los de `content/integration-design.json`, así que la entrega de cada módulo del Arca sigue igual a su receta.
+`·` es un casillero vacío. Los conteos son los de `content/integration-design.json`.
 
 ```
 Acoplador (II)     Matriz viva (II)    Provisiones (II)   Matriz de distribución (III)
@@ -121,15 +121,7 @@ Núcleos, placas,     Cápsulas, imperium,      ensalada, procesador
 Sensor               Núcleos de propagación   de cálculo
 ```
 
-```
-Ingeniería (V)   Arcano (V)        Naturaleza (V)    Exploración (V)   Logística (V)   Habitabilidad (V)
-· F ·            · N ·             · W ·             S H S             · R ·           · R ·
-E B E            L I L             C R C             Z L Z             H B H           M C M
-A F A            S · S             · M ·             · D ·             · R ·           · R ·
-Marcos,          estrella,         esponja,          steeleaf, Carta,  Matrices,       provisiones,
-Acopladores,     Lentes, iesnium,  Cápsulas, Motor,  zanita, Lente,    Núcleos, Bus    Matrices, Carta
-Bus, atómica     Sellos            Matriz viva       aliento           
-```
+**Módulos del Arca (v2).** No tienen receta de mesa. En el Arca v2 ([ark-modules-v2](ark-modules-v2.md)) cada módulo es la recompensa única del proyecto del Atlas de su acto (I habitabilidad, II exploración, III naturaleza, IV arcano, V logística e ingeniería), y cada proyecto pide a lo sumo un componente. Esas entregas van de 8 a 33 ítems (por ejemplo 16 amatistas y 16 lapislázulis con la Lente), así que ningún dibujo de 3×3 las iguala, y una copia más barata en la mesa salteaba el proyecto. Las seis recetas `ark_*` del acto V del Arca v1, con sus drops de jefe, se retiraron; un módulo roto se suelta a sí mismo. `generate_integration_recipes.py` rechaza una receta de mesa que fabrique un módulo, y la GameTest `arkmodulescomeonlyfromtheiractprojects` lo comprueba en el pack cargado.
 
 ```
 Lente en bruto   Notas   Núcleo de señal   Atlas   Controlador del Arca
@@ -151,7 +143,7 @@ núcleo            núcleo           en lugar de la perla el pico         dos li
 
 ## Cambios de costo
 
-- **Módulo de exploración:** vuelve la segunda gema de zanita (siete ítems). Cuatro ítems sueltos no entran en un solo eje; la receta, el proyecto de `projects.json`, sus pruebas y los textos del acto V se actualizaron juntos.
+- **Módulo de exploración (Arca v1):** había vuelto la segunda gema de zanita para dibujarlo simétrico. El Arca v2 reemplazó el proyecto y retiró la receta.
 - **Núcleo de señal:** un lingote de cobre más, por la misma razón.
 - **Un escalón con par de casilleros** (sculkshelves, endshelf dracónico, energizador reforzado, cantera de MI, tarjeta de cantera, celda dimensional) pide dos unidades del material. Donde el mod no tenía un casillero libre en el eje, el material o el componente reemplaza un ingrediente único del eje: la perla del cofre y el tanque de Ender, la obsidiana de la cámara de HNN, la verruga del duplicador, el controlador lógico del spawner de Ender IO, la carcasa del autocrafter de RS, la redstone de los láseres de IF y el oro del controlador de XNet. En los capacitores de Powah el material toma el cristal de arriba, que era uno de cuatro.
 - **Macetas por color:** fabricar una directamente cuesta la mejora más los materiales; aplicar la mejora a una maceta colocada sigue costando sólo la mejora.
@@ -209,7 +201,7 @@ Elias pidió que todos los jetpacks del pack gasten 2,5 veces más energía por 
 
 - `tools/check_recipe_design.py` (CI): hitos, abanico, forma, simetría, posición, medalla de aumentadores y los dos filtros. `--report` imprime el inventario completo de recetas con su forma, grilla, componentes y anidado.
 - Los generadores comprueban contra los JAR fijados lo que el chequeo no ve: que un escalón no rompa un dibujo nativo simétrico, que un componente sólo entre en uno simétrico y que la reversión recupere la receta nativa. `generate_integration_recipes.py` exige que cada dibujo use exactamente los insumos del diseño y que la entrega de cada módulo del Arca sea igual a su receta.
-- GameTests de pack completo: `RecipeDesignFullpackGameTests` (dibujos cargados, abanico cargado, entrada a Mekanism sin Oritech, Emperor's Cloth) y las pruebas de RFTools, Botany Pots, New Age, AE2, provisiones y módulos del Arca, ajustadas a las recetas nuevas.
+- GameTests de pack completo: `RecipeDesignFullpackGameTests` (dibujos cargados, abanico cargado, entrada a Mekanism sin Oritech, Emperor's Cloth), `arkmodulescomeonlyfromtheiractprojects` y las pruebas de RFTools, Botany Pots, New Age, AE2 y provisiones, ajustadas a las recetas nuevas.
 - Jetpacks: `tools/test_jetpack_balance.py` (CI) compara los archivos con los valores de fábrica y corre el script en Node con capacidades simuladas. `JetpackBalanceFullpackGameTests` lee en el servidor los valores cargados de Iron Jetpacks, Oritech y PneumaticCraft, y hace volar con el gasto nativo real el jetpack y el blindado de Mekanism, el diésel de MI y el traje de Ad Astra: tras cuatro ticks falta 2,5 veces lo nativo, y un cambio de pieza no cobra nada. La MekaSuit comparte el camino del hidrógeno y no se prueba aparte, porque pide instalar el módulo.
 
 Recibo: [`docs/verification/recipe-audit-runtime.json`](../verification/recipe-audit-runtime.json). Los 33 chequeos de Python dan 0; 225 JUnit y 108 GameTests aisladas pasan. En dos servidores propios y desechables con el pack completo y mundo nuevo pasaron las 145 GameTests de la corrida final (26f4986), con todas las familias de KubeJS en `loaded` sin fallas y la auditoría de contenido en PASS. La prueba de las cuatro recargas necesita la tolerancia de 180 s sólo para QA, como en los lotes anteriores.

@@ -90,6 +90,8 @@ Son 12 Luminosidades en total, 4 por disciplina. Mientras los aldeanos nativos d
 
 ## Drops de jefes en el Arca (acto V)
 
+> **Reemplazado por el Arca v2** (26 de septiembre, [ark-modules-v2](ark-modules-v2.md)): los módulos son proyectos de su acto sin drops de jefe y sin receta de mesa. Esta sección queda como historia.
+
 Cada drop reemplaza una unidad de un insumo que ya estaba, así que ningún módulo pide más ítems que antes. La receta de mesa y la entrega del Atlas siguen iguales entre sí.
 
 | Módulo | Antes | Ahora | Jefe |

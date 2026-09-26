@@ -256,31 +256,36 @@ public final class ProgressionFullpackGameTests {
     helper.succeed();
   }
 
-  @GameTest(template = "empty", timeoutTicks = 20)
-  public static void arkModulesTakeTheirBossDrops(GameTestHelper helper) {
+  @GameTest(template = "empty", timeoutTicks = 40)
+  public static void arkModulesComeOnlyFromTheirActProjects(GameTestHelper helper) {
     requireSuite();
-    Map<String, String> drops = Map.of(
-        "entrelumen:integration/ark_arcana", "minecraft:nether_star",
-        "entrelumen:integration/ark_nature", "minecraft:wet_sponge",
-        "entrelumen:integration/ark_exploration", "minecraft:dragon_breath");
-    Map<String, String> projects = Map.of(
-        "entrelumen:integration/ark_arcana", "arcane_module",
-        "entrelumen:integration/ark_nature", "nature_module",
-        "entrelumen:integration/ark_exploration", "exploration_module");
+    // Ark v2 (docs/design/ark-modules-v2.md): one module per act, the one-time reward of that act's Atlas
+    // project. The v1 table recipes, and the boss drops they carried, are gone.
+    Map<String, Integer> acts = Map.of("habitation_module", 1, "exploration_module", 2, "nature_module", 3,
+        "arcane_module", 4, "logistics_module", 5, "engineering_module", 5);
+    var level = helper.getLevel();
     List<String> problems = new ArrayList<>();
-    drops.forEach((id, drop) -> {
-      var holder = helper.getLevel().getRecipeManager().byKey(ResourceLocation.parse(id));
-      var dropStack = stack(drop);
-      if (holder.isEmpty() || holder.get().value().getIngredients().stream().filter(i -> i.test(dropStack)).count() != 1)
-        problems.add(id + " does not take exactly one " + drop);
-      var project = Projects.all().get(projects.get(id));
-      // Shaped since the playtest of 24 September 2026: empty cells are empty ingredients.
-      if (project == null || project.items().getOrDefault(drop, 0) != 1
-          || holder.isPresent() && project.items().values().stream().mapToInt(Integer::intValue).sum()
-              != holder.get().value().getIngredients().stream().filter(i -> !i.isEmpty()).count())
-        problems.add(projects.get(id) + " delivery does not match its recipe with one " + drop);
+    acts.forEach((module, act) -> {
+      var project = Projects.all().get(module);
+      if (project == null || project.act() != act || !("entrelumen:" + module).equals(project.reward()))
+        problems.add(module + " is not the act " + act + " project that rewards it");
+      else if (project.items().keySet().stream().filter(id -> id.startsWith("entrelumen:")).count() > 1)
+        problems.add(module + " asks for more than one ENTRELUMEN component");
+      var item = stack("entrelumen:" + module);
+      for (var holder : level.getRecipeManager().getRecipes()) {
+        try {
+          if (holder.value().getResultItem(level.registryAccess()).is(item.getItem()))
+            problems.add(holder.id() + " crafts " + module);
+        } catch (RuntimeException special) {
+          // Special recipes have no fixed result.
+        }
+      }
     });
-    helper.assertTrue(problems.isEmpty(), "Ark boss drops: " + problems);
+    for (String retired : List.of("ark_engineering", "ark_arcana", "ark_nature", "ark_exploration", "ark_logistics",
+        "ark_habitation"))
+      if (level.getRecipeManager().byKey(ResourceLocation.parse("entrelumen:integration/" + retired)).isPresent())
+        problems.add("entrelumen:integration/" + retired + " is still loaded");
+    helper.assertTrue(problems.isEmpty(), "Ark modules: " + problems);
     helper.succeed();
   }
 }

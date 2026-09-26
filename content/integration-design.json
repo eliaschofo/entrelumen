@@ -13,12 +13,12 @@
       5,
       6
     ],
-    "projects": 22,
+    "projects": 16,
     "contentMods": 39
   },
   "policies": {
     "gifts": "All components and mod items remain usable, transferable and craftable regardless of campaign. Receiving an item never completes a narrative milestone.",
-    "recipeMechanism": "21 static shaped, symmetric crafting recipes and the frame's infusion are exported by tools/generate_integration_recipes.py; source generation is not evidence that all 22 narrative projects are implemented. Counts expand into <=9 occupied crafting slots with native remainders.",
+    "recipeMechanism": "15 static shaped, symmetric crafting recipes and the frame's infusion are exported by tools/generate_integration_recipes.py; source generation is not evidence that all 16 narrative projects are implemented. Counts expand into <=9 occupied crafting slots with native remainders. The six Ark modules have no table recipe since Ark v2: each is the one-time reward of its act's Atlas project.",
     "progression": "Narrative directed prerequisites are distinct from physical recipe dependencies. Act number means expected acquisition phase, never a use restriction.",
     "failureSafety": "Native static crafting retains container remainders. Acts II-IV and the first half of Act V consume prototypes without replacement; the Ark half of Act V consumes construction inputs and rewards one module once. Commissioning consumes only accepted batches. No timer decay or forced chunks.",
     "containers": "Preserve native recipe remainders for consumed soups/stews; verify bowls return normally in crafting and AE2 automation.",
@@ -1120,479 +1120,6 @@
         "purpose": "Explicit Atlas delivery consumes the portable prototype once and records the current team milestone. No duplicate reward; installed machines remain in place. The related installation exercise is optional and self-reported."
       },
       "tutorialExercise": "Abastecer cocina y depósito; habitación jugable con luz, descanso y señalización. Decoración libre no consumida ni contada como rareza."
-    },
-    {
-      "id": "entrelumen:ark_engineering",
-      "act": 5,
-      "title": {
-        "en_us": "The Beating Engine",
-        "es_es": "El motor del Arca"
-      },
-      "output": {
-        "id": "entrelumen:engineering_module",
-        "count": 1,
-        "registration": "registered companion module; repeatable static recipe and one-time construction project use the same cost"
-      },
-      "recipe": {
-        "id": "entrelumen:integration/ark_engineering",
-        "type": "minecraft:crafting_shaped",
-        "representation": "Shaped and left-right symmetric (Elias's playtest, 24 September 2026): the pattern draws the component, with its ENTRELUMEN items on the axis, corners or middle row. Each ingredient count equals the grid cells it fills, so the inputs and the Atlas delivery stay equal. Native crafting remainders apply. Static recipe: no team/stage/player predicates.",
-        "inputs": [
-          {
-            "id": "entrelumen:calibration_frame",
-            "count": 2
-          },
-          {
-            "id": "entrelumen:energy_coupler",
-            "count": 2
-          },
-          {
-            "id": "entrelumen:ark_bus",
-            "count": 1
-          },
-          {
-            "id": "mekanism:alloy_atomic",
-            "count": 2
-          }
-        ],
-        "pattern": [
-          " F ",
-          "EBE",
-          "AFA"
-        ],
-        "key": {
-          "F": "entrelumen:calibration_frame",
-          "E": "entrelumen:energy_coupler",
-          "B": "entrelumen:ark_bus",
-          "A": "mekanism:alloy_atomic"
-        }
-      },
-      "systems": [
-        "create",
-        "actuallyadditions",
-        "mekanism"
-      ],
-      "completion": "Entregar los materiales de construcción en el Atlas acredita el proyecto y devuelve un módulo. Instalar los seis módulos y aportar los lotes del controlador son pasos separados; se conservan al reiniciar.",
-      "evidenceRequirements": [
-        "loaded item IDs and recipe outputs",
-        "survival acquisition without circular dependencies",
-        "team delivery idempotency/restart",
-        "manual tutorial playthrough"
-      ],
-      "status": "implemented campaign construction delivery; full-pack verification and survival pacing pending",
-      "delivery": {
-        "projectId": "engineering_module",
-        "act": 6,
-        "requires": [
-          "world_network"
-        ],
-        "items": {
-          "entrelumen:calibration_frame": 2,
-          "entrelumen:energy_coupler": 2,
-          "entrelumen:ark_bus": 1,
-          "mekanism:alloy_atomic": 2
-        },
-        "consume": true,
-        "reward": {
-          "id": "entrelumen:engineering_module",
-          "count": 1
-        },
-        "purpose": "Explicit server delivery consumes construction inputs and grants one module once; replay cannot reward again. Static crafting remains an unrestricted replacement path and grants no campaign credit. Installed modules are never consumed."
-      }
-    },
-    {
-      "id": "entrelumen:ark_arcana",
-      "act": 5,
-      "title": {
-        "en_us": "The Listening Chamber",
-        "es_es": "La cámara que escucha"
-      },
-      "output": {
-        "id": "entrelumen:arcane_module",
-        "count": 1,
-        "registration": "registered companion module; repeatable static recipe and one-time construction project use the same cost"
-      },
-      "recipe": {
-        "id": "entrelumen:integration/ark_arcana",
-        "type": "minecraft:crafting_shaped",
-        "representation": "Shaped and left-right symmetric (Elias's playtest, 24 September 2026): the pattern draws the component, with its ENTRELUMEN items on the axis, corners or middle row. Each ingredient count equals the grid cells it fills, so the inputs and the Atlas delivery stay equal. Native crafting remainders apply. Static recipe: no team/stage/player predicates.",
-        "inputs": [
-          {
-            "id": "entrelumen:spectral_lens",
-            "count": 2
-          },
-          {
-            "id": "entrelumen:containment_seal",
-            "count": 2
-          },
-          {
-            "id": "occultism:iesnium_ingot",
-            "count": 1
-          },
-          {
-            "id": "minecraft:nether_star",
-            "count": 1
-          }
-        ],
-        "pattern": [
-          " N ",
-          "LIL",
-          "S S"
-        ],
-        "key": {
-          "N": "minecraft:nether_star",
-          "L": "entrelumen:spectral_lens",
-          "I": "occultism:iesnium_ingot",
-          "S": "entrelumen:containment_seal"
-        }
-      },
-      "systems": [
-        "occultism",
-        "malum",
-        "evilcraft"
-      ],
-      "completion": "Entregar los materiales de construcción en el Atlas acredita el proyecto y devuelve un módulo. Instalar los seis módulos y aportar los lotes del controlador son pasos separados; se conservan al reiniciar.",
-      "evidenceRequirements": [
-        "loaded item IDs and recipe outputs",
-        "survival acquisition without circular dependencies",
-        "team delivery idempotency/restart",
-        "manual tutorial playthrough"
-      ],
-      "status": "implemented campaign construction delivery; full-pack verification and survival pacing pending",
-      "delivery": {
-        "projectId": "arcane_module",
-        "act": 5,
-        "requires": [
-          "world_network"
-        ],
-        "items": {
-          "entrelumen:spectral_lens": 2,
-          "entrelumen:containment_seal": 2,
-          "occultism:iesnium_ingot": 1,
-          "minecraft:nether_star": 1
-        },
-        "consume": true,
-        "reward": {
-          "id": "entrelumen:arcane_module",
-          "count": 1
-        },
-        "purpose": "Explicit server delivery consumes construction inputs and grants one module once; replay cannot reward again. Static crafting remains an unrestricted replacement path and grants no campaign credit. Installed modules are never consumed."
-      }
-    },
-    {
-      "id": "entrelumen:ark_nature",
-      "act": 5,
-      "title": {
-        "en_us": "The Living Reserve",
-        "es_es": "La reserva viva"
-      },
-      "output": {
-        "id": "entrelumen:nature_module",
-        "count": 1,
-        "registration": "registered companion module; repeatable static recipe and one-time construction project use the same cost"
-      },
-      "recipe": {
-        "id": "entrelumen:integration/ark_nature",
-        "type": "minecraft:crafting_shaped",
-        "representation": "Shaped and left-right symmetric (Elias's playtest, 24 September 2026): the pattern draws the component, with its ENTRELUMEN items on the axis, corners or middle row. Each ingredient count equals the grid cells it fills, so the inputs and the Atlas delivery stay equal. Native crafting remainders apply. Static recipe: no team/stage/player predicates.",
-        "inputs": [
-          {
-            "id": "entrelumen:renewal_engine",
-            "count": 1
-          },
-          {
-            "id": "entrelumen:ecosystem_capsule",
-            "count": 2
-          },
-          {
-            "id": "entrelumen:living_matrix",
-            "count": 1
-          },
-          {
-            "id": "minecraft:wet_sponge",
-            "count": 1
-          }
-        ],
-        "pattern": [
-          " W ",
-          "CRC",
-          " M "
-        ],
-        "key": {
-          "W": "minecraft:wet_sponge",
-          "C": "entrelumen:ecosystem_capsule",
-          "R": "entrelumen:renewal_engine",
-          "M": "entrelumen:living_matrix"
-        }
-      },
-      "systems": [
-        "naturesaura",
-        "mysticalagriculture",
-        "productivebees",
-        "the_bumblezone"
-      ],
-      "completion": "Entregar los materiales de construcción en el Atlas acredita el proyecto y devuelve un módulo. Instalar los seis módulos y aportar los lotes del controlador son pasos separados; se conservan al reiniciar.",
-      "evidenceRequirements": [
-        "loaded item IDs and recipe outputs",
-        "survival acquisition without circular dependencies",
-        "team delivery idempotency/restart",
-        "manual tutorial playthrough"
-      ],
-      "status": "implemented campaign construction delivery; full-pack verification and survival pacing pending",
-      "delivery": {
-        "projectId": "nature_module",
-        "act": 5,
-        "requires": [
-          "world_network"
-        ],
-        "items": {
-          "entrelumen:renewal_engine": 1,
-          "entrelumen:ecosystem_capsule": 2,
-          "entrelumen:living_matrix": 1,
-          "minecraft:wet_sponge": 1
-        },
-        "consume": true,
-        "reward": {
-          "id": "entrelumen:nature_module",
-          "count": 1
-        },
-        "purpose": "Explicit server delivery consumes construction inputs and grants one module once; replay cannot reward again. Static crafting remains an unrestricted replacement path and grants no campaign credit. Installed modules are never consumed."
-      }
-    },
-    {
-      "id": "entrelumen:ark_exploration",
-      "act": 5,
-      "title": {
-        "en_us": "A Compass for Impossible Shores",
-        "es_es": "Una brújula para otras orillas"
-      },
-      "output": {
-        "id": "entrelumen:exploration_module",
-        "count": 1,
-        "registration": "registered companion module; repeatable static recipe and one-time construction project use the same cost"
-      },
-      "recipe": {
-        "id": "entrelumen:integration/ark_exploration",
-        "type": "minecraft:crafting_shaped",
-        "representation": "Shaped and left-right symmetric (Elias's playtest, 24 September 2026): the pattern draws the component, with its ENTRELUMEN items on the axis, corners or middle row. Each ingredient count equals the grid cells it fills, so the inputs and the Atlas delivery stay equal. Native crafting remainders apply. Static recipe: no team/stage/player predicates.",
-        "inputs": [
-          {
-            "id": "entrelumen:horizon_chart",
-            "count": 1
-          },
-          {
-            "id": "entrelumen:spectral_lens",
-            "count": 1
-          },
-          {
-            "id": "twilightforest:steeleaf_ingot",
-            "count": 2
-          },
-          {
-            "id": "aether:zanite_gemstone",
-            "count": 2
-          },
-          {
-            "id": "minecraft:dragon_breath",
-            "count": 1
-          }
-        ],
-        "pattern": [
-          "SHS",
-          "ZLZ",
-          " D "
-        ],
-        "key": {
-          "S": "twilightforest:steeleaf_ingot",
-          "H": "entrelumen:horizon_chart",
-          "Z": "aether:zanite_gemstone",
-          "L": "entrelumen:spectral_lens",
-          "D": "minecraft:dragon_breath"
-        }
-      },
-      "systems": [
-        "aether",
-        "twilightforest",
-        "waystones"
-      ],
-      "completion": "Entregar los materiales de construcción en el Atlas acredita el proyecto y devuelve un módulo. Instalar los seis módulos y aportar los lotes del controlador son pasos separados; se conservan al reiniciar.",
-      "evidenceRequirements": [
-        "loaded item IDs and recipe outputs",
-        "survival acquisition without circular dependencies",
-        "team delivery idempotency/restart",
-        "manual tutorial playthrough"
-      ],
-      "status": "implemented campaign construction delivery; full-pack verification and survival pacing pending",
-      "delivery": {
-        "projectId": "exploration_module",
-        "act": 5,
-        "requires": [
-          "world_network",
-          "end_arrival"
-        ],
-        "items": {
-          "entrelumen:horizon_chart": 1,
-          "entrelumen:spectral_lens": 1,
-          "twilightforest:steeleaf_ingot": 2,
-          "aether:zanite_gemstone": 2,
-          "minecraft:dragon_breath": 1
-        },
-        "consume": true,
-        "reward": {
-          "id": "entrelumen:exploration_module",
-          "count": 1
-        },
-        "purpose": "Explicit server delivery consumes construction inputs and grants one module once; replay cannot reward again. Static crafting remains an unrestricted replacement path and grants no campaign credit. Installed modules are never consumed."
-      }
-    },
-    {
-      "id": "entrelumen:ark_logistics",
-      "act": 5,
-      "title": {
-        "en_us": "Nothing Lost in Transit",
-        "es_es": "Nada perdido en el camino"
-      },
-      "output": {
-        "id": "entrelumen:logistics_module",
-        "count": 1,
-        "registration": "registered companion module; repeatable static recipe and one-time construction project use the same cost"
-      },
-      "recipe": {
-        "id": "entrelumen:integration/ark_logistics",
-        "type": "minecraft:crafting_shaped",
-        "representation": "Shaped and left-right symmetric (Elias's playtest, 24 September 2026): the pattern draws the component, with its ENTRELUMEN items on the axis, corners or middle row. Each ingredient count equals the grid cells it fills, so the inputs and the Atlas delivery stay equal. Native crafting remainders apply. Static recipe: no team/stage/player predicates.",
-        "inputs": [
-          {
-            "id": "entrelumen:routing_matrix",
-            "count": 2
-          },
-          {
-            "id": "entrelumen:handling_core",
-            "count": 2
-          },
-          {
-            "id": "entrelumen:ark_bus",
-            "count": 1
-          }
-        ],
-        "pattern": [
-          " R ",
-          "HBH",
-          " R "
-        ],
-        "key": {
-          "R": "entrelumen:routing_matrix",
-          "H": "entrelumen:handling_core",
-          "B": "entrelumen:ark_bus"
-        }
-      },
-      "systems": [
-        "ae2",
-        "integrateddynamics",
-        "integratedtunnels",
-        "laserio",
-        "modularrouters"
-      ],
-      "completion": "Entregar los materiales de construcción en el Atlas acredita el proyecto y devuelve un módulo. Instalar los seis módulos y aportar los lotes del controlador son pasos separados; se conservan al reiniciar.",
-      "evidenceRequirements": [
-        "loaded item IDs and recipe outputs",
-        "survival acquisition without circular dependencies",
-        "team delivery idempotency/restart",
-        "manual tutorial playthrough"
-      ],
-      "status": "implemented campaign construction delivery; full-pack verification and survival pacing pending",
-      "delivery": {
-        "projectId": "logistics_module",
-        "act": 6,
-        "requires": [
-          "world_network"
-        ],
-        "items": {
-          "entrelumen:routing_matrix": 2,
-          "entrelumen:handling_core": 2,
-          "entrelumen:ark_bus": 1
-        },
-        "consume": true,
-        "reward": {
-          "id": "entrelumen:logistics_module",
-          "count": 1
-        },
-        "purpose": "Explicit server delivery consumes construction inputs and grants one module once; replay cannot reward again. Static crafting remains an unrestricted replacement path and grants no campaign credit. Installed modules are never consumed."
-      }
-    },
-    {
-      "id": "entrelumen:ark_habitation",
-      "act": 5,
-      "title": {
-        "en_us": "Room for Everyone",
-        "es_es": "Un lugar para todos"
-      },
-      "output": {
-        "id": "entrelumen:habitation_module",
-        "count": 1,
-        "registration": "registered companion module; repeatable static recipe and one-time construction project use the same cost"
-      },
-      "recipe": {
-        "id": "entrelumen:integration/ark_habitation",
-        "type": "minecraft:crafting_shaped",
-        "representation": "Shaped and left-right symmetric (Elias's playtest, 24 September 2026): the pattern draws the component, with its ENTRELUMEN items on the axis, corners or middle row. Each ingredient count equals the grid cells it fills, so the inputs and the Atlas delivery stay equal. Native crafting remainders apply. Static recipe: no team/stage/player predicates.",
-        "inputs": [
-          {
-            "id": "entrelumen:habitation_contract",
-            "count": 1
-          },
-          {
-            "id": "entrelumen:ration_bundle",
-            "count": 2
-          },
-          {
-            "id": "entrelumen:living_matrix",
-            "count": 2
-          }
-        ],
-        "pattern": [
-          " R ",
-          "MCM",
-          " R "
-        ],
-        "key": {
-          "R": "entrelumen:ration_bundle",
-          "M": "entrelumen:living_matrix",
-          "C": "entrelumen:habitation_contract"
-        }
-      },
-      "systems": [
-        "cookingforblockheads",
-        "farmersdelight",
-        "aquaculture",
-        "supplementaries"
-      ],
-      "completion": "Entregar los materiales de construcción en el Atlas acredita el proyecto y devuelve un módulo. Instalar los seis módulos y aportar los lotes del controlador son pasos separados; se conservan al reiniciar.",
-      "evidenceRequirements": [
-        "loaded item IDs and recipe outputs",
-        "survival acquisition without circular dependencies",
-        "team delivery idempotency/restart",
-        "manual tutorial playthrough"
-      ],
-      "status": "implemented campaign construction delivery; full-pack verification and survival pacing pending",
-      "delivery": {
-        "projectId": "habitation_module",
-        "act": 6,
-        "requires": [
-          "world_network"
-        ],
-        "items": {
-          "entrelumen:habitation_contract": 1,
-          "entrelumen:ration_bundle": 2,
-          "entrelumen:living_matrix": 2
-        },
-        "consume": true,
-        "reward": {
-          "id": "entrelumen:habitation_module",
-          "count": 1
-        },
-        "purpose": "Explicit server delivery consumes construction inputs and grants one module once; replay cannot reward again. Static crafting remains an unrestricted replacement path and grants no campaign credit. Installed modules are never consumed."
-      }
     }
   ],
   "mods": [
@@ -2936,101 +2463,105 @@
     }
   ],
   "arkBehavior": {
-    "activation": "Six existing modules placed around existing controller; install once, feed commissioning batches through controller, never consume blocks.",
-    "phases": [
+    "version": 2,
+    "source": "docs/design/ark-modules-v2.md (Implementación); companion ArkData, ark_multiblock.json",
+    "ark": "One Ark per team: an astrolabe multiblock (ark_multiblock.json, any of four orientations). The controller a member places founds the team's Ark; a loose module never does. Only pieces inside that Ark count.",
+    "moduleWorks": "A module works while it stands in its place, the required core is complete and the controller is placed. Ark level is 1 plus one per beacon on the columns, up to 5. Effects every 2 s for every connected player of the team, in any dimension, without loading the Ark.",
+    "modules": [
       {
-        "id": "calibrate",
-        "requirements": {
-          "entrelumen:calibration_frame": 4,
-          "entrelumen:power_regulator": 2
-        }
-      },
-      {
-        "id": "stabilize",
-        "requirements": {
-          "entrelumen:containment_seal": 2,
-          "entrelumen:ecosystem_capsule": 2
-        }
-      },
-      {
-        "id": "provision",
-        "requirements": {
-          "entrelumen:ration_bundle": 8,
-          "entrelumen:routing_matrix": 2
-        }
-      },
-      {
-        "id": "chart",
-        "requirements": {
-          "entrelumen:horizon_chart": 1
-        }
-      }
-    ],
-    "failure": "Failure/restart preserves installed modules and already accepted batches; identical repeated request yields no duplicate payout.",
-    "finish": "After six persisted commissioning steps, World Network, all six module projects and an observed End arrival, crouched empty-main-hand interaction validates current team, reach and the six physical modules, then records last_horizon once. Inspection replays the ending. Mastery systems and further module benefits remain unimplemented. No periodic world/chunk scanning.",
-    "moduleFunctions": [
-      {
-        "itemId": "entrelumen:engineering_module",
-        "phase": "calibrate",
-        "behavior": "Acepta lotes de calibración y muestra reservas pendientes; habilita el diagnóstico de ingeniería del controlador.",
-        "implementationStatus": "Controller partial-batch ledger implemented and server-tested; the remaining described module experience is still proposed. See docs/design/ark-batches.md."
-      },
-      {
-        "itemId": "entrelumen:arcane_module",
-        "phase": "stabilize",
-        "behavior": "Registra sellos de contención y testimonios recuperados; permite reanudar la estabilización sin repetir entregas.",
-        "implementationStatus": "Controller partial-batch ledger implemented and server-tested; the remaining described module experience is still proposed. See docs/design/ark-batches.md."
-      },
-      {
-        "itemId": "entrelumen:nature_module",
-        "phase": "stabilize",
-        "behavior": "Registra cápsulas ecológicas y el proyecto de restauración; muestra qué abastecimiento natural falta.",
-        "implementationStatus": "Controller partial-batch ledger implemented and server-tested; the remaining described module experience is still proposed. See docs/design/ark-batches.md."
+        "itemId": "entrelumen:habitation_module",
+        "act": 1,
+        "project": "habitation_module",
+        "requires": [
+          "travellers_table"
+        ],
+        "delivery": {
+          "minecraft:white_bed": 1,
+          "minecraft:campfire": 1,
+          "minecraft:lantern": 2,
+          "minecraft:bread": 4
+        },
+        "effect": "/sethome and /home: one home per player, 5 s still warm-up, 15 min cooldown, no home in Solsticio, no /back."
       },
       {
         "itemId": "entrelumen:exploration_module",
-        "phase": "chart",
-        "behavior": "Compila la carta final con expediciones del equipo verificadas; abre la escena final sólo junto a las demás fases.",
-        "implementationStatus": "Controller partial-batch ledger implemented and server-tested; the remaining described module experience is still proposed. See docs/design/ark-batches.md."
+        "act": 2,
+        "project": "exploration_module",
+        "requires": [
+          "first_signal"
+        ],
+        "delivery": {
+          "entrelumen:ration_bundle": 2,
+          "minecraft:compass": 1,
+          "minecraft:map": 4,
+          "minecraft:spyglass": 1
+        },
+        "effect": "Waystones without experience cost (entrelumen:ark_traveller) and /rtp in the 1,000-5,000 block ring, 1 h cooldown."
+      },
+      {
+        "itemId": "entrelumen:nature_module",
+        "act": 3,
+        "project": "nature_module",
+        "requires": [
+          "lost_workshop"
+        ],
+        "delivery": {
+          "entrelumen:propagation_core": 1,
+          "minecraft:moss_block": 8,
+          "minecraft:glistering_melon_slice": 4
+        },
+        "effect": "Infinite ambient Regeneration of the Ark level and half food exhaustion."
+      },
+      {
+        "itemId": "entrelumen:arcane_module",
+        "act": 4,
+        "project": "arcane_module",
+        "requires": [
+          "exchange_route"
+        ],
+        "delivery": {
+          "entrelumen:spectral_lens": 1,
+          "minecraft:amethyst_shard": 16,
+          "minecraft:lapis_lazuli": 16
+        },
+        "effect": "+50 % maximum mana and regeneration per Ark level for Ars Nouveau, Iron's Spells and Psi."
       },
       {
         "itemId": "entrelumen:logistics_module",
-        "phase": "provision",
-        "behavior": "Presenta cantidades restantes por fase y acepta lotes parciales por interacción; no extrae inventarios remotos.",
-        "implementationStatus": "Controller partial-batch ledger implemented and server-tested; the remaining described module experience is still proposed. See docs/design/ark-batches.md."
+        "act": 5,
+        "project": "logistics_module",
+        "requires": [
+          "atlas_voices"
+        ],
+        "delivery": {
+          "entrelumen:routing_matrix": 1,
+          "minecraft:emerald": 16,
+          "minecraft:ender_pearl": 8
+        },
+        "effect": "Infinite Hero of the Village (I plus one per beacon) and remote trade with the Solsticio shops the team knows."
       },
       {
-        "itemId": "entrelumen:habitation_module",
-        "phase": "provision",
-        "behavior": "Registra provisiones y el refugio documentado; conserva el abastecimiento sin hambre artificial ni deterioro offline.",
-        "implementationStatus": "Controller partial-batch ledger implemented and server-tested; the remaining described module experience is still proposed. See docs/design/ark-batches.md."
+        "itemId": "entrelumen:engineering_module",
+        "act": 5,
+        "project": "engineering_module",
+        "requires": [
+          "atlas_voices"
+        ],
+        "delivery": {
+          "entrelumen:ark_bus": 1,
+          "minecraft:redstone_block": 8,
+          "minecraft:copper_block": 8
+        },
+        "effect": "Charges every FE item a player carries or wears: 0.5 % of capacity per second, 100 to 10,000 FE/s per item."
       }
     ],
-    "commissioningSteps": [
-      "engineering_module",
-      "arcane_module",
-      "nature_module",
-      "logistics_module",
-      "habitation_module",
-      "exploration_module"
-    ],
-    "milestones": {
-      "phaseIds": [
-        "ark_calibrated",
-        "ark_contained",
-        "ark_renewed",
-        "ark_routed",
-        "ark_provisioned",
-        "ark_charted"
-      ],
-      "observation": "end_arrival",
-      "ending": "last_horizon",
-      "storage": "Phase mirrors are derived from the existing 0-6 counter; last_horizon uses the saved completed set."
-    }
+    "moduleRecipes": "None. Each module is the reward of its Atlas project, once per team; a module block drops itself when broken. The v1 table recipes (ark_*, act V) were retired with v2.",
+    "activation": "Crouched and empty-handed at the team's controller, with the Ark standing and its six modules, World Network and the End arrival: forges the Light Key and opens act VI.",
+    "retired": "v1 commissioning batches (arkBehavior.phases), the six act V module projects and recipes, and the services (repair workshop, arcane library, chart room, kit depot, lodging). Undelivered batch items return to the team; nothing is lost."
   },
   "runtimePending": [
     "All itemEvidence entries prove resource references only: validate registry presence and loaded recipe conditions with real server.",
-    "22 static recipes are generated in source; this does not implement all 22 narrative projects. Verify companion registry and loaded recipes on the actual server; later-act campaign acceptance remains proposed.",
+    "16 static recipes are generated in source; this does not implement all 16 narrative projects. Verify companion registry and loaded recipes on the actual server; later-act campaign acceptance remains proposed.",
     "Native energy/fluid/automation interactions need actual GUI/inventory capability tests.",
     "Resource-seed and breeding acquisition recipe IDs/alternatives are not finalized: inspect generated runtime recipes, tags and data components.",
     "Balance quantities and six-player scaling through playtests; these are initial values, not proven 150–200h pacing.",
@@ -3073,6 +2604,12 @@
       "scope": "Progression batch",
       "decision": "Elias: the calibration frame loses its crafting recipe. The Act I closure (first_signal) also grants two frames; the Mekanism metallurgic infuser needs one, and the infuser makes more (one raw lens and 40 redstone infusion each), which feed precision_bench and every frame gate. The arcane, exploration and nature modules take one Wither nether star, one bottle of dragon's breath and one wet sponge in place of one unit of an existing input; item counts stay the same.",
       "evidence": "docs/design/progression-functions.md"
+    },
+    {
+      "date": "2026-09-26",
+      "scope": "Ark v2",
+      "decision": "Modules move to one per act (I habitation, II exploration, III nature, IV arcane, V logistics and engineering) as one-time Atlas project rewards with at most one ENTRELUMEN component each. The six v1 table recipes are retired: their deliveries (8 to 33 items) do not fit a 3x3 drawing, and a cheaper table copy would skip the project. Batches and services are gone.",
+      "evidence": "docs/design/ark-modules-v2.md; docs/design/recipe-design-rules.md"
     }
   ]
 }

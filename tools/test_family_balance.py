@@ -496,7 +496,7 @@ class FamilyBalanceTest(unittest.TestCase):
         self.assertEqual(frame['type'], 'mekanism:metallurgic_infusing')
         self.assertEqual(frame['item_input'], {'count': 1, 'item': 'entrelumen:raw_lens'})
         self.assertEqual(frame['output'], {'count': 1, 'id': balance.CF})
-        self.assertEqual(sum(r['type'] == 'minecraft:crafting_shaped' for r in rows.values()), 21)
+        self.assertEqual(sum(r['type'] == 'minecraft:crafting_shaped' for r in rows.values()), 15)
         self.assertFalse(any(balance.CF == r.get('result', {}).get('id') for r in rows.values()))
         with unittest.mock.patch.object(integration, 'STORY_FRAMES', 3):
             with self.assertRaises(ValueError):

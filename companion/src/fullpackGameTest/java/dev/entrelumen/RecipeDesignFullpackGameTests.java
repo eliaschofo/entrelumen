@@ -31,9 +31,10 @@ import org.slf4j.Logger;
 
 /**
  * Installed-pack QA of the recipe audit of 25 September 2026 (docs/design/recipe-design-rules.md), which
- * applies Elias's playtest of 24 September: the integration recipes are symmetric drawings equal to the
- * Ark deliveries, each component closes few loaded recipes, Mekanism's alloys and circuits come only
- * from Mekanism, and Emperor's Cloth keeps working in the grid while the viewers hide it.
+ * applies Elias's playtest of 24 September: the integration recipes are symmetric drawings, each
+ * component closes few loaded recipes, Mekanism's alloys and circuits come only from Mekanism, and
+ * Emperor's Cloth keeps working in the grid while the viewers hide it. Since Ark v2 the modules have no
+ * table recipe (ProgressionFullpackGameTests.arkModulesComeOnlyFromTheirActProjects).
  */
 @GameTestHolder("entrelumen")
 @PrefixGameTestTemplate(false)
@@ -45,13 +46,6 @@ public final class RecipeDesignFullpackGameTests {
       "inventory_sensor", "handling_core", "spectral_lens", "horizon_chart", "ecosystem_capsule",
       "containment_seal", "ark_bus", "renewal_engine", "habitation_contract");
   static final int GOAL = 8;
-  static final Map<String, String> MODULES = Map.of(
-      "entrelumen:integration/ark_engineering", "engineering_module",
-      "entrelumen:integration/ark_arcana", "arcane_module",
-      "entrelumen:integration/ark_nature", "nature_module",
-      "entrelumen:integration/ark_exploration", "exploration_module",
-      "entrelumen:integration/ark_logistics", "logistics_module",
-      "entrelumen:integration/ark_habitation", "habitation_module");
 
   private RecipeDesignFullpackGameTests() {}
 
@@ -74,7 +68,7 @@ public final class RecipeDesignFullpackGameTests {
   }
 
   @GameTest(template = "empty", timeoutTicks = 40)
-  public static void integrationDrawingsAreSymmetricAndMatchTheirDeliveries(GameTestHelper helper) {
+  public static void integrationDrawingsAreSymmetric(GameTestHelper helper) {
     requireSuite();
     List<String> problems = new ArrayList<>();
     int drawings = 0;
@@ -92,17 +86,8 @@ public final class RecipeDesignFullpackGameTests {
         for (int x = 0; x < width; x++)
           if (!kind(cells.get(y * width + x)).equals(kind(cells.get(y * width + width - 1 - x))))
             problems.add(id + " is not symmetric at row " + y);
-      String module = MODULES.get(id);
-      if (module != null) {
-        Map<String, Integer> counts = new TreeMap<>();
-        for (Ingredient cell : cells)
-          if (!cell.isEmpty()) counts.merge(kind(cell).getFirst(), 1, Integer::sum);
-        var project = Projects.all().get(module);
-        if (project == null || !new TreeMap<>(project.items()).equals(counts))
-          problems.add(id + " grid " + counts + " differs from the " + module + " delivery");
-      }
     }
-    helper.assertTrue(drawings == 21, "Expected 21 drawn integration recipes, found " + drawings);
+    helper.assertTrue(drawings == 15, "Expected 15 drawn integration recipes, found " + drawings);
     LOGGER.info("ENTRELUMEN_RECIPE_DESIGN drawings={} problems={}", drawings, problems);
     helper.assertTrue(problems.isEmpty(), "Integration drawings: " + problems);
     helper.succeed();
