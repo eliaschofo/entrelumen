@@ -145,6 +145,8 @@ Cada aumentador canjea los materiales de Apotheosis (un polvo de gema y dos mate
 
 ### Para la auditoría de recetas
 
+> **Resuelto el 25 de septiembre** en [recipe-design-rules](recipe-design-rules.md): las 21 recetas de componentes y módulos tienen dibujo, la tarjeta de cantera lleva dos lingotes de ironwood en las esquinas de arriba, y la Matriz de distribución y el Regulador cierran ocho recetas cada uno. Las funciones separan sus hitos (`FUNCTION_KEYSTONES`, con el componente) de los demás miembros (`FUNCTION_MEMBERS`, con el material del acto); el pozo dimensional de Occultism pasó a ironwood.
+
 Lo que este lote tocó y todavía choca con el playtest, porque arreglarlo no era barato acá:
 
 - **Recetas sin forma.** Las 21 recetas de componentes y módulos del Arca (`generate_integration_recipes.py`) siguen sin forma, incluidos los tres módulos que ahora llevan drops de jefes. Pasarlas a dibujos cambia el generador, las entregas y sus tests.

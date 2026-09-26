@@ -200,6 +200,8 @@ Librerías:
 
 ### Create: New Age, la tecnología de Heliodor
 
+> **Actualización del 25 de septiembre** ([recipe-design-rules](recipe-design-rules.md)): el Acoplador pasó de la bobina a las escobillas de carbón (una por generador); la placa básica lleva una aleación infundida (II); la placa avanzada queda nativa; energizador y motor avanzados llevan aleación reforzada (III); energizador y motor reforzados y la barra de reactor, ironwood (IV); los núcleos de CAD de Psi quedan nativos. La tabla de abajo es la de la ronda 4.
+
 New Age 1.2.0 no tiene paneles fotovoltaicos. Sus «paneles solares» son **placas de calentamiento solar**, que calientan las calderas de Create con la luz del sol. La electricidad sale de una **bobina generadora** que gira entre imanes y se recoge con **escobillas de carbón**.
 - Los **energizadores** sobrecargan metales con esa electricidad.
 - Los **motores** la vuelven a convertir en rotación.

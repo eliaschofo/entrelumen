@@ -165,6 +165,8 @@ Configurable: `config/silentgear-client.toml`, `tooltip.show_material_tooltips =
 
 ## Ítems creativos
 
+> **Actualización del 25 de septiembre** ([recipe-design-rules](recipe-design-rules.md)): la receta es `PXP / MCM / SXS`. El Bus del Arca o el Motor de renovación que iba bajo el núcleo (columna R de la tabla) es ahora un segundo drop de jefe (X), para que esos componentes cierren pocas recetas; las Luminosidades siguen marcando el acto VI.
+
 Cada receta es simétrica:
 
 ```
