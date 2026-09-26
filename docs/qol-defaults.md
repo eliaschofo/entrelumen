@@ -8,6 +8,7 @@ These source defaults are for the next installation/restart. The running ENTRELU
 | Same file, `customization.show_customization_overlay` | `false` | Keeps the toolbar hidden as the explicit stored preference, also if modpack mode is later disabled. Exact typed `B:key = 'value';` format was read from ENTRELUMEN's generated FancyMenu 3.9.12 config. |
 | Same file, `tutorial.show_welcome_screen` | `false` | Prevents the authoring welcome dialog on a fresh installation; documented by FancyMenu and present in generated config. |
 | `config/ftbchunks-client.snbt`, `minimap.enabled` | `false` | Disables only the FTB Chunks minimap. Exact nested key and boolean format were read from ENTRELUMEN's generated FTB Chunks 2101.1.21 config. Claims, full-screen map, waypoints and permissions are not overridden. |
+| `config/ftbchunks-world.snbt`, `require_game_stage` | `true` | FTB Chunks 2101.1.21 shows its map and minimap only to players with the `ftbchunks_mapping` stage (`FTBChunksWorldConfig.playerHasMapStage`, synced server config). The companion gives the stage to every player outside the Envés and removes it inside, so the dungeon's fog map is the only map there (docs/design/dungeon-enves.md). |
 
 Only the intended keys are supplied. Other mod options retain their defaults. Source inspection found **FTB's generated minimap already disabled** and FancyMenu's welcome already dismissed; therefore duplicate minimaps were a hypothesis, not a verified current defect. Shipping these explicit defaults makes fresh installs consistent.
 

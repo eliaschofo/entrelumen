@@ -46,6 +46,8 @@ public final class AtlasScreen extends Screen {
   public static void receive(AtlasNetwork.Snapshot snapshot) {
     Minecraft minecraft = Minecraft.getInstance();
     if (minecraft.screen instanceof AtlasScreen atlas) atlas.update(snapshot);
+    // Inside the Envés the Atlas opens on the floor's fog map; a button turns to these pages.
+    else if (snapshot.open() && EnvesClientState.inside()) minecraft.setScreen(new EnvesMapScreen(snapshot));
     else if (snapshot.open()) minecraft.setScreen(new AtlasScreen(snapshot));
   }
 
