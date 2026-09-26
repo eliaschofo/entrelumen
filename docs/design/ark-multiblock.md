@@ -17,13 +17,14 @@ Elias eligió el astrolabio en lugar del barco. Lo genera `art/structures/ark_mu
   - Ingeniería a 150°.
 - **Arcos:** dos, de radio 7, que se cruzan sobre el controlador, con franjas de cobre cortado y ladrillo de toba, pies de calcita y clave de amatista.
 - **Columnas:** cuatro en las diagonales, en los cuadrantes que no tienen apoyo de arco (Elias):
-  - base chica acampanada: cuatro escaleras de toba pulida alrededor del pie;
+  - base chica acampanada: ocho escaleras de toba pulida alrededor del pie, con sus esquinas;
   - fuste de un solo material, calcita;
-  - capitel acampanado de cuatro escaleras invertidas de toba pulida, con un bloque de cobre cincelado bajo el beacon;
+  - capitel acampanado de cuatro escaleras invertidas de toba pulida, sin esquinas; el beacon va apoyado directo sobre el capitel;
   - en la punta, un **lugar para un beacon**, opcional (ver `ark-modules-v2.md`).
-- **Cuenta:** 395 bloques obligatorios (116 stone_bricks, 71 tuff_bricks, 62 calcite, 52 stone_brick_stairs, 32 polished_tuff_stairs, 20 polished_tuff, 19 cut_copper, 11 chiseled_copper, 5 amethyst_block, 1 arcane_module, 1 logistics_module, 1 nature_module, 1 ark_controller, 1 engineering_module, 1 exploration_module, 1 habitation_module), más 4 lugares opcionales para beacons.
+- **Cuenta:** 407 bloques obligatorios (116 stone_bricks, 71 tuff_bricks, 62 calcite, 52 stone_brick_stairs, 48 polished_tuff_stairs, 20 polished_tuff, 19 cut_copper, 7 chiseled_copper, 5 amethyst_block, 1 arcane_module, 1 logistics_module, 1 nature_module, 1 ark_controller, 1 engineering_module, 1 exploration_module, 1 habitation_module), más 4 lugares opcionales para beacons.
 
 **Reglas de coincidencia para el código.**
+- **Escaleras (para que sea fácil de construir):** en cada posición de escalera vale cualquier escalera del material pedido con el `half` correcto, sin importar `facing` ni `shape`. El juego arma solo las esquinas según las vecinas.
 - El cobre coincide con cualquier oxidación y con su versión encerada.
 - Los bloques marcados `required: false` son decoración y no bloquean el Arca.
 - `slot` marca dónde va cada módulo y el controlador.

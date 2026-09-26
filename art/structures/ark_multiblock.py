@@ -107,18 +107,20 @@ def build():
             V[(x, y, z)] = B('calcite') if y == 1 else (B('cut_copper') if k % 2 == 0 else B('tuff_bricks'))
     put(0, top, 0, 'amethyst_block')                              # the keystone where they cross
     # four columns on the diagonals, where the arches give no support (Elias): a small flared base
-    # and a flared capital of polished-tuff stairs, a shaft of calcite alone, a chiseled copper
-    # block under the beacon's place on the peak.
+    # with corner stairs and a flared capital of polished-tuff stairs (no corners up there), a
+    # shaft of calcite alone, and the beacon's place right on the capital.
     # The beacon is optional: each one adds a level to the modules' effects (ark-modules-v2.md).
     for (cx, cz) in ((5, 5), (-5, 5), (5, -5), (-5, -5)):
         for (dx, dz, toward) in ((1, 0, 'west'), (-1, 0, 'east'), (0, 1, 'north'), (0, -1, 'south')):
             put(cx + dx, 1, cz + dz, 'polished_tuff_stairs[facing=%s,half=bottom,shape=straight,waterlogged=false]' % toward)
             put(cx + dx, 7, cz + dz, 'polished_tuff_stairs[facing=%s,half=top,shape=straight,waterlogged=false]' % toward)
+        for (dx, dz) in ((1, 1), (-1, 1), (1, -1), (-1, -1)):   # the base's corners (the game shapes them)
+            put(cx + dx, 1, cz + dz, 'polished_tuff_stairs[facing=%s,half=bottom,shape=straight,waterlogged=false]'
+                % ('north' if dz > 0 else 'south'))
         for y in range(1, 8):
             put(cx, y, cz, 'calcite')
-        put(cx, 8, cz, 'chiseled_copper')
-        put(cx, 9, cz, 'beacon', required=False)
-        SLOTS[(cx, 9, cz)] = 'beacon'
+        put(cx, 8, cz, 'beacon', required=False)                  # the beacon sits right on the capital
+        SLOTS[(cx, 8, cz)] = 'beacon'
     # raise it all one level (Elias): the platform stands on the ground, a ring of stairs round it
     raised = {(x, y + 1, z): v for (x, y, z), v in V.items()}
     req = {(x, y + 1, z): v for (x, y, z), v in REQ.items()}
@@ -158,28 +160,75 @@ def export():
     print(len(blocks), 'positions,', req, 'required,', len(SLOTS), 'slots')
 
 
+DIRS = {'north': (0, -1), 'south': (0, 1), 'west': (-1, 0), 'east': (1, 0)}
+CCW = {'north': 'west', 'west': 'south', 'south': 'east', 'east': 'north'}
+CW = {v: k for k, v in CCW.items()}
+OPP = {'north': 'south', 'south': 'north', 'west': 'east', 'east': 'west'}
+
+
+def _props(b):
+    return dict(p.split('=') for p in b[:-1].split('[')[1].split(',')) if '[' in b else {}
+
+
+def stair_shape(vox, pos, b):
+    """The shape the game gives a stair from its neighbours (StairBlock.getStairsShape)."""
+    pr = _props(b)
+    f, half = pr.get('facing'), pr.get('half')
+    x, y, z = pos
+
+    def stair_at(d):
+        n = vox.get((x + DIRS[d][0], y, z + DIRS[d][1]), '')
+        return _props(n) if n.split('[')[0].endswith('_stairs') and _props(n).get('half') == half else None
+
+    def can_take(d):
+        n = stair_at(d)
+        return not (n and n.get('facing') == f)
+    front = stair_at(f)
+    if front and DIRS[front['facing']][0] * DIRS[f][0] == 0 and DIRS[front['facing']][1] * DIRS[f][1] == 0             and front['facing'] not in (f, OPP[f]) and can_take(OPP[front['facing']]):
+        return 'outer_left' if front['facing'] == CCW[f] else 'outer_right'
+    back = stair_at(OPP[f])
+    if back and back['facing'] not in (f, OPP[f]) and can_take(back['facing']):
+        return 'inner_left' if back['facing'] == CCW[f] else 'inner_right'
+    return 'straight'
+
+
+def _side(d, sx, sz):
+    return {'north': sz == 0, 'south': sz == 1, 'west': sx == 0, 'east': sx == 1}[d]
+
+
 def subdivided(vox):
-    """Each block as 2x2x2 sub-blocks, so stairs and slabs show their shape in the preview."""
+    """Each block as 2x2x2 sub-blocks, so stairs (with their corner shapes) and slabs read."""
     out = {}
-    back = {'north': (None, 0), 'south': (None, 1), 'west': (0, None), 'east': (1, None)}
     for (x, y, z), b in vox.items():
         if b.endswith(':air'):
             continue
         name = b.split('[')[0]
-        props = dict(p.split('=') for p in b[:-1].split('[')[1].split(',')) if '[' in b else {}
+        pr = _props(b)
+        shape = stair_shape(vox, (x, y, z), b) if name.endswith('_stairs') else None
+        texture = name.replace('_stairs', '').replace('_slab', '')
+        texture = texture.replace('stone_brick', 'stone_bricks') if texture.endswith('stone_brick') else texture
         for sx in (0, 1):
             for sy in (0, 1):
                 for sz in (0, 1):
                     keep = True
                     if name.endswith('_slab'):
-                        keep = props.get('type') == 'double' or (sy == 0) == (props.get('type') == 'bottom')
-                    elif name.endswith('_stairs'):
-                        low = 0 if props.get('half') == 'bottom' else 1
-                        bx, bz = back.get(props.get('facing'), (None, None))
-                        on_back = (bx is None or sx == bx) and (bz is None or sz == bz)
-                        keep = sy == low or on_back
+                        keep = pr.get('type') == 'double' or (sy == 0) == (pr.get('type') == 'bottom')
+                    elif shape:
+                        f = pr['facing']
+                        full = sy == (0 if pr.get('half') == 'bottom' else 1)
+                        if shape == 'straight':
+                            part = _side(f, sx, sz)
+                        elif shape == 'outer_left':
+                            part = _side(f, sx, sz) and _side(CCW[f], sx, sz)
+                        elif shape == 'outer_right':
+                            part = _side(f, sx, sz) and _side(CW[f], sx, sz)
+                        elif shape == 'inner_left':
+                            part = _side(f, sx, sz) or _side(CCW[f], sx, sz)
+                        else:
+                            part = _side(f, sx, sz) or _side(CW[f], sx, sz)
+                        keep = full or part
                     if keep:
-                        out[(2 * x + sx, 2 * y + sy, 2 * z + sz)] = name if name.endswith(('_slab', '_stairs')) is False else                             name.replace('_stairs', '').replace('_slab', '').replace('brick', 'bricks').replace('brickss', 'bricks')
+                        out[(2 * x + sx, 2 * y + sy, 2 * z + sz)] = texture if name.endswith(('_slab', '_stairs')) else name
     return out
 
 
