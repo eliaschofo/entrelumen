@@ -51,8 +51,9 @@ function piece(id, kind, amount) {
   const take = n => { const t = Math.min(n, p.amount); p.amount -= t; return t; };
   const handlers = {
     energy: {getEnergyStored: () => p.amount, extractEnergy: (n, sim) => take(n)},
-    fluid: {getTanks: () => 1, getFluidInTank: () => ({getAmount: () => p.amount}),
-            drain: (n, action) => ({getAmount: () => take(n)})},
+    fluid: {getTanks: () => 1,
+            getFluidInTank: () => ({getAmount: () => p.amount, copyWithAmount: n => ({wanted: n})}),
+            drain: (stack, action) => ({getAmount: () => take(stack.wanted)})},
     chemical: {getChemicalTanks: () => 2,
                getChemicalInTank: i => i === 0
                  ? {isEmpty: () => true, getTypeRegistryName: () => 'mekanism:oxygen', getAmount: () => 0}

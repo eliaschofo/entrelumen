@@ -43,8 +43,10 @@ function entrelumenJetpackStore(api, stack, kind) {
   if (kind === 'fluid') {
     var fluid = stack.getCapability(api.fluid);
     if (fluid === null || fluid.getTanks() < 1) return null;
-    return {amount: Number(fluid.getFluidInTank(0).getAmount()),
-      take: n => Number(fluid.drain(n, api.fluidExecute).getAmount())};
+    var inTank = fluid.getFluidInTank(0);
+    // Drain by FluidStack: drain(int, action) and drain(FluidStack, action) could both take a JS number.
+    return {amount: Number(inTank.getAmount()),
+      take: n => Number(fluid.drain(inTank.copyWithAmount(n), api.fluidExecute).getAmount())};
   }
   if (kind === 'chemical' && api.chemical !== null) {
     var chemical = stack.getCapability(api.chemical);
