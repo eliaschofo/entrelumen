@@ -32,7 +32,9 @@ V = Voxels()
 REQ = {}        # (x, y, z) -> True if the multiblock requires the block, False for decoration
 SLOTS = {}      # (x, y, z) -> slot name
 B = lambda n: 'minecraft:' + n
-MODULES = [('habitation', 90), ('exploration', 30), ('nature', 330), ('arcane', 270), ('logistics', 210), ('engineering', 150)]
+# four on the diagonals and two on the north-south axis, close round the controller (Elias)
+MODULES = [('habitation', (0, 3)), ('arcane', (0, -3)), ('exploration', (2, 2)), ('nature', (2, -2)),
+           ('logistics', (-2, 2)), ('engineering', (-2, -2))]
 R_EQ = 5          # radius of the orbit
 SUN_Y = 2         # the controller stands on the raised floor
 DECK = SUN_Y      # export anchor height
@@ -85,9 +87,7 @@ def build():
     SLOTS[(0, 1, 0)] = 'ark_controller'
     put(0, 0, 0, 'chiseled_copper')
     sockets = []
-    for name, deg in MODULES:
-        th = math.radians(deg)
-        x, z = rd(R_EQ * math.cos(th)), rd(R_EQ * math.sin(th))
+    for name, (x, z) in MODULES:
         put(x, 1, z, 'entrelumen:%s_module' % name)
         SLOTS[(x, 1, z)] = '%s_module' % name
         sockets.append((x, 0, z))
