@@ -4,7 +4,7 @@ Each file is one chapter of the pack's manual (mods, QoL, logistics, building, f
 schema extends the story chapters' format (see content/act_two.json):
 
   {"chapter": "guide_create", "group": "tech|magic|exploration|qol|entrelumen", "act": "II",
-   "icon": "create:cogwheel",
+   "icon": "create:cogwheel", "emblem": "create:textures/item/goggles.png",
    "title": {"en_us": "...", "es_es": "..."}, "subtitle": {"en_us": "...", "es_es": "..."},
    "quests": [{"key": "create_welcome", "deps": [], "type": "checkmark|item|dimension|advancement",
                "item": "create:shaft", "count": 1, "tag": "c:plates/iron", "dimension": "...",
@@ -16,6 +16,10 @@ schema extends the story chapters' format (see content/act_two.json):
 Checks: schema, unique chapter ids and quest keys (globally, prefixed by the chapter), deps inside
 the chapter, EN/ES parity, text limits and formatting codes, sources on every quest, and that every
 item, icon and tag namespace exists in the pinned JARs (catalog/local-paths.json) or vanilla.
+The emblem is the texture drawn on the chapter's medallion in the quest book
+(tools/generate_quests.py): it must exist in a pinned JAR or the companion, be square (16 or 32 px)
+and not animated, since FTB draws the whole PNG. No item-filter mod is installed, so a "tag" task
+also names the concrete "item" that FTB checks (for unified materials, Almost Unified's choice).
 Warnings, which never fail the run: descriptions over 500 characters and the meta phrases that the
 copy pass bans (see copy_warnings).
 
@@ -41,6 +45,70 @@ _ITEMS = None
 
 
 CACHE = Path('E:/Elias/Codex/Entrelumen-ssd/research/item-registry.json')
+TEXTURE_CACHE = Path('E:/Elias/Codex/Entrelumen-ssd/research/guide-emblems.json')
+EMBLEM = re.compile(r'^([a-z0-9_.-]+):(textures/(?:items?|blocks?)/[a-z0-9_./-]+\.png)$')
+_TEXTURES = None
+
+
+def texture_info(ref):
+    """(width, height, animated) of an 'ns:textures/...png' in the companion or the pinned JARs, or None.
+    Cached outside the repository per set of JAR paths and requested textures."""
+    global _TEXTURES
+    m = EMBLEM.match(ref)
+    if not m:
+        return None
+    rel = f'assets/{m.group(1)}/{m.group(2)}'
+    comp = ROOT / 'companion' / 'src' / 'main' / 'resources' / rel
+    if comp.exists():
+        from PIL import Image
+        with Image.open(comp) as im:
+            return (im.width, im.height, comp.with_name(comp.name + '.mcmeta').exists())
+    lp = ROOT / 'catalog' / 'local-paths.json'
+    jars = sorted(json.loads(lp.read_text(encoding='utf-8')).values()) if lp.exists() else []
+    if VANILLA_JAR.exists():
+        jars.append(str(VANILLA_JAR))
+    if _TEXTURES is None:
+        _TEXTURES = {'jars': jars, 'info': {}}
+        if TEXTURE_CACHE.exists():
+            try:
+                cached = json.loads(TEXTURE_CACHE.read_text(encoding='utf-8'))
+                if cached.get('jars') == jars:
+                    _TEXTURES = cached
+            except Exception:
+                pass
+    if rel not in _TEXTURES['info']:
+        # One pass over the JARs for every emblem the guides name (plus this one).
+        import io
+        from PIL import Image
+        wanted = {rel}
+        for path in GUIDES.glob('*.json'):
+            try:
+                mm = EMBLEM.match(json.loads(path.read_text(encoding='utf-8')).get('emblem', ''))
+            except Exception:
+                mm = None
+            if mm:
+                wanted.add(f'assets/{mm.group(1)}/{mm.group(2)}')
+        wanted -= set(_TEXTURES['info'])
+        for jar in jars:
+            if not wanted:
+                break
+            try:
+                with zipfile.ZipFile(jar) as z:
+                    names = set(z.namelist())
+                    for hit in wanted & names:
+                        with Image.open(io.BytesIO(z.read(hit))) as im:
+                            _TEXTURES['info'][hit] = [im.width, im.height, hit + '.mcmeta' in names]
+                    wanted -= names
+            except Exception:
+                continue
+        for miss in wanted:
+            _TEXTURES['info'][miss] = None
+        try:
+            TEXTURE_CACHE.write_text(json.dumps(_TEXTURES), encoding='utf-8')
+        except Exception:
+            pass
+    found = _TEXTURES['info'][rel]
+    return tuple(found) if found else None
 
 
 def registry():
@@ -142,6 +210,14 @@ def check_chapter(path, seen_chapters, seen_keys, errors):
     icon = ch.get('icon', '')
     if icon not in items:
         errors.append(f'{where}: chapter icon {icon} not found in the pinned JARs')
+    emblem = ch.get('emblem', '')
+    info = texture_info(emblem) if EMBLEM.match(emblem) else None
+    if not EMBLEM.match(emblem):
+        errors.append(f'{where}: emblem must be ns:textures/item|block/....png')
+    elif info is None:
+        errors.append(f'{where}: emblem {emblem} not found in the pinned JARs')
+    elif info[0] != info[1] or info[0] not in (16, 32) or info[2]:
+        errors.append(f'{where}: emblem {emblem} is {info[0]}x{info[1]}{" animated" if info[2] else ""}; needs a still 16 or 32 px square')
     quests = ch.get('quests') or []
     keys = {q.get('key') for q in quests}
     if len(quests) < 8:
@@ -168,6 +244,8 @@ def check_chapter(path, seen_chapters, seen_keys, errors):
                 errors.append(f'{w}: item {q["item"]} not found in the pinned JARs')
             if 'tag' in q and (not ID.match(q['tag']) or q['tag'].split(':')[0] not in namespaces):
                 errors.append(f'{w}: tag {q["tag"]} has an unknown namespace')
+            if 'tag' in q and 'item' not in q:
+                errors.append(f'{w}: tag task needs the concrete "item" FTB will check (no item-filter mod)')
             c = q.get('count', 1)
             if not isinstance(c, int) or not 1 <= c <= 4096:
                 errors.append(f'{w}: count must be 1..4096')
