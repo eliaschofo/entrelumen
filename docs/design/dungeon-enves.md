@@ -91,33 +91,35 @@ Roles por piso:
   - sin perlas ni chorus;
   - sin waystones, `/home` ni `/rtp`.
   Los techos de 9 bloques tampoco dejan volar.
-- **Muerte (propuesta):**
-  - conservás el inventario y reaparecés al inicio del piso;
-  - tres caídas por descenso: a la tercera, el Envés te expulsa y el grupo sigue sin vos.
+- **Intento, caídas y muerte (Elias, 26/9):**
+  - la puerta se abre con una ofrenda cara, y cada ofrenda es un intento;
+  - adentro se conserva el inventario y se reaparece al inicio del piso;
+  - el grupo comparte una bolsa de caídas de 3 por integrante (dos jugadores, seis caídas), sin importar quién las gaste;
+  - cuando la bolsa se vacía, todos vuelven afuera, la puerta se cierra y pide otra ofrenda.
 
-## Jefe
+## Jefe (Elias, 26/9)
 
-- Piso V, en una arena propia. El jefe sale de un pool por tier: jefes con mecánicas y animaciones que el pack ya trae, con su loot reemplazado por el cofre del Envés.
-- Propuesta:
+Uno propio. Para la v1.0, y probablemente más allá, va un reemplazo provisorio: un **Wither blanco, luminoso**. El modelo propio queda para el futuro y no frena el lanzamiento.
 
-  | Tier | Jefe |
-  |---|---|
-  | Frontier | Ferrous Wroughtnaut, de Mowzie's (se le pega por la espalda) |
-  | Ascent | Frostmaw o Umvuthi |
-  | Summit | The Harbinger o Maledictus, de Cataclysm |
-  | Pinnacle | Netherite Monstrosity o Ignis |
-
-- Hay que probar que cada uno funciona fuera de su estructura.
-- Un jefe propio queda para después si el pool no alcanza.
+- **Movimiento:** casi no vuela. Levita unos bloques sobre el piso y se desliza.
+- **Ataques:**
+  - calaveras;
+  - una **embestida muy telegrafiada**: carga con aviso claro, marca en el piso el recorrido, embiste en línea recta y queda expuesto unos segundos.
+- **Sin grifeo.**
+- **Escalado:** vida y daño según el World Tier.
+- **Loot:** el cofre del Envés con la rareza alta del tier.
+- **Textura:** original, pintada sobre el UV del Wither.
 
 ## Acertijos y bóvedas
 
 Reusan los mecanismos de las ruinas: braseros en orden, espejos, palancas, ofrendas y el orden de piedras. Regla de diseño de Elias (26/9): divertidos y no obvios; ni aburridos, ni cliché, ni excesivamente difíciles. La pista siempre está en la sala o en la de al lado, nunca en una wiki.
 
-## Entrada (propuesta)
+## Entrada (Elias, 26/9)
 
-- **La Escalera Sellada**, en la ruina inicial, está desde el minuto uno y el Atlas no la sabe leer. Se abre con el World Tier Frontier (acto III).
-- Si se prefiere la Grieta que abre el Atlas en cualquier lado, cambia sólo la entrada.
+**La Escalera Sellada**, en la ruina inicial. Está desde el minuto uno y el Atlas no la sabe leer.
+- Se abre con el World Tier Frontier (acto III).
+- La puerta pide la ofrenda del intento.
+- Se puede elegir cualquier tier hasta el actual.
 
 ## Plan de implementación
 
@@ -135,8 +137,6 @@ Los puntos 1–3 y 5 son un worker; el 4 y el 6, otro, en paralelo, sobre la mis
 
 ## Para decidir
 
-- El nombre.
-- La entrada: Escalera Sellada en la ruina inicial, o Grieta.
-- La regla de muerte.
-- El pool de jefes, y si querés un jefe propio.
-- Si hay curios únicos por jefe.
+- El nombre del descenso y el del jefe.
+- Qué pide la ofrenda.
+- Si hay curios únicos del jefe.
