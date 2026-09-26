@@ -128,8 +128,6 @@ HITOS = {
         'entrelumen:integration/resilient_backbone': 'Bus del Arca',
         'entrelumen:augment_player_range': 'aumentador de alcance de jugador',
         'mekanism:qio_drive_array': 'almacenamiento QIO',
-        'enderstorage:ender_chest': 'inventario remoto: ítems',
-        'enderstorage:ender_tank': 'inventario remoto: fluidos',
     },
     'entrelumen:handling_core': {
         'entrelumen:integration/resilient_backbone': 'Bus del Arca',

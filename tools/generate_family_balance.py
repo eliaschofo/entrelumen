@@ -379,7 +379,7 @@ FUNCTIONS = {
     'mekanism_entry': (CF, 'II', None),          # the metallurgic infuser: every Mekanism circuit and alloy
     'storage_network': (RM, 'III', None),        # controllers of AE2 and Refined Storage
     'teleport': (RM, 'III', ALLOY_III),          # Waystones stay free; the machines keep the act
-    'remote_inventory': (IS, 'III', ALLOY_III),  # Ender Storage chests and tanks: an inventory seen from afar
+    'remote_inventory': (IS, 'III', ALLOY_III),  # Ender Storage: convenience, so every member takes the alloy
     'wireless_energy': (PR, 'III', ALLOY_III),   # cross-dimension energy links
     'jetpack': (PR, 'III', ALLOY_III),           # first powered flight
     'area_mining': (PR, 'III', ALLOY_III),       # the vein resonator's third tier; lasers and drills
@@ -397,7 +397,6 @@ FUNCTIONS = {
 # take the function's component, like the functions family's own gates.
 FUNCTION_KEYSTONES = {
     'storage_network': ['refinedstorage:controller'],
-    'remote_inventory': ['enderstorage:ender_chest', 'enderstorage:ender_tank'],
     'hands': ['refinedstorage:autocrafter'],
     'flight': ['justdirethings:upgrade_flight', 'modern_industrialization:armor/gravichestplate'],
     'mob_farm': ['hostilenetworks:sim_chamber', 'industrialforegoing:mob_duplicator', 'enderio:powered_spawner'],
@@ -407,7 +406,7 @@ FUNCTION_KEYSTONES = {
 FUNCTION_MEMBERS = {
     'teleport': ['justdirethings:portalgun', 'justdirethings:portalgun_v2', 'enderio:travel_anchor',
                  'enderio:staff_of_travelling', 'draconicevolution:tools/dislocator', 'rftoolsutility:matter_receiver'],
-    'remote_inventory': ['enderstorage:ender_pouch'],
+    'remote_inventory': ['enderstorage:ender_chest', 'enderstorage:ender_tank', 'enderstorage:ender_pouch'],
     'wireless_energy': ['fluxnetworks:flux_plug', 'rftoolspower:dimensionalcell_simple', 'rftoolspower:dimensionalcell'],
     'jetpack': ['ironjetpacks:strap', 'oritech:crafting/basicjetpack', 'oritech:crafting/basicjetpackalt',
                 'modern_industrialization:armor/diesel_jetpack'],
@@ -605,10 +604,11 @@ FAMILIES = {
         'changes': [
             shaped('easy_villagers:iron_farm', 0, 1, tag('c:glass_panes/colorless'), LM, 'II', 'Compact golem iron farm'),
             shaped('easy_villagers:auto_trader', 0, 1, tag('c:glass_panes/colorless'), HC, 'III', 'Automated villager trading: the hands that trade'),
-            # The inventory sensor is the link between twin chests, in place of the ender pearl.
-            shaped('enderstorage:ender_chest', 2, 1, tag('c:ender_pearls'), IS, 'III', 'Cross-dimension shared item storage',
+            # Ender Storage is convenience, not a milestone: the act III alloy holds the link in place of
+            # the ender pearl, so no component made of components is needed (playtest rule 1).
+            shaped('enderstorage:ender_chest', 2, 1, tag('c:ender_pearls'), ALLOY_III, 'III', 'Cross-dimension shared item storage',
                    alternates=['enderstorage:recolour_ender_chest'], drawn=True),
-            shaped('enderstorage:ender_tank', 2, 1, tag('c:ender_pearls'), IS, 'III', 'Cross-dimension shared fluid storage',
+            shaped('enderstorage:ender_tank', 2, 1, tag('c:ender_pearls'), ALLOY_III, 'III', 'Cross-dimension shared fluid storage',
                    alternates=['enderstorage:recolour_ender_tank'], drawn=True),
             shaped('enderstorage:ender_pouch', 0, 1, tag('c:leathers'), ALLOY_III, 'III', 'Remote access to a shared frequency',
                    alternates=['enderstorage:recolour_ender_pouch']),

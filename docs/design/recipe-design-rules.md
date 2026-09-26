@@ -43,7 +43,7 @@ Recetas que consumen cada componente (`python tools/check_recipe_design.py --rep
 | Carta de horizontes | 10 | 8 | 8 | módulo de exploración, Llave de Luz, 2 vuelos creativos, portales a Eternal Starlight y minería del End, estante del V, copia de altar |
 | Núcleo de manipulación | 8 | 7 | 8 | Bus, módulo de logística, autocrafter de RS, constructor de RFTools, comercio automático, copia de altar, 1 aumentador |
 | Matriz viva | 5 | 5 | 6 | Núcleo de propagación, Cápsula, módulos de naturaleza y habitabilidad, granja de hierro |
-| Sensor de inventario | 3 | 5 | 6 | Bus, QIO, cofre y tanque de Ender Storage, 1 aumentador |
+| Sensor de inventario | 3 | 3 | 6 | Bus, QIO, 1 aumentador |
 | Acoplador de energía | 3 | 3 | 4 | Regulador, módulo de ingeniería, escobillas de New Age |
 | Provisiones de viaje | 3 | 3 | 4 | Carta de horizontes, Carta de habitabilidad, módulo de habitabilidad |
 | Lente en bruto, notas, núcleo de señal | 3, 2, 2 | 3, 2, 2 | 3, 2, 2 | el Marco, el núcleo de señal, la estación, el controlador del Arca y el Resonador I |
@@ -60,7 +60,7 @@ La Matriz de distribución y el Regulador, que el lote de progresión dejó con 
 - Núcleos de CAD de Psi (el ensamblador ya es del acto III), routers de XNet (necesitan el controlador), punto y controlador de Flux (sin un enchufe la red no lleva nada), porter cargado de RFTools (sólo llega a receptores).
 - Modular Bees: partes, exportadores e importadores ME, overclockers, apilador, colmena de dragón y electrodo de netherita. Todo necesita un núcleo; el de colmena lleva dos lingotes de ironwood y el de centrífuga ya pide netherita y un huevo de dragón.
 
-**Con material de acto:** jetpacks de Iron Jetpacks, Oritech y MI; Mining Gadgets; taladro y bomba de Industrial Foregoing, láseres de minerales y de fluidos; enchufe de Flux; pistolas de portal, varita del tiempo y máquina paradoja de Just Dire Things; ancla y bastón de Ender IO; dislocador y núcleos de Draconic; receptor, spawner, controlador ambiental, celdas dimensionales y tarjeta de cantera de RFTools; controlador de XNet; cantera de MI y taladro profundo de Oritech; pozo dimensional de Occultism; bolsa de Ender Storage; girodino; PSD de Compact Machines; exojetpack, spawner, bombas, controlador de partículas y capacitor octádico; banco de la NASA; circuito cuántico de MI; escalones de New Age; sculkshelves, endshelf y endshelf dracónico; capacitores de Powah.
+**Con material de acto:** jetpacks de Iron Jetpacks, Oritech y MI; Mining Gadgets; taladro y bomba de Industrial Foregoing, láseres de minerales y de fluidos; enchufe de Flux; pistolas de portal, varita del tiempo y máquina paradoja de Just Dire Things; ancla y bastón de Ender IO; cofre, tanque y bolsa de Ender Storage (la aleación en lugar de la perla); dislocador y núcleos de Draconic; receptor, spawner, controlador ambiental, celdas dimensionales y tarjeta de cantera de RFTools; controlador de XNet; cantera de MI y taladro profundo de Oritech; pozo dimensional de Occultism; bolsa de Ender Storage; girodino; PSD de Compact Machines; exojetpack, spawner, bombas, controlador de partículas y capacitor octádico; banco de la NASA; circuito cuántico de MI; escalones de New Age; sculkshelves, endshelf y endshelf dracónico; capacitores de Powah.
 
 **Macetas por color:** las 1.098 recetas de Elite, Ultra y Mega consumen la mejora del tier en lugar de su viejo catalizador. El componente queda en tres recetas, una por mejora, y la mejora se sigue aplicando a una maceta colocada sin perder su contenido.
 
@@ -130,16 +130,16 @@ Algunos escalones, con el componente o el material en su lugar:
 Infusor (Marco)   Controlador ME   Cofre de Ender       Portal minero   Mejora Elite    Simulación HNN
 I # I             a b a            B W B                O F O           i P i           · G ·
 R F R             b M b            O C O                O P O                           E K E
-I # I             a b a            B S B                O O O                           M C M
-Marco en el       Matriz en el     el Sensor en lugar   Marco sobre     Núcleo entre    la Cápsula es
-núcleo            núcleo           de la perla          el pico         dos lingotes    la cámara
+I # I             a b a            B A B                O O O                           M C M
+Marco en el       Matriz en el     aleación reforzada   Marco sobre     Núcleo entre    la Cápsula es
+núcleo            núcleo           en lugar de la perla el pico         dos lingotes    la cámara
 ```
 
 ## Cambios de costo
 
 - **Módulo de exploración:** vuelve la segunda gema de zanita (siete ítems). Cuatro ítems sueltos no entran en un solo eje; la receta, el proyecto de `projects.json`, sus pruebas y los textos del acto V se actualizaron juntos.
 - **Núcleo de señal:** un lingote de cobre más, por la misma razón.
-- **Un escalón con par de casilleros** (sculkshelves, endshelf dracónico, energizador reforzado, cantera de MI, tarjeta de cantera, celda dimensional) pide dos unidades del material. Donde el mod no tenía un casillero libre en el eje, el material o el componente reemplaza un ingrediente único del eje: la perla del cofre de Ender, la obsidiana de la cámara de HNN, la verruga del duplicador, el controlador lógico del spawner de Ender IO, la carcasa del autocrafter de RS, la redstone de los láseres de IF y el oro del controlador de XNet.
+- **Un escalón con par de casilleros** (sculkshelves, endshelf dracónico, energizador reforzado, cantera de MI, tarjeta de cantera, celda dimensional) pide dos unidades del material. Donde el mod no tenía un casillero libre en el eje, el material o el componente reemplaza un ingrediente único del eje: la perla del cofre y el tanque de Ender, la obsidiana de la cámara de HNN, la verruga del duplicador, el controlador lógico del spawner de Ender IO, la carcasa del autocrafter de RS, la redstone de los láseres de IF y el oro del controlador de XNet.
 - **Macetas por color:** fabricar una directamente cuesta la mejora más los materiales; aplicar la mejora a una maceta colocada sigue costando sólo la mejora.
 
 ## Emperor's Cloth
