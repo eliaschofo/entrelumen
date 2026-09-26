@@ -128,7 +128,11 @@ function entrelumenJetpackStore(api, stack, kind) {{
       tanks.push(tank);
       total += Number(held.getAmount());
     }}
+    var item = stack.getItem();
     return {{amount: total, take: n => {{
+      // Mekanism's jetpacks let hydrogen out only by hand (IChemicalItem.useChemical, AutomationType.MANUAL),
+      // the way their own useJetpackFuel takes it; the MekaSuit's tanks answer the capability.
+      if (typeof item.useChemical === 'function') return Number(item.useChemical(stack, n).getAmount());
       var taken = 0;
       tanks.forEach(index => {{
         if (taken < n) taken += Number(chemical.extractChemical(index, n - taken, api.chemicalExecute).getAmount());

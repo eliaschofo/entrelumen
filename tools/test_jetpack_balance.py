@@ -46,7 +46,7 @@ vm.createContext(context);
 vm.runInContext(source, context);
 
 // A piece that stores `amount` of one kind of fuel (hydrogen sits in the second of two tanks).
-function piece(id, kind, amount) {
+function piece(id, kind, amount, manual) {
   const p = {id: id, amount: amount};
   const take = n => { const t = Math.min(n, p.amount); p.amount -= t; return t; };
   const handlers = {
@@ -60,7 +60,13 @@ function piece(id, kind, amount) {
                  : {isEmpty: () => p.amount === 0, getTypeRegistryName: () => 'mekanism:hydrogen', getAmount: () => p.amount},
                extractChemical: (i, n, action) => ({getAmount: () => i === 1 ? take(n) : 0})},
   };
-  p.stack = {isEmpty: () => false, getItem: () => ({id: id}), getCapability: cap => cap === kind ? handlers[kind] : null};
+  const item = {id: id};
+  // Mekanism's jetpacks: the capability refuses extraction; only the item's own useChemical takes hydrogen.
+  if (manual) {
+    handlers.chemical.extractChemical = (i, n, action) => ({getAmount: () => 0});
+    item.useChemical = (stack, n) => ({getAmount: () => take(n)});
+  }
+  p.stack = {isEmpty: () => false, getItem: () => item, getCapability: cap => cap === kind ? handlers[kind] : null};
   return p;
 }
 let worn = null;
@@ -74,7 +80,7 @@ function fly(name, p, nativePerTick, ticks) {
   for (let i = 0; i < ticks; i++) { p.amount -= nativePerTick; tick(); }
   out[name] = {idle: idle, flown: p.amount};
 }
-fly('mekanism', piece('mekanism:jetpack', 'chemical', 100), 1, 10);
+fly('mekanism', piece('mekanism:jetpack', 'chemical', 100, true), 1, 10);
 fly('mekasuit', piece('mekanism:mekasuit_bodyarmor', 'chemical', 1000), 3, 4);
 fly('diesel', piece('modern_industrialization:diesel_jetpack', 'fluid', 1000), 2, 3);
 fly('suit', piece('ad_astra:jet_suit', 'energy', 100000), 50, 4);
