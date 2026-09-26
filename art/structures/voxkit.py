@@ -96,7 +96,7 @@ TEXNAME = {'grass_block': ('grass_block_top', 'grass_block_side'), 'water': ('wa
            'grindstone': ('grindstone_round', 'grindstone_side'), 'smithing_table': ('smithing_table_top', 'smithing_table_front'),
            'oxidized_copper_bulb': ('oxidized_copper_bulb',) * 2,
            'oxidized_cut_copper_slab': ('oxidized_cut_copper',) * 2, 'ladder': ('ladder',) * 2,
-           'end_rod': ('end_rod',) * 2, 'stripped_birch_log': ('stripped_birch_log_top', 'stripped_birch_log')}
+           'end_rod': ('end_rod',) * 2, 'campfire': ('campfire_log', 'campfire_log'), 'stripped_birch_log': ('stripped_birch_log_top', 'stripped_birch_log')}
 TINT = {'grass_block_top': (104, 158, 70), 'short_grass': (88, 140, 60), 'fern': (80, 130, 56),
         'water_still': (70, 120, 210)}
 _cache = {}
