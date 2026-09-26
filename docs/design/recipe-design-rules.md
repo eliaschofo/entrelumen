@@ -200,10 +200,16 @@ Elias pidió que todos los jetpacks del pack gasten 2,5 veces más energía por 
 ## Verificación
 
 - `tools/check_recipe_design.py` (CI): hitos, abanico, forma, simetría, posición, medalla de aumentadores y los dos filtros. `--report` imprime el inventario completo de recetas con su forma, grilla, componentes y anidado.
-- Los generadores comprueban contra los JAR fijados lo que el chequeo no ve: que un escalón no rompa un dibujo nativo simétrico, que un componente sólo entre en uno simétrico y que la reversión recupere la receta nativa. `generate_integration_recipes.py` exige que cada dibujo use exactamente los insumos del diseño y que la entrega de cada módulo del Arca sea igual a su receta.
+- Los generadores comprueban contra los JAR fijados lo que el chequeo no ve: que un escalón no rompa un dibujo nativo simétrico, que un componente sólo entre en uno simétrico y que la reversión recupere la receta nativa. `generate_integration_recipes.py` exige que cada dibujo use exactamente los insumos del diseño y que ninguna receta de mesa fabrique un módulo del Arca.
 - GameTests de pack completo: `RecipeDesignFullpackGameTests` (dibujos cargados, abanico cargado, entrada a Mekanism sin Oritech, Emperor's Cloth), `arkmodulescomeonlyfromtheiractprojects` y las pruebas de RFTools, Botany Pots, New Age, AE2 y provisiones, ajustadas a las recetas nuevas.
 - Jetpacks: `tools/test_jetpack_balance.py` (CI) compara los archivos con los valores de fábrica y corre el script en Node con capacidades simuladas. `JetpackBalanceFullpackGameTests` lee en el servidor los valores cargados de Iron Jetpacks, Oritech y PneumaticCraft, y hace volar con el gasto nativo real el jetpack y el blindado de Mekanism, el diésel de MI y el traje de Ad Astra: tras cuatro ticks falta 2,5 veces lo nativo, y un cambio de pieza no cobra nada. La MekaSuit comparte el camino del hidrógeno y no se prueba aparte, porque pide instalar el módulo.
 
-Recibo: [`docs/verification/recipe-audit-runtime.json`](../verification/recipe-audit-runtime.json). Los 33 chequeos de Python dan 0; 225 JUnit y 108 GameTests aisladas pasan. En dos servidores propios y desechables con el pack completo y mundo nuevo pasaron las 145 GameTests de la corrida final (26f4986), con todas las familias de KubeJS en `loaded` sin fallas y la auditoría de contenido en PASS. La prueba de las cuatro recargas necesita la tolerancia de 180 s sólo para QA, como en los lotes anteriores.
+Recibo: [`docs/verification/recipe-audit-runtime.json`](../verification/recipe-audit-runtime.json). En la cabeza final (bf41d8e, con el Arca v2 de `main`) los 35 chequeos de Python dan 0, y pasan 219 JUnit y 103 GameTests aisladas. QA de pack completo en servidores propios y desechables, con mundo nuevo:
 
-Pendiente en un cliente: ver los dibujos en EMI y JEI y que Emperor's Cloth ya no aparezca en los usos de las armaduras.
+- **B** (26f4986): las 145 pruebas de entonces.
+- **D** (45357b1, jetpacks y resonador nuevos): 70 de 71. Pasaron todas las de recetas, los ajustes de jetpacks y los cuatro tiers del resonador (8, 16, 32 y 64 bloques con Ultimine real). El recargo todavía no alcanzaba el hidrógeno de Mekanism; se corrigió con `useChemical`.
+- **F** (bf41d8e): las 25 pruebas de recetas, jetpacks (el recargo cobra 2,5 veces en los cuatro), resonador, módulos del Arca sin receta y las cuatro recargas. Todas las familias de KubeJS en `loaded` sin fallas, la integración con 16 recetas y la auditoría de contenido en PASS.
+
+La prueba de las cuatro recargas necesita la tolerancia de 180 s sólo para QA, como en los lotes anteriores. Las corridas C y E se cortaron por carga de la máquina (otros servidores y builds a la vez); el recibo tiene el detalle.
+
+Pendiente en un cliente: ver los dibujos en EMI y JEI, que Emperor's Cloth ya no aparezca en los usos de las armaduras, y volar con los jetpacks (la MekaSuit con su unidad no tiene prueba propia).
