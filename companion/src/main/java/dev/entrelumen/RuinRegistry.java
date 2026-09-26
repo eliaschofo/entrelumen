@@ -20,19 +20,23 @@ public final class RuinRegistry {
   private static final Logger LOGGER = LogUtils.getLogger();
   public static final String DIRECTORY = "heliodor_ruin";
   private static volatile Map<String, RuinDefinitions.Definition> active = Map.of();
+  /** Definitions added at runtime (GameTest fixtures); they survive datapack reloads. */
+  private static volatile Map<String, RuinDefinitions.Definition> added = Map.of();
 
   private RuinRegistry() {}
 
+  /** The datapack's definitions (what the world ships). */
   public static Map<String, RuinDefinitions.Definition> all() {
     return active;
   }
 
   public static Optional<RuinDefinitions.Definition> get(ResourceLocation id) {
-    return Optional.ofNullable(active.get(id.toString()));
+    return get(id.toString());
   }
 
   public static Optional<RuinDefinitions.Definition> get(String id) {
-    return Optional.ofNullable(active.get(id));
+    var definition = active.get(id);
+    return Optional.ofNullable(definition != null ? definition : added.get(id));
   }
 
   public static boolean modLoaded(String mod) {
@@ -55,17 +59,17 @@ public final class RuinRegistry {
     active = Collections.unmodifiableMap(new LinkedHashMap<>(definitions));
   }
 
-  /** Adds one definition (GameTest fixtures); the next reload drops it. */
+  /** Adds one definition next to the datapack's (GameTest fixtures); reloads keep it. */
   static synchronized void add(RuinDefinitions.Definition definition) {
-    Map<String, RuinDefinitions.Definition> copy = new LinkedHashMap<>(active);
+    Map<String, RuinDefinitions.Definition> copy = new LinkedHashMap<>(added);
     copy.put(definition.id(), definition);
-    active = Collections.unmodifiableMap(copy);
+    added = Collections.unmodifiableMap(copy);
   }
 
   static synchronized void remove(String id) {
-    Map<String, RuinDefinitions.Definition> copy = new LinkedHashMap<>(active);
+    Map<String, RuinDefinitions.Definition> copy = new LinkedHashMap<>(added);
     copy.remove(id);
-    active = Collections.unmodifiableMap(copy);
+    added = Collections.unmodifiableMap(copy);
   }
 
   static final class ReloadListener extends SimpleJsonResourceReloadListener {

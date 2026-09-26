@@ -34,8 +34,8 @@ public final class RuinContent {
         .sound(sound).pushReaction(PushReaction.BLOCK);
   }
 
-  public static final DeferredBlock<Block> PEDESTAL = BLOCKS.register("ruin_pedestal",
-      () -> new Block(fixed(MapColor.GOLD, SoundType.TUFF).lightLevel(state -> 9).noOcclusion()));
+  public static final DeferredBlock<RuinBlocks.Answering> PEDESTAL = BLOCKS.register("ruin_pedestal",
+      () -> new RuinBlocks.Answering(fixed(MapColor.GOLD, SoundType.TUFF).lightLevel(state -> 9).noOcclusion()));
   public static final DeferredBlock<RuinBlocks.Mirror> MIRROR = BLOCKS.register("ruin_mirror",
       () -> new RuinBlocks.Mirror(fixed(MapColor.METAL, SoundType.COPPER).noOcclusion()));
   public static final DeferredBlock<RuinBlocks.Socket> SOCKET = BLOCKS.register("ruin_socket",

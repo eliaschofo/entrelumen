@@ -6,7 +6,11 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
@@ -17,6 +21,7 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
+import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.EntityCollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
@@ -66,8 +71,31 @@ public final class RuinBlocks {
   public static final BooleanProperty FILLED = BooleanProperty.create("filled");
   public static final BooleanProperty CLIMB = BooleanProperty.create("climb");
 
+  /**
+   * A block whose click belongs to its ruin. The server answers from {@link RuinChallenges} before
+   * the block is asked; on the client the click is simply taken, so a held block is never predicted
+   * as placed against it.
+   */
+  public static class Answering extends Block {
+    public Answering(Properties properties) {
+      super(properties);
+    }
+
+    @Override
+    protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player,
+        InteractionHand hand, BlockHitResult hit) {
+      return ItemInteractionResult.sidedSuccess(level.isClientSide);
+    }
+
+    @Override
+    protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player,
+        BlockHitResult hit) {
+      return InteractionResult.sidedSuccess(level.isClientSide);
+    }
+  }
+
   /** A silvered plate on a copper stand, turned an eighth per click. */
-  public static final class Mirror extends Block {
+  public static final class Mirror extends Answering {
     private static final VoxelShape SHAPE = Block.box(1, 0, 1, 15, 16, 15);
 
     public Mirror(Properties properties) {
@@ -87,7 +115,7 @@ public final class RuinBlocks {
   }
 
   /** An offering socket: a pot for plants or a small altar, shown filled for the last team. */
-  public static final class Socket extends Block {
+  public static final class Socket extends Answering {
     private static final VoxelShape SHAPE = Block.box(3, 0, 3, 13, 12, 13);
 
     public Socket(Properties properties) {
@@ -107,7 +135,7 @@ public final class RuinBlocks {
   }
 
   /** A stone like any other in the wall, except that it answers a touch. */
-  public static final class Hidden extends Block {
+  public static final class Hidden extends Answering {
     public Hidden(Properties properties) {
       super(properties);
       registerDefaultState(stateDefinition.any().setValue(LOOK, Look.TUFF_BRICKS));

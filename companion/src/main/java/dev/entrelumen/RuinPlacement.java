@@ -82,6 +82,16 @@ public final class RuinPlacement {
   private static final String STRUCTURE_BLOCK = "minecraft:structure_block";
 
   private static final Map<MinecraftServer, Deque<Job>> JOBS = new WeakHashMap<>();
+  /** A ruin whose placement failed waits this long before a trigger tries it again. */
+  static final long RETRY_TICKS = 12_000;
+  private static final Map<MinecraftServer, Map<ResourceLocation, Long>> FAILED = new WeakHashMap<>();
+
+  private static boolean waiting(MinecraftServer server, ResourceLocation id) {
+    synchronized (FAILED) {
+      Long at = FAILED.getOrDefault(server, Map.of()).get(id);
+      return at != null && server.overworld().getGameTime() - at < RETRY_TICKS;
+    }
+  }
 
   private RuinPlacement() {}
 
@@ -253,11 +263,11 @@ public final class RuinPlacement {
       if (floor <= in.height().getMinBuildHeight() + 1) return null;
     }
     int floor = RuinRules.floor(heights);
+    if (!fits(in.height(), floor - in.below(), in.below() + in.above())) return null;
     var biome = in.biomes().getNoiseBiome(QuartPos.fromBlock(x), QuartPos.fromBlock(floor), QuartPos.fromBlock(z),
         in.random().sampler());
     boolean suits = !biome.is(BiomeTags.IS_OCEAN) && !biome.is(BiomeTags.IS_RIVER) && !biome.is(BiomeTags.IS_BEACH);
     int score = RuinRules.score(new RuinRules.Sample(heights, water, suits), MAX_SPREAD);
-    if (floor + in.above() >= in.height().getMaxBuildHeight() - 2) return null;
     return score == Integer.MAX_VALUE ? null : new Candidate(x, z, floor, score);
   }
 
@@ -294,6 +304,11 @@ public final class RuinPlacement {
         if (!column.getBlock(k).isAir()) crowded++;
     }
     return new Candidate(x, z, y, crowded * 4);
+  }
+
+  /** Whether a template of {@code height} layers whose lowest layer is at {@code bottom} fits the world. */
+  static boolean fits(LevelHeightAccessor level, int bottom, int height) {
+    return bottom > level.getMinBuildHeight() && bottom + height < level.getMaxBuildHeight();
   }
 
   // ---- Jobs ----------------------------------------------------------------------------------
@@ -414,6 +429,10 @@ public final class RuinPlacement {
     job.busyNanos += spent;
     job.worstNanos = Math.max(job.worstNanos, spent);
     job.busyTicks++;
+    if (job.failed)
+      synchronized (FAILED) {
+        FAILED.computeIfAbsent(server, ignored -> new HashMap<>()).put(job.id, server.overworld().getGameTime());
+      }
     if (job.done || job.failed) {
       release(job);
       synchronized (JOBS) {
@@ -434,7 +453,7 @@ public final class RuinPlacement {
     for (var definition : RuinRegistry.available()) {
       if (definition.placement().trigger() != RuinDefinitions.Trigger.ACT || definition.act() > act) continue;
       var id = ResourceLocation.parse(definition.id());
-      if (data.find(id).isPresent() || busy(server, id)) continue;
+      if (data.find(id).isPresent() || busy(server, id) || waiting(server, id)) continue;
       if (!definition.dimension().equals(overworld.dimension().location().toString())) continue;
       start(overworld, definition, overworld.getSharedSpawnPos());
     }
@@ -450,7 +469,7 @@ public final class RuinPlacement {
       if (definition.placement().trigger() != RuinDefinitions.Trigger.ARRIVAL
           || !definition.dimension().equals(dimension)) continue;
       var id = ResourceLocation.parse(definition.id());
-      if (data.find(id).isPresent() || busy(player.server, id)) continue;
+      if (data.find(id).isPresent() || busy(player.server, id) || waiting(player.server, id)) continue;
       start(level, definition, player.blockPosition());
     }
   }
@@ -541,7 +560,14 @@ public final class RuinPlacement {
         if (job.resume != null) reserve(job);
       }
       case EVALUATING -> evaluate(job);
-      case CLEARING -> clearing(job, deadline);
+      case CLEARING -> {
+        if (job.columnIndex == 0 && !fits(job.level, job.origin.getY(), job.prepared.sizeY())) {
+          LOGGER.error("Heliodor ruin {} does not fit the world at {}; not placed", job.id, job.origin);
+          job.failed = true;
+          return;
+        }
+        clearing(job, deadline);
+      }
       case PLACING -> placing(job, deadline);
       case FOUNDATION -> foundation(job, deadline);
       case FINISHING -> finish(job);
@@ -572,7 +598,7 @@ public final class RuinPlacement {
   /** Skips candidates where players already spent time: a base, a farm, a path they use. */
   private static void checking(Job job) {
     if (job.candidate >= job.candidates.size()) {
-      if (job.best == null) {
+      if (job.best == null || job.bestScore == Integer.MAX_VALUE) {
         LOGGER.error("Heliodor ruin {}: every candidate site is inhabited or unusable; not placed", job.id);
         job.failed = true;
         return;
@@ -694,6 +720,7 @@ public final class RuinPlacement {
             if (!level.getBlockState(new BlockPos(x, y, z)).isAir()) crowded++;
       score = crowded;
     }
+    if (!fits(level, floor - p.ground(), p.sizeY())) score = Integer.MAX_VALUE;
     var candidate = new Candidate(x0 + p.sizeX() / 2, z0 + p.sizeZ() / 2, floor, score);
     if (score < job.bestScore) {
       job.bestScore = score;
