@@ -87,6 +87,70 @@ Los bocetos de `ruins_acts.py`, `ruins_dims.py` y `ruin_atlas.py` quedan como pu
 - **Jefes.** Mobs con barra de jefe, nombre y atributos propios. Reaparecen para cada equipo que todavía no resolvió el desafío.
 - **Sin mod.** Una ruina de dimensión cuyo mod falta se saltea y su pieza pasa al pedestal de la gigante del mismo acto.
 
+## El Motor de Terra: el puzzle de Create del Taller hundido (Elias, 26/9)
+
+«El taller de Terra tiene que tener un puzzle con Create, a pleno Create, terrible complejidad, pero debe ser así.»
+
+Terra dejó el taller ahogado a propósito: el foso sólo se vacía si alguien entiende su motor. El puzzle no tiene una solución única. Son restricciones reales de Create 6.0.10 que se cumplen construyendo.
+
+**Referencias inspeccionadas (hook de diseño):** las escenas ponder del JAR fijado `create-1.21.1-6.0.10.jar`, leídas con `voxkit.load_nbt`:
+
+| Escena | Qué se tomó |
+|---|---|
+| `assets/create/ponder/large_water_wheel.nbt` | La rueda grande con su estructura de relleno, el eje y el velocímetro |
+| `mechanical_pump/speed.nbt` | Bomba con engranajes y tanque |
+| `cog/speedup.nbt` | Multiplicar vueltas con engranaje grande contra chico |
+| `sequenced_gearshift.nbt` | Rodamiento con chasis y caja secuencial |
+| `gearbox.nbt` | Caja de engranajes |
+
+### Las etapas
+
+1. **Las cuatro ruedas.** Cada casa tiene una rueda hidráulica grande de Create en su canal.
+   - Una compuerta de cobre retiene el agua en un estanque aguas arriba. La palanca la levanta, el agua corre, pasa por la rueda y cae al foso por un corte en el muro.
+   - A cada casa le falta una pieza de su transmisión: hay que encontrarla y reponerla.
+   - Por la simetría del conjunto, las ruedas de casas enfrentadas giran en sentidos opuestos.
+   - Cada rueda tiene un velocímetro fijo y una nota de Terra.
+2. **Las líneas.** Un eje de Create por arriba de cada puente lleva la rotación de la casa a la sala de máquinas.
+3. **La sala de máquinas (el banco de Terra).**
+   - Es un salón redondo adentro de la caldera, sobre el agua, y el único lugar de la ruina donde se puede construir.
+   - Adentro de un disco de 9 de diámetro se ponen y se sacan piezas de transmisión de Create: ejes, engranajes, cajas, embrague, cambio de sentido, cadenas, correas, medidores, caja secuencial y redstone.
+   - No se permiten fuentes de energía ni controlador de velocidad.
+   - Entran cuatro ejes, uno por lado. Salen cinco puertos en el piso: cuatro bombas en las diagonales y el sello en el centro.
+4. **Las bombas del foso.** Cuatro bombas mecánicas fijas, dentro de la caldera, con caños al agua.
+   - El foso se vacía, capa por capa, mientras las cuatro giran al mismo tiempo a R RPM o más y en el sentido de sacar agua.
+   - Si una afloja o se invierte, se pausa.
+   - R y el estrés se eligen con los valores reales de la config de Create del pack:
+     - ninguna rueda sola llega;
+     - hay que unir las cuatro, y para eso corregir los sentidos espejados;
+     - hay que multiplicar la velocidad con engranajes;
+     - con el total a R entra justo en la capacidad; a 2R se sobrecarga.
+   - Dos bombas miran al revés que las otras dos, así que el reparto también pide invertir.
+5. **El sello de la bóveda.**
+   - Ya seco el foso, un rodamiento mecánico mueve un anillo de cobre que tapa las cuatro bajadas.
+   - Se abre sólo si el anillo queda quieto, girado exactamente un octavo de vuelta (45°, más múltiplos de 90). Hace falta la caja de cambios secuencial programada, o una sincronización fina.
+   - Abre para el equipo de quien lo giró.
+
+### Pistas (justas, en la ruina)
+
+Las notas de Terra van en atriles. Los medidores dan los números.
+
+| Nota | ES | EN |
+|---|---|---|
+| Casa 1 | Las ruedas no discuten: giran para donde las empuja el agua. Las de enfrente, al revés que ésta. | Wheels don't argue: they turn the way the water pushes. The ones across turn the other way. |
+| Casa 2 | Una bomba mía no traga con menos de R vueltas. Cuatro juntas pesan lo que pesan: mirá el estresómetro antes de apurarlas. | My pumps won't drink below R RPM. Four of them weigh what they weigh; check the stressometer before you rush them. |
+| Casa 3 | Engranaje grande contra chico: el doble de vueltas, el doble de peso. No hay magia, hay cuentas. | Big cog against small: twice the turns, twice the load. No magic, just sums. |
+| Casa 4 | Si juntás dos ejes que no giran igual, se rompen los dos. Una caja de engranajes da vuelta cualquier discusión. | Join two shafts that don't agree and both break. A gearbox turns any argument around. |
+| Motor | El sello gira un octavo y se queda quieto. Ni un grado más. Si no sabés medir un octavo, todavía no te toca el plano. | The seal turns an eighth and stays put. Not a degree more. If you can't measure an eighth, the blueprint isn't yours yet. |
+
+### Reglas
+
+- **Estado por equipo.** Cuando un equipo reclama el Plano, el taller se rearma para el siguiente diez minutos después de quedar vacío:
+  - el foso se vuelve a inundar;
+  - el anillo vuelve a su lugar;
+  - las piezas puestas en el banco vuelven a quien las puso o a un barril en la puerta.
+- **Piezas.** Las pone el jugador: son las del acto II (aleación de andesita, ejes, engranajes). Un barril por casa trae un poco de material oxidado para no moler de más.
+- **Sin Create:** vuelve el acertijo de las cuatro palancas.
+
 ## Pendiente
 
 - Arte de las diez ruinas a escala final. Orden: Torre de la Señal, Taller hundido, Viaducto, Observatorio del Risco, Templo, y después las medianas.
