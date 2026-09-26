@@ -93,7 +93,7 @@ Roles por piso:
   - sin waystones, `/home` ni `/rtp`.
   Los techos de 9 bloques tampoco dejan volar.
 - **Intento, caídas y muerte (Elias, 26/9):**
-  - la puerta se abre con una ofrenda cara, y cada ofrenda es un intento;
+  - la puerta se abre con una ofrenda de **1 bloque de netherita**, y cada ofrenda es un intento;
   - adentro se conserva el inventario y se reaparece al inicio del piso;
   - el grupo comparte una bolsa de caídas de 3 por integrante (dos jugadores, seis caídas), sin importar quién las gaste;
   - cuando la bolsa se vacía, todos vuelven afuera, la puerta se cierra y pide otra ofrenda.
@@ -139,5 +139,4 @@ Los puntos 1–3 y 5 son un worker; el 4 y el 6, otro, en paralelo, sobre la mis
 ## Para decidir
 
 - El nombre del descenso y el del jefe.
-- Qué pide la ofrenda.
 - Si hay curios únicos del jefe.
