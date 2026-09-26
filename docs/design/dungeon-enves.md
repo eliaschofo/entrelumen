@@ -20,7 +20,7 @@ Es el método de Diablo II. Hay dos niveles y cada uno hace lo que mejor le sale
 
 | Qué | Cómo | Costo |
 |---|---|---|
-| Forma del piso | Un generador de grilla (8×8 celdas) crece como un caminante con memoria: sigue de largo casi siempre, a veces abre una rama y al final cierra algunos bucles. Después elige la salida lejos, en un callejón, y reparte los roles. | Un algoritmo chico, sin arte |
+| Forma del piso | Un generador de grilla (11×11 celdas) crece como un caminante con memoria: sigue de largo casi siempre, a veces abre una rama y al final cierra algunos bucles. Después elige la salida lejos, en un callejón, y reparte los roles. | Un algoritmo chico, sin arte |
 | Aspecto de cada celda | Una plantilla de 19×19×12 por tileset × rol × máscara de puertas × variante, hecha por código: forma de la sala (cuadrada con pilares, octógono, cruz), piso, zócalos, nichos, luz. Se generan las 15 máscaras, así que el juego nunca rota nada. | Un script por tileset |
 
 Sale variado, porque cada descenso es otro, y bonito, porque cada sala está dirigida. Es barato de hacer: no hay un motor de tallado de voxels en tiempo de ejecución, sólo pegar plantillas. Un motor 100% procedural daría menos control del arte por más trabajo.
@@ -35,15 +35,16 @@ Invariantes que el port a Java hereda del prototipo, probados con 200 semillas:
 
 | Piso | Tileset | Salas | Carácter |
 |---|---|---|---|
-| I | Osarios | ~17 | Toba y calcita, nichos con huesos y velas, criptas de pilares |
-| II | Cisternas | ~20 | Canales de agua, caños de cobre, pasarelas |
-| III | Fundición | ~23 | Piedra negra, basalto, canales de lava, cadenas |
-| IV | Geodas | ~26 | Amatista, calcita, basalto liso, cristales que brillan |
+| I | Osarios | ~26 | Toba y calcita, nichos con huesos y velas, criptas de pilares |
+| II | Cisternas | ~31 | Canales de agua, caños de cobre, pasarelas |
+| III | Fundición | ~36 | Piedra negra, basalto, canales de lava, cadenas |
+| IV | Geodas | ~41 | Amatista, calcita, basalto liso, cristales que brillan |
 | V | El Eclipse | fijo | Acceso corto, antesala del campeón y arena de 3×3 celdas; al fondo, la salida |
 
 Roles por piso:
 - **inicio:** la bajada por donde llegaste;
-- **escalera:** oculta en un callejón lejano;
+- **escalera:** oculta en un callejón lejano; sellada hasta prender los sellos;
+- **sellos (Elias, 26/9: «más salas, más laberíntico, que tengas que sí o sí explorar»):** 2 en los pisos I–II y 3 en los III–IV, en callejones fuera del camino principal y lo más lejos posible entre sí. Si el piso no deja escondites, el generador brota una rama ciega nueva. Los sellos se ven en el mapa recién cuando los encontrás;
 - **guardia:** la sala antes de la escalera, con un campeón;
 - **encuentros:** alrededor del 40% de las salas;
 - **santuario:** en el 70% de los pisos, una bendición temporal;

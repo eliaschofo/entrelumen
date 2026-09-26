@@ -22,7 +22,7 @@ from collections import deque
 
 from PIL import Image, ImageDraw, ImageFilter, ImageFont
 
-W = H = 8                                   # cells per floor side
+W = H = 11                                  # cells per floor side
 DIRS = {'N': (0, -1), 'E': (1, 0), 'S': (0, 1), 'W': (-1, 0)}
 TILESETS = ['Osarios', 'Cisternas', 'Fundición', 'Geodas', 'El Eclipse']
 TILESETS_EN = ['Ossuaries', 'Cisterns', 'Foundry', 'Geodes', 'The Eclipse']
@@ -41,8 +41,9 @@ class Floor:
         self.depth = depth
         self.cells = set()
         self.links = set()                  # frozenset({a, b})
-        self.role = {}                      # cell -> start | exit | vault | shrine | guard | fight | quiet | arena | portal
+        self.role = {}                      # cell -> start | exit | seal | vault | shrine | guard | fight | quiet | arena | portal
         self.start = self.exit = None
+        self.seals = []
 
     def linked(self, a, b):
         return frozenset((a, b)) in self.links
@@ -80,7 +81,7 @@ class Floor:
         return out[::-1]
 
 
-def grow(rng, depth, start, target, keep_on=0.62, straight=0.5, loops=0.12):
+def grow(rng, depth, start, target, keep_on=0.5, straight=0.4, loops=0.07):
     """Random growth with memory: mostly keep walking from the newest cell (corridors), sometimes
     branch from anywhere (forks and dead ends), then close a few loops so it is not a pure tree."""
     f = Floor(depth)
@@ -111,6 +112,31 @@ def grow(rng, depth, start, target, keep_on=0.62, straight=0.5, loops=0.12):
     return f
 
 
+def sprout(rng, f, dist, length=2):
+    """Grow a fresh dead-end branch from the farthest cell that has room: somewhere to hide a seal."""
+    for c in sorted(f.cells, key=lambda c: (-dist.get(c, 0), rng.random())):
+        if c in (f.exit, f.start):
+            continue
+        dirs = list(DIRS.values())
+        rng.shuffle(dirs)
+        for d in dirs:
+            n = add(c, d)
+            if inside(n) and n not in f.cells:
+                f.cells.add(n)
+                f.links.add(frozenset((c, n)))
+                cur = n
+                for _ in range(length - 1):
+                    opts = [add(cur, dd) for dd in DIRS.values() if inside(add(cur, dd)) and add(cur, dd) not in f.cells]
+                    if not opts:
+                        break
+                    nxt = rng.choice(opts)
+                    f.cells.add(nxt)
+                    f.links.add(frozenset((cur, nxt)))
+                    cur = nxt
+                return cur
+    return None
+
+
 def assign(rng, f):
     dist = f.bfs(f.start)
     far = max(dist.values())
@@ -123,7 +149,28 @@ def assign(rng, f):
     p = f.path(f.start, f.exit)
     if len(p) > 2:
         f.role[p[-2]] = 'guard'                          # the champion pack before the stairs
-    side = [c for c in dead if c not in main and c != f.exit and dist[c] >= 0.35 * far]
+    # seals (Elias, 26/9: "que tengas que sí o sí explorar"): the stairwell stays shut until the group
+    # lights every seal; they sit in dead ends off the main path, as far from each other as possible
+    n_seals = 2 if f.depth <= 2 else 3
+    side = [c for c in dead if c not in main and c != f.exit]
+    seals = []
+    for _ in range(n_seals):
+        pool = [c for c in side if c not in seals and dist[c] >= 0.3 * far]
+        if not pool:                                         # no hiding place left: grow one
+            tip = sprout(rng, f, dist)
+            if tip is None:
+                break
+            dist = f.bfs(f.start)
+            f.role.update({c: 'quiet' for c in f.cells if c not in f.role})
+            pool = [tip]
+        if not seals:
+            pick = max(pool, key=lambda c: (dist[c], rng.random()))
+        else:
+            pick = max(pool, key=lambda c: (min(abs(c[0] - s[0]) + abs(c[1] - s[1]) for s in seals), rng.random()))
+        seals.append(pick)
+        f.role[pick] = 'seal'
+    f.seals = seals
+    side = [c for c in side if c not in seals and dist[c] >= 0.35 * far]
     if side:
         f.role[rng.choice(sorted(side))] = 'vault'
     mids = [c for c in f.cells if f.role[c] == 'quiet' and c not in main and len(f.doors(c)) >= 2]
@@ -169,7 +216,7 @@ def descent(seed):
     floors = []
     start = (rng.randrange(2, W - 2), rng.randrange(2, H - 2))
     for depth in range(1, 5):
-        f = assign(rng, grow(rng, depth, start, 14 + 3 * depth))
+        f = assign(rng, grow(rng, depth, start, 21 + 5 * depth))
         floors.append(f)
         start = f.exit                                   # the stairwell goes straight down
     floors.append(boss_floor(start if 1 <= start[0] <= W - 6 or True else start))
@@ -184,12 +231,15 @@ def check(floors):
             assert f.start == floors[i - 1].exit, 'floor %d does not start under the stairs' % f.depth
         if f.depth < 5:
             assert len(f.doors(f.exit)) == 1 or dist[f.exit] == max(dist.values())
+            assert len(f.seals) >= 2, 'floor %d has %d seals' % (f.depth, len(f.seals))
+            main = set(f.path(f.start, f.exit))
+            assert not (set(f.seals) & main), 'a seal on the main path'
     return True
 
 
 # ------------------------------------------------------------------ review maps (Atlas style)
 PARCH, INK, FAINT = (236, 222, 188), (74, 52, 34), (150, 120, 88)
-ROLE_FILL = {'start': (214, 196, 150), 'exit': (240, 204, 120), 'vault': (206, 170, 110), 'shrine': (226, 214, 150),
+ROLE_FILL = {'seal': (170, 206, 200), 'start': (214, 196, 150), 'exit': (240, 204, 120), 'vault': (206, 170, 110), 'shrine': (226, 214, 150),
              'guard': (214, 150, 120), 'fight': (222, 196, 160), 'quiet': (226, 210, 172), 'arena': (200, 130, 110),
              'portal': (240, 220, 140)}
 
@@ -205,7 +255,7 @@ def wobble(rng, pts, amp):
     return [(x + rng.uniform(-amp, amp), y + rng.uniform(-amp, amp)) for x, y in pts]
 
 
-def draw_floor(f, px=46, pad=24, fog=None, seed=0):
+def draw_floor(f, px=40, pad=22, fog=None, seed=0):
     """The floor as the Atlas would ink it. `fog` = (explored, glimpsed) sets for the player view."""
     rng = random.Random(seed * 31 + f.depth)
     Wp, Hp = W * px + 2 * pad, H * px + 2 * pad
@@ -290,6 +340,10 @@ def draw_floor(f, px=46, pad=24, fog=None, seed=0):
         elif role == 'fight':
             d.line((cx - r * 0.7, cy - r * 0.7, cx + r * 0.7, cy + r * 0.7), fill=FAINT, width=2)
             d.line((cx + r * 0.7, cy - r * 0.7, cx - r * 0.7, cy + r * 0.7), fill=FAINT, width=2)
+        elif role == 'seal':
+            pts = [(cx + r * 1.1 * math.cos(k * math.pi / 3), cy + r * 1.1 * math.sin(k * math.pi / 3)) for k in range(6)]
+            d.polygon(pts, outline=(30, 90, 90), width=2)
+            d.ellipse((cx - r * 0.35, cy - r * 0.35, cx + r * 0.35, cy + r * 0.35), fill=(30, 90, 90))
         elif role == 'portal':
             d.ellipse((cx - r, cy - r, cx + r, cy + r), outline=(200, 150, 40), width=3)
     if f.depth == 5:
@@ -348,8 +402,9 @@ def plan_image(seed, path):
     canvas = Image.new('RGB', (Wc, Hc), (28, 28, 38))
     d = ImageDraw.Draw(canvas)
     d.text((60, 36), 'El Envés · plano del descenso', font=font(44, True), fill=(250, 236, 200))
-    d.text((62, 94), 'Semilla %d. Cuatro pisos generados sobre salas de autor y el piso del jefe. '
-                     'Cada escalera baja justo al inicio del piso siguiente.' % seed, font=font(18), fill=(214, 200, 170))
+    d.text((62, 94), 'Semilla %d. Cuatro pisos de 26 a 41 salas sobre salas de autor, y el del jefe. La escalera no abre '
+                     'hasta prender los sellos escondidos; baja justo al inicio del piso siguiente.' % seed,
+           font=font(18), fill=(214, 200, 170))
     canvas.paste(fog.resize((fw, fh)), (60, 150))
     for k, line in enumerate(('Lo que ve el jugador en el piso II, a mitad de camino:',
                               'las salas pisadas, nítidas; las que se asoman por una puerta, borrosas;',
@@ -364,7 +419,8 @@ def plan_image(seed, path):
         d.text((px_ + 4, py_ + th + 6), label, font=font(16, True), fill=(250, 236, 200))
     # legend
     lx, ly = x0 + tw + 20, 150 + 2 * (th + 40)
-    items = [('triángulo', 'bajada por donde llegaste'), ('espiral', 'escalera al piso siguiente'),
+    items = [('triángulo', 'bajada por donde llegaste'), ('espiral', 'escalera, sellada hasta prender los sellos'),
+             ('hexágono', 'sello: en callejones lejanos, obligatorios'),
              ('calavera roja', 'campeón que custodia la escalera'), ('cruz', 'encuentro: pocos enemigos fuertes'),
              ('sol', 'santuario (bendición temporal)'), ('cofre', 'bóveda con acertijo'),
              ('anillo rojo', 'arena del jefe'), ('aro dorado', 'salida')]
