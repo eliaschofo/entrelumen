@@ -320,8 +320,8 @@ class ChapterContracts(unittest.TestCase):
     'settlement_supply':['voices_chorus'],'world_network':['world_backbone','world_renewal','world_settlement']})
   self.assertEqual({m:projects[m]['items'] for m in source},
    {'resilient_backbone':{'entrelumen:ark_bus':1},'renewal_engine':{'entrelumen:renewal_engine':1},
-    'settlement_supply':{'entrelumen:habitation_contract':1},
-    'world_network':{'minecraft:paper':3,'minecraft:copper_ingot':1}})
+    'settlement_supply':{'entrelumen:habitation_contract':1,'entrelumen:star_chart':1},
+    'world_network':{'minecraft:paper':3,'minecraft:copper_ingot':1,'entrelumen:sacred_flame':1}})
   expected_items={'world_atomic_alloy':2,'world_circuit_boards':2,'world_handling_cores':2,'world_inventory_sensor':1,
    'world_ark_bus':1,'world_sky_ingots':2,'world_imperium':2,'world_capsules':2,'world_propagation':2,
    'world_renewal_item':1,'world_fish_stew':2,'world_mixed_salad':2,'world_calculation':1,'world_rations':2,
@@ -511,7 +511,7 @@ class ChapterContracts(unittest.TestCase):
  def test_act_four_closes_with_the_heart_and_act_six_opens_with_the_crossing(self):
   projects=json.loads((ROOT/'companion/src/main/resources/data/entrelumen/campaign/projects.json').read_text(encoding='utf-8'))
   self.assertEqual(projects['heliodor_heart'],{'act':4,'requires':['exchange_route','heart_recovered'],
-                                                'items':{'entrelumen:heart_of_heliodor':1}})
+                                                'items':{'entrelumen:heart_of_heliodor':1,'entrelumen:sun_key':1}})
   self.assertIn('heliodor_heart',projects['atlas_voices']['requires'])
   self.assertIn('arcane_module',projects['atlas_voices']['requires'])
   self.assertEqual(sorted(m for m,p in projects.items() if p['act']==6),[])

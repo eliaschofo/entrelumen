@@ -39,7 +39,10 @@ class ProjectValidationTest {
       var project = projects.get(id);
       assertEquals(5, project.act());
       assertEquals(java.util.Set.of("atlas_voices"), project.prerequisites());
-      assertEquals(java.util.Map.of(item, 1), project.items());
+      // Ruins v2: the settlement also takes the Star Chart from the Void Observatory.
+      var expected = new java.util.HashMap<String, Integer>(java.util.Map.of(item, 1));
+      if (id.equals("settlement_supply")) expected.put("entrelumen:star_chart", 1);
+      assertEquals(expected, project.items());
       assertTrue(project.reward().isEmpty());
       var missing = definitions.deepCopy();
       missing.remove(id);
@@ -49,8 +52,8 @@ class ProjectValidationTest {
     var closure = projects.get("world_network");
     assertEquals(5, closure.act());
     assertEquals(costs.keySet(), closure.prerequisites());
-    assertEquals(java.util.Map.of("minecraft:paper", 3, "minecraft:copper_ingot", 1),
-        closure.items());
+    assertEquals(java.util.Map.of("minecraft:paper", 3, "minecraft:copper_ingot", 1,
+        "entrelumen:sacred_flame", 1), closure.items());
     assertTrue(closure.reward().isEmpty());
   }
 
@@ -60,7 +63,7 @@ class ProjectValidationTest {
     var projects = Projects.parse(defaults(), id -> true);
     var heart = projects.get(HeliodorHeartRules.PROJECT);
     assertEquals(4, heart.act());
-    assertEquals(java.util.Map.of("entrelumen:heart_of_heliodor", 1), heart.items());
+    assertEquals(java.util.Map.of("entrelumen:heart_of_heliodor", 1, "entrelumen:sun_key", 1), heart.items());
     assertEquals(java.util.Set.of("exchange_route", HeliodorHeartRules.RECOVERED), heart.prerequisites());
     assertTrue(heart.reward().isEmpty(), "the Atlas keeps the Heart");
     assertTrue(projects.get("atlas_voices").prerequisites().contains(HeliodorHeartRules.PROJECT));

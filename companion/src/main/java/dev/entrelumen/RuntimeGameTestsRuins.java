@@ -709,6 +709,44 @@ public final class RuntimeGameTestsRuins {
   }
 
   @GameTest(template = "empty", timeoutTicks = 200)
+  public static void projectsTakeOnlyTheTeamsCurrentKeyPiece(GameTestHelper helper) {
+    var a = arrive(helper, "ProjectA", new BlockPos(1, 1, 1));
+    var b = arrive(helper, "ProjectB", new BlockPos(3, 1, 1));
+    var campaign = Entrelumen.current(a);
+    var project = Projects.all().get("first_signal");
+    String ember = "entrelumen:signal_ember";
+    var item = BuiltInRegistries.ITEM.get(ResourceLocation.parse(ember));
+    helper.assertTrue(project.items().get(ember) == 1, "First Signal does not ask for the Signal Ember");
+    campaign.completed.addAll(project.prerequisites());
+    project.items().forEach((id, count) -> {
+      if (!id.equals(ember)) a.getInventory().add(new ItemStack(BuiltInRegistries.ITEM.get(ResourceLocation.parse(id)), count));
+    });
+    var campaignId = CampaignActions.campaignId(a);
+    java.util.function.BooleanSupplier deliver = () ->
+        CampaignActions.perform(a, campaignId, CampaignActions.Action.DELIVER, "first_signal").success();
+    helper.assertTrue(!deliver.getAsBoolean() && !campaign.completed.contains("first_signal"),
+        "First Signal closed without its piece");
+    String ruin = "entrelumen:qa_piece_" + UUID.randomUUID().toString().substring(0, 6);
+    team(b).pieces.put(ruin, 1);
+    a.getInventory().add(KeyPieces.bound(item, context(b).campaignId(), ruin, 1));
+    helper.assertTrue(!deliver.getAsBoolean(), "Another team's piece counted");
+    team(a).pieces.put(ruin, 2);
+    a.getInventory().add(KeyPieces.bound(item, context(a).campaignId(), ruin, 1));
+    helper.assertTrue(!deliver.getAsBoolean() && Entrelumen.availableMaterials(a).getOrDefault(ember, 0) == 0,
+        "A replaced copy counted");
+    a.getInventory().add(KeyPieces.bound(item, context(a).campaignId(), ruin, 2));
+    helper.assertTrue(Entrelumen.availableMaterials(a).get(ember) == 1, "The Atlas does not see the team's piece");
+    helper.assertTrue(deliver.getAsBoolean() && campaign.completed.contains("first_signal"),
+        "The team's own piece did not close First Signal");
+    helper.assertTrue(a.getInventory().items.stream().filter(stack -> stack.is(item))
+        .noneMatch(stack -> KeyPieces.binding(stack).generation() == 2 && KeyPieces.binding(stack).campaign().equals(campaignId)),
+        "The delivery did not take the team's piece");
+    leave(a);
+    leave(b);
+    helper.succeed();
+  }
+
+  @GameTest(template = "empty", timeoutTicks = 200)
   public static void landmarkPedestalAdoptsThePiecesOfAbsentMods(GameTestHelper helper) {
     var landmark = RuinRegistry.get("entrelumen:cliff_observatory").orElseThrow();
     var pieces = RuinChallenges.pieces(landmark).stream().map(RuinDefinitions.Definition::piece).toList();

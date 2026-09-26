@@ -158,6 +158,7 @@ public final class ActsFullpackGameTests {
       helper.assertTrue(command(player, "entrelumen deliver atlas_voices") == 0 && campaign.act == 4,
           "The Voices of the Atlas closed without the Heart");
       player.getInventory().add(new ItemStack(HeliodorHeart.ITEM.get()));
+      player.getInventory().add(new ItemStack(RuinContent.PIECES.get("sun_key").get()));
       helper.assertTrue(command(player, "entrelumen deliver " + HeliodorHeartRules.PROJECT) == 1
           && player.getInventory().countItem(HeliodorHeart.ITEM.get()) == 0 && HeliodorHeartRules.inAtlas(campaign),
           "The Heart was not delivered into the Atlas");

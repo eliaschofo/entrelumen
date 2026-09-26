@@ -28,7 +28,8 @@ class TerraArmDataTest {
     var archive = projects.get("lost_workshop");
     assertEquals(2, archive.act());
     assertEquals(ARM, archive.reward());
-    assertEquals(java.util.Map.of("minecraft:paper", 3, "minecraft:copper_ingot", 1), archive.items());
+    assertEquals(java.util.Map.of("minecraft:paper", 3, "minecraft:copper_ingot", 1,
+        "entrelumen:terra_blueprint", 1), archive.items());
     assertEquals(List.of("lost_workshop"),
         projects.entrySet().stream().filter(e -> e.getValue().reward().equals(ARM)).map(e -> e.getKey()).toList());
   }

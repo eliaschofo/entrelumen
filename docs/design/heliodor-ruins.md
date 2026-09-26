@@ -259,6 +259,7 @@ Sólidas para todos; los miembros de un equipo que resolvió lo que pide la comp
 - El pedestal da la pieza cuando el equipo resolvió todo lo que pide. Cada copia queda ligada a la campaña y a una generación. Si el equipo ya lleva la actual (inventario, ender chest o cursor de algún miembro conectado), no da otra. Si no la lleva, da una nueva generación, y la vieja se desvanece en cuanto alguien la lleve encima. Con el proyecto entregado, no da nada.
 - La entrega en el Atlas sólo cuenta la copia vigente del propio equipo (o la heredada del fundador); una pieza sin ligar (comandos, creativo) cuenta.
 - Sin el mod de una ruina de dimensión, su pieza pasa al pedestal de la gigante del mismo acto (hoy: Santuario y Antesala al Observatorio del Risco).
+- **En la campaña.** Cada pieza es un requisito más del proyecto de su ruina en `campaign/projects.json`, y la quest que lo entrega la nombra («Llevá también…»). La tabla del plantel nombra quests; donde la quest no es un proyecto se usó el proyecto de su rama: `voices_lens` y `voices_spirits` llevan a `spectral_archive` (Ocular y Testimonio), y `voices_sun_spirit`, que es la observación del Sun Spirit, a `heliodor_heart` (Llave del Sol).
 
 ### Jefes
 
