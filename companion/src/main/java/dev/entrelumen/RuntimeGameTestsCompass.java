@@ -145,15 +145,20 @@ public final class RuntimeGameTestsCompass {
       level.setDefaultSpawnPos(oldSpawn, oldAngle);
     }
     var origin = ruin.origin();
-    helper.assertTrue(origin.equals(new BlockPos(x0, ground, z0)),
-        "Template floor was not anchored at ground level: " + origin);
+    // The Sealed Stair reaches below the patio: the template sinks by its ground marker's layer.
+    var template = level.getStructureManager().get(HeliodorRuins.START).orElseThrow();
+    int sink = HeliodorRuins.groundLayer(template, new net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings());
+    helper.assertTrue(origin.equals(new BlockPos(x0, ground - sink, z0)),
+        "Template floor was not anchored at ground level: " + origin + " (sink " + sink + ")");
     helper.assertTrue(ruin.box().getXSpan() == size.getX() && ruin.box().getZSpan() == size.getZ()
         && ruin.box().maxY() == origin.getY() + size.getY() - 1,
         "Registered box does not match the template size " + size + ": " + ruin.box());
     helper.assertTrue(ruin.box().minY() <= ground - 1, "Foundation depth missing from the box");
+    int cx = size.getX() / 2, cz = size.getZ() / 2;
     for (int x = 0; x < size.getX(); x++)
       for (int z = 0; z < size.getZ(); z++) {
-        var below = origin.offset(x, -1, z);
+        if (Math.abs(x - cx) <= 1 && Math.abs(z - cz) <= 1) continue; // the heart, over the stair's well
+        var below = origin.offset(x, sink - 1, z);
         helper.assertTrue(!level.getBlockState(below).canBeReplaced(),
             "The ruin floats above " + below);
       }
@@ -168,11 +173,13 @@ public final class RuntimeGameTestsCompass {
     helper.assertTrue(outside && gap == 1 && HeliodorRuins.standable(level, arrival),
         "Arrival point is not a safe spot beside the ruin: " + arrival);
 
-    // Once per world: a second call returns the record and never rebuilds.
-    level.setBlockAndUpdate(origin, Blocks.MOSSY_COBBLESTONE.defaultBlockState());
+    // Once per world: a second call returns the record and never rebuilds. The probe sits on the
+    // floor layer (the template's corner is under ground and may be below this world's bottom).
+    BlockPos probe = origin.above(sink);
+    level.setBlockAndUpdate(probe, Blocks.MOSSY_COBBLESTONE.defaultBlockState());
     var again = HeliodorRuins.place(level, data, near.offset(40, 0, 40), true).orElseThrow();
     helper.assertTrue(again.equals(ruin) && data.ruins().size() == 1
-        && level.getBlockState(origin).is(Blocks.MOSSY_COBBLESTONE),
+        && level.getBlockState(probe).is(Blocks.MOSSY_COBBLESTONE),
         "The start ruin was placed twice");
     helper.assertTrue(level.getSharedSpawnPos().equals(oldSpawn), "The spawn moved on a repeat call");
 
