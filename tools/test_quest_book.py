@@ -134,6 +134,18 @@ class QuestBook(unittest.TestCase):
                     self.assertNotIn('', [value[0], value[-1]] if len(value) > 1 else value, key)
                     self.assertFalse(any(a == b == '' for a, b in zip(value, value[1:])), key)
 
+    def test_story_copy_is_not_meta(self):
+        # docs/design/quest-copy.md: the story never asks to confirm, names a key or explains the book.
+        for data in self.story:
+            for q in data['quests']:
+                for lang in LOCALES:
+                    text = ' '.join(q[lang])
+                    with self.subTest(quest=q['key'], lang=lang):
+                        for phrase in quest_engine.BANNED[lang]:
+                            self.assertNotIn(phrase, text.lower())
+                        self.assertIsNone(quest_engine.HARD_KEYS.search(text))
+                        self.assertNotRegex(text, r'(?i)\bconfirm')
+
     def test_chapter_images_use_real_textures_at_whole_texel_scales(self):
         for name, px in ART_PX.items():
             self.assertEqual(png_size(ART / (name + '.png')), px, name)
