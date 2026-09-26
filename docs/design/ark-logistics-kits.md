@@ -1,5 +1,7 @@
 # Logistics: complete expedition kits
 
+> **Replaced by [`ark-modules-v2.md`](ark-modules-v2.md) (25 September 2026).** The Ark's first version (the shared depot and expedition kits; the depot's stock drops next to its module) was removed: each module now gives a global effect to its team from its place in the Ark. This page is kept as the record of what existed; the companion no longer implements it.
+
 Decision, 2026-09-23. Implemented; headless full-pack runtime evidence passed on 2026-09-23 (see Evidence). Client visual acceptance is pending. This adds a practical benefit to the existing logistics module; it does not change campaign deliveries or grant resources.
 
 ## Purpose and native overlap

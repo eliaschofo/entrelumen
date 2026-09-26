@@ -1,5 +1,7 @@
 # Arcane service: restoring an item's forging history
 
+> **Replaced by [`ark-modules-v2.md`](ark-modules-v2.md) (25 September 2026).** The Ark's first version (the forging-history restoration) was removed: each module now gives a global effect to its team from its place in the Ark. This page is kept as the record of what existed; the companion no longer implements it.
+
 The assembled Ark's arcane module restores an item's forging history. Every anvil operation doubles an item's prior-work penalty (`minecraft:repair_cost`: 1, 3, 7, 15 …). The service returns it to 0 and keeps everything else. It creates no enchantment and removes no curse. It replaced the earlier separation of compound books on 23 September 2026 at Elias's direction; the reasons are below.
 
 ## Use

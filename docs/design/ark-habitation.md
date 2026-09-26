@@ -1,5 +1,7 @@
 # Habitation: expedition lodging
 
+> **Replaced by [`ark-modules-v2.md`](ark-modules-v2.md) (25 September 2026).** The Ark's first version (expedition lodging; a lodging still set as a spawn gives the previous home back at login) was removed: each module now gives a global effect to its team from its place in the Ark. This page is kept as the record of what existed; the companion no longer implements it.
+
 The assembled Ark offers a personal temporary respawn while retaining the player's previous home. Use the existing Habitation block with a bed in the main hand to check in; crouch-use a Habitation block with a bed to check out. The bed is not consumed, and checkout restores the previous spawn tuple without moving the living player. Visitors can use the service without completing or changing campaign progress.
 
 Check-in requires one complete physical Ark in loaded chunks and a dimension where native beds may set spawn. After check-in, only the reserved Habitation block and a safe exit are required: dismantling another module does not cancel an existing stay. There is no background tick, upkeep, chunk ticket or forced loading of neighboring chunks. A second reservation requires ending the first. Repeated check-in at the same location is harmless.
