@@ -1,0 +1,287 @@
+{
+  "format": "sector",
+  "chapter": "sector_create_addons",
+  "group": "tech",
+  "act": "II",
+  "motif": "create",
+  "icon": "create_enchantment_industry:blaze_enchanter",
+  "emblem": "create_enchantment_industry:textures/item/experience_bucket.png",
+  "title": {"en_us": "Create · Addons", "es_es": "Create · Complementos"},
+  "subtitle": {
+    "en_us": ["Five addons on one pegboard: liquid experience, smarter gearboxes, new fans, copycat blocks and tubes you ride."],
+    "es_es": ["Cinco complementos en un tablero: experiencia líquida, cajas más vivas, ventiladores nuevos, bloques imitadores y tubos para viajar."]
+  },
+  "entry": "cad_xp",
+  "figures": {
+    "beam": {"kind": "line", "from": [-12, -6], "to": [12, -6], "count": 5}
+  },
+  "art": [
+    {"id": "banner", "texture": "entrelumen:textures/gui/quests/banner_create.png", "x": 0, "y": -10.4, "scale": 1, "order": -1},
+    {"id": "title", "label": {"en_us": "Create · Addons", "es_es": "Create · Complementos"}, "x": 0, "y": -10.4, "scale": 2, "bold": true},
+    {"id": "beam", "line": [[-15.2, -6], [15.2, -6]], "alpha": 150, "thickness_px": 4},
+    {"id": "string_a", "line": [[-12, -6], [-12, 7.6]], "alpha": 60},
+    {"id": "string_b", "line": [[-6, -6], [-6, 7.6]], "alpha": 60},
+    {"id": "string_c", "line": [[0, -6], [0, -2.6]], "alpha": 60},
+    {"id": "string_d", "line": [[6, -6], [6, 0.8]], "alpha": 60},
+    {"id": "string_e", "line": [[12, -6], [12, -2.6]], "alpha": 60},
+    {"id": "label_a", "label": {"en_us": "Enchantment Industry", "es_es": "Enchantment Industry"}, "x": -12, "y": -7.9, "scale": 1},
+    {"id": "label_b", "label": {"en_us": "Connected", "es_es": "Connected"}, "x": -6, "y": -7.9, "scale": 1},
+    {"id": "label_c", "label": {"en_us": "Dragons Plus", "es_es": "Dragons Plus"}, "x": 0, "y": -7.9, "scale": 1},
+    {"id": "label_d", "label": {"en_us": "Copycats and Deco", "es_es": "Copycats y Deco"}, "x": 6, "y": -7.9, "scale": 1},
+    {"id": "label_e", "label": {"en_us": "Hypertube", "es_es": "Hypertube"}, "x": 12, "y": -7.9, "scale": 1},
+    {"id": "medallion", "texture": "entrelumen:textures/gui/quests/medallion.png", "x": -18.1, "y": -6, "scale": 2, "order": 0,
+     "click": "chapter:sector_create_kinetics", "hover": {"en_us": "Back to Create · Kinetics", "es_es": "Volver a Create · Cinética"}},
+    {"id": "bucket", "texture": "create_enchantment_industry:textures/item/experience_bucket.png", "x": -18.1, "y": -6, "scale": 4, "order": 1}
+  ],
+  "quests": [
+    {
+      "key": "cad_xp", "role": "entry", "deps": ["crb_brass"],
+      "task": {"type": "advancement", "advancement": "create_enchantment_industry:spirit_taking", "icon": "create_enchantment_industry:experience_hatch"},
+      "icon": "create_enchantment_industry:experience_hatch",
+      "at": {"figure": "beam", "slot": 0},
+      "en_us": {"title": "Experience, bottled", "subtitle": "Levels you can pour.",
+        "text": ["Click an [item:create_enchantment_industry:experience_hatch|Experience Hatch] to deposit your levels; sneak-click to take them back. Inside, they are Liquid Experience: pipes, spouts and drains move it like water."]},
+      "es_es": {"title": "Experiencia embotellada", "subtitle": "Niveles que se sirven.",
+        "text": ["Clic en una [item:create_enchantment_industry:experience_hatch|Madriguera de Experiencia] para guardar tus niveles; agachado y clic para recuperarlos. Adentro son Experiencia Líquida: caños, surtidores y escurridores la mueven como agua."]},
+      "sources": ["jar:create-enchantment-industry-2.5.3b.jar:data/create_enchantment_industry/advancement/spirit_taking.json"]
+    },
+    {
+      "key": "cad_shower", "role": "secret", "deps": ["cad_xp"],
+      "task": {"type": "advancement", "advancement": "create_enchantment_industry:a_shower_experience"},
+      "icon": "create_enchantment_industry:experience_bucket",
+      "at": {"x": -9.2, "y": -2.6},
+      "en_us": {"title": "A shower experience", "subtitle": "Refreshing. Educational.",
+        "text": ["You broke a pipe full of Liquid Experience and stood under it. Worth every level you soaked up."]},
+      "es_es": {"title": "Una ducha de experiencia", "subtitle": "Refrescante. Educativa.",
+        "text": ["Rompiste un caño lleno de Experiencia Líquida y te quedaste abajo. Vale cada nivel que te empapó."]},
+      "sources": ["jar:create-enchantment-industry-2.5.3b.jar:data/create_enchantment_industry/advancement/a_shower_experience.json"]
+    },
+    {
+      "key": "cad_cei_pack", "role": "info", "deps": ["cad_xp"],
+      "task": {"type": "checkmark"},
+      "icon": "create_enchantment_industry:experience_bucket",
+      "at": {"x": -14.8, "y": -2.6},
+      "en_us": {"title": "Every experience counts",
+        "text": ["The pack teaches Enchantment Industry the experience fluids of Ender IO, Industrial Foregoing, Just Dire Things, PneumaticCraft, Reliquary and Sophisticated. The Creative Bookshelf costs two Luminosities (act VI)."]},
+      "es_es": {"title": "Toda experiencia cuenta",
+        "text": ["El pack le enseña a Enchantment Industry los fluidos de experiencia de Ender IO, Industrial Foregoing, Just Dire Things, PneumaticCraft, Reliquary y Sophisticated. La biblioteca creativa cuesta dos Luminosidades (acto VI)."]},
+      "sources": ["tools/generate_family_balance.py#create_enchantment_industry"]
+    },
+    {
+      "key": "cad_grindstone", "role": "step", "deps": ["cad_xp"],
+      "task": {"item": "create_enchantment_industry:mechanical_grindstone"},
+      "at": {"x": -12, "y": -2.6},
+      "en_us": {"title": "Grind the drops",
+        "text": ["Eight andesite alloys around a shaft: a [item:create_enchantment_industry:mechanical_grindstone|Mechanical Grindstone]. Over an item drain it grinds [item:create:experience_nugget|Nuggets of Experience] into liquid. Mob farms feed it directly."]},
+      "es_es": {"title": "Moler lo que cae",
+        "text": ["Ocho aleaciones de andesita alrededor de un eje: una [item:create_enchantment_industry:mechanical_grindstone|Amoladora Mecánica]. Sobre un escurridor muele [item:create:experience_nugget|Pepitas de experiencia] en líquido. Las granjas de mobs la alimentan directo."]},
+      "sources": ["jar:create-enchantment-industry-2.5.3b.jar:data/create_enchantment_industry/recipe"]
+    },
+    {
+      "key": "cad_nugget_tax", "role": "bounty", "deps": ["cad_grindstone"],
+      "task": {"item": "create:experience_nugget", "count": 32, "consume": true},
+      "at": {"x": -14.8, "y": 0.8},
+      "en_us": {"title": "Nugget tax", "subtitle": "Paid in wisdom.",
+        "text": ["Thirty-two [item:create:experience_nugget|Nuggets of Experience] for the common store, once a day. Crushing wheels and deployers that kill mobs drop them now."]},
+      "es_es": {"title": "Impuesto en pepitas", "subtitle": "Se paga en sabiduría.",
+        "text": ["Treinta y dos [item:create:experience_nugget|Pepitas de experiencia] para el depósito común, una vez por día. Ahora las ruedas trituradoras y los desplegadores que matan mobs las sueltan."]},
+      "sources": ["jar:create-enchantment-industry-2.5.3b.jar:data/create_enchantment_industry/advancement/experienced_engineer.json"]
+    },
+    {
+      "key": "cad_enchanter", "role": "milestone", "deps": ["cad_grindstone"],
+      "task": {"type": "advancement", "advancement": "create_enchantment_industry:blazing_enchantment", "icon": "create_enchantment_industry:blaze_enchanter"},
+      "icon": "create_enchantment_industry:blaze_enchanter",
+      "at": {"x": -12, "y": 0.8},
+      "en_us": {"title": "Blaze Enchanter",
+        "text": ["Smith an enchanting table onto a blaze burner with the Blaze Upgrade template: a [item:create_enchantment_industry:blaze_enchanter|Blaze Enchanter]. Feed it liquid experience, set the level, and it enchants whatever arms or belts bring."]},
+      "es_es": {"title": "Encantador de Blaze",
+        "text": ["Forjá una mesa de encantamiento sobre un quemador con la plantilla de mejora de blaze: un [item:create_enchantment_industry:blaze_enchanter|Encantador de Blaze]. Dale experiencia líquida, elegí el nivel y encanta lo que traigan brazos o cintas."]},
+      "sources": ["jar:create-enchantment-industry-2.5.3b.jar:data/create_enchantment_industry/advancement/blazing_enchantment.json"]
+    },
+    {
+      "key": "cad_apotheosis", "role": "side", "deps": ["cad_enchanter"],
+      "task": {"item": "create_enchantment_industry:brass_bookshelf"},
+      "at": {"x": -9.2, "y": 0.8},
+      "en_us": {"title": "Brass library",
+        "text": ["With Apotheosis around, a [item:create_enchantment_industry:brass_bookshelf|Brass Bookshelf] gives adjustable enchanting stats while it turns. A fan through infused dragon's breath salvages gear in bulk: stay out of the stream."]},
+      "es_es": {"title": "Biblioteca de latón",
+        "text": ["Con Apotheosis, una [item:create_enchantment_industry:brass_bookshelf|biblioteca de latón] da estadísticas de encantamiento ajustables mientras gira. Un ventilador a través de aliento de dragón infundido desarma equipo en cantidad: no te pares en la corriente."]},
+      "sources": ["jar:create-enchantment-industry-2.5.3b.jar:assets/create_enchantment_industry/lang/en_us.json"]
+    },
+    {
+      "key": "cad_forger", "role": "step", "deps": ["cad_enchanter"],
+      "task": {"item": "create_enchantment_industry:blaze_forger"},
+      "at": {"x": -12, "y": 4.2},
+      "en_us": {"title": "An anvil that never gets tired",
+        "text": ["A [item:create_enchantment_industry:blaze_forger|Blaze Forger] merges enchantments with no repair cost, applies templates and pulls an enchantment onto a blank template. Move a great enchantment from an old tool to a new one."]},
+      "es_es": {"title": "Un yunque que no se cansa",
+        "text": ["Un [item:create_enchantment_industry:blaze_forger|Forjador de Blaze] junta encantamientos sin costo de reparación, aplica plantillas y pasa un encantamiento a una plantilla en blanco. Mudá un buen encantamiento de una herramienta vieja a una nueva."]},
+      "sources": ["jar:create-enchantment-industry-2.5.3b.jar:data/create_enchantment_industry/advancement/born_talent_of_fire.json"]
+    },
+    {
+      "key": "cad_printer", "role": "side", "deps": ["cad_forger"],
+      "task": {"type": "advancement", "advancement": "create_enchantment_industry:copiable_mystery", "icon": "create_enchantment_industry:printer"},
+      "icon": "create_enchantment_industry:printer",
+      "at": {"x": -9.2, "y": 4.2},
+      "en_us": {"title": "Copy that",
+        "text": ["A [item:create_enchantment_industry:printer|Printer] copies books, enchanted books, names, schedules and package addresses, paid in liquid experience. Every copy costs, so the recipe stays native."]},
+      "es_es": {"title": "Copiado",
+        "text": ["Una [item:create_enchantment_industry:printer|Impresora] copia libros, libros encantados, nombres, horarios y direcciones de paquetes, a cambio de experiencia líquida. Cada copia cuesta, así que la receta queda nativa."]},
+      "sources": ["jar:create-enchantment-industry-2.5.3b.jar:data/create_enchantment_industry/advancement/copiable_mystery.json"]
+    },
+    {
+      "key": "cad_super", "role": "tip", "deps": ["cad_forger"],
+      "task": {"type": "checkmark"},
+      "at": {"x": -12, "y": 7.6},
+      "en_us": {"title": "Seething",
+        "text": ["[tip] Feed an enchanter or forger a [item:create_enchantment_industry:experience_cake|Cake o' Enchanting] and it seethes: higher caps, treasure enchantments, conflicting ones merged. It calls lightning, so keep a rod nearby."]},
+      "es_es": {"title": "Hirviendo",
+        "text": ["[tip] Dale a un encantador o un forjador una [item:create_enchantment_industry:experience_cake|Tarta de Experiencia] y entra en ebullición: topes más altos, encantamientos de tesoro, conflictivos juntos. Llama rayos: tené un pararrayos cerca."]},
+      "sources": ["jar:create-enchantment-industry-2.5.3b.jar:assets/create_enchantment_industry/lang/en_us.json"]
+    },
+    {
+      "key": "cad_super_goal", "role": "capstone", "deps": ["cad_super"], "curve": {"cad_super": -0.18},
+      "task": {"type": "advancement", "advancement": "create_enchantment_industry:transcendent_overclock", "icon": "create_enchantment_industry:super_enchanting_template"},
+      "icon": "create_enchantment_industry:super_enchanting_template",
+      "at": {"x": 0, "y": 10.8},
+      "en_us": {"title": "Past the cap", "subtitle": "Level limits were more of a suggestion.",
+        "text": ["Strike [item:create_enchantment_industry:super_experience_block|Blocks of Super Experience] with lightning, craft a [item:create_enchantment_industry:super_enchanting_template|Super Enchanting Template] and run a seething enchanter by a lightning rod until an enchantment goes past its vanilla cap."]},
+      "es_es": {"title": "Más allá del tope", "subtitle": "El límite de nivel era una sugerencia.",
+        "text": ["Pegale un rayo a [item:create_enchantment_industry:super_experience_block|Bloques de Superexperiencia], fabricá una [item:create_enchantment_industry:super_enchanting_template|Súper Plantilla de Encantamiento] y hacé hervir un encantador junto a un pararrayos hasta que un encantamiento pase su tope de vanilla."]},
+      "sources": ["jar:create-enchantment-industry-2.5.3b.jar:data/create_enchantment_industry/advancement/transcendent_overclock.json"]
+    },
+    {
+      "key": "cad_connected", "role": "milestone", "deps": ["crb_gearbox"],
+      "task": {"item": "create_connected:six_way_gearbox"},
+      "at": {"figure": "beam", "slot": 1},
+      "en_us": {"title": "The missing parts",
+        "text": ["Create: Connected adds what the base lacks: a [item:create_connected:six_way_gearbox|6-way Gearbox], a brass gearbox with wrench-set sides, freewheel and overstress clutches, a brake, a crank wheel and a cross connector."]},
+      "es_es": {"title": "Las piezas que faltaban",
+        "text": ["Create: Connected suma lo que le falta al original: una [item:create_connected:six_way_gearbox|Caja de transmisión 6-lados], una caja de latón con lados elegidos con llave, embragues de rueda libre y de sobrecarga, un freno, una manivela de rueda y un conector cruzado."]},
+      "sources": ["jar:create_connected-1.3.3-mc1.21.1.jar:assets/create_connected/lang/en_us.json"]
+    },
+    {
+      "key": "cad_battery", "role": "side", "deps": ["cad_connected"],
+      "task": {"item": "create_connected:kinetic_battery"},
+      "at": {"x": -6, "y": -2.6},
+      "en_us": {"title": "Kinetic Battery",
+        "text": ["A [item:create_connected:kinetic_battery|Kinetic Battery] stores stress. Unpowered, it charges from rotation; with redstone it gives it back at a fixed speed. A windmill by day, a battery by night."]},
+      "es_es": {"title": "Batería cinética",
+        "text": ["Una [item:create_connected:kinetic_battery|Batería cinética] guarda estrés. Sin señal se carga con rotación; con redstone la devuelve a velocidad fija. Molino de día, batería de noche."]},
+      "sources": ["jar:create_connected-1.3.3-mc1.21.1.jar:data/create_connected/advancement/kinetic_battery.json"]
+    },
+    {
+      "key": "cad_shear_pin", "role": "side", "deps": ["cad_connected"],
+      "task": {"type": "advancement", "advancement": "create_connected:shear_pin", "icon": "create_connected:shear_pin"},
+      "icon": "create_connected:shear_pin",
+      "at": {"x": -6, "y": 0.8},
+      "en_us": {"title": "Snap", "subtitle": "Better the pin than the factory.",
+        "text": ["A [item:create_connected:shear_pin|Shear Pin] breaks when its branch is overstressed, and only that branch stops. The [item:create_connected:overstress_clutch|Overstress Clutch] does the same, and resets."]},
+      "es_es": {"title": "Crac", "subtitle": "Mejor el perno que la fábrica.",
+        "text": ["Un [item:create_connected:shear_pin|Eje sobre-estrés] se rompe cuando su rama se pasa de estrés, y sólo esa rama se frena. El [item:create_connected:overstress_clutch|Embrague sobrecargado] hace lo mismo, y se rearma."]},
+      "sources": ["jar:create_connected-1.3.3-mc1.21.1.jar:data/create_connected/advancement/shear_pin.json"]
+    },
+    {
+      "key": "cad_brake_secret", "role": "secret", "deps": ["cad_connected"],
+      "task": {"type": "advancement", "advancement": "create_connected:overpowered_brake_0"},
+      "icon": "create_connected:shear_pin",
+      "at": {"x": -3.3, "y": 0.8},
+      "en_us": {"title": "Overpowered", "subtitle": "The brake did its best.",
+        "text": ["A network kept running at speed with a powered brake on it. The brake would like a word."]},
+      "es_es": {"title": "Imparable", "subtitle": "El freno hizo lo que pudo.",
+        "text": ["Una red siguió girando a toda velocidad con un freno activado. El freno quiere hablar con vos."]},
+      "sources": ["jar:create_connected-1.3.3-mc1.21.1.jar:data/create_connected/advancement/overpowered_brake_0.json"]
+    },
+    {
+      "key": "cad_conn_logi", "role": "side", "deps": ["cad_shear_pin"],
+      "task": {"item": "create_connected:empty_fan_catalyst"},
+      "at": {"x": -6, "y": 4.2},
+      "en_us": {"title": "Tidy logistics",
+        "text": ["A brass chute moves 64 items at once, an inventory bridge lets one funnel reach two chests, the item silo is a vault standing up, and an [item:create_connected:empty_fan_catalyst|Empty Fan Catalyst] holds lava or water for fan processing, no spills."]},
+      "es_es": {"title": "Logística prolija",
+        "text": ["Un ducto de latón mueve 64 ítems de una, un puente de inventario deja que un embudo llegue a dos cofres, el silo es una bóveda parada y un [item:create_connected:empty_fan_catalyst|Catalizador de ventilador vacío] guarda lava o agua para procesar con ventilador, sin derrames."]},
+      "sources": ["jar:create_connected-1.3.3-mc1.21.1.jar:assets/create_connected/lang/en_us.json"]
+    },
+    {
+      "key": "cad_conn_pack", "role": "info", "deps": ["cad_conn_logi"],
+      "task": {"type": "checkmark"},
+      "icon": "copycats:copycat_block",
+      "at": {"x": -6, "y": 7.6},
+      "en_us": {"title": "One copycat family",
+        "text": ["Connected's own copycat blocks are off in its config: Copycats+ covers those shapes. If the recipe viewer shows two versions of a shape, the Copycats+ one is the real one."]},
+      "es_es": {"title": "Una sola familia de imitadores",
+        "text": ["Los bloques imitadores propios de Connected están apagados en su config: Copycats+ ya cubre esas formas. Si el visor de recetas muestra dos versiones de una forma, la de Copycats+ es la que vale."]},
+      "sources": ["pack/config/create_connected-common.toml"]
+    },
+    {
+      "key": "cad_dragons", "role": "milestone", "deps": ["crb_tank"],
+      "task": {"item": "create_dragons_plus:fluid_hatch"},
+      "at": {"figure": "beam", "slot": 2},
+      "en_us": {"title": "Dragons Plus",
+        "text": ["The base that Enchantment Industry and Central Kitchen build on. A [item:create_dragons_plus:fluid_hatch|Fluid Hatch] fills or drains a tank with buckets and bottles by hand."]},
+      "es_es": {"title": "Dragons Plus",
+        "text": ["La base sobre la que se apoyan Enchantment Industry y Central Kitchen. Una [item:create_dragons_plus:fluid_hatch|escotilla de fluidos] llena o vacía un tanque a mano, con baldes y botellas."]},
+      "sources": ["jar:CreateDragonsPlus-1.11.9.jar:assets/create_dragons_plus/lang/en_us.json"]
+    },
+    {
+      "key": "cad_fans", "role": "tip", "deps": ["cad_dragons"],
+      "task": {"type": "checkmark"},
+      "at": {"x": 0, "y": -2.6},
+      "en_us": {"title": "New fan catalysts",
+        "text": ["[tip] Liquid dye colours items, mobs and worn armour; powder snow freezes; a dragon head or dragon's breath does Ending; a golden aercloud runs Aether altar recipes in bulk. The recipe viewer lists each catalyst."]},
+      "es_es": {"title": "Catalizadores nuevos",
+        "text": ["[tip] El tinte líquido colorea ítems, mobs y armadura puesta; la nieve polvo congela; una cabeza o aliento de dragón hace el Ending; una nube dorada del Aether hace recetas del altar en cantidad. El visor de recetas muestra cada catalizador."]},
+      "sources": ["jar:CreateDragonsPlus-1.11.9.jar:data/create_dragons_plus/recipe"]
+    },
+    {
+      "key": "cad_copycats", "role": "milestone", "deps": ["crb_brass"],
+      "task": {"item": "copycats:copycat_slope", "count": 8},
+      "at": {"figure": "beam", "slot": 3},
+      "en_us": {"title": "Copycats", "subtitle": "Any block, any shape.",
+        "text": ["Click a copycat block with a material and it takes that look; a wrench removes it. Slopes, steps, beams, doors, ladders, a ghost block. Most are cut from zinc in a stonecutter."]},
+      "es_es": {"title": "Imitadores", "subtitle": "Cualquier bloque, cualquier forma.",
+        "text": ["Clic con un material sobre un bloque imitador y toma ese aspecto; la llave lo saca. Rampas, escalones, vigas, puertas, escaleras, un bloque fantasma. Casi todos se cortan de cinc en el cortapiedras."]},
+      "sources": ["jar:copycats-3.0.9+mc.1.21.1-neoforge.jar:data/copycats/recipe"]
+    },
+    {
+      "key": "cad_deco", "role": "side", "deps": ["cad_copycats"],
+      "task": {"item": "createdeco:andesite_sheet_metal", "count": 8},
+      "at": {"x": 6, "y": -2.6},
+      "en_us": {"title": "Sheet metal and friends",
+        "text": ["Create Deco adds [item:createdeco:andesite_sheet_metal|sheet metal], coloured bricks, lamps, decals, bars, doors and windows in Create's style. Rechiseled Create chisels the base blocks."]},
+      "es_es": {"title": "Chapa y compañía",
+        "text": ["Create Deco suma [item:createdeco:andesite_sheet_metal|chapa], ladrillos de colores, lámparas, calcos, rejas, puertas y ventanas con el estilo de Create. Rechiseled Create cincela los bloques de base."]},
+      "sources": ["jar:createdeco-2.1.3.jar:data/createdeco/recipe"]
+    },
+    {
+      "key": "cad_bw", "role": "side", "deps": ["cad_deco"],
+      "task": {"item": "bellsandwhistles:headlight", "count": 2},
+      "at": {"x": 6, "y": 0.8},
+      "en_us": {"title": "Bells and whistles",
+        "text": ["[item:bellsandwhistles:headlight|Headlights], cowcatchers, platforms, metro casing and grab bars: dressing for trains and stations. Glue it on like any block."]},
+      "es_es": {"title": "Chiches",
+        "text": ["[item:bellsandwhistles:headlight|Faros], quitapiedras, andenes, revestimiento de metro y pasamanos: vestuario para trenes y estaciones. Se pega como cualquier bloque."]},
+      "sources": ["jar:bellsandwhistles-0.4.7-1.21.1.jar:assets/bellsandwhistles/lang/en_us.json"]
+    },
+    {
+      "key": "cad_hypertube", "role": "milestone", "deps": ["crb_casing"],
+      "task": {"item": "create_hypertube:hypertube_entrance"},
+      "at": {"figure": "beam", "slot": 4},
+      "en_us": {"title": "Hypertube", "subtitle": "Commuting, but in a tube.",
+        "text": ["Glass tubes that carry players and mobs. A [item:create_hypertube:hypertube_entrance|Hypertube Entrance] needs 16 RPM or more; the faster it turns, the faster you fly."]},
+      "es_es": {"title": "Hipertubo", "subtitle": "Ir al trabajo, pero en un tubo.",
+        "text": ["Tubos de vidrio que llevan jugadores y mobs. Una [item:create_hypertube:hypertube_entrance|Entrada de hipertubo] necesita 16 RPM o más; cuanto más rápido gira, más rápido volás."]},
+      "sources": ["jar:create_hypertube-0.6.0-NEOFORGE.jar:assets/create_hypertube/lang/en_us.json"]
+    },
+    {
+      "key": "cad_accelerator", "role": "side", "deps": ["cad_hypertube"],
+      "task": {"item": "create_hypertube:hypertube_accelerator"},
+      "at": {"x": 12, "y": -2.6},
+      "en_us": {"title": "Faster, or slower",
+        "text": ["[item:create_hypertube:hypertube_accelerator|Accelerators] speed a rider up or brake them; junctions split the line and you steer with the movement keys. Link tubes by clicking a placed one with the next."]},
+      "es_es": {"title": "Más rápido, o más lento",
+        "text": ["Los [item:create_hypertube:hypertube_accelerator|Aceleradores de hipertubo] apuran o frenan a quien viaja; los empalmes parten la línea y se dobla con las teclas de movimiento. Los tubos se unen haciendo clic en uno puesto con el siguiente."]},
+      "sources": ["jar:create_hypertube-0.6.0-NEOFORGE.jar:assets/create_hypertube/lang/en_us.json"]
+    }
+  ]
+}
