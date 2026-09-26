@@ -83,8 +83,9 @@ function entrelumenJetpackCharge(seen, id, amount, max) {
 
 PlayerEvents.tick(event => {
   if (entrelumenJetpackBroken) return;
-  var key = String(event.player.getStringUUID());
   try {
+    // KubeJS exposes Entity.getStringUUID to scripts as getStringUuid.
+    var key = String(event.player.getStringUuid());
     var api = entrelumenJetpackLoad();
     var stack = event.player.getItemBySlot(api.chest);
     var id = stack.isEmpty() ? '' : String(api.items.getKey(stack.getItem()));
@@ -106,5 +107,5 @@ PlayerEvents.tick(event => {
 });
 
 PlayerEvents.loggedOut(event => {
-  delete entrelumenJetpackSeen[String(event.player.getStringUUID())];
+  delete entrelumenJetpackSeen[String(event.player.getStringUuid())];
 });

@@ -64,7 +64,7 @@ function piece(id, kind, amount) {
   return p;
 }
 let worn = null;
-const player = {getStringUUID: () => 'p1', getItemBySlot: slot => worn ? worn.stack : {isEmpty: () => true}};
+const player = {getStringUuid: () => 'p1', getItemBySlot: slot => worn ? worn.stack : {isEmpty: () => true}};
 const tick = () => handlers.tick({player: player});
 const out = {};
 function fly(name, p, nativePerTick, ticks) {
