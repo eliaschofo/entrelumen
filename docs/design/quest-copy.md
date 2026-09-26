@@ -12,7 +12,7 @@ Reglas para todo texto del libro: historia, cadenas (`content/sectors`), guías,
 
 ## Reglas
 
-1. **Al grano.** De una a tres oraciones cortas en la primera página. El motor corta en 330 caracteres visibles; si hace falta más, va a una segunda página (`{page}`) o a una quest aparte.
+1. **Al grano.** De una a tres oraciones cortas en la primera página. El motor rechaza una primera página de más de 330 caracteres visibles; lo que sobra va a una segunda página (`{page}`) o a una quest aparte.
 2. **Nada meta.** Ni «esta quest…», «en este capítulo vas a aprender…», «completá esto para…», «bienvenido a…», «confirmá cuando…», ni describir el libro («los hexágonos son hitos»). El nodo ya es un cartel: el texto dice lo que el cartel no puede.
 3. **No repetir el título.** Si el título es «Aleación de andesita», la primera oración no empieza «La aleación de andesita es…». Arranca por el cómo o el para qué.
 4. **Sin adjetivos de relleno.** «Poderoso», «increíble», «esencial», «muy útil»: afuera. Un número dice más: «seis ejes en vez de cuatro».
