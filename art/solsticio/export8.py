@@ -69,7 +69,7 @@ def export(G, markers, block_nbt, path):
     state_head = _named(3, 'state')
     nbt_head = _named(10, 'nbt')
     written = 0
-    with gzip.GzipFile(tmp, 'wb', mtime=0, compresslevel=6) as f:
+    with open(tmp, 'wb') as raw, gzip.GzipFile(filename='', mode='wb', fileobj=raw, mtime=0, compresslevel=6) as f:
         f.write(_named(10, ''))
         f.write(_named(3, 'DataVersion') + struct.pack('>i', DATA_VERSION))
         f.write(_named(9, 'size') + bytes([3]) + struct.pack('>i', 3) + struct.pack('>iii', *size))
