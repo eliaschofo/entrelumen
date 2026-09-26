@@ -34,7 +34,7 @@ SLOTS = {}      # (x, y, z) -> slot name
 B = lambda n: 'minecraft:' + n
 MODULES = [('habitation', 90), ('exploration', 30), ('nature', 330), ('arcane', 270), ('logistics', 210), ('engineering', 150)]
 R_EQ = 5          # radius of the orbit
-SUN_Y = 1         # the controller stands on the floor
+SUN_Y = 2         # the controller stands on the raised floor
 DECK = SUN_Y      # export anchor height
 
 
@@ -60,14 +60,15 @@ def ring(radius, tilt, yaw, block, cy, required=True, floor=False):
         if p[1] < (0 if floor else 1):
             continue
         for q in (p, (-p[0], p[1], p[2])):               # the mirror keeps the ring symmetric
-            if q not in SLOTS and q not in V:
+            if q not in SLOTS and (q not in V or floor):
                 put(*q, block, required)
 
 
 def build():
     """Everything on the ground, full cubes only (Elias): a stone-brick orbit in the floor with
-    chiseled copper sockets under the modules and the controller; two arches striped in cut copper
-    and tuff bricks on calcite feet, with amethyst on their shoulders and at the keystone."""
+    chiseled copper sockets under the modules and the controller, set in a round floor with the
+    sun's rays and amethyst on the diagonals; two arches striped in cut copper and tuff bricks on
+    calcite feet, with an amethyst keystone."""
     V.clear(); REQ.clear(); SLOTS.clear()
     put(0, 1, 0, 'entrelumen:ark_controller')
     SLOTS[(0, 1, 0)] = 'ark_controller'
@@ -79,9 +80,24 @@ def build():
         put(x, 1, z, 'entrelumen:%s_module' % name)
         SLOTS[(x, 1, z)] = '%s_module' % name
         sockets.append((x, 0, z))
-    ring(R_EQ, 0.0, 0.0, 'stone_bricks', 0, floor=True)            # the orbit, laid in the floor
+    # the floor (Elias: «que tenga un PISO»): a disc of stone bricks with a tuff-brick rim, the
+    # sun's eight rays in polished tuff, the orbit in calcite and amethyst on the diagonals
+    for x in range(-8, 9):
+        for z in range(-8, 9):
+            r = math.hypot(x, z)
+            if r > 7.4 or (x, 0, z) in V:
+                continue
+            ang = (math.degrees(math.atan2(z, x)) + 360) % 45
+            ray = 1.2 < r < 4.4 and (ang < 7 or ang > 38)
+            put(x, 0, z, 'tuff_bricks' if r > 6.5 else ('polished_tuff' if ray else 'stone_bricks'))
+    ring(R_EQ, 0.0, 0.0, 'calcite', 0, floor=True)                 # the orbit, laid in the floor
+    for p in list(V):
+        if p[1] == 0 and abs(math.hypot(p[0], p[2]) - R_EQ) < 0.5 and V[p] != B('calcite') and p not in SLOTS:
+            V[p] = B('calcite')
     for p in sockets:
         put(*p, 'chiseled_copper')
+    for (x, z) in ((3, 3), (-3, 3), (3, -3), (-3, -3)):
+        put(x, 0, z, 'amethyst_block')
     ring(R_EQ + 2, math.pi / 2, 0.0, 'stone_bricks', 0)            # two arches over the controller
     ring(R_EQ + 2, math.pi / 2, math.pi / 2, 'stone_bricks', 0)
     top = R_EQ + 2
@@ -89,11 +105,22 @@ def build():
         if y >= 1 and b == B('stone_bricks'):
             k = abs(x) + abs(z) + y
             V[(x, y, z)] = B('calcite') if y == 1 else (B('cut_copper') if k % 2 == 0 else B('tuff_bricks'))
-    for (x, y, z), b in list(V.items()):                           # amethyst on the four shoulders
-        r = abs(x) + abs(z)
-        if y >= 1 and (x == 0 or z == 0) and abs(y - round(top * 0.707)) == 0 and abs(r - round(top * 0.707)) <= 0:
-            V[(x, y, z)] = B('amethyst_block')
     put(0, top, 0, 'amethyst_block')                              # the keystone where they cross
+    # raise it all one level (Elias): the platform stands on the ground, a ring of stairs round it
+    raised = {(x, y + 1, z): v for (x, y, z), v in V.items()}
+    req = {(x, y + 1, z): v for (x, y, z), v in REQ.items()}
+    slots = {(x, y + 1, z): v for (x, y, z), v in SLOTS.items()}
+    V.clear(); REQ.clear(); SLOTS.clear()
+    V.update(raised); REQ.update(req); SLOTS.update(slots)
+    for x in range(-9, 10):
+        for z in range(-9, 10):
+            r = math.hypot(x, z)
+            if (x, 1, z) in V or not (7.4 < r <= 8.45):
+                continue
+            if not any((x + dx, 1, z + dz) in V for dx, dz in ((1, 0), (-1, 0), (0, 1), (0, -1))):
+                continue
+            inward = ('west' if x > 0 else 'east') if abs(x) >= abs(z) else ('north' if z > 0 else 'south')
+            put(x, 1, z, 'stone_brick_stairs[facing=%s,half=bottom,shape=straight,waterlogged=false]' % inward)
     return V
 
 

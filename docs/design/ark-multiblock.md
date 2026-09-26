@@ -2,22 +2,21 @@
 
 Elias eligió el astrolabio en lugar del barco. Lo genera `art/structures/ark_multiblock.py`, que escribe la definición en `art/structures/out/ark_multiblock.json`; el companion la carga desde `data/entrelumen/ark_multiblock.json`.
 
-**Forma (revisión final del 25/9, Elias: «todo en la tierra, con el arco pero sin adornos ni bloques raros; sólo bloques cúbicos, y los módulos y el controlador apoyados en el piso»).**
-- 91 bloques, todos obligatorios: 30 ladrillos de piedra, 23 ladrillos de toba, 15 de cobre cortado, 7 de cobre cincelado, 5 de amatista, 4 de calcita, los 6 módulos y el controlador. Elias: «estaba bien el cobre; que no sea monótono ni feo» y «detalles de amatista, alguna piedra, con onda pero sin extravagancia».
-- El controlador va en el centro, apoyado en el piso.
-- Los 6 módulos, también apoyados en el piso, van en un círculo de radio 5:
+**Forma (final, 25/9, en varias rondas con Elias):** todo apoyado en la tierra, sólo bloques cúbicos más un borde de escaleras, sin adornos, con un poco de cobre, amatista y piedra.
+- **Plataforma:** un piso redondo de radio 7, elevado un nivel sobre el suelo, con un borde de escaleras de ladrillo de piedra alrededor. El piso es de ladrillo de piedra con borde de ladrillo de toba y tiene:
+  - los 8 rayos del sol en toba pulida;
+  - la órbita en calcita, de radio 5;
+  - 4 bloques de amatista en las diagonales.
+- **Controlador:** en el centro, apoyado en el piso, sobre un zócalo de cobre cincelado.
+- **Módulos:** apoyados en el piso sobre la órbita, cada uno con su zócalo de cobre cincelado:
   - Habitabilidad a 90°, al sur;
   - Exploración a 30°;
   - Naturaleza a 330°;
   - Arcano a 270°, al norte;
   - Logística a 210°;
   - Ingeniería a 150°.
-- La órbita es un anillo de ladrillos de piedra puesto en el suelo, a la altura del piso.
-- Bajo cada módulo y bajo el controlador va un zócalo de cobre cincelado, a nivel del piso.
-- Dos arcos de radio 7 se cruzan sobre el controlador:
-  - franjas de cobre cortado y ladrillo de toba;
-  - pies de calcita;
-  - amatista en los cuatro hombros y en la clave del cruce.
+- **Arcos:** dos, de radio 7, que se cruzan sobre el controlador, con franjas de cobre cortado y ladrillo de toba, pies de calcita y clave de amatista.
+- **Cuenta:** 275 bloques, todos obligatorios: 76 stone_bricks, 63 tuff_bricks, 44 stone_brick_stairs, 34 calcite, 20 polished_tuff, 19 cut_copper, 7 chiseled_copper, 5 amethyst_block, 1 arcane_module, 1 logistics_module, 1 nature_module, 1 ark_controller, 1 engineering_module, 1 exploration_module, 1 habitation_module.
 
 **Reglas de coincidencia para el código.**
 - El cobre coincide con cualquier oxidación y con su versión encerada.
