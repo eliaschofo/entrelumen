@@ -56,7 +56,7 @@ import org.slf4j.Logger;
  * ruins at the first arrival, in a ring around it. Nothing blocks the server thread:
  *
  * <ol>
- *   <li>the template is read and cut into 16-block cubes off-thread ({@link SolsticioCity#partition});
+ *   <li>the template is read and cut into 8-block cubes off-thread ({@link SolsticioCity#partition});
  *   <li>candidate sites are scored off-thread from the generator's noise (no chunk is loaded);
  *   <li>a candidate whose stored chunks show players spent time there is skipped;
  *   <li>the site's chunks load in the background under a ticket, the real terrain is checked
@@ -71,6 +71,11 @@ import org.slf4j.Logger;
 public final class RuinPlacement {
   private static final Logger LOGGER = LogUtils.getLogger();
   static final long TICK_BUDGET_NANOS = 8_000_000L;
+  /**
+   * Edge of the cubes a template is cut into. A cube is placed whole, so its size bounds the worst
+   * tick (with 16-block cubes, one Temple tick took 67 ms in the isolated GameTests).
+   */
+  static final int SLICE = 8;
   static final int CANDIDATES = 48, MAX_ATTEMPTS = 6, TRIGGER_INTERVAL = 100;
   /** Chunks where players spent more than this many ticks are someone's place: never built over. */
   static final long INHABITED_LIMIT = 6000;
@@ -149,7 +154,7 @@ public final class RuinPlacement {
           && !block.equals("minecraft:cave_air") && !block.equals("minecraft:water")
           && !block.equals("minecraft:lava") && !block.equals(STRUCTURE_BLOCK);
     }
-    var partition = SolsticioCity.partition(tag, 16, 0, 0, 0);
+    var partition = SolsticioCity.partition(tag, SLICE, 0, 0, 0);
     List<Local> markers = new ArrayList<>();
     int ground = 0;
     for (int i = 0; i < partition.markerNames().size(); i++) {
