@@ -60,7 +60,6 @@ public final class FullpackQABootstrap {
       GameTestRegistry.register(BackupRestoreGameTests.class);
       GameTestRegistry.register(LogisticsProvisioningGameTests.class);
       GameTestRegistry.register(LogisticsRestartGameTests.class);
-      GameTestRegistry.register(NatureRestorationGameTests.class);
       GameTestRegistry.register(ArkChartsGameTests.class);
       GameTestRegistry.register(ApotheosisGameTests.class);
       GameTestRegistry.register(AltarFullpackGameTests.class);
@@ -91,7 +90,7 @@ public final class FullpackQABootstrap {
           SettlementArchitectureGameTests.class, BuilderUtilitiesGameTests.class,
           MechanicalChiselGameTests.class, TeamRestartGameTests.class, BackupRestoreGameTests.class,
           LogisticsProvisioningGameTests.class, LogisticsRestartGameTests.class,
-          NatureRestorationGameTests.class, ArkChartsGameTests.class, ApotheosisGameTests.class,
+          ArkChartsGameTests.class, ApotheosisGameTests.class,
           AltarFullpackGameTests.class, AltarEffectsFullpackGameTests.class, LuminousGameTests.class,
           StartWithoutBloatFullpackGameTests.class, TerraArmFullpackGameTests.class, ModPingpongFullpackGameTests.class,
           ModPingpongRound4FullpackGameTests.class,

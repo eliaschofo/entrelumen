@@ -68,7 +68,7 @@ final class FeatureSandbox implements InvocationHandler {
     try {
       placed = feature.place(proxy, level.getChunkSource().getGenerator(), random, origin);
     } catch (RuntimeException failure) {
-      LOGGER.debug("Nature restoration discarded a feature that failed in its sandbox", failure);
+      LOGGER.debug("An altar discarded a feature that failed in its sandbox", failure);
       return null;
     }
     if (!placed || sandbox.violated) return null;
@@ -85,8 +85,17 @@ final class FeatureSandbox implements InvocationHandler {
     return new Result(Collections.unmodifiableMap(changed), Map.copyOf(data));
   }
 
+  /** Chunks already checked in this simulation: a feature reads the same few chunks thousands of times. */
+  private final it.unimi.dsi.fastutil.longs.Long2BooleanOpenHashMap chunks =
+      new it.unimi.dsi.fastutil.longs.Long2BooleanOpenHashMap();
+
   private boolean readable(BlockPos pos) {
-    return permitted.isInside(pos) && !level.isOutsideBuildHeight(pos) && level.hasChunkAt(pos);
+    if (!permitted.isInside(pos) || level.isOutsideBuildHeight(pos)) return false;
+    long key = net.minecraft.world.level.ChunkPos.asLong(pos.getX() >> 4, pos.getZ() >> 4);
+    if (chunks.containsKey(key)) return chunks.get(key);
+    boolean loaded = level.hasChunkAt(pos);
+    chunks.put(key, loaded);
+    return loaded;
   }
 
   private BlockState stateAt(BlockPos pos) {
@@ -129,20 +138,21 @@ final class FeatureSandbox implements InvocationHandler {
       return switch (name) {
         case "equals" -> proxy == args[0];
         case "hashCode" -> System.identityHashCode(proxy);
-        default -> "NatureRestorationSandbox";
+        default -> "AltarFeatureSandbox";
       };
     }
+    // The two calls a feature makes most, first.
+    if (name.equals("getBlockState") && count == 1 && args[0] instanceof BlockPos pos)
+      return stateAt(pos);
+    if (name.equals("isStateAtPosition") && count == 2 && args[0] instanceof BlockPos pos)
+      return ((Predicate<BlockState>) args[1]).test(stateAt(pos));
     if (name.equals("setBlock") && count >= 3 && args[0] instanceof BlockPos pos
         && args[1] instanceof BlockState state) return record(pos, state);
     if ((name.equals("removeBlock") || name.equals("destroyBlock")) && count >= 1
         && args[0] instanceof BlockPos pos)
       return record(pos, stateAt(pos).getFluidState().createLegacyBlock());
-    if (name.equals("getBlockState") && count == 1 && args[0] instanceof BlockPos pos)
-      return stateAt(pos);
     if (name.equals("getFluidState") && count == 1 && args[0] instanceof BlockPos pos)
       return stateAt(pos).getFluidState();
-    if (name.equals("isStateAtPosition") && count == 2 && args[0] instanceof BlockPos pos)
-      return ((Predicate<BlockState>) args[1]).test(stateAt(pos));
     if (name.equals("isFluidAtPosition") && count == 2 && args[0] instanceof BlockPos pos)
       return ((Predicate<FluidState>) args[1]).test(stateAt(pos).getFluidState());
     if (name.equals("getBlockEntity") && count >= 1 && args[0] instanceof BlockPos pos) {

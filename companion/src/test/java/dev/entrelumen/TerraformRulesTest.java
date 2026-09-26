@@ -37,7 +37,7 @@ class TerraformRulesTest {
       assertEquals(8 * (TerraformRules.reach(size) + 1), TerraformRules.outerRing(size).size());
     }
     assertEquals(8, TerraformRules.nextSize(4));
-    assertEquals(4, TerraformRules.nextSize(16));
+    assertEquals(TerraformRules.REPAIR, TerraformRules.nextSize(16));
     assertEquals(TerraformRules.DEFAULT_SIZE, TerraformRules.nextSize(5));
     assertFalse(TerraformRules.validSize(5));
   }
@@ -162,53 +162,32 @@ class TerraformRulesTest {
   }
 
   @Test
-  void theLedgerMovesMatterWithoutCreatingIt() {
-    var ledger = new TerraformRules.Ledger();
-    ledger.deposit("minecraft:dirt", 3);
-    ledger.deposit("minecraft:cobblestone", 2);
-    assertEquals(5, ledger.total());
-    assertEquals("minecraft:dirt", ledger.withdraw(List.of("minecraft:grass_block", "minecraft:dirt")));
-    assertEquals("minecraft:cobblestone", ledger.withdraw(List.of("minecraft:sand", "minecraft:cobblestone")));
-    assertNull(ledger.withdraw(List.of("minecraft:sand")));
-    assertEquals(3, ledger.total());
-    assertThrows(IllegalArgumentException.class, () -> ledger.deposit("minecraft:dirt", -1));
+  void protectedNaturalBlocksRefuseTheColumnInsteadOfBeingRemoved() {
+    var ore = ground(64);
+    ore.put(63, TerraformRules.Cell.PROTECTED);
+    assertEquals("protected", plan(64, ore).refusal(), "an ore in the surface layers is never swapped");
+    var tree = ground(64);
+    for (int y = 65; y <= 70; y++) tree.put(y, TerraformRules.Cell.PROTECTED);
+    assertEquals("protected", plan(64, tree).refusal(), "a trunk above the target is never cut");
+    var deepOre = ground(64);
+    deepOre.put(64 - TerraformRules.SUBSURFACE_DEPTH - 3, TerraformRules.Cell.PROTECTED);
+    assertFalse(plan(64, deepOre).refused(), "an ore below the touched layers is not touched");
   }
 
   @Test
-  void applyingPlansConservesBlocksPlusBuffer() {
-    // A 1D world of columns: cut blocks enter the ledger, filled blocks leave it.
-    var ledger = new TerraformRules.Ledger();
-    ledger.deposit("dirt", 2);
-    int[] tops = {67, 70, 60, 64, 58};
-    int before = ledger.total();
-    for (int top : tops) before += top + 1;
-    int target = 64;
-    int placed = 0;
-    for (int i = 0; i < tops.length; i++) {
-      var cells = ground(tops[i]);
-      var plan = plan(target, cells);
-      assertFalse(plan.refused());
-      int height = tops[i];
-      for (var op : plan.ops()) {
-        switch (op.kind()) {
-          case CUT -> {
-            ledger.deposit("dirt", 1);
-            height--;
-          }
-          case FILL -> {
-            assertNotNull(ledger.withdraw(List.of("dirt")), "the plan never fills from nothing");
-            height++;
-            placed++;
-          }
-          case SWAP -> fail("matching layers are not swapped");
-        }
-      }
-      tops[i] = height;
-      assertEquals(target, height);
-    }
-    int after = ledger.total();
-    for (int top : tops) after += top + 1;
-    assertEquals(before, after);
-    assertTrue(placed > 0);
+  void theRepairIsTheFifthSettingOfTheCycle() {
+    assertEquals(TerraformRules.REPAIR, TerraformRules.nextSize(16));
+    assertEquals(4, TerraformRules.nextSize(TerraformRules.REPAIR));
+    assertTrue(TerraformRules.validSize(TerraformRules.REPAIR) && TerraformRules.repair(TerraformRules.REPAIR));
+    assertFalse(TerraformRules.repair(16));
+    assertEquals(TerraformRules.REPAIR, TerraformRules.reach(TerraformRules.REPAIR));
+    assertEquals(20, TerraformRules.reach(16));
+    int side = 2 * TerraformRules.REPAIR + 1;
+    var columns = TerraformRules.columns(TerraformRules.REPAIR);
+    assertEquals(side * side, columns.size());
+    assertEquals(new TerraformRules.Column(0, 0), columns.getFirst());
+    int cycle = TerraformRules.DEFAULT_SIZE;
+    for (int i = 0; i < 5; i++) cycle = TerraformRules.nextSize(cycle);
+    assertEquals(TerraformRules.DEFAULT_SIZE, cycle, "five settings bring the cycle back");
   }
 }
