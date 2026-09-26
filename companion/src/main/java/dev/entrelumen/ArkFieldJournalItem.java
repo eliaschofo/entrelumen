@@ -23,6 +23,9 @@ public final class ArkFieldJournalItem extends BlockItem {
     tooltip.add(Component.translatable("entrelumen.ark.module.tooltip.effect", ArkFieldJournals.effectName(module))
         .withStyle(ChatFormatting.GOLD));
     tooltip.add(Component.translatable("entrelumen.ark.module.tooltip." + module.key()).withStyle(ChatFormatting.GRAY));
+    // The Nature module also marks the team's garden (NatureRestoration, the altars' side).
+    if (module == ArkRules.Module.NATURE)
+      tooltip.add(Component.translatable("entrelumen.nature.tooltip").withStyle(ChatFormatting.GRAY));
     tooltip.add(Component.translatable("entrelumen.ark.module.tooltip.place").withStyle(ChatFormatting.DARK_GRAY));
   }
 }

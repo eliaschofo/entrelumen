@@ -1,5 +1,17 @@
 # Nature: landscape restoration
 
+## 25 September 2026: the altars absorb the restoration
+
+Elias's decision: the Altar of Renewal absorbs the Nature module's restoration. Since then (branch `feature/altars-vegetation-terrain`, see `ark-altars.md`):
+
+- **The Nature module no longer restores.** Bone meal on it uses nothing and answers that the work moved: the Altar of Renewal grows trees and flowers, and the Altar of Levelling repairs pits and bare dirt. Saplings are no longer asked for.
+- **It keeps the garden site.** A bookmarked compass still marks one site per campaign identity, with the same rules and the same saved data (`entrelumen_nature_restoration`), so sites marked in existing worlds stay valid. The site is now called the team's garden. An Altar of Renewal that a member of the team starts within 64 blocks of it grows a 65×65 square instead of 49×49. The module screen's row reads "Garden: site marked" or "Garden: no site marked", with the same how-to on hover.
+- **What each part of the old service became.** Re-covering exposed dirt is the Levelling repair's cover step. Native trees and bare-grass flora are the Altar of Renewal's two passes, now over a square and with curated variants and a dye garden. Nothing in the module fills or plants any more.
+- **Code.** `NatureRestoration` keeps the compass mark, the bone-meal answer, the module row and the natural-land rules the altars share; `NatureRestorationRules` keeps the distance rule and the stable per-world numbers. The restoration pass, its tree density estimate and its disc rules were removed with their tests. `FeatureSandbox` now serves the Altar of Renewal.
+- **Tests.** `natureModuleMarksTheGardenSiteAndNoLongerRestores` replaces the three restoration GameTests: refusals (unbound compass, other dimension, too far, incomplete Ark, offhand, spectator, removed module), an idempotent mark, the module row for the team and for a guest, bone meal used by neither the service nor the native gesture, no land or campaign change, the site surviving a save, and the 65×65 square for the team's altar but not a guest's. The full-pack claim case for restoration was removed; the altars' own claim case covers planting and repair.
+
+Everything below is the design of 23 September, kept as history.
+
 Decision, 2026-09-23. Implemented. Isolated headless evidence passed, and so did the full-pack claim case on the owned QA server at `e1cc078` (see Verification). Client review is pending. This adds a practical benefit to the existing Nature module. It does not change campaign deliveries or grant rewards.
 
 ## Purpose and native overlap

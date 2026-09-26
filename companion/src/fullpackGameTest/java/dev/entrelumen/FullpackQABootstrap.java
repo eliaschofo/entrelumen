@@ -59,7 +59,6 @@ public final class FullpackQABootstrap {
       GameTestRegistry.register(MechanicalChiselGameTests.class);
       GameTestRegistry.register(TeamRestartGameTests.class);
       GameTestRegistry.register(BackupRestoreGameTests.class);
-      GameTestRegistry.register(NatureRestorationGameTests.class);
       GameTestRegistry.register(ApotheosisGameTests.class);
       GameTestRegistry.register(AltarFullpackGameTests.class);
       GameTestRegistry.register(AltarEffectsFullpackGameTests.class);
@@ -90,7 +89,7 @@ public final class FullpackQABootstrap {
           ArsCreateGameTests.class, ArsOccultismGameTests.class, ArsAe2GameTests.class,
           SettlementArchitectureGameTests.class, BuilderUtilitiesGameTests.class,
           MechanicalChiselGameTests.class, TeamRestartGameTests.class, BackupRestoreGameTests.class,
-          NatureRestorationGameTests.class, ApotheosisGameTests.class,
+          ApotheosisGameTests.class,
           AltarFullpackGameTests.class, AltarEffectsFullpackGameTests.class, LuminousGameTests.class,
           StartWithoutBloatFullpackGameTests.class, TerraArmFullpackGameTests.class, ModPingpongFullpackGameTests.class,
           ModPingpongRound4FullpackGameTests.class,

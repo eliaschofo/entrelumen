@@ -1,0 +1,215 @@
+{
+  "schemaVersion": 1,
+  "checkedAt": "2026-09-26T14:21:43-0300",
+  "scope": "Redesign of the Altars of Renewal (vegetation, dye garden) and Levelling (free flatten and repair), and the Nature module reduced to the garden site: offline build, JUnit and isolated GameTests in the worktree, the Python CI steps, and full-pack QA of the changed altar cases on server-slice with its world backed up, verified and restored. Not client rendering, EN/ES review, survival play, co-op or TPS with players.",
+  "platform": "Minecraft 1.21.1 / NeoForge 21.1.249 / JDK 21.0.12.1+1 / Windows 11",
+  "branch": "feature/altars-vegetation-terrain",
+  "sourceCommit": "9c4ad97",
+  "designDocs": [
+    "docs/design/ark-altars.md",
+    "docs/design/ark-nature-restoration.md"
+  ],
+  "receipts": "E:\\Elias\\Codex\\Entrelumen-ssd\\altars3-20260925",
+  "junit": {
+    "tests": 229,
+    "failures": 0
+  },
+  "isolatedGameTests": {
+    "log": "E:\\Elias\\Codex\\Entrelumen-ssd\\altars3-build\\logs\\full-6.log",
+    "summary": "All 113 required tests passed",
+    "perf": [
+      "ALTAR_PERF scenario=renewal-forest workingTicks=30 wallWithoutGc=[mean=6180 p50=2854 p95=29315 max=45279]us gcTicks=0 maxGcMillis=0 actorMillis=0 maxTreeMicros=31369 restedTicks=25 treeMicros=[31369, 4254, 2291, 2521, 1630, 3401, 4388, 1877, 1656, 3355, 2314, 2176] paletteMicros=4952 totals=[trees=10 inkCaps=0 plants=152 dyeFlowers=51 guarded=23 fertilizer=78 charge=312] grown={minecraft:birch=1, minecraft:cornflower=12, minecraft:dandelion=16, minecraft:lily_of_the_valley=15, minecraft:oak=9, minecraft:poppy=36, minecraft:short_grass=73} guards={plant_claim=19, plant_margin=2, tree_blocked:birch_leaves=1, tree_blocked:oak_leaves=1}",
+      "ALTAR_PERF scenario=renewal-desert workingTicks=10 wallWithoutGc=[mean=2058 p50=2143 p95=2191 max=2191]us gcTicks=0 maxGcMillis=0 actorMillis=0 maxTreeMicros=0 restedTicks=0 treeMicros=[] paletteMicros=7709 totals=[trees=2 inkCaps=0 plants=125 dyeFlowers=1 guarded=0 fertilizer=38 charge=154] grown={entrelumen:giant_cactus=2, minecraft:dandelion=1, minecraft:dead_bush=119, minecraft:poppy=2, minecraft:short_grass=3} guards={}",
+      "ALTAR_PERF scenario=renewal-reload workingTicks=8 wallWithoutGc=[mean=1691 p50=1659 p95=2215 max=2215]us gcTicks=0 maxGcMillis=0 actorMillis=0 maxTreeMicros=0 restedTicks=0 treeMicros=[] paletteMicros=32997 totals=[trees=3 inkCaps=0 plants=169 dyeFlowers=51 guarded=0 fertilizer=55 charge=217] grown={minecraft:azure_bluet=2, minecraft:cornflower=16, minecraft:dandelion=37, minecraft:lily_of_the_valley=9, minecraft:poppy=13, minecraft:short_grass=4, minecraft:tall_grass=67} guards={}",
+      "ALTAR_PERF scenario=terraform-repair-pits workingTicks=15 wallWithoutGc=[mean=2806 p50=2421 p95=7582 max=7582]us gcTicks=0 maxGcMillis=0 actorMillis=0 totals=[columns=23 cut=0 filled=84 swapped=0 covered=2 refused=4 skipped=0] refusals={margin=3, claim=1}",
+      "ALTAR_PERF scenario=terraform-resumed workingTicks=12 wallWithoutGc=[mean=2368 p50=2314 p95=2993 max=2993]us gcTicks=0 maxGcMillis=0 actorMillis=0 totals=[columns=96 cut=159 filled=41 swapped=50 covered=0 refused=0 skipped=0] refusals={}",
+      "ALTAR_PERF scenario=terraform-repair-reload workingTicks=5 wallWithoutGc=[mean=2049 p50=2316 p95=2540 max=2540]us gcTicks=0 maxGcMillis=0 actorMillis=0 totals=[columns=36 cut=0 filled=108 swapped=0 covered=0 refused=0 skipped=0] refusals={}",
+      "ALTAR_PERF scenario=terraform-flat workingTicks=7 wallWithoutGc=[mean=2051 p50=2193 p95=2271 max=2271]us gcTicks=0 maxGcMillis=0 actorMillis=0 totals=[columns=61 cut=23 filled=118 swapped=0 covered=0 refused=6 skipped=0] refusals={built=2, protected=2, claim=2}"
+    ],
+    "treeCost": [
+      "ALTAR_TREE_COST micros={oak=sandbox p50=1763 p95=2280 max=2749 vanilla p50=2073 max=2450, birch=sandbox p50=1463 p95=2482 max=2955 vanilla p50=1744 max=1814, fancy_oak=sandbox p50=2413 p95=5364 max=7189 vanilla p50=2998 max=5950, spruce=sandbox p50=835 p95=1405 max=1658 vanilla p50=1641 max=2467, acacia=sandbox p50=1088 p95=1591 max=1984 vanilla p50=1458 max=1555, dark_oak=sandbox p50=1526 p95=2836 max=3006 vanilla p50=2438 max=2667, cherry=sandbox p50=2461 p95=4673 max=6609 vanilla p50=3916 max=6720, jungle_tree=sandbox p50=1498 p95=2225 max=2762 vanilla p50=1995 max=2076, mega_spruce=sandbox p50=5226 p95=6443 max=6955 vanilla p50=8292 max=9373, mega_jungle_tree=sandbox p50=5859 p95=7239 max=7504 vanilla p50=6520 max=9713, huge_red_mushroom=sandbox p50=154 p95=225 max=260 vanilla p50=366 max=519}"
+    ],
+    "variants": [
+      "ALTAR_VARIANTS overworld={cherry=APPLIED, huge_mushroom=APPLIED, mega_jungle=APPLIED, mega_spruce=APPLIED} guards={} treeMicros=[31797, 22958, 814, 13012]",
+      "ALTAR_VARIANTS other={chorus=APPLIED, crimson_fungus=APPLIED, giant_cactus=APPLIED, mangrove=APPLIED} guards={} treeMicros=[2132, 872, 6130]"
+    ],
+    "dyes": [
+      "ALTAR_DYES isolated biomes=65 recipes=979 variants={badlands=3, biome=25, birch_forest=2, cherry_grove=1, crimson_forest=1, dark_forest=1, desert=1, end=5, flower_forest=1, forest=1, jungle=3, mangrove_swamp=1, meadow=1, mushroom_fields=1, old_growth_taiga=2, plains=2, savanna=3, snowy=4, swamp=1, taiga=2, warped_forest=1, windswept=3}"
+    ]
+  },
+  "pythonChecks": {
+    "log": "E:\\Elias\\Codex\\Entrelumen-ssd\\altars3-20260925\\ci-checks-2.log",
+    "lines": [
+      "0 tools/generate_quests.py --check :: PASS: 102 chapters (8 story, 93 guides, hub), 1932 quests, 5 groups, global IDs/DAG, EN/ES parity; runtime not verified.",
+      "0 tools/test_generate_quests.py :: OK",
+      "0 tools/test_quest_book.py :: OK",
+      "0 tools/test_sync_pack.py :: OK",
+      "0 tools/test_curate_families.py :: Curated 1 JARs; missing requested IDs: ",
+      "0 tools/test_family_balance.py :: OK",
+      "0 tools/generate_client_defaults.py --check :: Default Options checked: 15 options, 105 bindings",
+      "0 tools/test_generate_client_defaults.py :: OK",
+      "0 tools/check_keybinds.py :: PASS: 302 keys from keybindings.txt, 0 clashes, 13 intended shares, 29 sneak/sprint shadows, 0 errors",
+      "0 tools/test_check_keybinds.py :: OK",
+      "0 tools/test_png_equivalence.py :: PASS identical PNG mode, size and pixels; encoding differs: logo.png",
+      "0 tools/generate_integration_recipes.py --check :: PASS: 22 static recipes (21 shapeless, the frame by metallurgic infusing), valid native grids/yields, bilingual project titles, component DAG, two story frames,",
+      "0 tools/build_survey_station_art.py --check :: PASS deterministic survey station:24 cuboids, native16 textures, integerUV; preview is software model, not in-game.",
+      "0 tools/build_atlas_book_art.py --check :: PASS native PixelLab book texture bytes and provenance; game QA is separate",
+      "0 art/build_art.py --check :: PASS: 65 item and 28 block grids render byte-identically into the resource pack and companion; models, EN/ES names and hash inventory current. In-game visual re",
+      "0 tools/build_heliodor_ruin_start.py --check :: heliodor_ruin_start.nbt matches its design",
+      "0 art/build_pixel_identity.py --check :: PASS: native scenes 243x139, 352x199 exported by integer nearest; classic logo 180x64; binary alpha. In-game review separate.",
+      "0 tools/check_runtime_content.py :: PASS source coverage only: 1353 item IDs, 37 recipe/output pairs. Runtime evidence still required with --log.",
+      "0 tools/benchmark.py --self-test :: PASS synthetic unit checks only: nearest-rank percentiles, FPS, strict 50ms/40FPS boundaries, short input and malformed CSV rejection.",
+      "0 tools/test_benchmark.py :: PASS synthetic unit checks only: nearest-rank percentiles, FPS, strict 50ms/40FPS boundaries, short input and malformed CSV rejection.",
+      "0 tools/test_benchmark_fixture.py :: OK",
+      "0 tools/check_more_machine_balance.py --self-test :: PASS synthetic receipt rejection tests; not runtime evidence",
+      "0 tools/test_optional_loot_compat.py :: OK",
+      "0 tools/test_aircraft_balance.py :: OK (skipped=4)",
+      "0 -W error::ResourceWarning tools/test_runtime_control.py :: {\"requestId\": \"55a80c5c-c2f3-426a-9a50-becf8c7fffcf\", \"status\": \"delivered\", \"deliveredAt\": 1790442747.2176611, \"runId\": \"02450a27-e7ad-42cf-a58f-e96abb68de8c\",",
+      "0 tools/generate_family_balance.py --check :: {\"family\": \"qol\", \"status\": \"static-PASS\", \"nativeRecipesIndexed\": 46464, \"changed\": 5, \"removed\": 1, \"dataOverrides\": 0, \"addedRecipes\": 0, \"creations\": 0, \"ac",
+      "0 tools/generate_rftools_balance.py --check :: {\"status\": \"static-PASS\", \"nativeRecipesAudited\": 235, \"changed\": 11, \"componentDAG\": [\"entrelumen:calibration_frame\", \"entrelumen:ecosystem_capsule\", \"entrelum",
+      "0 tools/check_guides.py :: PASS: 93 guide chapters, 1748 quests, 0 errors, 0 copy warnings",
+      "0 tools/generate_resource_balance.py --check --self-test :: {\"status\": \"static-PASS\", \"changed\": 1421, \"byReason\": {\"dimensional_material_and_integration\": 3, \"highest_electrode_native_smithing\": 1, \"hopper_automation\": ",
+      "0 tools/generate_cooking_provisions.py --check :: {\"status\": \"static-PASS\", \"newJars\": 5, \"nativeRecipesAudited\": 8, \"addedRoutes\": 2, \"marketBackedTrees\": 9, \"overlappingPlacementsDisabled\": 9, \"originalRoute\"",
+      "0 tools/generate_malum_compat.py --check :: PASS: five exact recipe IDs; source hash, native schema and all non-key semantics preserved.",
+      "0 tools/curate_pack.py --check :: PASS: 314 client JAR hashes, references and required dependency closure. Requested-but-unavailable: 0. Runtime/version compatibility still needs loader verifica",
+      "overall=0"
+    ]
+  },
+  "fullpack": {
+    "server": "E:/Elias/Codex/Entrelumen-ssd/server-slice",
+    "backup": {
+      "at": 1790385946.8218715,
+      "world": "E:\\Elias\\Codex\\Entrelumen-ssd\\server-slice\\entrelumen-test",
+      "files": 1567,
+      "bytes": 105551907,
+      "zip": "E:\\Elias\\Codex\\Entrelumen-ssd\\altars3-20260925\\server-world-before-altars3.zip",
+      "zipSha256": "6bb70bac5ab7c3b22a05d31a1c0f2576ea94cca51b7b5fdb4a2ba1d2f7b0eb0a",
+      "installedJar": "E:\\Elias\\Codex\\Entrelumen-ssd\\server-slice\\mods\\entrelumen-0.1.0.jar",
+      "installedJarSha256": "d442de83f7ccd6e98ef4589d8aac01a6f48d8786f00dafea45ef60313b9b0282",
+      "keptJarSha256": "d442de83f7ccd6e98ef4589d8aac01a6f48d8786f00dafea45ef60313b9b0282"
+    },
+    "installQa": {
+      "at": 1790387474.92307,
+      "qaJar": "E:\\Elias\\Codex\\Entrelumen-ssd\\altars3-20260925\\entrelumen-0.1.0-qa-altars3-b.jar",
+      "qaJarSha256": "e0de71cda7d77d4bb696dec4fbe8b9d01005d2f9ef7d62b496582bdea194b429",
+      "installedSha256": "e0de71cda7d77d4bb696dec4fbe8b9d01005d2f9ef7d62b496582bdea194b429"
+    },
+    "restores": {
+      "A": {
+        "at": 1790386646.3396587,
+        "restoredFiles": 1567,
+        "qaWorldKeptAt": "E:\\Elias\\Codex\\Entrelumen-ssd\\server-slice\\entrelumen-test.__after-altars3-qa-1790386619",
+        "jarSha256": "d442de83f7ccd6e98ef4589d8aac01a6f48d8786f00dafea45ef60313b9b0282"
+      },
+      "B": {
+        "at": 1790387474.399985,
+        "restoredFiles": 1567,
+        "qaWorldKeptAt": "E:\\Elias\\Codex\\Entrelumen-ssd\\server-slice\\entrelumen-test.__after-altars3-qa-1790387449",
+        "jarSha256": "d442de83f7ccd6e98ef4589d8aac01a6f48d8786f00dafea45ef60313b9b0282"
+      },
+      "C": {
+        "at": 1790442300.7571807,
+        "restoredFiles": 1567,
+        "qaWorldKeptAt": "E:\\Elias\\Codex\\Entrelumen-ssd\\server-slice\\entrelumen-test.__after-altars3-qa-1790442287",
+        "jarSha256": "d442de83f7ccd6e98ef4589d8aac01a6f48d8786f00dafea45ef60313b9b0282"
+      }
+    },
+    "earlierRuns": {
+      "A": {
+        "tests": {
+          "renewalaltarharvestmakeseverydyeineverybiome": "PASS",
+          "renewalaltargrowsinkcapsandmodflowersonplainsoil": "PASS",
+          "renewalaltargrowsthetreesofmoddeddimensions": "FAIL",
+          "naturemodulemarksthegardensiteandnolongerrestores": "FAIL",
+          "altarsrespectforeignftbchunksclaims": "FAIL"
+        },
+        "failureLines": {
+          "renewalaltargrowsthetreesofmoddeddimensions": [
+            "[22:34:44] [Server thread/ERROR] [minecraft/LogTestReporter]: renewalaltargrowsthetreesofmoddeddimensions failed at 0, 67, -13! eternal_starlight:starlight_forest grew no tree: none [] of [] guards={}",
+            "[22:34:44] [Server thread/INFO] [de.en.FullpackQABootstrap/]: ENTRELUMEN_QA_RESULT FAIL renewalaltargrowsthetreesofmoddeddimensions"
+          ],
+          "naturemodulemarksthegardensiteandnolongerrestores": [
+            "[22:34:54] [Server thread/ERROR] [minecraft/LogTestReporter]: naturemodulemarksthegardensiteandnolongerrestores failed at 0, 67, -13! The native gesture used bone meal, changed land or touched campaign progress",
+            "[22:34:54] [Server thread/INFO] [de.en.FullpackQABootstrap/]: ENTRELUMEN_QA_RESULT FAIL naturemodulemarksthegardensiteandnolongerrestores"
+          ],
+          "altarsrespectforeignftbchunksclaims": [
+            "[22:35:15] [Server thread/ERROR] [minecraft/LogTestReporter]: altarsrespectforeignftbchunksclaims failed at 0, 67, -13! A foreign Altar of Renewal planted in the claimed chunk at BlockPos{x=20, y=68, z=7}",
+            "[22:35:15] [Server thread/INFO] [de.en.FullpackQABootstrap/]: ENTRELUMEN_QA_RESULT FAIL altarsrespectforeignftbchunksclaims"
+          ]
+        },
+        "serverEndedDuring": null,
+        "exitCode": 0,
+        "cantKeepUp": 3,
+        "worstCantKeepUpMs": 56078
+      },
+      "B": {
+        "tests": {
+          "renewalaltarharvestmakeseverydyeineverybiome": "PASS",
+          "renewalaltargrowsthetreesofmoddeddimensions": "PASS",
+          "renewalaltargrowsinkcapsandmodflowersonplainsoil": "PASS",
+          "naturemodulemarksthegardensiteandnolongerrestores": "PASS"
+        },
+        "failureLines": {},
+        "serverEndedDuring": "altarsrespectforeignftbchunksclaims",
+        "exitCode": null,
+        "cantKeepUp": null,
+        "worstCantKeepUpMs": null
+      }
+    },
+    "runBStop": "Server watchdog at the start of the claim case after the dye case and four player logins ran back to back; stack in an Integrated Dynamics item entity move (crash-reports/crash-2026-09-25_22.49.07-server.txt); world restored.",
+    "record": {
+      "label": "C",
+      "bootWallSeconds": 274.6,
+      "doneSeconds": 19.627,
+      "expected": 145,
+      "tests": {
+        "altarsrespectforeignftbchunksclaims": "PASS",
+        "naturemodulemarksthegardensiteandnolongerrestores": "PASS",
+        "renewalaltargrowsthetreesofmoddeddimensions": "PASS",
+        "renewalaltargrowsinkcapsandmodflowersonplainsoil": "PASS",
+        "renewalaltarharvestmakeseverydyeineverybiome": "PASS"
+      },
+      "seconds": {
+        "altarsrespectforeignftbchunksclaims": 17.8,
+        "naturemodulemarksthegardensiteandnolongerrestores": 1.5,
+        "renewalaltargrowsthetreesofmoddeddimensions": 1.5,
+        "renewalaltargrowsinkcapsandmodflowersonplainsoil": 1.0,
+        "renewalaltarharvestmakeseverydyeineverybiome": 5.0
+      },
+      "commands": {
+        "forceload": {
+          "seconds": 1.0,
+          "matched": "Marked"
+        },
+        "levellingaltarrepairslandfromthepacksowngenerator": {
+          "seconds": 5.0,
+          "matched": "ENTRELUMEN_QA_RESULT PASS levellingaltarrepairslandfromthepacksowngenerator"
+        },
+        "unforceload": {
+          "seconds": 0.0,
+          "matched": "Unmarked"
+        }
+      },
+      "failureLines": {},
+      "exitCode": 0,
+      "watchdog": false,
+      "cantKeepUp": 2,
+      "worstCantKeepUpMs": 2437,
+      "passed": 5,
+      "failed": []
+    },
+    "dyes": [
+      "ALTAR_DYES fullpack biomes=183 recipes=21878 indexMillis=1033 totalMillis=3966 worstBiomeMillis=28 variants={badlands=3, biome=142, birch_forest=2, cherry_grove=1, crimson_forest=1, dark_forest=1, desert=1, end=5, flower_forest=1, forest=1, jungle=4, mangrove_swamp=1, meadow=1, mushroom_fields=1, old_growth_taiga=2, plains=2, savanna=3, snowy=4, swamp=1, taiga=2, warped_forest=1, windswept=3} gardenHarvest=[eternal_starlight:conebloom, eternal_starlight:swamp_rose, minecraft:cornflower, minecraft:dandelion, minecraft:lily_of_the_valley, minecraft:poppy, undergarden:ink_mushroom] gardenMissing=[] treelessBiomes=65 failures={}"
+    ],
+    "moddedTrees": [
+      "ALTAR_MODDED_TREES results={aether:skyroot_forest=APPLIED [aether:golden_oak_tree=APPLIED], undergarden:smogstem_forest=APPLIED [undergarden:smogstem_tree=APPLIED], eternal_starlight:starlight_forest=APPLIED [eternal_starlight:lunar_cyan=APPLIED], twilightforest:dark_forest=APPLIED [twilightforest:tree/dark_forest_birch_tree=APPLIED]} guards={} grown={aether:golden_oak_tree=1, eternal_starlight:lunar_cyan=1, twilightforest:tree/dark_forest_birch_tree=1, undergarden:smogstem_tree=1}"
+    ],
+    "garden": [
+      "ALTAR_GARDEN inkCap=APPLIED capBlocks=57 survivesOnGrass={eternal_starlight:conebloom=true, eternal_starlight:swamp_rose=true, minecraft:cornflower=true, minecraft:dandelion=true, minecraft:lily_of_the_valley=true, minecraft:poppy=true, undergarden:ink_mushroom=false} inkOnMycelium=true"
+    ],
+    "repairAndClaims": [
+      "ALTAR_FULLPACK claims repairRefusals={built=53, claim=135, protected=14} renewal=[plants=47 trees=3 guards={plant_claim=56, plant_entity=1, plant_margin=17, tree_claim=9}]",
+      "ALTAR_FULLPACK repair totals filled=27 covered=0 refused=0 skipped=0 fuel=1 refusals={} reference=[terrain=16 decorated=4 terrainMillis=1284 decorationMillis=115 failures={pneumaticcraft:oil_lake_underground=1, waystones:waystone=4} unsupported=[getLevel]]"
+    ]
+  }
+}

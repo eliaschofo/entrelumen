@@ -2,20 +2,24 @@ package dev.entrelumen;
 
 import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.function.IntFunction;
 import java.util.function.IntPredicate;
 
 /**
- * Registry-free rules of the Terraform Altar: the flat square and its blending band, the target
- * height of each column, the layers a filled column receives and the conservation ledger.
+ * Registry-free rules of the Terraform Altar (Altar of Levelling): the flat square and its
+ * blending band, the target height of each column, the layers a filled column receives, and the
+ * repair setting that rebuilds the generator's land in a larger square instead.
  */
 final class TerraformRules {
   /** Half-widths of the flat square the altar cycles through. */
   static final int[] SIZES = {4, 8, 12, 16};
   static final int DEFAULT_SIZE = 8;
+  /**
+   * The fifth setting of the cycle: repair instead of flatten, over a 49×49 square (half-width 24),
+   * refilling pits up to the surface the world generator made and re-covering bare dirt.
+   */
+  static final int REPAIR = 24;
   /** Width of the slope that blends the flat square into the land around it. */
   static final int BAND = 4;
   /** Layers of subsurface material under the surface block. */
@@ -41,6 +45,11 @@ final class TerraformRules {
     GROUND,
     /** Builds, containers and anything placed: the whole column is left alone. */
     BUILT,
+    /**
+     * Natural but not plain terrain: ores, logs, leaves, cacti, ice and the like. The altar never
+     * removes or replaces them, so the whole column is left alone.
+     */
+    PROTECTED,
     /** Fluid sources: the whole column is left alone. */
     FLUID
   }
@@ -68,25 +77,36 @@ final class TerraformRules {
 
   private TerraformRules() {}
 
+  /** The next setting: 9, 17, 25 and 33 blocks flat, then the 49-block repair, then 9 again. */
   static int nextSize(int size) {
+    if (size == REPAIR) return SIZES[0];
     for (int i = 0; i < SIZES.length; i++)
-      if (SIZES[i] == size) return SIZES[(i + 1) % SIZES.length];
+      if (SIZES[i] == size) return i + 1 < SIZES.length ? SIZES[i + 1] : REPAIR;
     return DEFAULT_SIZE;
   }
 
   static boolean validSize(int size) {
+    if (size == REPAIR) return true;
     for (int value : SIZES) if (value == size) return true;
     return false;
   }
 
-  /** Half-width of the whole affected square, slope included. */
+  static boolean repair(int size) {
+    return size == REPAIR;
+  }
+
+  /** Half-width of the whole affected square: slope included when flattening, the square when repairing. */
   static int reach(int size) {
-    return size + BAND;
+    return repair(size) ? REPAIR : size + BAND;
   }
 
   /** Every affected column, center outwards: by ring, then distance, then x, then z. */
   static List<Column> columns(int size) {
-    int reach = reach(size);
+    return square(reach(size));
+  }
+
+  /** Every column of a square of this half-width, center outwards, in the same order. */
+  static List<Column> square(int reach) {
     List<Column> result = new ArrayList<>();
     for (int dx = -reach; dx <= reach; dx++)
       for (int dz = -reach; dz <= reach; dz++) result.add(new Column(dx, dz));
@@ -148,9 +168,9 @@ final class TerraformRules {
   /**
    * Plans one column. Everything natural above the target is cut, top-down; loose plants in a hole
    * are cleared; the hole is filled bottom-up with surface, subsurface and deep layers; natural
-   * ground in the top layers that does not match its layer is swapped. Builds and fluid sources
-   * anywhere in the touched span, land taller than {@link #MAX_CUT} and holes deeper than
-   * {@link #MAX_FILL} refuse the whole column.
+   * ground in the top layers that does not match its layer is swapped. Builds, protected natural
+   * blocks (ores, trees, ice) and fluid sources anywhere in the touched span, land taller than
+   * {@link #MAX_CUT} and holes deeper than {@link #MAX_FILL} refuse the whole column.
    *
    * @param matches whether the ground at a height already has the right material for its layer
    */
@@ -158,7 +178,7 @@ final class TerraformRules {
     int top = target + MAX_CUT;
     int bottom = target - MAX_FILL;
     Cell above = cell.apply(top + 1);
-    if (above == Cell.GROUND || above == Cell.LOOSE) return Plan.refused("too_tall");
+    if (above == Cell.GROUND || above == Cell.LOOSE || above == Cell.PROTECTED) return Plan.refused("too_tall");
     int ground = bottom - 1;
     for (int y = target; y >= bottom; y--)
       if (cell.apply(y) == Cell.GROUND) {
@@ -170,6 +190,7 @@ final class TerraformRules {
     for (int y = lowest; y <= top; y++) {
       Cell at = cell.apply(y);
       if (at == Cell.BUILT) return Plan.refused("built");
+      if (at == Cell.PROTECTED) return Plan.refused("protected");
       if (at == Cell.FLUID) return Plan.refused("fluid");
     }
     List<Op> ops = new ArrayList<>();
@@ -184,45 +205,5 @@ final class TerraformRules {
         ops.add(new Op(Kind.SWAP, y, layer(target - y)));
     for (int y = ground + 1; y <= target; y++) ops.add(new Op(Kind.FILL, y, layer(target - y)));
     return new Plan(List.copyOf(ops), null);
-  }
-
-  /**
-   * Conservation ledger for materials: cut blocks are deposited, filled blocks withdrawn. Nothing
-   * is created or destroyed; a withdrawal names the first available material from a preference.
-   */
-  static final class Ledger {
-    private final Map<String, Integer> counts = new LinkedHashMap<>();
-
-    void deposit(String id, int count) {
-      if (count < 0) throw new IllegalArgumentException("Negative deposit");
-      if (count > 0) counts.merge(id, count, Integer::sum);
-    }
-
-    /** Takes one of the first material in the preference that is present; null if none is. */
-    String withdraw(List<String> preference) {
-      for (String id : preference) {
-        int have = counts.getOrDefault(id, 0);
-        if (have > 0) {
-          if (have == 1) counts.remove(id);
-          else counts.put(id, have - 1);
-          return id;
-        }
-      }
-      return null;
-    }
-
-    int count(String id) {
-      return counts.getOrDefault(id, 0);
-    }
-
-    int total() {
-      int total = 0;
-      for (int value : counts.values()) total += value;
-      return total;
-    }
-
-    Map<String, Integer> snapshot() {
-      return Map.copyOf(counts);
-    }
   }
 }
