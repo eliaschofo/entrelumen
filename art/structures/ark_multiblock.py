@@ -33,8 +33,8 @@ REQ = {}        # (x, y, z) -> True if the multiblock requires the block, False 
 SLOTS = {}      # (x, y, z) -> slot name
 B = lambda n: 'minecraft:' + n
 MODULES = [('habitation', 90), ('exploration', 30), ('nature', 330), ('arcane', 270), ('logistics', 210), ('engineering', 150)]
-R_EQ = 5          # equator radius
-SUN_Y = 4         # height of the controller above the ground
+R_EQ = 5          # radius of the orbit
+SUN_Y = 1         # the controller stands on the floor
 DECK = SUN_Y      # export anchor height
 
 
@@ -48,7 +48,7 @@ def put(x, y, z, b, required=True):
     REQ[(x, y, z)] = required
 
 
-def ring(radius, tilt, yaw, block, cy, required=True):
+def ring(radius, tilt, yaw, block, cy, required=True, floor=False):
     """A one-block ring round (0, cy, 0), tilted about x by `tilt`, then turned about y."""
     steps = int(2 * math.pi * radius * 3)
     for i in range(steps):
@@ -57,7 +57,7 @@ def ring(radius, tilt, yaw, block, cy, required=True):
         y, z = y * math.cos(tilt) - z * math.sin(tilt), y * math.sin(tilt) + z * math.cos(tilt)
         x, z = x * math.cos(yaw) + z * math.sin(yaw), -x * math.sin(yaw) + z * math.cos(yaw)
         p = (rd(x), rd(cy + y), rd(z))
-        if p[1] <= 0:
+        if p[1] < (0 if floor else 1):
             continue
         for q in (p, (-p[0], p[1], p[2])):               # the mirror keeps the ring symmetric
             if q not in SLOTS and q not in V:
@@ -65,42 +65,21 @@ def ring(radius, tilt, yaw, block, cy, required=True):
 
 
 def build():
-    """The required core is cheap and quick (about 55 pieces of stone bricks and smooth stone);
-    everything else is suggested decoration that the ghost shows but the Ark never demands."""
+    """Everything on the ground and only full cubes (Elias): a ring of stone bricks in the floor,
+    the six modules and the controller standing on the floor, and two stone-brick arches crossing
+    over the controller. All of it is required; there is no separate decoration."""
     V.clear(); REQ.clear(); SLOTS.clear()
-    # REQUIRED: the sun (the controller on a column of three stone bricks)
-    for y in range(1, SUN_Y):
-        put(0, y, 0, 'stone_bricks')
-    put(0, SUN_Y, 0, 'entrelumen:ark_controller')
-    SLOTS[(0, SUN_Y, 0)] = 'ark_controller'
-    # REQUIRED: six planets, each module on two stone bricks, and the equator of smooth stone slabs
+    put(0, 1, 0, 'entrelumen:ark_controller')
+    SLOTS[(0, 1, 0)] = 'ark_controller'
     for name, deg in MODULES:
         th = math.radians(deg)
         x, z = rd(R_EQ * math.cos(th)), rd(R_EQ * math.sin(th))
-        put(x, 1, z, 'stone_bricks')
-        put(x, 2, z, 'stone_bricks')
-        put(x, 3, z, 'entrelumen:%s_module' % name)
-        SLOTS[(x, 3, z)] = '%s_module' % name
-    ring(R_EQ, 0.0, 0.0, 'smooth_stone_slab[type=top,waterlogged=false]', 3)
-    # DECORATION (suggested): a disc of calcite with the sun's rays, lanterns, the corona,
-    # two meridian arches and the gnomon
-    for x in range(-7, 8):
-        for z in range(-7, 8):
-            r = math.hypot(x, z)
-            if r > 7.4 or (x, 0, z) in V:
-                continue
-            th = (math.degrees(math.atan2(z, x)) + 360) % 45
-            ray = r > 1.5 and (th < 5 or th > 40)
-            put(x, 0, z, 'cut_copper' if ray else ('stone_bricks' if r > 6.5 else 'calcite'), required=False)
-    for name, deg in MODULES:
-        th = math.radians(deg)
-        put(rd(R_EQ * math.cos(th)), 4, rd(R_EQ * math.sin(th)), 'lantern[hanging=false,waterlogged=false]', required=False)
-    for (dx, dz, f) in ((1, 0, 'east'), (-1, 0, 'west'), (0, 1, 'south'), (0, -1, 'north')):
-        put(dx, SUN_Y, dz, 'lightning_rod[facing=%s,powered=false,waterlogged=false]' % f, required=False)
-    ring(R_EQ + 1, math.pi / 2, 0.0, 'cut_copper', SUN_Y, required=False)
-    ring(R_EQ + 1, math.pi / 2, math.pi / 2, 'cut_copper', SUN_Y, required=False)
-    put(0, SUN_Y + R_EQ + 2, 0, 'lantern[hanging=false,waterlogged=false]', required=False)
-    put(0, SUN_Y + R_EQ + 3, 0, 'lightning_rod[facing=up,powered=false,waterlogged=false]', required=False)
+        put(x, 1, z, 'entrelumen:%s_module' % name)
+        SLOTS[(x, 1, z)] = '%s_module' % name
+    ring(R_EQ, 0.0, 0.0, 'stone_bricks', 0, floor=True)            # the orbit, laid in the floor
+    ring(R_EQ + 2, math.pi / 2, 0.0, 'stone_bricks', 0)            # two arches over the controller
+    ring(R_EQ + 2, math.pi / 2, math.pi / 2, 'stone_bricks', 0)
+    put(0, R_EQ + 2, 0, 'chiseled_stone_bricks')                   # the keystone where they cross
     return V
 
 
