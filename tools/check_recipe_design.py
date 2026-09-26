@@ -16,8 +16,10 @@ Rules (fail with exit code 1):
   4. spawner augments are the five-item copper medallion;
   5. Emperor's Cloth stays hidden in EMI and JEI (static part; the loaded check is a GameTest).
 
---report prints the inventory and the fan-out table as Markdown; --baseline REF adds the fan-out of a
-git revision (for example origin/main) as the "before" column.
+--report prints a summary per source, the fan-out table and the inventory of every recipe with an
+ENTRELUMEN item (form, grid, components, nesting depth) as Markdown; --all lists every recipe the pack
+changes or adds; --baseline REF adds the fan-out of a git revision (for example origin/main) as the
+"before" column.
 """
 from __future__ import annotations
 
@@ -491,12 +493,38 @@ def describe(recipe):
     return 'máquina', recipe.get('type', '?')
 
 
-def report(recipes, tree, baseline=None):
+def removals(tree):
+    """Native recipe IDs the family scripts remove at load."""
+    found = []
+    for path in tree.glob(SCRIPTS + '/', '.js'):
+        for match in re.finditer(r'^const \w+Removals = (\[.*\]);$', tree.read(path), re.M):
+            found.extend(json.loads(match.group(1)))
+    return found
+
+
+def summary(recipes, tree):
+    """Recipes per source: how many, of which kind, and how many carry an ENTRELUMEN item."""
+    rows = {}
+    for source, _, recipe in recipes:
+        row = rows.setdefault(source, {'forma': 0, 'sin forma': 0, 'máquina': 0, 'ENTRELUMEN': 0})
+        row[describe(recipe)[0]] += 1
+        if any(i.startswith('entrelumen:') for i in inputs(recipe) + outputs(recipe)):
+            row['ENTRELUMEN'] += 1
+    lines = ['| Fuente | Con forma | Sin forma | Máquina | Con ítems de ENTRELUMEN |', '|---|---:|---:|---:|---:|']
+    for source in sorted(rows):
+        r = rows[source]
+        lines.append(f"| {source} | {r['forma']} | {r['sin forma']} | {r['máquina']} | {r['ENTRELUMEN']} |")
+    lines.append(f'\nAdemás, los scripts quitan {len(removals(tree))} recetas nativas por ID.')
+    return lines
+
+
+def report(recipes, tree, baseline=None, everything=False):
     tracked = components(tree)
     uses = fanout(recipes, tracked)
     depth = depths(recipes)
     before = fanout(baseline, tracked) if baseline is not None else None
-    lines = ['| Componente | Antes | Ahora | Meta |', '|---|---:|---:|---:|']
+    lines = summary(recipes, tree) + ['']
+    lines += ['| Componente | Antes | Ahora | Meta |', '|---|---:|---:|---:|']
     for c in sorted(tracked, key=lambda c: -len((before or uses)[c])):
         if c not in META:
             continue  # the Ark modules are milestones themselves; nothing consumes them
@@ -504,7 +532,7 @@ def report(recipes, tree, baseline=None):
     lines += ['', '| Receta | Fuente | Forma | Grilla | Componentes | Anidado |', '|---|---|---|---|---|---:|']
     for source, rid, recipe in sorted(recipes, key=lambda r: (r[0], r[1])):
         parts = sorted({i for i in inputs(recipe) if i.startswith('entrelumen:')})
-        if not parts and not any(o.startswith('entrelumen:') for o in outputs(recipe)):
+        if not everything and not parts and not any(o.startswith('entrelumen:') for o in outputs(recipe)):
             continue
         shape, grid = describe(recipe)
         level = max((depth(i) for i in parts), default=0)
@@ -519,12 +547,13 @@ def main():
     parser.add_argument('--check', action='store_true', help='fail on any rule (default)')
     parser.add_argument('--report', action='store_true', help='print the inventory and fan-out tables')
     parser.add_argument('--baseline', help='git revision for the "before" fan-out column')
+    parser.add_argument('--all', action='store_true', help='list every changed or added recipe, not only ENTRELUMEN ones')
     args = parser.parse_args()
     tree = Tree()
     recipes = load(tree)
     if args.report:
         baseline = load(Tree(args.baseline)) if args.baseline else None
-        print(report(recipes, tree, baseline))
+        print(report(recipes, tree, baseline, args.all))
         return 0
     problems = check(recipes, tree)
     for problem in problems:

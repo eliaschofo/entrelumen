@@ -51,6 +51,20 @@ Recetas que consumen cada componente (`python tools/check_recipe_design.py --rep
 
 La Matriz de distribución y el Regulador, que el lote de progresión dejó con cerca de veinte recetas cada uno, quedan en ocho. Antes había 273 recetas sin forma y 508 asimétricas con ítems de ENTRELUMEN; ahora ninguna.
 
+## Inventario
+
+`python tools/check_recipe_design.py --report` lista cada receta con ítems de ENTRELUMEN con su forma, su grilla, sus componentes y su anidado (niveles de fabricación de ENTRELUMEN por debajo); `--all` suma las demás. Resumen por fuente, antes y ahora:
+
+| Fuente | Recetas | Con ítems de ENTRELUMEN | Sin forma |
+|---|---:|---:|---:|
+| Familias escalonadas (industrial, QoL, arcana, Apotheosis, ping-pong, funciones, RFTools, aeronaves) | 106 → 98 | 101 → 38 | 0 → 0 |
+| Recursos (Botany Pots, JAMD, Modular Bees) | 1.421 → 1.105 | 1.421 → 6 | 245 → 0 |
+| Integración y provisiones | 24 → 24 | 24 → 24 | 23 → 0 |
+| Datos del pack (estantes, aumentadores, creativos, resonadores, lingote, datos corregidos) | 90 → 90 | 82 → 82 | 1 → 1 |
+| Companion | 13 → 13 | 13 → 13 | 5 → 0 |
+
+La receta sin forma que queda en los datos del pack es la copia sin cambios del manual de PneumaticCraft (`patchouli:guide_book`), sin ítems de ENTRELUMEN. Además, los scripts quitan 84 recetas nativas por ID (77 antes; las siete nuevas son las copias de Oritech).
+
 ## Qué dejó de pedir componentes
 
 **Nativas otra vez** (cubiertas por otra puerta o fabricadas por docenas):
