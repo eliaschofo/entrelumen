@@ -1,11 +1,12 @@
 {
   "id": "63A7B1E69BE2C38A",
   "filename": "a_light_among_ruins",
-  "order_index": 0,
+  "order_index": 1,
   "icon": {
     "id": "entrelumen:atlas"
   },
   "default_quest_shape": "square",
+  "default_min_width": 320,
   "autofocus_id": "3C1A37141ABD78D8",
   "quests": [
     {
@@ -26,15 +27,18 @@
         }
       ],
       "rewards": [],
+      "tags": [
+        "entrelumen_optional"
+      ],
       "optional": true
     },
     {
       "id": "3AC9E31D78B2BCB0",
       "x": 0.0,
-      "y": 2.0,
+      "y": 1.5,
       "shape": "square",
-      "size": 0.85,
-      "hide_dependent_lines": true,
+      "size": 1.0,
+      "hide_dependent_lines": false,
       "dependencies": [
         "3C1A37141ABD78D8"
       ],
@@ -53,14 +57,23 @@
           "consume_items": false
         }
       ],
-      "rewards": []
+      "rewards": [
+        {
+          "id": "08B19FA1BC313172",
+          "type": "xp",
+          "xp": 5
+        }
+      ],
+      "tags": [
+        "entrelumen_story"
+      ]
     },
     {
       "id": "153F660992CE9BA3",
-      "x": 1.0,
-      "y": 4.0,
+      "x": 1.5,
+      "y": 3.0,
       "shape": "square",
-      "size": 0.85,
+      "size": 1.0,
       "hide_dependent_lines": false,
       "dependencies": [
         "3AC9E31D78B2BCB0"
@@ -80,12 +93,21 @@
           "consume_items": false
         }
       ],
-      "rewards": []
+      "rewards": [
+        {
+          "id": "4F68DB59DC15F309",
+          "type": "xp",
+          "xp": 5
+        }
+      ],
+      "tags": [
+        "entrelumen_story"
+      ]
     },
     {
       "id": "0CA82678D5DFA3E8",
-      "x": -4.0,
-      "y": 2.0,
+      "x": -3.25,
+      "y": 1.5,
       "shape": "circle",
       "size": 0.75,
       "hide_dependent_lines": false,
@@ -102,14 +124,17 @@
         }
       ],
       "rewards": [],
+      "tags": [
+        "entrelumen_optional"
+      ],
       "optional": true
     },
     {
       "id": "2742A6E0D4B75C80",
-      "x": -2.0,
-      "y": 4.0,
+      "x": -1.5,
+      "y": 3.0,
       "shape": "square",
-      "size": 0.85,
+      "size": 1.0,
       "hide_dependent_lines": false,
       "dependencies": [
         "3AC9E31D78B2BCB0"
@@ -129,15 +154,24 @@
           "consume_items": false
         }
       ],
-      "rewards": []
+      "rewards": [
+        {
+          "id": "69ECCADD67BC1B6E",
+          "type": "xp",
+          "xp": 5
+        }
+      ],
+      "tags": [
+        "entrelumen_story"
+      ]
     },
     {
       "id": "216E7E97E831A00C",
-      "x": 0.0,
-      "y": 6.0,
+      "x": 0.75,
+      "y": 4.5,
       "shape": "square",
-      "size": 0.85,
-      "hide_dependent_lines": true,
+      "size": 1.0,
+      "hide_dependent_lines": false,
       "dependencies": [
         "153F660992CE9BA3"
       ],
@@ -156,14 +190,23 @@
           "consume_items": false
         }
       ],
-      "rewards": []
+      "rewards": [
+        {
+          "id": "14E97FBDF34A4245",
+          "type": "xp",
+          "xp": 5
+        }
+      ],
+      "tags": [
+        "entrelumen_story"
+      ]
     },
     {
       "id": "73220D1B896D7CD9",
-      "x": 2.0,
-      "y": 6.0,
+      "x": 2.25,
+      "y": 4.5,
       "shape": "square",
-      "size": 0.85,
+      "size": 1.0,
       "hide_dependent_lines": false,
       "dependencies": [
         "153F660992CE9BA3"
@@ -183,12 +226,21 @@
           "consume_items": false
         }
       ],
-      "rewards": []
+      "rewards": [
+        {
+          "id": "09A2FB3E8C9DA1BE",
+          "type": "xp",
+          "xp": 5
+        }
+      ],
+      "tags": [
+        "entrelumen_story"
+      ]
     },
     {
       "id": "4FC6DEBD8FEED1C0",
-      "x": -5.0,
-      "y": 5.0,
+      "x": -3.25,
+      "y": 3.0,
       "shape": "circle",
       "size": 0.75,
       "hide_dependent_lines": false,
@@ -205,14 +257,17 @@
         }
       ],
       "rewards": [],
+      "tags": [
+        "entrelumen_optional"
+      ],
       "optional": true
     },
     {
       "id": "34262755FE4ACAB3",
-      "x": 1.0,
-      "y": 9.0,
+      "x": 0.0,
+      "y": 13.5,
       "shape": "hexagon",
-      "size": 1.1,
+      "size": 2.0,
       "hide_dependent_lines": false,
       "dependencies": [],
       "icon": {
@@ -225,14 +280,32 @@
           "milestone": "atlas_awakened"
         }
       ],
-      "rewards": []
+      "rewards": [
+        {
+          "id": "24CA0690893AEB2F",
+          "type": "xp",
+          "xp": 25
+        },
+        {
+          "id": "46A251C70832BE7F",
+          "type": "item",
+          "item": {
+            "id": "minecraft:torch",
+            "count": 1
+          },
+          "count": 8
+        }
+      ],
+      "tags": [
+        "entrelumen_story"
+      ]
     },
     {
       "id": "744122ED817C45E5",
-      "x": -4.0,
-      "y": 8.0,
+      "x": -6.0,
+      "y": 7.75,
       "shape": "square",
-      "size": 0.85,
+      "size": 1.0,
       "hide_dependent_lines": false,
       "dependencies": [
         "216E7E97E831A00C"
@@ -252,14 +325,23 @@
           "consume_items": false
         }
       ],
-      "rewards": []
+      "rewards": [
+        {
+          "id": "31880B9A08C81957",
+          "type": "xp",
+          "xp": 5
+        }
+      ],
+      "tags": [
+        "entrelumen_story"
+      ]
     },
     {
       "id": "4E81EB4CAA1D1D13",
-      "x": -5.0,
-      "y": 10.0,
+      "x": -6.0,
+      "y": 9.25,
       "shape": "square",
-      "size": 0.85,
+      "size": 1.0,
       "hide_dependent_lines": false,
       "dependencies": [
         "744122ED817C45E5"
@@ -279,14 +361,23 @@
           "consume_items": false
         }
       ],
-      "rewards": []
+      "rewards": [
+        {
+          "id": "61825BC505DCF49A",
+          "type": "xp",
+          "xp": 5
+        }
+      ],
+      "tags": [
+        "entrelumen_story"
+      ]
     },
     {
       "id": "0DDC984DEA3CAD80",
-      "x": -2.0,
-      "y": 8.0,
+      "x": -7.5,
+      "y": 7.75,
       "shape": "square",
-      "size": 0.85,
+      "size": 1.0,
       "hide_dependent_lines": false,
       "dependencies": [
         "216E7E97E831A00C"
@@ -306,14 +397,23 @@
           "consume_items": false
         }
       ],
-      "rewards": []
+      "rewards": [
+        {
+          "id": "7709F50B41512182",
+          "type": "xp",
+          "xp": 5
+        }
+      ],
+      "tags": [
+        "entrelumen_story"
+      ]
     },
     {
       "id": "1EE8E17F9022A402",
-      "x": -2.0,
-      "y": 10.0,
+      "x": -7.5,
+      "y": 9.25,
       "shape": "square",
-      "size": 0.85,
+      "size": 1.0,
       "hide_dependent_lines": false,
       "dependencies": [
         "0DDC984DEA3CAD80"
@@ -333,14 +433,23 @@
           "consume_items": false
         }
       ],
-      "rewards": []
+      "rewards": [
+        {
+          "id": "5BEEB759EB2FDABE",
+          "type": "xp",
+          "xp": 5
+        }
+      ],
+      "tags": [
+        "entrelumen_story"
+      ]
     },
     {
       "id": "7CD0636D9B7DDA5E",
-      "x": -7.0,
-      "y": 10.0,
+      "x": -4.5,
+      "y": 7.75,
       "shape": "square",
-      "size": 0.85,
+      "size": 1.0,
       "hide_dependent_lines": false,
       "dependencies": [
         "3AC9E31D78B2BCB0"
@@ -360,14 +469,23 @@
           "consume_items": false
         }
       ],
-      "rewards": []
+      "rewards": [
+        {
+          "id": "2ACA477E803C3709",
+          "type": "xp",
+          "xp": 5
+        }
+      ],
+      "tags": [
+        "entrelumen_story"
+      ]
     },
     {
       "id": "7022698D6AF61048",
-      "x": -5.0,
-      "y": 12.0,
+      "x": -6.0,
+      "y": 10.75,
       "shape": "square",
-      "size": 0.85,
+      "size": 1.0,
       "hide_dependent_lines": false,
       "dependencies": [
         "4E81EB4CAA1D1D13"
@@ -387,14 +505,23 @@
           "consume_items": false
         }
       ],
-      "rewards": []
+      "rewards": [
+        {
+          "id": "1706A74338D0A2E9",
+          "type": "xp",
+          "xp": 5
+        }
+      ],
+      "tags": [
+        "entrelumen_story"
+      ]
     },
     {
       "id": "5E980BB86AE535DF",
-      "x": -3.0,
-      "y": 15.0,
+      "x": -5.25,
+      "y": 15.75,
       "shape": "hexagon",
-      "size": 1.1,
+      "size": 2.0,
       "hide_dependent_lines": false,
       "dependencies": [
         "34262755FE4ACAB3"
@@ -409,14 +536,32 @@
           "milestone": "travellers_table"
         }
       ],
-      "rewards": []
+      "rewards": [
+        {
+          "id": "7D428F5951C5752E",
+          "type": "xp",
+          "xp": 25
+        },
+        {
+          "id": "59156F7CF1C5ADD8",
+          "type": "item",
+          "item": {
+            "id": "minecraft:torch",
+            "count": 1
+          },
+          "count": 8
+        }
+      ],
+      "tags": [
+        "entrelumen_story"
+      ]
     },
     {
       "id": "0E2E2C08C06F343B",
-      "x": 4.0,
-      "y": 8.0,
+      "x": 4.5,
+      "y": 7.75,
       "shape": "square",
-      "size": 0.85,
+      "size": 1.0,
       "hide_dependent_lines": false,
       "dependencies": [
         "216E7E97E831A00C"
@@ -436,14 +581,23 @@
           "consume_items": false
         }
       ],
-      "rewards": []
+      "rewards": [
+        {
+          "id": "18033B406E2E0FC3",
+          "type": "xp",
+          "xp": 5
+        }
+      ],
+      "tags": [
+        "entrelumen_story"
+      ]
     },
     {
       "id": "27B833739C94F3B1",
-      "x": 3.0,
-      "y": 10.0,
+      "x": 6.0,
+      "y": 7.75,
       "shape": "square",
-      "size": 0.85,
+      "size": 1.0,
       "hide_dependent_lines": false,
       "dependencies": [
         "216E7E97E831A00C"
@@ -463,14 +617,23 @@
           "consume_items": false
         }
       ],
-      "rewards": []
+      "rewards": [
+        {
+          "id": "4CCE14A114D01910",
+          "type": "xp",
+          "xp": 5
+        }
+      ],
+      "tags": [
+        "entrelumen_story"
+      ]
     },
     {
       "id": "7D9F3FDD50B52514",
-      "x": 4.0,
-      "y": 12.0,
+      "x": 2.25,
+      "y": 15.75,
       "shape": "hexagon",
-      "size": 1.1,
+      "size": 2.0,
       "hide_dependent_lines": false,
       "dependencies": [
         "34262755FE4ACAB3"
@@ -485,12 +648,30 @@
           "milestone": "lens_assembled"
         }
       ],
-      "rewards": []
+      "rewards": [
+        {
+          "id": "405C0B78DEB28F51",
+          "type": "xp",
+          "xp": 25
+        },
+        {
+          "id": "6E19F91391D02BB5",
+          "type": "item",
+          "item": {
+            "id": "minecraft:torch",
+            "count": 1
+          },
+          "count": 8
+        }
+      ],
+      "tags": [
+        "entrelumen_story"
+      ]
     },
     {
       "id": "67D63EA89ED72879",
-      "x": 6.0,
-      "y": 8.0,
+      "x": -3.25,
+      "y": 4.5,
       "shape": "circle",
       "size": 0.75,
       "hide_dependent_lines": false,
@@ -507,14 +688,17 @@
         }
       ],
       "rewards": [],
+      "tags": [
+        "entrelumen_optional"
+      ],
       "optional": true
     },
     {
       "id": "078C1FA519669777",
-      "x": 1.0,
-      "y": 14.0,
+      "x": 4.5,
+      "y": 10.75,
       "shape": "square",
-      "size": 0.85,
+      "size": 1.0,
       "hide_dependent_lines": false,
       "dependencies": [
         "7022698D6AF61048",
@@ -535,14 +719,23 @@
           "consume_items": false
         }
       ],
-      "rewards": []
+      "rewards": [
+        {
+          "id": "446328F07CB0DF96",
+          "type": "xp",
+          "xp": 5
+        }
+      ],
+      "tags": [
+        "entrelumen_story"
+      ]
     },
     {
       "id": "42845362110B95B7",
-      "x": 4.0,
-      "y": 16.0,
+      "x": 5.25,
+      "y": 15.75,
       "shape": "hexagon",
-      "size": 1.1,
+      "size": 2.0,
       "hide_dependent_lines": false,
       "dependencies": [
         "34262755FE4ACAB3",
@@ -558,12 +751,30 @@
           "milestone": "field_survey"
         }
       ],
-      "rewards": []
+      "rewards": [
+        {
+          "id": "6D58E7025F4552E3",
+          "type": "xp",
+          "xp": 25
+        },
+        {
+          "id": "48574FE66A6CC549",
+          "type": "item",
+          "item": {
+            "id": "minecraft:torch",
+            "count": 1
+          },
+          "count": 8
+        }
+      ],
+      "tags": [
+        "entrelumen_story"
+      ]
     },
     {
       "id": "5625EFC0A0C376CF",
-      "x": 7.0,
-      "y": 16.0,
+      "x": 7.75,
+      "y": 10.75,
       "shape": "circle",
       "size": 0.75,
       "hide_dependent_lines": false,
@@ -580,14 +791,17 @@
         }
       ],
       "rewards": [],
+      "tags": [
+        "entrelumen_optional"
+      ],
       "optional": true
     },
     {
       "id": "762B0B9FB46F552F",
       "x": 0.0,
-      "y": 19.0,
+      "y": 19.5,
       "shape": "hexagon",
-      "size": 1.1,
+      "size": 3.0,
       "hide_dependent_lines": false,
       "dependencies": [
         "5E980BB86AE535DF",
@@ -604,12 +818,30 @@
           "milestone": "first_signal"
         }
       ],
-      "rewards": []
+      "rewards": [
+        {
+          "id": "41EDA48CA610404B",
+          "type": "xp",
+          "xp": 50
+        },
+        {
+          "id": "1F1CE47AC456C335",
+          "type": "item",
+          "item": {
+            "id": "minecraft:lantern",
+            "count": 1
+          },
+          "count": 2
+        }
+      ],
+      "tags": [
+        "entrelumen_story"
+      ]
     },
     {
       "id": "258FF615C9AD9711",
-      "x": 0.0,
-      "y": 22.0,
+      "x": -1.5,
+      "y": 22.75,
       "shape": "circle",
       "size": 0.75,
       "hide_dependent_lines": false,
@@ -626,14 +858,17 @@
         }
       ],
       "rewards": [],
+      "tags": [
+        "entrelumen_optional"
+      ],
       "optional": true
     },
     {
       "id": "2E22D95F3AC6BE45",
-      "x": 3.0,
-      "y": 22.0,
-      "shape": "square",
-      "size": 0.85,
+      "x": 1.5,
+      "y": 22.75,
+      "shape": "diamond",
+      "size": 1.0,
       "hide_dependent_lines": false,
       "dependencies": [
         "762B0B9FB46F552F"
@@ -653,8 +888,249 @@
           "consume_items": false
         }
       ],
-      "rewards": [],
+      "rewards": [
+        {
+          "id": "7B84244833A522DC",
+          "type": "xp",
+          "xp": 5
+        }
+      ],
+      "tags": [
+        "entrelumen_optional"
+      ],
       "optional": true
+    }
+  ],
+  "images": [
+    {
+      "id": "7EF8341F4794C523",
+      "x": -3.835714,
+      "y": -0.585714,
+      "width": 0.666667,
+      "height": 0.666667,
+      "rotation": 0.0,
+      "image": "entrelumen:textures/gui/quests/corner.png"
+    },
+    {
+      "id": "522365D85763DC99",
+      "x": 2.942857,
+      "y": -0.585714,
+      "width": 0.666667,
+      "height": 0.666667,
+      "rotation": 90.0,
+      "image": "entrelumen:textures/gui/quests/corner.png"
+    },
+    {
+      "id": "20F8D12A5E143213",
+      "x": 2.942857,
+      "y": 5.192857,
+      "width": 0.666667,
+      "height": 0.666667,
+      "rotation": 180.0,
+      "image": "entrelumen:textures/gui/quests/corner.png"
+    },
+    {
+      "id": "5E6441A239703ADE",
+      "x": -3.835714,
+      "y": 5.192857,
+      "width": 0.666667,
+      "height": 0.666667,
+      "rotation": 270.0,
+      "image": "entrelumen:textures/gui/quests/corner.png"
+    },
+    {
+      "id": "5FA9913813897189",
+      "x": -0.446429,
+      "y": -1.282143,
+      "width": 6.166667,
+      "height": 0.375,
+      "rotation": 0.0,
+      "image": "",
+      "text_on_image": true,
+      "text_shadow": true,
+      "order": 5
+    },
+    {
+      "id": "6BB5A7A7B15106C8",
+      "x": -8.192857,
+      "y": 7.057143,
+      "width": 0.666667,
+      "height": 0.666667,
+      "rotation": 0.0,
+      "image": "entrelumen:textures/gui/quests/corner.png"
+    },
+    {
+      "id": "4FD77BFF661FEDB5",
+      "x": -3.807143,
+      "y": 7.057143,
+      "width": 0.666667,
+      "height": 0.666667,
+      "rotation": 90.0,
+      "image": "entrelumen:textures/gui/quests/corner.png"
+    },
+    {
+      "id": "0335D7CE6C5789E4",
+      "x": -3.807143,
+      "y": 11.442857,
+      "width": 0.666667,
+      "height": 0.666667,
+      "rotation": 180.0,
+      "image": "entrelumen:textures/gui/quests/corner.png"
+    },
+    {
+      "id": "48980A836416E93F",
+      "x": -8.192857,
+      "y": 11.442857,
+      "width": 0.666667,
+      "height": 0.666667,
+      "rotation": 270.0,
+      "image": "entrelumen:textures/gui/quests/corner.png"
+    },
+    {
+      "id": "59D6720CE929BFC4",
+      "x": -6.0,
+      "y": 12.3,
+      "width": 4.166667,
+      "height": 0.75,
+      "rotation": 0.0,
+      "image": "",
+      "text_on_image": true,
+      "text_shadow": true,
+      "order": 5
+    },
+    {
+      "id": "7EAA58F5244D7A3A",
+      "x": 3.807143,
+      "y": 7.057143,
+      "width": 0.666667,
+      "height": 0.666667,
+      "rotation": 0.0,
+      "image": "entrelumen:textures/gui/quests/corner.png"
+    },
+    {
+      "id": "7EC746B1F4839CFB",
+      "x": 8.335714,
+      "y": 7.057143,
+      "width": 0.666667,
+      "height": 0.666667,
+      "rotation": 90.0,
+      "image": "entrelumen:textures/gui/quests/corner.png"
+    },
+    {
+      "id": "2F25D0F9422C00C1",
+      "x": 8.335714,
+      "y": 11.442857,
+      "width": 0.666667,
+      "height": 0.666667,
+      "rotation": 180.0,
+      "image": "entrelumen:textures/gui/quests/corner.png"
+    },
+    {
+      "id": "68B9576661E2195B",
+      "x": 3.807143,
+      "y": 11.442857,
+      "width": 0.666667,
+      "height": 0.666667,
+      "rotation": 270.0,
+      "image": "entrelumen:textures/gui/quests/corner.png"
+    },
+    {
+      "id": "5B66BE95D53E20EF",
+      "x": 6.071429,
+      "y": 12.3,
+      "width": 4.916667,
+      "height": 0.75,
+      "rotation": 0.0,
+      "image": "",
+      "text_on_image": true,
+      "text_shadow": true,
+      "order": 5
+    },
+    {
+      "id": "26013D0406363140",
+      "x": -2.085714,
+      "y": 22.057143,
+      "width": 0.666667,
+      "height": 0.666667,
+      "rotation": 0.0,
+      "image": "entrelumen:textures/gui/quests/corner.png"
+    },
+    {
+      "id": "303B7282818279B1",
+      "x": 2.192857,
+      "y": 22.057143,
+      "width": 0.666667,
+      "height": 0.666667,
+      "rotation": 90.0,
+      "image": "entrelumen:textures/gui/quests/corner.png"
+    },
+    {
+      "id": "226721891C771003",
+      "x": 2.192857,
+      "y": 23.442857,
+      "width": 0.666667,
+      "height": 0.666667,
+      "rotation": 180.0,
+      "image": "entrelumen:textures/gui/quests/corner.png"
+    },
+    {
+      "id": "5E307B9C7B39A464",
+      "x": -2.085714,
+      "y": 23.442857,
+      "width": 0.666667,
+      "height": 0.666667,
+      "rotation": 270.0,
+      "image": "entrelumen:textures/gui/quests/corner.png"
+    },
+    {
+      "id": "0DEB76F601E735E0",
+      "x": 0.053571,
+      "y": 24.139286,
+      "width": 4.166667,
+      "height": 0.375,
+      "rotation": 0.0,
+      "image": "",
+      "text_on_image": true,
+      "text_shadow": true,
+      "order": 5
+    },
+    {
+      "id": "401C2D33C1B15279",
+      "x": -7.514286,
+      "y": -4.742857,
+      "width": 2.25,
+      "height": 3.75,
+      "rotation": 0.0,
+      "image": "entrelumen:textures/gui/quests/numeral_1.png"
+    },
+    {
+      "id": "64856A838DF0F3F2",
+      "x": -5.007143,
+      "y": -4.742857,
+      "width": 2.666667,
+      "height": 2.666667,
+      "rotation": 0.0,
+      "image": "entrelumen:textures/gui/quests/act_1.png",
+      "click_action": "open_quest:0EF22D195361F538"
+    },
+    {
+      "id": "5C9E9392A95DC219",
+      "x": -5.05,
+      "y": -2.364286,
+      "width": 8.0,
+      "height": 0.75,
+      "rotation": 0.0,
+      "image": "entrelumen:textures/gui/quests/divider.png"
+    },
+    {
+      "id": "6743C2310D2AF3A7",
+      "x": 0.0,
+      "y": 19.5,
+      "width": 5.333333,
+      "height": 5.333333,
+      "rotation": 0.0,
+      "image": "entrelumen:textures/gui/quests/sun_heliodor.png",
+      "order": -1
     }
   ]
 }

@@ -1,13 +1,13 @@
 # First chapter · route composition
 
-Read from top to bottom. Arrival and the workshop form a short central trunk. Shelter supplies fork toward a kitchen on the left and surveying instruments on the right. The travellers' table and survey converge into the first signal; the closing page sits below with breathing room.
+Read from top to bottom (redrawn 25 September 2026 with the quest-book grammar, [docs/design/quest-book.md](../docs/design/quest-book.md)). Arrival and the workbench form a short central trunk inside the shelter panel; storage forks left, stone tools right, and the furnace and torches hang below them. Kitchen (left) and cartography (right) are two framed panels under the shelter. The Atlas sits alone in the middle, and the travellers' table, the lens and the survey converge on the first signal, the act's large hexagon on a small sun.
 
-- Kitchen: water → wheat → bread, beside knife → cutting board, with bowls as a small outer branch. The enlarged table node gathers these useful systems.
-- Cartography: copper and glass gather at the lens; the expedition kit joins it at the survey. The map practice and unpacking practice sit outside this route.
-- QoL: small round nodes, positioned beside relevant activities instead of a mandatory distant chapter.
-- Campaign: five 1.5-unit hexagons. Ordinary tasks use 1-unit squares; optional readings/practices use 0.8-unit circles. Shape and size carry hierarchy without relying on color.
-- Prose: bilingual route labels, then breathing space. The main narrative nodes separate the short story beat from the concrete action. Actual prototype limitations remain explicit.
+- Kitchen: water → wheat → bread in the middle column, knife → cutting board on the left, bowls on the right.
+- Cartography: copper and glass on top; the expedition kit below them joins bread (a line across the page) and torches.
+- QoL: small round nodes beside the activities they belong to (left of the shelter, right of the kit), outside any panel.
+- Grammar: hexagon 2 for milestones, hexagon 3 for the chapter's last milestone, square 1 for tasks, diamond 1 for optional items, circle 0.75 for informative checkmarks. Shape and size carry hierarchy without relying on colour; colour (theme tags) only adds story, guide or optional.
+- Prose: bilingual route labels, then breathing space. The main narrative nodes separate the short story beat from the concrete action.
 
-The source owns x/y, group, shape and size. No coordinates depend on array order. Validation rejects non-finite coordinates, unknown groups, node overlap, backwards dependency direction and loss of milestone hierarchy. Semantic IDs and all 25 quests remain unchanged.
+The source owns x/y, group, shape and size; the generator checks the grammar. No coordinates depend on array order. Validation rejects non-finite coordinates, unknown groups, node overlap, backwards dependency direction and a node whose shape or size does not match its role. Semantic IDs and every quest remain unchanged.
 
-Acceptance still requires FTB screenshots in EN/ES: verify overview at ordinary zoom, recognisable silhouettes, dependency line crossings, tooltip/description wrapping and keyboard/mouse selection. Geometry checks establish source spacing, not rendered visual quality. Root owns the in-game capture; this worker did not launch the client.
+Acceptance still requires FTB screenshots in EN/ES at ordinary zoom: silhouettes, line crossings, description wrapping at the 320 px panel and keyboard/mouse selection. Geometry checks and the preview renders establish spacing, not rendered visual quality in the client.
