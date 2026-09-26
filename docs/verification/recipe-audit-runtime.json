@@ -3,22 +3,22 @@
  "task": "Recipe audit after Elias's playtest of 24 September 2026: components close few milestones, act materials elsewhere, every ENTRELUMEN crafting recipe shaped and symmetric, fan-out check, Emperor's Cloth hidden in EMI and JEI; every jetpack pays 2.5 times its native energy per tick; the vein resonator nerfed to four tiers (8/16/32/64 blocks); Ark v2 in the recipe surface (modules without table recipes)",
  "branch": "feature/recipe-audit",
  "base": "c219dcbc1a7241217eccedc385ab8c626fb28c86",
- "head": "bf41d8e2f5242c36c757868bce9065a698babc03",
+ "head": "517b54b0597a524ded7306df21430c281c4e1c63",
  "design": "docs/design/recipe-design-rules.md",
  "receipts": "E:\\Elias\\Codex\\Entrelumen-ssd\\recipes-20260925",
  "python": {
-  "log": "ci-checks-5.log",
+  "log": "ci-checks-7.log",
   "commands": 35,
   "nonZero": []
  },
  "junit": {
-  "tests": 219,
+  "tests": 220,
   "failures": 0,
   "errors": 0
  },
  "isolatedGameTests": {
-  "log": "build-6.log",
-  "summary": "All 103 required tests passed",
+  "log": "build-7.log",
+  "summary": "All 111 required tests passed",
   "build": "BUILD SUCCESSFUL"
  },
  "jarsSha256": {
@@ -496,6 +496,7 @@
    "D: final runtime (QA JAR built at ec86471; the merge 45357b1 only adds art/structures scripts and docs), new server, same allowance (watchdog-D-reload-allowance.json): jetpacks, the four resonator tiers and every recipe test first, then the rest and the reload test. 70 of 71 passed (all recipe tests, the jetpack settings and the four resonator tiers); the surcharge still missed Mekanism, whose jetpack tank lets hydrogen out only by hand (fixed in a26abbd: the item's useChemical). The server then ended by the 180 s watchdog in a Solsticio test while two other agents' servers and a Blender job shared the machine (qa-D-evidence).",
    "E: stopped by hand after an hour of boot at 100 % CPU and under 2 GB free memory; nothing ran.",
    "F: head bf41d8e (Ark v2 merged; the modules have no table recipe), QA JAR built there: the jetpack, resonator and recipe tests and the reload test, on a new server once the machine had room.",
+   "After F, main was merged twice more (517b54b): a ruins art script, docs and the altars batch (companion altar code, lang, one guide); no recipe, KubeJS or config file of this batch changed. The Python checks, JUnit and isolated GameTests of this receipt ran on that merged head.",
    "altarsrespectforeignftbchunksclaims failed once per run with \"Claimed terraform did not finish in time\" and passed on the automatic retry: the known load-bound altar test, not recipes.",
    "check_runtime_content.py --log on server-recipes-qa-b/logs/kubejs/server.log: PASS (1353 items, 37 recipes, market 745 checked).",
    "Logged Ars wall-spell NPEs and \"invalid item\" lines come from the altar and Solsticio tests in both runs; not recipe related."
