@@ -59,8 +59,13 @@ final class LandWorks {
   /** Wild terrain and vegetation; everything else, and every block entity, counts as built. */
   static boolean natural(BlockState state) {
     return NatureRestoration.natural(state) || !state.hasBlockEntity()
-        && (EXTRA_TERRAIN.contains(state.getBlock()) || WILD_PLANTS.contains(state.getBlock()));
+        && (EXTRA_TERRAIN.contains(state.getBlock()) || WILD_PLANTS.contains(state.getBlock())
+            || state.is(WILD_CANOPY));
   }
+
+  /** Modded huge-mushroom caps and stems, such as the dye garden's ink caps: wild, not built. Data-driven. */
+  static final net.minecraft.tags.TagKey<Block> WILD_CANOPY = BlockTags.create(
+      net.minecraft.resources.ResourceLocation.fromNamespaceAndPath("entrelumen", "wild_canopy"));
 
   /** Natural ground: what a hole is made of and what a column rests on. */
   static boolean ground(BlockState state) {
@@ -117,6 +122,15 @@ final class LandWorks {
    */
   static boolean commit(Player actor, ServerLevel level, Map<BlockPos, BlockState> writes,
       Map<BlockPos, CompoundTag> blockEntities, int flags) {
+    return commit(actor, level, writes, blockEntities, flags, () -> true);
+  }
+
+  /**
+   * As above; {@code stays} is asked once everything is placed and before any event is posted, so a
+   * unit whose plant cannot live on what was just laid is taken back whole.
+   */
+  static boolean commit(Player actor, ServerLevel level, Map<BlockPos, BlockState> writes,
+      Map<BlockPos, CompoundTag> blockEntities, int flags, java.util.function.BooleanSupplier stays) {
     List<BlockSnapshot> snapshots = new ArrayList<>(writes.size());
     for (BlockPos pos : writes.keySet())
       snapshots.add(BlockSnapshot.create(level.dimension(), level, pos, flags));
@@ -129,6 +143,10 @@ final class LandWorks {
         entity.setChanged();
       }
     }
+    if (!stays.getAsBoolean()) {
+      for (int i = snapshots.size() - 1; i >= 0; i--) snapshots.get(i).restore(flags);
+      return false;
+    }
     for (BlockSnapshot snapshot : snapshots) {
       if (EventHooks.onBlockPlace(actor, snapshot, Direction.UP)) {
         for (int i = snapshots.size() - 1; i >= 0; i--) snapshots.get(i).restore(flags);
@@ -136,6 +154,19 @@ final class LandWorks {
       }
     }
     return true;
+  }
+
+  /** The first face neighbour of a write that is neither natural, part of the unit nor accepted, or null. */
+  static BlockPos foreignNeighbour(ServerLevel level, Iterable<BlockPos> writes, Set<BlockPos> unit,
+      java.util.function.Predicate<BlockPos> accepted) {
+    for (BlockPos pos : writes)
+      for (Direction direction : Direction.values()) {
+        BlockPos neighbour = pos.relative(direction);
+        if (unit.contains(neighbour)) continue;
+        if (!loaded(level, neighbour)) return neighbour;
+        if (!natural(level.getBlockState(neighbour)) && !accepted.test(neighbour)) return neighbour;
+      }
+    return null;
   }
 
   /** Every face neighbour of every write is natural, part of the unit, or accepted by the caller. */

@@ -239,11 +239,11 @@ public final class RuntimeGameTestsAltars {
   private static void perf(String scenario, RenewalAltarEntity altar) {
     long mean = altar.workingTicks == 0 ? 0 : altar.tickNanos / altar.workingTicks;
     var totals = altar.totals();
-    LOGGER.info("ALTAR_PERF scenario={} workingTicks={} wallWithoutGc=[mean={} p50={} p95={} max={}]us gcTicks={} maxGcMillis={} actorMillis={} maxTreeMicros={} restedTicks={} treeMicros={} paletteMicros={} totals=[trees={} inkCaps={} plants={} dyeFlowers={} guarded={} fertilizer={} charge={}] grown={} guards={}",
+    LOGGER.info("ALTAR_PERF scenario={} workingTicks={} wallWithoutGc=[mean={} p50={} p95={} max={}]us gcTicks={} maxGcMillis={} actorMillis={} maxTreeMicros={} restedTicks={} maxSoilCheckMicros={} treeMicros={} paletteMicros={} totals=[trees={} inkCaps={} plants={} dyeFlowers={} guarded={} fertilizer={} charge={}] grown={} guards={}",
         scenario, altar.workingTicks, mean / 1000, percentile(altar.tickSamples, altar.workingTicks, 0.5) / 1000,
         percentile(altar.tickSamples, altar.workingTicks, 0.95) / 1000, altar.maxTickNanos / 1000,
         altar.gcTicks, altar.maxGcMillis, altar.actorNanos / 1_000_000, altar.maxTreeNanos / 1000,
-        altar.restedTicks, altar.treeMicros(), AltarVegetation.resolveMicros(), totals.trees,
+        altar.restedTicks, altar.maxSoilCheckNanos / 1000, altar.treeMicros(), AltarVegetation.resolveMicros(), totals.trees,
         totals.inkCaps, totals.plants, totals.dyeFlowers, totals.guarded, totals.fertilizer, totals.charge,
         altar.grown, altar.guards);
   }
@@ -432,7 +432,7 @@ public final class RuntimeGameTestsAltars {
   }
 
   @GameTest(template = "nature_restoration", timeoutTicks = 2400, skyAccess = true)
-  public static void renewalAltarGrowsGiantCactiInTheDesertAndFlowersOnlyOnSoil(GameTestHelper helper) {
+  public static void renewalAltarGrowsGiantCactiAndLaysGardenSoilInTheDesert(GameTestHelper helper) {
     var level = helper.getLevel();
     for (int x = 0; x < EXTENT; x++)
       for (int z = 0; z < EXTENT; z++) {
@@ -443,7 +443,7 @@ public final class RuntimeGameTestsAltars {
     biome(helper, Biomes.DESERT, 0, 0, EXTENT - 1, EXTENT - 1);
     BlockPos altarPos = helper.absolutePos(ALTAR);
     int cx = altarPos.getX(), cz = altarPos.getZ(), ground = at(helper, 0, 0, 0).getY();
-    // One patch of grass laid by a player around the bed at (6, 2): the only soil flowers can live on.
+    // One patch of grass laid by a player around the bed at (6, 2): that bed needs no soil of its own.
     for (int dx = 5; dx <= 7; dx++)
       for (int dz = 1; dz <= 3; dz++) level.setBlock(new BlockPos(cx + dx, ground, cz + dz),
           Blocks.GRASS_BLOCK.defaultBlockState(), 2);
@@ -457,7 +457,7 @@ public final class RuntimeGameTestsAltars {
     BlockPos sand = new BlockPos(cx - 8, ground, cz + 9);
     String result = altar.growForTest(level, sand, palette.trees().getFirst());
     helper.assertTrue(result.equals("APPLIED"), "The giant cactus did not grow: " + result + " " + altar.guards);
-    var shape = VegetationRules.giantCactus(level.getSeed(), sand.getX(), sand.getZ());
+    var shape = VegetationRules.giantCactus(VegetationRules.treeSeed(level.getSeed(), sand.getX(), sand.getZ()), 0, 0);
     for (var column : shape)
       for (int h = 1; h <= column.height(); h++)
         helper.assertTrue(level.getBlockState(sand.offset(column.dx(), h, column.dz())).is(Blocks.CACTUS),
@@ -475,14 +475,31 @@ public final class RuntimeGameTestsAltars {
             if (state.is(Blocks.DEAD_BUSH)) bushes++;
             if (garden.contains(state.getBlock().defaultBlockState())) {
               flowers++;
-              helper.assertTrue(level.getBlockState(at(helper, x, y - 1, z)).is(Blocks.GRASS_BLOCK),
-                  "A flower grew on sand at " + at(helper, x, y, z));
+              BlockPos flower = at(helper, x, y, z);
+              // Beds lay their own grass; other flowers only grow on grass that was already there.
+              helper.assertTrue(level.getBlockState(flower.below()).is(Blocks.GRASS_BLOCK)
+                  && (VegetationRules.bed(flower.getX() - cx, flower.getZ() - cz)
+                      || before.get(flower.below()).is(Blocks.GRASS_BLOCK)),
+                  "A garden flower grew off its bed on sand at " + flower);
             }
           }
       helper.assertTrue(bushes > 0, "The desert grew no dead bushes");
       helper.assertTrue(level.getBlockState(new BlockPos(cx + 6, ground + 1, cz + 2))
-          .is(garden.get(VegetationRules.bedSpecies(6, 2, garden.size())).getBlock()) && flowers >= 1,
-          "The bed on laid soil did not flower");
+          .is(garden.get(VegetationRules.bedSpecies(6, 2, garden.size())).getBlock()),
+          "The bed on the player's grass did not flower");
+      int onSand = 0;
+      for (int dx = -GARDEN; dx <= GARDEN; dx++)
+        for (int dz = -GARDEN; dz <= GARDEN; dz++) {
+          if (!VegetationRules.bed(dx, dz)) continue;
+          BlockPos soil = new BlockPos(cx + dx, ground, cz + dz);
+          BlockState above = level.getBlockState(soil.above());
+          if (above.is(Blocks.CACTUS)) continue;
+          helper.assertTrue(above.is(garden.get(VegetationRules.bedSpecies(dx, dz, garden.size())).getBlock())
+              && level.getBlockState(soil).is(Blocks.GRASS_BLOCK), "Bed " + dx + "," + dz + " is empty on the desert");
+          if (before.get(soil).is(Blocks.SAND)) onSand++;
+        }
+      helper.assertTrue(onSand > 0 && altar.totals().soil == onSand,
+          "Soil laid " + altar.totals().soil + " for " + onSand + " beds on sand");
       int grown = cacti;
       // Cacti must survive their own neighbour updates: nothing breaks after a while.
       helper.runAfterDelay(40, () -> {
@@ -492,15 +509,263 @@ public final class RuntimeGameTestsAltars {
             for (int y = 1; y <= 10; y++) if (level.getBlockState(at(helper, x, y, z)).is(Blocks.CACTUS)) still++;
         helper.assertTrue(still == grown && noDrops(helper), "Cactus broke after growing: " + grown + " -> " + still);
         for (var entry : changes(helper, before).entrySet())
-          helper.assertTrue(entry.getKey().getY() > ground, "Terrain changed at " + entry.getKey());
+          helper.assertTrue(entry.getKey().getY() > ground || entry.getKey().getY() == ground
+              && VegetationRules.bed(entry.getKey().getX() - cx, entry.getKey().getZ() - cz)
+              && entry.getValue().is(Blocks.GRASS_BLOCK), "Terrain changed outside a garden bed at " + entry.getKey());
         helper.succeed();
       });
     });
   }
 
-  /** One variant grown on a pad of its own soil and biome; returns what the altar reported. */
+  // ---- Renewal: the dye garden lays its own soil ---------------------------------------------
+
+  /** Four quadrants of bare plain ground: sand, stone, end stone and netherrack, over stone. */
+  private static Block bareGround(int x, int z) {
+    return x < 20 ? (z < 20 ? Blocks.SAND : Blocks.END_STONE) : (z < 20 ? Blocks.STONE : Blocks.NETHERRACK);
+  }
+
+  private static void bareQuadrants(GameTestHelper helper) {
+    var level = helper.getLevel();
+    for (int x = 0; x < EXTENT; x++)
+      for (int z = 0; z < EXTENT; z++) {
+        level.setBlock(at(helper, x, -2, z), Blocks.STONE.defaultBlockState(), 2);
+        level.setBlock(at(helper, x, -1, z), bareGround(x, z).defaultBlockState(), 2);
+        level.setBlock(at(helper, x, 0, z), bareGround(x, z).defaultBlockState(), 2);
+      }
+  }
+
+  @GameTest(template = "nature_restoration", timeoutTicks = 2400, skyAccess = true)
+  public static void renewalAltarLaysGardenSoilOnBareGroundButNeverOnProtectedCells(GameTestHelper helper) {
+    bareQuadrants(helper);
+    // The void grows no trees and no flora, so every change is the garden's. End stone stands for the End.
+    biome(helper, Biomes.THE_VOID, 0, 0, EXTENT - 1, EXTENT - 1);
+    var level = helper.getLevel();
+    BlockPos altarPos = helper.absolutePos(ALTAR);
+    int cx = altarPos.getX(), cz = altarPos.getZ(), ground = at(helper, 0, 0, 0).getY();
+    // Protected beds: an ore, a water source, packed ice, a build, a claimed column, an armor stand,
+    // a chest beside the bed's ground and a column whose soil may not be broken.
+    Map<String, BlockPos> protectedBeds = new java.util.LinkedHashMap<>();
+    java.util.function.BiFunction<Integer, Integer, BlockPos> bedGround = (dx, dz) -> new BlockPos(cx + dx, ground, cz + dz);
+    protectedBeds.put("ore", bedGround.apply(-10, -10));
+    protectedBeds.put("water", bedGround.apply(-6, -10));
+    protectedBeds.put("ice", bedGround.apply(-2, -10));
+    protectedBeds.put("build", bedGround.apply(2, -10));
+    protectedBeds.put("claim", bedGround.apply(6, -10));
+    protectedBeds.put("entity", bedGround.apply(10, -10));
+    protectedBeds.put("chest", bedGround.apply(10, 10));
+    protectedBeds.put("unbreakable", bedGround.apply(-10, 10));
+    level.setBlock(protectedBeds.get("ore"), Blocks.IRON_ORE.defaultBlockState(), 2);
+    level.setBlock(protectedBeds.get("water"), Blocks.WATER.defaultBlockState(), 2);
+    level.setBlock(protectedBeds.get("ice"), Blocks.PACKED_ICE.defaultBlockState(), 2);
+    level.setBlock(protectedBeds.get("build"), Blocks.OAK_PLANKS.defaultBlockState(), 2);
+    BlockPos chestPos = protectedBeds.get("chest").east();
+    level.setBlockAndUpdate(chestPos, Blocks.CHEST.defaultBlockState());
+    var stand = EntityType.ARMOR_STAND.create(level);
+    BlockPos standPos = protectedBeds.get("entity").above();
+    stand.moveTo(standPos.getX() + 0.5, standPos.getY(), standPos.getZ() + 0.5);
+    level.addFreshEntity(stand);
+    BlockPos claimed = protectedBeds.get("claim"), unbreakable = protectedBeds.get("unbreakable");
+    Consumer<BlockEvent.EntityPlaceEvent> claim = veto(BlockEvent.EntityPlaceEvent.class, event -> {
+      if (event.getPos().getX() == claimed.getX() && event.getPos().getZ() == claimed.getZ()) event.setCanceled(true);
+    });
+    Consumer<BlockEvent.BreakEvent> noBreak = veto(BlockEvent.BreakEvent.class, event -> {
+      if (event.getPos().equals(unbreakable)) event.setCanceled(true);
+    });
+    var before = snapshot(helper, -2, 20);
+    var altar = renewal(helper, GARDEN);
+    altar.addFertilizer(new ItemStack(Items.BONE_MEAL, 64));
+    int[] given = {64};
+    await(helper, fedUntilDone(altar, given), 0, 2000, "Bare-ground garden pass", () -> {
+      perf("renewal-bare-garden", altar);
+      var garden = AltarVegetation.garden(level.registryAccess()).species();
+      Set<BlockPos> guardedGround = new java.util.HashSet<>(protectedBeds.values());
+      int planted = 0, beds = 0;
+      Set<Block> quadrants = new java.util.HashSet<>();
+      for (int dx = -GARDEN; dx <= GARDEN; dx++)
+        for (int dz = -GARDEN; dz <= GARDEN; dz++) {
+          if (!VegetationRules.bed(dx, dz)) continue;
+          beds++;
+          BlockPos soil = new BlockPos(cx + dx, ground, cz + dz);
+          BlockState now = level.getBlockState(soil), above = level.getBlockState(soil.above());
+          if (guardedGround.contains(soil)) {
+            helper.assertTrue(now.equals(before.get(soil)) && above.equals(before.get(soil.above())),
+                "A protected bed was planted or its ground changed at " + dx + "," + dz + ": " + now + " / " + above);
+            continue;
+          }
+          BlockState expected = garden.get(VegetationRules.bedSpecies(dx, dz, garden.size()));
+          helper.assertTrue(above.is(expected.getBlock()) && now.is(Blocks.GRASS_BLOCK),
+              "Bed " + dx + "," + dz + " on " + before.get(soil) + " holds " + above + " over " + now);
+          quadrants.add(before.get(soil).getBlock());
+          planted++;
+        }
+      helper.assertTrue(quadrants.containsAll(List.of(Blocks.SAND, Blocks.STONE, Blocks.END_STONE, Blocks.NETHERRACK)),
+          "Not every kind of bare ground got a garden: " + quadrants);
+      helper.assertTrue(planted == beds - guardedGround.size() && altar.totals().soil == planted,
+          "Soil was not laid exactly once per planted bed: planted=" + planted + " soil=" + altar.totals().soil);
+      for (var entry : changes(helper, before).entrySet()) {
+        BlockPos pos = entry.getKey();
+        if (pos.getY() > ground) continue;
+        int dx = pos.getX() - cx, dz = pos.getZ() - cz;
+        helper.assertTrue(pos.getY() == ground && VegetationRules.bed(dx, dz) && entry.getValue().is(Blocks.GRASS_BLOCK),
+            "Ground changed outside a garden bed: " + pos + " -> " + entry.getValue());
+      }
+      helper.assertTrue(level.getBlockState(chestPos).is(Blocks.CHEST) && stand.isAlive() && noDrops(helper),
+          "The chest, the armor stand or the drops were disturbed");
+      helper.assertTrue(altar.totals().charge >= altar.totals().plants + altar.totals().soil,
+          "Laid soil was not paid for: " + altar.totals().charge);
+      // A second pass over the grown garden lays nothing and charges nothing.
+      var settled = snapshot(helper, -2, 20);
+      altar.addFertilizer(new ItemStack(Items.BONE_MEAL, 8));
+      given[0] += 8;
+      altar.crouchUse(helperPlayer(helper, altar));
+      await(helper, fedUntilDone(altar, given), 0, 1200, "Repeated bare-ground pass", () -> {
+        NeoForge.EVENT_BUS.unregister(claim);
+        NeoForge.EVENT_BUS.unregister(noBreak);
+        var repeated = new HashMap<BlockPos, BlockState>();
+        changes(helper, settled).forEach((pos, state) -> {
+          if (!settled.get(pos).isAir() || pos.getY() <= ground) repeated.put(pos, state);
+        });
+        helper.assertTrue(altar.totals().soil == 0 && altar.totals().charge == 0 && repeated.isEmpty(),
+            "A repeated pass laid soil or charged: " + altar.totals().soil + " " + altar.totals().charge + " " + repeated);
+        helper.succeed();
+      });
+    });
+  }
+
+  /**
+   * The Nether has a roof, so the heightmap finds bedrock. The altar plants on the floor nearest its
+   * own level instead: a closed room in the real Nether, with a netherrack and soul sand floor.
+   */
+  @GameTest(template = "empty", timeoutTicks = 3600)
+  public static void renewalAltarPlantsItsGardenUnderTheNetherRoof(GameTestHelper helper) {
+    ServerLevel nether = helper.getLevel().getServer().getLevel(net.minecraft.world.level.Level.NETHER);
+    helper.assertTrue(nether != null && nether.dimensionType().hasCeiling(), "No roofed Nether in the test server");
+    int x0 = 4096 + 8, z0 = 4096 + 8, y0 = 64, room = 16;
+    int[] bounds = AltarRules.loadedBounds(x0, z0, GARDEN);
+    for (int chunkX = bounds[0] - 1; chunkX <= bounds[2] + 1; chunkX++)
+      for (int chunkZ = bounds[1] - 1; chunkZ <= bounds[3] + 1; chunkZ++) nether.setChunkForced(chunkX, chunkZ, true);
+    Runnable release = () -> {
+      for (int chunkX = bounds[0] - 1; chunkX <= bounds[2] + 1; chunkX++)
+        for (int chunkZ = bounds[1] - 1; chunkZ <= bounds[3] + 1; chunkZ++) nether.setChunkForced(chunkX, chunkZ, false);
+    };
+    await(helper, () -> LandWorks.loaded(nether, bounds[0], bounds[1], bounds[2], bounds[3]), 0, 1500, "Nether chunks", () -> {
+      try {
+        // A closed room: floor at y0 (soul sand in one quadrant), air up to y0 + 9, a netherrack roof above.
+        for (int x = x0 - room; x <= x0 + room; x++)
+          for (int z = z0 - room; z <= z0 + room; z++)
+            for (int y = y0 - 3; y <= y0 + 14; y++) {
+              boolean wall = Math.abs(x - x0) == room || Math.abs(z - z0) == room;
+              BlockState state = y <= y0 ? (y == y0 && x > x0 && z > z0 ? Blocks.SOUL_SAND : Blocks.NETHERRACK).defaultBlockState()
+                  : y >= y0 + 10 || wall ? Blocks.NETHERRACK.defaultBlockState() : Blocks.AIR.defaultBlockState();
+              nether.setBlock(new BlockPos(x, y, z), state, Block.UPDATE_CLIENTS);
+            }
+        // A biome without natural spawns, and no creature left inside: a mob standing on a bed rightly
+        // keeps it empty until it moves, which would make this count depend on the Nether's crowd.
+        var quiet = nether.registryAccess().registryOrThrow(Registries.BIOME).getHolderOrThrow(Biomes.THE_VOID);
+        net.minecraft.server.commands.FillBiomeCommand.fill(nether, new BlockPos(x0 - room, y0 - 4, z0 - room),
+            new BlockPos(x0 + room, y0 + 16, z0 + room), quiet);
+        for (var entity : nether.getEntities((net.minecraft.world.entity.Entity) null,
+            new AABB(x0 - room, y0 - 4, z0 - room, x0 + room + 1, y0 + 16, z0 + room + 1),
+            entity -> !(entity instanceof net.minecraft.world.entity.player.Player))) entity.discard();
+        Map<BlockPos, BlockState> roof = new HashMap<>();
+        for (int x = x0 - GARDEN; x <= x0 + GARDEN; x++)
+          for (int z = z0 - GARDEN; z <= z0 + GARDEN; z++)
+            for (int y = y0 + 4; y <= y0 + 14; y++) {
+              BlockPos pos = new BlockPos(x, y, z);
+              roof.put(pos, nether.getBlockState(pos));
+            }
+        BlockPos altarPos = new BlockPos(x0, y0 + 1, z0);
+        nether.setBlockAndUpdate(altarPos, Altars.RENEWAL_ALTAR.get().defaultBlockState());
+        var altar = (RenewalAltarEntity) nether.getBlockEntity(altarPos);
+        altar.configureRadius(GARDEN);
+        altar.addFertilizer(new ItemStack(Items.BONE_MEAL, 64));
+        helper.assertTrue(altar.surfaceAt(nether, x0 + 6, z0 + 2) != null
+            && altar.surfaceAt(nether, x0 + 6, z0 + 2).getY() == y0, "The floor under the roof was not found");
+        int[] given = {64};
+        await(helper, fedUntilDone(altar, given), 0, 1800, "Nether garden pass", () -> {
+          try {
+            perf("renewal-nether", altar);
+            var garden = AltarVegetation.garden(nether.registryAccess()).species();
+            int planted = 0, beds = 0;
+            for (int dx = -GARDEN; dx <= GARDEN; dx++)
+              for (int dz = -GARDEN; dz <= GARDEN; dz++) {
+                if (!VegetationRules.bed(dx, dz)) continue;
+                beds++;
+                BlockPos soil = new BlockPos(x0 + dx, y0, z0 + dz);
+                BlockState expected = garden.get(VegetationRules.bedSpecies(dx, dz, garden.size()));
+                if (nether.getBlockState(soil.above()).is(expected.getBlock()) && nether.getBlockState(soil).is(Blocks.GRASS_BLOCK))
+                  planted++;
+              }
+            boolean roofKept = true;
+            for (var entry : roof.entrySet()) if (!nether.getBlockState(entry.getKey()).equals(entry.getValue())) roofKept = false;
+            LOGGER.info("ALTAR_NETHER beds={} planted={} soil={} plants={} grown={} guards={} roofKept={}", beds, planted,
+                altar.totals().soil, altar.totals().plants, altar.grown, altar.guards, roofKept);
+            helper.assertTrue(planted == beds && altar.totals().soil == beds,
+                "The garden under the Nether roof is incomplete: " + planted + " of " + beds + " soil " + altar.totals().soil);
+            helper.assertTrue(roofKept, "Something grew on or changed the roof");
+            nether.removeBlock(altarPos, false);
+            helper.succeed();
+          } finally {
+            release.run();
+          }
+        });
+      } catch (RuntimeException | Error failure) {
+        release.run();
+        throw failure;
+      }
+    });
+  }
+
+  /**
+   * The variant fixture, the same on every run: grass over dirt across the whole template, so every
+   * neighbour a tree can touch is natural, and the altar buried under it at the centre, out of every
+   * canopy's reach. Trees grow with fixed seeds, so their shape does not depend on where the test runs.
+   */
+  private static RenewalAltarEntity variantAltar(GameTestHelper helper) {
+    var level = helper.getLevel();
+    for (int x = 0; x < EXTENT; x++)
+      for (int z = 0; z < EXTENT; z++) {
+        level.setBlock(at(helper, x, -3, z), Blocks.DIRT.defaultBlockState(), 2);
+        level.setBlock(at(helper, x, -2, z), Blocks.DIRT.defaultBlockState(), 2);
+        level.setBlock(at(helper, x, -1, z), Blocks.DIRT.defaultBlockState(), 2);
+        level.setBlock(at(helper, x, 0, z), Blocks.GRASS_BLOCK.defaultBlockState(), 2);
+      }
+    // Buried under the ground at the centre, out of every canopy's reach; the tree grows above it.
+    BlockPos pos = at(helper, 20, -3, 20);
+    level.setBlockAndUpdate(pos, Altars.RENEWAL_ALTAR.get().defaultBlockState());
+    var altar = (RenewalAltarEntity) level.getBlockEntity(pos);
+    altar.configureRadius(GARDEN);
+    altar.addFertilizer(new ItemStack(Items.BONE_MEAL, 64));
+    return altar;
+  }
+
+  /** Every block a variant wrote stays inside the template with a free block around it. */
+  private static void assertInside(GameTestHelper helper, Map<BlockPos, BlockState> before) {
+    BlockPos corner = at(helper, 0, 0, 0);
+    var changed = changes(helper, before);
+    long digest = 17;
+    for (var entry : new TreeMap<>(changed.entrySet().stream().collect(java.util.stream.Collectors.toMap(
+        e -> e.getKey().subtract(corner).asLong(), e -> e.getValue().toString()))).entrySet())
+      digest = digest * 31 + entry.getKey() * 7 + entry.getValue().hashCode();
+    Map<String, Map<String, Integer>> perPad = new TreeMap<>();
+    for (var entry : changed.entrySet()) {
+      BlockPos rel = entry.getKey().subtract(corner);
+      String pad = (rel.getX() < 20 ? "w" : "e") + (rel.getZ() < 20 ? "n" : "s");
+      perPad.computeIfAbsent(pad, key -> new TreeMap<>()).merge(
+          BuiltInRegistries.BLOCK.getKey(entry.getValue().getBlock()).getPath() + "@" + (rel.getY() <= 0 ? "ground" : "air"),
+          1, Integer::sum);
+    }
+    LOGGER.info("ALTAR_VARIANTS_FOOTPRINT blocks={} digest={} perPad={}", changed.size(), Long.toHexString(digest), perPad);
+    for (BlockPos pos : changed.keySet()) {
+      int x = pos.getX() - corner.getX(), z = pos.getZ() - corner.getZ();
+      helper.assertTrue(x >= 2 && x <= EXTENT - 3 && z >= 2 && z <= EXTENT - 3,
+          "A variant grew within a block of its fixture's walls at " + x + "," + z);
+    }
+  }
+
+  /** One variant grown with a fixed seed on a pad of its own soil and biome; returns what the altar reported. */
   private static String growVariant(GameTestHelper helper, RenewalAltarEntity altar, ResourceKey<Biome> biome,
-      Block soil, int padX, int padZ, String option) {
+      Block soil, int padX, int padZ, String option, long treeSeed) {
     var level = helper.getLevel();
     biome(helper, biome, padX - 4, padZ - 4, padX + 4, padZ + 4);
     for (int x = padX - 4; x <= padX + 4; x++)
@@ -512,48 +777,95 @@ public final class RuntimeGameTestsAltars {
     var palette = AltarVegetation.palette(level, level.getBiome(ground.above()));
     var chosen = palette.trees().stream().filter(tree -> tree.id().equals(option)).findFirst();
     helper.assertTrue(chosen.isPresent(), biome.location() + " has no option " + option + ": " + palette.trees());
-    return altar.growForTest(level, ground, chosen.get());
+    return altar.growForTest(level, ground, chosen.get(), treeSeed);
   }
 
   private static int count(GameTestHelper helper, int padX, int padZ, java.util.function.Predicate<BlockState> test) {
     int found = 0;
-    for (int x = padX - 8; x <= padX + 8; x++)
-      for (int z = padZ - 8; z <= padZ + 8; z++)
+    for (int x = padX - 12; x <= padX + 12; x++)
+      for (int z = padZ - 12; z <= padZ + 12; z++)
         for (int y = 1; y <= 40; y++) if (test.test(helper.getLevel().getBlockState(at(helper, x, y, z)))) found++;
     return found;
   }
 
-  @GameTest(template = "nature_restoration", timeoutTicks = 200, skyAccess = true)
-  public static void renewalAltarGrowsOverworldVariantsPerBiome(GameTestHelper helper) {
-    var altar = renewal(helper, GARDEN);
-    altar.addFertilizer(new ItemStack(Items.BONE_MEAL, 64));
-    Map<String, String> results = new TreeMap<>();
-    results.put("mega_spruce", growVariant(helper, altar, Biomes.OLD_GROWTH_SPRUCE_TAIGA, Blocks.PODZOL, 10, 10,
-        "minecraft:mega_spruce"));
-    results.put("mega_jungle", growVariant(helper, altar, Biomes.JUNGLE, Blocks.GRASS_BLOCK, 10, 30,
-        "minecraft:mega_jungle_tree"));
-    results.put("huge_mushroom", growVariant(helper, altar, Biomes.MUSHROOM_FIELDS, Blocks.MYCELIUM, 30, 10,
-        "minecraft:huge_red_mushroom"));
-    results.put("cherry", growVariant(helper, altar, Biomes.CHERRY_GROVE, Blocks.GRASS_BLOCK, 30, 30,
-        "minecraft:cherry"));
-    LOGGER.info("ALTAR_VARIANTS overworld={} guards={} treeMicros={}", results, altar.guards, altar.treeMicros());
-    for (var entry : results.entrySet())
-      helper.assertTrue(entry.getValue().equals("APPLIED"), entry.getKey() + " did not grow: " + entry.getValue()
-          + " " + altar.guards);
-    helper.assertTrue(count(helper, 10, 10, state -> state.is(Blocks.SPRUCE_LOG)) >= 20,
-        "The mega spruce is not a giant");
-    helper.assertTrue(count(helper, 10, 30, state -> state.is(Blocks.JUNGLE_LOG)) >= 20
-        && count(helper, 10, 30, state -> state.is(Blocks.COCOA)) >= 1, "The giant jungle tree has no cocoa");
-    helper.assertTrue(count(helper, 30, 10, state -> state.is(Blocks.RED_MUSHROOM_BLOCK)) > 0,
-        "No huge red mushroom on mycelium");
-    helper.assertTrue(count(helper, 30, 30, state -> state.is(Blocks.CHERRY_LOG)) > 0, "No cherry tree");
-    for (int[] pad : new int[][] {{10, 10}, {10, 30}, {30, 10}, {30, 30}})
-      for (int x = pad[0] - 4; x <= pad[0] + 4; x++)
-        for (int z = pad[1] - 4; z <= pad[1] + 4; z++)
-          helper.assertTrue(LandWorks.ground(helper.getLevel().getBlockState(at(helper, x, 0, z))),
-              "A tree changed its soil at " + x + "," + z);
-    helper.assertTrue(noDrops(helper), "Growing variants dropped items");
+  /**
+   * One variant, alone at the centre of its own template: its trunk and crown come from a fixed seed,
+   * the whole template is natural ground, and the tree grows at its centre, about ten blocks from
+   * the template's barrier walls, so no neighbour a tree can touch belongs to anything else. Vanilla's
+   * vine and propagule decorators walk hash sets of positions, so those few blocks vary with where
+   * the test runs; they stay inside the margin.
+   */
+  private static void variant(GameTestHelper helper, ResourceKey<Biome> biome, Block soil, String option,
+      long treeSeed, java.util.function.Predicate<BlockState> part, int least, String what) {
+    variant(helper, biome, soil, option, treeSeed, part, least, what, () -> {});
+  }
+
+  private static void variant(GameTestHelper helper, ResourceKey<Biome> biome, Block soil, String option,
+      long treeSeed, java.util.function.Predicate<BlockState> part, int least, String what, Runnable extra) {
+    var altar = variantAltar(helper);
+    var before = snapshot(helper, -3, 40);
+    String result = growVariant(helper, altar, biome, soil, 20, 20, option, treeSeed);
+    LOGGER.info("ALTAR_VARIANT {} result={} guards={} treeMicros={}", option, result, altar.guards, altar.treeMicros());
+    helper.assertTrue(result.equals("APPLIED"), option + " did not grow: " + result + " " + altar.guards);
+    assertInside(helper, before);
+    helper.assertTrue(count(helper, 20, 20, part) >= least, what);
+    for (int x = 16; x <= 24; x++)
+      for (int z = 16; z <= 24; z++)
+        helper.assertTrue(LandWorks.ground(helper.getLevel().getBlockState(at(helper, x, 0, z))),
+            "A tree changed its soil at " + x + "," + z);
+    helper.assertTrue(noDrops(helper), "Growing " + option + " dropped items");
+    extra.run();
     helper.succeed();
+  }
+
+  @GameTest(template = "nature_restoration", timeoutTicks = 200, skyAccess = true)
+  public static void renewalAltarGrowsGiantSpruceInOldTaiga(GameTestHelper helper) {
+    variant(helper, Biomes.OLD_GROWTH_SPRUCE_TAIGA, Blocks.PODZOL, "minecraft:mega_spruce", 11L,
+        state -> state.is(Blocks.SPRUCE_LOG), 20, "The mega spruce is not a giant");
+  }
+
+  @GameTest(template = "nature_restoration", timeoutTicks = 200, skyAccess = true)
+  public static void renewalAltarGrowsGiantJungleTreeWithCocoa(GameTestHelper helper) {
+    variant(helper, Biomes.JUNGLE, Blocks.GRASS_BLOCK, "minecraft:mega_jungle_tree", 12L,
+        state -> state.is(Blocks.COCOA), 1, "The giant jungle tree has no cocoa",
+        () -> helper.assertTrue(count(helper, 20, 20, state -> state.is(Blocks.JUNGLE_LOG)) >= 20,
+            "The jungle tree is not a giant"));
+  }
+
+  @GameTest(template = "nature_restoration", timeoutTicks = 200, skyAccess = true)
+  public static void renewalAltarGrowsHugeMushroomInMushroomFields(GameTestHelper helper) {
+    variant(helper, Biomes.MUSHROOM_FIELDS, Blocks.MYCELIUM, "minecraft:huge_red_mushroom", 13L,
+        state -> state.is(Blocks.RED_MUSHROOM_BLOCK), 1, "No huge red mushroom on mycelium");
+  }
+
+  @GameTest(template = "nature_restoration", timeoutTicks = 200, skyAccess = true)
+  public static void renewalAltarGrowsCherryInCherryGrove(GameTestHelper helper) {
+    variant(helper, Biomes.CHERRY_GROVE, Blocks.GRASS_BLOCK, "minecraft:cherry", 14L,
+        state -> state.is(Blocks.CHERRY_LOG), 1, "No cherry tree");
+  }
+
+  @GameTest(template = "nature_restoration", timeoutTicks = 200, skyAccess = true)
+  public static void renewalAltarGrowsHugeCrimsonFungusOnNylium(GameTestHelper helper) {
+    variant(helper, Biomes.CRIMSON_FOREST, Blocks.CRIMSON_NYLIUM, "minecraft:crimson_fungus_planted", 21L,
+        state -> state.is(Blocks.NETHER_WART_BLOCK), 1, "No huge crimson fungus on nylium");
+  }
+
+  @GameTest(template = "nature_restoration", timeoutTicks = 200, skyAccess = true)
+  public static void renewalAltarGrowsChorusOnEndStone(GameTestHelper helper) {
+    variant(helper, Biomes.END_HIGHLANDS, Blocks.END_STONE, "minecraft:chorus_plant", 22L,
+        state -> state.is(Blocks.CHORUS_PLANT), 1, "No chorus on end stone");
+  }
+
+  @GameTest(template = "nature_restoration", timeoutTicks = 200, skyAccess = true)
+  public static void renewalAltarGrowsMangroveOnMud(GameTestHelper helper) {
+    variant(helper, Biomes.MANGROVE_SWAMP, Blocks.MUD, "minecraft:mangrove", 23L,
+        state -> state.is(Blocks.MANGROVE_LOG), 1, "No mangrove on mud");
+  }
+
+  @GameTest(template = "nature_restoration", timeoutTicks = 200, skyAccess = true)
+  public static void renewalAltarGrowsGiantCactusOnSand(GameTestHelper helper) {
+    variant(helper, Biomes.DESERT, Blocks.SAND, "entrelumen:giant_cactus", 24L,
+        state -> state.is(Blocks.CACTUS), 7, "No giant cactus on sand");
   }
 
   /**
@@ -600,36 +912,6 @@ public final class RuntimeGameTestsAltars {
           + simulated[19] / 1000 + " vanilla p50=" + placed[2] / 1000 + " max=" + placed[4] / 1000);
     }
     LOGGER.info("ALTAR_TREE_COST micros={}", costs);
-    helper.succeed();
-  }
-
-  @GameTest(template = "nature_restoration", timeoutTicks = 200, skyAccess = true)
-  public static void renewalAltarGrowsNetherEndSwampAndDesertVariants(GameTestHelper helper) {
-    var altar = renewal(helper, GARDEN);
-    altar.addFertilizer(new ItemStack(Items.BONE_MEAL, 64));
-    Map<String, String> results = new TreeMap<>();
-    results.put("crimson_fungus", growVariant(helper, altar, Biomes.CRIMSON_FOREST, Blocks.CRIMSON_NYLIUM, 10, 10,
-        "minecraft:crimson_fungus_planted"));
-    results.put("chorus", growVariant(helper, altar, Biomes.END_HIGHLANDS, Blocks.END_STONE, 10, 30,
-        "minecraft:chorus_plant"));
-    results.put("mangrove", growVariant(helper, altar, Biomes.MANGROVE_SWAMP, Blocks.MUD, 30, 10,
-        "minecraft:mangrove"));
-    results.put("giant_cactus", growVariant(helper, altar, Biomes.DESERT, Blocks.SAND, 30, 30,
-        "entrelumen:giant_cactus"));
-    LOGGER.info("ALTAR_VARIANTS other={} guards={} treeMicros={}", results, altar.guards, altar.treeMicros());
-    for (var entry : results.entrySet())
-      helper.assertTrue(entry.getValue().equals("APPLIED"), entry.getKey() + " did not grow: " + entry.getValue()
-          + " " + altar.guards);
-    helper.assertTrue(count(helper, 10, 10, state -> state.is(Blocks.CRIMSON_STEM)) > 0
-        && count(helper, 10, 10, state -> state.is(Blocks.NETHER_WART_BLOCK)) > 0, "No huge crimson fungus on nylium");
-    helper.assertTrue(count(helper, 10, 30, state -> state.is(Blocks.CHORUS_PLANT)) > 0, "No chorus on end stone");
-    helper.assertTrue(count(helper, 30, 10, state -> state.is(Blocks.MANGROVE_LOG)) > 0, "No mangrove on mud");
-    helper.assertTrue(count(helper, 30, 30, state -> state.is(Blocks.CACTUS)) >= 7, "No giant cactus on sand");
-    for (int[] pad : new int[][] {{10, 10}, {10, 30}, {30, 10}, {30, 30}})
-      for (int x = pad[0] - 4; x <= pad[0] + 4; x++)
-        for (int z = pad[1] - 4; z <= pad[1] + 4; z++)
-          helper.assertTrue(LandWorks.ground(helper.getLevel().getBlockState(at(helper, x, 0, z))),
-              "A tree changed its soil at " + x + "," + z);
     helper.succeed();
   }
 

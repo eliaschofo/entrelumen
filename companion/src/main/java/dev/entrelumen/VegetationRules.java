@@ -40,6 +40,19 @@ final class VegetationRules {
   static final long SPECIES_SALT = 0x76656765745F7370L;
   static final long SHAPE_SALT = 0x76656765745F7368L;
 
+  /** What a garden bed does with its ground. */
+  enum Planter { PLANT, LAY_SOIL, EMPTY }
+
+  /**
+   * A garden bed plants straight away when its species can live on the ground. Otherwise it lays one
+   * block of soil the species can live on, but only in place of plain terrain (never an ore, ice, a
+   * build, a block entity or a fluid); anything else leaves the bed empty.
+   */
+  static Planter planter(boolean survivesNow, boolean plainGround, boolean survivesOnSoil) {
+    if (survivesNow) return Planter.PLANT;
+    return plainGround && survivesOnSoil ? Planter.LAY_SOIL : Planter.EMPTY;
+  }
+
   /** What a column is for. Trees and ink caps grow in the first pass, the rest in the second. */
   enum Role { NONE, TREE, INK_CAP, BED, FLORA }
 
@@ -142,6 +155,11 @@ final class VegetationRules {
   static int pick(long seed, int x, int z, long salt, int count) {
     if (count <= 0) return -1;
     return Math.min(count - 1, (int) (NatureRestorationRules.unit(seed, x, z, salt) * count));
+  }
+
+  /** The random seed of the tree, cactus or ink cap grown at a column: stable per world and column. */
+  static long treeSeed(long seed, int x, int z) {
+    return NatureRestorationRules.mix(seed, x, z, TREE_SALT);
   }
 
   // ---- Giant cactus --------------------------------------------------------------------------

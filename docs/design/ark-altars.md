@@ -115,7 +115,7 @@ Trees grow whole or not at all. A feature runs in `FeatureSandbox` over the live
 
 ### The dye garden and the sixteen dyes
 
-Every biome grows the same garden: one species per primary colour, dealt out by orbit. Beds are grouped by their orbit under the square's eight symmetries, the pair (larger, smaller) of |dx| and |dz|; orbits are numbered from the centre out and deal the species in turn, so the garden is a symmetric pattern of coloured rings and each species gets whole orbits (at least 16 beds of each in the 49 square). A bed whose species cannot live there takes the next species that can.
+Every biome grows the same garden: one species per primary colour, dealt out by orbit. Beds are grouped by their orbit under the square's eight symmetries, the pair (larger, smaller) of |dx| and |dz|; orbits are numbered from the centre out and deal the species in turn, so the garden is a symmetric pattern of coloured rings and each species gets whole orbits (at least 16 beds of each in the 49 square). A bed always grows its own orbit's species; see [Garden soil](#garden-soil-always-every-dye).
 
 | Primary | Plant the altar grows | Recipe (verified in the pinned JAR) |
 | --- | --- | --- |
@@ -137,20 +137,30 @@ Why these three mods' plants:
 
 No recipe was invented. The rules are unit-tested with these recipes (`VegetationRulesTest`), and the full-pack case checks every registered biome against the recipes the server actually loads (crafting and smelting only, no machines).
 
-### Soil: the one limit of "always"
+### Garden soil: always, every dye
 
-The altar never changes terrain, so a plant only grows on ground it can live on. Flowers live on dirt, grass, podzol, mycelium, moss, mud and every modded soil tagged `minecraft:dirt` (Aether grass, deepturf, nightfall grass, uberous soil). In a desert, on a beach, on bare stone, in most of the Nether and in the End there is no such soil: the altar grows giant cacti, dead bushes, fungi or chorus there, and the garden grows only where some dirt or grass exists. A few blocks of dirt laid by a player are enough: placed dirt counts as terrain and becomes a garden bed on the next pass. The status line names what the biome grows; the garden is always part of it.
+Elias's rule (26 September): the dye garden always yields every dye, so the altar lays the soil of its own planters. It applies to the dye-garden cells only, the beds and the four ink caps, and uses the minimum:
+
+- A bed whose species already lives on the ground (flowers on grass, dirt, podzol, moss, mud or any soil tagged `minecraft:dirt`) is planted as it is.
+- Otherwise the one block under the plant is replaced by the soil that plant is made for: a grass block for a flower, podzol for the ink mushroom (it does not spread, unlike mycelium). An ink cap on bare ground gets one block of podzol under its stem. Nothing else is laid: not a path, not a ring, not the block below.
+- Only plain terrain is replaced: sand, red sand, sandstone, gravel, clay, stone, deepslate, the stone variants, netherrack, basalt, blackstone, soul sand and soil, nylium, end stone, snow block and the like. Ores, ice, packed ice and powder snow, fluids, builds, block entities, crops and anything a player placed that is not terrain keep the bed empty. Claims refuse it through the native break and place events, an entity in the cell refuses it, and a build touching the cell refuses it by the usual margin. A refused bed simply stays empty; nothing else in the pass changes.
+- The laid soil and the plant are one unit. Once both are in place, and before any event is posted, the altar checks that the plant can live there; if not, the unit is taken back whole.
+- Each laid block costs one work charge, like a plant. Soil is laid once: a harvested flower grows back on its grass without laying more.
+
+This works on sand, stone, netherrack, soul sand and end stone alike, in every dimension. Under a roof (the Nether, or any dimension with a ceiling) the heightmap would find the roof, so the altar works on the floor nearest its own level, within 24 blocks above or below: an altar in a Nether cave plants on the cave floor and never on the roof.
+
+Everything else keeps the old rule: trees, biome variants and the rest of the flora plant only on natural soil as it is, and flowers outside the beds never lay soil.
 
 ### Protection
 
-- Only exposed natural ground is planted: the top block under grass and snow layers must be natural ground and the block above it air (for trees, air or a replaceable wild plant).
+- Only exposed natural ground is planted: the top block under grass and snow layers must be natural ground and the block above it air (for trees, air or a replaceable wild plant). The only ground the altar ever changes is the one block of soil under a garden bed or an ink cap, and only in place of plain terrain.
 - Every block written has natural neighbours or belongs to the same unit, so nothing grows against a build, a container, a crop, farmland, a path or placed leaves. No block is placed into an entity.
 - Every write posts `EntityPlaceEvent` as the owner; any cancellation restores the whole unit and charges nothing.
 - Excluded flora (`entrelumen:renewal_altar_excluded_plants`, data-driven): wither roses and sweet berry bushes hurt, cacti hurt and grow only as the giant cactus, and pumpkins, melons and crops are food.
 
 ### Payment
 
-One fertilizer adds 4 work charge and pays 10 s of active time; only ticks that actually work pay time. A plant costs 1 charge. A tree, giant cactus or ink cap costs one per block, up to 16 (4 bone meal). Fertilizer is drawn only when needed; without it the altar waits. A pass over a bare 49 square costs roughly 150–250 bone meal; a repeated pass over grown land costs nothing, and a harvest costs exactly what grows back.
+One fertilizer adds 4 work charge and pays 10 s of active time; only ticks that actually work pay time. A plant costs 1 charge, and a block of garden soil 1 more. A tree, giant cactus or ink cap costs one per block, soil included, up to 16 (4 bone meal). Fertilizer is drawn only when needed; without it the altar waits. A pass over a bare 49 square costs roughly 150–250 bone meal; a repeated pass over grown land costs nothing, and a harvest costs exactly what grows back.
 
 ### Progress, persistence and idempotence
 
@@ -518,6 +528,23 @@ Root integration in `C:/Users/elias/Documents/Codex/2026-09-12/h/outputs/entrelu
 
 The CI check `tools/check_runtime_content.py` then found the runtime audit script stale, because the altars had become rewards. `6a743eb` synced it and was installed the same way, one file per profile. A normal boot with it passed the runtime content audit: 128 items and 36 recipe/output pairs, including the six altars and their duplication recipes.
 
+### Garden soil and deterministic variants (26 September)
+
+Elias's rule that the garden always yields every dye (see [Garden soil](#garden-soil-always-every-dye)), and a CI flake. Receipts in `E:/Elias/Codex/Entrelumen-ssd/altars3-20260925` (`build-soil.log`, `ci-checks-3.log`, `qa-F.json`, `qa-G.json`) and `altars3-build/logs` (`soil-*.log`, `det-*.log`).
+
+- **JUnit.** `VegetationRulesTest` gains the bed rule: plant, lay soil on plain ground, or stay empty.
+- **Isolated GameTests.**
+  - `renewalAltarLaysGardenSoilOnBareGroundButNeverOnProtectedCells`: a 25 square of sand, stone, end stone and netherrack with no dirt. Every free bed gets one grass block and its orbit's flower, soil is laid exactly once per planted bed and paid for, and nothing but those beds' ground changes. An iron ore, a water source, packed ice, a plank block, a claimed column, an armor stand, a chest beside the bed and a column whose break event is refused each keep their bed empty and untouched. A second pass lays nothing and charges nothing.
+  - `renewalAltarPlantsItsGardenUnderTheNetherRoof`, in the test server's real Nether: a closed room with a netherrack and soul sand floor and a netherrack roof. All 36 beds are planted on laid grass on the floor, and the roof is untouched.
+  - **The variant flake.** `renewalAltarGrowsOverworldVariantsPerBiome` failed once on CI with `mega_jungle … tree_margin`. The logged cause (`tree_margin:barrier`): the giant jungle tree grew at a pad ten blocks from the template edge, its shape followed the world seed and the test's absolute position, and on some positions its crown reached the block next to the GameTest barrier wall. The vine, propagule and moss decorators of vanilla walk hash sets of positions, so those blocks also vary with where a test runs. Now each of the eight variants has its own case, `renewalAltarGrows…` (`GiantSpruceInOldTaiga`, `GiantJungleTreeWithCocoa`, `HugeMushroomInMushroomFields`, `CherryInCherryGrove`, `HugeCrimsonFungusOnNylium`, `ChorusOnEndStone`, `MangroveOnMud`, `GiantCactusOnSand`). Each grows at the centre of a template covered in grass over dirt, about ten blocks from the walls, with the altar buried under it, and its trunk and crown come from a fixed seed through a test hook. Every written block must stay at least two blocks from the walls. In production a tree's seed is still the world seed mixed with its column, and cocoa pods now follow the tree's seed and their offset from the trunk.
+  - Beds and trees under an overhead canopy (the four huge ink mushrooms, huge mushrooms in dark forests) now find the ground under it; before, the heightmap stopped at the cap and those beds stayed empty (run F below). The Undergarden's mushroom caps and stems are tagged `entrelumen:wild_canopy` (optional entries), so the altars count them as wild, not built.
+  - Four consecutive isolated runs (`det-6` to `det-9`) and the final one passed all 121 cases. Across runs, the trunks, crowns, cocoa, fungi, chorus and cacti were identical; only vines and mangrove propagules differ, as expected.
+- **Full pack, on `server-slice`** (world backed up, hashed and restored after every run, as before).
+  - Run G (`qa-G.json`), on the final code: **all five cases passed.** `renewalAltarGardenMakesEveryDyeOnBareGround` (new) planted all 64 beds of a 29 square of sand, stone, end stone and netherrack with the pack's seven species, laid exactly 64 blocks of soil for them and 4 of podzol under the four ink caps (228 cap blocks), and the harvest of what actually grew makes all sixteen dyes with the loaded recipes. The dye check over all 183 biomes, the ink caps and mod flowers, the modded trees and the FTB Chunks claims passed again.
+  - Run F: the bare-ground case grew all seven species, the four ink caps on podzol and a harvest that makes all sixteen dyes, but 12 of 64 beds under the ink caps' caps stayed empty, which the canopy fix above corrects. The other three cases passed.
+  - Runs D and E stopped at server start, inside Supplementaries' own start-up, while another worker built on the same machine with 4 GB of RAM free. Runs F and G used a temporary `max-tick-time` of 180000 for the boot (receipts `watchdog-F-allowance.json`, `watchdog-G-allowance.json`), set back to 60000 right after each.
+  - **Backups.** SimpleBackups keeps 10 archives in `server-slice/simplebackups` and rotated four old ones while these QA servers ran. Three were put back from copies made before run D (`altars3-20260925/simplebackups-kept`). One, `entrelumen-test_2026-09-12_18-24-30.zip` (3.5 MB, the fresh QA world of 12 September), was rotated during run C on 25 September, before copies were made, and has no other copy. The folder now holds 12 archives, so the server's next backup will rotate the oldest again unless its `backupsToKeep` changes.
+
 ### Vegetation and free terrain (`feature/altars-vegetation-terrain`, 25 September)
 
 Offline `gradlew --offline --no-daemon build qaJar runGameTestServer` in the worktree `E:/Elias/Codex/Entrelumen-ssd/wt-altars3`, pinned JDK 21.0.12.1+1 and NeoForge 21.1.249, build and run folders on `E:/Elias/Codex/Entrelumen-ssd/altars3-build` (logs in `altars3-build/logs`, receipts in `E:/Elias/Codex/Entrelumen-ssd/altars3-20260925`).
@@ -528,8 +555,8 @@ Offline `gradlew --offline --no-daemon build qaJar runGameTestServer` in the wor
   - `NatureRestorationRulesTest` (5): the disc and density tests went with the restoration; distance, stable numbers, weighted choice and site persistence stay.
 - **Isolated GameTests: all 113 passed** (`gt-4.log`), 12 of them new or rewritten in `RuntimeGameTestsAltars`, plus the Nature module test in `RuntimeGameTests`.
   - `renewalAltarGrowsTheForestAndASymmetricDyeGardenSparingBuilds`: fed by the native gesture in a forest, it grows oaks, birches and big oaks, 140–160 plants and 40–50 dye flowers in a 25 square. Every bed holds its orbit's species and every orbit is one colour; at least 70% of the beds flower (the rest border the chest, the planks or claimed land). Nothing below the ground or where something stood changed; nothing touches a build; a chest, planks, farmland with wheat, an armor stand and simulated claimed land are left alone. Payment is exact. A repeated pass grows nothing and charges nothing; three harvested beds grow back the same flowers for exactly three charge.
-  - `renewalAltarGrowsGiantCactiInTheDesertAndFlowersOnlyOnSoil`: a giant cactus grows whole through the altar's checks, cacti survive their neighbour updates, dead bushes grow on sand, no flower grows on sand, and the one bed on a patch of grass flowers.
-  - `renewalAltarGrowsOverworldVariantsPerBiome` and `renewalAltarGrowsNetherEndSwampAndDesertVariants`: in their own biomes and soils, a giant spruce (≥20 logs), a giant jungle tree with cocoa, a huge red mushroom on mycelium, a cherry, a huge crimson fungus on nylium, chorus on end stone, a mangrove on mud and a giant cactus on sand all grow, and no soil block changes.
+  - `renewalAltarGrowsGiantCactiAndLaysGardenSoilInTheDesert` (renamed 26 September): a giant cactus grows whole through the altar's checks, cacti survive their neighbour updates, dead bushes grow on sand, every bed on sand gets its grass and its flower, the bed on a player's patch of grass takes no soil, and no flower outside a bed grows on sand.
+  - Eight variant cases (split on 26 September from two combined ones, see below): in their own biomes and soils, a giant spruce (≥20 logs), a giant jungle tree with cocoa, a huge red mushroom on mycelium, a cherry, a huge crimson fungus on nylium, chorus on end stone, a mangrove on mud and a giant cactus on sand all grow, and no soil block changes.
   - `renewalAltarHarvestMakesTheDyesOfItsVanillaGarden`: over all 65 vanilla biomes and 22 palette families, the harvest makes white, red, yellow, blue and everything they mix into with the loaded recipes; jungles add brown (cocoa) and deserts green (cactus). What is missing is only what the pinned mods supply.
   - `renewalAltarProgressSurvivesSaveAndReloadAndMigratesVersionOne`: pass, column, charge, fertilizer, totals and radius round-trip, the registry reports the square, and a version 1 save starts a fresh vegetation pass with its charge.
   - `renewalAltarTreeCostAgainstVanillaGrowth`: the tree costs in Performance.
@@ -550,7 +577,7 @@ Offline `gradlew --offline --no-daemon build qaJar runGameTestServer` in the wor
 
 ## Limitations
 
-- Altar of Renewal: flowers need soil they can live on, and the altar never changes terrain. On sand, bare stone, netherrack or end stone the garden grows only where some dirt or grass exists; a few blocks laid by a player are enough. See [Soil](#soil-the-one-limit-of-always).
+- Altar of Renewal: a garden bed on an ore, ice, water, a build, in a claim or with a creature standing in it stays empty until that changes; a mob standing in a bed is waited out by the next pass. Flowers outside the garden still need soil that is already there. See [Garden soil](#garden-soil-always-every-dye).
 - Altar of Renewal: the dye guarantee rests on three pinned mods (Eternal Starlight's conebloom and swamp rose, The Undergarden's ink mushroom and its huge ink mushroom feature, and Utilitarian's blue + yellow recipe as a second green). Without them the garden still makes white, red, yellow, blue and everything they mix into, but not black, brown, gray or light gray. The full-pack case fails loudly if a pack update drops one of them.
 - Altar of Renewal: biomes whose trees are modded feature types without a tree configuration (for example Twilight Forest's hollow trees, or trees mixed with fallen logs in one selector) grow none of those; a feature that fails in the sandbox is skipped. Curated families replace the biome's own trees in vanilla biomes.
 - Altar of Renewal: a tree is simulated whole on the server thread, as vanilla does when a sapling grows; a giant tree can take tens of milliseconds. The altar then rests in proportion (see Performance), so its average stays near 2 ms a tick, but a single tick can still be that long.
