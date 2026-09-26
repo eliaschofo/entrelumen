@@ -1,9 +1,10 @@
-"""The six tiers of the Ultimine curio (a vein resonator made by Terra), on the 16x16 item grid.
+"""The four tiers of the Ultimine curio (a vein resonator made by Terra), on the 16x16 item grid.
 
 A mirror-symmetric tuning fork: two prongs joined in a U, a stem, a collar and a faceted gem at
-the base that sets the resonance, all inside the outline. Each tier climbs in metal (copper, iron, brass, teal, dark alloy, luminous)
-and gem, so the six read as one family at inventory size. Writes art/grids/item/vein_resonator_<n>.txt,
-the grids of the items entrelumen:vein_resonator_1..6 that art/build_art.py registers.
+the base that sets the resonance, all inside the outline. Each tier wears its recipe (Elias, 25/9):
+gold and diamond (8 blocks), netherite and emerald (16), end stone and nether star (32), a
+luminosity's blue round a luminous core (64). Writes art/grids/item/vein_resonator_<n>.txt, the grids of the
+items entrelumen:vein_resonator_1..4 that art/build_art.py registers.
 
     python art/authoring/draw_resonators.py
 """
@@ -20,12 +21,10 @@ GRIDS = os.path.join(HERE, '..', 'grids', 'item')
 INK = '#1f1d22'
 GOLD = ['#3a2a0e', '#6e5220', '#a8862f', '#d9b95a', '#f1dc98', '#fff6dc', '#ffffff']
 TIERS = [  # (metal ramp: dark..light, gem ramp: dark..light)
-    ([R['copper'][1], R['copper'][3], R['copper'][5]], [R['straw'][1], R['straw'][2], R['straw'][3]]),
-    ([R['iron'][1], R['iron'][3], R['iron'][5]], [R['sky'][1], R['sky'][2], R['sky'][4]]),
-    ([R['brass'][1], R['brass'][3], R['brass'][5]], [R['leaf'][2], R['leaf'][4], R['leaf'][5]]),
-    ([R['teal'][1], R['teal'][3], R['teal'][5]], [R['violet'][2], R['violet'][4], R['violet'][5]]),
-    (['#241f2b', '#453d52', '#6f6680'], [R['crimson'][2], R['crimson'][4], R['crimson'][5]]),
-    ([GOLD[2], GOLD[4], GOLD[6]], [R['teal'][3], R['teal'][4], '#ffffff']),
+    ([GOLD[1], GOLD[3], GOLD[4]], [R['teal'][2], R['teal'][4], R['teal'][5]]),                  # gold, diamond
+    (['#2e2628', '#4d4145', '#7a6a6f'], ['#12743b', '#2fcf6a', '#aef5c6']),                     # netherite, emerald
+    (['#9c9866', '#d6d79c', '#f4f5c6'], ['#8f86b0', '#e4e0f5', '#ffffff']),                     # end stone, nether star
+    ([R['sky'][1], R['sky'][3], R['sky'][4]], [GOLD[3], GOLD[5], GOLD[6]]),                     # a luminosity's blue, luminous core
 ]
 
 
@@ -80,8 +79,8 @@ def write(name, g):
 
 
 if __name__ == '__main__':
-    sheet = Image.new('RGBA', (6 * 144 + 16, 200), (139, 139, 139, 255))
-    for t in range(6):
+    sheet = Image.new('RGBA', (len(TIERS) * 144 + 16, 200), (139, 139, 139, 255))
+    for t in range(len(TIERS)):
         g = grid(t)
         assert all(g[y][x] == g[y][15 - x] for y in range(16) for x in range(16))
         write('vein_resonator_%d' % (t + 1), g)
