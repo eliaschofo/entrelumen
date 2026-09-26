@@ -1,20 +1,12 @@
 package dev.entrelumen;
 
-import it.unimi.dsi.fastutil.longs.Long2IntOpenHashMap;
-import it.unimi.dsi.fastutil.longs.LongArrayList;
-import it.unimi.dsi.fastutil.longs.LongOpenHashSet;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Comparator;
-import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.function.Function;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.core.GlobalPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.particles.ParticleTypes;
@@ -25,86 +17,70 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.TagKey;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.FallingBlock;
+import net.minecraft.world.level.block.CocoaBlock;
+import net.minecraft.world.level.block.DoublePlantBlock;
+import net.minecraft.world.level.block.HorizontalDirectionalBlock;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 import net.minecraft.world.level.levelgen.Heightmap;
+import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
+import net.minecraft.world.level.levelgen.structure.BoundingBox;
+import net.minecraft.world.level.material.Fluids;
 
 /**
- * The Renewal Altar's work. Fed with fertilizer, it compares every chunk of its square with what the
- * world generator originally made there ({@link TerrainReference}) and, a few blocks per tick,
- * refills dug holes up to the original surface, re-covers bare dirt, regrows the original trees
- * and replants the original plants. Only open, natural positions are written; builds, containers,
- * crops, entities and claims are left alone. Progress is saved; the plan is recomputed from the
- * world, so a resumed or repeated pass only finds what is still missing and never pays twice.
+ * The Altar of Renewal: the vegetation altar. Fed with fertilizer, it grows in its square what its
+ * biome grows (the biome's trees with curated variants, its flowers and ground plants) and a
+ * symmetric dye garden, the same in every biome, whose harvest makes all sixteen dyes. It never
+ * changes terrain: it only plants on exposed natural ground that the plant can live on, and never
+ * near builds, containers, crops, entities or claims. The plan depends only on the world seed and
+ * positions, so a repeated pass grows back only what was harvested and never piles up.
  */
 public final class RenewalAltarEntity extends AltarBlockEntity {
   public enum State { IDLE, RUNNING, WAITING, PAUSED, DONE, FAILED }
 
-  /** Counts of restored work and exact payment for the current pass. */
+  /** Counts of grown work and exact payment for the current pass. */
   public static final class Totals {
-    public int filled, covered, trees, plants, guarded, skippedChunks, fertilizer, charge;
+    public int trees, inkCaps, plants, dyeFlowers, guarded, fertilizer, charge;
 
     CompoundTag save() {
       CompoundTag tag = new CompoundTag();
-      tag.putIntArray("values", new int[] {filled, covered, trees, plants, guarded, skippedChunks, fertilizer, charge});
+      tag.putIntArray("values", new int[] {trees, inkCaps, plants, dyeFlowers, guarded, fertilizer, charge});
       return tag;
     }
 
     void load(CompoundTag tag) {
-      int[] values = Arrays.copyOf(tag.getIntArray("values"), 8);
-      filled = values[0];
-      covered = values[1];
-      trees = values[2];
-      plants = values[3];
+      int[] values = Arrays.copyOf(tag.getIntArray("values"), 7);
+      trees = values[0];
+      inkCaps = values[1];
+      plants = values[2];
+      dyeFlowers = values[3];
       guarded = values[4];
-      skippedChunks = values[5];
-      fertilizer = values[6];
-      charge = values[7];
-    }
-
-    /** Charge the applied work must have cost. */
-    public int expectedCharge(int treeCharge) {
-      return filled + covered + plants + treeCharge;
+      fertilizer = values[5];
+      charge = values[6];
     }
   }
 
   public static final TagKey<Item> FERTILIZERS = AltarType.RENEWAL.fuel();
-  static final int VERSION = 1;
+  /** Version 2: vegetation. Version 1 (terrain reconstruction) is migrated to a fresh pass. */
+  static final int VERSION = 2;
   static final int PREVIEW_TICKS = 100;
-  private static final int PASSES = 3;
-  private static final Set<Block> COVERS = Set.of(Blocks.GRASS_BLOCK, Blocks.PODZOL, Blocks.MYCELIUM, Blocks.MOSS_BLOCK);
-  private static final Set<Block> BARE = Set.of(Blocks.DIRT, Blocks.COARSE_DIRT);
-  /** Wild plants outside the replaceable and flower tags; pumpkins and melons stay out (no free harvest). */
-  private static final Set<Block> EXTRA_PLANTS = Set.of(Blocks.CACTUS, Blocks.SUGAR_CANE,
-      Blocks.SWEET_BERRY_BUSH, Blocks.BROWN_MUSHROOM, Blocks.RED_MUSHROOM, Blocks.BAMBOO, Blocks.MOSS_CARPET);
-  private static final Set<Block> CANOPY_EXTRAS = Set.of(Blocks.VINE, Blocks.COCOA, Blocks.BROWN_MUSHROOM_BLOCK,
-      Blocks.RED_MUSHROOM_BLOCK, Blocks.MANGROVE_ROOTS, Blocks.MOSS_CARPET, Blocks.HANGING_ROOTS);
-  /** Test hook: a generator other than the level's own, keyed by altar position. Never set in play. */
-  static final Map<GlobalPos, Function<ServerLevel, TerrainReference.Setup>> SETUPS = new ConcurrentHashMap<>();
+  private static final int PASSES = 2;
 
   private State state = State.IDLE;
   private int radius = AltarRules.RENEWAL_RADIUS;
   private int pass;
-  /** Next unit of the current pass: a disc column (passes 0 and 2) or an original tree (pass 1). */
+  /** Next column of the current pass, in concentric rings. */
   private int index;
   private int charge;
   private final Totals totals = new Totals();
-  private String failure = "";
-
-  private List<AltarRules.ChunkKey> area;
-  private CompletableFuture<Prepared> job;
-  private TerrainReference.Region region;
-  private List<Tree> trees = List.of();
-  long treeNanos;
-  /** Disc columns in concentric order, and which chunks still look generated; not saved. */
   private List<long[]> columns;
-  private final Map<AltarRules.ChunkKey, Boolean> trust = new java.util.HashMap<>();
   private long previewUntil;
   private long idleUntil;
   long ticks;
@@ -115,6 +91,16 @@ public final class RenewalAltarEntity extends AltarBlockEntity {
   final long[] tickSamples = new long[4096];
   long gcTicks;
   long maxGcMillis;
+  /** Wall time of the most expensive single tree simulation, and the recent ones, for measurement only. */
+  long maxTreeNanos;
+  /** Wall time of the tree simulated by the current unit, if any; drives the rest after it. */
+  private long lastSimulationNanos;
+  /** Ticks spent resting after trees, for measurement only. */
+  long restedTicks;
+  private final List<Long> treeSamples = new ArrayList<>();
+  /** Why units were left alone in this pass, and which tree options grew; diagnostics, not saved. */
+  final Map<String, Integer> guards = new java.util.TreeMap<>();
+  final Map<String, Integer> grown = new java.util.TreeMap<>();
 
   public RenewalAltarEntity(BlockPos pos, BlockState state) {
     super(Altars.RENEWAL_ENTITY.get(), pos, state, AltarType.RENEWAL);
@@ -144,18 +130,19 @@ public final class RenewalAltarEntity extends AltarBlockEntity {
     return index;
   }
 
-  int pass() {
-    return pass;
+  /** Microseconds of each tree simulation so far, in order; measurement only. */
+  List<Long> treeMicros() {
+    return List.copyOf(treeSamples);
   }
 
-  TerrainReference.Region region() {
-    return region;
+  int pass() {
+    return pass;
   }
 
   /** Test hook: a smaller square that fits a GameTest template. */
   void configureRadius(int value) {
     radius = value;
-    area = null;
+    columns = null;
     setChanged();
   }
 
@@ -203,7 +190,7 @@ public final class RenewalAltarEntity extends AltarBlockEntity {
   @Override
   public void use(ServerPlayer player) {
     previewUntil = player.serverLevel().getGameTime() + PREVIEW_TICKS;
-    for (Component line : statusLines()) player.sendSystemMessage(line);
+    for (Component line : statusLines(player.serverLevel())) player.sendSystemMessage(line);
   }
 
   /** Crouched empty hand: pause or resume; a finished altar starts a fresh pass when it has fuel. */
@@ -231,25 +218,24 @@ public final class RenewalAltarEntity extends AltarBlockEntity {
     setChanged();
   }
 
-  List<Component> statusLines() {
+  List<Component> statusLines(ServerLevel world) {
     List<Component> lines = new ArrayList<>();
-    int size = pass == 1 ? trees.size() : columns().size();
+    int size = columns().size();
     double done = pass >= PASSES ? PASSES : pass + (size == 0 ? 0 : Math.min(1.0, index / (double) size));
     lines.add(Component.translatable("entrelumen.altar.renewal.status",
         Component.translatable("entrelumen.altar.state." + state.name().toLowerCase(java.util.Locale.ROOT)),
         2 * radius + 1, (int) Math.floor(done * 100 / PASSES)));
-    lines.add(Component.translatable("entrelumen.altar.renewal.progress", totals.filled, totals.covered,
-        totals.trees, totals.plants, totals.guarded, totals.skippedChunks));
+    var palette = AltarVegetation.palette(world, world.getBiome(worldPosition));
+    lines.add(Component.translatable("entrelumen.altar.renewal.biome",
+        Component.translatable("entrelumen.altar.renewal.variant." + palette.variant())));
+    lines.add(Component.translatable("entrelumen.altar.renewal.progress", totals.trees, totals.inkCaps,
+        totals.plants, totals.dyeFlowers, totals.guarded));
     lines.add(Component.translatable("entrelumen.altar.renewal.fuel", fuel.getCount(), charge,
         activeTicks / 20, totals.fertilizer));
-    if (state == State.RUNNING && region == null)
-      lines.add(Component.translatable("entrelumen.altar.renewal.generating"));
-    if (state == State.FAILED)
-      lines.add(Component.translatable("entrelumen.altar.renewal.failed", failure));
     return lines;
   }
 
-  /** A fresh pass over the whole disc; the radius follows the team's Ark site when known. */
+  /** A fresh pass over the whole square; the radius follows the team's Ark garden site when known. */
   void start(ServerPlayer by) {
     if (by != null && level instanceof ServerLevel serverLevel
         && (radius == AltarRules.RENEWAL_RADIUS || radius == AltarRules.RENEWAL_ARK_RADIUS)) {
@@ -263,48 +249,27 @@ public final class RenewalAltarEntity extends AltarBlockEntity {
           && AltarRules.nearArkSite(worldPosition.getX(), worldPosition.getZ(), site.pos().getX(), site.pos().getZ());
       radius = AltarRules.renewalRadius(near);
     }
-    cancelJob();
-    area = null;
     columns = null;
-    trust.clear();
     pass = 0;
     index = 0;
-    region = null;
-    trees = List.of();
-    failure = "";
     totals.load(new CompoundTag());
     fuelUsed = 0;
     guards.clear();
+    grown.clear();
     state = State.RUNNING;
     setChanged();
   }
 
-  private List<AltarRules.ChunkKey> area() {
-    if (area == null) area = AltarRules.areaChunks(worldPosition.getX(), worldPosition.getZ(), radius);
-    return area;
-  }
-
-  /** Every column of the square in concentric rings from the altar. */
+  /** Every column of the square in concentric rings from the altar, as offsets and positions. */
   private List<long[]> columns() {
     if (columns == null) {
       int cx = worldPosition.getX(), cz = worldPosition.getZ();
       List<long[]> result = new ArrayList<>();
-      for (var column : AltarRules.square(radius)) result.add(new long[] {cx + column.dx(), cz + column.dz()});
+      for (var column : AltarRules.square(radius))
+        result.add(new long[] {cx + column.dx(), cz + column.dz(), column.dx(), column.dz()});
       columns = List.copyOf(result);
     }
     return columns;
-  }
-
-  void cancelJob() {
-    if (job != null) job.cancel(false);
-    job = null;
-  }
-
-  @Override
-  public void setRemoved() {
-    super.setRemoved();
-    cancelJob();
-    region = null;
   }
 
   // ---- Ticking -------------------------------------------------------------------------------
@@ -335,9 +300,8 @@ public final class RenewalAltarEntity extends AltarBlockEntity {
   }
 
   /**
-   * Returns whether any world work was attempted this tick. The whole disc advances together, in
-   * concentric rings from the altar: first every column's terrain and cover, then every original
-   * tree by its trunk's distance, then every column's plants.
+   * Returns whether any world work was attempted this tick. The whole square advances together, in
+   * concentric rings from the altar: first every tree and ink cap, then every plant and flower.
    */
   private boolean tick(ServerLevel world) {
     long now = world.getGameTime();
@@ -351,13 +315,12 @@ public final class RenewalAltarEntity extends AltarBlockEntity {
       return false;
     }
     if (now < idleUntil) return false;
-    if (region == null && !reference(world)) return false;
     if (!actorWarm(world)) return false;
     if (!areaLoaded(world)) {
       idleUntil = now + 40;
       return false;
     }
-    // Only ticks that actually work pay active time; generating and waiting for chunks are free.
+    // Only ticks that actually work pay active time; waiting for chunks is free.
     if (!payActiveTick()) {
       state = State.WAITING;
       setChanged();
@@ -365,25 +328,32 @@ public final class RenewalAltarEntity extends AltarBlockEntity {
     }
     AltarRules.TickBudget budget = AltarRules.TickBudget.standard();
     Player actor = actor(world);
-    List<long[]> disc = columns();
+    List<long[]> square = columns();
     while (budget.open() && state == State.RUNNING) {
       if (pass >= PASSES) {
         finish(world);
         return true;
       }
-      int size = pass == 1 ? trees.size() : disc.size();
-      if (index >= size) {
+      if (index >= square.size()) {
         pass++;
         index = 0;
         setChanged();
         continue;
       }
       budget.scan();
-      Unit unit = switch (pass) {
-        case 0 -> terrain(world, actor, disc.get(index), budget);
-        case 1 -> tree(world, actor, trees.get(index), budget);
-        default -> plant(world, actor, disc.get(index), budget);
-      };
+      long[] column = square.get(index);
+      lastSimulationNanos = 0;
+      Unit unit = pass == 0 ? woody(world, actor, column, budget) : flora(world, actor, column, budget);
+      if (lastSimulationNanos > 0 && unit != Unit.FERTILIZER && unit != Unit.BUDGET) {
+        // A tree cannot be split across ticks. After one, the altar rests in proportion to what it
+        // cost, so its average stays within the per-tick budget: a 20 ms giant tree buys 9 idle ticks.
+        index++;
+        if (unit == Unit.GUARDED) totals.guarded++;
+        idleUntil = now + restTicks(lastSimulationNanos);
+        restedTicks += restTicks(lastSimulationNanos);
+        setChanged();
+        return true;
+      }
       switch (unit) {
         case FERTILIZER -> {
           state = State.WAITING;
@@ -409,58 +379,18 @@ public final class RenewalAltarEntity extends AltarBlockEntity {
 
   private void finish(ServerLevel world) {
     state = State.DONE;
-    region = null;
-    trees = List.of();
     setChanged();
     if (owner != null) {
       ServerPlayer player = world.getServer().getPlayerList().getPlayer(owner);
       if (player != null)
         player.sendSystemMessage(Component.translatable("entrelumen.altar.renewal.done",
-            worldPosition.getX(), worldPosition.getY(), worldPosition.getZ(), totals.filled, totals.covered,
-            totals.trees, totals.plants, totals.fertilizer));
+            worldPosition.getX(), worldPosition.getY(), worldPosition.getZ(), totals.trees + totals.inkCaps,
+            totals.plants, totals.dyeFlowers, totals.fertilizer));
     }
-  }
-
-  /** Starts or collects the sandbox generation; true once the reference is available. */
-  private boolean reference(ServerLevel world) {
-    if (job == null) {
-      List<ChunkPos> decorate = new ArrayList<>();
-      Set<ChunkPos> captured = new HashSet<>();
-      for (AltarRules.ChunkKey key : area()) {
-        decorate.add(new ChunkPos(key.x(), key.z()));
-        for (int dx = -1; dx <= 1; dx++)
-          for (int dz = -1; dz <= 1; dz++) captured.add(new ChunkPos(key.x() + dx, key.z() + dz));
-      }
-      var override = SETUPS.get(GlobalPos.of(world.dimension(), worldPosition));
-      TerrainReference.Setup setup = override != null ? override.apply(world)
-          : TerrainReference.Setup.capture(world, captured);
-      List<AltarRules.ChunkKey> keys = List.copyOf(area());
-      int cx = worldPosition.getX(), cz = worldPosition.getZ(), reach = radius;
-      job = TerrainReference.generate(setup, decorate, this::isRemoved)
-          .thenApplyAsync(built -> Prepared.of(built, keys, cx, cz, reach), TerrainReference.EXECUTOR);
-      return false;
-    }
-    if (!job.isDone()) return false;
-    try {
-      Prepared prepared = job.join();
-      region = prepared.region();
-      trees = prepared.trees();
-      treeNanos = prepared.treeNanos();
-    } catch (RuntimeException failed) {
-      Throwable cause = failed.getCause() == null ? failed : failed.getCause();
-      failure = cause.getClass().getSimpleName();
-      state = State.FAILED;
-      com.mojang.logging.LogUtils.getLogger().warn("Renewal altar at {} could not regenerate its reference",
-          worldPosition, cause);
-      setChanged();
-    } finally {
-      job = null;
-    }
-    return region != null;
   }
 
   /**
-   * The disc, every canopy it may grow and their neighbours are loaded. The altar never loads a
+   * The square, every canopy it may grow and their neighbours are loaded. The altar never loads a
    * chunk; it waits until players have the whole area loaded, so the rings stay symmetric.
    */
   private boolean areaLoaded(ServerLevel world) {
@@ -496,365 +426,337 @@ public final class RenewalAltarEntity extends AltarBlockEntity {
   }
 
   // ---- Work units ---------------------------------------------------------------------------
-  // Only the pass and the unit index are saved. A unit finishes before the index moves, and after a
-  // reload positions already restored simply match their reference.
 
-  /** Why units were left alone in this pass; diagnostics for status and tests, not saved. */
-  final Map<String, Integer> guards = new java.util.TreeMap<>();
+  private enum Unit { APPLIED, NONE, GUARDED, FERTILIZER, BUDGET }
 
   private Unit guard(String reason) {
     guards.merge(reason, 1, Integer::sum);
     return Unit.GUARDED;
   }
 
-  private enum Unit { APPLIED, NONE, GUARDED, FERTILIZER, BUDGET }
-
-  /** One tree: its blocks in the reference and the lowest trunk block that anchors it. */
-  record Tree(BlockPos anchor, List<BlockPos> blocks) {}
-
-  /** A finished reference with its original trees in ring order, both built off the server thread. */
-  record Prepared(TerrainReference.Region region, List<Tree> trees, long treeNanos) {
-    static Prepared of(TerrainReference.Region region, List<AltarRules.ChunkKey> area, int cx, int cz, int radius) {
-      long started = System.nanoTime();
-      List<Tree> all = new ArrayList<>();
-      for (AltarRules.ChunkKey key : area) all.addAll(treesIn(region, key, cx, cz, radius));
-      all.sort(Comparator.comparingLong((Tree t) -> {
-            long dx = t.anchor().getX() - cx, dz = t.anchor().getZ() - cz;
-            return dx * dx + dz * dz;
-          }).thenComparingInt(t -> t.anchor().getX()).thenComparingInt(t -> t.anchor().getZ()));
-      return new Prepared(region, List.copyOf(all), System.nanoTime() - started);
-    }
+  private VegetationRules.Role role(ServerLevel world, long[] column, AltarVegetation.Palette palette) {
+    return VegetationRules.role(world.getSeed(), (int) column[0], (int) column[1], (int) column[2],
+        (int) column[3], radius, palette.treeProbability());
   }
 
-  /**
-   * The chunk holding this column still looks like its generator's output; otherwise the altar
-   * leaves the whole chunk alone. Checked once per chunk and remembered until the next pass.
-   */
-  private boolean trusted(ServerLevel world, int columnX, int columnZ, AltarRules.TickBudget budget) {
-    AltarRules.ChunkKey key = new AltarRules.ChunkKey(columnX >> 4, columnZ >> 4);
-    Boolean known = trust.get(key);
-    if (known != null) return known;
-    budget.spend(8);
-    boolean result = consistent(world, key);
-    trust.put(key, result);
-    int untrusted = 0;
-    for (boolean value : trust.values()) if (!value) untrusted++;
-    totals.skippedChunks = Math.max(totals.skippedChunks, untrusted);
-    return result;
-  }
-
-  private boolean consistent(ServerLevel world, AltarRules.ChunkKey key) {
-    if (region.unresolved(key.x(), key.z()) || !region.decorated(key.x(), key.z())) return false;
-    int natural = 0, agree = 0, surplus = 0;
-    for (int x = key.minX(); x < key.minX() + 16; x++)
-      for (int z = key.minZ(); z < key.minZ() + 16; z++) {
-        int reference = referenceGround(x, z);
-        int current = currentGround(world, x, z);
-        if (reference == Integer.MIN_VALUE || current == Integer.MIN_VALUE) continue;
-        natural++;
-        if (Math.abs(current - reference) <= 1) agree++;
-        else if (current > reference + 1) surplus++;
-      }
-    return AltarRules.consistent(natural, agree, surplus);
-  }
-
-  /** Refills an open hole up to the original surface, bottom-up, then re-covers bare dirt. */
-  private Unit terrain(ServerLevel world, Player actor, long[] column, AltarRules.TickBudget budget) {
+  /** Pass one: a tree of the biome, a giant cactus or an ink cap, whole or not at all. */
+  private Unit woody(ServerLevel world, Player actor, long[] column, AltarRules.TickBudget budget) {
     int x = (int) column[0], z = (int) column[1];
-    if (!trusted(world, x, z, budget)) return Unit.NONE;
-    int top = referenceGround(x, z);
-    if (top == Integer.MIN_VALUE) return Unit.NONE;
-    BlockPos.MutableBlockPos cursor = new BlockPos.MutableBlockPos();
-    int[] fills = AltarRules.fillColumn(top, y -> fillable(region.state(cursor.set(x, y, z))),
-        y -> cell(world.getBlockState(cursor.set(x, y, z))));
-    for (int y : fills) {
-      if (!budget.allows(1)) return Unit.BUDGET;
-      BlockPos pos = new BlockPos(x, y, z);
-      BlockState target = supported(pos, region.state(pos));
-      if (!guardedWrite(pos, Set.of(pos))) return guard("fill_margin");
-      if (!affordable(AltarRules.BLOCK_CHARGE)) return Unit.FERTILIZER;
-      if (!LandWorks.commit(actor, world, Map.of(pos, target), Map.of(), Block.UPDATE_ALL)) return guard("fill_claim");
-      pay(AltarRules.BLOCK_CHARGE);
-      totals.filled++;
-      budget.spend(1);
-    }
-    BlockPos surface = new BlockPos(x, top, z);
-    BlockState now = world.getBlockState(surface);
-    BlockState original = region.state(surface);
-    if (original == null || !BARE.contains(now.getBlock()) || !COVERS.contains(original.getBlock())
-        || now.is(original.getBlock())) return Unit.NONE;
-    BlockState above = world.getBlockState(surface.above());
-    if (!above.isAir() && !(LandWorks.natural(above) && above.canBeReplaced() && above.getFluidState().isEmpty()))
-      return Unit.NONE;
-    if (!budget.allows(1)) return Unit.BUDGET;
-    if (!guardedWrite(surface, Set.of(surface))) return guard("cover_margin");
-    if (!affordable(AltarRules.BLOCK_CHARGE)) return Unit.FERTILIZER;
-    BlockState cover = original.getBlock().defaultBlockState();
-    if (!LandWorks.commit(actor, world, Map.of(surface, cover), Map.of(), Block.UPDATE_ALL)) return guard("cover_claim");
-    pay(AltarRules.BLOCK_CHARGE);
-    totals.covered++;
-    budget.spend(1);
-    return Unit.APPLIED;
+    BlockPos ground = groundAt(world, x, z);
+    if (ground == null) return Unit.NONE;
+    var palette = AltarVegetation.palette(world, world.getBiome(ground.above()));
+    VegetationRules.Role role = role(world, column, palette);
+    if (role == VegetationRules.Role.INK_CAP) return grow(world, actor, x, z, ground, null, budget);
+    if (role != VegetationRules.Role.TREE) return Unit.NONE;
+    List<AltarVegetation.TreeOption> options = palette.treesFor(world.getBlockState(ground));
+    if (options.isEmpty()) return Unit.NONE;
+    double[] weights = options.stream().mapToDouble(AltarVegetation.TreeOption::weight).toArray();
+    int chosen = NatureRestorationRules.weightedIndex(weights,
+        NatureRestorationRules.unit(world.getSeed(), x, z, VegetationRules.SPECIES_SALT));
+    if (chosen < 0) return Unit.NONE;
+    return grow(world, actor, x, z, ground, options.get(chosen), budget);
   }
 
-  /** Regrows or completes one original tree as a whole, or leaves it for a later pass. */
-  private Unit tree(ServerLevel world, Player actor, Tree tree, AltarRules.TickBudget budget) {
-    if (!trusted(world, tree.anchor().getX(), tree.anchor().getZ(), budget)) return Unit.NONE;
-    LinkedHashMap<BlockPos, BlockState> missing = new LinkedHashMap<>();
-    for (BlockPos pos : tree.blocks()) {
-      if (!LandWorks.loaded(world, pos)) return guard("tree_unloaded");
-      BlockState original = region.state(pos);
-      BlockState now = world.getBlockState(pos);
-      if (same(original, now)) continue;
-      boolean open = now.isAir() || LandWorks.natural(now) && now.getFluidState().isEmpty()
-          && (now.canBeReplaced() || now.is(original.getBlock()));
-      if (!open) return guard("tree_blocked:" + net.minecraft.core.registries.BuiltInRegistries.BLOCK.getKey(now.getBlock()).getPath());
-      missing.put(pos, original);
+  /** Idle ticks after a unit that cost this much, so the altar averages one tick budget per tick. */
+  static int restTicks(long nanos) {
+    return (int) Math.max(0, Math.min(200, Math.ceilDiv(nanos, AltarRules.NANOS_PER_TICK) - 1));
+  }
+
+  /** Any entity inside any of these blocks, with one entity query over their bounding box. */
+  private static boolean occupiedAny(ServerLevel world, java.util.Collection<BlockPos> blocks) {
+    if (blocks.isEmpty()) return false;
+    int minX = Integer.MAX_VALUE, minY = Integer.MAX_VALUE, minZ = Integer.MAX_VALUE;
+    int maxX = Integer.MIN_VALUE, maxY = Integer.MIN_VALUE, maxZ = Integer.MIN_VALUE;
+    for (BlockPos pos : blocks) {
+      minX = Math.min(minX, pos.getX());
+      minY = Math.min(minY, pos.getY());
+      minZ = Math.min(minZ, pos.getZ());
+      maxX = Math.max(maxX, pos.getX());
+      maxY = Math.max(maxY, pos.getY());
+      maxZ = Math.max(maxZ, pos.getZ());
     }
-    if (missing.isEmpty()) return Unit.NONE;
-    BlockState soil = world.getBlockState(tree.anchor().below());
-    if (!LandWorks.ground(soil) && !missing.containsKey(tree.anchor().below())) return guard("tree_soil");
-    Set<BlockPos> unit = new HashSet<>(tree.blocks());
-    for (BlockPos pos : missing.keySet()) if (LandWorks.occupied(world, pos)) return guard("tree_entity");
-    if (!LandWorks.surroundedByLand(world, missing.keySet(), unit, pos -> original(world, pos))) return guard("tree_margin");
-    int cost = AltarRules.treeCost(missing.size());
+    var entities = world.getEntities((net.minecraft.world.entity.Entity) null,
+        new net.minecraft.world.phys.AABB(minX, minY, minZ, maxX + 1, maxY + 1, maxZ + 1));
+    for (var entity : entities) {
+      var box = entity.getBoundingBox();
+      for (int x = (int) Math.floor(box.minX); x <= (int) Math.floor(box.maxX); x++)
+        for (int y = (int) Math.floor(box.minY); y <= (int) Math.floor(box.maxY); y++)
+          for (int z = (int) Math.floor(box.minZ); z <= (int) Math.floor(box.maxZ); z++)
+            if (blocks.contains(new BlockPos(x, y, z))) return true;
+    }
+    return false;
+  }
+
+  /** Test hook: grows one option (or the ink cap for null) on this ground now, through the same checks. */
+  String growForTest(ServerLevel world, BlockPos ground, AltarVegetation.TreeOption option) {
+    return grow(world, actor(world), ground.getX(), ground.getZ(), ground, option,
+        new AltarRules.TickBudget(4096, 4096, 1_000_000_000L, System::nanoTime)).name();
+  }
+
+  /** One tree option, or the ink cap when {@code option} is null, grown whole at a column or not at all. */
+  private Unit grow(ServerLevel world, Player actor, int x, int z, BlockPos ground,
+      AltarVegetation.TreeOption option, AltarRules.TickBudget budget) {
+    BlockState soil = world.getBlockState(ground);
+    BlockPos origin = ground.above();
+    if (!open(world.getBlockState(origin))) return Unit.NONE;
+    if (nearTree(world, origin)) return Unit.NONE;
+    // A tree is simulated only at the start of a tick, so it is never simulated twice for want of budget.
+    if (budget.used() > 0) return Unit.BUDGET;
+    long seed = world.getSeed();
+    LinkedHashMap<BlockPos, BlockState> writes;
+    String kind;
+    if (option == null) {
+      var cap = AltarVegetation.garden(world.registryAccess()).inkCap();
+      if (cap == null || !soil.is(BlockTags.DIRT)) return Unit.NONE;
+      writes = simulate(world, cap.value(), seed, x, z, origin, ground.getY());
+      kind = AltarVegetation.INK_CAP;
+    } else {
+      if (!option.soil().accepts(soil)) return Unit.NONE;
+      kind = option.id();
+      if (option.giantCactus()) writes = giantCactus(world, seed, x, z, ground);
+      else {
+        writes = simulate(world, option.feature().value(), seed, x, z, origin, ground.getY());
+        if (writes != null && option.cocoa()) cocoa(world, seed, writes, ground.getY());
+      }
+    }
+    if (writes == null) return guard("tree_unplaceable");
+    if (writes.isEmpty()) return Unit.NONE;
+    for (var entry : writes.entrySet()) {
+      BlockState now = world.getBlockState(entry.getKey());
+      if (!replaceable(now, entry.getValue()))
+        return guard("tree_blocked:" + net.minecraft.core.registries.BuiltInRegistries.BLOCK.getKey(now.getBlock()).getPath());
+    }
+    if (occupiedAny(world, writes.keySet())) return guard("tree_entity");
+    if (!LandWorks.surroundedByLand(world, writes.keySet(), writes.keySet(), pos -> false)) return guard("tree_margin");
+    int cost = AltarRules.treeCost(writes.size());
     if (!affordable(cost)) return Unit.FERTILIZER;
-    if (!budget.allows(missing.size())) return Unit.BUDGET;
-    if (!LandWorks.commit(actor, world, missing, Map.of(), Block.UPDATE_ALL | Block.UPDATE_KNOWN_SHAPE))
+    if (!budget.allows(writes.size())) return Unit.BUDGET;
+    if (!LandWorks.commit(actor, world, writes, Map.of(), Block.UPDATE_ALL | Block.UPDATE_KNOWN_SHAPE))
       return guard("tree_claim");
     pay(cost);
-    totals.trees++;
-    budget.spend(missing.size());
+    if (option == null) totals.inkCaps++;
+    else totals.trees++;
+    grown.merge(kind, 1, Integer::sum);
+    budget.spend(writes.size());
     return Unit.APPLIED;
   }
 
-  /** Replants the original plant on a column's surface: one block, a double plant or a stack. */
-  private Unit plant(ServerLevel world, Player actor, long[] column, AltarRules.TickBudget budget) {
-    int x = (int) column[0], z = (int) column[1];
-    if (!trusted(world, x, z, budget)) return Unit.NONE;
-    int top = referenceGround(x, z);
-    if (top == Integer.MIN_VALUE) return Unit.NONE;
-    LinkedHashMap<BlockPos, BlockState> writes = new LinkedHashMap<>();
-    boolean complete = true;
-    for (int y = top + 1; y <= top + 4; y++) {
-      BlockPos pos = new BlockPos(x, y, z);
-      BlockState original = region.state(pos);
-      if (original == null || !plantLike(original)) break;
-      BlockState now = world.getBlockState(pos);
-      if (same(original, now)) continue;
-      if (!now.isAir()) return complete && writes.isEmpty() ? Unit.NONE : Unit.GUARDED;
-      complete = false;
-      writes.put(pos, original);
+  /** Pass two: a garden bed's dye flower, or a flora column's flower or ground plant. */
+  private Unit flora(ServerLevel world, Player actor, long[] column, AltarRules.TickBudget budget) {
+    int x = (int) column[0], z = (int) column[1], dx = (int) column[2], dz = (int) column[3];
+    BlockPos top = surfaceAt(world, x, z);
+    if (top == null) return Unit.NONE;
+    var palette = AltarVegetation.palette(world, world.getBiome(top.above()));
+    VegetationRules.Role role = role(world, column, palette);
+    if (role != VegetationRules.Role.BED && role != VegetationRules.Role.FLORA) return Unit.NONE;
+    BlockState surface = world.getBlockState(top);
+    BlockPos pos = top.above();
+    BlockState cover = world.getBlockState(pos);
+    // A single snow layer is weather, not growth: snowy land still grows its garden.
+    if (!cover.isAir() && !(cover.is(Blocks.SNOW) && cover.getValue(net.minecraft.world.level.block.SnowLayerBlock.LAYERS) == 1))
+      return Unit.NONE;
+    long seed = world.getSeed();
+    List<BlockState> garden = AltarVegetation.garden(world.registryAccess()).species();
+    List<BlockState> candidates = new ArrayList<>();
+    boolean dye = false;
+    if (surface.is(Blocks.WATER) && surface.getFluidState().isSource()) {
+      if (!palette.lilyPads() || role != VegetationRules.Role.FLORA) return Unit.NONE;
+      candidates.add(Blocks.LILY_PAD.defaultBlockState());
+    } else if (!LandWorks.ground(surface)) {
+      return Unit.NONE;
+    } else if (role == VegetationRules.Role.BED) {
+      int first = VegetationRules.bedSpecies(dx, dz, garden.size());
+      for (int i = 0; i < garden.size(); i++) candidates.add(garden.get((first + i) % garden.size()));
+      dye = true;
+    } else {
+      RandomSource random = RandomSource.create(NatureRestorationRules.mix(seed, x, z, VegetationRules.SPECIES_SALT));
+      if (VegetationRules.flower(seed, x, z)) {
+        if (VegetationRules.dyeFlower(seed, x, z) || palette.flowers().isEmpty()) {
+          int pick = VegetationRules.pick(seed, x, z, VegetationRules.SPECIES_SALT, garden.size());
+          if (pick >= 0) candidates.add(garden.get(pick));
+          dye = true;
+        } else {
+          var provider = palette.flowers().get(VegetationRules.pick(seed, x, z, VegetationRules.DYE_SALT,
+              palette.flowers().size()));
+          candidates.add(provider.getState(random, pos));
+        }
+      }
+      for (var provider : palette.grasses()) candidates.add(provider.getState(random, pos));
+      candidates.add(Blocks.SHORT_GRASS.defaultBlockState());
     }
-    if (writes.isEmpty()) return Unit.NONE;
-    BlockPos base = new BlockPos(x, top, z);
-    BlockState ground = world.getBlockState(base);
-    BlockState originalGround = region.state(base);
-    if (originalGround == null || !ground.is(originalGround.getBlock())) return Unit.NONE;
-    BlockPos first = writes.keySet().iterator().next();
-    if (first.getY() == top + 1 && !writes.get(first).canSurvive(world, first)) return Unit.NONE;
-    for (BlockPos pos : writes.keySet()) if (LandWorks.occupied(world, pos)) return guard("plant_entity");
-    if (!LandWorks.surroundedByLand(world, writes.keySet(), writes.keySet(), pos -> original(world, pos))) return guard("plant_margin");
+    LinkedHashMap<BlockPos, BlockState> writes = null;
+    BlockState planted = null;
+    for (BlockState candidate : candidates) {
+      if (candidate == null || !candidate.is(Blocks.LILY_PAD) && !AltarVegetation.plant(candidate)) continue;
+      writes = placement(world, pos, candidate);
+      if (writes != null) {
+        planted = candidate;
+        break;
+      }
+    }
+    if (writes == null) return Unit.NONE;
+    for (BlockPos write : writes.keySet()) if (LandWorks.occupied(world, write)) return guard("plant_entity");
+    if (!LandWorks.surroundedByLand(world, writes.keySet(), writes.keySet(), p -> false)) return guard("plant_margin");
     if (!budget.allows(writes.size())) return Unit.BUDGET;
     if (!affordable(AltarRules.BLOCK_CHARGE)) return Unit.FERTILIZER;
     if (!LandWorks.commit(actor, world, writes, Map.of(), Block.UPDATE_ALL)) return guard("plant_claim");
     pay(AltarRules.BLOCK_CHARGE);
     totals.plants++;
+    if (dye && garden.contains(planted.getBlock().defaultBlockState())) totals.dyeFlowers++;
+    grown.merge(net.minecraft.core.registries.BuiltInRegistries.BLOCK.getKey(planted.getBlock()).toString(), 1,
+        Integer::sum);
     budget.spend(writes.size());
     return Unit.APPLIED;
   }
 
-  /** A neighbour that still holds exactly what the generator put there is part of the land. */
-  private boolean original(ServerLevel world, BlockPos pos) {
-    BlockState original = region.state(pos);
-    return original != null && same(original, world.getBlockState(pos));
-  }
-
-  /** Current ground top of a column under vegetation, or MIN for built or unknown columns. */
-  private int currentGround(ServerLevel world, int x, int z) {
-    int y = world.getHeight(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, x, z) - 1;
-    BlockPos.MutableBlockPos cursor = new BlockPos.MutableBlockPos();
-    for (int steps = 0; steps < 64 && y >= world.getMinBuildHeight(); steps++, y--) {
-      BlockState state = world.getBlockState(cursor.set(x, y, z));
-      if (LandWorks.ground(state)) return y;
-      if (!state.isAir() && !LandWorks.natural(state)) return Integer.MIN_VALUE;
+  /** The blocks of one plant at a position (two for a double plant), or null if it cannot live there. */
+  private static LinkedHashMap<BlockPos, BlockState> placement(ServerLevel world, BlockPos pos, BlockState state) {
+    LinkedHashMap<BlockPos, BlockState> writes = new LinkedHashMap<>();
+    if (state.getBlock() instanceof DoublePlantBlock && state.hasProperty(DoublePlantBlock.HALF)) {
+      BlockPos upper = pos.above();
+      if (!world.getBlockState(upper).isAir()) return null;
+      BlockState lower = state.setValue(DoublePlantBlock.HALF, DoubleBlockHalf.LOWER);
+      if (!lower.canSurvive(world, pos)) return null;
+      writes.put(pos, lower);
+      writes.put(upper, state.setValue(DoublePlantBlock.HALF, DoubleBlockHalf.UPPER));
+      return writes;
     }
-    return Integer.MIN_VALUE;
+    if (!state.canSurvive(world, pos)) return null;
+    writes.put(pos, state);
+    return writes;
   }
 
   /**
-   * The reference trees anchored in this chunk and inside the disc. Trunks are 26-connected
-   * logs; every canopy block joins the trunk that reaches it first through the canopy, so
-   * neighbouring crowns stay separate trees.
+   * Runs a tree feature in a sandbox over the live level and keeps only what grows above ground:
+   * dirt placed under a trunk and roots driven into the soil are dropped, so terrain is never
+   * changed, and block entities (bee nests) are never placed. Null when the feature does not place.
    */
-  static List<Tree> treesIn(TerrainReference.Region region, AltarRules.ChunkKey key, int cx, int cz, int radius) {
-    int margin = AltarRules.TREE_MARGIN;
-    int minX = key.minX() - margin, maxX = key.minX() + 15 + margin;
-    int minZ = key.minZ() - margin, maxZ = key.minZ() + 15 + margin;
-    int low = Integer.MAX_VALUE, high = Integer.MIN_VALUE;
-    for (int x = minX; x <= maxX; x++)
-      for (int z = minZ; z <= maxZ; z++) {
-        int ground = referenceGround(region, x, z);
-        int surface = region.surface(x, z);
-        if (ground != Integer.MIN_VALUE) low = Math.min(low, ground - 1);
-        if (surface != Integer.MIN_VALUE) high = Math.max(high, Math.min(surface, ground + AltarRules.CANOPY_HEIGHT));
+  private LinkedHashMap<BlockPos, BlockState> simulate(ServerLevel world, ConfiguredFeature<?, ?> feature, long seed,
+      int x, int z, BlockPos origin, int groundY) {
+    int reach = radius + AltarRules.TREE_MARGIN;
+    BoundingBox permitted = new BoundingBox(worldPosition.getX() - reach, world.getMinBuildHeight(),
+        worldPosition.getZ() - reach, worldPosition.getX() + reach, world.getMaxBuildHeight() - 1,
+        worldPosition.getZ() + reach);
+    long started = System.nanoTime();
+    var result = FeatureSandbox.simulate(world, permitted, feature,
+        RandomSource.create(NatureRestorationRules.mix(seed, x, z, VegetationRules.TREE_SALT)), origin);
+    long spent = System.nanoTime() - started;
+    lastSimulationNanos = Math.max(1, spent);
+    maxTreeNanos = Math.max(maxTreeNanos, spent);
+    if (treeSamples.size() < 256) treeSamples.add(spent / 1000);
+    if (result == null) return null;
+    LinkedHashMap<BlockPos, BlockState> writes = new LinkedHashMap<>();
+    for (var entry : result.writes().entrySet()) {
+      BlockPos pos = entry.getKey();
+      BlockState state = entry.getValue();
+      if (state.hasBlockEntity() || state.isAir()) continue;
+      BlockState now = world.getBlockState(pos);
+      if (pos.getY() <= groundY && LandWorks.ground(now)) continue;
+      if (LandWorks.ground(state) && !state.is(BlockTags.LOGS)) {
+        // Dirt or soil a feature lays: terrain, which this altar never places.
+        continue;
       }
-    if (low > high) return List.of();
-    LongOpenHashSet logs = new LongOpenHashSet();
-    LongOpenHashSet canopy = new LongOpenHashSet();
+      writes.put(pos, state);
+    }
+    return writes;
+  }
+
+  /** A giant cactus in sand, as {@link VegetationRules#giantCactus} shapes it, or null when it cannot stand. */
+  private static LinkedHashMap<BlockPos, BlockState> giantCactus(ServerLevel world, long seed, int x, int z,
+      BlockPos ground) {
+    LinkedHashMap<BlockPos, BlockState> writes = new LinkedHashMap<>();
+    BlockState cactus = Blocks.CACTUS.defaultBlockState();
+    for (var column : VegetationRules.giantCactus(seed, x, z)) {
+      int cx = x + column.dx(), cz = z + column.dz();
+      BlockPos base = new BlockPos(cx, ground.getY(), cz);
+      if (!world.getBlockState(base).is(BlockTags.SAND)) return null;
+      for (int h = 1; h <= column.height(); h++) writes.put(base.above(h), cactus);
+    }
+    // Every cactus block needs non-solid sides; the shape never touches itself face to face.
+    for (BlockPos pos : writes.keySet())
+      for (Direction side : Direction.Plane.HORIZONTAL) {
+        BlockPos next = pos.relative(side);
+        if (writes.containsKey(next)) return null;
+        BlockState beside = world.getBlockState(next);
+        if (beside.isSolid() || !beside.getFluidState().isEmpty()) return null;
+      }
+    return writes;
+  }
+
+  /** Cocoa pods on the lower jungle trunk: about one face in four, stable per position. */
+  private static void cocoa(ServerLevel world, long seed, LinkedHashMap<BlockPos, BlockState> writes, int groundY) {
+    List<Map.Entry<BlockPos, BlockState>> pods = new ArrayList<>();
+    for (var entry : writes.entrySet()) {
+      BlockPos log = entry.getKey();
+      if (!entry.getValue().is(BlockTags.JUNGLE_LOGS) || log.getY() < groundY + 2 || log.getY() > groundY + 5) continue;
+      for (Direction side : Direction.Plane.HORIZONTAL) {
+        BlockPos pod = log.relative(side);
+        // Pods take the place of trunk vines; anything else of the tree keeps its spot.
+        BlockState planned = writes.get(pod);
+        if (planned != null && !planned.is(Blocks.VINE) || !world.getBlockState(pod).isAir()) continue;
+        if (!NatureRestorationRules.selected(seed, pod.getX() * 31 + side.ordinal(), pod.getZ() + pod.getY() * 131,
+            VegetationRules.SHAPE_SALT, 0.25)) continue;
+        int age = VegetationRules.pick(seed, pod.getX(), pod.getZ() + pod.getY(), VegetationRules.SPECIES_SALT, 3);
+        pods.add(Map.entry(pod, Blocks.COCOA.defaultBlockState()
+            .setValue(HorizontalDirectionalBlock.FACING, side.getOpposite()).setValue(CocoaBlock.AGE, age)));
+      }
+    }
+    for (var pod : pods) writes.put(pod.getKey(), pod.getValue());
+  }
+
+  /** A write may only go into air, a replaceable wild plant, or water for a waterlogged block. */
+  private static boolean replaceable(BlockState now, BlockState written) {
+    if (now.isAir() || now.equals(written)) return true;
+    if (now.is(Blocks.WATER) && now.getFluidState().isSource())
+      return written.hasProperty(BlockStateProperties.WATERLOGGED) && written.getFluidState().is(Fluids.WATER);
+    return LandWorks.natural(now) && now.getFluidState().isEmpty() && now.canBeReplaced()
+        && !now.is(BlockTags.FLOWERS);
+  }
+
+  /** Nothing but air or a replaceable wild plant (grass, snow layer) where a tree's trunk starts. */
+  private static boolean open(BlockState state) {
+    return state.isAir() || LandWorks.natural(state) && state.canBeReplaced() && state.getFluidState().isEmpty()
+        && !state.is(BlockTags.FLOWERS);
+  }
+
+  /** A log, stem, sapling or huge mushroom nearby: trees keep their distance. */
+  private static boolean nearTree(ServerLevel world, BlockPos origin) {
     BlockPos.MutableBlockPos cursor = new BlockPos.MutableBlockPos();
-    for (int x = minX; x <= maxX; x++)
-      for (int z = minZ; z <= maxZ; z++)
-        for (int y = low; y <= high; y++) {
-          BlockState state = region.state(cursor.set(x, y, z));
-          if (state == null || state.isAir() || state.hasBlockEntity()) continue;
-          if (trunk(state)) logs.add(cursor.asLong());
-          else if (crown(state)) canopy.add(cursor.asLong());
+    int spacing = VegetationRules.TREE_SPACING;
+    for (int dx = -spacing; dx <= spacing; dx++)
+      for (int dz = -spacing; dz <= spacing; dz++)
+        for (int y = origin.getY() - 1; y <= origin.getY() + 6; y++) {
+          BlockState state = world.getBlockState(cursor.set(origin.getX() + dx, y, origin.getZ() + dz));
+          if (state.is(BlockTags.LOGS) || state.is(BlockTags.SAPLINGS) || state.is(Blocks.MUSHROOM_STEM)
+              || state.is(Blocks.BROWN_MUSHROOM_BLOCK) || state.is(Blocks.RED_MUSHROOM_BLOCK)
+              || state.is(Blocks.CACTUS) || state.is(Blocks.CHORUS_PLANT) || state.is(BlockTags.WART_BLOCKS)
+              || state.is(Blocks.CRIMSON_STEM) || state.is(Blocks.WARPED_STEM))
+            return true;
         }
-    Long2IntOpenHashMap owner = new Long2IntOpenHashMap();
-    owner.defaultReturnValue(-1);
-    List<LongArrayList> members = new ArrayList<>();
-    for (long start : logs) {
-      if (owner.containsKey(start)) continue;
-      int id = members.size();
-      LongArrayList trunkBlocks = new LongArrayList();
-      LongArrayList frontier = new LongArrayList();
-      frontier.add(start);
-      owner.put(start, id);
-      while (!frontier.isEmpty()) {
-        long at = frontier.removeLong(frontier.size() - 1);
-        trunkBlocks.add(at);
-        int ax = BlockPos.getX(at), ay = BlockPos.getY(at), az = BlockPos.getZ(at);
-        for (int dx = -1; dx <= 1; dx++)
-          for (int dy = -1; dy <= 1; dy++)
-            for (int dz = -1; dz <= 1; dz++) {
-              long next = BlockPos.asLong(ax + dx, ay + dy, az + dz);
-              if (logs.contains(next) && !owner.containsKey(next)) {
-                owner.put(next, id);
-                frontier.add(next);
-              }
-            }
-      }
-      members.add(trunkBlocks);
-    }
-    LongArrayList wave = new LongArrayList();
-    for (LongArrayList trunk : members) wave.addAll(trunk);
-    while (!wave.isEmpty()) {
-      LongArrayList next = new LongArrayList();
-      for (int i = 0; i < wave.size(); i++) {
-        long at = wave.getLong(i);
-        int id = owner.get(at);
-        for (net.minecraft.core.Direction direction : net.minecraft.core.Direction.values()) {
-          long neighbour = BlockPos.offset(at, direction);
-          if (canopy.contains(neighbour) && !owner.containsKey(neighbour)) {
-            owner.put(neighbour, id);
-            members.get(id).add(neighbour);
-            next.add(neighbour);
-          }
-        }
-      }
-      wave = next;
-    }
-    List<Tree> result = new ArrayList<>();
-    for (LongArrayList blocks : members) {
-      long anchor = Long.MAX_VALUE;
-      int ay = Integer.MAX_VALUE, ax = 0, az = 0;
-      for (int i = 0; i < blocks.size(); i++) {
-        long at = blocks.getLong(i);
-        if (!logs.contains(at)) continue;
-        int y = BlockPos.getY(at), x = BlockPos.getX(at), z = BlockPos.getZ(at);
-        if (y < ay || y == ay && (x < ax || x == ax && z < az)) {
-          anchor = at;
-          ay = y;
-          ax = x;
-          az = z;
-        }
-      }
-      if (anchor == Long.MAX_VALUE || ax >> 4 != key.x() || az >> 4 != key.z()
-          || !AltarRules.inSquare(ax - cx, az - cz, radius)) continue;
-      List<BlockPos> list = new ArrayList<>(blocks.size());
-      for (int i = 0; i < blocks.size(); i++) list.add(BlockPos.of(blocks.getLong(i)));
-      list.sort(Comparator.comparingInt((BlockPos p) -> p.getY()).thenComparingInt(p -> p.getX())
-          .thenComparingInt(p -> p.getZ()));
-      result.add(new Tree(BlockPos.of(anchor), List.copyOf(list)));
-    }
-    result.sort(Comparator.comparingLong((Tree t) -> {
-          long dx = t.anchor().getX() - cx, dz = t.anchor().getZ() - cz;
-          return dx * dx + dz * dz;
-        }).thenComparingInt(t -> t.anchor().getX()).thenComparingInt(t -> t.anchor().getZ()));
-    return List.copyOf(result);
+    return false;
   }
 
-  // ---- Classification ------------------------------------------------------------------------
-
-  private int referenceGround(int x, int z) {
-    return referenceGround(region, x, z);
+  /**
+   * The exposed natural ground of a column: the top block under grass, flowers and snow layers,
+   * ignoring leaves. Null when it is built, a fluid, a plant or a trunk.
+   */
+  static BlockPos groundAt(ServerLevel world, int x, int z) {
+    BlockPos top = surfaceAt(world, x, z);
+    if (top == null) return null;
+    return LandWorks.ground(world.getBlockState(top)) ? top : null;
   }
 
-  /** Original ground top of a column under vegetation and water, or MIN outside the sandbox. */
-  static int referenceGround(TerrainReference.Region region, int x, int z) {
-    int y = region.surface(x, z);
-    if (y == Integer.MIN_VALUE) return y;
-    BlockPos.MutableBlockPos cursor = new BlockPos.MutableBlockPos();
-    for (int steps = 0; steps < 80 && y >= region.setup.minY(); steps++, y--) {
-      BlockState state = region.state(cursor.set(x, y, z));
-      if (state != null && LandWorks.ground(state)) return y;
-    }
-    return Integer.MIN_VALUE;
-  }
-
-  /** Terrain the altar may recreate: natural ground, never ores or block entities. */
-  static boolean fillable(BlockState state) {
-    return state != null && LandWorks.ground(state) && !state.is(net.neoforged.neoforge.common.Tags.Blocks.ORES)
-        && !state.hasBlockEntity();
-  }
-
-  static AltarRules.Cell cell(BlockState state) {
-    if (!state.getFluidState().isEmpty()) return AltarRules.Cell.BLOCKED;
-    if (state.isAir()) return AltarRules.Cell.OPEN;
-    if (!LandWorks.natural(state)) return AltarRules.Cell.BLOCKED;
-    return state.canBeReplaced() ? AltarRules.Cell.OPEN : AltarRules.Cell.GROUND;
-  }
-
-  /** Falling ground over a void gets its own sturdy form, as surface rules do under sand. */
-  private BlockState supported(BlockPos pos, BlockState state) {
-    if (!(state.getBlock() instanceof FallingBlock)) return state;
-    BlockState below = level.getBlockState(pos.below());
-    if (!below.isAir() && !below.canBeReplaced()) return state;
-    if (state.is(Blocks.SAND)) return Blocks.SANDSTONE.defaultBlockState();
-    if (state.is(Blocks.RED_SAND)) return Blocks.RED_SANDSTONE.defaultBlockState();
-    return Blocks.STONE.defaultBlockState();
-  }
-
-  /** No entity inside, and every face neighbour natural, original or part of the unit. */
-  private boolean guardedWrite(BlockPos pos, Set<BlockPos> unit) {
-    ServerLevel world = (ServerLevel) level;
-    if (LandWorks.occupied(world, pos)) return false;
-    return LandWorks.surroundedByLand(world, List.of(pos), unit, neighbour -> {
-      BlockState original = region.state(neighbour);
-      return original != null && same(original, world.getBlockState(neighbour));
-    });
-  }
-
-  static boolean same(BlockState original, BlockState now) {
-    if (original.equals(now)) return true;
-    return original.is(BlockTags.LEAVES) && now.is(original.getBlock());
-  }
-
-  static boolean trunk(BlockState state) {
-    return state.is(BlockTags.LOGS) || state.is(Blocks.MUSHROOM_STEM);
-  }
-
-  static boolean crown(BlockState state) {
-    return state.is(BlockTags.LEAVES) || CANOPY_EXTRAS.contains(state.getBlock());
-  }
-
-  static boolean plantLike(BlockState state) {
-    if (state.isAir() || !state.getFluidState().isEmpty() || state.hasBlockEntity()) return false;
-    if (state.is(BlockTags.LEAVES) || state.is(BlockTags.LOGS) || state.is(Blocks.FIRE) || state.is(Blocks.SOUL_FIRE))
-      return false;
-    if (!NatureRestoration.natural(state) && !EXTRA_PLANTS.contains(state.getBlock())) return false;
-    return state.is(BlockTags.REPLACEABLE) || state.is(BlockTags.FLOWERS) || EXTRA_PLANTS.contains(state.getBlock());
+  /**
+   * The top block of a column that blocks motion or holds a fluid, ignoring leaves, or null
+   * outside the world. A snow layer thick enough to block motion counts as cover: the block below.
+   */
+  static BlockPos surfaceAt(ServerLevel world, int x, int z) {
+    int y = world.getHeight(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, x, z) - 1;
+    if (y < world.getMinBuildHeight()) return null;
+    BlockPos top = new BlockPos(x, y, z);
+    BlockState state = world.getBlockState(top);
+    if (state.is(Blocks.SNOW)) return top.below();
+    return top;
   }
 
   // ---- Persistence ---------------------------------------------------------------------------
@@ -867,16 +769,20 @@ public final class RenewalAltarEntity extends AltarBlockEntity {
     state = parse(tag.getString("state"));
     radius = tag.contains("radius", Tag.TAG_INT) ? Math.max(1, Math.min(64, tag.getInt("radius")))
         : AltarRules.RENEWAL_RADIUS;
-    area = null;
     columns = null;
-    trust.clear();
+    charge = Math.max(0, tag.getInt("charge"));
+    if (version < 2) {
+      // Version 1 rebuilt terrain in three other passes; its progress means nothing now. A running
+      // altar starts a fresh vegetation pass, keeping its fertilizer and charge.
+      pass = 0;
+      index = 0;
+      totals.load(new CompoundTag());
+      if (state == State.FAILED) state = State.DONE;
+      return;
+    }
     pass = Math.max(0, Math.min(PASSES, tag.getInt("pass")));
     index = Math.max(0, tag.getInt("index"));
-    charge = Math.max(0, tag.getInt("charge"));
     totals.load(tag.getCompound("totals"));
-    failure = tag.getString("failure");
-    region = null;
-    trees = List.of();
   }
 
   private static State parse(String name) {
@@ -894,6 +800,5 @@ public final class RenewalAltarEntity extends AltarBlockEntity {
     tag.putInt("index", index);
     tag.putInt("charge", charge);
     tag.put("totals", totals.save());
-    tag.putString("failure", failure);
   }
 }

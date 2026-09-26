@@ -25,11 +25,11 @@
       },
       "en_us": [
         "Machines That Remember the Land",
-        "Six blocks you place, feed and leave working: they restore land, flatten it, keep monsters away, grow crops, slow enemies and mend gear. None is crafted from scratch: the Atlas grants one of each in acts III and IV, and an original can be copied.\n\nHeliodor's groundskeepers, still clocking in."
+        "Six blocks you place, feed and leave working: they grow gardens, shape the land, keep monsters away, speed up crops, slow enemies and mend gear. None is crafted from scratch: the Atlas grants one of each in acts III and IV, and an original can be copied.\n\nHeliodor's groundskeepers, still clocking in."
       ],
       "es_es": [
         "Máquinas que recuerdan la tierra",
-        "Seis bloques que ponés, alimentás y dejás trabajando: restauran la tierra, la aplanan, alejan monstruos, hacen crecer cultivos, frenan enemigos y reparan equipo. Ninguno se fabrica desde cero: el Atlas da uno de cada uno en los actos III y IV, y un original se puede copiar.\n\nLos jardineros de Heliodor, todavía fichando."
+        "Seis bloques que ponés, alimentás y dejás trabajando: hacen crecer jardines, dan forma a la tierra, alejan monstruos, apuran cultivos, frenan enemigos y reparan equipo. Ninguno se fabrica desde cero: el Atlas da uno de cada uno en los actos III y IV, y un original se puede copiar.\n\nLos jardineros de Heliodor, todavía fichando."
       ],
       "sources": [
         "repo:docs/design/ark-altars.md",
@@ -324,15 +324,16 @@
       },
       "en_us": [
         "Altar of Renewal",
-        "Rebuilds the land the world generator made in the &e49 by 49&r square around it: refills dug pits, gives bare dirt back its cover and regrows the original trees and plants. Near your team's Ark nature site it grows to 65 by 65.\n\nIt eats &ebone meal&r or other fertilizers: each pays 10 seconds of work, about four blocks. The whole square must stay loaded, so stay close."
+        "Grows its biome in the &e49 by 49&r square around it: the biome's trees, giant cacti in the desert, giant spruces in old taigas, mangroves, huge fungi in the Nether, chorus in the End, and flowers. Near your team's Ark garden it grows 65 by 65.\n\nIt only eats &ebone meal&r or other fertilizers: each one pays 10 seconds of work and four plants, and a whole tree takes up to four. Keep the square loaded."
       ],
       "es_es": [
         "Altar de Renovación",
-        "Reconstruye la tierra que hizo el generador del mundo en el cuadrado de &e49 por 49&r a su alrededor: rellena pozos, le devuelve la cobertura a la tierra pelada y hace rebrotar los árboles y plantas originales. Cerca del sitio de naturaleza del Arca de tu equipo pasa a 65 por 65.\n\nConsume &epolvo de hueso&r u otros fertilizantes: cada uno paga 10 segundos de trabajo, unos cuatro bloques. Todo el cuadrado tiene que estar cargado, así que quedate cerca."
+        "Hace crecer su bioma en el cuadrado de &e49 por 49&r a su alrededor: los árboles del bioma, cactus gigantes en el desierto, abetos gigantes en las taigas viejas, mangles, hongos gigantes en el Nether, chorus en el End, y flores. Cerca del jardín del Arca de tu equipo pasa a 65 por 65.\n\nSólo come &epolvo de hueso&r u otros fertilizantes: cada uno paga 10 segundos de trabajo y cuatro plantas, y un árbol entero lleva hasta cuatro. Mantené el cuadrado cargado."
       ],
       "sources": [
         "repo:docs/design/ark-altars.md",
         "repo:companion/src/main/java/dev/entrelumen/RenewalAltarEntity.java",
+        "repo:companion/src/main/java/dev/entrelumen/AltarVegetation.java",
         "repo:companion/src/main/resources/data/entrelumen/tags/item/renewal_fertilizers.json"
       ]
     },
@@ -351,15 +352,20 @@
         "shape": "diamond"
       },
       "en_us": [
-        "What Renewal Leaves Alone",
-        "Never builds, containers, crops, paths, placed leaves or block entities, and never blocks placed into entities. No ores, closed caves, flooded or bottomless pits, or holes more than 16 blocks below the original surface: level those first.\n\nNo pumpkins or melons either: it restores land, not lunch. Claims and ruins refuse its work at no cost."
+        "Every Dye, Always",
+        "Around the altar grows a symmetric dye garden: lily of the valley, poppy, dandelion, cornflower, conebloom, swamp rose and ink mushrooms, plus four huge ink mushrooms whose caps drop ink mushrooms. Its harvest crafts all 16 dyes; mix the rest.\n\nFlowers need dirt or grass: on sand or stone, lay a few blocks. It never touches terrain, builds, crops or claims, and never plants wither roses or berry bushes."
       ],
       "es_es": [
-        "Lo que la Renovación no toca",
-        "Nunca construcciones, contenedores, cultivos, caminos, hojas colocadas ni entidades de bloque, y nunca pone bloques encima de entidades. Ni minerales, ni cuevas cerradas, ni pozos inundados o sin fondo, ni agujeros de más de 16 bloques bajo la superficie original: nivelalos antes.\n\nTampoco calabazas ni melones: restaura tierra, no almuerzos. Reclamos y ruinas rechazan su trabajo sin costo."
+        "Todos los tintes, siempre",
+        "Alrededor del altar crece un jardín de tintes simétrico: lirio de los valles, amapola, diente de león, aciano, Conebloom, Swamp Rose y hongos de tinta, más cuatro hongos de tinta gigantes cuyos sombreros sueltan hongos de tinta. Su cosecha da los 16 tintes; el resto se mezcla.\n\nLas flores necesitan tierra o pasto: en arena o piedra, poné unos bloques. Nunca toca el terreno, las construcciones, los cultivos ni los reclamos, y nunca planta rosas marchitas ni arbustos de bayas."
       ],
       "sources": [
-        "repo:docs/design/ark-altars.md"
+        "repo:docs/design/ark-altars.md",
+        "repo:companion/src/main/java/dev/entrelumen/AltarVegetation.java",
+        "jar:eternalstarlight-0.9.0+1.21.1+neoforge.jar:data/eternal_starlight/recipe/shapeless/brown_dye_from_conebloom.json",
+        "jar:eternalstarlight-0.9.0+1.21.1+neoforge.jar:data/eternal_starlight/recipe/shapeless/green_dye_from_swamp_rose.json",
+        "jar:The_Undergarden-1.21.1-0.9.6.jar:data/undergarden/recipe/ink_mushroom_to_dye.json",
+        "jar:utilitarian-1.21.1-0.19.2.jar:data/utilitarian/recipe/utility/green_dye.json"
       ]
     },
     {
@@ -377,11 +383,11 @@
       },
       "en_us": [
         "Altar of Levelling",
-        "Flattens a square centered on itself at its own height, with a 4-block slope into the land on every side. Burns &ecoal, charcoal or redstone&r, a minute each.\n- Empty hand: 10-second preview; use again during it to start; while working, pause or resume.\n- Crouch during the preview: next size, 9, 17, 25 or 33 blocks wide.\n- Crouch otherwise: its 27-slot buffer; a block in hand goes in."
+        "Free terrain work with the land's own plain blocks: it asks for no materials and keeps none. Burns &ecoal, charcoal or redstone&r, a minute each.\n- Empty hand: 10-second preview; use again to start; while working, pause or resume.\n- Crouch during the preview: next setting, flat 9, 17, 25 or 33 wide with a 4-block slope, then repair 49 by 49.\n- Crouch otherwise: its status."
       ],
       "es_es": [
         "Altar de Nivelación",
-        "Aplana un cuadrado centrado en sí mismo a su propia altura, con una pendiente de 4 bloques hacia el terreno en todos los lados. Quema &ecarbón, carbón vegetal o redstone&r, un minuto cada uno.\n- Mano vacía: vista previa de 10 segundos; usalo otra vez durante ella para empezar; trabajando, pausa o reanuda.\n- Agachado en la vista previa: siguiente tamaño, 9, 17, 25 o 33 bloques de lado.\n- Agachado en otro momento: su depósito de 27 casilleros; un bloque en la mano se agrega."
+        "Trabajo de terreno gratis con los bloques comunes del lugar: no pide materiales ni guarda nada. Quema &ecarbón, carbón vegetal o redstone&r, un minuto cada uno.\n- Mano vacía: vista previa de 10 segundos; usalo otra vez para empezar; trabajando, pausa o reanuda.\n- Agachado en la vista previa: siguiente modo, plano de 9, 17, 25 o 33 de lado con una pendiente de 4 bloques, y después reparar 49 por 49.\n- Agachado en otro momento: su estado."
       ],
       "sources": [
         "repo:docs/design/ark-altars.md",
@@ -405,15 +411,16 @@
         "shape": "diamond"
       },
       "en_us": [
-        "Moves Matter, Never Makes It",
-        "Every block it cuts goes to its buffer or an adjacent container, as an iron tool would drop it (grass gives dirt, stone gives cobblestone). Holes fill only from the buffer or a container beside it; out of material, it waits.\n\nIt copies the surrounding top, subsurface and deep blocks, so the flat looks natural. Builds, containers and fluids refuse their column."
+        "Only Real Terrain",
+        "Flatten copies the top, subsurface and deep blocks around it: what it cuts vanishes and what it fills is free. Repair rebuilds pits and bare dirt as the world generator made them, with ores turned into plain rock.\n\nIt never removes or creates ores, trees, ice or builds: a column holding one, a container, a crop or a fluid is left whole. Fell the trees first."
       ],
       "es_es": [
-        "Mueve materia, nunca la crea",
-        "Cada bloque que corta va a su depósito o a un contenedor pegado, como lo soltaría una herramienta de hierro (el pasto da tierra, la piedra da adoquín). Los pozos se rellenan sólo desde el depósito o un contenedor al lado; sin material, espera.\n\nCopia los bloques de superficie, subsuelo y profundidad de alrededor, así el llano se ve natural. Construcciones, contenedores y fluidos rechazan su columna."
+        "Sólo terreno de verdad",
+        "Aplanar copia los bloques de superficie, subsuelo y profundidad de alrededor: lo que corta desaparece y lo que rellena es gratis. Reparar reconstruye pozos y tierra pelada como los hizo el generador del mundo, con los minerales convertidos en roca común.\n\nNunca saca ni crea minerales, árboles, hielo ni construcciones: una columna con alguno, un contenedor, un cultivo o un fluido queda entera. Talá los árboles primero."
       ],
       "sources": [
-        "repo:docs/design/ark-altars.md"
+        "repo:docs/design/ark-altars.md",
+        "repo:companion/src/main/java/dev/entrelumen/TerraformAltarEntity.java"
       ]
     },
     {
@@ -433,11 +440,11 @@
       },
       "en_us": [
         "Quirk: Everything Is Symmetric",
-        "Every area is a square centered on the altar, worked in rings from the center out, and the Levelling slope is the same on every side. Put the altar at the exact center of what you want to affect.\n\nHeliodor built with symmetry. Its altars never learned any other way."
+        "Every area is a square centered on the altar, worked in rings from the center out. The Levelling slope is the same on every side, and Renewal's dye garden is a pattern of coloured rings. Put the altar at the exact center of what you want to affect.\n\nHeliodor built with symmetry. Its altars never learned any other way."
       ],
       "es_es": [
         "Particularidad: todo es simétrico",
-        "Cada área es un cuadrado centrado en el altar, trabajado en anillos desde el centro hacia afuera, y la pendiente de la Nivelación es igual en todos los lados. Poné el altar justo en el centro de lo que querés afectar.\n\nHeliodor construía con simetría. Sus altares nunca aprendieron otra forma."
+        "Cada área es un cuadrado centrado en el altar, trabajado en anillos desde el centro hacia afuera. La pendiente de la Nivelación es igual en todos los lados, y el jardín de tintes de la Renovación es un dibujo de anillos de colores. Poné el altar justo en el centro de lo que querés afectar.\n\nHeliodor construía con simetría. Sus altares nunca aprendieron otra forma."
       ],
       "sources": [
         "repo:docs/design/ark-altars.md",
@@ -514,11 +521,11 @@
       },
       "en_us": [
         "Six Gifts From the Past",
-        "Peace for the base, Growth for the fields, Levelling and Renewal for the land, Time for the fights and Repose for the gear.\n\nHeliodor could not save itself, but it left very good tools."
+        "Peace for the base, Growth for the fields, Renewal for the gardens, Levelling for the land, Time for the fights and Repose for the gear.\n\nHeliodor could not save itself, but it left very good tools."
       ],
       "es_es": [
         "Seis regalos del pasado",
-        "Paz para la base, Crecimiento para los campos, Nivelación y Renovación para la tierra, Tiempo para las peleas y Reposo para el equipo.\n\nHeliodor no pudo salvarse, pero dejó muy buenas herramientas."
+        "Paz para la base, Crecimiento para los campos, Renovación para los jardines, Nivelación para la tierra, Tiempo para las peleas y Reposo para el equipo.\n\nHeliodor no pudo salvarse, pero dejó muy buenas herramientas."
       ],
       "sources": [
         "repo:docs/design/ark-altars.md"

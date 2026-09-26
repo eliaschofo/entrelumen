@@ -7,10 +7,10 @@
   },
   "subtitle": {
     "en_us": [
-      "Six modules around a controller, six batches and one deliberate act: the Ark opens a seam in the light and forges the Light Key."
+      "The Ark stands with its six modules and its controller: one deliberate act opens a seam in the light and forges the Light Key."
     ],
     "es_es": [
-      "Seis módulos alrededor de un controlador, seis lotes y un acto deliberado: el Arca abre una grieta en la luz y forja la Llave de Luz."
+      "El Arca en pie, con sus seis módulos y su controlador: un acto deliberado abre una grieta en la luz y forja la Llave de Luz."
     ]
   },
   "autofocus": "horizon_welcome",
@@ -20,16 +20,16 @@
       "es_es": "Terra · El controlador del Arca"
     },
     "workshop": {
-      "en_us": "Six distinct contributions",
-      "es_es": "Seis aportes distintos"
+      "en_us": "The last two modules",
+      "es_es": "Los dos últimos módulos"
     },
     "expedition": {
       "en_us": "The End · A witnessed journey",
       "es_es": "El End · Un viaje presenciado"
     },
     "commission": {
-      "en_us": "The Ark · Six recoverable batches",
-      "es_es": "El Arca · Seis lotes recuperables"
+      "en_us": "The Ark · The activation",
+      "es_es": "El Arca · La activación"
     },
     "afterward": {
       "en_us": "After the activation · self-reported",
@@ -38,18 +38,8 @@
   },
   "milestones": [
     "end_arrival",
-    "engineering_module",
-    "arcane_module",
-    "nature_module",
     "logistics_module",
-    "habitation_module",
-    "exploration_module",
-    "ark_calibrated",
-    "ark_contained",
-    "ark_renewed",
-    "ark_routed",
-    "ark_provisioned",
-    "ark_charted",
+    "engineering_module",
     "last_horizon"
   ],
   "quests": [
@@ -83,11 +73,11 @@
       "item": "entrelumen:ark_controller",
       "en_us": [
         "A controller, not a throne",
-        "Craft the Ark Controller shapelessly from one lodestone, one signal core and one diamond, and keep it: owning it records nothing. Place it where all six module blocks can stay nearby; a normal interaction reports the current batch and any missing block.\n\nAurelia wanted a throne at the centre of the fusion machine. Terra built a controller instead: anyone can read it, and it obeys only a team that finished its work."
+        "Craft the Ark Controller shapelessly from one lodestone, one signal core and one diamond. It marks where the Ark stands and the modules need it: place it first and build around it with the guide the Atlas projects.\n\nAurelia wanted a throne at the centre of the fusion machine. Terra built a controller instead: anyone can read it, and it obeys only a team that finished its work."
       ],
       "es_es": [
         "Un controlador, no un trono",
-        "Fabricá el controlador del Arca sin forma fija con una magnetita, un núcleo de señal y un diamante, y guardalo: tenerlo no registra nada. Colocalo donde los seis bloques de módulo puedan quedar cerca; una interacción común informa el lote actual y los bloques que faltan.\n\nAurelia quería un trono en el centro de la máquina de la fusión. Terra construyó un controlador: cualquiera puede leerlo y sólo obedece a un equipo que terminó su trabajo."
+        "Fabricá el controlador del Arca sin forma fija con una magnetita, un núcleo de señal y un diamante. Marca dónde va el Arca y los módulos lo necesitan: ponelo primero y construí alrededor con la guía que proyecta el Atlas.\n\nAurelia quería un trono en el centro de la máquina de la fusión. Terra construyó un controlador: cualquiera puede leerlo y sólo obedece a un equipo que terminó su trabajo."
       ],
       "layout": {
         "group": "threshold",
@@ -98,138 +88,73 @@
       }
     },
     {
-      "key": "horizon_engineering_parts",
+      "key": "horizon_placement",
       "deps": [
-        "horizon_welcome"
+        "horizon_controller"
       ],
-      "item": "mekanism:alloy_atomic",
-      "count": 2,
+      "type": "checkmark",
+      "optional": true,
+      "icon": "entrelumen:ark_controller",
       "en_us": [
-        "A bus with a second path",
-        "Set aside two Mekanism atomic alloys for the Engineering Module. Its delivery also takes two calibration frames, two energy couplers and one Ark Connection Bus: the same seven parts as its crafting recipe, so a lost module can be made again.\n\nTerra draws a bypass beside every line of the Ark. The fusion machine had one path for everything, and nowhere to go when it failed."
+        "Field note: the Ark on its feet",
+        "Optional, self-reported: build the Ark round its controller. In the Atlas, select The Ark and choose Show guide: a ghost marks every block. Each module works once it is in its place, the Ark is whole and the controller stands.\n\nAn astrolabe of stone and copper. Terra drew it so anyone could read the sky from it, even a child."
       ],
       "es_es": [
-        "Un bus con otra ruta",
-        "Apartá dos aleaciones atómicas de Mekanism para el módulo de ingeniería. Su entrega también pide dos marcos de calibración, dos acopladores de energía y un bus de conexión del Arca: las mismas siete piezas de su receta, así que un módulo perdido se vuelve a fabricar.\n\nTerra dibuja un desvío junto a cada línea del Arca. La máquina de la fusión tenía un solo camino para todo, y ninguna salida cuando falló."
+        "Nota de campo: el Arca en pie",
+        "Opcional y autoevaluado: construí el Arca alrededor del controlador. En el Atlas, elegí El Arca y pulsá Mostrar guía: un fantasma marca cada bloque. Cada módulo funciona en su lugar, con el Arca entera y el controlador puesto.\n\nUn astrolabio de piedra y cobre. Terra lo dibujó para que cualquiera pudiera leer el cielo en él, hasta un chico."
       ],
       "layout": {
-        "group": "workshop",
-        "x": -11.25,
-        "y": 4,
-        "size": 1.0,
-        "shape": "square"
+        "group": "commission",
+        "x": -3,
+        "y": 1.5,
+        "size": 0.75,
+        "shape": "circle"
       }
     },
     {
-      "key": "horizon_arcane_parts",
+      "key": "horizon_logistics",
       "deps": [
-        "horizon_welcome"
+        "voices_chorus"
       ],
-      "item": "occultism:iesnium_ingot",
-      "count": 2,
+      "milestone": "logistics_module",
+      "icon": "entrelumen:logistics_module",
       "en_us": [
-        "A boundary with a witness",
-        "Reserve two Occultism iesnium ingots. Iesnium hides as Nether netherrack: Otherworld Goggles reveal it and an Infused or Iesnium Pickaxe mines it; smelt the raw ore. Two spectral lenses and two containment seals complete the Arcane Module's delivery and recipe.\n\nBodhi asks for a boundary around the strange light, with a window in it. 'Seal what could hurt us. Never seal it from sight.'"
+        "Logistics: trade from afar",
+        "Deliver one routing matrix, sixteen emeralds and eight ender pearls to Logistics Module in the Atlas. In its place in the Ark your team buys from the Atlas in the Solsticio shops it knows, and villagers treat you as a Hero of the Village.\n\nAurelia kept a ledger of every debt of the fusion. Its last line reads: 'Trade honestly with those who stayed.'"
       ],
       "es_es": [
-        "Un límite con testigo",
-        "Reservá dos lingotes de iesnium de Occultism. El iesnium se esconde como netherrack en el Nether: las Otherworld Goggles lo revelan y un Infused o Iesnium Pickaxe lo pica; fundí el mineral crudo. Dos lentes espectrales y dos sellos de contención completan la entrega y la receta del módulo arcano.\n\nBodhi pide un límite alrededor de la luz extraña, con una ventana. «Sellá lo que pueda lastimarnos. Nunca lo escondas de la vista»."
+        "Logística: comercio a distancia",
+        "Entregá una matriz de distribución, dieciséis esmeraldas y ocho perlas de Ender en Módulo de logística desde el Atlas. En su lugar del Arca tu equipo compra desde el Atlas en las tiendas de Solsticio que conoce, y los aldeanos te tratan como Héroe de la Aldea.\n\nAurelia llevaba un libro con cada deuda de la fusión. La última línea dice: «Comerciá honestamente con los que se quedaron»."
       ],
       "layout": {
         "group": "workshop",
-        "x": -6.75,
-        "y": 4,
-        "size": 1.0,
-        "shape": "square"
+        "x": -4.5,
+        "y": 6,
+        "size": 2.0,
+        "shape": "hexagon"
       }
     },
     {
-      "key": "horizon_nature_parts",
+      "key": "horizon_engineering",
       "deps": [
-        "horizon_welcome"
+        "voices_chorus"
       ],
-      "item": "entrelumen:renewal_engine",
+      "milestone": "engineering_module",
+      "icon": "entrelumen:engineering_module",
       "en_us": [
-        "A reserve that answers",
-        "The Nature Module takes one renewal engine, two ecosystem capsules and two living matrices; the same five inputs craft a replacement if the block is lost. Keep your settlement's own reserve where it is.\n\nJuan's rule, now inside the Ark: if one supply fails, a living system must be able to begin again. He learned it feeding a frozen city."
+        "Engineering: charge without wires",
+        "Deliver one Ark Connection Bus, eight blocks of redstone and eight blocks of copper to Engineering Module in the Atlas. In its place in the Ark every item with energy your team carries charges itself, in any dimension.\n\nTerra's first rule for the fusion machine: 'Power goes where the people are, not where the cables end.'"
       ],
       "es_es": [
-        "Una reserva que responde",
-        "El módulo de naturaleza pide un motor de renovación, dos cápsulas de ecosistema y dos matrices vivas; los mismos cinco insumos fabrican un reemplazo si se pierde el bloque. Dejá la reserva de tu asentamiento donde está.\n\nLa regla de Juan, ahora dentro del Arca: si falla un suministro, un sistema vivo tiene que poder empezar de nuevo. La aprendió alimentando a una ciudad congelada."
+        "Ingeniería: carga sin cables",
+        "Entregá un bus de conexión del Arca, ocho bloques de redstone y ocho bloques de cobre en Módulo de ingeniería desde el Atlas. En su lugar del Arca todo ítem con energía que lleve tu equipo se carga solo, en cualquier dimensión.\n\nLa primera regla de Terra para la máquina de la fusión: «La energía va adonde está la gente, no adonde terminan los cables»."
       ],
       "layout": {
         "group": "workshop",
-        "x": -2.25,
-        "y": 4,
-        "size": 1.0,
-        "shape": "square"
-      }
-    },
-    {
-      "key": "horizon_logistics_parts",
-      "deps": [
-        "horizon_welcome"
-      ],
-      "item": "entrelumen:routing_matrix",
-      "count": 2,
-      "en_us": [
-        "Routes with readable stores",
-        "Prepare two routing matrices, two handling cores and one Ark Connection Bus for the Logistics Module. The same five inputs craft a replacement without reopening the one-time Atlas project; holding them only completes this lesson.\n\nAurelia counts everything, and for once Terra agrees: before a route changes, anyone should be able to check what it carries."
-      ],
-      "es_es": [
-        "Rutas con depósitos legibles",
-        "Prepará dos matrices de distribución, dos núcleos de manipulación y un bus de conexión del Arca para el módulo de logística. Los mismos cinco insumos fabrican un reemplazo sin reabrir el proyecto único del Atlas; tenerlos sólo completa esta lección.\n\nAurelia cuenta todo y, por una vez, Terra está de acuerdo: antes de cambiar una ruta, cualquiera tendría que poder revisar qué lleva."
-      ],
-      "layout": {
-        "group": "workshop",
-        "x": 2.25,
-        "y": 4,
-        "size": 1.0,
-        "shape": "square"
-      }
-    },
-    {
-      "key": "horizon_habitation_parts",
-      "deps": [
-        "horizon_welcome"
-      ],
-      "item": "entrelumen:habitation_contract",
-      "en_us": [
-        "A room for whoever follows",
-        "Set aside one Habitation Charter, two packs of Travel Rations and two living matrices for the Habitation Module; the same five inputs craft a replacement later. Count these two packs apart from the eight the commissioning will ask for.\n\nJuan packed rations like these for Terra's long shifts. Aurelia signs for every pack: nobody crossing the light should arrive to an empty kitchen."
-      ],
-      "es_es": [
-        "Un lugar para quien venga",
-        "Apartá una carta de habitabilidad, dos provisiones de viaje y dos matrices vivas para el módulo de habitabilidad; los mismos cinco insumos fabrican un reemplazo más adelante. Contá estas dos provisiones aparte de las ocho que va a pedir la puesta en marcha.\n\nJuan preparaba raciones así para los turnos largos de Terra. Aurelia firma cada paquete: nadie que cruce la luz tendría que llegar a una cocina vacía."
-      ],
-      "layout": {
-        "group": "workshop",
-        "x": 6.75,
-        "y": 4,
-        "size": 1.0,
-        "shape": "square"
-      }
-    },
-    {
-      "key": "horizon_exploration_parts",
-      "deps": [
-        "horizon_welcome"
-      ],
-      "item": "entrelumen:horizon_chart",
-      "en_us": [
-        "A chart with a return line",
-        "The Exploration Module takes one horizon chart, one spectral lens, two Twilight Forest steeleaf ingots, two Aether zanite gemstones and a bottle of the dragon's breath. Search Hollow Hill chests for steeleaf (Labyrinth chests are a chance, not a promise) and mine zanite ore without Silk Touch.\n\nTerra draws the way home before the way in. The fusion's engineers never marked a return; the Ark's first line is one."
-      ],
-      "es_es": [
-        "Una carta con ruta de regreso",
-        "El módulo de exploración pide una carta de horizontes, una lente espectral, dos lingotes de steeleaf de Twilight Forest, dos gemas de zanite del Aether y una botella de aliento de dragón. Buscá steeleaf en cofres de Hollow Hills (los del Labyrinth son una chance, no una promesa) y picá mena de zanite sin Toque de Seda.\n\nTerra dibuja la vuelta antes que la ida. Los ingenieros de la fusión nunca marcaron un regreso; la primera línea del Arca es uno."
-      ],
-      "layout": {
-        "group": "workshop",
-        "x": 11.25,
-        "y": 4,
-        "size": 1.0,
-        "shape": "square"
+        "x": 4.5,
+        "y": 6,
+        "size": 2.0,
+        "shape": "hexagon"
       }
     },
     {
@@ -248,7 +173,7 @@
       ],
       "layout": {
         "group": "expedition",
-        "x": 15.75,
+        "x": 9,
         "y": 2.5,
         "size": 1.0,
         "shape": "square"
@@ -272,7 +197,7 @@
       ],
       "layout": {
         "group": "expedition",
-        "x": 15.75,
+        "x": 9,
         "y": 4,
         "size": 0.75,
         "shape": "circle"
@@ -293,339 +218,34 @@
       ],
       "layout": {
         "group": "expedition",
-        "x": 15.75,
-        "y": 7.5,
+        "x": 9,
+        "y": 6,
         "size": 2.0,
         "shape": "octagon"
       }
     },
     {
-      "key": "horizon_engineering",
-      "deps": [
-        "world_network"
-      ],
-      "milestone": "engineering_module",
-      "icon": "entrelumen:engineering_module",
-      "en_us": [
-        "Engineering: a path around failure",
-        "After World Network, deliver two calibration frames, two energy couplers, one Ark Connection Bus and two Mekanism atomic alloys to Engineering Module in the Atlas. Placed, an empty hand reads the team's diagnosis; a damaged tool with its repair material in the offhand gets a quarter of its durability back, no experience spent.\n\nTerra: 'Everything breaks. What matters is whether you can fix it.'"
-      ],
-      "es_es": [
-        "Ingeniería: rodear una falla",
-        "Después de Red del mundo, entregá dos marcos de calibración, dos acopladores de energía, un bus de conexión del Arca y dos aleaciones atómicas de Mekanism en Módulo de ingeniería desde el Atlas. Colocado, con la mano vacía da el diagnóstico del equipo; con una herramienta dañada y su material de reparación en la otra mano, le devuelve un cuarto de durabilidad.\n\nTerra: «Todo se rompe. Lo que importa es si lo podés arreglar»."
-      ],
-      "layout": {
-        "group": "workshop",
-        "x": -11.25,
-        "y": 7.5,
-        "size": 2.0,
-        "shape": "hexagon"
-      }
-    },
-    {
-      "key": "horizon_arcane",
-      "deps": [
-        "world_network"
-      ],
-      "milestone": "arcane_module",
-      "icon": "entrelumen:arcane_module",
-      "en_us": [
-        "Arcane: a boundary that holds",
-        "After World Network, deliver two spectral lenses, two containment seals, one Occultism iesnium ingot and one nether star from the Wither to Arcane Module in the Atlas. Placed, it opens the team's field journal, takes its stabilization batch when crouch-used empty-handed, and splits a book of several enchantments into single volumes, one ordinary book per extra volume.\n\nBodhi keeps the strange light behind glass: sealed, never hidden."
-      ],
-      "es_es": [
-        "Arcano: un límite que resiste",
-        "Después de Red del mundo, entregá dos lentes espectrales, dos sellos de contención, un lingote de iesnium de Occultism y una estrella del Nether del Wither en Módulo arcano desde el Atlas. Colocado, abre el diario de campo, recibe su lote de estabilización si lo usás agachado con la mano vacía y separa un libro de varios encantamientos en volúmenes, un libro común por volumen extra.\n\nBodhi guarda la luz extraña detrás de un vidrio: sellada, nunca escondida."
-      ],
-      "layout": {
-        "group": "workshop",
-        "x": -6.75,
-        "y": 7.5,
-        "size": 2.0,
-        "shape": "hexagon"
-      }
-    },
-    {
-      "key": "horizon_nature",
-      "deps": [
-        "world_network"
-      ],
-      "milestone": "nature_module",
-      "icon": "entrelumen:nature_module",
-      "en_us": [
-        "Nature: growth with reserves",
-        "After World Network, deliver one renewal engine, two ecosystem capsules, one living matrix and one wet sponge from an Elder Guardian to Nature Module in the Atlas. Placed, it opens the restoration journal and takes its batch when crouch-used empty-handed. Mark a site with a bookmarked compass; then bone meal and saplings bring back its biome's cover and trees, leaving built blocks alone.\n\nJuan: 'Take only what can grow back.'"
-      ],
-      "es_es": [
-        "Naturaleza: crecer con reservas",
-        "Después de Red del mundo, entregá un motor de renovación, dos cápsulas de ecosistema, una matriz viva y una esponja mojada de un guardián anciano en Módulo de naturaleza desde el Atlas. Colocado, abre el diario de restauración y recibe su lote si lo usás agachado con la mano vacía. Marcá un sitio con una brújula anclada; polvo de hueso y brotes devuelven la cobertura y los árboles del bioma sin tocar lo construido.\n\nJuan: «Tomá sólo lo que pueda volver a crecer»."
-      ],
-      "layout": {
-        "group": "workshop",
-        "x": -2.25,
-        "y": 7.5,
-        "size": 2.0,
-        "shape": "hexagon"
-      }
-    },
-    {
-      "key": "horizon_logistics",
-      "deps": [
-        "world_network"
-      ],
-      "milestone": "logistics_module",
-      "icon": "entrelumen:logistics_module",
-      "en_us": [
-        "Logistics: a count before movement",
-        "After World Network, deliver two routing matrices, two handling cores and one Ark Connection Bus to Logistics Module in the Atlas. Placed, an empty hand opens its 27-slot depot, crouching adds to the current Ark batch, and a routing matrix records and refills a personal expedition kit from the depot.\n\nAurelia's ledger, turned outward: everyone can see what the Ark holds before they leave."
-      ],
-      "es_es": [
-        "Logística: contar antes de mover",
-        "Después de Red del mundo, entregá dos matrices de distribución, dos núcleos de manipulación y un bus de conexión del Arca en Módulo de logística desde el Atlas. Colocado, con la mano vacía abre su depósito de 27 espacios, agachado aporta al lote actual y con una matriz de distribución registra y repone un kit personal de expedición.\n\nEl libro de cuentas de Aurelia, puesto hacia afuera: todos ven qué guarda el Arca antes de partir."
-      ],
-      "layout": {
-        "group": "workshop",
-        "x": 2.25,
-        "y": 7.5,
-        "size": 2.0,
-        "shape": "hexagon"
-      }
-    },
-    {
-      "key": "horizon_habitation",
-      "deps": [
-        "world_network"
-      ],
-      "milestone": "habitation_module",
-      "icon": "entrelumen:habitation_module",
-      "en_us": [
-        "Habitation: a place to arrive",
-        "After World Network, deliver one Habitation Charter, two packs of Travel Rations and two living matrices to Habitation Module in the Atlas. Placed, it opens the supply journal and takes its provisioning batch when crouch-used empty-handed; used with a bed, it reserves a temporary respawn and keeps your old home.\n\nAurelia promised a place to live to whoever crosses. Juan makes sure there is dinner."
-      ],
-      "es_es": [
-        "Habitabilidad: un lugar al que llegar",
-        "Después de Red del mundo, entregá una carta de habitabilidad, dos provisiones de viaje y dos matrices vivas en Módulo de habitabilidad desde el Atlas. Colocado, abre el diario de abastecimiento y recibe su lote si lo usás agachado con la mano vacía; con una cama, reserva una reaparición temporal y conserva tu hogar anterior.\n\nAurelia le prometió un lugar a quien cruce. Juan se asegura de que haya cena."
-      ],
-      "layout": {
-        "group": "workshop",
-        "x": 6.75,
-        "y": 7.5,
-        "size": 2.0,
-        "shape": "hexagon"
-      }
-    },
-    {
-      "key": "horizon_exploration",
-      "deps": [
-        "world_network",
-        "horizon_end_arrival"
-      ],
-      "milestone": "exploration_module",
-      "icon": "entrelumen:exploration_module",
-      "en_us": [
-        "Exploration: the return marked first",
-        "After World Network and a witnessed End arrival, deliver one horizon chart, one spectral lens, two Twilight Forest steeleaf ingots, two Aether zanite gemstones and one bottle of the dragon's breath to Exploration Module in the Atlas. Placed, it opens the journey journal and takes the final chart when crouch-used; with a filled map, it fills blank pixels from your other maps of that area.\n\nTerra's charts all start with the way home."
-      ],
-      "es_es": [
-        "Exploración: primero la vuelta",
-        "Después de Red del mundo y una llegada al End observada, entregá una carta de horizontes, una lente espectral, dos lingotes de steeleaf de Twilight Forest, dos gemas de zanite del Aether y una botella de aliento de dragón en Módulo de exploración desde el Atlas. Colocado, abre el diario de viajes y recibe la última carta si lo usás agachado; con un mapa, completa sus píxeles en blanco con tus otros mapas de esa zona.\n\nTodas las cartas de Terra empiezan por la vuelta."
-      ],
-      "layout": {
-        "group": "workshop",
-        "x": 11.25,
-        "y": 7.5,
-        "size": 2.0,
-        "shape": "hexagon"
-      }
-    },
-    {
-      "key": "horizon_placement",
-      "deps": [
-        "horizon_controller"
-      ],
-      "type": "checkmark",
-      "optional": true,
-      "icon": "entrelumen:ark_controller",
-      "en_us": [
-        "Field note: six blocks in reach",
-        "Optional, self-reported: place the controller and keep all six module blocks within three blocks horizontally, one below or two above it. Inspect the controller to see which ones it finds; the server checks the real blocks at every batch and at activation.\n\nSix chambers close enough to hear each other. Terra built the fusion machine as one piece; the Ark is six, side by side."
-      ],
-      "es_es": [
-        "Nota de campo: seis bloques al alcance",
-        "Opcional y autoevaluado: colocá el controlador y mantené los seis bloques de módulo a no más de tres bloques en horizontal, uno por debajo o dos por encima. Inspeccionalo para ver cuáles encuentra; el servidor revisa los bloques reales en cada lote y en la activación.\n\nSeis cámaras lo bastante cerca para escucharse. Terra hizo la máquina de la fusión de una sola pieza; el Arca son seis, lado a lado."
-      ],
-      "layout": {
-        "group": "commission",
-        "x": -3,
-        "y": 1.5,
-        "size": 0.75,
-        "shape": "circle"
-      }
-    },
-    {
-      "key": "horizon_calibrated",
-      "deps": [
-        "horizon_engineering",
-        "horizon_arcane",
-        "horizon_nature",
-        "horizon_logistics",
-        "horizon_habitation",
-        "horizon_exploration"
-      ],
-      "milestone": "ark_calibrated",
-      "icon": "entrelumen:engineering_module",
-      "en_us": [
-        "I · Calibrate the bypass",
-        "With all six module projects credited and their blocks around the controller, bring four additional calibration frames and two additional power regulators. Crouch and use the controller with an empty main hand; it takes what you carry toward the batch, and partial deposits survive a restart. Inspect it for the remainder.\n\nTerra checks every bypass twice. The fusion was never checked once."
-      ],
-      "es_es": [
-        "I · Calibrar el desvío",
-        "Con los seis proyectos de módulo acreditados y sus bloques alrededor del controlador, llevá otros cuatro marcos de calibración y otros dos reguladores de energía. Agachate y usá el controlador con la mano principal vacía; toma lo que llevás para el lote, y los depósitos parciales sobreviven a un reinicio. Inspeccionalo para ver lo pendiente.\n\nTerra revisa cada desvío dos veces. La fusión no se revisó ni una."
-      ],
-      "layout": {
-        "group": "commission",
-        "x": -1.5,
-        "y": 11,
-        "size": 2.0,
-        "shape": "hexagon"
-      }
-    },
-    {
-      "key": "horizon_contained",
-      "deps": [
-        "horizon_calibrated"
-      ],
-      "milestone": "ark_contained",
-      "icon": "entrelumen:arcane_module",
-      "en_us": [
-        "II · Hold the boundary",
-        "The second batch takes two additional containment seals at the controller, with the six module blocks still in place and the same crouched, empty-handed use. The first batch is already credited: repeating it takes nothing and skips nothing.\n\nBodhi watches the seals settle. 'A boundary you can check again tomorrow is worth more than one you swear by today.'"
-      ],
-      "es_es": [
-        "II · Sostener el límite",
-        "El segundo lote pide otros dos sellos de contención en el controlador, con los seis bloques de módulo en su lugar y el mismo uso agachado y con la mano vacía. El primer lote ya está acreditado: repetirlo no consume nada ni saltea nada.\n\nBodhi mira cómo se asientan los sellos. «Un límite que podés revisar mañana vale más que uno que jurás hoy»."
-      ],
-      "layout": {
-        "group": "commission",
-        "x": 1.5,
-        "y": 12.75,
-        "size": 2.0,
-        "shape": "hexagon"
-      }
-    },
-    {
-      "key": "horizon_renewed",
-      "deps": [
-        "horizon_contained"
-      ],
-      "milestone": "ark_renewed",
-      "icon": "entrelumen:nature_module",
-      "en_us": [
-        "III · Keep a living reserve",
-        "The third batch takes two additional ecosystem capsules. Deposit them with the six module blocks present; the server records each accepted amount and credits the step when the batch is complete.\n\nJuan will not call a reserve renewable because the diagram is green. He waits to see it grow back, the way he has waited inside the light for years."
-      ],
-      "es_es": [
-        "III · Conservar una reserva viva",
-        "El tercer lote pide otras dos cápsulas de ecosistema. Depositalas con los seis bloques de módulo presentes; el servidor registra cada cantidad aceptada y acredita el paso cuando el lote está completo.\n\nJuan no llama renovable a una reserva porque el plano sea verde. Espera a verla crecer de nuevo, como esperó durante años adentro de la luz."
-      ],
-      "layout": {
-        "group": "commission",
-        "x": -1.5,
-        "y": 14.5,
-        "size": 2.0,
-        "shape": "hexagon"
-      }
-    },
-    {
-      "key": "horizon_routed",
-      "deps": [
-        "horizon_renewed"
-      ],
-      "milestone": "ark_routed",
-      "icon": "entrelumen:logistics_module",
-      "en_us": [
-        "IV · Route the first load",
-        "The fourth batch takes two additional routing matrices, apart from the ones the Logistics Module consumed. A deposit can be partial; inspect the controller for the exact remainder before bringing more.\n\nAurelia wants the Ark's routes legible even after someone leaves the team. It is the first rule of hers Terra ever agreed with."
-      ],
-      "es_es": [
-        "IV · Encauzar la primera carga",
-        "El cuarto lote pide otras dos matrices de distribución, aparte de las que consumió el módulo de logística. Un depósito puede ser parcial; inspeccioná el controlador para ver lo pendiente exacto antes de traer más.\n\nAurelia quiere que las rutas del Arca se entiendan aunque alguien deje el equipo. Es la primera regla suya con la que Terra estuvo de acuerdo."
-      ],
-      "layout": {
-        "group": "commission",
-        "x": 1.5,
-        "y": 16.25,
-        "size": 2.0,
-        "shape": "hexagon"
-      }
-    },
-    {
-      "key": "horizon_provisioned",
-      "deps": [
-        "horizon_routed"
-      ],
-      "milestone": "ark_provisioned",
-      "icon": "entrelumen:habitation_module",
-      "en_us": [
-        "V · Provision a welcome",
-        "The fifth batch takes eight more packs of Travel Rations, apart from the two the Habitation Module used. Keep every module block in place and deposit them crouching with an empty main hand.\n\nJuan's arithmetic is blunt: a door that brings people through must also feed them when they arrive, without quietly emptying the kitchen at home."
-      ],
-      "es_es": [
-        "V · Preparar una bienvenida",
-        "El quinto lote pide otras ocho provisiones de viaje, aparte de las dos que usó el módulo de habitabilidad. Mantené todos los bloques de módulo en su lugar y depositalas agachado, con la mano principal vacía.\n\nLa cuenta de Juan es directa: una puerta que trae gente también tiene que darle de comer cuando llega, sin vaciar a escondidas la cocina de casa."
-      ],
-      "layout": {
-        "group": "commission",
-        "x": -1.5,
-        "y": 18,
-        "size": 2.0,
-        "shape": "hexagon"
-      }
-    },
-    {
-      "key": "horizon_charted",
-      "deps": [
-        "horizon_provisioned"
-      ],
-      "milestone": "ark_charted",
-      "icon": "entrelumen:exploration_module",
-      "en_us": [
-        "VI · Chart a return",
-        "The sixth and last batch takes one additional horizon chart, apart from the one the Exploration Module consumed. After it, inspect the controller: six batches can be complete while the activation still waits for your explicit choice.\n\nTerra folds the chart so the route home stays on its outer face. 'Whoever crosses should always see the way back.'"
-      ],
-      "es_es": [
-        "VI · Trazar el regreso",
-        "El sexto y último lote pide otra carta de horizontes, aparte de la que consumió el módulo de exploración. Después, inspeccioná el controlador: los seis lotes pueden estar completos y la activación todavía espera tu decisión explícita.\n\nTerra pliega la carta con la ruta de regreso hacia afuera. «Quien cruce tiene que ver siempre el camino de vuelta»."
-      ],
-      "layout": {
-        "group": "commission",
-        "x": 1.5,
-        "y": 19.75,
-        "size": 2.0,
-        "shape": "hexagon"
-      }
-    },
-    {
       "key": "horizon_last",
       "deps": [
-        "horizon_charted",
         "world_network",
-        "horizon_end_arrival"
+        "horizon_end_arrival",
+        "horizon_logistics",
+        "horizon_engineering"
       ],
       "milestone": "last_horizon",
       "icon": "entrelumen:ark_controller",
       "en_us": [
         "The Ark opens the light",
-        "After six credited batches, with World Network complete, the End journey witnessed and all six modules beside the controller, crouch and interact with it once more with an empty main hand. That act activates the Ark, consumes nothing and forges your team's Light Key. Act VI begins.\n\nThe light parts along a seam. Bodhi, very quietly: 'Open it. Never own it.' Behind it, Solsticio."
+        "With the Ark standing, its six modules and controller in place, World Network complete and the End journey witnessed, crouch and interact with the controller with an empty main hand. It consumes nothing and forges your team's Light Key. Act VI begins.\n\nThe light parts along a seam. Bodhi, very quietly: 'Open it. Never own it.' Behind it, Solsticio."
       ],
       "es_es": [
         "El Arca abre la luz",
-        "Con seis lotes acreditados, la Red del mundo completa, el viaje al End observado y los seis módulos junto al controlador, agachate e interactuá una vez más con la mano principal vacía. Ese acto activa el Arca, no consume nada y forja la Llave de Luz de tu equipo. Empieza el acto VI.\n\nLa luz se abre en una costura. Bodhi, muy bajo: «Abrila. Nunca te adueñes de ella». Del otro lado, Solsticio."
+        "Con el Arca en pie, sus seis módulos y el controlador en su lugar, la Red del mundo completa y el viaje al End observado, agachate e interactuá con el controlador con la mano principal vacía. No consume nada y forja la Llave de Luz de tu equipo. Empieza el acto VI.\n\nLa luz se abre en una costura. Bodhi, muy bajo: «Abrila. Nunca te adueñes de ella». Del otro lado, Solsticio."
       ],
       "layout": {
         "group": "commission",
         "x": 0,
-        "y": 23.5,
+        "y": 11,
         "size": 3.0,
         "shape": "hexagon"
       }
@@ -649,7 +269,7 @@
       "layout": {
         "group": "afterward",
         "x": -1.5,
-        "y": 26.75,
+        "y": 14.25,
         "size": 0.75,
         "shape": "circle"
       }
@@ -673,7 +293,7 @@
       "layout": {
         "group": "afterward",
         "x": 1.5,
-        "y": 26.75,
+        "y": 14.25,
         "size": 0.75,
         "shape": "circle"
       }

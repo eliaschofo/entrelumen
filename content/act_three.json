@@ -20,6 +20,7 @@
     "distributed_power",
     "measured_logistics",
     "workshop_hands",
+    "nature_module",
     "exchange_route"
   ],
   "layout_groups": {
@@ -667,14 +668,37 @@
       },
       "en_us": [
         "Small Hands, Large Workshops",
-        "Deliver one handling core to Small Hands, Large Workshops in the Atlas. It gives you an Altar of Levelling, which flattens the ground around it, moving earth without creating any.\n\nHeliodor levelled its terraces with this altar and planted every one. The fields went on; the people did not."
+        "Deliver one handling core to Small Hands, Large Workshops in the Atlas. It gives you an Altar of Levelling, which flattens or repairs the ground around it with the land's own blocks, free of materials.\n\nHeliodor levelled its terraces with this altar and planted every one. The fields went on; the people did not."
       ],
       "es_es": [
         "Manos pequeñas, grandes talleres",
-        "Entregá un núcleo de manipulación en Manos pequeñas, grandes talleres desde el Atlas. Te da un Altar de Nivelación, que aplana el terreno a su alrededor moviendo tierra sin crearla.\n\nHeliodor niveló sus terrazas con este altar y las sembró todas. Los campos siguieron; la gente no."
+        "Entregá un núcleo de manipulación en Manos pequeñas, grandes talleres desde el Atlas. Te da un Altar de Nivelación, que aplana o repara el terreno a su alrededor con los bloques del lugar, sin pedir materiales.\n\nHeliodor niveló sus terrazas con este altar y las sembró todas. Los campos siguieron; la gente no."
       ],
       "milestone": "workshop_hands",
       "icon": "entrelumen:handling_core"
+    },
+    {
+      "key": "exchange_nature",
+      "deps": [
+        "crafts_archive"
+      ],
+      "milestone": "nature_module",
+      "icon": "entrelumen:nature_module",
+      "en_us": [
+        "A module that breathes",
+        "Deliver one propagation core, eight moss blocks and four glistering melon slices to Nature Module in the Atlas. In its place in the Ark it gives your whole team Regeneration and half the hunger, anywhere, and a bookmarked compass marks your garden.\n\nJuan kept the greenhouse air warm through Heliodor's worst winter. He never asked the plants to grow faster; he asked them to last."
+      ],
+      "es_es": [
+        "Un módulo que respira",
+        "Entregá un núcleo de propagación, ocho bloques de musgo y cuatro rodajas de sandía reluciente en Módulo de naturaleza desde el Atlas. En su lugar del Arca le da a todo tu equipo Regeneración y la mitad de hambre, en cualquier lado, y una brújula anclada marca tu jardín.\n\nJuan mantuvo tibio el aire del invernadero en el peor invierno de Heliodor. Nunca les pidió a las plantas que crecieran más rápido; les pidió que duraran."
+      ],
+      "layout": {
+        "group": "hands",
+        "x": 13.5,
+        "y": 10,
+        "size": 2.0,
+        "shape": "hexagon"
+      }
     },
     {
       "key": "exchange_archive",
@@ -683,7 +707,8 @@
         "exchange_nursery",
         "exchange_power",
         "exchange_logistics",
-        "exchange_hands"
+        "exchange_hands",
+        "exchange_nature"
       ],
       "layout": {
         "group": "archive",

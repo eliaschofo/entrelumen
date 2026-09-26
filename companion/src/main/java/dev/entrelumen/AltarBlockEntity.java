@@ -24,8 +24,7 @@ import net.neoforged.neoforge.items.IItemHandlerModifiable;
  * What every Ark altar shares: its type, an owner that claims are judged for, one fuel slot of the
  * type's tag, active time paid unit by unit from that slot, a centred square area, its entry in
  * the level's {@link AltarRegistry} while it is active, and an optional inventory of any size
- * (none for the Altar of Renewal, 27 for the Altar of Levelling's buffer, 4 for the Altar of
- * Repose). Subclasses decide what the altar does while active and how it is used; a pure area
+ * (none for the Altars of Renewal and Levelling, 4 for the Altar of Repose). Subclasses decide what the altar does while active and how it is used; a pure area
  * effect only needs {@link #payActiveTick()} each tick and {@link #areaRadius()}.
  */
 public abstract class AltarBlockEntity extends BlockEntity implements Container {
@@ -235,7 +234,7 @@ public abstract class AltarBlockEntity extends BlockEntity implements Container 
     return true;
   }
 
-  /** What else one unit gives; the Renewal Altar adds work charge. */
+  /** What else one unit gives; the Altar of Renewal adds work charge. */
   protected void onFuelDrawn() {}
 
   /** Pays one active tick, drawing a unit when the paid time is used up; false when none is left. */

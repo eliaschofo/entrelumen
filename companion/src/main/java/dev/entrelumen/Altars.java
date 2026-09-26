@@ -123,7 +123,7 @@ public final class Altars {
     event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, RENEWAL_ENTITY.get(),
         (altar, side) -> altar.fuelHandler());
     event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, TERRAFORM_ENTITY.get(),
-        (altar, side) -> altar.itemHandler());
+        (altar, side) -> altar.fuelHandler());
     event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, PEACE_ENTITY.get(), (altar, side) -> altar.fuelHandler());
     event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, GROWTH_ENTITY.get(), (altar, side) -> altar.fuelHandler());
     event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, TIME_ENTITY.get(), (altar, side) -> altar.fuelHandler());

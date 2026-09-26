@@ -9,9 +9,23 @@ import net.minecraft.world.level.saveddata.SavedData;
 public final class CampaignData extends SavedData {
   /**
    * 3 since 24 September 2026: acts were renumbered (the Ark moved from act 6 to act 5, Solsticio
-   * is act 6). {@link #migrateActs} maps older saves once, when they are read.
+   * is act 6). {@link #migrateActs} maps older saves once, when they are read. 4 since 25 September
+   * 2026 (Ark v2): the Ark's batches are gone; supplies deposited into an unfinished batch become a
+   * refund ({@link #migrateBatches}).
    */
-  public static final int VERSION = 3;
+  public static final int VERSION = 4;
+
+  /**
+   * The six Ark batches as they were (step, then item and cost), kept only to read older saves: an
+   * unfinished batch's deposits, capped at its cost, are refunded.
+   */
+  static final java.util.List<Map<String, Integer>> LEGACY_BATCHES = java.util.List.of(
+      Map.of("entrelumen:calibration_frame", 4, "entrelumen:power_regulator", 2),
+      Map.of("entrelumen:containment_seal", 2),
+      Map.of("entrelumen:ecosystem_capsule", 2),
+      Map.of("entrelumen:routing_matrix", 2),
+      Map.of("entrelumen:ration_bundle", 8),
+      Map.of("entrelumen:horizon_chart", 1));
 
   public final Campaigns campaigns = new Campaigns();
 
@@ -39,16 +53,16 @@ public final class CampaignData extends SavedData {
       CompoundTag value = tag.getCompound(key);
       Campaigns.Campaign c = new Campaigns.Campaign();
       c.act = Math.clamp(value.getInt("act"), 1, Campaigns.FINAL_ACT);
-      c.arkPhase = Math.clamp(value.getInt("arkPhase"), 0, 6);
       c.archived = value.getBoolean("archived");
       for (Tag milestone : value.getList("completed", Tag.TAG_STRING))
         c.completed.add(milestone.getAsString());
-      if (version >= 2 && c.arkPhase < ArkCommissioning.STEPS.size()) {
-        CompoundTag deposits = value.getCompound("arkDeposits");
-        ArkCommissioning.STEPS.get(c.arkPhase).requirements().forEach((item, cost) -> {
-          int count = Math.clamp(deposits.getInt(item), 0, cost);
-          if (count > 0) c.arkDeposits.put(item, count);
-        });
+      if (version < 4) migrateBatches(c, value, version);
+      else {
+        CompoundTag refunds = value.getCompound("refunds");
+        for (String item : refunds.getAllKeys()) {
+          int count = refunds.getInt(item);
+          if (count > 0) c.refunds.put(item, count);
+        }
       }
       if (version < 3) migrateActs(c);
       target.put(UUID.fromString(key), c);
@@ -67,17 +81,31 @@ public final class CampaignData extends SavedData {
       c.act = CampaignMilestones.ARK_ACT;
   }
 
+  /**
+   * Version 3 and earlier kept the Ark's current batch ({@code arkPhase}) and what was deposited into
+   * it ({@code arkDeposits}, since version 2). The batches are gone: the unfinished batch's deposits,
+   * capped at its cost as they were read before, become a refund. Finished batches are not refunded.
+   */
+  static void migrateBatches(Campaigns.Campaign c, CompoundTag value, int version) {
+    int phase = Math.clamp(value.getInt("arkPhase"), 0, LEGACY_BATCHES.size());
+    if (version < 2 || phase >= LEGACY_BATCHES.size()) return;
+    CompoundTag deposits = value.getCompound("arkDeposits");
+    LEGACY_BATCHES.get(phase).forEach((item, cost) -> {
+      int count = Math.clamp(deposits.getInt(item), 0, cost);
+      if (count > 0) c.refunds.merge(item, count, Integer::sum);
+    });
+  }
+
   private static CompoundTag write(Map<UUID, Campaigns.Campaign> source) {
     CompoundTag tag = new CompoundTag();
     source.forEach(
         (id, c) -> {
           CompoundTag value = new CompoundTag();
           value.putInt("act", c.act);
-          value.putInt("arkPhase", c.arkPhase);
           value.putBoolean("archived", c.archived);
-          CompoundTag deposits = new CompoundTag();
-          c.arkDeposits.forEach(deposits::putInt);
-          value.put("arkDeposits", deposits);
+          CompoundTag refunds = new CompoundTag();
+          c.refunds.forEach(refunds::putInt);
+          value.put("refunds", refunds);
           ListTag completed = new ListTag();
           c.completed.forEach(s -> completed.add(StringTag.valueOf(s)));
           value.put("completed", completed);

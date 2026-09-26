@@ -79,6 +79,57 @@ def design():
     return v
 
 
+SEAL = [(x, z) for x in (-1, 0, 1) for z in (-1, 0, 1)]     # the sun mosaic's heart is the seal
+STAIR_DEPTH = 12                                            # the spiral's foot, below the patio floor
+
+
+def sealed_stair():
+    """The Sealed Stair to the Envés (docs/design/dungeon-enves.md): under the sun mosaic's 3x3 heart
+    a spiral winds down round a calcite core to an antechamber with the Envés gate. It stays hidden
+    until the seal opens (the offering on the pedestal, act III and on); the companion clears the SEAL
+    cells and the pedestal when it opens. Underground and functional: the spiral turns one way, the
+    one exception to the D4 rule besides lecterns. Returns voxels with negative y, plus markers."""
+    v = Voxels()
+    ring = [(-1, -1), (0, -1), (1, -1), (1, 0), (1, 1), (0, 1), (-1, 1), (-1, 0)]
+    for y in range(-STAIR_DEPTH, 0):                        # the shaft: tuff bricks round a 3x3 well
+        for x in range(-2, 3):
+            for z in range(-2, 3):
+                if max(abs(x), abs(z)) == 2:
+                    v.put(x, y, z, B('tuff_bricks') if y % 4 else B('calcite'))
+                elif (x, z) == (0, 0):
+                    v.put(x, y, z, B('calcite'))
+                else:
+                    v.put(x, y, z, B('air'))
+    for i in range(STAIR_DEPTH):                            # one step down per ring cell
+        x, z = ring[i % 8]
+        nx, nz = ring[(i + 1) % 8]
+        px, pz = ring[(i - 1) % 8]
+        up = {(1, 0): 'east', (-1, 0): 'west', (0, 1): 'south', (0, -1): 'north'}[(px - x, pz - z)] if (px - x, pz - z) in (
+            (1, 0), (-1, 0), (0, 1), (0, -1)) else 'north'
+        y = -1 - i
+        v.put(x, y, z, B('tuff_brick_stairs[facing=%s,half=bottom,shape=straight,waterlogged=false]' % up))
+        if y - 1 >= -STAIR_DEPTH:
+            v.put(x, y - 1, z, B('tuff_bricks'))
+    for x in range(-4, 5):                                  # the antechamber
+        for z in range(-8, 1):
+            for y in range(-STAIR_DEPTH - 1, -STAIR_DEPTH + 5):
+                edge = abs(x) == 4 or z in (-8,) or y in (-STAIR_DEPTH - 1, -STAIR_DEPTH + 4)
+                if (x, z) in [(a, b) for a in range(-2, 3) for b in range(-2, 1)] and y >= -STAIR_DEPTH:
+                    continue
+                v.put(x, y, z, (B('tuff_bricks') if y != -STAIR_DEPTH - 1 else B('polished_tuff')) if edge else B('air'))
+    for y in range(-STAIR_DEPTH, -STAIR_DEPTH + 4):         # the gate frame on the far wall
+        for x in (-2, 2):
+            v.put(x, y, -8, B('calcite'))
+    for x in range(-2, 3):
+        v.put(x, -STAIR_DEPTH + 4, -8, B('waxed_oxidized_chiseled_copper'))
+    for y in (-STAIR_DEPTH + 2,):
+        for x in (-3, 3):
+            v.put(x, y, -7, B('soul_lantern[hanging=false,waterlogged=false]'))
+    markers = {'seal': [[x, 0, z] for (x, z) in SEAL], 'enves_gate': [[0, -STAIR_DEPTH, -8]],
+               'offering': [[0, 1, 0]], 'antechamber_arrival': [[0, -STAIR_DEPTH, -4]]}
+    return v, markers
+
+
 def template_block(v, x, y, z):
     """Template lookup for tools/build_heliodor_ruin_start.py, in template coordinates."""
     key = (x - HALF, y, z - HALF)
@@ -95,4 +146,5 @@ if __name__ == '__main__':
     out = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'preview')
     os.makedirs(out, exist_ok=True)
     iso(v, os.path.join(out, 'ruin_start.png'), scale=10, ground=11)
-    print(len(v), 'blocks, symmetric')
+    st, mk = sealed_stair()
+    print(len(v), 'blocks, symmetric;', len(st), 'blocks in the Sealed Stair;', mk)

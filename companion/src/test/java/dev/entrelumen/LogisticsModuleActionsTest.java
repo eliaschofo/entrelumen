@@ -10,29 +10,6 @@ import org.junit.jupiter.api.Test;
 
 class LogisticsModuleActionsTest {
   @Test
-  void completedOrEndedLedgerDoesNotInviteAnotherDeposit() {
-    var physical = new EngineeringDiagnostics.PhysicalView(
-        EngineeringDiagnostics.ControllerState.ABSENT, null, java.util.Set.of(), false);
-    var active = new EngineeringDiagnostics.CampaignView(6, false, List.of(), List.of(),
-        false, false, 5, 6, "chart", "exploration_module", List.of(), false);
-    var commissioned = new EngineeringDiagnostics.CampaignView(6, false, List.of(), List.of(),
-        false, false, 6, 6, "", "", List.of(), false);
-    var ending = new EngineeringDiagnostics.CampaignView(6, false, List.of(), List.of(),
-        false, false, 6, 6, "", "", List.of(), true);
-    assertTrue(hasKey(LogisticsModuleActions.lines(active, physical), "entrelumen.logistics.hint"));
-    assertFalse(hasKey(LogisticsModuleActions.lines(commissioned, physical), "entrelumen.logistics.hint"));
-    assertFalse(hasKey(LogisticsModuleActions.lines(ending, physical), "entrelumen.logistics.hint"));
-    assertTrue(hasKey(LogisticsModuleActions.lines(commissioned, physical),
-        "entrelumen.logistics.commissioned"));
-  }
-
-  private static boolean hasKey(List<net.minecraft.network.chat.Component> lines, String key) {
-    return lines.stream().anyMatch(component -> component.getContents()
-        instanceof net.minecraft.network.chat.contents.TranslatableContents translated
-        && translated.getKey().equals(key));
-  }
-
-  @Test
   void onlyOneFullyKnownCompleteControllerCanReceiveADeposit() {
     var module = new BlockPos(0, 70, 0);
     var controller = module.offset(3, 1, 0);

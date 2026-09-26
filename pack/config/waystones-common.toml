@@ -1,0 +1,7 @@
+# ENTRELUMEN: the Ark's Exploration module (Traveller) makes warps free of experience.
+# The first eight lines are Waystones 21.1.41's defaults (WaystonesConfigData.DEFAULT_WARP_REQUIREMENTS);
+# the last two waive experience for a player whose team's Ark has the Exploration module active.
+# The companion registers the condition entrelumen:ark_traveller through the public Waystones API
+# (WaystonesAPI.registerConditionPredicate); without the companion Waystones skips the two lines.
+[teleports]
+	warpRequirements = ["[is_not_interdimensional] scaled_add_xp_cost(distance, 0.01)", "[is_interdimensional] add_xp_cost(27)", "[source_is_warp_plate] multiply_xp_cost(0)", "[target_is_global] multiply_xp_cost(0)", "[target_is_fleeting_memorial] multiply_xp_cost(0)", "min_xp_cost(0)", "max_xp_cost(27)", "[source_is_inventory_button] add_cooldown(inventory_button, 300)", "[entrelumen:ark_traveller] multiply_xp_cost(0)", "[entrelumen:ark_traveller] multiply_level_cost(0)"]

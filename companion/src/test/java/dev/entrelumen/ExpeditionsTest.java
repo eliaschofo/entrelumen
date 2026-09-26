@@ -22,8 +22,7 @@ class ExpeditionsTest {
     for (int act = 1; act <= 6; act++) {
       var campaign = new Campaigns.Campaign();
       campaign.act = act;
-      campaign.arkPhase = 2;
-      campaign.arkDeposits.put("entrelumen:ecosystem_capsule", 1);
+      campaign.refunds.put("entrelumen:ecosystem_capsule", 1);
       campaign.completed.add("exchange_route");
       for (var destination : DESTINATIONS.entrySet()) {
         assertTrue(Expeditions.record(campaign, destination.getKey()));
@@ -31,8 +30,7 @@ class ExpeditionsTest {
         assertFalse(Expeditions.record(campaign, destination.getKey()));
       }
       assertEquals(act, campaign.act);
-      assertEquals(2, campaign.arkPhase);
-      assertEquals(Map.of("entrelumen:ecosystem_capsule", 1), campaign.arkDeposits);
+      assertEquals(Map.of("entrelumen:ecosystem_capsule", 1), campaign.refunds);
       assertEquals(Set.of("exchange_route", "aether_arrival", "twilight_arrival",
           "bumblezone_arrival", "end_arrival"), campaign.completed);
       assertFalse(campaign.archived);
@@ -87,8 +85,7 @@ class ExpeditionsTest {
     UUID founder = UUID.randomUUID(), team = UUID.randomUUID();
     var personal = data.campaigns.personal(founder);
     personal.act = CampaignMilestones.ARK_ACT;
-    personal.arkPhase = 2;
-    personal.arkDeposits.put("entrelumen:ecosystem_capsule", 1);
+    personal.refunds.put("entrelumen:ecosystem_capsule", 1);
     personal.completed.add("atlas_voices");
     assertTrue(Expeditions.record(personal, "aether:the_aether"));
     var party = data.campaigns.party(team, founder);
@@ -102,8 +99,9 @@ class ExpeditionsTest {
     assertEquals(personal.completed, restoredPersonal.completed);
     assertEquals(party.completed, restoredParty.completed);
     assertEquals(CampaignMilestones.ARK_ACT, restoredParty.act);
-    assertEquals(2, restoredParty.arkPhase);
-    assertEquals(personal.arkDeposits, restoredParty.arkDeposits);
+    // A party never copies its founder's refund; the founder keeps it.
+    assertTrue(restoredParty.refunds.isEmpty());
+    assertEquals(personal.refunds, restoredPersonal.refunds);
     assertTrue(restoredParty.archived);
     assertFalse(Expeditions.record(restoredParty, "twilightforest:twilight_forest"));
     assertFalse(Expeditions.record(restoredPersonal, "aether:the_aether"));

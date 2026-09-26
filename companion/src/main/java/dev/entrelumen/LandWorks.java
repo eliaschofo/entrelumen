@@ -34,7 +34,13 @@ import net.neoforged.neoforge.event.level.BlockEvent;
 final class LandWorks {
   /** Wild ground the Nature service leaves out but the altars treat as terrain. */
   private static final Set<Block> EXTRA_TERRAIN = Set.of(Blocks.SANDSTONE, Blocks.RED_SANDSTONE,
-      Blocks.TERRACOTTA, Blocks.SMOOTH_BASALT, Blocks.TUFF);
+      Blocks.TERRACOTTA, Blocks.SMOOTH_BASALT, Blocks.TUFF, Blocks.END_STONE, Blocks.CRIMSON_NYLIUM,
+      Blocks.WARPED_NYLIUM, Blocks.SOUL_SAND, Blocks.SOUL_SOIL);
+  /** Wild plants outside the vegetation tags, so the altars treat them as land, not builds. */
+  private static final Set<Block> WILD_PLANTS = Set.of(Blocks.CACTUS, Blocks.SUGAR_CANE, Blocks.BAMBOO,
+      Blocks.NETHER_WART_BLOCK, Blocks.WARPED_WART_BLOCK, Blocks.SHROOMLIGHT, Blocks.WEEPING_VINES,
+      Blocks.WEEPING_VINES_PLANT, Blocks.TWISTING_VINES, Blocks.TWISTING_VINES_PLANT, Blocks.CHORUS_PLANT,
+      Blocks.LILY_PAD, Blocks.MANGROVE_ROOTS, Blocks.CRIMSON_FUNGUS, Blocks.WARPED_FUNGUS);
   private static final Set<Block> GROUND_BLOCKS = Set.of(Blocks.GRAVEL, Blocks.CLAY, Blocks.SNOW_BLOCK,
       Blocks.ICE, Blocks.PACKED_ICE, Blocks.BLUE_ICE, Blocks.CALCITE, Blocks.DRIPSTONE_BLOCK,
       Blocks.POWDER_SNOW);
@@ -52,8 +58,8 @@ final class LandWorks {
 
   /** Wild terrain and vegetation; everything else, and every block entity, counts as built. */
   static boolean natural(BlockState state) {
-    return NatureRestoration.natural(state)
-        || !state.hasBlockEntity() && EXTRA_TERRAIN.contains(state.getBlock());
+    return NatureRestoration.natural(state) || !state.hasBlockEntity()
+        && (EXTRA_TERRAIN.contains(state.getBlock()) || WILD_PLANTS.contains(state.getBlock()));
   }
 
   /** Natural ground: what a hole is made of and what a column rests on. */

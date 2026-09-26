@@ -42,6 +42,7 @@ public final class FullpackQABootstrap {
     VeinResonatorFullpackGameTests.requireSuite();
     RecipeDesignFullpackGameTests.requireSuite();
     JetpackBalanceFullpackGameTests.requireSuite();
+    ArkFullpackGameTests.requireSuite();
     if (GameTestHooks.isGametestEnabled()) return;
     if (!registered) {
       GameTestRegistry.register(RuntimeGameTests.class);
@@ -60,10 +61,6 @@ public final class FullpackQABootstrap {
       GameTestRegistry.register(MechanicalChiselGameTests.class);
       GameTestRegistry.register(TeamRestartGameTests.class);
       GameTestRegistry.register(BackupRestoreGameTests.class);
-      GameTestRegistry.register(LogisticsProvisioningGameTests.class);
-      GameTestRegistry.register(LogisticsRestartGameTests.class);
-      GameTestRegistry.register(NatureRestorationGameTests.class);
-      GameTestRegistry.register(ArkChartsGameTests.class);
       GameTestRegistry.register(ApotheosisGameTests.class);
       GameTestRegistry.register(AltarFullpackGameTests.class);
       GameTestRegistry.register(AltarEffectsFullpackGameTests.class);
@@ -89,6 +86,8 @@ public final class FullpackQABootstrap {
       GameTestRegistry.register(RecipeDesignFullpackGameTests.class);
       // Jetpack balance (25 September): settings from pack/config and the KubeJS surcharge, 2.5 times per tick.
       GameTestRegistry.register(JetpackBalanceFullpackGameTests.class);
+      // Ark v2 (25 September): the modules' effects with the pack's real magic, Waystones, Curios and Moonlight.
+      GameTestRegistry.register(ArkFullpackGameTests.class);
       Set<String> expected = new TreeSet<>();
       for (Class<?> owner : List.of(RuntimeGameTests.class, FullpackGameTests.class,
           ResourceFarmGameTests.class, Ae2CraftingGameTests.class, RFToolsRecipeGameTests.class,
@@ -96,15 +95,14 @@ public final class FullpackQABootstrap {
           ArsCreateGameTests.class, ArsOccultismGameTests.class, ArsAe2GameTests.class,
           SettlementArchitectureGameTests.class, BuilderUtilitiesGameTests.class,
           MechanicalChiselGameTests.class, TeamRestartGameTests.class, BackupRestoreGameTests.class,
-          LogisticsProvisioningGameTests.class, LogisticsRestartGameTests.class,
-          NatureRestorationGameTests.class, ArkChartsGameTests.class, ApotheosisGameTests.class,
+          ApotheosisGameTests.class,
           AltarFullpackGameTests.class, AltarEffectsFullpackGameTests.class, LuminousGameTests.class,
           StartWithoutBloatFullpackGameTests.class, TerraArmFullpackGameTests.class, ModPingpongFullpackGameTests.class,
           ModPingpongRound4FullpackGameTests.class,
           RuntimeGameTestsCompass.class, RuntimeGameTestsGameplay.class, SolsticioFullpackGameTests.class,
           RuntimeGameTestsActs.class, ActsFullpackGameTests.class,
           ProgressionFullpackGameTests.class, VeinResonatorFullpackGameTests.class, RuntimeGameTestsStory.class,
-          RecipeDesignFullpackGameTests.class, JetpackBalanceFullpackGameTests.class))
+          RecipeDesignFullpackGameTests.class, JetpackBalanceFullpackGameTests.class, ArkFullpackGameTests.class))
         for (var method : owner.getDeclaredMethods())
           if (method.isAnnotationPresent(GameTest.class))
             expected.add(method.getName().toLowerCase(Locale.ROOT));
