@@ -96,13 +96,14 @@ class QuestBook(unittest.TestCase):
                         title, text = source[lang]
                         self.assertEqual(self.lang[lang][f"quest.{q['id']}.title"], title)
                         self.assertEqual([p for p in self.lang[lang][f"quest.{q['id']}.quest_desc"] if p], text.split('\n\n'))
-        # No item-filter mod: the tag tasks check one concrete item (Almost Unified's for metals). Two
+        # No item-filter mod: the tag tasks check one concrete item (Almost Unified's for metals). One
         # since the Ars guides became the Ars sector chapter (its archwood task names the log), the
-        # Mekanism guides became the Mekanism sector chapters (their steel task names IE's ingot) and the
-        # Aether guide became the Aether chains (the Moa egg is the aether:obtain_egg advancement).
+        # Mekanism guides the Mekanism sector chapters (their steel task names IE's ingot), the Aether
+        # guide the Aether chains (the Moa egg is the aether:obtain_egg advancement) and the Occultism
+        # guides the Occultism sector chapters (the first ritual is its advancement now).
         tagged = {q['key']: q['item'] for g in self.guides for q in g['quests'] if 'tag' in q}
-        self.assertEqual(tagged['occ_crusher'], 'immersiveengineering:ingot_silver')
-        self.assertEqual(len(tagged), 2)
+        self.assertEqual(tagged['tombstone_graves'], 'tombstone:dark_marble')
+        self.assertEqual(len(tagged), 1)
 
     def test_story_node_grammar(self):
         # Hito hexagon 2, act finale hexagon 3, observed journey octagon 2, task square 1,
@@ -291,7 +292,7 @@ class QuestBook(unittest.TestCase):
 
     def test_guide_without_concrete_item_rejected(self):
         guides = copy.deepcopy(self.guides)
-        quest = next(q for g in guides for q in g['quests'] if q['key'] == 'occ_crusher')
+        quest = next(q for g in guides for q in g['quests'] if q['key'] == 'tombstone_graves')
         del quest['item']
         with self.assertRaisesRegex(AssertionError, 'concrete item'):
             generate_book(self.story, guides, self.book)
