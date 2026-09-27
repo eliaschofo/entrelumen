@@ -1,0 +1,691 @@
+{
+  "format": "sector",
+  "chapter": "sector_theurgy",
+  "group": "magic",
+  "act": "III",
+  "motif": "theurgy",
+  "icon": "theurgy:incubator",
+  "emblem": "theurgy:textures/item/the_hermetica.png",
+  "title": {"en_us": "Theurgy", "es_es": "Theurgy"},
+  "subtitle": {
+    "en_us": ["Salt, sulfur and mercury: take matter apart, put it back together three times over, then turn iron into gold."],
+    "es_es": ["Sal, azufre y mercurio: desarmá la materia, volvé a armarla por triplicado y después convertí hierro en oro."]
+  },
+  "entry": "theurgy_brazier",
+  "center": [0.0, 0.0],
+  "figures": {
+    "opus": {"kind": "ring", "cx": 0.0, "cy": 0.0, "r": 18.0, "count": 24, "start": -90, "draw": [{"style": "ring", "r": 18.0, "segments": 96, "alpha": 150, "thickness_px": 2}, {"style": "ring", "r": 18.8, "segments": 96, "alpha": 80}, {"style": "glyphs", "r": 20.4, "scale": 1, "alpha": 170, "start": -73.5, "textures": ["theurgy:textures/item/niters/metals_abundant.png", "theurgy:textures/item/niters/metals_common.png", "theurgy:textures/item/niters/metals_rare.png", "theurgy:textures/item/niters/metals_precious.png", "theurgy:textures/item/niters/gems_abundant.png", "theurgy:textures/item/niters/gems_common.png", "theurgy:textures/item/niters/gems_rare.png", "theurgy:textures/item/niters/gems_precious.png", "theurgy:textures/item/niters/other_minerals_abundant.png", "theurgy:textures/item/niters/other_minerals_common.png", "theurgy:textures/item/niters/other_minerals_rare.png", "theurgy:textures/item/niters/other_minerals_precious.png"]}]},
+    "square": {"kind": "ring", "cx": 0.0, "cy": 0.0, "r": 18.0, "count": 4, "start": -135, "draw": [{"style": "polyline", "closed": true, "alpha": 120, "thickness_px": 1.5}]},
+    "tria": {"kind": "ring", "cx": 0.0, "cy": 0.0, "r": 12.728, "count": 3, "start": -90, "draw": [{"style": "polyline", "closed": true, "alpha": 210, "thickness_px": 3, "color": "#E8904A"}]},
+    "athanor": {"kind": "ring", "cx": 0.0, "cy": 0.0, "r": 6.364, "count": 6, "start": -90, "draw": [{"style": "ring", "r": 6.364, "segments": 48, "alpha": 130, "thickness_px": 1.5}]}
+  },
+  "groups": {
+    "rods": {"label": {"en_us": "Divination", "es_es": "Adivinación"}, "axis": "y", "caption": "above"},
+    "salts": {"label": {"en_us": "Salts", "es_es": "Sales"}, "axis": "x", "caption": "below"},
+    "logistics": {"label": {"en_us": "Mercurial logistics", "es_es": "Logística mercurial"}, "axis": "auto", "caption": "below"},
+    "replicas": {"label": {"en_us": "Same tier, new face", "es_es": "Mismo nivel, otra cara"}, "axis": "y", "caption": "above"},
+    "heat": {"label": {"en_us": "Heat by flux", "es_es": "Calor por flujo"}, "axis": "x", "caption": "above"}
+  },
+  "links": [
+    {"target": "voices_seal_item", "at": {"x": 9.6, "y": -4.6}},
+    {"target": "occsp_logistics", "at": {"x": 19.4, "y": 13.2}},
+    {"target": "occ_rod", "at": {"x": -21.8, "y": 9.4}}
+  ],
+  "art": [
+    {"id": "banner", "texture": "entrelumen:textures/gui/quests/banner_plain.png", "x": -24.6, "y": -24.4, "scale": 1, "order": -1, "color": "#5A4A6E"},
+    {"id": "title", "label": {"en_us": "Theurgy", "es_es": "Theurgy"}, "x": -24.6, "y": -24.4, "scale": 2, "bold": true, "tint": "#F3EEDF"},
+    {"id": "motto", "label": {"en_us": "solve et coagula", "es_es": "solve et coagula"}, "x": -24.6, "y": -22.5, "scale": 1, "font": "minecraft:alt", "tint": "#A7B7C6"},
+    {"id": "medallion", "texture": "entrelumen:textures/gui/quests/medallion.png", "x": -24.6, "y": -18.4, "scale": 2, "order": 0, "click": "chapter:sun_of_heliodor", "hover": {"en_us": "Back to the Sun of Heliodor", "es_es": "Volver al Sol de Heliodor"}},
+    {"id": "emblem", "texture": "theurgy:textures/item/the_hermetica.png", "x": -24.6, "y": -18.4, "scale": 4, "order": 1},
+    {"id": "sulfur", "label": {"en_us": "Sulfur · soul", "es_es": "Azufre · alma"}, "x": 0.0, "y": -20.3, "scale": 1, "tint": "#EBCB4F"},
+    {"id": "salt", "label": {"en_us": "Salt · body", "es_es": "Sal · cuerpo"}, "x": -17.4, "y": 11.4, "scale": 1, "tint": "#F3EEDF"},
+    {"id": "mercury", "label": {"en_us": "Mercury · spirit", "es_es": "Mercurio · espíritu"}, "x": 17.4, "y": 11.4, "scale": 1, "tint": "#A7B7C6"}
+  ],
+  "quests": [
+    {
+      "key": "theurgy_brazier", "role": "entry", "deps": [],
+      "task": {"item": "theurgy:pyromantic_brazier", "count": 4},
+      "at": {"x": 0.0, "y": 6.364},
+      "en_us": {"title": "Pyromantic Brazier", "subtitle": "Alchemy starts with a good fire.",
+        "text": ["Five copper ingots and four stone make a [item:theurgy:pyromantic_brazier|Pyromantic Brazier]. Every heated apparatus sits on one: the oven, the cauldron, the distiller and the incubator. It burns furnace fuel, by hand or from a hopper.",
+                 "{page}",
+                 "Four braziers cover the whole refinery. Later a [quest:theurgy_automation|Caloric Flux Emitter] heats from a distance and the coal can stay in the chest."]},
+      "es_es": {"title": "Brasero piromántico", "subtitle": "La alquimia arranca con un buen fuego.",
+        "text": ["Cinco lingotes de cobre y cuatro piedras hacen un [item:theurgy:pyromantic_brazier|brasero piromántico]. Todo aparato que necesita calor va arriba de uno: el horno, el caldero, el destilador y la incubadora. Quema combustible de horno, a mano o con tolva.",
+                 "{page}",
+                 "Con cuatro braseros alcanza para toda la refinería. Más adelante, un [quest:theurgy_automation|emisor de flujo calórico] calienta a distancia y el carbón se queda en el cofre."]},
+      "sources": ["jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/recipe/crafting/shaped/pyromantic_brazier.json", "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/modonomicon/books/the_hermetica/entries/apparatus/pyromantic_brazier.json", "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/modonomicon/books/the_hermetica/entries/getting_started/needed_apparatus_spagyrics.json", "jar:theurgy-1.21.1-neoforge-1.76.0.jar:assets/theurgy/lang/en_us.json#book.theurgy.the_hermetica.apparatus.pyromantic_brazier.usage.text"]
+    },
+    {
+      "key": "theurgy_welcome", "role": "tip", "deps": ["theurgy_brazier"],
+      "task": {"type": "checkmark"},
+      "at": {"x": -2.9, "y": 9.4},
+      "en_us": {"title": "Hands, hoppers and buckets",
+        "text": ["[tip] Every apparatus takes the same clicks. Empty hand: the output first, then the input. An item in hand goes in. A full bucket pours in, an empty one fills; [key:key.sneak] and right-click drains every fluid. Hoppers and pipes load them too."]},
+      "es_es": {"title": "Manos, tolvas y cubos",
+        "text": ["[tip] Todos los aparatos responden a los mismos clics. Mano vacía: primero la salida, después la entrada. Un ítem en la mano entra. Un cubo lleno se vuelca, uno vacío se llena; [key:key.sneak] y clic derecho vacía todos los fluidos. Las tolvas y los caños también los cargan."]},
+      "sources": ["jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/modonomicon/books/the_hermetica/entries/apparatus/how_to.json", "jar:theurgy-1.21.1-neoforge-1.76.0.jar:assets/theurgy/lang/en_us.json#book.theurgy.the_hermetica.apparatus.how_to.manual_interaction.text", "jar:theurgy-1.21.1-neoforge-1.76.0.jar:assets/theurgy/lang/en_us.json#book.theurgy.the_hermetica.apparatus.how_to.manual_interaction2.text", "jar:theurgy-1.21.1-neoforge-1.76.0.jar:assets/theurgy/lang/en_us.json#book.theurgy.the_hermetica.apparatus.how_to.emptying_fluids.text", "jar:theurgy-1.21.1-neoforge-1.76.0.jar:assets/theurgy/lang/en_us.json#book.theurgy.the_hermetica.apparatus.pyromantic_brazier.usage.text"]
+    },
+    {
+      "key": "theurgy_stone_tip", "role": "tip", "deps": ["theurgy_brazier"],
+      "task": {"type": "checkmark"},
+      "at": {"x": 2.9, "y": 9.4},
+      "en_us": {"title": "Stone means stone",
+        "text": ["[tip] Theurgy's recipes ask for the stone tag: stone, andesite, diorite, granite, deepslate and tuff all count, cobblestone doesn't. Smelt a stack before the braziers, the distiller and the vessels."]},
+      "es_es": {"title": "Piedra es piedra",
+        "text": ["[tip] Las recetas de Theurgy piden la etiqueta de piedras: sirven piedra, andesita, diorita, granito, pizarra profunda y toba; la roca no. Fundí un stack antes de los braseros, el destilador y los recipientes."]},
+      "sources": ["jar:neoforge-21.1.249-universal.jar:data/c/tags/item/stones.json", "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/recipe/crafting/shaped/pyromantic_brazier.json", "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/recipe/crafting/shaped/distiller.json", "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/recipe/crafting/shaped/incubator_salt_vessel.json", "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/recipe/crafting/shaped/liquefaction_cauldron.json"]
+    },
+    {
+      "key": "theurgy_hermetica", "role": "side", "deps": ["theurgy_brazier"],
+      "task": {"item": "modonomicon:modonomicon", "components": {"modonomicon:book_id": "theurgy:the_hermetica"}},
+      "icon": "theurgy:the_hermetica_icon",
+      "at": {"x": 0.0, "y": 10.2},
+      "en_us": {"title": "The Hermetica", "subtitle": "It insists it's science. Humor it.",
+        "text": ["A book and two sand of any kind. The Hermetica runs its experiments in order, and most entries open as you read the ones before: raw iron into three ingots, lapis into quartz, quartz into iron, iron into gold. Every apparatus page shows its recipe and the clicks it takes."]},
+      "es_es": {"title": "La Hermética", "subtitle": "Insiste en que es ciencia. Seguile la corriente.",
+        "text": ["Un libro y dos de arena de cualquier tipo. La Hermética hace sus experimentos en orden, y la mayoría de las entradas se abre al leer las anteriores: hierro en bruto en tres lingotes, lapislázuli en cuarzo, cuarzo en hierro, hierro en oro. Cada página de aparato trae su receta y los clics que pide."]},
+      "sources": ["jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/recipe/crafting/shapeless/the_hermetica.json", "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/modonomicon/books/the_hermetica/book.json", "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/modonomicon/books/the_hermetica/entries/getting_started/about_mod.json", "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/modonomicon/books/the_hermetica/entries/getting_started/replication.json"]
+    },
+    {
+      "key": "theurgy_salt", "role": "step", "deps": ["theurgy_brazier"],
+      "tasks": [{"item": "theurgy:calcination_oven"}, {"item": "theurgy:alchemical_salt_mineral", "count": 3}],
+      "at": {"x": -5.511, "y": 3.182},
+      "en_us": {"title": "Salt: the body",
+        "text": ["Four iron ingots around a block of copper make the [item:theurgy:calcination_oven|Calcination Oven]. On a brazier it calcines minerals: an ore block gives three [item:theurgy:alchemical_salt_mineral|Mineral Salt], an ingot or a gem two, a raw metal one. Each ingot or gem the incubator makes eats one."]},
+      "es_es": {"title": "Sal: el cuerpo",
+        "text": ["Cuatro lingotes de hierro alrededor de un bloque de cobre hacen el [item:theurgy:calcination_oven|horno de calcinación]. Sobre un brasero calcina minerales: una mena da tres de [item:theurgy:alchemical_salt_mineral|sal mineral], un lingote o una gema dos, un metal en bruto una. Cada lingote o gema que hace la incubadora gasta una."]},
+      "sources": ["jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/recipe/crafting/shaped/calcination_oven.json", "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/recipe/calcination/alchemical_salt_mineral_from_ores.json", "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/recipe/calcination/alchemical_salt_mineral_from_ingots.json", "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/recipe/calcination/alchemical_salt_mineral_from_gems.json", "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/recipe/calcination/alchemical_salt_mineral_from_raw_materials.json", "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/recipe/incubation/ingots_iron_from_alchemical_sulfur_iron.json"]
+    },
+    {
+      "key": "theurgy_solvent", "role": "step", "deps": ["theurgy_salt"],
+      "tasks": [{"item": "theurgy:sal_ammoniac_accumulator"}, {"item": "theurgy:sal_ammoniac_tank"}, {"item": "theurgy:sal_ammoniac_bucket"}],
+      "at": {"x": -5.511, "y": -3.182},
+      "en_us": {"title": "Sal Ammoniac: the solvent", "subtitle": "It evaporates water until the water gives up.",
+        "text": ["Set the [item:theurgy:sal_ammoniac_accumulator|Sal Ammoniac Accumulator] on its [item:theurgy:sal_ammoniac_tank|Tank] and pour in up to ten water buckets. Every bucket of water leaves a tenth of a bucket of solvent; an empty bucket on the tank draws a [item:theurgy:sal_ammoniac_bucket|Sal Ammoniac Bucket].",
+                 "{page}",
+                 "[tip] A [quest:theurgy_sal_crystal|Sal Ammoniac Crystal] dissolved in the accumulator turns each bucket of water into a whole bucket of solvent."]},
+      "es_es": {"title": "Sal amoníaco: el solvente", "subtitle": "Evapora agua hasta que el agua se rinde.",
+        "text": ["Poné el [item:theurgy:sal_ammoniac_accumulator|acumulador de sal amoníaco] sobre su [item:theurgy:sal_ammoniac_tank|tanque] y echale hasta diez cubos de agua. Cada cubo de agua deja un décimo de cubo de solvente; un cubo vacío en el tanque saca un [item:theurgy:sal_ammoniac_bucket|cubo de sal amoníaco].",
+                 "{page}",
+                 "[tip] Un [quest:theurgy_sal_crystal|cristal de sal amoníaco] disuelto en el acumulador convierte cada cubo de agua en un cubo entero de solvente."]},
+      "sources": ["jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/recipe/crafting/shaped/sal_ammoniac_accumulator.json", "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/recipe/crafting/shaped/sal_ammoniac_tank.json", "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/recipe/accumulation/sal_ammoniac_from_water.json", "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/recipe/accumulation/sal_ammoniac_from_water_and_sal_ammoniac_crystal.json", "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/modonomicon/books/the_hermetica/entries/getting_started/create_solvent.json", "jar:theurgy-1.21.1-neoforge-1.76.0.jar:assets/theurgy/lang/en_us.json#book.theurgy.the_hermetica.getting_started.create_solvent.step1.text"]
+    },
+    {
+      "key": "theurgy_sulfur", "role": "step", "deps": ["theurgy_solvent"],
+      "tasks": [{"item": "theurgy:liquefaction_cauldron"}, {"item": "theurgy:alchemical_sulfur_iron", "count": 3}],
+      "at": {"x": 0.0, "y": -6.364},
+      "en_us": {"title": "Sulfur: the soul", "subtitle": "The soul of an ingot, in a jar.",
+        "text": ["Five copper ingots, a cauldron and three stone make the [item:theurgy:liquefaction_cauldron|Liquefaction Cauldron]. On a brazier and filled with sal ammoniac it dissolves what you feed it and keeps the sulfur: one [item:minecraft:raw_iron|Raw Iron] gives three [item:theurgy:alchemical_sulfur_iron|Iron Sulfur]. That's where the multiplying happens."]},
+      "es_es": {"title": "Azufre: el alma", "subtitle": "El alma de un lingote, en un frasco.",
+        "text": ["Cinco lingotes de cobre, un caldero y tres piedras hacen el [item:theurgy:liquefaction_cauldron|caldero de licuefacción]. Sobre un brasero y con sal amoníaco disuelve lo que le des y se queda con el azufre: un [item:minecraft:raw_iron|hierro en bruto] da tres de [item:theurgy:alchemical_sulfur_iron|azufre de hierro]. Ahí está la multiplicación."]},
+      "sources": ["jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/recipe/crafting/shaped/liquefaction_cauldron.json", "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/recipe/liquefaction/alchemical_sulfur_iron_from_raw_materials_iron.json", "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/modonomicon/books/the_hermetica/entries/getting_started/create_sulfur.json", "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/modonomicon/books/the_hermetica/entries/apparatus/liquefaction_cauldron.json"]
+    },
+    {
+      "key": "theurgy_mercury", "role": "step", "deps": ["theurgy_brazier"],
+      "tasks": [{"item": "theurgy:distiller"}, {"item": "theurgy:mercury_shard", "count": 8}],
+      "at": {"x": 5.511, "y": 3.182},
+      "en_us": {"title": "Mercury: the spirit",
+        "text": ["Three iron ingots, a block of copper and three stone make the [item:theurgy:distiller|Mercury Distiller]. On a brazier it boils almost anything down to [item:theurgy:mercury_shard|Mercury Shards]: ten cobblestone give one, a raw iron one, an iron ore block five. Mercury is the incubator's third ingredient and Theurgy's fuel."]},
+      "es_es": {"title": "Mercurio: el espíritu",
+        "text": ["Tres lingotes de hierro, un bloque de cobre y tres piedras hacen el [item:theurgy:distiller|destilador de mercurio]. Sobre un brasero reduce casi cualquier cosa a [item:theurgy:mercury_shard|fragmentos de mercurio]: diez de roca dan uno, un hierro en bruto uno, una mena de hierro cinco. El mercurio es el tercer ingrediente de la incubadora y el combustible de Theurgy."]},
+      "sources": ["jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/recipe/crafting/shaped/distiller.json", "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/recipe/distillation/cobblestones.json", "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/recipe/distillation/raw_materials.mercury.low.json", "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/recipe/distillation/ores.mercury.low.json", "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/modonomicon/books/the_hermetica/entries/getting_started/create_mercury.json", "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/modonomicon/books/the_hermetica/entries/apparatus/mercury_flux.json"]
+    },
+    {
+      "key": "theurgy_incubator", "role": "milestone", "deps": ["theurgy_salt", "theurgy_sulfur", "theurgy_mercury"],
+      "tasks": [{"item": "theurgy:incubator"}, {"item": "theurgy:incubator_salt_vessel"}, {"item": "theurgy:incubator_sulfur_vessel"}, {"item": "theurgy:incubator_mercury_vessel"}],
+      "at": {"x": 0.0, "y": 0.0},
+      "en_us": {"title": "Three ingots from one", "subtitle": "Body, soul and spirit, back together.",
+        "text": ["Set the [item:theurgy:incubator|Incubator] on a brazier with its salt, sulfur and mercury vessels beside it, one of each. An Iron Sulfur, a Mineral Salt and a Mercury Shard incubate into an [item:minecraft:iron_ingot|Iron Ingot]: three for every raw iron.",
+                 "{page}",
+                 "Three gold ingots, copper, stone and planks make the incubator; each vessel is four copper and three stone around the principle it holds.",
+                 "[tip] Hoppers fill the vessels, so one chest per principle keeps the line running."]},
+      "es_es": {"title": "Tres lingotes por uno", "subtitle": "Cuerpo, alma y espíritu, juntos de nuevo.",
+        "text": ["Poné la [item:theurgy:incubator|incubadora] sobre un brasero con sus recipientes de sal, azufre y mercurio al lado, uno de cada uno. Un azufre de hierro, una sal mineral y un fragmento de mercurio se incuban en un [item:minecraft:iron_ingot|lingote de hierro]: tres por cada hierro en bruto.",
+                 "{page}",
+                 "Tres lingotes de oro, cobre, piedra y tablones hacen la incubadora; cada recipiente es cuatro de cobre y tres piedras alrededor del principio que guarda.",
+                 "[tip] Las tolvas llenan los recipientes, así que un cofre por principio mantiene la línea andando."]},
+      "sources": ["jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/recipe/crafting/shaped/incubator.json", "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/recipe/crafting/shaped/incubator_salt_vessel.json", "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/recipe/crafting/shaped/incubator_sulfur_vessel.json", "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/recipe/crafting/shaped/incubator_mercury_vessel.json", "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/recipe/incubation/ingots_iron_from_alchemical_sulfur_iron.json", "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/modonomicon/books/the_hermetica/entries/getting_started/incubation.json", "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/modonomicon/books/the_hermetica/entries/apparatus/incubator.json"]
+    },
+    {
+      "key": "theurgy_sal_crystal", "role": "side", "deps": ["theurgy_solvent"],
+      "task": {"item": "theurgy:sal_ammoniac_crystal", "count": 4},
+      "at": {"x": -9.2, "y": -6.2},
+      "en_us": {"title": "Sal Ammoniac Crystals", "subtitle": "Ten times the acid, same water.",
+        "text": ["[item:theurgy:sal_ammoniac_ore|Sal Ammoniac Ore] runs through the Overworld's stone and deepslate, up to twenty veins a chunk, and Fortune works on it. One [item:theurgy:sal_ammoniac_crystal|crystal] in the accumulator turns a bucket of water into a whole bucket of solvent instead of a tenth.",
+                 "{page}",
+                 "A Sal Ammoniac Bucket crafted alone gives the crystal back, and the bucket."]},
+      "es_es": {"title": "Cristales de sal amoníaco", "subtitle": "Diez veces el ácido, la misma agua.",
+        "text": ["La [item:theurgy:sal_ammoniac_ore|mena de sal amoníaco] corre por la piedra y la pizarra profunda del Overworld, hasta veinte vetas por chunk, y Fortuna le sirve. Un [item:theurgy:sal_ammoniac_crystal|cristal] en el acumulador convierte un cubo de agua en un cubo entero de solvente, no en un décimo.",
+                 "{page}",
+                 "Un cubo de sal amoníaco fabricado solo devuelve el cristal, y el cubo."]},
+      "sources": ["jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/worldgen/placed_feature/sal_ammoniac_ore.json", "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/worldgen/configured_feature/sal_ammoniac_ore.json", "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/loot_table/blocks/sal_ammoniac_ore.json", "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/recipe/accumulation/sal_ammoniac_from_water_and_sal_ammoniac_crystal.json", "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/recipe/crafting/shapeless/sal_ammoniac_crystal_from_sal_ammoniac_bucket.json"]
+    },
+    {
+      "key": "theurgy_silk_tip", "role": "tip", "deps": ["theurgy_sulfur"],
+      "task": {"type": "checkmark"},
+      "at": {"x": -2.6, "y": -3.3},
+      "en_us": {"title": "Silk Touch, then acid",
+        "text": ["[tip] The cauldron pays more for whole ores: an iron, gold or copper ore block gives five sulfur where the raw metal gives three, a diamond ore four, a lapis ore twelve. Mine with Silk Touch and dissolve the blocks."]},
+      "es_es": {"title": "Toque de seda, después ácido",
+        "text": ["[tip] El caldero paga más por la mena entera: un bloque de mena de hierro, oro o cobre da cinco azufres donde el metal en bruto da tres; una mena de diamante, cuatro; una de lapislázuli, doce. Picá con Toque de seda y disolvé los bloques."]},
+      "sources": ["jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/recipe/liquefaction/alchemical_sulfur_iron_from_ores_iron.json", "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/recipe/liquefaction/alchemical_sulfur_iron_from_raw_materials_iron.json", "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/recipe/liquefaction/alchemical_sulfur_gold_from_ores_gold.json", "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/recipe/liquefaction/alchemical_sulfur_copper_from_ores_copper.json", "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/recipe/liquefaction/alchemical_sulfur_diamond_from_ores_diamond.json", "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/recipe/liquefaction/alchemical_sulfur_lapis_from_ores_lapis.json"]
+    },
+    {
+      "key": "theurgy_bucket_tip", "role": "tip", "deps": ["theurgy_sulfur"],
+      "task": {"type": "checkmark"},
+      "at": {"x": 2.6, "y": -3.3},
+      "en_us": {"title": "A bucket, a hundred jobs",
+        "text": ["[tip] A liquefaction drinks only 10 mB of sal ammoniac, so one bucket in the cauldron dissolves a hundred raw ores: three hundred sulfurs. The accumulator never has to hurry."]},
+      "es_es": {"title": "Un cubo, cien trabajos",
+        "text": ["[tip] Cada licuefacción toma apenas 10 mB de sal amoníaco, así que un cubo en el caldero disuelve cien metales en bruto: trescientos azufres. El acumulador nunca tiene que apurarse."]},
+      "sources": ["jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/recipe/liquefaction/alchemical_sulfur_iron_from_raw_materials_iron.json", "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/recipe/accumulation/sal_ammoniac_from_water.json"]
+    },
+    {
+      "key": "theurgy_metals", "role": "side", "deps": ["theurgy_incubator"],
+      "tasks": [{"item": "theurgy:alchemical_sulfur_osmium"}, {"item": "theurgy:alchemical_sulfur_tin"}, {"item": "theurgy:alchemical_sulfur_lead"}, {"item": "theurgy:alchemical_sulfur_silver"}],
+      "at": {"x": 0.0, "y": 3.4},
+      "en_us": {"title": "Every metal in the pack", "subtitle": "Mekanism's ores at alchemy's prices.",
+        "text": ["The recipes read the common metal tags, so the cauldron also takes the pack's other raw metals: osmium, tin, lead, silver, nickel, zinc, aluminum, uranium and platinum, three sulfurs each. The incubator hands back the ingot Almost Unified picks."]},
+      "es_es": {"title": "Todos los metales del pack", "subtitle": "Las menas de Mekanism a precio de alquimia.",
+        "text": ["Las recetas leen las etiquetas comunes de metales, así que el caldero también acepta los otros metales en bruto del pack: osmio, estaño, plomo, plata, níquel, zinc, aluminio, uranio y platino, tres azufres cada uno. La incubadora devuelve el lingote que elige Almost Unified."]},
+      "sources": ["jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/recipe/liquefaction/alchemical_sulfur_osmium_from_raw_materials_osmium.json", "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/recipe/liquefaction/alchemical_sulfur_tin_from_raw_materials_tin.json", "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/recipe/liquefaction/alchemical_sulfur_lead_from_raw_materials_lead.json", "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/recipe/liquefaction/alchemical_sulfur_silver_from_raw_materials_silver.json", "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/recipe/liquefaction/alchemical_sulfur_platinum_from_raw_materials_platinum.json", "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/recipe/incubation/ingots_iron_from_alchemical_sulfur_iron.json", "repo:pack/config/almostunified/unification/materials.json"]
+    },
+    {
+      "key": "theurgy_vats", "role": "milestone", "deps": ["theurgy_sulfur"],
+      "task": {"item": "theurgy:fermentation_vat"},
+      "at": {"x": 0.0, "y": -12.728},
+      "en_us": {"title": "Fermentation Vat", "subtitle": "A brewery with a doctorate.",
+        "text": ["Six copper ingots, a copper block, a barrel and any sulfur make the [item:theurgy:fermentation_vat|Fermentation Vat]. It needs no fire: load a sulfur, sugar or a crop and water, then close it with [key:key.sneak] and an empty-handed right-click. It opens again when the [quest:theurgy_niter|niter] is ready."]},
+      "es_es": {"title": "Tina de fermentación", "subtitle": "Una cervecería con doctorado.",
+        "text": ["Seis lingotes de cobre, un bloque de cobre, un barril y cualquier azufre hacen la [item:theurgy:fermentation_vat|tina de fermentación]. No necesita fuego: cargá un azufre, azúcar o un cultivo y agua, y cerrala con [key:key.sneak] y clic derecho con la mano vacía. Se vuelve a abrir cuando el [quest:theurgy_niter|nitro] está listo."]},
+      "sources": ["jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/recipe/crafting/shaped/fermentation_vat.json", "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/modonomicon/books/the_hermetica/entries/apparatus/fermentation_vat.json", "jar:theurgy-1.21.1-neoforge-1.76.0.jar:assets/theurgy/lang/en_us.json#book.theurgy.the_hermetica.apparatus.fermentation_vat.process.text", "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/modonomicon/books/the_hermetica/entries/getting_started/fermentation_transmutation.json"]
+    },
+    {
+      "key": "theurgy_niter", "role": "step", "deps": ["theurgy_vats"],
+      "task": {"item": "theurgy:alchemical_niter_metals_common", "count": 4},
+      "at": {"x": 0.0, "y": -15.6},
+      "en_us": {"title": "Niter: the idea of a thing", "subtitle": "Philosophy you can smelt.",
+        "text": ["Sulfur is stubborn and won't turn into anything else. Fermented, it becomes niter, the idea of a material: [item:theurgy:alchemical_niter_metals_common|Common Metals Niter] instead of iron. Each iron sulfur, a sugar or a crop and 250 mB of water give one."]},
+      "es_es": {"title": "Nitro: la idea de una cosa", "subtitle": "Filosofía que se puede fundir.",
+        "text": ["El azufre es terco y no se deja transformar. Fermentado se vuelve nitro, la idea de un material: [item:theurgy:alchemical_niter_metals_common|nitro de metales comunes] en vez de hierro. Cada azufre de hierro, un azúcar o un cultivo y 250 mB de agua dan uno."]},
+      "sources": ["jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/modonomicon/books/the_hermetica/entries/getting_started/alchemical_niter.json", "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/recipe/fermentation/alchemical_niter_metals_common_using_sugars.json", "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/recipe/fermentation/alchemical_niter_metals_common_using_crops.json"]
+    },
+    {
+      "key": "theurgy_starter", "role": "side", "deps": ["theurgy_vats"],
+      "task": {"item": "theurgy:fermentation_starter", "count": 20},
+      "at": {"x": 3.3, "y": -12.727922061357855},
+      "en_us": {"title": "Fermentation Starter", "subtitle": "Sourdough for alchemists.",
+        "text": ["A crop, a sugar and 100 mB of sal ammoniac ferment into twenty [item:theurgy:fermentation_starter|Fermentation Starters]. Each one stands in for the sugar or the crop of a niter fermentation: twenty niters for one sugar."]},
+      "es_es": {"title": "Iniciador de fermentación", "subtitle": "Masa madre para alquimistas.",
+        "text": ["Un cultivo, un azúcar y 100 mB de sal amoníaco fermentan en veinte [item:theurgy:fermentation_starter|iniciadores de fermentación]. Cada uno reemplaza al azúcar o al cultivo de una fermentación de nitro: veinte nitros por un azúcar."]},
+      "sources": ["jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/recipe/fermentation/fermentation_starter_from_crops.json", "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/recipe/fermentation/alchemical_niter_metals_common_using_fermentation_starters.json", "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/modonomicon/books/the_hermetica/entries/getting_started/fermentation_starter.json"]
+    },
+    {
+      "key": "theurgy_vat_redstone", "role": "tip", "deps": ["theurgy_vats"],
+      "task": {"type": "checkmark"},
+      "at": {"x": -3.3, "y": -12.727922061357855},
+      "en_us": {"title": "Vats that close themselves",
+        "text": ["[tip] A redstone signal closes a vat as soon as a valid recipe is inside, and a vat gives off a signal while its output holds something. A redstone torch between the two runs the loop: fill, close, finish, open, empty."]},
+      "es_es": {"title": "Tinas que se cierran solas",
+        "text": ["[tip] Una señal de redstone cierra la tina apenas tiene una receta válida adentro, y la tina emite señal mientras su salida tenga algo. Una antorcha de redstone entre las dos arma el ciclo: llenar, cerrar, terminar, abrir, vaciar."]},
+      "sources": ["jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/modonomicon/books/the_hermetica/entries/apparatus/vat_redstone.json", "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/modonomicon/books/the_hermetica/entries/apparatus/basic_vat_automation.json", "jar:theurgy-1.21.1-neoforge-1.76.0.jar:assets/theurgy/lang/en_us.json#book.theurgy.the_hermetica.apparatus.vat_redstone.redstone_control.text", "jar:theurgy-1.21.1-neoforge-1.76.0.jar:assets/theurgy/lang/en_us.json#book.theurgy.the_hermetica.apparatus.vat_redstone.redstone_output.text"]
+    },
+    {
+      "key": "theurgy_catalyst", "role": "milestone", "deps": ["theurgy_mercury"],
+      "task": {"item": "theurgy:mercury_catalyst"},
+      "at": {"x": 11.023, "y": 6.364},
+      "en_us": {"title": "Mercury Catalyst", "subtitle": "Shards in, energy out.",
+        "text": ["Iron, gold, a block of quartz and a mercury shard make the [item:theurgy:mercury_catalyst|Mercury Catalyst]. Feed it shards and it turns each into 800 mercury flux, 20 a tick; its sides go blue as it fills. An emitter set on it spends that flux."]},
+      "es_es": {"title": "Catalizador de mercurio", "subtitle": "Entran fragmentos, sale energía.",
+        "text": ["Hierro, oro, un bloque de cuarzo y un fragmento de mercurio hacen el [item:theurgy:mercury_catalyst|catalizador de mercurio]. Dale fragmentos y convierte cada uno en 800 de flujo de mercurio, a 20 por tick; sus lados se ponen azules a medida que se llena. Un emisor puesto encima gasta ese flujo."]},
+      "sources": ["jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/recipe/crafting/shaped/mercury_catalyst.json", "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/recipe/catalysation/mercury_flux_from_mercury_shard.json", "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/modonomicon/books/the_hermetica/entries/apparatus/mercury_catalyst.json", "jar:theurgy-1.21.1-neoforge-1.76.0.jar:assets/theurgy/lang/en_us.json#book.theurgy.the_hermetica.apparatus.mercury_catalyst.usage.text"]
+    },
+    {
+      "key": "theurgy_mercury_crystal", "role": "side", "deps": ["theurgy_mercury"],
+      "task": {"item": "theurgy:mercury_crystal"},
+      "at": {"x": 5.4, "y": 8.2},
+      "en_us": {"title": "Mercury Crystal",
+        "text": ["Four shards pack into a [item:theurgy:mercury_crystal|Mercury Crystal] and unpack again. The catalyst gets 3,200 flux out of one, four shards' worth. The catalyst, the mercury vessel and the caloric emitter take either in their recipes; incubation and the logistics parts want shards."]},
+      "es_es": {"title": "Cristal de mercurio",
+        "text": ["Cuatro fragmentos se compactan en un [item:theurgy:mercury_crystal|cristal de mercurio] y se vuelven a separar. El catalizador saca 3.200 de flujo de uno, lo mismo que cuatro fragmentos. El catalizador, el recipiente de mercurio y el emisor calórico aceptan cualquiera de los dos en sus recetas; la incubación y las piezas de logística piden fragmentos."]},
+      "sources": ["jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/recipe/crafting/shapeless/mercury_crystal.json", "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/recipe/crafting/shapeless/mercury_shard.json", "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/recipe/catalysation/mercury_flux_from_mercury_crystal.json", "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/tags/item/alchemical_mercuries.json", "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/recipe/incubation/ingots_iron_from_alchemical_sulfur_iron.json", "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/recipe/crafting/shaped/logistics_item_extractor.json"]
+    },
+    {
+      "key": "theurgy_distill_tip", "role": "tip", "deps": ["theurgy_mercury"],
+      "task": {"type": "checkmark"},
+      "at": {"x": 11.2, "y": 9.2},
+      "en_us": {"title": "What's worth distilling",
+        "text": ["[tip] The distiller pays by value: ten stone, fifteen sand or three crops for a shard; five for an iron or copper ore block, twenty-five for a gold ore, fifty for a diamond or emerald ore or a block of Ancient Debris."]},
+      "es_es": {"title": "Qué conviene destilar",
+        "text": ["[tip] El destilador paga según el valor: diez piedras, quince de arena o tres cultivos por un fragmento; cinco por una mena de hierro o de cobre, veinticinco por una de oro, cincuenta por una de diamante o de esmeralda o por un bloque de escombros ancestrales."]},
+      "sources": ["jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/recipe/distillation/stones.json", "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/recipe/distillation/sands.json", "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/recipe/distillation/crops.json", "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/recipe/distillation/ores.mercury.low.json", "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/recipe/distillation/ores.mercury.medium.json", "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/recipe/distillation/ores.mercury.high.json", "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/tags/item/ores/mercury/high.json"]
+    },
+    {
+      "key": "theurgy_automation", "role": "milestone", "deps": ["theurgy_catalyst"], "group": "heat",
+      "task": {"item": "theurgy:caloric_flux_emitter"},
+      "at": {"x": 20.4, "y": 4.8},
+      "en_us": {"title": "Heat without fire", "subtitle": "Coal is for barbarians.",
+        "text": ["Gold, stone, a mercury shard and a campfire or a lava bucket make the [item:theurgy:caloric_flux_emitter|Caloric Flux Emitter]. [key:key.sneak] and right-click the apparatus to heat, then set the emitter on a catalyst: it keeps its target hot from up to eight blocks away, with no fuel and no brazier."]},
+      "es_es": {"title": "Calor sin fuego", "subtitle": "El carbón es para bárbaros.",
+        "text": ["Oro, piedra, un fragmento de mercurio y una hoguera o un cubo con lava hacen el [item:theurgy:caloric_flux_emitter|emisor de flujo calórico]. Con [key:key.sneak] hacé clic derecho al aparato que querés calentar y poné el emisor sobre un catalizador: lo mantiene caliente hasta a ocho bloques, sin combustible ni brasero."]},
+      "sources": ["jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/recipe/crafting/shaped/caloric_flux_emitter_from_campfire.json", "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/recipe/crafting/shaped/caloric_flux_emitter_from_lava_bucket.json", "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/modonomicon/books/the_hermetica/entries/apparatus/caloric_flux_emitter.json", "jar:theurgy-1.21.1-neoforge-1.76.0.jar:assets/theurgy/lang/en_us.json#block.theurgy.caloric_flux_emitter.tooltip.usage", "jar:theurgy-1.21.1-neoforge-1.76.0.jar:assets/theurgy/lang/en_us.json#book.theurgy.the_hermetica.apparatus.caloric_flux_emitter.usage.text"]
+    },
+    {
+      "key": "theurgy_flux_redstone", "role": "tip", "deps": ["theurgy_automation"], "group": "heat",
+      "task": {"type": "checkmark"},
+      "at": {"x": 23.4, "y": 4.8},
+      "en_us": {"title": "Redstone on the flux",
+        "text": ["[tip] A redstone signal switches the caloric emitter off. A powered catalyst keeps converting shards but holds the flux, so one lever on the catalyst pauses whatever sits on it and nothing is lost."]},
+      "es_es": {"title": "Redstone sobre el flujo",
+        "text": ["[tip] Una señal de redstone apaga el emisor calórico. Un catalizador con señal sigue convirtiendo fragmentos pero se guarda el flujo, así que una palanca en el catalizador pausa lo que tenga encima y no se pierde nada."]},
+      "sources": ["jar:theurgy-1.21.1-neoforge-1.76.0.jar:assets/theurgy/lang/en_us.json#book.theurgy.the_hermetica.apparatus.caloric_flux_emitter.redstone.text", "jar:theurgy-1.21.1-neoforge-1.76.0.jar:assets/theurgy/lang/en_us.json#book.theurgy.the_hermetica.apparatus.mercury_catalyst.redstone.text"]
+    },
+    {
+      "key": "theurgy_logistics", "role": "side", "deps": ["theurgy_mercury"], "group": "logistics",
+      "tasks": [{"item": "theurgy:logistics_item_extractor"}, {"item": "theurgy:logistics_item_inserter"}, {"item": "theurgy:copper_wire", "count": 10}],
+      "at": {"x": 13.6, "y": 16.0},
+      "en_us": {"title": "Mercurial logistics", "subtitle": "Items over copper wire.",
+        "text": ["Copper over a mercury shard makes a [item:theurgy:logistics_item_extractor|Mercurial Item Extractor]; the shard over copper, an [item:theurgy:logistics_item_inserter|Inserter]. Click them onto inventories, join them with [item:theurgy:copper_wire|Mercurial Copper Wire], and items flow from every extractor to the inserters of that network.",
+                 "{page}",
+                 "[tip] An extractor with a list filter is also the lightest way to pull items out of [quest:occsp_logistics|Occultism's storage]."]},
+      "es_es": {"title": "Logística mercurial", "subtitle": "Ítems por cable de cobre.",
+        "text": ["Cobre arriba de un fragmento de mercurio hace un [item:theurgy:logistics_item_extractor|extractor mercurial de ítems]; el fragmento arriba del cobre, un [item:theurgy:logistics_item_inserter|insertador]. Pegalos a inventarios con un clic, unilos con [item:theurgy:copper_wire|cable de cobre mercurial] y los ítems viajan de cada extractor a los insertadores de esa red.",
+                 "{page}",
+                 "[tip] Un extractor con filtro de lista es además la forma más liviana de sacar ítems del [quest:occsp_logistics|almacenamiento de Occultism]."]},
+      "sources": ["jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/recipe/crafting/shaped/logistics_item_extractor.json", "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/recipe/crafting/shaped/logistics_item_inserter.json", "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/recipe/crafting/shaped/copper_wire.json", "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/modonomicon/books/the_hermetica/entries/logistics/logistics_network.json", "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/modonomicon/books/the_hermetica/entries/logistics/mercurial_wire.json", "jar:occultism-1.21.1-neoforge-1.224.4.jar:data/occultism/modonomicon/books/dictionary_of_spirits/entries/storage/storage_system_automation_theurgy.json"]
+    },
+    {
+      "key": "theurgy_wand", "role": "side", "deps": ["theurgy_logistics"], "group": "logistics",
+      "task": {"item": "theurgy:mercurial_wand"},
+      "at": {"x": 16.419, "y": 14.974},
+      "en_us": {"title": "Mercurial Wand", "subtitle": "A wrench with a philosophy degree.",
+        "text": ["Three sticks, copper and a shard. [key:key.sneak] and scroll to change modes: pick which side of its block an extractor pulls from, switch a node on or off, or set a frequency so only nodes with the same number talk to each other."]},
+      "es_es": {"title": "Varita mercurial", "subtitle": "Una llave inglesa con título en filosofía.",
+        "text": ["Tres palos, cobre y un fragmento. Con [key:key.sneak] y la rueda cambiás de modo: elegir de qué cara de su bloque saca un extractor, prender o apagar un nodo, o ponerle una frecuencia para que sólo se hablen los nodos con el mismo número."]},
+      "sources": ["jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/recipe/crafting/shaped/mercurial_wand.json", "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/modonomicon/books/the_hermetica/entries/logistics/mercurial_wand.json", "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/modonomicon/books/the_hermetica/entries/logistics/frequency.json", "jar:theurgy-1.21.1-neoforge-1.76.0.jar:assets/theurgy/lang/en_us.json#item.theurgy.mercurial_wand.tooltip.usage"]
+    },
+    {
+      "key": "theurgy_node", "role": "side", "deps": ["theurgy_logistics"], "group": "logistics",
+      "task": {"item": "theurgy:logistics_connector_node"},
+      "at": {"x": 16.198, "y": 17.5},
+      "en_us": {"title": "Connection Node",
+        "text": ["A shard, an iron ingot and three bricks make three [item:theurgy:logistics_connector_node|Mercurial Connection Nodes]. Stick them on any block to carry wire round corners and across distance: everything wired to them is one network, and extractors deal their items out in turns."]},
+      "es_es": {"title": "Nodo de conexión",
+        "text": ["Un fragmento, un lingote de hierro y tres ladrillos hacen tres [item:theurgy:logistics_connector_node|nodos de conexión mercuriales]. Pegalos a cualquier bloque para llevar el cable por esquinas y distancias: todo lo cableado a ellos es una sola red, y los extractores reparten sus ítems por turnos."]},
+      "sources": ["jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/recipe/crafting/shaped/logistics_connector_node.json", "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/modonomicon/books/the_hermetica/entries/logistics/connection_node.json", "jar:theurgy-1.21.1-neoforge-1.76.0.jar:assets/theurgy/lang/en_us.json#book.theurgy.the_hermetica.logistics.connection_node.large_networks.text"]
+    },
+    {
+      "key": "theurgy_filters", "role": "side", "deps": ["theurgy_logistics"], "group": "logistics",
+      "tasks": [{"item": "theurgy:list_filter"}, {"item": "theurgy:attribute_filter"}],
+      "at": {"x": 14.121, "y": 18.954},
+      "en_us": {"title": "Filters", "subtitle": "Paper, a shard and opinions.",
+        "text": ["Eight paper around a shard make nine [item:theurgy:list_filter|List Filters]; trade one paper for a feather and you get [item:theurgy:attribute_filter|Attribute Filters]. Right-click the air to set one up, then right-click an extractor or inserter to fit it. Buckets in a list filter filter fluids."]},
+      "es_es": {"title": "Filtros", "subtitle": "Papel, un fragmento y opiniones.",
+        "text": ["Ocho papeles alrededor de un fragmento hacen nueve [item:theurgy:list_filter|filtros de lista]; cambiá un papel por una pluma y salen [item:theurgy:attribute_filter|filtros de atributos]. Clic derecho al aire para configurar uno y clic derecho a un extractor o insertador para ponérselo. Con cubos adentro, el filtro de lista filtra fluidos."]},
+      "sources": ["jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/recipe/crafting/shaped/list_filter.json", "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/recipe/crafting/shaped/attribute_filter.json", "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/modonomicon/books/the_hermetica/entries/logistics/list_filter.json", "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/modonomicon/books/the_hermetica/entries/logistics/attribute_filter.json", "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/modonomicon/books/the_hermetica/entries/logistics/fluid_list_filter.json"]
+    },
+    {
+      "key": "theurgy_fluid_logistics", "role": "side", "deps": ["theurgy_logistics"], "group": "logistics",
+      "tasks": [{"item": "theurgy:logistics_fluid_extractor"}, {"item": "theurgy:logistics_fluid_inserter"}],
+      "at": {"x": 11.672, "y": 18.298},
+      "en_us": {"title": "Fluids on the wire",
+        "text": ["Blue dye on top of the extractor or inserter recipe makes the [item:theurgy:logistics_fluid_extractor|Fluid Extractor] and the [item:theurgy:logistics_fluid_inserter|Fluid Inserter]. Draw from the sal ammoniac tank, feed the cauldrons and vats, and nobody carries buckets again."]},
+      "es_es": {"title": "Fluidos por cable",
+        "text": ["Tinte azul arriba de la receta del extractor o del insertador da el [item:theurgy:logistics_fluid_extractor|extractor de fluidos] y el [item:theurgy:logistics_fluid_inserter|insertador de fluidos]. Sacá del tanque de sal amoníaco, llevalo a calderos y tinas, y nadie vuelve a cargar cubos."]},
+      "sources": ["jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/recipe/crafting/shaped/logistics_fluid_extractor.json", "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/recipe/crafting/shaped/logistics_fluid_inserter.json", "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/modonomicon/books/the_hermetica/entries/logistics/fluid_extractor.json", "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/modonomicon/books/the_hermetica/entries/logistics/fluid_inserter.json"]
+    },
+    {
+      "key": "theurgy_flip_tip", "role": "tip", "deps": ["theurgy_logistics"], "group": "logistics",
+      "task": {"type": "checkmark"},
+      "at": {"x": 10.6, "y": 16.0},
+      "en_us": {"title": "Wrong way round",
+        "text": ["[tip] Made an extractor where you wanted an inserter? Put it alone in the crafting grid and it flips to the other one, and back."]},
+      "es_es": {"title": "Al revés",
+        "text": ["[tip] ¿Hiciste un extractor y querías un insertador? Ponelo solo en la mesa de crafteo: se da vuelta al otro, y viceversa."]},
+      "sources": ["jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/recipe/crafting/shapeless/logistics_item_inserter_from_extractor.json", "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/recipe/crafting/shapeless/logistics_item_extractor_from_inserter.json"]
+    },
+    {
+      "key": "theurgy_bounty", "role": "bounty", "deps": ["theurgy_mercury"],
+      "task": {"item": "theurgy:mercury_shard", "count": 32, "consume": true},
+      "at": {"x": 7.6, "y": 10.8},
+      "en_us": {"title": "Mercury for the common store", "subtitle": "Every apparatus drinks it.",
+        "text": ["Thirty-two [item:theurgy:mercury_shard|Mercury Shards] for the common store, once a day. Incubators, catalysts and wires all run on them, and a quarry's leftover stone distills into plenty."]},
+      "es_es": {"title": "Mercurio para el depósito común", "subtitle": "Todos los aparatos lo toman.",
+        "text": ["Treinta y dos [item:theurgy:mercury_shard|fragmentos de mercurio] para el depósito común, una vez por día. Incubadoras, catalizadores y cables viven de ellos, y la piedra que sobra de una cantera se destila en montones."]},
+      "sources": ["jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/recipe/distillation/stones.json", "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/recipe/incubation/ingots_iron_from_alchemical_sulfur_iron.json", "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/recipe/catalysation/mercury_flux_from_mercury_shard.json", "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/recipe/crafting/shaped/copper_wire.json"]
+    },
+    {
+      "key": "theurgy_strata_salt", "role": "side", "deps": ["theurgy_salt"], "group": "salts",
+      "task": {"item": "theurgy:alchemical_salt_strata", "count": 5},
+      "at": {"x": -5.6, "y": 9.6},
+      "en_us": {"title": "Salt from dirt", "subtitle": "Renewable, unlike your ores.",
+        "text": ["Dirt, cobblestone, sand, gravel and clay carry traces of minerals: the oven turns each into [item:theurgy:alchemical_salt_strata|Strata Salt], and five strata salts calcine into one Mineral Salt. Keep the ores for sulfur."]},
+      "es_es": {"title": "Sal de la tierra", "subtitle": "Renovable, no como tus menas.",
+        "text": ["La tierra, la roca, la arena, la grava y la arcilla guardan rastros de minerales: el horno convierte cada una en [item:theurgy:alchemical_salt_strata|sal de estratos], y cinco sales de estratos se calcinan en una sal mineral. Guardá las menas para el azufre."]},
+      "sources": ["jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/modonomicon/books/the_hermetica/entries/getting_started/strata_recycling.json", "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/recipe/calcination/alchemical_salt_strata_from_dirt.json", "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/recipe/calcination/alchemical_salt_strata_from_cobblestone.json", "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/recipe/calcination/alchemical_salt_strata_from_sand.json", "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/recipe/calcination/alchemical_salt_strata_from_gravel.json", "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/recipe/calcination/alchemical_salt_mineral_from_strata_salt.json"]
+    },
+    {
+      "key": "theurgy_creature_salt", "role": "side", "deps": ["theurgy_salt"], "group": "salts",
+      "tasks": [{"item": "theurgy:alchemical_salt_plant", "count": 2}, {"item": "theurgy:alchemical_salt_creature"}],
+      "at": {"x": -8.6, "y": 9.6},
+      "en_us": {"title": "Salt for living things",
+        "text": ["Logs, saplings, crops and leaves calcine into [item:theurgy:alchemical_salt_plant|Plant Salt], and two plant salts into one [item:theurgy:alchemical_salt_creature|Creature Salt]. Meat, bones and mob drops give creature salt straight away."]},
+      "es_es": {"title": "Sal para lo vivo",
+        "text": ["Troncos, brotes, cultivos y hojas se calcinan en [item:theurgy:alchemical_salt_plant|sal vegetal], y dos sales vegetales en una [item:theurgy:alchemical_salt_creature|sal de criaturas]. La carne, los huesos y lo que sueltan los mobs dan sal de criaturas directo."]},
+      "sources": ["jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/modonomicon/books/the_hermetica/entries/getting_started/plant_recycling.json", "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/recipe/calcination/alchemical_salt_plant_from_logs.json", "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/recipe/calcination/alchemical_salt_plant_from_crops.json", "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/recipe/calcination/alchemical_salt_creature_from_plant_salt.json", "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/recipe/calcination/alchemical_salt_creature_from_bone.json", "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/recipe/calcination/alchemical_salt_creature_from_beef.json"]
+    },
+    {
+      "key": "theurgy_crystallized", "role": "side", "deps": ["theurgy_salt"], "group": "salts",
+      "tasks": [{"item": "theurgy:crystallized_water"}, {"item": "theurgy:crystallized_lava"}],
+      "at": {"x": -11.6, "y": 9.6},
+      "en_us": {"title": "Water in your pocket", "subtitle": "Lava you can pocket. What could go wrong?",
+        "text": ["Any alchemical salt crafted with a water or lava bucket crystallizes it: [item:theurgy:crystallized_water|Crystallized Water] and [item:theurgy:crystallized_lava|Crystallized Lava] travel as items and craft back into a bucket. In the accumulator each melts into a full bucket; calcined, the lava gives eight strata salts."]},
+      "es_es": {"title": "Agua en el bolsillo", "subtitle": "Lava de bolsillo. ¿Qué podría salir mal?",
+        "text": ["Cualquier sal alquímica fabricada con un cubo con agua o con lava lo cristaliza: el [item:theurgy:crystallized_water|agua cristalizada] y la [item:theurgy:crystallized_lava|lava cristalizada] viajan como ítems y vuelven a un cubo en la mesa. En el acumulador cada una se funde en un cubo entero; calcinada, la lava da ocho sales de estratos."]},
+      "sources": ["jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/recipe/crafting/shapeless/crystallized_water.json", "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/recipe/crafting/shapeless/crystallized_lava.json", "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/recipe/crafting/shapeless/water_bucket.json", "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/recipe/crafting/shapeless/lava_bucket.json", "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/recipe/accumulation/water_from_crystallized_water.json", "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/recipe/accumulation/lava_from_crystallized_lava.json", "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/recipe/calcination/alchemical_salt_strata_from_crystallized_lava.json"]
+    },
+    {
+      "key": "theurgy_salt_tip", "role": "tip", "deps": ["theurgy_creature_salt"], "group": "salts",
+      "task": {"type": "checkmark"},
+      "at": {"x": -8.6, "y": 12.2},
+      "en_us": {"title": "The right salt",
+        "text": ["[tip] The salt has to match the sulfur: ores, gems, coal and redstone want Mineral Salt; logs and crops, Plant Salt; animal and mob drops, Creature Salt; earth and stone, Strata Salt. A blaze rod is incubated with creature salt, never with a diamond's."]},
+      "es_es": {"title": "La sal que corresponde",
+        "text": ["[tip] La sal tiene que ir con el azufre: menas, gemas, carbón y redstone piden sal mineral; troncos y cultivos, sal vegetal; lo que sueltan animales y mobs, sal de criaturas; tierra y piedra, sal de estratos. Una vara de blaze se incuba con sal de criaturas, nunca con la de un diamante."]},
+      "sources": ["jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/recipe/incubation/ingots_iron_from_alchemical_sulfur_iron.json", "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/recipe/incubation/oak_log.json", "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/recipe/incubation/blaze_rod.json", "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/recipe/incubation/dirt.json", "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/recipe/incubation/coal.json", "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/modonomicon/books/the_hermetica/entries/getting_started/create_salt.json"]
+    },
+    {
+      "key": "theurgy_rod", "role": "side", "deps": [], "group": "rods",
+      "task": {"item": "theurgy:divination_rod_t1"},
+      "at": {"x": -21.8, "y": 6.0},
+      "en_us": {"title": "A rod for ordinary ores", "subtitle": "Dowsing, except it works.",
+        "text": ["Two glass and three sticks. [key:key.sneak] and right-click a block to attune the [item:theurgy:divination_rod_t1|Glass Divination Rod], then hold right-click: it points to the nearest match. Iron, coal and the other common ores are in its reach; gold and diamonds need a better rod."]},
+      "es_es": {"title": "Una vara para menas comunes", "subtitle": "Radiestesia, pero que anda.",
+        "text": ["Dos de cristal y tres palos. Con [key:key.sneak] hacé clic derecho a un bloque para afinar la [item:theurgy:divination_rod_t1|vara de adivinación de vidrio] y después mantené el clic derecho: apunta al igual más cercano. Hierro, carbón y las otras menas comunes le alcanzan; oro y diamantes piden una vara mejor."]},
+      "sources": ["jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/recipe/crafting/shaped/divination_rod_t1.json", "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/modonomicon/books/the_hermetica/entries/getting_started/about_divination_rods.json", "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/modonomicon/books/the_hermetica/entries/getting_started/t1_divination_rod.json", "jar:theurgy-1.21.1-neoforge-1.76.0.jar:assets/theurgy/lang/en_us.json#item.theurgy.divination_rod_t1.tooltip.usage", "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/tags/block/divination_rod_t1_allowed_blocks.json"]
+    },
+    {
+      "key": "theurgy_rod_tip", "role": "tip", "deps": ["theurgy_rod"], "group": "rods",
+      "task": {"type": "checkmark"},
+      "at": {"x": -24.8, "y": 6.0},
+      "en_us": {"title": "Rod habits",
+        "text": ["[tip] A rod that found something turns purple. A right-click without holding points to the last find again and costs no durability; hold it to search anew."]},
+      "es_es": {"title": "Mañas de la vara",
+        "text": ["[tip] Una vara que encontró algo se pone violeta. Un clic derecho sin mantener vuelve a señalar el último hallazgo y no gasta durabilidad; mantenelo para buscar de nuevo."]},
+      "sources": ["jar:theurgy-1.21.1-neoforge-1.76.0.jar:assets/theurgy/lang/en_us.json#book.theurgy.the_hermetica.getting_started.about_divination_rods.usage.text", "jar:theurgy-1.21.1-neoforge-1.76.0.jar:assets/theurgy/lang/en_us.json#book.theurgy.the_hermetica.getting_started.about_divination_rods.usage2.text"]
+    },
+    {
+      "key": "theurgy_amethyst_rod", "role": "side", "deps": ["theurgy_rod"], "group": "rods",
+      "task": {"item": "theurgy:amethyst_divination_rod"},
+      "at": {"x": -21.8, "y": 3.0},
+      "en_us": {"title": "Amethyst Divination Rod", "subtitle": "The rod that finds rods.",
+        "text": ["Glass, sticks and purple dye: no amethyst needed. The [item:theurgy:amethyst_divination_rod|Amethyst Divination Rod] comes attuned to [item:minecraft:budding_amethyst|Budding Amethyst], and every better rod asks for an [item:minecraft:amethyst_shard|Amethyst Shard]."]},
+      "es_es": {"title": "Vara de adivinación de amatista", "subtitle": "La vara que encuentra varas.",
+        "text": ["Cristal, palos y tinte morado: no hace falta amatista. La [item:theurgy:amethyst_divination_rod|vara de adivinación de amatista] viene afinada al [item:minecraft:budding_amethyst|brotador de amatista], y toda vara mejor pide un [item:minecraft:amethyst_shard|fragmento de amatista]."]},
+      "sources": ["jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/recipe/crafting/shaped/amethyst_divination_rod.json", "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/modonomicon/books/the_hermetica/entries/getting_started/amethyst_divination_rod.json", "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/recipe/crafting/shaped/divination_rod_t2.json", "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/recipe/crafting/shaped/sulfur_attuned_divination_rod_rare.json"]
+    },
+    {
+      "key": "theurgy_iron_rod", "role": "side", "deps": ["theurgy_amethyst_rod"], "group": "rods",
+      "task": {"item": "theurgy:divination_rod_t2"},
+      "at": {"x": -21.8, "y": 0.0},
+      "en_us": {"title": "Iron Divination Rod",
+        "text": ["Glass, a gold nugget, an amethyst shard and a stick. The [item:theurgy:divination_rod_t2|Iron Divination Rod] lasts longer and reaches the rarer ores, gold among them, and obsidian too."]},
+      "es_es": {"title": "Vara de adivinación de hierro",
+        "text": ["Cristal, una pepita de oro, un fragmento de amatista y un palo. La [item:theurgy:divination_rod_t2|vara de adivinación de hierro] dura más y llega a las menas más raras, el oro entre ellas, y también a la obsidiana."]},
+      "sources": ["jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/recipe/crafting/shaped/divination_rod_t2.json", "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/modonomicon/books/the_hermetica/entries/getting_started/t2_divination_rod.json", "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/tags/block/divination_rod_t2_allowed_blocks.json"]
+    },
+    {
+      "key": "theurgy_diamond_rod", "role": "side", "deps": ["theurgy_iron_rod"], "group": "rods",
+      "task": {"item": "theurgy:divination_rod_t3"},
+      "at": {"x": -21.8, "y": -3.0},
+      "en_us": {"title": "Diamond Divination Rod",
+        "text": ["Glass, a diamond, nether quartz and an amethyst shard. The [item:theurgy:divination_rod_t3|Diamond Divination Rod] finds the high-tier ores, diamonds included, and wears much slower."]},
+      "es_es": {"title": "Vara de adivinación de diamante",
+        "text": ["Cristal, un diamante, cuarzo del Nether y un fragmento de amatista. La [item:theurgy:divination_rod_t3|vara de adivinación de diamante] encuentra las menas de nivel alto, diamantes incluidos, y se gasta mucho más despacio."]},
+      "sources": ["jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/recipe/crafting/shaped/divination_rod_t3.json", "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/modonomicon/books/the_hermetica/entries/getting_started/t3_divination_rod.json"]
+    },
+    {
+      "key": "theurgy_netherite_rod", "role": "side", "deps": ["theurgy_diamond_rod"], "group": "rods",
+      "task": {"item": "theurgy:divination_rod_t4"},
+      "at": {"x": -21.8, "y": -6.0},
+      "en_us": {"title": "Netherite Divination Rod", "subtitle": "It wants the ore, not the scrap.",
+        "text": ["Glass, a blaze rod, an amethyst shard and a whole block of [item:minecraft:ancient_debris|Ancient Debris]. The [item:theurgy:divination_rod_t4|Netherite Divination Rod] finds ores of any tier and barely wears."]},
+      "es_es": {"title": "Vara de adivinación de netherita", "subtitle": "Pide la mena, no la chatarra.",
+        "text": ["Cristal, una vara de blaze, un fragmento de amatista y un bloque entero de [item:minecraft:ancient_debris|escombros ancestrales]. La [item:theurgy:divination_rod_t4|vara de adivinación de netherita] encuentra menas de cualquier nivel y casi no se gasta."]},
+      "sources": ["jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/recipe/crafting/shaped/divination_rod_t4.json", "jar:neoforge-21.1.249-universal.jar:data/c/tags/item/ores/netherite_scrap.json", "jar:neoforge-21.1.249-universal.jar:data/c/tags/item/rods/blaze.json", "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/modonomicon/books/the_hermetica/entries/getting_started/t4_divination_rod.json"]
+    },
+    {
+      "key": "theurgy_common_rod", "role": "side", "deps": ["theurgy_rod"], "group": "rods",
+      "task": {"item": "theurgy:sulfur_attuned_divination_rod_common"},
+      "at": {"x": -24.8, "y": 3.0},
+      "en_us": {"title": "Rods that already know", "subtitle": "Pre-attuned, no second opinions.",
+        "text": ["Craft a rod with a sulfur in place of a stick and it comes attuned to that sulfur's ore: [item:theurgy:alchemical_sulfur_iron|Iron Sulfur] makes a [item:theurgy:sulfur_attuned_divination_rod_common|Divination Rod: Common Materials] that finds iron. It can't be re-attuned, but it lasts far longer. Copper or coal sulfur makes the abundant one."]},
+      "es_es": {"title": "Varas que ya saben", "subtitle": "Preafinada, sin segundas opiniones.",
+        "text": ["Hacé la vara con un azufre en lugar de un palo y sale afinada a la mena de ese azufre: con [item:theurgy:alchemical_sulfur_iron|azufre de hierro] da una [item:theurgy:sulfur_attuned_divination_rod_common|vara de adivinación: materiales comunes] que encuentra hierro. No se puede volver a afinar, pero dura mucho más. Con azufre de cobre o de carbón sale la de materiales abundantes."]},
+      "sources": ["jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/recipe/crafting/shaped/sulfur_attuned_divination_rod_common.json", "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/recipe/crafting/shaped/sulfur_attuned_divination_rod_abundant.json", "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/modonomicon/books/the_hermetica/entries/getting_started/abundant_and_common_sulfur_attuned_divination_rod.json", "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/modonomicon/books/the_hermetica/entries/getting_started/about_divination_rods.json"]
+    },
+    {
+      "key": "theurgy_rare_rod", "role": "side", "deps": ["theurgy_common_rod"], "group": "rods",
+      "task": {"item": "theurgy:sulfur_attuned_divination_rod_rare"},
+      "at": {"x": -24.8, "y": 0.0},
+      "en_us": {"title": "Pre-attuned: rare",
+        "text": ["A rare sulfur, glass, a stick and an amethyst shard: [item:theurgy:alchemical_sulfur_gold|Gold Sulfur] makes a [item:theurgy:sulfur_attuned_divination_rod_rare|Divination Rod: Rare Materials] locked on gold. Any rare sulfur works the same way."]},
+      "es_es": {"title": "Preafinada: raros",
+        "text": ["Un azufre raro, cristal, un palo y un fragmento de amatista: con [item:theurgy:alchemical_sulfur_gold|azufre de oro] sale una [item:theurgy:sulfur_attuned_divination_rod_rare|vara de adivinación: materiales raros] fija en el oro. Cualquier azufre raro sirve igual."]},
+      "sources": ["jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/recipe/crafting/shaped/sulfur_attuned_divination_rod_rare.json", "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/modonomicon/books/the_hermetica/entries/getting_started/rare_sulfur_attuned_divination_rod.json"]
+    },
+    {
+      "key": "theurgy_precious_rod", "role": "side", "deps": ["theurgy_rare_rod"], "group": "rods",
+      "task": {"item": "theurgy:sulfur_attuned_divination_rod_precious"},
+      "at": {"x": -24.8, "y": -3.0},
+      "en_us": {"title": "Pre-attuned: precious", "subtitle": "A diamond to find diamonds.",
+        "text": ["A precious sulfur, glass, a diamond and an amethyst shard: [item:theurgy:alchemical_sulfur_diamond|Diamond Sulfur] makes a [item:theurgy:sulfur_attuned_divination_rod_precious|Divination Rod: Precious Materials], the toughest of the pre-attuned rods, locked on diamonds."]},
+      "es_es": {"title": "Preafinada: preciosos", "subtitle": "Un diamante para encontrar diamantes.",
+        "text": ["Un azufre precioso, cristal, un diamante y un fragmento de amatista: con [item:theurgy:alchemical_sulfur_diamond|azufre de diamante] sale una [item:theurgy:sulfur_attuned_divination_rod_precious|vara de adivinación: materiales preciosos], la más dura de las preafinadas, fija en el diamante."]},
+      "sources": ["jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/recipe/crafting/shaped/sulfur_attuned_divination_rod_precious.json", "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/modonomicon/books/the_hermetica/entries/getting_started/precious_sulfur_attuned_divination_rod.json"]
+    },
+    {
+      "key": "theurgy_emitter", "role": "milestone", "deps": ["theurgy_catalyst", "theurgy_sulfur"],
+      "task": {"item": "theurgy:sulfuric_flux_emitter"},
+      "at": {"x": 5.511, "y": -3.182},
+      "en_us": {"title": "Sulfuric Flux Emitter", "subtitle": "The soul, sent by wire.",
+        "text": ["Gold, stone, any sulfur, a sal ammoniac crystal and, in this pack, a [item:entrelumen:containment_seal|Containment Seal] (act IV) in the bottom row. Right-click the reformation pedestals with the [item:theurgy:sulfuric_flux_emitter|emitter] and set it on a catalyst, within eight blocks of them.",
+                 "{page}",
+                 "Right-click the placed emitter to check its links. If a pedestal is missing, break the emitter, link it again and put it back."]},
+      "es_es": {"title": "Emisor de flujo sulfúrico", "subtitle": "El alma, enviada por cable.",
+        "text": ["Oro, piedra, cualquier azufre, un cristal de sal amoníaco y, en este pack, un [item:entrelumen:containment_seal|sello de contención] (acto IV) en la fila de abajo. Hacé clic derecho con el [item:theurgy:sulfuric_flux_emitter|emisor] a los pedestales de reformación y ponelo sobre un catalizador, a menos de ocho bloques de ellos.",
+                 "{page}",
+                 "Clic derecho al emisor ya puesto para revisar sus enlaces. Si falta un pedestal, rompé el emisor, enlazalo de nuevo y volvé a ponerlo."]},
+      "sources": ["repo:pack/kubejs/server_scripts/entrelumen_arcane_balance.js#theurgy:crafting/shaped/sulfuric_flux_emitter", "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/recipe/crafting/shaped/sulfuric_flux_emitter.json", "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/modonomicon/books/the_hermetica/entries/apparatus/sulfuric_flux_emitter.json", "jar:theurgy-1.21.1-neoforge-1.76.0.jar:assets/theurgy/lang/en_us.json#book.theurgy.the_hermetica.apparatus.sulfuric_flux_emitter.usage.text", "jar:theurgy-1.21.1-neoforge-1.76.0.jar:assets/theurgy/lang/en_us.json#book.theurgy.the_hermetica.apparatus.sulfuric_flux_emitter.usage3.text", "repo:content/act_four.json#voices_seal_item"]
+    },
+    {
+      "key": "theurgy_balance", "role": "info", "deps": ["theurgy_emitter"],
+      "task": {"type": "checkmark"},
+      "at": {"x": 8.8, "y": -2.2},
+      "en_us": {"title": "Why transmutation waits",
+        "text": ["Reformation, transmutation and exaltation together copy nearly any material, diamonds and netherite included, so the pack ties the emitter to the Containment Seal like its other replication tools. Refining ores stays free from the start."]},
+      "es_es": {"title": "Por qué la transmutación espera",
+        "text": ["Reformación, transmutación y exaltación juntas copian casi cualquier material, diamantes y netherita incluidos, así que el pack ata el emisor al sello de contención como a sus otras herramientas de réplica. Refinar menas sigue libre desde el principio."]},
+      "sources": ["repo:pack/kubejs/server_scripts/entrelumen_arcane_balance.js#theurgy:crafting/shaped/sulfuric_flux_emitter", "repo:docs/design/arcane-expansion-family.md#staged-acquisition-and-removed-duplication", "repo:docs/design/recipe-design-rules.md", "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/recipe/reformation/alchemical_sulfur_diamond_from_alchemical_niter_gems_precious.json", "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/recipe/reformation/alchemical_sulfur_netherite_from_alchemical_niter_metals_precious.json"]
+    },
+    {
+      "key": "theurgy_array", "role": "step", "deps": ["theurgy_emitter"],
+      "tasks": [{"item": "theurgy:reformation_target_pedestal"}, {"item": "theurgy:reformation_source_pedestal", "count": 2}, {"item": "theurgy:reformation_result_pedestal"}],
+      "at": {"x": 8.8, "y": -7.2},
+      "en_us": {"title": "The Reformation Array", "subtitle": "Alchemy that needs the furniture just so.",
+        "text": ["No fixed shape: a [item:theurgy:reformation_target_pedestal|Target Pedestal] holds the sulfur you want more of and is never used up, [item:theurgy:reformation_source_pedestal|Source Pedestals] hold what gets consumed, and one [item:theurgy:reformation_result_pedestal|Result Pedestal] collects the copies. Keep them within a few blocks of each other.",
+                 "{page}",
+                 "All three are built on blackstone, so the Nether comes first."]},
+      "es_es": {"title": "El conjunto de reformación", "subtitle": "Alquimia que pide los muebles en su lugar.",
+        "text": ["No tiene forma fija: un [item:theurgy:reformation_target_pedestal|pedestal objetivo] tiene el azufre del que querés más y nunca se gasta, los [item:theurgy:reformation_source_pedestal|pedestales fuente] tienen lo que se consume y un [item:theurgy:reformation_result_pedestal|pedestal resultado] junta las copias. Ponelos a pocos bloques entre sí.",
+                 "{page}",
+                 "Los tres se arman sobre piedra negra, así que primero va el Nether."]},
+      "sources": ["jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/modonomicon/books/the_hermetica/entries/apparatus/reformation_array.json", "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/recipe/crafting/shaped/reformation_target_pedestal.json", "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/recipe/crafting/shaped/reformation_source_pedestal.json", "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/recipe/crafting/shaped/reformation_result_pedestal.json", "jar:theurgy-1.21.1-neoforge-1.76.0.jar:assets/theurgy/lang/en_us.json#book.theurgy.the_hermetica.apparatus.reformation_array.structure.text"]
+    },
+    {
+      "key": "theurgy_eight_tip", "role": "tip", "deps": ["theurgy_array"],
+      "task": {"type": "checkmark"},
+      "at": {"x": 14.8, "y": -5.4},
+      "en_us": {"title": "Room for eight",
+        "text": ["[tip] Build more source pedestals than you think you need: the expensive recipes spread their sources over up to eight pedestals, sometimes with several sulfurs on each. The recipe viewer shows exactly how many."]},
+      "es_es": {"title": "Lugar para ocho",
+        "text": ["[tip] Hacé más pedestales fuente de los que creés: las recetas caras reparten sus fuentes en hasta ocho pedestales, a veces con varios azufres en cada uno. El visor de recetas muestra cuántos exactamente."]},
+      "sources": ["jar:theurgy-1.21.1-neoforge-1.76.0.jar:assets/theurgy/lang/en_us.json#book.theurgy.the_hermetica.apparatus.source_pedestal.sulfur_consumption.text", "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/modonomicon/books/the_hermetica/entries/getting_started/reformation_array.json"]
+    },
+    {
+      "key": "theurgy_flux_tip", "role": "tip", "deps": ["theurgy_array"],
+      "task": {"type": "checkmark"},
+      "at": {"x": 15.2, "y": -2.4},
+      "en_us": {"title": "The flux budget",
+        "text": ["[tip] A reformation costs 50 mercury flux for abundant sulfurs, 100 for common ones, 150 for rare and 200 for precious. At 800 flux a shard, one shard pays for four diamonds."]},
+      "es_es": {"title": "El presupuesto de flujo",
+        "text": ["[tip] Una reformación cuesta 50 de flujo de mercurio para azufres abundantes, 100 para comunes, 150 para raros y 200 para preciosos. A 800 de flujo por fragmento, uno solo paga cuatro diamantes."]},
+      "sources": ["jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/recipe/reformation/alchemical_sulfur_timewood_from_alchemical_sulfurs_logs_abundant.json", "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/recipe/reformation/alchemical_sulfur_quartz_from_alchemical_sulfurs_gems_common.json", "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/recipe/reformation/alchemical_sulfur_gold_from_alchemical_sulfurs_metals_rare.json", "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/recipe/reformation/alchemical_sulfur_diamond_from_alchemical_sulfurs_gems_precious.json", "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/recipe/catalysation/mercury_flux_from_mercury_shard.json"]
+    },
+    {
+      "key": "theurgy_reformation", "role": "step", "deps": ["theurgy_array"],
+      "tasks": [{"item": "theurgy:alchemical_sulfur_lapis"}, {"item": "theurgy:alchemical_sulfur_quartz"}],
+      "at": {"x": 10.8, "y": -10.2},
+      "en_us": {"title": "Lapis into quartz", "subtitle": "Same type, same tier, new face.",
+        "text": ["Reformation swaps sulfurs of the same type and tier. Put a [item:theurgy:alchemical_sulfur_quartz|Quartz Sulfur] on the target and [item:theurgy:alchemical_sulfur_lapis|Lapis Sulfur] on the sources: each lapis becomes one more quartz for 100 flux. Certus quartz sits in the same tier, if AE2 is calling."]},
+      "es_es": {"title": "Lapislázuli en cuarzo", "subtitle": "Mismo tipo, mismo nivel, otra cara.",
+        "text": ["La reformación cambia azufres del mismo tipo y nivel. Poné un [item:theurgy:alchemical_sulfur_quartz|azufre de cuarzo] en el objetivo y [item:theurgy:alchemical_sulfur_lapis|azufre de lapislázuli] en las fuentes: cada lapislázuli se vuelve un cuarzo más por 100 de flujo. El cuarzo certus está en el mismo nivel, por si AE2 te llama."]},
+      "sources": ["jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/modonomicon/books/the_hermetica/entries/getting_started/convert_within_type_and_tier.json", "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/modonomicon/books/the_hermetica/entries/getting_started/source_pedestal.json", "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/recipe/reformation/alchemical_sulfur_quartz_from_alchemical_sulfurs_gems_common.json", "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/recipe/reformation/alchemical_sulfur_certus_quartz_from_alchemical_sulfurs_gems_common.json", "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/tags/item/alchemical_sulfurs/gems/common.json"]
+    },
+    {
+      "key": "theurgy_gem_reform", "role": "side", "deps": ["theurgy_reformation"], "group": "replicas",
+      "task": {"item": "theurgy:alchemical_sulfur_diamond"},
+      "at": {"x": 20.6, "y": -9.8},
+      "en_us": {"title": "Emeralds into diamonds", "subtitle": "The villagers never saw it coming.",
+        "text": ["Diamond and emerald share the precious gem tier. With a [item:theurgy:alchemical_sulfur_diamond|Diamond Sulfur] on the target, every emerald sulfur on the sources turns into another for 200 flux: the villagers pay in emeralds and you cash in diamonds."]},
+      "es_es": {"title": "Esmeraldas en diamantes", "subtitle": "Los aldeanos no lo vieron venir.",
+        "text": ["Diamante y esmeralda comparten el nivel de gemas preciosas. Con un [item:theurgy:alchemical_sulfur_diamond|azufre de diamante] en el objetivo, cada azufre de esmeralda de las fuentes se vuelve otro por 200 de flujo: los aldeanos pagan en esmeraldas y vos cobrás en diamantes."]},
+      "sources": ["jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/recipe/reformation/alchemical_sulfur_diamond_from_alchemical_sulfurs_gems_precious.json", "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/tags/item/alchemical_sulfurs/gems/precious.json", "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/recipe/liquefaction/alchemical_sulfur_emerald_from_gems_emerald.json", "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/recipe/incubation/gems_diamond_from_alchemical_sulfur_diamond.json"]
+    },
+    {
+      "key": "theurgy_mob_reform", "role": "side", "deps": ["theurgy_reformation"], "group": "replicas",
+      "task": {"item": "theurgy:alchemical_sulfur_blaze_rod"},
+      "at": {"x": 20.6, "y": -12.8},
+      "en_us": {"title": "Blaze rods from slime", "subtitle": "Zombie leftovers, now with ambition.",
+        "text": ["Mob drops have tiers too. Ender pearls, blaze rods, slimeballs, phantom membranes and magma cream are all common: with a [item:theurgy:alchemical_sulfur_blaze_rod|Blaze Rod Sulfur] on the target, slime sulfur turns into blaze rods. Rotten flesh, string, bone and gunpowder swap among themselves the same way.",
+                 "{page}",
+                 "Animal drops follow the same rule: a rabbit's foot and a turtle scute share the rare tier, so rabbits pay for turtle helmets. Everything from a creature comes back out of the incubator with Creature Salt."]},
+      "es_es": {"title": "Varas de blaze con slime", "subtitle": "Sobras de zombi, ahora con ambición.",
+        "text": ["Lo que sueltan los mobs también tiene niveles. Perlas de ender, varas de blaze, bolas de slime, membranas de fantasma y crema de magma son comunes: con un [item:theurgy:alchemical_sulfur_blaze_rod|azufre de vara de blaze] en el objetivo, el azufre de slime se vuelve varas de blaze. Carne podrida, hilo, huesos y pólvora se cambian entre sí igual.",
+                 "{page}",
+                 "Lo que sueltan los animales sigue la misma regla: la pata de conejo y la escama de tortuga comparten el nivel raro, así que los conejos pagan los caparazones de tortuga. Todo lo que sale de una criatura vuelve de la incubadora con sal de criaturas."]},
+      "sources": ["jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/recipe/reformation/alchemical_sulfur_blaze_rod_from_alchemical_sulfurs_mobs_common.json", "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/tags/item/alchemical_sulfurs/mobs/common.json", "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/tags/item/alchemical_sulfurs/mobs/abundant.json", "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/recipe/incubation/blaze_rod.json", "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/recipe/reformation/alchemical_sulfur_turtle_scute_from_alchemical_sulfurs_animals_rare.json", "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/tags/item/alchemical_sulfurs/animals/rare.json", "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/recipe/incubation/turtle_scute.json"]
+    },
+    {
+      "key": "theurgy_wood", "role": "side", "deps": ["theurgy_reformation"], "group": "replicas",
+      "task": {"item": "theurgy:alchemical_sulfur_oak_log", "count": 4},
+      "at": {"x": 20.6, "y": -6.8},
+      "en_us": {"title": "Any wood from oak", "subtitle": "A lumberjack who never leaves the lab.",
+        "text": ["Logs and crops are abundant tiers of their own and reform for 50 flux. With a birch, cherry or mangrove sulfur on the target, oak sulfur turns into that wood; with a coffee bean sulfur there, wheat does the same. Plant Salt brings them back out of the incubator."]},
+      "es_es": {"title": "Cualquier madera desde el roble", "subtitle": "Un leñador que nunca sale del laboratorio.",
+        "text": ["Troncos y cultivos tienen sus propios niveles abundantes y se reforman por 50 de flujo. Con un azufre de abedul, cerezo o mangle en el objetivo, el azufre de roble se vuelve esa madera; con uno de granos de café, el trigo hace lo mismo. La sal vegetal los devuelve desde la incubadora."]},
+      "sources": ["jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/recipe/reformation/alchemical_sulfur_oak_log_from_alchemical_sulfurs_logs_abundant.json", "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/recipe/reformation/alchemical_sulfur_wheat_from_alchemical_sulfurs_crops_abundant.json", "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/tags/item/alchemical_sulfurs/logs/abundant.json", "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/tags/item/alchemical_sulfurs/crops/abundant.json", "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/recipe/incubation/oak_log.json", "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/recipe/incubation/crops_coffee_beans_from_alchemical_sulfur_coffee_beans.json"]
+    },
+    {
+      "key": "theurgy_transmutation", "role": "step", "deps": ["theurgy_reformation", "theurgy_niter"],
+      "task": {"item": "theurgy:alchemical_niter_gems_common"},
+      "at": {"x": 12.728, "y": -12.728},
+      "en_us": {"title": "Quartz into iron", "subtitle": "Two metals for every gem.",
+        "text": ["Transmutation changes the type. Ferment quartz sulfur into [item:theurgy:alchemical_niter_gems_common|Common Gems Niter] and reform it against a Common Metals Niter target, two metal niters per gem niter; then reform those against an Iron Sulfur target. Two metals are worth one gem, and two other minerals one metal."]},
+      "es_es": {"title": "Cuarzo en hierro", "subtitle": "Dos metales por cada gema.",
+        "text": ["La transmutación cambia el tipo. Fermentá azufre de cuarzo en [item:theurgy:alchemical_niter_gems_common|nitro de gemas comunes] y reformalo contra un objetivo de nitro de metales comunes, dos nitros de metal por cada uno de gema; después reformá esos contra un objetivo de azufre de hierro. Dos metales valen una gema, y dos de otros minerales, un metal."]},
+      "sources": ["jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/modonomicon/books/the_hermetica/entries/getting_started/convert_to_other_type.json", "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/modonomicon/books/the_hermetica/entries/getting_started/niter_to_niter_reformation.json", "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/recipe/reformation/alchemical_niter_metals_common_from_alchemical_niter_gems_common.json", "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/recipe/reformation/alchemical_sulfur_iron_from_alchemical_niter_metals_common.json", "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/recipe/reformation/alchemical_niter_metals_common_from_alchemical_niter_other_minerals_common.json"]
+    },
+    {
+      "key": "theurgy_renewable", "role": "side", "deps": ["theurgy_transmutation"],
+      "task": {"item": "theurgy:alchemical_niter_other_minerals_abundant"},
+      "at": {"x": 16.6, "y": -18.2},
+      "en_us": {"title": "Gold that grows on trees", "subtitle": "The goose had a point after all.",
+        "text": ["Charcoal counts as a mineral: its [item:theurgy:alchemical_sulfur_coals|Coal Sulfur] ferments into [item:theurgy:alchemical_niter_other_minerals_abundant|Abundant Other Minerals Niter]. Transmute and exalt from there and a tree farm feeds gold, or diamonds, forever. Slowly."]},
+      "es_es": {"title": "Oro que crece en los árboles", "subtitle": "Al final la gallina de los huevos de oro tenía razón.",
+        "text": ["El carbón vegetal cuenta como mineral: su [item:theurgy:alchemical_sulfur_coals|azufre de carbón] fermenta en [item:theurgy:alchemical_niter_other_minerals_abundant|nitro de otros minerales abundantes]. Transmutá y exaltá desde ahí y una granja de árboles da oro, o diamantes, para siempre. Despacio."]},
+      "sources": ["jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/modonomicon/books/the_hermetica/entries/getting_started/renewable_gold.json", "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/recipe/liquefaction/alchemical_sulfur_coals_from_charcoal.json", "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/recipe/fermentation/alchemical_niter_other_minerals_abundant_using_sugars.json", "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/recipe/reformation/alchemical_niter_metals_abundant_from_alchemical_niter_other_minerals_abundant.json"]
+    },
+    {
+      "key": "theurgy_digestion", "role": "milestone", "deps": ["theurgy_salt", "theurgy_solvent"],
+      "task": {"item": "theurgy:digestion_vat"},
+      "at": {"x": -11.023, "y": 6.364},
+      "en_us": {"title": "Digestion Vat", "subtitle": "Slow food for niter.",
+        "text": ["A sal ammoniac crystal, two gold ingots, a decorated pot and three sandstone make the [item:theurgy:digestion_vat|Digestion Vat]. Like the fermentation vat it works closed and loads open. It moves niter between tiers: up with a catalyst, down for free."]},
+      "es_es": {"title": "Tina de digestión", "subtitle": "Comida lenta para el nitro.",
+        "text": ["Un cristal de sal amoníaco, dos lingotes de oro, una vasija decorada y tres de arenisca hacen la [item:theurgy:digestion_vat|tina de digestión]. Como la de fermentación, trabaja cerrada y se carga abierta. Pasa nitro de un nivel a otro: hacia arriba con catalizador, hacia abajo gratis."]},
+      "sources": ["jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/recipe/crafting/shaped/digestion_vat.json", "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/modonomicon/books/the_hermetica/entries/apparatus/digestion_vat.json", "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/recipe/digestion/alchemical_niter_metals_rare_from_common.json", "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/recipe/digestion/alchemical_niter_metals_common_from_rare.json"]
+    },
+    {
+      "key": "theurgy_purified_gold", "role": "step", "deps": ["theurgy_digestion"],
+      "task": {"item": "theurgy:purified_gold", "count": 20},
+      "at": {"x": -15.0, "y": 0.0},
+      "en_us": {"title": "Purified Gold", "subtitle": "Salt scrubs gold. Don't ask.",
+        "text": ["One [item:minecraft:gold_ingot|Gold Ingot], any alchemical salt and a water bucket digest into twenty [item:theurgy:purified_gold|Purified Gold]: the salt draws the impurities out. Every upward digestion burns one."]},
+      "es_es": {"title": "Oro purificado", "subtitle": "La sal le lava la cara al oro. No preguntes.",
+        "text": ["Un [item:minecraft:gold_ingot|lingote de oro], cualquier sal alquímica y un cubo con agua se digieren en veinte de [item:theurgy:purified_gold|oro purificado]: la sal le saca las impurezas. Cada digestión hacia arriba quema uno."]},
+      "sources": ["jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/recipe/digestion/purified_gold.json", "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/modonomicon/books/the_hermetica/entries/getting_started/purified_gold.json"]
+    },
+    {
+      "key": "theurgy_exaltation", "role": "step", "deps": ["theurgy_purified_gold", "theurgy_niter"],
+      "task": {"item": "theurgy:alchemical_niter_metals_rare"},
+      "at": {"x": -12.728, "y": -12.728},
+      "en_us": {"title": "Four into one", "subtitle": "Iron, promoted.",
+        "text": ["Exaltation climbs tiers. Four Common Metals Niter, a Purified Gold and 15 mB of sal ammoniac digest into one [item:theurgy:alchemical_niter_metals_rare|Rare Metals Niter] in twenty seconds. Load the vat in bulk and it repeats until something runs out."]},
+      "es_es": {"title": "Cuatro en uno", "subtitle": "Hierro, ascendido.",
+        "text": ["La exaltación sube de nivel. Cuatro nitros de metales comunes, un oro purificado y 15 mB de sal amoníaco se digieren en un [item:theurgy:alchemical_niter_metals_rare|nitro de metales raros] en veinte segundos. Cargá la tina a granel y repite hasta que algo se acabe."]},
+      "sources": ["jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/modonomicon/books/the_hermetica/entries/getting_started/convert_to_other_tier.json", "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/modonomicon/books/the_hermetica/entries/getting_started/digestion_exaltation.json", "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/recipe/digestion/alchemical_niter_metals_rare_from_common.json"]
+    },
+    {
+      "key": "theurgy_precious_metals", "role": "side", "deps": ["theurgy_exaltation"],
+      "task": {"item": "theurgy:alchemical_niter_metals_precious"},
+      "at": {"x": -17.8, "y": -15.0},
+      "en_us": {"title": "Past gold", "subtitle": "Netherite, the long way round.",
+        "text": ["Four Rare Metals Niter digest into one [item:theurgy:alchemical_niter_metals_precious|Precious Metals Niter], and precious is netherite's tier. Sixteen niters of iron, a Netherite Sulfur on the target, and the incubator hands you a [item:minecraft:netherite_ingot|Netherite Ingot]."]},
+      "es_es": {"title": "Más allá del oro", "subtitle": "Netherita, por el camino largo.",
+        "text": ["Cuatro nitros de metales raros se digieren en un [item:theurgy:alchemical_niter_metals_precious|nitro de metales preciosos], y precioso es el nivel de la netherita. Dieciséis nitros de hierro, un azufre de netherita en el objetivo y la incubadora te da un [item:minecraft:netherite_ingot|lingote de netherita]."]},
+      "sources": ["jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/recipe/digestion/alchemical_niter_metals_precious_from_rare.json", "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/recipe/reformation/alchemical_sulfur_netherite_from_alchemical_niter_metals_precious.json", "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/recipe/incubation/ingots_netherite_from_alchemical_sulfur_netherite.json", "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/tags/item/alchemical_sulfurs/metals/precious.json"]
+    },
+    {
+      "key": "theurgy_mastery", "role": "capstone", "deps": ["theurgy_exaltation", "theurgy_transmutation"], "sequential": true,
+      "tasks": [{"type": "observation", "observe": "block", "target": "theurgy:sulfuric_flux_emitter", "ticks": 40, "title": {"en_us": "Look at your Sulfuric Flux Emitter", "es_es": "Mirá tu emisor de flujo sulfúrico"}}, {"item": "theurgy:alchemical_sulfur_gold", "count": 4}],
+      "at": {"x": 0.0, "y": -22.6},
+      "en_us": {"title": "The Great Work", "subtitle": "Base metal in, sun out.",
+        "text": ["Put a [item:theurgy:alchemical_sulfur_gold|Gold Sulfur] on the target and Rare Metals Niter on the sources, and let the emitter work: every niter becomes gold sulfur, and the incubator makes it gold. Iron in, gold out: the oldest promise in alchemy, kept."]},
+      "es_es": {"title": "La Gran Obra", "subtitle": "Entra metal vil, sale el sol.",
+        "text": ["Poné un [item:theurgy:alchemical_sulfur_gold|azufre de oro] en el objetivo y nitro de metales raros en las fuentes, y dejá trabajar al emisor: cada nitro se vuelve azufre de oro, y la incubadora lo hace oro. Entra hierro, sale oro: la promesa más vieja de la alquimia, cumplida."]},
+      "sources": ["jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/modonomicon/books/the_hermetica/entries/getting_started/niter_to_sulfur_reformation_exaltation.json", "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/modonomicon/books/the_hermetica/entries/getting_started/incubation_after_exaltation.json", "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/recipe/reformation/alchemical_sulfur_gold_from_alchemical_niter_metals_rare.json", "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/recipe/incubation/ingots_gold_from_alchemical_sulfur_gold.json"]
+    },
+    {
+      "key": "theurgy_secret_dirt", "role": "secret", "deps": ["theurgy_vats"],
+      "task": {"item": "theurgy:alchemical_niter_earthen_matters_abundant"},
+      "at": {"x": -5.4, "y": -10.2},
+      "en_us": {"title": "A doctorate in dirt", "subtitle": "Somebody had to try.",
+        "text": ["You fermented dirt. Sixteen of these reform into one Abundant Gems Niter, and three digestions later that's a precious gem: a diamond is 1,024 dirt niters away."]},
+      "es_es": {"title": "Un doctorado en tierra", "subtitle": "Alguien tenía que probar.",
+        "text": ["Fermentaste tierra. Dieciséis de estos se reforman en un nitro de gemas abundantes, y tres digestiones después eso es una gema preciosa: un diamante queda a 1.024 nitros de tierra."]},
+      "sources": ["jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/recipe/fermentation/alchemical_niter_earthen_matters_abundant_using_sugars.json", "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/recipe/reformation/alchemical_niter_gems_abundant_from_alchemical_niter_earthen_matters_abundant.json", "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/recipe/digestion/alchemical_niter_gems_common_from_abundant.json", "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/recipe/digestion/alchemical_niter_gems_rare_from_common.json", "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/recipe/digestion/alchemical_niter_gems_precious_from_rare.json", "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/recipe/reformation/alchemical_sulfur_diamond_from_alchemical_niter_gems_precious.json"]
+    },
+    {
+      "key": "theurgy_secret_egg", "role": "secret", "deps": ["theurgy_sulfur"],
+      "task": {"item": "theurgy:alchemical_sulfur_dragon_egg"},
+      "at": {"x": 5.4, "y": -10.2},
+      "en_us": {"title": "Scrambled", "subtitle": "The only egg in the world, in acid.",
+        "text": ["You dissolved the Dragon Egg. Relax: the incubator puts it back together with a creature salt and a shard, and an array with four precious mob niters makes another."]},
+      "es_es": {"title": "Revuelto", "subtitle": "El único huevo del mundo, en ácido.",
+        "text": ["Disolviste el huevo de dragón. Tranquilo: la incubadora lo vuelve a armar con una sal de criaturas y un fragmento, y un conjunto con cuatro nitros preciosos de mobs hace otro."]},
+      "sources": ["jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/recipe/liquefaction/alchemical_sulfur_dragon_egg_from_dragon_egg.json", "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/recipe/incubation/dragon_egg.json", "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/recipe/reformation/alchemical_sulfur_dragon_egg_from_alchemical_niter_mobs_precious.json"]
+    },
+    {
+      "key": "theurgy_secret_solvent", "role": "secret", "deps": ["theurgy_sulfur"],
+      "task": {"item": "theurgy:alchemical_sulfur_sal_ammoniac"},
+      "at": {"x": -5.4, "y": -7.4},
+      "en_us": {"title": "Acid in acid", "subtitle": "Somebody had to.",
+        "text": ["You dissolved sal ammoniac in sal ammoniac. It works: a crystal gives one sulfur, an ore block six, and the result counts as an abundant gem. The acid is not amused."]},
+      "es_es": {"title": "Ácido en ácido", "subtitle": "Alguien tenía que hacerlo.",
+        "text": ["Disolviste sal amoníaco en sal amoníaco. Funciona: un cristal da un azufre, una mena seis, y el resultado cuenta como gema abundante. Al ácido no le hizo gracia."]},
+      "sources": ["jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/recipe/liquefaction/alchemical_sulfur_sal_ammoniac_from_gems_sal_ammoniac.json", "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/recipe/liquefaction/alchemical_sulfur_sal_ammoniac_from_ores_sal_ammoniac.json", "jar:theurgy-1.21.1-neoforge-1.76.0.jar:data/theurgy/tags/item/alchemical_sulfurs/gems/abundant.json"]
+    }
+  ]
+}
