@@ -1,0 +1,645 @@
+{
+  "format": "sector",
+  "chapter": "sector_ma_souls",
+  "group": "exploration",
+  "act": "IV",
+  "motif": "ma",
+  "icon": "mysticalagriculture:soulium_dagger",
+  "emblem": "mysticalagriculture:textures/item/cognizant_dust.png",
+  "title": {"en_us": "Mystical Agriculture · Souls and Awakening", "es_es": "Mystical Agriculture · Almas y despertar"},
+  "subtitle": {
+    "en_us": ["Jars of souls for mob seeds, four workshops, and an altar that wakes supremium up."],
+    "es_es": ["Tarros de almas para semillas de mob, cuatro talleres y un altar que despierta al supremium."]
+  },
+  "entry": "ma2_soulium",
+  "center": [0, 0],
+  "figures": {
+    "altar": {"kind": "ring", "cx": 0, "cy": 0, "r": 4.3, "count": 8, "start": -90, "draw": [{"style": "ring", "r": 4.3, "alpha": 110, "thickness_px": 2, "segments": 64}, {"style": "ring", "r": 5.55, "alpha": 45, "segments": 64}, {"style": "glyphs", "r": 4.3, "scale": 1, "alpha": 235, "start": -67.5, "textures": ["mysticalagriculture:textures/block/awakening_pedestal_top.png", "mysticalagriculture:textures/block/essence_vessel_side.png", "mysticalagriculture:textures/block/awakening_pedestal_top.png", "mysticalagriculture:textures/block/essence_vessel_side.png", "mysticalagriculture:textures/block/awakening_pedestal_top.png", "mysticalagriculture:textures/block/essence_vessel_side.png", "mysticalagriculture:textures/block/awakening_pedestal_top.png", "mysticalagriculture:textures/block/essence_vessel_side.png"]}]}
+  },
+  "groups": {
+    "souls": {"label": {"en_us": "Souls", "es_es": "Almas"}, "axis": "x", "caption": "above"},
+    "mobs": {"label": {"en_us": "Mob seeds", "es_es": "Semillas de mob"}, "axis": "y", "caption": "right"},
+    "machines": {"label": {"en_us": "Machines", "es_es": "Máquinas"}, "axis": "x", "caption": "below"},
+    "workshop": {"label": {"en_us": "Gear and augments", "es_es": "Equipo y aumentos"}, "axis": "y", "caption": "left"}
+  },
+  "links": [
+    {"target": "ma_tier_supremium", "at": {"x": -3.0406, "y": -3.0406}},
+    {"target": "bosses_wither", "at": {"x": -6.9, "y": 5.0}},
+    {"target": "bosses_dragon", "at": {"x": 6.9, "y": 5.0}}
+  ],
+  "art": [
+    {"id": "banner", "texture": "entrelumen:textures/gui/quests/banner_plain.png", "x": -8.4, "y": -18.3, "scale": 2, "order": -1, "color": "#4E6B24"},
+    {"id": "title", "label": {"en_us": "Mystical Agriculture", "es_es": "Mystical Agriculture"}, "x": -8.4, "y": -18.8, "scale": 2, "bold": true, "tint": "#F1F6D8"},
+    {"id": "chapter", "label": {"en_us": "Souls and awakening", "es_es": "Almas y despertar"}, "x": -8.4, "y": -17.2, "scale": 1},
+    {"id": "motto", "label": {"en_us": "souls jars dust waking", "es_es": "almas tarros polvo despertar"}, "x": -8.4, "y": -16.0, "scale": 1, "font": "minecraft:alt", "tint": "#B9D77A"},
+    {"id": "medallion", "texture": "entrelumen:textures/gui/quests/medallion.png", "x": 9.8, "y": -17.4, "scale": 2, "order": 0, "click": "chapter:sun_of_heliodor", "hover": {"en_us": "Back to the Sun of Heliodor", "es_es": "Volver al Sol de Heliodor"}},
+    {"id": "emblem", "texture": "mysticalagriculture:textures/item/cognizant_dust.png", "x": 9.8, "y": -17.4, "scale": 4, "order": 1},
+    {"id": "to_essence", "label": {"en_us": "» Essence", "es_es": "» Esencia"}, "x": 9.8, "y": -14.2, "scale": 1, "click": "chapter:sector_ma_essence"},
+    {"id": "sun", "texture": "entrelumen:textures/gui/quests/sun_heliodor.png", "x": 0, "y": 0, "scale": 1, "order": -1, "alpha": 170, "reveal": "ma2_awakened"}
+  ],
+  "quests": [
+    {
+      "key": "ma2_soulium", "role": "entry", "deps": [], "group": "souls",
+      "task": {"item": "mysticalagriculture:soulium_dust", "count": 4},
+      "at": {"x": -12.6, "y": -13.2},
+      "en_us": {"title": "Grey veins", "subtitle": "Five percent of the vein, all of the fun.",
+        "text": ["[item:mysticalagriculture:soulstone|Soulstone] fills big veins in the Nether's netherrack, and one block in twenty of them is [item:mysticalagriculture:soulium_ore|Soulium Ore]. Each one breaks into one to three [item:mysticalagriculture:soulium_dust|Soulium Dust], more with Fortune."]},
+      "es_es": {"title": "Vetas grises", "subtitle": "El cinco por ciento de la veta, toda la diversión.",
+        "text": ["La [item:mysticalagriculture:soulstone|Piedra de alma] llena vetas grandes en el netherrack del Nether, y uno de cada veinte de sus bloques es [item:mysticalagriculture:soulium_ore|Mena de soulium]. Cada una se rompe en uno a tres [item:mysticalagriculture:soulium_dust|Polvos de soulium], más con Fortuna."]},
+      "sources": ["jar:MysticalAgriculture-1.21.1-8.0.27.jar:data/mysticalagriculture/worldgen/configured_feature/soulstone.json", "jar:MysticalAgriculture-1.21.1-8.0.27.jar:data/mysticalagriculture/neoforge/biome_modifier/soulstone.json", "jar:MysticalAgriculture-1.21.1-8.0.27.jar:com/blakebr0/mysticalagriculture/world/feature/SoulstoneFeature.class", "jar:MysticalAgriculture-1.21.1-8.0.27.jar:com/blakebr0/mysticalagriculture/config/ModConfigs.class#souliumOreChance", "jar:MysticalAgriculture-1.21.1-8.0.27.jar:data/mysticalagriculture/loot_table/blocks/soulium_ore.json"]
+    },
+    {
+      "key": "ma2_soul_glass", "role": "step", "deps": ["ma2_soulium"], "group": "souls",
+      "task": {"item": "mysticalagriculture:soul_glass", "count": 4},
+      "at": {"x": -9.4, "y": -13.2},
+      "en_us": {"title": "Three trips through the furnace", "subtitle": "Soul glass is patient glass.",
+        "text": ["Mined soulstone drops cobbled: smelt it into soulstone, again into [item:mysticalagriculture:soulstone_smooth|Smooth Soulstone] and a third time into [item:mysticalagriculture:soul_dust|Soul Dust]. Four soul dust around a glass block make [item:mysticalagriculture:soul_glass|Soul Glass]."]},
+      "es_es": {"title": "Tres pasadas por el horno", "subtitle": "El cristal de alma es vidrio con paciencia.",
+        "text": ["La piedra de alma minada suelta la versión apedreada: fundila y es piedra de alma, otra vez y es [item:mysticalagriculture:soulstone_smooth|Piedra de alma lisa], y una tercera da [item:mysticalagriculture:soul_dust|Polvo de alma]. Cuatro polvos de alma alrededor de un cristal dan [item:mysticalagriculture:soul_glass|Cristal de alma]."]},
+      "sources": ["jar:MysticalAgriculture-1.21.1-8.0.27.jar:data/mysticalagriculture/loot_table/blocks/soulstone.json", "jar:MysticalAgriculture-1.21.1-8.0.27.jar:data/mysticalagriculture/recipe/soulstone_smelted.json", "jar:MysticalAgriculture-1.21.1-8.0.27.jar:data/mysticalagriculture/recipe/soulstone_smooth_smelted.json", "jar:MysticalAgriculture-1.21.1-8.0.27.jar:data/mysticalagriculture/recipe/soul_dust_smelted.json", "jar:MysticalAgriculture-1.21.1-8.0.27.jar:data/mysticalagriculture/recipe/soul_glass.json"]
+    },
+    {
+      "key": "ma2_soulium_ingot", "role": "step", "deps": ["ma2_soul_glass"], "group": "souls",
+      "task": {"item": "mysticalagriculture:soulium_ingot"},
+      "at": {"x": -6.8, "y": -13.2},
+      "en_us": {"title": "An ingot with a pulse",
+        "text": ["A [item:mysticalagriculture:prosperity_ingot|Prosperity Ingot] and two soulium dust make a [item:mysticalagriculture:soulium_ingot|Soulium Ingot]; with a prosperity gemstone instead, a [item:mysticalagriculture:soulium_gemstone|Soulium Gemstone]. Jars, daggers and most of the mod's machines are built from it."]},
+      "es_es": {"title": "Un lingote con pulso",
+        "text": ["Un [item:mysticalagriculture:prosperity_ingot|Lingote de prosperidad] y dos polvos de soulium dan un [item:mysticalagriculture:soulium_ingot|Lingote de soulium]; con una gema de prosperidad en su lugar, una [item:mysticalagriculture:soulium_gemstone|Gema de soulium]. Tarros, dagas y casi todas las máquinas del mod salen de acá."]},
+      "sources": ["jar:MysticalAgriculture-1.21.1-8.0.27.jar:data/mysticalagriculture/recipe/soulium_ingot.json", "jar:MysticalAgriculture-1.21.1-8.0.27.jar:data/mysticalagriculture/recipe/soulium_gemstone.json", "jar:MysticalAgriculture-1.21.1-8.0.27.jar:data/mysticalagriculture/recipe/soul_jar.json", "jar:MysticalAgriculture-1.21.1-8.0.27.jar:data/mysticalagriculture/recipe/soulium_dagger.json", "jar:MysticalAgriculture-1.21.1-8.0.27.jar:data/mysticalagriculture/recipe/harvester.json"]
+    },
+    {
+      "key": "ma2_soul_jar", "role": "milestone", "deps": ["ma2_soulium_ingot"], "group": "souls",
+      "task": {"item": "mysticalagriculture:soul_jar"},
+      "at": {"x": -3.9, "y": -13.2},
+      "en_us": {"title": "Jars for souls", "subtitle": "Label them. Trust us.",
+        "text": ["Four soul glass and a soulium ingot make a [item:mysticalagriculture:soul_jar|Soul Jar]. Each one holds the souls of a single mob, from 4 for a ghast to 12 for slimes, and mob seeds eat full jars: four per seed.",
+                 "{page}",
+                 "[tip] A jar alone in the crafting grid comes out empty, in case you filled it with the wrong mob."]},
+      "es_es": {"title": "Tarros para almas", "subtitle": "Etiquetalos. En serio.",
+        "text": ["Cuatro cristales de alma y un lingote de soulium dan un [item:mysticalagriculture:soul_jar|Tarro de alma]. Cada uno guarda las almas de un solo mob, de 4 para un ghast a 12 para los slimes, y las semillas de mob comen tarros llenos: cuatro por semilla.",
+                 "{page}",
+                 "[tip] Un tarro solo en la mesa de fabricación sale vacío, por si lo llenaste con el mob equivocado."]},
+      "sources": ["jar:MysticalAgriculture-1.21.1-8.0.27.jar:data/mysticalagriculture/recipe/soul_jar.json", "jar:MysticalAgriculture-1.21.1-8.0.27.jar:data/mysticalagriculture/recipe/soul_jar_empty.json", "jar:MysticalAgriculture-1.21.1-8.0.27.jar:com/blakebr0/mysticalagriculture/lib/ModMobSoulTypes.class", "jar:MysticalAgriculture-1.21.1-8.0.27.jar:data/mysticalagriculture/recipe/seed/infusion/zombie.json"]
+    },
+    {
+      "key": "ma2_dagger", "role": "milestone", "deps": ["ma2_soul_jar"], "group": "souls",
+      "task": {"item": "mysticalagriculture:soulium_dagger"},
+      "at": {"x": -0.6, "y": -13.2},
+      "en_us": {"title": "The dagger that collects", "subtitle": "Every kill is a deposit.",
+        "text": ["A golden sword, two soulium ingots and two soulium dust make the [item:mysticalagriculture:soulium_dagger|Soulium Dagger]. Each kill with it pours one soul into a jar you carry that holds that mob or nothing yet; ten zombies fill a zombie jar."]},
+      "es_es": {"title": "La daga que cobra", "subtitle": "Cada muerte es un depósito.",
+        "text": ["Una espada de oro, dos lingotes de soulium y dos polvos de soulium dan la [item:mysticalagriculture:soulium_dagger|Daga de soulium]. Cada muerte con ella vuelca un alma en un tarro que lleves encima, vacío o de ese mob; diez zombis llenan un tarro de zombi."]},
+      "sources": ["jar:MysticalAgriculture-1.21.1-8.0.27.jar:data/mysticalagriculture/recipe/soulium_dagger.json", "jar:MysticalAgriculture-1.21.1-8.0.27.jar:com/blakebr0/mysticalagriculture/handler/MobSoulHandler.class", "jar:MysticalAgriculture-1.21.1-8.0.27.jar:com/blakebr0/mysticalagriculture/item/SouliumDaggerItem$DaggerType.class", "jar:MysticalAgriculture-1.21.1-8.0.27.jar:com/blakebr0/mysticalagriculture/lib/ModMobSoulTypes.class", "jar:MysticalAgriculture-1.21.1-8.0.27.jar:assets/mysticalagriculture/patchouli_books/guide/en_us/entries/souls/soulium_dagger.json"]
+    },
+    {
+      "key": "ma2_seed_base", "role": "step", "deps": ["ma2_dagger", "ma_seed_base"], "group": "souls",
+      "task": {"item": "mysticalagriculture:soulium_seed_base"},
+      "at": {"x": 2.4, "y": -13.2},
+      "en_us": {"title": "A base for mob seeds",
+        "text": ["A [item:mysticalagriculture:prosperity_seed_base|Prosperity Seed Base] and two soulium dust make a [item:mysticalagriculture:soulium_seed_base|Soulium Seed Base]. It takes the altar's centre for every mob seed, with four full jars and four essences of the mob's tier around it."]},
+      "es_es": {"title": "Una base para semillas de mob",
+        "text": ["Una [item:mysticalagriculture:prosperity_seed_base|Base de semillas de prosperidad] y dos polvos de soulium dan una [item:mysticalagriculture:soulium_seed_base|Base de semillas de soulium]. Va en el centro del altar para toda semilla de mob, con cuatro tarros llenos y cuatro esencias del nivel del mob alrededor."]},
+      "sources": ["jar:MysticalAgriculture-1.21.1-8.0.27.jar:data/mysticalagriculture/recipe/soulium_seed_base.json", "jar:MysticalAgriculture-1.21.1-8.0.27.jar:data/mysticalagriculture/recipe/seed/infusion/zombie.json", "jar:MysticalAgriculture-1.21.1-8.0.27.jar:com/blakebr0/mysticalagriculture/lib/ModCorePlugin.class"]
+    },
+    {
+      "key": "ma2_attuned", "role": "side", "deps": ["ma2_dagger"], "group": "souls",
+      "tasks": [{"item": "mysticalagriculture:passive_soulium_dagger"}, {"item": "mysticalagriculture:hostile_soulium_dagger"}],
+      "at": {"x": -2.2, "y": -10.4},
+      "en_us": {"title": "Attuned daggers",
+        "text": ["On the altar, a dagger with two soulium ingots, two soulium gemstones and four full jars attunes: pig, chicken, cow and sheep make it passive, zombie, skeleton, creeper and spider hostile. Attuned, it takes one and a half souls per kill of its kind."]},
+      "es_es": {"title": "Dagas sintonizadas",
+        "text": ["En el altar, una daga con dos lingotes y dos gemas de soulium y cuatro tarros llenos se sintoniza: cerdo, pollo, vaca y oveja la vuelven pasiva; zombi, esqueleto, creeper y araña, hostil. Sintonizada, saca alma y media por muerte de su tipo."]},
+      "sources": ["jar:MysticalAgriculture-1.21.1-8.0.27.jar:data/mysticalagriculture/recipe/passive_soulium_dagger.json", "jar:MysticalAgriculture-1.21.1-8.0.27.jar:data/mysticalagriculture/recipe/hostile_soulium_dagger.json", "jar:MysticalAgriculture-1.21.1-8.0.27.jar:com/blakebr0/mysticalagriculture/item/SouliumDaggerItem$DaggerType.class", "jar:MysticalAgriculture-1.21.1-8.0.27.jar:assets/mysticalagriculture/patchouli_books/guide/en_us/entries/souls/soulium_dagger.json"]
+    },
+    {
+      "key": "ma2_tip_siphoner", "role": "tip", "deps": ["ma2_dagger"], "group": "souls",
+      "task": {"type": "checkmark"},
+      "at": {"x": 0.8, "y": -10.4},
+      "en_us": {"title": "A thirstier dagger",
+        "text": ["[tip] The Enchanter puts Soul Siphoner on a dagger: eight soulium dust and 64 experience essence per level. Each level adds 10% to every soul the dagger collects."]},
+      "es_es": {"title": "Una daga con más sed",
+        "text": ["[tip] El Encantador le pone Sifón de almas a una daga: ocho polvos de soulium y 64 esencias de experiencia por nivel. Cada nivel suma 10% a cada alma que junta la daga."]},
+      "sources": ["jar:MysticalAgriculture-1.21.1-8.0.27.jar:data/mysticalagriculture/recipe/enchanter/soul_siphoner.json", "jar:MysticalAgriculture-1.21.1-8.0.27.jar:com/blakebr0/mysticalagriculture/handler/MobSoulHandler.class#getSoulSiphonerTotal", "jar:MysticalAgriculture-1.21.1-8.0.27.jar:com/blakebr0/mysticalagriculture/crafting/recipe/EnchanterRecipe.class"]
+    },
+    {
+      "key": "ma2_soul_extractor", "role": "milestone", "deps": ["ma2_dagger"], "group": "souls",
+      "task": {"item": "mysticalagriculture:soul_extractor"},
+      "at": {"x": 4.0, "y": -10.4},
+      "en_us": {"title": "Souls from leftovers", "subtitle": "Rotten flesh finally has a job.",
+        "text": ["Iron, two soulium ingots, two daggers and a machine frame make the [item:mysticalagriculture:soul_extractor|Soul Extractor]. Fed fuel and mob drops, it fills the jar inside: rotten flesh is half a zombie soul, a zombie head three."]},
+      "es_es": {"title": "Almas de las sobras", "subtitle": "La carne podrida por fin tiene laburo.",
+        "text": ["Hierro, dos lingotes de soulium, dos dagas y un marco de máquina dan la [item:mysticalagriculture:soul_extractor|Extractora de almas]. Con combustible y drops de mobs llena el tarro que tenga adentro: la carne podrida vale media alma de zombi; una cabeza de zombi, tres."]},
+      "sources": ["jar:MysticalAgriculture-1.21.1-8.0.27.jar:data/mysticalagriculture/recipe/soul_extractor.json", "jar:MysticalAgriculture-1.21.1-8.0.27.jar:data/mysticalagriculture/recipe/souls/rotten_flesh.json", "jar:MysticalAgriculture-1.21.1-8.0.27.jar:data/mysticalagriculture/recipe/souls/zombie_head.json", "jar:MysticalAgriculture-1.21.1-8.0.27.jar:assets/mysticalagriculture/patchouli_books/guide/en_us/entries/machines/soul_extractor.json"]
+    },
+    {
+      "key": "ma2_soulium_seeds", "role": "side", "deps": ["ma2_soulium", "ma_tier_imperium"], "group": "souls",
+      "task": {"item": "mysticalagriculture:soulium_seeds"},
+      "at": {"x": -15.6, "y": -10.4},
+      "en_us": {"title": "Soulium, planted",
+        "text": ["[item:mysticalagriculture:soulium_seeds|Soulium Seeds] are a tier-4 resource crop: four soulium dust and four imperium on the pedestals. Eight essences give four dust, and the trips to the Nether can stop."]},
+      "es_es": {"title": "Soulium sembrado",
+        "text": ["Las [item:mysticalagriculture:soulium_seeds|Semillas de soulium] son un cultivo de recursos de nivel 4: cuatro polvos de soulium y cuatro imperium en los pedestales. Ocho esencias dan cuatro polvos, y se terminan los viajes al Nether."]},
+      "sources": ["jar:MysticalAgriculture-1.21.1-8.0.27.jar:com/blakebr0/mysticalagriculture/lib/ModCrops.class", "jar:MysticalAgriculture-1.21.1-8.0.27.jar:data/mysticalagriculture/recipe/essence/mysticalagriculture/soulium_dust.json"]
+    },
+    {
+      "key": "ma2_masonry", "role": "side", "deps": ["ma2_soul_glass"], "group": "souls",
+      "tasks": [{"item": "mysticalagriculture:soulstone_bricks"}, {"item": "mysticalagriculture:soulstone_chiseled_bricks"}, {"item": "mysticalagriculture:soulstone_smooth"}],
+      "at": {"x": -9.4, "y": -10.4},
+      "en_us": {"title": "Soulstone masonry",
+        "text": ["Soulstone works like any stone: bricks, chiseled bricks, smooth, slabs, stairs and walls, most of them in one step at a stonecutter. It also goes into the awakening altar, its pedestals and its vessels."]},
+      "es_es": {"title": "Mampostería de alma",
+        "text": ["La piedra de alma se trabaja como cualquier piedra: ladrillos, ladrillos cincelados, lisa, losas, escaleras y muros, casi todo de un paso en el cortapiedras. También va en el altar del despertar, sus pedestales y sus recipientes."]},
+      "sources": ["jar:MysticalAgriculture-1.21.1-8.0.27.jar:data/mysticalagriculture/recipe/stonecutting/soulstone_bricks_from_soulstone.json", "jar:MysticalAgriculture-1.21.1-8.0.27.jar:data/mysticalagriculture/recipe/stonecutting/soulstone_chiseled_bricks_from_soulstone.json", "jar:MysticalAgriculture-1.21.1-8.0.27.jar:data/mysticalagriculture/recipe/soulstone_smooth_smelted.json", "jar:MysticalAgriculture-1.21.1-8.0.27.jar:data/mysticalagriculture/recipe/awakening_altar.json", "jar:MysticalAgriculture-1.21.1-8.0.27.jar:data/mysticalagriculture/recipe/awakening_pedestal.json", "jar:MysticalAgriculture-1.21.1-8.0.27.jar:data/mysticalagriculture/recipe/essence_vessel.json"]
+    },
+    {
+      "key": "ma2_bounty", "role": "bounty", "deps": ["ma2_soulium"], "group": "souls",
+      "task": {"item": "mysticalagriculture:soulium_dust", "count": 16, "consume": true},
+      "at": {"x": -6.8, "y": -10.4},
+      "en_us": {"title": "Soulium for the common store", "subtitle": "Every jar starts with a pinch.",
+        "text": ["Sixteen [item:mysticalagriculture:soulium_dust|Soulium Dust] for the common store. Jars, daggers and mob seed bases all start with a pinch of it."]},
+      "es_es": {"title": "Soulium para el depósito común", "subtitle": "Todo tarro arranca con una pizca.",
+        "text": ["Dieciséis [item:mysticalagriculture:soulium_dust|Polvos de soulium] para el depósito común. Tarros, dagas y bases de semillas de mob arrancan con una pizca."]},
+      "sources": ["jar:MysticalAgriculture-1.21.1-8.0.27.jar:data/mysticalagriculture/recipe/soulium_ingot.json", "jar:MysticalAgriculture-1.21.1-8.0.27.jar:data/mysticalagriculture/recipe/soulium_dagger.json", "jar:MysticalAgriculture-1.21.1-8.0.27.jar:data/mysticalagriculture/recipe/soulium_seed_base.json"]
+    },
+    {
+      "key": "ma2_secret_ore", "role": "secret", "deps": ["ma2_soulium"], "group": "souls",
+      "task": {"type": "observation", "observe": "block", "target": "mysticalagriculture:soulium_ore", "ticks": 20, "title": {"en_us": "Look at Soulium Ore", "es_es": "Mirá una Mena de soulium"}},
+      "icon": "mysticalagriculture:soulium_ore",
+      "at": {"x": -15.6, "y": -13.2},
+      "en_us": {"title": "Five percent", "subtitle": "Found one. Staring is allowed.",
+        "text": ["One soulstone block in twenty is [item:mysticalagriculture:soulium_ore|Soulium Ore], and you found one. Fortune on the pickaxe raises its one to three dust."]},
+      "es_es": {"title": "Cinco por ciento", "subtitle": "Encontraste una. Mirar está permitido.",
+        "text": ["Uno de cada veinte bloques de piedra de alma es [item:mysticalagriculture:soulium_ore|Mena de soulium], y encontraste uno. Fortuna en el pico sube sus uno a tres polvos."]},
+      "sources": ["jar:MysticalAgriculture-1.21.1-8.0.27.jar:com/blakebr0/mysticalagriculture/world/feature/SoulstoneFeature.class", "jar:MysticalAgriculture-1.21.1-8.0.27.jar:data/mysticalagriculture/loot_table/blocks/soulium_ore.json"]
+    },
+    {
+      "key": "ma2_mobs_farm", "role": "side", "deps": ["ma2_seed_base", "ma_tier_prudentium"], "group": "mobs",
+      "tasks": [{"item": "mysticalagriculture:pig_seeds"}, {"item": "mysticalagriculture:chicken_seeds"}, {"item": "mysticalagriculture:cow_seeds"}, {"item": "mysticalagriculture:sheep_seeds"}],
+      "at": {"x": 12.8, "y": -7.4},
+      "en_us": {"title": "The barnyard", "subtitle": "The whole farm, in seeds.",
+        "text": ["Tier-2 mob seeds: a soulium base, four full jars and four prudentium each. Three pig or cow essences give six porkchops or six leather, three chicken essences eight eggs, eight sheep essences six white wool."]},
+      "es_es": {"title": "El corral", "subtitle": "La granja entera, en semillas.",
+        "text": ["Semillas de mob de nivel 2: base de soulium, cuatro tarros llenos y cuatro prudentium cada una. Tres esencias de cerdo o de vaca dan seis chuletas o seis cueros, tres de pollo dan ocho huevos, ocho de oveja dan seis lanas blancas."]},
+      "sources": ["jar:MysticalAgriculture-1.21.1-8.0.27.jar:com/blakebr0/mysticalagriculture/lib/ModCrops.class", "jar:MysticalAgriculture-1.21.1-8.0.27.jar:data/mysticalagriculture/recipe/essence/minecraft/porkchop.json", "jar:MysticalAgriculture-1.21.1-8.0.27.jar:data/mysticalagriculture/recipe/essence/minecraft/leather.json", "jar:MysticalAgriculture-1.21.1-8.0.27.jar:data/mysticalagriculture/recipe/essence/minecraft/egg.json", "jar:MysticalAgriculture-1.21.1-8.0.27.jar:data/mysticalagriculture/recipe/essence/minecraft/white_wool.json"]
+    },
+    {
+      "key": "ma2_mobs_water", "role": "side", "deps": ["ma2_mobs_farm"], "group": "mobs",
+      "tasks": [{"item": "mysticalagriculture:squid_seeds"}, {"item": "mysticalagriculture:fish_seeds"}, {"item": "mysticalagriculture:turtle_seeds"}],
+      "at": {"x": 12.8, "y": -4.8},
+      "en_us": {"title": "Things that swim",
+        "text": ["Tier 2 again, with six-soul jars. Three squid essences give six ink sacs, three fish essences six cod or salmon, eight turtle essences four scutes: turtle shells without babysitting eggs."]},
+      "es_es": {"title": "Lo que nada",
+        "text": ["Otra vez nivel 2, con tarros de seis almas. Tres esencias de calamar dan seis sacos de tinta, tres de pez seis bacalaos o salmones, ocho de tortuga cuatro escamas: caparazones de tortuga sin cuidar huevos."]},
+      "sources": ["jar:MysticalAgriculture-1.21.1-8.0.27.jar:com/blakebr0/mysticalagriculture/lib/ModCrops.class", "jar:MysticalAgriculture-1.21.1-8.0.27.jar:com/blakebr0/mysticalagriculture/lib/ModMobSoulTypes.class", "jar:MysticalAgriculture-1.21.1-8.0.27.jar:data/mysticalagriculture/recipe/essence/minecraft/ink_sac.json", "jar:MysticalAgriculture-1.21.1-8.0.27.jar:data/mysticalagriculture/recipe/essence/minecraft/cod.json", "jar:MysticalAgriculture-1.21.1-8.0.27.jar:data/mysticalagriculture/recipe/essence/minecraft/turtle_scute.json"]
+    },
+    {
+      "key": "ma2_mobs_odd", "role": "side", "deps": ["ma2_mobs_water"], "group": "mobs",
+      "tasks": [{"item": "mysticalagriculture:slime_seeds"}, {"item": "mysticalagriculture:rabbit_seeds"}, {"item": "mysticalagriculture:armadillo_seeds"}],
+      "at": {"x": 12.8, "y": -2.2},
+      "en_us": {"title": "Slime, rabbit and armadillo",
+        "text": ["Slime and armadillo are tier 2, rabbit tier 3; a slime jar takes twelve souls. Three slime essences give eight slimeballs, three rabbit essences three rabbit's feet, eight armadillo essences four scutes for wolf armor."]},
+      "es_es": {"title": "Slime, conejo y armadillo",
+        "text": ["El slime y el armadillo son de nivel 2; el conejo, de nivel 3, y el tarro de slime pide doce almas. Tres esencias de slime dan ocho bolas de slime, tres de conejo tres patas de conejo, ocho de armadillo cuatro escamas para armaduras de lobo."]},
+      "sources": ["jar:MysticalAgriculture-1.21.1-8.0.27.jar:com/blakebr0/mysticalagriculture/lib/ModCrops.class", "jar:MysticalAgriculture-1.21.1-8.0.27.jar:com/blakebr0/mysticalagriculture/lib/ModMobSoulTypes.class", "jar:MysticalAgriculture-1.21.1-8.0.27.jar:data/mysticalagriculture/recipe/essence/minecraft/slime_ball.json", "jar:MysticalAgriculture-1.21.1-8.0.27.jar:data/mysticalagriculture/recipe/essence/minecraft/rabbit_foot.json", "jar:MysticalAgriculture-1.21.1-8.0.27.jar:data/mysticalagriculture/recipe/essence/minecraft/armadillo_scute.json"]
+    },
+    {
+      "key": "ma2_mobs_night", "role": "milestone", "deps": ["ma2_mobs_odd", "ma_tier_tertium"], "group": "mobs",
+      "tasks": [{"item": "mysticalagriculture:zombie_seeds"}, {"item": "mysticalagriculture:skeleton_seeds"}, {"item": "mysticalagriculture:creeper_seeds"}, {"item": "mysticalagriculture:spider_seeds"}],
+      "at": {"x": 12.8, "y": 0.8},
+      "en_us": {"title": "The night shift", "subtitle": "They clock in at dusk.",
+        "text": ["The classic mob farm, tier 3, with ten-soul jars. Three zombie essences give twelve rotten flesh, eight skeleton essences twelve bones, three creeper essences six gunpowder, three spider essences eight string."]},
+      "es_es": {"title": "El turno noche", "subtitle": "Marcan tarjeta al atardecer.",
+        "text": ["La granja de mobs clásica, nivel 3, con tarros de diez almas. Tres esencias de zombi dan doce carnes podridas, ocho de esqueleto doce huesos, tres de creeper seis pólvoras, tres de araña ocho hilos."]},
+      "sources": ["jar:MysticalAgriculture-1.21.1-8.0.27.jar:com/blakebr0/mysticalagriculture/lib/ModCrops.class", "jar:MysticalAgriculture-1.21.1-8.0.27.jar:com/blakebr0/mysticalagriculture/lib/ModMobSoulTypes.class", "jar:MysticalAgriculture-1.21.1-8.0.27.jar:data/mysticalagriculture/recipe/essence/minecraft/rotten_flesh.json", "jar:MysticalAgriculture-1.21.1-8.0.27.jar:data/mysticalagriculture/recipe/essence/minecraft/bone.json", "jar:MysticalAgriculture-1.21.1-8.0.27.jar:data/mysticalagriculture/recipe/essence/minecraft/gunpowder.json", "jar:MysticalAgriculture-1.21.1-8.0.27.jar:data/mysticalagriculture/recipe/essence/minecraft/string.json"]
+    },
+    {
+      "key": "ma2_mobs_sky", "role": "side", "deps": ["ma2_mobs_night"], "group": "mobs",
+      "tasks": [{"item": "mysticalagriculture:phantom_seeds"}, {"item": "mysticalagriculture:breeze_seeds"}, {"item": "mysticalagriculture:enderman_seeds"}],
+      "at": {"x": 12.8, "y": 3.8},
+      "en_us": {"title": "Wings, wind and pearls",
+        "text": ["Phantom is tier 3, breeze and enderman tier 4, and their jars are small: six, four and eight souls. Eight essences give four phantom membranes, four breeze rods or four ender pearls."]},
+      "es_es": {"title": "Alas, viento y perlas",
+        "text": ["El fantasma es de nivel 3; el breeze y el enderman, de nivel 4, y sus tarros son chicos: seis, cuatro y ocho almas. Ocho esencias dan cuatro membranas de fantasma, cuatro varas de breeze o cuatro perlas de ender."]},
+      "sources": ["jar:MysticalAgriculture-1.21.1-8.0.27.jar:com/blakebr0/mysticalagriculture/lib/ModCrops.class", "jar:MysticalAgriculture-1.21.1-8.0.27.jar:com/blakebr0/mysticalagriculture/lib/ModMobSoulTypes.class", "jar:MysticalAgriculture-1.21.1-8.0.27.jar:data/mysticalagriculture/recipe/essence/minecraft/phantom_membrane.json", "jar:MysticalAgriculture-1.21.1-8.0.27.jar:data/mysticalagriculture/recipe/essence/minecraft/breeze_rod.json", "jar:MysticalAgriculture-1.21.1-8.0.27.jar:data/mysticalagriculture/recipe/essence/minecraft/ender_pearl.json"]
+    },
+    {
+      "key": "ma2_mobs_nether", "role": "side", "deps": ["ma2_mobs_sky"], "group": "mobs",
+      "tasks": [{"item": "mysticalagriculture:blaze_seeds"}, {"item": "mysticalagriculture:ghast_seeds"}, {"item": "mysticalagriculture:wither_skeleton_seeds"}],
+      "at": {"x": 12.8, "y": 6.4},
+      "en_us": {"title": "Nether fire",
+        "text": ["Blaze and ghast are tier 4, wither skeleton tier 5. Eight essences give six blaze rods or two ghast tears; eight wither skeleton essences around a blank skull give a [item:minecraft:wither_skeleton_skull|Wither Skeleton Skull]."]},
+      "es_es": {"title": "Fuego del Nether",
+        "text": ["El blaze y el ghast son de nivel 4; el esqueleto del Wither, de nivel 5. Ocho esencias dan seis varas de blaze o dos lágrimas de ghast; ocho de esqueleto del Wither alrededor de una calavera en blanco dan una [item:minecraft:wither_skeleton_skull|Calavera de esqueleto del Wither]."]},
+      "sources": ["jar:MysticalAgriculture-1.21.1-8.0.27.jar:com/blakebr0/mysticalagriculture/lib/ModCrops.class", "jar:MysticalAgriculture-1.21.1-8.0.27.jar:data/mysticalagriculture/recipe/essence/minecraft/blaze_rod.json", "jar:MysticalAgriculture-1.21.1-8.0.27.jar:data/mysticalagriculture/recipe/essence/minecraft/ghast_tear.json", "jar:MysticalAgriculture-1.21.1-8.0.27.jar:data/mysticalagriculture/recipe/essence/minecraft/wither_skeleton_skull.json"]
+    },
+    {
+      "key": "ma2_blank_skull", "role": "side", "deps": ["ma2_mobs_night"], "group": "mobs",
+      "task": {"item": "mysticalagriculture:blank_skull"},
+      "at": {"x": 15.6, "y": 0.8},
+      "en_us": {"title": "Heads on order",
+        "text": ["A bone block and four soul dust make four [item:mysticalagriculture:blank_skull|Blank Skulls]. Eight zombie, skeleton, creeper or wither skeleton essences around one turn it into that mob's head."]},
+      "es_es": {"title": "Cabezas por encargo",
+        "text": ["Un bloque de huesos y cuatro polvos de alma dan cuatro [item:mysticalagriculture:blank_skull|Calaveras en blanco]. Ocho esencias de zombi, esqueleto, creeper o esqueleto del Wither alrededor de una la vuelven la cabeza de ese mob."]},
+      "sources": ["jar:MysticalAgriculture-1.21.1-8.0.27.jar:data/mysticalagriculture/recipe/blank_skull.json", "jar:MysticalAgriculture-1.21.1-8.0.27.jar:data/mysticalagriculture/recipe/essence/minecraft/zombie_head.json", "jar:MysticalAgriculture-1.21.1-8.0.27.jar:data/mysticalagriculture/recipe/essence/minecraft/skeleton_skull.json", "jar:MysticalAgriculture-1.21.1-8.0.27.jar:data/mysticalagriculture/recipe/essence/minecraft/creeper_head.json", "jar:MysticalAgriculture-1.21.1-8.0.27.jar:data/mysticalagriculture/recipe/essence/minecraft/wither_skeleton_skull.json"]
+    },
+    {
+      "key": "ma2_blank_record", "role": "side", "deps": ["ma2_mobs_night"], "group": "mobs",
+      "task": {"item": "mysticalagriculture:blank_record"},
+      "at": {"x": 15.6, "y": 3.8},
+      "en_us": {"title": "Records on request",
+        "text": ["Four creeper and four skeleton essences around an iron ingot make a [item:mysticalagriculture:blank_record|Blank Record]. On the record, one creeper essence, one skeleton essence and a dye press most vanilla discs; the dye picks the song."]},
+      "es_es": {"title": "Discos a pedido",
+        "text": ["Cuatro esencias de creeper y cuatro de esqueleto alrededor de un lingote de hierro dan un [item:mysticalagriculture:blank_record|Disco en blanco]. Sobre el disco, una esencia de creeper, una de esqueleto y un tinte hacen casi todos los discos vanilla; el tinte elige el tema."]},
+      "sources": ["jar:MysticalAgriculture-1.21.1-8.0.27.jar:data/mysticalagriculture/recipe/blank_record.json", "jar:MysticalAgriculture-1.21.1-8.0.27.jar:data/mysticalagriculture/recipe/essence/minecraft/music_disc_cat.json", "jar:MysticalAgriculture-1.21.1-8.0.27.jar:data/mysticalagriculture/recipe/essence/minecraft/music_disc_13.json"]
+    },
+    {
+      "key": "ma2_witherproof", "role": "side", "deps": ["ma2_mobs_nether"], "group": "mobs",
+      "tasks": [{"item": "mysticalagriculture:witherproof_block"}, {"item": "mysticalagriculture:witherproof_glass"}],
+      "at": {"x": 15.6, "y": 6.4},
+      "en_us": {"title": "Walls the Wither can't break", "subtitle": "Boss arena, some assembly required.",
+        "text": ["Four wither skeleton essences around soulstone make a [item:mysticalagriculture:witherproof_block|Witherproof Block]; around soul glass, [item:mysticalagriculture:witherproof_glass|Witherproof Glass]. The Wither can't break either one, and the Dragon can't damage them, though it flies straight through."]},
+      "es_es": {"title": "Paredes que el Wither no rompe", "subtitle": "Arena para jefes, se arma en casa.",
+        "text": ["Cuatro esencias de esqueleto del Wither alrededor de piedra de alma dan un [item:mysticalagriculture:witherproof_block|Bloque a prueba de Wither]; alrededor de cristal de alma, [item:mysticalagriculture:witherproof_glass|Cristal a prueba de Wither]. El Wither no rompe ninguno y el Dragón no los daña, aunque los atraviesa volando."]},
+      "sources": ["jar:MysticalAgriculture-1.21.1-8.0.27.jar:data/mysticalagriculture/recipe/witherproof_block.json", "jar:MysticalAgriculture-1.21.1-8.0.27.jar:data/mysticalagriculture/recipe/witherproof_glass.json", "jar:MysticalAgriculture-1.21.1-8.0.27.jar:assets/mysticalagriculture/patchouli_books/guide/en_us/entries/souls/witherproof_blocks.json"]
+    },
+    {
+      "key": "ma2_secret_pigstep", "role": "secret", "deps": ["ma2_blank_record"], "group": "mobs",
+      "task": {"item": "minecraft:music_disc_pigstep"},
+      "at": {"x": 18.4, "y": 3.8},
+      "en_us": {"title": "Pigstep, homegrown", "subtitle": "Bastions hate this one trick.",
+        "text": ["A blank record with one nether, one netherite and one gold essence presses Pigstep, the disc that otherwise only turns up in bastion chests."]},
+      "es_es": {"title": "Pigstep de huerta", "subtitle": "Los bastiones odian este truco.",
+        "text": ["Un disco en blanco con una esencia del Nether, una de netherita y una de oro graba Pigstep, el disco que si no sólo aparece en cofres de bastiones."]},
+      "sources": ["jar:MysticalAgriculture-1.21.1-8.0.27.jar:data/mysticalagriculture/recipe/essence/minecraft/music_disc_pigstep.json"]
+    },
+    {
+      "key": "ma2_secret_heart", "role": "secret", "deps": ["ma2_mobs_water"], "group": "mobs",
+      "task": {"item": "minecraft:heart_of_the_sea"},
+      "at": {"x": 15.6, "y": -4.8},
+      "en_us": {"title": "A heart, grown to order", "subtitle": "No treasure map required.",
+        "text": ["Diamond, prismarine and squid essence around a nautilus shell make a [item:minecraft:heart_of_the_sea|Heart of the Sea], and prismarine with fish essence makes the shell."]},
+      "es_es": {"title": "Un corazón por encargo", "subtitle": "Sin mapa del tesoro.",
+        "text": ["Esencias de diamante, prismarina y calamar alrededor de un caparazón de nautilo dan un [item:minecraft:heart_of_the_sea|Corazón del mar], y la prismarina con esencia de pez hace el caparazón."]},
+      "sources": ["jar:MysticalAgriculture-1.21.1-8.0.27.jar:data/mysticalagriculture/recipe/essence/minecraft/heart_of_the_sea.json", "jar:MysticalAgriculture-1.21.1-8.0.27.jar:data/mysticalagriculture/recipe/essence/minecraft/nautilus_shell.json"]
+    },
+    {
+      "key": "ma2_frame", "role": "step", "deps": ["ma2_soulium_ingot"], "group": "machines", "hide_lines": true,
+      "task": {"item": "mysticalagriculture:machine_frame"},
+      "at": {"x": -1.3, "y": 13.6},
+      "en_us": {"title": "One frame, five machines",
+        "text": ["Iron, redstone and stone make the [item:mysticalagriculture:machine_frame|Machine Frame] inside the Furnace, Harvester, Seed Reprocessor, Soul Extractor and Soulium Spawner. All five burn solid fuel and keep a small power buffer."]},
+      "es_es": {"title": "Un marco, cinco máquinas",
+        "text": ["Hierro, redstone y piedra dan el [item:mysticalagriculture:machine_frame|Marco de máquina] que llevan el Horno, la Cosechadora, el Reprocesador de semillas, la Extractora de almas y el Generador de soulium. Las cinco queman combustible sólido y guardan un poco de energía."]},
+      "sources": ["jar:MysticalAgriculture-1.21.1-8.0.27.jar:data/mysticalagriculture/recipe/machine_frame.json", "jar:MysticalAgriculture-1.21.1-8.0.27.jar:data/mysticalagriculture/recipe/furnace.json", "jar:MysticalAgriculture-1.21.1-8.0.27.jar:data/mysticalagriculture/recipe/harvester.json", "jar:MysticalAgriculture-1.21.1-8.0.27.jar:data/mysticalagriculture/recipe/seed_reprocessor.json", "jar:MysticalAgriculture-1.21.1-8.0.27.jar:data/mysticalagriculture/recipe/soul_extractor.json", "jar:MysticalAgriculture-1.21.1-8.0.27.jar:data/mysticalagriculture/recipe/soulium_spawner.json", "jar:MysticalAgriculture-1.21.1-8.0.27.jar:assets/mysticalagriculture/patchouli_books/guide/en_us/entries/machines/harvester.json"]
+    },
+    {
+      "key": "ma2_harvester", "role": "milestone", "deps": ["ma2_frame"], "group": "machines",
+      "task": {"item": "mysticalagriculture:harvester"},
+      "at": {"x": 1.9, "y": 13.6},
+      "en_us": {"title": "A farmhand that never sleeps", "subtitle": "Replants, too. Unlike some people.",
+        "text": ["Two diamond scythes, two soulium ingots, iron and a frame make the [item:mysticalagriculture:harvester|Harvester]. Facing a field, it picks ripe crops, replants them and keeps the harvest inside; machine upgrades widen its reach, and redstone pauses it."]},
+      "es_es": {"title": "Un peón que no duerme", "subtitle": "Y replanta. No como otros.",
+        "text": ["Dos guadañas de diamante, dos lingotes de soulium, hierro y un marco dan la [item:mysticalagriculture:harvester|Cosechadora]. Mirando al campo, junta lo maduro, lo replanta y guarda la cosecha adentro; las mejoras de máquina agrandan su alcance y la redstone la pausa."]},
+      "sources": ["jar:MysticalAgriculture-1.21.1-8.0.27.jar:data/mysticalagriculture/recipe/harvester.json", "jar:MysticalAgriculture-1.21.1-8.0.27.jar:com/blakebr0/mysticalagriculture/tileentity/HarvesterTileEntity.class", "jar:MysticalAgriculture-1.21.1-8.0.27.jar:assets/mysticalagriculture/patchouli_books/guide/en_us/entries/machines/harvester.json"]
+    },
+    {
+      "key": "ma2_reprocessor", "role": "side", "deps": ["ma2_harvester"], "group": "machines",
+      "task": {"item": "mysticalagriculture:seed_reprocessor"},
+      "at": {"x": 5.1, "y": 13.6},
+      "en_us": {"title": "Spare seeds into essence",
+        "text": ["Two soulium ingots, two iron hoes, iron and a frame make the [item:mysticalagriculture:seed_reprocessor|Seed Reprocessor]. Every spare seed becomes two essences of its crop, so the second seeds from essence farmland finally have a use."]},
+      "es_es": {"title": "Semillas de sobra a esencia",
+        "text": ["Dos lingotes de soulium, dos azadas de hierro, hierro y un marco dan el [item:mysticalagriculture:seed_reprocessor|Reprocesador de semillas]. Cada semilla de sobra se vuelve dos esencias de su cultivo, así que las segundas semillas de la tierra de esencia por fin sirven."]},
+      "sources": ["jar:MysticalAgriculture-1.21.1-8.0.27.jar:data/mysticalagriculture/recipe/seed_reprocessor.json", "jar:MysticalAgriculture-1.21.1-8.0.27.jar:data/mysticalagriculture/recipe/seed/reprocessor/iron.json", "jar:MysticalAgriculture-1.21.1-8.0.27.jar:assets/mysticalagriculture/patchouli_books/guide/en_us/entries/machines/seed_reprocessors.json"]
+    },
+    {
+      "key": "ma2_furnace", "role": "side", "deps": ["ma2_frame"], "group": "machines",
+      "task": {"item": "mysticalagriculture:furnace"},
+      "at": {"x": -1.3, "y": 16.4},
+      "en_us": {"title": "A furnace that takes upgrades",
+        "text": ["Two furnaces, two prosperity ingots, iron and a frame make Mystical Agriculture's [item:mysticalagriculture:furnace|Furnace]. It smelts like any other until a machine upgrade speeds it up."]},
+      "es_es": {"title": "Un horno que acepta mejoras",
+        "text": ["Dos hornos, dos lingotes de prosperidad, hierro y un marco dan el [item:mysticalagriculture:furnace|Horno] de Mystical Agriculture. Funde como cualquier otro hasta que una mejora de máquina lo acelera."]},
+      "sources": ["jar:MysticalAgriculture-1.21.1-8.0.27.jar:data/mysticalagriculture/recipe/furnace.json", "jar:MysticalAgriculture-1.21.1-8.0.27.jar:assets/mysticalagriculture/patchouli_books/guide/en_us/entries/machines/essence_furnace.json"]
+    },
+    {
+      "key": "ma2_upgrades", "role": "side", "deps": ["ma2_furnace"], "group": "machines",
+      "tasks": [{"item": "mysticalagriculture:upgrade_base"}, {"item": "mysticalagriculture:inferium_upgrade"}],
+      "at": {"x": 1.3, "y": 16.4},
+      "en_us": {"title": "Faster machines",
+        "text": ["Shards, prosperity ingots and a diamond make the [item:mysticalagriculture:upgrade_base|Machine Upgrade Base]; four essences and four ingots of a tier turn it into that tier's upgrade, inferium to supremium. Upgraded machines work and burn faster, and the Harvester reaches further."]},
+      "es_es": {"title": "Máquinas más rápidas",
+        "text": ["Fragmentos, lingotes de prosperidad y un diamante dan la [item:mysticalagriculture:upgrade_base|Base de mejora de máquina]; cuatro esencias y cuatro lingotes de un nivel la vuelven la mejora de ese nivel, de inferium a supremium. Las máquinas mejoradas trabajan y queman más rápido, y la Cosechadora llega más lejos."]},
+      "sources": ["jar:MysticalAgriculture-1.21.1-8.0.27.jar:data/mysticalagriculture/recipe/upgrade_base.json", "jar:MysticalAgriculture-1.21.1-8.0.27.jar:data/mysticalagriculture/recipe/inferium_upgrade.json", "jar:MysticalAgriculture-1.21.1-8.0.27.jar:data/mysticalagriculture/recipe/awakened_supremium_upgrade.json", "jar:MysticalAgriculture-1.21.1-8.0.27.jar:assets/mysticalagriculture/patchouli_books/guide/en_us/entries/machines/machine_upgrades.json"]
+    },
+    {
+      "key": "ma2_spawner", "role": "side", "deps": ["ma2_frame"], "group": "machines",
+      "task": {"item": "mysticalagriculture:soulium_spawner"},
+      "at": {"x": -3.9, "y": 16.4},
+      "en_us": {"title": "Mobs from essence", "subtitle": "Agriculture, in reverse.",
+        "text": ["Two wither skeleton skulls, two soulium ingots, iron and a frame make the [item:mysticalagriculture:soulium_spawner|Soulium Spawner]. It turns mob essence back into the mob, within three blocks: 16 zombie essences per zombie, 24 per blaze."]},
+      "es_es": {"title": "Mobs desde la esencia", "subtitle": "Agricultura, al revés.",
+        "text": ["Dos calaveras de esqueleto del Wither, dos lingotes de soulium, hierro y un marco dan el [item:mysticalagriculture:soulium_spawner|Generador de soulium]. Vuelve la esencia de mob al mob, a tres bloques o menos: 16 esencias de zombi por zombi, 24 por blaze."]},
+      "sources": ["jar:MysticalAgriculture-1.21.1-8.0.27.jar:data/mysticalagriculture/recipe/soulium_spawner.json", "jar:MysticalAgriculture-1.21.1-8.0.27.jar:data/mysticalagriculture/recipe/soulium_spawner/zombie.json", "jar:MysticalAgriculture-1.21.1-8.0.27.jar:data/mysticalagriculture/recipe/soulium_spawner/blaze.json", "jar:MysticalAgriculture-1.21.1-8.0.27.jar:assets/mysticalagriculture/patchouli_books/guide/en_us/entries/machines/soulium_spawner.json"]
+    },
+    {
+      "key": "ma2_enchanter", "role": "milestone", "deps": ["ma2_soulium_ingot"], "hide_lines": true,
+      "task": {"item": "mysticalagriculture:enchanter"},
+      "at": {"x": 0, "y": 8.8},
+      "en_us": {"title": "Enchantments without dice", "subtitle": "No lapis, no luck.",
+        "text": ["An enchanting table on a soulium ingot and three soulstone makes the [item:mysticalagriculture:enchanter|Enchanter]. It puts the enchantment you pick on a tool or a book for experience essence and a themed item: 64 essence and 16 redstone for Efficiency, for example.",
+                 "{page}",
+                 "[tip] Each multiple of the recipe adds a level, up to the enchantment's cap, and a slot holds up to 512."]},
+      "es_es": {"title": "Encantamientos sin dados", "subtitle": "Sin lapislázuli y sin suerte.",
+        "text": ["Una mesa de encantamientos sobre un lingote de soulium y tres piedras de alma da el [item:mysticalagriculture:enchanter|Encantador]. Pone el encantamiento que elijas en una herramienta o un libro por esencia de experiencia y un ítem temático: 64 esencias y 16 de redstone para Eficiencia, por ejemplo.",
+                 "{page}",
+                 "[tip] Cada múltiplo de la receta suma un nivel, hasta el tope del encantamiento, y cada espacio guarda hasta 512."]},
+      "sources": ["jar:MysticalAgriculture-1.21.1-8.0.27.jar:data/mysticalagriculture/recipe/enchanter.json", "jar:MysticalAgriculture-1.21.1-8.0.27.jar:data/mysticalagriculture/recipe/enchanter/efficiency.json", "jar:MysticalAgriculture-1.21.1-8.0.27.jar:com/blakebr0/mysticalagriculture/crafting/recipe/EnchanterRecipe.class#getMaxResultEnchantmentLevel", "jar:MysticalAgriculture-1.21.1-8.0.27.jar:com/blakebr0/mysticalagriculture/tileentity/EnchanterTileEntity.class", "jar:MysticalAgriculture-1.21.1-8.0.27.jar:assets/mysticalagriculture/patchouli_books/guide/en_us/entries/souls/enchanter.json"]
+    },
+    {
+      "key": "ma2_experience", "role": "side", "deps": ["ma2_enchanter", "ma_tier_imperium"],
+      "tasks": [{"item": "mysticalagriculture:experience_capsule"}, {"item": "mysticalagriculture:experience_seeds"}],
+      "at": {"x": -3.1, "y": 10.4},
+      "en_us": {"title": "Experience, bottled and planted",
+        "text": ["Two soulium ingots and two soul glass make an [item:mysticalagriculture:experience_capsule|Experience Capsule] that soaks up the orbs you collect, up to 1,200 points. Four full ones on the pedestals make tier-4 [item:mysticalagriculture:experience_seeds|Experience Seeds].",
+                 "{page}",
+                 "Eight experience essences give eight [item:mysticalagriculture:experience_droplet|Experience Droplets]; each one and a glass bottle make a [item:minecraft:experience_bottle|Bottle o' Enchanting]. The Enchanter drinks the essence itself."]},
+      "es_es": {"title": "Experiencia embotellada y sembrada",
+        "text": ["Dos lingotes de soulium y dos cristales de alma dan una [item:mysticalagriculture:experience_capsule|Cápsula de experiencia] que absorbe los orbes que juntes, hasta 1200 puntos. Cuatro llenas en los pedestales dan [item:mysticalagriculture:experience_seeds|Semillas de experiencia] de nivel 4.",
+                 "{page}",
+                 "Ocho esencias de experiencia dan ocho [item:mysticalagriculture:experience_droplet|Gotas de experiencia]; cada una con un frasco de cristal da un [item:minecraft:experience_bottle|Frasco con experiencia]. El Encantador consume la esencia directamente."]},
+      "sources": ["jar:MysticalAgriculture-1.21.1-8.0.27.jar:data/mysticalagriculture/recipe/experience_capsule.json", "jar:MysticalAgriculture-1.21.1-8.0.27.jar:com/blakebr0/mysticalagriculture/api/util/ExperienceCapsuleUtils.class", "jar:MysticalAgriculture-1.21.1-8.0.27.jar:com/blakebr0/mysticalagriculture/lib/ModCrops.class", "jar:MysticalAgriculture-1.21.1-8.0.27.jar:data/mysticalagriculture/recipe/essence/minecraft/experience_droplet.json", "jar:MysticalAgriculture-1.21.1-8.0.27.jar:data/mysticalagriculture/recipe/experience_bottle.json"]
+    },
+    {
+      "key": "ma2_tip_mending", "role": "tip", "deps": ["ma2_enchanter"],
+      "task": {"type": "checkmark"},
+      "at": {"x": 3.1, "y": 10.4},
+      "en_us": {"title": "Mending, on request",
+        "text": ["[tip] The Enchanter also does Mending: three wither skeleton skulls and 256 experience essence. Silk Touch takes 32 slimeballs and 128 essence."]},
+      "es_es": {"title": "Reparación, a pedido",
+        "text": ["[tip] El Encantador también hace Reparación: tres calaveras de esqueleto del Wither y 256 esencias de experiencia. Toque de seda pide 32 bolas de slime y 128 esencias."]},
+      "sources": ["jar:MysticalAgriculture-1.21.1-8.0.27.jar:data/mysticalagriculture/recipe/enchanter/mending.json", "jar:MysticalAgriculture-1.21.1-8.0.27.jar:data/mysticalagriculture/recipe/enchanter/silk_touch.json", "jar:MysticalAgriculture-1.21.1-8.0.27.jar:com/blakebr0/mysticalagriculture/tileentity/EnchanterTileEntity.class"]
+    },
+    {
+      "key": "ma2_tinkering", "role": "step", "deps": ["ma2_soulium"], "group": "workshop",
+      "tasks": [{"item": "mysticalagriculture:tinkering_table"}, {"item": "mysticalagriculture:unattuned_augment"}],
+      "at": {"x": -13.0, "y": -7.4},
+      "en_us": {"title": "Room for one more ability",
+        "text": ["Stone and two soulium dust make the [item:mysticalagriculture:tinkering_table|Tinkering Table]; shards and iron make an [item:mysticalagriculture:unattuned_augment|Unattuned Augment]. Infuse the augment on the altar, then socket it into essence gear at the table."]},
+      "es_es": {"title": "Lugar para una habilidad más",
+        "text": ["Piedra y dos polvos de soulium dan la [item:mysticalagriculture:tinkering_table|Mesa de modificaciones]; fragmentos y hierro, un [item:mysticalagriculture:unattuned_augment|Aumento no sintonizado]. Infundí el aumento en el altar y después encastralo en el equipo de esencia desde la mesa."]},
+      "sources": ["jar:MysticalAgriculture-1.21.1-8.0.27.jar:data/mysticalagriculture/recipe/tinkering_table.json", "jar:MysticalAgriculture-1.21.1-8.0.27.jar:data/mysticalagriculture/recipe/unattuned_augment.json", "jar:MysticalAgriculture-1.21.1-8.0.27.jar:assets/mysticalagriculture/patchouli_books/guide/en_us/entries/tinkering/augments.json", "jar:MysticalAgriculture-1.21.1-8.0.27.jar:assets/mysticalagriculture/patchouli_books/guide/en_us/entries/tinkering/tinkering_table.json"]
+    },
+    {
+      "key": "ma2_gear_inferium", "role": "side", "deps": ["ma2_tinkering"], "group": "workshop",
+      "tasks": [{"item": "mysticalagriculture:inferium_pickaxe"}, {"item": "mysticalagriculture:inferium_sword"}, {"item": "mysticalagriculture:inferium_chestplate"}],
+      "at": {"x": -13.0, "y": -4.8},
+      "en_us": {"title": "Inferium gear",
+        "text": ["Diamond gear plus two ingots and two gemstones of a tier becomes that tier's essence gear and keeps its enchantments. It lasts longer, digs faster and has one augment slot; an anvil repairs it with the tier's ingot."]},
+      "es_es": {"title": "Equipo de inferium",
+        "text": ["El equipo de diamante más dos lingotes y dos gemas de un nivel se vuelve el equipo de esencia de ese nivel y conserva sus encantamientos. Dura más, rompe más rápido y tiene un espacio de aumento; el yunque lo repara con el lingote del nivel."]},
+      "sources": ["jar:MysticalAgriculture-1.21.1-8.0.27.jar:data/mysticalagriculture/recipe/gear/inferium_pickaxe.json", "jar:MysticalAgriculture-1.21.1-8.0.27.jar:data/mysticalagriculture/recipe/gear/inferium_chestplate.json", "jar:MysticalAgriculture-1.21.1-8.0.27.jar:assets/mysticalagriculture/patchouli_books/guide/en_us/entries/tinkering/essence_tools.json", "jar:MysticalAgriculture-1.21.1-8.0.27.jar:assets/mysticalagriculture/patchouli_books/guide/en_us/entries/tinkering/essence_armor.json"]
+    },
+    {
+      "key": "ma2_gear_prudentium", "role": "side", "deps": ["ma2_gear_inferium"], "group": "workshop",
+      "tasks": [{"item": "mysticalagriculture:prudentium_pickaxe"}, {"item": "mysticalagriculture:prudentium_sword"}, {"item": "mysticalagriculture:prudentium_chestplate"}],
+      "at": {"x": -13.0, "y": -2.2},
+      "en_us": {"title": "Prudentium gear",
+        "text": ["Each tier upgrades the last one's piece, so the pickaxe you started with keeps climbing. Tier 2 opens the next shelf of augments: Speed I, Night Vision, Jump Boost I and Mining AOE I among them."]},
+      "es_es": {"title": "Equipo de prudentium",
+        "text": ["Cada nivel mejora la pieza del anterior, así que el pico con el que empezaste sigue subiendo. El nivel 2 abre la siguiente tanda de aumentos: velocidad I, visión nocturna, salto aumentado I y ADE de minería I, entre otros."]},
+      "sources": ["jar:MysticalAgriculture-1.21.1-8.0.27.jar:data/mysticalagriculture/recipe/gear/prudentium_pickaxe.json", "jar:MysticalAgriculture-1.21.1-8.0.27.jar:com/blakebr0/mysticalagriculture/lib/ModAugments.class"]
+    },
+    {
+      "key": "ma2_gear_tertium", "role": "side", "deps": ["ma2_gear_prudentium"], "group": "workshop",
+      "tasks": [{"item": "mysticalagriculture:tertium_pickaxe"}, {"item": "mysticalagriculture:tertium_sword"}, {"item": "mysticalagriculture:tertium_chestplate"}],
+      "at": {"x": -13.0, "y": 0.4},
+      "en_us": {"title": "Tertium gear",
+        "text": ["Tertium gear takes the augments that change how you move: Step Assist, No Fall Damage, Slow Falling and Fire Resistance, plus Haste I and Strength I."]},
+      "es_es": {"title": "Equipo de tertium",
+        "text": ["El equipo de tertium acepta los aumentos que cambian cómo te movés: asistencia de paso, sin daño de caída, caída lenta y resistencia al fuego, además de prisa I y fuerza I."]},
+      "sources": ["jar:MysticalAgriculture-1.21.1-8.0.27.jar:data/mysticalagriculture/recipe/gear/tertium_pickaxe.json", "jar:MysticalAgriculture-1.21.1-8.0.27.jar:com/blakebr0/mysticalagriculture/lib/ModAugments.class"]
+    },
+    {
+      "key": "ma2_gear_imperium", "role": "side", "deps": ["ma2_gear_tertium"], "group": "workshop",
+      "tasks": [{"item": "mysticalagriculture:imperium_pickaxe"}, {"item": "mysticalagriculture:imperium_sword"}, {"item": "mysticalagriculture:imperium_chestplate"}],
+      "at": {"x": -13.0, "y": 3.0},
+      "en_us": {"title": "Imperium gear",
+        "text": ["Imperium gear carries the tier-4 augments: Haste II, Speed III, Strength II, Poison Resistance, Hunger Resistance and Mining AOE III."]},
+      "es_es": {"title": "Equipo de imperium",
+        "text": ["El equipo de imperium lleva los aumentos de nivel 4: prisa II, velocidad III, fuerza II, resistencia al veneno, resistencia al hambre y ADE de minería III."]},
+      "sources": ["jar:MysticalAgriculture-1.21.1-8.0.27.jar:data/mysticalagriculture/recipe/gear/imperium_pickaxe.json", "jar:MysticalAgriculture-1.21.1-8.0.27.jar:com/blakebr0/mysticalagriculture/lib/ModAugments.class"]
+    },
+    {
+      "key": "ma2_gear_supremium", "role": "side", "deps": ["ma2_gear_imperium"], "group": "workshop",
+      "tasks": [{"item": "mysticalagriculture:supremium_pickaxe"}, {"item": "mysticalagriculture:supremium_sword"}, {"item": "mysticalagriculture:supremium_chestplate"}],
+      "at": {"x": -13.0, "y": 5.6},
+      "en_us": {"title": "Supremium gear",
+        "text": ["Supremium gear takes every augment, flight included, and its tools can be enchanted at a plain enchanting table. Supremium armor still wears out: the pack keeps that default."]},
+      "es_es": {"title": "Equipo de supremium",
+        "text": ["El equipo de supremium acepta todos los aumentos, vuelo incluido, y sus herramientas se encantan en una mesa de encantamientos común. La armadura de supremium igual se gasta: el pack deja ese valor por defecto."]},
+      "sources": ["jar:MysticalAgriculture-1.21.1-8.0.27.jar:data/mysticalagriculture/recipe/gear/supremium_pickaxe.json", "jar:MysticalAgriculture-1.21.1-8.0.27.jar:com/blakebr0/mysticalagriculture/config/ModConfigs.class#enchantableSupremiumTools", "jar:MysticalAgriculture-1.21.1-8.0.27.jar:com/blakebr0/mysticalagriculture/config/ModConfigs.class#unbreakableSupremiumArmor", "jar:MysticalAgriculture-1.21.1-8.0.27.jar:com/blakebr0/mysticalagriculture/lib/ModAugments.class"]
+    },
+    {
+      "key": "ma2_flight", "role": "side", "deps": ["ma2_gear_supremium"], "group": "workshop",
+      "task": {"item": "mysticalagriculture:flight_augment"},
+      "at": {"x": -13.0, "y": 8.2},
+      "en_us": {"title": "Creative flight, earned", "subtitle": "Four nether stars. Worth every one.",
+        "text": ["Four nether stars and four supremium essences infuse the [item:mysticalagriculture:flight_augment|Flight Augment]. Socketed in a supremium chestplate, it grants creative flight while you wear it."]},
+      "es_es": {"title": "Vuelo creativo, ganado", "subtitle": "Cuatro estrellas del Nether. Valen cada una.",
+        "text": ["Cuatro estrellas del Nether y cuatro esencias de supremium infunden el [item:mysticalagriculture:flight_augment|Aumento de vuelo]. Encastrado en un peto de supremium, da vuelo creativo mientras lo tengas puesto."]},
+      "sources": ["jar:MysticalAgriculture-1.21.1-8.0.27.jar:data/mysticalagriculture/recipe/augment/flight.json", "jar:MysticalAgriculture-1.21.1-8.0.27.jar:assets/mysticalagriculture/patchouli_books/guide/en_us/entries/augments/flight_augment.json", "jar:MysticalAgriculture-1.21.1-8.0.27.jar:com/blakebr0/mysticalagriculture/lib/ModAugments.class"]
+    },
+    {
+      "key": "ma2_ranged", "role": "side", "deps": ["ma2_gear_inferium"], "group": "workshop",
+      "tasks": [{"item": "mysticalagriculture:inferium_bow"}, {"item": "mysticalagriculture:inferium_crossbow"}, {"item": "mysticalagriculture:inferium_fishing_rod"}, {"item": "mysticalagriculture:inferium_shears"}],
+      "at": {"x": -10.2, "y": -4.8},
+      "en_us": {"title": "Bows, rods and shears",
+        "text": ["The same upgrade works on bows, crossbows, fishing rods and shears. Essence bows and crossbows draw faster and hit harder with each tier: from 1.1 times the speed and +1 damage at inferium to 2.1 times and +4 awakened."]},
+      "es_es": {"title": "Arcos, cañas y tijeras",
+        "text": ["La misma mejora sirve para arcos, ballestas, cañas de pescar y tijeras. Los arcos y ballestas de esencia tensan más rápido y pegan más fuerte con cada nivel: de 1,1 veces la velocidad y +1 de daño en inferium a 2,1 veces y +4 despertados."]},
+      "sources": ["jar:MysticalAgriculture-1.21.1-8.0.27.jar:data/mysticalagriculture/recipe/gear/inferium_bow.json", "jar:MysticalAgriculture-1.21.1-8.0.27.jar:data/mysticalagriculture/recipe/gear/inferium_crossbow.json", "jar:MysticalAgriculture-1.21.1-8.0.27.jar:data/mysticalagriculture/recipe/gear/inferium_fishing_rod.json", "jar:MysticalAgriculture-1.21.1-8.0.27.jar:data/mysticalagriculture/recipe/gear/inferium_shears.json", "jar:MysticalAgriculture-1.21.1-8.0.27.jar:com/blakebr0/mysticalagriculture/init/ModItems.class"]
+    },
+    {
+      "key": "ma2_aug_tools", "role": "side", "deps": ["ma2_tinkering"], "group": "workshop",
+      "tasks": [{"item": "mysticalagriculture:mining_aoe_i_augment"}, {"item": "mysticalagriculture:tilling_aoe_i_augment"}, {"item": "mysticalagriculture:pathing_aoe_i_augment"}, {"item": "mysticalagriculture:haste_i_augment"}],
+      "at": {"x": -15.8, "y": -4.8},
+      "en_us": {"title": "Augments for digging",
+        "text": ["Iron tools around an unattuned augment make the area augments: digging, tilling and paths in 3×3, up to 9×9 at their top tier. Haste goes on a chestplate and costs redstone."]},
+      "es_es": {"title": "Aumentos para cavar",
+        "text": ["Herramientas de hierro alrededor de un aumento no sintonizado dan los aumentos de área: cavar, arar y hacer caminos en 3×3, hasta 9×9 en su último nivel. La prisa va en el peto y cuesta redstone."]},
+      "sources": ["jar:MysticalAgriculture-1.21.1-8.0.27.jar:data/mysticalagriculture/recipe/augment/mining_aoe_i.json", "jar:MysticalAgriculture-1.21.1-8.0.27.jar:data/mysticalagriculture/recipe/augment/tilling_aoe_i.json", "jar:MysticalAgriculture-1.21.1-8.0.27.jar:data/mysticalagriculture/recipe/augment/pathing_aoe_i.json", "jar:MysticalAgriculture-1.21.1-8.0.27.jar:data/mysticalagriculture/recipe/augment/haste_i.json", "jar:MysticalAgriculture-1.21.1-8.0.27.jar:assets/mysticalagriculture/patchouli_books/guide/en_us/entries/augments/mining_aoe_augment.json", "jar:MysticalAgriculture-1.21.1-8.0.27.jar:assets/mysticalagriculture/patchouli_books/guide/en_us/entries/augments/haste_augment.json"]
+    },
+    {
+      "key": "ma2_aug_senses", "role": "side", "deps": ["ma2_aug_tools"], "group": "workshop",
+      "tasks": [{"item": "mysticalagriculture:night_vision_augment"}, {"item": "mysticalagriculture:water_breathing_augment"}, {"item": "mysticalagriculture:fire_resistance_augment"}],
+      "at": {"x": -15.8, "y": -2.2},
+      "en_us": {"title": "Augments for the senses",
+        "text": ["Golden carrots for Night Vision and pufferfish for Water Breathing go on helmets; magma cream makes Fire Resistance, which fits any armor piece."]},
+      "es_es": {"title": "Aumentos para los sentidos",
+        "text": ["Zanahorias doradas para visión nocturna y peces globo para respiración acuática van en el casco; la crema de magma da resistencia al fuego, que entra en cualquier pieza de armadura."]},
+      "sources": ["jar:MysticalAgriculture-1.21.1-8.0.27.jar:data/mysticalagriculture/recipe/augment/night_vision.json", "jar:MysticalAgriculture-1.21.1-8.0.27.jar:data/mysticalagriculture/recipe/augment/water_breathing.json", "jar:MysticalAgriculture-1.21.1-8.0.27.jar:data/mysticalagriculture/recipe/augment/fire_resistance.json", "jar:MysticalAgriculture-1.21.1-8.0.27.jar:assets/mysticalagriculture/patchouli_books/guide/en_us/entries/augments/night_vision_augment.json", "jar:MysticalAgriculture-1.21.1-8.0.27.jar:assets/mysticalagriculture/patchouli_books/guide/en_us/entries/augments/fire_resistance.json"]
+    },
+    {
+      "key": "ma2_aug_move", "role": "side", "deps": ["ma2_aug_senses"], "group": "workshop",
+      "tasks": [{"item": "mysticalagriculture:speed_i_augment"}, {"item": "mysticalagriculture:jump_boost_i_augment"}, {"item": "mysticalagriculture:step_assist_augment"}, {"item": "mysticalagriculture:no_fall_damage_augment"}],
+      "at": {"x": -15.8, "y": 0.4},
+      "en_us": {"title": "Augments for the road",
+        "text": ["Sugar for Speed, rabbit's feet for Jump Boost, stairs for Step Assist, diamonds and wool for No Fall Damage. Speed sits on leggings, Jump Boost and No Fall Damage on boots, Step Assist on either."]},
+      "es_es": {"title": "Aumentos para el camino",
+        "text": ["Azúcar para velocidad, patas de conejo para salto, escaleras para asistencia de paso, diamantes y lana para sin daño de caída. La velocidad va en los pantalones; el salto y la caída, en las botas; la asistencia de paso, en cualquiera."]},
+      "sources": ["jar:MysticalAgriculture-1.21.1-8.0.27.jar:data/mysticalagriculture/recipe/augment/speed_i.json", "jar:MysticalAgriculture-1.21.1-8.0.27.jar:data/mysticalagriculture/recipe/augment/jump_boost_i.json", "jar:MysticalAgriculture-1.21.1-8.0.27.jar:data/mysticalagriculture/recipe/augment/step_assist.json", "jar:MysticalAgriculture-1.21.1-8.0.27.jar:data/mysticalagriculture/recipe/augment/no_fall_damage.json", "jar:MysticalAgriculture-1.21.1-8.0.27.jar:assets/mysticalagriculture/patchouli_books/guide/en_us/entries/augments/speed_augment.json", "jar:MysticalAgriculture-1.21.1-8.0.27.jar:assets/mysticalagriculture/patchouli_books/guide/en_us/entries/augments/step_assist_augment.json"]
+    },
+    {
+      "key": "ma2_aug_fight", "role": "side", "deps": ["ma2_aug_move"], "group": "workshop",
+      "tasks": [{"item": "mysticalagriculture:strength_i_augment"}, {"item": "mysticalagriculture:attack_aoe_i_augment"}, {"item": "mysticalagriculture:health_boost_i_augment"}, {"item": "mysticalagriculture:absorption_i_augment"}],
+      "at": {"x": -15.8, "y": 3.0},
+      "en_us": {"title": "Augments for a fight",
+        "text": ["Strength and Attack AOE go on swords; Health Boost and Absorption on any armor, up to ten extra hearts or ten absorption hearts at their top tier. Health Boost costs wither skeleton skulls from its first level."]},
+      "es_es": {"title": "Aumentos para pelear",
+        "text": ["Fuerza y ADE de ataque van en espadas; mejora de salud y absorción, en cualquier armadura, hasta diez corazones extra o diez de absorción en su último nivel. La mejora de salud pide calaveras de esqueleto del Wither desde el primer nivel."]},
+      "sources": ["jar:MysticalAgriculture-1.21.1-8.0.27.jar:data/mysticalagriculture/recipe/augment/strength_i.json", "jar:MysticalAgriculture-1.21.1-8.0.27.jar:data/mysticalagriculture/recipe/augment/attack_aoe_i.json", "jar:MysticalAgriculture-1.21.1-8.0.27.jar:data/mysticalagriculture/recipe/augment/health_boost_i.json", "jar:MysticalAgriculture-1.21.1-8.0.27.jar:data/mysticalagriculture/recipe/augment/absorption_i.json", "jar:MysticalAgriculture-1.21.1-8.0.27.jar:assets/mysticalagriculture/patchouli_books/guide/en_us/entries/augments/health_boost_augment.json", "jar:MysticalAgriculture-1.21.1-8.0.27.jar:assets/mysticalagriculture/patchouli_books/guide/en_us/entries/augments/absorption_augment.json"]
+    },
+    {
+      "key": "ma2_aug_resist", "role": "side", "deps": ["ma2_aug_fight"], "group": "workshop",
+      "tasks": [{"item": "mysticalagriculture:nausea_resistance_augment"}, {"item": "mysticalagriculture:blindness_resistance_augment"}, {"item": "mysticalagriculture:poison_resistance_augment"}, {"item": "mysticalagriculture:wither_resistance_augment"}],
+      "at": {"x": -15.8, "y": 5.6},
+      "en_us": {"title": "Augments against bad luck",
+        "text": ["Leather and milk stop Nausea, torches and glowstone Blindness, milk and imperium Poison. Wither Resistance is tier 5: two nether stars, two wither skeleton skulls and four supremium."]},
+      "es_es": {"title": "Aumentos contra la mala suerte",
+        "text": ["Cuero y leche frenan las náuseas; antorchas y piedra luminosa, la ceguera; leche e imperium, el veneno. La resistencia al Wither es de nivel 5: dos estrellas del Nether, dos calaveras de esqueleto del Wither y cuatro supremium."]},
+      "sources": ["jar:MysticalAgriculture-1.21.1-8.0.27.jar:data/mysticalagriculture/recipe/augment/nausea_resistance.json", "jar:MysticalAgriculture-1.21.1-8.0.27.jar:data/mysticalagriculture/recipe/augment/blindness_resistance.json", "jar:MysticalAgriculture-1.21.1-8.0.27.jar:data/mysticalagriculture/recipe/augment/poison_resistance.json", "jar:MysticalAgriculture-1.21.1-8.0.27.jar:data/mysticalagriculture/recipe/augment/wither_resistance.json", "jar:MysticalAgriculture-1.21.1-8.0.27.jar:com/blakebr0/mysticalagriculture/lib/ModAugments.class"]
+    },
+    {
+      "key": "ma2_awakening_altar", "role": "milestone", "deps": ["ma2_vessels"],
+      "tasks": [{"item": "mysticalagriculture:awakening_altar"}, {"item": "mysticalagriculture:awakening_pedestal", "count": 4}],
+      "at": {"x": 0.0, "y": -4.3},
+      "en_us": {"title": "The second altar", "subtitle": "Orange wool this time. It matters.",
+        "text": ["Gold, orange wool and soulstone make the [item:mysticalagriculture:awakening_altar|Awakening Altar] and four [item:mysticalagriculture:awakening_pedestal|Awakening Pedestals]. Placed, it shows the eight spots for pedestals and vessels, the same ring as the infusion altar; a redstone signal starts it."]},
+      "es_es": {"title": "El segundo altar", "subtitle": "Esta vez con lana naranja. Importa.",
+        "text": ["Oro, lana naranja y piedra de alma dan el [item:mysticalagriculture:awakening_altar|Altar del despertar] y cuatro [item:mysticalagriculture:awakening_pedestal|Pedestales del despertar]. Al colocarlo muestra los ocho lugares para pedestales y recipientes, el mismo anillo del altar de infusión; lo arranca una señal de redstone."]},
+      "sources": ["jar:MysticalAgriculture-1.21.1-8.0.27.jar:data/mysticalagriculture/recipe/awakening_altar.json", "jar:MysticalAgriculture-1.21.1-8.0.27.jar:data/mysticalagriculture/recipe/awakening_pedestal.json", "jar:MysticalAgriculture-1.21.1-8.0.27.jar:com/blakebr0/mysticalagriculture/tileentity/AwakeningAltarTileEntity.class", "jar:MysticalAgriculture-1.21.1-8.0.27.jar:assets/mysticalagriculture/patchouli_books/guide/en_us/entries/elemental/awakening_altar.json"]
+    },
+    {
+      "key": "ma2_elementals", "role": "step", "deps": ["farming_resources_altar"],
+      "tasks": [{"item": "mysticalagriculture:air_seeds"}, {"item": "mysticalagriculture:earth_seeds"}, {"item": "mysticalagriculture:water_seeds"}, {"item": "mysticalagriculture:fire_seeds"}],
+      "at": {"x": 3.0406, "y": -3.0406},
+      "en_us": {"title": "The four elements", "subtitle": "Gravel, dirt and clay, four ways.",
+        "text": ["Each element's agglomeratio is gravel, dirt and clay plus its own touch: a glass bottle for air, grass for earth, a water or lava bucket for the other two. On the altar with inferium they grow the essences the vessels hold.",
+                 "{page}",
+                 "[tip] Elemental crops count inferium farmland as their own tier: plant them there for the 20% odds."]},
+      "es_es": {"title": "Los cuatro elementos", "subtitle": "Grava, tierra y arcilla, de cuatro maneras.",
+        "text": ["La aglomeración de cada elemento es grava, tierra y arcilla con un toque propio: un frasco de cristal para el aire, hierba para la tierra, un cubo de agua o de lava para los otros dos. En el altar con inferium dan las esencias que guardan los recipientes.",
+                 "{page}",
+                 "[tip] Los cultivos elementales toman la tierra de inferium como la de su nivel: plantalos ahí para tener el 20%."]},
+      "sources": ["jar:MysticalAgriculture-1.21.1-8.0.27.jar:data/mysticalagriculture/recipe/air_agglomeratio.json", "jar:MysticalAgriculture-1.21.1-8.0.27.jar:data/mysticalagriculture/recipe/earth_agglomeratio.json", "jar:MysticalAgriculture-1.21.1-8.0.27.jar:data/mysticalagriculture/recipe/water_agglomeratio.json", "jar:MysticalAgriculture-1.21.1-8.0.27.jar:data/mysticalagriculture/recipe/fire_agglomeratio.json", "jar:MysticalAgriculture-1.21.1-8.0.27.jar:com/blakebr0/mysticalagriculture/lib/ModCrops.class", "jar:MysticalAgriculture-1.21.1-8.0.27.jar:com/blakebr0/mysticalagriculture/lib/ModCorePlugin.class", "jar:MysticalAgriculture-1.21.1-8.0.27.jar:assets/mysticalagriculture/patchouli_books/guide/en_us/entries/elemental/elemental_essences.json"]
+    },
+    {
+      "key": "ma2_vessels", "role": "step", "deps": ["ma2_elementals"],
+      "task": {"item": "mysticalagriculture:essence_vessel", "count": 4},
+      "at": {"x": 4.3, "y": 0.0},
+      "en_us": {"title": "Four vessels",
+        "text": ["Gold, glass and soulstone make an [item:mysticalagriculture:essence_vessel|Essence Vessel]. Each one holds up to 40 of a single elemental essence, and the awakening altar drinks from all four at once."]},
+      "es_es": {"title": "Cuatro recipientes",
+        "text": ["Oro, cristal y piedra de alma dan un [item:mysticalagriculture:essence_vessel|Recipiente de esencia]. Cada uno guarda hasta 40 de una sola esencia elemental, y el altar del despertar toma de los cuatro a la vez."]},
+      "sources": ["jar:MysticalAgriculture-1.21.1-8.0.27.jar:data/mysticalagriculture/recipe/essence_vessel.json", "jar:MysticalAgriculture-1.21.1-8.0.27.jar:assets/mysticalagriculture/patchouli_books/guide/en_us/entries/elemental/essence_vessel.json"]
+    },
+    {
+      "key": "ma2_boss_wither", "role": "boss", "deps": ["ma2_enchanter"],
+      "task": {"type": "kill", "entity": "minecraft:wither", "value": 1},
+      "icon": {"entity": "minecraft:wither"},
+      "at": {"x": -3.0406, "y": 3.0406},
+      "en_us": {"title": "The Wither", "subtitle": "A donor with three heads.",
+        "text": ["Kill it with an essence weapon enchanted with Mystical Enlightenment and it drops [item:mysticalagriculture:cognizant_dust|Cognizant Dust], four at level I and one more per level. Any essence weapon also shakes out one to three essences of its tier.",
+                 "{page}",
+                 "[tip] Mystical Enlightenment comes from the Enchanter: three supremium essences and 64 experience essences per level."]},
+      "es_es": {"title": "El Wither", "subtitle": "Un donante de tres cabezas.",
+        "text": ["Matalo con un arma de esencia encantada con Iluminación mística y suelta [item:mysticalagriculture:cognizant_dust|Polvo cognizante]: cuatro con nivel I y uno más por nivel. Cualquier arma de esencia además le saca de una a tres esencias de su nivel.",
+                 "{page}",
+                 "[tip] La Iluminación mística sale del Encantador: tres esencias de supremium y 64 de experiencia por nivel."]},
+      "sources": ["jar:MysticalAgriculture-1.21.1-8.0.27.jar:com/blakebr0/mysticalagriculture/handler/MobDropHandler.class", "jar:MysticalAgriculture-1.21.1-8.0.27.jar:com/blakebr0/mysticalagriculture/config/ModConfigs.class#witherDropsCognizant", "jar:MysticalAgriculture-1.21.1-8.0.27.jar:data/mysticalagriculture/recipe/enchanter/mystical_enlightenment.json", "jar:MysticalAgriculture-1.21.1-8.0.27.jar:data/mysticalagriculture/enchantment/mystical_enlightenment.json"]
+    },
+    {
+      "key": "ma2_boss_dragon", "role": "boss", "deps": ["ma2_enchanter"],
+      "task": {"type": "kill", "entity": "minecraft:ender_dragon", "value": 1},
+      "icon": {"entity": "minecraft:ender_dragon"},
+      "at": {"x": 3.0406, "y": 3.0406},
+      "en_us": {"title": "The Ender Dragon", "subtitle": "Better odds, longer commute.",
+        "text": ["The Dragon pays more: four [item:mysticalagriculture:cognizant_dust|Cognizant Dust] plus two per Mystical Enlightenment level, and two to four essences of your weapon's tier."]},
+      "es_es": {"title": "El Dragón del End", "subtitle": "Mejores números, viaje más largo.",
+        "text": ["El Dragón paga mejor: cuatro [item:mysticalagriculture:cognizant_dust|Polvos cognizantes] más dos por nivel de Iluminación mística, y de dos a cuatro esencias del nivel de tu arma."]},
+      "sources": ["jar:MysticalAgriculture-1.21.1-8.0.27.jar:com/blakebr0/mysticalagriculture/handler/MobDropHandler.class", "jar:MysticalAgriculture-1.21.1-8.0.27.jar:com/blakebr0/mysticalagriculture/config/ModConfigs.class#dragonDropsCognizant", "jar:MysticalAgriculture-1.21.1-8.0.27.jar:com/blakebr0/mysticalagriculture/config/ModConfigs.class#dragonDropsEssence"]
+    },
+    {
+      "key": "ma2_cognizant", "role": "step", "deps": ["ma2_boss_wither", "ma2_boss_dragon"], "any_dep": true,
+      "task": {"item": "mysticalagriculture:cognizant_dust", "count": 4},
+      "at": {"x": 0.0, "y": 4.3},
+      "en_us": {"title": "Dust that knows",
+        "text": ["Four [item:mysticalagriculture:cognizant_dust|Cognizant Dust] on the four pedestals, a supremium block on the altar and ten of each elemental essence in the vessels: that is one awakening."]},
+      "es_es": {"title": "Polvo que sabe",
+        "text": ["Cuatro [item:mysticalagriculture:cognizant_dust|Polvos cognizantes] en los cuatro pedestales, un bloque de supremium en el altar y diez de cada esencia elemental en los recipientes: eso es un despertar."]},
+      "sources": ["jar:MysticalAgriculture-1.21.1-8.0.27.jar:data/mysticalagriculture/recipe/awakened_supremium_block_awakening.json", "jar:MysticalAgriculture-1.21.1-8.0.27.jar:assets/mysticalagriculture/patchouli_books/guide/en_us/entries/elemental/cognizant_dust.json"]
+    },
+    {
+      "key": "ma2_awakened", "role": "capstone", "deps": ["ma2_cognizant", "ma2_awakening_altar", "ma_tier_supremium"],
+      "task": {"item": "mysticalagriculture:awakened_supremium_block"},
+      "at": {"x": 0, "y": 0},
+      "en_us": {"title": "Awake", "subtitle": "The block that got a promotion.",
+        "text": ["The altar turns a supremium block into an [item:mysticalagriculture:awakened_supremium_block|Awakened Supremium Block], which breaks into nine [item:mysticalagriculture:awakened_supremium_essence|Awakened Supremium Essence]. Two per prosperity ingot or gemstone make the awakened metal."]},
+      "es_es": {"title": "Despierto", "subtitle": "El bloque que ascendió.",
+        "text": ["El altar vuelve un bloque de supremium un [item:mysticalagriculture:awakened_supremium_block|Bloque de supremium despertado], que se parte en nueve [item:mysticalagriculture:awakened_supremium_essence|Esencias de supremium despertado]. Dos por lingote o gema de prosperidad hacen el metal despertado."]},
+      "sources": ["jar:MysticalAgriculture-1.21.1-8.0.27.jar:data/mysticalagriculture/recipe/awakened_supremium_block_awakening.json", "jar:MysticalAgriculture-1.21.1-8.0.27.jar:data/mysticalagriculture/recipe/awakened_supremium_block_uncraft.json", "jar:MysticalAgriculture-1.21.1-8.0.27.jar:data/mysticalagriculture/recipe/awakened_supremium_ingot.json", "jar:MysticalAgriculture-1.21.1-8.0.27.jar:data/mysticalagriculture/recipe/awakened_supremium_gemstone.json", "jar:MysticalAgriculture-1.21.1-8.0.27.jar:assets/mysticalagriculture/patchouli_books/guide/en_us/entries/elemental/awakened_supremium.json"]
+    },
+    {
+      "key": "ma2_gear_awakened", "role": "side", "deps": ["ma2_awakened"],
+      "tasks": [{"item": "mysticalagriculture:awakened_supremium_pickaxe"}, {"item": "mysticalagriculture:awakened_supremium_sword"}, {"item": "mysticalagriculture:awakened_supremium_watering_can"}],
+      "at": {"x": -4.3, "y": 0.0},
+      "en_us": {"title": "Awakened gear",
+        "text": ["Supremium gear on the awakening altar, with awakened ingots and gemstones on the pedestals and 40 of each element in the vessels, wakes up with two augment slots. The awakened can waters 13×13 at even odds."]},
+      "es_es": {"title": "Equipo despertado",
+        "text": ["El equipo de supremium en el altar del despertar, con lingotes y gemas despertados en los pedestales y 40 de cada elemento en los recipientes, despierta con dos espacios de aumento. La regadera despertada riega 13×13 con chance pareja."]},
+      "sources": ["jar:MysticalAgriculture-1.21.1-8.0.27.jar:data/mysticalagriculture/recipe/gear/awakened_supremium_pickaxe.json", "jar:MysticalAgriculture-1.21.1-8.0.27.jar:data/mysticalagriculture/recipe/gear/awakened_supremium_watering_can.json", "jar:MysticalAgriculture-1.21.1-8.0.27.jar:com/blakebr0/mysticalagriculture/init/ModItems.class"]
+    },
+    {
+      "key": "ma2_awakened_armor", "role": "side", "deps": ["ma2_gear_awakened"],
+      "tasks": [{"item": "mysticalagriculture:awakened_supremium_helmet"}, {"item": "mysticalagriculture:awakened_supremium_chestplate"}, {"item": "mysticalagriculture:awakened_supremium_leggings"}, {"item": "mysticalagriculture:awakened_supremium_boots"}],
+      "at": {"x": -7.4, "y": -1.4},
+      "en_us": {"title": "A full awakened set", "subtitle": "Walk through the field. It grows.",
+        "text": ["Wear all four awakened armor pieces together for the set bonus: plants grow faster in an area around you. Each piece still keeps its own two augment slots."]},
+      "es_es": {"title": "Un juego despertado completo", "subtitle": "Caminá por el campo. Crece.",
+        "text": ["Con las cuatro piezas de armadura despertada puestas a la vez tenés el bono de conjunto: las plantas crecen más rápido en un área a tu alrededor. Cada pieza igual conserva sus dos espacios de aumento."]},
+      "sources": ["jar:MysticalAgriculture-1.21.1-8.0.27.jar:data/mysticalagriculture/recipe/gear/awakened_supremium_chestplate.json", "jar:MysticalAgriculture-1.21.1-8.0.27.jar:com/blakebr0/mysticalagriculture/config/ModConfigs.class#awakenedSupremiumSetBonus", "jar:MysticalAgriculture-1.21.1-8.0.27.jar:com/blakebr0/mysticalagriculture/init/ModItems.class"]
+    },
+    {
+      "key": "ma2_awakened_farming", "role": "side", "deps": ["ma2_gear_awakened"],
+      "tasks": [{"item": "mysticalagriculture:awakened_supremium_growth_accelerator"}, {"item": "mysticalagriculture:awakened_supremium_upgrade"}],
+      "at": {"x": -7.4, "y": 1.4},
+      "en_us": {"title": "The last accelerator",
+        "text": ["Four awakened essences, stone and an awakened gemstone make three accelerators that reach 54 blocks. On the awakening altar, 20 of each element turn a supremium upgrade into the top machine upgrade."]},
+      "es_es": {"title": "El último acelerador",
+        "text": ["Cuatro esencias despertadas, piedra y una gema despertada dan tres aceleradores que llegan a 54 bloques. En el altar del despertar, 20 de cada elemento vuelven una mejora de supremium la mejor mejora de máquina."]},
+      "sources": ["jar:MysticalAgriculture-1.21.1-8.0.27.jar:data/mysticalagriculture/recipe/awakened_supremium_growth_accelerator.json", "jar:MysticalAgriculture-1.21.1-8.0.27.jar:data/mysticalagriculture/recipe/awakened_supremium_upgrade.json", "jar:MysticalAgriculture-1.21.1-8.0.27.jar:com/blakebr0/mysticalagriculture/init/ModBlocks.class"]
+    },
+    {
+      "key": "ma2_tip_vessels", "role": "tip", "deps": ["ma2_vessels"],
+      "task": {"type": "checkmark"},
+      "at": {"x": 7.9, "y": -1.6},
+      "en_us": {"title": "Forty to the brim",
+        "text": ["[tip] Keep the vessels topped up: a block takes ten of each element, every awakened tool or armor piece forty, the top machine upgrade twenty."]},
+      "es_es": {"title": "Cuarenta hasta el borde",
+        "text": ["[tip] Mantené los recipientes llenos: un bloque pide diez de cada elemento, cada herramienta o pieza despertada cuarenta y la mejor mejora de máquina, veinte."]},
+      "sources": ["jar:MysticalAgriculture-1.21.1-8.0.27.jar:data/mysticalagriculture/recipe/awakened_supremium_block_awakening.json", "jar:MysticalAgriculture-1.21.1-8.0.27.jar:data/mysticalagriculture/recipe/gear/awakened_supremium_pickaxe.json", "jar:MysticalAgriculture-1.21.1-8.0.27.jar:data/mysticalagriculture/recipe/awakened_supremium_upgrade.json"]
+    },
+    {
+      "key": "ma2_tip_dust", "role": "tip", "deps": ["ma2_cognizant"],
+      "task": {"type": "checkmark"},
+      "at": {"x": 0, "y": 6.4},
+      "en_us": {"title": "Pick your boss",
+        "text": ["[tip] Level V of Mystical Enlightenment costs 15 supremium and 320 experience essence in the Enchanter. With it the Dragon drops 14 dust and the Wither eight."]},
+      "es_es": {"title": "Elegí tu jefe",
+        "text": ["[tip] La Iluminación mística V cuesta 15 supremium y 320 esencias de experiencia en el Encantador. Con ella el Dragón suelta 14 polvos y el Wither, ocho."]},
+      "sources": ["jar:MysticalAgriculture-1.21.1-8.0.27.jar:data/mysticalagriculture/recipe/enchanter/mystical_enlightenment.json", "jar:MysticalAgriculture-1.21.1-8.0.27.jar:com/blakebr0/mysticalagriculture/crafting/recipe/EnchanterRecipe.class#getMaxResultEnchantmentLevel", "jar:MysticalAgriculture-1.21.1-8.0.27.jar:com/blakebr0/mysticalagriculture/handler/MobDropHandler.class"]
+    }
+  ]
+}
