@@ -18,7 +18,6 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
@@ -28,8 +27,6 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
@@ -116,6 +113,7 @@ public final class Enves {
     EnvesGuard.register();
     EnvesDeaths.register();
     EnvesEntrance.register();
+    EnvesContent.register(bus);
   }
 
   public static ServerLevel level(MinecraftServer server) {
@@ -247,31 +245,9 @@ public final class Enves {
 
   // ---- The offering -------------------------------------------------------------------------
 
-  static Item offeringItem() {
-    return BuiltInRegistries.ITEM.get(ResourceLocation.parse(EnvesConfig.settings().offeringItem()));
-  }
-
-  static int countOffering(ServerPlayer player) {
-    Item item = offeringItem();
-    int count = 0;
-    for (ItemStack stack : Entrelumen.deliveryStacks(player)) if (stack.is(item)) count += stack.getCount();
-    return count;
-  }
-
-  static boolean takeOffering(ServerPlayer player) {
-    int need = EnvesConfig.settings().offeringCount();
-    if (countOffering(player) < need) return false;
-    Item item = offeringItem();
-    for (ItemStack stack : Entrelumen.deliveryStacks(player)) {
-      if (need <= 0) break;
-      if (!stack.is(item)) continue;
-      int take = Math.min(need, stack.getCount());
-      stack.shrink(take);
-      need -= take;
-    }
-    player.getInventory().setChanged();
-    player.containerMenu.broadcastChanges();
-    return true;
+  /** Whether the player carries any of the gate's offerings. */
+  static boolean canPay(ServerPlayer player) {
+    return EnvesOffering.affordable(player).contains(true);
   }
 
   // ---- Attempts -----------------------------------------------------------------------------
@@ -279,11 +255,17 @@ public final class Enves {
   /** Why the gate refused; {@code null} when an attempt opened. */
   public enum Refusal {NOT_YET, ALREADY_OPEN, BAD_TIER, NO_OFFERING, FULL, NO_DIMENSION}
 
-  /**
-   * Opens an attempt for the payer's team at the chosen difficulty: takes the offering, reserves a
-   * slot and starts placing the vestibule and floor I. The payer walks in once they are ready.
-   */
+  /** {@link #open(ServerPlayer, Tier, int)} with the first offering the payer carries. */
   public static Refusal open(ServerPlayer payer, Tier tier) {
+    return open(payer, tier, -1);
+  }
+
+  /**
+   * Opens an attempt for the payer's team at the chosen difficulty: takes offering {@code offer} (or,
+   * with -1, the first one the payer carries), reserves a slot and starts placing the vestibule and
+   * floor I. The payer walks in once they are ready.
+   */
+  public static Refusal open(ServerPlayer payer, Tier tier, int offer) {
     MinecraftServer server = payer.server;
     if (level(server) == null) return Refusal.NO_DIMENSION;
     if (!frontier(payer)) return Refusal.NOT_YET;
@@ -292,7 +274,8 @@ public final class Enves {
     if (data.forTeam(team).isPresent()) return Refusal.ALREADY_OPEN;
     if (!EnvesRules.validChoice(tier, currentTier(payer))) return Refusal.BAD_TIER;
     if (data.freeSlot() < 0) return Refusal.FULL;
-    if (!takeOffering(payer)) return Refusal.NO_OFFERING;
+    int chosen = EnvesOffering.choose(EnvesOffering.affordable(payer), offer);
+    if (chosen < 0 || !EnvesOffering.take(payer, chosen)) return Refusal.NO_OFFERING;
     create(payer, tier, payer.getRandom().nextLong());
     return null;
   }
@@ -414,6 +397,7 @@ public final class Enves {
     for (var m : markers(server, attempt, EnvesLayout.BOSS_DEPTH, portal))
       if (m.marker().kind() == EnvesMarkers.Kind.EXIT_PORTAL)
         level.setBlock(m.pos(), PORTAL.get().defaultBlockState().setValue(EnvesPortalBlock.ACTIVE, true), Block.UPDATE_ALL);
+    EnvesHooks.lifecycle().bossDefeated(attempt);
   }
 
   // ---- Seals and stairwells -----------------------------------------------------------------
@@ -574,7 +558,8 @@ public final class Enves {
       if (next.placement == Placement.NONE
           && EnvesRules.nextFloorDue(state.guardReached, state.exitReached, state.lit.cardinality(), seals))
         EnvesPlacer.queue(server, attempt, depth + 1);
-      if (!state.stairOpen && EnvesRules.stairOpens(state.lit.cardinality(), seals, next.placement == Placement.READY))
+      if (!state.stairOpen && EnvesRules.stairOpens(state.lit.cardinality(), seals, next.placement == Placement.READY)
+          && EnvesHooks.seals().stairMayOpen(floor(level(server), attempt, depth)))
         openStair(server, attempt, depth);
     }
   }

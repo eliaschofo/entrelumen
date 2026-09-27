@@ -87,6 +87,21 @@ public final class RuntimeGameTestsEnves {
     }
   }
 
+  /**
+   * The engine's own cases run on the engine's plain hooks: no echoes in the rooms they walk, seals
+   * that light on a touch and no champion at the stair. The content's cases are in
+   * {@code RuntimeGameTestsEnvesContent}.
+   */
+  @net.minecraft.gametest.framework.BeforeBatch(batch = "enves_attempts")
+  public static void plainHooks(ServerLevel level) {
+    EnvesHooks.reset();
+  }
+
+  @net.minecraft.gametest.framework.AfterBatch(batch = "enves_attempts")
+  public static void contentHooks(ServerLevel level) {
+    EnvesContent.install();
+  }
+
   private static void frontier(ServerPlayer player) {
     Entrelumen.current(player).act = ApotheosisTiers.FRONTIER_ACT;
     CampaignData.get(player.server).setDirty();
@@ -104,7 +119,7 @@ public final class RuntimeGameTestsEnves {
 
   private static Attempt openFor(GameTestHelper helper, ServerPlayer player, Tier tier) {
     frontier(player);
-    player.getInventory().add(new ItemStack(Items.NETHERITE_BLOCK));
+    player.getInventory().add(new ItemStack(Items.NETHER_STAR));
     var refusal = Enves.open(player, tier);
     helper.assertTrue(refusal == null, "The gate refused a paid attempt: " + refusal);
     return Enves.attemptOf(player).orElseThrow();
@@ -158,10 +173,10 @@ public final class RuntimeGameTestsEnves {
     var player = qa.player;
     frontier(player);
     helper.assertTrue(Enves.open(player, Tier.FRONTIER) == Enves.Refusal.NO_OFFERING, "An attempt opened without the offering");
-    player.getInventory().add(new ItemStack(Items.NETHERITE_BLOCK, 2));
+    player.getInventory().add(new ItemStack(Items.NETHER_STAR, 2));
     helper.assertTrue(Enves.open(player, Tier.ASCENT) == Enves.Refusal.BAD_TIER, "A difficulty above the player's tier was accepted");
     helper.assertTrue(Enves.open(player, Tier.HAVEN) == null, "A lower difficulty must be allowed");
-    helper.assertTrue(player.getInventory().countItem(Items.NETHERITE_BLOCK) == 1, "The offering was not taken exactly once");
+    helper.assertTrue(player.getInventory().countItem(Items.NETHER_STAR) == 1, "The offering was not taken exactly once");
     Attempt attempt = Enves.attemptOf(player).orElseThrow();
     helper.assertTrue(attempt.tier == Tier.HAVEN && attempt.poolTotal == 3 && attempt.poolLeft == 3,
         "One member online makes a pool of three: " + attempt.poolTotal);
@@ -180,7 +195,7 @@ public final class RuntimeGameTestsEnves {
           helper.assertTrue(!player.serverLevel().getBlockState(origin.offset(0, 11, 0)).isAir(), "Cell " + cell + " has no ceiling");
         }
         helper.assertTrue(attempt.floor(2).placement == Placement.NONE, "Floor II was placed before anyone reached the guard");
-        helper.assertTrue(player.getInventory().countItem(Items.NETHERITE_BLOCK) == 1, "Entering cost anything");
+        helper.assertTrue(player.getInventory().countItem(Items.NETHER_STAR) == 1, "Entering cost anything");
       } finally {
         cleanUp(player, attempt);
         qa.close();

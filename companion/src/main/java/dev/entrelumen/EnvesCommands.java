@@ -110,12 +110,16 @@ public final class EnvesCommands {
     var attempt = Enves.attemptAt(player.server, player.blockPosition());
     int depth = EnvesGeometry.depthAt(player.blockPosition().getY());
     if (attempt.isEmpty() || depth < 1 || depth >= EnvesLayout.BOSS_DEPTH) return 0;
-    int lit = 0;
-    for (int seal : Enves.layout(attempt.get(), depth).seals()) {
-      var pos = Enves.marker(player.server, attempt.get(), depth, seal, EnvesMarkers.Kind.SEAL);
-      if (pos.isPresent() && Enves.lightSeal(player, pos.get())) lit++;
-    }
-    return lit;
+    // An operator's command: the seals' hook lets them light and waives the floor's champion.
+    return EnvesHooks.forcing(() -> {
+      int lit = 0;
+      for (int seal : Enves.layout(attempt.get(), depth).seals()) {
+        var pos = Enves.marker(player.server, attempt.get(), depth, seal, EnvesMarkers.Kind.SEAL);
+        if (pos.isPresent() && Enves.lightSeal(player, pos.get())) lit++;
+      }
+      EnvesEncounters.waiveChampion(Enves.floor(player.serverLevel(), attempt.get(), depth));
+      return lit;
+    });
   }
 
   private static int reveal(ServerPlayer player) {
