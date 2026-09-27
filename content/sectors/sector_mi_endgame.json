@@ -1,0 +1,373 @@
+{
+  "format": "sector",
+  "chapter": "sector_mi_endgame",
+  "group": "tech",
+  "act": "V",
+  "motif": "mi",
+  "icon": "modern_industrialization:fusion_reactor",
+  "emblem": "modern_industrialization:textures/item/quantum_circuit.png",
+  "title": {"en_us": "Modern Industrialization · Endgame", "es_es": "Modern Industrialization · Final"},
+  "subtitle": {
+    "en_us": ["Fission that cannot melt down, fusion that breeds its own fuel, and a pocket black hole for the quantum tier."],
+    "es_es": ["Fisión que no se funde, fusión que cría su propio combustible y un agujero negro de bolsillo para el nivel cuántico."]
+  },
+  "entry": "mi_nuclear_alloy",
+  "figures": {
+    "torus": {"kind": "ring", "cx": 9.5, "cy": 0.0, "r": 6.4, "count": 8, "start": 180, "draw": [{"style": "ring", "r": 6.4, "segments": 64, "color": "#E07BFF", "alpha": 150, "thickness_px": 3}, {"style": "ring", "r": 5.2, "segments": 56, "color": "#8C96A0", "alpha": 130, "thickness_px": 2}, {"style": "ring", "r": 7.6000000000000005, "segments": 64, "color": "#8C96A0", "alpha": 130, "thickness_px": 2}, {"style": "teeth", "r": 7.6000000000000005, "count": 12, "start": 15, "depth": 1.1, "width": 1.0, "color": "#C9A227", "alpha": 170}]},
+    "core": {"kind": "ring", "cx": 9.5, "cy": 0.0, "r": 2.2, "count": 4, "start": -90, "draw": [{"style": "ring", "r": 2.2, "segments": 32, "color": "#E07BFF", "alpha": 70, "thickness_px": 2}]},
+    "accretion": {"kind": "ring", "cx": -0.4, "cy": 10.4, "r": 1.9, "count": 4, "start": -90, "draw": [{"style": "ring", "r": 1.9, "segments": 32, "color": "#B9A7E0", "alpha": 60, "thickness_px": 2}, {"style": "ring", "r": 2.6, "segments": 40, "color": "#B9A7E0", "alpha": 35, "thickness_px": 1}]}
+  },
+  "groups": {
+    "fuel": {"label": {"en_us": "Fuel cycle", "es_es": "Ciclo de combustible"}, "axis": "x", "caption": "below"},
+    "quantum": {"label": {"en_us": "Quantum tier", "es_es": "Nivel cuántico"}, "axis": "x", "caption": "below"}
+  },
+  "links": [
+    {"target": "world_ark_bus", "at": {"x": -12.4, "y": -8.2}},
+    {"target": "world_atomic_alloy", "at": {"x": 12.6, "y": 8.9}},
+    {"target": "entrelumen_solsticio_close", "at": {"x": 10.4, "y": 13.0}}
+  ],
+  "art": [
+    {"id": "banner", "texture": "entrelumen:textures/gui/quests/banner_plain.png", "x": -12.2, "y": -13.6, "scale": 2, "order": -1, "color": "#8A5A2B"},
+    {"id": "title", "label": {"en_us": "Modern Industrialization\nEndgame", "es_es": "Modern Industrialization\nFinal"}, "x": -12.2, "y": -13.6, "scale": 2, "bold": true, "tint": "#FFF1DE"},
+    {"id": "medallion", "texture": "entrelumen:textures/gui/quests/medallion.png", "x": -23.6, "y": -13.6, "scale": 2, "order": 0, "click": "chapter:sun_of_heliodor", "hover": {"en_us": "Back to the Sun of Heliodor", "es_es": "Volver al Sol de Heliodor"}},
+    {"id": "emblem", "texture": "modern_industrialization:textures/item/quantum_circuit.png", "x": -23.6, "y": -13.6, "scale": 4, "order": 1},
+    {"id": "to_steam", "label": {"en_us": "» Steam", "es_es": "» Vapor"}, "x": -19.2, "y": -11.0, "scale": 1, "align": "start", "click": "chapter:sector_mi_steam", "tint": "#FFA552"},
+    {"id": "to_electric", "label": {"en_us": "» Electricity", "es_es": "» Electricidad"}, "x": -19.2, "y": -10.1, "scale": 1, "align": "start", "click": "chapter:sector_mi_electric", "tint": "#FFA552"},
+    {"id": "to_digital", "label": {"en_us": "» Digital", "es_es": "» Digital"}, "x": -19.2, "y": -9.2, "scale": 1, "align": "start", "click": "chapter:sector_mi_digital", "tint": "#FFA552"},
+    {"id": "motto", "label": {"en_us": "split  fuse  fold", "es_es": "partir  fusionar  plegar"}, "x": -19.2, "y": -8.3, "scale": 1, "align": "start", "font": "minecraft:alt", "tint": "#BFA58A"},
+    {"id": "core", "panel": [-18.4, -6.0, -6.4, 6.0], "alpha": 90, "tint": "#1E2B22", "order": -4},
+    {"id": "glow", "panel": [-16.0, -3.6, -8.8, 3.6], "alpha": 26, "tint": "#3AA0FF", "order": -3},
+    {"id": "vessel_t", "line": [[-18.75, -6.35], [-6.05, -6.35]], "alpha": 210, "thickness_px": 4, "tint": "#7FB069", "order": -2},
+    {"id": "vessel_b", "line": [[-18.75, 6.35], [-6.05, 6.35]], "alpha": 210, "thickness_px": 4, "tint": "#7FB069", "order": -2},
+    {"id": "vessel_l", "line": [[-18.75, -6.35], [-18.75, 6.35]], "alpha": 210, "thickness_px": 4, "tint": "#7FB069", "order": -2},
+    {"id": "vessel_r", "line": [[-6.05, -6.35], [-6.05, 6.35]], "alpha": 210, "thickness_px": 4, "tint": "#7FB069", "order": -2},
+    {"id": "grid_v1", "line": [[-16.0, -6.0], [-16.0, 6.0]], "alpha": 70, "thickness_px": 1, "tint": "#8FA3B5", "order": -3},
+    {"id": "grid_h1", "line": [[-18.4, -3.6], [-6.4, -3.6]], "alpha": 70, "thickness_px": 1, "tint": "#8FA3B5", "order": -3},
+    {"id": "grid_v2", "line": [[-13.6, -6.0], [-13.6, 6.0]], "alpha": 70, "thickness_px": 1, "tint": "#8FA3B5", "order": -3},
+    {"id": "grid_h2", "line": [[-18.4, -1.2], [-6.4, -1.2]], "alpha": 70, "thickness_px": 1, "tint": "#8FA3B5", "order": -3},
+    {"id": "grid_v3", "line": [[-11.2, -6.0], [-11.2, 6.0]], "alpha": 70, "thickness_px": 1, "tint": "#8FA3B5", "order": -3},
+    {"id": "grid_h3", "line": [[-18.4, 1.2], [-6.4, 1.2]], "alpha": 70, "thickness_px": 1, "tint": "#8FA3B5", "order": -3},
+    {"id": "grid_v4", "line": [[-8.8, -6.0], [-8.8, 6.0]], "alpha": 70, "thickness_px": 1, "tint": "#8FA3B5", "order": -3},
+    {"id": "grid_h4", "line": [[-18.4, 3.6], [-6.4, 3.6]], "alpha": 70, "thickness_px": 1, "tint": "#8FA3B5", "order": -3},
+    {"id": "coolant_a", "line": [[-6.05, -0.35], [2.2, -0.35]], "alpha": 150, "thickness_px": 2, "tint": "#3AA0FF", "order": -2},
+    {"id": "coolant_b", "line": [[-6.05, 0.35], [2.2, 0.35]], "alpha": 150, "thickness_px": 2, "tint": "#3AA0FF", "order": -2},
+    {"id": "cap_fission", "label": {"en_us": "fission", "es_es": "fisión"}, "x": -12.4, "y": 6.9, "scale": 1, "tint": "#7FB069", "anchor": "top"},
+    {"id": "cap_fusion", "label": {"en_us": "fusion", "es_es": "fusión"}, "x": 9.5, "y": -9.0, "scale": 1, "tint": "#E07BFF", "anchor": "bottom"},
+    {"id": "hub_sun", "texture": "entrelumen:textures/gui/quests/sun_heliodor.png", "x": 9.5, "y": 0.0, "scale": 1, "order": -2, "alpha": 120, "reveal": "mi_mastery"}
+  ],
+  "quests": [
+    {
+      "key": "mi_nuclear_alloy", "role": "entry", "deps": ["mi_implosion"],
+      "task": {"item": "modern_industrialization:nuclear_alloy_plate", "count": 8},
+      "at": {"x": -17.2, "y": -4.8},
+      "en_us": {"title": "Nuclear Alloy", "subtitle": "Three metals, one controlled explosion.",
+        "text": ["A blastproof alloy plate, a beryllium plate and a cadmium plate pack into one mixed plate; the implosion compressor turns it into three [item:modern_industrialization:nuclear_alloy_plate|Nuclear Alloy Plates]. Beryllium ingots also come out of that compressor, from electrolyzed emerald dust."]},
+      "es_es": {"title": "Aleación nuclear", "subtitle": "Tres metales, una explosión controlada.",
+        "text": ["Una placa antiexplosiva, una de berilio y una de cadmio se empaquetan en una placa mixta; el compresor de implosión la vuelve tres [item:modern_industrialization:nuclear_alloy_plate|Placas de aleación nuclear]. Los lingotes de berilio también salen de ese compresor, de polvo de esmeralda electrolizado."]},
+      "sources": ["jar:Modern-Industrialization-2.5.6.jar:data/modern_industrialization/recipe/materials/packer/mixed_plate_nuclear.json", "jar:Modern-Industrialization-2.5.6.jar:data/modern_industrialization/recipe/materials/implosion_compressor/nuclear_alloy_plate.json", "jar:Modern-Industrialization-2.5.6.jar:data/modern_industrialization/recipe/materials/implosion_compressor/beryllium.json", "jar:Modern-Industrialization-2.5.6.jar:data/modern_industrialization/recipe/materials/electrolyzer/beryllium_dust.json", "jar:Modern-Industrialization-2.5.6.jar:assets/modern_industrialization/mi_guidebook/midgame/nuclear_reactor.md"]
+    },
+    {
+      "key": "mi_nuclear_casing", "role": "step", "deps": ["mi_nuclear_alloy"],
+      "tasks": [{"item": "modern_industrialization:nuclear_casing", "count": 8}, {"item": "modern_industrialization:nuclear_item_hatch", "count": 4}, {"item": "modern_industrialization:nuclear_fluid_hatch"}],
+      "icon": "modern_industrialization:nuclear_item_hatch",
+      "at": {"x": -14.8, "y": -4.8},
+      "en_us": {"title": "Casings and hatches",
+        "text": ["Eight nuclear alloy plates around a turbo hull make a [item:modern_industrialization:nuclear_casing|Nuclear Alloy Casing]; around a highly advanced input hatch, a [item:modern_industrialization:nuclear_item_hatch|Nuclear Item Hatch] or [item:modern_industrialization:nuclear_fluid_hatch|Nuclear Fluid Hatch]. Each hatch has one input and two outputs, and their inputs form the grid in the reactor's screen."]},
+      "es_es": {"title": "Carcasas y escotillas",
+        "text": ["Ocho placas de aleación nuclear alrededor de un chasis turbo hacen una [item:modern_industrialization:nuclear_casing|Carcasa de aleación nuclear]; alrededor de una escotilla de entrada altamente avanzada, una [item:modern_industrialization:nuclear_item_hatch|Escotilla nuclear de ítems] o una [item:modern_industrialization:nuclear_fluid_hatch|Escotilla nuclear de fluidos]. Cada escotilla tiene una entrada y dos salidas; las entradas forman la grilla que muestra el reactor."]},
+      "sources": ["jar:Modern-Industrialization-2.5.6.jar:data/modern_industrialization/recipe/electric_age/casing/nuclear_casing_asbl.json", "jar:Modern-Industrialization-2.5.6.jar:data/modern_industrialization/recipe/electric_age/casing/nuclear_item_hatch_asbl.json", "jar:Modern-Industrialization-2.5.6.jar:data/modern_industrialization/recipe/electric_age/casing/nuclear_fluid_hatch_asbl.json", "jar:Modern-Industrialization-2.5.6.jar:assets/modern_industrialization/mi_guidebook/midgame/nuclear_reactor.md"]
+    },
+    {
+      "key": "mi_fuel_rod", "role": "step", "deps": ["mi_nuclear_casing"],
+      "task": {"item": "modern_industrialization:uranium_fuel_rod", "count": 4},
+      "icon": "modern_industrialization:uranium_fuel_rod",
+      "at": {"x": -12.4, "y": -4.8},
+      "en_us": {"title": "Uranium fuel rods",
+        "text": ["Eighteen uranium rods, two blastproof curved plates, a large motor and two robot arms, with 500 mB of soldering alloy and 100 of helium, make one rod in the assembler. Two rods and a nuclear alloy plate pack into a double, two doubles and two plates into a quad."]},
+      "es_es": {"title": "Barras de combustible de uranio",
+        "text": ["Dieciocho varillas de uranio, dos placas curvas antiexplosivas, un motor grande y dos brazos robot, con 500 mB de aleación para soldar y 100 de helio, dan una barra en el ensamblador. Dos barras y una placa de aleación nuclear se empaquetan en una doble; dos dobles y dos placas, en una cuádruple."]},
+      "sources": ["jar:Modern-Industrialization-2.5.6.jar:data/modern_industrialization/recipe/materials/uranium/assembler/fuel_rod.json", "jar:Modern-Industrialization-2.5.6.jar:data/modern_industrialization/recipe/materials/uranium/packer/fuel_rod_double.json", "jar:Modern-Industrialization-2.5.6.jar:data/modern_industrialization/recipe/materials/uranium/packer/fuel_rod_quad.json", "jar:Modern-Industrialization-2.5.6.jar:data/modern_industrialization/recipe/materials/uranium/cutting_machine/main.json"]
+    },
+    {
+      "key": "mi_control_rod", "role": "step", "deps": ["mi_fuel_rod"],
+      "task": {"item": "modern_industrialization:cadmium_control_rod", "count": 2},
+      "at": {"x": -10.0, "y": -4.8},
+      "en_us": {"title": "Cadmium control rods",
+        "text": ["The same frame around eighteen cadmium rods makes a [item:modern_industrialization:cadmium_control_rod|Cadmium Control Rod]: it soaks up neutrons instead of making them. The reactor's controller takes two."]},
+      "es_es": {"title": "Barras de control de cadmio",
+        "text": ["El mismo armazón alrededor de dieciocho varillas de cadmio hace una [item:modern_industrialization:cadmium_control_rod|Barra de control de cadmio]: absorbe neutrones en vez de producirlos. El controlador del reactor lleva dos."]},
+      "sources": ["jar:Modern-Industrialization-2.5.6.jar:data/modern_industrialization/recipe/materials/cadmium/assembler/fuel_rod.json", "jar:Modern-Industrialization-2.5.6.jar:data/modern_industrialization/recipe/electric_age/machine/nuclear_reactor_asbl.json", "jar:Modern-Industrialization-2.5.6.jar:assets/modern_industrialization/mi_guidebook/midgame/nuclear_reactor.md"]
+    },
+    {
+      "key": "mi_nuclear", "role": "milestone", "deps": ["mi_control_rod"],
+      "task": {"item": "modern_industrialization:nuclear_reactor"},
+      "at": {"x": -12.4, "y": 0.0},
+      "en_us": {"title": "Nuclear Reactor", "subtitle": "3.6 roentgen. Not great, not terrible.",
+        "text": ["Four nuclear alloy large plates, two control rods, a highly advanced hull and a processing unit; in this pack an [item:entrelumen:ark_bus|Ark Connection Bus] too, act V. It comes in several sizes: nuclear casings for walls, hatches on top, and water in a fluid hatch boils into steam."]},
+      "es_es": {"title": "Reactor nuclear", "subtitle": "3,6 roentgen. No es genial, no es terrible.",
+        "text": ["Cuatro placas grandes de aleación nuclear, dos barras de control, un chasis altamente avanzado y una unidad de procesamiento; en este pack también un [item:entrelumen:ark_bus|Bus de conexión del Arca], acto V. Viene en varios tamaños: carcasas nucleares de pared, escotillas arriba, y el agua de una escotilla de fluidos hierve en vapor."]},
+      "sources": ["repo:pack/kubejs/server_scripts/entrelumen_pingpong_balance.js", "repo:tools/generate_family_balance.py", "jar:Modern-Industrialization-2.5.6.jar:data/modern_industrialization/recipe/electric_age/machine/nuclear_reactor_asbl.json", "jar:Modern-Industrialization-2.5.6.jar:assets/modern_industrialization/mi_guidebook/midgame/nuclear_reactor.md", "jar:Modern-Industrialization-2.5.6.jar:data/modern_industrialization/advancement/nuclear_reactor.json"]
+    },
+    {
+      "key": "mi_breeding", "role": "step", "deps": ["mi_nuclear"],
+      "tasks": [{"item": "modern_industrialization:deuterium_bucket"}, {"item": "modern_industrialization:tritium_bucket"}],
+      "icon": "modern_industrialization:tritium_bucket",
+      "at": {"x": -10.0, "y": 2.4},
+      "en_us": {"title": "Deuterium and tritium",
+        "text": ["Neutrons turn a little of the water in a fluid hatch into deuterium, and heavy water into tritium. The electrolyzer also splits heavy water into deuterium, and the centrifuge gets 20 mB of deuterium and 1 of tritium from a bucket of hydrogen."]},
+      "es_es": {"title": "Deuterio y tritio",
+        "text": ["Los neutrones vuelven deuterio un poco del agua de una escotilla de fluidos, y tritio el agua pesada. El electrolizador también separa el agua pesada en deuterio, y la centrífuga saca 20 mB de deuterio y 1 de tritio de un balde de hidrógeno."]},
+      "sources": ["jar:Modern-Industrialization-2.5.6.jar:aztech/modern_industrialization/nuclear/FluidNuclearComponent.class", "jar:Modern-Industrialization-2.5.6.jar:data/modern_industrialization/recipe/materials/electrolyzer/heavy_water.json", "jar:Modern-Industrialization-2.5.6.jar:data/modern_industrialization/recipe/materials/centrifuge/deuterium.json", "jar:Modern-Industrialization-2.5.6.jar:data/modern_industrialization/recipe/materials/centrifuge/heavy_water.json", "jar:Modern-Industrialization-2.5.6.jar:assets/modern_industrialization/mi_guidebook/midgame/nuclear_reactor.md"]
+    },
+    {
+      "key": "mi_plutonium", "role": "step", "deps": ["mi_nuclear"],
+      "task": {"item": "modern_industrialization:plutonium_ingot", "count": 4},
+      "at": {"x": -7.6, "y": 4.8},
+      "en_us": {"title": "Plutonium",
+        "text": ["Spent fuel isn't waste: in five minutes the centrifuge splits a depleted uranium rod into 53 uranium-238 and 27 plutonium tiny dusts, often with a uranium-235 one. Plutonium melts into ingots at 128 EU/t, for MOX fuel, nukes and batteries."]},
+      "es_es": {"title": "Plutonio",
+        "text": ["El combustible gastado no es basura: en cinco minutos la centrífuga separa una barra de uranio agotada en 53 polvitos de uranio-238 y 27 de plutonio, muchas veces con uno de uranio-235. El plutonio se funde en lingotes a 128 EU/t, para combustible MOX, bombas y baterías."]},
+      "sources": ["jar:Modern-Industrialization-2.5.6.jar:data/modern_industrialization/recipe/materials/centrifuge/nuclear_recycling/uranium_fuel_rod.json", "jar:Modern-Industrialization-2.5.6.jar:data/modern_industrialization/recipe/materials/plutonium/blast_furnace/dust.json", "jar:Modern-Industrialization-2.5.6.jar:data/modern_industrialization/recipe/alloy/mixer/le_mox/dust.json", "jar:Modern-Industrialization-2.5.6.jar:data/modern_industrialization/recipe/materials/assembler/nuke.json", "jar:Modern-Industrialization-2.5.6.jar:data/modern_industrialization/recipe/electric_age/battery/plutonium_battery_asbl.json"]
+    },
+    {
+      "key": "mi_mox", "role": "side", "deps": ["mi_plutonium"], "group": "fuel",
+      "task": {"item": "modern_industrialization:le_mox_fuel_rod"},
+      "at": {"x": -14.8, "y": 4.8},
+      "en_us": {"title": "MOX fuel",
+        "text": ["Eight uranium-238 dusts and a plutonium dust mix into LE MOX, six and three into HE MOX: new fuel rods from your spent ones. A depleted LE MOX rod still centrifuges into 30 plutonium tiny dusts."]},
+      "es_es": {"title": "Combustible MOX",
+        "text": ["Ocho polvos de uranio-238 y uno de plutonio se mezclan en MOX LE, seis y tres en MOX HE: barras nuevas con las gastadas. Una barra de MOX LE agotada todavía da 30 polvitos de plutonio en la centrífuga."]},
+      "sources": ["jar:Modern-Industrialization-2.5.6.jar:data/modern_industrialization/recipe/alloy/mixer/le_mox/dust.json", "jar:Modern-Industrialization-2.5.6.jar:data/modern_industrialization/recipe/alloy/mixer/he_mox/dust.json", "jar:Modern-Industrialization-2.5.6.jar:data/modern_industrialization/recipe/materials/le_mox/assembler/fuel_rod.json", "jar:Modern-Industrialization-2.5.6.jar:data/modern_industrialization/recipe/materials/centrifuge/nuclear_recycling/le_mox_fuel_rod.json"]
+    },
+    {
+      "key": "mi_enriched", "role": "side", "deps": ["mi_fuel_rod"], "group": "fuel",
+      "task": {"item": "modern_industrialization:le_uranium_fuel_rod"},
+      "at": {"x": -17.2, "y": 4.8},
+      "en_us": {"title": "Enriched uranium",
+        "text": ["Nine uranium dusts in the centrifuge give a uranium-235 tiny dust and eighty uranium-238 ones. Eight U-238 and one U-235 dust make LE uranium, six and three HE uranium: richer fuel for the same rod frame."]},
+      "es_es": {"title": "Uranio enriquecido",
+        "text": ["Nueve polvos de uranio en la centrífuga dan un polvito de uranio-235 y ochenta de uranio-238. Ocho de U-238 y uno de U-235 hacen uranio LE, seis y tres uranio HE: combustible más rico para el mismo armazón."]},
+      "sources": ["jar:Modern-Industrialization-2.5.6.jar:data/modern_industrialization/recipe/materials/centrifuge/uranium.json", "jar:Modern-Industrialization-2.5.6.jar:data/modern_industrialization/recipe/alloy/mixer/le_uranium/dust.json", "jar:Modern-Industrialization-2.5.6.jar:data/modern_industrialization/recipe/alloy/mixer/he_uranium/dust.json", "jar:Modern-Industrialization-2.5.6.jar:data/modern_industrialization/recipe/materials/le_uranium/assembler/fuel_rod.json"]
+    },
+    {
+      "key": "mi_qubit", "role": "step", "deps": ["mi_plutonium", "mi_breeding"],
+      "task": {"item": "modern_industrialization:qubit", "count": 2},
+      "at": {"x": 3.1, "y": 0.0},
+      "en_us": {"title": "Qubits",
+        "text": ["Two arithmetic logic units, two carbon plates, two glass panes and six superconductor wires, with 250 mB of cryofluid and 50 of tritium, in the assembler."]},
+      "es_es": {"title": "Qubits",
+        "text": ["Dos unidades aritmético-lógicas, dos placas de carbono, dos paneles de vidrio y seis alambres superconductores, con 250 mB de criofluido y 50 de tritio, en el ensamblador."]},
+      "sources": ["jar:Modern-Industrialization-2.5.6.jar:data/modern_industrialization/recipe/electric_age/component/assembler/qubit.json"]
+    },
+    {
+      "key": "mi_quantum_board", "role": "step", "deps": ["mi_qubit"],
+      "task": {"item": "modern_industrialization:quantum_circuit_board"},
+      "at": {"x": 4.9745, "y": 4.5255},
+      "en_us": {"title": "Quantum Circuit Board",
+        "text": ["Twelve superconductor cables, two plutonium batteries, a processing unit board, six iridium plates and 50 mB of helium-3, at 64 EU/t: the assembler needs +32 of upgrades. The centrifuge gets 5 mB of helium-3 from each bucket of helium."]},
+      "es_es": {"title": "Placa de circuito cuántico",
+        "text": ["Doce cables superconductores, dos baterías de plutonio, una placa de procesamiento, seis placas de iridio y 50 mB de helio-3, a 64 EU/t: el ensamblador necesita +32 en mejoras. La centrífuga saca 5 mB de helio-3 de cada balde de helio."]},
+      "sources": ["jar:Modern-Industrialization-2.5.6.jar:data/modern_industrialization/recipe/electric_age/circuit/assembler/quantum_circuit_board.json", "jar:Modern-Industrialization-2.5.6.jar:data/modern_industrialization/recipe/materials/centrifuge/helium_3.json", "jar:Modern-Industrialization-2.5.6.jar:aztech/modern_industrialization/machines/init/MachineTier.class#LV", "jar:Modern-Industrialization-2.5.6.jar:data/modern_industrialization/data_maps/item/machine_upgrades.json"]
+    },
+    {
+      "key": "mi_quantum_circuit", "role": "milestone", "deps": ["mi_quantum_board"],
+      "task": {"item": "modern_industrialization:quantum_circuit", "count": 2},
+      "at": {"x": 9.5, "y": 6.4},
+      "en_us": {"title": "Quantum Circuit", "subtitle": "Möbius strip eigenvalues.",
+        "text": ["Four processing units, two qubits, a cooling cell and a quantum board; in this pack a Mekanism [item:mekanism:alloy_atomic|Atomic Alloy] too, act V, and the assembler version is gone. Fusion, the plasma turbine and every quantum item start here."]},
+      "es_es": {"title": "Circuito cuántico", "subtitle": "Autovalores de una cinta de Möbius.",
+        "text": ["Cuatro unidades de procesamiento, dos qubits, una celda de enfriamiento y una placa cuántica; en este pack también una [item:mekanism:alloy_atomic|Aleación atómica] de Mekanism, acto V, y la versión del ensamblador ya no está. La fusión, la turbina de plasma y todo lo cuántico empiezan acá."]},
+      "sources": ["repo:pack/kubejs/server_scripts/entrelumen_pingpong_balance.js", "repo:tools/generate_family_balance.py", "jar:Modern-Industrialization-2.5.6.jar:data/modern_industrialization/recipe/electric_age/circuit/craft/quantum_circuit_asbl.json", "jar:Modern-Industrialization-2.5.6.jar:data/modern_industrialization/advancement/quantum_circuit.json"]
+    },
+    {
+      "key": "mi_quantum_hull", "role": "step", "deps": ["mi_quantum_circuit"],
+      "task": {"item": "modern_industrialization:quantum_machine_hull"},
+      "at": {"x": 14.0255, "y": 4.5255},
+      "en_us": {"title": "Quantum Machine Hull",
+        "text": ["A quantum circuit, two plutonium batteries and three superconductor cables on a quantum casing: eight iridium plates around a highly advanced hull."]},
+      "es_es": {"title": "Chasis cuántico",
+        "text": ["Un circuito cuántico, dos baterías de plutonio y tres cables superconductores sobre una carcasa cuántica: ocho placas de iridio alrededor de un chasis altamente avanzado."]},
+      "sources": ["jar:Modern-Industrialization-2.5.6.jar:data/modern_industrialization/recipe/electric_age/hull/quantum_machine_hull_asbl.json", "jar:Modern-Industrialization-2.5.6.jar:data/modern_industrialization/recipe/electric_age/casing/quantum_machine_casing_asbl.json"]
+    },
+    {
+      "key": "mi_fusion_chamber", "role": "step", "deps": ["mi_quantum_hull"],
+      "task": {"item": "modern_industrialization:fusion_chamber", "count": 6},
+      "at": {"x": 15.9, "y": 0.0},
+      "en_us": {"title": "Fusion chambers",
+        "text": ["Four superconductor coils, two large heat exchangers and two nuclear alloy large plates around a plasma-handling iridium casing. The fusion reactor's controller takes six."]},
+      "es_es": {"title": "Cámaras de fusión",
+        "text": ["Cuatro bobinas superconductoras, dos intercambiadores de calor grandes y dos placas grandes de aleación nuclear alrededor de una carcasa de iridio para plasma. El controlador del reactor de fusión lleva seis."]},
+      "sources": ["jar:Modern-Industrialization-2.5.6.jar:data/modern_industrialization/recipe/electric_age/blocks/fusion_chamber_asbl.json", "jar:Modern-Industrialization-2.5.6.jar:data/modern_industrialization/recipe/electric_age/machine/fusion_reactor_asbl.json"]
+    },
+    {
+      "key": "mi_fusion", "role": "milestone", "deps": ["mi_fusion_chamber"],
+      "task": {"item": "modern_industrialization:fusion_reactor"},
+      "at": {"x": 14.0255, "y": -4.5255},
+      "en_us": {"title": "Fusion Reactor", "subtitle": "A star core, on a leash.",
+        "text": ["Six fusion chambers, two quantum circuits and a quantum hull. It fuses deuterium, tritium or helium-3 into helium plasma, 16,000 EU/t per reaction: deuterium and tritium give a bucket of plasma in 45 seconds, helium-3 and tritium in 15."]},
+      "es_es": {"title": "Reactor de fusión", "subtitle": "El núcleo de una estrella, con correa.",
+        "text": ["Seis cámaras de fusión, dos circuitos cuánticos y un chasis cuántico. Fusiona deuterio, tritio o helio-3 en plasma de helio, a 16.000 EU/t por reacción: deuterio y tritio dan un balde de plasma en 45 segundos, helio-3 y tritio en 15."]},
+      "sources": ["jar:Modern-Industrialization-2.5.6.jar:data/modern_industrialization/recipe/electric_age/machine/fusion_reactor_asbl.json", "jar:Modern-Industrialization-2.5.6.jar:data/modern_industrialization/recipe/fusion_reactor/deuterium_tritium.json", "jar:Modern-Industrialization-2.5.6.jar:data/modern_industrialization/recipe/fusion_reactor/helium_tritium.json", "jar:Modern-Industrialization-2.5.6.jar:assets/modern_industrialization/mi_guidebook/lategame/fusion_reactor.md", "jar:Modern-Industrialization-2.5.6.jar:data/modern_industrialization/advancement/fusion_reactor.json"]
+    },
+    {
+      "key": "mi_mastery", "role": "capstone", "deps": ["mi_fusion"],
+      "task": {"item": "modern_industrialization:plasma_turbine"},
+      "at": {"x": 9.5, "y": 0.0},
+      "en_us": {"title": "Plasma Turbine", "subtitle": "Better than fission.",
+        "text": ["Four superconductor coils, two quantum circuits, two titanium rotors and a quantum hull, walled in plasma-handling iridium casings. Helium plasma is worth 100,000 EU per mB, and the turbine turns out about a million EU per tick."]},
+      "es_es": {"title": "Turbina de plasma", "subtitle": "Mejor que la fisión.",
+        "text": ["Cuatro bobinas superconductoras, dos circuitos cuánticos, dos rotores de titanio y un chasis cuántico, con paredes de carcasas de iridio para plasma. El plasma de helio vale 100.000 EU por mB, y la turbina entrega cerca de un millón de EU por tick."]},
+      "sources": ["jar:Modern-Industrialization-2.5.6.jar:data/modern_industrialization/recipe/electric_age/machine/plasma_turbine_asbl.json", "jar:Modern-Industrialization-2.5.6.jar:aztech/modern_industrialization/machines/init/MultiblockMachines.class#plasmaTurbine", "jar:Modern-Industrialization-2.5.6.jar:assets/modern_industrialization/mi_guidebook/lategame/fusion_reactor.md", "jar:Modern-Industrialization-2.5.6.jar:data/modern_industrialization/advancement/plasma_turbine.json"]
+    },
+    {
+      "key": "mi_sv", "role": "side", "deps": ["mi_fusion"],
+      "tasks": [{"item": "modern_industrialization:superconductor_storage_unit"}, {"item": "modern_industrialization:ev_superconductor_transformer"}],
+      "icon": "modern_industrialization:superconductor_storage_unit",
+      "at": {"x": 9.5, "y": -6.4},
+      "en_us": {"title": "Superconductor grid", "subtitle": "Unlimited power, transferred.",
+        "text": ["Six plutonium batteries on a quantum hull store 12.8 trillion EU. An EV to SV transformer joins annealed copper cables to superconductor ones, which carry up to 1,024,000,000 EU/t."]},
+      "es_es": {"title": "Red superconductora", "subtitle": "Poder ilimitado, transferido.",
+        "text": ["Seis baterías de plutonio sobre un chasis cuántico guardan 12,8 billones de EU. Un transformador de EV a SV une cables de cobre recocido con superconductores, que llevan hasta 1.024.000.000 EU/t."]},
+      "sources": ["jar:Modern-Industrialization-2.5.6.jar:data/modern_industrialization/recipe/electric_age/storage_unit/superconductor_storage_unit_asbl.json", "jar:Modern-Industrialization-2.5.6.jar:data/modern_industrialization/recipe/electric_age/transformer/ev_supra/up_asbl.json", "jar:Modern-Industrialization-2.5.6.jar:aztech/modern_industrialization/api/energy/CableTier.class", "jar:Modern-Industrialization-2.5.6.jar:aztech/modern_industrialization/machines/init/SingleBlockSpecialMachines.class#registerEUStorage"]
+    },
+    {
+      "key": "mi_ultradense", "role": "step", "deps": ["mi_plutonium"], "group": "quantum",
+      "task": {"item": "modern_industrialization:ultradense_metal_ball"},
+      "at": {"x": -3.2, "y": 10.4},
+      "en_us": {"title": "Ultradense Metal Ball", "subtitle": "Heavier than it looks. It looks heavy.",
+        "text": ["Four tungsten large plates, four lead plates and an iridium plate: the only thing hard enough to hold a black hole together."]},
+      "es_es": {"title": "Bola de metal ultradensa", "subtitle": "Pesa más de lo que parece. Y parece pesada.",
+        "text": ["Cuatro placas grandes de tungsteno, cuatro placas de plomo y una placa de iridio: lo único bastante duro para contener un agujero negro."]},
+      "sources": ["jar:Modern-Industrialization-2.5.6.jar:data/modern_industrialization/recipe/electric_age/component/craft/ultradense_metal_ball_asbl.json", "jar:Modern-Industrialization-2.5.6.jar:data/modern_industrialization/recipe/electric_age/component/implosion_compressor/singularity.json"]
+    },
+    {
+      "key": "mi_endgame", "role": "milestone", "deps": ["mi_ultradense"], "group": "quantum",
+      "task": {"item": "modern_industrialization:singularity"},
+      "at": {"x": -0.4, "y": 10.4},
+      "en_us": {"title": "Singularity", "subtitle": "A pocket black hole.",
+        "text": ["An ultradense metal ball and sixty-four nukes in the implosion compressor. The assembler makes two nukes per run from six Industrial TNT, four plutonium ingots, two processing units, four nuclear alloy plates, tritium and deuterium."]},
+      "es_es": {"title": "Singularidad", "subtitle": "Un agujero negro de bolsillo.",
+        "text": ["Una bola de metal ultradensa y sesenta y cuatro bombas nucleares en el compresor de implosión. El ensamblador hace dos bombas por corrida con seis TNT industriales, cuatro lingotes de plutonio, dos unidades de procesamiento, cuatro placas de aleación nuclear, tritio y deuterio."]},
+      "sources": ["jar:Modern-Industrialization-2.5.6.jar:data/modern_industrialization/recipe/electric_age/component/implosion_compressor/singularity.json", "jar:Modern-Industrialization-2.5.6.jar:data/modern_industrialization/recipe/materials/assembler/nuke.json", "jar:Modern-Industrialization-2.5.6.jar:assets/modern_industrialization/mi_guidebook/lategame/quantum_tier.md", "jar:Modern-Industrialization-2.5.6.jar:data/modern_industrialization/advancement/singularity.json"]
+    },
+    {
+      "key": "mi_quantum_upgrade", "role": "milestone", "deps": ["mi_endgame", "mi_quantum_circuit"], "group": "quantum",
+      "task": {"item": "modern_industrialization:quantum_upgrade"},
+      "at": {"x": 2.5, "y": 10.4},
+      "en_us": {"title": "Quantum Upgrade", "subtitle": "Time dilation.",
+        "text": ["Thirty-two highly advanced upgrades, eight quantum circuits, a singularity, a quantum board and 50 mB of UU matter. The UU matter drips from a second singularity left in an electrolyzer, never used up: 1 mB every 125 seconds at 40 EU/t. It lifts a machine's cap by 999,999,999 EU/t."]},
+      "es_es": {"title": "Mejora cuántica", "subtitle": "Dilatación del tiempo.",
+        "text": ["Treinta y dos mejoras altamente avanzadas, ocho circuitos cuánticos, una singularidad, una placa cuántica y 50 mB de materia UU. La materia UU gotea de una segunda singularidad dejada en un electrolizador, que nunca se gasta: 1 mB cada 125 segundos a 40 EU/t. Sube el tope de una máquina 999.999.999 EU/t."]},
+      "sources": ["jar:Modern-Industrialization-2.5.6.jar:data/modern_industrialization/recipe/electric_age/upgrades/quantum.json", "jar:Modern-Industrialization-2.5.6.jar:data/modern_industrialization/recipe/materials/electrolyzer/uu_matter.json", "jar:Modern-Industrialization-2.5.6.jar:data/modern_industrialization/data_maps/item/machine_upgrades.json", "jar:Modern-Industrialization-2.5.6.jar:assets/modern_industrialization/mi_guidebook/lategame/quantum_tier.md", "jar:Modern-Industrialization-2.5.6.jar:data/modern_industrialization/advancement/quantum_upgrade.json"]
+    },
+    {
+      "key": "mi_quantum_storage", "role": "side", "deps": ["mi_endgame", "mi_quantum_circuit"], "group": "quantum",
+      "tasks": [{"item": "modern_industrialization:quantum_barrel"}, {"item": "modern_industrialization:quantum_tank"}],
+      "icon": "modern_industrialization:quantum_barrel",
+      "at": {"x": 5.2, "y": 10.4},
+      "en_us": {"title": "Quantum barrel and tank", "subtitle": "Two billion, give or take.",
+        "text": ["A quantum hull, a singularity, two quantum circuits, sixteen iridium plates and eight large advanced motors, or pumps for the tank, around a titanium barrel or tank: 2,147,483,647 stacks of one item, or buckets of one fluid."]},
+      "es_es": {"title": "Barril y tanque cuánticos", "subtitle": "Dos mil millones, más o menos.",
+        "text": ["Un chasis cuántico, una singularidad, dos circuitos cuánticos, dieciséis placas de iridio y ocho motores avanzados grandes, o bombas para el tanque, alrededor de un barril o tanque de titanio: 2.147.483.647 stacks de un ítem, o baldes de un fluido."]},
+      "sources": ["jar:Modern-Industrialization-2.5.6.jar:data/modern_industrialization/recipe/electric_age/blocks/assembler/quantum_barrel.json", "jar:Modern-Industrialization-2.5.6.jar:data/modern_industrialization/recipe/electric_age/blocks/assembler/quantum_tank.json", "jar:Modern-Industrialization-2.5.6.jar:assets/modern_industrialization/mi_guidebook/lategame/quantum_tier.md"]
+    },
+    {
+      "key": "mi_quantum_armor", "role": "side", "deps": ["mi_quantum_upgrade"], "group": "quantum",
+      "tasks": [{"item": "modern_industrialization:quantum_helmet"}, {"item": "modern_industrialization:quantum_chestplate"}, {"item": "modern_industrialization:quantum_leggings"}, {"item": "modern_industrialization:quantum_boots"}],
+      "icon": "modern_industrialization:quantum_chestplate",
+      "at": {"x": 7.9, "y": 10.4},
+      "en_us": {"title": "Quantum armor", "subtitle": "Quantum immortality.",
+        "text": ["The Packer fuses a netherite piece with a quantum upgrade at 1,000,000 EU/t, so it needs a quantum upgrade of its own; in this pack each piece also takes a [item:entrelumen:luminosity_habitation|Habitation Luminosity] from Solsticio, act VI. Each piece gives a 25% chance to ignore any damage: the full set, immunity and creative flight."]},
+      "es_es": {"title": "Armadura cuántica", "subtitle": "Inmortalidad cuántica.",
+        "text": ["La Empaquetadora funde una pieza de netherita con una mejora cuántica a 1.000.000 EU/t, así que necesita una mejora cuántica propia; en este pack cada pieza lleva además una [item:entrelumen:luminosity_habitation|Luminosidad de Habitabilidad] de Solsticio, acto VI. Cada pieza da 25% de chance de ignorar cualquier daño: el set completo, inmunidad y vuelo creativo."]},
+      "sources": ["jar:Modern-Industrialization-2.5.6.jar:data/modern_industrialization/recipe/upgrade/packer/quantum/helmet.json", "repo:pack/kubejs/server_scripts/entrelumen_functions_balance.js", "repo:tools/generate_family_balance.py", "jar:Modern-Industrialization-2.5.6.jar:aztech/modern_industrialization/items/armor/MIArmorEffects.class#quantumArmorPreventsDamage", "jar:Modern-Industrialization-2.5.6.jar:assets/modern_industrialization/mi_guidebook/lategame/quantum_tier.md", "jar:Modern-Industrialization-2.5.6.jar:data/modern_industrialization/advancement/quantum_chestplate.json"]
+    },
+    {
+      "key": "mi_tip_reactor_safe", "role": "tip", "deps": ["mi_nuclear"],
+      "task": {"type": "checkmark"},
+      "at": {"x": -17.2, "y": 0.0},
+      "en_us": {"title": "Nothing melts down",
+        "text": ["[tip] The reactor cannot explode, emit radiation or harm the map. When a hatch runs too hot it only destroys what sits in it, so experiment freely: MI's guide suggests trying designs in creative first."]},
+      "es_es": {"title": "Nada se funde",
+        "text": ["[tip] El reactor no puede explotar, emitir radiación ni dañar el mapa. Si una escotilla se pasa de temperatura sólo destruye lo que tiene adentro, así que experimentá tranquilo: la guía de MI sugiere probar diseños en creativo primero."]},
+      "sources": ["jar:Modern-Industrialization-2.5.6.jar:assets/modern_industrialization/mi_guidebook/midgame/nuclear_reactor.md"]
+    },
+    {
+      "key": "mi_tip_neutrons", "role": "tip", "deps": ["mi_fuel_rod"],
+      "task": {"type": "checkmark"},
+      "at": {"x": -14.8, "y": 0.0},
+      "en_us": {"title": "Fast and thermal",
+        "text": ["[tip] Fuel emits fast neutrons, which carry the energy; scattered, some slow into thermal neutrons, which fuel absorbs far better. Past a temperature threshold a fuel emits fewer neutrons, so a reactor settles by itself. The recipe viewer lists each component's odds."]},
+      "es_es": {"title": "Rápidos y térmicos",
+        "text": ["[tip] El combustible emite neutrones rápidos, que llevan la energía; al dispersarse, algunos se frenan en térmicos, que el combustible absorbe mucho mejor. Pasado un umbral de temperatura emite menos neutrones, así que el reactor se estabiliza solo. El visor de recetas muestra las chances de cada componente."]},
+      "sources": ["jar:Modern-Industrialization-2.5.6.jar:assets/modern_industrialization/mi_guidebook/midgame/nuclear_reactor.md"]
+    },
+    {
+      "key": "mi_tip_reactor_screen", "role": "tip", "deps": ["mi_nuclear"],
+      "task": {"type": "checkmark"},
+      "at": {"x": -14.8, "y": -2.4},
+      "en_us": {"title": "Read the grid",
+        "text": ["[tip] The reactor's screen switches between temperature, neutron flux, absorption, generation and fuel views. Watch where heat piles up and where neutrons escape before moving a single rod."]},
+      "es_es": {"title": "Leé la grilla",
+        "text": ["[tip] La pantalla del reactor cambia entre vistas de temperatura, flujo de neutrones, absorción, generación y combustible. Mirá dónde se junta el calor y por dónde se escapan los neutrones antes de mover una sola barra."]},
+      "sources": ["jar:Modern-Industrialization-2.5.6.jar:assets/modern_industrialization/lang/en_us.json#text.modern_industrialization.TemperatureMode", "jar:Modern-Industrialization-2.5.6.jar:assets/modern_industrialization/lang/en_us.json#text.modern_industrialization.NeutronFluxMode", "jar:Modern-Industrialization-2.5.6.jar:assets/modern_industrialization/lang/en_us.json#text.modern_industrialization.NeutronAbsorptionMode", "jar:Modern-Industrialization-2.5.6.jar:assets/modern_industrialization/lang/en_us.json#text.modern_industrialization.NeutronGenerationMode", "jar:Modern-Industrialization-2.5.6.jar:assets/modern_industrialization/lang/en_us.json#text.modern_industrialization.NuclearFuelMode"]
+    },
+    {
+      "key": "mi_tip_fusion", "role": "tip", "deps": ["mi_fusion"],
+      "task": {"type": "checkmark"},
+      "at": {"x": 4.9745, "y": -4.5255},
+      "en_us": {"title": "Breed your own tritium",
+        "text": ["[tip] Deuterium with deuterium gives half a bucket of plasma and half a bucket of tritium: a fusion reactor can breed the tritium its faster reactions want."]},
+      "es_es": {"title": "Criá tu propio tritio",
+        "text": ["[tip] Deuterio con deuterio da medio balde de plasma y medio de tritio: un reactor de fusión puede criar el tritio que piden sus reacciones más rápidas."]},
+      "sources": ["jar:Modern-Industrialization-2.5.6.jar:data/modern_industrialization/recipe/fusion_reactor/deuterium_deuterium.json", "jar:Modern-Industrialization-2.5.6.jar:data/modern_industrialization/recipe/fusion_reactor/deuterium_tritium.json", "jar:Modern-Industrialization-2.5.6.jar:data/modern_industrialization/recipe/fusion_reactor/helium_tritium.json"]
+    },
+    {
+      "key": "mi_pack", "role": "info", "deps": ["mi_nuclear"],
+      "task": {"type": "checkmark"},
+      "icon": "modern_industrialization:guidebook",
+      "at": {"x": -10.0, "y": -2.4},
+      "en_us": {"title": "What the pack changed",
+        "text": ["Five MI pieces wait on the Atlas: the diesel jetpack (act III), the Electric Quarry and the Gravichestplate (IV), the nuclear reactor and quantum circuits (V), and no assembler recipe skips the gate; each quantum armor piece waits for act VI.",
+                 "{page}",
+                 "The Replicator can't be crafted, and the implosion compressor makes no Nether Stars: the Wither stays their only source. Almost Unified gives MI the lowest metal priority, so shared metals come out as another mod's item."]},
+      "es_es": {"title": "Lo que cambió el pack",
+        "text": ["Cinco piezas de MI esperan al Atlas: el jetpack diésel (acto III), la cantera eléctrica y la Gravipechera (IV), el reactor nuclear y los circuitos cuánticos (V), y ninguna receta de ensamblador se saltea la puerta; cada pieza de armadura cuántica espera al acto VI.",
+                 "{page}",
+                 "El Replicador no se craftea, y el compresor de implosión no hace Estrellas del Nether: el Wither sigue siendo su única fuente. Almost Unified le da a MI la menor prioridad de metales, así que los metales compartidos salen como ítem de otro mod."]},
+      "sources": ["repo:pack/kubejs/server_scripts/entrelumen_pingpong_balance.js", "repo:pack/kubejs/server_scripts/entrelumen_functions_balance.js", "repo:tools/generate_family_balance.py", "repo:pack/config/almostunified/unification/materials.json", "repo:docs/design/mod-pingpong.md"]
+    },
+    {
+      "key": "mi_secret_nuke", "role": "secret", "deps": ["mi_plutonium"],
+      "task": {"type": "advancement", "advancement": "modern_industrialization:nuke", "icon": "modern_industrialization:nuke"},
+      "icon": "modern_industrialization:nuke",
+      "at": {"x": -0.4, "y": 13.0},
+      "en_us": {"title": "Destroyer of worlds", "subtitle": "It doesn't even go off.",
+        "text": ["You built a Nuke. Place it and nothing happens: it is a plain block, and sixty-four of them are only the price of a singularity."]},
+      "es_es": {"title": "Destructor de mundos", "subtitle": "Ni siquiera explota.",
+        "text": ["Armaste una bomba nuclear. Si la ponés, no pasa nada: es un bloque común, y sesenta y cuatro son apenas el precio de una singularidad."]},
+      "sources": ["jar:Modern-Industrialization-2.5.6.jar:data/modern_industrialization/advancement/nuke.json", "jar:Modern-Industrialization-2.5.6.jar:aztech/modern_industrialization/MIBlock.class#blockExplosive", "jar:Modern-Industrialization-2.5.6.jar:data/modern_industrialization/recipe/electric_age/component/implosion_compressor/singularity.json"]
+    },
+    {
+      "key": "mi_secret_sword", "role": "secret", "deps": ["mi_quantum_upgrade"],
+      "task": {"type": "advancement", "advancement": "modern_industrialization:quantum_sword", "icon": "modern_industrialization:quantum_sword"},
+      "icon": "modern_industrialization:quantum_sword",
+      "at": {"x": 10.4, "y": 10.4},
+      "en_us": {"title": "Annihilation operator", "subtitle": "The wandering trader's llamas have been warned.",
+        "text": ["A netherite sword and a quantum upgrade, fused in a packer running 1,000,000 EU/t: a blade with infinite damage."]},
+      "es_es": {"title": "Operador de aniquilación", "subtitle": "Las llamas del comerciante ya fueron avisadas.",
+        "text": ["Una espada de netherita y una mejora cuántica, fundidas en una empaquetadora a 1.000.000 EU/t: una hoja de daño infinito."]},
+      "sources": ["jar:Modern-Industrialization-2.5.6.jar:data/modern_industrialization/advancement/quantum_sword.json", "jar:Modern-Industrialization-2.5.6.jar:data/modern_industrialization/recipe/upgrade/packer/quantum/sword.json", "jar:Modern-Industrialization-2.5.6.jar:assets/modern_industrialization/lang/en_us.json#text.modern_industrialization.AttributeInfiniteDamage"]
+    },
+    {
+      "key": "mi_bounty_nuclear", "role": "bounty", "deps": ["mi_nuclear_alloy"],
+      "task": {"item": "modern_industrialization:nuclear_alloy_plate", "count": 16, "consume": true},
+      "at": {"x": -20.0, "y": -4.8},
+      "en_us": {"title": "Alloy for the common store", "subtitle": "Handle with tongs.",
+        "text": ["Sixteen nuclear alloy plates: casings, hatches, fuel rod packs and nukes all start with them."]},
+      "es_es": {"title": "Aleación para el depósito común", "subtitle": "Manejar con pinzas.",
+        "text": ["Dieciséis placas de aleación nuclear: carcasas, escotillas, barras empaquetadas y bombas arrancan con ellas."]},
+      "sources": ["jar:Modern-Industrialization-2.5.6.jar:data/modern_industrialization/recipe/electric_age/casing/nuclear_casing_asbl.json", "jar:Modern-Industrialization-2.5.6.jar:data/modern_industrialization/recipe/materials/uranium/packer/fuel_rod_double.json", "jar:Modern-Industrialization-2.5.6.jar:data/modern_industrialization/recipe/materials/assembler/nuke.json"]
+    }
+  ]
+}
