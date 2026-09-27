@@ -40,7 +40,7 @@ class RuinDefinitionsTest {
         .collect(Collectors.groupingBy(RuinDefinitions.Definition::act, TreeMap::new,
             Collectors.mapping(RuinDefinitions.Definition::name, Collectors.toList())));
     assertEquals(Map.of(1, List.of("signal_tower"), 2, List.of("sunken_workshop"), 3, List.of("viaduct"),
-        4, List.of("cliff_observatory"), 5, List.of("light_temple")), landmarks);
+        4, List.of("light_temple"), 5, List.of("void_observatory")), landmarks);
     for (var definition : all.values()) {
       boolean overworld = definition.dimension().equals("minecraft:overworld");
       var placement = definition.placement();
@@ -56,7 +56,7 @@ class RuinDefinitionsTest {
             "signal_tower", "first_signal", "sunken_workshop", "lost_workshop", "viaduct", "exchange_route",
             "dome_greenhouse", "nursery_protocol", "nether_foundry", "distributed_power",
             "cliff_observatory", "spectral_archive", "twilight_sanctuary", "spectral_archive",
-            "sun_antechamber", "heliodor_heart", "light_temple", "world_network", "void_observatory", "settlement_supply"),
+            "sun_antechamber", "heliodor_heart", "light_temple", "spectral_archive", "void_observatory", "world_network"),
         all.values().stream().collect(Collectors.toMap(RuinDefinitions.Definition::name, RuinDefinitions.Definition::project)));
     assertEquals(new TreeSet<>(KeyPieces.PIECES.keySet()), all.values().stream()
         .map(d -> d.piece().substring("entrelumen:".length())).collect(Collectors.toCollection(TreeSet::new)));
@@ -74,9 +74,10 @@ class RuinDefinitionsTest {
   void piecesOfMissingModsMoveToTheirActsLandmark() throws Exception {
     var all = shipped(mod -> false);
     var fallbacks = RuinDefinitions.fallbacks(all.values(), mod -> false);
-    assertEquals(Set.of("entrelumen:cliff_observatory"), fallbacks.keySet());
+    // Act IV's landmark is the Temple since the roster of 26 September.
+    assertEquals(Set.of("entrelumen:light_temple"), fallbacks.keySet());
     assertEquals(Set.of("entrelumen:twilight_sanctuary", "entrelumen:sun_antechamber"),
-        fallbacks.get("entrelumen:cliff_observatory").stream().map(RuinDefinitions.Definition::id)
+        fallbacks.get("entrelumen:light_temple").stream().map(RuinDefinitions.Definition::id)
             .collect(Collectors.toSet()));
     assertTrue(RuinDefinitions.fallbacks(all.values(), mod -> true).isEmpty());
     assertTrue(all.get("entrelumen:twilight_sanctuary").available(mod -> mod.equals("twilightforest")));

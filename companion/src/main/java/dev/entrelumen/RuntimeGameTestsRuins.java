@@ -775,10 +775,11 @@ public final class RuntimeGameTestsRuins {
 
   @GameTest(template = "empty", timeoutTicks = 200)
   public static void landmarkPedestalAdoptsThePiecesOfAbsentMods(GameTestHelper helper) {
-    var landmark = RuinRegistry.get("entrelumen:cliff_observatory").orElseThrow();
+    // Act IV's landmark is the Temple since the roster of 26 September.
+    var landmark = RuinRegistry.get("entrelumen:light_temple").orElseThrow();
     var pieces = RuinChallenges.pieces(landmark).stream().map(RuinDefinitions.Definition::piece).toList();
     boolean twilight = RuinRegistry.modLoaded("twilightforest"), aether = RuinRegistry.modLoaded("aether");
-    helper.assertTrue(pieces.contains("entrelumen:voices_eyepiece")
+    helper.assertTrue(pieces.contains("entrelumen:sacred_flame")
         && pieces.contains("entrelumen:forest_testimony") == !twilight
         && pieces.contains("entrelumen:sun_key") == !aether, "Landmark pieces: " + pieces);
     helper.assertTrue(RuinRegistry.available().stream().noneMatch(d -> d.id().equals("entrelumen:twilight_sanctuary")) == !twilight,

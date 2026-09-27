@@ -57,7 +57,8 @@ class CompassTargetsTest {
   void eachRuinComesBeforeTheObjectiveThatWaitsForItsProject() throws Exception {
     var all = CompassTargets.parse(shipped(), mod -> true, item -> true);
     var ids = all.stream().map(CompassTargets.Objective::id).toList();
-    assertTrue(ids.indexOf("signal_tower") < ids.indexOf("trial_chambers"), "first_signal needs the Signal Ember");
+    assertEquals(0, ids.indexOf("signal_tower"), "The compass leads to the Signal Tower first: the Atlas waits there");
+    assertTrue(ids.indexOf("light_temple") < ids.indexOf("the_aether"), "The Temple reveals the fusion in act IV");
     assertTrue(ids.indexOf("sunken_workshop") < ids.indexOf("trail_ruins"), "lost_workshop needs Terra's Blueprint");
     assertTrue(ids.indexOf("void_observatory") > ids.indexOf("stronghold"), "The End ruin waits for the End");
     var ruin = all.get(ids.indexOf("nether_foundry"));

@@ -1128,8 +1128,9 @@ public final class RuntimeGameTests {
     prototypes.put("pollinator_treaty", arkItem("ecosystem_capsule"));
     prototypes.put("sealed_memory", arkItem("containment_seal"));
     prototypes.values().forEach(item -> player.getInventory().add(new ItemStack(item, 2)));
-    // Ruins v2: the archive also takes the Eyepiece and the Testimony; the Heart, the Sun Key.
-    for (String piece : List.of("voices_eyepiece", "forest_testimony", "sun_key"))
+    // Ruins v2: the archive also takes the Eyepiece, the Testimony and the Temple's Sacred Flame (26 September);
+    // the Heart, the Sun Key.
+    for (String piece : List.of("voices_eyepiece", "forest_testimony", "sacred_flame", "sun_key"))
       player.getInventory().add(new ItemStack(RuinContent.PIECES.get(piece).get()));
     player.getInventory().add(new ItemStack(Items.PAPER, 6));
     player.getInventory().add(new ItemStack(Items.COPPER_INGOT, 2));
@@ -1306,8 +1307,8 @@ public final class RuntimeGameTests {
     player.getInventory().add(new ItemStack(Items.PAPER, 6));
     player.getInventory().add(new ItemStack(Items.COPPER_INGOT, 2));
     player.getInventory().add(new ItemStack(Items.DIAMOND, 3));
-    // Ruins v2: the settlement also takes the Star Chart; World Network, the Sacred Flame.
-    for (String piece : List.of("star_chart", "sacred_flame"))
+    // Ruins v2 (roster of 26 September): World Network takes the Star Chart of the Void Observatory.
+    for (String piece : List.of("star_chart"))
       player.getInventory().add(new ItemStack(RuinContent.PIECES.get(piece).get()));
     var installedPos = helper.absolutePos(new net.minecraft.core.BlockPos(1, 1, 1));
     helper.getLevel().setBlockAndUpdate(installedPos,
@@ -1374,7 +1375,7 @@ public final class RuntimeGameTests {
         && new HashSet<>(closure.materials()).equals(Set.of(
             new AtlasNetwork.Material(ResourceLocation.parse("minecraft:paper"), 6, 3),
             new AtlasNetwork.Material(ResourceLocation.parse("minecraft:copper_ingot"), 2, 1),
-            new AtlasNetwork.Material(ResourceLocation.parse("entrelumen:sacred_flame"), 1, 1))),
+            new AtlasNetwork.Material(ResourceLocation.parse("entrelumen:star_chart"), 1, 1))),
         "World network closure has wrong cost or prerequisite state");
 
     for (var entry : prototypes.entrySet()) {
@@ -1424,7 +1425,7 @@ public final class RuntimeGameTests {
     expectedInventory.compute("minecraft:paper", (id, count) -> count - 3);
     expectedInventory.compute("minecraft:copper_ingot", (id, count) -> count - 1);
     expectedCompleted.add("world_network");
-    expectedInventory.remove("entrelumen:sacred_flame");
+    expectedInventory.remove("entrelumen:star_chart");
     helper.assertTrue(closed.message().equals("entrelumen.atlas.delivered")
         && !closed.canAdvance() && campaign.completed.equals(expectedCompleted)
         && Entrelumen.availableMaterials(player).equals(expectedInventory)

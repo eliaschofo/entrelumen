@@ -39,10 +39,8 @@ class ProjectValidationTest {
       var project = projects.get(id);
       assertEquals(5, project.act());
       assertEquals(java.util.Set.of("atlas_voices"), project.prerequisites());
-      // Ruins v2: the settlement also takes the Star Chart from the Void Observatory.
-      var expected = new java.util.HashMap<String, Integer>(java.util.Map.of(item, 1));
-      if (id.equals("settlement_supply")) expected.put("entrelumen:star_chart", 1);
-      assertEquals(expected, project.items());
+      // Ruins v2, roster of 26 September: the Star Chart went to the network; the settlement takes no piece.
+      assertEquals(java.util.Map.of(item, 1), project.items());
       assertTrue(project.reward().isEmpty());
       var missing = definitions.deepCopy();
       missing.remove(id);
@@ -53,7 +51,7 @@ class ProjectValidationTest {
     assertEquals(5, closure.act());
     assertEquals(costs.keySet(), closure.prerequisites());
     assertEquals(java.util.Map.of("minecraft:paper", 3, "minecraft:copper_ingot", 1,
-        "entrelumen:sacred_flame", 1), closure.items());
+        "entrelumen:star_chart", 1), closure.items());
     assertTrue(closure.reward().isEmpty());
   }
 

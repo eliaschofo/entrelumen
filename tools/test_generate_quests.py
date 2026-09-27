@@ -320,8 +320,8 @@ class ChapterContracts(unittest.TestCase):
     'settlement_supply':['voices_chorus'],'world_network':['world_backbone','world_renewal','world_settlement']})
   self.assertEqual({m:projects[m]['items'] for m in source},
    {'resilient_backbone':{'entrelumen:ark_bus':1},'renewal_engine':{'entrelumen:renewal_engine':1},
-    'settlement_supply':{'entrelumen:habitation_contract':1,'entrelumen:star_chart':1},
-    'world_network':{'minecraft:paper':3,'minecraft:copper_ingot':1,'entrelumen:sacred_flame':1}})
+    'settlement_supply':{'entrelumen:habitation_contract':1},
+    'world_network':{'minecraft:paper':3,'minecraft:copper_ingot':1,'entrelumen:star_chart':1}})
   expected_items={'world_atomic_alloy':2,'world_circuit_boards':2,'world_handling_cores':2,'world_inventory_sensor':1,
    'world_ark_bus':1,'world_sky_ingots':2,'world_imperium':2,'world_capsules':2,'world_propagation':2,
    'world_renewal_item':1,'world_fish_stew':2,'world_mixed_salad':2,'world_calculation':1,'world_rations':2,

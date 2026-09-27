@@ -122,9 +122,9 @@ public final class RuinWorkshopFullpackGameTests {
             helper.assertTrue(site != null, "The workshop has no engine site");
             a = RuntimeGameTestsRuins.arrive(helper, "Engine" + ruin.id().getPath().hashCode() % 1000 + "A", new BlockPos(1, 1, 1));
             b = RuntimeGameTestsRuins.arrive(helper, "Engine" + ruin.id().getPath().hashCode() % 1000 + "B", new BlockPos(2, 1, 1));
-            // Beside the ruin: the builds fill the engine room, and nobody should stand in them.
-            RuntimeGameTestsRuins.teleport(a, level, ruin.arrival());
-            RuntimeGameTestsRuins.teleport(b, level, ruin.arrival());
+            // The players stay by the test grid: nothing here needs them near the ruin (clicks reach it,
+            // credit is explicit), and mock players far from their chunk tickets make other mods load
+            // chunks on the server thread.
           }))
           .thenWaitUntil(within(2400, "The ruin's chunks load", () -> {
             for (var chunk : held.getFirst())
@@ -493,7 +493,6 @@ public final class RuinWorkshopFullpackGameTests {
           var a = engine.a;
           BlockPos center = engine.center();
           a.setGameMode(net.minecraft.world.level.GameType.SURVIVAL);
-          RuntimeGameTestsRuins.teleport(a, level, center.below());
           cells[0] = center.offset(1, 0, 1);
           helper.assertTrue(place(a, cells[0], "create:shaft"), "A shaft does not go on Terra's bench");
           helper.assertTrue(place(a, center.offset(-1, 0, 1), "minecraft:repeater"), "Redstone does not go on the bench");
@@ -520,7 +519,6 @@ public final class RuinWorkshopFullpackGameTests {
           helper.assertTrue(place(a, socket.pos(), "create:gearbox"), "A socket refused its piece");
           cells[1] = socket.pos();
           // Team B leaves a cogwheel on the bench and goes home before the reset.
-          RuntimeGameTestsRuins.teleport(engine.b, level, center.below());
           cells[2] = center.offset(0, 0, -2);
           helper.assertTrue(place(engine.b, cells[2], "create:cogwheel"), "B's cog did not go on the bench");
           RuntimeGameTestsRuins.leave(engine.b);
@@ -532,9 +530,7 @@ public final class RuinWorkshopFullpackGameTests {
           engine.levers(Set.of("2"));
           RuinWorkshop.claimed(level, engine.ruin);
           helper.assertTrue(RuinWorkshop.pending(level.getServer(), engine.ruin.id()), "No reset after a claim");
-          // Everyone leaves; ten minutes pass. (A waits in creative, out of the ruin, so the fall does not matter.)
-          a.setGameMode(net.minecraft.world.level.GameType.CREATIVE);
-          a.teleportTo(level, engine.ruin.box().maxX() + 24, engine.ruin.box().maxY() + 8, engine.ruin.box().maxZ() + 24, 0, 0);
+          // Nobody is inside the ruin (the players stay by the test grid); ten minutes pass.
         }))
         .thenWaitUntil(engine.within(400, "The ruin counts as empty", () -> helper.assertTrue(
             RuinWorkshopData.get(engine.level.getServer()).peek(engine.ruin.id()).map(e -> e.emptySince >= 0).orElse(false),

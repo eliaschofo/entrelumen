@@ -1,6 +1,14 @@
 {
-  "note": "Order is campaign order (acts renumbered 24 September 2026: IV ends with the Sun Spirit, V is the Ark, VI Solsticio). The Heliodor ruins (Plan v2, 26 September 2026) are anchors that advance once the team entered the ruin, took its key piece or delivered its project; each comes before the objective that waits for that project. Objectives marked draft wait for Elias's review. advance_when prefers campaign milestones and story bosses so a missing nearby structure never blocks guidance. Radius is in blocks, at most 1500. Objectives whose mods are absent are skipped. Source of truth; the companion build copies it to data/entrelumen/compass/targets.json.",
+  "note": "Order is campaign order (acts renumbered 24 September 2026: IV ends with the Sun Spirit, V is the Ark, VI Solsticio). The Heliodor ruins (Plan v2, 26 September 2026) are anchors that advance once the team entered the ruin, took its key piece or delivered its project; each comes before the objective that waits for that project. The Signal Tower comes first: the Atlas waits there (Elias, 26 September 2026). Objectives marked draft wait for Elias's review. advance_when prefers campaign milestones and story bosses so a missing nearby structure never blocks guidance. Radius is in blocks, at most 1500. Objectives whose mods are absent are skipped. Source of truth; the companion build copies it to data/entrelumen/compass/targets.json.",
   "objectives": [
+    {
+      "id": "signal_tower",
+      "act": 1,
+      "kind": "structure",
+      "target": {"type": "anchor", "anchor": "entrelumen:signal_tower"},
+      "advance_when": {"type": "ruin", "ruin": "entrelumen:signal_tower"},
+      "lore": true
+    },
     {
       "id": "heliodor_ruin",
       "act": 1,
@@ -18,14 +26,6 @@
       "advance_when": {"type": "milestone", "milestone": "field_survey"},
       "lore": true,
       "draft": true
-    },
-    {
-      "id": "signal_tower",
-      "act": 1,
-      "kind": "structure",
-      "target": {"type": "anchor", "anchor": "entrelumen:signal_tower"},
-      "advance_when": {"type": "ruin", "ruin": "entrelumen:signal_tower"},
-      "lore": true
     },
     {
       "id": "trial_chambers",
@@ -123,6 +123,14 @@
       "lore": true
     },
     {
+      "id": "light_temple",
+      "act": 4,
+      "kind": "structure",
+      "target": {"type": "anchor", "anchor": "entrelumen:light_temple"},
+      "advance_when": {"type": "ruin", "ruin": "entrelumen:light_temple"},
+      "lore": true
+    },
+    {
       "id": "the_aether",
       "act": 4,
       "kind": "structure",
@@ -188,14 +196,6 @@
       "lore": true,
       "draft": true,
       "note": "The Sun Spirit drops the Heart of Heliodor once per campaign; delivering it closes act IV."
-    },
-    {
-      "id": "light_temple",
-      "act": 5,
-      "kind": "structure",
-      "target": {"type": "anchor", "anchor": "entrelumen:light_temple"},
-      "advance_when": {"type": "ruin", "ruin": "entrelumen:light_temple"},
-      "lore": true
     },
     {
       "id": "ocean_monument",
