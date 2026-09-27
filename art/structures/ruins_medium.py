@@ -384,8 +384,9 @@ def void_observatory():
     return v, mk
 
 
-RUINS = {'greenhouse': greenhouse, 'foundry': foundry, 'sanctuary': sanctuary,
-         'antechamber': antechamber, 'void_observatory': void_observatory}
+RUINS = {'greenhouse': greenhouse, 'foundry': foundry, 'sanctuary': sanctuary, 'antechamber': antechamber}
+# void_observatory() stays as the first sketch; since 26/9 the End observatory is act V's landmark,
+# drawn at full scale in ruin_void_observatory.py.
 SKIES = {'foundry': ((70, 20, 16), (140, 50, 30)), 'sanctuary': ((30, 50, 40), (70, 100, 80)),
          'antechamber': ((210, 230, 255), (250, 250, 255)), 'void_observatory': ((20, 12, 32), (50, 30, 70))}
 

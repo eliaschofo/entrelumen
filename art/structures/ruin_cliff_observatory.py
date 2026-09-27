@@ -1,4 +1,7 @@
-"""Act IV landmark: the Cliff Observatory (Observatorio del Risco), where Heliodor listened to the sky.
+"""Act IV medium ruin: the Cliff Observatory (Observatorio del Risco), where Heliodor listened to the sky.
+
+Scaled down on 26/9 (Elias): the Temple is act IV's landmark, so this one is a medium ruin, about 42
+blocks across and 38 tall.
 
 The site is about 60 blocks tall:
 - A crag of layered stone rises 28 blocks. Four stairs are cut into it on the axes and end at
@@ -30,9 +33,9 @@ from voxkit import Voxels, ab  # noqa: E402
 
 B = lambda n: 'minecraft:' + n
 S2 = math.sqrt(2)
-CRAG_H = 28
-DRUM_OUT, DRUM_IN, DRUM_H = 8.5, 7.5, 10
-STAIR_TOP = 17                   # the stairs arrive at portals this high
+CRAG_H = 16
+DRUM_OUT, DRUM_IN, DRUM_H = 7.5, 6.5, 8
+STAIR_TOP = 9                    # the stairs arrive at portals this high
 
 
 def m(x, z):
@@ -47,7 +50,7 @@ def noise(x, y, z, salt=0):
 
 def crag_r(y, x, z):
     """Radius of the crag at height y, a little ragged (from octant coordinates)."""
-    base = 21 - 1.8 * (y // 6) - 0.2 * (y % 6)       # six-block cliff faces with ledges
+    base = 15 - 1.2 * (y // 6) - 0.2 * (y % 6)       # six-block cliff faces with ledges
     a, b = ab(x, z)
     ang = math.atan2(b, a)                           # 0..pi/4 in the octant
     lobes = 2.0 * math.cos(ang * 8)                  # eight buttresses of rock
@@ -62,7 +65,7 @@ def stone_at(x, y, z):
 def build():
     v = Voxels()
     mk = {'pedestal': [], 'mirrors': [], 'beam_receptor': [], 'barrels': [], 'lore': [], 'arrival': []}
-    N = 30
+    N = 22
 
     # --- the crag ---
     for x in range(-N, N + 1):
@@ -75,11 +78,11 @@ def build():
                     top = y
             if top is not None and top < CRAG_H and noise(x, top, z, 3) < 0.7:
                 v.put(x, top, z, B('moss_block') if noise(x, top, z, 4) < 0.5 else B('grass_block[snowy=false]'))
-    for x in range(-13, 14):                                            # the plateau
-        for z in range(-13, 14):
-            if m(x, z) <= 12.5:
+    for x in range(-11, 12):                                            # the plateau
+        for z in range(-11, 12):
+            if m(x, z) <= 10.5:
                 v.put(x, CRAG_H, z, B('polished_tuff') if m(x, z) > DRUM_OUT + 1 else B('chiseled_tuff'))
-                if 11.5 < m(x, z) <= 12.5:
+                if 9.5 < m(x, z) <= 10.5:
                     v.put(x, CRAG_H + 1, z, B('tuff_bricks'))
                     if noise(x, 0, z, 5) < 0.6:
                         v.put(x, CRAG_H + 2, z, B('polished_tuff'))
@@ -151,12 +154,12 @@ def build():
                 elif d <= DRUM_IN:
                     v.put(x, y, z, B('air'))
     for y in range(CRAG_H + 3, CRAG_H + 8):                             # tall windows on the diagonals
-        v.sym(6, y, 5, B('glass'))
-        v.sym(5, y, 6, B('glass'))
+        v.sym(5, y, 5, B('glass'))
+        v.sym(6, y, 4, B('glass'))
     for b in (0, 1):                                                    # doors on the axes
         for y in range(CRAG_H + 1, CRAG_H + 5):
             if not (b == 1 and y == CRAG_H + 4):
-                v.sym(8, y, b, B('air'))
+                v.sym(7, y, b, B('air'))
     for y in range(CRAG_H + 1, CRAG_H + 2):
         v.sym(4, y, 0, B('air'))
 
@@ -173,7 +176,7 @@ def build():
                     v.put(x, TOP + dy, z, B('waxed_oxidized_copper') if (a == b) else B('waxed_oxidized_cut_copper'))
 
     # --- the zenith telescope ---
-    for y in range(CRAG_H + 3, TOP + 16):
+    for y in range(CRAG_H + 3, TOP + 10):
         for x in range(-2, 3):
             for z in range(-2, 3):
                 r = math.hypot(x, z)
@@ -186,8 +189,8 @@ def build():
     for x in range(-2, 3):                                              # the lens and its hood at the top
         for z in range(-2, 3):
             if math.hypot(x, z) <= 2.3:
-                v.put(x, TOP + 16, z, B('waxed_oxidized_cut_copper') if math.hypot(x, z) > 1 else B('glass'))
-    mk['beam_receptor'] = [[0, TOP + 16, 0]]
+                v.put(x, TOP + 10, z, B('waxed_oxidized_cut_copper') if math.hypot(x, z) > 1 else B('glass'))
+    mk['beam_receptor'] = [[0, TOP + 10, 0]]
     for y in range(CRAG_H + 1, CRAG_H + 3):                             # the mount
         v.sym(2, y, 0, B('waxed_oxidized_cut_copper'))
         v.sym(2, y, 2, B('waxed_oxidized_cut_copper'))
@@ -198,13 +201,13 @@ def build():
     for x in range(-13, 14):
         for z in range(-13, 14):
             a, b = ab(x, z)
-            if math.hypot(a - 9.5, b - 9.5) <= 1.6:
+            if math.hypot(a - 7.5, b - 7.5) <= 1.4:
                 for y in range(CRAG_H + 1, CRAG_H + 9):
                     v.put(x, y, z, B('tuff_bricks') if y < CRAG_H + 8 else B('waxed_oxidized_cut_copper'))
-    v.sym(9, CRAG_H + 9, 9, B('calcite'))
-    v.sym(10, CRAG_H + 9, 10, B('calcite'))
-    v.sym(10, CRAG_H + 9, 9, B('calcite'))
-    mk['mirrors'] = [[sx * 10, CRAG_H + 10, sz * 10] for sx in (1, -1) for sz in (1, -1)]
+    v.sym(7, CRAG_H + 9, 7, B('calcite'))
+    v.sym(8, CRAG_H + 9, 8, B('calcite'))
+    v.sym(8, CRAG_H + 9, 7, B('calcite'))
+    mk['mirrors'] = [[sx * 8, CRAG_H + 10, sz * 8] for sx in (1, -1) for sz in (1, -1)]
     mk['arrival'] = [[N + 2, 1, 0]]
     return v, mk
 
