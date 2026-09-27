@@ -1,0 +1,72 @@
+{
+ "schema": 1,
+ "task": "The two full-pack GameTests the Solsticio v8 QA reported failing (arkmodulestaketheirbossdrops, sunspiritdropstheheartonceanditclosesactfour): a verdict for each, the fix, and one full-pack QA of main with it",
+ "branch": "fix/fullpack-ark-act4",
+ "base": "main fd48e17 (rebased; first cut from 49c1b78 as 635f507)",
+ "head": "450da41",
+ "receipts": "E:/Elias/Codex/Entrelumen-ssd/fullpack-fix-20260927",
+ "verdicts": {
+  "arkmodulestaketheirbossdrops": {
+   "verdict": "obsolete (a), already rewritten on main; no change here",
+   "what": "It checked the v1 table recipes of the nature, arcane and exploration modules against their boss drops (wet sponge, nether star, dragon breath). Ark v2 (docs/design/ark-modules-v2.md, f038227) made each module the one-time reward of its act's Atlas project and removed the module recipes. The recipe audit replaced the test with ProgressionFullpackGameTests.arkModulesComeOnlyFromTheirActProjects (bf41d8e): each module is the reward of its act's project (I habitation, II exploration, III nature, IV arcane, V logistics and engineering), asks at most one ENTRELUMEN component, no loaded recipe crafts it and the ark_* integration recipes are gone.",
+   "whyItFailed": "The Solsticio v8 runs D and E used head e46b619, cut from 27fb170: that base had Ark v2 but not bf41d8e, so its QA JAR still carried the v1 test against the v2 projects. Main has had the rewritten test since the recipe audit merged.",
+   "evidence": [
+    "recipes-20260925/qa-F.json: arkmodulescomeonlyfromtheiractprojects PASS at bf41d8e",
+    "this batch: PASS in full-pack runs A and B"
+   ]
+  },
+  "sunspiritdropstheheartonceanditclosesactfour": {
+   "verdict": "obsolete fixture (a); rewritten to the Ark v2 act IV",
+   "what": "Ark v2 (f038227) moved the Arcane Module project to act IV and made the Voices of the Atlas wait for it (docs/design/ark-modules-v2.md, \"Módulos por acto\": IV Arcano, and the closing project of its act waits for it; projects.json: atlas_voices requires arcane_module). The test's act IV fixture predates that: with the Heart in the Atlas the voices still lacked arcane_module, so 'entrelumen deliver atlas_voices' returned 0 and the test reported 'Act IV did not close with the Heart in the Atlas'. Its earlier check that the voices refuse without the Heart also passed for the wrong reason. The isolated twin, fourthActRequiresJourneysAndFiveDeliveries, was updated by Ark v2; this full-pack test was not.",
+   "change": "companion/src/fullpackGameTest/java/dev/entrelumen/ActsFullpackGameTests.java: the fixture also completes arcane_module, and before the Sun Spirit dies the test asserts that only heliodor_heart and atlas_voices are left open in act IV and that the voices wait only for the Heart, so the refusal is the Heart's and a new act IV requirement fails by name. The Sun Spirit drop-once, Heart delivery, act V and Summit assertions are unchanged.",
+   "lastPassBefore": "act6-20260924/qa-F.json, 25/09 19:22, before Ark v2 (26/09 14:22)",
+   "evidence": [
+    "old fixture against projects.json of e46b619 and of main: after the Heart the voices still wait for [arcane_module]",
+    "this batch: PASS in full-pack runs A (14.8 s) and B (3.1 s)",
+    "merges cleanly with feature/ruins-v2 (git merge-tree), whose projects.json keeps the same act IV prerequisites"
+   ]
+  }
+ },
+ "junit": {
+  "635f507": {"tests": 246, "failures": 0, "errors": 0},
+  "450da41": {"tests": 246, "failures": 0, "errors": 0}
+ },
+ "isolatedGameTests": {
+  "command": "gradlew --offline --no-daemon runGameTestServer (fresh run/world)",
+  "635f507": "All 119 required tests passed (gametest-1.log)",
+  "450da41": "All 119 required tests passed (gametest-2.log)"
+ },
+ "fullpackQA": {
+  "server": "E:/Elias/Codex/Entrelumen-ssd/server-fullpack-fix-qa (server-slice libraries only, the 272 server JARs of the lock, pack/ and the QA JAR; -Xmx4G; max-tick-time 60000; fresh world); deleted after the runs",
+  "A": {
+   "head": "635f507 (main 49c1b78 plus the fix)",
+   "bootWallSeconds": 357.4,
+   "expected": 130,
+   "result": "no verdict for the whole plan: 33 of 33 run PASS, including both tests of this batch; then the 60 s watchdog stopped the server during worldtieroverridesopenwhentheteamclosesacts",
+   "cause": "machine load: another worker's full-pack server (server-ruins-qa) started 15 s after this one and a Blender bake ran; 8 'Can't keep up' warnings, worst 24.5 s behind; the stack was chunk post-processing for a mock player's login",
+   "runtimeAudit": "PASS (1461 items)"
+  },
+  "B": {
+   "head": "450da41 (rebased on main fd48e17: quest book v3 wave 1, storage, AE2, Immersive Engineering, farm and Twilight chains)",
+   "conditions": "new server, fresh world, 7.5 GB free and no other server at start",
+   "bootWallSeconds": 204.2,
+   "expected": 130,
+   "excludedByPlan": ["preparelivebackupfixture", "verifyrestoredlivebackup", "verifyteamrestartafternewserverprocess"],
+   "passed": 123,
+   "failed": ["altarsrespectforeignftbchunksclaims", "levellingaltarrepairslandfromthepacksowngenerator", "thesealedstairstandsunderthestartruin"],
+   "noVerdict": ["datapackreloadisatomicandrejectscycles"],
+   "thisBatch": {"sunspiritdropstheheartonceanditclosesactfour": "PASS", "arkmodulescomeonlyfromtheiractprojects": "PASS"},
+   "solsticio": "1362001 template blocks over 241 ticks, 4485 ms placing (worst tick 124 ms), 19469 ms wall",
+   "cantKeepUp": 10,
+   "worstCantKeepUpMs": 15380,
+   "triage": {
+    "altarsrespectforeignftbchunksclaims": "The pit must cross a chunk border: a fixture precondition that depends on the test origin. At this world's origin (-12, 63, 8) the altar stands at x 8 and its 15-block pit spans x 1..15, inside chunk 0; at other origins it straddles a border (run D of Solsticio v8, origin x -8). The failed precondition also leaves its two mock players online, because it runs before the sessions' cleanup. Unrelated to this change; altars.",
+    "levellingaltarrepairslandfromthepacksowngenerator": "DONE skipped=1: the site 48 blocks east of the origin put the repair's four chunks at chunk x 1..2, and chunks (1,0) and (1,1) hold GameTest barriers and floors of earlier tests that share the origin (the claims test's 40-wide template among them), so the altar refused one chunk it could not match to the generator, as designed. Position- and order-dependent; unrelated to this change; altars.",
+    "thesealedstairstandsunderthestartruin": "The antechamber is not protected: startruinisanchoredregisteredandplacedonce ran earlier in the same server and places a second start ruin 4096 blocks east into a throwaway RuinData, but HeliodorRuins.place always calls EnvesEntrance.onStartRuinPlaced, which re-recorded the world's Sealed Stair there (log 02:12:10, heart 4084, 62, 8). That ruin is not in the world's RuinData, so StructureProtection does not guard its antechamber. Order-dependent: in the Envés batch QA (enves-20260926/qa-A-8eafac9.json) the sealed stair ran first and both passed. A test-isolation defect since the Envés engine; in play only one start ruin is placed. Unrelated to this change; Envés and ruins.",
+    "datapackreloadisatomicandrejectscycles": "no verdict: the 60 s watchdog stopped the server inside its synchronous reloads (pending.join() on the server thread; stack in KubeJS script execution). Known since the acts, fullpack and act VI batches; the recipe audit ran it with a QA-only 180 s allowance."
+   },
+   "runtimeAudit": "FAIL on main fd48e17: immersiveengineering:shader_bag does not exist in the pinned Immersive Engineering 12.4.2-194, which registers one bag per rarity (shader_bag_common and others); a quest in sector_immersive_workshop uses it (b5caf42, merged 27/09 02:00). tools/check_runtime_content.py --log on the boot audit: 'FAIL: Runtime content missing/mismatched: immersiveengineering:shader_bag'. Unrelated to this change; quest book.",
+   "knownErrorLines": "pamhc2crops rabbit_food tag; enderio and reliquary xp fluid data maps; both in earlier receipts"
+  }
+ }
+}
