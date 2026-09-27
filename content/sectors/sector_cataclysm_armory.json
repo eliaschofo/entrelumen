@@ -1,0 +1,651 @@
+{
+  "format": "sector",
+  "chapter": "sector_cataclysm_armory",
+  "group": "exploration",
+  "act": "V",
+  "motif": "cataclysm",
+  "icon": "cataclysm:the_incinerator",
+  "emblem": "cataclysm:textures/item/witherite_ingot.png",
+  "title": {"en_us": "L_Ender's Cataclysm · Armory", "es_es": "L_Ender's Cataclysm · Arsenal"},
+  "subtitle": {
+    "en_us": ["What each boss leaves behind, and the anvil that fuses it."],
+    "es_es": ["Lo que deja cada jefe y el yunque que lo fusiona."]
+  },
+  "entry": "cata_witherite",
+  "center": [0.0, 0.0],
+  "figures": {
+    "wheel": {"kind": "ring", "cx": 0, "cy": 0, "r": 6.4, "count": 16, "start": -90, "draw": [{"style": "ring", "r": 6.4, "segments": 64, "alpha": 110, "thickness_px": 2}, {"style": "teeth", "r": 6.4, "count": 24, "depth": 0.7, "width": 0.55, "alpha": 90, "start": -90}, {"style": "ring", "r": 4.6, "segments": 48, "alpha": 60, "thickness_px": 1}]}
+  },
+  "groups": {
+    "harbinger": {"label": {"en_us": "The Harbinger", "es_es": "El Heraldo"}, "axis": "radial"},
+    "maledictus": {"label": {"en_us": "Maledictus", "es_es": "Maledictus"}, "axis": "radial"},
+    "ignis": {"label": {"en_us": "Ignis", "es_es": "Ignis"}, "axis": "radial"},
+    "monstrosity": {"label": {"en_us": "Netherite Monstrosity", "es_es": "Monstruosidad de Netherita"}, "axis": "radial"},
+    "remnant": {"label": {"en_us": "Ancient Remnant", "es_es": "Remanente Antiguo"}, "axis": "radial"},
+    "leviathan": {"label": {"en_us": "The Leviathan", "es_es": "El Leviatán"}, "axis": "radial"},
+    "scylla": {"label": {"en_us": "Scylla", "es_es": "Scylla"}, "axis": "radial"},
+    "guardian": {"label": {"en_us": "Ender Guardian", "es_es": "Guardián Ender"}, "axis": "radial"},
+    "trinkets": {"label": {"en_us": "From the ruins' chests", "es_es": "De los cofres de las ruinas"}, "axis": "x", "caption": "above"},
+    "notes": {"label": {"en_us": "Workshop notes", "es_es": "Notas del taller"}, "axis": "x", "caption": "above"}
+  },
+  "links": [
+    {"target": "bosses_elytra", "at": {"x": -2.908, "y": 7.021}},
+    {"target": "gear_netherite", "at": {"x": 6.429, "y": 15.521}}
+  ],
+  "art": [
+    {"id": "banner", "texture": "entrelumen:textures/gui/quests/banner_plain.png", "x": -24.0, "y": -29.0, "scale": 2, "order": -1, "color": "#6A4F92", "alpha": 225},
+    {"id": "title", "label": {"en_us": "L_Ender's Cataclysm\nArmory", "es_es": "L_Ender's Cataclysm\nArsenal"}, "x": -24.0, "y": -29.0, "scale": 2, "bold": true, "tint": "#FFE9CC"},
+    {"id": "motto", "label": {"en_us": "what the keepers leave behind", "es_es": "lo que dejan los guardianes"}, "x": -24.0, "y": -26.1, "scale": 1, "font": "minecraft:alt", "tint": "#C9B8E8"},
+    {"id": "to_other", "label": {"en_us": "« Arenas", "es_es": "« Arenas"}, "x": -24.0, "y": -25.0, "scale": 1, "click": "chapter:sector_cataclysm_arenas"},
+    {"id": "medallion", "texture": "entrelumen:textures/gui/quests/medallion.png", "x": -24.0, "y": -21.6, "scale": 2, "order": 0, "click": "chapter:sun_of_heliodor", "hover": {"en_us": "Back to the Sun of Heliodor", "es_es": "Volver al Sol de Heliodor"}},
+    {"id": "emblem", "texture": "cataclysm:textures/item/witherite_ingot.png", "x": -24.0, "y": -21.6, "scale": 4, "order": 1},
+    {"id": "bar_guardian", "texture": "cataclysm:textures/gui/boss_bar/ender_guardian_bar_overlay.png", "px": [256, 16], "x": 0.0, "y": -19.183, "scale": 1, "order": -1, "rotation": 90.0, "alpha": 235},
+    {"id": "bar_maledictus", "texture": "cataclysm:textures/gui/boss_bar/maledictus_bar_overlay.png", "px": [256, 32], "x": 18.373, "y": -18.373, "scale": 1, "order": -1, "rotation": -45.0, "alpha": 235},
+    {"id": "bar_scylla", "texture": "cataclysm:textures/gui/boss_bar/scylla_bar_overlay.png", "px": [256, 32], "x": 22.583, "y": 0.0, "scale": 1, "order": -1, "rotation": 0.0, "alpha": 235},
+    {"id": "bar_monstrosity", "texture": "cataclysm:textures/gui/boss_bar/monstrosity_bar_overlay.png", "px": [256, 16], "x": 14.272, "y": 14.272, "scale": 1, "order": -1, "rotation": 45.0, "alpha": 235},
+    {"id": "bar_ignis", "texture": "cataclysm:textures/gui/boss_bar/ignis_bar_overlay.png", "px": [256, 16], "x": 0.0, "y": 25.783, "scale": 1, "order": -1, "rotation": 90.0, "alpha": 235},
+    {"id": "bar_harbinger", "texture": "cataclysm:textures/gui/boss_bar/harbinger_bar_overlay.png", "px": [256, 32], "x": -13.565, "y": 13.565, "scale": 1, "order": -1, "rotation": -45.0, "alpha": 235},
+    {"id": "bar_leviathan", "texture": "cataclysm:textures/gui/boss_bar/leviathan_bar_overlay.png", "px": [256, 16], "x": -23.383, "y": 0.0, "scale": 1, "order": -1, "rotation": 0.0, "alpha": 235},
+    {"id": "bar_remnant", "texture": "cataclysm:textures/gui/boss_bar/remnant_bar_overlay.png", "px": [256, 32], "x": -15.969, "y": -15.969, "scale": 1, "order": -1, "rotation": 45.0, "alpha": 235}
+  ],
+  "quests": [
+    {
+      "key": "cata_witherite", "role": "entry", "deps": [],
+      "task": {"item": "cataclysm:witherite_ingot", "count": 6},
+      "at": {"x": 0.0, "y": 1.7},
+      "en_us": {"title": "Witherite", "subtitle": "The Harbinger's leftovers, by the block.",
+        "text": ["The Harbinger's [item:cataclysm:witherite_block|Block of Witherite] breaks into nine ingots. Six go into the Mechanical Fusion Anvil; the rest start its weapons: the Laser Gatling, the Meat Shredder and the Wither Assault Shoulder Weapon."]},
+      "es_es": {"title": "Witherita", "subtitle": "Las sobras del Heraldo, en bloque.",
+        "text": ["El [item:cataclysm:witherite_block|bloque de witherita] del Heraldo se parte en nueve lingotes. Seis van al Yunque de fusión mecánica; el resto arranca sus armas: la Gatling láser, la Trituradora de carne y el Asalto de hombro del wither."]},
+      "sources": ["jar:L_Ender's Cataclysm 1.21.1-3.33.jar:data/cataclysm/loot_table/entities/the_harbinger.json", "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:data/cataclysm/recipe/witherite_ingot.json", "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:data/cataclysm/recipe/mechanical_fusion_anvil.json", "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:data/cataclysm/recipe/laser_gatling.json", "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:data/cataclysm/recipe/meat_shredder.json", "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:data/cataclysm/recipe/wither_assault_shoulder_weapon.json"]
+    },
+    {
+      "key": "cata_fusion_anvil", "role": "milestone", "deps": ["cata_witherite"],
+      "task": {"item": "cataclysm:mechanical_fusion_anvil"},
+      "at": {"x": 0.0, "y": -1.7},
+      "en_us": {"title": "The Mechanical Fusion Anvil", "subtitle": "Two weapons walk in. One walks out.",
+        "text": ["Six witherite ingots, two blocks of redstone and an [item:minecraft:anvil|Anvil]. It fuses a base weapon with an addition, and the result keeps the base's enchantments, name and wear.",
+                 "[tip] Enchant the base before you fuse it: nothing is lost in the anvil."]},
+      "es_es": {"title": "El Yunque de fusión mecánica", "subtitle": "Entran dos armas. Sale una.",
+        "text": ["Seis lingotes de witherita, dos bloques de redstone y un [item:minecraft:anvil|yunque]. Fusiona un arma base con un agregado, y el resultado conserva los encantamientos, el nombre y el desgaste de la base.",
+                 "[tip] Encantá la base antes de fusionarla: en el yunque no se pierde nada."]},
+      "sources": ["jar:L_Ender's Cataclysm 1.21.1-3.33.jar:data/cataclysm/recipe/mechanical_fusion_anvil.json", "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:com/github/L_Ender/cataclysm/blocks/Mechanical_fusion_Anvil.class#useWithoutItem", "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:com/github/L_Ender/cataclysm/inventory/WeaponfusionMenu.class", "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:com/github/L_Ender/cataclysm/crafting/WeaponfusionRecipe.class#assemble"]
+    },
+    {
+      "key": "cata_gauntlet_bulwark", "role": "side", "deps": ["cata_fusion_anvil", "cata_gauntlet_guard"], "hide_lines": true,
+      "task": {"item": "cataclysm:gauntlet_of_bulwark"},
+      "at": {"x": 1.76, "y": -4.25},
+      "en_us": {"title": "Gauntlet of Bulwark",
+        "text": ["Fuse the Gauntlet of Guard with the [item:cataclysm:bulwark_of_the_flame|Bulwark of the Flame]. Hold right-click for a second to shove everything nearby and brand it, then let go to charge forward."]},
+      "es_es": {"title": "Guantelete de baluarte",
+        "text": ["Fusioná el guantelete de la guardia con el [item:cataclysm:bulwark_of_the_flame|baluarte de la llama]. Mantené el clic derecho un segundo para empujar todo lo que tengas cerca y marcarlo, y soltalo para cargar hacia adelante."]},
+      "sources": ["jar:L_Ender's Cataclysm 1.21.1-3.33.jar:data/cataclysm/recipe/weapon_infusion/gauntlet_of_bulwark.json", "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:assets/cataclysm/lang/en_us.json#item.cataclysm.gauntlet_of_bulwark.desc", "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:assets/cataclysm/lang/en_us.json#item.cataclysm.gauntlet_of_bulwark.desc2"]
+    },
+    {
+      "key": "cata_gauntlet_maelstrom", "role": "side", "deps": ["cata_fusion_anvil", "cata_gauntlet_guard"], "hide_lines": true,
+      "task": {"item": "cataclysm:gauntlet_of_maelstrom"},
+      "at": {"x": -1.76, "y": -4.25},
+      "en_us": {"title": "Gauntlet of Maelstrom", "subtitle": "Hoovers, but for enemies.",
+        "text": ["Fuse the Gauntlet of Guard with [item:cataclysm:sandstorm_in_a_bottle|Sandstorm in a Bottle]. Right-click opens a Void Vortex that drags enemies down into it and bursts after a few seconds."]},
+      "es_es": {"title": "Guantelete del torbellino", "subtitle": "Una aspiradora, pero para enemigos.",
+        "text": ["Fusioná el guantelete de la guardia con la [item:cataclysm:sandstorm_in_a_bottle|tormenta de arena en un frasco]. El clic derecho abre un Vórtice del vacío que arrastra a los enemigos hacia abajo y estalla a los pocos segundos."]},
+      "sources": ["jar:L_Ender's Cataclysm 1.21.1-3.33.jar:data/cataclysm/recipe/weapon_infusion/gauntlet_of_maelstrom.json", "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:assets/cataclysm/lang/en_us.json#item.cataclysm.gauntlet_of_maelstrom.desc", "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:com/github/L_Ender/cataclysm/entity/projectile/Void_Vortex_Entity.class#tick"]
+    },
+    {
+      "key": "cata_wrath", "role": "side", "deps": ["cata_fusion_anvil", "cata_cursed_bow"], "hide_lines": true,
+      "task": {"item": "cataclysm:wrath_of_the_desert"},
+      "at": {"x": -4.25, "y": -1.76},
+      "en_us": {"title": "Wrath of the Desert",
+        "text": ["Fuse the Cursed Bow with [item:cataclysm:sandstorm_in_a_bottle|Sandstorm in a Bottle] from the [quest:cata_sandstorm|Remnant]. It looses three cursed sandstorms instead of arrows."]},
+      "es_es": {"title": "Ira del desierto",
+        "text": ["Fusioná el arco maldito con la [item:cataclysm:sandstorm_in_a_bottle|tormenta de arena en un frasco] del [quest:cata_sandstorm|Remanente]. Dispara tres tormentas de arena malditas en vez de flechas."]},
+      "sources": ["jar:L_Ender's Cataclysm 1.21.1-3.33.jar:data/cataclysm/recipe/weapon_infusion/wrath_of_the_desert.json", "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:assets/cataclysm/lang/en_us.json#item.cataclysm.wrath_of_the_desert.desc"]
+    },
+    {
+      "key": "cata_immolator", "role": "side", "deps": ["cata_fusion_anvil", "cata_annihilator"], "hide_lines": true,
+      "task": {"item": "cataclysm:the_immolator"},
+      "at": {"x": 4.25, "y": -1.76},
+      "en_us": {"title": "The Immolator",
+        "text": ["Fuse the Annihilator with an [item:cataclysm:ignitium_ingot|Ignitium Ingot]. Every hit on a branded target is a critical, and held in both hands a two-second charge calls down a flame strike."]},
+      "es_es": {"title": "El inmolador",
+        "text": ["Fusioná el aniquilador con un [item:cataclysm:ignitium_ingot|lingote de ignitio]. Cada golpe a un blanco marcado es crítico, y con las dos manos, una carga de dos segundos hace caer un ataque flameante."]},
+      "sources": ["jar:L_Ender's Cataclysm 1.21.1-3.33.jar:data/cataclysm/recipe/weapon_infusion/the_immolator.json", "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:assets/cataclysm/lang/en_us.json#item.cataclysm.immolator.desc", "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:assets/cataclysm/lang/en_us.json#item.cataclysm.immolator2.desc", "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:com/github/L_Ender/cataclysm/event/ServerEventHandler.class#onCriticalAttack"]
+    },
+    {
+      "key": "cata_void_forge", "role": "side", "deps": ["cata_fusion_anvil", "cata_infernal_forge"], "hide_lines": true,
+      "task": {"item": "cataclysm:void_forge"},
+      "at": {"x": 1.76, "y": 4.25},
+      "en_us": {"title": "Void Forge",
+        "text": ["Fuse the Infernal Forge with a [item:cataclysm:void_core|Void Core] from an [quest:cata_ender_golem|Ender Golem]. Right-clicking a block now raises a fan of Void Runes, and it's still a pickaxe."]},
+      "es_es": {"title": "Forja del vacío",
+        "text": ["Fusioná la forja infernal con un [item:cataclysm:void_core|núcleo del vacío] de un [quest:cata_ender_golem|Gólem de ender]. El clic derecho en un bloque ahora levanta un abanico de Runas del vacío, y sigue siendo un pico."]},
+      "sources": ["jar:L_Ender's Cataclysm 1.21.1-3.33.jar:data/cataclysm/recipe/weapon_infusion/void_forge.json", "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:assets/cataclysm/lang/en_us.json#item.cataclysm.void_forge.desc", "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:assets/cataclysm/lang/en_us.json#item.cataclysm.void_forge.desc2", "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:com/github/L_Ender/cataclysm/config/CMCommonConfig.class#VoidForge.cooldown"]
+    },
+    {
+      "key": "cata_brontes", "role": "side", "deps": ["cata_fusion_anvil", "cata_infernal_forge"], "hide_lines": true,
+      "task": {"item": "cataclysm:brontes"},
+      "at": {"x": 4.25, "y": 1.76},
+      "en_us": {"title": "Brontes", "subtitle": "Also, this is a pickaxe.",
+        "text": ["Fuse the Infernal Forge with [item:cataclysm:astrape|Astrape]. The result is a pickaxe you can throw, and it brings a storm down where it lands."]},
+      "es_es": {"title": "Brontes", "subtitle": "Además, es un pico.",
+        "text": ["Fusioná la forja infernal con [item:cataclysm:astrape|Astrape]. El resultado es un pico que se puede tirar, y hace caer una tormenta donde aterriza."]},
+      "sources": ["jar:L_Ender's Cataclysm 1.21.1-3.33.jar:data/cataclysm/recipe/weapon_infusion/brontes.json", "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:assets/cataclysm/lang/en_us.json#item.cataclysm.brontes.desc", "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:assets/cataclysm/lang/en_us.json#item.cataclysm.brontes.desc2", "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:com/github/L_Ender/cataclysm/config/CMCommonConfig.class#Brontes"]
+    },
+    {
+      "key": "cata_void_asw", "role": "side", "deps": ["cata_fusion_anvil", "cata_wither_asw"], "hide_lines": true,
+      "task": {"item": "cataclysm:void_assault_shoulder_weapon"},
+      "at": {"x": -4.25, "y": 1.76},
+      "en_us": {"title": "Void Assault Shoulder Weapon",
+        "text": ["Fuse the Wither Assault Shoulder Weapon with a [item:cataclysm:void_core|Void Core]. It trades missiles for Void Howitzers, one every eight seconds."]},
+      "es_es": {"title": "Asalto de hombro del vacío",
+        "text": ["Fusioná el asalto de hombro del wither con un [item:cataclysm:void_core|núcleo del vacío]. Cambia los misiles por obuses del vacío, uno cada ocho segundos."]},
+      "sources": ["jar:L_Ender's Cataclysm 1.21.1-3.33.jar:data/cataclysm/recipe/weapon_infusion/void_assault_shoulder_weapon.json", "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:assets/cataclysm/lang/en_us.json#item.cataclysm.void_assault_shoulder_weapon.desc", "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:com/github/L_Ender/cataclysm/config/CMCommonConfig.class#VASW.howitzerCooldown"]
+    },
+    {
+      "key": "cata_elytra_chest", "role": "capstone", "deps": ["cata_fusion_anvil", "cata_ignitium_armor"], "hide_lines": true,
+      "task": {"item": "cataclysm:ignitium_elytra_chestplate"},
+      "at": {"x": 0.0, "y": 5.6},
+      "en_us": {"title": "Wings of ignitium", "subtitle": "Armor that flies. Flight that doesn't wear.",
+        "text": ["Fuse an Ignitium Chestplate with an [item:minecraft:elytra|Elytra]. It keeps the chestplate's 11 armor and glides like an elytra, except that gliding never wears it down.",
+                 "{page}",
+                 "Metal from the Nether, wings from the End, an anvil from under the Overworld: three worlds in one chestplate."]},
+      "es_es": {"title": "Alas de ignitio", "subtitle": "Armadura que vuela. Vuelo que no se gasta.",
+        "text": ["Fusioná un peto de ignitio con unos [item:minecraft:elytra|élitros]. Conserva las 11 de armadura del peto y planea como unos élitros, salvo que planear nunca lo desgasta.",
+                 "{page}",
+                 "Metal del Nether, alas del End, un yunque de abajo del mundo: tres mundos en un solo peto."]},
+      "sources": ["jar:L_Ender's Cataclysm 1.21.1-3.33.jar:data/cataclysm/recipe/weapon_infusion/ignitium_elytra_chestplate.json", "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:com/github/L_Ender/cataclysm/items/Ignitium_Elytra_ChestPlate.class#canElytraFly,elytraFlightTick", "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:com/github/L_Ender/cataclysm/items/Armortier.class#IGNITIUM", "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:com/github/L_Ender/cataclysm/init/ModItems.class#IGNITIUM_ELYTRA_CHESTPLATE"]
+    },
+    {
+      "key": "cata_laser_gatling", "role": "side", "deps": ["cata_witherite"], "group": "harbinger",
+      "task": {"item": "cataclysm:laser_gatling"},
+      "at": {"x": -4.808, "y": 7.354},
+      "en_us": {"title": "Laser Gatling",
+        "text": ["Two witherite ingots, iron, redstone and a block of redstone. Hold right-click to fire a stream of lasers; when the bar runs dry, one redstone dust from your inventory reloads all of it."]},
+      "es_es": {"title": "Gatling láser",
+        "text": ["Dos lingotes de witherita, hierro, redstone y un bloque de redstone. Mantené el clic derecho para disparar una ráfaga de láseres; cuando se vacía la barra, un polvo de redstone del inventario la recarga entera."]},
+      "sources": ["jar:L_Ender's Cataclysm 1.21.1-3.33.jar:data/cataclysm/recipe/laser_gatling.json", "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:com/github/L_Ender/cataclysm/items/Laser_Gatling.class#use,onUseTick", "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:assets/cataclysm/lang/en_us.json#item.cataclysm.laser_gatling.desc", "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:com/github/L_Ender/cataclysm/config/CMCommonConfig.class#LaserGatling.damage"]
+    },
+    {
+      "key": "cata_meat_shredder", "role": "side", "deps": ["cata_witherite"], "group": "harbinger",
+      "task": {"item": "cataclysm:meat_shredder"},
+      "at": {"x": -7.354, "y": 4.808},
+      "en_us": {"title": "Meat Shredder", "subtitle": "Exactly what the name says.",
+        "text": ["Two witherite ingots, redstone and a block of iron. Hold right-click and it grinds whatever stands in front of you, ignoring the usual pause between hits."]},
+      "es_es": {"title": "Trituradora de carne", "subtitle": "Exactamente lo que dice el nombre.",
+        "text": ["Dos lingotes de witherita, redstone y un bloque de hierro. Mantené el clic derecho y muele lo que tengas enfrente, sin la pausa de siempre entre golpes."]},
+      "sources": ["jar:L_Ender's Cataclysm 1.21.1-3.33.jar:data/cataclysm/recipe/meat_shredder.json", "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:assets/cataclysm/lang/en_us.json#item.cataclysm.meat_shredder.desc", "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:com/github/L_Ender/cataclysm/items/Meat_Shredder.class"]
+    },
+    {
+      "key": "cata_wither_asw", "role": "side", "deps": ["cata_witherite"], "group": "harbinger",
+      "task": {"item": "cataclysm:wither_assault_shoulder_weapon"},
+      "at": {"x": -8.344, "y": 8.344},
+      "en_us": {"title": "Wither Assault Shoulder Weapon",
+        "text": ["Two witherite ingots, four gunpowder and a block of redstone, carried on the shoulder. Right-click fires Wither Missiles every two seconds; sneaking, it lobs a Wither Howitzer every five."]},
+      "es_es": {"title": "Asalto de hombro del wither",
+        "text": ["Dos lingotes de witherita, cuatro de pólvora y un bloque de redstone, al hombro. El clic derecho dispara misiles wither cada dos segundos; agachado, lanza un obús wither cada cinco."]},
+      "sources": ["jar:L_Ender's Cataclysm 1.21.1-3.33.jar:data/cataclysm/recipe/wither_assault_shoulder_weapon.json", "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:assets/cataclysm/lang/en_us.json#item.cataclysm.wither_assault_shoulder_weapon.desc", "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:assets/cataclysm/lang/en_us.json#item.cataclysm.wither_assault_shoulder_weapon.desc2", "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:com/github/L_Ender/cataclysm/config/CMCommonConfig.class#WASW.missileCooldown,WASW.howitzerCooldown"]
+    },
+    {
+      "key": "cata_black_steel", "role": "step", "deps": ["cata_prison", "cata_abandoned"], "group": "maledictus", "any_dep": true,
+      "task": {"item": "cataclysm:black_steel_ingot", "count": 4},
+      "at": {"x": 4.738, "y": -7.425},
+      "en_us": {"title": "Black Steel",
+        "text": ["Draugr drop nuggets and now and then an ingot, an Aptrgangr one or two, and Frosted Prison treasure chests five to nine. It goes into the cursium template and every cursium weapon."]},
+      "es_es": {"title": "Acero negro",
+        "text": ["Los Draugr sueltan pepitas y cada tanto un lingote, un Aptrgangr uno o dos, y los cofres del tesoro de la Prisión Helada de cinco a nueve. Va en la plantilla de cursio y en todas las armas de cursio."]},
+      "sources": ["jar:L_Ender's Cataclysm 1.21.1-3.33.jar:data/cataclysm/loot_table/entities/draugr.json", "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:data/cataclysm/loot_table/entities/aptrgangr.json", "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:data/cataclysm/loot_table/chests/frosted_prison_treasure.json", "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:data/cataclysm/loot_table/chests/abandoned_treasure.json", "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:data/cataclysm/recipe/cursium_upgrade_smithing_template.json", "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:data/cataclysm/recipe/cursed_bow.json", "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:data/cataclysm/recipe/soul_render.json", "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:data/cataclysm/recipe/the_annihilator.json"]
+    },
+    {
+      "key": "cata_targe", "role": "side", "deps": ["cata_black_steel"], "group": "maledictus",
+      "task": {"item": "cataclysm:black_steel_targe"},
+      "at": {"x": 5.515, "y": -11.172},
+      "en_us": {"title": "Black Steel Targe",
+        "text": ["The shield Royal Draugr carry: black steel nuggets around an ingot, with planks. It repairs with black steel instead of wood."]},
+      "es_es": {"title": "Escudo de acero negro",
+        "text": ["El escudo que llevan los Draugr reales: pepitas de acero negro alrededor de un lingote, con tablones. Se repara con acero negro en vez de madera."]},
+      "sources": ["jar:L_Ender's Cataclysm 1.21.1-3.33.jar:data/cataclysm/recipe/black_steel_targe.json", "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:com/github/L_Ender/cataclysm/items/Black_Steel_Targe.class#isValidRepairItem", "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:com/github/L_Ender/cataclysm/entity/InternalAnimationMonster/Draugar/Royal_Draugr_Entity.class#createSpawnShiled"]
+    },
+    {
+      "key": "cata_cursium", "role": "step", "deps": ["cata_maledictus"], "group": "maledictus",
+      "task": {"item": "cataclysm:cursium_ingot", "count": 4},
+      "at": {"x": 7.425, "y": -4.738},
+      "en_us": {"title": "Cursium", "subtitle": "Cursed, but in a useful way.",
+        "text": ["Maledictus drops three or four ingots a kill. The armor takes one per piece, and the bow, the halberd and the Annihilator two or three each."]},
+      "es_es": {"title": "Cursio", "subtitle": "Maldito, pero de forma útil.",
+        "text": ["Maledictus suelta tres o cuatro lingotes por pelea. La armadura lleva uno por pieza, y el arco, la alabarda y el aniquilador, dos o tres cada uno."]},
+      "sources": ["jar:L_Ender's Cataclysm 1.21.1-3.33.jar:data/cataclysm/loot_table/entities/maledictus.json", "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:data/cataclysm/recipe/smithing/cursium_chestplate.json", "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:data/cataclysm/recipe/cursed_bow.json", "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:data/cataclysm/recipe/soul_render.json", "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:data/cataclysm/recipe/the_annihilator.json"]
+    },
+    {
+      "key": "cata_cursium_template", "role": "step", "deps": ["cata_cursium", "cata_black_steel"], "group": "maledictus",
+      "task": {"item": "cataclysm:cursium_upgrade_smithing_template"},
+      "at": {"x": 7.92, "y": -8.768},
+      "en_us": {"title": "The cursium upgrade",
+        "text": ["Six gold ingots and two black steel around a [item:minecraft:netherite_upgrade_smithing_template|Netherite Upgrade]. At the smithing table it turns a netherite piece into cursium, and it's spent each time."]},
+      "es_es": {"title": "La mejora de cursio",
+        "text": ["Seis lingotes de oro y dos de acero negro alrededor de un [item:minecraft:netherite_upgrade_smithing_template|molde de mejora de netherita]. En la mesa de herrería convierte una pieza de netherita en cursio, y se gasta cada vez."]},
+      "sources": ["jar:L_Ender's Cataclysm 1.21.1-3.33.jar:data/cataclysm/recipe/cursium_upgrade_smithing_template.json", "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:data/cataclysm/recipe/smithing/cursium_helmet.json", "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:assets/cataclysm/lang/en_us.json#item.cataclysm.cursium_upgrade.applies_to.desc"]
+    },
+    {
+      "key": "cata_cursium_armor", "role": "milestone", "deps": ["cata_cursium_template"], "group": "maledictus",
+      "tasks": [{"item": "cataclysm:cursium_helmet"}, {"item": "cataclysm:cursium_chestplate"}, {"item": "cataclysm:cursium_leggings"}, {"item": "cataclysm:cursium_boots"}],
+      "at": {"x": 9.899, "y": -11.879},
+      "en_us": {"title": "Cursium armor", "subtitle": "Dying is optional. Once.",
+        "text": ["[good|Ghost Vision]: [key:key.cataclysm.helmet_ability] makes everything within 24 blocks glow. [good|Undead Revive]: a killing blow leaves you at 5 health and untouchable for five seconds, then six minutes of Ghost Sickness. The leggings sometimes dodge, the boots soften falls and back-step on [key:key.cataclysm.boots_ability].",
+                 "{page}",
+                 "28 armor across the set (5, 10, 8 and 5) and 4 toughness a piece, against netherite's 20 and 3. It repairs with cursium ingots."]},
+      "es_es": {"title": "Armadura de cursio", "subtitle": "Morirse es opcional. Una vez.",
+        "text": ["[good|Visión fantasmal]: [key:key.cataclysm.helmet_ability] hace brillar todo lo que haya a 24 bloques. [good|Resucitado no-muerto]: un golpe mortal te deja con 5 de vida e intocable cinco segundos, y después seis minutos de enfermedad fantasmal. Las grebas a veces esquivan, y las botas amortiguan caídas y saltan atrás con [key:key.cataclysm.boots_ability].",
+                 "{page}",
+                 "28 de armadura en el conjunto (5, 10, 8 y 5) y 4 de dureza por pieza, contra 20 y 3 de la netherita. Se repara con lingotes de cursio."]},
+      "sources": ["jar:L_Ender's Cataclysm 1.21.1-3.33.jar:data/cataclysm/recipe/smithing/cursium_boots.json", "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:com/github/L_Ender/cataclysm/items/Armortier.class#CURSIUM", "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:com/github/L_Ender/cataclysm/items/Cursium_Armor.class#onKeyPacket,isValidRepairItem", "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:com/github/L_Ender/cataclysm/event/ServerEventHandler.class#tryCursiumPlateRebirth,onLivingAttack,onLivingFall", "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:assets/cataclysm/lang/en_us.json#item.cataclysm.cursium_chestplate.desc2", "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:assets/cataclysm/lang/en_us.json#item.cataclysm.cursium_chestplate.desc3", "repo:pack/config/defaultoptions/keybindings.txt"]
+    },
+    {
+      "key": "cata_cursed_bow", "role": "side", "deps": ["cata_cursium"], "group": "maledictus",
+      "task": {"item": "cataclysm:cursed_bow"},
+      "at": {"x": 11.455, "y": -5.233},
+      "en_us": {"title": "Cursed Bow", "subtitle": "Three arrows, one pull.",
+        "text": ["Two cursium ingots, a black steel ingot and three string. It looses three Phantom Arrows per shot, and special arrows fire twice."]},
+      "es_es": {"title": "Arco maldito", "subtitle": "Tres flechas, un solo tirón.",
+        "text": ["Dos lingotes de cursio, uno de acero negro y tres hilos. Dispara tres flechas fantasmales por tiro, y las flechas especiales salen dos veces."]},
+      "sources": ["jar:L_Ender's Cataclysm 1.21.1-3.33.jar:data/cataclysm/recipe/cursed_bow.json", "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:assets/cataclysm/lang/en_us.json#item.cataclysm.cursed_bow.desc", "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:assets/cataclysm/lang/en_us.json#item.cataclysm.cursed_bow2.desc"]
+    },
+    {
+      "key": "cata_soul_render", "role": "side", "deps": ["cata_cursium"], "group": "maledictus",
+      "task": {"item": "cataclysm:soul_render"},
+      "at": {"x": 12.304, "y": -8.91},
+      "en_us": {"title": "Soul Render",
+        "text": ["Three cursium ingots and two black steel make a halberd that rushes forward. Used while sneaking, it raises Phantom Halberds in a spiral around you."]},
+      "es_es": {"title": "Alabarda de alma",
+        "text": ["Tres lingotes de cursio y dos de acero negro hacen una alabarda que embiste hacia adelante. Usada agachado, levanta alabardas fantasmales en espiral a tu alrededor."]},
+      "sources": ["jar:L_Ender's Cataclysm 1.21.1-3.33.jar:data/cataclysm/recipe/soul_render.json", "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:assets/cataclysm/lang/en_us.json#item.cataclysm.soul_render.desc", "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:assets/cataclysm/lang/en_us.json#item.cataclysm.soul_render2.desc", "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:com/github/L_Ender/cataclysm/config/CMCommonConfig.class#SoulRender"]
+    },
+    {
+      "key": "cata_annihilator", "role": "side", "deps": ["cata_cursium"], "group": "maledictus",
+      "task": {"item": "cataclysm:the_annihilator"},
+      "at": {"x": 15.981, "y": -10.041},
+      "en_us": {"title": "The Annihilator",
+        "text": ["Two cursium ingots and a black steel ingot. Its critical hits land harder, and held in both hands a two-second charge smashes everything around you."]},
+      "es_es": {"title": "El aniquilador",
+        "text": ["Dos lingotes de cursio y uno de acero negro. Sus golpes críticos pegan más fuerte, y con las dos manos, una carga de dos segundos aplasta todo a tu alrededor."]},
+      "sources": ["jar:L_Ender's Cataclysm 1.21.1-3.33.jar:data/cataclysm/recipe/the_annihilator.json", "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:assets/cataclysm/lang/en_us.json#item.cataclysm.annihilator.desc", "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:assets/cataclysm/lang/en_us.json#item.cataclysm.annihilator2.desc"]
+    },
+    {
+      "key": "cata_ignitium", "role": "step", "deps": ["cata_ignis"], "group": "ignis",
+      "task": {"item": "cataclysm:ignitium_ingot", "count": 3},
+      "at": {"x": 0.0, "y": 8.6},
+      "en_us": {"title": "Ignitium", "subtitle": "Still warm.",
+        "text": ["Ignis drops three ingots a kill. The armor takes one per piece, the Incinerator and the Bulwark two each, the Blazing Grips one: plan on a few fights."]},
+      "es_es": {"title": "Ignitio", "subtitle": "Todavía caliente.",
+        "text": ["Ignis suelta tres lingotes por pelea. La armadura lleva uno por pieza, el incinerador y el baluarte dos cada uno, los guantes llameantes uno: contá con varias peleas."]},
+      "sources": ["jar:L_Ender's Cataclysm 1.21.1-3.33.jar:data/cataclysm/loot_table/entities/ignis.json", "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:data/cataclysm/recipe/the_incinerator.json", "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:data/cataclysm/recipe/bulwark_of_the_flame.json", "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:data/cataclysm/recipe/blazing_grips.json", "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:data/cataclysm/recipe/smithing/ignitium_chestplate.json"]
+    },
+    {
+      "key": "cata_ignitium_template", "role": "step", "deps": ["cata_ignitium"], "group": "ignis",
+      "task": {"item": "cataclysm:ignitium_upgrade_smithing_template"},
+      "at": {"x": 1.9, "y": 11.8},
+      "en_us": {"title": "The ignitium upgrade",
+        "text": ["Four blaze powder and four blocks of nether bricks around a [item:minecraft:netherite_upgrade_smithing_template|Netherite Upgrade]. Like the cursium one, it's spent on every piece."]},
+      "es_es": {"title": "La mejora de ignitio",
+        "text": ["Cuatro de polvo de blaze y cuatro bloques de ladrillos del Nether alrededor de un [item:minecraft:netherite_upgrade_smithing_template|molde de mejora de netherita]. Como el de cursio, se gasta en cada pieza."]},
+      "sources": ["jar:L_Ender's Cataclysm 1.21.1-3.33.jar:data/cataclysm/recipe/ignitium_upgrade_smithing_template.json", "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:data/cataclysm/recipe/smithing/ignitium_helmet.json", "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:assets/cataclysm/lang/en_us.json#item.cataclysm.ignitium_upgrade.applies_to.desc"]
+    },
+    {
+      "key": "cata_ignitium_armor", "role": "milestone", "deps": ["cata_ignitium_template"], "group": "ignis",
+      "tasks": [{"item": "cataclysm:ignitium_helmet"}, {"item": "cataclysm:ignitium_chestplate"}, {"item": "cataclysm:ignitium_leggings"}, {"item": "cataclysm:ignitium_boots"}],
+      "at": {"x": 1.9, "y": 15.4},
+      "en_us": {"title": "Ignitium armor", "subtitle": "Fireproof is an understatement.",
+        "text": ["[good|Gaze of Heat]: [key:key.cataclysm.helmet_ability] brands every creature within 16 blocks, and blazes and magma cubes ignore you until you strike them. [good|Flame Reflex]: an attacker is often set alight and branded. [good|Lava Walker]: the boots walk on lava unless you sneak.",
+                 "{page}",
+                 "32 armor across the set (6, 11, 9 and 6) and 4 toughness a piece. The chestplate also fuses with an elytra into the [quest:cata_elytra_chest|Ignitium Elytra Chestplate]."]},
+      "es_es": {"title": "Armadura de ignitio", "subtitle": "Decir ignífugo es quedarse corto.",
+        "text": ["[good|Mirada calorífica]: [key:key.cataclysm.helmet_ability] marca a toda criatura a 16 bloques, y los blazes y los cubos de magma te ignoran hasta que les pegás. [good|Reflejo de fuego]: al que te ataca muchas veces lo prende fuego y lo marca. [good|Paso cálido]: las botas caminan sobre la lava si no vas agachado.",
+                 "{page}",
+                 "32 de armadura en el conjunto (6, 11, 9 y 6) y 4 de dureza por pieza. El peto además se fusiona con unos élitros en el [quest:cata_elytra_chest|peto de ignitio con élitros]."]},
+      "sources": ["jar:L_Ender's Cataclysm 1.21.1-3.33.jar:com/github/L_Ender/cataclysm/items/Ignitium_Armor.class#onKeyPacket", "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:com/github/L_Ender/cataclysm/items/Armortier.class#IGNITIUM", "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:com/github/L_Ender/cataclysm/event/ServerEventHandler.class#StandOnFluidEventEvent,onLivingSetTargetEvent,onLivingDamage", "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:data/cataclysm/tags/entity_type/lava_monster.json", "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:assets/cataclysm/lang/en_us.json#item.cataclysm.ignitium_boots.desc", "repo:pack/config/defaultoptions/keybindings.txt"]
+    },
+    {
+      "key": "cata_bulwark", "role": "side", "deps": ["cata_ignitium"], "group": "ignis",
+      "task": {"item": "cataclysm:bulwark_of_the_flame"},
+      "at": {"x": -2.4, "y": 11.8},
+      "en_us": {"title": "Bulwark of the Flame",
+        "text": ["Two ignitium ingots, nether bricks and blaze rods around a [item:minecraft:shield|Shield]. Release it while sneaking to charge, and a target slammed into a wall is stunned; raise it just before a hit to set the attacker alight."]},
+      "es_es": {"title": "Baluarte de la llama",
+        "text": ["Dos lingotes de ignitio, ladrillos del Nether y varas de blaze alrededor de un [item:minecraft:shield|escudo]. Soltalo agachado para cargar, y el blanco que choca contra una pared queda aturdido; levantalo justo antes del golpe para prender fuego al atacante."]},
+      "sources": ["jar:L_Ender's Cataclysm 1.21.1-3.33.jar:data/cataclysm/recipe/bulwark_of_the_flame.json", "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:assets/cataclysm/lang/en_us.json#item.cataclysm.bulwark_of_the_flame.desc", "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:assets/cataclysm/lang/en_us.json#item.cataclysm.bulwark_of_the_flame2.desc", "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:com/github/L_Ender/cataclysm/event/ServerEventHandler.class#onShieldDamage"]
+    },
+    {
+      "key": "cata_incinerator", "role": "side", "deps": ["cata_ignitium"], "group": "ignis",
+      "task": {"item": "cataclysm:the_incinerator"},
+      "at": {"x": -1.0, "y": 15.2},
+      "en_us": {"title": "The Incinerator", "subtitle": "Every twenty seconds, a small apocalypse.",
+        "text": ["Two ignitium ingots and four blaze rods on a [item:minecraft:netherite_sword|Netherite Sword]. Hold right-click for three seconds and let go to send a flame strike ahead; items caught in the blast can burn."]},
+      "es_es": {"title": "El incinerador", "subtitle": "Cada veinte segundos, un apocalipsis chiquito.",
+        "text": ["Dos lingotes de ignitio y cuatro varas de blaze sobre una [item:minecraft:netherite_sword|espada de netherita]. Mantené el clic derecho tres segundos y soltalo para mandar un ataque flameante hacia adelante; los ítems que agarre la explosión se pueden quemar."]},
+      "sources": ["jar:L_Ender's Cataclysm 1.21.1-3.33.jar:data/cataclysm/recipe/the_incinerator.json", "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:assets/cataclysm/lang/en_us.json#item.cataclysm.incinerator.desc", "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:assets/cataclysm/lang/en_us.json#item.cataclysm.incinerator2.desc", "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:assets/cataclysm/lang/en_us.json#item.cataclysm.incinerator3.desc", "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:com/github/L_Ender/cataclysm/config/CMCommonConfig.class#Incinerator.cooldown"]
+    },
+    {
+      "key": "cata_blazing_grips", "role": "side", "deps": ["cata_ignitium"], "group": "ignis",
+      "task": {"item": "cataclysm:blazing_grips"},
+      "at": {"x": -2.8, "y": 18.2},
+      "en_us": {"title": "Blazing Grips",
+        "text": ["Eight nether bricks around an ignitium ingot, worn in a hands slot. Each hit has a 15% chance to brand the target, 30% with a pair."]},
+      "es_es": {"title": "Guantes llameantes",
+        "text": ["Ocho ladrillos del Nether alrededor de un lingote de ignitio, en una ranura de manos. Cada golpe tiene un 15% de chance de marcar al blanco, 30% con un par."]},
+      "sources": ["jar:L_Ender's Cataclysm 1.21.1-3.33.jar:data/cataclysm/recipe/blazing_grips.json", "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:com/github/L_Ender/cataclysm/event/ServerEventHandler.class#onLivingDamage", "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:data/curios/tags/item/hands.json", "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:data/cataclysm/curios/slots/hands.json"]
+    },
+    {
+      "key": "cata_infernal_forge", "role": "step", "deps": ["cata_monstrosity"], "group": "monstrosity",
+      "task": {"item": "cataclysm:infernal_forge"},
+      "at": {"x": 6.081, "y": 6.081},
+      "en_us": {"title": "The Infernal Forge", "subtitle": "FYI, it's a pickaxe.",
+        "text": ["Swing it at blocks and it mines; right-click a block and it sends a shockwave through everything nearby, every four seconds. It's also the base of two fusions, and each kill drops only one."]},
+      "es_es": {"title": "La forja infernal", "subtitle": "Para que sepas: es un pico.",
+        "text": ["Golpeá bloques y los pica; clic derecho en un bloque y manda una onda de choque a todo lo que haya cerca, cada cuatro segundos. También es la base de dos fusiones, y cada pelea suelta una sola."]},
+      "sources": ["jar:L_Ender's Cataclysm 1.21.1-3.33.jar:data/cataclysm/loot_table/entities/netherite_monstrosity.json", "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:assets/cataclysm/lang/en_us.json#item.cataclysm.infernal_forge.desc", "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:assets/cataclysm/lang/en_us.json#item.cataclysm.infernal_forge.desc2", "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:com/github/L_Ender/cataclysm/config/CMCommonConfig.class#InfernalForge.cooldown"]
+    },
+    {
+      "key": "cata_monstrous_helm", "role": "milestone", "deps": ["cata_monstrosity"], "group": "monstrosity",
+      "task": {"item": "cataclysm:monstrous_helm"},
+      "at": {"x": 8.768, "y": 8.768},
+      "en_us": {"title": "The Monstrous Helm", "subtitle": "Horns included. Temper too.",
+        "text": ["Smith the Monstrous Horn onto a [item:minecraft:netherite_helmet|Netherite Helmet] with a netherite upgrade. When you drop below half health it knocks back everyone around you and grants Monstrous: more armor, knockback resistance and regeneration."]},
+      "es_es": {"title": "El Yelmo monstruoso", "subtitle": "Cuernos incluidos. Mal carácter también.",
+        "text": ["Poné el cuerno monstruoso sobre un [item:minecraft:netherite_helmet|casco de netherita] con una mejora de netherita. Cuando bajás de la mitad de la vida empuja a todos los que tengas cerca y te da Monstruoso: más armadura, resistencia al empuje y regeneración."]},
+      "sources": ["jar:L_Ender's Cataclysm 1.21.1-3.33.jar:data/cataclysm/recipe/smithing/monstrous_helm.json", "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:assets/cataclysm/lang/en_us.json#item.cataclysm.monstrous_helm.desc", "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:assets/cataclysm/lang/en_us.json#item.cataclysm.monstrous_helm2.desc", "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:data/cataclysm/loot_table/entities/netherite_monstrosity.json"]
+    },
+    {
+      "key": "cata_effigy", "role": "side", "deps": ["cata_monstrosity"], "group": "monstrosity",
+      "task": {"item": "cataclysm:netherite_effigy"},
+      "at": {"x": 6.788, "y": 10.748},
+      "en_us": {"title": "Netherite Effigy",
+        "text": ["A netherite ingot, a [item:minecraft:totem_of_undying|Totem of Undying], a block of redstone, gold and nether bricks. Use it to summon a Netherite Ministrosity of your own, and tame it with a Lava Power Cell."]},
+      "es_es": {"title": "Efigie de netherita",
+        "text": ["Un lingote de netherita, un [item:minecraft:totem_of_undying|tótem de inmortalidad], un bloque de redstone, oro y ladrillos del Nether. Usala para invocar una Ministruosidad de netherita propia, y domala con una celda de energía de lava."]},
+      "sources": ["jar:L_Ender's Cataclysm 1.21.1-3.33.jar:data/cataclysm/recipe/netherite_effigy.json", "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:assets/cataclysm/lang/en_us.json#item.cataclysm.netherite_effigy.desc", "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:com/github/L_Ender/cataclysm/items/Netherite_Effigy.class#use"]
+    },
+    {
+      "key": "cata_sandstorm", "role": "step", "deps": ["cata_remnant"], "group": "remnant",
+      "task": {"item": "cataclysm:sandstorm_in_a_bottle"},
+      "at": {"x": -4.738, "y": -7.425},
+      "en_us": {"title": "Sandstorm in a Bottle",
+        "text": ["Right-click to raise two sandstorms that circle you, every fifteen seconds. It's also the addition for [quest:cata_wrath|Wrath of the Desert] and the [quest:cata_gauntlet_maelstrom|Gauntlet of Maelstrom]."]},
+      "es_es": {"title": "Tormenta de arena en un frasco",
+        "text": ["Clic derecho para levantar dos tormentas de arena que te orbitan, cada quince segundos. También es el agregado de la [quest:cata_wrath|Ira del desierto] y del [quest:cata_gauntlet_maelstrom|guantelete del torbellino]."]},
+      "sources": ["jar:L_Ender's Cataclysm 1.21.1-3.33.jar:data/cataclysm/loot_table/entities/ancient_remnant.json", "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:assets/cataclysm/lang/en_us.json#item.cataclysm.sandstorm_in_a_bottle.desc", "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:com/github/L_Ender/cataclysm/config/CMCommonConfig.class#SandstormInABottle.cooldown", "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:data/cataclysm/recipe/weapon_infusion/wrath_of_the_desert.json"]
+    },
+    {
+      "key": "cata_modern_remnant", "role": "side", "deps": ["cata_sandstorm"], "group": "remnant",
+      "task": {"item": "cataclysm:modern_remnant_bucket"},
+      "at": {"x": -6.081, "y": -10.607},
+      "en_us": {"title": "A Remnant of your own", "subtitle": "Smaller. Friendlier. Still bitey.",
+        "text": ["Use the Remnant's Skull on the ground and a Modern Remnant appears; a [item:minecraft:sniffer_egg|Sniffer Egg] tames it and bones heal it. An empty bucket carries it around."]},
+      "es_es": {"title": "Un Remanente propio", "subtitle": "Más chico. Más amigable. Igual muerde.",
+        "text": ["Usá la calavera del remanente sobre el suelo y aparece un Remanente moderno; un [item:minecraft:sniffer_egg|huevo de sniffer] lo doma y los huesos lo curan. Un cubo vacío lo lleva a todos lados."]},
+      "sources": ["jar:L_Ender's Cataclysm 1.21.1-3.33.jar:com/github/L_Ender/cataclysm/items/Remnant_Skull.class#use", "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:com/github/L_Ender/cataclysm/entity/Pet/Modern_Remnant_Entity.class#mobInteract,isFood,emptybucketMobPickup", "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:assets/cataclysm/lang/en_us.json#item.cataclysm.remnant_skull.desc"]
+    },
+    {
+      "key": "cata_ancient_metal", "role": "step", "deps": ["cata_pyramid", "cata_desert_village", "cata_remnant"], "group": "remnant", "any_dep": true,
+      "task": {"item": "cataclysm:ancient_metal_ingot", "count": 4},
+      "at": {"x": -7.425, "y": -4.738},
+      "en_us": {"title": "Ancient Metal",
+        "text": ["Wadjets drop two to four ingots, Kobolediators one to three, Koboletons nuggets and now and then an ingot; the Remnant's block holds nine. Smelting a khopesh or an ancient spear gives back a nugget."]},
+      "es_es": {"title": "Metal antiguo",
+        "text": ["Los Wadjets sueltan de dos a cuatro lingotes, los Kobolediadores de uno a tres, los Koboletons pepitas y cada tanto un lingote; el bloque del Remanente tiene nueve. Fundir un khopesh o una lanza antigua devuelve una pepita."]},
+      "sources": ["jar:L_Ender's Cataclysm 1.21.1-3.33.jar:data/cataclysm/loot_table/entities/wadjet.json", "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:data/cataclysm/loot_table/entities/kobolediator.json", "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:data/cataclysm/loot_table/entities/koboleton.json", "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:data/cataclysm/recipe/ancient_metal_ingot.json", "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:data/cataclysm/recipe/ancient_metal_nugget_from_smelting.json"]
+    },
+    {
+      "key": "cata_bone_reptile", "role": "side", "deps": ["cata_ancient_metal", "cata_kobolediator"], "group": "remnant",
+      "tasks": [{"item": "cataclysm:bone_reptile_helmet"}, {"item": "cataclysm:bone_reptile_chestplate"}],
+      "at": {"x": -10.465, "y": -6.223},
+      "en_us": {"title": "Bone Reptile armor",
+        "text": ["Ancient metal and Koboleton Bones make a helmet and a chestplate; the helmet also takes a Kobolediator Skull. 17 armor between them, and the best knockback resistance of any Cataclysm armor."]},
+      "es_es": {"title": "Armadura de reptil óseo",
+        "text": ["Metal antiguo y huesos de koboleton hacen un casco y un peto; el casco además lleva una calavera de kobolediador. 17 de armadura entre los dos, y la mejor resistencia al empuje de toda la armadura de Cataclysm."]},
+      "sources": ["jar:L_Ender's Cataclysm 1.21.1-3.33.jar:data/cataclysm/recipe/bone_reptile_helmet.json", "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:data/cataclysm/recipe/bone_reptile_chestplate.json", "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:com/github/L_Ender/cataclysm/items/Armortier.class#BONE_REPTILE", "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:com/github/L_Ender/cataclysm/config/CMCommonConfig.class#BoneReptileArmor.knockbackResistance"]
+    },
+    {
+      "key": "cata_ancient_spear", "role": "side", "deps": ["cata_ancient_metal"], "group": "remnant",
+      "task": {"item": "cataclysm:ancient_spear"},
+      "at": {"x": -12.445, "y": -8.768},
+      "en_us": {"title": "Ancient Spear",
+        "text": ["Three ancient metal ingots. Left-click also fires a sandstorm down the line, so it hits at range as well as up close."]},
+      "es_es": {"title": "Lanza antigua",
+        "text": ["Tres lingotes de metal antiguo. El clic izquierdo además dispara una tormenta de arena en línea, así que pega de lejos y de cerca."]},
+      "sources": ["jar:L_Ender's Cataclysm 1.21.1-3.33.jar:data/cataclysm/recipe/ancient_spear.json", "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:assets/cataclysm/lang/en_us.json#item.cataclysm.ancient_spear.desc", "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:com/github/L_Ender/cataclysm/config/CMCommonConfig.class#AncientSpear.sandstormdamage"]
+    },
+    {
+      "key": "cata_bones", "role": "bounty", "deps": ["cata_ancient_metal"], "group": "remnant",
+      "task": {"item": "cataclysm:koboleton_bone", "count": 32, "consume": true},
+      "at": {"x": -10.182, "y": -11.031},
+      "en_us": {"title": "Bones for the common store", "subtitle": "Koboletons: renewable, if you ask them firmly.",
+        "text": ["Thirty-two [item:cataclysm:koboleton_bone|Koboleton Bones], once a day. Each one crafts into four bone meal, so the team's farms eat well."]},
+      "es_es": {"title": "Huesos para el depósito común", "subtitle": "Los Koboletons son renovables, si se lo pedís con firmeza.",
+        "text": ["Treinta y dos [item:cataclysm:koboleton_bone|huesos de koboleton], una vez por día. Cada uno da cuatro de polvo de hueso, así que las granjas del equipo comen bien."]},
+      "sources": ["jar:L_Ender's Cataclysm 1.21.1-3.33.jar:data/cataclysm/loot_table/entities/koboleton.json", "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:data/cataclysm/recipe/bone_meal.json", "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:data/cataclysm/tags/worldgen/biome/koboleton_spawn.json", "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:com/github/L_Ender/cataclysm/config/CMCommonConfig.class#Spawning.KoboletonSpawnWeight"]
+    },
+    {
+      "key": "cata_tidal_claws", "role": "milestone", "deps": ["cata_leviathan"], "group": "leviathan",
+      "task": {"item": "cataclysm:tidal_claws"},
+      "at": {"x": -9.4, "y": 0.0},
+      "en_us": {"title": "Tidal Claws", "subtitle": "Get over here. Politely.",
+        "text": ["Right-click fires a grappling hook that reels you in, with no fall damage from the swing; left-click lashes out with a tentacle that hurts whatever it hits."]},
+      "es_es": {"title": "Garras de la marea", "subtitle": "Vení para acá. Con buenos modales.",
+        "text": ["El clic derecho dispara un gancho que te lleva de un tirón, sin daño de caída por el envión; el clic izquierdo azota con un tentáculo que lastima lo que toque."]},
+      "sources": ["jar:L_Ender's Cataclysm 1.21.1-3.33.jar:data/cataclysm/loot_table/entities/the_leviathan.json", "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:assets/cataclysm/lang/en_us.json#item.cataclysm.tidal_claws.desc", "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:assets/cataclysm/lang/en_us.json#item.cataclysm.tidal_claws.desc2", "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:com/github/L_Ender/cataclysm/event/ServerEventHandler.class#onLivingFall"]
+    },
+    {
+      "key": "cata_coral_arms", "role": "side", "deps": ["cata_sunken"], "group": "leviathan",
+      "tasks": [{"item": "cataclysm:coral_spear"}, {"item": "cataclysm:coral_bardiche"}],
+      "icon": "cataclysm:coral_spear",
+      "at": {"x": -12.8, "y": 2.3},
+      "en_us": {"title": "Coral arms",
+        "text": ["Deeplings carry Coral Spears and brutes Coral Bardiches, and now and then one falls with its weapon. Both are thrown like a trident."]},
+      "es_es": {"title": "Armas de coral",
+        "text": ["Los Deeplings llevan lanzas de coral y los brutos bardiches de coral, y cada tanto alguno cae con su arma. Las dos se tiran como un tridente."]},
+      "sources": ["jar:L_Ender's Cataclysm 1.21.1-3.33.jar:com/github/L_Ender/cataclysm/entity/Deepling/Deepling_Entity.class#populateDefaultEquipmentSlots", "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:com/github/L_Ender/cataclysm/entity/Deepling/Deepling_Brute_Entity.class#populateDefaultEquipmentSlots", "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:com/github/L_Ender/cataclysm/items/Coral_Spear.class#releaseUsing", "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:com/github/L_Ender/cataclysm/items/Coral_Bardiche.class"]
+    },
+    {
+      "key": "cata_bloom_pauldrons", "role": "side", "deps": ["cata_crab"], "group": "leviathan",
+      "task": {"item": "cataclysm:bloom_stone_pauldrons"},
+      "at": {"x": -12.8, "y": -2.3},
+      "en_us": {"title": "Bloom Stone Pauldrons",
+        "text": ["Eight Amethyst Crab Shells make a chest piece with 9 armor. [key:key.cataclysm.chestplate_ability] fires a ring of amethyst clusters that hurts everything around you, every twelve seconds."]},
+      "es_es": {"title": "Hombreras de piedra floreciente",
+        "text": ["Ocho caparazones de cangrejo de amatista hacen una pieza de pecho con 9 de armadura. [key:key.cataclysm.chestplate_ability] dispara un anillo de racimos de amatista que lastima todo a tu alrededor, cada doce segundos."]},
+      "sources": ["jar:L_Ender's Cataclysm 1.21.1-3.33.jar:data/cataclysm/recipe/bloom_stone_pauldrons.json", "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:com/github/L_Ender/cataclysm/items/Bloom_Stone_Pauldrons.class#onKeyPacket", "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:com/github/L_Ender/cataclysm/items/Armortier.class#CRAB", "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:com/github/L_Ender/cataclysm/config/CMCommonConfig.class#AmethystCrab.AmethystClusterDamage", "repo:pack/config/defaultoptions/keybindings.txt"]
+    },
+    {
+      "key": "cata_baby_leviathan", "role": "secret", "deps": ["cata_leviathan"], "group": "leviathan",
+      "task": {"item": "cataclysm:the_baby_leviathan_bucket"},
+      "icon": "cataclysm:the_baby_leviathan_bucket",
+      "at": {"x": -16.0, "y": 0.0},
+      "en_us": {"title": "Leviathan to go", "subtitle": "Some assembly required. Mostly fish.",
+        "text": ["The Abyssal Egg hatched after three slow cracks, the Baby Leviathan took tropical fish until it trusted you, and now it fits in a water bucket. Any fish heals it."]},
+      "es_es": {"title": "Leviatán para llevar", "subtitle": "Requiere algo de armado. Casi todo pescado.",
+        "text": ["El huevo abisal se abrió después de tres grietas lentas, el bebé leviatán comió peces tropicales hasta confiar en vos, y ahora entra en un cubo con agua. Cualquier pescado lo cura."]},
+      "sources": ["jar:L_Ender's Cataclysm 1.21.1-3.33.jar:com/github/L_Ender/cataclysm/blocks/Abyssal_Egg_Block.class#tick,onPlace", "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:com/github/L_Ender/cataclysm/entity/Pet/The_Baby_Leviathan_Entity.class#mobInteract,isFood", "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:data/cataclysm/loot_table/entities/the_leviathan.json"]
+    },
+    {
+      "key": "cata_storm_essence", "role": "step", "deps": ["cata_scylla"], "group": "scylla",
+      "task": {"item": "cataclysm:essence_of_the_storm", "count": 2},
+      "at": {"x": 8.6, "y": 0.0},
+      "en_us": {"title": "Essence of the Storm",
+        "text": ["Scylla drops three or four. Two of them and three Lacrima make either of her weapons."]},
+      "es_es": {"title": "Esencia de la tormenta",
+        "text": ["Scylla suelta tres o cuatro. Dos de ellas y tres lácrimas hacen cualquiera de sus armas."]},
+      "sources": ["jar:L_Ender's Cataclysm 1.21.1-3.33.jar:data/cataclysm/loot_table/entities/scylla.json", "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:data/cataclysm/recipe/astrape.json", "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:data/cataclysm/recipe/ceraunus.json"]
+    },
+    {
+      "key": "cata_astrape", "role": "side", "deps": ["cata_storm_essence"], "group": "scylla",
+      "task": {"item": "cataclysm:astrape"},
+      "at": {"x": 12.0, "y": -1.6},
+      "en_us": {"title": "Astrape", "subtitle": "Point it at the problem.",
+        "text": ["A spear that answers with lightning: right-click throws a Lightning Spear, every three seconds. It's also the addition that turns the Infernal Forge into [quest:cata_brontes|Brontes]."]},
+      "es_es": {"title": "Astrape", "subtitle": "Apuntala al problema.",
+        "text": ["Una lanza que responde con rayos: el clic derecho tira una lanza relámpago, cada tres segundos. También es el agregado que convierte la forja infernal en [quest:cata_brontes|Brontes]."]},
+      "sources": ["jar:L_Ender's Cataclysm 1.21.1-3.33.jar:data/cataclysm/recipe/astrape.json", "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:assets/cataclysm/lang/en_us.json#item.cataclysm.astrape.desc", "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:com/github/L_Ender/cataclysm/config/CMCommonConfig.class#Astrape.cooldown", "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:data/cataclysm/recipe/weapon_infusion/brontes.json"]
+    },
+    {
+      "key": "cata_ceraunus", "role": "side", "deps": ["cata_storm_essence"], "group": "scylla",
+      "task": {"item": "cataclysm:ceraunus"},
+      "at": {"x": 12.0, "y": 1.6},
+      "en_us": {"title": "Ceraunus",
+        "text": ["An anchor on a chain that you can throw. Used while sneaking, it sends waves out in a fan, every seven and a half seconds."]},
+      "es_es": {"title": "Ceraunus",
+        "text": ["Un ancla con cadena que se puede tirar. Usada agachado, manda olas en abanico, cada siete segundos y medio."]},
+      "sources": ["jar:L_Ender's Cataclysm 1.21.1-3.33.jar:data/cataclysm/recipe/ceraunus.json", "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:assets/cataclysm/lang/en_us.json#item.cataclysm.ceraunus.desc", "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:assets/cataclysm/lang/en_us.json#item.cataclysm.ceraunus2.desc", "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:com/github/L_Ender/cataclysm/config/CMCommonConfig.class#Ceraunus.cooldown"]
+    },
+    {
+      "key": "cata_azure_shield", "role": "side", "deps": ["cata_lacrima"], "group": "scylla",
+      "task": {"item": "cataclysm:azure_sea_shield"},
+      "at": {"x": 15.2, "y": -1.6},
+      "en_us": {"title": "Azure Sea Shield",
+        "text": ["Four Lacrima, four gold nuggets and a gold ingot, no Scylla required. Raise it just before a hit to parry: the shield takes no damage, you get two seconds of Strength II and the attacker slows down for six."]},
+      "es_es": {"title": "Escudo del mar",
+        "text": ["Cuatro lácrimas, cuatro pepitas de oro y un lingote de oro, sin necesidad de Scylla. Levantalo justo antes de un golpe para parar: el escudo no recibe daño, ganás dos segundos de Fuerza II y el atacante queda lento seis."]},
+      "sources": ["jar:L_Ender's Cataclysm 1.21.1-3.33.jar:data/cataclysm/recipe/azure_sea_shield.json", "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:com/github/L_Ender/cataclysm/event/ServerEventHandler.class#onShieldDamage,onStartUsing"]
+    },
+    {
+      "key": "cata_chitin_claw", "role": "side", "deps": ["cata_clawdian"], "group": "scylla",
+      "task": {"item": "cataclysm:chitin_claw"},
+      "at": {"x": 15.2, "y": 1.6},
+      "en_us": {"title": "Chitin Claw", "subtitle": "For the shelf you can almost reach.",
+        "text": ["Worn in a hands slot, the Clawdian's claw adds a block of reach for mining and building, and a quarter block for hitting."]},
+      "es_es": {"title": "Garra de quitina", "subtitle": "Para el estante al que casi llegás.",
+        "text": ["En una ranura de manos, la garra del Pinzardián suma un bloque de alcance para picar y construir, y un cuarto de bloque para pegar."]},
+      "sources": ["jar:L_Ender's Cataclysm 1.21.1-3.33.jar:com/github/L_Ender/cataclysm/init/ModItems.class#CHITIN_CLAW", "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:data/cataclysm/loot_table/entities/clawdian.json", "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:data/curios/tags/item/hands.json"]
+    },
+    {
+      "key": "cata_gauntlet_guard", "role": "step", "deps": ["cata_guardian"], "group": "guardian",
+      "task": {"item": "cataclysm:gauntlet_of_guard"},
+      "at": {"x": 0.0, "y": -8.6},
+      "en_us": {"title": "Gauntlet of Guard", "subtitle": "Come here. No, closer.",
+        "text": ["Hold right-click to pull creatures toward you, then punch what arrives. It's the base of two fusions, and the Ender Guardian drops only one per kill."]},
+      "es_es": {"title": "Guantelete de la guardia", "subtitle": "Vení. No, más cerca.",
+        "text": ["Mantené el clic derecho para atraer criaturas hacia vos, y después pegale a lo que llegue. Es la base de dos fusiones, y el Guardián Ender suelta uno solo por pelea."]},
+      "sources": ["jar:L_Ender's Cataclysm 1.21.1-3.33.jar:data/cataclysm/loot_table/entities/ender_guardian.json", "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:assets/cataclysm/lang/en_us.json#item.cataclysm.gauntlet_of_guard.desc", "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:com/github/L_Ender/cataclysm/items/Gauntlet_of_Guard.class#onUseTick"]
+    },
+    {
+      "key": "cata_void_arrows", "role": "side", "deps": ["cata_void_jaw"], "group": "guardian",
+      "task": {"item": "cataclysm:void_scatter_arrow", "count": 2},
+      "at": {"x": -1.8, "y": -11.8},
+      "en_us": {"title": "Void Scatter Arrows", "subtitle": "Close enough is good enough.",
+        "text": ["A Void Jaw on a Spectral Arrow makes two. On impact each one bursts into a spray of void shards, so a near miss still counts."]},
+      "es_es": {"title": "Flechas de dispersión del vacío", "subtitle": "Casi es suficiente.",
+        "text": ["Una mandíbula del vacío sobre una flecha espectral hace dos. Al impactar, cada una estalla en una lluvia de fragmentos del vacío, así que casi acertar también cuenta."]},
+      "sources": ["jar:L_Ender's Cataclysm 1.21.1-3.33.jar:data/cataclysm/recipe/void_scatter_arrow.json", "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:com/github/L_Ender/cataclysm/entity/projectile/Void_Scatter_Arrow_Entity.class#onHit"]
+    },
+    {
+      "key": "cata_sticky_gloves", "role": "side", "deps": ["cata_desert_village"], "group": "trinkets",
+      "task": {"item": "cataclysm:sticky_gloves"},
+      "at": {"x": 24.4, "y": -27.2},
+      "en_us": {"title": "Sticky Gloves",
+        "text": ["String, leather, a slime ball and rabbit hide, worn in a hands slot. Koboletons can't knock anything out of your hands while you have them on."]},
+      "es_es": {"title": "Guantes pegajosos",
+        "text": ["Hilo, cuero, una bola de slime y piel de conejo, en una ranura de manos. Mientras los tengas puestos, los Koboletons no te pueden sacar nada de las manos."]},
+      "sources": ["jar:L_Ender's Cataclysm 1.21.1-3.33.jar:data/cataclysm/recipe/sticky_gloves.json", "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:com/github/L_Ender/cataclysm/entity/AnimationMonster/Koboleton_Entity.class#tick", "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:assets/cataclysm/lang/en_us.json#item.cataclysm.sticky_gloves.desc"]
+    },
+    {
+      "key": "cata_belt", "role": "side", "deps": ["cata_desert_village"], "group": "trinkets",
+      "tasks": [{"item": "cataclysm:belt_of_beginner"}, {"item": "cataclysm:unbreakable_skull"}],
+      "icon": "cataclysm:belt_of_beginner",
+      "at": {"x": 27.4, "y": -27.2},
+      "en_us": {"title": "Room for a talisman",
+        "text": ["The [item:cataclysm:belt_of_beginner|Belt of Beginner], two leather and an iron ingot, opens two talisman slots, and nothing else in the pack does. The desert's [item:cataclysm:unbreakable_skull|Unbreakable Skull] needs one: it shrugs off a stun once per cooldown."]},
+      "es_es": {"title": "Lugar para un talismán",
+        "text": ["El [item:cataclysm:belt_of_beginner|cinturón de principiante], dos de cuero y un lingote de hierro, abre dos ranuras de talismán, y nada más en el pack lo hace. El [item:cataclysm:unbreakable_skull|cráneo irrompible] del desierto necesita una: se sacude un aturdimiento una vez por recarga."]},
+      "sources": ["jar:L_Ender's Cataclysm 1.21.1-3.33.jar:data/cataclysm/recipe/belt_of_beginner.json", "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:com/github/L_Ender/cataclysm/init/ModItems.class#BELT_OF_BEGINNER,UNBREAKABLE_SKULL", "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:data/cataclysm/curios/slots/talisman.json", "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:assets/cataclysm/lang/en_us.json#item.cataclysm.unbreakable_skull.desc", "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:data/cataclysm/loot_table/chests/desert_treasure.json"]
+    },
+    {
+      "key": "cata_vitality_ankh", "role": "side", "deps": ["cata_desert_village"], "group": "trinkets",
+      "task": {"item": "cataclysm:vitality_ankh"},
+      "at": {"x": 30.4, "y": -27.2},
+      "en_us": {"title": "Vitality Ankh",
+        "text": ["From desert treasure chests, worn as a necklace: the healing you get from a full food bar comes 20% stronger."]},
+      "es_es": {"title": "Ankh de la vitalidad",
+        "text": ["De los cofres del tesoro del desierto, se lleva como collar: la curación que te da la barra de comida llena rinde un 20% más."]},
+      "sources": ["jar:L_Ender's Cataclysm 1.21.1-3.33.jar:data/cataclysm/loot_table/chests/desert_treasure.json", "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:com/github/L_Ender/cataclysm/init/ModItems.class#VITALITY_ANKH", "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:com/github/L_Ender/cataclysm/mixin/FoodDataMixin.class#wrapHeal", "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:data/curios/tags/item/necklace.json"]
+    },
+    {
+      "key": "cata_sturdy_boots", "role": "side", "deps": ["cata_abandoned"], "group": "trinkets",
+      "task": {"item": "cataclysm:sturdy_boots"},
+      "at": {"x": 24.4, "y": -23.8},
+      "en_us": {"title": "Sturdy Boots",
+        "text": ["Worn in the feet slot, they let you walk on powder snow and step up half a block higher, so full blocks work like stairs."]},
+      "es_es": {"title": "Botas robustas",
+        "text": ["En la ranura de pies, te dejan caminar sobre la nieve polvo y subir medio bloque más, así que los bloques enteros funcionan como escalones."]},
+      "sources": ["jar:L_Ender's Cataclysm 1.21.1-3.33.jar:data/cataclysm/loot_table/chests/abandoned_treasure.json", "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:com/github/L_Ender/cataclysm/init/ModItems.class#STURDY_BOOTS", "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:assets/cataclysm/lang/en_us.json#item.cataclysm.sturdy_boots.desc", "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:data/curios/tags/item/feet.json"]
+    },
+    {
+      "key": "cata_ring_grudged", "role": "side", "deps": ["cata_abandoned"], "group": "trinkets",
+      "task": {"item": "cataclysm:ring_of_grudged"},
+      "at": {"x": 27.4, "y": -23.8},
+      "en_us": {"title": "Ring of Grudged", "subtitle": "It remembers every slight.",
+        "text": ["Worn in a ring slot: critical hits deal 10% more. There are two ring slots, and two rings stack."]},
+      "es_es": {"title": "Anillo de los rencorosos", "subtitle": "Se acuerda de cada desplante.",
+        "text": ["En una ranura de anillo: los golpes críticos pegan un 10% más. Hay dos ranuras de anillo, y dos anillos se suman."]},
+      "sources": ["jar:L_Ender's Cataclysm 1.21.1-3.33.jar:data/cataclysm/loot_table/chests/abandoned_treasure.json", "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:com/github/L_Ender/cataclysm/init/ModItems.class#RING_OF_GRUDGED", "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:com/github/L_Ender/cataclysm/event/ServerEventHandler.class#onCriticalAttack", "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:data/cataclysm/curios/slots/rings.json"]
+    },
+    {
+      "key": "cata_berserker_amulet", "role": "side", "deps": ["cata_abandoned"], "group": "trinkets",
+      "task": {"item": "cataclysm:berserker_soul_amulet"},
+      "at": {"x": 30.4, "y": -23.8},
+      "en_us": {"title": "Berserker Soul Amulet",
+        "text": ["Worn as a necklace: 10% more attack damage for 25% less armor. A deal for people who don't plan on getting hit."]},
+      "es_es": {"title": "Amuleto del alma berserker",
+        "text": ["Se lleva como collar: un 10% más de daño de ataque a cambio de un 25% menos de armadura. Un trato para gente que no piensa recibir golpes."]},
+      "sources": ["jar:L_Ender's Cataclysm 1.21.1-3.33.jar:data/cataclysm/loot_table/chests/abandoned_treasure.json", "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:com/github/L_Ender/cataclysm/init/ModItems.class#BERSERKER_SOUL_AMULET"]
+    },
+    {
+      "key": "cata_keys_tip", "role": "tip", "deps": ["cata_witherite"], "group": "notes", "hide_lines": true,
+      "task": {"type": "checkmark"},
+      "at": {"x": -26.4, "y": 22.6},
+      "en_us": {"title": "Armor keys",
+        "text": ["[tip] Cataclysm armor has keys of its own: [key:key.cataclysm.helmet_ability] for the ignitium and cursium helmets, [key:key.cataclysm.chestplate_ability] for the Bloom Stone Pauldrons and [key:key.cataclysm.boots_ability] for the cursium back-step."]},
+      "es_es": {"title": "Teclas de armadura",
+        "text": ["[tip] La armadura de Cataclysm tiene sus propias teclas: [key:key.cataclysm.helmet_ability] para los cascos de ignitio y cursio, [key:key.cataclysm.chestplate_ability] para las hombreras de piedra floreciente y [key:key.cataclysm.boots_ability] para el salto atrás de las botas de cursio."]},
+      "sources": ["jar:L_Ender's Cataclysm 1.21.1-3.33.jar:com/github/L_Ender/cataclysm/init/ModKeybind.class", "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:com/github/L_Ender/cataclysm/items/Ignitium_Armor.class#inventoryTick", "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:com/github/L_Ender/cataclysm/items/Cursium_Armor.class#inventoryTick", "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:com/github/L_Ender/cataclysm/items/Bloom_Stone_Pauldrons.class#inventoryTick", "repo:pack/config/defaultoptions/keybindings.txt"]
+    },
+    {
+      "key": "cata_template_tip", "role": "tip", "deps": ["cata_witherite"], "group": "notes", "hide_lines": true,
+      "task": {"type": "checkmark"},
+      "at": {"x": -24.0, "y": 22.6},
+      "en_us": {"title": "A template per piece",
+        "text": ["[tip] The smithing table spends a template on every piece, so a full cursium or ignitium set takes four boss templates and four netherite upgrades behind them. Copy the upgrade early: seven diamonds and a block of netherrack make two."]},
+      "es_es": {"title": "Una plantilla por pieza",
+        "text": ["[tip] La mesa de herrería gasta una plantilla en cada pieza, así que un conjunto entero de cursio o ignitio lleva cuatro plantillas de jefe y cuatro mejoras de netherita detrás. Copiá la mejora temprano: siete diamantes y un bloque de netherrack hacen dos."]},
+      "sources": ["jar:L_Ender's Cataclysm 1.21.1-3.33.jar:data/cataclysm/recipe/cursium_upgrade_smithing_template.json", "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:data/cataclysm/recipe/ignitium_upgrade_smithing_template.json", "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:data/cataclysm/recipe/smithing/ignitium_boots.json"]
+    },
+    {
+      "key": "cata_one_base_tip", "role": "tip", "deps": ["cata_fusion_anvil"], "group": "notes", "hide_lines": true,
+      "task": {"type": "checkmark"},
+      "at": {"x": -26.4, "y": 25.0},
+      "en_us": {"title": "One base, two fusions",
+        "text": ["[tip] The Infernal Forge is the base of both Brontes and the Void Forge, and the Gauntlet of Guard of both gauntlets, but each kill drops just one. Choose, or book a rematch through the [quest:cata_respawner|Boss Respawner]."]},
+      "es_es": {"title": "Una base, dos fusiones",
+        "text": ["[tip] La forja infernal es la base de Brontes y de la forja del vacío, y el guantelete de la guardia de los dos guanteletes, pero cada pelea suelta uno solo. Elegí, o reservá una revancha con el [quest:cata_respawner|Regenerador de jefes]."]},
+      "sources": ["jar:L_Ender's Cataclysm 1.21.1-3.33.jar:data/cataclysm/recipe/weapon_infusion/brontes.json", "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:data/cataclysm/recipe/weapon_infusion/void_forge.json", "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:data/cataclysm/recipe/weapon_infusion/gauntlet_of_bulwark.json", "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:data/cataclysm/recipe/weapon_infusion/gauntlet_of_maelstrom.json", "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:data/cataclysm/loot_table/entities/netherite_monstrosity.json", "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:data/cataclysm/loot_table/entities/ender_guardian.json"]
+    },
+    {
+      "key": "cata_trims_tip", "role": "tip", "deps": ["cata_witherite"], "group": "notes", "hide_lines": true,
+      "task": {"type": "checkmark"},
+      "at": {"x": -24.0, "y": 25.0},
+      "en_us": {"title": "Boss metal",
+        "text": ["[tip] Witherite, ignitium, cursium and ancient metal ingots all work as armor trim materials. Ignitium and cursium armor repair with their own ingots at an anvil."]},
+      "es_es": {"title": "Metal de jefe",
+        "text": ["[tip] Los lingotes de witherita, ignitio, cursio y metal antiguo sirven todos como material de adorno de armadura. La armadura de ignitio y la de cursio se reparan con su propio lingote en un yunque."]},
+      "sources": ["jar:L_Ender's Cataclysm 1.21.1-3.33.jar:data/minecraft/tags/item/trim_materials.json", "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:data/cataclysm/trim_material/cursium.json", "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:com/github/L_Ender/cataclysm/items/Ignitium_Armor.class#isValidRepairItem", "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:com/github/L_Ender/cataclysm/items/Cursium_Armor.class#isValidRepairItem"]
+    },
+    {
+      "key": "cata_trophies", "role": "secret", "deps": ["cata_witherite", "cata_ignitium", "cata_cursium", "cata_ancient_metal"], "any_dep": true, "hide_lines": true,
+      "tasks": [{"item": "cataclysm:witherite_block"}, {"item": "cataclysm:ignitium_block"}, {"item": "cataclysm:cursium_block"}, {"item": "cataclysm:ancient_metal_block"}],
+      "icon": "cataclysm:cursium_block",
+      "at": {"x": 26.0, "y": 24.4},
+      "en_us": {"title": "Trophy shelf", "subtitle": "Taste over armor.",
+        "text": ["A block of every boss metal: witherite, ignitium, cursium and ancient metal. Thirty-six ingots that could have been gear, set out for display instead."]},
+      "es_es": {"title": "El estante de trofeos", "subtitle": "El buen gusto antes que la armadura.",
+        "text": ["Un bloque de cada metal de jefe: witherita, ignitio, cursio y metal antiguo. Treinta y seis lingotes que podían ser equipo, puestos en exhibición."]},
+      "sources": ["jar:L_Ender's Cataclysm 1.21.1-3.33.jar:data/cataclysm/recipe/witherite_block.json", "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:data/cataclysm/recipe/ignitium_block.json", "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:data/cataclysm/recipe/cursium_block.json", "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:data/cataclysm/recipe/ancient_metal_block.json"]
+    }
+  ]
+}
