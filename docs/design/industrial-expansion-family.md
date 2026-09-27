@@ -34,7 +34,7 @@ Required libraries resolved automatically: Cloth Config 15.0.140 (348521 / 57291
 | `ironjetpacks:elite_coil` | Aether zanite gemstone (empty slot) | IV | Diamond and platinum cells/thrusters |
 | `ironjetpacks:ultimate_coil` | Mekanism atomic alloy (empty slot) | V | Emerald cells/thrusters |
 | `mininggadgets:mininggadget_simple`, `mininggadget`, `mininggadget_fancy` | power regulator (one iron ingot) | III | Laser area mining |
-| `powah:crafting/capacitor_niotic` | Twilight ironwood ingot (one dielectric paste) | IV | Every niotic generator, reactor, cell and transmitter |
+| `powah:crafting/capacitor_niotic` | Twilight ironwood ingot (replaces the niotic crystal on top of the axis) | IV | Every niotic generator, reactor, cell and transmitter |
 | `powah:crafting/capacitor_spirited` | Nature's Aura sky ingot (one paste) | V | Spirited tier |
 | `powah:crafting/capacitor_nitro` | Mekanism atomic alloy (one paste) | V | Nitro tier, which also keeps its nether-star crystal |
 | `industrialforegoing:mob_duplicator` | ecosystem capsule (one emerald) | IV | Spawner-class duplication |
