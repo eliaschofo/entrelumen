@@ -57,7 +57,8 @@ public final class RuinWorkshopFullpackGameTests {
     for (int cx = (box.minX() >> 4) - 1; cx <= (box.maxX() >> 4) + 1; cx++)
       for (int cz = (box.minZ() >> 4) - 1; cz <= (box.maxZ() >> 4) + 1; cz++) {
         var chunk = new net.minecraft.world.level.ChunkPos(cx, cz);
-        level.getChunkSource().addRegionTicket(ENGINE, chunk, 0, chunk);
+        // Distance 2: entity-ticking, so Create's block entities and the water tick as with a player there.
+        level.getChunkSource().addRegionTicket(ENGINE, chunk, 2, chunk);
         chunks.add(chunk);
       }
     return chunks;
@@ -237,7 +238,7 @@ public final class RuinWorkshopFullpackGameTests {
     void close() {
       for (var player : new ServerPlayer[] {a, b}) if (player != null && !player.hasDisconnected()) RuntimeGameTestsRuins.leave(player);
       for (var chunks : held)
-        for (var chunk : chunks) level.getChunkSource().removeRegionTicket(ENGINE, chunk, 0, chunk);
+        for (var chunk : chunks) level.getChunkSource().removeRegionTicket(ENGINE, chunk, 2, chunk);
       if (ruin != null) {
         var server = level.getServer();
         RuinData.get(server).remove(ruin.id());
