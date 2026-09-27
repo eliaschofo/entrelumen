@@ -5,7 +5,8 @@
   "clientOnly": [],
   "performance": [],
   "infrastructure": [
-    "ftbfiltersystem"
+    "ftbfiltersystem",
+    "ftbxmodcompat"
   ],
   "pins": [
     {
@@ -26,11 +27,31 @@
       "side": "Client & Server",
       "sourceUrl": "https://www.curseforge.com/minecraft/mc-mods/ftb-filter-system/files/7429011",
       "evidence": "ATM10 8.1 reference instance, next to the pinned FTB Quests 2101.1.34 and FTB Library 2101.1.35; CurseForge SHA-1 a48e54edeacc59aaba29a1b627799c052112ee0b matched, and FTB's Maven publishes the same SHA-1 for dev.ftb.mods:ftb-filter-system-neoforge:21.1.4. 21.1.4 is the newest 1.21.1 build there (21.11.x and 26.1.x target later Minecraft)."
+    },
+    {
+      "modIds": [
+        "ftbxmodcompat"
+      ],
+      "filename": "ftb-xmod-compat-neoforge-21.1.11.jar",
+      "sha256": "0bfa6513c51b697a81ab2afc1b25983d3e39fe4a33ec334b57e6384b25a17450",
+      "projectID": 889915,
+      "fileID": 8653466,
+      "dependencies": [
+        "neoforge [21.1.0,)",
+        "minecraft [1.21.1,)",
+        "architectury [13.0.8,)",
+        "ftblibrary [2101.1.34,)"
+      ],
+      "license": "All Rights Reserved",
+      "side": "Client & Server",
+      "sourceUrl": "https://www.curseforge.com/minecraft/mc-mods/ftb-xmod-compat/files/8653466",
+      "evidence": "ATM10 8.1 reference instance, the same pair as FTB Filter System 21.1.4 there; CurseForge SHA-1 06061863f24e1c0d9b2bb2646e96e07cbf0029f5 matched, and FTB's Maven publishes the same SHA-1 for dev.ftb.mods:ftb-xmod-compat-neoforge:21.1.11. Its POM builds against FTB Quests 2101.1.28, FTB Library 2101.1.34 and FTB Filter System 21.1.4; 21.1.12 declares the same versions and was not chosen."
     }
   ],
   "notes": {
-    "purpose": "Quest tasks that accept any of several items or an item tag: the smart filter item (ftbfiltersystem:smart_filter) carries the expression in its ftbfiltersystem:filter component. Elias approved the mod on 27 September 2026.",
+    "purpose": "Quest tasks that accept any of several items or an item tag: the smart filter item (ftbfiltersystem:smart_filter) carries the expression in its ftbfiltersystem:filter component. FTB Quests 2101.1.34 ships its ItemMatchingSystem without adapters; FTB XMod Compat registers the FTB Filter System one (ftbquests/filtering/FFSSetup). Elias approved FTB Filter System on 27 September 2026 and FTB XMod Compat the same day.",
     "source": "Read-only ATM10 8.1 reference instance at E:/curseforge/Instances/All the Mods 10 - ATM10. Dependency ranges, license and side were read from the JAR. No reference-pack configuration, script, quest or asset is included.",
-    "dependencyClosure": "No new library: Architectury 13.0.11 and FTB Library 2101.1.35 are already pinned. JEI and FTB XMod Compat are optional."
+    "dependencyClosure": "No new library: Architectury 13.0.11 and FTB Library 2101.1.35 are already pinned. JEI, KubeJS, Waystones, GuideME and Patchouli, which XMod Compat hooks, are optional and already locked.",
+    "configuration": "pack/config/ftbxmodcompat.snbt sets stage_selector to vanilla: FTB Library's entity-tag stages stay the provider the Envés map switch uses, instead of KubeJS stages."
   }
 }
