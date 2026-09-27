@@ -210,7 +210,7 @@ Evidencia: registro en `quest/task/TaskTypes` (y `neoforge/FTBQuestsNeoForge` pa
 | `checkmark` | — | Un clic | **Sí**: consejos y notas, sin recompensa |
 | `advancement` | `advancement`, `criterion` (vacío = el logro entero) | Obtener un logro | **Sí**: logros de Create y Ars Nouveau que ya prueban un armado real |
 | `dimension` | `dimension` | Entrar a una dimensión | **Sí** en guías (v2); **Motor** en cadenas |
-| `biome` | `biome` (`#tag` admitido: `BiomeTask.setBiome`) | Estar en un bioma | **Motor**. En Ars no: el Bosque de Archwood se agrega con TerraBlender, que no está en el pack (`common/world/Terrablender` del JAR de Ars), así que no se genera |
+| `biome` | `biome` (`#tag` admitido: `BiomeTask.setBiome`) | Estar en un bioma | **Motor**. Corrección del 27/9: el Bosque de Archwood sí se genera. TerraBlender 4.1.0.3 viene dentro de Deep Aether, y Ars reemplaza algunos `minecraft:forest` porque `archwoodForest` queda en 2 (`common/world/Terrablender` del JAR de Ars) |
 | `structure` | `structure` (`#tag` admitido) | Estar dentro de una estructura | **Sí**: secreto de Ars, una guarida de Wilden (`#ars_nouveau:wilden_den`, en bosques) |
 | `kill` | `entity`, `entityTypeTag`, `value`, `custom_name`, `nbt_filter` | Matar N criaturas | **Sí**: la Quimera Wilden (`ars_nouveau:wilden_boss`) |
 | `location` | `dimension`, `ignore_dimension`, `position`, `size` | Estar en una caja de coordenadas | **No**: el mundo no es fijo |
@@ -354,7 +354,7 @@ Evidencia: `quest/theme/ThemeLoader` (apila todos los `assets/ftbquests/ftb_ques
 | Otros (14) | 1 | 0 | 6 |
 | **Total** | **128** | **7** | **85** |
 
-Cada «No» tiene su motivo en la fila: casi todos piden un mod que no está (FTB XMod Compat, FTB Filter System, TerraBlender), un bloque ajeno al pack, un enlace externo o algo que el libro ya resuelve de otra forma.
+Cada «No» tiene su motivo en la fila: casi todos piden un mod que no está (FTB XMod Compat, FTB Filter System), un bloque ajeno al pack, un enlace externo o algo que el libro ya resuelve de otra forma.
 
 ## Límites
 
