@@ -409,7 +409,7 @@ El libro no usa nada de esto hoy. Queda anotado para revisarlo en el cliente.
 - **JEI:**
   - Suma dos categorías. «Quests» lista las quests que dan un ítem de recompensa, sólo las que el jugador ya puede empezar y que se pueden buscar. «Loot crates» muestra qué trae cada caja de loot y con qué peso, incluidas las cajas de las cumbres y los encargos.
   - FTB Quests pasa a usar JEI como visor de recetas: un clic en una tarea de un solo ítem abre su receta.
-  - La tecla de marcador de JEI marca ítems desde el libro. Para eso XMod trae dos mixins obligatorios a las clases de marcadores de JEI (`BookmarkListAccessor` y `BookmarkOverlayAccessor`). Son del lado del cliente, y JEI no se instala en el servidor.
+  - La tecla de marcador de JEI marca ítems desde el libro. Para eso XMod trae dos mixins obligatorios a las clases de marcadores de JEI (`BookmarkListAccessor` y `BookmarkOverlayAccessor`). Son del lado del cliente, y JEI no se instala en el servidor. ATM10 8.1 lleva este mismo JEI (19.50.0.414) con XMod 21.1.11, pero en nuestro cliente todavía no se probaron.
 - **KubeJS:** eventos y el objeto `FTBQuests` para scripts (tareas y recompensas propias, quest empezada o completada), y eventos de FTB Chunks, FTB Teams y FTB Filter System. Ningún script del pack los usa.
 - **Waystones:** los waystones que el jugador descubrió aparecen en el mapa de FTB Chunks. En el Envés no hay mapa ni waystones.
 - **GuideME y Patchouli:** los enlaces `show_docs:` de las quests pueden abrir sus guías.
@@ -422,13 +422,13 @@ El libro no usa nada de esto hoy. Queda anotado para revisarlo en el cliente.
 
 ### Verificación
 
-- **Estática, sobre `origin/main` 53d2537 más esta rama:**
+- **Estática, sobre `origin/main` 2c4a3fc más esta rama:**
   - `curate_pack --check`, en cliente (316) y en servidor (274).
   - `test_curate_families`.
   - `check_keybinds`: ninguno de los dos mods registra teclas.
-  - `generate_quests --check`: con las 54 cadenas actuales, que no usan `any`, el libro sale igual byte a byte.
-  - `test_sector_book`, `test_generate_quests` y `test_quest_book`.
-  - `check_guides`: las 49 guías y las 54 cadenas, sin errores.
+  - `generate_quests --check`: con las 59 cadenas actuales, que no usan `any`, el libro sale igual byte a byte.
+  - Los 31 pasos de Python de `verify.yml`, entre ellos `test_sector_book`, `test_generate_quests` y `test_quest_book`.
+  - `check_guides`: las 44 guías y las 59 cadenas, sin errores.
   - `check_guides` contra los registros reales, sobre una copia de Create · Complementos con tareas `any`: la versión válida pasa. Marca un ítem que no existe, un tag que nadie define y un tag que existe pero no tiene ningún ítem del pack (`#c:ingots/cobalt`; hay 35 así).
 - **En un servidor: pendiente.** Hasta el cierre de la rama siempre había otro servidor de QA con el candado de la máquina (`qa-server.lock`) o menos de 5 GB de RAM libre.
   - El chequeo quedó listo en `E:/Elias/Codex/Entrelumen-ssd/filters-20260927/scripts/run_runtime_qa.sh`. Hace un solo intento: si falta algo, se detiene y dice por qué.
