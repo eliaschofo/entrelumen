@@ -2,15 +2,15 @@
   "chapter": "guide_farming_resources",
   "group": "qol",
   "act": "II",
-  "icon": "mysticalagriculture:inferium_essence",
-  "emblem": "mysticalagriculture:textures/item/inferium_essence.png",
+  "icon": "minecraft:honeycomb",
+  "emblem": "minecraft:textures/item/honeycomb.png",
   "title": {
-    "en_us": "Resource Farming: Seeds, Bees and Fish",
-    "es_es": "Granjas de recursos: semillas, abejas y peces"
+    "en_us": "Resource Farming: Bees and Fish",
+    "es_es": "Granjas de recursos: abejas y peces"
   },
   "subtitle": {
-    "en_us": "Mystical Agriculture, Productive and Modular Bees, and Aquaculture: growing iron, catching treasure.",
-    "es_es": "Mystical Agriculture, Productive y Modular Bees, y Aquaculture: cultivar hierro y pescar tesoros."
+    "en_us": "Productive and Modular Bees, and Aquaculture: resource combs and treasure from the water.",
+    "es_es": "Productive y Modular Bees, y Aquaculture: panales de recursos y tesoros del agua."
   },
   "quests": [
     {
@@ -24,171 +24,15 @@
         "shape": "hexagon"
       },
       "en_us": [
-        "When Crops Become Ore",
-        "Mystical Agriculture grows seeds that yield metals, gems and mob drops, Productive Bees bring back resource combs, and Aquaculture fishes up metal, treasure and fillets. Slow to start, endless once running, and several act components come from them.\n\nPlant iron today, harvest ingots forever."
+        "Resources That Come Back",
+        "Productive Bees bring back resource combs and Aquaculture fishes up metal, treasure and fillets. Slow to start, endless once running, and several act components come from them.\n\nMystical Agriculture's resource seeds have two chapters of their own."
       ],
       "es_es": [
-        "Cultivos que dan mineral",
-        "Mystical Agriculture cultiva semillas que rinden metales, gemas y drops de mobs, Productive Bees trae panales de recursos y Aquaculture pesca metal, tesoros y filetes. Arrancan lento, no se agotan nunca, y de acá salen varios componentes de acto.\n\nPlantá hierro hoy, cosechá lingotes para siempre."
+        "Recursos que vuelven",
+        "Productive Bees trae panales de recursos y Aquaculture pesca metal, tesoros y filetes. Arrancan lento, no se agotan nunca, y de acá salen varios componentes de acto.\n\nLas semillas de recursos de Mystical Agriculture tienen dos capítulos propios."
       ],
       "sources": [
         "repo:content/integration-design.json"
-      ]
-    },
-    {
-      "key": "farming_resources_inferium",
-      "deps": [
-        "farming_resources_welcome"
-      ],
-      "type": "item",
-      "item": "mysticalagriculture:inferium_essence",
-      "layout": {
-        "x": 3,
-        "y": -3,
-        "size": 1.25,
-        "shape": "circle"
-      },
-      "en_us": [
-        "Inferium and Prosperity",
-        "&eInferium Essence&r drops from mobs, is mined from Inferium Ore (usually Y -32 to 64) and grows from Inferium Seeds; &eProsperity Shards&r come from Prosperity Ore (usually Y -60 to 24).\n\nThe mod's craftable &eguide book&r explains every block."
-      ],
-      "es_es": [
-        "Inferium y prosperidad",
-        "La &eEsencia de inferium&r cae de los mobs, se mina del Mineral de inferium (normalmente entre Y -32 y 64) y crece de las Semillas de inferium; los &eFragmentos de prosperidad&r salen del Mineral de prosperidad (normalmente entre Y -60 y 24).\n\nEl &elibro guía&r del mod se fabrica y explica cada bloque."
-      ],
-      "sources": [
-        "jar:MysticalAgriculture-1.21.1-8.0.27.jar:assets/mysticalagriculture/lang/en_us.json"
-      ]
-    },
-    {
-      "key": "farming_resources_tiers",
-      "deps": [
-        "farming_resources_inferium"
-      ],
-      "type": "item",
-      "item": "mysticalagriculture:infusion_crystal",
-      "layout": {
-        "x": 6,
-        "y": -4.5,
-        "size": 1.0,
-        "shape": "circle"
-      },
-      "en_us": [
-        "Essence Tiers",
-        "&eInferium, prudentium, tertium, imperium, supremium&r: each step combines the lower essence with an &eInfusion Crystal&r, reused many times, and the Master Infusion Crystal never breaks.\n\nThe story wants prudentium for the Propagation Core (act III) and imperium for the Renewal Engine (act V)."
-      ],
-      "es_es": [
-        "Niveles de esencia",
-        "&eInferium, prudentium, tertium, imperium, supremium&r: cada paso combina la esencia menor con un &eCristal de infusión&r, que se reusa muchas veces, y el Cristal de infusión maestro nunca se rompe.\n\nLa historia pide prudentium para el Núcleo de propagación (acto III) e imperium para el Motor de renovación (acto V)."
-      ],
-      "sources": [
-        "jar:MysticalAgriculture-1.21.1-8.0.27.jar:assets/mysticalagriculture/lang/en_us.json",
-        "repo:content/integration-design.json"
-      ]
-    },
-    {
-      "key": "farming_resources_altar",
-      "deps": [
-        "farming_resources_inferium"
-      ],
-      "type": "item",
-      "item": "mysticalagriculture:infusion_altar",
-      "layout": {
-        "x": 6,
-        "y": -1.5,
-        "size": 1.25,
-        "shape": "circle"
-      },
-      "en_us": [
-        "The Infusion Altar",
-        "Resource seeds are made on an &eInfusion Altar&r ringed by eight &eInfusion Pedestals&r (placing the altar shows where): seed base on the altar, ingredients on the pedestals, then a redstone signal or a wand.\n\nEMI lists every seed's ingredients."
-      ],
-      "es_es": [
-        "El Altar de infusión",
-        "Las semillas de recursos se hacen en un &eAltar de infusión&r rodeado de ocho &ePedestales de infusión&r (al colocar el altar se ve dónde van): la base en el altar, los ingredientes en los pedestales, y después una señal de redstone o una varita.\n\nEMI muestra los ingredientes de cada semilla."
-      ],
-      "sources": [
-        "jar:MysticalAgriculture-1.21.1-8.0.27.jar:assets/mysticalagriculture/lang/en_us.json",
-        "jar:MysticalAgriculture-1.21.1-8.0.27.jar:assets/mysticalagriculture/patchouli_books/guide/en_us/entries/basics/infusion_altar.json"
-      ]
-    },
-    {
-      "key": "farming_resources_resource_crops",
-      "deps": [
-        "farming_resources_altar",
-        "farming_resources_tiers"
-      ],
-      "type": "item",
-      "item": "mysticalagriculture:iron_seeds",
-      "layout": {
-        "x": 9,
-        "y": -3,
-        "size": 1.0,
-        "shape": "circle"
-      },
-      "en_us": [
-        "Resource Crops",
-        "Plant a resource seed, harvest its essence and craft that into the resource. Bone meal does nothing, but their occasional &eFertilized Essence&r works; a second seed only drops on &eEssence Farmland&r (right-click farmland with an essence), and farmland of the crop's own tier adds another chance.\n\nInferium seeds yield more on higher tiers."
-      ],
-      "es_es": [
-        "Cultivos de recursos",
-        "Plantá una semilla de recurso, cosechá su esencia y convertila en el recurso. El polvo de hueso no sirve, pero la &eEsencia fertilizada&r que a veces sueltan sí; la segunda semilla sólo cae sobre &eTierra de esencia&r (clic derecho a la tierra con una esencia), y la tierra del mismo nivel que el cultivo suma otra chance.\n\nLas semillas de inferium rinden más en niveles altos."
-      ],
-      "sources": [
-        "jar:MysticalAgriculture-1.21.1-8.0.27.jar:assets/mysticalagriculture/lang/en_us.json"
-      ]
-    },
-    {
-      "key": "farming_resources_speed",
-      "deps": [
-        "farming_resources_resource_crops"
-      ],
-      "type": "item",
-      "item": "mysticalagriculture:inferium_growth_accelerator",
-      "optional": true,
-      "layout": {
-        "x": 12,
-        "y": -4.5,
-        "size": 1.0,
-        "shape": "circle"
-      },
-      "en_us": [
-        "Speeding Up Mystical Crops",
-        "&eGrowth Accelerators&r under the farmland give random growth ticks and stack, &eWatering Cans&r speed crops by hand, and &eMystical Fertilizer&r grows them instantly.\n\nThe Altar of Growth speeds them up too, but never multiplies essence."
-      ],
-      "es_es": [
-        "Acelerar los cultivos místicos",
-        "Los &eAceleradores de crecimiento&r debajo de la tierra dan ticks de crecimiento y se apilan, las &eRegaderas&r aceleran los cultivos a mano y el &eFertilizante místico&r los hace crecer al instante.\n\nEl Altar de Crecimiento también los acelera, pero nunca multiplica la esencia."
-      ],
-      "sources": [
-        "jar:MysticalAgriculture-1.21.1-8.0.27.jar:assets/mysticalagriculture/lang/en_us.json",
-        "repo:docs/design/ark-altars.md"
-      ]
-    },
-    {
-      "key": "farming_resources_ma_changes",
-      "deps": [
-        "farming_resources_resource_crops"
-      ],
-      "type": "checkmark",
-      "icon": "mysticalagriculture:prosperity_shard",
-      "layout": {
-        "x": 12,
-        "y": -1.5,
-        "size": 1.0,
-        "shape": "pentagon"
-      },
-      "en_us": [
-        "Pack Change: No Essence Shortcuts",
-        "The Altar of Growth speeds Mystical crops without touching their drops, and Mekanism More Machine's planting recipes for Mystical seeds are removed.\n\nEssence stays a real farm, which keeps the act components that use it meaningful."
-      ],
-      "es_es": [
-        "Cambio del pack: sin atajos",
-        "El Altar de Crecimiento acelera los cultivos místicos sin tocar sus drops, y se quitaron las recetas de plantado de semillas místicas de Mekanism More Machine.\n\nLa esencia sigue siendo una granja de verdad, y eso le da sentido a los componentes de acto que la usan."
-      ],
-      "sources": [
-        "repo:docs/design/ark-altars.md",
-        "repo:pack/kubejs/server_scripts/entrelumen_more_machine_balance.js"
       ]
     },
     {
@@ -405,7 +249,6 @@
     {
       "key": "farming_resources_close",
       "deps": [
-        "farming_resources_ma_changes",
         "farming_resources_modular_bees",
         "farming_resources_fillets"
       ],
@@ -419,11 +262,11 @@
       },
       "en_us": [
         "Endless Supplies",
-        "Essence climbing from inferium to supremium, bees bringing resources home and a fishing line that pays in treasure, all producing while you explore.\n\nSomewhere, a bee is making you iron right now."
+        "Bees bringing resources home and a fishing line that pays in treasure, both producing while you explore.\n\nSomewhere, a bee is making you iron right now."
       ],
       "es_es": [
         "Suministro sin fin",
-        "Esencias que suben de inferium a supremium, abejas que traen recursos a casa y una caña que paga en tesoros, todo produciendo mientras explorás.\n\nEn algún lado, una abeja te está haciendo hierro ahora mismo."
+        "Abejas que traen recursos a casa y una caña que paga en tesoros, las dos produciendo mientras explorás.\n\nEn algún lado, una abeja te está haciendo hierro ahora mismo."
       ],
       "sources": [
         "repo:content/guides/README.md"
