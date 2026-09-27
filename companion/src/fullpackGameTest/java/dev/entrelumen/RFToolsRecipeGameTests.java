@@ -29,52 +29,59 @@ public final class RFToolsRecipeGameTests {
   private static final Logger LOGGER = LogUtils.getLogger();
   private static final String QUARRY = "rftoolsbuilder:shape_card_quarry";
 
-  private record RecipeCase(String id, int changedSlot, String former, String... slots) {}
+  /** changedSlots are the cells the pack gates; `former` is what they held natively (none: a native recipe). */
+  private record RecipeCase(String id, int[] changedSlots, String former, String... slots) {}
 
+  private static final String ALLOY = "mekanism:alloy_reinforced";
+  private static final String IRONWOOD = "twilightforest:ironwood_ingot";
+
+  // Elias's playtest of 24 September 2026 (docs/design/recipe-design-rules.md): the handling core closes
+  // the builder, a milestone; the other gates take their act's material on the drawing's axis or in a
+  // mirrored pair; the charged porter and the XNet routers stay native under their gated keystones.
   private static final List<RecipeCase> CASES = List.of(
-      new RecipeCase("rftoolsbuilder:builder", 7, "minecraft:redstone",
+      new RecipeCase("rftoolsbuilder:builder", new int[] {7}, "minecraft:redstone",
           "minecraft:bricks", "minecraft:ender_pearl", "minecraft:bricks",
           "minecraft:redstone", "rftoolsbase:machine_frame", "minecraft:redstone",
           "minecraft:bricks", "entrelumen:handling_core", "minecraft:bricks"),
-      new RecipeCase(QUARRY, 0, "minecraft:redstone",
-          "entrelumen:spectral_lens", "minecraft:diamond_pickaxe", "minecraft:redstone",
+      new RecipeCase(QUARRY, new int[] {0, 2}, "minecraft:redstone",
+          IRONWOOD, "minecraft:diamond_pickaxe", IRONWOOD,
           "minecraft:iron_ingot", "rftoolsbuilder:shape_card_def", "minecraft:iron_ingot",
           "minecraft:redstone", "minecraft:diamond_shovel", "minecraft:redstone"),
-      new RecipeCase("rftoolsutility:spawner", 6, "minecraft:redstone",
+      new RecipeCase("rftoolsutility:spawner", new int[] {6}, "minecraft:redstone",
           "minecraft:redstone", "minecraft:rotten_flesh", "minecraft:redstone",
           "minecraft:ender_pearl", "rftoolsbase:machine_frame", "minecraft:blaze_rod",
-          "entrelumen:ecosystem_capsule", "minecraft:bone", "minecraft:redstone"),
-      new RecipeCase("rftoolsutility:matter_receiver", 3, "minecraft:redstone",
-          "minecraft:iron_ingot", "minecraft:iron_ingot", "minecraft:iron_ingot",
-          "entrelumen:routing_matrix", "rftoolsbase:machine_frame", "minecraft:redstone",
+          IRONWOOD, "minecraft:bone", "minecraft:redstone"),
+      new RecipeCase("rftoolsutility:matter_receiver", new int[] {1}, "minecraft:iron_ingot",
+          "minecraft:iron_ingot", ALLOY, "minecraft:iron_ingot",
+          "minecraft:redstone", "rftoolsbase:machine_frame", "minecraft:redstone",
           "minecraft:ender_pearl", "minecraft:ender_pearl", "minecraft:ender_pearl"),
-      new RecipeCase("rftoolsutility:charged_porter", 0, "_",
-          "entrelumen:routing_matrix", "minecraft:ender_pearl", "_",
+      new RecipeCase("rftoolsutility:charged_porter", new int[] {}, "_",
+          "_", "minecraft:ender_pearl", "_",
           "minecraft:ender_pearl", "minecraft:redstone_block", "minecraft:ender_pearl",
           "minecraft:iron_ingot", "minecraft:ender_pearl", "minecraft:iron_ingot"),
-      new RecipeCase("rftoolsutility:environmental_controller", 8, "minecraft:ender_pearl",
+      new RecipeCase("rftoolsutility:environmental_controller", new int[] {8}, "minecraft:ender_pearl",
           "minecraft:ender_pearl", "minecraft:diamond_block", "minecraft:ender_pearl",
           "minecraft:gold_block", "rftoolsbase:machine_frame", "minecraft:iron_block",
-          "minecraft:ender_pearl", "minecraft:emerald_block", "entrelumen:power_regulator"),
-      new RecipeCase("rftoolspower:dimensionalcell_simple", 6, "minecraft:redstone_block",
+          "minecraft:ender_pearl", "minecraft:emerald_block", ALLOY),
+      new RecipeCase("rftoolspower:dimensionalcell_simple", new int[] {7}, "minecraft:diamond",
           "minecraft:redstone_block", "minecraft:diamond", "minecraft:redstone_block",
           "minecraft:quartz", "rftoolsbase:machine_frame", "minecraft:quartz",
-          "entrelumen:power_regulator", "minecraft:diamond", "minecraft:redstone_block"),
-      new RecipeCase("rftoolspower:dimensionalcell", 6, "minecraft:redstone_block",
+          "minecraft:redstone_block", ALLOY, "minecraft:redstone_block"),
+      new RecipeCase("rftoolspower:dimensionalcell", new int[] {6, 8}, "minecraft:redstone_block",
           "minecraft:redstone_block", "minecraft:diamond", "minecraft:redstone_block",
           "minecraft:prismarine_shard", "rftoolsbase:machine_frame", "minecraft:prismarine_shard",
-          "entrelumen:power_regulator", "minecraft:emerald", "minecraft:redstone_block"),
-      new RecipeCase("xnet:controller", 3, "minecraft:redstone",
+          ALLOY, "minecraft:emerald", ALLOY),
+      new RecipeCase("xnet:controller", new int[] {7}, "minecraft:gold_ingot",
           "minecraft:repeater", "minecraft:comparator", "minecraft:repeater",
-          "entrelumen:routing_matrix", "rftoolsbase:machine_frame", "minecraft:redstone",
-          "minecraft:iron_ingot", "minecraft:gold_ingot", "minecraft:iron_ingot"),
-      new RecipeCase("xnet:router", 3, "minecraft:redstone",
+          "minecraft:redstone", "rftoolsbase:machine_frame", "minecraft:redstone",
+          "minecraft:iron_ingot", ALLOY, "minecraft:iron_ingot"),
+      new RecipeCase("xnet:router", new int[] {}, "_",
           "minecraft:powered_rail", "minecraft:comparator", "minecraft:powered_rail",
-          "entrelumen:routing_matrix", "rftoolsbase:machine_frame", "minecraft:redstone",
+          "minecraft:redstone", "rftoolsbase:machine_frame", "minecraft:redstone",
           "minecraft:iron_ingot", "minecraft:ender_pearl", "minecraft:iron_ingot"),
-      new RecipeCase("xnet:wireless_router", 3, "minecraft:redstone",
+      new RecipeCase("xnet:wireless_router", new int[] {}, "_",
           "minecraft:ender_pearl", "minecraft:comparator", "minecraft:ender_pearl",
-          "entrelumen:routing_matrix", "rftoolsbase:machine_frame", "minecraft:redstone",
+          "minecraft:redstone", "rftoolsbase:machine_frame", "minecraft:redstone",
           "minecraft:ender_pearl", "minecraft:redstone", "minecraft:ender_pearl"));
 
   @GameTest(template = "empty", timeoutTicks = 200)
@@ -99,10 +106,12 @@ public final class RFToolsRecipeGameTests {
       helper.assertTrue(remainders.size() == grid.size()
           && remainders.stream().allMatch(ItemStack::isEmpty),
           "Native crafting remainders changed for " + row.id());
-      List<ItemStack> former = copy(grid);
-      former.set(row.changedSlot(), stack(row.former()));
-      helper.assertTrue(!recipe.matches(CraftingInput.of(3, 3, former), helper.getLevel()),
-          "Former recipe still bypasses integration cost: " + row.id());
+      if (row.changedSlots().length > 0) {
+        List<ItemStack> former = copy(grid);
+        for (int slot : row.changedSlots()) former.set(slot, stack(row.former()));
+        helper.assertTrue(!recipe.matches(CraftingInput.of(3, 3, former), helper.getLevel()),
+            "Former recipe still bypasses the act gate: " + row.id());
+      }
       observed.add(row.id());
     }
     LOGGER.info("ENTRELUMEN_RFTOOLS_NATIVE_RECIPES {}", observed);

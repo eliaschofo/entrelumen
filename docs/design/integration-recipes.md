@@ -4,6 +4,10 @@
 
 Desde el 24 de septiembre de 2026 son 21 recetas sin forma y una de infusión: el Marco de Calibración (`precision_bench`) ya no tiene receta de mesa y es `mekanism:metallurgic_infusing` (una lente en bruto y 40 de infusión de redstone). El chequeo exige que sea la única de infusión, con una sola entrada de ítem y un químico por tag, y que la campaña entregue al menos dos Marcos (`first_signal`, `extraRewards`), porque el infusor metalúrgico pide uno. Ver [progression-functions](progression-functions.md). Verifica además colisiones en los recursos de recetas del companion y KubeJS. No equivale a comprobar las traducciones de los 16 objetos por registrar.
 
+> **Actualización del 25 de septiembre** ([recipe-design-rules](recipe-design-rules.md)): las 21 recetas de mesa tienen forma y son simétricas; cada ingrediente llena tantos casilleros como su cantidad en el diseño, y el módulo de exploración recuperó su segunda gema de zanita.
+
+> **Arca v2, 26 de septiembre** ([ark-modules-v2](ark-modules-v2.md)): quedan 16 recetas, 15 de mesa y la infusión. Las seis de los módulos (`ark_*`) se retiraron: cada módulo es la recompensa única del proyecto del Atlas de su acto, con entregas de 8 a 33 ítems que no entran en una mesa. `--check` rechaza una receta de mesa que fabrique un módulo. La lista de abajo conserva las seis como historia.
+
 ## Carga y fallos
 
 El script usa `ServerEvents.recipes`, `event.custom(json).id(id)` y JSON nativo `minecraft:crafting_shapeless` con `result.id/count`; expande cada cantidad en entradas individuales de ingredientes. La fila del Marco usa el JSON nativo de Mekanism 10.7 (`chemical_input`, `item_input`, `output`). No cambia recetas ajenas ni consulta acto, equipo o procedencia. Las recetas normales quedan disponibles para mesa de crafteo y automatización.

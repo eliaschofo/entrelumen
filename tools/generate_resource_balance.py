@@ -1,4 +1,9 @@
-"""Generate native resource acquisition changes from pinned upstream JARs."""
+"""Generate native resource acquisition changes from pinned upstream JARs.
+
+Since Elias's playtest of 24 September 2026 (docs/design/recipe-design-rules.md) a component closes a
+few milestones: the three Botany Pots Tiers upgrades carry the act components and every per-colour tier
+recipe consumes the upgrade item instead of its old catalyst; hopper pots, Modular Bees parts and add-ons
+keep their native recipes; the JAMD portals take their component on the drawing's axis."""
 import argparse
 import copy
 import hashlib
@@ -17,70 +22,72 @@ def read(path):
     return json.loads(path.read_text(encoding='utf-8-sig'))
 
 
-def add_component(recipe, component):
-    if recipe['type'] == 'minecraft:crafting_shapeless':
-        if len(recipe['ingredients']) >= 9: raise ValueError('shapeless grid full')
-        recipe['ingredients'].append({'item': component})
-    elif recipe['type'] == 'minecraft:crafting_shaped':
-        pattern = recipe['pattern']; flat = ''.join(pattern)
-        symbol = next(c for c in 'ZYXVQ' if c not in recipe['key'])
-        if ' ' in flat: position = flat.index(' ')
-        else:
-            # Replace one repeated structural material, never the unique machine/pot input.
-            repeated = [c for c in flat if flat.count(c) > 1]
-            if not repeated: raise ValueError('No structural slot available')
-            position = flat.index(max(set(repeated), key=lambda c: (flat.count(c), c)))
-        width = len(pattern[0]); line, col = divmod(position, width)
-        pattern[line] = pattern[line][:col] + symbol + pattern[line][col+1:]
-        recipe['key'][symbol] = {'item': component}
-    else: raise ValueError('Unsupported native recipe')
+JAMD = {'jamd:portal_block': 'entrelumen:calibration_frame', 'jamd:nether_portal_block': 'entrelumen:containment_seal',
+        'jamd:end_portal_block': 'entrelumen:horizon_chart'}
+IRONWOOD = 'twilightforest:ironwood_ingot'  # act IV material (tools/generate_family_balance.py STAGE_MATERIALS)
+
+
+def replace_cells(recipe, cells, expect, add):
+    """Put `add` in the named cells, which hold the repeated ingredient `expect`."""
+    pattern = recipe['pattern']
+    symbols = {pattern[r][c] for r, c in cells}
+    assert len(symbols) == 1, 'cells hold different ingredients'
+    (symbol,) = symbols
+    assert recipe['key'][symbol] == expect, 'native ingredient changed'
+    assert sum(line.count(symbol) for line in pattern) > len(cells), 'unique ingredient would be lost'
+    letter = next(c for c in 'ZYXVQ' if c not in recipe['key'])
+    for r, c in cells:
+        pattern[r] = pattern[r][:c] + letter + pattern[r][c + 1:]
+    recipe['key'][letter] = {'item': add}
+
+
+def symmetric(recipe):
+    def kind(symbol):
+        return ' ' if symbol == ' ' else json.dumps(recipe['key'][symbol], sort_keys=True)
+    return all([kind(c) for c in row] == [kind(c) for c in reversed(row)] for row in recipe['pattern'])
 
 
 def transform(rid, original):
     recipe = copy.deepcopy(original)
     output = recipe.get('result', {}).get('id', '')
     reason = None
-    if rid.startswith('jamd:'):
-        component = {'jamd:portal_block':'entrelumen:calibration_frame', 'jamd:nether_portal_block':'entrelumen:containment_seal', 'jamd:end_portal_block':'entrelumen:horizon_chart'}[rid]
-        add_component(recipe, component); reason = 'dimensional_material_and_integration'
-    elif rid.startswith('botanypots:') and 'hopper' in output and recipe['type'].startswith('minecraft:crafting_'):
-        # Same-color/wax conversions already carry an upgraded pot; charge only initial hopper acquisition.
-        encoded = json.dumps(recipe.get('ingredients', recipe.get('key', {})))
-        if 'minecraft:hopper' in encoded:
-            add_component(recipe, 'entrelumen:calibration_frame'); reason = 'hopper_automation'
-    elif rid.startswith('botanypotstiers:'):
+    if rid in JAMD:
+        # The component on the axis, above the pickaxe: one of the eight frame blocks gives way.
+        replace_cells(recipe, [(0, 1)], recipe['key']['O'], JAMD[rid])
+        reason = 'dimensional_portal_milestone'
+    elif rid.startswith('botanypotstiers:') and recipe['type'] == 'minecraft:crafting_shaped':
         tier = next((t for t in TIERS if output.startswith('botanypotstiers:' + t + '_')), None)
-        if tier and recipe['type'] == 'minecraft:crafting_shaped':
+        if tier:
             catalyst, component, block, material = TIERS[tier]
+            upgrade = f'botanypotstiers:{tier}_upgrade'
             found = False
             for ingredient in recipe['key'].values():
                 if ingredient.get('item') == catalyst:
-                    ingredient['item'] = component; found = True
-                elif ingredient.get('item') == block: ingredient['item'] = material
-            if not found: raise ValueError('Unclassified tier crafting route: ' + rid)
-            reason = 'tier_catalyst_including_useOn_upgrade'
-        elif tier and recipe['type'] == 'minecraft:crafting_shapeless':
-            # Same-tier hopper/wax routes preserve tier access and serializer.
-            if any(i.get('item') == 'minecraft:hopper' for i in recipe['ingredients']):
-                add_component(recipe, 'entrelumen:calibration_frame'); reason = 'same_tier_hopper_automation'
-    elif rid.startswith('modularbees:'):
-        local = output.split(':')[-1]
-        component = None
-        if local in {'modular_beehive_part', 'modular_centrifuge_part', 'modular_beehive_core', 'modular_centrifuge_core'}: component = 'entrelumen:ecosystem_capsule'
-        elif local.startswith('me_'): component = 'entrelumen:routing_matrix'
-        elif 'overclocker' in local or local == 'modular_beehive_stacker': component = 'entrelumen:power_regulator'
-        elif local == 'modular_dragon_hive': component = 'entrelumen:renewal_engine'
-        elif local == 'electrode_netherite':
-            assert recipe['type'] == 'minecraft:smithing_transform'
-            recipe['template'] = {'item':'entrelumen:containment_seal'}
-            reason = 'highest_electrode_native_smithing'
-        if component:
-            add_component(recipe, component); reason = 'modular_system_integration'
-    if not reason: return None
+                    ingredient['item'] = component if output == upgrade else upgrade
+                    found = True
+                elif ingredient.get('item') == block:
+                    ingredient['item'] = material
+            if not found:
+                raise ValueError('Unclassified tier crafting route: ' + rid)
+            if output == upgrade:
+                # The native upgrade is a row of blocks and a catalyst (BBA); the component goes in the middle.
+                assert recipe['pattern'] == ['BBA'], rid
+                recipe['pattern'] = ['BAB']
+                reason = 'tier_upgrade_milestone'
+            else:
+                reason = 'tier_pot_consumes_upgrade'
+    elif rid == 'modularbees:modular_beehive_core':
+        # One core per modular hive; its parts and add-ons stay native. Two ironwood ingots, top corners.
+        replace_cells(recipe, [(0, 0), (0, 2)], {'item': 'modularbees:scented_plank'}, IRONWOOD)
+        reason = 'modular_core_act_material'
+    if not reason:
+        return None
     assert recipe['type'] == original['type'] and recipe['result'] == original['result']
     for key in ('bookshelf:load_conditions', 'neoforge:conditions'):
         assert recipe.get(key) == original.get(key)
-    return {'id':rid, 'reason':reason, 'json':recipe}
+    if 'pattern' in original and symmetric(original):
+        assert symmetric(recipe), f'{rid}: the drawing lost its symmetry'
+    return {'id': rid, 'reason': reason, 'json': recipe}
 
 
 def build():
@@ -101,7 +108,7 @@ def build():
                 seen.add(rid);row=transform(rid,json.loads(raw))
                 if row:rows.append(row)
     assert set(expected)<=seen
-    assert all(any(r['id']=='botanypotstiers:'+t+'_upgrade' for r in rows) for t in TIERS)
+    assert all(any(r['id'] == 'botanypotstiers:' + t + '_upgrade' and r['reason'] == 'tier_upgrade_milestone' for r in rows) for t in TIERS)
     assert len({r['id'] for r in rows})==len(rows)
     return sorted(rows,key=lambda r:r['id']),sources
 
@@ -158,26 +165,39 @@ ServerEvents.afterRecipes(event => {
 
 
 def self_test():
-    original={'type':'minecraft:smithing_transform','template':{'item':'minecraft:netherite_upgrade_smithing_template'},
-              'base':{'item':'modularbees:electrode_gold'},'addition':{'item':'minecraft:netherite_block'},
-              'result':{'id':'modularbees:electrode_netherite','count':1}}
-    changed=transform('modularbees:electrode_netherite',original)['json']
-    assert changed['base']==original['base'] and changed['addition']==original['addition']
-    assert original['template']['item']=='minecraft:netherite_upgrade_smithing_template'
-    assert changed['type']=='minecraft:smithing_transform'
-    plain={'type':'minecraft:crafting_shapeless','ingredients':[{'item':'minecraft:clay_ball'}],
-           'result':{'id':'botanypots:terracotta_botany_pot','count':1}}
-    assert transform('botanypots:test',plain) is None
-    wax={'type':'minecraft:crafting_shapeless','ingredients':[{'item':'botanypotstiers:elite_terracotta_botany_pot'},{'item':'minecraft:honeycomb'}],
-         'result':{'id':'botanypotstiers:elite_terracotta_waxed_botany_pot','count':1}}
-    assert transform('botanypotstiers:pots/wax',wax) is None
-    full={'type':'minecraft:crafting_shaped','pattern':['OOO','OPO','OOO'],
-          'key':{'O':{'item':'minecraft:obsidian'},'P':{'item':'minecraft:diamond_pickaxe'}},
-          'result':{'id':'jamd:portal_block','count':1}}
-    changed=transform('jamd:portal_block',full)['json']
-    assert changed['key']['P']==full['key']['P'] and changed['pattern'][1]=='OPO'
-    assert sum(line.count('Z') for line in changed['pattern'])==1
-    print('PASS synthetic transformation checks: smithing base/addition, plain/wax routes, unique tool preserved')
+    smithing = {'type': 'minecraft:smithing_transform', 'template': {'item': 'minecraft:netherite_upgrade_smithing_template'},
+                'base': {'item': 'modularbees:electrode_gold'}, 'addition': {'item': 'minecraft:netherite_block'},
+                'result': {'id': 'modularbees:electrode_netherite', 'count': 1}}
+    assert transform('modularbees:electrode_netherite', smithing) is None
+    plain = {'type': 'minecraft:crafting_shapeless', 'ingredients': [{'item': 'minecraft:clay_ball'}],
+             'result': {'id': 'botanypots:terracotta_botany_pot', 'count': 1}}
+    assert transform('botanypots:test', plain) is None
+    hopper = {'type': 'minecraft:crafting_shapeless', 'ingredients': [{'item': 'minecraft:hopper'},
+              {'item': 'botanypots:terracotta_botany_pot'}], 'result': {'id': 'botanypots:terracotta_hopper_botany_pot', 'count': 1}}
+    assert transform('botanypots:botanypots/crafting/terracotta_hopper_botany_pot', hopper) is None
+    wax = {'type': 'minecraft:crafting_shapeless', 'ingredients': [{'item': 'botanypotstiers:elite_terracotta_botany_pot'}, {'item': 'minecraft:honeycomb'}],
+           'result': {'id': 'botanypotstiers:elite_terracotta_waxed_botany_pot', 'count': 1}}
+    assert transform('botanypotstiers:pots/wax', wax) is None
+    upgrade = {'type': 'minecraft:crafting_shaped', 'pattern': ['BBA'], 'key': {'B': {'item': 'minecraft:iron_block'},
+               'A': {'item': 'minecraft:ender_pearl'}}, 'result': {'id': 'botanypotstiers:elite_upgrade', 'count': 1}}
+    changed = transform('botanypotstiers:elite_upgrade', upgrade)['json']
+    assert changed['pattern'] == ['BAB'] and changed['key']['A'] == {'item': 'entrelumen:propagation_core'}
+    assert changed['key']['B'] == {'item': 'minecraft:iron_ingot'}
+    pot = {'type': 'minecraft:crafting_shaped', 'pattern': ['MAM', 'MPM', 'BMB'],
+           'key': {'M': {'item': 'minecraft:terracotta'}, 'A': {'item': 'minecraft:nether_star'},
+                   'B': {'item': 'minecraft:diamond_block'}, 'P': {'tag': 'botanypotstiers:elite_botany_pots'}},
+           'result': {'id': 'botanypotstiers:ultra_terracotta_botany_pot', 'count': 1}}
+    changed = transform('botanypotstiers:pots/ultra_terracotta_botany_pot', pot)['json']
+    assert changed['key']['A'] == {'item': 'botanypotstiers:ultra_upgrade'} and changed['key']['B'] == {'item': 'minecraft:diamond'}
+    assert 'entrelumen' not in json.dumps(changed), 'a per-colour pot must not take the component itself'
+    full = {'type': 'minecraft:crafting_shaped', 'pattern': ['OOO', 'OPO', 'OOO'],
+            'key': {'O': {'item': 'minecraft:obsidian'}, 'P': {'item': 'minecraft:diamond_pickaxe'}},
+            'result': {'id': 'jamd:portal_block', 'count': 1}}
+    changed = transform('jamd:portal_block', full)['json']
+    assert changed['key']['P'] == full['key']['P'] and changed['pattern'] == ['OZO', 'OPO', 'OOO']
+    assert symmetric(changed)
+    print('PASS synthetic transformation checks: native smithing, plain, hopper and wax routes; upgrade drawn BAB with the'
+          ' component; per-colour pots take the upgrade; JAMD component on the axis')
 
 
 def main():

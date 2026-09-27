@@ -17,22 +17,26 @@ TARGET = ROOT / 'pack/kubejs/server_scripts/entrelumen_rftools_balance.js'
 MODS = {'rftoolsbuilder', 'rftoolsutility', 'rftoolspower', 'xnet'}
 FAMILY = MODS | {'rftoolsbase', 'mcjtylib'}
 
-# One slot per native recipe; the old symbol still appears elsewhere. Keeping
-# wrapper recipes is essential for configured cards and charged items.
-# (component, row, column, original pattern, original ingredient at that slot)
+# Keeping wrapper recipes is essential for configured cards and charged items. Since Elias's playtest
+# of 24 September 2026 (docs/design/recipe-design-rules.md) a component only closes a milestone, the
+# RFTools builder; the other gates take their act's material (Mekanism's reinforced alloy for act III,
+# Twilight Forest's ironwood for act IV), in one slot on the drawing's axis or in a mirrored pair.
+# The charged porter only reaches matter receivers and XNet routers only work under a controller, so
+# those keep their native recipes.
+ALLOY_III, IRONWOOD = 'mekanism:alloy_reinforced', 'twilightforest:ironwood_ingot'
+MATERIALS = {ALLOY_III: 'III', IRONWOOD: 'IV'}
+# (component or act material, cells, original pattern, original ingredient at those cells)
 CHANGES = {
-    'rftoolsbuilder:builder': ('entrelumen:handling_core', 2, 1, ('BoB', 'rFr', 'BrB'), {'item': 'minecraft:redstone'}),
-    # Quarries are a spectral lens function (Act IV) since 24 September 2026, like the other quarries.
-    'rftoolsbuilder:shape_card_quarry': ('entrelumen:spectral_lens', 0, 0, ('rPr', 'iMi', 'rSr'), {'item': 'minecraft:redstone'}),
-    'rftoolsutility:spawner': ('entrelumen:ecosystem_capsule', 2, 0, ('rzr', 'oFX', 'rPr'), {'item': 'minecraft:redstone'}),
-    'rftoolsutility:matter_receiver': ('entrelumen:routing_matrix', 1, 0, ('iii', 'rFr', 'ooo'), {'item': 'minecraft:redstone'}),
-    'rftoolsutility:charged_porter': ('entrelumen:routing_matrix', 0, 0, (' o ', 'oRo', 'ioi'), None),
-    'rftoolsutility:environmental_controller': ('entrelumen:power_regulator', 2, 2, ('oXo', 'zFI', 'oEo'), {'tag': 'c:ender_pearls'}),
-    'rftoolspower:dimensionalcell_simple': ('entrelumen:power_regulator', 2, 0, ('RdR', 'qFq', 'RdR'), {'item': 'minecraft:redstone_block'}),
-    'rftoolspower:dimensionalcell': ('entrelumen:power_regulator', 2, 0, ('RdR', 'PFP', 'ReR'), {'item': 'minecraft:redstone_block'}),
-    'xnet:controller': ('entrelumen:routing_matrix', 1, 0, ('ICI', 'rFr', 'igi'), {'item': 'minecraft:redstone'}),
-    'xnet:router': ('entrelumen:routing_matrix', 1, 0, ('ICI', 'rFr', 'ioi'), {'item': 'minecraft:redstone'}),
-    'xnet:wireless_router': ('entrelumen:routing_matrix', 1, 0, ('oCo', 'rFr', 'oro'), {'item': 'minecraft:redstone'}),
+    'rftoolsbuilder:builder': ('entrelumen:handling_core', [(2, 1)], ('BoB', 'rFr', 'BrB'), {'item': 'minecraft:redstone'}),
+    # Quarries are an act IV function; the quarry card takes two ironwood ingots in its top corners.
+    'rftoolsbuilder:shape_card_quarry': (IRONWOOD, [(0, 0), (0, 2)], ('rPr', 'iMi', 'rSr'), {'item': 'minecraft:redstone'}),
+    'rftoolsutility:spawner': (IRONWOOD, [(2, 0)], ('rzr', 'oFX', 'rPr'), {'item': 'minecraft:redstone'}),
+    'rftoolsutility:matter_receiver': (ALLOY_III, [(0, 1)], ('iii', 'rFr', 'ooo'), {'tag': 'c:ingots/iron'}),
+    'rftoolsutility:environmental_controller': (ALLOY_III, [(2, 2)], ('oXo', 'zFI', 'oEo'), {'tag': 'c:ender_pearls'}),
+    'rftoolspower:dimensionalcell_simple': (ALLOY_III, [(2, 1)], ('RdR', 'qFq', 'RdR'), {'item': 'minecraft:diamond'}),
+    'rftoolspower:dimensionalcell': (ALLOY_III, [(2, 0), (2, 2)], ('RdR', 'PFP', 'ReR'), {'item': 'minecraft:redstone_block'}),
+    # Every pair of the XNet controller is its only copy: the alloy takes the gold ingot at the foot.
+    'xnet:controller': (ALLOY_III, [(2, 1)], ('ICI', 'rFr', 'igi'), {'tag': 'c:ingots/gold'}),
 }
 
 
@@ -48,29 +52,50 @@ def inner(recipe):
     return recipe
 
 
+def symmetric(craft):
+    """The drawing reads the same mirrored left to right, comparing ingredients."""
+    def kind(symbol):
+        return ' ' if symbol == ' ' else json.dumps(craft['key'][symbol], sort_keys=True)
+    return all([kind(c) for c in row] == [kind(c) for c in reversed(row)] for row in craft['pattern'])
+
+
 def transform(recipe_id, original):
-    component, row, col, pattern, old_ingredient = CHANGES[recipe_id]
+    component, cells, pattern, old_ingredient = CHANGES[recipe_id]
     result = copy.deepcopy(original)
     craft = inner(result)
     assert tuple(craft['pattern']) == pattern, f'{recipe_id}: native pattern changed'
     assert craft['result']['id'] == recipe_id, f'{recipe_id}: native result changed'
-    old_symbol = craft['pattern'][row][col]
+    symbols = {craft['pattern'][row][col] for row, col in cells}
+    assert len(symbols) == 1, f'{recipe_id}: the cells hold different ingredients'
+    (old_symbol,) = symbols
     if old_ingredient is None:
         assert old_symbol == ' ', f'{recipe_id}: intended empty slot changed'
     else:
         assert craft['key'][old_symbol] == old_ingredient, f'{recipe_id}: native ingredient changed'
-        assert sum(line.count(old_symbol) for line in pattern) > 1, f'{recipe_id}: unique ingredient would be lost'
+        # A single ingredient may only give way on the drawing's vertical axis (the machine's foot or core).
+        on_axis = len(cells) == 1 and cells[0][1] == len(pattern[0]) // 2 and len(pattern[0]) % 2 == 1
+        assert on_axis or sum(line.count(old_symbol) for line in pattern) > len(cells),             f'{recipe_id}: unique ingredient would be lost'
     assert 'Z' not in craft['key'] and all('Z' not in line for line in pattern)
-    craft['pattern'][row] = craft['pattern'][row][:col] + 'Z' + craft['pattern'][row][col + 1:]
+    for row, col in cells:
+        craft['pattern'][row] = craft['pattern'][row][:col] + 'Z' + craft['pattern'][row][col + 1:]
     craft['key']['Z'] = {'item': component}
     # A precise reverse edit must recover every native field, including result,
     # serializer, conditions, component-copy behavior and remainders.
-    reverse = inner(result)
-    reverse['pattern'][row] = reverse['pattern'][row][:col] + old_symbol + reverse['pattern'][row][col + 1:]
-    del reverse['key']['Z']
-    assert result == original, f'{recipe_id}: an unrelated native field changed'
-    craft['pattern'][row] = craft['pattern'][row][:col] + 'Z' + craft['pattern'][row][col + 1:]
-    craft['key']['Z'] = {'item': component}
+    reverse = copy.deepcopy(result)
+    body = inner(reverse)
+    for row, col in cells:
+        body['pattern'][row] = body['pattern'][row][:col] + old_symbol + body['pattern'][row][col + 1:]
+    del body['key']['Z']
+    unique = old_ingredient is not None and sum(line.count(old_symbol) for line in pattern) == len(cells)
+    if unique:
+        body['key'][old_symbol] = craft['key'][old_symbol]
+    assert reverse == original, f'{recipe_id}: an unrelated native field changed'
+    if unique:
+        del craft['key'][old_symbol]  # a shaped key may not keep an unused symbol
+    # Rule 3 of the playtest: no gate breaks a symmetric drawing, and a component only enters one.
+    assert symmetric(craft) or not symmetric(inner(original)), f'{recipe_id}: the drawing lost its symmetry'
+    if component.startswith('entrelumen:'):
+        assert symmetric(craft), f'{recipe_id}: a component needs a symmetric drawing'
     assert result['type'] == original['type'] and inner(result)['result'] == inner(original)['result']
     return result
 
@@ -102,6 +127,8 @@ def check_component_cycles():
         visited.add(item)
 
     for component, *_ in CHANGES.values():
+        if component in MATERIALS:
+            continue  # an act material, not a component (tools/generate_family_balance.py STAGE_MATERIALS)
         assert component in sources, f'Uncraftable integration component: {component}'
         visit(component)
     return sorted(visited)

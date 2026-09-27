@@ -2,7 +2,6 @@ package dev.entrelumen;
 
 import com.mojang.logging.LogUtils;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.gametest.framework.GameTest;
@@ -45,40 +44,40 @@ public final class CookingProvisionsGameTests {
       var holder = manager.byKey(id).orElseThrow();
       helper.assertTrue(holder.value() instanceof CraftingRecipe, "Not a crafting recipe: " + id);
       var recipe = (CraftingRecipe) holder.value();
+      // Elias's playtest of 24 September 2026: every ration is the same drawing, the bowl meals on the
+      // axis and the main dishes on either side of a hollow bundle (docs/design/recipe-design-rules.md).
       helper.assertTrue(BuiltInRegistries.RECIPE_SERIALIZER.getKey(recipe.getSerializer())
-          .equals(ResourceLocation.withDefaultNamespace("crafting_shapeless")),
+          .equals(ResourceLocation.withDefaultNamespace("crafting_shaped")),
           "Unexpected provisions serializer: " + id);
-      var stacks = new ArrayList<>(List.of(stack(route.soup()), stack(route.soup()),
-          stack(route.meal()), stack(route.meal())));
-      for (int permutation = 0; permutation < 4; permutation++) {
-        var input = CraftingInput.of(2, 2, stacks);
-        helper.assertTrue(recipe.matches(input, helper.getLevel()), "Native inputs rejected: " + id);
-        helper.assertTrue(manager.getRecipeFor(RecipeType.CRAFTING, input, helper.getLevel())
-            .orElseThrow().id().equals(id), "Another recipe intercepts provisions inputs: " + id);
-        var output = recipe.assemble(input, helper.getLevel().registryAccess());
-        helper.assertTrue(output.is(stack("entrelumen:ration_bundle").getItem())
-            && output.getCount() == 1, "Wrong ration result: " + id);
-        var remainders = recipe.getRemainingItems(input);
-        helper.assertTrue(remainders.size() == stacks.size(), "Remainder grid changed: " + id);
-        int bowls = 0;
-        for (int slot = 0; slot < stacks.size(); slot++) {
-          var expected = stacks.get(slot).getCraftingRemainingItem();
-          helper.assertTrue(ItemStack.matches(expected, remainders.get(slot)),
-              "Native food remainder lost at " + id + " slot " + slot);
-          if (remainders.get(slot).is(Items.BOWL)) bowls += remainders.get(slot).getCount();
-        }
-        helper.assertTrue(bowls == 2, "Two soup bowls were not returned: " + id);
-        Collections.rotate(stacks, 1);
+      var stacks = new ArrayList<>(List.of(ItemStack.EMPTY, stack(route.soup()), ItemStack.EMPTY,
+          stack(route.meal()), ItemStack.EMPTY, stack(route.meal()),
+          ItemStack.EMPTY, stack(route.soup()), ItemStack.EMPTY));
+      var input = CraftingInput.of(3, 3, stacks);
+      helper.assertTrue(recipe.matches(input, helper.getLevel()), "Native inputs rejected: " + id);
+      helper.assertTrue(manager.getRecipeFor(RecipeType.CRAFTING, input, helper.getLevel())
+          .orElseThrow().id().equals(id), "Another recipe intercepts provisions inputs: " + id);
+      var output = recipe.assemble(input, helper.getLevel().registryAccess());
+      helper.assertTrue(output.is(stack("entrelumen:ration_bundle").getItem())
+          && output.getCount() == 1, "Wrong ration result: " + id);
+      var remainders = recipe.getRemainingItems(input);
+      helper.assertTrue(remainders.size() == stacks.size(), "Remainder grid changed: " + id);
+      int bowls = 0;
+      for (int slot = 0; slot < stacks.size(); slot++) {
+        var expected = stacks.get(slot).getCraftingRemainingItem();
+        helper.assertTrue(ItemStack.matches(expected, remainders.get(slot)),
+            "Native food remainder lost at " + id + " slot " + slot);
+        if (remainders.get(slot).is(Items.BOWL)) bowls += remainders.get(slot).getCount();
       }
+      helper.assertTrue(bowls == 2, "Two soup bowls were not returned: " + id);
       var missing = new ArrayList<>(stacks);
-      missing.set(0, ItemStack.EMPTY);
-      helper.assertTrue(!recipe.matches(CraftingInput.of(2, 2, missing), helper.getLevel()),
+      missing.set(1, ItemStack.EMPTY);
+      helper.assertTrue(!recipe.matches(CraftingInput.of(3, 3, missing), helper.getLevel()),
           "Incomplete provisions accepted: " + id);
       var raw = new ArrayList<>(stacks);
-      raw.set(2, new ItemStack(Items.BEEF));
-      helper.assertTrue(!recipe.matches(CraftingInput.of(2, 2, raw), helper.getLevel()),
+      raw.set(3, new ItemStack(Items.BEEF));
+      helper.assertTrue(!recipe.matches(CraftingInput.of(3, 3, raw), helper.getLevel()),
           "Raw meat bypasses cooking: " + id);
-      LogUtils.getLogger().info("ENTRELUMEN_PROVISIONS_NATIVE route={} ration=1 bowls=2 permutations=4 incompleteRejected=true rawRejected=true", id);
+      LogUtils.getLogger().info("ENTRELUMEN_PROVISIONS_NATIVE route={} ration=1 bowls=2 drawn=true incompleteRejected=true rawRejected=true", id);
     }
     helper.succeed();
   }

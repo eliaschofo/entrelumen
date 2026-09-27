@@ -2,6 +2,8 @@
 
 Estado: implementado en fuentes del pack, pendiente de crafting/EMI/servidor real. No hubo escrituras de instancia, catálogo o companion. Generador `tools/generate_resource_balance.py`; salida `pack/kubejs/server_scripts/entrelumen_resource_balance.js`. El generador lee cuatro JAR fijados (JAMD, Botany Pots, Botany Pots Tiers, Modular Bees), valida SHA256 y contrasta todas las recetas del inventario previo mediante hash de cada JSON.
 
+> **Actualización del 25 de septiembre** ([recipe-design-rules](recipe-design-rules.md)): las macetas con tolva y Modular Bees quedan nativas salvo el núcleo de colmena (dos lingotes de ironwood); cada tier de Botany Pots Tiers lleva su componente sólo en la mejora (`BAB`), y las 1.098 recetas por color consumen esa mejora en lugar del catalizador. Los portales de JAMD llevan el componente en el eje, sobre el pico. La tabla de abajo describe el diseño anterior.
+
 ## Límite importante de etapas
 
 Los 16 IntegrationItems tienen recetas shapeless públicas; las 22 recetas de integración no consultan campaña ni acto. Por ejemplo, propagation_core deriva de prudentium+wax+living_matrix; ecosystem_capsule usa pollen_puff+wax+living_matrix; renewal_engine usa sky_ingot+imperium+esas piezas. Ninguna exige completar un acto. Por eso los números II–VI siguientes son **objetivos de progresión tecnológica y editorial, no gates narrativos demostrados**. No se disfrazó esa limitación agregando supuestos permisos al crafting. El progreso de campaña continúa siendo independiente de posesión y regalos.

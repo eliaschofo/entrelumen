@@ -85,6 +85,8 @@ Las relaciones enlazan proyectos concretos del JSON. Los mods arquitectónicos o
 
 ## Arca funcional y recuperable
 
+> **Reemplazado por el Arca v2** (26 de septiembre, [ark-modules-v2](ark-modules-v2.md)): un Arca por equipo, controlador obligatorio, un módulo por acto y sin lotes. `arkBehavior` de `content/integration-design.json` ya describe la v2; lo de abajo es la v1.
+
 Las funciones siguientes son comportamiento propuesto del controlador, no APIs ya comprobadas. Los módulos se colocan una vez y no se consumen. La interacción valida un volumen acotado; no debe cargar chunks ni recorrer máquinas ajenas.
 
 | Módulo | Función propuesta |

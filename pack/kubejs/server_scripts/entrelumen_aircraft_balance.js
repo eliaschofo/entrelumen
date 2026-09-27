@@ -1,5 +1,8 @@
 // Static acquisition balance for pinned Immersive Aircraft 1.5.2+1.21.1 NeoForge.
 // Changes crafting only: given aircraft and components remain usable and transferable.
+// The engine carries the power regulator on its axis (act III milestone: engine aircraft); the gyrodyne,
+// the only aircraft without an engine, takes Mekanism's reinforced alloy, the act III material, in place
+// of its lower sail (docs/design/recipe-design-rules.md).
 const entrelumenAircraftSourceSha256 = 'ef5b68c04171d1eadb3bb70e600eb766534ef7588a5b4737f9d55a4f38550ae9';
 const entrelumenAircraftOverrides = [
   {
@@ -21,12 +24,12 @@ const entrelumenAircraftOverrides = [
     "id": "immersive_aircraft:gyrodyne",
     "json": {
       "type": "minecraft:crafting_shaped",
-      "pattern": [" S ", "HPH", " SC"],
+      "pattern": [" S ", "HPH", " A "],
       "key": {
         "S": {"item": "immersive_aircraft:sail"},
         "H": {"item": "immersive_aircraft:hull"},
         "P": {"item": "immersive_aircraft:propeller"},
-        "C": {"item": "entrelumen:handling_core"}
+        "A": {"item": "mekanism:alloy_reinforced"}
       },
       "result": {"id": "immersive_aircraft:gyrodyne"}
     }

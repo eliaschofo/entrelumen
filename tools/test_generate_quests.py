@@ -332,7 +332,7 @@ class ChapterContracts(unittest.TestCase):
   material_quests={q['item']:q['count'] for q in chapter['quests'] if 'item' in q}
   for milestone,slots in [('resilient_backbone',7),('renewal_engine',8),('settlement_supply',7)]:
    recipe=designs[milestone]
-   self.assertEqual(recipe['type'],'minecraft:crafting_shapeless')
+   self.assertEqual(recipe['type'],'minecraft:crafting_shaped')  # drawn since the playtest of 24 September 2026
    self.assertEqual(sum(i['count'] for i in recipe['inputs']),slots)
    for ingredient in recipe['inputs']:
     self.assertEqual(material_quests[ingredient['id']],ingredient['count'])

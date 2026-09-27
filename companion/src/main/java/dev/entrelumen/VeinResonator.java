@@ -22,7 +22,8 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 
 /**
  * Vein resonators, Terra's tuning forks (Elias, 24 September 2026). FTB Ultimine only works while one is
- * worn in a Curios {@code charm} slot, and tier {@code n} (1 to 6) lets it break {@code 16 * n} blocks.
+ * worn in a Curios {@code charm} slot. Since the nerf of 25 September there are four tiers, and each lets
+ * one Ultimine use break 8, 16, 32 or 64 blocks ({@link VeinResonatorRules#reach}).
  *
  * <p>The pack's {@code ftbultimine-server.snbt} sets {@code max_blocks} to 0, so without a resonator
  * Ultimine selects nothing. Every {@link #INTERVAL_TICKS} ticks the server asks Curios, through
@@ -37,7 +38,6 @@ public final class VeinResonator {
   static final DeferredRegister.Items ITEMS = DeferredRegister.createItems("entrelumen");
 
   public static final int TIERS = VeinResonatorRules.TIERS;
-  public static final int BLOCKS_PER_TIER = VeinResonatorRules.BLOCKS_PER_TIER;
   /** Server ticks between two checks of a player's Curios slots, as for Terra's Arm. */
   public static final int INTERVAL_TICKS = 10;
   /** The only modifier the resonators add: additive, on Ultimine's per-player block limit. */
@@ -64,9 +64,18 @@ public final class VeinResonator {
     return VeinResonatorRules.id(tier);
   }
 
+  /** One vanilla rarity per tier: common, uncommon, rare and epic; the last one also resists fire. */
+  static Rarity rarity(int tier) {
+    return switch (tier) {
+      case 1 -> Rarity.COMMON;
+      case 2 -> Rarity.UNCOMMON;
+      case 3 -> Rarity.RARE;
+      default -> Rarity.EPIC;
+    };
+  }
+
   static Item.Properties properties(int tier) {
-    var rarity = tier <= 2 ? Rarity.COMMON : tier <= 4 ? Rarity.UNCOMMON : tier == 5 ? Rarity.RARE : Rarity.EPIC;
-    var properties = new Item.Properties().stacksTo(1).rarity(rarity);
+    var properties = new Item.Properties().stacksTo(1).rarity(rarity(tier));
     return tier == TIERS ? properties.fireResistant() : properties;
   }
 
@@ -140,7 +149,7 @@ public final class VeinResonator {
       tooltip.add(reachLine(tier));
     }
 
-    /** "Ultimine: up to 16 blocks", blue like vanilla's attribute lines. */
+    /** "Ultimine: up to 8 blocks", blue like vanilla's attribute lines. */
     public static Component reachLine(int tier) {
       return Component.translatable("entrelumen.vein_resonator.reach", reach(tier)).withStyle(ChatFormatting.BLUE);
     }

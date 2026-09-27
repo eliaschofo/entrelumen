@@ -76,37 +76,57 @@ public final class ResourceFarmGameTests {
       item(id);
   }
 
+  /**
+   * Elias's playtest of 24 September 2026 (docs/design/recipe-design-rules.md): each tier's component is
+   * drawn in the middle of its upgrade (iron, component, iron) and every per-colour tier recipe consumes
+   * that upgrade instead of its old catalyst, so the component closes one recipe per tier. Hopper pots are
+   * basic automation and keep their native recipes.
+   */
   @GameTest(template = "empty", timeoutTicks = 200)
   public static void nativeWhitePotCraftingRequiresRealIntegrationItems(GameTestHelper helper) {
     requireNativeInputs();
     List<String> observed = new ArrayList<>();
     observed.add(checkRecipe(helper, "botanypots:botanypots/crafting/white_terracotta_hopper_botany_pot",
-        BASE_HOPPER, false, 3, 1, 2, "_", HOPPER, BASE, FRAME));
+        BASE_HOPPER, false, 2, 1, -1, "_", HOPPER, BASE));
     observed.add(checkRecipe(helper, "botanypots:botanypots/crafting/white_terracotta_hopper_botany_pot_quick",
-        BASE_HOPPER, true, 3, 3, 6, "_",
-        MATERIAL, HOPPER, MATERIAL, MATERIAL, "minecraft:flower_pot", MATERIAL, FRAME, MATERIAL, "_"));
+        BASE_HOPPER, true, 3, 3, -1, "_",
+        MATERIAL, HOPPER, MATERIAL, MATERIAL, "minecraft:flower_pot", MATERIAL, "_", MATERIAL, "_"));
 
     String previous = BASE;
     for (Tier tier : TIERS) {
-      observed.add(checkRecipe(helper, tier.upgrade(), tier.upgrade(), true, 3, 1, 2,
-          tier.formerCatalyst(), tier.material(), tier.material(), tier.catalyst()));
+      observed.add(checkRecipe(helper, tier.upgrade(), tier.upgrade(), true, 3, 1, 1,
+          tier.formerCatalyst(), tier.material(), tier.catalyst(), tier.material()));
+      String[] direct = {MATERIAL, tier.upgrade(), MATERIAL, MATERIAL, previous,
+          MATERIAL, tier.material(), MATERIAL, tier.material()};
       observed.add(checkRecipe(helper, tier.recipe("botany_pot"), tier.pot(), true, 3, 3, 1,
-          tier.formerCatalyst(), MATERIAL, tier.catalyst(), MATERIAL, MATERIAL, previous,
-          MATERIAL, tier.material(), MATERIAL, tier.material()));
+          tier.formerCatalyst(), direct));
+      rejects(helper, tier.recipe("botany_pot"), 3, 3, direct, 1, tier.catalyst());
+      String[] same = {"_", tier.upgrade(), "_", "_", previous, "_", tier.material(), "_", tier.material()};
       observed.add(checkRecipe(helper, tier.recipe("botany_pot_same_material"), tier.pot(),
-          true, 3, 3, 1, tier.formerCatalyst(),
-          "_", tier.catalyst(), "_", "_", previous, "_",
-          tier.material(), "_", tier.material()));
+          true, 3, 3, 1, tier.formerCatalyst(), same));
+      rejects(helper, tier.recipe("botany_pot_same_material"), 3, 3, same, 1, tier.catalyst());
       observed.add(checkRecipe(helper, tier.recipe("hopper_botany_pot_upgrade_quick"),
           tier.hopperPot(), true, 3, 3, 2, tier.formerCatalyst(),
-          HOPPER, MATERIAL, tier.catalyst(), MATERIAL, previous, MATERIAL,
+          HOPPER, MATERIAL, tier.upgrade(), MATERIAL, previous, MATERIAL,
           tier.material(), MATERIAL, tier.material()));
       observed.add(checkRecipe(helper, tier.recipe("hopper_botany_pot"), tier.hopperPot(),
-          false, 3, 1, 2, "_", HOPPER, tier.pot(), FRAME));
+          false, 2, 1, -1, "_", HOPPER, tier.pot()));
       previous = tier.pot();
     }
     LOGGER.info("ENTRELUMEN_RESOURCE_FARM_RECIPES {}", observed);
     helper.succeed();
+  }
+
+  /** The grid with `item` in `slot` must not match: the component alone no longer makes a tier pot. */
+  private static void rejects(GameTestHelper helper, String id, int width, int height, String[] slots, int slot,
+      String item) {
+    var recipe = (CraftingRecipe) helper.getLevel().getRecipeManager().byKey(ResourceLocation.parse(id))
+        .orElseThrow().value();
+    List<ItemStack> grid = new ArrayList<>();
+    for (String cell : slots) grid.add("_".equals(cell) ? ItemStack.EMPTY : new ItemStack(item(cell)));
+    grid.set(slot, new ItemStack(item(item)));
+    helper.assertTrue(!recipe.matches(CraftingInput.of(width, height, grid), helper.getLevel()),
+        id + " still accepts " + item + " in place of its upgrade");
   }
 
   @GameTest(template = "empty", timeoutTicks = 200)
@@ -245,11 +265,13 @@ public final class ResourceFarmGameTests {
     helper.assertTrue(remainders.size() == grid.size()
         && remainders.stream().allMatch(ItemStack::isEmpty),
         "Native crafting remainder changed or retained an input for " + id);
-    List<ItemStack> oldGrid = new ArrayList<>();
-    for (ItemStack stack : grid) oldGrid.add(stack.copy());
-    oldGrid.set(changedSlot, "_".equals(oldItem) ? ItemStack.EMPTY : new ItemStack(item(oldItem)));
-    helper.assertTrue(!recipe.matches(CraftingInput.of(width, height, oldGrid), helper.getLevel()),
-        "Recipe still accepts the former or missing integration cost: " + id);
+    if (changedSlot >= 0) {  // -1: a native recipe the pack leaves alone
+      List<ItemStack> oldGrid = new ArrayList<>();
+      for (ItemStack stack : grid) oldGrid.add(stack.copy());
+      oldGrid.set(changedSlot, "_".equals(oldItem) ? ItemStack.EMPTY : new ItemStack(item(oldItem)));
+      helper.assertTrue(!recipe.matches(CraftingInput.of(width, height, oldGrid), helper.getLevel()),
+          "Recipe still accepts the former or missing integration cost: " + id);
+    }
     return id + "=" + actual + "x" + output.getCount();
   }
 
