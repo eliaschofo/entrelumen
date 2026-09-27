@@ -257,6 +257,46 @@ Reusan los mecanismos de las ruinas: braseros en orden, espejos, palancas, ofren
 
 Los puntos 1–3 y 5 son un worker; el 4 y el 6, otro, en paralelo, sobre la misma interfaz de marcadores. Hechos (26/9): 1, 2 (el exportador y los marcadores; falta el arte de los otros tilesets), 3, 5 y 7. Pendientes: 4 y 6.
 
+## Contenido propuesto (27/9, para que Elias lo dirija)
+
+Los pisos ya tienen tema. Los enemigos salen de mods que ya están en el pack (IDs verificados en los JAR fijados) y cada uno aparece como **eco**: condensado por la luz agria, con nombre propio, aura pálida y afijos.
+
+| Piso | Ambiente | Escoltas | Élites | Campeón de la escalera | Idea de combate |
+|---|---|---|---|---|---|
+| I · Osarios | toba, calcita, nichos de huesos | `minecraft:stray`, `minecraft:skeleton` con equipo | `cataclysm:draugr`, `cataclysm:elite_draugr` | `cataclysm:royal_draugr` | Aprender a pelear en salas chicas: escudos, arqueros detrás |
+| II · Cisternas | canales de agua, caños de cobre, pasarelas | `minecraft:drowned` con tridente | `cataclysm:deepling_brute`, `deepling_angler`, `deepling_priest` | `cataclysm:coral_golem` | Agua que te frena y enemigos que la aprovechan |
+| III · Fundición | piedra negra, canales de lava tras rejas, cadenas | `minecraft:blaze`, `minecraft:wither_skeleton` | `cataclysm:ignited_revenant`, `cataclysm:ignited_berserker` | `cataclysm:the_prowler` | Fuego y embestidas: resistencia al fuego obligatoria |
+| IV · Geodas | amatista, calcita, cristales que brillan | `minecraft:vex` | `cataclysm:amethyst_crab`, `cataclysm:the_watcher` | `cataclysm:ender_golem` | Enemigos que teletransportan y proyectiles de cristal |
+| V · El Eclipse | obsidiana, obsidiana llorosa, oro, un sol oscuro | ecos menores del jefe | — | — | El Wither blanco: embestida telegrafiada y calaveras |
+
+- **Tesoro que camina:** un `mowziesmobs:grottol` (el topo que come cristales) aparece a veces en las Geodas y huye. Si lo agarrás, suelta gemas.
+- **Afijos de élite** (1 en el piso I, hasta 3 en el IV):
+
+  | Afijo | Efecto |
+  |---|---|
+  | Veloz | velocidad |
+  | Blindado | armadura y empuje |
+  | Vampírico | se cura pegando |
+  | Ardiente | aura de fuego |
+  | Perforante | parte del daño ignora la armadura |
+  | Espectral | parpadea y reaparece a tu espalda |
+
+- **Santuarios** (un bendición temporal hasta el final del piso):
+
+  | Bendición | Efecto |
+  |---|---|
+  | Fervor | + daño |
+  | Refugio | + resistencia |
+  | Presteza | velocidad y prisa |
+  | Claridad | revela el mapa del piso entero |
+  | Fortuna | + rareza del loot del piso |
+
+- **Sellos**, con tres variantes para que no sean todos iguales:
+  - vencer al guardián que lo custodia;
+  - sostener el círculo 20 segundos mientras llegan ecos;
+  - un acertijo chico de la familia de las ruinas: braseros, espejos o palancas.
+- **Loot:** piezas con afijos de Apotheosis por tier y piso, y gemas. Además, **esquirlas de luz agria** como moneda del Envés, para decidir en qué se gastan (los curios únicos del jefe, por ejemplo).
+
 ## Para decidir
 
 - El nombre del descenso y el del jefe.
