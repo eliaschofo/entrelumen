@@ -49,6 +49,19 @@ WHEELHOUSE_LOOT = "entrelumen:chests/ruin_act2_wheelhouse"
 VANILLA = Path("E:/Elias/Codex/Entrelumen-ssd/companion-build/moddev/artifacts/"
                "neoforge-21.1.249-client-extra-aka-minecraft-resources.jar")
 CREATE = Path("G:/curseforge/Instances/ENTRELUMEN/mods/create-1.21.1-6.0.10.jar")
+# Create 6.0.10 blocks with a waterlogged property (AbstractShaftBlock, CogWheelBlock, PumpBlock,
+# FluidPipeBlock); gauges, water wheels, gearboxes, bearings and chassis have none.
+WATERLOGGABLE_CREATE = {"create:shaft", "create:cogwheel", "create:large_cogwheel", "create:mechanical_pump",
+                        "create:fluid_pipe"}
+
+
+def sane(state: str) -> str:
+    """Drops a waterlogged property the block does not have (the art writes it on every Create block)."""
+    block, props = split(state)
+    if not block.startswith("create:") or block in WATERLOGGABLE_CREATE or "waterlogged" not in props:
+        return state
+    props = {k: v for k, v in props.items() if k != "waterlogged"}
+    return block + ("[" + ",".join(f"{k}={v}" for k, v in sorted(props.items())) + "]" if props else "")
 
 # ruin id -> (art module, build function)
 RUINS = {
@@ -302,7 +315,7 @@ def workshop_create(v: dict, mk: dict):
     v[seal_port] = shaft("y")
     for y in range(bearing[1] + 1, seal_port[1]):
         v[(seal_port[0], y, seal_port[2])] = shaft("y")
-    v[bearing] = "create:mechanical_bearing[facing=down,waterlogged=false]"
+    v[bearing] = "create:mechanical_bearing[facing=down]"
     marks[bearing] = f"seal challenge=seal scroll=2 block={v[bearing]}"
     v[chassis] = ("create:radial_chassis[axis=y,sticky_east=true,sticky_north=true,sticky_south=true,"
                   "sticky_west=true]")
@@ -561,6 +574,10 @@ def art(name: str):
     v, mk = getattr(importlib.import_module(module), fn)()
     v = dict(v)
     extra, nbt, layout = workshop_create(v, mk) if name == WORKSHOP else ({}, {}, None)
+    for p, state in v.items():
+        v[p] = sane(state)
+    for p, meta in extra.items():
+        extra[p] = " ".join("block=" + sane(t[len("block="):]) if t.startswith("block=") else t for t in meta.split())
     return v, mk, extra, nbt, layout
 
 
@@ -724,7 +741,8 @@ def unknown_blocks() -> dict[str, list[str]]:
             if block not in known:
                 bad.add(block)
             elif known[block] is not None:
-                extra = [k for k in props if k not in known[block] and k != "waterlogged"]
+                extra = [k for k in props if k not in known[block]
+                         and not (k == "waterlogged" and block in WATERLOGGABLE_CREATE)]
                 if extra:
                     bad.add(f"{block}[{','.join(extra)}]")
         if bad:

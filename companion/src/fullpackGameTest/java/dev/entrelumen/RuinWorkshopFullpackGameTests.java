@@ -47,6 +47,21 @@ public final class RuinWorkshopFullpackGameTests {
   private RuinWorkshopFullpackGameTests() {}
 
   static final String WORKSHOP = "entrelumen:sunken_workshop";
+  /** Holds the ruin's chunks for the whole case (the engine cases outlast the shared play ticket). */
+  static final net.minecraft.server.level.TicketType<net.minecraft.world.level.ChunkPos> ENGINE =
+      net.minecraft.server.level.TicketType.create("entrelumen_qa_ruin_engine",
+          Comparator.comparingLong(net.minecraft.world.level.ChunkPos::toLong));
+
+  static List<net.minecraft.world.level.ChunkPos> hold(ServerLevel level, net.minecraft.world.level.levelgen.structure.BoundingBox box) {
+    List<net.minecraft.world.level.ChunkPos> chunks = new ArrayList<>();
+    for (int cx = (box.minX() >> 4) - 1; cx <= (box.maxX() >> 4) + 1; cx++)
+      for (int cz = (box.minZ() >> 4) - 1; cz <= (box.maxZ() >> 4) + 1; cz++) {
+        var chunk = new net.minecraft.world.level.ChunkPos(cx, cz);
+        level.getChunkSource().addRegionTicket(ENGINE, chunk, 0, chunk);
+        chunks.add(chunk);
+      }
+    return chunks;
+  }
 
   static void requireSuite() {
     if (!ModList.get().isLoaded("create")) throw new IllegalStateException("Required real mod is absent: create");
@@ -101,18 +116,19 @@ public final class RuinWorkshopFullpackGameTests {
           .thenExecute(RuntimeGameTestsRuins.guarded(() -> {
             stop.check(helper);
             ruin = job.result();
-            held.add(RuntimeGameTestsRuins.hold(level, ruin.box()));
+            held.add(hold(level, ruin.box()));
             site = RuinWorkshop.site(level.getServer(), ruin.id());
             helper.assertTrue(site != null, "The workshop has no engine site");
             a = RuntimeGameTestsRuins.arrive(helper, "Engine" + ruin.id().getPath().hashCode() % 1000 + "A", new BlockPos(1, 1, 1));
             b = RuntimeGameTestsRuins.arrive(helper, "Engine" + ruin.id().getPath().hashCode() % 1000 + "B", new BlockPos(2, 1, 1));
-            RuntimeGameTestsRuins.teleport(a, level, center());
-            RuntimeGameTestsRuins.teleport(b, level, center());
+            // Beside the ruin: the builds fill the engine room, and nobody should stand in them.
+            RuntimeGameTestsRuins.teleport(a, level, ruin.arrival());
+            RuntimeGameTestsRuins.teleport(b, level, ruin.arrival());
           }))
-          .thenWaitUntil(() -> {
+          .thenWaitUntil(within(2400, "The ruin's chunks load", () -> {
             for (var chunk : held.getFirst())
               helper.assertTrue(level.getChunkSource().getChunkNow(chunk.x, chunk.z) != null, "Loading " + chunk);
-          });
+          }));
     }
 
     List<RuinData.PlacedMarker> markers(RuinMarkers.Kind kind) {
@@ -166,6 +182,35 @@ public final class RuinWorkshopFullpackGameTests {
       return solution.get("rpm").getAsInt();
     }
 
+    /**
+     * A wait that gives up after {@code maxTicks}: it then stops waiting and the next step fails with
+     * what was being waited for.
+     */
+    Runnable within(int maxTicks, String what, Runnable check) {
+      long[] start = {-1};
+      return () -> {
+        if (stop.reason != null) return;
+        if (start[0] < 0) start[0] = level.getGameTime();
+        try {
+          check.run();
+        } catch (net.minecraft.gametest.framework.GameTestAssertException e) {
+          if (level.getGameTime() - start[0] > maxTicks) {
+            stop.reason = what + " (not within " + maxTicks + " ticks): " + e.getMessage();
+            return;
+          }
+          throw e;
+        }
+      };
+    }
+
+    /** A step that first fails for an abandoned wait. */
+    Runnable step(Runnable body) {
+      return RuntimeGameTestsRuins.guarded(() -> {
+        stop.check(helper);
+        body.run();
+      });
+    }
+
     float speed(BlockPos pos) {
       return CreateCompat.speed(level, pos);
     }
@@ -192,7 +237,7 @@ public final class RuinWorkshopFullpackGameTests {
     void close() {
       for (var player : new ServerPlayer[] {a, b}) if (player != null && !player.hasDisconnected()) RuntimeGameTestsRuins.leave(player);
       for (var chunks : held)
-        for (var chunk : chunks) level.getChunkSource().removeRegionTicket(RuntimeGameTestsRuins.PLAY, chunk, 0, chunk);
+        for (var chunk : chunks) level.getChunkSource().removeRegionTicket(ENGINE, chunk, 0, chunk);
       if (ruin != null) {
         var server = level.getServer();
         RuinData.get(server).remove(ruin.id());
@@ -202,6 +247,13 @@ public final class RuinWorkshopFullpackGameTests {
       RuinRegistry.remove(definition.id());
       StructureProtection.invalidate(level.getServer());
     }
+  }
+
+  /** The sluice id (1..4) of the house a wheel stands in: the id of the nearest sluice cell. */
+  static int houseOf(Engine engine, BlockPos wheel) {
+    return engine.markers(RuinMarkers.Kind.SLUICE).stream()
+        .min(Comparator.comparingDouble(s -> s.pos().distSqr(wheel)))
+        .map(s -> Integer.parseInt(s.marker().param("id", "0"))).orElse(0);
   }
 
   static void waitTicks(Engine engine, int ticks) {
@@ -217,7 +269,7 @@ public final class RuinWorkshopFullpackGameTests {
     var engine = new Engine(helper, 0);
     int[] initial = new int[1];
     engine.placed()
-        .thenExecute(RuntimeGameTestsRuins.guarded(() -> {
+        .thenExecute(engine.step(() -> {
           helper.assertTrue(engine.site.wheels.size() == 4 && engine.site.pumps.size() == 4, "Four wheels and four pumps");
           int r = RuinWorkshop.pumpSpeed(engine.site, null);
           helper.assertTrue(r == engine.rpm() && r == 128, "R from the pack's Create values is " + r + ", the exporter says "
@@ -230,29 +282,29 @@ public final class RuinWorkshopFullpackGameTests {
             helper.assertTrue(engine.speed(wheelMarker.pos()) == 0, "A wheel turns behind a closed sluice");
           engine.levers(Set.of("1", "2", "3", "4"));
         }))
-        .thenWaitUntil(() -> {
+        .thenWaitUntil(engine.within(1200, "The wheels turn once their sluices open", () -> {
           for (var wheel : engine.site.wheels)
             helper.assertTrue(Math.abs(engine.speed(wheel.pos())) == 4, "Wheel at " + wheel.pos() + " turns at "
-                + engine.speed(wheel.pos()));
-        })
-        .thenExecute(RuntimeGameTestsRuins.guarded(() -> {
+                + engine.speed(wheel.pos()) + " (block " + engine.level.getBlockState(wheel.pos()) + ")");
+        }))
+        .thenExecute(engine.step(() -> {
           for (var port : engine.markers(RuinMarkers.Kind.PORT))
             if (port.marker().param("role", "").equals("input"))
               helper.assertTrue(engine.speed(port.pos()) == 0, "A line turns with its wheelhouse's piece missing: " + port.pos());
           engine.fillSockets();
         }))
-        .thenWaitUntil(() -> {
+        .thenWaitUntil(engine.within(400, "The lines turn with the pieces back", () -> {
           for (var port : engine.markers(RuinMarkers.Kind.PORT))
             if (port.marker().param("role", "").equals("input"))
               helper.assertTrue(Math.abs(engine.speed(port.pos())) == 4, "Line end " + port.pos() + " at " + engine.speed(port.pos()));
-        })
-        .thenExecute(RuntimeGameTestsRuins.guarded(() -> {
+        }))
+        .thenExecute(engine.step(() -> {
           initial[0] = Arrays.stream(engine.sources()).sum();
           helper.assertTrue(initial[0] > 500, "The pit is flooded: " + initial[0]);
           engine.build("wrong");
         }))
         .thenWaitUntil(() -> waitTicks(engine, 200))
-        .thenExecute(RuntimeGameTestsRuins.guarded(() -> {
+        .thenExecute(engine.step(() -> {
           var states = RuinWorkshop.pumpStates(engine.level, engine.site, engine.rpm());
           helper.assertTrue(Arrays.stream(states).filter(s -> s == RuinRules.Pump.WRONG).count() == 2
                   && Arrays.stream(states).filter(s -> s == RuinRules.Pump.DRINKING).count() == 2,
@@ -263,7 +315,7 @@ public final class RuinWorkshopFullpackGameTests {
           engine.build("overstress");
         }))
         .thenWaitUntil(() -> waitTicks(engine, 200))
-        .thenExecute(RuntimeGameTestsRuins.guarded(() -> {
+        .thenExecute(engine.step(() -> {
           for (var pump : engine.site.pumps) {
             helper.assertTrue(Math.abs(CreateCompat.theoreticalSpeed(engine.level, pump.pos())) == 2 * engine.rpm(),
                 "The overstress build turns its pumps at 2R: " + CreateCompat.theoreticalSpeed(engine.level, pump.pos()));
@@ -273,20 +325,28 @@ public final class RuinWorkshopFullpackGameTests {
           helper.assertTrue(Arrays.stream(engine.sources()).sum() == initial[0], "The pit drains at 2R");
           engine.clearSandbox();
           engine.levers(Set.of("1"));
-          engine.build("correct");
         }))
+        .thenWaitUntil(engine.within(1200, "Only the first house's wheel turns", () -> {
+          for (var wheel : engine.site.wheels) {
+            float speed = engine.speed(wheel.pos());
+            helper.assertTrue(houseOf(engine, wheel.pos()) == 1 ? Math.abs(speed) == 4 : speed == 0,
+                "Wheel of house " + houseOf(engine, wheel.pos()) + " at " + speed);
+          }
+        }))
+        .thenExecute(engine.step(() -> engine.build("correct")))
         .thenWaitUntil(() -> waitTicks(engine, 300))
-        .thenExecute(RuntimeGameTestsRuins.guarded(() -> {
+        .thenExecute(engine.step(() -> {
           for (var pump : engine.site.pumps)
             helper.assertTrue(CreateCompat.overStressed(engine.level, pump.pos()), "One wheel carries the four pumps at R");
           helper.assertTrue(Arrays.stream(engine.sources()).sum() == initial[0], "The pit drains on one wheel");
           engine.levers(Set.of("1", "2", "3", "4"));
         }))
-        .thenWaitUntil(() -> {
+        .thenWaitUntil(engine.within(3000, "The correct build drains the top layer", () -> {
           int[] layers = engine.sources();
-          helper.assertTrue(layers[layers.length - 1] == 0, "Draining the top layer: " + Arrays.toString(layers));
-        })
-        .thenExecute(RuntimeGameTestsRuins.guarded(() -> {
+          helper.assertTrue(layers[layers.length - 1] == 0, "Draining the top layer: " + Arrays.toString(layers)
+              + ", pumps " + Arrays.toString(RuinWorkshop.pumpStates(engine.level, engine.site, engine.rpm())));
+        }))
+        .thenExecute(engine.step(() -> {
           int[] layers = engine.sources();
           helper.assertTrue(layers[0] > 0, "The bottom layer drained with the top: " + Arrays.toString(layers));
           // Break the engine: the drain pauses where it is.
@@ -297,14 +357,14 @@ public final class RuinWorkshopFullpackGameTests {
           engine.counter = Arrays.stream(layers).sum();
         }))
         .thenWaitUntil(() -> waitTicks(engine, 100))
-        .thenExecute(RuntimeGameTestsRuins.guarded(() -> {
+        .thenExecute(engine.step(() -> {
           int left = Arrays.stream(engine.sources()).sum();
           helper.assertTrue(left == engine.counter, "The drain went on with the engine broken: " + engine.counter + " -> " + left);
           engine.build("correct");
         }))
-        .thenWaitUntil(() -> helper.assertTrue(engine.solved(engine.a, "engine"),
-            "Draining: " + Arrays.toString(engine.sources())))
-        .thenExecute(RuntimeGameTestsRuins.guarded(() -> {
+        .thenWaitUntil(engine.within(4000, "The correct build drains the pit", () -> helper.assertTrue(engine.solved(engine.a, "engine"),
+            "Draining: " + Arrays.toString(engine.sources()))))
+        .thenExecute(engine.step(() -> {
           helper.assertTrue(Arrays.stream(engine.sources()).sum() == 0, "The pit is dry");
           helper.assertTrue(!engine.solved(engine.b, "engine"), "The other team got the engine for free");
           LOGGER.info("Ruin engine QA: the correct build drained {} sources at R={}", initial[0], engine.rpm());
@@ -348,7 +408,7 @@ public final class RuinWorkshopFullpackGameTests {
     var engine = new Engine(helper, 1);
     BlockPos[] gearshift = new BlockPos[1];
     engine.placed()
-        .thenExecute(RuntimeGameTestsRuins.guarded(() -> {
+        .thenExecute(engine.step(() -> {
           engine.fillSockets();
           engine.levers(Set.of("1", "2", "3", "4"));
           var context = RuntimeGameTestsRuins.context(engine.a);
@@ -364,25 +424,25 @@ public final class RuinWorkshopFullpackGameTests {
           }
           helper.assertTrue(gearshift[0] != null, "The seal build has no sequenced gearshift");
         }))
-        .thenWaitUntil(() -> {
+        .thenWaitUntil(engine.within(1200, "The lines turn", () -> {
           for (var port : engine.markers(RuinMarkers.Kind.PORT))
             if (port.marker().param("role", "").equals("input"))
               helper.assertTrue(Math.abs(engine.speed(port.pos())) == 4, "Line end " + port.pos() + " at " + engine.speed(port.pos()));
-        })
-        .thenExecute(RuntimeGameTestsRuins.guarded(() -> turn(engine.level, gearshift[0], 90)))
-        .thenWaitUntil(() -> {
+        }))
+        .thenExecute(engine.step(() -> turn(engine.level, gearshift[0], 90)))
+        .thenWaitUntil(engine.within(600, "The ring turns a quarter and rests", () -> {
           var bearing = CreateCompat.bearing(engine.level, engine.site.seal.pos());
           helper.assertTrue(bearing != null && bearing.running() && bearing.angularSpeed() == 0
               && Math.abs(bearing.angle() - 90) < 1, "Turning a quarter: " + bearing);
-        })
+        }))
         .thenWaitUntil(() -> waitTicks(engine, 120))
-        .thenExecute(RuntimeGameTestsRuins.guarded(() -> {
+        .thenExecute(engine.step(() -> {
           helper.assertTrue(!engine.solved(engine.a, "seal"), "The seal opened at a quarter turn");
           turn(engine.level, gearshift[0], 45);
         }))
-        .thenWaitUntil(() -> helper.assertTrue(engine.solved(engine.a, "seal"),
-            "The seal at " + CreateCompat.bearing(engine.level, engine.site.seal.pos())))
-        .thenExecute(RuntimeGameTestsRuins.guarded(() -> {
+        .thenWaitUntil(engine.within(600, "The seal opens at an eighth", () -> helper.assertTrue(engine.solved(engine.a, "seal"),
+            "The seal at " + CreateCompat.bearing(engine.level, engine.site.seal.pos()))))
+        .thenExecute(engine.step(() -> {
           var bearing = CreateCompat.bearing(engine.level, engine.site.seal.pos());
           helper.assertTrue(RuinRules.aligned(bearing.angle(), 45, 3), "Opened away from an eighth: " + bearing);
           for (var plug : engine.markers(RuinMarkers.Kind.MODBLOCK))
@@ -411,11 +471,12 @@ public final class RuinWorkshopFullpackGameTests {
     return BuiltInRegistries.BLOCK.getKey(player.serverLevel().getBlockState(target).getBlock()).toString().equals(item);
   }
 
+  /** Uses an item on a block's north face (a wrench there turns a vertical shaft). */
   static void use(ServerPlayer player, BlockPos target, String item) {
     var stack = new ItemStack(BuiltInRegistries.ITEM.get(ResourceLocation.parse(item)));
     player.setItemInHand(InteractionHand.MAIN_HAND, stack);
     player.gameMode.useItemOn(player, player.serverLevel(), stack, InteractionHand.MAIN_HAND,
-        new BlockHitResult(Vec3.atCenterOf(target), Direction.UP, target, false));
+        new BlockHitResult(Vec3.atCenterOf(target).add(0, 0, -0.5), Direction.NORTH, target, false));
     player.setItemInHand(InteractionHand.MAIN_HAND, ItemStack.EMPTY);
   }
 
@@ -426,7 +487,7 @@ public final class RuinWorkshopFullpackGameTests {
     BlockPos[] cells = new BlockPos[4];
     int[] before = new int[1];
     engine.placed()
-        .thenExecute(RuntimeGameTestsRuins.guarded(() -> {
+        .thenExecute(engine.step(() -> {
           var level = engine.level;
           var a = engine.a;
           BlockPos center = engine.center();
@@ -454,7 +515,6 @@ public final class RuinWorkshopFullpackGameTests {
           var socket = engine.markers(RuinMarkers.Kind.PART).stream()
               .filter(p -> p.marker().block().startsWith("create:gearbox") && !level.getBlockState(p.pos().below()).isAir())
               .findFirst().orElseThrow();
-          RuntimeGameTestsRuins.teleport(a, level, socket.pos().below(2));
           helper.assertTrue(!place(a, socket.pos(), "create:shaft"), "A socket took the wrong piece");
           helper.assertTrue(place(a, socket.pos(), "create:gearbox"), "A socket refused its piece");
           cells[1] = socket.pos();
@@ -471,18 +531,20 @@ public final class RuinWorkshopFullpackGameTests {
           engine.levers(Set.of("2"));
           RuinWorkshop.claimed(level, engine.ruin);
           helper.assertTrue(RuinWorkshop.pending(level.getServer(), engine.ruin.id()), "No reset after a claim");
-          // Everyone leaves; ten minutes pass.
-          a.teleportTo(level, engine.ruin.box().maxX() + 40, 120, engine.ruin.box().maxZ() + 40, 0, 0);
+          // Everyone leaves; ten minutes pass. (A waits in creative, out of the ruin, so the fall does not matter.)
+          a.setGameMode(net.minecraft.world.level.GameType.CREATIVE);
+          a.teleportTo(level, engine.ruin.box().maxX() + 24, engine.ruin.box().maxY() + 8, engine.ruin.box().maxZ() + 24, 0, 0);
         }))
-        .thenWaitUntil(() -> helper.assertTrue(RuinWorkshopData.get(engine.level.getServer()).peek(engine.ruin.id())
-            .map(e -> e.emptySince >= 0).orElse(false), "The ruin is not empty yet"))
-        .thenExecute(RuntimeGameTestsRuins.guarded(() -> {
+        .thenWaitUntil(engine.within(400, "The ruin counts as empty", () -> helper.assertTrue(
+            RuinWorkshopData.get(engine.level.getServer()).peek(engine.ruin.id()).map(e -> e.emptySince >= 0).orElse(false),
+            "The ruin is not empty yet")))
+        .thenExecute(engine.step(() -> {
           var entry = RuinWorkshopData.get(engine.level.getServer()).peek(engine.ruin.id()).orElseThrow();
           entry.emptySince -= RuinWorkshop.RESET_DELAY;
         }))
-        .thenWaitUntil(() -> helper.assertTrue(!RuinWorkshop.pending(engine.level.getServer(), engine.ruin.id()),
-            "The workshop has not reset"))
-        .thenExecute(RuntimeGameTestsRuins.guarded(() -> {
+        .thenWaitUntil(engine.within(400, "The workshop resets", () -> helper.assertTrue(
+            !RuinWorkshop.pending(engine.level.getServer(), engine.ruin.id()), "The workshop has not reset")))
+        .thenExecute(engine.step(() -> {
           var level = engine.level;
           for (var sandbox : engine.site.sandboxes)
             for (BlockPos pos : sandbox.cells())

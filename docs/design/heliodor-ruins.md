@@ -6,7 +6,8 @@ Diseño del controlador, 24 de septiembre de 2026; sistema del Plan v2 en el jue
 
 - `art/structures/voxkit.py`: diccionario de bloques con colocación simétrica D4 (`sym`), comprobación `is_symmetric()`, vista isométrica con el color promedio de las texturas vanilla y lectura de NBT para renderizar referencias.
 - Cada ruina del Plan v2 es un `build()` que devuelve `(Voxels, marcadores)` en coordenadas centradas; `y` puede ser negativa (fosos, bóvedas). `ruins_medium.RUINS` junta las cinco medianas.
-- `tools/build_heliodor_ruins.py` exporta las diez a `companion/src/main/resources/data/entrelumen/structure/ruins/<id>.nbt` con un solo comando; `--check` compara con lo commiteado y `--report` lista tamaños y marcadores. Rechaza IDs de bloque que el 1.21.1 no conoce.
+- `tools/build_heliodor_ruins.py` exporta las diez a `companion/src/main/resources/data/entrelumen/structure/ruins/<id>.nbt` con un solo comando; `--check` compara con lo commiteado y `--report` lista tamaños y marcadores. Rechaza IDs de bloque que el 1.21.1 no conoce y, con el JAR de Create del pack a mano, bloques y propiedades de Create que no existen. Al Taller le agrega el Motor de Terra (ver abajo) y escribe las construcciones guionadas de sus pruebas.
+- `tools/create_kinetics.py`: un modelo chico de la propagación de giro de Create 6.0.10 (`RotationPropagator`), con el que se diseñó y se comprueba el motor del Taller.
 - Las vistas previas van a `art/structures/preview/` o a `$RUIN_OUT`.
 
 ## Estado
@@ -15,7 +16,7 @@ Diseño del controlador, 24 de septiembre de 2026; sistema del Plan v2 en el jue
 |---|---|---|---|---|---|
 | Ruina inicial (patio del sol, pedestal de la brújula) | inicio | Overworld, spawn | `ruin_start.py` | `heliodor_ruin_start.nbt`, 15×9×15 | En el juego |
 | Torre de la Señal | I | Overworld | `ruin_signal_tower.py` | `ruins/signal_tower.nbt`, 51×83×51 | En el juego, arte de primera pasada |
-| Taller hundido | II | Overworld | `ruin_sunken_workshop.py` | `ruins/sunken_workshop.nbt`, 77×49×77 (17 bajo el suelo) | En el juego, arte de primera pasada |
+| Taller hundido | II | Overworld | `ruin_sunken_workshop.py` | `ruins/sunken_workshop.nbt`, 77×49×77 (17 bajo el suelo) | En el juego con el Motor de Terra (Create), arte de primera pasada |
 | Viaducto | III | Overworld | `ruin_viaduct.py` | `ruins/viaduct.nbt`, 97×53×97 | En el juego, arte de primera pasada |
 | Invernadero-domo | III | Overworld | `ruins_medium.py` | `ruins/dome_greenhouse.nbt`, 45×29×45 | En el juego, arte de primera pasada |
 | Fundición bajo la lava | III | Nether | `ruins_medium.py` | `ruins/nether_foundry.nbt`, 47×21×47 | En el juego, arte de primera pasada |
@@ -185,18 +186,62 @@ Las notas de Terra van en atriles. Los medidores dan los números.
 - **Piezas.** Las pone el jugador: son las del acto II (aleación de andesita, ejes, engranajes). Un barril por casa trae un poco de material oxidado para no moler de más.
 - **Sin Create:** vuelve el acertijo de las cuatro palancas.
 
+### Implementación (26/9)
+
+**Números.** Valores de Create 6.0.10 en el pack, los de `CStress` sin override en `pack/config`: la rueda hidráulica grande da 128 SU por RPM a 4 RPM (512 SU), la bomba mecánica pesa 4 SU por RPM y el rodamiento, 4. **R = 128 RPM.** Es la mayor velocidad 4·2^k con la que las cuatro bombas (4 × 4 × R = 2048 SU) entran en las cuatro ruedas juntas (2048 SU); Create sobrecarga sólo si el estrés supera la capacidad. Una rueda sola mueve las cuatro bombas a 32 RPM como mucho, y a 2R piden 4096 SU y se sobrecargan. De 4 a 128 RPM hacen falta cinco pasos de engranaje grande contra chico. El runtime calcula R en vivo con `BlockStressValues` (`RuinRules.pumpSpeed`), así que el desafío y las notas siguen a la config si cambia. La QA comprueba que el pack da 128.
+
+**Desvíos del diseño, y por qué.**
+- En Create 6 la bomba mecánica empuja siempre hacia donde mira: el sentido de giro no cambia el flujo. Por eso «dos bombas miran al revés» no se puede hacer con bombas reales. Las cuatro miran para arriba, o sea que sacan agua del foso, y la ruina exige el sentido de giro: las de las diagonales con x·z > 0 tienen que girar en negativo (el signo de Create sobre su eje) y las otras dos en positivo. Una bomba al revés se nota: salen burbujas en su toma, humo en su puerto, y avisa «Esta bomba gira al revés: escupe el agua».
+- Las cuatro bombas tienen que estar en **una sola red**. Con redes separadas, cada rueda movería su bomba a 128 RPM sola (512 SU) y no haría falta unir nada, y el diseño pide unir las cuatro.
+- El disco del banco tiene 4,5 de radio, 9 de diámetro como dice el doc. El comentario del arte decía 4,2, que dejaba afuera la celda de arriba de cada puerto de bomba.
+- El rodamiento va arriba del anillo, colgado y mirando para abajo (y = −11), porque el eje del sello baja desde el puerto del centro de la sala. El marcador `seal_bearing` del arte lo ponía en el techo de la bóveda, adonde ese eje no llega.
+
+**Qué agrega el exportador.** Sale de los marcadores del arte y se rota a las cuatro casas:
+- **Transmisión de cada casa.** Caja en la punta del eje de la rueda, montante hasta la altura de la línea, caja arriba, ejes hacia la sala y dos engranajes chicos que bajan a la línea. A la altura del velocímetro, una caja en el montante mueve los dos velocímetros de la casa. La línea del arte, que la puerta del galpón cortaba en x = 19, vuelve a estar entera.
+- **La pieza que falta.** En la casa +x es la caja de arriba; en +z, un eje del montante; en −x, un engranaje del cambio de línea; en −z, la caja del eje. Cada una es un marcador `part` y su celda empieza vacía.
+- **Bombas.** El puerto del piso baja por un eje hasta un engranaje chico que engrana con la bomba de al lado: la bomba no tiene eje, sólo engranaje. La bomba mira para arriba y tira de un caño que baja al agua del foso.
+- **Sello.** Un eje baja del puerto central hasta el rodamiento, en modo «nunca colocar» (`ScrollValue` 2). Abajo va un chasis radial con alcance 8, pegajoso a los cuatro lados, en la capa del fondo del foso, y un anillo de cobre (radios 6,3 a 7,6) con muescas en las diagonales. El chasis también se lleva la base de la caldera: gira el disco entero. A 45° las muescas quedan sobre las cuatro bajadas. Las cuatro celdas del anillo que tapan las bajadas son `modblock mod=create`: sin Create no están.
+- **El resto.** Compuertas de las esclusas (`sluice id=1..4`), palancas con `sluice=`, notas (`note key=engine|house1..4`), velocímetros con su estado de 1.21.1 (`axis_along_first`), el barril de devolución, el banco y los barriles de piezas de cada casa.
+- **Comprobación.** `tools/create_kinetics.py` verifica que cada rueda llega a su línea, que sin la pieza no llega y que las cuatro construcciones guionadas (`correct`, `wrong`, `overstress`, `seal`) dan lo esperado. Se escriben en `companion/src/fullpackGameTest/resources/data/entrelumen/ruin_solution/sunken_workshop.json` para las GameTests, y `--check` falla si quedaron viejas.
+
+**En el juego** (`RuinWorkshop`; Create por reflexión, en `CreateCompat`):
+- **Esclusas.** Abiertas (aire) mientras alguna de sus palancas está encendida; el agua del estanque llega a la rueda.
+- **Bombas.** Se revisan cada medio segundo. Si las cuatro chupan (en su sentido, a R o más, en una red), el foso se vacía capa por capa: saca un tajo de fuentes por vez, girando alrededor del centro. Si algo se rompe, se detiene donde está. Con el foso seco, `engine` es del equipo que tocó el motor por última vez (banco, zócalos o palancas) o, si no hay, del más cercano adentro.
+- **Sello.** El rodamiento armado, quieto y a 45° ± 3° (o sumando múltiplos de 90) durante 3 s le da `seal` a ese equipo, si ya tiene `engine`, y la compuerta de la bóveda se abre sólo para él. Sirve la caja de cambios secuencial programada o un embrague a tiempo.
+- **Banco.**
+  - Dentro del disco sólo se ponen y se sacan bloques de `#entrelumen:ruin/sandbox`: ejes, engranajes, cajas, embrague, cambio de sentido, cadenas, correas, medidores, caja secuencial y redstone de vanilla y de Create. Se puede usar cualquier bloque, y de los ítems sin bloque sólo los de `#entrelumen:ruin/sandbox_tools` (la llave inglesa y el conector de correa).
+  - Las fuentes de energía, el controlador de velocidad, el motor creativo y todo lo demás se rechazan con su mensaje.
+  - En un zócalo sólo entra y sale su pieza.
+  - Fuera de esas celdas la ruina sigue indestructible y la llave inglesa no toca nada. Las máquinas (deployers) no trabajan el banco.
+- **Curación.** Si un conflicto de giro rompe un bloque de Create de la ruina (Create lo tira como ítem), el bloque vuelve a su lugar y el ítem desaparece.
+- **Notas.** Libros escritos en los atriles, en inglés o español según el cliente, con R. Si alguien se lleva uno, vuelve.
+- **Reinicio.** Cuando un equipo reclama el Plano, el taller queda pendiente. Diez minutos después de quedar vacío:
+  - se descarta el disco girado;
+  - se restauran desde la plantilla la capa del anillo y el foso, así que vuelve el agua;
+  - las piezas del banco y de los zócalos vuelven a quien las puso, si está conectado, o si no al barril de la puerta;
+  - se cierran las esclusas.
+
+  El estado vive en `RuinWorkshopData` (`entrelumen_ruin_workshop`).
+- **Sin Create.** `engine` y `seal` duermen (cada desafío tiene `mods` y `without`) y juega `sluices`, el acertijo de las ocho palancas.
+
+**Arte: lo que el exportador corrige.** Queda para la revisión del arte:
+- la puerta del galpón (x = 19) borra la punta de la línea;
+- el amoladero de cada casa pisa el atril de la nota en (22, 1, ±6);
+- `create:speedometer` no tiene `axis` en 1.21.1;
+- `seal_bearing` cae bajo el fondo del foso.
+
 ## Sistema (26 de septiembre de 2026)
 
 Rama `feature/ruins-v2`. Código en `companion/src/main/java/dev/entrelumen/Ruin*.java` y `KeyPieces.java`; reglas puras en `RuinRules`, `RuinMarkers` y `RuinDefinitions`.
 
 ### Definiciones
 
-Una ruina es un JSON en `data/entrelumen/heliodor_ruin/<id>.json` (datapack, recargable): acto, dimensión, mods que necesita, escala, plantilla, colocación (`surface`, `cavern` o `sky`; anillo `min`–`max`), pieza, proyecto que la pide, loot table por defecto, desafíos, compuertas y lo que pide el pedestal. Un desafío puede exigir otros antes (`requires`). Un archivo inválido se descarta con un error en el log y el resto carga igual.
+Una ruina es un JSON en `data/entrelumen/heliodor_ruin/<id>.json` (datapack, recargable): acto, dimensión, mods que necesita, escala, plantilla, colocación (`surface`, `cavern` o `sky`; anillo `min`–`max`), pieza, proyecto que la pide, loot table por defecto, desafíos, compuertas y lo que pide el pedestal. Un desafío puede exigir otros antes (`requires`) y jugar sólo con ciertos mods (`mods`) o sin ellos (`without`); los que no juegan con los mods cargados duermen y salen de las compuertas y del pedestal. Un archivo inválido se descarta con un error en el log y el resto carga igual.
 
 | Ruina | Colocación | Desafíos | Compuerta | Pieza | Proyecto |
 |---|---|---|---|---|---|
 | `signal_tower` | superficie, 250–500 del spawn | `braziers`: cuatro pisos de braseros, de abajo hacia arriba; la linterna se enciende | — | Brasa de la Señal | `first_signal` |
-| `sunken_workshop` | superficie, 400–1200 | `drowned`: tres ahogados; `sluices`: las ocho palancas de las compuertas, que vacían el foso | `vault` (`sluices`) | Plano de Terra | `lost_workshop` |
+| `sunken_workshop` | superficie, 400–1200 | `drowned`: tres ahogados. Con Create, `engine`: el Motor de Terra vacía el foso; `seal`: el sello a un octavo, después del motor. Sin Create, `sluices`: las ocho palancas de las compuertas | `vault` (`seal`; sin Create, `sluices`) | Plano de Terra | `lost_workshop` |
 | `viaduct` | superficie, 400–1200 | `toll_guardian`: Guardián del Peaje (vindicador, 120 de vida, escala 1,4) | — | Sello de Ruta | `exchange_route` |
 | `dome_greenhouse` | superficie, 400–1200 | `saplings`: cuatro retoños (`#minecraft:saplings`) en cualquiera de los ocho canteros | `crypt` (`saplings`) | Semilla Madre | `nursery_protocol` |
 | `nether_foundry` | caverna del Nether, 150–500 de la llegada | `guards`: cuatro esqueletos wither; `furnaces`: las ocho palancas, después de la guardia | `vault` (`furnaces`) | Crisol de Heliodor | `distributed_power` |
@@ -239,6 +284,18 @@ Bloques de estructura en modo DATA; el texto es `<tipo> clave=valor ...` (el pre
 | `lore` | `radius` (6), `height` (5), `block` | Volumen que registra la visita; sin `lore`, toda la ruina. |
 | `arrival` | `block` | Punto de llegada (`spawn` también vale, para la ruina inicial). |
 | `ground` | `block` | La capa de la plantilla que queda al ras del terreno; sin él, la capa 0. |
+| `sandbox` | `size=x,y,z`, `radius` | Donde se construye: la caja cortada a un disco alrededor de su centro. |
+| `part` | `block` | Pieza que falta: la celda empieza vacía y sólo acepta ese bloque. |
+| `pump` | `challenge`, `turn` (`+`, `-`), `intake`, `block` | Bomba del motor; `turn` es el sentido que se exige, `intake` la toma (desde la bomba). |
+| `port` | `role` (`input`, `pump`, `seal`), `block` | Donde una transmisión llega al banco. |
+| `seal` | `challenge`, `scroll`, `block` | El rodamiento del sello; `scroll` es su modo de movimiento en Create. |
+| `sluice` | `id`, `block` | Celda de una esclusa: aire mientras alguna palanca con `sluice=<id>` está encendida. |
+| `wheel` | `block` | Rueda hidráulica, puesta al final para que tenga lugar su marco. |
+| `note` | `key`, `block` | Atril con una nota de Terra. |
+| `returns` | `block` | El barril adonde vuelven las piezas al reiniciar. |
+| `modblock` | `mod`, `block` | Un bloque que sólo está con ese mod. |
+
+La palanca acepta además `sluice=<id>`: mueve esa esclusa.
 
 El exportador traduce los marcadores del arte: `braziers` y `lantern` (Torre), `levers`, `drain_volume`, `vault_doors`, `arm_chest` y `drowned` (Taller), `mirrors` y `beam_receptor` (Risco), `offering_sockets`, `order_stones` (orden de brújula), `boss`, `lore`, `arrival` y `pedestal`. Todo barril del arte es un cofre de Lootr y toda palanca entra en la cerradura de su ruina. Las compuertas salen de `vault_doors` o, en las medianas con bóveda, de los pozos de escalera que bajan desde la capa del suelo (`GATE_STYLE` dice cuál y cómo se ve).
 
@@ -246,7 +303,7 @@ El exportador traduce los marcadores del arte: `braziers` y `lantern` (Torre), `
 
 - El progreso vive en `RuinProgress` (`entrelumen_ruin_progress`), por campaña; un grupo nuevo hereda el del fundador, como la campaña y la brújula.
 - El mundo muestra el estado del último equipo que tocó el desafío: braseros encendidos, receptáculos llenos, lámparas. Otro equipo ve el suyo en cuanto toca.
-- Los espejos y las palancas vuelven a su posición inicial poco después de resolverse (10 y 5 s), para el equipo siguiente. El foso vaciado queda vacío: es del mundo.
+- Los espejos y las palancas vuelven a su posición inicial poco después de resolverse (10 y 5 s), para el equipo siguiente. Sin Create el foso vaciado queda vacío, porque es del mundo; con Create el Taller se reinicia después de que un equipo reclama el Plano (ver el Motor de Terra).
 - Un desafío con `requires` pendiente responde «Antes tiene que responder otra cosa de este lugar».
 
 ### Compuertas
@@ -271,7 +328,7 @@ Entrar al volumen de `lore` registra la visita del equipo y le muestra el lore d
 
 ### Loot
 
-Una tabla por ruina, por acto (`chests/ruin_act<N>_<ruina>`), sólo con ítems vanilla. El Taller conserva `chests/ruin_act2_workshop` con el Brazo de Terra en un barril y usa `ruin_act2_workshop_stores` en el resto.
+Una tabla por ruina, por acto (`chests/ruin_act<N>_<ruina>`), sólo con ítems vanilla. El Taller conserva `chests/ruin_act2_workshop` con el Brazo de Terra en un barril y usa `ruin_act2_workshop_stores` en el resto. Los dos barriles de cada casa llevan piezas de Create (`chests/ruin_act2_wheelhouse`: aleación de andesita, ejes, engranajes, una caja), una tabla que sólo existe con Create; sin Create esos barriles usan la de la ruina.
 
 ### Comandos
 
@@ -292,10 +349,18 @@ Hace falta, en 16×16 y con referencias inspeccionadas según `DESIGN.md`:
 
 ### Pruebas
 
-- JUnit: `RuinMarkersTest`, `RuinRulesTest`, `RuinDefinitionsTest`, `RuinTemplatesTest` (cada plantilla tiene lo que su definición pide) y `CompassTargetsTest`.
-- GameTests (`RuntimeGameTestsRuins`): plantillas con bloques conocidos; una gigante en el Overworld por búsqueda de anillo (registro, protección, cimiento, ancla); el Templo por partes; la Fundición en una caverna del Nether y el Observatorio flotando en el End; cada tipo de desafío resuelto y reiniciado por equipo; la compuerta; el pedestal que da y repone; el jefe con su barra; la adopción de piezas sin mod; la visita. Además, cada una de las diez ruinas se juega entera desde sus propios marcadores (`*PlaysFromItsMarkers`): sin coordenadas escritas en las pruebas.
+- JUnit: `RuinMarkersTest`, `RuinRulesTest` (con R, las bombas, el ángulo del sello, el disco del banco y la espera del reinicio), `RuinDefinitionsTest` (el Taller con y sin Create), `RuinTemplatesTest` (cada plantilla tiene lo que su definición pide; el motor del Taller, sus tags, textos y construcciones) y `CompassTargetsTest`.
+- GameTests (`RuntimeGameTestsRuins`): plantillas con bloques y propiedades conocidos (los de un mod ausente quedan en aire); una gigante en el Overworld por búsqueda de anillo (registro, protección, cimiento, ancla); el Templo por partes; la Fundición en una caverna del Nether y el Observatorio flotando en el End; cada tipo de desafío resuelto y reiniciado por equipo; la compuerta; el pedestal que da y repone; el jefe con su barra; la adopción de piezas sin mod; la visita. Además, cada una de las diez ruinas se juega entera desde sus propios marcadores (`*PlaysFromItsMarkers`): sin coordenadas escritas en las pruebas. Sin Create, el Taller se juega con las palancas.
+- Pack completo (`RuinWorkshopFullpackGameTests`, lote `ruins_engine`), con el Create fijado y las construcciones del exportador:
+  - las ruedas giran al abrir sus esclusas y las líneas sólo llegan con las piezas repuestas;
+  - una rueda sola se sobrecarga con las cuatro bombas, dos bombas al revés y 2R no vacían;
+  - la construcción correcta vacía capa por capa y se detiene si se rompe;
+  - el sello abre a 45° y no a 90°, sólo para el equipo que lo giró;
+  - el banco acepta piezas y redstone y rechaza motores, manivela, controlador, rueda y bloques comunes; los zócalos, sólo su pieza; la llave inglesa no toca la ruina;
+  - el reinicio devuelve las piezas (a quien las puso o al barril), vuelve a inundar, cierra las esclusas y pone el anillo.
 
 ## Pendiente
 
 - Arte de las diez ruinas a escala final (Elias revisa una por una). El exportador y las pruebas sólo dependen del contrato de marcadores.
 - Los íconos y modelos de la lista de arte provisorio.
+- Motor de Terra: que Elias confirme los dos desvíos (el sentido de las bombas lo exige la ruina; las cuatro en una red) y que la revisión del arte corrija lo que hoy repone el exportador.
