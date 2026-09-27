@@ -813,18 +813,20 @@ public final class RuntimeGameTestsRuins {
   // ---- How the ruins meet the terrain (Elias, 26 September; RuinTerrain) ------------------------
 
   /**
-   * Raises a test landscape on the flat test world: every column of {@code area} gets {@code under} up
-   * to {@code height(x, z)}, its top three blocks {@code surface}, and air above, up to 96 blocks over
-   * the area, so that a ruin left by an earlier run of the persistent test world is gone.
+   * Raises a test landscape: every column of {@code area} gets {@code under} up to {@code height(x, z)},
+   * its top three blocks {@code surface}, and air above, up to 96 blocks over the area or the column's
+   * own top if higher: a ruin left by an earlier run of the persistent test world goes, and so does the
+   * natural terrain of a full-pack world.
    */
   static void landscape(ServerLevel level, BoundingBox area, java.util.function.IntBinaryOperator height,
       net.minecraft.world.level.block.state.BlockState surface, net.minecraft.world.level.block.state.BlockState under) {
     var cursor = new BlockPos.MutableBlockPos();
     var air = Blocks.AIR.defaultBlockState();
-    int ceiling = Math.min(level.getMaxBuildHeight() - 1, area.maxY() + 96);
     for (int x = area.minX(); x <= area.maxX(); x++)
       for (int z = area.minZ(); z <= area.maxZ(); z++) {
         int top = height.applyAsInt(x, z);
+        int ceiling = Math.min(level.getMaxBuildHeight() - 1, Math.max(area.maxY() + 96,
+            level.getHeight(net.minecraft.world.level.levelgen.Heightmap.Types.WORLD_SURFACE, x, z)));
         for (int y = area.minY(); y <= ceiling; y++) {
           var state = y > top ? air : y >= top - 2 ? surface : under;
           if (!level.getBlockState(cursor.set(x, y, z)).equals(state))

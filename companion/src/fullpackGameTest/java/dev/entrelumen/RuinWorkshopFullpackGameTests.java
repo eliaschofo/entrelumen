@@ -413,8 +413,12 @@ public final class RuinWorkshopFullpackGameTests {
           engine.fillSockets();
           engine.levers(Set.of("1", "2", "3", "4"));
           var context = RuntimeGameTestsRuins.context(engine.a);
-          // The pumps' stage is the other case's; this team has drained the pit already.
+          // The pumps' stage is the other case's; this team has drained the pit already, so the ring turns in
+          // the dry pit (in water, the cells the ring leaves would fill again).
           RuinChallenges.solve(engine.level, engine.ruin, engine.definition, "engine", context.campaignId(), context.founder());
+          var drain = engine.markers(RuinMarkers.Kind.DRAIN).getFirst();
+          for (int i = 0; i < 2000 && !RuinWorkshop.drainStep(engine.level, drain); i++) {}
+          helper.assertTrue(Arrays.stream(engine.sources()).sum() == 0, "The pit did not drain");
           engine.build("seal");
           for (var element : engine.solution.getAsJsonObject("builds").getAsJsonArray("seal")) {
             var entry = element.getAsJsonObject();
@@ -472,12 +476,18 @@ public final class RuinWorkshopFullpackGameTests {
     return BuiltInRegistries.BLOCK.getKey(player.serverLevel().getBlockState(target).getBlock()).toString().equals(item);
   }
 
-  /** Uses an item on a block's north face (a wrench there turns a vertical shaft). */
+  /**
+   * Uses an item on a face of a block across its axis, if it has one: a wrench turns a shaft about the
+   * clicked face's axis, so a click along the shaft would leave it as it is.
+   */
   static void use(ServerPlayer player, BlockPos target, String item) {
     var stack = new ItemStack(BuiltInRegistries.ITEM.get(ResourceLocation.parse(item)));
+    var state = player.serverLevel().getBlockState(target);
+    Direction face = state.hasProperty(BlockStateProperties.AXIS)
+        && state.getValue(BlockStateProperties.AXIS) == Direction.Axis.Z ? Direction.UP : Direction.NORTH;
     player.setItemInHand(InteractionHand.MAIN_HAND, stack);
     player.gameMode.useItemOn(player, player.serverLevel(), stack, InteractionHand.MAIN_HAND,
-        new BlockHitResult(Vec3.atCenterOf(target).add(0, 0, -0.5), Direction.NORTH, target, false));
+        new BlockHitResult(Vec3.atCenterOf(target).relative(face, 0.5), face, target, false));
     player.setItemInHand(InteractionHand.MAIN_HAND, ItemStack.EMPTY);
   }
 
