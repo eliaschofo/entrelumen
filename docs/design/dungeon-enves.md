@@ -297,6 +297,13 @@ Los pisos ya tienen tema. Los enemigos salen de mods que ya están en el pack (I
   - un acertijo chico de la familia de las ruinas: braseros, espejos o palancas.
 - **Loot:** piezas con afijos de Apotheosis por tier y piso, y gemas. Además, **esquirlas de luz agria** como moneda del Envés, para decidir en qué se gastan (los curios únicos del jefe, por ejemplo).
 
+## Decisiones de Elias (27/9)
+
+- **Primera iteración completa** con el contenido propuesto: pisos, ecos, afijos, santuarios, sellos, bóvedas, loot y el Wither blanco. Elias dirige recién sobre algo tangible, así que se construye entero y se le muestra.
+- **Ofrenda:** pasa de un bloque de netherite a **una estrella del Nether** por intento, o, en su lugar, **una cantidad de esquirlas de luz agria**. La cantidad va en `config.json` y se calibra para que la estrella sea sobre todo el pago de las primeras bajadas: una bajada completa deja más esquirlas de las que pide la puerta.
+- **Esquirlas de luz agria:** la moneda del Envés. Más adelante se van a canjear en Solsticio, así que está bien que sobren. El canje no entra en esta iteración.
+- **Nombres provisorios:** el Envés y el Wither blanco (EN «the Envés», «White Wither»). Los curios únicos del jefe quedan fuera de esta iteración.
+
 ## Para decidir
 
 - El nombre del descenso y el del jefe.
