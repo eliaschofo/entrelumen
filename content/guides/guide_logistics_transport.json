@@ -62,85 +62,9 @@
       ]
     },
     {
-      "key": "logistics_transport_pipez",
-      "deps": [
-        "logistics_transport_welcome"
-      ],
-      "type": "item",
-      "item": "pipez:item_pipe",
-      "layout": {
-        "x": 3,
-        "y": 0,
-        "size": 1.5,
-        "shape": "square"
-      },
-      "en_us": [
-        "Pipez: the Everyday Pipe",
-        "Item, fluid, energy and gas pipes, plus a &eUniversal Pipe&r for all four, that connect on their own to whatever they touch. They do not pull by themselves: right-click the end at the source with the &ePipe Wrench&r to make it extract.\n\nSneak-right-click with the wrench to cut a connection you do not want."
-      ],
-      "es_es": [
-        "Pipez: el caño de todos los días",
-        "Caños de ítems, fluidos, energía y gas, más un &eCaño universal&r para los cuatro, que se conectan solos a lo que tocan. No extraen solos: clic derecho con la &eLlave de caños&r en el extremo de la fuente para que extraiga.\n\nAgachado y clic derecho con la llave corta una conexión que no querés."
-      ],
-      "sources": [
-        "jar:pipez-neoforge-1.21.1-1.2.31.jar:assets/pipez/lang/en_us.json",
-        "jar:pipez-neoforge-1.21.1-1.2.31.jar:de/maxhenkel/pipez/blocks/PipeBlock.class"
-      ]
-    },
-    {
-      "key": "logistics_transport_pipez_menu",
-      "deps": [
-        "logistics_transport_pipez"
-      ],
-      "type": "item",
-      "item": "pipez:wrench",
-      "layout": {
-        "x": 6,
-        "y": -1.5,
-        "size": 1.0,
-        "shape": "circle"
-      },
-      "en_us": [
-        "The Extraction Menu",
-        "Right-click an extracting end to set &edistribution&r (nearest, furthest, round robin, random), &eredstone mode&r, and &efilters&r by item ID or #tag, with data matching, inversion and a destination picked with the &eFilter Destination Tool&r.\n\nThe menu also shows how much the pipe moves per tick."
-      ],
-      "es_es": [
-        "El menú de extracción",
-        "Clic derecho en un extremo que extrae para configurar el &ereparto&r (más cercano, más lejano, por turnos, al azar), el &emodo de redstone&r y los &efiltros&r por ID o #tag, con coincidencia de datos, inversión y un destino elegido con la &eHerramienta de destino de filtro&r.\n\nEl menú también muestra cuánto mueve el caño por tick."
-      ],
-      "sources": [
-        "jar:pipez-neoforge-1.21.1-1.2.31.jar:assets/pipez/lang/en_us.json"
-      ]
-    },
-    {
-      "key": "logistics_transport_pipez_upgrades",
-      "deps": [
-        "logistics_transport_pipez"
-      ],
-      "type": "item",
-      "item": "pipez:basic_upgrade",
-      "layout": {
-        "x": 6,
-        "y": 1.5,
-        "size": 1.0,
-        "shape": "circle"
-      },
-      "en_us": [
-        "Faster Pipes",
-        "A &epipe upgrade&r in the extraction menu raises speed (Basic, Improved, Advanced, Ultimate) and unlocks more options.\n\nOne upgrade per extracting side, not per pipe: upgrade only where items enter the line."
-      ],
-      "es_es": [
-        "Caños más rápidos",
-        "Una &emejora de caño&r en el menú de extracción sube la velocidad (Básica, Mejorada, Avanzada, Definitiva) y habilita más opciones.\n\nUna mejora por lado que extrae, no por caño: mejorá sólo donde los ítems entran a la línea."
-      ],
-      "sources": [
-        "jar:pipez-neoforge-1.21.1-1.2.31.jar:assets/pipez/lang/en_us.json"
-      ]
-    },
-    {
       "key": "logistics_transport_fluids",
       "deps": [
-        "logistics_transport_pipez_menu"
+        "logistics_transport_welcome"
       ],
       "type": "item",
       "item": "mekanism:basic_mechanical_pipe",
@@ -165,36 +89,9 @@
       ]
     },
     {
-      "key": "logistics_transport_energy",
-      "deps": [
-        "logistics_transport_pipez_menu",
-        "logistics_transport_pipez_upgrades"
-      ],
-      "type": "item",
-      "item": "energymeter:meter",
-      "layout": {
-        "x": 9,
-        "y": 0,
-        "size": 1.5,
-        "shape": "hexagon"
-      },
-      "en_us": [
-        "Energy Between Mods",
-        "Most tech mods here speak &eFE&r, so one cable feeds machines from any of them: Pipez energy pipes, Mekanism universal cables or Immersive Engineering wires. An &eEnergy Meter&r in a line shows the flow.\n\nThe exception is &eCreate&r, which runs on rotation."
-      ],
-      "es_es": [
-        "Energía entre mods",
-        "Casi todos los mods técnicos del pack hablan &eFE&r, así que un cable alimenta máquinas de cualquiera: caños de energía de Pipez, cables universales de Mekanism o cables de Immersive Engineering. Un &eMedidor de energía&r en una línea muestra el flujo.\n\nLa excepción es &eCreate&r, que funciona con rotación."
-      ],
-      "sources": [
-        "jar:energymeter-neoforge-1.21.1-0.5.2.jar:assets/energymeter/lang/en_us.json",
-        "jar:pipez-neoforge-1.21.1-1.2.31.jar:assets/pipez/lang/en_us.json"
-      ]
-    },
-    {
       "key": "logistics_transport_create_bridge",
       "deps": [
-        "logistics_transport_energy"
+        "logistics_transport_welcome"
       ],
       "type": "item",
       "item": "createaddition:alternator",
@@ -219,35 +116,9 @@
       ]
     },
     {
-      "key": "logistics_transport_flux",
-      "deps": [
-        "logistics_transport_energy"
-      ],
-      "type": "item",
-      "item": "fluxnetworks:flux_point",
-      "layout": {
-        "x": 12,
-        "y": 1.5,
-        "size": 1.0,
-        "shape": "pentagon"
-      },
-      "en_us": [
-        "Wireless Energy (Act III)",
-        "&eFlux Networks&r moves energy without cables: &eFlux Plugs&r feed a network and &eFlux Points&r deliver wherever the same network reaches.\n\nPlugs take a reinforced alloy (act III); points and the controller keep their native recipes."
-      ],
-      "es_es": [
-        "Energía inalámbrica (acto III)",
-        "&eFlux Networks&r mueve energía sin cables: los &eFlux Plugs&r alimentan una red y los &eFlux Points&r entregan donde llegue esa red.\n\nLos plugs llevan una aleación reforzada (acto III); points y controlador conservan sus recetas nativas."
-      ],
-      "sources": [
-        "repo:pack/kubejs/server_scripts/entrelumen_industrial_balance.js",
-        "repo:docs/design/industrial-expansion-family.md"
-      ]
-    },
-    {
       "key": "logistics_transport_mekanism",
       "deps": [
-        "logistics_transport_pipez_upgrades"
+        "logistics_transport_welcome"
       ],
       "type": "item",
       "item": "mekanism:basic_logistical_transporter",
@@ -271,35 +142,9 @@
       ]
     },
     {
-      "key": "logistics_transport_laserio",
-      "deps": [
-        "logistics_transport_create_bridge"
-      ],
-      "type": "item",
-      "item": "laserio:laser_node",
-      "layout": {
-        "x": 15,
-        "y": -3,
-        "size": 1.0,
-        "shape": "circle"
-      },
-      "en_us": [
-        "LaserIO: Beams, Not Pipes",
-        "&eLaser Nodes&r sit beside machines, linked by beams with the &eLaser Wrench&r, and each side takes &ecards&r for items, fluids, energy, chemicals or redstone. Each card runs in &eExtract&r, &eInsert&r, &eStock&r or &eSensor&r mode on a channel color, with optional filters (basic, tag, mod, count, data).\n\nOverclockers speed it up. Made for compact machine rooms."
-      ],
-      "es_es": [
-        "LaserIO: rayos, no caños",
-        "Los &eNodos láser&r van al lado de las máquinas, unidos por rayos con la &eLlave láser&r, y cada cara recibe &etarjetas&r de ítems, fluidos, energía, químicos o redstone. Cada tarjeta va en modo &eExtraer&r, &eInsertar&r, &eAbastecer&r o &eSensor&r, en un color de canal, con filtros opcionales (básico, tag, mod, conteo, datos).\n\nLos overclockers la aceleran. Hecha para salas de máquinas compactas."
-      ],
-      "sources": [
-        "jar:laserio-1.9.11.jar:assets/laserio/lang/en_us.json"
-      ]
-    },
-    {
       "key": "logistics_transport_xnet",
       "deps": [
-        "logistics_transport_create_bridge",
-        "logistics_transport_flux"
+        "logistics_transport_create_bridge"
       ],
       "type": "item",
       "item": "xnet:connector_blue",
@@ -323,35 +168,9 @@
       ]
     },
     {
-      "key": "logistics_transport_routers",
-      "deps": [
-        "logistics_transport_mekanism"
-      ],
-      "type": "item",
-      "item": "modularrouters:modular_router",
-      "layout": {
-        "x": 15,
-        "y": 3,
-        "size": 1.0,
-        "shape": "circle"
-      },
-      "en_us": [
-        "Modular Routers",
-        "A &eModular Router&r does whatever its modules say: &eSender&r pushes items to other inventories, &ePuller&r pulls, &eDropper&r and &eFlinger&r throw, &ePlacer&r and &eBreaker&r handle blocks, &eVacuum&r collects drops, &eExtruder&r builds lines of blocks. Upgrades add speed and range.\n\nEvery module starts from a Blank Module; Mekanistic Routers adds chemicals."
-      ],
-      "es_es": [
-        "Modular Routers",
-        "Un &eModular Router&r hace lo que digan sus módulos: &eSender&r empuja ítems a otros inventarios, &ePuller&r tira, &eDropper&r y &eFlinger&r arrojan, &ePlacer&r y &eBreaker&r manejan bloques, &eVacuum&r junta drops, &eExtruder&r arma filas de bloques. Las mejoras suman velocidad y alcance.\n\nTodos los módulos salen de un Módulo en blanco; Mekanistic Routers suma químicos."
-      ],
-      "sources": [
-        "jar:modular-routers-13.2.7+mc1.21.1.jar:assets/modularrouters/lang/en_us.json",
-        "jar:mekanisticrouters-1.2.0.jar:assets/mekanisticrouters/lang/en_us.json"
-      ]
-    },
-    {
       "key": "logistics_transport_tunnels",
       "deps": [
-        "logistics_transport_routers"
+        "logistics_transport_mekanism"
       ],
       "type": "item",
       "item": "integratedtunnels:part_importer_item",
@@ -378,7 +197,6 @@
     {
       "key": "logistics_transport_which",
       "deps": [
-        "logistics_transport_laserio",
         "logistics_transport_xnet"
       ],
       "type": "checkmark",
@@ -431,7 +249,7 @@
     {
       "key": "logistics_transport_tip_overflow",
       "deps": [
-        "logistics_transport_pipez_upgrades"
+        "logistics_transport_welcome"
       ],
       "type": "checkmark",
       "optional": true,
