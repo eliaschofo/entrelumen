@@ -493,5 +493,87 @@
       "note": "The first log stopped at its time limit after 29 checks; the remaining six and the jar split ran in the second."
     },
     "fullpack": "Not run; server-slice untouched."
+  },
+  "fullpackQaPlacementFix": {
+    "checkedAt": "2026-09-27T03:10:00-0300",
+    "scope": "Coordinator's report of main's full-pack run B (head fd48e17): the claims case's pit fitted in one chunk at origin x=-12 and left two mock players connected; the repair case's site fell among earlier cases' barriers and floors. Both made independent of placement and order.",
+    "sourceCommit": "95bb4bb",
+    "isolatedGameTests": {
+      "runs": [
+        "fixtures-gt-1.log",
+        "fixtures-gt-2.log",
+        "fixtures-gt-3.log"
+      ],
+      "summary": "All 121 required tests passed, three times, the arena at three origins",
+      "new": [
+        "levellingAltarArenaPitCrossesAChunkBorderWhereverTheTestRuns",
+        "levellingAltarRepairsUntouchedLandFarFromTheTests"
+      ]
+    },
+    "fullpack": {
+      "server": "E:\\Elias\\Codex\\Entrelumen-ssd\\server-altars4-qa (disposable, deleted after the run)",
+      "heap": "4G",
+      "freeRamMbAtStart": 6149,
+      "plan": [
+        {
+          "test": "altarsrespectforeignftbchunksclaims"
+        },
+        {
+          "test": "levellingaltarrepairslandfromthepacksowngenerator"
+        },
+        {
+          "test": "renewalaltargardenmakeseverydyeonbareground"
+        },
+        {
+          "command": "execute positioned -40 100 -25 run test run altarsrespectforeignftbchunksclaims",
+          "wait": "ENTRELUMEN_QA_RESULT (PASS|FAIL) altarsrespectforeignftbchunksclaims",
+          "timeout": 900,
+          "tag": "claims-at--40,100,-25"
+        },
+        {
+          "command": "execute positioned 300 100 -200 run test run levellingaltarrepairslandfromthepacksowngenerator",
+          "wait": "ENTRELUMEN_QA_RESULT (PASS|FAIL) levellingaltarrepairslandfromthepacksowngenerator",
+          "timeout": 1500,
+          "tag": "repair-at-300,100,-200"
+        },
+        {
+          "test": "altarsrespectforeignftbchunksclaims"
+        }
+      ],
+      "tests": {
+        "altarsrespectforeignftbchunksclaims": "PASS",
+        "levellingaltarrepairslandfromthepacksowngenerator": "PASS",
+        "renewalaltargardenmakeseverydyeonbareground": "PASS"
+      },
+      "commands": {
+        "claims-at--40,100,-25": {
+          "seconds": 32.4,
+          "matched": "ENTRELUMEN_QA_RESULT PASS altarsrespectforeignftbchunksclaims"
+        },
+        "repair-at-300,100,-200": {
+          "seconds": 91.0,
+          "matched": "ENTRELUMEN_QA_RESULT PASS levellingaltarrepairslandfromthepacksowngenerator"
+        }
+      },
+      "bootWallSeconds": 176.6,
+      "watchdog": false,
+      "worstCantKeepUpMs": 45888,
+      "lines": [
+        "ALTAR_FULLPACK claims arena=[-16, 256, 16] claimed=[-1, 1] repairRefusals={claim=168} renewal=[plants=59 trees=1 guards={plant_claim=33, plant_entity=1, plant_margin=14, tree_claim=1}]",
+        "ENTRELUMEN_QA_RESULT PASS altarsrespectforeignftbchunksclaims",
+        "ALTAR_FULLPACK repair site=BlockPos{x=-3212, y=68, z=-124} middle=[-201, -8] biome=minecraft:forest stats={asGenerated=1, floors=33, patches=1} reference=[terrain=25 decorated=9 terrainMillis=3146 decorationMillis=152 failures={pneumaticcraft:oil_lake_surface=1, waystones:waystone=9} unsupported=[getLevel]]",
+        "ALTAR_FULLPACK repair totals filled=30 covered=0 refused=0 skipped=0 fuel=1 refusals={} pit=27 elsewhere=3 coveredElsewhere=0",
+        "ENTRELUMEN_QA_RESULT PASS levellingaltarrepairslandfromthepacksowngenerator",
+        "ENTRELUMEN_QA_RESULT PASS renewalaltargardenmakeseverydyeonbareground",
+        "ALTAR_FULLPACK claims arena=[-32, 256, -16] claimed=[-2, -1] repairRefusals={claim=168} renewal=[plants=65 trees=2 guards={plant_claim=27, plant_margin=31, tree_claim=4}]",
+        "ENTRELUMEN_QA_RESULT PASS altarsrespectforeignftbchunksclaims",
+        "ALTAR_FULLPACK repair site=BlockPos{x=-1243, y=71, z=309} middle=[-78, 19] biome=ars_elemental:vexing_caves stats={asGenerated=1, floors=14, patches=1} reference=[terrain=25 decorated=9 terrainMillis=4940 decorationMillis=219 failures={waystones:mossy_waystone=9} unsupported=[getLevel]]",
+        "ALTAR_FULLPACK repair totals filled=27 covered=0 refused=0 skipped=0 fuel=1 refusals={} pit=27 elsewhere=0 coveredElsewhere=0",
+        "ENTRELUMEN_QA_RESULT PASS levellingaltarrepairslandfromthepacksowngenerator",
+        "ALTAR_FULLPACK claims arena=[-16, 256, 16] claimed=[-1, 1] repairRefusals={claim=168} renewal=[plants=59 trees=1 guards={plant_claim=33, plant_entity=1, plant_margin=14, tree_claim=1}]",
+        "ENTRELUMEN_QA_RESULT PASS altarsrespectforeignftbchunksclaims"
+      ],
+      "receipts": "E:\\Elias\\Codex\\Entrelumen-ssd\\altars4-20260927"
+    }
   }
 }
