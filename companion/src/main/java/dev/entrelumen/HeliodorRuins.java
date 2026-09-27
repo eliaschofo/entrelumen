@@ -40,6 +40,11 @@ public final class HeliodorRuins {
   static final int MAX_FOUNDATION = 12;
   /** Optional data structure block ("spawn") inside a template marks the arrival point. */
   static final Set<String> SPAWN_MARKERS = Set.of("spawn", "entrelumen:spawn");
+  /**
+   * Optional data structure block standing on the floor layer of a template that reaches below
+   * ground (the start ruin's Sealed Stair): the template sinks so that layer meets the ground.
+   */
+  static final String GROUND_MARKER = "entrelumen:ground";
 
   private HeliodorRuins() {}
 
@@ -99,11 +104,15 @@ public final class HeliodorRuins {
       LOGGER.error("Structure template {} is empty; the start ruin was not placed", START);
       return Optional.empty();
     }
-    BlockPos origin = chooseSite(level, near, size);
     StructurePlaceSettings settings = new StructurePlaceSettings();
+    int ground = groundLayer(template, settings);
+    BlockPos origin = chooseSite(level, near, size).below(ground);
     BoundingBox box = template.getBoundingBox(settings, origin);
     template.placeInWorld(level, origin, origin, settings, level.getRandom(), Block.UPDATE_CLIENTS);
-    int lowest = pourFoundation(level, box);
+    int lowest = pourFoundation(level, box, box.minY() + ground);
+    // The foundation may pour into what the template carved below the floor; carve it again.
+    if (ground > 0)
+      template.placeInWorld(level, origin, origin, settings, level.getRandom(), Block.UPDATE_CLIENTS);
 
     BlockPos arrival = null;
     for (var info : template.filterBlocks(origin, settings, Blocks.STRUCTURE_BLOCK)) {
@@ -111,7 +120,7 @@ public final class HeliodorRuins {
       if (SPAWN_MARKERS.contains(info.nbt().getString("metadata"))) arrival = info.pos();
       level.setBlock(info.pos(), Blocks.AIR.defaultBlockState(), Block.UPDATE_CLIENTS);
     }
-    if (arrival == null) arrival = besideRuin(level, box);
+    if (arrival == null) arrival = besideRuin(level, box, box.minY() + ground);
     List<BlockPos> pedestals = new ArrayList<>();
     for (var info : template.filterBlocks(origin, settings, HeliodorContent.PEDESTAL.get()))
       pedestals.add(info.pos().immutable());
@@ -126,8 +135,18 @@ public final class HeliodorRuins {
     data.setDirty();
     // The foundation is already poured: from now on the whole registered box is protected.
     StructureProtection.invalidate(level.getServer());
+    EnvesEntrance.onStartRuinPlaced(level, template, origin, settings, ground);
     if (moveSpawn) level.setDefaultSpawnPos(arrival, facing(arrival, ruin.center()));
     return Optional.of(ruin);
+  }
+
+  /** Height of the floor layer in the template: the ground marker stands on it; 0 without one. */
+  static int groundLayer(StructureTemplate template, StructurePlaceSettings settings) {
+    for (var info : template.filterBlocks(BlockPos.ZERO, settings, Blocks.STRUCTURE_BLOCK))
+      if (info.nbt() != null && "DATA".equals(info.nbt().getString("mode"))
+          && GROUND_MARKER.equals(info.nbt().getString("metadata")))
+        return Math.max(0, info.pos().getY() - 1);
+    return 0;
   }
 
   private record Evaluation(int floor, int spread, int canopy) {}
@@ -191,11 +210,11 @@ public final class HeliodorRuins {
    * the template leaves to the terrain (a round ruin's corners) are levelled with the ground found
    * under them instead, floor cell included.
    */
-  private static int pourFoundation(ServerLevel level, BoundingBox box) {
+  private static int pourFoundation(ServerLevel level, BoundingBox box, int floorY) {
     int lowest = box.minY();
     for (int x = box.minX(); x <= box.maxX(); x++)
       for (int z = box.minZ(); z <= box.maxZ(); z++) {
-        BlockPos floorPos = new BlockPos(x, box.minY(), z);
+        BlockPos floorPos = new BlockPos(x, floorY, z);
         BlockState floor = level.getBlockState(floorPos);
         boolean open = floor.canBeReplaced();
         if (open) floor = groundBelow(level, floorPos);
@@ -203,7 +222,7 @@ public final class HeliodorRuins {
             floor.isCollisionShapeFullBlock(level, floorPos)
                 ? floor
                 : Blocks.TUFF.defaultBlockState();
-        for (int y = box.minY() - (open ? 0 : 1); y >= box.minY() - MAX_FOUNDATION; y--) {
+        for (int y = floorY - (open ? 0 : 1); y >= floorY - MAX_FOUNDATION; y--) {
           BlockPos pos = new BlockPos(x, y, z);
           BlockState state = level.getBlockState(pos);
           if (!state.canBeReplaced() && !state.is(BlockTags.LEAVES)) break;
@@ -229,7 +248,7 @@ public final class HeliodorRuins {
    * with the ruin floor, so the arrival point is always beside the ruin and safe. Last resort, on
    * the floor at the center.
    */
-  static BlockPos besideRuin(ServerLevel level, BoundingBox box) {
+  static BlockPos besideRuin(ServerLevel level, BoundingBox box, int floorY) {
     int cx = (box.minX() + box.maxX()) / 2, cz = (box.minZ() + box.maxZ()) / 2;
     int[][] sides = {
       {cx, box.maxZ() + 1}, {cx, box.minZ() - 1}, {box.maxX() + 1, cz}, {box.minX() - 1, cz}
@@ -240,7 +259,7 @@ public final class HeliodorRuins {
           level.getHeight(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, side[0], side[1]), side[1]);
       if (standable(level, pos)) return pos;
     }
-    BlockPos step = new BlockPos(cx, box.minY() + 1, box.maxZ() + 1);
+    BlockPos step = new BlockPos(cx, floorY + 1, box.maxZ() + 1);
     if (step.getY() + 1 < level.getMaxBuildHeight()) {
       BlockPos below = step.below();
       if (!level.getBlockState(below).getFluidState().isEmpty()
@@ -253,7 +272,7 @@ public final class HeliodorRuins {
       }
       if (standable(level, step)) return step;
     }
-    BlockPos pos = new BlockPos(cx, box.minY() + 1, cz);
+    BlockPos pos = new BlockPos(cx, floorY + 1, cz);
     while (!standable(level, pos) && pos.getY() < level.getMaxBuildHeight() - 2) pos = pos.above();
     return pos;
   }

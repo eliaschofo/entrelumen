@@ -86,9 +86,11 @@ STAIR_DEPTH = 12                                            # the spiral's foot,
 def sealed_stair():
     """The Sealed Stair to the Envés (docs/design/dungeon-enves.md): under the sun mosaic's 3x3 heart
     a spiral winds down round a calcite core to an antechamber with the Envés gate. It stays hidden
-    until the seal opens (the offering on the pedestal, act III and on); the companion clears the SEAL
-    cells and the pedestal when it opens. Underground and functional: the spiral turns one way, the
-    one exception to the D4 rule besides lecterns. Returns voxels with negative y, plus markers."""
+    until a team reaches World Tier Frontier (act III); then the companion clears the eight outer SEAL
+    cells for good. The heart's centre and the pedestal stay: they cap the core, and the pedestal is
+    the only compass source for later arrivals. The offering is paid at the gate, per attempt.
+    Underground and functional: the spiral turns one way, the one exception to the D4 rule besides
+    lecterns. Returns voxels with negative y, plus markers."""
     v = Voxels()
     ring = [(-1, -1), (0, -1), (1, -1), (1, 0), (1, 1), (0, 1), (-1, 1), (-1, 0)]
     for y in range(-STAIR_DEPTH, 0):                        # the shaft: tuff bricks round a 3x3 well
@@ -125,6 +127,13 @@ def sealed_stair():
     for y in (-STAIR_DEPTH + 2,):
         for x in (-3, 3):
             v.put(x, y, -7, B('soul_lantern[hanging=false,waterlogged=false]'))
+    # Companion fix (26/9): the well's foot had no way into the antechamber and its south row stood on
+    # bare terrain. A doorway two blocks high from the foot of the spiral, and a floor under the well.
+    for y in (-STAIR_DEPTH, -STAIR_DEPTH + 1):
+        v.put(-1, y, -2, B('air'))
+    for x in range(-2, 3):
+        for z in (1, 2):
+            v.put(x, -STAIR_DEPTH - 1, z, B('polished_tuff') if abs(x) < 2 and z == 1 else B('tuff_bricks'))
     markers = {'seal': [[x, 0, z] for (x, z) in SEAL], 'enves_gate': [[0, -STAIR_DEPTH, -8]],
                'offering': [[0, 1, 0]], 'antechamber_arrival': [[0, -STAIR_DEPTH, -4]]}
     return v, markers

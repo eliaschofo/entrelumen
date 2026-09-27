@@ -94,6 +94,7 @@ public final class Entrelumen {
     VeinResonator.register(bus);
     HeliodorHeart.register(bus);
     Solsticio.register(bus, container);
+    Enves.register(bus);
     if (container != null)
       container.registerConfig(net.neoforged.fml.config.ModConfig.Type.SERVER, ArkEffects.SPEC,
           "entrelumen-ark-server.toml");

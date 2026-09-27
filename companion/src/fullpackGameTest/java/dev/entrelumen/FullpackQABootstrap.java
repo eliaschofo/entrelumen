@@ -88,6 +88,9 @@ public final class FullpackQABootstrap {
       GameTestRegistry.register(JetpackBalanceFullpackGameTests.class);
       // Ark v2 (25 September): the modules' effects with the pack's real magic, Waystones, Curios and Moonlight.
       GameTestRegistry.register(ArkFullpackGameTests.class);
+      // The Envés (26 September): the engine's GameTests plus the Sealed Stair, Lootr and FTB Chunks.
+      GameTestRegistry.register(RuntimeGameTestsEnves.class);
+      GameTestRegistry.register(EnvesFullpackGameTests.class);
       Set<String> expected = new TreeSet<>();
       for (Class<?> owner : List.of(RuntimeGameTests.class, FullpackGameTests.class,
           ResourceFarmGameTests.class, Ae2CraftingGameTests.class, RFToolsRecipeGameTests.class,
@@ -102,7 +105,8 @@ public final class FullpackQABootstrap {
           RuntimeGameTestsCompass.class, RuntimeGameTestsGameplay.class, SolsticioFullpackGameTests.class,
           RuntimeGameTestsActs.class, ActsFullpackGameTests.class,
           ProgressionFullpackGameTests.class, VeinResonatorFullpackGameTests.class, RuntimeGameTestsStory.class,
-          RecipeDesignFullpackGameTests.class, JetpackBalanceFullpackGameTests.class, ArkFullpackGameTests.class))
+          RecipeDesignFullpackGameTests.class, JetpackBalanceFullpackGameTests.class, ArkFullpackGameTests.class,
+          RuntimeGameTestsEnves.class, EnvesFullpackGameTests.class))
         for (var method : owner.getDeclaredMethods())
           if (method.isAnnotationPresent(GameTest.class))
             expected.add(method.getName().toLowerCase(Locale.ROOT));

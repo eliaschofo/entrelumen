@@ -1,9 +1,14 @@
 """Write the Heliodor start ruin template from its design in art/structures/ruin_start.py.
 
-The design (a round sun patio with the compass pedestal, D4-symmetric) lives with the other
-structure designs; this tool only serialises it. Layer 0 of the template is its floor; floor cells
-outside the round patio are left out so the ground stays, and every other empty cell is air so
-grass and bushes inside the box are cleared. Output is deterministic.
+The design (a round sun patio with the compass pedestal, D4-symmetric) and the Sealed Stair under
+it live with the other structure designs; this tool only serialises them. The patio floor is layer
+GROUND of the template, centred on the sun's heart; the stair and its antechamber fill the layers
+below. Floor cells outside the round patio, and the underground the stair does not use, are left
+out so the terrain stays; every other empty cell above the floor is air so grass and bushes inside
+the box are cleared. DATA markers: `entrelumen:ground` stands on the floor layer (HeliodorRuins
+sinks the template by its height), `entrelumen:enves_gate` and `entrelumen:enves_antechamber` are
+the gate and the arrival point of the antechamber (docs/design/dungeon-enves.md). Output is
+deterministic.
 
     python tools/build_heliodor_ruin_start.py          # write
     python tools/build_heliodor_ruin_start.py --check  # verify the committed file
@@ -23,12 +28,36 @@ import ruin_start  # noqa: E402
 
 TARGET = ROOT / "companion/src/main/resources/data/entrelumen/structure/heliodor_ruin_start.nbt"
 DATA_VERSION = 3955  # Minecraft 1.21.1
-SIZE = (2 * ruin_start.HALF + 1, ruin_start.HEIGHT, 2 * ruin_start.HALF + 1)
 DESIGN = ruin_start.design()
+STAIR, STAIR_MARKERS = ruin_start.sealed_stair()
+GROUND = -min(y for (_, y, _) in STAIR)                       # the patio floor's layer in the template
+HALF_X = ruin_start.HALF
+HALF_Z = max(ruin_start.HALF, *(abs(z) for (_, _, z) in STAIR))  # centred on the heart, stair included
+SIZE = (2 * HALF_X + 1, GROUND + ruin_start.HEIGHT, 2 * HALF_Z + 1)
+
+
+def _design_pos(x: int, y: int, z: int):
+    return (x - HALF_X, y - GROUND, z - HALF_Z)
+
+
+MARKERS = {
+    (0, GROUND + 1, 0): "entrelumen:ground",                  # a corner above the floor: air anyway
+}
+for name, metadata in (("enves_gate", "entrelumen:enves_gate"), ("antechamber_arrival", "entrelumen:enves_antechamber")):
+    for (mx, my, mz) in STAIR_MARKERS[name]:
+        MARKERS[(mx + HALF_X, my + GROUND, mz + HALF_Z)] = metadata
 
 
 def block_at(x: int, y: int, z: int):
-    state = ruin_start.template_block(DESIGN, x, y, z)
+    if (x, y, z) in MARKERS:
+        return ("minecraft:structure_block", {"mode": "data"})
+    key = _design_pos(x, y, z)
+    if key[1] < 0:
+        state = STAIR.get(key)                                # below the floor only the stair is written
+    elif key in DESIGN:
+        state = DESIGN[key]
+    else:
+        state = None if key[1] == 0 else "minecraft:air"      # outside the round floor the ground stays
     if state is None:
         return None
     if "[" not in state:
@@ -81,10 +110,17 @@ def build_raw() -> bytes:
                 key = (name, tuple(sorted(properties.items())))
                 if key not in palette:
                     palette.append(key)
-                blocks.append({
+                entry = {
                     "pos": (LIST, (INT, [x, y, z])),
                     "state": (INT, palette.index(key)),
-                })
+                }
+                if (x, y, z) in MARKERS:
+                    entry["nbt"] = (COMPOUND, {
+                        "id": (STRING, "minecraft:structure_block"),
+                        "mode": (STRING, "DATA"),
+                        "metadata": (STRING, MARKERS[(x, y, z)]),
+                    })
+                blocks.append(entry)
     palette_tags = []
     for name, properties in palette:
         entry = {"Name": (STRING, name)}
