@@ -43,6 +43,7 @@ import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.AddReloadListenerEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.event.server.ServerStartedEvent;
+import net.neoforged.neoforge.event.server.ServerStoppingEvent;
 import net.neoforged.neoforge.event.tick.ServerTickEvent;
 import net.neoforged.neoforge.registries.DeferredBlock;
 import net.neoforged.neoforge.registries.DeferredRegister;
@@ -106,6 +107,7 @@ public final class Enves {
     NeoForge.EVENT_BUS.addListener((AddReloadListenerEvent event) -> event.addListener(new EnvesConfig.Listener()));
     NeoForge.EVENT_BUS.addListener((ServerTickEvent.Post event) -> tick(event.getServer()));
     NeoForge.EVENT_BUS.addListener((ServerStartedEvent event) -> EnvesPlacer.resume(event.getServer()));
+    NeoForge.EVENT_BUS.addListener((ServerStoppingEvent event) -> EnvesPlacer.stop(event.getServer()));
     NeoForge.EVENT_BUS.addListener(Enves::onLogin);
     NeoForge.EVENT_BUS.addListener(Enves::onChangedDimension);
     NeoForge.EVENT_BUS.addListener(EnvesCommands::register);

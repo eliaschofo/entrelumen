@@ -132,6 +132,13 @@ public final class EnvesPlacer {
     });
   }
 
+  /** The server stops: jobs let go of their chunks; their floors stay queued in the saved data for {@link #resume}. */
+  static synchronized void stop(MinecraftServer server) {
+    ServerLevel level = Enves.level(server);
+    if (level != null) for (Job job : JOBS) release(level, job);
+    JOBS.clear();
+  }
+
   /** After a restart: placements and wipes that were running start again. */
   static synchronized void resume(MinecraftServer server) {
     JOBS.clear();
