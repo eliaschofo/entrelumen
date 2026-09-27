@@ -168,23 +168,40 @@ public final class RuinTerrain {
   public static final double ROCK_SHARE = 0.05;
 
   /**
-   * The site's rocks, commonest first: those that make at least {@link #ROCK_SHARE} of the samples, at
-   * most {@link #ROCK_SLOTS}; {@code fallback} alone when nothing was sampled. Ties keep the order in
-   * which the samples came.
+   * The site's rocks, commonest first, all of one kind so that they read as one stratum: the kind most
+   * samples are ({@link #rockKind}), then its rocks that make at least {@link #ROCK_SHARE} of those
+   * samples, at most {@link #ROCK_SLOTS}; {@code fallback} alone when nothing was sampled. Ties keep the
+   * order in which the samples came.
    */
-  public static <T> List<T> rocks(List<T> samples, T fallback) {
+  public static <T> List<T> rocks(List<T> samples, java.util.function.Function<T, String> kind, T fallback) {
     if (samples.isEmpty()) return List.of(fallback);
+    Map<String, Integer> kinds = new LinkedHashMap<>();
+    for (T sample : samples) kinds.merge(kind.apply(sample), 1, Integer::sum);
+    String main = null;
+    for (var entry : kinds.entrySet()) if (main == null || entry.getValue() > kinds.get(main)) main = entry.getKey();
     Map<T, Integer> counts = new LinkedHashMap<>();
-    for (T sample : samples) counts.merge(sample, 1, Integer::sum);
+    int total = 0;
+    for (T sample : samples)
+      if (kind.apply(sample).equals(main)) {
+        counts.merge(sample, 1, Integer::sum);
+        total++;
+      }
     List<Map.Entry<T, Integer>> sorted = new ArrayList<>(counts.entrySet());
     sorted.sort((a, b) -> Integer.compare(b.getValue(), a.getValue()));
     List<T> rocks = new ArrayList<>();
     for (var entry : sorted) {
-      if (!rocks.isEmpty() && entry.getValue() < ROCK_SHARE * samples.size()) break;
+      if (!rocks.isEmpty() && entry.getValue() < ROCK_SHARE * total) break;
       rocks.add(entry.getKey());
       if (rocks.size() == ROCK_SLOTS) break;
     }
     return List.copyOf(rocks);
+  }
+
+  /** The kind of rock a block id is: terracotta (the badlands' bands), sandstone or stone. */
+  public static String rockKind(String id) {
+    if (id.endsWith("terracotta") && !id.endsWith("glazed_terracotta")) return "terracotta";
+    if (id.endsWith("sandstone")) return "sandstone";
+    return "stone";
   }
 
   /** The site's rock for a template's {@code slot}-th placeholder: slots past the site's rocks wrap. */

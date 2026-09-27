@@ -1143,7 +1143,7 @@ public final class RuinPlacement {
     job.margin = p.shape().platformless() ? 0 : RuinTerrain.margin(rim);
     BlockState filler = RuinTerrain.mostCommon(job.fillers, Palette.DEFAULT.filler());
     job.palette = new Palette(RuinTerrain.mostCommon(job.surfaces, Palette.DEFAULT.surface()), filler,
-        job.samples > 0 && job.snowSamples * 3 >= job.samples, RuinTerrain.rocks(job.rocks, rockUnder(filler)));
+        job.samples > 0 && job.snowSamples * 3 >= job.samples, RuinTerrain.rocks(job.rocks, RuinPlacement::rockKind, rockUnder(filler)));
     job.surfaces.clear();
     job.fillers.clear();
     job.rocks.clear();
@@ -1168,13 +1168,17 @@ public final class RuinPlacement {
       job.snowSamples++;
     job.surfaces.add(surface.getBlock().defaultBlockState());
     job.fillers.add(ground(below) ? below.getBlock().defaultBlockState() : surface.getBlock().defaultBlockState());
-    // The rock under the soil: the first natural stones going down (sand, dirt, gravel and ores are
-    // passed; a cave or water ends the column).
+    // The rock under the soil: the first natural stones going down, of one kind (sand, dirt, gravel and
+    // ores are passed; a cave, water or another kind of rock ends the column).
     int found = 0;
+    String kind = null;
     for (int y = ground; y > ground - RuinTerrain.ROCK_DEPTH && y > level.getMinBuildHeight()
         && found < RuinTerrain.ROCKS_PER_COLUMN; y--) {
       BlockState state = level.getBlockState(cursor.set(x, y, z));
       if (rock(state)) {
+        String here = rockKind(state);
+        if (kind != null && !kind.equals(here)) break;
+        kind = here;
         job.rocks.add(state.getBlock().defaultBlockState());
         found++;
       } else if (!ground(state)) break;
@@ -1186,6 +1190,10 @@ public final class RuinPlacement {
     return state.is(BlockTags.BASE_STONE_OVERWORLD) || state.is(net.neoforged.neoforge.common.Tags.Blocks.STONES)
         || state.is(BlockTags.TERRACOTTA) || state.is(Blocks.SANDSTONE) || state.is(Blocks.RED_SANDSTONE)
         || state.is(Blocks.CALCITE);
+  }
+
+  static String rockKind(BlockState state) {
+    return RuinTerrain.rockKind(BuiltInRegistries.BLOCK.getKey(state.getBlock()).toString());
   }
 
   /** The rock a site gives when no column showed any: the stone of its sand, or stone. */

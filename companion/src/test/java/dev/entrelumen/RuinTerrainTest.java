@@ -115,17 +115,33 @@ class RuinTerrainTest {
 
   @Test
   void aSitesRocksAreItsCommonestStonesUnderTheSoil() {
+    java.util.function.Function<String, String> kind = RuinTerrain::rockKind;
     List<String> plains = new ArrayList<>();
-    for (int i = 0; i < 90; i++) plains.add("stone");
-    for (int i = 0; i < 7; i++) plains.add("andesite");
-    for (int i = 0; i < 3; i++) plains.add("granite");
-    assertEquals(List.of("stone", "andesite"), RuinTerrain.rocks(plains, "stone"), "a rock under 5% of the samples is no slot");
+    for (int i = 0; i < 90; i++) plains.add("minecraft:stone");
+    for (int i = 0; i < 7; i++) plains.add("minecraft:andesite");
+    for (int i = 0; i < 3; i++) plains.add("minecraft:granite");
+    assertEquals(List.of("minecraft:stone", "minecraft:andesite"), RuinTerrain.rocks(plains, kind, "minecraft:stone"),
+        "a rock under 5% of the samples is no slot");
+    List<String> desert = new ArrayList<>();
+    for (int i = 0; i < 80; i++) desert.add("minecraft:sandstone");
+    for (int i = 0; i < 20; i++) desert.add("minecraft:stone");
+    assertEquals(List.of("minecraft:sandstone"), RuinTerrain.rocks(desert, kind, "minecraft:stone"),
+        "the stone under a thin sandstone is another stratum: a desert crag is all sandstone");
     List<String> badlands = new ArrayList<>();
-    for (String band : List.of("orange", "white", "orange", "red", "terracotta", "orange", "white", "red", "brown", "orange"))
-      for (int i = 0; i < 10; i++) badlands.add(band);
-    assertEquals(List.of("orange", "white", "red"), RuinTerrain.rocks(badlands, "stone"), "three slots at most, commonest first");
-    assertEquals(List.of("sandstone"), RuinTerrain.rocks(List.of(), "sandstone"), "nothing sampled: the fallback");
-    assertEquals(List.of("a", "b"), RuinTerrain.rocks(List.of("a", "b", "b", "a"), "stone"), "ties keep the order of the samples");
+    for (String band : List.of("orange", "white", "orange", "red", "", "orange", "white", "red", "brown", "orange"))
+      for (int i = 0; i < 10; i++) badlands.add("minecraft:" + (band.isEmpty() ? "" : band + "_") + "terracotta");
+    for (int i = 0; i < 30; i++) badlands.add("minecraft:red_sandstone");
+    assertEquals(List.of("minecraft:orange_terracotta", "minecraft:white_terracotta", "minecraft:red_terracotta"),
+        RuinTerrain.rocks(badlands, kind, "minecraft:stone"), "three bands at most, commonest first, all terracotta");
+    assertEquals(List.of("minecraft:sandstone"), RuinTerrain.rocks(List.of(), kind, "minecraft:sandstone"),
+        "nothing sampled: the fallback");
+    assertEquals(List.of("minecraft:stone", "minecraft:andesite"), RuinTerrain.rocks(
+        List.of("minecraft:stone", "minecraft:andesite", "minecraft:andesite", "minecraft:stone"), kind, "minecraft:stone"),
+        "ties keep the order of the samples");
+    assertEquals("terracotta", RuinTerrain.rockKind("minecraft:terracotta"));
+    assertEquals("stone", RuinTerrain.rockKind("minecraft:white_glazed_terracotta"));
+    assertEquals("sandstone", RuinTerrain.rockKind("minecraft:red_sandstone"));
+    assertEquals("stone", RuinTerrain.rockKind("minecraft:deepslate"));
     var rocks = List.of("sandstone");
     assertEquals("sandstone", RuinTerrain.rock(rocks, 0));
     assertEquals("sandstone", RuinTerrain.rock(rocks, 2), "slots past the site's rocks wrap");
