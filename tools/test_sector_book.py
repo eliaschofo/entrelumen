@@ -259,6 +259,20 @@ class AnyOfTasks(unittest.TestCase):
         finally:
             cg._ITEMS, cg._SECTOR, cg._LOCKED = saved
 
+    def test_check_guides_caches_are_per_jar_set_and_replaced_whole(self):
+        import tempfile
+        from pathlib import Path
+        import check_guides as cg
+        base = Path("research/item-registry.json")
+        self.assertNotEqual(cg.signed_cache(base, ["a.jar"], 2), cg.signed_cache(base, ["a.jar", "b.jar"], 2))
+        self.assertNotEqual(cg.signed_cache(base, ["a.jar"], 2), cg.signed_cache(base, ["a.jar"], 3))
+        with tempfile.TemporaryDirectory() as tmp:
+            target = Path(tmp) / "cache.json"
+            cg.write_cache(target, {"version": 1})
+            cg.write_cache(target, {"version": 2})
+            self.assertEqual(json.loads(target.read_text(encoding="utf-8")), {"version": 2})
+            self.assertEqual([p.name for p in Path(tmp).iterdir()], ["cache.json"])
+
 
 class Sectors(unittest.TestCase):
     @classmethod

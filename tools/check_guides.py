@@ -44,6 +44,7 @@ locks do not rebuild each other's.
 """
 import hashlib
 import json
+import os
 import re
 import sys
 import zipfile
@@ -65,14 +66,25 @@ _ITEMS = None
 
 CACHE = Path('E:/Elias/Codex/Entrelumen-ssd/research/item-registry.json')
 TEXTURE_CACHE = Path('E:/Elias/Codex/Entrelumen-ssd/research/guide-emblems.json')
+EMBLEM = re.compile(r'^([a-z0-9_.-]+):(textures/(?:items?|blocks?)/[a-z0-9_./-]+\.png)$')
+_TEXTURES = None
 
 
 def signed_cache(base, signature, version):
     """The cache file for one set of JARs and one cache version."""
     digest = hashlib.sha256(json.dumps([version, signature]).encode()).hexdigest()[:12]
     return base.with_name(f'{base.stem}-{digest}{base.suffix}')
-EMBLEM = re.compile(r'^([a-z0-9_.-]+):(textures/(?:items?|blocks?)/[a-z0-9_./-]+\.png)$')
-_TEXTURES = None
+
+
+def write_cache(path, value):
+    """Replace a cache file in one step: many check_guides runs share these files, and a reader must never load
+    half of one."""
+    tmp = path.with_name(f'{path.name}.{os.getpid()}.tmp')
+    try:
+        tmp.write_text(json.dumps(value), encoding='utf-8')
+        os.replace(tmp, path)
+    finally:
+        tmp.unlink(missing_ok=True)  # only left when the replace failed (a reader holding the file on Windows)
 
 
 def texture_info(ref):
@@ -130,7 +142,7 @@ def texture_info(ref):
         for miss in wanted:
             _TEXTURES['info'][miss] = None
         try:
-            texture_cache.write_text(json.dumps(_TEXTURES), encoding='utf-8')
+            write_cache(texture_cache, _TEXTURES)
         except Exception:
             pass
     found = _TEXTURES['info'][rel]
@@ -208,8 +220,8 @@ def registry():
             continue
     try:
         cache.parent.mkdir(parents=True, exist_ok=True)
-        cache.write_text(json.dumps({'jars': signature, 'version': 2, 'items': sorted(items),
-                                     'namespaces': sorted(namespaces)}), encoding='utf-8')
+        write_cache(cache, {'jars': signature, 'version': 2, 'items': sorted(items),
+                            'namespaces': sorted(namespaces)})
     except Exception:
         pass
     comp = ROOT / 'companion' / 'src' / 'main' / 'resources' / 'assets' / 'entrelumen'
@@ -447,7 +459,7 @@ def sector_registry():
     cache = {k: sorted(v) if isinstance(v, set) else v for k, v in out.items()}
     cache.update(jars=jars, neoforge=neoforge, version=5)
     try:
-        cache_file.write_text(json.dumps(cache), encoding='utf-8')
+        write_cache(cache_file, cache)
     except Exception:
         pass
     _SECTOR = out
