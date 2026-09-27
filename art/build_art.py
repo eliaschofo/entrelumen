@@ -28,6 +28,8 @@ AUGMENTS = ['burning', 'echoing', 'ignore_conditions', 'ignore_light', 'ignore_p
 ITEMS += ['augment_' + a for a in AUGMENTS]
 # The Ultimine curio's four tiers (art/authoring/draw_resonators.py; tiers 5 and 6 went with the nerf of 25 September).
 ITEMS += ['vein_resonator_%d' % tier for tier in range(1, 5)]
+# The Envés currency (art/authoring/draw_enves.py).
+ITEMS += ['sour_light_shard']
 # Luminous content: animated items are stored as frame grids <name>__f<N>.txt and exported as vertical strips.
 DISCIPLINES = ['engineering', 'arcane', 'nature', 'exploration', 'logistics', 'habitation']
 ANIMATED = {**{'luminosity_' + d: 8 for d in DISCIPLINES}, 'luminous_ingot': 8}
