@@ -302,8 +302,8 @@ def skywalk_fit(A, c, d, span, Bl, qB):
         return None
     ground = max(TOP[q] for q in cells)
     inA, inB = (c[0] - d[0], c[1] - d[1]), (qB[0] + d[0], qB[1] + d[1])
-    if inA not in sA or inB not in sB:
-        return None
+    if not all((p[0] + a, p[1] + b) in sp for p, sp in ((inA, sA), (inB, sB)) for a, b in N4):
+        return None                                   # the way in is inside the house, not in a wall
     for sa in range(1, iA['floors']):
         F = A['pad'] + STOREY * sa
         sb, r = divmod(F - Bl['pad'], STOREY)

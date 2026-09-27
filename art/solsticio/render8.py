@@ -57,7 +57,8 @@ TEXNAME.update({
     'cave_vines': ('cave_vines_lit',) * 2, 'cave_vines_plant': ('cave_vines_plant_lit',) * 2, 'vine': ('vine',) * 2,
     'white_sail': ('white_wool',) * 2, 'yellow_sail': ('yellow_wool',) * 2, 'orange_sail': ('orange_wool',) * 2,
     'sail_frame': ('stripped_spruce_log',) * 2, 'windmill_bearing': ('stripped_spruce_log_top', 'spruce_planks'),
-    'fluid_pipe': ('copper_block',) * 2,
+    'fluid_pipe': ('copper_block',) * 2, 'smooth_sandstone_slab': ('sandstone_top',) * 2,
+    'smooth_quartz_slab': ('quartz_block_bottom',) * 2, 'brick_slab': ('bricks',) * 2, 'smooth_stone': ('smooth_stone',) * 2,
 })
 for _c in ('white', 'orange', 'magenta', 'light_blue', 'yellow', 'lime', 'pink', 'gray', 'light_gray', 'cyan', 'purple',
            'blue', 'brown', 'green', 'red', 'black'):
@@ -84,10 +85,11 @@ def name(st):
 
 
 # ---------------- isometric ----------------
-def iso(G, path, scale=2, box=None, turn=0, extra=None, sky=((252, 238, 208), (200, 218, 240)), flip=False):
+def iso(G, path, scale=2, box=None, turn=0, extra=None, sky=((252, 238, 208), (200, 218, 240)), flip=False, only=None):
     """voxrender's look from the grid. box = (x0, y0, z0, x1, y1, z1) crops; turn rotates the city
     a quarter at a time so the camera (always from +x, +z, above) sees another side; flip turns
-    the island upside down, to look at its underside."""
+    the island upside down, to look at its underside; only, {(x, z): highest y}, keeps just those
+    columns up to that height (a row of houses and its street, without what stands round them)."""
     x0, y0, z0, x1, y1, z1 = box or (G.x0, G.y0, G.z0, G.x1, G.y1, G.z1)
     pal = G.palette
     skip = {i for i, s in enumerate(pal) if s in SKIP}
@@ -108,7 +110,7 @@ def iso(G, path, scale=2, box=None, turn=0, extra=None, sky=((252, 238, 208), (2
     def occ(u, y, v):
         x, z = inv(u, v)
         y = y * sgn
-        if not (x0 <= x <= x1 and z0 <= z <= z1 and y0 <= y <= y1):
+        if not (x0 <= x <= x1 and z0 <= z <= z1 and y0 <= y <= y1) or only is not None and y > only.get((x, z), -10 ** 6):
             return False
         i = G.gid(x, y, z)
         return i != 0 and i not in thin and i not in skip
@@ -116,8 +118,10 @@ def iso(G, path, scale=2, box=None, turn=0, extra=None, sky=((252, 238, 208), (2
     items = []
     for x in range(x0, x1 + 1):
         for z in range(z0, z1 + 1):
+            if only is not None and (x, z) not in only:
+                continue
             base = G.col(x, z)
-            lo, hi = max(0, y0 - G.y0), min(ny - 1, y1 - G.y0)
+            lo, hi = max(0, y0 - G.y0), min(ny - 1, (min(y1, only[(x, z)]) if only is not None else y1) - G.y0)
             seg = d[base + lo:base + hi + 1]
             if not any(seg):
                 continue

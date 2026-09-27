@@ -313,7 +313,12 @@ def fill_ground():
         elif e_of(x, z) < 0.9 and r < 0.12:
             for dy in range(1, 2 + int(r * 25)):
                 G.setdefault(x, bot - dy, z, B('hanging_roots[waterlogged=false]'))
+    HOLLOW.clear()
+    HOLLOW.update(hollow)
     return hollow
+
+
+HOLLOW = {}              # column -> (first, last) hollow y inside the ground (fill_ground)
 
 
 # ---------------- surfaces ----------------
@@ -534,7 +539,7 @@ def tree(x, z, y0, h_=5, r=2.4, leaf='flowering_azalea', log='stripped_birch_log
 def lamp(x, z, y0, height=3, mat='tuff_brick'):
     """A street lamp: a post, a copper bulb (fresh or exposed, the brightest) under a copper cap.
     Not where the post would stand in something (a shop's sign); the cap only where there is room."""
-    if any(G.filled(x, y, z) for y in range(y0 + 1, y0 + height + 1)):
+    if any(G.filled(x, y, z) for y in range(y0 + 1, y0 + height + 2)):
         return
     for y in range(y0 + 1, y0 + height + 1):
         G.set(x, y, z, wall(mat))
@@ -698,31 +703,41 @@ LOT_TOP = {}
 LOT_INFO = {}
 
 
+def street_key(n):
+    """The street (or plaza) a street cell belongs to, as net8 names rows."""
+    if n in N.PLAZA_OF:
+        return ('z', N.PLAZA_OF[n])
+    if n in N.OWNER:
+        return ('p', N.OWNER[n])
+    return ('k', N.CELL.get(n))
+
+
 def lot_plan():
-    """Storeys and roof of every lot. A street wall is one height: the district's storeys, chosen
-    once for each street a block faces, one more on the Axis, the boulevards, the plazas and the
-    promenade; one lot in five differs by one. Low round the palace, so the palace rules the
-    summit. Roofs by district; a dome where a lot turns a plaza corner."""
+    """Storeys and roof of every lot. A row of houses is one height: the district's storeys, chosen
+    once for the street the row faces, one more on the Axis, the boulevards, the plazas and the
+    promenade; a corner house stands a storey higher. Rows step with their street by the row's
+    own increment (net8.row_levels), so the cornices make a clean staircase. Low round the
+    palace, so the palace rules the summit. Roofs by district; a dome where a lot turns a plaza
+    corner."""
     for lot in N.LOTS:
         cs = lot['cells']
         if not cs:
             continue
         d = DMAT[lot['district']]
         seed = int(h(lot['id'], 7, 3) * 1000)
-        fronts = [N.FRONT[c][3] for c in lot['front'] if c in N.FRONT]
-        owner = Counter(('p', N.PLAZA_OF[f]) if f in N.PLAZA_OF else ('o', N.OWNER.get(f)) for f in fronts).most_common(1)
-        key = owner[0][0] if owner else ('l', lot['id'])
-        street_seed = int(h((key[1] or 0) * 31 + (7 if key[0] == 'p' else 0), len(lot['district']), 5) * 1000)
+        key = lot.get('street') or ('l', lot['id'])
+        kval = key[1] if isinstance(key[1], int) else sum(map(ord, str(key[1])))
+        street_seed = int(h(kval * 31 + (7 if key[0] == 'z' else 0), len(lot['district']), 5) * 1000)
+        prio = 100 if key[0] == 'z' else N.PATHS[key[1]].prio if key[0] == 'p' else lot['prio']
         floors = d['floors'] + (1 if street_seed % 3 == 0 else 0)
-        if lot['prio'] >= 78:
+        if prio >= 78:
             floors += 1
-        floors += (0, 1, 0, 0, 1, 0, -1)[lot['id'] % 7]          # the rhythm along a street wall
         corner = len({N.OWNER.get(N.FRONT[c][3]) for c in lot['front'] if c in N.FRONT}) >= 2
         if corner:
             floors += 1                                         # corners stand one higher
         mx = sum(c[0] for c in cs) / len(cs)
         mz = sum(c[1] for c in cs) / len(cs)
-        cap = 5 if lot['prio'] >= 95 else 4
+        cap = 5 if prio >= 95 else 4
         if math.hypot(mx, mz + 44) < 42:
             cap = 3
         if len(cs) < 24:
@@ -768,13 +783,554 @@ def lot_dist(cs, exterior=False):
 
 def massing():
     lot_plan()
+    fix_entries()
+    yards()
     count = 0
     for lot in N.LOTS:
         if not lot['cells']:
             continue
         building(lot, LOT_INFO[lot['id']])
         count += 1
+    firewalls()
+    bases()
+    retaining_walls()
     return count
+
+
+# ---------------- houses on the slope ----------------
+YARD = {}                # garden-terrace cell -> lot id (cut out of the house where the ground rises)
+ROOF_Y = {}              # house cell -> y of its roof line (fire walls follow it)
+ARCADE_CELLS = set()     # the open fronts of the Calle de los Oficios porticos (open by design)
+STAIRWELL = set()        # the head of a stair inside a doorway: its hole in the ground floor
+SLOPE = Counter()        # what the houses on the slope got, for the report
+SLOPE_SITES = []         # (piece, x, z) for the review renders
+PLINTH = ('stone_bricks', 'polished_andesite')      # rusticated courses, alternating
+WATER_TABLE = 'smooth_stone'
+COPING = {'market': 'smooth_sandstone', 'inns': 'smooth_sandstone', 'gardens': 'smooth_quartz', 'travellers': 'smooth_quartz',
+          'temple': 'smooth_quartz', 'workshops': 'brick'}
+
+
+def yards():
+    """Where the ground beside a house rises more than a step above its ground floor (a street, a
+    court or garden, a terrace; never a neighbouring house, whose base is masonry), the house
+    stands back from it: that strip of the lot becomes a garden terrace at the house's level, and
+    the higher ground's face is its retaining wall. Two deep where the house keeps its depth, one
+    where it is shallow; never across the house's own front on its street."""
+    for lot in N.LOTS:
+        cs = lot['cells']
+        if not cs:
+            continue
+        g0 = lot['pad']
+        s = set(cs)
+        pressed = set()
+        for c in cs:
+            for a, b in N4:
+                n = (c[0] + a, c[1] + b)
+                if n not in s and n not in N.LOT and n in TOP and TOP[n] > g0 + 1:
+                    pressed.add(c)
+        if not pressed:
+            continue
+        key = lot.get('street')
+        allfront = {c for c in lot['front'] if c in N.FRONT and street_key(N.FRONT[c][3]) == key}
+        front = allfront - pressed if len(allfront - pressed) >= 2 else allfront   # a pressed corner may go too
+        chosen = None
+        for depth in (2, 1):
+            yard, ring = set(), set(pressed) - front
+            for _ in range(depth):
+                yard |= ring
+                ring = {(c[0] + a, c[1] + b) for c in ring for a, b in N4} & s - yard - front
+            rest = house_part(s - yard, front)          # a scrap cut off by the terrace joins it
+            yard = s - rest
+            if len(rest) >= 12 and (front & rest or not front) and max(lot_dist(sorted(rest)).values()) >= 1:
+                chosen = yard
+                break
+        if not chosen:
+            SLOPE['houses against rising ground (no room for a terrace)'] += 1
+            continue
+        for c in chosen:
+            YARD[c] = lot['id']
+            del N.LOT[c]
+        lot['cells'] = sorted(s - chosen)
+        SLOPE_SITES.append(('terrace', min(chosen)[0], min(chosen)[1]))
+        SLOPE['garden terraces'] += 1
+        SLOPE['garden terrace cells'] += len(chosen)
+
+
+def entry_for(c, n, pad, s):
+    """How a door in the front cell c reaches the street cell n before it, for a house whose floor
+    is at pad: ('water',) a quay on a canal; ('flush',) level with the pavement; ('step',) one step
+    up; ('stoop', plan) a landing and a flight outside (stoop_plan); ('inside', k) a door at the
+    street's level with k steps up inside the doorway, through the house's base, where there is no
+    room outside; or None."""
+    lev = N.LEVEL[n]
+    dz = pad - lev
+    if dz < 0 or grade(c, s, pad) is not None:      # never a door in a wall that retains ground
+        return None
+    if N.CELL.get(n) == 'canal' and n not in N.CULVERT:
+        return ('water',)
+    if not walkable(n):
+        return None
+    if dz <= 1:
+        return ('flush',) if dz == 0 else ('step',)
+    plan = stoop_plan(n, (n[0] - c[0], n[1] - c[1]), lev, pad)
+    if plan:
+        return ('stoop', plan)
+    d_in = (c[0] - n[0], c[1] - n[1])
+    run = [(c[0] + d_in[0] * k, c[1] + d_in[1] * k) for k in range(1, dz + 2)]
+    t = (d_in[1], d_in[0])
+    if all(q in s for q in run) and all((q[0] + t[0], q[1] + t[1]) in s and (q[0] - t[0], q[1] - t[1]) in s for q in run[:-1]) \
+            and not any(G.filled(n[0], y, n[1]) for y in (lev + 1, lev + 2)):
+        return ('inside', dz)
+    return None
+
+
+def stoop_plan(n, d, lev, pad):
+    """The flight down from the landing before a door two or three above its street (n, the cell
+    before the door; d, out of the house): along the facade either way, or straight out into the
+    street, until the pavement meets a step. Returns (direction, [(cell, stair y or None where
+    the pavement takes over)]) or None when there is no room (the landing's own cell included)."""
+    if N.CELL.get(n) == 'canal' and n not in N.CULVERT:
+        return (d, [])                              # a water door: its landing is a little quay
+    wide = n in N.OWNER and N.PATHS[N.OWNER[n]].width >= 4
+    for y in range(lev + 1, pad + 3):               # the landing's own cell (a street stair may give way
+        st = G.get(n[0], y, n[1])                   # to it where the street is wide enough to pass)
+        if st and not (wide and y == lev + 1 and 'stairs' in st):
+            return None
+    t = (d[1], d[0])
+    for step in (t, (-t[0], -t[1]), d):
+        flight = []
+        for k in range(1, 8):
+            q = (n[0] + step[0] * k, n[1] + step[1] * k)
+            if q in N.LOT or q in YARD or q not in TOP or not walkable(q):
+                break
+            if TOP[q] >= pad - k:
+                flight.append((q, None))
+                break
+            if any(G.filled(q[0], y, q[1]) for y in range(TOP[q] + 1, pad - k + 3)):
+                break
+            flight.append((q, pad - k))
+        if flight and flight[-1][1] is None:
+            return step, flight
+    return None
+
+
+def house_part(cells, front):
+    """The piece of a lot that stays a house once the terraces are cut out: of its connected parts,
+    the one with most of its front, then the biggest."""
+    cells = set(cells)
+    parts = []
+    while cells:
+        start = min(cells)
+        seen, q = {start}, deque([start])
+        while q:
+            c = q.popleft()
+            for a, b in N4:
+                n = (c[0] + a, c[1] + b)
+                if n in cells and n not in seen:
+                    seen.add(n)
+                    q.append(n)
+        parts.append(seen)
+        cells -= seen
+    return max(parts, key=lambda p: (len(p & front), len(p), min(p))) if parts else set()
+
+
+def one_piece(cells):
+    cells = set(cells)
+    start = next(iter(cells))
+    seen, q = {start}, deque([start])
+    while q:
+        c = q.popleft()
+        for a, b in N4:
+            n = (c[0] + a, c[1] + b)
+            if n in cells and n not in seen:
+                seen.add(n)
+                q.append(n)
+    return len(seen) == len(cells)
+
+
+def firewalls():
+    """Where two houses of different heights meet, the taller one's side is a plain fire wall of
+    its own stone (building() leaves the pilasters to the street faces), and it rises one course
+    through its roof line with a coping on top, so every step of a row reads as meant."""
+    for lot in N.LOTS:
+        cs = lot['cells']
+        if not cs:
+            continue
+        lid = lot['id']
+        top = LOT_TOP[lid]
+        wallb = B(LOT_INFO[lid]['wall'])
+        cop = B('%s_slab[type=bottom,waterlogged=false]' % COPING[lot['district']])
+        n_ = 0
+        for c in cs:
+            if not any(N.LOT.get((c[0] + a, c[1] + b), lid) != lid and LOT_TOP.get(N.LOT[(c[0] + a, c[1] + b)], 999) < top
+                       for a, b in N4):
+                continue
+            y = ROOF_Y.get(c)
+            if y is None:
+                continue
+            G.set(c[0], y, c[1], wallb)
+            G.set(c[0], y + 1, c[1], cop)
+            n_ += 1
+        if n_:
+            SLOPE['fire walls'] += 1
+            SLOPE_SITES.append(('firewall', cs[0][0], cs[0][1]))
+
+
+def retaining_walls():
+    """Where the ground beside a house stays higher than its first course (a street or garden it
+    had no room to stand back from, a neighbour's garden terrace, a landmark's podium), the house's
+    wall is a retaining wall up to that grade: blind rusticated courses, the water table on top,
+    no window into the earth; above the grade the facade goes on as built."""
+    for lot in N.LOTS:
+        cs = lot['cells']
+        if not cs:
+            continue
+        g0, top = lot['pad'], LOT_TOP[lot['id']]
+        s = set(cs)
+        n_ = 0
+        for c in cs:
+            g = grade(c, s, g0)
+            if g is None:
+                continue
+            hi = min(g, top - 1)
+            for y in range(g0 + 1, hi + 1):
+                st = G.get(c[0], y, c[1])
+                if st and 'door' in st:                     # (a balcony's door: its other half goes too)
+                    G.set(c[0], y + (1 if 'half=lower' in st else -1), c[1], B(PLINTH[y % 2]))
+                G.set(c[0], y, c[1], B(WATER_TABLE if y == hi else PLINTH[y % 2]))
+            n_ += 1
+        if n_:
+            SLOPE['houses retaining higher ground'] += 1
+            SLOPE['retaining wall faces'] += n_
+
+
+def fix_entries():
+    """A house whose row put its ground floor where no door can reach it from a street it fronts
+    moves one step of its row down (or up) to where one can: the lattice of its street stays."""
+    for lot in N.LOTS:
+        cs = lot['cells']
+        if not cs:
+            continue
+        s = set(cs)
+        fr = [c for c in lot['front'] if c in N.FRONT and c in s]
+        ok = lambda p: any(0 <= p - N.LEVEL[N.FRONT[c][3]] <= 6 and entry_for(c, N.FRONT[c][3], p, s) for c in fr)
+        if not fr or ok(lot['pad']):
+            continue
+        st = lot.get('step', 2)
+        for p in (lot['pad'] - st, lot['pad'] + st, lot['pad'] - 2 * st):
+            if not ok(p):
+                continue
+            old = lot['pad']
+            lot['pad'] = p
+            for c in cs:
+                N.LEVEL[c] = p
+                TOP[c] = p
+                for y in range(old + 1, p):                 # raised: solid under the new floor
+                    G.set(c[0], y, c[1], B('stone'))
+            LOT_TOP[lot['id']] = p + LOT_INFO[lot['id']]['floors'] * STOREY
+            SLOPE['houses moved a step of their row for their door'] += 1
+            break
+
+
+def grade(c, s, g0):
+    """The highest ground outside a house's cell c (not another house; a garden terrace at its
+    house's level) where it stands above the cell's first course, else None."""
+    best = None
+    for a, b in N4:
+        n = (c[0] + a, c[1] + b)
+        if n in s or n in N.LOT:
+            continue
+        g = N.LOTS[YARD[n]]['pad'] if n in YARD else TOP.get(n)
+        if g is not None and g > g0 + 1 and (best is None or g > best):
+            best = g
+    return best
+
+
+def terrace_stairs():
+    """A garden terrace below a walkable street or garden gets a stair up to it along its retaining
+    wall: the split-level passage from the street down to the houses' gardens."""
+    comps, seen = [], set()
+    for c0 in sorted(YARD):
+        if c0 in seen:
+            continue
+        comp, q = [], deque([c0])
+        seen.add(c0)
+        while q:
+            c = q.popleft()
+            comp.append(c)
+            for a, b in N4:
+                n = (c[0] + a, c[1] + b)
+                if n in YARD and n not in seen and YARD[n] == YARD[c0]:
+                    seen.add(n)
+                    q.append(n)
+        comps.append(comp)
+    made = 0
+    for comp in comps:
+        g = N.LOTS[YARD[comp[0]]]['pad']
+        cs = set(comp)
+        done = False
+        for c in sorted(comp):
+            for a, b in N4:
+                w = (c[0] + a, c[1] + b)
+                if w in cs or w in N.LOT or w not in TOP or not walkable(w) or w in N.PLAZA_OF:
+                    continue
+                k = TOP[w] - g
+                if not 2 <= k <= 6:
+                    continue
+                for t in ((b, a), (-b, -a)):             # the flight runs along the wall, away from c
+                    run = [(c[0] + t[0] * j, c[1] + t[1] * j) for j in range(-(k - 1), 1)]
+                    if not all(q in cs for q in run):
+                        continue
+                    if not all((q[0] + a, q[1] + b) in TOP and TOP[(q[0] + a, q[1] + b)] >= g + j + 2
+                               for j, q in enumerate(run[:-1])):
+                        continue
+                    head = [G.get(w[0], y, w[1]) for y in (TOP[w] + 1, TOP[w] + 2)]
+                    if head[1] or head[0] and 'stairs' not in head[0]:
+                        continue                                # the street's own furniture stands there
+                    for j, q in enumerate(run):
+                        for y in range(g + 1, g + j + 1):
+                            G.set(q[0], y, q[1], B('stone_bricks'))
+                        G.set(q[0], g + j + 1, q[1], stairs('stone_brick', FACING[t]))
+                        for y in range(g + j + 2, g + j + 5):
+                            G.set(q[0], y, q[1], DOORWAY)
+                    for y in range(TOP[w] + 1, TOP[w] + 3):     # the rail leaves the stair's head open
+                        if not G.filled(w[0], y, w[1]):
+                            G.set(w[0], y, w[1], DOORWAY)
+                    TERRACE_STAIR.update(run)
+                    SLOPE_SITES.append(('terrace stair', c[0], c[1]))
+                    made += 1
+                    done = True
+                    break
+                if done:
+                    break
+            if done:
+                break
+    SLOPE['terrace stairs'] = made
+
+
+TERRACE_STAIR = set()
+
+
+def plinth(lot, c, d, g, g0):
+    """The base of a house on one face, from the ground outside (g) up to its floor (g0): rusticated
+    courses, the water table at the floor, a band at every storey of a taller base, and lit
+    basement windows in every storey of a base three or more high."""
+    x, z = c
+    along = c[1] if d[0] else c[0]
+    for y in range(g + 1, g0 + 1):
+        band = y == g0 or (g0 - g >= 7 and (g0 - y) % STOREY == 0)
+        G.set(x, y, z, B(WATER_TABLE if band else PLINTH[y % 2]))
+    if g0 - g < 3 or along % 4 != 1:
+        return
+    inner = (x - d[0], z - d[1])
+    for wy in range(g0 - 1, g + 1, -STOREY):
+        if wy - g < 2:
+            continue
+        G.set(x, wy, z, B('glass'))
+        if inner in N.LOT and N.LOT[inner] == lot['id'] and G.filled(inner[0], wy + 1, inner[1]):
+            G.set(inner[0], wy, inner[1], B('lantern[hanging=true,waterlogged=false]'))
+        SLOPE['basement windows'] += 1
+
+
+def bases():
+    """Every house stands on a designed base wherever the ground falls away from it: its own masonry,
+    level with it, from the ground (or the neighbouring house's roof, where that hides the rest)
+    up to its floor (plinth); on a walkable low side four or more below its floor, an arcaded
+    loggia under the house at the street's own level (loggias). The island's rim stays rock."""
+    for lot in N.LOTS:
+        cs = lot['cells']
+        if not cs:
+            continue
+        g0 = lot['pad']
+        s = set(cs)
+        low = defaultdict(list)
+        tall = 0
+        for c in cs:
+            for d in N4:
+                n = (c[0] + d[0], c[1] + d[1])
+                if n in s:
+                    continue
+                if n in N.LOT:
+                    m = N.LOT[n]
+                    g = max(N.LOTS[m]['pad'], LOT_TOP.get(m, -999))
+                elif n in TOP:
+                    g = TOP[n]
+                else:
+                    continue
+                if g >= g0:
+                    continue
+                plinth(lot, c, d, g, g0)
+                tall = max(tall, g0 - g)
+                if g0 - g >= 4 and n not in N.LOT and n not in YARD and walkable(n):
+                    low[d].append((c, n, g))
+        if tall:
+            SLOPE['houses on a base'] += 1
+            SLOPE['bases 3 or more high'] += tall >= 3
+        for d, faces in sorted(low.items()):
+            loggias(lot, s, d, faces, g0)
+
+
+def loggias(lot, s, d, faces, g0):
+    """An arcade in the base of a house on its low side: piers every third cell and at the ends,
+    two-cell openings with their arches, a loggia two deep behind them at the street's level, its
+    back wall dressed, lanterns hung from the house's floor."""
+    t = (abs(d[1]), abs(d[0]))
+    faces = sorted(faces, key=lambda f: f[0][0] * t[0] + f[0][1] * t[1])
+    runs, run = [], []
+    for f in faces:
+        if run and (f[0][0] - run[-1][0][0], f[0][1] - run[-1][0][1]) != t:
+            runs.append(run)
+            run = []
+        run.append(f)
+    runs.append(run)
+    for run in runs:
+        if len(run) < 4:
+            continue
+        made = 0
+        bays = []
+        for i, (c, n, g) in enumerate(run):
+            inner = (c[0] - d[0], c[1] - d[1])
+            walls = [(inner[0] - d[0], inner[1] - d[1]), (inner[0] + t[0], inner[1] + t[1]), (inner[0] - t[0], inner[1] - t[1]),
+                     (c[0] + t[0], c[1] + t[1]), (c[0] - t[0], c[1] - t[1])]
+            if i % 3 and i != len(run) - 1 and inner in s and all(w in s for w in walls):
+                bays.append((i, c, inner, g))
+        carved = {q for (i, c, inner, g) in bays for q in (c, inner)}
+        for (i, c, inner, g) in bays:
+            for q in (c, inner):
+                for y in range(g + 1, g0):
+                    G.clear(q[0], y, q[1])
+                G.set(q[0], g, q[1], B('polished_andesite' if (q[0] + q[1]) % 2 else 'stone_bricks'))
+                for y in range(g - 2, g):                           # solid under the loggia's floor
+                    G.set(q[0], y, q[1], B('stone'))
+                hc = HOLLOW.get(q)
+                if hc:
+                    if hc[0] <= g - 3:
+                        HOLLOW[q] = (hc[0], min(hc[1], g - 3))
+                    else:
+                        del HOLLOW[q]
+                for a, b in N4:                                     # its walls: the base's own courses
+                    w = (q[0] + a, q[1] + b)
+                    if w in s and w not in carved:
+                        for y in range(g - 2, g0):
+                            G.set(w[0], y, w[1], B(PLINTH[y % 2]))
+            k = i % 3                                             # the arch: its haunch against the pier
+            G.set(c[0], g0 - 1, c[1], stairs('stone_brick', FACING[(-t[0], -t[1])] if k == 1 else FACING[t], half='top'))
+            if k == 1:
+                G.set(inner[0], g0 - 1, inner[1], B('lantern[hanging=true,waterlogged=false]'))
+            made += 1
+        if made:
+            SLOPE['loggias'] += 1
+            SLOPE['loggia bays'] += made
+            SLOPE_SITES.append(('loggia', run[len(run) // 2][0][0], run[len(run) // 2][0][1]))
+
+
+def yard_gardens():
+    """The garden terraces behind the houses: grass and moss at the house's level, a path of mud
+    bricks along the house, flowers and azaleas; the higher ground's face is their retaining wall
+    (a balustrade crowns it where a street runs along the top)."""
+    terrace_stairs()
+    for c, lid in sorted(YARD.items()):
+        if c in TERRACE_STAIR:
+            continue
+        g = N.LOTS[lid]['pad']
+        x, z = c
+        along_house = any(N.LOT.get((x + a, z + b)) == lid for a, b in N4)
+        r = h(x, z, 131)
+        G.set(x, g, z, B('mud_bricks' if along_house and r < 0.5 else 'grass_block' if r < 0.8 else 'moss_block'))
+        if not along_house or r >= 0.5:
+            if r < 0.14:
+                G.set(x, g + 1, z, B(['allium', 'azure_bluet', 'cornflower', 'oxeye_daisy'][int(r * 100) % 4]))
+            elif r < 0.22:
+                G.set(x, g + 1, z, B('flowering_azalea' if r < 0.18 else 'azalea'))
+
+
+DOORWAY = B('structure_void')   # reserved headroom before every door while the city is dressed
+
+
+def open_doorways():
+    """Everything is placed: the reserved doorways become air again."""
+    sid = G.index.get(DOORWAY)
+    if not sid:
+        return 0
+    raw = G.data.tobytes()
+    pat = sid.to_bytes(2, 'little')
+    n, i = 0, raw.find(pat)
+    while i != -1:
+        if i % 2 == 0:
+            G.data[i // 2] = 0
+            n += 1
+            i = raw.find(pat, i + 2)
+        else:
+            i = raw.find(pat, i + 1)
+    return n
+
+
+TERRAIN = {'stone', 'dirt', 'grass_block', 'tuff', 'andesite', 'dripstone_block', 'mossy_stone_bricks', 'quartz_bricks',
+           'chiseled_quartz_block', 'pointed_dripstone', 'hanging_roots'}
+PASSABLE = ('carpet', 'pressure_plate', 'rail', 'flower', 'short_grass')
+
+
+def building_checks():
+    """The rules of the houses on the slope, counted: one ground level each (a flat pad, a floor
+    under every cell of it); no ground above a floor and no terrain block inside a house; no wall
+    column cut short (a gap) or pressed by ground above its first course; every street door on
+    walkable ground at its sill."""
+    out = Counter()
+    seen_pairs = set()
+    for lot in N.LOTS:
+        cs = lot['cells']
+        if not cs:
+            continue
+        lid, g0 = lot['id'], lot['pad']
+        top = LOT_TOP[lid]
+        s = set(cs)
+        out['buildings'] += 1
+        if all(TOP[c] == g0 and (G.filled(c[0], g0, c[1]) or c in STAIRWELL) for c in cs):
+            out['one ground level'] += 1
+        dist = lot_dist(cs)
+        for c in cs:
+            out['ground above the floor'] += TOP[c] > g0
+            if dist[c] > 0:
+                for y in range(g0 + 1, top):
+                    st = G.get(c[0], y, c[1])
+                    if st and st.split('[')[0].split(':')[1] in TERRAIN:
+                        out['terrain inside houses'] += 1
+                continue
+            if c not in ARCADE_CELLS and any(not G.filled(c[0], y, c[1]) for y in range(g0 + 1, top + 1)):
+                out['wall columns cut short'] += 1
+            for a, b in N4:
+                n = (c[0] + a, c[1] + b)
+                if n in s or n in N.LOT or n not in TOP:
+                    continue
+                g = N.LOTS[YARD[n]]['pad'] if n in YARD else TOP[n]
+                out['walls with ground above their first course'] += g > g0 + 1
+                out['walls with ground at their first course'] += g == g0 + 1
+                if g > g0 + 1 and any('glass' in (G.get(c[0], y, c[1]) or '') or 'door' in (G.get(c[0], y, c[1]) or '')
+                                      for y in range(g0 + 1, min(g, top - 1) + 1)):
+                    out['windows or doors below the grade'] += 1
+        for c in cs:                                  # the row's rhythm with each neighbour on its street
+            for a, b in N4:
+                m = N.LOT.get((c[0] + a, c[1] + b))
+                if m is not None and m > lid and N.LOTS[m].get('row') == lot.get('row') is not None:
+                    pair = (lid, m)
+                    if pair not in seen_pairs:
+                        seen_pairs.add(pair)
+                        out['row neighbours'] += 1
+                        out['row steps off the rhythm'] += (N.LOTS[m]['pad'] - g0) % lot['step'] != 0
+        dr = LOT_INFO[lid].get('door')
+        if not dr:
+            out['houses without a street door'] += 1
+            continue
+        n = dr[2]
+        sill = LOT_INFO[lid].get('door_y', g0 + 1)
+        at, above, below = G.get(n[0], sill, n[1]), G.get(n[0], sill + 1, n[1]), G.get(n[0], sill - 1, n[1])
+        clear = lambda st: st is None or any(k in st for k in PASSABLE)
+        step = at is not None and ('stairs' in at or 'slab' in at)
+        if clear(above) and (step or clear(at) and below is not None and not clear(below)):
+            out['doors on walkable ground'] += 1
+        else:
+            out['doors off walkable ground'] += 1
+    return out
 
 
 def exposed(c, lid, y):
@@ -812,6 +1368,9 @@ def building(lot, info):
     dist = lot_dist(cs)
     grand = lot['prio'] >= 78
     cst = cu_stage(info)
+    for c in cs:                                   # one rigid volume: nothing of before stays in it
+        for y in range(pad + 1, top + 1):
+            G.clear(c[0], y, c[1])
     arcade = {}
     if lot['kinds'].get('crafts', 0):
         q = deque()
@@ -829,20 +1388,45 @@ def building(lot, info):
                     arcade[n] = arcade[c] + 1
                     q.append(n)
     door = None
-    fr = [c for c in lot['front'] if c in N.FRONT and c in s]
-    if fr:
-        mx = sum(c[0] for c in fr) / len(fr)
-        mz = sum(c[1] for c in fr) / len(fr)
-        door = min(fr, key=lambda c: (abs(N.LEVEL[N.FRONT[c][3]] - pad), math.hypot(c[0] - mx, c[1] - mz)))
+    key = lot.get('street')
+    allfr = [c for c in lot['front'] if c in N.FRONT and c in s]
+    side = lambda c: any(N.LOT.get((c[0] + a, c[1] + b), lid) != lid for a, b in N4)
+    # on its own street, flush or up a step, a stoop or steps inside the doorway; else on another
+    # street it fronts; else a longer stair (a house the water raised); never a door without its way
+    for pool, most in (([c for c in allfr if street_key(N.FRONT[c][3]) == key], 3), (allfr, 3), (allfr, 6)):
+        ok = [c for c in pool if 0 <= pad - N.LEVEL[N.FRONT[c][3]] <= most]
+        if not ok:
+            continue
+        mx = sum(c[0] for c in pool) / len(pool)
+        mz = sum(c[1] for c in pool) / len(pool)
+        cands = sorted(ok, key=lambda c: (max(1, pad - N.LEVEL[N.FRONT[c][3]]), side(c), math.hypot(c[0] - mx, c[1] - mz), c))
+        for c in cands:
+            entry = entry_for(c, N.FRONT[c][3], pad, s)
+            if entry:
+                door = c
+                info['entry'] = entry
+                break
+        if door:
+            break
+    if door is None:
+        SLOPE['houses whose door has no way down'] += 1
     for c in cs:
         x, z = c
         G.set(x, pad, z, B('polished_andesite' if (x + z) % 2 else 'stone_bricks'))
         edge = dist[c] == 0
         party = edge and any(N.LOT.get((x + a, z + b), lid) != lid for a, b in N4)
+        facade = edge and any((x + a, z + b) not in N.LOT and (x + a, z + b) in TOP for a, b in N4)
         arc = arcade.get(c)
+        if arc is not None:
+            ARCADE_CELLS.add(c)
+        step_side = party and any(N.LOT.get((x + a, z + b), lid) != lid and N.LOTS[N.LOT[(x + a, z + b)]]['pad'] != pad
+                                  for a, b in N4 if (x + a, z + b) in N.LOT)
         for y in range(pad + 1, top + 1):
             k = (y - pad) % STOREY
             storey = (y - pad - 1) // STOREY
+            if arc is not None and storey == 0 and step_side and y < pad + STOREY:
+                G.set(x, y, z, trimb if facade else wallb)          # closed where the next portico steps
+                continue
             if arc is not None and storey == 0:
                 if y == pad + STOREY:
                     G.set(x, y, z, band if edge or arc < 2 else B('spruce_planks'))
@@ -863,8 +1447,8 @@ def building(lot, info):
             if not ex:
                 G.set(x, y, z, wallb)
                 continue
-            if party:
-                G.set(x, y, z, trimb)
+            if party:                              # a pilaster on the street; a plain fire wall behind
+                G.set(x, y, z, trimb if facade else wallb)
                 continue
             a, b = ex[0]
             along = z if a else x
@@ -875,10 +1459,12 @@ def building(lot, info):
             else:
                 G.set(x, y, z, wallb)
     if door is not None:
-        for y in (pad + 1, pad + 2):
-            G.clear(door[0], y, door[1])
         f = N.FRONT[door][3]
+        inside = info['entry'][0] == 'inside'
+        for y in (pad + 1, pad + 2):               # (a door down in the base leaves a fanlight here)
+            G.set(door[0], y, door[1], glass) if inside else G.clear(door[0], y, door[1])
         info['door'] = (door, (f[0] - door[0], f[1] - door[1]), f)
+        info['door_y'] = N.LEVEL[f] + 1 if inside else pad + 1
     roof(lot, info, cs, top)
 
 
@@ -909,6 +1495,7 @@ def roof(lot, info, cs, top):
                 if n in s and min(ext[n], cap) > r:
                     up = (a, b)
                     break
+            ROOF_Y[c] = y
             if style == 'glass':                                       # glass stepped up on copper ribs
                 rib = r in (0, rmax) or (c[0] if along_x else c[1]) % 4 == 0
                 G.set(c[0], y, c[1], B(cu('cut', patina(cst, c[0], c[1], 7))) if rib else B('glass'))
@@ -928,6 +1515,7 @@ def roof(lot, info, cs, top):
     elif style in ('flat', 'garden'):
         dist = lot_dist(cs)
         for c in cs:
+            ROOF_Y[c] = top + 1
             if dist[c] == 0:                                           # a copper grate parapet
                 G.set(c[0], top + 1, c[1], B('%s[waterlogged=false]' % cu('grate', patina(cst, c[0], c[1], 9))))
             elif style == 'garden':
@@ -939,6 +1527,7 @@ def roof(lot, info, cs, top):
         copper = info['roof'].startswith('cu:')
         for c in cs:
             k = c[0] % 6
+            ROOF_Y[c] = top + 1 + min(k, 3) if k < 5 else top + 1
             mat, rb = roof_at(info, c[0], c[1])
             if k < 4:
                 sky = copper and k == 2 and dist[c] > 0 and c[1] % 4 == 1          # a skylight in the slope
@@ -1383,8 +1972,11 @@ def build():
     solar8.STATS.clear()
     t0 = time.time()
     G.reset()
-    for d in (MARKERS, EXTRA, TOP, BOTTOM, BLOCK_NBT, LOT_INFO, LOT_TOP):
+    for d in (MARKERS, EXTRA, TOP, BOTTOM, BLOCK_NBT, LOT_INFO, LOT_TOP, YARD, ROOF_Y, SLOPE, SLOPE_SITES):
         d.clear()
+    ARCADE_CELLS.clear()
+    STAIRWELL.clear()
+    TERRACE_STAIR.clear()
     for d in (ROOMS, APPROACH, FALLS, NOT_BARRIER, WATER_OK):
         d.clear()
     dress8.STATS.clear()
@@ -1393,7 +1985,8 @@ def build():
     N.contain()
     REPORT.append('levels solved %.0f s' % (time.time() - t0))
     ground_tops()
-    hollow = fill_ground()
+    fill_ground()
+    hollow = HOLLOW
     LM.temple()                         # (its approach stair joins the walking cells)
     surfaces()
     LM.palace()
@@ -1406,6 +1999,7 @@ def build():
     dress8.INNS.clear()
     dress8.INNS.update(inns)
     dress8.dress_lots()
+    yard_gardens()
     dress8.interiors(inns)
     LM.templetes()
     plaza_decor()
@@ -1433,6 +2027,10 @@ def build():
     falls = LM.falls()
     weirs = contain_water()
     nbar = rim_barrier()
+    SLOPE['doorways kept clear'] = open_doorways()
+    before = SLOPE['retaining wall faces']
+    retaining_walls()
+    SLOPE['retaining wall faces'] = before
     unsafe = solar8.finish()
     gone = [p for p in BLOCK_NBT if 'sign' not in (G.get(*p) or '')]
     for p in gone:                      # a sign something later stood in (the Portal's gate): no text left behind
@@ -1443,6 +2041,7 @@ def build():
     REPORT.append('solarpunk: ' + ', '.join('%s %d' % kv for kv in sorted(solar8.STATS.items())))
     REPORT.append('redstone sources still on a bulb, door, trapdoor or bell: %d %s' % (len(unsafe), unsafe[:5]))
     REPORT.append('the whole city: ' + ', '.join('%s %d' % kv for kv in sorted(solar8.CENSUS.items())))
+    REPORT.append('houses on the slope: ' + ', '.join('%s %d' % kv for kv in sorted(SLOPE.items())))
     if falls:
         REPORT.append('the Last Falls: water at %d falls %d blocks into its catch basin at %d' % (
             falls['water'], falls['fall'], falls['ledge']))
@@ -1512,6 +2111,16 @@ def summary(hollow):
     for m in mi[:40]:
         print('   ', m)
     print('not in the registry:', registry_check())
+    bc = building_checks()
+    print('houses: %d buildings, %d with one ground level; ground above a floor %d; terrain inside houses %d; '
+          'wall columns cut short %d; walls with ground above their first course %d (at it %d); '
+          'windows or doors below the grade %d; '
+          'street doors on walkable ground %d, off it %d, none %d; row neighbours %d, steps off the rhythm %d' % (
+              bc['buildings'], bc['one ground level'], bc['ground above the floor'], bc['terrain inside houses'],
+              bc['wall columns cut short'], bc['walls with ground above their first course'],
+              bc['walls with ground at their first course'], bc['windows or doors below the grade'], bc['doors on walkable ground'],
+              bc['doors off walkable ground'], bc['houses without a street door'], bc['row neighbours'],
+              bc['row steps off the rhythm']))
     gravity = sorted(st for st in G.palette[1:] if st.split('[')[0].split(':')[1] in (
         'sand', 'red_sand', 'gravel', 'suspicious_sand', 'suspicious_gravel') or st.split('[')[0].endswith('_concrete_powder'))
     print('gravity blocks:', gravity)
@@ -1520,11 +2129,24 @@ def summary(hollow):
         print(r)
     for m in N.LOG:
         print('plan:', m)
+    broken = [k for k, bad in (('one ground level', bc['one ground level'] != bc['buildings']),
+                               ('ground above a floor', bc['ground above the floor']),
+                               ('terrain inside houses', bc['terrain inside houses']),
+                               ('wall columns cut short', bc['wall columns cut short']),
+                               ('windows or doors below the grade', bc['windows or doors below the grade']),
+                               ('row steps off the rhythm', bc['row steps off the rhythm']),
+                               ('doors off walkable ground', bc['doors off walkable ground'] + bc['houses without a street door']),
+                               ('hollow ground open to the air', len(lk))) if bad]
+    return broken
 
 
 if __name__ == '__main__':
     hollow = build()
-    summary(hollow)
+    broken = summary(hollow)
+    if broken:
+        print('THE HOUSES BREAK THEIR RULES:', ', '.join(broken))
+        if '--export' in sys.argv:
+            sys.exit('not exported')
     if '--export' in sys.argv:
         import export8
         print('export', export8.export(G, MARKERS, BLOCK_NBT, export8.CITY))
