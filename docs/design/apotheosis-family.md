@@ -261,3 +261,11 @@ Story-set tiers (24 September 2026, branch `feature/gameplay`):
   - a chosen Haven being put back to Pinnacle.
 
   The owned server needs this `apotheosis.cfg` and the QA JAR. The `apotheosis.cfg` hash in [apotheosis-runtime.json](../verification/apotheosis-runtime.json) predates the change.
+
+Eterna ceilings (27 September 2026, branch `fix/eterna-caps`, see [World Tier Eterna ceilings](#world-tier-eterna-ceilings)):
+
+- `python tools/generate_family_balance.py --check` passes for all eight families; the apotheosis family now has 41 data overrides and reports the ceilings 45, 75, 90, 100 and 100. `tools/test_family_balance.py` passes (25 tests).
+- The quest book was regenerated; `generate_quests.py --check`, `test_sector_book.py`, `test_quest_book.py`, `check_guides.py` and `format_sector.py --check` pass.
+- The offline companion build passes with its 246 JUnit tests.
+- A disposable full-pack server (272 server JARs, this branch's pack files and companion JAR, `-Xmx4G`) walked a fake player through the five tiers with Apotheosis's own `WorldTier.setTier`. `apothic_enchanting:max_eterna` read 45, 75, 90, 100 and 100 on a base of 100. At each of the first three tiers the only modifier was the tier's own (−55, −25, −10), and none was left at Summit or Pinnacle. Placebo registered 22 tier augments, the 23 upstream minus the disabled one, with no warning or error about them. The first boot's probe failed on a script error, and the 60-second watchdog then stopped the server while ComputerCraft rebuilt the creative tabs at start; the second boot used a temporary `max-tick-time` of 300000 on that throwaway server, which was deleted afterwards.
+- Still pending: on a client, the table's "Limited to N by your World Tier" line and the World Tier screen, where Summit no longer lists an Eterna augment; survival pacing of the new ladder.
