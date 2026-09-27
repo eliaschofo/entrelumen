@@ -217,7 +217,7 @@ public final class RuntimeGameTestsStory {
 
   // ---- missions 1-2 and the gate --------------------------------------------------------------
 
-  @GameTest(template = "empty", timeoutTicks = 3600)
+  @GameTest(template = "empty", timeoutTicks = RuntimeGameTestsSolsticio.CITY_TICKS)
   public static void storyWaitsForTheTeamsOwnCrossingAndAureliaOpensIt(GameTestHelper helper) {
     whenCityReady(helper, () -> {
       var server = helper.getLevel().getServer();
@@ -265,7 +265,7 @@ public final class RuntimeGameTestsStory {
 
   // ---- missions 3-4: Juan -----------------------------------------------------------------------
 
-  @GameTest(template = "empty", timeoutTicks = 3600)
+  @GameTest(template = "empty", timeoutTicks = RuntimeGameTestsSolsticio.CITY_TICKS)
   public static void juanWantsEightSpeciesThenSixteenOfFourMeals(GameTestHelper helper) {
     whenCityReady(helper, () -> {
       try (var cast = new Cast(helper); var qa = new QaPlayer(helper, "StoryJuanQA")) {
@@ -336,7 +336,7 @@ public final class RuntimeGameTestsStory {
     return ItemStack.EMPTY;
   }
 
-  @GameTest(template = "empty", timeoutTicks = 3600)
+  @GameTest(template = "empty", timeoutTicks = RuntimeGameTestsSolsticio.CITY_TICKS)
   public static void terraNeedsPowerFromOutsideThenSixLuminosities(GameTestHelper helper) {
     whenCityReady(helper, () -> {
       try (var cast = new Cast(helper); var qa = new QaPlayer(helper, "StoryTerraQA")) {
@@ -386,7 +386,7 @@ public final class RuntimeGameTestsStory {
 
   // ---- mission 7: the innkeepers' errands -------------------------------------------------------
 
-  @GameTest(template = "empty", timeoutTicks = 3600)
+  @GameTest(template = "empty", timeoutTicks = RuntimeGameTestsSolsticio.CITY_TICKS)
   public static void theEightErrandsRaiseTheRelationUntilBodhiListens(GameTestHelper helper) {
     whenCityReady(helper, () -> {
       var server = helper.getLevel().getServer();
@@ -489,7 +489,7 @@ public final class RuntimeGameTestsStory {
 
   // ---- mission 8: the blessing -------------------------------------------------------------------
 
-  @GameTest(template = "empty", timeoutTicks = 3600)
+  @GameTest(template = "empty", timeoutTicks = RuntimeGameTestsSolsticio.CITY_TICKS)
   public static void bodhiBlessesTheHeartTheAtlasLetsGo(GameTestHelper helper) {
     whenCityReady(helper, () -> {
       try (var cast = new Cast(helper); var qa = new QaPlayer(helper, "StoryBodhiQA");
@@ -567,7 +567,7 @@ public final class RuntimeGameTestsStory {
     }
   }
 
-  @GameTest(template = "empty", timeoutTicks = 3600)
+  @GameTest(template = "empty", timeoutTicks = RuntimeGameTestsSolsticio.CITY_TICKS)
   public static void theTableOfTwoLightsOpensThePortalAndLiberatesTheEntrelumen(GameTestHelper helper) {
     whenCityReady(helper, () -> {
       var server = helper.getLevel().getServer();
@@ -651,7 +651,7 @@ public final class RuntimeGameTestsStory {
 
   // ---- mission 11: the elections -----------------------------------------------------------------
 
-  @GameTest(template = "empty", timeoutTicks = 3600)
+  @GameTest(template = "empty", timeoutTicks = RuntimeGameTestsSolsticio.CITY_TICKS)
   public static void electionsComeDaysAfterTheLiberationAndChangeWhatSolsticioSays(GameTestHelper helper) {
     whenCityReady(helper, () -> {
       var server = helper.getLevel().getServer();
@@ -703,7 +703,7 @@ public final class RuntimeGameTestsStory {
         && key(stack.get(DataComponents.CUSTOM_NAME)).equals("entrelumen.solsticio.lore." + loreId + ".title")).count();
   }
 
-  @GameTest(template = "empty", timeoutTicks = 3600)
+  @GameTest(template = "empty", timeoutTicks = RuntimeGameTestsSolsticio.CITY_TICKS)
   public static void easterEggsGiveTheirPageOnceAndTogetherTheRumour(GameTestHelper helper) {
     whenCityReady(helper, () -> {
       var data = SolsticioData.get(helper.getLevel().getServer());

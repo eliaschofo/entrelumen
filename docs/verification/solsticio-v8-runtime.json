@@ -1,0 +1,283 @@
+{
+ "schema": 1,
+ "task": "Solsticio v8: the urban plan in blocks (phase 1), dressed, detailed and exported (phase 2), and the solarpunk pass (Elias: glass, stained glass and copper) before the final export, replacing the v7 citadel",
+ "branch": "feature/solsticio-v8",
+ "base": "main 50f2d50 (rebased; phases 1 and 2 were cut from 27fb170; JUnit and GameTests ran on main b71cdd8, and the only later main commit changes quest-book docs and a Python test)",
+ "design": "docs/design/solsticio-city-v8.md",
+ "generator": {
+  "command": "python art/solsticio/city8.py --export",
+  "modules": [
+   "art/solsticio/city8.py",
+   "art/solsticio/net8.py",
+   "art/solsticio/dress8.py",
+   "art/solsticio/landmarks8.py",
+   "art/solsticio/solar8.py",
+   "art/solsticio/export8.py",
+   "art/solsticio/grid8.py",
+   "art/solsticio/render8.py"
+  ],
+  "blocks": 1361902,
+  "blocksWithoutBarrier": 1253557,
+  "barrier": 108345,
+  "footprint": [
+   309,
+   240,
+   307
+  ],
+  "buildings": 614,
+  "lotPadLevels": 53,
+  "stairBlocksOnWalkingNetwork": 4590,
+  "axis": "falls 48 (Plaza Mayor 51 to Plaza del Portal 3) in 9 flights of 5-6 steps, landings 4-28 blocks",
+  "retainingFaces": {
+   "2-3": 4463,
+   "4-7": 2616,
+   "8+": 987,
+   "tallest": 20
+  },
+  "lastFalls": "water at -2 falls 24 blocks into a still catch basin at -27; steady-state water in the template; barrier stepped round it",
+  "dressing": {
+   "awnings": 1801,
+   "balconies": 373,
+   "balconyPlanters": 373,
+   "banners": 190,
+   "benches": 310,
+   "chimneys": 101,
+   "cornerLanterns": 273,
+   "courtyardFountains": 5,
+   "cratesAndBarrels": 226,
+   "doorLanterns": 613,
+   "doors": 614,
+   "dormers": 95,
+   "flowerBoxes": 3519,
+   "forges": 111,
+   "interiorLanterns": 2436,
+   "ladders": 602,
+   "laneLanterns": 57,
+   "planters": 54,
+   "roomsFurnished": 885,
+   "shopSigns": 200,
+   "shopfronts": 223,
+   "shopsFurnished": 88,
+   "shutters": 1427,
+   "signposts": 30,
+   "sills": 5414,
+   "smokingChimneys": 46,
+   "taverns": 4,
+   "wells": 6
+  },
+  "solarpunk": {
+   "arcadeBulbs": 18,
+   "arcadeColumns": 39,
+   "arcadeRoof": 294,
+   "canalCopperEdges": 53,
+   "downpipes": 29,
+   "galleryColumns": 3,
+   "galleryRoof": 212,
+   "gardenGlasshouses": 2,
+   "glassAtticGardens": 101,
+   "glowBerryVines": 72,
+   "innVitrales": 84,
+   "livingFacades": 124,
+   "livingWallBlocks": 3072,
+   "panesJoined": 624,
+   "pilasterVines": 13,
+   "plazaGablesWithRoseWindows": 20,
+   "rainBarrels": 8,
+   "ridgeFinials": 282,
+   "roofGardenAzaleas": 87,
+   "roofGardens": 10,
+   "rooftopConservatories": 27,
+   "skywalks": 12,
+   "solarPanels": 512,
+   "solarRoofs": 52,
+   "windmillTurrets": 2,
+   "windmills": 3
+  },
+  "census": {
+   "azalea": 7911,
+   "cave_vines": 153,
+   "clearGlass": 33997,
+   "copperExposed": 12081,
+   "copperFresh": 18374,
+   "copperOxidized": 9177,
+   "copperWeathered": 12700,
+   "copper_bulb": 443,
+   "daylight_detector": 608,
+   "flower_box": 3764,
+   "fluid_pipe": 385,
+   "lightning_rod": 336,
+   "sail": 40,
+   "stainedGlass": 4376,
+   "tintedGlass": 206,
+   "vine": 300,
+   "windmill_bearing": 3
+  },
+  "copperPatinas": "waxed: fresh, exposed, weathered, oxidized; roofs weather in patches (a step on in about a quarter of the cells)"
+ },
+ "checks": {
+  "hollowGroundOpenToAir": 0,
+  "walkingNeighboursTwoOrMoreApart": 0,
+  "markers": {
+   "total": 99,
+   "issues": 0,
+   "arrival": 1,
+   "town_hall_portal": 1,
+   "town_hall_waystone": 1,
+   "trading_hall": 1,
+   "player_plot": 4,
+   "mayor": 1,
+   "inventor": 1,
+   "gardener": 1,
+   "priest": 1,
+   "shop": 16,
+   "sidequest": 4,
+   "easter": 3,
+   "resident": 64
+  },
+  "blockIdsNotInPackRegistry": 0,
+  "gravityBlocks": 0,
+  "modBlocks": [
+   "create:fluid_pipe",
+   "create:orange_sail",
+   "create:sail_frame",
+   "create:white_sail",
+   "create:windmill_bearing",
+   "create:yellow_sail",
+   "handcrafted:birch_bench",
+   "handcrafted:birch_chair",
+   "handcrafted:birch_couch",
+   "handcrafted:birch_counter",
+   "handcrafted:birch_cupboard",
+   "handcrafted:birch_drawer",
+   "handcrafted:birch_shelf",
+   "handcrafted:birch_side_table",
+   "handcrafted:birch_table",
+   "handcrafted:white_crockery_combo",
+   "mcwlights:copper_chandelier",
+   "mcwlights:wall_lantern",
+   "mcwroofs:cyan_striped_awning",
+   "mcwroofs:orange_terracotta_roof",
+   "mcwroofs:yellow_striped_awning",
+   "refurbished_furniture:birch_crate",
+   "refurbished_furniture:white_lamp",
+   "supplementaries:flower_box",
+   "supplementaries:planter"
+  ],
+  "redstoneSourcesOnSensitiveBlocks": 0,
+  "redstoneRule": "no daylight detector or lightning rod on a face of a copper bulb, door, trapdoor or bell (a bulb flips on a pulse)",
+  "panes": "every glass pane joined as IronBarsBlock.attachsTo joins it (the city is placed without shape updates)",
+  "signs": "278 with their text; 1 dropped where the Plaza del Portal gate stands on a shop front (its text went nowhere)"
+ },
+ "template": {
+  "path": "companion/src/main/resources/data/entrelumen/structure/solsticio/city.nbt",
+  "sha256": "e159cc4e4da3711b38d7d42c8329c34ceefc641591486dc67bee28100fb4ac1b",
+  "bytes": 4451859,
+  "size": [
+   309,
+   240,
+   307
+  ],
+  "entries": 1362001,
+  "palette": 631,
+  "blockEntities": 278,
+  "dataVersion": 3955,
+  "deterministic": "two independent exports byte-identical",
+  "rebased": "the rebased generator exports the same bytes (sha256 unchanged)"
+ },
+ "junit": {
+  "tests": 246,
+  "failures": 0,
+  "errors": 0,
+  "onHead": "rebased",
+  "beforeRebase": {
+   "tests": 219,
+   "failures": 0,
+   "errors": 0
+  }
+ },
+ "isolatedGameTests": {
+  "command": "gradlew --offline --no-daemon test runGameTestServer (fresh run/world)",
+  "log": "E:/Elias/Codex/Entrelumen-ssd/solsticio8/gametest-8.log",
+  "summary": "All 119 required tests passed (rebased head); 103 of 103 before the rebase (gametest-7.log)",
+  "solsticioPlacement": "1362001 template blocks over 128 ticks, 2297 ms placing (worst tick 149 ms), 18356 ms wall",
+  "commerce": "70 villagers spawned in 10968 ms, 0 failed",
+  "note": "the isolated server has no Create or Macaw mods: their blocks read as air there; the full-pack run places them"
+ },
+ "python": {
+  "log": [
+   "E:/Elias/Codex/Entrelumen-ssd/solsticio8/ci-checks-2a.log",
+   "E:/Elias/Codex/Entrelumen-ssd/solsticio8/ci-checks-2b.log"
+  ],
+  "mainWorkflowCommands": 25,
+  "mainWorkflowNonZero": [],
+  "afterSolarpunk": {
+   "tools/check_runtime_content.py": 0,
+   "art/build_art.py --check": 0
+  },
+  "note": "the three commands of the shared list that exist only on other branches (build_heliodor_ruins, jetpack balance) are not on main"
+ },
+ "jarContents": "normal JAR without GameTest/QA classes and with solsticio/city.nbt (sha256 e159cc4e...); QA JAR d8a87103... with FullpackQABootstrap and the same city.nbt",
+ "fullpackQA": {
+  "server": "E:/Elias/Codex/Entrelumen-ssd/server-solsticio8-qa (skeleton from server-slice libraries only, 272 server JARs of the lock, pack/ and the QA JAR; -Xmx4G; fresh world each run); deleted after the runs",
+  "plan": "E:/Elias/Codex/Entrelumen-ssd/solsticio8/qa/plan-A.json",
+  "runs": {
+   "B": {
+    "result": "no verdict: the server stopped at start-up on the 60 s watchdog",
+    "bootWallSeconds": 567.5,
+    "doneSeconds": 164.218,
+    "cause": "ServerHangWatchdog during handleServerStarted, in supplementaries FaucetBehaviorsManager.onLevelLoad (class loading), before any Solsticio command was processed; machine at 100% CPU with other workers' full-pack and GameTest servers running",
+    "evidence": "E:/Elias/Codex/Entrelumen-ssd/solsticio8/qa/run-B"
+   },
+   "C": {
+    "result": "stopped by hand after boot: the solarpunk pass changed the template before the run"
+   },
+   "D": {
+    "head": "e46b6193a6ac63325759a09c0d2720b6babea4de",
+    "record": "E:/Elias/Codex/Entrelumen-ssd/solsticio8/qa/qa-D.json",
+    "bootWallSeconds": 120.1,
+    "summary": "expected 116, finished 113, passed 111, failed 2; pending 3 (the restart and live-backup fixtures the plan excludes: they need a second server process)",
+    "failed": {
+     "arkmodulestaketheirbossdrops": "Ark boss drops: nature, arcane and exploration module deliveries do not match their recipes (wet sponge, nether star, dragon breath)",
+     "sunspiritdropstheheartonceanditclosesactfour": "Act IV did not close with the Heart in the Atlas"
+    },
+    "solsticioPlacement": "1362001 template blocks over 228 ticks, 4027 ms placing (worst tick 58 ms), 17357 ms wall",
+    "commerce": "70 villagers spawned in 584 ms, 0 failed",
+    "solsticioTests": "solsticiocitypaletteresolvesinthefullpack, solsticioshoptablesresolveinthefullpack, solsticiostorydeliveriesresolveinthefullpack and every other Solsticio and story test PASS",
+    "watchdog": false,
+    "crashReports": "6 \"Ticking entity\" reports from spell entities of the spell tests (ars_nouveau:wall, irons_spellbooks:chain_lightning, theurgy:follow_projectile), caught; none from a block of the city"
+   },
+   "E": {
+    "record": "E:/Elias/Codex/Entrelumen-ssd/solsticio8/qa/qa-E.json",
+    "plan": "the two failures alone, fresh world",
+    "result": "both FAIL again, same messages: deterministic, not an order effect",
+    "scope": "this branch changes only Solsticio (generator, template, lang, the shared-city tick budget); the last PASS on record for both is act6-20260924/qa-F.json (25/09)"
+   },
+   "F": {
+    "head": "b4abe72 (rebased on main b71cdd8)",
+    "result": "no verdict: the 60 s watchdog stopped the server at start-up in immersiveengineering ArcRecyclingCalculator.onServerStarted, with another worker's GameTest server running and the machine at 100% CPU",
+    "evidence": "E:/Elias/Codex/Entrelumen-ssd/solsticio8/qa/run-F",
+    "expected": 130
+   },
+   "G": {
+    "head": "b4abe72 (rebased on main b71cdd8)",
+    "result": "stopped by hand 15 minutes into mod loading: the machine at 100% CPU and 0.3 GB of free memory (other workers' processes); no verdict"
+   }
+  },
+  "status": "run D (the same template, before the rebase): 111 of 113 PASS; 2 deterministic failures outside Solsticio (Ark boss-drop recipes, Act IV closing), confirmed alone by run E; on the rebased head the full-pack runs F and G gave no verdict because of machine load, the isolated GameTests pass there (119 of 119)"
+ },
+ "renders": {
+  "local": "E:/Elias/Codex/Entrelumen-ssd/solsticio8/phase2",
+  "views": [
+   "solsticio8_map.png",
+   "solsticio8_iso.png",
+   "solsticio8_axis.png",
+   "solsticio8_market.png",
+   "solsticio8_workshops.png",
+   "solsticio8_close_workshops.png",
+   "solsticio8_close_temple.png",
+   "solsticio8_close_axis.png",
+   "solsticio8_roofs.png"
+  ],
+  "committed": false
+ }
+}

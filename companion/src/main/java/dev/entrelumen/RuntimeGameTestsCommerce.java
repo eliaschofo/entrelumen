@@ -409,9 +409,10 @@ public final class RuntimeGameTestsCommerce {
 
   /**
    * In the shared city: the six natives get spawned by the background population, and a villager
-   * brought straight into the trading hall settles as it arrives.
+   * brought straight into the trading hall settles as it arrives. It waits for the whole city with
+   * the other shared-city tests' budget.
    */
-  @GameTest(template = "empty", timeoutTicks = 1200)
+  @GameTest(template = "empty", timeoutTicks = RuntimeGameTestsSolsticio.CITY_TICKS)
   public static void theCityHallHasItsNativesAndSettlesNewcomers(GameTestHelper helper) {
     var server = helper.getLevel().getServer();
     helper.assertTrue(server.getLevel(Solsticio.LEVEL) != null, "The Solsticio dimension is missing");

@@ -43,6 +43,14 @@ import net.neoforged.neoforge.gametest.PrefixGameTestTemplate;
 public final class RuntimeGameTestsSolsticio {
   private RuntimeGameTestsSolsticio() {}
 
+  /**
+   * Tick budget of the tests that wait for the shared city. The GameTest server ticks as fast as
+   * it can, so ticks are not seconds: placing Solsticio v8 (1.35 million blocks) takes 25 to 50 s
+   * of wall time, bound by chunk loading, which a 3600-tick budget no longer covered when the
+   * machine was busy. The tests still finish as soon as the city is ready.
+   */
+  static final int CITY_TICKS = 12000;
+
   /** A real server player on an in-memory connection, with its own FTB team and campaign. */
   private static final class QaPlayer implements AutoCloseable {
     final ServerPlayer player;
@@ -110,7 +118,7 @@ public final class RuntimeGameTestsSolsticio {
 
   // ---- Dimension and city -----------------------------------------------------------------
 
-  @GameTest(template = "empty", timeoutTicks = 3600)
+  @GameTest(template = "empty", timeoutTicks = CITY_TICKS)
   public static void solsticioDimensionAndProvisionalCityArePlacedOnce(GameTestHelper helper) {
     var server = helper.getLevel().getServer();
     whenCityReady(helper, () -> {
@@ -399,7 +407,7 @@ public final class RuntimeGameTestsSolsticio {
 
   // ---- Light Key --------------------------------------------------------------------------
 
-  @GameTest(template = "empty", timeoutTicks = 3600)
+  @GameTest(template = "empty", timeoutTicks = CITY_TICKS)
   public static void lightKeyCrossesOnceBreaksAndBindsToItsUser(GameTestHelper helper) {
     whenCityReady(helper, () -> {
       var level = helper.getLevel();
@@ -451,7 +459,7 @@ public final class RuntimeGameTestsSolsticio {
   }
 
   /** The real item-use path: hold to channel, release early to cancel, hold through to cross. */
-  @GameTest(template = "empty", timeoutTicks = 3600)
+  @GameTest(template = "empty", timeoutTicks = CITY_TICKS)
   public static void lightKeyChannelCancelsOnReleaseAndCrossesWhenHeld(GameTestHelper helper) {
     whenCityReady(helper, () -> {
       var level = helper.getLevel();
@@ -478,7 +486,7 @@ public final class RuntimeGameTestsSolsticio {
     });
   }
 
-  @GameTest(template = "empty", timeoutTicks = 3600)
+  @GameTest(template = "empty", timeoutTicks = CITY_TICKS)
   public static void brokenKeyCarriesOnlyItsOwnerBothWays(GameTestHelper helper) {
     whenCityReady(helper, () -> {
       var level = helper.getLevel();
@@ -526,7 +534,7 @@ public final class RuntimeGameTestsSolsticio {
     StructureProtection.invalidate(server);
   }
 
-  @GameTest(template = "empty", timeoutTicks = 3600)
+  @GameTest(template = "empty", timeoutTicks = CITY_TICKS)
   public static void portalOpensWithRelicsAndOwnKeyAndRestsAfterArrival(GameTestHelper helper) {
     whenCityReady(helper, () -> {
       var server = helper.getLevel().getServer();
