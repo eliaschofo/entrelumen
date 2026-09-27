@@ -124,8 +124,19 @@ public final class ActsFullpackGameTests {
       var campaign = Entrelumen.current(player);
       campaign.act = 4;
       for (int act = 1; act <= 3; act++) campaign.completed.addAll(Projects.forAct(act));
+      // Ark v2 (docs/design/ark-modules-v2.md, "Módulos por acto"): act IV also delivers the Arcane Module, and
+      // the Voices of the Atlas wait for it as well as for the Heart.
       campaign.completed.addAll(List.of("spectral_archive", "horizon_survey", "pollinator_treaty", "sealed_memory",
-          "aether_arrival", "twilight_arrival", "bumblezone_arrival"));
+          "arcane_module", "aether_arrival", "twilight_arrival", "bumblezone_arrival"));
+      // Only the Heart and the voices are left in act IV, and the voices wait only for the Heart, so the
+      // refusal below is the Heart's and a new act IV requirement fails here, by name.
+      var open = new java.util.TreeSet<>(Projects.forAct(4));
+      open.removeAll(campaign.completed);
+      var waiting = new java.util.TreeSet<>(Projects.all().get("atlas_voices").prerequisites());
+      waiting.removeAll(campaign.completed);
+      helper.assertTrue(open.equals(java.util.Set.of(HeliodorHeartRules.PROJECT, "atlas_voices"))
+          && waiting.equals(java.util.Set.of(HeliodorHeartRules.PROJECT)),
+          "Act IV fixture is stale: open projects " + open + ", the voices wait for " + waiting);
 
       killSunSpirit(helper, player, at);
       var first = drops(helper, at);
