@@ -115,8 +115,8 @@ def grow(rng, depth, start, target, keep_on=0.5, straight=0.4, loops=0.07):
 def sprout(rng, f, dist, length=2):
     """Grow a fresh dead-end branch from the farthest cell that has room: somewhere to hide a seal."""
     for c in sorted(f.cells, key=lambda c: (-dist.get(c, 0), rng.random())):
-        if c in (f.exit, f.start):
-            continue
+        if c in (f.exit, f.start) or f.role.get(c) == 'seal':
+            continue                                     # a seal must stay a dead end
         dirs = list(DIRS.values())
         rng.shuffle(dirs)
         for d in dirs:
@@ -234,6 +234,7 @@ def check(floors):
             assert len(f.seals) >= 2, 'floor %d has %d seals' % (f.depth, len(f.seals))
             main = set(f.path(f.start, f.exit))
             assert not (set(f.seals) & main), 'a seal on the main path'
+            assert all(len(f.doors(s)) == 1 for s in f.seals), 'a seal that is not a dead end'
     return True
 
 
