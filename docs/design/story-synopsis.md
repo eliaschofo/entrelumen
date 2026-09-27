@@ -10,7 +10,7 @@
 - **El Arca.** Terra deja en el Atlas un plano. Ponés el controlador y el primer módulo, **Habitabilidad**: `/home`.
 - **La pregunta del acto:** ¿un recuerdo puede señalar un lugar real?
 
-**Para decidir:** ¿el Atlas está en la Torre (propuesta) o en otra ruina? ¿El Patio del Atlas de la biblia se fusiona con la Torre?
+**Decidido (26/9):** el Atlas está en la Torre de la Señal.
 
 ## Acto II · Los oficios perdidos (Haven)
 
@@ -31,26 +31,28 @@
 - **La Escalera Sellada de la ruina inicial se abre: el Envés.** El Atlas no quiere hablar de lo que hay abajo.
 - **El Arca:** módulo **Naturaleza** (regeneración, menos hambre).
 
-**Para decidir:** ¿qué es el Envés en la historia? Propuesta: lo que la luz empujó hacia abajo al congelar Heliodor. La sombra del dios que quisieron fabricar. El Wither blanco sería ese dios fallido, sellado.
+**El Envés (Elias, 26/9):**
+- es la **luz agria** (*sour light*): la luminosidad que se pudrió en el experimento fallido;
+- alguien la **contuvo en un wither**, y ese recipiente es el Wither blanco;
+- el recipiente se filtra: la luz agria le da forma al Envés, que copia lo que tocó y se reacomoda en cada apertura, y condensa ecos como enemigos;
+- la netherita es lo único que no puede comer, por eso la puerta la usa de contrapeso.
+
+**Para decidir:** ¿quién la contuvo, los ciudadanos antes de que el Sun Spirit los congelara, o el Sun Spirit mismo?
 
 ## Acto IV · Las voces del Atlas (Ascent)
 
-- **El Observatorio del Risco.** Girás los espejos hasta que la luz baja por el telescopio y te da el **Ocular de las Voces**. El Atlas empieza a oír a más de uno.
+- **El Observatorio del Risco (mediano).** Girás los espejos hasta que la luz baja por el telescopio y te da el **Ocular de las Voces**. El Atlas empieza a oír a más de uno.
 - **El Santuario del Twilight** guarda el **Testimonio del Bosque**, la voz de Bodhi: él avisó que la fusión iba a destruirlos.
+- **El Templo de la Luz Sagrada (la ruina gigante del acto)** muestra la fusión donde pasó. Heliodor quiso fabricar un dios con máquinas, y la luz que la máquina llegó a atar se agrió. Hacés las ofrendas, prendés las lámparas y vencés al Custodio: te llevás la **Llama Sagrada**.
 - **Al Aether por la Antesala del Sol.** Ahí está la **Llave del Sol**, y con ella llegás al Sun Spirit. El jefe del acto suelta el **Corazón de Heliodor**: el cristal de Bodhi, núcleo de la máquina de la fusión.
-- **La revelación.** Con el Corazón, el Atlas habla claro. Heliodor quiso fabricar un dios con máquinas. El Sun Spirit los congeló en luz eterna antes de que se destruyeran: el Entrelumen. Siguen vivos adentro.
+- **Con el Corazón, el Atlas habla claro.** El Sun Spirit los congeló en luz eterna antes de que se destruyeran: el Entrelumen. Siguen vivos adentro.
 - **El Arca:** módulo **Arcano** (maná).
-
-**Para decidir:** ¿el Templo de la Luz Sagrada revela la fusión en este acto, como dice la biblia? ¿O la revelación la hace el Corazón y el Templo queda como escenario del acto V, como en el plan de ruinas?
 
 ## Acto V · El Arca (Summit)
 
 - **Sabiendo todo, construís el Arca** con los módulos **Logística** e **Ingeniería**.
-- **El Templo de la Luz Sagrada** es donde intentaron la fusión. Resolvés las ofrendas, las lámparas y el Custodio de la Luz, y te llevás la **Llama Sagrada**.
-- **El Observatorio sobre el vacío, en el End,** da la **Carta Estelar**, el rumbo hacia el Entrelumen.
+- **El Observatorio sobre el vacío, en el End (la ruina gigante del acto),** da la **Carta Estelar**, el rumbo hacia el Entrelumen.
 - **La activación del Arca forja la Llave de Luz.** La moraleja del acto: no reconstruir el punto único que los hundió; el Arca conecta, no domina.
-
-**Para decidir:** ¿la Llama Sagrada y la Carta Estelar son parte de la activación del Arca, o requisito de la Llave?
 
 ## Acto VI · Solsticio (Pinnacle)
 
@@ -64,4 +66,4 @@
   - tu lote, la sala de comercio y las Luminosidades para los ítems creativos;
   - el Envés en tiers altos.
 
-**Para decidir:** ¿el portal libera el Entrelumen, como en el lore corto, o la ciudad sigue en el limbo con un paso abierto, como en la biblia? Las dos versiones están escritas.
+**Decidido (26/9):** el Entrelumen queda libre.

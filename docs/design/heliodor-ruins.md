@@ -67,14 +67,19 @@ Decisiones de Elias del 25/9:
 | 3 | Viaducto | Overworld | III | **gigante** | Sello de Ruta / Route Seal | `exchange_archive` | Combate (Guardián del Peaje, jefe con barra) + exploración por los arcos |
 | 4 | Invernadero-domo | Overworld | III | mediana | Semilla Madre / Mother Seed | `exchange_nursery` | Ofrenda (plantar cuatro retoños en los canteros para abrir la cripta) |
 | 5 | Fundición bajo la lava | Nether | III | mediana | Crisol de Heliodor / Heliodor Crucible | `exchange_power` | Combate (oleada) + cerradura de redstone |
-| 6 | Observatorio del Risco | Overworld | IV | **gigante** | Ocular de las Voces / Eyepiece of Voices | `voices_lens` | Luz (orientar espejos hasta el telescopio) + exploración |
+| 6 | Observatorio del Risco | Overworld | IV | mediana (26/9) | Ocular de las Voces / Eyepiece of Voices | `voices_lens` | Luz (orientar espejos hasta el telescopio) + exploración |
 | 7 | Santuario | Twilight Forest | IV | mediana | Testimonio del Bosque / Forest Testimony | `voices_spirits` | Exploración oculta (orden de menhires, bodega entre raíces) |
 | 8 | Antesala del Sol | Aether | IV | mediana | Llave del Sol / Sun Key | `voices_sun_spirit` | Ofrenda + parkour entre nubes |
-| 9 | Templo de la Luz Sagrada | Overworld | V | **gigante** | Llama Sagrada / Sacred Flame | `world_network` | Luz + ofrenda + combate (Custodio de la Luz) |
-| 10 | Observatorio sobre el vacío | End | V | mediana | Carta Estelar / Star Chart | `world_settlement` | Exploración y parkour sobre el vacío + combate |
+| 9 | Templo de la Luz Sagrada | Overworld | IV (26/9) | **gigante** | Llama Sagrada / Sacred Flame | `voices_archive`: el Templo revela la fusión | Luz + ofrenda + combate (Custodio de la Luz) |
+| 10 | Observatorio sobre el vacío | End | V | **gigante** (26/9) | Carta Estelar / Star Chart | `world_network` | Exploración y parkour sobre el vacío + combate |
 | 11 | Solsticio | su dimensión | VI | **gigante** | — | — | ciudad (sistema propio) |
 
 Los bocetos de `ruins_acts.py`, `ruins_dims.py` y `ruin_atlas.py` quedan como punto de partida: el arte final se redibuja a escala. El Patio del Atlas sale del plantel porque el acto I ya tiene su gigante y es la primera hora.
+
+**Cambio del 26/9 (Elias):**
+- el Templo pasa al acto IV y es ahí donde se revela la fusión, como dice la biblia;
+- para que siga habiendo una sola ruina gigante por acto, el Observatorio del Risco baja a mediana en el IV y el Observatorio sobre el vacío del End sube a gigante del V;
+- el arte de las dos se reescala.
 
 ### Reglas del sistema
 
