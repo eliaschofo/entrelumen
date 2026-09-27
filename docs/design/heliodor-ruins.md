@@ -33,7 +33,7 @@ Los bocetos anteriores (`ruin_atlas.py`, `ruins_acts.py`, `ruins_dims.py`) queda
 
 - **Simetría.** Cada ruina es simétrica bajo rotaciones de 90° y espejos. El deterioro también: grietas, musgo, piezas caídas y huecos salen de funciones de `(a, b) = orden(|x|, |z|)`. La única excepción es la orientación de un atril.
 - **Paleta común.** Toba, calcita, cuarzo y cobre oxidado encerado; es la misma familia de materiales que Solsticio, con el cobre ya verde.
-- **Terreno.** Los bordes redondos dejan fuera las celdas de piso de las esquinas, así el terreno sigue ahí. Si el piso queda por encima del suelo, la colocación rellena la celda con el suelo que encuentra abajo.
+- **Terreno.** Los bordes redondos dejan fuera las celdas de piso de las esquinas, así el terreno sigue ahí. Cómo se encuentra cada ruina con el terreno está en «El terreno», más abajo: el arte no dibuja suelo, salvo los canteros que marca con `keep_soil`.
 
 ## Referencias inspeccionadas
 
@@ -258,8 +258,8 @@ Los ítems de las ofrendas, los jefes y sus atributos son datos: se cambian en e
 - **Cuándo.** Las del Overworld, una vez por mundo, cuando algún equipo abre su acto (se revisa cada 5 s). Las de dimensión, cuando alguien llega por primera vez, alrededor de ese punto. Un sitio elegido queda reservado en `RuinData`: si el servidor se corta, la colocación sigue ahí al arrancar. Una sola ruina a la vez.
 - **Sitio, sin tocar chunks.** 48 candidatos en espiral áurea dentro del anillo, deterministas por semilla y ruina. Fuera del hilo del servidor se puntúan con el ruido del generador: pendiente y agua (`WORLD_SURFACE_WG` contra `OCEAN_FLOOR_WG`), bioma (sin océanos, ríos ni playas); en el Nether, un piso de caverna (o lago de lava) con altura libre; en el cielo, cuántos bloques ocupa el volumen. Se descartan los que tocan otra ruina, una reserva o una región protegida (48 bloques de margen) y los que no entran en el mundo.
 - **Nunca sobre algo de un jugador.** Antes de cargar nada, se lee el `InhabitedTime` de los chunks guardados: si jugadores pasaron más de 5 minutos en alguno, el candidato se saltea.
-- **Terreno real.** Los chunks del sitio se cargan en segundo plano con un ticket propio. Con el terreno cargado se vuelve a medir sobre 49 puntos: sirve si el desnivel es de 10 bloques o menos, hay agua en no más de un octavo, troncos en no más de un cuarto y ninguna estructura (aldeas y demás) cruza el volumen. Hasta 6 intentos; si ninguno sirve, el mejor que entre en el mundo.
-- **Por partes.** La plantilla se lee y se corta en cubos de 8 fuera del hilo (el mismo corte que Solsticio, en cubos más chicos porque cada uno se coloca entero). Cada tick, hasta 8 ms: se vacían las columnas de la ruina sobre la capa del suelo, se colocan los cubos, se rellena el cimiento bajo las columnas que apoyan en el suelo (hasta 12) y los marcadores se vuelven bloques. Después se registra en `RuinData`, queda protegida y es ancla de la brújula.
+- **Terreno real.** Los chunks del sitio y de su margen se cargan en segundo plano con un ticket propio. Con el terreno cargado se vuelve a medir: el nivel del suelo es la mediana del terreno natural bajo las columnas que apoyan (hasta 400), y sirve si su desnivel es de 10 bloques o menos, hay agua en no más de un octavo de 49 puntos, troncos en no más de un cuarto y ninguna estructura (aldeas y demás) cruza el volumen. Hasta 6 intentos; si ninguno sirve, el de menor puntaje (casi siempre el de menor desnivel) y la barba hace el resto. El desnivel ya no descarta a nadie en la búsqueda por ruido: sólo cuesta. Nunca se busca fuera del anillo.
+- **Por partes.** La plantilla se lee y se corta en cubos de 8 fuera del hilo (el mismo corte que Solsticio, en cubos más chicos porque cada uno se coloca entero). Cada tick, hasta 8 ms: se lee el sitio, se le da forma al terreno, se talan los árboles cortados, se colocan los cubos, los apoyos bajan hasta el suelo y los marcadores se vuelven bloques; al final, la tierra de la plantilla se vuelve el suelo del sitio (ver «El terreno»). Después se registra en `RuinData`, queda protegida y es ancla de la brújula.
 - **Indestructible.** Todo el volumen registrado, con la protección de siempre (romper, poner, explosiones, fluidos, pistones, fuego, mobs). Palancas y botones siguen usables; los contenedores se abren desde el acto de la ruina.
 
 ### Marcadores
@@ -288,6 +288,7 @@ Bloques de estructura en modo DATA; el texto es `<tipo> clave=valor ...` (el pre
 | `arrival` | `block` | Punto de llegada (`spawn` también vale, para la ruina inicial). |
 | `ground` | `block` | La capa de la plantilla que queda al ras del terreno; sin él, la capa 0. |
 | `sandbox` | `size=x,y,z`, `radius` | Donde se construye: la caja cortada a un disco alrededor de su centro. |
+| `keep_soil` | `size=x,y,z` | Un cantero diseñado (canteros, estanque, jardín): su tierra queda como está dibujada. Fuera de estas cajas, la tierra de la plantilla es el suelo del sitio. En el arte: `markers["keep_soil"]`, cajas `(lo, hi)` inclusivas. |
 | `part` | `block` | Pieza que falta: la celda empieza vacía y sólo acepta ese bloque. |
 | `pump` | `challenge`, `turn` (`+`, `-`), `intake`, `block` | Bomba del motor; `turn` es el sentido que se exige, `intake` la toma (desde la bomba). |
 | `port` | `role` (`input`, `pump`, `seal`), `block` | Donde una transmisión llega al banco. |
@@ -336,7 +337,7 @@ Una tabla por ruina, por acto (`chests/ruin_act<N>_<ruina>`), sólo con ítems v
 
 ### Comandos
 
-`/entrelumen admin ruins list`, `place <id> [here]`, `tp <id>` y `reset <id>` (borra el progreso de todos los equipos en esa ruina; los bloques quedan).
+`/entrelumen admin ruins list`, `place <id> [here]`, `tp <id>` y `reset <id>` (borra el progreso de todos los equipos en esa ruina; los bloques quedan). `terrain` (sólo el dueño del servidor) corre el relevamiento de terreno de «El terreno» en un mundo para tirar.
 
 ### Arte provisorio
 
@@ -353,8 +354,8 @@ Hace falta, en 16×16 y con referencias inspeccionadas según `DESIGN.md`:
 
 ### Pruebas
 
-- JUnit: `RuinMarkersTest`, `RuinRulesTest` (con R, las bombas, el ángulo del sello, el disco del banco y la espera del reinicio), `RuinDefinitionsTest` (el Taller con y sin Create), `RuinTemplatesTest` (cada plantilla tiene lo que su definición pide; el motor del Taller, sus tags, textos y construcciones) y `CompassTargetsTest`.
-- GameTests (`RuntimeGameTestsRuins`): plantillas con bloques y propiedades conocidos (los de un mod ausente quedan en aire); una gigante en el Overworld por búsqueda de anillo (registro, protección, cimiento, ancla); el Templo por partes; la Fundición en una caverna del Nether y el Observatorio flotando en el End; cada tipo de desafío resuelto y reiniciado por equipo; la compuerta; el pedestal que da y repone; el jefe con su barra; la adopción de piezas sin mod; la visita. Además, cada una de las diez ruinas se juega entera desde sus propios marcadores (`*PlaysFromItsMarkers`): sin coordenadas escritas en las pruebas. Sin Create, el Taller se juega con las palancas.
+- JUnit: `RuinMarkersTest`, `RuinRulesTest` (con R, las bombas, el ángulo del sello, el disco del banco, la espera del reinicio y el tope de colocación), `RuinTerrainTest` (plataformas y apoyos, distancias, la barba, las terrazas, la mediana y la tierra), `RuinDefinitionsTest` (el Taller con y sin Create), `RuinTemplatesTest` (cada plantilla tiene lo que su definición pide; el motor del Taller, sus tags, textos y construcciones) y `CompassTargetsTest`.
+- GameTests (`RuntimeGameTestsRuins`): plantillas con bloques y propiedades conocidos (los de un mod ausente quedan en aire); una gigante en el Overworld por búsqueda de anillo (registro, protección, cimiento, ancla); el Templo por partes; la Fundición en una caverna del Nether y el Observatorio flotando en el End; cada tipo de desafío resuelto y reiniciado por equipo; la compuerta; el pedestal que da y repone; el jefe con su barra; la adopción de piezas sin mod; la visita. Además, cada una de las diez ruinas se juega entera desde sus propios marcadores (`*PlaysFromItsMarkers`): sin coordenadas escritas en las pruebas. Sin Create, el Taller se juega con las palancas. Sobre paisajes armados en el mundo plano: el Invernadero en una duna que sube 24 bloques (sin huecos bajo el piso, al ras en el borde, escalones de 3 o menos en la barba, intacto pasado el margen, su césped hecho arena) y el Viaducto cruzando un valle de 18 (los pilares bajan hasta el fondo en su bloque; los arcos quedan abiertos).
 - Pack completo (`RuinWorkshopFullpackGameTests`, lote `ruins_engine`), con el Create fijado y las construcciones del exportador:
   - las ruedas giran al abrir sus esclusas y las líneas sólo llegan con las piezas repuestas;
   - una rueda sola se sobrecarga con las cuatro bombas, dos bombas al revés y 2R no vacían;
@@ -375,6 +376,21 @@ Hace falta, en 16×16 y con referencias inspeccionadas según `DESIGN.md`:
 - **Lo que genera el exportador.** Pasa la `solution` del arte a `solve=` en cada pieza y hace empezar cada espejo lejos de su respuesta. Comprueba con una traza propia que cada piso se enciende con su solución y no con el estado inicial. En el cuarto piso, el estado inicial manda rojo, verde y ámbar a la lente: el señuelo.
 - **Correcciones al arte.** La galería tapaba el tiro blanco en (0, 63, 0) y el exportador lo reabre. La base del vitral del piso de arriba pisaba el receptor, y el exportador lo repone como lámpara de cobre.
 
+## El terreno (Elias, 26/9)
+
+Elias no quiere «una losa flotando», ni «media estructura destruyendo el paisaje», ni depender de terreno plano, ni tierra dibujada en las ruinas: tienen que poder ir a cualquier lado. `RuinTerrain` (reglas puras, con pruebas) y `RuinPlacement` lo resuelven en las ruinas de superficie; las de caverna y cielo siguen como estaban.
+
+- **Plataformas y apoyos.** Las columnas cuyo bloque más bajo está en la capa del suelo o en la de arriba se separan con una apertura morfológica de 5×5. Lo que sobrevive es plataforma: pisos, zócalos, céspedes. Lo demás son apoyos finos: pilares, pilastras, muros, escombros.
+- **El nivel del suelo.** La mediana del terreno natural bajo esas columnas, que equilibra lo que se rellena y lo que se corta. «Terreno natural» saltea plantas, nieve, troncos, hojas, hongos gigantes y agua.
+- **La barba.** Alrededor de las plataformas, el terreno natural se funde con el nivel de la ruina en un margen de 6 a 10 bloques, con una caída suave (`smoothstep`): se rellena o se corta con la superficie y el relleno del propio sitio. El margen se elige por el mayor desnivel en el borde: una vez y media ese desnivel, entre 6 y 10. En el borde queda al ras y pasado el margen no se toca.
+- **Qué se vacía.** Sobre las plataformas, todo lo que hay arriba del piso. En las demás columnas de la ruina (tableros, arcos, pilares), sólo el volumen de la ruina y tres bloques de aire sobre él. El resto del volumen no se vacía: bajo un arco o un tablero, el terreno queda.
+- **Terrazas.** Donde un relleno cae dos bloques o más hacia una columna vecina, esa cara es mampostería de la ruina: su bloque opaco más común en el piso (toba de ladrillo en el Viaducto). El cimiento queda escalonado, nunca un muro de tierra. Bajo las plataformas, el relleno llega hasta el suelo: no quedan losas flotando.
+- **Apoyos hasta el suelo.** Un apoyo fino que cuelga baja en su propio bloque hasta el suelo, hasta 32 bloques: el más bajo de sus bloques opacos cerca del pie o, si no tiene, la mampostería. El Viaducto sobre un valle termina con pilares altos, como un acueducto, y los arcos entre ellos quedan abiertos.
+- **Árboles.** Un tronco que la forma corta se tala entero, con las hojas que eran suyas y lo que cuelga (enredaderas, cacao, colmenas). Las hojas más cerca de otro árbol quedan. Un marco de troncos sin hojas naturales es una construcción: queda.
+- **El suelo del sitio.** En la plantilla, `grass_block`, `dirt`, `coarse_dirt`, `podzol` y `moss_block` son marcadores de posición. Se vuelven la superficie del sitio donde les da el aire y su relleno donde están tapados: arena en el desierto, pasto con nieve en la taiga nevada. Es el bloque más común entre unas 250 columnas de alrededor, más la nieve si la cubre un tercio. Arena o grava sobre un hueco se vuelven su piedra, y las plantas que no crecen en el suelo nuevo se van. La excepción son los canteros diseñados, en cajas `keep_soil` que pone el arte (los canteros del Invernadero, el estanque y el jardín del Santuario).
+- **El tope de colocación.** Ver «Colocación»: el desnivel sólo cuesta y, si ningún sitio del anillo es suave, gana el de menor desnivel.
+- **Evidencia.** `RuinTerrainSurvey`, con `/entrelumen admin ruins terrain` o, sin nadie, la propiedad `-Dentrelumen.ruinTerrain=<carpeta>` (con `.stop=true`, el servidor se apaga al terminar). Coloca cada ruina del Overworld en cinco sitios de la semilla del mundo: llanura, ladera de colina o montaña, desierto, taiga nevada y bosque denso. Vuelca cada región, con su margen, antes y después: un bloque por línea, `x y z estado`, relativo al centro y al nivel del suelo, en la convención del arte. Guarda cada bloque del volumen de la ruina y, alrededor, los que tienen una cara al aire. `tools/render_ruin_terrain.py` los dibuja con `voxrender` (antes y después, lado a lado; `--cut` para un corte).
+
 ## Pendiente
 
 - Arte de las diez ruinas a escala final (Elias revisa una por una). El exportador y las pruebas sólo dependen del contrato de marcadores.
@@ -382,3 +398,4 @@ Hace falta, en 16×16 y con referencias inspeccionadas según `DESIGN.md`:
 - Motor de Terra: que Elias confirme los dos desvíos (el sentido de las bombas lo exige la ruina; las cuatro en una red) y que la revisión del arte corrija lo que hoy repone el exportador.
 - El Atlas: ¿se saca la receta (cobre sobre un libro, 24/9) ahora que el Atlas espera en la Torre?
 - El arte reescalado del Observatorio del Risco (mediano) y del Observatorio sobre el vacío (gigante), que entrega el arte.
+- Terreno: las cajas `keep_soil` en el arte (canteros del Invernadero, estanque y jardín del Santuario); hasta entonces su tierra se vuelve la del sitio. La ruina inicial (`HeliodorRuins`, de main) sigue con su colocación propia.

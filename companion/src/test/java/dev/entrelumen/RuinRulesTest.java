@@ -92,11 +92,13 @@ class RuinRulesTest {
     var slope = new RuinRules.Sample(new int[] {60, 64, 68, 72}, new boolean[4], true);
     var wet = new RuinRules.Sample(new int[] {62, 62, 62, 62}, new boolean[] {true, true, false, false}, true);
     var shore = new RuinRules.Sample(new int[] {64, 64, 64, 64}, new boolean[4], false);
-    int maxSpread = 10;
-    assertTrue(RuinRules.score(flat, maxSpread) < RuinRules.score(slope, maxSpread));
-    assertEquals(Integer.MAX_VALUE, RuinRules.score(wet, maxSpread), "Half under water");
-    assertTrue(RuinRules.score(shore, maxSpread) > RuinRules.score(flat, maxSpread), "Oceans, rivers and beaches cost");
-    assertEquals(Integer.MAX_VALUE, RuinRules.score(new RuinRules.Sample(new int[] {10, 90}, new boolean[2], true), maxSpread));
+    assertTrue(RuinRules.score(flat) < RuinRules.score(slope));
+    assertEquals(Integer.MAX_VALUE, RuinRules.score(wet), "Half under water");
+    assertTrue(RuinRules.score(shore) > RuinRules.score(flat), "Oceans, rivers and beaches cost");
+    // The placement cap (26 September): a steep site costs but stays a candidate; the least steep wins.
+    var steep = new RuinRules.Sample(new int[] {10, 90}, new boolean[2], true);
+    var steeper = new RuinRules.Sample(new int[] {10, 120}, new boolean[2], true);
+    assertTrue(RuinRules.score(steep) < Integer.MAX_VALUE && RuinRules.score(steep) < RuinRules.score(steeper));
     assertEquals(64, RuinRules.floor(new int[] {64, 63, 64, 70, 64}));
     assertEquals(70, RuinRules.floor(new int[] {63, 70}), "A tie takes the higher ground");
   }

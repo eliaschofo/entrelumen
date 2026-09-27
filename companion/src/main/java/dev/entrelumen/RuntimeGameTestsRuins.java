@@ -810,6 +810,189 @@ public final class RuntimeGameTestsRuins {
     helper.succeed();
   }
 
+  // ---- How the ruins meet the terrain (Elias, 26 September; RuinTerrain) ------------------------
+
+  /**
+   * Raises a test landscape on the flat test world: every column of {@code area} gets {@code under} up
+   * to {@code height(x, z)}, its top three blocks {@code surface}.
+   */
+  static void landscape(ServerLevel level, BoundingBox area, java.util.function.IntBinaryOperator height,
+      net.minecraft.world.level.block.state.BlockState surface, net.minecraft.world.level.block.state.BlockState under) {
+    var cursor = new BlockPos.MutableBlockPos();
+    for (int x = area.minX(); x <= area.maxX(); x++)
+      for (int z = area.minZ(); z <= area.maxZ(); z++) {
+        int top = height.applyAsInt(x, z);
+        for (int y = area.minY(); y <= top; y++)
+          level.setBlock(cursor.set(x, y, z), y >= top - 2 ? surface : under,
+              net.minecraft.world.level.block.Block.UPDATE_CLIENTS);
+      }
+  }
+
+  /** Places a ruin centred on a test landscape, then checks it with the chunks held again. */
+  static void placeOnLandscape(GameTestHelper helper, String id, BoundingBox area,
+      java.util.function.IntBinaryOperator height, net.minecraft.world.level.block.state.BlockState surface,
+      net.minecraft.world.level.block.state.BlockState under, java.util.function.Consumer<RuinPlacement.Job> check) {
+    var level = helper.getLevel();
+    var server = level.getServer();
+    var definition = qaCopy(RuinRegistry.get(id).orElseThrow());
+    List<List<net.minecraft.world.level.ChunkPos>> held = new ArrayList<>();
+    held.add(hold(level, area));
+    RuinPlacement.Job[] job = new RuinPlacement.Job[1];
+    long started = System.nanoTime();
+    Stop stop = new Stop();
+    helper.startSequence()
+        .thenWaitUntil(() -> {
+          for (var chunk : held.getFirst())
+            helper.assertTrue(level.getChunkSource().getChunkNow(chunk.x, chunk.z) != null, "Loading " + chunk);
+        })
+        .thenExecute(guarded(() -> {
+          landscape(level, area, height, surface, under);
+          var center = new BlockPos((area.minX() + area.maxX()) / 2, 0, (area.minZ() + area.maxZ()) / 2);
+          job[0] = RuinPlacement.startCentred(level, definition, center).orElseThrow();
+        }))
+        .thenWaitUntil(() -> awaitJob(helper, job[0], started, stop))
+        .thenExecute(guarded(() -> {
+          stop.check(helper);
+          held.add(hold(level, area));
+        }))
+        .thenWaitUntil(() -> {
+          for (var chunk : held.getLast())
+            helper.assertTrue(level.getChunkSource().getChunkNow(chunk.x, chunk.z) != null, "Loading " + chunk);
+        })
+        .thenExecute(guarded(() -> {
+          try {
+            check.accept(job[0]);
+          } finally {
+            for (var chunks : held)
+              for (var chunk : chunks) level.getChunkSource().removeRegionTicket(PLAY, chunk, 0, chunk);
+            RuinData.get(server).remove(ResourceLocation.parse(definition.id()));
+            RuinRegistry.remove(definition.id());
+            StructureProtection.invalidate(server);
+          }
+        }))
+        .thenSucceed();
+  }
+
+  /**
+   * The Dome Greenhouse on a dune that rises 24 blocks over 113: no floating slab under it, no cliff at
+   * its edge, a smooth blend that is gone past the margin, and its lawn the dune's own sand.
+   */
+  @GameTest(template = "empty", timeoutTicks = 400000, batch = "ruins")
+  public static void aRuinMeetsASlopeWithoutCliffsOrFloatingSlabs(GameTestHelper helper) {
+    var level = helper.getLevel();
+    int cx = -36_000, cz = 44_000, half = 56, bottom = level.getMinBuildHeight() + 1;
+    var area = new BoundingBox(cx - half, bottom, cz - half, cx + half, bottom + 38, cz + half);
+    java.util.function.IntBinaryOperator dune = (x, z) -> bottom + 14 + (x - (cx - half)) * 24 / (2 * half);
+    placeOnLandscape(helper, "entrelumen:dome_greenhouse", area, dune, Blocks.SAND.defaultBlockState(),
+        Blocks.SANDSTONE.defaultBlockState(), job -> {
+          var p = job.prepared;
+          var shape = p.shape();
+          var origin = job.result().origin();
+          int ground = origin.getY() + p.ground(), m = RuinTerrain.MAX_MARGIN, w = RuinPlacement.grownWidth(p);
+          var cursor = new BlockPos.MutableBlockPos();
+          helper.assertTrue(job.margin >= RuinTerrain.MIN_MARGIN && job.margin <= RuinTerrain.MAX_MARGIN,
+              "Margin " + job.margin);
+          helper.assertTrue(job.palette.surface().is(Blocks.SAND), "The site's ground is not the dune's sand: " + job.palette);
+          // No floating slab: under every platform column, solid down to the dune.
+          int platforms = 0;
+          for (int c = 0; c < p.sizeX() * p.sizeZ(); c++) {
+            if (!shape.platform()[c]) continue;
+            int x = origin.getX() + c % p.sizeX(), z = origin.getZ() + c / p.sizeX();
+            for (int y = origin.getY() + shape.low()[c] - 1; y > dune.applyAsInt(x, z); y--)
+              if (!p.cell(c % p.sizeX(), y - origin.getY(), c / p.sizeX()))
+                helper.assertTrue(!level.getBlockState(cursor.set(x, y, z)).canBeReplaced(), "A gap under the platform at " + cursor);
+            platforms++;
+          }
+          helper.assertTrue(platforms > 500, "Only " + platforms + " platform columns");
+          // Around the platform: flush at its edge, smooth over the margin, untouched past it.
+          int steepest = 0, flushChecked = 0, untouched = 0;
+          for (int i = 0; i < shape.distance().length; i++) {
+            int x = i % w - m, z = i / w - m;
+            boolean inside = x >= 0 && z >= 0 && x < p.sizeX() && z < p.sizeZ();
+            if (inside && shape.top()[z * p.sizeX() + x] >= 0) continue;     // the ruin's own blocks
+            int wx = origin.getX() + x, wz = origin.getZ() + z;
+            int here = RuinPlacement.groundAt(level, cursor, wx, wz,
+                level.getHeight(net.minecraft.world.level.levelgen.Heightmap.Types.WORLD_SURFACE, wx, wz) - 1);
+            float d = shape.distance()[i];
+            if (d > 0 && d <= 1.5f) {
+              helper.assertTrue(Math.abs(here - ground) <= 1, "A cliff at the edge: " + here + " by ground " + ground
+                  + " at " + wx + "," + wz);
+              flushChecked++;
+            }
+            if (d > 0 && d <= job.margin && x + 1 < p.sizeX() + m) {
+              int east = RuinPlacement.groundAt(level, cursor, wx + 1, wz,
+                  level.getHeight(net.minecraft.world.level.levelgen.Heightmap.Types.WORLD_SURFACE, wx + 1, wz) - 1);
+              if (!(x + 1 >= 0 && z >= 0 && x + 1 < p.sizeX() && z < p.sizeZ() && shape.top()[z * p.sizeX() + x + 1] >= 0))
+                steepest = Math.max(steepest, Math.abs(east - here));
+            }
+            if (d >= job.margin && !inside) {
+              helper.assertTrue(here == dune.applyAsInt(wx, wz), "Changed past the margin at " + wx + "," + wz);
+              untouched++;
+            }
+          }
+          helper.assertTrue(flushChecked > 100 && untouched > 100, "Checked " + flushChecked + " / " + untouched);
+          helper.assertTrue(steepest <= 3, "A step of " + steepest + " in the blend");
+          // The lawn is the dune's sand: no soil left in the ruin's box.
+          int soil = 0, sand = 0;
+          for (int x = 0; x < p.sizeX(); x++)
+            for (int z = 0; z < p.sizeZ(); z++) {
+              for (int y = 0; y < p.sizeY(); y++) {
+                var state = level.getBlockState(cursor.set(origin.getX() + x, origin.getY() + y, origin.getZ() + z));
+                if (RuinTerrain.soil(BuiltInRegistries.BLOCK.getKey(state.getBlock()).toString())) soil++;
+              }
+              if (level.getBlockState(cursor.set(origin.getX() + x, ground, origin.getZ() + z)).is(Blocks.SAND)) sand++;
+            }
+          helper.assertTrue(soil == 0, soil + " soil blocks stayed in the greenhouse");
+          helper.assertTrue(sand > 300, "Only " + sand + " sand blocks on the lawn");
+          LOGGER.info("Ruin QA terrain: greenhouse on a dune, ground {}, margin {}, steepest step {}, lowest {}",
+              ground, job.margin, steepest, job.lowest);
+        });
+  }
+
+  /**
+   * The Viaduct across a valley: its hub stands on a plateau and its east arm crosses a valley 18 blocks
+   * deep. The piers there go down to the valley floor in their own block, like an aqueduct's; the arches
+   * between them stay open.
+   */
+  @GameTest(template = "empty", timeoutTicks = 400000, batch = "ruins")
+  public static void theViaductsPiersReachTheValleyFloor(GameTestHelper helper) {
+    var level = helper.getLevel();
+    int cx = -44_000, cz = 44_000, half = 62, bottom = level.getMinBuildHeight() + 1, plateau = bottom + 26;
+    var area = new BoundingBox(cx - half, bottom, cz - half, cx + half, plateau, cz + half);
+    java.util.function.IntBinaryOperator valley = (x, z) -> plateau - Math.clamp((12 - Math.abs(x - (cx + 31))) * 2, 0, 18);
+    placeOnLandscape(helper, "entrelumen:viaduct", area, valley, Blocks.GRASS_BLOCK.defaultBlockState(),
+        Blocks.STONE.defaultBlockState(), job -> {
+          var p = job.prepared;
+          var shape = p.shape();
+          var origin = job.result().origin();
+          int ground = origin.getY() + p.ground();
+          helper.assertTrue(ground == plateau, "The hub is not on the plateau: " + ground + " vs " + plateau);
+          var cursor = new BlockPos.MutableBlockPos();
+          int tall = 0, tallest = 0, open = 0;
+          for (int c = 0; c < p.sizeX() * p.sizeZ(); c++) {
+            int x = origin.getX() + c % p.sizeX(), z = origin.getZ() + c / p.sizeX();
+            int floor = valley.applyAsInt(x, z);
+            if (floor >= plateau - 8) continue;
+            if (shape.thin(c)) {
+              var pier = shape.pier()[c];
+              int from = origin.getY() + shape.low()[c] - 1;
+              for (int y = from; y > floor; y--)
+                helper.assertTrue(level.getBlockState(cursor.set(x, y, z)).equals(pier),
+                    "A pier stops short at " + cursor + ": " + level.getBlockState(cursor));
+              tall++;
+              tallest = Math.max(tallest, from - floor);
+            } else if (!shape.contact()[c] && shape.low()[c] > p.ground() + 2) {
+              // An arch over the valley: open under its span.
+              if (level.getBlockState(cursor.set(x, origin.getY() + shape.low()[c] - 1, z)).isAir()) open++;
+            }
+          }
+          helper.assertTrue(tall > 20 && tallest >= 14, "Piers over the valley: " + tall + " columns, the tallest " + tallest);
+          helper.assertTrue(open > 20, "Only " + open + " open arch columns over the valley");
+          LOGGER.info("Ruin QA terrain: viaduct over a valley, {} pier columns down to its floor, the tallest {} blocks, "
+              + "{} open arch columns", tall, tallest, open);
+        });
+  }
+
   // ---- Every shipped ruin, end to end, from its own markers ----------------------------------
 
   /** Keeps a placed ruin's chunks loaded while a case plays it; expires if abandoned. */

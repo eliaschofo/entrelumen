@@ -2,6 +2,7 @@ package dev.entrelumen;
 
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.logging.LogUtils;
+import it.unimi.dsi.fastutil.longs.LongArrayList;
 import it.unimi.dsi.fastutil.longs.LongOpenHashSet;
 import java.io.IOException;
 import java.io.InputStream;
@@ -32,12 +33,17 @@ import net.minecraft.tags.BlockTags;
 import net.minecraft.util.datafix.DataFixTypes;
 import net.minecraft.world.RandomizableContainer;
 import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.EmptyBlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelHeightAccessor;
 import net.minecraft.world.level.biome.BiomeSource;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.FallingBlock;
+import net.minecraft.world.level.block.HugeMushroomBlock;
+import net.minecraft.world.level.block.LeavesBlock;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.Property;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.Heightmap;
@@ -70,7 +76,7 @@ import org.slf4j.Logger;
  */
 public final class RuinPlacement {
   private static final Logger LOGGER = LogUtils.getLogger();
-  static final long TICK_BUDGET_NANOS = 8_000_000L;
+  static final long TICK_BUDGET_NANOS = 8_000_000L, SURVEY_BUDGET_NANOS = 40_000_000L;
   /**
    * Edge of the cubes a template is cut into. A cube is placed whole, so its size bounds the worst
    * tick (with 16-block cubes, one Temple tick took 67 ms in the isolated GameTests).
@@ -79,8 +85,13 @@ public final class RuinPlacement {
   static final int CANDIDATES = 48, MAX_ATTEMPTS = 6, TRIGGER_INTERVAL = 100;
   /** Chunks where players spent more than this many ticks are someone's place: never built over. */
   static final long INHABITED_LIMIT = 6000;
-  static final int EXCLUSION_MARGIN = 48, LOAD_TIMEOUT_TICKS = 6000, MAX_FOUNDATION = 12;
-  /** A surface site this uneven (highest minus lowest sampled ground) is rejected. */
+  static final int EXCLUSION_MARGIN = 48, LOAD_TIMEOUT_TICKS = 6000;
+  /** At most this many blocks of trees are felled around one ruin. */
+  static final int MAX_FELLED = 40_000;
+  /**
+   * A surface site whose ground under the ruin spreads more than this (highest minus lowest) is not
+   * suitable; when no candidate of the ring is, the least uneven one wins and the blend meets it.
+   */
   static final int MAX_SPREAD = 10;
   static final TicketType<ChunkPos> TICKET =
       TicketType.create("entrelumen_ruin", Comparator.comparingLong(ChunkPos::toLong));
@@ -108,13 +119,36 @@ public final class RuinPlacement {
   /**
    * A template read for placement: its size, the layer that meets the ground, its markers, the
    * cells it writes (so clearing leaves them alone), its columns above ground, the lowest solid
-   * cell per column (for the foundation) and the cubes to place.
+   * cell per column, the cubes to place and how it meets the terrain.
    */
   record Prepared(int sizeX, int sizeY, int sizeZ, int ground, List<Local> markers, LongOpenHashSet cells,
       long[] columns, long[] lowColumns, int[] lowY, List<StructureTemplate> slices, List<BlockPos> sliceOrigins,
-      int blocks) {
+      int blocks, Shape shape) {
     int above() {
       return sizeY - ground;
+    }
+
+    boolean cell(int x, int y, int z) {
+      return x >= 0 && z >= 0 && x < sizeX && z < sizeZ && cells.contains(RuinPlacement.cell(x, y, z));
+    }
+  }
+
+  /**
+   * How a template meets the terrain ({@link RuinTerrain}), per column (index {@code z * sizeX + x}):
+   * whether it stands on the ground layer, whether that part is platform or a thin support, its lowest
+   * and highest solid cells (-1: none), the block a thin support goes down in, the ruin's masonry for
+   * terrace faces, the distance of every column of the grid grown by {@link RuinTerrain#MAX_MARGIN} to
+   * the platforms, the soil cells the site's ground replaces and the {@code keep_soil} boxes.
+   */
+  record Shape(boolean[] contact, boolean[] platform, int[] low, int[] top, BlockState[] pier, BlockState masonry,
+      float[] distance, long[] soil, List<ProtectionRules.Box> keep) {
+    boolean thin(int column) {
+      return contact[column] && !platform[column];
+    }
+
+    boolean platformless() {
+      for (boolean p : platform) if (p) return false;
+      return true;
     }
   }
 
@@ -203,7 +237,86 @@ public final class RuinPlacement {
       lowY[k++] = entry.getValue();
     }
     return new Prepared(sizeX, sizeY, sizeZ, ground, List.copyOf(markers), cells,
-        columns.stream().mapToLong(Long::longValue).toArray(), lowColumns, lowY, slices, origins, blocks);
+        columns.stream().mapToLong(Long::longValue).toArray(), lowColumns, lowY, slices, origins, blocks,
+        shape(tag, palette, sizeX, sizeZ, ground, markers));
+  }
+
+  /** How the template meets the terrain; see {@link Shape}. */
+  static Shape shape(CompoundTag tag, net.minecraft.nbt.ListTag palette, int sizeX, int sizeZ, int ground,
+      List<Local> markers) {
+    int n = sizeX * sizeZ;
+    BlockState[] states = new BlockState[palette.size()];
+    String[] names = new String[palette.size()];
+    boolean[] solid = new boolean[palette.size()], full = new boolean[palette.size()];
+    for (int i = 0; i < palette.size(); i++) {
+      names[i] = palette.getCompound(i).getString("Name");
+      states[i] = NbtUtils.readBlockState(BuiltInRegistries.BLOCK.asLookup(), palette.getCompound(i));
+      solid[i] = !states[i].isAir() && states[i].getFluidState().isEmpty() && !names[i].equals(STRUCTURE_BLOCK)
+          && !names[i].equals("minecraft:structure_void");
+      full[i] = solid[i] && states[i].isSolidRender(EmptyBlockGetter.INSTANCE, BlockPos.ZERO);
+    }
+    List<ProtectionRules.Box> keep = new ArrayList<>();
+    for (Local local : markers)
+      if (local.marker().kind() == RuinMarkers.Kind.KEEP_SOIL) {
+        int[] size = local.marker().size();
+        keep.add(new ProtectionRules.Box(local.x(), local.y(), local.z(), local.x() + size[0] - 1,
+            local.y() + size[1] - 1, local.z() + size[2] - 1));
+      }
+    int[] low = new int[n], top = new int[n];
+    Arrays.fill(low, Integer.MAX_VALUE);
+    Arrays.fill(top, -1);
+    var blocks = tag.getList("blocks", Tag.TAG_COMPOUND);
+    for (Tag element : blocks) {
+      CompoundTag block = (CompoundTag) element;
+      var pos = block.getList("pos", Tag.TAG_INT);
+      int x = pos.getInt(0), y = pos.getInt(1), z = pos.getInt(2), state = block.getInt("state");
+      if (state < 0 || state >= solid.length || !solid[state]) continue;
+      low[z * sizeX + x] = Math.min(low[z * sizeX + x], y);
+      top[z * sizeX + x] = Math.max(top[z * sizeX + x], y);
+    }
+    // A marker that stands for a block counts as that block (the ground marker is a floor cell).
+    for (Local local : markers) {
+      String block = local.marker().block();
+      if (block.isEmpty() || block.endsWith(":air") || block.equals("air")) continue;
+      int column = local.z() * sizeX + local.x();
+      low[column] = Math.min(low[column], local.y());
+      top[column] = Math.max(top[column], local.y());
+    }
+    boolean[] contact = new boolean[n];
+    for (int i = 0; i < n; i++) {
+      contact[i] = low[i] <= ground + 1;
+      if (low[i] == Integer.MAX_VALUE) low[i] = -1;
+    }
+    boolean[] platform = RuinTerrain.opening(contact, sizeX, sizeZ, RuinTerrain.PLATFORM_RADIUS);
+    // The masonry: the commonest opaque full block of the platforms' ground layer that is not soil.
+    List<BlockState> floor = new ArrayList<>(), any = new ArrayList<>();
+    BlockState[] pier = new BlockState[n];
+    int[] pierY = new int[n];
+    Arrays.fill(pierY, Integer.MAX_VALUE);
+    LongArrayList soil = new LongArrayList();
+    for (Tag element : blocks) {
+      CompoundTag block = (CompoundTag) element;
+      var pos = block.getList("pos", Tag.TAG_INT);
+      int x = pos.getInt(0), y = pos.getInt(1), z = pos.getInt(2), state = block.getInt("state");
+      if (state < 0 || state >= solid.length) continue;
+      int column = z * sizeX + x;
+      if (RuinTerrain.soil(names[state])) {
+        if (!RuinTerrain.kept(x, y, z, keep)) soil.add(cell(x, y, z));
+        continue;
+      }
+      if (!full[state]) continue;
+      any.add(states[state]);
+      if (y == ground && platform[column]) floor.add(states[state]);
+      // A thin support goes down in its lowest opaque full block near its foot.
+      if (contact[column] && !platform[column] && y <= low[column] + 4 && y < pierY[column]) {
+        pierY[column] = y;
+        pier[column] = states[state];
+      }
+    }
+    BlockState masonry = RuinTerrain.mostCommon(floor, RuinTerrain.mostCommon(any, Blocks.STONE_BRICKS.defaultBlockState()));
+    for (int i = 0; i < n; i++) if (contact[i] && !platform[i] && pier[i] == null) pier[i] = masonry;
+    return new Shape(contact, platform, low, top, pier, masonry,
+        RuinTerrain.distance(platform, sizeX, sizeZ, RuinTerrain.MAX_MARGIN), soil.toLongArray(), List.copyOf(keep));
   }
 
   // ---- Siting --------------------------------------------------------------------------------
@@ -272,7 +385,7 @@ public final class RuinPlacement {
     var biome = in.biomes().getNoiseBiome(QuartPos.fromBlock(x), QuartPos.fromBlock(floor), QuartPos.fromBlock(z),
         in.random().sampler());
     boolean suits = !biome.is(BiomeTags.IS_OCEAN) && !biome.is(BiomeTags.IS_RIVER) && !biome.is(BiomeTags.IS_BEACH);
-    int score = RuinRules.score(new RuinRules.Sample(heights, water, suits), MAX_SPREAD);
+    int score = RuinRules.score(new RuinRules.Sample(heights, water, suits));
     return score == Integer.MAX_VALUE ? null : new Candidate(x, z, floor, score);
   }
 
@@ -318,7 +431,20 @@ public final class RuinPlacement {
 
   // ---- Jobs ----------------------------------------------------------------------------------
 
-  enum Stage { PREPARING, SITING, CHECKING, LOADING, EVALUATING, CLEARING, PLACING, FOUNDATION, FINISHING }
+  /**
+   * A surface ruin scans its site (heights, ground palette), shapes the terrain (blend, carve, fill,
+   * headroom), fells the trees it cut, places its cubes, sends its thin supports down and finishes;
+   * cavern and sky ruins clear their columns instead. A survey job waits in HOLD until released.
+   */
+  enum Stage {
+    PREPARING, SITING, CHECKING, LOADING, EVALUATING, HOLD, SCANNING, SHAPING, FELLING, CLEARING, PLACING, SUPPORTING,
+    FINISHING
+  }
+
+  /** The site's own ground: its surface and filler blocks and whether snow covers it. */
+  record Palette(BlockState surface, BlockState filler, boolean snow) {
+    static final Palette DEFAULT = new Palette(Blocks.GRASS_BLOCK.defaultBlockState(), Blocks.DIRT.defaultBlockState(), false);
+  }
 
   static final class Job {
     final RuinDefinitions.Definition definition;
@@ -338,7 +464,8 @@ public final class RuinPlacement {
     /** The reserved origin to resume at, skipping the search. */
     BlockPos resume;
     int columnIndex, sliceIndex;
-    int lowest;
+    /** The lowest block the placement wrote under the template (fill, supports): the box goes down to it. */
+    int lowest = Integer.MAX_VALUE;
     final long startedAt = System.nanoTime();
     long busyNanos, worstNanos;
     int busyTicks;
@@ -346,6 +473,21 @@ public final class RuinPlacement {
     RuinData.Ruin result;
     Candidate best;
     int bestScore = Integer.MAX_VALUE;
+    /** Centred on {@code center}: sited on the real terrain there, never rejected, no occupancy check. */
+    boolean fixed;
+    /** A dev survey: fixed, held before shaping, and never registered. */
+    boolean survey;
+    int spread = -1;
+    // The terrain, over the grid grown by RuinTerrain.MAX_MARGIN: natural ground and top per column.
+    int[] natural, surfaceTop;
+    int margin, scanIndex, shapeIndex, supportIndex;
+    Palette palette = Palette.DEFAULT;
+    final List<BlockState> surfaces = new ArrayList<>(), fillers = new ArrayList<>();
+    int snowSamples, samples;
+    /** Trunks and mushroom stems the shaping cut, whose trees are felled whole. */
+    final ArrayDeque<BlockPos> felled = new ArrayDeque<>();
+    final LongOpenHashSet felledSeen = new LongOpenHashSet();
+    int felledCount;
 
     Job(RuinDefinitions.Definition definition, ServerLevel level, BlockPos center) {
       this.definition = definition;
@@ -405,6 +547,32 @@ public final class RuinPlacement {
     }
   }
 
+  /**
+   * A dev survey job ({@link RuinTerrainSurvey}): {@code definition} centred on {@code center}, sited on
+   * the real terrain there without rejection, held before the terrain is shaped and never registered.
+   */
+  static Job survey(ServerLevel level, RuinDefinitions.Definition definition, BlockPos center) {
+    Job job = new Job(definition, level, center);
+    job.fixed = true;
+    job.survey = true;
+    synchronized (JOBS) {
+      queue(level.getServer()).add(job);
+    }
+    return job;
+  }
+
+  /**
+   * Starts {@code definition} centred on {@code center}, its height from the real terrain there and the
+   * terrain shaped around it, skipping the ring search (tests of how ruins meet the terrain).
+   */
+  public static Optional<Job> startCentred(ServerLevel level, RuinDefinitions.Definition definition, BlockPos center) {
+    var job = start(level, definition, center);
+    job.ifPresent(j -> {
+      if (j.stage == Stage.PREPARING && j.resume == null) j.fixed = true;
+    });
+    return job;
+  }
+
   /** Starts {@code definition} at a fixed template origin, skipping the site search (commands, tests). */
   public static Optional<Job> startAt(ServerLevel level, RuinDefinitions.Definition definition, BlockPos origin) {
     var job = start(level, definition, origin);
@@ -425,7 +593,8 @@ public final class RuinPlacement {
     if (job == null) return;
     long start = System.nanoTime();
     try {
-      step(job, start + TICK_BUDGET_NANOS);
+      // A survey world has nobody to keep the ticks short for.
+      step(job, start + (job.survey ? SURVEY_BUDGET_NANOS : TICK_BUDGET_NANOS));
     } catch (RuntimeException e) {
       LOGGER.error("Heliodor ruin {} could not be placed", job.id, e);
       job.failed = true;
@@ -434,7 +603,7 @@ public final class RuinPlacement {
     job.busyNanos += spent;
     job.worstNanos = Math.max(job.worstNanos, spent);
     job.busyTicks++;
-    if (job.failed)
+    if (job.failed && !job.survey)
       synchronized (FAILED) {
         FAILED.computeIfAbsent(server, ignored -> new HashMap<>()).put(job.id, server.overworld().getGameTime());
       }
@@ -517,6 +686,11 @@ public final class RuinPlacement {
         }
         if (!job.preparing.isDone()) return;
         job.prepared = job.preparing.join();
+        if (job.fixed) {
+          job.candidates = List.of(new Candidate(job.center.getX(), job.center.getZ(), Integer.MIN_VALUE, 0));
+          job.stage = Stage.CHECKING;
+          return;
+        }
         if (job.resume != null) {
           job.origin = job.resume;
           job.stage = Stage.LOADING;
@@ -561,10 +735,25 @@ public final class RuinPlacement {
             }
             return;
           }
-        job.stage = job.resume != null ? Stage.CLEARING : Stage.EVALUATING;
-        if (job.resume != null) reserve(job);
+        if (job.resume != null) {
+          reserve(job);
+          job.stage = shapingStage(job);
+        } else {
+          job.stage = Stage.EVALUATING;
+        }
       }
       case EVALUATING -> evaluate(job);
+      case HOLD -> {}
+      case SCANNING -> {
+        if (job.natural == null && !fits(job.level, job.origin.getY(), job.prepared.sizeY())) {
+          LOGGER.error("Heliodor ruin {} does not fit the world at {}; not placed", job.id, job.origin);
+          job.failed = true;
+          return;
+        }
+        scanning(job, deadline);
+      }
+      case SHAPING -> shaping(job, deadline);
+      case FELLING -> felling(job, deadline);
       case CLEARING -> {
         if (job.columnIndex == 0 && !fits(job.level, job.origin.getY(), job.prepared.sizeY())) {
           LOGGER.error("Heliodor ruin {} does not fit the world at {}; not placed", job.id, job.origin);
@@ -574,9 +763,15 @@ public final class RuinPlacement {
         clearing(job, deadline);
       }
       case PLACING -> placing(job, deadline);
-      case FOUNDATION -> foundation(job, deadline);
+      case SUPPORTING -> supporting(job, deadline);
       case FINISHING -> finish(job);
     }
+  }
+
+  /** Where a sited job goes next: surface ruins shape the terrain (survey jobs wait first), others clear. */
+  private static Stage shapingStage(Job job) {
+    if (job.definition.placement().mode() != RuinDefinitions.Mode.SURFACE) return Stage.CLEARING;
+    return job.survey ? Stage.HOLD : Stage.SCANNING;
   }
 
   private static List<ProtectionRules.Box> exclusions(ServerLevel level) {
@@ -620,7 +815,8 @@ public final class RuinPlacement {
     int x0 = candidate.x() - p.sizeX() / 2, z0 = candidate.z() - p.sizeZ() / 2;
     var chunkMap = job.level.getChunkSource().chunkMap;
     boolean pending = false;
-    for (ChunkPos chunk : chunks(x0, z0, p.sizeX(), p.sizeZ(), 0)) {
+    // The blended margin reshapes the ground too: a base right next to the footprint counts.
+    for (ChunkPos chunk : job.fixed ? List.<ChunkPos>of() : chunks(x0, z0, p.sizeX(), p.sizeZ(), RuinTerrain.MAX_MARGIN)) {
       var loaded = job.level.getChunkSource().getChunkNow(chunk.x, chunk.z);
       long inhabited;
       if (loaded != null) {
@@ -658,7 +854,8 @@ public final class RuinPlacement {
     release(job);
     var p = job.prepared;
     job.waited = 0;
-    for (ChunkPos chunk : chunks(job.origin.getX(), job.origin.getZ(), p.sizeX(), p.sizeZ(), 1)) {
+    // The footprint, its blended margin and two blocks more, so that every read and write is loaded.
+    for (ChunkPos chunk : chunks(job.origin.getX(), job.origin.getZ(), p.sizeX(), p.sizeZ(), RuinTerrain.MAX_MARGIN + 2)) {
       job.level.getChunkSource().addRegionTicket(TICKET, chunk, 0, chunk);
       job.tickets.add(chunk);
     }
@@ -692,22 +889,30 @@ public final class RuinPlacement {
       int[] heights = new int[n * n];
       boolean[] water = new boolean[n * n];
       int canopy = 0, wet = 0;
+      var cursor = new BlockPos.MutableBlockPos();
       for (int i = 0; i < n; i++)
         for (int j = 0; j < n; j++) {
           int x = x0 + p.sizeX() / 8 + i * (p.sizeX() * 3 / 4) / (n - 1);
           int z = z0 + p.sizeZ() / 8 + j * (p.sizeZ() * 3 / 4) / (n - 1);
           int free = level.getHeight(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, x, z);
-          heights[i * n + j] = free - 1;
+          heights[i * n + j] = groundAt(level, cursor, x, z, free - 1);
           water[i * n + j] = !level.getBlockState(new BlockPos(x, free - 1, z)).getFluidState().isEmpty();
           if (water[i * n + j]) wet++;
           if (level.getBlockState(new BlockPos(x, free, z)).is(BlockTags.LOGS)) canopy++;
         }
-      floor = RuinRules.floor(heights);
-      int spread = Arrays.stream(heights).max().getAsInt() - Arrays.stream(heights).min().getAsInt();
+      // The ruin's ground level: the median of the natural ground under the columns it stands on, which
+      // balances what the blend fills and what it carves.
+      int[] base = base(level, cursor, p, x0, z0);
+      floor = RuinTerrain.median(base.length > 0 ? base : heights);
+      int[] under = base.length > 0 ? base : heights;
+      int spread = Arrays.stream(under).max().getAsInt() - Arrays.stream(under).min().getAsInt();
+      job.spread = spread;
       int structures = structures(level, x0, z0, p, floor);
-      score = RuinRules.score(new RuinRules.Sample(heights, water, true), MAX_SPREAD);
-      if (score != Integer.MAX_VALUE) score += canopy * 2 + structures * 100;
-      // Suitable: gentle ground, almost no water, no big trees, no village or outpost in the way.
+      score = RuinRules.score(new RuinRules.Sample(under, new boolean[under.length], true));
+      if (score != Integer.MAX_VALUE) score += wet * 40 + canopy * 2 + structures * 100;
+      if (wet * 4 > heights.length) score = Integer.MAX_VALUE;
+      // Suitable: gentle ground, almost no water, no big trees, no village or outpost in the way. When no
+      // candidate is (Elias, 26 September), the one with the smallest spread wins and the blend does the rest.
       good = spread <= MAX_SPREAD && wet * 8 <= heights.length && canopy * 4 <= heights.length && structures == 0;
     } else if (mode == RuinDefinitions.Mode.CAVERN) {
       good = true;
@@ -739,7 +944,7 @@ public final class RuinPlacement {
       job.bestScore = score;
       job.best = candidate;
     }
-    good = score != Integer.MAX_VALUE && switch (mode) {
+    good = job.fixed || score != Integer.MAX_VALUE && switch (mode) {
       case SURFACE -> good;
       case CAVERN -> score <= MAX_SPREAD * 8;
       case SKY -> score <= 24;
@@ -752,8 +957,44 @@ public final class RuinPlacement {
     }
     // Only the height can change here, so the chunks under the ticket stay the same.
     job.origin = new BlockPos(x0, floor - p.ground(), z0);
-    reserve(job);
-    job.stage = Stage.CLEARING;
+    if (!job.survey) reserve(job);
+    job.stage = shapingStage(job);
+  }
+
+  /** The natural ground under the columns a surface ruin stands on (up to about 400 of them). */
+  private static int[] base(ServerLevel level, BlockPos.MutableBlockPos cursor, Prepared p, int x0, int z0) {
+    var contact = p.shape().contact();
+    int count = 0;
+    for (boolean c : contact) if (c) count++;
+    if (count == 0) return new int[0];
+    int step = Math.max(1, count / 400);
+    int[] out = new int[(count + step - 1) / step];
+    int k = 0, seen = 0;
+    for (int i = 0; i < contact.length && k < out.length; i++) {
+      if (!contact[i] || seen++ % step != 0) continue;
+      int x = x0 + i % p.sizeX(), z = z0 + i / p.sizeX();
+      out[k++] = groundAt(level, cursor, x, z, level.getHeight(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, x, z) - 1);
+    }
+    return Arrays.copyOf(out, k);
+  }
+
+  /**
+   * The natural ground of a column: the highest block at or below {@code top} that a ruin can stand on,
+   * past plants, snow, trees, mushroom caps and water.
+   */
+  static int groundAt(ServerLevel level, BlockPos.MutableBlockPos cursor, int x, int z, int top) {
+    int bottom = level.getMinBuildHeight();
+    for (int y = top; y > bottom && y > top - 96; y--)
+      if (ground(level.getBlockState(cursor.set(x, y, z)))) return y;
+    return top;
+  }
+
+  /** Terrain a ruin stands on: solid, not a plant, snow layer, tree, mushroom cap or fluid. */
+  static boolean ground(BlockState state) {
+    return !state.isAir() && state.getFluidState().isEmpty() && !state.canBeReplaced() && state.isSolid()
+        && !state.is(BlockTags.LOGS) && !state.is(BlockTags.LEAVES) && !state.is(Blocks.SNOW)
+        && !(state.getBlock() instanceof HugeMushroomBlock)
+        && !state.is(Blocks.BAMBOO) && !state.is(Blocks.CACTUS) && !state.is(Blocks.BEE_NEST);
   }
 
   private static void reserve(Job job) {
@@ -818,35 +1059,357 @@ public final class RuinPlacement {
       if (System.nanoTime() > deadline) return;
     }
     job.columnIndex = 0;
-    job.lowest = job.origin.getY();
-    job.stage = Stage.FOUNDATION;
+    job.stage = job.definition.placement().mode() == RuinDefinitions.Mode.SURFACE ? Stage.SUPPORTING : Stage.FINISHING;
   }
 
-  /** Fills dips under the ruin's lowest solid cells so nothing floats (surface ruins only). */
-  private static void foundation(Job job, long deadline) {
+  // ---- Terrain (surface ruins; RuinTerrain) ----------------------------------------------------
+
+  /** The width and depth of the template grown by the widest margin on every side. */
+  static int grownWidth(Prepared p) {
+    return p.sizeX() + 2 * RuinTerrain.MAX_MARGIN;
+  }
+
+  static int grownDepth(Prepared p) {
+    return p.sizeZ() + 2 * RuinTerrain.MAX_MARGIN;
+  }
+
+  /**
+   * Reads the site: the natural ground and the top of every column of the footprint and its widest
+   * margin, the site's ground palette from the columns around the template, and the margin that the
+   * height difference at the platforms' rim needs.
+   */
+  private static void scanning(Job job, long deadline) {
     var p = job.prepared;
-    if (job.definition.placement().mode() != RuinDefinitions.Mode.SURFACE) {
-      job.stage = Stage.FINISHING;
-      return;
+    var level = job.level;
+    int m = RuinTerrain.MAX_MARGIN, w = grownWidth(p), n = w * grownDepth(p);
+    if (job.natural == null) {
+      job.natural = new int[n];
+      job.surfaceTop = new int[n];
+      job.scanIndex = 0;
     }
-    while (job.columnIndex < p.lowColumns().length) {
-      int index = job.columnIndex++;
-      int x = (int) (p.lowColumns()[index] >> 32), z = (int) p.lowColumns()[index];
-      int y = p.lowY()[index];
-      if (y > p.ground()) continue;
-      BlockPos base = job.origin.offset(x, y, z);
-      BlockState floor = job.level.getBlockState(base);
-      BlockState fill = floor.isCollisionShapeFullBlock(job.level, base) ? floor : Blocks.TUFF.defaultBlockState();
-      for (int depth = 1; depth <= MAX_FOUNDATION; depth++) {
-        BlockPos pos = base.below(depth);
-        BlockState state = job.level.getBlockState(pos);
-        if (!state.canBeReplaced() && !state.is(BlockTags.LEAVES)) break;
-        job.level.setBlock(pos, fill, Block.UPDATE_CLIENTS);
-        job.lowest = Math.min(job.lowest, pos.getY());
+    var cursor = new BlockPos.MutableBlockPos();
+    while (job.scanIndex < n) {
+      int i = job.scanIndex++;
+      int x = i % w - m, z = i / w - m;
+      int wx = job.origin.getX() + x, wz = job.origin.getZ() + z;
+      int top = level.getHeight(Heightmap.Types.WORLD_SURFACE, wx, wz) - 1;
+      int ground = groundAt(level, cursor, wx, wz, top);
+      job.natural[i] = ground;
+      job.surfaceTop[i] = top;
+      boolean outside = x < 0 || z < 0 || x >= p.sizeX() || z >= p.sizeZ();
+      if (outside && Math.floorMod(x * 7 + z * 3, 5) == 0) sample(job, cursor, wx, ground, wz);
+      if ((i & 63) == 0 && System.nanoTime() > deadline) return;
+    }
+    int floor = job.origin.getY() + p.ground(), rim = 0;
+    float[] distance = p.shape().distance();
+    for (int i = 0; i < n; i++)
+      if (distance[i] > 0 && distance[i] <= 2) rim = Math.max(rim, Math.abs(job.natural[i] - floor));
+    job.margin = p.shape().platformless() ? 0 : RuinTerrain.margin(rim);
+    job.palette = new Palette(RuinTerrain.mostCommon(job.surfaces, Palette.DEFAULT.surface()),
+        RuinTerrain.mostCommon(job.fillers, Palette.DEFAULT.filler()),
+        job.samples > 0 && job.snowSamples * 3 >= job.samples);
+    job.surfaces.clear();
+    job.fillers.clear();
+    job.shapeIndex = 0;
+    job.stage = Stage.SHAPING;
+    LOGGER.info("Heliodor ruin {}: ground level {} at {}, rim {} so margin {}, site ground {} over {}{}", job.id,
+        floor, job.origin.toShortString(), rim, job.margin, BuiltInRegistries.BLOCK.getKey(job.palette.surface().getBlock()),
+        BuiltInRegistries.BLOCK.getKey(job.palette.filler().getBlock()), job.palette.snow() ? " under snow" : "");
+  }
+
+  /** One column of the site's ground palette: its surface, the block under it and whether snow covers it. */
+  private static void sample(Job job, BlockPos.MutableBlockPos cursor, int x, int ground, int z) {
+    var level = job.level;
+    BlockState above = level.getBlockState(cursor.set(x, ground + 1, z));
+    if (!above.getFluidState().isEmpty()) return;          // a pond's bed is not the site's ground
+    BlockState surface = level.getBlockState(cursor.set(x, ground, z));
+    if (!ground(surface)) return;
+    BlockState below = level.getBlockState(cursor.set(x, ground - 1, z));
+    job.samples++;
+    if (above.is(Blocks.SNOW) || surface.hasProperty(BlockStateProperties.SNOWY) && surface.getValue(BlockStateProperties.SNOWY))
+      job.snowSamples++;
+    job.surfaces.add(surface.getBlock().defaultBlockState());
+    job.fillers.add(ground(below) ? below.getBlock().defaultBlockState() : surface.getBlock().defaultBlockState());
+  }
+
+  /**
+   * Shapes the site of a surface ruin, column by column over the footprint and its margin. Platform
+   * columns are carved down to the ruin's ground level and filled up to it; around them the natural
+   * surface blends back over the margin; the ruin's other columns (decks, piers) keep headroom over
+   * their blocks and nothing else is cleared. Template cells are left to the placement.
+   */
+  private static void shaping(Job job, long deadline) {
+    var p = job.prepared;
+    var shape = p.shape();
+    int m = RuinTerrain.MAX_MARGIN, w = grownWidth(p), n = w * grownDepth(p);
+    int floor = job.origin.getY() + p.ground();
+    var cursor = new BlockPos.MutableBlockPos();
+    while (job.shapeIndex < n) {
+      int i = job.shapeIndex++;
+      int x = i % w - m, z = i / w - m;
+      boolean inside = x >= 0 && z >= 0 && x < p.sizeX() && z < p.sizeZ();
+      int column = inside ? z * p.sizeX() + x : -1;
+      int natural = job.natural[i], top = job.surfaceTop[i];
+      if (inside && shape.platform()[column]) {
+        carve(job, cursor, x, z, floor + 1, top);
+        fill(job, cursor, i, x, z, natural + 1, Math.min(floor, job.origin.getY() + shape.low()[column]) - 1, false);
+      } else {
+        int target = surfaceOf(job, i);
+        if (target < natural) {
+          carve(job, cursor, x, z, target + 1, top);
+          resurface(job, cursor, x, target, z);
+        } else if (target > natural) {
+          fill(job, cursor, i, x, z, natural + 1, target, true);
+          // What grew on the old surface and now sticks out of the fill goes (not trees: their trunks stay buried).
+          for (int y = target + 1; y <= Math.min(top, target + 3); y++) {
+            BlockState state = job.level.getBlockState(cursor.set(job.origin.getX() + x, y, job.origin.getZ() + z));
+            if (!state.isAir() && state.canBeReplaced() && state.getFluidState().isEmpty()
+                && !p.cell(x, y - job.origin.getY(), z))
+              job.level.setBlock(cursor, Blocks.AIR.defaultBlockState(), Block.UPDATE_CLIENTS);
+          }
+        }
+        if (inside && shape.top()[column] >= 0) {
+          // Headroom over the ruin's own blocks where they do not stand on a platform (decks, piers).
+          int from = job.origin.getY() + Math.max(shape.low()[column], p.ground() + 1);
+          carve(job, cursor, x, z, from, job.origin.getY() + shape.top()[column] + RuinTerrain.HEADROOM);
+        }
+      }
+      if ((i & 15) == 0 && System.nanoTime() > deadline) return;
+    }
+    job.stage = Stage.FELLING;
+  }
+
+  /** The shaped surface of a column of the grown grid: the ruin's ground on its platforms, blended around them. */
+  static int surfaceOf(Job job, int i) {
+    return RuinTerrain.target(job.natural[i], job.origin.getY() + job.prepared.ground(),
+        job.prepared.shape().distance()[i], job.margin);
+  }
+
+  /** The lowest shaped surface among a column's four neighbours inside the grown grid. */
+  private static int lowestNeighbour(Job job, int i, int fallback) {
+    var p = job.prepared;
+    int w = grownWidth(p), d = grownDepth(p), gx = i % w, gz = i / w, lowest = fallback;
+    if (gx > 0) lowest = Math.min(lowest, surfaceOf(job, i - 1));
+    if (gx < w - 1) lowest = Math.min(lowest, surfaceOf(job, i + 1));
+    if (gz > 0) lowest = Math.min(lowest, surfaceOf(job, i - w));
+    if (gz < d - 1) lowest = Math.min(lowest, surfaceOf(job, i + w));
+    return lowest;
+  }
+
+  /** Empties the non-template cells of a column from {@code from} to {@code to}, noting the trees it cuts. */
+  private static void carve(Job job, BlockPos.MutableBlockPos cursor, int x, int z, int from, int to) {
+    var level = job.level;
+    int wx = job.origin.getX() + x, wz = job.origin.getZ() + z;
+    for (int y = Math.max(from, level.getMinBuildHeight()); y <= Math.min(to, level.getMaxBuildHeight() - 1); y++) {
+      if (job.prepared.cell(x, y - job.origin.getY(), z)) continue;
+      BlockState state = level.getBlockState(cursor.set(wx, y, wz));
+      if (state.isAir()) continue;
+      if (tree(state) && job.felledSeen.add(cursor.asLong())) job.felled.add(cursor.immutable());
+      level.setBlock(cursor, Blocks.AIR.defaultBlockState(), Block.UPDATE_CLIENTS);
+    }
+  }
+
+  /**
+   * Fills the non-template cells of a column from {@code from} to {@code to}: the site's filler, its
+   * surface on top of a margin column, and the ruin's masonry where the fill faces a neighbour two or
+   * more blocks lower (a terrace face).
+   */
+  private static void fill(Job job, BlockPos.MutableBlockPos cursor, int i, int x, int z, int from, int to,
+      boolean margin) {
+    if (from > to) return;
+    var level = job.level;
+    var p = job.prepared;
+    int wx = job.origin.getX() + x, wz = job.origin.getZ() + z;
+    boolean inside = x >= 0 && z >= 0 && x < p.sizeX() && z < p.sizeZ();
+    int lowest = lowestNeighbour(job, i, to);
+    // The old surface goes under: grass and its kin become the filler.
+    BlockState buried = level.getBlockState(cursor.set(wx, from - 1, wz));
+    if ((buried.is(Blocks.GRASS_BLOCK) || buried.is(Blocks.MYCELIUM) || buried.is(Blocks.PODZOL))
+        && !p.cell(x, from - 1 - job.origin.getY(), z))
+      level.setBlock(cursor, job.palette.filler(), Block.UPDATE_CLIENTS);
+    for (int y = Math.max(from, level.getMinBuildHeight()); y <= to; y++) {
+      if (p.cell(x, y - job.origin.getY(), z)) continue;
+      BlockState state = RuinTerrain.riser(y, to, lowest) ? p.shape().masonry()
+          : margin && y == to ? job.palette.surface() : job.palette.filler();
+      level.setBlock(cursor.set(wx, y, wz), state, Block.UPDATE_CLIENTS);
+      if (inside) job.lowest = Math.min(job.lowest, y);
+    }
+    if (margin && !RuinTerrain.riser(to, to, lowest)) cover(job, cursor.set(wx, to, wz).immutable());
+  }
+
+  /** A carved column's new top: the site's surface block where the carving bared the ground. */
+  private static void resurface(Job job, BlockPos.MutableBlockPos cursor, int x, int y, int z) {
+    if (job.prepared.cell(x, y - job.origin.getY(), z)) return;
+    BlockState state = job.level.getBlockState(cursor.set(job.origin.getX() + x, y, job.origin.getZ() + z));
+    if (!ground(state)) return;
+    job.level.setBlock(cursor, job.palette.surface(), Block.UPDATE_CLIENTS);
+    cover(job, cursor.immutable());
+  }
+
+  /** Snow on a new surface where the site is snowy and the sky is open; a snowy surface block shows it. */
+  private static void cover(Job job, BlockPos pos) {
+    var level = job.level;
+    BlockState surface = level.getBlockState(pos);
+    BlockPos up = pos.above();
+    // The heightmap is current; the sky light is not until the light engine catches up.
+    boolean snow = job.palette.snow() && level.getBlockState(up).isAir()
+        && level.getHeight(Heightmap.Types.MOTION_BLOCKING, up.getX(), up.getZ()) <= up.getY()
+        && Blocks.SNOW.defaultBlockState().canSurvive(level, up);
+    if (snow) level.setBlock(up, Blocks.SNOW.defaultBlockState(), Block.UPDATE_CLIENTS);
+    if (surface.hasProperty(BlockStateProperties.SNOWY))
+      level.setBlock(pos, surface.setValue(BlockStateProperties.SNOWY, snow || level.getBlockState(up).is(Blocks.SNOW)),
+          Block.UPDATE_CLIENTS);
+  }
+
+  private static boolean tree(BlockState state) {
+    return state.is(BlockTags.LOGS) || state.getBlock() instanceof HugeMushroomBlock;
+  }
+
+  /** Blocks that hang on a tree and go with it. */
+  private static boolean hanging(BlockState state) {
+    return state.is(Blocks.VINE) || state.is(Blocks.COCOA) || state.is(Blocks.BEE_NEST) || state.is(Blocks.SNOW);
+  }
+
+  /** A felled tree's leaves: a position and its distance from the felled wood through leaves. */
+  private record Leaf(BlockPos pos, int depth) {}
+
+  /**
+   * Fells the trees whose wood the shaping cut, so that no canopy floats: every log (or mushroom
+   * block) joined to the cut one, then the leaves nearer to it than to any other tree, and what hangs
+   * on them. A cluster of logs that touches no natural leaves is a building's frame and stays.
+   */
+  private static void felling(Job job, long deadline) {
+    var p = job.prepared;
+    var level = job.level;
+    int reach = RuinTerrain.MAX_MARGIN + 8;
+    int x0 = job.origin.getX() - reach, z0 = job.origin.getZ() - reach;
+    int x1 = job.origin.getX() + p.sizeX() + reach, z1 = job.origin.getZ() + p.sizeZ() + reach;
+    while (!job.felled.isEmpty() && job.felledCount < MAX_FELLED) {
+      BlockPos seed = job.felled.poll();
+      // The cluster of wood joined to the cut block (diagonals too, like branches).
+      List<BlockPos> wood = new ArrayList<>();
+      ArrayDeque<BlockPos> open = new ArrayDeque<>(List.of(seed));
+      boolean leafy = false, mushroom = false;
+      while (!open.isEmpty() && wood.size() < 512) {
+        BlockPos at = open.poll();
+        for (BlockPos next : BlockPos.betweenClosed(at.offset(-1, -1, -1), at.offset(1, 1, 1))) {
+          if (next.getX() < x0 || next.getX() > x1 || next.getZ() < z0 || next.getZ() > z1) continue;
+          if (!loaded(level, next)) continue;
+          BlockState state = level.getBlockState(next);
+          if (state.is(BlockTags.LEAVES) && state.hasProperty(LeavesBlock.PERSISTENT)
+              && !state.getValue(LeavesBlock.PERSISTENT)) leafy = true;
+          if (!tree(state) || !job.felledSeen.add(next.asLong())) continue;
+          if (p.cell(next.getX() - job.origin.getX(), next.getY() - job.origin.getY(), next.getZ() - job.origin.getZ()))
+            continue;
+          mushroom |= state.getBlock() instanceof HugeMushroomBlock;
+          BlockPos kept = next.immutable();
+          wood.add(kept);
+          open.add(kept);
+        }
+      }
+      if (!leafy && !mushroom) continue;
+      for (BlockPos log : wood) {
+        level.setBlock(log, Blocks.AIR.defaultBlockState(), Block.UPDATE_CLIENTS);
+        job.felledCount++;
+      }
+      ArrayDeque<Leaf> leaves = new ArrayDeque<>();
+      leaves.add(new Leaf(seed, 0));
+      for (BlockPos log : wood) leaves.add(new Leaf(log, 0));
+      LongOpenHashSet seen = new LongOpenHashSet();
+      while (!leaves.isEmpty()) {
+        Leaf leaf = leaves.poll();
+        for (var direction : net.minecraft.core.Direction.values()) {
+          BlockPos next = leaf.pos().relative(direction);
+          if (!seen.add(next.asLong()) || !loaded(level, next)) continue;
+          BlockState state = level.getBlockState(next);
+          if (hanging(state)) {
+            level.setBlock(next, Blocks.AIR.defaultBlockState(), Block.UPDATE_CLIENTS);
+            continue;
+          }
+          int depth = leaf.depth() + 1;
+          // A leaf nearer to another tree than to this one belongs to that tree.
+          if (depth > 6 || !state.is(BlockTags.LEAVES) || !state.hasProperty(LeavesBlock.DISTANCE)
+              || state.getValue(LeavesBlock.PERSISTENT) || state.getValue(LeavesBlock.DISTANCE) < depth) continue;
+          level.setBlock(next, Blocks.AIR.defaultBlockState(), Block.UPDATE_CLIENTS);
+          job.felledCount++;
+          leaves.add(new Leaf(next.immutable(), depth));
+        }
       }
       if (System.nanoTime() > deadline) return;
     }
+    job.felled.clear();
+    job.stage = Stage.PLACING;
+  }
+
+  static boolean loaded(ServerLevel level, BlockPos pos) {
+    return level.getChunkSource().getChunkNow(pos.getX() >> 4, pos.getZ() >> 4) != null;
+  }
+
+  /** Thin supports (piers, pilasters, walls) that hang above the ground go down to it in their own block. */
+  private static void supporting(Job job, long deadline) {
+    var p = job.prepared;
+    var shape = p.shape();
+    var level = job.level;
+    var cursor = new BlockPos.MutableBlockPos();
+    int n = p.sizeX() * p.sizeZ();
+    while (job.supportIndex < n) {
+      int column = job.supportIndex++;
+      if (!shape.thin(column)) continue;
+      int x = column % p.sizeX(), z = column / p.sizeX();
+      int wx = job.origin.getX() + x, wz = job.origin.getZ() + z;
+      int y = job.origin.getY() + shape.low()[column] - 1;
+      for (int depth = 0; depth < RuinTerrain.MAX_PIER && y > level.getMinBuildHeight(); depth++, y--) {
+        if (p.cell(x, y - job.origin.getY(), z)) break;
+        if (ground(level.getBlockState(cursor.set(wx, y, wz)))) break;
+        level.setBlock(cursor, shape.pier()[column], Block.UPDATE_CLIENTS);
+        job.lowest = Math.min(job.lowest, y);
+      }
+      if ((column & 31) == 0 && System.nanoTime() > deadline) return;
+    }
     job.stage = Stage.FINISHING;
+  }
+
+  /** The template's soil becomes the site's ground: its surface where open to the air, its filler under cover. */
+  private static void resoil(Job job) {
+    var p = job.prepared;
+    for (long cell : p.shape().soil())
+      resoil(job, job.origin.offset(BlockPos.getX(cell), BlockPos.getY(cell), BlockPos.getZ(cell)));
+    for (Local local : p.markers()) {
+      String block = local.marker().block().replaceFirst("\\[.*", "");
+      if (RuinTerrain.soil(block.contains(":") ? block : "minecraft:" + block)
+          && !RuinTerrain.kept(local.x(), local.y(), local.z(), p.shape().keep()))
+        resoil(job, job.origin.offset(local.x(), local.y(), local.z()));
+    }
+  }
+
+  private static void resoil(Job job, BlockPos pos) {
+    var level = job.level;
+    BlockState current = level.getBlockState(pos);
+    if (!RuinTerrain.soil(BuiltInRegistries.BLOCK.getKey(current.getBlock()).toString())) return;
+    BlockPos up = pos.above();
+    BlockState above = level.getBlockState(up);
+    boolean open = !above.isSolidRender(level, up);
+    BlockState state = open ? job.palette.surface() : job.palette.filler();
+    // Sand or gravel over a gap would fall at the first update: its stone stands instead.
+    if (state.getBlock() instanceof FallingBlock && FallingBlock.isFree(level.getBlockState(pos.below())))
+      state = steady(state, job.palette);
+    level.setBlock(pos, state, Block.UPDATE_CLIENTS);
+    if (!open) return;
+    // A plant that cannot grow on the new ground goes (with the top of a tall one).
+    if (!above.isAir() && above.getFluidState().isEmpty() && !above.canSurvive(level, up)) {
+      level.setBlock(up, Blocks.AIR.defaultBlockState(), Block.UPDATE_CLIENTS);
+      if (level.getBlockState(up.above()).is(above.getBlock()))
+        level.setBlock(up.above(), Blocks.AIR.defaultBlockState(), Block.UPDATE_CLIENTS);
+    }
+    cover(job, pos);
+  }
+
+  /** A block that does not fall, for a falling one that would. */
+  static BlockState steady(BlockState state, Palette palette) {
+    if (state.is(Blocks.SAND)) return Blocks.SANDSTONE.defaultBlockState();
+    if (state.is(Blocks.RED_SAND)) return Blocks.RED_SANDSTONE.defaultBlockState();
+    if (!(palette.filler().getBlock() instanceof FallingBlock)) return palette.filler();
+    return Blocks.STONE.defaultBlockState();
   }
 
   /** Turns markers into their blocks and registers the ruin. */
@@ -869,15 +1432,18 @@ public final class RuinPlacement {
       if (marker.kind() == RuinMarkers.Kind.ARRIVAL && arrival == null) arrival = pos;
       placed.add(new RuinData.PlacedMarker(marker, pos));
     }
+    if (job.definition.placement().mode() == RuinDefinitions.Mode.SURFACE) resoil(job);
     var box = new BoundingBox(job.origin.getX(), Math.min(job.lowest, job.origin.getY()), job.origin.getZ(),
         job.origin.getX() + p.sizeX() - 1, job.origin.getY() + p.sizeY() - 1, job.origin.getZ() + p.sizeZ() - 1);
     if (arrival == null) arrival = HeliodorRuins.besideRuin(level, box, job.origin.getY() + p.ground());
     var ruin = new RuinData.Ruin(job.id, ResourceLocation.parse(job.definition.template()), level.dimension(),
         job.definition.act(), box, job.origin, arrival, pedestals, level.getGameTime(), placed);
-    var data = RuinData.get(level.getServer());
-    data.add(ruin);
-    StructureProtection.invalidate(level.getServer());
-    RuinWorkshop.placed(level, ruin);
+    if (!job.survey) {
+      var data = RuinData.get(level.getServer());
+      data.add(ruin);
+      StructureProtection.invalidate(level.getServer());
+      RuinWorkshop.placed(level, ruin);
+    }
     job.result = ruin;
     job.done = true;
     LOGGER.info("Placed Heliodor ruin {} at {} in {}: {} template blocks, {} markers, {} ms busy over {} ticks"

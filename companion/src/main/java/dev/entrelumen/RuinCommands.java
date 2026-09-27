@@ -13,7 +13,8 @@ import net.neoforged.neoforge.event.RegisterCommandsEvent;
  * Operator commands for the Plan v2 ruins, under {@code /entrelumen admin ruins}: {@code list},
  * {@code place <id>} (around the world spawn or the arrival rules), {@code place <id> here} (centred
  * on the operator, no site search), {@code tp <id>} and {@code reset <id>} (every team's progress in
- * that ruin; the blocks stay).
+ * that ruin; the blocks stay). {@code terrain} (owners only) runs {@link RuinTerrainSurvey} in a world
+ * meant to be thrown away.
  */
 public final class RuinCommands {
   private RuinCommands() {}
@@ -33,7 +34,19 @@ public final class RuinCommands {
                 .then(Commands.literal("tp").then(Commands.argument("id", ResourceLocationArgument.id())
                     .executes(RuinCommands::teleport)))
                 .then(Commands.literal("reset").then(Commands.argument("id", ResourceLocationArgument.id())
-                    .executes(RuinCommands::reset))))));
+                    .executes(RuinCommands::reset)))
+                .then(Commands.literal("terrain").requires(source -> source.hasPermission(4))
+                    .executes(RuinCommands::terrain)))));
+  }
+
+  private static int terrain(CommandContext<CommandSourceStack> context) {
+    var server = context.getSource().getServer();
+    var folder = RuinTerrainSurvey.folder(server);
+    boolean started = RuinTerrainSurvey.start(server, folder, false);
+    context.getSource().sendSuccess(() -> Component.literal(started
+        ? "Ruin terrain survey started: every overworld ruin on five kinds of site, into " + folder
+        : "A ruin terrain survey is already running"), true);
+    return started ? 1 : 0;
   }
 
   private static int list(CommandContext<CommandSourceStack> context) {

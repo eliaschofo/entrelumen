@@ -127,8 +127,12 @@ public final class RuinRules {
   /** A sampled surface site: ground heights, water flags and whether the biome suits. */
   public record Sample(int[] heights, boolean[] water, boolean biome) {}
 
-  /** Lower is better; {@link Integer#MAX_VALUE} rejects the site. */
-  public static int score(Sample sample, int maxSpread) {
+  /**
+   * Lower is better; {@link Integer#MAX_VALUE} rejects a site mostly under water. A spread only costs:
+   * when no site in the ring is gentle, the one with the smallest spread wins and the blend meets it
+   * (Elias, 26 September; {@link RuinTerrain}).
+   */
+  public static int score(Sample sample) {
     int min = Integer.MAX_VALUE, max = Integer.MIN_VALUE, wet = 0;
     for (int i = 0; i < sample.heights().length; i++) {
       min = Math.min(min, sample.heights()[i]);
@@ -137,7 +141,7 @@ public final class RuinRules {
     }
     if (sample.heights().length == 0) return Integer.MAX_VALUE;
     int spread = max - min;
-    if (wet * 4 > sample.heights().length || spread > maxSpread * 4) return Integer.MAX_VALUE;
+    if (wet * 4 > sample.heights().length) return Integer.MAX_VALUE;
     return spread * 8 + wet * 40 + (sample.biome() ? 0 : 200);
   }
 

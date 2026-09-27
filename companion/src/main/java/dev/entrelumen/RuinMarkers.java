@@ -80,7 +80,12 @@ public final class RuinMarkers {
      */
     VITRAL,
     /** Gathers a relay floor's horizontal light and sends the union up: {@code challenge}, {@code floor}. */
-    COLLECTOR;
+    COLLECTOR,
+    /**
+     * A designed bed whose soil stays as drawn (planters, a pond, a garden): a box of {@code size=x,y,z}
+     * from this cell. Elsewhere the template's soil becomes the site's own ground.
+     */
+    KEEP_SOIL;
 
     public String id() {
       return name().toLowerCase(Locale.ROOT);
@@ -148,7 +153,7 @@ public final class RuinMarkers {
       return params.getOrDefault("block", "");
     }
 
-    /** {@code size=x,y,z} of a drain or a sandbox, in blocks from the marker cell. */
+    /** {@code size=x,y,z} of a drain, a sandbox or a kept soil bed, in blocks from the marker cell. */
     public int[] size() {
       return triple("size", "1,1,1");
     }
@@ -223,6 +228,7 @@ public final class RuinMarkers {
       case DRAIN -> Set.of("challenge", "size");
       case LORE -> Set.of("radius", "height");
       case SANDBOX -> Set.of("size", "radius");
+      case KEEP_SOIL -> Set.of("size");
       case PART, WHEEL, RETURNS -> Set.<String>of();
       case PUMP -> Set.of("challenge", "turn", "intake");
       case PORT -> Set.of("role");
@@ -305,7 +311,7 @@ public final class RuinMarkers {
         oneOf(params, "look", LOOKS, false, metadata);
         oneOf(params, "climb", List.of("true", "false"), false, metadata);
       }
-      case DRAIN -> size(params, metadata);
+      case DRAIN, KEEP_SOIL -> size(params, metadata);
       case LORE -> {
         integer(params, "radius", 0, MAX_LORE_RADIUS, false, metadata);
         integer(params, "height", 1, MAX_LORE_HEIGHT, false, metadata);

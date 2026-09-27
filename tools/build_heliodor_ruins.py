@@ -4,7 +4,9 @@ Each art module's build() returns (Voxels, markers dict) in centred coordinates.
 markers onto the companion's data-marker convention (DATA structure blocks, see
 docs/design/heliodor-ruins.md and RuinMarkers.java) and writes one template per ruin under
 companion/src/main/resources/data/entrelumen/structure/ruins/. Only the cells the art defines are
-written (explicit air included); placement clears the rest of the ruin's columns above the ground.
+written (explicit air included). Placement shapes the terrain around them (RuinTerrain.java): the land
+blends to the ruin's ground layer, thin supports go down to the ground, and the art's soil (grass, dirt,
+coarse dirt, podzol, moss) becomes the site's own ground except inside the art's keep_soil boxes.
 
 Blocks the art puts at a marker's cell travel in the marker as block=<state>, so campfires, copper
 bulbs, levers, lecterns and barrels stay what they are. Every barrel becomes a Lootr barrel; every
@@ -704,6 +706,10 @@ def markers(name: str, v: dict, mk: dict, extra: dict | None = None) -> dict[tup
     stones = sorted(mk.get("order_stones", []), key=lambda p: math.atan2(p[0], -p[2]) % (2 * math.pi))
     for order, p in enumerate(stones, 1):
         put(p, f"brazier challenge={c['stones']} order={order}")
+    # Designed beds keep their soil: the art lists inclusive (lo, hi) boxes in markers["keep_soil"].
+    for lo, hi in mk.get("keep_soil", []):
+        size = ",".join(str(hi[i] - lo[i] + 1) for i in range(3))
+        put(lo, f"keep_soil size={size}")
     radius, height = LORE.get(name, (6, 5))
     for p in mk.get("lore", []):
         put(p, f"lore radius={radius} height={height}")
