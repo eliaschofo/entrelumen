@@ -326,7 +326,7 @@ def sector_registry():
     if SECTOR_CACHE.exists():
         try:
             cached = json.loads(SECTOR_CACHE.read_text(encoding='utf-8'))
-            if cached.get('jars') == jars and cached.get('version') == 2:
+            if cached.get('jars') == jars and cached.get('version') == 3:
                 _SECTOR = {k: set(v) if isinstance(v, list) else v for k, v in cached.items()}
                 return _SECTOR
         except Exception:
@@ -364,8 +364,8 @@ def sector_registry():
                 if m:
                     try:
                         for k in json.loads(z.read(name).decode('utf-8', 'replace')):
-                            if k.startswith(('key.', 'item.', 'block.', 'entity.')):
-                                out['lang'].add(k)
+                            if k.startswith(('key.', 'item.', 'block.', 'entity.')) or re.fullmatch(r'[a-z0-9_]+(\.[A-Za-z0-9_]+)+', k):
+                                out['lang'].add(k)          # mods name keybinds outside key.* (pneumaticcraft.armor.options)
                             mm = re.match(r'^entity\.([a-z0-9_]+)\.([a-z0-9_./]+)$', k)
                             if mm:
                                 out['entities'].add(f'{mm.group(1)}:{mm.group(2)}')
@@ -383,7 +383,7 @@ def sector_registry():
                             if name.endswith('lang/en_us.json'):
                                 out['lang'].update(k for k in json.loads(zz.read(name)) if k.startswith('key.'))
     cache = {k: sorted(v) if isinstance(v, set) else v for k, v in out.items()}
-    cache.update(jars=jars, version=2)
+    cache.update(jars=jars, version=3)
     try:
         SECTOR_CACHE.write_text(json.dumps(cache), encoding='utf-8')
     except Exception:
