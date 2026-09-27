@@ -250,12 +250,15 @@ public final class RuntimeGameTestsAltars {
 
   private static void perf(String scenario, TerraformAltarEntity altar) {
     long mean = altar.workingTicks == 0 ? 0 : altar.tickNanos / altar.workingTicks;
-    LOGGER.info("ALTAR_PERF scenario={} workingTicks={} wallWithoutGc=[mean={} p50={} p95={} max={}]us gcTicks={} maxGcMillis={} actorMillis={} totals=[columns={} cut={} filled={} swapped={} covered={} refused={} skipped={}] refusals={}",
+    LOGGER.info("ALTAR_PERF scenario={} workingTicks={} wallWithoutGc=[mean={} p50={} p95={} max={}]us gcTicks={} maxGcMillis={} actorMillis={} maxTrustSliceMicros={} maxTrustSliceCpuMicros={} totals=[columns={} cut={} filled={} swapped={} covered={} refused={} skipped={}] refusals={}",
         scenario, altar.workingTicks, mean / 1000, percentile(altar.tickSamples, altar.workingTicks, 0.5) / 1000,
         percentile(altar.tickSamples, altar.workingTicks, 0.95) / 1000, altar.maxTickNanos / 1000,
-        altar.gcTicks, altar.maxGcMillis, altar.actorNanos / 1_000_000, altar.totals().columns,
+        altar.gcTicks, altar.maxGcMillis, altar.actorNanos / 1_000_000, altar.maxTrustNanos / 1000, altar.maxTrustCpuNanos / 1000, altar.totals().columns,
         altar.totals().cut, altar.totals().filled, altar.totals().swapped, altar.totals().covered,
         altar.totals().refused, altar.totals().skippedChunks, altar.refusals());
+    long[] first = java.util.Arrays.copyOf(altar.tickSamples, (int) Math.min(16, altar.workingTicks));
+    LOGGER.info("ALTAR_PERF_TICKS scenario={} firstTicksUs={}", scenario,
+        java.util.Arrays.toString(java.util.Arrays.stream(first).map(nanos -> nanos / 1000).toArray()));
   }
 
   // ---- Renewal: vegetation -------------------------------------------------------------------
@@ -1119,7 +1122,7 @@ public final class RuntimeGameTestsAltars {
       int x = center.getX() + column.dx(), z = center.getZ() + column.dz();
       if (skipped.contains(ChunkPos.asLong(x, z))) continue;
       int target = TerraformRules.target(column.dx(), column.dz(), size, flat,
-          (ox, oz) -> TerraformAltarEntity.outerGround(level, center.getX() + ox, center.getZ() + oz));
+          (ox, oz) -> altar.outerGroundAt(level, center.getX() + ox, center.getZ() + oz));
       boolean untouched = true;
       for (int y = flat - 8; y <= flat + 10; y++) {
         BlockPos pos = new BlockPos(x, y, z);
@@ -1283,6 +1286,48 @@ public final class RuntimeGameTestsAltars {
           helper.succeed();
         });
       });
+    });
+  }
+
+  /**
+   * A cave in the Overworld, open to the sky above its roof: the altar finds the stone roof over it,
+   * cuts the mound on the floor and keeps the roof and the stalactite hanging from it. The old
+   * planner cut every natural block up to 32 over the target, roof included.
+   */
+  @GameTest(template = "nature_restoration", timeoutTicks = 1200, skyAccess = true)
+  public static void levellingAltarKeepsTheRoofOfAnOverworldCave(GameTestHelper helper) {
+    meadow(helper);
+    var level = helper.getLevel();
+    for (int x = 0; x < EXTENT; x++)
+      for (int z = 0; z < EXTENT; z++) {
+        level.setBlock(at(helper, x, -3, z), Blocks.DIRT.defaultBlockState(), 2);
+        level.setBlock(at(helper, x, -4, z), Blocks.STONE.defaultBlockState(), 2);
+        for (int y = 7; y <= 8; y++) level.setBlock(at(helper, x, y, z), Blocks.STONE.defaultBlockState(), 2);
+      }
+    List<BlockPos> mound = new ArrayList<>(), stalactite = new ArrayList<>();
+    for (int x = 22; x <= 23; x++)
+      for (int z = 22; z <= 23; z++)
+        for (int y = 1; y <= 2; y++) mound.add(at(helper, x, y, z));
+    for (int y = 4; y <= 6; y++) stalactite.add(at(helper, 18, y, 18));
+    for (BlockPos pos : concat(mound, stalactite)) level.setBlock(pos, Blocks.STONE.defaultBlockState(), 2);
+    var altar = terraform(helper, 4);
+    altar.addFuel(new ItemStack(Items.COAL, 2));
+    var before = snapshot(helper, -4, 12);
+    altar.start(level);
+    int roof = at(helper, 0, 7, 0).getY();
+    helper.assertTrue(altar.roofed() && altar.bandTop() == roof,
+        "The altar did not find the cave roof over it: band=" + altar.bandTop() + " roof=" + roof);
+    await(helper, () -> altar.state() == TerraformAltarEntity.State.DONE, 0, 1000, "Overworld cave flatten", () -> {
+      perf("terraform-overworld-cave", altar);
+      var changes = changes(helper, before);
+      changes.remove(altar.getBlockPos());
+      for (var entry : changes.entrySet())
+        helper.assertTrue(entry.getKey().getY() < roof - 1, "Something at or over the cave roof changed: " + entry);
+      for (BlockPos pos : stalactite) helper.assertTrue(!changes.containsKey(pos), "The stalactite was cut at " + pos);
+      for (BlockPos pos : mound) helper.assertTrue(level.getBlockState(pos).isAir(), "The mound was not cut at " + pos);
+      helper.assertTrue(level.getBlockState(mound.getFirst().below()).is(Blocks.GRASS_BLOCK), "The mound's floor was not resurfaced");
+      helper.assertTrue(noDrops(helper) && altar.totals().refused == 0, "Unexpected drops or refusals: " + altar.refusals());
+      helper.succeed();
     });
   }
 
@@ -1481,6 +1526,484 @@ public final class RuntimeGameTestsAltars {
         TerraformAltarEntity.SETUPS.remove(GlobalPos.of(level.dimension(), altarPos));
         helper.succeed();
       });
+    });
+  }
+
+  // ---- Levelling under a roof ----------------------------------------------------------------
+
+  /** Force-loads a square of chunks; the returned action releases them. */
+  private static Runnable forceChunks(ServerLevel level, int minX, int minZ, int maxX, int maxZ) {
+    for (int x = minX; x <= maxX; x++)
+      for (int z = minZ; z <= maxZ; z++) level.setChunkForced(x, z, true);
+    return () -> {
+      for (int x = minX; x <= maxX; x++)
+        for (int z = minZ; z <= maxZ; z++) level.setChunkForced(x, z, false);
+    };
+  }
+
+  /**
+   * A biome without natural spawns over a box, and no creature left in it: a mob standing on a
+   * column rightly makes the altar leave it, which would tie the counts to the Nether's crowd.
+   */
+  private static void quiet(ServerLevel level, BlockPos from, BlockPos to, int biomeLow, int biomeHigh) {
+    var holder = level.registryAccess().registryOrThrow(Registries.BIOME).getHolderOrThrow(Biomes.THE_VOID);
+    net.minecraft.server.commands.FillBiomeCommand.fill(level, new BlockPos(from.getX(), biomeLow, from.getZ()),
+        new BlockPos(to.getX(), biomeHigh, to.getZ()), holder);
+    for (var entity : level.getEntities((net.minecraft.world.entity.Entity) null,
+        new AABB(from.getX(), from.getY(), from.getZ(), to.getX() + 1, to.getY() + 1, to.getZ() + 1),
+        entity -> !(entity instanceof net.minecraft.world.entity.player.Player))) entity.discard();
+  }
+
+  private static Map<BlockPos, BlockState> box(ServerLevel level, BlockPos from, BlockPos to) {
+    Map<BlockPos, BlockState> states = new HashMap<>();
+    for (BlockPos pos : BlockPos.betweenClosed(from, to)) states.put(pos.immutable(), level.getBlockState(pos));
+    return states;
+  }
+
+  private static Map<BlockPos, BlockState> changed(ServerLevel level, Map<BlockPos, BlockState> before) {
+    Map<BlockPos, BlockState> changed = new HashMap<>();
+    before.forEach((pos, state) -> {
+      BlockState now = level.getBlockState(pos);
+      if (!now.equals(state)) changed.put(pos, now);
+    });
+    return changed;
+  }
+
+  /** Removes a finished test altar without dropping its fuel into the level. */
+  private static void removeAltar(ServerLevel level, BlockPos pos) {
+    level.removeBlockEntity(pos);
+    level.setBlock(pos, Blocks.AIR.defaultBlockState(), Block.UPDATE_CLIENTS);
+  }
+
+  /**
+   * A cave in the real Nether with an upper cavern over its roof, so the old planner, which cut
+   * every natural block up to 32 over the target, would have cut the roof. On the floor: a mound
+   * with nylium and a fungus, a pit, a pillar from floor to roof, a stalactite over a pit, and a
+   * higher floor to the east for the slope. From the roof: a stalactite and weeping vines.
+   */
+  @GameTest(template = "empty", timeoutTicks = 3600)
+  public static void levellingAltarFlattensTheNetherCaveFloorAndLeavesItsRoof(GameTestHelper helper) {
+    ServerLevel nether = helper.getLevel().getServer().getLevel(net.minecraft.world.level.Level.NETHER);
+    helper.assertTrue(nether != null && nether.dimensionType().hasCeiling(), "No roofed Nether in the test server");
+    int x0 = 8192 + 8, z0 = 8192 + 8, y0 = 64, room = 12, size = 4, roof = y0 + 10;
+    int minChunkX = (x0 - room - 16) >> 4, minChunkZ = (z0 - room - 16) >> 4;
+    int maxChunkX = (x0 + room + 16) >> 4, maxChunkZ = (z0 + room + 16) >> 4;
+    Runnable release = forceChunks(nether, minChunkX, minChunkZ, maxChunkX, maxChunkZ);
+    await(helper, () -> LandWorks.loaded(nether, minChunkX, minChunkZ, maxChunkX, maxChunkZ), 0, 1500, "Nether chunks", () -> {
+      try {
+        BlockState netherrack = Blocks.NETHERRACK.defaultBlockState(), air = Blocks.AIR.defaultBlockState();
+        for (int x = x0 - room; x <= x0 + room; x++)
+          for (int z = z0 - room; z <= z0 + room; z++)
+            for (int y = y0 - 6; y <= y0 + 46; y++) {
+              boolean wall = Math.abs(x - x0) == room || Math.abs(z - z0) == room;
+              BlockState state = wall || y <= y0 || y >= roof && y <= roof + 3 || y == y0 + 46 ? netherrack
+                  : y == y0 + 45 ? Blocks.BEDROCK.defaultBlockState() : air;
+              if (!wall && x - x0 >= 9 && y > y0 && y <= y0 + 2) state = netherrack;
+              nether.setBlock(new BlockPos(x, y, z), state, Block.UPDATE_CLIENTS);
+            }
+        java.util.function.BiFunction<Integer, Integer, BlockPos.MutableBlockPos> column =
+            (dx, dz) -> new BlockPos.MutableBlockPos(x0 + dx, 0, z0 + dz);
+        // A mound two high under crimson nylium and a fungus.
+        for (int dx = 1; dx <= 3; dx++)
+          for (int dz = -3; dz <= -1; dz++) {
+            nether.setBlock(column.apply(dx, dz).setY(y0 + 1), netherrack, Block.UPDATE_CLIENTS);
+            nether.setBlock(column.apply(dx, dz).setY(y0 + 2), Blocks.CRIMSON_NYLIUM.defaultBlockState(), Block.UPDATE_CLIENTS);
+          }
+        BlockPos fungus = column.apply(2, -2).setY(y0 + 3).immutable();
+        nether.setBlock(fungus, Blocks.CRIMSON_FUNGUS.defaultBlockState(), Block.UPDATE_CLIENTS);
+        // A pit three deep.
+        for (int dx = -3; dx <= -1; dx++)
+          for (int dz = 1; dz <= 3; dz++)
+            for (int y = y0 - 2; y <= y0; y++) nether.setBlock(column.apply(dx, dz).setY(y), air, Block.UPDATE_CLIENTS);
+        // A stalactite, weeping vines that stop short of the floor, a pillar, and a pit under a stalactite.
+        List<BlockPos> hanging = new ArrayList<>();
+        for (int y = y0 + 5; y < roof; y++) hanging.add(column.apply(-2, -2).setY(y).immutable());
+        for (BlockPos pos : hanging) nether.setBlock(pos, netherrack, Block.UPDATE_CLIENTS);
+        List<BlockPos> vines = new ArrayList<>();
+        for (int y = y0 + 5; y < roof; y++) {
+          BlockPos pos = column.apply(0, -4).setY(y).immutable();
+          nether.setBlock(pos, y == y0 + 5
+              ? Blocks.WEEPING_VINES.defaultBlockState().setValue(net.minecraft.world.level.block.GrowingPlantHeadBlock.AGE, 25)
+              : Blocks.WEEPING_VINES_PLANT.defaultBlockState(), Block.UPDATE_CLIENTS);
+          vines.add(pos);
+        }
+        List<BlockPos> pillar = new ArrayList<>();
+        for (int y = y0 + 1; y < roof; y++) pillar.add(column.apply(3, 3).setY(y).immutable());
+        for (BlockPos pos : pillar) nether.setBlock(pos, netherrack, Block.UPDATE_CLIENTS);
+        BlockPos sealedPit = column.apply(0, 3).setY(y0).immutable();
+        nether.setBlock(sealedPit, air, Block.UPDATE_CLIENTS);
+        nether.setBlock(sealedPit.below(), air, Block.UPDATE_CLIENTS);
+        for (int y = y0 + 1; y < roof; y++) {
+          BlockPos pos = column.apply(0, 3).setY(y).immutable();
+          nether.setBlock(pos, netherrack, Block.UPDATE_CLIENTS);
+          hanging.add(pos);
+        }
+        BlockPos from = new BlockPos(x0 - room, y0 - 6, z0 - room), to = new BlockPos(x0 + room, y0 + 46, z0 + room);
+        quiet(nether, from, to, y0 - 4, y0 + 12);
+        BlockPos altarPos = new BlockPos(x0, y0 + 1, z0);
+        nether.setBlockAndUpdate(altarPos, Altars.TERRAFORM_ALTAR.get().defaultBlockState());
+        var altar = (TerraformAltarEntity) nether.getBlockEntity(altarPos);
+        altar.configureSize(size);
+        altar.addFuel(new ItemStack(Items.COAL, 4));
+        var before = box(nether, from, to);
+        altar.start(nether);
+        helper.assertTrue(altar.roofed() && altar.bandTop() == roof,
+            "The altar did not find the cave roof over it: roofed=" + altar.roofed() + " band=" + altar.bandTop());
+        helper.assertTrue(altar.palette().surface().is(Blocks.NETHERRACK) && altar.palette().deep().is(Blocks.NETHERRACK),
+            "The palette did not come from the cave floor: " + altar.palette());
+        CompoundTag saved = altar.saveWithFullMetadata(nether.registryAccess());
+        var copy = (TerraformAltarEntity) BlockEntity.loadStatic(altarPos, nether.getBlockState(altarPos), saved,
+            nether.registryAccess());
+        helper.assertTrue(copy != null && copy.roofed() && copy.bandTop() == roof, "The roof over the band was not saved");
+        await(helper, () -> altar.state() == TerraformAltarEntity.State.DONE, 0, 1400, "Nether flatten", () -> {
+          try {
+            perf("terraform-nether-cave", altar);
+            var changes = changed(nether, before);
+            changes.remove(altarPos);
+            for (var entry : changes.entrySet()) {
+              BlockPos pos = entry.getKey();
+              helper.assertTrue(pos.getY() < roof - 1, "Something at or over the band changed: " + entry);
+              helper.assertTrue(entry.getValue().isAir() || TerraformAltarEntity.basic(entry.getValue()),
+                  "The altar placed something that is not plain terrain: " + entry);
+            }
+            for (BlockPos pos : concat(hanging, vines, pillar))
+              helper.assertTrue(!changes.containsKey(pos), "What hangs from the roof or reaches it was touched: " + pos);
+            helper.assertTrue(nether.getBlockState(sealedPit).isAir() && nether.getBlockState(sealedPit.below()).isAir(),
+                "The pit under the stalactite was sealed against it");
+            for (int dx = 1; dx <= 3; dx++)
+              for (int dz = -3; dz <= -1; dz++) {
+                BlockPos floor = column.apply(dx, dz).setY(y0).immutable();
+                helper.assertTrue(nether.getBlockState(floor).is(Blocks.NETHERRACK) && nether.getBlockState(floor.above()).isAir()
+                    && nether.getBlockState(floor.above(2)).isAir() && nether.getBlockState(floor.above(3)).isAir(),
+                    "The mound was not cut to the floor at " + floor);
+              }
+            for (int dx = -3; dx <= -1; dx++)
+              for (int dz = 1; dz <= 3; dz++)
+                for (int y = y0 - 2; y <= y0; y++)
+                  helper.assertTrue(nether.getBlockState(column.apply(dx, dz).setY(y)).is(Blocks.NETHERRACK),
+                      "The pit was not filled with the cave's rock at " + dx + "," + y + "," + dz);
+            int[] slope = new int[4];
+            for (int dx = 5; dx <= 8; dx++) {
+              BlockPos.MutableBlockPos probe = column.apply(dx, 0).setY(y0);
+              while (!nether.getBlockState(probe.above()).isAir()) probe.move(Direction.UP);
+              slope[dx - 5] = probe.getY() - y0;
+            }
+            helper.assertTrue(java.util.Arrays.equals(slope, new int[] {0, 1, 1, 2}),
+                "The slope does not follow the higher floor to the east: " + java.util.Arrays.toString(slope));
+            helper.assertTrue(altar.refusals().getOrDefault("ceiling", 0) == 2 && altar.totals().refused == 2,
+                "Only the pillar and the pit under the stalactite should be left alone: " + altar.refusals());
+            helper.assertTrue(nether.getEntitiesOfClass(ItemEntity.class, new AABB(from).expandTowards(2 * room, 52, 2 * room)).isEmpty(),
+                "The Nether flatten dropped items");
+            var settled = box(nether, from, to);
+            altar.start(nether);
+            await(helper, () -> altar.state() == TerraformAltarEntity.State.DONE, 0, 600, "Repeated Nether flatten", () -> {
+              try {
+                var repeated = changed(nether, settled);
+                helper.assertTrue(repeated.isEmpty(), "A repeated run changed the settled cave: " + repeated.keySet());
+                removeAltar(nether, altarPos);
+                helper.succeed();
+              } finally {
+                release.run();
+              }
+            });
+          } catch (RuntimeException | Error failure) {
+            release.run();
+            throw failure;
+          }
+        });
+      } catch (RuntimeException | Error failure) {
+        release.run();
+        throw failure;
+      }
+    });
+  }
+
+
+  /** Open space over a floor: air or a wild plant, such as the roots and fungi of a crimson forest. */
+  private static boolean open(BlockState state) {
+    return !TerraformRules.solid(TerraformAltarEntity.cell(state));
+  }
+
+  /** Plain ground at {@code y} with {@code height} blocks of open space over it. */
+  private static boolean openFloor(ServerLevel level, int x, int y, int z, int height) {
+    if (!TerraformAltarEntity.basic(level.getBlockState(new BlockPos(x, y, z)))) return false;
+    for (int dy = 1; dy <= height; dy++) if (!open(level.getBlockState(new BlockPos(x, y + dy, z)))) return false;
+    return true;
+  }
+
+  /** The column's floor nearest {@code flat} in the live level or in a reference, or UNKNOWN when it is not ground. */
+  private static int floorOf(java.util.function.IntFunction<BlockState> states, int minY, int flat, int band) {
+    int y = TerraformRules.floorNear(at -> {
+      BlockState state = states.apply(at);
+      return state == null ? TerraformRules.Cell.BUILT : TerraformAltarEntity.cell(state);
+    }, minY, flat, band);
+    return y != TerraformRules.UNKNOWN && states.apply(y) != null && LandWorks.ground(states.apply(y)) ? y
+        : TerraformRules.UNKNOWN;
+  }
+
+  /**
+   * The altar's own trust test of a chunk, run against the test's reference: floors nearest
+   * {@code flat}. Returns the comparable, agreeing and surplus column counts.
+   */
+  private static int[] trust(ServerLevel level, TerrainReference.Region reference, ChunkPos chunk, int flat, int band) {
+    int natural = 0, agree = 0, surplus = 0;
+    BlockPos.MutableBlockPos probe = new BlockPos.MutableBlockPos();
+    for (int x = chunk.getMinBlockX(); x <= chunk.getMaxBlockX(); x++)
+      for (int z = chunk.getMinBlockZ(); z <= chunk.getMaxBlockZ(); z++) {
+        int cx = x, cz = z;
+        int original = floorOf(at -> reference.state(probe.set(cx, at, cz)), reference.setup.minY(), flat, band);
+        int current = floorOf(at -> level.getBlockState(probe.set(cx, at, cz)), level.getMinBuildHeight(), flat, band);
+        if (original == TerraformRules.UNKNOWN || current == TerraformRules.UNKNOWN) continue;
+        natural++;
+        if (Math.abs(current - original) <= 1) agree++;
+        else if (current > original + 1) surplus++;
+      }
+    return new int[] {natural, agree, surplus};
+  }
+
+  /** A repair site: the floor under the altar and the floors of the 3×3 patch east of it that the test digs. */
+  private record NetherSite(BlockPos floor, List<BlockPos> patch) {}
+
+  /**
+   * The floors of the altar column and of a 3×3 patch two to four blocks east of it, each within a
+   * block of the altar's floor, plain ground three deep, with open space over it and no fluid beside
+   * it; null when the ground there is not like that.
+   */
+  private static List<BlockPos> siteFloors(ServerLevel level, int x, int y, int z) {
+    List<BlockPos> floors = new ArrayList<>();
+    for (int dx = 2; dx <= 4; dx++)
+      for (int dz = -1; dz <= 1; dz++) {
+        BlockPos floor = null;
+        for (int f : new int[] {y, y + 1, y - 1})
+          if (floor == null && openFloor(level, x + dx, f, z + dz, 2)) floor = new BlockPos(x + dx, f, z + dz);
+        if (floor == null) return null;
+        for (int dy = 0; dy >= -2; dy--) {
+          BlockPos pos = floor.above(dy);
+          if (!TerraformAltarEntity.basic(level.getBlockState(pos))) return null;
+          for (Direction side : Direction.Plane.HORIZONTAL)
+            if (!level.getBlockState(pos.relative(side)).getFluidState().isEmpty()) return null;
+        }
+        floors.add(floor);
+      }
+    return floors;
+  }
+
+  /** The generator made the same ground under each floor, three deep, and left open space over it. */
+  private static boolean asGenerated(ServerLevel level, TerrainReference.Region reference, List<BlockPos> floors) {
+    for (BlockPos floor : floors) {
+      for (int dy = 0; dy >= -2; dy--) {
+        BlockState original = reference.state(floor.above(dy));
+        if (original == null || !level.getBlockState(floor.above(dy)).is(original.getBlock())) return false;
+      }
+      BlockState over = reference.state(floor.above());
+      if (over == null || !open(over)) return false;
+    }
+    return true;
+  }
+
+  /**
+   * The first place, ring by ring from the middle of the reference, where the floor is open plain
+   * ground, a 3×3 patch two blocks east of it is plain ground three deep within a block of the same
+   * height with no fluid beside it, all exactly as the generator made them, and every chunk of the
+   * repair square passes the altar's trust test. {@code stats} counts how far the candidates got.
+   */
+  private static NetherSite netherRepairSite(ServerLevel level, TerrainReference.Region reference, ChunkPos middle,
+      int radius, Map<String, Object> stats) {
+    int cx = middle.getMiddleBlockX(), cz = middle.getMiddleBlockZ();
+    int reach = 16 + 8 - radius - 1;
+    Map<String, int[]> chunks = new HashMap<>();
+    for (int ring = 0; ring <= reach; ring++)
+      for (int x = cx - ring; x <= cx + ring; x++)
+        for (int z = cz - ring; z <= cz + ring; z++) {
+          if (Math.max(Math.abs(x - cx), Math.abs(z - cz)) != ring) continue;
+          for (int y = 100; y >= 36; y--) {
+            if (!openFloor(level, x, y, z, 4)) continue;
+            stats.merge("floors", 1, (a, b) -> (Integer) a + (Integer) b);
+            List<BlockPos> patch = siteFloors(level, x, y, z);
+            if (patch == null) continue;
+            stats.merge("patches", 1, (a, b) -> (Integer) a + (Integer) b);
+            List<BlockPos> all = new ArrayList<>(patch);
+            all.add(new BlockPos(x, y, z));
+            if (!asGenerated(level, reference, all)) continue;
+            stats.merge("asGenerated", 1, (a, b) -> (Integer) a + (Integer) b);
+            int floor = y;
+            int band = TerraformAltarEntity.roofOver(level, new BlockPos(x, y + 1, z), y);
+            boolean comparable = true;
+            for (var key : AltarRules.areaChunks(x, z, radius)) {
+              ChunkPos chunk = new ChunkPos(key.x(), key.z());
+              int[] counts = chunks.computeIfAbsent(chunk + "@" + y + "/" + band,
+                  ignored -> trust(level, reference, chunk, floor, band));
+              if (counts[0] < 96 || !AltarRules.consistent(counts[0], counts[1], counts[2])) {
+                comparable = false;
+                stats.putIfAbsent("untrusted:" + chunk + "@" + y, counts[0] + "/" + counts[1] + "/" + counts[2]);
+              }
+            }
+            if (comparable) {
+              stats.put("trust", AltarRules.areaChunks(x, z, radius).stream()
+                  .map(key -> java.util.Arrays.toString(chunks.get(new ChunkPos(key.x(), key.z()) + "@" + floor + "/" + band)))
+                  .toList());
+              return new NetherSite(new BlockPos(x, y, z), patch);
+            }
+          }
+        }
+    return null;
+  }
+
+  /** Where the live Nether and the reference differ in a chunk, by block pair: carvers, ores and the like. */
+  private static String differences(ServerLevel level, TerrainReference.Region reference, ChunkPos chunk) {
+    Map<String, Integer> pairs = new TreeMap<>();
+    int compared = 0;
+    BlockPos.MutableBlockPos probe = new BlockPos.MutableBlockPos();
+    for (int x = chunk.getMinBlockX(); x <= chunk.getMaxBlockX(); x++)
+      for (int z = chunk.getMinBlockZ(); z <= chunk.getMaxBlockZ(); z++)
+        for (int y = 1; y < 127; y++) {
+          BlockState original = reference.state(probe.set(x, y, z));
+          if (original == null) continue;
+          compared++;
+          BlockState now = level.getBlockState(probe);
+          if (now.is(original.getBlock())) continue;
+          pairs.merge(BuiltInRegistries.BLOCK.getKey(now.getBlock()).getPath() + "<-"
+              + BuiltInRegistries.BLOCK.getKey(original.getBlock()).getPath(), 1, Integer::sum);
+        }
+    List<Map.Entry<String, Integer>> top = new ArrayList<>(pairs.entrySet());
+    top.sort(Map.Entry.<String, Integer>comparingByValue().reversed());
+    return "compared=" + compared + " differing=" + pairs.values().stream().mapToInt(Integer::intValue).sum()
+        + " top=" + top.subList(0, Math.min(12, top.size()));
+  }
+
+  /**
+   * The repair on the real floor of the fixed-seed Nether, against its own generator: pits dug in
+   * the floor are refilled up to the generator's floor with its own blocks, nothing at or over the
+   * roof of the altar's band changes, and the altar only rebuilds what the generator made. The old
+   * repair read the land's top, which in the Nether is the bedrock roof, and never reached the floor.
+   * It runs in a batch of its own: its chunk generation and its two regenerations would otherwise
+   * compete with the timing checks of other tests.
+   */
+  @GameTest(template = "empty", timeoutTicks = 6000, batch = "altars_nether_reference")
+  public static void levellingAltarRepairsTheNetherFloorFromItsGenerator(GameTestHelper helper) {
+    ServerLevel nether = helper.getLevel().getServer().getLevel(net.minecraft.world.level.Level.NETHER);
+    helper.assertTrue(nether != null && nether.dimensionType().hasCeiling(), "No roofed Nether in the test server");
+    int radius = 8;
+    ChunkPos middle = new ChunkPos(-192, 192);
+    Runnable release = forceChunks(nether, middle.x - 2, middle.z - 2, middle.x + 2, middle.z + 2);
+    await(helper, () -> LandWorks.loaded(nether, middle.x - 2, middle.z - 2, middle.x + 2, middle.z + 2), 0, 2500,
+        "Nether chunks", () -> {
+      try {
+        List<ChunkPos> decorate = new ArrayList<>(), captured = new ArrayList<>();
+        for (int dx = -2; dx <= 2; dx++)
+          for (int dz = -2; dz <= 2; dz++) {
+            ChunkPos pos = new ChunkPos(middle.x + dx, middle.z + dz);
+            captured.add(pos);
+            if (Math.abs(dx) <= 1 && Math.abs(dz) <= 1) decorate.add(pos);
+          }
+        var setup = TerrainReference.Setup.capture(nether, captured);
+        CompletableFuture<TerrainReference.Region> built = CompletableFuture.supplyAsync(
+            () -> TerrainReference.build(setup, List.copyOf(decorate), () -> false), NOISE_WORKER);
+        await(helper, built::isDone, 0, 2500, "Nether reference", () -> {
+          try {
+            var reference = built.join();
+            Map<String, Object> stats = new TreeMap<>();
+            NetherSite found = netherRepairSite(nether, reference, middle, radius, stats);
+            BlockPos site = found == null ? null : found.floor();
+            LOGGER.info("ALTAR_NETHER_SITE site={} stats={} middle=[{}] reference=[terrain={} decorated={} surfaceRules={} failures={} unsupported={}]",
+                site, stats, differences(nether, reference, middle), reference.terrainChunks, reference.decoratedChunks,
+                reference.surfaceRules, reference.failures, reference.unsupported);
+            helper.assertTrue(site != null, "No open Nether floor matching its generator near " + middle + ": " + stats);
+            int x = site.getX(), y = site.getY(), z = site.getZ();
+            BlockPos from = new BlockPos(x - radius, Math.max(nether.getMinBuildHeight(), y - 24), z - radius);
+            BlockPos to = new BlockPos(x + radius, Math.min(nether.getMaxBuildHeight() - 1, y + 64), z + radius);
+            quiet(nether, from.offset(-2, 0, -2), to.offset(2, 0, 2), y - 8, y + 16);
+            // As a player would: the plants over the pit and the altar go first, so nothing is left floating.
+            List<BlockPos> cleared = new ArrayList<>(found.patch());
+            cleared.add(site);
+            for (BlockPos floor : cleared)
+              for (BlockPos pos = floor.above(); open(nether.getBlockState(pos)) && !nether.getBlockState(pos).isAir(); pos = pos.above())
+                nether.setBlock(pos, Blocks.AIR.defaultBlockState(), Block.UPDATE_CLIENTS);
+            BlockPos altarPos = site.above();
+            nether.setBlockAndUpdate(altarPos, Altars.TERRAFORM_ALTAR.get().defaultBlockState());
+            var altar = (TerraformAltarEntity) nether.getBlockEntity(altarPos);
+            altar.configureSize(TerraformRules.REPAIR);
+            altar.configureRepairRadius(radius);
+            altar.addFuel(new ItemStack(Items.COAL, 4));
+            var before = box(nether, from, to);
+            List<BlockPos> pit = new ArrayList<>();
+            for (BlockPos floor : found.patch()) {
+              pit.add(floor);
+              pit.add(floor.below());
+            }
+            for (BlockPos pos : pit) nether.setBlock(pos, Blocks.AIR.defaultBlockState(), Block.UPDATE_CLIENTS);
+            altar.start(nether);
+            helper.assertTrue(altar.roofed() && altar.bandTop() > y + 4 && altar.bandTop() <= y + TerraformRules.MAX_CUT + 1,
+                "The altar did not work under the Nether roof: band=" + altar.bandTop() + " floor=" + y);
+            await(helper, () -> altar.state() == TerraformAltarEntity.State.DONE
+                || altar.state() == TerraformAltarEntity.State.FAILED, 0, 2500, "Nether repair", () -> {
+              try {
+                perf("terraform-nether-repair", altar);
+                LOGGER.info("ALTAR_NETHER_REPAIR site={} band={} biome={} reference=[terrain={} decorated={} terrainMillis={} decorationMillis={} failures={} unsupported={}]",
+                    site, altar.bandTop(), nether.registryAccess().registryOrThrow(Registries.BIOME)
+                        .getKey(reference.biome(site).value()), reference.terrainChunks, reference.decoratedChunks,
+                    reference.terrainNanos / 1_000_000, reference.decorationNanos / 1_000_000, reference.failures,
+                    reference.unsupported);
+                helper.assertTrue(altar.state() == TerraformAltarEntity.State.DONE && altar.totals().skippedChunks == 0,
+                    "The Nether's own land was not recognised: " + altar.state() + " skipped="
+                        + altar.totals().skippedChunks + " refusals=" + altar.refusals());
+                BlockState rock = TerraformAltarEntity.defaultRock(nether);
+                helper.assertTrue(rock.is(Blocks.NETHERRACK), "The Nether's own rock is not netherrack: " + rock);
+                for (BlockPos pos : pit) {
+                  BlockState original = reference.state(pos), now = nether.getBlockState(pos);
+                  helper.assertTrue(now.equals(TerraformAltarEntity.fill(original, pos.getY(), rock))
+                      && now.is(before.get(pos).getBlock()),
+                      "Repaired " + pos + " with " + now + " instead of the generator's " + original);
+                }
+                var changes = changed(nether, before);
+                changes.remove(altarPos);
+                int elsewhere = 0;
+                for (var entry : changes.entrySet()) {
+                  BlockPos pos = entry.getKey();
+                  helper.assertTrue(pos.getY() <= altar.bandTop() - 2 && TerraformAltarEntity.basic(entry.getValue()),
+                      "Something other than plain ground on the floor changed: " + entry + " band=" + altar.bandTop());
+                  if (pit.contains(pos)) continue;
+                  elsewhere++;
+                  BlockState was = before.get(pos);
+                  helper.assertTrue((was.isAir() || was.canBeReplaced()) && TerraformAltarEntity.fillable(reference.state(pos)),
+                      "The repair changed " + pos + " from " + was + " where the generator had " + reference.state(pos));
+                }
+                LOGGER.info("ALTAR_NETHER_REPAIR pit={} changed={} elsewhere={} filled={}", pit.size(), changes.size(),
+                    elsewhere, altar.totals().filled);
+                helper.assertTrue(nether.getEntitiesOfClass(ItemEntity.class, new AABB(from).expandTowards(2 * radius, 88, 2 * radius)).isEmpty(),
+                    "The Nether repair dropped items");
+              } catch (RuntimeException | Error failure) {
+                release.run();
+                throw failure;
+              }
+              // A second run, warm: it rebuilds the reference, compares again and changes nothing.
+              var settled = box(nether, from, to);
+              altar.workingTicks = altar.tickNanos = altar.maxTickNanos = altar.maxTrustNanos = altar.maxTrustCpuNanos = 0;
+              altar.gcTicks = altar.maxGcMillis = 0;
+              altar.start(nether);
+              await(helper, () -> altar.state() == TerraformAltarEntity.State.DONE
+                  || altar.state() == TerraformAltarEntity.State.FAILED, 0, 2500, "Repeated Nether repair", () -> {
+                try {
+                  perf("terraform-nether-repair-repeated", altar);
+                  var repeated = changed(nether, settled);
+                  helper.assertTrue(altar.state() == TerraformAltarEntity.State.DONE && repeated.isEmpty()
+                      && altar.totals().skippedChunks == 0, "A repeated Nether repair changed something: " + repeated.keySet());
+                  removeAltar(nether, altarPos);
+                  helper.succeed();
+                } finally {
+                  release.run();
+                }
+              });
+            });
+          } catch (RuntimeException | Error failure) {
+            release.run();
+            throw failure;
+          }
+        });
+      } catch (RuntimeException | Error failure) {
+        release.run();
+        throw failure;
+      }
     });
   }
 }

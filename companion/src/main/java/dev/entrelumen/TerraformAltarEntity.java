@@ -52,6 +52,10 @@ import net.neoforged.neoforge.common.Tags;
  *       blocks and gives bare dirt back its cover.</li>
  * </ul>
  *
+ * Under a roof (the Nether, a cave, anything solid over the altar) both settings work on the floor
+ * nearest the altar's own height and never touch the roof: nothing at or above the first solid block
+ * over the altar is ever cut or filled, and what hangs from above is left alone.
+ *
  * No material is asked for and none is kept. The altar only removes and places basic terrain
  * (dirt, grass, sand, sandstone, stone, gravel, snow and the like): ores, trees, ice, builds, block
  * entities, crops, fluids and claims refuse their column, and it never creates an ore or a valuable
@@ -103,6 +107,14 @@ public final class TerraformAltarEntity extends AltarBlockEntity {
   /** Half-width of the repair square; a test hook may shrink it to fit a GameTest template. */
   private int repairRadius = TerraformRules.REPAIR;
   private int flatTop;
+  /**
+   * Top of the working band under a roof: the first solid block over the altar, capped at the
+   * highest cut a column may make. Nothing at or above it is ever cut or filled. MAX_VALUE in the
+   * open, where the altar works on the land's top as before. Decided when a run starts, and saved.
+   */
+  private int bandTop = Integer.MAX_VALUE;
+  /** A run saved before the band existed: its roof is judged again when it next works. */
+  private boolean bandUnknown;
   private int cursor;
   private Palette palette = Palette.DEFAULT;
   private final Totals totals = new Totals();
@@ -117,9 +129,16 @@ public final class TerraformAltarEntity extends AltarBlockEntity {
   private CompletableFuture<TerrainReference.Region> job;
   private TerrainReference.Region region;
   private final Map<AltarRules.ChunkKey, Boolean> trust = new HashMap<>();
+  /** Chunks still being compared with the reference, a slice at a time: next column, natural, agree, surplus. */
+  private final Map<AltarRules.ChunkKey, int[]> comparing = new HashMap<>();
+  /** What each block state means to the planner, kept for the run: floor searches under a roof read many. */
+  private final Map<BlockState, TerraformRules.Cell> cells = new java.util.IdentityHashMap<>();
   long workingTicks;
   long tickNanos;
   long maxTickNanos;
+  /** Longest slice of a chunk's comparison with the reference, wall and thread CPU time, for the performance log. */
+  long maxTrustNanos;
+  long maxTrustCpuNanos;
   final long[] tickSamples = new long[4096];
   long gcTicks;
   long maxGcMillis;
@@ -160,6 +179,14 @@ public final class TerraformAltarEntity extends AltarBlockEntity {
 
   int flatTop() {
     return flatTop;
+  }
+
+  boolean roofed() {
+    return bandTop != Integer.MAX_VALUE;
+  }
+
+  int bandTop() {
+    return bandTop;
   }
 
   Palette palette() {
@@ -276,6 +303,8 @@ public final class TerraformAltarEntity extends AltarBlockEntity {
     lines.add(Component.translatable("entrelumen.altar.terraform.progress", totals.cut, totals.filled,
         totals.swapped, totals.covered, totals.refused));
     lines.add(Component.translatable("entrelumen.altar.terraform.fuel", fuel.getCount(), activeTicks / 20, fuelUsed));
+    if (roofed() && state != State.IDLE && state != State.PREVIEW)
+      lines.add(Component.translatable("entrelumen.altar.terraform.roofed", bandTop));
     if (state == State.RUNNING && repairing() && region == null)
       lines.add(Component.translatable("entrelumen.altar.terraform.generating"));
     if (state == State.WAITING) lines.add(Component.translatable("entrelumen.altar.terraform.waiting"));
@@ -286,12 +315,16 @@ public final class TerraformAltarEntity extends AltarBlockEntity {
   /** A fresh run: at the level the altar stands on, or over the repair square. */
   void start(ServerLevel world) {
     flatTop = worldPosition.getY() - 1;
+    bandTop = roofOver(world, worldPosition, flatTop);
+    bandUnknown = false;
     palette = repairing() ? Palette.DEFAULT : sample(world);
     cursor = 0;
     columns = null;
     cancelJob();
     region = null;
     trust.clear();
+    comparing.clear();
+    cells.clear();
     failure = "";
     totals.load(new CompoundTag(), VERSION);
     fuelUsed = 0;
@@ -341,6 +374,11 @@ public final class TerraformAltarEntity extends AltarBlockEntity {
     }
     if (state == State.WAITING && now >= retryAt) state = State.RUNNING;
     if (state != State.RUNNING) return;
+    if (bandUnknown) {
+      bandUnknown = false;
+      bandTop = roofOver(world, worldPosition, flatTop);
+      setChanged();
+    }
     if (!actorWarm(world)) return;
     // Reading the original land is free: only ticks that change the world pay time.
     if (repairing() && region == null && !reference(world)) return;
@@ -414,10 +452,13 @@ public final class TerraformAltarEntity extends AltarBlockEntity {
     if (column.dx() == 0 && column.dz() == 0) return Result.SKIPPED;
     int x = worldPosition.getX() + column.dx(), z = worldPosition.getZ() + column.dz();
     int target = TerraformRules.target(column.dx(), column.dz(), size, flatTop,
-        (ox, oz) -> outerGround(world, worldPosition.getX() + ox, worldPosition.getZ() + oz));
+        (ox, oz) -> outerGroundAt(world, worldPosition.getX() + ox, worldPosition.getZ() + oz));
     BlockPos.MutableBlockPos probe = new BlockPos.MutableBlockPos();
-    TerraformRules.Plan plan = TerraformRules.column(target, y -> cell(world.getBlockState(probe.set(x, y, z))),
-        y -> matches(world.getBlockState(probe.set(x, y, z)), TerraformRules.layer(target - y)));
+    java.util.function.IntFunction<TerraformRules.Cell> at = y -> cellOf(world.getBlockState(probe.set(x, y, z)));
+    java.util.function.IntPredicate layered = y -> matches(world.getBlockState(probe.set(x, y, z)),
+        TerraformRules.layer(target - y));
+    TerraformRules.Plan plan = roofed() ? TerraformRules.roofedColumn(target, bandTop, at, layered)
+        : TerraformRules.column(target, at, layered);
     if (plan.refused()) return refuse(plan.refusal());
     if (plan.ops().isEmpty()) return Result.SKIPPED;
     if (!budget.allows(plan.ops().size())) return Result.BUDGET;
@@ -484,9 +525,15 @@ public final class TerraformAltarEntity extends AltarBlockEntity {
     if (state.is(BlockTags.LEAVES) || state.is(BlockTags.LOGS)) return TerraformRules.Cell.PROTECTED;
     if (state.canBeReplaced() || state.is(BlockTags.SMALL_FLOWERS) || state.is(BlockTags.TALL_FLOWERS)
         || state.is(Blocks.BROWN_MUSHROOM) || state.is(Blocks.RED_MUSHROOM) || state.is(Blocks.MOSS_CARPET)
-        || state.is(BlockTags.SAPLINGS))
+        || state.is(BlockTags.SAPLINGS) || state.getBlock() instanceof net.minecraft.world.level.block.BushBlock
+        || state.getBlock() instanceof net.minecraft.world.level.block.GrowingPlantBlock)
       return TerraformRules.Cell.LOOSE;
     return TerraformRules.Cell.PROTECTED;
+  }
+
+  /** {@link #cell}, remembered per block state for the run. */
+  TerraformRules.Cell cellOf(BlockState state) {
+    return cells.computeIfAbsent(state, TerraformAltarEntity::cell);
   }
 
   /**
@@ -521,6 +568,42 @@ public final class TerraformAltarEntity extends AltarBlockEntity {
     };
   }
 
+  /**
+   * The top of the working band for an altar at {@code altar} whose flat level is {@code flat}: the
+   * first solid block over the altar, or the highest cut a column may make when the dimension has a
+   * ceiling and nothing is closer. MAX_VALUE in the open. Leaves and fluids over the altar are not a
+   * roof.
+   */
+  static int roofOver(ServerLevel world, BlockPos altar, int flat) {
+    boolean ceiling = world.dimensionType().hasCeiling();
+    int limit = Math.min(flat + TerraformRules.MAX_CUT + 1, world.getMaxBuildHeight());
+    BlockPos.MutableBlockPos probe = new BlockPos.MutableBlockPos();
+    for (int y = altar.getY() + 1; y < limit; y++) {
+      BlockState state = world.getBlockState(probe.set(altar.getX(), y, altar.getZ()));
+      TerraformRules.Cell at = cell(state);
+      if (!TerraformRules.solid(at)) continue;
+      if (ceiling || at != TerraformRules.Cell.FLUID && !state.is(BlockTags.LEAVES)) return y;
+    }
+    return ceiling ? limit : Integer.MAX_VALUE;
+  }
+
+  /** Ground top next to the square for the slope and the palette: under a roof, the floor nearest the flat level. */
+  int outerGroundAt(ServerLevel world, int x, int z) {
+    return roofed() ? floorGround(world, x, z, flatTop, bandTop, this::cellOf) : outerGround(world, x, z);
+  }
+
+  /** Under a roof: the floor nearest {@code flat} inside the band, water surface included; unknown when built. */
+  static int floorGround(ServerLevel world, int x, int z, int flat, int band,
+      java.util.function.Function<BlockState, TerraformRules.Cell> cells) {
+    if (!world.hasChunk(x >> 4, z >> 4)) return TerraformRules.UNKNOWN;
+    BlockPos.MutableBlockPos probe = new BlockPos.MutableBlockPos();
+    int y = TerraformRules.floorNear(at -> cells.apply(world.getBlockState(probe.set(x, at, z))),
+        world.getMinBuildHeight(), flat, band);
+    if (y == TerraformRules.UNKNOWN) return y;
+    TerraformRules.Cell at = cells.apply(world.getBlockState(probe.set(x, y, z)));
+    return at == TerraformRules.Cell.GROUND || at == TerraformRules.Cell.FLUID ? y : TerraformRules.UNKNOWN;
+  }
+
   /** Ground top next to the square, water surface included; unknown when built or unloaded. */
   static int outerGround(ServerLevel world, int x, int z) {
     if (!world.hasChunk(x >> 4, z >> 4)) return TerraformRules.UNKNOWN;
@@ -545,7 +628,7 @@ public final class TerraformAltarEntity extends AltarBlockEntity {
     BlockPos.MutableBlockPos probe = new BlockPos.MutableBlockPos();
     for (TerraformRules.Column column : TerraformRules.outerRing(size)) {
       int x = worldPosition.getX() + column.dx(), z = worldPosition.getZ() + column.dz();
-      int top = outerGround(world, x, z);
+      int top = outerGroundAt(world, x, z);
       if (top == TerraformRules.UNKNOWN) continue;
       BlockState at = world.getBlockState(probe.set(x, top, z));
       if (!basic(at)) continue;
@@ -634,16 +717,19 @@ public final class TerraformAltarEntity extends AltarBlockEntity {
       AltarRules.TickBudget budget) {
     if (column.dx() == 0 && column.dz() == 0) return Result.SKIPPED;
     int x = worldPosition.getX() + column.dx(), z = worldPosition.getZ() + column.dz();
-    if (!trusted(world, x, z, budget)) return Result.SKIPPED;
-    int top = referenceGround(region, x, z);
+    Boolean trusted = trusted(world, x, z, budget);
+    if (trusted == null) return Result.BUDGET;
+    if (!trusted) return Result.SKIPPED;
+    int top = referenceGroundAt(x, z);
     if (top == Integer.MIN_VALUE) return Result.SKIPPED;
     BlockPos.MutableBlockPos probe = new BlockPos.MutableBlockPos();
     int[] fills = AltarRules.fillColumn(top, y -> fillable(region.state(probe.set(x, y, z))),
         y -> repairCell(world.getBlockState(probe.set(x, y, z))));
     LinkedHashMap<BlockPos, BlockState> places = new LinkedHashMap<>();
+    BlockState rock = fills.length == 0 ? null : defaultRock(world);
     for (int y : fills) {
       BlockPos pos = new BlockPos(x, y, z);
-      places.put(pos, supported(world, pos, fill(region.state(pos), y), places));
+      places.put(pos, supported(world, pos, fill(region.state(pos), y, rock), places));
     }
     BlockPos surface = new BlockPos(x, top, z);
     BlockState original = region.state(surface);
@@ -671,16 +757,42 @@ public final class TerraformAltarEntity extends AltarBlockEntity {
     return Result.APPLIED;
   }
 
+  /** Columns of a chunk compared with the reference in one slice; a slice costs one operation. */
+  static final int TRUST_SLICE = 16;
+
   /**
    * The chunk holding this column still looks like its generator's output; otherwise the altar
-   * leaves the whole chunk alone. Checked once per chunk and remembered until the next run.
+   * leaves the whole chunk alone. Checked once per chunk, a slice of columns at a time while the
+   * tick has budget (under a roof each column is a floor search), and remembered until the next
+   * run; null while the comparison needs another tick.
    */
-  private boolean trusted(ServerLevel world, int columnX, int columnZ, AltarRules.TickBudget budget) {
+  private Boolean trusted(ServerLevel world, int columnX, int columnZ, AltarRules.TickBudget budget) {
     AltarRules.ChunkKey key = new AltarRules.ChunkKey(columnX >> 4, columnZ >> 4);
     Boolean known = trust.get(key);
     if (known != null) return known;
-    budget.spend(8);
-    boolean result = consistent(world, key);
+    if (region.unresolved(key.x(), key.z()) || !region.decorated(key.x(), key.z())) return decide(key, false);
+    int[] counts = comparing.computeIfAbsent(key, ignored -> new int[4]);
+    while (counts[0] < 256) {
+      if (!budget.allows(1)) return null;
+      long started = System.nanoTime(), cpu = LandWorks.cpuNanos();
+      for (int end = Math.min(256, counts[0] + TRUST_SLICE); counts[0] < end; counts[0]++) {
+        int x = key.minX() + (counts[0] >> 4), z = key.minZ() + (counts[0] & 15);
+        int reference = referenceGroundAt(x, z);
+        int current = currentGroundAt(world, x, z);
+        if (reference == Integer.MIN_VALUE || current == Integer.MIN_VALUE) continue;
+        counts[1]++;
+        if (Math.abs(current - reference) <= 1) counts[2]++;
+        else if (current > reference + 1) counts[3]++;
+      }
+      budget.spend(1);
+      maxTrustNanos = Math.max(maxTrustNanos, System.nanoTime() - started);
+      maxTrustCpuNanos = Math.max(maxTrustCpuNanos, LandWorks.cpuNanos() - cpu);
+    }
+    comparing.remove(key);
+    return decide(key, AltarRules.consistent(counts[1], counts[2], counts[3]));
+  }
+
+  private boolean decide(AltarRules.ChunkKey key, boolean result) {
     trust.put(key, result);
     int untrusted = 0;
     for (boolean value : trust.values()) if (!value) untrusted++;
@@ -688,19 +800,27 @@ public final class TerraformAltarEntity extends AltarBlockEntity {
     return result;
   }
 
-  private boolean consistent(ServerLevel world, AltarRules.ChunkKey key) {
-    if (region.unresolved(key.x(), key.z()) || !region.decorated(key.x(), key.z())) return false;
-    int natural = 0, agree = 0, surplus = 0;
-    for (int x = key.minX(); x < key.minX() + 16; x++)
-      for (int z = key.minZ(); z < key.minZ() + 16; z++) {
-        int reference = referenceGround(region, x, z);
-        int current = currentGround(world, x, z);
-        if (reference == Integer.MIN_VALUE || current == Integer.MIN_VALUE) continue;
-        natural++;
-        if (Math.abs(current - reference) <= 1) agree++;
-        else if (current > reference + 1) surplus++;
-      }
-    return AltarRules.consistent(natural, agree, surplus);
+  /** The generator's ground top of a column: under a roof, its floor nearest the altar's level. */
+  int referenceGroundAt(int x, int z) {
+    if (!roofed()) return referenceGround(region, x, z);
+    BlockPos.MutableBlockPos probe = new BlockPos.MutableBlockPos();
+    int y = TerraformRules.floorNear(at -> {
+      BlockState state = region.state(probe.set(x, at, z));
+      return state == null ? TerraformRules.Cell.BUILT : cellOf(state);
+    }, region.setup.minY(), flatTop, bandTop);
+    if (y == TerraformRules.UNKNOWN) return Integer.MIN_VALUE;
+    BlockState state = region.state(probe.set(x, y, z));
+    return state != null && LandWorks.ground(state) ? y : Integer.MIN_VALUE;
+  }
+
+  /** The current ground top of a column: under a roof, its floor nearest the altar's level. */
+  int currentGroundAt(ServerLevel world, int x, int z) {
+    if (!roofed()) return currentGround(world, x, z);
+    BlockPos.MutableBlockPos probe = new BlockPos.MutableBlockPos();
+    int y = TerraformRules.floorNear(at -> cellOf(world.getBlockState(probe.set(x, at, z))),
+        world.getMinBuildHeight(), flatTop, bandTop);
+    if (y == TerraformRules.UNKNOWN) return Integer.MIN_VALUE;
+    return LandWorks.ground(world.getBlockState(probe.set(x, y, z))) ? y : Integer.MIN_VALUE;
   }
 
   /** Current ground top of a column under vegetation, or MIN for built or unknown columns. */
@@ -737,6 +857,11 @@ public final class TerraformAltarEntity extends AltarBlockEntity {
    * surrounding rock for an ore, snow for ice. Nothing of value is ever created.
    */
   static BlockState fill(BlockState original, int y) {
+    return fill(original, y, null);
+  }
+
+  /** As above, in a level whose own rock is {@code rock}: an ore of no known rock becomes it outside the Overworld. */
+  static BlockState fill(BlockState original, int y, BlockState rock) {
     if (basic(original)) return original.getBlock().defaultBlockState();
     if (COLD.contains(original.getBlock())) return Blocks.SNOW_BLOCK.defaultBlockState();
     if (original.is(Tags.Blocks.ORES_IN_GROUND_STONE)) return Blocks.STONE.defaultBlockState();
@@ -746,7 +871,17 @@ public final class TerraformAltarEntity extends AltarBlockEntity {
     if (path.contains("deepslate")) return Blocks.DEEPSLATE.defaultBlockState();
     if (path.contains("nether")) return Blocks.NETHERRACK.defaultBlockState();
     if (path.contains("end")) return Blocks.END_STONE.defaultBlockState();
+    if (rock != null && basic(rock) && !rock.is(Blocks.STONE)) return rock;
     return y < 0 ? Blocks.DEEPSLATE.defaultBlockState() : Blocks.STONE.defaultBlockState();
+  }
+
+  /** The rock the level's generator fills its land with: stone, netherrack, end stone. */
+  static BlockState defaultRock(ServerLevel world) {
+    if (world.getChunkSource().getGenerator() instanceof net.minecraft.world.level.levelgen.NoiseBasedChunkGenerator noise) {
+      BlockState rock = noise.generatorSettings().value().defaultBlock();
+      if (basic(rock) && !(rock.getBlock() instanceof FallingBlock)) return rock;
+    }
+    return Blocks.STONE.defaultBlockState();
   }
 
   static AltarRules.Cell repairCell(BlockState state) {
@@ -768,14 +903,17 @@ public final class TerraformAltarEntity extends AltarBlockEntity {
     if (!under.isAir() && !under.canBeReplaced()) return state;
     if (state.is(Blocks.SAND)) return Blocks.SANDSTONE.defaultBlockState();
     if (state.is(Blocks.RED_SAND)) return Blocks.RED_SANDSTONE.defaultBlockState();
-    return Blocks.STONE.defaultBlockState();
+    return defaultRock(world);
   }
 
   // ---- Preview -------------------------------------------------------------------------------
 
   /** Flatten: the flat square's edge in white and the slope's outer edge in green. Repair: the square's edge. */
   private void preview(ServerLevel world) {
-    int top = state == State.PREVIEW || state == State.IDLE ? worldPosition.getY() - 1 : flatTop;
+    boolean fresh = state == State.PREVIEW || state == State.IDLE;
+    int top = fresh ? worldPosition.getY() - 1 : flatTop;
+    // Under a roof the heightmap is the roof: the outline follows the floor nearest the altar instead.
+    int band = fresh ? roofOver(world, worldPosition, top) : bandTop;
     int[] rings = repairing() ? new int[] {repairRadius} : new int[] {size, TerraformRules.reach(size)};
     int step = repairing() ? 2 : 1;
     for (int ring : rings)
@@ -784,7 +922,10 @@ public final class TerraformAltarEntity extends AltarBlockEntity {
           int x = worldPosition.getX() + offset[0], z = worldPosition.getZ() + offset[1];
           if (!world.hasChunk(x >> 4, z >> 4)) continue;
           boolean flat = !repairing() && ring == size;
-          int y = flat ? top + 1 : world.getHeight(Heightmap.Types.MOTION_BLOCKING, x, z);
+          int floor = flat || band == Integer.MAX_VALUE ? TerraformRules.UNKNOWN
+              : floorGround(world, x, z, top, band, this::cellOf);
+          int y = flat ? top + 1 : band == Integer.MAX_VALUE ? world.getHeight(Heightmap.Types.MOTION_BLOCKING, x, z)
+              : floor == TerraformRules.UNKNOWN ? top + 1 : floor + 1;
           world.sendParticles(flat ? ParticleTypes.END_ROD : ParticleTypes.HAPPY_VILLAGER,
               x + 0.5, y + 0.2, z + 0.5, 1, 0, 0, 0, 0);
         }
@@ -824,6 +965,8 @@ public final class TerraformAltarEntity extends AltarBlockEntity {
     repairRadius = tag.contains("repairRadius", Tag.TAG_INT)
         ? Math.max(1, Math.min(TerraformRules.REPAIR, tag.getInt("repairRadius"))) : TerraformRules.REPAIR;
     flatTop = tag.contains("flatTop", Tag.TAG_INT) ? tag.getInt("flatTop") : worldPosition.getY() - 1;
+    bandUnknown = !tag.contains("bandTop", Tag.TAG_INT);
+    bandTop = bandUnknown ? Integer.MAX_VALUE : tag.getInt("bandTop");
     columns = null;
     cursor = Math.max(0, Math.min(columns().size(), tag.getInt("cursor")));
     var blocks = registries.lookupOrThrow(Registries.BLOCK);
@@ -836,6 +979,8 @@ public final class TerraformAltarEntity extends AltarBlockEntity {
     failure = tag.getString("failure");
     region = null;
     trust.clear();
+    comparing.clear();
+    cells.clear();
     legacy.clear();
     // Version 1's buffer lived in the common inventory list; version 2 keeps what is left of it here.
     ListTag items = version < 2 ? tag.getCompound("altar").getList("Items", Tag.TAG_COMPOUND)
@@ -859,6 +1004,7 @@ public final class TerraformAltarEntity extends AltarBlockEntity {
     tag.putInt("size", size);
     tag.putInt("repairRadius", repairRadius);
     tag.putInt("flatTop", flatTop);
+    tag.putInt("bandTop", bandTop);
     tag.putInt("cursor", cursor);
     CompoundTag materials = new CompoundTag();
     materials.put("surface", NbtUtils.writeBlockState(palette.surface()));

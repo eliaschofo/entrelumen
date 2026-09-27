@@ -174,6 +174,107 @@ class TerraformRulesTest {
     assertFalse(plan(64, deepOre).refused(), "an ore below the touched layers is not touched");
   }
 
+  // ---- Under a roof ---------------------------------------------------------------------------
+
+  /** A cave: ground up to {@code floor}, air up to the roof, ground from {@code roof} to 127 (the ceiling). */
+  private static Map<Integer, TerraformRules.Cell> cave(int floor, int roof) {
+    var cells = ground(floor);
+    for (int y = roof; y < 128; y++) cells.put(y, GROUND);
+    return cells;
+  }
+
+  private static TerraformRules.Plan roofed(int target, int bandTop, Map<Integer, TerraformRules.Cell> cells) {
+    return TerraformRules.roofedColumn(target, bandTop, y -> cells.getOrDefault(y, AIR), y -> true);
+  }
+
+  private static int highestTouched(TerraformRules.Plan plan) {
+    return plan.ops().stream().mapToInt(TerraformRules.Op::y).max().orElse(Integer.MIN_VALUE);
+  }
+
+  @Test
+  void underARoofOnlyTheMoundOnTheFloorIsCutNeverTheCeiling() {
+    // The old planner cut every natural block up to 32 over the target: here, the whole roof.
+    var cells = cave(64, 74);
+    for (int y = 78; y < 128; y++) cells.put(y, AIR);
+    for (int y = 65; y <= 67; y++) cells.put(y, GROUND);
+    cells.put(68, LOOSE);
+    var plan = roofed(64, 74, cells);
+    assertFalse(plan.refused());
+    List<Integer> cuts = new ArrayList<>();
+    for (var op : plan.ops()) if (op.kind() == TerraformRules.Kind.CUT) cuts.add(op.y());
+    assertEquals(List.of(68, 67, 66, 65), cuts, "the mound and the plant on it, top-down, nothing else");
+    assertTrue(highestTouched(plan) < 74);
+    assertTrue(TerraformRules.column(64, y -> cells.getOrDefault(y, AIR), y -> true).ops().stream()
+        .anyMatch(op -> op.y() >= 74), "the open-air planner would have cut the roof");
+  }
+
+  @Test
+  void underARoofWhatHangsFromAboveIsNeverCut() {
+    var stalactite = cave(64, 74);
+    for (int y = 69; y < 74; y++) stalactite.put(y, GROUND);
+    assertTrue(roofed(64, 74, stalactite).ops().isEmpty(), "a stalactite over a level floor stays");
+    var vines = cave(64, 74);
+    for (int y = 68; y < 74; y++) vines.put(y, LOOSE);
+    assertTrue(roofed(64, 74, vines).ops().isEmpty(), "vines that do not reach the floor stay");
+    var pillar = cave(64, 74);
+    for (int y = 65; y < 74; y++) pillar.put(y, GROUND);
+    assertEquals("ceiling", roofed(64, 74, pillar).refusal(), "rock from the floor into the roof is a wall");
+    var lowRoof = cave(64, 70);
+    assertTrue(roofed(64, 74, lowRoof).ops().isEmpty(), "a roof lower than the altar's is left alone");
+    var tallMound = cave(64, 90);
+    for (int y = 65; y <= 76; y++) tallMound.put(y, GROUND);
+    assertEquals("ceiling", roofed(64, 74, tallMound).refusal(), "nothing at or over the band top is ever cut");
+  }
+
+  @Test
+  void underARoofHolesAreFilledButNeverSealedAgainstTheRoof() {
+    var pit = cave(60, 74);
+    pit.put(61, LOOSE);
+    var plan = roofed(64, 74, pit);
+    assertFalse(plan.refused());
+    List<Integer> fills = new ArrayList<>();
+    for (var op : plan.ops()) if (op.kind() == TerraformRules.Kind.FILL) fills.add(op.y());
+    assertEquals(List.of(61, 62, 63, 64), fills);
+    assertTrue(highestTouched(plan) == 64);
+    var sealed = cave(60, 74);
+    for (int y = 65; y < 74; y++) sealed.put(y, GROUND);
+    assertEquals("ceiling", roofed(64, 74, sealed).refusal(), "filling up to a stalactite would seal the cave");
+    var hangingVines = cave(60, 74);
+    for (int y = 65; y < 74; y++) hangingVines.put(y, LOOSE);
+    var cleared = roofed(64, 74, hangingVines);
+    assertFalse(cleared.refused());
+    assertTrue(highestTouched(cleared) <= 73, "vines down to the fill are cut below the roof only");
+    assertEquals("ceiling", roofed(73, 74, cave(64, 74)).refusal(), "no target inside the roof");
+    assertEquals("too_deep", roofed(64, 74, cave(64 - TerraformRules.MAX_FILL - 1, 74)).refusal());
+    var lava = cave(60, 74);
+    lava.put(61, TerraformRules.Cell.FLUID);
+    assertEquals("fluid", roofed(64, 74, lava).refusal());
+    var bedrock = cave(64, 74);
+    bedrock.put(63, TerraformRules.Cell.BUILT);
+    assertEquals("built", roofed(64, 74, bedrock).refusal(), "bedrock and builds in the touched layers refuse");
+  }
+
+  @Test
+  void theFloorUnderARoofIsTheSurfaceNearestTheAltarNeverTheRoof() {
+    var cave = cave(60, 74);
+    assertEquals(60, TerraformRules.floorNear(y -> cave.getOrDefault(y, AIR), 0, 64, 74));
+    var ledge = cave(40, 74);
+    for (int y = 41; y <= 66; y++) ledge.put(y, y == 66 ? GROUND : AIR);
+    assertEquals(66, TerraformRules.floorNear(y -> ledge.getOrDefault(y, AIR), 0, 64, 74), "the nearer ledge wins");
+    var tie = cave(62, 74);
+    for (int y = 63; y <= 66; y++) tie.put(y, y == 66 ? GROUND : AIR);
+    assertEquals(62, TerraformRules.floorNear(y -> tie.getOrDefault(y, AIR), 0, 64, 74), "below first on a tie");
+    var plants = cave(63, 74);
+    plants.put(64, LOOSE);
+    assertEquals(63, TerraformRules.floorNear(y -> plants.getOrDefault(y, AIR), 0, 64, 74), "grass is not a floor");
+    var wall = cave(127, 128);
+    assertEquals(TerraformRules.UNKNOWN, TerraformRules.floorNear(y -> wall.getOrDefault(y, AIR), 0, 64, 74),
+        "solid rock up to the roof has no floor");
+    var roofOnly = cave(10, 74);
+    assertEquals(TerraformRules.UNKNOWN, TerraformRules.floorNear(y -> roofOnly.getOrDefault(y, AIR), 0, 64, 74),
+        "the top of the roof is outside the band");
+  }
+
   @Test
   void theRepairIsTheFifthSettingOfTheCycle() {
     assertEquals(TerraformRules.REPAIR, TerraformRules.nextSize(16));

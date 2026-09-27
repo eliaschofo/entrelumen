@@ -206,4 +206,92 @@ final class TerraformRules {
     for (int y = ground + 1; y <= target; y++) ops.add(new Op(Kind.FILL, y, layer(target - y)));
     return new Plan(List.copyOf(ops), null);
   }
+
+  /** Cells a roofed column treats as rock: anything that is neither air nor a loose plant. */
+  static boolean solid(Cell cell) {
+    return cell == Cell.GROUND || cell == Cell.PROTECTED || cell == Cell.BUILT || cell == Cell.FLUID;
+  }
+
+  /** How far above and below the flat level a column under a roof is searched for its floor. */
+  static final int FLOOR_SEARCH = 24;
+
+  /**
+   * Under a roof, the surface of a column: the floor nearest {@code flat}, the first height that,
+   * searching outwards from it (below first on ties), is solid with open space above. The search
+   * stays inside the working band, so it never returns the roof itself or anything above
+   * {@code bandTop - 2}; {@link #UNKNOWN} when no floor lies within {@link #FLOOR_SEARCH}.
+   */
+  static int floorNear(IntFunction<Cell> cell, int minY, int flat, int bandTop) {
+    int low = Math.max(minY, flat - FLOOR_SEARCH);
+    int high = Math.min(bandTop - 2, flat + FLOOR_SEARCH);
+    if (low > high) return UNKNOWN;
+    Cell[] seen = new Cell[high - low + 2];
+    IntFunction<Cell> at = y -> {
+      Cell known = seen[y - low];
+      if (known == null) seen[y - low] = known = cell.apply(y);
+      return known;
+    };
+    for (int d = 0; d <= FLOOR_SEARCH; d++) {
+      int below = flat - d, above = flat + d;
+      if (below >= low && below <= high && solid(at.apply(below)) && !solid(at.apply(below + 1))) return below;
+      if (d > 0 && above >= low && above <= high && solid(at.apply(above)) && !solid(at.apply(above + 1)))
+        return above;
+    }
+    return UNKNOWN;
+  }
+
+  /**
+   * Plans one column under a roof: in the Nether, in a cave, or wherever the altar has something
+   * above it. {@code bandTop} is the first solid block above the altar; nothing at or above it is
+   * ever cut or filled, whatever the column. Below it the altar only cuts the ground that rises from
+   * the target without a gap (a mound on the cave floor) and the loose plants standing on it, and
+   * fills holes in the floor. What hangs from above (a stalactite, a lower roof, vines that do not
+   * reach the floor) is never cut. A column whose rock rises from the target into the band top (a
+   * wall, a pillar, a roof lower than the altar's) is refused whole, and so is a hole that would be
+   * filled up against a roof. Builds, protected natural blocks and fluid sources in the touched
+   * span refuse the column as on open ground.
+   */
+  static Plan roofedColumn(int target, int bandTop, IntFunction<Cell> cell, IntPredicate matches) {
+    if (target == UNKNOWN || target > bandTop - 2) return Plan.refused("ceiling");
+    int ground;
+    int cutTop;
+    if (solid(cell.apply(target))) {
+      int y = target + 1;
+      while (y < bandTop && solid(cell.apply(y))) y++;
+      if (y == bandTop && solid(cell.apply(bandTop))) return Plan.refused("ceiling");
+      int moundTop = y - 1;
+      if (moundTop - target > MAX_CUT) return Plan.refused("too_tall");
+      cutTop = moundTop;
+      while (cutTop + 1 < bandTop && cell.apply(cutTop + 1) == Cell.LOOSE) cutTop++;
+      ground = target;
+    } else {
+      int y = target;
+      while (y >= target - MAX_FILL && !solid(cell.apply(y))) y--;
+      if (y < target - MAX_FILL) return Plan.refused("too_deep");
+      ground = y;
+      cutTop = target;
+      while (cutTop + 1 < bandTop && cell.apply(cutTop + 1) == Cell.LOOSE) cutTop++;
+      // Filling up to the target must leave open space under whatever is above it.
+      if (cutTop == target && solid(cell.apply(target + 1))) return Plan.refused("ceiling");
+    }
+    int lowest = Math.min(ground, target - SUBSURFACE_DEPTH);
+    for (int y = lowest; y <= cutTop; y++) {
+      Cell at = cell.apply(y);
+      if (at == Cell.BUILT) return Plan.refused("built");
+      if (at == Cell.PROTECTED) return Plan.refused("protected");
+      if (at == Cell.FLUID) return Plan.refused("fluid");
+    }
+    List<Op> ops = new ArrayList<>();
+    for (int y = cutTop; y > target; y--) {
+      Cell at = cell.apply(y);
+      if (at == Cell.GROUND || at == Cell.LOOSE) ops.add(new Op(Kind.CUT, y, null));
+    }
+    for (int y = target; y > ground; y--)
+      if (cell.apply(y) == Cell.LOOSE) ops.add(new Op(Kind.CUT, y, null));
+    for (int y = Math.max(target - SUBSURFACE_DEPTH, lowest); y <= Math.min(ground, target); y++)
+      if (cell.apply(y) == Cell.GROUND && !matches.test(y))
+        ops.add(new Op(Kind.SWAP, y, layer(target - y)));
+    for (int y = ground + 1; y <= target; y++) ops.add(new Op(Kind.FILL, y, layer(target - y)));
+    return new Plan(List.copyOf(ops), null);
+  }
 }

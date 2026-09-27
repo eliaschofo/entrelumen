@@ -205,9 +205,24 @@ The old Renewal terrain pass, unchanged in its rules and now paid only with fuel
 
 A whole column is one unit: if any of its blocks borders a build (other than land still holding its original block, so badlands terracotta and village edges work), enters an entity or is refused by a claim, nothing is placed.
 
+### Under a roof
+
+Until 26 September the altar read the land's top from the heightmap everywhere. Under a roof that is the roof: in the Nether, the bedrock ceiling. A flatten aimed its slope at the roof and cut every natural block up to 32 over the target, so a cave roof with open space over it was cut away; a repair took the roof for the surface and never reached the floor. Elias's rule: under a roof the altar works on the terrain nearest its own height, never cuts or fills a ceiling, bedrock or anything above its working band, and repairs the real floor.
+
+The altar works under a roof when its dimension has a ceiling (the Nether, or a modded dimension with one) or when a solid block stands within 32 blocks over it: rock, a build, a trunk. Leaves and fluids over it are not a roof. This is decided when a run starts and saved with it.
+
+- **Working band.** It runs up to the band top: the first solid block over the altar, or 33 blocks over the flat level when a dimension with a ceiling leaves the altar's column open that far. Nothing at or above the band top is ever cut or filled. Bedrock is never terrain, so it is never cut, filled or swapped anywhere.
+- **The land's top** of a column becomes its floor nearest the altar's height: searching outwards from the flat level, below first on ties, the first height within 24 blocks and inside the band that is solid with open space over it (air or a loose plant). The slope, the palette, the preview's outline and the repair's comparison and refill all use it.
+- **Flatten** cuts only the ground that rises from the target without a gap (a mound on the floor) and the loose plants on it, and fills holes in the floor. What hangs from above is never cut: a stalactite, a lower part of the roof, vines that stop short of the floor. A column whose rock rises from the target into the band top (a wall, a pillar) is refused, and so is a hole whose fill would touch rock over it and seal the passage; both are `ceiling` refusals. Builds, ores, trees, fluids and claims refuse as in the open.
+- **Repair** compares each chunk's floors, the generator's and the current one, both nearest the altar's height, with the same thresholds, and refills a pit from its bottom up to the generator's floor, never above it. An ore of no known rock becomes the level's own rock (netherrack in the Nether), and falling ground over a void becomes its sturdy form or that rock.
+- **Plants.** Fungi, roots, sprouts and weeping or twisting vines count as loose plants, cut when in the way like grass and flowers. Huge fungi (stems, wart blocks, shroomlights) stay protected.
+- **Status.** A line gives the band top: nothing from that height up is touched.
+
+Under a roof each column's floor is a search of up to 49 blocks, in the live level and in the reference, so the repair compares a chunk in slices of 16 columns, as many as fit in the tick's 2 ms, and the altar keeps what each block state means for the rest of the run.
+
 ### Persistence and the old buffer
 
-Setting, repair half-width, flat height, palette, cursor, totals and fuel are saved (schema version 2). A reload resumes at the next column; the repair's reference is rebuilt identically. A version 1 altar kept a 27-slot buffer: its contents are read from the old save and dropped at the altar on its first tick, once, and dropped with the altar if it is broken first. Nothing is lost.
+Setting, repair half-width, flat height, band top under a roof, palette, cursor, totals and fuel are saved (schema version 2; a run saved without a band top judges its roof again when it next works). A reload resumes at the next column; the repair's reference is rebuilt identically. A version 1 altar kept a 27-slot buffer: its contents are read from the old save and dropped at the altar on its first tick, once, and dropped with the altar if it is broken first. Nothing is lost.
 
 ## Area altars: Peace, Growth and Time
 
@@ -543,7 +558,7 @@ Elias's rule that the garden always yields every dye (see [Garden soil](#garden-
   - Run G (`qa-G.json`), on the final code: **all five cases passed.** `renewalAltarGardenMakesEveryDyeOnBareGround` (new) planted all 64 beds of a 29 square of sand, stone, end stone and netherrack with the pack's seven species, laid exactly 64 blocks of soil for them and 4 of podzol under the four ink caps (228 cap blocks), and the harvest of what actually grew makes all sixteen dyes with the loaded recipes. The dye check over all 183 biomes, the ink caps and mod flowers, the modded trees and the FTB Chunks claims passed again.
   - Run F: the bare-ground case grew all seven species, the four ink caps on podzol and a harvest that makes all sixteen dyes, but 12 of 64 beds under the ink caps' caps stayed empty, which the canopy fix above corrects. The other three cases passed.
   - Runs D and E stopped at server start, inside Supplementaries' own start-up, while another worker built on the same machine with 4 GB of RAM free. Runs F and G used a temporary `max-tick-time` of 180000 for the boot (receipts `watchdog-F-allowance.json`, `watchdog-G-allowance.json`), set back to 60000 right after each.
-  - **Backups.** SimpleBackups keeps 10 archives in `server-slice/simplebackups` and rotated four old ones while these QA servers ran. Three were put back from copies made before run D (`altars3-20260925/simplebackups-kept`). One, `entrelumen-test_2026-09-12_18-24-30.zip` (3.5 MB, the fresh QA world of 12 September), was rotated during run C on 25 September, before copies were made, and has no other copy. The folder now holds 12 archives, so the server's next backup will rotate the oldest again unless its `backupsToKeep` changes.
+  - **Backups.** SimpleBackups keeps 10 archives in `server-slice/simplebackups` and rotated four old ones while these QA servers ran. Three were put back from copies made before run D (`altars3-20260925/simplebackups-kept`). One, `entrelumen-test_2026-09-12_18-24-30.zip` (3.5 MB, the fresh QA world of 12 September), was rotated during run C on 25 September, before copies were made, and has no other copy. The folder then held 12 archives; on 26 September `backupsToKeep` was raised to 100 (the old file is kept beside it), so QA runs no longer rotate them away.
 
 ### Vegetation and free terrain (`feature/altars-vegetation-terrain`, 25 September)
 
@@ -584,6 +599,7 @@ Offline `gradlew --offline --no-daemon build qaJar runGameTestServer` in the wor
 - Altar of Renewal: it needs its whole square and margin loaded, so it needs a player nearby.
 - Altar of Levelling: repair refills pits no deeper than 16 blocks below the original surface, and never overhangs, closed caves, flooded pits or carver ravines. Where neighbouring chunks' features overlapped during real generation, the reference may differ slightly from the original. Chunks next to a structure whose start is not loaded are skipped, and structure pieces are never rebuilt. Modded chunk generators get no surface-rule pass.
 - Altar of Levelling: columns with an ore, a tree, ice or a build in the touched span are refused whole, so flattening a forest or a hill with ore leaves pillars until the trees are felled and the ore is mined. Cut blocks vanish.
+- Altar of Levelling under a roof: the roof is judged at the altar's own column when a run starts. An altar under open sky works as in the open even beside an overhang or over a cave, and cuts natural rock hanging over its targets within 32 blocks as part of the hill. Under a roof, a column with no floor within 24 blocks of the altar's height inside the band is left alone. The reference still has no carvers or underground ores and blobs, so in the Nether a pit dug in a gravel, blackstone or magma blob comes back as netherrack, and a carver's hole in the floor with a bottom within 16 blocks is refilled.
 - Minecraft does not record who placed a block, so isolated placed dirt or stone counts as terrain.
 - Fake-player claim checks follow FTB Chunks' own fake-player setting.
 - Altar of Peace: a modded hostile outside the `MONSTER` category, or a mod that spawns hostiles without NeoForge's spawn events, is not refused.
