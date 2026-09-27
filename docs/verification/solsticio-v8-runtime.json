@@ -2,7 +2,7 @@
  "schema": 1,
  "task": "Solsticio v8: the urban plan in blocks (phase 1), dressed, detailed and exported (phase 2), and the solarpunk pass (Elias: glass, stained glass and copper) before the final export, replacing the v7 citadel",
  "branch": "feature/solsticio-v8",
- "base": "main 27fb170",
+ "base": "main b71cdd8 (rebased; phase 1 and 2 were cut from 27fb170)",
  "design": "docs/design/solsticio-city-v8.md",
  "generator": {
   "command": "python art/solsticio/city8.py --export",
@@ -181,19 +181,26 @@
   "palette": 631,
   "blockEntities": 278,
   "dataVersion": 3955,
-  "deterministic": "two independent exports byte-identical"
+  "deterministic": "two independent exports byte-identical",
+  "rebased": "the rebased generator exports the same bytes (sha256 unchanged)"
  },
  "junit": {
-  "tests": 219,
+  "tests": 246,
   "failures": 0,
-  "errors": 0
+  "errors": 0,
+  "onHead": "rebased",
+  "beforeRebase": {
+   "tests": 219,
+   "failures": 0,
+   "errors": 0
+  }
  },
  "isolatedGameTests": {
   "command": "gradlew --offline --no-daemon test runGameTestServer (fresh run/world)",
-  "log": "E:/Elias/Codex/Entrelumen-ssd/solsticio8/gametest-7.log",
-  "summary": "All 103 required tests passed",
-  "solsticioPlacement": "1362001 template blocks over 131 ticks, 2183 ms placing (worst tick 73 ms), 17667 ms wall",
-  "commerce": "70 villagers spawned in 7996 ms, 0 failed",
+  "log": "E:/Elias/Codex/Entrelumen-ssd/solsticio8/gametest-8.log",
+  "summary": "All 119 required tests passed (rebased head); 103 of 103 before the rebase (gametest-7.log)",
+  "solsticioPlacement": "1362001 template blocks over 128 ticks, 2297 ms placing (worst tick 149 ms), 18356 ms wall",
+  "commerce": "70 villagers spawned in 10968 ms, 0 failed",
   "note": "the isolated server has no Create or Macaw mods: their blocks read as air there; the full-pack run places them"
  },
  "python": {
@@ -244,9 +251,19 @@
     "plan": "the two failures alone, fresh world",
     "result": "both FAIL again, same messages: deterministic, not an order effect",
     "scope": "this branch changes only Solsticio (generator, template, lang, the shared-city tick budget); the last PASS on record for both is act6-20260924/qa-F.json (25/09)"
+   },
+   "F": {
+    "head": "b4abe72 (rebased on main b71cdd8)",
+    "result": "no verdict: the 60 s watchdog stopped the server at start-up in immersiveengineering ArcRecyclingCalculator.onServerStarted, with another worker's GameTest server running and the machine at 100% CPU",
+    "evidence": "E:/Elias/Codex/Entrelumen-ssd/solsticio8/qa/run-F",
+    "expected": 130
+   },
+   "G": {
+    "head": "b4abe72 (rebased on main b71cdd8)",
+    "result": "stopped by hand 15 minutes into mod loading: the machine at 100% CPU and 0.3 GB of free memory (other workers' processes); no verdict"
    }
   },
-  "status": "run: 111 of 113 PASS; 2 deterministic failures outside Solsticio (Ark boss-drop recipes, Act IV closing)"
+  "status": "run D (the same template, before the rebase): 111 of 113 PASS; 2 deterministic failures outside Solsticio (Ark boss-drop recipes, Act IV closing), confirmed alone by run E; on the rebased head the full-pack runs F and G gave no verdict because of machine load, the isolated GameTests pass there (119 of 119)"
  },
  "renders": {
   "local": "E:/Elias/Codex/Entrelumen-ssd/solsticio8/phase2",
