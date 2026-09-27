@@ -59,9 +59,14 @@ public final class EnvesEntrance {
     NeoForge.EVENT_BUS.addListener(EventPriority.HIGH, EnvesEntrance::onRightClickBlock);
   }
 
-  /** Called by {@link HeliodorRuins#place} once the start ruin stands: records the stair and sets the gate. */
+  /**
+   * Called by {@link HeliodorRuins#place} once the start ruin stands: records the stair and sets the
+   * gate. Only the world's own start ruin owns the Sealed Stair; a placement into another registry
+   * (GameTests place throwaway ones far away) leaves the world's record alone.
+   */
   static void onStartRuinPlaced(ServerLevel level, StructureTemplate template, BlockPos origin,
       StructurePlaceSettings settings, int ground) {
+    if (!worldsStartRuin(level, origin)) return;
     BlockPos gate = null, antechamber = null;
     for (var info : template.filterBlocks(origin, settings, Blocks.STRUCTURE_BLOCK)) {
       if (info.nbt() == null || !"DATA".equals(info.nbt().getString("mode"))) continue;
@@ -74,6 +79,13 @@ public final class EnvesEntrance {
     record(level, origin.offset(size.getX() / 2, ground, size.getZ() / 2), gate, antechamber,
         new int[] {origin.getX(), origin.getY(), origin.getZ(), origin.getX() + size.getX() - 1, origin.getY() + ground - 1,
             origin.getZ() + size.getZ() - 1});
+  }
+
+  /** Whether this world's ruin registry holds the start ruin placed at {@code origin} in {@code level}. */
+  static boolean worldsStartRuin(ServerLevel level, BlockPos origin) {
+    return RuinData.get(level.getServer()).find(HeliodorRuins.START)
+        .filter(ruin -> ruin.dimension().equals(level.dimension()) && ruin.origin().equals(origin))
+        .isPresent();
   }
 
   /** Records a Sealed Stair (placement, and GameTests building one by hand) and sets the gate blocks. */

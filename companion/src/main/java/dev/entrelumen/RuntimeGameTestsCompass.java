@@ -136,6 +136,7 @@ public final class RuntimeGameTestsCompass {
     data.pendingStart = true;
     var oldSpawn = level.getSharedSpawnPos();
     float oldAngle = level.getSharedSpawnAngle();
+    var stair = EnvesData.get(level.getServer()).entrance;
     RuinData.Ruin ruin;
     try {
       ruin = HeliodorRuins.place(level, data, near, true).orElseThrow();
@@ -144,6 +145,8 @@ public final class RuntimeGameTestsCompass {
     } finally {
       level.setDefaultSpawnPos(oldSpawn, oldAngle);
     }
+    helper.assertTrue(EnvesData.get(level.getServer()).entrance == stair,
+        "A start ruin in a throwaway registry took over the world's Sealed Stair");
     var origin = ruin.origin();
     // The Sealed Stair reaches below the patio: the template sinks by its ground marker's layer.
     var template = level.getStructureManager().get(HeliodorRuins.START).orElseThrow();
