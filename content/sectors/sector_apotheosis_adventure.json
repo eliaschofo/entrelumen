@@ -1,0 +1,480 @@
+{
+  "format": "sector",
+  "chapter": "sector_apotheosis_adventure",
+  "group": "magic",
+  "act": "II",
+  "motif": "apotheosis",
+  "icon": "apotheosis:salvaging_table",
+  "emblem": "apotheosis:textures/items/gems/solar.png",
+  "title": {"en_us": "Apotheosis · Adventure", "es_es": "Apotheosis · Aventura"},
+  "subtitle": {
+    "en_us": ["Affix loot from Common to Mythic, gems, salvaging, reforging and Invaders, up the World Tier mountain that the story climbs for you."],
+    "es_es": ["Botín con afijos de Común a Mítico, gemas, reciclaje, reforjado e Invasores, por la montaña de Niveles de Mundo que la historia sube por vos."]
+  },
+  "entry": "aadv_welcome",
+  "center": [0, 0],
+  "figures": {
+    "crown": {"kind": "ring", "cx": 12.143, "cy": -14.4, "r": 2.9, "count": 15, "start": -90, "draw": [{"style": "glyphs", "r": 2.9, "scale": 1, "alpha": 230, "start": -90, "textures": ["apotheosis:textures/items/gems/ballast.png", "apotheosis:textures/items/gems/brawlers.png", "apotheosis:textures/items/gems/breach.png", "apotheosis:textures/items/gems/combatant.png", "apotheosis:textures/items/gems/guardian.png", "apotheosis:textures/items/gems/lightning.png", "apotheosis:textures/items/gems/lunar.png", "apotheosis:textures/items/gems/samurai.png", "apotheosis:textures/items/gems/slipstream.png", "apotheosis:textures/items/gems/solar.png", "apotheosis:textures/items/gems/splendor.png", "apotheosis:textures/items/gems/tyrannical.png", "apotheosis:textures/items/gems/warlord.png", "apotheosis:textures/items/gems/forest.png", "apotheosis:textures/items/gems/queen.png"]}]}
+  },
+  "groups": {
+    "gems": {"label": {"en_us": "Gems", "es_es": "Gemas"}, "axis": "x", "caption": "below"},
+    "reforge": {"label": {"en_us": "Salvaging and reforging", "es_es": "Reciclaje y reforjado"}, "axis": "x", "caption": "below"},
+    "charms": {"label": {"en_us": "Charms and potions", "es_es": "Amuletos y pociones"}, "axis": "x", "caption": "above"},
+    "world": {"label": {"en_us": "Out in the world", "es_es": "Por el mundo"}, "axis": "x", "caption": "above"},
+    "invaders": {"label": {"en_us": "Invaders", "es_es": "Invasores"}, "axis": "x", "caption": "right"},
+    "augment": {"label": {"en_us": "Augmenting", "es_es": "Aumentación"}, "axis": "y", "caption": "right"}
+  },
+  "links": [
+    {"target": "entrelumen_world_tiers_ladder", "at": {"x": 0.6, "y": 8.9}},
+    {"target": "gear_act6", "at": {"x": 8.6, "y": -9.4}},
+    {"target": "bosses_wither", "at": {"x": 9.2, "y": 1.0}}
+  ],
+  "art": [
+    {"id": "mountain", "texture": "apotheosis:textures/gui/mountain.png", "px": [498, 286], "x": 0, "y": 0, "scale": 2, "order": -5, "alpha": 150},
+    {"id": "banner", "texture": "entrelumen:textures/gui/quests/banner_plain.png", "x": -8.0, "y": -13.6, "scale": 2, "order": -1, "color": "#5A3E75"},
+    {"id": "title", "label": {"en_us": "Apotheosis", "es_es": "Apotheosis"}, "x": -8.0, "y": -14.049999999999999, "scale": 2, "bold": true, "tint": "#F3EEFF", "order": 5},
+    {"id": "chapter", "label": {"en_us": "Adventure", "es_es": "Aventura"}, "x": -8.0, "y": -12.65, "scale": 1, "tint": "#F2B27A", "order": 5},
+    {"id": "medallion", "texture": "entrelumen:textures/gui/quests/medallion.png", "x": -17.6, "y": -13.6, "scale": 2, "order": 0, "click": "chapter:sun_of_heliodor", "hover": {"en_us": "Back to the Sun of Heliodor", "es_es": "Volver al Sol de Heliodor"}},
+    {"id": "emblem", "texture": "apotheosis:textures/items/gems/solar.png", "x": -17.6, "y": -13.6, "scale": 4, "order": 1},
+    {"id": "to_enchanting", "label": {"en_us": "» Enchanting", "es_es": "» Encantamiento"}, "x": 1.8000000000000007, "y": -14.2, "scale": 1, "tint": "#F2B27A", "click": "chapter:sector_apotheosis_enchanting"},
+    {"id": "to_spawners", "label": {"en_us": "» Spawners", "es_es": "» Generadores"}, "x": 1.8000000000000007, "y": -13.0, "scale": 1, "tint": "#F2B27A", "click": "chapter:sector_apotheosis_spawners"},
+    {"id": "sun", "texture": "entrelumen:textures/gui/quests/sun_heliodor.png", "x": 12.143, "y": -14.4, "scale": 1, "order": -3, "alpha": 170, "reveal": "aadv_mastery"},
+    {"id": "tier_haven", "label": {"en_us": "Haven", "es_es": "Refugio"}, "x": -8.929, "y": 5.335999999999999, "scale": 1, "tint": "#F3EEFF", "order": 4},
+    {"id": "tier_frontier", "label": {"en_us": "Frontier", "es_es": "Frontera"}, "x": 1.2790000000000001, "y": 6.071, "scale": 1, "tint": "#F3EEFF", "order": 4},
+    {"id": "tier_ascent", "label": {"en_us": "Ascent", "es_es": "Ascenso"}, "x": 2.457, "y": -0.357, "scale": 1, "tint": "#F3EEFF", "order": 4},
+    {"id": "tier_summit", "label": {"en_us": "Summit", "es_es": "Cumbre"}, "x": 8.429, "y": -4.286, "scale": 1, "tint": "#F3EEFF", "order": 4},
+    {"id": "tier_pinnacle", "label": {"en_us": "Pinnacle", "es_es": "Pináculo"}, "x": 14.343, "y": -8.571, "scale": 1, "tint": "#F3EEFF", "order": 4}
+  ],
+  "quests": [
+    {
+      "key": "aadv_welcome", "role": "entry", "deps": [],
+      "task": {"item": "apotheosis:gem", "title": {"en_us": "Any Apotheosis gem", "es_es": "Cualquier gema de Apotheosis"}},
+      "icon": "apotheosis:gem",
+      "at": {"x": -8.929, "y": 6.786},
+      "en_us": {"title": "Loot with opinions", "subtitle": "The sword you find may beat the one you made.",
+        "text": ["Gear now drops with affixes, extra stats named on the item and coloured by rarity, and gems drop beside it. A quarter of vanilla chests hold a gem, and monsters you kill yourself drop one about 4% of the time."]},
+      "es_es": {"title": "Botín con personalidad", "subtitle": "La espada que encontrás puede ser mejor que la que hiciste.",
+        "text": ["El equipo ahora cae con afijos, atributos extra que llevan nombre en el ítem y color según la rareza, y al lado caen gemas. Un cuarto de los cofres vanilla trae una gema, y los monstruos que matás vos sueltan una cerca del 4% de las veces."]},
+      "sources": ["jar:Apotheosis-1.21.1-8.7.0.jar:assets/apotheosis/patchouli_books/apoth_chronicle/en_us/entries/adventure/affix_loot/affixes.json", "jar:Apotheosis-1.21.1-8.7.0.jar:assets/apotheosis/patchouli_books/apoth_chronicle/en_us/entries/adventure/gems/gems.json", "jar:Apotheosis-1.21.1-8.7.0.jar:data/apotheosis/loot_modifiers/gem_loot_injection.json", "jar:Apotheosis-1.21.1-8.7.0.jar:data/apotheosis/loot_modifiers/gem_entity_drops_from_real_players.json", "jar:Apotheosis-1.21.1-8.7.0.jar:data/apotheosis/loot_modifiers/affix_loot_injection.json"]
+    },
+    {
+      "key": "aadv_gem_dust", "role": "step", "deps": ["aadv_welcome"],
+      "task": {"item": "apotheosis:gem_dust", "count": 4},
+      "at": {"x": -8.929, "y": 12.2},
+      "en_us": {"title": "Drop an anvil on it", "subtitle": "Crude, loud, effective.",
+        "text": ["The first gems get crushed the old way: an anvil falling on a gem lying on the ground turns it into [item:apotheosis:gem_dust|Gem Dust]. Dust builds the Salvaging Table, and one among eight deepslate makes eight [item:apotheosis:gem_fused_slate|Gem-Fused Slate] for every sigil."]},
+      "es_es": {"title": "Tirale un yunque", "subtitle": "Bruto, ruidoso, efectivo.",
+        "text": ["Las primeras gemas se muelen a la antigua: un yunque que cae sobre una gema tirada en el piso la vuelve [item:apotheosis:gem_dust|polvo de gema]. El polvo arma la mesa de reciclaje, y uno entre ocho de pizarra profunda da ocho de [item:apotheosis:gem_fused_slate|pizarra fusionada con gema] para todos los sellos."]},
+      "sources": ["jar:Apotheosis-1.21.1-8.7.0.jar:assets/apotheosis/patchouli_books/apoth_chronicle/en_us/entries/adventure/gems/gem_dust.json", "jar:Apotheosis-1.21.1-8.7.0.jar:data/apotheosis/recipe/gem_fused_slate.json", "jar:Apotheosis-1.21.1-8.7.0.jar:data/apotheosis/recipe/salvaging_table.json"]
+    },
+    {
+      "key": "aadv_salvage", "role": "milestone", "deps": ["aadv_gem_dust"],
+      "task": {"item": "apotheosis:salvaging_table"},
+      "at": {"x": -4.8, "y": 12.2},
+      "en_us": {"title": "Salvage everything", "subtitle": "One adventurer's junk is another's pearl.",
+        "text": ["Three copper ingots, an iron pickaxe and axe, a smithing table, two Gem Dust and a lava bucket make the [item:apotheosis:salvaging_table|Salvaging Table]. It breaks affix items into one to four rarity materials, gems into dust and plain vanilla gear back into ingots or diamonds."]},
+      "es_es": {"title": "Reciclá todo", "subtitle": "La chatarra de uno es la perla de otro.",
+        "text": ["Tres lingotes de cobre, un pico y un hacha de hierro, una mesa de herrería, dos de polvo de gema y un cubo con lava dan la [item:apotheosis:salvaging_table|mesa de reciclaje]. Desarma los ítems con afijos en uno a cuatro materiales de rareza, las gemas en polvo y el equipo vanilla común en lingotes o diamantes."]},
+      "sources": ["jar:Apotheosis-1.21.1-8.7.0.jar:data/apotheosis/recipe/salvaging_table.json", "jar:Apotheosis-1.21.1-8.7.0.jar:data/apotheosis/recipe/salvaging/affix_item/common.json", "jar:Apotheosis-1.21.1-8.7.0.jar:data/apotheosis/recipe/salvaging/gem/normal.json", "jar:Apotheosis-1.21.1-8.7.0.jar:data/apotheosis/recipe/salvaging/other/iron_armor.json", "jar:Apotheosis-1.21.1-8.7.0.jar:assets/apotheosis/patchouli_books/apoth_chronicle/en_us/entries/adventure/affix_loot/salvaging.json"]
+    },
+    {
+      "key": "aadv_rarities", "role": "step", "deps": ["aadv_welcome"],
+      "task": {"item": "apotheosis:mysterious_scrap_metal", "count": 4},
+      "at": {"x": -6.6, "y": 7.6},
+      "en_us": {"title": "Read the colour", "subtitle": "Gray: the colour of humble beginnings.",
+        "text": ["Gray Common items carry one stat, sometimes two, and salvage into [item:apotheosis:mysterious_scrap_metal|Mysterious Scrap Metal]. In Haven six drops in ten are Common, most of them stone tools, leather or chainmail."]},
+      "es_es": {"title": "Leé el color", "subtitle": "Gris: el color de los comienzos humildes.",
+        "text": ["Los ítems grises, Comunes, traen un atributo, a veces dos, y se reciclan en [item:apotheosis:mysterious_scrap_metal|chatarra misteriosa]. En el Refugio seis de cada diez son Comunes, casi todos herramientas de piedra, cuero o cota de malla."]},
+      "sources": ["jar:Apotheosis-1.21.1-8.7.0.jar:data/apotheosis/rarities/common.json", "jar:Apotheosis-1.21.1-8.7.0.jar:data/apotheosis/recipe/salvaging/affix_item/common.json", "jar:Apotheosis-1.21.1-8.7.0.jar:data/apotheosis/affix_loot_entries/stone_sword.json", "jar:Apotheosis-1.21.1-8.7.0.jar:data/apotheosis/affix_loot_entries/leather_chestplate.json", "jar:Apotheosis-1.21.1-8.7.0.jar:data/apotheosis/affix_loot_entries/chainmail_helmet.json"]
+    },
+    {
+      "key": "aadv_fabric", "role": "step", "deps": ["aadv_rarities"],
+      "task": {"item": "apotheosis:timeworn_fabric", "count": 4},
+      "at": {"x": -4.2, "y": 7.2},
+      "en_us": {"title": "Uncommon green", "subtitle": "Not a single tear in it, somehow.",
+        "text": ["Green Uncommon items get two stats, may add an effect and a socket, and salvage into [item:apotheosis:timeworn_fabric|Timeworn Fabric]. They are over a third of what drops in Haven, and six in ten at Frontier."]},
+      "es_es": {"title": "Verde Poco común", "subtitle": "Ni un solo desgarro, quién sabe cómo.",
+        "text": ["Los ítems verdes, Poco comunes, traen dos atributos, pueden sumar un efecto y un engarce, y se reciclan en [item:apotheosis:timeworn_fabric|tela deteriorada]. Son más de un tercio de lo que cae en el Refugio, y seis de cada diez en la Frontera."]},
+      "sources": ["jar:Apotheosis-1.21.1-8.7.0.jar:data/apotheosis/rarities/uncommon.json", "jar:Apotheosis-1.21.1-8.7.0.jar:data/apotheosis/recipe/salvaging/affix_item/uncommon.json"]
+    },
+    {
+      "key": "aadv_tiers", "role": "milestone", "deps": ["aadv_fabric"],
+      "task": {"type": "advancement", "advancement": "apotheosis:progression/frontier", "title": {"en_us": "Your team completes Act II", "es_es": "Tu equipo completa el acto II"}, "icon": "minecraft:spruce_sapling"},
+      "icon": "minecraft:spruce_sapling",
+      "at": {"x": -1.071, "y": 6.071},
+      "en_us": {"title": "Frontier", "subtitle": "The story sets your tier.",
+        "text": ["When your team's campaign completes Act II, everyone rises to Frontier, and it never goes back down. Monsters get +4 armor and Invaders start to arrive; you get 35% more experience and the enchanting ceiling goes up to 45."]},
+      "es_es": {"title": "Frontera", "subtitle": "La historia fija tu nivel.",
+        "text": ["Cuando la campaña de tu equipo completa el acto II, todos suben a Frontera, y nunca vuelve a bajar. Los monstruos ganan +4 de armadura y empiezan a llegar Invasores; vos ganás 35% más de experiencia y el techo de encantamiento sube a 45."]},
+      "sources": ["repo:pack/kubejs/data/apotheosis/advancement/progression/frontier.json", "jar:Apotheosis-1.21.1-8.7.0.jar:data/apotheosis/tier_augments/frontier/armor.json", "jar:Apotheosis-1.21.1-8.7.0.jar:data/apotheosis/tier_augments/frontier/experience.json", "jar:Apotheosis-1.21.1-8.7.0.jar:data/apotheosis/tier_augments/frontier/max_eterna.json", "jar:Apotheosis-1.21.1-8.7.0.jar:data/apotheosis/data_maps/dimension_type/invader_spawn_rules.json", "repo:docs/design/apotheosis-family.md#Story-set World Tiers"]
+    },
+    {
+      "key": "aadv_shard", "role": "step", "deps": ["aadv_tiers"],
+      "task": {"item": "apotheosis:luminous_crystal_shard", "count": 4},
+      "at": {"x": -0.357, "y": 2.857},
+      "en_us": {"title": "Rare blue", "subtitle": "A shard of the brightest crystal ever. Allegedly.",
+        "text": ["Blue Rare items add a real effect to their stats, up to two sockets and 10 to 25% more durability, and salvage into [item:apotheosis:luminous_crystal_shard|Luminous Crystal Shards]. One drop in ten at Frontier, half of them at Ascent."]},
+      "es_es": {"title": "Azul Raro", "subtitle": "Un fragmento del cristal más brillante. Dicen.",
+        "text": ["Los ítems azules, Raros, suman un efecto de verdad a sus atributos, hasta dos engarces y entre 10 y 25% más de durabilidad, y se reciclan en [item:apotheosis:luminous_crystal_shard|fragmentos de cristal luminoso]. Uno de cada diez en la Frontera, la mitad en el Ascenso."]},
+      "sources": ["jar:Apotheosis-1.21.1-8.7.0.jar:data/apotheosis/rarities/rare.json", "jar:Apotheosis-1.21.1-8.7.0.jar:data/apotheosis/recipe/salvaging/affix_item/rare.json"]
+    },
+    {
+      "key": "aadv_ascent", "role": "milestone", "deps": ["aadv_shard"],
+      "task": {"type": "advancement", "advancement": "apotheosis:progression/ascent", "title": {"en_us": "Your team completes Act III", "es_es": "Tu equipo completa el acto III"}, "icon": "minecraft:arrow"},
+      "icon": "minecraft:arrow",
+      "at": {"x": 0.357, "y": -0.357},
+      "en_us": {"title": "Ascent", "subtitle": "The expedition act gets the good loot.",
+        "text": ["Act III complete: Ascent. Monsters get +8 armor and 5 armor pierce, you get 55% more experience and the table reaches 60. Diamond gear starts dropping with affixes, one item in ten is Epic and most gems come Flawed."]},
+      "es_es": {"title": "Ascenso", "subtitle": "El acto de las expediciones se lleva el mejor botín.",
+        "text": ["Acto III completo: Ascenso. Los monstruos ganan +8 de armadura y 5 de perforación de armadura, vos 55% más de experiencia, y la mesa llega a 60. Empieza a caer equipo de diamante con afijos, uno de cada diez ítems es Épico y la mayoría de las gemas salen Imperfectas."]},
+      "sources": ["repo:pack/kubejs/data/apotheosis/advancement/progression/ascent.json", "jar:Apotheosis-1.21.1-8.7.0.jar:data/apotheosis/tier_augments/ascent/armor.json", "jar:Apotheosis-1.21.1-8.7.0.jar:data/apotheosis/tier_augments/ascent/armor_pierce.json", "jar:Apotheosis-1.21.1-8.7.0.jar:data/apotheosis/tier_augments/ascent/experience.json", "jar:Apotheosis-1.21.1-8.7.0.jar:data/apotheosis/tier_augments/ascent/max_eterna.json", "jar:Apotheosis-1.21.1-8.7.0.jar:data/apotheosis/rarities/epic.json", "jar:Apotheosis-1.21.1-8.7.0.jar:data/apotheosis/purity_weights/weights.json", "jar:Apotheosis-1.21.1-8.7.0.jar:data/apotheosis/affix_loot_entries/diamond_sword.json"]
+    },
+    {
+      "key": "aadv_sands", "role": "step", "deps": ["aadv_ascent"],
+      "task": {"item": "apotheosis:arcane_sands", "count": 4},
+      "at": {"x": 3.393, "y": -2.321},
+      "en_us": {"title": "Epic purple", "subtitle": "Sand from a realm where magic warps everything.",
+        "text": ["Purple Epic items carry three stats, an effect, an ability, one to three sockets and 25 to 55% more durability. They salvage into [item:apotheosis:arcane_sands|Arcane Sands], which the Reforging Table needs."]},
+      "es_es": {"title": "Violeta Épico", "subtitle": "Arena de un reino donde la magia deforma todo.",
+        "text": ["Los ítems violetas, Épicos, traen tres atributos, un efecto, una habilidad, de uno a tres engarces y entre 25 y 55% más de durabilidad. Se reciclan en [item:apotheosis:arcane_sands|arenas arcanas], que pide la mesa de reforjado."]},
+      "sources": ["jar:Apotheosis-1.21.1-8.7.0.jar:data/apotheosis/rarities/epic.json", "jar:Apotheosis-1.21.1-8.7.0.jar:data/apotheosis/recipe/salvaging/affix_item/epic.json", "jar:Apotheosis-1.21.1-8.7.0.jar:data/apotheosis/recipe/reforging_table.json"]
+    },
+    {
+      "key": "aadv_summit", "role": "milestone", "deps": ["aadv_sands"],
+      "task": {"type": "advancement", "advancement": "apotheosis:progression/summit", "title": {"en_us": "Your team completes Act IV", "es_es": "Tu equipo completa el acto IV"}, "icon": "minecraft:snow_block"},
+      "icon": "minecraft:snow_block",
+      "at": {"x": 6.429, "y": -4.286},
+      "en_us": {"title": "Summit", "subtitle": "The top, but not the end.",
+        "text": ["Act IV complete, and the Ark begins: Summit. Monsters get +12 armor, 10 toughness and more pierce; you get 75% more experience and a table ceiling of 75. Epic becomes the usual drop, Mythic appears, and a gem can come Perfect."]},
+      "es_es": {"title": "Cumbre", "subtitle": "Arriba, pero no al final.",
+        "text": ["Acto IV completo, y empieza el Arca: Cumbre. Los monstruos ganan +12 de armadura, 10 de dureza y más perforación; vos 75% más de experiencia y un techo de 75 en la mesa. Lo Épico pasa a ser lo común, aparece lo Mítico y una gema puede salir Perfecta."]},
+      "sources": ["repo:pack/kubejs/data/apotheosis/advancement/progression/summit.json", "jar:Apotheosis-1.21.1-8.7.0.jar:data/apotheosis/tier_augments/summit/armor.json", "jar:Apotheosis-1.21.1-8.7.0.jar:data/apotheosis/tier_augments/summit/armor_toughness.json", "jar:Apotheosis-1.21.1-8.7.0.jar:data/apotheosis/tier_augments/summit/armor_pierce.json", "jar:Apotheosis-1.21.1-8.7.0.jar:data/apotheosis/tier_augments/summit/experience.json", "jar:Apotheosis-1.21.1-8.7.0.jar:data/apotheosis/tier_augments/summit/max_eterna.json", "jar:Apotheosis-1.21.1-8.7.0.jar:data/apotheosis/rarities/epic.json", "jar:Apotheosis-1.21.1-8.7.0.jar:data/apotheosis/rarities/mythic.json", "jar:Apotheosis-1.21.1-8.7.0.jar:data/apotheosis/purity_weights/weights.json"]
+    },
+    {
+      "key": "aadv_pearl", "role": "step", "deps": ["aadv_summit"],
+      "task": {"item": "apotheosis:godforged_pearl"},
+      "at": {"x": 9.286, "y": -6.428},
+      "en_us": {"title": "Mythic orange", "subtitle": "Volatile. Handle with gauntlets.",
+        "text": ["Orange Mythic items carry four stats, two effects, an ability and up to three sockets. Only salvaging them yields [item:apotheosis:godforged_pearl|Godforged Pearls]: the Augmenting Table, its sigils and, in act VI, the [item:entrelumen:luminous_ingot|Luminous Ingot] want them."]},
+      "es_es": {"title": "Naranja Mítico", "subtitle": "Volátil. Manipular con guantes.",
+        "text": ["Los ítems naranjas, Míticos, traen cuatro atributos, dos efectos, una habilidad y hasta tres engarces. Sólo reciclándolos salen [item:apotheosis:godforged_pearl|perlas forjadas por dioses]: las piden la mesa de aumentación, sus sellos y, en el acto VI, el [item:entrelumen:luminous_ingot|Lingote Luminoso]."]},
+      "sources": ["jar:Apotheosis-1.21.1-8.7.0.jar:data/apotheosis/rarities/mythic.json", "jar:Apotheosis-1.21.1-8.7.0.jar:data/apotheosis/recipe/salvaging/affix_item/mythic.json", "jar:Apotheosis-1.21.1-8.7.0.jar:data/apotheosis/recipe/augmenting_table.json", "jar:Apotheosis-1.21.1-8.7.0.jar:data/apotheosis/recipe/sigil_of_enhancement.json", "repo:pack/kubejs/data/entrelumen/recipe/luminous_ingot.json", "jar:Apotheosis-1.21.1-8.7.0.jar:assets/apotheosis/patchouli_books/apoth_chronicle/en_us/entries/adventure/affix_loot/rarities.json"]
+    },
+    {
+      "key": "aadv_pinnacle", "role": "milestone", "deps": ["aadv_pearl"],
+      "task": {"type": "advancement", "advancement": "apotheosis:progression/pinnacle", "title": {"en_us": "Your team activates the Ark", "es_es": "Tu equipo activa el Arca"}, "icon": "minecraft:lightning_rod"},
+      "icon": "minecraft:lightning_rod",
+      "at": {"x": 12.143, "y": -8.571},
+      "en_us": {"title": "Pinnacle", "subtitle": "Where the lightning lives.",
+        "text": ["Activating the Ark opens Act VI and Pinnacle: monsters get +16 armor, 20 toughness and 25 armor pierce, you get 125% more experience, and the table finally reaches 100. A quarter of drops are Mythic and one gem in ten is Perfect."]},
+      "es_es": {"title": "Pináculo", "subtitle": "Donde vive el rayo.",
+        "text": ["Activar el Arca abre el acto VI y el Pináculo: los monstruos ganan +16 de armadura, 20 de dureza y 25 de perforación de armadura, vos 125% más de experiencia, y la mesa por fin llega a 100. Un cuarto de lo que cae es Mítico y una gema de cada diez sale Perfecta."]},
+      "sources": ["repo:pack/kubejs/data/apotheosis/advancement/progression/pinnacle.json", "jar:Apotheosis-1.21.1-8.7.0.jar:data/apotheosis/tier_augments/pinnacle/armor.json", "jar:Apotheosis-1.21.1-8.7.0.jar:data/apotheosis/tier_augments/pinnacle/armor_toughness.json", "jar:Apotheosis-1.21.1-8.7.0.jar:data/apotheosis/tier_augments/pinnacle/armor_pierce.json", "jar:Apotheosis-1.21.1-8.7.0.jar:data/apotheosis/tier_augments/pinnacle/experience.json", "jar:Apotheosis-1.21.1-8.7.0.jar:data/apotheosis/rarities/mythic.json", "jar:Apotheosis-1.21.1-8.7.0.jar:data/apotheosis/purity_weights/weights.json"]
+    },
+    {
+      "key": "aadv_mastery", "role": "capstone", "deps": ["aadv_pinnacle"],
+      "task": {"item": "apotheosis:gem", "components": {"apotheosis:purity": "perfect"}, "title": {"en_us": "A Perfect gem", "es_es": "Una gema Perfecta"}},
+      "icon": "apotheosis:gem",
+      "at": {"x": 12.143, "y": -14.4},
+      "en_us": {"title": "Perfect", "subtitle": "It can't be improved. It doesn't need to be.",
+        "text": ["A Perfect gem tops the purity ladder. From Flawless it costs nine Gem Dust, 27 Luminous Crystal Shards, nine Arcane Sands, three Godforged Pearls and a second Flawless gem of the same kind; at Pinnacle, one gem in ten drops Perfect."]},
+      "es_es": {"title": "Perfecta", "subtitle": "No se puede mejorar. Tampoco hace falta.",
+        "text": ["Una gema Perfecta corona la escalera de pureza. Desde Impecable cuesta nueve de polvo de gema, 27 fragmentos de cristal luminoso, nueve de arenas arcanas, tres perlas forjadas por dioses y una segunda gema Impecable del mismo tipo; en el Pináculo, una gema de cada diez cae Perfecta."]},
+      "sources": ["jar:Apotheosis-1.21.1-8.7.0.jar:data/apotheosis/recipe/gem_cutting/flawless.json", "jar:Apotheosis-1.21.1-8.7.0.jar:data/apotheosis/purity_weights/weights.json", "jar:Apotheosis-1.21.1-8.7.0.jar:assets/apotheosis/patchouli_books/apoth_chronicle/en_us/entries/adventure/gems/gems.json", "jar:Apotheosis-1.21.1-8.7.0.jar:assets/apotheosis/patchouli_books/apoth_chronicle/en_us/entries/adventure/gems/gem_cutting.json"]
+    },
+    {
+      "key": "aadv_gems", "role": "side", "deps": ["aadv_gem_dust"], "group": "gems",
+      "task": {"item": "apotheosis:sigil_of_socketing"},
+      "at": {"x": -12.129, "y": 15.4},
+      "en_us": {"title": "Gems and sockets", "subtitle": "Some assembly required.",
+        "text": ["A gem goes into a socket at a Smithing Table, and each gem lists the items it fits. Four Gem Dust, three slate, gunpowder and an amethyst shard make three [item:apotheosis:sigil_of_socketing|Sigils of Socketing]: each adds a socket, but only up to two."]},
+      "es_es": {"title": "Gemas y engarces", "subtitle": "Requiere armado.",
+        "text": ["Una gema entra en un engarce en la mesa de herrería, y cada gema dice en qué ítems encaja. Cuatro de polvo de gema, tres de pizarra, pólvora y un fragmento de amatista dan tres [item:apotheosis:sigil_of_socketing|sellos del acoplamiento]: cada uno suma un engarce, pero sólo hasta dos."]},
+      "sources": ["jar:Apotheosis-1.21.1-8.7.0.jar:assets/apotheosis/patchouli_books/apoth_chronicle/en_us/entries/adventure/gems/gems.json", "jar:Apotheosis-1.21.1-8.7.0.jar:data/apotheosis/recipe/sigil_of_socketing.json", "jar:Apotheosis-1.21.1-8.7.0.jar:data/apotheosis/recipe/sigil_add_sockets.json#max_sockets 2", "jar:Apotheosis-1.21.1-8.7.0.jar:assets/apotheosis/lang/en_us.json#item.apotheosis.sigil_of_socketing.desc"]
+    },
+    {
+      "key": "aadv_withdrawal", "role": "side", "deps": ["aadv_gems"], "group": "gems",
+      "task": {"item": "apotheosis:sigil_of_withdrawal"},
+      "at": {"x": -15.329, "y": 15.4},
+      "en_us": {"title": "Take them back", "subtitle": "Gems are forever. Sockets aren't.",
+        "text": ["Four slate, a blaze rod, two ender pearls, a lava bucket and Gem Dust make four [item:apotheosis:sigil_of_withdrawal|Sigils of Withdrawal]. At a Smithing Table one gives back the item and every gem in it, so moving to better gear costs nothing."]},
+      "es_es": {"title": "Recuperalas", "subtitle": "Las gemas son para siempre. Los engarces, no.",
+        "text": ["Cuatro de pizarra, una vara de blaze, dos perlas de ender, un cubo con lava y polvo de gema dan cuatro [item:apotheosis:sigil_of_withdrawal|sellos de retirada]. En la mesa de herrería, uno te devuelve el ítem y todas sus gemas, así que pasarte a mejor equipo no cuesta nada."]},
+      "sources": ["jar:Apotheosis-1.21.1-8.7.0.jar:data/apotheosis/recipe/sigil_of_withdrawal.json", "jar:Apotheosis-1.21.1-8.7.0.jar:assets/apotheosis/patchouli_books/apoth_chronicle/en_us/entries/adventure/gems/gems.json"]
+    },
+    {
+      "key": "aadv_cutting", "role": "side", "deps": ["aadv_gem_dust"], "group": "gems",
+      "task": {"item": "apotheosis:gem_cutting_table"},
+      "at": {"x": -8.929, "y": 15.4},
+      "en_us": {"title": "Cutting gems", "subtitle": "Two gems in, one better gem out.",
+        "text": ["Two smooth stone, shears, four planks and Gem Dust make the [item:apotheosis:gem_cutting_table|Gem Cutting Table]. Two gems of the same kind and purity, dust and rarity materials raise the purity one step, Cracked to Perfect; a Cracked gem only needs a dust, three scrap and a fabric."]},
+      "es_es": {"title": "Tallar gemas", "subtitle": "Entran dos gemas, sale una mejor.",
+        "text": ["Dos de piedra lisa, tijeras, cuatro tablones y polvo de gema dan la [item:apotheosis:gem_cutting_table|mesa de tallado de gemas]. Dos gemas del mismo tipo y pureza, polvo y materiales de rareza suben la pureza un escalón, de Rachada a Perfecta; una Rachada sólo pide un polvo, tres chatarras y una tela."]},
+      "sources": ["jar:Apotheosis-1.21.1-8.7.0.jar:data/apotheosis/recipe/gem_cutting_table.json", "jar:Apotheosis-1.21.1-8.7.0.jar:data/apotheosis/recipe/gem_cutting/cracked.json", "jar:Apotheosis-1.21.1-8.7.0.jar:assets/apotheosis/patchouli_books/apoth_chronicle/en_us/entries/adventure/gems/gem_cutting.json", "jar:Apotheosis-1.21.1-8.7.0.jar:assets/apotheosis/patchouli_books/apoth_chronicle/en_us/entries/adventure/gems/gems.json"]
+    },
+    {
+      "key": "aadv_gem_case", "role": "side", "deps": ["aadv_cutting"], "group": "gems",
+      "task": {"item": "apotheosis:gem_case"},
+      "at": {"x": -8.929, "y": 18.6},
+      "en_us": {"title": "The Gem Case", "subtitle": "For the dragon in all of us.",
+        "text": ["Three glass, four basalt, a Gem Cutting Table and an ender chest. The [item:apotheosis:gem_case|Gem Case] holds 32,000 of each gem and purity, filters by name or by what fits an item, and cuts gems itself from six side slots.",
+                 "{page}",
+                 "Infused at exactly 100 Eterna, 100 Quanta and 45 to 50 Arcana, it becomes the [item:apotheosis:ender_gem_case|Gem Case of House Fabergé]: two billion of each, contents included."]},
+      "es_es": {"title": "La Caja de gemas", "subtitle": "Para el dragón que todos llevamos adentro.",
+        "text": ["Tres de vidrio, cuatro de basalto, una mesa de tallado y un cofre de ender. La [item:apotheosis:gem_case|caja de gemas] guarda 32.000 de cada gema y pureza, filtra por nombre o por lo que entra en un ítem, y talla gemas sola desde seis ranuras laterales.",
+                 "{page}",
+                 "Infundida con exactamente 100 de Eterna, 100 de Quanta y entre 45 y 50 de Arcana, se vuelve la [item:apotheosis:ender_gem_case|caja de gemas de la Casa Fabergé]: dos mil millones de cada una, con el contenido incluido."]},
+      "sources": ["jar:Apotheosis-1.21.1-8.7.0.jar:data/apotheosis/recipe/gem_case.json", "jar:Apotheosis-1.21.1-8.7.0.jar:data/apotheosis/recipe/infusion/ender_gem_case.json", "jar:Apotheosis-1.21.1-8.7.0.jar:assets/apotheosis/patchouli_books/apoth_chronicle/en_us/entries/adventure/gems/gem_case.json"]
+    },
+    {
+      "key": "aadv_purity", "role": "side", "deps": ["aadv_cutting"], "group": "gems",
+      "task": {"item": "apotheosis:gem", "components": {"apotheosis:purity": "flawless"}, "title": {"en_us": "A Flawless gem", "es_es": "Una gema Impecable"}},
+      "icon": "apotheosis:gem",
+      "at": {"x": -12.129, "y": 18.6},
+      "en_us": {"title": "Flawless", "subtitle": "Almost there.",
+        "text": ["Flawless gems start dropping at Ascent, one in a hundred, and turn common only at Pinnacle. Cutting one from Normal costs seven Gem Dust, 27 Timeworn Fabric, nine shards, three sands and a Godforged Pearl."]},
+      "es_es": {"title": "Impecable", "subtitle": "Casi, casi.",
+        "text": ["Las gemas Impecables empiezan a caer en el Ascenso, una de cada cien, y sólo son comunes en el Pináculo. Tallar una desde Normal cuesta siete de polvo de gema, 27 telas deterioradas, nueve fragmentos, tres arenas y una perla forjada por dioses."]},
+      "sources": ["jar:Apotheosis-1.21.1-8.7.0.jar:data/apotheosis/purity_weights/weights.json", "jar:Apotheosis-1.21.1-8.7.0.jar:data/apotheosis/recipe/gem_cutting/normal.json"]
+    },
+    {
+      "key": "aadv_queen", "role": "secret", "deps": ["aadv_welcome"], "hide_lines": true, "group": "gems",
+      "task": {"item": "apotheosis:gem", "components": {"apotheosis:gem": "apotheosis:twilight/queen"}, "title": {"en_us": "Gem of the Frozen Queen", "es_es": "Gema de la Reina Helada"}},
+      "icon": "apotheosis:gem",
+      "at": {"x": -15.329, "y": 18.6},
+      "en_us": {"title": "A frozen queen's gem", "subtitle": "Cold hands, warm heart.",
+        "text": ["The Gem of the Frozen Queen drops only in the Twilight Forest, from Summit on, like the Gem of the Twilight Forest. Nether gems wait for Ascent, End gems for Summit."]},
+      "es_es": {"title": "La gema de una reina helada", "subtitle": "Manos frías, corazón caliente.",
+        "text": ["La Gema de la Reina Helada cae sólo en el Twilight Forest, desde la Cumbre, igual que la Gema del Bosque del Atardecer. Las gemas del Nether esperan al Ascenso; las del End, a la Cumbre."]},
+      "sources": ["jar:Apotheosis-1.21.1-8.7.0.jar:data/apotheosis/gems/twilight/queen.json", "jar:Apotheosis-1.21.1-8.7.0.jar:data/apotheosis/gems/twilight/forest.json", "jar:Apotheosis-1.21.1-8.7.0.jar:data/apotheosis/gems/the_nether/inferno.json", "jar:Apotheosis-1.21.1-8.7.0.jar:data/apotheosis/gems/the_end/mageslayer.json"]
+    },
+    {
+      "key": "aadv_reforge", "role": "side", "deps": ["aadv_salvage"], "group": "reforge",
+      "tasks": [{"item": "apotheosis:simple_reforging_table"}, {"item": "apotheosis:sigil_of_rebirth", "count": 6}],
+      "at": {"x": -4.8, "y": 15.4},
+      "en_us": {"title": "Reforging", "subtitle": "Three choices, no guarantees.",
+        "text": ["An iron ingot, two Gem Dust, an enchanting table and three smooth stone make the [item:apotheosis:simple_reforging_table|Simple Reforging Table]: it rerolls any item's affixes up to Rare. Rarity materials and [item:apotheosis:sigil_of_rebirth|Sigils of Rebirth] pay, and the second and third choice cost double and triple."]},
+      "es_es": {"title": "Reforjado", "subtitle": "Tres opciones, ninguna garantía.",
+        "text": ["Un lingote de hierro, dos de polvo de gema, una mesa de encantamientos y tres de piedra lisa dan la [item:apotheosis:simple_reforging_table|mesa de reforjado simple]: vuelve a tirar los afijos de cualquier ítem hasta Raro. Pagan los materiales de rareza y los [item:apotheosis:sigil_of_rebirth|sellos de renacimiento], y la segunda y la tercera opción cuestan el doble y el triple."]},
+      "sources": ["jar:Apotheosis-1.21.1-8.7.0.jar:data/apotheosis/recipe/simple_reforging_table.json", "jar:Apotheosis-1.21.1-8.7.0.jar:data/apotheosis/recipe/sigil_of_rebirth.json", "jar:Apotheosis-1.21.1-8.7.0.jar:data/apotheosis/recipe/reforging/rare.json", "jar:Apotheosis-1.21.1-8.7.0.jar:assets/apotheosis/patchouli_books/apoth_chronicle/en_us/entries/adventure/affix_loot/reforging.json"]
+    },
+    {
+      "key": "aadv_templates", "role": "side", "deps": ["aadv_salvage"], "group": "reforge",
+      "tasks": [{"item": "apotheosis:iron_upgrade_smithing_template"}, {"item": "apotheosis:gold_upgrade_smithing_template"}, {"item": "apotheosis:diamond_upgrade_smithing_template"}],
+      "icon": "apotheosis:iron_upgrade_smithing_template",
+      "at": {"x": -1.6, "y": 15.4},
+      "en_us": {"title": "Keep the affixes, upgrade the base", "subtitle": "Stone to diamond, one template at a time.",
+        "text": ["Two slate, four stone and a rarity material make two templates: scrap takes stone or chain to iron, fabric iron to gold, a crystal shard gold to diamond. At a Smithing Table, with four ingots or diamonds, the item upgrades and keeps every affix."]},
+      "es_es": {"title": "Conservá los afijos, mejorá la base", "subtitle": "De piedra a diamante, una plantilla por vez.",
+        "text": ["Dos de pizarra, cuatro de piedra y un material de rareza dan dos plantillas: la chatarra lleva piedra o cota a hierro, la tela hierro a oro, un fragmento de cristal oro a diamante. En la mesa de herrería, con cuatro lingotes o diamantes, el ítem sube y conserva todos sus afijos."]},
+      "sources": ["jar:Apotheosis-1.21.1-8.7.0.jar:data/apotheosis/recipe/iron_upgrade_smithing_template.json", "jar:Apotheosis-1.21.1-8.7.0.jar:data/apotheosis/recipe/gold_upgrade_smithing_template.json", "jar:Apotheosis-1.21.1-8.7.0.jar:data/apotheosis/recipe/diamond_upgrade_smithing_template.json", "jar:Apotheosis-1.21.1-8.7.0.jar:data/apotheosis/recipe/smithing/upgrade_stone_sword_to_iron_sword.json", "jar:Apotheosis-1.21.1-8.7.0.jar:dev/shadowsoffire/apotheosis/util/SizedUpgradeRecipe.class (SmithingTransformRecipe)"]
+    },
+    {
+      "key": "aadv_unnaming", "role": "side", "deps": ["aadv_reforge"], "group": "reforge",
+      "task": {"item": "apotheosis:sigil_of_unnaming"},
+      "at": {"x": -4.8, "y": 18.6},
+      "en_us": {"title": "Just call it a sword", "subtitle": "Of the Earthbreaker, of the Butcher, of the... no.",
+        "text": ["Six slate and three flint make six [item:apotheosis:sigil_of_unnaming|Sigils of Unnaming]. At a Smithing Table one strips the long affix name and keeps every affix; an anvil can name it whatever you like afterwards."]},
+      "es_es": {"title": "Llamala espada y listo", "subtitle": "Del Rompetierras, del Carnicero, del... no.",
+        "text": ["Seis de pizarra y tres pedernales dan seis [item:apotheosis:sigil_of_unnaming|sellos de desnombramiento]. En la mesa de herrería, uno le saca el nombre largo de los afijos y conserva todos los afijos; después un yunque le pone el nombre que quieras."]},
+      "sources": ["jar:Apotheosis-1.21.1-8.7.0.jar:data/apotheosis/recipe/sigil_of_unnaming.json", "jar:Apotheosis-1.21.1-8.7.0.jar:data/apotheosis/recipe/unnaming.json", "jar:Apotheosis-1.21.1-8.7.0.jar:assets/apotheosis/lang/en_us.json#item.apotheosis.sigil_of_unnaming.desc"]
+    },
+    {
+      "key": "aadv_reforging_table", "role": "side", "deps": ["aadv_reforge"], "group": "reforge",
+      "task": {"item": "apotheosis:reforging_table"},
+      "at": {"x": -1.6, "y": 18.6},
+      "en_us": {"title": "Epic and beyond", "subtitle": "Netherite, but make it rerollable.",
+        "text": ["A netherite ingot, two Arcane Sands and three nether bricks upgrade the simple table into the [item:apotheosis:reforging_table|Reforging Table], which also reforges Epic and Mythic items. A Mythic reroll costs 50 levels, three Godforged Pearls and five sigils."]},
+      "es_es": {"title": "Épico y más allá", "subtitle": "Netherita, pero que se pueda volver a tirar.",
+        "text": ["Un lingote de netherita, dos de arenas arcanas y tres ladrillos del Nether convierten la mesa simple en la [item:apotheosis:reforging_table|mesa de reforjado], que también reforja ítems Épicos y Míticos. Una tirada Mítica cuesta 50 niveles, tres perlas forjadas por dioses y cinco sellos."]},
+      "sources": ["jar:Apotheosis-1.21.1-8.7.0.jar:data/apotheosis/recipe/reforging_table.json", "jar:Apotheosis-1.21.1-8.7.0.jar:data/apotheosis/recipe/reforging/mythic.json", "jar:Apotheosis-1.21.1-8.7.0.jar:data/apotheosis/recipe/reforging/epic.json"]
+    },
+    {
+      "key": "aadv_bounty", "role": "bounty", "deps": ["aadv_salvage"], "group": "reforge",
+      "tasks": [{"item": "apotheosis:mysterious_scrap_metal", "count": 32, "consume": true}, {"item": "apotheosis:timeworn_fabric", "count": 16, "consume": true}],
+      "at": {"x": 1.6, "y": 15.4},
+      "en_us": {"title": "Scrap for the common store", "subtitle": "Somebody's junk drawer.",
+        "text": ["Thirty-two Mysterious Scrap Metal and sixteen Timeworn Fabric, once a day. Salvage what you won't wear: it is the cheapest way to keep a team's gems climbing."]},
+      "es_es": {"title": "Chatarra para el depósito común", "subtitle": "El cajón de los cachivaches de alguien.",
+        "text": ["Treinta y dos de chatarra misteriosa y dieciséis telas deterioradas, una vez por día. Reciclá lo que no vas a usar: es la forma más barata de que las gemas del equipo sigan subiendo."]},
+      "sources": ["jar:Apotheosis-1.21.1-8.7.0.jar:data/apotheosis/recipe/salvaging/affix_item/common.json", "jar:Apotheosis-1.21.1-8.7.0.jar:data/apotheosis/recipe/salvaging/affix_item/uncommon.json", "jar:Apotheosis-1.21.1-8.7.0.jar:data/apotheosis/recipe/gem_cutting/cracked.json"]
+    },
+    {
+      "key": "aadv_charms", "role": "side", "deps": ["aadv_tiers"], "group": "charms",
+      "task": {"item": "apotheosis:potion_charm"},
+      "at": {"x": -4.8, "y": 2.0},
+      "en_us": {"title": "Potion charms", "subtitle": "The potion that never runs dry.",
+        "text": ["Three potions of one kind between six blaze powder make a [item:apotheosis:potion_charm|Potion Charm] that outlasts all three. Right-click to switch it on: from your inventory or a Curios charm slot it applies the effect a few seconds at a time, spending durability.",
+                 "{page}",
+                 "Infused at exactly 100 Eterna, 8.5 to 13.5 Quanta and 32.5 to 37.5 Arcana, a charm becomes Unbreakable."]},
+      "es_es": {"title": "Amuletos de poción", "subtitle": "La poción que nunca se acaba.",
+        "text": ["Tres pociones iguales entre seis de polvo de blaze dan un [item:apotheosis:potion_charm|amuleto de poción] que dura más que las tres juntas. Clic derecho para prenderlo: desde el inventario o una ranura de amuleto de Curios aplica el efecto de a unos segundos, gastando durabilidad.",
+                 "{page}",
+                 "Infundido con exactamente 100 de Eterna, entre 8,5 y 13,5 de Quanta y entre 32,5 y 37,5 de Arcana, un amuleto se vuelve irrompible."]},
+      "sources": ["jar:Apotheosis-1.21.1-8.7.0.jar:data/apotheosis/recipe/potion_charm.json", "jar:Apotheosis-1.21.1-8.7.0.jar:data/apotheosis/recipe/infusion/potion_charm.json", "jar:Apotheosis-1.21.1-8.7.0.jar:assets/apotheosis/patchouli_books/apoth_chronicle/en_us/entries/potion/charms/charm.json", "jar:Apotheosis-1.21.1-8.7.0.jar:assets/apotheosis/patchouli_books/apoth_chronicle/en_us/entries/potion/charms/curios.json", "jar:Apotheosis-1.21.1-8.7.0.jar:assets/apotheosis/patchouli_books/apoth_chronicle/en_us/entries/potion/charms/unbreakable.json"]
+    },
+    {
+      "key": "aadv_knowledge", "role": "side", "deps": ["aadv_charms"], "group": "charms",
+      "task": {"item": "minecraft:potion", "components": {"minecraft:potion_contents": {"potion": "apothic_attributes:knowledge"}}, "title": {"en_us": "Potion of Ancient Knowledge", "es_es": "Poción de Conocimiento Ancestral"}},
+      "icon": "minecraft:experience_bottle",
+      "at": {"x": -8.0, "y": 2.0},
+      "en_us": {"title": "Ancient knowledge", "subtitle": "Study hard, hunt harder.",
+        "text": ["An Awkward Potion and a Bottle o' Enchanting brew Ancient Knowledge: +400% experience from what you kill and break, +800% at level II. In a charm it keeps the table's levels coming."]},
+      "es_es": {"title": "Conocimiento ancestral", "subtitle": "Estudiá mucho, cazá más.",
+        "text": ["Una poción rara y un frasco con experiencia dan Conocimiento Ancestral: +400% de experiencia de lo que matás y rompés, +800% en nivel II. En un amuleto mantiene llegando los niveles para la mesa."]},
+      "sources": ["jar:ApothicAttributes-1.21.1-2.10.1.jar:data/apothic_attributes/brewing_mixes/knowledge_from_awkward.json", "jar:ApothicAttributes-1.21.1-2.10.1.jar:dev/shadowsoffire/apothic_attributes/mob_effect/KnowledgeEffect.class", "jar:ApothicAttributes-1.21.1-2.10.1.jar:dev/shadowsoffire/apothic_attributes/ALConfig.class#knowledgeMultiplier 4.0", "jar:ApothicAttributes-1.21.1-2.10.1.jar:assets/apothic_attributes/lang/en_us.json#apothic_attributes:experience_gained.desc"]
+    },
+    {
+      "key": "aadv_flying", "role": "secret", "deps": ["aadv_charms"], "hide_lines": true, "group": "charms",
+      "task": {"item": "minecraft:potion", "components": {"minecraft:potion_contents": {"potion": "apothic_attributes:flying"}}, "title": {"en_us": "Potion of Flying", "es_es": "Poción de Vuelo"}},
+      "icon": "minecraft:phantom_membrane",
+      "at": {"x": -8.0, "y": -1.2},
+      "en_us": {"title": "Potion of Flying", "subtitle": "Creative mode, eight minutes at a time.",
+        "text": ["A Potion of Slow Falling and a fermented spider eye brew Apothic Levitation; popped chorus fruit turns that into Flying: creative-style flight for eight minutes, longer with redstone. In a charm, it lasts as long as the charm does."]},
+      "es_es": {"title": "Poción de vuelo", "subtitle": "Modo creativo, de a ocho minutos.",
+        "text": ["Una poción de caída lenta y un ojo de araña fermentado dan la Levitación de Apothic; la fruta chorus horneada la vuelve Vuelo: vuelo como en creativo durante ocho minutos, más con redstone. En un amuleto dura lo que dure el amuleto."]},
+      "sources": ["jar:ApothicAttributes-1.21.1-2.10.1.jar:data/apothic_attributes/brewing_mixes/levitation_from_slow_falling.json", "jar:ApothicAttributes-1.21.1-2.10.1.jar:data/apothic_attributes/brewing_mixes/flying_from_levitation.json", "jar:ApothicAttributes-1.21.1-2.10.1.jar:data/apothic_attributes/brewing_mixes/long_flying_from_flying.json", "jar:ApothicAttributes-1.21.1-2.10.1.jar:dev/shadowsoffire/apothic_attributes/mob_effect/FlyingEffect.class", "jar:ApothicAttributes-1.21.1-2.10.1.jar:dev/shadowsoffire/apothic_attributes/api/ALObjects.class#FLYING (9600 ticks)"]
+    },
+    {
+      "key": "aadv_dungeons", "role": "info", "deps": ["aadv_invaders"], "group": "invaders",
+      "task": {"type": "checkmark"},
+      "icon": "minecraft:spawner",
+      "at": {"x": 6.4, "y": 4.6},
+      "en_us": {"title": "Cages, elites and rogue spawners",
+        "text": ["Underground dungeons hold a Caged Invader that wakes when you come within eight blocks, in any tier. Elites take the place of normal mobs without warning. Rogue spawners sit alone in caves over a chest: brutal ones spawn slow, tough mobs, swarm ones many weak ones."]},
+      "es_es": {"title": "Jaulas, élites y generadores rebeldes",
+        "text": ["Las mazmorras subterráneas guardan un Invasor enjaulado que despierta cuando te acercás a ocho bloques, en cualquier nivel. Las élites ocupan el lugar de criaturas comunes sin avisar. Los generadores rebeldes están solos en cuevas sobre un cofre: los brutales sacan criaturas lentas y duras, los de enjambre muchas débiles."]},
+      "sources": ["jar:Apotheosis-1.21.1-8.7.0.jar:dev/shadowsoffire/apotheosis/mobs/BossSpawnerBlock.class#inflate(8)", "jar:Apotheosis-1.21.1-8.7.0.jar:assets/apotheosis/patchouli_books/apoth_chronicle/en_us/entries/adventure/mobs/invader_dungeons.json", "jar:Apotheosis-1.21.1-8.7.0.jar:assets/apotheosis/patchouli_books/apoth_chronicle/en_us/entries/adventure/mobs/elites.json", "jar:Apotheosis-1.21.1-8.7.0.jar:assets/apotheosis/patchouli_books/apoth_chronicle/en_us/entries/adventure/rogue_spawners/brutal_spawners.json", "jar:Apotheosis-1.21.1-8.7.0.jar:assets/apotheosis/patchouli_books/apoth_chronicle/en_us/entries/adventure/rogue_spawners/swarm_spawners.json", "jar:Apotheosis-1.21.1-8.7.0.jar:dev/shadowsoffire/apotheosis/spawner/RogueSpawner.class#place"]
+    },
+    {
+      "key": "aadv_tower", "role": "side", "deps": ["aadv_welcome"], "group": "world",
+      "task": {"type": "structure", "structure": "apotheosis:tower_main", "title": {"en_us": "Find a tome tower in a forest, plains or hills", "es_es": "Encontrá una torre de tomos en bosque, llanura o montaña"}, "icon": "minecraft:bookshelf"},
+      "icon": "minecraft:bookshelf",
+      "at": {"x": -13.2, "y": 8.6},
+      "en_us": {"title": "Tome towers", "subtitle": "A library, with a trap.",
+        "text": ["Stone towers full of bookshelves rise in forests, plains and mountains, with versions for deserts, jungles and taigas. Four item frames hold gems, and the chest is trapped: enchanted books, gems and affix gear."]},
+      "es_es": {"title": "Torres de tomos", "subtitle": "Una biblioteca, con trampa.",
+        "text": ["Torres de piedra llenas de librerías se levantan en bosques, llanuras y montañas, con versiones para desiertos, junglas y taigas. Cuatro marcos guardan gemas, y el cofre es trampa: libros encantados, gemas y equipo con afijos."]},
+      "sources": ["jar:Apotheosis-1.21.1-8.7.0.jar:data/apotheosis/worldgen/structure/tower_main.json", "jar:Apotheosis-1.21.1-8.7.0.jar:data/apotheosis/tags/worldgen/biome/tower_main.json", "jar:Apotheosis-1.21.1-8.7.0.jar:data/apotheosis/tags/worldgen/biome/tower_sand.json", "jar:Apotheosis-1.21.1-8.7.0.jar:data/apotheosis/structure/tower_main.nbt", "jar:Apotheosis-1.21.1-8.7.0.jar:data/apotheosis/loot_table/chests/tome_tower.json", "jar:Apotheosis-1.21.1-8.7.0.jar:data/apotheosis/worldgen/processor_list/item_frame_gems.json"]
+    },
+    {
+      "key": "aadv_trader", "role": "info", "deps": ["aadv_welcome"], "group": "world",
+      "task": {"type": "checkmark"},
+      "icon": "minecraft:emerald",
+      "at": {"x": -16.4, "y": 8.6},
+      "en_us": {"title": "The trader got better",
+        "text": ["Apotheosis restocks the Wandering Trader: beacons, totems, enchanted golden apples, diamonds and skulls for the table. From Summit it also sells named diamond gear for the matching piece and 45 to 64 emeralds, and it can show up underground."]},
+      "es_es": {"title": "El vendedor mejoró",
+        "text": ["Apotheosis le renueva el surtido al comerciante errante: faros, tótems, manzanas doradas encantadas, diamantes y calaveras para la mesa. Desde la Cumbre también vende equipo de diamante con nombre a cambio de la pieza igual y 45 a 64 esmeraldas, y puede aparecer bajo tierra."]},
+      "sources": ["jar:Apotheosis-1.21.1-8.7.0.jar:data/apotheosis/wanderer_trades/beacon.json", "jar:Apotheosis-1.21.1-8.7.0.jar:data/apotheosis/wanderer_trades/totem_of_undying.json", "jar:Apotheosis-1.21.1-8.7.0.jar:data/apotheosis/wanderer_trades/skeleton_skull.json", "jar:Apotheosis-1.21.1-8.7.0.jar:data/apotheosis/wanderer_trades/rare_gear/bonesplitter.json", "repo:pack/config/apotheosis/apotheosis.cfg#Underground Trader"]
+    },
+    {
+      "key": "aadv_invaders", "role": "info", "deps": ["aadv_tiers"], "group": "invaders",
+      "task": {"type": "checkmark"},
+      "icon": "minecraft:beacon",
+      "at": {"x": 3.2, "y": 7.8},
+      "en_us": {"title": "Invaders from the sky",
+        "text": ["From Frontier on, an Apothic Invader can land nearby with a noise, a chat message and a beacon beam, in full enchanted gear. It always drops one affix item of its rarity, named after it. Here at most one comes every ten minutes, almost three times as often in the Twilight Forest."]},
+      "es_es": {"title": "Invasores del cielo",
+        "text": ["Desde la Frontera puede caer cerca un Invasor Apótico, con estruendo, mensaje en el chat y un rayo de faro, con equipo encantado completo. Siempre suelta un ítem con afijos de su rareza y con su nombre. Acá llega como mucho uno cada diez minutos, casi tres veces más seguido en el Twilight Forest."]},
+      "sources": ["jar:Apotheosis-1.21.1-8.7.0.jar:assets/apotheosis/patchouli_books/apoth_chronicle/en_us/entries/adventure/mobs/invaders.json", "jar:Apotheosis-1.21.1-8.7.0.jar:assets/apotheosis/patchouli_books/apoth_chronicle/en_us/entries/adventure/mobs/invader_items.json", "repo:pack/config/apotheosis/apotheosis.cfg#Boss Spawn Cooldown", "jar:Apotheosis-1.21.1-8.7.0.jar:data/apotheosis/data_maps/dimension_type/invader_spawn_rules.json"]
+    },
+    {
+      "key": "aadv_malice", "role": "side", "deps": ["aadv_invaders"], "group": "invaders",
+      "task": {"item": "apotheosis:sigil_of_malice"},
+      "at": {"x": 6.4, "y": 7.8},
+      "en_us": {"title": "Touched by Malice", "subtitle": "Power has a price: another affix.",
+        "text": ["Invaders often drop a [item:apotheosis:sigil_of_malice|Sigil of Malice]. At a Smithing Table, on an item with two or more affixes, it makes one 50% stronger and destroys another, at random. Once per item.",
+                 "{page}",
+                 "Its cousin, the Sigil of Supremacy, only comes from Gateways to Eternity, which this pack does not include."]},
+      "es_es": {"title": "Tocado por la Malicia", "subtitle": "El poder tiene precio: otro afijo.",
+        "text": ["Los Invasores suelen soltar un [item:apotheosis:sigil_of_malice|sello de malicia]. En la mesa de herrería, sobre un ítem con dos afijos o más, vuelve a uno un 50% más fuerte y destruye otro, al azar. Una vez por ítem.",
+                 "{page}",
+                 "Su primo, el sello de supremacía, sólo sale de Gateways to Eternity, que este pack no incluye."]},
+      "sources": ["jar:Apotheosis-1.21.1-8.7.0.jar:dev/shadowsoffire/apotheosis/recipe/MaliceRecipe.class", "jar:Apotheosis-1.21.1-8.7.0.jar:dev/shadowsoffire/apotheosis/affix/AffixHelper.class#applyMalice (1.5x)", "jar:Apotheosis-1.21.1-8.7.0.jar:data/apotheosis/loot_table/entity/boss_drops.json", "jar:Apotheosis-1.21.1-8.7.0.jar:data/apotheosis/apothic_invaders/overworld/zombie.json#bonus_loot", "jar:Apotheosis-1.21.1-8.7.0.jar:data/apotheosis/gateways/endless_invader.json"]
+    },
+    {
+      "key": "aadv_wither", "role": "boss", "deps": ["aadv_summit"],
+      "task": {"type": "kill", "entity": "minecraft:wither", "value": 1, "title": {"en_us": "Defeat the Wither", "es_es": "Derrotá al Wither"}},
+      "icon": "minecraft:nether_star",
+      "at": {"x": 9.2, "y": -2.2},
+      "en_us": {"title": "A star for the table", "subtitle": "Three skulls, one bad afternoon.",
+        "text": ["The Augmenting Table is built around a [item:minecraft:nether_star|Nether Star], so the Wither comes first. Fight it far from anything you want to keep.",
+                 "[quest:bosses_wither|The Wither, step by step.]"]},
+      "es_es": {"title": "Una estrella para la mesa", "subtitle": "Tres calaveras, una mala tarde.",
+        "text": ["La mesa de aumentación se arma alrededor de una [item:minecraft:nether_star|estrella del Nether], así que primero va el Wither. Peleale lejos de todo lo que quieras conservar.",
+                 "[quest:bosses_wither|El Wither, paso a paso.]"]},
+      "sources": ["jar:Apotheosis-1.21.1-8.7.0.jar:data/apotheosis/recipe/augmenting_table.json"]
+    },
+    {
+      "key": "aadv_augmenting", "role": "milestone", "deps": ["aadv_pearl", "aadv_wither"],
+      "task": {"item": "apotheosis:augmenting_table"},
+      "at": {"x": 12.0, "y": -3.6},
+      "en_us": {"title": "The Augmenting Table", "subtitle": "Fine-tuning a legend.",
+        "text": ["A Nether Star, two Godforged Pearls, an enchanting table and three polished blackstone. The [item:apotheosis:augmenting_table|Augmenting Table] edits one affix and leaves the rest alone: an upgrade makes it 25% stronger for two sigils and 225 levels, a reroll swaps it for another of its type for one sigil and 175 levels."]},
+      "es_es": {"title": "La Mesa de aumentación", "subtitle": "Ajuste fino para una leyenda.",
+        "text": ["Una estrella del Nether, dos perlas forjadas por dioses, una mesa de encantamientos y tres de piedra negra pulida. La [item:apotheosis:augmenting_table|mesa de aumentación] edita un afijo y deja el resto: mejorarlo lo vuelve 25% más fuerte por dos sellos y 225 niveles; volver a tirarlo lo cambia por otro de su tipo por un sello y 175 niveles."]},
+      "sources": ["jar:Apotheosis-1.21.1-8.7.0.jar:data/apotheosis/recipe/augmenting_table.json", "repo:pack/config/apotheosis/apotheosis.cfg#augmenting", "jar:Apotheosis-1.21.1-8.7.0.jar:assets/apotheosis/patchouli_books/apoth_chronicle/en_us/entries/adventure/affix_loot/augmenting.json"]
+    },
+    {
+      "key": "aadv_enhancement", "role": "side", "deps": ["aadv_augmenting"], "group": "augment",
+      "task": {"item": "apotheosis:sigil_of_enhancement", "count": 4},
+      "at": {"x": 15.4, "y": -3.6},
+      "en_us": {"title": "Sigils of Enhancement", "subtitle": "One pearl, four sigils.",
+        "text": ["Four Gem Dust, four slate and a Godforged Pearl make four [item:apotheosis:sigil_of_enhancement|Sigils of Enhancement]. Augmenting is meant for Mythic items, maybe Epic ones: every sigil is a pearl you did not spend elsewhere."]},
+      "es_es": {"title": "Sellos de mejora", "subtitle": "Una perla, cuatro sellos.",
+        "text": ["Cuatro de polvo de gema, cuatro de pizarra y una perla forjada por dioses dan cuatro [item:apotheosis:sigil_of_enhancement|sellos de mejora]. La aumentación está pensada para ítems Míticos, quizás Épicos: cada sello es una perla que no gastaste en otra cosa."]},
+      "sources": ["jar:Apotheosis-1.21.1-8.7.0.jar:data/apotheosis/recipe/sigil_of_enhancement.json", "jar:Apotheosis-1.21.1-8.7.0.jar:assets/apotheosis/patchouli_books/apoth_chronicle/en_us/entries/adventure/affix_loot/augmenting.json"]
+    },
+    {
+      "key": "aadv_god_pearl", "role": "secret", "deps": ["aadv_pearl"], "hide_lines": true, "group": "augment",
+      "task": {"item": "apotheosis:god_fused_pearl"},
+      "at": {"x": 15.4, "y": -6.8},
+      "en_us": {"title": "God-fused", "subtitle": "A pearl, only more so.",
+        "text": ["A Godforged Pearl infused at exactly 100 Eterna, about 10 Quanta and 59 Arcana becomes a [item:apotheosis:god_fused_pearl|God-Fused Pearl]. Two of them build [quest:aench_raven|the Raven's table], where you set the stats by hand."]},
+      "es_es": {"title": "Fusionada con dioses", "subtitle": "Una perla, pero más.",
+        "text": ["Una perla forjada por dioses infundida con exactamente 100 de Eterna, unos 10 de Quanta y 59 de Arcana se vuelve una [item:apotheosis:god_fused_pearl|perla fusionada con dioses]. Dos arman [quest:aench_raven|la mesa del cuervo], donde fijás los valores a mano."]},
+      "sources": ["jar:Apotheosis-1.21.1-8.7.0.jar:data/apotheosis/recipe/god_fused_pearl.json", "jar:Apotheosis-1.21.1-8.7.0.jar:data/apotheosis/recipe/raven_enchanting_table.json"]
+    },
+    {
+      "key": "aadv_keys", "role": "tip", "deps": ["aadv_welcome"],
+      "task": {"type": "checkmark"},
+      "at": {"x": -12.6, "y": 12.2},
+      "en_us": {"title": "Two Apotheosis keys",
+        "text": ["[tip] [key:key.apotheosis.toggle_radial_mining] switches radial mining on tools with the Radial affix, and [key:key.apotheosis.link_item_to_chat] links the item under your cursor to chat. Its own comparison is off: Equipment Compare already shows it."]},
+      "es_es": {"title": "Dos teclas de Apotheosis",
+        "text": ["[tip] [key:key.apotheosis.toggle_radial_mining] cambia el minado radial de las herramientas con el afijo Radial, y [key:key.apotheosis.link_item_to_chat] enlaza en el chat el ítem que está bajo el cursor. Su comparación está apagada: Equipment Compare ya la muestra."]},
+      "sources": ["repo:pack/config/defaultoptions/keybindings.txt#key_key.apotheosis.toggle_radial_mining", "repo:pack/config/defaultoptions/keybindings.txt#key_key.apotheosis.link_item_to_chat", "repo:pack/config/apotheosis/apotheosis.cfg#Enable Equipment Comparisons", "jar:Apotheosis-1.21.1-8.7.0.jar:data/apotheosis/affixes/breaker/effect/radial.json"]
+    },
+    {
+      "key": "aadv_salvage_tip", "role": "tip", "deps": ["aadv_salvage"],
+      "task": {"type": "checkmark"},
+      "at": {"x": -1.6, "y": 12.2},
+      "en_us": {"title": "Salvage the plain stuff too",
+        "text": ["[tip] Old iron armor salvages into one to three ingots, diamond gear into one to three diamonds and netherite gear into up to two netherite scrap. Keep a Salvaging Table by the trash can."]},
+      "es_es": {"title": "Reciclá lo común también",
+        "text": ["[tip] La armadura de hierro vieja se recicla en uno a tres lingotes, el equipo de diamante en uno a tres diamantes y el de netherita en hasta dos chatarras de netherita. Tené una mesa de reciclaje al lado del tacho."]},
+      "sources": ["jar:Apotheosis-1.21.1-8.7.0.jar:data/apotheosis/recipe/salvaging/other/iron_armor.json", "jar:Apotheosis-1.21.1-8.7.0.jar:data/apotheosis/recipe/salvaging/other/diamond_armor.json", "jar:Apotheosis-1.21.1-8.7.0.jar:data/apotheosis/recipe/salvaging/other/netherite_armor.json"]
+    },
+    {
+      "key": "aadv_attributes", "role": "tip", "deps": ["aadv_rarities"],
+      "task": {"type": "checkmark"},
+      "at": {"x": -6.6, "y": 9.4},
+      "en_us": {"title": "Where your stats live",
+        "text": ["[tip] The Show Attributes button in your inventory lists every attribute you have, from crit chance to life steal and dodge. Hold [key:key.keyboard.left.shift] over one to see where each modifier comes from."]},
+      "es_es": {"title": "Dónde viven tus atributos",
+        "text": ["[tip] El botón Show Attributes del inventario lista todos tus atributos, de la probabilidad de crítico al robo de vida y la esquiva. Mantené [key:key.keyboard.left.shift] sobre uno para ver de dónde sale cada modificador."]},
+      "sources": ["jar:ApothicAttributes-1.21.1-2.10.1.jar:assets/apothic_attributes/lang/en_us.json#apothic_attributes.gui.show_attributes", "jar:ApothicAttributes-1.21.1-2.10.1.jar:assets/apothic_attributes/lang/en_us.json#apothic_attributes.gui.press_shift", "jar:Apotheosis-1.21.1-8.7.0.jar:assets/apotheosis/patchouli_books/apoth_chronicle/en_us/entries/adventure/attributes/crit_chance.json", "jar:Apotheosis-1.21.1-8.7.0.jar:assets/apotheosis/patchouli_books/apoth_chronicle/en_us/entries/adventure/attributes/life_steal.json"]
+    },
+    {
+      "key": "aadv_tier_screen", "role": "tip", "deps": ["aadv_tiers"],
+      "task": {"type": "checkmark"},
+      "at": {"x": -1.071, "y": 8.8},
+      "en_us": {"title": "The tier screen",
+        "text": ["[tip] [key:key.apotheosis.open_world_tier_select] opens the World Tier screen: Detailed Info shows each tier's buffs and the odds of every rarity and gem purity. Its Activate button stays off here, since the story moves the tier."]},
+      "es_es": {"title": "La pantalla de niveles",
+        "text": ["[tip] [key:key.apotheosis.open_world_tier_select] abre la pantalla de Niveles de Mundo: Información detallada muestra las mejoras de cada nivel y las chances de cada rareza y pureza de gema. Su botón Activar queda apagado acá, porque el nivel lo mueve la historia."]},
+      "sources": ["jar:Apotheosis-1.21.1-8.7.0.jar:assets/apotheosis/lang/en_us.json#tutorial.apotheosis.world_tier.detailed_info.desc", "jar:Apotheosis-1.21.1-8.7.0.jar:assets/apotheosis/lang/en_us.json#tutorial.apotheosis.world_tier.activate_disabled.desc", "repo:pack/config/defaultoptions/keybindings.txt#key_key.apotheosis.open_world_tier_select", "repo:pack/config/apotheosis/apotheosis.cfg#Enable Manual World Tier Changes"]
+    }
+  ]
+}

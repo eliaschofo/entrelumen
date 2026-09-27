@@ -1,0 +1,323 @@
+{
+  "format": "sector",
+  "chapter": "sector_apotheosis_spawners",
+  "group": "magic",
+  "act": "III",
+  "motif": "apotheosis",
+  "icon": "minecraft:spawner",
+  "emblem": "minecraft:textures/block/spawner.png",
+  "title": {"en_us": "Apotheosis · Spawners", "es_es": "Apotheosis · Generadores"},
+  "subtitle": {
+    "en_us": ["Sixteen copper augments tune a spawner where it stands, one set per act from III to V: ENTRELUMEN's version of Apothic Spawners, with no runes."],
+    "es_es": ["Dieciséis aumentadores de cobre afinan un generador donde está, un juego por acto del III al V: la versión de ENTRELUMEN de Apothic Spawners, sin runas."]
+  },
+  "entry": "aspawn_welcome",
+  "center": [0, 0],
+  "groups": {
+    "leashes": {"label": {"en_us": "Eggs and leashes", "es_es": "Huevos y correas"}, "axis": "x", "caption": "above"}
+  },
+  "links": [
+    {"target": "exchange_spare_regulator", "at": {"x": -5.0, "y": -8.8}},
+    {"target": "voices_capsule", "at": {"x": -5.0, "y": 0.4}},
+    {"target": "world_renewal_item", "at": {"x": -8.75, "y": 5.8}},
+    {"target": "world_ark_bus", "at": {"x": -3.4, "y": 9.45}}
+  ],
+  "art": [
+    {"id": "banner", "texture": "entrelumen:textures/gui/quests/banner_plain.png", "x": 0.0, "y": -19.4, "scale": 2, "order": -1, "color": "#6B4E3A"},
+    {"id": "title", "label": {"en_us": "Apotheosis", "es_es": "Apotheosis"}, "x": 0.0, "y": -19.849999999999998, "scale": 2, "bold": true, "tint": "#F3EEFF", "order": 5},
+    {"id": "chapter", "label": {"en_us": "Spawners", "es_es": "Generadores"}, "x": 0.0, "y": -18.45, "scale": 1, "tint": "#F2B27A", "order": 5},
+    {"id": "medallion", "texture": "entrelumen:textures/gui/quests/medallion.png", "x": -10.4, "y": -19.4, "scale": 2, "order": 0, "click": "chapter:sun_of_heliodor", "hover": {"en_us": "Back to the Sun of Heliodor", "es_es": "Volver al Sol de Heliodor"}},
+    {"id": "emblem", "texture": "minecraft:textures/block/spawner.png", "x": -10.4, "y": -19.4, "scale": 4, "order": 1},
+    {"id": "to_enchanting", "label": {"en_us": "» Enchanting", "es_es": "» Encantamiento"}, "x": 10.4, "y": -20.0, "scale": 1, "tint": "#F2B27A", "click": "chapter:sector_apotheosis_enchanting"},
+    {"id": "to_adventure", "label": {"en_us": "» Adventure", "es_es": "» Aventura"}, "x": 10.4, "y": -18.799999999999997, "scale": 1, "tint": "#F2B27A", "click": "chapter:sector_apotheosis_adventure"},
+    {"id": "sun", "texture": "entrelumen:textures/gui/quests/sun_heliodor.png", "x": 0, "y": 13.2, "scale": 1, "order": -3, "alpha": 160, "reveal": "aspawn_mastery"},
+    {"id": "frame0", "line": [[-10.0, -10.0], [10.0, -10.0]], "tint": "#6E7885", "alpha": 210, "thickness_px": 3, "order": -2},
+    {"id": "frame1", "line": [[10.0, -10.0], [10.0, 10.6]], "tint": "#6E7885", "alpha": 210, "thickness_px": 3, "order": -2},
+    {"id": "frame2", "line": [[10.0, 10.6], [-10.0, 10.6]], "tint": "#6E7885", "alpha": 210, "thickness_px": 3, "order": -2},
+    {"id": "frame3", "line": [[-10.0, 10.6], [-10.0, -10.0]], "tint": "#6E7885", "alpha": 210, "thickness_px": 3, "order": -2},
+    {"id": "vbar0", "line": [[-7.5, -10.0], [-7.5, 10.6]], "tint": "#4A515C", "alpha": 120, "thickness_px": 2, "order": -2},
+    {"id": "vbar1", "line": [[-2.5, -10.0], [-2.5, 10.6]], "tint": "#4A515C", "alpha": 120, "thickness_px": 2, "order": -2},
+    {"id": "vbar2", "line": [[2.5, -10.0], [2.5, 10.6]], "tint": "#4A515C", "alpha": 120, "thickness_px": 2, "order": -2},
+    {"id": "vbar3", "line": [[7.5, -10.0], [7.5, 10.6]], "tint": "#4A515C", "alpha": 120, "thickness_px": 2, "order": -2},
+    {"id": "hbar0", "line": [[-10.0, -7.6], [10.0, -7.6]], "tint": "#4A515C", "alpha": 120, "thickness_px": 2, "order": -2},
+    {"id": "hbar1", "line": [[-10.0, -2.3], [10.0, -2.3]], "tint": "#4A515C", "alpha": 120, "thickness_px": 2, "order": -2},
+    {"id": "hbar2", "line": [[-10.0, 3.1], [10.0, 3.1]], "tint": "#4A515C", "alpha": 120, "thickness_px": 2, "order": -2},
+    {"id": "hbar3", "line": [[-10.0, 8.3], [10.0, 8.3]], "tint": "#4A515C", "alpha": 120, "thickness_px": 2, "order": -2},
+    {"id": "bolt0", "texture": "minecraft:textures/block/spawner.png", "x": -10.0, "y": -10.0, "scale": 2, "order": -1},
+    {"id": "bolt1", "texture": "minecraft:textures/block/spawner.png", "x": 10.0, "y": -10.0, "scale": 2, "order": -1},
+    {"id": "bolt2", "texture": "minecraft:textures/block/spawner.png", "x": 10.0, "y": 10.6, "scale": 2, "order": -1},
+    {"id": "bolt3", "texture": "minecraft:textures/block/spawner.png", "x": -10.0, "y": 10.6, "scale": 2, "order": -1},
+    {"id": "act3", "texture": "entrelumen:textures/gui/quests/act_3.png", "x": -11.7, "y": -5.0, "scale": 1, "order": 0},
+    {"id": "act3_label", "label": {"en_us": "III", "es_es": "III"}, "x": -13.3, "y": -5.0, "scale": 1, "tint": "#C2B6DC", "order": 4},
+    {"id": "act4", "texture": "entrelumen:textures/gui/quests/act_4.png", "x": -11.7, "y": 0.4, "scale": 1, "order": 0},
+    {"id": "act4_label", "label": {"en_us": "IV", "es_es": "IV"}, "x": -13.3, "y": 0.4, "scale": 1, "tint": "#C2B6DC", "order": 4},
+    {"id": "act5", "texture": "entrelumen:textures/gui/quests/act_5.png", "x": -11.7, "y": 5.8, "scale": 1, "order": 0},
+    {"id": "act5_label", "label": {"en_us": "V", "es_es": "V"}, "x": -13.3, "y": 5.8, "scale": 1, "tint": "#C2B6DC", "order": 4}
+  ],
+  "quests": [
+    {
+      "key": "aspawn_welcome", "role": "entry", "deps": [],
+      "task": {"type": "observation", "observe": "block", "target": "minecraft:spawner", "ticks": 40, "title": {"en_us": "Look at a Monster Spawner", "es_es": "Mirá un generador de criaturas"}, "icon": "minecraft:spawner"},
+      "icon": "minecraft:spawner",
+      "at": {"x": 0, "y": -13.4},
+      "en_us": {"title": "Spawners you tune in place", "subtitle": "You don't move the spawner. You move in.",
+        "text": ["Every Monster Spawner has stats: how long it waits, how many mobs it makes, how far it reaches. Here you change them where the spawner stands, with sixteen copper augments, one set per act from III to V."]},
+      "es_es": {"title": "Generadores afinados en el lugar", "subtitle": "El generador no se muda. Te mudás vos.",
+        "text": ["Cada generador de criaturas tiene valores: cuánto espera, cuántas criaturas saca, hasta dónde llega. Acá se cambian donde está el generador, con dieciséis aumentadores de cobre, un juego por acto del III al V."]},
+      "sources": ["jar:Apotheosis-1.21.1-8.7.0.jar:assets/apotheosis/patchouli_books/apoth_chronicle/en_us/entries/spawner/stats.json", "repo:docs/design/apotheosis-family.md#Spawner augments replace Apotheosis runes", "repo:pack/kubejs/data/entrelumen/recipe/augment_min_delay.json", "repo:pack/kubejs/data/entrelumen/recipe/augment_spawn_count.json", "repo:pack/kubejs/data/entrelumen/recipe/augment_echoing.json"]
+    },
+    {
+      "key": "aspawn_stats", "role": "info", "deps": ["aspawn_welcome"],
+      "task": {"type": "checkmark"},
+      "icon": "minecraft:clock",
+      "at": {"x": -3.6, "y": -12.2},
+      "en_us": {"title": "What a spawner knows",
+        "text": ["A dungeon spawner waits 200 to 800 ticks, tries 4 mobs at once, stops at 6 nearby, runs with a player within 16 blocks and spawns within 4. Look at one with Jade and hold [key:key.keyboard.left.control] to read its current stats."]},
+      "es_es": {"title": "Lo que sabe un generador",
+        "text": ["Un generador de mazmorra espera de 200 a 800 ticks, intenta 4 criaturas por vez, frena con 6 cerca, anda con un jugador a menos de 16 bloques y las hace aparecer a menos de 4. Miralo con Jade y mantené [key:key.keyboard.left.control] para leer sus valores."]},
+      "sources": ["jar:minecraft_1.21.1_client.jar:dby.class#BaseSpawner.<init> (min 200, max 800, count 4, nearby 6, player range 16, spawn range 4)", "jar:ApothicSpawners-1.21.1-1.4.0.jar:dev/shadowsoffire/apothic_spawners/compat/SpawnerHwylaPlugin.class#hasControlDown", "jar:Apotheosis-1.21.1-8.7.0.jar:assets/apotheosis/patchouli_books/apoth_chronicle/en_us/entries/spawner/stats.json"]
+    },
+    {
+      "key": "aspawn_no_silk", "role": "info", "deps": ["aspawn_welcome"],
+      "task": {"type": "checkmark"},
+      "icon": "minecraft:enchanted_book",
+      "at": {"x": -3.6, "y": -15.0},
+      "en_us": {"title": "Spawners stay put",
+        "text": ["Silk Touch cannot lift spawners in this pack: portable spawners would bring mob farms ahead of their acts. Build around the spawner you found, and scout a few before you sink augments into one."]},
+      "es_es": {"title": "Los generadores no se mudan",
+        "text": ["En este pack el Toque de seda no levanta generadores: los generadores portátiles adelantarían las granjas de criaturas a sus actos. Armá alrededor del generador que encontraste, y explorá varios antes de gastar aumentadores en uno."]},
+      "sources": ["repo:pack/config/apothic_spawners.cfg#Spawner Silk Level", "repo:docs/design/apotheosis-family.md#Spawner augments replace Apotheosis runes"]
+    },
+    {
+      "key": "aspawn_runes", "role": "info", "deps": ["aspawn_welcome"],
+      "task": {"type": "checkmark"},
+      "icon": "apotheosis:spawner_chain",
+      "at": {"x": 3.6, "y": -12.2},
+      "en_us": {"title": "No runes here",
+        "text": ["Apotheosis 8.7 moved spawner modifiers onto runes. The pack removes the runes and puts every modifier on the copper augments instead, so there is one route. Spawner chains still drop from blown-up spawners but craft nothing."]},
+      "es_es": {"title": "Acá no hay runas",
+        "text": ["Apotheosis 8.7 pasó los modificadores de generador a runas. El pack saca las runas y pone todos los modificadores en los aumentadores de cobre, así que hay un solo camino. Las cadenas de generador siguen cayendo de generadores volados, pero no craftean nada."]},
+      "sources": ["repo:pack/kubejs/server_scripts/entrelumen_apotheosis_balance.js#entrelumenApotheosisRemovals", "jar:Apotheosis-1.21.1-8.7.0.jar:assets/apotheosis/lang/en_us.json#item.apotheosis.spawner_chain.desc", "repo:docs/design/apotheosis-family.md#Spawner augments replace Apotheosis runes"]
+    },
+    {
+      "key": "aspawn_recipe", "role": "tip", "deps": ["aspawn_welcome"],
+      "task": {"type": "checkmark"},
+      "at": {"x": 3.6, "y": -15.0},
+      "en_us": {"title": "Copper medallions",
+        "text": ["[tip] Every augment is the same small medallion: the classic core for its stat in the middle, like sugar for speed or a clock for delay, an act component on top and three copper sheets around. EMI lists each one with its step and cap."]},
+      "es_es": {"title": "Medallas de cobre",
+        "text": ["[tip] Todos los aumentadores son la misma medalla chica: el núcleo clásico de su valor en el medio, como azúcar para la velocidad o un reloj para la espera, un componente del acto arriba y tres láminas de cobre alrededor. EMI muestra cada uno con su paso y su tope."]},
+      "sources": ["repo:pack/kubejs/data/entrelumen/recipe/augment_min_delay.json", "repo:pack/kubejs/data/entrelumen/recipe/augment_max_delay.json", "repo:docs/design/apotheosis-family.md#Spawner augments replace Apotheosis runes"]
+    },
+    {
+      "key": "aspawn_where", "role": "side", "deps": ["aspawn_welcome"],
+      "task": {"type": "structure", "structure": "minecraft:fortress", "title": {"en_us": "Enter a Nether fortress", "es_es": "Entrá a una fortaleza del Nether"}, "icon": "minecraft:blaze_rod"},
+      "icon": "minecraft:blaze_rod",
+      "at": {"x": -7.4, "y": -13.4},
+      "en_us": {"title": "Where spawners hide", "subtitle": "Blazes by appointment.",
+        "text": ["Dungeons hold zombie, skeleton and spider spawners, mineshafts cave spiders, and Nether fortresses blazes: blaze rods feed hellshelves, tomes and sigils. Apotheosis adds rogue spawners in caves, each over a chest."]},
+      "es_es": {"title": "Dónde se esconden", "subtitle": "Blazes con turno.",
+        "text": ["Las mazmorras tienen generadores de zombis, esqueletos y arañas; las minas, de arañas de las cuevas; y las fortalezas del Nether, de blazes: las varas de blaze alimentan estantes infernales, tomos y sellos. Apotheosis suma generadores rebeldes en cuevas, cada uno sobre un cofre."]},
+      "sources": ["jar:Apotheosis-1.21.1-8.7.0.jar:dev/shadowsoffire/apotheosis/spawner/RogueSpawner.class#place", "jar:Apotheosis-1.21.1-8.7.0.jar:assets/apotheosis/patchouli_books/apoth_chronicle/en_us/entries/adventure/rogue_spawners/brutal_spawners.json", "jar:ApothicEnchanting-1.21.1-1.6.1.jar:data/apothic_enchanting/recipe/hellshelf.json"]
+    },
+    {
+      "key": "aspawn_apply", "role": "milestone", "deps": ["aspawn_welcome"],
+      "task": {"type": "advancement", "advancement": "apothic_spawners:modifier", "title": {"en_us": "Apply an augment to a spawner", "es_es": "Aplicá un aumentador a un generador"}},
+      "icon": "entrelumen:augment_min_delay",
+      "at": {"x": 0, "y": -10.0},
+      "en_us": {"title": "Applying an augment", "subtitle": "Right-click, and the cage listens.",
+        "text": ["Right-click the spawner holding an augment: it's spent and the stat moves one fixed step, up to its cap. Changed your mind? The same augment with Nether Quartz in the other hand undoes one step, and the quartz stays."]},
+      "es_es": {"title": "Aplicar un aumentador", "subtitle": "Clic derecho, y la jaula escucha.",
+        "text": ["Clic derecho al generador con un aumentador en la mano: se gasta y el valor se mueve un paso fijo, hasta su tope. ¿Te arrepentiste? El mismo aumentador con cuarzo del Nether en la otra mano deshace un paso, y el cuarzo queda."]},
+      "sources": ["jar:ApothicSpawners-1.21.1-1.4.0.jar:data/apothic_spawners/advancement/modifier.json", "repo:pack/kubejs/data/apothic_spawners/recipe/spawner_modifiers/spawn_count.json", "repo:pack/kubejs/data/apothic_spawners/recipe/spawner_modifiers/_inverse/spawn_count.json", "jar:Apotheosis-1.21.1-8.7.0.jar:assets/apotheosis/patchouli_books/apoth_chronicle/en_us/entries/spawner/modifiers.json"]
+    },
+    {
+      "key": "aspawn_act3_timing", "role": "step", "deps": ["aspawn_apply"],
+      "tasks": [{"item": "entrelumen:augment_min_delay"}, {"item": "entrelumen:augment_max_delay"}],
+      "at": {"x": -5.0, "y": -5.0},
+      "en_us": {"title": "Act III: faster", "subtitle": "Sugar and a clock. Coffee not included.",
+        "text": ["On a [item:entrelumen:power_regulator|Power Regulator]: the [item:entrelumen:augment_min_delay|Quickening Augment] takes 10 ticks off the minimum delay and the [item:entrelumen:augment_max_delay|Hastening Augment] 20 off the maximum, both down to 20. If the maximum drops below the minimum, the minimum wins, so lower both."]},
+      "es_es": {"title": "Acto III: más rápido", "subtitle": "Azúcar y un reloj. Café no incluido.",
+        "text": ["Sobre un [item:entrelumen:power_regulator|Regulador de energía]: el [item:entrelumen:augment_min_delay|Aumentador acelerado] le saca 10 ticks a la espera mínima y el [item:entrelumen:augment_max_delay|Aumentador apresurado] 20 a la máxima, las dos hasta 20. Si la máxima queda debajo de la mínima, gana la mínima, así que bajá las dos."]},
+      "sources": ["repo:pack/kubejs/data/entrelumen/recipe/augment_min_delay.json", "repo:pack/kubejs/data/entrelumen/recipe/augment_max_delay.json", "repo:pack/kubejs/data/apothic_spawners/recipe/spawner_modifiers/min_delay.json", "repo:pack/kubejs/data/apothic_spawners/recipe/spawner_modifiers/max_delay.json", "jar:Apotheosis-1.21.1-8.7.0.jar:assets/apotheosis/patchouli_books/apoth_chronicle/en_us/entries/spawner/stats.json"]
+    },
+    {
+      "key": "aspawn_act3_quiet", "role": "side", "deps": ["aspawn_apply"],
+      "tasks": [{"item": "entrelumen:augment_silent"}, {"item": "entrelumen:augment_youthful"}],
+      "at": {"x": 0.0, "y": -5.0},
+      "en_us": {"title": "Act III: quiet and small", "subtitle": "Peace and quiet, and tiny zombies.",
+        "text": ["The [item:entrelumen:augment_silent|Silent Augment], on a [item:entrelumen:handling_core|Handling Core], mutes whatever the spawner makes. The [item:entrelumen:augment_youthful|Youthful Augment], on a [item:entrelumen:propagation_core|Propagation Core], spawns babies whenever the mob has them. Both are switches: one of each does it."]},
+      "es_es": {"title": "Acto III: silencioso y chiquito", "subtitle": "Paz, silencio y zombis diminutos.",
+        "text": ["El [item:entrelumen:augment_silent|Aumentador silencioso], sobre un [item:entrelumen:handling_core|Núcleo de manipulación], calla todo lo que saca el generador. El [item:entrelumen:augment_youthful|Aumentador juvenil], sobre un [item:entrelumen:propagation_core|Núcleo de propagación], saca crías cuando la criatura tiene. Los dos son interruptores: con uno de cada uno alcanza."]},
+      "sources": ["repo:pack/kubejs/data/entrelumen/recipe/augment_silent.json", "repo:pack/kubejs/data/entrelumen/recipe/augment_youthful.json", "repo:pack/kubejs/data/apothic_spawners/recipe/spawner_modifiers/silent.json", "repo:pack/kubejs/data/apothic_spawners/recipe/spawner_modifiers/youthful.json"]
+    },
+    {
+      "key": "aspawn_reach", "role": "step", "deps": ["aspawn_apply"],
+      "tasks": [{"item": "entrelumen:augment_spawn_range"}, {"item": "entrelumen:augment_player_range"}],
+      "at": {"x": 5.0, "y": -5.0},
+      "en_us": {"title": "Act III: wider", "subtitle": "More room, and you can stand further back.",
+        "text": ["The [item:entrelumen:augment_spawn_range|Spread Augment], on a [item:entrelumen:routing_matrix|Routing Matrix], adds 2 to the spawn range, up to 32. The [item:entrelumen:augment_player_range|Reach Augment], on an [item:entrelumen:inventory_sensor|Inventory Sensor], adds 4 to the activation range, up to 48."]},
+      "es_es": {"title": "Acto III: más amplio", "subtitle": "Más lugar, y podés pararte más lejos.",
+        "text": ["El [item:entrelumen:augment_spawn_range|Aumentador de dispersión], sobre una [item:entrelumen:routing_matrix|Matriz de distribución], suma 2 al rango de aparición, hasta 32. El [item:entrelumen:augment_player_range|Aumentador de alcance], sobre un [item:entrelumen:inventory_sensor|Sensor de inventario], suma 4 al rango de activación, hasta 48."]},
+      "sources": ["repo:pack/kubejs/data/entrelumen/recipe/augment_spawn_range.json", "repo:pack/kubejs/data/entrelumen/recipe/augment_player_range.json", "repo:pack/kubejs/data/apothic_spawners/recipe/spawner_modifiers/spawn_range.json", "repo:pack/kubejs/data/apothic_spawners/recipe/spawner_modifiers/player_range.json"]
+    },
+    {
+      "key": "aspawn_act4", "role": "milestone", "deps": ["aspawn_act3_timing", "aspawn_reach"], "any_dep": true,
+      "tasks": [{"item": "entrelumen:augment_spawn_count"}, {"item": "entrelumen:augment_max_nearby"}],
+      "at": {"x": 0.0, "y": 0.4},
+      "en_us": {"title": "Act IV: more", "subtitle": "A crowd needs room.",
+        "text": ["Both sit on an [item:entrelumen:ecosystem_capsule|Ecosystem Capsule]. The [item:entrelumen:augment_spawn_count|Multitude Augment] adds 2 mobs to each spawn, up to 16; the [item:entrelumen:augment_max_nearby|Crowd Augment] lets 2 more stay nearby, up to 32. Raise them together, or the spawner stops as soon as the room fills."]},
+      "es_es": {"title": "Acto IV: más", "subtitle": "Una multitud necesita lugar.",
+        "text": ["Los dos van sobre una [item:entrelumen:ecosystem_capsule|Cápsula de ecosistema]. El [item:entrelumen:augment_spawn_count|Aumentador de cantidad] suma 2 criaturas por aparición, hasta 16; el [item:entrelumen:augment_max_nearby|Aumentador de multitud] deja 2 más cerca, hasta 32. Subilos juntos, o el generador frena apenas se llena la sala."]},
+      "sources": ["repo:pack/kubejs/data/entrelumen/recipe/augment_spawn_count.json", "repo:pack/kubejs/data/entrelumen/recipe/augment_max_nearby.json", "repo:pack/kubejs/data/apothic_spawners/recipe/spawner_modifiers/spawn_count.json", "repo:pack/kubejs/data/apothic_spawners/recipe/spawner_modifiers/max_nearby.json", "jar:Apotheosis-1.21.1-8.7.0.jar:assets/apotheosis/patchouli_books/apoth_chronicle/en_us/entries/spawner/stats.json"]
+    },
+    {
+      "key": "aspawn_weaken", "role": "side", "deps": ["aspawn_act4"],
+      "tasks": [{"item": "entrelumen:augment_initial_health"}, {"item": "entrelumen:augment_burning"}],
+      "at": {"x": 5.0, "y": 0.4},
+      "en_us": {"title": "Act IV: weaker, hotter", "subtitle": "Pre-cooked mobs.",
+        "text": ["The [item:entrelumen:augment_initial_health|Debilitating Augment], on a [item:entrelumen:spectral_lens|Spectral Lens], spawns mobs with 5% less health per use, down to 20%. The [item:entrelumen:augment_burning|Burning Augment], on a [item:entrelumen:containment_seal|Containment Seal], sets them on fire as they appear."]},
+      "es_es": {"title": "Acto IV: más débiles, más calientes", "subtitle": "Criaturas precocidas.",
+        "text": ["El [item:entrelumen:augment_initial_health|Aumentador debilitante], sobre una [item:entrelumen:spectral_lens|Lente espectral], hace aparecer criaturas con 5% menos de vida por uso, hasta el 20%. El [item:entrelumen:augment_burning|Aumentador ardiente], sobre un [item:entrelumen:containment_seal|Sello de contención], las prende fuego al aparecer."]},
+      "sources": ["repo:pack/kubejs/data/entrelumen/recipe/augment_initial_health.json", "repo:pack/kubejs/data/entrelumen/recipe/augment_burning.json", "repo:pack/kubejs/data/apothic_spawners/recipe/spawner_modifiers/initial_health.json", "repo:pack/kubejs/data/apothic_spawners/recipe/spawner_modifiers/burning.json"]
+    },
+    {
+      "key": "aspawn_act5", "role": "step", "deps": ["aspawn_act4"],
+      "task": {"item": "entrelumen:augment_echoing", "count": 3},
+      "at": {"x": -5.0, "y": 5.8},
+      "en_us": {"title": "Act V: echoes", "subtitle": "Loot, with an echo.",
+        "text": ["The [item:entrelumen:augment_echoing|Echoing Augment], on a [item:entrelumen:renewal_engine|Renewal Engine], makes spawned mobs drop extra loot: one more level per use, up to three. Three augments, three levels."]},
+      "es_es": {"title": "Acto V: ecos", "subtitle": "Botín, con eco.",
+        "text": ["El [item:entrelumen:augment_echoing|Aumentador de eco], sobre un [item:entrelumen:renewal_engine|Motor de renovación], hace que las criaturas suelten botín extra: un nivel más por uso, hasta tres. Tres aumentadores, tres niveles."]},
+      "sources": ["repo:pack/kubejs/data/entrelumen/recipe/augment_echoing.json", "repo:pack/kubejs/data/apothic_spawners/recipe/spawner_modifiers/echoing.json", "jar:ApothicSpawners-1.21.1-1.4.0.jar:assets/apothic_spawners/lang/en_us.json#stat.apothic_spawners.echoing.desc"]
+    },
+    {
+      "key": "aspawn_defiant", "role": "step", "deps": ["aspawn_act4"],
+      "task": {"type": "advancement", "advancement": "apothic_spawners:conditions", "title": {"en_us": "Make a spawner ignore spawn conditions", "es_es": "Hacé que un generador ignore las condiciones"}, "icon": "entrelumen:augment_ignore_conditions"},
+      "icon": "entrelumen:augment_ignore_conditions",
+      "at": {"x": 5.0, "y": 5.8},
+      "en_us": {"title": "Act V: anywhere, any light", "subtitle": "Mobs, now also in daylight.",
+        "text": ["The [item:entrelumen:augment_ignore_conditions|Defiant Augment], on a Renewal Engine, makes the spawner ignore the mob's own spawn rules, grass for animals and darkness for monsters. The [item:entrelumen:augment_ignore_light|Twilight Augment] only ignores light, so it does nothing once a spawner is Defiant."]},
+      "es_es": {"title": "Acto V: donde sea, con cualquier luz", "subtitle": "Criaturas, ahora también de día.",
+        "text": ["El [item:entrelumen:augment_ignore_conditions|Aumentador desafiante], sobre un motor de renovación, hace que el generador ignore las reglas de aparición de la criatura: pasto para los animales, oscuridad para los monstruos. El [item:entrelumen:augment_ignore_light|Aumentador crepuscular] sólo ignora la luz, así que no hace nada si el generador ya es desafiante."]},
+      "sources": ["repo:pack/kubejs/data/entrelumen/recipe/augment_ignore_conditions.json", "repo:pack/kubejs/data/entrelumen/recipe/augment_ignore_light.json", "repo:pack/kubejs/data/apothic_spawners/recipe/spawner_modifiers/ignore_conditions.json", "jar:ApothicSpawners-1.21.1-1.4.0.jar:data/apothic_spawners/advancement/conditions.json", "jar:Apotheosis-1.21.1-8.7.0.jar:assets/apotheosis/patchouli_books/apoth_chronicle/en_us/entries/spawner/stats.json"]
+    },
+    {
+      "key": "aspawn_ark", "role": "milestone", "deps": ["aspawn_act5", "aspawn_defiant"],
+      "tasks": [{"type": "advancement", "advancement": "apothic_spawners:players", "title": {"en_us": "Make a spawner work with nobody near", "es_es": "Hacé que un generador ande sin nadie cerca"}, "icon": "entrelumen:augment_ignore_players"}, {"type": "advancement", "advancement": "apothic_spawners:noai", "title": {"en_us": "Make a spawner spawn mobs without AI", "es_es": "Hacé que un generador saque criaturas sin IA"}, "icon": "entrelumen:augment_no_ai"}, {"type": "advancement", "advancement": "apothic_spawners:redstone", "title": {"en_us": "Put a spawner under redstone control", "es_es": "Poné un generador bajo control de redstone"}, "icon": "entrelumen:augment_redstone_control"}],
+      "icon": "entrelumen:augment_no_ai",
+      "at": {"x": 0.0, "y": 5.8},
+      "en_us": {"title": "Act V: the farm runs itself",
+        "text": ["Three augments sit on an [item:entrelumen:ark_bus|Ark Connection Bus]: [item:entrelumen:augment_ignore_players|Solitude] runs the spawner with nobody near, [item:entrelumen:augment_no_ai|Stupor] spawns mobs without AI and [item:entrelumen:augment_redstone_control|Control] makes it wait for a redstone signal. Apply all three."]},
+      "es_es": {"title": "Acto V: la granja anda sola",
+        "text": ["Tres aumentadores van sobre un [item:entrelumen:ark_bus|Bus de conexión del Arca]: el de [item:entrelumen:augment_ignore_players|soledad] hace andar el generador sin nadie cerca, el de [item:entrelumen:augment_no_ai|estupor] saca criaturas sin IA y el de [item:entrelumen:augment_redstone_control|control] lo hace esperar una señal de redstone. Aplicá los tres."]},
+      "sources": ["repo:pack/kubejs/data/entrelumen/recipe/augment_ignore_players.json", "repo:pack/kubejs/data/entrelumen/recipe/augment_no_ai.json", "repo:pack/kubejs/data/entrelumen/recipe/augment_redstone_control.json", "jar:ApothicSpawners-1.21.1-1.4.0.jar:data/apothic_spawners/advancement/players.json", "jar:ApothicSpawners-1.21.1-1.4.0.jar:data/apothic_spawners/advancement/noai.json", "jar:ApothicSpawners-1.21.1-1.4.0.jar:data/apothic_spawners/advancement/redstone.json"]
+    },
+    {
+      "key": "aspawn_mastery", "role": "capstone", "deps": ["aspawn_ark"],
+      "task": {"type": "advancement", "advancement": "apothic_spawners:ultimate_spawner", "title": {"en_us": "Build the Ultimate Spawner", "es_es": "Armá el generador definitivo"}, "icon": "minecraft:spawner"},
+      "icon": "minecraft:spawner",
+      "at": {"x": 0, "y": 13.2},
+      "en_us": {"title": "The ultimate spawner", "subtitle": "The dungeon works for you now.",
+        "text": ["Minimum and maximum delay at 20 ticks, redstone control, no AI, spawn rules ignored and no player needed: a machine built over three acts, some sixty augments in all."]},
+      "es_es": {"title": "El generador definitivo", "subtitle": "Ahora la mazmorra trabaja para vos.",
+        "text": ["Espera mínima y máxima en 20 ticks, control por redstone, sin IA, sin reglas de aparición y sin necesitar jugadores: una máquina armada en tres actos, unos sesenta aumentadores en total."]},
+      "sources": ["jar:ApothicSpawners-1.21.1-1.4.0.jar:data/apothic_spawners/advancement/ultimate_spawner.json", "jar:minecraft_1.21.1_client.jar:dby.class#BaseSpawner.<init> (min 200, max 800, count 4, nearby 6, player range 16, spawn range 4)", "repo:pack/kubejs/data/apothic_spawners/recipe/spawner_modifiers/min_delay.json", "repo:pack/kubejs/data/apothic_spawners/recipe/spawner_modifiers/max_delay.json"]
+    },
+    {
+      "key": "aspawn_no_ai_tip", "role": "tip", "deps": ["aspawn_ark"],
+      "task": {"type": "checkmark"},
+      "at": {"x": 3.4, "y": 9.45},
+      "en_us": {"title": "No AI, no lag",
+        "text": ["[tip] For any big farm, use Stupor: mobs without AI hang in place doing nothing, which takes a lot of load off the server, and they can still be pushed into a killing chamber. Wire Control to a lever to switch it all off."]},
+      "es_es": {"title": "Sin IA, sin lag",
+        "text": ["[tip] Para cualquier granja grande, usá estupor: las criaturas sin IA quedan quietas sin hacer nada, lo que le saca mucha carga al servidor, y se pueden seguir empujando a una cámara de matanza. Conectá el control a una palanca para apagar todo."]},
+      "sources": ["jar:Apotheosis-1.21.1-8.7.0.jar:assets/apotheosis/patchouli_books/apoth_chronicle/en_us/entries/spawner/stats.json", "repo:pack/kubejs/data/entrelumen/recipe/augment_redstone_control.json"]
+    },
+    {
+      "key": "aspawn_delays_tip", "role": "tip", "deps": ["aspawn_act3_timing"],
+      "task": {"type": "checkmark"},
+      "at": {"x": -8.75, "y": -8.8},
+      "en_us": {"title": "Count before you craft",
+        "text": ["[tip] From a dungeon spawner, 20 ticks takes 18 Quickening and 39 Hastening; Multitude needs 6 to reach 16, Crowd 13 to reach 32, Reach 8 and Spread 14. Every augment costs its act component, so automate them."]},
+      "es_es": {"title": "Contá antes de craftear",
+        "text": ["[tip] Desde un generador de mazmorra, llegar a 20 ticks pide 18 acelerados y 39 apresurados; el de cantidad necesita 6 para llegar a 16, el de multitud 13 para llegar a 32, el de alcance 8 y el de dispersión 14. Cada aumentador cuesta su componente de acto, así que automatizalos."]},
+      "sources": ["jar:minecraft_1.21.1_client.jar:dby.class#BaseSpawner.<init> (min 200, max 800, count 4, nearby 6, player range 16, spawn range 4)", "repo:pack/kubejs/data/apothic_spawners/recipe/spawner_modifiers/min_delay.json", "repo:pack/kubejs/data/apothic_spawners/recipe/spawner_modifiers/max_delay.json", "repo:pack/kubejs/data/apothic_spawners/recipe/spawner_modifiers/spawn_count.json", "repo:pack/kubejs/data/apothic_spawners/recipe/spawner_modifiers/max_nearby.json", "repo:pack/kubejs/data/apothic_spawners/recipe/spawner_modifiers/player_range.json", "repo:pack/kubejs/data/apothic_spawners/recipe/spawner_modifiers/spawn_range.json"]
+    },
+    {
+      "key": "aspawn_fast", "role": "side", "deps": ["aspawn_act3_timing"],
+      "task": {"type": "advancement", "advancement": "apothic_spawners:mindelay", "title": {"en_us": "Bring a minimum delay down to 20", "es_es": "Bajá una espera mínima a 20"}},
+      "icon": "entrelumen:augment_min_delay",
+      "at": {"x": -8.75, "y": -5.0},
+      "en_us": {"title": "I am the fast", "subtitle": "One spawn a second, if the maximum follows.",
+        "text": ["Eighteen Quickening Augments take the minimum delay from 200 to 20 ticks. Every one costs a Power Regulator."]},
+      "es_es": {"title": "Soy el rápido", "subtitle": "Una aparición por segundo, si la máxima acompaña.",
+        "text": ["Dieciocho aumentadores acelerados llevan la espera mínima de 200 a 20 ticks. Cada uno cuesta un regulador de energía."]},
+      "sources": ["jar:ApothicSpawners-1.21.1-1.4.0.jar:data/apothic_spawners/advancement/mindelay.json", "repo:pack/kubejs/data/apothic_spawners/recipe/spawner_modifiers/min_delay.json", "jar:minecraft_1.21.1_client.jar:dby.class#BaseSpawner.<init> (min 200, max 800, count 4, nearby 6, player range 16, spawn range 4)"]
+    },
+    {
+      "key": "aspawn_size", "role": "secret", "deps": ["aspawn_act4"], "hide_lines": true,
+      "task": {"type": "advancement", "advancement": "apothic_spawners:spawncount", "title": {"en_us": "Raise a spawn count to 16", "es_es": "Subí una cantidad de aparición a 16"}},
+      "icon": "entrelumen:augment_spawn_count",
+      "at": {"x": -8.75, "y": 0.4},
+      "en_us": {"title": "Look at the size of it", "subtitle": "Sixteen at a time.",
+        "text": ["Six Multitude Augments: sixteen mobs per spawn, the cap. The advancement's name is the mod's joke, not ours."]},
+      "es_es": {"title": "Mirá el tamaño que tiene", "subtitle": "Dieciséis por vez.",
+        "text": ["Seis aumentadores de cantidad: dieciséis criaturas por aparición, el tope. El nombre del logro es chiste del mod, no nuestro."]},
+      "sources": ["jar:ApothicSpawners-1.21.1-1.4.0.jar:data/apothic_spawners/advancement/spawncount.json", "repo:pack/kubejs/data/apothic_spawners/recipe/spawner_modifiers/spawn_count.json", "jar:minecraft_1.21.1_client.jar:dby.class#BaseSpawner.<init> (min 200, max 800, count 4, nearby 6, player range 16, spawn range 4)"]
+    },
+    {
+      "key": "aspawn_horde", "role": "secret", "deps": ["aspawn_act4"], "hide_lines": true,
+      "task": {"type": "advancement", "advancement": "apothic_spawners:nearbyents", "title": {"en_us": "Raise max nearby entities to 32", "es_es": "Subí el máximo de entidades cerca a 32"}},
+      "icon": "entrelumen:augment_max_nearby",
+      "at": {"x": 8.75, "y": 0.4},
+      "en_us": {"title": "Creating a horde", "subtitle": "Thirty-two, and counting.",
+        "text": ["Thirteen Crowd Augments let 32 mobs of that kind stay near the spawner before it pauses. Make sure the killing floor keeps up."]},
+      "es_es": {"title": "Armando una horda", "subtitle": "Treinta y dos, y contando.",
+        "text": ["Trece aumentadores de multitud dejan que 32 criaturas de ese tipo se queden cerca del generador antes de que pare. Asegurate de que la zona de matanza dé abasto."]},
+      "sources": ["jar:ApothicSpawners-1.21.1-1.4.0.jar:data/apothic_spawners/advancement/nearbyents.json", "repo:pack/kubejs/data/apothic_spawners/recipe/spawner_modifiers/max_nearby.json", "jar:minecraft_1.21.1_client.jar:dby.class#BaseSpawner.<init> (min 200, max 800, count 4, nearby 6, player range 16, spawn range 4)"]
+    },
+    {
+      "key": "aspawn_far", "role": "side", "deps": ["aspawn_reach"],
+      "task": {"type": "advancement", "advancement": "apothic_spawners:playerrange", "title": {"en_us": "Raise an activation range to 48", "es_es": "Subí un rango de activación a 48"}},
+      "icon": "entrelumen:augment_player_range",
+      "at": {"x": 8.75, "y": -5.0},
+      "en_us": {"title": "Far from the fight", "subtitle": "Farming from the couch.",
+        "text": ["Eight Reach Augments take the activation range from 16 blocks to its cap of 48: the spawner keeps working while you sort loot three chunks away."]},
+      "es_es": {"title": "Lejos de la pelea", "subtitle": "Granja desde el sillón.",
+        "text": ["Ocho aumentadores de alcance llevan el rango de activación de 16 bloques a su tope de 48: el generador sigue andando mientras ordenás el botín a tres chunks."]},
+      "sources": ["jar:ApothicSpawners-1.21.1-1.4.0.jar:data/apothic_spawners/advancement/playerrange.json", "repo:pack/kubejs/data/apothic_spawners/recipe/spawner_modifiers/player_range.json", "jar:minecraft_1.21.1_client.jar:dby.class#BaseSpawner.<init> (min 200, max 800, count 4, nearby 6, player range 16, spawn range 4)"]
+    },
+    {
+      "key": "aspawn_capturing", "role": "side", "deps": ["aspawn_welcome"], "group": "leashes",
+      "task": {"type": "advancement", "advancement": "apothic_spawners:capturing", "title": {"en_us": "Get a spawn egg with Capturing", "es_es": "Conseguí un huevo con Captura"}},
+      "icon": "minecraft:zombie_spawn_egg",
+      "at": {"x": 7.4, "y": -13.4},
+      "en_us": {"title": "Capturing and spawn eggs", "subtitle": "Gotta catch... one, eventually.",
+        "text": ["A spawn egg changes a spawner's mob. Capturing, a sword enchantment, gives each kill a 0.5% chance per level to drop the mob's egg: the Chronicle says 0.4%, the pack's config sets 0.5%."]},
+      "es_es": {"title": "Captura y huevos", "subtitle": "Atrapar... uno, en algún momento.",
+        "text": ["Un huevo de aparición cambia la criatura de un generador. Captura, un encantamiento de espada, le da a cada muerte un 0,5% por nivel de soltar el huevo de la criatura: la Crónica dice 0,4%, la configuración del pack pone 0,5%."]},
+      "sources": ["jar:ApothicSpawners-1.21.1-1.4.0.jar:data/apothic_spawners/enchantment/capturing.json", "repo:pack/config/apothic_spawners.cfg#Capturing Drop Chance", "jar:Apotheosis-1.21.1-8.7.0.jar:assets/apotheosis/patchouli_books/apoth_chronicle/en_us/entries/spawner/capturing.json", "jar:ApothicSpawners-1.21.1-1.4.0.jar:data/apothic_spawners/advancement/capturing.json"]
+    },
+    {
+      "key": "aspawn_occult", "role": "side", "deps": ["aspawn_capturing"], "group": "leashes",
+      "task": {"item": "apothic_enchanting:occult_ender_lead"},
+      "at": {"x": 10.6, "y": -13.4},
+      "en_us": {"title": "A leash that rewrites spawners", "subtitle": "The witch is non-negotiable.",
+        "text": ["Catch a witch in an Ender Lead and infuse it at 75 Eterna, 85 Quanta and 60 to 85 Arcana: the [item:apothic_enchanting:occult_ender_lead|Occult Ender Lead] never breaks. Right-click a spawner while it holds a mob, and that mob becomes the spawner's new one."]},
+      "es_es": {"title": "Una correa que reescribe generadores", "subtitle": "La bruja no es negociable.",
+        "text": ["Atrapá una bruja con una rienda de ender e infundila con 75 de Eterna, 85 de Quanta y entre 60 y 85 de Arcana: la [item:apothic_enchanting:occult_ender_lead|rienda de ender oculta] nunca se rompe. Clic derecho a un generador mientras lleva una criatura, y esa criatura pasa a ser la del generador."]},
+      "sources": ["jar:ApothicEnchanting-1.21.1-1.6.1.jar:data/apothic_enchanting/recipe/infusion/occult_ender_lead.json", "jar:ApothicEnchanting-1.21.1-1.6.1.jar:dev/shadowsoffire/apothic_enchanting/objects/EnderLeadItem.class#useOn (setEntityId)", "jar:ApothicEnchanting-1.21.1-1.6.1.jar:dev/shadowsoffire/apothic_enchanting/Ench.class#OCCULT_ENDER_LEAD (unbreakable)"]
+    },
+    {
+      "key": "aspawn_bounty", "role": "bounty", "deps": ["aspawn_apply"],
+      "tasks": [{"item": "minecraft:bone", "count": 64, "consume": true}, {"item": "minecraft:string", "count": 64, "consume": true}],
+      "at": {"x": -8.2, "y": 13.2},
+      "en_us": {"title": "What the farm leaves behind", "subtitle": "Bones for the garden, string for the looms.",
+        "text": ["Sixty-four bones and sixty-four string for the common store, once a day: the usual harvest of a skeleton or spider spawner."]},
+      "es_es": {"title": "Lo que deja la granja", "subtitle": "Huesos para la huerta, hilo para los telares.",
+        "text": ["Sesenta y cuatro huesos y sesenta y cuatro hilos para el depósito común, una vez por día: la cosecha de siempre de un generador de esqueletos o de arañas."]},
+      "sources": ["jar:minecraft_1.21.1_client.jar:dby.class#BaseSpawner.<init> (min 200, max 800, count 4, nearby 6, player range 16, spawn range 4)", "jar:Apotheosis-1.21.1-8.7.0.jar:assets/apotheosis/patchouli_books/apoth_chronicle/en_us/entries/spawner/stats.json"]
+    }
+  ]
+}
