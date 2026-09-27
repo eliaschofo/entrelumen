@@ -1,0 +1,87 @@
+{
+ "schema": 1,
+ "task": "Solsticio v8: the urban plan in blocks (phase 1) and dressed, detailed and exported (phase 2), replacing the v7 citadel",
+ "branch": "feature/solsticio-v8",
+ "base": "main 27fb170",
+ "design": "docs/design/solsticio-city-v8.md",
+ "generator": {
+  "command": "python art/solsticio/city8.py --export",
+  "modules": ["art/solsticio/city8.py", "art/solsticio/net8.py", "art/solsticio/dress8.py", "art/solsticio/landmarks8.py",
+              "art/solsticio/export8.py", "art/solsticio/grid8.py", "art/solsticio/render8.py"],
+  "blocks": 1353171,
+  "blocksWithoutBarrier": 1244826,
+  "barrier": 108345,
+  "footprint": [309, 240, 307],
+  "buildings": 614,
+  "lotPadLevels": 53,
+  "stairBlocksOnWalkingNetwork": 4590,
+  "axis": "falls 48 (Plaza Mayor 51 to Plaza del Portal 3) in 9 flights of 5-6 steps, landings 4-28 blocks",
+  "retainingFaces": {"2-3": 4463, "4-7": 2616, "8+": 987, "tallest": 20},
+  "lastFalls": "water at -2 falls 24 blocks into a still catch basin at -27; steady-state water in the template; barrier stepped round it",
+  "dressing": {"doors": 614, "doorLanterns": 613, "sills": 5664, "flowerBoxes": 3627, "shutters": 1431, "balconies": 109,
+               "shopfronts": 226, "awnings": 1906, "shopSigns": 201, "banners": 191, "cratesAndBarrels": 226,
+               "cornerLanterns": 273, "dormers": 127, "chimneys": 135, "smokingChimneys": 55, "roomsFurnished": 885,
+               "shopsFurnished": 88, "taverns": 4, "ladders": 602, "interiorLanterns": 2436, "forges": 111,
+               "laneLanterns": 61, "benches": 310, "planters": 54, "courtyardFountains": 5, "wells": 6, "signposts": 30}
+ },
+ "checks": {
+  "hollowGroundOpenToAir": 0,
+  "walkingNeighboursTwoOrMoreApart": 0,
+  "markers": {"total": 99, "issues": 0, "arrival": 1, "town_hall_portal": 1, "town_hall_waystone": 1, "trading_hall": 1,
+              "player_plot": 4, "mayor": 1, "inventor": 1, "gardener": 1, "priest": 1, "shop": 16, "sidequest": 4,
+              "easter": 3, "resident": 64},
+  "blockIdsNotInPackRegistry": 0,
+  "gravityBlocks": 0,
+  "modBlocks": ["handcrafted:birch_bench", "handcrafted:birch_chair", "handcrafted:birch_couch", "handcrafted:birch_counter",
+                "handcrafted:birch_cupboard", "handcrafted:birch_drawer", "handcrafted:birch_shelf", "handcrafted:birch_side_table",
+                "handcrafted:birch_table", "handcrafted:white_crockery_combo", "mcwlights:copper_chandelier", "mcwlights:wall_lantern",
+                "mcwroofs:cyan_striped_awning", "mcwroofs:orange_terracotta_roof", "mcwroofs:yellow_striped_awning",
+                "refurbished_furniture:birch_crate", "refurbished_furniture:white_lamp", "supplementaries:flower_box",
+                "supplementaries:planter"]
+ },
+ "template": {
+  "path": "companion/src/main/resources/data/entrelumen/structure/solsticio/city.nbt",
+  "sha256": "7511637eded6c824f84af50b73f62922b242344a41ff36cf07a8934798cc50bf",
+  "bytes": 4373389,
+  "size": [309, 240, 307],
+  "entries": 1353270,
+  "palette": 547,
+  "blockEntities": 281,
+  "dataVersion": 3955,
+  "deterministic": "two independent exports byte-identical"
+ },
+ "junit": {"tests": 219, "failures": 0, "errors": 0},
+ "isolatedGameTests": {
+  "command": "gradlew --offline --no-daemon test runGameTestServer (fresh run/world)",
+  "log": "E:/Elias/Codex/Entrelumen-ssd/solsticio8/gametest-6.log",
+  "summary": "All 103 required tests passed",
+  "solsticioPlacement": "1353270 template blocks over 169 ticks, 3257 ms placing (worst tick 305 ms), 20921 ms wall",
+  "commerce": "70 villagers spawned in 11460 ms, 0 failed",
+  "note": "gametest-5 on the same head failed 5 shared-city tests by tick budget only: the GameTest server ticks as fast as it can and placement took 50.5 s of wall time on a loaded machine; the shared-city tests now use RuntimeGameTestsSolsticio.CITY_TICKS = 12000"
+ },
+ "python": {
+  "log": ["E:/Elias/Codex/Entrelumen-ssd/solsticio8/ci-checks-2a.log", "E:/Elias/Codex/Entrelumen-ssd/solsticio8/ci-checks-2b.log"],
+  "mainWorkflowCommands": 25,
+  "mainWorkflowNonZero": [],
+  "note": "the three commands of the shared list that exist only on other branches (build_heliodor_ruins, jetpack balance) are not on main"
+ },
+ "jarContents": "normal JAR without GameTest/QA classes and with solsticio/city.nbt; QA JAR with FullpackQABootstrap",
+ "fullpackQA": {
+  "server": "E:/Elias/Codex/Entrelumen-ssd/server-solsticio8-qa (skeleton from server-slice libraries only, 272 server JARs of the lock, pack/ and the QA JAR; -Xmx4G; fresh world)",
+  "plan": "E:/Elias/Codex/Entrelumen-ssd/solsticio8/qa/plan-A.json",
+  "runs": {
+   "B": {
+    "result": "no verdict: the server stopped at start-up on the 60 s watchdog",
+    "bootWallSeconds": 567.5,
+    "doneSeconds": 164.218,
+    "cause": "ServerHangWatchdog during handleServerStarted, in supplementaries FaucetBehaviorsManager.onLevelLoad (class loading), before any Solsticio command was processed; machine at 100% CPU with other workers' full-pack and GameTest servers running",
+    "evidence": "E:/Elias/Codex/Entrelumen-ssd/solsticio8/qa/run-B"
+   }
+  },
+  "status": "pending"
+ },
+ "renders": {
+  "local": "E:/Elias/Codex/Entrelumen-ssd/solsticio8/phase2",
+  "committed": false
+ }
+}
