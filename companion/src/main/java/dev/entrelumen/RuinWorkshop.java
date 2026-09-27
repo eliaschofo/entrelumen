@@ -648,17 +648,7 @@ public final class RuinWorkshop {
     var entry = data.entry(site.ruin.id());
     var definition = RuinRegistry.get(site.ruin.id().toString()).orElse(null);
     List<BoundingBox> regions = new ArrayList<>();
-    if (site.seal != null) {
-      var bearing = CreateCompat.bearing(level, site.seal.pos());
-      if (bearing != null && bearing.contraption() != null) bearing.contraption().discard();
-      BlockPos s = site.seal.pos();
-      var ring = new BoundingBox(s.getX() - 9, s.getY() - 2, s.getZ() - 9, s.getX() + 9, s.getY(), s.getZ() + 9);
-      for (Entity entity : level.getEntities((Entity) null, AABB.of(ring).inflate(2),
-          e -> BuiltInRegistries.ENTITY_TYPE.getKey(e.getType()).toString().contains("contraption")))
-        entity.discard();
-      level.setBlock(s, Blocks.AIR.defaultBlockState(), Block.UPDATE_CLIENTS);
-      regions.add(ring);
-    }
+    if (site.seal != null) regions.add(clearRing(level, site));
     Map<UUID, List<ItemStack>> owed = new HashMap<>();
     List<ItemStack> unclaimed = new ArrayList<>();
     List<BlockPos> cells = new ArrayList<>(site.parts.keySet());
@@ -666,6 +656,8 @@ public final class RuinWorkshop {
     for (BlockPos pos : cells) {
       BlockState state = level.getBlockState(pos);
       if (state.isAir()) continue;
+      // Only what builders can put there goes: the room's own lanterns stay.
+      if (!site.parts.containsKey(pos) && !state.is(SANDBOX_BLOCKS)) continue;
       List<ItemStack> drops = Block.getDrops(state, level, pos, level.getBlockEntity(pos));
       level.setBlock(pos, Blocks.AIR.defaultBlockState(), Block.UPDATE_ALL);
       UUID placer = entry.placers.get(pos.asLong());
@@ -706,7 +698,25 @@ public final class RuinWorkshop {
     entry.emptySince = -1;
     entry.placers.clear();
     data.setDirty();
-    LOGGER.info("Ruin engine {}: reset for the next team ({} regions)", site.ruin.id(), regions.size());
+    LOGGER.info("Ruin engine {}: reset for the next team ({} regions); parts back to {} placer(s), {} to the barrel",
+        site.ruin.id(), regions.size(), owed.size(), unclaimed.size());
+  }
+
+  /**
+   * Takes the seal ring away for a restore: its contraption goes without putting its blocks back, and
+   * so does the bearing, which would otherwise keep turning a contraption that is gone. Returns the
+   * box to restore.
+   */
+  static BoundingBox clearRing(ServerLevel level, Site site) {
+    BlockPos s = site.seal.pos();
+    var bearing = CreateCompat.bearing(level, s);
+    if (bearing != null && bearing.contraption() != null) bearing.contraption().discard();
+    var ring = new BoundingBox(s.getX() - 9, s.getY() - 2, s.getZ() - 9, s.getX() + 9, s.getY(), s.getZ() + 9);
+    for (Entity entity : level.getEntities((Entity) null, AABB.of(ring).inflate(2),
+        e -> BuiltInRegistries.ENTITY_TYPE.getKey(e.getType()).toString().contains("contraption")))
+      entity.discard();
+    level.setBlock(s, Blocks.AIR.defaultBlockState(), Block.UPDATE_CLIENTS);
+    return ring;
   }
 
   /** Puts the template's blocks back inside a box, then the markers that stand in it. */

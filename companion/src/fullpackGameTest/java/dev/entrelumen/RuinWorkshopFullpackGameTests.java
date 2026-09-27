@@ -108,6 +108,16 @@ public final class RuinWorkshopFullpackGameTests {
       var shipped = RuinRegistry.get(WORKSHOP).orElseThrow();
       definition = RuntimeGameTestsRuins.qaCopy(shipped);
       BlockPos origin = new BlockPos(60_000 + slot * 256, helper.getLevel().getSeaLevel(), -60_000);
+      // The QA world persists, and a run that failed never closed: its workshop at this origin is still
+      // registered, and the first engine that holds a cell answers for it (placers, resets, the ring).
+      var server = level.getServer();
+      var data = RuinData.get(server);
+      for (var old : List.copyOf(data.ruins()))
+        if (old.id().getPath().startsWith("qa_sunken_workshop") && old.origin().equals(origin)) {
+          data.remove(old.id());
+          RuinWorkshopData.get(server).forget(old.id());
+        }
+      StructureProtection.invalidate(server);
       job = RuinPlacement.startAt(level, definition, origin).orElseThrow();
     }
 
@@ -128,8 +138,12 @@ public final class RuinWorkshopFullpackGameTests {
           }))
           .thenWaitUntil(within(2400, "The ruin's chunks load", () -> {
             for (var chunk : held.getFirst())
-              helper.assertTrue(level.getChunkSource().getChunkNow(chunk.x, chunk.z) != null, "Loading " + chunk);
-          }));
+              helper.assertTrue(level.getChunkSource().getChunkNow(chunk.x, chunk.z) != null
+                  && level.areEntitiesLoaded(chunk.toLong()), "Loading " + chunk);
+          }))
+          // The QA world persists: a seal ring left turning by a run that failed loads with these chunks and
+          // this run's bearing adopts it, so the ring the placement put there would never move.
+          .thenExecute(RuntimeGameTestsRuins.guarded(this::freshRing));
     }
 
     List<RuinData.PlacedMarker> markers(RuinMarkers.Kind kind) {
@@ -235,7 +249,30 @@ public final class RuinWorkshopFullpackGameTests {
       return RuntimeGameTestsRuins.team(player).solved.contains(RuinProgress.key(definition.id(), challenge));
     }
 
+    /** Create contraptions over the ruin (a seal ring), gone without putting their blocks back; how many. */
+    int discardContraptions() {
+      if (ruin == null) return 0;
+      int gone = 0;
+      for (var entity : level.getEntities((net.minecraft.world.entity.Entity) null,
+          net.minecraft.world.phys.AABB.of(ruin.box()).inflate(4),
+          e -> BuiltInRegistries.ENTITY_TYPE.getKey(e.getType()).toString().contains("contraption"))) {
+        entity.discard();
+        gone++;
+      }
+      return gone;
+    }
+
+    /** The ring as placed, under a bearing that turns nothing yet (see {@link RuinWorkshop#clearRing}). */
+    void freshRing() {
+      int stale = discardContraptions();
+      var bearing = site.seal == null ? null : CreateCompat.bearing(level, site.seal.pos());
+      if (bearing == null || stale == 0 && !bearing.running()) return;
+      RuinWorkshop.restore(level, ruin, definition, RuinWorkshop.clearRing(level, site));
+      LOGGER.info("Ruin engine QA {}: {} contraption(s) left by an earlier run; the ring is placed again", ruin.id(), stale);
+    }
+
     void close() {
+      discardContraptions();
       for (var player : new ServerPlayer[] {a, b}) if (player != null && !player.hasDisconnected()) RuntimeGameTestsRuins.leave(player);
       for (var chunks : held)
         for (var chunk : chunks) level.getChunkSource().removeRegionTicket(ENGINE, chunk, 2, chunk);
@@ -451,7 +488,11 @@ public final class RuinWorkshopFullpackGameTests {
           var bearing = CreateCompat.bearing(engine.level, engine.site.seal.pos());
           helper.assertTrue(RuinRules.aligned(bearing.angle(), 45, 3), "Opened away from an eighth: " + bearing);
           for (var plug : engine.markers(RuinMarkers.Kind.MODBLOCK))
-            helper.assertTrue(engine.level.getBlockState(plug.pos()).isAir(), "The ring still plugs " + plug.pos());
+            helper.assertTrue(engine.level.getBlockState(plug.pos()).isAir(), "The ring still plugs " + plug.pos() + ": "
+                + engine.level.getBlockState(plug.pos()) + "; " + carried(bearing, engine.site.seal.pos(), plug.pos()));
+          // Gates are worked out for players within reach of the ruin: both teams come to the door now.
+          RuntimeGameTestsRuins.teleport(engine.a, engine.level, engine.ruin.arrival());
+          RuntimeGameTestsRuins.teleport(engine.b, engine.level, engine.ruin.arrival());
           RuinGates.refresh(engine.a);
           RuinGates.refresh(engine.b);
           for (var gate : engine.markers(RuinMarkers.Kind.GATE)) {
@@ -462,6 +503,21 @@ public final class RuinWorkshopFullpackGameTests {
         }))
         .thenExecute(RuntimeGameTestsRuins.guarded(engine::close))
         .thenSucceed();
+  }
+
+  /** What the seal's contraption carries, for a failure message: its size and whether it holds a cell. */
+  static String carried(CreateCompat.Bearing bearing, BlockPos seal, BlockPos cell) {
+    if (bearing == null || bearing.contraption() == null) return "no contraption";
+    try {
+      Object contraption = bearing.contraption().getClass().getMethod("getContraption").invoke(bearing.contraption());
+      var blocks = (Map<?, ?>) contraption.getClass().getMethod("getBlocks").invoke(contraption);
+      BlockPos anchor = seal.below();
+      BlockPos local = cell.subtract(anchor);
+      return "the contraption carries " + blocks.size() + " blocks, " + (blocks.containsKey(local) ? "this one too" : "not this one")
+          + " (local " + local.toShortString() + ")";
+    } catch (ReflectiveOperationException | RuntimeException e) {
+      return "contraption unreadable: " + e;
+    }
   }
 
   // ---- The sandbox and the reset -------------------------------------------------------------------
@@ -553,14 +609,19 @@ public final class RuinWorkshopFullpackGameTests {
             !RuinWorkshop.pending(engine.level.getServer(), engine.ruin.id()), "The workshop has not reset")))
         .thenExecute(engine.step(() -> {
           var level = engine.level;
+          // Every builder's part left the bench; the room's own lanterns stay.
           for (var sandbox : engine.site.sandboxes)
             for (BlockPos pos : sandbox.cells())
-              helper.assertTrue(level.getBlockState(pos).isAir(), "A part stayed on the bench at " + pos);
+              helper.assertTrue(!level.getBlockState(pos).is(RuinWorkshop.SANDBOX_BLOCKS), "A part stayed on the bench at " + pos);
           helper.assertTrue(level.getBlockState(cells[1]).isAir(), "The socket kept its piece");
           var a = engine.a;
+          var returnsPos = engine.markers(RuinMarkers.Kind.RETURNS).getFirst().pos();
           helper.assertTrue(a.getInventory().countItem(BuiltInRegistries.ITEM.get(ResourceLocation.parse("create:gearbox"))) >= 1
                   && a.getInventory().countItem(BuiltInRegistries.ITEM.get(ResourceLocation.parse("create:shaft"))) >= 1,
-              "A's parts did not come back to A");
+              "A's parts did not come back to A: A holds " + a.getInventory().items.stream().filter(i -> !i.isEmpty()).toList()
+                  + ", the barrel " + (level.getBlockEntity(returnsPos) instanceof net.minecraft.world.Container c
+                      ? java.util.stream.IntStream.range(0, c.getContainerSize()).mapToObj(c::getItem).filter(i -> !i.isEmpty()).toList()
+                      : "missing"));
           var returns = engine.markers(RuinMarkers.Kind.RETURNS).getFirst().pos();
           helper.assertTrue(level.getBlockEntity(returns) instanceof net.minecraft.world.Container container
                   && java.util.stream.IntStream.range(0, container.getContainerSize())

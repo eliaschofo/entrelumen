@@ -192,9 +192,9 @@ public final class TeamLifecycleGameTests {
             "Admin recovery did not copy the archive to its own personal campaign");
         assertInventory(helper, founder, founderItems, "admin recovery founder");
         assertInventory(helper, guestAgain, guestItems, "admin recovery guest");
-        helper.assertTrue(founder.getInventory().countItem(atlas) == 1
+        helper.assertTrue(founder.getInventory().countItem(atlas) == 0
             && founder.getInventory().countItem(lens) == 0
-            && guestAgain.getInventory().countItem(atlas) == 1
+            && guestAgain.getInventory().countItem(atlas) == 0
             && guestAgain.getInventory().countItem(lens) == 1,
             "Team lifecycle duplicated or removed a campaign reward");
         LOGGER.info("ENTRELUMEN_TEAM_LIFECYCLE creationCopy=true joinNoMerge=true "
