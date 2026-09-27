@@ -96,12 +96,13 @@ class QuestBook(unittest.TestCase):
                         title, text = source[lang]
                         self.assertEqual(self.lang[lang][f"quest.{q['id']}.title"], title)
                         self.assertEqual([p for p in self.lang[lang][f"quest.{q['id']}.quest_desc"] if p], text.split('\n\n'))
-        # No item-filter mod: the tag tasks check one concrete item (Almost Unified's for metals). Three
-        # since the Ars guides became the Ars sector chapter (its archwood task names the log) and the
-        # Mekanism guides became the Mekanism sector chapters (their steel task names IE's ingot).
+        # No item-filter mod: the tag tasks check one concrete item (Almost Unified's for metals). Two
+        # since the Ars guides became the Ars sector chapter (its archwood task names the log), the
+        # Mekanism guides became the Mekanism sector chapters (their steel task names IE's ingot) and the
+        # Aether guide became the Aether chains (the Moa egg is the aether:obtain_egg advancement).
         tagged = {q['key']: q['item'] for g in self.guides for q in g['quests'] if 'tag' in q}
         self.assertEqual(tagged['occ_crusher'], 'immersiveengineering:ingot_silver')
-        self.assertEqual(len(tagged), 3)
+        self.assertEqual(len(tagged), 2)
 
     def test_story_node_grammar(self):
         # Hito hexagon 2, act finale hexagon 3, observed journey octagon 2, task square 1,
