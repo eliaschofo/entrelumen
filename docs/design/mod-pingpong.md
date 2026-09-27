@@ -374,3 +374,74 @@ Recibo: [`docs/verification/mod-pingpong-r4-runtime.json`](../verification/mod-p
   - El Nether con las estructuras de D&T en una PC modesta.
 - **Quests y ruinas:** los ganchos de arriba son propuestas. Las ruinas de los actos todavía no están colocadas.
 - **Estructuras de D&T y ruinas:** `startruinisanchoredregisteredandplacedonce` pasa, pero no se buscó a propósito si alguna estructura de D&T puede generarse cerca de la ruina de inicio.
+
+## FTB Filter System y FTB XMod Compat (27/9)
+
+Rama `feature/ftb-filter-system`. El 27/9 Elias aprobó FTB Filter System («Sí, agregalo») para que el libro tenga tareas de «cualquiera de estos ítems». Ese mismo día aprobó FTB XMod Compat, porque sin él FTB Quests no usa los filtros.
+
+La familia es `catalog/families/quest-filters.json`: dos mods de infraestructura y ninguna librería nueva, porque Architectury y FTB Library ya estaban. El lock pasa de 314 cliente / 272 servidor a **316 / 274**, y ninguna entrada previa cambió.
+
+| Mod | Versión | Fuente | SHA-256 |
+|---|---|---|---|
+| FTB Filter System | 21.1.4 | CurseForge 943925/7429011 | `b8700e8bfd9c78b09bc7819cb28a6318b20d2bf68969bc6894a0bfa39581a99b` |
+| FTB XMod Compat | 21.1.11 | CurseForge 889915/8653466 | `0bfa6513c51b697a81ab2afc1b25983d3e39fe4a33ec334b57e6384b25a17450` |
+
+- **Origen.** Los dos JAR vienen de la instancia de referencia ATM10 8.1, donde van junto a las mismas FTB Quests 2101.1.34 y FTB Library 2101.1.35 del lock. El SHA-1 de CurseForge coincide, y FTB publica el mismo SHA-1 en su Maven.
+- **FTB Filter System.** 21.1.4 es su última versión para 1.21.1; las 21.11 y 26.1 son para otras versiones de Minecraft.
+- **FTB XMod Compat.** 21.1.12 declara las mismas dependencias que 21.1.11. Se fijó 21.1.11, el par que usa ATM10.
+
+### Por qué hacen falta los dos
+
+Leído de los JAR descompilados con Vineflower 1.10.1, fuera del repo, en `E:/Elias/Codex/Entrelumen-ssd/filters-20260927/decomp`:
+
+- **FTB Quests no trae adaptadores.** Su `integration/item_filtering/ItemMatchingSystem` viene vacío. Una tarea de ítem le pregunta si su ítem es un filtro; si ningún adaptador lo reclama, compara ítem contra ítem, y la tarea acepta sólo el filtro mismo.
+- **FTB Filter System no sabe nada de FTB Quests.** El adaptador lo registra XMod Compat: `ftbquests/filtering/FFSSetup` llama a `FTBQuestsAPI.registerFilterAdapter` y resuelve cada caso con `FTBFilterSystemAPI` (`isFilterItem`, `doesFilterMatch`, `parseFilter`).
+- **El filtro.** Es el ítem `ftbfiltersystem:smart_filter`, con la expresión en el componente de texto `ftbfiltersystem:filter` (`registry/ModDataComponents`).
+- **La sintaxis.** Es la de `util/FilterParser`: `tipo(argumento)`, con los tipos del mod sin espacio de nombres (`item`, `item_tag`, `or`, `and`, `not`…).
+  - La raíz (`RootFilter`) combina sus términos con AND, así que «cualquiera de estos» va dentro de `or(...)`: `or(item(minecraft:oak_log)item_tag(minecraft:logs))`.
+  - Un `item(...)` que no existe hace fallar la expresión entera (`ItemFilter.fromString`), y el filtro no acepta nada. Un tag vacío, en cambio, sólo no aporta ítems.
+- El formato en las cadenas y las reglas del motor están en [content/sectors/README.md](../../content/sectors/README.md#tarea-de-cualquiera-de-estos).
+
+### Qué más prende XMod Compat con los mods del pack
+
+El libro no usa nada de esto hoy. Queda anotado para revisarlo en el cliente.
+
+- **JEI:**
+  - Suma dos categorías. «Quests» lista las quests que dan un ítem de recompensa, sólo las que el jugador ya puede empezar y que se pueden buscar. «Loot crates» muestra qué trae cada caja de loot y con qué peso, incluidas las cajas de las cumbres y los encargos.
+  - FTB Quests pasa a usar JEI como visor de recetas: un clic en una tarea de un solo ítem abre su receta.
+  - La tecla de marcador de JEI marca ítems desde el libro. Para eso XMod trae dos mixins obligatorios a las clases de marcadores de JEI (`BookmarkListAccessor` y `BookmarkOverlayAccessor`). Son del lado del cliente, y JEI no se instala en el servidor. ATM10 8.1 lleva este mismo JEI (19.50.0.414) con XMod 21.1.11, pero en nuestro cliente todavía no se probaron.
+- **KubeJS:** eventos y el objeto `FTBQuests` para scripts (tareas y recompensas propias, quest empezada o completada), y eventos de FTB Chunks, FTB Teams y FTB Filter System. Ningún script del pack los usa.
+- **Waystones:** los waystones que el jugador descubrió aparecen en el mapa de FTB Chunks. En el Envés no hay mapa ni waystones.
+- **GuideME y Patchouli:** los enlaces `show_docs:` de las quests pueden abrir sus guías.
+- **Jade:** muestra las barreras de quest, que el pack no coloca.
+- **Etapas de juego:**
+  - Por defecto, XMod les pasa las etapas de FTB Library a KubeJS.
+  - `pack/config/ftbxmodcompat.snbt` fija `stage_selector: "vanilla"`. Así siguen siendo las etiquetas de entidad de FTB Library, las que usa el companion para sacar el mapa de FTB Chunks dentro del Envés ([dungeon-enves](dungeon-enves.md)).
+  - El valor está anotado en [qol-defaults](../qol-defaults.md).
+- **El resto no aplica:** permisos (FTB Ranks, LuckPerms), monedas (SG Economy), Game Stages, REI y FTB Essentials no están en el pack, y XMod no hace nada con ellos.
+
+### Verificación
+
+- **Estática, sobre `origin/main` 2c4a3fc más esta rama:**
+  - `curate_pack --check`, en cliente (316) y en servidor (274).
+  - `test_curate_families`.
+  - `check_keybinds`: ninguno de los dos mods registra teclas.
+  - `generate_quests --check`: con las 59 cadenas actuales, que no usan `any`, el libro sale igual byte a byte.
+  - Los 31 pasos de Python de `verify.yml`, entre ellos `test_sector_book`, `test_generate_quests` y `test_quest_book`.
+  - `check_guides`: las 44 guías y las 59 cadenas, sin errores.
+  - `check_guides` contra los registros reales, sobre una copia de Create · Complementos con tareas `any`: la versión válida pasa. Marca un ítem que no existe, un tag que nadie define y un tag que existe pero no tiene ningún ítem del pack (`#c:ingots/cobalt`; hay 35 así).
+- **En un servidor: pendiente.** Hasta el cierre de la rama siempre había otro servidor de QA con el candado de la máquina (`qa-server.lock`) o menos de 5 GB de RAM libre.
+  - El chequeo quedó listo en `E:/Elias/Codex/Entrelumen-ssd/filters-20260927/scripts/run_runtime_qa.sh`. Hace un solo intento: si falta algo, se detiene y dice por qué.
+  - Arma un servidor desechable con los 274 JAR y el libro del pack, y agrega tres tareas `any` de prueba en Create · Complementos: dos alternativas con un tag, tres ítems sueltos, y un encargo que consume un tag.
+  - Un comando de KubeJS le pide cada tarea a FTB Quests por el objeto `FTBQuests` de XMod Compat. Comprueba que el ítem sea el filtro con la expresión compilada, que el adaptador de FTB Filter System lo reclame, y qué ítems acepta y rechaza cada tarea. También revisa que una tarea común y la llave arcana (que compara por componente) sigan igual.
+  - Además corre la prueba del mapa del Envés y cuatro pruebas de quests del companion.
+
+### Pendiente
+
+- Correr el chequeo en servidor cuando haya lugar.
+- **En el cliente:**
+  - la lista de ítems válidos que abre un clic en una tarea `any`;
+  - las categorías de JEI;
+  - el clic que abre la receta;
+  - los waystones en el mapa de FTB Chunks.
+- **Cadenas que esquivaron el «cualquiera de estos»** con un logro en lugar de los ítems, o pidiendo un ítem por varios: su conversión a `any` la programa el controlador.

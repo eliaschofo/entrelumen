@@ -13,6 +13,8 @@ docs/design/quest-book-v3.md; copy rules: docs/design/quest-copy.md):
   medallions, textures and art revealed by completing a quest;
 - Bezier dependency curves (dep_control_pts), hidden lines, reveal-as-you-go branches, secrets,
   exclusive branches, N-of-M capstones, repeatable bounties;
+- item tasks that accept any of several items or item tags: an FTB Filter System smart filter, which
+  FTB Quests matches through FTB XMod Compat (both must be in catalog/curated.json);
 - reward tables and loot crates tiered by act, choice rewards, secret toasts and capstone fanfares;
 - the FTB theme for all of it and the companion's ftbquests-namespace strings (shape names, crate
   names, toast texts).
@@ -57,6 +59,14 @@ AUTO_TASKS = TASK_TYPES - {"checkmark"}  # tasks the server can detect: the only
 OBSERVE_TYPES = {"block", "block_tag", "block_state", "block_entity", "block_entity_type", "entity_type", "entity_type_tag"}
 ID = re.compile(r"[a-z0-9_.-]+:[a-z0-9_./-]+")
 TEXTURE = re.compile(r"[a-z0-9_.-]+:textures/[a-z0-9_./-]+\.png")
+# "Any of these items": FTB Quests 2101.1.34 hands an item task whose item is a filter to the adapter that claims
+# it (ItemMatchingSystem); FTB XMod Compat 21.1.11 registers FTB Filter System's (ftbquests/filtering/FFSSetup).
+# The smart filter keeps its expression in a string component (FTB Filter System 21.1.4, ModDataComponents).
+SMART_FILTER = "ftbfiltersystem:smart_filter"
+FILTER_COMPONENT = "ftbfiltersystem:filter"
+FILTER_MODS = ("ftbfiltersystem", "ftbxmodcompat")
+ANY_ENTRY = re.compile(r"#?[a-z0-9_.-]+:[a-z0-9_./-]+")
+_FILTER_MODS_LOCKED = None
 
 # Copy palette (docs/design/quest-copy.md). Items teal, keys yellow, links blue, tips gold.
 COLORS = {"item": "#8FD6C8", "key": "#F2D060", "link": "#9DC3FF", "tip": "#E8B04A", "warn": "#FF8C7A",
@@ -487,12 +497,71 @@ def tasks_of(q):
     return tasks
 
 
+def task_kind(t):
+    """FTB task type; a task with only "item" or "any" is an item task."""
+    return t.get("type", "item" if "item" in t or "any" in t else None)
+
+
+def filter_mods_locked():
+    """Both mods an any-of task needs are in catalog/curated.json (read once)."""
+    global _FILTER_MODS_LOCKED
+    if _FILTER_MODS_LOCKED is None:
+        lock = json.loads((ROOT / "catalog/curated.json").read_text(encoding="utf-8"))
+        mods = {m["id"] for entry in lock["mods"] for m in entry["metadata"]["mods"]}
+        _FILTER_MODS_LOCKED = all(mod in mods for mod in FILTER_MODS)
+    return _FILTER_MODS_LOCKED
+
+
+def filter_expression(alternatives):
+    """FTB Filter System's own string form (SmartFilter.asString): item(id) and item_tag(tag), inside or(...) when
+    there are several, because the filter's root ANDs its top-level terms (RootFilter extends AndFilter)."""
+    terms = [f"item_tag({a[1:]})" if a.startswith("#") else f"item({a})" for a in alternatives]
+    return terms[0] if len(terms) == 1 else "or(" + "".join(terms) + ")"
+
+
+def any_item_task(t, key, ctx):
+    """{"any": [ids and #tags], "count", "consume", "icon", "title"} -> the item task fields for a smart filter.
+    One missing item makes FTB Filter System reject the whole expression (ItemFilter.fromString throws), so
+    tools/check_guides.py checks every entry against the pinned JARs. The title is required: FTB would show
+    "Smart Filter". The icon defaults to the first item listed."""
+    alternatives = t["any"]
+    assert isinstance(alternatives, list) and alternatives and all(
+        isinstance(a, str) and ANY_ENTRY.fullmatch(a) for a in alternatives), f"{key}: any-of entries are item ids or #tags"
+    assert len(set(alternatives)) == len(alternatives), f"{key}: repeated any-of entry"
+    assert len(alternatives) > 1 or alternatives[0].startswith("#"), f"{key}: a single item is a plain item task"
+    assert "item" not in t and "components" not in t, f"{key}: any-of replaces item and components"
+    assert filter_mods_locked(), f"{key}: any-of tasks need FTB Filter System and FTB XMod Compat in catalog/curated.json"
+    assert "title" in t, f"{key}: an any-of task needs a title in en_us and es_es (FTB would show 'Smart Filter')"
+    items = [a for a in alternatives if not a.startswith("#")]
+    assert items or "icon" in t, f"{key}: an any-of task of tags only needs an icon"
+    count = t.get("count", 1)
+    assert isinstance(count, int) and 1 <= count <= 4096, f"{key}: count"
+    ctx["items"].update(items)
+    ctx.setdefault("item_tags", set()).update(a[1:] for a in alternatives if a.startswith("#"))
+    return {"item": {"id": SMART_FILTER, "count": 1, "components": {FILTER_COMPONENT: filter_expression(alternatives)}},
+            "count": count, "consume_items": bool(t.get("consume", False))}
+
+
+def any_icon(t, ctx, key=""):
+    """The given icon, or the first item listed (a quest without an icon of its own takes it too)."""
+    if "icon" in t:
+        return icon_stack(t["icon"], ctx)
+    items = [a for a in t["any"] if isinstance(a, str) and not a.startswith("#")]
+    assert items, f"{key}: an any-of task of tags only needs an icon"
+    return {"id": items[0]}
+
+
 def compile_task(t, key, index, languages, ctx):
-    kind = t.get("type", "item" if "item" in t else None)
+    kind = task_kind(t)
     assert kind in TASK_TYPES, f"{key}: task type {kind}"
+    assert "any" not in t or kind == "item", f"{key}: any-of is an item task"
     tid = stable_id(f"task:{key}" if index == 0 else f"task:{key}:{index}")
     out = {"id": tid, "type": kind}
-    if kind == "item":
+    if kind == "item" and "any" in t:
+        out.update(any_item_task(t, key, ctx))
+        if "icon" not in t:
+            out["icon"] = any_icon(t, ctx, key)
+    elif kind == "item":
         assert ID.fullmatch(t["item"]), f"{key}: item id"
         count = t.get("count", 1)
         assert isinstance(count, int) and 1 <= count <= 4096, f"{key}: count"
@@ -658,7 +727,7 @@ def compile_sector(data, book, tables, languages, seen_ids, all_keys, chapter_id
         size = float(q.get("size", size))
         assert shape in FTB_SHAPES or shape in CUSTOM_SHAPES, f"{key}: shape {shape}"
         tasks = tasks_of(q)
-        kinds = [t.get("type", "item" if "item" in t else None) for t in tasks]
+        kinds = [task_kind(t) for t in tasks]
         if role in CHECK_ROLES:
             assert kinds == ["checkmark"], f"{key}: {role} nodes are one checkmark"
         if role == "secret":
@@ -692,6 +761,8 @@ def compile_sector(data, book, tables, languages, seen_ids, all_keys, chapter_id
             first = tasks[0]
             if "item" in first:
                 out["icon"] = {"id": first["item"]}
+            elif "any" in first:
+                out["icon"] = any_icon(first, ctx, key)
         if "icon_scale" in q:
             assert 0.1 <= q["icon_scale"] <= 2.0
             out["icon_scale"] = float(q["icon_scale"])
