@@ -250,10 +250,10 @@ public final class RuntimeGameTestsAltars {
 
   private static void perf(String scenario, TerraformAltarEntity altar) {
     long mean = altar.workingTicks == 0 ? 0 : altar.tickNanos / altar.workingTicks;
-    LOGGER.info("ALTAR_PERF scenario={} workingTicks={} wallWithoutGc=[mean={} p50={} p95={} max={}]us gcTicks={} maxGcMillis={} actorMillis={} maxTrustSliceMicros={} maxTrustSliceCpuMicros={} totals=[columns={} cut={} filled={} swapped={} covered={} refused={} skipped={}] refusals={}",
+    LOGGER.info("ALTAR_PERF scenario={} workingTicks={} wallWithoutGc=[mean={} p50={} p95={} max={}]us gcTicks={} maxGcMillis={} actorMillis={} maxTrustSliceMicros={} totals=[columns={} cut={} filled={} swapped={} covered={} refused={} skipped={}] refusals={}",
         scenario, altar.workingTicks, mean / 1000, percentile(altar.tickSamples, altar.workingTicks, 0.5) / 1000,
         percentile(altar.tickSamples, altar.workingTicks, 0.95) / 1000, altar.maxTickNanos / 1000,
-        altar.gcTicks, altar.maxGcMillis, altar.actorNanos / 1_000_000, altar.maxTrustNanos / 1000, altar.maxTrustCpuNanos / 1000, altar.totals().columns,
+        altar.gcTicks, altar.maxGcMillis, altar.actorNanos / 1_000_000, altar.maxTrustNanos / 1000, altar.totals().columns,
         altar.totals().cut, altar.totals().filled, altar.totals().swapped, altar.totals().covered,
         altar.totals().refused, altar.totals().skippedChunks, altar.refusals());
     long[] first = java.util.Arrays.copyOf(altar.tickSamples, (int) Math.min(16, altar.workingTicks));
@@ -1733,9 +1733,14 @@ public final class RuntimeGameTestsAltars {
 
   /** The column's floor nearest {@code flat} in the live level or in a reference, or UNKNOWN when it is not ground. */
   private static int floorOf(java.util.function.IntFunction<BlockState> states, int minY, int flat, int band) {
+    return floorOf(states, TerraformAltarEntity::cell, minY, flat, band);
+  }
+
+  private static int floorOf(java.util.function.IntFunction<BlockState> states,
+      java.util.function.Function<BlockState, TerraformRules.Cell> cells, int minY, int flat, int band) {
     int y = TerraformRules.floorNear(at -> {
       BlockState state = states.apply(at);
-      return state == null ? TerraformRules.Cell.BUILT : TerraformAltarEntity.cell(state);
+      return state == null ? TerraformRules.Cell.BUILT : cells.apply(state);
     }, minY, flat, band);
     return y != TerraformRules.UNKNOWN && states.apply(y) != null && LandWorks.ground(states.apply(y)) ? y
         : TerraformRules.UNKNOWN;
@@ -1746,13 +1751,18 @@ public final class RuntimeGameTestsAltars {
    * {@code flat}. Returns the comparable, agreeing and surplus column counts.
    */
   private static int[] trust(ServerLevel level, TerrainReference.Region reference, ChunkPos chunk, int flat, int band) {
+    return trust(level, reference, chunk, flat, band, TerraformAltarEntity::cell);
+  }
+
+  private static int[] trust(ServerLevel level, TerrainReference.Region reference, ChunkPos chunk, int flat, int band,
+      java.util.function.Function<BlockState, TerraformRules.Cell> cells) {
     int natural = 0, agree = 0, surplus = 0;
     BlockPos.MutableBlockPos probe = new BlockPos.MutableBlockPos();
     for (int x = chunk.getMinBlockX(); x <= chunk.getMaxBlockX(); x++)
       for (int z = chunk.getMinBlockZ(); z <= chunk.getMaxBlockZ(); z++) {
         int cx = x, cz = z;
-        int original = floorOf(at -> reference.state(probe.set(cx, at, cz)), reference.setup.minY(), flat, band);
-        int current = floorOf(at -> level.getBlockState(probe.set(cx, at, cz)), level.getMinBuildHeight(), flat, band);
+        int original = floorOf(at -> reference.state(probe.set(cx, at, cz)), cells, reference.setup.minY(), flat, band);
+        int current = floorOf(at -> level.getBlockState(probe.set(cx, at, cz)), cells, level.getMinBuildHeight(), flat, band);
         if (original == TerraformRules.UNKNOWN || current == TerraformRules.UNKNOWN) continue;
         natural++;
         if (Math.abs(current - original) <= 1) agree++;
@@ -1970,6 +1980,19 @@ public final class RuntimeGameTestsAltars {
                 }
                 LOGGER.info("ALTAR_NETHER_REPAIR pit={} changed={} elsewhere={} filled={}", pit.size(), changes.size(),
                     elsewhere, altar.totals().filled);
+                // What comparing a whole chunk under the roof costs, warm and at best of 20 (the machine may be busy):
+                // the altar's own floor searches, with its cache of block states.
+                Map<BlockState, TerraformRules.Cell> cache = new java.util.IdentityHashMap<>();
+                ChunkPos siteChunk = new ChunkPos(site);
+                long[] rounds = new long[20];
+                for (int round = 0; round < rounds.length; round++) {
+                  long started = System.nanoTime();
+                  trust(nether, reference, siteChunk, y, altar.bandTop(), state -> cache.computeIfAbsent(state, TerraformAltarEntity::cell));
+                  rounds[round] = System.nanoTime() - started;
+                }
+                java.util.Arrays.sort(rounds);
+                LOGGER.info("ALTAR_PERF scenario=nether-trust-chunk columns=256 bestMicros={} medianMicros={} perColumnBestMicros={}",
+                    rounds[0] / 1000, rounds[rounds.length / 2] / 1000, rounds[0] / 256_000.0);
                 helper.assertTrue(nether.getEntitiesOfClass(ItemEntity.class, new AABB(from).expandTowards(2 * radius, 88, 2 * radius)).isEmpty(),
                     "The Nether repair dropped items");
               } catch (RuntimeException | Error failure) {
@@ -1978,7 +2001,7 @@ public final class RuntimeGameTestsAltars {
               }
               // A second run, warm: it rebuilds the reference, compares again and changes nothing.
               var settled = box(nether, from, to);
-              altar.workingTicks = altar.tickNanos = altar.maxTickNanos = altar.maxTrustNanos = altar.maxTrustCpuNanos = 0;
+              altar.workingTicks = altar.tickNanos = altar.maxTickNanos = altar.maxTrustNanos = 0;
               altar.gcTicks = altar.maxGcMillis = 0;
               altar.start(nether);
               await(helper, () -> altar.state() == TerraformAltarEntity.State.DONE

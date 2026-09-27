@@ -136,9 +136,8 @@ public final class TerraformAltarEntity extends AltarBlockEntity {
   long workingTicks;
   long tickNanos;
   long maxTickNanos;
-  /** Longest slice of a chunk's comparison with the reference, wall and thread CPU time, for the performance log. */
+  /** Longest slice of a chunk's comparison with the reference, for the performance log. */
   long maxTrustNanos;
-  long maxTrustCpuNanos;
   final long[] tickSamples = new long[4096];
   long gcTicks;
   long maxGcMillis;
@@ -774,7 +773,7 @@ public final class TerraformAltarEntity extends AltarBlockEntity {
     int[] counts = comparing.computeIfAbsent(key, ignored -> new int[4]);
     while (counts[0] < 256) {
       if (!budget.allows(1)) return null;
-      long started = System.nanoTime(), cpu = LandWorks.cpuNanos();
+      long started = System.nanoTime();
       for (int end = Math.min(256, counts[0] + TRUST_SLICE); counts[0] < end; counts[0]++) {
         int x = key.minX() + (counts[0] >> 4), z = key.minZ() + (counts[0] & 15);
         int reference = referenceGroundAt(x, z);
@@ -786,7 +785,6 @@ public final class TerraformAltarEntity extends AltarBlockEntity {
       }
       budget.spend(1);
       maxTrustNanos = Math.max(maxTrustNanos, System.nanoTime() - started);
-      maxTrustCpuNanos = Math.max(maxTrustCpuNanos, LandWorks.cpuNanos() - cpu);
     }
     comparing.remove(key);
     return decide(key, AltarRules.consistent(counts[1], counts[2], counts[3]));

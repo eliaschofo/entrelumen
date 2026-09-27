@@ -48,12 +48,6 @@ final class LandWorks {
 
   private LandWorks() {}
 
-  /** CPU time of the current thread, to tell altar work apart from a busy machine when measuring; 0 if unsupported. */
-  static long cpuNanos() {
-    var threads = java.lang.management.ManagementFactory.getThreadMXBean();
-    return threads.isCurrentThreadCpuTimeSupported() ? threads.getCurrentThreadCpuTime() : 0;
-  }
-
   /** Total garbage-collection time so far, to tell GC pauses apart from altar work when measuring. */
   static long gcMillis() {
     long total = 0;
