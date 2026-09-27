@@ -87,7 +87,7 @@ Roles por piso:
 - Al pagar se colocan el vestíbulo y el piso I; el siguiente, cuando alguien llega a la guardia, a la escalera o prende todos los sellos.
 - Celda por celda, del inicio hacia afuera, con 6 ms por tick. Los chunks cargan en segundo plano con un ticket por trabajo y las plantillas se leen fuera del hilo del servidor.
 - Bajo cada celda va una capa de roca donde la losa está abierta, hasta que el piso de abajo la reemplaza.
-- Al terminar un intento se borra su parcela, bloques y entidades, y queda libre.
+- Al terminar un intento se borra su parcela, bloques y entidades, en franjas de capas por tick, y queda libre.
 
 ### El intento
 

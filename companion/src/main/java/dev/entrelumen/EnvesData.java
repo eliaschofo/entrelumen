@@ -140,8 +140,6 @@ public final class EnvesData extends SavedData {
     /** Each member's floor, for respawns and rejoining. */
     public final Map<UUID, Integer> depthOf = new HashMap<>();
     public final FloorState[] floors = new FloorState[EnvesGeometry.DEPTHS];
-    /** Wipe progress once ended: the floor and cell reached. */
-    public int wipeDepth, wipeCell;
 
     public Attempt(UUID id, UUID team, int slot, long seed, Tier tier, UUID payer, long openedAt) {
       this.id = id;
@@ -177,8 +175,6 @@ public final class EnvesData extends SavedData {
       tag.putInt("frontline", frontline);
       tag.putLong("emptySince", emptySince);
       tag.putBoolean("bossDefeated", bossDefeated);
-      tag.putInt("wipeDepth", wipeDepth);
-      tag.putInt("wipeCell", wipeCell);
       CompoundTag depths = new CompoundTag();
       depthOf.forEach((player, depth) -> depths.putInt(player.toString(), depth));
       tag.put("depthOf", depths);
@@ -207,8 +203,6 @@ public final class EnvesData extends SavedData {
       a.frontline = Math.clamp(tag.getInt("frontline"), 1, EnvesLayout.FLOORS);
       a.emptySince = tag.getLong("emptySince");
       a.bossDefeated = tag.getBoolean("bossDefeated");
-      a.wipeDepth = tag.getInt("wipeDepth");
-      a.wipeCell = tag.getInt("wipeCell");
       CompoundTag depths = tag.getCompound("depthOf");
       for (String key : depths.getAllKeys()) {
         try {

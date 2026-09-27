@@ -56,6 +56,8 @@ public final class EnvesPlacer {
   private static final java.util.concurrent.atomic.AtomicInteger JOB_IDS = new java.util.concurrent.atomic.AtomicInteger();
   static final int FLAGS = Block.UPDATE_CLIENTS | Block.UPDATE_KNOWN_SHAPE;
   static final int WIPE_FLAGS = Block.UPDATE_CLIENTS | Block.UPDATE_KNOWN_SHAPE | Block.UPDATE_SUPPRESS_DROPS;
+  /** A wipe clears a cell's 13 layers in this many steps: a whole cell is too much for one tick. */
+  static final int WIPE_BANDS = 4;
 
   private static final class Job {
     final int id = JOB_IDS.incrementAndGet();
@@ -113,7 +115,8 @@ public final class EnvesPlacer {
     Job job = new Job(attempt.id, -1, true);
     for (int depth = 0; depth < EnvesGeometry.DEPTHS; depth++) {
       if (attempt.floor(depth).placement == Placement.NONE) continue;
-      for (int cell : Enves.cells(attempt, depth)) job.steps.add(new int[] {depth, cell});
+      for (int cell : Enves.cells(attempt, depth))
+        for (int band = 0; band < WIPE_BANDS; band++) job.steps.add(new int[] {depth, cell, band});
     }
     JOBS.add(job);
   }
@@ -181,7 +184,7 @@ public final class EnvesPlacer {
         BlockPos origin = Enves.origin(a, step[0], step[1]);
         if (!chunksReady(level, origin)) break;
         long cellStart = System.nanoTime();
-        if (job.wipe) wipeCell(level, origin);
+        if (job.wipe) wipeBand(level, origin, step[2]);
         else placeCell(level, a, step[0], step[1]);
         long cell = System.nanoTime() - cellStart;
         if (cell > job.worstCell) {
@@ -236,8 +239,8 @@ public final class EnvesPlacer {
     JOBS.remove(job);
     if (job.wipe) {
       data.remove(attempt.id);
-      LOGGER.info("Envés: slot {} wiped ({} cells, {} ms over {} ticks, worst tick {} ms, worst cell {} ms)", attempt.slot,
-          job.steps.size(), job.nanos / 1_000_000, job.ticks, job.worst / 1_000_000, job.worstCell / 1_000_000);
+      LOGGER.info("Envés: slot {} wiped ({} cells, {} ms over {} ticks, worst tick {} ms, worst step {} ms)", attempt.slot,
+          job.steps.size() / WIPE_BANDS, job.nanos / 1_000_000, job.ticks, job.worst / 1_000_000, job.worstCell / 1_000_000);
       return;
     }
     attempt.floor(job.depth).placement = Placement.READY;
@@ -330,10 +333,12 @@ public final class EnvesPlacer {
     return (block == Blocks.AIR ? Blocks.REINFORCED_DEEPSLATE : block).defaultBlockState();
   }
 
-  private static void wipeCell(ServerLevel level, BlockPos origin) {
+  /** Clears one band of a cell's layers, from the underlay (y = -1) to the ceiling. */
+  private static void wipeBand(ServerLevel level, BlockPos origin, int band) {
     BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos();
     BlockState air = Blocks.AIR.defaultBlockState();
-    for (int y = -1; y < EnvesGeometry.FLOOR_H; y++)
+    int layers = EnvesGeometry.FLOOR_H + 1;
+    for (int y = -1 + band * layers / WIPE_BANDS; y < -1 + (band + 1) * layers / WIPE_BANDS; y++)
       for (int x = 0; x < EnvesGeometry.CELL; x++)
         for (int z = 0; z < EnvesGeometry.CELL; z++) {
           pos.set(origin.getX() + x, origin.getY() + y, origin.getZ() + z);
