@@ -127,6 +127,139 @@ class Geometry(unittest.TestCase):
         self.assertAlmostEqual(ftb(pts[0]) / (bs + bp), want, places=3)
 
 
+class AnyOfTasks(unittest.TestCase):
+    """Item tasks that accept any of several items or item tags: an FTB Filter System smart filter, matched by
+    FTB Quests through FTB XMod Compat. The server check is in docs/design/quest-book-v3.md."""
+    TITLE = {"en_us": "Any four logs", "es_es": "Cuatro troncos cualesquiera"}
+
+    @classmethod
+    def setUpClass(cls):
+        cls.book = load_book()
+        cls.story = load_chapters()
+        cls.guides = load_guides(cls.book)
+        cls.sectors = {s["chapter"]: s for s in qe.load_sectors()}
+
+    def compile(self, task, index=0):
+        languages = {lang: {} for lang in LOCALES}
+        ctx = ctx_for()
+        return qe.compile_task(task, "crb_press", index, languages, ctx), languages, ctx
+
+    def test_items_and_tags_compile_to_one_smart_filter(self):
+        out, languages, ctx = self.compile({"any": ["minecraft:oak_log", "#minecraft:logs"], "count": 4,
+                                            "title": self.TITLE})
+        tid = qe.stable_id("task:crb_press")
+        self.assertEqual(out, {"id": tid, "type": "item",
+                               "item": {"id": "ftbfiltersystem:smart_filter", "count": 1,
+                                        "components": {"ftbfiltersystem:filter":
+                                                       "or(item(minecraft:oak_log)item_tag(minecraft:logs))"}},
+                               "count": 4, "consume_items": False, "icon": {"id": "minecraft:oak_log"}})
+        self.assertEqual({lang: languages[lang][f"task.{tid}.title"] for lang in LOCALES}, self.TITLE)
+        self.assertEqual((ctx["items"], ctx["item_tags"]), ({"minecraft:oak_log"}, {"minecraft:logs"}))
+
+    def test_one_tag_needs_no_or_and_takes_the_given_icon(self):
+        out, _, _ = self.compile({"any": ["#c:ingots/copper"], "icon": "minecraft:copper_ingot", "consume": True,
+                                  "title": self.TITLE}, 1)
+        self.assertEqual(out["id"], qe.stable_id("task:crb_press:1"))
+        self.assertEqual(out["item"]["components"], {"ftbfiltersystem:filter": "item_tag(c:ingots/copper)"})
+        self.assertEqual((out["icon"], out["consume_items"], out["count"]), ({"id": "minecraft:copper_ingot"}, True, 1))
+
+    def test_bad_any_of_tasks_are_rejected(self):
+        t = self.TITLE
+        cases = [({"any": ["minecraft:oak_log"], "title": t}, "single item"),
+                 ({"any": ["minecraft:oak_log", "minecraft:oak_log"], "title": t}, "repeated"),
+                 ({"any": ["minecraft:oak_log", "logs"], "title": t}, "item ids or #tags"),
+                 ({"any": [], "title": t}, "item ids or #tags"),
+                 ({"any": ["minecraft:oak_log", "#minecraft:logs"]}, "needs a title"),
+                 ({"any": ["#minecraft:logs", "#minecraft:planks"], "title": t}, "needs an icon"),
+                 ({"any": ["minecraft:oak_log", "minecraft:birch_log"], "item": "minecraft:oak_log", "title": t},
+                  "replaces item"),
+                 ({"any": ["minecraft:oak_log", "minecraft:birch_log"], "count": 0, "title": t}, "count"),
+                 ({"type": "checkmark", "any": ["minecraft:oak_log", "minecraft:birch_log"], "title": t}, "item task"),
+                 ({"any": ["minecraft:oak_log", "minecraft:birch_log"], "title": {"en_us": "Logs"}}, "locales")]
+        for task, message in cases:
+            with self.subTest(message=message):
+                with self.assertRaisesRegex(AssertionError, message):
+                    self.compile(task)
+
+    def test_both_filter_mods_must_be_locked(self):
+        self.assertTrue(qe.filter_mods_locked())
+        qe._FILTER_MODS_LOCKED = False
+        try:
+            with self.assertRaisesRegex(AssertionError, "FTB XMod Compat"):
+                self.compile({"any": ["minecraft:oak_log", "minecraft:birch_log"], "title": self.TITLE})
+        finally:
+            qe._FILTER_MODS_LOCKED = None
+
+    def test_a_sector_step_and_bounty_ask_for_any_of(self):
+        data = copy.deepcopy(self.sectors["sector_create_addons"])
+        step = next(q for q in data["quests"] if q["role"] == "step" and "icon" not in q and not q.get("sequential"))
+        step.pop("tasks", None)
+        step["task"] = {"any": ["create:andesite_alloy", "#c:ingots/zinc"], "count": 2,
+                        "title": {"en_us": "Andesite alloy or zinc", "es_es": "Aleación de andesita o zinc"}}
+        bounty = next(q for q in data["quests"] if q["role"] == "bounty")
+        bounty.pop("tasks", None)
+        bounty["task"] = {"any": ["#minecraft:logs"], "count": 64, "consume": True, "icon": "minecraft:oak_log",
+                          "title": {"en_us": "Any logs", "es_es": "Troncos cualesquiera"}}
+        sectors = [s for s in self.sectors.values() if s["chapter"] != data["chapter"]] + [data]
+        files = generate_book(self.story, self.guides, self.book, sectors)
+        chapter = json.loads(files[OUT / "chapters" / (data["chapter"] + ".snbt")])
+        quests = {q["id"]: q for q in chapter["quests"]}
+        q = quests[stable_id("quest:" + step["key"])]
+        self.assertEqual(q["icon"], {"id": "create:andesite_alloy"})
+        self.assertEqual(q["tasks"], [{"id": stable_id("task:" + step["key"]), "type": "item",
+                                       "item": {"id": "ftbfiltersystem:smart_filter", "count": 1, "components": {
+                                           "ftbfiltersystem:filter": "or(item(create:andesite_alloy)item_tag(c:ingots/zinc))"}},
+                                       "count": 2, "consume_items": False, "icon": {"id": "create:andesite_alloy"}}])
+        b = quests[stable_id("quest:" + bounty["key"])]
+        self.assertTrue(b["can_repeat"])
+        self.assertEqual((b["icon"], b["tasks"][0]["consume_items"], b["tasks"][0]["item"]["components"]),
+                         ({"id": "minecraft:oak_log"}, True, {"ftbfiltersystem:filter": "item_tag(minecraft:logs)"}))
+        es = json.loads(files[OUT / "lang" / "es_es.snbt"])
+        self.assertEqual(es[f"task.{q['tasks'][0]['id']}.title"], "Aleación de andesita o zinc")
+        # Every other chapter is what generate_quests.py --check holds on disk.
+        for path, content in files.items():
+            if path.parent == OUT / "chapters" and path.stem != data["chapter"]:
+                self.assertEqual(content, path.read_text(encoding="utf-8"), path.name)
+
+    def test_check_guides_checks_every_alternative(self):
+        # check_guides.py against a small stand-in registry (the real one reads the pinned JARs, not in CI).
+        import tempfile
+        from pathlib import Path
+        import check_guides as cg
+        items = {"minecraft:oak_log", "minecraft:birch_log", "create:zinc_ingot", "ftbfiltersystem:smart_filter"}
+        reg = {"advancements": set(), "entities": set(), "structures": set(), "structure_tags": set(), "lang": set(),
+               "item_tags": {}, "item_owner": {},
+               "item_tags_all": {"minecraft:logs": ["#minecraft:oak_logs", "minecraft:birch_log"],
+                                 "minecraft:oak_logs": ["minecraft:oak_log"], "c:ingots/zinc": ["create:zinc_ingot"],
+                                 "c:ingots/tin": ["mekanism:ingot_tin"]}}
+        saved = (cg._ITEMS, cg._SECTOR, cg._LOCKED)
+        cg._ITEMS, cg._SECTOR = (items, {"minecraft", "create", "c", "ftbfiltersystem"}), reg
+
+        def run(entries, locked=("ftbfiltersystem", "ftbxmodcompat")):
+            cg._LOCKED = set(locked)
+            quest = {"key": "anyof_probe", "deps": [], "sources": ["test"],
+                     "task": {"any": entries, "title": self.TITLE},
+                     "en_us": {"title": "Probe", "text": ["Logs."]}, "es_es": {"title": "Prueba", "text": ["Troncos."]}}
+            data = {"icon": "minecraft:oak_log", "emblem": "entrelumen:textures/gui/quests/px.png", "quests": [quest]}
+            with tempfile.TemporaryDirectory() as tmp:
+                path = Path(tmp) / "sector_probe.json"
+                path.write_text(json.dumps(data), encoding="utf-8")
+                errors = []
+                cg.check_sector(path, errors, {"anyof_probe"})
+            return errors
+
+        try:
+            self.assertEqual(run(["minecraft:oak_log", "#minecraft:logs", "#c:ingots/zinc"]), [])
+            self.assertIn("entrelumen:luminous_gear", cg.known_item_tags(reg))  # the companion's own tags count
+            self.assertRegex(" ".join(run(["minecraft:oak_log", "minecraft:acacia_log"])), "item minecraft:acacia_log not found")
+            self.assertRegex(" ".join(run(["minecraft:oak_log", "#minecraft:nope"])), r"#minecraft:nope is defined by no")
+            self.assertRegex(" ".join(run(["minecraft:oak_log", "#c:ingots/tin"])), r"#c:ingots/tin holds no item")
+            self.assertRegex(" ".join(run(["minecraft:oak_log", "#minecraft:logs"], locked=("ftbfiltersystem",))),
+                             "need ftbxmodcompat")
+        finally:
+            cg._ITEMS, cg._SECTOR, cg._LOCKED = saved
+
+
 class Sectors(unittest.TestCase):
     @classmethod
     def setUpClass(cls):

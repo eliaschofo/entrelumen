@@ -128,6 +128,13 @@ Vistas previas a zoom 16, fuera del repo, en `E:/Elias/Codex/Entrelumen-ssd/ques
 
 ## Límites
 
+- **«Cualquiera de estos» (27/9).** Hasta esta fecha una tarea de ítem pedía un solo ítem: FTB Quests 2101.1.34 trae `ItemMatchingSystem` sin adaptadores. Algunas cadenas lo esquivaron con un logro o pidiendo un ítem concreto.
+  - Ahora el lock tiene FTB Filter System 21.1.4 y FTB XMod Compat 21.1.11, que registra el adaptador (`ftbquests/filtering/FFSSetup`).
+  - El motor compila `{"any": [ítems y #tags]}` a una tarea de ítem cuyo ítem es un filtro inteligente con la expresión en su componente (formato en [content/sectors/README.md](../../content/sectors/README.md#tarea-de-cualquiera-de-estos)). El resto de las formas de tarea sale igual byte a byte.
+  - Sigue sin expresarse:
+    - Componentes por alternativa: FTB Filter System tiene `component(...)`, pero el motor no lo expone, así que una variante por componente sigue siendo una tarea `item` con `components`.
+    - Tags que sólo agrega un script de KubeJS: `check_guides.py` no los ve.
+    - El nombre de la lista: el título lo escribe quien redacta.
 - Nada de esto se vio en el cliente. Las formas propias, las líneas hechas con rectángulos finos rotados, los rótulos con fuente rúnica, las curvas de Bézier, las imágenes en descripciones y los enlaces y notas dentro del texto están leídos del código y cargados en un servidor, pero no mirados.
 - Las vistas previas salen de un renderer propio que imita la geometría de FTB a zoom 16. No son capturas.
 - Las otras 83 guías siguen en formato v2 hasta convertirse en cadenas.

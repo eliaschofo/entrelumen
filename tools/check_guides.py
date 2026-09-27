@@ -18,8 +18,9 @@ the chapter, EN/ES parity, text limits and formatting codes, sources on every qu
 item, icon and tag namespace exists in the pinned JARs (catalog/local-paths.json) or vanilla.
 The emblem is the texture drawn on the chapter's medallion in the quest book
 (tools/generate_quests.py): it must exist in a pinned JAR or the companion, be square (16 or 32 px)
-and not animated, since FTB draws the whole PNG. No item-filter mod is installed, so a "tag" task
-also names the concrete "item" that FTB checks (for unified materials, Almost Unified's choice).
+and not animated, since FTB draws the whole PNG. The v2 guide generator compiles a "tag" task to one
+item, so it also names the concrete "item" that FTB checks (for unified materials, Almost Unified's
+choice); sector chapters ask for tags with any-of tasks instead.
 Warnings, which never fail the run: descriptions over 500 characters and the meta phrases that the
 copy pass bans (see copy_warnings).
 
@@ -31,12 +32,24 @@ every item named by a task, an icon, a reward table or the rich text ([item:…]
 entities, structures (or structure tags), keybinds and translation keys they use, and every texture
 their images and inline images draw. Items that Almost Unified replaces are errors, with the item the
 player really gets (pack/config/almostunified: tags, placeholders and mod priorities).
+
+Any-of tasks ({"any": [items and #tags]}, an FTB Filter System smart filter) need FTB Filter System and
+FTB XMod Compat in catalog/curated.json. Every item they list must exist in the pinned JARs, since one
+missing item voids the whole filter. Every tag must be defined by a pinned JAR, vanilla, NeoForge's own
+c: tags (its universal JAR in the Gradle cache), the companion or pack/kubejs/data, and must hold at
+least one item of the pinned JARs.
+
+Registry caches live outside the repository, one file per set of JARs, so worktrees with different
+locks do not rebuild each other's.
 """
+import hashlib
 import json
 import re
 import sys
 import zipfile
 from pathlib import Path
+
+import quest_engine
 
 ROOT = Path(__file__).resolve().parents[1]
 GUIDES = ROOT / 'content' / 'guides'
@@ -52,6 +65,12 @@ _ITEMS = None
 
 CACHE = Path('E:/Elias/Codex/Entrelumen-ssd/research/item-registry.json')
 TEXTURE_CACHE = Path('E:/Elias/Codex/Entrelumen-ssd/research/guide-emblems.json')
+
+
+def signed_cache(base, signature, version):
+    """The cache file for one set of JARs and one cache version."""
+    digest = hashlib.sha256(json.dumps([version, signature]).encode()).hexdigest()[:12]
+    return base.with_name(f'{base.stem}-{digest}{base.suffix}')
 EMBLEM = re.compile(r'^([a-z0-9_.-]+):(textures/(?:items?|blocks?)/[a-z0-9_./-]+\.png)$')
 _TEXTURES = None
 
@@ -73,11 +92,12 @@ def texture_info(ref):
     jars = sorted(json.loads(lp.read_text(encoding='utf-8')).values()) if lp.exists() else []
     if VANILLA_JAR.exists():
         jars.append(str(VANILLA_JAR))
+    texture_cache = signed_cache(TEXTURE_CACHE, jars, 1)
     if _TEXTURES is None:
         _TEXTURES = {'jars': jars, 'info': {}}
-        if TEXTURE_CACHE.exists():
+        if texture_cache.exists():
             try:
-                cached = json.loads(TEXTURE_CACHE.read_text(encoding='utf-8'))
+                cached = json.loads(texture_cache.read_text(encoding='utf-8'))
                 if cached.get('jars') == jars:
                     _TEXTURES = cached
             except Exception:
@@ -110,7 +130,7 @@ def texture_info(ref):
         for miss in wanted:
             _TEXTURES['info'][miss] = None
         try:
-            TEXTURE_CACHE.write_text(json.dumps(_TEXTURES), encoding='utf-8')
+            texture_cache.write_text(json.dumps(_TEXTURES), encoding='utf-8')
         except Exception:
             pass
     found = _TEXTURES['info'][rel]
@@ -149,9 +169,10 @@ def registry():
     if lp.exists():
         jars += [Path(p) for p in json.loads(lp.read_text(encoding='utf-8')).values()]
     signature = sorted(str(j) for j in jars)
-    if CACHE.exists():
+    cache = signed_cache(CACHE, signature, 2)
+    if cache.exists():
         try:
-            c = json.loads(CACHE.read_text(encoding='utf-8'))
+            c = json.loads(cache.read_text(encoding='utf-8'))
             if c.get('jars') == signature and c.get('version') == 2:
                 items, namespaces = set(c['items']), set(c['namespaces'])
                 comp = ROOT / 'companion' / 'src' / 'main' / 'resources' / 'assets' / 'entrelumen'
@@ -186,8 +207,8 @@ def registry():
         except Exception:
             continue
     try:
-        CACHE.parent.mkdir(parents=True, exist_ok=True)
-        CACHE.write_text(json.dumps({'jars': signature, 'version': 2, 'items': sorted(items),
+        cache.parent.mkdir(parents=True, exist_ok=True)
+        cache.write_text(json.dumps({'jars': signature, 'version': 2, 'items': sorted(items),
                                      'namespaces': sorted(namespaces)}), encoding='utf-8')
     except Exception:
         pass
@@ -271,7 +292,7 @@ def check_chapter(path, seen_chapters, seen_keys, errors):
             if 'tag' in q and (not ID.match(q['tag']) or q['tag'].split(':')[0] not in namespaces):
                 errors.append(f'{w}: tag {q["tag"]} has an unknown namespace')
             if 'tag' in q and 'item' not in q:
-                errors.append(f'{w}: tag task needs the concrete "item" FTB will check (no item-filter mod)')
+                errors.append(f'{w}: tag task needs the concrete "item" FTB will check (the v2 guide generator asks for one item)')
             c = q.get('count', 1)
             if not isinstance(c, int) or not 1 <= c <= 4096:
                 errors.append(f'{w}: count must be 1..4096')
@@ -333,10 +354,33 @@ SECTOR_CACHE = Path('E:/Elias/Codex/Entrelumen-ssd/research/sector-registry.json
 _SECTOR = None
 
 
+def neoforge_jar():
+    """NeoForge's universal JAR for the lock's loader, from the Gradle cache (its data holds the c: tags NeoForge
+    itself defines), or None."""
+    lock = json.loads((ROOT / 'catalog' / 'curated.json').read_text(encoding='utf-8'))
+    version = lock['loader'].removeprefix('neoforge-')
+    base = Path.home() / '.gradle/caches/modules-2/files-2.1/net.neoforged/neoforge' / version
+    found = sorted(base.glob(f'*/neoforge-{version}-universal.jar'))
+    return str(found[0]) if found else None
+
+
+def add_tag_values(tags, tag, raw):
+    """Merge one tag file's values (ids, #tags; optional entries by their id) into tags[tag]."""
+    try:
+        values = json.loads(raw).get('values', [])
+    except Exception:
+        values = []
+    members = tags.setdefault(tag, [])
+    for v in values:
+        v = v.get('id') if isinstance(v, dict) else v
+        if isinstance(v, str) and v not in members:
+            members.append(v)
+
+
 def sector_registry():
     """Advancements, entities, structures, structure tags, keybinds and translation keys of the pinned JARs,
-    the JARs they bundle and vanilla, plus the c: item tags that Almost Unified unifies. Cached outside the
-    repository."""
+    the JARs they bundle and vanilla, plus the c: item tags that Almost Unified unifies and, for any-of tasks,
+    every item tag of those JARs and of NeoForge. Cached outside the repository."""
     global _SECTOR
     if _SECTOR is not None:
         return _SECTOR
@@ -344,19 +388,24 @@ def sector_registry():
     jars = sorted(json.loads(lp.read_text(encoding='utf-8')).values()) if lp.exists() else []
     if VANILLA_JAR.exists():
         jars.append(str(VANILLA_JAR))
-    if SECTOR_CACHE.exists():
+    neoforge = neoforge_jar()
+    cache_file = signed_cache(SECTOR_CACHE, [jars, neoforge], 5)
+    if cache_file.exists():
         try:
-            cached = json.loads(SECTOR_CACHE.read_text(encoding='utf-8'))
-            if cached.get('jars') == jars and cached.get('version') == 4:
+            cached = json.loads(cache_file.read_text(encoding='utf-8'))
+            if cached.get('jars') == jars and cached.get('neoforge') == neoforge and cached.get('version') == 5:
                 _SECTOR = {k: set(v) if isinstance(v, list) else v for k, v in cached.items()}
                 return _SECTOR
         except Exception:
             pass
     out = {'advancements': set(), 'entities': set(), 'structures': set(), 'structure_tags': set(),
-           'lang': set(), 'item_tags': {}, 'item_owner': {}}
+           'lang': set(), 'item_tags': {}, 'item_owner': {}, 'item_tags_all': {}}
     for jar in jars:
         for z in bundled(jar):
             for name in z.namelist():
+                m = re.match(r'data/([^/]+)/tags/items?/(.+)\.json$', name)
+                if m:
+                    add_tag_values(out['item_tags_all'], f'{m.group(1)}:{m.group(2)}', z.read(name))
                 m = re.match(r'data/([^/]+)/advancements?/(.+)\.json$', name)
                 if m and '/recipes/' not in name:
                     out['advancements'].add(f'{m.group(1)}:{m.group(2)}')
@@ -388,14 +437,33 @@ def sector_registry():
                                 out['entities'].add(f'{mm.group(1)}:{mm.group(2)}')
                     except Exception:
                         pass
+    if neoforge:
+        # Only NeoForge's item tags: its lang, advancements and c: values stay out of the other checks.
+        for z in bundled(neoforge):
+            for name in z.namelist():
+                m = re.match(r'data/([^/]+)/tags/items?/(.+)\.json$', name)
+                if m:
+                    add_tag_values(out['item_tags_all'], f'{m.group(1)}:{m.group(2)}', z.read(name))
     cache = {k: sorted(v) if isinstance(v, set) else v for k, v in out.items()}
-    cache.update(jars=jars, version=4)
+    cache.update(jars=jars, neoforge=neoforge, version=5)
     try:
-        SECTOR_CACHE.write_text(json.dumps(cache), encoding='utf-8')
+        cache_file.write_text(json.dumps(cache), encoding='utf-8')
     except Exception:
         pass
     _SECTOR = out
     return out
+
+
+def known_item_tags(reg):
+    """Every item tag the pack defines: the cached JAR, vanilla and NeoForge tags plus the companion's and
+    pack/kubejs/data's own tag files (read fresh, they change with the repository)."""
+    tags = {tag: list(values) for tag, values in reg['item_tags_all'].items()}
+    for base in (ROOT / 'companion/src/main/resources/data', ROOT / 'pack/kubejs/data'):
+        for path in sorted(base.glob('*/tags/*/**/*.json')):
+            parts = path.relative_to(base).parts
+            if parts[2] in ('item', 'items'):
+                add_tag_values(tags, parts[0] + ':' + '/'.join(parts[3:])[:-len('.json')], path.read_bytes())
+    return tags
 
 
 def tag_members(tag, tags, seen=()):
@@ -452,14 +520,23 @@ def check_sector(path, errors, all_keys):
     add_icon(data['icon'])
     refs['textures'].add(data['emblem'])
     task_items = set()
+    any_tags, any_tasks = set(), 0
     for q in data['quests']:
         if 'icon' in q:
             add_icon(q['icon'])
         for t in q.get('tasks') or [q.get('task')]:
             if not t:
                 continue
-            kind = t.get('type', 'item' if 'item' in t else None)
-            if kind == 'item':
+            kind = quest_engine.task_kind(t)
+            if kind == 'item' and 'any' in t:
+                any_tasks += 1
+                for entry in t['any']:
+                    if entry.startswith('#'):
+                        any_tags.add(entry[1:])
+                    else:
+                        refs['items'].add(entry)
+                        task_items.add(entry)
+            elif kind == 'item':
                 refs['items'].add(t['item'])
                 task_items.add(t['item'])
             elif kind == 'advancement':
@@ -523,7 +600,33 @@ def check_sector(path, errors, all_keys):
         swap = unified(item, reg)
         if swap:
             errors.append(f'{where}: Almost Unified replaces {item} with {swap[0]} ({swap[1]}): ask for that one')
+    if any_tasks:
+        missing = [mod for mod in quest_engine.FILTER_MODS if mod not in locked_mods()]
+        if missing:
+            errors.append(f'{where}: any-of tasks need {", ".join(missing)} in catalog/curated.json')
+        if quest_engine.SMART_FILTER not in items:
+            errors.append(f'{where}: {quest_engine.SMART_FILTER} not found in the pinned JARs (catalog/local-paths.json)')
+    if any_tags:
+        tags = known_item_tags(reg)
+        for tag in sorted(any_tags):
+            if tag not in tags:
+                errors.append(f'{where}: item tag #{tag} is defined by no pinned JAR, vanilla, NeoForge, the companion '
+                              'or pack/kubejs/data')
+            elif not any(member in items for member in tag_members(tag, tags)):
+                errors.append(f'{where}: item tag #{tag} holds no item of the pinned JARs')
     return len(data['quests'])
+
+
+_LOCKED = None
+
+
+def locked_mods():
+    """Mod ids the lock installs (catalog/curated.json)."""
+    global _LOCKED
+    if _LOCKED is None:
+        lock = json.loads((ROOT / 'catalog' / 'curated.json').read_text(encoding='utf-8'))
+        _LOCKED = {m['id'] for entry in lock['mods'] for m in entry['metadata']['mods']}
+    return _LOCKED
 
 
 def any_texture(ref):

@@ -29,7 +29,7 @@ Estilos de `draw`: `ring` (arco o círculo de segmentos), `teeth` (dientes de en
 | `key` | Clave semántica global; el ID es `stable_id("quest:" + key)`. Reusar la clave conserva el progreso |
 | `role` | `entry`, `step`, `milestone`, `side`, `tip`, `info`, `secret`, `bounty`, `boss`, `capstone` |
 | `deps` | Claves de dependencias (pueden ser de otro capítulo) |
-| `task` / `tasks` | `item` (+`count`, `consume`, `components` para un ítem que sólo existe como variante), `checkmark`, `advancement`, `dimension`, `biome`, `structure`, `kill`, `observation` (`observe`, `target`, `ticks`), `stat`; cada una con `title` e `icon` opcionales |
+| `task` / `tasks` | `item` (+`count`, `consume`, `components` para un ítem que sólo existe como variante), `any` (cualquiera de varios ítems o tags; ver abajo), `checkmark`, `advancement`, `dimension`, `biome`, `structure`, `kill`, `observation` (`observe`, `target`, `ticks`), `stat`; cada una con `title` e `icon` opcionales |
 | `at` | `{"x", "y"}`, `{"figure", "slot", "out", "along"}` o `{"near", "dx", "dy"}` |
 | `group` | Panel de rama al que pertenece |
 | `icon`, `icon_scale`, `size` | Ícono (ítem, `{"texture"}` o `{"entity"}`), escala del ícono, tamaño si no es el del rol |
@@ -39,6 +39,21 @@ Estilos de `draw`: `ring` (arco o círculo de segmentos), `teeth` (dientes de en
 | `sequential`, `lore_after`, `cooldown` | Tareas en orden; texto oculto hasta completar; espera de un encargo |
 | `en_us`, `es_es` | `title`, `subtitle` opcional, `text` (párrafos con marcado) |
 | `sources` | Evidencia de cada dato mecánico |
+
+## Tarea de «cualquiera de estos»
+
+```json
+{"any": ["minecraft:oak_log", "#minecraft:logs"], "count": 4,
+ "title": {"en_us": "Any four logs", "es_es": "Cuatro troncos cualesquiera"}}
+```
+
+- `any` lista ítems y tags (con `#`), y cualquiera sirve. Un tag solo vale; un ítem solo es una tarea `item` común.
+- `count` suma entre alternativas: dos troncos de roble y dos de abedul cuentan cuatro. `consume` funciona igual que en `item` (encargos).
+- `title` es obligatorio en los dos idiomas, porque sin él FTB muestra «Smart Filter».
+- El ícono es el primer ítem de la lista, o `icon` si lo das. Si la lista tiene sólo tags, `icon` es obligatorio. La quest usa ese ícono si no tiene uno propio.
+- En el juego, un clic en la tarea abre la lista de ítems válidos.
+- El motor la compila a una tarea `item` de FTB cuyo ítem es un filtro inteligente de FTB Filter System (`ftbfiltersystem:smart_filter`). La expresión va en su componente `ftbfiltersystem:filter`, con la sintaxis del propio mod: `or(item(minecraft:oak_log)item_tag(minecraft:logs))`. FTB Quests la resuelve con el adaptador de FTB XMod Compat. Si alguno de los dos mods falta en el lock, el motor y `check_guides.py` rechazan la tarea.
+- `check_guides.py` pide que cada ítem exista en los JAR fijados, porque uno que falte anula el filtro entero. Cada tag tiene que estar definido por un JAR fijado, vanilla, NeoForge (sus tags `c:`), el companion o `pack/kubejs/data`, y tener al menos un ítem. A los ítems de la lista les aplica la misma regla de Almost Unified que a cualquier tarea.
 
 ## Marcado del texto
 
