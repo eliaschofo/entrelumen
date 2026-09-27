@@ -823,7 +823,8 @@ public final class RuinPlacement {
     var chunkMap = job.level.getChunkSource().chunkMap;
     boolean pending = false;
     // The blended margin reshapes the ground too: a base right next to the footprint counts.
-    for (ChunkPos chunk : job.fixed ? List.<ChunkPos>of() : chunks(x0, z0, p.sizeX(), p.sizeZ(), RuinTerrain.MAX_MARGIN)) {
+    int around = job.definition.placement().mode() == RuinDefinitions.Mode.SURFACE ? RuinTerrain.MAX_MARGIN : 0;
+    for (ChunkPos chunk : job.fixed ? List.<ChunkPos>of() : chunks(x0, z0, p.sizeX(), p.sizeZ(), around)) {
       var loaded = job.level.getChunkSource().getChunkNow(chunk.x, chunk.z);
       long inhabited;
       if (loaded != null) {
@@ -861,11 +862,18 @@ public final class RuinPlacement {
     release(job);
     var p = job.prepared;
     job.waited = 0;
-    // The footprint, its blended margin and the trees felled around it, so that every read and write is loaded.
-    for (ChunkPos chunk : chunks(job.origin.getX(), job.origin.getZ(), p.sizeX(), p.sizeZ(), FELLING_REACH + 8)) {
+    for (ChunkPos chunk : chunks(job.origin.getX(), job.origin.getZ(), p.sizeX(), p.sizeZ(), reach(job))) {
       job.level.getChunkSource().addRegionTicket(TICKET, chunk, 0, chunk);
       job.tickets.add(chunk);
     }
+  }
+
+  /**
+   * How far around the template a job loads chunks: a surface ruin reshapes its margin and fells trees
+   * around it, so every read and write there must be loaded; cavern and sky ruins stay in their box.
+   */
+  static int reach(Job job) {
+    return job.definition.placement().mode() == RuinDefinitions.Mode.SURFACE ? FELLING_REACH + 8 : 1;
   }
 
   private static void release(Job job) {
@@ -1110,7 +1118,8 @@ public final class RuinPlacement {
     int floor = job.origin.getY() + p.ground(), rim = 0;
     float[] distance = p.shape().distance();
     for (int i = 0; i < n; i++)
-      if (distance[i] > 0 && distance[i] <= 2) rim = Math.max(rim, Math.abs(job.natural[i] - floor));
+      if (distance[i] > 0 && distance[i] <= 2 && RuinTerrain.blends(job.natural[i], floor))
+        rim = Math.max(rim, Math.abs(job.natural[i] - floor));
     job.margin = p.shape().platformless() ? 0 : RuinTerrain.margin(rim);
     job.palette = new Palette(RuinTerrain.mostCommon(job.surfaces, Palette.DEFAULT.surface()),
         RuinTerrain.mostCommon(job.fillers, Palette.DEFAULT.filler()),
@@ -1159,7 +1168,9 @@ public final class RuinPlacement {
       int natural = job.natural[i], top = job.surfaceTop[i];
       if (inside && shape.platform()[column]) {
         carve(job, cursor, x, z, floor + 1, top);
-        fill(job, cursor, i, x, z, natural + 1, Math.min(floor, job.origin.getY() + shape.low()[column]) - 1, false);
+        int under = Math.min(floor, job.origin.getY() + shape.low()[column]);
+        // Filled down to the land when it is within reach; over a chasm the floor spans it.
+        if (RuinTerrain.fills(natural, under)) fill(job, cursor, i, x, z, natural + 1, under - 1, false);
       } else {
         int target = surfaceOf(job, i);
         if (target < natural) {

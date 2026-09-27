@@ -814,17 +814,22 @@ public final class RuntimeGameTestsRuins {
 
   /**
    * Raises a test landscape on the flat test world: every column of {@code area} gets {@code under} up
-   * to {@code height(x, z)}, its top three blocks {@code surface}.
+   * to {@code height(x, z)}, its top three blocks {@code surface}, and air above, up to 96 blocks over
+   * the area, so that a ruin left by an earlier run of the persistent test world is gone.
    */
   static void landscape(ServerLevel level, BoundingBox area, java.util.function.IntBinaryOperator height,
       net.minecraft.world.level.block.state.BlockState surface, net.minecraft.world.level.block.state.BlockState under) {
     var cursor = new BlockPos.MutableBlockPos();
+    var air = Blocks.AIR.defaultBlockState();
+    int ceiling = Math.min(level.getMaxBuildHeight() - 1, area.maxY() + 96);
     for (int x = area.minX(); x <= area.maxX(); x++)
       for (int z = area.minZ(); z <= area.maxZ(); z++) {
         int top = height.applyAsInt(x, z);
-        for (int y = area.minY(); y <= top; y++)
-          level.setBlock(cursor.set(x, y, z), y >= top - 2 ? surface : under,
-              net.minecraft.world.level.block.Block.UPDATE_CLIENTS);
+        for (int y = area.minY(); y <= ceiling; y++) {
+          var state = y > top ? air : y >= top - 2 ? surface : under;
+          if (!level.getBlockState(cursor.set(x, y, z)).equals(state))
+            level.setBlock(cursor, state, net.minecraft.world.level.block.Block.UPDATE_CLIENTS);
+        }
       }
   }
 
@@ -842,6 +847,7 @@ public final class RuntimeGameTestsRuins {
     Stop stop = new Stop();
     helper.startSequence()
         .thenWaitUntil(() -> {
+          refresh(level, held.getFirst());
           for (var chunk : held.getFirst())
             helper.assertTrue(level.getChunkSource().getChunkNow(chunk.x, chunk.z) != null, "Loading " + chunk);
         })
@@ -856,6 +862,7 @@ public final class RuntimeGameTestsRuins {
           held.add(hold(level, area));
         }))
         .thenWaitUntil(() -> {
+          refresh(level, held.getLast());
           for (var chunk : held.getLast())
             helper.assertTrue(level.getChunkSource().getChunkNow(chunk.x, chunk.z) != null, "Loading " + chunk);
         })
@@ -1011,6 +1018,11 @@ public final class RuntimeGameTestsRuins {
     return chunks;
   }
 
+  /** Adds the tickets again, which restarts their expiry: a fresh test world can take long to generate. */
+  static void refresh(ServerLevel level, List<net.minecraft.world.level.ChunkPos> chunks) {
+    for (var chunk : chunks) level.getChunkSource().addRegionTicket(PLAY, chunk, 0, chunk);
+  }
+
   static void teleport(ServerPlayer player, ServerLevel level, BlockPos pos) {
     player.teleportTo(level, pos.getX() + 0.5, pos.getY() + 1, pos.getZ() + 0.5, 0f, 0f);
   }
@@ -1067,6 +1079,13 @@ public final class RuntimeGameTestsRuins {
         teleport(player, level, spawn);
         RuinBosses.scan(level.getServer());
         var group = RuinBosses.group(level.getServer(), ruin.id(), c, context(player).campaignId());
+        if (group == null && !team(player).solved.contains(RuinProgress.key(definition.id(), c)))
+          LOGGER.warn("Ruin QA: no guardians rose for {} {}: {} in {} at {}, {} blocks from the marker {}, creative {},"
+                  + " spectator {}, difficulty {}, registered {}, defined {}", definition.id(), c,
+              player.getName().getString(), player.level().dimension().location(), player.blockPosition(),
+              String.format(Locale.ROOT, "%.1f", Math.sqrt(player.distanceToSqr(Vec3.atCenterOf(spawn)))), spawn,
+              player.isCreative(), player.isSpectator(), level.getDifficulty(),
+              RuinData.get(level.getServer()).find(ruin.id()).isPresent(), RuinRegistry.get(ruin.id()).isPresent());
         if (group != null)
           for (UUID id : List.copyOf(group.mobs)) {
             var mob = (LivingEntity) level.getEntity(id);
@@ -1176,8 +1195,11 @@ public final class RuntimeGameTestsRuins {
             stop.reason = "The ruin's chunks did not load";
             return;
           }
+          // Blocks and entities: a guardian raised where the entities are still loading is not visible yet.
+          refresh(level, held.getFirst());
           for (var chunk : held.getFirst())
-            helper.assertTrue(level.getChunkSource().getChunkNow(chunk.x, chunk.z) != null, "Loading " + chunk);
+            helper.assertTrue(level.getChunkSource().getChunkNow(chunk.x, chunk.z) != null
+                && level.areEntitiesLoaded(chunk.toLong()), "Loading " + chunk);
         })
         .thenExecute(guarded(() -> {
           stop.check(helper);

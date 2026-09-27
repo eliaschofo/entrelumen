@@ -135,7 +135,11 @@ public final class RuinBosses {
       boolean alive = false;
       for (UUID id : group.mobs) {
         Entity entity = level.getEntity(id);
-        if (entity instanceof LivingEntity living && living.isAlive()) {
+        // A guardian spawned where the chunk's entities are still loading is not visible yet: it is still in
+        // the fight. One missing where they are loaded is gone (a death leaves the group through onDeath).
+        if (entity == null) {
+          if (!level.areEntitiesLoaded(net.minecraft.world.level.ChunkPos.asLong(group.spawn))) alive = true;
+        } else if (entity instanceof LivingEntity living && living.isAlive()) {
           alive = true;
           health += living.getHealth();
           max += living.getMaxHealth();

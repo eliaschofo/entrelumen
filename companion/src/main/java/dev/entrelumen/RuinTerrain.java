@@ -22,8 +22,13 @@ public final class RuinTerrain {
   private RuinTerrain() {}
 
   public static final int MIN_MARGIN = 6, MAX_MARGIN = 10;
-  /** How far a thin support goes down to find the ground. */
+  /**
+   * How far a thin support goes down to find the ground, and how deep a platform's fill may be: ground
+   * farther down is a chasm the ruin spans, not a dip it fills.
+   */
   public static final int MAX_PIER = 32;
+  /** Land more than this above or below the ruin's ground level is a cliff or a chasm: the blend leaves it. */
+  public static final int MAX_BLEND = 32;
   /** Air kept above the highest block of a ruin column that does not stand on a platform. */
   public static final int HEADROOM = 3;
   /** Half the side of the square whose opening separates platforms from thin supports. */
@@ -104,12 +109,23 @@ public final class RuinTerrain {
 
   /**
    * The blended surface of a column {@code distance} away from the platform: the ruin's {@code ground}
-   * on the platform, the {@code natural} surface from the margin on, a smooth blend between.
+   * on the platform, the {@code natural} surface from the margin on, a smooth blend between. Land more
+   * than {@link #MAX_BLEND} away from the ground level stays as it is.
    */
   public static int target(int natural, int ground, double distance, int margin) {
     if (distance <= 0) return ground;
-    if (margin <= 0 || distance >= margin) return natural;
+    if (margin <= 0 || distance >= margin || !blends(natural, ground)) return natural;
     return ground + (int) Math.round((natural - ground) * weight(distance / margin));
+  }
+
+  /** Whether land at {@code natural} is near enough to the ground level to blend (not a cliff or a chasm). */
+  public static boolean blends(int natural, int ground) {
+    return Math.abs(natural - ground) <= MAX_BLEND;
+  }
+
+  /** Whether a platform whose floor is at {@code floor} fills down to land at {@code natural} (not a chasm). */
+  public static boolean fills(int natural, int floor) {
+    return floor - natural <= MAX_PIER + 1;
   }
 
   /**

@@ -69,6 +69,10 @@ class RuinTerrainTest {
       }
     }
     assertEquals(6, RuinTerrain.margin(2), "a gentle site blends over the narrowest margin");
+    // A cliff or a chasm beside the ruin is left alone; a platform spans a chasm instead of plugging it.
+    assertEquals(20, RuinTerrain.target(20, 70, 3, 10), "a chasm 50 down stays");
+    assertEquals(110, RuinTerrain.target(110, 70, 3, 10), "a cliff 40 up stays");
+    assertTrue(RuinTerrain.fills(70 - 33, 70) && !RuinTerrain.fills(70 - 34, 70));
     assertEquals(10, RuinTerrain.margin(25), "a steep one over the widest");
     assertEquals(0.5, RuinTerrain.weight(0.5), 1e-9);
     assertEquals(0.0, RuinTerrain.weight(-1), 1e-9);
