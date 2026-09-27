@@ -1,0 +1,828 @@
+{
+  "format": "sector",
+  "chapter": "sector_mekanism_basics",
+  "group": "tech",
+  "act": "II",
+  "motif": "mekanism",
+  "icon": "mekanism:metallurgic_infuser",
+  "emblem": "mekanism:textures/item/basic_control_circuit.png",
+  "title": {"en_us": "Mekanism · Basics", "es_es": "Mekanism · Básico"},
+  "subtitle": {
+    "en_us": ["From the infuser to five ingots per ore: alloys, circuits, the ore ladder, chemistry and factories."],
+    "es_es": ["Del infusor a cinco lingotes por mena: aleaciones, circuitos, la escalera de menas, química y fábricas."]
+  },
+  "entry": "mkb_infuser",
+  "center": [0, 0],
+  "figures": {
+    "sq_basic": {"kind": "ring", "cx": 0, "cy": 0, "r": 21.2132, "count": 4, "start": -135, "draw": [{"style": "polyline", "closed": true, "color": "#1EA05C", "alpha": 190, "thickness_px": 3}]},
+    "sq_advanced": {"kind": "ring", "cx": 0, "cy": 0, "r": 16.2635, "count": 4, "start": -135, "draw": [{"style": "polyline", "closed": true, "color": "#CF443F", "alpha": 190, "thickness_px": 3}]},
+    "sq_elite": {"kind": "ring", "cx": 0, "cy": 0, "r": 11.3137, "count": 4, "start": -135, "draw": [{"style": "polyline", "closed": true, "color": "#269BA1", "alpha": 190, "thickness_px": 3}]},
+    "sq_ultimate": {"kind": "ring", "cx": 0, "cy": 0, "r": 6.364, "count": 4, "start": -135, "draw": [{"style": "polyline", "closed": true, "color": "#AB5AAF", "alpha": 190, "thickness_px": 3}]},
+    "core": {"kind": "ring", "cx": 0, "cy": 0, "r": 2.2, "count": 4, "start": -135, "draw": [{"style": "ring", "r": 2.2, "alpha": 160, "thickness_px": 2, "segments": 32}, {"style": "spokes", "from_r": 2.2, "to_r": 21.2132, "alpha": 80}]}
+  },
+  "groups": {
+    "moremachine": {"label": {"en_us": "MoreMachine", "es_es": "MoreMachine"}, "axis": "x", "caption": "above"},
+    "chemistry": {"label": {"en_us": "Chemistry", "es_es": "Química"}, "axis": "x", "caption": "below"},
+    "workshop": {"label": {"en_us": "Workshop", "es_es": "Taller"}, "axis": "y", "caption": "left"}
+  },
+  "links": [
+    {"target": "crafts_precision", "at": {"x": -18.4, "y": -15.8}},
+    {"target": "exchange_circuits", "at": {"x": 0.6, "y": -18.4}}
+  ],
+  "art": [
+    {"id": "medallion", "texture": "entrelumen:textures/gui/quests/medallion.png", "x": -27.5, "y": -24.5, "scale": 2, "order": 0, "click": "chapter:sun_of_heliodor", "hover": {"en_us": "Back to the Sun of Heliodor", "es_es": "Volver al Sol de Heliodor"}},
+    {"id": "emblem", "texture": "mekanism:textures/item/basic_control_circuit.png", "x": -27.5, "y": -24.5, "scale": 4, "order": 1},
+    {"id": "title_plate", "panel": [-25.05, -26.0, -16.679, -24.5], "alpha": 64, "order": -3},
+    {"id": "title_plate_corner0", "texture": "entrelumen:textures/gui/quests/corner.png", "x": -24.764, "y": -25.714, "scale": 1, "rotation": 0.0, "order": -1},
+    {"id": "title_plate_corner1", "texture": "entrelumen:textures/gui/quests/corner.png", "x": -16.964, "y": -25.714, "scale": 1, "rotation": 90.0, "order": -1},
+    {"id": "title_plate_corner2", "texture": "entrelumen:textures/gui/quests/corner.png", "x": -16.964, "y": -24.786, "scale": 1, "rotation": 180.0, "order": -1},
+    {"id": "title_plate_corner3", "texture": "entrelumen:textures/gui/quests/corner.png", "x": -24.764, "y": -24.786, "scale": 1, "rotation": 270.0, "order": -1},
+    {"id": "title", "label": {"en_us": "Mekanism · Basics", "es_es": "Mekanism · Básico"}, "x": -24.6, "y": -25.25, "scale": 2, "bold": true, "align": "start", "order": 5},
+    {"id": "to_energy", "label": {"en_us": "» Energy and reactors", "es_es": "» Energía y reactores"}, "x": -24.6, "y": -23.9, "scale": 1, "align": "start", "click": "chapter:sector_mekanism_energy", "order": 5},
+    {"id": "to_logistics", "label": {"en_us": "» Logistics and gear", "es_es": "» Logística y equipo"}, "x": -19.236, "y": -23.9, "scale": 1, "align": "start", "click": "chapter:sector_mekanism_logistics", "order": 5},
+    {"id": "motto", "label": {"en_us": "infuse enrich repeat", "es_es": "infundir enriquecer repetir"}, "x": -24.6, "y": -23.0, "scale": 1, "font": "minecraft:alt", "align": "start", "tint": "#9FB8C8", "order": 5},
+    {"id": "tier_basic", "label": {"en_us": "Basic", "es_es": "Básico"}, "x": -2.0, "y": 15.3, "scale": 1, "anchor": "top", "tint": "#1EA05C"},
+    {"id": "tier_advanced", "label": {"en_us": "Advanced", "es_es": "Avanzado"}, "x": -2.0, "y": 11.8, "scale": 1, "anchor": "top", "tint": "#CF443F"},
+    {"id": "tier_elite", "label": {"en_us": "Elite", "es_es": "Élite"}, "x": -2.0, "y": 8.3, "scale": 1, "anchor": "top", "tint": "#269BA1"},
+    {"id": "tier_ultimate", "label": {"en_us": "Ultimate", "es_es": "Definitivo"}, "x": -2.0, "y": 4.8, "scale": 1, "anchor": "top", "tint": "#AB5AAF"},
+    {"id": "extras_label", "label": {"en_us": "Mekanism Extras", "es_es": "Mekanism Extras"}, "x": -15.0, "y": 16.0, "scale": 1, "anchor": "top"},
+    {"id": "sun", "texture": "entrelumen:textures/gui/quests/sun_heliodor.png", "x": 0, "y": 0, "scale": 1, "order": -1, "alpha": 170, "reveal": "mko_mastery"}
+  ],
+  "quests": [
+    {
+      "key": "mkb_infuser", "role": "entry", "deps": [],
+      "task": {"item": "mekanism:metallurgic_infuser"},
+      "at": {"x": -15.0, "y": -15.0},
+      "en_us": {"title": "Metallurgic Infuser", "subtitle": "Mekanism's front door, and every alloy's.",
+        "text": ["Iron, redstone and two furnaces around a [item:entrelumen:calibration_frame|Calibration Frame]: the pack puts the Frame from [quest:signal|First Signal] where Mekanism wanted an osmium ingot. Material on the left, item in the middle; it spends the stored infusion.",
+                 "{page}",
+                 "[tip] It copies Frames too: a [item:entrelumen:raw_lens|Raw Lens] with 40 redstone (four dust) makes one. Keep the infuser running and you never run short."]},
+      "es_es": {"title": "Infusor metalúrgico", "subtitle": "La puerta de Mekanism, y de toda aleación.",
+        "text": ["Hierro, redstone y dos hornos alrededor de un [item:entrelumen:calibration_frame|Marco de calibración]: el pack pone el Marco de [quest:signal|Primera señal] donde Mekanism pedía un lingote de osmio. Material a la izquierda, ítem en el medio; gasta la infusión guardada.",
+                 "{page}",
+                 "[tip] También copia Marcos: una [item:entrelumen:raw_lens|Lente en bruto] con 40 de redstone (cuatro polvos) da uno. Con el infusor andando, nunca te quedás sin."]},
+      "sources": ["repo:pack/kubejs/server_scripts/entrelumen_functions_balance.js", "repo:pack/kubejs/server_scripts/entrelumen_integration_recipes.js", "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/metallurgic_infuser.json", "jar:Mekanism-1.21.1-10.7.19.85.jar:assets/mekanism/lang/en_us.json#description.mekanism.metallurgic_infuser", "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/chemical_conversion/redstone/from_dust.json", "repo:content/first_hour.json"]
+    },
+    {
+      "key": "mkb_osmium", "role": "step", "deps": ["mkb_infuser"],
+      "task": {"item": "mekanism:ingot_osmium", "count": 16},
+      "at": {"x": -9, "y": -15.0},
+      "en_us": {"title": "Osmium",
+        "text": ["[item:mekanism:osmium_ore|Osmium Ore] turns up at almost any height. Circuits, casings, tanks and upgrades all eat [item:mekanism:ingot_osmium|Osmium Ingots], so dig a lot of it."]},
+      "es_es": {"title": "Osmio",
+        "text": ["La [item:mekanism:osmium_ore|Mena de osmio] aparece casi a cualquier altura. Circuitos, carcasas, tanques y mejoras comen [item:mekanism:ingot_osmium|Lingotes de osmio]: juntá bastante."]},
+      "sources": ["jar:Mekanism-1.21.1-10.7.19.85.jar:assets/mekanism/lang/en_us.json#description.mekanism.osmium_ore", "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/control_circuit/basic.json", "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/steel_casing.json", "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/chemical_tank/basic.json", "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/upgrade/speed.json"]
+    },
+    {
+      "key": "mkb_circuit", "role": "step", "deps": ["mkb_osmium"],
+      "task": {"item": "mekanism:basic_control_circuit", "count": 4},
+      "at": {"x": -3, "y": -15.0},
+      "en_us": {"title": "Basic Control Circuit", "subtitle": "A rock that learned to count.",
+        "text": ["One osmium ingot and 20 redstone in the infuser: a [item:mekanism:basic_control_circuit|Basic Control Circuit]. The [item:entrelumen:power_regulator|Power Regulator] of act III takes two, and almost every Mekanism machine takes one."]},
+      "es_es": {"title": "Circuito de control básico", "subtitle": "Una piedra que aprendió a contar.",
+        "text": ["Un lingote de osmio y 20 de redstone en el infusor: un [item:mekanism:basic_control_circuit|Circuito de control básico]. El [item:entrelumen:power_regulator|Regulador de energía] del acto III pide dos, y casi toda máquina de Mekanism, uno."]},
+      "sources": ["jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/control_circuit/basic.json", "repo:pack/kubejs/server_scripts/entrelumen_integration_recipes.js", "repo:content/act_three.json"]
+    },
+    {
+      "key": "mkb_steel", "role": "step", "deps": ["mkb_circuit"],
+      "task": {"item": "immersiveengineering:ingot_steel", "count": 8},
+      "at": {"x": 3, "y": -15.0},
+      "en_us": {"title": "Steel", "subtitle": "Carbon, twice. Then heat.",
+        "text": ["Iron plus 10 carbon makes [item:mekanism:enriched_iron|Enriched Iron]; 10 more makes [item:immersiveengineering:dust_steel|Steel Dust]; smelt it into a [item:immersiveengineering:ingot_steel|Steel Ingot]. One coal is 10 carbon. Almost Unified keeps a single steel for the whole pack."]},
+      "es_es": {"title": "Acero", "subtitle": "Carbono, dos veces. Después, fuego.",
+        "text": ["Hierro y 10 de carbono dan [item:mekanism:enriched_iron|Hierro enriquecido]; 10 más, [item:immersiveengineering:dust_steel|Polvo de acero]; fundilo en un [item:immersiveengineering:ingot_steel|Lingote de acero]. Un carbón son 10 de carbono. Almost Unified deja un solo acero para todo el pack."]},
+      "sources": ["jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/processing/iron/enriched.json", "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/processing/steel/enriched_iron_to_dust.json", "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/processing/steel/ingot/from_dust_smelting.json", "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/chemical_conversion/carbon/from_coal.json", "repo:pack/config/almostunified/unification/materials.json"]
+    },
+    {
+      "key": "mkb_casing", "role": "step", "deps": ["mkb_steel"],
+      "task": {"item": "mekanism:steel_casing", "count": 4},
+      "at": {"x": 9, "y": -15.0},
+      "en_us": {"title": "Steel Casing",
+        "text": ["Four steel, four glass and an osmium ingot: one [item:mekanism:steel_casing|Steel Casing]. Nearly every Mekanism machine is built around one, so make a stack while the infuser is warm."]},
+      "es_es": {"title": "Carcasa de acero",
+        "text": ["Cuatro aceros, cuatro vidrios y un lingote de osmio: una [item:mekanism:steel_casing|Carcasa de acero]. Casi toda máquina de Mekanism se arma alrededor de una: hacé varias mientras el infusor está caliente."]},
+      "sources": ["jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/steel_casing.json", "jar:Mekanism-1.21.1-10.7.19.85.jar:assets/mekanism/lang/en_us.json#description.mekanism.steel_casing"]
+    },
+    {
+      "key": "mkb_enricher", "role": "milestone", "deps": ["mkb_casing"],
+      "task": {"item": "mekanism:enrichment_chamber"},
+      "at": {"x": 15.0, "y": -15.0},
+      "en_us": {"title": "Enrichment Chamber", "subtitle": "Two for one, forever.",
+        "text": ["An ore block becomes two dusts; three raw ores become four. It also enriches coal, redstone and diamonds for the infuser, turns fluorite ore into six gems and scrubs the green off old copper.",
+                 "[tip] Point its output at an [item:mekanism:energized_smelter|Energized Smelter] with auto-eject and every ore doubles on its own."]},
+      "es_es": {"title": "Cámara de enriquecimiento", "subtitle": "Dos por uno, para siempre.",
+        "text": ["Un bloque de mena da dos polvos; tres menas en bruto, cuatro. También enriquece carbón, redstone y diamantes para el infusor, da seis gemas por mena de fluorita y le saca el verde al cobre viejo.",
+                 "[tip] Mandá su salida a un [item:mekanism:energized_smelter|Fundidor eléctrico] con auto-expulsión y cada mena se duplica sola."]},
+      "sources": ["jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/enrichment_chamber.json", "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/processing/iron/dust/from_ore.json", "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/processing/iron/dust/from_raw_ore.json", "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/processing/fluorite/from_ore.json", "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/enriching/deoxidizing/copper_block.json", "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/enriching/enriched/diamond.json", "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/advancement/enricher.json"]
+    },
+    {
+      "key": "mkb_ores", "role": "side", "deps": ["mkb_osmium"],
+      "tasks": [{"item": "mekanism:ingot_tin", "count": 8}, {"item": "immersiveengineering:ingot_lead", "count": 8}, {"item": "mekanism:fluorite_gem", "count": 8}],
+      "at": {"x": -9, "y": -18.4},
+      "en_us": {"title": "The other four ores",
+        "text": ["Mekanism also buries tin, lead, uranium and fluorite. [item:mekanism:ingot_tin|Tin] goes into bronze and heaters, [item:immersiveengineering:ingot_lead|Lead] into reactors and radiation gear, [item:mekanism:fluorite_gem|Fluorite] into the ×5 crystallizer. Uranium waits for the reactor chapter.",
+                 "[tip] Fluorite sits deep. Enriched, one ore gives six gems."]},
+      "es_es": {"title": "Las otras cuatro menas",
+        "text": ["Mekanism también entierra estaño, plomo, uranio y fluorita. El [item:mekanism:ingot_tin|Estaño] va a bronce y calentadores, el [item:immersiveengineering:ingot_lead|Plomo] a reactores y equipo antirradiación, la [item:mekanism:fluorite_gem|Fluorita] al cristalizador del ×5. El uranio espera al capítulo de reactores.",
+                 "[tip] La fluorita está en lo profundo. Enriquecida, una mena da seis gemas."]},
+      "sources": ["jar:Mekanism-1.21.1-10.7.19.85.jar:assets/mekanism/lang/en_us.json#description.mekanism.tin_ore", "jar:Mekanism-1.21.1-10.7.19.85.jar:assets/mekanism/lang/en_us.json#description.mekanism.lead_ore", "jar:Mekanism-1.21.1-10.7.19.85.jar:assets/mekanism/lang/en_us.json#description.mekanism.fluorite_ore", "jar:Mekanism-1.21.1-10.7.19.85.jar:assets/mekanism/lang/en_us.json#description.mekanism.uranium_ore", "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/processing/fluorite/from_ore.json", "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/chemical_crystallizer.json", "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/resistive_heater.json", "repo:pack/config/almostunified/unification/materials.json"]
+    },
+    {
+      "key": "mkb_bronze", "role": "side", "deps": ["mkb_ores"],
+      "task": {"item": "mekanism:ingot_bronze", "count": 8},
+      "at": {"x": -12.6, "y": -18.4},
+      "en_us": {"title": "Bronze by infusion",
+        "text": ["Three copper ingots and 10 tin infusion make four [item:mekanism:ingot_bronze|Bronze Ingots]. The flamethrower, the Solar Neutron Activator, armored jetpacks and a whole Mekanism Tools set ask for it."]},
+      "es_es": {"title": "Bronce por infusión",
+        "text": ["Tres lingotes de cobre y 10 de estaño en el infusor dan cuatro [item:mekanism:ingot_bronze|Lingotes de bronce]. El lanzallamas, el Activador de neutrón solar, los jetpacks blindados y todo un juego de Mekanism Tools lo piden."]},
+      "sources": ["jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/processing/bronze/ingot/from_infusing.json", "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/flamethrower.json", "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/solar_neutron_activator.json", "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/jetpack_armored.json", "jar:MekanismTools-1.21.1-10.7.19.85.jar:data/mekanismtools/recipe/bronze/armor/chestplate.json"]
+    },
+    {
+      "key": "mkb_dictionary", "role": "side", "deps": ["mkb_circuit"],
+      "task": {"item": "mekanism:dictionary"},
+      "at": {"x": -3, "y": -18.4},
+      "en_us": {"title": "Dictionary",
+        "text": ["A book and a basic circuit. Right-click an item, block or fluid and it lists its tags, which is what most pack recipes actually check. A machine refusing an ingot? Ask the [item:mekanism:dictionary|Dictionary] first."]},
+      "es_es": {"title": "Diccionario",
+        "text": ["Un libro y un circuito básico. Clic derecho sobre un ítem, bloque o fluido y te lista sus etiquetas, que es lo que miran casi todas las recetas del pack. ¿Una máquina rechaza un lingote? Preguntale primero al [item:mekanism:dictionary|Diccionario]."]},
+      "sources": ["jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/dictionary.json", "jar:Mekanism-1.21.1-10.7.19.85.jar:assets/mekanism/lang/en_us.json#description.mekanism.dictionary"]
+    },
+    {
+      "key": "mkb_infusion_tricks", "role": "tip", "deps": ["mkb_infuser"],
+      "task": {"type": "checkmark"},
+      "at": {"x": -18.4, "y": -18.4},
+      "en_us": {"title": "Infuser party tricks",
+        "text": ["[tip] Bio fuel turns dirt into podzol, cobblestone into mossy and clay into slime balls; mushrooms turn dirt into mycelium and netherrack into nylium; gold dust gilds blackstone. Cheap decoration, zero farming."]},
+      "es_es": {"title": "Trucos del infusor",
+        "text": ["[tip] El combustible biológico convierte tierra en podsol, adoquín en musgoso y arcilla en bolas de slime; los hongos, tierra en micelio y roca del Nether en nilio; el polvo de oro dora la piedra negra. Decoración barata, sin granja."]},
+      "sources": ["jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/metallurgic_infusing/dirt_to_podzol.json", "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/metallurgic_infusing/mossy/cobblestone.json", "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/metallurgic_infusing/clay_to_slime_ball.json", "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/metallurgic_infusing/dirt_to_mycelium.json", "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/metallurgic_infusing/netherrack_to_crimson_nylium.json", "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/metallurgic_infusing/blackstone_to_gilded_blackstone.json"]
+    },
+    {
+      "key": "mkb_machines", "role": "step", "deps": ["mkb_casing"],
+      "tasks": [{"item": "mekanism:energized_smelter"}, {"item": "mekanism:crusher"}],
+      "at": {"x": 9, "y": -18.4},
+      "en_us": {"title": "Smelter and crusher",
+        "text": ["The [item:mekanism:energized_smelter|Energized Smelter] is a furnace that runs on power and takes upgrades. The [item:mekanism:crusher|Crusher] grinds ingots into dust, obsidian into four dusts and crops into bio fuel. The ore lines need both."]},
+      "es_es": {"title": "Fundidor y triturador",
+        "text": ["El [item:mekanism:energized_smelter|Fundidor eléctrico] es un horno a energía que acepta mejoras. El [item:mekanism:crusher|Triturador] muele lingotes en polvo, obsidiana en cuatro polvos y cultivos en combustible biológico. Las líneas de menas necesitan los dos."]},
+      "sources": ["jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/energized_smelter.json", "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/crusher.json", "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/crushing/obsidian_to_dust.json", "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/crushing/biofuel/apple.json", "jar:Mekanism-1.21.1-10.7.19.85.jar:assets/mekanism/lang/en_us.json#description.mekanism.crusher"]
+    },
+    {
+      "key": "mkb_sawmill", "role": "side", "deps": ["mkb_machines"],
+      "task": {"item": "mekanism:precision_sawmill"},
+      "at": {"x": 5.4, "y": -18.4},
+      "en_us": {"title": "Precision Sawmill", "subtitle": "Measure once, cut six.",
+        "text": ["A log becomes six planks instead of four, plus a sawdust one time in four. It also takes apart chests, doors, beds and boats for their wood, and sawdust makes the Cardboard Box."]},
+      "es_es": {"title": "Aserradero de precisión", "subtitle": "Se mide una vez, se cortan seis.",
+        "text": ["Un tronco da seis tablones en vez de cuatro, más un serrín una de cada cuatro veces. También desarma cofres, puertas, camas y botes por su madera, y el serrín hace la Caja de cartón."]},
+      "sources": ["jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/precision_sawmill.json", "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/sawing/log/oak.json", "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/sawing/chest.json", "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/sawing/bed/black.json", "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/cardboard_box.json", "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/advancement/sawmill.json"]
+    },
+    {
+      "key": "mkb_redstone_power", "role": "tip", "deps": ["mkb_machines"],
+      "task": {"type": "checkmark"},
+      "at": {"x": 12.6, "y": -18.4},
+      "en_us": {"title": "Redstone in a pinch",
+        "text": ["[tip] A machine with no generator still runs: redstone dust in its energy slot is 10,000 joules, a block 90,000. Fine for a first test, not for a factory."]},
+      "es_es": {"title": "Redstone de emergencia",
+        "text": ["[tip] Una máquina sin generador igual anda: el polvo de redstone en su casillero de energía son 10.000 joules, un bloque 90.000. Sirve para probar, no para una fábrica."]},
+      "sources": ["jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/energy_conversion/redstone.json", "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/energy_conversion/redstone_block.json"]
+    },
+    {
+      "key": "mkb_alarm", "role": "secret", "deps": ["mkb_circuit"],
+      "task": {"type": "advancement", "advancement": "mekanism:alarm", "icon": "mekanism:industrial_alarm"},
+      "at": {"x": -5.6, "y": -21.4},
+      "en_us": {"title": "Woop woop", "subtitle": "Your neighbours have questions.",
+        "text": ["You built an [item:mekanism:industrial_alarm|Industrial Alarm]: lead, two circuits and a lamp that screams on redstone. Wire it to a reactor, not to the doorbell."]},
+      "es_es": {"title": "Uiu uiu", "subtitle": "Los vecinos tienen preguntas.",
+        "text": ["Armaste una [item:mekanism:industrial_alarm|Alarma industrial]: plomo, dos circuitos y una lámpara que grita con redstone. Conectala a un reactor, no al timbre."]},
+      "sources": ["jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/advancement/alarm.json", "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/industrial_alarm.json"]
+    },
+    {
+      "key": "mko_x2", "role": "step", "deps": ["mkb_enricher"],
+      "task": {"item": "immersiveengineering:dust_iron", "count": 16},
+      "at": {"x": 18.4, "y": -15.0},
+      "en_us": {"title": "Twice the iron",
+        "text": ["Ore in, [item:immersiveengineering:dust_iron|Iron Grit] out, smelter behind: two ingots per ore block. A raw iron block gives twelve grit, where a furnace gives nine ingots."]},
+      "es_es": {"title": "El doble de hierro",
+        "text": ["Mena adentro, [item:immersiveengineering:dust_iron|Polvo de hierro] afuera, fundidor atrás: dos lingotes por bloque de mena. Un bloque de hierro en bruto da doce polvos, donde el horno da nueve lingotes."]},
+      "sources": ["jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/processing/iron/dust/from_ore.json", "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/processing/iron/dust/from_raw_block.json", "repo:pack/config/almostunified/unification/materials.json"]
+    },
+    {
+      "key": "mko_math", "role": "tip", "deps": ["mko_x2"],
+      "task": {"type": "checkmark"},
+      "at": {"x": 21.8, "y": -15},
+      "en_us": {"title": "Raw or Silk Touch?",
+        "text": ["[tip] Per ore block the ladder pays 2, 3, 4 or 5 ingots; per raw ore about 1.3, 2, 2.7 or 3.3. Fortune III averages 2.2 raw per iron or gold ore, so raw wins at every rung. Never combine raw back into ore: it costs eight."]},
+      "es_es": {"title": "¿En bruto o toque de seda?",
+        "text": ["[tip] Por bloque de mena la escalera paga 2, 3, 4 o 5 lingotes; por mena en bruto, más o menos 1,3, 2, 2,7 o 3,3. Fortuna III promedia 2,2 en bruto por mena de hierro u oro: el bruto gana en cada escalón. No combines el bruto de vuelta en mena: cuesta ocho."]},
+      "sources": ["jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/processing/iron/dust/from_raw_ore.json", "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/processing/iron/clump/from_raw_ore.json", "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/processing/iron/shard/from_raw_ore.json", "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/processing/iron/slurry/dirty/from_raw_ore.json", "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/processing/iron/ore/from_raw.json", "jar:minecraft_1.21.1_client.jar:data/minecraft/loot_table/blocks/iron_ore.json"]
+    },
+    {
+      "key": "mko_tags", "role": "tip", "deps": ["mkb_enricher"],
+      "task": {"type": "checkmark"},
+      "at": {"x": 18.4, "y": -18.4},
+      "en_us": {"title": "Every ore counts",
+        "text": ["[tip] The ore lines read common tags, so any mod's copper, tin, lead or uranium ore runs the same chain, and Almost Unified hands you the pack's ingot at the end."]},
+      "es_es": {"title": "Toda mena cuenta",
+        "text": ["[tip] Las líneas de menas leen etiquetas comunes: la mena de cobre, estaño, plomo o uranio de cualquier mod sigue la misma cadena, y Almost Unified te da el lingote del pack al final."]},
+      "sources": ["jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/processing/copper/dust/from_ore.json", "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/processing/iron/clump/from_ore.json", "repo:pack/config/almostunified/unification/materials.json"]
+    },
+    {
+      "key": "mkb_enriched", "role": "side", "deps": ["mkb_enricher"],
+      "task": {"item": "mekanism:enriched_carbon", "count": 8},
+      "at": {"x": 18.4, "y": -11.6},
+      "en_us": {"title": "Enrich before you infuse",
+        "text": ["One coal gives the infuser 10 carbon; enriched first, [item:mekanism:enriched_carbon|Enriched Carbon] gives 80. Redstone, diamond, gold, tin and refined obsidian work the same way: eight times less mining for every alloy."]},
+      "es_es": {"title": "Enriquecé antes de infundir",
+        "text": ["Un carbón le da 10 de carbono al infusor; enriquecido antes, el [item:mekanism:enriched_carbon|Carbono enriquecido] da 80. Redstone, diamante, oro, estaño y obsidiana refinada funcionan igual: ocho veces menos minería por aleación."]},
+      "sources": ["jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/chemical_conversion/carbon/from_coal.json", "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/chemical_conversion/carbon/from_enriched.json", "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/enriching/enriched/carbon.json", "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/chemical_conversion/redstone/from_enriched.json", "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/chemical_conversion/diamond/from_enriched.json", "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/advancement/infusing_efficiency.json"]
+    },
+    {
+      "key": "mkb_netherite", "role": "side", "deps": ["mko_x2"],
+      "task": {"item": "mekanism:dirty_netherite_scrap", "count": 3},
+      "at": {"x": 21.8, "y": -11.6},
+      "en_us": {"title": "Three scraps per debris",
+        "text": ["Crush [item:minecraft:ancient_debris|Ancient Debris] into three [item:mekanism:dirty_netherite_scrap|Dirty Netherite Scrap] and enrich each into a scrap: three per debris, not one. Four scraps and 40 gold infusion make [item:mekanism:dust_netherite|Netherite Dust]."]},
+      "es_es": {"title": "Tres fragmentos por escombro",
+        "text": ["Triturá los [item:minecraft:ancient_debris|Escombros ancestrales] en tres [item:mekanism:dirty_netherite_scrap|Fragmentos de netherita sucia] y enriquecé cada uno en un fragmento: tres por escombro, no uno. Cuatro fragmentos y 40 de oro en el infusor dan [item:mekanism:dust_netherite|Polvo de netherita]."]},
+      "sources": ["jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/processing/netherite/ancient_debris_to_dirty_scrap.json", "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/processing/netherite/dirty_scrap_to_scrap.json", "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/processing/netherite/scrap_to_dust.json", "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/processing/netherite/ingot_from_dust_smelting.json"]
+    },
+    {
+      "key": "mkb_enrich_tricks", "role": "tip", "deps": ["mko_tags"],
+      "task": {"type": "checkmark"},
+      "at": {"x": 21.8, "y": -18.4},
+      "en_us": {"title": "More than ore",
+        "text": ["[tip] The chamber also doubles diamond, emerald and coal ores, pulls nine string out of a cobweb, four clay balls out of a clay block and four salt out of a salt block."]},
+      "es_es": {"title": "Más que menas",
+        "text": ["[tip] La cámara también duplica las menas de diamante, esmeralda y carbón, saca nueve hilos de una telaraña, cuatro bolas de arcilla de un bloque de arcilla y cuatro de sal de un bloque de sal."]},
+      "sources": ["jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/processing/diamond/from_ore.json", "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/processing/emerald/from_ore.json", "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/processing/coal/from_ore.json", "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/enriching/string.json", "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/enriching/clay_ball.json", "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/enriching/salt.json"]
+    },
+    {
+      "key": "mkb_alloys", "role": "milestone", "deps": ["mkb_circuit"], "sequential": true,
+      "tasks": [{"item": "mekanism:alloy_infused", "count": 4}, {"item": "mekanism:advanced_control_circuit", "count": 2}, {"item": "mekanism:advanced_tier_installer"}],
+      "at": {"x": -11.5, "y": -11.5},
+      "en_us": {"title": "Advanced tier", "subtitle": "Red: copper learns redstone.",
+        "text": ["Copper and 10 redstone make [item:mekanism:alloy_infused|Infused Alloy]; a basic circuit between two of them is an [item:mekanism:advanced_control_circuit|Advanced Control Circuit]; both make the [item:mekanism:advanced_tier_installer|Advanced Tier Installer]. Infused alloy is the pack's act II material.",
+                 "{page}",
+                 "[tip] Right-click a placed factory with the installer: it becomes an advanced factory, five jobs at once, with everything inside kept."]},
+      "es_es": {"title": "Nivel avanzado", "subtitle": "Rojo: el cobre aprende redstone.",
+        "text": ["Cobre y 10 de redstone dan [item:mekanism:alloy_infused|Aleación infusionada]; un circuito básico entre dos de ellas es un [item:mekanism:advanced_control_circuit|Circuito de control avanzado]; con los dos sale el [item:mekanism:advanced_tier_installer|Instalador de nivel avanzado]. La aleación infusionada es el material del acto II en el pack.",
+                 "{page}",
+                 "[tip] Clic derecho con el instalador sobre una fábrica colocada: pasa a avanzada, cinco trabajos a la vez, sin perder lo que tiene adentro."]},
+      "sources": ["jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/metallurgic_infusing/alloy/infused.json", "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/control_circuit/advanced.json", "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/tier_installer/advanced.json", "jar:Mekanism-1.21.1-10.7.19.85.jar:mekanism/common/tier/FactoryTier.class", "jar:Mekanism-1.21.1-10.7.19.85.jar:mekanism/common/item/ItemTierInstaller.class", "repo:docs/design/recipe-design-rules.md"]
+    },
+    {
+      "key": "mkb_tier_elite", "role": "milestone", "deps": ["mkb_alloys"], "sequential": true,
+      "tasks": [{"item": "mekanism:alloy_reinforced", "count": 4}, {"item": "mekanism:elite_control_circuit", "count": 2}, {"item": "mekanism:elite_tier_installer"}],
+      "at": {"x": -8.0, "y": -8.0},
+      "en_us": {"title": "Elite tier", "subtitle": "Cyan: diamonds make everything better.",
+        "text": ["Infused alloy and 20 diamond infusion make [item:mekanism:alloy_reinforced|Reinforced Alloy]; with an advanced circuit it gives the [item:mekanism:elite_control_circuit|Elite Control Circuit] and the [item:mekanism:elite_tier_installer|Elite Tier Installer]: seven jobs per factory. It is the act III material of the pack.",
+                 "{page}",
+                 "[tip] Enrich diamonds before infusing: one diamond becomes 80 units, four alloys. Crushed, it gives 10."]},
+      "es_es": {"title": "Nivel de élite", "subtitle": "Cian: los diamantes todo lo mejoran.",
+        "text": ["Aleación infusionada con 20 de diamante da [item:mekanism:alloy_reinforced|Aleación reforzada]; con un circuito avanzado sale el [item:mekanism:elite_control_circuit|Circuito de control de élite] y el [item:mekanism:elite_tier_installer|Instalador de nivel de élite]: siete trabajos por fábrica. Es el material del acto III en el pack.",
+                 "{page}",
+                 "[tip] Enriquecé los diamantes antes de infundir: un diamante da 80 unidades, cuatro aleaciones. Triturado, 10."]},
+      "sources": ["jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/metallurgic_infusing/alloy/reinforced.json", "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/control_circuit/elite.json", "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/tier_installer/elite.json", "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/enriching/enriched/diamond.json", "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/chemical_conversion/diamond/from_enriched.json", "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/processing/diamond/to_dust.json", "repo:pack/kubejs/server_scripts/entrelumen_industrial_balance.js", "repo:docs/design/recipe-design-rules.md"]
+    },
+    {
+      "key": "mkb_mastery", "role": "milestone", "deps": ["mkb_tier_elite", "mkb_obsidian"], "sequential": true,
+      "tasks": [{"item": "mekanism:alloy_atomic", "count": 4}, {"item": "mekanism:ultimate_control_circuit", "count": 2}, {"item": "mekanism:ultimate_tier_installer"}],
+      "at": {"x": -4.5, "y": -4.5},
+      "en_us": {"title": "Ultimate tier", "subtitle": "Purple: the top of the ladder, for now.",
+        "text": ["Reinforced alloy and 40 refined obsidian infusion make [item:mekanism:alloy_atomic|Atomic Alloy]; the [item:mekanism:ultimate_control_circuit|Ultimate Control Circuit] and the [item:mekanism:ultimate_tier_installer|Ultimate Tier Installer] follow: nine jobs per factory. Atomic alloy is the act V material: the Ark bus and the NASA workbench take it."]},
+      "es_es": {"title": "Nivel definitivo", "subtitle": "Violeta: la punta de la escalera, por ahora.",
+        "text": ["Aleación reforzada con 40 de obsidiana refinada da [item:mekanism:alloy_atomic|Aleación atómica]; le siguen el [item:mekanism:ultimate_control_circuit|Circuito de control definitivo] y el [item:mekanism:ultimate_tier_installer|Instalador de nivel definitivo]: nueve trabajos por fábrica. La atómica es el material del acto V: la piden el bus del Arca y la mesa de la NASA."]},
+      "sources": ["jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/metallurgic_infusing/alloy/atomic.json", "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/control_circuit/ultimate.json", "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/tier_installer/ultimate.json", "jar:Mekanism-1.21.1-10.7.19.85.jar:mekanism/common/tier/FactoryTier.class", "repo:content/act_five.json", "repo:pack/kubejs/server_scripts/entrelumen_pingpong_balance.js"]
+    },
+    {
+      "key": "mkb_creative", "role": "info", "deps": ["mkb_mastery"],
+      "task": {"type": "checkmark"},
+      "at": {"x": -2.3, "y": -6.3},
+      "en_us": {"title": "Creative, at a price",
+        "text": ["The creative energy cube, fluid tank and chemical tank each cost two Luminosities, two antimatter pellets and an ultimate block of the same kind: act VI. Nothing else in Mekanism is creative here."]},
+      "es_es": {"title": "Creativo, con precio",
+        "text": ["El cubo de energía, el tanque de fluidos y el tanque químico creativos piden dos Luminosidades, dos fragmentos de antimateria y el bloque definitivo de su tipo cada uno: acto VI. Nada más de Mekanism es creativo acá."]},
+      "sources": ["repo:pack/kubejs/data/entrelumen/recipe/creative/mekanism/creative_energy_cube.json", "repo:pack/kubejs/data/entrelumen/recipe/creative/mekanism/creative_fluid_tank.json", "repo:pack/kubejs/data/entrelumen/recipe/creative/mekanism/creative_chemical_tank.json"]
+    },
+    {
+      "key": "mko_x3", "role": "milestone", "deps": ["mkb_enricher", "mkb_alloys", "mko_oxygen"],
+      "task": {"item": "mekanism:purification_chamber"},
+      "at": {"x": 11.5, "y": -11.5},
+      "en_us": {"title": "Purification Chamber",
+        "text": ["With oxygen piped in, an ore block becomes three [item:mekanism:clump_iron|Clumps] and a raw ore two. A [item:mekanism:crusher|Crusher] turns clumps into dirty dust, the Enrichment Chamber cleans it, the smelter finishes."]},
+      "es_es": {"title": "Cámara de purificación",
+        "text": ["Con oxígeno entrando, un bloque de mena da tres [item:mekanism:clump_iron|Trozos] y una en bruto, dos. Un [item:mekanism:crusher|Triturador] los hace polvo sucio, la Cámara de enriquecimiento lo limpia y el fundidor termina."]},
+      "sources": ["jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/purification_chamber.json", "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/processing/iron/clump/from_ore.json", "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/processing/iron/clump/from_raw_ore.json", "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/processing/iron/dirty_dust/from_clump.json", "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/processing/iron/dust/from_dirty_dust.json", "jar:Mekanism-1.21.1-10.7.19.85.jar:assets/mekanism/lang/en_us.json#description.mekanism.purification_chamber"]
+    },
+    {
+      "key": "mko_x3_line", "role": "step", "deps": ["mko_x3"],
+      "task": {"item": "mekanism:dirty_dust_iron", "count": 16},
+      "at": {"x": 13.4, "y": -8.6},
+      "en_us": {"title": "Dirty work",
+        "text": ["Clumps leave the [item:mekanism:crusher|Crusher] as [item:mekanism:dirty_dust_iron|Dirty Iron Dust] and go back into the Enrichment Chamber. Auto-eject each machine into the next and the ×3 line runs alone."]},
+      "es_es": {"title": "Trabajo sucio",
+        "text": ["Los trozos salen del [item:mekanism:crusher|Triturador] como [item:mekanism:dirty_dust_iron|Polvo de hierro sucio] y vuelven a la Cámara de enriquecimiento. Con cada máquina expulsando a la siguiente, la línea ×3 anda sola."]},
+      "sources": ["jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/processing/iron/dirty_dust/from_clump.json", "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/processing/iron/dust/from_dirty_dust.json"]
+    },
+    {
+      "key": "mko_layout", "role": "tip", "deps": ["mko_x3_line"],
+      "task": {"type": "checkmark"},
+      "at": {"x": 13.4, "y": -5.4},
+      "en_us": {"title": "Laying out the line",
+        "text": ["[tip] Build backwards from the smelter and auto-eject each machine into the next. Items ride Logistical Transporters, chemicals Pressurized Tubes, water Mechanical Pipes. When one stage backs up, turn it into a factory right there."]},
+      "es_es": {"title": "Armar la línea",
+        "text": ["[tip] Armala de atrás para adelante, desde el fundidor, con cada máquina expulsando a la siguiente. Los ítems van por Transportadores logísticos, los químicos por Tubos presurizados y el agua por Tuberías mecánicas. Si una etapa se atora, convertila en fábrica ahí mismo."]},
+      "sources": ["jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/transmitter/logistical_transporter/basic.json", "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/transmitter/pressurized_tube/basic.json", "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/transmitter/mechanical_pipe/basic.json", "jar:Mekanism-1.21.1-10.7.19.85.jar:mekanism/common/item/ItemTierInstaller.class"]
+    },
+    {
+      "key": "mko_x4", "role": "milestone", "deps": ["mko_x3", "mkb_tier_elite", "mko_hcl"],
+      "task": {"item": "mekanism:chemical_injection_chamber"},
+      "at": {"x": 8.0, "y": -8.0},
+      "en_us": {"title": "Chemical Injection Chamber",
+        "text": ["Hydrogen chloride turns an ore block into four [item:mekanism:shard_iron|Shards], three raw ores into eight. Shards go into the Purification Chamber as if they were ore and follow the ×3 line from there."]},
+      "es_es": {"title": "Cámara de inyección química",
+        "text": ["El cloruro de hidrógeno convierte un bloque de mena en cuatro [item:mekanism:shard_iron|Fragmentos] y tres menas en bruto en ocho. Los fragmentos entran a la Cámara de purificación como si fueran mena y siguen la línea ×3."]},
+      "sources": ["jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/chemical_injection_chamber.json", "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/processing/iron/shard/from_ore.json", "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/processing/iron/shard/from_raw_ore.json", "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/processing/iron/clump/from_shard.json", "jar:Mekanism-1.21.1-10.7.19.85.jar:assets/mekanism/lang/en_us.json#description.mekanism.chemical_injection_chamber"]
+    },
+    {
+      "key": "mko_x4_line", "role": "step", "deps": ["mko_x4"],
+      "task": {"item": "mekanism:shard_iron", "count": 16},
+      "at": {"x": 9.9, "y": -5.1},
+      "en_us": {"title": "Injected", "subtitle": "Hold the chloride.",
+        "text": ["[item:mekanism:shard_iron|Iron Shards] by the stack mean the injector never runs dry. It burns hydrogen chloride every tick it works, so keep a full tank beside it."]},
+      "es_es": {"title": "Inyectado", "subtitle": "Con cloruro, por favor.",
+        "text": ["[item:mekanism:shard_iron|Fragmentos de hierro] de a montones: el inyector no se queda seco. Gasta cloruro de hidrógeno cada tick que trabaja, así que dejale un tanque lleno al lado."]},
+      "sources": ["jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/processing/iron/shard/from_ore.json"]
+    },
+    {
+      "key": "mko_x5", "role": "milestone", "deps": ["mko_x4", "mkb_mastery", "mko_sulfuric"],
+      "tasks": [{"item": "mekanism:chemical_dissolution_chamber"}, {"item": "mekanism:chemical_washer"}, {"item": "mekanism:chemical_crystallizer"}],
+      "at": {"x": 4.5, "y": -4.5},
+      "en_us": {"title": "Dissolve, wash, crystallize",
+        "text": ["In the [item:mekanism:chemical_dissolution_chamber|Chemical Dissolution Chamber], sulfuric acid turns an ore block into 1000 mB of dirty slurry; the [item:mekanism:chemical_washer|Chemical Washer] cleans it with water and the [item:mekanism:chemical_crystallizer|Chemical Crystallizer] makes a crystal every 200 mB: five per ore.",
+                 "Crystals enter the Injection Chamber and ride the rest of the ladder down."]},
+      "es_es": {"title": "Disolver, lavar, cristalizar",
+        "text": ["En la [item:mekanism:chemical_dissolution_chamber|Cámara de disolución química], el ácido sulfúrico convierte un bloque de mena en 1000 mB de lodo sucio; la [item:mekanism:chemical_washer|Lavadora química] lo limpia con agua y el [item:mekanism:chemical_crystallizer|Cristalizador químico] hace un cristal cada 200 mB: cinco por mena.",
+                 "Los cristales entran a la Cámara de inyección y bajan el resto de la escalera."]},
+      "sources": ["jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/chemical_dissolution_chamber.json", "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/chemical_washer.json", "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/chemical_crystallizer.json", "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/processing/iron/slurry/dirty/from_ore.json", "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/processing/iron/slurry/clean.json", "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/processing/iron/crystal/from_slurry.json", "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/processing/iron/shard/from_crystal.json", "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/advancement/chemical_crystallizer.json"]
+    },
+    {
+      "key": "mko_mastery", "role": "capstone", "deps": ["mko_x5", "mkb_mastery", "mko_sulfuric"],
+      "task": {"item": "mekanism:crystal_iron", "count": 32},
+      "at": {"x": 0, "y": 0},
+      "en_us": {"title": "Five per ore", "subtitle": "Every ore, all five rungs.",
+        "text": ["Automate the whole ladder, dissolution to smelter, and bring 32 [item:mekanism:crystal_iron|Iron Crystals]. One ore block, five ingots; one raw iron block, thirty.",
+                 "{page}",
+                 "[hl|×2] dust, [hl|×3] clumps, [hl|×4] shards, [hl|×5] crystals. Each rung is one machine in front of the last, and nothing from a lower rung is wasted."]},
+      "es_es": {"title": "Cinco por mena", "subtitle": "Cada mena, los cinco escalones.",
+        "text": ["Automatizá la escalera entera, de la disolución al fundidor, y traé 32 [item:mekanism:crystal_iron|Cristales de hierro]. Un bloque de mena, cinco lingotes; un bloque de hierro en bruto, treinta.",
+                 "{page}",
+                 "[hl|×2] polvo, [hl|×3] trozos, [hl|×4] fragmentos, [hl|×5] cristales. Cada escalón es una máquina más adelante de la anterior, y nada de un escalón de abajo se pierde."]},
+      "sources": ["jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/processing/iron/slurry/dirty/from_ore.json", "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/processing/iron/slurry/dirty/from_raw_block.json", "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/processing/iron/crystal/from_slurry.json"]
+    },
+    {
+      "key": "mkb_chemtank", "role": "step", "deps": ["mkb_enricher"], "group": "chemistry",
+      "tasks": [{"item": "mekanism:basic_chemical_tank"}, {"item": "mekanism:basic_pressurized_tube", "count": 8}],
+      "at": {"x": 15.0, "y": 2.5},
+      "en_us": {"title": "Tanks and tubes",
+        "text": ["Redstone and osmium make a [item:mekanism:basic_chemical_tank|Basic Chemical Tank]; steel and glass, eight [item:mekanism:basic_pressurized_tube|Pressurized Tubes]. Gases never share a pipe with fluids."]},
+      "es_es": {"title": "Tanques y tubos",
+        "text": ["Redstone y osmio hacen un [item:mekanism:basic_chemical_tank|Tanque químico básico]; acero y vidrio, ocho [item:mekanism:basic_pressurized_tube|Tubos presurizados]. Los gases nunca comparten caño con los fluidos."]},
+      "sources": ["jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/chemical_tank/basic.json", "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/transmitter/pressurized_tube/basic.json", "jar:Mekanism-1.21.1-10.7.19.85.jar:assets/mekanism/lang/en_us.json#description.mekanism.tube"]
+    },
+    {
+      "key": "mko_oxygen", "role": "step", "deps": ["mkb_chemtank"], "group": "chemistry",
+      "task": {"item": "mekanism:electrolytic_separator"},
+      "at": {"x": 11.5, "y": 2.5},
+      "en_us": {"title": "Electrolytic Separator",
+        "text": ["Two parts water become two of hydrogen and one of oxygen. Send the oxygen to the Purification Chamber; the hydrogen feeds jetpacks and gas generators, or gets dumped.",
+                 "[tip] In a hurry? Flint in a machine's chemical slot counts as 10 oxygen."]},
+      "es_es": {"title": "Separador electrolítico",
+        "text": ["Dos partes de agua dan dos de hidrógeno y una de oxígeno. El oxígeno va a la Cámara de purificación; el hidrógeno alimenta jetpacks y generadores a gas, o se tira.",
+                 "[tip] ¿Apurado? Un pedernal en la ranura química de una máquina cuenta como 10 de oxígeno."]},
+      "sources": ["jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/electrolytic_separator.json", "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/separator/water.json", "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/chemical_conversion/flint_to_oxygen.json", "jar:Mekanism-1.21.1-10.7.19.85.jar:assets/mekanism/lang/en_us.json#description.mekanism.electrolytic_separator"]
+    },
+    {
+      "key": "mko_evaporation", "role": "step", "deps": ["mko_oxygen"], "group": "chemistry",
+      "tasks": [{"item": "mekanism:thermal_evaporation_controller"}, {"item": "mekanism:thermal_evaporation_block", "count": 30}],
+      "at": {"x": 11.5, "y": 6.5},
+      "en_us": {"title": "Thermal Evaporation Plant",
+        "text": ["A hollow 4×4 tower, 3 to 18 blocks high, of [item:mekanism:thermal_evaporation_block|Thermal Evaporation Blocks] with one [item:mekanism:thermal_evaporation_controller|Controller] and valves. Ten water makes one brine, ten brine one lithium. Taller and hotter runs faster."]},
+      "es_es": {"title": "Planta de evaporación térmica",
+        "text": ["Una torre hueca de 4×4 y de 3 a 18 bloques de alto, de [item:mekanism:thermal_evaporation_block|Bloques de evaporación térmica], con un [item:mekanism:thermal_evaporation_controller|Controlador] y válvulas. Diez de agua dan uno de salmuera; diez de salmuera, uno de litio. Más alta y más caliente, más rápido."]},
+      "sources": ["jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/thermal_evaporation/block.json", "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/thermal_evaporation/controller.json", "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/evaporating/brine.json", "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/evaporating/lithium.json", "jar:Mekanism-1.21.1-10.7.19.85.jar:mekanism/common/content/evaporation/EvaporationValidator.class"]
+    },
+    {
+      "key": "mko_salt", "role": "side", "deps": ["mko_evaporation"], "group": "chemistry",
+      "task": {"item": "mekanism:salt", "count": 16},
+      "at": {"x": 13.4, "y": 9.4},
+      "en_us": {"title": "Salt shortcuts",
+        "text": ["[item:mekanism:salt|Salt] in a chemical slot becomes hydrogen chloride on the spot, two units each: enough to test the injector. An oxidizer turns it into brine, and brine crystallizes back into salt."]},
+      "es_es": {"title": "Atajos de sal",
+        "text": ["La [item:mekanism:salt|Sal] en una ranura química se vuelve cloruro de hidrógeno al instante, dos unidades cada una: alcanza para probar el inyector. Un oxidador la hace salmuera, y la salmuera cristaliza de vuelta en sal."]},
+      "sources": ["jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/chemical_conversion/salt_to_hydrogen_chloride.json", "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/oxidizing/brine.json", "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/crystallizing/salt.json"]
+    },
+    {
+      "key": "mko_hcl", "role": "step", "deps": ["mko_oxygen", "mko_evaporation"], "group": "chemistry",
+      "task": {"item": "mekanism:chemical_infuser"},
+      "at": {"x": 8.0, "y": 2.5},
+      "en_us": {"title": "Chemical Infuser",
+        "text": ["Brine through the separator gives sodium and chlorine; the [item:mekanism:chemical_infuser|Chemical Infuser] joins chlorine with hydrogen into hydrogen chloride, one to one. Later it makes sulfur trioxide, sulfuric acid and fusion fuel."]},
+      "es_es": {"title": "Infusor químico",
+        "text": ["La salmuera por el separador da sodio y cloro; el [item:mekanism:chemical_infuser|Infusor químico] junta el cloro con hidrógeno y sale cloruro de hidrógeno, uno a uno. Más adelante hace trióxido de azufre, ácido sulfúrico y combustible de fusión."]},
+      "sources": ["jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/chemical_infuser.json", "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/separator/brine.json", "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/chemical_infusing/hydrogen_chloride.json", "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/chemical_infusing/sulfur_trioxide.json", "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/chemical_infusing/sulfuric_acid.json", "jar:MekanismGenerators-1.21.1-10.7.19.85.jar:data/mekanismgenerators/recipe/chemical_infusing/fusion_fuel.json"]
+    },
+    {
+      "key": "mko_condensentrator", "role": "side", "deps": ["mkb_chemtank"], "group": "chemistry",
+      "task": {"item": "mekanism:rotary_condensentrator"},
+      "at": {"x": 15.0, "y": 6.5},
+      "en_us": {"title": "Rotary Condensentrator", "subtitle": "It condenses and it concentrates. Pick one.",
+        "text": ["Turns a gas into its liquid and back: water into water vapor for sulfuric acid, hydrogen or ethene into buckets you can store anywhere. Toggle the direction in its screen."]},
+      "es_es": {"title": "Condensador giratorio", "subtitle": "Condensa y concentra. Elegí.",
+        "text": ["Convierte un gas en su líquido y al revés: agua en vapor para el ácido sulfúrico, hidrógeno o eteno en baldes para guardar donde quieras. La dirección se cambia en su pantalla."]},
+      "sources": ["jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/rotary_condensentrator.json", "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/rotary/water_vapor.json", "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/rotary/hydrogen.json", "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/rotary/ethene.json", "jar:Mekanism-1.21.1-10.7.19.85.jar:assets/mekanism/lang/en_us.json#description.mekanism.rotary_condensentrator"]
+    },
+    {
+      "key": "mko_oxidizer", "role": "step", "deps": ["mko_hcl"], "group": "chemistry",
+      "task": {"item": "mekanism:chemical_oxidizer"},
+      "at": {"x": 8.0, "y": 6.5},
+      "en_us": {"title": "Chemical Oxidizer",
+        "text": ["Solids into gas: [item:immersiveengineering:dust_sulfur|Sulfur Dust] into 100 sulfur dioxide, yellow cake into uranium oxide, lithium dust into lithium. Its recipe wants a Dynamic Tank block and a personal chest or barrel."]},
+      "es_es": {"title": "Oxidador químico",
+        "text": ["Sólidos en gas: el [item:immersiveengineering:dust_sulfur|Polvo de azufre] en 100 de dióxido de azufre, la torta amarilla en óxido de uranio, el polvo de litio en litio. Su receta pide un bloque de Tanque dinámico y un cofre o barril personal."]},
+      "sources": ["jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/chemical_oxidizer.json", "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/oxidizing/sulfur_dioxide.json", "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/processing/uranium/uranium_oxide.json", "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/oxidizing/lithium.json", "repo:pack/config/almostunified/unification/materials.json"]
+    },
+    {
+      "key": "mko_prc", "role": "side", "deps": ["mko_oxidizer"], "group": "chemistry",
+      "task": {"item": "mekanism:pressurized_reaction_chamber"},
+      "at": {"x": 4.5, "y": 6.5},
+      "en_us": {"title": "Pressurized Reaction Chamber", "subtitle": "Solid, liquid and gas walk into a chamber.",
+        "text": ["One coal, 100 water and 100 oxygen give 100 hydrogen and a [item:immersiveengineering:dust_sulfur|Sulfur Dust]: the sulfur mine you never dig. Bio fuel, water and hydrogen give ethene and substrate, the road to plastic."]},
+      "es_es": {"title": "Cámara de reacción presurizada", "subtitle": "Un sólido, un líquido y un gas entran a una cámara.",
+        "text": ["Un carbón, 100 de agua y 100 de oxígeno dan 100 de hidrógeno y un [item:immersiveengineering:dust_sulfur|Polvo de azufre]: la mina de azufre que nunca cavás. Combustible biológico, agua e hidrógeno dan eteno y sustrato, el camino al plástico."]},
+      "sources": ["jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/pressurized_reaction_chamber.json", "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/reaction/coal_gasification/coals.json", "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/reaction/substrate/water_hydrogen.json", "repo:pack/config/almostunified/unification/materials.json"]
+    },
+    {
+      "key": "mko_sulfuric", "role": "step", "deps": ["mko_hcl", "mko_oxidizer"], "group": "chemistry",
+      "task": {"item": "immersiveengineering:dust_sulfur", "count": 8},
+      "at": {"x": 4.5, "y": 2.5},
+      "en_us": {"title": "Sulfuric acid",
+        "text": ["Oxidize [item:immersiveengineering:dust_sulfur|Sulfur Dust] into sulfur dioxide, infuse it with oxygen into sulfur trioxide, then with water vapor into sulfuric acid. The Dissolution Chamber drinks it every tick it works."]},
+      "es_es": {"title": "Ácido sulfúrico",
+        "text": ["Oxidá el [item:immersiveengineering:dust_sulfur|Polvo de azufre] en dióxido de azufre, infundilo con oxígeno en trióxido y después con vapor de agua en ácido sulfúrico. La Cámara de disolución lo toma cada tick que trabaja."]},
+      "sources": ["jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/oxidizing/sulfur_dioxide.json", "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/chemical_infusing/sulfur_trioxide.json", "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/chemical_infusing/sulfuric_acid.json", "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/rotary/water_vapor.json", "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/chemical_conversion/sulfur_to_sulfuric_acid.json", "repo:pack/config/almostunified/unification/materials.json"]
+    },
+    {
+      "key": "mkb_hdpe", "role": "side", "deps": ["mko_prc"], "group": "chemistry",
+      "task": {"item": "mekanism:hdpe_sheet", "count": 8},
+      "at": {"x": 4.5, "y": 9.9},
+      "en_us": {"title": "Plastic", "subtitle": "Future MekaSuit, currently a pellet.",
+        "text": ["Substrate, 50 ethene and 10 oxygen in the reaction chamber make an HDPE pellet; three pellets enriched make an [item:mekanism:hdpe_sheet|HDPE Sheet]. The MekaSuit, the SPS casing and most MekaSuit modules are made of it."]},
+      "es_es": {"title": "Plástico", "subtitle": "Futuro MekaTraje, por ahora una bolita.",
+        "text": ["Sustrato, 50 de eteno y 10 de oxígeno en la cámara de reacción dan un pellet de PAD; tres pellets enriquecidos, una [item:mekanism:hdpe_sheet|Lámina de PAD]. El MekaTraje, la carcasa del CFS y casi todos los módulos del traje salen de ahí."]},
+      "sources": ["jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/reaction/substrate/ethene_oxygen.json", "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/enriching/hdpe_sheet.json", "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/sps_casing.json", "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/mekasuit_helmet.json", "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/module_energy_unit.json"]
+    },
+    {
+      "key": "mkb_gauges", "role": "secret", "deps": ["mkb_chemtank"], "group": "chemistry",
+      "task": {"type": "advancement", "advancement": "mekanism:cleaning_gauges", "icon": "mekanism:gauge_dropper"},
+      "at": {"x": 18.4, "y": 2.5},
+      "en_us": {"title": "Spring cleaning", "subtitle": "Not a drop wasted. Well, one.",
+        "text": ["A [item:mekanism:gauge_dropper|Gauge Dropper] on a tank gauge in a machine screen empties it. Wrong gas in the wrong tank? That is the undo button."]},
+      "es_es": {"title": "Limpieza de primavera", "subtitle": "No se desperdició ni una gota. Bueno, una.",
+        "text": ["Un [item:mekanism:gauge_dropper|Cuenta gotas] sobre el indicador de un tanque, en la pantalla de una máquina, lo vacía. ¿Gas equivocado en el tanque equivocado? Ese es el botón de deshacer."]},
+      "sources": ["jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/advancement/cleaning_gauges.json", "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/gauge_dropper.json"]
+    },
+    {
+      "key": "mkb_compressor", "role": "step", "deps": ["mkb_alloys"],
+      "task": {"item": "mekanism:osmium_compressor"},
+      "at": {"x": -11.5, "y": -3.6},
+      "en_us": {"title": "Osmium Compressor",
+        "text": ["It burns osmium like fuel, 200 units per ingot. Glowstone dust becomes [item:mekanism:ingot_refined_glowstone|Refined Glowstone] and refined obsidian dust becomes ingots. Built from an advanced circuit and infused alloy."]},
+      "es_es": {"title": "Compresor de osmio",
+        "text": ["Quema osmio como combustible, 200 unidades por lingote. El polvo de piedra luminosa se vuelve [item:mekanism:ingot_refined_glowstone|Piedra luminosa refinada] y el polvo de obsidiana refinado, lingotes. Se arma con un circuito avanzado y aleación infusionada."]},
+      "sources": ["jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/osmium_compressor.json", "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/chemical_conversion/osmium_from_ingot.json", "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/processing/refined_glowstone/ingot/from_dust.json", "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/processing/refined_obsidian/ingot/from_dust.json"]
+    },
+    {
+      "key": "mkb_glowstone", "role": "side", "deps": ["mkb_compressor"],
+      "task": {"item": "mekanism:ingot_refined_glowstone", "count": 4},
+      "at": {"x": -11.5, "y": -0.2},
+      "en_us": {"title": "Refined Glowstone",
+        "text": ["Two uses, both worth it: the [item:mekanism:teleporter_frame|Teleporter Frame] and the refined glowstone set of Mekanism Tools, bright enough to light your way."]},
+      "es_es": {"title": "Piedra luminosa refinada",
+        "text": ["Dos usos, los dos valen: el [item:mekanism:teleporter_frame|Marco de teletransportador] y el juego de piedra luminosa refinada de Mekanism Tools, que alumbra tu camino."]},
+      "sources": ["jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/teleporter_frame.json", "jar:MekanismTools-1.21.1-10.7.19.85.jar:data/mekanismtools/recipe/refined_glowstone/armor/helmet.json", "jar:MekanismTools-1.21.1-10.7.19.85.jar:data/mekanismtools/advancement/loved_by_piglins.json"]
+    },
+    {
+      "key": "mkb_obsidian", "role": "step", "deps": ["mkb_compressor", "mkb_tier_elite"],
+      "task": {"item": "mekanism:ingot_refined_obsidian", "count": 8},
+      "at": {"x": -8.0, "y": -1.4},
+      "en_us": {"title": "Refined Obsidian",
+        "text": ["Crush obsidian into dust and infuse it with 10 diamond: [item:mekanism:dust_refined_obsidian|Refined Obsidian Dust], the infusion behind atomic alloy. The [item:mekanism:osmium_compressor|Osmium Compressor] presses it into [item:mekanism:ingot_refined_obsidian|Refined Obsidian Ingots] for the ×5 machines."]},
+      "es_es": {"title": "Obsidiana refinada",
+        "text": ["Triturá obsidiana en polvo e infundila con 10 de diamante: [item:mekanism:dust_refined_obsidian|Polvo de obsidiana refinado], la infusión de la aleación atómica. El [item:mekanism:osmium_compressor|Compresor de osmio] lo prensa en [item:mekanism:ingot_refined_obsidian|Lingotes de obsidiana refinada] para las máquinas del ×5."]},
+      "sources": ["jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/crushing/obsidian_to_dust.json", "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/processing/refined_obsidian/dust/from_obsidian_dust.json", "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/processing/refined_obsidian/ingot/from_dust.json", "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/chemical_dissolution_chamber.json", "repo:pack/config/almostunified/unification/materials.json"]
+    },
+    {
+      "key": "mkb_config", "role": "tip", "deps": ["mkb_infuser"], "group": "workshop",
+      "task": {"type": "checkmark"},
+      "at": {"x": -18.4, "y": -13.2},
+      "en_us": {"title": "Sides and colors",
+        "text": ["[tip] Every machine face has a color: input, output, energy or off. Turn on auto-eject and results leave by themselves. Most \"my machine does nothing\" is a side set wrong."]},
+      "es_es": {"title": "Caras y colores",
+        "text": ["[tip] Cada cara de una máquina tiene un color: entrada, salida, energía o apagada. Con la auto-expulsión prendida, los productos salen solos. Casi todo «mi máquina no hace nada» es una cara mal puesta."]},
+      "sources": ["jar:Mekanism-1.21.1-10.7.19.85.jar:mekanism/common/tile/component/config/ConfigInfo.class", "jar:Mekanism-1.21.1-10.7.19.85.jar:assets/mekanism/lang/en_us.json#configurator.mekanism.toggle_mode"]
+    },
+    {
+      "key": "mkb_configurator", "role": "side", "deps": ["mkb_config"], "group": "workshop",
+      "task": {"item": "mekanism:configurator"},
+      "at": {"x": -18.4, "y": -9.8},
+      "en_us": {"title": "Configurator",
+        "text": ["Two iron, an osmium ingot and a steel ingot. Shift-right-click cycles its modes: configure a face in the world, empty a machine, rotate it, or use it as a wrench. [key:key.mekanism.mode] switches mode too."]},
+      "es_es": {"title": "Configurador",
+        "text": ["Dos hierros, un lingote de osmio y uno de acero. Shift y clic derecho cambian el modo: configurar una cara en el mundo, vaciar una máquina, rotarla o usarlo de llave. [key:key.mekanism.mode] también cambia el modo."]},
+      "sources": ["jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/configurator.json", "jar:Mekanism-1.21.1-10.7.19.85.jar:mekanism/common/item/ItemConfigurator.class", "jar:Mekanism-1.21.1-10.7.19.85.jar:assets/mekanism/lang/en_us.json#configurator.mekanism.rotate", "jar:Mekanism-1.21.1-10.7.19.85.jar:assets/mekanism/lang/en_us.json#key.mekanism.mode", "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/advancement/configurator.json"]
+    },
+    {
+      "key": "mkb_config_copy", "role": "secret", "deps": ["mkb_configurator"], "group": "workshop",
+      "task": {"type": "advancement", "advancement": "mekanism:configuration_copying", "icon": "mekanism:configuration_card"},
+      "at": {"x": -21.8, "y": -9.8},
+      "en_us": {"title": "Copy, paste", "subtitle": "Twenty machines, one click each.",
+        "text": ["A [item:mekanism:configuration_card|Configuration Card] copied one machine's sides and pasted them onto another. Set one up right, then stamp it on the rest."]},
+      "es_es": {"title": "Copiar y pegar", "subtitle": "Veinte máquinas, un clic cada una.",
+        "text": ["Una [item:mekanism:configuration_card|Tarjeta de configuración] copió las caras de una máquina y las pegó en otra. Configurá una bien y estampala en el resto."]},
+      "sources": ["jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/advancement/configuration_copying.json", "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/configuration_card.json"]
+    },
+    {
+      "key": "mkb_upgrades", "role": "step", "deps": ["mkb_alloys"],
+      "tasks": [{"item": "mekanism:upgrade_speed", "count": 2}, {"item": "mekanism:upgrade_energy", "count": 2}],
+      "at": {"x": -15.0, "y": -5},
+      "en_us": {"title": "Speed and energy", "subtitle": "Go faster. Pay for it.",
+        "text": ["Infused alloy and glass around osmium dust make a [item:mekanism:upgrade_speed|Speed Upgrade]; around gold dust, an [item:mekanism:upgrade_energy|Energy Upgrade]. Up to eight of each per machine. Speed alone drinks power: pair them."]},
+      "es_es": {"title": "Velocidad y energía", "subtitle": "Más rápido. Se paga.",
+        "text": ["Aleación infusionada y vidrio alrededor de polvo de osmio dan una [item:mekanism:upgrade_speed|Mejora de velocidad]; alrededor de polvo de oro, una [item:mekanism:upgrade_energy|Mejora de energía]. Hasta ocho de cada una por máquina. La velocidad sola se toma la energía: ponelas de a pares."]},
+      "sources": ["jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/upgrade/speed.json", "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/upgrade/energy.json", "jar:Mekanism-1.21.1-10.7.19.85.jar:mekanism/api/Upgrade.class"]
+    },
+    {
+      "key": "mkb_upgrades_more", "role": "side", "deps": ["mkb_upgrades"], "group": "workshop",
+      "tasks": [{"item": "mekanism:upgrade_muffling"}, {"item": "mekanism:upgrade_chemical"}],
+      "at": {"x": -18.4, "y": -6.6},
+      "en_us": {"title": "The rest of the drawer",
+        "text": ["[item:mekanism:upgrade_muffling|Muffling] quiets a machine; [item:mekanism:upgrade_chemical|Chemical] makes chemical-hungry machines use less, up to eight. Filter pulls heavy water, Anchor keeps a chunk loaded, Stone Generator refills what a miner digs."]},
+      "es_es": {"title": "El resto del cajón",
+        "text": ["La de [item:mekanism:upgrade_muffling|Silencio] calla una máquina; la [item:mekanism:upgrade_chemical|Química] hace que las máquinas que comen químicos gasten menos, hasta ocho. Filtro saca agua pesada, Ancla mantiene cargado el chunk y Generador de piedra rellena lo que cava un minero."]},
+      "sources": ["jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/upgrade/muffling.json", "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/upgrade/chemical.json", "jar:Mekanism-1.21.1-10.7.19.85.jar:mekanism/api/Upgrade.class", "jar:Mekanism-1.21.1-10.7.19.85.jar:assets/mekanism/lang/en_us.json#upgrade.mekanism.chemical.description", "jar:Mekanism-1.21.1-10.7.19.85.jar:assets/mekanism/lang/en_us.json#upgrade.mekanism.filter.description", "jar:Mekanism-1.21.1-10.7.19.85.jar:assets/mekanism/lang/en_us.json#upgrade.mekanism.anchor.description", "jar:Mekanism-1.21.1-10.7.19.85.jar:assets/mekanism/lang/en_us.json#upgrade.mekanism.stone_generator.description"]
+    },
+    {
+      "key": "mkb_upgrade_tip", "role": "tip", "deps": ["mkb_upgrades"], "group": "workshop",
+      "task": {"type": "checkmark"},
+      "at": {"x": -18.4, "y": -3.4},
+      "en_us": {"title": "Upgrades travel",
+        "text": ["[tip] Pull upgrades out in the machine's upgrade tab and move them where the bottleneck is. Upgrading a machine to a factory with an installer keeps them in."]},
+      "es_es": {"title": "Las mejoras viajan",
+        "text": ["[tip] Sacá las mejoras en la pestaña de mejoras de la máquina y llevalas a donde esté el cuello de botella. Pasar una máquina a fábrica con un instalador las conserva."]},
+      "sources": ["jar:Mekanism-1.21.1-10.7.19.85.jar:assets/mekanism/lang/en_us.json#gui.mekanism.upgrade.uninstall.tooltip", "jar:Mekanism-1.21.1-10.7.19.85.jar:mekanism/common/item/ItemTierInstaller.class"]
+    },
+    {
+      "key": "mkb_factory", "role": "milestone", "deps": ["mkb_upgrades"],
+      "task": {"type": "advancement", "advancement": "mekanism:factory", "icon": "mekanism:basic_enriching_factory", "title": {"en_us": "Make a factory or use an installer", "es_es": "Hacé una fábrica o usá un instalador"}},
+      "icon": "mekanism:basic_enriching_factory",
+      "at": {"x": -15.0, "y": 1.8},
+      "en_us": {"title": "The factory must grow",
+        "text": ["A machine, basic circuits, iron and redstone make its factory; a [item:mekanism:basic_tier_installer|Basic Tier Installer] does it in place. Basic factories run three jobs at once, advanced five, elite seven, ultimate nine, from one power and gas supply."]},
+      "es_es": {"title": "La fábrica tiene que crecer",
+        "text": ["Una máquina, circuitos básicos, hierro y redstone hacen su fábrica; un [item:mekanism:basic_tier_installer|Instalador de nivel básico] lo hace en el lugar. Las fábricas básicas hacen tres trabajos a la vez, las avanzadas cinco, las de élite siete y las definitivas nueve, con una sola entrada de energía y de gas."]},
+      "sources": ["jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/factory/basic/enriching.json", "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/tier_installer/basic.json", "jar:Mekanism-1.21.1-10.7.19.85.jar:mekanism/common/tier/FactoryTier.class", "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/advancement/factory.json"]
+    },
+    {
+      "key": "mko_factories", "role": "side", "deps": ["mkb_factory"], "group": "workshop",
+      "task": {"item": "mekanism:basic_purifying_factory"},
+      "at": {"x": -18.4, "y": 3.4},
+      "en_us": {"title": "Factories for the ladder",
+        "text": ["Enriching, purifying and injecting all have factories: an ultimate [item:mekanism:basic_purifying_factory|Purifying Factory] takes nine ores on one oxygen supply. A Speed and an Energy upgrade per stage, then raise the tier where the queue grows."]},
+      "es_es": {"title": "Fábricas para la escalera",
+        "text": ["Enriquecer, purificar e inyectar tienen fábrica: una [item:mekanism:basic_purifying_factory|Fábrica de purificación] definitiva toma nueve menas con un solo suministro de oxígeno. Una mejora de velocidad y una de energía por etapa, y después subí el nivel donde se forme cola."]},
+      "sources": ["jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/factory/basic/purifying.json", "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/factory/basic/injecting.json", "jar:Mekanism-1.21.1-10.7.19.85.jar:mekanism/common/tier/FactoryTier.class"]
+    },
+    {
+      "key": "mkb_assemblicator", "role": "side", "deps": ["mkb_factory"],
+      "tasks": [{"item": "mekanism:formulaic_assemblicator"}, {"item": "mekanism:crafting_formula"}],
+      "at": {"x": -15.0, "y": 8},
+      "en_us": {"title": "Formulaic Assemblicator", "subtitle": "A crafting table that never blinks.",
+        "text": ["Write a recipe onto a [item:mekanism:crafting_formula|Crafting Formula] in the [item:mekanism:formulaic_assemblicator|Formulaic Assemblicator] and it crafts it from whatever you pipe in. Small automation before AE2 or Refined Storage."]},
+      "es_es": {"title": "Ensamblador de fórmulas", "subtitle": "Una mesa de trabajo que no pestañea.",
+        "text": ["Escribí una receta en una [item:mekanism:crafting_formula|Fórmula de fabricación] dentro del [item:mekanism:formulaic_assemblicator|Ensamblador de fórmulas] y la fabrica con lo que le entre por los caños. Automatización chica, antes de AE2 o Refined Storage."]},
+      "sources": ["jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/formulaic_assemblicator.json", "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/crafting_formula.json", "jar:Mekanism-1.21.1-10.7.19.85.jar:assets/mekanism/lang/en_us.json#description.mekanism.formulaic_assemblicator", "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/advancement/automated_crafting.json"]
+    },
+    {
+      "key": "mkb_paint", "role": "side", "deps": ["mkb_upgrades"], "group": "workshop",
+      "tasks": [{"item": "mekanism:pigment_extractor"}, {"item": "mekanism:painting_machine"}],
+      "at": {"x": -18.4, "y": -0.1},
+      "en_us": {"title": "Paint by machine",
+        "text": ["The [item:mekanism:pigment_extractor|Pigment Extractor] pulls pigment out of dyes and flowers, the Pigment Mixer blends two, and the [item:mekanism:painting_machine|Painting Machine] recolors blocks and items from the pigment tank."]},
+      "es_es": {"title": "Pintar a máquina",
+        "text": ["El [item:mekanism:pigment_extractor|Extractor de pigmentos] saca pigmento de tintes y flores, el Mezclador de pigmentos junta dos y la [item:mekanism:painting_machine|Máquina de pintura] recolorea bloques e ítems desde su tanque de pigmento."]},
+      "sources": ["jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/pigment_extractor.json", "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/painting_machine.json", "jar:Mekanism-1.21.1-10.7.19.85.jar:assets/mekanism/lang/en_us.json#description.mekanism.pigment_extractor", "jar:Mekanism-1.21.1-10.7.19.85.jar:assets/mekanism/lang/en_us.json#description.mekanism.pigment_mixer", "jar:Mekanism-1.21.1-10.7.19.85.jar:assets/mekanism/lang/en_us.json#description.mekanism.painting_machine"]
+    },
+    {
+      "key": "mkb_bounty", "role": "bounty", "deps": ["mkb_ores"],
+      "task": {"item": "mekanism:ingot_osmium", "count": 32, "consume": true},
+      "at": {"x": -9, "y": -21.8},
+      "en_us": {"title": "Osmium for the common store", "subtitle": "Somebody always needs another casing.",
+        "text": ["Thirty-two [item:mekanism:ingot_osmium|Osmium Ingots] for the common store, once a day. An enrichment line makes it painless."]},
+      "es_es": {"title": "Osmio para el depósito común", "subtitle": "Alguien siempre necesita otra carcasa.",
+        "text": ["Treinta y dos [item:mekanism:ingot_osmium|Lingotes de osmio] para el depósito común, una vez por día. Con una línea de enriquecimiento no duele."]},
+      "sources": ["repo:content/quest_book.json", "repo:docs/design/quest-book-v3.md"]
+    },
+    {
+      "key": "mkb_extras", "role": "side", "deps": ["mkb_mastery", "mke_uranium"],
+      "tasks": [{"item": "mekanism_extras:alloy_radiance", "count": 2}, {"item": "mekanism_extras:absolute_control_circuit"}, {"item": "mekanism_extras:absolute_tier_installer"}],
+      "at": {"x": -4.5, "y": 4.5},
+      "en_us": {"title": "Absolute tier",
+        "text": ["Compress glowstone dust with uranium oxide for radiance, then infuse atomic alloy with it: [item:mekanism_extras:alloy_radiance|Radiance Alloy]. It makes the [item:mekanism_extras:absolute_control_circuit|Absolute Control Circuit] and the [item:mekanism_extras:absolute_tier_installer|Absolute Tier Installer]."]},
+      "es_es": {"title": "Nivel absoluto",
+        "text": ["Comprimí polvo de piedra luminosa con óxido de uranio para el resplandor e infundí aleación atómica con él: [item:mekanism_extras:alloy_radiance|Aleación de resplandor]. Con ella salen el [item:mekanism_extras:absolute_control_circuit|Circuito de control absoluto] y el [item:mekanism_extras:absolute_tier_installer|Instalador de nivel absoluto]."]},
+      "sources": ["jar:mekanism_extras-1.21.1-1.4.1.jar:data/mekanism_extras/recipe/processing/dust_radiance/from_glowstone.json", "jar:mekanism_extras-1.21.1-1.4.1.jar:data/mekanism_extras/recipe/metallurgic_infusing/alloy/radiance.json", "jar:mekanism_extras-1.21.1-1.4.1.jar:data/mekanism_extras/recipe/control_circuit/infused_absolute.json", "jar:mekanism_extras-1.21.1-1.4.1.jar:data/mekanism_extras/recipe/tier_installer/absolute.json", "jar:mekanism_extras-1.21.1-1.4.1.jar:data/mekanism_extras/advancement/radiance_alloy.json"]
+    },
+    {
+      "key": "mkb_extras_supreme", "role": "side", "deps": ["mkb_extras", "mke_sodium"],
+      "tasks": [{"item": "mekanism_extras:alloy_thermonuclear", "count": 2}, {"item": "mekanism_extras:supreme_control_circuit"}, {"item": "mekanism_extras:supreme_tier_installer"}],
+      "at": {"x": -8.0, "y": 8.0},
+      "en_us": {"title": "Supreme tier",
+        "text": ["A netherite ingot, superheated sodium and lava in the reaction chamber make molten thermonuclear; it turns enriched radiance into thermonuclear, and that into [item:mekanism_extras:alloy_thermonuclear|Thermonuclear Alloy] for the [item:mekanism_extras:supreme_control_circuit|Supreme Control Circuit] and [item:mekanism_extras:supreme_tier_installer|installer]."]},
+      "es_es": {"title": "Nivel supremo",
+        "text": ["Un lingote de netherita, sodio sobrecalentado y lava en la cámara de reacción dan termonuclear fundido; con él, el resplandor enriquecido se vuelve termonuclear, y eso, [item:mekanism_extras:alloy_thermonuclear|Aleación termonuclear] para el [item:mekanism_extras:supreme_control_circuit|Circuito de control supremo] y su [item:mekanism_extras:supreme_tier_installer|instalador]."]},
+      "sources": ["jar:mekanism_extras-1.21.1-1.4.1.jar:data/mekanism_extras/recipe/reaction/molten_thermonuclear_gasification/molten_thermonuclear.json", "jar:mekanism_extras-1.21.1-1.4.1.jar:data/mekanism_extras/recipe/reaction/enriched_radiance_gasification/enriched_thermonuclear.json", "jar:mekanism_extras-1.21.1-1.4.1.jar:data/mekanism_extras/recipe/metallurgic_infusing/alloy/thermonuclear.json", "jar:mekanism_extras-1.21.1-1.4.1.jar:data/mekanism_extras/recipe/control_circuit/infused_supreme.json", "jar:mekanism_extras-1.21.1-1.4.1.jar:data/mekanism_extras/recipe/tier_installer/supreme.json", "jar:mekanism_extras-1.21.1-1.4.1.jar:data/mekanism_extras/advancement/thermonuclear_alloy.json"]
+    },
+    {
+      "key": "mkb_extras_cosmic", "role": "side", "deps": ["mkb_extras_supreme", "mke_antimatter"],
+      "tasks": [{"item": "mekanism_extras:alloy_shining", "count": 2}, {"item": "mekanism_extras:cosmic_control_circuit"}, {"item": "mekanism_extras:cosmic_tier_installer"}],
+      "at": {"x": -11.5, "y": 11.5},
+      "en_us": {"title": "Cosmic tier",
+        "text": ["One antimatter unit in the Nucleosynthesizer turns enriched thermonuclear into enriched shining; infused into thermonuclear alloy, [item:mekanism_extras:alloy_shining|Shining Alloy]. Cosmic circuits and [item:mekanism_extras:cosmic_tier_installer|installers] follow, and the Naquadah reactor needs both."]},
+      "es_es": {"title": "Nivel cósmico",
+        "text": ["Una unidad de antimateria en el Nucleosintetizador vuelve brillante al termonuclear enriquecido; infundido en aleación termonuclear, da [item:mekanism_extras:alloy_shining|Aleación brillante]. Siguen los circuitos cósmicos y sus [item:mekanism_extras:cosmic_tier_installer|instaladores], y el reactor de naquadah pide los dos."]},
+      "sources": ["jar:mekanism_extras-1.21.1-1.4.1.jar:data/mekanism_extras/recipe/nucleosynthesizing/enriched_shining.json", "jar:mekanism_extras-1.21.1-1.4.1.jar:data/mekanism_extras/recipe/metallurgic_infusing/alloy/shining.json", "jar:mekanism_extras-1.21.1-1.4.1.jar:data/mekanism_extras/recipe/control_circuit/infused_cosmic.json", "jar:mekanism_extras-1.21.1-1.4.1.jar:data/mekanism_extras/recipe/tier_installer/cosmic.json", "jar:mekanism_extras-1.21.1-1.4.1.jar:data/mekanism_extras/recipe/naquadah_reactor/controller.json", "jar:mekanism_extras-1.21.1-1.4.1.jar:assets/mekanism_extras/lang/en_us.json#advancements.mekanism_extras.cosmic_control_circuit.description"]
+    },
+    {
+      "key": "mkb_extras_infinite", "role": "side", "deps": ["mkb_extras_cosmic"],
+      "tasks": [{"item": "mekanism_extras:alloy_spectrum", "count": 2}, {"item": "mekanism_extras:infinite_control_circuit"}, {"item": "mekanism_extras:infinite_tier_installer"}],
+      "at": {"x": -15.0, "y": 15.0},
+      "en_us": {"title": "Infinite tier", "subtitle": "Can it run Minecraft yet? Yes.",
+        "text": ["The Osmium Compressor, fed antimatter instead of osmium, turns enriched shining into spectrum; infused into shining alloy it gives [item:mekanism_extras:alloy_spectrum|Spectrum Alloy]. The [item:mekanism_extras:infinite_tier_installer|Infinite Tier Installer] also wants a plutonium and a polonium pellet."]},
+      "es_es": {"title": "Nivel infinito", "subtitle": "¿Ya corre Minecraft? Sí.",
+        "text": ["El Compresor de osmio, con antimateria en vez de osmio, vuelve espectro al brillante enriquecido; infundido en aleación brillante da [item:mekanism_extras:alloy_spectrum|Aleación de espectro]. El [item:mekanism_extras:infinite_tier_installer|Instalador de nivel infinito] además pide un fragmento de plutonio y uno de polonio."]},
+      "sources": ["jar:mekanism_extras-1.21.1-1.4.1.jar:data/mekanism_extras/recipe/processing/enriched_spectrum/from_enriched_shining.json", "jar:mekanism_extras-1.21.1-1.4.1.jar:data/mekanism_extras/recipe/metallurgic_infusing/alloy/spectrum.json", "jar:mekanism_extras-1.21.1-1.4.1.jar:data/mekanism_extras/recipe/control_circuit/infused_infinite.json", "jar:mekanism_extras-1.21.1-1.4.1.jar:data/mekanism_extras/recipe/tier_installer/infinite.json", "jar:mekanism_extras-1.21.1-1.4.1.jar:data/mekanism_extras/advancement/infinite_control_circuit.json"]
+    },
+    {
+      "key": "mkb_stack", "role": "side", "deps": ["mkb_extras_supreme"],
+      "task": {"item": "mekanism_extras:upgrade_stack"},
+      "at": {"x": -9.4, "y": 5.2},
+      "en_us": {"title": "Stack Upgrade",
+        "text": ["Thermonuclear alloy around a chest: the [item:mekanism_extras:upgrade_stack|Stack Upgrade] makes a machine run several operations in parallel, on top of Speed."]},
+      "es_es": {"title": "Mejora de stack",
+        "text": ["Aleación termonuclear alrededor de un cofre: la [item:mekanism_extras:upgrade_stack|Mejora de stack] hace que una máquina corra varias operaciones en paralelo, encima de la velocidad."]},
+      "sources": ["jar:mekanism_extras-1.21.1-1.4.1.jar:data/mekanism_extras/recipe/upgrade/stack.json", "jar:mekanism_extras-1.21.1-1.4.1.jar:assets/mekanism_extras/lang/en_us.json#upgrade.mekanism_extras.stack.description", "jar:mekanism_extras-1.21.1-1.4.1.jar:data/mekanism_extras/advancement/stack_upgrade.json"]
+    },
+    {
+      "key": "mko_extras_ore", "role": "side", "deps": ["mko_x5"],
+      "task": {"item": "mekanism_extras:raw_naquadah"},
+      "at": {"x": 6.4, "y": -1.6},
+      "en_us": {"title": "Naquadah",
+        "text": ["Mekanism Extras hides [item:mekanism_extras:naquadah_ore|Naquadah Ore] near the Overworld's bedrock and, more often, near the void in the End. It climbs the same five rungs, and its ingots fuel the Extras reactor."]},
+      "es_es": {"title": "Naquadah",
+        "text": ["Mekanism Extras esconde [item:mekanism_extras:naquadah_ore|Mena de naquadah] cerca de la roca madre del Supramundo y, más seguido, junto al vacío del End. Sube los mismos cinco escalones, y sus lingotes alimentan el reactor de Extras."]},
+      "sources": ["jar:mekanism_extras-1.21.1-1.4.1.jar:assets/mekanism_extras/lang/en_us.json#description.mekanism_extras.naquadah_ore", "jar:mekanism_extras-1.21.1-1.4.1.jar:assets/mekanism_extras/lang/en_us.json#description.mekanism_extras.end_naquadah_ore", "jar:mekanism_extras-1.21.1-1.4.1.jar:data/mekanism_extras/recipe/processing/naquadah_hexafluoride.json"]
+    },
+    {
+      "key": "mkb_moremachine", "role": "side", "deps": ["mkb_biofuel"], "group": "moremachine",
+      "task": {"item": "mekmm:planting_station"},
+      "at": {"x": 9, "y": -25.2},
+      "en_us": {"title": "Planting Station",
+        "text": ["[item:mekmm:planting_station|Planting Station] grows a sapling or crop into its harvest on nutrient solution. In this pack Mystical Agriculture seeds are left out and the replicators are gone, so nothing copies items from thin air."]},
+      "es_es": {"title": "Estación de plantación",
+        "text": ["La [item:mekmm:planting_station|Estación de plantación] hace crecer un plantín o un cultivo hasta su cosecha con solución nutritiva. En este pack las semillas de Mystical Agriculture quedan afuera y los replicadores no existen: nada copia ítems de la nada."]},
+      "sources": ["jar:mekmm-1.21.1-1.4.1.jar:data/mekmm/recipe/planting_station.json", "jar:mekmm-1.21.1-1.4.1.jar:assets/mekmm/lang/en_us.json#description.mekmm.planting_station", "jar:mekmm-1.21.1-1.4.1.jar:data/mekmm/recipe/dissolution/nutrient_solution/from_bio.json", "repo:pack/kubejs/server_scripts/entrelumen_more_machine_balance.js", "repo:pack/kubejs/data/mekmm/data_maps/item/item_replicator.json", "repo:docs/design/more-machine-audit.md"]
+    },
+    {
+      "key": "mkb_mm_stamper", "role": "side", "deps": ["mkb_machines"], "group": "moremachine",
+      "tasks": [{"item": "mekmm:cnc_stamper"}, {"item": "mekmm:presser"}],
+      "at": {"x": 5.4, "y": -25.2},
+      "en_us": {"title": "Stamper and presser",
+        "text": ["The [item:mekmm:cnc_stamper|CNC Stamper] uses AE2 presses as molds to print circuits; the [item:mekmm:presser|Presser] adds redstone and printed silicon to finish the processor. An inscriber that takes Speed upgrades."]},
+      "es_es": {"title": "Estampadora y prensa",
+        "text": ["La [item:mekmm:cnc_stamper|Estampadora CNC] usa las prensas de AE2 como molde para imprimir circuitos; la [item:mekmm:presser|Prensa] suma redstone y silicio impreso para terminar el procesador. Un inscriptor que acepta mejoras de velocidad."]},
+      "sources": ["jar:mekmm-1.21.1-1.4.1.jar:data/mekmm/recipe/cnc_stamper.json", "jar:mekmm-1.21.1-1.4.1.jar:data/mekmm/recipe/presser.json", "jar:mekmm-1.21.1-1.4.1.jar:data/mekmm/recipe/compat/ae2/stamper/printed_logic_processor.json", "jar:mekmm-1.21.1-1.4.1.jar:data/mekmm/recipe/compat/ae2/presser/logic_processor.json", "jar:mekmm-1.21.1-1.4.1.jar:assets/mekmm/lang/en_us.json#description.mekmm.cnc_stamper"]
+    },
+    {
+      "key": "mkb_mm_lathe", "role": "side", "deps": ["mkb_machines"], "group": "moremachine",
+      "tasks": [{"item": "mekmm:cnc_rolling_mill"}, {"item": "mekmm:cnc_lathe"}],
+      "at": {"x": 12.6, "y": -25.2},
+      "en_us": {"title": "Rods and wires",
+        "text": ["The [item:mekmm:cnc_rolling_mill|CNC Rolling Mill] bends an ingot into two Immersive Engineering wires; the [item:mekmm:cnc_lathe|CNC Lathe] turns one into two rods. The lathe is built around a Robit, so plan the atomic alloy."]},
+      "es_es": {"title": "Varillas y cables",
+        "text": ["La [item:mekmm:cnc_rolling_mill|Laminadora CNC] dobla un lingote en dos cables de Immersive Engineering; el [item:mekmm:cnc_lathe|Torno CNC] lo tornea en dos varillas. El torno se arma alrededor de un Robit: planeá la aleación atómica."]},
+      "sources": ["jar:mekmm-1.21.1-1.4.1.jar:data/mekmm/recipe/cnc_rolling_mill.json", "jar:mekmm-1.21.1-1.4.1.jar:data/mekmm/recipe/cnc_lathe.json", "jar:mekmm-1.21.1-1.4.1.jar:data/mekmm/recipe/compat/immersiveengineering/rolling_mill/copper_wire.json", "jar:mekmm-1.21.1-1.4.1.jar:data/mekmm/recipe/compat/immersiveengineering/lathe/steel_stick.json", "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/robit.json"]
+    },
+    {
+      "key": "mkb_mm_large", "role": "side", "deps": ["mkb_mm_lathe"], "group": "moremachine",
+      "tasks": [{"item": "mekmm:large_chemical_infuser"}, {"item": "mekmm:large_electrolytic_separator"}],
+      "at": {"x": 12.6, "y": -28.6},
+      "en_us": {"title": "Large machines", "subtitle": "Each one eats a Robit. Sorry, buddy.",
+        "text": ["MoreMachine's big chemical infuser, separator and condensentrator do the work of many, and each recipe has a Robit at its heart, steel blocks and ultimate chemical tanks around it."]},
+      "es_es": {"title": "Máquinas grandes", "subtitle": "Cada una se come un Robit. Perdón, amigo.",
+        "text": ["El infusor químico, el separador y el condensador grandes de MoreMachine trabajan por varios, y cada receta tiene un Robit en el centro, con bloques de acero y tanques químicos definitivos alrededor."]},
+      "sources": ["jar:mekmm-1.21.1-1.4.1.jar:data/mekmm/recipe/large_chemical_infuser.json", "jar:mekmm-1.21.1-1.4.1.jar:data/mekmm/recipe/large_electrolytic_separator.json", "jar:mekmm-1.21.1-1.4.1.jar:data/mekmm/recipe/large_rotary_condensentrator.json"]
+    },
+    {
+      "key": "mkb_mm_factories", "role": "side", "deps": ["mkb_moremachine"], "group": "moremachine",
+      "tasks": [{"item": "mekmm:basic_oxidizing_factory"}, {"item": "mekmm:basic_dissolving_factory"}],
+      "at": {"x": 5.4, "y": -28.6},
+      "en_us": {"title": "More factories",
+        "text": ["MoreMachine gives factories to the machines Mekanism left alone: oxidizing, dissolving, washing, crystallizing, centrifuging, reacting and more, in the same four tiers and the four of Extras."]},
+      "es_es": {"title": "Más fábricas",
+        "text": ["MoreMachine les da fábrica a las máquinas que Mekanism dejó solas: oxidar, disolver, lavar, cristalizar, centrifugar, reaccionar y más, en los mismos cuatro niveles y los cuatro de Extras."]},
+      "sources": ["jar:mekmm-1.21.1-1.4.1.jar:data/mekmm/recipe/factory/basic/oxidizing.json", "jar:mekmm-1.21.1-1.4.1.jar:data/mekmm/recipe/factory/basic/dissolving.json", "jar:mekmm-1.21.1-1.4.1.jar:data/mekmm/recipe/factory/basic/washing.json", "jar:mekmm-1.21.1-1.4.1.jar:data/mekmm/recipe/factory/basic/crystallizing.json", "repo:pack/kubejs/server_scripts/entrelumen_more_machine_balance.js"]
+    },
+    {
+      "key": "mkb_biofuel", "role": "side", "deps": ["mkb_machines"],
+      "task": {"item": "mekanism:bio_fuel", "count": 32},
+      "at": {"x": 9, "y": -21.8},
+      "en_us": {"title": "Bio fuel",
+        "text": ["The [item:mekanism:crusher|Crusher] turns crops, seeds, saplings and food into [item:mekanism:bio_fuel|Bio Fuel]: an apple gives two, bread four, a cake six. It runs the bio generator, becomes ethene in the reaction chamber and feeds the Planting Station."]},
+      "es_es": {"title": "Combustible biológico",
+        "text": ["El [item:mekanism:crusher|Triturador] convierte cultivos, semillas, plantines y comida en [item:mekanism:bio_fuel|Combustible biológico]: una manzana da dos, un pan cuatro, una torta seis. Mueve el biogenerador, se vuelve eteno en la cámara de reacción y alimenta la Estación de plantación."]},
+      "sources": ["jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/crushing/biofuel/apple.json", "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/crushing/biofuel/bread.json", "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/crushing/biofuel/cake.json", "jar:MekanismGenerators-1.21.1-10.7.19.85.jar:data/mekanismgenerators/recipe/generator/bio.json", "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/reaction/substrate/water_hydrogen.json", "jar:mekmm-1.21.1-1.4.1.jar:data/mekmm/recipe/planting_station.json"]
+    },
+    {
+      "key": "mko_hydrogen", "role": "tip", "deps": ["mko_oxygen"], "group": "chemistry",
+      "task": {"type": "checkmark"},
+      "at": {"x": 13.25, "y": 5.0},
+      "en_us": {"title": "What to do with hydrogen",
+        "text": ["[tip] The separator makes twice as much hydrogen as oxygen. Burn it in a gas generator, fill jetpacks, or set that output to dump: with the hydrogen tank full, the oxygen stops too."]},
+      "es_es": {"title": "Qué hacer con el hidrógeno",
+        "text": ["[tip] El separador hace el doble de hidrógeno que de oxígeno. Quemalo en un generador a gas, cargá jetpacks o poné esa salida a tirar: con el tanque de hidrógeno lleno, también se corta el oxígeno."]},
+      "sources": ["jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/separator/water.json", "jar:Mekanism-1.21.1-10.7.19.85.jar:mekanism/common/tile/machine/TileEntityElectrolyticSeparator.class"]
+    },
+    {
+      "key": "mkb_crusher_tricks", "role": "tip", "deps": ["mkb_machines"],
+      "task": {"type": "checkmark"},
+      "at": {"x": 12.6, "y": -21.8},
+      "en_us": {"title": "Crusher bonuses",
+        "text": ["[tip] Crushed, a bone gives six bone meal, a blaze rod four blaze powder and a breeze rod six wind charges, all better than by hand. Cobblestone becomes gravel."]},
+      "es_es": {"title": "Bonus del triturador",
+        "text": ["[tip] Triturados, un hueso da seis polvos de hueso, una vara de blaze cuatro polvos de blaze y una vara de breeze seis cargas de viento: todo mejor que a mano. El adoquín se vuelve grava."]},
+      "sources": ["jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/crushing/bone.json", "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/crushing/blaze_rod.json", "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/crushing/breeze_rod.json", "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/crushing/cobblestone_to_gravel.json"]
+    },
+    {
+      "key": "mkb_combiner", "role": "side", "deps": ["mkb_tier_elite"],
+      "task": {"item": "mekanism:combiner"},
+      "at": {"x": -4.8, "y": -9.8},
+      "en_us": {"title": "Combiner",
+        "text": ["It presses two items into one: flint and cobblestone into gravel, glowstone dust into glow berries, glow ink and glow frames, four obsidian dusts and cobbled deepslate into obsidian. Raw ore and cobble make ore blocks, at eight raw a block."]},
+      "es_es": {"title": "Combinador",
+        "text": ["Prensa dos ítems en uno: pedernal y adoquín en grava, polvo de piedra luminosa en bayas, tinta y marcos luminosos, cuatro polvos de obsidiana y pizarra profunda en obsidiana. Mena en bruto y adoquín dan bloques de mena, a ocho en bruto por bloque."]},
+      "sources": ["jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/combiner.json", "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/combining/gravel.json", "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/combining/glow/berries.json", "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/combining/glow/item_frame.json", "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/combining/obsidian.json", "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/processing/iron/ore/from_raw.json", "jar:Mekanism-1.21.1-10.7.19.85.jar:assets/mekanism/lang/en_us.json#description.mekanism.combiner"]
+    },
+    {
+      "key": "mkb_energy_tablet", "role": "step", "deps": ["mkb_alloys"],
+      "task": {"item": "mekanism:energy_tablet", "count": 2},
+      "at": {"x": -13.6, "y": -9.4},
+      "en_us": {"title": "Energy Tablet",
+        "text": ["Infused alloy, gold and redstone make an [item:mekanism:energy_tablet|Energy Tablet], a battery that fits in a pocket. Energy cubes, solar and wind generators, induction cells, heaters and the Robit are all built around one."]},
+      "es_es": {"title": "Tableta de energía",
+        "text": ["Aleación infusionada, oro y redstone hacen una [item:mekanism:energy_tablet|Tableta de energía], una batería de bolsillo. Cubos de energía, generadores solares y eólicos, celdas de inducción, calentadores y el Robit se arman alrededor de una."]},
+      "sources": ["jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/energy_tablet.json", "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/energy_cube/basic.json", "jar:MekanismGenerators-1.21.1-10.7.19.85.jar:data/mekanismgenerators/recipe/generator/solar.json", "jar:MekanismGenerators-1.21.1-10.7.19.85.jar:data/mekanismgenerators/recipe/generator/wind.json", "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/induction/cell/basic.json", "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/resistive_heater.json", "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/robit.json"]
+    },
+    {
+      "key": "mkb_osmium_fuel", "role": "tip", "deps": ["mkb_compressor"],
+      "task": {"type": "checkmark"},
+      "at": {"x": -13.25, "y": -1.9},
+      "en_us": {"title": "Cheaper compressor fuel",
+        "text": ["[tip] With Extras, crush an osmium ingot and enrich the dust: [item:mekanism_extras:enriched_osmium|Enriched Osmium] is 1600 units of compressor fuel, eight ingots' worth."]},
+      "es_es": {"title": "Combustible más barato",
+        "text": ["[tip] Con Extras, triturá un lingote de osmio y enriquecé el polvo: el [item:mekanism_extras:enriched_osmium|Osmio enriquecido] son 1600 unidades para el compresor, lo que ocho lingotes."]},
+      "sources": ["jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/processing/osmium/dust/from_ingot.json", "jar:mekanism_extras-1.21.1-1.4.1.jar:data/mekanism_extras/recipe/enriching/enriched/dust_osmium.json", "jar:mekanism_extras-1.21.1-1.4.1.jar:data/mekanism_extras/recipe/chemical_conversion/osmium_from_enriched.json", "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/chemical_conversion/osmium_from_ingot.json"]
+    },
+    {
+      "key": "mko_injection_tricks", "role": "tip", "deps": ["mko_x4"],
+      "task": {"type": "checkmark"},
+      "at": {"x": 6.2, "y": -9.75},
+      "en_us": {"title": "Injector side jobs",
+        "text": ["[tip] Gunpowder with hydrogen chloride becomes sulfur dust. With water vapor instead, the injector revives dead coral, hardens concrete powder and turns terracotta back into clay."]},
+      "es_es": {"title": "Changas del inyector",
+        "text": ["[tip] Pólvora con cloruro de hidrógeno da polvo de azufre. Con vapor de agua, el inyector revive el coral muerto, fragua el polvo de hormigón y devuelve la terracota a arcilla."]},
+      "sources": ["jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/injecting/gunpowder_to_sulfur.json", "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/injecting/coral/brain_coral.json", "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/injecting/concrete/white.json", "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/injecting/terracotta_to_clay.json"]
+    },
+    {
+      "key": "mkb_cardboard", "role": "secret", "deps": ["mkb_sawmill"],
+      "task": {"type": "advancement", "advancement": "mekanism:moving_blocks", "icon": "mekanism:cardboard_box"},
+      "at": {"x": 5.4, "y": -21.8},
+      "en_us": {"title": "Moving day", "subtitle": "Some assembly required. None allowed.",
+        "text": ["Four sawdust make a [item:mekanism:cardboard_box|Cardboard Box]; you boxed up a block with everything inside and unpacked it somewhere else. Chests travel full."]},
+      "es_es": {"title": "Día de mudanza", "subtitle": "Requiere armado. No se permite.",
+        "text": ["Cuatro de serrín hacen una [item:mekanism:cardboard_box|Caja de cartón]; encajonaste un bloque con todo adentro y lo desempacaste en otro lado. Los cofres viajan llenos."]},
+      "sources": ["jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/advancement/moving_blocks.json", "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/cardboard_box.json", "jar:Mekanism-1.21.1-10.7.19.85.jar:assets/mekanism/lang/en_us.json#cardboard_box.mekanism.block_entity"]
+    }
+  ]
+}
