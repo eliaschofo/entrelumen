@@ -85,7 +85,13 @@ public final class RuinMarkers {
      * A designed bed whose soil stays as drawn (planters, a pond, a garden): a box of {@code size=x,y,z}
      * from this cell. Elsewhere the template's soil becomes the site's own ground.
      */
-    KEEP_SOIL;
+    KEEP_SOIL,
+    /**
+     * Rock that is the site's own (a crag, an outcrop): in a box of {@code size=x,y,z} from this cell,
+     * the template's {@code rock} blocks (block ids joined by commas, in slot order) become the site's
+     * rocks, the first slot its commonest. The cell itself keeps its {@code block} as drawn.
+     */
+    SITE_ROCK;
 
     public String id() {
       return name().toLowerCase(Locale.ROOT);
@@ -164,6 +170,12 @@ public final class RuinMarkers {
       return new int[] {Integer.parseInt(parts[0]), Integer.parseInt(parts[1]), Integer.parseInt(parts[2])};
     }
 
+    /** A site_rock box's placeholder blocks, in slot order. */
+    public List<String> rock() {
+      String rock = params.getOrDefault("rock", "");
+      return rock.isEmpty() ? List.of() : List.of(rock.split(","));
+    }
+
     /** A sandbox's disc radius; 0 keeps the whole box. */
     public double radius() {
       return Double.parseDouble(params.getOrDefault("radius", "0"));
@@ -229,6 +241,7 @@ public final class RuinMarkers {
       case LORE -> Set.of("radius", "height");
       case SANDBOX -> Set.of("size", "radius");
       case KEEP_SOIL -> Set.of("size");
+      case SITE_ROCK -> Set.of("size", "rock");
       case PART, WHEEL, RETURNS -> Set.<String>of();
       case PUMP -> Set.of("challenge", "turn", "intake");
       case PORT -> Set.of("role");
@@ -312,6 +325,14 @@ public final class RuinMarkers {
         oneOf(params, "climb", List.of("true", "false"), false, metadata);
       }
       case DRAIN, KEEP_SOIL -> size(params, metadata);
+      case SITE_ROCK -> {
+        size(params, metadata);
+        String rock = params.get("rock");
+        if (rock == null || !rock.matches("[a-z0-9_.-]+:[a-z0-9_/.-]+(,[a-z0-9_.-]+:[a-z0-9_/.-]+){0,3}"))
+          throw invalid(metadata, "rock must be one to four block ids joined by commas");
+        if (new HashSet<>(List.of(rock.split(","))).size() != rock.split(",").length)
+          throw invalid(metadata, "rock names a block twice");
+      }
       case LORE -> {
         integer(params, "radius", 0, MAX_LORE_RADIUS, false, metadata);
         integer(params, "height", 1, MAX_LORE_HEIGHT, false, metadata);

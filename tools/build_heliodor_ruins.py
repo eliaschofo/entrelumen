@@ -6,7 +6,9 @@ docs/design/heliodor-ruins.md and RuinMarkers.java) and writes one template per 
 companion/src/main/resources/data/entrelumen/structure/ruins/. Only the cells the art defines are
 written (explicit air included). Placement shapes the terrain around them (RuinTerrain.java): the land
 blends to the ruin's ground layer, thin supports go down to the ground, and the art's soil (grass, dirt,
-coarse dirt, podzol, moss) becomes the site's own ground except inside the art's keep_soil boxes.
+coarse dirt, podzol, moss) becomes the site's own ground except inside the art's keep_soil boxes. In
+the art's site_rock boxes, the placeholder rocks it names become the site's own rock (the Cliff
+Observatory's crag).
 
 Blocks the art puts at a marker's cell travel in the marker as block=<state>, so campfires, copper
 bulbs, levers, lecterns and barrels stay what they are. Every barrel becomes a Lootr barrel; every
@@ -728,6 +730,16 @@ def markers(name: str, v: dict, mk: dict, extra: dict | None = None) -> dict[tup
         hi = tuple(min(hi[i], extent[i][1]) for i in range(3))
         size = ",".join(str(hi[i] - lo[i] + 1) for i in range(3))
         put(lo, f"keep_soil size={size}")
+    # The site's own rock (a crag): the art lists (lo, hi, blocks), an inclusive box cut to the art's
+    # extent and its placeholder rocks in slot order (the first becomes the site's commonest rock). The
+    # marker stands at the box's low corner, whose own block is placed as drawn, so it must not be one.
+    for lo, hi, rock in mk.get("site_rock", []):
+        lo = tuple(max(lo[i], extent[i][0]) for i in range(3))
+        hi = tuple(min(hi[i], extent[i][1]) for i in range(3))
+        size = ",".join(str(hi[i] - lo[i] + 1) for i in range(3))
+        if v.get(lo, "minecraft:air") in rock:
+            raise SystemExit(f"{name}: the site_rock marker at {lo} stands on one of its placeholder rocks")
+        put(lo, f"site_rock size={size} rock={','.join(rock)}")
     radius, height = LORE.get(name, (6, 5))
     for p in mk.get("lore", []):
         put(p, f"lore radius={radius} height={height}")

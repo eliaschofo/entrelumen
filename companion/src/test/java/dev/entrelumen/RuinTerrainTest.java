@@ -2,6 +2,7 @@ package dev.entrelumen;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 
@@ -110,5 +111,41 @@ class RuinTerrainTest {
     assertFalse(RuinTerrain.kept(13, 6, 13, List.of(box)));
     assertThrows(IllegalArgumentException.class, () -> RuinMarkers.parse("keep_soil"), "a bed needs its size");
     assertThrows(IllegalArgumentException.class, () -> RuinMarkers.parse("keep_soil size=3,2,4 radius=2"));
+  }
+
+  @Test
+  void aSitesRocksAreItsCommonestStonesUnderTheSoil() {
+    List<String> plains = new ArrayList<>();
+    for (int i = 0; i < 90; i++) plains.add("stone");
+    for (int i = 0; i < 7; i++) plains.add("andesite");
+    for (int i = 0; i < 3; i++) plains.add("granite");
+    assertEquals(List.of("stone", "andesite"), RuinTerrain.rocks(plains, "stone"), "a rock under 5% of the samples is no slot");
+    List<String> badlands = new ArrayList<>();
+    for (String band : List.of("orange", "white", "orange", "red", "terracotta", "orange", "white", "red", "brown", "orange"))
+      for (int i = 0; i < 10; i++) badlands.add(band);
+    assertEquals(List.of("orange", "white", "red"), RuinTerrain.rocks(badlands, "stone"), "three slots at most, commonest first");
+    assertEquals(List.of("sandstone"), RuinTerrain.rocks(List.of(), "sandstone"), "nothing sampled: the fallback");
+    assertEquals(List.of("a", "b"), RuinTerrain.rocks(List.of("a", "b", "b", "a"), "stone"), "ties keep the order of the samples");
+    var rocks = List.of("sandstone");
+    assertEquals("sandstone", RuinTerrain.rock(rocks, 0));
+    assertEquals("sandstone", RuinTerrain.rock(rocks, 2), "slots past the site's rocks wrap");
+    assertEquals("andesite", RuinTerrain.rock(List.of("stone", "andesite"), 1));
+    assertEquals("stone", RuinTerrain.rock(List.of("stone", "andesite"), 2));
+  }
+
+  @Test
+  void aSiteRockMarkerNamesItsBoxAndItsPlaceholders() {
+    var crag = RuinMarkers.parse("site_rock size=41,17,41 rock=minecraft:stone,minecraft:andesite,minecraft:tuff").orElseThrow();
+    assertEquals(RuinMarkers.Kind.SITE_ROCK, crag.kind());
+    assertArrayEquals(new int[] {41, 17, 41}, crag.size());
+    assertEquals(List.of("minecraft:stone", "minecraft:andesite", "minecraft:tuff"), crag.rock());
+    assertThrows(IllegalArgumentException.class, () -> RuinMarkers.parse("site_rock size=4,4,4"), "no placeholders");
+    assertThrows(IllegalArgumentException.class, () -> RuinMarkers.parse("site_rock rock=minecraft:stone"), "no box");
+    assertThrows(IllegalArgumentException.class, () -> RuinMarkers.parse("site_rock size=4,4,4 rock=stone"), "ids are namespaced");
+    assertThrows(IllegalArgumentException.class,
+        () -> RuinMarkers.parse("site_rock size=4,4,4 rock=minecraft:stone,minecraft:stone"), "a block twice");
+    assertThrows(IllegalArgumentException.class, () -> RuinMarkers.parse(
+        "site_rock size=4,4,4 rock=minecraft:stone,minecraft:andesite,minecraft:tuff,minecraft:diorite,minecraft:granite"),
+        "four slots at most");
   }
 }

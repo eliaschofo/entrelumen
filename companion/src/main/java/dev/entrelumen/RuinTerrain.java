@@ -158,6 +158,40 @@ public final class RuinTerrain {
     return best;
   }
 
+  // ---- The site's rock ------------------------------------------------------------------------
+
+  /**
+   * How deep under a sampled column the rock is read, how many rock blocks it gives at most, how many
+   * rocks a site offers (one per placeholder slot) and the share of the samples a rock needs to be one.
+   */
+  public static final int ROCK_DEPTH = 12, ROCKS_PER_COLUMN = 3, ROCK_SLOTS = 3;
+  public static final double ROCK_SHARE = 0.05;
+
+  /**
+   * The site's rocks, commonest first: those that make at least {@link #ROCK_SHARE} of the samples, at
+   * most {@link #ROCK_SLOTS}; {@code fallback} alone when nothing was sampled. Ties keep the order in
+   * which the samples came.
+   */
+  public static <T> List<T> rocks(List<T> samples, T fallback) {
+    if (samples.isEmpty()) return List.of(fallback);
+    Map<T, Integer> counts = new LinkedHashMap<>();
+    for (T sample : samples) counts.merge(sample, 1, Integer::sum);
+    List<Map.Entry<T, Integer>> sorted = new ArrayList<>(counts.entrySet());
+    sorted.sort((a, b) -> Integer.compare(b.getValue(), a.getValue()));
+    List<T> rocks = new ArrayList<>();
+    for (var entry : sorted) {
+      if (!rocks.isEmpty() && entry.getValue() < ROCK_SHARE * samples.size()) break;
+      rocks.add(entry.getKey());
+      if (rocks.size() == ROCK_SLOTS) break;
+    }
+    return List.copyOf(rocks);
+  }
+
+  /** The site's rock for a template's {@code slot}-th placeholder: slots past the site's rocks wrap. */
+  public static <T> T rock(List<T> rocks, int slot) {
+    return rocks.get(Math.floorMod(slot, rocks.size()));
+  }
+
   /** Whether a template cell lies in one of the {@code keep_soil} boxes. */
   public static boolean kept(int x, int y, int z, List<ProtectionRules.Box> boxes) {
     for (var box : boxes) if (box.contains(x, y, z)) return true;

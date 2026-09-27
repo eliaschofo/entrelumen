@@ -12,6 +12,10 @@ The site is about 60 blocks tall:
   pedestal.
 - Four turrets on the diagonals each hold a mirror.
 
+The crag is the site's own rock (Elias, 27/9): its stone, andesite and tuff are placeholders in a
+site_rock box, and the placement puts the rock of the place in them (sandstone in a desert, terracotta
+in badlands, the local stone elsewhere), band for band. The observatory's masonry stays as drawn.
+
 The challenge (docs/design/heliodor-ruins.md, Plan v2) is light plus exploration:
 - turn the four mirrors so the beam enters the slits and runs down the telescope;
 - the Eyepiece of Voices then rests on the pedestal;
@@ -57,9 +61,13 @@ def crag_r(y, x, z):
     return base + lobes + (noise(x, y // 3, z, 1) - 0.5) * 1.0
 
 
+# The crag's rock, band by band: placeholders for the site's rocks, commonest first (site_rock below).
+CRAG_ROCK = [B('stone'), B('andesite'), B('tuff')]
+
+
 def stone_at(x, y, z):
     band = (y + int(noise(x, 0, z, 2) * 2)) // 3 % 4
-    return B(('stone', 'andesite', 'tuff', 'stone')[band])
+    return CRAG_ROCK[(0, 1, 2, 0)[band]]
 
 
 def build():
@@ -209,6 +217,8 @@ def build():
     v.sym(8, CRAG_H + 9, 7, B('calcite'))
     mk['mirrors'] = [[sx * 8, CRAG_H + 10, sz * 8] for sx in (1, -1) for sz in (1, -1)]
     mk['arrival'] = [[N + 2, 1, 0]]
+    # The crag takes the site's rock: inclusive (lo, hi) box and the placeholders, in slot order.
+    mk['site_rock'] = [[[-N, 0, -N], [N, CRAG_H, N], CRAG_ROCK]]
     return v, mk
 
 

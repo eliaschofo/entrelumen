@@ -969,6 +969,45 @@ public final class RuntimeGameTestsRuins {
   }
 
   /**
+   * The Cliff Observatory on a dune (Elias, 27 September): its crag is the dune's own rock, sandstone
+   * band for band, not a grey boulder on the sand; the observatory's calcite, copper and tuff masonry
+   * stays as drawn.
+   */
+  @GameTest(template = "empty", timeoutTicks = 400000, batch = "ruins")
+  public static void theObservatorysCragIsTheSitesOwnRock(GameTestHelper helper) {
+    var level = helper.getLevel();
+    int cx = -36_000, cz = 52_000, half = 44, bottom = level.getMinBuildHeight() + 1;
+    var area = new BoundingBox(cx - half, bottom, cz - half, cx + half, bottom + 30, cz + half);
+    java.util.function.IntBinaryOperator dune = (x, z) -> bottom + 14 + (x - (cx - half)) * 4 / (2 * half);
+    placeOnLandscape(helper, "entrelumen:cliff_observatory", area, dune, Blocks.SAND.defaultBlockState(),
+        Blocks.SANDSTONE.defaultBlockState(), job -> {
+          var p = job.prepared;
+          var origin = job.result().origin();
+          helper.assertTrue(!p.shape().rock().isEmpty(), "The observatory has no site_rock box");
+          helper.assertTrue(job.palette.rocks().equals(List.of(Blocks.SANDSTONE.defaultBlockState())),
+              "The dune's rock is not its sandstone: " + job.palette.rocks());
+          var cursor = new BlockPos.MutableBlockPos();
+          int grey = 0, sandstone = 0, calcite = 0, copper = 0, tuffBricks = 0;
+          for (int x = 0; x < p.sizeX(); x++)
+            for (int y = 0; y < p.sizeY(); y++)
+              for (int z = 0; z < p.sizeZ(); z++) {
+                var state = level.getBlockState(cursor.set(origin.getX() + x, origin.getY() + y, origin.getZ() + z));
+                if (state.is(Blocks.STONE) || state.is(Blocks.ANDESITE) || state.is(Blocks.TUFF)) grey++;
+                else if (state.is(Blocks.SANDSTONE)) sandstone++;
+                else if (state.is(Blocks.CALCITE)) calcite++;
+                else if (state.is(Blocks.WAXED_OXIDIZED_CUT_COPPER)) copper++;
+                else if (state.is(Blocks.TUFF_BRICKS)) tuffBricks++;
+              }
+          helper.assertTrue(grey == 0, grey + " grey rock blocks stayed in the crag");
+          helper.assertTrue(sandstone > 2000, "Only " + sandstone + " sandstone blocks in the crag");
+          helper.assertTrue(calcite > 100 && copper > 100 && tuffBricks > 100,
+              "The observatory's masonry changed: calcite " + calcite + ", copper " + copper + ", tuff bricks " + tuffBricks);
+          LOGGER.info("Ruin QA terrain: the observatory's crag on a dune, {} sandstone, masonry kept ({} calcite, {} copper, {} tuff bricks)",
+              sandstone, calcite, copper, tuffBricks);
+        });
+  }
+
+  /**
    * The Viaduct across a valley: its hub stands on a plateau and its east arm crosses a valley 18 blocks
    * deep. The piers there go down to the valley floor in their own block, like an aqueduct's; the arches
    * between them stay open.

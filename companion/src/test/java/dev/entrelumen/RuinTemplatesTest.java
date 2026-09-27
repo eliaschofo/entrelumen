@@ -167,6 +167,42 @@ class RuinTemplatesTest {
     assertEquals(Set.of("correct", "wrong", "overstress", "seal"), builds.getAsJsonObject("builds").keySet());
   }
 
+  /** The Cliff Observatory's crag is the site's rock: one site_rock box holds every one of its placeholders. */
+  @Test
+  void theObservatorysCragIsAllSiteRock() throws Exception {
+    CompoundTag tag;
+    try (InputStream stream = Files.newInputStream(RESOURCES.resolve("data/entrelumen/structure/ruins/cliff_observatory.nbt"))) {
+      tag = NbtIo.readCompressed(stream, NbtAccounter.unlimitedHeap());
+    }
+    var palette = tag.getList("palette", Tag.TAG_COMPOUND);
+    RuinMarkers.Marker rock = null;
+    int[] at = null;
+    List<int[]> placeholders = new ArrayList<>();
+    for (Tag element : tag.getList("blocks", Tag.TAG_COMPOUND)) {
+      var block = (CompoundTag) element;
+      var pos = block.getList("pos", Tag.TAG_INT);
+      int[] p = {pos.getInt(0), pos.getInt(1), pos.getInt(2)};
+      String name = palette.getCompound(block.getInt("state")).getString("Name");
+      if (List.of("minecraft:stone", "minecraft:andesite", "minecraft:tuff").contains(name)) placeholders.add(p);
+      var marker = RuinMarkers.parse(block.getCompound("nbt").getString("metadata"));
+      if (marker.isPresent() && marker.get().kind() == RuinMarkers.Kind.SITE_ROCK) {
+        assertNull(rock, "one site_rock box");
+        rock = marker.get();
+        at = p;
+      }
+    }
+    assertNotNull(rock, "the crag has no site_rock box");
+    assertEquals(List.of("minecraft:stone", "minecraft:andesite", "minecraft:tuff"), rock.rock(), "the placeholders in slot order");
+    assertTrue(placeholders.size() > 2000, "a crag of " + placeholders.size() + " rock blocks");
+    int[] size = rock.size();
+    for (int[] p : placeholders)
+      for (int i = 0; i < 3; i++)
+        assertTrue(p[i] >= at[i] && p[i] < at[i] + size[i], "a placeholder rock outside the box at " + Arrays.toString(p));
+    var found = read("entrelumen:ruins/cliff_observatory");
+    assertTrue(found.blocks().contains("minecraft:calcite") && found.blocks().contains("minecraft:tuff_bricks"),
+        "the observatory's own masonry is drawn as it is");
+  }
+
   @Test
   void theSanctuaryStonesHaveOneStrictOrder() throws Exception {
     var orders = read("entrelumen:ruins/twilight_sanctuary").of(RuinMarkers.Kind.BRAZIER, "stones").stream()

@@ -49,7 +49,10 @@ import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.RandomState;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
+import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessor;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessorType;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.storage.loot.LootTable;
@@ -138,10 +141,11 @@ public final class RuinPlacement {
    * whether it stands on the ground layer, whether that part is platform or a thin support, its lowest
    * and highest solid cells (-1: none), the block a thin support goes down in, the ruin's masonry for
    * terrace faces, the distance of every column of the grid grown by {@link RuinTerrain#MAX_MARGIN} to
-   * the platforms, the soil cells the site's ground replaces and the {@code keep_soil} boxes.
+   * the platforms, the soil cells the site's ground replaces, the {@code keep_soil} boxes and the
+   * {@code site_rock} boxes.
    */
   record Shape(boolean[] contact, boolean[] platform, int[] low, int[] top, BlockState[] pier, BlockState masonry,
-      float[] distance, long[] soil, List<ProtectionRules.Box> keep) {
+      float[] distance, long[] soil, List<ProtectionRules.Box> keep, List<Rock> rock) {
     boolean thin(int column) {
       return contact[column] && !platform[column];
     }
@@ -151,6 +155,9 @@ public final class RuinPlacement {
       return true;
     }
   }
+
+  /** A {@code site_rock} box of the template (local cells) and its placeholder blocks in slot order. */
+  record Rock(ProtectionRules.Box box, List<Block> blocks) {}
 
   static long cell(int x, int y, int z) {
     return BlockPos.asLong(x, y, z);
@@ -256,12 +263,21 @@ public final class RuinPlacement {
       full[i] = solid[i] && states[i].isSolidRender(EmptyBlockGetter.INSTANCE, BlockPos.ZERO);
     }
     List<ProtectionRules.Box> keep = new ArrayList<>();
-    for (Local local : markers)
-      if (local.marker().kind() == RuinMarkers.Kind.KEEP_SOIL) {
-        int[] size = local.marker().size();
-        keep.add(new ProtectionRules.Box(local.x(), local.y(), local.z(), local.x() + size[0] - 1,
-            local.y() + size[1] - 1, local.z() + size[2] - 1));
+    List<Rock> rock = new ArrayList<>();
+    for (Local local : markers) {
+      var kind = local.marker().kind();
+      if (kind != RuinMarkers.Kind.KEEP_SOIL && kind != RuinMarkers.Kind.SITE_ROCK) continue;
+      int[] size = local.marker().size();
+      var box = new ProtectionRules.Box(local.x(), local.y(), local.z(), local.x() + size[0] - 1,
+          local.y() + size[1] - 1, local.z() + size[2] - 1);
+      if (kind == RuinMarkers.Kind.KEEP_SOIL) keep.add(box);
+      else {
+        // An unknown id stays in its slot as air, which no template cell swaps.
+        List<Block> blocks = new ArrayList<>();
+        for (String id : local.marker().rock()) blocks.add(BuiltInRegistries.BLOCK.get(ResourceLocation.parse(id)));
+        rock.add(new Rock(box, List.copyOf(blocks)));
       }
+    }
     int[] low = new int[n], top = new int[n];
     Arrays.fill(low, Integer.MAX_VALUE);
     Arrays.fill(top, -1);
@@ -316,7 +332,8 @@ public final class RuinPlacement {
     BlockState masonry = RuinTerrain.mostCommon(floor, RuinTerrain.mostCommon(any, Blocks.STONE_BRICKS.defaultBlockState()));
     for (int i = 0; i < n; i++) if (contact[i] && !platform[i] && pier[i] == null) pier[i] = masonry;
     return new Shape(contact, platform, low, top, pier, masonry,
-        RuinTerrain.distance(platform, sizeX, sizeZ, RuinTerrain.MAX_MARGIN), soil.toLongArray(), List.copyOf(keep));
+        RuinTerrain.distance(platform, sizeX, sizeZ, RuinTerrain.MAX_MARGIN), soil.toLongArray(), List.copyOf(keep),
+        List.copyOf(rock));
   }
 
   // ---- Siting --------------------------------------------------------------------------------
@@ -443,8 +460,10 @@ public final class RuinPlacement {
   }
 
   /** The site's own ground: its surface and filler blocks and whether snow covers it. */
-  record Palette(BlockState surface, BlockState filler, boolean snow) {
-    static final Palette DEFAULT = new Palette(Blocks.GRASS_BLOCK.defaultBlockState(), Blocks.DIRT.defaultBlockState(), false);
+  /** The site's ground: its surface block, the filler under it, whether snow covers it, and its rocks. */
+  record Palette(BlockState surface, BlockState filler, boolean snow, List<BlockState> rocks) {
+    static final Palette DEFAULT = new Palette(Blocks.GRASS_BLOCK.defaultBlockState(), Blocks.DIRT.defaultBlockState(), false,
+        List.of(Blocks.STONE.defaultBlockState()));
   }
 
   static final class Job {
@@ -483,7 +502,7 @@ public final class RuinPlacement {
     int[] natural, surfaceTop;
     int margin, scanIndex, shapeIndex, supportIndex;
     Palette palette = Palette.DEFAULT;
-    final List<BlockState> surfaces = new ArrayList<>(), fillers = new ArrayList<>();
+    final List<BlockState> surfaces = new ArrayList<>(), fillers = new ArrayList<>(), rocks = new ArrayList<>();
     int snowSamples, samples;
     /** Trunks and mushroom stems the shaping cut, whose trees are felled whole. */
     final ArrayDeque<BlockPos> felled = new ArrayDeque<>();
@@ -1067,6 +1086,7 @@ public final class RuinPlacement {
   private static void placing(Job job, long deadline) {
     var p = job.prepared;
     var settings = new StructurePlaceSettings().setKnownShape(true);
+    if (!p.shape().rock().isEmpty()) settings.addProcessor(new SiteRock(job.origin, p.shape().rock(), job.palette.rocks()));
     while (job.sliceIndex < p.slices().size()) {
       BlockPos at = job.origin.offset(p.sliceOrigins().get(job.sliceIndex));
       p.slices().get(job.sliceIndex++).placeInWorld(job.level, at, at, settings, job.level.getRandom(),
@@ -1121,16 +1141,18 @@ public final class RuinPlacement {
       if (distance[i] > 0 && distance[i] <= 2 && RuinTerrain.blends(job.natural[i], floor))
         rim = Math.max(rim, Math.abs(job.natural[i] - floor));
     job.margin = p.shape().platformless() ? 0 : RuinTerrain.margin(rim);
-    job.palette = new Palette(RuinTerrain.mostCommon(job.surfaces, Palette.DEFAULT.surface()),
-        RuinTerrain.mostCommon(job.fillers, Palette.DEFAULT.filler()),
-        job.samples > 0 && job.snowSamples * 3 >= job.samples);
+    BlockState filler = RuinTerrain.mostCommon(job.fillers, Palette.DEFAULT.filler());
+    job.palette = new Palette(RuinTerrain.mostCommon(job.surfaces, Palette.DEFAULT.surface()), filler,
+        job.samples > 0 && job.snowSamples * 3 >= job.samples, RuinTerrain.rocks(job.rocks, rockUnder(filler)));
     job.surfaces.clear();
     job.fillers.clear();
+    job.rocks.clear();
     job.shapeIndex = 0;
     job.stage = Stage.SHAPING;
-    LOGGER.info("Heliodor ruin {}: ground level {} at {}, rim {} so margin {}, site ground {} over {}{}", job.id,
+    LOGGER.info("Heliodor ruin {}: ground level {} at {}, rim {} so margin {}, site ground {} over {}{}, rock {}", job.id,
         floor, job.origin.toShortString(), rim, job.margin, BuiltInRegistries.BLOCK.getKey(job.palette.surface().getBlock()),
-        BuiltInRegistries.BLOCK.getKey(job.palette.filler().getBlock()), job.palette.snow() ? " under snow" : "");
+        BuiltInRegistries.BLOCK.getKey(job.palette.filler().getBlock()), job.palette.snow() ? " under snow" : "",
+        job.palette.rocks().stream().map(r -> BuiltInRegistries.BLOCK.getKey(r.getBlock()).getPath()).toList());
   }
 
   /** One column of the site's ground palette: its surface, the block under it and whether snow covers it. */
@@ -1146,6 +1168,81 @@ public final class RuinPlacement {
       job.snowSamples++;
     job.surfaces.add(surface.getBlock().defaultBlockState());
     job.fillers.add(ground(below) ? below.getBlock().defaultBlockState() : surface.getBlock().defaultBlockState());
+    // The rock under the soil: the first natural stones going down (sand, dirt, gravel and ores are
+    // passed; a cave or water ends the column).
+    int found = 0;
+    for (int y = ground; y > ground - RuinTerrain.ROCK_DEPTH && y > level.getMinBuildHeight()
+        && found < RuinTerrain.ROCKS_PER_COLUMN; y--) {
+      BlockState state = level.getBlockState(cursor.set(x, y, z));
+      if (rock(state)) {
+        job.rocks.add(state.getBlock().defaultBlockState());
+        found++;
+      } else if (!ground(state)) break;
+    }
+  }
+
+  /** Natural rock: the overworld's stones, the pack's, sandstone and terracotta; never an ore. */
+  static boolean rock(BlockState state) {
+    return state.is(BlockTags.BASE_STONE_OVERWORLD) || state.is(net.neoforged.neoforge.common.Tags.Blocks.STONES)
+        || state.is(BlockTags.TERRACOTTA) || state.is(Blocks.SANDSTONE) || state.is(Blocks.RED_SANDSTONE)
+        || state.is(Blocks.CALCITE);
+  }
+
+  /** The rock a site gives when no column showed any: the stone of its sand, or stone. */
+  static BlockState rockUnder(BlockState filler) {
+    if (filler.is(Blocks.SAND)) return Blocks.SANDSTONE.defaultBlockState();
+    if (filler.is(Blocks.RED_SAND)) return Blocks.RED_SANDSTONE.defaultBlockState();
+    return Blocks.STONE.defaultBlockState();
+  }
+
+  /**
+   * The site's rock for a template cell (local coordinates) that holds a placeholder of a
+   * {@code site_rock} box it lies in; the state itself otherwise.
+   */
+  static BlockState siteRock(List<Rock> boxes, List<BlockState> rocks, BlockState state, int x, int y, int z) {
+    if (state.isAir()) return state;
+    for (Rock rock : boxes) {
+      if (!rock.box().contains(x, y, z)) continue;
+      int slot = rock.blocks().indexOf(state.getBlock());
+      if (slot >= 0) return RuinTerrain.rock(rocks, slot);
+    }
+    return state;
+  }
+
+  /** A block the ruin builds with (its masonry, a pier) that is a placeholder rock stands in the site's rock. */
+  static BlockState siteRock(Job job, BlockState state) {
+    for (Rock rock : job.prepared.shape().rock()) {
+      int slot = rock.blocks().indexOf(state.getBlock());
+      if (slot >= 0) return RuinTerrain.rock(job.palette.rocks(), slot);
+    }
+    return state;
+  }
+
+  /** Puts the site's rock in the template's placeholder rocks as the cubes go in; lives for one placement. */
+  static final class SiteRock extends StructureProcessor {
+    private final BlockPos origin;
+    private final List<Rock> boxes;
+    private final List<BlockState> rocks;
+
+    SiteRock(BlockPos origin, List<Rock> boxes, List<BlockState> rocks) {
+      this.origin = origin;
+      this.boxes = boxes;
+      this.rocks = rocks;
+    }
+
+    @Override
+    public StructureTemplate.StructureBlockInfo processBlock(LevelReader level, BlockPos offset, BlockPos pos,
+        StructureTemplate.StructureBlockInfo raw, StructureTemplate.StructureBlockInfo placed, StructurePlaceSettings settings) {
+      BlockPos at = placed.pos();
+      BlockState state = siteRock(boxes, rocks, placed.state(), at.getX() - origin.getX(), at.getY() - origin.getY(),
+          at.getZ() - origin.getZ());
+      return state == placed.state() ? placed : new StructureTemplate.StructureBlockInfo(at, state, placed.nbt());
+    }
+
+    @Override
+    protected StructureProcessorType<?> getType() {
+      return StructureProcessorType.NOP;      // never saved: it is built for one placement
+    }
   }
 
   /**
@@ -1248,7 +1345,7 @@ public final class RuinPlacement {
       level.setBlock(cursor, job.palette.filler(), Block.UPDATE_CLIENTS);
     for (int y = Math.max(from, level.getMinBuildHeight()); y <= to; y++) {
       if (p.cell(x, y - job.origin.getY(), z)) continue;
-      BlockState state = RuinTerrain.riser(y, to, lowest) ? p.shape().masonry()
+      BlockState state = RuinTerrain.riser(y, to, lowest) ? siteRock(job, p.shape().masonry())
           : margin && y == to ? job.palette.surface() : job.palette.filler();
       level.setBlock(cursor.set(wx, y, wz), state, Block.UPDATE_CLIENTS);
       if (inside) job.lowest = Math.min(job.lowest, y);
@@ -1438,7 +1535,7 @@ public final class RuinPlacement {
       for (int depth = 0; depth < RuinTerrain.MAX_PIER && y > level.getMinBuildHeight(); depth++, y--) {
         if (p.cell(x, y - job.origin.getY(), z)) break;
         if (ground(level.getBlockState(cursor.set(wx, y, wz)))) break;
-        level.setBlock(cursor, shape.pier()[column], Block.UPDATE_CLIENTS);
+        level.setBlock(cursor, siteRock(job, shape.pier()[column]), Block.UPDATE_CLIENTS);
         job.lowest = Math.min(job.lowest, y);
       }
       if ((column & 31) == 0 && System.nanoTime() > deadline) return;
@@ -1549,6 +1646,19 @@ public final class RuinPlacement {
   /** Puts a marker's block in its cell. */
   static void placeMarker(ServerLevel level, RuinDefinitions.Definition definition, RuinMarkers.Marker marker,
       BlockPos pos) {
+    // A box (a kept bed, the site's rock) is only data: a cell the art left empty becomes what surrounds
+    // it instead of a pocket of air in the ground.
+    if ((marker.kind() == RuinMarkers.Kind.KEEP_SOIL || marker.kind() == RuinMarkers.Kind.SITE_ROCK)
+        && blockOf(marker) == null) {
+      List<BlockState> around = new ArrayList<>();
+      for (var direction : net.minecraft.core.Direction.Plane.HORIZONTAL) {
+        BlockState next = level.getBlockState(pos.relative(direction));
+        if (ground(next)) around.add(next.getBlock().defaultBlockState());
+      }
+      level.setBlock(pos, around.size() >= 2 ? RuinTerrain.mostCommon(around, around.getFirst())
+          : Blocks.AIR.defaultBlockState(), Block.UPDATE_CLIENTS);
+      return;
+    }
     BlockState state = switch (marker.kind()) {
       case PEDESTAL -> RuinContent.PEDESTAL.get().defaultBlockState();
       case MIRROR -> RuinContent.MIRROR.get().defaultBlockState()

@@ -43,8 +43,9 @@ import org.slf4j.Logger;
  * <p>Run by {@code /entrelumen admin ruins terrain} or, unattended, with the system property
  * {@code entrelumen.ruinTerrain=<folder>} ({@code entrelumen.ruinTerrain.stop=true} stops the server when
  * done; {@code entrelumen.ruinTerrain.spots=<an earlier index.json>} takes that survey's sites, found for
- * the same seed, instead of searching the noise again). Placements are never registered as ruins; the
- * world is meant to be thrown away.
+ * the same seed, instead of searching the noise again; {@code .ruins=<ids>} and {@code .kinds=<names>},
+ * comma-separated, keep only those ruins and kinds of site). Placements are never registered as ruins;
+ * the world is meant to be thrown away.
  */
 public final class RuinTerrainSurvey {
   private static final Logger LOGGER = LogUtils.getLogger();
@@ -116,9 +117,13 @@ public final class RuinTerrainSurvey {
   public static synchronized boolean start(MinecraftServer server, Path out, boolean stop) {
     if (RUNS.containsKey(server)) return false;
     Run run = new Run(server, out, stop);
+    Set<String> onlyRuins = listed("entrelumen.ruinTerrain.ruins"), onlyKinds = listed("entrelumen.ruinTerrain.kinds");
     List<RuinDefinitions.Definition> ruins = RuinRegistry.available().stream()
         .filter(d -> d.dimension().equals("minecraft:overworld") && d.placement().mode() == RuinDefinitions.Mode.SURFACE)
+        .filter(d -> onlyRuins.isEmpty() || onlyRuins.contains(d.id())
+            || onlyRuins.contains(ResourceLocation.parse(d.id()).getPath()))
         .sorted(Comparator.comparing(RuinDefinitions.Definition::id)).toList();
+    List<Kind> kinds = KINDS.stream().filter(k -> onlyKinds.isEmpty() || onlyKinds.contains(k.name())).toList();
     var source = run.level.getChunkSource();
     var generator = source.getGenerator();
     var random = source.randomState();
@@ -127,7 +132,7 @@ public final class RuinTerrainSurvey {
     Path earlier = earlierSpots();
     run.finding = CompletableFuture.supplyAsync(() -> {
       if (earlier != null) {
-        var spots = reused(earlier, level.getSeed(), ruins);
+        var spots = reused(earlier, level.getSeed(), ruins, kinds);
         if (spots != null) {
           run.spotsFrom = earlier;
           return spots;
@@ -142,11 +147,17 @@ public final class RuinTerrainSurvey {
           throw new java.io.UncheckedIOException(e);
         }
       }
-      return find(generator, random, level, generator.getBiomeSource(), spawn, ruins, sizes);
+      return find(generator, random, level, generator.getBiomeSource(), spawn, ruins, sizes, kinds);
     }, Util.backgroundExecutor());
     RUNS.put(server, run);
-    LOGGER.info("Ruin terrain survey: {} overworld ruins on {} kinds of site, into {}", ruins.size(), KINDS.size(), out);
+    LOGGER.info("Ruin terrain survey: {} overworld ruins on {} kinds of site, into {}", ruins.size(), kinds.size(), out);
     return true;
+  }
+
+  /** A comma-separated system property as a set (empty when unset). */
+  static Set<String> listed(String property) {
+    String value = System.getProperty(property, "");
+    return value.isBlank() ? Set.of() : Set.of(value.split(","));
   }
 
   // ---- Finding the sites (off the server thread: noise only) ----------------------------------
@@ -162,7 +173,7 @@ public final class RuinTerrainSurvey {
    * whatever its size now. Null, and a new search, when the index is from another seed or lacks one of
    * this survey's ruins on one of its kinds of site.
    */
-  static @Nullable List<Spot> reused(Path index, long seed, List<RuinDefinitions.Definition> ruins) {
+  static @Nullable List<Spot> reused(Path index, long seed, List<RuinDefinitions.Definition> ruins, List<Kind> kinds) {
     try {
       JsonObject root = JsonParser.parseString(Files.readString(index, StandardCharsets.UTF_8)).getAsJsonObject();
       if (root.get("seed").getAsLong() != seed) {
@@ -175,7 +186,7 @@ public final class RuinTerrainSurvey {
         earlier.put(entry.get("site").getAsString() + " " + entry.get("ruin").getAsString(), entry);
       }
       List<Spot> spots = new ArrayList<>();
-      for (Kind kind : KINDS)
+      for (Kind kind : kinds)
         for (var ruin : ruins) {
           JsonObject entry = earlier.get(kind.name() + " " + ruin.id());
           if (entry == null) {
@@ -220,13 +231,13 @@ public final class RuinTerrainSurvey {
 
   /** Every kind of site searched at once, each in its own biome far from the others. */
   static List<Spot> find(ChunkGenerator generator, RandomState random, LevelHeightAccessor height, BiomeSource biomes,
-      BlockPos spawn, List<RuinDefinitions.Definition> ruins, Map<String, int[]> sizes) {
-    List<CompletableFuture<List<Spot>>> kinds = new ArrayList<>();
-    for (Kind kind : KINDS)
-      kinds.add(CompletableFuture.supplyAsync(() -> find(generator, random, height, biomes, spawn, ruins, sizes, kind),
+      BlockPos spawn, List<RuinDefinitions.Definition> ruins, Map<String, int[]> sizes, List<Kind> kinds) {
+    List<CompletableFuture<List<Spot>>> searches = new ArrayList<>();
+    for (Kind kind : kinds)
+      searches.add(CompletableFuture.supplyAsync(() -> find(generator, random, height, biomes, spawn, ruins, sizes, kind),
           Util.backgroundExecutor()));
     List<Spot> spots = new ArrayList<>();
-    for (var future : kinds) spots.addAll(future.join());
+    for (var future : searches) spots.addAll(future.join());
     return spots;
   }
 
@@ -484,6 +495,7 @@ public final class RuinTerrainSurvey {
     entry.put("siteGround", List.of(BlockStateParser.serialize(job.palette.surface()),
         BlockStateParser.serialize(job.palette.filler()), job.palette.snow() ? "snow" : "no snow"));
     entry.put("masonry", BlockStateParser.serialize(p.shape().masonry()));
+    entry.put("siteRock", job.palette.rocks().stream().map(BlockStateParser::serialize).toList());
     entry.put("lowest", job.lowest == Integer.MAX_VALUE ? job.origin.getY() : job.lowest);
     entry.put("felledBlocks", job.felledCount);
     entry.put("busyMs", Math.round(job.busyNanos / 1e6));
