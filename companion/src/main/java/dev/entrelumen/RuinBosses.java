@@ -218,12 +218,20 @@ public final class RuinBosses {
       member.displayClientMessage(Component.translatable("entrelumen.ruin.boss.rises", name), true);
   }
 
-  /** The first cell at or above the marker with room for a mob. */
+  /**
+   * The first cell with room for a mob at or above the marker, or, when its column is solid for eight
+   * blocks (a nest drawn inside a pylon), in the nearest column around it with room.
+   */
   static BlockPos standing(ServerLevel level, BlockPos marker) {
-    BlockPos pos = marker;
-    for (int i = 0; i < 8; i++, pos = pos.above())
-      if (level.getBlockState(pos).getCollisionShape(level, pos).isEmpty()
-          && level.getBlockState(pos.above()).getCollisionShape(level, pos.above()).isEmpty()) return pos;
+    for (int ring = 0; ring <= 4; ring++)
+      for (int dx = -ring; dx <= ring; dx++)
+        for (int dz = -ring; dz <= ring; dz++) {
+          if (Math.max(Math.abs(dx), Math.abs(dz)) != ring) continue;
+          BlockPos pos = marker.offset(dx, 0, dz);
+          for (int i = 0; i < 8; i++, pos = pos.above())
+            if (level.getBlockState(pos).getCollisionShape(level, pos).isEmpty()
+                && level.getBlockState(pos.above()).getCollisionShape(level, pos.above()).isEmpty()) return pos;
+        }
     return marker.above();
   }
 

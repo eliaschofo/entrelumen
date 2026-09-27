@@ -38,6 +38,9 @@ FIRE_ANIMATION = {'animation': {'frametime': 2}}
 ANIMATION = {'animation': {'frametime': 3, 'frames': [{'index': 0, 'time': 40}, 1, 2, 3, 4, 5, 6, 7]}}
 HANDHELD = {'luminous_sword', 'luminous_pickaxe', 'luminous_axe', 'luminous_shovel', 'luminous_hoe'}
 ITEMS += list(ANIMATED) + sorted(HANDHELD) + ['luminous_helmet', 'luminous_chestplate', 'luminous_leggings', 'luminous_boots']
+# The ten key pieces of the Heliodor ruins (art/authoring/draw_key_pieces.py).
+ITEMS += ['signal_ember', 'terra_blueprint', 'route_seal', 'mother_seed', 'heliodor_crucible', 'voices_eyepiece',
+          'forest_testimony', 'sun_key', 'sacred_flame', 'star_chart']
 ARMOR_LAYERS = ['luminous_layer_1', 'luminous_layer_2']   # 64x32 PNG sources in art/armor/
 COMPASS_DIMENSIONS = ['overworld', 'nether', 'end', 'aether', 'twilight', 'other']   # entrelumen:dimension 0..5
 # Enchanting shelves (cube_column: side + end) and the Atlas Library (cube_bottom_top).

@@ -76,7 +76,7 @@ RUINS = {
     "twilight_sanctuary": ("ruins_medium", "sanctuary"),
     "sun_antechamber": ("ruins_medium", "antechamber"),
     "light_temple": ("ruin_temple", "build"),
-    "void_observatory": ("ruins_medium", "void_observatory"),
+    "void_observatory": ("ruin_void_observatory", "build"),
 }
 
 # Each ruin's challenge ids, matching data/entrelumen/heliodor_ruin/<id>.json.
@@ -91,9 +91,10 @@ CHALLENGES = {
     "twilight_sanctuary": {"stones": "stones"},
     "sun_antechamber": {"sockets": "offerings"},
     "light_temple": {"sockets": "offerings", "braziers": "lamps", "boss": "keeper"},
-    "void_observatory": {"boss": "watcher"},
+    "void_observatory": {"shulker_nests": "nests", "lens_sockets": "lenses"},
 }
-SOCKET_LOOK = {"dome_greenhouse": "pot", "sun_antechamber": "altar", "light_temple": "altar"}
+SOCKET_LOOK = {"dome_greenhouse": "pot", "sun_antechamber": "altar", "light_temple": "altar",
+               "void_observatory": "altar"}
 LORE = {"signal_tower": (5, 5), "cliff_observatory": (5, 5), "viaduct": (8, 5)}
 DIRECTIONS = ["n", "ne", "e", "se", "s", "sw", "w", "nw"]
 
@@ -104,12 +105,15 @@ def direction(dx: int, dz: int) -> int:
 
 # The gate each ruin's vault or cellar keeps, and how it looks. Seal: a pale light over the shaft;
 # floor: a false floor the team falls through and climbs; shaft: the top rung of the ladder shaft,
-# looking like the floor around it (the Sunken Workshop, whose seal ring lies over the shafts).
+# looking like the floor around it (the Sunken Workshop, whose seal ring lies over the shafts);
+# hatch: the deck cell over a ladder that starts just under the ground layer (the Void Observatory's
+# chart room).
 GATE_STYLE = {
     "sunken_workshop": ("vault", "shaft"),
     "dome_greenhouse": ("crypt", "seal"),
     "nether_foundry": ("vault", "seal"),
     "twilight_sanctuary": ("cellar", "floor"),
+    "void_observatory": ("chart_room", "hatch"),
 }
 
 
@@ -119,8 +123,13 @@ def gates(name: str, v: dict, mk: dict) -> list[tuple[tuple[int, int, int], str]
     if name not in GATE_STYLE:
         return []
     gate, style = GATE_STYLE[name]
-    look = {"floor": "look=moss_block climb=true", "shaft": "look=tuff_bricks climb=true"}.get(style, "look=seal")
+    look = {"floor": "look=moss_block climb=true", "shaft": "look=tuff_bricks climb=true",
+            "hatch": "look=end_stone_bricks climb=true"}.get(style, "look=seal")
     tops = [tuple(p) for p in mk.get("vault_doors", [])]
+    if not tops and style == "hatch":
+        tops = [(p[0], 0, p[2]) for p, b in sorted(v.items()) if p[1] == -1 and b.startswith("minecraft:ladder")
+                and not v.get((p[0], 0, p[2]), "minecraft:air").endswith(":air")
+                and not v.get((p[0], 0, p[2]), "").startswith("minecraft:ladder")]
     if not tops:
         tops = [p for p, b in sorted(v.items()) if p[1] == 0 and b.startswith("minecraft:ladder")
                 and v.get((p[0], -1, p[2]), "").startswith("minecraft:ladder")]
@@ -128,7 +137,7 @@ def gates(name: str, v: dict, mk: dict) -> list[tuple[tuple[int, int, int], str]
         raise SystemExit(f"{name}: no vault door or ladder shaft to put its {gate} gate on")
     out = []
     for x, y, z in tops:
-        cell = (x, y, z) if style in ("floor", "shaft") else (x, y + 1, z)
+        cell = (x, y, z) if style in ("floor", "shaft", "hatch") else (x, y + 1, z)
         out.append((cell, f"gate id={gate} {look}"))
     return out
 
@@ -702,12 +711,21 @@ def markers(name: str, v: dict, mk: dict, extra: dict | None = None) -> dict[tup
         put(p, f"mirror challenge={c['mirrors']} facing={DIRECTIONS[(aim + 4) % 8]}")
     for p in mk.get("offering_sockets", []):
         put(p, f"socket challenge={c['sockets']} look={SOCKET_LOOK[name]}")
+    # The Void Observatory: a lens on each islet (two by symmetry), shulker nests guarding them.
+    for p in mk.get("lens_sockets", []):
+        put(p, f"socket challenge={c['lens_sockets']} look={SOCKET_LOOK[name]}")
+    for p in mk.get("shulker_nests", []):
+        put(p, f"boss challenge={c['shulker_nests']}")
     # Standing stones are read like the compass: from the north, clockwise.
     stones = sorted(mk.get("order_stones", []), key=lambda p: math.atan2(p[0], -p[2]) % (2 * math.pi))
     for order, p in enumerate(stones, 1):
         put(p, f"brazier challenge={c['stones']} order={order}")
-    # Designed beds keep their soil: the art lists inclusive (lo, hi) boxes in markers["keep_soil"].
+    # Designed beds keep their soil: the art lists inclusive (lo, hi) boxes in markers["keep_soil"],
+    # cut to the art's own extent; the marker stands at the box's low corner.
+    extent = [(min(p[i] for p in v), max(p[i] for p in v)) for i in range(3)]
     for lo, hi in mk.get("keep_soil", []):
+        lo = tuple(max(lo[i], extent[i][0]) for i in range(3))
+        hi = tuple(min(hi[i], extent[i][1]) for i in range(3))
         size = ",".join(str(hi[i] - lo[i] + 1) for i in range(3))
         put(lo, f"keep_soil size={size}")
     radius, height = LORE.get(name, (6, 5))

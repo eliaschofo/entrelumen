@@ -941,18 +941,28 @@ public final class RuntimeGameTestsRuins {
           }
           helper.assertTrue(flushChecked > 100 && untouched > 100, "Checked " + flushChecked + " / " + untouched);
           helper.assertTrue(steepest <= 3, "A step of " + steepest + " in the blend");
-          // The lawn is the dune's sand: no soil left in the ruin's box.
-          int soil = 0, sand = 0;
+          // The template's soil is the dune's sand outside the art's keep_soil beds; the garden under the
+          // dome is a designed bed and keeps its own.
+          int stray = 0, kept = 0, sand = 0;
           for (int x = 0; x < p.sizeX(); x++)
-            for (int z = 0; z < p.sizeZ(); z++) {
+            for (int z = 0; z < p.sizeZ(); z++)
               for (int y = 0; y < p.sizeY(); y++) {
                 var state = level.getBlockState(cursor.set(origin.getX() + x, origin.getY() + y, origin.getZ() + z));
-                if (RuinTerrain.soil(BuiltInRegistries.BLOCK.getKey(state.getBlock()).toString())) soil++;
+                if (RuinTerrain.soil(BuiltInRegistries.BLOCK.getKey(state.getBlock()).toString())) {
+                  if (RuinTerrain.kept(x, y, z, shape.keep())) kept++;
+                  else stray++;
+                }
               }
-              if (level.getBlockState(cursor.set(origin.getX() + x, ground, origin.getZ() + z)).is(Blocks.SAND)) sand++;
-            }
-          helper.assertTrue(soil == 0, soil + " soil blocks stayed in the greenhouse");
-          helper.assertTrue(sand > 300, "Only " + sand + " sand blocks on the lawn");
+          for (int i = 0; i < shape.distance().length; i++) {
+            float d = shape.distance()[i];
+            if (d <= 0 || d > job.margin) continue;
+            int wx = origin.getX() + i % w - m, wz = origin.getZ() + i / w - m;
+            int top = level.getHeight(net.minecraft.world.level.levelgen.Heightmap.Types.WORLD_SURFACE, wx, wz) - 1;
+            if (level.getBlockState(cursor.set(wx, top, wz)).is(Blocks.SAND)) sand++;
+          }
+          helper.assertTrue(stray == 0, stray + " soil blocks outside the garden stayed in the greenhouse");
+          helper.assertTrue(shape.keep().isEmpty() || kept > 100, "The garden lost its drawn soil: " + kept);
+          helper.assertTrue(sand > 300, "Only " + sand + " sand blocks around the greenhouse");
           LOGGER.info("Ruin QA terrain: greenhouse on a dune, ground {}, margin {}, steepest step {}, lowest {}",
               ground, job.margin, steepest, job.lowest);
         });

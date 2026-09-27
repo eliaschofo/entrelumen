@@ -89,7 +89,8 @@ class RuinTemplatesTest {
             for (var socket : sockets)
               assertFalse(socket.param("item", challenge.item()).isEmpty(), id + "/" + c + ": what does it take?");
           }
-          case BOSS -> assertEquals(1, found.of(RuinMarkers.Kind.BOSS, c).size(), id + "/" + c);
+          // Several markers are several places the guards can rise: the first one a team comes near.
+          case BOSS -> assertFalse(found.of(RuinMarkers.Kind.BOSS, c).isEmpty(), id + "/" + c);
           case HIDDEN -> assertFalse(found.of(RuinMarkers.Kind.HIDDEN, c).isEmpty(), id + "/" + c);
           case PUMPS -> assertFalse(found.of(RuinMarkers.Kind.PUMP, c).isEmpty() || found.of(RuinMarkers.Kind.DRAIN).isEmpty(),
               id + "/" + c);

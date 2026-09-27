@@ -72,9 +72,10 @@ public final class TeamLifecycleGameTests {
           "Personal campaign fixture did not earn real milestones and rewards");
       Item atlas = item("entrelumen:atlas");
       Item lens = item("entrelumen:raw_lens");
-      helper.assertTrue(founder.getInventory().countItem(atlas) == 1
+      // Since 26 September the Atlas waits on the Signal Tower's pedestal: awakening it gives no item.
+      helper.assertTrue(founder.getInventory().countItem(atlas) == 0
           && founder.getInventory().countItem(lens) == 0
-          && guest.getInventory().countItem(atlas) == 1
+          && guest.getInventory().countItem(atlas) == 0
           && guest.getInventory().countItem(lens) == 1,
           "Personal deliveries produced unexpected reward counts");
       give(helper, founder, Items.DIAMOND, 2);

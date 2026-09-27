@@ -12,20 +12,33 @@
   "project": "world_network",
   "loot": "entrelumen:chests/ruin_act5_void_observatory",
   "challenges": {
-    "watcher": {
+    "nests": {
       "type": "boss",
-      "entity": "minecraft:enderman",
-      "name": "entrelumen.ruin.boss.void_watcher",
+      "entity": "minecraft:shulker",
+      "name": "entrelumen.ruin.boss.nest_guard",
+      "count": 3,
       "radius": 14,
       "color": "purple",
       "attributes": {
-        "minecraft:generic.max_health": 120,
-        "minecraft:generic.attack_damage": 10,
-        "minecraft:generic.scale": 1.3
+        "minecraft:generic.max_health": 60,
+        "minecraft:generic.armor": 6
       }
+    },
+    "lenses": {
+      "type": "offering",
+      "item": "minecraft:ender_eye",
+      "requires": [
+        "nests"
+      ]
     }
   },
   "pedestal": [
-    "watcher"
-  ]
+    "lenses"
+  ],
+  "gates": {
+    "chart_room": [
+      "lenses"
+    ]
+  },
+  "note": "Act V landmark (Elias, 26 September): shulker nests guard the four islets; an Eye of Ender in every lens socket aligns the telescope and opens the chart room under the deck, where the Star Chart waits."
 }

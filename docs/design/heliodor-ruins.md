@@ -20,11 +20,11 @@ Diseño del controlador, 24 de septiembre de 2026; sistema del Plan v2 en el jue
 | Viaducto | III | Overworld | `ruin_viaduct.py` | `ruins/viaduct.nbt`, 97×53×97 | En el juego, arte de primera pasada |
 | Invernadero-domo | III | Overworld | `ruins_medium.py` | `ruins/dome_greenhouse.nbt`, 45×29×45 | En el juego, arte de primera pasada |
 | Fundición bajo la lava | III | Nether | `ruins_medium.py` | `ruins/nether_foundry.nbt`, 47×21×47 | En el juego, arte de primera pasada |
-| Observatorio del Risco | IV | Overworld | `ruin_cliff_observatory.py` | `ruins/cliff_observatory.nbt`, 57×55×57 | En el juego, arte de primera pasada |
+| Observatorio del Risco | IV | Overworld | `ruin_cliff_observatory.py` | `ruins/cliff_observatory.nbt`, 41×35×41 (mediana desde el 27/9) | En el juego, arte de primera pasada |
 | Santuario | IV | Twilight Forest | `ruins_medium.py` | `ruins/twilight_sanctuary.nbt`, 47×24×47 | En el juego con el mod, arte de primera pasada |
 | Antesala del Sol | IV | Aether | `ruins_medium.py` | `ruins/sun_antechamber.nbt`, 49×19×49 | En el juego con el mod, arte de primera pasada |
 | Templo de la Luz Sagrada | V | Overworld | `ruin_temple.py` | `ruins/light_temple.nbt`, 85×39×85 | En el juego, arte de primera pasada |
-| Observatorio sobre el vacío | V | End | `ruins_medium.py` | `ruins/void_observatory.nbt`, 39×23×39 | En el juego, arte de primera pasada |
+| Observatorio sobre el vacío | V | End | `ruin_void_observatory.py` | `ruins/void_observatory.nbt`, 83×60×83 (gigante desde el 27/9) | En el juego, arte de primera pasada |
 | Solsticio | VI | su dimensión | `art/solsticio/city6.py` | `solsticio/city.nbt` | En el juego (ciudad orgánica v6) |
 
 Los bocetos anteriores (`ruin_atlas.py`, `ruins_acts.py`, `ruins_dims.py`) quedan como referencia.
@@ -249,7 +249,7 @@ Una ruina es un JSON en `data/entrelumen/heliodor_ruin/<id>.json` (datapack, rec
 | `twilight_sanctuary` | superficie del Twilight Forest, 150–500 | `stones`: las ocho piedras en orden de brújula (desde el norte, en sentido horario) | `cellar` (`stones`): piso falso de musgo | Testimonio del Bosque | `spectral_archive` |
 | `sun_antechamber` | cielo del Aether, 150–500 | `offerings`: un lingote de oro en cada islote | — | Llave del Sol | `heliodor_heart` |
 | `light_temple` | superficie, 400–1200 (gigante del acto IV desde el 26/9) | `offerings`: piedra luminosa al final de cada escalera; `lamps`: las cuatro lámparas de los obeliscos; `keeper`: el Custodio de la Luz (evocador, 200 de vida), que se levanta después de las otras dos | — | Llama Sagrada | `spectral_archive` |
-| `void_observatory` | cielo del End, 150–500 (gigante del acto V desde el 26/9) | `watcher`: Vigía del vacío (enderman, 120 de vida) | — | Carta Estelar | `world_network` |
+| `void_observatory` | cielo del End, 150–500 (gigante del acto V desde el 26/9) | `nests`: los nidos de shulkers que guardan los islotes (tres shulkers de 60 de vida, en el primer nido al que se acerca el equipo); `lenses`: un Ojo de Ender en cada una de las ocho lentes de los islotes (pide `nests`), que alinea el telescopio | `chart_room` (`lenses`): las cuatro escotillas del puente sobre las escaleras de la sala de cartas | Carta Estelar | `world_network` |
 
 Los ítems de las ofrendas, los jefes y sus atributos son datos: se cambian en el JSON.
 
@@ -341,15 +341,14 @@ Una tabla por ruina, por acto (`chests/ruin_act<N>_<ruina>`), sólo con ítems v
 
 ### Arte provisorio
 
-Modelos que usan texturas vanilla, sin copiarlas: pedestal de toba cincelada con tapa de cobre; espejo de hierro sobre un poste de cobre (recto y diagonal); maceta o altar de cuarzo para las ofrendas; sello de vidrio celeste; piedra floja y compuertas con la textura de su `look`; núcleo de lámpara de redstone. Las piezas usan íconos vanilla (carga ígnea, mapa, llave de desafío, vaina de jarra, caldero, catalejo, libro escrito, llave siniestra, polvo de blaze, mapa lleno).
+Modelos que usan texturas vanilla, sin copiarlas: pedestal de toba cincelada con tapa de cobre; espejo de hierro sobre un poste de cobre (recto y diagonal); maceta o altar de cuarzo para las ofrendas; sello de vidrio celeste; piedra floja y compuertas con la textura de su `look`; núcleo de lámpara de redstone. Las diez piezas tienen sus íconos propios desde el 27/9 (`art/authoring/draw_key_pieces.py`, registrados en `art/build_art.py`).
 
 Hace falta, en 16×16 y con referencias inspeccionadas según `DESIGN.md`:
 
-1. Diez íconos de pieza: Brasa de la Señal, Plano de Terra, Sello de Ruta, Semilla Madre, Crisol de Heliodor, Ocular de las Voces, Testimonio del Bosque, Llave del Sol, Llama Sagrada, Carta Estelar.
-2. Pedestal de la pieza (bloque con forma propia, tapa encendida).
-3. Espejo en dos modelos, recto y a 45°, con la cara plateada distinguible desde lejos.
-4. Receptáculo lleno y vacío, en maceta y en altar.
-5. Sello de luz (translúcido) y piedra floja.
+1. Pedestal de la pieza (bloque con forma propia, tapa encendida).
+2. Espejo en dos modelos, recto y a 45°, con la cara plateada distinguible desde lejos.
+3. Receptáculo lleno y vacío, en maceta y en altar.
+4. Sello de luz (translúcido) y piedra floja.
 6. Núcleo de cerradura apagado y encendido.
 
 ### Pruebas
@@ -394,8 +393,8 @@ Elias no quiere «una losa flotando», ni «media estructura destruyendo el pais
 ## Pendiente
 
 - Arte de las diez ruinas a escala final (Elias revisa una por una). El exportador y las pruebas sólo dependen del contrato de marcadores.
-- Los íconos y modelos de la lista de arte provisorio.
+- Los modelos de la lista de arte provisorio.
 - Motor de Terra: que Elias confirme los dos desvíos (el sentido de las bombas lo exige la ruina; las cuatro en una red) y que la revisión del arte corrija lo que hoy repone el exportador.
 - El Atlas: ¿se saca la receta (cobre sobre un libro, 24/9) ahora que el Atlas espera en la Torre?
-- El arte reescalado del Observatorio del Risco (mediano) y del Observatorio sobre el vacío (gigante), que entrega el arte.
-- Terreno: las cajas `keep_soil` en el arte (canteros del Invernadero, estanque y jardín del Santuario); hasta entonces su tierra se vuelve la del sitio. La ruina inicial (`HeliodorRuins`, de main) sigue con su colocación propia.
+- El Observatorio sobre el vacío: qué enciende las lentes (hoy un Ojo de Ender cada una, un dato de su JSON) y si los cuatro nidos deben pelearse todos o alcanza el primero (hoy uno por equipo). Los nidos del arte están dentro de los pilones: los shulkers salen en la primera columna libre de al lado.
+- La ruina inicial (`HeliodorRuins`, de main) sigue con su colocación propia, sin la barba ni el suelo del sitio.
