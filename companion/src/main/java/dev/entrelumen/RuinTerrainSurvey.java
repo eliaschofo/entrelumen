@@ -1,6 +1,8 @@
 package dev.entrelumen;
 
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import com.mojang.logging.LogUtils;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -8,6 +10,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
+import javax.annotation.Nullable;
 import net.minecraft.SharedConstants;
 import net.minecraft.Util;
 import net.minecraft.commands.arguments.blocks.BlockStateParser;
@@ -39,7 +42,9 @@ import org.slf4j.Logger;
  *
  * <p>Run by {@code /entrelumen admin ruins terrain} or, unattended, with the system property
  * {@code entrelumen.ruinTerrain=<folder>} ({@code entrelumen.ruinTerrain.stop=true} stops the server when
- * done). Placements are never registered as ruins; the world is meant to be thrown away.
+ * done; {@code entrelumen.ruinTerrain.spots=<an earlier index.json>} takes that survey's sites, found for
+ * the same seed, instead of searching the noise again). Placements are never registered as ruins; the
+ * world is meant to be thrown away.
  */
 public final class RuinTerrainSurvey {
   private static final Logger LOGGER = LogUtils.getLogger();
@@ -72,6 +77,8 @@ public final class RuinTerrainSurvey {
     final boolean stop;
     CompletableFuture<List<Spot>> finding;
     List<Spot> spots;
+    /** The earlier survey whose sites this one took, if it did. */
+    volatile Path spotsFrom;
     int index = -1;
     Spot spot;
     RuinPlacement.Job job;
@@ -117,7 +124,15 @@ public final class RuinTerrainSurvey {
     var random = source.randomState();
     var level = run.level;
     BlockPos spawn = level.getSharedSpawnPos();
+    Path earlier = earlierSpots();
     run.finding = CompletableFuture.supplyAsync(() -> {
+      if (earlier != null) {
+        var spots = reused(earlier, level.getSeed(), ruins);
+        if (spots != null) {
+          run.spotsFrom = earlier;
+          return spots;
+        }
+      }
       Map<String, int[]> sizes = new HashMap<>();
       for (var ruin : ruins) {
         try {
@@ -135,6 +150,48 @@ public final class RuinTerrainSurvey {
   }
 
   // ---- Finding the sites (off the server thread: noise only) ----------------------------------
+
+  /** The earlier survey's index named by {@code entrelumen.ruinTerrain.spots}, if any. */
+  static @Nullable Path earlierSpots() {
+    String property = System.getProperty("entrelumen.ruinTerrain.spots", "");
+    return property.isBlank() ? null : Path.of(property);
+  }
+
+  /**
+   * An earlier survey's sites for this seed, in the finder's order: each ruin keeps its centre there,
+   * whatever its size now. Null, and a new search, when the index is from another seed or lacks one of
+   * this survey's ruins on one of its kinds of site.
+   */
+  static @Nullable List<Spot> reused(Path index, long seed, List<RuinDefinitions.Definition> ruins) {
+    try {
+      JsonObject root = JsonParser.parseString(Files.readString(index, StandardCharsets.UTF_8)).getAsJsonObject();
+      if (root.get("seed").getAsLong() != seed) {
+        LOGGER.warn("Ruin terrain survey: {} is from seed {}, not {}; searching again", index, root.get("seed"), seed);
+        return null;
+      }
+      Map<String, JsonObject> earlier = new HashMap<>();
+      for (var element : root.getAsJsonArray("placements")) {
+        JsonObject entry = element.getAsJsonObject();
+        earlier.put(entry.get("site").getAsString() + " " + entry.get("ruin").getAsString(), entry);
+      }
+      List<Spot> spots = new ArrayList<>();
+      for (Kind kind : KINDS)
+        for (var ruin : ruins) {
+          JsonObject entry = earlier.get(kind.name() + " " + ruin.id());
+          if (entry == null) {
+            LOGGER.warn("Ruin terrain survey: {} has no {} site for {}; searching again", index, kind.name(), ruin.id());
+            return null;
+          }
+          var centre = entry.getAsJsonArray("centre");
+          spots.add(new Spot(kind, ruin, centre.get(0).getAsInt(), centre.get(1).getAsInt(),
+              entry.get("noiseSpread").getAsInt(), entry.get("biome").getAsString()));
+        }
+      return spots;
+    } catch (IOException | RuntimeException e) {
+      LOGGER.warn("Ruin terrain survey: cannot take the sites of {}; searching again", index, e);
+      return null;
+    }
+  }
 
   static String biomeAt(ChunkGenerator generator, RandomState random, LevelHeightAccessor height, BiomeSource biomes,
       int x, int z) {
@@ -264,7 +321,8 @@ public final class RuinTerrainSurvey {
     if (run.spots == null) {
       if (!run.finding.isDone()) return;
       run.spots = run.finding.join();
-      LOGGER.info("Ruin terrain survey: {} spots", run.spots.size());
+      LOGGER.info("Ruin terrain survey: {} spots{}", run.spots.size(),
+          run.spotsFrom == null ? "" : ", the sites of " + run.spotsFrom);
       for (Spot spot : run.spots)
         LOGGER.info("Ruin terrain survey: {} on {} at {}, {} ({}, noise spread {})", spot.ruin().id(), spot.kind().name(),
             spot.x(), spot.z(), spot.biome(), spot.spread());
@@ -447,6 +505,7 @@ public final class RuinTerrainSurvey {
     index.put("minecraft", SharedConstants.getCurrentVersion().getName());
     index.put("format", "x y z state per line, relative to the ruin's centre and ground level");
     index.put("seconds", Math.round((System.nanoTime() - run.started) / 1e9));
+    if (run.spotsFrom != null) index.put("sitesFrom", run.spotsFrom.toString());
     index.put("placements", run.placements);
     try {
       Files.createDirectories(run.out);
