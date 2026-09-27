@@ -117,9 +117,29 @@ def texture_info(ref):
     return tuple(found) if found else None
 
 
+def bundled(jar):
+    """The JAR and every JAR it bundles under META-INF/jarjar, at any depth: NeoForge loads those as mods too
+    (productivelib inside Productive Bees, ponder inside Create). Each one is open only while it is yielded."""
+    import io
+    try:
+        stack = [zipfile.ZipFile(jar)]
+    except Exception:
+        return
+    while stack:
+        with stack.pop() as z:
+            yield z
+            for name in z.namelist():
+                if name.startswith('META-INF/jarjar/') and name.endswith('.jar'):
+                    try:
+                        stack.append(zipfile.ZipFile(io.BytesIO(z.read(name))))
+                    except Exception:
+                        pass
+
+
 def registry():
-    """Item-like ids known from item models and lang keys of every pinned JAR, plus vanilla and the companion.
-    Cached (outside the repository) per set of JAR paths, since reading 300+ JARs takes a while."""
+    """Item-like ids known from item models and lang keys of every pinned JAR and the JARs they bundle, plus
+    vanilla and the companion. Cached (outside the repository) per set of JAR paths, since reading 300+ JARs
+    takes a while."""
     global _ITEMS
     if _ITEMS is not None:
         return _ITEMS
@@ -132,7 +152,7 @@ def registry():
     if CACHE.exists():
         try:
             c = json.loads(CACHE.read_text(encoding='utf-8'))
-            if c.get('jars') == signature:
+            if c.get('jars') == signature and c.get('version') == 2:
                 items, namespaces = set(c['items']), set(c['namespaces'])
                 comp = ROOT / 'companion' / 'src' / 'main' / 'resources' / 'assets' / 'entrelumen'
                 items |= {'entrelumen:' + p.stem for p in (comp / 'models' / 'item').glob('*.json')}
@@ -144,7 +164,7 @@ def registry():
         jars.append(VANILLA_JAR)
     for jar in jars:
         try:
-            with zipfile.ZipFile(jar) as z:
+            for z in bundled(jar):
                 for name in z.namelist():
                     m = re.match(r'assets/([^/]+)/models/item/(.+)\.json$', name)
                     if m:
@@ -167,8 +187,8 @@ def registry():
             continue
     try:
         CACHE.parent.mkdir(parents=True, exist_ok=True)
-        CACHE.write_text(json.dumps({'jars': signature, 'items': sorted(items), 'namespaces': sorted(namespaces)}),
-                         encoding='utf-8')
+        CACHE.write_text(json.dumps({'jars': signature, 'version': 2, 'items': sorted(items),
+                                     'namespaces': sorted(namespaces)}), encoding='utf-8')
     except Exception:
         pass
     comp = ROOT / 'companion' / 'src' / 'main' / 'resources' / 'assets' / 'entrelumen'
@@ -314,8 +334,9 @@ _SECTOR = None
 
 
 def sector_registry():
-    """Advancements, entities, structures, structure tags, keybinds and translation keys of the pinned JARs
-    and vanilla, plus the c: item tags that Almost Unified unifies. Cached outside the repository."""
+    """Advancements, entities, structures, structure tags, keybinds and translation keys of the pinned JARs,
+    the JARs they bundle and vanilla, plus the c: item tags that Almost Unified unifies. Cached outside the
+    repository."""
     global _SECTOR
     if _SECTOR is not None:
         return _SECTOR
@@ -326,19 +347,15 @@ def sector_registry():
     if SECTOR_CACHE.exists():
         try:
             cached = json.loads(SECTOR_CACHE.read_text(encoding='utf-8'))
-            if cached.get('jars') == jars and cached.get('version') == 3:
+            if cached.get('jars') == jars and cached.get('version') == 4:
                 _SECTOR = {k: set(v) if isinstance(v, list) else v for k, v in cached.items()}
                 return _SECTOR
         except Exception:
             pass
     out = {'advancements': set(), 'entities': set(), 'structures': set(), 'structure_tags': set(),
            'lang': set(), 'item_tags': {}, 'item_owner': {}}
-    for index, jar in enumerate(jars):
-        try:
-            z = zipfile.ZipFile(jar)
-        except Exception:
-            continue
-        with z:
+    for jar in jars:
+        for z in bundled(jar):
             for name in z.namelist():
                 m = re.match(r'data/([^/]+)/advancements?/(.+)\.json$', name)
                 if m and '/recipes/' not in name:
@@ -371,19 +388,8 @@ def sector_registry():
                                 out['entities'].add(f'{mm.group(1)}:{mm.group(2)}')
                     except Exception:
                         pass
-    # ponder's keybinds live in a jar-in-jar of Create
-    create = next((j for j in jars if Path(j).name.startswith('create-1.21.1')), None)
-    if create:
-        import io
-        with zipfile.ZipFile(create) as z:
-            for inner in z.namelist():
-                if inner.endswith('.jar') and 'ponder' in inner:
-                    with zipfile.ZipFile(io.BytesIO(z.read(inner))) as zz:
-                        for name in zz.namelist():
-                            if name.endswith('lang/en_us.json'):
-                                out['lang'].update(k for k in json.loads(zz.read(name)) if k.startswith('key.'))
     cache = {k: sorted(v) if isinstance(v, set) else v for k, v in out.items()}
-    cache.update(jars=jars, version=3)
+    cache.update(jars=jars, version=4)
     try:
         SECTOR_CACHE.write_text(json.dumps(cache), encoding='utf-8')
     except Exception:
