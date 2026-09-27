@@ -542,8 +542,13 @@ def any_item_task(t, key, ctx):
             "count": count, "consume_items": bool(t.get("consume", False))}
 
 
-def any_icon(t, ctx):
-    return icon_stack(t["icon"], ctx) if "icon" in t else {"id": next(a for a in t["any"] if not a.startswith("#"))}
+def any_icon(t, ctx, key=""):
+    """The given icon, or the first item listed (a quest without an icon of its own takes it too)."""
+    if "icon" in t:
+        return icon_stack(t["icon"], ctx)
+    items = [a for a in t["any"] if isinstance(a, str) and not a.startswith("#")]
+    assert items, f"{key}: an any-of task of tags only needs an icon"
+    return {"id": items[0]}
 
 
 def compile_task(t, key, index, languages, ctx):
@@ -555,7 +560,7 @@ def compile_task(t, key, index, languages, ctx):
     if kind == "item" and "any" in t:
         out.update(any_item_task(t, key, ctx))
         if "icon" not in t:
-            out["icon"] = any_icon(t, ctx)
+            out["icon"] = any_icon(t, ctx, key)
     elif kind == "item":
         assert ID.fullmatch(t["item"]), f"{key}: item id"
         count = t.get("count", 1)
@@ -757,7 +762,7 @@ def compile_sector(data, book, tables, languages, seen_ids, all_keys, chapter_id
             if "item" in first:
                 out["icon"] = {"id": first["item"]}
             elif "any" in first:
-                out["icon"] = any_icon(first, ctx)
+                out["icon"] = any_icon(first, ctx, key)
         if "icon_scale" in q:
             assert 0.1 <= q["icon_scale"] <= 2.0
             out["icon_scale"] = float(q["icon_scale"])

@@ -216,6 +216,12 @@ class AnyOfTasks(unittest.TestCase):
                          ({"id": "minecraft:oak_log"}, True, {"ftbfiltersystem:filter": "item_tag(minecraft:logs)"}))
         es = json.loads(files[OUT / "lang" / "es_es.snbt"])
         self.assertEqual(es[f"task.{q['tasks'][0]['id']}.title"], "Aleación de andesita o zinc")
+        # A quest whose first task lists tags only, with no icon anywhere, is refused by name.
+        broken = copy.deepcopy(data)
+        next(x for x in broken["quests"] if x["key"] == bounty["key"])["task"].pop("icon")
+        with self.assertRaisesRegex(AssertionError, bounty["key"] + ": an any-of task of tags only needs an icon"):
+            generate_book(self.story, self.guides, self.book,
+                          [s for s in self.sectors.values() if s["chapter"] != data["chapter"]] + [broken])
         # Every other chapter is what generate_quests.py --check holds on disk.
         for path, content in files.items():
             if path.parent == OUT / "chapters" and path.stem != data["chapter"]:
