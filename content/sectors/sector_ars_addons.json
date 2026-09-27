@@ -1,0 +1,620 @@
+{
+  "format": "sector",
+  "chapter": "sector_ars_addons",
+  "group": "magic",
+  "act": "III",
+  "motif": "ars",
+  "icon": "ars_elemental:mark_of_mastery",
+  "emblem": "ars_elemental:textures/item/mark_of_mastery.png",
+  "title": {"en_us": "Ars Nouveau · Addons", "es_es": "Ars Nouveau · Complementos"},
+  "subtitle": {
+    "en_us": ["Nine addons around one mark: the elements, Create machines, AE2, fluids, spirits, charms, remote control and more glyphs."],
+    "es_es": ["Nueve complementos alrededor de una marca: los elementos, las máquinas de Create, AE2, fluidos, espíritus, amuletos, control remoto y más glifos."]
+  },
+  "entry": "arsadd_pouch",
+  "center": [0, 0],
+  "figures": {
+    "big": {"kind": "ring", "cx": 0, "cy": 0, "r": 14.5, "count": 9, "start": -90, "draw": [{"style": "ring", "r": 14.5, "alpha": 80, "segments": 90}, {"style": "ring", "r": 3.4, "alpha": 110, "thickness_px": 2, "segments": 32}, {"style": "spokes", "from_r": 3.4, "to_r": 11.7, "alpha": 60}]},
+    "A": {"kind": "ring", "cx": 0.0, "cy": -14.5, "r": 2.8, "count": 4, "start": -135, "draw": [{"style": "ring", "r": 2.8, "alpha": 90, "segments": 28}]},
+    "B": {"kind": "ring", "cx": 9.32, "cy": -11.11, "r": 2.8, "count": 7, "start": -90, "draw": [{"style": "ring", "r": 2.8, "alpha": 90, "segments": 28}]},
+    "C": {"kind": "ring", "cx": 14.28, "cy": -2.52, "r": 2.8, "count": 5, "start": -90, "draw": [{"style": "ring", "r": 2.8, "alpha": 90, "segments": 28}]},
+    "D": {"kind": "ring", "cx": 12.56, "cy": 7.25, "r": 2.8, "count": 3, "start": -90, "draw": [{"style": "ring", "r": 2.8, "alpha": 90, "segments": 28}]},
+    "E": {"kind": "ring", "cx": 4.96, "cy": 13.63, "r": 2.8, "count": 6, "start": -90, "draw": [{"style": "ring", "r": 2.8, "alpha": 90, "segments": 28}]},
+    "F": {"kind": "ring", "cx": -4.96, "cy": 13.63, "r": 2.8, "count": 3, "start": -90, "draw": [{"style": "ring", "r": 2.8, "alpha": 90, "segments": 28}]},
+    "G": {"kind": "ring", "cx": -12.56, "cy": 7.25, "r": 2.8, "count": 8, "start": -90, "draw": [{"style": "ring", "r": 2.8, "alpha": 90, "segments": 28}]},
+    "H": {"kind": "ring", "cx": -14.28, "cy": -2.52, "r": 2.8, "count": 6, "start": -90, "draw": [{"style": "ring", "r": 2.8, "alpha": 90, "segments": 28}]},
+    "I": {"kind": "ring", "cx": -9.32, "cy": -11.11, "r": 2.8, "count": 3, "start": -90, "draw": [{"style": "ring", "r": 2.8, "alpha": 90, "segments": 28}]}
+  },
+  "links": [
+    {"target": "cbr_precision", "at": {"x": 19.6, "y": -2.5}},
+    {"target": "arsrit_chimera", "at": {"x": 5.4, "y": -19.9}}
+  ],
+  "art": [
+    {"id": "banner", "texture": "entrelumen:textures/gui/quests/banner_ars.png", "x": -16.5, "y": -21.0, "scale": 1, "order": -1},
+    {"id": "title", "label": {"en_us": "Ars Nouveau · Addons", "es_es": "Ars Nouveau · Complementos"}, "x": -16.5, "y": -21.0, "scale": 2, "bold": true},
+    {"id": "medallion", "texture": "entrelumen:textures/gui/quests/medallion.png", "x": -19.0, "y": -16.0, "scale": 2, "order": 0, "click": "chapter:sector_ars_nouveau", "hover": {"en_us": "Back to Ars Nouveau", "es_es": "Volver a Ars Nouveau"}},
+    {"id": "gem", "texture": "ars_nouveau:textures/item/source_gem.png", "x": -19.0, "y": -16.0, "scale": 4, "order": 1},
+    {"id": "label_a", "label": {"en_us": "Ars Elemental: schools", "es_es": "Ars Elemental: escuelas"}, "x": 0.0, "y": -20.62, "scale": 1},
+    {"id": "label_b", "label": {"en_us": "Ars Elemental: gear", "es_es": "Ars Elemental: equipo"}, "x": 12.68, "y": -16.01, "scale": 1},
+    {"id": "label_c", "label": {"en_us": "Ars Technica", "es_es": "Ars Technica"}, "x": 19.42, "y": -4.33, "scale": 1},
+    {"id": "label_d", "label": {"en_us": "Ars Énergistique", "es_es": "Ars Énergistique"}, "x": 17.08, "y": 10.76, "scale": 1},
+    {"id": "label_e", "label": {"en_us": "Starbunclemania", "es_es": "Starbunclemania"}, "x": 6.75, "y": 19.44, "scale": 1},
+    {"id": "label_f", "label": {"en_us": "Ars Ocultas and Ars Creo", "es_es": "Ars Ocultas y Ars Creo"}, "x": -6.75, "y": 19.44, "scale": 1},
+    {"id": "label_g", "label": {"en_us": "Ars Additions", "es_es": "Ars Additions"}, "x": -17.08, "y": 10.76, "scale": 1},
+    {"id": "label_h", "label": {"en_us": "Ars Controle", "es_es": "Ars Controle"}, "x": -19.42, "y": -4.33, "scale": 1},
+    {"id": "label_i", "label": {"en_us": "Not Enough Glyphs", "es_es": "Not Enough Glyphs"}, "x": -12.68, "y": -16.01, "scale": 1}
+  ],
+  "quests": [
+    {
+      "key": "arsadd_mark", "role": "capstone", "deps": ["arsadd_focus_fire", "arsadd_focus_water", "arsadd_focus_earth", "arsadd_focus_air"], "any_dep": true, "hide_lines": true,
+      "task": {"item": "ars_elemental:mark_of_mastery"},
+      "at": {"x": 0, "y": 0},
+      "en_us": {"title": "Mark of Mastery",
+        "text": ["A Wilden Tribute imbued with all eight essences gives five [item:ars_elemental:mark_of_mastery|Marks of Mastery]. A mark turns a lesser focus into a full one, or tier 3 Ars armour into elemental armour."]},
+      "es_es": {"title": "Marca de maestría",
+        "text": ["Un Tributo Salvaje imbuido con las ocho esencias da cinco [item:ars_elemental:mark_of_mastery|marcas de maestría]. Una marca vuelve completo un foco menor, o convierte armadura de Ars de nivel 3 en armadura elemental."]},
+      "sources": ["jar:ars_elemental-1.21.1-0.7.10.1.jar:data/ars_elemental/recipe"]
+    },
+    {
+      "key": "arsadd_schools", "role": "tip", "deps": ["arssrc_essences"], "exclusive": 1, "hide_lines": true,
+      "task": {"type": "checkmark"},
+      "at": {"x": 0.0, "y": -14.5},
+      "en_us": {"title": "Pick a school", "subtitle": "Loyalty has perks.",
+        "text": ["[tip] With Ars Elemental, most glyphs belong to a school, and gear attuned to one boosts or discounts it. Choose one lesser focus below: the other three close for this book, not for the game."]},
+      "es_es": {"title": "Elegí una escuela", "subtitle": "La lealtad tiene premio.",
+        "text": ["[tip] Con Ars Elemental, casi todos los glifos son de una escuela, y el equipo afinado a una la potencia o la abarata. Elegí un foco menor de abajo: los otros tres se cierran en este libro, no en el juego."]},
+      "sources": ["jar:ars_elemental-1.21.1-0.7.10.1.jar:assets/ars_elemental/lang/en_us.json"]
+    },
+    {
+      "key": "arsadd_focus_fire", "role": "side", "deps": ["arsadd_schools"],
+      "task": {"item": "ars_elemental:lesser_fire_focus"},
+      "at": {"figure": "A", "slot": 0},
+      "en_us": {"title": "School of Fire",
+        "text": ["An amethyst shard imbued with three [item:ars_nouveau:fire_essence|fire essences] and three gold, 5000 Source: a [item:ars_elemental:lesser_fire_focus|Lesser Focus of Fire]. As a curio it boosts fire glyphs; Ignite adds Magic Burn."]},
+      "es_es": {"title": "Escuela de fuego",
+        "text": ["Un fragmento de amatista imbuido con tres [item:ars_nouveau:fire_essence|esencias de fuego] y tres oros, 5000 de Fuente: un [item:ars_elemental:lesser_fire_focus|foco menor de fuego]. Como amuleto potencia los glifos de fuego; Encender suma quemadura mágica."]},
+      "sources": ["jar:ars_elemental-1.21.1-0.7.10.1.jar:data/ars_elemental/recipe"]
+    },
+    {
+      "key": "arsadd_focus_water", "role": "side", "deps": ["arsadd_schools"],
+      "task": {"item": "ars_elemental:lesser_water_focus"},
+      "at": {"figure": "A", "slot": 1},
+      "en_us": {"title": "School of Water",
+        "text": ["The same recipe with water essences: a [item:ars_elemental:lesser_water_focus|Lesser Focus of Water]. It boosts water glyphs and weakens the element across from it."]},
+      "es_es": {"title": "Escuela de agua",
+        "text": ["La misma receta con esencias de agua: un [item:ars_elemental:lesser_water_focus|foco menor de agua]. Potencia los glifos de agua y debilita al elemento opuesto."]},
+      "sources": ["jar:ars_elemental-1.21.1-0.7.10.1.jar:data/ars_elemental/recipe"]
+    },
+    {
+      "key": "arsadd_focus_earth", "role": "side", "deps": ["arsadd_schools"],
+      "task": {"item": "ars_elemental:lesser_earth_focus"},
+      "at": {"figure": "A", "slot": 2},
+      "en_us": {"title": "School of Earth",
+        "text": ["With earth essences: a [item:ars_elemental:lesser_earth_focus|Lesser Focus of Earth]. Diggers love it: earth glyphs get stronger and cheaper."]},
+      "es_es": {"title": "Escuela de tierra",
+        "text": ["Con esencias de tierra: un [item:ars_elemental:lesser_earth_focus|foco menor de tierra]. Los que cavan lo adoran: los glifos de tierra salen más fuertes y más baratos."]},
+      "sources": ["jar:ars_elemental-1.21.1-0.7.10.1.jar:data/ars_elemental/recipe"]
+    },
+    {
+      "key": "arsadd_focus_air", "role": "side", "deps": ["arsadd_schools"],
+      "task": {"item": "ars_elemental:lesser_air_focus"},
+      "at": {"figure": "A", "slot": 3},
+      "en_us": {"title": "School of Air",
+        "text": ["With air essences: a [item:ars_elemental:lesser_air_focus|Lesser Focus of Air]. Lightning, wind and falling slower, all a little better."]},
+      "es_es": {"title": "Escuela de aire",
+        "text": ["Con esencias de aire: un [item:ars_elemental:lesser_air_focus|foco menor de aire]. Rayos, viento y caer más despacio, todo un poco mejor."]},
+      "sources": ["jar:ars_elemental-1.21.1-0.7.10.1.jar:data/ars_elemental/recipe"]
+    },
+    {
+      "key": "arsadd_motor", "role": "side", "deps": ["arsadd_calibrated"],
+      "task": {"item": "ars_technica:source_motor"},
+      "at": {"figure": "C", "slot": 0},
+      "en_us": {"title": "Magic to shafts",
+        "text": ["Imbue a Create precision mechanism with amethyst and Source Gems, then build the [item:ars_technica:source_motor|Source Motor] with brass and cogs. It turns jar Source into rotation and stops when the jar runs dry: fuel, not free power."]},
+      "es_es": {"title": "De la magia al eje",
+        "text": ["Imbuí un mecanismo de precisión de Create con amatista y gemas fuente, y armá el [item:ars_technica:source_motor|motor de Fuente] con latón y engranajes. Convierte la Fuente de un frasco en rotación y para cuando se vacía: combustible, no energía gratis."]},
+      "sources": ["jar:ars_technica-1.21.1-2.7.6.jar:data/ars_technica/recipe"]
+    },
+    {
+      "key": "arsadd_technica_glyphs", "role": "tip", "deps": ["arsadd_motor"],
+      "task": {"type": "checkmark"},
+      "at": {"figure": "C", "slot": 1},
+      "en_us": {"title": "Create recipes, cast",
+        "text": ["[tip] Ars Technica glyphs run Create recipes on dropped items: Obliterate crushes, Press presses, Fuse mixes, Whirl washes or smelts by the next glyph. A timer turret over a hopper is a Create machine on Source."]},
+      "es_es": {"title": "Recetas de Create, lanzadas",
+        "text": ["[tip] Los glifos de Ars Technica hacen recetas de Create sobre ítems tirados: Obliterar tritura, Prensar prensa, Fusionar mezcla, Remolino lava o funde según el glifo que sigue. Una torreta con temporizador sobre una tolva es una máquina de Create a Fuente."]},
+      "sources": ["jar:ars_technica-1.21.1-2.7.6.jar:assets/ars_technica/lang/en_us.json"]
+    },
+    {
+      "key": "arsadd_creo", "role": "side", "deps": ["arsadd_motor"], "hide_lines": true,
+      "task": {"item": "ars_creo:starbuncle_wheel"},
+      "at": {"figure": "F", "slot": 0},
+      "en_us": {"title": "A hamster wheel, rebranded",
+        "text": ["A starbuncle charm and a water wheel make a [item:ars_creo:starbuncle_wheel|Starbuncle Wheel]: small rotation, more with a gold block in front. Ars blocks also work on moving contraptions."]},
+      "es_es": {"title": "Una rueda de hámster, con otro nombre",
+        "text": ["Un amuleto de starbuncle y una rueda hidráulica dan una [item:ars_creo:starbuncle_wheel|rueda de starbuncle]: poca rotación, más con un bloque de oro adelante. Los bloques de Ars también andan sobre estructuras móviles."]},
+      "sources": ["jar:ars_creo-1.21.1-5.4.0.jar:data/ars_creo/recipe"]
+    },
+    {
+      "key": "arsadd_ocultas", "role": "side", "deps": ["arsrit_containment"], "hide_lines": true,
+      "task": {"item": "occultism:spirit_attuned_gem"},
+      "at": {"x": -4.96, "y": 13.63},
+      "en_us": {"title": "Spirits in jars",
+        "text": ["Catch an Occultism worker in a containment jar and it keeps working, never decaying, grabbing matching items around the jar. Ars Ocultas also imbues a [item:occultism:spirit_attuned_gem|Spirit Attuned Gem] from a Source Gem: no diamond burned."]},
+      "es_es": {"title": "Espíritus en frascos",
+        "text": ["Atrapá a un trabajador de Occultism en un tarro de contención y sigue trabajando, sin gastarse, levantando los ítems que coinciden alrededor. Ars Ocultas además imbuye una [item:occultism:spirit_attuned_gem|gema espiritual afinada] con una gema fuente: sin quemar diamantes."]},
+      "sources": ["jar:ars_ocultas-1.21.1-2.6.1.jar:data/ars_ocultas/recipe"]
+    },
+    {
+      "key": "arsadd_arseng", "role": "side", "deps": ["arssrc_apparatus"], "hide_lines": true,
+      "task": {"item": "arseng:source_acceptor"},
+      "at": {"x": 12.56, "y": 7.25},
+      "en_us": {"title": "Source in AE2",
+        "text": ["With AE2, the [item:arseng:source_acceptor|ME Source Converter] turns Source from linked jars into AE energy. When the jars run dry, the network stops: a bridge, not a generator."]},
+      "es_es": {"title": "Fuente en AE2",
+        "text": ["Con AE2, el [item:arseng:source_acceptor|Conversor ME de Fuente] vuelve energía de AE la Fuente de los tarros enlazados. Si los tarros se vacían, la red para: un puente, no un generador."]},
+      "sources": ["jar:arseng-2.1.1-beta.jar:assets/arseng/lang/en_us.json"]
+    },
+    {
+      "key": "arsadd_charms", "role": "side", "deps": ["arsspell_mage_book"], "hide_lines": true,
+      "task": {"item": "ars_additions:undying_charm"},
+      "at": {"x": -12.56, "y": 7.25},
+      "en_us": {"title": "Charms with charges",
+        "text": ["Ars Additions makes curios with charges around a bottle in the apparatus. The [item:ars_additions:undying_charm|Charm of Second Wind] saves you from a fatal hit; others cover falls, fire, water and the void. Recharge them in the chamber."]},
+      "es_es": {"title": "Amuletos con cargas",
+        "text": ["Ars Additions fabrica amuletos con cargas alrededor de una botella en el aparato. El [item:ars_additions:undying_charm|amuleto de segundo aire] te salva de un golpe mortal; otros cubren caídas, fuego, agua y el vacío. Se recargan en la cámara."]},
+      "sources": ["jar:ars_additions-1.21.1-21.3.0.jar:data/ars_additions/recipe"]
+    },
+    {
+      "key": "arsadd_remote", "role": "side", "deps": ["arsadd_charms"],
+      "task": {"item": "ars_additions:warp_index"},
+      "at": {"figure": "G", "slot": 0},
+      "en_us": {"title": "Remote access",
+        "text": ["The [item:ars_additions:warp_index|Warp Index] opens your storage lectern from anywhere in the dimension; the stabilised one crosses dimensions. Craft it on a mundane belt with an eye, a crystal and two charms."]},
+      "es_es": {"title": "Acceso remoto",
+        "text": ["El [item:ars_additions:warp_index|índice de teletransporte] abre tu atril de almacenamiento desde cualquier lugar de la dimensión; el estabilizado cruza dimensiones. Se arma sobre un cinturón mundano con un ojo, un cristal y dos amuletos."]},
+      "sources": ["jar:ars_additions-1.21.1-21.3.0.jar:assets/ars_additions/lang/en_us.json"]
+    },
+    {
+      "key": "arsadd_stability", "role": "tip", "deps": ["arsadd_charms"], "hide_lines": true,
+      "task": {"type": "checkmark"},
+      "at": {"x": -14.28, "y": -2.52},
+      "en_us": {"title": "A lag alarm", "subtitle": "On a shared server, a small act of love.",
+        "text": ["[tip] Ars Controle's [item:ars_controle:temporal_stability_sensor|Temporal Stability Sensor] raises its comparator signal as the world nears lag. Wire it to beds, turrets or braziers and your farms rest when the server struggles."]},
+      "es_es": {"title": "Una alarma de lag", "subtitle": "En un servidor compartido, un gesto de amor.",
+        "text": ["[tip] El [item:ars_controle:temporal_stability_sensor|sensor de estabilidad temporal] de Ars Controle sube su señal de comparador cuando el mundo se acerca al lag. Conectalo a camas, torretas o braseros y las granjas descansan cuando el servidor sufre."]},
+      "sources": ["jar:ars_controle-1.21.1-1.6.15.jar:assets/ars_controle/lang/en_us.json"]
+    },
+    {
+      "key": "arsadd_gfocus_fire", "role": "side", "deps": ["arsadd_focus_fire", "arsadd_mark"], "hide_lines": true, "reveal": true,
+      "task": {"item": "ars_elemental:fire_focus"},
+      "at": {"figure": "A", "slot": 0, "out": 2.3},
+      "en_us": {"title": "Major Focus of Fire",
+        "text": ["A Mark of Mastery on your lesser focus at the apparatus, 5000 Source: the [item:ars_elemental:fire_focus|Focus of Fire]. It keeps the school's boosts and adds Spell Damage II while you burn or swim in lava."]},
+      "es_es": {"title": "Foco mayor de fuego",
+        "text": ["Una marca de maestría sobre tu foco menor en el aparato, 5000 de Fuente: el [item:ars_elemental:fire_focus|foco de fuego]. Conserva los empujes de la escuela y suma daño mágico II mientras te quemás o nadás en lava."]},
+      "sources": ["jar:ars_elemental-1.21.1-0.7.10.1.jar:data/ars_elemental/recipe/fire_focus.json", "jar:ars_elemental-1.21.1-0.7.10.1.jar:assets/ars_elemental/lang/en_us.json#tooltip.ars_elemental.focus_element_mana.fire"]
+    },
+    {
+      "key": "arsadd_gfocus_water", "role": "side", "deps": ["arsadd_focus_water", "arsadd_mark"], "hide_lines": true, "reveal": true,
+      "task": {"item": "ars_elemental:water_focus"},
+      "at": {"figure": "A", "slot": 1, "out": 2.3},
+      "en_us": {"title": "Major Focus of Water",
+        "text": ["A Mark of Mastery on your lesser focus at the apparatus, 5000 Source: the [item:ars_elemental:water_focus|Focus of Water]. It keeps the school's boosts and adds Mana Regen I while wet, II and Dolphin's Grace while swimming."]},
+      "es_es": {"title": "Foco mayor de agua",
+        "text": ["Una marca de maestría sobre tu foco menor en el aparato, 5000 de Fuente: el [item:ars_elemental:water_focus|foco de agua]. Conserva los empujes de la escuela y suma regeneración de maná I mojado, II y Gracia de delfín nadando."]},
+      "sources": ["jar:ars_elemental-1.21.1-0.7.10.1.jar:data/ars_elemental/recipe/water_focus.json", "jar:ars_elemental-1.21.1-0.7.10.1.jar:assets/ars_elemental/lang/en_us.json#tooltip.ars_elemental.focus_element_mana.water"]
+    },
+    {
+      "key": "arsadd_gfocus_earth", "role": "side", "deps": ["arsadd_focus_earth", "arsadd_mark"], "hide_lines": true, "reveal": true,
+      "task": {"item": "ars_elemental:earth_focus"},
+      "at": {"figure": "A", "slot": 2, "out": 2.3},
+      "en_us": {"title": "Major Focus of Earth",
+        "text": ["A Mark of Mastery on your lesser focus at the apparatus, 5000 Source: the [item:ars_elemental:earth_focus|Focus of Earth]. It keeps the school's boosts and adds Mana Regen I below Y 0."]},
+      "es_es": {"title": "Foco mayor de tierra",
+        "text": ["Una marca de maestría sobre tu foco menor en el aparato, 5000 de Fuente: el [item:ars_elemental:earth_focus|foco de tierra]. Conserva los empujes de la escuela y suma regeneración de maná I por debajo de Y 0."]},
+      "sources": ["jar:ars_elemental-1.21.1-0.7.10.1.jar:data/ars_elemental/recipe/earth_focus.json", "jar:ars_elemental-1.21.1-0.7.10.1.jar:assets/ars_elemental/lang/en_us.json#tooltip.ars_elemental.focus_element_mana.earth"]
+    },
+    {
+      "key": "arsadd_gfocus_air", "role": "side", "deps": ["arsadd_focus_air", "arsadd_mark"], "hide_lines": true, "reveal": true,
+      "task": {"item": "ars_elemental:air_focus"},
+      "at": {"figure": "A", "slot": 3, "out": 2.3},
+      "en_us": {"title": "Major Focus of Air",
+        "text": ["A Mark of Mastery on your lesser focus at the apparatus, 5000 Source: the [item:ars_elemental:air_focus|Focus of Air]. It keeps the school's boosts and adds Mana Regen I high in the sky."]},
+      "es_es": {"title": "Foco mayor de aire",
+        "text": ["Una marca de maestría sobre tu foco menor en el aparato, 5000 de Fuente: el [item:ars_elemental:air_focus|foco de aire]. Conserva los empujes de la escuela y suma regeneración de maná I en lo alto del cielo."]},
+      "sources": ["jar:ars_elemental-1.21.1-0.7.10.1.jar:data/ars_elemental/recipe/air_focus.json", "jar:ars_elemental-1.21.1-0.7.10.1.jar:assets/ars_elemental/lang/en_us.json#tooltip.ars_elemental.focus_element_mana.air"]
+    },
+    {
+      "key": "arsadd_necrotic", "role": "side", "deps": ["arswild_focus"], "hide_lines": true,
+      "task": {"item": "ars_elemental:necrotic_focus"},
+      "at": {"x": 0, "y": -19.7},
+      "en_us": {"title": "The fifth school", "subtitle": "Your wolves come back. Angrier.",
+        "text": ["Two wither roses, a wither skeleton skull and anima essence on a Focus of Summoning: the [item:ars_elemental:necrotic_focus|Focus of Necromancy]. Summons that die rise once more, cast your homing spells and heal you when they kill."]},
+      "es_es": {"title": "La quinta escuela", "subtitle": "Tus lobos vuelven. Más enojados.",
+        "text": ["Dos rosas marchitas, un cráneo de esqueleto wither y esencia de ánima sobre un foco de invocación: el [item:ars_elemental:necrotic_focus|Foco de nigromancia]. Las invocaciones que mueren se levantan una vez más, lanzan tus hechizos teledirigidos y te curan cuando matan."]},
+      "sources": ["jar:ars_elemental-1.21.1-0.7.10.1.jar:data/ars_elemental/recipe/necrotic_focus.json", "jar:ars_elemental-1.21.1-0.7.10.1.jar:assets/ars_elemental/lang/en_us.json#ars_elemental.page1.necrotic_focus"]
+    },
+    {
+      "key": "arsadd_pouch", "role": "entry", "deps": ["arssrc_fiber"], "hide_lines": true,
+      "task": {"item": "ars_elemental:curio_bag"},
+      "at": {"x": 9.32, "y": -11.11},
+      "en_us": {"title": "Trinkets Pouch", "subtitle": "For the jewelry you forgot you had.",
+        "text": ["A chest wrapped in eight [item:ars_nouveau:magebloom_fiber|Magebloom Fiber]: the [item:ars_elemental:curio_bag|Trinkets Pouch], a bag only for magical trinkets. Rings, amulets, charms and foci stop eating inventory slots."]},
+      "es_es": {"title": "Bolsa de chucherías", "subtitle": "Para las alhajas que no sabías que tenías.",
+        "text": ["Un cofre envuelto en ocho [item:ars_nouveau:magebloom_fiber|Fibras Magebloom]: la [item:ars_elemental:curio_bag|Bolsa de chucherías], sólo para accesorios mágicos. Anillos, amuletos, amuletos de carga y focos dejan de ocupar el inventario."]},
+      "sources": ["jar:ars_elemental-1.21.1-0.7.10.1.jar:data/ars_elemental/recipe/curio_bag.json", "jar:ars_elemental-1.21.1-0.7.10.1.jar:assets/ars_elemental/lang/en_us.json#ars_elemental.page.curio_bag"]
+    },
+    {
+      "key": "arsadd_caster_bag", "role": "side", "deps": ["arsadd_pouch"],
+      "task": {"item": "ars_elemental:caster_bag"},
+      "at": {"figure": "B", "slot": 0},
+      "en_us": {"title": "Spellcaster Bag",
+        "text": ["Two manipulation essences, blaze powder and two gold blocks turn the pouch into a [item:ars_elemental:caster_bag|Spellcaster Bag]: the same trinket storage, for the parchments, tomes and wands you carry."]},
+      "es_es": {"title": "Bolsa del hechicero",
+        "text": ["Dos esencias de manipulación, polvo de blaze y dos bloques de oro vuelven la bolsa una [item:ars_elemental:caster_bag|Bolsa del hechicero]: el mismo guardado, para los pergaminos, tomos y varitas que llevás encima."]},
+      "sources": ["jar:ars_elemental-1.21.1-0.7.10.1.jar:data/ars_elemental/recipe/caster_bag.json"]
+    },
+    {
+      "key": "arsadd_bangle", "role": "side", "deps": ["arsadd_pouch"],
+      "task": {"item": "ars_elemental:base_bangle"},
+      "at": {"figure": "B", "slot": 1},
+      "en_us": {"title": "Enchanter's Bangle",
+        "text": ["An end crystal, two gold blocks and a Source block on a Ring of Potential: the [item:ars_elemental:base_bangle|Enchanter's Bangle], a chance to boost any spell. Attune it with a school's essences for a steady boost and that element's side effect."]},
+      "es_es": {"title": "Brazalete del encantador",
+        "text": ["Un cristal del End, dos bloques de oro y uno de Fuente sobre un anillo de potencial: el [item:ars_elemental:base_bangle|Brazalete del encantador], una chance de potenciar cualquier hechizo. Afinalo con las esencias de una escuela para un empuje fijo y el efecto de ese elemento."]},
+      "sources": ["jar:ars_elemental-1.21.1-0.7.10.1.jar:data/ars_elemental/recipe/base_bangle.json", "jar:ars_elemental-1.21.1-0.7.10.1.jar:assets/ars_elemental/lang/en_us.json#ars_elemental.page1.base_bangle"]
+    },
+    {
+      "key": "arsadd_relays", "role": "side", "deps": ["arsadd_pouch"],
+      "task": {"item": "ars_elemental:air_relay"},
+      "at": {"figure": "B", "slot": 2},
+      "en_us": {"title": "Relays with an element",
+        "text": ["Two essences and two diamonds on a relay raise its capacity and speed. The warper version, the [item:ars_elemental:air_relay|Wind Warper Relay], also stops losing Source over long jumps."]},
+      "es_es": {"title": "Relés con elemento",
+        "text": ["Dos esencias y dos diamantes sobre un relé le suben capacidad y velocidad. La versión de teletransporte, el [item:ars_elemental:air_relay|Relé de viento], además deja de perder Fuente en los saltos largos."]},
+      "sources": ["jar:ars_elemental-1.21.1-0.7.10.1.jar:data/ars_elemental/recipe/air_relay.json", "jar:ars_elemental-1.21.1-0.7.10.1.jar:assets/ars_elemental/lang/en_us.json#ars_elemental.page1.elemental_relays"]
+    },
+    {
+      "key": "arsadd_upstream", "role": "side", "deps": ["arsadd_pouch"],
+      "task": {"item": "ars_elemental:water_upstream", "count": 4},
+      "at": {"figure": "B", "slot": 3},
+      "en_us": {"title": "Elevators by current",
+        "text": ["Soul sand, air and water essence and four prismarine shards: a [item:ars_elemental:water_upstream|Bubble Current Elevator]. It lifts anyone in water, even flowing water; stack them for height, sneak to go down."]},
+      "es_es": {"title": "Ascensores de corriente",
+        "text": ["Arena de almas, esencia de aire y de agua y cuatro fragmentos de prismarina: un [item:ars_elemental:water_upstream|Elevador de burbujas]. Sube a cualquiera en el agua, aunque no sea fuente; apilalos para más altura y agachate para bajar."]},
+      "sources": ["jar:ars_elemental-1.21.1-0.7.10.1.jar:data/ars_elemental/recipe/water_upstream.json", "jar:ars_elemental-1.21.1-0.7.10.1.jar:assets/ars_elemental/lang/en_us.json#ars_elemental.page1.upstream_blocks"]
+    },
+    {
+      "key": "arsadd_urn", "role": "side", "deps": ["arsadd_pouch"],
+      "task": {"item": "ars_elemental:everfull_urn"},
+      "at": {"figure": "B", "slot": 4},
+      "en_us": {"title": "Urn of Endless Waters",
+        "text": ["A flower pot with a Source Gem, two water essences and two prismarine shards: the [item:ars_elemental:everfull_urn|Urn of Endless Waters]. Link a cauldron to it with the dominion wand and it stays full for a little Source."]},
+      "es_es": {"title": "La urna de aguas eternas",
+        "text": ["Una maceta con una gema fuente, dos esencias de agua y dos fragmentos de prismarina: la [item:ars_elemental:everfull_urn|Urna de aguas eternas]. Enlazale un caldero con la varita de dominio y lo mantiene lleno por un poco de Fuente."]},
+      "sources": ["jar:ars_elemental-1.21.1-0.7.10.1.jar:data/ars_elemental/recipe/everfull_urn.json", "jar:ars_elemental-1.21.1-0.7.10.1.jar:assets/ars_elemental/lang/en_us.json#ars_elemental.page.everfull_urn"]
+    },
+    {
+      "key": "arsadd_siren", "role": "side", "deps": ["arsadd_pouch"],
+      "task": {"item": "ars_elemental:siren_charm"},
+      "at": {"figure": "B", "slot": 5},
+      "en_us": {"title": "A siren of your own", "subtitle": "Pays in pickles.",
+        "text": ["Sirens swim near coral. Give one a sea pickle for shards, then add prismarine, fish and Source Gems at the apparatus: a [item:ars_elemental:siren_charm|Siren Charm]. On prismarine it becomes a shrine that fishes for you."]},
+      "es_es": {"title": "Una sirena propia", "subtitle": "Cobra en pepinos de mar.",
+        "text": ["Las sirenas nadan cerca del coral. Dale un pepino de mar a una para sacarle fragmentos y sumá prismarina, pescado y gemas fuente en el aparato: un [item:ars_elemental:siren_charm|Amuleto de sirena]. Sobre prismarina se vuelve un santuario que pesca por vos."]},
+      "sources": ["jar:ars_elemental-1.21.1-0.7.10.1.jar:data/ars_elemental/recipe/siren_charm.json", "jar:ars_elemental-1.21.1-0.7.10.1.jar:assets/ars_elemental/lang/en_us.json#ars_elemental.page1.siren_charm"]
+    },
+    {
+      "key": "arsadd_forms", "role": "side", "deps": ["arsadd_pouch"],
+      "tasks": [{"item": "ars_elemental:glyph_arc_projectile"}, {"item": "ars_elemental:glyph_homing_projectile"}],
+      "at": {"figure": "B", "slot": 6},
+      "en_us": {"title": "Two new ways to throw",
+        "text": ["[item:ars_elemental:glyph_arc_projectile|Arc Projectile] falls with gravity and bounces once per Pierce. [item:ars_elemental:glyph_homing_projectile|Homing Projectile] chases the nearest creature; it costs a Nether Star at the scribe's table."]},
+      "es_es": {"title": "Dos formas nuevas de tirar",
+        "text": ["[item:ars_elemental:glyph_arc_projectile|Proyectil en arco] cae con gravedad y rebota una vez por cada Atravesar. [item:ars_elemental:glyph_homing_projectile|Proyectil teledirigido] persigue a la criatura más cercana; en la mesa de escriba cuesta una estrella del Nether."]},
+      "sources": ["jar:ars_elemental-1.21.1-0.7.10.1.jar:data/ars_elemental/recipe/glyph_arc_projectile.json", "jar:ars_elemental-1.21.1-0.7.10.1.jar:data/ars_elemental/recipe/glyph_homing_projectile.json"]
+    },
+    {
+      "key": "arsadd_calibrated", "role": "milestone", "deps": ["cbr_precision"], "hide_lines": true,
+      "task": {"item": "ars_technica:calibrated_precision_mechanism"},
+      "at": {"x": 14.28, "y": -2.52},
+      "en_us": {"title": "Calibrated Precision Mechanism",
+        "text": ["A Create precision mechanism on the apparatus with four amethyst shards and four Source Gems, 500 Source: the [item:ars_technica:calibrated_precision_mechanism|Calibrated Precision Mechanism]. Every Ars Technica machine starts from one."]},
+      "es_es": {"title": "Mecanismo de precisión calibrado",
+        "text": ["Un mecanismo de precisión de Create en el aparato con cuatro fragmentos de amatista y cuatro gemas fuente, 500 de Fuente: el [item:ars_technica:calibrated_precision_mechanism|Mecanismo de precisión calibrado]. Toda máquina de Ars Technica arranca de uno."]},
+      "sources": ["jar:ars_technica-1.21.1-2.7.6.jar:data/ars_technica/recipe/calibrated_precision_mechanism.json"]
+    },
+    {
+      "key": "arsadd_wrench", "role": "side", "deps": ["arsadd_calibrated"],
+      "task": {"item": "ars_technica:runic_spanner"},
+      "at": {"figure": "C", "slot": 2},
+      "en_us": {"title": "Arcane Wrench",
+        "text": ["Enchant a Create wrench at the apparatus: the [item:ars_technica:runic_spanner|Arcane Wrench]. Sneak-use picks up pedestals, turrets and containment jars; on a relay it makes a Precise Relay with a cooldown you set."]},
+      "es_es": {"title": "Llave arcana",
+        "text": ["Encantá una llave de Create en el aparato: la [item:ars_technica:runic_spanner|Llave arcana]. Agachado levanta pedestales, torretas y tarros de contención; sobre un relé lo vuelve un relé preciso con la espera que elijas."]},
+      "sources": ["jar:ars_technica-1.21.1-2.7.6.jar:assets/ars_technica/lang/en_us.json#ars_technica.page2.arcane_wrench"]
+    },
+    {
+      "key": "arsadd_transmutation", "role": "side", "deps": ["arsadd_calibrated"],
+      "task": {"item": "ars_technica:transmutation_focus"},
+      "at": {"figure": "C", "slot": 3},
+      "en_us": {"title": "Focus of Transmutation",
+        "text": ["Brass, a rabbit's foot, a calibrated mechanism and an emerald on manipulation essence: the [item:ars_technica:transmutation_focus|Focus of Transmutation]. Each glyph gets a free Luck, and Press, Polish and Whirl run twice as fast."]},
+      "es_es": {"title": "Foco de transmutación",
+        "text": ["Latón, una pata de conejo, un mecanismo calibrado y una esmeralda sobre esencia de manipulación: el [item:ars_technica:transmutation_focus|Foco de transmutación]. Cada glifo gana una Suerte gratis, y Prensar, Pulir y Remolino van al doble de velocidad."]},
+      "sources": ["jar:ars_technica-1.21.1-2.7.6.jar:data/ars_technica/recipe/transmutation_focus.json", "jar:ars_technica-1.21.1-2.7.6.jar:assets/ars_technica/lang/en_us.json#ars_technica.tooltip.transmutation_focus_shift_info_speed"]
+    },
+    {
+      "key": "arsadd_technomancy", "role": "milestone", "deps": ["arsadd_calibrated"],
+      "task": {"item": "ars_technica:mark_of_technomancy"},
+      "at": {"figure": "C", "slot": 4},
+      "en_us": {"title": "Mark of Technomancy", "subtitle": "Half wizard, half mechanic.",
+        "text": ["A Wilden Tribute with both mechanisms, manipulation essence, iron, copper, zinc, and brass and gold plates, 10000 Source: the [item:ars_technica:mark_of_technomancy|Mark of Technomancy]. With netherite and brass it turns Arcanist robes into Technomancer's."]},
+      "es_es": {"title": "Marca de tecnomancia", "subtitle": "Mitad mago, mitad mecánico.",
+        "text": ["Un Tributo Salvaje con los dos mecanismos, esencia de manipulación, hierro, cobre, cinc y placas de latón y oro, 10000 de Fuente: la [item:ars_technica:mark_of_technomancy|Marca de tecnomancia]. Con netherita y latón vuelve los ropajes de arcanista ropajes de tecnomante."]},
+      "sources": ["jar:ars_technica-1.21.1-2.7.6.jar:data/ars_technica/recipe/mark_of_technomancy.json", "jar:ars_technica-1.21.1-2.7.6.jar:data/ars_technica/recipe/technomancer_chestplate_default.json"]
+    },
+    {
+      "key": "arsadd_me_jar", "role": "side", "deps": ["arsadd_arseng"],
+      "task": {"item": "arseng:me_source_jar"},
+      "at": {"figure": "D", "slot": 1},
+      "en_us": {"title": "A jar on the network",
+        "text": ["A Source Jar with manipulation essence and an ME Interface: the [item:arseng:me_source_jar|ME Source Jar]. Rituals, the apparatus and relays pull Source from it as if it were any jar, and it refills from your ME drives."]},
+      "es_es": {"title": "Un tarro en la red",
+        "text": ["Un tarro de Fuente con esencia de manipulación y una interfaz ME: el [item:arseng:me_source_jar|Tarro ME de Fuente]. Rituales, aparato y relés le sacan Fuente como a cualquier tarro, y se rellena desde tus unidades ME."]},
+      "sources": ["jar:arseng-2.1.1-beta.jar:data/arseng/recipe/me_source_jar.json"]
+    },
+    {
+      "key": "arsadd_source_cells", "role": "side", "deps": ["arsadd_arseng"],
+      "task": {"item": "arseng:source_storage_cell_1k"},
+      "at": {"figure": "D", "slot": 2},
+      "en_us": {"title": "Source by the kilobyte",
+        "text": ["An item cell housing with manipulation essence, Source Gems and gold becomes an [item:arseng:source_cell_housing|ME Source Cell Housing]; add a cell component for a [item:arseng:source_storage_cell_1k|1k Source Storage Cell]. Drives then hold Source like items."]},
+      "es_es": {"title": "Fuente por kilobyte",
+        "text": ["Una carcasa de celda de ítems con esencia de manipulación, gemas fuente y oro se vuelve una [item:arseng:source_cell_housing|Carcasa ME de celda de Fuente]; con un componente, una [item:arseng:source_storage_cell_1k|Celda de Fuente de 1k]. Las unidades guardan Fuente como ítems."]},
+      "sources": ["jar:arseng-2.1.1-beta.jar:data/arseng/recipe/source_cell_housing.json", "jar:arseng-2.1.1-beta.jar:data/arseng/recipe/source_storage_cell_1k.json"]
+    },
+    {
+      "key": "arsadd_fluid_jar", "role": "milestone", "deps": ["arsauto_starby_charm"], "hide_lines": true,
+      "task": {"item": "starbunclemania:fluid_jar"},
+      "at": {"x": 4.96, "y": 13.63},
+      "en_us": {"title": "Fluid Jar",
+        "text": ["Gold, glass, a water essence and blue archwood: the [item:starbunclemania:fluid_jar|Fluid Jar], sixteen buckets of any fluid. A potion fluid inside feeds a Potion Jar placed on top."]},
+      "es_es": {"title": "Tarro de fluidos",
+        "text": ["Oro, vidrio, una esencia de agua y archwood azul: el [item:starbunclemania:fluid_jar|Tarro de fluidos], dieciséis baldes de cualquier fluido. Una poción líquida adentro alimenta un tarro de pociones puesto arriba."]},
+      "sources": ["jar:starbunclemania-1.21.1-1.5.7.jar:data/starbunclemania/recipe/fluid_jar.json", "jar:starbunclemania-1.21.1-1.5.7.jar:assets/starbunclemania/lang/en_us.json#starbunclemania.page.fluid_jar"]
+    },
+    {
+      "key": "arsadd_star_jobs", "role": "side", "deps": ["arsadd_fluid_jar"],
+      "tasks": [{"item": "starbunclemania:star_bucket"}, {"item": "starbunclemania:star_battery"}],
+      "at": {"figure": "E", "slot": 0},
+      "en_us": {"title": "New jobs for starbuncles", "subtitle": "Same pay, more paperwork.",
+        "text": ["Give a starbuncle a [item:starbunclemania:star_bucket|Starbucket] and it carries fluids; a [item:starbunclemania:star_battery|StarbAttery], and it carries FE. Sneak while giving it for looks only."]},
+      "es_es": {"title": "Oficios nuevos para starbuncles", "subtitle": "Mismo sueldo, más papeleo.",
+        "text": ["Dale a un starbuncle un [item:starbunclemania:star_bucket|Starbalde] y lleva fluidos; una [item:starbunclemania:star_battery|Starbatería], y lleva FE. Agachado al dárselo, es sólo de adorno."]},
+      "sources": ["jar:starbunclemania-1.21.1-1.5.7.jar:assets/starbunclemania/lang/en_us.json#starbunclemania.bucket.tooltip", "jar:starbunclemania-1.21.1-1.5.7.jar:assets/starbunclemania/lang/en_us.json#starbunclemania.battery.tooltip"]
+    },
+    {
+      "key": "arsadd_fluid_link", "role": "side", "deps": ["arsadd_fluid_jar"],
+      "task": {"item": "starbunclemania:fluid_sourcelink"},
+      "at": {"figure": "E", "slot": 1},
+      "en_us": {"title": "Source from fluids",
+        "text": ["A bucket of liquid Source between gold and Source Gems: the [item:starbunclemania:fluid_sourcelink|Fluid Sourcelink]. It burns fluids for Source and drains tanks placed under it."]},
+      "es_es": {"title": "Fuente de fluidos",
+        "text": ["Un balde de Fuente líquida entre oro y gemas fuente: el [item:starbunclemania:fluid_sourcelink|Generador fluido]. Quema fluidos a cambio de Fuente y vacía los tanques que tenga abajo."]},
+      "sources": ["jar:starbunclemania-1.21.1-1.5.7.jar:data/starbunclemania/recipe/fluid_sourcelink.json", "jar:starbunclemania-1.21.1-1.5.7.jar:assets/starbunclemania/lang/en_us.json#starbunclemania.page.fluid_sourcelink"]
+    },
+    {
+      "key": "arsadd_condenser", "role": "side", "deps": ["arsadd_fluid_jar"],
+      "task": {"item": "starbunclemania:source_condenser"},
+      "at": {"figure": "E", "slot": 2},
+      "en_us": {"title": "Liquid Source",
+        "text": ["A Fluid Jar crafted with a relay: the [item:starbunclemania:source_condenser|Source Condenser]. It condenses Source from nearby jars into a fluid and pours it into tanks below; pipe it anywhere."]},
+      "es_es": {"title": "Fuente líquida",
+        "text": ["Un tarro de fluidos fabricado con un relé: el [item:starbunclemania:source_condenser|Condensador de Fuente]. Condensa la Fuente de los tarros cercanos en un fluido y la vuelca en los tanques de abajo; mandala por caño adonde quieras."]},
+      "sources": ["jar:starbunclemania-1.21.1-1.5.7.jar:data/starbunclemania/recipe/source_condenser.json", "jar:starbunclemania-1.21.1-1.5.7.jar:assets/starbunclemania/lang/en_us.json#starbunclemania.page.source_condenser"]
+    },
+    {
+      "key": "arsadd_wixie_stations", "role": "side", "deps": ["arsadd_fluid_jar"],
+      "task": {"type": "advancement", "advancement": "ars_nouveau:wixie_cook", "icon": "starbunclemania:cooking_pot_wixie_cauldron"},
+      "at": {"figure": "E", "slot": 3},
+      "en_us": {"title": "Wixie workstations",
+        "text": ["Put a Wixie on a furnace, a crucible or a cooking pot and it works that station instead of the cauldron. On a fluid jar it mixes; on a stonecutter or cutting board it cuts."]},
+      "es_es": {"title": "Estaciones de wixie",
+        "text": ["Poné una wixie sobre un horno, un crisol o una olla y trabaja esa estación en vez del caldero. Sobre un tarro de fluidos mezcla; sobre un cortapiedras o una tabla de cortar, corta."]},
+      "sources": ["jar:starbunclemania-1.21.1-1.5.7.jar:data/ars_nouveau/advancement/wixie_cook.json", "jar:starbunclemania-1.21.1-1.5.7.jar:assets/starbunclemania/lang/en_us.json#starbunclemania.adv.desc.wixie_cook"]
+    },
+    {
+      "key": "arsadd_scrolls", "role": "side", "deps": ["arsadd_fluid_jar"],
+      "tasks": [{"item": "starbunclemania:fluid_scroll_allow"}, {"item": "starbunclemania:direction_scroll"}],
+      "at": {"figure": "E", "slot": 5},
+      "en_us": {"title": "Paperwork for fluids",
+        "text": ["Parchment with a water essence makes a [item:starbunclemania:fluid_scroll_allow|Fluid Scroll], a filter for fluid starbuncles. Parchment and a compass, a [item:starbunclemania:direction_scroll|Direction Scroll]: it picks which face of a block they use."]},
+      "es_es": {"title": "Papeleo para fluidos",
+        "text": ["Pergamino con una esencia de agua hace un [item:starbunclemania:fluid_scroll_allow|Pergamino de fluidos], filtro para starbuncles de fluidos. Pergamino y una brújula, un [item:starbunclemania:direction_scroll|Pergamino de dirección]: elige de qué cara del bloque trabajan."]},
+      "sources": ["jar:starbunclemania-1.21.1-1.5.7.jar:data/starbunclemania/recipe/fluid_scroll_allow.json", "jar:starbunclemania-1.21.1-1.5.7.jar:assets/starbunclemania/lang/en_us.json#starbunclemania.page.direction_scroll"]
+    },
+    {
+      "key": "arsadd_pie_bounty", "role": "bounty", "deps": ["arsadd_wixie_stations"],
+      "task": {"item": "ars_nouveau:source_berry_pie", "count": 16, "consume": true},
+      "at": {"figure": "E", "slot": 4},
+      "en_us": {"title": "Pie day", "subtitle": "The circle has a sweet tooth.",
+        "text": ["Sixteen [item:ars_nouveau:source_berry_pie|Source Berry Pies] for the common store: egg, sugar, magebloom and three sourceberries each. A Wixie on a cooking pot bakes them while you work."]},
+      "es_es": {"title": "Día de tarta", "subtitle": "El círculo es goloso.",
+        "text": ["Dieciséis [item:ars_nouveau:source_berry_pie|Tartas de bayas fuente] para el depósito común: huevo, azúcar, magebloom y tres bayas fuente cada una. Una wixie sobre una olla las hornea mientras trabajás."]},
+      "sources": ["jar:ars_nouveau-1.21.1-5.13.1.jar:data/ars_nouveau/recipe/source_berry_pie.json"]
+    },
+    {
+      "key": "arsadd_altar", "role": "side", "deps": ["arsadd_ocultas"],
+      "task": {"item": "ars_ocultas:altar"},
+      "at": {"figure": "F", "slot": 1},
+      "en_us": {"title": "Sacrificial Altar",
+        "text": ["Occultism's golden sacrificial bowl rebuilt at the apparatus with four silver ingots, a drygmy shard, sourcestone and a containment jar, 5000 Source: the [item:ars_ocultas:altar|Sacrificial Altar]. The same bridge also swaps gold and silver by imbuement."]},
+      "es_es": {"title": "Altar de sacrificio",
+        "text": ["El cuenco de sacrificio dorado de Occultism rehecho en el aparato con cuatro lingotes de plata, un fragmento de drygmy, sourcestone y un tarro de contención, 5000 de Fuente: el [item:ars_ocultas:altar|Altar de sacrificio]. El mismo puente cambia oro por plata, y al revés, por imbuición."]},
+      "sources": ["jar:ars_ocultas-1.21.1-2.6.1.jar:data/ars_ocultas/recipe/altar.json", "jar:ars_ocultas-1.21.1-2.6.1.jar:data/ars_ocultas/recipe/silver_transmute.json"]
+    },
+    {
+      "key": "arsadd_ender_jar", "role": "side", "deps": ["arsadd_charms"],
+      "task": {"item": "ars_additions:ender_source_jar"},
+      "at": {"figure": "G", "slot": 1},
+      "en_us": {"title": "One pool, many jars",
+        "text": ["Four ender pearls and four popped chorus fruits on a Source Jar: an [item:ars_additions:ender_source_jar|Ender Source Jar]. Every one you place shares the same pool, so the base's Source reaches your outposts."]},
+      "es_es": {"title": "Una reserva, muchos tarros",
+        "text": ["Cuatro perlas de ender y cuatro frutas coral reventadas sobre un tarro de Fuente: un [item:ars_additions:ender_source_jar|Tarro de Fuente del End]. Todos los que pongas comparten la misma reserva, así la Fuente de la base llega a los puestos."]},
+      "sources": ["jar:ars_additions-1.21.1-21.3.0.jar:data/ars_additions/recipe/apparatus/ender_source_jar.json", "jar:ars_additions-1.21.1-21.3.0.jar:assets/ars_additions/lang/en_us.json#ars_additions.page.ender_source_jar"]
+    },
+    {
+      "key": "arsadd_haversack", "role": "side", "deps": ["arsadd_charms"],
+      "task": {"item": "ars_additions:handy_haversack"},
+      "at": {"figure": "G", "slot": 2},
+      "en_us": {"title": "Handy Haversack", "subtitle": "Your chest, on your back.",
+        "text": ["Bind the [item:ars_additions:handy_haversack|Handy Haversack] to a container, then use items on it to send them there from anywhere. When that container's chunk unloads, the haversack closes."]},
+      "es_es": {"title": "Morral práctico", "subtitle": "Tu cofre, en la espalda.",
+        "text": ["Enlazá el [item:ars_additions:handy_haversack|Morral práctico] a un contenedor y usá ítems sobre él para mandarlos ahí desde cualquier lado. Si el chunk del contenedor se descarga, el morral se cierra."]},
+      "sources": ["jar:ars_additions-1.21.1-21.3.0.jar:data/ars_additions/recipe/handy_haversack.json", "jar:ars_additions-1.21.1-21.3.0.jar:assets/ars_additions/lang/en_us.json#ars_additions.page.handy_haversack"]
+    },
+    {
+      "key": "arsadd_spawner", "role": "side", "deps": ["arsadd_charms"],
+      "task": {"item": "ars_additions:source_spawner"},
+      "at": {"figure": "G", "slot": 3},
+      "en_us": {"title": "Source Spawner",
+        "text": ["A Drygmy Charm with a Focus of Summoning and conjuration essence: the [item:ars_additions:source_spawner|Source Spawner]. It spawns whatever sits in nearby Containment Jars and pays each mob in Source."]},
+      "es_es": {"title": "Generador de criaturas",
+        "text": ["Un amuleto de drygmy con un foco de invocación y esencia de conjuración: el [item:ars_additions:source_spawner|Generador de Fuente]. Hace aparecer lo que haya en los tarros de contención cercanos y paga cada criatura con Fuente."]},
+      "sources": ["jar:ars_additions-1.21.1-21.3.0.jar:data/ars_additions/recipe/apparatus/source_spawner.json", "jar:ars_additions-1.21.1-21.3.0.jar:assets/ars_additions/lang/en_us.json#ars_additions.page.source_spawner"]
+    },
+    {
+      "key": "arsadd_wayfinder", "role": "side", "deps": ["arsadd_charms"],
+      "tasks": [{"item": "ars_additions:wayfinder"}, {"item": "ars_additions:ritual_locate_structure"}],
+      "at": {"figure": "G", "slot": 4},
+      "en_us": {"title": "Finding places",
+        "text": ["Gold around an amethyst shard makes a [item:ars_additions:wayfinder|Wayfinder]. With a compass, a Source Gem and purple archwood it becomes the [item:ars_additions:ritual_locate_structure|Locate Structure] tablet: the augments pick what to find."]},
+      "es_es": {"title": "Encontrar lugares",
+        "text": ["Oro alrededor de un fragmento de amatista hace un [item:ars_additions:wayfinder|Buscarrutas]. Con una brújula, una gema fuente y archwood violeta se vuelve la tableta de [item:ars_additions:ritual_locate_structure|Localizar estructura]: los aumentos eligen qué buscar."]},
+      "sources": ["jar:ars_additions-1.21.1-21.3.0.jar:data/ars_additions/recipe/wayfinder.json", "jar:ars_additions-1.21.1-21.3.0.jar:data/ars_additions/recipe/ritual/ritual_locate_structure.json"]
+    },
+    {
+      "key": "arsadd_permanence", "role": "side", "deps": ["arsadd_charms"],
+      "task": {"item": "ars_additions:ritual_chunk_loading"},
+      "at": {"figure": "G", "slot": 5},
+      "en_us": {"title": "Arcane Permanence",
+        "text": ["Blue archwood, a Nether Star, a Source Gem and earth essence: [item:ars_additions:ritual_chunk_loading|Arcane Permanence]. While fed a steady stream of Source, it keeps the chunks around the brazier loaded."]},
+      "es_es": {"title": "Permanencia arcana",
+        "text": ["Archwood azul, una estrella del Nether, una gema fuente y esencia de tierra: [item:ars_additions:ritual_chunk_loading|Permanencia arcana]. Mientras reciba Fuente sin parar, mantiene cargados los chunks alrededor del brasero."]},
+      "sources": ["jar:ars_additions-1.21.1-21.3.0.jar:data/ars_additions/recipe/ritual/ritual_chunk_loading.json", "jar:ars_additions-1.21.1-21.3.0.jar:assets/ars_additions/lang/en_us.json#ars_additions.ritual_desc.ritual_chunk_loading"]
+    },
+    {
+      "key": "arsadd_nexus", "role": "secret", "deps": ["arsadd_charms"],
+      "task": {"type": "structure", "structure": "ars_additions:nexus_tower"},
+      "icon": "ars_additions:warp_nexus",
+      "at": {"figure": "G", "slot": 6},
+      "en_us": {"title": "Nexus Tower", "subtitle": "Built on a leyline, no rent due.",
+        "text": ["You found a Nexus Tower. Its Warp Nexus holds nine warp scrolls and, sitting on a leyline, teleports for free; moved anywhere else it costs 1000 Source per jump."]},
+      "es_es": {"title": "Torre del nexo", "subtitle": "Sobre una línea ley, sin alquiler.",
+        "text": ["Encontraste una torre del nexo. Su nexo de teletransporte guarda nueve pergaminos y, sobre una línea ley, teletransporta gratis; movido a otro lado, cuesta 1000 de Fuente por salto."]},
+      "sources": ["jar:ars_additions-1.21.1-21.3.0.jar:data/ars_additions/worldgen/structure/nexus_tower.json", "jar:ars_additions-1.21.1-21.3.0.jar:assets/ars_additions/lang/en_us.json#ars_additions.page2.warp_nexus"]
+    },
+    {
+      "key": "arsadd_ruined_portal", "role": "secret", "deps": ["arsadd_charms"],
+      "task": {"type": "advancement", "advancement": "ars_additions:find_ruined_portal"},
+      "at": {"figure": "G", "slot": 7},
+      "en_us": {"title": "A portal that still hums", "subtitle": "Mind the gap.",
+        "text": ["You found a ruined warp portal. Throw an Explorer's Warp Scroll into its frame and it drops you near a structure: which one, the scroll decides."]},
+      "es_es": {"title": "Un portal que todavía zumba", "subtitle": "Cuidado con el escalón.",
+        "text": ["Encontraste un portal de teletransporte en ruinas. Tirá un pergamino de explorador en su marco y te deja cerca de una estructura: cuál, lo decide el pergamino."]},
+      "sources": ["jar:ars_additions-1.21.1-21.3.0.jar:data/ars_additions/advancement/find_ruined_portal.json", "jar:ars_additions-1.21.1-21.3.0.jar:assets/ars_additions/lang/en_us.json#tooltip.ars_additions.exploration_warp_scroll.use"]
+    },
+    {
+      "key": "arsadd_controle_remote", "role": "side", "deps": ["arsadd_stability"],
+      "task": {"item": "ars_controle:remote"},
+      "at": {"figure": "H", "slot": 1},
+      "en_us": {"title": "The dominion wand, from afar",
+        "text": ["A dominion wand with four ender pearls and four popped chorus fruits: the [item:ars_controle:remote|Remote]. Select a block or creature once, then configure it from anywhere, like the wand at arm's length."]},
+      "es_es": {"title": "La varita de dominio, a distancia",
+        "text": ["Una varita de dominio con cuatro perlas de ender y cuatro frutas coral reventadas: el [item:ars_controle:remote|Control remoto]. Seleccioná un bloque o una criatura una vez y configurala desde cualquier lado, como la varita pero de lejos."]},
+      "sources": ["jar:ars_controle-1.21.1-1.6.15.jar:data/ars_controle/recipe/remote.json", "jar:ars_controle-1.21.1-1.6.15.jar:assets/ars_controle/lang/en_us.json#ars_nouveau.page1.item.ars_controle.remote"]
+    },
+    {
+      "key": "arsadd_linkage", "role": "side", "deps": ["arsadd_stability"],
+      "task": {"item": "ars_controle:scryers_linkage"},
+      "at": {"figure": "H", "slot": 2},
+      "en_us": {"title": "Scryer's Linkage",
+        "text": ["Ender pearls and popped chorus on a Scry Crystal: the [item:ars_controle:scryers_linkage|Scryer's Linkage]. Link it to a distant block with the dominion wand and machines at the linkage reach that block's items, fluids, energy and redstone."]},
+      "es_es": {"title": "Enlace del adivino",
+        "text": ["Perlas de ender y frutas coral reventadas sobre un cristal escudriñador: el [item:ars_controle:scryers_linkage|Enlace del adivino]. Enlazalo a un bloque lejano con la varita de dominio y las máquinas junto al enlace llegan a sus ítems, fluidos, energía y redstone."]},
+      "sources": ["jar:ars_controle-1.21.1-1.6.15.jar:data/ars_controle/recipe/scryers_linkage.json", "jar:ars_controle-1.21.1-1.6.15.jar:assets/ars_controle/lang/en_us.json#ars_nouveau.page1.block.ars_controle.scryers_linkage"]
+    },
+    {
+      "key": "arsadd_warp_prism", "role": "side", "deps": ["arsadd_stability"],
+      "task": {"item": "ars_controle:warping_spell_prism"},
+      "at": {"figure": "H", "slot": 3},
+      "en_us": {"title": "Warping Spell Prism",
+        "text": ["A spell prism with ender pearls and popped chorus: the [item:ars_controle:warping_spell_prism|Warping Spell Prism]. A projectile that hits it comes out wherever you bound it, even in another dimension."]},
+      "es_es": {"title": "Prisma de teletransporte",
+        "text": ["Un prisma de hechizos con perlas de ender y frutas coral reventadas: el [item:ars_controle:warping_spell_prism|Prisma de teletransporte]. El proyectil que lo toca sale donde lo hayas enlazado, aunque sea otra dimensión."]},
+      "sources": ["jar:ars_controle-1.21.1-1.6.15.jar:data/ars_controle/recipe/warping_spell_prism.json", "jar:ars_controle-1.21.1-1.6.15.jar:assets/ars_controle/lang/en_us.json#ars_nouveau.page1.block.ars_controle.warping_spell_prism"]
+    },
+    {
+      "key": "arsadd_portable_brazier", "role": "side", "deps": ["arsadd_stability"],
+      "task": {"item": "ars_controle:portable_brazier_relay"},
+      "at": {"figure": "H", "slot": 4},
+      "en_us": {"title": "A ritual in your pocket",
+        "text": ["A brazier relay with a Nether Star, the Wilden Tribute, pearls, chorus and manipulation essence: the [item:ars_controle:portable_brazier_relay|Portable Brazier Relay]. You carry the ritual's effect, as long as its brazier stays loaded and fed."]},
+      "es_es": {"title": "Un ritual en el bolsillo",
+        "text": ["Un relé de brasero con una estrella del Nether, el Tributo Salvaje, perlas, frutas coral y esencia de manipulación: el [item:ars_controle:portable_brazier_relay|Relé de brasero portátil]. Llevás el efecto del ritual encima, mientras su brasero siga cargado y con Fuente."]},
+      "sources": ["jar:ars_controle-1.21.1-1.6.15.jar:data/ars_controle/recipe/portable_brazier_relay.json", "jar:ars_controle-1.21.1-1.6.15.jar:assets/ars_controle/lang/en_us.json#ars_nouveau.page1.item.ars_controle.portable_brazier_relay"]
+    },
+    {
+      "key": "arsadd_filters", "role": "tip", "deps": ["arsadd_stability"],
+      "task": {"type": "checkmark"},
+      "at": {"figure": "H", "slot": 5},
+      "en_us": {"title": "Spells with conditions",
+        "text": ["[tip] Ars Controle's filter glyphs stop a spell unless a condition holds: Above, Below, Level, Not, Or, Xor, Random. Precise Delay waits an exact number of ticks. Filters make turrets pick their targets."]},
+      "es_es": {"title": "Hechizos con condiciones",
+        "text": ["[tip] Los glifos de filtro de Ars Controle frenan un hechizo salvo que se cumpla algo: Arriba, Abajo, Nivel, No, O, O exclusivo, Azar. Demora precisa espera los ticks exactos. Con filtros, las torretas eligen blanco."]},
+      "sources": ["jar:ars_controle-1.21.1-1.6.15.jar:data/ars_controle/recipe"]
+    },
+    {
+      "key": "arsadd_binder", "role": "milestone", "deps": ["arsspell_scribes"], "hide_lines": true,
+      "task": {"item": "not_enough_glyphs:spell_binder"},
+      "at": {"x": -9.32, "y": -11.11},
+      "en_us": {"title": "Spell Binder", "subtitle": "A book of books.",
+        "text": ["A Novice Spell Book wrapped in eight leather: the [item:not_enough_glyphs:spell_binder|Spell Binder]. It casts from the spell parchments and caster tomes you keep inside, ten of them on the radial menu."]},
+      "es_es": {"title": "Carpeta de hechizos", "subtitle": "Un libro de libros.",
+        "text": ["Un grimorio de novato envuelto en ocho cueros: la [item:not_enough_glyphs:spell_binder|Carpeta de hechizos]. Lanza desde los pergaminos y tomos que guardes adentro, diez de ellos en el menú radial."]},
+      "sources": ["jar:not_enough_glyphs-1.21.1-4.6.1.jar:data/not_enough_glyphs/recipe/spell_binder.json", "jar:not_enough_glyphs-1.21.1-4.6.1.jar:assets/not_enough_glyphs/lang/en_us.json#not_enough_glyphs.page.spell_binder"]
+    },
+    {
+      "key": "arsadd_covers", "role": "side", "deps": ["arsadd_binder"],
+      "tasks": [{"item": "not_enough_glyphs:thread_scritchance"}, {"item": "not_enough_glyphs:thread_scritdamage"}],
+      "at": {"figure": "I", "slot": 0},
+      "en_us": {"title": "Covers for the binder",
+        "text": ["The Alteration Table fits two covers on a binder, like threads. [item:not_enough_glyphs:thread_scritchance|Lucky Cover] raises spell critical chance; [item:not_enough_glyphs:thread_scritdamage|Keen Cover], critical damage."]},
+      "es_es": {"title": "Tapas para la carpeta",
+        "text": ["La mesa de alteraciones le pone dos tapas a la carpeta, como hilos. La [item:not_enough_glyphs:thread_scritchance|Tapa de la suerte] sube la probabilidad de crítico; la [item:not_enough_glyphs:thread_scritdamage|Tapa afilada], el daño crítico."]},
+      "sources": ["jar:not_enough_glyphs-1.21.1-4.6.1.jar:data/not_enough_glyphs/recipe/thread_scritchance.json", "jar:not_enough_glyphs-1.21.1-4.6.1.jar:assets/not_enough_glyphs/lang/en_us.json#not_enough_glyphs.page.book_threads.desc"]
+    },
+    {
+      "key": "arsadd_contingency", "role": "side", "deps": ["arsadd_binder"],
+      "tasks": [{"item": "not_enough_glyphs:glyph_contingency_health"}, {"item": "not_enough_glyphs:glyph_contingency_fall"}],
+      "at": {"figure": "I", "slot": 1},
+      "en_us": {"title": "Spells on standby",
+        "text": ["Contingency glyphs hold the rest of the spell until something happens: [item:not_enough_glyphs:glyph_contingency_health|health drops] below 20%, or a [item:not_enough_glyphs:glyph_contingency_fall|long fall] starts. Heal or Slowfall behind them is insurance you cast in advance."]},
+      "es_es": {"title": "Hechizos en espera",
+        "text": ["Los glifos de contingencia guardan el resto del hechizo hasta que pasa algo: [item:not_enough_glyphs:glyph_contingency_health|la vida baja] del 20%, o empieza una [item:not_enough_glyphs:glyph_contingency_fall|caída larga]. Sanar o Caída lenta detrás es un seguro que pagás por adelantado."]},
+      "sources": ["jar:not_enough_glyphs-1.21.1-4.6.1.jar:assets/not_enough_glyphs/lang/en_us.json#not_enough_glyphs.glyph_desc.glyph_contingency_health", "jar:not_enough_glyphs-1.21.1-4.6.1.jar:assets/not_enough_glyphs/lang/en_us.json#not_enough_glyphs.glyph_desc.glyph_contingency_fall"]
+    },
+    {
+      "key": "arsadd_neg_tools", "role": "side", "deps": ["arsadd_binder"],
+      "tasks": [{"item": "not_enough_glyphs:glyph_plow"}, {"item": "not_enough_glyphs:glyph_propagate_plane"}],
+      "at": {"figure": "I", "slot": 2},
+      "en_us": {"title": "Farm and flatten",
+        "text": ["[item:not_enough_glyphs:glyph_plow|Plow] tills like a hoe. [item:not_enough_glyphs:glyph_propagate_plane|Propagate Plane] spreads the rest of the spell over a flat area from the block hit; AOE and Pierce size it, Sensitive makes it round."]},
+      "es_es": {"title": "Arar y emparejar",
+        "text": ["[item:not_enough_glyphs:glyph_plow|Arar] labra como una azada. [item:not_enough_glyphs:glyph_propagate_plane|Propagar plano] reparte el resto del hechizo sobre un área plana desde el bloque golpeado; Área y Atravesar le dan tamaño, Sensible la hace redonda."]},
+      "sources": ["jar:not_enough_glyphs-1.21.1-4.6.1.jar:assets/not_enough_glyphs/lang/en_us.json#not_enough_glyphs.glyph_desc.glyph_plow", "jar:not_enough_glyphs-1.21.1-4.6.1.jar:assets/not_enough_glyphs/lang/en_us.json#not_enough_glyphs.glyph_desc.glyph_propagate_plane"]
+    }
+  ]
+}

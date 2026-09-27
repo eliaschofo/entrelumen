@@ -42,7 +42,9 @@ class QuestBook(unittest.TestCase):
 
     def test_book_structure_hub_story_and_five_groups(self):
         self.assertEqual(len(self.chapters), 1 + len(self.story) + len(self.guides) + len(self.sectors))
-        self.assertEqual(len(self.guides) + len(self.sectors), 87)
+        # Every guide and sector file is a chapter; converting guides into sectors never drops one.
+        self.assertEqual({g['chapter'] for g in self.guides}, {p.stem for p in (ROOT / 'content/guides').glob('guide_*.json')})
+        self.assertEqual(self.sector_names, {p.stem for p in (ROOT / 'content/sectors').glob('sector_*.json')})
         groups = json.loads(self.files[OUT / 'chapter_groups.snbt'])['chapter_groups']
         self.assertEqual([g['id'] for g in groups], [stable_id('chapter_group:' + g['id']) for g in self.book['groups']])
         self.assertEqual([g['id'] for g in self.book['groups']], ['entrelumen', 'qol', 'tech', 'magic', 'exploration'])

@@ -8,17 +8,18 @@
   "emblem": "create_enchantment_industry:textures/item/experience_bucket.png",
   "title": {"en_us": "Create · Addons", "es_es": "Create · Complementos"},
   "subtitle": {
-    "en_us": ["Five addons on one pegboard: liquid experience, smarter gearboxes, new fans, copycat blocks and tubes you ride."],
-    "es_es": ["Cinco complementos en un tablero: experiencia líquida, cajas más vivas, ventiladores nuevos, bloques imitadores y tubos para viajar."]
+    "en_us": ["Eight addons on one pegboard: liquid experience, smarter gearboxes, new fans, copycat blocks, tubes you ride, a kitchen, a chisel and storage on the move."],
+    "es_es": ["Ocho complementos en un tablero: experiencia líquida, cajas más vivas, ventiladores nuevos, bloques imitadores, tubos para viajar, una cocina, un cincel y almacenamiento que se mueve."]
   },
   "entry": "cad_xp",
   "figures": {
-    "beam": {"kind": "line", "from": [-12, -6], "to": [12, -6], "count": 5}
+    "beam": {"kind": "line", "from": [-12, -6], "to": [12, -6], "count": 5},
+    "beam2": {"kind": "line", "from": [18, -6], "to": [30, -6], "count": 3}
   },
   "art": [
     {"id": "banner", "texture": "entrelumen:textures/gui/quests/banner_create.png", "x": 0, "y": -10.4, "scale": 1, "order": -1},
     {"id": "title", "label": {"en_us": "Create · Addons", "es_es": "Create · Complementos"}, "x": 0, "y": -10.4, "scale": 2, "bold": true},
-    {"id": "beam", "line": [[-15.2, -6], [15.2, -6]], "alpha": 150, "thickness_px": 4},
+    {"id": "beam", "line": [[-15.2, -6], [33.2, -6]], "alpha": 150, "thickness_px": 4},
     {"id": "string_a", "line": [[-12, -6], [-12, 7.6]], "alpha": 60},
     {"id": "string_b", "line": [[-6, -6], [-6, 7.6]], "alpha": 60},
     {"id": "string_c", "line": [[0, -6], [0, -2.6]], "alpha": 60},
@@ -29,9 +30,13 @@
     {"id": "label_c", "label": {"en_us": "Dragons Plus", "es_es": "Dragons Plus"}, "x": 0, "y": -7.9, "scale": 1},
     {"id": "label_d", "label": {"en_us": "Copycats and Deco", "es_es": "Copycats y Deco"}, "x": 6, "y": -7.9, "scale": 1},
     {"id": "label_e", "label": {"en_us": "Hypertube", "es_es": "Hypertube"}, "x": 12, "y": -7.9, "scale": 1},
-    {"id": "medallion", "texture": "entrelumen:textures/gui/quests/medallion.png", "x": -18.1, "y": -6, "scale": 2, "order": 0,
-     "click": "chapter:sector_create_kinetics", "hover": {"en_us": "Back to Create · Kinetics", "es_es": "Volver a Create · Cinética"}},
-    {"id": "bucket", "texture": "create_enchantment_industry:textures/item/experience_bucket.png", "x": -18.1, "y": -6, "scale": 4, "order": 1}
+    {"id": "medallion", "texture": "entrelumen:textures/gui/quests/medallion.png", "x": -18.1, "y": -6, "scale": 2, "order": 0, "click": "chapter:sector_create_kinetics", "hover": {"en_us": "Back to Create · Kinetics", "es_es": "Volver a Create · Cinética"}},
+    {"id": "bucket", "texture": "create_enchantment_industry:textures/item/experience_bucket.png", "x": -18.1, "y": -6, "scale": 4, "order": 1},
+    {"id": "label_f", "label": {"en_us": "Farmer's Delight", "es_es": "Farmer's Delight"}, "x": 18, "y": -7.9, "scale": 1},
+    {"id": "string_f", "line": [[18, -6], [18, 0.8]], "alpha": 60},
+    {"id": "label_g", "label": {"en_us": "Rechiseled", "es_es": "Rechiseled"}, "x": 24, "y": -7.9, "scale": 1},
+    {"id": "label_h", "label": {"en_us": "Storage in motion", "es_es": "Almacenamiento en movimiento"}, "x": 30, "y": -7.9, "scale": 1},
+    {"id": "string_h", "line": [[30, -6], [30, -2.6]], "alpha": 60}
   ],
   "quests": [
     {
@@ -282,6 +287,66 @@
       "es_es": {"title": "Más rápido, o más lento",
         "text": ["Los [item:create_hypertube:hypertube_accelerator|Aceleradores de hipertubo] apuran o frenan a quien viaja; los empalmes parten la línea y se dobla con las teclas de movimiento. Los tubos se unen haciendo clic en uno puesto con el siguiente."]},
       "sources": ["jar:create_hypertube-0.6.0-NEOFORGE.jar:assets/create_hypertube/lang/en_us.json"]
+    },
+    {
+      "key": "cad_slicer", "role": "milestone", "deps": ["crb_press"],
+      "task": {"item": "sliceanddice:slicer"},
+      "at": {"figure": "beam2", "slot": 0},
+      "en_us": {"title": "Slicer", "subtitle": "Knife skills, outsourced.",
+        "text": ["A cogwheel, an andesite casing and a turntable: the [item:sliceanddice:slicer|Slicer]. Right-click it with a knife and it cuts what passes beneath, on a depot, a belt or in a basin: Farmer's Delight cutting board recipes, no hands."]},
+      "es_es": {"title": "Rebanador", "subtitle": "El cuchillo, tercerizado.",
+        "text": ["Un engranaje, un revestimiento de andesita y una plataforma giratoria: el [item:sliceanddice:slicer|Rebanador]. Clic derecho con un cuchillo y corta lo que pasa abajo, en un depósito, una cinta o una cuenca: recetas de tabla de Farmer's Delight, sin manos."]},
+      "sources": ["jar:sliceanddice-4.3.4-neoforge.jar:data/sliceanddice/recipe/slicer.json", "jar:sliceanddice-4.3.4-neoforge.jar:assets/sliceanddice/lang/en_us.json#sliceanddice.ponder.slicer.text_2"]
+    },
+    {
+      "key": "cad_sprinkler", "role": "side", "deps": ["cad_slicer"],
+      "task": {"item": "sliceanddice:sprinkler"},
+      "at": {"x": 18, "y": -2.6},
+      "en_us": {"title": "Sprinkles on top",
+        "text": ["Copper plates, a fluid pipe and iron bars: a [item:sliceanddice:sprinkler|Sprinkler]. Put it under a pipe and it sprays the fluid over the area; water, liquid fertilizer and other fluids each do something different to crops and creatures."]},
+      "es_es": {"title": "Riego por arriba",
+        "text": ["Placas de cobre, un caño de fluidos y barrotes de hierro: un [item:sliceanddice:sprinkler|Aspersor]. Ponelo bajo un caño y rocía el fluido sobre la zona; el agua, el fertilizante líquido y otros fluidos hacen cosas distintas con cultivos y criaturas."]},
+      "sources": ["jar:sliceanddice-4.3.4-neoforge.jar:data/sliceanddice/recipe/sprinkler.json", "jar:sliceanddice-4.3.4-neoforge.jar:assets/sliceanddice/lang/en_us.json#sliceanddice.ponder.sprinkler/uses.text_1"]
+    },
+    {
+      "key": "cad_kitchen", "role": "tip", "deps": ["cad_slicer"],
+      "task": {"type": "checkmark"},
+      "at": {"x": 18, "y": 0.8},
+      "en_us": {"title": "A kitchen on autopilot",
+        "text": ["[tip] With Central Kitchen, a Mechanical Arm puts raw ingredients on a cutting board and serves plated portions of a feast without bowls, and a funnel takes finished food out of a cooking pot."]},
+      "es_es": {"title": "Una cocina en piloto automático",
+        "text": ["[tip] Con Central Kitchen, un brazo mecánico pone ingredientes crudos en la tabla de cortar y sirve porciones de un festín sin cuencos, y un embudo saca la comida lista de la olla."]},
+      "sources": ["jar:create-central-kitchen-2.6.2.jar:assets/create_central_kitchen/lang/en_us.json#create_central_kitchen.ponder.cutting_board.text_2", "jar:create-central-kitchen-2.6.2.jar:assets/create_central_kitchen/lang/en_us.json#create_central_kitchen.ponder.cultural_delights_portioning.text_1", "jar:create-central-kitchen-2.6.2.jar:assets/create_central_kitchen/lang/en_us.json#create_central_kitchen.ponder.cooking_pot.text_1"]
+    },
+    {
+      "key": "cad_chisel", "role": "side", "deps": ["crb_casing"],
+      "task": {"item": "rechiseledcreate:mechanical_chisel"},
+      "at": {"figure": "beam2", "slot": 1},
+      "en_us": {"title": "Mechanical Chisel",
+        "text": ["An andesite casing and a chisel: the [item:rechiseledcreate:mechanical_chisel|Mechanical Chisel]. Rechiseled: Create adds cut and polished variants of Create's stones and new window styles to chisel into."]},
+      "es_es": {"title": "Cincel mecánico",
+        "text": ["Un revestimiento de andesita y un cincel: el [item:rechiseledcreate:mechanical_chisel|Cincel mecánico]. Rechiseled: Create suma variantes cortadas y pulidas de las piedras de Create y estilos nuevos de ventana para cincelar."]},
+      "sources": ["jar:rechiseledcreate-1.1.1-neoforge-mc1.21.jar:data/rechiseledcreate/recipe/mechanical_chisel.json", "jar:rechiseledcreate-1.1.1-neoforge-mc1.21.jar:META-INF/neoforge.mods.toml"]
+    },
+    {
+      "key": "cad_storage_cart", "role": "milestone", "deps": ["crb_belt"],
+      "task": {"item": "sophisticatedstorageinmotion:storage_minecart"},
+      "at": {"figure": "beam2", "slot": 2},
+      "en_us": {"title": "Storage on rails",
+        "text": ["Craft a Sophisticated chest, barrel or shulker box with a minecart and it becomes a [item:sophisticatedstorageinmotion:storage_minecart|storage minecart], upgradable by tier like the block. Boats and rafts work the same way."]},
+      "es_es": {"title": "Almacenamiento sobre rieles",
+        "text": ["Fabricá un cofre, barril o caja de shulker de Sophisticated con una vagoneta y se vuelve una [item:sophisticatedstorageinmotion:storage_minecart|vagoneta de almacenamiento], que sube de nivel como el bloque. Los botes y las balsas funcionan igual."]},
+      "sources": ["jar:sophisticatedstorageinmotion-1.21.1-0.10.34.358.jar:data/sophisticatedstorageinmotion/recipe", "jar:sophisticatedstorageinmotion-1.21.1-0.10.34.358.jar:META-INF/neoforge.mods.toml"]
+    },
+    {
+      "key": "cad_storage_contraption", "role": "tip", "deps": ["cad_storage_cart"],
+      "task": {"type": "checkmark"},
+      "at": {"x": 30, "y": -2.6},
+      "en_us": {"title": "Upgrades that ride along",
+        "text": ["[tip] Two small integrations make Sophisticated backpacks and storage fully featured on Create contraptions: their upgrades keep working while the contraption moves."]},
+      "es_es": {"title": "Mejoras que viajan",
+        "text": ["[tip] Dos integraciones chicas hacen que las mochilas y el almacenamiento de Sophisticated funcionen completos sobre estructuras de Create: sus mejoras siguen andando mientras la estructura se mueve."]},
+      "sources": ["jar:sophisticatedbackpackscreateintegration-1.21.1-0.1.8.134.jar:META-INF/neoforge.mods.toml", "jar:sophisticatedstoragecreateintegration-1.21.1-0.1.21.209.jar:META-INF/neoforge.mods.toml"]
     }
   ]
 }

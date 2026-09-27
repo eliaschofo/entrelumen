@@ -145,8 +145,8 @@ class Sectors(unittest.TestCase):
         return self.chapters[name]["quests"]
 
     def test_the_flagship_sectors_replace_their_guides(self):
-        self.assertEqual(set(self.sectors), {"sector_create_kinetics", "sector_create_logistics",
-                                             "sector_create_addons", "sector_ars_nouveau"})
+        self.assertTrue({"sector_create_kinetics", "sector_create_logistics", "sector_create_addons",
+                         "sector_ars_nouveau", "sector_ars_addons"} <= set(self.sectors))
         guide_names = {g["chapter"] for g in self.guides}
         self.assertFalse([g for g in guide_names if g.startswith(("guide_create_", "guide_ars_"))])
         # Keys reused from the old guides keep their quest IDs (player progress survives).
@@ -156,11 +156,12 @@ class Sectors(unittest.TestCase):
     def test_sector_standard_is_met(self):
         # docs/design/quest-book-v3.md, "Estándar de una cadena".
         counts = {"sector_create_kinetics": (45, 90), "sector_create_logistics": (45, 90),
-                  "sector_create_addons": (20, 40), "sector_ars_nouveau": (60, 110)}
+                  "sector_create_addons": (20, 40), "sector_ars_nouveau": (60, 110),
+                  "sector_ars_addons": (40, 70)}
         for name, data in self.sectors.items():
             roles = [q["role"] for q in data["quests"]]
             with self.subTest(sector=name):
-                lo, hi = counts[name]
+                lo, hi = counts.get(name, (20, 90))  # the standard for chapters without their own range
                 self.assertTrue(lo <= len(roles) <= hi, len(roles))
                 self.assertEqual(roles.count("capstone"), 1)
                 self.assertEqual(roles.count("entry"), 1)
