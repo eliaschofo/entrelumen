@@ -136,6 +136,7 @@ def greenhouse():
     for y in (-2,):
         v.sym(3, y, 0, B('lantern[hanging=true,waterlogged=false]'))
     mk['lore'] = [[0, 1, 17]]
+    mk['keep_soil'] = [[[-20, -1, -20], [20, 1, 20]]]              # the garden under the dome is designed ground
     return v, mk
 
 
@@ -267,6 +268,7 @@ def sanctuary():
     v.sym(4, -5, 1, B('barrel[facing=up,open=false]'))
     mk['barrels'] = [[4, -5, 1]]
     mk['lore'] = [[0, 1, 15]]
+    mk['keep_soil'] = [[[-24, -1, -24], [24, 1, 24]]]              # the pool, its mud and the moss are the design
     return v, mk
 
 
