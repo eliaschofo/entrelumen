@@ -494,11 +494,11 @@
       "at": {"figure": "sun", "slot": 1},
       "en_us": {"title": "Generator Coil",
         "text": ["A spinning [item:create_new_age:generator_coil|Generator Coil] ringed by magnets makes current; [item:create_new_age:carbon_brushes|Carbon Brushes] collect it. Stronger magnets turn more stress into power.",
-                 "Each coil takes an [item:entrelumen:energy_coupler|Energy Coupler] in place of a copper ingot: the component of Crystal Grid, in act II."]},
+                 "Pack change: the brushes take an [item:entrelumen:energy_coupler|Energy Coupler] (act II) in place of an andesite alloy; the coils don't."]},
       "es_es": {"title": "Bobina del generador",
         "text": ["Una [item:create_new_age:generator_coil|Bobina del generador] que gira rodeada de imanes da corriente; las [item:create_new_age:carbon_brushes|Escobillas de carbón] la juntan. Imanes más fuertes sacan más energía del mismo estrés.",
-                 "Cada bobina lleva un [item:entrelumen:energy_coupler|Acoplador de energía] en lugar de un lingote de cobre: el componente de Red de cristales, del acto II."]},
-      "sources": ["tools/generate_family_balance.py#create_new_age:shaped/generator_coil"]
+                 "Cambio del pack: las escobillas llevan un [item:entrelumen:energy_coupler|Acoplador de energía] (acto II) en vez de una aleación de andesita; las bobinas, no."]},
+      "sources": ["tools/generate_family_balance.py#create_new_age:shaped/carbon_brushes"]
     },
     {
       "key": "cpw_magnets", "role": "tip", "deps": ["cpw_coil"],
@@ -546,9 +546,9 @@
       "task": {"item": "create_new_age:basic_motor"},
       "at": {"figure": "sun", "slot": 4},
       "en_us": {"title": "Basic Motor",
-        "text": ["Current back into rotation: a wrench sets a [item:create_new_age:basic_motor|Basic Motor]'s speed. Extensions behind it raise its capacity and its energy use. The advanced motor needs a Power Regulator (act III)."]},
+        "text": ["Current back into rotation: a wrench sets a [item:create_new_age:basic_motor|Basic Motor]'s speed. Extensions behind it raise its capacity and its energy use. The advanced motor takes a [item:mekanism:alloy_reinforced|Reinforced Alloy] (act III)."]},
       "es_es": {"title": "Motor básico",
-        "text": ["Corriente de vuelta a rotación: la llave elige la velocidad del [item:create_new_age:basic_motor|Motor básico]. Las extensiones de atrás suben su capacidad y su consumo. El motor fuerte pide un Regulador de energía (acto III)."]},
+        "text": ["Corriente de vuelta a rotación: la llave elige la velocidad del [item:create_new_age:basic_motor|Motor básico]. Las extensiones de atrás suben su capacidad y su consumo. El motor avanzado pide una [item:mekanism:alloy_reinforced|Aleación Reforzada] (acto III)."]},
       "sources": ["tools/generate_family_balance.py#create_new_age:shaped/advanced_motor"]
     },
     {
@@ -557,10 +557,10 @@
       "at": {"figure": "sun", "slot": 5},
       "en_us": {"title": "Solar heating",
         "text": ["In daylight, a [item:create_new_age:basic_solar_heating_plate|Basic Solar Heating Plate] makes heat; heat pipes carry it. Too much heat in one block melts it to lava: always give heat somewhere to go.",
-                 "The basic plate takes a Calibration Frame (act II); the advanced one, a Power Regulator (act III)."]},
+                 "The basic plate takes an [item:mekanism:alloy_infused|Infused Alloy] (act II) in place of one glass."]},
       "es_es": {"title": "Calor solar",
         "text": ["De día, una [item:create_new_age:basic_solar_heating_plate|Placa solar básica] da calor y las tuberías de calor lo llevan. Mucho calor en un bloque lo derrite en lava: siempre dale al calor para dónde ir.",
-                 "La placa básica lleva un Marco de calibración (acto II); la avanzada, un Regulador de energía (acto III)."]},
+                 "La placa básica lleva una [item:mekanism:alloy_infused|Aleación Infusionada] (acto II) en lugar de un vidrio."]},
       "sources": ["tools/generate_family_balance.py#create_new_age:shaped/basic_solar_heating_plate"]
     },
     {
@@ -578,9 +578,9 @@
       "task": {"item": "create_new_age:reactor_rod"},
       "at": {"figure": "sun", "slot": 7},
       "en_us": {"title": "Thorium reactor", "subtitle": "Glow responsibly.",
-        "text": ["[item:create_new_age:reactor_rod|Reactor Rods], a fuel acceptor and heat vents. [warn|Radiation kills]: wear leather armour or seal it in reactor casing. If nothing takes its heat, it melts down. Rods need a Containment Seal (act IV)."]},
+        "text": ["[item:create_new_age:reactor_rod|Reactor Rods], a fuel acceptor and heat vents. [warn|Radiation kills]: wear leather armour or seal it in reactor casing. If nothing takes its heat, it melts down. Rods take an [item:twilightforest:ironwood_ingot|Ironwood Ingot] (act IV)."]},
       "es_es": {"title": "Reactor de torio", "subtitle": "Brillá con responsabilidad.",
-        "text": ["[item:create_new_age:reactor_rod|Varillas de reactor], un receptor de combustible y ventilaciones de calor. [warn|La radiación mata]: usá armadura de cuero o encerralo en carcasa de reactor. Si nadie se lleva el calor, se funde. Las varillas piden un Sello de contención (acto IV)."]},
+        "text": ["[item:create_new_age:reactor_rod|Varillas de reactor], un receptor de combustible y ventilaciones de calor. [warn|La radiación mata]: usá armadura de cuero o encerralo en carcasa de reactor. Si nadie se lleva el calor, se funde. Las varillas piden un [item:twilightforest:ironwood_ingot|Lingote de madera de hierro] (acto IV)."]},
       "sources": ["tools/generate_family_balance.py#create_new_age:mechanical_crafting/reactor_rod"]
     },
     {
@@ -598,9 +598,9 @@
       "task": {"item": "create_new_age:reinforced_motor"},
       "at": {"x": 9.5, "y": 12.5},
       "en_us": {"title": "Heliodor's loop, closed",
-        "text": ["Sun heats a boiler, the boiler spins coils, coils feed energisers, energised parts build the [item:create_new_age:reinforced_motor|Reinforced Motor]. It takes a Spectral Lens (act IV)."]},
+        "text": ["Sun heats a boiler, the boiler spins coils, coils feed energisers, energised parts build the [item:create_new_age:reinforced_motor|Reinforced Motor]. It takes an [item:twilightforest:ironwood_ingot|Ironwood Ingot] (act IV)."]},
       "es_es": {"title": "El círculo de Heliodor, cerrado",
-        "text": ["El sol calienta una caldera, la caldera hace girar bobinas, las bobinas alimentan energizadores y las piezas energizadas arman el [item:create_new_age:reinforced_motor|Motor reforzado]. Pide una Lente espectral (acto IV)."]},
+        "text": ["El sol calienta una caldera, la caldera hace girar bobinas, las bobinas alimentan energizadores y las piezas energizadas arman el [item:create_new_age:reinforced_motor|Motor reforzado]. Pide un [item:twilightforest:ironwood_ingot|Lingote de madera de hierro] (acto IV)."]},
       "sources": ["tools/generate_family_balance.py#create_new_age:mechanical_crafting/reinforced_motor"]
     }
   ]

@@ -351,9 +351,10 @@ class Sectors(unittest.TestCase):
     def test_gated_outputs_never_reward(self):
         from generate_quests import gated_outputs
         gated = gated_outputs()
-        self.assertIn("create_new_age:generator_coil", gated)
+        self.assertGreater(len(gated), 20)
+        sample = sorted(gated)[0]  # any gated output; which ones are gated is the recipe audit's call
         book = copy.deepcopy(self.book)
-        book["reward_tables"]["crate_1"]["rewards"].append(["create_new_age:generator_coil", 1, 1])
+        book["reward_tables"]["crate_1"]["rewards"].append([sample, 1, 1])
         with self.assertRaisesRegex(AssertionError, "gated"):
             qe.build_reward_tables(book, gated)
 
