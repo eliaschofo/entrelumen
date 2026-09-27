@@ -1,0 +1,740 @@
+{
+  "format": "sector",
+  "chapter": "sector_draconic_chaos",
+  "group": "tech",
+  "act": "V",
+  "motif": "draconic",
+  "icon": "draconicevolution:chaotic_core",
+  "emblem": "draconicevolution:textures/item/components/chaotic_core.png",
+  "title": {"en_us": "Draconic Evolution · Draconic and Chaotic", "es_es": "Draconic Evolution · Dracónico y caótico"},
+  "subtitle": {
+    "en_us": ["Awakened draconium and the draconic tier, the Chaos Guardian and the chaotic tier, and the Draconic Reactor between them."],
+    "es_es": ["Draconio despertado y el nivel dracónico, el Guardián del Caos y el nivel caótico, y el reactor dracónico entre los dos."]
+  },
+  "entry": "de_awakened_ingot",
+  "center": [0.0, 1.5],
+  "figures": {
+    "reactor": {"kind": "ring", "cx": 0.0, "cy": 1.5, "r": 1.9, "count": 1, "draw": [{"style": "ring", "r": 1.9, "segments": 40, "color": "#E0473A", "alpha": 210, "thickness_px": 3}, {"style": "ring", "r": 2.45, "segments": 48, "color": "#FF9D3B", "alpha": 110, "thickness_px": 2}, {"style": "ring", "r": 4.2, "segments": 64, "color": "#7FD4F0", "alpha": 60, "thickness_px": 1}]},
+    "cross": {"kind": "ring", "cx": 0.0, "cy": 1.5, "r": 5.0, "count": 4, "start": 0, "draw": [{"style": "spokes", "from_r": 2.6, "to_r": 4.3, "color": "#7FD4F0", "alpha": 150, "thickness_px": 2}]},
+    "stab_w": {"kind": "ring", "cx": -5.0, "cy": 1.5, "r": 0.6, "count": 1, "draw": [{"style": "ring", "r": 0.6, "segments": 4, "from": 45, "color": "#9C7BE0", "alpha": 200, "thickness_px": 2}]},
+    "stab_s": {"kind": "ring", "cx": 0.0, "cy": 6.5, "r": 0.6, "count": 1, "draw": [{"style": "ring", "r": 0.6, "segments": 4, "from": 45, "color": "#9C7BE0", "alpha": 200, "thickness_px": 2}]},
+    "island": {"kind": "ring", "cx": -6.0, "cy": -10.6, "r": 3.2, "count": 6, "start": -90, "draw": [{"style": "ring", "r": 3.2, "segments": 36, "color": "#E0473A", "alpha": 130, "thickness_px": 2}, {"style": "ring", "r": 4.3, "segments": 40, "color": "#9C7BE0", "alpha": 70, "thickness_px": 1}, {"style": "spokes", "from_r": 0.8, "to_r": 2.7, "color": "#E0473A", "alpha": 60, "thickness_px": 1}]},
+    "pillar_0": {"kind": "ring", "cx": -4.4, "cy": -13.371, "r": 0.62, "count": 1, "draw": [{"style": "ring", "r": 0.62, "segments": 4, "from": 45, "color": "#FF9D3B", "alpha": 110, "thickness_px": 2}]},
+    "pillar_1": {"kind": "ring", "cx": -2.8, "cy": -10.6, "r": 0.62, "count": 1, "draw": [{"style": "ring", "r": 0.62, "segments": 4, "from": 45, "color": "#FF9D3B", "alpha": 110, "thickness_px": 2}]},
+    "pillar_2": {"kind": "ring", "cx": -4.4, "cy": -7.829, "r": 0.62, "count": 1, "draw": [{"style": "ring", "r": 0.62, "segments": 4, "from": 45, "color": "#FF9D3B", "alpha": 110, "thickness_px": 2}]},
+    "pillar_3": {"kind": "ring", "cx": -7.6, "cy": -7.829, "r": 0.62, "count": 1, "draw": [{"style": "ring", "r": 0.62, "segments": 4, "from": 45, "color": "#FF9D3B", "alpha": 110, "thickness_px": 2}]},
+    "pillar_4": {"kind": "ring", "cx": -9.2, "cy": -10.6, "r": 0.62, "count": 1, "draw": [{"style": "ring", "r": 0.62, "segments": 4, "from": 45, "color": "#FF9D3B", "alpha": 110, "thickness_px": 2}]},
+    "pillar_5": {"kind": "ring", "cx": -7.6, "cy": -13.371, "r": 0.62, "count": 1, "draw": [{"style": "ring", "r": 0.62, "segments": 4, "from": 45, "color": "#FF9D3B", "alpha": 110, "thickness_px": 2}]}
+  },
+  "groups": {
+    "draconic_tools": {"label": {"en_us": "Draconic weapons and tools", "es_es": "Armas y herramientas dracónicas"}, "axis": "x", "caption": "above"},
+    "draconic_armor": {"label": {"en_us": "Draconic armor", "es_es": "Armadura dracónica"}, "axis": "x", "caption": "below"},
+    "chaotic_tools": {"label": {"en_us": "Chaotic weapons and tools", "es_es": "Armas y herramientas caóticas"}, "axis": "x", "caption": "above"},
+    "chaotic_armor": {"label": {"en_us": "Chaotic armor", "es_es": "Armadura caótica"}, "axis": "x", "caption": "below"},
+    "energy": {"label": {"en_us": "Energy beyond wyvern", "es_es": "Energía más allá de wyvern"}, "axis": "x", "caption": "below"}
+  },
+  "links": [
+    {"target": "de_core_t7", "at": {"x": -10.4, "y": 10.6}},
+    {"target": "de_energy_link", "at": {"x": -1.6, "y": 13.0}},
+    {"target": "entrelumen_luminous_creative", "at": {"x": 17.2, "y": -13.4}},
+    {"target": "world_atomic_alloy", "at": {"x": -25.4, "y": -5.6}}
+  ],
+  "art": [
+    {"id": "banner", "texture": "entrelumen:textures/gui/quests/banner_plain.png", "x": -19.0, "y": -17.0, "scale": 2, "order": -1, "color": "#6A45B8"},
+    {"id": "title", "label": {"en_us": "Draconic Evolution\nDraconic and Chaotic", "es_es": "Draconic Evolution\nDracónico y caótico"}, "x": -19.0, "y": -17.2, "scale": 2, "bold": true, "tint": "#FFF1DC"},
+    {"id": "medallion", "texture": "entrelumen:textures/gui/quests/medallion.png", "x": -30.4, "y": -17.0, "scale": 2, "order": 0, "click": "chapter:sun_of_heliodor", "hover": {"en_us": "Back to the Sun of Heliodor", "es_es": "Volver al Sol de Heliodor"}},
+    {"id": "emblem", "texture": "draconicevolution:textures/item/components/chaotic_core.png", "x": -30.4, "y": -17.0, "scale": 4, "order": 1},
+    {"id": "to_wyvern", "label": {"en_us": "» Draconium and Wyvern", "es_es": "» Draconio y wyvern"}, "x": -27.2, "y": -14.4, "scale": 1, "align": "start", "click": "chapter:sector_draconic_wyvern", "tint": "#FF9D3B"},
+    {"id": "motto", "label": {"en_us": "wake  break  burn  contain", "es_es": "despertar  romper  quemar  contener"}, "x": -27.2, "y": -13.5, "scale": 1, "align": "start", "font": "minecraft:alt", "tint": "#B9A7E0"},
+    {"id": "cap_island", "label": {"en_us": "chaos island", "es_es": "isla del caos"}, "x": -6.0, "y": -5.9, "scale": 1, "tint": "#E0473A", "anchor": "top"},
+    {"id": "cap_reactor", "label": {"en_us": "reactor", "es_es": "reactor"}, "x": -1.4, "y": 4.85, "scale": 1, "tint": "#FF9D3B", "order": 2},
+    {"id": "hub_sun", "texture": "entrelumen:textures/gui/quests/sun_heliodor.png", "x": 25.0, "y": 0.4, "scale": 1, "order": -2, "alpha": 150, "reveal": "de_chaotic_staff"}
+  ],
+  "quests": [
+    {
+      "key": "de_awakened_ingot", "role": "entry", "deps": ["de_awakened_blocks"],
+      "task": {"item": "draconicevolution:awakened_draconium_ingot", "count": 9},
+      "at": {"x": -29.0, "y": 0.0},
+      "en_us": {"title": "Awakened Draconium", "subtitle": "Wide awake, and slightly orange.",
+        "text": ["One awakened block splits into nine [item:draconicevolution:awakened_draconium_ingot|Awakened Draconium Ingots], and nine nuggets make an ingot. They go into everything draconic: controllers, cores, rotors and the reactor's own fuel."]},
+      "es_es": {"title": "Draconio despertado", "subtitle": "Bien despierto, y un poco naranja.",
+        "text": ["Un bloque despertado se parte en nueve [item:draconicevolution:awakened_draconium_ingot|lingotes de draconio despertado], y nueve pepitas hacen un lingote. Van en todo lo dracónico: controladores, núcleos, rotores y el propio combustible del reactor."]},
+      "sources": ["jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:data/draconicevolution/recipe/decompress/awakened_draconium_ingot.json", "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:data/draconicevolution/recipe/compress/awakened_draconium_ingot.json", "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:data/draconicevolution/recipe/components/draconic_energy_core.json", "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:data/draconicevolution/recipe/machines/reactor_prt_in_rotor.json", "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:com/brandon3055/draconicevolution/inventory/ReactorMenu$SlotReactor.class"]
+    },
+    {
+      "key": "de_awakened", "role": "milestone", "deps": ["de_awakened_ingot"],
+      "task": {"item": "draconicevolution:awakened_core"},
+      "at": {"x": -25.4, "y": 0.0},
+      "en_us": {"title": "Draconic Core", "subtitle": "Four wyverns walk into a fusion core.",
+        "text": ["A nether star as catalyst, then four Wyvern Cores, three awakened ingots and, in this pack, an [item:mekanism:alloy_atomic|Atomic Alloy], on wyvern injectors: 1,000,000 OP. The draconic capacitor and staff build on it, and four of them make a Chaotic Core."]},
+      "es_es": {"title": "Núcleo dracónico", "subtitle": "Cuatro wyverns entran a un núcleo de fusión.",
+        "text": ["Una estrella del Nether de catalizador, y cuatro núcleos wyvern, tres lingotes despertados y, en este pack, una [item:mekanism:alloy_atomic|aleación atómica], en inyectores wyvern: 1.000.000 de OP. El capacitor y el báculo dracónicos parten de él, y cuatro hacen un núcleo caótico."]},
+      "sources": ["repo:pack/kubejs/server_scripts/entrelumen_industrial_balance.js", "repo:tools/generate_family_balance.py", "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:data/draconicevolution/recipe/components/awakened_core.json", "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:data/draconicevolution/recipe/tools/draconic_capacitor.json", "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:data/draconicevolution/recipe/tools/draconic_staff.json", "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:data/draconicevolution/recipe/components/chaotic_core.json"]
+    },
+    {
+      "key": "de_draconic_energy", "role": "step", "deps": ["de_awakened"],
+      "task": {"item": "draconicevolution:draconic_energy_core", "count": 2},
+      "at": {"x": -25.4, "y": 3.6},
+      "en_us": {"title": "Draconic Energy Controller",
+        "text": ["Four awakened ingots, four wyvern energy controllers and a Wyvern Core. Each draconic tool, bow and chestpiece takes one, and the capacitor three."]},
+      "es_es": {"title": "Controlador de energía dracónico",
+        "text": ["Cuatro lingotes despertados, cuatro controladores de energía wyvern y un núcleo wyvern. Cada herramienta, arco y pechera dracónicos lleva uno, y el capacitor tres."]},
+      "sources": ["jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:data/draconicevolution/recipe/components/draconic_energy_core.json", "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:data/draconicevolution/recipe/tools/draconic_pickaxe.json", "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:data/draconicevolution/recipe/tools/draconic_capacitor.json"]
+    },
+    {
+      "key": "de_draconic_injector", "role": "step", "deps": ["de_awakened"],
+      "task": {"item": "draconicevolution:awakened_crafting_injector", "count": 8},
+      "at": {"x": -21.8, "y": 0.0},
+      "en_us": {"title": "Draconic injectors",
+        "text": ["A wyvern injector as catalyst, two Wyvern Cores, four diamonds and an awakened draconium block, for 256,000 OP. Draconic recipes need one per ingredient: eight for a draconic tool."]},
+      "es_es": {"title": "Inyectores dracónicos",
+        "text": ["Un inyector wyvern de catalizador, dos núcleos wyvern, cuatro diamantes y un bloque de draconio despertado, por 256.000 OP. Las recetas dracónicas piden uno por ingrediente: ocho para una herramienta dracónica."]},
+      "sources": ["jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:data/draconicevolution/recipe/machines/awakened_crafting_injector.json", "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:data/draconicevolution/recipe/tools/draconic_pickaxe.json", "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:com/brandon3055/draconicevolution/api/crafting/IFusionRecipe.class"]
+    },
+    {
+      "key": "de_draconic_tools", "role": "milestone", "deps": ["de_draconic_injector"],
+      "tasks": [{"item": "draconicevolution:draconic_pickaxe"}, {"item": "draconicevolution:draconic_axe"}, {"item": "draconicevolution:draconic_shovel"}, {"item": "draconicevolution:draconic_hoe"}],
+      "icon": "draconicevolution:draconic_pickaxe",
+      "at": {"x": -18.0, "y": -3.6},
+      "en_us": {"title": "Draconic tools", "subtitle": "Netherite goes in. Orange comes out.",
+        "text": ["Fuse each wyvern tool with four netherite ingots, two awakened ingots, a Wyvern Core and a draconic energy controller: 32 million OP apiece. They dig at speed 25 in a 6×5 grid, and modules, enchantments and charge carry over."]},
+      "es_es": {"title": "Herramientas dracónicas", "subtitle": "Entra netherita, sale naranja.",
+        "text": ["Fusioná cada herramienta wyvern con cuatro lingotes de netherita, dos despertados, un núcleo wyvern y un controlador de energía dracónico: 32 millones de OP cada una. Pican a velocidad 25 con grilla de 6×5, y los módulos, encantamientos y carga pasan."]},
+      "sources": ["jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:data/draconicevolution/recipe/tools/draconic_pickaxe.json", "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:data/draconicevolution/recipe/tools/draconic_axe.json", "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:data/draconicevolution/recipe/tools/draconic_shovel.json", "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:data/draconicevolution/recipe/tools/draconic_hoe.json", "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:com/brandon3055/draconicevolution/init/EquipCfg.class", "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:com/brandon3055/draconicevolution/init/ModuleCfg.class", "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:com/brandon3055/draconicevolution/api/crafting/IFusionDataTransfer.class"]
+    },
+    {
+      "key": "de_draconic_chestpiece", "role": "milestone", "deps": ["de_draconic_injector"],
+      "task": {"item": "draconicevolution:draconic_chestpiece"},
+      "at": {"x": -18.0, "y": 3.6},
+      "en_us": {"title": "Draconic Chestpiece", "subtitle": "Now with actual flying.",
+        "text": ["The same fusion, from the wyvern chestpiece. Its 8×6 grid takes draconic modules, and the draconic flight module finally adds creative flight on top of the elytra."]},
+      "es_es": {"title": "Pechera dracónica", "subtitle": "Ahora sí, a volar de verdad.",
+        "text": ["La misma fusión, desde la pechera wyvern. Su grilla de 8×6 toma módulos dracónicos, y el módulo de vuelo dracónico por fin suma vuelo creativo además de los élitros."]},
+      "sources": ["jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:data/draconicevolution/recipe/tools/draconic_chestpiece.json", "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:com/brandon3055/draconicevolution/init/ModuleCfg.class", "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:com/brandon3055/draconicevolution/init/DEModules.class"]
+    },
+    {
+      "key": "de_tip_star_budget", "role": "tip", "deps": ["de_awakened"],
+      "task": {"type": "checkmark"},
+      "at": {"x": -25.4, "y": -3.0},
+      "en_us": {"title": "Count your nether stars",
+        "text": ["[tip] Every Wyvern Core eats a nether star, so a Draconic Core costs five with its catalyst, and a Chaotic Core twenty. Keep a Wither farm running."]},
+      "es_es": {"title": "Contá las estrellas del Nether",
+        "text": ["[tip] Cada núcleo wyvern se come una estrella del Nether, así que un núcleo dracónico cuesta cinco con su catalizador, y uno caótico veinte. Mantené andando una granja de Withers."]},
+      "sources": ["jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:data/draconicevolution/recipe/components/wyvern_core.json", "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:data/draconicevolution/recipe/components/awakened_core.json", "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:data/draconicevolution/recipe/components/chaotic_core.json", "repo:pack/kubejs/server_scripts/entrelumen_industrial_balance.js"]
+    },
+    {
+      "key": "de_awakened_magnet", "role": "side", "deps": ["de_awakened_ingot"],
+      "task": {"item": "draconicevolution:advanced_magnet"},
+      "at": {"x": -29.0, "y": -3.6},
+      "en_us": {"title": "Awakened Item Dislocator",
+        "text": ["Two awakened ingots, draconium and redstone around the item dislocator stretch its pull from 8 to 32 blocks. It keeps the same toggle key and fits a curio slot."]},
+      "es_es": {"title": "Dislocador de ítems despertado",
+        "text": ["Dos lingotes despertados, draconio y redstone alrededor del dislocador de ítems estiran su alcance de 8 a 32 bloques. Usa la misma tecla y entra en una ranura de curio."]},
+      "sources": ["jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:data/draconicevolution/recipe/tools/advanced_magnet.json", "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:com/brandon3055/draconicevolution/init/DEContent.class", "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:data/curios/tags/item/curio.json"]
+    },
+    {
+      "key": "de_draconic_modules", "role": "side", "deps": ["de_awakened_ingot"],
+      "tasks": [{"item": "draconicevolution:item_draconic_energy"}, {"item": "draconicevolution:item_draconic_speed"}, {"item": "draconicevolution:item_draconic_damage"}, {"item": "draconicevolution:item_draconic_aoe"}, {"item": "draconicevolution:item_draconic_jump"}, {"item": "draconicevolution:item_draconic_auto_feed"}],
+      "icon": "draconicevolution:item_draconic_energy",
+      "at": {"x": -29.0, "y": 3.8},
+      "en_us": {"title": "Draconic modules",
+        "text": ["The same six, one tier up: 16 million OP, +50% speed, +8 damage, a 7×7 area, +125% jump and 400 hunger points. Awakened nuggets turn wyvern modules into these; damage also wants dragon's breath and the area module a Draconic Core."]},
+      "es_es": {"title": "Módulos dracónicos",
+        "text": ["Los mismos seis, un nivel arriba: 16 millones de OP, +50 % de velocidad, +8 de daño, área de 7×7, +125 % de salto y 400 puntos de hambre. Las pepitas despertadas convierten módulos wyvern en estos; el de daño además pide aliento de dragón y el de área, un núcleo dracónico."]},
+      "sources": ["jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:com/brandon3055/draconicevolution/init/DEModules.class", "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:com/brandon3055/draconicevolution/api/modules/data/AOEData.class", "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:data/draconicevolution/recipe/modules/item_draconic_energy.json", "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:data/draconicevolution/recipe/modules/item_draconic_speed.json", "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:data/draconicevolution/recipe/modules/item_draconic_damage.json", "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:data/draconicevolution/recipe/modules/item_draconic_aoe.json", "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:data/draconicevolution/recipe/modules/item_draconic_jump.json", "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:data/draconicevolution/recipe/modules/item_draconic_auto_feed.json"]
+    },
+    {
+      "key": "de_bounty_awakened", "role": "bounty", "deps": ["de_awakened_ingot"],
+      "task": {"item": "draconicevolution:awakened_draconium_ingot", "count": 9, "consume": true},
+      "at": {"x": -32.4, "y": -1.8},
+      "en_us": {"title": "Awakened draconium for the store", "subtitle": "The dragon pays in installments.",
+        "text": ["Nine [item:draconicevolution:awakened_draconium_ingot|Awakened Draconium Ingots] for the common store, once a day. One Dragon Heart awakens four blocks, thirty-six ingots."]},
+      "es_es": {"title": "Draconio despertado al depósito", "subtitle": "El dragón paga en cuotas.",
+        "text": ["Nueve [item:draconicevolution:awakened_draconium_ingot|lingotes de draconio despertado] para el depósito común, una vez por día. Un corazón de dragón despierta cuatro bloques, treinta y seis lingotes."]},
+      "sources": ["jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:data/draconicevolution/recipe/awakened_draconium_block.json", "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:data/draconicevolution/recipe/decompress/awakened_draconium_ingot.json"]
+    },
+    {
+      "key": "de_heart_collector", "role": "secret", "deps": ["de_awakened_ingot"],
+      "task": {"type": "kill", "entity": "minecraft:ender_dragon", "value": 10, "title": {"en_us": "Defeat the Ender Dragon ten times", "es_es": "Derrotá al dragón del End diez veces"}},
+      "icon": "draconicevolution:dragon_heart",
+      "at": {"x": -32.4, "y": 1.8},
+      "en_us": {"title": "Serial dragon slayer", "subtitle": "The End's longest-running show.",
+        "text": ["Ten dragons, ten hearts, ten eggs. The exit portal must be tired of the fireworks by now."]},
+      "es_es": {"title": "Matadragones en serie", "subtitle": "La función más larga del End.",
+        "text": ["Diez dragones, diez corazones, diez huevos. El portal de salida ya debe estar harto de los fuegos artificiales."]},
+      "sources": ["jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:com/brandon3055/draconicevolution/handlers/LootEventHandler.class", "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:com/brandon3055/draconicevolution/DEConfig.class"]
+    },
+    {
+      "key": "de_draconic_capacitor", "role": "side", "deps": ["de_draconic_injector"],
+      "task": {"item": "draconicevolution:draconic_capacitor"},
+      "at": {"x": -21.8, "y": 4.6},
+      "en_us": {"title": "Draconic Capacitor",
+        "text": ["The wyvern capacitor as catalyst, a Draconic Core, three draconic energy controllers and four awakened ingots: 32 million OP. Its grid grows to 5×5, room for draconic energy modules of 16 million OP each."]},
+      "es_es": {"title": "Capacitor dracónico",
+        "text": ["El capacitor wyvern de catalizador, un núcleo dracónico, tres controladores de energía dracónicos y cuatro lingotes despertados: 32 millones de OP. Su grilla crece a 5×5, lugar para módulos de energía dracónicos de 16 millones de OP cada uno."]},
+      "sources": ["jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:data/draconicevolution/recipe/tools/draconic_capacitor.json", "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:com/brandon3055/draconicevolution/init/ModuleCfg.class", "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:com/brandon3055/draconicevolution/init/DEModules.class"]
+    },
+    {
+      "key": "de_draconic_crystals", "role": "side", "deps": ["de_draconic_injector"],
+      "tasks": [{"item": "draconicevolution:draconic_relay_crystal"}, {"item": "draconicevolution:draconic_io_crystal"}, {"item": "draconicevolution:draconic_wireless_crystal"}],
+      "icon": "draconicevolution:draconic_relay_crystal",
+      "at": {"x": -21.8, "y": -4.0},
+      "en_us": {"title": "Draconic crystals",
+        "text": ["Four wyvern relays fuse into four draconic ones with wyvern energy controllers, diamonds and a Wyvern Core. Draconic crystals reach 127 blocks and buffer 64 million OP; relays take 32 links, wireless ones feed 64 machines at 512,000 OP/t."]},
+      "es_es": {"title": "Cristales dracónicos",
+        "text": ["Cuatro relevos wyvern se fusionan en cuatro dracónicos con controladores de energía wyvern, diamantes y un núcleo wyvern. Los cristales dracónicos llegan a 127 bloques y guardan 64 millones de OP; los relevos toman 32 enlaces, los inalámbricos alimentan 64 máquinas a 512.000 OP/t."]},
+      "sources": ["jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:data/draconicevolution/recipe/machines/draconic_relay_crystal.json", "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:data/draconicevolution/recipe/machines/draconic_io_crystal.json", "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:data/draconicevolution/recipe/machines/draconic_wireless_crystal.json", "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:com/brandon3055/draconicevolution/blocks/energynet/tileentity/TileCrystalBase.class", "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:com/brandon3055/draconicevolution/blocks/energynet/tileentity/TileCrystalWirelessIO.class"]
+    },
+    {
+      "key": "de_draconic_weapons", "role": "side", "deps": ["de_draconic_tools"], "group": "draconic_tools",
+      "tasks": [{"item": "draconicevolution:draconic_sword"}, {"item": "draconicevolution:draconic_bow"}],
+      "icon": "draconicevolution:draconic_sword",
+      "at": {"x": -21.8, "y": -7.6},
+      "en_us": {"title": "Draconic weapons",
+        "text": ["The sword and bow fuse from the wyvern ones like the tools, 32 million OP each. Draconic damage modules add 8 each, and the sword's Attack Radius still sweeps a 100-degree arc."]},
+      "es_es": {"title": "Armas dracónicas",
+        "text": ["La espada y el arco se fusionan desde los wyvern como las herramientas, 32 millones de OP cada uno. Los módulos de daño dracónicos suman 8 cada uno, y el Attack Radius de la espada sigue barriendo un arco de 100 grados."]},
+      "sources": ["jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:data/draconicevolution/recipe/tools/draconic_sword.json", "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:data/draconicevolution/recipe/tools/draconic_bow.json", "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:com/brandon3055/draconicevolution/init/DEModules.class", "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:assets/draconicevolution/lang/en_us.json#item_prop.draconicevolution.attack_aoe.info"]
+    },
+    {
+      "key": "de_draconic_proj", "role": "side", "deps": ["de_draconic_weapons"], "group": "draconic_tools",
+      "tasks": [{"item": "draconicevolution:item_draconic_proj_velocity"}, {"item": "draconicevolution:item_draconic_proj_accuracy"}, {"item": "draconicevolution:item_draconic_proj_damage"}, {"item": "draconicevolution:item_draconic_proj_penetration"}, {"item": "draconicevolution:item_draconic_proj_grav_comp"}],
+      "icon": "draconicevolution:item_draconic_proj_velocity",
+      "at": {"x": -21.8, "y": -10.2},
+      "en_us": {"title": "Draconic projectile modules",
+        "text": ["Awakened nuggets and a Wyvern Core fold two wyvern projectile modules into each draconic one: velocity, accuracy, damage, penetration and gravity compensation."]},
+      "es_es": {"title": "Módulos de proyectil dracónicos",
+        "text": ["Pepitas despertadas y un núcleo wyvern juntan dos módulos de proyectil wyvern en cada dracónico: velocidad, precisión, daño, penetración y compensación de gravedad."]},
+      "sources": ["jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:data/draconicevolution/recipe/modules/item_draconic_proj_velocity.json", "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:data/draconicevolution/recipe/modules/item_draconic_proj_accuracy.json", "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:data/draconicevolution/recipe/modules/item_draconic_proj_damage.json", "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:data/draconicevolution/recipe/modules/item_draconic_proj_penetration.json", "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:data/draconicevolution/recipe/modules/item_draconic_proj_grav_comp.json"]
+    },
+    {
+      "key": "de_proj_anti_immune", "role": "side", "deps": ["de_draconic_proj"], "group": "draconic_tools",
+      "task": {"item": "draconicevolution:item_draconic_proj_anti_immune"},
+      "at": {"x": -24.4, "y": -10.2},
+      "en_us": {"title": "Projectile Immunity Cancellation", "subtitle": "Endermen hate this one trick.",
+        "text": ["A wither skeleton skull, an ender pearl and two Wyvern Cores in a module. Its arrows ignore the arrow immunity of endermen, withers, the Ender Dragon, Guardian Withers and shulkers."]},
+      "es_es": {"title": "Cancelación de inmunidad", "subtitle": "Los endermen odian este truco.",
+        "text": ["Un cráneo de esqueleto wither, una perla de ender y dos núcleos wyvern en un módulo. Sus flechas ignoran la inmunidad a flechas de endermen, withers, el dragón del End, los Withers guardianes y los shulkers."]},
+      "sources": ["jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:data/draconicevolution/recipe/modules/item_draconic_proj_anti_immune.json", "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:com/brandon3055/draconicevolution/DEConfig.class"]
+    },
+    {
+      "key": "de_draconic_staff", "role": "side", "deps": ["de_draconic_tools", "de_draconic_weapons"], "group": "draconic_tools",
+      "task": {"item": "draconicevolution:draconic_staff"},
+      "at": {"x": -19.2, "y": -7.6},
+      "en_us": {"title": "Draconic Staff of Power", "subtitle": "Three tools, one pocket.",
+        "text": ["A Draconic Core as catalyst, the draconic pickaxe, sword and shovel, six awakened ingots and a draconic energy controller: 256 million OP. One tool that digs like all three and hits like an axe, with an 8×6 grid."]},
+      "es_es": {"title": "Báculo de poder dracónico", "subtitle": "Tres herramientas, un bolsillo.",
+        "text": ["Un núcleo dracónico de catalizador, el pico, la espada y la pala dracónicos, seis lingotes despertados y un controlador de energía dracónico: 256 millones de OP. Una herramienta que pica como las tres y pega como un hacha, con grilla de 8×6."]},
+      "sources": ["jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:data/draconicevolution/recipe/tools/draconic_staff.json", "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:com/brandon3055/draconicevolution/init/EquipCfg.class", "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:com/brandon3055/draconicevolution/init/ModuleCfg.class", "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:data/draconicevolution/tags/block/mineable_with_staff.json"]
+    },
+    {
+      "key": "de_ender_filter", "role": "side", "deps": ["de_draconic_tools"], "group": "draconic_tools",
+      "task": {"item": "draconicevolution:item_draconic_ender_collection"},
+      "at": {"x": -24.4, "y": -7.6},
+      "en_us": {"title": "Filterable Ender Collection",
+        "text": ["Two comparators, a chest and awakened nuggets turn the wyvern module into a filtered one: choose by item or by tag, like c:ores, which drops go to the ender chest."]},
+      "es_es": {"title": "Recolección de ender filtrable",
+        "text": ["Dos comparadores, un cofre y pepitas despertadas vuelven filtrable al módulo wyvern: elegí por ítem o por etiqueta, como c:ores, qué va al cofre de ender."]},
+      "sources": ["jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:data/draconicevolution/recipe/modules/item_draconic_ender_collection.json", "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:assets/draconicevolution/lang/en_us.json#module.draconicevolution.filtered_module.filter_by_tag"]
+    },
+    {
+      "key": "de_forest", "role": "side", "deps": ["de_draconic_tools"], "group": "draconic_tools",
+      "task": {"item": "draconicevolution:item_draconic_tree_harvest"},
+      "at": {"x": -27.0, "y": -7.6},
+      "en_us": {"title": "Forest Reduction Assistant", "subtitle": "It assists. The forest reduces.",
+        "text": ["The draconic tree harvester: 48 blocks of reach at 15 blocks per second, from the wyvern module with netherite, awakened ingots and a Wyvern Core."]},
+      "es_es": {"title": "Asistente de reducción forestal", "subtitle": "Asiste. El bosque se reduce.",
+        "text": ["El talador dracónico: 48 bloques de alcance a 15 bloques por segundo, desde el módulo wyvern con netherita, lingotes despertados y un núcleo wyvern."]},
+      "sources": ["jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:data/draconicevolution/recipe/modules/item_draconic_tree_harvest.json", "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:com/brandon3055/draconicevolution/init/DEModules.class"]
+    },
+    {
+      "key": "de_tip_any_block", "role": "tip", "deps": ["de_draconic_tools"],
+      "task": {"type": "checkmark"},
+      "at": {"x": -15.2, "y": -3.6},
+      "en_us": {"title": "It mines anything",
+        "text": ["[tip] Draconic and chaotic tools skip the tool-tier tags: they mine any block that can be mined, while wyvern tools stop at the netherite tier."]},
+      "es_es": {"title": "Pica cualquier cosa",
+        "text": ["[tip] Las herramientas dracónicas y caóticas ignoran las etiquetas de nivel: pican cualquier bloque que se pueda picar, mientras que las wyvern llegan hasta el nivel de netherita."]},
+      "sources": ["jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:com/brandon3055/draconicevolution/DEConfig.class", "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:data/draconicevolution/tags/block/incorrect_for_wyvern_tool.json"]
+    },
+    {
+      "key": "de_draconic_flight", "role": "side", "deps": ["de_draconic_chestpiece"], "group": "draconic_armor",
+      "task": {"item": "draconicevolution:item_draconic_flight"},
+      "at": {"x": -18.0, "y": 7.6},
+      "en_us": {"title": "Creative flight", "subtitle": "Finally, no rockets.",
+        "text": ["Two Wyvern Cores, awakened ingots, a slow falling potion and a firework rocket around the wyvern module. It adds creative flight to the elytra, drawing 4,096 OP per tick while you fly; [key:key.draconicevolution.toggle_flight] switches it."]},
+      "es_es": {"title": "Vuelo creativo", "subtitle": "Por fin, sin cohetes.",
+        "text": ["Dos núcleos wyvern, lingotes despertados, una poción de caída lenta y un cohete alrededor del módulo wyvern. Suma vuelo creativo a los élitros y gasta 4.096 OP por tick mientras volás; [key:key.draconicevolution.toggle_flight] lo prende y lo apaga."]},
+      "sources": ["jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:data/draconicevolution/recipe/modules/item_draconic_flight.json", "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:com/brandon3055/draconicevolution/init/DEModules.class", "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:com/brandon3055/draconicevolution/init/EquipCfg.class", "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:assets/draconicevolution/lang/en_us.json#key.draconicevolution.toggle_flight"]
+    },
+    {
+      "key": "de_draconic_shields", "role": "side", "deps": ["de_draconic_chestpiece"], "group": "draconic_armor",
+      "tasks": [{"item": "draconicevolution:item_draconic_shield_control"}, {"item": "draconicevolution:item_draconic_shield_capacity"}, {"item": "draconicevolution:item_draconic_shield_recovery"}],
+      "icon": "draconicevolution:item_draconic_shield_capacity",
+      "at": {"x": -15.4, "y": 7.6},
+      "en_us": {"title": "Draconic shields",
+        "text": ["Capacity modules hold 50 points each and the large one 250; recovery modules recharge faster. The draconic controller, built from two Draconic Cores, emeralds and netherite, cuts the cooldown to 10 seconds."]},
+      "es_es": {"title": "Escudos dracónicos",
+        "text": ["Cada módulo de capacidad guarda 50 puntos y el grande 250; los de recuperación recargan más rápido. El controlador dracónico, con dos núcleos dracónicos, esmeraldas y netherita, baja el enfriamiento a 10 segundos."]},
+      "sources": ["jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:data/draconicevolution/recipe/modules/item_draconic_shield_control.json", "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:data/draconicevolution/recipe/modules/item_draconic_shield_capacity.json", "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:data/draconicevolution/recipe/modules/item_draconic_shield_recovery.json", "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:data/draconicevolution/recipe/modules/item_draconic_large_shield_capacity.json", "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:com/brandon3055/draconicevolution/init/DEModules.class"]
+    },
+    {
+      "key": "de_draconic_undying", "role": "side", "deps": ["de_draconic_shields"], "group": "draconic_armor",
+      "task": {"item": "draconicevolution:item_draconic_undying"},
+      "at": {"x": -12.8, "y": 7.6},
+      "en_us": {"title": "Draconic Undying",
+        "text": ["When a hit would kill you it heals 12 health and adds 50 shield points for 30 seconds, then recharges in 60 seconds with 10 million OP. A strong healing potion and a draconic shield module go into it."]},
+      "es_es": {"title": "Inmortal dracónico",
+        "text": ["Cuando un golpe te mataría, cura 12 de vida y suma 50 puntos de escudo por 30 segundos; después se recarga en 60 segundos con 10 millones de OP. Lleva una poción de curación fuerte y un módulo de escudo dracónico."]},
+      "sources": ["jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:data/draconicevolution/recipe/modules/item_draconic_undying.json", "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:com/brandon3055/draconicevolution/init/DEModules.class", "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:com/brandon3055/draconicevolution/api/modules/data/UndyingData.class"]
+    },
+    {
+      "key": "de_tip_spawner_tiers", "role": "tip", "deps": ["de_awakened"],
+      "task": {"type": "checkmark"},
+      "at": {"x": -28.6, "y": 7.0},
+      "en_us": {"title": "Spawners, one tier up",
+        "text": ["[tip] Click a stabilized spawner with a Draconic Core and it spawns 8 mobs at a time, ignoring light; with a Chaotic Core, 12 every 25 to 100 ticks."]},
+      "es_es": {"title": "Generadores, un nivel arriba",
+        "text": ["[tip] Hacé clic en un generador estabilizado con un núcleo dracónico y genera 8 criaturas por vez, ignorando la luz; con un núcleo caótico, 12 cada 25 a 100 ticks."]},
+      "sources": ["jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:com/brandon3055/draconicevolution/blocks/tileentity/TileStabilizedSpawner.class", "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:com/brandon3055/draconicevolution/blocks/tileentity/TileStabilizedSpawner$SpawnerTier.class", "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:com/brandon3055/draconicevolution/DEConfig.class"]
+    },
+    {
+      "key": "de_chaos_island", "role": "step", "deps": ["de_draconic_tools"],
+      "task": {"type": "observation", "observe": "block", "target": "draconicevolution:chaos_crystal", "ticks": 40, "title": {"en_us": "Look at a Chaos Crystal", "es_es": "Mirá un cristal del caos"}},
+      "icon": "draconicevolution:chaos_crystal",
+      "at": {"x": -6.0, "y": -10.6},
+      "en_us": {"title": "Chaos Islands", "subtitle": "Ten thousand blocks of nothing, then this.",
+        "text": ["Chaos Islands sit on a grid 10,000 blocks apart in the End, each around a Chaos Crystal at Y 80. Walking up to one wakes it: pillars rise with Guardian Crystals, then the Chaos Guardian arrives."]},
+      "es_es": {"title": "Islas del Caos", "subtitle": "Diez mil bloques de nada, y después esto.",
+        "text": ["Las islas del Caos están en una grilla de 10.000 bloques en el End, cada una alrededor de un cristal del caos en Y 80. Acercarte la despierta: suben pilares con cristales guardianes, y después llega el Guardián del Caos."]},
+      "sources": ["jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:com/brandon3055/draconicevolution/DEConfig.class", "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:com/brandon3055/draconicevolution/world/ChaosIslandFeature.class", "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:com/brandon3055/draconicevolution/entity/guardian/GuardianSpawnState.class", "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:data/draconicevolution/worldgen/placed_feature/chaos_island.json"]
+    },
+    {
+      "key": "de_guardian_crystals", "role": "step", "deps": ["de_chaos_island"],
+      "task": {"type": "observation", "observe": "entity_type", "target": "draconicevolution:guardian_crystal", "ticks": 20, "title": {"en_us": "Look at a Guardian Crystal", "es_es": "Mirá un cristal guardián"}},
+      "icon": "draconicevolution:chaos_shard",
+      "at": {"x": -7.6, "y": -7.829},
+      "en_us": {"title": "Guardian Crystals", "subtitle": "Friendly fire, weaponized.",
+        "text": ["Each crystal carries a 512-point shield. The Guardian's own attacks leave it unstable for 10 seconds: stand near a crystal, let the Guardian's fire hit it, then break it before it settles."]},
+      "es_es": {"title": "Cristales guardianes", "subtitle": "Fuego amigo, bien usado.",
+        "text": ["Cada cristal tiene un escudo de 512 puntos. Los ataques del propio Guardián lo dejan inestable por 10 segundos: parate cerca de un cristal, dejá que el fuego del Guardián le pegue y rompelo antes de que se estabilice."]},
+      "sources": ["jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:com/brandon3055/draconicevolution/DEConfig.class", "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:com/brandon3055/draconicevolution/entity/GuardianCrystalEntity.class"]
+    },
+    {
+      "key": "de_guardian", "role": "boss", "deps": ["de_guardian_crystals"],
+      "task": {"type": "kill", "entity": "draconicevolution:draconic_guardian", "value": 1, "title": {"en_us": "Defeat the Chaos Guardian", "es_es": "Derrotá al Guardián del Caos"}},
+      "icon": {"entity": "draconicevolution:draconic_guardian"},
+      "at": {"x": -7.6, "y": -13.371},
+      "en_us": {"title": "The Chaos Guardian", "subtitle": "It has a frickin laser beam.",
+        "text": ["With the crystals down its 16,000-point shield comes next, and only then its 1,000 health. It charges, bombards, fires lasers and sends shockwaves; when it lands it calls Guardian Withers. It drops 57 to 70 draconium dust."]},
+      "es_es": {"title": "El Guardián del Caos", "subtitle": "Tiene un láser. Uno de verdad.",
+        "text": ["Con los cristales rotos, sigue su escudo de 16.000 puntos, y recién después sus 1.000 de vida. Embiste, bombardea, dispara láseres y lanza ondas de choque; cuando aterriza llama Withers guardianes. Suelta de 57 a 70 de polvo de draconio."]},
+      "sources": ["jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:com/brandon3055/draconicevolution/DEConfig.class", "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:com/brandon3055/draconicevolution/entity/guardian/DraconicGuardianEntity.class", "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:com/brandon3055/draconicevolution/entity/guardian/control/GroundEffectPhase.class", "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:com/brandon3055/draconicevolution/entity/guardian/control/LaserBeamPhase.class", "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:com/brandon3055/draconicevolution/handlers/LootEventHandler.class", "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:assets/draconicevolution/lang/en_us.json#death.attack.draconicevolution.guardian_laser"]
+    },
+    {
+      "key": "de_chaos", "role": "step", "deps": ["de_guardian"],
+      "task": {"item": "draconicevolution:chaos_shard"},
+      "at": {"x": -4.4, "y": -13.371},
+      "en_us": {"title": "Chaos Shards",
+        "text": ["Break the Chaos Crystal after the fight for five [item:draconicevolution:chaos_shard|Chaos Shards]. Until a reactor runs, they are the only chaos you get, so spend them on Chaotic Cores first."]},
+      "es_es": {"title": "Esquirlas de caos",
+        "text": ["Rompé el cristal del caos después de la pelea: cinco [item:draconicevolution:chaos_shard|esquirlas de caos]. Hasta que ande un reactor son el único caos que conseguís, así que gastalas primero en núcleos caóticos."]},
+      "sources": ["jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:com/brandon3055/draconicevolution/DEConfig.class", "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:com/brandon3055/draconicevolution/blocks/tileentity/TileChaosCrystal.class", "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:com/brandon3055/draconicevolution/inventory/ReactorMenu.class"]
+    },
+    {
+      "key": "de_guardian_wither", "role": "secret", "deps": ["de_chaos_island"],
+      "task": {"type": "kill", "entity": "draconicevolution:guardian_wither", "value": 1, "title": {"en_us": "Defeat a Guardian Wither", "es_es": "Derrotá a un Wither guardián"}},
+      "icon": {"entity": "draconicevolution:guardian_wither"},
+      "at": {"x": -9.2, "y": -10.6},
+      "en_us": {"title": "Wither on the side", "subtitle": "Bring a friend, it said.",
+        "text": ["You beat one of the withers the Guardian calls when it lands. It had backup. It always has backup."]},
+      "es_es": {"title": "Wither de guarnición", "subtitle": "Traé un amigo, dijo.",
+        "text": ["Derrotaste a uno de los withers que llama el Guardián cuando aterriza. Tenía refuerzos. Siempre tiene refuerzos."]},
+      "sources": ["jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:com/brandon3055/draconicevolution/entity/guardian/control/GroundEffectPhase.class", "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:com/brandon3055/draconicevolution/entity/guardian/GuardianWither.class"]
+    },
+    {
+      "key": "de_island_hopper", "role": "secret", "deps": ["de_guardian"],
+      "task": {"type": "kill", "entity": "draconicevolution:draconic_guardian", "value": 2, "title": {"en_us": "Defeat two Chaos Guardians", "es_es": "Derrotá a dos Guardianes del Caos"}},
+      "icon": "draconicevolution:chaos_shard",
+      "at": {"x": -2.8, "y": -10.6},
+      "en_us": {"title": "Island hopper", "subtitle": "Frequent flyer miles: earned.",
+        "text": ["A second Chaos Guardian means a second island, at least 10,000 blocks from the first. Nobody said the End was small."]},
+      "es_es": {"title": "Salto de isla en isla", "subtitle": "Millas de viajero frecuente: ganadas.",
+        "text": ["Un segundo Guardián del Caos quiere decir una segunda isla, a 10.000 bloques de la primera como mínimo. Nadie dijo que el End fuera chico."]},
+      "sources": ["jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:com/brandon3055/draconicevolution/DEConfig.class", "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:com/brandon3055/draconicevolution/world/ChaosIslandFeature.class"]
+    },
+    {
+      "key": "de_tip_escape", "role": "tip", "deps": ["de_chaos_island"],
+      "task": {"type": "checkmark"},
+      "at": {"x": -4.4, "y": -7.829},
+      "en_us": {"title": "Pack a way home",
+        "text": ["[tip] Store your base in an Advanced Dislocator before you sail for an island: islands sit 10,000 blocks apart, and the End has few landmarks."]},
+      "es_es": {"title": "Llevá una vuelta a casa",
+        "text": ["[tip] Guardá tu base en un dislocador avanzado antes de salir hacia una isla: están a 10.000 bloques entre sí, y el End tiene pocas referencias."]},
+      "sources": ["jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:com/brandon3055/draconicevolution/DEConfig.class", "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:data/draconicevolution/recipe/tools/advanced_dislocator.json"]
+    },
+    {
+      "key": "de_tip_farm_guardians", "role": "tip", "deps": ["de_guardian"],
+      "task": {"type": "checkmark"},
+      "at": {"x": -11.0, "y": -14.4},
+      "en_us": {"title": "Farming guardians",
+        "text": ["[tip] A chaotic weapon destabilizes Guardian Crystal shields by itself, no Guardian needed, which makes every later island fight much quicker."]},
+      "es_es": {"title": "Guardianes en serie",
+        "text": ["[tip] Un arma caótica desestabiliza el escudo de los cristales guardianes por su cuenta, sin el Guardián, y eso acorta mucho cada pelea en otra isla."]},
+      "sources": ["jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:com/brandon3055/draconicevolution/DEConfig.class"]
+    },
+    {
+      "key": "de_tip_guardian_bow", "role": "tip", "deps": ["de_guardian_crystals"],
+      "task": {"type": "checkmark"},
+      "at": {"x": -11.0, "y": -7.4},
+      "en_us": {"title": "Bows melt shields",
+        "text": ["[tip] The Guardian's shield has no limit on how fast it takes hits: a strong bow firing quickly strips its 16,000 points far sooner than a sword."]},
+      "es_es": {"title": "El arco derrite escudos",
+        "text": ["[tip] El escudo del Guardián no tiene límite de cuán rápido recibe golpes: un arco fuerte que dispara rápido le saca los 16.000 puntos mucho antes que una espada."]},
+      "sources": ["jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:com/brandon3055/draconicevolution/DEConfig.class"]
+    },
+    {
+      "key": "de_chaos_frags", "role": "step", "deps": ["de_chaos"],
+      "tasks": [{"item": "draconicevolution:large_chaos_frag", "count": 4}, {"item": "draconicevolution:medium_chaos_frag", "count": 4}],
+      "icon": "draconicevolution:large_chaos_frag",
+      "at": {"x": 1.0, "y": -13.4},
+      "en_us": {"title": "Chaos fragments",
+        "text": ["A shard crafts into nine Large Chaos Fragments, each of those into nine Small ones, and each Small into nine Tiny ones; nine of a size craft back up. Recipes ask for large and small fragments, so split only what you need."]},
+      "es_es": {"title": "Fragmentos de caos",
+        "text": ["Una esquirla se parte en nueve fragmentos grandes de caos, cada uno en nueve chicos y cada chico en nueve diminutos; nueve de un tamaño vuelven a armar el de arriba. Las recetas piden grandes y chicos, así que partí sólo lo que necesites."]},
+      "sources": ["jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:data/draconicevolution/recipe/decompress/large_chaos_frag.json", "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:data/draconicevolution/recipe/decompress/medium_chaos_frag.json", "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:data/draconicevolution/recipe/decompress/small_chaos_frag.json", "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:data/draconicevolution/recipe/compress/chaos_shard.json"]
+    },
+    {
+      "key": "de_tip_frag_budget", "role": "tip", "deps": ["de_chaos_frags"],
+      "task": {"type": "checkmark"},
+      "at": {"x": 1.0, "y": -16.0},
+      "en_us": {"title": "Count your fragments",
+        "text": ["[tip] One shard is nine large fragments. A Chaotic Core takes five of them, a chaotic injector four, the reactor core two and each reactor stabilizer one."]},
+      "es_es": {"title": "Contá los fragmentos",
+        "text": ["[tip] Una esquirla son nueve fragmentos grandes. Un núcleo caótico lleva cinco, un inyector caótico cuatro, el núcleo del reactor dos y cada estabilizador del reactor uno."]},
+      "sources": ["jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:data/draconicevolution/recipe/components/chaotic_core.json", "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:data/draconicevolution/recipe/machines/chaotic_crafting_injector.json", "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:data/draconicevolution/recipe/machines/reactor_core.json", "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:data/draconicevolution/recipe/machines/reactor_stabilizer.json"]
+    },
+    {
+      "key": "de_mastery", "role": "milestone", "deps": ["de_chaos_frags"],
+      "task": {"item": "draconicevolution:chaotic_core"},
+      "at": {"x": 6.0, "y": -10.4},
+      "en_us": {"title": "Chaotic Core", "subtitle": "Twenty nether stars, one very angry marble.",
+        "text": ["A large chaos fragment as catalyst; four Draconic Cores, four awakened ingots and four more large fragments around it, on draconic injectors: 100 million OP. Every chaotic tool, each reactor stabilizer and the chaotic capacitor take one."]},
+      "es_es": {"title": "Núcleo caótico", "subtitle": "Veinte estrellas del Nether, una bolita muy enojada.",
+        "text": ["Un fragmento grande de caos de catalizador; cuatro núcleos dracónicos, cuatro lingotes despertados y cuatro fragmentos grandes más alrededor, en inyectores dracónicos: 100 millones de OP. Cada herramienta caótica, cada estabilizador del reactor y el capacitor caótico llevan uno."]},
+      "sources": ["jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:data/draconicevolution/recipe/components/chaotic_core.json", "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:data/draconicevolution/recipe/tools/chaotic_pickaxe.json", "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:data/draconicevolution/recipe/machines/reactor_stabilizer.json", "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:data/draconicevolution/recipe/tools/chaotic_capacitor.json"]
+    },
+    {
+      "key": "de_chaotic_injector", "role": "step", "deps": ["de_mastery"],
+      "task": {"item": "draconicevolution:chaotic_crafting_injector", "count": 8},
+      "at": {"x": 10.0, "y": -13.4},
+      "en_us": {"title": "Chaotic injectors", "subtitle": "One dragon egg each. Yes, each.",
+        "text": ["A draconic injector as catalyst, four diamonds, four large chaos fragments and a dragon egg, for 8,000,000 OP. Chaotic recipes need one per ingredient, eight for a tool, so start collecting eggs."]},
+      "es_es": {"title": "Inyectores caóticos", "subtitle": "Un huevo de dragón cada uno. Sí, cada uno.",
+        "text": ["Un inyector dracónico de catalizador, cuatro diamantes, cuatro fragmentos grandes de caos y un huevo de dragón, por 8.000.000 de OP. Las recetas caóticas piden uno por ingrediente, ocho para una herramienta, así que empezá a juntar huevos."]},
+      "sources": ["jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:data/draconicevolution/recipe/machines/chaotic_crafting_injector.json", "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:data/draconicevolution/recipe/tools/chaotic_pickaxe.json", "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:com/brandon3055/draconicevolution/DEConfig.class"]
+    },
+    {
+      "key": "de_chaotic_energy", "role": "step", "deps": ["de_mastery"],
+      "task": {"item": "draconicevolution:chaotic_energy_core", "count": 2},
+      "at": {"x": 10.0, "y": -10.8},
+      "en_us": {"title": "Chaotic Energy Controller",
+        "text": ["Four small chaos fragments, four draconic energy controllers and a Draconic Core. Each chaotic tool takes one, the capacitor three and the Staff of Power up to three."]},
+      "es_es": {"title": "Controlador de energía caótico",
+        "text": ["Cuatro fragmentos chicos de caos, cuatro controladores de energía dracónicos y un núcleo dracónico. Cada herramienta caótica lleva uno, el capacitor tres y el báculo de poder hasta tres."]},
+      "sources": ["jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:data/draconicevolution/recipe/components/chaotic_energy_core.json", "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:data/draconicevolution/recipe/tools/chaotic_pickaxe.json", "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:data/draconicevolution/recipe/tools/chaotic_capacitor.json", "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:data/draconicevolution/recipe/tools/chaotic_staff.json", "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:data/draconicevolution/recipe/tools/chaotic_staff_alt.json"]
+    },
+    {
+      "key": "de_chaotic_tools", "role": "milestone", "deps": ["de_mastery"],
+      "tasks": [{"item": "draconicevolution:chaotic_pickaxe"}, {"item": "draconicevolution:chaotic_axe"}, {"item": "draconicevolution:chaotic_shovel"}, {"item": "draconicevolution:chaotic_hoe"}],
+      "icon": "draconicevolution:chaotic_pickaxe",
+      "at": {"x": 14.6, "y": -4.0},
+      "en_us": {"title": "Chaotic tools", "subtitle": "Speed 50. Blinking not recommended.",
+        "text": ["Fuse each draconic tool with a Chaotic Core, six awakened ingots and a chaotic energy controller, on chaotic injectors: 128 million OP apiece. They dig at speed 50 and carry an 8×6 grid."]},
+      "es_es": {"title": "Herramientas caóticas", "subtitle": "Velocidad 50. No parpadees.",
+        "text": ["Fusioná cada herramienta dracónica con un núcleo caótico, seis lingotes despertados y un controlador de energía caótico, en inyectores caóticos: 128 millones de OP cada una. Pican a velocidad 50 y traen una grilla de 8×6."]},
+      "sources": ["jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:data/draconicevolution/recipe/tools/chaotic_pickaxe.json", "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:data/draconicevolution/recipe/tools/chaotic_axe.json", "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:data/draconicevolution/recipe/tools/chaotic_shovel.json", "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:data/draconicevolution/recipe/tools/chaotic_hoe.json", "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:com/brandon3055/draconicevolution/init/EquipCfg.class", "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:com/brandon3055/draconicevolution/init/ModuleCfg.class"]
+    },
+    {
+      "key": "de_chaotic_chestpiece", "role": "milestone", "deps": ["de_mastery"],
+      "task": {"item": "draconicevolution:chaotic_chestpiece"},
+      "at": {"x": 14.6, "y": 5.0},
+      "en_us": {"title": "Chaotic Chestpiece",
+        "text": ["The same fusion from the draconic chestpiece. Its 10×8 grid is the largest armor grid in the mod: room for chaotic shields, undying and the fastest flight."]},
+      "es_es": {"title": "Pechera caótica",
+        "text": ["La misma fusión desde la pechera dracónica. Su grilla de 10×8 es la más grande de armadura del mod: entra escudo caótico, inmortalidad y el vuelo más rápido."]},
+      "sources": ["jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:data/draconicevolution/recipe/tools/chaotic_chestpiece.json", "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:com/brandon3055/draconicevolution/init/ModuleCfg.class"]
+    },
+    {
+      "key": "de_chaotic_weapons", "role": "side", "deps": ["de_chaotic_tools"], "group": "chaotic_tools",
+      "tasks": [{"item": "draconicevolution:chaotic_sword"}, {"item": "draconicevolution:chaotic_bow"}],
+      "icon": "draconicevolution:chaotic_sword",
+      "at": {"x": 18.2, "y": -7.0},
+      "en_us": {"title": "Chaotic weapons",
+        "text": ["The chaotic sword and bow, fused from the draconic ones for 128 million OP each. Chaotic damage modules add 16 each, and with one of these the crystal shields on a Chaos Island stop waiting for the Guardian."]},
+      "es_es": {"title": "Armas caóticas",
+        "text": ["La espada y el arco caóticos, fusionados desde los dracónicos por 128 millones de OP cada uno. Los módulos de daño caóticos suman 16 cada uno, y con una de estas los escudos de los cristales de una isla del Caos dejan de esperar al Guardián."]},
+      "sources": ["jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:data/draconicevolution/recipe/tools/chaotic_sword.json", "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:data/draconicevolution/recipe/tools/chaotic_bow.json", "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:com/brandon3055/draconicevolution/init/DEModules.class", "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:com/brandon3055/draconicevolution/DEConfig.class"]
+    },
+    {
+      "key": "de_chaotic_proj", "role": "side", "deps": ["de_chaotic_weapons"], "group": "chaotic_tools",
+      "tasks": [{"item": "draconicevolution:item_chaotic_proj_velocity"}, {"item": "draconicevolution:item_chaotic_proj_accuracy"}, {"item": "draconicevolution:item_chaotic_proj_damage"}, {"item": "draconicevolution:item_chaotic_proj_penetration"}, {"item": "draconicevolution:item_chaotic_proj_grav_comp"}],
+      "icon": "draconicevolution:item_chaotic_proj_velocity",
+      "at": {"x": 21.6, "y": -7.0},
+      "en_us": {"title": "Chaotic projectile modules",
+        "text": ["Six small chaos fragments and a Draconic Core fold two draconic projectile modules into each chaotic one: velocity, accuracy, damage, penetration and gravity compensation, each at its best."]},
+      "es_es": {"title": "Módulos de proyectil caóticos",
+        "text": ["Seis fragmentos chicos de caos y un núcleo dracónico juntan dos módulos de proyectil dracónicos en cada caótico: velocidad, precisión, daño, penetración y compensación de gravedad, cada uno en su mejor versión."]},
+      "sources": ["jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:data/draconicevolution/recipe/modules/item_chaotic_proj_velocity.json", "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:data/draconicevolution/recipe/modules/item_chaotic_proj_accuracy.json", "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:data/draconicevolution/recipe/modules/item_chaotic_proj_damage.json", "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:data/draconicevolution/recipe/modules/item_chaotic_proj_penetration.json", "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:data/draconicevolution/recipe/modules/item_chaotic_proj_grav_comp.json", "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:com/brandon3055/draconicevolution/init/DEModules.class"]
+    },
+    {
+      "key": "de_deforestation", "role": "side", "deps": ["de_chaotic_tools"], "group": "chaotic_tools",
+      "task": {"item": "draconicevolution:item_chaotic_tree_harvest"},
+      "at": {"x": 14.6, "y": -7.4},
+      "en_us": {"title": "Chaotic Deforestation Module", "subtitle": "Pack a sapling or two.",
+        "text": ["144 blocks of reach at 45 blocks per second: the forest reduction module with large chaos fragments, netherite and a Draconic Core."]},
+      "es_es": {"title": "Módulo de deforestación caótico", "subtitle": "Llevá un par de retoños.",
+        "text": ["144 bloques de alcance a 45 bloques por segundo: el módulo de reducción forestal con fragmentos grandes de caos, netherita y un núcleo dracónico."]},
+      "sources": ["jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:data/draconicevolution/recipe/modules/item_chaotic_tree_harvest.json", "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:com/brandon3055/draconicevolution/init/DEModules.class"]
+    },
+    {
+      "key": "de_chaotic_modules", "role": "side", "deps": ["de_mastery"],
+      "tasks": [{"item": "draconicevolution:item_chaotic_energy"}, {"item": "draconicevolution:item_chaotic_speed"}, {"item": "draconicevolution:item_chaotic_damage"}, {"item": "draconicevolution:item_chaotic_aoe"}, {"item": "draconicevolution:item_chaotic_jump"}],
+      "icon": "draconicevolution:item_chaotic_energy",
+      "at": {"x": 6.0, "y": -7.0},
+      "en_us": {"title": "Chaotic modules",
+        "text": ["64 million OP, +150% speed, +16 damage, an 11×11 area and +400% jump. Small chaos fragments and a Draconic Core fold two draconic modules into each; the area module takes a Chaotic Core instead."]},
+      "es_es": {"title": "Módulos caóticos",
+        "text": ["64 millones de OP, +150 % de velocidad, +16 de daño, área de 11×11 y +400 % de salto. Fragmentos chicos de caos y un núcleo dracónico juntan dos módulos dracónicos en cada uno; el de área lleva un núcleo caótico."]},
+      "sources": ["jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:com/brandon3055/draconicevolution/init/DEModules.class", "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:com/brandon3055/draconicevolution/api/modules/data/AOEData.class", "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:data/draconicevolution/recipe/modules/item_chaotic_energy.json", "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:data/draconicevolution/recipe/modules/item_chaotic_speed.json", "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:data/draconicevolution/recipe/modules/item_chaotic_damage.json", "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:data/draconicevolution/recipe/modules/item_chaotic_aoe.json", "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:data/draconicevolution/recipe/modules/item_chaotic_jump.json"]
+    },
+    {
+      "key": "de_chaotic_flight", "role": "side", "deps": ["de_chaotic_chestpiece"], "group": "chaotic_armor",
+      "task": {"item": "draconicevolution:item_chaotic_flight"},
+      "at": {"x": 14.6, "y": 8.4},
+      "en_us": {"title": "Chaotic flight",
+        "text": ["Strong swiftness potions, large chaos fragments and two Draconic Cores around the draconic flight module. The same creative and elytra flight, with the strongest elytra boost in the mod."]},
+      "es_es": {"title": "Vuelo caótico",
+        "text": ["Pociones de velocidad fuertes, fragmentos grandes de caos y dos núcleos dracónicos alrededor del módulo de vuelo dracónico. El mismo vuelo creativo y de élitros, con el impulso de élitros más fuerte del mod."]},
+      "sources": ["jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:data/draconicevolution/recipe/modules/item_chaotic_flight.json", "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:com/brandon3055/draconicevolution/init/DEModules.class", "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:com/brandon3055/draconicevolution/init/EquipCfg.class"]
+    },
+    {
+      "key": "de_chaotic_shields", "role": "side", "deps": ["de_chaotic_chestpiece"], "group": "chaotic_armor",
+      "tasks": [{"item": "draconicevolution:item_chaotic_shield_control"}, {"item": "draconicevolution:item_chaotic_shield_capacity"}, {"item": "draconicevolution:item_chaotic_shield_recovery"}],
+      "icon": "draconicevolution:item_chaotic_shield_capacity",
+      "at": {"x": 18.2, "y": 8.4},
+      "en_us": {"title": "Chaotic shields",
+        "text": ["100 points per capacity module, 500 for the large one, and a controller with a 5-second cooldown that takes two Chaotic Cores and four nether stars. The chaotic capacity module also goes into the chaotic undying module."]},
+      "es_es": {"title": "Escudos caóticos",
+        "text": ["100 puntos por módulo de capacidad, 500 el grande, y un controlador con 5 segundos de enfriamiento que lleva dos núcleos caóticos y cuatro estrellas del Nether. El módulo de capacidad caótico también va en el inmortal caótico."]},
+      "sources": ["jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:data/draconicevolution/recipe/modules/item_chaotic_shield_control.json", "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:data/draconicevolution/recipe/modules/item_chaotic_shield_capacity.json", "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:data/draconicevolution/recipe/modules/item_chaotic_shield_recovery.json", "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:data/draconicevolution/recipe/modules/item_chaotic_large_shield_capacity.json", "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:data/draconicevolution/recipe/modules/item_chaotic_undying.json", "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:com/brandon3055/draconicevolution/init/DEModules.class"]
+    },
+    {
+      "key": "de_chaotic_undying", "role": "side", "deps": ["de_chaotic_shields"], "group": "chaotic_armor",
+      "task": {"item": "draconicevolution:item_chaotic_undying"},
+      "at": {"x": 21.6, "y": 8.4},
+      "en_us": {"title": "Chaotic Undying",
+        "text": ["Heals 20, adds 100 shield points for 2 minutes and recharges in 45 seconds with 20 million OP. An enchanted golden apple and chaos fragments go into it."]},
+      "es_es": {"title": "Inmortal caótico",
+        "text": ["Cura 20, suma 100 puntos de escudo por 2 minutos y se recarga en 45 segundos con 20 millones de OP. Lleva una manzana de oro encantada y fragmentos de caos."]},
+      "sources": ["jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:data/draconicevolution/recipe/modules/item_chaotic_undying.json", "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:com/brandon3055/draconicevolution/init/DEModules.class", "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:com/brandon3055/draconicevolution/api/modules/data/UndyingData.class"]
+    },
+    {
+      "key": "de_chaotic_capacitor", "role": "side", "deps": ["de_chaotic_energy"],
+      "task": {"item": "draconicevolution:chaotic_capacitor"},
+      "at": {"x": 13.6, "y": -10.8},
+      "en_us": {"title": "Chaotic Capacitor",
+        "text": ["The draconic capacitor as catalyst, a Chaotic Core, three chaotic energy controllers and four awakened ingots: 128 million OP. Its 8×6 grid holds chaotic energy modules of 64 million OP each."]},
+      "es_es": {"title": "Capacitor caótico",
+        "text": ["El capacitor dracónico de catalizador, un núcleo caótico, tres controladores de energía caóticos y cuatro lingotes despertados: 128 millones de OP. Su grilla de 8×6 lleva módulos de energía caóticos de 64 millones de OP cada uno."]},
+      "sources": ["jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:data/draconicevolution/recipe/tools/chaotic_capacitor.json", "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:com/brandon3055/draconicevolution/init/ModuleCfg.class", "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:com/brandon3055/draconicevolution/init/DEModules.class"]
+    },
+    {
+      "key": "de_creative_capacitor", "role": "side", "deps": ["de_chaotic_capacitor"],
+      "task": {"item": "draconicevolution:creative_capacitor"},
+      "at": {"x": 17.2, "y": -10.8},
+      "en_us": {"title": "Creative Capacitor", "subtitle": "Infinite, if you ask the light nicely.",
+        "text": ["In this pack it has a recipe: a chaotic capacitor, two Dragon Hearts, two awakened ingots and four Luminosities, two of Exploration and two of the Arcane, from act VI. It holds more OP than you will ever spend."]},
+      "es_es": {"title": "Capacitor creativo", "subtitle": "Infinito, si se lo pedís bien a la luz.",
+        "text": ["En este pack tiene receta: un capacitor caótico, dos corazones de dragón, dos lingotes despertados y cuatro Luminosidades, dos de Exploración y dos de lo Arcano, del acto VI. Guarda más OP de lo que vas a gastar en tu vida."]},
+      "sources": ["repo:pack/kubejs/data/entrelumen/recipe/creative/draconicevolution/creative_capacitor.json", "repo:pack/kubejs/server_scripts/entrelumen_luminous_balance.js", "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:com/brandon3055/draconicevolution/items/tools/DraconiumCapacitor.class"]
+    },
+    {
+      "key": "de_reactor_parts", "role": "step", "deps": ["de_mastery"],
+      "tasks": [{"item": "draconicevolution:reactor_prt_in_rotor", "count": 2}, {"item": "draconicevolution:reactor_prt_out_rotor", "count": 2}, {"item": "draconicevolution:reactor_prt_rotor_full"}],
+      "icon": "draconicevolution:reactor_prt_rotor_full",
+      "at": {"x": 5.0, "y": -3.5},
+      "en_us": {"title": "Rotor assembly",
+        "text": ["Inner rotors take three awakened ingots, outer rotors three diamonds, each with a draconium core and two draconium ingots. Two of each, two more draconium ingots and a Wyvern Core make a rotor assembly."]},
+      "es_es": {"title": "Conjunto de rotores",
+        "text": ["Los rotores internos llevan tres lingotes despertados y los externos tres diamantes, cada uno con un núcleo de draconio y dos lingotes de draconio. Dos de cada uno, dos lingotes de draconio más y un núcleo wyvern arman un conjunto de rotores."]},
+      "sources": ["jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:data/draconicevolution/recipe/machines/reactor_prt_in_rotor.json", "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:data/draconicevolution/recipe/machines/reactor_prt_out_rotor.json", "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:data/draconicevolution/recipe/machines/reactor_prt_rotor_full.json"]
+    },
+    {
+      "key": "de_reactor_frame", "role": "step", "deps": ["de_reactor_parts"],
+      "tasks": [{"item": "draconicevolution:reactor_prt_focus_ring"}, {"item": "draconicevolution:reactor_prt_stab_frame"}],
+      "icon": "draconicevolution:reactor_prt_focus_ring",
+      "at": {"x": 8.4, "y": -1.4},
+      "en_us": {"title": "Focus ring and frame",
+        "text": ["The focus ring is four gold ingots, three diamonds and two Wyvern Cores; the frame, six iron ingots around a Wyvern Core and an awakened ingot. Each reactor stabilizer takes one of each."]},
+      "es_es": {"title": "Anillo de enfoque y marco",
+        "text": ["El anillo de enfoque lleva cuatro lingotes de oro, tres diamantes y dos núcleos wyvern; el marco, seis lingotes de hierro alrededor de un núcleo wyvern y un lingote despertado. Cada estabilizador del reactor lleva uno de cada uno."]},
+      "sources": ["jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:data/draconicevolution/recipe/machines/reactor_prt_focus_ring.json", "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:data/draconicevolution/recipe/machines/reactor_prt_stab_frame.json", "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:data/draconicevolution/recipe/machines/reactor_stabilizer.json"]
+    },
+    {
+      "key": "de_reactor_stabilizer", "role": "step", "deps": ["de_reactor_frame"],
+      "task": {"item": "draconicevolution:reactor_stabilizer", "count": 4},
+      "at": {"x": 5.0, "y": 1.5},
+      "en_us": {"title": "Reactor Stabilizers",
+        "text": ["Fuse the frame with a rotor assembly, a focus ring, a draconic energy controller, a Chaotic Core, three awakened ingots and a large chaos fragment: 16 million OP each, on chaotic injectors. The reactor needs four."]},
+      "es_es": {"title": "Estabilizadores del reactor",
+        "text": ["Fusioná el marco con un conjunto de rotores, un anillo de enfoque, un controlador de energía dracónico, un núcleo caótico, tres lingotes despertados y un fragmento grande de caos: 16 millones de OP cada uno, en inyectores caóticos. El reactor pide cuatro."]},
+      "sources": ["jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:data/draconicevolution/recipe/machines/reactor_stabilizer.json", "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:com/brandon3055/draconicevolution/blocks/reactor/tileentity/TileReactorCore.class"]
+    },
+    {
+      "key": "de_reactor_injector", "role": "step", "deps": ["de_reactor_parts"],
+      "task": {"item": "draconicevolution:reactor_injector"},
+      "at": {"x": 0.0, "y": -3.5},
+      "en_us": {"title": "Reactor Energy Injector",
+        "text": ["A Wyvern Core as catalyst with four inner rotors, four draconium ingots and two iron ingots, 16 million OP. It feeds the containment field; the stabilizers take the power out."]},
+      "es_es": {"title": "Inyector de energía del reactor",
+        "text": ["Un núcleo wyvern de catalizador con cuatro rotores internos, cuatro lingotes de draconio y dos de hierro, 16 millones de OP. Alimenta el campo de contención; los estabilizadores sacan la energía."]},
+      "sources": ["jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:data/draconicevolution/recipe/machines/reactor_injector.json", "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:com/brandon3055/draconicevolution/blocks/reactor/tileentity/TileReactorInjector.class", "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:com/brandon3055/draconicevolution/blocks/reactor/tileentity/TileReactorStabilizer.class"]
+    },
+    {
+      "key": "de_reactor", "role": "milestone", "deps": ["de_reactor_stabilizer", "de_reactor_injector"],
+      "task": {"item": "draconicevolution:reactor_core"},
+      "at": {"x": 0.0, "y": 1.5},
+      "en_us": {"title": "Draconic Reactor", "subtitle": "Handle with oven mitts.",
+        "text": ["A Chaos Shard as catalyst, four awakened and three draconium ingots and two large chaos fragments: 64 million OP. Build it with four stabilizers in a cross, 4 to 7 blocks from the core and facing it, and the injector on one of the two free sides."]},
+      "es_es": {"title": "Reactor dracónico", "subtitle": "Manejar con guantes de horno.",
+        "text": ["Una esquirla de caos de catalizador, cuatro lingotes despertados y tres de draconio, y dos fragmentos grandes de caos: 64 millones de OP. Armalo con cuatro estabilizadores en cruz, de 4 a 7 bloques del núcleo y mirándolo, y el inyector en uno de los dos lados libres."]},
+      "sources": ["jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:data/draconicevolution/recipe/machines/reactor_core.json", "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:com/brandon3055/draconicevolution/blocks/reactor/tileentity/TileReactorCore.class"]
+    },
+    {
+      "key": "de_reactor_fuel", "role": "step", "deps": ["de_reactor"],
+      "task": {"item": "draconicevolution:awakened_draconium_block", "count": 8},
+      "at": {"x": -3.536, "y": 5.036},
+      "en_us": {"title": "Fuel",
+        "text": ["The core holds up to eight awakened draconium blocks of fuel, and ingots and nuggets count too. As it burns, spent fuel turns to chaos and comes back out of the same screen as chaos fragments."]},
+      "es_es": {"title": "Combustible",
+        "text": ["El núcleo toma hasta ocho bloques de draconio despertado de combustible, y los lingotes y pepitas también cuentan. Mientras quema, el combustible gastado se vuelve caos y sale por la misma pantalla como fragmentos de caos."]},
+      "sources": ["jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:com/brandon3055/draconicevolution/blocks/reactor/tileentity/TileReactorCore.class", "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:com/brandon3055/draconicevolution/inventory/ReactorMenu$SlotReactor.class", "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:com/brandon3055/draconicevolution/inventory/ReactorMenu.class"]
+    },
+    {
+      "key": "de_reactor_gates", "role": "side", "deps": ["de_reactor_fuel"],
+      "task": {"item": "draconicevolution:flux_gate", "count": 2},
+      "at": {"x": -3.535, "y": 7.736},
+      "en_us": {"title": "Two flux gates",
+        "text": ["Run the stabilizers' output through one flux gate and feed the injector through another. Set by redstone, they hold the field input steady while the surplus goes to your Energy Core."]},
+      "es_es": {"title": "Dos compuertas de flujo",
+        "text": ["Pasá la salida de los estabilizadores por una compuerta de flujo y alimentá el inyector por otra. Con redstone mantienen fija la entrada al campo mientras el sobrante va a tu núcleo de energía."]},
+      "sources": ["jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:data/draconicevolution/recipe/flux_gate.json", "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:assets/draconicevolution/lang/en_us.json#gui.draconicevolution.flow_gate.flow.info", "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:assets/draconicevolution/lang/en_us.json#gui.draconicevolution.reactor.field_rate.info"]
+    },
+    {
+      "key": "de_tip_reactor_start", "role": "tip", "deps": ["de_reactor"],
+      "task": {"type": "checkmark"},
+      "at": {"x": -2.192, "y": -0.692},
+      "en_us": {"title": "Charge, then activate",
+        "text": ["[tip] Fuel it, press Charge and feed the injector. Activate unlocks once the core reaches 2,000°C with its field and saturation at least half full."]},
+      "es_es": {"title": "Cargá y después activá",
+        "text": ["[tip] Cargale combustible, apretá Charge y alimentá el inyector. Activate se habilita cuando el núcleo llega a 2.000 °C con el campo y la saturación al menos a la mitad."]},
+      "sources": ["jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:com/brandon3055/draconicevolution/blocks/reactor/tileentity/TileReactorCore.class", "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:assets/draconicevolution/lang/en_us.json#gui.draconicevolution.reactor.charge", "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:assets/draconicevolution/lang/en_us.json#gui.draconicevolution.reactor.activate"]
+    },
+    {
+      "key": "de_tip_reactor_field", "role": "tip", "deps": ["de_reactor"],
+      "task": {"type": "checkmark"},
+      "at": {"x": 2.192, "y": 3.692},
+      "en_us": {"title": "Watch the field",
+        "text": ["[tip] Field Input Rate is the exact OP/t that holds the containment field where it is, and it grows exponentially as the field gets stronger. An empty field means an overload nothing can stop."]},
+      "es_es": {"title": "Vigilá el campo",
+        "text": ["[tip] Field Input Rate es la OP/t exacta que sostiene el campo de contención donde está, y crece exponencialmente cuanto más fuerte es. Un campo vacío quiere decir una sobrecarga que nada frena."]},
+      "sources": ["jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:assets/draconicevolution/lang/en_us.json#gui.draconicevolution.reactor.field_rate.info", "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:assets/draconicevolution/lang/en_us.json#gui.draconicevolution.reactor.go_boom_now"]
+    },
+    {
+      "key": "de_tip_sas", "role": "tip", "deps": ["de_reactor_fuel"],
+      "task": {"type": "checkmark"},
+      "at": {"x": -6.4, "y": 5.2},
+      "en_us": {"title": "Let SAS shut it down",
+        "text": ["[tip] With SAS on, the reactor shuts itself down once the temperature drops below 2,500°C at 99% saturation: the right moment to refuel, or a safety net when something breaks."]},
+      "es_es": {"title": "Que SAS lo apague",
+        "text": ["[tip] Con SAS prendido, el reactor se apaga solo cuando la temperatura baja de 2.500 °C con 99 % de saturación: el momento justo para recargar, o una red de seguridad si algo se rompe."]},
+      "sources": ["jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:assets/draconicevolution/lang/en_us.json#gui.draconicevolution.reactor.sas.info"]
+    },
+    {
+      "key": "de_tip_reactor_redstone", "role": "tip", "deps": ["de_reactor"],
+      "task": {"type": "checkmark"},
+      "at": {"x": 2.192, "y": -0.692},
+      "en_us": {"title": "Reactors speak redstone",
+        "text": ["[tip] Every stabilizer and injector can drive a comparator: set it on the part's screen to temperature, field, saturation or fuel conversion, or their inverses."]},
+      "es_es": {"title": "El reactor habla redstone",
+        "text": ["[tip] Cada estabilizador e inyector puede manejar un comparador: en su pantalla elegís temperatura, campo, saturación o conversión de combustible, o sus inversos."]},
+      "sources": ["jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:assets/draconicevolution/lang/en_us.json#gui.draconicevolution.reactor.rs_mode.info", "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:com/brandon3055/draconicevolution/blocks/reactor/tileentity/TileReactorComponent.class", "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:assets/draconicevolution/lang/en_us.json#gui.draconicevolution.reactor.rs_mode_temp.info", "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:assets/draconicevolution/lang/en_us.json#gui.draconicevolution.reactor.rs_mode_field.info", "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:assets/draconicevolution/lang/en_us.json#gui.draconicevolution.reactor.rs_mode_sat.info", "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:assets/draconicevolution/lang/en_us.json#gui.draconicevolution.reactor.rs_mode_fuel.info"]
+    },
+    {
+      "key": "de_tip_boom", "role": "tip", "deps": ["de_reactor"],
+      "task": {"type": "checkmark"},
+      "at": {"x": 2.4, "y": 6.6},
+      "en_us": {"title": "Mind the blast radius",
+        "text": ["[tip] [warn|The full-size reactor explosion is on in this pack.] Build the reactor far from anything you love and keep an eye on it while it runs."]},
+      "es_es": {"title": "Ojo con la explosión",
+        "text": ["[tip] [warn|En este pack la explosión grande del reactor está activa.] Armalo lejos de todo lo que quieras y no lo pierdas de vista mientras anda."]},
+      "sources": ["jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:com/brandon3055/draconicevolution/DEConfig.class", "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:com/brandon3055/draconicevolution/blocks/reactor/ProcessExplosion.class"]
+    },
+    {
+      "key": "de_core_t8", "role": "side", "deps": ["de_core_t7"], "group": "energy",
+      "tasks": [{"item": "draconicevolution:draconium_block", "count": 786}, {"item": "draconicevolution:awakened_draconium_block", "count": 378}],
+      "icon": "draconicevolution:energy_core",
+      "at": {"x": -7.6, "y": 10.6},
+      "en_us": {"title": "Tier 8 core", "subtitle": "The number stops being a number.",
+        "text": ["The last shell trades redstone for awakened draconium: 786 draconium blocks and 378 awakened ones. Tier 8 has no practical ceiling; you will run out of power plants before it fills."]},
+      "es_es": {"title": "Núcleo de nivel 8", "subtitle": "El número deja de ser un número.",
+        "text": ["La última capa cambia la redstone por draconio despertado: 786 bloques de draconio y 378 despertados. El nivel 8 no tiene techo práctico: te vas a quedar sin centrales antes de llenarlo."]},
+      "sources": ["jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:com/brandon3055/draconicevolution/DEConfig.class", "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:data/draconicevolution/multiblocks/energy_core_8.json"]
+    },
+    {
+      "key": "de_tip_heart_math", "role": "tip", "deps": ["de_core_t8"], "group": "energy",
+      "task": {"type": "checkmark"},
+      "at": {"x": -5.0, "y": 10.6},
+      "en_us": {"title": "Hearts for tier 8",
+        "text": ["[tip] 378 awakened blocks at four per heart is 95 Dragon Hearts. The egg returns with every kill, so respawn the dragon on a schedule."]},
+      "es_es": {"title": "Corazones para el nivel 8",
+        "text": ["[tip] 378 bloques despertados a cuatro por corazón son 95 corazones de dragón. El huevo vuelve con cada muerte, así que reviví al dragón seguido."]},
+      "sources": ["jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:data/draconicevolution/multiblocks/energy_core_8.json", "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:data/draconicevolution/recipe/awakened_draconium_block.json", "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:com/brandon3055/draconicevolution/DEConfig.class"]
+    },
+    {
+      "key": "de_quantum_tunnel", "role": "side", "deps": ["de_energy_link"], "group": "energy",
+      "task": {"item": "draconicevolution:item_draconic_energy_link"},
+      "at": {"x": -1.6, "y": 10.6},
+      "en_us": {"title": "Quantum Energy Tunnel",
+        "text": ["The draconic energy link: an end crystal, two wyvern wireless crystals, awakened ingots and a Draconic Core around the wyvern link. It crosses dimensions and moves 16,000 OP/t; switching it on costs 16 million OP."]},
+      "es_es": {"title": "Túnel cuántico de energía",
+        "text": ["El enlace de energía dracónico: un cristal del End, dos cristales inalámbricos wyvern, lingotes despertados y un núcleo dracónico alrededor del enlace wyvern. Cruza dimensiones y mueve 16.000 OP/t; prenderlo cuesta 16 millones de OP."]},
+      "sources": ["jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:data/draconicevolution/recipe/modules/item_draconic_energy_link.json", "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:com/brandon3055/draconicevolution/init/DEModules.class", "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:com/brandon3055/draconicevolution/api/modules/data/EnergyLinkData.class"]
+    },
+    {
+      "key": "de_chaos_tunnel", "role": "side", "deps": ["de_quantum_tunnel"], "group": "energy",
+      "task": {"item": "draconicevolution:item_chaotic_energy_link"},
+      "at": {"x": 1.0, "y": 10.6},
+      "en_us": {"title": "Chaos-Entangled Quantum Energy Tunnel",
+        "text": ["The top link: 128,000 OP/t across dimensions, 64 million OP to switch on and up to 8,192 OP/t to keep open. Two draconic wireless crystals, netherite, an end crystal and a Chaotic Core wrap the draconic tunnel."]},
+      "es_es": {"title": "Túnel entrelazado con caos",
+        "text": ["El enlace más alto: 128.000 OP/t entre dimensiones, 64 millones de OP para prenderlo y hasta 8.192 OP/t para mantenerlo. Dos cristales inalámbricos dracónicos, netherita, un cristal del End y un núcleo caótico envuelven el túnel dracónico."]},
+      "sources": ["jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:data/draconicevolution/recipe/modules/item_chaotic_energy_link.json", "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:com/brandon3055/draconicevolution/init/DEModules.class", "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:com/brandon3055/draconicevolution/api/modules/data/EnergyLinkData.class"]
+    },
+    {
+      "key": "de_chaotic_staff", "role": "capstone", "deps": ["de_chaotic_tools", "de_chaotic_weapons"],
+      "task": {"item": "draconicevolution:chaotic_staff"},
+      "at": {"x": 25.0, "y": 0.4},
+      "en_us": {"title": "Chaotic Staff of Power", "subtitle": "A billion OP, give or take nothing.",
+        "text": ["A Chaotic Core as catalyst; the chaotic pickaxe, sword and shovel, six small chaos fragments and a chaotic energy controller around it: 1,024,000,000 OP in one fusion. It digs, mines and fights as one tool with a 10×8 grid.",
+                 "{page}",
+                 "A draconic staff can be the catalyst instead, fused with three chaotic energy controllers, two Draconic Cores, a Chaotic Core and chaos fragments."]},
+      "es_es": {"title": "Báculo de poder caótico", "subtitle": "Mil millones de OP, ni uno menos.",
+        "text": ["Un núcleo caótico de catalizador; el pico, la espada y la pala caóticos, seis fragmentos chicos de caos y un controlador de energía caótico alrededor: 1.024.000.000 de OP en una sola fusión. Cava, pica y pelea como una sola herramienta con grilla de 10×8.",
+                 "{page}",
+                 "También sirve un báculo dracónico de catalizador, fusionado con tres controladores de energía caóticos, dos núcleos dracónicos, un núcleo caótico y fragmentos de caos."]},
+      "sources": ["jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:data/draconicevolution/recipe/tools/chaotic_staff.json", "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:data/draconicevolution/recipe/tools/chaotic_staff_alt.json", "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:com/brandon3055/draconicevolution/init/ModuleCfg.class", "jar:Draconic-Evolution-1.21.1-3.1.4.632.jar:com/brandon3055/draconicevolution/init/EquipCfg.class"]
+    }
+  ]
+}
