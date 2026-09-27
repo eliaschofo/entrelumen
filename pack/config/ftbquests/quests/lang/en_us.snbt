@@ -11028,70 +11028,418 @@
   "image.43D5A3991285CA6E.title": "[\"\",{\"text\":\"chest\",\"color\":\"#B9A27A\"}]",
   "image.7E3CFA685D18A507.title": "[\"\",{\"text\":\"legs\",\"color\":\"#B9A27A\"}]",
   "image.710FA3BF3A4D9A38.title": "[\"\",{\"text\":\"feet\",\"color\":\"#B9A27A\"}]",
-  "chapter.348CEA2D00B3DA83.title": "RFTools and XNet",
-  "chapter.348CEA2D00B3DA83.chapter_subtitle": [
-    "Machine frames and dimensional shards, power cells, crafters, screens, teleporters, the Builder, and XNet channel networks."
+  "chapter.4303D6A6B06E5331.title": "RFTools and XNet",
+  "chapter.4303D6A6B06E5331.chapter_subtitle": [
+    "Machine frames and shards, power, the Builder and its cards, screens and logic, teleporters, and XNet's channel networks."
   ],
-  "quest.05304B06AF7BC363.title": "RFTools as glue",
-  "quest.05304B06AF7BC363.quest_desc": [
-    "Base, Power, Utility and Builder, plus XNet: FE generation and storage, logic blocks, crafters, screens, teleporters, a shape-card Builder and channel logistics. Storage and Dimensions are left out on purpose (AE2 and the pack's own dimensions cover them). One shared manual."
-  ],
-  "quest.58B31E223A20F0D6.title": "Machine Frame and Dimensional Shards",
+  "quest.58B31E223A20F0D6.title": "Machine Frame",
+  "quest.58B31E223A20F0D6.quest_subtitle": "The chassis of a whole mod family.",
   "quest.58B31E223A20F0D6.quest_desc": [
-    "The Machine Frame houses most machines; the Machine Base makes the quarter-block logic devices. Dimensional Shard ore (several dimensions, Fortune works) feeds advanced recipes and infusing. The Smart Wrench rotates, picks up and selects."
+    "[\"\",{\"text\":\"Four \"},{\"text\":\"Iron Ingots\",\"color\":\"#8FD6C8\",\"hoverEvent\":{\"action\":\"show_item\",\"contents\":{\"id\":\"minecraft:iron_ingot\",\"count\":1}}},{\"text\":\", two \"},{\"text\":\"Blue Dye\",\"color\":\"#8FD6C8\",\"hoverEvent\":{\"action\":\"show_item\",\"contents\":{\"id\":\"minecraft:blue_dye\",\"count\":1}}},{\"text\":\" and two \"},{\"text\":\"Gold Nuggets\",\"color\":\"#8FD6C8\",\"hoverEvent\":{\"action\":\"show_item\",\"contents\":{\"id\":\"minecraft:gold_nugget\",\"count\":1}}},{\"text\":\" make a \"},{\"text\":\"Machine Frame\",\"color\":\"#8FD6C8\",\"hoverEvent\":{\"action\":\"show_item\",\"contents\":{\"id\":\"rftoolsbase:machine_frame\",\"count\":1}}},{\"text\":\". Generators, crafters, teleporters, the Builder and the XNet Controller are all built around one, so keep a stack at hand.\"}]"
+  ],
+  "quest.782A76788891D895.title": "Smart Wrench",
+  "quest.782A76788891D895.quest_subtitle": "Blue in, yellow out.",
+  "quest.782A76788891D895.quest_desc": [
+    "[\"\",{\"text\":\"An \"},{\"text\":\"Iron Ingot\",\"color\":\"#8FD6C8\",\"hoverEvent\":{\"action\":\"show_item\",\"contents\":{\"id\":\"minecraft:iron_ingot\",\"count\":1}}},{\"text\":\" and two \"},{\"text\":\"Blue Dye\",\"color\":\"#8FD6C8\",\"hoverEvent\":{\"action\":\"show_item\",\"contents\":{\"id\":\"minecraft:blue_dye\",\"count\":1}}},{\"text\":\" make the \"},{\"text\":\"Smart Wrench\",\"color\":\"#8FD6C8\",\"hoverEvent\":{\"action\":\"show_item\",\"contents\":{\"id\":\"rftoolsbase:smartwrench\",\"count\":1}}},{\"text\":\". Right-click turns a machine and \"},{\"text\":\"\",\"extra\":[{\"text\":\"[\"},{\"keybind\":\"key.sneak\"},{\"text\":\"]\"}],\"color\":\"#F2D060\"},{\"text\":\" + right-click picks it up; right-click the air for Select mode, which ties blocks to a master block, like shield sections to their projector.\"}]"
+  ],
+  "quest.05304B06AF7BC363.title": "Technology Guide",
+  "quest.05304B06AF7BC363.quest_subtitle": "One book, five mods.",
+  "quest.05304B06AF7BC363.quest_desc": [
+    "[\"\",{\"text\":\"A \"},{\"text\":\"Book\",\"color\":\"#8FD6C8\",\"hoverEvent\":{\"action\":\"show_item\",\"contents\":{\"id\":\"minecraft:book\",\"count\":1}}},{\"text\":\" and three \"},{\"text\":\"Iron Nuggets\",\"color\":\"#8FD6C8\",\"hoverEvent\":{\"action\":\"show_item\",\"contents\":{\"id\":\"minecraft:iron_nugget\",\"count\":1}}},{\"text\":\" make the \"},{\"text\":\"Technology Guide\",\"color\":\"#8FD6C8\",\"hoverEvent\":{\"action\":\"show_item\",\"contents\":{\"id\":\"rftoolsbase:manual\",\"count\":1}}},{\"text\":\", one manual for Base, Power, Utility, Builder and XNet. While an RFTools item's tooltip is on screen, \"},{\"text\":\"\",\"extra\":[{\"text\":\"[\"},{\"keybind\":\"key.openManual\"},{\"text\":\"]\"}],\"color\":\"#F2D060\"},{\"text\":\" opens its page.\"}]",
+    "",
+    "RFTools Storage and RFTools Dimensions are left out on purpose: AE2 keeps the items, and the pack already has its worlds."
+  ],
+  "quest.27604CCE0CDE6DFC.title": "Dimensional Shards",
+  "quest.27604CCE0CDE6DFC.quest_subtitle": "Fortune says yes.",
+  "quest.27604CCE0CDE6DFC.quest_desc": [
+    "[\"\",{\"text\":\"Dimensional Shard Ore\",\"color\":\"#8FD6C8\",\"hoverEvent\":{\"action\":\"show_item\",\"contents\":{\"id\":\"rftoolsbase:dimensionalshard_overworld\",\"count\":1}}},{\"text\":\" hides between y -15 and 40 in the Overworld, and in the Nether and the End too. Mine it with an iron pickaxe or better for four or five \"},{\"text\":\"Dimensional Shards\",\"color\":\"#8FD6C8\",\"hoverEvent\":{\"action\":\"show_item\",\"contents\":{\"id\":\"rftoolsbase:dimensionalshard\",\"count\":1}}},{\"text\":\" per block, more with Fortune.\"}]",
+    "{@pagebreak}",
+    "[\"\",{\"text\":\"» \",\"color\":\"#E8B04A\"},{\"text\":\"Pro tip: \",\"color\":\"#E8B04A\",\"bold\":true},{\"text\":\"No ore nearby? A diamond, an emerald, gold, iron, redstone, glowstone dust, quartz, a prismarine shard and glass craft a single shard. It works; it isn't cheap.\"}]"
   ],
   "quest.29E9AAEA105FD7E2.title": "Machine Infuser",
+  "quest.29E9AAEA105FD7E2.quest_subtitle": "Feed your machines rocks. They like it.",
   "quest.29E9AAEA105FD7E2.quest_desc": [
-    "Feeds shards into a machine: most then use less power, some gain more (faster teleporters, longer screen range, stronger generators). Infuse whatever runs all day."
+    "[\"\",{\"text\":\"Four shards, two \"},{\"text\":\"Diamonds\",\"color\":\"#8FD6C8\",\"hoverEvent\":{\"action\":\"show_item\",\"contents\":{\"id\":\"minecraft:diamond\",\"count\":1}}},{\"text\":\" and two redstone around a \"},{\"text\":\"Machine Frame\",\"color\":\"#8FD6C8\",\"hoverEvent\":{\"action\":\"show_item\",\"contents\":{\"id\":\"rftoolsbase:machine_frame\",\"count\":1}}},{\"text\":\" make the \"},{\"text\":\"Machine Infuser\",\"color\":\"#8FD6C8\",\"hoverEvent\":{\"action\":\"show_item\",\"contents\":{\"id\":\"rftoolsbase:machine_infuser\",\"count\":1}}},{\"text\":\". Put a machine and \"},{\"text\":\"Dimensional Shards\",\"color\":\"#8FD6C8\",\"hoverEvent\":{\"action\":\"show_item\",\"contents\":{\"id\":\"rftoolsbase:dimensionalshard\",\"count\":1}}},{\"text\":\" in, give it 600 FE/t, and every shard stays in the machine for good, up to 256.\"}]",
+    "{@pagebreak}",
+    "Most machines spend less FE when infused, and some gain more: the Coal Generator burns longer and hotter, the Builder quarries faster, the Screen Controller reaches farther, Dimensional Cells lose less over distance. Infusing the Infuser makes it cheaper to run.",
+    "",
+    "[\"\",{\"text\":\"» \",\"color\":\"#E8B04A\"},{\"text\":\"Pro tip: \",\"color\":\"#E8B04A\",\"bold\":true},{\"text\":\"Infuse what runs all day first. A fully infused Builder quarries 28 blocks a tick instead of 8.\"}]"
   ],
-  "quest.7C066FE9FC7FCF26.title": "Coal Generator and Powercells",
+  "quest.7FB35717721685F6.title": "Infused gems",
+  "quest.7FB35717721685F6.quest_subtitle": "Diamonds, now with an extra dimension.",
+  "quest.7FB35717721685F6.quest_desc": [
+    "[\"\",{\"text\":\"Eight \"},{\"text\":\"Dimensional Shards\",\"color\":\"#8FD6C8\",\"hoverEvent\":{\"action\":\"show_item\",\"contents\":{\"id\":\"rftoolsbase:dimensionalshard\",\"count\":1}}},{\"text\":\" around a \"},{\"text\":\"Diamond\",\"color\":\"#8FD6C8\",\"hoverEvent\":{\"action\":\"show_item\",\"contents\":{\"id\":\"minecraft:diamond\",\"count\":1}}},{\"text\":\" make an \"},{\"text\":\"Infused Diamond\",\"color\":\"#8FD6C8\",\"hoverEvent\":{\"action\":\"show_item\",\"contents\":{\"id\":\"rftoolsbase:infused_diamond\",\"count\":1}}},{\"text\":\"; around an \"},{\"text\":\"Ender Pearl\",\"color\":\"#8FD6C8\",\"hoverEvent\":{\"action\":\"show_item\",\"contents\":{\"id\":\"minecraft:ender_pearl\",\"count\":1}}},{\"text\":\", an \"},{\"text\":\"Infused Ender Pearl\",\"color\":\"#8FD6C8\",\"hoverEvent\":{\"action\":\"show_item\",\"contents\":{\"id\":\"rftoolsbase:infused_enderpearl\",\"count\":1}}},{\"text\":\". The top recipes ask for them: advanced cells, module templates, the blazing and endergenic generators, the Scanner.\"}]"
+  ],
+  "task.62856E4D18F31118.title": "Look at Dimensional Shard Ore in end stone",
+  "quest.11E68B6573C63E11.title": "Shards in the End",
+  "quest.11E68B6573C63E11.quest_subtitle": "The void has sparkles too.",
+  "quest.11E68B6573C63E11.quest_desc": [
+    "The End grows its own shard veins in end stone: eight tries per chunk between y 2 and 80, against two in the Overworld, and twice the size. Bring a Fortune pickaxe and a way home."
+  ],
+  "reward.21F2EC995469BACF.title": "Secret found",
+  "quest.513F15E4F2902951.title": "Shards for the common store",
+  "quest.513F15E4F2902951.quest_subtitle": "Infusers are always hungry.",
+  "quest.513F15E4F2902951.quest_desc": [
+    "[\"\",{\"text\":\"Thirty-two \"},{\"text\":\"Dimensional Shards\",\"color\":\"#8FD6C8\",\"hoverEvent\":{\"action\":\"show_item\",\"contents\":{\"id\":\"rftoolsbase:dimensionalshard\",\"count\":1}}},{\"text\":\" for the common store, once a day. A Fortune III pickaxe averages six per ore.\"}]"
+  ],
+  "quest.7C066FE9FC7FCF26.title": "Coal Generator",
+  "quest.7C066FE9FC7FCF26.quest_subtitle": "Old-school FE.",
   "quest.7C066FE9FC7FCF26.quest_desc": [
-    "The Coal Generator burns coal or coal blocks into FE, free on purpose. Powercells store lots of FE and merge with neighbours of any tier; the Smart Wrench sets each side (blue in, yellow out). The Endergenic Generator is an ender-pearl timing puzzle for experts."
+    "[\"\",{\"text\":\"Six coal or charcoal and two \"},{\"text\":\"Redstone Torches\",\"color\":\"#8FD6C8\",\"hoverEvent\":{\"action\":\"show_item\",\"contents\":{\"id\":\"minecraft:redstone_torch\",\"count\":1}}},{\"text\":\" around a \"},{\"text\":\"Machine Frame\",\"color\":\"#8FD6C8\",\"hoverEvent\":{\"action\":\"show_item\",\"contents\":{\"id\":\"rftoolsbase:machine_frame\",\"count\":1}}},{\"text\":\" make a \"},{\"text\":\"Coal Generator\",\"color\":\"#8FD6C8\",\"hoverEvent\":{\"action\":\"show_item\",\"contents\":{\"id\":\"rftoolspower:coalgenerator\",\"count\":1}}},{\"text\":\": 60 FE/t for 600 ticks per coal, nine times as long per \"},{\"text\":\"Block of Coal\",\"color\":\"#8FD6C8\",\"hoverEvent\":{\"action\":\"show_item\",\"contents\":{\"id\":\"minecraft:coal_block\",\"count\":1}}},{\"text\":\". It pushes FE into its neighbours and charges an item in its slot.\"}]",
+    "{@pagebreak}",
+    "[\"\",{\"text\":\"» \",\"color\":\"#E8B04A\"},{\"text\":\"Pro tip: \",\"color\":\"#E8B04A\",\"bold\":true},{\"text\":\"Fully infused it doubles its output and makes each coal last half again as long: three times the FE per lump.\"}]"
   ],
-  "quest.45510A06967F9601.title": "Dimensional Cells",
+  "quest.190FED7518F4144F.title": "Powercell",
+  "quest.190FED7518F4144F.quest_subtitle": "Stackable, like good ideas.",
+  "quest.190FED7518F4144F.quest_desc": [
+    "[\"\",{\"text\":\"A \"},{\"text\":\"Diamond\",\"color\":\"#8FD6C8\",\"hoverEvent\":{\"action\":\"show_item\",\"contents\":{\"id\":\"minecraft:diamond\",\"count\":1}}},{\"text\":\", a redstone block and three redstone make a \"},{\"text\":\"Power Core (Low)\",\"color\":\"#8FD6C8\",\"hoverEvent\":{\"action\":\"show_item\",\"contents\":{\"id\":\"rftoolspower:power_core1\",\"count\":1}}},{\"text\":\"; four cores, four redstone and a frame, a \"},{\"text\":\"Powercell (Low)\",\"color\":\"#8FD6C8\",\"hoverEvent\":{\"action\":\"show_item\",\"contents\":{\"id\":\"rftoolspower:cell1\",\"count\":1}}},{\"text\":\": 500,000 FE, 250 FE/t per face. With no screen, the \"},{\"text\":\"Smart Wrench\",\"color\":\"#8FD6C8\",\"hoverEvent\":{\"action\":\"show_item\",\"contents\":{\"id\":\"rftoolsbase:smartwrench\",\"count\":1}}},{\"text\":\" sets each face: blue in, yellow out, blank off.\"}]",
+    "{@pagebreak}",
+    "[\"\",{\"text\":\"» \",\"color\":\"#E8B04A\"},{\"text\":\"Pro tip: \",\"color\":\"#E8B04A\",\"bold\":true},{\"text\":\"Cells of any tier merge into one bank, up to 729 blocks, and each extra cell adds a quarter of the base rate to every face: five cells move twice as fast.\"}]"
+  ],
+  "quest.51CEF74EF94D6644.title": "Medium and High Powercells",
+  "quest.51CEF74EF94D6644.quest_subtitle": "Four million, then twenty.",
+  "quest.51CEF74EF94D6644.quest_desc": [
+    "[\"\",{\"text\":\"Four \"},{\"text\":\"Power Cores (Medium)\",\"color\":\"#8FD6C8\",\"hoverEvent\":{\"action\":\"show_item\",\"contents\":{\"id\":\"rftoolspower:power_core2\",\"count\":1}}},{\"text\":\" (shards, an emerald and redstone) and four redstone around a Low cell make a \"},{\"text\":\"Powercell (Medium)\",\"color\":\"#8FD6C8\",\"hoverEvent\":{\"action\":\"show_item\",\"contents\":{\"id\":\"rftoolspower:cell2\",\"count\":1}}},{\"text\":\": 4,000,000 FE, 1,000 FE/t per face. \"},{\"text\":\"High cores\",\"color\":\"#8FD6C8\",\"hoverEvent\":{\"action\":\"show_item\",\"contents\":{\"id\":\"rftoolspower:power_core3\",\"count\":1}}},{\"text\":\" around that give a \"},{\"text\":\"Powercell (High)\",\"color\":\"#8FD6C8\",\"hoverEvent\":{\"action\":\"show_item\",\"contents\":{\"id\":\"rftoolspower:cell3\",\"count\":1}}},{\"text\":\": 20,000,000 FE, 4,000 FE/t.\"}]"
+  ],
+  "quest.45510A06967F9601.title": "Dimensional Cell",
+  "quest.45510A06967F9601.quest_subtitle": "Power without wires or borders.",
   "quest.45510A06967F9601.quest_desc": [
-    "Cells linked with a Powercell Card share FE without touching, across dimensions; remote draws cost a few percent, less when infused. Pack change: Simple and regular Dimensional Cells need a reinforced alloy (III); local Powercells stay the cheap option."
+    "[\"\",{\"text\":\"Cells linked by a \"},{\"text\":\"Powercell Card\",\"color\":\"#8FD6C8\",\"hoverEvent\":{\"action\":\"show_item\",\"contents\":{\"id\":\"rftoolspower:powercell_card\",\"count\":1}}},{\"text\":\" share one bank, anywhere and in any dimension: put an unlinked card in a cell, then use it on the others. A \"},{\"text\":\"Dimensional Cell\",\"color\":\"#8FD6C8\",\"hoverEvent\":{\"action\":\"show_item\",\"contents\":{\"id\":\"rftoolspower:dimensionalcell\",\"count\":1}}},{\"text\":\" holds 1,000,000 FE and moves 5,000 FE/t; drawing from far away costs up to a tenth extra.\"}]",
+    "{@pagebreak}",
+    "[\"\",{\"text\":\"Pack change: the Dimensional Cell takes two \"},{\"text\":\"Reinforced Alloy\",\"color\":\"#8FD6C8\",\"hoverEvent\":{\"action\":\"show_item\",\"contents\":{\"id\":\"mekanism:alloy_reinforced\",\"count\":1}}},{\"text\":\" (act III) in its bottom corners, and the \"},{\"text\":\"Simple\",\"color\":\"#8FD6C8\",\"hoverEvent\":{\"action\":\"show_item\",\"contents\":{\"id\":\"rftoolspower:dimensionalcell_simple\",\"count\":1}}},{\"text\":\" one, with a quarter of the capacity and rate, takes one. Infusing a cell cuts the distance cost and raises its rate.\"}]"
   ],
-  "quest.36B12A0BD6F53671.title": "Crafter",
-  "quest.36B12A0BD6F53671.quest_desc": [
-    "Powered autocrafting: the top tier holds 8 recipes, 26 input and 4 output slots. R remembers a slot's item so it only accepts that, F forgets. Recipes live on Crafting Cards; it takes a Filter Module, and infusing cuts its power use."
+  "quest.7F1312A254419439.title": "Advanced Dimensional Cell",
+  "quest.7F1312A254419439.quest_subtitle": "Four times the everything.",
+  "quest.7F1312A254419439.quest_desc": [
+    "[\"\",{\"text\":\"Four \"},{\"text\":\"Infused Diamonds\",\"color\":\"#8FD6C8\",\"hoverEvent\":{\"action\":\"show_item\",\"contents\":{\"id\":\"rftoolsbase:infused_diamond\",\"count\":1}}},{\"text\":\" and four \"},{\"text\":\"Blocks of Redstone\",\"color\":\"#8FD6C8\",\"hoverEvent\":{\"action\":\"show_item\",\"contents\":{\"id\":\"minecraft:redstone_block\",\"count\":1}}},{\"text\":\" around a Dimensional Cell make the \"},{\"text\":\"Advanced\",\"color\":\"#8FD6C8\",\"hoverEvent\":{\"action\":\"show_item\",\"contents\":{\"id\":\"rftoolspower:dimensionalcell_advanced\",\"count\":1}}},{\"text\":\" one: 4,000,000 FE and 20,000 FE/t. Link it with the same card and it joins the bank like any other.\"}]"
   ],
-  "quest.612F9FC41120325A.title": "Logic blocks and screens",
-  "quest.612F9FC41120325A.quest_desc": [
-    "Quarter-block timers, counters, sequencers, sensors, inventory checkers, analog and digit blocks, wireless redstone. Screens show energy, inventories and more through modules, powered by a Screen Controller (32x32x32); a Screen Link in a Tablet opens one remotely."
+  "quest.217A9A026B9C255E.title": "Reading the charge",
+  "quest.217A9A026B9C255E.quest_subtitle": "Is it full yet?",
+  "quest.217A9A026B9C255E.quest_desc": [
+    "[\"\",{\"text\":\"An \"},{\"text\":\"Information Screen\",\"color\":\"#8FD6C8\",\"hoverEvent\":{\"action\":\"show_item\",\"contents\":{\"id\":\"rftoolsbase:information_screen\",\"count\":1}}},{\"text\":\" placed on a cell shows its charge, and the wrench changes what it displays. On a Machine Base, a \"},{\"text\":\"Power Level\",\"color\":\"#8FD6C8\",\"hoverEvent\":{\"action\":\"show_item\",\"contents\":{\"id\":\"rftoolspower:power_level\",\"count\":1}}},{\"text\":\" shows a digit from 0 to 9 and emits it as redstone, and a \"},{\"text\":\"Power Monitor\",\"color\":\"#8FD6C8\",\"hoverEvent\":{\"action\":\"show_item\",\"contents\":{\"id\":\"rftoolspower:power_monitor\",\"count\":1}}},{\"text\":\" emits only between the percentages you set.\"}]"
+  ],
+  "quest.751BEB9127DC888E.title": "Blazing Agitator",
+  "quest.751BEB9127DC888E.quest_subtitle": "Shaken, not stirred.",
+  "quest.751BEB9127DC888E.quest_desc": [
+    "[\"\",{\"text\":\"Three \"},{\"text\":\"Blaze Rods\",\"color\":\"#8FD6C8\",\"hoverEvent\":{\"action\":\"show_item\",\"contents\":{\"id\":\"minecraft:blaze_rod\",\"count\":1}}},{\"text\":\", glass, iron and a frame make the \"},{\"text\":\"Blazing Agitator\",\"color\":\"#8FD6C8\",\"hoverEvent\":{\"action\":\"show_item\",\"contents\":{\"id\":\"rftoolspower:blazing_agitator\",\"count\":1}}},{\"text\":\", which spends 10 FE/t turning blaze rods into \"},{\"text\":\"Blazing Rods\",\"color\":\"#8FD6C8\",\"hoverEvent\":{\"action\":\"show_item\",\"contents\":{\"id\":\"rftoolspower:blazing_rod\",\"count\":1}}},{\"text\":\". Good rods in its grid make their neighbours finish faster and better, and the lock buttons keep your best ones in place as boosters.\"}]"
+  ],
+  "quest.708E3B66B75618DD.title": "Blazing Generator",
+  "quest.708E3B66B75618DD.quest_subtitle": "Warm-up included.",
+  "quest.708E3B66B75618DD.quest_desc": [
+    "[\"\",{\"text\":\"Four blaze rods, two \"},{\"text\":\"Infused Diamonds\",\"color\":\"#8FD6C8\",\"hoverEvent\":{\"action\":\"show_item\",\"contents\":{\"id\":\"rftoolsbase:infused_diamond\",\"count\":1}}},{\"text\":\", two redstone blocks and a frame make the \"},{\"text\":\"Blazing Generator\",\"color\":\"#8FD6C8\",\"hoverEvent\":{\"action\":\"show_item\",\"contents\":{\"id\":\"rftoolspower:blazing_generator\",\"count\":1}}},{\"text\":\". It burns up to four Blazing Rods at once, each with its own power and duration, and needs to warm up before it gives its all, so keep it running.\"}]",
+    "{@pagebreak}",
+    "[\"\",{\"text\":\"» \",\"color\":\"#E8B04A\"},{\"text\":\"Pro tip: \",\"color\":\"#E8B04A\",\"bold\":true},{\"text\":\"The \"},{\"text\":\"Blazing Infuser\",\"color\":\"#8FD6C8\",\"hoverEvent\":{\"action\":\"show_item\",\"contents\":{\"id\":\"rftoolspower:blazing_infuser\",\"count\":1}}},{\"text\":\" improves finished rods: redstone adds power, quartz and glowstone add duration, shards add both. An infused rod no longer boosts others in the Agitator, so infuse only fuel.\"}]"
+  ],
+  "quest.23ACEAB7303FB1B9.title": "Endergenic Generator",
+  "quest.23ACEAB7303FB1B9.quest_subtitle": "Juggling pearls for a living.",
+  "quest.23ACEAB7303FB1B9.quest_desc": [
+    "[\"\",{\"text\":\"Two \"},{\"text\":\"Endergenic Generators\",\"color\":\"#8FD6C8\",\"hoverEvent\":{\"action\":\"show_item\",\"contents\":{\"id\":\"rftoolspower:endergenic\",\"count\":1}}},{\"text\":\" pass an ender pearl back and forth, and every well-timed catch pays FE. A \"},{\"text\":\"Pearl Injector\",\"color\":\"#8FD6C8\",\"hoverEvent\":{\"action\":\"show_item\",\"contents\":{\"id\":\"rftoolspower:pearl_injector\",\"count\":1}}},{\"text\":\" loads the first on a redstone pulse; pair the two with the wrench, which reports the pearl's flight time in ticks.\"}]",
+    "{@pagebreak}",
+    "[\"\",{\"text\":\"» \",\"color\":\"#E8B04A\"},{\"text\":\"Pro tip: \",\"color\":\"#E8B04A\",\"bold\":true},{\"text\":\"Pulse the catcher into Charging so the pearl lands on tick 10 of its 15-tick cycle, then fire it on at once: a held pearl costs 500 FE/t and can slip away. \"},{\"text\":\"Ender Monitors\",\"color\":\"#8FD6C8\",\"hoverEvent\":{\"action\":\"show_item\",\"contents\":{\"id\":\"rftoolspower:ender_monitor\",\"count\":1}}},{\"text\":\" watch the generator's state and handle the timing.\"}]"
+  ],
+  "quest.58DECA7D319F0107.title": "Builder",
+  "quest.58DECA7D319F0107.quest_subtitle": "Brick by brick, 500 FE apiece.",
+  "quest.58DECA7D319F0107.quest_desc": [
+    "[\"\",{\"text\":\"Four \"},{\"text\":\"Bricks\",\"color\":\"#8FD6C8\",\"hoverEvent\":{\"action\":\"show_item\",\"contents\":{\"id\":\"minecraft:bricks\",\"count\":1}}},{\"text\":\", an ender pearl, redstone and a \"},{\"text\":\"Machine Frame\",\"color\":\"#8FD6C8\",\"hoverEvent\":{\"action\":\"show_item\",\"contents\":{\"id\":\"rftoolsbase:machine_frame\",\"count\":1}}},{\"text\":\" make the \"},{\"text\":\"Builder\",\"color\":\"#8FD6C8\",\"hoverEvent\":{\"action\":\"show_item\",\"contents\":{\"id\":\"rftoolsbuilder:builder\",\"count\":1}}},{\"text\":\"; the pack sets a \"},{\"text\":\"Handling Core\",\"color\":\"#8FD6C8\",\"hoverEvent\":{\"action\":\"show_item\",\"contents\":{\"id\":\"entrelumen:handling_core\",\"count\":1}}},{\"text\":\" (act III) in its foot. With a card and FE it builds, quarries, pumps, clears, and copies or moves whole rooms.\"}]",
+    "{@pagebreak}",
+    "It takes blocks from a chest on top of it or under it and puts what it digs into the same chests. Building costs 500 FE a block.",
+    "",
+    "[\"\",{\"text\":\"» \",\"color\":\"#E8B04A\"},{\"text\":\"Pro tip: \",\"color\":\"#E8B04A\",\"bold\":true},{\"text\":\"\",\"extra\":[{\"text\":\"[\"},{\"keybind\":\"key.sneak\"},{\"text\":\"]\"}],\"color\":\"#F2D060\"},{\"text\":\" + right-click the Builder with a Shape Card to mark an area: two corner clicks set its size and offset.\"}]"
+  ],
+  "quest.5A681A52123D7131.title": "Shape Card",
+  "quest.5A681A52123D7131.quest_subtitle": "Box, sphere, torus... and a heart.",
+  "quest.5A681A52123D7131.quest_desc": [
+    "[\"\",{\"text\":\"Four \"},{\"text\":\"Paper\",\"color\":\"#8FD6C8\",\"hoverEvent\":{\"action\":\"show_item\",\"contents\":{\"id\":\"minecraft:paper\",\"count\":1}}},{\"text\":\", two bricks, redstone and iron make a \"},{\"text\":\"Shape Card\",\"color\":\"#8FD6C8\",\"hoverEvent\":{\"action\":\"show_item\",\"contents\":{\"id\":\"rftoolsbuilder:shape_card_def\",\"count\":1}}},{\"text\":\". Right-click it to choose a shape (box, domes, sphere, cylinder, prism, torus, cone, even a heart), its size, offset and whether it is solid or hollow. In the Builder, it builds that shape from your blocks.\"}]"
+  ],
+  "quest.6BCC84C1A724B3A7.title": "Quarry Card",
+  "quest.6BCC84C1A724B3A7.quest_subtitle": "Eight blocks a tick, before breakfast.",
+  "quest.6BCC84C1A724B3A7.quest_desc": [
+    "[\"\",{\"text\":\"A Shape Card, a \"},{\"text\":\"Diamond Pickaxe\",\"color\":\"#8FD6C8\",\"hoverEvent\":{\"action\":\"show_item\",\"contents\":{\"id\":\"minecraft:diamond_pickaxe\",\"count\":1}}},{\"text\":\", a \"},{\"text\":\"Diamond Shovel\",\"color\":\"#8FD6C8\",\"hoverEvent\":{\"action\":\"show_item\",\"contents\":{\"id\":\"minecraft:diamond_shovel\",\"count\":1}}},{\"text\":\", iron and redstone make the \"},{\"text\":\"Quarry Card\",\"color\":\"#8FD6C8\",\"hoverEvent\":{\"action\":\"show_item\",\"contents\":{\"id\":\"rftoolsbuilder:shape_card_quarry\",\"count\":1}}},{\"text\":\"; the pack adds two \"},{\"text\":\"Ironwood Ingots\",\"color\":\"#8FD6C8\",\"hoverEvent\":{\"action\":\"show_item\",\"contents\":{\"id\":\"twilightforest:ironwood_ingot\",\"count\":1}}},{\"text\":\" (act IV) in the top corners. The Builder mines the whole shape, 8 blocks a tick, from 300 FE a block.\"}]",
+    "{@pagebreak}",
+    "The card keeps the shape, size and offset of the Shape Card it came from, and hands them on to every card crafted from it."
+  ],
+  "quest.095CEC2B71BC1EB2.title": "Where to dig",
+  "quest.095CEC2B71BC1EB2.quest_desc": [
+    "[\"\",{\"text\":\"» \",\"color\":\"#E8B04A\"},{\"text\":\"Pro tip: \",\"color\":\"#E8B04A\",\"bold\":true},{\"text\":\"Park the Builder in \"},{\"text\":\"the mining dimension\",\"color\":\"#9DC3FF\",\"underlined\":true,\"clickEvent\":{\"action\":\"change_page\",\"value\":\"706A01ED65FEE247\"}},{\"text\":\", not under your base: a normal Quarry Card refills every hole with dirt, a Clearing one leaves air. The Builder's chunk must stay loaded; the quarry loads the chunk it is digging, one at a time.\"}]"
+  ],
+  "quest.6CFAD0EF97557697.title": "Fortune Quarry Card",
+  "quest.6CFAD0EF97557697.quest_subtitle": "More ore, same hole.",
+  "quest.6CFAD0EF97557697.quest_desc": [
+    "[\"\",{\"text\":\"Four shards, a \"},{\"text\":\"Ghast Tear\",\"color\":\"#8FD6C8\",\"hoverEvent\":{\"action\":\"show_item\",\"contents\":{\"id\":\"minecraft:ghast_tear\",\"count\":1}}},{\"text\":\", an \"},{\"text\":\"Emerald\",\"color\":\"#8FD6C8\",\"hoverEvent\":{\"action\":\"show_item\",\"contents\":{\"id\":\"minecraft:emerald\",\"count\":1}}},{\"text\":\", a \"},{\"text\":\"Diamond\",\"color\":\"#8FD6C8\",\"hoverEvent\":{\"action\":\"show_item\",\"contents\":{\"id\":\"minecraft:diamond\",\"count\":1}}},{\"text\":\" and a redstone around a Quarry Card make the \"},{\"text\":\"Fortune\",\"color\":\"#8FD6C8\",\"hoverEvent\":{\"action\":\"show_item\",\"contents\":{\"id\":\"rftoolsbuilder:shape_card_quarry_fortune\",\"count\":1}}},{\"text\":\" version: ores drop as if mined with Fortune, for twice the FE per block.\"}]"
+  ],
+  "quest.47450443504B71B2.title": "Silk Touch Quarry Card",
+  "quest.47450443504B71B2.quest_subtitle": "Ores stay ores.",
+  "quest.47450443504B71B2.quest_desc": [
+    "[\"\",{\"text\":\"A \"},{\"text\":\"Nether Star\",\"color\":\"#8FD6C8\",\"hoverEvent\":{\"action\":\"show_item\",\"contents\":{\"id\":\"minecraft:nether_star\",\"count\":1}}},{\"text\":\", three \"},{\"text\":\"Diamonds\",\"color\":\"#8FD6C8\",\"hoverEvent\":{\"action\":\"show_item\",\"contents\":{\"id\":\"minecraft:diamond\",\"count\":1}}},{\"text\":\" and four shards around a Quarry Card make the \"},{\"text\":\"Silk Touch\",\"color\":\"#8FD6C8\",\"hoverEvent\":{\"action\":\"show_item\",\"contents\":{\"id\":\"rftoolsbuilder:shape_card_quarry_silk\",\"count\":1}}},{\"text\":\" version. Blocks come out whole, for three times the FE: ore blocks for a processing line that multiplies them.\"}]"
+  ],
+  "quest.29B6F92F9CE9BAA0.title": "Nothing but air",
+  "quest.29B6F92F9CE9BAA0.quest_subtitle": "Leave not even the dirt behind.",
+  "quest.29B6F92F9CE9BAA0.quest_desc": [
+    "[\"\",{\"text\":\"Eight \"},{\"text\":\"Glass\",\"color\":\"#8FD6C8\",\"hoverEvent\":{\"action\":\"show_item\",\"contents\":{\"id\":\"minecraft:glass\",\"count\":1}}},{\"text\":\" around a Fortune Quarry Card make the \"},{\"text\":\"Clearing Fortune\",\"color\":\"#8FD6C8\",\"hoverEvent\":{\"action\":\"show_item\",\"contents\":{\"id\":\"rftoolsbuilder:shape_card_quarry_clear_fortune\",\"count\":1}}},{\"text\":\" one: the hole stays empty. Fully infused, the Builder takes 28 blocks a tick; feed it from a linked Dimensional Cell and send the haul home over XNet.\"}]"
+  ],
+  "quest.2F760D81906579A3.title": "Void, Pump and Liquid Cards",
+  "quest.2F760D81906579A3.quest_subtitle": "Delete, drain, pour.",
+  "quest.2F760D81906579A3.quest_desc": [
+    "[\"\",{\"text\":\"Obsidian and black dye around a Shape Card make a \"},{\"text\":\"Void Card\",\"color\":\"#8FD6C8\",\"hoverEvent\":{\"action\":\"show_item\",\"contents\":{\"id\":\"rftoolsbuilder:shape_card_void\",\"count\":1}}},{\"text\":\": the Builder deletes the shape without drops, at half the FE. Buckets and redstone make the \"},{\"text\":\"Pump Card\",\"color\":\"#8FD6C8\",\"hoverEvent\":{\"action\":\"show_item\",\"contents\":{\"id\":\"rftoolsbuilder:shape_card_pump\",\"count\":1}}},{\"text\":\", which drains fluids into a tank by the Builder, and the \"},{\"text\":\"Liquid Card\",\"color\":\"#8FD6C8\",\"hoverEvent\":{\"action\":\"show_item\",\"contents\":{\"id\":\"rftoolsbuilder:shape_card_liquid\",\"count\":1}}},{\"text\":\", which pours them out.\"}]"
+  ],
+  "quest.7AEEB06B2B144946.title": "Space Chambers",
+  "quest.7AEEB06B2B144946.quest_subtitle": "Copy-paste, but for rooms.",
+  "quest.7AEEB06B2B144946.quest_desc": [
+    "[\"\",{\"text\":\"Put seven \"},{\"text\":\"Space Chambers\",\"color\":\"#8FD6C8\",\"hoverEvent\":{\"action\":\"show_item\",\"contents\":{\"id\":\"rftoolsbuilder:space_chamber\",\"count\":1}}},{\"text\":\" and a \"},{\"text\":\"Controller\",\"color\":\"#8FD6C8\",\"hoverEvent\":{\"action\":\"show_item\",\"contents\":{\"id\":\"rftoolsbuilder:space_chamber_controller\",\"count\":1}}},{\"text\":\" on the corners of a box up to 128 blocks a side, and \"},{\"text\":\"\",\"extra\":[{\"text\":\"[\"},{\"keybind\":\"key.sneak\"},{\"text\":\"]\"}],\"color\":\"#F2D060\"},{\"text\":\" + right-click the Controller with a \"},{\"text\":\"Space Card\",\"color\":\"#8FD6C8\",\"hoverEvent\":{\"action\":\"show_item\",\"contents\":{\"id\":\"rftoolsbuilder:space_chamber_card\",\"count\":1}}},{\"text\":\". In the Builder, that card copies, moves or swaps the room.\"}]",
+    "{@pagebreak}",
+    "Right-click the card in the air to list what the room holds. Moving it costs 500 FE a block, five times that into another dimension, and Collect mode gathers the items and XP inside instead."
+  ],
+  "quest.079EADD02C8453CE.title": "Scanner and Composer",
+  "quest.079EADD02C8453CE.quest_subtitle": "Photocopy a castle.",
+  "quest.079EADD02C8453CE.quest_desc": [
+    "[\"\",{\"text\":\"The \"},{\"text\":\"Scanner\",\"color\":\"#8FD6C8\",\"hoverEvent\":{\"action\":\"show_item\",\"contents\":{\"id\":\"rftoolsbuilder:scanner\",\"count\":1}}},{\"text\":\" reads the area one Shape Card describes and writes it into another as a Scan shape, which the Builder rebuilds elsewhere from your blocks. The \"},{\"text\":\"Composer\",\"color\":\"#8FD6C8\",\"hoverEvent\":{\"action\":\"show_item\",\"contents\":{\"id\":\"rftoolsbuilder:composer\",\"count\":1}}},{\"text\":\" adds, subtracts or intersects shapes into one card, and the \"},{\"text\":\"Projector\",\"color\":\"#8FD6C8\",\"hoverEvent\":{\"action\":\"show_item\",\"contents\":{\"id\":\"rftoolsbuilder:projector\",\"count\":1}}},{\"text\":\" previews any card in the air.\"}]"
+  ],
+  "quest.273D0DFA045CFC50.title": "Shield Projector",
+  "quest.273D0DFA045CFC50.quest_subtitle": "A wall of light and FE.",
+  "quest.273D0DFA045CFC50.quest_desc": [
+    "[\"\",{\"text\":\"Template blocks of one colour touching a \"},{\"text\":\"Shield Projector\",\"color\":\"#8FD6C8\",\"hoverEvent\":{\"action\":\"show_item\",\"contents\":{\"id\":\"rftoolsbuilder:shield_block1\",\"count\":1}}},{\"text\":\" become a force field, or a Shape Card gives it a form. Filters decide who passes, who is blocked and who takes damage, and the look goes from invisible to solid or mimicking a block. Tier 1 covers 256 blocks.\"}]",
+    "{@pagebreak}",
+    "[\"\",{\"text\":\"Each tier wraps the last: 1,024 blocks with redstone blocks and obsidian, 4,096 with shards, 32,768 with Nether Stars. Eight \"},{\"text\":\"Shield Templates\",\"color\":\"#8FD6C8\",\"hoverEvent\":{\"action\":\"show_item\",\"contents\":{\"id\":\"rftoolsbuilder:red_shield_template_block\",\"count\":1}}},{\"text\":\" come from wool, dye and glass.\"}]"
+  ],
+  "task.0F3C37666D49219E.title": "Look at a shield you raised",
+  "quest.26D5680DAE4CFF91.title": "Force field",
+  "quest.26D5680DAE4CFF91.quest_subtitle": "Nobody gets through. Probably.",
+  "quest.26D5680DAE4CFF91.quest_desc": [
+    "A damage filter strikes for 5 per hit at 1,000 FE. Switch it to player damage (2,000 FE) and mobs drop loot and XP as if you had swung; with shards in the projector, each hit spends two of them for Looting III."
+  ],
+  "reward.66D6C24FF40B6D5F.title": "Secret found",
+  "quest.7E9C9385B150C8F3.title": "Movers",
+  "quest.7E9C9385B150C8F3.quest_subtitle": "A railway without rails.",
+  "quest.7E9C9385B150C8F3.quest_desc": [
+    "[\"\",{\"text\":\"Two \"},{\"text\":\"Movers\",\"color\":\"#8FD6C8\",\"hoverEvent\":{\"action\":\"show_item\",\"contents\":{\"id\":\"rftoolsbuilder:mover\",\"count\":1}}},{\"text\":\" in a straight line, up to 128 blocks apart, are stops on a track, and a \"},{\"text\":\"Mover Controller\",\"color\":\"#8FD6C8\",\"hoverEvent\":{\"action\":\"show_item\",\"contents\":{\"id\":\"rftoolsbuilder:mover_controller\",\"count\":1}}},{\"text\":\" placed against one finds every Mover linked to it. Each trip costs the controller 1,000 FE.\"}]"
+  ],
+  "quest.3BFE2836A84398FF.title": "Vehicles",
+  "quest.3BFE2836A84398FF.quest_subtitle": "Your base, but it drives.",
+  "quest.3BFE2836A84398FF.quest_desc": [
+    "[\"\",{\"text\":\"Build the vehicle inside a Space Chamber; the \"},{\"text\":\"Vehicle Builder\",\"color\":\"#8FD6C8\",\"hoverEvent\":{\"action\":\"show_item\",\"contents\":{\"id\":\"rftoolsbuilder:vehicle_builder\",\"count\":1}}},{\"text\":\" packs it into a \"},{\"text\":\"Vehicle Card\",\"color\":\"#8FD6C8\",\"hoverEvent\":{\"action\":\"show_item\",\"contents\":{\"id\":\"rftoolsbuilder:vehicle_card\",\"count\":1}}},{\"text\":\", and the card in a Mover sets it down there. A \"},{\"text\":\"Mover Control\",\"color\":\"#8FD6C8\",\"hoverEvent\":{\"action\":\"show_item\",\"contents\":{\"id\":\"rftoolsbuilder:mover_control\",\"count\":1}}},{\"text\":\" block inside steers it, and \"},{\"text\":\"\",\"extra\":[{\"text\":\"[\"},{\"keybind\":\"key.unmountVehicle\"},{\"text\":\"]\"}],\"color\":\"#F2D060\"},{\"text\":\" gets you off.\"}]",
+    "{@pagebreak}",
+    "[\"\",{\"text\":\"From outside, a \"},{\"text\":\"Vehicle Control Module\",\"color\":\"#8FD6C8\",\"hoverEvent\":{\"action\":\"show_item\",\"contents\":{\"id\":\"rftoolsbuilder:vehicle_control_module\",\"count\":1}}},{\"text\":\" on a Screen, bound to the Mover Controller, sends it to any stop.\"}]"
   ],
   "quest.181E685FFBFE7E7E.title": "Matter Transmitter and Receiver",
+  "quest.181E685FFBFE7E7E.quest_subtitle": "Beam me home.",
   "quest.181E685FFBFE7E7E.quest_desc": [
-    "Stand on a Transmitter and jump to any Receiver, even in another dimension; a Dialing Device picks the destination. An underpowered receiver makes for a bad trip. Charged Porters teleport from your hand. Pack change: the Receiver needs a reinforced alloy (III); Porters only reach receivers, so they stay native."
+    "[\"\",{\"text\":\"Step into the beam of a \"},{\"text\":\"Matter Transmitter\",\"color\":\"#8FD6C8\",\"hoverEvent\":{\"action\":\"show_item\",\"contents\":{\"id\":\"rftoolsutility:matter_transmitter\",\"count\":1}}},{\"text\":\" dialed to a \"},{\"text\":\"Matter Receiver\",\"color\":\"#8FD6C8\",\"hoverEvent\":{\"action\":\"show_item\",\"contents\":{\"id\":\"rftoolsutility:matter_receiver\",\"count\":1}}},{\"text\":\" and you arrive there, even in another dimension. Both are ender pearls, iron and redstone around a frame; the pack sets a \"},{\"text\":\"Reinforced Alloy\",\"color\":\"#8FD6C8\",\"hoverEvent\":{\"action\":\"show_item\",\"contents\":{\"id\":\"mekanism:alloy_reinforced\",\"count\":1}}},{\"text\":\" (act III) in the Receiver.\"}]",
+    "{@pagebreak}",
+    "Charge the Receiver before anyone uses it: every arrival draws 5,000 FE from it, and landing on one that can't pay hurts."
   ],
-  "quest.1C4C957B5C85CA8F.title": "Environmental Controller and Spawner",
+  "quest.76F8456772C49F54.title": "Dialing Device",
+  "quest.76F8456772C49F54.quest_subtitle": "Pick a number.",
+  "quest.76F8456772C49F54.quest_desc": [
+    "[\"\",{\"text\":\"Six redstone and two torches around a frame make the \"},{\"text\":\"Dialing Device\",\"color\":\"#8FD6C8\",\"hoverEvent\":{\"action\":\"show_item\",\"contents\":{\"id\":\"rftoolsutility:dialing_device\",\"count\":1}}},{\"text\":\". It finds transmitters within 10 blocks around it and 5 up or down, lists every receiver in reach and dials; Dial Once hangs up after the first trip.\"}]",
+    "{@pagebreak}",
+    "[\"\",{\"text\":\"A \"},{\"text\":\"Simple Dialer\",\"color\":\"#8FD6C8\",\"hoverEvent\":{\"action\":\"show_item\",\"contents\":{\"id\":\"rftoolsutility:simple_dialer\",\"count\":1}}},{\"text\":\" dials on a redstone signal: \"},{\"text\":\"\",\"extra\":[{\"text\":\"[\"},{\"keybind\":\"key.sneak\"},{\"text\":\"]\"}],\"color\":\"#F2D060\"},{\"text\":\" + right-click it on a transmitter or a dialed receiver to set the route.\"}]"
+  ],
+  "quest.224660F38550102F.title": "Analyzer and Booster",
+  "quest.224660F38550102F.quest_subtitle": "Look before you leap.",
+  "quest.224660F38550102F.quest_desc": [
+    "[\"\",{\"text\":\"A \"},{\"text\":\"Destination Analyzer\",\"color\":\"#8FD6C8\",\"hoverEvent\":{\"action\":\"show_item\",\"contents\":{\"id\":\"rftoolsutility:destination_analyzer\",\"count\":1}}},{\"text\":\" next to the transmitter colours it by its destination: green is safe, yellow unknown, red bad. A \"},{\"text\":\"Matter Booster\",\"color\":\"#8FD6C8\",\"hoverEvent\":{\"action\":\"show_item\",\"contents\":{\"id\":\"rftoolsutility:matter_booster\",\"count\":1}}},{\"text\":\" next to it spends 20,000 FE to land you even when the receiver has run dry.\"}]"
+  ],
+  "quest.38A860709D10EF92.title": "Charged Porters",
+  "quest.38A860709D10EF92.quest_subtitle": "A teleporter that fits in a pocket.",
+  "quest.38A860709D10EF92.quest_desc": [
+    "[\"\",{\"text\":\"\",\"extra\":[{\"text\":\"[\"},{\"keybind\":\"key.sneak\"},{\"text\":\"]\"}],\"color\":\"#F2D060\"},{\"text\":\" + right-click a Receiver with a \"},{\"text\":\"Charged Porter\",\"color\":\"#8FD6C8\",\"hoverEvent\":{\"action\":\"show_item\",\"contents\":{\"id\":\"rftoolsutility:charged_porter\",\"count\":1}}},{\"text\":\" to store it, then right-click to go; it pays half again what a transmitter would. The \"},{\"text\":\"Advanced\",\"color\":\"#8FD6C8\",\"hoverEvent\":{\"action\":\"show_item\",\"contents\":{\"id\":\"rftoolsutility:advanced_charged_porter\",\"count\":1}}},{\"text\":\" one holds eight targets and 1,000,000 FE, and teleports four times faster.\"}]",
+    "",
+    "[\"\",{\"text\":\"\",\"extra\":[{\"text\":\"[\"},{\"keybind\":\"key.prevDestination\"},{\"text\":\"]\"}],\"color\":\"#F2D060\"},{\"text\":\" and \"},{\"text\":\"\",\"extra\":[{\"text\":\"[\"},{\"keybind\":\"key.nextDestination\"},{\"text\":\"]\"}],\"color\":\"#F2D060\"},{\"text\":\" step through its targets.\"}]"
+  ],
+  "quest.4F1056C9A0388EA8.title": "The teleport bill",
+  "quest.4F1056C9A0388EA8.quest_desc": [
+    "[\"\",{\"text\":\"» \",\"color\":\"#E8B04A\"},{\"text\":\"Pro tip: \",\"color\":\"#E8B04A\",\"bold\":true},{\"text\":\"A local trip costs the transmitter 5,000 FE plus 10 per block, never more than 100,000, and any trip to another dimension costs the full 100,000, plus 500 FE/t while the beam charges. The transmitter holds 200,000: fill it before the long jumps.\"}]"
+  ],
+  "quest.425583372E07221F.title": "Machine Base",
+  "quest.425583372E07221F.quest_subtitle": "A quarter block of brains.",
+  "quest.425583372E07221F.quest_desc": [
+    "[\"\",{\"text\":\"Three \"},{\"text\":\"Gold Nuggets\",\"color\":\"#8FD6C8\",\"hoverEvent\":{\"action\":\"show_item\",\"contents\":{\"id\":\"minecraft:gold_nugget\",\"count\":1}}},{\"text\":\" over three stone make a \"},{\"text\":\"Machine Base\",\"color\":\"#8FD6C8\",\"hoverEvent\":{\"action\":\"show_item\",\"contents\":{\"id\":\"rftoolsbase:machine_base\",\"count\":1}}},{\"text\":\", the foot of every screen and logic block. Logic blocks sit a quarter block high on floors, walls or ceilings and face the edge your cursor is nearest when you place them.\"}]"
+  ],
+  "quest.612F9FC41120325A.title": "Screens",
+  "quest.612F9FC41120325A.quest_subtitle": "A dashboard for your base.",
+  "quest.612F9FC41120325A.quest_desc": [
+    "[\"\",{\"text\":\"Five glass and three iron on a Machine Base make a \"},{\"text\":\"Screen\",\"color\":\"#8FD6C8\",\"hoverEvent\":{\"action\":\"show_item\",\"contents\":{\"id\":\"rftoolsutility:screen\",\"count\":1}}},{\"text\":\". It shows nothing until you add modules and runs only near a \"},{\"text\":\"Screen Controller\",\"color\":\"#8FD6C8\",\"hoverEvent\":{\"action\":\"show_item\",\"contents\":{\"id\":\"rftoolsutility:screen_controller\",\"count\":1}}},{\"text\":\": press Scan in the controller to power every screen in a 32x32x32 area.\"}]",
+    "{@pagebreak}",
+    "[\"\",{\"text\":\"» \",\"color\":\"#E8B04A\"},{\"text\":\"Pro tip: \",\"color\":\"#E8B04A\",\"bold\":true},{\"text\":\"The wrench resizes a screen and toggles its transparency; each module's settings have a full-bright switch.\"}]"
+  ],
+  "quest.56F2460D6599157A.title": "Screen modules",
+  "quest.56F2460D6599157A.quest_subtitle": "What's on tonight?",
+  "quest.56F2460D6599157A.quest_desc": [
+    "[\"\",{\"text\":\"Modules are the screen's channels: the \"},{\"text\":\"Text Module\",\"color\":\"#8FD6C8\",\"hoverEvent\":{\"action\":\"show_item\",\"contents\":{\"id\":\"rftoolsutility:text_module\",\"count\":1}}},{\"text\":\" is free, the \"},{\"text\":\"Energy\",\"color\":\"#8FD6C8\",\"hoverEvent\":{\"action\":\"show_item\",\"contents\":{\"id\":\"rftoolsutility:energy_module\",\"count\":1}}},{\"text\":\" and \"},{\"text\":\"Inventory\",\"color\":\"#8FD6C8\",\"hoverEvent\":{\"action\":\"show_item\",\"contents\":{\"id\":\"rftoolsutility:inventory_module\",\"count\":1}}},{\"text\":\" ones cost 4 FE/t each. \"},{\"text\":\"\",\"extra\":[{\"text\":\"[\"},{\"keybind\":\"key.sneak\"},{\"text\":\"]\"}],\"color\":\"#F2D060\"},{\"text\":\" + right-click a module on a machine to aim it, then put it in the screen.\"}]",
+    "{@pagebreak}",
+    "[\"\",{\"text\":\"There are also clock, counter, fluid, redstone, button and machine-information modules. Plain ones read targets up to 64 blocks away on each axis, in the same dimension; the Plus versions, like the \"},{\"text\":\"Energy Plus Screen Module\",\"color\":\"#8FD6C8\",\"hoverEvent\":{\"action\":\"show_item\",\"contents\":{\"id\":\"rftoolsutility:energyplus_module\",\"count\":1}}},{\"text\":\", read any distance and any dimension.\"}]"
+  ],
+  "quest.21BD0826D9586A7F.title": "Tablet",
+  "quest.21BD0826D9586A7F.quest_subtitle": "The whole base, in your pocket.",
+  "quest.21BD0826D9586A7F.quest_desc": [
+    "[\"\",{\"text\":\"Fit a \"},{\"text\":\"Screen Link\",\"color\":\"#8FD6C8\",\"hoverEvent\":{\"action\":\"show_item\",\"contents\":{\"id\":\"rftoolsutility:screen_link\",\"count\":1}}},{\"text\":\" (\"},{\"text\":\"\",\"extra\":[{\"text\":\"[\"},{\"keybind\":\"key.sneak\"},{\"text\":\"]\"}],\"color\":\"#F2D060\"},{\"text\":\" + right-click it on a Screen) or a \"},{\"text\":\"Redstone Module\",\"color\":\"#8FD6C8\",\"hoverEvent\":{\"action\":\"show_item\",\"contents\":{\"id\":\"rftoolsutility:redstone_information\",\"count\":1}}},{\"text\":\" (right-click a transmitter or receiver to add its channel) in a \"},{\"text\":\"Tablet\",\"color\":\"#8FD6C8\",\"hoverEvent\":{\"action\":\"show_item\",\"contents\":{\"id\":\"rftoolsbase:tablet\",\"count\":1}}},{\"text\":\": right-click then opens it wherever the target's chunk is loaded.\"}]",
+    "",
+    "[\"\",{\"text\":\"\",\"extra\":[{\"text\":\"[\"},{\"keybind\":\"key.sneak\"},{\"text\":\"]\"}],\"color\":\"#F2D060\"},{\"text\":\" + right-click the tablet to fit up to six; \"},{\"text\":\"\",\"extra\":[{\"text\":\"[\"},{\"keybind\":\"key.prevDestination\"},{\"text\":\"]\"}],\"color\":\"#F2D060\"},{\"text\":\" and \"},{\"text\":\"\",\"extra\":[{\"text\":\"[\"},{\"keybind\":\"key.nextDestination\"},{\"text\":\"]\"}],\"color\":\"#F2D060\"},{\"text\":\" switch between them.\"}]"
+  ],
+  "quest.42ED65A4D4594D90.title": "Wireless redstone",
+  "quest.42ED65A4D4594D90.quest_subtitle": "Pull a lever three rooms away.",
+  "quest.42ED65A4D4594D90.quest_desc": [
+    "[\"\",{\"text\":\"A \"},{\"text\":\"Redstone Transmitter\",\"color\":\"#8FD6C8\",\"hoverEvent\":{\"action\":\"show_item\",\"contents\":{\"id\":\"rftoolsutility:redstone_transmitter\",\"count\":1}}},{\"text\":\" opens a channel when placed; right-click it with a \"},{\"text\":\"Redstone Receiver\",\"color\":\"#8FD6C8\",\"hoverEvent\":{\"action\":\"show_item\",\"contents\":{\"id\":\"rftoolsutility:redstone_receiver\",\"count\":1}}},{\"text\":\" in hand to tune the receiver in, and switch the receiver to analog to keep the strength. A \"},{\"text\":\"Button Module\",\"color\":\"#8FD6C8\",\"hoverEvent\":{\"action\":\"show_item\",\"contents\":{\"id\":\"rftoolsutility:button_module\",\"count\":1}}},{\"text\":\" on a screen sends on a channel too.\"}]"
+  ],
+  "quest.57E52BD2048A1FBC.title": "Logic blocks",
+  "quest.57E52BD2048A1FBC.quest_subtitle": "Redstone with a degree.",
+  "quest.57E52BD2048A1FBC.quest_desc": [
+    "[\"\",{\"text\":\"On Machine Bases: a \"},{\"text\":\"Timer\",\"color\":\"#8FD6C8\",\"hoverEvent\":{\"action\":\"show_item\",\"contents\":{\"id\":\"rftoolsutility:timer\",\"count\":1}}},{\"text\":\" pulses at any delay and restarts on every input, a \"},{\"text\":\"Counter\",\"color\":\"#8FD6C8\",\"hoverEvent\":{\"action\":\"show_item\",\"contents\":{\"id\":\"rftoolsutility:counter\",\"count\":1}}},{\"text\":\" fires every N pulses, a \"},{\"text\":\"Sequencer\",\"color\":\"#8FD6C8\",\"hoverEvent\":{\"action\":\"show_item\",\"contents\":{\"id\":\"rftoolsutility:sequencer\",\"count\":1}}},{\"text\":\" plays 64 steps in seven modes, and a \"},{\"text\":\"Logic\",\"color\":\"#8FD6C8\",\"hoverEvent\":{\"action\":\"show_item\",\"contents\":{\"id\":\"rftoolsutility:logic\",\"count\":1}}},{\"text\":\" block maps three inputs to any truth table.\"}]",
+    "{@pagebreak}",
+    "[\"\",{\"text\":\"» \",\"color\":\"#E8B04A\"},{\"text\":\"Pro tip: \",\"color\":\"#E8B04A\",\"bold\":true},{\"text\":\"A Timer fed by a working process never fires: wire a machine's output pulses into it and it raises the alarm only when the machine stalls.\"}]"
+  ],
+  "quest.57552BCF69FD6EBB.title": "Analog, Digit and Wire",
+  "quest.57552BCF69FD6EBB.quest_subtitle": "Small parts, fewer headaches.",
+  "quest.57552BCF69FD6EBB.quest_desc": [
+    "[\"\",{\"text\":\"An \"},{\"text\":\"Analog\",\"color\":\"#8FD6C8\",\"hoverEvent\":{\"action\":\"show_item\",\"contents\":{\"id\":\"rftoolsutility:analog\",\"count\":1}}},{\"text\":\" multiplies and offsets a signal depending on how its A and B sides compare, a \"},{\"text\":\"Digit\",\"color\":\"#8FD6C8\",\"hoverEvent\":{\"action\":\"show_item\",\"contents\":{\"id\":\"rftoolsutility:digit\",\"count\":1}}},{\"text\":\" shows a strength from 0 to F, and a \"},{\"text\":\"Wire\",\"color\":\"#8FD6C8\",\"hoverEvent\":{\"action\":\"show_item\",\"contents\":{\"id\":\"rftoolsutility:wire\",\"count\":1}}},{\"text\":\" carries a signal in a straight line without the lag of redstone dust.\"}]"
+  ],
+  "quest.290BC456094F281E.title": "Sensor and Inventory Checker",
+  "quest.290BC456094F281E.quest_subtitle": "Eyes on the farm.",
+  "quest.290BC456094F281E.quest_desc": [
+    "[\"\",{\"text\":\"A \"},{\"text\":\"Sensor\",\"color\":\"#8FD6C8\",\"hoverEvent\":{\"action\":\"show_item\",\"contents\":{\"id\":\"rftoolsutility:sensor\",\"count\":1}}},{\"text\":\" looks 1, 3 or 5 blocks ahead for blocks, fluids, crop growth, mobs or players and emits redstone. An \"},{\"text\":\"Inventory Checker\",\"color\":\"#8FD6C8\",\"hoverEvent\":{\"action\":\"show_item\",\"contents\":{\"id\":\"rftoolsutility:invchecker\",\"count\":1}}},{\"text\":\" emits when a slot of the inventory behind it holds more than a set number of an item or tag. Slots count from zero.\"}]"
+  ],
+  "quest.36B12A0BD6F53671.title": "Crafter",
+  "quest.36B12A0BD6F53671.quest_subtitle": "It crafts while you mine.",
+  "quest.36B12A0BD6F53671.quest_desc": [
+    "[\"\",{\"text\":\"Two crafting tables and two redstone torches around a frame make a \"},{\"text\":\"Crafter Tier 1\",\"color\":\"#8FD6C8\",\"hoverEvent\":{\"action\":\"show_item\",\"contents\":{\"id\":\"rftoolsutility:crafter1\",\"count\":1}}},{\"text\":\". Lay a recipe in its grid and apply it; ingredients go in 26 slots, results come out of 4, and each craft costs 100 FE. Tier 1 remembers two recipes.\"}]",
+    "{@pagebreak}",
+    "[\"\",{\"text\":\"» \",\"color\":\"#E8B04A\"},{\"text\":\"Pro tip: \",\"color\":\"#E8B04A\",\"bold\":true},{\"text\":\"R remembers what sits in a slot so only that item goes there; F forgets. In Int mode a result stays inside to feed the next recipe. The Crafting Card from the manual has no reader in this pack: the Crafter keeps its recipes itself.\"}]"
+  ],
+  "quest.50CABE0EA36EF81B.title": "Crafter Tiers 2 and 3",
+  "quest.50CABE0EA36EF81B.quest_subtitle": "Two, four, eight.",
+  "quest.50CABE0EA36EF81B.quest_desc": [
+    "[\"\",{\"text\":\"Two more crafting tables and torches around a Crafter make the next tier, recipes and contents included: \"},{\"text\":\"Tier 2\",\"color\":\"#8FD6C8\",\"hoverEvent\":{\"action\":\"show_item\",\"contents\":{\"id\":\"rftoolsutility:crafter2\",\"count\":1}}},{\"text\":\" remembers four recipes and \"},{\"text\":\"Tier 3\",\"color\":\"#8FD6C8\",\"hoverEvent\":{\"action\":\"show_item\",\"contents\":{\"id\":\"rftoolsutility:crafter3\",\"count\":1}}},{\"text\":\" eight. Fast mode runs five crafts at a time, and infusion cuts the FE.\"}]"
+  ],
+  "quest.1C4C957B5C85CA8F.title": "Environmental Controller",
+  "quest.1C4C957B5C85CA8F.quest_subtitle": "Buffs by the cubic metre.",
   "quest.1C4C957B5C85CA8F.quest_desc": [
-    "The Environmental Controller bathes an area in up to seven effect modules, more effects costing more power. The Spawner makes mobs from a filled syringe, FE and beamed materials. Pack change: Controller needs a reinforced alloy (III), Spawner an ironwood ingot (IV)."
+    "[\"\",{\"text\":\"Diamond, emerald, gold and iron blocks and ender pearls around a frame make the \"},{\"text\":\"Environmental Controller\",\"color\":\"#8FD6C8\",\"hoverEvent\":{\"action\":\"show_item\",\"contents\":{\"id\":\"rftoolsutility:environmental_controller\",\"count\":1}}},{\"text\":\"; the pack swaps one pearl for a \"},{\"text\":\"Reinforced Alloy\",\"color\":\"#8FD6C8\",\"hoverEvent\":{\"action\":\"show_item\",\"contents\":{\"id\":\"mekanism:alloy_reinforced\",\"count\":1}}},{\"text\":\" (act III). Up to seven modules act on everyone inside its radius and height band, and each costs FE per block covered.\"}]",
+    "{@pagebreak}",
+    "[\"\",{\"text\":\"Every module starts as a \"},{\"text\":\"Module Template\",\"color\":\"#8FD6C8\",\"hoverEvent\":{\"action\":\"show_item\",\"contents\":{\"id\":\"rftoolsutility:module_template\",\"count\":1}}},{\"text\":\": four shards and four iron around an Infused Diamond. The filter picks who is affected (everyone, listed players, passive or hostile mobs), and mobs cost double.\"}]"
   ],
-  "quest.58DECA7D319F0107.title": "Builder and shape cards",
-  "quest.58DECA7D319F0107.quest_desc": [
-    "A Shape Card (box, sphere, cylinder, cone, torus, prism or scanned) with size, offset and fill tells the Builder what to build from supplied blocks; a Quarry Card makes it mine (Clear, Silk Touch, Fortune); Void, Liquid and Pump cards too. Pack change: Builder needs a Handling Core (III), Quarry Card two ironwood ingots (IV)."
+  "quest.424D4DCD81CCFBEE.title": "Syringe",
+  "quest.424D4DCD81CCFBEE.quest_subtitle": "This might sting a little.",
+  "quest.424D4DCD81CCFBEE.quest_desc": [
+    "[\"\",{\"text\":\"Two \"},{\"text\":\"Iron Ingots\",\"color\":\"#8FD6C8\",\"hoverEvent\":{\"action\":\"show_item\",\"contents\":{\"id\":\"minecraft:iron_ingot\",\"count\":1}}},{\"text\":\" and a \"},{\"text\":\"Glass Bottle\",\"color\":\"#8FD6C8\",\"hoverEvent\":{\"action\":\"show_item\",\"contents\":{\"id\":\"minecraft:glass_bottle\",\"count\":1}}},{\"text\":\" make a \"},{\"text\":\"Syringe\",\"color\":\"#8FD6C8\",\"hoverEvent\":{\"action\":\"show_item\",\"contents\":{\"id\":\"rftoolsutility:syringe\",\"count\":1}}},{\"text\":\". Hit a mob with it ten times, always the same kind, and it holds that mob's essence: effect modules and the Spawner both start from a full one.\"}]"
   ],
-  "quest.095CEC2B71BC1EB2.title": "Quarry etiquette",
-  "quest.095CEC2B71BC1EB2.quest_desc": [
-    "A quarry card empties huge volumes and backfills them unless you use a Clear variant. Run it in a JAMD mining dimension, not under your base or a village, and never in someone else's claim. It only works while its chunk is loaded."
+  "quest.625D93D2ED91DBFA.title": "Effect modules",
+  "quest.625D93D2ED91DBFA.quest_subtitle": "Coffee for the whole room.",
+  "quest.625D93D2ED91DBFA.quest_desc": [
+    "[\"\",{\"text\":\"A full syringe, a Module Template and seven matching items make a module: wolf and \"},{\"text\":\"Powered Rails\",\"color\":\"#8FD6C8\",\"hoverEvent\":{\"action\":\"show_item\",\"contents\":{\"id\":\"minecraft:powered_rail\",\"count\":1}}},{\"text\":\" for \"},{\"text\":\"Speed\",\"color\":\"#8FD6C8\",\"hoverEvent\":{\"action\":\"show_item\",\"contents\":{\"id\":\"rftoolsutility:speed_module\",\"count\":1}}},{\"text\":\", pillager and redstone for \"},{\"text\":\"Haste\",\"color\":\"#8FD6C8\",\"hoverEvent\":{\"action\":\"show_item\",\"contents\":{\"id\":\"rftoolsutility:haste_module\",\"count\":1}}},{\"text\":\", zombie and rotten flesh for \"},{\"text\":\"Saturation\",\"color\":\"#8FD6C8\",\"hoverEvent\":{\"action\":\"show_item\",\"contents\":{\"id\":\"rftoolsutility:saturation_module\",\"count\":1}}},{\"text\":\". Each costs 0.001 FE/t per block covered.\"}]",
+    "{@pagebreak}",
+    "Plus versions (Speed, Haste, Regeneration and Saturation III) add a Plus template and infused gems and cost three times as much. Blindness, Poison, Slowness and Weakness only touch mobs here, and No-Teleport pins endermen and shulkers in place."
   ],
-  "quest.06141C8077AB2510.title": "XNet: controller, cables, connectors",
+  "quest.50CFB8CC0A0BC881.title": "Peaceful Module",
+  "quest.50CFB8CC0A0BC881.quest_subtitle": "No monsters, no drama.",
+  "quest.50CFB8CC0A0BC881.quest_desc": [
+    "[\"\",{\"text\":\"An iron golem's syringe, a \"},{\"text\":\"ModulePlus Template\",\"color\":\"#8FD6C8\",\"hoverEvent\":{\"action\":\"show_item\",\"contents\":{\"id\":\"rftoolsutility:moduleplus_template\",\"count\":1}}},{\"text\":\", four \"},{\"text\":\"Blocks of Iron\",\"color\":\"#8FD6C8\",\"hoverEvent\":{\"action\":\"show_item\",\"contents\":{\"id\":\"minecraft:iron_block\",\"count\":1}}},{\"text\":\" and three \"},{\"text\":\"Infused Ender Pearls\",\"color\":\"#8FD6C8\",\"hoverEvent\":{\"action\":\"show_item\",\"contents\":{\"id\":\"rftoolsbase:infused_enderpearl\",\"count\":1}}},{\"text\":\" make the \"},{\"text\":\"Peaceful Module\",\"color\":\"#8FD6C8\",\"hoverEvent\":{\"action\":\"show_item\",\"contents\":{\"id\":\"rftoolsutility:peaceful_module\",\"count\":1}}},{\"text\":\": no hostile mob spawns inside the controller's range, for 0.001 FE/t per block.\"}]"
+  ],
+  "quest.083D065001E084EC.title": "Flight Module",
+  "quest.083D065001E084EC.quest_subtitle": "Creative mode, rented by the block.",
+  "quest.083D065001E084EC.quest_desc": [
+    "[\"\",{\"text\":\"A ghast's syringe, a ModulePlus Template, six \"},{\"text\":\"Ghast Tears\",\"color\":\"#8FD6C8\",\"hoverEvent\":{\"action\":\"show_item\",\"contents\":{\"id\":\"minecraft:ghast_tear\",\"count\":1}}},{\"text\":\" and an \"},{\"text\":\"Infused Ender Pearl\",\"color\":\"#8FD6C8\",\"hoverEvent\":{\"action\":\"show_item\",\"contents\":{\"id\":\"rftoolsbase:infused_enderpearl\",\"count\":1}}},{\"text\":\" make the \"},{\"text\":\"Flight Module\",\"color\":\"#8FD6C8\",\"hoverEvent\":{\"action\":\"show_item\",\"contents\":{\"id\":\"rftoolsutility:flight_module\",\"count\":1}}},{\"text\":\": creative flight for anyone in range, at 0.004 FE/t per block, four times a basic module.\"}]"
+  ],
+  "quest.5A1F529EBFEAF725.title": "Spawner",
+  "quest.5A1F529EBFEAF725.quest_subtitle": "Mobs to order.",
+  "quest.5A1F529EBFEAF725.quest_desc": [
+    "[\"\",{\"text\":\"A full syringe in the \"},{\"text\":\"Spawner\",\"color\":\"#8FD6C8\",\"hoverEvent\":{\"action\":\"show_item\",\"contents\":{\"id\":\"rftoolsutility:spawner\",\"count\":1}}},{\"text\":\" picks the mob. \"},{\"text\":\"Matter Beamers\",\"color\":\"#8FD6C8\",\"hoverEvent\":{\"action\":\"show_item\",\"contents\":{\"id\":\"rftoolsutility:matter_beamer\",\"count\":1}}},{\"text\":\", linked with the wrench and given a redstone signal, feed it the three materials that mob's recipe lists, and FE does the rest: 800 FE for a zombie, 1,000 for a blaze.\"}]",
+    "{@pagebreak}",
+    "[\"\",{\"text\":\"Pack change: the Spawner takes an \"},{\"text\":\"Ironwood Ingot\",\"color\":\"#8FD6C8\",\"hoverEvent\":{\"action\":\"show_item\",\"contents\":{\"id\":\"twilightforest:ironwood_ingot\",\"count\":1}}},{\"text\":\" (act IV) in a bottom corner.\"}]",
+    "",
+    "[\"\",{\"text\":\"» \",\"color\":\"#E8B04A\"},{\"text\":\"Pro tip: \",\"color\":\"#E8B04A\",\"bold\":true},{\"text\":\"Infuse the beamers: they send more per pulse for less FE. Materials the mob doesn't need are ignored.\"}]"
+  ],
+  "task.0F34816A42DE1D71.title": "A syringe full of Wither",
+  "quest.3E97C0EDD20723C8.title": "A sample from the Wither",
+  "quest.3E97C0EDD20723C8.quest_subtitle": "Ten jabs. It noticed.",
+  "quest.3E97C0EDD20723C8.quest_desc": [
+    "The syringe takes bosses like any other mob: ten hits and it's full. Whether your FE bill can take a Spawner line at 20,000 per Wither is another matter."
+  ],
+  "reward.723B044FC0431D62.title": "Secret found",
+  "quest.06141C8077AB2510.title": "XNet Controller",
+  "quest.06141C8077AB2510.quest_subtitle": "Eight channels, one brain.",
   "quest.06141C8077AB2510.quest_desc": [
-    "Coloured cables (red, green, blue, yellow never connect to each other), connectors next to your blocks and one Controller. In it, add a channel (items, fluids, energy or logic) and connectors with side, priority, filter and speed. Pack change: the Controller needs a reinforced alloy (III)."
+    "[\"\",{\"text\":\"Two repeaters, a comparator, redstone, iron and a frame make the \"},{\"text\":\"Controller\",\"color\":\"#8FD6C8\",\"hoverEvent\":{\"action\":\"show_item\",\"contents\":{\"id\":\"xnet:controller\",\"count\":1}}},{\"text\":\"; the pack puts a \"},{\"text\":\"Reinforced Alloy\",\"color\":\"#8FD6C8\",\"hoverEvent\":{\"action\":\"show_item\",\"contents\":{\"id\":\"mekanism:alloy_reinforced\",\"count\":1}}},{\"text\":\" (act III) where its gold went. It runs up to eight channels (items, fluids, energy or logic) for every connector on its cable network.\"}]",
+    "{@pagebreak}",
+    "It draws 1 FE/t per active channel and 2 FE per operation from a 100,000 FE buffer, so wire it to power first."
   ],
-  "quest.4B7327FBE1FDB730.title": "XNet routers",
-  "quest.4B7327FBE1FDB730.quest_desc": [
-    "A Router links controller networks through routing cables: channels published on one side, consumed on the other. A Wireless Router does it without cables via an antenna on top (the dish has unlimited range at higher cost). Both routers keep their native recipes: they only work under a controller."
+  "quest.57B2140EFD756F01.title": "Cables and connectors",
+  "quest.57B2140EFD756F01.quest_subtitle": "Red never talks to blue.",
+  "quest.57B2140EFD756F01.quest_desc": [
+    "[\"\",{\"text\":\"String, redstone, a gold nugget and a dye make sixteen \"},{\"text\":\"Network Cables\",\"color\":\"#8FD6C8\",\"hoverEvent\":{\"action\":\"show_item\",\"contents\":{\"id\":\"xnet:netcable_red\",\"count\":1}}},{\"text\":\"; red, green, blue and yellow never join, so four networks can share a wall. A \"},{\"text\":\"Connector\",\"color\":\"#8FD6C8\",\"hoverEvent\":{\"action\":\"show_item\",\"contents\":{\"id\":\"xnet:connector_red\",\"count\":1}}},{\"text\":\" (a chest, gold, redstone and dye) goes on the cable beside each block the network should reach.\"}]",
+    "{@pagebreak}",
+    "Name a connector in its screen and the Controller lists it by that name. Any cable or connector can be re-dyed in the crafting grid."
   ],
-  "quest.7CF9EF22817C4CDF.title": "A useful XNet project",
+  "quest.70EA46A774BBF977.title": "Item channels",
+  "quest.70EA46A774BBF977.quest_desc": [
+    "[\"\",{\"text\":\"» \",\"color\":\"#E8B04A\"},{\"text\":\"Pro tip: \",\"color\":\"#E8B04A\",\"bold\":true},{\"text\":\"An item channel shares by priority or round robin, and each connector inserts or extracts. Extractors take from the first slot, a random one or in order; one item, a stack or a set count; every 10 ticks at best, 5 on an advanced connector.\"}]"
+  ],
+  "quest.0B100AF4DA0987E5.title": "Fluid channels",
+  "quest.0B100AF4DA0987E5.quest_desc": [
+    "[\"\",{\"text\":\"» \",\"color\":\"#E8B04A\"},{\"text\":\"Pro tip: \",\"color\":\"#E8B04A\",\"bold\":true},{\"text\":\"A fluid connector moves up to 1,000 mB per operation, 5,000 when advanced. Its minimum and maximum pause it when the tank on the other side gets too empty or too full.\"}]"
+  ],
+  "quest.766AEE98414EBF0E.title": "Energy channels",
+  "quest.766AEE98414EBF0E.quest_desc": [
+    "[\"\",{\"text\":\"» \",\"color\":\"#E8B04A\"},{\"text\":\"Pro tip: \",\"color\":\"#E8B04A\",\"bold\":true},{\"text\":\"Energy connectors carry up to 10,000 FE/t, advanced ones 100,000. Give the machines that must never starve a higher priority and let the rest share what is left.\"}]"
+  ],
+  "quest.7CF9EF22817C4CDF.title": "Logic channels",
   "quest.7CF9EF22817C4CDF.quest_desc": [
-    "An energy channel plus a logic channel: a sensor watches a generator's buffer and feeds fuel only when it runs low, while an item channel ships output to the next workshop. One controller, items, fluids, FE and logic together."
+    "[\"\",{\"text\":\"» \",\"color\":\"#E8B04A\"},{\"text\":\"Pro tip: \",\"color\":\"#E8B04A\",\"bold\":true},{\"text\":\"A logic connector in Sensor mode reads the items, fluid, energy or redstone of its block and lights a colour when a comparison holds; one in Output mode turns that colour into redstone. Feed a generator's fuel only while its buffer is low.\"}]"
   ],
-  "quest.29B6F92F9CE9BAA0.title": "Mastery: the glue holds",
-  "quest.29B6F92F9CE9BAA0.quest_desc": [
-    "Powercells feeding the base, crafters on XNet, screens showing everything, a transmitter linking two bases and a Builder quarrying in the mining dimension."
+  "quest.1ED624C1C43D1356.title": "Filter Module",
+  "quest.1ED624C1C43D1356.quest_subtitle": "Only the good stuff.",
+  "quest.1ED624C1C43D1356.quest_desc": [
+    "[\"\",{\"text\":\"A hopper, iron, redstone and paper make a \"},{\"text\":\"Filter Module\",\"color\":\"#8FD6C8\",\"hoverEvent\":{\"action\":\"show_item\",\"contents\":{\"id\":\"rftoolsbase:filter_module\",\"count\":1}}},{\"text\":\": items, blocks and tags as a whitelist or blacklist, matching NBT and damage if you want. \"},{\"text\":\"\",\"extra\":[{\"text\":\"[\"},{\"keybind\":\"key.sneak\"},{\"text\":\"]\"}],\"color\":\"#F2D060\"},{\"text\":\" + right-click a chest to copy what it holds. The Controller holds four for its item connectors; Crafters and Builders take one.\"}]"
   ],
+  "quest.72F958976F6C18DD.title": "Tank",
+  "quest.72F958976F6C18DD.quest_subtitle": "Thirty-two buckets, one flavour.",
+  "quest.72F958976F6C18DD.quest_desc": [
+    "[\"\",{\"text\":\"Glass, buckets, iron and a frame make an RFTools \"},{\"text\":\"Tank\",\"color\":\"#8FD6C8\",\"hoverEvent\":{\"action\":\"show_item\",\"contents\":{\"id\":\"rftoolsutility:tank\",\"count\":1}}},{\"text\":\" for 32,000 mB. A filled bucket in its filter slot locks it to that fluid, so a fluid channel can't mix things up.\"}]"
+  ],
+  "quest.655F01B97DD53BD2.title": "Advanced connectors",
+  "quest.655F01B97DD53BD2.quest_subtitle": "Same wire, more lanes.",
+  "quest.655F01B97DD53BD2.quest_desc": [
+    "[\"\",{\"text\":\"Paper, a \"},{\"text\":\"Diamond\",\"color\":\"#8FD6C8\",\"hoverEvent\":{\"action\":\"show_item\",\"contents\":{\"id\":\"minecraft:diamond\",\"count\":1}}},{\"text\":\", an ender pearl and redstone make a \"},{\"text\":\"Connector Upgrade Kit\",\"color\":\"#8FD6C8\",\"hoverEvent\":{\"action\":\"show_item\",\"contents\":{\"id\":\"xnet:connector_upgrade\",\"count\":1}}},{\"text\":\"; \"},{\"text\":\"\",\"extra\":[{\"text\":\"[\"},{\"keybind\":\"key.sneak\"},{\"text\":\"]\"}],\"color\":\"#F2D060\"},{\"text\":\" + right-click a placed connector to make it advanced. It moves items every 5 ticks, 100,000 FE/t and 5,000 mB, and reaches any side of the block it touches.\"}]"
+  ],
+  "quest.39F2B06F5B6C0B59.title": "Redstone Proxy",
+  "quest.39F2B06F5B6C0B59.quest_subtitle": "A stand-in for your redstone.",
+  "quest.39F2B06F5B6C0B59.quest_desc": [
+    "[\"\",{\"text\":\"Eight redstone around a frame make a \"},{\"text\":\"Redstone Proxy\",\"color\":\"#8FD6C8\",\"hoverEvent\":{\"action\":\"show_item\",\"contents\":{\"id\":\"xnet:redstone_proxy\",\"count\":1}}},{\"text\":\", a plain block a logic connector can read or drive when the real contraption has no good face. Craft it with a torch for the \"},{\"text\":\"update\",\"color\":\"#8FD6C8\",\"hoverEvent\":{\"action\":\"show_item\",\"contents\":{\"id\":\"xnet:redstone_proxy_upd\",\"count\":1}}},{\"text\":\" version, which also wakes up its neighbours.\"}]"
+  ],
+  "quest.64E9E38C94BBDB98.title": "Facades",
+  "quest.64E9E38C94BBDB98.quest_subtitle": "Cables? What cables?",
+  "quest.64E9E38C94BBDB98.quest_desc": [
+    "[\"\",{\"text\":\"Paper, wool and glass make sixteen \"},{\"text\":\"Facades\",\"color\":\"#8FD6C8\",\"hoverEvent\":{\"action\":\"show_item\",\"contents\":{\"id\":\"xnet:facade\",\"count\":1}}},{\"text\":\". Right-click a block to copy its look, then right-click a cable or connector to hide it inside; break the facade and the cable is back.\"}]"
+  ],
+  "quest.4B7327FBE1FDB730.title": "Router",
+  "quest.4B7327FBE1FDB730.quest_subtitle": "Networks, meet networks.",
+  "quest.4B7327FBE1FDB730.quest_desc": [
+    "[\"\",{\"text\":\"Routing cables (black dye) and routing connectors (redstone and gold around any connector) join a \"},{\"text\":\"Router\",\"color\":\"#8FD6C8\",\"hoverEvent\":{\"action\":\"show_item\",\"contents\":{\"id\":\"xnet:router\",\"count\":1}}},{\"text\":\" to several controllers. In it, one network publishes a channel under a name and another consumes it: up to 32 published channels per routing network.\"}]"
+  ],
+  "quest.66117F0122FEB0E2.title": "Wireless Router",
+  "quest.66117F0122FEB0E2.quest_subtitle": "Look, no cables.",
+  "quest.66117F0122FEB0E2.quest_desc": [
+    "[\"\",{\"text\":\"A \"},{\"text\":\"Wireless Router\",\"color\":\"#8FD6C8\",\"hoverEvent\":{\"action\":\"show_item\",\"contents\":{\"id\":\"xnet:wireless_router\",\"count\":1}}},{\"text\":\" needs an \"},{\"text\":\"Antenna Base\",\"color\":\"#8FD6C8\",\"hoverEvent\":{\"action\":\"show_item\",\"contents\":{\"id\":\"xnet:antenna_base\",\"count\":1}}},{\"text\":\" on top and an \"},{\"text\":\"Antenna\",\"color\":\"#8FD6C8\",\"hoverEvent\":{\"action\":\"show_item\",\"contents\":{\"id\":\"xnet:antenna\",\"count\":1}}},{\"text\":\" on that: 100 blocks of range, 500 with a second antenna above. Two routers link when each sits within the other's range, in the same dimension; each published channel costs 20 or 50 FE/t.\"}]"
+  ],
+  "quest.02619F5F1BD9855B.title": "Antenna Dish",
+  "quest.02619F5F1BD9855B.quest_subtitle": "Anywhere, any world.",
+  "quest.02619F5F1BD9855B.quest_desc": [
+    "[\"\",{\"text\":\"An \"},{\"text\":\"Antenna Dish\",\"color\":\"#8FD6C8\",\"hoverEvent\":{\"action\":\"show_item\",\"contents\":{\"id\":\"xnet:antenna_dish\",\"count\":1}}},{\"text\":\" on the Antenna Base, instead of antennas, gives unlimited range, and two routers with dishes link even across dimensions. Each channel they publish costs 200 FE/t.\"}]"
+  ],
+  "image.1951DEF90E777B81.title": "[\"\",{\"text\":\"Infusion\",\"color\":\"#7FE3DD\"}]",
+  "image.5B21CF069E60A25D.title": "[\"\",{\"text\":\"Power\",\"color\":\"#7FE3DD\"}]",
+  "image.5453752DE8AB28DE.title": "[\"\",{\"text\":\"Cards and quarries\",\"color\":\"#7FE3DD\"}]",
+  "image.2DAF7B281A049DC4.title": "[\"\",{\"text\":\"Scan, move and shield\",\"color\":\"#7FE3DD\"}]",
+  "image.7CF639A1591A833E.title": "[\"\",{\"text\":\"Teleportation\",\"color\":\"#7FE3DD\"}]",
+  "image.3B668BC1BFC4B714.title": "[\"\",{\"text\":\"Screens and logic\",\"color\":\"#7FE3DD\"}]",
+  "image.5B34AB64D8D735D6.title": "[\"\",{\"text\":\"Environment and spawning\",\"color\":\"#7FE3DD\"}]",
+  "image.140F67A6CC69B2FA.title": "[\"\",{\"text\":\"Items\",\"color\":\"#7FE3DD\"}]",
+  "image.78B6BC2EB17D6AB1.title": "[\"\",{\"text\":\"Fluids\",\"color\":\"#7FE3DD\"}]",
+  "image.5613B848BDD8BB2E.title": "[\"\",{\"text\":\"Energy\",\"color\":\"#7FE3DD\"}]",
+  "image.0A98342320671571.title": "[\"\",{\"text\":\"Logic\",\"color\":\"#7FE3DD\"}]",
+  "image.450D26BFF37AFED6.title": "[\"\",{\"text\":\"Routing\",\"color\":\"#7FE3DD\"}]",
+  "image.0C1630A376B5408F.title": "[\"\",{\"text\":\"RFTools and XNet\",\"color\":\"#EAFBFA\",\"bold\":true}]",
+  "image.60E032750E759347.title": "[\"\",{\"text\":\"one frame, many machines\",\"color\":\"#9FEDE7\",\"font\":\"minecraft:uniform\"}]",
+  "image.5CBE8BE0C3C92460.title": "Back to the Sun of Heliodor",
   "chapter.09DFA10FF144C082.title": "Refined Storage",
   "chapter.09DFA10FF144C082.chapter_subtitle": [
     "Disks, grids and autocrafting on one network: no channels, devices just touch."
