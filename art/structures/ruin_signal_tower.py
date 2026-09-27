@@ -42,7 +42,7 @@ TOP = 62                         # last course of the shaft
 FLOORS = (15, 27, 39, 51)        # floor slabs inside the shaft
 GALLERY = 63
 GLASS = {15: 'orange', 27: 'yellow', 39: 'light_blue', 51: 'white'}
-BRAZIER_LEVELS = (2, 15, 27, 39)  # the floor each ring of braziers stands on (2 = podium top)
+ASYM = {(0, 3, 0)}               # functional cells exempt from the D4 check (the relay, the lectern)
 
 
 def m(x, z):
@@ -127,14 +127,15 @@ def build():
                 d = m(x, z)
                 a, b = ab(x, z)
                 if WALL_IN < d <= r:
-                    blk = B('polished_tuff') if (y in FLOORS or y == TOP) else B('tuff_bricks')
+                    middle = STAGES[1][0] <= y <= STAGES[1][1]              # the middle stage turns bright: calcite and copper
+                    blk = B('polished_tuff') if (y in FLOORS or y == TOP) else (B('calcite') if middle else B('tuff_bricks'))
                     if y < 14 and noise(x, y, z, 3) < 0.12:
                         blk = B('tuff')                                     # weathered courses low down
                     if (a, b) == (pa, pb):
-                        blk = B('calcite')
+                        blk = B('waxed_weathered_copper') if middle else B('calcite')
                     v.put(x, y, z, blk)
                 elif (a, b) == (pa + 1, pb):
-                    v.put(x, y, z, B('calcite'))                            # the pilaster stands proud
+                    v.put(x, y, z, B('waxed_weathered_copper') if STAGES[1][0] <= y <= STAGES[1][1] else B('calcite'))
                 elif r < d <= r + 1 and y in FLOORS:
                     v.put(x, y, z, B('waxed_oxidized_cut_copper'))          # copper cornice per floor
 
@@ -144,26 +145,37 @@ def build():
                 v.sym(a, y, b, B('calcite') if (y == 6 and b == 1) else B('air'))
             v.sym(a, 7, b, B('calcite'))
 
-    for f in FLOORS:                                                    # stained-glass windows, a pair per axis face
+    for f in FLOORS:                                                    # tall stained-glass windows, amber at the foot to sky at the head
         outer = int(r_out(f + 2))
-        for y in range(f + 2, f + 6):
+        for k, y in enumerate(range(f + 2, f + 8)):
             for a in range(6, outer):
                 v.sym(a, y, 2, B('air'))
-            v.sym(outer, y, 2, B(GLASS[f] + '_stained_glass'))
-        v.sym(outer, f + 6, 2, B('calcite'))
-        for y in range(f + 3, f + 6):                                   # arrow slits on the diagonals
-            for a in range(4, 8):
-                if WALL_IN < m(a, a) <= r_out(y):
-                    v.sym(a, y, a, B('air'))
+            v.sym(outer, y, 2, B(('orange', 'yellow', 'yellow', 'light_blue', 'light_blue', 'white')[k] + '_stained_glass'))
+        v.sym(outer, f + 8, 2, B('waxed_weathered_cut_copper'))
+        for k, y in enumerate(range(f + 2, f + 8)):                     # tall lights on the diagonal faces too
+            for (a1, b1) in ((5, 4), (4, 5), (5, 5)):
+                if WALL_IN < m(a1, b1) <= r_out(y):
+                    v.sym(a1, y, b1, B(('orange', 'yellow', 'light_blue', 'light_blue', 'cyan', 'white')[k] + '_stained_glass'))
+
+    # the upper stage: a glass lantern between the pilasters, copper bands at each floor
+    lo, hi, r3 = STAGES[2]
+    for y in range(lo, hi + 1):
+        if y in FLOORS or y == TOP:
+            continue
+        for x in range(-8, 9):
+            for z in range(-8, 9):
+                a1, b1 = ab(x, z)
+                if WALL_IN < m(x, z) <= r3 and (a1, b1) != PILASTER[r3] and not (a1 == 5 and b1 == 0):
+                    v.put(x, y, z, B('light_blue_stained_glass') if (y - lo) % 4 == 3 else B('glass'))
 
     # --- floors, atrium and the way up ---
     for f in FLOORS:
-        hole = 3.2 if f == 39 else 2.5
+        hole = -1.0                                                     # solid floors: the light relay climbs through them
         for x in range(-6, 7):
             for z in range(-6, 7):
                 d = math.hypot(x, z)
                 if m(x, z) <= WALL_IN and d >= hole:
-                    blk = B('chiseled_tuff') if abs(d - hole - 0.7) < 0.5 else B('polished_tuff')
+                    blk = B('chiseled_tuff') if abs(d - 3.2) < 0.5 else B('polished_tuff')
                     if f == 39 and noise(x, f, z, 4) < 0.2:
                         continue                                            # the collapsed floor
                     v.put(x, f, z, blk)
@@ -186,12 +198,61 @@ def build():
         v.sym(4, y, 3, B('ladder[facing=west,waterlogged=false]'))
     v.sym(5, 51, 0, B('polished_tuff'))                                 # floor 51 closes over the axes
 
-    # --- braziers, lit from the bottom up ---
-    for k, f in enumerate(BRAZIER_LEVELS):
-        pos = (4, 0) if f == 39 else (3, 0)
-        v.sym(pos[0], f, pos[1], B('chiseled_tuff'))
-        v.sym(pos[0], f + 1, pos[1], B('campfire[facing=west,lit=false,signal_fire=false,waterlogged=false]'))
-        markers['braziers'][k + 1] = [[s * pos[0], f + 1, 0] for s in (1, -1)] + [[0, f + 1, s * pos[0]] for s in (1, -1)]
+    # --- the light relay (Elias, 26/9): vitrals tint the light and colours add up; each lit receptor lights
+    # the brazier of the floor above. Reference: vanilla beacon beams take the colour of stained glass set in
+    # them and blend several panes (textures/entity/beacon_beam.png); here the light travels flat on each floor.
+    # Positions are functional and asymmetric: the one exception to D4 besides the lectern (see ASYM).
+    relay = [
+        dict(floor=1, brazier=(0, 16, 0), by_hand=True,
+             vitrals=[((2, 16, 0), 'red'), ((0, 16, 2), 'blue')], mirrors=[],
+             receptor=((2, 27, 0), ['red']),
+             solution='red: up'),
+        dict(floor=2, brazier=(0, 28, 0),
+             vitrals=[((-2, 28, 0), 'red'), ((-3, 28, 0), 'green'), ((0, 28, -2), 'orange'), ((2, 28, 0), 'blue')], mirrors=[],
+             receptor=((-3, 39, 0), ['red', 'green']),
+             solution='red: pass; green: up'),
+        dict(floor=3, brazier=(0, 40, 0),
+             vitrals=[((0, 40, 2), 'green'), ((3, 40, 3), 'blue'), ((-2, 40, 0), 'red')], mirrors=[(0, 40, 3), (0, 40, -3)],
+             receptor=((3, 51, 3), ['green', 'blue']),
+             solution='green: pass; mirror (0,3): east; blue: up'),
+        dict(floor=4, brazier=(-4, 52, 0),
+             vitrals=[((-3, 52, 0), 'red'), ((-2, 52, 0), 'green'), ((-1, 52, 0), 'orange'), ((-2, 52, 2), 'blue')],
+             mirrors=[(0, 52, 2)], collector=(0, 52, 0),
+             receptor=((0, GALLERY + 3, 0), ['red', 'green', 'blue']),
+             solution='red: pass; green: south; blue: east; mirror (0,2): north; collector: up to the lens'),
+    ]
+    for r in relay:
+        bx, by, bz = r['brazier']
+        v.put(bx, by - 1, bz, B('chiseled_tuff'))
+        v.put(bx, by, bz, B('campfire[facing=west,lit=false,signal_fire=false,waterlogged=false]'))
+        for (x, y, z), colour in r['vitrals']:
+            v.put(x, y - 1, z, B('waxed_cut_copper'))
+            v.put(x, y, z, B(colour + '_stained_glass'))
+        for (x, y, z) in r['mirrors']:
+            v.put(x, y - 1, z, B('waxed_cut_copper'))
+            v.put(x, y, z, B('calcite'))
+        if 'collector' in r:
+            x, y, z = r['collector']
+            v.put(x, y - 1, z, B('waxed_chiseled_copper'))
+            v.put(x, y, z, B('glass'))
+        (x, y, z), target = r['receptor']
+        if r['floor'] < 4:
+            v.put(x, y, z, B('waxed_copper_bulb[lit=false,powered=false]'))
+    for y in range(53, GALLERY + 3):                                    # the white light's shaft up to the lens
+        v.put(0, y, 0, B('air'))
+    markers['relay'] = [dict(floor=r['floor'], brazier=list(r['brazier']), by_hand=r.get('by_hand', False),
+                             vitrals=[dict(pos=list(p), colour=c) for p, c in r['vitrals']],
+                             mirrors=[list(p) for p in r['mirrors']],
+                             collector=list(r['collector']) if 'collector' in r else None,
+                             receptor=list(r['receptor'][0]), target=r['receptor'][1], solution=r['solution'])
+                        for r in relay]
+    for r in relay:
+        cells = [r['brazier'], r['receptor'][0]] + [p for p, _ in r['vitrals']] + list(r['mirrors'])
+        if 'collector' in r:
+            cells.append(r['collector'])
+        for (x, y, z) in cells:
+            ASYM.update({(x, y, z), (x, y - 1, z)})
+    ASYM.update({(0, y, 0) for y in range(53, GALLERY + 3)})
 
     # --- loot barrels on the top floor ---
     for y in (52,):
@@ -261,15 +322,18 @@ def build():
                 rho = math.sqrt(m(x, z) ** 2 + (dy * 0.95) ** 2)
                 y = GALLERY + 8 + dy
                 if 5.6 <= rho <= 7.4:
-                    v.put(x, y, z, B('waxed_oxidized_cut_copper') if dy % 3 else B('waxed_oxidized_copper'))
+                    patina = ('waxed_oxidized_copper', 'waxed_weathered_cut_copper', 'waxed_oxidized_cut_copper')[dy % 3]
+                    v.put(x, y, z, B(patina))
     top = max(y for (_, y, _) in v)
     v.put(0, top + 1, 0, B('waxed_chiseled_copper'))
     for y in range(top + 2, top + 5):
         v.put(0, y, 0, B('lightning_rod[facing=up,powered=false,waterlogged=false]'))
 
     # the lens over the key pedestal
-    v.put(0, GALLERY + 1, 0, B('chiseled_tuff_bricks'))
-    markers['pedestal'] = [[0, GALLERY + 2, 0]]
+    v.put(0, GALLERY + 1, 3, B('chiseled_tuff_bricks'))                 # the pedestal: the Atlas and the Signal Ember
+    markers['pedestal'] = [[0, GALLERY + 2, 3]]
+    markers['atlas'] = [[0, GALLERY + 2, 3]]
+    ASYM.update({(0, GALLERY + 1, 3), (0, GALLERY + 1, 0)})
     for y in range(GALLERY + 3, GALLERY + 7):
         for x in (-1, 0, 1):
             for z in (-1, 0, 1):
@@ -279,6 +343,30 @@ def build():
         markers['lantern'] += [[2, y, 0], [-2, y, 0], [0, y, 2], [0, y, -2]]
     markers['arrival'] = [[PODIUM + 5, 1, 0]]
 
+    # planters with flowering azalea round the gallery rail
+    for (a_, b_) in ((9, 0), (7, 5)):
+        v.sym(a_, GALLERY + 1, b_, B('potted_flowering_azalea_bush'))
+    # vines climbing the lower shaft on the diagonal faces
+    opposite = {'west': 'east', 'east': 'west', 'north': 'south', 'south': 'north'}
+    for x in range(-11, 12):
+        for z in range(-11, 12):
+            a_, b_ = ab(x, z)
+            if r_out(5) < m(x, z) <= r_out(5) + 1 and (a_ - b_ <= 2 or noise(x, 0, z, 13) < 0.35):
+                for y in range(4, 16):
+                    if (x, y, z) in v or noise(x, y, z, 12) >= 0.8:
+                        continue
+                    props = {k2: 'false' for k2 in ('east', 'north', 'south', 'up', 'west')}
+                    for (dx, dz), key in (((1, 0), 'east'), ((-1, 0), 'west'), ((0, 1), 'south'), ((0, -1), 'north')):
+                        if v.get((x + dx, y, z + dz), '').endswith(('tuff_bricks', 'calcite', 'tuff', 'polished_tuff')):
+                            props[key] = 'true'                         # every wall it touches, so corners stay symmetric
+                    if 'true' in props.values():
+                        v.put(x, y, z, B('vine[' + ','.join('%s=%s' % kv for kv in sorted(props.items())) + ']'))
+    # vines hanging from under the gallery rim
+    for x in range(-11, 12):
+        for z in range(-11, 12):
+            if WALL_OUT + 1.5 < m(x, z) <= WALL_OUT + 2.5 and (x, GALLERY - 1, z) not in v and noise(x, 1, z, 14) < 0.5:
+                for dy in range(1, 2 + int(noise(x, 2, z, 15) * 4)):
+                    v.put(x, GALLERY - dy, z, B('cave_vines[age=0,berries=false]') if dy > 1 else B('cave_vines_plant[berries=false]'))
     # moss on the podium, symmetric
     for x in range(-PODIUM, PODIUM + 1):
         for z in range(-PODIUM, PODIUM + 1):
@@ -289,7 +377,13 @@ def build():
 
 if __name__ == '__main__':
     V, M = build()
-    probe = Voxels({k: b for k, b in V.items() if k != (0, 3, 0)})     # the lectern is the one exception
+    from voxkit import T8, tf
+    skip = set()
+    for (x, y, z) in ASYM:
+        for t in T8:
+            p_, q_ = tf(x, z, t)
+            skip.add((p_, y, q_))
+    probe = Voxels({k: b for k, b in V.items() if k not in skip})     # relay, pedestal and lectern exempt
     assert probe.is_symmetric(), 'not D4-symmetric'
     ys = [y for (_, y, _) in V]
     xs = [x for (x, _, _) in V]

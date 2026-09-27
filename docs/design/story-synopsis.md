@@ -5,7 +5,7 @@
 ## Acto I · Una luz entre ruinas (Haven)
 
 - **La ruina inicial.** Despertás sin nada en el patio del sol, una ruina de Heliodor. En el pedestal está la Brújula de Heliodor. Bajo el mosaico hay una escalera sellada que la brújula no sabe leer.
-- **La Torre de la Señal.** La brújula te lleva a un faro partido de 83 bloques. Subís piso por piso encendiendo braseros en el orden de los vitrales. Arriba, la linterna se prende y el Atlas, que esperaba bajo la lente, dice su primer fragmento: tachones, glitch y una frase entera. La pieza clave es la **Brasa de la Señal**.
+- **La Torre de la Señal.** La brújula te lleva a un faro partido de 83 bloques. Subís piso por piso haciendo un relevo de luz: los vitrales tiñen, los colores se suman y el blanco enciende la lente. Arriba, la linterna se prende y el Atlas, que esperaba bajo la lente, dice su primer fragmento: tachones, glitch y una frase entera. La pieza clave es la **Brasa de la Señal**.
 - **Sobrevivir.** Cocina, refugio, herramientas y la primera expedición.
 - **El Arca.** Terra deja en el Atlas un plano. Ponés el controlador y el primer módulo, **Habitabilidad**: `/home`.
 - **La pregunta del acto:** ¿un recuerdo puede señalar un lugar real?
@@ -37,7 +37,7 @@
 - el recipiente se filtra: la luz agria le da forma al Envés, que copia lo que tocó y se reacomoda en cada apertura, y condensa ecos como enemigos;
 - la netherita es lo único que no puede comer, por eso la puerta la usa de contrapeso.
 
-**Para decidir:** ¿quién la contuvo, los ciudadanos antes de que el Sun Spirit los congelara, o el Sun Spirit mismo?
+**Decidido (26/9):** la contuvieron los ciudadanos. Terra armó el recipiente y Bodhi lo selló, a las apuradas, justo antes de que el Sun Spirit congelara todo. Heliodor intentó hacerse cargo de su error, y eso anticipa el final: la inventora y el sacerdote colaborando.
 
 ## Acto IV · Las voces del Atlas (Ascent)
 

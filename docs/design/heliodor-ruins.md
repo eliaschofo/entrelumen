@@ -62,7 +62,7 @@ Decisiones de Elias del 25/9:
 | # | Ruina | Dónde | Acto | Escala | Pieza clave (ES / EN) | La pide | Desafío |
 |---|---|---|---|---|---|---|---|
 | 0 | Ruina inicial | Overworld, spawn | I | chica | — (el Atlas) | — | — |
-| 1 | Torre de la Señal | Overworld | I | **gigante** | Brasa de la Señal / Signal Ember | `signal` | Exploración (pisos derrumbados) + luz (cuatro braseros en el orden de los vitrales) |
+| 1 | Torre de la Señal | Overworld | I | **gigante** | Brasa de la Señal / Signal Ember, y el **Atlas** en la linterna (26/9) | `signal` | Relevo de luz (26/9): vitrales que tiñen, colores que se suman, un espejo y un colector hasta el blanco; más la trepada del piso roto |
 | 2 | Taller hundido | Overworld | II | **gigante** | Plano de Terra / Terra's Blueprint (+ Brazo de Terra) | `crafts_archive` | Mecanismo (reactivar el motor, vaciar el foso y abrir la bóveda) + combate liviano |
 | 3 | Viaducto | Overworld | III | **gigante** | Sello de Ruta / Route Seal | `exchange_archive` | Combate (Guardián del Peaje, jefe con barra) + exploración por los arcos |
 | 4 | Invernadero-domo | Overworld | III | mediana | Semilla Madre / Mother Seed | `exchange_nursery` | Ofrenda (plantar cuatro retoños en los canteros para abrir la cripta) |
@@ -91,6 +91,31 @@ Los bocetos de `ruins_acts.py`, `ruins_dims.py` y `ruin_atlas.py` quedan como pu
 - **Indestructible.** Todo el volumen registrado. Sólo se usan palancas, botones, braseros, espejos y los mecanismos del desafío.
 - **Jefes.** Mobs con barra de jefe, nombre y atributos propios. Reaparecen para cada equipo que todavía no resolvió el desafío.
 - **Sin mod.** Una ruina de dimensión cuyo mod falta se saltea y su pieza pasa al pedestal de la gigante del mismo acto.
+
+## La Torre de la Señal: el relevo de luz (Elias, 26/9)
+
+**Look:** más solarpunk.
+- La base es de toba gastada, con enredaderas.
+- El cuerpo medio es de calcita, con nervios de cobre y vitrales altos, de ámbar a celeste, en las ocho caras.
+- El cuerpo alto es una linterna de vidrio.
+- Arriba, la cúpula de cobre con pátinas mezcladas, macetas en la galería y lianas colgando.
+
+**El relevo:**
+- Cada piso tiene un brasero, vitrales giratorios, algún espejo y un receptor en el techo.
+- Los vitrales tiñen la luz y los colores se suman.
+- Cuando el receptor recibe exactamente su color, se enciende el brasero del piso de arriba.
+
+| Piso | Pide | Idea | Solución |
+|---|---|---|---|
+| 1 | rojo | aprender a girar un vitral | rojo: subir |
+| 2 | rojo + verde | atravesar dos vitrales en fila | rojo: pasar; verde: subir |
+| 3, el roto | verde + azul | rebotar en un espejo | verde: pasar; espejo: este; azul: subir |
+| 4 | rojo + verde + azul | un vitral ámbar de trampa; un colector central junta las luces y las manda a la lente | rojo: pasar; verde: sur; azul: este; espejo: norte; colector: arriba |
+
+- El blanco enciende la lente, y el Atlas y la Brasa de la Señal quedan en el pedestal, al lado.
+- En cada piso hay vitrales de más, que despistan. Las posiciones están en `markers['relay']`, dentro de `art/structures/ruin_signal_tower.py`.
+- Es la única asimetría de la ruina, igual que el atril.
+- **Referencia:** el haz del faro (beacon) vanilla toma el color de los vidrios teñidos que atraviesa y mezcla varios (`textures/entity/beacon_beam.png`). Acá la luz corre plana, piso por piso.
 
 ## El Motor de Terra: el puzzle de Create del Taller hundido (Elias, 26/9)
 
