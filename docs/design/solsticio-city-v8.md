@@ -1,8 +1,8 @@
 # Solsticio v8: el plano urbano en bloques (26 de septiembre de 2026)
 
-La ciudadela en terrazas (v7) se reemplaza por la ciudad del plano urbano (`art/concepts/solsticio_plan.py`), que Elias aprobó: el Eje del Sol, dos bulevares en anillo, radiales, calles y pasajes; plazas en los nudos; el Parque del Mediodía con su lago; manzanas con fachada continua y patio; seis barrios. La fase 1 levantó el terreno, la red y la volumetría; la fase 2 la vistió.
+La ciudadela en terrazas (v7) se reemplaza por la ciudad del plano urbano (`art/concepts/solsticio_plan.py`), que Elias aprobó: el Eje del Sol, dos bulevares en anillo, radiales, calles y pasajes; plazas en los nudos; el Parque del Mediodía con su lago; manzanas con fachada continua y patio; seis barrios. La fase 1 levantó el terreno, la red y la volumetría; la fase 2 la vistió; el pase solarpunk (Elias: «le falta vidrio, vitrales y cobre») le puso encima vidrio, vitrales, cobre, sol y verde, sin tocar la paleta cálida.
 
-- Generador: `art/solsticio/city8.py` (terreno, red, volumetría, marcadores, controles), `net8.py` (niveles), `landmarks8.py` (hitos y la Cascada del Fin), `dress8.py` (fachadas, interiores y vida de calle), `export8.py` (plantilla), `grid8.py` (grilla compacta), `render8.py` (renders locales).
+- Generador: `art/solsticio/city8.py` (terreno, red, volumetría, cobre y vitrales compartidos, marcadores, controles), `net8.py` (niveles), `landmarks8.py` (hitos y la Cascada del Fin), `dress8.py` (fachadas, interiores y vida de calle), `solar8.py` (el pase solarpunk y el cierre: paneles de vidrio unidos y seguridad de redstone), `export8.py` (plantilla), `grid8.py` (grilla compacta), `render8.py` (renders locales).
 - Plantilla: `companion/src/main/resources/data/entrelumen/structure/solsticio/city.nbt`, que se genera con `python art/solsticio/city8.py --export`.
 
 ## Relieve
@@ -17,21 +17,21 @@ La colina del plano (`height()`) cae un bloque cada tres. Nada queda sobre la pe
 
 ## Barrios
 
-El color va en techos y detalles, no en fachadas enteras. Cada barrio tiene 3 o 4 variantes de fachada, dos materiales de techo por calle y un ritmo de alturas. Las esquinas suben un piso y llevan un farol.
+El color va en techos y detalles, no en fachadas enteras. Cada barrio tiene 3 o 4 variantes de fachada, un material de techo por calle y un ritmo de alturas. Las esquinas suben un piso y llevan un farol. El cobre va encerado en sus cuatro pátinas (fresco, expuesto, a la intemperie, verdín) y se oxida a manchas: cada techo mezcla su pátina con la vecina.
 
 | Barrio | Muros | Techos |
 |---|---|---|
-| Mercado | arenisca lisa, tallada y ladrillo | terracota naranja (Macaw's Roofs), cobre |
-| Posadas | arenisca amarilla con abeto | abeto y ladrillo |
-| Jardines | calcita | cobre verde y jardines en azotea |
-| Viajeros | calcita y diorita | cobre turquesa y prismarina |
-| Templo | calcita | cerezo |
-| Talleres | ladrillo, adobe y toba | pizarra oscura en diente de sierra con lucernarios, chimeneas con humo, forjas encendidas en planta baja |
+| Mercado | arenisca lisa, tallada y ladrillo | terracota naranja (Macaw's Roofs), cobre expuesto y a la intemperie, techos de vidrio |
+| Posadas | arenisca amarilla con abeto | abeto, ladrillo, cobre expuesto y a la intemperie, techos de vidrio |
+| Jardines | calcita | cobre a la intemperie y verdín, techos de vidrio con jardín en el ático, jardines en azotea |
+| Viajeros | calcita y diorita | cobre verdín, prismarina, techos de vidrio |
+| Templo | calcita | cerezo, cobre, techos de vidrio, jardines en azotea |
+| Talleres | ladrillo, adobe y toba | diente de sierra de cobre con luz norte y lucernarios; la pizarra oscura queda de acento (una calle de cada seis); chimeneas con humo, forjas encendidas en planta baja |
 
 ## Calles
 
 - **Pavimentos por jerarquía.** El Eje en cuarzo pulido con bandas de calcita e incrustaciones de oro; los bulevares en ladrillo de piedra y piedra lisa con cordón; las calles en andesita con cordón de toba; los pasajes en adobe, ladrillo de barro y adoquín. No hay bloques que caigan.
-- **Faroles.** Cada nueve bloques; en los pasajes, farol de pared.
+- **Faroles.** Cada nueve bloques, con bombilla de cobre bajo un sombrerete de cobre; en los pasajes, farol de pared.
 - **Mobiliario.** Bancos, jardineras, fuentes o pozos en los patios.
 - **Señales.** Postes en los cruces que nombran la plaza que hay adelante. Son traducibles (`entrelumen.solsticio.place.*` en `en_us` y `es_es`).
 
@@ -43,12 +43,40 @@ El color va en techos y detalles, no en fachadas enteras. Cada barrio tiene 3 o 
 
 ## Hitos
 
-- **Palacio del Solsticio.** Cúpula dorada y torre del sol. Bajo el óculo, el Salón del Solsticio: el portal, la piedra de viaje y el trono de Aurelia sobre una tarima. En las alas, la sala del consejo y el archivo.
-- **Gran Mercado de la Luz.** Un rellano al nivel de la plaza y una gran escalera que baja a la nave, donde hay 16 puestos: uno por comerciante, con toldo de su color, mostrador y cartel con su nombre. Ahí están los marcadores `shop:*`.
-- **Templo del Alba.** Estilóbato, pórtico, rosetón, bancos, altar con el sol, campanario con campana y aguja de cerezo.
-- **Taller de Terra.** Forja, bancos, yunques, entrepiso, chimeneas de cobre y el gran engranaje.
+- **Palacio del Solsticio.** Cúpula de cobre fresco con nervios de oro y torre del sol. Bajo el óculo, el Salón del Solsticio: el portal, la piedra de viaje y el trono de Aurelia sobre una tarima. En las alas, la sala del consejo y el archivo. Un sol sobre el mar en cada vano (vitral ámbar, oro y turquesa), una banda de sol en el tambor, rayos de oro y ámbar en el sol del frontón, cúpulas de verdín en los pabellones y, en la azotea, un campo de paneles solares alrededor del tambor.
+- **Gran Mercado de la Luz.** Nave de vidrio sobre nervios de cobre, con una franja de oro en la clave y pilares de cobre en dos pátinas; una corona de sol en lo alto de cada vano y un sol naciente (núcleo ámbar, rayos de oro, cielo turquesa) en cada testero. Un rellano al nivel de la plaza y una gran escalera que baja a la nave, donde hay 16 puestos: uno por comerciante, con toldo de su color, mostrador y cartel con su nombre. Ahí están los marcadores `shop:*`.
+- **Templo del Alba.** Estilóbato, pórtico, bancos, altar con el sol, campanario con campana y aguja de cerezo. Techo de cobre a la intemperie con cresta de cobre fresco; las lancetas van del turquesa al rosa, al oro y al ámbar (el alba); el rosetón es un sol con un anillo rosa.
+- **Taller de Terra.** Diente de sierra de cobre con luz norte y lucernarios, forja, bancos, yunques, entrepiso, chimeneas de cobre, el gran engranaje y un molino de Create en una chimenea.
 - **Jardín Botánico.** Invernadero con estanque, canteros, bancos y flores de esporas.
-- **Torre del Reloj.** Escalera interior, galería bajo los cuatro relojes y campana.
+- **Torre del Reloj.** Escalera interior, lancetas de sol, galería de rejilla de cobre bajo los cuatro relojes, campana y aguja de verdín.
+
+## Solarpunk
+
+Va encima de la paleta cálida (arenisca, calcita, terracota), así la ciudad sigue soleada y sin aire industrial oscuro.
+
+- **Vidrio.**
+  - Galerías con techo de vidrio a los dos lados del Eje, donde hay casas. El vidrio va sobre vigas de cobre a la altura de la banda del segundo piso, por encima de los toldos y de las copas de los cerezos (que se podan para que no lo atraviesen). Columnas de cuarzo con capitel de cobre en el pasto, entre los árboles, y bombillas en las vigas.
+  - Una bóveda de vidrio cubre toda la Calle de los Oficios, con nervios de cobre y clave de oro.
+  - Techos de vidrio escalonado sobre nervios de cobre en uno de cada cinco lotes, más o menos, con jardín de musgo, azaleas y helechos en el ático.
+  - Invernaderos en azoteas planas, en el patio y en los jardincitos donde entran.
+  - Doce pasarelas de cobre y vidrio entre casas que comparten piso a los dos lados de una calle.
+  - Vidrio claro y, en algunos techos, celeste. Los paneles de vidrio llevan en la plantilla las uniones que el juego les daría.
+- **Vitrales.** El sol en ámbar, oro y turquesa, en el palacio, el mercado, el templo, la torre del reloj y las cuatro posadas. Donde un techo a dos aguas da a una plaza, un hastial escalonado lleva un rosetón del sol: sol ámbar, rayos de oro y cielo turquesa en un marco de cobre cincelado.
+- **Cobre.**
+  - Cornisas de cobre en todos los edificios; techos, cúpulas y pretiles en las cuatro pátinas.
+  - Balcones de trampilla y rejilla de cobre, con jardinera en todos, en dos de cada tres casas; en las altas, dos pisos de balcones.
+  - Pretiles de rejilla en las azoteas y bombillas de cobre en los faroles.
+  - Pararrayos de remate en cumbreras, hastiales, cúpulas y torres.
+  - Bajantes de cobre por las medianeras de los talleres hasta barriles de lluvia. Son tubos de fluido de Create, unidos como los une Create.
+  - Bordes de cobre en los canales y en las fuentes de los patios.
+- **Sol y verde.**
+  - Sensores de luz solar como paneles solares en las azoteas planas y en el palacio.
+  - Tres molinos de Create estáticos: uno en el Taller de Terra y dos en torretas de talleres. El rodamiento no está armado.
+  - Fachadas vivas de azalea, azalea florida y musgo entre las ventanas, enredaderas por las pilastras de los Jardines y bayas luminosas colgando del vidrio.
+  - Jardines en azotea.
+- **Seguridad.** Una bombilla cambia con un pulso de redstone y una puerta se abre. Por eso ninguna fuente de redstone (sensor de luz, pararrayos) toca una bombilla, puerta, trampilla o campana. El generador lo controla al final y da cero.
+
+Bloques de mods nuevos: `create:fluid_pipe`, `create:sail_frame`, `create:white_sail`, `create:yellow_sail`, `create:orange_sail`, `create:windmill_bearing`. El resto del pase es vanilla.
 
 ## Cascada del Fin
 
