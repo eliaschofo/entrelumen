@@ -419,3 +419,29 @@ El libro no usa nada de esto hoy. Queda anotado para revisarlo en el cliente.
   - `pack/config/ftbxmodcompat.snbt` fija `stage_selector: "vanilla"`. Así siguen siendo las etiquetas de entidad de FTB Library, las que usa el companion para sacar el mapa de FTB Chunks dentro del Envés ([dungeon-enves](dungeon-enves.md)).
   - El valor está anotado en [qol-defaults](../qol-defaults.md).
 - **El resto no aplica:** permisos (FTB Ranks, LuckPerms), monedas (SG Economy), Game Stages, REI y FTB Essentials no están en el pack, y XMod no hace nada con ellos.
+
+### Verificación
+
+- **Estática, sobre `origin/main` 53d2537 más esta rama:**
+  - `curate_pack --check`, en cliente (316) y en servidor (274).
+  - `test_curate_families`.
+  - `check_keybinds`: ninguno de los dos mods registra teclas.
+  - `generate_quests --check`: con las 54 cadenas actuales, que no usan `any`, el libro sale igual byte a byte.
+  - `test_sector_book`, `test_generate_quests` y `test_quest_book`.
+  - `check_guides`: las 49 guías y las 54 cadenas, sin errores.
+  - `check_guides` contra los registros reales, sobre una copia de Create · Complementos con tareas `any`: la versión válida pasa. Marca un ítem que no existe, un tag que nadie define y un tag que existe pero no tiene ningún ítem del pack (`#c:ingots/cobalt`; hay 35 así).
+- **En un servidor: pendiente.** Hasta el cierre de la rama siempre había otro servidor de QA con el candado de la máquina (`qa-server.lock`) o menos de 5 GB de RAM libre.
+  - El chequeo quedó listo en `E:/Elias/Codex/Entrelumen-ssd/filters-20260927/scripts/run_runtime_qa.sh`. Hace un solo intento: si falta algo, se detiene y dice por qué.
+  - Arma un servidor desechable con los 274 JAR y el libro del pack, y agrega tres tareas `any` de prueba en Create · Complementos: dos alternativas con un tag, tres ítems sueltos, y un encargo que consume un tag.
+  - Un comando de KubeJS le pide cada tarea a FTB Quests por el objeto `FTBQuests` de XMod Compat. Comprueba que el ítem sea el filtro con la expresión compilada, que el adaptador de FTB Filter System lo reclame, y qué ítems acepta y rechaza cada tarea. También revisa que una tarea común y la llave arcana (que compara por componente) sigan igual.
+  - Además corre la prueba del mapa del Envés y cuatro pruebas de quests del companion.
+
+### Pendiente
+
+- Correr el chequeo en servidor cuando haya lugar.
+- **En el cliente:**
+  - la lista de ítems válidos que abre un clic en una tarea `any`;
+  - las categorías de JEI;
+  - el clic que abre la receta;
+  - los waystones en el mapa de FTB Chunks.
+- **Cadenas que esquivaron el «cualquiera de estos»** con un logro en lugar de los ítems, o pidiendo un ítem por varios: su conversión a `any` la programa el controlador.

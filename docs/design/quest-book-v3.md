@@ -135,6 +135,7 @@ Vistas previas a zoom 16, fuera del repo, en `E:/Elias/Codex/Entrelumen-ssd/ques
     - Componentes por alternativa: FTB Filter System tiene `component(...)`, pero el motor no lo expone, así que una variante por componente sigue siendo una tarea `item` con `components`.
     - Tags que sólo agrega un script de KubeJS: `check_guides.py` no los ve.
     - El nombre de la lista: el título lo escribe quien redacta.
+  - Todavía no se cargó en un servidor. El chequeo está listo ([mod-pingpong](mod-pingpong.md#ftb-filter-system-y-ftb-xmod-compat-279)).
 - Nada de esto se vio en el cliente. Las formas propias, las líneas hechas con rectángulos finos rotados, los rótulos con fuente rúnica, las curvas de Bézier, las imágenes en descripciones y los enlaces y notas dentro del texto están leídos del código y cargados en un servidor, pero no mirados.
 - Las vistas previas salen de un renderer propio que imita la geometría de FTB a zoom 16. No son capturas.
 - Las otras 83 guías siguen en formato v2 hasta convertirse en cadenas.
