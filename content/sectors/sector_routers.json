@@ -260,6 +260,20 @@
       "sources": ["jar:modular-routers-13.2.7+mc1.21.1.jar:assets/modularrouters/patchouli_books/book/en_us/entries/intro/modules.json#direction relative to the router's facing"]
     },
     {
+      "key": "mr_tip_filter", "role": "tip", "deps": ["mr_sender1"],
+      "task": {"type": "checkmark"},
+      "at": {"x": -18.5, "y": -1.5},
+      "en_us": {"title": "Who gets through",
+        "text": ["[tip] A module's nine filter slots take ghost copies, so nothing is used up. A new module is a blacklist: empty, it lets everything through. Switch it to a whitelist and, empty, it never runs.",
+                 "{page}",
+                 "The buttons beside the slots decide whether damage, components like enchantments and shared tags count, and whether one entry is enough or all of them must match."]},
+      "es_es": {"title": "Quién pasa",
+        "text": ["[tip] Los nueve espacios de filtro de un módulo toman copias fantasma: no se gasta nada. Un módulo nuevo es lista negra (Blacklist): vacío, deja pasar todo. Pasalo a lista blanca (Whitelist) y, vacío, no corre nunca.",
+                 "{page}",
+                 "Los botones de al lado deciden si cuentan el daño, los componentes como encantamientos y las etiquetas compartidas, y si alcanza con una entrada o tienen que coincidir todas."]},
+      "sources": ["jar:modular-routers-13.2.7+mc1.21.1.jar:assets/modularrouters/patchouli_books/book/en_us/entries/intro/modules.json#nine filter slots, ghost copies; whitelisting vs. blacklisting; match damage, NBT, item tags", "jar:modular-routers-13.2.7+mc1.21.1.jar:assets/modularrouters/lang/en_us.json#modularrouters.guiText.tooltip.whitelist.true,modularrouters.guiText.tooltip.whitelist.false,modularrouters.guiText.tooltip.match_damage.true,modularrouters.guiText.tooltip.match_components.true,modularrouters.guiText.tooltip.match_item_tag.true,modularrouters.guiText.tooltip.match_all.true", "jar:modular-routers-13.2.7+mc1.21.1.jar:me/desht/modularrouters/logic/settings/ModuleFlags.class#DEFAULT(whiteList=false); codec white_list default false"]
+    },
+    {
       "key": "mr_tip_termination", "role": "tip", "deps": ["mr_void"],
       "task": {"type": "checkmark"},
       "at": {"x": -3.5, "y": 1.5},
