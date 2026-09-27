@@ -310,7 +310,8 @@ public final class RuntimeGameTestsRuins {
     var copy = new RuinDefinitions.Definition("entrelumen:qa_" + definition.name() + "_"
         + UUID.randomUUID().toString().substring(0, 6), definition.act(), definition.dimension(), definition.mods(),
         definition.scale(), definition.template(), definition.placement(), definition.piece(), definition.project(),
-        definition.loot(), definition.challenges(), definition.gates(), definition.pedestal(), definition.dormant());
+        definition.loot(), definition.challenges(), definition.gates(), definition.pedestal(), definition.dormant(),
+        definition.gifts());
     RuinRegistry.add(copy);
     return copy;
   }
@@ -896,9 +897,55 @@ public final class RuntimeGameTestsRuins {
       // The engine plays in RuinWorkshopFullpackGameTests with real Create builds; here the pedestal,
       // the gates and the second team are what the case checks, so the engine is credited directly.
       case PUMPS, SEAL -> RuinChallenges.solve(level, ruin, definition, c, context(player).campaignId(), context(player).founder());
+      case RELAY -> playRelay(helper, level, ruin, c, player);
     }
     helper.assertTrue(team(player).solved.contains(RuinProgress.key(definition.id(), c)),
         definition.id() + ": " + c + " (" + challenge.type() + ") was not solved from its markers");
+  }
+
+  /**
+   * Plays a light relay the way a player would, from the solution its markers carry (solve=): the
+   * starting pieces light nothing, then floor by floor each receptor lights only once its floor's
+   * pieces are set, and on the last floor the amber decoy's colours reach the lens before the answer.
+   */
+  static void playRelay(GameTestHelper helper, ServerLevel level, RuinData.Ruin ruin, String c, ServerPlayer player) {
+    var floors = RuinRelay.floors(level, ruin, c);
+    helper.assertTrue(!floors.isEmpty(), "The relay has no floors");
+    var first = floors.getFirst();
+    helper.assertTrue("true".equals(first.light().marker().param("hand", "false")), "The first floor is not lit by hand");
+    click(player, first.light().pos());
+    helper.assertTrue(RuinRelay.lit(level.getBlockState(first.light().pos())), "The first light did not catch");
+    String key = RuinProgress.key(RuinRegistry.get(ruin.id().toString()).orElseThrow().id(), c);
+    helper.assertTrue(!team(player).solved.contains(key), "The relay went white in its starting state");
+    for (int i = 0; i < floors.size(); i++) {
+      int floor = floors.get(i).floor();
+      helper.assertTrue(floors.get(i).receptor() == null
+              || !RuinRelay.lit(level.getBlockState(floors.get(i).receptor().pos())),
+          "Floor " + floor + " lit its receptor in its starting state");
+      if (i == floors.size() - 1) {
+        var now = RuinRelay.floors(level, ruin, c).get(i);
+        var trace = LightRelay.trace(now.model(), cell -> RuinRelay.open(level, RuinRelay.pos(cell)));
+        helper.assertTrue(!LightRelay.satisfied(now.model(), trace),
+            "The last floor reached its colours before its answer: " + trace.received());
+      }
+      for (var marker : ruin.markers()) {
+        var m = marker.marker();
+        if (!m.challenge().equals(c) || m.floor() != floor || !m.params().containsKey("solve")) continue;
+        for (int k = 0; k < 8; k++) {
+          boolean done = switch (m.kind()) {
+            case VITRAL -> RuinRelay.turn(level, marker.pos()).id().equals(m.param("solve", ""));
+            case MIRROR -> RuinRelay.facing(level.getBlockState(marker.pos())).id().substring(0, 1).equals(m.param("solve", ""));
+            default -> true;
+          };
+          if (done) break;
+          click(player, marker.pos());
+        }
+      }
+      var receptor = floors.get(i).receptor();
+      if (i < floors.size() - 1)
+        helper.assertTrue(receptor != null && RuinRelay.lit(level.getBlockState(receptor.pos())),
+            "Floor " + floor + "'s solution does not light its receptor");
+    }
   }
 
   /**
@@ -966,6 +1013,9 @@ public final class RuntimeGameTestsRuins {
           teleport(a, level, pedestal);
           click(a, pedestal);
           helper.assertTrue(a.getInventory().countItem(piece) == 1, "No " + definition.piece() + " after every challenge");
+          for (String gift : definition.gifts())
+            helper.assertTrue(a.getInventory().countItem(BuiltInRegistries.ITEM.get(ResourceLocation.parse(gift))) == 1,
+                "The pedestal did not give " + gift);
           RuinGates.refresh(a);
           RuinGates.refresh(b);
           for (var gate : ruin.markers(RuinMarkers.Kind.GATE)) {

@@ -240,16 +240,16 @@ Una ruina es un JSON en `data/entrelumen/heliodor_ruin/<id>.json` (datapack, rec
 
 | Ruina | Colocación | Desafíos | Compuerta | Pieza | Proyecto |
 |---|---|---|---|---|---|
-| `signal_tower` | superficie, 250–500 del spawn | `braziers`: cuatro pisos de braseros, de abajo hacia arriba; la linterna se enciende | — | Brasa de la Señal | `first_signal` |
+| `signal_tower` | superficie, 250–500 del spawn | `relay`: el relevo de luz, cuatro pisos de vitrales y espejos; el blanco enciende la lente. El pedestal da también el Atlas | — | Brasa de la Señal | `first_signal` |
 | `sunken_workshop` | superficie, 400–1200 | `drowned`: tres ahogados. Con Create, `engine`: el Motor de Terra vacía el foso; `seal`: el sello a un octavo, después del motor. Sin Create, `sluices`: las ocho palancas de las compuertas | `vault` (`seal`; sin Create, `sluices`) | Plano de Terra | `lost_workshop` |
 | `viaduct` | superficie, 400–1200 | `toll_guardian`: Guardián del Peaje (vindicador, 120 de vida, escala 1,4) | — | Sello de Ruta | `exchange_route` |
 | `dome_greenhouse` | superficie, 400–1200 | `saplings`: cuatro retoños (`#minecraft:saplings`) en cualquiera de los ocho canteros | `crypt` (`saplings`) | Semilla Madre | `nursery_protocol` |
 | `nether_foundry` | caverna del Nether, 150–500 de la llegada | `guards`: cuatro esqueletos wither; `furnaces`: las ocho palancas, después de la guardia | `vault` (`furnaces`) | Crisol de Heliodor | `distributed_power` |
-| `cliff_observatory` | superficie, 400–1200 | `mirrors`: cuatro espejos hacia el telescopio | — | Ocular de las Voces | `spectral_archive` |
+| `cliff_observatory` | superficie, 400–1200 (mediana desde el 26/9) | `mirrors`: cuatro espejos hacia el telescopio | — | Ocular de las Voces | `spectral_archive` |
 | `twilight_sanctuary` | superficie del Twilight Forest, 150–500 | `stones`: las ocho piedras en orden de brújula (desde el norte, en sentido horario) | `cellar` (`stones`): piso falso de musgo | Testimonio del Bosque | `spectral_archive` |
 | `sun_antechamber` | cielo del Aether, 150–500 | `offerings`: un lingote de oro en cada islote | — | Llave del Sol | `heliodor_heart` |
-| `light_temple` | superficie, 400–1200 | `offerings`: piedra luminosa al final de cada escalera; `lamps`: las cuatro lámparas de los obeliscos; `keeper`: el Custodio de la Luz (evocador, 200 de vida), que se levanta después de las otras dos | — | Llama Sagrada | `world_network` |
-| `void_observatory` | cielo del End, 150–500 | `watcher`: Vigía del vacío (enderman, 120 de vida) | — | Carta Estelar | `settlement_supply` |
+| `light_temple` | superficie, 400–1200 (gigante del acto IV desde el 26/9) | `offerings`: piedra luminosa al final de cada escalera; `lamps`: las cuatro lámparas de los obeliscos; `keeper`: el Custodio de la Luz (evocador, 200 de vida), que se levanta después de las otras dos | — | Llama Sagrada | `spectral_archive` |
+| `void_observatory` | cielo del End, 150–500 (gigante del acto V desde el 26/9) | `watcher`: Vigía del vacío (enderman, 120 de vida) | — | Carta Estelar | `world_network` |
 
 Los ítems de las ofrendas, los jefes y sus atributos son datos: se cambian en el JSON.
 
@@ -272,8 +272,11 @@ Bloques de estructura en modo DATA; el texto es `<tipo> clave=valor ...` (el pre
 | `chest` | `loot`, `block` | Un cofre o barril (según `block`) de Lootr con esa tabla (o la de la ruina); sin Lootr, el vanilla. |
 | `brazier` | `challenge`, `order` (1), `block` | Nodo que se enciende o se toca en orden. Los del mismo `order` van en cualquier orden entre sí; uno fuera de turno apaga todos. |
 | `lamp` | `challenge`, `block` | Se enciende (`lit`) cuando el equipo resuelve el desafío. |
-| `mirror` | `challenge`, `facing` (`n`, `ne`, `e`, `se`, `s`, `sw`, `w`, `nw`) | Espejo; cada clic lo gira un octavo. |
-| `receptor` | `challenge`, `block` | Adónde deben apuntar los espejos. |
+| `mirror` | `challenge`, `facing` (`n`, `ne`, `e`, `se`, `s`, `sw`, `w`, `nw`); en el relevo, `floor` y `solve` | Espejo; cada clic lo gira un octavo (en el relevo, un cuarto). |
+| `receptor` | `challenge`, `block`; en el relevo, `floor` y `target` (colores con `+`) | Adónde deben apuntar los espejos, o el receptor de un piso del relevo. |
+| `light` | `challenge`, `floor`, `hand`, `block` | La luz de un piso del relevo: la del primero la prende un jugador, las demás el receptor de abajo. |
+| `vitral` | `challenge`, `floor`, `colour`, `turn` (`pass`, `up`, `north`, `east`, `south`, `west`), `solve`, `block` | Vitral giratorio; la vara de cobre de arriba muestra su estado. |
+| `collector` | `challenge`, `floor`, `block` | Junta la luz horizontal de su piso y manda la unión hacia arriba. |
 | `lever` | `challenge`, `on` (`true`), `block` | Palanca de una cerradura: se resuelve cuando todas quedan como dice `on`. |
 | `lock` | `challenge` | Núcleo de cerradura de redstone: con señal, lo resuelve el equipo que usó la última palanca o botón de la ruina (o el jugador más cercano adentro). |
 | `socket` | `challenge`, `item` (ID o `#tag`), `count`, `look` (`pot`, `altar`) | Receptáculo de ofrendas; consume el ítem. |
@@ -315,7 +318,8 @@ Sólidas para todos; los miembros de un equipo que resolvió lo que pide la comp
 - Diez ítems (`signal_ember`, `terra_blueprint`, `route_seal`, `mother_seed`, `heliodor_crucible`, `voices_eyepiece`, `forest_testimony`, `sun_key`, `sacred_flame`, `star_chart`): stack de 1, épicos los de las gigantes y raros los de las medianas, resistentes al fuego, sin receta, con una línea de lore.
 - El pedestal da la pieza cuando el equipo resolvió todo lo que pide. Cada copia queda ligada a la campaña y a una generación. Si el equipo ya lleva la actual (inventario, ender chest o cursor de algún miembro conectado), no da otra. Si no la lleva, da una nueva generación, y la vieja se desvanece en cuanto alguien la lleve encima. Con el proyecto entregado, no da nada.
 - La entrega en el Atlas sólo cuenta la copia vigente del propio equipo (o la heredada del fundador); una pieza sin ligar (comandos, creativo) cuenta.
-- Sin el mod de una ruina de dimensión, su pieza pasa al pedestal de la gigante del mismo acto (hoy: Santuario y Antesala al Observatorio del Risco).
+- Sin el mod de una ruina de dimensión, su pieza pasa al pedestal de la gigante del mismo acto (hoy: Santuario y Antesala al Templo de la Luz Sagrada).
+- **El Atlas (26/9).** Espera en el pedestal de la Torre de la Señal: resuelto el relevo, el pedestal le da uno a quien no lleve (`gifts` en la definición). Despertar el Atlas (`atlas_awakened`) ya no da el ítem; la primera quest dice dónde está y la brújula lleva primero a la Torre. Quien ya tenía uno lo conserva. La receta de 24/9 (cobre sobre un libro) sigue: ver Pendiente.
 - **En la campaña.** Cada pieza es un requisito más del proyecto de su ruina en `campaign/projects.json`, y la quest que lo entrega la nombra («Llevá también…»). La tabla del plantel nombra quests; donde la quest no es un proyecto se usó el proyecto de su rama: `voices_lens` y `voices_spirits` llevan a `spectral_archive` (Ocular y Testimonio), y `voices_sun_spirit`, que es la observación del Sun Spirit, a `heliodor_heart` (Llave del Sol).
 
 ### Jefes
@@ -359,8 +363,22 @@ Hace falta, en 16×16 y con referencias inspeccionadas según `DESIGN.md`:
   - el banco acepta piezas y redstone y rechaza motores, manivela, controlador, rueda y bloques comunes; los zócalos, sólo su pieza; la llave inglesa no toca la ruina;
   - el reinicio devuelve las piezas (a quien las puso o al barril), vuelve a inundar, cierra las esclusas y pone el anillo.
 
+### El relevo de luz, en el juego
+
+`LightRelay` es el modelo puro y `RuinRelay` lo lleva al mundo.
+- **La luz.** Sale del brasero de cada piso en los cuatro ejes, a su altura, y corre por el aire hasta el primer bloque cerrado.
+- **Los vitrales.** Un vitral que atraviesa suma su color y, según su estado, deja pasar la luz, la sube o la dobla hacia un punto cardinal. Si ese punto es de donde vino, la corta. El estado se ve en la vara de cobre que está arriba: sin vara, pasa; parada, sube; acostada, dobla hacia donde apunta.
+- **Los espejos.** Doblan 90° y se giran un cuarto por clic.
+- **El colector.** Junta toda la luz que le llega y manda la unión hacia arriba.
+- **Los receptores.** El receptor del techo se prende sólo con sus colores exactos, y eso enciende el brasero del piso de arriba.
+- **Resolver y reiniciar.** El blanco en la lente lo resuelve para el equipo del que hizo clic. Diez segundos después, el relevo vuelve a su estado inicial para el equipo siguiente.
+- **Lo que genera el exportador.** Pasa la `solution` del arte a `solve=` en cada pieza y hace empezar cada espejo lejos de su respuesta. Comprueba con una traza propia que cada piso se enciende con su solución y no con el estado inicial. En el cuarto piso, el estado inicial manda rojo, verde y ámbar a la lente: el señuelo.
+- **Correcciones al arte.** La galería tapaba el tiro blanco en (0, 63, 0) y el exportador lo reabre. La base del vitral del piso de arriba pisaba el receptor, y el exportador lo repone como lámpara de cobre.
+
 ## Pendiente
 
 - Arte de las diez ruinas a escala final (Elias revisa una por una). El exportador y las pruebas sólo dependen del contrato de marcadores.
 - Los íconos y modelos de la lista de arte provisorio.
 - Motor de Terra: que Elias confirme los dos desvíos (el sentido de las bombas lo exige la ruina; las cuatro en una red) y que la revisión del arte corrija lo que hoy repone el exportador.
+- El Atlas: ¿se saca la receta (cobre sobre un libro, 24/9) ahora que el Atlas espera en la Torre?
+- El arte reescalado del Observatorio del Risco (mediano) y del Observatorio sobre el vacío (gigante), que entrega el arte.

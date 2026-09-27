@@ -20,7 +20,8 @@ class ProjectValidationTest {
   @Test
   void validDefinitionsRemainImmutable() throws Exception {
     var projects = Projects.parse(defaults(), id -> true);
-    assertEquals("entrelumen:atlas", projects.get("atlas_awakened").reward());
+    // 26 September 2026: the Atlas waits on the Signal Tower's pedestal; awakening it gives no item.
+    assertTrue(projects.get("atlas_awakened").reward().isEmpty());
     assertThrows(UnsupportedOperationException.class, () -> projects.clear());
     assertThrows(
         UnsupportedOperationException.class,
@@ -218,10 +219,11 @@ class ProjectValidationTest {
       json.getAsJsonObject("atlas_awakened").getAsJsonObject("items").add("minecraft:book", value);
       assertThrows(IllegalArgumentException.class, () -> Projects.parse(json, id -> true));
     }
+    // An unknown reward item is refused (the Atlas is no reward since 26 September; the lens is).
     var json = defaults();
     assertThrows(
         IllegalArgumentException.class,
-        () -> Projects.parse(json, id -> !id.toString().equals("entrelumen:atlas")));
+        () -> Projects.parse(json, id -> !id.toString().equals("entrelumen:raw_lens")));
   }
 
   @Test

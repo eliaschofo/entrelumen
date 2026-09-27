@@ -108,4 +108,19 @@ class RuinMarkersTest {
         "modblock block=minecraft:stone", "modblock mod=create", "wheel", "lever challenge=a sluice=Bad"))
       assertThrows(IllegalArgumentException.class, () -> RuinMarkers.parse(metadata), metadata);
   }
+  @Test
+  void theRelayMarkersParse() {
+    var light = parse("light challenge=relay floor=1 hand=true block=minecraft:campfire[lit=false]");
+    assertEquals(1, light.floor());
+    var vitral = parse("vitral challenge=relay floor=4 colour=green turn=pass solve=south block=minecraft:green_stained_glass");
+    assertEquals("south", vitral.param("solve", ""));
+    assertEquals(4, vitral.floor());
+    assertEquals("red+green", parse("receptor challenge=relay floor=2 target=red+green").param("target", ""));
+    assertEquals("n", parse("mirror challenge=relay floor=3 facing=s solve=n").param("solve", ""));
+    assertTrue(parse("collector challenge=relay floor=4 block=minecraft:glass").kind().challenge());
+    for (String metadata : List.of("light challenge=relay", "light challenge=relay floor=0", "vitral challenge=relay floor=1",
+        "vitral challenge=relay floor=1 colour=Red", "vitral challenge=relay floor=1 colour=red turn=left",
+        "receptor challenge=relay target=red,green", "mirror challenge=relay facing=n solve=up", "collector challenge=relay"))
+      assertThrows(IllegalArgumentException.class, () -> RuinMarkers.parse(metadata), metadata);
+  }
 }

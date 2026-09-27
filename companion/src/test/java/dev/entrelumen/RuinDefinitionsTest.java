@@ -184,4 +184,15 @@ class RuinDefinitionsTest {
     assertThrows(IllegalArgumentException.class, () -> RuinDefinitions.parse("entrelumen:x", JsonParser.parseString(sleeping),
         mod -> !mod.equals("absent"), item -> true, entity -> true));
   }
+  @Test
+  void theTowerPlaysItsRelayAndHandsOverTheAtlas() throws Exception {
+    var tower = shipped(mod -> true).get("entrelumen:signal_tower");
+    assertEquals(RuinDefinitions.ChallengeType.RELAY, tower.challenges().get("relay").type());
+    assertEquals(List.of("relay"), tower.pedestal());
+    assertEquals(List.of("entrelumen:atlas"), tower.gifts(), "The Atlas waits on the Tower's pedestal (26 September)");
+    assertThrows(IllegalArgumentException.class, () -> parse(BASE.replace("\"act\": 3", "\"act\": 3, \"gifts\": \"entrelumen:atlas\"")));
+    assertThrows(IllegalArgumentException.class, () -> RuinDefinitions.parse("entrelumen:x",
+        JsonParser.parseString(BASE.replace("\"act\": 3", "\"act\": 3, \"gifts\": [\"entrelumen:nothing\"]")),
+        mod -> true, item -> !item.equals("entrelumen:nothing"), entity -> true));
+  }
 }

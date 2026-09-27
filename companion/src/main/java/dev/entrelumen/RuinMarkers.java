@@ -71,7 +71,16 @@ public final class RuinMarkers {
     /** The barrel where parts left in the ruin come back when it resets. */
     RETURNS,
     /** A block that stands only when {@code mod} is loaded (air otherwise). */
-    MODBLOCK;
+    MODBLOCK,
+    /** A relay floor's light: {@code challenge}, {@code floor}; {@code hand=true} is lit by a player. */
+    LIGHT,
+    /**
+     * A rotatable vitral of a relay: {@code challenge}, {@code floor}, {@code colour}, {@code turn}
+     * (pass, up, north, east, south, west) and the {@code solve} state of the ruin's solution.
+     */
+    VITRAL,
+    /** Gathers a relay floor's horizontal light and sends the union up: {@code challenge}, {@code floor}. */
+    COLLECTOR;
 
     public String id() {
       return name().toLowerCase(Locale.ROOT);
@@ -80,7 +89,8 @@ public final class RuinMarkers {
     /** Kinds that belong to one challenge. */
     public boolean challenge() {
       return switch (this) {
-        case BRAZIER, LAMP, MIRROR, RECEPTOR, LEVER, LOCK, SOCKET, HIDDEN, BOSS, DRAIN, PUMP, SEAL -> true;
+        case BRAZIER, LAMP, MIRROR, RECEPTOR, LEVER, LOCK, SOCKET, HIDDEN, BOSS, DRAIN, PUMP, SEAL, LIGHT, VITRAL,
+            COLLECTOR -> true;
         default -> false;
       };
     }
@@ -93,6 +103,7 @@ public final class RuinMarkers {
   }
 
   public static final List<String> PORT_ROLES = List.of("input", "pump", "seal");
+  public static final List<String> TURNS = List.of("pass", "up", "north", "east", "south", "west");
   public static final double MAX_SANDBOX_RADIUS = 16;
 
   /** The looks a hidden trigger or a gate cell can take ({@code seal} is a pale light). */
@@ -121,6 +132,11 @@ public final class RuinMarkers {
 
     public int order() {
       return Integer.parseInt(params.getOrDefault("order", "1"));
+    }
+
+    /** A relay marker's floor (1 when absent). */
+    public int floor() {
+      return Integer.parseInt(params.getOrDefault("floor", "1"));
     }
 
     public int count() {
@@ -194,8 +210,12 @@ public final class RuinMarkers {
       case PEDESTAL, ARRIVAL, GROUND -> Set.<String>of();
       case CHEST -> Set.of("loot");
       case BRAZIER -> Set.of("challenge", "order");
-      case LAMP, RECEPTOR, LOCK, BOSS -> Set.of("challenge");
-      case MIRROR -> Set.of("challenge", "facing");
+      case LAMP, LOCK, BOSS -> Set.of("challenge");
+      case RECEPTOR -> Set.of("challenge", "floor", "target");
+      case MIRROR -> Set.of("challenge", "facing", "floor", "solve");
+      case LIGHT -> Set.of("challenge", "floor", "hand");
+      case VITRAL -> Set.of("challenge", "floor", "colour", "turn", "solve");
+      case COLLECTOR -> Set.of("challenge", "floor");
       case LEVER -> Set.of("challenge", "on", "sluice");
       case SOCKET -> Set.of("challenge", "item", "count", "look");
       case HIDDEN -> Set.of("challenge", "look");
@@ -226,7 +246,28 @@ public final class RuinMarkers {
       throw invalid(metadata, "bad block state " + params.get("block"));
     switch (kind) {
       case BRAZIER -> integer(params, "order", 1, 64, false, metadata);
-      case MIRROR -> oneOf(params, "facing", DIRECTIONS, true, metadata);
+      case MIRROR -> {
+        oneOf(params, "facing", DIRECTIONS, true, metadata);
+        oneOf(params, "solve", DIRECTIONS, false, metadata);
+        integer(params, "floor", 1, 64, false, metadata);
+      }
+      case RECEPTOR -> {
+        integer(params, "floor", 1, 64, false, metadata);
+        if (params.containsKey("target") && !params.get("target").matches("[a-z_]{1,24}(\\+[a-z_]{1,24})*"))
+          throw invalid(metadata, "target must be colours joined by +");
+      }
+      case LIGHT -> {
+        integer(params, "floor", 1, 64, true, metadata);
+        oneOf(params, "hand", List.of("true", "false"), false, metadata);
+      }
+      case VITRAL -> {
+        integer(params, "floor", 1, 64, true, metadata);
+        if (params.get("colour") == null || !params.get("colour").matches("[a-z_]{1,24}"))
+          throw invalid(metadata, "colour must be a colour name");
+        oneOf(params, "turn", TURNS, false, metadata);
+        oneOf(params, "solve", TURNS, false, metadata);
+      }
+      case COLLECTOR -> integer(params, "floor", 1, 64, true, metadata);
       case LEVER -> {
         oneOf(params, "on", List.of("true", "false"), false, metadata);
         if (params.containsKey("sluice")) requireId(params, "sluice", metadata);

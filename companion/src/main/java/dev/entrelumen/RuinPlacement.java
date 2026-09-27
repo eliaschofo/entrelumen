@@ -871,7 +871,7 @@ public final class RuinPlacement {
     }
     var box = new BoundingBox(job.origin.getX(), Math.min(job.lowest, job.origin.getY()), job.origin.getZ(),
         job.origin.getX() + p.sizeX() - 1, job.origin.getY() + p.sizeY() - 1, job.origin.getZ() + p.sizeZ() - 1);
-    if (arrival == null) arrival = HeliodorRuins.besideRuin(level, box);
+    if (arrival == null) arrival = HeliodorRuins.besideRuin(level, box, job.origin.getY() + p.ground());
     var ruin = new RuinData.Ruin(job.id, ResourceLocation.parse(job.definition.template()), level.dimension(),
         job.definition.act(), box, job.origin, arrival, pedestals, level.getGameTime(), placed);
     var data = RuinData.get(level.getServer());
@@ -945,6 +945,8 @@ public final class RuinPlacement {
         entity.setChanged();
       }
     }
+    if (marker.kind() == RuinMarkers.Kind.VITRAL)
+      RuinRelay.setTurn(level, pos, LightRelay.Turn.of(marker.param("turn", "pass")).orElse(LightRelay.Turn.PASS));
     if (marker.kind() == RuinMarkers.Kind.NOTE && state.getBlock() instanceof net.minecraft.world.level.block.LecternBlock
         && !state.getValue(net.minecraft.world.level.block.LecternBlock.HAS_BOOK))
       net.minecraft.world.level.block.LecternBlock.tryPlaceBook(null, level, pos, state,

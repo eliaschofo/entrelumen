@@ -75,7 +75,7 @@ class CompassTargetsTest {
   void theDraftParsesWithEveryModAndDropsObjectivesOfMissingMods() throws Exception {
     var all = CompassTargets.parse(shipped(), mod -> true, item -> true);
     var vanilla = CompassTargets.parse(shipped(), mod -> false, item -> true);
-    assertEquals("heliodor_ruin", all.getFirst().id());
+    assertEquals("signal_tower", all.getFirst().id(), "The Atlas waits in the Signal Tower (26 September)");
     assertEquals(CompassTargets.TargetType.ANCHOR, all.getFirst().target().type());
     assertTrue(all.size() > vanilla.size(), "Mod-specific objectives must be optional");
     assertTrue(vanilla.stream().noneMatch(o -> o.id().equals("gold_dungeon")));

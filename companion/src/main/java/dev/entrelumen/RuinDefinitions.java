@@ -27,8 +27,9 @@ public final class RuinDefinitions {
    * PUMPS: the ruin's pumps turn together, each its own way, at {@code rpm} or faster (0: computed from
    * Create's stress values, see {@link RuinRules#pumpSpeed}). SEAL: a bearing holds its ring at
    * {@code angle} degrees (plus multiples of 90) within {@code tolerance}, at rest for {@code rest} ticks.
+   * RELAY: the light relay of {@link LightRelay}, floor by floor up to the last receptor.
    */
-  public enum ChallengeType { BRAZIERS, MIRRORS, REDSTONE, OFFERING, BOSS, HIDDEN, PUMPS, SEAL }
+  public enum ChallengeType { BRAZIERS, MIRRORS, REDSTONE, OFFERING, BOSS, HIDDEN, PUMPS, SEAL, RELAY }
 
   /** The mobs of a boss challenge: {@code count} copies share one boss bar. */
   public record Boss(String entity, String name, int count, int radius, String color,
@@ -66,12 +67,13 @@ public final class RuinDefinitions {
    * {@code challenges} holds the challenges that play with the loaded mods; {@code dormant} names the
    * declared ones that do not (a challenge's {@code mods} missing, or one of its {@code without}
    * present), whose markers are then ignored. Gates, the pedestal and {@code requires} list only
-   * playing challenges.
+   * playing challenges. {@code gifts} are items the solved pedestal also hands to a player who carries
+   * none (the Signal Tower's Atlas).
    */
   public record Definition(String id, int act, String dimension, List<String> mods, Scale scale,
       String template, Placement placement, String piece, String project, String loot,
       Map<String, Challenge> challenges, Map<String, List<String>> gates, List<String> pedestal,
-      Set<String> dormant) {
+      Set<String> dormant, List<String> gifts) {
     public Definition {
       mods = List.copyOf(mods);
       challenges = Collections.unmodifiableMap(new LinkedHashMap<>(challenges));
@@ -80,13 +82,14 @@ public final class RuinDefinitions {
       gates = Collections.unmodifiableMap(copy);
       pedestal = List.copyOf(pedestal);
       dormant = Collections.unmodifiableSet(new TreeSet<>(dormant));
+      gifts = List.copyOf(gifts);
     }
 
     public Definition(String id, int act, String dimension, List<String> mods, Scale scale, String template,
         Placement placement, String piece, String project, String loot, Map<String, Challenge> challenges,
         Map<String, List<String>> gates, List<String> pedestal) {
       this(id, act, dimension, mods, scale, template, placement, piece, project, loot, challenges, gates, pedestal,
-          Set.of());
+          Set.of(), List.of());
     }
 
     /** The id's path: {@code entrelumen:signal_tower} gives {@code signal_tower}. */
@@ -113,7 +116,7 @@ public final class RuinDefinitions {
     if (root == null || !root.isJsonObject()) throw invalid(path, "expected an object");
     JsonObject object = root.getAsJsonObject();
     allow(object, path, "act", "dimension", "mods", "scale", "template", "placement", "piece",
-        "project", "loot", "challenges", "gates", "pedestal", "note");
+        "project", "loot", "challenges", "gates", "pedestal", "gifts", "note");
     int act = integer(object, "act", path, 1, Campaigns.FINAL_ACT);
     String dimension = location(string(object, "dimension", path), path + ".dimension");
     List<String> mods = new ArrayList<>();
@@ -172,8 +175,18 @@ public final class RuinDefinitions {
     List<String> pedestal = object.has("pedestal")
         ? references(object.get("pedestal"), declared, path + ".pedestal").stream().filter(c -> !dormant.contains(c)).toList()
         : List.copyOf(challenges.keySet());
+    List<String> gifts = new ArrayList<>();
+    if (object.has("gifts")) {
+      if (!object.get("gifts").isJsonArray()) throw invalid(path + ".gifts", "expected item ids");
+      for (JsonElement gift : object.getAsJsonArray("gifts")) {
+        if (!gift.isJsonPrimitive()) throw invalid(path + ".gifts", "expected item ids");
+        String item = location(gift.getAsString(), path + ".gifts");
+        if (available && !items.test(item)) throw invalid(path + ".gifts", "unknown item " + item);
+        if (!gifts.contains(item)) gifts.add(item);
+      }
+    }
     return new Definition(id, act, dimension, mods, scale, template, placement, piece, project, loot,
-        challenges, gates, pedestal, dormant);
+        challenges, gates, pedestal, dormant, gifts);
   }
 
   private static List<String> modList(JsonObject object, String field, String path) {

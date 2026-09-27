@@ -80,6 +80,7 @@ public final class RuinContent {
       RuinBosses.tick(event.getServer());
       RuinGates.tick(event.getServer());
       RuinWorkshop.tick(event.getServer());
+      RuinRelay.tick(event.getServer());
     });
     events.addListener((ServerStartedEvent event) -> RuinPlacement.resumeReserved(event.getServer()));
     events.addListener((ServerStoppedEvent event) -> {

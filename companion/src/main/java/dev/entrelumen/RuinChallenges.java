@@ -98,6 +98,15 @@ public final class RuinChallenges {
     state(server).scheduled.add(new Scheduled(server.overworld().getGameTime() + delay, task));
   }
 
+  /** Claims a pending reset {@code key}; false when one is already scheduled. */
+  static boolean pendingReset(MinecraftServer server, String key) {
+    return state(server).pendingResets.add(key);
+  }
+
+  static void resetDone(MinecraftServer server, String key) {
+    state(server).pendingResets.remove(key);
+  }
+
   static void tick(MinecraftServer server) {
     State state = state(server);
     long now = server.overworld().getGameTime();
@@ -125,7 +134,7 @@ public final class RuinChallenges {
     if (node == null) return;
     var kind = node.marker().marker().kind();
     boolean ours = switch (kind) {
-      case BRAZIER, MIRROR, SOCKET, HIDDEN, PEDESTAL -> true;
+      case BRAZIER, MIRROR, SOCKET, HIDDEN, PEDESTAL, VITRAL, LIGHT -> true;
       default -> false;
     };
     if (kind == RuinMarkers.Kind.LEVER && event.getHand() == InteractionHand.MAIN_HAND) {
@@ -167,6 +176,18 @@ public final class RuinChallenges {
     var progress = RuinProgress.get(level.getServer());
     var team = progress.team(context.campaignId(), context.founder());
     String key = RuinProgress.key(definition.id(), challengeId);
+    if (challenge.type() == RuinDefinitions.ChallengeType.RELAY) {
+      if (team.solved.contains(key)) {
+        player.displayClientMessage(Component.translatable("entrelumen.ruin.done"), true);
+        return;
+      }
+      if (!RuinRules.ready(keys(definition, challenge.requires()), team.solved)) {
+        player.displayClientMessage(Component.translatable("entrelumen.ruin.not_ready"), true);
+        return;
+      }
+      RuinRelay.use(level, node, player, context, definition, challengeId);
+      return;
+    }
     if (kind == RuinMarkers.Kind.MIRROR) {
       mirror(level, node, definition, challengeId, player, context, team.solved.contains(key)
           || !RuinRules.ready(keys(definition, challenge.requires()), team.solved));
@@ -543,6 +564,16 @@ public final class RuinChallenges {
         }
       }
     }
+    // Gifts wait on the pedestal too (the Signal Tower's Atlas): one for a player who carries none.
+    if (solved)
+      for (String gift : definition.gifts()) {
+        Item item = BuiltInRegistries.ITEM.get(ResourceLocation.parse(gift));
+        if (item == net.minecraft.world.item.Items.AIR || player.getInventory().countItem(item) > 0) continue;
+        ItemStack stack = new ItemStack(item);
+        Component name = stack.getHoverName();
+        if (!player.getInventory().add(stack)) player.drop(stack, false);
+        lines.add(Component.translatable("entrelumen.ruin.pedestal.gift", name));
+      }
     lines.stream().distinct().forEach(line -> player.displayClientMessage(line, true));
     if (lines.size() > 1) lines.forEach(player::sendSystemMessage);
   }

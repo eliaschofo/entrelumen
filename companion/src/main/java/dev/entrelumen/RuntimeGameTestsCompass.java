@@ -300,24 +300,27 @@ public final class RuntimeGameTestsCompass {
     helper.assertTrue(CompassData.get(founder.server).reached(team.getId(), null)
         .containsAll(List.of("qa_marker", "qa_end")), "Reached objectives were not persisted");
 
-    // The shipped draft: the ruin anchor first, then the first campaign milestone moves it on.
-    // The isolated world has no start ruin (NOT_FOUND); a full-pack server placed one at its
-    // first start, and the needle then points at it. Either way it never spins.
+    // The shipped draft (26 September): the Signal Tower first, where the Atlas waits; visiting it
+    // moves the compass on, and the awakened Atlas passes the start ruin. The isolated world has no
+    // tower yet (NOT_FOUND); a full-pack server places it when the first team opens act I, and the
+    // needle then points at it. Either way it never spins.
     var solo = arrive(helper, "DraftReader");
     var draft = HeliodorCompass.compute(solo);
-    var ruin = RuinData.get(solo.server).find(HeliodorRuins.START)
+    var tower = RuinData.get(solo.server).find(net.minecraft.resources.ResourceLocation.parse("entrelumen:signal_tower"))
         .filter(r -> r.dimension().equals(Level.OVERWORLD)
             && CompassData.horizontalDistanceSqr(r.center(), solo.blockPosition())
                 <= (long) CompassTargets.DEFAULT_RADIUS * CompassTargets.DEFAULT_RADIUS);
-    boolean drafted = ruin.isPresent()
+    boolean drafted = tower.isPresent()
         ? draft.state() == CompassState.POINTING
-            && draft.target().equals(Optional.of(GlobalPos.of(Level.OVERWORLD, ruin.get().center())))
+            && draft.target().equals(Optional.of(GlobalPos.of(Level.OVERWORLD, tower.get().center())))
         : draft.state() == CompassState.NOT_FOUND;
-    helper.assertTrue(draft.objective().equals("heliodor_ruin") && drafted && !draft.spinning(),
-        "Draft does not start at the ruin, or spins without one: " + draft);
+    helper.assertTrue(draft.objective().equals("signal_tower") && drafted && !draft.spinning(),
+        "Draft does not start at the Signal Tower, or spins without it: " + draft);
+    var soloContext = HeliodorCompass.context(solo).orElseThrow();
+    RuinProgress.get(solo.server).team(soloContext.campaignId(), soloContext.founder()).visited.add("entrelumen:signal_tower");
     Entrelumen.current(solo).completed.add("atlas_awakened");
     helper.assertTrue(HeliodorCompass.compute(solo).objective().equals("village_survey"),
-        "Awakening the Atlas did not move the draft compass on");
+        "The visited tower and the awakened Atlas did not move the draft compass on");
     // The carried item follows the same state.
     var carried = new ItemStack(HeliodorContent.COMPASS.get());
     HeliodorCompass.refresh(solo, carried);
@@ -325,7 +328,7 @@ public final class RuntimeGameTestsCompass {
     helper.assertTrue(carriedState != null && carriedState.objective().equals("village_survey"),
         "The item component does not mirror the objective");
     var view = HeliodorCompass.view(solo);
-    helper.assertTrue(view.objective().equals("village_survey") && view.lore().equals(List.of("heliodor_ruin"))
+    helper.assertTrue(view.objective().equals("village_survey") && view.lore().equals(List.of("signal_tower", "heliodor_ruin"))
         && view.dimension().equals("minecraft:overworld"), "Atlas view is wrong: " + view);
     var buffer = new net.minecraft.network.RegistryFriendlyByteBuf(io.netty.buffer.Unpooled.buffer(),
         helper.getLevel().registryAccess());

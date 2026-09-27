@@ -218,8 +218,8 @@ public final class RuntimeGameTests {
         player
                 .getInventory()
                 .countItem(BuiltInRegistries.ITEM.get(ResourceLocation.parse("entrelumen:atlas")))
-            == 1,
-        "Atlas reward missing or duplicated");
+            == 0,
+        "Awakening the Atlas gave an Atlas (it waits in the Signal Tower since 26 September)");
     helper.assertTrue(
         player.getInventory().countItem(Items.BOOK) == 1
             && player.getInventory().countItem(Items.COPPER_INGOT) == 2,
@@ -410,8 +410,8 @@ public final class RuntimeGameTests {
         player
                 .getInventory()
                 .countItem(BuiltInRegistries.ITEM.get(ResourceLocation.parse("entrelumen:atlas")))
-            == 1,
-        "Delivery did not grant one Atlas");
+            == 0,
+        "Delivery granted an Atlas (it waits in the Signal Tower since 26 September)");
     helper.succeed();
   }
 
@@ -607,8 +607,8 @@ public final class RuntimeGameTests {
         player
                 .getInventory()
                 .countItem(BuiltInRegistries.ITEM.get(ResourceLocation.parse("entrelumen:atlas")))
-            == 1,
-        "Cross-route reward duplicated");
+            == 0,
+        "Cross-route delivery granted an Atlas");
     team.leave(player.getUUID());
     var afterLeave =
         AtlasNetwork.handleRequest(
@@ -700,16 +700,17 @@ public final class RuntimeGameTests {
     // crafting recipe (one builds the metallurgic infuser, one is spare).
     var frame = BuiltInRegistries.ITEM.get(ResourceLocation.parse("entrelumen:calibration_frame"));
     var habitation = BuiltInRegistries.ITEM.get(ResourceLocation.parse("entrelumen:habitation_module"));
-    helper.assertTrue(player.getInventory().countItem(atlas) == 1
+    // Since 26 September the Atlas waits in the Signal Tower: the first act's deliveries give none.
+    helper.assertTrue(player.getInventory().countItem(atlas) == 0
         && player.getInventory().countItem(habitation) == 1
-        && player.getInventory().items.stream().filter(s -> !s.isEmpty()).count() == 4
+        && player.getInventory().items.stream().filter(s -> !s.isEmpty()).count() == 3
           && player.getInventory().countItem(BuiltInRegistries.ITEM.get(ResourceLocation.parse("entrelumen:signal_core"))) == 1
           && player.getInventory().countItem(frame) == 2,
         "First-act deliveries consumed incorrect amounts, lost the portable Atlas or missed the two frames");
     var replay = AtlasNetwork.handleRequest(player, new AtlasNetwork.Request(
         initial.campaign(), CampaignActions.Action.DELIVER, "first_signal"));
     helper.assertTrue(replay.message().equals("entrelumen.delivery.failed")
-        && campaign.completed.size() == 6 && player.getInventory().countItem(atlas) == 1
+        && campaign.completed.size() == 6 && player.getInventory().countItem(atlas) == 0
           && player.getInventory().countItem(BuiltInRegistries.ITEM.get(ResourceLocation.parse("entrelumen:signal_core"))) == 1
           && player.getInventory().countItem(frame) == 2,
         "Completed signal replay changed progress or inventory");

@@ -94,6 +94,13 @@ class RuinTemplatesTest {
           case PUMPS -> assertFalse(found.of(RuinMarkers.Kind.PUMP, c).isEmpty() || found.of(RuinMarkers.Kind.DRAIN).isEmpty(),
               id + "/" + c);
           case SEAL -> assertEquals(1, found.of(RuinMarkers.Kind.SEAL, c).size(), id + "/" + c);
+          case RELAY -> {
+            assertFalse(found.of(RuinMarkers.Kind.LIGHT, c).isEmpty(), id + "/" + c);
+            assertEquals(found.of(RuinMarkers.Kind.LIGHT, c).size(), found.of(RuinMarkers.Kind.RECEPTOR, c).size(),
+                id + "/" + c + ": a receptor per floor");
+            assertEquals(1, found.of(RuinMarkers.Kind.LIGHT, c).stream().filter(m -> m.param("hand", "false").equals("true")).count(),
+                id + "/" + c + ": one light lit by hand");
+          }
         }
       }
       for (var marker : found.of(RuinMarkers.Kind.CHEST))

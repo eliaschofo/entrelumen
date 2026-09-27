@@ -79,7 +79,7 @@ RUINS = {
 
 # Each ruin's challenge ids, matching data/entrelumen/heliodor_ruin/<id>.json.
 CHALLENGES = {
-    "signal_tower": {"braziers": "braziers", "lantern": "braziers"},
+    "signal_tower": {"relay": "relay", "lantern": "relay"},
     "sunken_workshop": {"levers": "sluices", "drain": "sluices", "boss": "drowned", "pumps": "engine",
                         "seal": "seal"},
     "viaduct": {"boss": "toll_guardian"},
@@ -489,6 +489,161 @@ def solution_json(name: str) -> str | None:
     return json.dumps(workshop_check(v, layout), indent=1, sort_keys=True) + "\n"
 
 
+# --- The Signal Tower's light relay (docs/design/heliodor-ruins.md, "el relevo de luz") -------------
+TURN_WORDS = ("pass", "up", "north", "east", "south", "west")
+DIR_STEP = {"north": (0, -1), "east": (1, 0), "south": (0, 1), "west": (-1, 0)}
+REVERSE = {"north": "south", "south": "north", "east": "west", "west": "east"}
+WORD = {"n": "north", "e": "east", "s": "south", "w": "west"}
+MIRROR_START = {"north": "s", "east": "w", "south": "n", "west": "e"}     # a mirror starts away from its answer
+
+
+def solution(text: str) -> dict[str, str]:
+    """'red: pass; mirror (0,2): north; collector: up to the lens' -> {'red': 'pass', 'mirror 0,2': 'north'}."""
+    out = {}
+    for part in text.split(";"):
+        if ":" not in part:
+            continue
+        key, value = (x.strip() for x in part.split(":", 1))
+        if key.startswith("mirror"):
+            key = "mirror " + key[key.index("(") + 1:key.index(")")].replace(" ", "")
+        out[key] = value.split()[0]
+    return out
+
+
+def relay_shafts(v: dict, mk: dict):
+    """The white light's shaft from each collector up to its receptor stays open: the art's gallery floor,
+    laid after the shaft, closes it at the gallery."""
+    for r in mk.get("relay", []):
+        if not r.get("collector"):
+            continue
+        x, y, z = r["collector"]
+        rx, ry, rz = r["receptor"]
+        if (rx, rz) != (x, z):
+            continue
+        for yy in range(y + 1, ry):
+            v[(x, yy, z)] = "minecraft:air"
+
+
+def relay_markers(name: str, mk: dict, c: dict):
+    """The relay floors of the art as light, vitral, mirror, collector and receptor markers; each piece
+    carries the state the art's solution gives it (solve=), and starts elsewhere."""
+    out = []
+    for r in mk.get("relay", []):
+        floor = r["floor"]
+        answer = solution(r["solution"])
+        hand = "true" if r.get("by_hand") else "false"
+        out.append((tuple(r["brazier"]), f"light challenge={c['relay']} floor={floor} hand={hand}"))
+        for vitral in r["vitrals"]:
+            meta = f"vitral challenge={c['relay']} floor={floor} colour={vitral['colour']} turn=pass"
+            if vitral["colour"] in answer:
+                if answer[vitral["colour"]] not in TURN_WORDS:
+                    raise SystemExit(f"{name}: floor {floor}: unknown turn in the solution: {r['solution']}")
+                meta += f" solve={answer[vitral['colour']]}"
+            out.append((tuple(vitral["pos"]), meta))
+        for mirror in r["mirrors"]:
+            key = f"mirror {mirror[0]},{mirror[2]}"
+            if key in answer:
+                out.append((tuple(mirror), f"mirror challenge={c['relay']} floor={floor} "
+                                           f"facing={MIRROR_START[answer[key]]} solve={answer[key][0]}"))
+            else:
+                out.append((tuple(mirror), f"mirror challenge={c['relay']} floor={floor} facing=n"))
+        if r.get("collector"):
+            out.append((tuple(r["collector"]), f"collector challenge={c['relay']} floor={floor}"))
+        # A floor's receptor is a copper bulb in the ceiling (the art lays the next floor's vitral base over
+        # it); the last floor's is the lens itself.
+        bulb = "" if r.get("collector") else " block=minecraft:waxed_copper_bulb[lit=false,powered=false]"
+        out.append((tuple(r["receptor"]),
+                    f"receptor challenge={c['relay']} floor={floor} target={'+'.join(r['target'])}{bulb}"))
+    return out
+
+
+def relay_open(v: dict, cell) -> bool:
+    block = v.get(tuple(cell))
+    if block is None:
+        return True
+    name = block.split("[")[0].split(":")[-1]
+    return name in ("air", "cave_air", "lightning_rod", "vine") or name.endswith("torch")
+
+
+def relay_trace(v: dict, floor: dict, states: dict):
+    """LightRelay.trace in Python: the colours reaching a floor's receptor with the given piece states
+    (cell -> turn for vitrals, cell -> direction for mirrors)."""
+    vitrals = {tuple(x["pos"]): x["colour"] for x in floor["vitrals"]}
+    mirrors = {tuple(m) for m in floor["mirrors"]}
+    collector = tuple(floor["collector"]) if floor.get("collector") else None
+    receptor = tuple(floor["receptor"])
+    received, collected = set(), set()
+    hit = [False]
+
+    def up(cell, colours):
+        x, y, z = cell
+        for _ in range(64):
+            y += 1
+            if (x, y, z) == receptor:
+                received.update(colours)
+                return
+            if not relay_open(v, (x, y, z)):
+                return
+
+    seen = set()
+    rays = [(tuple(floor["brazier"]), d, frozenset()) for d in ("north", "east", "south", "west")]
+    while rays:
+        cell, d, colours = rays.pop(0)
+        colours = set(colours)
+        for _ in range(32):
+            cell = (cell[0] + DIR_STEP[d][0], cell[1], cell[2] + DIR_STEP[d][1])
+            if cell in vitrals:
+                key = (cell, d, frozenset(colours))
+                if key in seen:
+                    break
+                seen.add(key)
+                colours.add(vitrals[cell])
+                turn = states.get(cell, "pass")
+                if turn == "pass":
+                    continue
+                if turn == "up":
+                    up(cell, colours)
+                    break
+                if turn == REVERSE[d]:
+                    break
+                d = turn
+            elif cell in mirrors:
+                facing = states.get(cell, "north")
+                if facing in (d, REVERSE[d]):
+                    break
+                d = facing
+            elif cell == collector:
+                collected.update(colours)
+                hit[0] = True
+                break
+            elif not relay_open(v, cell):
+                break
+    if hit[0] and collected:
+        up(collector, collected)
+    return received
+
+
+def relay_check(name: str, v: dict, mk: dict, marks: dict):
+    """Every relay floor reaches its exact colours with the solution and not with the starting states."""
+    for floor in mk.get("relay", []):
+        start, solved = {}, {}
+        for vitral in floor["vitrals"]:
+            params = dict(t.split("=", 1) for t in marks[tuple(vitral["pos"])].split()[1:] if "=" in t)
+            start[tuple(vitral["pos"])] = params.get("turn", "pass")
+            solved[tuple(vitral["pos"])] = params.get("solve", params.get("turn", "pass"))
+        for mirror in floor["mirrors"]:
+            params = dict(t.split("=", 1) for t in marks[tuple(mirror)].split()[1:] if "=" in t)
+            start[tuple(mirror)] = WORD[params["facing"]]
+            solved[tuple(mirror)] = WORD[params.get("solve", params["facing"])]
+        target = set(floor["target"])
+        got = relay_trace(v, floor, solved)
+        if got != target:
+            raise SystemExit(f"{name}: relay floor {floor['floor']} does not light its receptor with its solution "
+                             f"({sorted(got)} != {sorted(target)})")
+        if relay_trace(v, floor, start) == target:
+            raise SystemExit(f"{name}: relay floor {floor['floor']} is already solved in its starting state")
+
+
 def markers(name: str, v: dict, mk: dict, extra: dict | None = None) -> dict[tuple[int, int, int], str]:
     """Centred cell -> marker metadata (block= is added from the art cell later unless given)."""
     c = CHALLENGES[name]
@@ -515,6 +670,8 @@ def markers(name: str, v: dict, mk: dict, extra: dict | None = None) -> dict[tup
             put(p, f"brazier challenge={c['braziers']}")
     for p in mk.get("lantern", []):
         put(p, f"lamp challenge={c['lantern']}")
+    for p, meta in relay_markers(name, mk, c):
+        put(p, meta)
     arm = [tuple(p) for p in mk.get("arm_chest", [])]
     for p, block in sorted(v.items()):
         if p in out:
@@ -557,6 +714,7 @@ def markers(name: str, v: dict, mk: dict, extra: dict | None = None) -> dict[tup
             put(p, "arrival")
     for p, meta in gates(name, v, mk):
         put(p, meta)
+    relay_check(name, v, mk, out)
     ground = next(((x, 0, z) for (x, z) in [(0, 0)] + [(x, z) for (x, y, z) in sorted(v) if y == 0]
                    if (x, 0, z) in v and (x, 0, z) not in out), None)
     if ground is None:
@@ -574,6 +732,7 @@ def art(name: str):
     v, mk = getattr(importlib.import_module(module), fn)()
     v = dict(v)
     extra, nbt, layout = workshop_create(v, mk) if name == WORKSHOP else ({}, {}, None)
+    relay_shafts(v, mk)
     for p, state in v.items():
         v[p] = sane(state)
     for p, meta in extra.items():
