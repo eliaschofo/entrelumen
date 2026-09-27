@@ -272,6 +272,144 @@ def emblem(kind, size=32):
     return mirrored(outline(im))
 
 
+# ---------------- quest book v3: icons, title plates and inline diagrams ----------------
+def rect_(im, x0, y0, x1, y1, colour):
+    for y in range(y0, y1 + 1):
+        for x in range(x0, x1 + 1):
+            put(im, x, y, colour)
+
+
+def disc_(im, cx, cy, r, colour):
+    for y in range(im.height):
+        for x in range(im.width):
+            if math.hypot(x - cx, y - cy) <= r:
+                put(im, x, y, colour)
+
+
+def tip_icon():
+    """16x16: a small copper lantern with a gold flame, the light a pro tip gives."""
+    im = canvas(16, 16)
+    rect_(im, 7, 1, 8, 2, CU[2])
+    rect_(im, 5, 3, 10, 3, CU[3])
+    rect_(im, 4, 4, 11, 12, CU[3])
+    rect_(im, 5, 5, 10, 11, GOLD[3])
+    rect_(im, 6, 6, 9, 10, GOLD[4])
+    rect_(im, 7, 7, 8, 9, GOLD[5])
+    rect_(im, 3, 13, 12, 13, CU[2])
+    return mirrored(outline(im))
+
+
+def secret_icon():
+    """16x16: a copper plate with a keyhole, and a spark that says there is more."""
+    im = canvas(16, 16)
+    disc_(im, 7.5, 8, 6.4, CU[3])
+    disc_(im, 7.5, 8, 5.2, CU[4])
+    disc_(im, 7.5, 6.5, 1.8, INK)
+    rect_(im, 7, 7, 8, 11, INK)
+    for (x, y) in ((7, 0), (8, 0), (7, 1), (8, 1)):
+        put(im, x, y, GOLD[5])
+    return mirrored(outline(im))
+
+
+def plate(kind, w=192, h=48):
+    """Title plate behind a chapter's title: Create gets riveted brass with a cog at each end, Ars a
+    violet vellum with a rune border and a source gem at each end."""
+    im = canvas(w, h)
+    if kind == 'create':
+        face, edge, dark = R['brass'][3], R['brass'][4], R['brass'][1]
+    else:
+        face, edge, dark = R['violet'][1], R['violet'][3], R['violet'][0]
+    for y in range(3, h - 3):
+        for x in range(10, w - 10):
+            put(im, x, y, face)
+    rect_(im, 10, 3, w - 11, 4, edge)
+    rect_(im, 10, h - 5, w - 11, h - 4, dark)
+    if kind == 'create':
+        for x in range(18, w - 18, 12):
+            put(im, x, 7, R['brass'][5]); put(im, x, h - 8, R['brass'][5])
+        for cx in (12, w - 13):
+            for y in range(h):
+                for x in range(w):
+                    r = math.hypot(x - cx, y - (h - 1) / 2)
+                    th = math.atan2(y - (h - 1) / 2, x - cx)
+                    tooth = (int((th / (2 * math.pi)) * 16) % 2) == 0
+                    if 5 <= r <= 13 + (3 if tooth else 0):
+                        put(im, x, y, R['iron'][3] if r > 10 else R['iron'][4])
+                    elif r < 5:
+                        put(im, x, y, R['iron'][1])
+    else:
+        for x in range(16, w - 16, 6):
+            put(im, x, 7, R['violet'][4]); put(im, x + 2, 7, R['violet'][3])
+            put(im, x, h - 8, R['violet'][4]); put(im, x + 2, h - 8, R['violet'][3])
+        for cx in (13, w - 14):
+            for y in range(h):
+                for x in range(w):
+                    dx, dy = abs(x - cx), abs(y - (h - 1) / 2)
+                    if dx / 8 + dy / 13 <= 1:
+                        put(im, x, y, R['violet'][4] if dx / 8 + dy / 13 <= 0.55 else R['violet'][3])
+                    if dx / 8 + dy / 13 <= 0.25:
+                        put(im, x, y, R['violet'][5])
+    return mirrored(outline(im))
+
+
+def diagram(kind, w=96, h=48):
+    """Inline diagrams for quest pages, drawn like a workshop sketch on parchment."""
+    im = canvas(w, h)
+    rect_(im, 0, 0, w - 1, h - 1, R['parch'][4])
+    rect_(im, 1, 1, w - 2, h - 2, R['parch'][5])
+    ink = R['parch'][0]
+    if kind == 'crushing':
+        for cx in (w / 2 - 12.5, w / 2 + 11.5):          # two wheels turning inward
+            for y in range(h):
+                for x in range(w):
+                    r = math.hypot(x - cx, y - 20)
+                    if r <= 11:
+                        put(im, x, y, R['iron'][3] if r > 8 else R['iron'][4])
+                    if r <= 2:
+                        put(im, x, y, R['iron'][1])
+        for (x, y) in ((44, 6), (47, 4), (50, 6)):        # ore falling in...
+            rect_(im, x, y, x + 1, y + 1, R['copper'][2])
+        for (x, y) in ((45, 36), (48, 39), (46, 42), (50, 38)):   # ...dust falling out
+            put(im, x, y, R['parch'][1])
+        for (x0, s) in ((24, 1), (70, -1)):               # arrows: both wheels turn toward the middle
+            for i in range(6):
+                put(im, x0 + s * i, 5 + (i // 2), ink)
+    elif kind == 'train':
+        for y in range(h):
+            for x in range(w):
+                ex, ey = (x - (w - 1) / 2) / 38, (y - 24) / 15
+                d = math.hypot(ex, ey)
+                if 0.93 <= d <= 1.07:
+                    put(im, x, y, R['wood'][2])
+                if 1.07 < d <= 1.12 or 0.88 <= d < 0.93:
+                    put(im, x, y, R['iron'][3])
+        rect_(im, 40, 34, 55, 38, R['copper'][3])         # the station on the bottom straight
+        rect_(im, 44, 31, 51, 33, R['copper'][4])
+        rect_(im, 20, 6, 27, 10, R['brass'][3])           # a train on the top curve
+        rect_(im, 28, 7, 33, 10, R['brass'][2])
+        for (x, y) in ((70, 8), (70, 9), (70, 10), (70, 11)):   # a signal
+            put(im, x, y, R['iron'][2])
+        put(im, 70, 6, R['leaf'][4]); put(im, 70, 7, R['crimson'][3])
+    else:                                                  # glyphs: Form + Effect + Augment
+        slots = ((18, R['violet'][3]), (48, R['violet'][4]), (78, R['violet'][2]))
+        for i, (cx, colour) in enumerate(slots):
+            disc_(im, cx, 23, 11, R['violet'][1])
+            disc_(im, cx, 23, 9, colour)
+            if i == 0:
+                disc_(im, cx, 23, 4, R['violet'][5])      # form: a round projectile
+            elif i == 1:
+                for d in range(5):                         # effect: a burst
+                    for (dx, dy) in ((d, 0), (-d, 0), (0, d), (0, -d)):
+                        put(im, cx + dx, 23 + dy, R['violet'][5])
+            else:
+                rect_(im, cx - 4, 22, cx + 4, 24, R['violet'][5])   # augment: a plus
+                rect_(im, cx - 1, 19, cx + 1, 27, R['violet'][5])
+        for x0 in (31, 61):
+            rect_(im, x0, 22, x0 + 3, 24, ink)
+            rect_(im, x0 + 1, 20, x0 + 2, 26, ink)
+    return outline(im, R['parch'][0])
+
+
 def main():
     os.makedirs(OUT, exist_ok=True)
     art = {'sun_heliodor': sun(128), 'medallion': medallion(64), 'divider': divider(), 'corner': corner(),
@@ -279,7 +417,12 @@ def main():
     for n, text in enumerate(['I', 'II', 'III', 'IV', 'V', 'VI'], 1):
         art['numeral_%d' % n] = numeral(text)
         art['act_%d' % n] = emblem(n)
+    art.update({'tip': tip_icon(), 'secret': secret_icon(), 'banner_create': plate('create'), 'banner_ars': plate('ars'),
+                'diagram_crushing': diagram('crushing'), 'diagram_train': diagram('train'), 'diagram_glyphs': diagram('glyphs')})
     for name, im in art.items():
+        if name.startswith('diagram_'):
+            im.save(os.path.join(OUT, name + '.png'))              # diagrams read left to right: not mirrored
+            continue
         for y in range(im.height):                           # every piece is mirror-symmetric
             for x in range(im.width):
                 if name != 'corner' and not name.startswith('numeral'):   # IV and VI mirror each other
