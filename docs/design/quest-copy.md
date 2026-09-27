@@ -72,7 +72,7 @@ Tomadas del libro del 25/9. Las seis primeras ya están aplicadas (cadenas e his
 
 **8. El jefe que se describe como opcional** (`cata_mastery`, Cataclysm)
 - Antes: el logro de matar a todos los jefes, con un segundo párrafo: «The hardest optional challenge in this family, and pure bragging rights: the story never asks for it.»
-- Después: una cumbre con el mismo logro y el chiste en el subtítulo: «Bragging rights, in disc form.» / «Derecho a presumir, en disco.» Que es opcional lo dicen la forma del nodo y el color.
+- Después: una cumbre con el mismo logro y el subtítulo «Eight for eight.» / «Ocho de ocho.»; el texto dice sólo lo que el jugador no sabe (el logro cuenta por jugador, así que uno tiene que dar cada golpe final). Que es opcional lo dicen la forma del nodo y el color. (La versión anterior prometía un disco que Cataclysm 3.33 ya no suelta.)
 
 **9. El título que ya es un prefijo** (`entrelumen_altars_tip_farm`)
 - Antes: título «Tip: Stack the Effects».
