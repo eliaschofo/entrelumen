@@ -148,17 +148,27 @@ public final class RuntimeGameTestsRuins {
       helper.assertTrue(prepared.markers().stream().filter(m -> m.marker().kind() == RuinMarkers.Kind.PEDESTAL).count() == 1,
           definition.id() + ": one pedestal");
       helper.assertTrue(!prepared.slices().isEmpty() && prepared.blocks() > 1000, definition.id() + ": empty template");
+      // Blocks of a mod that is not loaded (Create on the isolated server) stay air; the rest must exist.
       for (var local : prepared.markers())
-        if (!local.marker().block().isEmpty())
+        if (!local.marker().block().isEmpty() && loadedNamespace(local.marker().block()))
           helper.assertTrue(RuinPlacement.blockOf(local.marker()) != null, definition.id() + ": bad block in " + local.marker());
       var resource = server.getResourceManager().getResource(ResourceLocation.fromNamespaceAndPath("entrelumen",
           "structure/" + ResourceLocation.parse(definition.template()).getPath() + ".nbt")).orElseThrow();
       try (var stream = resource.open()) {
         var tag = net.minecraft.nbt.NbtIo.readCompressed(stream, net.minecraft.nbt.NbtAccounter.unlimitedHeap());
         for (var entry : tag.getList("palette", net.minecraft.nbt.Tag.TAG_COMPOUND)) {
-          String name = ((net.minecraft.nbt.CompoundTag) entry).getString("Name");
+          var compound = (net.minecraft.nbt.CompoundTag) entry;
+          String name = compound.getString("Name");
+          if (!loadedNamespace(name)) continue;
           helper.assertTrue(BuiltInRegistries.BLOCK.containsKey(ResourceLocation.parse(name)),
               definition.id() + ": unknown block " + name);
+          // Every property the template names must exist on the block (1.21.1 states).
+          var block = BuiltInRegistries.BLOCK.get(ResourceLocation.parse(name));
+          var properties = compound.getCompound("Properties");
+          for (String key : properties.getAllKeys())
+            helper.assertTrue(block.getStateDefinition().getProperty(key) != null
+                    && block.getStateDefinition().getProperty(key).getValue(properties.getString(key)).isPresent(),
+                definition.id() + ": " + name + " has no " + key + "=" + properties.getString(key));
         }
       }
     }
@@ -171,6 +181,13 @@ public final class RuntimeGameTestsRuins {
         && RuinPlacement.fits(level, 0, 49), "World bounds check");
     helper.assertTrue(deep.template().endsWith("sunken_workshop"), "Workshop definition");
     helper.succeed();
+  }
+
+  /** Whether a block id's namespace is Minecraft's or a loaded mod's. */
+  static boolean loadedNamespace(String block) {
+    int colon = block.indexOf(':');
+    String namespace = colon < 0 ? "minecraft" : block.substring(0, colon);
+    return namespace.equals("minecraft") || RuinRegistry.modLoaded(namespace);
   }
 
   /**
@@ -248,13 +265,23 @@ public final class RuntimeGameTestsRuins {
         case LOCK -> helper.assertTrue(state.is(RuinContent.LOCK.get()), "No lock at " + marker);
         case CHEST -> {
           String loot = marker.marker().param("loot", definition.loot());
+          // A table of an absent mod (the wheelhouse parts without Create) gives way to the ruin's loot.
+          if (!RuinPlacement.lootExists(level, loot)) loot = definition.loot();
+          String expected = loot;
           helper.assertTrue(level.getBlockEntity(marker.pos()) instanceof RandomizableContainerBlockEntity container
-              && container.getLootTable() != null && container.getLootTable().location().toString().equals(loot),
+              && container.getLootTable() != null && container.getLootTable().location().toString().equals(expected),
               "Container without its loot at " + marker);
           if (RuinRegistry.modLoaded("lootr"))
             helper.assertTrue(BuiltInRegistries.BLOCK.getKey(state.getBlock()).getNamespace().equals("lootr"),
                 "Not a Lootr container: " + state);
         }
+        case PART, SANDBOX -> helper.assertTrue(state.isAir(), "A missing piece or the sandbox is not empty: " + marker);
+        case MODBLOCK -> {
+          var expected = RuinRegistry.modLoaded(marker.marker().param("mod", "")) ? RuinPlacement.blockOf(marker.marker()) : null;
+          helper.assertTrue(expected == null ? state.isAir() : state.is(expected.getBlock()), "Mod block cell holds " + state + ": " + marker);
+        }
+        case NOTE -> helper.assertTrue(state.getBlock() instanceof net.minecraft.world.level.block.LecternBlock
+            && state.getValue(net.minecraft.world.level.block.LecternBlock.HAS_BOOK), "No note on its lectern: " + marker);
         default -> {
           var expected = RuinPlacement.blockOf(marker.marker());
           if (expected != null)
@@ -283,7 +310,7 @@ public final class RuntimeGameTestsRuins {
     var copy = new RuinDefinitions.Definition("entrelumen:qa_" + definition.name() + "_"
         + UUID.randomUUID().toString().substring(0, 6), definition.act(), definition.dimension(), definition.mods(),
         definition.scale(), definition.template(), definition.placement(), definition.piece(), definition.project(),
-        definition.loot(), definition.challenges(), definition.gates(), definition.pedestal());
+        definition.loot(), definition.challenges(), definition.gates(), definition.pedestal(), definition.dormant());
     RuinRegistry.add(copy);
     return copy;
   }
@@ -865,6 +892,9 @@ public final class RuntimeGameTestsRuins {
       case HIDDEN -> {
         for (var hidden : ruin.markers(RuinMarkers.Kind.HIDDEN, c)) click(player, hidden.pos());
       }
+      // The engine plays in RuinWorkshopFullpackGameTests with real Create builds; here the pedestal,
+      // the gates and the second team are what the case checks, so the engine is credited directly.
+      case PUMPS, SEAL -> RuinChallenges.solve(level, ruin, definition, c, context(player).campaignId(), context(player).founder());
     }
     helper.assertTrue(team(player).solved.contains(RuinProgress.key(definition.id(), c)),
         definition.id() + ": " + c + " (" + challenge.type() + ") was not solved from its markers");

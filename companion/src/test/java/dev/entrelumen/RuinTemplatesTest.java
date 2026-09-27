@@ -64,7 +64,8 @@ class RuinTemplatesTest {
       assertFalse(found.of(RuinMarkers.Kind.CHEST).isEmpty(), id + ": loot");
       for (var marker : found.markers()) {
         if (marker.kind().challenge())
-          assertTrue(definition.challenges().containsKey(marker.challenge()), id + ": marker for unknown challenge " + marker);
+          assertTrue(definition.challenges().containsKey(marker.challenge()) || definition.dormant().contains(marker.challenge()),
+              id + ": marker for unknown challenge " + marker);
         if (marker.kind() == RuinMarkers.Kind.GATE)
           assertTrue(definition.gates().containsKey(marker.param("id", "")), id + ": gate without a rule " + marker);
       }
@@ -90,6 +91,9 @@ class RuinTemplatesTest {
           }
           case BOSS -> assertEquals(1, found.of(RuinMarkers.Kind.BOSS, c).size(), id + "/" + c);
           case HIDDEN -> assertFalse(found.of(RuinMarkers.Kind.HIDDEN, c).isEmpty(), id + "/" + c);
+          case PUMPS -> assertFalse(found.of(RuinMarkers.Kind.PUMP, c).isEmpty() || found.of(RuinMarkers.Kind.DRAIN).isEmpty(),
+              id + "/" + c);
+          case SEAL -> assertEquals(1, found.of(RuinMarkers.Kind.SEAL, c).size(), id + "/" + c);
         }
       }
       for (var marker : found.of(RuinMarkers.Kind.CHEST))
@@ -105,6 +109,54 @@ class RuinTemplatesTest {
     var found = read("entrelumen:ruins/sunken_workshop");
     assertEquals(1, found.of(RuinMarkers.Kind.CHEST).stream()
         .filter(m -> m.param("loot", "").equals("entrelumen:chests/ruin_act2_workshop")).count());
+  }
+
+  @Test
+  void theWorkshopCarriesTerrasEngine() throws Exception {
+    var found = read("entrelumen:ruins/sunken_workshop");
+    assertEquals(4, found.of(RuinMarkers.Kind.WHEEL).size(), "Four wheels");
+    var pumps = found.of(RuinMarkers.Kind.PUMP, "engine");
+    assertEquals(4, pumps.size());
+    assertEquals(2, pumps.stream().filter(p -> p.turn() > 0).count(), "Two pumps turn one way, two the other");
+    for (var pump : pumps) assertTrue(pump.block().startsWith("create:mechanical_pump[facing=up"), pump.toString());
+    var parts = found.of(RuinMarkers.Kind.PART);
+    assertEquals(4, parts.size(), "One missing piece per wheelhouse");
+    assertEquals(3, parts.stream().map(RuinMarkers.Marker::block).map(b -> b.substring(0, b.indexOf('['))).distinct().count(),
+        "The pieces differ: gearboxes, a shaft and a cogwheel");
+    var sandbox = found.of(RuinMarkers.Kind.SANDBOX);
+    assertEquals(1, sandbox.size());
+    assertEquals(4.5, sandbox.getFirst().radius(), "A disc of nine blocks across");
+    var seal = found.of(RuinMarkers.Kind.SEAL, "seal");
+    assertEquals(1, seal.size());
+    assertEquals("2", seal.getFirst().param("scroll", ""), "The bearing never places its ring back by itself");
+    assertEquals(4, found.of(RuinMarkers.Kind.MODBLOCK).size(), "The ring plugs the four shafts only with Create");
+    assertEquals(16, found.of(RuinMarkers.Kind.SLUICE).size());
+    var levers = found.of(RuinMarkers.Kind.LEVER, "sluices");
+    assertEquals(8, levers.size());
+    assertEquals(Set.of("1", "2", "3", "4"), levers.stream().map(l -> l.param("sluice", "")).collect(java.util.stream.Collectors.toSet()));
+    assertEquals(Set.of("engine", "house1", "house2", "house3", "house4"),
+        found.of(RuinMarkers.Kind.NOTE).stream().map(n -> n.param("key", "")).collect(java.util.stream.Collectors.toSet()));
+    assertEquals(1, found.of(RuinMarkers.Kind.RETURNS).size());
+    assertEquals(Set.of("input", "pump", "seal"),
+        found.of(RuinMarkers.Kind.PORT).stream().map(p -> p.param("role", "")).collect(java.util.stream.Collectors.toSet()));
+    assertEquals(8, found.of(RuinMarkers.Kind.CHEST).stream()
+        .filter(m -> m.param("loot", "").equals("entrelumen:chests/ruin_act2_wheelhouse")).count(), "A barrel of parts per house side");
+    var en = json(RESOURCES.resolve("assets/entrelumen/lang/en_us.json"));
+    var es = json(RESOURCES.resolve("assets/entrelumen/lang/es_es.json"));
+    for (String key : List.of("engine", "house1", "house2", "house3", "house4"))
+      for (var lang : List.of(en, es)) assertTrue(lang.has("entrelumen.ruin.note." + key), key);
+    assertTrue(en.get("entrelumen.ruin.note.house2").getAsString().contains("%s"), "The pumps note names R");
+    assertTrue(es.get("entrelumen.ruin.note.house2").getAsString().contains("%s"), "The pumps note names R");
+    var sandboxTag = json(RESOURCES.resolve("data/entrelumen/tags/block/ruin/sandbox.json")).toString();
+    for (String part : List.of("create:shaft", "create:gearbox", "create:sequenced_gearshift", "minecraft:redstone_wire"))
+      assertTrue(sandboxTag.contains("\"" + part + "\""), part);
+    for (String banned : List.of("create:creative_motor", "create:rotation_speed_controller", "create:hand_crank",
+        "create:water_wheel", "create:large_water_wheel", "create:windmill_bearing", "create:steam_engine", "create:mechanical_bearing"))
+      assertFalse(sandboxTag.contains("\"" + banned + "\""), banned);
+    var solution = Path.of("src/fullpackGameTest/resources/data/entrelumen/ruin_solution/sunken_workshop.json");
+    var builds = json(solution);
+    assertEquals(128, builds.get("rpm").getAsInt(), "R for the pack's Create defaults");
+    assertEquals(Set.of("correct", "wrong", "overstress", "seal"), builds.getAsJsonObject("builds").keySet());
   }
 
   @Test

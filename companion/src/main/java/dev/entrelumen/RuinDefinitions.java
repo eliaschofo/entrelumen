@@ -23,7 +23,12 @@ public final class RuinDefinitions {
   /** Overworld ruins wait for the first team to open their act; others for the first arrival. */
   public enum Trigger { ACT, ARRIVAL }
 
-  public enum ChallengeType { BRAZIERS, MIRRORS, REDSTONE, OFFERING, BOSS, HIDDEN }
+  /**
+   * PUMPS: the ruin's pumps turn together, each its own way, at {@code rpm} or faster (0: computed from
+   * Create's stress values, see {@link RuinRules#pumpSpeed}). SEAL: a bearing holds its ring at
+   * {@code angle} degrees (plus multiples of 90) within {@code tolerance}, at rest for {@code rest} ticks.
+   */
+  public enum ChallengeType { BRAZIERS, MIRRORS, REDSTONE, OFFERING, BOSS, HIDDEN, PUMPS, SEAL }
 
   /** The mobs of a boss challenge: {@code count} copies share one boss bar. */
   public record Boss(String entity, String name, int count, int radius, String color,
@@ -33,23 +38,40 @@ public final class RuinDefinitions {
     }
   }
 
+  /** A pump or seal challenge's numbers (unused by the other types). */
+  public record Engine(int rpm, int angle, int tolerance, int rest) {
+    public static final Engine DEFAULT = new Engine(0, 45, 3, 60);
+  }
+
   /**
    * One challenge. {@code requires} lists challenges the team must solve first (declared earlier);
    * {@code item}/{@code count} are the offering default for sockets that name none, and
    * {@code need} how many sockets must be filled (0: all).
    */
   public record Challenge(String id, ChallengeType type, List<String> requires, String item, int count,
-      int need, Boss boss) {
+      int need, Boss boss, Engine engine) {
     public Challenge {
       requires = List.copyOf(requires);
+      engine = engine == null ? Engine.DEFAULT : engine;
+    }
+
+    public Challenge(String id, ChallengeType type, List<String> requires, String item, int count, int need, Boss boss) {
+      this(id, type, requires, item, count, need, boss, Engine.DEFAULT);
     }
   }
 
   public record Placement(Mode mode, Trigger trigger, int min, int max) {}
 
+  /**
+   * {@code challenges} holds the challenges that play with the loaded mods; {@code dormant} names the
+   * declared ones that do not (a challenge's {@code mods} missing, or one of its {@code without}
+   * present), whose markers are then ignored. Gates, the pedestal and {@code requires} list only
+   * playing challenges.
+   */
   public record Definition(String id, int act, String dimension, List<String> mods, Scale scale,
       String template, Placement placement, String piece, String project, String loot,
-      Map<String, Challenge> challenges, Map<String, List<String>> gates, List<String> pedestal) {
+      Map<String, Challenge> challenges, Map<String, List<String>> gates, List<String> pedestal,
+      Set<String> dormant) {
     public Definition {
       mods = List.copyOf(mods);
       challenges = Collections.unmodifiableMap(new LinkedHashMap<>(challenges));
@@ -57,6 +79,14 @@ public final class RuinDefinitions {
       gates.forEach((gate, needs) -> copy.put(gate, List.copyOf(needs)));
       gates = Collections.unmodifiableMap(copy);
       pedestal = List.copyOf(pedestal);
+      dormant = Collections.unmodifiableSet(new TreeSet<>(dormant));
+    }
+
+    public Definition(String id, int act, String dimension, List<String> mods, Scale scale, String template,
+        Placement placement, String piece, String project, String loot, Map<String, Challenge> challenges,
+        Map<String, List<String>> gates, List<String> pedestal) {
+      this(id, act, dimension, mods, scale, template, placement, piece, project, loot, challenges, gates, pedestal,
+          Set.of());
     }
 
     /** The id's path: {@code entrelumen:signal_tower} gives {@code signal_tower}. */
@@ -104,7 +134,8 @@ public final class RuinDefinitions {
     String project = string(object, "project", path);
     if (!project.matches("[a-z0-9_]{1,128}")) throw invalid(path + ".project", "expected a project id");
     String loot = object.has("loot") ? location(string(object, "loot", path), path + ".loot") : "";
-    Map<String, Challenge> challenges = new LinkedHashMap<>();
+    Map<String, Challenge> declared = new LinkedHashMap<>();
+    Set<String> dormant = new TreeSet<>();
     if (object.has("challenges")) {
       if (!object.get("challenges").isJsonObject()) throw invalid(path + ".challenges", "expected an object");
       for (var entry : object.getAsJsonObject("challenges").entrySet()) {
@@ -112,23 +143,49 @@ public final class RuinDefinitions {
         String at = path + ".challenges." + challenge;
         if (!challenge.matches("[a-z0-9_]{1,32}")) throw invalid(at, "bad challenge id");
         if (!entry.getValue().isJsonObject()) throw invalid(at, "expected an object");
-        challenges.put(challenge, challenge(challenge, entry.getValue().getAsJsonObject(), at,
-            available, items, entities, challenges.keySet()));
+        JsonObject body = entry.getValue().getAsJsonObject();
+        boolean plays = modList(body, "mods", at).stream().allMatch(modLoaded)
+            && modList(body, "without", at).stream().noneMatch(modLoaded);
+        declared.put(challenge, challenge(challenge, body, at, available && plays, items, entities, declared.keySet()));
+        if (!plays) dormant.add(challenge);
       }
     }
+    Map<String, Challenge> challenges = new LinkedHashMap<>();
+    declared.forEach((key, challenge) -> {
+      if (dormant.contains(key)) return;
+      challenges.put(key, new Challenge(challenge.id(), challenge.type(),
+          challenge.requires().stream().filter(r -> !dormant.contains(r)).toList(), challenge.item(), challenge.count(),
+          challenge.need(), challenge.boss(), challenge.engine()));
+    });
     Map<String, List<String>> gates = new LinkedHashMap<>();
     if (object.has("gates")) {
       if (!object.get("gates").isJsonObject()) throw invalid(path + ".gates", "expected an object");
       for (var entry : object.getAsJsonObject("gates").entrySet()) {
         if (!entry.getKey().matches("[a-z0-9_]{1,32}")) throw invalid(path + ".gates", "bad gate id");
-        gates.put(entry.getKey(), references(entry.getValue(), challenges, path + ".gates." + entry.getKey()));
+        var needs = references(entry.getValue(), declared, path + ".gates." + entry.getKey());
+        var playing = needs.stream().filter(c -> !dormant.contains(c)).toList();
+        if (playing.isEmpty() && !needs.isEmpty())
+          throw invalid(path + ".gates." + entry.getKey(), "no challenge that opens it plays with these mods");
+        gates.put(entry.getKey(), playing);
       }
     }
     List<String> pedestal = object.has("pedestal")
-        ? references(object.get("pedestal"), challenges, path + ".pedestal")
+        ? references(object.get("pedestal"), declared, path + ".pedestal").stream().filter(c -> !dormant.contains(c)).toList()
         : List.copyOf(challenges.keySet());
     return new Definition(id, act, dimension, mods, scale, template, placement, piece, project, loot,
-        challenges, gates, pedestal);
+        challenges, gates, pedestal, dormant);
+  }
+
+  private static List<String> modList(JsonObject object, String field, String path) {
+    if (!object.has(field)) return List.of();
+    if (!object.get(field).isJsonArray()) throw invalid(path + "." + field, "expected mod ids");
+    List<String> mods = new ArrayList<>();
+    for (JsonElement mod : object.getAsJsonArray(field)) {
+      if (!mod.isJsonPrimitive() || !mod.getAsString().matches("[a-z0-9_.-]{1,64}"))
+        throw invalid(path + "." + field, "expected mod ids");
+      mods.add(mod.getAsString());
+    }
+    return mods;
   }
 
   private static Placement placement(JsonObject object, String dimension, String path) {
@@ -152,7 +209,7 @@ public final class RuinDefinitions {
   private static Challenge challenge(String id, JsonObject object, String path, boolean available,
       Predicate<String> items, Predicate<String> entities, Set<String> earlier) {
     allow(object, path, "type", "requires", "item", "count", "need", "entity", "name", "radius", "color",
-        "attributes");
+        "attributes", "mods", "without", "rpm", "angle", "tolerance", "rest");
     ChallengeType type = enumValue(ChallengeType.class, string(object, "type", path), path + ".type");
     List<String> requires = new ArrayList<>();
     if (object.has("requires")) {
@@ -211,7 +268,17 @@ public final class RuinDefinitions {
       if (type != ChallengeType.OFFERING) throw invalid(path + ".need", "only offerings take a need");
       need = integer(object, "need", path, 1, 64);
     }
-    return new Challenge(id, type, requires, item, count, need, boss);
+    Engine engine = Engine.DEFAULT;
+    if (object.has("rpm") && type != ChallengeType.PUMPS) throw invalid(path + ".rpm", "only pumps take an rpm");
+    for (String field : List.of("angle", "tolerance", "rest"))
+      if (object.has(field) && type != ChallengeType.SEAL) throw invalid(path + "." + field, "only seals take " + field);
+    if (type == ChallengeType.PUMPS)
+      engine = new Engine(object.has("rpm") ? integer(object, "rpm", path, 1, 256) : 0, 45, 3, 60);
+    if (type == ChallengeType.SEAL)
+      engine = new Engine(0, object.has("angle") ? integer(object, "angle", path, 0, 89) : 45,
+          object.has("tolerance") ? integer(object, "tolerance", path, 1, 20) : 3,
+          object.has("rest") ? integer(object, "rest", path, 1, 1200) : 60);
+    return new Challenge(id, type, requires, item, count, need, boss, engine);
   }
 
   private static List<String> references(JsonElement element, Map<String, Challenge> challenges, String path) {

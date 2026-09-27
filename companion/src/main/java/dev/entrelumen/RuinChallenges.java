@@ -399,11 +399,18 @@ public final class RuinChallenges {
       solve(level, node.ruin(), definition, challenge, campaign, founder);
   }
 
-  /** Records a lever or button used anywhere in a ruin, for its redstone locks. */
+  /** Records a lever or button used anywhere in a ruin, for its redstone locks and its engine. */
   static void credit(ServerLevel level, BlockPos pos, HeliodorCompass.Context context) {
     for (var ruin : RuinData.get(level.getServer()).ruins())
       if (ruin.contains(level.dimension(), pos))
         state(level.getServer()).credits.put(ruin.id(), new Credit(context.campaignId(), context.founder(), level.getGameTime()));
+  }
+
+  /** The team that last worked a ruin within {@code maxAge} ticks, or null. */
+  @Nullable
+  static Credit lastCredit(MinecraftServer server, ResourceLocation ruin, int maxAge) {
+    Credit credit = state(server).credits.get(ruin);
+    return credit != null && server.overworld().getGameTime() - credit.tick() <= maxAge ? credit : null;
   }
 
   // ---- Solving --------------------------------------------------------------------------------
@@ -524,6 +531,7 @@ public final class RuinChallenges {
           progress.setDirty();
           ItemStack stack = KeyPieces.bound(item, context.campaignId(), piece.id(), generation + 1);
           if (!player.getInventory().add(stack)) player.drop(stack, false);
+          if (piece == definition) RuinWorkshop.claimed(level, ruin);
           lines.add(Component.translatable(generation == 0 ? "entrelumen.ruin.pedestal.given"
               : "entrelumen.ruin.pedestal.again", name));
           level.playSound(null, player.blockPosition(), SoundEvents.AMETHYST_BLOCK_CHIME, SoundSource.PLAYERS, 1f, 0.8f);

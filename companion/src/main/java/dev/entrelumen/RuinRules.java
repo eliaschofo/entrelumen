@@ -178,4 +178,65 @@ public final class RuinRules {
     }
     return -1;
   }
+  // ---- The Sunken Workshop's engine (docs/design/heliodor-ruins.md, "El Motor de Terra") --------
+
+  /** Create's fastest rotation (CKinetics.maxRotationSpeed default); R never asks for more. */
+  public static final int MAX_RPM = 256;
+
+  /**
+   * R, the pump speed the workshop asks for: the fastest {@code wheelRpm * 2^k} at which {@code pumps}
+   * pumps still fit in the stress capacity of {@code wheels} wheels merged. Create overstresses a
+   * network only when its stress exceeds its capacity, so at R the merged wheels just carry the
+   * pumps, one wheel alone cannot, and 2R overstresses. 0 when the numbers make no engine.
+   */
+  public static int pumpSpeed(double wheelCapacity, int wheelRpm, double pumpImpact, int wheels, int pumps) {
+    if (wheelRpm <= 0 || wheelCapacity <= 0 || pumpImpact <= 0 || wheels <= 0 || pumps <= 0) return 0;
+    double capacity = wheels * wheelCapacity * wheelRpm;
+    if (pumps * pumpImpact * wheelRpm > capacity) return 0;
+    int r = wheelRpm;
+    while (r * 2 <= MAX_RPM && pumps * pumpImpact * r * 2 <= capacity) r *= 2;
+    return r;
+  }
+
+  /** What one pump does: still, turning too slowly, turning the wrong way, or drinking. */
+  public enum Pump { STILL, SLOW, WRONG, DRINKING }
+
+  public static Pump pump(float speed, int turn, int rpm) {
+    if (speed == 0) return Pump.STILL;
+    if (Math.signum(speed) != Math.signum(turn)) return Pump.WRONG;
+    return Math.abs(speed) + 1e-3 >= rpm ? Pump.DRINKING : Pump.SLOW;
+  }
+
+  /**
+   * Whether the pit drains: every pump drinks (its own way, at R or faster) and all of them hang on
+   * one network, so that the four wheels are merged ({@code networks} null entries: no network).
+   */
+  public static boolean pumping(float[] speeds, int[] turns, Long[] networks, int rpm) {
+    if (rpm <= 0 || speeds.length == 0 || speeds.length != turns.length || speeds.length != networks.length) return false;
+    for (int i = 0; i < speeds.length; i++) {
+      if (pump(speeds[i], turns[i], rpm) != Pump.DRINKING) return false;
+      if (networks[i] == null || !networks[i].equals(networks[0])) return false;
+    }
+    return true;
+  }
+
+  /** Whether a bearing's angle is {@code target} degrees plus a multiple of 90, within {@code tolerance}. */
+  public static boolean aligned(float angle, int target, int tolerance) {
+    double a = ((angle % 90) + 90) % 90;
+    double diff = Math.abs(a - target);
+    return Math.min(diff, 90 - diff) <= tolerance + 1e-4;
+  }
+
+  /** Whether a cell lies in a sandbox: its box from {@code x0,y0,z0}, cut to a disc of {@code radius}. */
+  public static boolean inSandbox(int x, int y, int z, int x0, int y0, int z0, int[] size, double radius) {
+    if (x < x0 || y < y0 || z < z0 || x >= x0 + size[0] || y >= y0 + size[1] || z >= z0 + size[2]) return false;
+    if (radius <= 0) return true;
+    double dx = x - (x0 + (size[0] - 1) / 2.0), dz = z - (z0 + (size[2] - 1) / 2.0);
+    return dx * dx + dz * dz <= radius * radius + 1e-6;
+  }
+
+  /** Whether a ruin left empty since {@code emptySince} (-1: someone is there) is due to reset. */
+  public static boolean resetDue(long emptySince, long now, long delay) {
+    return emptySince >= 0 && now - emptySince >= delay;
+  }
 }

@@ -31,6 +31,7 @@ import net.minecraft.world.entity.decoration.ItemFrame;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.BucketItem;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
@@ -83,6 +84,52 @@ public final class StructureProtection {
   private static final Map<MinecraftServer, State> STATES = new WeakHashMap<>();
 
   private StructureProtection() {}
+
+  /**
+   * Cells where a structure lets players do what its region would refuse (the Sunken Workshop's
+   * engine room and wheelhouse sockets). Asked before a refusal; PASS leaves the verdict to the
+   * regions, DENY refuses with the exemption's own message.
+   */
+  public interface Exemption {
+    record Result(boolean decided, boolean allowed, String message) {
+      public static final Result PASS = new Result(false, false, "");
+      public static final Result ALLOW = new Result(true, true, "");
+
+      public static Result deny(String message) {
+        return new Result(true, false, message);
+      }
+    }
+
+    Result check(ServerLevel level, BlockPos pos, ProtectionRules.Action action, Player player, BlockState state,
+        ItemStack item);
+  }
+
+  private static final List<Exemption> EXEMPTIONS = new java.util.concurrent.CopyOnWriteArrayList<>();
+
+  public static void registerExemption(Exemption exemption) {
+    if (!EXEMPTIONS.contains(exemption)) EXEMPTIONS.add(exemption);
+  }
+
+  /** The first decided exemption for a player's action on a guarded cell, or PASS. */
+  static Exemption.Result exemption(ServerLevel level, BlockPos pos, ProtectionRules.Action action, Player player,
+      BlockState state, ItemStack item) {
+    if (player == null || EXEMPTIONS.isEmpty()) return Exemption.Result.PASS;
+    for (Exemption exemption : EXEMPTIONS) {
+      var result = exemption.check(level, pos, action, player, state, item);
+      if (result.decided()) return result;
+    }
+    return Exemption.Result.PASS;
+  }
+
+  private static void tell(Player player, Exemption.Result result) {
+    if (!(player instanceof ServerPlayer serverPlayer) || player instanceof FakePlayer) return;
+    State state = state(serverPlayer.server);
+    long now = serverPlayer.serverLevel().getGameTime();
+    Long last = state.lastMessage.get(player.getUUID());
+    if (last != null && now - last < MESSAGE_INTERVAL && now >= last) return;
+    state.lastMessage.put(player.getUUID(), now);
+    serverPlayer.displayClientMessage(Component.translatable(result.message()), true);
+  }
 
   private static volatile MinecraftServer lastServer;
   private static volatile State lastState;
@@ -358,8 +405,12 @@ public final class StructureProtection {
     if (level == null) return;
     var verdict = check(level, event.getPos(), ProtectionRules.Action.BREAK, actor(event.getPlayer()));
     if (!verdict.allowed()) {
+      var exempt = exemption(level, event.getPos(), ProtectionRules.Action.BREAK, event.getPlayer(), event.getState(),
+          ItemStack.EMPTY);
+      if (exempt.allowed()) return;
       event.setCanceled(true);
-      tell(event.getPlayer(), verdict);
+      if (exempt.decided()) tell(event.getPlayer(), exempt);
+      else tell(event.getPlayer(), verdict);
     }
   }
 
@@ -376,8 +427,15 @@ public final class StructureProtection {
     for (BlockPos pos : positions) {
       var verdict = check(level, pos, action, actor);
       if (!verdict.allowed()) {
+        BlockState placed = positions.size() == 1 ? event.getPlacedBlock() : level.getBlockState(pos);
+        var exempt = entity instanceof Player player
+            ? exemption(level, pos, action, player, placed, ItemStack.EMPTY) : Exemption.Result.PASS;
+        if (exempt.allowed()) continue;
         event.setCanceled(true);
-        if (entity instanceof Player player) tell(player, verdict);
+        if (entity instanceof Player player) {
+          if (exempt.decided()) tell(player, exempt);
+          else tell(player, verdict);
+        }
         return;
       }
     }
@@ -388,8 +446,12 @@ public final class StructureProtection {
     if (level == null || event.getAction() != PlayerInteractEvent.LeftClickBlock.Action.START) return;
     var verdict = check(level, event.getPos(), ProtectionRules.Action.BREAK, actor(event.getEntity()));
     if (!verdict.allowed()) {
+      var exempt = exemption(level, event.getPos(), ProtectionRules.Action.BREAK, event.getEntity(),
+          level.getBlockState(event.getPos()), ItemStack.EMPTY);
+      if (exempt.allowed()) return;
       event.setCanceled(true);
-      tell(event.getEntity(), verdict);
+      if (exempt.decided()) tell(event.getEntity(), exempt);
+      else tell(event.getEntity(), verdict);
     }
   }
 
@@ -401,12 +463,17 @@ public final class StructureProtection {
     if (regions.isEmpty()) return;
     var actor = actor(event.getEntity());
     BlockState state = level.getBlockState(pos);
-    var use = ProtectionRules.decide(regions, pos.getX(), pos.getY(), pos.getZ(),
-        classify(level, pos, state), actor);
+    var action = classify(level, pos, state);
+    var use = ProtectionRules.decide(regions, pos.getX(), pos.getY(), pos.getZ(), action, actor);
+    if (!use.allowed() && exemption(level, pos, action, event.getEntity(), state, event.getItemStack()).allowed())
+      use = ProtectionRules.Verdict.ALLOW;
     // Placement is judged where the block lands (EntityPlaceEvent); other items act on this block.
     boolean placing = event.getItemStack().getItem() instanceof BlockItem;
     var item = placing ? ProtectionRules.Verdict.ALLOW
         : ProtectionRules.decide(regions, pos.getX(), pos.getY(), pos.getZ(), ProtectionRules.Action.USE_ITEM, actor);
+    if (!item.allowed() && exemption(level, pos, ProtectionRules.Action.USE_ITEM, event.getEntity(), state,
+        event.getItemStack()).allowed())
+      item = ProtectionRules.Verdict.ALLOW;
     if (!use.allowed()) event.setUseBlock(TriState.FALSE);
     if (!item.allowed()) event.setUseItem(TriState.FALSE);
     if ((!use.allowed() && (!item.allowed() || event.getItemStack().isEmpty()))

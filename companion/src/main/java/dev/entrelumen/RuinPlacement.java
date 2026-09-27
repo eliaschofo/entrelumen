@@ -877,6 +877,7 @@ public final class RuinPlacement {
     var data = RuinData.get(level.getServer());
     data.add(ruin);
     StructureProtection.invalidate(level.getServer());
+    RuinWorkshop.placed(level, ruin);
     job.result = ruin;
     job.done = true;
     LOGGER.info("Placed Heliodor ruin {} at {} in {}: {} template blocks, {} markers, {} ms busy over {} ticks"
@@ -886,11 +887,14 @@ public final class RuinPlacement {
         String.format(Locale.ROOT, "%.0f", (System.nanoTime() - job.startedAt) / 1e6));
   }
 
-  /** Parses a marker's {@code block=} state; null when absent or unknown. */
+  /** Parses a marker's {@code block=} state; null when absent, unknown or of a mod that is not loaded. */
   @Nullable
   static BlockState blockOf(RuinMarkers.Marker marker) {
     String block = marker.block();
     if (block.isEmpty()) return null;
+    int colon = block.indexOf(':');
+    String namespace = colon < 0 ? "minecraft" : block.substring(0, colon);
+    if (!namespace.equals("minecraft") && !RuinRegistry.modLoaded(namespace)) return null;
     try {
       return BlockStateParser.parseForBlock(BuiltInRegistries.BLOCK.asLookup(), block, false).blockState();
     } catch (CommandSyntaxException e) {
@@ -915,15 +919,41 @@ public final class RuinPlacement {
           .setValue(RuinBlocks.CLIMB, "true".equals(marker.param("climb", "false")));
       case LOCK -> RuinContent.LOCK.get().defaultBlockState();
       case CHEST -> container(marker);
+      // A missing piece starts missing; the sandbox is air to build in.
+      case PART, SANDBOX -> Blocks.AIR.defaultBlockState();
+      case MODBLOCK -> RuinRegistry.modLoaded(marker.param("mod", "")) && blockOf(marker) != null
+          ? blockOf(marker) : Blocks.AIR.defaultBlockState();
       default -> Optional.ofNullable(blockOf(marker)).orElse(Blocks.AIR.defaultBlockState());
     };
     level.setBlock(pos, state, Block.UPDATE_CLIENTS);
     if (marker.kind() == RuinMarkers.Kind.CHEST) {
       String loot = marker.param("loot", definition == null ? "" : definition.loot());
+      // A table of a mod that is not loaded is absent: the ruin's own loot fills the chest instead.
+      if (!loot.isEmpty() && definition != null && !definition.loot().isEmpty() && !lootExists(level, loot))
+        loot = definition.loot();
       if (!loot.isEmpty())
         RandomizableContainer.setBlockEntityLootTable(level, level.getRandom(), pos,
             ResourceKey.create(Registries.LOOT_TABLE, ResourceLocation.parse(loot)));
     }
+    if (marker.params().containsKey("scroll")) {
+      var entity = level.getBlockEntity(pos);
+      var tag = RuinWorkshop.scroll(marker);
+      if (entity != null && tag != null) {
+        CompoundTag data = entity.saveWithoutMetadata(level.registryAccess());
+        data.merge(tag);
+        entity.loadWithComponents(data, level.registryAccess());
+        entity.setChanged();
+      }
+    }
+    if (marker.kind() == RuinMarkers.Kind.NOTE && state.getBlock() instanceof net.minecraft.world.level.block.LecternBlock
+        && !state.getValue(net.minecraft.world.level.block.LecternBlock.HAS_BOOK))
+      net.minecraft.world.level.block.LecternBlock.tryPlaceBook(null, level, pos, state,
+          RuinWorkshop.note(marker.param("key", "engine"), 0));
+  }
+
+  static boolean lootExists(ServerLevel level, String id) {
+    var key = ResourceKey.create(Registries.LOOT_TABLE, ResourceLocation.parse(id));
+    return level.getServer().reloadableRegistries().getLootTable(key) != LootTable.EMPTY;
   }
 
   /** The marker's chest or barrel, as its Lootr counterpart when Lootr is loaded. */

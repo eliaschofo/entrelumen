@@ -79,4 +79,33 @@ class RuinMarkersTest {
     assertFalse(RuinMarkers.Kind.GATE.challenge(), "Gates open by a definition's list, not one challenge");
     assertEquals(Map.of("challenge", "a", "order", "2"), parse("brazier challenge=a order=2").params());
   }
+  @Test
+  void theEngineMarkersParse() {
+    var sandbox = parse("sandbox size=9,5,9 radius=4.5");
+    assertArrayEquals(new int[] {9, 5, 9}, sandbox.size());
+    assertEquals(4.5, sandbox.radius());
+    assertEquals(0, parse("sandbox size=3,3,3").radius(), "No radius keeps the whole box");
+    var pump = parse("pump challenge=engine turn=- intake=2,-6,1 block=create:mechanical_pump[facing=up,waterlogged=false]");
+    assertEquals(-1, pump.turn());
+    assertArrayEquals(new int[] {2, -6, 1}, pump.triple("intake", "0,0,0"));
+    assertEquals(1, parse("pump challenge=engine turn=+ block=create:mechanical_pump[facing=up]").turn());
+    assertTrue(pump.kind().challenge());
+    assertEquals("create:gearbox[axis=z]", parse("part block=create:gearbox[axis=z]").block());
+    assertFalse(RuinMarkers.Kind.PART.ownBlock(), "A part names the piece it takes");
+    assertEquals("2", parse("seal challenge=seal scroll=2 block=create:mechanical_bearing[facing=down]").param("scroll", ""));
+    assertEquals("3", parse("lever challenge=sluices sluice=3").param("sluice", ""));
+    assertEquals("pump", parse("port role=pump block=create:shaft[axis=y]").param("role", ""));
+    for (String metadata : List.of("sandbox size=9,5,9 radius=4.5", "part block=create:shaft[axis=y,waterlogged=false]",
+        "pump challenge=engine turn=- intake=2,-6,1 block=create:mechanical_pump[facing=up]", "port role=input",
+        "seal challenge=seal scroll=2 block=create:mechanical_bearing[facing=down]", "sluice id=1 block=minecraft:waxed_copper_block",
+        "wheel block=create:large_water_wheel[axis=z,extension=false]", "note key=house2 block=minecraft:lectern[facing=north]",
+        "returns block=minecraft:barrel[facing=up,open=false]", "modblock mod=create block=minecraft:waxed_copper_block"))
+      assertEquals(parse(metadata), parse(parse(metadata).metadata()), "Round trip of " + metadata);
+    for (String metadata : List.of("sandbox size=9,5", "sandbox size=9,5,9 radius=0", "sandbox size=9,5,9 radius=wide",
+        "part", "pump challenge=engine block=create:mechanical_pump", "pump challenge=engine turn=x block=create:mechanical_pump",
+        "pump challenge=engine turn=+ intake=1,2 block=create:mechanical_pump", "port role=output", "port",
+        "seal challenge=seal block=create:mechanical_bearing scroll=99", "sluice", "sluice id=A", "note",
+        "modblock block=minecraft:stone", "modblock mod=create", "wheel", "lever challenge=a sluice=Bad"))
+      assertThrows(IllegalArgumentException.class, () -> RuinMarkers.parse(metadata), metadata);
+  }
 }

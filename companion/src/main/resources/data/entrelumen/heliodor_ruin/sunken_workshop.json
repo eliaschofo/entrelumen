@@ -25,16 +25,40 @@
       }
     },
     "sluices": {
-      "type": "redstone"
+      "type": "redstone",
+      "without": [
+        "create"
+      ]
+    },
+    "engine": {
+      "type": "pumps",
+      "mods": [
+        "create"
+      ]
+    },
+    "seal": {
+      "type": "seal",
+      "mods": [
+        "create"
+      ],
+      "requires": [
+        "engine"
+      ],
+      "angle": 45,
+      "tolerance": 3,
+      "rest": 60
     }
   },
   "gates": {
     "vault": [
-      "sluices"
+      "sluices",
+      "seal"
     ]
   },
   "pedestal": [
     "drowned",
-    "sluices"
-  ]
+    "sluices",
+    "seal"
+  ],
+  "note": "With Create, Terra's Engine: the four wheels merged drain the pit through the pumps at R RPM or faster (R from the pack's Create stress values), then the seal ring held at an eighth of a turn opens the vault. Without Create, the eight sluice levers drain it."
 }

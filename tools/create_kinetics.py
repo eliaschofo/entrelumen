@@ -150,6 +150,33 @@ def modifier(result: Result, a_pos, a: Block, b_pos, b: Block) -> float:
     return 0.0
 
 
+def rotate90(v, axis: str):
+    """net.createmod.catnip.math.VecHelper.rotate(v, 90, axis)."""
+    x, y, z = v
+    return {"x": (x, -z, y), "y": (z, y, -x), "z": (-y, x, z)}[axis]
+
+
+def water_wheel_speed(axis: str, flow, rpm: int = 4) -> int:
+    """A large water wheel's generated speed (WaterWheelBlockEntity.determineAndApplyFlowScore and
+    getGeneratedSpeed) when water flows along ``flow`` through the three rim cells under its centre."""
+    i = AXES.index(axis)
+    across = next(a for a in range(3) if a != i and a != 1)
+    score = 0
+    for t in (-1, 0, 1):
+        off = [0, -2, 0]
+        off[across] = t
+        length = sum(c * c for c in off) ** 0.5
+        tangent = rotate90(tuple(c / length for c in off), axis)
+        plane = [0.0 if j == i else float(flow[j]) for j in range(3)]
+        norm = sum(c * c for c in plane) ** 0.5
+        if norm == 0:
+            continue
+        d = sum(plane[j] / norm * tangent[j] for j in range(3))
+        if abs(d) > 0.5:
+            score += 1 if d > 0 else -1
+    return max(-1, min(1, score)) * rpm          # clamp(score, -1, 1) * 8 / size, size 2
+
+
 def neighbours(pos, block: Block):
     x, y, z = pos
     for d in DIRECTIONS.values():

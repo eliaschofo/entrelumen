@@ -48,7 +48,30 @@ public final class RuinMarkers {
     /** Where the ruin is entered; {@code spawn} is accepted for the start ruin. */
     ARRIVAL,
     /** The template layer that meets the terrain surface (default: layer 0). */
-    GROUND;
+    GROUND,
+    /**
+     * Where players may build: a box of {@code size=x,y,z} from this cell, cut to a disc of
+     * {@code radius} around its centre. Only the blocks of {@code #entrelumen:ruin/sandbox} go in.
+     */
+    SANDBOX,
+    /** A missing piece the player puts back: only {@code block}'s block goes in this cell. */
+    PART,
+    /** A pump the engine drives: {@code challenge}, {@code turn} (+ or -), {@code intake} offset. */
+    PUMP,
+    /** Where a transmission meets the builders: {@code role} input, pump or seal. */
+    PORT,
+    /** The bearing of a seal ring: {@code challenge}; {@code scroll} is its movement mode. */
+    SEAL,
+    /** One cell of sluice {@code id}: open (air) while one of its levers is on. */
+    SLUICE,
+    /** A water wheel, placed last so that its frame has room. */
+    WHEEL,
+    /** A lectern with one of Terra's notes: {@code key}. */
+    NOTE,
+    /** The barrel where parts left in the ruin come back when it resets. */
+    RETURNS,
+    /** A block that stands only when {@code mod} is loaded (air otherwise). */
+    MODBLOCK;
 
     public String id() {
       return name().toLowerCase(Locale.ROOT);
@@ -57,7 +80,7 @@ public final class RuinMarkers {
     /** Kinds that belong to one challenge. */
     public boolean challenge() {
       return switch (this) {
-        case BRAZIER, LAMP, MIRROR, RECEPTOR, LEVER, LOCK, SOCKET, HIDDEN, BOSS, DRAIN -> true;
+        case BRAZIER, LAMP, MIRROR, RECEPTOR, LEVER, LOCK, SOCKET, HIDDEN, BOSS, DRAIN, PUMP, SEAL -> true;
         default -> false;
       };
     }
@@ -68,6 +91,9 @@ public final class RuinMarkers {
           || this == LOCK;
     }
   }
+
+  public static final List<String> PORT_ROLES = List.of("input", "pump", "seal");
+  public static final double MAX_SANDBOX_RADIUS = 16;
 
   /** The looks a hidden trigger or a gate cell can take ({@code seal} is a pale light). */
   public static final List<String> LOOKS = List.of("seal", "tuff_bricks", "polished_tuff", "calcite",
@@ -106,10 +132,25 @@ public final class RuinMarkers {
       return params.getOrDefault("block", "");
     }
 
-    /** {@code size=x,y,z} of a drain, in blocks from the marker cell. */
+    /** {@code size=x,y,z} of a drain or a sandbox, in blocks from the marker cell. */
     public int[] size() {
-      String[] parts = params.getOrDefault("size", "1,1,1").split(",");
+      return triple("size", "1,1,1");
+    }
+
+    /** An {@code x,y,z} parameter, such as a pump's {@code intake} offset. */
+    public int[] triple(String key, String fallback) {
+      String[] parts = params.getOrDefault(key, fallback).split(",");
       return new int[] {Integer.parseInt(parts[0]), Integer.parseInt(parts[1]), Integer.parseInt(parts[2])};
+    }
+
+    /** A sandbox's disc radius; 0 keeps the whole box. */
+    public double radius() {
+      return Double.parseDouble(params.getOrDefault("radius", "0"));
+    }
+
+    /** A pump's required turn: +1 or -1 (Create's speed sign along the pump's axis). */
+    public int turn() {
+      return "-".equals(params.get("turn")) ? -1 : 1;
     }
 
     /** The metadata that parses back to this marker. */
@@ -155,25 +196,61 @@ public final class RuinMarkers {
       case BRAZIER -> Set.of("challenge", "order");
       case LAMP, RECEPTOR, LOCK, BOSS -> Set.of("challenge");
       case MIRROR -> Set.of("challenge", "facing");
-      case LEVER -> Set.of("challenge", "on");
+      case LEVER -> Set.of("challenge", "on", "sluice");
       case SOCKET -> Set.of("challenge", "item", "count", "look");
       case HIDDEN -> Set.of("challenge", "look");
       case GATE -> Set.of("id", "look", "climb");
       case DRAIN -> Set.of("challenge", "size");
       case LORE -> Set.of("radius", "height");
+      case SANDBOX -> Set.of("size", "radius");
+      case PART, WHEEL, RETURNS -> Set.<String>of();
+      case PUMP -> Set.of("challenge", "turn", "intake");
+      case PORT -> Set.of("role");
+      case SEAL -> Set.of("challenge", "scroll");
+      case SLUICE -> Set.of("id");
+      case NOTE -> Set.of("key");
+      case MODBLOCK -> Set.of("mod");
     });
     allowed.add("block");
     for (String key : params.keySet())
       if (!allowed.contains(key)) throw invalid(metadata, "unknown key " + key + " for " + kind.id());
     if (kind.challenge()) requireId(params, "challenge", metadata);
-    if (kind == Kind.GATE) requireId(params, "id", metadata);
+    if (kind == Kind.GATE || kind == Kind.SLUICE) requireId(params, "id", metadata);
+    if (kind == Kind.NOTE) requireId(params, "key", metadata);
+    if (kind == Kind.MODBLOCK) requireId(params, "mod", metadata);
+    if ((kind == Kind.PART || kind == Kind.MODBLOCK || kind == Kind.WHEEL || kind == Kind.PUMP || kind == Kind.SEAL)
+        && !params.containsKey("block"))
+      throw invalid(metadata, kind.id() + " needs block=");
     if (params.containsKey("block") && !params.get("block").matches(
         "([a-z0-9_.-]+:)?[a-z0-9_./-]+(\\[[a-z0-9_]+=[a-z0-9_]+(,[a-z0-9_]+=[a-z0-9_]+)*])?"))
       throw invalid(metadata, "bad block state " + params.get("block"));
     switch (kind) {
       case BRAZIER -> integer(params, "order", 1, 64, false, metadata);
       case MIRROR -> oneOf(params, "facing", DIRECTIONS, true, metadata);
-      case LEVER -> oneOf(params, "on", List.of("true", "false"), false, metadata);
+      case LEVER -> {
+        oneOf(params, "on", List.of("true", "false"), false, metadata);
+        if (params.containsKey("sluice")) requireId(params, "sluice", metadata);
+      }
+      case SANDBOX -> {
+        size(params, metadata);
+        String radius = params.get("radius");
+        if (radius != null) {
+          double value;
+          try {
+            value = Double.parseDouble(radius);
+          } catch (NumberFormatException e) {
+            throw invalid(metadata, "radius must be a number");
+          }
+          if (!(value > 0 && value <= MAX_SANDBOX_RADIUS)) throw invalid(metadata, "radius must be 0.." + MAX_SANDBOX_RADIUS);
+        }
+      }
+      case PUMP -> {
+        oneOf(params, "turn", List.of("+", "-"), true, metadata);
+        if (params.containsKey("intake") && !params.get("intake").matches("-?\\d{1,3},-?\\d{1,3},-?\\d{1,3}"))
+          throw invalid(metadata, "intake must be x,y,z");
+      }
+      case PORT -> oneOf(params, "role", PORT_ROLES, true, metadata);
+      case SEAL -> integer(params, "scroll", 0, 64, false, metadata);
       case CHEST -> {
         if (params.containsKey("loot")) location(params.get("loot"), false, metadata);
       }
@@ -187,20 +264,22 @@ public final class RuinMarkers {
         oneOf(params, "look", LOOKS, false, metadata);
         oneOf(params, "climb", List.of("true", "false"), false, metadata);
       }
-      case DRAIN -> {
-        String size = params.get("size");
-        if (size == null || !size.matches("\\d{1,3},\\d{1,3},\\d{1,3}"))
-          throw invalid(metadata, "size must be x,y,z");
-        for (String part : size.split(","))
-          if (Integer.parseInt(part) < 1 || Integer.parseInt(part) > MAX_DRAIN)
-            throw invalid(metadata, "size must be 1.." + MAX_DRAIN + " per axis");
-      }
+      case DRAIN -> size(params, metadata);
       case LORE -> {
         integer(params, "radius", 0, MAX_LORE_RADIUS, false, metadata);
         integer(params, "height", 1, MAX_LORE_HEIGHT, false, metadata);
       }
       default -> {}
     }
+  }
+
+  private static void size(Map<String, String> params, String metadata) {
+    String size = params.get("size");
+    if (size == null || !size.matches("\\d{1,3},\\d{1,3},\\d{1,3}"))
+      throw invalid(metadata, "size must be x,y,z");
+    for (String part : size.split(","))
+      if (Integer.parseInt(part) < 1 || Integer.parseInt(part) > MAX_DRAIN)
+        throw invalid(metadata, "size must be 1.." + MAX_DRAIN + " per axis");
   }
 
   private static void requireId(Map<String, String> params, String key, String metadata) {

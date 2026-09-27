@@ -79,13 +79,16 @@ public final class RuinContent {
       RuinChallenges.tick(event.getServer());
       RuinBosses.tick(event.getServer());
       RuinGates.tick(event.getServer());
+      RuinWorkshop.tick(event.getServer());
     });
     events.addListener((ServerStartedEvent event) -> RuinPlacement.resumeReserved(event.getServer()));
     events.addListener((ServerStoppedEvent event) -> {
       RuinChallenges.forget(event.getServer());
       RuinBosses.forget(event.getServer());
       RuinGates.forget(event.getServer());
+      RuinWorkshop.forget(event.getServer());
     });
+    StructureProtection.registerExemption(RuinWorkshop::check);
     events.addListener(RuinPlacement::onChangedDimension);
     events.addListener(RuinPlacement::onLogin);
     events.addListener(EventPriority.HIGH, RuinChallenges::onRightClickBlock);

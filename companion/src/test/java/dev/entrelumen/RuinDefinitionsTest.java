@@ -146,4 +146,41 @@ class RuinDefinitionsTest {
     var problems = RuinDefinitions.problems(List.of(a, b));
     assertEquals(3, problems.size(), problems.toString());
   }
+  @Test
+  void theWorkshopPlaysTerrasEngineWithCreateAndItsLeversWithout() throws Exception {
+    var engine = shipped(mod -> true).get("entrelumen:sunken_workshop");
+    assertEquals(List.of("drowned", "engine", "seal"), List.copyOf(engine.challenges().keySet()));
+    assertEquals(Set.of("sluices"), engine.dormant());
+    assertEquals(Map.of("vault", List.of("seal")), engine.gates());
+    assertEquals(List.of("drowned", "seal"), engine.pedestal());
+    assertEquals(List.of("engine"), engine.challenges().get("seal").requires());
+    assertEquals(RuinDefinitions.ChallengeType.PUMPS, engine.challenges().get("engine").type());
+    assertEquals(0, engine.challenges().get("engine").engine().rpm(), "R comes from the pack's Create values");
+    var seal = engine.challenges().get("seal").engine();
+    assertEquals(List.of(45, 3, 60), List.of(seal.angle(), seal.tolerance(), seal.rest()));
+    var levers = shipped(mod -> !mod.equals("create")).get("entrelumen:sunken_workshop");
+    assertEquals(List.of("drowned", "sluices"), List.copyOf(levers.challenges().keySet()));
+    assertEquals(Set.of("engine", "seal"), levers.dormant());
+    assertEquals(Map.of("vault", List.of("sluices")), levers.gates());
+    assertEquals(List.of("drowned", "sluices"), levers.pedestal());
+  }
+
+  @Test
+  void engineFieldsBelongToTheirTypes() {
+    String pumps = BASE.replace("{\"type\": \"braziers\"}", "{\"type\": \"pumps\", \"rpm\": 64}");
+    assertEquals(64, parse(pumps).challenges().get("a").engine().rpm());
+    String seal = BASE.replace("{\"type\": \"braziers\"}", "{\"type\": \"seal\", \"angle\": 30, \"rest\": 20}");
+    var engine = parse(seal).challenges().get("a").engine();
+    assertEquals(List.of(30, 3, 20), List.of(engine.angle(), engine.tolerance(), engine.rest()));
+    for (String json : List.of(BASE.replace("{\"type\": \"braziers\"}", "{\"type\": \"braziers\", \"rpm\": 64}"),
+        BASE.replace("{\"type\": \"braziers\"}", "{\"type\": \"pumps\", \"angle\": 45}"),
+        BASE.replace("{\"type\": \"braziers\"}", "{\"type\": \"seal\", \"angle\": 90}"),
+        BASE.replace("{\"type\": \"braziers\"}", "{\"type\": \"braziers\", \"mods\": \"create\"}")))
+      assertThrows(IllegalArgumentException.class, () -> parse(json), json);
+    // A gate whose every challenge sleeps without its mod has nothing to open it.
+    String sleeping = BASE.replace("{\"type\": \"braziers\"}", "{\"type\": \"braziers\", \"mods\": [\"absent\"]}")
+        .replace("[\"a\", \"b\"]", "[\"a\"]");
+    assertThrows(IllegalArgumentException.class, () -> RuinDefinitions.parse("entrelumen:x", JsonParser.parseString(sleeping),
+        mod -> !mod.equals("absent"), item -> true, entity -> true));
+  }
 }

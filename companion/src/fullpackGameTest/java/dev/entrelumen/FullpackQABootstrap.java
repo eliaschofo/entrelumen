@@ -43,6 +43,7 @@ public final class FullpackQABootstrap {
     RecipeDesignFullpackGameTests.requireSuite();
     JetpackBalanceFullpackGameTests.requireSuite();
     ArkFullpackGameTests.requireSuite();
+    RuinWorkshopFullpackGameTests.requireSuite();
     if (GameTestHooks.isGametestEnabled()) return;
     if (!registered) {
       GameTestRegistry.register(RuntimeGameTests.class);
@@ -94,6 +95,8 @@ public final class FullpackQABootstrap {
       // Heliodor ruins, Plan v2 (26 September): placement, challenges and every ruin played with Lootr,
       // the Twilight Forest and the Aether loaded.
       GameTestRegistry.register(RuntimeGameTestsRuins.class);
+      // Terra's Engine (26 September): the Sunken Workshop's Create puzzle with the pinned Create.
+      GameTestRegistry.register(RuinWorkshopFullpackGameTests.class);
       Set<String> expected = new TreeSet<>();
       for (Class<?> owner : List.of(RuntimeGameTests.class, FullpackGameTests.class,
           ResourceFarmGameTests.class, Ae2CraftingGameTests.class, RFToolsRecipeGameTests.class,
@@ -110,7 +113,7 @@ public final class FullpackQABootstrap {
           ProgressionFullpackGameTests.class, VeinResonatorFullpackGameTests.class, RuntimeGameTestsStory.class,
           RecipeDesignFullpackGameTests.class, JetpackBalanceFullpackGameTests.class, ArkFullpackGameTests.class,
           RuntimeGameTestsEnves.class, EnvesFullpackGameTests.class,
-          RuntimeGameTestsRuins.class))
+          RuntimeGameTestsRuins.class, RuinWorkshopFullpackGameTests.class))
         for (var method : owner.getDeclaredMethods())
           if (method.isAnnotationPresent(GameTest.class))
             expected.add(method.getName().toLowerCase(Locale.ROOT));
