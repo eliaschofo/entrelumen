@@ -13,27 +13,10 @@
   },
   "entry": "clg_sturdy",
   "figures": {
-    "rail": {
-      "kind": "line", "from": [-17, 0], "to": [17, 0], "count": 11,
-      "draw": [{"style": "rails", "from": [-19, 0], "to": [19.5, 0], "gauge": 0.6, "sleepers": 0.8, "alpha": 130,
-                "thickness_px": 1.5, "sleeper_alpha": 70, "sleeper_px": 3}]
-    },
-    "chain": {
-      "kind": "ring", "cx": 7, "cy": -9.5, "r": 4.2, "count": 8, "start": -90,
-      "draw": [{"style": "ring", "r": 4.2, "alpha": 110, "thickness_px": 2, "segments": 40},
-               {"style": "teeth", "r": 4.05, "count": 28, "depth": 0.3, "width": 0.45, "alpha": 90}]
-    },
-    "wire": {
-      "kind": "line", "from": [-17, 7], "to": [-1, 7], "count": 6,
-      "draw": [{"style": "rails", "from": [-18.5, 7], "to": [0.5, 7], "gauge": 0.35, "sleepers": 3.2, "alpha": 110,
-                "thickness_px": 1, "sleeper_alpha": 120, "sleeper_px": 2}]
-    },
-    "sun": {
-      "kind": "arc", "cx": 9.5, "cy": 12.5, "r": 5.5, "count": 9, "start": 180, "span": 180,
-      "draw": [{"style": "ring", "r": 5.5, "from": 180, "span": 180, "segments": 24, "alpha": 90},
-               {"style": "spokes", "from_r": 1.6, "to_r": 4.4, "alpha": 70},
-               {"style": "ring", "r": 7.2, "from": 180, "span": 180, "segments": 30, "alpha": 45}]
-    }
+    "rail": {"kind": "line", "from": [-17, 0], "to": [17, 0], "count": 11, "draw": [{"style": "rails", "from": [-19, 0], "to": [19.5, 0], "gauge": 0.6, "sleepers": 0.8, "alpha": 130, "thickness_px": 1.5, "sleeper_alpha": 70, "sleeper_px": 3}]},
+    "chain": {"kind": "ring", "cx": 7, "cy": -9.5, "r": 4.2, "count": 8, "start": -90, "draw": [{"style": "ring", "r": 4.2, "alpha": 110, "thickness_px": 2, "segments": 40}, {"style": "teeth", "r": 4.05, "count": 28, "depth": 0.3, "width": 0.45, "alpha": 90}]},
+    "wire": {"kind": "line", "from": [-17, 7], "to": [-1, 7], "count": 6, "draw": [{"style": "rails", "from": [-18.5, 7], "to": [0.5, 7], "gauge": 0.35, "sleepers": 3.2, "alpha": 110, "thickness_px": 1, "sleeper_alpha": 120, "sleeper_px": 2}]},
+    "sun": {"kind": "arc", "cx": 9.5, "cy": 12.5, "r": 5.5, "count": 9, "start": 180, "span": 180, "draw": [{"style": "ring", "r": 5.5, "from": 180, "span": 180, "segments": 24, "alpha": 90}, {"style": "spokes", "from_r": 1.6, "to_r": 4.4, "alpha": 70}, {"style": "ring", "r": 7.2, "from": 180, "span": 180, "segments": 30, "alpha": 45}]}
   },
   "groups": {
     "additions": {"label": {"en_us": "Crafts & Additions: rotation to FE and back", "es_es": "Crafts & Additions: de rotación a FE y vuelta"}, "axis": "x", "caption": "above"}
@@ -45,8 +28,7 @@
   "art": [
     {"id": "banner", "texture": "entrelumen:textures/gui/quests/banner_create.png", "x": -14.3, "y": -13.3, "scale": 1, "order": -1},
     {"id": "title", "label": {"en_us": "Create · Rails and Power", "es_es": "Create · Vías y energía"}, "x": -14.3, "y": -13.3, "scale": 1, "bold": true},
-    {"id": "medallion", "texture": "entrelumen:textures/gui/quests/medallion.png", "x": -14.3, "y": -8.6, "scale": 2, "order": 0,
-     "click": "chapter:sector_create_kinetics", "hover": {"en_us": "Back to Create · Kinetics", "es_es": "Volver a Create · Cinética"}},
+    {"id": "medallion", "texture": "entrelumen:textures/gui/quests/medallion.png", "x": -14.3, "y": -8.6, "scale": 2, "order": 0, "click": "chapter:sector_create_kinetics", "hover": {"en_us": "Back to Create · Kinetics", "es_es": "Volver a Create · Cinética"}},
     {"id": "schedule", "texture": "create:textures/item/schedule.png", "x": -14.3, "y": -8.6, "scale": 4, "order": 1},
     {"id": "ring_label", "label": {"en_us": "Package network", "es_es": "Red de paquetes"}, "x": 7, "y": -15.2, "scale": 1},
     {"id": "horizon", "line": [[2.2, 12.5], [16.8, 12.5]], "alpha": 120, "thickness_px": 2},
@@ -63,8 +45,7 @@
         "text": ["Crush obsidian into [item:create:powdered_obsidian|Powdered Obsidian], then a short sequence: a spout adds 500 mB of lava, a press stamps it twice. One of each over a looping belt keeps the [item:create:sturdy_sheet|Sturdy Sheets] coming."]},
       "es_es": {"title": "Lámina robusta", "subtitle": "Las vías empiezan con piedras.",
         "text": ["Triturá obsidiana en [item:create:powdered_obsidian|Polvo de obsidiana] y después una secuencia corta: un surtidor agrega 500 mB de lava, una prensa la estampa dos veces. Uno de cada uno sobre una cinta que vuelve y las [item:create:sturdy_sheet|Láminas robustas] no paran."]},
-      "sources": ["jar:create-1.21.1-6.0.10.jar:data/create/recipe/sequenced_assembly/sturdy_sheet.json",
-                  "jar:create-1.21.1-6.0.10.jar:data/create/recipe/crushing/obsidian.json"]
+      "sources": ["jar:create-1.21.1-6.0.10.jar:data/create/recipe/sequenced_assembly/sturdy_sheet.json", "jar:create-1.21.1-6.0.10.jar:data/create/recipe/crushing/obsidian.json"]
     },
     {
       "key": "clg_casing", "role": "step", "deps": ["clg_sturdy", "cbr_casing"],
@@ -137,8 +118,7 @@
         "text": ["In assembly mode: casing on the track for bogeys, glue your blocks, [item:create:controls|Train Controls] on board, confirm at the station. Drive with the movement keys; a second set of controls lets it run both ways."]},
       "es_es": {"title": "¡Todos a bordo!",
         "text": ["En modo ensamble: revestimiento sobre la vía para los bogies, pegá tus bloques, [item:create:controls|Controles de tren] a bordo y confirmá en la estación. Se maneja con las teclas de movimiento; un segundo par de controles lo deja ir para los dos lados."]},
-      "sources": ["jar:create-1.21.1-6.0.10.jar:data/create/advancement/train.json",
-                  "jar:create-1.21.1-6.0.10.jar:data/create/recipe/crafting/kinetics/controls.json"]
+      "sources": ["jar:create-1.21.1-6.0.10.jar:data/create/advancement/train.json", "jar:create-1.21.1-6.0.10.jar:data/create/recipe/crafting/kinetics/controls.json"]
     },
     {
       "key": "clg_train_tips", "role": "tip", "deps": ["clg_controls"],
@@ -170,8 +150,7 @@
         "text": ["Obsidian sheet and paper make four [item:create:schedule|Train Schedules]: stops, waits and conditions. Hand one to a conductor seated at the controls, any mob or a Blaze Burner will do."]},
       "es_es": {"title": "Horario",
         "text": ["Lámina de obsidiana y papel dan cuatro [item:create:schedule|Horarios del tren]: paradas, esperas y condiciones. Dáselo a un conductor sentado en los controles; sirve cualquier mob o un quemador de Blaze."]},
-      "sources": ["jar:create-1.21.1-6.0.10.jar:data/create/recipe/crafting/kinetics/schedule.json",
-                  "jar:create-1.21.1-6.0.10.jar:data/create/advancement/conductor.json"]
+      "sources": ["jar:create-1.21.1-6.0.10.jar:data/create/recipe/crafting/kinetics/schedule.json", "jar:create-1.21.1-6.0.10.jar:data/create/advancement/conductor.json"]
     },
     {
       "key": "clg_signal", "role": "milestone", "deps": ["clg_schedule"],
@@ -183,8 +162,7 @@
       "es_es": {"title": "Control de tráfico",
         "text": ["Revestimiento y un tubo de electrones dan cuatro [item:create:track_signal|Señales de Tren]. Las señales cortan la vía en tramos, un tren por tramo: cero choques.",
                  "[tip] El modo latón, con la llave, también frena a un tren que no podría liberar el tramo siguiente. Usalo en los cruces con mucho movimiento."]},
-      "sources": ["jar:create-1.21.1-6.0.10.jar:data/create/recipe/crafting/kinetics/track_signal.json",
-                  "jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#create.ponder.track_signal"]
+      "sources": ["jar:create-1.21.1-6.0.10.jar:data/create/recipe/crafting/kinetics/track_signal.json", "jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#create.ponder.track_signal"]
     },
     {
       "key": "clg_red_signal", "role": "secret", "deps": ["clg_signal"],
@@ -209,16 +187,14 @@
     },
     {
       "key": "clg_postbox", "role": "step", "deps": ["clg_signal", "clg_frogport"], "curve": {"clg_frogport": 0.08},
-      "task": {"type": "observation", "observe": "block_tag", "target": "create:postboxes", "ticks": 40,
-               "title": {"en_us": "Look at a postbox beside a station", "es_es": "Mirá un buzón al lado de una estación"}},
+      "task": {"type": "observation", "observe": "block_tag", "target": "create:postboxes", "ticks": 40, "title": {"en_us": "Look at a postbox beside a station", "es_es": "Mirá un buzón al lado de una estación"}},
       "icon": "create:white_postbox",
       "at": {"figure": "rail", "slot": 7},
       "en_us": {"title": "Mail by rail",
         "text": ["A [item:create:white_postbox|Postbox] near a station gets an address. Trains that stop there collect parcels for elsewhere and drop off the ones for here, even in unloaded chunks."]},
       "es_es": {"title": "Correo por tren",
         "text": ["Un [item:create:white_postbox|Buzón] cerca de una estación recibe una dirección. Los trenes que paran ahí levantan los paquetes para otro lado y dejan los de acá, incluso en chunks sin cargar."]},
-      "sources": ["jar:create-1.21.1-6.0.10.jar:data/create/tags/block/postboxes.json",
-                  "jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#create.ponder.postbox"]
+      "sources": ["jar:create-1.21.1-6.0.10.jar:data/create/tags/block/postboxes.json", "jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#create.ponder.postbox"]
     },
     {
       "key": "clg_psi", "role": "step", "deps": ["clg_postbox"],
@@ -243,9 +219,7 @@
     },
     {
       "key": "clg_mastery", "role": "capstone", "deps": ["clg_psi", "clg_gauge"], "hide_lines": true,
-      "tasks": [{"type": "advancement", "advancement": "create:display_board_0", "icon": "create:display_board"},
-                {"type": "observation", "observe": "entity_type", "target": "create:carriage_contraption", "ticks": 60,
-                 "title": {"en_us": "Watch your train pull in", "es_es": "Mirá tu tren entrar a la estación"}}],
+      "tasks": [{"type": "advancement", "advancement": "create:display_board_0", "icon": "create:display_board"}, {"type": "observation", "observe": "entity_type", "target": "create:carriage_contraption", "ticks": 60, "title": {"en_us": "Watch your train pull in", "es_es": "Mirá tu tren entrar a la estación"}}],
       "icon": "create:track_station",
       "at": {"figure": "rail", "slot": 10},
       "en_us": {"title": "The outpost line", "subtitle": "Next stop: everywhere.",

@@ -161,7 +161,7 @@ def compile_paragraph(text, lang, ctx, where):
             ctx["names"].add(arg)
             seg = {"translate": arg, "color": COLORS["item"]}
         elif name == "key":
-            assert arg and re.fullmatch(r"key\.[a-z0-9_.]+", arg) and not parts, f"{where}: [key:key.id]"
+            assert arg and re.fullmatch(r"key.[A-Za-z0-9_.]+", arg) and not parts, f"{where}: [key:key.id]"
             ctx["keys"].add(arg)
             seg = {"text": "", "extra": [{"text": "["}, {"keybind": arg}, {"text": "]"}], "color": COLORS["key"]}
         elif name in ("quest", "chapter"):
