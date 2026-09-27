@@ -29,6 +29,7 @@ PLACEHOLDERS = {
     "secret.png": ((16, 16), "icon for secret nodes without an item"),
     "banner_create.png": ((192, 48), "title plate behind the Create chapters' title"),
     "banner_ars.png": ((192, 48), "title plate behind the Ars Nouveau chapter's title"),
+    "banner_plain.png": ((192, 48), "title plate for any chapter, pale so the art entry's colour tints it"),
     "diagram_crushing.png": ((96, 48), "inline diagram: two crushing wheels turning inward, items falling between"),
     "diagram_train.png": ((96, 48), "inline diagram: station, signal, train on a loop"),
     "diagram_glyphs.png": ((96, 48), "inline diagram: a spell as Form + Effect + Augment slots"),

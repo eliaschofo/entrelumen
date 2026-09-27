@@ -317,6 +317,8 @@ def plate(kind, w=192, h=48):
     im = canvas(w, h)
     if kind == 'create':
         face, edge, dark = R['brass'][3], R['brass'][4], R['brass'][1]
+    elif kind == 'plain':                      # pale greys: FTB multiplies them by the art entry's colour
+        face, edge, dark = '#cfcfcf', '#f4f4f4', '#8a8a8a'
     else:
         face, edge, dark = R['violet'][1], R['violet'][3], R['violet'][0]
     for y in range(3, h - 3):
@@ -337,6 +339,17 @@ def plate(kind, w=192, h=48):
                         put(im, x, y, R['iron'][3] if r > 10 else R['iron'][4])
                     elif r < 5:
                         put(im, x, y, R['iron'][1])
+    elif kind == 'plain':
+        for x in range(18, w - 18, 10):
+            put(im, x, 7, '#ffffff'); put(im, x, h - 8, '#ffffff')
+        for cx in (13, w - 14):                 # a diamond stud at each end
+            for y in range(h):
+                for x in range(w):
+                    dx, dy = abs(x - cx), abs(y - (h - 1) / 2)
+                    if dx + dy <= 9:
+                        put(im, x, y, '#e8e8e8' if dx + dy <= 5 else '#a8a8a8')
+                    if dx + dy <= 2:
+                        put(im, x, y, '#ffffff')
     else:
         for x in range(16, w - 16, 6):
             put(im, x, 7, R['violet'][4]); put(im, x + 2, 7, R['violet'][3])
@@ -417,7 +430,7 @@ def main():
     for n, text in enumerate(['I', 'II', 'III', 'IV', 'V', 'VI'], 1):
         art['numeral_%d' % n] = numeral(text)
         art['act_%d' % n] = emblem(n)
-    art.update({'tip': tip_icon(), 'secret': secret_icon(), 'banner_create': plate('create'), 'banner_ars': plate('ars'),
+    art.update({'tip': tip_icon(), 'secret': secret_icon(), 'banner_create': plate('create'), 'banner_ars': plate('ars'), 'banner_plain': plate('plain'),
                 'diagram_crushing': diagram('crushing'), 'diagram_train': diagram('train'), 'diagram_glyphs': diagram('glyphs')})
     for name, im in art.items():
         if name.startswith('diagram_'):
