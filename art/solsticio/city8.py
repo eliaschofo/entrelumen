@@ -127,6 +127,77 @@ def leaves(kind):
     return B('%s_leaves[distance=1,persistent=true,waterlogged=false]' % kind)
 
 
+# ---------------- copper and stained glass (the solarpunk pass) ----------------
+PATINA = ('', 'exposed_', 'weathered_', 'oxidized_')
+CU_FORM = {'cut': 'cut_copper', 'chiseled': 'chiseled_copper', 'grate': 'copper_grate', 'bulb': 'copper_bulb',
+           'door': 'copper_door', 'trapdoor': 'copper_trapdoor'}
+AMBER, GOLD, TEAL = 'orange_stained_glass', 'yellow_stained_glass', 'cyan_stained_glass'   # the sun's vitrales
+
+
+def cu(form, stage=0):
+    """A waxed copper block name at one of the four patinas (0 fresh, 1 exposed, 2 weathered,
+    3 verdigris). Waxed: the city keeps the patina it was built with."""
+    stage = max(0, min(3, stage))
+    if form == 'block':
+        return 'waxed_copper_block' if stage == 0 else 'waxed_%scopper' % PATINA[stage]
+    return 'waxed_%s%s' % (PATINA[stage], CU_FORM[form])
+
+
+def patina(stage, x, z, seed=0, y=0):
+    """Copper weathers in patches: most cells keep their stage, some are a step further on, a few
+    a step behind."""
+    r = h(x * 31 + y, z * 17 - y, 900 + seed)
+    if r < 0.26:
+        return min(3, stage + 1)
+    if r > 0.9:
+        return max(0, stage - 1)
+    return stage
+
+
+def cu_slab(stage, half='bottom'):
+    return B('%s_slab[type=%s,waterlogged=false]' % (cu('cut', stage), half))
+
+
+def bulb(x, y, z, stage=0):
+    """A lit copper bulb. A bulb only changes on a redstone pulse, so the solarpunk pass keeps every
+    power source (detectors, lightning rods) off its faces."""
+    G.set(x, y, z, B('%s[lit=true,powered=false]' % cu('bulb', stage)))
+
+
+ROSE = {2: ['_KKK_', 'KTYTK', 'KYOYK', 'KTYTK', '_KKK_'],
+        3: ['__KKK__', '_KTYTK_', 'KTYOYTK', 'KYOOOYK', 'KTYOYTK', '_KTYTK_', '__KKK__']}
+
+
+def rose(x, y, z, t, R, stage=1, back=None):
+    """A rose window of the sun in the wall plane through (x, y, z), t the wall's horizontal
+    direction: an amber sun, gold rays, a teal sky, a copper frame. back: the inward direction; the
+    cell behind every pane is closed in white, so the colours read lit."""
+    n = 0
+    for i, row in enumerate(ROSE[R]):
+        v = R - i
+        for j, ch in enumerate(row):
+            if ch == '_':
+                continue
+            u = j - R
+            px, pz = x + u * t[0], z + u * t[1]
+            if ch == 'K':
+                G.set(px, y + v, pz, B(cu('chiseled', patina(stage, px, pz, 21, y + v))))
+            else:
+                G.set(px, y + v, pz, B({'T': TEAL, 'Y': GOLD, 'O': AMBER}[ch]))
+                if back:
+                    G.set(px + back[0], y + v, pz + back[1], B('smooth_quartz'))
+            n += 1
+    return n
+
+
+def lancet(v, n, centre=True):
+    """The pane in row v (0 at the bottom) of a window n high: teal below, gold above, the amber sun
+    at the top of the centre column."""
+    if v == n - 1:
+        return AMBER if centre else GOLD
+    return GOLD if v >= n // 2 else TEAL
+
+
 LANTERN = B('lantern[hanging=false,waterlogged=false]')
 FACING = {(1, 0): 'east', (-1, 0): 'west', (0, 1): 'south', (0, -1): 'north'}
 
@@ -461,11 +532,14 @@ def tree(x, z, y0, h_=5, r=2.4, leaf='flowering_azalea', log='stripped_birch_log
 
 
 def lamp(x, z, y0, height=3, mat='tuff_brick'):
-    if G.filled(x, y0 + 1, z):
+    """A street lamp: a post, a copper bulb (fresh or exposed, the brightest) under a copper cap.
+    Not where the post would stand in something (a shop's sign); the cap only where there is room."""
+    if any(G.filled(x, y, z) for y in range(y0 + 1, y0 + height + 1)):
         return
     for y in range(y0 + 1, y0 + height + 1):
         G.set(x, y, z, wall(mat))
-    G.set(x, y0 + height + 1, z, LANTERN)
+    bulb(x, y0 + height + 1, z, (x + z) % 2)
+    G.setdefault(x, y0 + height + 2, z, cu_slab(patina(1, x, z, 3)))
 
 
 def open_air(c, y, n=6):
@@ -577,25 +651,48 @@ def rails():
 
 
 # ---------------- massing ----------------
+# roofs: (stair material, block); 'cu:N' is waxed cut copper weathering in patches round patina N.
+# styles: gable (and a dome on a plaza corner), glass (a stepped glasshouse roof on copper ribs, a
+# garden in the attic under it), flat (a solar array, a conservatory or a roof garden on it),
+# garden (moss and flowers), saw (copper sawtooth with north lights and skylights).
 DMAT = {
     'market': dict(walls=['smooth_sandstone', 'cut_sandstone', 'bricks', 'sandstone'], trim='chiseled_sandstone',
-                   roofs=[('mcwroofs:orange_terracotta_roof', 'orange_terracotta'), ('mcwroofs:orange_terracotta_roof', 'orange_terracotta'),
-                          ('waxed_cut_copper', 'waxed_cut_copper')], floors=3, styles=['gable', 'gable', 'gable', 'flat']),
+                   roofs=[('mcwroofs:orange_terracotta_roof', 'orange_terracotta'), ('cu:1', 'cu:1'),
+                          ('mcwroofs:orange_terracotta_roof', 'orange_terracotta'), ('cu:2', 'cu:2')],
+                   floors=3, styles=['gable', 'gable', 'glass', 'gable', 'flat']),
     'inns': dict(walls=['sandstone', 'cut_sandstone', 'smooth_sandstone', 'sandstone'], trim='stripped_spruce_log',
-                 roofs=[('spruce', 'spruce_planks'), ('brick', 'bricks'), ('spruce', 'spruce_planks')], floors=3,
-                 styles=['gable', 'gable', 'gable', 'gable', 'flat']),
+                 roofs=[('spruce', 'spruce_planks'), ('cu:1', 'cu:1'), ('brick', 'bricks'), ('cu:2', 'cu:2')], floors=3,
+                 styles=['gable', 'gable', 'glass', 'gable', 'flat']),
     'gardens': dict(walls=['calcite', 'smooth_quartz', 'calcite', 'quartz_bricks'], trim='quartz_pillar',
-                    roofs=[('waxed_weathered_cut_copper', 'waxed_weathered_cut_copper'), ('mossy_stone_brick', 'moss_block')],
-                    floors=2, styles=['garden', 'gable', 'garden']),
+                    roofs=[('cu:2', 'cu:2'), ('cu:3', 'cu:3'), ('mossy_stone_brick', 'moss_block')],
+                    floors=2, styles=['garden', 'glass', 'gable', 'garden', 'glass']),
     'travellers': dict(walls=['calcite', 'polished_diorite', 'smooth_quartz', 'calcite'], trim='quartz_bricks',
-                       roofs=[('waxed_oxidized_cut_copper', 'waxed_oxidized_cut_copper'), ('prismarine_brick', 'prismarine_bricks'),
-                              ('waxed_oxidized_cut_copper', 'waxed_oxidized_cut_copper')], floors=2, styles=['gable', 'gable', 'flat']),
+                       roofs=[('cu:3', 'cu:3'), ('prismarine_brick', 'prismarine_bricks'), ('cu:2', 'cu:2')], floors=2,
+                       styles=['gable', 'glass', 'gable', 'flat']),
     'temple': dict(walls=['calcite', 'smooth_quartz', 'calcite', 'white_terracotta'], trim='stripped_cherry_log',
-                   roofs=[('cherry', 'cherry_planks')], floors=2, styles=['gable', 'gable', 'gable', 'garden']),
+                   roofs=[('cherry', 'cherry_planks'), ('cu:1', 'cu:1'), ('cherry', 'cherry_planks'), ('cu:2', 'cu:2')],
+                   floors=2, styles=['gable', 'glass', 'gable', 'garden']),
     'workshops': dict(walls=['bricks', 'mud_bricks', 'tuff_bricks', 'bricks'], trim='waxed_cut_copper',
-                      roofs=[('deepslate_tile', 'deepslate_tiles'), ('polished_blackstone_brick', 'polished_blackstone_bricks'),
-                             ('deepslate_tile', 'deepslate_tiles')], floors=2, styles=['saw', 'saw', 'gable']),
+                      roofs=[('cu:1', 'cu:1'), ('cu:0', 'cu:0'), ('cu:2', 'cu:2'), ('cu:1', 'cu:1'),
+                             ('deepslate_tile', 'deepslate_tiles'), ('cu:2', 'cu:2')],
+                      floors=2, styles=['saw', 'saw', 'gable']),
 }
+CU_DISTRICT = {'market': 1, 'inns': 1, 'gardens': 2, 'travellers': 3, 'temple': 2, 'workshops': 1}
+
+
+def roof_at(info, x, z):
+    """(stair material, block state) of a lot's roof at (x, z): copper roofs weather in patches."""
+    m = info['roof']
+    if m.startswith('cu:'):
+        s = patina(int(m[3:]), x, z, info['seed'] % 11)
+        return cu('cut', s), B(cu('cut', s))
+    return m, B(info['roof_block'])
+
+
+def cu_stage(info):
+    """The patina of a lot's copper (cornice, parapet, balconies): its roof's own, or its district's."""
+    m = info['roof']
+    return int(m[3:]) if m.startswith('cu:') else CU_DISTRICT[info['district']]
 STOREY = 4
 LOT_TOP = {}
 LOT_INFO = {}
@@ -639,7 +736,7 @@ def lot_plan():
             style = 'gable'
         roof_, roof_block = d['roofs'][street_seed % len(d['roofs'])]
         LOT_INFO[lot['id']] = dict(floors=floors, style=style, wall=d['walls'][seed % len(d['walls'])], seed=seed,
-                                   corner=corner, roof=roof_, roof_block=roof_block)
+                                   corner=corner, roof=roof_, roof_block=roof_block, district=lot['district'])
         LOT_TOP[lot['id']] = lot['pad'] + floors * STOREY
 
 
@@ -714,6 +811,7 @@ def building(lot, info):
     glass = B('glass')
     dist = lot_dist(cs)
     grand = lot['prio'] >= 78
+    cst = cu_stage(info)
     arcade = {}
     if lot['kinds'].get('crafts', 0):
         q = deque()
@@ -753,6 +851,9 @@ def building(lot, info):
                 elif arc == 2:
                     G.set(x, y, z, glass if (x + z) % 3 and y < pad + 3 else wallb)
                 continue
+            if y == top and edge:                                       # the copper cornice
+                G.set(x, y, z, B(cu('cut', patina(cst, x, z, 5))))
+                continue
             if y == top or k == 0:
                 G.set(x, y, z, band if edge else B('spruce_planks'))
                 continue
@@ -789,14 +890,16 @@ def roof_stair(mat, facing):
 
 def roof(lot, info, cs, top):
     style = info['style']
-    mat = info['roof']
-    rb = B(info['roof_block'])
     wallb = B(info['wall'])
     s = set(cs)
-    if style in ('gable', 'dome'):
+    cst = cu_stage(info)
+    if style in ('gable', 'dome', 'glass'):
         ext = lot_dist(cs, exterior=True)
         depth = max(ext.values())
         cap = 4 if depth >= 5 else 3
+        rmax = max(min(ext[c], cap) for c in cs)
+        xs, zs = [c[0] for c in cs], [c[1] for c in cs]
+        along_x = max(xs) - min(xs) >= max(zs) - min(zs)          # the ridge runs along the longer side
         for c in cs:
             r = min(ext[c], cap)
             y = top + 1 + r
@@ -806,7 +909,12 @@ def roof(lot, info, cs, top):
                 if n in s and min(ext[n], cap) > r:
                     up = (a, b)
                     break
-            G.set(c[0], y, c[1], roof_stair(mat, FACING[up]) if up else rb)
+            if style == 'glass':                                       # glass stepped up on copper ribs
+                rib = r in (0, rmax) or (c[0] if along_x else c[1]) % 4 == 0
+                G.set(c[0], y, c[1], B(cu('cut', patina(cst, c[0], c[1], 7))) if rib else B('glass'))
+            else:
+                mat, rb = roof_at(info, c[0], c[1])
+                G.set(c[0], y, c[1], roof_stair(mat, FACING[up]) if up else rb)
             if r and any((c[0] + a, c[1] + b) not in s for a, b in N4):
                 for yy in range(top + 1, y):                       # the gable end on a party wall
                     G.set(c[0], yy, c[1], wallb)
@@ -815,23 +923,26 @@ def roof(lot, info, cs, top):
             peak = max(cs, key=lambda c: dist[c])
             R = min(4, dist[peak] + 1)
             yb = top + 1 + min(ext[peak], cap)
-            dome(peak[0], peak[1], yb, R, ribs=4)
+            dome(peak[0], peak[1], yb, R, shell=cu('cut', (1, 2, 3)[info['seed'] % 3]), ribs=4)
             G.set(peak[0], yb + R + 1, peak[1], B('lightning_rod[facing=up,powered=false,waterlogged=false]'))
     elif style in ('flat', 'garden'):
         dist = lot_dist(cs)
         for c in cs:
-            if dist[c] == 0:
-                G.set(c[0], top + 1, c[1], wall('diorite' if lot['district'] != 'inns' else 'brick', up='true'))
+            if dist[c] == 0:                                           # a copper grate parapet
+                G.set(c[0], top + 1, c[1], B('%s[waterlogged=false]' % cu('grate', patina(cst, c[0], c[1], 9))))
             elif style == 'garden':
                 G.set(c[0], top, c[1], B('moss_block' if dist[c] > 1 else 'grass_block'))
                 if h(c[0], c[1], 44) < 0.12:
                     G.set(c[0], top + 1, c[1], B(['flowering_azalea', 'azalea', 'allium', 'azure_bluet'][int(h(c[0], c[1], 45) * 4)]))
     elif style == 'saw':
         dist = lot_dist(cs)
+        copper = info['roof'].startswith('cu:')
         for c in cs:
             k = c[0] % 6
+            mat, rb = roof_at(info, c[0], c[1])
             if k < 4:
-                G.set(c[0], top + 1 + k, c[1], roof_stair(mat, 'east'))
+                sky = copper and k == 2 and dist[c] > 0 and c[1] % 4 == 1          # a skylight in the slope
+                G.set(c[0], top + 1 + k, c[1], B('glass') if sky else roof_stair(mat, 'east'))
                 if dist[c] == 0:
                     for y in range(top + 1, top + 1 + k):
                         G.set(c[0], y, c[1], rb)
@@ -1252,6 +1363,10 @@ def registry_check():
             cands.append(ns + ':flower_pot')
         if n.endswith('_stem'):
             cands.append(ns + ':' + n[:-5])
+        if n.startswith('cave_vines'):
+            cands.append(ns + ':glow_berries')
+        if n.endswith('_cauldron'):
+            cands.append(ns + ':cauldron')
         return cands
     return sorted(i for i in ids if i not in NOT_ITEMS and not any(c in items for c in item_of(i)))
 
@@ -1260,9 +1375,12 @@ def registry_check():
 def build():
     import dress8
     import landmarks8 as LM
+    import solar8
     me = sys.modules[__name__]
     LM.bind(me)
     dress8.bind(me)
+    solar8.bind(me, dress8)
+    solar8.STATS.clear()
     t0 = time.time()
     G.reset()
     for d in (MARKERS, EXTRA, TOP, BOTTOM, BLOCK_NBT, LOT_INFO, LOT_TOP):
@@ -1293,6 +1411,21 @@ def build():
     plaza_decor()
     planting()
     dress8.street_life()
+    solar8.plots(corners)               # the solarpunk pass: glass, stained glass, copper, sun and green
+    solar8.inn_vitrales()
+    solar8.plaza_gables()
+    solar8.axis_arcades()
+    solar8.oficios_gallery()
+    solar8.court_glasshouses()
+    solar8.flat_roofs()
+    solar8.glass_attics()
+    solar8.finials()
+    solar8.living_walls()
+    solar8.pilaster_vines()
+    solar8.downpipes()
+    solar8.windmills()
+    solar8.skywalks()
+    solar8.canal_edges()
     greenery()
     plot_markers(corners)
     nr = rails()
@@ -1300,8 +1433,16 @@ def build():
     falls = LM.falls()
     weirs = contain_water()
     nbar = rim_barrier()
+    unsafe = solar8.finish()
+    gone = [p for p in BLOCK_NBT if 'sign' not in (G.get(*p) or '')]
+    for p in gone:                      # a sign something later stood in (the Portal's gate): no text left behind
+        del BLOCK_NBT[p]
+    REPORT.append('signs: %d with their text%s' % (len(BLOCK_NBT), ', %d dropped where a later piece stands' % len(gone) if gone else ''))
     REPORT.append('%d buildings, %d rail blocks, %d weirs, %d barrier blocks' % (nb, nr, weirs, nbar))
     REPORT.append('dressing: ' + ', '.join('%s %d' % kv for kv in sorted(dress8.STATS.items())))
+    REPORT.append('solarpunk: ' + ', '.join('%s %d' % kv for kv in sorted(solar8.STATS.items())))
+    REPORT.append('redstone sources still on a bulb, door, trapdoor or bell: %d %s' % (len(unsafe), unsafe[:5]))
+    REPORT.append('the whole city: ' + ', '.join('%s %d' % kv for kv in sorted(solar8.CENSUS.items())))
     if falls:
         REPORT.append('the Last Falls: water at %d falls %d blocks into its catch basin at %d' % (
             falls['water'], falls['fall'], falls['ledge']))

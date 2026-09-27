@@ -19,7 +19,8 @@ import math
 
 NAMES = ('G', 'N', 'B', 'stairs', 'wall', 'leaves', 'h', 'kind', 'FACING', 'N4', 'N8', 'MARKERS', 'TOP', 'BOTTOM',
          'EXTRA', 'ring_xz', 'dome', 'cells_of', 'max_rect', 'tree', 'lamp', 'LANTERN', 'APPROACH', 'mp_state',
-         'sign', 'FALLS', 'NOT_BARRIER', 'WATER_OK')
+         'sign', 'FALLS', 'NOT_BARRIER', 'WATER_OK', 'cu', 'patina', 'cu_slab', 'bulb', 'rose', 'lancet', 'AMBER',
+         'GOLD', 'TEAL')
 OPP = {'north': 'south', 'south': 'north', 'east': 'west', 'west': 'east'}
 DIRV = {'east': (1, 0), 'west': (-1, 0), 'south': (0, 1), 'north': (0, -1)}
 
@@ -72,13 +73,13 @@ def palace():
                     continue
                 along = z if x in (X0, X1) else x
                 if k == H:
-                    G.set(x, y, z, B('waxed_cut_copper'))
+                    G.set(x, y, z, B(cu('cut', patina(0, x, z, 81))))
                 elif along % 4 == 0 or (x in (X0, X1) and z in (Z0, Z1)):
                     G.set(x, y, z, B('quartz_pillar[axis=y]'))
                 elif k % 6 == 0:
                     G.set(x, y, z, B('smooth_quartz'))
-                elif k % 6 in (2, 3, 4):
-                    G.set(x, y, z, B('yellow_stained_glass' if k % 6 != 4 else 'white_stained_glass'))
+                elif k % 6 in (2, 3, 4):                                # a sun over the sea in every bay
+                    G.set(x, y, z, B(lancet(k % 6 - 2, 3, along % 4 == 2)))
                 else:
                     G.set(x, y, z, B('calcite'))
     for x in range(X0, X1 + 1):
@@ -114,7 +115,8 @@ def palace():
         for dy in range(-3, 4):
             rr = math.hypot(dx, dy)
             if rr <= 3.3:
-                G.set(dx, L + 25 + dy, -31, B('ochre_froglight[axis=y]' if rr < 1.5 else 'gold_block' if rr > 2.5 else 'yellow_stained_glass'))
+                ray = dx == 0 or dy == 0 or abs(dx) == abs(dy)
+                G.set(dx, L + 25 + dy, -31, B('ochre_froglight[axis=y]' if rr < 1.5 else ('gold_block' if ray else AMBER) if rr > 2.5 else GOLD))
     for x in range(-12, 13, 6):                                  # lanterns hung in the portico
         hang(x, L + 19, -33 + 1)
     # corner pavilions with little domes, ladders up their floors
@@ -125,7 +127,7 @@ def palace():
                 for y in range(L + 1, L + 31):
                     if edge:
                         corner = abs(x - px) == 4 and abs(z - pz) == 4
-                        G.set(x, y, z, B('quartz_pillar[axis=y]' if corner else ('yellow_stained_glass' if (y - L) % 6 in (2, 3, 4) and (x + z) % 2 else 'calcite')))
+                        G.set(x, y, z, B('quartz_pillar[axis=y]' if corner else (lancet((y - L) % 6 - 2, 3) if (y - L) % 6 in (2, 3, 4) and (x + z) % 2 else 'calcite')))
                     elif y == L + 30:
                         G.set(x, y, z, B('smooth_quartz'))
                     elif (y - L) % 6 == 0:
@@ -136,7 +138,7 @@ def palace():
             G.set(px, y, pz + (3 if pz < -47 else -3), B('ladder[facing=%s,waterlogged=false]' % ('north' if pz < -47 else 'south')))
         for k in range(0, 5):
             hang(px, L + 5 + 6 * k, pz)
-        dome(px, pz, L + 31, 4, ribs=4)
+        dome(px, pz, L + 31, 4, shell=cu('cut', 2 if (px < 0) == (pz < -47) else 3), ribs=4)       # verdigris pavilions
         G.set(px, L + 36, pz, B('lightning_rod[facing=up,powered=false,waterlogged=false]'))
     # drum and dome over the Hall of the Solstice
     Rd = 12
@@ -144,8 +146,9 @@ def palace():
         th = math.degrees(math.atan2(dz, dx)) % 360
         col = int(th // 10) % 3 == 0
         for y in range(L + H + 1, L + H + 9):
+            k2 = y - L - H
             G.set(x, y, z, B('waxed_cut_copper' if y == L + H + 8 else 'quartz_pillar[axis=y]' if col else
-                               'yellow_stained_glass' if (y - L) % 3 else 'white_stained_glass'))
+                               AMBER if k2 == 4 else GOLD if k2 in (3, 5) else TEAL))
     for (x, z, rr, dx, dz) in ring_xz(cx, cz, 0, 12.4):          # the hall opens into the dome
         for y in range(L + 1, L + H + 1):
             if rr < 11.5 and not (y == L + H and rr > 10.5):
@@ -246,11 +249,11 @@ def palace():
                 if corner:
                     st = 'quartz_pillar[axis=y]'
                 elif k % 12 == 0:
-                    st = 'waxed_cut_copper'
+                    st = cu('cut', (k // 12) % 3)                        # bands at three patinas
                 elif k > TH - 12 and abs(dx) <= 1 or k > TH - 12 and abs(dz) <= 1:
                     st = 'air' if k < TH - 2 else 'calcite'
                 elif (dx == 0 or dz == 0) and k % 12 in (4, 5, 6, 7):
-                    st = 'yellow_stained_glass'
+                    st = lancet(k % 12 - 4, 4)
                 else:
                     st = 'calcite'
                 G.set(tx + dx, y, tz + dz, B(st))
@@ -286,6 +289,17 @@ def palace():
     for k in range(R + 1, R + 4):
         for (a, b) in ((1, 1), (1, -1), (-1, 1), (-1, -1)):
             G.set(tx + a * k, sy + (k if a > 0 else -k) // 2, tz + b * k, B('gold_block'))
+    # the solar array on the roof: rows of daylight detectors round the drum, walks between them
+    for x in range(X0 + 2, X1 - 1):
+        for z in range(Z0 + 2, Z1 - 1):
+            if x % 3 == 0 or math.hypot(x - cx, z - cz) < 14.5:
+                continue
+            if any(abs(x - px) <= 5 and abs(z - pz) <= 5 for (px, pz) in ((-20, -35), (20, -35), (-20, -60), (20, -60))):
+                continue
+            if 6 <= x <= 16 and z <= -53 or abs(x) <= 4 and z <= -56:     # the secret garden, the sun tower
+                continue
+            if G.get(x, L + H + 1, z) is None and G.filled(x, L + H, z):
+                G.set(x, L + H + 1, z, B('daylight_detector[inverted=false,power=15]'))
     # markers: the portal under the oculus, the waystone beside it, the secret garden on the roof
     MARKERS.append(('town_hall_portal', (cx, L + 1, cz)))
     MARKERS.append(('town_hall_waystone', (cx + 6, L + 1, cz + 7)))
@@ -360,25 +374,29 @@ def market_hall():
                     k = y - L
                     pier = along % 4 == 0 or (side and end)
                     if k >= W and not (end and x == x0 and k < W + drop):
-                        st = 'waxed_cut_copper' if k == W else 'glass'
+                        st = cu('cut', patina(0, x, z, 83)) if k == W else 'glass'
                     elif pier:
-                        st = 'waxed_copper_block' if k > 4 else 'quartz_pillar[axis=y]'
+                        st = cu('block', 1 + (along // 4) % 2) if k > 4 else 'quartz_pillar[axis=y]'
                     elif k <= 4:
                         st = 'calcite' if k == 4 or along % 8 in (1, 7) else 'glass'
+                    elif k == W - 1:                                     # a crown of sun over every bay
+                        st = AMBER if along % 4 == 2 else GOLD
+                    elif k == W - 2:
+                        st = GOLD if along % 4 == 2 else TEAL
                     else:
                         st = 'glass'
                     G.set(x, y, z, B(st))
             dz = z - zc
             yv = L + W + int(math.sqrt(max(0.0, R * R - dz * dz)) * 0.75)
             rib = x % 4 == 0
-            G.set(x, yv, z, B('waxed_cut_copper' if rib or end else 'glass'))
-            if end:
+            G.set(x, yv, z, B(cu('cut', patina(0, x, z, 84)) if rib or end else GOLD if abs(dz) < 0.6 else 'glass'))
+            if end:                                                     # the sunburst in each end
                 for y in range(L + W + 1, yv):
                     ray = int((math.degrees(math.atan2(y - L - W, dz)) + 360) // 15) % 2
-                    G.set(x, y, z, B('gold_block' if ray else 'yellow_stained_glass'))
+                    G.set(x, y, z, B(AMBER if math.hypot(y - L - W, dz) < 3 else GOLD if ray else TEAL))
     mx = (x0 + x1) // 2
     top = L + W + int(R * 0.75)
-    dome(mx, round(zc), top - 2, 7, shell='glass', rib='waxed_cut_copper', ribs=8)
+    dome(mx, round(zc), top - 2, 7, shell='glass', rib=cu('cut', 1), ribs=8)
     G.set(mx, top + 6, round(zc), B('gold_block'))
     G.set(mx, top + 7, round(zc), B('lightning_rod[facing=up,powered=false,waterlogged=false]'))
     # the landing at the plaza's level and the grand stair down to the floor, the full nave wide
@@ -463,11 +481,11 @@ def stall(side, a, shop, L, x0, z0, x1, z1):
             G.set(gx, L + 2, gz, B('barrel[facing=up,open=false]') if shop not in ('bookstore',) else B(g1))
         cx_, cz_ = rowpos(u, 2)
         counter(cx_, L + 1, cz_, face, 'quartz_block' if u != 1 else 'spruce_planks')
-    for (x, z) in cells:                                           # the awning over the stall
-        G.set(x, L + 4, z, B('%s_wool' % col))
+    for (x, z) in cells:                                           # the awning over the stall (not over a neighbour's sign)
+        G.setdefault(x, L + 4, z, B('%s_wool' % col))
     fx, fz = rowpos(1, 2)
     dx, dz = DIRV[face]
-    G.set(fx + dx, L + 4, fz + dz, B('%s_wool' % col))
+    G.setdefault(fx + dx, L + 4, fz + dz, B('%s_wool' % col))
     sign(fx + dx * 2, L + 4, fz + dz * 2, face, ['', ('shop', shop), '', ''], wall=True, glow=False, wood='spruce')
     hang(keeper[0], L + 3, keeper[1])
     MARKERS.append(('shop:' + shop, (keeper[0], L + 1, keeper[1])))
@@ -501,21 +519,22 @@ def temple():
                 if edge:
                     along = z if x in (X0, X1) else x
                     k = y - L
-                    st = 'quartz_pillar[axis=y]' if along % 3 == 0 else ('pink_stained_glass' if 3 <= k <= 10 else 'calcite')
+                    dawn = TEAL if k <= 4 else 'pink_stained_glass' if k <= 6 else GOLD if k <= 8 else AMBER
+                    st = 'quartz_pillar[axis=y]' if along % 3 == 0 else (dawn if 3 <= k <= 10 else 'calcite')
                     G.set(x, y, z, B(st))
             rr = 8 - abs(x - tx)
             y = L + 13 + min(rr, 7)
             if x - tx:
-                G.set(x, y, z, stairs('cherry', 'east' if x < tx else 'west'))
+                G.set(x, y, z, stairs(cu('cut', patina(2, x, z, 85)), 'east' if x < tx else 'west'))
             else:
-                G.set(x, y, z, B('cherry_planks'))
+                G.set(x, y, z, B(cu('chiseled', 1)))
             if z in (Z0, Z1):
                 for yy in range(L + 13, y):
                     G.set(x, yy, z, B('calcite'))
             elif not edge:
                 G.set(x, L + 12, z, B('air'))
-    for z in range(Z0, Z1 + 1):                                    # the ridge and the eaves' cornice
-        G.set(tx, L + 21, z, B('cherry_planks'))
+    for z in range(Z0, Z1 + 1):                                    # the ridge crest in fresh copper
+        G.set(tx, L + 21, z, B(cu('chiseled', 0)))
     for z in range(Z0, Z1 + 1, 3):                                 # buttresses
         for x, d in ((X0 - 1, 'east'), (X1 + 1, 'west')):
             for y in range(L + 1, L + 10):
@@ -523,8 +542,11 @@ def temple():
             G.set(x, L + 10, z, stairs('quartz', d))
     for a in range(-4, 5):                                         # the rose window
         for b in range(-4, 5):
-            if a * a + b * b <= 16:
-                G.set(tx + a, L + 14 + b, Z1, B(['pink_stained_glass', 'yellow_stained_glass', 'magenta_stained_glass', 'white_stained_glass'][(abs(a) + abs(b)) % 4]))
+            rr = math.hypot(a, b)
+            if rr <= 4:                                                # amber sun, gold rays, teal sky, a ring of dawn
+                ray = a == 0 or b == 0 or abs(a) == abs(b)
+                G.set(tx + a, L + 14 + b, Z1, B(AMBER if rr <= 1.2 else GOLD if rr <= 2.3 else 'pink_stained_glass' if rr > 3.5 else
+                                              GOLD if ray else TEAL))
     for x in range(tx - 1, tx + 2):                                # the door
         for y in range(L + 1, L + 6):
             G.clear(x, y, Z1)
@@ -538,8 +560,8 @@ def temple():
         for z in (Z1 + 1, Z1 + 2):
             G.set(x, L + 10, z, B('smooth_quartz'))
             if z == Z1 + 2:
-                G.set(x, L + 11, z, stairs('cherry', 'north'))
-        G.set(x, L + 11, Z1 + 1, B('cherry_planks'))
+                G.set(x, L + 11, z, stairs(cu('cut', patina(2, x, z, 86)), 'north'))
+        G.set(x, L + 11, Z1 + 1, B(cu('cut', patina(2, x, Z1 + 1, 86))))
     for z in (Z1 + 1, Z1 + 2):
         for x in range(tx - 4, tx + 5):
             G.set(x, L, z, B('smooth_quartz'))
@@ -621,14 +643,16 @@ def workshop():
                           'orange_stained_glass' if 2 <= k <= 3 else 'glass' if 6 <= k <= 8 else 'bricks')
                     G.set(x, y, z, B(st))
             k = (x - x0) % 6
+            cst = patina(1, x, z, 87)
             if k < 4:
-                G.set(x, L + 11 + k, z, stairs('deepslate_tile', 'east'))
+                sky = k == 2 and not edge and z % 4 == 1                 # skylights in the copper slopes
+                G.set(x, L + 11 + k, z, B('glass') if sky else stairs(cu('cut', cst), 'east'))
                 for y in range(L + 11, L + 11 + k):
                     if edge:
-                        G.set(x, y, z, B('deepslate_tiles'))
+                        G.set(x, y, z, B(cu('cut', cst)))
             else:
                 for y in range(L + 11, L + 15):
-                    G.set(x, y, z, B('glass' if k == 4 else 'deepslate_tiles') if edge or k == 4 else B('air'))
+                    G.set(x, y, z, B('glass' if k == 4 else cu('cut', cst)) if edge or k == 4 else B('air'))
             G.set(x, L + 10, z, B('waxed_cut_copper') if edge else B('air'))
     for (sx, sz) in ((x0 + 4, z0 + 3), (x1 - 4, z0 + 3)):           # the stacks
         for y in range(L + 11, L + 28):
@@ -763,8 +787,8 @@ def clock_tower():
                     corner = x in (x0, x1) and z in (z0, z1)
                     open_ = k > Ht - 7 and not corner and k < Ht
                     slit = not corner and (x == cx or z == cz) and k % 10 in (4, 5) and k < 20
-                    G.set(x, y, z, B('quartz_pillar[axis=y]' if corner else 'waxed_cut_copper' if k % 10 == 0 else
-                                     'air' if open_ else 'yellow_stained_glass' if slit else 'calcite'))
+                    G.set(x, y, z, B('quartz_pillar[axis=y]' if corner else cu('cut', patina(1, x, z, 89, y)) if k % 10 == 0 else
+                                     'air' if open_ else lancet(k % 10 - 4, 2) if slit else 'calcite'))
                 elif k % 10 == 0 and k < Ht:
                     G.set(x, y, z, B('spruce_planks'))
     for y in range(L + 1, L + Ht):                                  # the ladder up through the landings
@@ -783,7 +807,7 @@ def clock_tower():
         for z in range(z0 - 1, z1 + 2):
             if x in (x0 - 1, x1 + 1) or z in (z0 - 1, z1 + 1):
                 G.setdefault(x, L + 22, z, B('smooth_quartz'))
-                G.setdefault(x, L + 23, z, wall('diorite'))
+                G.setdefault(x, L + 23, z, B('%s[waterlogged=false]' % cu('grate', 2)))
     G.set(cx, L + Ht - 1, cz, B('bell[attachment=ceiling,facing=north,powered=false]'))
     for k in range(0, 12):
         r = 4 - (k * 4) // 12
@@ -805,6 +829,7 @@ def clock_tower():
 def templetes():
     """A small domed templete on the promenade at the end of every radial: every street ends on
     something to look at."""
+    made = 0
     for (es, en, x, z, k) in N.LANDMARKS:
         if k != 'mirador':
             continue
@@ -825,7 +850,8 @@ def templetes():
                 G.set(px, y, pz, B('quartz_pillar[axis=y]'))
         for (px, pz, rr, dx, dz) in ring_xz(ctr[0], ctr[1], 0, 3.4):
             G.set(px, L + 6, pz, B('smooth_quartz'))
-        dome(ctr[0], ctr[1], L + 6, 3, shell='waxed_cut_copper', rib='gold_block', ribs=4)
+        dome(ctr[0], ctr[1], L + 6, 3, shell=cu('cut', 1 + made % 3), rib='gold_block', ribs=4)
+        made += 1
         G.set(ctr[0], L + 5, ctr[1], LANTERN.replace('hanging=false', 'hanging=true'))
         G.set(ctr[0], L + 10, ctr[1], B('lightning_rod[facing=up,powered=false,waterlogged=false]'))
 

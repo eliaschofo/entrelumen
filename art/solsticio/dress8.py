@@ -26,7 +26,7 @@ from voxkit import orient  # noqa: E402
 
 NAMES = ('G', 'N', 'B', 'stairs', 'wall', 'h', 'kind', 'FACING', 'N4', 'N8', 'MARKERS', 'TOP', 'LOT_INFO', 'LOT_TOP',
          'DMAT', 'STOREY', 'lot_dist', 'exposed', 'walkable', 'cls', 'axis_part', 'mp_state', 'sign', 'LANTERN', 'lamp',
-         'PLACE_KEYS')
+         'PLACE_KEYS', 'cu', 'patina', 'cu_slab', 'roof_at', 'cu_stage')
 VEC = {'east': (1, 0), 'west': (-1, 0), 'south': (0, 1), 'north': (0, -1)}
 NAMEOF = {v: k for k, v in VEC.items()}
 OPP = {'north': 'south', 'south': 'north', 'east': 'west', 'west': 'east'}
@@ -158,14 +158,14 @@ def windows(lot, info):
 
 
 def balcony(lot, info):
-    """A balcony on the first floor over the wider streets: a trapdoor floor, a fence rail with
-    flower boxes, and a door out of the middle window."""
-    if lot['prio'] < 55 or info['floors'] < 2 or info['seed'] % 3 != 0:
+    """Balconies over the streets, two houses in three: a copper trapdoor floor, copper grates for
+    the rail, a flower box in the middle (a planter on every balcony) and a copper door out of the
+    middle window; tall houses stack a second one above."""
+    if lot['prio'] < 44 or info['floors'] < 2 or h(lot['id'], 17, 555) > 0.67:
         return
     pad = lot['pad']
     y0 = pad + STOREY
-    D = DRESS[lot['district']]
-    wood = D['door']
+    st = cu_stage(info)
     fronts = {}
     for (c, d, n, lev) in street_front(lot):
         if lev <= pad and walkable(n) and (n[0] + d[0], n[1] + d[1]) in TOP:
@@ -182,21 +182,33 @@ def balcony(lot, info):
                 break
         if len(run) < 3:
             continue
-        mid = run[1]
         face = NAMEOF[d]
-        if any(not free(c[0] + d[0], y, c[1] + d[1]) for c in run for y in (y0, y0 + 1)):
-            continue
-        for i, c in enumerate(run):
-            n = (c[0] + d[0], c[1] + d[1])
-            G.set(n[0], y0, n[1], B('%s_trapdoor[facing=%s,half=top,open=false,powered=false,waterlogged=false]' % (wood, face)))
-            if i == 1:
-                G.set(n[0], y0 + 1, n[1], mp_state('supplementaries:flower_box', facing=face, face='floor'))
-            else:
-                G.set(n[0], y0 + 1, n[1], B('%s_fence[east=false,north=false,south=false,waterlogged=false,west=false]' % wood))
-        G.set(mid[0], y0 + 1, mid[1], B('%s_door[facing=%s,half=lower,hinge=left,open=false,powered=false]' % (wood, face)))
-        G.set(mid[0], y0 + 2, mid[1], B('%s_door[facing=%s,half=upper,hinge=left,open=false,powered=false]' % (wood, face)))
-        count('balconies')
-        return
+        levels = [y0] + ([y0 + STOREY] if info['floors'] >= 3 and h(lot['id'], 19, 555) < 0.5 else [])
+        made = 0
+        for yb in levels:
+            if any(not free(c[0] + d[0], y, c[1] + d[1]) for c in run for y in (yb, yb + 1)):
+                break
+            one_balcony(run, d, face, yb, st)
+            made += 1
+        if made:
+            return
+
+
+def one_balcony(run, d, face, y0, st):
+    mid = run[1]
+    for i, c in enumerate(run):
+        n = (c[0] + d[0], c[1] + d[1])
+        s = patina(st, n[0], n[1], 17, y0)
+        G.set(n[0], y0, n[1], B('%s[facing=%s,half=top,open=false,powered=false,waterlogged=false]' % (cu('trapdoor', s), face)))
+        if i == 1:
+            G.set(n[0], y0 + 1, n[1], mp_state('supplementaries:flower_box', facing=face, face='floor'))
+            count('balcony planters')
+        else:
+            G.set(n[0], y0 + 1, n[1], B('%s[waterlogged=false]' % cu('grate', s)))
+    door = cu('door', patina(st, mid[0], mid[1], 19))
+    G.set(mid[0], y0 + 1, mid[1], B('%s[facing=%s,half=lower,hinge=left,open=false,powered=false]' % (door, face)))
+    G.set(mid[0], y0 + 2, mid[1], B('%s[facing=%s,half=upper,hinge=left,open=false,powered=false]' % (door, face)))
+    count('balconies')
 
 
 def shopfront(lot, info):
@@ -287,7 +299,6 @@ def roofscape(lot, info):
     """Dormers on the street slopes of the pitched roofs, chimneys on the ridges."""
     style = info['style']
     top = LOT_TOP[lot['id']]
-    rb = B(info['roof_block'])
     wallb = B(info['wall'])
     if style in ('gable', 'dome') and len(lot['cells']) >= 30:
         for (c, d, n, lev) in street_front(lot):
@@ -302,7 +313,7 @@ def roofscape(lot, info):
             G.set(c[0], top + 2, c[1], B('glass'))
             for q in side:
                 G.set(q[0], top + 2, q[1], wallb)
-            G.set(c[0], top + 3, c[1], rb)
+            G.set(c[0], top + 3, c[1], roof_at(info, c[0], c[1])[1])
             count('dormers')
     if style in ('gable', 'saw') and info['seed'] % 3 == 0 and len(lot['cells']) >= 24:
         dist = lot_dist(lot['cells'], exterior=True) if style == 'gable' else lot_dist(lot['cells'])
@@ -643,7 +654,7 @@ def courtyards():
                         G.set(x, y + 3, z, B('gold_block'))
                 else:
                     G.set(x, y + 1, z, B('stone_brick_wall[east=none,north=none,south=none,up=true,waterlogged=false,west=none]') if well
-                          else B('calcite'))
+                          else cu_slab(patina(1, x, z, 13)))
                     G.clear(x, y + 2, z)
         if well:
             for (a, b) in ((1, 1), (-1, -1)):
