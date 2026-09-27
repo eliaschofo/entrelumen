@@ -96,12 +96,12 @@ class QuestBook(unittest.TestCase):
                         title, text = source[lang]
                         self.assertEqual(self.lang[lang][f"quest.{q['id']}.title"], title)
                         self.assertEqual([p for p in self.lang[lang][f"quest.{q['id']}.quest_desc"] if p], text.split('\n\n'))
-        # No item-filter mod: the tag tasks check one concrete item (Almost Unified's for metals). Four
-        # since the Ars guides became the Ars sector chapter (its archwood task names the log).
+        # No item-filter mod: the tag tasks check one concrete item (Almost Unified's for metals). Three
+        # since the Ars guides became the Ars sector chapter (its archwood task names the log) and the
+        # Mekanism guides became the Mekanism sector chapters (their steel task names IE's ingot).
         tagged = {q['key']: q['item'] for g in self.guides for q in g['quests'] if 'tag' in q}
-        self.assertEqual(tagged['mkb_steel'], 'immersiveengineering:ingot_steel')
         self.assertEqual(tagged['occ_crusher'], 'immersiveengineering:ingot_silver')
-        self.assertEqual(len(tagged), 4)
+        self.assertEqual(len(tagged), 3)
 
     def test_story_node_grammar(self):
         # Hito hexagon 2, act finale hexagon 3, observed journey octagon 2, task square 1,
@@ -290,7 +290,7 @@ class QuestBook(unittest.TestCase):
 
     def test_guide_without_concrete_item_rejected(self):
         guides = copy.deepcopy(self.guides)
-        quest = next(q for g in guides for q in g['quests'] if q['key'] == 'mkb_steel')
+        quest = next(q for g in guides for q in g['quests'] if q['key'] == 'occ_crusher')
         del quest['item']
         with self.assertRaisesRegex(AssertionError, 'concrete item'):
             generate_book(self.story, guides, self.book)

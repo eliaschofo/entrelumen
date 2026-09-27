@@ -161,7 +161,7 @@ def compile_paragraph(text, lang, ctx, where):
             ctx["names"].add(arg)
             seg = {"translate": arg, "color": COLORS["item"]}
         elif name == "key":
-            assert arg and re.fullmatch(r"key\.[a-z0-9_.]+", arg) and not parts, f"{where}: [key:key.id]"
+            assert arg and re.fullmatch(r"key\.[A-Za-z0-9_.]+", arg) and not parts, f"{where}: [key:key.id]"
             ctx["keys"].add(arg)
             seg = {"text": "", "extra": [{"text": "["}, {"keybind": arg}, {"text": "]"}], "color": COLORS["key"]}
         elif name in ("quest", "chapter"):
@@ -879,7 +879,8 @@ def decorate_sector(data, motif, figures, placed, nodes, languages, ctx, by_key)
 ART_PX = {"sun_heliodor": (128, 128), "medallion": (64, 64), "corner": (16, 16), "divider": (96, 9),
           **{f"numeral_{n}": (w, 45) for n, w in zip(range(1, 7), (27, 51, 75, 63, 39, 63))},
           **{f"act_{n}": (32, 32) for n in range(1, 7)},
-          "banner_create": (192, 48), "banner_ars": (192, 48), "tip": (16, 16), "secret": (16, 16)}
+          "banner_create": (192, 48), "banner_ars": (192, 48), "banner_plain": (192, 48), "tip": (16, 16), "secret": (16, 16)}
+# banner_plain is a pale plate meant to be tinted with the chapter's own colour: "color": "#rrggbb" on the art entry.
 
 
 def art_image(chapter, i, art, palette, languages, ctx, by_key):

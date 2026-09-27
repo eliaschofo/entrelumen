@@ -358,8 +358,11 @@ public final class RuntimeGameTestsSolsticio {
     var level = helper.getLevel();
     var server = level.getServer();
     var data = new RuinData();
+    var stair = EnvesData.get(server).entrance;
     var ruin = HeliodorRuins.place(level, data, helper.absolutePos(BlockPos.ZERO).offset(0, 0, 4096), false)
         .orElseThrow();
+    helper.assertTrue(EnvesData.get(server).entrance == stair,
+        "A start ruin in a local registry took over the world's Sealed Stair");
     var regions = StructureProtection.ruinRegions(data);
     helper.assertTrue(regions.size() == 1 && regions.getFirst().box().equals(StructureProtection.box(ruin.box()))
         && regions.getFirst().gate().equals(ProtectionRules.ActGate.act(1))

@@ -14,17 +14,7 @@
   "entry": "crb_alloy",
   "center": [0, 0],
   "figures": {
-    "gear": {
-      "kind": "ring", "cx": 0, "cy": 0, "r": 8, "count": 16, "start": -90,
-      "draw": [
-        {"style": "ring", "r": 8, "alpha": 60, "segments": 64},
-        {"style": "ring", "r": 9.7, "alpha": 120, "thickness_px": 2, "segments": 64},
-        {"style": "teeth", "r": 9.7, "count": 16, "start": -78.75, "depth": 0.9, "width": 1.05, "alpha": 95},
-        {"style": "ring", "r": 6.5, "alpha": 70, "segments": 48},
-        {"style": "ring", "r": 2.3, "alpha": 120, "thickness_px": 2, "segments": 24},
-        {"style": "spokes", "from_r": 2.3, "to_r": 6.5, "alpha": 70, "skip": [0, 1, 3, 5, 7, 8, 9, 11, 13, 15]}
-      ]
-    }
+    "gear": {"kind": "ring", "cx": 0, "cy": 0, "r": 8, "count": 16, "start": -90, "draw": [{"style": "ring", "r": 8, "alpha": 60, "segments": 64}, {"style": "ring", "r": 9.7, "alpha": 120, "thickness_px": 2, "segments": 64}, {"style": "teeth", "r": 9.7, "count": 16, "start": -78.75, "depth": 0.9, "width": 1.05, "alpha": 95}, {"style": "ring", "r": 6.5, "alpha": 70, "segments": 48}, {"style": "ring", "r": 2.3, "alpha": 120, "thickness_px": 2, "segments": 24}, {"style": "spokes", "from_r": 2.3, "to_r": 6.5, "alpha": 70, "skip": [0, 1, 3, 5, 7, 8, 9, 11, 13, 15]}]}
   },
   "groups": {
     "belts": {"label": {"en_us": "Belts and funnels", "es_es": "Cintas y embudos"}},
@@ -38,8 +28,7 @@
   "art": [
     {"id": "banner", "texture": "entrelumen:textures/gui/quests/banner_create.png", "x": -14.2, "y": -13.2, "scale": 1, "order": -1},
     {"id": "title", "label": {"en_us": "Create · Kinetics", "es_es": "Create · Cinética"}, "x": -14.2, "y": -13.2, "scale": 2, "bold": true},
-    {"id": "medallion", "texture": "entrelumen:textures/gui/quests/medallion.png", "x": -14.2, "y": -8.6, "scale": 2, "order": 0,
-     "click": "chapter:sun_of_heliodor", "hover": {"en_us": "Back to the Sun of Heliodor", "es_es": "Volver al Sol de Heliodor"}},
+    {"id": "medallion", "texture": "entrelumen:textures/gui/quests/medallion.png", "x": -14.2, "y": -8.6, "scale": 2, "order": 0, "click": "chapter:sun_of_heliodor", "hover": {"en_us": "Back to the Sun of Heliodor", "es_es": "Volver al Sol de Heliodor"}},
     {"id": "goggles", "texture": "create:textures/item/goggles.png", "x": -14.2, "y": -8.6, "scale": 4, "order": 1},
     {"id": "hub_sun", "texture": "entrelumen:textures/gui/quests/sun_heliodor.png", "x": 0, "y": 0, "scale": 1, "order": -1, "reveal": "crk_crushing"}
   ],
@@ -54,8 +43,7 @@
       "es_es": {"title": "Aleación de andesita", "subtitle": "El Poxipol de Create.",
         "text": ["[item:minecraft:andesite|Andesita] y [item:minecraft:iron_nugget|pepitas de hierro] en damero de 2×2: una aleación. Ejes, revestimientos, cintas y media tanda de máquinas salen de acá.",
                  "[tip] Más adelante una [item:create:mechanical_mixer|Mezcladora mecánica] la hace con una de cada: a mitad de precio."]},
-      "sources": ["jar:create-1.21.1-6.0.10.jar:data/create/recipe/crafting/materials/andesite_alloy.json",
-                  "jar:create-1.21.1-6.0.10.jar:data/create/recipe/mixing/andesite_alloy.json"]
+      "sources": ["jar:create-1.21.1-6.0.10.jar:data/create/recipe/crafting/materials/andesite_alloy.json", "jar:create-1.21.1-6.0.10.jar:data/create/recipe/mixing/andesite_alloy.json"]
     },
     {
       "key": "crb_ponder", "role": "tip", "deps": ["crb_alloy"],
@@ -68,17 +56,16 @@
       "sources": ["jar:create-1.21.1-6.0.10.jar:META-INF/jarjar/ponder-neoforge-1.0.82+mc1.21.1.jar#assets/ponder/lang/en_us.json#key.ponder.ponder"]
     },
     {
-      "key": "crb_shafts", "role": "step", "deps": ["crb_alloy"],
+      "key": "crb_shafts", "role": "step", "deps": ["crb_alloy"], "curve": {"crb_alloy": 0.12},
       "task": {"item": "create:cogwheel", "count": 8},
-      "at": {"figure": "gear", "slot": 1}, "curve": {"crb_alloy": 0.12},
+      "at": {"figure": "gear", "slot": 1},
       "en_us": {"title": "Shafts and cogs",
         "text": ["Two alloys stacked make eight [item:create:shaft|Shafts]; a shaft and a plank make a [item:create:cogwheel|Cogwheel]. Shafts carry rotation straight, cogs pass it to their neighbours, each turning the other way.",
                  "[tip] Machine running backwards? Add or remove one cog."]},
       "es_es": {"title": "Ejes y engranajes",
         "text": ["Dos aleaciones, una arriba de otra, dan ocho [item:create:shaft|Ejes]; un eje y un tablón, un [item:create:cogwheel|Engranaje]. Los ejes llevan la rotación derecho; los engranajes la pasan al vecino, que gira al revés.",
                  "[tip] ¿La máquina anda para atrás? Sumá o sacá un engranaje."]},
-      "sources": ["jar:create-1.21.1-6.0.10.jar:data/create/recipe/crafting/kinetics/shaft.json",
-                  "jar:create-1.21.1-6.0.10.jar:data/create/recipe/crafting/kinetics/cogwheel.json"]
+      "sources": ["jar:create-1.21.1-6.0.10.jar:data/create/recipe/crafting/kinetics/shaft.json", "jar:create-1.21.1-6.0.10.jar:data/create/recipe/crafting/kinetics/cogwheel.json"]
     },
     {
       "key": "crb_large_cog", "role": "side", "deps": ["crb_shafts"],
@@ -104,9 +91,9 @@
       "sources": ["jar:create-1.21.1-6.0.10.jar:data/create/recipe/crafting/kinetics/hand_crank.json"]
     },
     {
-      "key": "crb_water_wheel", "role": "milestone", "deps": ["crb_shafts"],
+      "key": "crb_water_wheel", "role": "milestone", "deps": ["crb_shafts"], "curve": {"crb_shafts": 0.12},
       "task": {"item": "create:water_wheel"},
-      "at": {"figure": "gear", "slot": 2}, "curve": {"crb_shafts": 0.12},
+      "at": {"figure": "gear", "slot": 2},
       "en_us": {"title": "Let the river work",
         "text": ["Eight planks around a [item:create:shaft|Shaft]. It spins in flowing water: a river, a waterfall, a short stream. More water on more sides adds nothing; more wheels do.",
                  "Any plank reskins it. Free, steady, silent power."]},
@@ -133,8 +120,7 @@
         "text": ["A [item:create:windmill_bearing|Windmill Bearing] spins a glued structure with at least 8 sail blocks; sails stick without glue. Right-click it to start or stop. More sails, more speed."]},
       "es_es": {"title": "Donde no hay agua",
         "text": ["Un [item:create:windmill_bearing|Rodamiento de molino de viento] hace girar una estructura pegada con al menos 8 bloques de vela; las velas se pegan solas. Clic derecho para arrancar o parar. Más velas, más velocidad."]},
-      "sources": ["jar:create-1.21.1-6.0.10.jar:data/create/recipe/crafting/kinetics/windmill_bearing.json",
-                  "jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#create.ponder.windmill_source"]
+      "sources": ["jar:create-1.21.1-6.0.10.jar:data/create/recipe/crafting/kinetics/windmill_bearing.json", "jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#create.ponder.windmill_source"]
     },
     {
       "key": "crk_lava_wheel", "role": "secret", "deps": ["crb_water_wheel"],
@@ -148,9 +134,9 @@
       "sources": ["jar:create-1.21.1-6.0.10.jar:data/create/advancement/lava_wheel_00000.json"]
     },
     {
-      "key": "crb_casing", "role": "step", "deps": ["crb_water_wheel"],
+      "key": "crb_casing", "role": "step", "deps": ["crb_water_wheel"], "curve": {"crb_water_wheel": 0.12},
       "task": {"item": "create:andesite_casing", "count": 8},
-      "at": {"figure": "gear", "slot": 3}, "curve": {"crb_water_wheel": 0.12},
+      "at": {"figure": "gear", "slot": 3},
       "en_us": {"title": "Dress the wood",
         "text": ["Right-click stripped logs or wood with [item:create:andesite_alloy|Andesite Alloy]. Press, mixer, fan, millstone, drill, saw, bearing and gearbox all wear it.",
                  "[tip] A [item:create:deployer|Deployer] applies it for you later."]},
@@ -191,22 +177,20 @@
       "es_es": {"title": "Taladro y sierra",
         "text": ["Quieto, un [item:create:mechanical_drill|Taladro mecánico] rompe el bloque de adelante y una [item:create:mechanical_saw|Sierra mecánica] voltea un árbol entero desde el tronco de abajo. En una estructura móvil, trabajan cada bloque que pasan.",
                  "[tip] Una sierra mirando para arriba corta una aleación en seis ejes. La mesa da cuatro."]},
-      "sources": ["jar:create-1.21.1-6.0.10.jar:data/create/recipe/cutting/andesite_alloy.json",
-                  "jar:create-1.21.1-6.0.10.jar:data/create/recipe/crafting/kinetics/shaft.json"]
+      "sources": ["jar:create-1.21.1-6.0.10.jar:data/create/recipe/cutting/andesite_alloy.json", "jar:create-1.21.1-6.0.10.jar:data/create/recipe/crafting/kinetics/shaft.json"]
     },
     {
-      "key": "crb_press", "role": "milestone", "deps": ["crb_casing"],
+      "key": "crb_press", "role": "milestone", "deps": ["crb_casing"], "curve": {"crb_casing": 0.12},
       "task": {"item": "create:iron_sheet", "count": 16},
       "icon": "create:mechanical_press",
-      "at": {"figure": "gear", "slot": 4}, "curve": {"crb_casing": 0.12},
+      "at": {"figure": "gear", "slot": 4},
       "en_us": {"title": "Flat out", "subtitle": "Ingots in, pancakes out.",
         "text": ["A [item:create:mechanical_press|Mechanical Press] flattens what sits below it: an item on the ground, on a [item:create:depot|Depot] or riding a belt. Ingots come out as sheets.",
                  "Over a [item:create:basin|Basin] it compacts instead: 2×2 and 3×3 recipes, no hands."]},
       "es_es": {"title": "A la plancha", "subtitle": "Entran lingotes, salen panqueques.",
         "text": ["La [item:create:mechanical_press|Prensa mecánica] aplasta lo que tiene abajo: un ítem en el piso, en un [item:create:depot|Depósito] o sobre una cinta. Los lingotes salen láminas.",
                  "Sobre una [item:create:basin|Cuenca] compacta: recetas de 2×2 y 3×3, sin manos."]},
-      "sources": ["jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#create.ponder.mechanical_press",
-                  "jar:create-1.21.1-6.0.10.jar:data/create/recipe/pressing/iron_ingot.json"]
+      "sources": ["jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#create.ponder.mechanical_press", "jar:create-1.21.1-6.0.10.jar:data/create/recipe/pressing/iron_ingot.json"]
     },
     {
       "key": "crb_belt", "role": "side", "deps": ["crb_press"], "group": "belts",
@@ -251,9 +235,9 @@
       "sources": ["jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#create.ponder.item_vault_sizes"]
     },
     {
-      "key": "crb_goggles", "role": "step", "deps": ["crb_press"],
+      "key": "crb_goggles", "role": "step", "deps": ["crb_press"], "curve": {"crb_press": 0.12},
       "tasks": [{"item": "create:goggles"}, {"item": "create:wrench"}],
-      "at": {"figure": "gear", "slot": 5}, "curve": {"crb_press": 0.12},
+      "at": {"figure": "gear", "slot": 5},
       "en_us": {"title": "Read the strain",
         "text": ["[item:create:goggles|Engineer's Goggles] show every machine's stress; a [item:create:wrench|Wrench] turns parts and, sneaking, picks them up whole. The goggles need a golden sheet: the press makes it."]},
       "es_es": {"title": "Leer el esfuerzo",
@@ -280,13 +264,12 @@
       "es_es": {"title": "Inalámbrico, a la antigua",
         "text": ["Dos ítems en sus ranuras fijan la frecuencia de un [item:create:redstone_link|Enlace de redstone]; los que tienen el mismo par se hablan a [hl|256 bloques]. Agachado y clic cambia entre emisor y receptor.",
                  "[tip] Un enlace que maneja un [item:create:clutch|Embrague] es el apagado a distancia más prolijo."]},
-      "sources": ["jar:create-1.21.1-6.0.10.jar:data/create/recipe/crafting/logistics/redstone_link.json",
-                  "jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#create.ponder.redstone_link"]
+      "sources": ["jar:create-1.21.1-6.0.10.jar:data/create/recipe/crafting/logistics/redstone_link.json", "jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#create.ponder.redstone_link"]
     },
     {
-      "key": "crb_mixer", "role": "milestone", "deps": ["crb_goggles"],
+      "key": "crb_mixer", "role": "milestone", "deps": ["crb_goggles"], "curve": {"crb_goggles": 0.12},
       "task": {"item": "create:mechanical_mixer"},
-      "at": {"figure": "gear", "slot": 6}, "curve": {"crb_goggles": 0.12},
+      "at": {"figure": "gear", "slot": 6},
       "en_us": {"title": "Stir it up",
         "text": ["A [item:create:mechanical_mixer|Mechanical Mixer] over a [item:create:basin|Basin] runs shapeless recipes and Create mixing: alloys, dough, liquids. Results leave by the basin's outlet into an inventory below or beside.",
                  "[tip] Two recipes match? A filter on the mixer picks one."]},
@@ -326,9 +309,9 @@
       "sources": ["jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#create.ponder.millstone"]
     },
     {
-      "key": "crb_burner", "role": "step", "deps": ["crb_mixer"],
+      "key": "crb_burner", "role": "step", "deps": ["crb_mixer"], "curve": {"crb_mixer": 0.12},
       "task": {"item": "create:blaze_burner"},
-      "at": {"figure": "gear", "slot": 7}, "curve": {"crb_mixer": 0.12},
+      "at": {"figure": "gear", "slot": 7},
       "en_us": {"title": "Fire in a cage", "subtitle": "Blaze, meet your new job.",
         "text": ["Iron sheets and netherrack make an empty [item:create:blaze_burner|Blaze Burner]; right-click a Blaze or its spawner to fill it. Fed fuel, it heats the basin above; fed a [item:create:blaze_cake|Blaze Cake], it superheats."]},
       "es_es": {"title": "Fuego enjaulado", "subtitle": "Blaze: conseguiste laburo.",
@@ -365,8 +348,7 @@
         "text": ["[item:create:steam_engine|Steam Engines] on a tank, burners below and water piped in: a boiler. Each boiler level runs one more engine at full power; the goggles say what's missing."]},
       "es_es": {"title": "A todo vapor", "subtitle": "El silbato es opcional. Casi.",
         "text": ["[item:create:steam_engine|Motores de vapor] sobre un tanque, quemadores abajo y agua por caño: una caldera. Cada nivel de caldera mueve un motor más a pleno; las gafas dicen qué falta."]},
-      "sources": ["jar:create-1.21.1-6.0.10.jar:data/create/recipe/crafting/kinetics/steam_engine.json",
-                  "jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#create.ponder.steam_engine"]
+      "sources": ["jar:create-1.21.1-6.0.10.jar:data/create/recipe/crafting/kinetics/steam_engine.json", "jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#create.ponder.steam_engine"]
     },
     {
       "key": "crk_pipe_organ", "role": "secret", "deps": ["crb_steam"], "group": "fluids",
@@ -380,9 +362,9 @@
       "sources": ["jar:create-1.21.1-6.0.10.jar:data/create/advancement/pipe_organ.json"]
     },
     {
-      "key": "crb_brass", "role": "milestone", "deps": ["crb_burner"],
+      "key": "crb_brass", "role": "milestone", "deps": ["crb_burner"], "curve": {"crb_burner": 0.12},
       "task": {"item": "create:brass_ingot", "count": 8},
-      "at": {"figure": "gear", "slot": 8}, "curve": {"crb_burner": 0.12},
+      "at": {"figure": "gear", "slot": 8},
       "en_us": {"title": "Down to brass tacks",
         "text": ["One copper and one [item:create:zinc_ingot|Zinc Ingot] in a heated basin give two [item:create:brass_ingot|Brass Ingots]. Zinc ore spawns in the Overworld.",
                  "Brass opens the second age: smart logistics, deployers, arms, crafters and the [chapter:sector_create_addons|addons]."]},
@@ -399,13 +381,12 @@
         "text": ["One quartz and eight redstone make [item:create:rose_quartz|Rose Quartz]. Polish it with [item:create:sand_paper|Sand Paper] in your hand and the quartz in the other, or leave it to a deployer."]},
       "es_es": {"title": "Rosado y pulido",
         "text": ["Un cuarzo y ocho redstone dan [item:create:rose_quartz|Cuarzo rosado]. Pulilo con [item:create:sand_paper|Papel de lija] en una mano y el cuarzo en la otra, o dejáselo a un desplegador."]},
-      "sources": ["jar:create-1.21.1-6.0.10.jar:data/create/recipe/crafting/materials/rose_quartz.json",
-                  "jar:create-1.21.1-6.0.10.jar:data/create/recipe/sandpaper_polishing/rose_quartz.json"]
+      "sources": ["jar:create-1.21.1-6.0.10.jar:data/create/recipe/crafting/materials/rose_quartz.json", "jar:create-1.21.1-6.0.10.jar:data/create/recipe/sandpaper_polishing/rose_quartz.json"]
     },
     {
-      "key": "cbr_casing", "role": "step", "deps": ["crb_brass"],
+      "key": "cbr_casing", "role": "step", "deps": ["crb_brass"], "curve": {"crb_brass": 0.12},
       "task": {"item": "create:brass_casing", "count": 8},
-      "at": {"figure": "gear", "slot": 9}, "curve": {"crb_brass": 0.12},
+      "at": {"figure": "gear", "slot": 9},
       "en_us": {"title": "The brass jacket",
         "text": ["A [item:create:brass_ingot|Brass Ingot] on stripped wood: the body of every smart machine. Crafters, arms, tunnels and the speed controller all wear it."]},
       "es_es": {"title": "La chaqueta de latón",
@@ -453,9 +434,9 @@
       "sources": ["jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#create.ponder.stockpile_switch"]
     },
     {
-      "key": "cbr_tube", "role": "milestone", "deps": ["cbr_casing", "cbr_rose"],
+      "key": "cbr_tube", "role": "milestone", "deps": ["cbr_casing", "cbr_rose"], "curve": {"cbr_casing": 0.12},
       "task": {"item": "create:electron_tube", "count": 8},
-      "at": {"figure": "gear", "slot": 10}, "curve": {"cbr_casing": 0.12},
+      "at": {"figure": "gear", "slot": 10},
       "en_us": {"title": "Brains in a bulb",
         "text": ["[item:create:polished_rose_quartz|Polished Rose Quartz] on an [item:create:iron_sheet|Iron Sheet]. Every smart block carries one: funnels, tunnels, deployers, crafters, observers. Make a handful; they go fast."]},
       "es_es": {"title": "Cerebro en una lamparita",
@@ -483,9 +464,9 @@
       "sources": ["jar:create-1.21.1-6.0.10.jar:data/create/recipe/crafting/kinetics/weighted_ejector.json"]
     },
     {
-      "key": "cbr_deployer", "role": "step", "deps": ["cbr_tube"],
+      "key": "cbr_deployer", "role": "step", "deps": ["cbr_tube"], "curve": {"cbr_tube": 0.12},
       "task": {"item": "create:deployer"},
-      "at": {"figure": "gear", "slot": 11}, "curve": {"cbr_tube": 0.12},
+      "at": {"figure": "gear", "slot": 11},
       "en_us": {"title": "A second pair of hands",
         "text": ["A [item:create:deployer|Deployer] is a mechanical you: it places, uses, harvests and hits two blocks ahead. With an item in hand, it works on whatever sits below on a depot or belt."]},
       "es_es": {"title": "Otro par de manos",
@@ -524,11 +505,10 @@
       "sources": ["jar:create-1.21.1-6.0.10.jar:data/create/advancement/fist_bump.json"]
     },
     {
-      "key": "cbr_precision", "role": "milestone", "deps": ["cbr_deployer"],
+      "key": "cbr_precision", "role": "milestone", "deps": ["cbr_deployer"], "sequential": true, "curve": {"cbr_deployer": 0.12},
       "tasks": [{"item": "create:golden_sheet"}, {"item": "create:incomplete_precision_mechanism"}, {"item": "create:precision_mechanism", "count": 4}],
-      "sequential": true,
       "icon": "create:precision_mechanism",
-      "at": {"figure": "gear", "slot": 12}, "curve": {"cbr_deployer": 0.12},
+      "at": {"figure": "gear", "slot": 12},
       "en_us": {"title": "Precision work",
         "text": ["A [item:create:golden_sheet|Golden Sheet] from the [quest:crb_press|press], then five loops of deployers adding a cogwheel, a large cogwheel and an iron nugget. About four runs in five end as a [item:create:precision_mechanism|Precision Mechanism]; the rest is scrap.",
                  "Arms, speed controllers and train controls need it. So do two act components."]},
@@ -548,9 +528,9 @@
       "sources": ["jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#create.ponder.rotation_speed_controller"]
     },
     {
-      "key": "cbr_arm", "role": "step", "deps": ["cbr_precision"],
+      "key": "cbr_arm", "role": "step", "deps": ["cbr_precision"], "curve": {"cbr_precision": 0.12},
       "task": {"item": "create:mechanical_arm"},
-      "at": {"figure": "gear", "slot": 13}, "curve": {"cbr_precision": 0.12},
+      "at": {"figure": "gear", "slot": 13},
       "en_us": {"title": "Pick and place",
         "text": ["Before placing a [item:create:mechanical_arm|Mechanical Arm], click its targets with it in hand: blue takes, click again for yellow, which gives. Then it shuttles items between any number of them."]},
       "es_es": {"title": "Agarrar y dejar",
@@ -589,9 +569,9 @@
       "sources": ["jar:create-1.21.1-6.0.10.jar:data/create/advancement/musical_arm.json"]
     },
     {
-      "key": "cbr_crafter", "role": "milestone", "deps": ["cbr_arm"],
+      "key": "cbr_crafter", "role": "milestone", "deps": ["cbr_arm"], "curve": {"cbr_arm": 0.12},
       "task": {"item": "create:mechanical_crafter", "count": 9},
-      "at": {"figure": "gear", "slot": 14}, "curve": {"cbr_arm": 0.12},
+      "at": {"figure": "gear", "slot": 14},
       "en_us": {"title": "Crafting, industrialised",
         "text": ["A tube, a brass casing and a crafting table make three [item:create:mechanical_crafter|Mechanical Crafters]. In a grid they craft any recipe, 5×5 ones included. Wrench their arrows so every path ends at one exit."]},
       "es_es": {"title": "La mesa, industrializada",
@@ -644,8 +624,7 @@
                  "{page}",
                  "{image:entrelumen:textures/gui/quests/diagram_crushing.png width:96 height:48 align:center}",
                  "La mena sale triturada, con pepitas de más y chance de experiencia. El netherrack da [item:create:cinder_flour|Harina del Nether]. Ruedas más rápidas, molienda más rápida."]},
-      "sources": ["jar:create-1.21.1-6.0.10.jar:data/create/recipe/mechanical_crafting/crushing_wheel.json",
-                  "jar:create-1.21.1-6.0.10.jar:data/create/recipe/crushing/netherrack.json"]
+      "sources": ["jar:create-1.21.1-6.0.10.jar:data/create/recipe/mechanical_crafting/crushing_wheel.json", "jar:create-1.21.1-6.0.10.jar:data/create/recipe/crushing/netherrack.json"]
     },
     {
       "key": "cbr_ore_math", "role": "tip", "deps": ["crk_crushing"],
@@ -655,8 +634,7 @@
         "text": ["[tip] One raw iron, one crushed iron, plus 75% of an XP nugget. Smelt it for an ingot, or wash it with a fan for nine nuggets and a chance of redstone. Silk-touched ore crushes into more."]},
       "es_es": {"title": "Aritmética de mena",
         "text": ["[tip] Un hierro en bruto, un hierro triturado, más 75% de una pepita de experiencia. Fundilo por un lingote o lavalo con ventilador por nueve pepitas y chance de redstone. La mena con toque de seda rinde más."]},
-      "sources": ["jar:create-1.21.1-6.0.10.jar:data/create/recipe/crushing/raw_iron.json",
-                  "jar:create-1.21.1-6.0.10.jar:data/create/recipe/splashing/crushed_raw_iron.json"]
+      "sources": ["jar:create-1.21.1-6.0.10.jar:data/create/recipe/crushing/raw_iron.json", "jar:create-1.21.1-6.0.10.jar:data/create/recipe/splashing/crushed_raw_iron.json"]
     },
     {
       "key": "crk_crusher_maxed", "role": "secret", "deps": ["crk_crushing"],

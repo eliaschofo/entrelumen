@@ -19,6 +19,7 @@ import net.minecraft.world.RandomizableContainer;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.GameType;
+import net.minecraft.world.level.Level;
 import net.neoforged.neoforge.gametest.GameTestHolder;
 import net.neoforged.neoforge.gametest.PrefixGameTestTemplate;
 
@@ -70,6 +71,8 @@ public final class EnvesFullpackGameTests {
         "The start ruin did not record its Sealed Stair");
     ServerLevel overworld = server.overworld();
     BlockPos heart = entrance.heart;
+    helper.assertTrue(RuinData.get(server).find(HeliodorRuins.START).filter(ruin -> ruin.contains(Level.OVERWORLD, heart)).isPresent(),
+        "The recorded Sealed Stair is not the world's start ruin's: " + heart);
     overworld.getChunk(heart);
     overworld.getChunk(entrance.gate.getFirst());
     for (BlockPos gate : entrance.gate)
