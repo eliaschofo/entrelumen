@@ -44,8 +44,24 @@ Además, cada cadena:
 - **Tiene un dibujo.** Una figura con la forma del tema ubica los nodos y se dibuja detrás: el engranaje de 16 dientes en Create · Cinética, los rieles y el sol de energía en Create · Vías y energía, un tablero con un panel por complemento en Create · Complementos, el círculo de rituales con cuatro escuelas en Ars. Los paneles de rama llevan rótulo.
 - **Tiene un motivo.** Colores de línea, de panel y de texto del panel por tema: cobre y latón en Create, violeta de gema fuente en Ars.
 - **Cuenta lo justo.** Cada quest cumple [quest-copy](quest-copy.md): de una a tres oraciones, sin hablar de sí misma, con algún chiste en el subtítulo y consejos con prefijo.
-- **Tamaño.** De 45 a 90 quests por capítulo (el círculo de Ars llega a 110); un mod más grande se parte por etapas, y sus complementos van a un capítulo propio. La meta por mod es igual o mayor que ATM10 cuando ATM10 lo tiene ([plan de cobertura](quest-coverage-plan.md)). Referencias (`research/quests/chapter-stats.json`): Create tiene 89 quests en ATM10, 102 en FTB Evolution y 109 en Craftoria; Ars Nouveau, 130, 57 y 91.
+- **Tamaño.** De 45 a 90 quests por capítulo (el círculo de Ars llega a 110); un mod más grande se parte por etapas, y sus complementos van a un capítulo propio. La cifra de ATM10 es sólo un piso de referencia: la profundidad la manda la complejidad del mod (ver abajo, [plan de cobertura](quest-coverage-plan.md)). Referencias (`research/quests/chapter-stats.json`): Create tiene 89 quests en ATM10, 102 en FTB Evolution y 109 en Craftoria; Ars Nouveau, 130, 57 y 91.
 - **Mínimos que prueba `test_sector_book.py`:** una entrada, una cumbre y un encargo; al menos tres hitos, dos consejos y dos secretos; consejos y notas, no más de un cuarto del capítulo.
+
+### Profundidad según el mod (Elias, 27/9)
+
+La cantidad de nodos sigue la complejidad del mod, no la cifra de otro pack: Mekanism no tiene la misma profundidad que Just Dire Things, ni Create la de Iron Furnaces.
+
+- **Ninguna faceta sin explorar.** Cada sistema del mod tiene al menos un nodo que lo muestre: paso, rama, consejo o nota. Sistema quiere decir máquinas, procesos, logística, energía, equipo, jefes o una mecánica rara. El índice del manual del mod (Ponder, Patchouli, GuideME, Modonomicon) y sus tipos de receta sirven de lista de facetas.
+- **Sin obligar a fabricar todo.** Para completar la cadena alcanza el tronco: entrada, pasos, hitos y cumbre. Las ramas, los consejos y las notas son opcionales: enseñan y premian, pero no bloquean.
+- **Un jugador nuevo sale sabiendo usar el mod.** En un mod complejo, el tronco enseña el camino y las ramas cubren cada variante, con el porqué y no sólo el qué.
+- **Niveles**, con presupuesto orientativo. El nivel de cada cadena y sus facetas pendientes están en el [plan de cobertura](quest-coverage-plan.md).
+
+| Nivel | Qué es | Ejemplos | Quests | Capítulos |
+|---|---|---|---|---|
+| S | Columna del pack: muchos sistemas que se encadenan | Create, Mekanism | 200–400 | 3–5 |
+| A | Sistema grande con varias ramas | Occultism, Oritech | 100–200 | 2–3 |
+| B | Mod mediano: un sistema con variantes | Just Dire Things, Powah | 40–100 | 1–2 |
+| C | Mod chico o utilidad | Iron Furnaces, una mochila | 5–30 | dentro de una guía |
 
 ## Ejemplares
 
