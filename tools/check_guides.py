@@ -25,6 +25,12 @@ copy pass bans (see copy_warnings).
 
     python tools/check_guides.py            # all chapters
     python tools/check_guides.py create     # chapters whose id contains 'create'
+
+Sector chapters (content/sectors, quest book v3) are checked here too, against the same pinned JARs:
+every item named by a task, an icon, a reward table or the rich text ([item:…]), the advancements,
+entities, structures (or structure tags), keybinds and translation keys they use, and every texture
+their images and inline images draw. Items that Almost Unified replaces are errors, with the item the
+player really gets (pack/config/almostunified: tags, placeholders and mod priorities).
 """
 import json
 import re
@@ -303,6 +309,258 @@ def copy_warnings(path):
     return warnings
 
 
+SECTOR_CACHE = Path('E:/Elias/Codex/Entrelumen-ssd/research/sector-registry.json')
+_SECTOR = None
+
+
+def sector_registry():
+    """Advancements, entities, structures, structure tags, keybinds and translation keys of the pinned JARs
+    and vanilla, plus the c: item tags that Almost Unified unifies. Cached outside the repository."""
+    global _SECTOR
+    if _SECTOR is not None:
+        return _SECTOR
+    lp = ROOT / 'catalog' / 'local-paths.json'
+    jars = sorted(json.loads(lp.read_text(encoding='utf-8')).values()) if lp.exists() else []
+    if VANILLA_JAR.exists():
+        jars.append(str(VANILLA_JAR))
+    if SECTOR_CACHE.exists():
+        try:
+            cached = json.loads(SECTOR_CACHE.read_text(encoding='utf-8'))
+            if cached.get('jars') == jars and cached.get('version') == 2:
+                _SECTOR = {k: set(v) if isinstance(v, list) else v for k, v in cached.items()}
+                return _SECTOR
+        except Exception:
+            pass
+    out = {'advancements': set(), 'entities': set(), 'structures': set(), 'structure_tags': set(),
+           'lang': set(), 'item_tags': {}, 'item_owner': {}}
+    for index, jar in enumerate(jars):
+        try:
+            z = zipfile.ZipFile(jar)
+        except Exception:
+            continue
+        with z:
+            for name in z.namelist():
+                m = re.match(r'data/([^/]+)/advancements?/(.+)\.json$', name)
+                if m and '/recipes/' not in name:
+                    out['advancements'].add(f'{m.group(1)}:{m.group(2)}')
+                m = re.match(r'data/([^/]+)/worldgen/structure/(.+)\.json$', name)
+                if m:
+                    out['structures'].add(f'{m.group(1)}:{m.group(2)}')
+                m = re.match(r'data/([^/]+)/tags/worldgen/structure/(.+)\.json$', name)
+                if m:
+                    out['structure_tags'].add(f'{m.group(1)}:{m.group(2)}')
+                m = re.match(r'data/c/tags/items?/(.+)\.json$', name)
+                if m:
+                    try:
+                        values = json.loads(z.read(name)).get('values', [])
+                    except Exception:
+                        values = []
+                    tag = out['item_tags'].setdefault('c:' + m.group(1), [])
+                    for v in values:
+                        v = v.get('id') if isinstance(v, dict) else v
+                        if isinstance(v, str) and v not in tag:
+                            tag.append(v)
+                m = re.match(r'assets/([^/]+)/lang/en_us\.json$', name)
+                if m:
+                    try:
+                        for k in json.loads(z.read(name).decode('utf-8', 'replace')):
+                            if k.startswith(('key.', 'item.', 'block.', 'entity.')):
+                                out['lang'].add(k)
+                            mm = re.match(r'^entity\.([a-z0-9_]+)\.([a-z0-9_./]+)$', k)
+                            if mm:
+                                out['entities'].add(f'{mm.group(1)}:{mm.group(2)}')
+                    except Exception:
+                        pass
+    # ponder's keybinds live in a jar-in-jar of Create
+    create = next((j for j in jars if Path(j).name.startswith('create-1.21.1')), None)
+    if create:
+        import io
+        with zipfile.ZipFile(create) as z:
+            for inner in z.namelist():
+                if inner.endswith('.jar') and 'ponder' in inner:
+                    with zipfile.ZipFile(io.BytesIO(z.read(inner))) as zz:
+                        for name in zz.namelist():
+                            if name.endswith('lang/en_us.json'):
+                                out['lang'].update(k for k in json.loads(zz.read(name)) if k.startswith('key.'))
+    cache = {k: sorted(v) if isinstance(v, set) else v for k, v in out.items()}
+    cache.update(jars=jars, version=2)
+    try:
+        SECTOR_CACHE.write_text(json.dumps(cache), encoding='utf-8')
+    except Exception:
+        pass
+    _SECTOR = out
+    return out
+
+
+def tag_members(tag, tags, seen=()):
+    members = []
+    for v in tags.get(tag, []):
+        if v.startswith('#'):
+            if v[1:] not in seen:
+                members += tag_members(v[1:], tags, seen + (tag,))
+        else:
+            members.append(v.split('?')[0])
+    return members
+
+
+def unified(item, reg):
+    """The item Almost Unified hands out instead of `item`, or None when it keeps it."""
+    au = ROOT / 'pack' / 'config' / 'almostunified'
+    placeholders = json.loads((au / 'placeholders.json').read_text(encoding='utf-8'))
+    for cfg in sorted((au / 'unification').glob('*.json')):
+        conf = json.loads(cfg.read_text(encoding='utf-8'))
+        priorities = conf['mod_priorities']
+        for pattern in conf['tags']:
+            key = re.search(r'\{(\w+)\}', pattern).group(1)
+            for value in placeholders.get(key, []):
+                tag = pattern.replace('{' + key + '}', value)
+                if tag in conf.get('ignored_tags', []):
+                    continue
+                members = [m for m in tag_members(tag, reg['item_tags']) if m not in conf.get('ignored_items', [])]
+                if item not in members or len({m.split(':')[0] for m in members}) < 2:
+                    continue
+                ranked = sorted(members, key=lambda m: priorities.index(m.split(':')[0])
+                                if m.split(':')[0] in priorities else len(priorities))
+                winner = ranked[0]
+                if winner != item and winner.split(':')[0] in priorities:
+                    return winner, tag
+    return None
+
+
+def check_sector(path, errors, all_keys):
+    """JAR-backed checks for one sector chapter; the structure itself is tools/quest_engine.py's job."""
+    data = json.loads(path.read_text(encoding='utf-8'))
+    items, namespaces = registry()
+    reg = sector_registry()
+    where = path.name
+    refs = {'items': set(), 'advancements': set(), 'entities': set(), 'structures': set(), 'keys': set(),
+            'names': set(), 'textures': set()}
+
+    def add_icon(spec):
+        if isinstance(spec, str):
+            refs['items'].add(spec)
+        elif isinstance(spec, dict) and 'texture' in spec:
+            refs['textures'].add(spec['texture'])
+        elif isinstance(spec, dict) and 'entity' in spec:
+            refs['entities'].add(spec['entity'])
+    add_icon(data['icon'])
+    refs['textures'].add(data['emblem'])
+    task_items = set()
+    for q in data['quests']:
+        if 'icon' in q:
+            add_icon(q['icon'])
+        for t in q.get('tasks') or [q.get('task')]:
+            if not t:
+                continue
+            kind = t.get('type', 'item' if 'item' in t else None)
+            if kind == 'item':
+                refs['items'].add(t['item'])
+                task_items.add(t['item'])
+            elif kind == 'advancement':
+                refs['advancements'].add(t['advancement'])
+            elif kind == 'kill':
+                refs['entities'].add(t['entity'])
+            elif kind == 'structure':
+                refs['structures'].add(t['structure'])
+            elif kind == 'observation':
+                if t['observe'] == 'entity_type':
+                    refs['entities'].add(t['target'])
+                elif t['observe'] == 'block':
+                    refs['items'].add(t['target'])
+            if 'icon' in t:
+                add_icon(t['icon'])
+        for lang in ('en_us', 'es_es'):
+            for para in q[lang]['text']:
+                for m in re.finditer(r'\[(item|key|name):([^\]|]+)', para):
+                    refs[{'item': 'items', 'key': 'keys', 'name': 'names'}[m.group(1)]].add(m.group(2))
+                m = re.match(r'\{image:(\S+)', para)
+                if m:
+                    refs['textures'].add(m.group(1))
+        for dep in q['deps']:
+            if dep not in all_keys:
+                errors.append(f'{where}:{q["key"]}: unknown dependency {dep}')
+        if not q.get('sources'):
+            errors.append(f'{where}:{q["key"]}: no sources')
+    for art in data.get('art', []):
+        if 'texture' in art:
+            refs['textures'].add(art['texture'])
+    for fig in data.get('figures', {}).values():
+        for style in fig.get('draw', []):
+            refs['textures'].update(style.get('textures', []))
+    for item in sorted(refs['items']):
+        if item not in items:
+            errors.append(f'{where}: item {item} not found in the pinned JARs')
+    for adv in sorted(refs['advancements']):
+        if adv not in reg['advancements']:
+            errors.append(f'{where}: advancement {adv} not found')
+    for ent in sorted(refs['entities']):
+        if ent not in reg['entities']:
+            errors.append(f'{where}: entity {ent} not found')
+    for st in sorted(refs['structures']):
+        ok = st[1:] in reg['structure_tags'] if st.startswith('#') else st in reg['structures']
+        if not ok:
+            errors.append(f'{where}: structure {st} not found')
+    for key in sorted(refs['keys']):
+        if key not in reg['lang']:
+            errors.append(f'{where}: keybind {key} not found')
+    for key in sorted(refs['names']):
+        if key not in reg['lang']:
+            errors.append(f'{where}: translation key {key} not found')
+    for tex in sorted(refs['textures']):
+        rel = ROOT / 'companion/src/main/resources/assets' / tex.split(':')[0] / tex.split(':', 1)[1]
+        if rel.exists():
+            continue
+        info = texture_info(tex) if EMBLEM.match(tex) else None
+        if info is None and not any_texture(tex):
+            errors.append(f'{where}: texture {tex} not found')
+    for item in sorted(task_items):
+        swap = unified(item, reg)
+        if swap:
+            errors.append(f'{where}: Almost Unified replaces {item} with {swap[0]} ({swap[1]}): ask for that one')
+    return len(data['quests'])
+
+
+def any_texture(ref):
+    ns, path = ref.split(':', 1)
+    rel = f'assets/{ns}/{path}'
+    lp = ROOT / 'catalog' / 'local-paths.json'
+    jars = sorted(json.loads(lp.read_text(encoding='utf-8')).values()) if lp.exists() else []
+    for jar in jars + ([str(VANILLA_JAR)] if VANILLA_JAR.exists() else []):
+        if Path(jar).name.split('-')[0].lower().replace('_', '') not in ns.replace('_', '') and ns not in Path(jar).name.lower():
+            continue
+        try:
+            with zipfile.ZipFile(jar) as z:
+                if rel in z.namelist():
+                    return True
+        except Exception:
+            continue
+    for jar in jars:
+        try:
+            with zipfile.ZipFile(jar) as z:
+                if rel in z.namelist():
+                    return True
+        except Exception:
+            continue
+    return False
+
+
+def check_reward_tables(errors):
+    reg = sector_registry()
+    items, _ = registry()
+    book = json.loads((ROOT / 'content' / 'quest_book.json').read_text(encoding='utf-8'))
+    for name, spec in book['reward_tables'].items():
+        if name.startswith('_'):
+            continue
+        for item, _count, _weight in spec['rewards']:
+            if item not in items:
+                errors.append(f'reward table {name}: {item} not found in the pinned JARs')
+            swap = unified(item, reg)
+            if swap:
+                errors.append(f'reward table {name}: Almost Unified replaces {item} with {swap[0]}')
+        if spec['icon'] not in items:
+            errors.append(f'reward table {name}: icon {spec["icon"]} not found')
+
+
 def main():
     flt = sys.argv[1] if len(sys.argv) > 1 else ''
     errors, chapters, keys, warnings = [], set(), set(), []
@@ -313,12 +571,29 @@ def main():
             continue
         total += check_chapter(p, chapters, keys, errors)
         warnings += copy_warnings(p)
+    sectors = 0
+    all_keys = {q['key'] for p in files for q in json.loads(p.read_text(encoding='utf-8')).get('quests', [])}
+    for p in sorted((ROOT / 'content').glob('*.json')):
+        try:
+            all_keys |= {q['key'] for q in json.loads(p.read_text(encoding='utf-8')).get('quests', [])}
+        except Exception:
+            pass
+    sector_files = sorted((ROOT / 'content' / 'sectors').glob('sector_*.json'))
+    for p in sector_files:
+        all_keys |= {q['key'] for q in json.loads(p.read_text(encoding='utf-8'))['quests']}
+    for p in sector_files:
+        if flt and flt not in p.stem:
+            continue
+        total += check_sector(p, errors, all_keys)
+        sectors += 1
+    if not flt:
+        check_reward_tables(errors)
     for w in warnings:
         print('WARN', w)
     for e in errors:
         print('ERROR', e)
-    print(f'{"FAIL" if errors else "PASS"}: {len(chapters)} guide chapters, {total} quests, {len(errors)} errors, '
-          f'{len(warnings)} copy warnings')
+    print(f'{"FAIL" if errors else "PASS"}: {len(chapters)} guide chapters, {sectors} sector chapters, {total} quests, '
+          f'{len(errors)} errors, {len(warnings)} copy warnings')
     return 1 if errors else 0
 
 

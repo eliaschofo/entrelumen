@@ -1,32 +1,987 @@
 {
-  "_comment": "Presentation of the FTB quest book, compiled by tools/generate_quests.py. Scale, grammar, rewards, colours and the hub are documented in docs/design/quest-book.md.",
+  "_comment": "Presentation of the FTB quest book, compiled by tools/generate_quests.py and tools/quest_engine.py. Scale, grammar, rewards, colours and the hub: docs/design/quest-book.md (v2) and docs/design/quest-book-v3.md (sector chapters, reward tables, motifs, presets).",
   "min_width": 320,
   "hub": {
     "chapter": "sun_of_heliodor",
     "icon": "entrelumen:atlas",
-    "title": {"en_us": "The Sun of Heliodor", "es_es": "El Sol de Heliodor"},
-    "subtitle": {"en_us": ["Six acts under one sun."], "es_es": ["Seis actos bajo un mismo sol."]}
+    "title": {
+      "en_us": "The Sun of Heliodor",
+      "es_es": "El Sol de Heliodor"
+    },
+    "subtitle": {
+      "en_us": [
+        "Six acts under one sun."
+      ],
+      "es_es": [
+        "Seis actos bajo un mismo sol."
+      ]
+    }
   },
   "groups": [
-    {"id": "entrelumen", "icon": "entrelumen:heliodor_compass", "emblem_guide": "guide_entrelumen_start", "lead": ["guide_entrelumen_start", "guide_entrelumen_atlas", "guide_entrelumen_compass"], "title": {"en_us": "Heliodor's Legacy", "es_es": "Legado de Heliodor"}},
-    {"id": "qol", "icon": "sophisticatedbackpacks:backpack", "emblem_guide": "guide_qol_recipes", "lead": ["guide_qol_controls", "guide_qol_recipes", "guide_qol_inventory"], "title": {"en_us": "Quality of Life", "es_es": "Calidad de vida"}},
-    {"id": "tech", "icon": "create:cogwheel", "emblem_guide": "guide_create_basics", "lead": [], "title": {"en_us": "Technology", "es_es": "Tecnología"}},
-    {"id": "magic", "icon": "ars_nouveau:source_gem", "emblem_guide": "guide_ars_source", "lead": [], "title": {"en_us": "Magic", "es_es": "Magia"}},
-    {"id": "exploration", "icon": "waystones:waystone", "emblem_guide": "guide_travel", "lead": [], "title": {"en_us": "Exploration", "es_es": "Exploración"}}
+    {
+      "id": "entrelumen",
+      "icon": "entrelumen:heliodor_compass",
+      "emblem_guide": "guide_entrelumen_start",
+      "lead": [
+        "guide_entrelumen_start",
+        "guide_entrelumen_atlas",
+        "guide_entrelumen_compass"
+      ],
+      "title": {
+        "en_us": "Heliodor's Legacy",
+        "es_es": "Legado de Heliodor"
+      }
+    },
+    {
+      "id": "qol",
+      "icon": "sophisticatedbackpacks:backpack",
+      "emblem_guide": "guide_qol_recipes",
+      "lead": [
+        "guide_qol_controls",
+        "guide_qol_recipes",
+        "guide_qol_inventory"
+      ],
+      "title": {
+        "en_us": "Quality of Life",
+        "es_es": "Calidad de vida"
+      }
+    },
+    {
+      "id": "tech",
+      "icon": "create:cogwheel",
+      "emblem_guide": "sector_create_kinetics",
+      "lead": [
+        "sector_create_kinetics",
+        "sector_create_logistics"
+      ],
+      "title": {
+        "en_us": "Technology",
+        "es_es": "Tecnología"
+      }
+    },
+    {
+      "id": "magic",
+      "icon": "ars_nouveau:source_gem",
+      "emblem_guide": "sector_ars_nouveau",
+      "lead": [
+        "guide_magic_overview",
+        "sector_ars_nouveau"
+      ],
+      "title": {
+        "en_us": "Magic",
+        "es_es": "Magia"
+      }
+    },
+    {
+      "id": "exploration",
+      "icon": "waystones:waystone",
+      "emblem_guide": "guide_travel",
+      "lead": [],
+      "title": {
+        "en_us": "Exploration",
+        "es_es": "Exploración"
+      }
+    }
   ],
   "rewards": {
     "story": {
-      "task_xp": [5, 10, 15, 20, 25, 30],
-      "milestone_xp": [25, 50, 75, 100, 125, 150],
-      "finale_xp": [50, 100, 150, 200, 250, 300],
-      "milestone_item": [["minecraft:torch", 8], ["create:andesite_alloy", 8], ["minecraft:chest", 2], ["minecraft:golden_carrot", 8], ["minecraft:glowstone", 4], ["minecraft:firework_rocket", 8]],
-      "finale_item": [["minecraft:lantern", 2], ["farmersdelight:vegetable_soup", 4], ["minecraft:hopper", 2], ["minecraft:ender_pearl", 4], ["minecraft:golden_apple", 2], ["minecraft:cake", 1]]
+      "task_xp": [
+        5,
+        10,
+        15,
+        20,
+        25,
+        30
+      ],
+      "milestone_xp": [
+        25,
+        50,
+        75,
+        100,
+        125,
+        150
+      ],
+      "finale_xp": [
+        50,
+        100,
+        150,
+        200,
+        250,
+        300
+      ],
+      "milestone_item": [
+        [
+          "minecraft:torch",
+          8
+        ],
+        [
+          "create:andesite_alloy",
+          8
+        ],
+        [
+          "minecraft:chest",
+          2
+        ],
+        [
+          "minecraft:golden_carrot",
+          8
+        ],
+        [
+          "minecraft:glowstone",
+          4
+        ],
+        [
+          "minecraft:firework_rocket",
+          8
+        ]
+      ],
+      "finale_item": [
+        [
+          "minecraft:lantern",
+          2
+        ],
+        [
+          "farmersdelight:vegetable_soup",
+          4
+        ],
+        [
+          "minecraft:hopper",
+          2
+        ],
+        [
+          "minecraft:ender_pearl",
+          4
+        ],
+        [
+          "minecraft:golden_apple",
+          2
+        ],
+        [
+          "minecraft:cake",
+          1
+        ]
+      ]
     },
-    "guides": {"xp": {"any": 5, "I": 5, "II": 8, "III": 10, "IV": 12, "V": 15, "VI": 15}}
+    "guides": {
+      "xp": {
+        "any": 5,
+        "I": 5,
+        "II": 8,
+        "III": 10,
+        "IV": 12,
+        "V": 15,
+        "VI": 15
+      }
+    }
   },
   "colors": {
-    "story": {"locked": "#FF8E4631", "available": "#FFECC866"},
-    "guide": {"locked": "#FF2B5E50", "available": "#FF72C49E"},
-    "optional": {"locked": "#FF7D6843", "available": "#FFE8DCB5"}
+    "story": {
+      "locked": "#FF8E4631",
+      "available": "#FFECC866"
+    },
+    "guide": {
+      "locked": "#FF2B5E50",
+      "available": "#FF72C49E"
+    },
+    "optional": {
+      "locked": "#FF7D6843",
+      "available": "#FFE8DCB5"
+    }
+  },
+  "file_title": "ENTRELUMEN",
+  "sector_rewards": {
+    "_comment": "Reward cadence of sector chapters by role (docs/design/quest-book-v3.md). xp multiplies the guide XP of the act.",
+    "xp": {
+      "entry": 1,
+      "step": 1,
+      "side": 1,
+      "milestone": 2,
+      "boss": 3,
+      "capstone": 5,
+      "secret": 1
+    },
+    "choice": [
+      "milestone"
+    ],
+    "random": [
+      "secret"
+    ],
+    "loot": [
+      "boss"
+    ],
+    "crate": [
+      "capstone",
+      "bounty"
+    ],
+    "tables": {
+      "choice": "choice_{n}",
+      "random": "supplies_{n}",
+      "loot": "crate_{n}",
+      "crate": "crate_{n}"
+    },
+    "bounty_cooldown": 1200,
+    "fanfare": "playsound minecraft:ui.toast.challenge_complete master {p} ~ ~ ~ 0.8 1",
+    "toast_title": {
+      "en_us": "Secret found",
+      "es_es": "Secreto encontrado"
+    }
+  },
+  "reward_tables": {
+    "_comment": "Reward tables and loot crates by act (docs/design/quest-book-v3.md): moderate, never ENTRELUMEN components or outputs of gated recipes. Rows: [item, count, weight].",
+    "crate_1": {
+      "title": {
+        "en_us": "Salvage Crate",
+        "es_es": "Cajón de rescate"
+      },
+      "icon": "minecraft:barrel",
+      "loot_size": 2,
+      "empty_weight": 0,
+      "crate": {
+        "string_id": "entrelumen_crate_1",
+        "color": "#9C7A55",
+        "glow": false
+      },
+      "rewards": [
+        [
+          "minecraft:torch",
+          16,
+          10
+        ],
+        [
+          "minecraft:bread",
+          6,
+          8
+        ],
+        [
+          "minecraft:coal",
+          12,
+          8
+        ],
+        [
+          "minecraft:iron_ingot",
+          4,
+          6
+        ],
+        [
+          "minecraft:string",
+          8,
+          5
+        ],
+        [
+          "minecraft:leather",
+          4,
+          4
+        ],
+        [
+          "minecraft:flint",
+          6,
+          3
+        ],
+        [
+          "minecraft:lantern",
+          1,
+          2
+        ]
+      ]
+    },
+    "choice_1": {
+      "title": {
+        "en_us": "Pick one · Salvage",
+        "es_es": "Elegí uno · Rescate"
+      },
+      "icon": "minecraft:barrel",
+      "rewards": [
+        [
+          "minecraft:torch",
+          32,
+          1
+        ],
+        [
+          "minecraft:bread",
+          12,
+          1
+        ],
+        [
+          "minecraft:iron_ingot",
+          6,
+          1
+        ]
+      ]
+    },
+    "supplies_1": {
+      "title": {
+        "en_us": "Odds and ends · act I",
+        "es_es": "Cosas sueltas · acto I"
+      },
+      "icon": "minecraft:bundle",
+      "rewards": [
+        [
+          "minecraft:torch",
+          8,
+          6
+        ],
+        [
+          "minecraft:apple",
+          4,
+          5
+        ],
+        [
+          "minecraft:iron_nugget",
+          9,
+          5
+        ],
+        [
+          "minecraft:bone_meal",
+          6,
+          4
+        ]
+      ]
+    },
+    "crate_2": {
+      "title": {
+        "en_us": "Workshop Crate",
+        "es_es": "Cajón de taller"
+      },
+      "icon": "create:andesite_casing",
+      "loot_size": 2,
+      "empty_weight": 0,
+      "crate": {
+        "string_id": "entrelumen_crate_2",
+        "color": "#C8814A",
+        "glow": false
+      },
+      "rewards": [
+        [
+          "minecraft:iron_ingot",
+          8,
+          8
+        ],
+        [
+          "minecraft:copper_ingot",
+          12,
+          8
+        ],
+        [
+          "minecraft:redstone",
+          12,
+          8
+        ],
+        [
+          "create:andesite_alloy",
+          8,
+          8
+        ],
+        [
+          "farmersdelight:vegetable_soup",
+          2,
+          5
+        ],
+        [
+          "minecraft:glowstone_dust",
+          6,
+          4
+        ],
+        [
+          "minecraft:gold_ingot",
+          3,
+          4
+        ],
+        [
+          "create:zinc_ingot",
+          6,
+          5
+        ]
+      ]
+    },
+    "choice_2": {
+      "title": {
+        "en_us": "Pick one · Workshop",
+        "es_es": "Elegí uno · Taller"
+      },
+      "icon": "create:andesite_casing",
+      "rewards": [
+        [
+          "create:andesite_alloy",
+          16,
+          1
+        ],
+        [
+          "farmersdelight:vegetable_soup",
+          4,
+          1
+        ],
+        [
+          "minecraft:redstone",
+          24,
+          1
+        ]
+      ]
+    },
+    "supplies_2": {
+      "title": {
+        "en_us": "Odds and ends · act II",
+        "es_es": "Cosas sueltas · acto II"
+      },
+      "icon": "minecraft:bundle",
+      "rewards": [
+        [
+          "minecraft:copper_ingot",
+          6,
+          6
+        ],
+        [
+          "create:andesite_alloy",
+          4,
+          5
+        ],
+        [
+          "minecraft:redstone",
+          8,
+          5
+        ],
+        [
+          "minecraft:cooked_beef",
+          4,
+          4
+        ]
+      ]
+    },
+    "crate_3": {
+      "title": {
+        "en_us": "Courier Crate",
+        "es_es": "Cajón de correo"
+      },
+      "icon": "minecraft:ender_pearl",
+      "loot_size": 2,
+      "empty_weight": 0,
+      "crate": {
+        "string_id": "entrelumen_crate_3",
+        "color": "#4F8FBF",
+        "glow": false
+      },
+      "rewards": [
+        [
+          "minecraft:gold_ingot",
+          6,
+          8
+        ],
+        [
+          "minecraft:lapis_lazuli",
+          12,
+          7
+        ],
+        [
+          "minecraft:quartz",
+          12,
+          7
+        ],
+        [
+          "minecraft:ender_pearl",
+          2,
+          4
+        ],
+        [
+          "minecraft:emerald",
+          3,
+          5
+        ],
+        [
+          "minecraft:experience_bottle",
+          4,
+          5
+        ],
+        [
+          "minecraft:slime_ball",
+          6,
+          4
+        ],
+        [
+          "create:brass_ingot",
+          6,
+          5
+        ]
+      ]
+    },
+    "choice_3": {
+      "title": {
+        "en_us": "Pick one · Courier",
+        "es_es": "Elegí uno · Correo"
+      },
+      "icon": "minecraft:ender_pearl",
+      "rewards": [
+        [
+          "create:brass_ingot",
+          8,
+          1
+        ],
+        [
+          "farmersdelight:baked_cod_stew",
+          4,
+          1
+        ],
+        [
+          "minecraft:ender_pearl",
+          3,
+          1
+        ]
+      ]
+    },
+    "supplies_3": {
+      "title": {
+        "en_us": "Odds and ends · act III",
+        "es_es": "Cosas sueltas · acto III"
+      },
+      "icon": "minecraft:bundle",
+      "rewards": [
+        [
+          "minecraft:gold_nugget",
+          18,
+          6
+        ],
+        [
+          "minecraft:quartz",
+          8,
+          5
+        ],
+        [
+          "minecraft:lapis_lazuli",
+          8,
+          5
+        ],
+        [
+          "minecraft:honey_bottle",
+          2,
+          4
+        ]
+      ]
+    },
+    "crate_4": {
+      "title": {
+        "en_us": "Expedition Crate",
+        "es_es": "Cajón de expedición"
+      },
+      "icon": "minecraft:compass",
+      "loot_size": 2,
+      "empty_weight": 0,
+      "crate": {
+        "string_id": "entrelumen_crate_4",
+        "color": "#8468C8",
+        "glow": false
+      },
+      "rewards": [
+        [
+          "minecraft:diamond",
+          1,
+          3
+        ],
+        [
+          "minecraft:golden_carrot",
+          12,
+          8
+        ],
+        [
+          "minecraft:experience_bottle",
+          8,
+          6
+        ],
+        [
+          "minecraft:ender_pearl",
+          4,
+          5
+        ],
+        [
+          "minecraft:blaze_rod",
+          3,
+          5
+        ],
+        [
+          "minecraft:emerald",
+          6,
+          5
+        ],
+        [
+          "minecraft:obsidian",
+          8,
+          5
+        ],
+        [
+          "farmersdelight:beef_stew",
+          3,
+          5
+        ]
+      ]
+    },
+    "choice_4": {
+      "title": {
+        "en_us": "Pick one · Expedition",
+        "es_es": "Elegí uno · Expedición"
+      },
+      "icon": "minecraft:compass",
+      "rewards": [
+        [
+          "minecraft:golden_carrot",
+          16,
+          1
+        ],
+        [
+          "minecraft:experience_bottle",
+          12,
+          1
+        ],
+        [
+          "minecraft:obsidian",
+          16,
+          1
+        ]
+      ]
+    },
+    "supplies_4": {
+      "title": {
+        "en_us": "Odds and ends · act IV",
+        "es_es": "Cosas sueltas · acto IV"
+      },
+      "icon": "minecraft:bundle",
+      "rewards": [
+        [
+          "minecraft:experience_bottle",
+          4,
+          6
+        ],
+        [
+          "minecraft:emerald",
+          3,
+          5
+        ],
+        [
+          "minecraft:golden_carrot",
+          6,
+          5
+        ],
+        [
+          "minecraft:blaze_powder",
+          4,
+          4
+        ]
+      ]
+    },
+    "crate_5": {
+      "title": {
+        "en_us": "Ark Crate",
+        "es_es": "Cajón del Arca"
+      },
+      "icon": "minecraft:lodestone",
+      "loot_size": 3,
+      "empty_weight": 0,
+      "crate": {
+        "string_id": "entrelumen_crate_5",
+        "color": "#D9B25A",
+        "glow": false
+      },
+      "rewards": [
+        [
+          "minecraft:diamond",
+          2,
+          4
+        ],
+        [
+          "minecraft:emerald",
+          8,
+          6
+        ],
+        [
+          "minecraft:golden_apple",
+          1,
+          3
+        ],
+        [
+          "minecraft:experience_bottle",
+          12,
+          6
+        ],
+        [
+          "minecraft:glowstone",
+          8,
+          6
+        ],
+        [
+          "minecraft:ender_pearl",
+          6,
+          5
+        ],
+        [
+          "minecraft:amethyst_block",
+          4,
+          4
+        ]
+      ]
+    },
+    "choice_5": {
+      "title": {
+        "en_us": "Pick one · Ark",
+        "es_es": "Elegí uno · Arca"
+      },
+      "icon": "minecraft:lodestone",
+      "rewards": [
+        [
+          "minecraft:diamond",
+          2,
+          1
+        ],
+        [
+          "minecraft:glowstone",
+          16,
+          1
+        ],
+        [
+          "minecraft:golden_apple",
+          2,
+          1
+        ]
+      ]
+    },
+    "supplies_5": {
+      "title": {
+        "en_us": "Odds and ends · act V",
+        "es_es": "Cosas sueltas · acto V"
+      },
+      "icon": "minecraft:bundle",
+      "rewards": [
+        [
+          "minecraft:experience_bottle",
+          6,
+          6
+        ],
+        [
+          "minecraft:glowstone_dust",
+          12,
+          5
+        ],
+        [
+          "minecraft:emerald",
+          4,
+          5
+        ],
+        [
+          "minecraft:amethyst_shard",
+          8,
+          4
+        ]
+      ]
+    },
+    "crate_6": {
+      "title": {
+        "en_us": "Solstice Crate",
+        "es_es": "Cajón del Solsticio"
+      },
+      "icon": "minecraft:sunflower",
+      "loot_size": 3,
+      "empty_weight": 0,
+      "crate": {
+        "string_id": "entrelumen_crate_6",
+        "color": "#F2E4A0",
+        "glow": true
+      },
+      "rewards": [
+        [
+          "minecraft:golden_apple",
+          2,
+          4
+        ],
+        [
+          "minecraft:diamond",
+          3,
+          4
+        ],
+        [
+          "minecraft:emerald",
+          12,
+          6
+        ],
+        [
+          "minecraft:firework_rocket",
+          16,
+          6
+        ],
+        [
+          "minecraft:cake",
+          1,
+          4
+        ],
+        [
+          "minecraft:experience_bottle",
+          16,
+          6
+        ],
+        [
+          "minecraft:glow_berries",
+          16,
+          5
+        ]
+      ]
+    },
+    "choice_6": {
+      "title": {
+        "en_us": "Pick one · Solstice",
+        "es_es": "Elegí uno · Solsticio"
+      },
+      "icon": "minecraft:sunflower",
+      "rewards": [
+        [
+          "minecraft:firework_rocket",
+          32,
+          1
+        ],
+        [
+          "minecraft:emerald",
+          16,
+          1
+        ],
+        [
+          "minecraft:cake",
+          2,
+          1
+        ]
+      ]
+    },
+    "supplies_6": {
+      "title": {
+        "en_us": "Odds and ends · act VI",
+        "es_es": "Cosas sueltas · acto VI"
+      },
+      "icon": "minecraft:bundle",
+      "rewards": [
+        [
+          "minecraft:experience_bottle",
+          8,
+          6
+        ],
+        [
+          "minecraft:glow_berries",
+          8,
+          5
+        ],
+        [
+          "minecraft:emerald",
+          6,
+          5
+        ],
+        [
+          "minecraft:firework_rocket",
+          8,
+          4
+        ]
+      ]
+    }
+  },
+  "motifs": {
+    "create": {
+      "_comment": "Copper and brass: the gear chapter and the railway chapter.",
+      "accent": "#E5A16A",
+      "line": "#C8814A",
+      "panel": "#C8814A",
+      "panel_alpha": 34,
+      "shapes": {
+        "milestone": "gear"
+      },
+      "theme": {
+        "dependency_line_completed_color": "#D8ECC866",
+        "dependency_line_uncompleted_color": "#B4C8814A",
+        "dependency_line_unavailable_color": "#50C8814A",
+        "dependency_line_thickness": "0.2",
+        "tasks_text_color": "#E5A16A"
+      }
+    },
+    "ars": {
+      "_comment": "Violet and source-gem purple: the ritual circle.",
+      "accent": "#C7A0F5",
+      "line": "#9B6FD6",
+      "panel": "#7B4FC0",
+      "panel_alpha": 34,
+      "shapes": {
+        "milestone": "octagon"
+      },
+      "theme": {
+        "dependency_line_completed_color": "#D8C7A0F5",
+        "dependency_line_uncompleted_color": "#B49B6FD6",
+        "dependency_line_unavailable_color": "#509B6FD6",
+        "dependency_line_thickness": "0.2",
+        "dependency_line_unselected_speed": "0.15",
+        "tasks_text_color": "#C7A0F5"
+      }
+    }
+  },
+  "role_colors": {
+    "_comment": "Node outline colours of sector roles (ARGB). Completed and started keep FTB colours except secrets.",
+    "entry": {
+      "locked": "#FF7D6843",
+      "available": "#FFE8DCB5"
+    },
+    "step": {
+      "locked": "#FF2B5E50",
+      "available": "#FF72C49E"
+    },
+    "milestone": {
+      "locked": "#FF8E6A31",
+      "available": "#FFECC866"
+    },
+    "side": {
+      "locked": "#FF5E5344",
+      "available": "#FFB9A98A"
+    },
+    "tip": {
+      "locked": "#FF3A4A66",
+      "available": "#FF9DC3FF",
+      "icon": "entrelumen:textures/gui/quests/tip.png"
+    },
+    "info": {
+      "locked": "#FF3A4A66",
+      "available": "#FFB8CCE8"
+    },
+    "secret": {
+      "locked": "#FF6B5A20",
+      "available": "#FFF2D060",
+      "completed": "#FFFFD84A"
+    },
+    "bounty": {
+      "locked": "#FF6B5020",
+      "available": "#FFE8B04A"
+    },
+    "boss": {
+      "locked": "#FF6B2A22",
+      "available": "#FFFF8C7A"
+    },
+    "capstone": {
+      "locked": "#FF8E4631",
+      "available": "#FFFFE9A0",
+      "completed": "#FFFFD84A"
+    }
+  },
+  "shape_names": {
+    "el_sunburst": {
+      "en_us": "Sunburst (ENTRELUMEN)",
+      "es_es": "Sol (ENTRELUMEN)"
+    },
+    "el_star": {
+      "en_us": "Star (ENTRELUMEN)",
+      "es_es": "Estrella (ENTRELUMEN)"
+    },
+    "el_rosette": {
+      "en_us": "Seal (ENTRELUMEN)",
+      "es_es": "Sello (ENTRELUMEN)"
+    },
+    "el_tag": {
+      "en_us": "Tag (ENTRELUMEN)",
+      "es_es": "Etiqueta (ENTRELUMEN)"
+    },
+    "el_shield": {
+      "en_us": "Shield (ENTRELUMEN)",
+      "es_es": "Escudo (ENTRELUMEN)"
+    }
+  },
+  "companion_strings": {
+    "entrelumen.quests.toast.secret": {
+      "en_us": "The Atlas never mentioned this one.",
+      "es_es": "El Atlas no dijo nada de esto."
+    }
   }
 }

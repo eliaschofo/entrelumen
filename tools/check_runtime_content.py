@@ -114,7 +114,10 @@ def verify_market_log(text):
 
 
 def targets():
-    chapters = [json.loads(path.read_text(encoding='utf-8-sig')) for path in sorted((ROOT / 'pack/config/ftbquests/quests/chapters').glob('*.snbt'))]
+    quests = ROOT / 'pack/config/ftbquests/quests'
+    # Chapters and, since the quest book v3, reward tables (loot crates and choice tables name items too).
+    chapters = [json.loads(path.read_text(encoding='utf-8-sig')) for folder in ('chapters', 'reward_tables')
+                for path in sorted((quests / folder).glob('*.snbt'))]
     projects = json.loads((ROOT / 'companion/src/main/resources/data/entrelumen/campaign/projects.json').read_text(encoding='utf-8-sig'))
     items = set()
 

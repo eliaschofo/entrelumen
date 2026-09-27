@@ -14,6 +14,10 @@ chapter gets the reading width of content/quest_book.json, and chapter images
 (numerals, act emblems, branch corners and labels, suns and medallions) are placed
 around the nodes from the layout itself. Rewards follow the table in quest_book.json.
 The FTB theme that colours the nodes ships in the companion (assets/ftbquests).
+
+Quest book v3 (docs/design/quest-book-v3.md): sector chapters (content/sectors) compiled by
+tools/quest_engine.py, reward tables and loot crates (reward_tables/), node presets in data.snbt, the
+extended theme, custom node shapes and the companion's ftbquests-namespace strings.
 """
 import argparse
 import hashlib
@@ -21,12 +25,17 @@ import json
 from pathlib import Path
 import re
 import math
+import sys
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+import quest_engine  # noqa: E402
 
 ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / "pack/config/ftbquests/quests"
 BOOK = ROOT / "content/quest_book.json"
 GUIDES = ROOT / "content/guides"
 THEME = ROOT / "companion/src/main/resources/assets/ftbquests/ftb_quests_theme.txt"
+FTBQ_LANG = ROOT / "companion/src/main/resources/assets/ftbquests/lang"
 LOCALES = ("en_us", "es_es")
 # Acts renumbered 24 September 2026: act V is two chapters (the plan and the activation), act VI Solsticio.
 CHAPTER_SOURCES = ("first_hour.json", "act_two.json", "act_three.json", "act_four.json",
@@ -65,21 +74,22 @@ def load_book():
 
 
 def load_guides(book=None):
-    """Guides by the book's group order; inside a group, the group's "lead" chapters first, then
-    'any' and acts I-VI, then English title."""
+    """Guides by the book's group order (see group_order)."""
     book = book or load_book()
-    groups = {g["id"]: g for g in book["groups"]}
-    order = list(groups)
     guides = [json.loads(p.read_text(encoding="utf-8")) for p in sorted(GUIDES.glob("guide_*.json"))]
-    rank = {"any": 0, **{a: i + 1 for i, a in enumerate(ACTS)}}
+    names = {g["chapter"] for g in guides} | {s["chapter"] for s in quest_engine.load_sectors()}
+    assert all(c in names for g in book["groups"] for c in g["lead"] + [g["emblem_guide"]]), "unknown guide in quest_book.json"
+    return sorted(guides, key=lambda g: group_order(g, book))
 
-    def key(g):
-        lead = groups[g["group"]]["lead"]
-        first = lead.index(g["chapter"]) if g["chapter"] in lead else len(lead)
-        return (order.index(g["group"]), first, rank[g["act"]], g["title"]["en_us"], g["chapter"])
-    names = {g["chapter"] for g in guides}
-    assert all(c in names for g in groups.values() for c in g["lead"] + [g["emblem_guide"]]), "unknown guide in quest_book.json"
-    return sorted(guides, key=key)
+
+def group_order(g, book):
+    """Order inside the book: group, then the group's "lead" chapters, then 'any' and acts I-VI, then
+    English title. Guides and sector chapters share it."""
+    groups = {x["id"]: x for x in book["groups"]}
+    rank = {"any": 0, **{a: i + 1 for i, a in enumerate(ACTS)}}
+    lead = groups[g["group"]]["lead"]
+    first = lead.index(g["chapter"]) if g["chapter"] in lead else len(lead)
+    return (list(groups).index(g["group"]), first, rank[g["act"]], g["title"]["en_us"], g["chapter"])
 
 
 def stable_id(key):
@@ -628,14 +638,32 @@ def theme(book):
         assert set(colours) == {"locked", "available"} and all(re.fullmatch(r"#[0-9A-F]{8}", c) for c in colours.values())
         lines += ["", f"[#entrelumen_{name}]", f"quest_locked_color: {colours['locked']}",
                   f"quest_not_started_color: {colours['available']}"]
+    lines += quest_engine.theme_lines(book)
     return "\n".join(lines) + "\n"
 
 
-def generate_book(chapters=None, guides=None, book=None):
-    """Every generated file: story (generate_all), hub, guides, chapter groups and theme."""
+def gated_outputs():
+    """Items that come out of a gated recipe (tools/generate_family_balance.py): never a reward."""
+    import generate_family_balance as balance
+    out = set()
+    for family in balance.FAMILIES.values():
+        for change in family.get("changes", []):
+            rid = change.get("id") or ""
+            if ":" in rid:
+                ns, path = rid.split(":", 1)
+                out.add(f"{ns}:{path.rsplit('/', 1)[-1]}")
+            if isinstance(change.get("output"), str):
+                out.add(change["output"])
+    return out
+
+
+def generate_book(chapters=None, guides=None, book=None, sectors=None):
+    """Every generated file: story (generate_all), hub, guides, sector chapters, chapter groups, reward
+    tables, data.snbt presets, theme and the companion's ftbquests strings."""
     book = book or load_book()
     chapters = chapters if chapters is not None else load_chapters()
     guides = guides if guides is not None else load_guides(book)
+    sectors = sectors if sectors is not None else quest_engine.load_sectors()
     files = generate_all(chapters, book)
     languages = {lang: json.loads(files[OUT / "lang" / (lang + ".snbt")]) for lang in LOCALES}
     story_ids = {q["id"] for data in chapters
@@ -649,24 +677,49 @@ def generate_book(chapters=None, guides=None, book=None):
         for lang in LOCALES:
             languages[lang][f"chapter_group.{gid}.title"] = group["title"][lang]
     names = {data["chapter"] for data in chapters} | {book["hub"]["chapter"]}
+    all_keys = {q["key"] for data in chapters for q in data["quests"]} | {q["key"] for g in guides for q in g["quests"]}
+    sector_keys = [q["key"] for sec in sectors for q in sec["quests"]]
+    assert len(sector_keys) == len(set(sector_keys)) and not all_keys & set(sector_keys), "duplicate sector quest key"
+    all_keys |= set(sector_keys)
+    chapter_names = names | {g["chapter"] for g in guides} | {sec["chapter"] for sec in sectors}
+    tables, table_files, table_langs = quest_engine.build_reward_tables(book, gated_outputs())
+    for name, table in table_files.items():
+        files[OUT / "reward_tables" / (name + ".snbt")] = snbt(table)
+        for lang in LOCALES:
+            languages[lang][f"reward_table.{table['id']}.title"] = book["reward_tables"][name]["title"][lang]
+    ordered = sorted(list(guides) + list(sectors), key=lambda g: group_order(g, book))
     order = {}
-    for data in guides:
+    presets = {}
+    for data in ordered:
         assert data["chapter"] not in names, f"duplicate chapter {data['chapter']}"
         names.add(data["chapter"])
         gid = stable_id("chapter_group:" + data["group"])
         first.setdefault(data["group"], data)
         order[gid] = order.get(gid, -1) + 1
-        chapter = generate_guide(data, gid, order[gid], book, languages, seen)
+        if data.get("format") == "sector":
+            chapter, _ctx, sector_presets = quest_engine.compile_sector(
+                data, book, tables, languages, seen, all_keys, chapter_names, gid, order[gid])
+            presets.update(sector_presets)
+        else:
+            chapter = generate_guide(data, gid, order[gid], book, languages, seen)
         files[OUT / "chapters" / (data["chapter"] + ".snbt")] = snbt(chapter)
     if guides:
         assert set(first) == {g["id"] for g in book["groups"]}, "every group needs guides"
-        hub = build_hub(book, chapters, first, guides, languages)
+        hub = build_hub(book, chapters, first, ordered, languages)
         files[OUT / "chapters" / (book["hub"]["chapter"] + ".snbt")] = snbt(hub)
     files[OUT / "chapter_groups.snbt"] = snbt({"chapter_groups": groups})
+    for lang in LOCALES:
+        languages[lang]["file.0000000000000001.title"] = book["file_title"]
     assert languages["en_us"].keys() == languages["es_es"].keys(), "locale key mismatch"
     for lang in LOCALES:
         files[OUT / "lang" / (lang + ".snbt")] = snbt(languages[lang])
+    data_snbt = json.loads(files[OUT / "data.snbt"])
+    data_snbt.update(drop_loot_crates=False, icon={"id": book["hub"]["icon"]},
+                     presets=quest_engine.presets_block(presets))
+    files[OUT / "data.snbt"] = snbt(data_snbt)
     files[THEME] = theme(book)
+    for lang, values in quest_engine.companion_strings(book, table_langs).items():
+        files[FTBQ_LANG / (lang + ".json")] = json.dumps(values, ensure_ascii=False, indent=2) + "\n"
     return files
 
 
@@ -675,7 +728,7 @@ def main():
     chapters=load_chapters(); book=load_book(); guides=load_guides(book)
     files=generate_book(chapters,guides,book);failures=[]
     expected={p.resolve() for p in files}
-    stale=[p for p in (OUT/'chapters').glob('*.snbt') if p.resolve() not in expected]
+    stale=[p for folder in ('chapters','reward_tables') for p in (OUT/folder).glob('*.snbt') if p.resolve() not in expected]
     for path,content in files.items():
         if args.check:
             if not path.exists() or path.read_text(encoding='utf-8')!=content:failures.append(str(path.relative_to(ROOT)))
@@ -684,8 +737,10 @@ def main():
     else:
         for p in stale:p.unlink()
     if failures:raise SystemExit('Generated output missing or stale: '+', '.join(failures))
-    quests=sum(len(d['quests']) for d in chapters)+sum(len(g['quests']) for g in guides)
-    print(f"PASS: {len(chapters)+len(guides)+1} chapters ({len(chapters)} story, {len(guides)} guides, hub), {quests} quests, "
+    sectors=quest_engine.load_sectors()
+    quests=sum(len(d['quests']) for d in chapters)+sum(len(g['quests']) for g in guides)+sum(len(x['quests']) for x in sectors)
+    print(f"PASS: {len(chapters)+len(guides)+len(sectors)+1} chapters ({len(chapters)} story, {len(guides)} guides, "
+          f"{len(sectors)} sectors, hub), {quests} quests, {len([t for t in book['reward_tables'] if not t.startswith('_')])} reward tables, "
           f"{len(book['groups'])} groups, global IDs/DAG, EN/ES parity; runtime not verified.")
 
 

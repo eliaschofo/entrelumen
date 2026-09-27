@@ -1,0 +1,607 @@
+{
+  "format": "sector",
+  "chapter": "sector_create_logistics",
+  "group": "tech",
+  "act": "II",
+  "motif": "create",
+  "icon": "create:track_station",
+  "emblem": "create:textures/item/schedule.png",
+  "title": {"en_us": "Create · Rails and Power", "es_es": "Create · Vías y energía"},
+  "subtitle": {
+    "en_us": ["Trains on your own line, parcels on chains, and Heliodor's sun turned into current."],
+    "es_es": ["Trenes en tu propia línea, paquetes en cadenas y el sol de Heliodor hecho corriente."]
+  },
+  "entry": "clg_sturdy",
+  "figures": {
+    "rail": {
+      "kind": "line", "from": [-17, 0], "to": [17, 0], "count": 11,
+      "draw": [{"style": "rails", "from": [-19, 0], "to": [19.5, 0], "gauge": 0.6, "sleepers": 0.8, "alpha": 130,
+                "thickness_px": 1.5, "sleeper_alpha": 70, "sleeper_px": 3}]
+    },
+    "chain": {
+      "kind": "ring", "cx": 7, "cy": -9.5, "r": 4.2, "count": 8, "start": -90,
+      "draw": [{"style": "ring", "r": 4.2, "alpha": 110, "thickness_px": 2, "segments": 40},
+               {"style": "teeth", "r": 4.05, "count": 28, "depth": 0.3, "width": 0.45, "alpha": 90}]
+    },
+    "wire": {
+      "kind": "line", "from": [-17, 7], "to": [-1, 7], "count": 6,
+      "draw": [{"style": "rails", "from": [-18.5, 7], "to": [0.5, 7], "gauge": 0.35, "sleepers": 3.2, "alpha": 110,
+                "thickness_px": 1, "sleeper_alpha": 120, "sleeper_px": 2}]
+    },
+    "sun": {
+      "kind": "arc", "cx": 9.5, "cy": 12.5, "r": 5.5, "count": 9, "start": 180, "span": 180,
+      "draw": [{"style": "ring", "r": 5.5, "from": 180, "span": 180, "segments": 24, "alpha": 90},
+               {"style": "spokes", "from_r": 1.6, "to_r": 4.4, "alpha": 70},
+               {"style": "ring", "r": 7.2, "from": 180, "span": 180, "segments": 30, "alpha": 45}]
+    }
+  },
+  "groups": {
+    "additions": {"label": {"en_us": "Crafts & Additions: rotation to FE and back", "es_es": "Crafts & Additions: de rotación a FE y vuelta"}, "axis": "x", "caption": "above"}
+  },
+  "links": [
+    {"target": "crafts_crystal", "at": {"figure": "sun", "slot": 2, "out": 2.4}},
+    {"target": "exchange_power", "at": {"figure": "sun", "slot": 5, "out": 2.4}}
+  ],
+  "art": [
+    {"id": "banner", "texture": "entrelumen:textures/gui/quests/banner_create.png", "x": -14.3, "y": -13.3, "scale": 1, "order": -1},
+    {"id": "title", "label": {"en_us": "Create · Rails and Power", "es_es": "Create · Vías y energía"}, "x": -14.3, "y": -13.3, "scale": 1, "bold": true},
+    {"id": "medallion", "texture": "entrelumen:textures/gui/quests/medallion.png", "x": -14.3, "y": -8.6, "scale": 2, "order": 0,
+     "click": "chapter:sector_create_kinetics", "hover": {"en_us": "Back to Create · Kinetics", "es_es": "Volver a Create · Cinética"}},
+    {"id": "schedule", "texture": "create:textures/item/schedule.png", "x": -14.3, "y": -8.6, "scale": 4, "order": 1},
+    {"id": "ring_label", "label": {"en_us": "Package network", "es_es": "Red de paquetes"}, "x": 7, "y": -15.2, "scale": 1},
+    {"id": "horizon", "line": [[2.2, 12.5], [16.8, 12.5]], "alpha": 120, "thickness_px": 2},
+    {"id": "sun", "texture": "entrelumen:textures/gui/quests/sun_heliodor.png", "x": 9.5, "y": 12.5, "scale": 1, "order": -1, "alpha": 150},
+    {"id": "na_label", "label": {"en_us": "New Age: sunlight, magnets, current", "es_es": "New Age: sol, imanes, corriente"}, "x": 9.5, "y": 16.4, "scale": 1},
+    {"id": "sun_full", "texture": "entrelumen:textures/gui/quests/sun_heliodor.png", "x": 9.5, "y": 12.5, "scale": 2, "order": -2, "alpha": 90, "reveal": "cpw_mastery"}
+  ],
+  "quests": [
+    {
+      "key": "clg_sturdy", "role": "entry", "deps": ["cbr_spout"],
+      "task": {"item": "create:sturdy_sheet", "count": 8},
+      "at": {"figure": "rail", "slot": 0},
+      "en_us": {"title": "Sturdy Sheet", "subtitle": "Rails start with rocks.",
+        "text": ["Crush obsidian into [item:create:powdered_obsidian|Powdered Obsidian], then a short sequence: a spout adds 500 mB of lava, a press stamps it twice. One of each over a looping belt keeps the [item:create:sturdy_sheet|Sturdy Sheets] coming."]},
+      "es_es": {"title": "Lámina robusta", "subtitle": "Las vías empiezan con piedras.",
+        "text": ["Triturá obsidiana en [item:create:powdered_obsidian|Polvo de obsidiana] y después una secuencia corta: un surtidor agrega 500 mB de lava, una prensa la estampa dos veces. Uno de cada uno sobre una cinta que vuelve y las [item:create:sturdy_sheet|Láminas robustas] no paran."]},
+      "sources": ["jar:create-1.21.1-6.0.10.jar:data/create/recipe/sequenced_assembly/sturdy_sheet.json",
+                  "jar:create-1.21.1-6.0.10.jar:data/create/recipe/crushing/obsidian.json"]
+    },
+    {
+      "key": "clg_casing", "role": "step", "deps": ["clg_sturdy", "cbr_casing"],
+      "task": {"item": "create:railway_casing", "count": 4},
+      "at": {"figure": "rail", "slot": 1},
+      "en_us": {"title": "Train Casing",
+        "text": ["A [item:create:sturdy_sheet|Sturdy Sheet] on [item:create:brass_casing|Brass Casing]. Every railway block wears it, and used on a track it places a bogey while you build a train."]},
+      "es_es": {"title": "Revestimiento de tren",
+        "text": ["Una [item:create:sturdy_sheet|Lámina robusta] sobre [item:create:brass_casing|Revestimiento de Latón]. Todo bloque ferroviario lo lleva, y usado sobre una vía pone un bogie mientras armás un tren."]},
+      "sources": ["jar:create-1.21.1-6.0.10.jar:data/create/recipe/item_application/railway_casing.json"]
+    },
+    {
+      "key": "clg_no_snr", "role": "info", "deps": ["clg_casing"],
+      "task": {"type": "checkmark"},
+      "icon": "create:track",
+      "at": {"figure": "rail", "slot": 1, "out": -2.6},
+      "en_us": {"title": "No Steam 'n' Rails",
+        "text": ["Steam 'n' Rails stops at Minecraft 1.20.1, so it isn't here: standard Create tracks, stations, signals and bogeys only. To move people between buildings, try Create Hypertube."]},
+      "es_es": {"title": "Sin Steam 'n' Rails",
+        "text": ["Steam 'n' Rails llega hasta Minecraft 1.20.1, así que acá no está: vías, estaciones, señales y bogies de Create y nada más. Para mover gente entre edificios, probá Create Hypertube."]},
+      "sources": ["https://modrinth.com/mod/create-steam-n-rails/versions"]
+    },
+    {
+      "key": "clg_track", "role": "milestone", "deps": ["clg_casing"],
+      "task": {"item": "create:track", "count": 64},
+      "at": {"figure": "rail", "slot": 2},
+      "en_us": {"title": "Lay the line",
+        "text": ["A slab gets two iron or zinc nuggets, then a press: [item:create:track|Train Track] by sequenced assembly. To lay it, click a placed piece, then a second spot; bends and slopes fill themselves."]},
+      "es_es": {"title": "Tender la línea",
+        "text": ["Una losa recibe dos pepitas de hierro o de cinc y después una prensa: [item:create:track|Vía de tren] por montaje secuencial. Para tenderla, clic en un tramo puesto y después en otro punto; curvas y pendientes se completan solas."]},
+      "sources": ["jar:create-1.21.1-6.0.10.jar:data/create/recipe/sequenced_assembly/track.json"]
+    },
+    {
+      "key": "clg_track_tip", "role": "tip", "deps": ["clg_track"],
+      "task": {"type": "checkmark"},
+      "at": {"figure": "rail", "slot": 2, "out": 2.6},
+      "en_us": {"title": "Track manners",
+        "text": ["[tip] Hold sprint while laying for the widest possible bend. Blocks in your off-hand pave under new track. Track laid into a Nether portal builds its twin on the other side."]},
+      "es_es": {"title": "Modales de vía",
+        "text": ["[tip] Mantené correr al tender para la curva más amplia. Los bloques de la otra mano pavimentan debajo. Una vía que entra a un portal del Nether arma su gemela del otro lado."]},
+      "sources": ["jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#create.track.hold_for_smooth_curve"]
+    },
+    {
+      "key": "clg_portal", "role": "side", "deps": ["clg_track"],
+      "task": {"type": "advancement", "advancement": "create:train_portal"},
+      "icon": "minecraft:obsidian",
+      "at": {"figure": "rail", "slot": 2, "out": -2.6},
+      "en_us": {"title": "Dimensional commuter", "subtitle": "Mind the gap. The very big gap.",
+        "text": ["Ride a train through a Nether portal. Eight blocks of Nether rail cover sixty-four of Overworld: the fastest line you'll ever build."]},
+      "es_es": {"title": "Viajero interdimensional", "subtitle": "Cuidado con el hueco. El hueco enorme.",
+        "text": ["Pasá con un tren por un portal del Nether. Ocho bloques de vía en el Nether cubren sesenta y cuatro en el Overworld: la línea más rápida que vas a hacer."]},
+      "sources": ["jar:create-1.21.1-6.0.10.jar:data/create/advancement/train_portal.json"]
+    },
+    {
+      "key": "clg_station", "role": "step", "deps": ["clg_track"],
+      "task": {"item": "create:track_station", "count": 2},
+      "at": {"figure": "rail", "slot": 3},
+      "en_us": {"title": "Stations",
+        "text": ["Train Casing and a compass make two [item:create:track_station|Train Stations]: select a track, place one beside it. In assembly mode, scheduled trains keep away while you build."]},
+      "es_es": {"title": "Estaciones",
+        "text": ["Revestimiento de tren y una brújula dan dos [item:create:track_station|Estaciones de tren]: elegí una vía y poné la estación al lado. En modo ensamble, los trenes con horario no se acercan mientras armás."]},
+      "sources": ["jar:create-1.21.1-6.0.10.jar:data/create/recipe/crafting/kinetics/track_station.json"]
+    },
+    {
+      "key": "clg_controls", "role": "milestone", "deps": ["clg_station"],
+      "task": {"type": "advancement", "advancement": "create:train", "icon": "create:controls"},
+      "icon": "create:controls",
+      "at": {"figure": "rail", "slot": 4},
+      "en_us": {"title": "All aboard",
+        "text": ["In assembly mode: casing on the track for bogeys, glue your blocks, [item:create:controls|Train Controls] on board, confirm at the station. Drive with the movement keys; a second set of controls lets it run both ways."]},
+      "es_es": {"title": "¡Todos a bordo!",
+        "text": ["En modo ensamble: revestimiento sobre la vía para los bogies, pegá tus bloques, [item:create:controls|Controles de tren] a bordo y confirmá en la estación. Se maneja con las teclas de movimiento; un segundo par de controles lo deja ir para los dos lados."]},
+      "sources": ["jar:create-1.21.1-6.0.10.jar:data/create/advancement/train.json",
+                  "jar:create-1.21.1-6.0.10.jar:data/create/recipe/crafting/kinetics/controls.json"]
+    },
+    {
+      "key": "clg_train_tips", "role": "tip", "deps": ["clg_controls"],
+      "task": {"type": "checkmark"},
+      "at": {"figure": "rail", "slot": 4, "out": 2.6},
+      "en_us": {"title": "Train quirks",
+        "text": ["[tip] Trains turn back into blocks only at a station. Fuel in chests on board speeds them up; fuel in vaults never burns. Out of loaded chunks they still obey signals, but drills stop."]},
+      "es_es": {"title": "Mañas del tren",
+        "text": ["[tip] Un tren vuelve a ser bloques sólo en una estación. Combustible en cofres a bordo lo acelera; en bóvedas, nunca se quema. Fuera de chunks cargados sigue respetando señales, pero los taladros paran."]},
+      "sources": ["jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#create.ponder.train_assembly"]
+    },
+    {
+      "key": "clg_roadkill", "role": "secret", "deps": ["clg_controls"],
+      "task": {"type": "advancement", "advancement": "create:train_roadkill"},
+      "icon": "minecraft:zombie_head",
+      "at": {"figure": "rail", "slot": 5, "out": 2.6},
+      "en_us": {"title": "Road kill", "subtitle": "The zombie didn't have a ticket.",
+        "text": ["A hostile mob met your train, head on. The train won."]},
+      "es_es": {"title": "Atropello", "subtitle": "El zombi no tenía boleto.",
+        "text": ["Un mob hostil se cruzó con tu tren, de frente. Ganó el tren."]},
+      "sources": ["jar:create-1.21.1-6.0.10.jar:data/create/advancement/train_roadkill.json"]
+    },
+    {
+      "key": "clg_schedule", "role": "step", "deps": ["clg_controls"],
+      "task": {"type": "advancement", "advancement": "create:conductor", "icon": "create:schedule"},
+      "icon": "create:schedule",
+      "at": {"figure": "rail", "slot": 5},
+      "en_us": {"title": "Timetable",
+        "text": ["Obsidian sheet and paper make four [item:create:schedule|Train Schedules]: stops, waits and conditions. Hand one to a conductor seated at the controls, any mob or a Blaze Burner will do."]},
+      "es_es": {"title": "Horario",
+        "text": ["Lámina de obsidiana y papel dan cuatro [item:create:schedule|Horarios del tren]: paradas, esperas y condiciones. Dáselo a un conductor sentado en los controles; sirve cualquier mob o un quemador de Blaze."]},
+      "sources": ["jar:create-1.21.1-6.0.10.jar:data/create/recipe/crafting/kinetics/schedule.json",
+                  "jar:create-1.21.1-6.0.10.jar:data/create/advancement/conductor.json"]
+    },
+    {
+      "key": "clg_signal", "role": "milestone", "deps": ["clg_schedule"],
+      "task": {"item": "create:track_signal", "count": 4},
+      "at": {"figure": "rail", "slot": 6},
+      "en_us": {"title": "Traffic control",
+        "text": ["Casing and an electron tube make four [item:create:track_signal|Train Signals]. Signals cut the track into sections, one train each: no collisions.",
+                 "[tip] Brass mode, set with a wrench, also holds a train that couldn't clear the next section. Use it at busy junctions."]},
+      "es_es": {"title": "Control de tráfico",
+        "text": ["Revestimiento y un tubo de electrones dan cuatro [item:create:track_signal|Señales de Tren]. Las señales cortan la vía en tramos, un tren por tramo: cero choques.",
+                 "[tip] El modo latón, con la llave, también frena a un tren que no podría liberar el tramo siguiente. Usalo en los cruces con mucho movimiento."]},
+      "sources": ["jar:create-1.21.1-6.0.10.jar:data/create/recipe/crafting/kinetics/track_signal.json",
+                  "jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#create.ponder.track_signal"]
+    },
+    {
+      "key": "clg_red_signal", "role": "secret", "deps": ["clg_signal"],
+      "task": {"type": "advancement", "advancement": "create:red_signal"},
+      "icon": "minecraft:redstone_torch",
+      "at": {"figure": "rail", "slot": 6, "out": -2.6},
+      "en_us": {"title": "Expert driver", "subtitle": "It was more of an orange.",
+        "text": ["You ran a red [item:create:track_signal|Train Signal]. The signal remembers. The signal always remembers."]},
+      "es_es": {"title": "Conductor experto", "subtitle": "Era más bien naranja.",
+        "text": ["Pasaste una [item:create:track_signal|Señal de Tren] en rojo. La señal se acuerda. La señal siempre se acuerda."]},
+      "sources": ["jar:create-1.21.1-6.0.10.jar:data/create/advancement/red_signal.json"]
+    },
+    {
+      "key": "clg_observer", "role": "side", "deps": ["clg_signal"],
+      "task": {"item": "create:track_observer"},
+      "at": {"figure": "rail", "slot": 6, "out": 2.6},
+      "en_us": {"title": "Train Observer",
+        "text": ["Select a track, place a [item:create:track_observer|Train Observer] nearby: it gives a redstone pulse when a train passes, optionally only for certain cargo. Doors, counters, loading triggers."]},
+      "es_es": {"title": "Observador de tren",
+        "text": ["Elegí una vía y poné un [item:create:track_observer|Observador de tren] cerca: da un pulso de redstone cuando pasa un tren, si querés sólo con cierta carga. Puertas, contadores, disparadores de carga."]},
+      "sources": ["jar:create-1.21.1-6.0.10.jar:data/create/recipe/crafting/kinetics/track_observer.json"]
+    },
+    {
+      "key": "clg_postbox", "role": "step", "deps": ["clg_signal", "clg_frogport"], "curve": {"clg_frogport": 0.08},
+      "task": {"type": "observation", "observe": "block_tag", "target": "create:postboxes", "ticks": 40,
+               "title": {"en_us": "Look at a postbox beside a station", "es_es": "Mirá un buzón al lado de una estación"}},
+      "icon": "create:white_postbox",
+      "at": {"figure": "rail", "slot": 7},
+      "en_us": {"title": "Mail by rail",
+        "text": ["A [item:create:white_postbox|Postbox] near a station gets an address. Trains that stop there collect parcels for elsewhere and drop off the ones for here, even in unloaded chunks."]},
+      "es_es": {"title": "Correo por tren",
+        "text": ["Un [item:create:white_postbox|Buzón] cerca de una estación recibe una dirección. Los trenes que paran ahí levantan los paquetes para otro lado y dejan los de acá, incluso en chunks sin cargar."]},
+      "sources": ["jar:create-1.21.1-6.0.10.jar:data/create/tags/block/postboxes.json",
+                  "jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#create.ponder.postbox"]
+    },
+    {
+      "key": "clg_psi", "role": "step", "deps": ["clg_postbox"],
+      "task": {"type": "advancement", "advancement": "create:portable_storage_interface", "icon": "create:portable_storage_interface"},
+      "icon": "create:portable_storage_interface",
+      "at": {"figure": "rail", "slot": 8},
+      "en_us": {"title": "Drive-by exchange",
+        "text": ["A [item:create:portable_storage_interface|Portable Storage Interface] on the train and another on the ground, one or two blocks apart, connect as it passes. The train leaves once the items stop moving."]},
+      "es_es": {"title": "Intercambio al paso",
+        "text": ["Una [item:create:portable_storage_interface|Interfaz de almacenamiento portátil] en el tren y otra en el piso, a uno o dos bloques, se conectan cuando pasa. El tren sigue cuando los ítems dejan de moverse."]},
+      "sources": ["jar:create-1.21.1-6.0.10.jar:data/create/advancement/portable_storage_interface.json"]
+    },
+    {
+      "key": "clg_freight", "role": "bounty", "deps": ["clg_psi"],
+      "task": {"item": "create:sturdy_sheet", "count": 16, "consume": true},
+      "at": {"figure": "rail", "slot": 9},
+      "en_us": {"title": "Freight contract", "subtitle": "The depot always needs more.",
+        "text": ["Sixteen [item:create:sturdy_sheet|Sturdy Sheets] for the depot, once a day. A spout, a press and a looping belt make it a formality."]},
+      "es_es": {"title": "Contrato de carga", "subtitle": "El depósito siempre quiere más.",
+        "text": ["Dieciséis [item:create:sturdy_sheet|Láminas robustas] para el depósito, una vez por día. Un surtidor, una prensa y una cinta que vuelve lo hacen un trámite."]},
+      "sources": ["jar:create-1.21.1-6.0.10.jar:data/create/recipe/sequenced_assembly/sturdy_sheet.json"]
+    },
+    {
+      "key": "clg_mastery", "role": "capstone", "deps": ["clg_psi", "clg_gauge"], "hide_lines": true,
+      "tasks": [{"type": "advancement", "advancement": "create:display_board_0", "icon": "create:display_board"},
+                {"type": "observation", "observe": "entity_type", "target": "create:carriage_contraption", "ticks": 60,
+                 "title": {"en_us": "Watch your train pull in", "es_es": "Mirá tu tren entrar a la estación"}}],
+      "icon": "create:track_station",
+      "at": {"figure": "rail", "slot": 10},
+      "en_us": {"title": "The outpost line", "subtitle": "Next stop: everywhere.",
+        "text": ["A scheduled train between home and an outpost, a [item:create:display_board|Display Board] forecasting its arrival, and a factory board keeping key items stocked by itself.",
+                 "{page}",
+                 "{image:entrelumen:textures/gui/quests/diagram_train.png width:96 height:48 align:center}",
+                 "Packages move goods far without chunk loading. Storage networks can take over at home later; the line keeps running."]},
+      "es_es": {"title": "La línea al puesto", "subtitle": "Próxima parada: todos lados.",
+        "text": ["Un tren con horario entre casa y un puesto lejano, una [item:create:display_board|Pantalla de visualización] que anuncia cuándo llega y un tablero de fábrica que repone solo lo importante.",
+                 "{page}",
+                 "{image:entrelumen:textures/gui/quests/diagram_train.png width:96 height:48 align:center}",
+                 "Los paquetes llevan cosas lejos sin cargar chunks. En casa, más adelante, una red de almacenamiento puede tomar la posta; la línea sigue andando."]},
+      "sources": ["jar:create-1.21.1-6.0.10.jar:data/create/advancement/display_board_0.json"]
+    },
+    {
+      "key": "clg_cardboard", "role": "step", "deps": ["crb_mixer"],
+      "task": {"item": "create:cardboard", "count": 16},
+      "at": {"figure": "chain", "slot": 0},
+      "en_us": {"title": "Cardboard",
+        "text": ["Pulpable stuff and water mix into [item:create:pulp|Pulp]: bamboo, sugar cane, saplings. A press makes [item:create:cardboard|Cardboard]. The whole package network is made of it."]},
+      "es_es": {"title": "Cartón",
+        "text": ["Cosas que se pueden hacer pasta y agua dan [item:create:pulp|Pasta de cartón]: bambú, caña de azúcar, retoños. Una prensa la hace [item:create:cardboard|Cartón]. Toda la red de paquetes está hecha de eso."]},
+      "sources": ["jar:create-1.21.1-6.0.10.jar:data/create/recipe/pressing/cardboard.json"]
+    },
+    {
+      "key": "clg_packager", "role": "milestone", "deps": ["clg_cardboard"],
+      "task": {"type": "advancement", "advancement": "create:packager", "icon": "create:packager"},
+      "icon": "create:packager",
+      "at": {"figure": "chain", "slot": 1},
+      "en_us": {"title": "Post production",
+        "text": ["A [item:create:packager|Packager] on an inventory boxes its items on a redstone pulse. Feed it a package and it unboxes, only if everything fits. Contents stay together on belts, chains and trains."]},
+      "es_es": {"title": "Posproducción",
+        "text": ["Un [item:create:packager|Empaquetador] pegado a un inventario empaqueta con un pulso de redstone. Si le das un paquete, lo abre, sólo si entra todo. El contenido viaja junto por cintas, cadenas y trenes."]},
+      "sources": ["jar:create-1.21.1-6.0.10.jar:data/create/recipe/crafting/logistics/packager.json"]
+    },
+    {
+      "key": "clg_address", "role": "tip", "deps": ["clg_packager"],
+      "task": {"type": "checkmark"},
+      "at": {"x": 7, "y": -9.5},
+      "en_us": {"title": "Addresses",
+        "text": ["[tip] A sign on a packager stamps its text as the address. A [item:create:package_filter|Package Filter] routes by address through funnels, tunnels and chutes. A clipboard learns frogport addresses."]},
+      "es_es": {"title": "Direcciones",
+        "text": ["[tip] Un cartel en el empaquetador estampa su texto como dirección. Un [item:create:package_filter|Filtro de paquetes] enruta por dirección en embudos, túneles y ductos. Una planilla aprende las direcciones de los ranapuertos."]},
+      "sources": ["jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#create.ponder.packager_address"]
+    },
+    {
+      "key": "clg_chute_throw", "role": "secret", "deps": ["clg_packager"],
+      "task": {"type": "advancement", "advancement": "create:package_chute_throw"},
+      "icon": "create:cardboard",
+      "at": {"figure": "chain", "slot": 1, "out": 2.6},
+      "en_us": {"title": "Nothing but net", "subtitle": "Three points.",
+        "text": ["You threw a package into a chute from a distance. The mail has never been so athletic."]},
+      "es_es": {"title": "Sin tocar el aro", "subtitle": "Triple.",
+        "text": ["Tiraste un paquete a un ducto desde lejos. El correo nunca fue tan deportivo."]},
+      "sources": ["jar:create-1.21.1-6.0.10.jar:data/create/advancement/package_chute_throw.json"]
+    },
+    {
+      "key": "clg_chain", "role": "step", "deps": ["clg_packager"],
+      "task": {"item": "create:chain_conveyor", "count": 4},
+      "at": {"figure": "chain", "slot": 2},
+      "en_us": {"title": "Chain Conveyor",
+        "text": ["A large cogwheel ringed by andesite casings makes two [item:create:chain_conveyor|Chain Conveyors]; link them with chains. They carry rotation and packages, and you can ride one holding a wrench."]},
+      "es_es": {"title": "Cadena transportadora",
+        "text": ["Un engranaje grande rodeado de revestimientos de andesita da dos [item:create:chain_conveyor|Cadenas transportadoras]; unilas con cadenas. Llevan rotación y paquetes, y te podés colgar de una con la llave en la mano."]},
+      "sources": ["jar:create-1.21.1-6.0.10.jar:data/create/recipe/crafting/kinetics/chain_conveyor.json"]
+    },
+    {
+      "key": "clg_frogport", "role": "milestone", "deps": ["clg_chain"],
+      "task": {"type": "advancement", "advancement": "create:frogport", "icon": "create:package_frogport"},
+      "icon": "create:package_frogport",
+      "at": {"figure": "chain", "slot": 3},
+      "en_us": {"title": "Hungry frogs",
+        "text": ["Click a chain with a [item:create:package_frogport|Package Frogport], place it nearby and name an address. Parcels for that address get snapped off the chain; the rest keep riding."]},
+      "es_es": {"title": "Ranas con hambre",
+        "text": ["Clic en una cadena con un [item:create:package_frogport|Ranapuerto], ponelo cerca y dale una dirección. Los paquetes para esa dirección salen de la cadena de un lengüetazo; el resto sigue viaje."]},
+      "sources": ["jar:create-1.21.1-6.0.10.jar:data/create/advancement/frogport.json"]
+    },
+    {
+      "key": "clg_link", "role": "step", "deps": ["clg_frogport"],
+      "task": {"item": "create:stock_link", "count": 2},
+      "at": {"figure": "chain", "slot": 4},
+      "en_us": {"title": "Stock Link",
+        "text": ["A transmitter on an item vault: a [item:create:stock_link|Stock Link]. Linked packagers show their inventory to the whole network, at any range; the parcels still need a real route."]},
+      "es_es": {"title": "Enlace de existencias",
+        "text": ["Un transmisor sobre una bóveda: un [item:create:stock_link|Enlace de existencias]. Los empaquetadores enlazados muestran su inventario a toda la red, a cualquier distancia; los paquetes igual necesitan un camino real."]},
+      "sources": ["jar:create-1.21.1-6.0.10.jar:data/create/recipe/crafting/logistics/stock_link.json"]
+    },
+    {
+      "key": "clg_ticker", "role": "milestone", "deps": ["clg_link"],
+      "task": {"type": "advancement", "advancement": "create:stock_ticker", "icon": "create:stock_ticker"},
+      "icon": "create:stock_ticker",
+      "at": {"figure": "chain", "slot": 5},
+      "en_us": {"title": "Order up",
+        "text": ["Bind a [item:create:stock_ticker|Stock Ticker] to a link and seat a mob or a blaze burner in front: your stock keeper. Talk to it to browse the network and send anything to any address."]},
+      "es_es": {"title": "¡Sale pedido!",
+        "text": ["Enlazá un [item:create:stock_ticker|Telégrafo de existencias] y sentá un mob o un quemador adelante: tu encargado. Hablale para recorrer la red y mandar cualquier cosa a cualquier dirección."]},
+      "sources": ["jar:create-1.21.1-6.0.10.jar:data/create/advancement/stock_ticker.json"]
+    },
+    {
+      "key": "clg_requester", "role": "side", "deps": ["clg_ticker"],
+      "task": {"item": "create:redstone_requester"},
+      "at": {"figure": "chain", "slot": 5, "out": 2.6},
+      "en_us": {"title": "One button, one delivery",
+        "text": ["A [item:create:redstone_requester|Redstone Requester] orders a fixed list on every pulse. Wire it to a button by the door: building materials on demand."]},
+      "es_es": {"title": "Un botón, un envío",
+        "text": ["Un [item:create:redstone_requester|Solicitador de Redstone] pide una lista fija con cada pulso. Conectalo a un botón junto a la puerta: materiales de construcción a pedido."]},
+      "sources": ["jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#create.ponder.redstone_requester"]
+    },
+    {
+      "key": "clg_shop", "role": "side", "deps": ["clg_ticker"],
+      "task": {"type": "advancement", "advancement": "create:table_cloth_shop", "icon": "create:white_table_cloth"},
+      "icon": "create:white_table_cloth",
+      "at": {"figure": "chain", "slot": 6, "out": 2.6},
+      "en_us": {"title": "Open for business",
+        "text": ["Hold a [item:create:white_table_cloth|Table Cloth] and talk to your stock keeper to set up a trade, then place and price it. Buyers pay at the counter; goods come out boxed."]},
+      "es_es": {"title": "Abierto al público",
+        "text": ["Con un [item:create:white_table_cloth|Mantel] en la mano, hablale a tu encargado para armar una venta; después ponelo y ponele precio. Los clientes pagan en el mostrador y la mercadería sale empaquetada."]},
+      "sources": ["jar:create-1.21.1-6.0.10.jar:data/create/advancement/table_cloth_shop.json"]
+    },
+    {
+      "key": "clg_gauge", "role": "step", "deps": ["clg_ticker"],
+      "task": {"type": "advancement", "advancement": "create:factory_gauge", "icon": "create:factory_gauge"},
+      "icon": "create:factory_gauge",
+      "at": {"figure": "chain", "slot": 6},
+      "en_us": {"title": "High logistics",
+        "text": ["A stock link and a precision mechanism make two [item:create:factory_gauge|Factory Gauges]. On a packager, a gauge keeps one item stocked by ordering it; chained gauges form a factory board."]},
+      "es_es": {"title": "Alta logística",
+        "text": ["Un enlace de existencias y un mecanismo de precisión dan dos [item:create:factory_gauge|Medidores Industriales]. Sobre un empaquetador, mantienen un ítem en stock pidiéndolo; encadenados, arman un tablero de fábrica."]},
+      "sources": ["jar:create-1.21.1-6.0.10.jar:data/create/recipe/crafting/logistics/factory_gauge.json"]
+    },
+    {
+      "key": "clg_repack", "role": "tip", "deps": ["clg_gauge"],
+      "task": {"type": "checkmark"},
+      "at": {"figure": "chain", "slot": 7},
+      "en_us": {"title": "Re-Packager",
+        "text": ["[tip] Big orders arrive split and can mix with other parcels. A powered [item:create:repackager|Re-Packager] waits for every fragment and ships them as one package, in order."]},
+      "es_es": {"title": "Reempaquetador",
+        "text": ["[tip] Los pedidos grandes llegan partidos y se pueden mezclar con otros. Un [item:create:repackager|Reempaquetador] con energía espera todos los pedazos y los manda como un solo paquete, en orden."]},
+      "sources": ["jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#create.ponder.repackager"]
+    },
+    {
+      "key": "cpw_mill", "role": "step", "deps": ["crb_press"], "group": "additions",
+      "task": {"item": "createaddition:rolling_mill"},
+      "at": {"figure": "wire", "slot": 0},
+      "en_us": {"title": "Rolling Mill",
+        "text": ["A [item:createaddition:rolling_mill|Rolling Mill] rolls long parts: an ingot into two rods, a plate into two wires, bamboo or paper into straw. Drop items on top; a belt and two funnels automate it."]},
+      "es_es": {"title": "Laminador",
+        "text": ["Un [item:createaddition:rolling_mill|Laminador] estira piezas largas: un lingote en dos varillas, una placa en dos alambres, bambú o papel en pajita. Los ítems se tiran arriba; una cinta y dos embudos lo automatizan."]},
+      "sources": ["jar:createaddition-1.7.0.jar:data/createaddition/recipe/rolling"]
+    },
+    {
+      "key": "cpw_liquid", "role": "side", "deps": ["cpw_mill"],
+      "task": {"item": "createaddition:straw", "count": 4},
+      "at": {"figure": "wire", "slot": 0, "out": 2.8},
+      "en_us": {"title": "A straw for the blaze",
+        "text": ["Use [item:createaddition:straw|Straw] on a blaze burner and it drinks liquid fuel by bucket or pipe. Lava keeps it lit 20000 ticks a bucket; biofuel superheats it. Goodbye, coal by hand."]},
+      "es_es": {"title": "Una pajita para el blaze",
+        "text": ["Usá una [item:createaddition:straw|Pajita] sobre un quemador y toma combustible líquido por balde o por caño. La lava lo mantiene 20000 ticks por balde; el biocombustible lo sobrecalienta. Chau carbón a mano."]},
+      "sources": ["jar:createaddition-1.7.0.jar:data/createaddition/recipe/liquid_burning"]
+    },
+    {
+      "key": "cpw_biofuel", "role": "tip", "deps": ["cpw_liquid"],
+      "task": {"type": "checkmark"},
+      "at": {"figure": "wire", "slot": 0, "out": 5.4},
+      "en_us": {"title": "Fuel from the field",
+        "text": ["[tip] Compacted seeds give seed oil; crops, leaves or flowers mixed hot with plant oil give biomass; sugar, cinder flour and biomass mix into [item:createaddition:bioethanol_bucket|Biofuel]. A wheat farm is a gas station."]},
+      "es_es": {"title": "Combustible de la huerta",
+        "text": ["[tip] Semillas compactadas dan aceite; cultivos, hojas o flores mezclados en caliente con aceite vegetal dan biomasa; azúcar, harina del Nether y biomasa dan [item:createaddition:bioethanol_bucket|Biocombustible]. Una huerta de trigo es una estación de servicio."]},
+      "sources": ["jar:createaddition-1.7.0.jar:data/createaddition/recipe/mixing"]
+    },
+    {
+      "key": "cpw_spool", "role": "step", "deps": ["cpw_mill"], "group": "additions",
+      "task": {"item": "createaddition:copper_spool", "count": 4},
+      "at": {"figure": "wire", "slot": 1},
+      "en_us": {"title": "Wires and connectors",
+        "text": ["[item:createaddition:connector|Small Connectors] link FE blocks with [item:createaddition:copper_spool|Copper Spool] wire; large ones take gold or electrum. A wrench cycles push, pull and none: generators push, machines pull."]},
+      "es_es": {"title": "Cables y conectores",
+        "text": ["Los [item:createaddition:connector|Conectores pequeños] unen bloques de FE con cable de [item:createaddition:copper_spool|Carrete de cobre]; los grandes usan oro o electro. La llave alterna empujar, tirar y nada: los generadores empujan, las máquinas tiran."]},
+      "sources": ["jar:createaddition-1.7.0.jar:assets/createaddition/lang/en_us.json#createaddition.connector"]
+    },
+    {
+      "key": "cpw_alternator", "role": "milestone", "deps": ["cpw_spool"], "group": "additions",
+      "task": {"item": "createaddition:alternator"},
+      "at": {"figure": "wire", "slot": 2},
+      "en_us": {"title": "Rotation to current",
+        "text": ["An [item:createaddition:alternator|Alternator] turns rotation into FE, the energy most tech mods run on, from 32 RPM up, more the faster it spins. A water wheel can now run a Mekanism machine."]},
+      "es_es": {"title": "De rotación a corriente",
+        "text": ["Un [item:createaddition:alternator|Alternador] convierte rotación en FE, la energía de casi todos los mods técnicos, desde 32 RPM y más cuanto más rápido gira. Una rueda hidráulica ya puede mover una máquina de Mekanism."]},
+      "sources": ["jar:createaddition-1.7.0.jar:assets/createaddition/lang/en_us.json#block.createaddition.alternator"]
+    },
+    {
+      "key": "cpw_motor", "role": "step", "deps": ["cpw_alternator"], "group": "additions",
+      "task": {"item": "createaddition:electric_motor"},
+      "at": {"figure": "wire", "slot": 3},
+      "en_us": {"title": "And back again",
+        "text": ["An [item:createaddition:electric_motor|Electric Motor] turns FE into rotation; scroll its back panel to set the RPM, and more RPM costs more energy. Silent, compact rotation wherever the wires reach."]},
+      "es_es": {"title": "Y de vuelta",
+        "text": ["Un [item:createaddition:electric_motor|Motor eléctrico] convierte FE en rotación; girá la rueda de su panel trasero para elegir las RPM, y más RPM gastan más. Rotación silenciosa y compacta hasta donde lleguen los cables."]},
+      "sources": ["jar:createaddition-1.7.0.jar:assets/createaddition/lang/en_us.json#block.createaddition.electric_motor"]
+    },
+    {
+      "key": "cpw_accumulator", "role": "side", "deps": ["cpw_alternator"], "group": "additions",
+      "task": {"item": "createaddition:modular_accumulator"},
+      "at": {"figure": "wire", "slot": 4},
+      "en_us": {"title": "Accumulator",
+        "text": ["A stackable multiblock battery: set one connector as input and one as output. A portable energy interface pair charges one riding a train."]},
+      "es_es": {"title": "Acumulador",
+        "text": ["Una batería multibloque que se apila: un conector de entrada y otro de salida. Un par de interfaces de energía portátil carga uno que viaja en tren."]},
+      "sources": ["jar:createaddition-1.7.0.jar:assets/createaddition/lang/en_us.json#block.createaddition.modular_accumulator"]
+    },
+    {
+      "key": "cpw_tesla", "role": "side", "deps": ["cpw_motor"], "group": "additions",
+      "task": {"item": "createaddition:tesla_coil"},
+      "at": {"figure": "wire", "slot": 5},
+      "en_us": {"title": "Tesla Coil",
+        "text": ["A [item:createaddition:tesla_coil|Tesla Coil] charges FE items below it and runs charging recipes, like electrum. Powered by redstone, it also shocks what stands nearby, you included."]},
+      "es_es": {"title": "Bobina de Tesla",
+        "text": ["Una [item:createaddition:tesla_coil|Bobina de Tesla] carga ítems de FE que tenga abajo y hace recetas de carga, como el electro. Con redstone, además electrocuta lo que haya cerca, vos incluido."]},
+      "sources": ["jar:createaddition-1.7.0.jar:data/createaddition/recipe/charging"]
+    },
+    {
+      "key": "cpw_ores", "role": "step", "deps": [],
+      "task": {"item": "create_new_age:magnetite_block", "count": 4},
+      "at": {"figure": "sun", "slot": 0},
+      "en_us": {"title": "Magnetite and thorium",
+        "text": ["[item:create_new_age:magnetite_block|Magnetite] and [item:create_new_age:thorium_ore|Thorium Ore] spawn in the Overworld. Magnetite makes magnets and motors; crushed thorium sometimes gives radioactive thorium for reactors.",
+                 "[tip] Thorium has no common ore tag here, on purpose: dimensional miners skip it. Dig for it."]},
+      "es_es": {"title": "Magnetita y torio",
+        "text": ["La [item:create_new_age:magnetite_block|Magnetita] y el [item:create_new_age:thorium_ore|Mineral de torio] aparecen en el Overworld. La magnetita da imanes y motores; el torio triturado a veces da torio radiactivo para reactores.",
+                 "[tip] El torio no tiene etiqueta común de mena, a propósito: los mineros dimensionales lo saltean. Hay que picarlo."]},
+      "sources": ["jar:create-new-age-1.2.0+neoforge-mc1.21.1.jar:data/create_new_age/recipe/crushing"]
+    },
+    {
+      "key": "cpw_heliodor", "role": "tip", "deps": ["cpw_ores"],
+      "task": {"type": "checkmark"},
+      "at": {"figure": "sun", "slot": 0, "out": 2.4},
+      "en_us": {"title": "Sunlight as heat",
+        "text": ["[tip] New Age has no photovoltaic panels: solar plates make heat, a boiler or a Stirling engine makes rotation, magnets and coils make current. Light, heat, motion, current: Heliodor's loop."]},
+      "es_es": {"title": "El sol como calor",
+        "text": ["[tip] New Age no tiene paneles fotovoltaicos: las placas solares dan calor, una caldera o un motor Stirling da rotación, imanes y bobinas dan corriente. Luz, calor, movimiento, corriente: el círculo de Heliodor."]},
+      "sources": ["jar:create-new-age-1.2.0+neoforge-mc1.21.1.jar:assets/create_new_age/lang/en_us.json"]
+    },
+    {
+      "key": "cpw_coil", "role": "milestone", "deps": ["cpw_ores"],
+      "task": {"item": "create_new_age:generator_coil"},
+      "at": {"figure": "sun", "slot": 1},
+      "en_us": {"title": "Generator Coil",
+        "text": ["A spinning [item:create_new_age:generator_coil|Generator Coil] ringed by magnets makes current; [item:create_new_age:carbon_brushes|Carbon Brushes] collect it. Stronger magnets turn more stress into power.",
+                 "Pack change: the brushes take an [item:entrelumen:energy_coupler|Energy Coupler] (act II) in place of an andesite alloy; the coils don't."]},
+      "es_es": {"title": "Bobina del generador",
+        "text": ["Una [item:create_new_age:generator_coil|Bobina del generador] que gira rodeada de imanes da corriente; las [item:create_new_age:carbon_brushes|Escobillas de carbón] la juntan. Imanes más fuertes sacan más energía del mismo estrés.",
+                 "Cambio del pack: las escobillas llevan un [item:entrelumen:energy_coupler|Acoplador de energía] (acto II) en vez de una aleación de andesita; las bobinas, no."]},
+      "sources": ["tools/generate_family_balance.py#create_new_age:shaped/carbon_brushes"]
+    },
+    {
+      "key": "cpw_magnets", "role": "tip", "deps": ["cpw_coil"],
+      "task": {"type": "checkmark"},
+      "at": {"figure": "sun", "slot": 1, "out": 2.4},
+      "en_us": {"title": "Magnet ladder",
+        "text": ["[tip] Weakest to strongest: Redstone, Layered, Netherite, Fluxuated Magnetite. The goggles show a coil's force and efficiency. Better magnets first: efficiency is free power."]},
+      "es_es": {"title": "Escalera de imanes",
+        "text": ["[tip] Del más débil al más fuerte: de redstone, en capas, de netherita y magnetita fluxuada. Las gafas muestran la fuerza y la eficiencia de la bobina. Primero mejores imanes: la eficiencia es energía gratis."]},
+      "sources": ["jar:create-new-age-1.2.0+neoforge-mc1.21.1.jar:assets/create_new_age/lang/en_us.json#block.create_new_age.fluxuated_magnetite"]
+    },
+    {
+      "key": "cpw_wire", "role": "step", "deps": ["cpw_coil"],
+      "task": {"item": "create_new_age:copper_wire", "count": 16},
+      "at": {"figure": "sun", "slot": 2},
+      "en_us": {"title": "Copper Wire",
+        "text": ["A saw cuts a copper sheet into four [item:create_new_age:copper_wire|Copper Wires] for [item:create_new_age:electrical_connector|Electrical Connectors]. A connector on pull draws power from other mods' blocks."]},
+      "es_es": {"title": "Alambre de cobre",
+        "text": ["Una sierra corta una lámina de cobre en cuatro [item:create_new_age:copper_wire|Alambres de cobre] para [item:create_new_age:electrical_connector|Conectores eléctricos]. Un conector en modo tirar saca energía de bloques de otros mods."]},
+      "sources": ["jar:create-new-age-1.2.0+neoforge-mc1.21.1.jar:data/create_new_age/recipe/cutting"]
+    },
+    {
+      "key": "cpw_energiser", "role": "milestone", "deps": ["cpw_wire"],
+      "task": {"item": "create_new_age:overcharged_iron", "count": 8},
+      "icon": "create_new_age:basic_energiser",
+      "at": {"figure": "sun", "slot": 3},
+      "en_us": {"title": "Energise it",
+        "text": ["With current and rotation, a [item:create_new_age:basic_energiser|Basic Energiser] charges items below it on a depot or belt: iron becomes [item:create_new_age:overcharged_iron|Overcharged Iron] for 1000 energy, gold 2000, diamond 10000."]},
+      "es_es": {"title": "Energizalo",
+        "text": ["Con corriente y rotación, un [item:create_new_age:basic_energiser|Energizador básico] carga lo que tenga abajo en un depósito o una cinta: el hierro sale [item:create_new_age:overcharged_iron|Plancha sobrecargada] por 1000 de energía, el oro por 2000, el diamante por 10000."]},
+      "sources": ["jar:create-new-age-1.2.0+neoforge-mc1.21.1.jar:data/create_new_age/recipe/energising"]
+    },
+    {
+      "key": "cpw_quirk", "role": "tip", "deps": ["cpw_energiser"],
+      "task": {"type": "checkmark"},
+      "at": {"figure": "sun", "slot": 3, "out": 2.4},
+      "en_us": {"title": "Expensive miracles",
+        "text": ["[tip] An energiser can make an Enchanted Golden Apple by sequenced assembly, at two million energy per step, and bottles o' enchanting at 50000 each. Renewable, not cheap."]},
+      "es_es": {"title": "Milagros caros",
+        "text": ["[tip] Un energizador hace una manzana dorada encantada por montaje secuencial, a dos millones de energía por paso, y frascos de experiencia a 50000 cada uno. Renovable, no barato."]},
+      "sources": ["jar:create-new-age-1.2.0+neoforge-mc1.21.1.jar:data/create_new_age/recipe/sequenced_assembly"]
+    },
+    {
+      "key": "cpw_na_motor", "role": "step", "deps": ["cpw_energiser"],
+      "task": {"item": "create_new_age:basic_motor"},
+      "at": {"figure": "sun", "slot": 4},
+      "en_us": {"title": "Basic Motor",
+        "text": ["Current back into rotation: a wrench sets a [item:create_new_age:basic_motor|Basic Motor]'s speed. Extensions behind it raise its capacity and its energy use. The advanced motor takes a [item:mekanism:alloy_reinforced|Reinforced Alloy] (act III)."]},
+      "es_es": {"title": "Motor básico",
+        "text": ["Corriente de vuelta a rotación: la llave elige la velocidad del [item:create_new_age:basic_motor|Motor básico]. Las extensiones de atrás suben su capacidad y su consumo. El motor avanzado pide una [item:mekanism:alloy_reinforced|Aleación Reforzada] (acto III)."]},
+      "sources": ["tools/generate_family_balance.py#create_new_age:shaped/advanced_motor"]
+    },
+    {
+      "key": "cpw_solar", "role": "step", "deps": ["cpw_na_motor"],
+      "task": {"item": "create_new_age:basic_solar_heating_plate", "count": 4},
+      "at": {"figure": "sun", "slot": 5},
+      "en_us": {"title": "Solar heating",
+        "text": ["In daylight, a [item:create_new_age:basic_solar_heating_plate|Basic Solar Heating Plate] makes heat; heat pipes carry it. Too much heat in one block melts it to lava: always give heat somewhere to go.",
+                 "The basic plate takes an [item:mekanism:alloy_infused|Infused Alloy] (act II) in place of one glass."]},
+      "es_es": {"title": "Calor solar",
+        "text": ["De día, una [item:create_new_age:basic_solar_heating_plate|Placa solar básica] da calor y las tuberías de calor lo llevan. Mucho calor en un bloque lo derrite en lava: siempre dale al calor para dónde ir.",
+                 "La placa básica lleva una [item:mekanism:alloy_infused|Aleación Infusionada] (acto II) en lugar de un vidrio."]},
+      "sources": ["tools/generate_family_balance.py#create_new_age:shaped/basic_solar_heating_plate"]
+    },
+    {
+      "key": "cpw_heater", "role": "step", "deps": ["cpw_solar"],
+      "task": {"item": "create_new_age:heater"},
+      "at": {"figure": "sun", "slot": 6},
+      "en_us": {"title": "A boiler that eats sunlight",
+        "text": ["A [item:create_new_age:heater|Heater] under a Create boiler burns heat instead of fuel: more heat in, more steam out. Plates, pipes and a heater make a sun-powered steam engine."]},
+      "es_es": {"title": "Una caldera que come sol",
+        "text": ["Un [item:create_new_age:heater|Calentador de caldera] debajo de una caldera de Create quema calor en vez de combustible: más calor entra, más vapor sale. Placas, tuberías y un calentador arman un motor de vapor solar."]},
+      "sources": ["jar:create-new-age-1.2.0+neoforge-mc1.21.1.jar:assets/create_new_age/lang/en_us.json#block.create_new_age.heater"]
+    },
+    {
+      "key": "cpw_reactor", "role": "side", "deps": ["cpw_heater"],
+      "task": {"item": "create_new_age:reactor_rod"},
+      "at": {"figure": "sun", "slot": 7},
+      "en_us": {"title": "Thorium reactor", "subtitle": "Glow responsibly.",
+        "text": ["[item:create_new_age:reactor_rod|Reactor Rods], a fuel acceptor and heat vents. [warn|Radiation kills]: wear leather armour or seal it in reactor casing. If nothing takes its heat, it melts down. Rods take an [item:twilightforest:ironwood_ingot|Ironwood Ingot] (act IV)."]},
+      "es_es": {"title": "Reactor de torio", "subtitle": "Brillá con responsabilidad.",
+        "text": ["[item:create_new_age:reactor_rod|Varillas de reactor], un receptor de combustible y ventilaciones de calor. [warn|La radiación mata]: usá armadura de cuero o encerralo en carcasa de reactor. Si nadie se lleva el calor, se funde. Las varillas piden un [item:twilightforest:ironwood_ingot|Lingote de madera de hierro] (acto IV)."]},
+      "sources": ["tools/generate_family_balance.py#create_new_age:mechanical_crafting/reactor_rod"]
+    },
+    {
+      "key": "cpw_street", "role": "side", "deps": ["cpw_na_motor"],
+      "task": {"item": "create_new_age:street_light", "count": 4},
+      "at": {"figure": "sun", "slot": 8},
+      "en_us": {"title": "Street lights",
+        "text": ["[item:create_new_age:street_light|Street Lights] run on current; lamp posts hold them up. A lit road home, a small nod to the city that kept its light."]},
+      "es_es": {"title": "Faroles",
+        "text": ["Los [item:create_new_age:street_light|faroles] andan con corriente; los postes los sostienen. Un camino iluminado a casa, un guiño a la ciudad que guardó su luz."]},
+      "sources": ["jar:create-new-age-1.2.0+neoforge-mc1.21.1.jar:assets/create_new_age/lang/en_us.json#block.create_new_age.street_light"]
+    },
+    {
+      "key": "cpw_mastery", "role": "milestone", "deps": ["cpw_na_motor", "cpw_heater"],
+      "task": {"item": "create_new_age:reinforced_motor"},
+      "at": {"x": 9.5, "y": 12.5},
+      "en_us": {"title": "Heliodor's loop, closed",
+        "text": ["Sun heats a boiler, the boiler spins coils, coils feed energisers, energised parts build the [item:create_new_age:reinforced_motor|Reinforced Motor]. It takes an [item:twilightforest:ironwood_ingot|Ironwood Ingot] (act IV)."]},
+      "es_es": {"title": "El círculo de Heliodor, cerrado",
+        "text": ["El sol calienta una caldera, la caldera hace girar bobinas, las bobinas alimentan energizadores y las piezas energizadas arman el [item:create_new_age:reinforced_motor|Motor reforzado]. Pide un [item:twilightforest:ironwood_ingot|Lingote de madera de hierro] (acto IV)."]},
+      "sources": ["tools/generate_family_balance.py#create_new_age:mechanical_crafting/reinforced_motor"]
+    }
+  ]
+}

@@ -1,9 +1,11 @@
 """Quest-book contracts of 25 September 2026 (docs/design/quest-book.md): hub, guides, groups,
 node grammar, reading width, chapter images, rewards and theme. Static only: FTB loading and the
-look inside the client are runtime questions."""
+look inside the client are runtime questions. Sector chapters (quest book v3) have their own
+contracts in tools/test_sector_book.py; here they only take part in the book-wide checks."""
 import copy, json, math, re, struct, unittest
 from generate_quests import (ROOT, OUT, THEME, GRAMMAR, NODE_PX, VISUAL, ART_PX, LOCALES, generate_book, load_book,
-                             load_chapters, load_guides, stable_id, finale_of, story_role)
+                             load_chapters, load_guides, stable_id, finale_of, story_role, group_order)
+import quest_engine
 
 ART = ROOT / 'companion/src/main/resources/assets/entrelumen/textures/gui/quests'
 
@@ -21,7 +23,9 @@ class QuestBook(unittest.TestCase):
         cls.book = load_book()
         cls.story = load_chapters()
         cls.guides = load_guides(cls.book)
-        cls.files = generate_book(cls.story, cls.guides, cls.book)
+        cls.sectors = quest_engine.load_sectors()
+        cls.files = generate_book(cls.story, cls.guides, cls.book, cls.sectors)
+        cls.sector_names = {x['chapter'] for x in cls.sectors}
         cls.chapters = {p.stem: json.loads(c) for p, c in cls.files.items() if p.parent == OUT / 'chapters'}
         cls.lang = {l: json.loads(cls.files[OUT / 'lang' / (l + '.snbt')]) for l in LOCALES}
         cls.quests = {q['id']: q for c in cls.chapters.values() for q in c['quests']}
@@ -33,9 +37,14 @@ class QuestBook(unittest.TestCase):
                 self.assertEqual(path.read_text(encoding='utf-8'), content)
         on_disk = {p.stem for p in (OUT / 'chapters').glob('*.snbt')}
         self.assertEqual(on_disk, set(self.chapters))
+        tables = {p.stem for p in (OUT / 'reward_tables').glob('*.snbt')}
+        self.assertEqual(tables, {p.stem for p in self.files if p.parent == OUT / 'reward_tables'})
 
     def test_book_structure_hub_story_and_five_groups(self):
-        self.assertEqual(len(self.chapters), 1 + len(self.story) + 93)
+        self.assertEqual(len(self.chapters), 1 + len(self.story) + len(self.guides) + len(self.sectors))
+        # Every guide and sector file is a chapter; converting guides into sectors never drops one.
+        self.assertEqual({g['chapter'] for g in self.guides}, {p.stem for p in (ROOT / 'content/guides').glob('guide_*.json')})
+        self.assertEqual(self.sector_names, {p.stem for p in (ROOT / 'content/sectors').glob('sector_*.json')})
         groups = json.loads(self.files[OUT / 'chapter_groups.snbt'])['chapter_groups']
         self.assertEqual([g['id'] for g in groups], [stable_id('chapter_group:' + g['id']) for g in self.book['groups']])
         self.assertEqual([g['id'] for g in self.book['groups']], ['entrelumen', 'qol', 'tech', 'magic', 'exploration'])
@@ -48,8 +57,11 @@ class QuestBook(unittest.TestCase):
         for data in self.guides:
             c = self.chapters[data['chapter']]
             self.assertEqual(c['group'], stable_id('chapter_group:' + data['group']))
+        for data in self.sectors:
+            c = self.chapters[data['chapter']]
+            self.assertEqual(c['group'], stable_id('chapter_group:' + data['group']))
         for group in self.book['groups']:
-            members = [g['chapter'] for g in self.guides if g['group'] == group['id']]
+            members = [g['chapter'] for g in self.guides + self.sectors if g['group'] == group['id']]
             order = sorted(members, key=lambda n: self.chapters[n]['order_index'])
             self.assertEqual([self.chapters[n]['order_index'] for n in order], list(range(len(members))))
             self.assertEqual(order[:len(group['lead'])], group['lead'])
@@ -84,11 +96,12 @@ class QuestBook(unittest.TestCase):
                         title, text = source[lang]
                         self.assertEqual(self.lang[lang][f"quest.{q['id']}.title"], title)
                         self.assertEqual([p for p in self.lang[lang][f"quest.{q['id']}.quest_desc"] if p], text.split('\n\n'))
-        # No item-filter mod: the five tag tasks check one concrete item (Almost Unified's for metals).
+        # No item-filter mod: the tag tasks check one concrete item (Almost Unified's for metals). Four
+        # since the Ars guides became the Ars sector chapter (its archwood task names the log).
         tagged = {q['key']: q['item'] for g in self.guides for q in g['quests'] if 'tag' in q}
         self.assertEqual(tagged['mkb_steel'], 'immersiveengineering:ingot_steel')
         self.assertEqual(tagged['occ_crusher'], 'immersiveengineering:ingot_silver')
-        self.assertEqual(len(tagged), 5)
+        self.assertEqual(len(tagged), 4)
 
     def test_story_node_grammar(self):
         # Hito hexagon 2, act finale hexagon 3, observed journey octagon 2, task square 1,
@@ -123,12 +136,27 @@ class QuestBook(unittest.TestCase):
                     self.assertNotIn('', [value[0], value[-1]] if len(value) > 1 else value, key)
                     self.assertFalse(any(a == b == '' for a, b in zip(value, value[1:])), key)
 
+    def test_story_copy_is_not_meta(self):
+        # docs/design/quest-copy.md: the story never asks to confirm, names a key or explains the book.
+        for data in self.story:
+            for q in data['quests']:
+                for lang in LOCALES:
+                    text = ' '.join(q[lang])
+                    with self.subTest(quest=q['key'], lang=lang):
+                        for phrase in quest_engine.BANNED[lang]:
+                            self.assertNotIn(phrase, text.lower())
+                        self.assertIsNone(quest_engine.HARD_KEYS.search(text))
+                        self.assertNotRegex(text, r'(?i)\bconfirm')
+
     def test_chapter_images_use_real_textures_at_whole_texel_scales(self):
         for name, px in ART_PX.items():
             self.assertEqual(png_size(ART / (name + '.png')), px, name)
-        emblems = {g['emblem'] for g in self.guides}
+        emblems = {g['emblem'] for g in self.guides + self.sectors}
         ids = set()
         for chapter, c in self.chapters.items():
+            if chapter in self.sector_names:
+                ids.update(i['id'] for i in c.get('images', []))
+                continue  # sector images: tools/test_sector_book.py
             for img in c.get('images', []):
                 with self.subTest(chapter=chapter, image=img['id']):
                     self.assertNotIn(img['id'], ids)
@@ -187,7 +215,7 @@ class QuestBook(unittest.TestCase):
         for act, chapter in acts.items():
             self.assertIn('open_quest:' + stable_id('chapter:' + chapter), opens)
         firsts = {}
-        for g in self.guides:
+        for g in sorted(self.guides + self.sectors, key=lambda x: group_order(x, self.book)):
             firsts.setdefault(g['group'], g['chapter'])
         for chapter in firsts.values():
             self.assertIn('open_quest:' + stable_id('chapter:' + chapter), opens)
@@ -209,6 +237,7 @@ class QuestBook(unittest.TestCase):
         ids = set()
         total = {'guide': 0, 'story': 0}
         for chapter, c in self.chapters.items():
+            sector = chapter in self.sector_names
             for q in c['quests']:
                 task = q['tasks'][0]
                 if task['type'] == 'checkmark':
@@ -216,9 +245,11 @@ class QuestBook(unittest.TestCase):
                 for r in q['rewards']:
                     self.assertNotIn(r['id'], ids)
                     ids.add(r['id'])
-                    self.assertIn(r['type'], ('xp', 'item'))
+                    # Sector chapters add tables, secret toasts and capstone fanfares (test_sector_book.py).
+                    allowed = ('xp', 'item', 'choice', 'random', 'loot', 'toast', 'command') if sector else ('xp', 'item')
+                    self.assertIn(r['type'], allowed)
                     if r['type'] == 'xp':
-                        total['guide' if chapter.startswith('guide_') else 'story'] += r['xp']
+                        total['guide' if chapter.startswith(('guide_', 'sector_')) else 'story'] += r['xp']
         for data in self.guides:
             for q in data['quests']:
                 c = self.quests[stable_id('quest:' + q['key'])]
@@ -231,15 +262,20 @@ class QuestBook(unittest.TestCase):
 
     def test_every_quest_has_one_colour_tag_and_the_theme_colours_them(self):
         names = {'entrelumen_story', 'entrelumen_guide', 'entrelumen_optional'}
-        for c in self.chapters.values():
+        roles = {f'entrelumen_{r}' for r in quest_engine.ROLES}
+        for chapter, c in self.chapters.items():
             for q in c['quests']:
+                if chapter in self.sector_names:
+                    self.assertEqual(len(set(q['tags']) & roles), 1)  # the role colours the node
+                    continue
                 self.assertEqual(len(set(q['tags']) & names), 1)
                 self.assertEqual('entrelumen_optional' in q['tags'], q.get('optional', False))
         theme = self.files[THEME]
-        for name in names:
+        for name in names | roles:
             self.assertIn(f'[#{name}]', theme)
-        self.assertEqual(len(re.findall(r'^quest_locked_color: #[0-9A-F]{8}$', theme, re.M)), 3)
-        self.assertEqual(len(re.findall(r'^quest_not_started_color: #[0-9A-F]{8}$', theme, re.M)), 3)
+        colours = len(self.book['colors']) + len([r for r in self.book['role_colors'] if not r.startswith('_')])
+        self.assertEqual(len(re.findall(r'^quest_locked_color: #[0-9A-F]{8}$', theme, re.M)), colours)
+        self.assertEqual(len(re.findall(r'^quest_not_started_color: #[0-9A-F]{8}$', theme, re.M)), colours)
 
     def test_guide_medallions(self):
         for data in self.guides:
