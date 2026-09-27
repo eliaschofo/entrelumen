@@ -394,6 +394,19 @@ The first tree after a server start pays class loading and JIT: 25–38 ms in th
 
 The repair's reference, off the server thread, is unchanged: 127 ms per terrain chunk and 33 ms per decorated chunk for the overworld noise generator in this run. A biome's palette is resolved once, on the server thread, the first time an altar works in it: about 0.4 ms per biome (28.5 ms for the 65 vanilla biomes, cumulative `paletteMicros`). In the full pack, resolving the palettes and harvests of all 183 biomes and closing them over the 21,878 loaded recipes took 4.0 s in all, at most 28 ms for one biome; that is the QA case's own cost, not the altar's. TPS with players and the full pack has not been measured.
 
+### Levelling under a roof, 26 September
+
+Final run on `cd8d03a` (`altars3-20260925/final-roof-cd8d03a.log`), 114 isolated tests, on a machine shared with other workers' servers and builds. Wall time without GC pauses, per working tick.
+
+| Scenario | Working ticks | p50 | Max | Notes |
+| --- | --- | --- | --- | --- |
+| Levelling flatten in a Nether cave (17×17, 63 columns worked) | 3 | 2.3 ms | 2.3 ms | |
+| Levelling flatten in an Overworld cave | 3 | 2.2 ms | 2.3 ms | |
+| Levelling repair on the Nether floor, first run | 16 | 2.6 ms | 15.8 ms | its own batch, first in the suite: the first ticks pay class loading and JIT (13.2 and 7.9 ms) |
+| The same repair, warm second run | 5 | 2.4 ms | 2.5 ms | trust slices at most 0.4 ms |
+
+Comparing one whole chunk under the roof, both floor searches for 256 columns with the cache of block states, costs 2.7 ms at best of 20 rounds (10 µs a column, median 3.0 ms). That is why the comparison runs in slices of 16 columns within the tick's budget instead of a chunk at a time. The Nether reference, off the server thread, took 1.5 s for 25 terrain chunks and 0.13 s for 9 decorated ones.
+
 ### Peace, Growth, Time and Repose
 
 Final isolated run (`E:/Elias/Codex/Entrelumen-ssd/altars2-build/logs/full-2.log`, `ALTAR_PERF` lines), on the SSD with 57 tests running concurrently:
@@ -542,6 +555,19 @@ Root integration in `C:/Users/elias/Documents/Codex/2026-09-12/h/outputs/entrelu
 **Installation.** The final code, `eabad96`, was installed in `ENTRELUMEN`, `ENTRELUMEN Defaults QA` and the server with the receipt-managed installer: 42 files each, 21 of them new. They are the QoL script, the companion JAR, and the altar, shelf and module art in `resourcepacks/entrelumen`. Nothing was retired, no JAR was added, and player and local files were unchanged. Later commits changed only the QA source set, so the normal JAR is byte-identical.
 
 The CI check `tools/check_runtime_content.py` then found the runtime audit script stale, because the altars had become rewards. `6a743eb` synced it and was installed the same way, one file per profile. A normal boot with it passed the runtime content audit: 128 items and 36 recipe/output pairs, including the six altars and their duplication recipes.
+
+### Levelling under a roof (26 September)
+
+Elias's rule: anywhere with a ceiling the altar works on the terrain nearest its own height, never cuts or fills a ceiling, bedrock or anything over its working band, and repairs the real floor (see [Under a roof](#under-a-roof)). Offline build in `wt-altars3` merged with `main` (`b7ed842`); logs in `altars3-build/logs/roof-*.log`, receipts `altars3-20260925/final-roof-cd8d03a.log`, `ci-checks-roof*.log`.
+
+- **JUnit: 224 passed**, 4 new in `TerraformRulesTest`: under a roof only the mound on the floor is cut, where the open-air planner cut the roof; a stalactite, vines that stop short, a lower roof and a pillar are left alone and nothing at or over the band top is cut; holes are filled but never sealed against rock over them, and a target inside the roof, a hole deeper than 24, lava and bedrock refuse; the floor search returns the nearest floor, below first on ties, skips plants and never returns the roof.
+- **Isolated GameTests: all 114 passed**, 3 new in `RuntimeGameTestsAltars`:
+  - `levellingAltarFlattensTheNetherCaveFloorAndLeavesItsRoof`: in the test server's real Nether, a 23×23 cave with a 4-block roof, an upper cavern over it (where the old planner would have cut the roof) and a bedrock lid. The altar finds the roof as its band top and saves it, takes netherrack from the cave floor, cuts a mound with nylium and a crimson fungus, fills a pit, and raises the slope to a higher floor to the east (0, 1, 1 and 2 blocks). A stalactite, weeping vines, a pillar from floor to roof and a pit under a stalactite are left alone (2 `ceiling` refusals), and nothing at or over the band top changes. No drops; a repeated run changes nothing.
+  - `levellingAltarRepairsTheNetherFloorFromItsGenerator`: on the fixed-seed Nether's own terrain. An independent regeneration of 25 chunks chooses the first place where the floor and a 3×3 patch are as generated and every chunk of the square passes the altar's trust test: a crimson forest floor at y 91 under a band top at 107, 174–242 comparable columns per chunk, all within a block. An 18-block pit dug there is refilled exactly with the generator's blocks, every chunk is recognised, nothing else changes, and a warm second run changes nothing. It runs in its own batch, so its chunk generation does not disturb other tests' timing checks. The old repair read the bedrock roof as the surface and never reached this floor.
+  - `levellingAltarKeepsTheRoofOfAnOverworldCave`: a stone roof over the altar in the Overworld, open to the sky above it, is found as the band top; the mound on the floor is cut and the roof and a stalactite stay.
+  - Eleven isolated runs in all (`roof-gt-1` to `roof-gt-8`, `roof-final-gt*`, `final-roof-cd8d03a`). The first two failed the Nether repair case while its site search still demanded bare air over the floor (a crimson forest floor has roots and fungi). Two others failed only `compassSearchesStayBoundedAndCooperative`, the compass's own timing check (a 315 ms step, then an underfoot search that took two ticks), while other workers' processes held the machine at 100% CPU; the retry at lower load and the final run passed every case.
+- **Python checks.** The 28 Python steps of `.github/workflows/verify.yml` on `main` (now with `check_recipe_design.py` and the jetpack balance) plus `check_guides.py`, the six balance and pack generators and the distributable-jar split: all pass (`ci-checks-roof.log`, `ci-checks-roof-rest.log`).
+- **Full pack.** Not run: the change touches no pack content, and the pack's Nether is vanilla's generator plus My Nether's Delight and YUNG's fortresses, which the isolated real-generator case already exercises in its vanilla form. `server-slice` was not used.
 
 ### Garden soil and deterministic variants (26 September)
 

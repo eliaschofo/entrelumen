@@ -442,5 +442,56 @@
       "lost": "entrelumen-test_2026-09-12_18-24-30.zip (3.5 MB), rotated during run C on 25 September before copies were made; no other copy exists.",
       "copies": "E:\\Elias\\Codex\\Entrelumen-ssd\\altars3-20260925\\simplebackups-kept"
     }
+  },
+  "levellingUnderARoof": {
+    "checkedAt": "2026-09-26T21:55:00-0300",
+    "scope": "Elias's rule of 26 September: under a roof (the Nether, a cave, anything solid over the altar) the Altar of Levelling works on the terrain nearest its own height, never cuts or fills a ceiling, bedrock or anything above its working band, and repairs the real floor. Offline build, JUnit and isolated GameTests on the head merged with main b7ed842, and the Python CI steps. Full pack not run: no pack content changed.",
+    "sourceCommit": "cd8d03a",
+    "junit": {
+      "tests": 224,
+      "failures": 0,
+      "new": [
+        "TerraformRulesTest.underARoofOnlyTheMoundOnTheFloorIsCutNeverTheCeiling",
+        "TerraformRulesTest.underARoofWhatHangsFromAboveIsNeverCut",
+        "TerraformRulesTest.underARoofHolesAreFilledButNeverSealedAgainstTheRoof",
+        "TerraformRulesTest.theFloorUnderARoofIsTheSurfaceNearestTheAltarNeverTheRoof"
+      ]
+    },
+    "isolatedGameTests": {
+      "log": "E:\\Elias\\Codex\\Entrelumen-ssd\\altars3-20260925\\final-roof-cd8d03a.log",
+      "summary": "All 114 required tests passed :)",
+      "new": [
+        "levellingAltarFlattensTheNetherCaveFloorAndLeavesItsRoof",
+        "levellingAltarRepairsTheNetherFloorFromItsGenerator",
+        "levellingAltarKeepsTheRoofOfAnOverworldCave"
+      ],
+      "nether": [
+        "ALTAR_NETHER_SITE site=BlockPos{x=-3065, y=91, z=3079} stats={asGenerated=2, floors=2, patches=2, trust=[[229, 229, 0], [242, 242, 0], [174, 174, 0], [242, 242, 0]], untrusted:[-191, 192]@91=41/41/0} middle=[compared=32256 differing=2161 top=[nether_wart_block<-air=431, air<-nether_wart_block=375, magma_block<-netherrack=356, gravel<-netherrack=258, blackstone<-netherrack=194, nether_quartz_ore<-netherrack=84, nether_gold_ore<-netherrack=69, air<-crimson_roots=48, air<-crimson_stem=39, crimson_roots<-air=37, crimson_stem<-air=33, nether_wart_block<-crimson_stem=32]] reference=[terrain=25 decorated=9 surfaceRules=true failures={} unsupported=[]]",
+        "ALTAR_PERF scenario=terraform-nether-repair workingTicks=16 wallWithoutGc=[mean=4601 p50=2590 p95=15773 max=15773]us gcTicks=0 maxGcMillis=0 actorMillis=182 maxTrustSliceMicros=5501 totals=[columns=9 cut=0 filled=18 swapped=0 covered=0 refused=0 skipped=0] refusals={}",
+        "ALTAR_PERF_TICKS scenario=terraform-nether-repair firstTicksUs=[13204, 7890, 2513, 2735, 7581, 15773, 3118, 2437, 2590, 2712, 2667, 2520, 2489, 2422, 2468, 499]",
+        "ALTAR_NETHER_REPAIR site=BlockPos{x=-3065, y=91, z=3079} band=107 biome=minecraft:crimson_forest reference=[terrain=25 decorated=9 terrainMillis=1548 decorationMillis=128 failures={} unsupported=[]]",
+        "ALTAR_NETHER_REPAIR pit=18 changed=0 elsewhere=0 filled=18",
+        "ALTAR_PERF scenario=nether-trust-chunk columns=256 bestMicros=2650 medianMicros=3030 perColumnBestMicros=10.35234375",
+        "ALTAR_PERF scenario=terraform-nether-repair-repeated workingTicks=5 wallWithoutGc=[mean=2375 p50=2433 p95=2516 max=2516]us gcTicks=0 maxGcMillis=0 actorMillis=182 maxTrustSliceMicros=406 totals=[columns=0 cut=0 filled=0 swapped=0 covered=0 refused=0 skipped=0] refusals={}",
+        "ALTAR_PERF_TICKS scenario=terraform-nether-repair-repeated firstTicksUs=[2516, 2433, 2434, 2311, 2179]",
+        "ALTAR_PERF scenario=terraform-nether-cave workingTicks=3 wallWithoutGc=[mean=1905 p50=2297 p95=2324 max=2324]us gcTicks=0 maxGcMillis=0 actorMillis=0 maxTrustSliceMicros=0 totals=[columns=63 cut=19 filled=89 swapped=0 covered=0 refused=2 skipped=0] refusals={ceiling=2}",
+        "ALTAR_PERF_TICKS scenario=terraform-nether-cave firstTicksUs=[2297, 2324, 1094]"
+      ],
+      "overworldCave": [
+        "ALTAR_PERF scenario=terraform-overworld-cave workingTicks=3 wallWithoutGc=[mean=2188 p50=2179 p95=2256 max=2256]us gcTicks=0 maxGcMillis=0 actorMillis=0 maxTrustSliceMicros=0 totals=[columns=4 cut=8 filled=0 swapped=0 covered=0 refused=0 skipped=0] refusals={}",
+        "ALTAR_PERF_TICKS scenario=terraform-overworld-cave firstTicksUs=[2256, 2129, 2179]"
+      ],
+      "earlierRuns": "Eleven runs in all: the first two failed the Nether repair case while its site search demanded bare air over a crimson forest floor; two failed only compassSearchesStayBoundedAndCooperative (a 315 ms step, an underfoot search in two ticks) while other workers held the machine at 100% CPU; the rest passed every case."
+    },
+    "pythonChecks": {
+      "logs": [
+        "E:\\Elias\\Codex\\Entrelumen-ssd\\altars3-20260925\\ci-checks-roof.log",
+        "E:\\Elias\\Codex\\Entrelumen-ssd\\altars3-20260925\\ci-checks-roof-rest.log"
+      ],
+      "passed": 36,
+      "failed": 0,
+      "note": "The first log stopped at its time limit after 29 checks; the remaining six and the jar split ran in the second."
+    },
+    "fullpack": "Not run; server-slice untouched."
   }
 }
