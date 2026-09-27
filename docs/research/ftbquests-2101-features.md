@@ -45,7 +45,7 @@ Evidencia: `quest/BaseQuestFile.readData` (líneas 462–502 del descompilado).
 | `default_consume_items` | bool | Tareas de ítem que consumen por defecto | **Sí**: `false`; sólo las tareas de los encargos consumen, con su propia clave |
 | `default_autoclaim_rewards` | `disabled`, `enabled`, `no_toast`, `invisible` | Reclamo automático | **Sí**: `disabled`; los avisos y fanfarrias usan `auto` por recompensa |
 | `default_quest_shape` | nombre de forma | Forma cuando capítulo y quest no dicen nada | **No**: cada capítulo la fija |
-| `default_quest_disable_jei` | bool | Oculta quests del visor de recetas | **No**: hace falta FTB XMod Compat, que no está (sección 12) |
+| `default_quest_disable_jei` | bool | Oculta quests del visor de recetas | **No**. Corrección del 27/9: FTB XMod Compat ya está en el lock y JEI lista las quests que el jugador puede empezar; ocultarlas queda por decidir |
 | `emergency_items`, `emergency_items_cooldown` | lista de ítems, segundos | Botón de ítems de emergencia | **No**: la biblia no regala el libro ni kits de rescate |
 | `drop_loot_crates`, `loot_crate_no_drop` | bool, pesos por tipo de mob | Cajas que caen de mobs | **Sí**: `drop_loot_crates: false` explícito; las cajas salen sólo de quests y los pesos de cada caja van en 0 |
 | `disable_gui` | bool | Bloquea el libro | **No** |
@@ -114,7 +114,7 @@ Evidencia: `quest/ChapterImage.readData`, dibujo en `client/gui/quests/ChapterIm
 | `order` | entero | Orden de dibujo entre imágenes | **Sí**: paneles −3, figuras −2, arte −1, medallón de regreso 0 y su emblema 1, rótulos 5 |
 | título `image.<ID>.title` | idioma | Tooltip al pasar el mouse, o texto dibujado con `text_on_image` | **Sí**: rótulos y chistes al pasar el mouse sobre adornos |
 | `hover` | lista (formato viejo) | Se convierte en título (`readData`) | **No**: usamos el título por idioma |
-| `click_action` | `open_quest:<ID>[/<página>]`, `open_uri:`, `run_command:`, `custom_event:`, `show_recipe:`, `show_docs:` | Clic en la imagen (`quest/ImageClickAction`) | **Sí**: `open_quest` para puertas a capítulos (emblemas del hub, medallones de regreso). **No** el resto: sin enlaces externos en un pack público, sin comandos por clic, `custom_event` necesita KubeJS de FTB, `show_recipe` y `show_docs` no tienen proveedor registrado sin FTB XMod Compat (`RecipeModHelper.NoOp`, `DocsModRegistry` vacío) |
+| `click_action` | `open_quest:<ID>[/<página>]`, `open_uri:`, `run_command:`, `custom_event:`, `show_recipe:`, `show_docs:` | Clic en la imagen (`quest/ImageClickAction`) | **Sí**: `open_quest` para puertas a capítulos (emblemas del hub, medallones de regreso). **No** el resto: sin enlaces externos en un pack público, sin comandos por clic, `custom_event` necesita KubeJS de FTB, `show_recipe` y `show_docs` no tenían proveedor sin FTB XMod Compat (`RecipeModHelper.NoOp`, `DocsModRegistry` vacío); desde el 27/9 XMod registra JEI, GuideME y Patchouli, pero el libro todavía no los usa |
 | `click` | legado: `#id`, `http…`, `command:`, `custom:` | `ImageClickAction.fromLegacy` | **No**: usamos `click_action` |
 | `text_on_image` | bool | Dibuja el título escalado a la caja (`min(ancho/texto, alto/(9·líneas))`) | **Sí**: encabezados de rama y títulos de la cadena |
 | `text_shadow` | bool | Sombra del texto | **Sí** |
@@ -170,7 +170,7 @@ Evidencia: `quest/Quest.readData` (líneas 403–464), `Quest.isVisible`, `Quest
 | `min_width` | entero | Ancho propio del panel | **No**: el del capítulo |
 | `progression_mode` | `default`, `linear`, `flexible` | Modo propio | **Sí**: `linear` en las cumbres. En `flexible`, `TeamData.canStartTasks` siempre da verdadero y `hide_details_until_startable` no tendría efecto |
 | `require_sequential_tasks` | tristate | Tareas en orden | **Sí**: el montaje secuencial de Create (lámina → mecanismo incompleto → mecanismo) y el amuleto de starbuncle de Ars (ficha → amuleto → verlo trabajar) |
-| `disable_recipe_mod` | tristate | Oculta en JEI/EMI | **No**: sin FTB XMod Compat no hay integración |
+| `disable_recipe_mod` | tristate | Oculta en JEI/EMI | **No**. Corrección del 27/9: con FTB XMod Compat en el lock saca una quest de la categoría de JEI; todavía no hace falta |
 | `guide_page` | texto | Botón «Abrir en la guía» (`ViewQuestPanel.OpenInGuideButton`) | **No**: no hay manejador de guía en el pack |
 | `ignore_reward_blocking` | bool | Ignora el bloqueo de recompensas | **No**: no bloqueamos recompensas |
 | `hide_lock_icon` | bool | Sin candado (2101.1.3) | **Sí**: consejos y notas |
@@ -206,7 +206,7 @@ Evidencia: registro en `quest/task/TaskTypes` (y `neoforge/FTBQuestsNeoForge` pa
 | Tipo | Claves | Qué pide | Decisión |
 |---|---|---|---|
 | Comunes | `id`, `title` (idioma `task.<ID>.title`), `icon`, `optional_task`, `disable_toast` | Título e ícono propios de la tarea | **Sí**: `title` en observaciones y bajas («Mirá a tu starbuncle trabajando»). **No** `optional_task` |
-| `item` | `item` (ítem con componentes), `count` (long), `consume_items` (tristate), `only_from_crafting`, `match_components` (`none`, `fuzzy`, `strict`), `task_screen_only` | Tener o entregar ítems | **Sí**: casi todo; `consume_items: true` sólo en encargos; `match_components: fuzzy` para un ítem que sólo existe como variante con componente (la llave arcana de Ars Technica es una llave de Create con `ars_technica:runic_wrench`; el valor por defecto `none` aceptaría cualquier llave). **No**: los filtros de ítem piden FTB Filter System (sólo hay `ItemMatchingSystem` sin adaptadores); `only_from_crafting` y `task_screen_only` |
+| `item` | `item` (ítem con componentes), `count` (long), `consume_items` (tristate), `only_from_crafting`, `match_components` (`none`, `fuzzy`, `strict`), `task_screen_only` | Tener o entregar ítems | **Sí**: casi todo; `consume_items: true` sólo en encargos; `match_components: fuzzy` para un ítem que sólo existe como variante con componente (la llave arcana de Ars Technica es una llave de Create con `ars_technica:runic_wrench`; el valor por defecto `none` aceptaría cualquier llave). **Motor** (27/9): filtros de FTB Filter System, que FTB Quests usa por el adaptador de FTB XMod Compat, para las tareas `any` («cualquiera de estos», [content/sectors/README.md](../../content/sectors/README.md#tarea-de-cualquiera-de-estos)). **No**: `only_from_crafting` y `task_screen_only` |
 | `checkmark` | — | Un clic | **Sí**: consejos y notas, sin recompensa |
 | `advancement` | `advancement`, `criterion` (vacío = el logro entero) | Obtener un logro | **Sí**: logros de Create y Ars Nouveau que ya prueban un armado real |
 | `dimension` | `dimension` | Entrar a una dimensión | **Sí** en guías (v2); **Motor** en cadenas |
@@ -220,7 +220,7 @@ Evidencia: registro en `quest/task/TaskTypes` (y `neoforge/FTBQuestsNeoForge` pa
 | `fluid` | `fluid`, `amount` | Fluido | **No**: se entrega en una Task Screen de FTB (`canInsertItem`), un bloque ajeno al pack; un balde se pide como ítem |
 | `forge_energy` | `value`, `max_input` | FE | **No**: misma razón |
 | `gamestage` | `stage`, `team_stage` | Etapa | **No**: sin sistema de etapas; el de respaldo usa etiquetas de entidad (`EntityTagStageProvider`) y nadie las pone |
-| `custom` | — | Tarea por script | **No**: necesita FTB XMod Compat con KubeJS |
+| `custom` | — | Tarea por script | **No**: el libro no usa tareas por script (desde el 27/9 FTB XMod Compat y KubeJS podrían resolverlas) |
 | `entrelumen:campaign` | `milestone` | Hito de campaña del companion | **Sí** (historia, v2) |
 
 ## 10. Recompensas
@@ -332,7 +332,7 @@ Evidencia: `quest/theme/ThemeLoader` (apila todos los `assets/ftbquests/ftb_ques
 | Teclas de FTB Quests | `key.ftbquests.quests` y las del libro (buscar, recentrar, zoom) | **No** en texto: quien lee el libro ya lo abrió |
 | Comandos `/ftbquests` | `FTBQuestsCommands` | **No** en el libro; el QA sólo mira el log de carga |
 | Eventos para scripts (`CustomTaskEvent`, `CustomRewardEvent`, `CustomClickEvent`, `ThemePropertyEvent`) | `events/*` | **No**: sin KubeJS de FTB |
-| Integración de visor de recetas y filtros | `integration/RecipeModHelper.NoOp`, `ItemMatchingSystem` | **No**: requieren FTB XMod Compat y FTB Filter System, fuera del set fijado |
+| Integración de visor de recetas y filtros | `integration/RecipeModHelper.NoOp`, `ItemMatchingSystem` | **Motor** (27/9): FTB Filter System y FTB XMod Compat están en el lock; el motor compila `any` a un filtro inteligente, y el visor de recetas es JEI ([mod-pingpong](../design/mod-pingpong.md#ftb-filter-system-y-ftb-xmod-compat-279)) |
 
 ## Recuento
 
@@ -351,10 +351,10 @@ Evidencia: `quest/theme/ThemeLoader` (apila todos los `assets/ftbquests/ftb_ques
 | Tablas y cajas (11) | 9 | 0 | 4 |
 | Texto (12) | 14 | 0 | 8 |
 | Tema (13) | 11 | 0 | 9 |
-| Otros (14) | 1 | 0 | 6 |
-| **Total** | **128** | **7** | **85** |
+| Otros (14) | 1 | 1 | 5 |
+| **Total** | **128** | **8** | **84** |
 
-Cada «No» tiene su motivo en la fila: casi todos piden un mod que no está (FTB XMod Compat, FTB Filter System), un bloque ajeno al pack, un enlace externo o algo que el libro ya resuelve de otra forma.
+Cada «No» tiene su motivo en la fila: un bloque ajeno al pack, un enlace externo o algo que el libro ya resuelve de otra forma. Varios pedían FTB XMod Compat o FTB Filter System, que entraron al lock el 27/9.
 
 ## Límites
 
