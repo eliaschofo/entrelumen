@@ -433,12 +433,13 @@ public final class RuinPlacement {
 
   /**
    * A surface ruin scans its site (heights, ground palette), shapes the terrain (blend, carve, fill,
-   * headroom), fells the trees it cut, places its cubes, sends its thin supports down and finishes;
+   * headroom), fells the trees it cut and sweeps their loose leaves, places its cubes, sends its thin
+   * supports down and finishes;
    * cavern and sky ruins clear their columns instead. A survey job waits in HOLD until released.
    */
   enum Stage {
-    PREPARING, SITING, CHECKING, LOADING, EVALUATING, HOLD, SCANNING, SHAPING, FELLING, CLEARING, PLACING, SUPPORTING,
-    FINISHING
+    PREPARING, SITING, CHECKING, LOADING, EVALUATING, HOLD, SCANNING, SHAPING, FELLING, SWEEPING, CLEARING, PLACING,
+    SUPPORTING, FINISHING
   }
 
   /** The site's own ground: its surface and filler blocks and whether snow covers it. */
@@ -488,6 +489,11 @@ public final class RuinPlacement {
     final ArrayDeque<BlockPos> felled = new ArrayDeque<>();
     final LongOpenHashSet felledSeen = new LongOpenHashSet();
     int felledCount;
+    /** Whether the shaping or the felling cut into a tree (then loose leaves are swept). */
+    boolean cutTrees;
+    LongOpenHashSet sweepLeaves;
+    LongArrayList sweepLogs;
+    int sweepIndex, sweepLow;
 
     Job(RuinDefinitions.Definition definition, ServerLevel level, BlockPos center) {
       this.definition = definition;
@@ -754,6 +760,7 @@ public final class RuinPlacement {
       }
       case SHAPING -> shaping(job, deadline);
       case FELLING -> felling(job, deadline);
+      case SWEEPING -> sweeping(job, deadline);
       case CLEARING -> {
         if (job.columnIndex == 0 && !fits(job.level, job.origin.getY(), job.prepared.sizeY())) {
           LOGGER.error("Heliodor ruin {} does not fit the world at {}; not placed", job.id, job.origin);
@@ -854,8 +861,8 @@ public final class RuinPlacement {
     release(job);
     var p = job.prepared;
     job.waited = 0;
-    // The footprint, its blended margin and two blocks more, so that every read and write is loaded.
-    for (ChunkPos chunk : chunks(job.origin.getX(), job.origin.getZ(), p.sizeX(), p.sizeZ(), RuinTerrain.MAX_MARGIN + 2)) {
+    // The footprint, its blended margin and the trees felled around it, so that every read and write is loaded.
+    for (ChunkPos chunk : chunks(job.origin.getX(), job.origin.getZ(), p.sizeX(), p.sizeZ(), FELLING_REACH + 8)) {
       job.level.getChunkSource().addRegionTicket(TICKET, chunk, 0, chunk);
       job.tickets.add(chunk);
     }
@@ -1204,6 +1211,7 @@ public final class RuinPlacement {
       if (job.prepared.cell(x, y - job.origin.getY(), z)) continue;
       BlockState state = level.getBlockState(cursor.set(wx, y, wz));
       if (state.isAir()) continue;
+      if (tree(state) || state.is(BlockTags.LEAVES)) job.cutTrees = true;
       if (tree(state) && job.felledSeen.add(cursor.asLong())) job.felled.add(cursor.immutable());
       level.setBlock(cursor, Blocks.AIR.defaultBlockState(), Block.UPDATE_CLIENTS);
     }
@@ -1270,20 +1278,19 @@ public final class RuinPlacement {
     return state.is(Blocks.VINE) || state.is(Blocks.COCOA) || state.is(Blocks.BEE_NEST) || state.is(Blocks.SNOW);
   }
 
-  /** A felled tree's leaves: a position and its distance from the felled wood through leaves. */
-  private record Leaf(BlockPos pos, int depth) {}
+  /** How far around the template trees are felled and loose leaves swept. */
+  static final int FELLING_REACH = RuinTerrain.MAX_MARGIN + 8;
 
   /**
-   * Fells the trees whose wood the shaping cut, so that no canopy floats: every log (or mushroom
-   * block) joined to the cut one, then the leaves nearer to it than to any other tree, and what hangs
-   * on them. A cluster of logs that touches no natural leaves is a building's frame and stays.
+   * Fells the trees whose wood the shaping cut: every log (or mushroom block) joined to the cut one,
+   * and what hangs on it. A cluster of logs that touches no natural leaves is a building's frame and
+   * stays. The leaves left without a tree go in the sweep that follows.
    */
   private static void felling(Job job, long deadline) {
     var p = job.prepared;
     var level = job.level;
-    int reach = RuinTerrain.MAX_MARGIN + 8;
-    int x0 = job.origin.getX() - reach, z0 = job.origin.getZ() - reach;
-    int x1 = job.origin.getX() + p.sizeX() + reach, z1 = job.origin.getZ() + p.sizeZ() + reach;
+    int x0 = job.origin.getX() - FELLING_REACH, z0 = job.origin.getZ() - FELLING_REACH;
+    int x1 = job.origin.getX() + p.sizeX() + FELLING_REACH, z1 = job.origin.getZ() + p.sizeZ() + FELLING_REACH;
     while (!job.felled.isEmpty() && job.felledCount < MAX_FELLED) {
       BlockPos seed = job.felled.poll();
       // The cluster of wood joined to the cut block (diagonals too, like branches).
@@ -1311,33 +1318,92 @@ public final class RuinPlacement {
       for (BlockPos log : wood) {
         level.setBlock(log, Blocks.AIR.defaultBlockState(), Block.UPDATE_CLIENTS);
         job.felledCount++;
-      }
-      ArrayDeque<Leaf> leaves = new ArrayDeque<>();
-      leaves.add(new Leaf(seed, 0));
-      for (BlockPos log : wood) leaves.add(new Leaf(log, 0));
-      LongOpenHashSet seen = new LongOpenHashSet();
-      while (!leaves.isEmpty()) {
-        Leaf leaf = leaves.poll();
         for (var direction : net.minecraft.core.Direction.values()) {
-          BlockPos next = leaf.pos().relative(direction);
-          if (!seen.add(next.asLong()) || !loaded(level, next)) continue;
-          BlockState state = level.getBlockState(next);
-          if (hanging(state)) {
+          BlockPos next = log.relative(direction);
+          if (loaded(level, next) && hanging(level.getBlockState(next)))
             level.setBlock(next, Blocks.AIR.defaultBlockState(), Block.UPDATE_CLIENTS);
-            continue;
-          }
-          int depth = leaf.depth() + 1;
-          // A leaf nearer to another tree than to this one belongs to that tree.
-          if (depth > 6 || !state.is(BlockTags.LEAVES) || !state.hasProperty(LeavesBlock.DISTANCE)
-              || state.getValue(LeavesBlock.PERSISTENT) || state.getValue(LeavesBlock.DISTANCE) < depth) continue;
-          level.setBlock(next, Blocks.AIR.defaultBlockState(), Block.UPDATE_CLIENTS);
-          job.felledCount++;
-          leaves.add(new Leaf(next.immutable(), depth));
         }
       }
+      job.cutTrees = true;
       if (System.nanoTime() > deadline) return;
     }
     job.felled.clear();
+    job.stage = job.cutTrees ? Stage.SWEEPING : Stage.PLACING;
+  }
+
+  /**
+   * Sweeps the leaves that the shaping and the felling left without a tree. As in vanilla, a leaf
+   * belongs to a tree while a log lies within six steps through leaves; the others go now, because a
+   * placement that sends no block updates never refreshes their stored distance and they would hang
+   * there for good. The template's leaves come later and are persistent.
+   */
+  private static void sweeping(Job job, long deadline) {
+    var p = job.prepared;
+    var level = job.level;
+    int graph = FELLING_REACH + 6;
+    int gx0 = job.origin.getX() - graph, gz0 = job.origin.getZ() - graph;
+    int gw = p.sizeX() + 2 * graph, gd = p.sizeZ() + 2 * graph;
+    if (job.sweepLeaves == null) {
+      job.sweepLeaves = new LongOpenHashSet();
+      job.sweepLogs = new LongArrayList();
+      job.sweepIndex = 0;
+      int low = Integer.MAX_VALUE;
+      for (int h : job.natural) low = Math.min(low, h);
+      job.sweepLow = Math.max(level.getMinBuildHeight(), low - 2);
+    }
+    var cursor = new BlockPos.MutableBlockPos();
+    // The graph: every log and every leaf around the site, six blocks beyond the swept area.
+    while (job.sweepIndex < gw * gd) {
+      int i = job.sweepIndex++;
+      int x = gx0 + i % gw, z = gz0 + i / gw;
+      if (level.getChunkSource().getChunkNow(x >> 4, z >> 4) == null) continue;
+      int top = level.getHeight(Heightmap.Types.WORLD_SURFACE, x, z) - 1;
+      for (int y = job.sweepLow; y <= top; y++) {
+        BlockState state = level.getBlockState(cursor.set(x, y, z));
+        if (state.is(BlockTags.LEAVES)) job.sweepLeaves.add(cursor.asLong());
+        else if (state.is(BlockTags.LOGS)) job.sweepLogs.add(cursor.asLong());
+      }
+      if ((i & 15) == 0 && System.nanoTime() > deadline) return;
+    }
+    // Every leaf within six steps of a log.
+    LongOpenHashSet held = new LongOpenHashSet();
+    LongArrayList frontier = job.sweepLogs;
+    for (int depth = 1; depth <= 6 && !frontier.isEmpty(); depth++) {
+      LongArrayList next = new LongArrayList();
+      for (int k = 0; k < frontier.size(); k++) {
+        long at = frontier.getLong(k);
+        for (var direction : net.minecraft.core.Direction.values()) {
+          long neighbour = BlockPos.offset(at, direction);
+          if (job.sweepLeaves.contains(neighbour) && held.add(neighbour)) next.add(neighbour);
+        }
+      }
+      frontier = next;
+    }
+    int x0 = job.origin.getX() - FELLING_REACH, z0 = job.origin.getZ() - FELLING_REACH;
+    int x1 = job.origin.getX() + p.sizeX() + FELLING_REACH, z1 = job.origin.getZ() + p.sizeZ() + FELLING_REACH;
+    int swept = 0;
+    for (long leaf : job.sweepLeaves) {
+      if (held.contains(leaf)) continue;
+      cursor.set(leaf);
+      if (cursor.getX() < x0 || cursor.getX() > x1 || cursor.getZ() < z0 || cursor.getZ() > z1) continue;
+      BlockState state = level.getBlockState(cursor);
+      if (!state.hasProperty(LeavesBlock.PERSISTENT) || state.getValue(LeavesBlock.PERSISTENT)) continue;
+      level.setBlock(cursor, Blocks.AIR.defaultBlockState(), Block.UPDATE_CLIENTS);
+      swept++;
+      // What hung on it goes too, down a vine to its end, and the snow on top of it.
+      for (var direction : net.minecraft.core.Direction.values()) {
+        BlockPos next = cursor.relative(direction);
+        for (int k = 0; k < 32; k++) {
+          BlockState hang = level.getBlockState(next);
+          if (!hanging(hang) || hang.is(Blocks.SNOW) && direction != net.minecraft.core.Direction.UP) break;
+          level.setBlock(next, Blocks.AIR.defaultBlockState(), Block.UPDATE_CLIENTS);
+          next = next.below();
+        }
+      }
+    }
+    job.felledCount += swept;
+    job.sweepLeaves = null;
+    job.sweepLogs = null;
     job.stage = Stage.PLACING;
   }
 
