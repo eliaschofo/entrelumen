@@ -11,9 +11,34 @@ La colina del plano (`height()`) cae un bloque cada tres. Nada queda sobre la pe
 
 - **Calles con perfil diseñado.** Cada calle es plana a lo ancho, tiene descansos y tramos de escalones de uno en uno. Se resuelven por jerarquía: la de menor rango se engancha al nivel de la que cruza, y la mayor deja un descanso en cada cruce. Ningún par de celdas caminables vecinas queda a dos bloques o más.
 - **El Eje.** Baja 48 bloques entre la Plaza Mayor y la del Portal en tramos de 5 a 6 escalones, con descansos de al menos 4. El canal de luz baja con él, bajo vidrio.
-- **Plazas y lotes.** Las plazas son planas; donde una calle pasa más baja, el borde de la plaza se escalona. Cada lote toma el nivel más alto de la calle que tiene al frente, sobre un zócalo.
+- **Plazas y lotes.** Las plazas son planas; donde una calle pasa más baja, el borde de la plaza se escalona. Cada lote es una sola plataforma plana: la planta baja de su casa (ver «Casas en la pendiente»).
 - **Parque y lago.** El parque desnivela un bloque como máximo. El lago es una sola lámina, con una calzada a nivel para el bulevar.
 - **Suelo cerrado.** Queda hueco sólo donde cada cara está tapada. El control de huecos da cero, y la parte de abajo es un domo de roca.
+
+## Casas en la pendiente
+
+Pedido de Elias (27 de septiembre): las casas siguen el relieve, pero diseñadas, no como placas tectónicas inclinadas.
+
+- **Volumen rígido.** Cada casa es un solo volumen con una sola planta baja. Pisos, cornisas y techos son horizontales, y ninguna columna de la casa se adapta al terreno.
+- **Filas con ritmo.** Las casas que dan a una misma calle forman filas y suben con ella en un solo escalón: dos bloques en las calles suaves y un piso entero (cuatro) en las empinadas. Cada calle tiene un escalón y una grilla de niveles, así que las cornisas y los aleros arman una escalera limpia. Cada casa toma el escalón más cercano a su puerta: al ras de la calle, uno a tres escalones arriba, o uno o dos abajo del punto más alto de su frente.
+- **Muros cortafuego.** Donde una fila sube, el costado de la casa más alta es un muro liso de su piedra, que atraviesa su techo un bloque y lleva una albardilla encima.
+- **Base diseñada donde el suelo cae.** Un zócalo de hiladas almohadilladas (ladrillo de piedra y andesita pulida) baja desde el piso hasta el suelo, con una moldura de piedra lisa en el nivel del piso y una banda por piso en las bases altas. En las bases de tres o más bloques hay ventanas de sótano encendidas. En el lado bajo de las calles empinadas, donde la base tiene cuatro bloques o más, se abre una logia con arcos al nivel de la calle.
+- **Suelo que sube.** La casa se retira: esa franja del lote queda como terraza de jardín a su nivel, y la cara del suelo más alto hace de muro de contención. Donde hay una calle arriba, una escalera junto al muro baja a la terraza. Donde no hay lugar para la terraza, la pared de la casa retiene el suelo: hiladas ciegas hasta la rasante y ninguna ventana contra la tierra. El terreno nunca entra en la casa y ninguna pared queda cortada.
+- **Puertas.** Toda puerta da a su calle:
+  - al ras de la vereda, o con un escalón;
+  - con una escalinata de rellano y tramo a lo largo de la fachada, cuando la casa queda dos o tres escalones arriba;
+  - como puerta baja en la base, con la escalera por dentro, donde afuera no hay lugar;
+  - con un pequeño muelle, sobre un canal.
+
+  Nunca hay puertas flotando ni enterradas.
+- **Controles del generador.** Imprime estos conteos y no exporta si alguno falla:
+  - edificios con una sola planta baja;
+  - suelo sobre un piso;
+  - terreno dentro de una casa;
+  - columnas de pared cortadas;
+  - ventanas o puertas bajo la rasante;
+  - puertas fuera de suelo caminable;
+  - escalones de fila fuera del ritmo.
 
 ## Barrios
 

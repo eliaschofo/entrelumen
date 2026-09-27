@@ -504,7 +504,7 @@ def temple():
     for x in range(X0 - 2, X1 + 3):
         for z in range(Z0 - 5, Z1 + 3):
             ring = max(0, X0 - x, x - X1, Z0 - 3 - z, z - Z1)
-            if ring in (1, 2) and (x, z) in TOP:
+            if ring in (1, 2) and (x, z) in TOP and (x, z) not in N.LOT:      # not into a house
                 lev = L - (ring - 1)
                 for y in range(TOP[(x, z)] + 1, lev):
                     G.set(x, y, z, B('calcite'))

@@ -998,6 +998,113 @@ def lots():
         for c in cs:
             LEVEL[c] = lot['pad']
             UNIT[c] = 'lot'
+    row_levels()
+
+
+STEEP_ROW = 3     # a row whose houses stand this far apart (the median step) steps a whole storey
+
+
+def lot_street(lot):
+    """The street (or plaza) a house faces and has its door on: the one it has most frontage on (a
+    canal only when it has no street), then the highest-ranked. Returns (key, [(front cell, street
+    cell)])."""
+    by = defaultdict(list)
+    for c in lot['front']:
+        if c not in FRONT:
+            continue
+        n = FRONT[c][3]
+        key = ('z', PLAZA_OF[n]) if n in PLAZA_OF else ('p', OWNER[n]) if n in OWNER else ('k', CELL.get(n))
+        by[key].append((c, n))
+    if not by:
+        return None, []
+    key = max(by, key=lambda k: (k[0] != 'k' and CELL.get(by[k][0][1]) != 'canal', len(by[k]),
+                                 max(rank(n) for c, n in by[k]), str(k)))
+    return key, sorted(by[key])
+
+
+def house_level(levs, s, b):
+    """A house's ground floor on its row's step: flush with its street where it can be, else one to
+    three steps up from it, or one or two below the highest pavement along its front when its door
+    can still stand flush lower down (its base then retains the street at the high end). Returns
+    (level, how far from ideal)."""
+    hi = levs[-1]
+    for g, pen in ((hi, 0), (hi + 1, 1), (hi - 1, 1.5), (hi + 2, 2), (hi - 2, 2.5), (hi + 3, 3.5)):
+        if (g - b) % s == 0 and any(g - 3 <= v <= g for v in levs):
+            return g, pen
+    return hi, 10
+
+
+def row_levels():
+    """Rows of houses step in one increment each. A row is the houses that face the same street
+    (or plaza) and share party walls; on a gentle street it steps two blocks at a time, on a steep
+    one a whole storey of four, so every step of its cornices and eaves is one of the row's. Each
+    house takes the level of the row's step nearest its door (house_level); the whole lot is one
+    flat pad at it."""
+    info = {}
+    for lot in LOTS:
+        if not lot['cells']:
+            continue
+        key, fr = lot_street(lot)
+        lot['street'] = key
+        if not key:
+            continue
+        levs = sorted(LEVEL[n] for c, n in fr)
+        if key[0] == 'p':
+            si = [COV[n][key[1]][1] for c, n in fr if key[1] in COV.get(n, {})]
+            pos = sum(si) / len(si) if si else 0.0
+        elif key[0] == 'z':
+            cx, cz = PLAZAS[key[1]][1]
+            pos = math.atan2(sum(c[1] for c, n in fr) / len(fr) - cz, sum(c[0] for c, n in fr) / len(fr) - cx)
+        else:
+            pos = 0.0
+        info[lot['id']] = (key, levs, pos)
+    parent = {lid: lid for lid in info}
+
+    def find(a):
+        while parent[a] != a:
+            parent[a] = parent[parent[a]]
+            a = parent[a]
+        return a
+    for c, lid in LOT.items():
+        if lid not in info:
+            continue
+        for a, b in N4:
+            m = LOT.get((c[0] + a, c[1] + b))
+            if m is not None and m != lid and m in info and info[m][0] == info[lid][0]:
+                ra, rb = find(lid), find(m)
+                if ra != rb:
+                    parent[max(ra, rb)] = min(ra, rb)
+    rows = defaultdict(list)
+    for lid in info:
+        rows[find(lid)].append(lid)
+    streets = defaultdict(list)
+    for r in rows:
+        streets[info[r][0]].append(r)
+    steps = Counter()
+    for key in sorted(streets, key=str):
+        diffs = []
+        for r in streets[key]:
+            members = sorted(rows[r], key=lambda lid: (info[lid][2], lid))
+            his = [info[lid][1][-1] for lid in members]
+            diffs += [abs(a - b) for a, b in zip(his, his[1:]) if a != b]
+        diffs.sort()
+        s = 4 if diffs and diffs[len(diffs) // 2] >= STEEP_ROW else 2
+        best = None
+        for b in range(s):
+            placed = {lid: house_level(info[lid][1], s, b) for r in streets[key] for lid in rows[r]}
+            cost = sum(p[1] for p in placed.values())
+            if best is None or cost < best[0]:
+                best = (cost, b, placed)
+        cost, b, placed = best
+        steps[s] += 1
+        for r in streets[key]:
+            for lid in rows[r]:
+                lot = LOTS[lid]
+                lot.update(pad=placed[lid][0], row=r, step=s, base=b)
+                for c in lot['cells']:
+                    LEVEL[c] = lot['pad']
+    log('houses in %d rows on %d streets: %d streets step two blocks, %d a whole storey' % (
+        len(rows), len(streets), steps[2], steps[4]))
 
 
 # ---------------- green, water, landmarks ----------------
@@ -1110,9 +1217,11 @@ def contain():
             if n in water or n not in LEVEL:
                 continue
             if LEVEL[n] < w:
-                if n in LOT:                            # a lot keeps one flat pad
+                if n in LOT:                            # a lot keeps one flat pad, on its row's step
                     lot = LOTS[LOT[n]]
                     lot['pad'] = max(lot['pad'], w)
+                    while lot.get('step') and (lot['pad'] - lot['base']) % lot['step']:
+                        lot['pad'] += 1
                     for m in lot['cells']:
                         LEVEL[m] = lot['pad']
                 else:

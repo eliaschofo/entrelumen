@@ -26,7 +26,8 @@ from voxkit import orient  # noqa: E402
 
 NAMES = ('G', 'N', 'B', 'stairs', 'wall', 'h', 'kind', 'FACING', 'N4', 'N8', 'MARKERS', 'TOP', 'LOT_INFO', 'LOT_TOP',
          'DMAT', 'STOREY', 'lot_dist', 'exposed', 'walkable', 'cls', 'axis_part', 'mp_state', 'sign', 'LANTERN', 'lamp',
-         'PLACE_KEYS', 'cu', 'patina', 'cu_slab', 'roof_at', 'cu_stage')
+         'PLACE_KEYS', 'cu', 'patina', 'cu_slab', 'roof_at', 'cu_stage', 'DOORWAY', 'stoop_plan', 'STAIRWELL',
+         'SLOPE_SITES')
 VEC = {'east': (1, 0), 'west': (-1, 0), 'south': (0, 1), 'north': (0, -1)}
 NAMEOF = {v: k for k, v in VEC.items()}
 OPP = {'north': 'south', 'south': 'north', 'east': 'west', 'west': 'east'}
@@ -82,11 +83,13 @@ def street_front(lot):
 
 # ---------------- facades ----------------
 def dress_lots():
+    for lot in N.LOTS:                     # every door first, its headroom reserved, then the rest
+        if lot['cells']:
+            door(lot, LOT_INFO[lot['id']])
     for lot in N.LOTS:
         if not lot['cells']:
             continue
         info = LOT_INFO[lot['id']]
-        door(lot, info)
         balcony(lot, info)
         windows(lot, info)
         shopfront(lot, info)
@@ -103,26 +106,88 @@ def door(lot, info):
     D = DRESS[lot['district']]
     face = NAMEOF[d]
     wood = D['door']
-    G.set(c[0], pad + 1, c[1], B('%s_door[facing=%s,half=lower,hinge=left,open=false,powered=false]' % (wood, face)))
-    G.set(c[0], pad + 2, c[1], B('%s_door[facing=%s,half=upper,hinge=left,open=false,powered=false]' % (wood, face)))
+    entry = info.get('entry', ('flush',))
+    sill = info.get('door_y', pad + 1)
+    G.set(c[0], sill, c[1], B('%s_door[facing=%s,half=lower,hinge=left,open=false,powered=false]' % (wood, face)))
+    G.set(c[0], sill + 1, c[1], B('%s_door[facing=%s,half=upper,hinge=left,open=false,powered=false]' % (wood, face)))
     count('doors')
     lev = TOP.get(n)
-    if lev is not None and walkable(n):
+    if entry[0] == 'inside':
+        inside_steps(lot, c, d, n, lev, pad)
+        lev = None
+    if lev is not None and N.CELL.get(n) == 'canal' and n not in N.CULVERT:
+        for y in range(lev + 1, pad + 1):                       # a water door: its landing, a little quay
+            G.set(n[0], y, n[1], B('stone_bricks' if y < pad else 'polished_andesite'))
+        count('water doors')
+        SLOPE_SITES.append(('water door', n[0], n[1]))
+    elif lev is not None and walkable(n):
         dz = pad - lev
+        way = [n]
         if dz == 1 and free(n[0], lev + 1, n[1]):
             G.set(n[0], lev + 1, n[1], stairs(D['sill'] if D['sill'] != 'smooth_quartz' else 'smooth_quartz', OPP[face]))
             count('door steps')
-        elif dz == 2:
-            m = (n[0] + d[0], n[1] + d[1])
-            if TOP.get(m) == lev and walkable(m) and free(m[0], lev + 1, m[1]) and free(n[0], lev + 1, n[1]):
-                G.set(n[0], lev + 1, n[1], B('stone_bricks'))
-                G.set(n[0], lev + 2, n[1], stairs('stone_brick', OPP[face]))
-                G.set(m[0], lev + 1, m[1], stairs('stone_brick', OPP[face]))
-                count('door steps', 2)
+        elif dz >= 2:
+            flight = stoop(n, d, lev, pad)
+            count('door stoops' if flight else 'door stoops without room')
+            way += flight or []
+            if flight:
+                SLOPE_SITES.append(('stoop', n[0], n[1]))
+        for q in way:                      # headroom over the sill, the landing and the steps
+            base = TOP.get(q, pad)
+            for y in range(pad + 1, base, -1):
+                if G.filled(q[0], y, q[1]):
+                    base = y
+                    break
+            for y in range(base + 1, max(base + 3, pad + 3)):
+                if free(q[0], y, q[1]):
+                    G.set(q[0], y, q[1], DOORWAY)
     y = max(pad, lev if lev is not None else pad) + 3
     if free(n[0], y, n[1]) and G.filled(c[0], y, c[1]):
         G.set(n[0], y, n[1], mp_state('mcwlights:wall_lantern', facing=face))
         count('door lanterns')
+
+
+def inside_steps(lot, c, d, n, lev, pad):
+    """A door down at the street's level in the house's base, and steps up inside it to the ground
+    floor: a narrow stair through the base, a hole in the floor at its head, the headroom kept
+    clear of furniture; the base's courses close over the door up to the water table."""
+    for y in range(lev + 3, pad):
+        G.set(c[0], y, c[1], B('stone_bricks' if y % 2 else 'polished_andesite'))
+    G.set(c[0], pad, c[1], B('smooth_stone'))
+    din = (-d[0], -d[1])
+    dz = pad - lev
+    for k in range(1, dz + 1):
+        q = (c[0] + din[0] * k, c[1] + din[1] * k)
+        G.set(q[0], lev + k, q[1], stairs('stone_brick', NAMEOF[din]))
+        for y in range(lev + k + 1, lev + k + 3):
+            G.set(q[0], y, q[1], DOORWAY if y > pad else None)
+        if lev + k + 1 <= pad:
+            STAIRWELL.add(q)
+    for y in (lev + 1, lev + 2):
+        G.set(n[0], y, n[1], DOORWAY) if free(n[0], y, n[1]) else None
+    count('doors with steps inside')
+    SLOPE_SITES.append(('inside steps', c[0], c[1]))
+
+
+def stoop(n, d, lev, pad):
+    """Steps up to a door two or three above its street: a landing before the door, its top the
+    door's sill, and a flight down from it along the facade (or, where the pavement has no room
+    along the house, straight out into the street) until the pavement meets a step; all on
+    masonry, whatever the pavement does under it. Returns the flight's cells, or None."""
+    plan = stoop_plan(n, d, lev, pad)
+    if not plan:
+        return None
+    step, flight = plan
+    rise = NAMEOF[(-step[0], -step[1])]
+    for y in range(lev + 1, pad + 1):
+        G.set(n[0], y, n[1], B('stone_bricks'))
+    for q, ys in flight:
+        if ys is None:
+            continue
+        for y in range(TOP[q] + 1, ys):
+            G.set(q[0], y, q[1], B('stone_bricks'))
+        G.set(q[0], ys, q[1], stairs('stone_brick', rise))
+    return [q for q, ys in flight]
 
 
 def windows(lot, info):
@@ -139,6 +204,8 @@ def windows(lot, info):
         face = NAMEOF[d]
         for s in range(1, info['floors']):
             y0 = pad + STOREY * s
+            if lev >= y0 + 1:
+                continue
             if G.get(c[0], y0 + 2, c[1]) == glass:
                 if n in N.CELL and lev >= y0 + 1:
                     continue
@@ -225,7 +292,7 @@ def shopfront(lot, info):
     awning = D['awning'] or 'mcwroofs:yellow_striped_awning'
     placed = 0
     for (c, d, n, lev) in street_front(lot):
-        if not walkable(n) or lev > pad:
+        if not walkable(n) or lev > pad or pad - lev >= 2:        # a shop stands at its street's level
             continue
         face = NAMEOF[d]
         along = c[0] + c[1]
