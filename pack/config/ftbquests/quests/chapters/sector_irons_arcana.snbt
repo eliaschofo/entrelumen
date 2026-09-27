@@ -1,0 +1,3143 @@
+{
+  "id": "7FD8A9B267B7C9D3",
+  "filename": "sector_irons_arcana",
+  "group": "4D74159E6A679408",
+  "order_index": 17,
+  "icon": {
+    "id": "irons_spellbooks:arcane_anvil"
+  },
+  "default_quest_shape": "square",
+  "default_min_width": 320,
+  "progression_mode": "flexible",
+  "autofocus_id": "49A652D6796F6545",
+  "tags": [
+    "entrelumen_motif_irons"
+  ],
+  "quests": [
+    {
+      "id": "49A652D6796F6545",
+      "x": 0.0,
+      "y": 0.6,
+      "shape": "hexagon",
+      "size": 2.0,
+      "preset": "el_entry",
+      "dependencies": [],
+      "tasks": [
+        {
+          "id": "57EC47454863A792",
+          "type": "item",
+          "item": {
+            "id": "irons_spellbooks:arcane_anvil",
+            "count": 1
+          },
+          "count": 1,
+          "consume_items": false
+        }
+      ],
+      "rewards": [
+        {
+          "id": "3FE9EDF12036AD93",
+          "type": "xp",
+          "xp": 12
+        }
+      ],
+      "tags": [
+        "entrelumen_entry"
+      ],
+      "icon": {
+        "id": "irons_spellbooks:arcane_anvil"
+      }
+    },
+    {
+      "id": "226BC5F8AF53B7AC",
+      "x": 3.6,
+      "y": -0.6,
+      "shape": "el_tag",
+      "size": 1.0,
+      "preset": "el_tip",
+      "dependencies": [
+        "49A652D6796F6545"
+      ],
+      "tasks": [
+        {
+          "id": "647FE7455CBA6DD5",
+          "type": "checkmark"
+        }
+      ],
+      "rewards": [],
+      "tags": [
+        "entrelumen_tip"
+      ],
+      "optional": true,
+      "icon_scale": 0.75,
+      "disable_toast": true,
+      "hide_lock_icon": true
+    },
+    {
+      "id": "6F6D8FBB1ADF111A",
+      "x": 3.6,
+      "y": 2.2,
+      "shape": "el_tag",
+      "size": 1.0,
+      "preset": "el_tip",
+      "dependencies": [
+        "49A652D6796F6545"
+      ],
+      "tasks": [
+        {
+          "id": "5225490CC06181F3",
+          "type": "checkmark"
+        }
+      ],
+      "rewards": [],
+      "tags": [
+        "entrelumen_tip"
+      ],
+      "optional": true,
+      "icon_scale": 0.75,
+      "disable_toast": true,
+      "hide_lock_icon": true
+    },
+    {
+      "id": "0F20910E4E8C2CC8",
+      "x": -3.2,
+      "y": -3.6,
+      "shape": "square",
+      "size": 1.0,
+      "preset": "el_step",
+      "dependencies": [
+        "49A652D6796F6545"
+      ],
+      "tasks": [
+        {
+          "id": "7DA440AF6EF8DD74",
+          "type": "item",
+          "item": {
+            "id": "irons_spellbooks:arcane_ingot",
+            "count": 1
+          },
+          "count": 1,
+          "consume_items": false
+        }
+      ],
+      "rewards": [
+        {
+          "id": "5D34DFF1F2489E1C",
+          "type": "xp",
+          "xp": 12
+        }
+      ],
+      "tags": [
+        "entrelumen_step"
+      ],
+      "icon": {
+        "id": "irons_spellbooks:arcane_ingot"
+      }
+    },
+    {
+      "id": "4843FD54806C56BA",
+      "x": 0.0,
+      "y": -3.6,
+      "shape": "pentagon",
+      "size": 2.0,
+      "preset": "el_milestone_irons",
+      "dependencies": [
+        "0F20910E4E8C2CC8",
+        "2C5C02FD1DB072D3",
+        "0F5261E364129735"
+      ],
+      "tasks": [
+        {
+          "id": "2F2A0313DF543802",
+          "type": "item",
+          "item": {
+            "id": "irons_spellbooks:upgrade_orb",
+            "count": 1
+          },
+          "count": 1,
+          "consume_items": false
+        }
+      ],
+      "rewards": [
+        {
+          "id": "2BF0036621D1AF08",
+          "type": "xp",
+          "xp": 24
+        },
+        {
+          "id": "26D6403BE04D11FC",
+          "type": "choice",
+          "table_id": 52659485
+        }
+      ],
+      "tags": [
+        "entrelumen_milestone"
+      ],
+      "icon": {
+        "id": "irons_spellbooks:upgrade_orb"
+      }
+    },
+    {
+      "id": "6ABD80D961145D42",
+      "x": 3.2,
+      "y": -3.6,
+      "shape": "diamond",
+      "size": 1.0,
+      "preset": "el_side",
+      "dependencies": [
+        "4843FD54806C56BA"
+      ],
+      "tasks": [
+        {
+          "id": "3C62C5B2D59AF626",
+          "type": "item",
+          "item": {
+            "id": "irons_spellbooks:mana_upgrade_orb",
+            "count": 1
+          },
+          "count": 1,
+          "consume_items": false
+        },
+        {
+          "id": "0DE93DA130E36DAB",
+          "type": "item",
+          "item": {
+            "id": "irons_spellbooks:cooldown_upgrade_orb",
+            "count": 1
+          },
+          "count": 1,
+          "consume_items": false
+        },
+        {
+          "id": "364B33A247D633BA",
+          "type": "item",
+          "item": {
+            "id": "irons_spellbooks:protection_upgrade_orb",
+            "count": 1
+          },
+          "count": 1,
+          "consume_items": false
+        }
+      ],
+      "rewards": [
+        {
+          "id": "5A4B3F86F1008FE5",
+          "type": "xp",
+          "xp": 12
+        }
+      ],
+      "tags": [
+        "entrelumen_side"
+      ],
+      "optional": true,
+      "icon": {
+        "id": "irons_spellbooks:mana_upgrade_orb"
+      }
+    },
+    {
+      "id": "32107FDAB27722D9",
+      "x": -3.6,
+      "y": -0.6,
+      "shape": "diamond",
+      "size": 1.0,
+      "preset": "el_side",
+      "dependencies": [
+        "49A652D6796F6545"
+      ],
+      "tasks": [
+        {
+          "id": "6BDBEA3BA621D0FE",
+          "type": "item",
+          "item": {
+            "id": "irons_spellbooks:lesser_spell_slot_upgrade",
+            "count": 1
+          },
+          "count": 1,
+          "consume_items": false
+        }
+      ],
+      "rewards": [
+        {
+          "id": "5DF9EABB0CA62E0D",
+          "type": "xp",
+          "xp": 12
+        }
+      ],
+      "tags": [
+        "entrelumen_side"
+      ],
+      "optional": true,
+      "icon": {
+        "id": "irons_spellbooks:lesser_spell_slot_upgrade"
+      }
+    },
+    {
+      "id": "4354A593903826B0",
+      "x": -3.6,
+      "y": 2.2,
+      "shape": "diamond",
+      "size": 1.0,
+      "preset": "el_side",
+      "dependencies": [
+        "49A652D6796F6545"
+      ],
+      "tasks": [
+        {
+          "id": "464557F8C9E1CC36",
+          "type": "item",
+          "item": {
+            "id": "irons_spellbooks:shriving_stone",
+            "count": 1
+          },
+          "count": 1,
+          "consume_items": false
+        }
+      ],
+      "rewards": [
+        {
+          "id": "002C016369E0DAD5",
+          "type": "xp",
+          "xp": 12
+        }
+      ],
+      "tags": [
+        "entrelumen_side"
+      ],
+      "optional": true,
+      "icon": {
+        "id": "irons_spellbooks:shriving_stone"
+      }
+    },
+    {
+      "id": "53C0612C3F0710ED",
+      "x": -1.4,
+      "y": 4.4,
+      "shape": "diamond",
+      "size": 1.0,
+      "preset": "el_side",
+      "dependencies": [
+        "49A652D6796F6545"
+      ],
+      "tasks": [
+        {
+          "id": "03B2DBDD5F49AAC8",
+          "type": "item",
+          "item": {
+            "id": "irons_spellbooks:legendary_ink",
+            "count": 1
+          },
+          "count": 1,
+          "consume_items": false
+        }
+      ],
+      "rewards": [
+        {
+          "id": "6C9C392C0DE13A36",
+          "type": "xp",
+          "xp": 12
+        }
+      ],
+      "tags": [
+        "entrelumen_side"
+      ],
+      "optional": true,
+      "icon": {
+        "id": "irons_spellbooks:legendary_ink"
+      }
+    },
+    {
+      "id": "1A797F17F13CB152",
+      "x": 1.4,
+      "y": 4.4,
+      "shape": "el_rosette",
+      "size": 1.0,
+      "preset": "el_bounty",
+      "dependencies": [
+        "0F20910E4E8C2CC8"
+      ],
+      "tasks": [
+        {
+          "id": "7EC2C248FFFE7838",
+          "type": "item",
+          "item": {
+            "id": "irons_spellbooks:arcane_ingot",
+            "count": 1
+          },
+          "count": 8,
+          "consume_items": true
+        }
+      ],
+      "rewards": [
+        {
+          "id": "2B200505135274F1",
+          "type": "item",
+          "item": {
+            "id": "ftbquests:lootcrate",
+            "components": {
+              "ftbquests:loot_crate": "entrelumen_crate_4"
+            }
+          },
+          "count": 1,
+          "random_bonus": 1
+        }
+      ],
+      "tags": [
+        "entrelumen_bounty"
+      ],
+      "optional": true,
+      "icon": {
+        "id": "irons_spellbooks:arcane_ingot"
+      },
+      "can_repeat": true,
+      "repeat_cooldown": 1200,
+      "hide_dependency_lines": true
+    },
+    {
+      "id": "2C5C02FD1DB072D3",
+      "x": -12.4,
+      "y": -9.8,
+      "shape": "square",
+      "size": 1.0,
+      "preset": "el_step",
+      "dependencies": [
+        "49A652D6796F6545"
+      ],
+      "tasks": [
+        {
+          "id": "139B8BA0B8076188",
+          "type": "item",
+          "item": {
+            "id": "irons_spellbooks:raw_mithril",
+            "count": 1
+          },
+          "count": 1,
+          "consume_items": false
+        },
+        {
+          "id": "0AD3EE13E415B21C",
+          "type": "item",
+          "item": {
+            "id": "irons_spellbooks:mithril_scrap",
+            "count": 1
+          },
+          "count": 1,
+          "consume_items": false
+        },
+        {
+          "id": "2F050D6C54808AF1",
+          "type": "item",
+          "item": {
+            "id": "irons_spellbooks:mithril_ingot",
+            "count": 1
+          },
+          "count": 1,
+          "consume_items": false
+        }
+      ],
+      "rewards": [
+        {
+          "id": "28437CFF0D92F8D9",
+          "type": "xp",
+          "xp": 12
+        }
+      ],
+      "tags": [
+        "entrelumen_step"
+      ],
+      "icon": {
+        "id": "irons_spellbooks:raw_mithril"
+      },
+      "require_sequential_tasks": true
+    },
+    {
+      "id": "535AE19EBA0DBC90",
+      "x": -15.2,
+      "y": -9.8,
+      "shape": "square",
+      "size": 1.0,
+      "preset": "el_step",
+      "dependencies": [
+        "2C5C02FD1DB072D3"
+      ],
+      "tasks": [
+        {
+          "id": "24217D1543D9239A",
+          "type": "item",
+          "item": {
+            "id": "irons_spellbooks:mithril_weave",
+            "count": 1
+          },
+          "count": 1,
+          "consume_items": false
+        }
+      ],
+      "rewards": [
+        {
+          "id": "1AA99665F4AA6328",
+          "type": "xp",
+          "xp": 12
+        }
+      ],
+      "tags": [
+        "entrelumen_step"
+      ],
+      "icon": {
+        "id": "irons_spellbooks:mithril_weave"
+      }
+    },
+    {
+      "id": "3AA7FEA28E043C1A",
+      "x": -18.0,
+      "y": -9.8,
+      "shape": "diamond",
+      "size": 1.0,
+      "preset": "el_side",
+      "dependencies": [
+        "2C5C02FD1DB072D3"
+      ],
+      "tasks": [
+        {
+          "id": "25E63248C87FCF94",
+          "type": "item",
+          "item": {
+            "id": "irons_spellbooks:weapon_parts",
+            "count": 1
+          },
+          "count": 1,
+          "consume_items": false
+        },
+        {
+          "id": "618FBB4C3E25F464",
+          "type": "item",
+          "item": {
+            "id": "irons_spellbooks:spellbreaker",
+            "count": 1
+          },
+          "count": 1,
+          "consume_items": false
+        }
+      ],
+      "rewards": [
+        {
+          "id": "341DE974BC82C068",
+          "type": "xp",
+          "xp": 12
+        }
+      ],
+      "tags": [
+        "entrelumen_side"
+      ],
+      "optional": true,
+      "icon": {
+        "id": "irons_spellbooks:weapon_parts"
+      }
+    },
+    {
+      "id": "4220639AB1AC0339",
+      "x": -15.2,
+      "y": -13.6,
+      "shape": "pentagon",
+      "size": 2.0,
+      "preset": "el_milestone_irons",
+      "dependencies": [
+        "2C5C02FD1DB072D3"
+      ],
+      "tasks": [
+        {
+          "id": "624099D721417943",
+          "type": "item",
+          "item": {
+            "id": "irons_spellbooks:portal_frame",
+            "count": 1
+          },
+          "count": 2,
+          "consume_items": false
+        }
+      ],
+      "rewards": [
+        {
+          "id": "520B4ED6499E0627",
+          "type": "xp",
+          "xp": 24
+        },
+        {
+          "id": "41052D7D1E7CCBC1",
+          "type": "choice",
+          "table_id": 52659485
+        }
+      ],
+      "tags": [
+        "entrelumen_milestone"
+      ],
+      "icon": {
+        "id": "irons_spellbooks:portal_frame"
+      }
+    },
+    {
+      "id": "1F175D1AB007C933",
+      "x": -3.4,
+      "y": -9.6,
+      "shape": "square",
+      "size": 1.0,
+      "preset": "el_step",
+      "dependencies": [
+        "2DA843F392A3C84D"
+      ],
+      "tasks": [
+        {
+          "id": "16BC99FCAAB7CECF",
+          "type": "item",
+          "item": {
+            "id": "irons_spellbooks:wayward_compass",
+            "count": 1
+          },
+          "count": 1,
+          "consume_items": false
+        }
+      ],
+      "rewards": [
+        {
+          "id": "4289C9479EE99EBD",
+          "type": "xp",
+          "xp": 12
+        }
+      ],
+      "tags": [
+        "entrelumen_step"
+      ],
+      "icon": {
+        "id": "irons_spellbooks:wayward_compass"
+      }
+    },
+    {
+      "id": "4F473C051C7DE50A",
+      "x": -3.4,
+      "y": -12.6,
+      "shape": "square",
+      "size": 1.0,
+      "preset": "el_step",
+      "dependencies": [
+        "1F175D1AB007C933"
+      ],
+      "tasks": [
+        {
+          "id": "004EABF345719E90",
+          "type": "structure",
+          "structure": "irons_spellbooks:catacombs",
+          "icon": {
+            "id": "irons_spellbooks:bone_key"
+          }
+        }
+      ],
+      "rewards": [
+        {
+          "id": "5DE524F5A033B60A",
+          "type": "xp",
+          "xp": 12
+        }
+      ],
+      "tags": [
+        "entrelumen_step"
+      ],
+      "icon": {
+        "id": "irons_spellbooks:bone_key"
+      }
+    },
+    {
+      "id": "122E552959C3FE9C",
+      "x": 0.0,
+      "y": -14.0,
+      "shape": "el_shield",
+      "size": 2.0,
+      "preset": "el_boss",
+      "dependencies": [
+        "4F473C051C7DE50A"
+      ],
+      "tasks": [
+        {
+          "id": "18C62E708195E1D7",
+          "type": "kill",
+          "entity": "irons_spellbooks:dead_king",
+          "value": 1
+        }
+      ],
+      "rewards": [
+        {
+          "id": "63751BEE93CE0586",
+          "type": "xp",
+          "xp": 36
+        },
+        {
+          "id": "123BCEA9B8ECBB1F",
+          "type": "loot",
+          "table_id": 1895351681
+        }
+      ],
+      "tags": [
+        "entrelumen_boss"
+      ],
+      "optional": true,
+      "icon": {
+        "id": "ftbquests:custom_icon",
+        "components": {
+          "ftbquests:entity_face": "irons_spellbooks:dead_king"
+        }
+      }
+    },
+    {
+      "id": "6DD225004EEEF7BC",
+      "x": 3.4,
+      "y": -12.6,
+      "shape": "diamond",
+      "size": 1.0,
+      "preset": "el_side",
+      "dependencies": [
+        "122E552959C3FE9C"
+      ],
+      "tasks": [
+        {
+          "id": "6F5C1FC4093FBC51",
+          "type": "item",
+          "item": {
+            "id": "irons_spellbooks:bone_key",
+            "count": 1
+          },
+          "count": 1,
+          "consume_items": false
+        },
+        {
+          "id": "64947A7EB15ED991",
+          "type": "item",
+          "item": {
+            "id": "irons_spellbooks:dead_king_phylactery",
+            "count": 1
+          },
+          "count": 1,
+          "consume_items": false
+        }
+      ],
+      "rewards": [
+        {
+          "id": "5561C3CE2F7940D4",
+          "type": "xp",
+          "xp": 12
+        }
+      ],
+      "tags": [
+        "entrelumen_side"
+      ],
+      "optional": true,
+      "icon": {
+        "id": "irons_spellbooks:bone_key"
+      },
+      "require_sequential_tasks": true
+    },
+    {
+      "id": "3201610D632C8592",
+      "x": -1.6,
+      "y": -17.2,
+      "shape": "el_star",
+      "size": 1.0,
+      "preset": "el_secret",
+      "dependencies": [
+        "122E552959C3FE9C"
+      ],
+      "tasks": [
+        {
+          "id": "3C46EB8CB979B269",
+          "type": "advancement",
+          "advancement": "irons_spellbooks:irons_spellbooks/spell_book_dead_king",
+          "criterion": ""
+        }
+      ],
+      "rewards": [
+        {
+          "id": "267D6814A4B12FEB",
+          "type": "xp",
+          "xp": 12
+        },
+        {
+          "id": "2DB5F744CE5A9F01",
+          "type": "random",
+          "table_id": 1181910734
+        },
+        {
+          "id": "1F34F1284E3F8E9C",
+          "type": "toast",
+          "description": "entrelumen.quests.toast.secret",
+          "auto": "invisible"
+        }
+      ],
+      "tags": [
+        "entrelumen_secret"
+      ],
+      "optional": true,
+      "icon": {
+        "id": "irons_spellbooks:necronomicon_spell_book"
+      },
+      "invisible": true
+    },
+    {
+      "id": "5BD141F9B2023AF3",
+      "x": 1.6,
+      "y": -17.2,
+      "shape": "el_star",
+      "size": 1.0,
+      "preset": "el_secret",
+      "dependencies": [
+        "122E552959C3FE9C"
+      ],
+      "tasks": [
+        {
+          "id": "66A6B15B795A7559",
+          "type": "advancement",
+          "advancement": "irons_spellbooks:irons_spellbooks/staff_blood_staff",
+          "criterion": ""
+        }
+      ],
+      "rewards": [
+        {
+          "id": "23FACA31A7FBD763",
+          "type": "xp",
+          "xp": 12
+        },
+        {
+          "id": "577F4BF25886A43A",
+          "type": "random",
+          "table_id": 1181910734
+        },
+        {
+          "id": "5B733CC232A53B81",
+          "type": "toast",
+          "description": "entrelumen.quests.toast.secret",
+          "auto": "invisible"
+        }
+      ],
+      "tags": [
+        "entrelumen_secret"
+      ],
+      "optional": true,
+      "icon": {
+        "id": "irons_spellbooks:blood_staff"
+      },
+      "invisible": true
+    },
+    {
+      "id": "52FDDD1B3A854FDE",
+      "x": 11.6,
+      "y": -9.6,
+      "shape": "square",
+      "size": 1.0,
+      "preset": "el_step",
+      "dependencies": [
+        "0F5261E364129735"
+      ],
+      "tasks": [
+        {
+          "id": "18D95A7AC8C1A021",
+          "type": "structure",
+          "structure": "irons_spellbooks:citadel",
+          "icon": {
+            "id": "irons_spellbooks:furled_map_citadel"
+          }
+        }
+      ],
+      "rewards": [
+        {
+          "id": "49745DAC356759B9",
+          "type": "xp",
+          "xp": 12
+        }
+      ],
+      "tags": [
+        "entrelumen_step"
+      ],
+      "icon": {
+        "id": "irons_spellbooks:furled_map_citadel"
+      }
+    },
+    {
+      "id": "4DE9435551F7A808",
+      "x": 11.6,
+      "y": -12.6,
+      "shape": "square",
+      "size": 1.0,
+      "preset": "el_step",
+      "dependencies": [
+        "52FDDD1B3A854FDE"
+      ],
+      "tasks": [
+        {
+          "id": "391A9B4C2ABA91C6",
+          "type": "item",
+          "item": {
+            "id": "irons_spellbooks:cinderous_soulcaller",
+            "count": 1
+          },
+          "count": 1,
+          "consume_items": false
+        }
+      ],
+      "rewards": [
+        {
+          "id": "5A9D6B9ED132E96B",
+          "type": "xp",
+          "xp": 12
+        }
+      ],
+      "tags": [
+        "entrelumen_step"
+      ],
+      "icon": {
+        "id": "irons_spellbooks:cinderous_soulcaller"
+      }
+    },
+    {
+      "id": "04CB9B7F34B0FA10",
+      "x": 15.4,
+      "y": -13.4,
+      "shape": "el_shield",
+      "size": 2.0,
+      "preset": "el_boss",
+      "dependencies": [
+        "4DE9435551F7A808"
+      ],
+      "tasks": [
+        {
+          "id": "0D04066AB5ECE331",
+          "type": "kill",
+          "entity": "irons_spellbooks:fire_boss",
+          "value": 1
+        }
+      ],
+      "rewards": [
+        {
+          "id": "724B94FAF2E245EE",
+          "type": "xp",
+          "xp": 36
+        },
+        {
+          "id": "630FEABF2B7FFBAA",
+          "type": "loot",
+          "table_id": 1895351681
+        }
+      ],
+      "tags": [
+        "entrelumen_boss"
+      ],
+      "optional": true,
+      "icon": {
+        "id": "ftbquests:custom_icon",
+        "components": {
+          "ftbquests:entity_face": "irons_spellbooks:fire_boss"
+        }
+      }
+    },
+    {
+      "id": "1886A3EFD833D5C4",
+      "x": 19.0,
+      "y": -10.6,
+      "shape": "diamond",
+      "size": 1.0,
+      "preset": "el_side",
+      "dependencies": [
+        "04CB9B7F34B0FA10"
+      ],
+      "tasks": [
+        {
+          "id": "13A0A2FE4DDAABEF",
+          "type": "item",
+          "item": {
+            "id": "irons_spellbooks:decrepit_key",
+            "count": 1
+          },
+          "count": 1,
+          "consume_items": false
+        },
+        {
+          "id": "0F60E82EF8FF48B4",
+          "type": "item",
+          "item": {
+            "id": "irons_spellbooks:pyrium_ingot",
+            "count": 1
+          },
+          "count": 1,
+          "consume_items": false
+        }
+      ],
+      "rewards": [
+        {
+          "id": "7CC49BAE26E9B590",
+          "type": "xp",
+          "xp": 12
+        }
+      ],
+      "tags": [
+        "entrelumen_side"
+      ],
+      "optional": true,
+      "icon": {
+        "id": "irons_spellbooks:decrepit_key"
+      },
+      "require_sequential_tasks": true
+    },
+    {
+      "id": "67CB46EF1DB1D0FE",
+      "x": 21.8,
+      "y": -10.6,
+      "shape": "diamond",
+      "size": 1.0,
+      "preset": "el_side",
+      "dependencies": [
+        "1886A3EFD833D5C4"
+      ],
+      "tasks": [
+        {
+          "id": "34A96273D54C336C",
+          "type": "item",
+          "item": {
+            "id": "irons_spellbooks:pyrium_staff",
+            "count": 1
+          },
+          "count": 1,
+          "consume_items": false
+        }
+      ],
+      "rewards": [
+        {
+          "id": "2F12DC028A83492D",
+          "type": "xp",
+          "xp": 12
+        }
+      ],
+      "tags": [
+        "entrelumen_side"
+      ],
+      "optional": true,
+      "icon": {
+        "id": "irons_spellbooks:pyrium_staff"
+      },
+      "hide_until_deps_complete": true
+    },
+    {
+      "id": "5426009F4BB82AC4",
+      "x": 19.0,
+      "y": -16.2,
+      "shape": "diamond",
+      "size": 1.0,
+      "preset": "el_side",
+      "dependencies": [
+        "04CB9B7F34B0FA10"
+      ],
+      "tasks": [
+        {
+          "id": "4AD4F6FDA1BB5112",
+          "type": "item",
+          "item": {
+            "id": "irons_spellbooks:timeless_slurry",
+            "count": 1
+          },
+          "count": 1,
+          "consume_items": false
+        },
+        {
+          "id": "508B4440CBE6DC68",
+          "type": "item",
+          "item": {
+            "id": "irons_spellbooks:hellrazor",
+            "count": 1
+          },
+          "count": 1,
+          "consume_items": false
+        }
+      ],
+      "rewards": [
+        {
+          "id": "6A195E9C13BA8A68",
+          "type": "xp",
+          "xp": 12
+        }
+      ],
+      "tags": [
+        "entrelumen_side"
+      ],
+      "optional": true,
+      "icon": {
+        "id": "irons_spellbooks:timeless_slurry"
+      },
+      "require_sequential_tasks": true
+    },
+    {
+      "id": "6E25AEDA2CC2E9DD",
+      "x": 11.6,
+      "y": -1.6,
+      "shape": "square",
+      "size": 1.0,
+      "preset": "el_step",
+      "dependencies": [
+        "4796CEA3BD858B10"
+      ],
+      "tasks": [
+        {
+          "id": "564579CE49A08640",
+          "type": "structure",
+          "structure": "irons_spellbooks:ice_spider_den",
+          "icon": {
+            "id": "irons_spellbooks:furled_map_ice_spider_den"
+          }
+        }
+      ],
+      "rewards": [
+        {
+          "id": "7D71669736F486C3",
+          "type": "xp",
+          "xp": 12
+        }
+      ],
+      "tags": [
+        "entrelumen_step"
+      ],
+      "icon": {
+        "id": "irons_spellbooks:furled_map_ice_spider_den"
+      }
+    },
+    {
+      "id": "4CB0382E9F2BD114",
+      "x": 15.4,
+      "y": 0.2,
+      "shape": "el_shield",
+      "size": 2.0,
+      "preset": "el_boss",
+      "dependencies": [
+        "6E25AEDA2CC2E9DD"
+      ],
+      "tasks": [
+        {
+          "id": "08FCBF0019513A5D",
+          "type": "kill",
+          "entity": "irons_spellbooks:ice_spider",
+          "value": 1
+        }
+      ],
+      "rewards": [
+        {
+          "id": "3EA3EB176E68128B",
+          "type": "xp",
+          "xp": 36
+        },
+        {
+          "id": "7FCB358ABAABDF3B",
+          "type": "loot",
+          "table_id": 1895351681
+        }
+      ],
+      "tags": [
+        "entrelumen_boss"
+      ],
+      "optional": true,
+      "icon": {
+        "id": "ftbquests:custom_icon",
+        "components": {
+          "ftbquests:entity_face": "irons_spellbooks:ice_spider"
+        }
+      }
+    },
+    {
+      "id": "29849C349E293C7F",
+      "x": 19.0,
+      "y": -2.0,
+      "shape": "diamond",
+      "size": 1.0,
+      "preset": "el_side",
+      "dependencies": [
+        "4CB0382E9F2BD114"
+      ],
+      "tasks": [
+        {
+          "id": "09ADD8A3EB0EB7DD",
+          "type": "item",
+          "item": {
+            "id": "irons_spellbooks:ice_spell_book",
+            "count": 1
+          },
+          "count": 1,
+          "consume_items": false
+        }
+      ],
+      "rewards": [
+        {
+          "id": "2653B7632DF24750",
+          "type": "xp",
+          "xp": 12
+        }
+      ],
+      "tags": [
+        "entrelumen_side"
+      ],
+      "optional": true,
+      "icon": {
+        "id": "irons_spellbooks:ice_spell_book"
+      }
+    },
+    {
+      "id": "5407D7E066F81FA6",
+      "x": 19.0,
+      "y": 2.4,
+      "shape": "diamond",
+      "size": 1.0,
+      "preset": "el_side",
+      "dependencies": [
+        "6E25AEDA2CC2E9DD"
+      ],
+      "tasks": [
+        {
+          "id": "3D26077571050732",
+          "type": "item",
+          "item": {
+            "id": "irons_spellbooks:frosted_helve",
+            "count": 1
+          },
+          "count": 1,
+          "consume_items": false
+        },
+        {
+          "id": "61DE0D4F1E5D9F3C",
+          "type": "item",
+          "item": {
+            "id": "irons_spellbooks:ice_staff",
+            "count": 1
+          },
+          "count": 1,
+          "consume_items": false
+        }
+      ],
+      "rewards": [
+        {
+          "id": "1BD96E5F3A6C16ED",
+          "type": "xp",
+          "xp": 12
+        }
+      ],
+      "tags": [
+        "entrelumen_side"
+      ],
+      "optional": true,
+      "icon": {
+        "id": "irons_spellbooks:frosted_helve"
+      },
+      "require_sequential_tasks": true
+    },
+    {
+      "id": "134503AEA3A84F8C",
+      "x": 21.8,
+      "y": 0.2,
+      "shape": "el_star",
+      "size": 1.0,
+      "preset": "el_secret",
+      "dependencies": [
+        "4CB0382E9F2BD114"
+      ],
+      "tasks": [
+        {
+          "id": "6F2F6E74FB29AF12",
+          "type": "item",
+          "item": {
+            "id": "irons_spellbooks:cooked_ice_spider_egg",
+            "count": 1
+          },
+          "count": 1,
+          "consume_items": false
+        }
+      ],
+      "rewards": [
+        {
+          "id": "1E6A3FAA848146E3",
+          "type": "xp",
+          "xp": 12
+        },
+        {
+          "id": "79BE6A4FA0FF9FE3",
+          "type": "random",
+          "table_id": 1181910734
+        },
+        {
+          "id": "2FFAD0EBA1DD4979",
+          "type": "toast",
+          "description": "entrelumen.quests.toast.secret",
+          "auto": "invisible"
+        }
+      ],
+      "tags": [
+        "entrelumen_secret"
+      ],
+      "optional": true,
+      "icon": {
+        "id": "irons_spellbooks:cooked_ice_spider_egg"
+      },
+      "invisible": true
+    },
+    {
+      "id": "3C51E9A3764B335F",
+      "x": -11.6,
+      "y": -3.2,
+      "shape": "square",
+      "size": 1.0,
+      "preset": "el_step",
+      "dependencies": [
+        "49A652D6796F6545"
+      ],
+      "tasks": [
+        {
+          "id": "24878A8BE0AB918C",
+          "type": "item",
+          "item": {
+            "id": "irons_spellbooks:ruined_book",
+            "count": 1
+          },
+          "count": 1,
+          "consume_items": false
+        }
+      ],
+      "rewards": [
+        {
+          "id": "4E843506C3C0A84C",
+          "type": "xp",
+          "xp": 12
+        }
+      ],
+      "tags": [
+        "entrelumen_step"
+      ],
+      "icon": {
+        "id": "irons_spellbooks:ruined_book"
+      }
+    },
+    {
+      "id": "2D520DA7AC1E66AF",
+      "x": -14.6,
+      "y": -4.4,
+      "shape": "diamond",
+      "size": 1.0,
+      "preset": "el_side",
+      "dependencies": [
+        "3C51E9A3764B335F"
+      ],
+      "tasks": [
+        {
+          "id": "65BA88D861E6EBAD",
+          "type": "item",
+          "item": {
+            "id": "irons_spellbooks:dragonskin_spell_book",
+            "count": 1
+          },
+          "count": 1,
+          "consume_items": false
+        }
+      ],
+      "rewards": [
+        {
+          "id": "74EABF1547BFFD16",
+          "type": "xp",
+          "xp": 12
+        }
+      ],
+      "tags": [
+        "entrelumen_side"
+      ],
+      "optional": true,
+      "icon": {
+        "id": "irons_spellbooks:dragonskin_spell_book"
+      }
+    },
+    {
+      "id": "40F8300A2D30AD7E",
+      "x": -14.6,
+      "y": -1.8,
+      "shape": "diamond",
+      "size": 1.0,
+      "preset": "el_side",
+      "dependencies": [
+        "3C51E9A3764B335F"
+      ],
+      "tasks": [
+        {
+          "id": "231B1BF6BAC3B506",
+          "type": "item",
+          "item": {
+            "id": "irons_spellbooks:cursed_doll_spell_book",
+            "count": 1
+          },
+          "count": 1,
+          "consume_items": false
+        }
+      ],
+      "rewards": [
+        {
+          "id": "3CD3B5FE40A30FB7",
+          "type": "xp",
+          "xp": 12
+        }
+      ],
+      "tags": [
+        "entrelumen_side"
+      ],
+      "optional": true,
+      "icon": {
+        "id": "irons_spellbooks:cursed_doll_spell_book"
+      }
+    },
+    {
+      "id": "6095C571C61BE84F",
+      "x": -16.4,
+      "y": 2.0,
+      "shape": "el_sunburst",
+      "size": 3.0,
+      "preset": "el_capstone",
+      "dependencies": [
+        "3C51E9A3764B335F",
+        "122E552959C3FE9C",
+        "04CB9B7F34B0FA10",
+        "4CB0382E9F2BD114"
+      ],
+      "tasks": [
+        {
+          "id": "42AC8942AF7551A7",
+          "type": "item",
+          "item": {
+            "id": "irons_spellbooks:netherite_spell_book",
+            "count": 1
+          },
+          "count": 1,
+          "consume_items": false
+        }
+      ],
+      "rewards": [
+        {
+          "id": "6C6489B32600D5FC",
+          "type": "xp",
+          "xp": 60
+        },
+        {
+          "id": "2B18117F8101600A",
+          "type": "item",
+          "item": {
+            "id": "ftbquests:lootcrate",
+            "components": {
+              "ftbquests:loot_crate": "entrelumen_crate_4"
+            }
+          },
+          "count": 1
+        },
+        {
+          "id": "5CB12B61ABC95010",
+          "type": "command",
+          "auto": "invisible",
+          "command": "playsound minecraft:ui.toast.challenge_complete master {p} ~ ~ ~ 0.8 1",
+          "permission_level": 2,
+          "silent": true
+        }
+      ],
+      "tags": [
+        "entrelumen_capstone"
+      ],
+      "icon": {
+        "id": "irons_spellbooks:netherite_spell_book"
+      },
+      "progression_mode": "linear",
+      "hide_details_until_startable": true,
+      "hide_dependency_lines": true,
+      "min_required_dependencies": 3
+    },
+    {
+      "id": "6DCA9D2256EC5E7E",
+      "x": -4.2,
+      "y": 9.6,
+      "shape": "diamond",
+      "size": 1.0,
+      "preset": "el_side",
+      "dependencies": [
+        "49A652D6796F6545"
+      ],
+      "tasks": [
+        {
+          "id": "60AAE799E36AA2ED",
+          "type": "item",
+          "item": {
+            "id": "irons_spellbooks:netherite_mage_helmet",
+            "count": 1
+          },
+          "count": 1,
+          "consume_items": false
+        },
+        {
+          "id": "1635EDF4CC4CA9D7",
+          "type": "item",
+          "item": {
+            "id": "irons_spellbooks:netherite_mage_chestplate",
+            "count": 1
+          },
+          "count": 1,
+          "consume_items": false
+        },
+        {
+          "id": "021BD3A7B2B3D3F7",
+          "type": "item",
+          "item": {
+            "id": "irons_spellbooks:netherite_mage_leggings",
+            "count": 1
+          },
+          "count": 1,
+          "consume_items": false
+        },
+        {
+          "id": "39D268A8C759C0C6",
+          "type": "item",
+          "item": {
+            "id": "irons_spellbooks:netherite_mage_boots",
+            "count": 1
+          },
+          "count": 1,
+          "consume_items": false
+        }
+      ],
+      "rewards": [
+        {
+          "id": "47E04D2957655C8F",
+          "type": "xp",
+          "xp": 12
+        }
+      ],
+      "tags": [
+        "entrelumen_side"
+      ],
+      "optional": true,
+      "icon": {
+        "id": "irons_spellbooks:netherite_mage_helmet"
+      }
+    },
+    {
+      "id": "12AE111657AC7782",
+      "x": -1.4,
+      "y": 9.6,
+      "shape": "diamond",
+      "size": 1.0,
+      "preset": "el_side",
+      "dependencies": [
+        "04CB9B7F34B0FA10",
+        "535AE19EBA0DBC90"
+      ],
+      "tasks": [
+        {
+          "id": "4538F532B8221FDF",
+          "type": "item",
+          "item": {
+            "id": "irons_spellbooks:infernal_sorcerer_chestplate",
+            "count": 1
+          },
+          "count": 1,
+          "consume_items": false
+        }
+      ],
+      "rewards": [
+        {
+          "id": "6C77E84B5FF335EE",
+          "type": "xp",
+          "xp": 12
+        }
+      ],
+      "tags": [
+        "entrelumen_side"
+      ],
+      "optional": true,
+      "icon": {
+        "id": "irons_spellbooks:infernal_sorcerer_chestplate"
+      },
+      "hide_dependency_lines": true
+    },
+    {
+      "id": "0F049277E5D4B154",
+      "x": 1.4,
+      "y": 9.6,
+      "shape": "diamond",
+      "size": 1.0,
+      "preset": "el_side",
+      "dependencies": [
+        "04CB9B7F34B0FA10",
+        "535AE19EBA0DBC90"
+      ],
+      "tasks": [
+        {
+          "id": "257671D37A80299F",
+          "type": "item",
+          "item": {
+            "id": "irons_spellbooks:paladin_chestplate",
+            "count": 1
+          },
+          "count": 1,
+          "consume_items": false
+        }
+      ],
+      "rewards": [
+        {
+          "id": "2C2000B73735533B",
+          "type": "xp",
+          "xp": 12
+        }
+      ],
+      "tags": [
+        "entrelumen_side"
+      ],
+      "optional": true,
+      "icon": {
+        "id": "irons_spellbooks:paladin_chestplate"
+      },
+      "hide_dependency_lines": true
+    },
+    {
+      "id": "6A48B3ADC1F0474F",
+      "x": 4.2,
+      "y": 9.6,
+      "shape": "diamond",
+      "size": 1.0,
+      "preset": "el_side",
+      "dependencies": [
+        "04CB9B7F34B0FA10",
+        "535AE19EBA0DBC90"
+      ],
+      "tasks": [
+        {
+          "id": "3FC9AA113FC94E7B",
+          "type": "item",
+          "item": {
+            "id": "irons_spellbooks:speed_boots",
+            "count": 1
+          },
+          "count": 1,
+          "consume_items": false
+        }
+      ],
+      "rewards": [
+        {
+          "id": "38280A41B5A73752",
+          "type": "xp",
+          "xp": 12
+        }
+      ],
+      "tags": [
+        "entrelumen_side"
+      ],
+      "optional": true,
+      "icon": {
+        "id": "irons_spellbooks:speed_boots"
+      },
+      "hide_dependency_lines": true
+    },
+    {
+      "id": "6ADFA6C54B457EEA",
+      "x": 0.0,
+      "y": 13.2,
+      "shape": "el_star",
+      "size": 1.0,
+      "preset": "el_secret",
+      "dependencies": [
+        "6DCA9D2256EC5E7E"
+      ],
+      "tasks": [
+        {
+          "id": "5437C0039DA7EADB",
+          "type": "advancement",
+          "advancement": "irons_spellbooks:irons_spellbooks/staff_lightning_rod",
+          "criterion": ""
+        }
+      ],
+      "rewards": [
+        {
+          "id": "4AFFCA37975D054B",
+          "type": "xp",
+          "xp": 12
+        },
+        {
+          "id": "2B185058B3F6E0E9",
+          "type": "random",
+          "table_id": 1181910734
+        },
+        {
+          "id": "23E691495FC90F5F",
+          "type": "toast",
+          "description": "entrelumen.quests.toast.secret",
+          "auto": "invisible"
+        }
+      ],
+      "tags": [
+        "entrelumen_secret"
+      ],
+      "optional": true,
+      "icon": {
+        "id": "irons_spellbooks:lightning_rod"
+      },
+      "invisible": true,
+      "hide_dependency_lines": true
+    },
+    {
+      "id": "17C6528A2DBACDC7",
+      "x": -12.4,
+      "y": 9.8,
+      "shape": "diamond",
+      "size": 1.0,
+      "preset": "el_side",
+      "dependencies": [
+        "0F20910E4E8C2CC8"
+      ],
+      "tasks": [
+        {
+          "id": "20982EAF369576CA",
+          "type": "item",
+          "item": {
+            "id": "irons_spellbooks:mana_ring",
+            "count": 1
+          },
+          "count": 1,
+          "consume_items": false
+        }
+      ],
+      "rewards": [
+        {
+          "id": "727A3E4B4BA0CF26",
+          "type": "xp",
+          "xp": 12
+        }
+      ],
+      "tags": [
+        "entrelumen_side"
+      ],
+      "optional": true,
+      "icon": {
+        "id": "irons_spellbooks:mana_ring"
+      },
+      "hide_dependency_lines": true
+    },
+    {
+      "id": "758939CDF2092C17",
+      "x": -15.2,
+      "y": 9.8,
+      "shape": "diamond",
+      "size": 1.0,
+      "preset": "el_side",
+      "dependencies": [
+        "2C5C02FD1DB072D3"
+      ],
+      "tasks": [
+        {
+          "id": "7015565DC9370339",
+          "type": "item",
+          "item": {
+            "id": "irons_spellbooks:cooldown_ring",
+            "count": 1
+          },
+          "count": 1,
+          "consume_items": false
+        },
+        {
+          "id": "5C3DCE29C723FBA5",
+          "type": "item",
+          "item": {
+            "id": "irons_spellbooks:cast_time_ring",
+            "count": 1
+          },
+          "count": 1,
+          "consume_items": false
+        }
+      ],
+      "rewards": [
+        {
+          "id": "321272A36317C68C",
+          "type": "xp",
+          "xp": 12
+        }
+      ],
+      "tags": [
+        "entrelumen_side"
+      ],
+      "optional": true,
+      "icon": {
+        "id": "irons_spellbooks:cooldown_ring"
+      },
+      "hide_dependency_lines": true
+    },
+    {
+      "id": "2DC8D08D5613ECB6",
+      "x": -18.0,
+      "y": 9.8,
+      "shape": "diamond",
+      "size": 1.0,
+      "preset": "el_side",
+      "dependencies": [
+        "2C5C02FD1DB072D3"
+      ],
+      "tasks": [
+        {
+          "id": "3353276BD9776E13",
+          "type": "item",
+          "item": {
+            "id": "irons_spellbooks:fireward_ring",
+            "count": 1
+          },
+          "count": 1,
+          "consume_items": false
+        },
+        {
+          "id": "5252FEC01A4C9BBE",
+          "type": "item",
+          "item": {
+            "id": "irons_spellbooks:frostward_ring",
+            "count": 1
+          },
+          "count": 1,
+          "consume_items": false
+        },
+        {
+          "id": "60C3CE240D10E4A0",
+          "type": "item",
+          "item": {
+            "id": "irons_spellbooks:poisonward_ring",
+            "count": 1
+          },
+          "count": 1,
+          "consume_items": false
+        }
+      ],
+      "rewards": [
+        {
+          "id": "094A8CBE48B24CEC",
+          "type": "xp",
+          "xp": 12
+        }
+      ],
+      "tags": [
+        "entrelumen_side"
+      ],
+      "optional": true,
+      "icon": {
+        "id": "irons_spellbooks:fireward_ring"
+      },
+      "hide_dependency_lines": true
+    },
+    {
+      "id": "08748D559A2AEDD8",
+      "x": -12.4,
+      "y": 12.8,
+      "shape": "diamond",
+      "size": 1.0,
+      "preset": "el_side",
+      "dependencies": [
+        "2C5C02FD1DB072D3"
+      ],
+      "tasks": [
+        {
+          "id": "779EEAF771DFDCB3",
+          "type": "item",
+          "item": {
+            "id": "irons_spellbooks:affinity_ring",
+            "count": 1
+          },
+          "count": 1,
+          "consume_items": false
+        }
+      ],
+      "rewards": [
+        {
+          "id": "6A99CA9D53AC1797",
+          "type": "xp",
+          "xp": 12
+        }
+      ],
+      "tags": [
+        "entrelumen_side"
+      ],
+      "optional": true,
+      "icon": {
+        "id": "irons_spellbooks:affinity_ring"
+      },
+      "hide_dependency_lines": true
+    },
+    {
+      "id": "09FD5F6876EBD90E",
+      "x": -15.2,
+      "y": 12.8,
+      "shape": "diamond",
+      "size": 1.0,
+      "preset": "el_side",
+      "dependencies": [
+        "2C5C02FD1DB072D3"
+      ],
+      "tasks": [
+        {
+          "id": "2BA815AB2EA5450D",
+          "type": "item",
+          "item": {
+            "id": "irons_spellbooks:conjurers_talisman",
+            "count": 1
+          },
+          "count": 1,
+          "consume_items": false
+        },
+        {
+          "id": "41D355CCC149D6C9",
+          "type": "item",
+          "item": {
+            "id": "irons_spellbooks:greater_conjurers_talisman",
+            "count": 1
+          },
+          "count": 1,
+          "consume_items": false
+        }
+      ],
+      "rewards": [
+        {
+          "id": "100DA55112B42B98",
+          "type": "xp",
+          "xp": 12
+        }
+      ],
+      "tags": [
+        "entrelumen_side"
+      ],
+      "optional": true,
+      "icon": {
+        "id": "irons_spellbooks:conjurers_talisman"
+      },
+      "hide_dependency_lines": true,
+      "require_sequential_tasks": true
+    },
+    {
+      "id": "6AD961EF77B52800",
+      "x": 11.8,
+      "y": 9.8,
+      "shape": "pentagon",
+      "size": 2.0,
+      "preset": "el_milestone_irons",
+      "dependencies": [
+        "5300AB8C0C6E4322"
+      ],
+      "tasks": [
+        {
+          "id": "6BC68A3AAC90FBC0",
+          "type": "item",
+          "item": {
+            "id": "irons_jewelry:jewelcrafting_station",
+            "count": 1
+          },
+          "count": 1,
+          "consume_items": false
+        },
+        {
+          "id": "13BED96D5C2D33E7",
+          "type": "item",
+          "item": {
+            "id": "irons_jewelry:jewelcrafting_guide",
+            "count": 1
+          },
+          "count": 1,
+          "consume_items": false
+        }
+      ],
+      "rewards": [
+        {
+          "id": "5D617E7369F5BBF5",
+          "type": "xp",
+          "xp": 24
+        },
+        {
+          "id": "14C436079A460D52",
+          "type": "choice",
+          "table_id": 52659485
+        }
+      ],
+      "tags": [
+        "entrelumen_milestone"
+      ],
+      "icon": {
+        "id": "irons_jewelry:jewelcrafting_station"
+      },
+      "hide_dependency_lines": true
+    },
+    {
+      "id": "483693B0BA94F259",
+      "x": 14.8,
+      "y": 9.8,
+      "shape": "square",
+      "size": 1.0,
+      "preset": "el_step",
+      "dependencies": [
+        "6AD961EF77B52800"
+      ],
+      "tasks": [
+        {
+          "id": "6E83223F65E6624B",
+          "type": "item",
+          "item": {
+            "id": "irons_jewelry:ring",
+            "count": 1
+          },
+          "count": 1,
+          "consume_items": false
+        },
+        {
+          "id": "373ADA8CCF680633",
+          "type": "item",
+          "item": {
+            "id": "irons_jewelry:necklace",
+            "count": 1
+          },
+          "count": 1,
+          "consume_items": false
+        }
+      ],
+      "rewards": [
+        {
+          "id": "28B7C552EDD1F908",
+          "type": "xp",
+          "xp": 12
+        }
+      ],
+      "tags": [
+        "entrelumen_step"
+      ],
+      "icon": {
+        "id": "irons_jewelry:ring"
+      }
+    },
+    {
+      "id": "7BB1F830FFEAE450",
+      "x": 11.8,
+      "y": 13.0,
+      "shape": "el_tag",
+      "size": 1.0,
+      "preset": "el_tip",
+      "dependencies": [
+        "6AD961EF77B52800"
+      ],
+      "tasks": [
+        {
+          "id": "6398E215A52FA551",
+          "type": "checkmark"
+        }
+      ],
+      "rewards": [],
+      "tags": [
+        "entrelumen_tip"
+      ],
+      "optional": true,
+      "icon_scale": 0.75,
+      "disable_toast": true,
+      "hide_lock_icon": true
+    },
+    {
+      "id": "2DCA6BC6C8B7FF81",
+      "x": 17.8,
+      "y": 9.8,
+      "shape": "diamond",
+      "size": 1.0,
+      "preset": "el_side",
+      "dependencies": [
+        "483693B0BA94F259"
+      ],
+      "tasks": [
+        {
+          "id": "3DE41980DB39B97F",
+          "type": "item",
+          "item": {
+            "id": "irons_jewelry:ruby",
+            "count": 1
+          },
+          "count": 1,
+          "consume_items": false
+        },
+        {
+          "id": "2F0893154335245C",
+          "type": "item",
+          "item": {
+            "id": "irons_jewelry:sapphire",
+            "count": 1
+          },
+          "count": 1,
+          "consume_items": false
+        },
+        {
+          "id": "30DA65D9F81A2A6C",
+          "type": "item",
+          "item": {
+            "id": "irons_jewelry:topaz",
+            "count": 1
+          },
+          "count": 1,
+          "consume_items": false
+        },
+        {
+          "id": "6428104D567DD77B",
+          "type": "item",
+          "item": {
+            "id": "irons_jewelry:moonstone",
+            "count": 1
+          },
+          "count": 1,
+          "consume_items": false
+        },
+        {
+          "id": "3924CBE23C83605F",
+          "type": "item",
+          "item": {
+            "id": "irons_jewelry:peridot",
+            "count": 1
+          },
+          "count": 1,
+          "consume_items": false
+        },
+        {
+          "id": "1AFBFA091B53BFFF",
+          "type": "item",
+          "item": {
+            "id": "irons_jewelry:onyx",
+            "count": 1
+          },
+          "count": 1,
+          "consume_items": false
+        },
+        {
+          "id": "1DF3F170F3F35A16",
+          "type": "item",
+          "item": {
+            "id": "irons_jewelry:garnet",
+            "count": 1
+          },
+          "count": 1,
+          "consume_items": false
+        }
+      ],
+      "rewards": [
+        {
+          "id": "6C0C0FB72E4693CF",
+          "type": "xp",
+          "xp": 12
+        }
+      ],
+      "tags": [
+        "entrelumen_side"
+      ],
+      "optional": true,
+      "icon": {
+        "id": "irons_jewelry:ruby"
+      }
+    },
+    {
+      "id": "1068D9D37D579C0A",
+      "x": 14.8,
+      "y": 12.8,
+      "shape": "square",
+      "size": 1.0,
+      "preset": "el_step",
+      "dependencies": [
+        "483693B0BA94F259"
+      ],
+      "tasks": [
+        {
+          "id": "29D493F4B36B6A5B",
+          "type": "item",
+          "item": {
+            "id": "irons_jewelry:recipe",
+            "count": 1
+          },
+          "count": 1,
+          "consume_items": false
+        }
+      ],
+      "rewards": [
+        {
+          "id": "25752ADB84382EDA",
+          "type": "xp",
+          "xp": 12
+        }
+      ],
+      "tags": [
+        "entrelumen_step"
+      ],
+      "icon": {
+        "id": "irons_jewelry:recipe"
+      }
+    },
+    {
+      "id": "5581113C7A4BCF60",
+      "x": 17.8,
+      "y": 12.8,
+      "shape": "el_tag",
+      "size": 1.0,
+      "preset": "el_tip",
+      "dependencies": [
+        "1068D9D37D579C0A"
+      ],
+      "tasks": [
+        {
+          "id": "13C5F6844E02CF4E",
+          "type": "checkmark"
+        }
+      ],
+      "rewards": [],
+      "tags": [
+        "entrelumen_tip"
+      ],
+      "optional": true,
+      "icon_scale": 0.75,
+      "disable_toast": true,
+      "hide_lock_icon": true
+    },
+    {
+      "id": "4742E138AC0E5B46",
+      "x": 20.8,
+      "y": 12.8,
+      "shape": "el_tag",
+      "size": 1.0,
+      "preset": "el_tip",
+      "dependencies": [
+        "1068D9D37D579C0A"
+      ],
+      "tasks": [
+        {
+          "id": "649F6291734B8339",
+          "type": "checkmark"
+        }
+      ],
+      "rewards": [],
+      "tags": [
+        "entrelumen_tip"
+      ],
+      "optional": true,
+      "icon_scale": 0.75,
+      "disable_toast": true,
+      "hide_lock_icon": true
+    }
+  ],
+  "quest_links": [
+    {
+      "id": "0F01B8FA53AD8818",
+      "linked_quest": "685ED6CB1E5B9681",
+      "x": -6.4,
+      "y": 5.0,
+      "shape": "octagon",
+      "size": 1.0
+    },
+    {
+      "id": "08E385D440D86203",
+      "linked_quest": "4BCEABDD4D9E618C",
+      "x": -21.0,
+      "y": 11.4,
+      "shape": "octagon",
+      "size": 1.0
+    }
+  ],
+  "images": [
+    {
+      "id": "5817F02A9AB05A7A",
+      "x": 0.0,
+      "y": 0.1857,
+      "width": 10.5667,
+      "height": 12.0,
+      "rotation": 0.0,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "color": 4078214,
+      "alpha": 36,
+      "order": -3,
+      "position_locked": true
+    },
+    {
+      "id": "5CE78080821D044D",
+      "x": -4.2429,
+      "y": -4.6714,
+      "width": 0.6667,
+      "height": 0.6667,
+      "rotation": 0.0,
+      "image": "entrelumen:textures/gui/quests/corner.png",
+      "order": -1,
+      "position_locked": true
+    },
+    {
+      "id": "611CFE9C9DBF2E74",
+      "x": 4.2429,
+      "y": -4.6714,
+      "width": 0.6667,
+      "height": 0.6667,
+      "rotation": 90.0,
+      "image": "entrelumen:textures/gui/quests/corner.png",
+      "order": -1,
+      "position_locked": true
+    },
+    {
+      "id": "290A4DC5C8F33788",
+      "x": 4.2429,
+      "y": 5.0429,
+      "width": 0.6667,
+      "height": 0.6667,
+      "rotation": 180.0,
+      "image": "entrelumen:textures/gui/quests/corner.png",
+      "order": -1,
+      "position_locked": true
+    },
+    {
+      "id": "2FC5B39A9CB9A77A",
+      "x": -4.2429,
+      "y": 5.0429,
+      "width": 0.6667,
+      "height": 0.6667,
+      "rotation": 270.0,
+      "image": "entrelumen:textures/gui/quests/corner.png",
+      "order": -1,
+      "position_locked": true
+    },
+    {
+      "id": "26CDA27E983D81D8",
+      "x": 0.0,
+      "y": 5.6093,
+      "width": 4.7917,
+      "height": 0.375,
+      "rotation": 0.0,
+      "image": "",
+      "text_on_image": true,
+      "text_shadow": true,
+      "order": 5,
+      "position_locked": true
+    },
+    {
+      "id": "0CE985F002F028B6",
+      "x": -15.2,
+      "y": -11.9143,
+      "width": 8.7,
+      "height": 7.1,
+      "rotation": 0.0,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "color": 4078214,
+      "alpha": 36,
+      "order": -3,
+      "position_locked": true
+    },
+    {
+      "id": "0157143D95975533",
+      "x": -18.6429,
+      "y": -14.6714,
+      "width": 0.6667,
+      "height": 0.6667,
+      "rotation": 0.0,
+      "image": "entrelumen:textures/gui/quests/corner.png",
+      "order": -1,
+      "position_locked": true
+    },
+    {
+      "id": "709CDE8F80A425AE",
+      "x": -11.7571,
+      "y": -14.6714,
+      "width": 0.6667,
+      "height": 0.6667,
+      "rotation": 90.0,
+      "image": "entrelumen:textures/gui/quests/corner.png",
+      "order": -1,
+      "position_locked": true
+    },
+    {
+      "id": "3EC35166781E42DF",
+      "x": -11.7571,
+      "y": -9.1571,
+      "width": 0.6667,
+      "height": 0.6667,
+      "rotation": 180.0,
+      "image": "entrelumen:textures/gui/quests/corner.png",
+      "order": -1,
+      "position_locked": true
+    },
+    {
+      "id": "423C6685C9277DA8",
+      "x": -18.6429,
+      "y": -9.1571,
+      "width": 0.6667,
+      "height": 0.6667,
+      "rotation": 270.0,
+      "image": "entrelumen:textures/gui/quests/corner.png",
+      "order": -1,
+      "position_locked": true
+    },
+    {
+      "id": "0BDA48FEC078E57E",
+      "x": -15.2,
+      "y": -15.2379,
+      "width": 1.4583,
+      "height": 0.375,
+      "rotation": 0.0,
+      "image": "",
+      "text_on_image": true,
+      "text_shadow": true,
+      "order": 5,
+      "position_locked": true
+    },
+    {
+      "id": "30E5C3C0B763C517",
+      "x": 0.0,
+      "y": -13.4,
+      "width": 10.1,
+      "height": 11.0333,
+      "rotation": 0.0,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "color": 4078214,
+      "alpha": 36,
+      "order": -3,
+      "position_locked": true
+    },
+    {
+      "id": "1411F4FFB0DD0E83",
+      "x": -4.0429,
+      "y": -17.8429,
+      "width": 0.6667,
+      "height": 0.6667,
+      "rotation": 0.0,
+      "image": "entrelumen:textures/gui/quests/corner.png",
+      "order": -1,
+      "position_locked": true
+    },
+    {
+      "id": "627A542E921DEF00",
+      "x": 4.0429,
+      "y": -17.8429,
+      "width": 0.6667,
+      "height": 0.6667,
+      "rotation": 90.0,
+      "image": "entrelumen:textures/gui/quests/corner.png",
+      "order": -1,
+      "position_locked": true
+    },
+    {
+      "id": "7BE55A37247D4824",
+      "x": 4.0429,
+      "y": -8.9571,
+      "width": 0.6667,
+      "height": 0.6667,
+      "rotation": 180.0,
+      "image": "entrelumen:textures/gui/quests/corner.png",
+      "order": -1,
+      "position_locked": true
+    },
+    {
+      "id": "3D8E509A9E8EE029",
+      "x": -4.0429,
+      "y": -8.9571,
+      "width": 0.6667,
+      "height": 0.6667,
+      "rotation": 270.0,
+      "image": "entrelumen:textures/gui/quests/corner.png",
+      "order": -1,
+      "position_locked": true
+    },
+    {
+      "id": "37759B7DF67D1BB5",
+      "x": 0.0,
+      "y": -18.4093,
+      "width": 3.1667,
+      "height": 0.375,
+      "rotation": 0.0,
+      "image": "",
+      "text_on_image": true,
+      "text_shadow": true,
+      "order": 5,
+      "position_locked": true
+    },
+    {
+      "id": "6CAD80AA47F4BF5D",
+      "x": 16.7,
+      "y": -12.9,
+      "width": 14.0667,
+      "height": 9.8667,
+      "rotation": 0.0,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "color": 4078214,
+      "alpha": 36,
+      "order": -3,
+      "position_locked": true
+    },
+    {
+      "id": "518B894607949684",
+      "x": 10.9571,
+      "y": -16.8429,
+      "width": 0.6667,
+      "height": 0.6667,
+      "rotation": 0.0,
+      "image": "entrelumen:textures/gui/quests/corner.png",
+      "order": -1,
+      "position_locked": true
+    },
+    {
+      "id": "506A9E772008FA32",
+      "x": 22.4429,
+      "y": -16.8429,
+      "width": 0.6667,
+      "height": 0.6667,
+      "rotation": 90.0,
+      "image": "entrelumen:textures/gui/quests/corner.png",
+      "order": -1,
+      "position_locked": true
+    },
+    {
+      "id": "1EF88A13F4072509",
+      "x": 22.4429,
+      "y": -8.9571,
+      "width": 0.6667,
+      "height": 0.6667,
+      "rotation": 180.0,
+      "image": "entrelumen:textures/gui/quests/corner.png",
+      "order": -1,
+      "position_locked": true
+    },
+    {
+      "id": "29C2141C9D441D73",
+      "x": 10.9571,
+      "y": -8.9571,
+      "width": 0.6667,
+      "height": 0.6667,
+      "rotation": 270.0,
+      "image": "entrelumen:textures/gui/quests/corner.png",
+      "order": -1,
+      "position_locked": true
+    },
+    {
+      "id": "13D3FE71F4921983",
+      "x": 16.7,
+      "y": -17.4093,
+      "width": 3.2917,
+      "height": 0.375,
+      "rotation": 0.0,
+      "image": "",
+      "text_on_image": true,
+      "text_shadow": true,
+      "order": 5,
+      "position_locked": true
+    },
+    {
+      "id": "6D6D3FA48D3F2084",
+      "x": 16.7,
+      "y": 0.2,
+      "width": 14.0667,
+      "height": 7.3,
+      "rotation": 0.0,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "color": 4078214,
+      "alpha": 36,
+      "order": -3,
+      "position_locked": true
+    },
+    {
+      "id": "5FC8F8500BE646FB",
+      "x": 10.9571,
+      "y": -2.6429,
+      "width": 0.6667,
+      "height": 0.6667,
+      "rotation": 0.0,
+      "image": "entrelumen:textures/gui/quests/corner.png",
+      "order": -1,
+      "position_locked": true
+    },
+    {
+      "id": "5A59CF873A34E0F9",
+      "x": 22.4429,
+      "y": -2.6429,
+      "width": 0.6667,
+      "height": 0.6667,
+      "rotation": 90.0,
+      "image": "entrelumen:textures/gui/quests/corner.png",
+      "order": -1,
+      "position_locked": true
+    },
+    {
+      "id": "3F6FA5C75619D86B",
+      "x": 22.4429,
+      "y": 3.0429,
+      "width": 0.6667,
+      "height": 0.6667,
+      "rotation": 180.0,
+      "image": "entrelumen:textures/gui/quests/corner.png",
+      "order": -1,
+      "position_locked": true
+    },
+    {
+      "id": "64B395F8EFB64710",
+      "x": 10.9571,
+      "y": 3.0429,
+      "width": 0.6667,
+      "height": 0.6667,
+      "rotation": 270.0,
+      "image": "entrelumen:textures/gui/quests/corner.png",
+      "order": -1,
+      "position_locked": true
+    },
+    {
+      "id": "01AF2ABDA469572D",
+      "x": 16.7,
+      "y": 3.6093,
+      "width": 3.9583,
+      "height": 0.375,
+      "rotation": 0.0,
+      "image": "",
+      "text_on_image": true,
+      "text_shadow": true,
+      "order": 5,
+      "position_locked": true
+    },
+    {
+      "id": "1FF3FC1825BE3367",
+      "x": -14.4286,
+      "y": -0.7714,
+      "width": 8.7667,
+      "height": 10.6333,
+      "rotation": 0.0,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "color": 4078214,
+      "alpha": 36,
+      "order": -3,
+      "position_locked": true
+    },
+    {
+      "id": "7945204A65B0A03C",
+      "x": -17.9,
+      "y": -5.0429,
+      "width": 0.6667,
+      "height": 0.6667,
+      "rotation": 0.0,
+      "image": "entrelumen:textures/gui/quests/corner.png",
+      "order": -1,
+      "position_locked": true
+    },
+    {
+      "id": "0A473B6593E6CB65",
+      "x": -10.9571,
+      "y": -5.0429,
+      "width": 0.6667,
+      "height": 0.6667,
+      "rotation": 90.0,
+      "image": "entrelumen:textures/gui/quests/corner.png",
+      "order": -1,
+      "position_locked": true
+    },
+    {
+      "id": "2F88F72B374D6210",
+      "x": -10.9571,
+      "y": 3.5,
+      "width": 0.6667,
+      "height": 0.6667,
+      "rotation": 180.0,
+      "image": "entrelumen:textures/gui/quests/corner.png",
+      "order": -1,
+      "position_locked": true
+    },
+    {
+      "id": "2A9355420E1EE214",
+      "x": -17.9,
+      "y": 3.5,
+      "width": 0.6667,
+      "height": 0.6667,
+      "rotation": 270.0,
+      "image": "entrelumen:textures/gui/quests/corner.png",
+      "order": -1,
+      "position_locked": true
+    },
+    {
+      "id": "6873C6B0DB9C4628",
+      "x": -14.4286,
+      "y": -5.6093,
+      "width": 3.5,
+      "height": 0.375,
+      "rotation": 0.0,
+      "image": "",
+      "text_on_image": true,
+      "text_shadow": true,
+      "order": 5,
+      "position_locked": true
+    },
+    {
+      "id": "3616C92B96B970CB",
+      "x": 0.0,
+      "y": 11.4,
+      "width": 11.9667,
+      "height": 6.3667,
+      "rotation": 0.0,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "color": 4078214,
+      "alpha": 36,
+      "order": -3,
+      "position_locked": true
+    },
+    {
+      "id": "510CF9F35B6F4FC3",
+      "x": -4.8429,
+      "y": 8.9571,
+      "width": 0.6667,
+      "height": 0.6667,
+      "rotation": 0.0,
+      "image": "entrelumen:textures/gui/quests/corner.png",
+      "order": -1,
+      "position_locked": true
+    },
+    {
+      "id": "2FC2EB5CD9EE402A",
+      "x": 4.8429,
+      "y": 8.9571,
+      "width": 0.6667,
+      "height": 0.6667,
+      "rotation": 90.0,
+      "image": "entrelumen:textures/gui/quests/corner.png",
+      "order": -1,
+      "position_locked": true
+    },
+    {
+      "id": "64444037A6E395E4",
+      "x": 4.8429,
+      "y": 13.8429,
+      "width": 0.6667,
+      "height": 0.6667,
+      "rotation": 180.0,
+      "image": "entrelumen:textures/gui/quests/corner.png",
+      "order": -1,
+      "position_locked": true
+    },
+    {
+      "id": "0BA283263AC17292",
+      "x": -4.8429,
+      "y": 13.8429,
+      "width": 0.6667,
+      "height": 0.6667,
+      "rotation": 270.0,
+      "image": "entrelumen:textures/gui/quests/corner.png",
+      "order": -1,
+      "position_locked": true
+    },
+    {
+      "id": "5A0AFE505760B900",
+      "x": 0.0,
+      "y": 14.4093,
+      "width": 5.6667,
+      "height": 0.375,
+      "rotation": 0.0,
+      "image": "",
+      "text_on_image": true,
+      "text_shadow": true,
+      "order": 5,
+      "position_locked": true
+    },
+    {
+      "id": "5EA1BCD7650E4953",
+      "x": -15.2,
+      "y": 11.3,
+      "width": 8.7,
+      "height": 5.6667,
+      "rotation": 0.0,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "color": 4078214,
+      "alpha": 36,
+      "order": -3,
+      "position_locked": true
+    },
+    {
+      "id": "3630F9A2F3EC366C",
+      "x": -18.6429,
+      "y": 9.1571,
+      "width": 0.6667,
+      "height": 0.6667,
+      "rotation": 0.0,
+      "image": "entrelumen:textures/gui/quests/corner.png",
+      "order": -1,
+      "position_locked": true
+    },
+    {
+      "id": "07800BE9904751AD",
+      "x": -11.7571,
+      "y": 9.1571,
+      "width": 0.6667,
+      "height": 0.6667,
+      "rotation": 90.0,
+      "image": "entrelumen:textures/gui/quests/corner.png",
+      "order": -1,
+      "position_locked": true
+    },
+    {
+      "id": "7297C3CB0C21685B",
+      "x": -11.7571,
+      "y": 13.4429,
+      "width": 0.6667,
+      "height": 0.6667,
+      "rotation": 180.0,
+      "image": "entrelumen:textures/gui/quests/corner.png",
+      "order": -1,
+      "position_locked": true
+    },
+    {
+      "id": "1750B961F749B09A",
+      "x": -18.6429,
+      "y": 13.4429,
+      "width": 0.6667,
+      "height": 0.6667,
+      "rotation": 270.0,
+      "image": "entrelumen:textures/gui/quests/corner.png",
+      "order": -1,
+      "position_locked": true
+    },
+    {
+      "id": "104942FF07BBBCA6",
+      "x": -15.2,
+      "y": 14.0093,
+      "width": 3.9583,
+      "height": 0.375,
+      "rotation": 0.0,
+      "image": "",
+      "text_on_image": true,
+      "text_shadow": true,
+      "order": 5,
+      "position_locked": true
+    },
+    {
+      "id": "099D8737F91B08FA",
+      "x": 16.0857,
+      "y": 11.1857,
+      "width": 13.1667,
+      "height": 6.4,
+      "rotation": 0.0,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "color": 4078214,
+      "alpha": 36,
+      "order": -3,
+      "position_locked": true
+    },
+    {
+      "id": "38999D7EECD946E4",
+      "x": 10.7286,
+      "y": 8.7286,
+      "width": 0.6667,
+      "height": 0.6667,
+      "rotation": 0.0,
+      "image": "entrelumen:textures/gui/quests/corner.png",
+      "order": -1,
+      "position_locked": true
+    },
+    {
+      "id": "3F0225BC05072BB1",
+      "x": 21.4429,
+      "y": 8.7286,
+      "width": 0.6667,
+      "height": 0.6667,
+      "rotation": 90.0,
+      "image": "entrelumen:textures/gui/quests/corner.png",
+      "order": -1,
+      "position_locked": true
+    },
+    {
+      "id": "47CEF126B8962366",
+      "x": 21.4429,
+      "y": 13.6429,
+      "width": 0.6667,
+      "height": 0.6667,
+      "rotation": 180.0,
+      "image": "entrelumen:textures/gui/quests/corner.png",
+      "order": -1,
+      "position_locked": true
+    },
+    {
+      "id": "667242223F45997B",
+      "x": 10.7286,
+      "y": 13.6429,
+      "width": 0.6667,
+      "height": 0.6667,
+      "rotation": 270.0,
+      "image": "entrelumen:textures/gui/quests/corner.png",
+      "order": -1,
+      "position_locked": true
+    },
+    {
+      "id": "3791F0DC3C3CDE85",
+      "x": 16.0857,
+      "y": 14.2093,
+      "width": 5.0417,
+      "height": 0.375,
+      "rotation": 0.0,
+      "image": "",
+      "text_on_image": true,
+      "text_shadow": true,
+      "order": 5,
+      "position_locked": true
+    },
+    {
+      "id": "004FA5B82A9604B7",
+      "x": -24.0,
+      "y": 0.0,
+      "width": 47.32,
+      "height": 0.0833,
+      "rotation": 90.0,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "color": 7307224,
+      "alpha": 55,
+      "order": -2,
+      "position_locked": true
+    },
+    {
+      "id": "13F5DC297DAAEF2F",
+      "x": -8.0,
+      "y": 0.0,
+      "width": 47.32,
+      "height": 0.0833,
+      "rotation": 90.0,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "color": 7307224,
+      "alpha": 80,
+      "order": -2,
+      "position_locked": true
+    },
+    {
+      "id": "65FE017049B82592",
+      "x": 8.0,
+      "y": 0.0,
+      "width": 47.32,
+      "height": 0.0833,
+      "rotation": 90.0,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "color": 7307224,
+      "alpha": 80,
+      "order": -2,
+      "position_locked": true
+    },
+    {
+      "id": "66CB002DEAF3DB50",
+      "x": 24.0,
+      "y": 0.0,
+      "width": 47.32,
+      "height": 0.0833,
+      "rotation": 90.0,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "color": 7307224,
+      "alpha": 55,
+      "order": -2,
+      "position_locked": true
+    },
+    {
+      "id": "28801F535FF4F409",
+      "x": 0.0,
+      "y": -19.5,
+      "width": 58.24,
+      "height": 0.0833,
+      "rotation": 0.0,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "color": 7307224,
+      "alpha": 55,
+      "order": -2,
+      "position_locked": true
+    },
+    {
+      "id": "4779A42234EEF2EB",
+      "x": 0.0,
+      "y": -6.5,
+      "width": 58.24,
+      "height": 0.0833,
+      "rotation": 0.0,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "color": 7307224,
+      "alpha": 80,
+      "order": -2,
+      "position_locked": true
+    },
+    {
+      "id": "3C5596E95789FB0B",
+      "x": 0.0,
+      "y": 6.5,
+      "width": 58.24,
+      "height": 0.0833,
+      "rotation": 0.0,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "color": 7307224,
+      "alpha": 80,
+      "order": -2,
+      "position_locked": true
+    },
+    {
+      "id": "127C604AC59EBF25",
+      "x": 0.0,
+      "y": 19.5,
+      "width": 58.24,
+      "height": 0.0833,
+      "rotation": 0.0,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "color": 7307224,
+      "alpha": 55,
+      "order": -2,
+      "position_locked": true
+    },
+    {
+      "id": "70C1F36F799F3A94",
+      "x": -22.4,
+      "y": -17.9,
+      "width": 1.3333,
+      "height": 1.3333,
+      "rotation": 0.0,
+      "image": "irons_spellbooks:textures/item/nature_rune.png",
+      "order": -1,
+      "position_locked": true,
+      "alpha": 210
+    },
+    {
+      "id": "038DE6FE97E40CDD",
+      "x": -6.4,
+      "y": -17.9,
+      "width": 1.3333,
+      "height": 1.3333,
+      "rotation": 0.0,
+      "image": "irons_spellbooks:textures/item/blood_rune.png",
+      "order": -1,
+      "position_locked": true,
+      "alpha": 210
+    },
+    {
+      "id": "6B3A76EDB8E5E748",
+      "x": 22.4,
+      "y": -17.9,
+      "width": 1.3333,
+      "height": 1.3333,
+      "rotation": 0.0,
+      "image": "irons_spellbooks:textures/item/fire_rune.png",
+      "order": -1,
+      "position_locked": true,
+      "alpha": 210
+    },
+    {
+      "id": "710BEE1BB2B7EF30",
+      "x": -22.4,
+      "y": -4.9,
+      "width": 1.3333,
+      "height": 1.3333,
+      "rotation": 0.0,
+      "image": "irons_spellbooks:textures/item/ender_rune.png",
+      "order": -1,
+      "position_locked": true,
+      "alpha": 210
+    },
+    {
+      "id": "01E31F0A8635C158",
+      "x": 22.4,
+      "y": -4.9,
+      "width": 1.3333,
+      "height": 1.3333,
+      "rotation": 0.0,
+      "image": "irons_spellbooks:textures/item/ice_rune.png",
+      "order": -1,
+      "position_locked": true,
+      "alpha": 210
+    },
+    {
+      "id": "5C58271B7D856F11",
+      "x": -22.4,
+      "y": 17.9,
+      "width": 1.3333,
+      "height": 1.3333,
+      "rotation": 0.0,
+      "image": "irons_spellbooks:textures/item/holy_rune.png",
+      "order": -1,
+      "position_locked": true,
+      "alpha": 210
+    },
+    {
+      "id": "5549897354FFCB6A",
+      "x": 6.4,
+      "y": 17.9,
+      "width": 1.3333,
+      "height": 1.3333,
+      "rotation": 0.0,
+      "image": "irons_spellbooks:textures/item/lightning_rune.png",
+      "order": -1,
+      "position_locked": true,
+      "alpha": 210
+    },
+    {
+      "id": "6A4AC2E2DCF6C20D",
+      "x": 22.4,
+      "y": 17.9,
+      "width": 1.3333,
+      "height": 1.3333,
+      "rotation": 0.0,
+      "image": "irons_spellbooks:textures/item/evocation_rune.png",
+      "order": -1,
+      "position_locked": true,
+      "alpha": 210
+    },
+    {
+      "id": "4E78D2267A4BCCD8",
+      "x": -15.6,
+      "y": -23.4,
+      "width": 16.0,
+      "height": 4.0,
+      "rotation": 0.0,
+      "image": "entrelumen:textures/gui/quests/banner_plain.png",
+      "order": -1,
+      "position_locked": true,
+      "color": 7307224
+    },
+    {
+      "id": "44FA71549E05E254",
+      "x": -15.6,
+      "y": -23.9,
+      "width": 9.0,
+      "height": 1.5,
+      "rotation": 0.0,
+      "image": "",
+      "text_on_image": true,
+      "text_shadow": true,
+      "order": 5,
+      "position_locked": true
+    },
+    {
+      "id": "4AD1EC51C982BC22",
+      "x": -15.6,
+      "y": -22.3,
+      "width": 9.8167,
+      "height": 0.375,
+      "rotation": 0.0,
+      "image": "",
+      "text_on_image": true,
+      "text_shadow": true,
+      "order": 5,
+      "position_locked": true
+    },
+    {
+      "id": "76D101C384342E3A",
+      "x": -27.6,
+      "y": -23.0,
+      "width": 5.3333,
+      "height": 5.3333,
+      "rotation": 0.0,
+      "image": "entrelumen:textures/gui/quests/medallion.png",
+      "order": 0,
+      "position_locked": true,
+      "click_action": "open_quest:618DE437ED55A7C4"
+    },
+    {
+      "id": "24FBF899D5D8C97A",
+      "x": -27.6,
+      "y": -23.0,
+      "width": 2.6667,
+      "height": 2.6667,
+      "rotation": 0.0,
+      "image": "irons_spellbooks:textures/item/upgrade_orb_mana.png",
+      "order": 1,
+      "position_locked": true
+    },
+    {
+      "id": "1961F490E4022CAC",
+      "x": -16.0,
+      "y": 1.6,
+      "width": 5.3333,
+      "height": 5.3333,
+      "rotation": 0.0,
+      "image": "entrelumen:textures/gui/quests/sun_heliodor.png",
+      "order": -2,
+      "position_locked": true,
+      "dependency": "6095C571C61BE84F",
+      "alpha": 150
+    }
+  ]
+}
