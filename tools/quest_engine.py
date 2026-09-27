@@ -497,6 +497,15 @@ def compile_task(t, key, index, languages, ctx):
         count = t.get("count", 1)
         assert isinstance(count, int) and 1 <= count <= 4096, f"{key}: count"
         out.update(item={"id": t["item"], "count": 1}, count=count, consume_items=bool(t.get("consume", False)))
+        if "components" in t:
+            # An item that only exists as a component variant (Ars Technica's Arcane Wrench is a Create
+            # wrench with ars_technica:runic_wrench). FTB compares the listed components only ("fuzzy",
+            # ItemMatchingSystem.ComponentMatchType); the default "none" would accept any wrench.
+            components = t["components"]
+            assert isinstance(components, dict) and components and all(ID.fullmatch(k) for k in components), \
+                f"{key}: components"
+            out["item"]["components"] = components
+            out["match_components"] = "fuzzy"
         ctx["items"].add(t["item"])
     elif kind == "advancement":
         assert ID.fullmatch(t["advancement"]), f"{key}: advancement"

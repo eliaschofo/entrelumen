@@ -231,6 +231,8 @@ class Sectors(unittest.TestCase):
         self.assertTrue(any(q.get("hide_dependency_lines") for q in allq))
         self.assertTrue(any(q.get("icon", {}).get("components", {}).get("ftbquests:entity_face") for q in allq))
         self.assertTrue(any(t.get("icon") for q in allq for t in q["tasks"]))
+        # An item variant by component (Ars Technica's Arcane Wrench) is matched fuzzily on that component.
+        self.assertTrue(any(t.get("match_components") == "fuzzy" and t["item"].get("components") for q in allq for t in q["tasks"]))
         subtitle_keys = [k for k in self.lang["en_us"] if k.endswith(".quest_subtitle")]
         self.assertGreater(len(subtitle_keys), 40)
         task_titles = [k for k in self.lang["en_us"] if k.startswith("task.") and k.endswith(".title")]

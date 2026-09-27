@@ -1,6 +1,6 @@
 # Cadenas del libro (quest book v3)
 
-Un archivo `sector_<nombre>.json` por capítulo. Lo compila `tools/quest_engine.py` desde `tools/generate_quests.py`; lo valida contra los JAR fijados `tools/check_guides.py`, y sus contratos están en `tools/test_sector_book.py`. El estándar de una cadena, la gramática, las recompensas y el arte pedido están en [quest-book-v3](../../docs/design/quest-book-v3.md); las reglas de texto, en [quest-copy](../../docs/design/quest-copy.md).
+Un archivo `sector_<nombre>.json` por capítulo, en el formato de `tools/format_sector.py`. Para redactar, `tools/mod_facts.py` y `tools/recipe_of.py` leen de los JAR fijados los ítems con sus nombres EN/ES, los logros, las recetas y la documentación de cada mod. Lo compila `tools/quest_engine.py` desde `tools/generate_quests.py`; lo valida contra los JAR fijados `tools/check_guides.py`, y sus contratos están en `tools/test_sector_book.py`. El estándar de una cadena, la gramática, las recompensas y el arte pedido están en [quest-book-v3](../../docs/design/quest-book-v3.md); las reglas de texto, en [quest-copy](../../docs/design/quest-copy.md).
 
 ## Capítulo
 
@@ -29,7 +29,7 @@ Estilos de `draw`: `ring` (arco o círculo de segmentos), `teeth` (dientes de en
 | `key` | Clave semántica global; el ID es `stable_id("quest:" + key)`. Reusar la clave conserva el progreso |
 | `role` | `entry`, `step`, `milestone`, `side`, `tip`, `info`, `secret`, `bounty`, `boss`, `capstone` |
 | `deps` | Claves de dependencias (pueden ser de otro capítulo) |
-| `task` / `tasks` | `item` (+`count`, `consume`), `checkmark`, `advancement`, `dimension`, `biome`, `structure`, `kill`, `observation` (`observe`, `target`, `ticks`), `stat`; cada una con `title` e `icon` opcionales |
+| `task` / `tasks` | `item` (+`count`, `consume`, `components` para un ítem que sólo existe como variante), `checkmark`, `advancement`, `dimension`, `biome`, `structure`, `kill`, `observation` (`observe`, `target`, `ticks`), `stat`; cada una con `title` e `icon` opcionales |
 | `at` | `{"x", "y"}`, `{"figure", "slot", "out", "along"}` o `{"near", "dx", "dy"}` |
 | `group` | Panel de rama al que pertenece |
 | `icon`, `icon_scale`, `size` | Ícono (ítem, `{"texture"}` o `{"entity"}`), escala del ícono, tamaño si no es el del rol |

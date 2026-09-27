@@ -268,7 +268,6 @@ const entrelumenAuditTargets = {
     "ars_ocultas:altar",
     "ars_technica:calibrated_precision_mechanism",
     "ars_technica:mark_of_technomancy",
-    "ars_technica:runic_spanner",
     "ars_technica:source_motor",
     "ars_technica:transmutation_focus",
     "arseng:me_source_jar",
@@ -1593,7 +1592,7 @@ const entrelumenAuditTargets = {
       "output": "farmersdelight:flint_knife"
     }
   ],
-  "signature": "e11bc2c6bb1e90f6"
+  "signature": "be78d242289ce2af"
 };
 
 ServerEvents.afterRecipes(event => {

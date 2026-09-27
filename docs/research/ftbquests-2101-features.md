@@ -206,7 +206,7 @@ Evidencia: registro en `quest/task/TaskTypes` (y `neoforge/FTBQuestsNeoForge` pa
 | Tipo | Claves | Qué pide | Decisión |
 |---|---|---|---|
 | Comunes | `id`, `title` (idioma `task.<ID>.title`), `icon`, `optional_task`, `disable_toast` | Título e ícono propios de la tarea | **Sí**: `title` en observaciones y bajas («Mirá a tu starbuncle trabajando»). **No** `optional_task` |
-| `item` | `item` (ítem con componentes), `count` (long), `consume_items` (tristate), `only_from_crafting`, `match_components` (`none`, `fuzzy`, `strict`), `task_screen_only` | Tener o entregar ítems | **Sí**: casi todo; `consume_items: true` sólo en encargos. **No**: los filtros de ítem piden FTB Filter System (sólo hay `ItemMatchingSystem` sin adaptadores); `only_from_crafting` y `task_screen_only` |
+| `item` | `item` (ítem con componentes), `count` (long), `consume_items` (tristate), `only_from_crafting`, `match_components` (`none`, `fuzzy`, `strict`), `task_screen_only` | Tener o entregar ítems | **Sí**: casi todo; `consume_items: true` sólo en encargos; `match_components: fuzzy` para un ítem que sólo existe como variante con componente (la llave arcana de Ars Technica es una llave de Create con `ars_technica:runic_wrench`; el valor por defecto `none` aceptaría cualquier llave). **No**: los filtros de ítem piden FTB Filter System (sólo hay `ItemMatchingSystem` sin adaptadores); `only_from_crafting` y `task_screen_only` |
 | `checkmark` | — | Un clic | **Sí**: consejos y notas, sin recompensa |
 | `advancement` | `advancement`, `criterion` (vacío = el logro entero) | Obtener un logro | **Sí**: logros de Create y Ars Nouveau que ya prueban un armado real |
 | `dimension` | `dimension` | Entrar a una dimensión | **Sí** en guías (v2); **Motor** en cadenas |

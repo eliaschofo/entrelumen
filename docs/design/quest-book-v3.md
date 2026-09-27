@@ -93,22 +93,22 @@ Opcionales para más adelante: una textura de línea por motivo (`dependency_lin
 
 ## Validación
 
-Estáticas, sobre `origin/main` b7ed842 más esta rama:
+Estáticas, sobre `origin/main` 81bd9a4 más esta rama:
 
-- `python tools/generate_quests.py --check`: 96 capítulos (8 de historia, 83 guías, 4 cadenas y el hub), 1.906 quests y 18 tablas; IDs globales, grafo sin ciclos y paridad EN/ES.
-- `tools/test_generate_quests.py` (36 pruebas: los digests semánticos de la historia no se mueven), `tools/test_quest_book.py` (14: libro, hub, recompensas, tema y que la historia no hable de sí misma) y `tools/test_sector_book.py` (26: texto enriquecido, geometría, curvas, gramática, estándar de cadena, cada función del catálogo usada, tablas con IDs enteros exactos, cajas moderadas y sin salidas con puerta, formas y textos del companion).
-- `tools/check_guides.py`: 83 guías y 4 cadenas, 1.734 quests, sin errores contra los JAR fijados y Almost Unified.
-- `tools/check_runtime_content.py`: la auditoría KubeJS cubre los 1.364 ítems del libro, las tablas incluidas.
-- Las 34 comprobaciones de Python de `verify.yml` (con `test_sector_book.py` y `build_quest_placeholders.py --check` agregados) pasan sobre el estado final (`questbook-v3/ci/ci-5.log`, fuera del repo).
+- `python tools/generate_quests.py --check`: 97 capítulos (8 de historia, 83 guías, 5 cadenas y el hub), 1.992 quests y 18 tablas; IDs globales, grafo sin ciclos y paridad EN/ES.
+- `tools/test_generate_quests.py` (36 pruebas: los digests semánticos de la historia no se mueven), `tools/test_quest_book.py` (14: libro, hub, recompensas, tema y que la historia no hable de sí misma) y `tools/test_sector_book.py` (27: texto enriquecido, geometría, curvas, gramática, estándar de cadena, cada función del catálogo usada, tablas con IDs enteros exactos, cajas moderadas y sin salidas con puerta, formas y textos del companion).
+- `tools/check_guides.py`: 83 guías y 5 cadenas, 1.820 quests, sin errores contra los JAR fijados y Almost Unified.
+- `tools/check_runtime_content.py`: la auditoría KubeJS cubre los 1.461 ítems del libro, las tablas incluidas.
+- Las 34 comprobaciones de Python de `verify.yml` (con `test_sector_book.py` y `build_quest_placeholders.py --check` agregados) pasan (`questbook-v3/ci/ci-6.log`, fuera del repo).
 - El companion compila (`gradlew --offline build`) y lleva el tema, las cinco formas, las texturas y los textos de `ftbquests`.
 
-En un servidor desechable (`server-questbook3`, 272 JAR de servidor y el companion de la rama, 4 GB de heap, uno por vez; borrado después). Recibos en `E:/Elias/Codex/Entrelumen-ssd/questbook-v3/qa/`:
+En un servidor desechable (`server-questbook3`, 272 JAR de servidor y el companion de la rama, 4 GB de heap, un servidor por vez; borrado después). Recibos en `E:/Elias/Codex/Entrelumen-ssd/questbook-v3/qa/`:
 
-- **Antes del último rebase** (d2ec472 sobre 56c3dd8, `qb3-pre-rebase.json`): FTB registró «Loaded 6 chapter groups, 96 chapters, 1906 quests, 18 reward tables» (los 5 grupos más el de FTB) y tablas de traducción para dos idiomas, **sin ningún aviso de FTB Quests ni de FTB Library**. La auditoría KubeJS pasó con los 1.364 ítems del libro, `ftbquests:lootcrate` incluido. Cierre limpio (código 0). FTB volvió a guardar 116 archivos en su formato; leídos de vuelta (`roundtrip-qb3-pre-rebase.json`), **las 41.663 claves generadas coinciden**: capítulos, quests, tareas, recompensas, 1.195 imágenes, enlaces, las 18 tablas con sus 88 entradas, los 45 `table_id` exactos, presets y `data.snbt`; sólo omite valores por defecto (cantidad 1, peso 1, tamaño 1, tipo ítem en tablas). Los idiomas no pierden claves.
-- **Cabeza final** (sobre b7ed842, `qb3b.json`): mismo registro de FTB, sin avisos, y la auditoría KubeJS pasa (1.364 ítems, 31 pares receta/salida). El cierre no fue limpio: con otros dos servidores arrancando a la vez y la memoria agotada, el primer tick (ComputerCraft reconstruye las pestañas creativas, `qb3b-watchdog-crash.txt`) tardó más de 60 s y el watchdog cortó el servidor. Es del entorno, no del libro, pero sin ese cierre no hay segunda lectura de ida y vuelta.
-- Los tres errores del log son anteriores al libro: una etiqueta de Pam's y dos fluidos de experiencia en data maps (Ender IO, Reliquary).
+- **Cabeza final** (`install-qb3d.json`, `qb3d.json`, `roundtrip-qb3d.json`): FTB registró «Loaded 6 chapter groups, 97 chapters, 1992 quests, 18 reward tables» (los 5 grupos más el de FTB) y tablas de traducción para dos idiomas, **sin ningún aviso de FTB Quests ni de FTB Library**. La auditoría KubeJS pasó con los 1.461 ítems del libro. Cierre limpio (código 0, sin watchdog). FTB volvió a guardar 117 archivos en su formato; leídos de vuelta, **las 49.273 claves generadas coinciden**: capítulos, quests, 2.020 tareas, 1.532 recompensas, 1.728 imágenes, 15 enlaces, las 18 tablas con sus 88 entradas y los 57 `table_id` exactos, presets y `data.snbt`; sólo omite valores por defecto (cantidad 1, peso 1, tamaño 1, tipo ítem en tablas). Los idiomas no pierden claves.
+- El arranque anterior (`qb3c-first.json`) encontró el único error de contenido de la fase: la llave arcana de Ars Technica 2.7.6 no es un ítem propio sino una llave de Create con componente. La tarea ahora pide esa llave con `match_components: fuzzy`, y el motor lo soporta.
+- Los tres errores del log son anteriores al libro: una etiqueta de Pam's y dos fluidos de experiencia en data maps (Ender IO, Reliquary). Los arranques previos a la ampliación (`qb3-pre-rebase.json`, `qb3b.json`) quedan como historia.
 
-Vistas previas a zoom 16, fuera del repo, en `E:/Elias/Codex/Entrelumen-ssd/questbook-v3/previews/`: el hub, las cuatro cadenas y el acto I, cada uno en un mundo nuevo (`-fresh`) y completo (`-done`), y en `panels/` el panel de quests con texto enriquecido en los dos idiomas.
+Vistas previas a zoom 16, fuera del repo, en `E:/Elias/Codex/Entrelumen-ssd/questbook-v3/previews/`: el hub, las cinco cadenas y el acto I, cada uno en un mundo nuevo (`-fresh`) y completo (`-done`), la versión en inglés en `en_us/`, y en `panels/` el panel de quests con texto enriquecido en los dos idiomas.
 
 ## Límites
 
