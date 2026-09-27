@@ -7,7 +7,6 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.UUID;
@@ -34,10 +33,6 @@ import net.minecraft.world.level.biome.Biomes;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.levelgen.FlatLevelSource;
-import net.minecraft.world.level.levelgen.Heightmap;
-import net.minecraft.world.level.levelgen.flat.FlatLayerInfo;
-import net.minecraft.world.level.levelgen.flat.FlatLevelGeneratorSettings;
 import net.neoforged.neoforge.gametest.GameTestHolder;
 import net.neoforged.neoforge.gametest.PrefixGameTestTemplate;
 
@@ -53,10 +48,11 @@ import net.neoforged.neoforge.gametest.PrefixGameTestTemplate;
  *   <li>On bare sand, stone, end stone and netherrack the garden lays its own soil, and what grew there
  *       makes all sixteen dyes.</li>
  *   <li>The Altar of Levelling's repair rebuilds a pit dug in land made by the pack's real overworld
- *       generator, compared with an independent regeneration. Run it on untouched land away from the
- *       spawn test area, with the land 28-68 blocks east of the test loaded.</li>
+ *       generator, compared with an independent regeneration, on untouched lowland about two
+ *       thousand blocks from the test that it finds and loads itself.</li>
  *   <li>A real FTB Chunks claim refuses a foreign team's Levelling repair, flatten and Renewal
- *       planting inside the claimed chunk, while outside the work goes on.</li>
+ *       planting inside the claimed chunk, while outside the work goes on, on a platform of its own
+ *       high over the test.</li>
  * </ul>
  */
 @GameTestHolder("entrelumen")
@@ -330,101 +326,19 @@ public final class AltarFullpackGameTests {
 
   // ---- Levelling repair against the pack's generator ------------------------------------------
 
-  @GameTest(template = "empty", timeoutTicks = 3600)
+  /**
+   * The repair on untouched land of the pack's own overworld generator: about two thousand blocks
+   * from the test, away from every other test's structures, chosen against an independent
+   * regeneration. A pit three deep is refilled exactly with the generator's blocks, every chunk is
+   * recognised, and nothing the generator did not make changes (see
+   * {@link RuntimeGameTestsAltarFixtures#pristineRepair}).
+   */
+  @GameTest(template = "empty", timeoutTicks = 12000)
   public static void levellingAltarRepairsLandFromThePacksOwnGenerator(GameTestHelper helper) {
-    ServerLevel level = helper.getLevel();
-    BlockPos origin = helper.absolutePos(BlockPos.ZERO);
-    int x = origin.getX() + 48, z = origin.getZ() + 4;
-    int radius = 8;
-    await(helper, () -> LandWorks.loaded(level, (x - radius - 28) >> 4, (z - radius - 28) >> 4,
-        (x + radius + 28) >> 4, (z + radius + 28) >> 4), 0, 400, "Natural land near spawn loading", () -> {
-      // The first spot within 16 blocks whose altar column and pit are open natural ground.
-      BlockPos altarPos = null;
-      List<BlockPos> pit = new ArrayList<>();
-      for (int ring = 0; ring <= 16 && altarPos == null; ring++)
-        for (int sx = x - ring; sx <= x + ring && altarPos == null; sx++)
-          for (int sz = z - ring; sz <= z + ring && altarPos == null; sz++) {
-            if (Math.max(Math.abs(sx - x), Math.abs(sz - z)) != ring) continue;
-            int surface = level.getHeight(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, sx, sz) - 1;
-            BlockPos candidate = new BlockPos(sx, surface + 1, sz);
-            if (!LandWorks.ground(level.getBlockState(candidate.below())) || !level.getBlockState(candidate).isAir())
-              continue;
-            List<BlockPos> blocks = new ArrayList<>();
-            for (int dx = 3; dx <= 5; dx++)
-              for (int dz = -1; dz <= 1; dz++) {
-                int top = level.getHeight(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, sx + dx, sz + dz) - 1;
-                for (int dy = 0; dy >= -2; dy--) {
-                  BlockPos pos = new BlockPos(sx + dx, top + dy, sz + dz);
-                  if (LandWorks.ground(level.getBlockState(pos)) && level.getBlockState(pos.above()).getFluidState().isEmpty())
-                    blocks.add(pos);
-                }
-              }
-            if (blocks.size() >= 18) {
-              altarPos = candidate;
-              pit.addAll(blocks);
-            }
-          }
-      helper.assertTrue(altarPos != null, "No open natural ground within 16 blocks; choose another place or world");
-      int ax = altarPos.getX(), az = altarPos.getZ();
-      BlockPos placed = altarPos;
-      level.setBlockAndUpdate(placed, Altars.TERRAFORM_ALTAR.get().defaultBlockState());
-      var altar = (TerraformAltarEntity) level.getBlockEntity(placed);
-      altar.configureSize(TerraformRules.REPAIR);
-      altar.configureRepairRadius(radius);
-      List<ChunkPos> decorate = new ArrayList<>();
-      for (var key : AltarRules.areaChunks(ax, az, radius)) decorate.add(new ChunkPos(key.x(), key.z()));
-      decorate.sort(java.util.Comparator.comparingInt((ChunkPos pos) -> pos.x).thenComparingInt(pos -> pos.z));
-      List<ChunkPos> captured = new ArrayList<>();
-      for (ChunkPos pos : decorate)
-        for (int dx = -1; dx <= 1; dx++)
-          for (int dz = -1; dz <= 1; dz++) captured.add(new ChunkPos(pos.x + dx, pos.z + dz));
-      var reference = TerrainReference.build(TerrainReference.Setup.capture(level, captured), decorate, () -> false);
-      for (BlockPos pos : pit) level.setBlock(pos, Blocks.AIR.defaultBlockState(), 2);
-      altar.addFuel(new ItemStack(Items.COAL, 4));
-      altar.start(level);
-      await(helper, () -> altar.state() == TerraformAltarEntity.State.DONE
-          || altar.state() == TerraformAltarEntity.State.FAILED, 0, 3000, "Real-generator repair", () -> {
-        com.mojang.logging.LogUtils.getLogger().info(
-            "ALTAR_FULLPACK repair totals filled={} covered={} refused={} skipped={} fuel={} refusals={} reference=[terrain={} decorated={} terrainMillis={} decorationMillis={} failures={} unsupported={}]",
-            altar.totals().filled, altar.totals().covered, altar.totals().refused, altar.totals().skippedChunks,
-            altar.fuelUsed(), altar.refusals(), reference.terrainChunks, reference.decoratedChunks,
-            reference.terrainNanos / 1_000_000, reference.decorationNanos / 1_000_000, reference.failures,
-            reference.unsupported);
-        helper.assertTrue(altar.state() == TerraformAltarEntity.State.DONE && altar.totals().skippedChunks == 0,
-            "The pack's own land was not recognised: " + altar.state() + " skipped=" + altar.totals().skippedChunks);
-        for (BlockPos pos : pit) {
-          BlockState original = reference.state(pos);
-          BlockState now = level.getBlockState(pos);
-          if (!TerraformAltarEntity.fillable(original)) continue;
-          BlockState expected = TerraformAltarEntity.fill(original, pos.getY());
-          helper.assertTrue(now.equals(expected) || now.is(Blocks.SANDSTONE) || now.is(Blocks.RED_SANDSTONE)
-              || now.is(Blocks.STONE) || TerraformAltarEntity.basic(now) && now.is(original.getBlock()),
-              "Repaired " + pos + " with " + now + " instead of the generator's " + original);
-          helper.assertTrue(TerraformAltarEntity.basic(now), "A repair placed something that is not plain terrain: " + now);
-        }
-        helper.succeed();
-      });
-    });
+    RuntimeGameTestsAltarFixtures.pristineRepair(helper, 8, 3, "ALTAR_FULLPACK");
   }
 
   // ---- Claims --------------------------------------------------------------------------------
-
-  /** Flat reference whose grass top is the template floor, as in the isolated tests. */
-  private static TerrainReference.Setup flat(GameTestHelper helper) {
-    ServerLevel level = helper.getLevel();
-    int ground = helper.absolutePos(BlockPos.ZERO).getY();
-    var settings = new FlatLevelGeneratorSettings(Optional.empty(),
-        level.registryAccess().lookupOrThrow(Registries.BIOME).getOrThrow(Biomes.PLAINS), List.of());
-    settings.getLayersInfo().add(new FlatLayerInfo(1, Blocks.BEDROCK));
-    int stone = ground - 2 - (level.getMinBuildHeight() + 1);
-    if (stone > 0) settings.getLayersInfo().add(new FlatLayerInfo(stone, Blocks.STONE));
-    settings.getLayersInfo().add(new FlatLayerInfo(2, Blocks.DIRT));
-    settings.getLayersInfo().add(new FlatLayerInfo(1, Blocks.GRASS_BLOCK));
-    settings.updateLayers();
-    return new TerrainReference.Setup(new FlatLevelSource(settings), level.getChunkSource().randomState(),
-        level.getSeed(), level.registryAccess(), level.enabledFeatures(), level.getMinBuildHeight(),
-        level.getHeight(), level.dimensionType(), Map.of(), Map.of(), Set.of());
-  }
 
   private static Map<BlockPos, BlockState> chunkSnapshot(ServerLevel level, ChunkPos chunk, int low, int high) {
     Map<BlockPos, BlockState> states = new HashMap<>();
@@ -437,55 +351,72 @@ public final class AltarFullpackGameTests {
     return states;
   }
 
-  @GameTest(template = "nature_restoration", timeoutTicks = 6000, skyAccess = true)
+  /**
+   * A real FTB Chunks claim against a foreign team's altars, on a platform of its own high over the
+   * test ({@link RuntimeGameTestsAltarFixtures.Arena}): the pit always crosses the chunk border under
+   * it and every chunk the altars compare is the platform, wherever the test runs and whatever ran
+   * before it. The mock players, the claim, the platform and the forced chunks are given back however
+   * the case ends.
+   */
+  @GameTest(template = "empty", timeoutTicks = 6000)
   public static void altarsRespectForeignFtbChunksClaims(GameTestHelper helper) {
-    var level = helper.getLevel();
-    for (int x = 0; x < EXTENT; x++)
-      for (int z = 0; z < EXTENT; z++) {
-        level.setBlock(helper.absolutePos(new BlockPos(x, -2, z)), Blocks.DIRT.defaultBlockState(), 2);
-        level.setBlock(helper.absolutePos(new BlockPos(x, -1, z)), Blocks.DIRT.defaultBlockState(), 2);
-        level.setBlock(helper.absolutePos(new BlockPos(x, 0, z)), Blocks.GRASS_BLOCK.defaultBlockState(), 2);
+    var arena = new RuntimeGameTestsAltarFixtures.Arena(helper);
+    await(helper, arena::loaded, 0, 1200, "Claims arena loading", () -> {
+      try {
+        arena.build();
+        // Player names are at most 16 characters: FTB Teams syncs them with the vanilla name codec.
+        var owner = new Session(helper, "AltarQAOwner");
+        arena.onClose(owner::close);
+        var visitor = new Session(helper, "AltarQAVisitor");
+        arena.onClose(visitor::close);
+        claimsCase(helper, arena, owner, visitor);
+      } catch (RuntimeException | Error failure) {
+        arena.close();
+        throw failure;
       }
-    // Player names are at most 16 characters: FTB Teams syncs them with the vanilla name codec.
-    var owner = new Session(helper, "AltarQAOwner");
-    Session created;
-    try {
-      created = new Session(helper, "AltarQAVisitor");
-    } catch (RuntimeException | Error failure) {
-      owner.close();
-      throw failure;
-    }
-    var visitor = created;
-    BlockPos altarPos = helper.absolutePos(new BlockPos(20, 1, 20));
-    // A pit that spans two chunks along x; the owner claims the eastern chunk.
-    List<BlockPos> pit = new ArrayList<>();
-    for (int dx = -7; dx <= 7; dx++) pit.add(altarPos.offset(dx, -1, 3));
-    ChunkPos claimed = new ChunkPos(altarPos.offset(7, 0, 3));
-    helper.assertTrue(claimed.x != new ChunkPos(altarPos.offset(-7, 0, 3)).x, "The pit must cross a chunk border");
+    }, arena::close);
+  }
+
+  private static void claimsCase(GameTestHelper helper, RuntimeGameTestsAltarFixtures.Arena arena, Session owner,
+      Session visitor) {
+    ServerLevel level = arena.level;
+    // The altar stands on the chunk corner: the pit runs seven blocks either side of it, across the
+    // border, and the owner claims the chunk holding its eastern half.
+    BlockPos altarPos = arena.altar();
+    List<BlockPos> pit = arena.pit();
+    ChunkPos claimed = arena.east();
+    helper.assertTrue(claimed.x != new ChunkPos(pit.getFirst()).x && claimed.equals(new ChunkPos(pit.getLast())),
+        "The pit must cross a chunk border");
     for (BlockPos top : pit)
       for (int dy = 0; dy >= -2; dy--) level.setBlock(top.above(dy), Blocks.AIR.defaultBlockState(), 2);
-    BlockPos east = altarPos.offset(7, 0, 3);
+    BlockPos east = pit.getLast().above();
     owner.player.teleportTo(east.getX() + 0.5, east.getY() + 1.0, east.getZ() + 0.5);
     try {
       int result = owner.player.server.getCommands().getDispatcher().execute("ftbchunks claim",
           owner.player.createCommandSourceStack().withSuppressedOutput());
       helper.assertTrue(result > 0, "FTB Chunks did not claim the owner's chunk");
-    } catch (Exception failure) {
+    } catch (com.mojang.brigadier.exceptions.CommandSyntaxException failure) {
       throw new IllegalStateException("FTB Chunks claim failed", failure);
     }
-    Runnable cleanup = () -> cleanup(owner, visitor, east);
+    arena.onClose(() -> unclaim(owner, east));
+    Runnable cleanup = arena::close;
     // 1. The visitor's Altar of Levelling repairs the pit: only outside the claim.
     level.setBlockAndUpdate(altarPos, Altars.TERRAFORM_ALTAR.get().defaultBlockState());
     var levelling = (TerraformAltarEntity) level.getBlockEntity(altarPos);
     levelling.setOwner(visitor.player.getUUID(), visitor.player.getGameProfile().getName());
     levelling.configureSize(TerraformRules.REPAIR);
     levelling.configureRepairRadius(10);
-    TerraformAltarEntity.SETUPS.put(GlobalPos.of(level.dimension(), altarPos), world -> flat(helper));
+    var reference = arena.reference();
+    TerraformAltarEntity.SETUPS.put(GlobalPos.of(level.dimension(), altarPos), world -> reference);
+    arena.onClose(() -> TerraformAltarEntity.SETUPS.remove(GlobalPos.of(level.dimension(), altarPos)));
     visitor.player.teleportTo(altarPos.getX() + 0.5, altarPos.getY(), altarPos.getZ() + 1.8);
     levelling.addFuel(new ItemStack(Items.COAL, 8));
+    arena.quiet();
     levelling.start(level);
     await(helper, () -> levelling.state() == TerraformAltarEntity.State.DONE, 0, 2000, "Claimed repair", () -> {
       try {
+        helper.assertTrue(levelling.totals().skippedChunks == 0,
+            "The arena's chunks were not recognised: skipped=" + levelling.totals().skippedChunks);
         for (BlockPos top : pit) {
           boolean inClaim = new ChunkPos(top).equals(claimed);
           boolean restored = level.getBlockState(top).is(Blocks.GRASS_BLOCK);
@@ -493,13 +424,13 @@ public final class AltarFullpackGameTests {
               "The claim boundary was not respected at " + top);
         }
         helper.assertTrue(levelling.refusals().getOrDefault("claim", 0) > 0, "The claim refused no repair column");
-        TerraformAltarEntity.SETUPS.remove(GlobalPos.of(level.dimension(), altarPos));
         // 2. The same altar flattens: columns inside the claim are refused whole.
         var claimedBefore = chunkSnapshot(level, claimed, altarPos.getY() - 4, altarPos.getY() + 4);
         for (int x = claimed.getMinBlockX() - 3; x < claimed.getMinBlockX(); x++)
           for (int dy = -1; dy >= -2; dy--)
             level.setBlock(new BlockPos(x, altarPos.getY() + dy, altarPos.getZ() - 5), Blocks.AIR.defaultBlockState(), 2);
         levelling.configureSize(8);
+        arena.quiet();
         levelling.start(level);
         await(helper, () -> levelling.state() == TerraformAltarEntity.State.DONE, 0, 1600, "Claimed flatten", () -> {
           try {
@@ -507,7 +438,7 @@ public final class AltarFullpackGameTests {
                 "A foreign Altar of Levelling changed the claimed chunk at " + pos));
             helper.assertTrue(levelling.refusals().getOrDefault("claim", 0) > 0 && levelling.totals().filled > 0,
                 "The claim did not refuse columns or nothing outside was filled: " + levelling.refusals());
-            level.removeBlock(altarPos, false);
+            RuntimeGameTestsAltarFixtures.removeAltar(level, altarPos);
             // 3. The visitor's Altar of Renewal plants outside the claim only. The altar itself stands in
             // the claimed chunk (placed by the test), so the snapshot is taken with it in place.
             level.setBlockAndUpdate(altarPos, Altars.RENEWAL_ALTAR.get().defaultBlockState());
@@ -516,6 +447,7 @@ public final class AltarFullpackGameTests {
             renewal.setOwner(visitor.player.getUUID(), visitor.player.getGameProfile().getName());
             renewal.configureRadius(10);
             renewal.addFertilizer(new ItemStack(Items.BONE_MEAL, 64));
+            arena.quiet();
             await(helper, () -> renewal.state() == RenewalAltarEntity.State.DONE
                 || renewal.state() == RenewalAltarEntity.State.WAITING, 0, 2000, "Claimed planting", () -> {
               try {
@@ -524,9 +456,10 @@ public final class AltarFullpackGameTests {
                 helper.assertTrue(renewal.totals().plants > 0 && renewal.guards.getOrDefault("plant_claim", 0) > 0,
                     "Nothing grew outside or the claim refused nothing: " + renewal.guards);
                 com.mojang.logging.LogUtils.getLogger().info(
-                    "ALTAR_FULLPACK claims repairRefusals={} renewal=[plants={} trees={} guards={}]",
-                    levelling.refusals(), renewal.totals().plants, renewal.totals().trees, renewal.guards);
-                level.removeBlock(altarPos, false);
+                    "ALTAR_FULLPACK claims arena=[{}, {}, {}] claimed={} repairRefusals={} renewal=[plants={} trees={} guards={}]",
+                    arena.cornerX, arena.top, arena.cornerZ, claimed, levelling.refusals(), renewal.totals().plants,
+                    renewal.totals().trees, renewal.guards);
+                RuntimeGameTestsAltarFixtures.removeAltar(level, altarPos);
                 helper.succeed();
               } finally {
                 cleanup.run();
@@ -544,16 +477,13 @@ public final class AltarFullpackGameTests {
     }, cleanup);
   }
 
-  private static void cleanup(Session owner, Session visitor, BlockPos east) {
+  private static void unclaim(Session owner, BlockPos east) {
     try {
       owner.player.teleportTo(east.getX() + 0.5, east.getY() + 1.0, east.getZ() + 0.5);
       owner.player.server.getCommands().getDispatcher().execute("ftbchunks unclaim",
           owner.player.createCommandSourceStack().withSuppressedOutput());
-    } catch (Exception ignored) {
-      // The QA world is archived before runs; a leftover claim is reported by the next run.
-    } finally {
-      owner.close();
-      visitor.close();
+    } catch (com.mojang.brigadier.exceptions.CommandSyntaxException ignored) {
+      // A claim left over the empty sky is harmless, and the next run's claim reports it.
     }
   }
 

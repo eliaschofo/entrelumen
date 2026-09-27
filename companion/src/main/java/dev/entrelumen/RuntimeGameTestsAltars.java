@@ -1529,6 +1529,90 @@ public final class RuntimeGameTestsAltars {
     });
   }
 
+  // ---- Levelling: fixtures that do not depend on placement or order ---------------------------
+
+  /**
+   * The full-pack repair case's procedure on this server's own overworld: untouched land about two
+   * thousand blocks from the test, found by the generator's biomes, loaded and regenerated
+   * independently; a site chosen against that regeneration; a pit refilled exactly. Its own batch:
+   * it loads and regenerates chunks far away.
+   */
+  @GameTest(template = "empty", timeoutTicks = 9000, batch = "altars_far_land")
+  public static void levellingAltarRepairsUntouchedLandFarFromTheTests(GameTestHelper helper) {
+    RuntimeGameTestsAltarFixtures.pristineRepair(helper, 8, 2, "ALTAR_ISOLATED");
+  }
+
+  /**
+   * The full-pack claims case's arena, wherever this test lands: a platform high over the test around
+   * the chunk corner nearest to it, where the pit always crosses a chunk border. A claim over the
+   * eastern chunk, simulated through the native events, keeps the repair out of it while the western
+   * half is refilled; closing the arena removes the platform and the listeners. Its own batch: the
+   * platform shades whatever runs under it.
+   */
+  @GameTest(template = "empty", timeoutTicks = 2400, batch = "altars_arena")
+  public static void levellingAltarArenaPitCrossesAChunkBorderWhereverTheTestRuns(GameTestHelper helper) {
+    var arena = new RuntimeGameTestsAltarFixtures.Arena(helper);
+    RuntimeGameTestsAltarFixtures.await(helper, arena::loaded, 0, 1200, "Arena loading", () -> {
+      try {
+        arena.build();
+        ServerLevel level = arena.level;
+        BlockPos altarPos = arena.altar();
+        List<BlockPos> pit = arena.pit();
+        ChunkPos claimed = arena.east();
+        helper.assertTrue(claimed.x != new ChunkPos(pit.getFirst()).x && claimed.equals(new ChunkPos(pit.getLast())),
+            "The pit must cross a chunk border: " + pit.getFirst() + " " + pit.getLast());
+        for (BlockPos top : pit)
+          for (int dy = 0; dy >= -2; dy--) level.setBlock(top.above(dy), Blocks.AIR.defaultBlockState(), 2);
+        Consumer<BlockEvent.EntityPlaceEvent> place = veto(BlockEvent.EntityPlaceEvent.class, event -> {
+          if (claimed.equals(new ChunkPos(event.getPos()))) event.setCanceled(true);
+        });
+        arena.onClose(() -> NeoForge.EVENT_BUS.unregister(place));
+        Consumer<BlockEvent.BreakEvent> breaking = veto(BlockEvent.BreakEvent.class, event -> {
+          if (claimed.equals(new ChunkPos(event.getPos()))) event.setCanceled(true);
+        });
+        arena.onClose(() -> NeoForge.EVENT_BUS.unregister(breaking));
+        level.setBlockAndUpdate(altarPos, Altars.TERRAFORM_ALTAR.get().defaultBlockState());
+        var altar = (TerraformAltarEntity) level.getBlockEntity(altarPos);
+        altar.configureSize(TerraformRules.REPAIR);
+        altar.configureRepairRadius(10);
+        var reference = arena.reference();
+        TerraformAltarEntity.SETUPS.put(GlobalPos.of(level.dimension(), altarPos), world -> reference);
+        arena.onClose(() -> TerraformAltarEntity.SETUPS.remove(GlobalPos.of(level.dimension(), altarPos)));
+        altar.addFuel(new ItemStack(Items.COAL, 4));
+        altar.start(level);
+        RuntimeGameTestsAltarFixtures.await(helper, () -> altar.state() == TerraformAltarEntity.State.DONE
+            || altar.state() == TerraformAltarEntity.State.FAILED, 0, 1200, "Arena repair", () -> {
+          try {
+            perf("terraform-arena", altar);
+            helper.assertTrue(altar.state() == TerraformAltarEntity.State.DONE && altar.totals().skippedChunks == 0,
+                "The arena's chunks were not recognised: " + altar.state() + " skipped=" + altar.totals().skippedChunks);
+            for (BlockPos top : pit) {
+              boolean inClaim = new ChunkPos(top).equals(claimed);
+              boolean restored = level.getBlockState(top).is(Blocks.GRASS_BLOCK)
+                  && level.getBlockState(top.below()).is(Blocks.DIRT) && level.getBlockState(top.below(2)).is(Blocks.DIRT);
+              helper.assertTrue(inClaim ? level.getBlockState(top).isAir() && level.getBlockState(top.below(2)).isAir() : restored,
+                  "The claim boundary was not respected at " + top);
+            }
+            helper.assertTrue(altar.refusals().getOrDefault("claim", 0) == 8, "The claim did not refuse exactly the eastern "
+                + "eight pit columns: " + altar.refusals());
+            LOGGER.info("ALTAR_ARENA corner=[{}, {}] top={} claimed={} refusals={} filled={}", arena.cornerX, arena.cornerZ,
+                arena.top, claimed, altar.refusals(), altar.totals().filled);
+            RuntimeGameTestsAltarFixtures.removeAltar(level, altarPos);
+          } catch (RuntimeException | Error failure) {
+            arena.close();
+            throw failure;
+          }
+          arena.close();
+          helper.assertTrue(arena.empty(), "Closing the arena left blocks over the test");
+          helper.succeed();
+        }, arena::close);
+      } catch (RuntimeException | Error failure) {
+        arena.close();
+        throw failure;
+      }
+    }, arena::close);
+  }
+
   // ---- Levelling under a roof ----------------------------------------------------------------
 
   /** Force-loads a square of chunks; the returned action releases them. */

@@ -822,7 +822,7 @@ public final class TerraformAltarEntity extends AltarBlockEntity {
   }
 
   /** Current ground top of a column under vegetation, or MIN for built or unknown columns. */
-  private static int currentGround(ServerLevel world, int x, int z) {
+  static int currentGround(ServerLevel world, int x, int z) {
     int y = world.getHeight(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, x, z) - 1;
     BlockPos.MutableBlockPos probe = new BlockPos.MutableBlockPos();
     for (int steps = 0; steps < 64 && y >= world.getMinBuildHeight(); steps++, y--) {
