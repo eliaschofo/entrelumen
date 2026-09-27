@@ -1085,7 +1085,7 @@ const entrelumenAuditTargets = {
     "immersiveengineering:sawmill",
     "immersiveengineering:screwdriver",
     "immersiveengineering:seed",
-    "immersiveengineering:shader_bag",
+    "immersiveengineering:shader_bag_common",
     "immersiveengineering:shield",
     "immersiveengineering:silo",
     "immersiveengineering:skyhook",
@@ -2214,7 +2214,7 @@ const entrelumenAuditTargets = {
       "output": "farmersdelight:flint_knife"
     }
   ],
-  "signature": "b0b404f4ba370f5a"
+  "signature": "d7f9170f2fa51069"
 };
 
 ServerEvents.afterRecipes(event => {
