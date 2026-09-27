@@ -2,15 +2,15 @@
   "chapter": "guide_farming_resources",
   "group": "qol",
   "act": "II",
-  "icon": "minecraft:honeycomb",
-  "emblem": "minecraft:textures/item/honeycomb.png",
+  "icon": "aquaculture:iron_fishing_rod",
+  "emblem": "aquaculture:textures/item/iron_fishing_rod_uncast.png",
   "title": {
-    "en_us": "Resource Farming: Bees and Fish",
-    "es_es": "Granjas de recursos: abejas y peces"
+    "en_us": "Resource Farming: Fishing",
+    "es_es": "Granjas de recursos: pesca"
   },
   "subtitle": {
-    "en_us": "Productive and Modular Bees, and Aquaculture: resource combs and treasure from the water.",
-    "es_es": "Productive y Modular Bees, y Aquaculture: panales de recursos y tesoros del agua."
+    "en_us": "Aquaculture: rods, hooks, fillets and treasure from the water.",
+    "es_es": "Aquaculture: cañas, anzuelos, filetes y tesoros del agua."
   },
   "quests": [
     {
@@ -24,161 +24,29 @@
         "shape": "hexagon"
       },
       "en_us": [
-        "Resources That Come Back",
-        "Productive Bees bring back resource combs and Aquaculture fishes up metal, treasure and fillets. Slow to start, endless once running, and several act components come from them.\n\nMystical Agriculture's resource seeds have two chapters of their own."
+        "Fish That Pay",
+        "Aquaculture fishes up metal, treasure and fillets: dozens of fish by biome, better rods, hooks and bait. Slow to start, endless once running, and the travel food the Atlas asks for in act II comes from here.\n\nProductive Bees has two chapters of its own; Mystical Agriculture too."
       ],
       "es_es": [
-        "Recursos que vuelven",
-        "Productive Bees trae panales de recursos y Aquaculture pesca metal, tesoros y filetes. Arrancan lento, no se agotan nunca, y de acá salen varios componentes de acto.\n\nLas semillas de recursos de Mystical Agriculture tienen dos capítulos propios."
+        "Peces que rinden",
+        "Aquaculture pesca metal, tesoros y filetes: decenas de peces por bioma, mejores cañas, anzuelos y carnada. Arranca lento, no se agota nunca, y de acá sale la comida de viaje que pide el Atlas en el acto II.\n\nProductive Bees tiene dos capítulos propios; Mystical Agriculture también."
       ],
       "sources": [
-        "repo:content/integration-design.json"
-      ]
-    },
-    {
-      "key": "farming_resources_bees",
-      "deps": [
-        "farming_resources_welcome"
-      ],
-      "type": "item",
-      "item": "productivebees:advanced_oak_beehive",
-      "layout": {
-        "x": 3,
-        "y": 2,
-        "size": 1.25,
-        "shape": "circle"
-      },
-      "en_us": [
-        "Productive Bees: First Hive",
-        "Find a bee nest, carry bees home in &eBee Cages&r (made with honey bottles) and build an &eAdvanced Beehive&r: you can look inside, take out what they make and move it with the bees still in. New species hide in nests across biomes and dimensions, or come from breeding.\n\nThe mod's guide book is craftable."
-      ],
-      "es_es": [
-        "Productive Bees: primera colmena",
-        "Buscá un nido, llevá las abejas a casa en &eJaulas para abejas&r (se hacen con botellas de miel) y armá una &eColmena avanzada&r: podés mirar adentro, sacar lo que producen y moverla con las abejas adentro. Las especies nuevas se esconden en nidos de distintos biomas y dimensiones, o salen de la cría.\n\nEl libro guía del mod se fabrica."
-      ],
-      "sources": [
-        "jar:productivebees-1.21.1-13.13.5.jar:assets/productivebees/patchouli_books/guide/en_us/entries/guide/start.json",
-        "jar:productivebees-1.21.1-13.13.5.jar:assets/productivebees/patchouli_books/guide/en_us/entries/hives/advanced_hives.json"
-      ]
-    },
-    {
-      "key": "farming_resources_centrifuge",
-      "deps": [
-        "farming_resources_bees"
-      ],
-      "type": "item",
-      "item": "productivebees:centrifuge",
-      "layout": {
-        "x": 6,
-        "y": 3.5,
-        "size": 1.0,
-        "shape": "circle"
-      },
-      "en_us": [
-        "Combs Into Resources",
-        "Resource bees bring &ecombs&r; a &eCentrifuge&r splits them into resources, wax and honey (pushed into a tank beside it), and the &ePowered Centrifuge&r uses FE to go faster. An &eExpansion Box&r raises a hive from 3 to 5 bees and allows upgrades.\n\nThe wax goes into the Propagation Core (act III) and the Ecosystem Capsule (act IV)."
-      ],
-      "es_es": [
-        "Panales en recursos",
-        "Las abejas de recursos traen &epanales&r; la &eCentrifugadora&r los separa en recursos, cera y miel (que empuja a un tanque de al lado), y la &eCentrifugadora con energía&r usa FE para ir más rápido. Una &eCaja de expansión&r sube una colmena de 3 a 5 abejas y permite mejoras.\n\nLa cera va al Núcleo de propagación (acto III) y a la Cápsula de ecosistema (acto IV)."
-      ],
-      "sources": [
-        "jar:productivebees-1.21.1-13.13.5.jar:assets/productivebees/patchouli_books/guide/en_us/entries/blocks/centrifuge.json",
-        "jar:productivebees-1.21.1-13.13.5.jar:assets/productivebees/patchouli_books/guide/en_us/entries/hives/advanced_hives.json",
-        "repo:content/integration-design.json"
-      ]
-    },
-    {
-      "key": "farming_resources_breeding",
-      "deps": [
-        "farming_resources_centrifuge"
-      ],
-      "type": "item",
-      "item": "productivebees:honey_treat",
-      "optional": true,
-      "layout": {
-        "x": 9,
-        "y": 2,
-        "size": 1.0,
-        "shape": "circle"
-      },
-      "en_us": [
-        "Breeding and Genes",
-        "New species come from breeding two bees with their favorite items, by hand or in a powered &eBreeding Chamber&r, and a &eCatcher&r with cages collects bees flying over it.\n\nTraits cover productivity, weather tolerance and day or night activity; genes can be extracted and given to another bee with a honey treat."
-      ],
-      "es_es": [
-        "Cría y genes",
-        "Las especies nuevas salen de cruzar dos abejas con sus ítems favoritos, a mano o en una &eCámara de cría&r con energía, y un &eAtrapador&r con jaulas junta las que vuelan por encima.\n\nLos rasgos cubren productividad, tolerancia al clima y actividad de día o de noche; los genes se extraen y se pasan a otra abeja con una golosina de miel."
-      ],
-      "sources": [
-        "jar:productivebees-1.21.1-13.13.5.jar:assets/productivebees/patchouli_books/guide/en_us/entries/blocks/breeding_chamber.json",
-        "jar:productivebees-1.21.1-13.13.5.jar:assets/productivebees/patchouli_books/guide/en_us/entries/genetics/attributes.json",
-        "jar:productivebees-1.21.1-13.13.5.jar:assets/productivebees/patchouli_books/guide/en_us/entries/blocks/catcher.json"
-      ]
-    },
-    {
-      "key": "farming_resources_bee_tip",
-      "deps": [
-        "farming_resources_breeding"
-      ],
-      "type": "checkmark",
-      "optional": true,
-      "icon": "minecraft:stick",
-      "layout": {
-        "x": 9,
-        "y": 5,
-        "size": 1.0,
-        "shape": "diamond"
-      },
-      "en_us": [
-        "Tip: Hurry a Bee",
-        "Whack a hive or nest with a stick to force the bees out, losing their current progress; it only works when it is safe for them to leave.\n\nBees hide from rain. Leash them outside in bad weather and some become weather tolerant, at a risk."
-      ],
-      "es_es": [
-        "Truco: apurar a una abeja",
-        "Golpeá una colmena o un nido con un palo para obligar a las abejas a salir, perdiendo el progreso actual; sólo funciona si es seguro que salgan.\n\nLas abejas se esconden de la lluvia. Atalas afuera con mal clima y algunas se vuelven tolerantes, con riesgo."
-      ],
-      "sources": [
-        "jar:productivebees-1.21.1-13.13.5.jar:assets/productivebees/patchouli_books/guide/en_us/entries/hives/advanced_hives.json",
-        "jar:productivebees-1.21.1-13.13.5.jar:assets/productivebees/patchouli_books/guide/en_us/entries/genetics/attributes.json"
-      ]
-    },
-    {
-      "key": "farming_resources_modular_bees",
-      "deps": [
-        "farming_resources_centrifuge"
-      ],
-      "type": "item",
-      "item": "modularbees:modular_beehive_core",
-      "layout": {
-        "x": 12,
-        "y": 2,
-        "size": 1.0,
-        "shape": "pentagon"
-      },
-      "en_us": [
-        "Modular Bees: Big Apiaries",
-        "Multiblock hives and centrifuges built from parts (core, casing, feeders, stackers, overclockers, heaters), with ME blocks for AE2. Here the modular hive core takes two ironwood ingots (act IV); parts, ME blocks, overclockers, the stacker and the dragon hive keep their native recipes, since none works without a core.\n\nBeekeeping, late-game edition."
-      ],
-      "es_es": [
-        "Modular Bees: apiarios",
-        "Colmenas y centrifugadoras multibloque armadas con piezas (núcleo, carcasa, alimentadores, apiladores, overclockers, calentadores), con bloques ME para AE2. Acá el núcleo de colmena modular lleva dos lingotes de ironwood (acto IV); piezas, bloques ME, overclockers, apilador y colmena de dragón quedan nativos, porque ninguno anda sin núcleo.\n\nApicultura, edición final."
-      ],
-      "sources": [
-        "repo:docs/design/resource-balance.md",
-        "repo:pack/kubejs/server_scripts/entrelumen_resource_balance.js"
+        "repo:content/integration-design.json",
+        "repo:content/sectors/sector_bees_apiary.json",
+        "repo:content/sectors/sector_ma_essence.json"
       ]
     },
     {
       "key": "farming_resources_fishing",
       "deps": [
-        "farming_resources_bees"
+        "farming_resources_welcome"
       ],
       "type": "item",
       "item": "aquaculture:iron_fishing_rod",
       "layout": {
         "x": 3,
-        "y": 6,
+        "y": 2,
         "size": 1.25,
         "shape": "circle"
       },
@@ -188,48 +56,103 @@
       ],
       "es_es": [
         "Aquaculture: mejor pesca",
-        "Decenas de peces por bioma, mejores cañas (hierro, oro, diamante, neptunio), anzuelos, carnada como gusanos, líneas y boyas, una &eCaja de aparejos&r para el equipo y un &eCuchillo de fileteo&r para los filetes.\n\nTambién pesca tesoros: los cofres de &eNeptune's Bounty&r traen neptunio, un metal para equipo submarino."
+        "Decenas de peces por bioma, mejores cañas (hierro, oro, diamante, neptunio), anzuelos, carnada como gusanos, líneas y boyas, una &eCaja de pesca&r para el equipo y un &eCuchillo fileteador&r para los filetes.\n\nTambién pesca tesoros: los cofres de &eNeptune's Bounty&r traen neptunio, un metal para equipo submarino."
       ],
       "sources": [
         "jar:Aquaculture-1.21.1-2.7.21.jar:assets/aquaculture/lang/en_us.json"
       ]
     },
     {
-      "key": "farming_resources_neptunium",
+      "key": "farming_resources_tackle_box",
       "deps": [
         "farming_resources_fishing"
       ],
       "type": "item",
-      "item": "aquaculture:neptunium_ingot",
-      "optional": true,
+      "item": "aquaculture:tackle_box",
       "layout": {
         "x": 6,
-        "y": 7.5,
+        "y": 0.5,
         "size": 1.0,
         "shape": "circle"
       },
       "en_us": [
-        "Neptunium Gear",
-        "Built for underwater: the rod gets faster bites, the helmet clearer vision, the chestplate breath, the leggings weightlessness and the boots speed; the pickaxe and shovel lose no speed underwater, and the hoe keeps farmland moist.\n\nOcean monuments will not know what hit them."
+        "The Tackle Box",
+        "Five iron, an iron block, a chest and two green dyes make a &eTackle Box&r: it stores the fishing gear, and a rod set in it takes a hook, a line, a bobber and bait."
       ],
       "es_es": [
-        "Equipo de neptunio",
-        "Hecho para bajo el agua: la caña hace que piquen antes, el casco mejora la visión, la pechera deja respirar, los pantalones te hacen ingrávido y las botas nadan rápido; el pico y la pala no pierden velocidad bajo el agua, y la azada mantiene húmeda la tierra.\n\nLos monumentos oceánicos no van a saber qué los golpeó."
+        "La caja de pesca",
+        "Cinco de hierro, un bloque de hierro, un cofre y dos tintes verdes hacen una &eCaja de pesca&r: guarda el equipo de pesca, y una caña puesta ahí acepta anzuelo, sedal, corcho y carnada."
       ],
       "sources": [
+        "jar:Aquaculture-1.21.1-2.7.21.jar:data/aquaculture/recipe/tackle_box.json",
+        "jar:Aquaculture-1.21.1-2.7.21.jar:com/teammetallurgy/aquaculture/inventory/container/TackleBoxContainer.class"
+      ]
+    },
+    {
+      "key": "farming_resources_hooks",
+      "deps": [
+        "farming_resources_tackle_box"
+      ],
+      "type": "item",
+      "item": "aquaculture:iron_hook",
+      "optional": true,
+      "layout": {
+        "x": 9,
+        "y": 0.5,
+        "size": 1.0,
+        "shape": "diamond"
+      },
+      "en_us": [
+        "Hooks",
+        "Four iron nuggets make an &eIron Hook&r, which saves durability one cast in five, and two iron hooks make a &eDouble Hook&r that can land two catches at once. Gold and glowstone hooks add luck; redstone ones give you longer to reel in."
+      ],
+      "es_es": [
+        "Anzuelos",
+        "Cuatro pepitas de hierro hacen un &eAnzuelo de hierro&r, que ahorra durabilidad una vez de cada cinco, y dos anzuelos de hierro hacen un &eAnzuelo doble&r que puede sacar dos piezas de una. Los de oro y piedra luminosa dan suerte; los de redstone, más tiempo para recoger."
+      ],
+      "sources": [
+        "jar:Aquaculture-1.21.1-2.7.21.jar:data/aquaculture/recipe/iron_hook.json",
+        "jar:Aquaculture-1.21.1-2.7.21.jar:data/aquaculture/recipe/double_hook.json",
+        "jar:Aquaculture-1.21.1-2.7.21.jar:assets/aquaculture/lang/en_us.json"
+      ]
+    },
+    {
+      "key": "farming_resources_fillet_knife",
+      "deps": [
+        "farming_resources_fishing"
+      ],
+      "type": "item",
+      "item": "aquaculture:iron_fillet_knife",
+      "layout": {
+        "x": 6,
+        "y": 3.5,
+        "size": 1.0,
+        "shape": "circle"
+      },
+      "en_us": [
+        "The Fillet Knife",
+        "Two iron ingots and a stick make an &eIron Fillet Knife&r. A fish and the knife on a crafting grid become raw fillets, and the neptunium knife cuts more of them."
+      ],
+      "es_es": [
+        "El cuchillo fileteador",
+        "Dos lingotes de hierro y un palo hacen un &eCuchillo fileteador de hierro&r. Un pez y el cuchillo en la mesa de trabajo dan filetes crudos, y el de neptunio corta más."
+      ],
+      "sources": [
+        "jar:Aquaculture-1.21.1-2.7.21.jar:data/aquaculture/recipe/iron_fillet_knife.json",
+        "jar:Aquaculture-1.21.1-2.7.21.jar:data/aquaculture/recipe/fish_fillet.json",
         "jar:Aquaculture-1.21.1-2.7.21.jar:assets/aquaculture/lang/en_us.json"
       ]
     },
     {
       "key": "farming_resources_fillets",
       "deps": [
-        "farming_resources_fishing"
+        "farming_resources_fillet_knife"
       ],
       "type": "item",
       "item": "aquaculture:fish_fillet_cooked",
       "layout": {
         "x": 9,
-        "y": 7.5,
+        "y": 3.5,
         "size": 1.0,
         "shape": "pentagon"
       },
@@ -247,26 +170,52 @@
       ]
     },
     {
+      "key": "farming_resources_neptunium",
+      "deps": [
+        "farming_resources_fishing"
+      ],
+      "type": "item",
+      "item": "aquaculture:neptunium_ingot",
+      "optional": true,
+      "layout": {
+        "x": 6,
+        "y": 6.5,
+        "size": 1.0,
+        "shape": "circle"
+      },
+      "en_us": [
+        "Neptunium Gear",
+        "Built for underwater: the rod gets faster bites, the helmet clearer vision, the chestplate breath, the leggings weightlessness and the boots speed; the pickaxe and shovel lose no speed underwater, and the hoe keeps farmland moist.\n\nOcean monuments will not know what hit them."
+      ],
+      "es_es": [
+        "Equipo de neptunio",
+        "Hecho para bajo el agua: la caña hace que piquen antes, el casco mejora la visión, la pechera deja respirar, los pantalones te hacen ingrávido y las botas nadan rápido; el pico y la pala no pierden velocidad bajo el agua, y la azada mantiene húmeda la tierra.\n\nLos monumentos oceánicos no van a saber qué los golpeó."
+      ],
+      "sources": [
+        "jar:Aquaculture-1.21.1-2.7.21.jar:assets/aquaculture/lang/en_us.json"
+      ]
+    },
+    {
       "key": "farming_resources_close",
       "deps": [
-        "farming_resources_modular_bees",
-        "farming_resources_fillets"
+        "farming_resources_fillets",
+        "farming_resources_neptunium"
       ],
       "type": "checkmark",
       "icon": "minecraft:honeycomb",
       "layout": {
-        "x": 15,
-        "y": 0,
+        "x": 12,
+        "y": 2,
         "size": 2.0,
         "shape": "hexagon"
       },
       "en_us": [
         "Endless Supplies",
-        "Bees bringing resources home and a fishing line that pays in treasure, both producing while you explore.\n\nSomewhere, a bee is making you iron right now."
+        "A fishing line that pays in treasure, fillets for the road and neptunium for the deep.\n\nSomewhere, a fish is swimming toward your hook right now."
       ],
       "es_es": [
         "Suministro sin fin",
-        "Abejas que traen recursos a casa y una caña que paga en tesoros, las dos produciendo mientras explorás.\n\nEn algún lado, una abeja te está haciendo hierro ahora mismo."
+        "Una caña que paga en tesoros, filetes para el camino y neptunio para lo profundo.\n\nEn algún lado, un pez está nadando hacia tu anzuelo ahora mismo."
       ],
       "sources": [
         "repo:content/guides/README.md"
