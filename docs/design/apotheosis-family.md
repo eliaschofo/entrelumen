@@ -5,7 +5,7 @@ Elias reversed the earlier [exclusion](arcane-expansion-family.md#apotheosis-dec
 | Mod · file (CF project / file) | Role | Acts | Relation to other systems |
 |---|---|---|---|
 | Apotheosis · `Apotheosis-1.21.1-8.7.0.jar` (313970 / 8564919) | Affixed loot, gems, rarity materials, salvaging, invaders and World Tiers | I–VI | The team campaign sets the World Tier; its rune-based spawner modifiers yield to ENTRELUMEN augments |
-| Apothic Enchanting · `ApothicEnchanting-1.21.1-1.6.1.jar` (1063926 / 8682996) | Eterna/Quanta/Arcana table, shelves, infusion, tomes, Library of Alexandria and Ender Library | I–V | Four ENTRELUMEN shelves and the Atlas Library extend it; the 80/90/100-Eterna shelves are staged |
+| Apothic Enchanting · `ApothicEnchanting-1.21.1-1.6.1.jar` (1063926 / 8682996) | Eterna/Quanta/Arcana table, shelves, infusion, tomes, Library of Alexandria and Ender Library | I–V | Four ENTRELUMEN shelves and the Atlas Library extend it; the 80/90/100-Eterna shelves are staged, and each World Tier's Eterna ceiling follows that staging |
 | Apothic Spawners · `ApothicSpawners-1.21.1-1.4.0.jar` (986583 / 8469405) | In-place spawner modifiers | III–V | Sixteen augments carry the modifiers; spawners are not portable |
 | Apothic Attributes · `ApothicAttributes-1.21.1-2.10.1.jar` (898963 / 8502288) | Required attribute library (crit, life steal, armour pierce, attribute screen) | — | ATM10 runs it beside AttributeFix, which is also locked here |
 | Placebo · `Placebo-1.21.1-9.9.2.jar` (283644 / 8463693) | Library (already locked) | — | — |
@@ -23,6 +23,8 @@ Apotheosis checks one advancement per tier (`apotheosis:progression/haven` … `
 | Ascent | `minecraft:impossible` | The campaign completes Act III (reaches Act IV) |
 | Summit | `minecraft:impossible` | The campaign completes Act IV (reaches Act V, the Ark) |
 | Pinnacle | `minecraft:impossible` | The team activates the Ark, which opens Act VI (`last_horizon`) |
+
+The same generator sets each tier's Eterna ceiling from the shelves its acts unlock; see [World Tier Eterna ceilings](#world-tier-eterna-ceilings).
 
 Ascent opens after Act III rather than Act IV. Act IV is the expedition act: Aether, Twilight Forest, Bumblezone, Cataclysm structures, horizon charts and the Sun Spirit. Opening Ascent as it starts rewards those dungeons with Ascent's uncommon-to-epic loot and makes epic material reachable for Act V spawner augments. The tier ladder then spaces one tier per act: Frontier during III, Ascent during IV, Summit during V (the Ark) and Pinnacle during VI (Solsticio).
 
@@ -90,25 +92,53 @@ Apothic Enchanting reads block stats from its `enchanting_stats` dynamic registr
 | Cartographer's Shelf (`entrelumen:cartographer_shelf`) | II | 3 / 40 | 0 | 0 | — | 4 planks, 2 empty maps, 2 bookshelves, calibration frame → 2 |
 | Patina Shelf (`entrelumen:patina_shelf`) | III | 4 / 60 | 12 | 0 | — | 4 oxidized copper, 4 hellshelves, power regulator → 4 |
 | Lumen Shelf (`entrelumen:lumen_shelf`) | IV | 7.5 / 80 | 0 | 15 | +1 | 4 glowstone, 4 infused seashelves, spectral lens → 4 |
-| Horizon Shelf (`entrelumen:horizon_shelf`) | V | 12.5 / 100 | 10 | 10 | — | 4 deepshelves, 2 horizon charts, 2 lumen shelves, renewal engine → 4 |
+| Horizon Shelf (`entrelumen:horizon_shelf`) | V | 12.5 / 100 | 10 | 10 | — | 4 deepshelves, 2 horizon charts, 2 lumen shelves, Ingot of the Skies → 4 |
 
-The native Apothic ladder gets the same act spacing through four precise recipe edits, which the generator validates against the pinned JARs:
+The native Apothic ladder gets the same act spacing through four precise recipe edits, which the generator validates against the pinned JARs. Since the recipe audit of 25 September 2026 they take act materials, not components ([recipe-design-rules.md](recipe-design-rules.md#materiales-de-acto)); the rows below are read from the generator's `apotheosis` changes:
 
-| Native recipe | Change | Act | Eterna cap it unlocks |
+| Native recipe | Change | Act | Max Eterna |
 |---|---|---|---|
-| `apothic_enchanting:echoing_sculkshelf`, `soul_touched_sculkshelf` | spectral lens fills the empty top-left slot | IV | 80 |
-| `apothic_enchanting:endshelf` | containment seal replaces one of six end stone bricks (the pearl endshelf inherits it) | IV | 90 |
-| `apothic_enchanting:draconic_endshelf` | Ark bus fills the empty top-left slot | V | 100 |
+| `apothic_enchanting:echoing_sculkshelf`, `soul_touched_sculkshelf` | two zanite gemstones (`aether:zanite_gemstone`) fill the empty top corners | IV | 80 |
+| `apothic_enchanting:endshelf` | a zanite gemstone replaces the top-middle of its six end stone bricks (the pearl endshelf inherits it) | IV | 90 |
+| `apothic_enchanting:draconic_endshelf` | two Ingots of the Skies (`naturesaura:sky_ingot`) fill the empty top corners | V | 100 |
 
-The resulting table ladder has five steps:
+The resulting ladder, as the generator derives it (the World Tier in which each shelf first counts):
 
-- up to 45 Eterna in Acts I–II (basic, hell and sea shelves, cartographer);
-- 60–65 in Act III (infused variants, patina);
-- 70–80 in Acts III–IV (deepshelves, sculkshelves, lumen);
-- 90 in Act IV (endshelves);
-- 100 in Act V (draconic endshelf, horizon).
+- **Haven, Acts I–II, up to 45:** basic, hell and sea shelves, cartographer (Occultism's spirit-attuned crystal also stops at 45);
+- **Frontier, Act III, up to 75:** infused hell and sea shelves and their upgrades (60–65), patina (60), deepshelves (70) and their echoing and soul-touched versions (75);
+- **Ascent, Act IV, up to 90:** sculkshelves and lumen (80), endshelves and pearlescent endshelves (90);
+- **Summit, Act V, 100:** draconic endshelf and horizon;
+- **Pinnacle, Act VI:** nothing new.
 
-The Library of Alexandria stays native: its recipe already needs four infused shelves, a 45-Eterna infusion. The Ender Library needs a 100-Eterna infusion and is therefore Act V.
+The Enchantment Library (`apothic_enchanting:library`) stays native: its recipe needs four infused shelves, a 45-Eterna infusion that Haven's ceiling already allows. The Library of Alexandria (`apothic_enchanting:ender_library`) needs a 100-Eterna infusion and is therefore Act V.
+
+### World Tier Eterna ceilings
+
+Apotheosis 8.7.0 lowers the player attribute `apothic_enchanting:max_eterna` in every World Tier but Pinnacle (`data/apotheosis/tier_augments/<tier>/max_eterna.json`). Apothic Enchanting builds that attribute with base 100, minimum 0 and maximum 100 (`Ench$Attributes`, read from the class by the generator), and the table offers and infuses with the lower of the shelves' Eterna and the attribute (`EnchantmentTableStats.eterna(Player)`). The upstream ceilings trailed this ladder by one tier: hellshelves were capped in Acts I–II, deepshelves in Act III, endshelves in Act IV, and 100 Eterna, which the Act V shelves and the Library of Alexandria need, only worked in Act VI.
+
+`tools/generate_family_balance.py --family apotheosis` now writes reversible overrides of the four files to `pack/kubejs/data/apotheosis/tier_augments/`, next to the progression overrides. Each keeps the type, target, sort index, modifier ID and `mod_loaded` condition and changes only the value to the ceiling minus the base; a ceiling of 100 disables the file instead, with `neoforge:false` ahead of its own condition:
+
+| Tier | Acts | Apotheosis 8.7.0 | ENTRELUMEN | Override | Shelves that reach it |
+|---|---|---|---|---|---|
+| Haven | I–II | 30 (−70) | **45** | −55 | hellshelf, seashelf |
+| Frontier | III | 45 (−55) | **75** | −25 | echoing and soul-touched deepshelves |
+| Ascent | IV | 60 (−40) | **90** | −10 | endshelf, pearlescent endshelf |
+| Summit | V | 75 (−25) | **100** | disabled | draconic endshelf, horizon shelf |
+| Pinnacle | VI | 100 (no augment) | **100** | none | draconic endshelf, horizon shelf |
+
+The numbers are not typed anywhere; the generator derives them from its own staging:
+
+- **Shelves.** Every block the `enchanting_stats` registry gives positive Eterna: the pinned JARs (Apothic Enchanting, and Occultism's two files under `data/apotheosis`) and the companion's four. The recipes that make them are the pinned crafting and Apothic infusion recipes, with this family's recipe edits applied, removals dropped and additions included. A shelf with no recipe at all, such as the amethyst cluster, is a world block from Act I.
+- **Acts.** A recipe is open from the latest act among its ingredients: act materials and components by their act, `VANILLA_ACTS`, other shelves by their own act, anything else from Act I. Each tier covers the acts up to the next tier's first act, read from the constants in `ApotheosisTiers.java`.
+- **Ceiling.** The best Eterna of a ring of 32 such shelves, summed the way `EnchantmentTableStats.Builder` does (buckets by maximum, each clamped to it). From Frontier on, the ceiling starts at the previous one and an infusion counts once the ceiling covers its Eterna, repeated until the shelves it lets a team infuse reach no further.
+- **The Haven anchor.** Haven counts crafted shelves only (`INFUSION_OPENS = 'frontier'`). The infused hell and sea shelves infuse at exactly 45, the crafted rung itself, so counting them would chain the whole native ladder, up to the 75 of the echoing deepshelves, into Act I. The design keeps that climb for Act III. Infused shelves can therefore be made in Haven at 45, and the Enchantment Library with them, but their Eterna past 45 counts from Frontier.
+- **Guards.** `--check` fails when a pinned augment changes shape, when another pinned augment moves `max_eterna`, when a tier without an upstream augment would need one, when the attribute is no longer built as one `RangedAttribute` in `Ench$Attributes`, or when a recipe type, ingredient or conditional recipe outside the model starts making a shelf. A pin that changes shelf stats or recipes changes the derived ceilings and turns the generated files stale.
+
+Quanta and Arcana windows are not part of the model. The infusions the ladder relies on fit inside their tier with its own shelves, checked separately on 27 September 2026: infused hell and sea shelves with 15 hellshelves or seashelves at 45; the deepshelf with 12 crystalline seashelves (60 Eterna, 51 Quanta, 60 Arcana); infused dragon's breath with 11 lumen shelves (80, 15, 100); the Library of Alexandria with 13 echoing deepshelves and 3 horizon shelves (100, 45, 100). Create: Enchantment Industry's spout also fills infused dragon's breath without a table, so the endshelf's act comes from its zanite alone.
+
+Every native infusion moves earlier with the ceilings: the 40–45 ones (infused shelves, ender lead, superior scrapping tomes, trident, discs) into Haven; the 60–75 ones (deepshelf, budding amethyst, extraction tomes, eight experience bottles, echo shards, occult ender lead) into Frontier; infused dragon's breath (80) into Ascent; the 100 ones (Library of Alexandria, 32 experience bottles, and Apotheosis's gem case, unbreakable charm and god-fused pearl, so the Raven's table) into Summit. The occult ender lead deserves a design look: it rewrites a found spawner's mob, and it now arrives in Act III instead of Act V.
+
+Apotheosis applies tier augments as permanent modifiers when the tier changes and once on a player's first join (`WorldTier.setTier`, `AdventureEvents.applyMissedTierAugments`). A player who already held a tier before this change keeps that tier's old modifier until the story raises the tier, which removes it by ID; a player who already sat at Summit keeps the old −25 even at Pinnacle, because the disabled Summit augment is no longer registered to be removed. No published world exists; development worlds need a fresh player or a refresh of the tier augments.
 
 Enchantment maximum levels keep Apothic Enchanting's defaults (`enchantments.cfg` is generated per loaded enchantment and is not shipped). The Eterna ladder bounds which levels the table can roll in each act. Create: Enchantment Industry, the Ars enchanting apparatus, EvilCraft and Tombstone keep working as before. Each reads vanilla definitions or its own recipes, and none of them depends on Apothic's table. CEI super-enchanting and Occultism's iesnium anvil can still exceed a natural maximum by one, as they do natively.
 
@@ -135,7 +165,7 @@ Numeric example: a Sharpness V book deposits 8 lumen, and Sharpness XX costs 2^1
 
 Server authority: the server builds the list, caps and exact prices for every eligible enchantment and sends them in a snapshot, and the client only displays it. A click sends a vanilla container-button id (enchantment registry id × 64 + target level). The block entity re-checks eligibility, the cap against a freshly measured Eterna, the direction and the pool before writing. Eterna is recomputed for every snapshot and every withdrawal and is never cached. The pool is a saturating `long` and cannot go negative.
 
-Hoppers and ME buses can insert books through a one-slot item handler. Extraction only happens in the GUI. Shift-click moves a book into the output slot, never into the deposit slot. Breaking the block drops one item carrying the pool in `block_entity_data`, and placing it restores the pool. The recipe is Ender Library, Ark bus, renewal engine, 2 horizon shelves and 4 containment seals (Act V).
+Hoppers and ME buses can insert books through a one-slot item handler. Extraction only happens in the GUI. Shift-click moves a book into the output slot, never into the deposit slot. Breaking the block drops one item carrying the pool in `block_entity_data`, and placing it restores the pool. The recipe is the Ender Library (Library of Alexandria), 2 horizon shelves, 2 containment seals and 4 Ingots of the Skies (Act V).
 
 ## Spawner augments replace Apotheosis runes
 
