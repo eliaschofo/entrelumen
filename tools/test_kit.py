@@ -50,6 +50,13 @@ class Draft(unittest.TestCase):
                                               "[li] Reach [hl|16]", "[li] [hl|64] poles", "[li] [hl|12] rows"])
         self.assertEqual(q["es_es"]["text"][-1], "[li] [hl|12] filas")
 
+    def test_a_phrase_with_commas_is_not_a_list(self):
+        q, _ = draft(quest(["Two contacts make a pair. Facing each other they give a signal: the tidy way to tell a piston, "
+                            "bearing or gantry where to stop."],
+                           ["Dos contactos hacen un par. Enfrentados dan señal: la forma prolija de decirle a un pistón, "
+                            "rodamiento o grúa dónde frenar."]))
+        self.assertNotIn("[li]", " ".join(q["en_us"]["text"]))
+
     def test_clauses_become_items(self):
         q, _ = draft(quest(["A lever sits on a rail. Powered, it builds the cart; unpowered, it takes it apart."],
                            ["Una palanca va en un riel. Con señal, arma la vagoneta; sin señal, la desarma."]))

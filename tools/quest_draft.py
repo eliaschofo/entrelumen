@@ -39,6 +39,7 @@ LOCALES = ("en_us", "es_es")
 LEAD_MAX = {"en_us": 110, "es_es": 125}   # visible characters of a lead: about two lines of bold text at GUI 2
 ITEM_MAX = 110       # a sentence that becomes a list item
 ENUM_ITEM_MAX = 48   # a comma-separated item of "intro: a, b and c"
+ENUM_ITEM_WORDS = 6  # and its words (the longest item at most three times the shortest)
 PARA_MAX = 120       # a paragraph longer than about two lines gets split when it has two sentences
 MAX_CAREFUL = 2
 V2_MARK = re.compile(r"^\[(lead|li|careful|note)\b|\[(big)\||\[icon:")
@@ -189,6 +190,11 @@ def enumeration(masked, tags, lang):
             return None
         items[-1:] = [m.group(1).strip(), m.group(2).strip()]
         if len(items) < 3 or any(not t or len(visible(t, tags)) > ENUM_ITEM_MAX for t in items):
+            return None
+        # a list is parallel: "the tidy way to tell a piston, bearing or gantry where to stop" is one phrase, not
+        # three items (seven words, one word, four words)
+        words = [len(visible(t, tags).split()) for t in items]
+        if max(words) > ENUM_ITEM_WORDS or max(words) > 3 * min(words):
             return None
     return intro + ":", [capital(t) for t in items]
 
