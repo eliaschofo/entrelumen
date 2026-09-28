@@ -992,7 +992,9 @@ public final class RuntimeGameTestsRuins {
             for (int y = 0; y < p.sizeY(); y++)
               for (int z = 0; z < p.sizeZ(); z++) {
                 var state = level.getBlockState(cursor.set(origin.getX() + x, origin.getY() + y, origin.getZ() + z));
-                if (state.is(Blocks.STONE) || state.is(Blocks.ANDESITE) || state.is(Blocks.TUFF)) grey++;
+                if (state.is(Blocks.STONE) || state.is(Blocks.ANDESITE) || state.is(Blocks.TUFF)) {
+                  if (grey++ == 0) LOGGER.info("Ruin QA terrain: grey rock {} at local {},{},{}", state, x, y, z);
+                }
                 else if (state.is(Blocks.SANDSTONE)) sandstone++;
                 else if (state.is(Blocks.CALCITE)) calcite++;
                 else if (state.is(Blocks.WAXED_OXIDIZED_CUT_COPPER)) copper++;

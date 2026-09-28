@@ -1607,9 +1607,14 @@ public final class RuinPlacement {
       if (marker.kind() == RuinMarkers.Kind.GROUND) {
         BlockState state = blockOf(marker);
         if (state != null) level.setBlock(pos, state, Block.UPDATE_CLIENTS);
-        continue;
+      } else placeMarker(level, job.definition, marker, pos);
+      // A marker that stands on the crag keeps the site's rock too (the ground marker is a crag cell).
+      if (!p.shape().rock().isEmpty()) {
+        BlockState drawn = level.getBlockState(pos);
+        BlockState rock = siteRock(p.shape().rock(), job.palette.rocks(), drawn, local.x(), local.y(), local.z());
+        if (rock != drawn) level.setBlock(pos, rock, Block.UPDATE_CLIENTS);
       }
-      placeMarker(level, job.definition, marker, pos);
+      if (marker.kind() == RuinMarkers.Kind.GROUND) continue;
       if (marker.kind() == RuinMarkers.Kind.PEDESTAL) pedestals.add(pos);
       if (marker.kind() == RuinMarkers.Kind.ARRIVAL && arrival == null) arrival = pos;
       placed.add(new RuinData.PlacedMarker(marker, pos));
