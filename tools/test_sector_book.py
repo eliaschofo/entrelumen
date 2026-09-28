@@ -8,8 +8,11 @@ import math
 import re
 import unittest
 
+import quest_art
 import quest_engine as qe
+import quest_text
 import build_quest_placeholders as placeholders
+from test_presentation import Canvas, Fonts, Pilots, TextMarkup  # noqa: F401  presentation v2 runs with the book
 from generate_quests import OUT, THEME, FTBQ_LANG, LOCALES, generate_book, load_book, load_chapters, load_guides, stable_id
 
 
@@ -312,7 +315,7 @@ class Sectors(unittest.TestCase):
                   "sector_create_addons": (20, 90), "sector_ars_nouveau": (60, 110),
                   "sector_ars_addons": (40, 90)}  # depth follows the mod (Elias, 27/9): addons may grow to the cap
         for name, data in self.sectors.items():
-            roles = [q["role"] for q in data["quests"]]
+            roles = [q["role"] for q in data["quests"] if quest_art.is_counted(q)]   # decor is never content
             with self.subTest(sector=name):
                 lo, hi = counts.get(name, (20, 90))  # the standard for chapters without their own range
                 self.assertTrue(lo <= len(roles) <= hi, len(roles))
@@ -332,11 +335,15 @@ class Sectors(unittest.TestCase):
                 shape, size, _ = qe.ROLES[source["role"]]
                 shape = motif.get("shapes", {}).get(source["role"], shape)
                 with self.subTest(quest=source["key"]):
+                    if source["role"] == "decor":   # a toy draws at any of its sizes (quest_art.decor)
+                        size = float(source.get("size", size))
+                        self.assertIn(size, quest_art.DECOR_SIZES)
                     self.assertEqual((q["shape"], q["size"]), (shape, size))
                     self.assertEqual(presets[q["preset"]], {"shape": shape, "size": size})
                     self.assertIn(f"entrelumen_{source['role']}", q["tags"])
-                    # Sizes 0.75, 1, 2, 3 keep 16 px icons on whole texels.
-                    self.assertIn(size, (0.75, 1.0, 2.0, 3.0))
+                    if source["role"] != "decor":
+                        # Sizes 0.75, 1, 2, 3 keep 16 px icons on whole texels.
+                        self.assertIn(size, (0.75, 1.0, 2.0, 3.0))
         for default in ("normal", "info", "goal"):
             self.assertIn(default, presets)
 
@@ -452,7 +459,9 @@ class Sectors(unittest.TestCase):
                         name_ = base[:-4]
                         self.assertTrue(base in textures or name_ in qe.ART_PX, base)
                     elif img["image"]:
-                        self.assertRegex(img["image"], qe.TEXTURE)
+                        # A texture, a block-atlas sprite or an item render (quest_art): what survives the sync.
+                        self.assertTrue(any(r.fullmatch(img["image"]) for r in (qe.TEXTURE, quest_art.SPRITE, quest_art.ITEM_IMAGE)),
+                                        img["image"])
                     else:
                         self.assertTrue(img["text_on_image"])
                         for lang in LOCALES:

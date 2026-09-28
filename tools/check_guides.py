@@ -57,7 +57,9 @@ import sys
 import zipfile
 from pathlib import Path
 
+import quest_art
 import quest_engine
+import quest_text
 
 ROOT = Path(__file__).resolve().parents[1]
 GUIDES = ROOT / 'content' / 'guides'
@@ -810,6 +812,7 @@ def check_sector(path, errors, all_keys):
     add_icon(data['icon'])
     refs['textures'].add(data['emblem'])
     task_items = set()
+    glyph_textures = set()
     any_tags, any_tasks = set(), 0
     for q in data['quests']:
         if 'icon' in q:
@@ -849,6 +852,11 @@ def check_sector(path, errors, all_keys):
                 m = re.match(r'\{image:(\S+)', para)
                 if m:
                     refs['textures'].add(m.group(1))
+                for ref in quest_text.icon_refs_in(para):   # presentation v2: icons drawn as font glyphs
+                    texture, item = quest_text.icon_texture(ref)
+                    glyph_textures.add(texture)
+                    if item:
+                        refs['items'].add(item)
         for dep in q['deps']:
             if dep not in all_keys:
                 errors.append(f'{where}:{q["key"]}: unknown dependency {dep}')
@@ -857,6 +865,19 @@ def check_sector(path, errors, all_keys):
     for art in data.get('art', []):
         if 'texture' in art:
             refs['textures'].add(art['texture'])
+    drawn = quest_art.references(data)   # presentation v2: pictures, sprites and item renders on the canvas
+    refs['textures'] |= drawn['textures'] | glyph_textures
+    refs['items'] |= drawn['items']
+    for sprite in sorted(drawn['sprites']):
+        ns, path = sprite.split(':', 1)
+        if not any_texture(f'{ns}:textures/{path}.png'):
+            errors.append(f'{where}: sprite {sprite} has no texture in the pinned JARs')
+        elif not in_block_atlas(sprite):
+            errors.append(f'{where}: sprite {sprite} is not in the block atlas (it would draw as the missing texture)')
+    for tex in sorted(glyph_textures):
+        info = texture_info(tex) if EMBLEM.match(tex) else None
+        if info and info[2]:
+            errors.append(f'{where}: icon {tex} is animated: a font glyph would squash every frame')
     for fig in data.get('figures', {}).values():
         for style in fig.get('draw', []):
             refs['textures'].update(style.get('textures', []))
@@ -909,7 +930,7 @@ def check_sector(path, errors, all_keys):
                               'or pack/kubejs/data')
             elif not any(member in items for member in tag_members(tag, tags)):
                 errors.append(f'{where}: item tag #{tag} holds no item of the pinned JARs')
-    return len(data['quests'])
+    return sum(1 for q in data['quests'] if quest_art.is_counted(q))
 
 
 _LOCKED = None
@@ -922,6 +943,36 @@ def locked_mods():
         lock = json.loads((ROOT / 'catalog' / 'curated.json').read_text(encoding='utf-8'))
         _LOCKED = {m['id'] for entry in lock['mods'] for m in entry['metadata']['mods']}
     return _LOCKED
+
+
+_ATLAS = None
+
+
+def in_block_atlas(sprite):
+    """Whether the block atlas stitches a sprite: vanilla's directory sources (block/, item/) or a single or
+    directory source some pinned JAR lists in assets/minecraft/atlases/blocks.json."""
+    global _ATLAS
+    if _ATLAS is None:
+        singles, dirs = set(), {'block', 'item'}
+        lp = ROOT / 'catalog' / 'local-paths.json'
+        jars = sorted(json.loads(lp.read_text(encoding='utf-8')).values()) if lp.exists() else []
+        for jar in jars + ([str(VANILLA_JAR)] if VANILLA_JAR.exists() else []):
+            try:
+                with zipfile.ZipFile(jar) as z:
+                    raw = z.read('assets/minecraft/atlases/blocks.json')
+            except (KeyError, OSError, zipfile.BadZipFile):
+                continue
+            for src in json.loads(raw).get('sources', []):
+                kind = src.get('type', '').split(':')[-1]
+                if kind == 'single':
+                    res = src['resource']
+                    singles.add(res if ':' in res else 'minecraft:' + res)
+                elif kind == 'directory':
+                    dirs.add(src.get('source', ''))
+        _ATLAS = (singles, dirs)
+    singles, dirs = _ATLAS
+    path = sprite.split(':', 1)[1]
+    return sprite in singles or any(path.startswith(d + '/') for d in dirs if d)
 
 
 def any_texture(ref):
@@ -989,6 +1040,7 @@ def main():
         if flt and flt not in p.stem:
             continue
         total += check_sector(p, errors, all_keys)
+        warnings += quest_art.lint(json.loads(p.read_text(encoding='utf-8')))   # notes no player would see
         sectors += 1
     if not flt:
         check_reward_tables(errors)
