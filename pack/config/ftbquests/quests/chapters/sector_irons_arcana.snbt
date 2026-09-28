@@ -574,6 +574,137 @@
       }
     },
     {
+      "id": "0FC4D20ED2316AA2",
+      "x": -28.2,
+      "y": -15.0,
+      "shape": "circle",
+      "size": 0.75,
+      "preset": "el_info",
+      "dependencies": [
+        "3B82220E97B79356"
+      ],
+      "tasks": [
+        {
+          "id": "7F10715AAA862531",
+          "type": "checkmark"
+        }
+      ],
+      "rewards": [],
+      "tags": [
+        "entrelumen_info"
+      ],
+      "optional": true,
+      "icon": {
+        "id": "irons_spellbooks:eldritch_manuscript"
+      },
+      "disable_toast": true,
+      "hide_lock_icon": true
+    },
+    {
+      "id": "63CA28457AF2DC41",
+      "x": -28.2,
+      "y": -12.2,
+      "shape": "diamond",
+      "size": 1.0,
+      "preset": "el_side",
+      "dependencies": [
+        "0FC4D20ED2316AA2"
+      ],
+      "tasks": [
+        {
+          "id": "3D098023340F86F2",
+          "type": "dimension",
+          "dimension": "irons_spellbooks:pocket_dimension",
+          "icon": {
+            "id": "ftbquests:custom_icon",
+            "components": {
+              "ftbquests:icon": "irons_spellbooks:textures/gui/spell_icons/pocket_dimension.png"
+            }
+          }
+        },
+        {
+          "id": "5AABCBE3D6C595ED",
+          "type": "observation",
+          "observation_type": "block",
+          "to_observe": "irons_spellbooks:pocket_dimension_portal_frame",
+          "timer": 20,
+          "icon": {
+            "id": "ftbquests:custom_icon",
+            "components": {
+              "ftbquests:icon": "irons_spellbooks:textures/block/pocket_dimension_portal_frame.png"
+            }
+          }
+        }
+      ],
+      "rewards": [
+        {
+          "id": "4D1529F3E9312930",
+          "type": "xp",
+          "xp": 12
+        }
+      ],
+      "tags": [
+        "entrelumen_side"
+      ],
+      "optional": true,
+      "icon": {
+        "id": "ftbquests:custom_icon",
+        "components": {
+          "ftbquests:icon": "irons_spellbooks:textures/gui/spell_icons/pocket_dimension.png"
+        }
+      }
+    },
+    {
+      "id": "63834E893D842A05",
+      "x": -29.6,
+      "y": -9.4,
+      "shape": "el_tag",
+      "size": 1.0,
+      "preset": "el_tip",
+      "dependencies": [
+        "63CA28457AF2DC41"
+      ],
+      "tasks": [
+        {
+          "id": "5FFE9700C430A860",
+          "type": "checkmark"
+        }
+      ],
+      "rewards": [],
+      "tags": [
+        "entrelumen_tip"
+      ],
+      "optional": true,
+      "icon_scale": 0.75,
+      "disable_toast": true,
+      "hide_lock_icon": true
+    },
+    {
+      "id": "2961D2D1C2B5820A",
+      "x": -26.8,
+      "y": -9.4,
+      "shape": "el_tag",
+      "size": 1.0,
+      "preset": "el_tip",
+      "dependencies": [
+        "63CA28457AF2DC41"
+      ],
+      "tasks": [
+        {
+          "id": "2E6346F770BE1627",
+          "type": "checkmark"
+        }
+      ],
+      "rewards": [],
+      "tags": [
+        "entrelumen_tip"
+      ],
+      "optional": true,
+      "icon_scale": 0.75,
+      "disable_toast": true,
+      "hide_lock_icon": true
+    },
+    {
       "id": "1F175D1AB007C933",
       "x": -3.4,
       "y": -9.6,
@@ -1075,7 +1206,7 @@
       "size": 1.0,
       "preset": "el_step",
       "dependencies": [
-        "4796CEA3BD858B10"
+        "6630614DD62181BF"
       ],
       "tasks": [
         {
@@ -2857,6 +2988,76 @@
       "x": 16.0857,
       "y": 14.2093,
       "width": 5.0417,
+      "height": 0.375,
+      "rotation": 0.0,
+      "image": "",
+      "text_on_image": true,
+      "text_shadow": true,
+      "order": 5,
+      "position_locked": true
+    },
+    {
+      "id": "19915D123FB9DAAC",
+      "x": -28.2,
+      "y": -12.1464,
+      "width": 8.575,
+      "height": 5.4333,
+      "rotation": 90.0,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "color": 4078214,
+      "alpha": 36,
+      "order": -3,
+      "position_locked": true
+    },
+    {
+      "id": "4605E399886EDC9D",
+      "x": -26.1571,
+      "y": -15.5357,
+      "width": 0.6667,
+      "height": 0.6667,
+      "rotation": 90.0,
+      "image": "entrelumen:textures/gui/quests/corner.png",
+      "order": -1,
+      "position_locked": true
+    },
+    {
+      "id": "374B5B94AA68CB62",
+      "x": -26.1571,
+      "y": -8.7571,
+      "width": 0.6667,
+      "height": 0.6667,
+      "rotation": 180.0,
+      "image": "entrelumen:textures/gui/quests/corner.png",
+      "order": -1,
+      "position_locked": true
+    },
+    {
+      "id": "12C35AED78C0BAE7",
+      "x": -30.2429,
+      "y": -8.7571,
+      "width": 0.6667,
+      "height": 0.6667,
+      "rotation": 270.0,
+      "image": "entrelumen:textures/gui/quests/corner.png",
+      "order": -1,
+      "position_locked": true
+    },
+    {
+      "id": "07D1D8012DC9DBB7",
+      "x": -30.2429,
+      "y": -15.5357,
+      "width": 0.6667,
+      "height": 0.6667,
+      "rotation": 0.0,
+      "image": "entrelumen:textures/gui/quests/corner.png",
+      "order": -1,
+      "position_locked": true
+    },
+    {
+      "id": "1279747487425BE2",
+      "x": -28.2,
+      "y": -16.1021,
+      "width": 5.125,
       "height": 0.375,
       "rotation": 0.0,
       "image": "",

@@ -419,6 +419,7 @@ const entrelumenAuditTargets = {
     "aquaculture:iron_hook",
     "aquaculture:neptunium_ingot",
     "aquaculture:tackle_box",
+    "ars_additions:codex_entry",
     "ars_additions:ender_source_jar",
     "ars_additions:handy_haversack",
     "ars_additions:ritual_chunk_loading",
@@ -433,6 +434,8 @@ const entrelumenAuditTargets = {
     "ars_controle:scryers_linkage",
     "ars_controle:warping_spell_prism",
     "ars_creo:starbuncle_wheel",
+    "ars_elemental:acceleration_prism_lens",
+    "ars_elemental:advanced_prism",
     "ars_elemental:air_focus",
     "ars_elemental:air_relay",
     "ars_elemental:base_bangle",
@@ -440,7 +443,10 @@ const entrelumenAuditTargets = {
     "ars_elemental:curio_bag",
     "ars_elemental:earth_focus",
     "ars_elemental:everfull_urn",
+    "ars_elemental:fire_bangle",
     "ars_elemental:fire_focus",
+    "ars_elemental:fire_robes",
+    "ars_elemental:fire_turret",
     "ars_elemental:glyph_arc_projectile",
     "ars_elemental:glyph_homing_projectile",
     "ars_elemental:lesser_air_focus",
@@ -483,12 +489,18 @@ const entrelumenAuditTargets = {
     "ars_nouveau:enchanting_apparatus",
     "ars_nouveau:familiar_bookwyrm",
     "ars_nouveau:familiar_starbuncle",
+    "ars_nouveau:fire_essence",
     "ars_nouveau:glyph_amplify",
     "ars_nouveau:glyph_aoe",
     "ars_nouveau:glyph_blink",
     "ars_nouveau:glyph_extract",
     "ars_nouveau:glyph_light",
+    "ars_nouveau:glyph_pantomime",
     "ars_nouveau:glyph_pickup",
+    "ars_nouveau:glyph_projectile",
+    "ars_nouveau:glyph_self",
+    "ars_nouveau:glyph_touch",
+    "ars_nouveau:glyph_underfoot",
     "ars_nouveau:green_archwood_log",
     "ars_nouveau:imbuement_chamber",
     "ars_nouveau:jar_of_light",
@@ -560,7 +572,9 @@ const entrelumenAuditTargets = {
     "ars_ocultas:altar",
     "ars_technica:calibrated_precision_mechanism",
     "ars_technica:mark_of_technomancy",
+    "ars_technica:pocket_factory",
     "ars_technica:source_motor",
+    "ars_technica:technomancer_chestplate",
     "ars_technica:transmutation_focus",
     "arseng:me_source_jar",
     "arseng:source_acceptor",
@@ -4989,7 +5003,7 @@ const entrelumenAuditTargets = {
       "output": "farmersdelight:flint_knife"
     }
   ],
-  "signature": "0c959a5106ce874b"
+  "signature": "74475c4853471885"
 };
 
 ServerEvents.afterRecipes(event => {
