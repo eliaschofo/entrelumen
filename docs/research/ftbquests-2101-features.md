@@ -108,7 +108,7 @@ Evidencia: `quest/ChapterImage.readData`, dibujo en `client/gui/quests/ChapterIm
 |---|---|---|---|
 | `x`, `y`, `width`, `height` | double, en celdas | Centro y tamaño | **Sí** |
 | `rotation` | grados | Gira alrededor del centro, o de la esquina con `corner` | **Sí**: las líneas del motor (aros, rieles, rayos, rayos de engranaje) son rectángulos finos rotados |
-| `image` | cadena de ícono (sección 8) | Qué se dibuja | **Sí**: texturas de ENTRELUMEN, texturas de ítems de los JAR fijados y el píxel blanco `entrelumen:textures/gui/quests/px.png` para paneles y líneas |
+| `image` | cadena de ícono (sección 8) | Qué se dibuja | **Sí**: texturas de ENTRELUMEN, texturas de los JAR fijados (ítems, bloques, pinturas de GUI) y el píxel blanco `entrelumen:textures/gui/quests/px.png` para paneles y líneas. Presentación v2 (28/9): también sprites del atlas de bloques (animados) e `item:<id>` (el ítem en 3D); ver [quest-book-v3](../design/quest-book-v3.md#presentación-v2-28-de-septiembre-de-2026) |
 | `color` | entero RGB | Tiñe la imagen | **Sí**: paneles y líneas toman el color de la paleta del motivo |
 | `alpha` | 0–255 | Transparencia | **Sí**: 34 en los paneles de rama, de 45 a 150 en figuras y líneas; el arte va opaco |
 | `order` | entero | Orden de dibujo entre imágenes | **Sí**: paneles −3, figuras −2, arte −1, medallón de regreso 0 y su emblema 1, rótulos 5 |
@@ -186,15 +186,15 @@ Evidencia: `icon/Icon.getIcon` y `getIcon0` de FTB Library; `item/CustomIconItem
 | Forma de la cadena | Ejemplo | Efecto | Decisión |
 |---|---|---|---|
 | Textura `ns:textures/….png` | `entrelumen:textures/gui/quests/sun_heliodor.png` | Imagen fija (`ImageIcon`) | **Sí** |
-| Sprite del atlas `ns:item/…` | `create:item/wrench` | Textura del atlas de bloques | **No**: preferimos la ruta `.png`, que no depende del atlas |
-| `item:<id>` | `item:create:cogwheel` | Renderiza el ítem, modelo 3D incluido | **No** por ahora: no se vio en el cliente a tamaños grandes; queda en «Límites» |
+| Sprite del atlas `ns:block/…` | `minecraft:block/water_still` | Sprite del atlas de bloques (`AtlasSpriteIcon`), con su animación | **Sí** (28/9): agua, lava y líquidos de Mekanism que se mueven en el lienzo. `check_guides.py` pide que el atlas lo liste (carpetas `block/` e `item/` de vanilla o una fuente del JAR en `atlases/blocks.json`); si no, sale la textura de «falta» |
+| `item:<id>` | `item:create:cogwheel` | Renderiza el ítem, modelo 3D incluido | **Sí** (28/9): utilería en 3D en el lienzo (el tanque y el motor de vapor de Create). Ignora tinte y alfa (`ItemIcon`); no se vio en el cliente |
 | Color `#RRGGBB` / `#AARRGGBB`, `color:` | `#40C8814A` | Rectángulo lleno | **No**: `ChapterImageButton.draw` reemplaza el color con `withColor(color, alpha)`; el píxel blanco teñido da lo mismo sin sorpresas |
 | `hollow_rectangle:<color>` | — | Marco de 1 px | **No**: en una imagen se escala con la caja y deja de ser un marco |
 | `bullet:<color>` | — | Viñeta | **No**: mismo problema de escala (`BulletIcon.draw` resta 2 px) |
 | `part:` | — | Recorte de textura | **No** |
 | `http:`, `https:`, `file:` | — | Imagen remota (`URLImageIcon`) | **No**: un pack público no descarga imágenes |
 | Combinación `a + b` | — | Superpone íconos (`CombinedIcon`) | **No** |
-| Propiedades `; padding=`, `border=`, `border_round_edges=`, `color=`, `tint=` | — | Modificadores | **No**: el `color` de la imagen alcanza |
+| Propiedades `; padding=`, `border=`, `border_round_edges=`, `color=`, `tint=`, `u0=`…`v1=`, `tile_size=` | — | Modificadores; recorte y mosaico de una textura (`ImageIcon.setProperties`) | **No**: la imagen de capítulo viaja al cliente como `Icon.toString()` (`ChapterImage.writeNetData`) e `ImageIcon.toString()` devuelve sólo la ruta, así que el cliente nunca las ve. Sin recorte ni mosaico: un patrón repetido son varias imágenes |
 | `ftbquests:custom_icon` con `ftbquests:icon` | textura | Cualquier textura como ícono de quest o capítulo | **Motor** (`{"texture": …}`): los consejos toman el ícono del tema y los secretos, el de su logro |
 | `ftbquests:custom_icon` con `ftbquests:entity_face` | `ars_nouveau:starbuncle` | Cara de criatura (caras incluidas en FTB Library para vanilla, Ars Nouveau, Mekanism, PneumaticCraft, Undergarden, Iron's Spells y otros) | **Sí**: las quests de criaturas de Ars (Starbuncle, Whirlisprig) |
 | Tema `icon` por selector | `[#entrelumen_tip] icon: …` | Ícono por defecto de las quests sin ícono (`QuestObjectBase.getIcon`) | **Sí**: los consejos toman el ícono de consejo del tema |
@@ -289,7 +289,8 @@ Cada línea de `quest_desc` es un párrafo. `util/TextUtils.parseRawText`: si la
 | `clickEvent` `open_url`, `run_command`, `suggest_command`, `copy_to_clipboard` | — | Vanilla (`Screen.handleComponentClicked`) | — | **No** |
 | `keybind` | `{"keybind":"key.ponder.ponder"}` | Vanilla | Muestra la tecla que el jugador tiene asignada | **Sí**: nunca escribimos una tecla fija (Ponder en Create, el libro de Ars) |
 | `translate` | `{"translate":"block.create.shaft"}` | Vanilla | Nombre del ítem en el idioma del jugador | **Sí**: `[name:…]` (el quemador de blaze en Create) |
-| `font` | `minecraft:alt`, `minecraft:illageralt`, `minecraft:uniform` | Vanilla | Otra fuente | **Sí**: `[rune\|…]` en la cumbre de Ars (alfabeto de la mesa de encantamientos) |
+| `font` | `minecraft:alt`, `minecraft:illageralt`, `minecraft:uniform`, y fuentes del companion | Vanilla; `FontManager` carga cualquier `assets/<ns>/font/*.json` | Otra fuente | **Sí**: `[rune\|…]` en la cumbre de Ars (alfabeto de la mesa de encantamientos). Presentación v2 (28/9): `entrelumen:quest_big`, las hojas de vanilla al doble (`[big\|…]`), y `entrelumen:quest_icons`, un glifo del área privada por textura de ítem (`[icon:…]`, `[li:…]`). El renglón sigue midiendo 9 px |
+| Escala del texto de la descripción | — | `ViewQuestPanel.addDescriptionText` crea cada `TextField` a escala 1 (`TextField.scale` existe pero no se usa); `FTBQuestsClientConfig` sólo escala el rastreador y el changelog | No existe | **No**: la letra la decide la escala de GUI del jugador; la v2 gana legibilidad con jerarquía y aire. La descripción, además, va sin sombra (banderas 0 en `Theme.drawString`) |
 | `bold`, `italic`, `underlined`, `strikethrough`, `obfuscated`, `color` | — | Vanilla | — | **Sí**, desde el marcado |
 | Escapes Unicode | `\u2022` | `TextUtils` (`UnicodeUnescaper`, 2101.1.3) | Caracteres | **No**: escribimos el carácter |
 | Subtítulo de quest y de capítulo | idioma | sección 7 | — | **Sí** |
@@ -345,18 +346,18 @@ Evidencia: `quest/theme/ThemeLoader` (apila todos los `assets/ftbquests/ftb_ques
 | Imágenes (5) | 14 | 1 | 5 |
 | Enlaces (6) | 2 | 0 | 1 |
 | Quest (7) | 26 | 2 | 7 |
-| Íconos (8) | 3 | 1 | 9 |
+| Íconos (8) | 5 | 1 | 7 |
 | Tareas (9) | 9 | 2 | 6 |
 | Recompensas (10) | 8 | 0 | 6 |
 | Tablas y cajas (11) | 9 | 0 | 4 |
-| Texto (12) | 14 | 0 | 8 |
+| Texto (12) | 14 | 0 | 9 |
 | Tema (13) | 11 | 0 | 9 |
 | Otros (14) | 1 | 1 | 5 |
-| **Total** | **128** | **8** | **84** |
+| **Total** | **130** | **8** | **83** |
 
 Cada «No» tiene su motivo en la fila: un bloque ajeno al pack, un enlace externo o algo que el libro ya resuelve de otra forma. Varios pedían FTB XMod Compat o FTB Filter System, que entraron al lock el 27/9.
 
 ## Límites
 
 - Todo se leyó del código descompilado y se cargó en un servidor; el dibujo en el cliente no se vio. Tres cosas nuestras no tienen antecedente en ATM10 ni en FTB Evolution y conviene mirarlas en el primer vistazo: los rectángulos finos rotados que dibujan figuras, los rótulos con `font` y las curvas de Bézier generadas.
-- `item:` como imagen quedó afuera hasta verlo en el cliente: el código lo permite (`ItemIcon`), pero ningún pack de referencia lo usa en capítulos.
+- `item:` como imagen se usa desde el 28/9 en los pilotos de la presentación v2 sin haberlo visto en el cliente: el código lo permite (`ItemIcon`), pero ningún pack de referencia lo usa en capítulos. Lo mismo vale para los sprites animados, los rótulos girados y las fuentes del companion.

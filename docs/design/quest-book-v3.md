@@ -12,6 +12,7 @@ El libro v2 ([quest-book](quest-book.md)) resolvió la escala, la historia y el 
 |---|---|
 | `content/sectors/sector_*.json` | Una cadena por archivo: quests con rol, tareas, posición y texto en los dos idiomas; figuras, paneles, arte y enlaces; recompensas propias y tablas del capítulo |
 | `tools/quest_engine.py` | Compila las cadenas: gramática de nodos, presets, texto enriquecido, imágenes, curvas, recompensas (las del rol y las propias), tablas del libro y del capítulo, tema y validación |
+| `tools/quest_text.py`, `tools/quest_art.py` | Presentación v2 ([abajo](#presentación-v2-28-de-septiembre-de-2026)): marcas de jerarquía y fuentes del companion; el vocabulario de dibujo del lienzo y los nodos de adorno |
 | `tools/generate_quests.py` | Arma el libro entero (historia, guías, cadenas, hub) y escribe `pack/config/ftbquests/quests` y los recursos del companion |
 | `content/quest_book.json` | Motivos (colores y formas por tema), colores por rol, ritmo de recompensas, las 18 tablas y los nombres de las formas |
 | `tools/build_quest_placeholders.py` | Texturas provisorias del arte pedido; nunca pisa un archivo que ya existe |
@@ -126,6 +127,170 @@ Todo lo que sigue es provisorio y geométrico (`build_quest_placeholders.py`), h
 | `entrelumen:textures/gui/quests/diagram_glyphs.png` | 96×48 | Diagrama en la cumbre de Ars: forma + efecto + aumento |
 
 Opcionales para más adelante: una textura de línea por motivo (`dependency_line_texture`), un fondo de libro y fondos grandes por cadena. `px.png` (4×4 blanco) no es arte: es el píxel que el motor estira y tiñe para paneles y líneas.
+
+## Presentación v2 (28 de septiembre de 2026)
+
+Pedido de Elias (28/9): el texto de las quests tiene que leerse mejor («está medio crudo y aparte está muy chico para leer») y los lienzos tienen que jugar más, como Apotheosis · Aventura, que pinta la montaña de World Tiers del propio JAR y hace subir la escalera de niveles por ella: constelaciones, cerca y lejos, dibujar con nodos, nada de grilla estricta. Después pidió romper las reglas mentales: cada elemento de FTB Quests es un grano de arena, no lo que dice su nombre.
+
+### Qué deja hacer FTB Quests 2101.1.34
+
+Leído del descompilado (`E:/Elias/Codex/Entrelumen-ssd/questbook-v3/decomp/src-ftbq` y `src-ftbl`, rutas relativas a `dev/ftb/mods/`) y comparado con el catálogo de [ftbquests-2101-features](../research/ftbquests-2101-features.md), que ya cubría colores, hover, clic, páginas e imágenes.
+
+**Tamaño del texto: no hay perilla.**
+- Cada párrafo de la descripción es un `TextField` a escala 1 con 9 px por renglón (`ftbquests/client/gui/quests/ViewQuestPanel.addDescriptionText`).
+- `TextField` tiene `scale` (`ftblibrary/ui/TextField`), pero el panel nunca lo toca, ni en el título ni en el subtítulo.
+- La configuración del cliente (`FTBQuestsClientConfig`) sólo escala el rastreador de quests fijadas (0,25 a 2) y el changelog. FTB Library no tiene ninguna.
+- El tema sólo agranda el panel: `full_screen_quest` lo lleva a pantalla completa. El ancho sale de `min_width` de la quest o `default_min_width` del capítulo (320 en el pack), con un mínimo de 200. Más ancho no es letra más grande: son renglones más largos.
+- Lo único que agranda la letra es la escala de GUI de Minecraft, que elige el jugador.
+
+**Lo que sí se puede elegir es la fuente, el color y el peso.**
+- Un componente JSON puede pedir cualquier fuente que el cliente tenga, y el companion puede traer fuentes nuevas. Una fuente bitmap con más `height` dibuja letras más grandes.
+- Pero el renglón sigue midiendo 9 px, así que una letra de 16 px invade el renglón de arriba. Sirve para pocas letras sobre la línea base (un número, un símbolo) con una línea en blanco encima; no para párrafos.
+- Negrita, cursiva, subrayado y color: sí. La descripción se dibuja sin sombra (`TextField` con banderas 0; `ftblibrary/ui/Theme.drawString`).
+
+**Íconos dentro del renglón.** Minecraft 1.21.1 no tiene componentes de sprite. Una fuente bitmap sí puede asignar un carácter del área privada de Unicode a cualquier textura, incluida la del ítem en el JAR de su mod, por referencia. El glifo lleva el tooltip real del ítem.
+
+**Imágenes en la descripción** (`{image:…}`, ya catalogadas):
+- Una por párrafo. El párrafo no puede llevar texto: `findImageComponent` toma el primer hermano y el resto se pierde.
+- El ícono puede ser una textura o `item:<id>`, que dibuja el ítem de verdad, modelo 3D incluido.
+- Alineación izquierda, centro o derecha, `fit` al ancho, nota al pasar el mouse y clic.
+
+**Divisores.** No hay componente; alcanza un renglón de `─`, que está en la hoja `ascii.png` de vanilla, o una imagen.
+
+**El lienzo.** Una imagen de capítulo puede ser:
+- una textura, propia o de cualquier mod;
+- un sprite del atlas de bloques (`minecraft:block/water_still`, `mekanism:liquid/liquid`), que en el juego sigue animado;
+- `item:<id>`, el ítem en 3D a cualquier tamaño y ángulo;
+- un color.
+
+Tiene tinte, alfa, rotación, orden, clic, nota al pasar el mouse y `dependency`: aparece recién al completar una quest (para quien no edita, `QuestPanel.addWidgets` ni crea el widget). El texto sobre una imagen (`text_on_image`) se escala al alto de la caja y gira con ella, con fuente JSON. Todo escala con el zoom del libro (de 4 a 28, 16 por defecto; a zoom 16 una celda son 28 px).
+
+**Lo que no sobrevive: recortes y mosaicos.**
+- `Icon.getIcon` acepta propiedades como `; u0= v0= u1= v1= tile_size=` (`ftblibrary/icon/ImageIcon.setProperties`), y dibujadas funcionarían.
+- Pero la imagen viaja del servidor al cliente como `Icon.toString()` (`ChapterImage.writeNetData`), y `ImageIcon.toString()` devuelve sólo la ruta de la textura.
+- Resultado: no hay recorte ni mosaico. Un patrón repetido son varias imágenes; una hoja de sprites no se puede recortar. Los sprites del atlas y `item:` sí llegan enteros.
+
+**Quests sin tareas.** No sirven para encender cosas: FTB las completa recién cuando el jugador entra al mundo (`ServerQuestFile.checkQuestBookOnLogin`), no en vivo. Para que algo aparezca al avanzar, está la `dependency` de una imagen.
+
+### Qué hace legible el texto en los packs de referencia
+
+Medido sobre las descripciones de las tres instancias de [reference-packs](../research/reference-packs.md) (en inglés; ATM10 3.522, FTB Evolution 1.764 y Craftoria 1.002 quests). Son patrones descritos con palabras propias; no se copió nada.
+
+- **ATM10: párrafo único y denso.** 1,2 párrafos por quest, de unos 188 caracteres. Color en el 70% y negrita en el 29%. Pocas líneas en blanco (7%). Imágenes en el 14%, casi todas capturas de multibloques armados.
+- **FTB Evolution: párrafos cortos separados.** 2,6 párrafos por quest de unos 105 caracteres, con línea en blanco entre párrafos en el 76%. Los términos clave van en color en el 94%. En el 9%, una segunda página: el qué en la primera, el cómo en la segunda.
+- **Craftoria: el más fácil de recorrer con la vista.** Tres párrafos de unos 79 caracteres. Listas en el 11%, algunas como fichas técnicas: una etiqueta de color por variante, viñetas de dos a cinco palabras y al final la imagen grande del bloque. Los colores marcan categorías (cosas, acciones, costos).
+
+Lo que comparten las que se leen bien: una idea por párrafo, aire entre párrafos, el mismo color para la misma categoría, listas para lo que es paralelo (modos, usos, recetas), lo largo en la página 2 y una imagen para reconocer la cosa.
+
+### Reglas v2 del texto
+
+La voz no cambia ([quest-copy](quest-copy.md)); cambia la forma. La letra no puede crecer, así que crecen la jerarquía y el aire.
+
+1. **Primero, una oración.** `[lead]` abre la quest con una oración corta en negrita blanca: lo que te llevás si leés un solo renglón. No repite el título. En un consejo, el primer párrafo es el `[tip]`.
+2. **Después, poco y separado.** Hasta dos párrafos cortos o una lista de dos a cinco viñetas. Una idea por párrafo, dos renglones como mucho. Entre viñetas no hay línea en blanco; entre párrafos, sí.
+3. **Viñetas con ícono.** `[li:mod:ítem]` pone el ícono del ítem (su textura plana, con su tooltip) en lugar del punto. Sin ícono, `[li]` pone un punto del color del motivo.
+4. **Números que importan.** Van con `[hl|…]`, en el color del motivo. El número que resume la quest va con `[big|…]`, al doble de tamaño. `[big]` no abre página ni sigue a una viñeta, porque sube 7 px sobre el renglón de arriba. Uno o dos por quest, en las que tienen un número estrella (256 bloques, 32 lingotes, ×2).
+5. **Llamadas, cada una en su párrafo.** `[tip]` («La posta:», con el farol del libro), `[careful]` («Ojo:», con la alerta de vanilla) y `[note]` («Dato:», con el ícono de información). La posta es un dato de oficio; el ojo, lo que rompe algo; el dato, un contexto que no es instrucción.
+6. **Acciones como íconos.** `[icon:right_click]` y `[icon:click]` delante del verbo: el mouse de vanilla con el botón marcado.
+7. **La página 2 es para la profundidad:** diagramas, tablas, submecánicas. El tope de 330 caracteres visibles en la primera página sigue igual.
+8. **Todo ítem nombrado** va con `[item:…]` (color y tooltip), igual que antes. `{rule}` separa dos bloques con una línea tenue, pocas veces.
+
+El tope, la paridad de idiomas y las frases prohibidas los sigue revisando el motor. `[lead]` primero, `[big]` bien ubicado y `{rule}` entre párrafos también son errores de compilación.
+
+### Reglas v2 del lienzo
+
+1. **Una escena, no un grafo.** Una pintura del propio mod (Apotheosis, el panorama del título de Create), referenciada desde su JAR. O un dibujo propio con texturas y sprites de los mods: un edificio en corte, un río, una mina.
+2. **El tronco dibuja algo:** un eje, un río, una cinta, un caño, una escalera. Donde el dibujo reemplaza a la línea, la línea real se esconde (`hide_lines`), y el mouse la sigue mostrando.
+3. **Distancias libres.** Las ramas van cerca de su padre, en grupos o constelaciones sueltas; no hay grilla.
+4. **Sólo dos reglas duras.** Los nodos no se pisan (lo valida el motor) y las líneas se leen: cortas, sin atravesar grupos ajenos ni rótulos.
+5. **Pocos rótulos y grandes:** escala 2 para las secciones y 3 o 4 para el título. Escala 1 sólo para notas.
+6. **El progreso cuenta algo.** `reveal` enciende luces, suelta humo o grava, levanta la neblina y trae el sol de Heliodor en la cumbre.
+7. **Adornos (`decor`)**, de uno a tres por capítulo: juguetes sin premio que nunca cuentan como contenido.
+8. **Por referencia, nunca copiado.** Las texturas de mods se leen de su JAR. `check_guides.py` exige que existan, que un sprite esté en el atlas de bloques y que un ícono de texto no sea animado.
+
+### Motor
+
+- **`tools/quest_text.py`:**
+  - las marcas `[lead]`, `[li]`, `[li:…]`, `[icon:…]`, `[big|…]`, `[careful]`, `[note]` y `{rule}`;
+  - las dos fuentes que `generate_quests.py` escribe en el companion. `entrelumen:quest_big` usa las hojas de vanilla al doble, sobre la línea base; `entrelumen:quest_icons` pone un glifo del área privada por textura usada;
+  - `"presentation": 2` en un capítulo dibuja `[tip]` con el farol en vez de «» ». Los capítulos que no lo piden no cambian.
+- **`tools/quest_art.py`:** diez tipos de arte, que salen del [README de las cadenas](../../content/sectors/README.md#arte-presentación-v2):
+  - `picture`, `sprite`, `item`, `path` (color, textura o sprite en trozos casi cuadrados, puntos o ítems, curvas suaves), `mosaic`, `glow`, `scatter`, `frame`, `text` (rótulo girado) y `lettering` (una letra por posición a lo largo de un camino);
+  - el rol `decor`: un checkmark opcional sin premio, aviso, candado ni líneas, de cualquier tamaño, que ningún total ni proporción cuenta (`is_counted`).
+- **Toques en el código existente:**
+  - `quest_engine.py`: importa los dos módulos, suma sus marcas y delega en `compile_paragraph`, `compile_text`, `compile_sector` (decor) y `decorate_sector` (`art_images`);
+  - `generate_quests.py`: escribe las fuentes y no cuenta los adornos;
+  - `check_guides.py`: revisa texturas, sprites, ítems e íconos;
+  - `content/quest_book.json`: colores (transparentes) del rol `decor`.
+- **Pruebas:** `tools/test_presentation.py` (20), que también corren dentro de `tools/test_sector_book.py`.
+
+### Piloto: Create · Cinética y Mekanism · Básico
+
+Las dos cadenas conservan todas sus claves, tareas, dependencias, datos y fuentes. Cambian la posición, el dibujo y la forma del texto: 153 quests reescritas en inglés y en español.
+
+**Create · Cinética: el molino en la caverna.**
+- La pintura del título de Create (sus cuatro caras, desde el JAR de Create) es el taller.
+- Un río de agua animada, con orillas de pasto y flores, mueve la rueda hidráulica dibujada alrededor de su nodo.
+- El eje de Create, con su propia textura, lleva el tronco en zigzag por la pintura. Pasa a latón recién cuando hacés latón.
+- Cada hito prende un farol.
+- Alrededor: las cintas bajo la prensa; la sala de calderas con el tanque y el motor en 3D, que largan vapor; el pozo inundado del buceo; los estratos de las piedras de Create; la pizarra de esquemas; la mesa de logística de latón; el estante de herramientas y golosinas.
+- En la cumbre, las dos ruedas trituradoras dibujadas, que sueltan grava, y el sol.
+- Juguetes: un farol que prende las lámparas de la pintura y un silbato que aparece con la caldera.
+
+**Mekanism · Básico: la planta en corte.**
+- Un edificio con un piso por nivel (básico, avanzado, élite, definitivo). Los pisos se iluminan al alcanzar su nivel.
+- A la izquierda, la escalera de niveles, que baja al sótano de Mekanism Extras en la tierra.
+- A la derecha, la escalera de menas ×2…×5, con el lodo sucio de Mekanism bajando animado.
+- En el medio, la planta química manda un caño de color, animado, a la máquina de cada piso: oxígeno a ×3, cloruro a ×4, ácido a ×5. La torre de evaporación está armada con sus bloques.
+- En la terraza, la cinta de carcasa de acero, las menas, el anexo de MoreMachine y dos chimeneas que humean.
+- Juguete: el Robit.
+
+Vistas previas, antes y después, en `E:/Elias/Codex/Entrelumen-ssd/presentation-v2/`. Las dibuja `presentation-v2/tools/preview_v2.py`, el renderer de `questbook-v3/tools/preview3.py` extendido, fuera del repo. Agrega:
+- modelos 3D de ítems (elementos JSON y OBJ de NeoForge) para íconos y para imágenes `item:`;
+- sprites, rótulos girados y cursiva;
+- las fuentes del companion;
+- el panel de la quest con la geometría de `ViewQuestPanel`, sin sombra y a escala de GUI 2 o 3.
+
+### Cómo pasar los otros capítulos
+
+**Qué cambiar en los otros ~70 capítulos:**
+- **Texto:** la forma de arriba, quest por quest y sin tocar los datos:
+  - `[lead]`;
+  - las enumeraciones hechas listas;
+  - íconos donde el ítem tiene textura plana;
+  - `[careful]` para lo que hoy es una advertencia metida en un párrafo;
+  - la profundidad en la página 2.
+- **Lienzo:** una escena por familia en vez de una figura geométrica por capítulo. Los grupos pasan de paneles con esquinas a lugares de la escena, con rótulos de escala 2.
+
+**Cómo hacerlo barato:**
+1. **Por familia, no por capítulo.** Las cinco cadenas de Create comparten la caverna y el eje; las tres de Mekanism, el edificio en corte. La primera de cada familia paga el dibujo y las otras lo reusan, cambiando la parte que les toca.
+2. **Pinturas que ya existen en los JAR fijados**, por referencia, en un barrido del 28/9 de texturas grandes fuera de bloques e ítems:
+   - Aether: el panorama del título (6 caras de 1017 px) y su logo;
+   - Ars Nouveau: el cuadro `painting/resting_drygmy`;
+   - Forbidden & Arcanus: los fondos de investigación con estrellas;
+   - Theurgy y Modonomicon: cielos nocturnos por capas, para los capítulos de magia con constelaciones;
+   - Herbs and Harvest: la lámina de cultivos (1920×991);
+   - los tutoriales de Apotheosis;
+   - los cuadros de vanilla (`minecraft:textures/painting/…`), para cocina, exploración y construcción.
+   
+   Los mods técnicos sin pintura usan el edificio en corte, la placa o el río de Create.
+3. **El texto con un borrador asistido.** Un script propone la forma v2 a partir del texto actual:
+   - la primera oración como `[lead]` si es corta;
+   - las enumeraciones como `[li]`;
+   - `[li:ítem]` para los ítems con textura plana, que `check_guides.py` ya sabe listar;
+   - los números como `[hl|…]`.
+   
+   Quien redacta revisa y corrige. Con eso, el costo baja a revisar unos segundos por quest más el chiste. Todavía no está hecho: es el primer paso del despliegue.
+4. **Orden: por dónde pasa un jugador nuevo.** Primero los actos I y II (Create · Vías y energía, Farmer's Delight, Ars, las guías de inicio), después el resto por familia. Cada tanda cierra con las vistas previas (`preview_v2.py`, fresca y completa, y paneles a GUI 2) antes de mostrárselas a Elias.
+5. **Lo que no cambia se queda:** claves, tareas, dependencias, recompensas y fuentes. Un capítulo sin `"presentation": 2` se ve igual que hoy, así que se puede pasar de a uno sin romper nada.
+
+### Límites de la v2
+
+- **Nada se vio en el cliente:** las dos fuentes, los glifos de ítems, los sprites animados, las imágenes `item:`, los rótulos girados y los adornos están leídos del código y compilados, y las vistas previas los imitan.
+  - Si una textura falta, su glifo sale como un cuadrado y el resto del texto no se rompe.
+  - Si un sprite no está en el atlas, se dibuja con la textura de «falta».
+- **Detalles del cliente:** una imagen `item:` ignora el tinte y el alfa. Los glifos de ícono miden 8 px, el alto de una letra: a GUI 2 muestran la textura de 16 px pixel por pixel.
+- **Salidas generadas:** las fuentes van con el resto del libro (`generate_quests.py`) y se regeneran al integrar, como el tema y los idiomas.
 
 ## Validación
 

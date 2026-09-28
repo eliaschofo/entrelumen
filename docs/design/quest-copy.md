@@ -37,6 +37,25 @@ Reglas para todo texto del libro: historia, cadenas (`content/sectors`), guías,
 | Runas | violeta, fuente de la mesa de encantamientos | `[rune\|…]` |
 | Positivo | verde `#9BE08A` | `[good\|…]` |
 | Voz del Atlas (historia) | tachado `&m` y glitch `&k` de hasta 8 letras, dos por texto | actos I a IV |
+| Primera oración | blanco, negrita | `[lead]` |
+| Número estrella | acento del motivo, al doble de tamaño | `[big\|…]` |
+| Ojo | salmón `#FF8C7A`, con la alerta | `[careful]` |
+| Dato | celeste `#9DC3FF`, con el ícono de información | `[note]` |
+| Íconos | los colores de la textura (el glifo va en blanco para no teñirse) | `[icon:…]`, `[li:…]` |
+
+## Forma (presentación v2)
+
+Desde el 28/9, pedido de Elias: el texto «está medio crudo y muy chico». FTB no deja agrandar la letra de la descripción ([quest-book-v3](quest-book-v3.md#qué-deja-hacer-ftb-quests-2101134)), así que se gana legibilidad con jerarquía y aire. Rige para los capítulos con `"presentation": 2`; los demás se pasan de a uno ([plan](quest-book-v3.md#presentación-v2-28-de-septiembre-de-2026)).
+
+1. **La primera oración, en negrita.** `[lead]` abre la quest con una oración corta: lo que te llevás si leés un solo renglón. No repite el título ni dice qué es la quest; dice para qué sirve o qué la hace distinta («Energía gratis, pareja y silenciosa.», «Cuatro de cada cinco salen bien; el resto, chatarra.»). Un consejo o una nota abre con su prefijo en lugar del lead.
+2. **Una idea por párrafo**, dos renglones como mucho. Lo que se puede decir en una lista (modos, usos, pasos, recetas) va en viñetas `[li]` de pocas palabras, sin punto final si son fragmentos.
+3. **Íconos en las viñetas** cuando el ítem tiene textura plana (`[li:create:iron_sheet]`). Con modelo 3D, la viñeta es un punto. Las acciones del mouse van con su ícono: `[icon:right_click] Clic derecho…`.
+4. **Los números en el acento.** `[hl|…]` para las cantidades que el jugador va a buscar con la vista. `[big|…]` sólo para el número estrella, uno o dos por quest: nunca en el primer párrafo de una página ni después de una viñeta.
+5. **Una llamada por tipo:** `[tip]` para el dato de oficio, `[careful]` para lo que rompe algo o te hace perder, `[note]` para el contexto que no es instrucción. Cada una en su párrafo.
+6. **Lo que es profundidad va a la página 2:** diagramas, tablas, cifras de rendimiento, casos raros. El tope de 330 caracteres visibles de la primera página no cambia.
+7. **Mismo contenido en los dos idiomas:** los mismos ítems enlazados, los mismos íconos, las mismas páginas y las mismas llamadas.
+
+Ejemplo, «Consejo: Catalizadores» de Create · Cinética. Antes, un párrafo de unos 200 caracteres con cuatro procesos seguidos. Después: «La posta: Lo que haya en la corriente decide el trabajo:», cuatro viñetas con el balde de lava, la fogata, el balde de agua y la fogata de almas («Lava o un Quemador de Blaze prendido: funde», «Fuego: ahúma», «Agua: lava», «Fuego de almas: embruja»), un «Ojo: La comida en lava se quema: ahumala.» y una línea final sobre la velocidad.
 
 ## Diez reescrituras
 
@@ -84,7 +103,7 @@ Tomadas del libro del 25/9. Las seis primeras ya están aplicadas (cadenas e his
 
 ## Cómo se revisa
 
-- En las cadenas, `tools/quest_engine.py` rechaza al generar: frases meta de la lista `BANNED`, teclas escritas, títulos de más de 40 caracteres, subtítulos de más de 64, primeras páginas de más de 330 caracteres, una primera oración igual al título, marcado roto, y idiomas con distinto número de páginas o distintos ítems, teclas o enlaces.
+- En las cadenas, `tools/quest_engine.py` rechaza al generar: frases meta de la lista `BANNED`, teclas escritas, títulos de más de 40 caracteres, subtítulos de más de 64, primeras páginas de más de 330 caracteres, una primera oración igual al título, marcado roto, y idiomas con distinto número de páginas o distintos ítems, teclas o enlaces. Con la forma v2 (`tools/quest_text.py`) también rechaza un `[lead]` que no abre la quest, un `[big|…]` que abre página o sigue a una viñeta o tiene más de 10 caracteres, y un `{rule}` en un borde.
 - En la historia, `tools/test_quest_book.py` rechaza frases meta, teclas escritas y pedidos de confirmar; `generate_quests.py` limita los códigos de formato y los glitches.
 - Las guías viejas no pasan por estas reglas hasta que se conviertan en cadenas.
 - `tools/check_guides.py` comprueba contra los JAR que existan los ítems enlazados, las teclas, los logros, las criaturas, las estructuras y las texturas, y que Almost Unified no cambie el ítem que se pide.

@@ -17,8 +17,9 @@ Un archivo `sector_<nombre>.json` por capítulo, en el formato de `tools/format_
 | `figures` | Figuras con nombre: `ring`, `arc` o `line`. Dan posiciones (`slot`) y se dibujan con `draw` |
 | `groups` | Paneles de rama: `label` por idioma, `axis` (`radial`, `auto`, `x`, `y` o grados), `caption` |
 | `links` | Enlaces a quests de otros capítulos: `target` y `at` |
-| `art` | Imágenes: `texture` (a escala entera), `label`, `line`, `panel`; con `click`, `hover`, `reveal`, `alpha` |
+| `art` | Imágenes: `texture` (a escala entera), `label`, `line`, `panel`; con `click`, `hover`, `reveal`, `alpha`. Presentación v2: los tipos de [abajo](#arte-presentación-v2) |
 | `reward_tables` | Opcional: tablas de recompensa propias del capítulo, por nombre (ver [Recompensas propias](#recompensas-propias)) |
+| `presentation` | Opcional: `2` dibuja `[tip]` con el farol del libro en vez de «» » ([quest-book-v3](../../docs/design/quest-book-v3.md#presentación-v2-28-de-septiembre-de-2026)) |
 | `quests` | Lista de quests |
 
 Estilos de `draw`: `ring` (arco o círculo de segmentos), `teeth` (dientes de engranaje), `spokes`, `rails` (dos rieles y durmientes), `polyline`, `glyphs` (texturas de ítems de un mod alrededor de un círculo, por referencia).
@@ -28,7 +29,7 @@ Estilos de `draw`: `ring` (arco o círculo de segmentos), `teeth` (dientes de en
 | Clave | Qué es |
 |---|---|
 | `key` | Clave semántica global; el ID es `stable_id("quest:" + key)`. Reusar la clave conserva el progreso |
-| `role` | `entry`, `step`, `milestone`, `side`, `tip`, `info`, `secret`, `bounty`, `boss`, `capstone` |
+| `role` | `entry`, `step`, `milestone`, `side`, `tip`, `info`, `secret`, `bounty`, `boss`, `capstone`; y `decor`, un juguete del lienzo que no es contenido ([abajo](#adornos-decor)) |
 | `deps` | Claves de dependencias (pueden ser de otro capítulo) |
 | `task` / `tasks` | `item` (+`count`, `consume`, `components` para un ítem que sólo existe como variante), `any` (cualquiera de varios ítems o tags; ver abajo), `checkmark`, `advancement`, `dimension`, `biome`, `structure`, `kill`, `observation` (`observe`, `target`, `ticks`), `stat`; cada una con `title` e `icon` opcionales |
 | `at` | `{"x", "y"}`, `{"figure", "slot", "out", "along"}` o `{"near", "dx", "dy"}` |
@@ -145,6 +146,43 @@ Son ítems simples, sin componentes: `{"item": "mysticalagriculture:inferium_see
 | `[hl\|…]`, `[b\|…]`, `[i\|…]`, `[warn\|…]`, `[good\|…]` | Acento del motivo, negrita, cursiva, advertencia, positivo |
 | `[hover\|texto\|nota]` | Texto con nota al pasar el mouse |
 | `[rune\|…]` | Fuente de la mesa de encantamientos |
-| `[tip]` al principio | Prefijo de consejo: «» Pro tip:» / «» La posta:» |
+| `[tip]` al principio | Prefijo de consejo: «» Pro tip:» / «» La posta:»; con `"presentation": 2`, el farol del libro y «Pro tip:» / «La posta:» |
 | `{page}` | Salto de página |
 | `{image:ns:textures/….png width:N height:N align:center}` | Imagen en la descripción (una por párrafo) |
+
+Presentación v2 (`tools/quest_text.py`; las reglas de uso están en [quest-copy](../../docs/design/quest-copy.md#forma-presentación-v2)):
+
+| Marca | Resultado |
+|---|---|
+| `[lead]` al principio del primer párrafo | Toda la oración en negrita: la línea que se lee si se lee una sola |
+| `[li]` al principio | Viñeta con un punto del color del motivo; entre viñetas seguidas no hay línea en blanco |
+| `[li:mod:ítem]`, `[li:ns:textures/….png]`, `[li:nombre]` | Viñeta con un ícono: la textura plana del ítem (con su tooltip), una textura o un ícono con nombre |
+| `[icon:…]` | El mismo ícono dentro del renglón. Con nombre: `right_click`, `click`, `info`, `alert`, `check`, `tip`, `secret`, `heart` |
+| `[big\|×5]` | Hasta 10 caracteres al doble de tamaño, en el color del motivo, sobre la línea base. Nunca en el primer párrafo de una página ni después de una viñeta |
+| `[careful]`, `[note]` al principio | Llamadas: «Careful:» / «Ojo:» con la alerta, «Note:» / «Dato:» con el ícono de información |
+| `{rule}` | Una línea tenue entre dos párrafos |
+
+Los íconos son glifos de una fuente que `generate_quests.py` escribe en el companion (`entrelumen:quest_icons`, 8 px, la textura referenciada desde su JAR). `check_guides.py` pide que la textura exista y que no sea animada. Los bloques con modelo 3D no tienen textura de ícono: para ellos, `[li]` sin ícono.
+
+## Arte (presentación v2)
+
+`tools/quest_art.py`. Cada entrada de `art` es de un tipo, el de la primera de estas claves que tenga. Coordenadas y medidas en celdas, como las quests. Todas aceptan `order`, `alpha`, `tint` (el color de la imagen), `rotation`, `reveal` (aparece al completar esa quest), `hover` y `click`.
+
+| Tipo | Claves | Qué dibuja |
+|---|---|---|
+| `lettering` | `lettering` {idioma: texto de igual largo}, `path`, `scale`, `font`, `smooth` | Una letra por posición a lo largo de un camino, girada con él |
+| `path` | `path` [[x, y]…], `width`, `smooth` (tramos por segmento, Catmull-Rom), `step` (trozos de ese largo), `turn` (la veta de la textura va a lo largo), `closed`; y `color`, `texture`, `sprite`, `dots` (+`size`) o `items` | Un camino: río, eje, cinta, caño, cable, raíz, órbita |
+| `mosaic` | `mosaic` [x, y] (esquina), `cell`, `rows` (cadenas), `legend` {carácter: dibujable} | Pixel art: cada carácter es un color (las corridas se juntan), una textura, un sprite o `item:` |
+| `scatter` | `scatter` (dibujable o lista), `region` [x0, y0, x1, y1], `count`, `size` [mín, máx], `alphas`, `seed`, `spin`, `avoid` [[x, y, r]…], `near` (camino) + `band` [mín, máx] | Un puñado con semilla: estrellas, chispas, humo, flores en una orilla |
+| `frame` | `frame` [x0, y0, x1, y1], `color`, `thickness_px`, `fill`, `fill_alpha`, `corners` | Marco con esquinas y relleno |
+| `glow` | `glow` [x, y], `r` | Una luz suave (la partícula `flash` de vanilla), casi siempre con `reveal` |
+| `text` | `text` {idioma}, `x`, `y`, `scale`, `font`, `bold`, `align`, `anchor`, `shadow` | Un rótulo de cualquier tamaño y ángulo |
+| `item` | `item` (id), `x`, `y`, `size` | El ítem en 3D (`item:<id>`), como en el inventario; ignora `tint` y `alpha` |
+| `sprite` | `sprite` (`ns:block/…` o una carpeta del atlas), `x`, `y`, `w`, `h` o `cells` [[x, y]…] + `cell` | Un sprite del atlas de bloques, animado en el juego |
+| `picture` | `picture` (`ns:textures/….png`), `x`, `y`, `w`, `h` | Cualquier textura estirada a cualquier tamaño: una pintura del mod, una placa |
+
+Un dibujable es una textura (`ns:textures/….png`), un sprite (`ns:block/…`), `item:<id>` o un color `#rrggbb`. FTB manda cada imagen al cliente como texto, así que no hay recortes ni mosaicos: un patrón repetido son varias imágenes. `check_guides.py` revisa que las texturas y los ítems existan en los JAR fijados y que cada sprite esté en el atlas de bloques.
+
+### Adornos (`decor`)
+
+Un juguete del lienzo: un farol que prende la escena, un silbato. Es un checkmark opcional, sin recompensa, aviso, candado ni líneas. Tiene forma `none` y un tamaño de 0,5 a 4 (`size`, con `icon_scale` si hace falta), y suele apagar o encender arte con `reveal`. No cuenta para nada: ni en los totales del libro, ni en el rango de quests de la cadena, ni en la proporción de consejos (`quest_art.is_counted`). Uno a tres por capítulo, con texto EN/ES y `sources` como cualquier quest.

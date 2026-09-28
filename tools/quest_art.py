@@ -242,6 +242,15 @@ def mosaic_images(key, art, extra, ctx):
     return out
 
 
+def distance_to(points, x, y):
+    best = float("inf")
+    for (ax, ay), (bx, by) in zip(points, points[1:]):
+        dx, dy = bx - ax, by - ay
+        t = max(0.0, min(1.0, ((x - ax) * dx + (y - ay) * dy) / ((dx * dx + dy * dy) or 1.0)))
+        best = min(best, math.hypot(x - ax - t * dx, y - ay - t * dy))
+    return best
+
+
 def scatter_images(key, art, extra, ctx):
     rng = random.Random(art.get("seed", 1))
     x0, y0, x1, y1 = art["region"]
@@ -249,12 +258,16 @@ def scatter_images(key, art, extra, ctx):
     alo, ahi = art.get("alphas", [extra.get("alpha", 255)] * 2)
     specs = art["scatter"] if isinstance(art["scatter"], list) else [art["scatter"]]
     avoid = [tuple(a) for a in art.get("avoid", [])]   # [x, y, r] circles to keep clear (nodes, labels)
+    near = smooth([tuple(p) for p in art["near"]], 6) if "near" in art else None   # along a path: banks, edges
+    band = art.get("band", [0.0, 1.0])
     out = []
     tries = 0
-    while len(out) < art["count"] and tries < art["count"] * 50:
+    while len(out) < art["count"] and tries < art["count"] * 80:
         tries += 1
         x, y = rng.uniform(x0, x1), rng.uniform(y0, y1)
         if any(math.hypot(x - ax, y - ay) < ar for ax, ay, ar in avoid):
+            continue
+        if near and not band[0] <= distance_to(near, x, y) <= band[1]:
             continue
         s = rng.uniform(lo, hi)
         e = dict(extra)
