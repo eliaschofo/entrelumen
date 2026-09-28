@@ -94,7 +94,7 @@ public final class RuntimeGameTestsEnves {
    */
   @net.minecraft.gametest.framework.BeforeBatch(batch = "enves_attempts")
   public static void plainHooks(ServerLevel level) {
-    EnvesHooks.reset();
+    EnvesContent.uninstall();
   }
 
   @net.minecraft.gametest.framework.AfterBatch(batch = "enves_attempts")

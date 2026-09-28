@@ -401,6 +401,17 @@ public final class EnvesEchoes {
     }
   }
 
+  /**
+   * A live echo by its UUID. The level's own lookup only sees entities of sections that finished
+   * loading, which a freshly spawned echo or a chunk just loaded may not be yet; this sees every echo
+   * that joined the level and has not left it.
+   */
+  public static Optional<Mob> find(UUID id) {
+    if (id == null) return Optional.empty();
+    for (Mob mob : LIVE) if (!mob.isRemoved() && mob.getUUID().equals(id)) return Optional.of(mob);
+    return Optional.empty();
+  }
+
   /** Every echo of an attempt still in the world (for the circle and the champion checks). */
   static List<Mob> of(UUID attempt) {
     List<Mob> out = new ArrayList<>();

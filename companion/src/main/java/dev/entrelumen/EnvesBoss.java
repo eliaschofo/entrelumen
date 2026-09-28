@@ -39,8 +39,7 @@ public final class EnvesBoss {
     if (floor.attempt().bossDefeated) return null;
     var runs = EnvesRuns.get(floor.level().getServer());
     var run = runs.run(floor.attempt().id);
-    if (run.bossSpawned && run.boss != null && floor.level().getEntity(run.boss) instanceof WhiteWither alive && alive.isAlive())
-      return alive;
+    if (run.bossSpawned && EnvesEchoes.find(run.boss).orElse(null) instanceof WhiteWither alive && alive.isAlive()) return alive;
     WhiteWither boss = spawn(floor.level(), floor.attempt(), center);
     if (boss == null) return null;
     run.boss = boss.getUUID();
@@ -90,7 +89,7 @@ public final class EnvesBoss {
     if (level == null || attempt.floor(EnvesLayout.BOSS_DEPTH).placement != EnvesData.Placement.READY) return;
     var runs = EnvesRuns.get(server);
     var run = runs.run(attempt.id);
-    if (run.boss != null && level.getEntity(run.boss) instanceof WhiteWither boss && boss.isAlive() && !boss.isDeadOrDying())
+    if (EnvesEchoes.find(run.boss).orElse(null) instanceof WhiteWither boss && boss.isAlive() && !boss.isDeadOrDying())
       boss.discard();
     if (run.bossChestPlaced) return;
     run.bossChestPlaced = true;
@@ -127,7 +126,14 @@ public final class EnvesBoss {
     level.playSound(null, home, SoundEvents.WITHER_AMBIENT, SoundSource.HOSTILE, 1.5f, 0.6f);
   }
 
-  /** Once a second: a boss that left the world without falling comes back when somebody stands in the arena. */
+  /** Seconds each attempt's boss has been missing from a loaded, ticking arena. */
+  private static final java.util.Map<java.util.UUID, Integer> MISSING = new java.util.HashMap<>();
+
+  /**
+   * Once a second: a boss that left the world without falling comes back when somebody stands in the
+   * arena, once the arena's centre ticks and the boss has been missing there for three checks in a
+   * row (a chunk that just loaded shows its entities a moment later; never two bosses).
+   */
   static void tick(MinecraftServer server) {
     if (server.getTickCount() % 20 != 17) return;
     ServerLevel level = Enves.level(server);
@@ -136,7 +142,10 @@ public final class EnvesBoss {
       if (!run.bossSpawned || run.boss == null) continue;
       var attempt = EnvesData.get(server).attempt(run.attempt);
       if (attempt.isEmpty() || attempt.get().bossDefeated || attempt.get().status != EnvesData.Status.OPEN) continue;
-      if (level.getEntity(run.boss) != null) continue;
+      if (EnvesEchoes.find(run.boss).isPresent()) {
+        MISSING.remove(run.attempt);
+        continue;
+      }
       var floor = Enves.floor(level, attempt.get(), EnvesLayout.BOSS_DEPTH);
       var centers = floor.layout().withRole(EnvesLayout.Role.ARENA_CENTER);
       if (centers.isEmpty()) continue;
@@ -148,6 +157,10 @@ public final class EnvesBoss {
             || (role != EnvesLayout.Role.ARENA && role != EnvesLayout.Role.ARENA_CENTER)) continue;
         BlockPos at = floor.markers(center).stream().filter(m -> m.marker().kind() == EnvesMarkers.Kind.BOSS_CENTER)
             .map(EnvesHooks.WorldMarker::pos).findFirst().orElse(floor.origin(center).offset(EnvesGeometry.C, 1, EnvesGeometry.C));
+        if (!level.isPositionEntityTicking(at)) break;
+        int missing = MISSING.merge(run.attempt, 1, Integer::sum);
+        if (missing < 3) break;
+        MISSING.remove(run.attempt);
         run.bossSpawned = false;
         awaken(floor, at, player);
         break;

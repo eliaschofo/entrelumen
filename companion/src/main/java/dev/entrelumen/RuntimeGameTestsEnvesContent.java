@@ -113,11 +113,13 @@ public final class RuntimeGameTestsEnvesContent {
 
   /** A little script of steps, one per tick when its condition holds. */
   private static final class Script {
+    /** A wait longer than this fails and names the step it waited for. */
+    static final int DEADLINE = 6000;
     final GameTestHelper helper;
     final List<BooleanSupplier> waits = new ArrayList<>();
     final List<Runnable> steps = new ArrayList<>();
     final Runnable cleanup;
-    int at;
+    int at, waited;
 
     Script(GameTestHelper helper, Runnable cleanup) {
       this.helper = helper;
@@ -139,7 +141,12 @@ public final class RuntimeGameTestsEnvesContent {
       helper.onEachTick(() -> {
         if (done.get()) return;
         try {
-          while (at < steps.size() && waits.get(at).getAsBoolean()) steps.get(at++).run();
+          while (at < steps.size() && waits.get(at).getAsBoolean()) {
+            steps.get(at++).run();
+            waited = 0;
+          }
+          if (at < steps.size() && ++waited > DEADLINE)
+            throw new net.minecraft.gametest.framework.GameTestAssertException("step " + at + " waited " + DEADLINE + " ticks");
           if (at >= steps.size()) {
             done.set(true);
             cleanup.run();
@@ -164,7 +171,21 @@ public final class RuntimeGameTestsEnvesContent {
 
   private static void moveTo(ServerPlayer player, BlockPos feet) {
     Enves.move(player, Enves.level(player.server), Vec3.atBottomCenterOf(feet), Enves.ARRIVAL_YAW);
+    arrived(player);
+  }
+
+  /**
+   * What a client's movement packets do for a real player: the dimension change is confirmed and the
+   * chunks round the player load, so what spawns there ticks.
+   */
+  static void arrived(ServerPlayer player) {
     player.hasChangedDimension();
+    player.serverLevel().getChunkSource().move(player);
+  }
+
+  /** A fresh player is invulnerable for its first 60 ticks; the damage checks wait them out. */
+  static boolean vulnerable(ServerPlayer player, long since) {
+    return player.serverLevel().getGameTime() - since > 70;
   }
 
   private static List<Mob> echoes(Attempt attempt) {
@@ -211,7 +232,7 @@ public final class RuntimeGameTestsEnvesContent {
       qa.close();
     }).then(() -> attempt.status == Status.OPEN, () -> {
       helper.assertTrue(Enves.enter(player), "could not enter");
-      player.hasChangedDimension();
+      arrived(player);
       player.setInvulnerable(true);
       int cell = Enves.layout(attempt, 1).withRole(EnvesLayout.Role.FIGHT).getFirst();
       moveTo(player, EnvesEchoes.safeSpot(player.serverLevel(), Enves.origin(attempt, 1, cell).offset(EnvesGeometry.C, 1, EnvesGeometry.C), 6));
@@ -277,7 +298,7 @@ public final class RuntimeGameTestsEnvesContent {
     for (int dx = -radius; dx <= radius; dx++)
       for (int dz = -radius; dz <= radius; dz++) {
         level.setBlockAndUpdate(center.offset(dx, -1, dz), Blocks.STONE.defaultBlockState());
-        for (int dy = 0; dy < 5; dy++) level.setBlockAndUpdate(center.offset(dx, dy, dz), Blocks.AIR.defaultBlockState());
+        for (int dy = 0; dy < 10; dy++) level.setBlockAndUpdate(center.offset(dx, dy, dz), Blocks.AIR.defaultBlockState());
       }
   }
 
@@ -294,10 +315,11 @@ public final class RuntimeGameTestsEnvesContent {
     Attempt attempt = loose(player);
     List<Mob> spawned = new ArrayList<>();
     AtomicLong started = new AtomicLong();
+    long born = level.getGameTime();
     new Script(helper, () -> {
       spawned.forEach(Mob::discard);
       qa.close();
-    }).then(() -> {
+    }).then(() -> vulnerable(player, born), () -> {
       // Veloz and Blindado: modifiers.
       Mob swift = echo(level, attempt, center.offset(-6, 0, -6), null, EnvesAffix.SWIFT);
       Mob armored = echo(level, attempt, center.offset(-6, 0, -4), null, EnvesAffix.ARMORED);
@@ -381,7 +403,7 @@ public final class RuntimeGameTestsEnvesContent {
     });
     script.then(() -> attempt.status == Status.OPEN, () -> {
       helper.assertTrue(Enves.enter(player), "could not enter");
-      player.hasChangedDimension();
+      arrived(player);
       noCrits(player);
       ServerLevel level = player.serverLevel();
       // Away from the stairwell in the middle of the start room.
@@ -492,7 +514,7 @@ public final class RuntimeGameTestsEnvesContent {
     });
     script.then(() -> attempt.status == Status.OPEN, () -> {
       helper.assertTrue(Enves.enter(player), "could not enter");
-      player.hasChangedDimension();
+      arrived(player);
       player.setInvulnerable(true);
       EnvesPlacer.queue(player.server, attempt, depth);
     }).then(() -> attempt.floor(depth).placement == Placement.READY, () -> {
@@ -519,7 +541,7 @@ public final class RuntimeGameTestsEnvesContent {
           case GUARDIAN -> {
             helper.assertTrue(state.guardianSpawned && state.guardian != null, "no guardian stood at the seal");
             helper.assertTrue(!Enves.lightSeal(player, seal.get()), "a guarded seal lit");
-            var guardian = player.serverLevel().getEntity(state.guardian);
+            var guardian = EnvesEchoes.find(state.guardian).orElse(null);
             helper.assertTrue(guardian instanceof Mob, "the guardian is gone");
             var data = EnvesEchoes.data(guardian).orElseThrow();
             helper.assertTrue(data.roleOf() == Role.GUARDIAN && data.affixes().size() == 3, "a floor III guardian has three affixes");
@@ -558,7 +580,7 @@ public final class RuntimeGameTestsEnvesContent {
     });
     script.then(() -> attempt.status == Status.OPEN, () -> {
       helper.assertTrue(Enves.enter(player), "could not enter");
-      player.hasChangedDimension();
+      arrived(player);
       player.setInvulnerable(true);
       int cell = Enves.layout(attempt, 1).withRole(EnvesLayout.Role.VAULT).getFirst();
       var floor = Enves.floor(player.serverLevel(), attempt, 1);
@@ -581,7 +603,15 @@ public final class RuntimeGameTestsEnvesContent {
         var runs = EnvesRuns.get(player.server);
         runs.run(attempt.id).floor(1).puzzles.remove(cell);
         BlockPos anchor = gate.get().bottomCentre().relative(gate.get().out().getOpposite(), 2);
+        // A glyph clue left by the lock the vault was placed with would push the glyphs to braziers.
+        for (int k = -1; k <= 1; k++) {
+          BlockPos clue = anchor.relative(gate.get().right(), k).above();
+          level.setBlockAndUpdate(clue, Blocks.AIR.defaultBlockState());
+          level.setBlockAndUpdate(clue.below(), Blocks.AIR.defaultBlockState());
+        }
         Puzzle puzzle = EnvesVaults.build(floor, cell, gate.get(), anchor, kind);
+        helper.assertTrue(puzzle.kind.equals("vault_" + kind.name().toLowerCase(java.util.Locale.ROOT)),
+            "asked for " + kind + ", the vault built " + puzzle.kind);
         EnvesPuzzles.put(player.server, attempt, 1, cell, puzzle);
         EnvesVaults.render(level, puzzle, gate.get());
         current.set(puzzle);
@@ -620,13 +650,13 @@ public final class RuntimeGameTestsEnvesContent {
       qa.close();
     }).then(() -> attempt.status == Status.OPEN, () -> {
       helper.assertTrue(Enves.enter(player), "could not enter");
-      player.hasChangedDimension();
+      arrived(player);
       player.setInvulnerable(true);
       int guard = Enves.layout(attempt, 1).guard();
       moveTo(player, EnvesEchoes.safeSpot(player.serverLevel(), Enves.origin(attempt, 1, guard).offset(EnvesGeometry.C + 4, 1, EnvesGeometry.C), 4));
     }).then(() -> EnvesRuns.get(player.server).run(attempt.id).floor(1).championSpawned, () -> {
       var state = EnvesRuns.get(player.server).run(attempt.id).floor(1);
-      var entity = player.serverLevel().getEntity(state.champion);
+      var entity = EnvesEchoes.find(state.champion).orElse(null);
       helper.assertTrue(entity instanceof Mob, "no champion");
       champion.set((Mob) entity);
       var data = EnvesEchoes.data(entity).orElseThrow();
@@ -739,6 +769,7 @@ public final class RuntimeGameTestsEnvesContent {
     player.getAttribute(Attributes.MAX_HEALTH).setBaseValue(400);
     player.setHealth(400);
     Attempt attempt = loose(player);
+    long born = level.getGameTime();
     WhiteWither boss = EnvesBoss.spawn(level, attempt, home);
     helper.assertTrue(boss != null, "no White Wither");
     AtomicLong telegraphAt = new AtomicLong(-1), chargeAt = new AtomicLong(-1);
@@ -748,7 +779,7 @@ public final class RuntimeGameTestsEnvesContent {
       qa.close();
     }).then(() -> {
       helper.assertTrue(!boss.hurt(level.damageSources().playerAttack(player), 50), "hurt while condensing");
-    }).then(() -> boss.phase() == WhiteWither.Phase.FIGHT, () -> {
+    }).then(() -> boss.phase() == WhiteWither.Phase.FIGHT && vulnerable(player, born), () -> {
       double height = boss.getY() - home.getY();
       helper.assertTrue(height > 1.5 && height < 3.5, "the White Wither does not hover low: " + height);
       boss.setTarget(player);
@@ -796,7 +827,7 @@ public final class RuntimeGameTestsEnvesContent {
       qa.close();
     }).then(() -> attempt.status == Status.OPEN, () -> {
       helper.assertTrue(Enves.enter(player), "could not enter");
-      player.hasChangedDimension();
+      arrived(player);
       player.setInvulnerable(true);
       EnvesPlacer.queue(player.server, attempt, EnvesLayout.BOSS_DEPTH);
     }).then(() -> attempt.floor(EnvesLayout.BOSS_DEPTH).placement == Placement.READY, () -> {
@@ -809,7 +840,7 @@ public final class RuntimeGameTestsEnvesContent {
       moveTo(player, EnvesEchoes.safeSpot(player.serverLevel(), floor.origin(center).offset(EnvesGeometry.C + 3, 1, EnvesGeometry.C), 4));
     }).then(() -> EnvesRuns.get(player.server).run(attempt.id).bossSpawned, () -> {
       var run = EnvesRuns.get(player.server).run(attempt.id);
-      var boss = player.serverLevel().getEntity(run.boss);
+      var boss = EnvesEchoes.find(run.boss).orElse(null);
       helper.assertTrue(boss instanceof WhiteWither, "the arena woke no White Wither");
       var data = EnvesEchoes.data(boss).orElseThrow();
       helper.assertTrue(data.roleOf() == Role.BOSS && ((WhiteWither) boss).getMaxHealth() == 1020, "Frontier's boss has 1020 health");

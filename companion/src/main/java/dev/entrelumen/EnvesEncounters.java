@@ -168,8 +168,9 @@ public final class EnvesEncounters {
   }
 
   /**
-   * A champion that left the world without falling (a command, a lost chunk) comes back to the middle
-   * of its guard room when someone of the group stands there.
+   * The guard room was entered before the content was there (an attempt older than it): its champion
+   * comes when someone of the group stands in it. A champion is never spawned twice; one that left
+   * the world without falling is waived by {@code /entrelumen admin enves seals}.
    */
   static void checkChampion(ServerLevel level, EnvesData.Attempt attempt, int depth, ServerPlayer present) {
     var runs = EnvesRuns.get(level.getServer());
@@ -178,10 +179,7 @@ public final class EnvesEncounters {
     int guard = floor.layout().guard();
     if (guard < 0 || state.championDead || depth >= EnvesLayout.BOSS_DEPTH) return;
     if (EnvesContentConfig.table(floor.tileset()).champions().isEmpty()) return;
-    // The room was entered without a champion (an attempt older than the content): it comes now.
-    boolean owed = !state.championSpawned && attempt.floor(depth).entered.get(guard);
-    boolean lost = state.championSpawned && state.champion != null && level.getEntity(state.champion) == null;
-    if (!owed && !lost) return;
+    if (state.championSpawned || !attempt.floor(depth).entered.get(guard)) return;
     BlockPos at = floor.markers(guard).stream().filter(m -> m.marker().kind() == EnvesMarkers.Kind.ENCOUNTER
         && m.marker().argument().equals("champion")).map(EnvesHooks.WorldMarker::pos).findFirst()
         .orElse(floor.origin(guard).offset(EnvesGeometry.C, 1, EnvesGeometry.C));

@@ -135,8 +135,22 @@ public final class EnvesContent {
     install();
   }
 
+  /** Whether the content is plugged in (the engine's own tests unplug it for their batch). */
+  private static volatile boolean active;
+
+  public static boolean active() {
+    return active;
+  }
+
+  /** Unplugs the content: the engine's plain hooks, and the content's ticking stops. */
+  public static void uninstall() {
+    active = false;
+    EnvesHooks.reset();
+  }
+
   /** Plugs the content into the engine's hooks. */
   public static void install() {
+    active = true;
     EnvesHooks.setEncounters(EnvesEncounters::roomEntered);
     EnvesHooks.setChests(EnvesChests::place);
     EnvesHooks.setShrines(EnvesShrines::place);
@@ -148,6 +162,7 @@ public final class EnvesContent {
 
   static void tick(MinecraftServer server) {
     EnvesEchoes.tick(server);
+    if (!active) return;
     EnvesPuzzles.tick(server);
     EnvesSeals.tick(server);
     EnvesShrines.tick(server);

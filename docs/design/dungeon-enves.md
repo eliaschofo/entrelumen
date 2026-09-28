@@ -173,7 +173,7 @@ Las plantillas son `structure/enves/<tileset>/<rol>_<puertas>_<variante>.nbt`, c
 - `Boss.floorReady`; el jefe llama a `Enves.bossDefeated` al caer;
 - `Lifecycle`: intento abierto, piso listo, caída, jefe vencido (`bossDefeated`, también desde `/entrelumen admin enves boss`) y fin con su motivo.
 
-`EnvesHooks.reset()` vuelve a los ganchos simples del motor (sus propios GameTests corren así) y `EnvesContent.install()` pone los del contenido. `EnvesHooks.forcing(...)` marca lo que hace un operador: `/entrelumen admin enves seals` prende los sellos sin preguntarle a su variante y dispensa al campeón del piso.
+`EnvesHooks.reset()` vuelve a los ganchos simples del motor y `EnvesContent.install()` pone los del contenido; `EnvesContent.uninstall()` además frena lo que el contenido hace por tick (los GameTests del motor corren así). `EnvesHooks.forcing(...)` marca lo que hace un operador: `/entrelumen admin enves seals` prende los sellos sin preguntarle a su variante y dispensa al campeón del piso.
 
 Cada gancho recibe un `EnvesHooks.Floor`: el nivel, el intento (tier, semilla, parcela, bolsa), la planta, la profundidad, el tileset y los marcadores de cualquier celda en coordenadas de mundo. `Enves.attemptAt(server, pos)` dice de qué intento es una posición.
 

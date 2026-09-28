@@ -161,10 +161,6 @@ public final class EnvesSeals {
     switch (seal.variant) {
       case GUARDIAN -> {
         if (!seal.guardianSpawned) spawnGuardian(floor, cell, player);
-        else if (!seal.guardianDead && seal.guardian != null && floor.level().getEntity(seal.guardian) == null) {
-          seal.guardianSpawned = false;
-          spawnGuardian(floor, cell, player);
-        }
       }
       case CIRCLE -> {
         if (first) player.displayClientMessage(Component.translatable("entrelumen.enves.seal.circle.hint"), true);

@@ -114,11 +114,12 @@ public final class EnvesContentFullpackGameTests {
           case 0 -> {
             if (attempt.status != Status.OPEN) return;
             helper.assertTrue(Enves.enter(player), "could not enter");
-            player.hasChangedDimension();
+            RuntimeGameTestsEnvesContent.arrived(player);
             player.setInvulnerable(true);
             int cell = Enves.layout(attempt, 1).withRole(EnvesLayout.Role.FIGHT).getFirst();
             BlockPos spot = EnvesEchoes.safeSpot(player.serverLevel(), Enves.origin(attempt, 1, cell).offset(EnvesGeometry.C, 1, EnvesGeometry.C), 6);
             Enves.move(player, player.serverLevel(), Vec3.atBottomCenterOf(spot), 0f);
+            RuntimeGameTestsEnvesContent.arrived(player);
             stage.set(1);
           }
           case 1 -> {
@@ -184,7 +185,7 @@ public final class EnvesContentFullpackGameTests {
           case 0 -> {
             if (attempt.status != Status.OPEN) return;
             helper.assertTrue(Enves.enter(player), "could not enter");
-            player.hasChangedDimension();
+            RuntimeGameTestsEnvesContent.arrived(player);
             player.setInvulnerable(true);
             EnvesPlacer.queue(player.server, attempt, EnvesLayout.BOSS_DEPTH);
             stage.set(1);
@@ -197,12 +198,13 @@ public final class EnvesContentFullpackGameTests {
             int center = floor.layout().withRole(EnvesLayout.Role.ARENA_CENTER).getFirst();
             BlockPos spot = EnvesEchoes.safeSpot(player.serverLevel(), floor.origin(center).offset(EnvesGeometry.C + 3, 1, EnvesGeometry.C), 4);
             Enves.move(player, player.serverLevel(), Vec3.atBottomCenterOf(spot), 0f);
+            RuntimeGameTestsEnvesContent.arrived(player);
             stage.set(2);
           }
           case 2 -> {
             var run = EnvesRuns.get(player.server).run(attempt.id);
             if (!run.bossSpawned) return;
-            var boss = player.serverLevel().getEntity(run.boss);
+            var boss = EnvesEchoes.find(run.boss).orElse(null);
             helper.assertTrue(boss instanceof WhiteWither, "no White Wither");
             ((WhiteWither) boss).kill();
             stage.set(3);
