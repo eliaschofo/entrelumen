@@ -7,7 +7,8 @@ label replaces ("Careful:", "Ojo:"). Both languages move in lockstep, so paragra
 
 Per quest:
 1. a warning sentence (Careful…, Never…, Don't…, explodes, destroys, is lost, or a [warn|…]) becomes its own
-   [careful] paragraph, after the paragraph it came from;
+   [careful] paragraph, after the paragraph it came from; a sentence about the pack itself ("In this pack…",
+   "Pack change:", an "(act III)" material) becomes a [note] the same way (two callouts per quest at most);
 2. the first sentence becomes the [lead] when it is short in both languages (up to 110 visible characters in EN,
    125 in ES);
 3. enumerations become lists: "intro: a, b, c and d" (three or more short items) and "a; b" clauses, one [li]
@@ -41,7 +42,7 @@ ITEM_MAX = 110       # a sentence that becomes a list item
 ENUM_ITEM_MAX = 48   # a comma-separated item of "intro: a, b and c"
 ENUM_ITEM_WORDS = 6  # and its words (the longest item at most three times the shortest)
 PARA_MAX = 120       # a paragraph longer than about two lines gets split when it has two sentences
-MAX_CAREFUL = 2
+MAX_CALLOUTS = 2
 V2_MARK = re.compile(r"^\[(lead|li|careful|note)\b|\[(big)\||\[icon:")
 OPEN, CLOSE = "", ""
 HOLE = re.compile(OPEN + "([a-z]+)" + CLOSE)
@@ -55,6 +56,16 @@ WARN_START = {
 }
 WARN_ANY = re.compile(r"\b(explod\w*|explosion|destroy\w*|is lost|are lost|gets? lost|burns? up|catch(es)? fire|"
                       r"melts? down|meltdown)\b", re.I)
+NOTE_ANY = {
+    # "In this pack…", "Pack change:", or a part that takes an act material ("takes a Reinforced Alloy (act III)")
+    "en_us": re.compile(r"\b(in this pack|this pack's|the pack's|pack change)\b"
+                        r"|\b(takes?|needs?|in place of|instead of)\b[^.]*\(act (I|II|III|IV|V|VI)\)", re.I),
+    "es_es": re.compile(r"\b(en este pack|del pack|cambio del pack)\b|\(acto (I|II|III|IV|V|VI)\)", re.I),
+}
+NOTE_WORDS = {
+    "en_us": re.compile(r"^(pack change|note)\s*[:,.-]?\s+", re.I),
+    "es_es": re.compile(r"^(cambio del pack|dato|nota)\s*[:,.-]?\s+", re.I),
+}
 LABEL_WORDS = {
     "en_us": re.compile(r"^(careful|warning|beware|watch out|heads up)\s*[:,!.-]?\s+", re.I),
     "es_es": re.compile(r"^(ojo|cuidado|atención)\s*[:,!.-]?\s+", re.I),
@@ -146,7 +157,7 @@ class Block:
         body = unmask(self.text, self.tags)
         if self.kind == "raw":
             return body
-        prefix = {"lead": "[lead] ", "careful": "[careful] ", "tip": "[tip] ", "plain": ""}.get(self.kind)
+        prefix = {"lead": "[lead] ", "careful": "[careful] ", "note": "[note] ", "tip": "[tip] ", "plain": ""}.get(self.kind)
         if self.kind == "li":
             prefix = f"[li:{self.icon}] " if self.icon else "[li] "
         return prefix + body
@@ -155,6 +166,16 @@ class Block:
 def is_warning(masked, tags, lang):
     text = visible(masked, tags)
     return bool(WARN_START[lang].search(text) or WARN_ANY.search(text) or "[warn|" in unmask(masked, tags))
+
+
+def is_pack_note(masked, tags, lang):
+    return bool(NOTE_ANY[lang].search(visible(masked, tags)))
+
+
+def note_text(masked, tags, lang):
+    """A sentence about the pack as a [note]: no "Pack change:" in front (the label says "Note:")."""
+    m = NOTE_WORDS[lang].match(masked)
+    return capital(masked[m.end():]) if m else masked
 
 
 def careful_text(masked, tags, lang):
@@ -219,7 +240,7 @@ class Draft:
         self.flat_icon = flat_icon or (lambda item: None)
         self.notes = []       # (key, what could not be decided)
         self.stats = {"quests": 0, "drafted": 0, "v2": 0, "kept": 0, "lead": 0, "li": 0, "icons": 0, "careful": 0,
-                      "big": 0, "hl": 0, "moved": 0}
+                      "note": 0, "big": 0, "hl": 0, "moved": 0}
 
     def note(self, key, text):
         self.notes.append((key, text))
@@ -273,23 +294,32 @@ class Draft:
             return None
         # 1. paragraphs cut into sentences (plain), kept whole (tip, raw)
         paras = [self.split_paragraph(key, i, {lang: src[lang][i] for lang in LOCALES}) for i in range(len(src["en_us"]))]
-        # 2. warnings out of plain paragraphs, into [careful] after their paragraph
+        # 2. warnings and pack notes out of plain paragraphs, into callouts after their paragraph
         careful_after = {}
-        cautions = 0
+        cautions = notes = 0
         for i, p in enumerate(paras):
             en, es = p["en_us"], p["es_es"]
             if not en or en[0].kind != "plain":
                 continue
             keep_en, keep_es = [], []
             for a, b in zip(en, es):
-                if is_warning(a.text, a.tags, "en_us") and not a.whole:
-                    if cautions < MAX_CAREFUL:
+                kind = None
+                if not a.whole and is_warning(a.text, a.tags, "en_us"):
+                    kind = "careful"
+                elif not a.whole and is_pack_note(a.text, a.tags, "en_us") and is_pack_note(b.text, b.tags, "es_es"):
+                    kind = "note"
+                if kind:
+                    if cautions + notes < MAX_CALLOUTS:
+                        make = careful_text if kind == "careful" else note_text
                         careful_after.setdefault(i, []).append(
-                            {"en_us": Block("careful", careful_text(a.text, a.tags, "en_us"), a.tags),
-                             "es_es": Block("careful", careful_text(b.text, b.tags, "es_es"), b.tags)})
-                        cautions += 1
+                            {"en_us": Block(kind, make(a.text, a.tags, "en_us"), a.tags),
+                             "es_es": Block(kind, make(b.text, b.tags, "es_es"), b.tags)})
+                        if kind == "careful":
+                            cautions += 1
+                        else:
+                            notes += 1
                         continue
-                    self.note(key, "more than two warnings: the rest stay in their paragraphs")
+                    self.note(key, "more than two callouts: the rest stay in their paragraphs")
                 keep_en.append(a)
                 keep_es.append(b)
             p["en_us"], p["es_es"] = keep_en, keep_es
@@ -331,6 +361,7 @@ class Draft:
         if lead:
             self.stats["lead"] += 1
         self.stats["careful"] += cautions
+        self.stats["note"] += notes
         # 5. icons, [big], [hl]
         self.icons(key, out)
         self.numbers(key, q, out)
@@ -431,7 +462,7 @@ class Draft:
         big = None
         blocks = list(zip(out["en_us"], out["es_es"]))
         for i, (a, b) in enumerate(blocks):
-            if big or a.kind not in ("plain", "li", "careful", "tip") or not self.big_fits(out["en_us"], i):
+            if big or a.kind not in ("plain", "li", "careful", "note", "tip") or not self.big_fits(out["en_us"], i):
                 continue
             for m in NUMBER.finditer(a.text):
                 value = norm(m.group(1))
@@ -583,7 +614,7 @@ def main(argv=None):
     s = d.stats
     print(f"{data['chapter']}: drafted {s['drafted']} of {s['quests']} quests "
           f"({s['v2']} already v2, {s['kept']} kept as they were)")
-    print(f"  leads {s['lead']}, list items {s['li']} ({s['icons']} with an icon), careful {s['careful']}, "
+    print(f"  leads {s['lead']}, list items {s['li']} ({s['icons']} with an icon), careful {s['careful']}, note {s['note']}, "
           f"big {s['big']}, hl {s['hl']}, moved to page 2: {s['moved']}")
     if d.notes:
         print("Could not decide (check these by hand):")

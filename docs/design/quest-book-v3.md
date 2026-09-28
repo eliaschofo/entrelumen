@@ -296,7 +296,7 @@ Vistas previas, antes y después, en `E:/Elias/Codex/Entrelumen-ssd/presentation
 Elias aprobó la v2 y varios redactores pasan capítulos en paralelo. El kit baja el costo y la memoria que usan. La lista de pasos para cada redactor está en el [README de las cadenas](../../content/sectors/README.md#pasar-un-capítulo-a-la-v2).
 
 **Borrador del texto: `tools/quest_draft.py content/sectors/sector_x.json`.** Reescribe sólo las listas `text`, inglés y español juntos, y deja claves, tareas, títulos, datos y fuentes como estaban. Por quest:
-1. una oración de advertencia (Careful…, Never…, Don't…, explota, se destruye, se pierde, un `[warn|…]`) pasa a su propio `[careful]`, sin la palabra que ya dice la etiqueta;
+1. una oración de advertencia (Careful…, Never…, Don't…, explota, se destruye, se pierde, un `[warn|…]`) pasa a su propio `[careful]`, sin la palabra que ya dice la etiqueta. Una sobre el pack mismo («In this pack…», «Pack change:», una pieza que pide un material de acto) pasa a `[note]`. Dos llamadas por quest como mucho;
 2. la primera oración es el `[lead]` si es corta en los dos idiomas (110 caracteres visibles en inglés, 125 en español);
 3. las enumeraciones se vuelven listas: «intro: a, b, c y d», las cláusulas con punto y coma, las viñetas «•» de la v1, y tres o más oraciones cortas seguidas;
 4. una viñeta que nombra un ítem lleva su ícono (`[li:ítem]`) sólo si el ícono del inventario es la textura plana del propio ítem, cuadrada y quieta. Lo lee `mcassets.flat_icon` de los JAR fijados;
