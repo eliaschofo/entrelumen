@@ -15,6 +15,7 @@ from __future__ import annotations
 import argparse
 import copy
 import hashlib
+import io
 import json
 from pathlib import Path
 import re
@@ -1048,6 +1049,21 @@ FAMILIES = {
                      'neovitae:ara_vitae/enhanced_teleposer_focus', 'neovitae:reinforced_teleposer_focus',
                      'neovitae:alchemytable/reagent_teleposition', 'neovitae:array/teleposition_sigil'],
     },
+    # Round 5, batch 7 (docs/design/mod-pingpong.md, «Lote 7»): Create Aeronautics on trial. Every physics
+    # vehicle (airship, car, borer) starts as a build that Create Simulated's physics assembler turns into a Sable
+    # structure, so the assembler is the one keystone: the handling core fills its free top slot (Act III), the
+    # same maneuvering control as Immersive Aircraft's gyrodyne. Propellers, envelopes, burners, wheels and
+    # levitite are pieces built by the dozen and only work on an assembled structure.
+    'pingpong5aero': {
+        'script': 'entrelumen_pingpong5aero_balance.js',
+        'tag': 'ENTRELUMEN_PINGPONG5AERO_BALANCE',
+        'namespaces': {'simulated', 'aeronautics', 'offroad'},
+        'changes': [
+            shaped('simulated:physics_assembler', 0, 1, None, HC, 'III',
+                   'Physics vehicles: the handling core steers every Sable structure'),
+        ],
+        'removals': [],
+    },
     # The progression batch of 24 September 2026 (docs/design/progression-functions.md): gates of the
     # reference-packs proposal, one component per function, the top armor in Act VI and the vein
     # resonator tiers. The closure check is per item (PROTECTED, component inputs), not per namespace:
@@ -1211,7 +1227,11 @@ def load_recipes():
     for entry in lock['mods']:
         path = Path(paths[entry['filename']])
         with zipfile.ZipFile(path) as jar:
+            nested = []
             for name in jar.namelist():
+                if name.endswith('.jar'):
+                    nested.append(name)
+                    continue
                 rid = recipe_id_from_name(name)
                 if rid is None:
                     continue
@@ -1219,6 +1239,22 @@ def load_recipes():
                     recipes.setdefault(rid, (json.loads(jar.read(name)), entry['filename']))
                 except (ValueError, UnicodeDecodeError):
                     continue
+            # Jar-in-jar content (a bundle such as Create Aeronautics): its recipes load like the outer JAR's,
+            # which the lock pins; the outer JAR's own recipes win a shared ID.
+            for name in nested:
+                try:
+                    inner_jar = zipfile.ZipFile(io.BytesIO(jar.read(name)))
+                except zipfile.BadZipFile:
+                    continue
+                with inner_jar:
+                    for inner_name in inner_jar.namelist():
+                        rid = recipe_id_from_name(inner_name)
+                        if rid is None:
+                            continue
+                        try:
+                            recipes.setdefault(rid, (json.loads(inner_jar.read(inner_name)), entry['filename']))
+                        except (ValueError, UnicodeDecodeError):
+                            continue
         sources[entry['filename']] = entry['sha256']
     return recipes, sources, lock
 

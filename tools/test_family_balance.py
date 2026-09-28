@@ -5,11 +5,14 @@ import functools
 import hashlib
 from collections import Counter
 import importlib.util
+import io
 import json
 from pathlib import Path
 import re
+import tempfile
 import unittest
 import unittest.mock
+import zipfile
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -345,6 +348,34 @@ class FamilyBalanceTest(unittest.TestCase):
             'neovitae:teleposer', 'neovitae:ara_vitae/teleposer_focus', 'neovitae:ara_vitae/enhanced_teleposer_focus',
             'neovitae:reinforced_teleposer_focus', 'neovitae:alchemytable/reagent_teleposition',
             'neovitae:array/teleposition_sigil'})
+
+    def test_round_five_aeronautics_gates_the_physics_assembler(self):
+        family = balance.FAMILIES['pingpong5aero']
+        (change,) = family['changes']
+        # Every Sable structure (airship, car, borer) starts at the assembler: the gyrodyne's handling core.
+        self.assertEqual((change['id'], change['add'], change['act']), ('simulated:physics_assembler', balance.HC, 'III'))
+        self.assertEqual(family['removals'], [])
+
+    def test_nested_jar_recipes_are_indexed_under_the_outer_pin(self):
+        def jar_bytes(files):
+            buffer = io.BytesIO()
+            with zipfile.ZipFile(buffer, 'w') as jar:
+                for name, data in files.items():
+                    jar.writestr(name, data)
+            return buffer.getvalue()
+
+        inner = jar_bytes({'data/a/recipe/shared.json': json.dumps({'from': 'inner'}),
+                           'data/b/recipe/only_nested.json': json.dumps({'from': 'inner'})})
+        with tempfile.TemporaryDirectory() as temp:
+            outer = Path(temp) / 'bundle.jar'
+            outer.write_bytes(jar_bytes({'data/a/recipe/shared.json': json.dumps({'from': 'outer'}),
+                                         'META-INF/jarjar/inner.jar': inner}))
+            lock = {'mods': [{'filename': 'bundle.jar', 'sha256': 'x' * 64}]}
+            with unittest.mock.patch.object(balance, 'lock_entries', return_value=(lock, {'bundle.jar': str(outer)})):
+                recipes, sources, _ = balance.load_recipes()
+        self.assertEqual(recipes['a:shared'], ({'from': 'outer'}, 'bundle.jar'))
+        self.assertEqual(recipes['b:only_nested'], ({'from': 'inner'}, 'bundle.jar'))
+        self.assertEqual(sources, {'bundle.jar': 'x' * 64})
 
     def test_copy_keeps_one_owner_of_a_shared_path_and_can_move_the_other(self):
         path = 'data/patchouli/recipe/guide_book.json'

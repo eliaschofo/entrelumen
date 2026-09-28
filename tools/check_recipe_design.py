@@ -142,6 +142,7 @@ HITOS = {
         'refinedstorage:autocrafter': 'autocrafteo de Refined Storage',
         'rftoolsbuilder:builder': 'constructor de RFTools',
         'easy_villagers:auto_trader': 'comercio automático',
+        'simulated:physics_assembler': 'vehículos físicos de Create Aeronautics (a prueba, 27/9)',
     },
     'entrelumen:spectral_lens': {
         'entrelumen:integration/sealed_memory': 'Sello de Contención',

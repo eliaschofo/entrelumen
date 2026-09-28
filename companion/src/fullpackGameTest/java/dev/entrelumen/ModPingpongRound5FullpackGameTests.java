@@ -103,13 +103,20 @@ public final class ModPingpongRound5FullpackGameTests {
       "neovitae:alchemytable/reagent_teleposition", "neovitae:array/teleposition_sigil");
   /** Neo Vitae's own dimension, the Demon Realm dungeons (Elias, 27 September). */
   static final String NEOVITAE_DIMENSION = "neovitae:dungeon";
+  /** Batch 7, Create Aeronautics on trial: the bundle's mods, Sable and the FTB Chunks claim bridge. */
+  static final List<String> AERONAUTICS = List.of("aeronautics_bundled", "aeronautics", "simulated", "offroad", "sable",
+      "ftbchunksaerospace");
+  /** pingpong5aero gate: every physics structure starts at Simulated's physics assembler (Act III). */
+  static final Map<String, String> AERONAUTICS_STAGED = Map.of(
+      "simulated:physics_assembler", "entrelumen:handling_core");
   /** Round 5 blocks Carry On must refuse (pack/config/carryon-common.toml). */
   static final List<String> CARRY_ON_REFUSED = new ArrayList<>(List.of("advancedperipherals:me_bridge",
       "advancedperipherals:inventory_manager", "advancedperipherals:player_detector", "ad_astra_giselle_addon:fuel_loader",
       "ad_astra_giselle_addon:automation_nasa_workbench", "extended_industrialization:tesla_coil",
       "extended_industrialization:processing_array", "industrialization_overdrive:multi_processing_array",
       "dysoncubeproject:em_railejector_controller", "morered:soldering_table", "neovitae:ara_vitae",
-      "neovitae:master_ritual_stone", "neovitae:hellfire_forge", "sanguine_networks:virtual_sacrificer"));
+      "neovitae:master_ritual_stone", "neovitae:hellfire_forge", "sanguine_networks:virtual_sacrificer",
+      "simulated:physics_assembler", "aeronautics:propeller_bearing", "offroad:wheel_mount"));
   /** Create Collision Fix patches exactly this Create build; it goes when Create moves to 6.0.11 (PR #10301). */
   static final String PATCHED_CREATE = "6.0.10";
 
@@ -397,6 +404,17 @@ public final class ModPingpongRound5FullpackGameTests {
     var dungeon = ResourceKey.create(Registries.DIMENSION, id(NEOVITAE_DIMENSION));
     if (helper.getLevel().getServer().getLevel(dungeon) == null) problems.add(NEOVITAE_DIMENSION + " is not loaded");
     helper.assertTrue(problems.isEmpty(), "Round 5 batch 5: " + problems);
+    helper.succeed();
+  }
+
+  // ---- Batch 7 ---------------------------------------------------------------------------------
+
+  @GameTest(template = "empty", timeoutTicks = 20)
+  public static void pingpongRound5AeronauticsLoaded(GameTestHelper helper) {
+    List<String> problems = new ArrayList<>();
+    AERONAUTICS.stream().filter(mod -> !ModList.get().isLoaded(mod)).forEach(mod -> problems.add(mod + " not loaded"));
+    staged(helper, AERONAUTICS_STAGED, problems);
+    helper.assertTrue(problems.isEmpty(), "Round 5 batch 7: " + problems);
     helper.succeed();
   }
 }

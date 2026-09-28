@@ -726,3 +726,35 @@ Familia `catalog/families/pingpong5-shaders.json`: 1 mod de cliente. El lock pas
   - Para usarlos: copiar un shaderpack a `shaderpacks/`, abrir Opciones → Video → Shader Packs, elegirlo y poner «Shaders: ON».
 - **Teclas:** Iris traía recargar en R (el cinturón de herramientas), prender o apagar en K (el gestor de reclamos, tecla fija) y la pantalla de packs en O (la bolsa de Occultism). El preset deja las tres sin asignar; la pantalla sigue a mano en las opciones de video. El modo alambre viene sin asignar. `tools/check_keybinds.py`: 0 choques.
 - **Escalonado, Carry On, GameTests:** no aplica (cliente, sin ítems ni bloques). Falta verlo en un cliente: el botón de Shader Packs, un pack de prueba prendido y apagado, y que el archivo sembrado no se pise al reiniciar.
+
+### Lote 7 · Create Aeronautics (a prueba)
+
+Familia `catalog/families/pingpong5-aeronautics.json`: 3 JARs. El lock pasa a **365 / 312**. Elias lo aprobó a prueba: entra en su propio commit, se mide su costo contra los lotes 1 a 6 y se queda sólo si el costo es aceptable. El controlador sumó el puente de reclamos a la prueba.
+
+| JAR | Versión | Fuente | Qué trae |
+|---|---|---|---|
+| Create Aeronautics (bundled) | 1.3.2 | CF 676721/8763471 (los mismos bytes en Modrinth) | Aeronautics (hélices, globos y quemadores, levitita, cojinetes giroscópicos), Create Simulated (ensamblador físico, cojinetes giratorios, sogas, sensores, acople) y Offroad (ruedas y tuneladoras), en JAR anidados. |
+| Sable | 2.0.5 | CF 1312371/8673825 (FTB Evolution trae el mismo archivo; los mismos bytes en Modrinth) | El motor de física de las estructuras móviles: nativos de Rapier (se extraen al arrancar, 9 MB comprimidos), Veil 4.3.2 y Sable Companion 1.6.0 anidados. |
+| FTB Chunks: Sable Aerospace | 1.0.1 | Modrinth zy8ymgWP (MIT) | Los reclamos de FTB Chunks alcanzan a las estructuras de Sable. |
+
+- **Versiones:** Aeronautics 1.3.2 arregla la integración con JEI y la pestaña creativa (PR #1403). Pide Sable `[2.0.0,3.0.0)` y Create `[6.0.10,)`. Sable rechaza Sodium anterior a 0.8.12 (tenemos 0.8.13) y ScalableLux (no está).
+- **Licencias:** Aeronautics trae su propia licencia (Simulated Project License) y Sable la PolyForm Shield 1.0.0. Las dos se fijan por CurseForge, así que el launcher las baja de la fuente. El addon es MIT.
+- **Escalonado** (familia `pingpong5aero`, script `entrelumen_pingpong5aero_balance.js`):
+  - **El ensamblador físico** de Simulated convierte una construcción en estructura de Sable, y todo vehículo empieza ahí: dirigible, auto o tuneladora. Lleva el núcleo de manejo en su hueco de arriba (`" Z " / " N " / "ARA"`, acto III), el mismo control de maniobra que el girodino de Immersive Aircraft. El núcleo de manejo queda en 7 hitos (meta 8).
+  - Hélices, globos, quemadores, ruedas y levitita quedan nativos: se hacen por docena y sólo sirven en una estructura ensamblada. La levitita pide polvo de piedra del End. El Bastón de Física es sólo creativo (no tiene receta).
+  - `tools/generate_family_balance.py` ahora indexa las recetas de los JAR anidados, a nombre del JAR fijado que los contiene; si un ID se repite, gana el del JAR de afuera. Eso suma al índice las 30 recetas anidadas que ya estaban (conductos de Ender IO, ProductiveLib) sin cambiar sus scripts. Hay un test con un JAR sintético.
+- **Reclamos:**
+  - Sable guarda los bloques de cada estructura en su propia zona del mundo. Sin el addon, FTB Chunks no protege nada de un barco, ni estacionado dentro de un reclamo.
+  - El addon traduce el clic o la rotura de un bloque de estructura a la posición real de la estructura y le pregunta a FTB Chunks ahí (`RightClickBlock`, `LeftClickBlock`, `BreakEvent`). Un barco estacionado en un reclamo queda protegido como el reclamo. Sobre el reclamo de otro equipo, ni el dueño del barco puede usarlo o romperlo mientras cruza; el cliente avisa antes de entrar.
+  - Se escribió para Sable 1.1.x: sus cinco llamadas a Sable existen con la misma firma en 2.0.5 (`javap`). Falta confirmarlo en el arranque. Su descripción promete filtrar explosiones y una zona libre arriba de Y 320, pero la 1.0.1 sólo escucha esos tres eventos.
+  - **Sin cubrir:** si el ensamblador puede llevarse bloques de un reclamo vecino que toquen la construcción. Hay que probarlo en juego.
+- **Otros efectos:**
+  - Simulated vuelve «mar» el vacío del End (desde Y −40) y del Aether (desde Y 1): las estructuras flotan en vez de caer.
+  - Suma dos tipos de mundo planos, «Airship ready» y «End sea», a la pantalla de crear mundo. El servidor tiene el suyo fijo; en un jugador conviene no elegirlos, porque no traen estructuras ni ruinas.
+  - Otros mods del pack ya traen mixins opcionales hacia clases de Simulated y Sable: el arranque de humo de la ronda los mostró sin objetivo («Error loading class»). Con Aeronautics se aplican; hay que mirarlos en el arranque.
+- **Teclas:** rotar con el Bastón de Física de Simulated usa Tab mientras se arrastra, y la comparte a propósito con la lista de jugadores (el bastón es creativo). Subir y bajar vienen sin asignar. La tecla del editor de Veil (F6) sólo se registra con ImGui MC, que no está en el pack. `tools/check_keybinds.py`: 0 choques.
+- **Carry On:** `aeronautics:*`, `simulated:*`, `offroad:*` y `sable:*`.
+- **Primer ingreso:** ningún regalo (`tools/audit_first_join.py`).
+- **GameTests:** `pingponground5aeronauticsloaded` (los seis mods cargados, contando el paquete, Sable y el addon, y el ensamblador con el núcleo). `carryonrefusesround5blocks` suma el ensamblador, el cojinete de hélice y el soporte de rueda.
+- **Costo:** pendiente de medir, con el método de la ronda (misma semilla, generación de chunks, ticks y memoria) contra los lotes 1 a 6. Queda o sale con esos números; decide Elias.
+- **Ganchos para las quests** (si se queda): ensamblador físico (`simulated:physics_assembler`), cojinete de hélice (`aeronautics:propeller_bearing`), quemador y globo (`aeronautics:adjustable_burner`, `aeronautics:white_envelope`), levitita (`aeronautics:levitite`), volante y acelerador (`simulated:steering_wheel`, `simulated:throttle_lever`), mesa de navegación (`simulated:navigation_table`), soporte de rueda (`offroad:wheel_mount`) y conector de acople (`simulated:docking_connector`).
