@@ -111,7 +111,7 @@ public final class FullpackQABootstrap {
           ApotheosisGameTests.class,
           AltarFullpackGameTests.class, AltarEffectsFullpackGameTests.class, LuminousGameTests.class,
           StartWithoutBloatFullpackGameTests.class, TerraArmFullpackGameTests.class, ModPingpongFullpackGameTests.class,
-          ModPingpongRound4FullpackGameTests.class,
+          ModPingpongRound4FullpackGameTests.class, ModPingpongRound5FullpackGameTests.class,
           RuntimeGameTestsCompass.class, RuntimeGameTestsGameplay.class, SolsticioFullpackGameTests.class,
           RuntimeGameTestsActs.class, ActsFullpackGameTests.class,
           ProgressionFullpackGameTests.class, VeinResonatorFullpackGameTests.class, RuntimeGameTestsStory.class,
