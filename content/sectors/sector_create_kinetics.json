@@ -19,11 +19,17 @@
   "groups": {
     "belts": {"label": {"en_us": "Belts and funnels", "es_es": "Cintas y embudos"}},
     "fluids": {"label": {"en_us": "Pipes and steam", "es_es": "Caños y vapor"}},
-    "sorting": {"label": {"en_us": "Smart logistics", "es_es": "Logística con criterio"}}
+    "sorting": {"label": {"en_us": "Smart logistics", "es_es": "Logística con criterio"}},
+    "diving": {"label": {"en_us": "Diving gear", "es_es": "Equipo de buceo"}},
+    "treats": {"label": {"en_us": "Treats", "es_es": "Golosinas"}, "axis": "x", "caption": "above"},
+    "tools": {"label": {"en_us": "Tools of the trade", "es_es": "Herramientas del oficio"}, "axis": "x", "caption": "above"},
+    "schematics": {"label": {"en_us": "Schematics", "es_es": "Esquemas"}, "axis": "y", "caption": "right"},
+    "stone": {"label": {"en_us": "Zinc and stone", "es_es": "Cinc y piedra"}, "axis": "y", "caption": "below"}
   },
   "links": [
     {"target": "crafts_precision", "at": {"figure": "gear", "slot": 3, "out": -2.6}},
-    {"target": "exchange_mechanism", "at": {"figure": "gear", "slot": 12, "out": 2.9, "along": 1.0}}
+    {"target": "exchange_mechanism", "at": {"figure": "gear", "slot": 12, "out": 2.9, "along": 1.0}},
+    {"target": "crb_contraption", "at": {"figure": "gear", "slot": 3, "out": 5.1, "along": 1.0}}
   ],
   "art": [
     {"id": "banner", "texture": "entrelumen:textures/gui/quests/banner_create.png", "x": -14.2, "y": -13.2, "scale": 1, "order": -1},
@@ -154,30 +160,6 @@
       "es_es": {"title": "A la vuelta de la esquina", "subtitle": "Más prolijo que un espagueti de engranajes.",
         "text": ["Cuatro engranajes alrededor de un [item:create:andesite_casing|Revestimiento de Andesita]: un bloque que dobla la rotación en las esquinas. Las salidas laterales son espejo; la de enfrente gira al revés."]},
       "sources": ["jar:create-1.21.1-6.0.10.jar:data/create/recipe/crafting/kinetics/gearbox.json"]
-    },
-    {
-      "key": "crb_contraption", "role": "side", "deps": ["crb_casing"],
-      "task": {"item": "create:mechanical_bearing"},
-      "at": {"figure": "gear", "slot": 3, "out": 2.9, "along": 1.0},
-      "en_us": {"title": "Things that move",
-        "text": ["A [item:create:mechanical_bearing|Mechanical Bearing] turns the blocks in front of it; a [item:create:mechanical_piston|Mechanical Piston] slides them; [item:create:super_glue|Super Glue] makes one contraption of many blocks.",
-                 "A bearing full of saws is the classic first tree farm."]},
-      "es_es": {"title": "Cosas que se mueven",
-        "text": ["Un [item:create:mechanical_bearing|Rodamiento mecánico] gira los bloques de adelante; un [item:create:mechanical_piston|Pistón mecánico] los desliza; el [item:create:super_glue|Pegamento] hace de muchos bloques una sola estructura.",
-                 "Un rodamiento lleno de sierras es la clásica primera granja de árboles."]},
-      "sources": ["jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#create.ponder.bearing_modes"]
-    },
-    {
-      "key": "crb_drill", "role": "side", "deps": ["crb_contraption"],
-      "task": {"item": "create:mechanical_drill"},
-      "at": {"figure": "gear", "slot": 3, "out": 5.1, "along": 1.0},
-      "en_us": {"title": "Drill and saw",
-        "text": ["Standing still, a [item:create:mechanical_drill|Mechanical Drill] breaks the block in front and a [item:create:mechanical_saw|Mechanical Saw] fells a whole tree from its bottom log. On a moving contraption, both work every block they pass.",
-                 "[tip] A saw facing up cuts one alloy into six shafts. Crafting gives four."]},
-      "es_es": {"title": "Taladro y sierra",
-        "text": ["Quieto, un [item:create:mechanical_drill|Taladro mecánico] rompe el bloque de adelante y una [item:create:mechanical_saw|Sierra mecánica] voltea un árbol entero desde el tronco de abajo. En una estructura móvil, trabajan cada bloque que pasan.",
-                 "[tip] Una sierra mirando para arriba corta una aleación en seis ejes. La mesa da cuatro."]},
-      "sources": ["jar:create-1.21.1-6.0.10.jar:data/create/recipe/cutting/andesite_alloy.json", "jar:create-1.21.1-6.0.10.jar:data/create/recipe/crafting/kinetics/shaft.json"]
     },
     {
       "key": "crb_press", "role": "milestone", "deps": ["crb_casing"], "curve": {"crb_casing": 0.12},
@@ -668,6 +650,253 @@
       "es_es": {"title": "Piezas creativas",
         "text": ["El [item:create:creative_motor|Motor creativo], el tanque y el pastel creativos cuestan dos Luminosidades cada uno, de Solsticio en el acto VI. El cajón creativo no se fabrica. La energía de verdad sale del agua, el viento y el vapor."]},
       "sources": ["tools/generate_family_balance.py#creative"]
+    },
+    {
+      "key": "ckx_backtank", "role": "side", "deps": ["crb_copper"], "group": "diving",
+      "task": {"type": "advancement", "advancement": "create:backtank", "icon": "create:copper_backtank"},
+      "icon": "create:copper_backtank",
+      "at": {"x": 10.4, "y": 12.0},
+      "en_us": {"title": "Air on tap",
+        "text": ["Copper, a copper block, alloy and a shaft make a [item:create:copper_backtank|Copper Backtank]. Set it on a spinning shaft and it fills with air, faster the faster it spins; worn on your back, it feeds that air to Create's equipment.",
+                 "[tip] It holds 900 air by default, and each level of the Capacity enchantment adds 300."]},
+      "es_es": {"title": "Aire a mano",
+        "text": ["Cobre, un bloque de cobre, aleación y un eje dan un [item:create:copper_backtank|Tanque trasero de cobre]. Puesto sobre un eje que gira se llena de aire, más rápido cuanto más rápido gira; en la espalda, le pasa ese aire al equipo de Create.",
+                 "[tip] Guarda 900 de aire por defecto, y cada nivel del encantamiento Capacidad suma 300."]},
+      "sources": ["jar:create-1.21.1-6.0.10.jar:data/create/recipe/crafting/appliances/copper_backtank.json", "jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#item.create.copper_backtank.tooltip.behaviour2", "jar:create-1.21.1-6.0.10.jar:data/create/advancement/backtank.json", "jar:create-1.21.1-6.0.10.jar:com/simibubi/create/infrastructure/config/CEquipment.class#airInBacktank", "jar:create-1.21.1-6.0.10.jar:com/simibubi/create/infrastructure/config/CEquipment.class#enchantedBacktankCapacity", "jar:create-1.21.1-6.0.10.jar:data/create/enchantment/capacity.json"]
+    },
+    {
+      "key": "ckx_diving", "role": "side", "deps": ["ckx_backtank"], "group": "diving",
+      "task": {"type": "advancement", "advancement": "create:diving_suit", "icon": "create:copper_diving_helmet"},
+      "icon": "create:copper_diving_helmet",
+      "at": {"x": 12.2, "y": 13.6},
+      "en_us": {"title": "Deep breath", "subtitle": "Glub.",
+        "text": ["Copper around a glass block makes a [item:create:copper_diving_helmet|Copper Diving Helmet]: with the backtank on, you breathe underwater while the air lasts. [item:create:copper_diving_boots|Copper Diving Boots] sink you fast and let you walk and jump on the seabed.",
+                 "With those boots on, belts don't carry you off either."]},
+      "es_es": {"title": "Aguantá la respiración", "subtitle": "Glub.",
+        "text": ["Cobre alrededor de un vidrio da un [item:create:copper_diving_helmet|Casco de Buceo de Cobre]: con el tanque puesto, respirás bajo el agua mientras dure el aire. Las [item:create:copper_diving_boots|Botas de Buceo de Cobre] te hunden rápido y te dejan caminar y saltar por el fondo.",
+                 "Con esas botas, las cintas tampoco te arrastran."]},
+      "sources": ["jar:create-1.21.1-6.0.10.jar:data/create/recipe/crafting/appliances/copper_diving_helmet.json", "jar:create-1.21.1-6.0.10.jar:data/create/recipe/crafting/appliances/copper_diving_boots.json", "jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#item.create.copper_diving_helmet.tooltip.behaviour1", "jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#item.create.copper_diving_boots.tooltip.behaviour1", "jar:create-1.21.1-6.0.10.jar:data/create/advancement/diving_suit.json"]
+    },
+    {
+      "key": "ckx_netherite", "role": "side", "deps": ["ckx_diving"], "group": "diving",
+      "task": {"type": "advancement", "advancement": "create:diving_suit_lava", "icon": "create:netherite_diving_helmet"},
+      "icon": "create:netherite_diving_helmet",
+      "at": {"x": 14.0, "y": 15.2},
+      "en_us": {"title": "Swim with the striders",
+        "text": ["At a smithing table, netherite upgrades turn the copper set into a [item:create:netherite_diving_helmet|Netherite Diving Helmet], [item:create:netherite_backtank|Netherite Backtank] and [item:create:netherite_diving_boots|Netherite Diving Boots]. With netherite leggings as well, fire and lava can't touch you while the air lasts.",
+                 "The helmet also lets you see inside lava."]},
+      "es_es": {"title": "Nadar con los strider",
+        "text": ["En una mesa de herrería, la mejora de netherita pasa el equipo de cobre a [item:create:netherite_diving_helmet|Casco de Buceo de Netherite], [item:create:netherite_backtank|Tanque trasero de netherita] y [item:create:netherite_diving_boots|Botas de Buceo de Netherite]. Con pantalones de netherita también, ni el fuego ni la lava te tocan mientras dure el aire.",
+                 "El casco además te deja ver dentro de la lava."]},
+      "sources": ["jar:create-1.21.1-6.0.10.jar:data/create/recipe/crafting/appliances/netherite_diving_helmet.json", "jar:create-1.21.1-6.0.10.jar:data/create/recipe/crafting/appliances/netherite_backtank.json", "jar:create-1.21.1-6.0.10.jar:data/create/recipe/crafting/appliances/netherite_diving_boots.json", "jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#item.create.netherite_diving_helmet.tooltip.summary", "jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#item.create.netherite_diving_helmet.tooltip.behaviour1", "jar:create-1.21.1-6.0.10.jar:data/create/advancement/diving_suit_lava.json"]
+    },
+    {
+      "key": "ckx_hose", "role": "side", "deps": ["crb_tank"], "group": "fluids",
+      "task": {"type": "advancement", "advancement": "create:hose_pulley", "icon": "create:hose_pulley"},
+      "icon": "create:hose_pulley",
+      "at": {"figure": "gear", "slot": 7, "out": 5.0, "along": -1.3},
+      "en_us": {"title": "Drink the lake",
+        "text": ["A copper casing, a dried kelp block and a copper sheet make a [item:create:hose_pulley|Hose Pulley]. Turned one way it lowers its hose, the other way it reels it in; pipes on its far side feed it to fill a pool, or pull from it to drain one.",
+                 "{page}",
+                 "[tip] In a big enough ocean or lava lake it never runs dry and never changes the source. How fast it moves fluid depends only on the pipes."]},
+      "es_es": {"title": "Tomarse el lago",
+        "text": ["Un revestimiento de cobre, un bloque de kelp seco y una lámina de cobre dan una [item:create:hose_pulley|Polea de manguera]. Girando para un lado baja la manguera y para el otro la recoge; los caños del otro lado la alimentan para llenar una pileta, o chupan de ella para vaciarla.",
+                 "{page}",
+                 "[tip] En un océano o un lago de lava bien grande nunca se agota ni cambia la fuente. Qué tan rápido mueve fluido depende sólo de los caños."]},
+      "sources": ["jar:create-1.21.1-6.0.10.jar:data/create/recipe/crafting/kinetics/hose_pulley.json", "jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#create.ponder.hose_pulley", "jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#create.ponder.hose_pulley_infinite", "jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#create.hint.hose_pulley", "jar:create-1.21.1-6.0.10.jar:data/create/advancement/hose_pulley.json", "jar:create-1.21.1-6.0.10.jar:data/create/advancement/hose_pulley_lava.json"]
+    },
+    {
+      "key": "ckx_extendo", "role": "side", "deps": ["cbr_crafter"], "group": "tools",
+      "task": {"item": "create:extendo_grip"},
+      "at": {"x": -4.8, "y": -12.6},
+      "en_us": {"title": "A longer arm", "subtitle": "Boioioing.",
+        "text": ["Mechanical crafters build it from a [item:create:brass_hand|Brass Hand], a precision mechanism, brass and sticks. In the off-hand, the [item:create:extendo_grip|Extendo Grip] gives your main hand 3 more blocks of reach.",
+                 "With a backtank on, it spends air instead of durability."]},
+      "es_es": {"title": "Un brazo más largo", "subtitle": "Boioioing.",
+        "text": ["Los ensambladores mecánicos lo arman con una [item:create:brass_hand|Mano de latón], un mecanismo de precisión, latón y palos. En la mano secundaria, el [item:create:extendo_grip|Agarre extensible] le da 3 bloques más de alcance a la principal.",
+                 "Con un tanque trasero puesto, gasta aire en vez de durabilidad."]},
+      "sources": ["jar:create-1.21.1-6.0.10.jar:data/create/recipe/mechanical_crafting/extendo_grip.json", "jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#item.create.extendo_grip.tooltip.behaviour1", "jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#item.create.extendo_grip.tooltip.behaviour2", "jar:create-1.21.1-6.0.10.jar:com/simibubi/create/content/equipment/extendoGrip/ExtendoGripItem.class#singleRangeAttributeModifier"]
+    },
+    {
+      "key": "ckx_extendo_dual", "role": "secret", "deps": ["ckx_extendo"], "group": "tools",
+      "task": {"type": "advancement", "advancement": "create:extendo_grip_dual"},
+      "icon": "create:extendo_grip",
+      "at": {"x": -4.8, "y": -14.8},
+      "en_us": {"title": "Both hands", "subtitle": "The top shelf is no longer safe.",
+        "text": ["An [item:create:extendo_grip|Extendo Grip] in each hand: 5 extra blocks of reach. Cookie jars everywhere, beware."]},
+      "es_es": {"title": "Con las dos manos", "subtitle": "El estante de arriba ya no está a salvo.",
+        "text": ["Un [item:create:extendo_grip|Agarre extensible] en cada mano: 5 bloques más de alcance. Frascos de galletitas del mundo, tiemblen."]},
+      "sources": ["jar:create-1.21.1-6.0.10.jar:data/create/advancement/extendo_grip_dual.json", "jar:create-1.21.1-6.0.10.jar:com/simibubi/create/content/equipment/extendoGrip/ExtendoGripItem.class#doubleRangeAttributeModifier"]
+    },
+    {
+      "key": "ckx_potato", "role": "side", "deps": ["cbr_crafter"], "group": "tools",
+      "task": {"type": "advancement", "advancement": "create:potato_cannon", "icon": "create:potato_cannon"},
+      "icon": "create:potato_cannon",
+      "at": {"x": -2.4, "y": -12.6},
+      "en_us": {"title": "Hot potato", "subtitle": "Fwoomp.",
+        "text": ["The [item:create:potato_cannon|Potato Cannon] fires food from your inventory, each kind its own way: potatoes knock back hard, carrots and potatoes plant themselves where they land, and a golden apple cures a zombie villager.",
+                 "With a backtank on, it spends air instead of durability."]},
+      "es_es": {"title": "Papa caliente", "subtitle": "Fwoomp.",
+        "text": ["El [item:create:potato_cannon|Lanzapatatas] dispara comida de tu inventario, cada una a su manera: las papas empujan fuerte, las zanahorias y las papas se plantan donde caen, y una manzana dorada cura a un aldeano zombi.",
+                 "Con un tanque trasero puesto, gasta aire en vez de durabilidad."]},
+      "sources": ["jar:create-1.21.1-6.0.10.jar:data/create/recipe/mechanical_crafting/potato_cannon.json", "jar:create-1.21.1-6.0.10.jar:data/create/create/potato_projectile/type/potato.json", "jar:create-1.21.1-6.0.10.jar:data/create/create/potato_projectile/type/carrot.json", "jar:create-1.21.1-6.0.10.jar:data/create/create/potato_projectile/type/golden_apple.json", "jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#item.create.potato_cannon.tooltip.behaviour2", "jar:create-1.21.1-6.0.10.jar:data/create/advancement/potato_cannon.json"]
+    },
+    {
+      "key": "ckx_potato_collide", "role": "secret", "deps": ["ckx_potato"], "group": "tools",
+      "task": {"type": "advancement", "advancement": "create:potato_cannon_collide"},
+      "icon": "minecraft:carrot",
+      "at": {"x": -2.4, "y": -14.8},
+      "en_us": {"title": "Food fight", "subtitle": "Nobody wins. Everyone's hungry.",
+        "text": ["Two different vegetables, fired into each other in midair. It was never about the aim."]},
+      "es_es": {"title": "Guerra de comida", "subtitle": "Nadie gana. Todos quedan con hambre.",
+        "text": ["Dos verduras distintas, disparadas una contra otra en el aire. Nunca se trató de la puntería."]},
+      "sources": ["jar:create-1.21.1-6.0.10.jar:data/create/advancement/potato_cannon_collide.json"]
+    },
+    {
+      "key": "ckx_symmetry", "role": "side", "deps": ["cbr_crafter"], "group": "tools",
+      "task": {"item": "create:wand_of_symmetry"},
+      "at": {"x": 0.0, "y": -12.6},
+      "en_us": {"title": "Mirror, mirror",
+        "text": ["Build one side and get the other free. Anywhere in your hotbar, a [item:create:wand_of_symmetry|Wand Of Symmetry] mirrors every block you place; use it on a surface to set or move the mirror, and sneak while using it to pick the kind of mirror."]},
+      "es_es": {"title": "Espejito, espejito",
+        "text": ["Construí un lado y el otro sale gratis. En cualquier lugar de la barra, la [item:create:wand_of_symmetry|Varita de simetría] copia en espejo cada bloque que ponés; usala sobre una superficie para poner o mover el espejo, y agachado para elegir el tipo de espejo."]},
+      "sources": ["jar:create-1.21.1-6.0.10.jar:data/create/recipe/mechanical_crafting/wand_of_symmetry.json", "jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#item.create.wand_of_symmetry.tooltip.summary", "jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#item.create.wand_of_symmetry.tooltip.behaviour1"]
+    },
+    {
+      "key": "ckx_toolbox", "role": "side", "deps": ["crb_press"],
+      "task": {"any": ["#create:toolboxes"], "icon": "create:brown_toolbox", "title": {"en_us": "Any toolbox", "es_es": "Una caja de herramientas cualquiera"}},
+      "icon": "create:brown_toolbox",
+      "at": {"x": 13.2, "y": 4.4},
+      "en_us": {"title": "A place for every tool",
+        "text": ["A cogwheel, two golden sheets, a chest and leather make a [item:create:brown_toolbox|Toolbox], and dye recolors it. It holds 8 kinds of items, up to 4 stacks of each, and keeps them when you pick it up.",
+                 "Within 10 blocks, hold [key:create.keyinfo.toolbelt] to take a tool straight out of it; the same menu puts it back."]},
+      "es_es": {"title": "Un lugar para cada cosa",
+        "text": ["Un engranaje, dos láminas de oro, un cofre y cuero dan una [item:create:brown_toolbox|Caja de herramientas], y el tinte le cambia el color. Guarda 8 tipos de ítems, hasta 4 stacks de cada uno, y no los pierde cuando la levantás.",
+                 "A 10 bloques o menos, mantené [key:create.keyinfo.toolbelt] para sacar una herramienta directo de ella; el mismo menú la devuelve."]},
+      "sources": ["jar:create-1.21.1-6.0.10.jar:data/create/recipe/crafting/curiosities/brown_toolbox.json", "jar:create-1.21.1-6.0.10.jar:data/create/tags/item/toolboxes.json", "jar:create-1.21.1-6.0.10.jar:com/simibubi/create/content/equipment/toolbox/ToolboxInventory.class#STACKS_PER_COMPARTMENT", "jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#block.create.toolbox.tooltip.behaviour2", "jar:create-1.21.1-6.0.10.jar:com/simibubi/create/infrastructure/config/CEquipment.class#toolboxRange", "jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#create.toolbox.depositBox"]
+    },
+    {
+      "key": "ckx_clipboard", "role": "side", "deps": ["cbr_filters"],
+      "task": {"item": "create:clipboard"},
+      "at": {"x": -8.0, "y": 11.8},
+      "en_us": {"title": "Copy, paste",
+        "text": ["Alloy, paper and planks make a [item:create:clipboard|Clipboard] for notes and checklists; sneak-click to hang it on a wall. Right-click a block with it to copy its settings, like a filter, and left-click another block to paste them.",
+                 "A schematicannon prints a schematic's list of materials onto it."]},
+      "es_es": {"title": "Copiar y pegar",
+        "text": ["Aleación, papel y tablones dan un [item:create:clipboard|Portapapeles] para notas y listas; agachado y clic, lo colgás en una pared. Clic derecho en un bloque copia su configuración, como un filtro, y clic izquierdo en otro bloque la pega.",
+                 "Un esquematicañón le imprime la lista de materiales de un esquema."]},
+      "sources": ["jar:create-1.21.1-6.0.10.jar:data/create/recipe/crafting/appliances/clipboard.json", "jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#block.create.clipboard.tooltip.behaviour1", "jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#block.create.clipboard.tooltip.behaviour2", "jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#create.gui.schematicannon.slot.listPrinter"]
+    },
+    {
+      "key": "ckx_quill", "role": "side", "deps": ["crb_alloy"], "group": "schematics",
+      "task": {"item": "create:schematic_and_quill"},
+      "at": {"x": 2.6, "y": -12.6},
+      "en_us": {"title": "Save a building",
+        "text": ["Paper and light blue dye make an [item:create:empty_schematic|Empty Schematic]; add a feather for a [item:create:schematic_and_quill|Schematic And Quill]. Right-click two corners, stretch the faces with [key:create.keyinfo.ctrl_modifier] and the scroll wheel, then right-click again to save it to a file."]},
+      "es_es": {"title": "Guardar un edificio",
+        "text": ["Papel y tinte celeste dan un [item:create:empty_schematic|Esquema vacío]; con una pluma, un [item:create:schematic_and_quill|Esquema y pluma]. Clic derecho en dos esquinas, estirá las caras con [key:create.keyinfo.ctrl_modifier] y la rueda del mouse, y otro clic derecho lo guarda en un archivo."]},
+      "sources": ["jar:create-1.21.1-6.0.10.jar:data/create/recipe/crafting/schematics/empty_schematic.json", "jar:create-1.21.1-6.0.10.jar:data/create/recipe/crafting/schematics/schematic_and_quill.json", "jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#item.create.schematic_and_quill.tooltip.behaviour1", "jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#item.create.schematic_and_quill.tooltip.behaviour2"]
+    },
+    {
+      "key": "ckx_table", "role": "side", "deps": ["ckx_quill"], "group": "schematics",
+      "task": {"item": "create:schematic_table"},
+      "at": {"x": 2.6, "y": -14.8},
+      "en_us": {"title": "From file to paper",
+        "text": ["Wooden slabs on smooth stone make a [item:create:schematic_table|Schematic Table]. Put an empty schematic in and pick a file from your schematics folder: out comes a [item:create:schematic|Schematic], a hologram to move, turn and mirror before you set it in place."]},
+      "es_es": {"title": "Del archivo al papel",
+        "text": ["Losas de madera sobre piedra lisa dan una [item:create:schematic_table|Tabla de esquemas]. Poné un esquema vacío y elegí un archivo de tu carpeta de esquemas: sale un [item:create:schematic|Esquema], un holograma que movés, girás y espejás antes de dejarlo ubicado."]},
+      "sources": ["jar:create-1.21.1-6.0.10.jar:data/create/recipe/crafting/schematics/schematic_table.json", "jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#block.create.schematic_table.tooltip.behaviour1", "jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#item.create.schematic.tooltip.summary", "jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#create.schematic.tool.flip"]
+    },
+    {
+      "key": "ckx_cannon", "role": "side", "deps": ["ckx_table"], "group": "schematics",
+      "task": {"item": "create:schematicannon"},
+      "at": {"x": 2.6, "y": -17.0},
+      "en_us": {"title": "Print it", "subtitle": "Aim at the plan, not the neighbours.",
+        "text": ["A [item:create:schematicannon|Schematicannon] builds a positioned schematic block by block from the chests next to it. Gunpowder is its fuel: one piece fires 400 blocks by default.",
+                 "Its settings choose what it may replace, and a clipboard or a book in its printer slot gets the list of missing materials."]},
+      "es_es": {"title": "Imprimilo", "subtitle": "Apuntale al plano, no a los vecinos.",
+        "text": ["Un [item:create:schematicannon|Esquematicañón] construye un esquema ya ubicado bloque por bloque, con lo que haya en los cofres de al lado. Su combustible es la pólvora: una rinde 400 bloques por defecto.",
+                 "Su configuración elige qué puede reemplazar, y un portapapeles o un libro en la ranura de impresión recibe la lista de materiales que faltan."]},
+      "sources": ["jar:create-1.21.1-6.0.10.jar:data/create/recipe/crafting/schematics/schematicannon.json", "jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#block.create.schematicannon.tooltip.summary", "jar:create-1.21.1-6.0.10.jar:com/simibubi/create/infrastructure/config/CSchematics.class#schematicannonShotsPerGunpowder", "jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#create.gui.schematicannon.slot.listPrinter", "jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#create.gui.schematicannon.option.replaceWithSolid"]
+    },
+    {
+      "key": "ckx_blueprint", "role": "side", "deps": ["crb_alloy"], "group": "schematics",
+      "task": {"item": "create:crafting_blueprint"},
+      "at": {"x": 5.0, "y": -14.8},
+      "en_us": {"title": "Recipes on the wall",
+        "text": ["A painting and a crafting table make a [item:create:crafting_blueprint|Crafting Blueprint]. Hang it up and set a recipe in each slot; right-click a slot to craft it from what you carry, sneaking for a whole stack."]},
+      "es_es": {"title": "Recetas en la pared",
+        "text": ["Un cuadro y una mesa de trabajo dan un [item:create:crafting_blueprint|Plano de elaboración]. Colgalo, fijá una receta en cada casilla y con clic derecho en una la fabricás con lo que llevás encima; agachado, un stack entero."]},
+      "sources": ["jar:create-1.21.1-6.0.10.jar:data/create/recipe/crafting/appliances/crafting_blueprint.json", "jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#item.create.crafting_blueprint.tooltip.summary", "jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#item.create.crafting_blueprint.behaviour2"]
+    },
+    {
+      "key": "ckx_tea", "role": "side", "deps": ["cbr_spout"], "group": "treats",
+      "task": {"item": "create:builders_tea"},
+      "at": {"x": -7.2, "y": -12.6},
+      "en_us": {"title": "Tea break", "subtitle": "Motivating. Also filling.",
+        "text": ["Leaves, water and milk in a heated mixer brew tea, and a spout pours 250 mB into a glass bottle. [item:create:builders_tea|Builder's Tea] gives three minutes of Haste and goes down even on a full stomach."]},
+      "es_es": {"title": "Pausa para el té", "subtitle": "Motivante. Y llena.",
+        "text": ["Hojas, agua y leche en una mezcladora con calor dan té, y un surtidor le echa 250 mB a una botella. El [item:create:builders_tea|Té del Constructor] da tres minutos de Prisa y se toma aunque estés lleno."]},
+      "sources": ["jar:create-1.21.1-6.0.10.jar:data/create/recipe/mixing/tea.json", "jar:create-1.21.1-6.0.10.jar:data/create/recipe/filling/builders_tea.json", "jar:create-1.21.1-6.0.10.jar:com/simibubi/create/AllItems.class#BUILDERS_TEA"]
+    },
+    {
+      "key": "ckx_sweets", "role": "side", "deps": ["cbr_spout"], "group": "treats",
+      "task": {"type": "advancement", "advancement": "create:foods", "icon": "create:chocolate_glazed_berries"},
+      "icon": "create:chocolate_glazed_berries",
+      "at": {"x": -9.6, "y": -12.6},
+      "en_us": {"title": "Sweet tooth", "subtitle": "A balanced diet, technically.",
+        "text": ["Sugar, cocoa and milk in a heated mixer melt into chocolate. Then, from one spout: chocolate on sweet berries, honey on an apple, milk on bread. [item:create:chocolate_glazed_berries|Chocolate Glazed Berries], a [item:create:honeyed_apple|Honeyed Apple] and a [item:create:sweet_roll|Sweet Roll].",
+                 "A press over a basin compacts chocolate into a [item:create:bar_of_chocolate|Bar of Chocolate]."]},
+      "es_es": {"title": "Golosos", "subtitle": "Una dieta balanceada, técnicamente.",
+        "text": ["Azúcar, cacao y leche en una mezcladora con calor se funden en chocolate. Después, desde un mismo surtidor: chocolate sobre bayas dulces, miel sobre una manzana, leche sobre pan. [item:create:chocolate_glazed_berries|Bayas Bañadas en chocolate], una [item:create:honeyed_apple|Manzana con miel] y una [item:create:sweet_roll|Ensaimada].",
+                 "Una prensa sobre una cuenca compacta el chocolate en una [item:create:bar_of_chocolate|Barra de chocolate]."]},
+      "sources": ["jar:create-1.21.1-6.0.10.jar:data/create/recipe/mixing/chocolate.json", "jar:create-1.21.1-6.0.10.jar:data/create/recipe/filling/chocolate_glazed_berries.json", "jar:create-1.21.1-6.0.10.jar:data/create/recipe/filling/honeyed_apple.json", "jar:create-1.21.1-6.0.10.jar:data/create/recipe/filling/sweet_roll.json", "jar:create-1.21.1-6.0.10.jar:data/create/recipe/compacting/chocolate.json", "jar:create-1.21.1-6.0.10.jar:data/create/advancement/foods.json"]
+    },
+    {
+      "key": "ckx_cuckoo", "role": "side", "deps": ["crb_casing"],
+      "task": {"type": "advancement", "advancement": "create:cuckoo_clock", "icon": "create:cuckoo_clock"},
+      "icon": "create:cuckoo_clock",
+      "at": {"figure": "gear", "slot": 3, "out": 2.9, "along": 1.0},
+      "en_us": {"title": "Is it time?",
+        "text": ["Planks, an andesite casing and a clock make a [item:create:cuckoo_clock|Cuckoo Clock]. Give it rotation and it shows the time, and its bird sings twice a day: at noon, and at dusk once you can sleep.",
+                 "[warn|Gunpowder around one makes a clock that looks the same and ends its song with a bang.]"]},
+      "es_es": {"title": "¿Llegó la hora?",
+        "text": ["Tablones, un revestimiento de andesita y un reloj dan un [item:create:cuckoo_clock|Reloj de cuco]. Con rotación muestra la hora, y su pájaro canta dos veces por día: al mediodía, y al atardecer cuando ya se puede dormir.",
+                 "[warn|Con pólvora alrededor sale un reloj idéntico que termina su canción con una explosión.]"]},
+      "sources": ["jar:create-1.21.1-6.0.10.jar:data/create/recipe/crafting/kinetics/cuckoo_clock.json", "jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#block.create.cuckoo_clock.tooltip.behaviour1", "jar:create-1.21.1-6.0.10.jar:data/create/recipe/crafting/kinetics/mysterious_cuckoo_clock.json", "jar:create-1.21.1-6.0.10.jar:com/simibubi/create/content/kinetics/clock/CuckooClockBlockEntity.class#tick", "jar:create-1.21.1-6.0.10.jar:data/create/advancement/cuckoo_clock.json"]
+    },
+    {
+      "key": "ckx_bell", "role": "side", "deps": ["crb_fan"],
+      "task": {"type": "advancement", "advancement": "create:haunted_bell", "icon": "create:haunted_bell"},
+      "icon": "create:haunted_bell",
+      "at": {"x": 11.6, "y": 6.6},
+      "en_us": {"title": "Ring for trouble", "subtitle": "It hears the dark.",
+        "text": ["A block of brass on a brass sheet makes a [item:create:peculiar_bell|Peculiar Bell]. Set it over soul fire, or haunt it with a fan, and it wakes up as a [item:create:haunted_bell|Haunted Bell]: held or rung, it shows the dark spots where monsters can spawn."]},
+      "es_es": {"title": "Campana de alerta", "subtitle": "Escucha la oscuridad.",
+        "text": ["Un bloque de latón sobre una lámina de latón da una [item:create:peculiar_bell|Campana peculiar]. Ponela sobre fuego de almas, o embrujala con un ventilador, y despierta como [item:create:haunted_bell|Campana maldita]: en la mano o al sonar, muestra los rincones oscuros donde pueden aparecer monstruos."]},
+      "sources": ["jar:create-1.21.1-6.0.10.jar:data/create/recipe/crafting/curiosities/peculiar_bell.json", "jar:create-1.21.1-6.0.10.jar:data/create/recipe/haunting/haunted_bell.json", "jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#block.create.peculiar_bell.tooltip.summary", "jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#block.create.haunted_bell.tooltip.behaviour1", "jar:create-1.21.1-6.0.10.jar:data/create/advancement/haunted_bell.json"]
+    },
+    {
+      "key": "ckx_zinc", "role": "side", "deps": ["crb_burner"], "group": "stone",
+      "task": {"any": ["create:raw_zinc", "create:zinc_ore", "create:deepslate_zinc_ore"], "count": 8, "title": {"en_us": "Zinc from the ground", "es_es": "Cinc de la tierra"}},
+      "at": {"x": 1.4, "y": 13.4},
+      "en_us": {"title": "Where the zinc is",
+        "text": ["Zinc veins of up to a dozen blocks run through the Overworld from the deepslate up to height 70. Smelt the [item:create:raw_zinc|Raw Zinc], or crush it first: a crushed zinc and a chance of XP each, and washed with a fan, nine nuggets and sometimes gunpowder."]},
+      "es_es": {"title": "Dónde está el cinc",
+        "text": ["Las vetas de cinc, de hasta una docena de bloques, cruzan el Overworld desde la pizarra profunda hasta la altura 70. Fundí el [item:create:raw_zinc|Cinc en Bruto], o trituralo antes: un cinc triturado y chance de experiencia por cada uno, y lavado con ventilador, nueve pepitas y a veces pólvora."]},
+      "sources": ["jar:create-1.21.1-6.0.10.jar:data/create/worldgen/configured_feature/zinc_ore.json", "jar:create-1.21.1-6.0.10.jar:data/create/worldgen/placed_feature/zinc_ore.json", "jar:create-1.21.1-6.0.10.jar:data/create/recipe/crushing/raw_zinc.json", "jar:create-1.21.1-6.0.10.jar:data/create/recipe/splashing/crushed_raw_zinc.json", "jar:create-1.21.1-6.0.10.jar:data/create/recipe/smelting/zinc_ingot_from_raw_ore.json"]
+    },
+    {
+      "key": "ckx_stones", "role": "side", "deps": ["ckx_zinc"], "group": "stone",
+      "task": {"any": ["create:asurine", "create:crimsite", "create:ochrum", "create:veridium", "create:limestone", "create:scoria", "create:scorchia"], "count": 16, "title": {"en_us": "Sixteen of Create's stones", "es_es": "Dieciséis piedras de Create"}},
+      "at": {"x": 1.4, "y": 15.6},
+      "en_us": {"title": "Stone with a streak",
+        "text": ["Striped layers underground hide Create's stones: [item:create:asurine|Asurine], [item:create:crimsite|Crimsite], [item:create:ochrum|Ochrum], [item:create:veridium|Veridium] and [item:create:limestone|Limestone]. Crushed, the colored ones give bits of zinc, iron, gold or copper.",
+                 "The Nether's layers bring [item:create:scoria|Scoria] and [item:create:scorchia|Scorchia]. Each stone comes cut, polished, as bricks or as a pillar at the stonecutter."]},
+      "es_es": {"title": "Piedra con vetas",
+        "text": ["Capas rayadas bajo tierra esconden las piedras de Create: [item:create:asurine|Azurina], [item:create:crimsite|Carmesita], [item:create:ochrum|Ocre], [item:create:veridium|Veridio] y [item:create:limestone|Piedra caliza]. Trituradas, las de color dan pedacitos de cinc, hierro, oro o cobre.",
+                 "Las capas del Nether traen [item:create:scoria|Escoria] y [item:create:scorchia|Escoria oscura]. En el cortapiedras, cada piedra sale cortada, pulida, en ladrillos o en pilar."]},
+      "sources": ["jar:create-1.21.1-6.0.10.jar:data/create/worldgen/configured_feature/striated_ores_overworld.json", "jar:create-1.21.1-6.0.10.jar:data/create/worldgen/configured_feature/striated_ores_nether.json", "jar:create-1.21.1-6.0.10.jar:data/create/recipe/crushing/asurine.json", "jar:create-1.21.1-6.0.10.jar:data/create/recipe/crushing/crimsite.json", "jar:create-1.21.1-6.0.10.jar:data/create/recipe/crushing/ochrum.json", "jar:create-1.21.1-6.0.10.jar:data/create/recipe/crushing/veridium.json", "jar:create-1.21.1-6.0.10.jar:data/create/tags/item/stone_types/asurine.json"]
     }
   ]
 }
