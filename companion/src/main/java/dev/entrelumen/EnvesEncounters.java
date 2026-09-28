@@ -116,9 +116,14 @@ public final class EnvesEncounters {
     int count = balance.affixCount(Role.CHAMPION, floor.depth(), random);
     Mob champion = EnvesEchoes.spawn(floor.level(), spec(floor, entry, Role.CHAMPION, EnvesAffix.pick(count, random)),
         Vec3.atBottomCenterOf(at), first);
-    if (champion == null) return null;
     var runs = EnvesRuns.get(floor.level().getServer());
     var state = runs.run(floor.attempt().id).floor(floor.depth());
+    if (champion == null) {
+      // Neither the champion nor its fallback exists in this pack: the stair does not wait for it.
+      state.championSpawned = state.championDead = true;
+      runs.setDirty();
+      return null;
+    }
     state.champion = champion.getUUID();
     state.championSpawned = true;
     runs.setDirty();

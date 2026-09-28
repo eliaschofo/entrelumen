@@ -392,7 +392,7 @@ Los afijos no se repiten en un eco. Los números están en `EnvesAffix`.
 
 - **Sala de combate:** la primera vez que alguien del grupo entra, se llenan sus puntos marcados, empezando por los más lejanos a quien entró: un élite y una escolta (45%), un élite y dos escoltas (30%) o dos élites (25%).
 - **El piso V** no tiene salas de combate: su antesala (la guardia) trae tres ecos menores, y la arena, el jefe.
-- **Guardia y campeón de la escalera:** el campeón, con tres afijos, en el centro de la guardia, y dos escoltas en las esquinas (tres desde el piso III). **La escalera no abre hasta que cae**, aunque ardan todos los sellos. Si todos arden y él sigue en pie, el grupo recibe un aviso. Si el campeón desaparece sin morir, vuelve al centro cuando alguien entra a la guardia. En un intento anterior al contenido, con la guardia ya pisada, aparece al entrar.
+- **Guardia y campeón de la escalera:** el campeón, con tres afijos, en el centro de la guardia, y dos escoltas en las esquinas (tres desde el piso III). **La escalera no abre hasta que cae**, aunque ardan todos los sellos. Si todos arden y él sigue en pie, el grupo recibe un aviso. Nunca aparece dos veces: si desaparece sin morir (un comando, otro mod), `/entrelumen admin enves seals` lo dispensa. En un intento anterior al contenido, con la guardia ya pisada, aparece al entrar. Si ni el campeón ni su respaldo existen en el pack, la escalera no lo espera.
 - Todo sale de la semilla del intento: un reinicio arma lo mismo.
 
 ### Loot
@@ -491,7 +491,7 @@ Los espejos se quedaron en los sellos: el umbral de una bóveda no tiene lugar p
   - queda expuesto en el piso 3,5 s, recibiendo un 50% más de daño.
 - **Bajo la mitad de la vida** llama una vez a dos ecos menores en los bordes de la arena.
 - **Sin grifeo:** su IA propia nunca rompe bloques y no tiene el nacimiento explosivo del vanilla. No tiene la armadura del vanilla, así que las flechas siempre cuentan. No suelta la estrella del Nether.
-- **Al caer** llama a `Enves.bossDefeated`: se despierta el portal de victoria y aparece el cofre del jefe de Lootr (`entrelumen:enves/boss`) en el marcador del portal. Si desaparece sin morir, vuelve cuando alguien del grupo pisa la arena.
+- **Al caer** llama a `Enves.bossDefeated`: se despierta el portal de victoria y aparece el cofre del jefe de Lootr (`entrelumen:enves/boss`) en el marcador del portal. Si desaparece sin morir, vuelve cuando alguien del grupo pisa la arena y el centro lleva tres segundos cargado sin él: un chunk recién cargado muestra sus entidades un momento después, y así nunca hay dos jefes.
 
 | Tier | Vida | Calavera | Embestida |
 |---|---|---|---|

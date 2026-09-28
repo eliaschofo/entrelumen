@@ -312,6 +312,11 @@ public final class RuntimeGameTestsEnvesContent {
     player.teleportTo(level, center.getX() + 0.5, center.getY(), center.getZ() + 0.5, 0f, 0f);
     player.getAttribute(Attributes.MAX_HEALTH).setBaseValue(200);
     player.setHealth(200);
+    // Diamond armor from the start: its modifiers apply when the player ticks, before the checks.
+    for (var piece : List.of(Items.DIAMOND_HELMET, Items.DIAMOND_CHESTPLATE, Items.DIAMOND_LEGGINGS, Items.DIAMOND_BOOTS)) {
+      ItemStack stack = new ItemStack(piece);
+      player.setItemSlot(player.getEquipmentSlotForItem(stack), stack);
+    }
     Attempt attempt = loose(player);
     List<Mob> spawned = new ArrayList<>();
     AtomicLong started = new AtomicLong();
@@ -342,10 +347,7 @@ public final class RuntimeGameTestsEnvesContent {
       helper.assertTrue(dealt > 0 && Math.abs(vampire.getHealth() - (10 + dealt * EnvesAffix.VAMPIRIC_LEECH)) < 0.01,
           "Vampírico healed to " + vampire.getHealth() + " after dealing " + dealt);
       // Perforante: armor stops half of what it would.
-      for (var piece : List.of(Items.DIAMOND_HELMET, Items.DIAMOND_CHESTPLATE, Items.DIAMOND_LEGGINGS, Items.DIAMOND_BOOTS)) {
-        ItemStack stack = new ItemStack(piece);
-        player.setItemSlot(player.getEquipmentSlotForItem(stack), stack);
-      }
+      helper.assertTrue(player.getArmorValue() >= 20, "the diamond armor is not on: " + player.getArmorValue());
       Mob piercer = echo(level, attempt, center.offset(-6, 0, 2), null, EnvesAffix.PIERCING);
       spawned.add(piercer);
       player.setHealth(200);
@@ -359,8 +361,6 @@ public final class RuntimeGameTestsEnvesContent {
       helper.assertTrue(plainLoss < 9, "the diamond armor stopped nothing: " + plainLoss);
       helper.assertTrue(pierceLoss - plainLoss >= (10 - plainLoss) * 0.45,
           "Perforante did " + pierceLoss + " against " + plainLoss + ": armor should keep only half its part");
-      for (EquipmentSlot slot : List.of(EquipmentSlot.HEAD, EquipmentSlot.CHEST, EquipmentSlot.LEGS, EquipmentSlot.FEET))
-        player.setItemSlot(slot, ItemStack.EMPTY);
       player.setHealth(200);
       // Ardiente: fire-proof, and sets the player alight within three blocks.
       Mob burning = echo(level, attempt, center.offset(1, 0, 1), null, EnvesAffix.BURNING);
@@ -755,9 +755,10 @@ public final class RuntimeGameTestsEnvesContent {
     ServerLevel level = helper.getLevel();
     BlockPos home = helper.absolutePos(new BlockPos(2, 1, 2));
     platform(level, home, 14);
+    // Glass the Wither would shatter, behind it (the charge runs toward the player, south of it).
     List<BlockPos> fragile = new ArrayList<>();
-    for (int dx = -2; dx <= 2; dx += 4)
-      for (int dz = -2; dz <= 2; dz += 4) {
+    for (int dx = -3; dx <= 3; dx += 6)
+      for (int dz = -5; dz >= -7; dz -= 2) {
         BlockPos glass = home.offset(dx, 3, dz);
         level.setBlockAndUpdate(glass, Blocks.GLASS.defaultBlockState());
         fragile.add(glass);
@@ -788,6 +789,8 @@ public final class RuntimeGameTestsEnvesContent {
       Vec3 from = new Vec3(home.getX() + 0.5, home.getY() + 3, home.getZ() - 4.5);
       level.addFreshEntity(new SourSkull(level, boss, from, Vec3.atCenterOf(dirt).subtract(from)));
       before.set(player.getHealth());
+      // Back over the middle, so the charge's line to the player is the arena's open floor.
+      boss.moveTo(home.getX() + 0.5, boss.getY(), home.getZ() + 0.5, 0f, 0f);
       boss.telegraph(player);
       telegraphAt.set(level.getGameTime());
       helper.assertTrue(boss.phase() == WhiteWither.Phase.TELEGRAPH, "no warning before the charge");
