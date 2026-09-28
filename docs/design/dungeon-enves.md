@@ -87,7 +87,7 @@ Roles por piso:
 - Al pagar se colocan el vestíbulo y el piso I; el siguiente, cuando alguien llega a la guardia, a la escalera o prende todos los sellos.
 - Celda por celda, del inicio hacia afuera, con 6 ms por tick. Los chunks cargan en segundo plano con un ticket por trabajo y las plantillas se leen fuera del hilo del servidor.
 - Bajo cada celda va una capa de roca donde la losa está abierta, hasta que el piso de abajo la reemplaza.
-- Al terminar un intento se borra su parcela, bloques y entidades, en franjas de capas por tick, y queda libre. Los contenedores se vacían antes de borrarlos: un cofre que se quita con `setBlock` tira lo que tiene, y uno sin abrir tira antes su loot, que quedaba flotando en la parcela para el intento siguiente. Las entidades se barren al empezar y otra vez al terminar el borrado, porque las de un chunk cargan un poco después que el chunk.
+- Al terminar un intento se borra su parcela, bloques y entidades, en franjas de capas por tick, y queda libre. Los contenedores se vacían antes de borrarlos: un cofre que se quita con `setBlock` tira lo que tiene, y uno sin abrir tira antes su loot, que quedaba flotando en la parcela para el intento siguiente. Las entidades se barren al empezar y otra vez al terminar, cuando ya cargaron las de todos los chunks de la parcela: llegan un poco después que el chunk, y un borrado rápido terminaba antes (el último barrido espera hasta 10 s). Un eco muerto en un chunk que dejó de andar nunca termina de morir: también se descarta si su intento ya no existe.
 - Si el servidor se apaga a mitad de un piso o de un borrado, lo retoma al arrancar.
 
 ### El intento
@@ -527,7 +527,7 @@ Los espejos se quedaron en los sellos: el umbral de una bóveda no tiene lugar p
 - **GameTests aislados** (`RuntimeGameTestsEnvesContent`, sin los mods del pack, con respaldos vanilla):
   - una sala llena de ecos escalados que sueltan sólo lo suyo;
   - cada afijo;
-  - cada bendición y que se apague fuera de su piso;
+  - cada bendición y que se apague fuera de su piso (Fervor y Refugio contra el mismo golpe sin bendición, así los modificadores propios del pack quedan de los dos lados);
   - los tres sellos del piso III;
   - las cuatro cerraduras, incluido que copiar los glifos tal cual no abre;
   - el campeón que cierra la escalera;
@@ -543,6 +543,10 @@ Los espejos se quedaron en los sellos: el umbral de una bóveda no tiene lugar p
   - la sala del piso I trae draugr de Cataclysm sin los aumentos de Apotheosis;
   - el cofre del jefe a Frontier da tres piezas épicas y dos gemas de Apotheosis;
   - el cofre que aparece al caer el jefe es de Lootr.
+- **Corrida del 27/9** sobre `main` 6bef925 (con los tilesets II–V):
+  - GameTests aislados: los 132 del mod pasan, los del contenido incluidos;
+  - QA de pack completo (274 JAR de servidor, `-Xmx4G`): pasan los 20 casos del Envés, los del contenido corridos con los mobs y el loot reales y los del motor, sin watchdog. Fervor se midió primero contra un golpe fijo y falló: el pack le saca a un golpe de jugador contra una oveja un 29% por su cuenta, así que ahora se compara contra el mismo golpe sin bendición;
+  - al terminar, ni el mundo de los GameTests ni el del QA tienen ítems sueltos en el Envés (antes del arreglo del borrado, cada parcela reutilizada guardaba el loot de los cofres del intento anterior).
 
 ### Para una segunda pasada
 

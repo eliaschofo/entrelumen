@@ -384,17 +384,19 @@ public final class EnvesEchoes {
     if (LIVE.isEmpty()) return;
     int now = server.getTickCount();
     for (Mob mob : List.copyOf(LIVE)) {
-      if (mob.isRemoved() || !mob.isAlive()) {
-        if (mob.isRemoved()) LIVE.remove(mob);
+      if (mob.isRemoved()) {
+        LIVE.remove(mob);
         continue;
       }
       if (!(mob.level() instanceof ServerLevel level)) continue;
       var data = mob.getData(ATTACHMENT.get());
+      // Alive or dying (one that fell in a chunk that stopped ticking never finishes dying).
       if ((now + mob.getId()) % 20 == 0 && stale(server, level, data)) {
         mob.discard();
         LIVE.remove(mob);
         continue;
       }
+      if (!mob.isAlive()) continue;
       EnvesAffixes.tick(level, mob, data, now);
       if ((now + mob.getId()) % 10 == 0 && level.getNearestPlayer(mob, 32) != null) {
         double w = mob.getBbWidth() * 0.6, h = mob.getBbHeight();

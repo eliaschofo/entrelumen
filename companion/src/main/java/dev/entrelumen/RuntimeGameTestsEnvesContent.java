@@ -185,6 +185,17 @@ public final class RuntimeGameTestsEnvesContent {
     player.serverLevel().getChunkSource().move(player);
   }
 
+  /**
+   * Every chunk within {@code radius} blocks of {@code center} ticks its entities. A test player's
+   * chunks load at the disk's pace, which a GameTest server running ahead of real time outruns.
+   */
+  static boolean ticking(ServerLevel level, BlockPos center, int radius) {
+    for (int cx = (center.getX() - radius) >> 4; cx <= (center.getX() + radius) >> 4; cx++)
+      for (int cz = (center.getZ() - radius) >> 4; cz <= (center.getZ() + radius) >> 4; cz++)
+        if (!level.isPositionEntityTicking(new BlockPos(cx * 16 + 8, center.getY(), cz * 16 + 8))) return false;
+    return true;
+  }
+
   /** A fresh player is invulnerable for its first 60 ticks; the damage checks wait them out. */
   static boolean vulnerable(ServerPlayer player, long since) {
     return player.serverLevel().getGameTime() - since > 70;
@@ -303,6 +314,7 @@ public final class RuntimeGameTestsEnvesContent {
     AtomicReference<BlockPos> chest = new AtomicReference<>(), room = new AtomicReference<>();
     List<net.minecraft.world.level.ChunkPos> looked = new ArrayList<>();
     AtomicLong loaded = new AtomicLong(-1);
+    Set<UUID> dropped = new HashSet<>();
     new Script(helper, () -> {
       ServerLevel level = Enves.level(player.server);
       for (var chunk : looked) level.getChunkSource().removeRegionTicket(LOOK, chunk, 0, chunk);
@@ -323,7 +335,10 @@ public final class RuntimeGameTestsEnvesContent {
       moveTo(player, EnvesEchoes.safeSpot(level, room.get(), 6));
     }).then(() -> echoes(attempt).size() >= 2, () -> {
       // One falls and leaves its loot on the floor; the rest are alive when the attempt ends.
-      slay(echoes(attempt).getFirst(), player);
+      Mob fallen = echoes(attempt).getFirst();
+      slay(fallen, player);
+      for (ItemEntity item : player.serverLevel().getEntitiesOfClass(ItemEntity.class, fallen.getBoundingBox().inflate(6)))
+        dropped.add(item.getUUID());
       Enves.end(player.server, attempt, EnvesHooks.EndReason.ADMIN);
     }).then(() -> EnvesData.get(player.server).attempt(attempt.id).isEmpty(), () -> {
       ServerLevel level = Enves.level(player.server);
@@ -341,8 +356,9 @@ public final class RuntimeGameTestsEnvesContent {
       for (BlockPos pos : List.of(chest.get(), room.get())) {
         var left = level.getEntitiesOfClass(net.minecraft.world.entity.Entity.class, new AABB(pos).inflate(12, 24, 12),
             e -> e instanceof ItemEntity || EnvesEchoes.isEcho(e));
-        helper.assertTrue(left.isEmpty(), "the wipe left " + left.stream().map(e -> e instanceof ItemEntity item
-            ? item.getItem().toString() : e.getType().toShortString()).toList() + " near " + pos.toShortString());
+        helper.assertTrue(left.isEmpty(), "the wipe left " + left.stream().map(e -> (e instanceof ItemEntity item
+            ? item.getItem().toString() : e.getType().toShortString()) + (dropped.contains(e.getUUID()) ? " (the fallen echo's)" : "")
+            + " aged " + e.tickCount).toList() + " near " + pos.toShortString());
       }
     }).run();
   }
@@ -404,7 +420,7 @@ public final class RuntimeGameTestsEnvesContent {
     new Script(helper, () -> {
       spawned.forEach(Mob::discard);
       qa.close();
-    }).then(() -> vulnerable(player, born), () -> {
+    }).then(() -> vulnerable(player, born) && ticking(level, center, 10), () -> {
       // Veloz and Blindado: modifiers.
       Mob swift = echo(level, attempt, center.offset(-6, 0, -6), null, EnvesAffix.SWIFT);
       Mob armored = echo(level, attempt, center.offset(-6, 0, -4), null, EnvesAffix.ARMORED);
@@ -468,6 +484,37 @@ public final class RuntimeGameTestsEnvesContent {
 
   // ---- Shrines ------------------------------------------------------------------------------
 
+  /** What the player's blow of 4 takes from a fresh sheep of 100 health, stripped of armor and effects. */
+  private static float blow(ServerLevel level, ServerPlayer player, BlockPos near, List<Mob> spawned) {
+    Sheep sheep = EntityType.SHEEP.create(level);
+    sheep.moveTo(Vec3.atBottomCenterOf(EnvesEchoes.safeSpot(level, near.offset(0, 0, 2), 2)));
+    level.addFreshEntity(sheep);
+    spawned.add(sheep);
+    for (var attribute : List.of(Attributes.ARMOR, Attributes.ARMOR_TOUGHNESS)) {
+      var instance = sheep.getAttribute(attribute);
+      if (instance != null) {
+        instance.removeModifiers();
+        instance.setBaseValue(0);
+      }
+    }
+    sheep.removeAllEffects();
+    sheep.getAttribute(Attributes.MAX_HEALTH).setBaseValue(100);
+    sheep.setHealth(100);
+    sheep.hurt(player.damageSources().playerAttack(player), 4);
+    return 100 - sheep.getHealth();
+  }
+
+  /** What a generic hit of 8 takes from the player at 20 health (the health is put back). */
+  private static float hit(ServerLevel level, ServerPlayer player) {
+    player.setHealth(20);
+    player.invulnerableTime = 0;
+    player.hurt(level.damageSources().generic(), 8);
+    float lost = 20 - player.getHealth();
+    player.setHealth(20);
+    player.invulnerableTime = 0;
+    return lost;
+  }
+
   @GameTest(template = "empty", timeoutTicks = 24000, batch = "enves_content")
   public static void aShrineBlessesTheGroupOnItsFloorOnly(GameTestHelper helper) {
     var qa = new QaPlayer(helper, "ShrineTaker");
@@ -499,6 +546,10 @@ public final class RuntimeGameTestsEnvesContent {
         floor.blessingTaken = false;
         runs.setDirty();
         moveTo(player, Enves.arrival(player.server, attempt, 1));
+        // Fervor and Refugio are measured against the same blow before the blessing: the pack's own
+        // modifiers (tier augments, attributes) are the same on both sides.
+        float plain = blessing == Blessing.FERVOR ? blow(level, player, altar.get(), spawned)
+            : blessing == Blessing.REFUGE ? hit(level, player) : 0;
         var context = Enves.floor(level, attempt, 1);
         EnvesShrines.place(context, new EnvesHooks.WorldMarker(new EnvesMarkers.Marker(EnvesMarkers.Kind.SHRINE, ""), altar.get(),
             context.layout().start(), EnvesLayout.Role.SHRINE));
@@ -509,21 +560,14 @@ public final class RuntimeGameTestsEnvesContent {
         helper.assertTrue(EnvesShrines.active(player) == blessing, "the blessing is not active: " + EnvesShrines.active(player));
         switch (blessing) {
           case FERVOR -> {
-            Sheep sheep = EntityType.SHEEP.create(level);
-            sheep.moveTo(Vec3.atBottomCenterOf(EnvesEchoes.safeSpot(level, altar.get().offset(0, 0, 2), 2)));
-            level.addFreshEntity(sheep);
-            spawned.add(sheep);
-            sheep.getAttribute(Attributes.MAX_HEALTH).setBaseValue(100);
-            sheep.setHealth(100);
-            sheep.hurt(player.damageSources().playerAttack(player), 4);
-            helper.assertTrue(Math.abs(100 - sheep.getHealth() - 5) < 0.01, "Fervor: " + (100 - sheep.getHealth()));
+            float blessed = blow(level, player, altar.get(), spawned);
+            helper.assertTrue(plain > 0 && Math.abs(blessed / plain - (1 + EnvesPuzzleRules.FERVOR_DAMAGE)) < 0.01,
+                "Fervor: a blow took " + blessed + ", unblessed " + plain);
           }
           case REFUGE -> {
-            player.setHealth(20);
-            player.invulnerableTime = 0;
-            player.hurt(level.damageSources().generic(), 8);
-            helper.assertTrue(Math.abs(20 - player.getHealth() - 6) < 0.01, "Refugio: " + (20 - player.getHealth()));
-            player.setHealth(20);
+            float blessed = hit(level, player);
+            helper.assertTrue(plain > 0 && Math.abs(blessed / plain - (1 - EnvesPuzzleRules.REFUGE_REDUCTION)) < 0.01,
+                "Refugio: a hit took " + blessed + ", unblessed " + plain);
           }
           case CLARITY -> {
             for (int cell : Enves.layout(attempt, 1).cells())
@@ -853,32 +897,34 @@ public final class RuntimeGameTestsEnvesContent {
     player.setHealth(400);
     Attempt attempt = loose(player);
     long born = level.getGameTime();
-    WhiteWither boss = EnvesBoss.spawn(level, attempt, home);
-    helper.assertTrue(boss != null, "no White Wither");
+    AtomicReference<WhiteWither> boss = new AtomicReference<>();
     AtomicLong telegraphAt = new AtomicLong(-1), chargeAt = new AtomicLong(-1);
     AtomicReference<Float> before = new AtomicReference<>();
     new Script(helper, () -> {
-      boss.discard();
+      if (boss.get() != null) boss.get().discard();
       qa.close();
-    }).then(() -> {
-      helper.assertTrue(!boss.hurt(level.damageSources().playerAttack(player), 50), "hurt while condensing");
-    }).then(() -> boss.phase() == WhiteWither.Phase.FIGHT && vulnerable(player, born), () -> {
-      double height = boss.getY() - home.getY();
+    }).then(() -> ticking(level, home, (int) WhiteWither.ARENA_RADIUS), () -> {
+      // The whole arena ticks before it wakes: the charge runs out of the test's own chunk.
+      boss.set(EnvesBoss.spawn(level, attempt, home));
+      helper.assertTrue(boss.get() != null, "no White Wither");
+      helper.assertTrue(!boss.get().hurt(level.damageSources().playerAttack(player), 50), "hurt while condensing");
+    }).then(() -> boss.get().phase() == WhiteWither.Phase.FIGHT && vulnerable(player, born), () -> {
+      double height = boss.get().getY() - home.getY();
       helper.assertTrue(height > 1.5 && height < 3.5, "the White Wither does not hover low: " + height);
-      boss.setTarget(player);
+      boss.get().setTarget(player);
       // Hurting a wither makes the vanilla one break the blocks round it; this one must not.
-      boss.hurt(level.damageSources().playerAttack(player), 5);
+      boss.get().hurt(level.damageSources().playerAttack(player), 5);
       Vec3 from = new Vec3(home.getX() + 0.5, home.getY() + 3, home.getZ() - 4.5);
-      level.addFreshEntity(new SourSkull(level, boss, from, Vec3.atCenterOf(dirt).subtract(from)));
+      level.addFreshEntity(new SourSkull(level, boss.get(), from, Vec3.atCenterOf(dirt).subtract(from)));
       before.set(player.getHealth());
       // Back over the middle, so the charge's line to the player is the arena's open floor.
-      boss.moveTo(home.getX() + 0.5, boss.getY(), home.getZ() + 0.5, 0f, 0f);
-      boss.telegraph(player);
+      boss.get().moveTo(home.getX() + 0.5, boss.get().getY(), home.getZ() + 0.5, 0f, 0f);
+      boss.get().telegraph(player);
       telegraphAt.set(level.getGameTime());
-      helper.assertTrue(boss.phase() == WhiteWither.Phase.TELEGRAPH, "no warning before the charge");
-      helper.assertTrue(boss.chargeLength() >= 8, "the charge's line is too short to reach the player: " + boss.chargeLength());
+      helper.assertTrue(boss.get().phase() == WhiteWither.Phase.TELEGRAPH, "no warning before the charge");
+      helper.assertTrue(boss.get().chargeLength() >= 8, "the charge's line is too short to reach the player: " + boss.get().chargeLength());
     }).then(() -> {
-      if (boss.phase() == WhiteWither.Phase.TELEGRAPH) {
+      if (boss.get().phase() == WhiteWither.Phase.TELEGRAPH) {
         helper.assertTrue(player.getHealth() >= before.get(), "struck during the warning");
         return false;
       }
@@ -887,14 +933,15 @@ public final class RuntimeGameTestsEnvesContent {
       chargeAt.set(level.getGameTime());
       helper.assertTrue(chargeAt.get() - telegraphAt.get() >= EnvesContentConfig.balance().boss().telegraphTicks() - 1,
           "the warning lasted only " + (chargeAt.get() - telegraphAt.get()) + " ticks");
-    }).then(() -> boss.phase() == WhiteWither.Phase.EXPOSED || level.getGameTime() - chargeAt.get() > 60, () -> {
-      helper.assertTrue(boss.phase() == WhiteWither.Phase.EXPOSED, "the charge did not end exposed");
-      helper.assertTrue(boss.struck().contains(player.getUUID()), "the charge missed a player standing on its line");
+    }).then(() -> boss.get().phase() == WhiteWither.Phase.EXPOSED || level.getGameTime() - chargeAt.get() > 60, () -> {
+      helper.assertTrue(boss.get().phase() == WhiteWither.Phase.EXPOSED, "the charge did not end exposed: " + boss.get().phase()
+          + " at " + boss.get().blockPosition().toShortString() + ", ticking " + level.isPositionEntityTicking(boss.get().blockPosition()));
+      helper.assertTrue(boss.get().struck().contains(player.getUUID()), "the charge missed a player standing on its line");
       helper.assertTrue(player.getHealth() < before.get(), "the charge did no damage");
-      float health = boss.getHealth();
-      boss.invulnerableTime = 0;
-      boss.hurt(level.damageSources().playerAttack(player), 10);
-      float lost = health - boss.getHealth();
+      float health = boss.get().getHealth();
+      boss.get().invulnerableTime = 0;
+      boss.get().hurt(level.damageSources().playerAttack(player), 10);
+      float lost = health - boss.get().getHealth();
       helper.assertTrue(lost > 10 * (1 + EnvesContentConfig.balance().boss().exposedBonus()) * 0.5, "exposed, it took only " + lost);
     }).then(() -> level.getGameTime() - chargeAt.get() > 60, () -> {
       for (BlockPos pos : fragile) helper.assertTrue(!level.getBlockState(pos).isAir(), "the White Wither broke " + pos);
