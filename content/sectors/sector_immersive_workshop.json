@@ -568,6 +568,16 @@
       "sources": ["jar:ImmersiveEngineering-1.21.1-12.4.2-194.jar:data/immersiveengineering/recipe/crafting/crate.json", "jar:ImmersiveEngineering-1.21.1-12.4.2-194.jar:data/immersiveengineering/recipe/crafting/reinforced_crate.json", "jar:ImmersiveEngineering-1.21.1-12.4.2-194.jar:assets/immersiveengineering/manual/en_us/storage_crates.txt"]
     },
     {
+      "key": "iet_storage_carts", "role": "side", "deps": ["iet_crate"], "group": "drafting",
+      "task": {"any": ["immersiveengineering:minecart_woodencrate", "immersiveengineering:minecart_reinforcedcrate", "immersiveengineering:minecart_woodenbarrel", "immersiveengineering:minecart_metalbarrel"], "title": {"en_us": "Any IE storage minecart", "es_es": "Cualquier vagoneta de almacenaje de IE"}},
+      "at": {"x": -21.0, "y": 6.6},
+      "en_us": {"title": "Freight on rails", "subtitle": "Choo-choo, with inventory.",
+        "text": ["A crate or a barrel over a minecart in the crafting grid puts it on rails. A [item:immersiveengineering:minecart_woodencrate|Minecart with Wooden Storage Crate] keeps its items when broken, which a chest cart never did, and a barrel cart still fills and empties with buckets."]},
+      "es_es": {"title": "Carga sobre rieles", "subtitle": "Chucu-chucu, con inventario.",
+        "text": ["Una caja o un barril sobre una vagoneta en la mesa de crafteo la suben a los rieles. Una [item:immersiveengineering:minecart_woodencrate|Vagoneta con caja de madera tratada] conserva lo que tiene al romperla, cosa que la de cofre nunca hizo, y una de barril se sigue llenando y vaciando con cubos."]},
+      "sources": ["jar:ImmersiveEngineering-1.21.1-12.4.2-194.jar:data/immersiveengineering/recipe/crafting/minecart_woodencrate.json", "jar:ImmersiveEngineering-1.21.1-12.4.2-194.jar:data/immersiveengineering/recipe/crafting/minecart_reinforcedcrate.json", "jar:ImmersiveEngineering-1.21.1-12.4.2-194.jar:data/immersiveengineering/recipe/crafting/minecart_woodenbarrel.json", "jar:ImmersiveEngineering-1.21.1-12.4.2-194.jar:data/immersiveengineering/recipe/crafting/minecart_metalbarrel.json", "jar:ImmersiveEngineering-1.21.1-12.4.2-194.jar:assets/immersiveengineering/manual/en_us/storage_minecarts.txt"]
+    },
+    {
       "key": "ie_gear", "role": "side", "deps": ["iet_crate"], "group": "drafting",
       "task": {"item": "immersiveengineering:toolbox"},
       "at": {"x": -23.4, "y": 4.2},
@@ -609,15 +619,41 @@
       "sources": ["jar:ImmersiveEngineering-1.21.1-12.4.2-194.jar:assets/immersiveengineering/manual/en_us/shaders.txt", "jar:ImmersiveEngineering-1.21.1-12.4.2-194.jar:assets/immersiveengineering/manual/en_us/other_engineers.txt", "jar:ImmersiveEngineering-1.21.1-12.4.2-194.jar:data/immersiveengineering/advancement/main/buy_shaderbag.json"]
     },
     {
+      "key": "iet_shader_banner", "role": "side", "deps": ["iet_shaders"], "group": "drafting",
+      "task": {"type": "observation", "observe": "block_entity_type", "target": "immersiveengineering:shaderbanner", "ticks": 40, "icon": "minecraft:white_banner", "title": {"en_us": "Look at a banner wearing a shader", "es_es": "Mirá un estandarte con apariencia"}},
+      "icon": "minecraft:white_banner",
+      "at": {"x": -13.8, "y": 9.0},
+      "en_us": {"title": "The Outfitter's banner", "subtitle": "Now hiring: one villager with taste.",
+        "text": ["Right-click a placed banner with a [item:immersiveengineering:shader|Shader] and it takes the design. That banner is the Outfitter's job site, so a villager without a trade nearby can claim it. The same click dresses a minecart or a balloon."]},
+      "es_es": {"title": "El estandarte del Proveedor", "subtitle": "Se busca aldeano con buen gusto.",
+        "text": ["Hacé clic derecho con una [item:immersiveengineering:shader|Apariencia] sobre un estandarte puesto y toma el diseño. Ese estandarte es el puesto de trabajo del Proveedor de apariencias: un aldeano sin oficio cerca puede tomarlo. El mismo clic viste una vagoneta o un globo."]},
+      "sources": ["jar:ImmersiveEngineering-1.21.1-12.4.2-194.jar:assets/immersiveengineering/manual/en_us/shaders.txt", "jar:ImmersiveEngineering-1.21.1-12.4.2-194.jar:assets/immersiveengineering/manual/en_us/other_engineers.txt", "jar:ImmersiveEngineering-1.21.1-12.4.2-194.jar:data/minecraft/tags/point_of_interest_type/acquirable_job_site.json", "jar:ImmersiveEngineering-1.21.1-12.4.2-194.jar:blusunrize/immersiveengineering/common/register/IEBlockEntities.class#shaderbanner", "jar:ImmersiveEngineering-1.21.1-12.4.2-194.jar:blusunrize/immersiveengineering/common/blocks/cloth/ShaderBannerBlock.class"]
+    },
+    {
       "key": "iet_villagers", "role": "side", "deps": ["ie_workbench"], "group": "drafting",
       "task": {"type": "advancement", "advancement": "immersiveengineering:main/villager", "title": {"en_us": "Meet an IE villager", "es_es": "Conocé a un aldeano de IE"}},
       "icon": {"entity": "minecraft:villager"},
       "at": {"x": -16.2, "y": 6.6},
       "en_us": {"title": "Colleagues in the village",
-        "text": ["Five IE trades take an IE workstation: Structural Engineer, Machinist, Electrician, Gunsmith and Outfitter. They sell parts, wire and blueprints, and even maps to mineral veins. Talk to one."]},
+        "text": ["Five IE trades take an IE workstation: Structural Engineer, Machinist, Electrician, Gunsmith and Outfitter. They sell parts, wire and blueprints, and even maps to mineral veins. Talk to one.",
+                 "{page}",
+                 "Job sites: a [item:immersiveengineering:turntable|Turntable] for the Structural Engineer, the [item:immersiveengineering:craftingtable|Engineer's Crafting Table] for the Machinist, the [item:immersiveengineering:circuit_table|Engineer's Circuit Workbench] for the Electrician, the [item:immersiveengineering:workbench|Engineer's Workbench] for the Gunsmith and a banner wearing a shader for the Outfitter. Villages can generate a house for each."]},
       "es_es": {"title": "Colegas en la aldea",
-        "text": ["Cinco oficios de IE toman un puesto de IE: Ingeniero estructural, Mecánico, Electricista, Armero y Proveedor de apariencias. Venden piezas, cable y planos, y hasta mapas de vetas minerales. Hablá con uno."]},
-      "sources": ["jar:ImmersiveEngineering-1.21.1-12.4.2-194.jar:assets/immersiveengineering/manual/en_us/other_engineers.txt", "jar:ImmersiveEngineering-1.21.1-12.4.2-194.jar:data/immersiveengineering/advancement/main/villager.json"]
+        "text": ["Cinco oficios de IE toman un puesto de IE: Ingeniero estructural, Mecánico, Electricista, Armero y Proveedor de apariencias. Venden piezas, cable y planos, y hasta mapas de vetas minerales. Hablá con uno.",
+                 "{page}",
+                 "Puestos de trabajo: una [item:immersiveengineering:turntable|Base giratoria] para el Ingeniero estructural, la [item:immersiveengineering:craftingtable|Mesa de trabajo del ingeniero] para el Mecánico, la [item:immersiveengineering:circuit_table|Tabla de circuitos del ingeniero] para el Electricista, el [item:immersiveengineering:workbench|Banco de trabajo del ingeniero] para el Armero y un estandarte con apariencia para el Proveedor. Las aldeas pueden traer una casa para cada uno."]},
+      "sources": ["jar:ImmersiveEngineering-1.21.1-12.4.2-194.jar:assets/immersiveengineering/manual/en_us/other_engineers.txt", "jar:ImmersiveEngineering-1.21.1-12.4.2-194.jar:data/immersiveengineering/advancement/main/villager.json", "jar:ImmersiveEngineering-1.21.1-12.4.2-194.jar:data/minecraft/tags/point_of_interest_type/acquirable_job_site.json", "jar:ImmersiveEngineering-1.21.1-12.4.2-194.jar:data/immersiveengineering/structure/village/houses/plains_outfitter.nbt"]
+    },
+    {
+      "key": "iet_hero_gifts", "role": "side", "deps": ["iet_villagers"], "group": "drafting",
+      "task": {"type": "advancement", "advancement": "minecraft:adventure/hero_of_the_village", "icon": "minecraft:bell", "title": {"en_us": "Win a raid", "es_es": "Ganá un asalto"}},
+      "icon": "minecraft:bell",
+      "at": {"x": -16.2, "y": 9.0},
+      "en_us": {"title": "Hero of the engineers", "subtitle": "Paid in steel.",
+        "text": ["Win a raid and the village's engineers throw gifts like any villager: rods from the Structural Engineer, components from the Machinist, a piece of Faraday armour from the Electrician, special cartridges or an extended magazine from the Gunsmith, a banner or a rare or epic shader grabbag from the Outfitter."]},
+      "es_es": {"title": "Héroe de los ingenieros", "subtitle": "Te pagan en acero.",
+        "text": ["Ganá un asalto y los ingenieros de la aldea te tiran regalos como cualquier aldeano: el Ingeniero estructural, barras; el Mecánico, componentes; el Electricista, una pieza de armadura de Faraday; el Armero, cartuchos especiales o un cargador ampliado, y el Proveedor, un estandarte o una bolsa de apariencias rara o épica."]},
+      "sources": ["jar:ImmersiveEngineering-1.21.1-12.4.2-194.jar:data/immersiveengineering/loot_table/gameplay/hero_of_the_village/engineer.json", "jar:ImmersiveEngineering-1.21.1-12.4.2-194.jar:data/immersiveengineering/loot_table/gameplay/hero_of_the_village/machinist.json", "jar:ImmersiveEngineering-1.21.1-12.4.2-194.jar:data/immersiveengineering/loot_table/gameplay/hero_of_the_village/electrician.json", "jar:ImmersiveEngineering-1.21.1-12.4.2-194.jar:data/immersiveengineering/loot_table/gameplay/hero_of_the_village/gunsmith.json", "jar:ImmersiveEngineering-1.21.1-12.4.2-194.jar:data/immersiveengineering/loot_table/gameplay/hero_of_the_village/outfitter.json", "jar:minecraft_1.21.1_client.jar:data/minecraft/advancement/adventure/hero_of_the_village.json"]
     },
     {
       "key": "iet_conveyor", "role": "side", "deps": ["ie_workbench"], "group": "logistics",

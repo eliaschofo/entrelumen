@@ -791,14 +791,14 @@
       "sources": ["jar:mekmm-1.21.1-1.4.1.jar:data/mekmm/recipe/large_antiprotonic_nucleosynthesizer.json"]
     },
     {
-      "key": "mke_heavy_water", "role": "step", "deps": ["mkb_upgrades_more"],
+      "key": "mke_heavy_water", "role": "step", "deps": ["mkl_pump", "mkb_upgrades"],
       "task": {"item": "mekanism:heavy_water_bucket"},
       "at": {"x": 11.778, "y": -6.8},
       "en_us": {"title": "Heavy water",
-        "text": ["An Electric Pump with a Filter Upgrade pulls 10 mB of [item:mekanism:heavy_water_bucket|Heavy Water] from every water block. The Electrolytic Separator splits it into deuterium and oxygen at twice the power."]},
+        "text": ["An [item:mekanism:electric_pump|Electric Pump] with a [item:mekanism:upgrade_filter|Filter Upgrade], infused alloy and glass around tin dust, pulls 10 mB of [item:mekanism:heavy_water_bucket|Heavy Water] from every water block. The Electrolytic Separator splits it into deuterium and oxygen at twice the power."]},
       "es_es": {"title": "Agua pesada",
-        "text": ["Una Bomba eléctrica con Mejora de filtro saca 10 mB de [item:mekanism:heavy_water_bucket|Agua pesada] de cada bloque de agua. El Separador electrolítico la parte en deuterio y oxígeno, al doble de energía."]},
-      "sources": ["jar:Mekanism-1.21.1-10.7.19.85.jar:mekanism/common/config/GeneralConfig.class", "jar:MekanismGenerators-1.21.1-10.7.19.85.jar:data/mekanismgenerators/recipe/separator/heavy_water.json", "jar:Mekanism-1.21.1-10.7.19.85.jar:assets/mekanism/lang/en_us.json#upgrade.mekanism.filter.description"]
+        "text": ["Una [item:mekanism:electric_pump|Bomba eléctrica] con una [item:mekanism:upgrade_filter|Mejora de filtro], aleación infusionada y vidrio alrededor de polvo de estaño, saca 10 mB de [item:mekanism:heavy_water_bucket|Agua pesada] de cada bloque de agua. El Separador electrolítico la parte en deuterio y oxígeno, al doble de energía."]},
+      "sources": ["jar:Mekanism-1.21.1-10.7.19.85.jar:mekanism/common/config/GeneralConfig.class", "jar:MekanismGenerators-1.21.1-10.7.19.85.jar:data/mekanismgenerators/recipe/separator/heavy_water.json", "jar:Mekanism-1.21.1-10.7.19.85.jar:assets/mekanism/lang/en_us.json#upgrade.mekanism.filter.description", "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/upgrade/filter.json", "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/electric_pump.json"]
     },
     {
       "key": "mke_adv_pump", "role": "side", "deps": ["mke_heavy_water"],

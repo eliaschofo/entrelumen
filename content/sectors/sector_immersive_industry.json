@@ -446,7 +446,7 @@
       "sources": ["jar:ImmersiveEngineering-1.21.1-12.4.2-194.jar:data/immersiveengineering/structure/multiblocks/lightning_rod.nbt", "jar:ImmersiveEngineering-1.21.1-12.4.2-194.jar:assets/immersiveengineering/manual/en_us/lightning_rod.txt", "jar:ImmersiveEngineering-1.21.1-12.4.2-194.jar:blusunrize/immersiveengineering/common/config/IEServerConfig$Machines.class#lightning_output"]
     },
     {
-      "key": "iei_railgun", "role": "milestone", "deps": ["iei_hv_accumulator"], "group": "hv",
+      "key": "iei_railgun", "role": "side", "deps": ["iei_hv_accumulator"], "group": "hv",
       "task": {"item": "immersiveengineering:railgun"},
       "at": {"x": 5.0, "y": -8.0},
       "en_us": {"title": "The railgun", "subtitle": "Physics, aimed.",
@@ -456,7 +456,7 @@
       "sources": ["jar:ImmersiveEngineering-1.21.1-12.4.2-194.jar:data/immersiveengineering/recipe/crafting/railgun.json", "jar:ImmersiveEngineering-1.21.1-12.4.2-194.jar:assets/immersiveengineering/manual/en_us/railgun.txt", "jar:ImmersiveEngineering-1.21.1-12.4.2-194.jar:data/immersiveengineering/advancement/tools/craft_railgun.json"]
     },
     {
-      "key": "iei_tip_ammo", "role": "tip", "deps": ["iei_railgun"], "group": "hv",
+      "key": "iei_tip_ammo", "role": "tip", "deps": ["iei_railgun"], "group": "hv", "reveal": true,
       "task": {"type": "checkmark"},
       "at": {"x": 8.0, "y": -6.8},
       "en_us": {"title": "Anything rod-shaped",
@@ -692,7 +692,7 @@
       "sources": ["jar:ImmersiveEngineering-1.21.1-12.4.2-194.jar:data/immersiveengineering/recipe/crafting/survey_tools.json", "jar:ImmersiveEngineering-1.21.1-12.4.2-194.jar:assets/immersiveengineering/manual/en_us/mineral_deposits.txt"]
     },
     {
-      "key": "iei_core_sample", "role": "side", "deps": ["ie_excavator"], "sequential": true,
+      "key": "iei_core_sample", "role": "step", "deps": ["ie_press"], "sequential": true,
       "tasks": [{"item": "immersiveengineering:sample_drill"}, {"item": "immersiveengineering:coresample"}],
       "at": {"figure": "wheel", "slot": 1},
       "en_us": {"title": "Core samples",
