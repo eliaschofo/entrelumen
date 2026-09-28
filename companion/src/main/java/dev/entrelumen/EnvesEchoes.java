@@ -160,6 +160,14 @@ public final class EnvesEchoes {
     // into one of its elites or invaders.
     @SuppressWarnings("deprecation")
     var ignored = mob.finalizeSpawn(level, level.getCurrentDifficultyAt(BlockPos.containing(pos)), MobSpawnType.EVENT, null);
+    // No jockeys and no babies: an echo is one grown mob (a zombie's set-up may add a chicken to ride).
+    if (mob.getVehicle() != null) {
+      Entity vehicle = mob.getVehicle();
+      mob.stopRiding();
+      vehicle.discard();
+    }
+    mob.getPassengers().forEach(Entity::discard);
+    if (mob.isBaby()) mob.setBaby(false);
     equip(mob, spec.entry());
     for (EquipmentSlot slot : EquipmentSlot.values()) mob.setDropChance(slot, 0f);
     Tier tier = spec.attempt().tier;

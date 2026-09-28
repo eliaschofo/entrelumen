@@ -74,9 +74,9 @@ public final class EnvesSeals {
   static EnvesRuns.Seal state(EnvesHooks.Floor floor, int cell) {
     var runs = EnvesRuns.get(floor.level().getServer());
     var seal = runs.run(floor.attempt().id).floor(floor.depth()).seal(cell);
-    SealVariant variant = variant(floor, cell);
-    if (seal.variant != variant && !seal.guardianSpawned && !seal.circle && !seal.solved) {
-      seal.variant = variant;
+    if (!seal.decided) {
+      seal.variant = variant(floor, cell);
+      seal.decided = true;
       runs.setDirty();
     }
     return seal;
@@ -123,7 +123,12 @@ public final class EnvesSeals {
       }
       default -> {
         Puzzle puzzle = dress(floor, cell);
-        if (puzzle == null || puzzle.solved) return true;
+        if (puzzle == null) {
+          // The room fits no puzzle: the seal became a circle.
+          if (seal.variant == SealVariant.CIRCLE) return mayLight(floor, cell, player);
+          return false;
+        }
+        if (puzzle.solved) return true;
         switch (puzzle.kind) {
           case "seal_braziers" -> EnvesPuzzles.play(floor.level(), puzzle);
           case "seal_levers" -> player.displayClientMessage(Component.translatable("entrelumen.enves.seal.levers"), true);
@@ -227,7 +232,8 @@ public final class EnvesSeals {
     var runs = EnvesRuns.get(floor.level().getServer());
     var seal = state(floor, cell);
     seal.circle = true;
-    seal.held = seal.empty = seal.waves = 0;
+    // Waves already sent are not sent again: cooling the circle on purpose farms nothing.
+    seal.held = seal.empty = 0;
     runs.setDirty();
     BlockPos pos = sealPos(floor, cell);
     floor.level().playSound(null, pos, SoundEvents.BEACON_AMBIENT, SoundSource.BLOCKS, 1.2f, 0.7f);
@@ -286,8 +292,8 @@ public final class EnvesSeals {
           }
           circle.bar().setProgress(Math.min(1f, seal.held / (float) goal));
           if (server.getTickCount() % 5 == 0) ring(level, pos, radius, !inside.isEmpty());
-          int wave = seal.held * 3 / goal;
-          if (seal.waves <= wave && seal.waves < 3) {
+          int wave = Math.min(2, seal.held * 3 / goal);
+          if (seal.waves <= wave) {
             sendWave(floor, cell, pos, seal.waves, inside.isEmpty() ? (near.isEmpty() ? null : near.getFirst()) : inside.getFirst());
             seal.waves++;
           }
@@ -300,7 +306,7 @@ public final class EnvesSeals {
             if (who != null) Enves.lightSeal(who, pos);
           } else if (seal.empty > grace) {
             seal.circle = false;
-            seal.held = seal.waves = seal.empty = 0;
+            seal.held = seal.empty = 0;
             circle.bar().removeAllPlayers();
             CIRCLES.remove(key(attempt.get().id, depth, cell));
             for (ServerPlayer player : near) player.displayClientMessage(Component.translatable("entrelumen.enves.seal.circle.cooled"), true);

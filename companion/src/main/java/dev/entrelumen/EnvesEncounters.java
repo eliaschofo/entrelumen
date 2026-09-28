@@ -174,11 +174,14 @@ public final class EnvesEncounters {
   static void checkChampion(ServerLevel level, EnvesData.Attempt attempt, int depth, ServerPlayer present) {
     var runs = EnvesRuns.get(level.getServer());
     var state = runs.run(attempt.id).floor(depth);
-    if (!state.championSpawned || state.championDead || state.champion == null) return;
-    if (level.getEntity(state.champion) != null) return;
     var floor = Enves.floor(level, attempt, depth);
     int guard = floor.layout().guard();
-    if (guard < 0) return;
+    if (guard < 0 || state.championDead || depth >= EnvesLayout.BOSS_DEPTH) return;
+    if (EnvesContentConfig.table(floor.tileset()).champions().isEmpty()) return;
+    // The room was entered without a champion (an attempt older than the content): it comes now.
+    boolean owed = !state.championSpawned && attempt.floor(depth).entered.get(guard);
+    boolean lost = state.championSpawned && state.champion != null && level.getEntity(state.champion) == null;
+    if (!owed && !lost) return;
     BlockPos at = floor.markers(guard).stream().filter(m -> m.marker().kind() == EnvesMarkers.Kind.ENCOUNTER
         && m.marker().argument().equals("champion")).map(EnvesHooks.WorldMarker::pos).findFirst()
         .orElse(floor.origin(guard).offset(EnvesGeometry.C, 1, EnvesGeometry.C));

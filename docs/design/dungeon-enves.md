@@ -9,7 +9,7 @@ Plano del controlador, 26 de septiembre de 2026. Pedido de Elias:
 - loot que escala con la dificultad y que obliga a equiparse: nada de «refined obsidian y listo»;
 - pocos enemigos fuertes y divertidos, nada de tormentas de entidades ni spawners, y nada de basura en el inventario.
 
-**Estado (26/9).** El motor está hecho: la dimensión, el intento con su ofrenda y su bolsa de caídas, el generador en Java, las plantillas de Osarios con marcadores, la colocación por ticks, las reglas y el mapa con niebla ([El motor](#el-motor)). Falta lo del segundo worker: encuentros, afijos, loot, santuarios, acertijos de bóveda y el jefe, que se enchufan en los ganchos del motor. Cisternas, Fundición, Geodas y El Eclipse usan por ahora las salas de Osarios con una paleta provisoria.
+**Estado (27/9).** El motor está hecho: la dimensión, el intento con su ofrenda y su bolsa de caídas, el generador en Java, las plantillas de Osarios con marcadores, la colocación por ticks, las reglas y el mapa con niebla ([El motor](#el-motor)). La primera iteración del contenido también: ecos con afijos, campeones de escalera, santuarios, sellos en tres variantes, cerraduras de bóveda, loot con Apotheosis y esquirlas de luz agria, el Wither blanco y la ofrenda de estrella o esquirlas ([Contenido construido](#contenido-construido-279)). Cisternas, Fundición, Geodas y El Eclipse usan por ahora las salas de Osarios con una paleta provisoria; otro worker dibuja su arte.
 
 - `art/dungeon/drlg.py` es el oráculo del generador y dibuja el plano de revisión;
 - `art/dungeon/tiles.py` hace las salas y sus marcadores; `tools/export_enves_tiles.py` las escribe como NBT.
@@ -152,7 +152,7 @@ Las plantillas son `structure/enves/<tileset>/<rol>_<puertas>_<variante>.nbt`, c
 
 ### Archivos de datos
 
-- `data/entrelumen/enves/config.json`: `offering` (`minecraft:netherite_block` × 1), `falls_per_member` (3), `abandon_minutes` (10), `stair_seal_block`, `vault_gate_block`, `room_chest_chance` (0,25), `chest_loot_table` (`entrelumen:enves/{kind}`; también acepta `{tier}` y `{floor}`), `denied_commands`, `tilesets` (uno por piso) y `ftb_chunks_map_stage`. Un datapack lo reemplaza; si no valida, sigue el anterior.
+- `data/entrelumen/enves/config.json`: `offering` (una lista de alternativas: `minecraft:nether_star` × 1 o `entrelumen:sour_light_shard` × 64; también acepta un solo `{item, count}`), `falls_per_member` (3), `abandon_minutes` (10), `stair_seal_block`, `vault_gate_block`, `room_chest_chance` (0,25), `chest_loot_table` (`entrelumen:enves/{kind}`; también acepta `{tier}` y `{floor}`), `denied_commands`, `tilesets` (uno por piso) y `ftb_chunks_map_stage`. Un datapack lo reemplaza; si no valida, sigue el anterior.
 - `data/entrelumen/enves/tilesets/<id>.json`: `templates` (la carpeta de plantillas) y `palette` (cambios de bloque). Los cinco usan `osarios`; Cisternas, Fundición, Geodas y El Eclipse con paletas provisorias.
 - `data/entrelumen/tags/item/enves_forbidden.json`: los objetos que no andan adentro.
 - `pack/config/ftbchunks-world.snbt`: `require_game_stage: true`.
@@ -169,9 +169,11 @@ Las plantillas son `structure/enves/<tileset>/<rol>_<puertas>_<variante>.nbt`, c
 - `Chests.place`;
 - `Shrines.place`;
 - `Vaults.place`; para abrir, `EnvesPlacer.openVault`;
-- `Seals.mayLight` y `lit`;
+- `Seals.mayLight`, `lit` y `stairMayOpen` (la escalera abre con todos los sellos, el piso de abajo listo y este sí: el contenido lo usa para el campeón);
 - `Boss.floorReady`; el jefe llama a `Enves.bossDefeated` al caer;
-- `Lifecycle`: intento abierto, piso listo, caída y fin con su motivo.
+- `Lifecycle`: intento abierto, piso listo, caída, jefe vencido (`bossDefeated`, también desde `/entrelumen admin enves boss`) y fin con su motivo.
+
+`EnvesHooks.reset()` vuelve a los ganchos simples del motor (sus propios GameTests corren así) y `EnvesContent.install()` pone los del contenido. `EnvesHooks.forcing(...)` marca lo que hace un operador: `/entrelumen admin enves seals` prende los sellos sin preguntarle a su variante y dispensa al campeón del piso.
 
 Cada gancho recibe un `EnvesHooks.Floor`: el nivel, el intento (tier, semilla, parcela, bolsa), la planta, la profundidad, el tileset y los marcadores de cualquier celda en coordenadas de mundo. `Enves.attemptAt(server, pos)` dice de qué intento es una posición.
 
@@ -214,7 +216,7 @@ Cada gancho recibe un `EnvesHooks.Floor`: el nivel, el intento (tier, semilla, p
   - sin waystones, `/home` ni `/rtp`.
   Los techos de 9 bloques tampoco dejan volar.
 - **Intento, caídas y muerte (Elias, 26/9):**
-  - la puerta se abre con una ofrenda de **1 bloque de netherita**, y cada ofrenda es un intento;
+  - la puerta se abre con una ofrenda, y cada ofrenda es un intento: desde el 27/9, **una estrella del Nether o 64 esquirlas de luz agria** (antes, un bloque de netherita);
   - adentro se conserva el inventario y se reaparece al inicio del piso;
   - el grupo comparte una bolsa de caídas de 3 por integrante (dos jugadores, seis caídas), sin importar quién las gaste;
   - cuando la bolsa se vacía, todos vuelven afuera, la puerta se cierra y pide otra ofrenda.
@@ -255,7 +257,7 @@ Reusan los mecanismos de las ruinas: braseros en orden, espejos, palancas, ofren
 6. Piso del jefe, pool, salida, recompensas y logro.
 7. Entrada y selección de dificultad, regla de muerte, GameTests y QA de pack completo.
 
-Los puntos 1–3 y 5 son un worker; el 4 y el 6, otro, en paralelo, sobre la misma interfaz de marcadores. Hechos (26/9): 1, 2 (el exportador y los marcadores; falta el arte de los otros tilesets), 3, 5 y 7. Pendientes: 4 y 6.
+Los puntos 1–3 y 5 son un worker; el 4 y el 6, otro, en paralelo, sobre la misma interfaz de marcadores. Hechos (26/9): 1, 2 (el exportador y los marcadores; falta el arte de los otros tilesets), 3, 5 y 7. El 27/9, el 4 y el 6 en su primera iteración ([Contenido construido](#contenido-construido-279)); falta el arte de los tilesets II–V y la QA del pack completo sobre ellos.
 
 ## Contenido propuesto (27/9, para que Elias lo dirija)
 
@@ -303,6 +305,254 @@ Los pisos ya tienen tema. Los enemigos salen de mods que ya están en el pack (I
 - **Ofrenda:** pasa de un bloque de netherite a **una estrella del Nether** por intento, o, en su lugar, **una cantidad de esquirlas de luz agria**. La cantidad va en `config.json` y se calibra para que la estrella sea sobre todo el pago de las primeras bajadas: una bajada completa deja más esquirlas de las que pide la puerta.
 - **Esquirlas de luz agria:** la moneda del Envés. Más adelante se van a canjear en Solsticio, así que está bien que sobren. El canje no entra en esta iteración.
 - **Nombres provisorios:** el Envés y el Wither blanco (EN «the Envés», «White Wither»). Los curios únicos del jefe quedan fuera de esta iteración.
+
+## Contenido construido (27/9)
+
+La primera iteración entera del contenido propuesto, en la rama `feature/enves-content`. Todo se enchufa en los ganchos del motor (`EnvesContent.install()`); los números viven en datos que un datapack puede reemplazar:
+
+| Archivo | Qué tiene |
+|---|---|
+| `data/entrelumen/enves/balance.json` (`EnvesBalance`) | escalado por World Tier y por piso, base de cada rol, afijos por piso, rareza y pureza del loot, sellos, acertijos y jefe |
+| `data/entrelumen/enves/encounters/<tileset>.json` (`EnvesEchoTables`) | los ecos de cada piso: escoltas, élites, campeón y tesoro |
+| `data/entrelumen/loot_table/enves/*.json` | cofres (`room`, `vault`, `boss`) y caídas de ecos (`echo_elite`, `echo_guardian`, `echo_champion`, `grottol`) |
+| `data/entrelumen/enves/config.json` | la ofrenda: estrella del Nether o esquirlas |
+
+Un archivo que no valida deja el anterior y lo dice en el log. `balance.json` y `EnvesBalance.DEFAULTS` dicen lo mismo, y un test lo comprueba.
+
+### Ecos
+
+Un eco es un mob del pack condensado por la luz agria (`EnvesEchoes`):
+- **Nombre:** «Eco de Draugr», y en los élites sus afijos: «Eco de Draugr — Veloz, Vampírico». El color cambia por rol: gris claro las escoltas, amarillo agrio los élites, verde agua los guardianes y oro los campeones. Los élites, guardianes y campeones muestran el nombre siempre.
+- **Aura pálida:** partículas del color de la luz agria dos veces por segundo cerca de un jugador, y una chispa extra en los que tienen afijos.
+- **Escalado:** la vida base del eco (su entrada en la tabla, o la del rol) por el multiplicador del tier del intento y el del piso. Todo el daño que hace (golpes, proyectiles, hechizos, AoE) se multiplica por su factor: el de la entrada o el del rol, por el del tier y el del piso. Además suma la armadura del tier.
+- **El tier del intento manda, no el del jugador:** a los ecos no les llegan los aumentos de tier de Apotheosis (se marca `apotheosis:tier_augments_applied`) ni el `FinalizeSpawnEvent`, así que ningún mod los convierte en sus élites o invasores. Un jugador de Pinnacle que farmea un intento de Frontier pelea ecos de Frontier.
+- **Sin basura:** las caídas del mob y su equipo se tiran. Suelta sólo la tabla de su rol: las escoltas, nada (sólo experiencia); los élites, guardianes y campeones, esquirlas y algo más.
+- Persisten, no juntan cosas del piso y no se lastiman entre ellos.
+
+**Por piso** (IDs verificados en los JAR fijados: `ModEntities` de L_Ender's Cataclysm 3.33 y el registro de Mowzie's Mobs 1.8.2). Vida base a Frontier en el piso I, antes del multiplicador del piso; «daño ×» multiplica el daño propio del mob. El respaldo vanilla sólo se usa si el mod falta:
+
+| Piso | Escoltas (peso) | Élites: vida, daño ×, peso, respaldo | Campeón: vida, daño ×, respaldo |
+|---|---|---|---|
+| I · Osarios | esqueleto con arco y casco de malla (3), stray con arco (2) | `cataclysm:draugr` 60, ×1,2, 3, zombie; `elite_draugr` 75, ×1,15, 2, husk | `cataclysm:royal_draugr` 180, ×1,4, wither skeleton |
+| II · Cisternas | drowned con tridente | `deepling_brute` 85, ×1,1, 3, zombie; `deepling_angler` 60, ×1,1, 2, drowned; `deepling_priest` 55, ×1,2, 2, bruja | `cataclysm:coral_golem` 220, ×1,1 |
+| III · Fundición | wither skeleton (3), blaze (2) | `ignited_berserker` 80, ×1,0, 3, vindicador; `ignited_revenant` 90, ×1,0, 2, blaze | `cataclysm:the_prowler` 240, ×0,9 |
+| IV · Geodas | vex | `the_watcher` 50, ×1,2, 3, vex; `amethyst_crab` 110, ×0,8, 2, zombie | `cataclysm:ender_golem` 260, ×1,0 |
+| V · El Eclipse | «Eco menor»: wither skeleton con espada de piedra | — | — (el Wither blanco) |
+
+El tesoro de las Geodas es `mowziesmobs:grottol`: aparece en el 20% de las salas de combate del piso IV, huye y se entierra en el piso (la losa de las Geodas es basalto liso, que puede cavar). Sólo lo lastima un pico que rompa diamante; si lo agarrás, suelta dos gemas y 2–4 esquirlas. Al aparecer avisa: «Un grottol sale del cristal y huye. Sólo un pico le quiebra el caparazón.»
+
+### Números de combate
+
+| World Tier | Vida × | Daño × | Armadura + | Rareza del loot en el piso I (común, poco común, rara, épica, mítica) | Techo | Pureza base |
+|---|---|---|---|---|---|---|
+| Haven | 0,75 | 0,75 | 0 | 60, 36, 4, 0, 0 | rara | `chipped` |
+| Frontier | 1,0 | 1,0 | 2 | 29, 60, 10, 1, 0 | épica | `chipped` |
+| Ascent | 1,6 | 1,35 | 4 | 10, 30, 50, 10, 0 | épica | `flawed` |
+| Summit | 2,5 | 1,8 | 8 | 0, 12, 29, 54, 5 | mítica | `normal` |
+| Pinnacle | 3,8 | 2,4 | 12 | 0, 0, 10, 65, 25 | mítica | `flawless` |
+
+Los pesos de rareza son los propios de Apotheosis para cada tier. El techo nunca se pasa, y es lo que da el cofre del jefe. La pureza sube por pasos (`cracked`, `chipped`, `flawed`, `normal`, `flawless`, `perfect`), hasta `perfect`.
+
+| Piso | Vida × | Daño × | Chance de subir una rareza | Pureza + |
+|---|---|---|---|---|
+| I | 1,0 | 1,0 | 0 | 0 |
+| II | 1,15 | 1,08 | 25% | 0 |
+| III | 1,3 | 1,16 | 50% | +1 |
+| IV | 1,5 | 1,25 | 75% | +1 |
+| V | 1,7 | 1,35 | 100% | +2 |
+
+| Rol | Vida base | Daño × | Experiencia | Afijos |
+|---|---|---|---|---|
+| Escolta | 24 | 1,0 | 6 | 0 |
+| Élite | 70 (las tablas dan la suya) | 1,15 | 20 | I: 1 · II: 1–2 · III: 2 · IV: 2–3 |
+| Guardián de sello | 110 | 1,25 | 35 | los del élite + 1, hasta 3 |
+| Campeón | 200 (las tablas dan la suya) | 1,35 | 60 | 3 |
+| Wither blanco | 600 | 1,0 | 300 | — |
+
+La experiencia se multiplica por la vida × del tier. Ejemplos:
+- Un élite de Frontier tiene entre 55 y 110 de vida en el piso I y 399 en el IV a Pinnacle.
+- El Royal Draugr de Frontier tiene 180 de vida y pega 7 por golpe; a Pinnacle, 684 y 17.
+- El Prowler del piso III tiene 312 de vida a Frontier y pega 15; a Pinnacle, 1.186 y 35.
+- El Ender Golem del piso IV tiene 390 de vida a Frontier y 1.482 a Pinnacle.
+
+### Afijos de élite
+
+| Afijo | Qué hace |
+|---|---|
+| Veloz | +40% de velocidad (y de vuelo, en los que vuelan) |
+| Blindado | +8 de armadura, +4 de dureza y +0,6 de resistencia al empuje |
+| Vampírico | se cura el 35% del daño que hace |
+| Ardiente | inmune al fuego; cada segundo prende fuego 3 s a todo jugador a 3 bloques, y sus golpes también prenden. La resistencia al fuego lo anula |
+| Perforante | la armadura frena la mitad de lo que frenaría de sus golpes |
+| Espectral | cada 5–8 s, si su blanco está a más de 2,5 bloques, elige un lugar libre unos 2 bloques detrás de él en el mismo piso; ese lugar sisea y brilla 0,6 s, y reaparece ahí |
+
+Los afijos no se repiten en un eco. Los números están en `EnvesAffix`.
+
+### Encuentros
+
+- **Sala de combate:** la primera vez que alguien del grupo entra, se llenan sus puntos marcados, empezando por los más lejanos a quien entró: un élite y una escolta (45%), un élite y dos escoltas (30%) o dos élites (25%).
+- **El piso V** no tiene salas de combate: su antesala (la guardia) trae tres ecos menores, y la arena, el jefe.
+- **Guardia y campeón de la escalera:** el campeón, con tres afijos, en el centro de la guardia, y dos escoltas en las esquinas (tres desde el piso III). **La escalera no abre hasta que cae**, aunque ardan todos los sellos. Si todos arden y él sigue en pie, el grupo recibe un aviso. Si el campeón desaparece sin morir, vuelve al centro cuando alguien entra a la guardia. En un intento anterior al contenido, con la guardia ya pisada, aparece al entrar.
+- Todo sale de la semilla del intento: un reinicio arma lo mismo.
+
+### Loot
+
+Entradas propias, resueltas en el momento: la de Apotheosis por reflexión, y sin Apotheosis equipo encantado vanilla, esmeraldas y materiales vanilla, así que las tablas cargan igual. El tier y el piso salen de dónde se tira el loot: el cofre o el eco que cayó. Por eso el loot de un intento de Frontier es de Frontier aunque lo abra alguien de Pinnacle.
+- `entrelumen:enves_gear` es una pieza con afijos de Apotheosis. La rareza es la del tier, sube un paso con la chance del piso (y con la de Fortuna, 60%) y suma `rarity_bonus` pasos, sin pasar el techo del tier; con `top`, es el techo. La pieza base la elige Apotheosis entre las del tier.
+- `entrelumen:enves_gem` es una gema de Apotheosis cuya pureza sale del tier, el piso y `purity_bonus`, nunca menor que la mínima de la gema.
+- `entrelumen:enves_material` es el material de rescate de una rareza tirada igual.
+- `entrelumen:enves_floor_bonus` suma `per_floor` × (piso − 1) a la pila, con la fracción al azar.
+- `entrelumen:enves_floor` es una condición: pisos `min`..`max`.
+
+| Tabla | Qué da |
+|---|---|
+| `enves/room` (25% de las salas quietas con marcador, Lootr) | 60% una pieza; 1–2 esquirlas + 0,35 por piso; 20% una gema; 30% un material; 50% un consumible (manzana dorada, curación II, resistencia al fuego larga, frascos de experiencia, flechas) |
+| `enves/vault` (Lootr) | dos piezas una rareza más arriba; 3–5 esquirlas + 0,5 por piso; una gema de pureza +1; un material +1; 75% un consumible |
+| `enves/boss` (Lootr, aparece al caer el jefe) | tres piezas de la rareza techo del tier; 12–16 esquirlas; dos gemas de pureza +1; dos materiales +2 |
+| `enves/echo_elite` | 1–2 esquirlas + 0,25 por piso; 8% una gema; 10% un material |
+| `enves/echo_guardian` | 2–3 esquirlas + 0,25 por piso; 35% una gema; 25% un material |
+| `enves/echo_champion` | 3–4 esquirlas + 1 por piso; una pieza una rareza más arriba; 50% una gema; 50% un material |
+| `enves/grottol` | dos gemas; 2–4 esquirlas |
+
+Los cofres son de Lootr, uno por jugador. El del jefe no está hasta que el Wither blanco cae, así nadie lo saquea pasándole por al lado.
+
+### Esquirlas de luz agria y la ofrenda
+
+- `entrelumen:sour_light_shard` («Esquirla de luz agria»): la moneda del Envés, apilable a 64 y de rareza poco común. Tooltip: «Luz que se agrió en la fusión fallida, condensada por el Envés.» y «La moneda del Envés: su puerta acepta esquirlas en lugar de una estrella del Nether.» El arte es el del 16×16 de `art/build_art.py`.
+- **La ofrenda:** una estrella del Nether **o 64 esquirlas**. La pantalla de la puerta muestra las dos; el jugador elige cuál paga, empezando por la primera que lleva, y el servidor lo vuelve a juzgar.
+- **Calibración** (`EnvesContentDataTest`, 200 descensos, con el grupo pasando por el 70% de las salas y resolviendo tres de cada cuatro bóvedas):
+
+| Hasta | Esquirlas esperadas |
+|---|---|
+| El piso I | 19 |
+| Los pisos I–III | 80 |
+| El descenso completo, con el jefe | 141 |
+
+Morir en el piso I no paga la próxima puerta. Llegar a la Fundición la paga. Un descenso completo deja más del doble, y el sobrante es para el canje futuro en Solsticio. La estrella queda como el precio de los primeros descensos. En grupo, cada jugador tiene su propio loot de los cofres de Lootr, así que las esquirlas de cofre se multiplican; las de ecos se comparten.
+
+### Santuarios
+
+El santuario del piso tiene un altar (`entrelumen:enves_shrine`, provisorio sobre el ancla de reaparición) con una bendición que sale de la semilla. El primer toque bendice a todo el grupo hasta el final del piso, y el altar se apaga:
+
+| Bendición | Efecto, mientras estés en ese piso |
+|---|---|
+| Fervor | +25% a todo el daño que hacés |
+| Refugio | 25% menos de todo el daño que recibís |
+| Presteza | Velocidad II y Prisa II |
+| Claridad | el mapa entero del piso, escalera y sellos incluidos |
+| Fortuna | el loot del piso sube una rareza más con 60% de chance |
+
+Las partículas del altar tienen el color de su bendición, así se adivina antes de tocarlo. El aviso al grupo dice qué hace.
+
+### Sellos
+
+Las tres variantes se reparten barajadas por piso: dos sellos nunca comparten variante y tres muestran las tres. Un operador con `/entrelumen admin enves seals` las saltea.
+- **Guardián:** al pisar la sala, un eco guardián (de los élites del piso, con un afijo más, hasta 3) se para entre la puerta y el sello. El sello no prende hasta que cae; después se prende con un toque.
+- **Círculo:** tocar el sello lo despierta. Hay que tener a alguien del grupo a 4,5 bloques del sello durante 20 s.
+  - La barra de jefe «Sosteniendo el sello» muestra el avance.
+  - El anillo de partículas brilla mientras alguien lo sostiene.
+  - Llegan tres oleadas por las bahías de la sala: dos escoltas, un élite y dos escoltas (una escolta más desde el piso III).
+  - Vacío, el avance baja el doble de rápido de lo que sube; vacío 15 s, se enfría y hay que volver a tocar el sello. Las oleadas que ya llegaron no se repiten.
+- **Acertijo chico:** la sala es del sello, así que se arma sobre sus pedestales:
+  - **Braseros:** cuatro braseros en los pedestales diagonales. Al entrar, y cada vez que tocás el sello, el sello los hace destellar en un orden, cada uno con su nota. Hay que repetirlo: 3 toques en el piso I, 4 en el II y 5 en el III y el IV. Un error los apaga.
+  - **Palancas:** cuatro palancas en los pedestales de los ejes y cuatro lámparas en los diagonales. Cada palanca invierte algunas lámparas; se prenden las cuatro. Nunca se resuelve con una sola palanca.
+  - **Espejos:** una fuente de luz agria y espejos de dos posiciones sobre una grilla de 5 × 5 alrededor del sello, con 2 vueltas en los pisos I–II y 3 en los III–IV, más dos o tres espejos que no llevan a nada. La luz se ve en partículas mientras rebota; cuando llega al sello, se prende.
+
+  Si otro tileset no deja lugar para el acertijo sorteado, se prueba el siguiente; si no entra ninguno, el sello pasa a ser de círculo.
+
+### Bóvedas
+
+La puerta de 3 × 4 de la bóveda es la cerradura misma:
+- la fila de abajo tiene las piezas;
+- las del medio son barrotes, para ver adentro;
+- la de arriba es el dintel o las lámparas.
+
+Lo que pide está detrás de los barrotes o en el umbral de enfrente. Al resolverla, `EnvesPlacer.openVault` la abre entera.
+
+| Cerradura | Peso | Cómo es |
+|---|---|---|
+| Piedras de glifo | 3 | Detrás de los barrotes, sobre pedestales de calcita, tres glifos (las caras cinceladas del cuarzo, la arenisca roja, la toba y la pizarra profunda) dicen un código. Las tres piedras de la puerta giran con un clic y abren cuando lo dicen **al revés**. Copiarlo tal cual no abre, y la cerradura avisa: «El Envés copia todo al revés». Nunca es un palíndromo. |
+| Braseros | 3 | La puerta recuerda un orden y lo toca al acercarte y cada vez que tocás los barrotes. Hay que prender los tres braseros en ese orden: 3, 4, 5 y 5 toques por piso. |
+| Palancas | 3 | Seis palancas en las paredes del umbral y tres lámparas en el dintel. Cada palanca invierte una o dos lámparas; hay que prender las tres, y nunca alcanza con una sola. |
+| Ofrenda | 1 | Un brasero frío pide 3, 4, 5 o 6 esquirlas según el piso. Paga con la moneda del Envés; la bóveda paga más. |
+
+Los espejos se quedaron en los sellos: el umbral de una bóveda no tiene lugar para una grilla de luz. Si otro tileset no deja lugar para los glifos, la cerradura pasa a braseros; si faltan paredes para las palancas, a glifos.
+
+### El Wither blanco
+
+`entrelumen:white_wither`, provisorio que queda en la v1.0:
+- **Cuerpo y textura:** es el cuerpo del Wither vanilla con la textura de marfil y oro de `art/authoring/draw_white_wither.py`. El brillo se dibuja a plena luz y late durante el aviso de la embestida. Las calaveras (`entrelumen:sour_skull`) usan el mismo marfil.
+- **Aparición:** se condensa al pisar el centro de la arena del piso V. Pasa 3 s sin recibir daño mientras sube, con la barra de jefe blanca con muescas «Wither blanco».
+- **Casi no vuela:** flota a 2,5 bloques del piso y se desliza (0,16 bloques por tick) alrededor de su blanco a unos 9 bloques, sin alejarse más de 24 del centro de la arena.
+- **Calaveras:** tres, una por cabeza, cada 2 s (1,3 s bajo la mitad de la vida). Hacen 8 × el factor del tier y el piso y marchitan 4 s. No rompen nada: ni bloques ni lo que un proyectil pueda romper.
+- **Embestida muy telegrafiada**, cada 8 s (5,6 s bajo la mitad de la vida) si su blanco está a 5–26 bloques y lo ve:
+  - baja a 1,2 bloques, tiembla, zumba y marca en el piso con polvo dorado la línea que va a barrer, cortada donde la pare una pared, durante 1,8 s;
+  - la barre a 21 bloques por segundo, golpea una vez a cada jugador de la línea con 14 × el factor y lo tira de costado;
+  - queda expuesto en el piso 3,5 s, recibiendo un 50% más de daño.
+- **Bajo la mitad de la vida** llama una vez a dos ecos menores en los bordes de la arena.
+- **Sin grifeo:** su IA propia nunca rompe bloques y no tiene el nacimiento explosivo del vanilla. No tiene la armadura del vanilla, así que las flechas siempre cuentan. No suelta la estrella del Nether.
+- **Al caer** llama a `Enves.bossDefeated`: se despierta el portal de victoria y aparece el cofre del jefe de Lootr (`entrelumen:enves/boss`) en el marcador del portal. Si desaparece sin morir, vuelve cuando alguien del grupo pisa la arena.
+
+| Tier | Vida | Calavera | Embestida |
+|---|---|---|---|
+| Haven | 765 | 8,1 | 14,2 |
+| Frontier | 1.020 | 10,8 | 18,9 |
+| Ascent | 1.632 | 14,6 | 25,5 |
+| Summit | 2.550 | 19,4 | 34,0 |
+| Pinnacle | 3.876 | 25,9 | 45,4 |
+
+(daño antes de armadura)
+
+### Cómo afinar
+
+- **Dureza:** `tiers.*.health|damage|armor` para toda una dificultad, `floors[i]` para un piso, `roles.*` para un tipo de eco y `health`/`damage` de una entrada de tabla para un mob.
+- **Afijos:** `affixes.elite` da `[mín, máx]` por piso, del I al V; `affixes.champion` fija los del campeón.
+- **Loot:**
+  - `tiers.*.rarity` y `top` para las rarezas;
+  - `floors[i].rarity_step` y `purity` para lo que suma cada piso;
+  - `loot.fortune_step` para Fortuna;
+  - las tablas `loot_table/enves/*` para las cantidades.
+- **La ofrenda:** `offering` de `config.json`. Si cambian las cantidades de esquirlas, `EnvesContentDataTest` vuelve a medir la calibración y falla si un descenso completo deja menos de 1,5 veces la puerta o más de 3,5, si el piso I la paga o si los pisos I–III no la pagan.
+- **Sellos y acertijos:** `seals.circle_seconds|circle_radius|circle_grace_seconds`; `puzzles.echo_length|mirror_turns|offering_shards` por piso.
+- **El jefe:** `boss.skull_damage|charge_damage|telegraph_ticks|exposed_ticks|exposed_bonus|hover|charge_cooldown`. El aviso nunca baja de 10 ticks.
+- **Enemigos:** `encounters/<tileset>.json`; un ID que falta usa su `fallback`, y sin respaldo el eco se saltea.
+
+### Pruebas
+
+- **JUnit:**
+  - `EnvesBalanceTest`: escalado, afijos por piso, rareza con techo, pureza, bonus por piso, validación, y que `balance.json` coincida con el código;
+  - `EnvesPuzzleRulesTest`: variantes de sellos, cerraduras y bendiciones; braseros; glifos al revés; palancas que piden dos o más; espejos resolubles que nunca empiezan resueltos; ofrendas;
+  - `EnvesContentDataTest`: tablas de ecos contra la propuesta con IDs verificados y respaldos, tablas de loot, calibración de la ofrenda, y las claves EN/ES que el código usa, con sus placeholders;
+  - `EnvesContractTest`: la ofrenda nueva y sus rechazos.
+- **GameTests aislados** (`RuntimeGameTestsEnvesContent`, sin los mods del pack, con respaldos vanilla):
+  - una sala llena de ecos escalados que sueltan sólo lo suyo;
+  - cada afijo;
+  - cada bendición y que se apague fuera de su piso;
+  - los tres sellos del piso III;
+  - las cuatro cerraduras, incluido que copiar los glifos tal cual no abre;
+  - el campeón que cierra la escalera;
+  - las dos ofrendas;
+  - que las siete tablas carguen y paguen;
+  - el Wither blanco sin grifeo, flotando bajo, con la embestida avisada, golpeando y expuesto;
+  - su aparición en la arena, el portal y el cofre al caer.
+
+  Los casos del motor (`RuntimeGameTestsEnves`) corren con los ganchos simples (`@BeforeBatch`).
+- **GameTests de pack completo** (`EnvesContentFullpackGameTests`):
+  - cada eco de las tablas es un mob vivo de su mod;
+  - la sala del piso I trae draugr de Cataclysm sin los aumentos de Apotheosis;
+  - el cofre del jefe a Frontier da tres piezas épicas y dos gemas de Apotheosis;
+  - el cofre que aparece al caer el jefe es de Lootr.
+
+### Para una segunda pasada
+
+- Ver en el juego lo que ningún test ve:
+  - cómo se sienten los números y los afijos;
+  - si los modelos provisorios (brasero, espejo, piedras de glifo, altar) se leen bien;
+  - la lectura del aviso de la embestida;
+  - si los mobs de Cataclysm con animación de muerte sueltan algo por fuera del evento de caídas.
+- Arte propio del altar, el brasero y el espejo, y un modelo propio del jefe (hoy es el Wither vanilla repintado).
+- Un curio único del jefe (fuera de esta iteración) y el canje de esquirlas en Solsticio.
+- Los tilesets II–V: las cerraduras y acertijos revisan el lugar y cambian de tipo si el arte nuevo no lo deja, pero conviene mirarlos con el arte final.
 
 ## Para decidir
 

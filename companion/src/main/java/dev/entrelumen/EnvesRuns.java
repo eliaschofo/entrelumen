@@ -79,6 +79,8 @@ public final class EnvesRuns extends SavedData {
   /** One seal: its variant, its guardian or its circle. */
   public static final class Seal {
     public EnvesPuzzleRules.SealVariant variant = EnvesPuzzleRules.SealVariant.GUARDIAN;
+    /** Whether the variant is settled (drawn from the seed, or changed because the room fits no puzzle). */
+    public boolean decided;
     public UUID guardian;
     public boolean guardianSpawned, guardianDead, solved;
     /** The circle: ticks held so far, whether it runs, ticks nobody stood in it, waves already sent. */
@@ -88,6 +90,7 @@ public final class EnvesRuns extends SavedData {
     CompoundTag save() {
       CompoundTag tag = new CompoundTag();
       tag.putString("variant", variant.name());
+      tag.putBoolean("decided", decided);
       if (guardian != null) tag.putUUID("guardian", guardian);
       tag.putBoolean("guardianSpawned", guardianSpawned);
       tag.putBoolean("guardianDead", guardianDead);
@@ -106,6 +109,7 @@ public final class EnvesRuns extends SavedData {
       } catch (IllegalArgumentException e) {
         s.variant = EnvesPuzzleRules.SealVariant.GUARDIAN;
       }
+      s.decided = tag.getBoolean("decided");
       if (tag.hasUUID("guardian")) s.guardian = tag.getUUID("guardian");
       s.guardianSpawned = tag.getBoolean("guardianSpawned");
       s.guardianDead = tag.getBoolean("guardianDead");

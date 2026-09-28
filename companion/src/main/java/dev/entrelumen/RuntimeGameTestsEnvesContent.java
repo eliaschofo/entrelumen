@@ -560,10 +560,14 @@ public final class RuntimeGameTestsEnvesContent {
         current.set(puzzle);
         for (BlockPos pos : gate.get().all()) helper.assertTrue(!level.getBlockState(pos).isAir(), kind + ": the gate is open");
         if (puzzle.kind.equals("vault_glyphs")) {
-          // Copying the clue as seen is the first mistake: it does not open.
-          for (int i = 0; i < 3; i++)
-            while (puzzle.state[i] != puzzle.solution[i]) EnvesPuzzles.click(level, attempt, puzzle, i, player);
-          helper.assertTrue(!puzzle.solved && puzzle.misses >= 1, "the literal reading opened the glyphs or went unnoticed");
+          // Copying the clue as seen is the first mistake: it does not open, and the lock says why.
+          int[] code = puzzle.solution;
+          puzzle.state = new int[] {code[0], code[1], Math.floorMod(code[2] - 1, EnvesPuzzleRules.GLYPHS)};
+          EnvesPuzzles.click(level, attempt, puzzle, 2, player);
+          helper.assertTrue(java.util.Arrays.equals(puzzle.state, code), "the stone did not turn");
+          helper.assertTrue(!puzzle.solved && puzzle.misses == 1, "the literal reading opened the glyphs or went unnoticed");
+          var clue = level.getBlockState(puzzle.extras.get(0)).getBlock();
+          helper.assertTrue(clue == EnvesVaults.GLYPH_BLOCKS.get(code[0]), "the clue behind the bars is not the code");
         }
         solve(level, attempt, puzzle, player);
         helper.assertTrue(puzzle.solved, kind + " was not solved");

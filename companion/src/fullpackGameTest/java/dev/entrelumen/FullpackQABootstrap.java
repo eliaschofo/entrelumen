@@ -97,6 +97,9 @@ public final class FullpackQABootstrap {
       GameTestRegistry.register(RuntimeGameTestsRuins.class);
       // Terra's Engine (26 September): the Sunken Workshop's Create puzzle with the pinned Create.
       GameTestRegistry.register(RuinWorkshopFullpackGameTests.class);
+      // The Envés's content (27 September): echoes, affixes, shrines, seals, vaults, the White Wither and its loot.
+      GameTestRegistry.register(RuntimeGameTestsEnvesContent.class);
+      GameTestRegistry.register(EnvesContentFullpackGameTests.class);
       Set<String> expected = new TreeSet<>();
       for (Class<?> owner : List.of(RuntimeGameTests.class, FullpackGameTests.class,
           ResourceFarmGameTests.class, Ae2CraftingGameTests.class, RFToolsRecipeGameTests.class,
@@ -112,8 +115,8 @@ public final class FullpackQABootstrap {
           RuntimeGameTestsActs.class, ActsFullpackGameTests.class,
           ProgressionFullpackGameTests.class, VeinResonatorFullpackGameTests.class, RuntimeGameTestsStory.class,
           RecipeDesignFullpackGameTests.class, JetpackBalanceFullpackGameTests.class, ArkFullpackGameTests.class,
-          RuntimeGameTestsEnves.class, EnvesFullpackGameTests.class,
-          RuntimeGameTestsRuins.class, RuinWorkshopFullpackGameTests.class))
+          RuntimeGameTestsEnves.class, EnvesFullpackGameTests.class, RuntimeGameTestsEnvesContent.class,
+          EnvesContentFullpackGameTests.class, RuntimeGameTestsRuins.class, RuinWorkshopFullpackGameTests.class))
         for (var method : owner.getDeclaredMethods())
           if (method.isAnnotationPresent(GameTest.class))
             expected.add(method.getName().toLowerCase(Locale.ROOT));
