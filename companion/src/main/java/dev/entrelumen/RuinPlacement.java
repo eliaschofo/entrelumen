@@ -341,26 +341,38 @@ public final class RuinPlacement {
   /** A scored candidate: its centre, the floor the ground layer lands on, and its score. */
   record Candidate(int x, int z, int floor, int score) {}
 
+  /** A site under water: its centre, the seabed, the water's surface and the ring it lies in. */
+  record Wet(int x, int z, int seabed, int water, int ring) {
+    int depth() {
+      return water - seabed;
+    }
+  }
+
+  /** What a ring's search found: the dry candidates, best first, and the sites under water. */
+  record Sites(List<Candidate> dry, List<Wet> wet) {}
+
   /** Everything the off-thread site search reads; the generator and biome source are thread-safe. */
   record Siting(ChunkGenerator generator, RandomState random, LevelHeightAccessor height, BiomeSource biomes,
       RuinDefinitions.Mode mode, long seed, String ruin, int cx, int cy, int cz, int min, int max,
-      int sizeX, int sizeZ, int above, int below, List<ProtectionRules.Box> exclusions) {}
+      int sizeX, int sizeZ, int above, int below, List<ProtectionRules.Box> exclusions, int ring) {}
 
   static ProtectionRules.Box footprint(int cx, int cz, int sizeX, int sizeZ) {
     int x0 = cx - sizeX / 2, z0 = cz - sizeZ / 2;
     return new ProtectionRules.Box(x0, 0, z0, x0 + sizeX - 1, 0, z0 + sizeZ - 1);
   }
 
-  /** Scores ring candidates from the noise, best first. Never touches a chunk. */
-  static List<Candidate> site(Siting in) {
+  /** Scores a ring's candidates from the noise, best first, and keeps the sites under water. Never touches a chunk. */
+  static Sites site(Siting in) {
     List<Candidate> found = new ArrayList<>();
-    for (int[] c : RuinRules.candidates(in.seed(), in.ruin(), in.cx(), in.cz(), in.min(), in.max(), CANDIDATES)) {
+    List<Wet> wet = new ArrayList<>();
+    for (int[] c : RuinRules.candidates(in.seed(), RuinRules.ringKey(in.ruin(), in.ring()), in.cx(), in.cz(),
+        in.min(), in.max(), CANDIDATES)) {
       if (!RuinRules.clear(footprint(c[0], c[1], in.sizeX(), in.sizeZ()), in.exclusions(), EXCLUSION_MARGIN))
         continue;
       Candidate candidate;
       try {
         candidate = switch (in.mode()) {
-          case SURFACE -> surface(in, c[0], c[1]);
+          case SURFACE -> surface(in, c[0], c[1], wet);
           case CAVERN -> cavern(in, c[0], c[1]);
           case SKY -> sky(in, c[0], c[1]);
         };
@@ -371,7 +383,8 @@ public final class RuinPlacement {
       if (candidate != null) found.add(candidate);
     }
     found.sort(Comparator.comparingInt(Candidate::score));
-    return found;
+    wet.sort(Comparator.comparingInt(Wet::depth));
+    return new Sites(found, wet);
   }
 
   private static int[][] samples(Siting in, int x, int z, int n) {
@@ -384,10 +397,11 @@ public final class RuinPlacement {
     return points;
   }
 
-  private static Candidate surface(Siting in, int x, int z) {
+  private static Candidate surface(Siting in, int x, int z, List<Wet> under) {
     int[][] points = samples(in, x, z, 5);
     int[] heights = new int[points.length];
     boolean[] water = new boolean[points.length];
+    List<Integer> tops = new ArrayList<>();
     for (int i = 0; i < points.length; i++) {
       int top = in.generator().getBaseHeight(points[i][0], points[i][1], Heightmap.Types.WORLD_SURFACE_WG,
           in.height(), in.random()) - 1;
@@ -395,9 +409,15 @@ public final class RuinPlacement {
           in.height(), in.random()) - 1;
       heights[i] = floor;
       water[i] = top > floor;
+      if (water[i]) tops.add(top);
       if (floor <= in.height().getMinBuildHeight() + 1) return null;
     }
     int floor = RuinRules.floor(heights);
+    // Mostly under water: no site, but an islet could stand here if no ring has land.
+    if (tops.size() * 4 > points.length) {
+      under.add(new Wet(x, z, floor, RuinTerrain.mostCommon(tops, floor), in.ring()));
+      return null;
+    }
     if (!fits(in.height(), floor - in.below(), in.below() + in.above())) return null;
     var biome = in.biomes().getNoiseBiome(QuartPos.fromBlock(x), QuartPos.fromBlock(floor), QuartPos.fromBlock(z),
         in.random().sampler());
@@ -455,8 +475,8 @@ public final class RuinPlacement {
    * cavern and sky ruins clear their columns instead. A survey job waits in HOLD until released.
    */
   enum Stage {
-    PREPARING, SITING, CHECKING, LOADING, EVALUATING, HOLD, SCANNING, SHAPING, FELLING, SWEEPING, CLEARING, PLACING,
-    SUPPORTING, FINISHING
+    PREPARING, SITING, CHECKING, LOADING, EVALUATING, ISLET, HOLD, SCANNING, SHAPING, FELLING, SWEEPING, CLEARING,
+    PLACING, SUPPORTING, FINISHING
   }
 
   /** The site's own ground: its surface and filler blocks and whether snow covers it. */
@@ -474,7 +494,7 @@ public final class RuinPlacement {
     Stage stage = Stage.PREPARING;
     CompletableFuture<Prepared> preparing;
     Prepared prepared;
-    CompletableFuture<List<Candidate>> siting;
+    CompletableFuture<Sites> siting;
     List<Candidate> candidates = List.of();
     int candidate, attempts;
     final Map<Long, CompletableFuture<Optional<CompoundTag>>> occupancy = new HashMap<>();
@@ -493,6 +513,20 @@ public final class RuinPlacement {
     RuinData.Ruin result;
     Candidate best;
     int bestScore = Integer.MAX_VALUE;
+    /**
+     * The ring being searched (0: the definition's) and how far a search may widen; the sites under
+     * water it saw, for an islet when no ring has land.
+     */
+    int ring, maxRings = RuinRules.WIDER_RINGS;
+    final List<Wet> wet = new ArrayList<>();
+    /** An islet raised under the ruin: where, over which seabed, and how far its building got. */
+    Wet islet;
+    boolean isletBuilt;
+    int[] isletSeabed;
+    int isletIndex, isletX0, isletZ0, isletWidth, isletDepth, isletWater;
+    BlockState isletCore, isletSkin;
+    final List<Integer> isletSurfaces = new ArrayList<>();
+    final List<BlockState> isletSkins = new ArrayList<>();
     /** Centred on {@code center}: sited on the real terrain there, never rejected, no occupancy check. */
     boolean fixed;
     /** A dev survey: fixed, held before shaping, and never registered. */
@@ -725,29 +759,38 @@ public final class RuinPlacement {
         job.stage = Stage.SITING;
       }
       case SITING -> {
+        var placement = job.definition.placement();
+        int[] ring = RuinRules.ring(placement.min(), placement.max(), job.ring);
         if (job.siting == null) {
           var p = job.prepared;
-          var placement = job.definition.placement();
           var source = job.level.getChunkSource();
           var siting = new Siting(source.getGenerator(), source.randomState(), job.level,
               source.getGenerator().getBiomeSource(), placement.mode(), job.level.getSeed(), job.definition.id(),
-              job.center.getX(), job.center.getY(), job.center.getZ(), placement.min(), placement.max(),
-              p.sizeX(), p.sizeZ(), p.above(), p.ground(), exclusions(job.level));
+              job.center.getX(), job.center.getY(), job.center.getZ(), ring[0], ring[1],
+              p.sizeX(), p.sizeZ(), p.above(), p.ground(), exclusions(job.level), job.ring);
           job.siting = CompletableFuture.supplyAsync(() -> site(siting), Util.backgroundExecutor());
           return;
         }
         if (!job.siting.isDone()) return;
-        job.candidates = job.siting.join();
+        var sites = job.siting.join();
+        job.siting = null;
+        job.candidates = sites.dry();
+        job.wet.addAll(sites.wet());
+        if (job.candidates.isEmpty() && !sites.wet().isEmpty() && job.ring < job.maxRings) {
+          // The whole ring is under water: the next one out.
+          widen(job, "every site in ring " + ring[0] + ".." + ring[1] + " is under water");
+          return;
+        }
         if (job.candidates.isEmpty()) {
           // Nothing scored well: fall back to the ring's candidates, judged on the real terrain.
           List<Candidate> fallback = new ArrayList<>();
-          for (int[] c : RuinRules.candidates(job.level.getSeed(), job.definition.id(), job.center.getX(),
-              job.center.getZ(), job.definition.placement().min(), job.definition.placement().max(), 8))
+          for (int[] c : RuinRules.candidates(job.level.getSeed(), RuinRules.ringKey(job.definition.id(), job.ring),
+              job.center.getX(), job.center.getZ(), ring[0], ring[1], 8))
             fallback.add(new Candidate(c[0], c[1], Integer.MIN_VALUE, 1000));
           job.candidates = fallback;
         }
-        LOGGER.info("Heliodor ruin {}: {} candidate sites, best {}", job.id, job.candidates.size(),
-            job.candidates.getFirst());
+        LOGGER.info("Heliodor ruin {}: {} candidate sites in ring {}..{}, best {}", job.id, job.candidates.size(),
+            ring[0], ring[1], job.candidates.getFirst());
         job.stage = Stage.CHECKING;
       }
       case CHECKING -> checking(job);
@@ -760,7 +803,10 @@ public final class RuinPlacement {
             }
             return;
           }
-        if (job.resume != null) {
+        // An islet is raised before its site is reserved, so a stop in between searches again and finds it.
+        if (job.islet != null && !job.isletBuilt) {
+          job.stage = Stage.ISLET;
+        } else if (job.resume != null) {
           reserve(job);
           job.stage = shapingStage(job);
         } else {
@@ -768,6 +814,7 @@ public final class RuinPlacement {
         }
       }
       case EVALUATING -> evaluate(job);
+      case ISLET -> isleting(job, deadline);
       case HOLD -> {}
       case SCANNING -> {
         if (job.natural == null && !fits(job.level, job.origin.getY(), job.prepared.sizeY())) {
@@ -825,6 +872,15 @@ public final class RuinPlacement {
   private static void checking(Job job) {
     if (job.candidate >= job.candidates.size()) {
       if (job.best == null || job.bestScore == Integer.MAX_VALUE) {
+        // A ruin never fails to place (Elias, 27 September): the next ring out, then an islet.
+        if (!job.fixed && job.ring < job.maxRings) {
+          widen(job, "no site in its ring will do");
+          return;
+        }
+        if (!job.fixed && job.definition.placement().mode() == RuinDefinitions.Mode.SURFACE && !job.wet.isEmpty()) {
+          islet(job);
+          return;
+        }
         LOGGER.error("Heliodor ruin {}: every candidate site is inhabited or unusable; not placed", job.id);
         job.failed = true;
         return;
@@ -892,12 +948,154 @@ public final class RuinPlacement {
    * around it, so every read and write there must be loaded; cavern and sky ruins stay in their box.
    */
   static int reach(Job job) {
-    return job.definition.placement().mode() == RuinDefinitions.Mode.SURFACE ? FELLING_REACH + 8 : 1;
+    if (job.definition.placement().mode() != RuinDefinitions.Mode.SURFACE) return 1;
+    if (job.islet != null) return Math.max(FELLING_REACH + 8, isletReach(job) + 2);
+    return FELLING_REACH + 8;
+  }
+
+  /** How far past the footprint an islet reaches, with room for a seabed deeper than the estimate. */
+  static int isletReach(Job job) {
+    return RuinTerrain.isletReach(Math.min(job.islet.depth() + 8, RuinTerrain.ISLET_MAX_DEPTH));
   }
 
   private static void release(Job job) {
     for (ChunkPos chunk : job.tickets) job.level.getChunkSource().removeRegionTicket(TICKET, chunk, 0, chunk);
     job.tickets.clear();
+  }
+
+  /** Searches the next ring out, from scratch. */
+  private static void widen(Job job, String why) {
+    release(job);
+    job.ring++;
+    var placement = job.definition.placement();
+    int[] ring = RuinRules.ring(placement.min(), placement.max(), job.ring);
+    LOGGER.warn("Heliodor ruin {}: {}; searching the ring {}..{} around {}", job.id, why, ring[0], ring[1],
+        job.center.toShortString());
+    job.candidates = List.of();
+    job.candidate = 0;
+    job.attempts = 0;
+    job.best = null;
+    job.bestScore = Integer.MAX_VALUE;
+    job.resume = null;
+    job.siting = null;
+    job.stage = Stage.SITING;
+  }
+
+  /**
+   * No ring has land (an ocean world): the ruin stands on an islet raised from the seabed at the
+   * shallowest site under water, the innermost ring first.
+   */
+  private static void islet(Job job) {
+    Wet site = job.wet.stream().min(Comparator.comparingInt(Wet::ring).thenComparingInt(Wet::depth)).orElseThrow();
+    LOGGER.warn("Heliodor ruin {}: no ring has land; raising an islet at {}, {} over a seabed {} blocks deep",
+        job.id, site.x(), site.z(), site.depth());
+    job.islet = site;
+    job.isletBuilt = false;
+    job.origin = origin(job, site.x(), site.z(), site.water() + RuinTerrain.ISLET_HEIGHT);
+    job.resume = job.origin;
+    job.stage = Stage.LOADING;
+    addTickets(job);
+  }
+
+  /** Water, ice over it, or a plant that lives in it. */
+  static boolean sea(BlockState state) {
+    return !state.getFluidState().isEmpty() && state.getFluidState().is(net.minecraft.tags.FluidTags.WATER)
+        || state.is(BlockTags.ICE);
+  }
+
+  /** The first solid block under the sea in a column, from {@code top} down. */
+  static int seabed(ServerLevel level, BlockPos.MutableBlockPos cursor, int x, int z, int top) {
+    int bottom = level.getMinBuildHeight();
+    for (int y = top; y > bottom; y--) {
+      BlockState state = level.getBlockState(cursor.set(x, y, z));
+      if (sea(state) || state.isAir() || state.canBeReplaced()) continue;
+      return y;
+    }
+    return bottom;
+  }
+
+  /**
+   * Raises the islet (Elias, 27 September): column by column, from the seabed up, in the seabed's own
+   * blocks: its surface block where the sea still covers the islet, the islet's sand or gravel over the
+   * water and inside. The top stands {@link RuinTerrain#ISLET_HEIGHT} over the water around the
+   * footprint and its margin, a beach goes down to the water and the slope fades into the seabed, so
+   * the ruin stands on land and nothing floats. Water plants left standing on the islet go.
+   */
+  private static void isleting(Job job, long deadline) {
+    var p = job.prepared;
+    var level = job.level;
+    var cursor = new BlockPos.MutableBlockPos();
+    int fx0 = job.origin.getX(), fz0 = job.origin.getZ(), fx1 = fx0 + p.sizeX() - 1, fz1 = fz0 + p.sizeZ() - 1;
+    if (job.isletSeabed == null) {
+      int reach = isletReach(job);
+      job.isletX0 = fx0 - reach;
+      job.isletZ0 = fz0 - reach;
+      job.isletWidth = p.sizeX() + 2 * reach;
+      job.isletSeabed = new int[job.isletWidth * (p.sizeZ() + 2 * reach)];
+      job.isletIndex = 0;
+      job.isletSurfaces.clear();
+      job.isletSkins.clear();
+    }
+    if (job.isletSkin == null) {
+      // The sea here: its surface, its seabed and the blocks the islet is made of.
+      while (job.isletIndex < job.isletSeabed.length) {
+        int i = job.isletIndex++;
+        int x = job.isletX0 + i % job.isletWidth, z = job.isletZ0 + i / job.isletWidth;
+        int top = level.getHeight(Heightmap.Types.WORLD_SURFACE, x, z) - 1;
+        boolean wet = sea(level.getBlockState(cursor.set(x, top, z)));
+        int seabed = wet ? seabed(level, cursor, x, z, top) : groundAt(level, cursor, x, z, top);
+        job.isletSeabed[i] = seabed;
+        if (wet) {
+          job.isletSurfaces.add(top);
+          BlockState skin = level.getBlockState(cursor.set(x, seabed, z));
+          if (ground(skin)) job.isletSkins.add(skin.getBlock().defaultBlockState());
+        }
+        if ((i & 63) == 0 && System.nanoTime() > deadline) return;
+      }
+      job.isletWater = RuinTerrain.mostCommon(job.isletSurfaces, job.islet.water());
+      job.isletSkin = RuinTerrain.mostCommon(job.isletSkins, Blocks.SAND.defaultBlockState());
+      job.isletSurfaces.clear();
+      job.isletSkins.clear();
+      // Loose sea floors make the islet (sand, gravel); a floor of clay, mud or rock gets a sand islet.
+      BlockState loose = job.isletSkin.is(Blocks.GRAVEL) || job.isletSkin.is(Blocks.SAND) || job.isletSkin.is(Blocks.RED_SAND)
+          ? job.isletSkin : Blocks.SAND.defaultBlockState();
+      job.isletCore = loose;
+      job.isletDepth = job.isletWater - job.islet.seabed();
+      job.isletIndex = 0;
+      LOGGER.info("Heliodor ruin {}: the islet stands over water at {} on a seabed of {} ({} deep)", job.id,
+          job.isletWater, BuiltInRegistries.BLOCK.getKey(job.isletSkin.getBlock()), job.isletDepth);
+      return;
+    }
+    long seed = job.level.getSeed() ^ job.id.hashCode();
+    double phase = (seed & 0xFFFF) / 65536.0 * Math.PI * 2;
+    int cx = (fx0 + fx1) / 2, cz = (fz0 + fz1) / 2;
+    while (job.isletIndex < job.isletSeabed.length) {
+      int i = job.isletIndex++;
+      int x = job.isletX0 + i % job.isletWidth, z = job.isletZ0 + i / job.isletWidth;
+      int seabed = job.isletSeabed[i];
+      double d = RuinTerrain.outside(x, z, fx0, fz0, fx1, fz1);
+      double angle = Math.atan2(z - cz, x - cx);
+      double wobble = 0.6 * Math.sin(3 * angle + phase) + 0.4 * Math.sin(7 * angle + 2 * phase);
+      int depth = Math.max(1, job.isletWater - seabed);
+      int top = job.isletWater + RuinTerrain.islet(d, depth, wobble);
+      if (top <= seabed) continue;
+      for (int y = seabed + 1; y <= top; y++) {
+        BlockState state = y == top && y <= job.isletWater ? job.isletSkin : job.isletCore;
+        if (!level.getBlockState(cursor.set(x, y, z)).equals(state)) level.setBlock(cursor, state, Block.UPDATE_CLIENTS);
+      }
+      // Kelp and sea grass that stood in the sea over the new ground would hang: water takes their place.
+      for (int y = top + 1; y <= job.isletWater; y++) {
+        BlockState over = level.getBlockState(cursor.set(x, y, z));
+        if (over.is(Blocks.WATER) || !sea(over) || over.is(BlockTags.ICE)) break;
+        level.setBlock(cursor, Blocks.WATER.defaultBlockState(), Block.UPDATE_CLIENTS);
+      }
+      if ((i & 31) == 0 && System.nanoTime() > deadline) return;
+    }
+    job.isletBuilt = true;
+    job.origin = new BlockPos(job.origin.getX(), job.isletWater + RuinTerrain.ISLET_HEIGHT - p.ground(), job.origin.getZ());
+    job.resume = job.origin;
+    if (!job.survey) reserve(job);
+    job.stage = shapingStage(job);
   }
 
   private static void nextCandidate(Job job) {
@@ -944,7 +1142,20 @@ public final class RuinPlacement {
       int structures = structures(level, x0, z0, p, floor);
       score = RuinRules.score(new RuinRules.Sample(under, new boolean[under.length], true));
       if (score != Integer.MAX_VALUE) score += wet * 40 + canopy * 2 + structures * 100;
-      if (wet * 4 > heights.length) score = Integer.MAX_VALUE;
+      if (wet * 4 > heights.length) {
+        score = Integer.MAX_VALUE;
+        // Under water: an islet could stand here if no ring has land.
+        List<Integer> tops = new ArrayList<>();
+        for (int i = 0; i < n; i++)
+          for (int j = 0; j < n; j++)
+            if (water[i * n + j]) {
+              int x = x0 + p.sizeX() / 8 + i * (p.sizeX() * 3 / 4) / (n - 1);
+              int z = z0 + p.sizeZ() / 8 + j * (p.sizeZ() * 3 / 4) / (n - 1);
+              tops.add(level.getHeight(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, x, z) - 1);
+            }
+        job.wet.add(new Wet(x0 + p.sizeX() / 2, z0 + p.sizeZ() / 2, RuinTerrain.median(heights),
+            RuinTerrain.mostCommon(tops, floor), job.ring));
+      }
       // Suitable: gentle ground, almost no water, no big trees, no village or outpost in the way. When no
       // candidate is (Elias, 26 September), the one with the smallest spread wins and the blend does the rest.
       good = spread <= MAX_SPREAD && wet * 8 <= heights.length && canopy * 4 <= heights.length && structures == 0;

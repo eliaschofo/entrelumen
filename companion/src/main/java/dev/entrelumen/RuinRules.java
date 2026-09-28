@@ -105,6 +105,28 @@ public final class RuinRules {
   // ---- Sites -----------------------------------------------------------------------------------
 
   /**
+   * How many rings a search widens to past the definition's when no site in a ring will do (all of it
+   * under water, taken or lived in), and the narrowest such ring (Elias, 27 September: a ruin must
+   * never fail to place).
+   */
+  public static final int WIDER_RINGS = 4, MIN_RING_WIDTH = 256;
+
+  /**
+   * The {@code k}-th ring of a search as {min, max}: ring 0 is the definition's, each next one lies just
+   * outside the last, as wide as the definition's ring (at least {@link #MIN_RING_WIDTH}).
+   */
+  public static int[] ring(int min, int max, int k) {
+    if (k <= 0) return new int[] {min, max};
+    int width = Math.max(max - min, MIN_RING_WIDTH);
+    return new int[] {max + (k - 1) * width, max + k * width};
+  }
+
+  /** The key a ring's candidates are drawn with: ring 0 keeps the ruin's own, so sites never move. */
+  public static String ringKey(String ruin, int k) {
+    return k <= 0 ? ruin : ruin + "#ring" + k;
+  }
+
+  /**
    * Deterministic candidate centres in the ring {@code min..max} around {@code (cx, cz)}: a golden
    * angle spiral whose phase comes from the world seed and the ruin, so a restart retries the same
    * sites in the same order.

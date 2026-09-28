@@ -307,9 +307,14 @@ public final class RuntimeGameTestsRuins {
 
   /** A copy of a shipped ruin under its own id, so cases never share a registry entry. */
   static RuinDefinitions.Definition qaCopy(RuinDefinitions.Definition definition) {
+    return qaCopy(definition, definition.placement());
+  }
+
+  /** A QA copy searched in another ring (a small one keeps a test's sea small). */
+  static RuinDefinitions.Definition qaCopy(RuinDefinitions.Definition definition, RuinDefinitions.Placement placement) {
     var copy = new RuinDefinitions.Definition("entrelumen:qa_" + definition.name() + "_"
         + UUID.randomUUID().toString().substring(0, 6), definition.act(), definition.dimension(), definition.mods(),
-        definition.scale(), definition.template(), definition.placement(), definition.piece(), definition.project(),
+        definition.scale(), definition.template(), placement, definition.piece(), definition.project(),
         definition.loot(), definition.challenges(), definition.gates(), definition.pedestal(), definition.dormant(),
         definition.gifts());
     RuinRegistry.add(copy);
@@ -368,6 +373,163 @@ public final class RuntimeGameTestsRuins {
   }
 
   private static final org.slf4j.Logger LOGGER = com.mojang.logging.LogUtils.getLogger();
+
+  // ---- A ring under water (Elias, 27 September: a ruin never fails to place) ----------------------
+
+  /** The superflat test world's ground and the sea the next two cases raise on it. */
+  static final int FLAT_GROUND = -61, SEABED = -62, SEA = -52;
+
+  /**
+   * A walled sea over a square of {@code half} around {@code (cx, cz)}: a gravel seabed at
+   * {@link #SEABED} and water up to {@link #SEA}, with a stone rim so that it does not spill onto the
+   * flat land around it.
+   */
+  static void sea(ServerLevel level, int cx, int cz, int half) {
+    var cursor = new BlockPos.MutableBlockPos();
+    for (int x = cx - half; x <= cx + half; x++)
+      for (int z = cz - half; z <= cz + half; z++) {
+        boolean rim = x == cx - half || x == cx + half || z == cz - half || z == cz + half;
+        for (int y = SEABED - 1; y <= SEA + 1; y++) {
+          var state = rim ? (y <= SEA ? Blocks.STONE.defaultBlockState() : Blocks.AIR.defaultBlockState())
+              : y <= SEABED ? Blocks.GRAVEL.defaultBlockState()
+              : y <= SEA ? Blocks.WATER.defaultBlockState() : Blocks.AIR.defaultBlockState();
+          if (!level.getBlockState(cursor.set(x, y, z)).equals(state))
+            level.setBlock(cursor, state, net.minecraft.world.level.block.Block.UPDATE_CLIENTS);
+        }
+      }
+  }
+
+  /** Raises a sea, then runs a ring search for a small-ring QA copy of the Cliff Observatory from its middle. */
+  static void searchOverSea(GameTestHelper helper, int cx, int cz, int half, int maxRings,
+      java.util.function.BiConsumer<RuinPlacement.Job, BlockPos> check) {
+    var level = helper.getLevel();
+    var server = level.getServer();
+    var shipped = RuinRegistry.get("entrelumen:cliff_observatory").orElseThrow();
+    var ring = new RuinDefinitions.Placement(shipped.placement().mode(), shipped.placement().trigger(), 24, 48);
+    var definition = qaCopy(shipped, ring);
+    var id = ResourceLocation.parse(definition.id());
+    var center = new BlockPos(cx, FLAT_GROUND, cz);
+    var area = new BoundingBox(cx - half, SEABED - 1, cz - half, cx + half, SEA + 1, cz + half);
+    List<List<net.minecraft.world.level.ChunkPos>> held = new ArrayList<>();
+    held.add(hold(level, area));
+    RuinPlacement.Job[] job = new RuinPlacement.Job[1];
+    long started = System.nanoTime();
+    Stop stop = new Stop();
+    helper.startSequence()
+        .thenWaitUntil(() -> {
+          refresh(level, held.getFirst());
+          for (var chunk : held.getFirst())
+            helper.assertTrue(level.getChunkSource().getChunkNow(chunk.x, chunk.z) != null, "Loading " + chunk);
+        })
+        .thenExecute(guarded(() -> {
+          sea(level, cx, cz, half);
+          RuinData.get(server).remove(id);
+          job[0] = RuinPlacement.start(level, definition, center).orElseThrow();
+          job[0].maxRings = maxRings;
+        }))
+        .thenWaitUntil(() -> {
+          refresh(level, held.getFirst());
+          awaitJob(helper, job[0], started, stop);
+        })
+        .thenExecute(guarded(() -> {
+          stop.check(helper);
+          held.add(hold(level, job[0].result().box().inflatedBy(64)));
+        }))
+        .thenWaitUntil(() -> {
+          refresh(level, held.getLast());
+          for (var chunk : held.getLast())
+            helper.assertTrue(level.getChunkSource().getChunkNow(chunk.x, chunk.z) != null, "Loading " + chunk);
+        })
+        .thenExecute(guarded(() -> {
+          try {
+            check.accept(job[0], center);
+          } finally {
+            for (var chunks : held)
+              for (var chunk : chunks) level.getChunkSource().removeRegionTicket(PLAY, chunk, 0, chunk);
+            RuinData.get(server).remove(id);
+            RuinRegistry.remove(definition.id());
+            StructureProtection.invalidate(server);
+          }
+        }))
+        .thenSucceed();
+  }
+
+  /** Every site of the ruin's own ring is under water: the search widens to the next ring and finds land. */
+  @GameTest(template = "empty", timeoutTicks = 400000, batch = "ruins")
+  public static void aRingUnderWaterWidensToTheNextRing(GameTestHelper helper) {
+    int cx = -56_000, cz = -56_000;
+    searchOverSea(helper, cx, cz, 96, RuinRules.WIDER_RINGS, (job, center) -> {
+      var ruin = job.result();
+      var p = job.prepared;
+      double distance = Math.hypot(ruin.center().getX() - center.getX(), ruin.center().getZ() - center.getZ());
+      int[] next = RuinRules.ring(24, 48, 1);
+      helper.assertTrue(job.ring >= 1 && job.islet == null, "Ring " + job.ring + ", islet " + job.islet);
+      helper.assertTrue(distance >= next[0] - 32 && distance <= next[1] + 32, "Not in the next ring: " + distance);
+      helper.assertTrue(ruin.origin().getY() + p.ground() == FLAT_GROUND, "Not on the land past the sea: ground "
+          + (ruin.origin().getY() + p.ground()));
+      LOGGER.info("Ruin QA: a ring under water; placed {} blocks out, in ring {}", (int) distance, job.ring);
+    });
+  }
+
+  /**
+   * No ring has land (an ocean world): the ruin stands on an islet raised from the gravel seabed, flat
+   * around it a little over the water, sloping into the sea, solid down to the seabed.
+   */
+  @GameTest(template = "empty", timeoutTicks = 400000, batch = "ruins")
+  public static void anOceanWithNoLandGetsAnIsletUnderTheRuin(GameTestHelper helper) {
+    int cx = -56_000, cz = -48_000;
+    searchOverSea(helper, cx, cz, 128, 0, (job, center) -> {
+      var level = helper.getLevel();
+      var ruin = job.result();
+      var p = job.prepared;
+      var shape = p.shape();
+      var origin = ruin.origin();
+      var cursor = new BlockPos.MutableBlockPos();
+      helper.assertTrue(job.islet != null && job.isletBuilt, "No islet: " + job.islet);
+      int ground = origin.getY() + p.ground();
+      helper.assertTrue(ground == SEA + RuinTerrain.ISLET_HEIGHT, "The ruin's ground " + ground + " is not on the islet");
+      // Nothing floats: under every platform column, solid down to the seabed.
+      int platforms = 0;
+      for (int c = 0; c < p.sizeX() * p.sizeZ(); c++) {
+        if (!shape.platform()[c]) continue;
+        int x = origin.getX() + c % p.sizeX(), z = origin.getZ() + c / p.sizeX();
+        for (int y = origin.getY() + shape.low()[c] - 1; y > SEABED; y--)
+          helper.assertTrue(!level.getBlockState(cursor.set(x, y, z)).canBeReplaced(), "A gap under the ruin at " + cursor);
+        platforms++;
+      }
+      helper.assertTrue(platforms > 200, "Only " + platforms + " platform columns");
+      // The islet: flat around the ruin, then down into the sea, every column solid from the seabed up,
+      // and made of the seabed's gravel.
+      int x0 = origin.getX(), z0 = origin.getZ(), x1 = x0 + p.sizeX() - 1, z1 = z0 + p.sizeZ() - 1;
+      int flat = 0, shore = 0, under = 0, gravel = 0, stray = 0;
+      for (int x = x0 - 50; x <= x1 + 50; x++)
+        for (int z = z0 - 50; z <= z1 + 50; z++) {
+          double d = RuinTerrain.outside(x, z, x0, z0, x1, z1);
+          if (d == 0) continue;
+          int top = SEABED;
+          while (top < SEA + 4 && !level.getBlockState(cursor.set(x, top + 1, z)).canBeReplaced()) top++;
+          for (int y = top + 1; y <= SEA + 4; y++)
+            helper.assertTrue(level.getBlockState(cursor.set(x, y, z)).canBeReplaced(), "Something floats over the islet at " + cursor);
+          if (d > 1 && d <= RuinTerrain.MAX_MARGIN) {
+            helper.assertTrue(top == ground, "The islet is not flat by the ruin at " + x + "," + z + ": " + top);
+            flat++;
+          }
+          if (top == SEA || top == SEA + 1) shore++;
+          if (top > SEABED && top < SEA) under++;
+          for (int y = SEABED + 1; y <= top; y++) {
+            var state = level.getBlockState(cursor.set(x, y, z));
+            if (state.is(Blocks.GRAVEL)) gravel++;
+            else if (d > RuinTerrain.MAX_MARGIN) stray++;
+          }
+        }
+      helper.assertTrue(flat > 500, "Only " + flat + " flat columns by the ruin");
+      helper.assertTrue(shore > 50 && under > 50, "No shore or slope: " + shore + " / " + under);
+      helper.assertTrue(gravel > 5000 && stray == 0, "The islet is not the seabed's gravel: " + gravel + ", " + stray + " other");
+      helper.assertTrue(RuinData.get(level.getServer()).find(ruin.id()).isPresent(), "The ruin is not registered");
+      LOGGER.info("Ruin QA: an islet under the ruin, {} flat columns, {} on the shore, {} under the sea, {} gravel",
+          flat, shore, under, gravel);
+    });
+  }
 
   @GameTest(template = "empty", timeoutTicks = 400000, batch = "ruins")
   public static void landmarkTemplateIsPlacedInSlicesAcrossTicks(GameTestHelper helper) {
