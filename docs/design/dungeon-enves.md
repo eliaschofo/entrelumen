@@ -432,7 +432,7 @@ Morir en el piso I no paga la próxima puerta. Llegar a la Fundición la paga. U
 
 ### Santuarios
 
-El santuario del piso tiene un altar (`entrelumen:enves_shrine`, provisorio sobre el ancla de reaparición) con una bendición que sale de la semilla. El primer toque bendice a todo el grupo hasta el final del piso, y el altar se apaga:
+El santuario del piso tiene un altar (`entrelumen:enves_shrine`, el relicario: una gota de luz agria en una corona de costillas, [su arte](#arte-propio-de-los-bloques-289)) con una bendición que sale de la semilla. El primer toque bendice a todo el grupo hasta el final del piso, y el altar se apaga:
 
 | Bendición | Efecto, mientras estés en ese piso |
 |---|---|
@@ -471,7 +471,7 @@ Lo que pide está detrás de los barrotes o en el umbral de enfrente. Al resolve
 
 | Cerradura | Peso | Cómo es |
 |---|---|---|
-| Piedras de glifo | 3 | Detrás de los barrotes, sobre pedestales de calcita, tres glifos (las caras cinceladas del cuarzo, la arenisca roja, la toba y la pizarra profunda) dicen un código. Las tres piedras de la puerta giran con un clic y abren cuando lo dicen **al revés**. Copiarlo tal cual no abre, y la cerradura avisa: «El Envés copia todo al revés». Nunca es un palíndromo. |
+| Piedras de glifo | 3 | Detrás de los barrotes, sobre pedestales de calcita, tres piedras de glifo iguales a las de la puerta (el sol, el ojo, el árbol sobre sus raíces y la escalera que baja) dicen un código. Las tres piedras de la puerta giran con un clic y abren cuando lo dicen **al revés**. Copiarlo tal cual no abre, y la cerradura avisa: «El Envés copia todo al revés». Nunca es un palíndromo. |
 | Braseros | 3 | La puerta recuerda un orden y lo toca al acercarte y cada vez que tocás los barrotes. Hay que prender los tres braseros en ese orden: 3, 4, 5 y 5 toques por piso. |
 | Palancas | 3 | Seis palancas en las paredes del umbral y tres lámparas en el dintel. Cada palanca invierte una o dos lámparas; hay que prender las tres, y nunca alcanza con una sola. |
 | Ofrenda | 1 | Un brasero frío pide 3, 4, 5 o 6 esquirlas según el piso. Paga con la moneda del Envés; la bóveda paga más. |
@@ -548,14 +548,53 @@ Los espejos se quedaron en los sellos: el umbral de una bóveda no tiene lugar p
   - QA de pack completo (274 JAR de servidor, `-Xmx4G`), sobre la rama antes de los últimos arreglos del borrado: pasan los 20 casos del Envés, los del contenido corridos con los mobs y el loot reales y los del motor, sin watchdog. Fervor se midió primero contra un golpe fijo y falló: el pack le saca a un golpe de jugador contra una oveja un 29% por su cuenta, así que ahora se compara contra el mismo golpe sin bendición;
   - el mundo de los GameTests anteriores al arreglo del borrado guardaba en cada parcela reutilizada el loot de los cofres del intento anterior (cientos de ítems: esquirlas, equipo, pociones); después del arreglo, ni ese mundo ni el del QA tienen ítems sueltos en el Envés. En la última corrida, el log muestra ecos, un Wither blanco e ítems de intentos terminados que volvieron del disco durante el borrado y no volvieron a entrar.
 
+### Arte propio de los bloques (28/9)
+
+Los cuatro bloques del contenido dejaron los looks prestados de vanilla. Son una sola familia: el marfil y el oro del Wither blanco (`art/authoring/draw_white_wither.py`), los huesos de Osarios, una piedra oscura propia y la luz agria (las rampas TIP, BODY y ROT de `art/authoring/draw_enves.py`) como lo único que brilla.
+
+- **Fuentes:** las grillas de 16 × 16 están en `art/grids/block/enves_*.txt` y los modelos en `art/models/block/enves_*.json`. Los escribe `art/authoring/draw_enves_blocks.py`, y `art/build_art.py` los lleva al mod con sus blockstates, que conservan los nombres de estado de la lógica.
+- **Un texel por unidad:** cada cara mide lo mismo que su UV y nada se reescala. El vidrio del espejo y las costillas diagonales del altar giran 45° sin reescalar; las piezas centradas en el eje del bloque apoyan su UV en texels enteros.
+- **Simetría:** el altar y el brasero son simétricos bajo D4; el espejo, respecto de su placa y del plano que la corta; las caras de los glifos, de izquierda a derecha.
+- **Brillo:** lo que brilla usa el método del pack, `neoforge_data` con `block_light` 15 en el elemento. La llama tiene cuatro cuadros (`enves_brazier_flame__f0..3.txt`, frametime 3).
+
+| Bloque | Idea | Estados |
+|---|---|---|
+| `enves_shrine`, el relicario | Una gota de luz agria sostenida por una corona de costillas finas sobre una columna de dos vértebras, en un zócalo oscuro cuyos rayos de oro apuntan hacia adentro: un sol al revés, que bebe la luz. Fresca, la gota brilla y pide que la toquen; gastada, es una cáscara oliva, más baja, rota y sin luz. | `spent=false` / `true` (luz 13 / 2) |
+| `enves_brazier`, la campana del revés | El Envés copia Heliodor al revés: sus campanas están boca arriba y guardan fuego. El badajo apunta hacia arriba como una mecha y las asas de la corona son cuatro patas. Encendida, una llama agria de tres lenguas y brasas que brillan; fría, ceniza y el badajo carbonizado. Ya suena a campanilla cuando la puerta toca su orden. | `lit=false` / `true` (luz 0 / 14) |
+| `enves_mirror`, el biombo | Una placa de plata de dos caras en la diagonal, entre dos postes de vértebras apiladas en las esquinas que une, cada uno con una luz piloto. El pie corre por la misma diagonal con los bordes de oro. Postes, luces y pie dicen hacia dónde apunta desde cualquier lado. | `aim=0` ('/') / `aim=1` ('\\', el mismo girado 90°) (luz 3) |
+| `enves_glyph`, las piedras de glifo | Piedra oscura con incrustación de oro y un pivote redondo arriba. Los cuatro glifos se distinguen por el tipo de forma, no por el color: el sol (radial), el ojo (cerrado y horizontal), el árbol sobre su copia al revés, las raíces (un eje vertical), y la escalera que baja (barras que se angostan). | `glyph=0..3` |
+
+**Referencias vistas** (renderizadas desde el JAR del cliente 1.21.1 y los JAR fijados en `catalog/`; las rutas exactas por textura están en `art/grids/provenance.json`):
+- **Relicario:**
+  - `minecraft:models/block/respawn_anchor_4.json` y `respawn_anchor_0.json`, con `textures/block/respawn_anchor_top.png`, `_top_off`, `_side4` y `_side0`: todo el cambio de estado es un núcleo que brilla y después está muerto, y la luz baja con él;
+  - `vault_active.json` y `vault.json`, con `vault_front_on.png` y `_off`: activo y gastado se leen sólo por lo que brilla;
+  - `enchanting_table.json`: una base oscura de ancho entero bajo un ornamento más chico.
+- **Campana:**
+  - `minecraft:models/block/soul_campfire.json` (`template_campfire.json`, `soul_campfire_fire.png` y su `.mcmeta`): el fuego en dos planos cruzados y animados, y que sólo cambien la llama y las brasas;
+  - `ars_nouveau:models/block/ritual_brazier.json` (Ars Nouveau 5.13.1): el interior del cuenco brilla al encenderse;
+  - `occultism:models/block/sacrificial_bowl.json` (Occultism 1.224.4): un cuenco de unos 6 de alto en 12 × 12, con patas; son las proporciones de la forma del bloque (12 × 7 × 12);
+  - `minecraft:textures/entity/bell/bell_body.png`: el labio abierto, el aro del golpe y las asas, dados vuelta.
+- **Biombo:**
+  - nuestros `entrelumen:models/block/ruin_mirror.json` y `ruin_mirror_diagonal.json`: una placa plana sobre un pie, con una cara de metal que refleja; es el lenguaje compartido, pero acá refleja de los dos lados y sólo gira entre dos diagonales;
+  - `minecraft:models/block/observer.json` (`observer_top.png`): la pieza dibuja su propia dirección.
+- **Glifos:**
+  - `minecraft:textures/block/chiseled_quartz_block.png`, `chiseled_red_sandstone.png`, `chiseled_tuff.png` y `chiseled_deepslate.png` (los provisorios): un motivo tallado en un marco biselado, que se distinguía sobre todo por el material;
+  - los patrones de las vasijas (`textures/entity/decorated_pot/*_pottery_pattern.png`): una silueta fuerte y de un solo tono por panel.
+
+Ninguna textura ajena entra al repositorio: las referencias sólo se ven.
+
+- **La pista de la bóveda usa las mismas piedras.** Antes, la pista detrás de los barrotes eran bloques cincelados de vanilla que coincidían con los looks provisorios. Con glifos propios ya no coincidían, así que `EnvesVaults.render` pone ahí piedras de glifo con el glifo del código (`EnvesVaults.glyph`). La lógica no cambia: la pista sigue en `extras`, tocarla sigue mostrando el aviso, y el GameTest de las cerraduras compara con el estado de la piedra.
+- **Revisión:** `python art/authoring/draw_enves_blocks.py` rehace grillas y modelos y deja hojas de revisión en `%TEMP%/enves-art` (o en `ENVES_PREVIEW`), renderizadas por software (`art/authoring/model_iso.py`), no capturas del juego. Cada hoja muestra los dos estados en tres ángulos, la vista del jugador con la luz del Envés de cerca y a unos diez bloques, las texturas a 8×, el bloque entre los de Osarios y sus referencias al lado. `--check` compara lo generado con lo commiteado.
+- **Falta en el juego:** la luz real (las hojas la aproximan), el parpadeo de la llama y si la diagonal del espejo se lee de un vistazo desde el piso.
+
 ### Para una segunda pasada
 
 - Ver en el juego lo que ningún test ve:
   - cómo se sienten los números y los afijos;
-  - si los modelos provisorios (brasero, espejo, piedras de glifo, altar) se leen bien;
+  - si los modelos propios (relicario, campana, biombo y piedras de glifo, [arriba](#arte-propio-de-los-bloques-289)) se leen bien con la luz real;
   - la lectura del aviso de la embestida;
   - si los mobs de Cataclysm con animación de muerte sueltan algo por fuera del evento de caídas.
-- Arte propio del altar, el brasero y el espejo, y un modelo propio del jefe (hoy es el Wither vanilla repintado).
+- Un modelo propio del jefe (hoy es el Wither vanilla repintado). El arte del altar, el brasero, el espejo y las piedras de glifo ya es propio (28/9).
 - Un curio único del jefe (fuera de esta iteración) y el canje de esquirlas en Solsticio.
 - Los tilesets II–V ya tienen plantillas propias (rama `feature/enves-tilesets`, en `main`). Con ellas pasaron los GameTests de los sellos del piso III (Fundición) y del jefe en la arena del V (El Eclipse); las cerraduras se probaron en el piso I. Las cerraduras y acertijos revisan el lugar y cambian de tipo si el arte no los deja: falta mirarlos en juego en II y IV.
 

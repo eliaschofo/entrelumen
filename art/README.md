@@ -15,6 +15,7 @@ Item and block textures are authored on native 16×16 grids. `grids/item/*.txt` 
 - `gui/atlas_book.png`: PixelLab 300×210 book background (`../tools/build_atlas_book_art.py`).
 - `../tools/build_survey_station_art.py`: the survey station's 24 cuboids and four 16×16 textures (unchanged; approved by Elias).
 - `menu/`: title/loading identity; see `../docs/design/menu-identity.md`.
+- The Envés's shrine, brazier, mirror and glyph stones: `authoring/draw_enves_blocks.py` writes their grids and sculpted models (`models/block/enves_*.json`, 1 texel per unit, symmetric) and `build_art.py` adds their blockstates; `--check` compares with the repo. Its review sheets are software renders (`authoring/model_iso.py`), not captures. Design notes: `../docs/design/dungeon-enves.md`, «Arte propio de los bloques».
 - `publication/`: CurseForge cover and avatar.
 
 ## Evidence limits
