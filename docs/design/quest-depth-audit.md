@@ -401,7 +401,7 @@ Nivel A · 115 quests hoy (sector_cataclysm_arenas, sector_cataclysm_armory) · 
 
 ### Productive Bees
 
-Nivel A · 131 quests hoy (sector_bees_apiary, sector_bees_breeding) · facetas 14/14 en la cadena · meta 131.
+Nivel A · 266 quests hoy (sector_bees_apiary, sector_bees_breeding, sector_bees_metals, sector_bees_crown) · facetas 14/14 en la cadena · una quest por abeja que se consigue jugando (189 de 197), 28/9.
 
 - **Productive Bees** (A, 12/12): con nodo: Nidos, jaulas y atrapar abejas · Colmenas avanzadas y cajas de expansión · Centrífuga y centrífuga eléctrica · Panales y recursos · Mejoras de colmena · Cría y mutaciones · Genes: indexador, extractor y tratamientos · Incubadora, embotelladora y alimentación · Abejas solitarias y silvestres · Abejas profesionales (colectora, granjera, cantera) · Generador de miel y catcher · Colmena del huevo de dragón y abejas raras.
 - **ModularBees** (C, 2/2): con nodo: Colmena modular (núcleo, alvéolo, hatch) · Centrífuga modular.
