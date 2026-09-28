@@ -1,8 +1,11 @@
-"""Export the Envés room templates from art/dungeon/tiles.py into the companion's resources.
+"""Export the Envés room templates from art/dungeon into the companion's resources.
 
-For every tileset with art, every role, door mask and variant, tiles.template() gives the voxels
-and the data markers of one cell; this tool writes them as a 19x19x12 structure template with the
-markers as DATA structure blocks (docs/design/dungeon-enves.md, marker contract):
+For every tileset, every role, door mask and variant, its art module gives the voxels and the data
+markers of one cell: tiles.template() for Osarios, kit.build() over cisternas.py, fundicion.py,
+geodas.py and eclipse.py for floors II-V (kit.build also refuses a template whose fluids could
+flow, whose lava is reachable or whose doors and markers are not reachable on foot). This tool
+writes each as a 19x19x12 structure template with the markers as DATA structure blocks
+(docs/design/dungeon-enves.md, marker contract):
 
     companion/src/main/resources/data/entrelumen/structure/enves/<tileset>/<role>_<mask>_<variant>.nbt
     companion/src/main/resources/data/entrelumen/enves/templates/<tileset>.json   (the index)
@@ -14,13 +17,15 @@ room (layers 1-9) is left out too: a slot is void or wiped before a floor is pla
 floor and ceiling layers need their air written (the ceiling's, over the underlay of the floor
 above). Output is deterministic and the tool re-runnable.
 
-    python tools/export_enves_tiles.py          # write
-    python tools/export_enves_tiles.py --check  # verify the committed files
+    python tools/export_enves_tiles.py                      # write every tileset
+    python tools/export_enves_tiles.py --check              # verify the committed files
+    python tools/export_enves_tiles.py --tileset geodas     # only one
 """
 from __future__ import annotations
 
 import argparse
 import gzip
+import importlib
 import io
 import json
 import struct
@@ -30,12 +35,13 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "art/dungeon"))
 import tiles  # noqa: E402
+import kit  # noqa: E402
 
 RESOURCES = ROOT / "companion/src/main/resources/data/entrelumen"
 DATA_VERSION = 3955  # Minecraft 1.21.1
 SIZE = (tiles.S, tiles.H, tiles.S)
 ROOM_TOP = tiles.CEIL_Y - 1  # layers 1..9 are the room: their air is not written
-TILESETS = ["osarios"]  # tilesets with art; the others borrow Osarios with a palette swap
+TILESETS = ["osarios", "cisternas", "fundicion", "geodas", "eclipse"]  # floors I-V
 DIRS = "NESW"
 # role -> variants; quiet and fight rooms take their shape from the variant, the rest have one
 ROLES = {"quiet": 3, "fight": 3, "start": 1, "exit": 1, "guard": 1, "shrine": 1, "vault": 1, "seal": 1,
@@ -94,10 +100,17 @@ def parse_state(state):
     return name, tuple(sorted(tuple(p.split("=")) for p in props.split(",")))
 
 
+def art(tileset, role, doors, variant, markers):
+    """The voxels of one template from its tileset's art module; fills `markers`."""
+    if tileset == "osarios":
+        return tiles.template(tileset, role, doors, variant, markers=markers)
+    return kit.build(importlib.import_module(tileset), role, doors, variant, markers)
+
+
 def build(tileset, role, doors, variant):
     """(raw NBT bytes, marker counts, clipped voxel count) of one template."""
     markers = []
-    voxels = tiles.template(tileset, role, doors, variant, markers=markers)
+    voxels = art(tileset, role, doors, variant, markers)
     marker_at = {}
     for (x, y, z, metadata) in markers:
         if not (0 <= x < SIZE[0] and 0 <= y < SIZE[1] and 0 <= z < SIZE[2]):
@@ -166,9 +179,10 @@ def index_json(tileset, entries):
 def main():
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("--check", action="store_true")
+    parser.add_argument("--tileset", choices=TILESETS, help="only this tileset")
     args = parser.parse_args()
     stale = []
-    for tileset in TILESETS:
+    for tileset in ([args.tileset] if args.tileset else TILESETS):
         folder = RESOURCES / "structure/enves" / tileset
         entries, names = [], set()
         for name, role, doors, variant in templates():

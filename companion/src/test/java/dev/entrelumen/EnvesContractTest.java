@@ -179,8 +179,8 @@ class EnvesContractTest {
     for (String id : settings.tilesets()) {
       var tileset = EnvesConfig.parseTileset(id,
           JsonParser.parseString(Files.readString(DATA.resolve("enves/tilesets/" + id + ".json"))));
-      assertEquals("osarios", tileset.templates(), id + " borrows Osarios until its art lands");
-      if (!id.equals("osarios")) assertFalse(tileset.palette().isEmpty(), id + " has a placeholder palette");
+      assertEquals(id, tileset.templates(), id + " reads its own templates");
+      assertTrue(tileset.palette().isEmpty(), id + " needs no palette swaps");
     }
     assertThrows(IllegalArgumentException.class, () -> EnvesConfig.parse(JsonParser.parseString(
         "{\"offering\": {\"item\": \"minecraft:nothing\", \"count\": 1}}"), id -> false));
