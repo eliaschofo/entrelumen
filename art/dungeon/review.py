@@ -6,13 +6,15 @@ to $ENVES_REVIEW (default E:/Elias/Codex/Entrelumen-ssd/enves-tiles-review).
     python art/dungeon/review.py cisternas [seed]     # contact sheet + floor II of the seed
     python art/dungeon/review.py all [seed]
 
-- Contact sheet: every room kind of the tileset as a dollhouse cutaway (ceiling off, the two near
-  walls cut to the deck), labelled with role, doors and variant, and its light (share of standing
-  spots at light 8 or more).
+- Contact sheet: every room kind of the tileset cut at head height (the two near walls down to the
+  deck), keeping what hangs or glows above, labelled with the room's name, role and doors and its
+  light (share of standing spots at light 8 or more, and the darkest one).
 - Floor: drlg.descent(seed) assembled with the tileset's templates as the engine would (variants
   drawn per cell for quiet and fight), drawn top-down at the height of a player's knees, with the
   markers: encounters red, champion crimson, chests gold, shrine yellow, seal teal, vault gate
   grey, arrival white, stairs violet.
+- El Eclipse also gets its arena as one hall, in isometric view.
+Faces are shaded with the block light kit.light() computes, so the sheets show where it is dark.
 """
 import importlib
 import os
@@ -355,6 +357,30 @@ def floor_image(ts, seed, path):
     return top_view(world, markers, path, px=8, deck=ts.DECK, title=title, lv=light)
 
 
+def arena_image(ts, seed, path):
+    """Floor V's arena as one hall, cut at head height with what hangs or glows above: the eight
+    pillars, the gold lines and the dark sun."""
+    f = drlg.descent(seed)[4]
+    world, markers, light = floor_world(ts, f, seed)
+    arena = [c for c in f.cells if f.role.get(c) == 'arena']
+    x0, x1 = min(c[0] for c in arena) * kit.S, (max(c[0] for c in arena) + 1) * kit.S - 1
+    z0, z1 = min(c[1] for c in arena) * kit.S, (max(c[1] for c in arena) + 1) * kit.S - 1
+    structural = {st for k, st in ts.P.items() if isinstance(st, str) and k in STRUCTURAL}
+
+    def keep(x, y, z):
+        if y >= kit.CEIL_Y or ((x >= x1 or z >= z1) and y > 0):
+            return False
+        if y <= ts.DECK + 4:
+            return True
+        st = world.get((x, y, z))
+        if st is None or st in structural or kit.base(st).endswith(('_stairs', '_slab')):
+            return False
+        return kit.emission(st) > 0 or not kit.full(st) or kit.passable(world.get((x, y - 1, z)))
+    sub = {p: s for p, s in world.items() if x0 - 1 <= p[0] <= x1 + 1 and z0 - 1 <= p[2] <= z1 + 1}
+    render_lit(sub, light, scale=4, keep=keep).convert('RGB').save(path)
+    return path
+
+
 # ------------------------------------------------------------------ main
 SHEET = ['quiet_nesw_0', 'quiet_nesw_1', 'quiet_nesw_2', 'quiet_ew_1', 'fight_nesw_0', 'fight_nesw_1',
          'fight_nesw_2', 'guard_nesw_0', 'start_nesw_0', 'exit_n_0', 'shrine_new_0', 'seal_s_0', 'vault_e_0',
@@ -372,6 +398,8 @@ def main():
                           '%s · %s: salas' % (roman, label))
         print(p)
         print(floor_image(ts, seed, os.path.join(OUT, '%s_piso_%d.png' % (name, seed))))
+        if name == 'eclipse':
+            print(arena_image(ts, seed, os.path.join(OUT, 'eclipse_arena_%d.png' % seed)))
 
 
 if __name__ == '__main__':
