@@ -7,7 +7,8 @@ and entry skeleton, number providers and the functions the pack's ports use, and
 tags, enchantments and nested tables against the pinned JARs, the vanilla client JAR and the pack's
 own data. Whatever it does not model is reported as unchecked, never as passed. 1.20 leftovers that
 1.21 rejects or silently drops (set_nbt, copy_nbt, the enchantments and treasure fields, loot_table
-entries by name) are errors.
+entries by name) are errors. Files are read as strict JSON, and the overlay folders a JAR's
+pack.mcmeta may declare are not read.
 
 usage:
   python tools/check_loot_tables.py [FILE ...]
@@ -448,10 +449,15 @@ def main(argv=None):
     for path in args.files or list(default_tables()):
         resolved = path.resolve()
         name = resolved.relative_to(ROOT).as_posix() if resolved.is_relative_to(ROOT) else resolved.as_posix()
-        found, skipped = check_table(name, json.loads(resolved.read_text(encoding='utf-8-sig')), index)
+        tables += 1
+        try:
+            data = json.loads(resolved.read_text(encoding='utf-8-sig'))
+        except ValueError as error:
+            errors.append(f'{name}: not strict JSON ({error})')
+            continue
+        found, skipped = check_table(name, data, index)
         errors += found
         unchecked.update(item.split(': ', 1)[1] for item in skipped)
-        tables += 1
     structures = {}
     for prefix in args.structures:
         if jars is None:
