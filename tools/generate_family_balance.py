@@ -110,7 +110,9 @@ def copied(path, source, why, *, owners, to=None):
     """Write one named JAR's version of a data path that `owners` pinned JARs ship, unchanged.
 
     Mod datapacks overwrite each other at a shared path; the pack keeps `source`'s file there (or at
-    `to`, a new ID, so both survive). `owners` is the exact number of JARs shipping the path."""
+    `to`, a new ID, so both survive). `owners` is the exact number of JARs shipping the path. A file of
+    a mod's optional built-in datapack (a folder inside its JAR) is loaded the same way, at `to`, its
+    path inside that datapack. No pinned JAR may ship `to` itself when it differs from `path`."""
     return {'path': path, 'op': 'copy', 'source': source, 'owners': owners, 'to': to or path, 'why': why}
 
 
@@ -134,9 +136,10 @@ def ported_loot(path, why):
     return {'path': path, 'op': 'port_loot', 'to': path.replace('/loot_tables/', '/loot_table/', 1), 'why': why}
 
 
-def tagged(path, values, why):
-    """Add values to a pinned tag with a merging pack file of the same path; the upstream file stays."""
-    return {'path': path, 'op': 'tag_values', 'values': list(values), 'why': why}
+def tagged(path, values, why, *, owners=1):
+    """Add values to a pinned tag with a merging pack file of the same path; the upstream files stay.
+    `owners` is the exact number of pinned JARs shipping the path (a c: tag often has several)."""
+    return {'path': path, 'op': 'tag_values', 'values': list(values), 'owners': owners, 'why': why}
 
 
 def infusion_eterna(path, eterna, tier, why):
@@ -609,6 +612,15 @@ ORB, SHARD = 'eternal_starlight:orb_of_prophecy', 'eternal_starlight:blue_starli
 QUEEN_STAR = {'item': {'id': NETHER_STAR, 'count': 1}, 'required': True}
 QUEEN_STAR_BOTTLE = dict(QUEEN_STAR, xp_reward=10, weight=1)
 QUEEN_STAR_BUCKET = dict(QUEEN_STAR, xp_reward=50, weight=80)
+# Compact Machines 7.0.81 keeps its room templates, the machine recipes and their recipe-book unlocks in an
+# optional built-in datapack. Its pack source never adds itself (RoomTemplatePackSource.shouldAddAutomatically
+# is false), so a new world has no template and no machine recipe until an operator runs
+# /compactmachines enable_basic_templates and restarts. The pack loads those files unchanged instead.
+CM_BASIC = 'data/compactmachines/datapacks/basic_templates/'
+CM_ROOMS = ('tiny', 'small', 'normal', 'large', 'giant', 'colossal', 'soaryn', 'farming')
+CM_ROOM_FILES = tuple(f'data/compactmachines/{path}.json' for room in CM_ROOMS
+                      for path in (f'compactmachines/room_templates/{room}', f'recipe/new_machine_{room}',
+                                   f'advancement/recipes/misc/new_machine_{room}'))
 
 FAMILIES = {
     'industrial': {
@@ -661,6 +673,11 @@ FAMILIES = {
             # same neoforge:item_exists condition this family used to add, so those overrides are gone.
             without_values('data/industrialforegoing/curios/entities/entities.json', 'slots', ['example'],
                            'Curios slot type that no selected mod registers (Artifacts registers feet)'),
+            # The eight basic room templates, unchanged: machines are craftable in every world, and the
+            # shrinking device keeps its act III stage above.
+            *[copied(CM_BASIC + path, 'compactmachines-', 'Basic room template data that no world enables by '
+                     'itself: without it no Compact Machine is craftable', owners=1, to=path)
+              for path in CM_ROOM_FILES],
         ],
     },
     'qol': {
@@ -967,6 +984,15 @@ FAMILIES = {
             'rftoolsutility:minecraft_ender_dragon',
         ],
         'data': [
+            # Bosses their own mods leave out of c:bosses (28 September 2026), so every capture tool and
+            # spawner that refuses the tag refuses them: the Wildfire (Friends&Foes 4.0.27, the only loot
+            # table with crown fragments; no boss bar, but a boss of the quests), the Stalker (Deeper and
+            # Darker, a ServerBossEvent in its class) and the Chaos Guardian (Draconic Evolution, the fight
+            # manager's ShieldedServerBossInfo). EvilCraft, which takes no tags, lists the same bosses in
+            # pack/config/evilcraft-common.toml.
+            tagged('data/c/tags/entity_type/bosses.json',
+                   ['deeperdarker:stalker', 'draconicevolution:draconic_guardian', 'friendsandfoes:wildfire'],
+                   'Quest bosses that machines could capture or spawn', owners=10),
             tagged('data/oritech/tags/entity_type/spawner_blacklist.json', ['#c:bosses'],
                    'The spawner controller caught any mob that stepped on it but the Ender Dragon: a Wither '
                    'for a few dozen souls'),
@@ -1339,8 +1365,10 @@ def build_data(name, found=None):
             continue
         if spec['op'] == 'tag_values':
             # Tags merge across datapacks, so the pack file carries only the new values.
-            assert len(sources) == 1, f"{spec['path']}: expected one pinned tag, found {len(sources)}"
-            upstream = [v['id'] if isinstance(v, dict) else v for v in json.loads(sources[0][2]).get('values', [])]
+            owners = spec.get('owners', 1)
+            assert len(sources) == owners, f"{spec['path']}: expected {owners} pinned tag files, found {len(sources)}"
+            upstream = [v['id'] if isinstance(v, dict) else v
+                        for source in sources for v in json.loads(source[2]).get('values', [])]
             assert not set(spec['values']) & set(upstream), f"{spec['path']}: already tagged upstream"
             outputs_by_path[spec['path'][len('data/'):]] = json.dumps(
                 {'replace': False, 'values': spec['values']}, indent=2, ensure_ascii=False) + '\n'
@@ -1363,6 +1391,8 @@ def build_data(name, found=None):
                 f"{spec['path']}: expected {spec['owners']} pinned owners, found {len(sources)}"
             chosen = [s for s in sources if s[0].startswith(spec['source'])]
             assert len(chosen) == 1, f"{spec['path']}: expected one file from {spec['source']}"
+            assert spec['to'] == spec['path'] or not found.get(spec['to']), \
+                f"{spec['to']}: a pinned JAR already ships this path"
             target = spec['to'][len('data/'):]
             assert target not in outputs_by_path, f"{spec['to']}: written twice"
             outputs_by_path[target] = json.dumps(json.loads(chosen[0][2]), indent=2, ensure_ascii=False) + '\n'

@@ -11,7 +11,7 @@ Base: `origin/main` 886f8c1, con 4.818 quests: 61 capítulos de cadena (3.907), 
 - **El hueco grande es Create.** Es S y tiene 140 quests para 94 facetas: 1,5 quests por faceta, la cadena más finita del libro. Le faltan 17 facetas (contraptions, lógica redstone, esquemas, buceo) y el libro nombra 87 de las 167 escenas de Ponder. Pide unas 110 quests más y dos capítulos nuevos.
 - **Después:** Applied Energistics 2 (S, +50), Malum (A, +45), Oritech (A, +40) y Ender IO (A, +19). El resto de la ola es chico (ver «Ola de profundización»).
 - **Sobre-profundidad:** Just Dire Things (B) tiene 155 quests, un 55 % sobre el techo de su nivel, por unas 40 ramas de una habilidad cada una; agrupadas por nivel quedaría en ~110 sin perder facetas. Eternal Starlight (195) está en el techo del nivel A y Mystical Agriculture (112) apenas sobre B; ninguna es relleno.
-- **Metas del plan que bajan** con la regla: Artifacts 50 → 30, Hostile Neural Networks 50 → 25, Equipo y armadura 80 → 40, Construcción 100 → 75, Estructuras 70 → 50, Viaje 70 → 50. **Suben:** Create 140 → 250, AE2 140 → 190, Malum 70 → 115, Oritech 70 → 110, Ender IO 70 → 95. Sumadas, las metas por nivel dan 5.043 quests en cadenas (el plan: 5.142).
+- **Metas del plan que bajan** con la regla: Artifacts 50 → 30, Hostile Neural Networks 50 → 25, Equipo y armadura 80 → 40, Construcción 100 → 75, Estructuras 70 → 50, Viaje 70 → 50. **Suben:** Create 140 → 250, AE2 140 → 190, Malum 70 → 115, Oritech 70 → 110, Ender IO 70 → 95. Sumadas, las metas por nivel dan 5.154 quests en cadenas (el plan: 5.142; 5.043 antes de que Mystical Agriculture pasara a un nodo por semilla, el 28/9).
 - **Sólo el tronco obliga:** 36 de 61 capítulos obligan al menos un nodo opcional. En 8 son sólo jefes, casi siempre porque el propio mod los exige; en 27, una rama o un consejo del que cuelga un nodo del tronco, que se arregla apuntando la dependencia a otro lado; uno es una elección del jugador. Contradicen la regla de fondo tres casos: las 16 tizas de Occultism en el tronco, la línea de energía de complementos en el tronco de Create · Vías y energía y la cumbre de Cataclysm que pide los ocho jefes.
 
 ## Niveles
@@ -69,7 +69,7 @@ Estado de cada cadena (las planeadas se miden sobre lo que el libro enseña hoy 
 | The Aether | A | 100 | 100 | 100 | 18/18 | 17 | 5,6 |
 | Industrial Foregoing | B | 80 | 80 | 80 | 18/18 | 16 | 4,4 |
 | Modern Industrialization | S | 175 | 175 | 175 | 30/30 | 30 | 5,8 |
-| Mystical Agriculture | B | 112 | 195 | 112 | 13/13 | 13 | 8,6 |
+| Mystical Agriculture | B | 223 (28/9) | 195 | 223 (28/9) | 13/13 | 13 | 17,2 |
 | Oritech | A | 70 | 70 | 110 | 24/25 | 21 | 2,8 |
 | Powah | B | 56 | 110 | 56 | 9/9 | 9 | 6,2 |
 | The Bumblezone | A | 119 | 115 | 119 | 12/12 | 12 | 9,9 |
@@ -142,7 +142,7 @@ No se propone recortar nada que no sea relleno; las marcas son para decidir.
 - **Just Dire Things (B): 155 quests para un techo de 100.** En Goo y equipo hay 56 ramas; unas 40 son una mejora de habilidad cada una (Mind Fog, Jump Boost, Step Assist, Ore Miner…). No son relleno, pero son el «un nodo por ítem» que el plan trata como colección. Agruparlas por nivel de material (ferricore, blazegold, celestigem, eclipse), como las escaleras de Powah y Mystical Agriculture, la dejaría en ~110 sin perder facetas. Es decisión de Elias.
 - **Eternal Starlight (A): 195 quests, en el techo del nivel.** Tiene 23 facetas, como Twilight (19, 90 quests) y el Aether (18, 100); sus 115 ramas son un arma, una criatura o un logro cada una. Tampoco es relleno; agrupar herramientas y armaduras por material la dejaría cerca de 150.
 - **Draconic Evolution (A): 140.** Repite por nivel de equipo (núcleos de nivel 2 a 7 en seis nodos; módulos, armas, escudos y resurrección en wyvern, dracónico y caótico). Dentro del presupuesto A; sólo se marca.
-- **Mystical Agriculture (B): 112**, apenas sobre el techo de B, con las familias ya agrupadas el 27/9. Se queda.
+- **Mystical Agriculture (B): 112**, apenas sobre el techo de B, con las familias ya agrupadas el 27/9. Se queda. El 28/9 Elias pidió un nodo por semilla: quedó en 223, en tres capítulos.
 - **Metas del plan para cadenas sin escribir** que la regla baja: Artifacts (C, un sistema de accesorios con muchas variantes) 50 → 30, Hostile Neural Networks (C, cinco facetas) 50 → 25, Equipo y armadura 80 → 40 (un nodo por nivel de material y otro por plantilla), Construcción 100 → 75 (21 mods de decoración, de dos a cinco nodos cada uno), Estructuras 70 → 50 y Viaje 70 → 50 (paraguas de mods C), Aparatos 70 → 60, Criaturas y jefes 60 → 50, Mundos profundos 50 → 45, Granja · Macetas 35 → 20.
 
 ## Sólo el tronco obliga
@@ -351,7 +351,7 @@ Nivel S · 175 quests hoy (sector_mi_steam, sector_mi_electric, sector_mi_digita
 
 ### Mystical Agriculture
 
-Nivel B · 112 quests hoy (sector_ma_essence, sector_ma_souls) · facetas 13/13 en la cadena · meta 112.
+Nivel B · 223 quests hoy (sector_ma_essence, sector_ma_greenhouse, sector_ma_souls) · facetas 13/13 en la cadena · una quest por semilla, 28/9.
 
 - **Mystical Agriculture** (B, 13/13): con nodo: Inferium, prosperidad y semillas base · Niveles de esencia (prudentium a insanium) · Altar de infusión y pedestales · Cristal de infusión y cristal maestro · Tierra de esencia, fertilizantes y aceleradores · Regaderas · Semillas de recursos (familias) · Almas: frascos, daga de soulium y extractor · Semillas de criaturas · Despertar: altar, esencias elementales, supremium despertado · Máquinas: horno, cosechadora, reprocesador, spawner de soulium · Mesa de ajuste, aumentos y equipo de esencia · Hoz, guadaña y cápsula de experiencia.
 

@@ -4,7 +4,8 @@ look inside the client are runtime questions. Sector chapters (quest book v3) ha
 contracts in tools/test_sector_book.py; here they only take part in the book-wide checks."""
 import copy, json, math, re, struct, unittest
 from generate_quests import (ROOT, OUT, THEME, GRAMMAR, NODE_PX, VISUAL, ART_PX, LOCALES, generate_book, load_book,
-                             load_chapters, load_guides, stable_id, finale_of, story_role, group_order)
+                             load_chapters, load_guides, stable_id, finale_of, story_role, group_order,
+                             generate_guide, guide_lines)
 import quest_engine
 
 ART = ROOT / 'companion/src/main/resources/assets/entrelumen/textures/gui/quests'
@@ -95,7 +96,15 @@ class QuestBook(unittest.TestCase):
                     for lang in LOCALES:
                         title, text = source[lang]
                         self.assertEqual(self.lang[lang][f"quest.{q['id']}.title"], title)
-                        self.assertEqual([p for p in self.lang[lang][f"quest.{q['id']}.quest_desc"] if p], text.split('\n\n'))
+                        lines = [p for p in self.lang[lang][f"quest.{q['id']}.quest_desc"] if p]
+                        self.assertEqual(len(lines), len(text.split('\n\n')))
+                        for line, paragraph in zip(lines, text.split('\n\n')):
+                            if quest_engine.TAG.search(paragraph):
+                                # A paragraph with a link is rich text: the same words, the link's text for its markup.
+                                shown = quest_engine.TAG.sub(lambda m: m.group(3)[1:], paragraph)
+                                self.assertEqual(''.join(s.get('text', '') for s in json.loads(line)[1:]), shown)
+                            else:
+                                self.assertEqual(line, paragraph)
         # No item-filter mod: the tag tasks check one concrete item (Almost Unified's for metals). One
         # since the Ars guides became the Ars sector chapter (its archwood task names the log), the
         # Mekanism guides the Mekanism sector chapters (their steel task names IE's ingot), the Aether
@@ -297,6 +306,32 @@ class QuestBook(unittest.TestCase):
         del quest['item']
         with self.assertRaisesRegex(AssertionError, 'concrete item'):
             generate_book(self.story, guides, self.book)
+
+    def test_guide_links_open_their_quest_or_chapter(self):
+        # Guides link like sectors (28/9): a paragraph with [quest:key|text] or [chapter:name|text] becomes a
+        # rich-text line whose click opens the target; other paragraphs keep their & codes as plain text.
+        desc = self.lang['en_us'][f"quest.{stable_id('quest:qol_inventory_welcome')}.quest_desc"]
+        self.assertTrue(desc[0].startswith('Big pack'))
+        link = json.loads(desc[-1])[2]
+        self.assertEqual(link['clickEvent'], {'action': 'change_page', 'value': stable_id('quest:qol_inventory_magnet')})
+        desc = self.lang['es_es'][f"quest.{stable_id('quest:qol_world_close')}.quest_desc"]
+        self.assertEqual(json.loads(desc[-1])[2]['clickEvent']['value'], stable_id('chapter:sector_gadgets'))
+        ctx = {'items': set(), 'names': set(), 'keys': set(), 'textures': set(),
+               'resolve_quest': lambda t, w: stable_id('quest:' + t), 'resolve_chapter': lambda t, w: stable_id('chapter:' + t)}
+        self.assertEqual(guide_lines('Plain &etext&r.\n\nMore.', 'en_us', ctx, 't'), ['Plain &etext&r.', '', 'More.'])
+        for bad in ('&eBold&r and [quest:a|a link]', 'A [item:minecraft:stone|Stone].'):
+            with self.subTest(text=bad), self.assertRaises(AssertionError):
+                guide_lines(bad, 'en_us', ctx, 't')
+        keys = {q['key'] for g in self.guides + self.sectors for q in g['quests']}
+        names = {g['chapter'] for g in self.guides} | self.sector_names
+        for lang, target, error in (('es_es', 'qol_inventory_sort', 'EN and ES link'),
+                                    (None, 'no_such_quest', 'unknown quest')):
+            guide = copy.deepcopy(next(g for g in self.guides if g['chapter'] == 'guide_qol_inventory'))
+            welcome = next(q for q in guide['quests'] if q['key'] == 'qol_inventory_welcome')
+            for code in ([lang] if lang else LOCALES):
+                welcome[code][1] = welcome[code][1].replace('qol_inventory_magnet', target)
+            with self.subTest(target=target), self.assertRaisesRegex(AssertionError, error):
+                generate_guide(guide, 'x', 0, self.book, {l: {} for l in LOCALES}, set(), keys, names)
 
 
 if __name__ == '__main__':
