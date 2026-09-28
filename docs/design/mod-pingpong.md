@@ -711,3 +711,18 @@ Familia `catalog/families/pingpong5-neovitae.json`: 2 mods, ninguna librería nu
   8. Orbe Magus (`neovitae:blood_orb_master`), Tabula Spiritus (`neovitae:tabula_spiritus`) y la Lex Vitae (`neovitae:lex_vitae`).
   9. Sanguine Neural Networks: sacrificador virtual (`sanguine_networks:virtual_sacrificer`) con un modelo de datos de HNN.
 - **Pendiente en juego:** el HUD y el altar en un cliente, una bajada al Reino Demoníaco y lo que pesan las Linternas de Sangre.
+
+### Lote 6 · Iris
+
+Familia `catalog/families/pingpong5-shaders.json`: 1 mod de cliente. El lock pasa a **362 / 309**; el servidor no cambia.
+
+| Mod | Versión | Fuente | Lado | Para qué |
+|---|---|---|---|---|
+| Iris | 1.8.14-beta.1 | CF 455508/8242804 (ATM10; los mismos bytes en Modrinth) | cliente | Carga shaders en formato OptiFine que agregue el jugador. |
+
+- **Versión:** la de ATM10, que corre con el mismo Sodium 0.8.13 y Sodium Extra 0.9.3 del lock. El log de ATM10 en esta máquina la muestra cargando y apagada por falta de pack («Shaders are disabled because no valid shaderpack is selected»). Su `mods.toml` pide `[1.21,1.21.1)` de Minecraft, pero el mismo archivo carga en ATM10 sobre 1.21.1.
+- **Apagado por defecto, sin shaderpack.** Iris lee `config/iris.properties` al cargar las opciones (`Options.load`) y prende los shaders salvo que diga `enableShaders=false`. Default Options copia `config/defaultoptions/extra/<ruta>` a `<ruta>` al construir `GameConfig`, antes de que ningún mod lea su config, y sólo si el archivo no existe (`ExtraDefaultOptionsHandler`, 21.1.8). Así el pack siembra una vez `enableShaders=false` y `disableUpdateMessage=true`. Quien prende shaders conserva esa elección cuando el pack se actualiza, algo que un `config/iris.properties` enviado directo pisaría.
+  - `tools/generate_client_defaults.py` genera el archivo desde la sección `extra` del preset (`pack/config/entrelumen/client-preset.json`). Sólo acepta los archivos de su lista (`config/iris.properties`) y líneas `clave=valor` simples; `--check` lo compara y los tests cubren el valor y los rechazos.
+  - Para usarlos: copiar un shaderpack a `shaderpacks/`, abrir Opciones → Video → Shader Packs, elegirlo y poner «Shaders: ON».
+- **Teclas:** Iris traía recargar en R (el cinturón de herramientas), prender o apagar en K (el gestor de reclamos, tecla fija) y la pantalla de packs en O (la bolsa de Occultism). El preset deja las tres sin asignar; la pantalla sigue a mano en las opciones de video. El modo alambre viene sin asignar. `tools/check_keybinds.py`: 0 choques.
+- **Escalonado, Carry On, GameTests:** no aplica (cliente, sin ítems ni bloques). Falta verlo en un cliente: el botón de Shader Packs, un pack de prueba prendido y apagado, y que el archivo sembrado no se pise al reiniciar.
