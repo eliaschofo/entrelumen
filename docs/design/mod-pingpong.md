@@ -498,3 +498,55 @@ Eternal Starlight es del acto IV: la receta del Orbe de la Profecía lleva una C
 - Pendiente: probarlo en un cliente (el trueque en la pantalla del Guardián, el texto de las quests) y una pelea real con el Guardián.
 
 Seguimiento (27/9, rama `fix/balance-rftools-dragon`): sale `rftoolsutility:minecraft_ender_dragon`. `tools/test_family_balance.py` (`test_no_rftools_spawner_recipe_spawns_a_boss`) lee `c:bosses`, los dos jefes de NeoForge y los que sumen los mods fijados, recorre las recetas del generador de RFTools en los JAR y exige que toda receta de un jefe esté quitada. El servidor no hizo falta: la familia usa el mismo mecanismo de quitado que el Wither, y el arranque anterior ya lo había probado.
+
+## Ronda 5 (27/9): censo de ATM10, FTB Evolution y Craftoria
+
+Rama `feature/mods-r5`. Entran los 31 ADD del [censo](../research/mod-census.md), con las decisiones de Elias del 27/9: «sumar genuinamente todo lo que MEJORE la experiencia y robustezca al pack (no sumar por sumar)»; Neo Vitae sí, en los actos III-IV y con su dimensión; Iris sí, con los shaders apagados y sin shaderpack; Create Aeronautics a prueba, en su propio lote y medido. El controlador sumó Create Collision Fix y, desde la [búsqueda hacia afuera](../research/mod-outward.md), tres arreglos al lote 1, tres comodidades al lote 2 y Sanguine Neural Networks al de Neo Vitae. Un commit (o un grupo chico) por lote, para mergear de a uno.
+
+**Qué versión se fija.** La que usa un pack de referencia (primero ATM10) cuando cumple las dependencias del lock: esos packs corren el mismo NeoForge 21.1 con cientos de mods, y su pin es evidencia de que carga. Un archivo oficial más nuevo entra sólo si arregla algo que necesitamos, y se dice por qué. Cada JAR sale de la fuente oficial:
+
+- **Instancia ATM10 8.1** (sólo lectura): el SHA-1 de CurseForge de su `minecraftinstance.json` coincide con los bytes.
+- **CDN de CurseForge** (`edge.forgecdn.net`): el tamaño coincide con el registro oficial del archivo. Cuando FTB Evolution 1.43.1 trae el mismo archivo, su manifiesto público da el mismo SHA-1.
+- **CDN de Modrinth**: SHA-1 y SHA-512 de la API de versiones.
+- En los tres casos, si los mismos bytes están en Modrinth, el pin guarda su SHA-512 y `--check` lo vuelve a verificar. Todo pin de CurseForge lleva los IDs de proyecto y archivo que necesita la exportación de la App.
+
+**Relaciones de CurseForge.** `tools/curate_pack.py` suma `cfRelations` a las familias: un proyecto requerido por CurseForge puede darse por cumplido con un mod que el lock ya provee desde otro proyecto (`satisfiedBy`, como CC: Tweaked 1676502 para el 282001 que piden Advanced Peripherals y More Red CCT) o quedar exento para archivos nombrados cuando la relación es vieja y su `mods.toml` no la pide (`waivedFor`). `--check` rechaza un proveedor ausente y una exención que no nombra al archivo; `tools/test_curate_families.py` lo cubre.
+
+### Lote 1 · Robustez y rendimiento
+
+Familia `catalog/families/pingpong5-robustness.json`: 16 mods y 2 librerías. El lock pasa de 316 cliente / 274 servidor (con los filtros de quests) a **334 / 287**; ninguna entrada previa cambió.
+
+| Mod | Versión | Fuente | Lado | Para qué |
+|---|---|---|---|---|
+| Entity Culling | 1.10.5 | CF 448233/8287097 (Craftoria) | cliente | No dibuja criaturas ni bloques con modelo ocultos tras paredes. |
+| Structure Layout Optimizer | 1.0.12 | CF 1087831/7439136 (FTB) | ambos | Arma más rápido las estructuras por piezas (aldeas, mazmorras). |
+| I'm Fast | 1.0.3 | CF 1111501/8747159 (ATM10) | ambos | El servidor deja de echar o frenar a quien se mueve rápido (jetpacks, élitros, aeronaves). |
+| Packet Fixer | 3.3.1 | CF 689467/7221528 (Craftoria) | ambos | Sube el límite de los paquetes: una mochila llena ya no desconecta. |
+| Load My F\*\*\*ing Tags | 1.1.1 | CF 656346/7084444 (ATM10) | ambos | Una entrada rota en un tag ya no vacía el tag entero. |
+| Crash Assistant | 1.11.12 | CF 1154099/8636685 (ATM10) | cliente | Ventana de crash que nombra la causa probable y sube los logs sólo si el jugador lo pide. |
+| Not Enough Recipe Book | 0.4.3 | CF 738663/6880047 (FTB) | ambos | Saca el libro de recetas vanilla; necesita OctoLib 0.6.2 (CF 916747/8040848, ATM10). |
+| NaNny | 1.0.1 | CF 634392/5728615 (FTB) | ambos | Cancela el daño que no es un número, que deja a un jugador inmortal o lo mata. |
+| Better Compatibility Checker | 21.1.8 | CF 551894/7404415 (ATM10) | ambos | La lista de servidores muestra si el servidor corre la misma versión del pack. |
+| Sodium Extra | 0.9.3 | CF 447673/8403576 (ATM10) | cliente | Más opciones de video para PCs modestas. |
+| Compact Machines Preview Fixer | 1.1.0 | CF 1548811/8133423 (FTB; no está en Modrinth) | cliente | Tapa la fuga de memoria de la vista previa de salas de Compact Machines. |
+| Draconic Evolution Render Patcher | 2.0.0 | CF 1383702/8277268 (FTB) | cliente | Núcleo de energía, reactor e inyectores de Draconic se dibujan bien con Sodium. |
+| Create Collision Fix | 1.0.0 | Modrinth j20TJ3QZ/oIRUjqoI | ambos | Evita el crash de Create 6.0.10 por choque de contraptions (`mf.axis` nulo) que deja al servidor reiniciándose en bucle. |
+| Mekanism Pipez Fix | 1.0.1 (beta) | CF 1233861/7661970 | ambos | Los caños de Pipez siguen alimentando multibloques de Mekanism después de reiniciar: un reactor de fisión ya no se queda sin agua. |
+| Neruina | 3.3.3 | CF 851046/8451084, con Configurable 3.5.2 (CF 1092048/8438541) | ambos | Congela la entidad, máquina o ítem que falla en cada tick en vez de tumbar el servidor, y avisa dónde. |
+| Async Locator Refined | 1.6.0 | CF 1331921/8501111 | ambos | Mapas del tesoro, delfines y `/locate` buscan fuera del hilo del servidor. |
+
+Todos salvo Compact Machines Preview Fixer tienen los mismos bytes en Modrinth, y el pin guarda su SHA-512.
+
+- **Versiones que no son las más nuevas.**
+  - Entity Culling 1.11.x arregla que NeoForge no usara la caja de render de los bloques con modelo grande, pero es una serie de seis días con tres arreglos seguidos y un hilo de culling reescrito. Queda 1.10.5, la de Craftoria. Hay que mirar en cliente que no desaparezcan renderizadores grandes (controlador del Arca, altares, núcleo de Draconic); si pasa, van a su lista blanca.
+  - Sodium Extra 0.9.4 sólo corrige la niebla y traducciones; queda 0.9.3, la de ATM10.
+- **Create Collision Fix** exige Create `[6.0.10]` exacto. **Se saca cuando Create pase a 6.0.11**, que trae el arreglo oficial (PR #10301); con 6.0.11 el cargador se niega a arrancar y lo nombra. La GameTest `pingponground5robustnessloaded` también lo avisa.
+- **Configuración:**
+  - `pack/config/bcc-common.toml`: ENTRELUMEN 0.1.0. La versión es la `mod_version` del companion y se sube con cada release; la GameTest compara las dos.
+  - `pack/config/crash_assistant/config.toml`: sólo el nombre del pack. El enlace de ayuda queda en el de NeoForge hasta que ENTRELUMEN tenga un canal público de soporte.
+  - El resto, por defecto. Not Enough Recipe Book queda en su modo `TOGGLE`: el botón del libro muestra u oculta la barra de fabricables de EMI y el servidor no otorga ni guarda recetas. Ningún script, quest ni código del pack usa el desbloqueo de recetas (búsqueda en el repo).
+  - Neruina, por defecto: umbral de 10 excepciones, avisos para todos y comandos para operadores. En la QA, una línea de Neruina cuenta como error.
+- **Compact Machines Preview Fixer** apunta a `MachineRoomScreen` y a la cámara de Gander, que existen en Compact Machines 7.0.81; sus mixins son `@Pseudo` y no exigen el objetivo. FTB Evolution lo usa con el mismo 7.0.81, y Draconic Render Patcher con el mismo Draconic 3.1.4.632 y Sodium 0.8.13.
+- **Escalonado:** ninguno; no agregan ítems.
+- **Teclas:** sólo Entity Culling registra dos, sin asignar (`key.entityculling.toggle` y `toggleBoxes`); quedan en `tools/keybind_contexts.json`.
+- **GameTests:** `pingponground5robustnessloaded` (los de servidor cargados, los de cliente fuera del servidor dedicado, Create en la versión que parchea el hotfix, BCC con el nombre y la versión del pack) y `nannycancelsnandamage` (un cerdo que recibe daño NaN conserva la vida).

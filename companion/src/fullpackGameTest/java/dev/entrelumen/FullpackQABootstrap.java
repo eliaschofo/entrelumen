@@ -70,6 +70,7 @@ public final class FullpackQABootstrap {
       GameTestRegistry.register(TerraArmFullpackGameTests.class);
       GameTestRegistry.register(ModPingpongFullpackGameTests.class);
       GameTestRegistry.register(ModPingpongRound4FullpackGameTests.class);
+      GameTestRegistry.register(ModPingpongRound5FullpackGameTests.class);
       GameTestRegistry.register(SolsticioFullpackGameTests.class);
       // The compass and gameplay runtime suites also run on the full pack (merged 24 September).
       GameTestRegistry.register(RuntimeGameTestsCompass.class);
