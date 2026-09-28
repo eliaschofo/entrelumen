@@ -361,7 +361,7 @@
       "sources": ["jar:industrialforegoing-1.21-3.6.39.jar:data/industrialforegoing/recipe/dissolution_chamber/speed_addon_tier_2.json", "jar:industrialforegoing-1.21-3.6.39.jar:data/industrialforegoing/recipe/dissolution_chamber/efficiency_addon_tier_2.json", "jar:industrialforegoing-1.21-3.6.39.jar:data/industrialforegoing/recipe/dissolution_chamber/processing_addon_tier_2.json", "jar:industrialforegoing-1.21-3.6.39.jar:assets/industrialforegoing/patchouli_books/industrial_foregoing/en_us/entries/basics/addons.json", "jar:industrialforegoing-1.21-3.6.39.jar:com/buuz135/industrial/block/tile/IndustrialMachineTile.class#canAcceptAugment(one per type)"]
     },
     {
-      "key": "if_range", "role": "side", "deps": ["if_addons"], "group": "chamber",
+      "key": "if_range", "role": "step", "deps": ["if_addons"], "group": "chamber",
       "tasks": [{"item": "industrialforegoing:range_addon_tier_0"}, {"item": "industrialforegoing:range_addon_tier_11"}],
       "at": {"x": -6.8, "y": -14.8},
       "en_us": {"title": "Twelve steps of range", "subtitle": "From cobblestone to emeralds.",
@@ -514,7 +514,7 @@
       "sources": ["jar:industrialforegoing-1.21-3.6.39.jar:com/buuz135/industrial/block/generator/tile/BioReactorTile.class#work(((n-1)*40+93)*n+2),getEfficiency,canInsert"]
     },
     {
-      "key": "if_biofuel_gen", "role": "side", "deps": ["if_bio"], "group": "power",
+      "key": "if_biofuel_gen", "role": "step", "deps": ["if_bio"], "group": "power",
       "task": {"item": "industrialforegoing:biofuel_generator"},
       "at": {"x": 6.8, "y": -12.4},
       "en_us": {"title": "Burning purple", "subtitle": "It stops when full. Unlike some.",
@@ -524,7 +524,7 @@
       "sources": ["jar:industrialforegoing-1.21-3.6.39.jar:data/industrialforegoing/recipe/biofuel_generator.json", "jar:industrialforegoing-1.21-3.6.39.jar:com/buuz135/industrial/config/machine/generator/BiofuelGeneratorConfig.class#powerPerTick=160,maxStoredPower=1000000", "jar:industrialforegoing-1.21-3.6.39.jar:com/buuz135/industrial/block/generator/tile/BiofuelGeneratorTile.class#consumeFuel(1 mB per 4 ticks),canStart", "jar:industrialforegoing-1.21-3.6.39.jar:assets/industrialforegoing/patchouli_books/industrial_foregoing/en_us/entries/generators/biofuel_generator.json"]
     },
     {
-      "key": "if_mycelial", "role": "side", "deps": ["if_biofuel_gen"], "group": "power",
+      "key": "if_mycelial", "role": "step", "deps": ["if_biofuel_gen"], "group": "power",
       "tasks": [{"item": "industrialforegoing:mycelial_furnace"}, {"item": "industrialforegoing:mycelial_culinary"}, {"item": "industrialforegoing:mycelial_frosty"}, {"item": "industrialforegoing:mycelial_pink"}],
       "at": {"x": 9.6, "y": -12.4},
       "en_us": {"title": "Mycelial, simple frame", "subtitle": "Sixteen appetites, four to start.",
@@ -534,7 +534,7 @@
       "sources": ["jar:industrialforegoing-1.21-3.6.39.jar:data/industrialforegoing/recipe/mycelial_furnace.json", "jar:industrialforegoing-1.21-3.6.39.jar:data/industrialforegoing/recipe/mycelial_culinary.json", "jar:industrialforegoing-1.21-3.6.39.jar:data/industrialforegoing/recipe/mycelial_frosty.json", "jar:industrialforegoing-1.21-3.6.39.jar:data/industrialforegoing/recipe/mycelial_pink.json", "jar:industrialforegoing-1.21-3.6.39.jar:com/buuz135/industrial/block/generator/mycelial/FurnaceGeneratorType.class#getTimeAndPowerGeneration(burnTime, 80)"]
     },
     {
-      "key": "if_mycelial_adv", "role": "side", "deps": ["if_mycelial"], "group": "power",
+      "key": "if_mycelial_adv", "role": "step", "deps": ["if_mycelial"], "group": "power",
       "tasks": [{"item": "industrialforegoing:mycelial_crimed"}, {"item": "industrialforegoing:mycelial_death"}, {"item": "industrialforegoing:mycelial_disenchantment"}, {"item": "industrialforegoing:mycelial_ender"}, {"item": "industrialforegoing:mycelial_explosive"}, {"item": "industrialforegoing:mycelial_magma"}, {"item": "industrialforegoing:mycelial_potion"}, {"item": "industrialforegoing:mycelial_rocket"}, {"item": "industrialforegoing:mycelial_slimey"}],
       "at": {"x": 12.4, "y": -12.4},
       "en_us": {"title": "Mycelial, advanced frame", "subtitle": "Nine more mouths to feed.",
@@ -544,7 +544,7 @@
       "sources": ["jar:industrialforegoing-1.21-3.6.39.jar:data/industrialforegoing/recipe/mycelial_crimed.json", "jar:industrialforegoing-1.21-3.6.39.jar:data/industrialforegoing/recipe/mycelial_death.json", "jar:industrialforegoing-1.21-3.6.39.jar:data/industrialforegoing/recipe/mycelial_disenchantment.json", "jar:industrialforegoing-1.21-3.6.39.jar:data/industrialforegoing/recipe/mycelial_ender.json", "jar:industrialforegoing-1.21-3.6.39.jar:data/industrialforegoing/recipe/mycelial_explosive.json", "jar:industrialforegoing-1.21-3.6.39.jar:data/industrialforegoing/recipe/mycelial_magma.json", "jar:industrialforegoing-1.21-3.6.39.jar:data/industrialforegoing/recipe/mycelial_potion.json", "jar:industrialforegoing-1.21-3.6.39.jar:data/industrialforegoing/recipe/mycelial_rocket.json", "jar:industrialforegoing-1.21-3.6.39.jar:data/industrialforegoing/recipe/mycelial_slimey.json", "jar:industrialforegoing-1.21-3.6.39.jar:com/buuz135/industrial/block/generator/mycelial/DisenchantmentGeneratorType.class#(isEnchanted)", "jar:industrialforegoing-1.21-3.6.39.jar:com/buuz135/industrial/block/generator/mycelial/"]
     },
     {
-      "key": "if_mycelial_supreme", "role": "side", "deps": ["if_mycelial_adv"], "group": "power",
+      "key": "if_mycelial_supreme", "role": "step", "deps": ["if_mycelial_adv"], "group": "power",
       "tasks": [{"item": "industrialforegoing:mycelial_halitosis"}, {"item": "industrialforegoing:mycelial_meatallurgic"}, {"item": "industrialforegoing:mycelial_netherstar"}],
       "at": {"x": 15.2, "y": -12.4},
       "en_us": {"title": "Mycelial, supreme frame", "subtitle": "One of them eats nether stars.",

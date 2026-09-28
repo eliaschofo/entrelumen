@@ -84,7 +84,7 @@
       "sources": ["jar:the_bumblezone-7.15.3+1.21.1-neoforge.jar:data/the_bumblezone/advancement/windy_air/obtain_windy_air.json", "jar:the_bumblezone-7.15.3+1.21.1-neoforge.jar:data/the_bumblezone/bz_bee_queen_trades/windy_air.json", "jar:the_bumblezone-7.15.3+1.21.1-neoforge.jar:assets/the_bumblezone/lang/en_us.json#the_bumblezone.windy_air.description"]
     },
     {
-      "key": "bz_crazy_trader", "role": "step", "deps": ["bumblezone_queen_trade"], "group": "trades",
+      "key": "bz_crazy_trader", "role": "step", "deps": ["bz_trade_basics"], "group": "trades", "curve": {"bz_trade_basics": -0.25},
       "task": {"type": "advancement", "advancement": "the_bumblezone:the_queens_desire/crazy_trader"},
       "icon": "minecraft:emerald",
       "at": {"x": -14.2, "y": -22.0},
