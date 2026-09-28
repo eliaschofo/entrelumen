@@ -1,0 +1,44 @@
+{
+  "act": 3,
+  "dimension": "minecraft:the_nether",
+  "scale": "medium",
+  "template": "entrelumen:ruins/nether_foundry",
+  "placement": {
+    "mode": "cavern",
+    "min": 150,
+    "max": 500
+  },
+  "piece": "entrelumen:heliodor_crucible",
+  "project": "distributed_power",
+  "loot": "entrelumen:chests/ruin_act3_foundry",
+  "challenges": {
+    "guards": {
+      "type": "boss",
+      "entity": "minecraft:wither_skeleton",
+      "name": "entrelumen.ruin.boss.foundry_guard",
+      "count": 4,
+      "radius": 16,
+      "color": "red",
+      "attributes": {
+        "minecraft:generic.max_health": 40,
+        "minecraft:generic.attack_damage": 7,
+        "minecraft:generic.armor": 4
+      }
+    },
+    "furnaces": {
+      "type": "redstone",
+      "requires": [
+        "guards"
+      ]
+    }
+  },
+  "gates": {
+    "vault": [
+      "furnaces"
+    ]
+  },
+  "pedestal": [
+    "guards",
+    "furnaces"
+  ]
+}

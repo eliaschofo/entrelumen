@@ -72,9 +72,10 @@ public final class TeamLifecycleGameTests {
           "Personal campaign fixture did not earn real milestones and rewards");
       Item atlas = item("entrelumen:atlas");
       Item lens = item("entrelumen:raw_lens");
-      helper.assertTrue(founder.getInventory().countItem(atlas) == 1
+      // Since 26 September the Atlas waits on the Signal Tower's pedestal: awakening it gives no item.
+      helper.assertTrue(founder.getInventory().countItem(atlas) == 0
           && founder.getInventory().countItem(lens) == 0
-          && guest.getInventory().countItem(atlas) == 1
+          && guest.getInventory().countItem(atlas) == 0
           && guest.getInventory().countItem(lens) == 1,
           "Personal deliveries produced unexpected reward counts");
       give(helper, founder, Items.DIAMOND, 2);
@@ -191,9 +192,9 @@ public final class TeamLifecycleGameTests {
             "Admin recovery did not copy the archive to its own personal campaign");
         assertInventory(helper, founder, founderItems, "admin recovery founder");
         assertInventory(helper, guestAgain, guestItems, "admin recovery guest");
-        helper.assertTrue(founder.getInventory().countItem(atlas) == 1
+        helper.assertTrue(founder.getInventory().countItem(atlas) == 0
             && founder.getInventory().countItem(lens) == 0
-            && guestAgain.getInventory().countItem(atlas) == 1
+            && guestAgain.getInventory().countItem(atlas) == 0
             && guestAgain.getInventory().countItem(lens) == 1,
             "Team lifecycle duplicated or removed a campaign reward");
         LOGGER.info("ENTRELUMEN_TEAM_LIFECYCLE creationCopy=true joinNoMerge=true "

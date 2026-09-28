@@ -218,8 +218,8 @@ public final class RuntimeGameTests {
         player
                 .getInventory()
                 .countItem(BuiltInRegistries.ITEM.get(ResourceLocation.parse("entrelumen:atlas")))
-            == 1,
-        "Atlas reward missing or duplicated");
+            == 0,
+        "Awakening the Atlas gave an Atlas (it waits in the Signal Tower since 26 September)");
     helper.assertTrue(
         player.getInventory().countItem(Items.BOOK) == 1
             && player.getInventory().countItem(Items.COPPER_INGOT) == 2,
@@ -410,8 +410,8 @@ public final class RuntimeGameTests {
         player
                 .getInventory()
                 .countItem(BuiltInRegistries.ITEM.get(ResourceLocation.parse("entrelumen:atlas")))
-            == 1,
-        "Delivery did not grant one Atlas");
+            == 0,
+        "Delivery granted an Atlas (it waits in the Signal Tower since 26 September)");
     helper.succeed();
   }
 
@@ -607,8 +607,8 @@ public final class RuntimeGameTests {
         player
                 .getInventory()
                 .countItem(BuiltInRegistries.ITEM.get(ResourceLocation.parse("entrelumen:atlas")))
-            == 1,
-        "Cross-route reward duplicated");
+            == 0,
+        "Cross-route delivery granted an Atlas");
     team.leave(player.getUUID());
     var afterLeave =
         AtlasNetwork.handleRequest(
@@ -676,6 +676,8 @@ public final class RuntimeGameTests {
     player.getInventory().add(new ItemStack(Items.WHITE_BED));
     player.getInventory().add(new ItemStack(Items.CAMPFIRE));
     player.getInventory().add(new ItemStack(Items.LANTERN, 2));
+    // Ruins v2: First Signal also takes the Signal Ember from the Signal Tower.
+    player.getInventory().add(new ItemStack(RuinContent.PIECES.get("signal_ember").get()));
     // Supplies may be gifted: possession alone never grants a milestone.
     helper.assertTrue(campaign.completed.isEmpty(), "Supplies completed the story automatically");
     var denied = AtlasNetwork.handleRequest(player, new AtlasNetwork.Request(
@@ -698,16 +700,17 @@ public final class RuntimeGameTests {
     // crafting recipe (one builds the metallurgic infuser, one is spare).
     var frame = BuiltInRegistries.ITEM.get(ResourceLocation.parse("entrelumen:calibration_frame"));
     var habitation = BuiltInRegistries.ITEM.get(ResourceLocation.parse("entrelumen:habitation_module"));
-    helper.assertTrue(player.getInventory().countItem(atlas) == 1
+    // Since 26 September the Atlas waits in the Signal Tower: the first act's deliveries give none.
+    helper.assertTrue(player.getInventory().countItem(atlas) == 0
         && player.getInventory().countItem(habitation) == 1
-        && player.getInventory().items.stream().filter(s -> !s.isEmpty()).count() == 4
+        && player.getInventory().items.stream().filter(s -> !s.isEmpty()).count() == 3
           && player.getInventory().countItem(BuiltInRegistries.ITEM.get(ResourceLocation.parse("entrelumen:signal_core"))) == 1
           && player.getInventory().countItem(frame) == 2,
         "First-act deliveries consumed incorrect amounts, lost the portable Atlas or missed the two frames");
     var replay = AtlasNetwork.handleRequest(player, new AtlasNetwork.Request(
         initial.campaign(), CampaignActions.Action.DELIVER, "first_signal"));
     helper.assertTrue(replay.message().equals("entrelumen.delivery.failed")
-        && campaign.completed.size() == 6 && player.getInventory().countItem(atlas) == 1
+        && campaign.completed.size() == 6 && player.getInventory().countItem(atlas) == 0
           && player.getInventory().countItem(BuiltInRegistries.ITEM.get(ResourceLocation.parse("entrelumen:signal_core"))) == 1
           && player.getInventory().countItem(frame) == 2,
         "Completed signal replay changed progress or inventory");
@@ -734,6 +737,8 @@ public final class RuntimeGameTests {
     prototypes.put("travelling_pantry", BuiltInRegistries.ITEM.get(ResourceLocation.parse("entrelumen:ration_bundle")));
     // Gifted prototypes are valid. This tests delivery, not the full pack's crafting recipes.
     prototypes.values().forEach(item -> player.getInventory().add(new ItemStack(item, 2)));
+    // Ruins v2: the archive also takes Terra's Blueprint from the Sunken Workshop.
+    player.getInventory().add(new ItemStack(RuinContent.PIECES.get("terra_blueprint").get()));
     player.getInventory().add(new ItemStack(Items.PAPER, 6));
     player.getInventory().add(new ItemStack(Items.COPPER_INGOT, 2));
     player.getInventory().add(new ItemStack(Items.ANVIL));
@@ -979,6 +984,9 @@ public final class RuntimeGameTests {
     prototypes.put("workshop_hands", BuiltInRegistries.ITEM.get(ResourceLocation.parse("entrelumen:handling_core")));
     // Gifted prototypes are valid. This tests delivery, not the full pack's crafting recipes.
     prototypes.values().forEach(item -> player.getInventory().add(new ItemStack(item, 2)));
+    // Ruins v2: three act III projects also take their ruin's key piece.
+    for (String piece : List.of("mother_seed", "heliodor_crucible", "route_seal"))
+      player.getInventory().add(new ItemStack(RuinContent.PIECES.get(piece).get()));
     player.getInventory().add(new ItemStack(Items.PAPER, 6));
     player.getInventory().add(new ItemStack(Items.COPPER_INGOT, 2));
     player.getInventory().add(new ItemStack(Items.ANVIL));
@@ -1013,8 +1021,9 @@ public final class RuntimeGameTests {
     var initial = AtlasNetwork.handleOpen(player);
     for (var entry : prototypes.entrySet()) {
       var view = initial.projects().stream().filter(p -> p.id().equals(entry.getKey())).findFirst().orElseThrow();
-      helper.assertTrue(!view.completed() && view.materials().equals(List.of(
-          new AtlasNetwork.Material(BuiltInRegistries.ITEM.getKey(entry.getValue()), 2, 1)))
+      helper.assertTrue(!view.completed() && view.materials().contains(
+          new AtlasNetwork.Material(BuiltInRegistries.ITEM.getKey(entry.getValue()), 2, 1))
+          && view.materials().size() == Projects.all().get(entry.getKey()).items().size()
           && view.prerequisites().stream().anyMatch(p -> p.id().equals("lost_workshop") && p.completed()),
           "Atlas prototype costs or prerequisite status differ: " + entry.getKey());
     }
@@ -1026,7 +1035,8 @@ public final class RuntimeGameTests {
         && closure.prerequisites().stream().noneMatch(AtlasNetwork.Prerequisite::completed)
         && new HashSet<>(closure.materials()).equals(Set.of(
             new AtlasNetwork.Material(ResourceLocation.parse("minecraft:paper"), 6, 3),
-            new AtlasNetwork.Material(ResourceLocation.parse("minecraft:copper_ingot"), 2, 1))),
+            new AtlasNetwork.Material(ResourceLocation.parse("minecraft:copper_ingot"), 2, 1),
+            new AtlasNetwork.Material(ResourceLocation.parse("entrelumen:route_seal"), 1, 1))),
         "Atlas closure snapshot has incorrect costs or status");
     int deliveredCount = 0;
     for (var entry : prototypes.entrySet()) {
@@ -1042,7 +1052,8 @@ public final class RuntimeGameTests {
           campaignId, CampaignActions.Action.DELIVER, entry.getKey()));
       helper.assertTrue(delivered.message().equals("entrelumen.atlas.delivered")
           && delivered.projects().stream().anyMatch(p -> p.id().equals(entry.getKey()) && p.completed()
-              && !p.ready() && p.materials().getFirst().available() == 1)
+              && !p.ready() && p.materials().stream().anyMatch(m -> m.available() == 1
+                  && m.item().equals(BuiltInRegistries.ITEM.getKey(entry.getValue()))))
           && campaign.completed.contains(entry.getKey())
           && player.getInventory().countItem(entry.getValue()) == 1,
           "Prototype delivery did not consume exactly one: " + entry.getKey());
@@ -1118,6 +1129,10 @@ public final class RuntimeGameTests {
     prototypes.put("pollinator_treaty", arkItem("ecosystem_capsule"));
     prototypes.put("sealed_memory", arkItem("containment_seal"));
     prototypes.values().forEach(item -> player.getInventory().add(new ItemStack(item, 2)));
+    // Ruins v2: the archive also takes the Eyepiece, the Testimony and the Temple's Sacred Flame (26 September);
+    // the Heart, the Sun Key.
+    for (String piece : List.of("voices_eyepiece", "forest_testimony", "sacred_flame", "sun_key"))
+      player.getInventory().add(new ItemStack(RuinContent.PIECES.get(piece).get()));
     player.getInventory().add(new ItemStack(Items.PAPER, 6));
     player.getInventory().add(new ItemStack(Items.COPPER_INGOT, 2));
     player.getInventory().add(new ItemStack(Items.DIAMOND, 3));
@@ -1129,8 +1144,9 @@ public final class RuntimeGameTests {
     var initial = AtlasNetwork.handleOpen(player);
     for (var entry : prototypes.entrySet()) {
       var view = initial.projects().stream().filter(p -> p.id().equals(entry.getKey())).findFirst().orElseThrow();
-      helper.assertTrue(!view.completed() && view.materials().equals(List.of(
-          new AtlasNetwork.Material(BuiltInRegistries.ITEM.getKey(entry.getValue()), 2, 1)))
+      helper.assertTrue(!view.completed() && view.materials().contains(
+          new AtlasNetwork.Material(BuiltInRegistries.ITEM.getKey(entry.getValue()), 2, 1))
+          && view.materials().size() == Projects.all().get(entry.getKey()).items().size()
           && view.prerequisites().stream().map(AtlasNetwork.Prerequisite::id)
               .collect(java.util.stream.Collectors.toSet()).equals(prerequisites.get(entry.getKey()))
           && view.prerequisites().stream().allMatch(p -> p.completed() == expectedCompleted.contains(p.id())),
@@ -1187,6 +1203,9 @@ public final class RuntimeGameTests {
       var result = AtlasNetwork.handleRequest(player, new AtlasNetwork.Request(
           initial.campaign(), CampaignActions.Action.DELIVER, entry.getKey()));
       expectedInventory.compute(BuiltInRegistries.ITEM.getKey(entry.getValue()).toString(), (id, count) -> count - 1);
+      Projects.all().get(entry.getKey()).items().keySet().stream()
+          .filter(item -> KeyPieces.PIECES.containsKey(item.substring(item.indexOf(':') + 1)))
+          .forEach(expectedInventory::remove);
       String reward = Projects.all().get(entry.getKey()).reward();
       if (!reward.isEmpty()) expectedInventory.merge(reward, 1, Integer::sum);
       expectedCompleted.add(entry.getKey());
@@ -1210,6 +1229,7 @@ public final class RuntimeGameTests {
     var placed = AtlasNetwork.handleRequest(player, new AtlasNetwork.Request(
         initial.campaign(), CampaignActions.Action.DELIVER, HeliodorHeartRules.PROJECT));
     expectedInventory.remove("entrelumen:heart_of_heliodor");
+    expectedInventory.remove("entrelumen:sun_key");
     expectedCompleted.add(HeliodorHeartRules.PROJECT);
     helper.assertTrue(placed.message().equals("entrelumen.atlas.delivered") && !placed.canAdvance()
         && campaign.completed.equals(expectedCompleted)
@@ -1288,6 +1308,9 @@ public final class RuntimeGameTests {
     player.getInventory().add(new ItemStack(Items.PAPER, 6));
     player.getInventory().add(new ItemStack(Items.COPPER_INGOT, 2));
     player.getInventory().add(new ItemStack(Items.DIAMOND, 3));
+    // Ruins v2 (roster of 26 September): World Network takes the Star Chart of the Void Observatory.
+    for (String piece : List.of("star_chart"))
+      player.getInventory().add(new ItemStack(RuinContent.PIECES.get(piece).get()));
     var installedPos = helper.absolutePos(new net.minecraft.core.BlockPos(1, 1, 1));
     helper.getLevel().setBlockAndUpdate(installedPos,
         net.minecraft.world.level.block.Blocks.CRAFTER.defaultBlockState());
@@ -1339,8 +1362,9 @@ public final class RuntimeGameTests {
           .findFirst().orElseThrow();
       helper.assertTrue(view.ready() && !view.completed()
           && view.prerequisites().equals(List.of(new AtlasNetwork.Prerequisite("atlas_voices", true)))
-          && view.materials().equals(List.of(new AtlasNetwork.Material(
-              BuiltInRegistries.ITEM.getKey(entry.getValue()), 2, 1))),
+          && view.materials().contains(new AtlasNetwork.Material(
+              BuiltInRegistries.ITEM.getKey(entry.getValue()), 2, 1))
+          && view.materials().size() == Projects.all().get(entry.getKey()).items().size(),
           "Atlas Act V material or prerequisite differs: " + entry.getKey());
     }
     var closure = initial.projects().stream().filter(p -> p.id().equals("world_network"))
@@ -1351,7 +1375,8 @@ public final class RuntimeGameTests {
         && closure.prerequisites().stream().noneMatch(AtlasNetwork.Prerequisite::completed)
         && new HashSet<>(closure.materials()).equals(Set.of(
             new AtlasNetwork.Material(ResourceLocation.parse("minecraft:paper"), 6, 3),
-            new AtlasNetwork.Material(ResourceLocation.parse("minecraft:copper_ingot"), 2, 1))),
+            new AtlasNetwork.Material(ResourceLocation.parse("minecraft:copper_ingot"), 2, 1),
+            new AtlasNetwork.Material(ResourceLocation.parse("entrelumen:star_chart"), 1, 1))),
         "World network closure has wrong cost or prerequisite state");
 
     for (var entry : prototypes.entrySet()) {
@@ -1363,6 +1388,9 @@ public final class RuntimeGameTests {
           campaignId, CampaignActions.Action.DELIVER, entry.getKey()));
       expectedInventory.compute(BuiltInRegistries.ITEM.getKey(entry.getValue()).toString(),
           (id, count) -> count - 1);
+      Projects.all().get(entry.getKey()).items().keySet().stream()
+          .filter(item -> KeyPieces.PIECES.containsKey(item.substring(item.indexOf(':') + 1)))
+          .forEach(expectedInventory::remove);
       expectedCompleted.add(entry.getKey());
       helper.assertTrue(delivered.message().equals("entrelumen.atlas.delivered")
           && !delivered.canAdvance() && campaign.completed.equals(expectedCompleted)
@@ -1398,6 +1426,7 @@ public final class RuntimeGameTests {
     expectedInventory.compute("minecraft:paper", (id, count) -> count - 3);
     expectedInventory.compute("minecraft:copper_ingot", (id, count) -> count - 1);
     expectedCompleted.add("world_network");
+    expectedInventory.remove("entrelumen:star_chart");
     helper.assertTrue(closed.message().equals("entrelumen.atlas.delivered")
         && !closed.canAdvance() && campaign.completed.equals(expectedCompleted)
         && Entrelumen.availableMaterials(player).equals(expectedInventory)

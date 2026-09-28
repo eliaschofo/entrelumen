@@ -1,0 +1,64 @@
+{
+  "act": 2,
+  "dimension": "minecraft:overworld",
+  "scale": "landmark",
+  "template": "entrelumen:ruins/sunken_workshop",
+  "placement": {
+    "mode": "surface",
+    "min": 400,
+    "max": 1200
+  },
+  "piece": "entrelumen:terra_blueprint",
+  "project": "lost_workshop",
+  "loot": "entrelumen:chests/ruin_act2_workshop_stores",
+  "challenges": {
+    "drowned": {
+      "type": "boss",
+      "entity": "minecraft:drowned",
+      "name": "entrelumen.ruin.boss.drowned_crew",
+      "count": 3,
+      "radius": 20,
+      "color": "blue",
+      "attributes": {
+        "minecraft:generic.max_health": 30,
+        "minecraft:generic.attack_damage": 4
+      }
+    },
+    "sluices": {
+      "type": "redstone",
+      "without": [
+        "create"
+      ]
+    },
+    "engine": {
+      "type": "pumps",
+      "mods": [
+        "create"
+      ]
+    },
+    "seal": {
+      "type": "seal",
+      "mods": [
+        "create"
+      ],
+      "requires": [
+        "engine"
+      ],
+      "angle": 45,
+      "tolerance": 3,
+      "rest": 60
+    }
+  },
+  "gates": {
+    "vault": [
+      "sluices",
+      "seal"
+    ]
+  },
+  "pedestal": [
+    "drowned",
+    "sluices",
+    "seal"
+  ],
+  "note": "With Create, Terra's Engine: the four wheels merged drain the pit through the pumps at R RPM or faster (R from the pack's Create stress values), then the seal ring held at an eighth of a turn opens the vault. Without Create, the eight sluice levers drain it."
+}

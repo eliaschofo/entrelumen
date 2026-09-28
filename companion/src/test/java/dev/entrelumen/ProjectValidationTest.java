@@ -20,7 +20,8 @@ class ProjectValidationTest {
   @Test
   void validDefinitionsRemainImmutable() throws Exception {
     var projects = Projects.parse(defaults(), id -> true);
-    assertEquals("entrelumen:atlas", projects.get("atlas_awakened").reward());
+    // 26 September 2026: the Atlas waits on the Signal Tower's pedestal; awakening it gives no item.
+    assertTrue(projects.get("atlas_awakened").reward().isEmpty());
     assertThrows(UnsupportedOperationException.class, () -> projects.clear());
     assertThrows(
         UnsupportedOperationException.class,
@@ -39,6 +40,7 @@ class ProjectValidationTest {
       var project = projects.get(id);
       assertEquals(5, project.act());
       assertEquals(java.util.Set.of("atlas_voices"), project.prerequisites());
+      // Ruins v2, roster of 26 September: the Star Chart went to the network; the settlement takes no piece.
       assertEquals(java.util.Map.of(item, 1), project.items());
       assertTrue(project.reward().isEmpty());
       var missing = definitions.deepCopy();
@@ -49,8 +51,8 @@ class ProjectValidationTest {
     var closure = projects.get("world_network");
     assertEquals(5, closure.act());
     assertEquals(costs.keySet(), closure.prerequisites());
-    assertEquals(java.util.Map.of("minecraft:paper", 3, "minecraft:copper_ingot", 1),
-        closure.items());
+    assertEquals(java.util.Map.of("minecraft:paper", 3, "minecraft:copper_ingot", 1,
+        "entrelumen:star_chart", 1), closure.items());
     assertTrue(closure.reward().isEmpty());
   }
 
@@ -60,7 +62,7 @@ class ProjectValidationTest {
     var projects = Projects.parse(defaults(), id -> true);
     var heart = projects.get(HeliodorHeartRules.PROJECT);
     assertEquals(4, heart.act());
-    assertEquals(java.util.Map.of("entrelumen:heart_of_heliodor", 1), heart.items());
+    assertEquals(java.util.Map.of("entrelumen:heart_of_heliodor", 1, "entrelumen:sun_key", 1), heart.items());
     assertEquals(java.util.Set.of("exchange_route", HeliodorHeartRules.RECOVERED), heart.prerequisites());
     assertTrue(heart.reward().isEmpty(), "the Atlas keeps the Heart");
     assertTrue(projects.get("atlas_voices").prerequisites().contains(HeliodorHeartRules.PROJECT));
@@ -217,10 +219,11 @@ class ProjectValidationTest {
       json.getAsJsonObject("atlas_awakened").getAsJsonObject("items").add("minecraft:book", value);
       assertThrows(IllegalArgumentException.class, () -> Projects.parse(json, id -> true));
     }
+    // An unknown reward item is refused (the Atlas is no reward since 26 September; the lens is).
     var json = defaults();
     assertThrows(
         IllegalArgumentException.class,
-        () -> Projects.parse(json, id -> !id.toString().equals("entrelumen:atlas")));
+        () -> Projects.parse(json, id -> !id.toString().equals("entrelumen:raw_lens")));
   }
 
   @Test

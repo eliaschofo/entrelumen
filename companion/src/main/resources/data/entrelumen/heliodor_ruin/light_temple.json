@@ -1,0 +1,45 @@
+{
+  "act": 4,
+  "dimension": "minecraft:overworld",
+  "scale": "landmark",
+  "template": "entrelumen:ruins/light_temple",
+  "placement": {
+    "mode": "surface",
+    "min": 400,
+    "max": 1200
+  },
+  "piece": "entrelumen:sacred_flame",
+  "project": "spectral_archive",
+  "loot": "entrelumen:chests/ruin_act4_temple",
+  "challenges": {
+    "offerings": {
+      "type": "offering",
+      "item": "minecraft:glowstone"
+    },
+    "lamps": {
+      "type": "braziers"
+    },
+    "keeper": {
+      "type": "boss",
+      "requires": [
+        "offerings",
+        "lamps"
+      ],
+      "entity": "minecraft:evoker",
+      "name": "entrelumen.ruin.boss.keeper_of_light",
+      "radius": 14,
+      "color": "yellow",
+      "attributes": {
+        "minecraft:generic.max_health": 200,
+        "minecraft:generic.armor": 10,
+        "minecraft:generic.knockback_resistance": 0.8,
+        "minecraft:generic.scale": 1.5
+      }
+    }
+  },
+  "pedestal": [
+    "offerings",
+    "lamps",
+    "keeper"
+  ]
+}

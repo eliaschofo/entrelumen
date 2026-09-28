@@ -1206,12 +1206,14 @@ const entrelumenAuditTargets = {
     "entrelumen:energy_coupler",
     "entrelumen:engineering_module",
     "entrelumen:exploration_module",
+    "entrelumen:forest_testimony",
     "entrelumen:growth_altar",
     "entrelumen:habitation_contract",
     "entrelumen:habitation_module",
     "entrelumen:handling_core",
     "entrelumen:heart_of_heliodor",
     "entrelumen:heliodor_compass",
+    "entrelumen:heliodor_crucible",
     "entrelumen:heliodor_pedestal",
     "entrelumen:heliodor_relic_1",
     "entrelumen:heliodor_relic_2",
@@ -1232,6 +1234,7 @@ const entrelumenAuditTargets = {
     "entrelumen:luminous_helmet",
     "entrelumen:luminous_ingot",
     "entrelumen:luminous_sword",
+    "entrelumen:mother_seed",
     "entrelumen:nature_module",
     "entrelumen:patina_shelf",
     "entrelumen:peace_altar",
@@ -1242,14 +1245,21 @@ const entrelumenAuditTargets = {
     "entrelumen:renewal_altar",
     "entrelumen:renewal_engine",
     "entrelumen:repose_altar",
+    "entrelumen:route_seal",
     "entrelumen:routing_matrix",
+    "entrelumen:sacred_flame",
     "entrelumen:signal_core",
+    "entrelumen:signal_ember",
     "entrelumen:spectral_lens",
+    "entrelumen:star_chart",
+    "entrelumen:sun_key",
     "entrelumen:survey_notes",
     "entrelumen:survey_station",
     "entrelumen:terra_arm",
+    "entrelumen:terra_blueprint",
     "entrelumen:terraform_altar",
     "entrelumen:time_altar",
+    "entrelumen:voices_eyepiece",
     "eternal_starlight:abyssal_fruit",
     "eternal_starlight:abyssal_geyser",
     "eternal_starlight:abyssal_kelp",
@@ -4937,7 +4947,7 @@ const entrelumenAuditTargets = {
       "output": "farmersdelight:flint_knife"
     }
   ],
-  "signature": "c66b1666c768d2b8"
+  "signature": "a2b39f460cfe032b"
 };
 
 ServerEvents.afterRecipes(event => {

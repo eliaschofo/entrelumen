@@ -59,17 +59,18 @@ public final class TeamRestartGameTests {
   private static final Set<String> TEAM_B_COMPLETED = Set.of("atlas_awakened",
       "lens_assembled", "engineering_module", "arcane_module", "nature_module",
       "logistics_module", "habitation_module", "exploration_module");
+  // Since 26 September the Atlas waits on the Signal Tower's pedestal: awakening it gives no item.
   private static final Map<String, Integer> INVENTORY_A = Map.of(
-      "entrelumen:atlas", 1, FRAME, 5, REGULATOR, 4, "minecraft:diamond", 3);
+      FRAME, 5, REGULATOR, 4, "minecraft:diamond", 3);
   private static final Map<String, Integer> INVENTORY_B = Map.of(
-      "entrelumen:atlas", 1, "entrelumen:raw_lens", 1, FRAME, 6,
+      "entrelumen:raw_lens", 1, FRAME, 6,
       REGULATOR, 4, "minecraft:diamond", 4);
   private static final Map<String, Integer> INVENTORY_GUEST = Map.of("minecraft:emerald", 2);
   /** After login each owner holds the refund of the Ark batch its team had left unfinished (Ark v2). */
   private static final Map<String, Integer> REFUNDED_A = Map.of(
-      "entrelumen:atlas", 1, FRAME, 7, REGULATOR, 4, "minecraft:diamond", 3);
+      FRAME, 7, REGULATOR, 4, "minecraft:diamond", 3);
   private static final Map<String, Integer> REFUNDED_B = Map.of(
-      "entrelumen:atlas", 1, "entrelumen:raw_lens", 1, FRAME, 6,
+      "entrelumen:raw_lens", 1, FRAME, 6,
       REGULATOR, 5, "minecraft:diamond", 4);
 
   private record State(int act, Set<String> completed, Map<String, Integer> refunds, boolean archived) {}
@@ -113,9 +114,8 @@ public final class TeamRestartGameTests {
               && command(ownerB, "entrelumen deliver atlas_awakened") == 1
               && command(ownerB, "entrelumen deliver lens_assembled") == 1,
           "Personal restart histories did not earn their real milestones and rewards");
-      assertInventory(helper, ownerA, Map.of("entrelumen:atlas", 1), "owner A personal");
-      assertInventory(helper, ownerB,
-          Map.of("entrelumen:atlas", 1, "entrelumen:raw_lens", 1), "owner B personal");
+      assertInventory(helper, ownerA, Map.of(), "owner A personal");
+      assertInventory(helper, ownerB, Map.of("entrelumen:raw_lens", 1), "owner B personal");
       assertState(helper, data.campaigns.personal.get(ownerA.getUUID()), personalA(),
           "owner A personal before party");
       assertState(helper, data.campaigns.personal.get(ownerB.getUUID()), personalB(),
