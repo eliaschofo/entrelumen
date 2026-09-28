@@ -274,9 +274,12 @@ class FamilyBalanceTest(unittest.TestCase):
         self.assertEqual(by_id['refinedstorage:controller']['add'], balance.RM)
         self.assertIn('modern_industrialization:electric_age/machine/assembler/replicator', family['removals'])
         self.assertIn('oritech:particle/nether_star', family['removals'])
-        # Broken upstream recipes are disabled; the only other override is the Gatekeeper's first-win loot.
+        # Broken upstream recipes are disabled, Ad Astra's chest loot moves to the 1.21 folder; the only other
+        # override is the Gatekeeper's first-win loot.
         self.assertEqual(len([s for s in family['data'] if s['op'] == 'disable']), len(balance.PINGPONG_BROKEN_RECIPES))
-        self.assertEqual([s['path'] for s in family['data'] if s['op'] != 'disable'],
+        self.assertEqual([s['to'] for s in family['data'] if s['op'] == 'port_loot'],
+                         [path.replace('/loot_tables/', '/loot_table/') for path, _ in balance.AD_ASTRA_CHEST_LOOT])
+        self.assertEqual([s['path'] for s in family['data'] if s['op'] not in ('disable', 'port_loot')],
                          ['data/eternal_starlight/loot_table/bosses/the_gatekeeper.json'])
 
     def test_round_four_stages_heliodor_solar_tech_and_psi(self):
@@ -717,6 +720,56 @@ class BossDropsTest(unittest.TestCase):
                       f'"from":"{balance.ORB}","to":"{balance.SHARD}","count":4}}];', script)
         self.assertIn("EntityEvents.spawned(swap.entity", script)
         self.assertEqual(balance.render_offer_swaps({'tag': 'X'}, 'p'), '')
+
+
+class PortedLootTest(unittest.TestCase):
+    """Ad Astra's chest loot in the 1.20 folder, ported to 1.21 (docs/design/mod-pingpong.md)."""
+
+    def test_ported_loot_moves_a_120_table_and_converts_only_what_121_reads_differently(self):
+        path = 'data/x/loot_tables/chests/a.json'
+        book = {'type': 'minecraft:item', 'name': 'minecraft:book', 'weight': 5,
+                'functions': [{'function': 'minecraft:enchant_randomly'}]}
+        native = {'_comment': 'legacy', 'type': 'minecraft:chest', 'pools': [{
+            'rolls': {'min': 1, 'max': 3}, 'bonus_rolls': 0.0,
+            'entries': [{'type': 'item', 'name': 'x:gem', 'weight': 2,
+                         'functions': [{'function': 'set_count', 'count': {'type': 'minecraft:uniform', 'min': 1.0, 'max': 2.0},
+                                        'add': False}]}, book]}]}
+        spec = balance.ported_loot(path, '')
+        self.assertEqual(spec['to'], 'data/x/loot_table/chests/a.json')
+        with unittest.mock.patch.dict(balance.FAMILIES, {'probe': {'data': [spec]}}):
+            out = balance.build_data('probe', upstream(path, native))
+            self.assertEqual(list(out), ['x/loot_table/chests/a.json'])
+            ported = json.loads(out['x/loot_table/chests/a.json'])
+            expected = json.loads(json.dumps(native))
+            expected['pools'][0]['entries'][1]['functions'][0]['options'] = '#minecraft:on_random_loot'
+            self.assertEqual(ported, expected)
+            # Upstream now ships the 1.21 path: the port must go instead of overriding it.
+            with self.assertRaises(AssertionError):
+                balance.build_data('probe', {**upstream(path, native), **upstream(spec['to'], native)})
+            # 1.20 forms without a written conversion fail instead of loading with another meaning.
+            for broken in (dict(book, functions=[{'function': 'minecraft:set_nbt', 'tag': '{Potion:"minecraft:luck"}'}]),
+                           dict(book, functions=[{'function': 'minecraft:enchant_randomly', 'enchantments': ['minecraft:mending']}]),
+                           dict(book, conditions=[{'condition': 'minecraft:random_chance', 'chance': 0.5}]),
+                           dict(book, type='minecraft:loot_table')):
+                table = json.loads(json.dumps(native))
+                table['pools'][0]['entries'][1] = broken
+                with self.subTest(broken=broken), self.assertRaises(AssertionError):
+                    balance.build_data('probe', upstream(path, table))
+        with self.assertRaises(AssertionError):
+            balance.ported_loot('data/x/loot_table/chests/a.json', '')
+
+    @unittest.skipUnless(lock_available(), 'Pinned dependency JARs are not available on this machine')
+    def test_ad_astra_ports_are_the_tables_its_structure_chests_name(self):
+        spec = importlib.util.spec_from_file_location('loot_check_for_family', Path(__file__).with_name('check_loot_tables.py'))
+        loot = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(loot)
+        found = pinned_data()
+        (jar,) = [path for name, path in loot.pinned_jars().items() if name.startswith('adastra-')]
+        named = set(loot.structure_loot_tables(jar))
+        ports = [s for s in balance.FAMILIES['pingpong']['data'] if s['op'] == 'port_loot']
+        ids = {re.sub(r'^data/([^/]+)/loot_table/(.+)\.json$', r'\1:\2', s['to']) for s in ports}
+        self.assertEqual(ids, named)
+        self.assertTrue(all(len(found[s['path']]) == 1 and s['to'] not in found for s in ports))
 
 
 if __name__ == '__main__':
