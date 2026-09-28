@@ -700,6 +700,7 @@ def generate_book(chapters=None, guides=None, book=None, sectors=None):
     ordered = sorted(list(guides) + list(sectors), key=lambda g: group_order(g, book))
     order = {}
     presets = {}
+    glyphs = set()   # icon textures the sectors draw in their text: the companion's icon font (quest_text)
     for data in ordered:
         assert data["chapter"] not in names, f"duplicate chapter {data['chapter']}"
         names.add(data["chapter"])
@@ -707,9 +708,10 @@ def generate_book(chapters=None, guides=None, book=None, sectors=None):
         first.setdefault(data["group"], data)
         order[gid] = order.get(gid, -1) + 1
         if data.get("format") == "sector":
-            chapter, _ctx, sector_presets = quest_engine.compile_sector(
+            chapter, sector_ctx, sector_presets = quest_engine.compile_sector(
                 data, book, tables, languages, seen, all_keys, chapter_names, gid, order[gid], gated)
             presets.update(sector_presets)
+            glyphs |= sector_ctx.get("glyphs", set())
         else:
             chapter = generate_guide(data, gid, order[gid], book, languages, seen)
         files[OUT / "chapters" / (data["chapter"] + ".snbt")] = snbt(chapter)
@@ -730,6 +732,7 @@ def generate_book(chapters=None, guides=None, book=None, sectors=None):
     files[THEME] = theme(book)
     for lang, values in quest_engine.companion_strings(book, table_langs).items():
         files[FTBQ_LANG / (lang + ".json")] = json.dumps(values, ensure_ascii=False, indent=2) + "\n"
+    files.update(quest_engine.quest_text.font_files(ROOT, glyphs))
     return files
 
 
@@ -748,7 +751,7 @@ def main():
         for p in stale:p.unlink()
     if failures:raise SystemExit('Generated output missing or stale: '+', '.join(failures))
     sectors=quest_engine.load_sectors()
-    quests=sum(len(d['quests']) for d in chapters)+sum(len(g['quests']) for g in guides)+sum(len(x['quests']) for x in sectors)
+    quests=sum(len(d['quests']) for d in chapters)+sum(len(g['quests']) for g in guides)+sum(1 for x in sectors for q in x['quests'] if quest_engine.quest_art.is_counted(q))
     print(f"PASS: {len(chapters)+len(guides)+len(sectors)+1} chapters ({len(chapters)} story, {len(guides)} guides, "
           f"{len(sectors)} sectors, hub), {quests} quests, {len([p for p in files if p.parent == OUT / 'reward_tables'])} reward tables, "
           f"{len(book['groups'])} groups, global IDs/DAG, EN/ES parity; runtime not verified.")

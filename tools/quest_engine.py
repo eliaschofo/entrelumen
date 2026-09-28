@@ -30,6 +30,9 @@ import math
 import re
 from pathlib import Path
 
+import quest_art    # presentation v2: canvas art kinds and decor nodes
+import quest_text   # presentation v2: text markup and the companion fonts
+
 ROOT = Path(__file__).resolve().parents[1]
 SECTORS = ROOT / "content/sectors"
 LOCALES = ("en_us", "es_es")
@@ -54,6 +57,7 @@ ROLES = {
     "bounty": ("el_rosette", 1.0, True),
     "boss": ("el_shield", 2.0, True),
     "capstone": ("el_sunburst", 3.0, False),
+    "decor": ("none", 1.0, True),          # a toy on the canvas, never content (quest_art.decor)
 }
 CHECK_ROLES = {"tip", "info"}
 TASK_TYPES = {"item", "checkmark", "advancement", "dimension", "biome", "structure", "kill", "observation", "stat"}
@@ -119,7 +123,7 @@ def load_sectors():
 # Rich text
 
 TAG = re.compile(r"\[([a-z]+)(?::([^\]|]*))?((?:\|[^\]|]*)*)\]")
-TEXT_TAGS = {"item", "name", "key", "quest", "chapter", "hl", "b", "i", "warn", "good", "rune", "hover", "tip"}
+TEXT_TAGS = {"item", "name", "key", "quest", "chapter", "hl", "b", "i", "warn", "good", "rune", "hover", "tip"} | quest_text.TAGS
 LINKED_TAGS = {"item", "name", "key", "quest", "chapter"}  # the same set in both languages (quest-copy.md, rule 10)
 
 
@@ -146,9 +150,12 @@ def compile_paragraph(text, lang, ctx, where):
         assert props.get("align", "center") in ("left", "center", "right"), f"{where}: image align"
         ctx["textures"].add(ref)
         return text, ""
+    if text == "{rule}":
+        return quest_text.rule_line(), ("", False)
     segments = []
     pos = 0
     tip = False
+    para_style = None   # quest_text: lead, li, careful, note, big
     for m in TAG.finditer(text):
         before = text[pos:m.start()]
         if before:
@@ -160,8 +167,15 @@ def compile_paragraph(text, lang, ctx, where):
         if name == "tip":
             assert m.start() == 0 and not arg and not parts, f"{where}: [tip] opens a paragraph"
             tip = True
-            segments.append({"text": TIP_MARK, "color": COLORS["tip"]})
-            segments.append({"text": TIP_PREFIX[lang] + " ", "color": COLORS["tip"], "bold": True})
+            if ctx.get("presentation", 1) >= 2:
+                segments.extend(quest_text.tip_prefix(lang, ctx))
+            else:
+                segments.append({"text": TIP_MARK, "color": COLORS["tip"]})
+                segments.append({"text": TIP_PREFIX[lang] + " ", "color": COLORS["tip"], "bold": True})
+        elif name in quest_text.TAGS:
+            segs, style = quest_text.compile_tag(name, arg, parts, m.start() == 0, lang, ctx, where)
+            segments.extend(segs)
+            para_style = style if name in quest_text.PARAGRAPH_TAGS else para_style
         elif name == "item":
             assert arg and ID.fullmatch(arg) and len(parts) == 1 and parts[0], f"{where}: [item:id|text]"
             ctx["items"].add(arg)
@@ -199,7 +213,7 @@ def compile_paragraph(text, lang, ctx, where):
         if seg:
             segments.append(seg)
         pos = m.end()
-        if name == "tip":
+        if name == "tip" or name in quest_text.PARAGRAPH_TAGS:
             while pos < len(text) and text[pos] == " ":
                 pos += 1
     tail = text[pos:]
@@ -210,11 +224,11 @@ def compile_paragraph(text, lang, ctx, where):
         for field in ("text",):
             value = s.get(field, "")
             assert not re.search(r"[\[\]{}§\\]", value), f"{where}: stray markup character in {value!r}"
-    if len(segments) == 1 and set(segments[0]) == {"text"} and "&" not in segments[0]["text"]:
+    if len(segments) == 1 and set(segments[0]) == {"text"} and "&" not in segments[0]["text"] and not para_style:
         line = segments[0]["text"]
         assert not line.startswith((" ", "[", "{")), f"{where}: leading space or bracket"
     else:
-        line = json.dumps([""] + segments, ensure_ascii=False, separators=(",", ":"))
+        line = json.dumps([quest_text.root(para_style)] + segments, ensure_ascii=False, separators=(",", ":"))
     return line, (plain, tip)
 
 
@@ -222,6 +236,7 @@ def compile_text(paragraphs, lang, ctx, where):
     """Markup paragraphs -> quest_desc lines (a blank line between paragraphs, none around page breaks)."""
     assert isinstance(paragraphs, list) and paragraphs, f"{where}: text is a list of paragraphs"
     lines, first_page, pages = [], [], 1
+    quest_text.check_paragraphs(paragraphs, where)
     for i, text in enumerate(paragraphs):
         assert isinstance(text, str) and text.strip() == text and text, f"{where}: empty or padded paragraph"
         line, info = compile_paragraph(text, lang, ctx, f"{where}#{i}")
@@ -230,7 +245,7 @@ def compile_text(paragraphs, lang, ctx, where):
             pages += 1
             lines.append(line)
             continue
-        if lines and lines[-1] != "{@pagebreak}":
+        if lines and lines[-1] != "{@pagebreak}" and not quest_text.joins(paragraphs[i - 1], text):
             lines.append("")
         lines.append(line)
         if pages == 1 and info:
@@ -859,7 +874,8 @@ def compile_sector(data, book, tables, languages, seen_ids, all_keys, chapter_id
     by_key = {q["key"]: q for q in quests}
     assert len(by_key) == len(quests), f"{name}: duplicate key"
     ctx = {"items": set(), "names": set(), "keys": set(), "textures": set(), "entities": set(),
-           "structures": set(), "advancements": set(), "accent": motif["accent"]}
+           "structures": set(), "advancements": set(), "accent": motif["accent"],
+           "presentation": data.get("presentation", 1)}
 
     def resolve_quest(target, where):
         assert target in all_keys, f"{where}: link to unknown quest {target}"
@@ -968,6 +984,8 @@ def compile_sector(data, book, tables, languages, seen_ids, all_keys, chapter_id
         if role in CHECK_ROLES:
             out["disable_toast"] = True
             out["hide_lock_icon"] = True
+        if role == "decor":
+            quest_art.decor(q, out)
         if role == "bounty":
             out["can_repeat"] = True
             out["repeat_cooldown"] = int(q.get("cooldown", book["sector_rewards"]["bounty_cooldown"]))
@@ -1123,7 +1141,7 @@ def decorate_sector(data, motif, figures, placed, nodes, languages, ctx, by_key)
                         scale=1, color=palette["accent"], align="end")
         images.append(img)
     for i, art in enumerate(data.get("art", [])):
-        images.append(art_image(name, i, art, palette, languages, ctx, by_key))
+        images += quest_art.art_images(name, i, art, palette, languages, ctx, by_key)
     return images
 
 
