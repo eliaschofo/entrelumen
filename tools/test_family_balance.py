@@ -630,7 +630,7 @@ class BossDropsTest(unittest.TestCase):
     def test_boss_drops_close_the_star_loops_the_audit_found(self):
         family = balance.FAMILIES['boss_drops']
         self.assertEqual(set(family['removals']), {'theurgy:incubation/nether_star', 'theurgy:incubation/dragon_egg',
-                                                   'rftoolsutility:minecraft_wither'})
+                                                   'rftoolsutility:minecraft_wither', 'rftoolsutility:minecraft_ender_dragon'})
         tags = [s for s in family['data'] if s['op'] == 'tag_values']
         self.assertEqual([(s['path'], s['values']) for s in tags],
                          [('data/oritech/tags/entity_type/spawner_blacklist.json', ['#c:bosses'])])
@@ -641,6 +641,24 @@ class BossDropsTest(unittest.TestCase):
         for name, other in balance.FAMILIES.items():
             for recipe in other.get('additions', []) + other.get('creations', []):
                 self.assertNotEqual(recipe.get('output', recipe['id']), balance.NETHER_STAR, name)
+
+    @unittest.skipUnless(lock_available(), 'Pinned dependency JARs are not available on this machine')
+    def test_no_rftools_spawner_recipe_spawns_a_boss(self):
+        # NeoForge's c:bosses holds the Wither and the Ender Dragon; pinned mods may add their own bosses.
+        found = pinned_data()
+        bosses = {'minecraft:wither', 'minecraft:ender_dragon'}
+        for _, _, raw in found.get('data/c/tags/entity_type/bosses.json', []):
+            bosses |= {v['id'] if isinstance(v, dict) else v for v in json.loads(raw)['values']}
+        spawns = {}
+        for path, owners in found.items():
+            if path.startswith('data/rftoolsutility/recipe/'):
+                recipe = json.loads(owners[0][2])
+                if recipe.get('type') == 'rftoolsutility:spawner':
+                    spawns[balance.recipe_id_from_name(path)] = recipe['entity']
+        boss_recipes = {rid for rid, entity in spawns.items() if entity in bosses}
+        self.assertEqual(boss_recipes, {'rftoolsutility:minecraft_wither', 'rftoolsutility:minecraft_ender_dragon'})
+        self.assertLessEqual(boss_recipes, set(balance.FAMILIES['boss_drops']['removals']))
+        self.assertIn('rftoolsutility:minecraft_zombie', spawns)
 
     def test_swapped_loot_pays_exactly_the_staged_recipe(self):
         spec = balance.swapped_loot(GATEKEEPER, balance.ORB, balance.SHARD, '', count=4, staged=balance.ORB)

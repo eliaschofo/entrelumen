@@ -941,6 +941,9 @@ FAMILIES = {
             'theurgy:incubation/dragon_egg',
             # A Wither for 0.1 star of matter and 20,000 FE, which drops a whole star.
             'rftoolsutility:minecraft_wither',
+            # No boss spawns from a machine (Elias, 27 September 2026). A spawned dragon has no End fight, so
+            # no heart or egg, but Draconic Evolution gave it about 64 draconium dust for 100,000 FE.
+            'rftoolsutility:minecraft_ender_dragon',
         ],
         'data': [
             tagged('data/oritech/tags/entity_type/spawner_blacklist.json', ['#c:bosses'],

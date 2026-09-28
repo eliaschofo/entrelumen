@@ -457,18 +457,18 @@ Familia nueva `boss_drops` de `tools/generate_family_balance.py` (script `entrel
 | Fuente | Qué hacía | Cambio |
 |---|---|---|
 | Theurgy, incubación | La licuefacción convierte una estrella o un huevo de dragón en varios azufres, y la incubación rearmaba cada uno. | Salen `theurgy:incubation/nether_star` y `theurgy:incubation/dragon_egg`. La licuefacción y la calcinación siguen consumiendo estrellas. |
-| RFTools Utility, generador de criaturas | Un Wither por 0,1 estrella de materia y 20.000 FE, y el Wither suelta una estrella entera. | Sale `rftoolsutility:minecraft_wither`. |
+| RFTools Utility, generador de criaturas | Un Wither por 0,1 estrella de materia y 20.000 FE, y el Wither suelta una estrella entera; un Dragón del End por 100.000 FE, sin pelea del End pero con unos 64 de polvo de draconio de Draconic Evolution. | Salen `rftoolsutility:minecraft_wither` y `rftoolsutility:minecraft_ender_dragon`: ninguna máquina hace jefes. |
 | Oritech, controlador de spawner | Atrapa cualquier mob que lo pisa salvo el Dragón: un Wither costaba unas decenas de almas. | `#c:bosses` se suma a `oritech:spawner_blacklist`, con un archivo que se fusiona con el de Oritech. |
 | Bumblezone, la Reina | Pagaba estrellas por jalea real, y la abeja real de Productive Bees hace jalea sin fin. | La estrella sale de las recompensas por frasco y por cubo o bloque. |
 
 Ender IO (frascos de alma y spawner motorizado), Industrial Foregoing (herramienta de captura, y con ella el duplicador) y Apothic Spawners (captura y huevos) ya rechazan `#c:bosses`, y la rienda de ender tampoco toma jefes. La trampa de jefes de Forbidden Arcanus los captura para soltarlos y pelearlos, y Silent Gear sólo parte y rearma estrellas: ninguna fuente nueva.
 
-Quedan para decidir con Elias, sin tocar:
+Decisiones de Elias (27/9) sobre lo que quedaba abierto:
 
-- **Hostile Neural Networks.** El modelo del Wither, entrenado matando Withers, simula estrellas con FE y matrices de predicción. La guía de jefes lo presenta como la granja de estrellas del acto IV.
-- **Occultism, campo de batalla dimensional.** Con una gema trinidad, que no tiene lista negra, clona un Wither capturado y lo mata a cambio de datura: una estrella por victoria (`battlefield/minecraft/wither`).
-- **Huevos de dragón.** Los hacen el modelo del dragón de HNN, el campo de batalla (uno de cada cuatro), la nucleosíntesis de Mekanism (un huevo y 4 mB de antimateria) y la Reina (cubo o bloque de jalea). Draconic Evolution ya deja un huevo cada vez que se mata al dragón.
-- **El dragón del generador de RFTools** (100.000 FE) sigue: sin la pelea del End no deja corazón ni huevo, pero Draconic Evolution le suma unos 64 de polvo de draconio.
+- **Hostile Neural Networks: queda.** El modelo del Wither se entrena matando Withers y simula estrellas con FE y matrices de predicción: es la granja de estrellas del acto IV que describe la guía de jefes, y el Wither sigue siendo la fuente.
+- **Occultism, campo de batalla dimensional: queda.** Clona un Wither capturado con una gema trinidad, que es de juego tardío, y lo mata a cambio de datura (`battlefield/minecraft/wither`): también ahí el Wither sigue siendo la fuente.
+- **Huevos de dragón: quedan las demás fuentes.** El modelo del dragón de HNN, el campo de batalla (uno de cada cuatro), la nucleosíntesis de Mekanism (un huevo y 4 mB de antimateria) y la Reina (cubo o bloque de jalea); Draconic Evolution además deja un huevo cada vez que se mata al dragón. Sólo salió la incubación de Theurgy.
+- **El dragón del generador de RFTools: sale**, por la misma regla que el Wither: ninguna máquina hace jefes. Sin la pelea del End no dejaba corazón ni huevo, pero era una granja barata de polvo de draconio (unos 64 por dragón, de Draconic Evolution).
 
 ### La puerta de Starlight
 
@@ -490,3 +490,5 @@ Eternal Starlight es del acto IV: la receta del Orbe de la Profecía lleva una C
   - la infusión de la rienda oculta pide 80 de Eterna, 85 de Quanta y 60 de Arcana.
 - El primer arranque cortó la sonda por un método sobrecargado de Rhino; el segundo, ya corregido, terminó limpio. Los únicos errores del log son los conocidos de siempre, ninguno de estos archivos. El servidor se borró después.
 - Pendiente: probarlo en un cliente (el trueque en la pantalla del Guardián, el texto de las quests) y una pelea real con el Guardián.
+
+Seguimiento (27/9, rama `fix/balance-rftools-dragon`): sale `rftoolsutility:minecraft_ender_dragon`. `tools/test_family_balance.py` (`test_no_rftools_spawner_recipe_spawns_a_boss`) lee `c:bosses`, los dos jefes de NeoForge y los que sumen los mods fijados, recorre las recetas del generador de RFTools en los JAR y exige que toda receta de un jefe esté quitada. El servidor no hizo falta: la familia usa el mismo mecanismo de quitado que el Wither, y el arranque anterior ya lo había probado.
