@@ -779,8 +779,8 @@ No se tocó contenido de quests. Los lotes 5 y 7 tienen su propia lista más arr
 
 Todo lo de runtime corre junto, con el lock del servidor de QA, cuando la máquina tenga RAM. El plan está en `mods-r5-20260927/runtime_all.sh` (recibos fuera del repo):
 
-- **QA** del final de la rama (ronda 6 incluida): arranque completo y las GameTests de las rondas 5 y 6. En QA, una línea de Neruina cuenta como error.
-- **Rendimiento**, con el método de la ronda 4: servidor dedicado, semilla 71942026, 90 s en reposo y cuatro sondas de 256 chunks (Overworld dos veces, Nether y End). Se compara en orden ABBA: `main` en f3696ac, los lotes 1 a 6, más Aeronautics y más la ronda 6 (el mundo de Familiars entra ahí).
+- **QA** del final de la rama (rondas 6 y 7 incluidas): arranque completo y las GameTests de las rondas 5 a 7. En QA, una línea de Neruina cuenta como error.
+- **Rendimiento**, con el método de la ronda 4: servidor dedicado, semilla 71942026, 90 s en reposo y cuatro sondas de 256 chunks (Overworld dos veces, Nether y End). Se compara en orden ABBA: la base de `main`, los lotes 1 a 6, más Aeronautics y el final de la rama con las rondas 6 y 7 (ahí entran el mundo de Familiars y las menas de Agradditions). El script toma cada estado de la rama misma, así que un rebase no lo desactualiza.
 - **Arranque de humo del 27/9:** se probó con `-Xmx3584M` y 4,6 GB libres. Todos los mods de los lotes 1 a 5 cargaron y el arranque llegó a la carga de datapacks, pero a los 112 s la RAM libre bajó de 700 MB y el guardián cortó el servidor. El pack completo pide unos 6 a 7 GB libres para arrancar con 4 GB de heap.
 
 ### Pendiente para Elias
@@ -850,3 +850,79 @@ Los mods de contenido aprobados de la [búsqueda hacia afuera](../research/mod-o
   - Familiars: libro de familiares (`alshanex_familiars:familiar_spellbook`), cama y almacén de familiares (`alshanex_familiars:pet_bed`, `alshanex_familiars:familiar_storage`) y la estación de encogimiento (`alshanex_familiars:shrinking_station`).
   - Ars Affinity: no tiene ítems propios que pedir; una quest puede explicar la habilidad en Mouse 4.
 - **Runtime (pendiente):** corre junto con el de la ronda 5 (ver «Rendimiento y QA»). El arranque confirma los mixins de Ars Affinity e Irons Spell N FTB Teams, y la pregeneración mide el mundo de Familiars.
+
+## Ronda 7 (28/9): las preguntas de la búsqueda hacia afuera
+
+Elias decidió el 28/9 las 15 preguntas de la [búsqueda hacia afuera](../research/mod-outward.md#preguntas-para-elias). Entran tres, Animus queda pospuesto y el resto sale. Familia `catalog/families/pingpong7.json`: 3 mods, ninguna librería nueva. El lock pasa de 373 / 319 a **376 / 322**; ninguna entrada previa cambió.
+
+| Mod | Versión | Fuente | Acto | Para qué |
+|---|---|---|---|---|
+| Mystical Agradditions | 8.0.14 | CF 256247/8515974 (FTB Evolution trae el mismo archivo; MIT) | VI | El sexto tier de Mystical Agriculture: insanium y semillas de estrella del Nether, huevo de dragón, draconio despertado y cristal nitro. Suma menas de inferium y prosperidad en el Nether y el End. |
+| ME Beam Former | 1.3.0 | CF 1351545/7765462 (los mismos bytes en Modrinth; LGPL) | III | Rayos visibles que llevan una red ME hasta 32 bloques por el aire. |
+| Hardcore Revival | 21.1.22 | CF 274036/8837401 (los mismos bytes en Modrinth) | todos | En co-op, un jugador sin vida queda caído dos minutos y un compañero lo puede levantar. |
+
+### Mystical Agradditions: el insanium, en el acto VI
+
+- **Todo pasa por el insanium.** Cada semilla de tier 6 lleva cuatro esencias de insanium (la receta de mesa y la del altar de infusión usan el componente «esencia» del cultivo, que para el tier 6 es insanium) y cada crux, otras cuatro. Alcanza con cerrar dónde nace el insanium.
+- **Escalonado** (familia `pingpong7` de `tools/generate_family_balance.py`, script `entrelumen_pingpong7_balance.js`). El insanium tenía dos fuentes:
+  - `mysticalagradditions:insanium_essence`, cuatro esencias de supremium alrededor de un cristal de infusión: **sale**;
+  - `mysticalagradditions:insanium_block_combine`, cuatro bloques de supremium alrededor del cristal maestro: queda, con la **Luminosidad de Naturaleza** en lugar del bloque de arriba (`" Z " / "ECE" / " E "`). Una Luminosidad da un bloque, nueve esencias: una semilla y su crux, con una de sobra.
+  - El bloque de nueve esencias queda como ruta alternativa declarada: sólo compacta insanium, que ahora sale de desarmar esos bloques.
+- **Nada saltea el acto VI** (`test_nothing_makes_insanium_or_tier_six_seeds_before_act_six`). El test recorre las recetas de todos los JAR fijados, anidados incluidos, y exige:
+  - que toda receta que da insanium esté escalonada o quitada, o tome insanium;
+  - que toda receta de semilla de tier 6 tome la esencia de su cultivo;
+  - que la única excepción declarada sea la centrífuga de panal de insanium de Productive Bees, porque la abeja de insanium se infusiona con cuatro bloques y cuatro esencias de insanium. El test lo comprueba.
+
+  Mekanism More Machine plantaba esas semillas; esa ruta ya la bloqueaba `entrelumen_more_machine_balance.js`.
+- **Estrellas del Nether, a propósito.** Elias aceptó las semillas de estrella y de huevo. Abren una fuente tardía de estrellas además del Wither: 27 esencias dan una estrella (nueve por esquirla, tres esquirlas por estrella), y la semilla y su crux piden seis estrellas y dos almas marchitas, que suelta el Wither (35 %). La ofrenda del Envés sigue siendo una estrella o 64 esquirlas de luz agria; con esto, una estrella del acto VI también la paga.
+- **Huevos de dragón:** la crux pide cuatro escamas de dragón (el Dragón suelta ocho); tres pedazos de huevo hacen un huevo.
+- **Draconio despertado y cristal nitro:** también quedan en el acto VI por el insanium. La crux del draconio pide tres bloques de draconio despertado y un corazón de dragón; la del nitro, dos cristales y dos capacitores nitro de Powah.
+- **Gaia y neutronio** no se cargan: Botania y Avaritia no están en el pack.
+- **Config por defecto:** los cultivos de tier 6 no aceptan fertilizante. Las menas del Nether y del End quedan prendidas y se miden en la pregeneración.
+- Almost Unified no toca el insanium (no está en su lista de materiales).
+- **Ganchos para las quests** (acto VI, en la cadena de Mystical Agriculture):
+  - bloque de insanium (`mysticalagradditions:insanium_block`), con la Luminosidad;
+  - tierra de insanium (`mysticalagradditions:insanium_farmland`);
+  - crux de estrella (`mysticalagradditions:nether_star_crux`) y semillas de estrella (`mysticalagriculture:nether_star_seeds`);
+  - crux de huevo (`mysticalagradditions:dragon_egg_crux`) y semillas de huevo (`mysticalagriculture:dragon_egg_seeds`);
+  - como secreto, una estrella cosechada: tres esquirlas (`mysticalagradditions:nether_star_shard`).
+
+### ME Beam Former, sin la torre
+
+- **Sale la torre de inducción inalámbrica** (`me_beam_former:wireless_energy_tower`). Movía energía sin tope por ojos de ender, hierro y oro, y pisaba a Flux Networks, que el pack escalona en el acto III.
+- **Los rayos quedan nativos** (`UPSTREAM`: la pieza lleva los canales que su red ya tiene, y el controlador pide la Matriz de Distribución). ExtendedAE ya conectaba sin cable; esto suma un rayo visible y dos bloques que salen de la misma pieza, el Mega y el Omni.
+- **Reclamos.** La pieza busca en línea recta hasta 32 bloques la primera pieza enfrentada y se conecta sin mirar dueños. Es como dejar la punta de un cable en el borde del reclamo: otro puede meter una pieza en el camino del rayo, del lado sin reclamar, y unir las redes. Los rayos tienen que ir dentro del propio reclamo; lo dice la quest.
+- **Carry On:** `me_beam_former:*`.
+- **Gancho para las quests:** el ME Beam Former (`me_beam_former:beam_former_part`) y la herramienta de enlace (`me_beam_former:laser_binding_tool`), en el capítulo de AE2.
+
+### Hardcore Revival, sólo en co-op
+
+- **Cómo funciona.** Hardcore Revival cancela la muerte del jugador con prioridad alta y lo deja caído con medio corazón:
+  - las criaturas no lo atacan;
+  - no recibe daño, salvo el del vacío;
+  - un golpe letal de lava o del vacío mata sin dejarlo caído;
+  - un compañero lo levanta en dos segundos a tres bloques, con clic derecho;
+  - si nadie llega en dos minutos, muere de verdad;
+  - el tótem de la inmortalidad sigue funcionando como siempre.
+- **Config** (`pack/config/hardcorerevival-common.toml`): apagado en un jugador y en un servidor con un solo jugador conectado. Solo nadie te levanta, y quedar caído sólo demoraría la muerte. Lo demás, por defecto.
+- **Con Tombstone:** queda como está. Su manejador de muerte ve la cancelación, escribe un aviso en el log y no hace tumba. La tumba se hace sólo en la muerte real.
+- **Con el Envés:** una caída del grupo se cuenta en la muerte real (`EnvesDeaths` no recibe eventos cancelados). Un compañero que te levanta a tiempo ahorra la caída.
+- **Distribución:** el archivo es «todos los derechos reservados». CurseForge lo referencia por ID y los mismos bytes están en Modrinth para la exportación `.mrpack`.
+- **Sin teclas:** se rescata con el botón de usar.
+
+### Animus, pospuesto
+
+Elias lo aprobó a condición de que se arregle el crash del cliente en multijugador, y no está arreglado. En 5.2.13, la última de 1.21.1, `ItemSpearBound.hurtEnemy` llama a `consumeEV` antes de mirar si corre en el cliente, y `consumeEV` usa la red de sangre que `getAnima` devuelve nula en un cliente conectado a un servidor (leído con `javap`; [TeamDman/Animus#156](https://github.com/TeamDman/Animus/issues/156), abierto el 27/9; la rama 1.21.1 no tiene commits desde el 14/9). Se revisa con la próxima versión. Si entra, también hay que resolver su sigilo que acelera bloques ×32.
+
+### Quedan afuera (Elias, 28/9)
+
+Create Big Cannons, Brewin' and Chewin', Better Fusion Reactor, Mekanism Nuclear Weapons & Explosives y Controlify. También Dark Doppelganger, Create: Gunsmithing, Steam 'n' Rails, Cataclysm: Spellbooks, Adam's Ars Plus y Create: Wizardry, como recomendó el controlador. Los motivos de cada uno están en la tabla de la búsqueda hacia afuera.
+
+### Verificación (estática)
+
+- **GameTests** (`ModPingpongRound7FullpackGameTests`):
+  - `pingponground7loaded`: los tres mods cargados, Animus ausente, el bloque de insanium con la Luminosidad, las dos recetas quitadas y la config co-op de Hardcore Revival leída del mod;
+  - `carryonrefusesround7blocks`;
+  - `hardcorerevivaldownsandrescuesincoop`: con dos jugadores de prueba conectados, un golpe letal deja caído al primero, vivo; el segundo lo levanta por el camino de rescate del propio mod.
+- `tools/test_family_balance.py` suma los dos tests de arriba. Pasan las familias (14), el diseño de recetas, el lock de los dos lados y la compilación de las GameTests. Ninguno de los tres regala nada al primer ingreso.
+- El runtime entra en la misma cola que las rondas 5 y 6.

@@ -356,6 +356,63 @@ class FamilyBalanceTest(unittest.TestCase):
         self.assertEqual((change['id'], change['add'], change['act']), ('simulated:physics_assembler', balance.HC, 'III'))
         self.assertEqual(family['removals'], [])
 
+    def test_round_seven_insanium_opens_in_act_six_and_the_energy_tower_goes(self):
+        family = balance.FAMILIES['pingpong7']
+        (change,) = family['changes']
+        # Insanium comes only from supremium blocks around the master crystal, now with the Nature Luminosity.
+        self.assertEqual((change['id'], change['add'], change['act']),
+                         ('mysticalagradditions:insanium_block_combine', balance.LUMINOSITY['nature'], 'VI'))
+        self.assertEqual(change['alternates'], ['mysticalagradditions:insanium_block'])
+        self.assertEqual(set(family['removals']), {'mysticalagradditions:insanium_essence',
+                                                   'me_beam_former:wireless_energy_tower'})
+        self.assertEqual(balance.UPSTREAM['me_beam_former:beam_former_part'], 'ae2:network/blocks/controller')
+
+    @unittest.skipUnless(lock_available(), 'Pinned dependency JARs are not available on this machine')
+    def test_nothing_makes_insanium_or_tier_six_seeds_before_act_six(self):
+        insanium = {'mysticalagradditions:insanium_essence', 'mysticalagradditions:insanium_block'}
+        crops = ('nether_star', 'dragon_egg', 'gaia_spirit', 'awakened_draconium', 'neutronium', 'nitro_crystal')
+        seeds = {f'mysticalagriculture:{crop}_seeds': f'mysticalagradditions:{crop}' for crop in crops}
+        family = balance.FAMILIES['pingpong7']
+        gated = {c['id'] for c in family['changes']} | set(family['removals'])
+        # Productive Bees' insanium bee is infused from four insanium blocks and four insanium essence.
+        downstream = {'productivebees:centrifuge/mysticalagriculture/honeycomb_insanium':
+                      'productivebees:mysticalagriculture/insanium_bee'}
+        def made_by(recipe):
+            # Deeper than balance.outputs: machine outputs nest the item ({"item": {"item": ...}}, main_output).
+            found = set()
+
+            def walk(value):
+                if isinstance(value, dict):
+                    found.update(v for k, v in value.items() if k in ('id', 'item') and isinstance(v, str))
+                    for child in value.values():
+                        walk(child)
+                elif isinstance(value, list):
+                    for child in value:
+                        walk(child)
+            for key in ('result', 'output', 'results', 'outputs', 'item_outputs', 'main_output', 'secondary_output'):
+                walk(recipe.get(key))
+            return found
+
+        recipes, _, _ = balance.load_recipes()
+        makers, seed_makers = set(), set()
+        for rid, (recipe, _) in recipes.items():
+            made = made_by(recipe)
+            if made & insanium:
+                makers.add(rid)
+                self.assertTrue(rid in gated or rid in downstream or balance.ingredient_items(recipe) & insanium,
+                                f'{rid} makes insanium without the Act VI gate')
+            for seed in made & set(seeds):
+                seed_makers.add(rid)
+                # Mystical Agriculture resolves a tier-6 crop's essence component to insanium essence.
+                text = json.dumps(recipe)
+                self.assertIn('"component": "essence"', text, f'{rid} makes {seed} without essence')
+                self.assertIn(f'"crop": "{seeds[seed]}"', text, f'{rid} makes {seed} from another crop')
+        self.assertIn('mysticalagradditions:insanium_block_combine', makers)
+        self.assertGreaterEqual(len(seed_makers), 2 * len(crops))
+        for rid, source in downstream.items():
+            self.assertIn(rid, makers)
+            self.assertTrue(balance.ingredient_items(recipes[source][0]) & insanium, f'{source} takes no insanium')
+
     def test_nested_jar_recipes_are_indexed_under_the_outer_pin(self):
         def jar_bytes(files):
             buffer = io.BytesIO()

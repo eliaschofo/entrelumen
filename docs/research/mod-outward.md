@@ -31,25 +31,29 @@ Seis búsquedas de sólo lectura en paralelo, una por familia: Create; AE2 y alm
 | Psionic Utilities 1.4 | Colores y atajos para programar Psi | III | Cliente |
 | Irons Spell N FTB Teams 1.0.0 | Las invocaciones de Iron's no atacan a tu equipo | II–VI | Beta de un mixin: pedirle un GameTest; se apaga por config |
 
+Resultado: entraron en las rondas 5 y 6 ([mod-pingpong](../design/mod-pingpong.md#ronda-6-279-contenido-de-la-búsqueda-hacia-afuera)), salvo Petrol's Parts: su librería fija JEI en rangos que no incluyen el del pack.
+
 ## Preguntas para Elias
 
-| Mod | Qué es | Choque o riesgo |
-|---|---|---|
-| ME Beam Former 1.3.0 | La red ME unida con rayos de luz visibles | ExtendedAE ya conecta sin cable; su torre de energía sin tope pisaría a Flux Networks (se le saca la receta) |
-| Dark Doppelganger 3.4.0 | Jefe opcional del End que copia tu equipo y castea hechizos de Iron's | Ronda 3: «jefes: ninguno» |
-| Animus 5.2.13 | Addon de Neo Vitae: sigilos, rituales y LP compartido | Crash de cliente abierto en multijugador; un sigilo acelera bloques ×32 |
-| Cataclysm: Spellbooks 1.1.14 | 65 hechizos de los jefes de Cataclysm y dos escuelas | Beta y dos librerías nuevas |
-| Adam's Ars Plus 6.0.5 | Aumentos de nivel II y III, Dominio, Limitless | Sube el techo de Ars; la Eficiencia apilada rompe costos |
-| Create: Wizardry 0.5.0 | Puente Create–Iron's: tintas y libros con Create | Ata Create 6.0.10; la 0.5.1 en pre-release; sólo vía CurseForge |
-| Create Big Cannons 5.11.7 | Cañones multibloque, obuses y espoletas | Diseñado para PvP; los proyectiles ignoran reclamos; opción: sólo daño a entidades |
-| Steam 'n' Rails (port) 0.3.0-beta.2 | Todo Steam 'n' Rails 1.7 portado | Beta con un crash abierto de carga de mundo en NeoForge 21.1.249 |
-| Create: Gunsmithing 1.4.9 | Armas steampunk fabricadas con máquinas de Create | Ronda 3: «combate: ninguno»; un crash de servidor dedicado abierto |
-| Brewin' and Chewin' 4.5.0 | Barril de fermentación, quesos y bebidas | Ronda 2: afuera «para no inflar»; licencia ambigua |
-| Mystical Agradditions 8.0.14 | Sexto tier de MA con semillas de estrella del Nether y huevo de dragón | Rompe «el Wither es la única fuente» de estrellas, que ahora también abren el Envés |
-| Better Fusion Reactor 1.5.9rc1 | La fusión como minijuego: reactividad que hay que seguir | Pasar el Bus del Arca y las quests a sus bloques; sacarle el irradiador |
-| Mekanism Nuclear Weapons & Explosives 1.7.0 | Bombas industriales, nucleares y de antimateria con radiación | Código cerrado y joven; sin verificar si respeta reclamos y ruinas |
-| Hardcore Revival 21.1.22 | En co-op quedás caído unos segundos para que te levanten | Permiso de distribución sin verificar |
-| Controlify 3.0.1 | Soporte de mando y Steam Deck | Ninguno sin mando |
+Elias las decidió el 28/9; el detalle está en [mod-pingpong, Ronda 7](../design/mod-pingpong.md#ronda-7-289-las-preguntas-de-la-búsqueda-hacia-afuera).
+
+| Mod | Qué es | Choque o riesgo | Decisión (28/9) |
+|---|---|---|---|
+| ME Beam Former 1.3.0 | La red ME unida con rayos de luz visibles | ExtendedAE ya conecta sin cable; su torre de energía sin tope pisaría a Flux Networks (se le saca la receta) | Entra (ronda 7), sin la torre de energía |
+| Dark Doppelganger 3.4.0 | Jefe opcional del End que copia tu equipo y castea hechizos de Iron's | Ronda 3: «jefes: ninguno» | Afuera |
+| Animus 5.2.13 | Addon de Neo Vitae: sigilos, rituales y LP compartido | Crash de cliente abierto en multijugador; un sigilo acelera bloques ×32 | Aprobado si se arregla el crash; sigue en 5.2.13 ([#156](https://github.com/TeamDman/Animus/issues/156)): pospuesto |
+| Cataclysm: Spellbooks 1.1.14 | 65 hechizos de los jefes de Cataclysm y dos escuelas | Beta y dos librerías nuevas | Afuera |
+| Adam's Ars Plus 6.0.5 | Aumentos de nivel II y III, Dominio, Limitless | Sube el techo de Ars; la Eficiencia apilada rompe costos | Afuera |
+| Create: Wizardry 0.5.0 | Puente Create–Iron's: tintas y libros con Create | Ata Create 6.0.10; la 0.5.1 en pre-release; sólo vía CurseForge | Afuera |
+| Create Big Cannons 5.11.7 | Cañones multibloque, obuses y espoletas | Diseñado para PvP; los proyectiles ignoran reclamos; opción: sólo daño a entidades | Afuera |
+| Steam 'n' Rails (port) 0.3.0-beta.2 | Todo Steam 'n' Rails 1.7 portado | Beta con un crash abierto de carga de mundo en NeoForge 21.1.249 | Afuera |
+| Create: Gunsmithing 1.4.9 | Armas steampunk fabricadas con máquinas de Create | Ronda 3: «combate: ninguno»; un crash de servidor dedicado abierto | Afuera |
+| Brewin' and Chewin' 4.5.0 | Barril de fermentación, quesos y bebidas | Ronda 2: afuera «para no inflar»; licencia ambigua | Afuera |
+| Mystical Agradditions 8.0.14 | Sexto tier de MA con semillas de estrella del Nether y huevo de dragón | Rompe «el Wither es la única fuente» de estrellas, que ahora también abren el Envés | Entra (ronda 7): insanium y sus semillas en el acto VI; Elias acepta las semillas de estrella y de huevo |
+| Better Fusion Reactor 1.5.9rc1 | La fusión como minijuego: reactividad que hay que seguir | Pasar el Bus del Arca y las quests a sus bloques; sacarle el irradiador | Afuera |
+| Mekanism Nuclear Weapons & Explosives 1.7.0 | Bombas industriales, nucleares y de antimateria con radiación | Código cerrado y joven; sin verificar si respeta reclamos y ruinas | Afuera |
+| Hardcore Revival 21.1.22 | En co-op quedás caído unos segundos para que te levanten | Permiso de distribución sin verificar | Entra (ronda 7), sólo en co-op; el mismo archivo está en Modrinth |
+| Controlify 3.0.1 | Soporte de mando y Steam Deck | Ninguno sin mando | Afuera |
 
 ## Descartes, por motivo
 

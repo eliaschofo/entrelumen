@@ -573,6 +573,7 @@ UPSTREAM = {
     'advancedperipherals:rs_bridge': 'refinedstorage:controller',
     'extended_industrialization:machines/tesla_receiver/craft': 'extended_industrialization:machines/tesla_coil/craft',
     'dysoncubeproject:ray_receiver_controller': 'dysoncubeproject:em_railejector_controller',
+    'me_beam_former:beam_former_part': 'ae2:network/blocks/controller',
 }
 # Oritech 0.19 copies Mekanism's alloys in its foundry and its circuits in its atomic forge. Those routes
 # skipped the metallurgic infuser, the way into Mekanism that the calibration frame opens, and with it
@@ -1063,6 +1064,25 @@ FAMILIES = {
                    'Physics vehicles: the handling core steers every Sable structure'),
         ],
         'removals': [],
+    },
+    # Round 7 (docs/design/mod-pingpong.md, «Ronda 7»): Elias's decisions of 28 September on the outward
+    # search. Insanium, Mystical Agradditions' sixth tier, is Act VI: every tier-6 seed and crux needs insanium
+    # essence, so the tier opens where insanium is made. Its two producers were four supremium essence around an
+    # infusion crystal and four supremium blocks around the master crystal; the first goes, and the second takes
+    # the Nature Luminosity on the drawing's axis (one Luminosity per block, nine essence). Elias accepted the
+    # star and egg seeds: an Act VI source of Nether stars besides the Wither. ME Beam Former's wireless energy
+    # tower moves unlimited energy for ender eyes and iron, which would undercut Flux Networks: it goes too.
+    'pingpong7': {
+        'script': 'entrelumen_pingpong7_balance.js',
+        'tag': 'ENTRELUMEN_PINGPONG7_BALANCE',
+        'namespaces': {'mysticalagradditions', 'me_beam_former'},
+        'changes': [
+            # The nine-essence block only compresses insanium, which now comes from uncrafting these blocks.
+            shaped('mysticalagradditions:insanium_block_combine', 0, 1, item('mysticalagriculture:supremium_block'),
+                   LUMINOSITY['nature'], 'VI', 'Insanium, the sixth tier: the Nature Luminosity over the master crystal',
+                   alternates=['mysticalagradditions:insanium_block']),
+        ],
+        'removals': ['mysticalagradditions:insanium_essence', 'me_beam_former:wireless_energy_tower'],
     },
     # The progression batch of 24 September 2026 (docs/design/progression-functions.md): gates of the
     # reference-packs proposal, one component per function, the top armor in Act VI and the vein
