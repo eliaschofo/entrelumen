@@ -10,8 +10,8 @@ El libro v2 ([quest-book](quest-book.md)) resolvió la escala, la historia y el 
 
 | Pieza | Qué hace |
 |---|---|
-| `content/sectors/sector_*.json` | Una cadena por archivo: quests con rol, tareas, posición y texto en los dos idiomas; figuras, paneles, arte y enlaces |
-| `tools/quest_engine.py` | Compila las cadenas: gramática de nodos, presets, texto enriquecido, imágenes, curvas, recompensas, tablas, tema y validación |
+| `content/sectors/sector_*.json` | Una cadena por archivo: quests con rol, tareas, posición y texto en los dos idiomas; figuras, paneles, arte y enlaces; recompensas propias y tablas del capítulo |
+| `tools/quest_engine.py` | Compila las cadenas: gramática de nodos, presets, texto enriquecido, imágenes, curvas, recompensas (las del rol y las propias), tablas del libro y del capítulo, tema y validación |
 | `tools/generate_quests.py` | Arma el libro entero (historia, guías, cadenas, hub) y escribe `pack/config/ftbquests/quests` y los recursos del companion |
 | `content/quest_book.json` | Motivos (colores y formas por tema), colores por rol, ritmo de recompensas, las 18 tablas y los nombres de las formas |
 | `tools/build_quest_placeholders.py` | Texturas provisorias del arte pedido; nunca pisa un archivo que ya existe |
@@ -86,6 +86,26 @@ Las recompensas siguen siendo un extra chico, por equipo y a mano, como en la v2
 - **18 tablas, tres por acto** (`reward_tables/`): la caja del acto (`crate_N`), un premio a elección (`choice_N`) y cosas sueltas (`supplies_N`). Las cajas se llaman de rescate, de taller, de correo, de expedición, del Arca y del Solsticio; dan 2 tiradas en los actos I a IV y 3 en V y VI, cada una con su color, y sólo la del Solsticio brilla. No caen de criaturas.
 - **Dónde:** hito → a elección; secreto → al azar; jefe → el contenido de una caja; cumbre y encargo → la caja cerrada, que se abre con clic derecho.
 
+### Recompensas propias (28/9)
+
+Las cadenas de Mystical Agriculture y Productive Bees van a tener un nodo por semilla y por abeja, con premios que ayuden a avanzar: la segunda abeja de un tipo difícil para criar, genes perfectos al azar, semillas o esencia. Por eso, además de lo que paga el rol, una quest puede nombrar sus propias recompensas. El formato, con ejemplos, está en [content/sectors/README.md](../../content/sectors/README.md#recompensas-propias).
+
+- **Ítems** (`rewards`), con componentes de datos, se suman al final de las recompensas del rol.
+- **Tablas del capítulo** (`reward_tables`) que una quest sortea (`reward_table`) o deja elegir (`reward_choice`).
+- **IDs estables:**
+  - Cada ítem sale de la clave de la quest y del ítem, y cada referencia a una tabla, de la clave y del nombre de la tabla. Reordenar no entrega de nuevo lo ya reclamado.
+  - Cada tabla usa `table_id("<capítulo>/<nombre>")` y se escribe en `reward_tables/<capítulo>__<nombre>.snbt`, después de las 18 del libro. Sus IDs y su orden no cambian (`test_sector_book.py` los fija).
+- **Límites, como en las tablas del libro:** hasta 64 de un ítem y hasta 8 sorteos; nada de ENTRELUMEN ni de recetas con puerta. Una quest de sólo checkmark sigue sin pagar.
+- **Lo que lee FTB Quests 2101.1.34**, descompilado del JAR fijado:
+  - `ItemReward.readData` lee la pila con `QuestObjectBase.itemOrMissingFromNBT`. Si el compuesto no trae las claves viejas `Count` o `tag`, pasa entero a `ItemStack.parse` (`ItemStack.CODEC` de 1.21.1: `id`, `count` de 1 a 99, `components`). Si no parsea, FTB pone su ítem faltante. Un tipo de componente sin registrar o que no se guarda hace fallar la pila (`DataComponentPatch.PatchKey`).
+  - `BaseQuestFile.loadRewardTableFile` carga cada `reward_tables/*.snbt` con su `id` y su `order_index`. `RewardTable.sanitizeFilename` sólo respeta nombres `[a-z0-9_]`, y por eso el nombre de la tabla va en minúsculas con `_`.
+  - `RandomReward.claim` sortea `loot_size` veces con reposición. `ChoiceReward` deja elegir una entrada: ahí no cuentan ni el peso ni los sorteos.
+  - FTB Library lee el JSON como SNBT: un entero es `int`, un decimal es `double` y una lista no puede mezclar tipos.
+- **`check_guides.py`** revisa, contra los JAR fijados:
+  - que cada ítem exista y sobreviva a Almost Unified, que las cantidades empiecen en 1 y que las tablas existan en el capítulo;
+  - que cada tipo de componente esté registrado: los de vanilla por la clase `DataComponents` del JAR de 1.21.1, los de un mod por las clases que registran componentes en sus JAR, con caché fuera del repo. Con los 16 tipos que ya usan las tareas del libro no da falsos errores;
+  - en Productive Bees, que el tipo de abeja de un huevo o de un gen de tipo esté definido y cargue en este pack, y que un gen tenga atributo, valor y pureza reales.
+
 ## Arte pedido
 
 Todo lo que sigue es provisorio y geométrico (`build_quest_placeholders.py`), hasta que Elias lo dibuje. No se dibujó arte nuevo.
@@ -111,6 +131,8 @@ Opcionales para más adelante: una textura de línea por motivo (`dependency_lin
 
 **Estado al 27/9** (main 156fc68): 118 capítulos (8 de historia, 43 guías, 66 cadenas y el hub) y 5.105 quests, por encima de las 4.790 de ATM10. Pasan `generate_quests.py --check`, `test_sector_book.py`, `test_quest_book.py`, `check_guides.py` (4.933 quests de guías y cadenas, sin errores) y `format_sector.py --check`; la auditoría KubeJS cubre 5.007 ítems. La carga del libro completo en un servidor no se volvió a probar desde el registro de abajo: queda para el próximo arranque de QA del pack completo, junto con las tareas de «cualquiera de estos».
 
+**28/9, recompensas propias.** El libro generado es idéntico byte a byte al de antes: ninguna cadena las usa todavía. Pasan `generate_quests.py --check`, `test_quest_book.py`, `check_guides.py` y `format_sector.py --check`. `test_sector_book.py` sube a 44 pruebas; las nuevas compilan una cadena de prueba con ítems y tablas y comprueban que el resto del libro quede igual byte a byte y que los IDs de las 18 tablas no se muevan. Falta la carga en un servidor (ver Límites).
+
 El registro que sigue es el del motor v3, sobre `origin/main` 81bd9a4 más su rama:
 
 - `python tools/generate_quests.py --check`: 97 capítulos (8 de historia, 83 guías, 5 cadenas y el hub), 1.992 quests y 18 tablas; IDs globales, grafo sin ciclos y paridad EN/ES.
@@ -130,6 +152,7 @@ Vistas previas a zoom 16, fuera del repo, en `E:/Elias/Codex/Entrelumen-ssd/ques
 
 ## Límites
 
+- **Recompensas propias (28/9): falta cargarlas en un servidor.** La RAM no alcanzó para un arranque. En el próximo arranque de QA hay que ver cuatro cosas: que FTB cargue las tablas del capítulo sin avisos, que el huevo suelte una abeja del tipo pedido, que el gen muestre su valor y su pureza, y que reclamar la recompensa entregue la pila con sus componentes. El formato está leído del código de FTB Quests, de vanilla y de Productive Bees, no visto en el juego.
 - **«Cualquiera de estos» (27/9).** Hasta esta fecha una tarea de ítem pedía un solo ítem: FTB Quests 2101.1.34 trae `ItemMatchingSystem` sin adaptadores. Algunas cadenas lo esquivaron con un logro o pidiendo un ítem concreto.
   - Ahora el lock tiene FTB Filter System 21.1.4 y FTB XMod Compat 21.1.11, que registra el adaptador (`ftbquests/filtering/FFSSetup`).
   - El motor compila `{"any": [ítems y #tags]}` a una tarea de ítem cuyo ítem es un filtro inteligente con la expresión en su componente (formato en [content/sectors/README.md](../../content/sectors/README.md#tarea-de-cualquiera-de-estos)). El resto de las formas de tarea sale igual byte a byte.

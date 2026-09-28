@@ -33,6 +33,13 @@ entities, structures (or structure tags), keybinds and translation keys they use
 their images and inline images draw. Items that Almost Unified replaces are errors, with the item the
 player really gets (pack/config/almostunified: tags, placeholders and mod priorities).
 
+Rewards a sector names itself ("rewards" of a quest, the chapter's "reward_tables" and the quests'
+"reward_table"/"reward_choice") need items of the pinned JARs that Almost Unified keeps, counts from 1, weights
+above 0, tables of the same chapter, and data components whose types the pinned JARs register as persistent
+(component_registry). The values the book documents are read as the mods read them: an entity_data with its
+entity id, a Productive Bees configurable bee of a bee type the pack loads, a gene of a real attribute, value and
+purity.
+
 Any-of tasks ({"any": [items and #tags]}, an FTB Filter System smart filter) need FTB Filter System and
 FTB XMod Compat in catalog/curated.json. Every item they list must exist in the pinned JARs, since one
 missing item voids the whole filter. Every tag must be defined by a pinned JAR, vanilla, NeoForge's own
@@ -513,6 +520,277 @@ def unified(item, reg):
     return None
 
 
+COMPONENT_CACHE = Path('E:/Elias/Codex/Entrelumen-ssd/research/component-registry.json')
+DATA_COMPONENT_TYPE = 'net/minecraft/core/component/DataComponentType'
+# Registered without a persistent codec (net.minecraft.core.component.DataComponents, 1.21.1): DataComponentPatch
+# refuses them in a saved stack, and FTB Quests then shows its missing item.
+TRANSIENT_COMPONENTS = {'minecraft:creative_slot_lock', 'minecraft:map_post_processing'}
+# Productive Bees 13.13.5 (util/GeneAttribute, util/GeneValue): attribute genes and their values ("<attribute>.<value>");
+# a "type" gene carries a bee type instead. Purity is a percentage: HoneyTreat and CombineGeneRecipe cap it at 100.
+GENE_VALUES = {'productivity': ('normal', 'medium', 'high', 'very_high'),
+               'endurance': ('weak', 'normal', 'medium', 'strong'),
+               'temper': ('passive', 'normal', 'aggressive', 'hostile'),
+               'behavior': ('diurnal', 'nocturnal', 'metaturnal'),
+               'weather_tolerance': ('none', 'rain', 'any')}
+CONFIGURABLE_BEE = 'productivebees:configurable_bee'
+_COMPONENTS = None
+_BEE_TAGS = None
+CONSTANT_SIZES = {3: 5, 4: 5, 5: 9, 6: 9, 7: 3, 8: 3, 9: 5, 10: 5, 11: 5, 12: 5, 15: 4, 16: 3, 17: 5, 18: 5, 19: 3, 20: 3}
+
+
+def class_constants(data):
+    """(string literals, every UTF-8 constant) of a class file's constant pool, or None when it is not one."""
+    if data[:4] != b'\xca\xfe\xba\xbe':
+        return None
+    count = int.from_bytes(data[8:10], 'big')
+    pos, i, utf8, literals = 10, 1, {}, []
+    try:
+        while i < count:
+            tag = data[pos]
+            if tag == 1:
+                n = int.from_bytes(data[pos + 1:pos + 3], 'big')
+                utf8[i] = data[pos + 3:pos + 3 + n].decode('utf-8', 'replace')
+                pos += 3 + n
+            elif tag in CONSTANT_SIZES:
+                if tag == 8:
+                    literals.append(int.from_bytes(data[pos + 1:pos + 3], 'big'))
+                pos += CONSTANT_SIZES[tag]
+                i += tag in (5, 6)  # longs and doubles take two slots
+            else:
+                return None
+            i += 1
+    except IndexError:
+        return None
+    return {utf8.get(s, '') for s in literals}, set(utf8.values())
+
+
+def component_registry():
+    """What reward stacks may carry, read from the pinned JARs and cached outside the repository per set of JARs:
+    {'types': {namespace: [paths]}, 'bees': {bee type: [the conditions of each file that defines it]}}.
+
+    Component types: minecraft's are the names DataComponents registers in the pinned client JAR (its obfuscated
+    class found through the Mojang mappings beside it). Any other namespace gets the string literals of the
+    classes that reference DataComponentType in the JARs that own it (mod id in neoforge.mods.toml or an assets
+    folder), since a registration names its type there: a miss is certain, a hit only likely. Bee types are
+    Productive Bees' data/<ns>/productivebees/**/<name>.json, as 'ns:name' (BeeReloadListener keeps the file
+    name, and a type defined by several files exists when one of them loads), with the conditions that can
+    switch each file off."""
+    global _COMPONENTS
+    if _COMPONENTS is not None:
+        return _COMPONENTS
+    lp = ROOT / 'catalog' / 'local-paths.json'
+    jars = sorted(json.loads(lp.read_text(encoding='utf-8')).values()) if lp.exists() else []
+    mappings = VANILLA_JAR.with_name('minecraft_1.21.1_client_mappings.txt')
+    vanilla = str(VANILLA_JAR) if VANILLA_JAR.exists() and mappings.exists() else None
+    cache_file = signed_cache(COMPONENT_CACHE, [jars, vanilla], 2)
+    if cache_file.exists():
+        try:
+            cached = json.loads(cache_file.read_text(encoding='utf-8'))
+            if cached.get('jars') == jars and cached.get('vanilla') == vanilla and cached.get('version') == 2:
+                _COMPONENTS = {'types': {ns: set(v) for ns, v in cached['types'].items()}, 'bees': cached['bees']}
+                return _COMPONENTS
+        except Exception:
+            pass
+    types, bees = {}, {}
+    if vanilla:
+        m = re.search(r'^net\.minecraft\.core\.component\.DataComponents -> (\S+):$',
+                      mappings.read_text(encoding='utf-8'), re.M)
+        if m:
+            with zipfile.ZipFile(VANILLA_JAR) as z:
+                found = class_constants(z.read(m.group(1).replace('.', '/') + '.class'))
+            if found:
+                types['minecraft'] = {s for s in found[0] if re.fullmatch(r'[a-z0-9_./-]+', s)}
+    marker = DATA_COMPONENT_TYPE.encode()
+    for jar in jars:
+        for z in bundled(jar):
+            owners, names = set(), set()
+            for name in z.namelist():
+                m = re.match(r'assets/([^/]+)/', name)
+                if m:
+                    owners.add(m.group(1))
+                if name == 'META-INF/neoforge.mods.toml':
+                    owners.update(re.findall(r'(?m)^\s*modId\s*=\s*"([^"]+)"', z.read(name).decode('utf-8', 'replace')))
+                elif name.endswith('.class'):
+                    data = z.read(name)
+                    if marker in data:
+                        found = class_constants(data)
+                        if found and any(DATA_COMPONENT_TYPE in u for u in found[1]):
+                            names |= {s for s in found[0] if re.fullmatch(r'[a-z0-9_./-]+', s)}
+                m = re.match(r'data/([^/]+)/productivebees/(?:.+/)?([^/]+)\.json$', name)
+                if m:
+                    try:
+                        spec = json.loads(z.read(name))
+                    except Exception:
+                        spec = {}
+                    conditions = spec.get('conditions', []) if isinstance(spec, dict) else []
+                    bees.setdefault(f'{m.group(1)}:{m.group(2)}', []).append(conditions)
+            for ns in owners - {'minecraft'}:
+                types.setdefault(ns, set()).update(names)
+    try:
+        write_cache(cache_file, {'jars': jars, 'vanilla': vanilla, 'version': 2, 'bees': bees,
+                                 'types': {ns: sorted(v) for ns, v in sorted(types.items())}})
+    except Exception:
+        pass
+    _COMPONENTS = {'types': types, 'bees': bees}
+    return _COMPONENTS
+
+
+def companion_components():
+    """Component types the companion registers (string literals of its sources that declare a DataComponentType)."""
+    names = set()
+    for path in (ROOT / 'companion' / 'src' / 'main' / 'java').rglob('*.java'):
+        text = path.read_text(encoding='utf-8', errors='replace')
+        if 'DataComponentType' in text:
+            names |= set(re.findall(r'"([a-z0-9_./-]+)"', text))
+    return names
+
+
+def condition_holds(cond, items, tags):
+    """A NeoForge load condition against the lock: True, False or None when it cannot be told statically."""
+    if not isinstance(cond, dict):
+        return None
+    kind = cond.get('type', '')
+    if kind == 'neoforge:true':
+        return True
+    if kind == 'neoforge:false':
+        return False
+    if kind == 'neoforge:mod_loaded':
+        return cond.get('modid') in locked_mods() | {'minecraft', 'neoforge'}
+    if kind == 'neoforge:tag_empty':
+        return not any(m in items for m in tag_members(cond.get('tag', ''), tags))
+    if kind == 'neoforge:not':
+        inner = condition_holds(cond.get('value'), items, tags)
+        return None if inner is None else not inner
+    if kind in ('neoforge:and', 'neoforge:or'):
+        values = [condition_holds(c, items, tags) for c in cond.get('values', [])]
+        want = kind == 'neoforge:or'
+        if want in values:
+            return want
+        return None if None in values else not want
+    return None
+
+
+def check_reward_components(item, components, where, errors, items, reg):
+    """Every component type registered and persistent, and the values the book documents read as the mod reads them:
+    an entity_data with its entity id (CustomData.CODEC_WITH_ID), a Productive Bees configurable bee of a bee type
+    the pack loads, and a gene of a real attribute, value and purity."""
+    registry = component_registry()
+    types = registry['types']
+    for key in components:
+        ns, _, path = key.partition(':')
+        if not ID.match(key):
+            errors.append(f'{where}: component type {key!r} is not namespace:path')
+        elif key in TRANSIENT_COMPONENTS:
+            errors.append(f'{where}: component {key} is not persistent: a saved stack cannot carry it')
+        elif ns == 'entrelumen':
+            if path not in companion_components():
+                errors.append(f'{where}: component {key} is not registered by the companion')
+        elif not types or (ns == 'minecraft' and 'minecraft' not in types):
+            continue  # no pinned JARs (or no vanilla JAR) to check against
+        elif ns not in types:
+            errors.append(f'{where}: component {key}: no pinned JAR owns the namespace {ns}')
+        elif path not in types[ns]:
+            errors.append(f'{where}: component {key} is registered by no pinned JAR of {ns}')
+    entity = components.get('minecraft:entity_data')
+    if entity is not None:
+        if not isinstance(entity, dict) or not isinstance(entity.get('id'), str):
+            errors.append(f'{where}: minecraft:entity_data needs the entity "id" (vanilla refuses it without one)')
+        elif entity['id'] not in reg['entities']:
+            errors.append(f'{where}: minecraft:entity_data names entity {entity["id"]}, which is not found')
+        elif entity['id'] == CONFIGURABLE_BEE:
+            check_bee_type(entity.get('type'), f'{where}: configurable bee', errors, items, reg)
+    gene = components.get('productivebees:gene_group')
+    if gene is not None:
+        attribute = gene.get('attribute') if isinstance(gene, dict) else None
+        value = gene.get('value') if isinstance(gene, dict) else None
+        purity = gene.get('purity') if isinstance(gene, dict) else None
+        if attribute == 'type':
+            check_bee_type(value, f'{where}: type gene', errors, items, reg)
+        elif attribute not in GENE_VALUES:
+            errors.append(f'{where}: gene attribute {attribute!r} is none of type, {", ".join(GENE_VALUES)}')
+        elif not (isinstance(value, str) and value.startswith(attribute + '.')
+                  and value[len(attribute) + 1:] in GENE_VALUES[attribute]):
+            errors.append(f'{where}: gene value {value!r} is none of '
+                          + ', '.join(f'{attribute}.{v}' for v in GENE_VALUES[attribute]))
+        if type(purity) is not int or not 1 <= purity <= 100:
+            errors.append(f'{where}: gene purity {purity!r} is a percentage, 1..100')
+
+
+def check_bee_type(bee, where, errors, items, reg):
+    bees = component_registry()['bees']
+    if not bees:
+        return  # no pinned JARs
+    if not isinstance(bee, str) or bee not in bees:
+        errors.append(f'{where}: bee type {bee!r} is defined by no pinned JAR (data/<ns>/productivebees/.../<name>.json)')
+        return
+    global _BEE_TAGS
+    if _BEE_TAGS is None or _BEE_TAGS[0] is not reg:
+        _BEE_TAGS = (reg, known_item_tags(reg))
+    tags = _BEE_TAGS[1]
+    if all(any(condition_holds(c, items, tags) is False for c in (conditions if isinstance(conditions, list) else []))
+           for conditions in bees[bee]):
+        errors.append(f'{where}: bee type {bee} is switched off in this pack (the load conditions of every file '
+                      'that defines it fail)')
+
+
+def check_sector_rewards(data, where, errors, items, reg):
+    """Rewards a sector names itself (tools/quest_engine.py, extra_rewards and build_local_tables): items that
+    exist, counts from 1, components the pinned JARs register, tables that exist in the chapter. Returns the
+    items, for the Almost Unified check."""
+    rewarded = set()
+    tables = data.get('reward_tables', {})
+    if not isinstance(tables, dict):
+        errors.append(f'{where}: reward_tables maps names to tables')
+        tables = {}
+
+    def stack(spec, w, weighted=False):
+        if not isinstance(spec, dict) or not isinstance(spec.get('item'), str):
+            errors.append(f'{w}: a reward names an "item"')
+            return
+        item = spec['item']
+        rewarded.add(item)
+        if item not in items:
+            errors.append(f'{w}: item {item} not found in the pinned JARs')
+        count = spec.get('count', 1)
+        if type(count) is not int or count < 1:
+            errors.append(f'{w}: count {count!r} must be a whole number from 1')
+        if weighted:
+            weight = spec.get('weight', 1)
+            if type(weight) not in (int, float) or not weight > 0:
+                errors.append(f'{w}: weight {weight!r} must be above 0')
+        components = spec.get('components', {})
+        if not isinstance(components, dict):
+            errors.append(f'{w}: components map component types to values')
+        elif components:
+            check_reward_components(item, components, f'{w} ({item})', errors, items, reg)
+
+    for name, spec in tables.items():
+        entries = spec.get('entries') if isinstance(spec, dict) else None
+        if not isinstance(entries, list) or not entries:
+            errors.append(f'{where}: reward table {name} has no entries')
+            continue
+        for i, entry in enumerate(entries):
+            stack(entry, f'{where}: reward table {name}, entry {i}', weighted=True)
+    used = set()
+    for q in data['quests']:
+        w = f'{where}:{q["key"]}'
+        rewards = q.get('rewards', [])
+        if not isinstance(rewards, list):
+            errors.append(f'{w}: rewards is a list of items')
+            rewards = []
+        for i, spec in enumerate(rewards):
+            stack(spec, f'{w}: reward {i}')
+        for field in ('reward_table', 'reward_choice'):
+            if field in q:
+                name = q[field] if isinstance(q[field], str) else None
+                used.add(name)
+                if name not in tables:
+                    errors.append(f'{w}: {field} {q[field]!r} is not in this chapter\'s reward_tables')
+    for name in sorted(set(tables) - used):
+        errors.append(f'{where}: reward table {name} is used by no quest')
+    return rewarded
+
+
 def check_sector(path, errors, all_keys):
     """JAR-backed checks for one sector chapter; the structure itself is tools/quest_engine.py's job."""
     data = json.loads(path.read_text(encoding='utf-8'))
@@ -585,6 +863,7 @@ def check_sector(path, errors, all_keys):
     for item in sorted(refs['items']):
         if item not in items:
             errors.append(f'{where}: item {item} not found in the pinned JARs')
+    rewarded = check_sector_rewards(data, where, errors, items, reg)
     for adv in sorted(refs['advancements']):
         if adv not in reg['advancements']:
             errors.append(f'{where}: advancement {adv} not found')
@@ -612,6 +891,10 @@ def check_sector(path, errors, all_keys):
         swap = unified(item, reg)
         if swap:
             errors.append(f'{where}: Almost Unified replaces {item} with {swap[0]} ({swap[1]}): ask for that one')
+    for item in sorted(rewarded):
+        swap = unified(item, reg)
+        if swap:
+            errors.append(f'{where}: Almost Unified replaces {item} with {swap[0]} ({swap[1]}): reward that one')
     if any_tasks:
         missing = [mod for mod in quest_engine.FILTER_MODS if mod not in locked_mods()]
         if missing:
