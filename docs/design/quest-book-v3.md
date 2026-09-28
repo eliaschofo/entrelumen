@@ -12,7 +12,8 @@ El libro v2 ([quest-book](quest-book.md)) resolvió la escala, la historia y el 
 |---|---|
 | `content/sectors/sector_*.json` | Una cadena por archivo: quests con rol, tareas, posición y texto en los dos idiomas; figuras, paneles, arte y enlaces; recompensas propias y tablas del capítulo |
 | `tools/quest_engine.py` | Compila las cadenas: gramática de nodos, presets, texto enriquecido, imágenes, curvas, recompensas (las del rol y las propias), tablas del libro y del capítulo, tema y validación |
-| `tools/quest_text.py`, `tools/quest_art.py` | Presentación v2 ([abajo](#presentación-v2-28-de-septiembre-de-2026)): marcas de jerarquía y fuentes del companion; el vocabulario de dibujo del lienzo y los nodos de adorno |
+| `tools/quest_text.py`, `tools/quest_art.py` | Presentación v2 ([abajo](#presentación-v2-28-de-septiembre-de-2026)): marcas de jerarquía y fuentes del companion; el vocabulario de dibujo del lienzo, el dibujo que se completa con el progreso y los nodos de adorno |
+| `tools/quest_draft.py`, `tools/preview/` | El kit para pasar capítulos a la v2 ([abajo](#kit-para-pasar-capítulos-28-de-septiembre)): el borrador del texto y el renderer de vistas previas, de a uno por vez en la PC |
 | `tools/generate_quests.py` | Arma el libro entero (historia, guías, cadenas, hub) y escribe `pack/config/ftbquests/quests` y los recursos del companion |
 | `content/quest_book.json` | Motivos (colores y formas por tema), colores por rol, ritmo de recompensas, las 18 tablas y los nombres de las formas |
 | `tools/build_quest_placeholders.py` | Texturas provisorias del arte pedido; nunca pisa un archivo que ya existe |
@@ -206,7 +207,13 @@ El tope, la paridad de idiomas y las frases prohibidas los sigue revisando el mo
 3. **Distancias libres.** Las ramas van cerca de su padre, en grupos o constelaciones sueltas; no hay grilla.
 4. **Sólo dos reglas duras.** Los nodos no se pisan (lo valida el motor) y las líneas se leen: cortas, sin atravesar grupos ajenos ni rótulos.
 5. **Pocos rótulos y grandes:** escala 2 para las secciones y 3 o 4 para el título. Escala 1 sólo para notas.
-6. **El progreso cuenta algo.** `reveal` enciende luces, suelta humo o grava, levanta la neblina y trae el sol de Heliodor en la cumbre.
+6. **Se dibuja de a poco: decisión de Elias del 28/9.** Viendo el piloto dijo «me va eso de que se vaya dibujando de a poco, es novedoso y nadie lo tiene». Es regla de primera:
+   - todo capítulo v2 arranca como un **boceto**: el marco de la escena, la entrada y unos pocos hitos, más el título;
+   - el dibujo **se completa a medida que el jugador avanza**: los caminos, las piezas de la escena, la utilería y la luz llegan con la quest que los gana;
+   - un camino que pasa por quests (`through`) crece tramo por tramo (`grow`): cada tramo aparece con la quest a la que llega. El río, el eje o el caño se van dibujando detrás del jugador;
+   - el boceto es tiza tenue (`sketch`: la misma forma, clara y casi transparente, desde el principio) y la tinta entra encima con `reveal` o `grow`;
+   - la luz, el humo, la grava y el sol de la cumbre siguen siendo el premio de los hitos;
+   - `check_guides.py` avisa si más del 40% de las imágenes fuertes de un capítulo v2 (alfa mayor que 90, y todo ítem en 3D) se ven antes de completar una quest.
 7. **Adornos (`decor`)**, de uno a tres por capítulo: juguetes sin premio que nunca cuentan como contenido.
 8. **Por referencia, nunca copiado.** Las texturas de mods se leen de su JAR. `check_guides.py` exige que existan, que un sprite esté en el atlas de bloques y que un ícono de texto no sea animado.
 
@@ -218,7 +225,8 @@ El tope, la paridad de idiomas y las frases prohibidas los sigue revisando el mo
   - `"presentation": 2` en un capítulo dibuja `[tip]` con el farol en vez de «» ». Los capítulos que no lo piden no cambian.
 - **`tools/quest_art.py`:** diez tipos de arte, que salen del [README de las cadenas](../../content/sectors/README.md#arte-presentación-v2):
   - `picture`, `sprite`, `item`, `path` (color, textura o sprite en trozos casi cuadrados, puntos o ítems, curvas suaves), `mosaic`, `glow`, `scatter`, `frame`, `text` (rótulo girado) y `lettering` (una letra por posición a lo largo de un camino);
-  - el rol `decor`: un checkmark opcional sin premio, aviso, candado ni líneas, de cualquier tamaño, que ningún total ni proporción cuenta (`is_counted`).
+  - el rol `decor`: un checkmark opcional sin premio, aviso, candado ni líneas, de cualquier tamaño, que ningún total ni proporción cuenta (`is_counted`);
+  - para la regla 6: `through` (un camino por las posiciones de quests), `grow` (cada tramo con la quest a la que llega, o una quest por segmento) y `sketch` (la copia tenue de un camino, una pintura, un sprite o un marco, visible desde el principio). Un ítem en 3D no se puede bocetar: FTB lo dibuja sin alfa.
 - **Toques en el código existente:**
   - `quest_engine.py`: importa los dos módulos, suma sus marcas y delega en `compile_paragraph`, `compile_text`, `compile_sector` (decor) y `decorate_sector` (`art_images`);
   - `generate_quests.py`: escribe las fuentes y no cuenta los adornos;
@@ -250,7 +258,7 @@ Las dos cadenas conservan todas sus claves, tareas, dependencias, datos y fuente
 - En la terraza, la cinta de carcasa de acero, las menas, el anexo de MoreMachine y dos chimeneas que humean.
 - Juguete: el Robit.
 
-Vistas previas, antes y después, en `E:/Elias/Codex/Entrelumen-ssd/presentation-v2/`. Las dibuja `presentation-v2/tools/preview_v2.py`, el renderer de `questbook-v3/tools/preview3.py` extendido, fuera del repo. Agrega:
+Vistas previas, antes y después, en `E:/Elias/Codex/Entrelumen-ssd/presentation-v2/`. Las dibujó el renderer de `questbook-v3/tools/preview3.py` extendido, que desde el 28/9 vive en el repo como `tools/preview/preview_v2.py` ([kit](#kit-para-pasar-capítulos-28-de-septiembre)). Agrega:
 - modelos 3D de ítems (elementos JSON y OBJ de NeoForge) para íconos y para imágenes `item:`;
 - sprites, rótulos girados y cursiva;
 - las fuentes del companion;
@@ -279,15 +287,38 @@ Vistas previas, antes y después, en `E:/Elias/Codex/Entrelumen-ssd/presentation
    - los cuadros de vanilla (`minecraft:textures/painting/…`), para cocina, exploración y construcción.
    
    Los mods técnicos sin pintura usan el edificio en corte, la placa o el río de Create.
-3. **El texto con un borrador asistido.** Un script propone la forma v2 a partir del texto actual:
-   - la primera oración como `[lead]` si es corta;
-   - las enumeraciones como `[li]`;
-   - `[li:ítem]` para los ítems con textura plana, que `check_guides.py` ya sabe listar;
-   - los números como `[hl|…]`.
-   
-   Quien redacta revisa y corrige. Con eso, el costo baja a revisar unos segundos por quest más el chiste. Todavía no está hecho: es el primer paso del despliegue.
-4. **Orden: por dónde pasa un jugador nuevo.** Primero los actos I y II (Create · Vías y energía, Farmer's Delight, Ars, las guías de inicio), después el resto por familia. Cada tanda cierra con las vistas previas (`preview_v2.py`, fresca y completa, y paneles a GUI 2) antes de mostrárselas a Elias.
+3. **El texto con un borrador asistido:** `tools/quest_draft.py` ([kit](#kit-para-pasar-capítulos-28-de-septiembre)). Quien redacta revisa y corrige, y el costo baja a unos segundos por quest más el chiste.
+4. **Orden: por dónde pasa un jugador nuevo.** Primero los actos I y II (Create · Vías y energía, Farmer's Delight, Ars, las guías de inicio), después el resto por familia. Cada tanda cierra con las vistas previas (`tools/preview/preview_v2.py`: el boceto, el avance, el final y los paneles a GUI 2) antes de mostrárselas a Elias.
 5. **Lo que no cambia se queda:** claves, tareas, dependencias, recompensas y fuentes. Un capítulo sin `"presentation": 2` se ve igual que hoy, así que se puede pasar de a uno sin romper nada.
+
+### Kit para pasar capítulos (28 de septiembre)
+
+Elias aprobó la v2 y varios redactores pasan capítulos en paralelo. El kit baja el costo y la memoria que usan. La lista de pasos para cada redactor está en el [README de las cadenas](../../content/sectors/README.md#pasar-un-capítulo-a-la-v2).
+
+**Borrador del texto: `tools/quest_draft.py content/sectors/sector_x.json`.** Reescribe sólo las listas `text`, inglés y español juntos, y deja claves, tareas, títulos, datos y fuentes como estaban. Por quest:
+1. una oración de advertencia (Careful…, Never…, Don't…, explota, se destruye, se pierde, un `[warn|…]`) pasa a su propio `[careful]`, sin la palabra que ya dice la etiqueta;
+2. la primera oración es el `[lead]` si es corta en los dos idiomas (110 caracteres visibles en inglés, 125 en español);
+3. las enumeraciones se vuelven listas: «intro: a, b, c y d», las cláusulas con punto y coma, las viñetas «•» de la v1, y tres o más oraciones cortas seguidas;
+4. una viñeta que nombra un ítem lleva su ícono (`[li:ítem]`) sólo si el ícono del inventario es la textura plana del propio ítem, cuadrada y quieta. Lo lee `mcassets.flat_icon` de los JAR fijados;
+5. los números van con `[hl|…]`, y uno solo va con `[big|…]`: el de la tarea, un ×N o el que está en el título, donde `[big]` puede ir;
+6. si la primera página pasa de 330 caracteres en algún idioma, sus últimos párrafos pasan a la página 2, sin cortar una lista.
+
+Cada quest se compila con `quest_engine.quest_copy`, el mismo control que usa el libro. Si una falla, se queda con su texto v1. Las que ya están en v2 no se tocan. Imprime lo que no pudo decidir: el lead largo, oraciones que no cortan igual en los dos idiomas, un `[big]` sin gemelo. Sobre los 80 capítulos v1 del 28/9, ningún borrador rompe una regla (`tools/test_kit.py`).
+
+**Vistas previas: `tools/preview/preview_v2.py`.** El renderer del piloto, en el repo:
+- lee todo de los JAR fijados al dibujar y escribe fuera del repo (`E:/Elias/Codex/Entrelumen-ssd/previews/<worktree>/`), así que no se sube ningún asset de mod;
+- dibuja estados intermedios (`--state steps`: fresco, 25, 50 y 75% en orden de dependencias, completo) para ver el dibujo completarse, la pantalla de 1080p (`--screen`) y hojas de paneles para revisar texto (`--panels all --sheet`).
+
+**Disciplina de RAM.** La PC tiene 16 GB para cinco o seis sesiones:
+- una sola vista previa por vez: `mkdir E:/Elias/Codex/Entrelumen-ssd/render.lock` con `owner.json` (proceso, arranque, carpeta, comando), que se libera al salir, también con Ctrl+C o `SIGTERM`;
+- si el dueño ya no existe, el candado viejo se limpia: sólo su `owner.json` y la carpeta vacía. Una carpeta con otra cosa adentro, o un enlace, no se toca;
+- antes de cada capítulo espera mientras la memoria libre (`MemFree` de `/proc/meminfo`; en Windows, la memoria física disponible, que es lo que Git Bash informa como `MemFree`) esté bajo 1,5 GB, hasta 30 minutos;
+- el renderer es Pillow puro y no abre navegador. Los 1,3 GB de Chrome headless que se vieron el 28/9 eran de Playwright, no de las vistas previas. Las PNG se miran con un visor, sin navegador; si alguien abre uno, lo cierra al terminar la tanda.
+
+**Presupuesto de imágenes.** Al 28/9 el libro tiene 21.552 imágenes de capítulo: Mundos profundos 683, Almacenamiento 626, Create · Cinética 553. El capítulo más pesado de ATM10 tiene 132.
+- `check_guides.py` compila el libro en memoria, avisa arriba de **700 imágenes por capítulo** e imprime el total del libro y los tres más pesados.
+- Una pintura grande antes que muchas fichas donde se lee igual: un fondo es una imagen, no un mosaico de 200.
+- Lo que cuestan en FPS y en la sincronización al entrar no está medido. FTB manda todas las imágenes al cliente al entrar y dibuja las de un capítulo abierto en cada cuadro. Queda para la QA del cliente, y hasta entonces los 700 son un techo prudente, no una medición.
 
 ### Límites de la v2
 

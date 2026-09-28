@@ -55,6 +55,8 @@ Desde el 28/9, pedido de Elias: el texto «está medio crudo y muy chico». FTB 
 6. **Lo que es profundidad va a la página 2:** diagramas, tablas, cifras de rendimiento, casos raros. El tope de 330 caracteres visibles de la primera página no cambia.
 7. **Mismo contenido en los dos idiomas:** los mismos ítems enlazados, los mismos íconos, las mismas páginas y las mismas llamadas.
 
+Para pasar un capítulo, `tools/quest_draft.py` arma un borrador con esta forma: el lead, las listas, los íconos de textura plana, los números, las advertencias en `[careful]` y la página 2 ([kit](quest-book-v3.md#kit-para-pasar-capítulos-28-de-septiembre)). La voz no la toca: el chiste, el orden de las ideas y los leads que faltan los pone quien redacta.
+
 Ejemplo, «Consejo: Catalizadores» de Create · Cinética. Antes, un párrafo de unos 200 caracteres con cuatro procesos seguidos. Después: «La posta: Lo que haya en la corriente decide el trabajo:», cuatro viñetas con el balde de lava, la fogata, el balde de agua y la fogata de almas («Lava o un Quemador de Blaze prendido: funde», «Fuego: ahúma», «Agua: lava», «Fuego de almas: embruja»), un «Ojo: La comida en lava se quema: ahumala.» y una línea final sobre la velocidad.
 
 ## Diez reescrituras

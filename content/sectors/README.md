@@ -164,14 +164,73 @@ Presentación v2 (`tools/quest_text.py`; las reglas de uso están en [quest-copy
 
 Los íconos son glifos de una fuente que `generate_quests.py` escribe en el companion (`entrelumen:quest_icons`, 8 px, la textura referenciada desde su JAR). `check_guides.py` pide que la textura exista y que no sea animada. Los bloques con modelo 3D no tienen textura de ícono: para ellos, `[li]` sin ícono.
 
+## Pasar un capítulo a la v2
+
+La lista de cada redactor. Las reglas están en [quest-book-v3](../../docs/design/quest-book-v3.md#presentación-v2-28-de-septiembre-de-2026) (texto, lienzo, kit) y en [quest-copy](../../docs/design/quest-copy.md#forma-presentación-v2); esto es el orden de trabajo.
+
+**0. Rama y dueño.** Una rama desde `origin/main` y un dueño por capítulo. Tocás tu `sector_*.json` y, si hace falta, arte nuevo propio en el companion; nada más.
+
+**1. Borrador del texto.**
+```
+python tools/quest_draft.py content/sectors/sector_x.json
+```
+Reescribe el texto de todas las quests, inglés y español juntos, e imprime lo que no pudo decidir. Revisalo con `git diff`:
+- cada `[lead]` es una oración que se sostiene sola y no repite el título; escribí los que faltan (la lista impresa);
+- una lista es de cosas paralelas; si no lo son, volvela párrafo;
+- `[careful]`, sólo para lo que rompe algo; `[big|…]`, uno o dos por quest, en el número que la resume;
+- el chiste y la voz son tuyos: el borrador sólo cambia la forma.
+
+Claves, tareas, títulos y datos no se tocan. Si un dato cambia, cambia con su `sources`.
+
+**2. Escena: se dibuja de a poco (regla 6).**
+- `"presentation": 2` en el capítulo.
+- **Reusá la escena de la familia.** La primera cadena de una familia paga el dibujo y las demás toman otra parte de la misma escena: el mismo fondo y la misma paleta, otro lugar. Por ejemplo, las cadenas de Create viven en la caverna del molino y las de Mekanism, en la planta en corte. Se copian las entradas de `art` de la cadena que pagó el dibujo, nunca los archivos de un mod. Las pinturas que ya hay en los JAR fijados están listadas en quest-book-v3 («Cómo pasar los otros capítulos»).
+- **Arrancá con un boceto:** el marco de la escena, la entrada, dos a cuatro hitos y el título.
+- **Completalo con el progreso:**
+  - los caminos (tronco, río, caño, cinta), con `through` y `grow`;
+  - las piezas de la escena, la utilería y la luz, con el `reveal` de la quest que las gana;
+  - el boceto de lo que falta, con `sketch`.
+- **Pocos rótulos y grandes:** escala 2 para secciones, 3 o 4 para el título.
+- **De uno a tres `decor`.**
+- **Imágenes:** 700 por capítulo como mucho; apuntá a la mitad. Una pintura grande en vez de muchas fichas donde se lee igual.
+
+**3. Validar**, en este orden:
+```
+python tools/format_sector.py content/sectors/sector_x.json
+python tools/generate_quests.py
+python tools/check_guides.py sector_x
+python tools/test_sector_book.py
+python tools/generate_quests.py --check
+```
+Sin errores. Los avisos de imágenes (más de 700) y de boceto (más del 40% visible al empezar) se arreglan o se explican en el reporte.
+
+**4. Vistas previas.**
+```
+python tools/preview/preview_v2.py sector_x --state steps --screen --panels all --sheet --locale both
+```
+- Una sola por vez en toda la PC: el renderer toma `E:/Elias/Codex/Entrelumen-ssd/render.lock`, espera su turno y espera también mientras haya menos de 1,5 GB libres. Pedí todo en una sola llamada y dejalo terminar.
+- Salen a `E:/Elias/Codex/Entrelumen-ssd/previews/<worktree>/`, nunca al repo.
+- Mirá el boceto (`fresh`), cómo se completa (25, 50 y 75%), el final (`done`), la pantalla de 1080p y las hojas de paneles.
+- Las PNG se miran con un visor, sin navegador. Si abrís uno, cerralo al terminar la tanda.
+
+**5. Commit.** Sólo tus archivos, con `git add <ruta>` (nunca `git add -A`), sin las salidas generadas: `pack/config/ftbquests`, los textos y el tema del companion y sus fuentes se regeneran al integrar.
+
+**6. Reporte**, corto:
+- el capítulo y sus quests: todas las claves, tareas y datos conservados;
+- la escena: qué se ve al empezar y qué llega con qué quest;
+- las imágenes: total y porcentaje visible al empezar (lo imprime `check_guides.py`);
+- lo que el borrador no decidió y cómo lo resolviste;
+- las rutas de las vistas previas;
+- los avisos que quedan y los riesgos.
+
 ## Arte (presentación v2)
 
-`tools/quest_art.py`. Cada entrada de `art` es de un tipo, el de la primera de estas claves que tenga. Coordenadas y medidas en celdas, como las quests. Todas aceptan `order`, `alpha`, `tint` (el color de la imagen), `rotation`, `reveal` (aparece al completar esa quest), `hover` y `click`.
+`tools/quest_art.py`. Cada entrada de `art` es de un tipo, el de la primera de estas claves que tenga. Coordenadas y medidas en celdas, como las quests. Todas aceptan `order`, `alpha`, `tint` (el color de la imagen), `rotation`, `reveal` (aparece al completar esa quest), `hover` y `click`. Un camino, una pintura, un sprite o un marco aceptan además `sketch` (abajo).
 
 | Tipo | Claves | Qué dibuja |
 |---|---|---|
 | `lettering` | `lettering` {idioma: texto de igual largo}, `path`, `scale`, `font`, `smooth` | Una letra por posición a lo largo de un camino, girada con él |
-| `path` | `path` [[x, y]…], `width`, `smooth` (tramos por segmento, Catmull-Rom), `step` (trozos de ese largo), `turn` (la veta de la textura va a lo largo), `closed`; y `color`, `texture`, `sprite`, `dots` (+`size`) o `items` | Un camino: río, eje, cinta, caño, cable, raíz, órbita |
+| `path` | `path` [[x, y]…] o `through` [clave o [x, y]…] (pasa por las quests), `grow`, `width`, `smooth` (tramos por segmento, Catmull-Rom), `step` (trozos de ese largo), `turn` (la veta de la textura va a lo largo), `closed`; y `color`, `texture`, `sprite`, `dots` (+`size`) o `items` | Un camino: río, eje, cinta, caño, cable, raíz, órbita |
 | `mosaic` | `mosaic` [x, y] (esquina), `cell`, `rows` (cadenas), `legend` {carácter: dibujable} | Pixel art: cada carácter es un color (las corridas se juntan), una textura, un sprite o `item:` |
 | `scatter` | `scatter` (dibujable o lista), `region` [x0, y0, x1, y1], `count`, `size` [mín, máx], `alphas`, `seed`, `spin`, `avoid` [[x, y, r]…], `near` (camino) + `band` [mín, máx] | Un puñado con semilla: estrellas, chispas, humo, flores en una orilla |
 | `frame` | `frame` [x0, y0, x1, y1], `color`, `thickness_px`, `fill`, `fill_alpha`, `corners` | Marco con esquinas y relleno |
@@ -182,6 +241,16 @@ Los íconos son glifos de una fuente que `generate_quests.py` escribe en el comp
 | `picture` | `picture` (`ns:textures/….png`), `x`, `y`, `w`, `h` | Cualquier textura estirada a cualquier tamaño: una pintura del mod, una placa |
 
 `line` y `panel` (los del motor) también respetan `reveal` y `click` desde el 28/9: ya no hace falta dibujarlos con `px.png` para que aparezcan con su quest o abran algo.
+
+**El dibujo se completa jugando** (regla 6 del lienzo, [quest-book-v3](../../docs/design/quest-book-v3.md#reglas-v2-del-lienzo)):
+- `through`: el camino pasa por las posiciones de esas quests, con puntos `[x, y]` intermedios donde haga falta.
+- `grow: true`: cada tramo aparece con la quest a la que llega, así el camino se dibuja detrás del jugador. `grow` también puede ser una lista con una quest (o `null`, siempre visible) por segmento. No va junto con `reveal`.
+- `sketch: true` (o `{"color", "alpha", "width"}`): además del dibujo, una copia tenue que está desde el principio, un orden más abajo. En un camino es una línea fina de tiza; en una pintura, un sprite o un marco, la misma forma teñida y casi transparente (alfa 64 por defecto, 90 como mucho). La tinta llega encima con `reveal` o `grow`. Un `item` no se puede bocetar, porque FTB dibuja los ítems sin alfa.
+
+```json
+{"id": "shaft", "through": ["crb_alloy", "crb_shafts", [-18.0, 1.0], "crb_casing"], "texture": "create:textures/block/axis.png",
+ "width": 1.8, "step": 0.45, "turn": true, "grow": true, "sketch": true}
+```
 
 **Notas al pasar el mouse.** FTB muestra la nota (`hover`) de una imagen sólo si la imagen tiene un clic: sin clic, sólo la ve quien edita el libro (`ChapterImageButton.checkMouseOver`). Por eso:
 - una imagen con `hover` y `reveal` pero sin `click` abre, al hacerle clic, la quest que la revela;

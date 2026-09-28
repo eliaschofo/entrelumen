@@ -254,6 +254,30 @@ def compile_text(paragraphs, lang, ctx, where):
     return lines, " ".join(first_page)
 
 
+def quest_copy(q, name, ctx):
+    """One quest's EN/ES copy compiled and checked (quest-copy.md): {lang: (lines, first page)}. Shared by
+    compile_sector and tools/quest_draft.py, so a draft passes exactly the rules the book compiles with."""
+    key = q["key"]
+    texts = {}
+    for lang in LOCALES:
+        copy = q[lang]
+        where = f"{name}:{key}:{lang}"
+        lines, first = compile_text(copy["text"], lang, ctx, where)
+        check_copy(copy["title"], copy.get("subtitle"), first, lang, where)
+        texts[lang] = (lines, first)
+    assert bool(q["en_us"].get("subtitle")) == bool(q["es_es"].get("subtitle")), f"{key}: subtitle parity"
+    assert texts["en_us"][0].count("{@pagebreak}") == texts["es_es"][0].count("{@pagebreak}"), f"{key}: page parity"
+    refs = {}
+    for lang in LOCALES:
+        raw = " ".join(q[lang]["text"])
+        refs[lang] = {(m.group(1), m.group(2)) for m in TAG.finditer(raw) if m.group(1) in LINKED_TAGS}
+        visible = TAG.sub(lambda m: " ".join(m.group(3).split("|")[1:]) if m.group(3) else "", raw)
+        assert not HARD_KEYS.search(visible), f"{name}:{key}:{lang}: hard-coded key; use [key:...]"
+    assert refs["en_us"] == refs["es_es"], \
+        f"{key}: linked items, keys and quests differ between languages ({sorted(refs['en_us'] ^ refs['es_es'])})"
+    return texts
+
+
 def check_copy(title, subtitle, first_page, lang, where):
     """The copy rules that a machine can check (docs/design/quest-copy.md)."""
     assert title and len(title) <= MAX_TITLE, f"{where}: title length"
@@ -1013,27 +1037,13 @@ def compile_sector(data, book, tables, languages, seen_ids, all_keys, chapter_id
             out["tasks"].append(compile_task(t, key, i, languages, ctx))
         chapter["quests"].append(out)
         nodes.append((key, x, y, size))
-        texts = {}
+        texts = quest_copy(q, name, ctx)
         for lang in LOCALES:
             copy = q[lang]
-            where = f"{name}:{key}:{lang}"
-            lines, first = compile_text(copy["text"], lang, ctx, where)
-            check_copy(copy["title"], copy.get("subtitle"), first, lang, where)
             languages[lang][f"quest.{qid}.title"] = copy["title"]
             if copy.get("subtitle"):
                 languages[lang][f"quest.{qid}.quest_subtitle"] = copy["subtitle"]
-            languages[lang][f"quest.{qid}.quest_desc"] = lines
-            texts[lang] = lines
-        assert bool(q["en_us"].get("subtitle")) == bool(q["es_es"].get("subtitle")), f"{key}: subtitle parity"
-        assert texts["en_us"].count("{@pagebreak}") == texts["es_es"].count("{@pagebreak}"), f"{key}: page parity"
-        refs = {}
-        for lang in LOCALES:
-            raw = " ".join(q[lang]["text"])
-            refs[lang] = {(m.group(1), m.group(2)) for m in TAG.finditer(raw) if m.group(1) in LINKED_TAGS}
-            visible = TAG.sub(lambda m: " ".join(m.group(3).split("|")[1:]) if m.group(3) else "", raw)
-            assert not HARD_KEYS.search(visible), f"{name}:{key}:{lang}: hard-coded key; use [key:...]"
-        assert refs["en_us"] == refs["es_es"], \
-            f"{key}: linked items, keys and quests differ between languages ({sorted(refs['en_us'] ^ refs['es_es'])})"
+            languages[lang][f"quest.{qid}.quest_desc"] = texts[lang][0]
         for r in out["rewards"]:
             if r["type"] == "toast":
                 for lang in LOCALES:
@@ -1141,6 +1151,7 @@ def decorate_sector(data, motif, figures, placed, nodes, languages, ctx, by_key)
             img = label(f"{name}:group:{gid}:label", min(xs) - 0.2, (min(ys) + max(ys)) / 2, group["label"], languages,
                         align="end", **cap)
         images.append(img)
+    ctx["placed"] = placed   # quest_art: paths drawn "through" quests
     for i, art in enumerate(data.get("art", [])):
         images += quest_art.art_images(name, i, art, palette, languages, ctx, by_key)
     return images
