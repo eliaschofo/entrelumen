@@ -105,6 +105,7 @@ public final class Enves {
     NeoForge.EVENT_BUS.addListener((ServerTickEvent.Post event) -> tick(event.getServer()));
     NeoForge.EVENT_BUS.addListener((ServerStartedEvent event) -> EnvesPlacer.resume(event.getServer()));
     NeoForge.EVENT_BUS.addListener((ServerStoppingEvent event) -> EnvesPlacer.stop(event.getServer()));
+    NeoForge.EVENT_BUS.addListener(EnvesPlacer::onEntityJoin);
     NeoForge.EVENT_BUS.addListener(Enves::onLogin);
     NeoForge.EVENT_BUS.addListener(Enves::onChangedDimension);
     NeoForge.EVENT_BUS.addListener(EnvesCommands::register);

@@ -34,6 +34,7 @@ import net.minecraft.world.level.block.ChestBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
 import net.minecraft.world.phys.AABB;
+import net.neoforged.neoforge.event.entity.EntityJoinLevelEvent;
 import net.neoforged.fml.ModList;
 import org.slf4j.Logger;
 
@@ -172,6 +173,10 @@ public final class EnvesPlacer {
   // ---- Ticking ------------------------------------------------------------------------------
 
   static synchronized void tick(MinecraftServer server) {
+    if (leftovers > 0) {
+      LOGGER.info("Envés: {} entities of ended attempts were dropped as their chunks loaded", leftovers);
+      leftovers = 0;
+    }
     if (JOBS.isEmpty()) return;
     ServerLevel level = Enves.level(server);
     if (level == null) return;
@@ -391,6 +396,26 @@ public final class EnvesPlacer {
     var entity = level.getBlockEntity(pos);
     if (entity instanceof RandomizableContainer loot) loot.setLootTable(null);
     Clearable.tryClear(entity);
+  }
+
+  /** Entities of ended attempts dropped as their chunks loaded, since the last report (server thread). */
+  private static int leftovers;
+
+  /**
+   * An entity coming back from disk into a slot without an open attempt is one a wipe could not see (its
+   * chunk's entities loaded after the last sweep): it never rejoins, so the next attempt finds nothing
+   * of it. A forming attempt has no entities of its own yet.
+   */
+  static void onEntityJoin(EntityJoinLevelEvent event) {
+    if (!event.loadedFromDisk() || event.getEntity() instanceof Player) return;
+    if (!(event.getLevel() instanceof ServerLevel level) || !level.dimension().equals(Enves.LEVEL)) return;
+    BlockPos pos = event.getEntity().blockPosition();
+    int slot = EnvesGeometry.slotAt(pos.getX(), pos.getZ());
+    if (slot < 0) return;
+    Optional<Attempt> attempt = EnvesData.get(level.getServer()).inSlot(slot);
+    if (attempt.isPresent() && attempt.get().status == Status.OPEN) return;
+    event.setCanceled(true);
+    leftovers++;
   }
 
   private static int discardEntities(ServerLevel level, Attempt attempt) {
