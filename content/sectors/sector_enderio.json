@@ -27,7 +27,7 @@
   },
   "links": [
     {"target": "mkb_tier_elite", "at": {"x": 21.0, "y": -8.2}},
-    {"target": "voices_capsule", "at": {"x": 24.4, "y": 6.5}},
+    {"target": "voices_capsule", "at": {"x": 28.0, "y": 6.5}},
     {"target": "world_atomic_alloy", "at": {"x": 18.4, "y": 0.0}}
   ],
   "art": [
@@ -249,6 +249,20 @@
       "sources": ["jar:enderio-8.2.11-beta.jar:data/enderio/recipe/advanced_capacitor_bank.json", "jar:enderio-8.2.11-beta.jar:data/enderio/recipe/advanced_capacitor_bank_upgrade.json", "jar:enderio-8.2.11-beta.jar:com/enderio/enderio/config/machines/common/EnergyConfig.class#CAPACITOR_BANK advanced=2000000"]
     },
     {
+      "key": "eio_sunshine", "role": "side", "deps": ["eio_solar"], "group": "power",
+      "task": {"item": "enderio:liquid_sunshine_bucket"},
+      "at": {"x": -21.0, "y": -7.8},
+      "en_us": {"title": "Liquid Sunshine", "subtitle": "Noon, bottled. Well, bucketed.",
+        "text": ["In the [quest:eio_vat|VAT], water with glowstone and a sunflower ferments into Liquid Sunshine. A source block of it touching a photovoltaic module runs that module at full output: any hour, any weather, underground, even in the Nether.",
+                 "{page}",
+                 "A module bound with a phantom's soul wants Liquid Darkness instead: Liquid Sunshine fermented with amethyst and obsidian dust. Each module checks its own six sides."]},
+      "es_es": {"title": "Luz solar líquida", "subtitle": "El mediodía embotellado. Y no en balde.",
+        "text": ["En la [quest:eio_vat|cuba], agua con piedra luminosa y un girasol fermenta en luz solar líquida. Un bloque fuente tocando un módulo fotovoltaico lo hace rendir al máximo: a cualquier hora, con cualquier clima, bajo tierra y hasta en el Nether.",
+                 "{page}",
+                 "Un módulo vinculado con el alma de un fantasma quiere oscuridad líquida: luz solar líquida fermentada con amatista y polvo de obsidiana. Cada módulo mira sus propias seis caras."]},
+      "sources": ["jar:enderio-8.2.11-beta.jar:data/enderio/recipe/fermenting/fluid_liquid_sunshine_still.json", "jar:enderio-8.2.11-beta.jar:data/enderio/recipe/fermenting/fluid_liquid_darkness_still.json", "jar:enderio-8.2.11-beta.jar:data/enderio/tags/item/natural_lights.json", "jar:enderio-8.2.11-beta.jar:data/enderio/tags/item/sunflower.json", "jar:enderio-8.2.11-beta.jar:data/enderio/tags/fluid/solar_panel_light.json", "jar:enderio-8.2.11-beta.jar:data/enderio/tags/fluid/solar_panel_dark.json", "jar:enderio-8.2.11-beta.jar:com/enderio/enderio/content/machines/solar_panel/SolarPanelBlockEntity.class#getGenerationRate(full rate with Liquid Sunshine, or Liquid Darkness for a night soul, before the sky, time, weather and dimension checks), hasLiquidSunshine(six sides)", "jar:enderio-8.2.11-beta.jar:data/enderio/eio_soul/solar/minecraft_phantom.json"]
+    },
+    {
       "key": "eio_solar", "role": "side", "deps": ["eio_bank"], "group": "power",
       "task": {"item": "enderio:energetic_photovoltaic_module"},
       "at": {"x": -17.5, "y": -7.8},
@@ -265,7 +279,7 @@
     {
       "key": "eio_charger", "role": "side", "deps": ["eio_bank"], "group": "power",
       "task": {"item": "enderio:wired_charger"},
-      "at": {"x": -21.0, "y": -7.8},
+      "at": {"x": -24.5, "y": -7.8},
       "en_us": {"title": "Wired Charger", "subtitle": "Juice for your gear.",
         "text": ["Eight conductive alloy around a void chassis. Any item that stores FE charges in its slot, the staff of travelling and the electromagnet included."]},
       "es_es": {"title": "Cargador con cable", "subtitle": "Jugo para tu equipo.",
@@ -389,6 +403,16 @@
       "sources": ["jar:enderio-8.2.11-beta.jar:data/enderio/recipe/conduit_facade.json", "jar:enderio-8.2.11-beta.jar:data/enderio/recipe/hardened_conduit_facade.json", "jar:enderio-8.2.11-beta.jar:data/enderio/recipe/transparent_conduit_facade.json", "jar:enderio-8.2.11-beta.jar:data/enderio/recipe/painting/conduit_facade.json", "jar:enderio-8.2.11-beta.jar:com/enderio/enderio/content/conduits/facades/ConduitFacadeItem.class#place", "jar:enderio-8.2.11-beta.jar:assets/enderio/lang/en_us.json#tooltip.enderio.conduit.facade.transparent"]
     },
     {
+      "key": "eio_painted_tip", "role": "tip", "deps": ["eio_facades"], "group": "paint",
+      "task": {"type": "checkmark"},
+      "at": {"x": -14.0, "y": -11.2},
+      "en_us": {"title": "Disguised machinery",
+        "text": ["[tip] Paint changes the look, not the job: a painted block of redstone still powers, painted glowstone still lights up, a painted crafting table still crafts and painted sand still falls."]},
+      "es_es": {"title": "Maquinaria disfrazada",
+        "text": ["[tip] La pintura cambia el aspecto, no el oficio: un bloque de redstone pintado sigue dando señal, la piedra luminosa pintada sigue alumbrando, una mesa de trabajo pintada sigue sirviendo y la arena pintada sigue cayendo."]},
+      "sources": ["jar:enderio-8.2.11-beta.jar:data/enderio/recipe/painting/painted_redstone_block.json", "jar:enderio-8.2.11-beta.jar:data/enderio/recipe/painting/painted_glowstone.json", "jar:enderio-8.2.11-beta.jar:data/enderio/recipe/painting/painted_crafting_table.json", "jar:enderio-8.2.11-beta.jar:data/enderio/recipe/painting/painted_sand.json", "jar:enderio-8.2.11-beta.jar:com/enderio/enderio/content/paint/block/PaintedRedstoneBlock.class#(extends PoweredBlock)", "jar:enderio-8.2.11-beta.jar:com/enderio/enderio/content/paint/block/PaintedCraftingTableBlock.class#(extends CraftingTableBlock)", "jar:enderio-8.2.11-beta.jar:com/enderio/enderio/content/paint/block/PaintedSandBlock.class#(extends ColoredFallingBlock)", "jar:enderio-8.2.11-beta.jar:com/enderio/enderio/init/EIOBlocks.class#registerPainted(Properties.ofFullCopy of the base block: glowstone keeps light 15)"]
+    },
+    {
       "key": "eio_rich", "role": "secret", "deps": ["eio_machines"], "group": "paint", "hide_lines": true,
       "task": {"type": "advancement", "advancement": "enderio:adventure/rich", "icon": "minecraft:diamond_block"},
       "icon": "minecraft:diamond_block",
@@ -432,7 +456,7 @@
       "sources": ["jar:enderio-8.2.11-beta.jar:data/enderio/recipe/energy_conduit.json", "jar:enderio-8.2.11-beta.jar:data/enderio/enderio/conduit/energy.json", "jar:enderio-8.2.11-beta.jar:com/enderio/enderio/api/conduits/bundle/ConduitBundle.class#MAX_CONDUITS=9"]
     },
     {
-      "key": "eio_pulsating", "role": "side", "deps": ["eio_energy_conduit"], "group": "conduits",
+      "key": "eio_pulsating", "role": "step", "deps": ["eio_energy_conduit"], "group": "conduits",
       "task": {"item": "enderio:pulsating_alloy_ingot", "count": 4},
       "at": {"x": 4.0, "y": -7.8},
       "en_us": {"title": "Pulsating Alloy", "subtitle": "An ender pearl with a heartbeat.",
@@ -475,12 +499,42 @@
       "en_us": {"title": "Redstone Conduit", "subtitle": "Sixteen wires in one.",
         "text": ["Redstone and a copper ingot make [item:enderio:redstone_alloy_ingot|Redstone Alloy]; three between six binder make eight conduits. Signals ride on sixteen colour channels, so one line carries many signals.",
                  "{page}",
-                 "Paper, redstone alloy and iron make the [item:enderio:redstone_filter_base|Redstone Filter Base]; a torch, a lever, a clock or a comparator turns it into a NOT, toggle, timer or sensor filter for a connection, and a torch flips AND to NAND and OR to NOR."]},
+                 "Paper, redstone alloy and iron make the [item:enderio:redstone_filter_base|Redstone Filter Base], the start of every [quest:eio_logic_filters|logic] and [quest:eio_signal_filters|signal] filter a connection can hold."]},
       "es_es": {"title": "Conducto de redstone", "subtitle": "Dieciséis cables en uno.",
         "text": ["Redstone y un lingote de cobre dan [item:enderio:redstone_alloy_ingot|Aleación de redstone]; tres entre seis de aglutinante dan ocho conductos. Las señales viajan en dieciséis canales de color, así una línea lleva muchas señales.",
                  "{page}",
-                 "Papel, aleación de redstone y hierro dan la [item:enderio:redstone_filter_base|Base de filtro de redstone]; una antorcha, una palanca, un reloj o un comparador la vuelven filtro NOT, de alternancia, temporizador o sensor para una conexión, y una antorcha pasa AND a NAND y OR a NOR."]},
-      "sources": ["jar:enderio-8.2.11-beta.jar:data/enderio/recipe/alloy_smelting/redstone_alloy_ingot.json", "jar:enderio-8.2.11-beta.jar:data/enderio/recipe/redstone_conduit.json", "jar:enderio-8.2.11-beta.jar:com/enderio/enderio/content/conduits/type/redstone/RedstoneConduitConnectionConfig.class#(DyeColor channels)", "jar:enderio-8.2.11-beta.jar:data/enderio/recipe/redstone_filter_base.json", "jar:enderio-8.2.11-beta.jar:data/enderio/recipe/redstone_not_filter.json", "jar:enderio-8.2.11-beta.jar:data/enderio/recipe/redstone_timer_filter.json", "jar:enderio-8.2.11-beta.jar:data/enderio/recipe/nand_filter_from_and_filter.json"]
+                 "Papel, aleación de redstone y hierro dan la [item:enderio:redstone_filter_base|Base de filtro de redstone], el punto de partida de todo filtro [quest:eio_logic_filters|lógico] y [quest:eio_signal_filters|de señal] que puede llevar una conexión."]},
+      "sources": ["jar:enderio-8.2.11-beta.jar:data/enderio/recipe/alloy_smelting/redstone_alloy_ingot.json", "jar:enderio-8.2.11-beta.jar:data/enderio/recipe/redstone_conduit.json", "jar:enderio-8.2.11-beta.jar:com/enderio/enderio/content/conduits/type/redstone/RedstoneConduitConnectionConfig.class#(DyeColor channels)", "jar:enderio-8.2.11-beta.jar:data/enderio/recipe/redstone_filter_base.json"]
+    },
+    {
+      "key": "eio_logic_filters", "role": "side", "deps": ["eio_redstone_conduit"], "group": "conduits",
+      "task": {"any": ["enderio:redstone_and_filter", "enderio:redstone_or_filter", "enderio:redstone_xor_filter", "enderio:redstone_nand_filter", "enderio:redstone_nor_filter", "enderio:redstone_xnor_filter", "enderio:redstone_not_filter"], "title": {"en_us": "Any logic filter", "es_es": "Cualquier filtro lógico"}},
+      "at": {"x": -3.0, "y": -11.6},
+      "en_us": {"title": "Logic Filters", "subtitle": "Boolean algebra, one colour at a time.",
+        "text": ["A redstone conduit connection has two filter slots: one for what it reads, one for what it outputs. AND, OR and XOR go in the output slot and combine two colour channels you pick; a redstone torch turns them into NAND, NOR and XNOR. NOT inverts, in either slot.",
+                 "{page}",
+                 "From the filter base: two redstone torches make AND, two redstone alloy make OR, all four make XOR, and a torch with one alloy makes NOT."]},
+      "es_es": {"title": "Filtros lógicos", "subtitle": "Álgebra booleana, de a un color.",
+        "text": ["Una conexión de conducto de redstone tiene dos ranuras de filtro: una para lo que lee y otra para lo que emite. AND, OR y XOR van en la de salida y combinan dos canales de color que elegís; una antorcha de redstone los vuelve NAND, NOR y XNOR. NOT invierte, en cualquiera de las dos.",
+                 "{page}",
+                 "Desde la base de filtro: dos antorchas de redstone dan AND, dos de aleación de redstone dan OR, las cuatro juntas dan XOR, y una antorcha con una aleación da NOT."]},
+      "sources": ["jar:enderio-8.2.11-beta.jar:data/enderio/recipe/redstone_and_filter.json", "jar:enderio-8.2.11-beta.jar:data/enderio/recipe/redstone_or_filter.json", "jar:enderio-8.2.11-beta.jar:data/enderio/recipe/redstone_xor_filter.json", "jar:enderio-8.2.11-beta.jar:data/enderio/recipe/redstone_not_filter.json", "jar:enderio-8.2.11-beta.jar:data/enderio/recipe/nand_filter_from_and_filter.json", "jar:enderio-8.2.11-beta.jar:data/enderio/recipe/nor_filter_from_or_filter.json", "jar:enderio-8.2.11-beta.jar:data/enderio/recipe/xnor_filter_from_xor_filter.json", "jar:enderio-8.2.11-beta.jar:com/enderio/enderio/content/conduits/type/redstone/RedstoneConduit.class#isItemValid(slot 0 extract filter, slot 1 insert filter)", "jar:enderio-8.2.11-beta.jar:com/enderio/enderio/init/EIOCapabilityProviders.class#REDSTONE_INSERT_FILTER(NOT, OR, AND, NOR, NAND, XOR, XNOR), REDSTONE_EXTRACT_FILTER(NOT)", "jar:enderio-8.2.11-beta.jar:com/enderio/enderio/content/filters/redstone/DoubleRedstoneChannel.class#(two channels)", "jar:enderio-8.2.11-beta.jar:com/enderio/enderio/content/filters/redstone/RedstoneANDFilter.class#getOutputSignal(15 or 0)", "jar:enderio-8.2.11-beta.jar:com/enderio/enderio/content/filters/redstone/RedstoneNOTFilter.class#getOutputSignal, getInputSignal"]
+    },
+    {
+      "key": "eio_signal_filters", "role": "side", "deps": ["eio_logic_filters"], "group": "conduits",
+      "task": {"any": ["enderio:redstone_timer_filter", "enderio:redstone_sensor_filter", "enderio:redstone_toggle_filter", "enderio:redstone_counting_filter"], "title": {"en_us": "Any timer, sensor, toggle or counter", "es_es": "Cualquier temporizador, sensor, alternancia o contador"}},
+      "at": {"x": -6.5, "y": -14.6},
+      "en_us": {"title": "Timers, Sensors and Counters", "subtitle": "A clock, an eye and an abacus.",
+        "text": ["In the input slot, a timer filter sends a pulse every so many ticks you type (20 make a second), and a sensor filter reads what a comparator would: a chest's fill level becomes the channel's strength.",
+                 "{page}",
+                 "In the output slot, a toggle filter flips with each pulse, and a count filter switches on at the pulse number you set and off at the next.",
+                 "A clock, a comparator or a lever next to the filter base and a redstone alloy make the timer, sensor and toggle; four redstone alloy make the counter."]},
+      "es_es": {"title": "Temporizadores, sensores y contadores", "subtitle": "Un reloj, un ojo y un ábaco.",
+        "text": ["En la ranura de entrada, un filtro temporizador manda un pulso cada tantos ticks como escribas (20 son un segundo), y uno sensor lee lo que leería un comparador: lo lleno que está un cofre se vuelve la fuerza del canal.",
+                 "{page}",
+                 "En la de salida, uno de alternancia cambia con cada pulso, y uno contador se prende en el pulso número que elijas y se apaga en el siguiente.",
+                 "Un reloj, un comparador o una palanca junto a la base de filtro y una aleación de redstone dan el temporizador, el sensor y el de alternancia; cuatro de aleación de redstone dan el contador."]},
+      "sources": ["jar:enderio-8.2.11-beta.jar:data/enderio/recipe/redstone_timer_filter.json", "jar:enderio-8.2.11-beta.jar:data/enderio/recipe/redstone_sensor_filter.json", "jar:enderio-8.2.11-beta.jar:data/enderio/recipe/redstone_toggle_filter.json", "jar:enderio-8.2.11-beta.jar:data/enderio/recipe/redstone_counting_filter.json", "jar:enderio-8.2.11-beta.jar:com/enderio/enderio/init/EIOCapabilityProviders.class#REDSTONE_EXTRACT_FILTER(sensor, timer), REDSTONE_INSERT_FILTER(toggle, count)", "jar:enderio-8.2.11-beta.jar:com/enderio/enderio/content/filters/redstone/RedstoneTimerFilter.class#getInputSignal(15 once maxTicks is reached, then restarts)", "jar:enderio-8.2.11-beta.jar:com/enderio/enderio/init/EIOConduitTypes.class#REDSTONE(ticker every 2 ticks; the timer adds 2 per run)", "jar:enderio-8.2.11-beta.jar:com/enderio/enderio/content/filters/redstone/RedstoneSensorFilter.class#getInputSignal(getAnalogOutputSignal)", "jar:enderio-8.2.11-beta.jar:com/enderio/enderio/content/filters/redstone/RedstoneTLatchFilter.class#getOutputSignal(flips on each rising edge)", "jar:enderio-8.2.11-beta.jar:com/enderio/enderio/content/filters/redstone/RedstoneCountFilter.class#getOutputSignal(15 while count == maxCount, then back to 1)"]
     },
     {
       "key": "eio_probe", "role": "side", "deps": ["eio_redstone_conduit"], "group": "conduits",
@@ -497,9 +551,9 @@
       "sources": ["jar:enderio-8.2.11-beta.jar:data/enderio/recipe/conduit_probe.json", "jar:enderio-8.2.11-beta.jar:data/enderio/recipe/yeta_wrench.json", "jar:enderio-8.2.11-beta.jar:com/enderio/enderio/content/tools/YetaWrenchItem.class#onItemUseFirst(SideConfig.cycleMode)", "jar:enderio-8.2.11-beta.jar:assets/enderio/lang/en_us.json#tooltip.enderio.conduit.probe.copy_paste", "jar:enderio-8.2.11-beta.jar:data/enderio/recipe/erase_sag_mill.json", "jar:enderio-8.2.11-beta.jar:data/enderio/recipe/erase_basic_capacitor_bank.json", "jar:enderio-8.2.11-beta.jar:data/enderio/recipe/erase_basic_item_filter.json"]
     },
     {
-      "key": "eio_conduit_tip", "role": "tip", "deps": ["eio_redstone_conduit"], "group": "conduits",
+      "key": "eio_conduit_tip", "role": "tip", "deps": ["eio_item_conduit"], "group": "conduits",
       "task": {"type": "checkmark"},
-      "at": {"x": -3.0, "y": -11.6},
+      "at": {"x": 7.5, "y": -11.2},
       "en_us": {"title": "Channels by colour",
         "text": ["[tip] Each connection has an insert colour and an extract colour, and items only flow between matching ones: two item lines share one bundle without mixing. An extract can also wait for a redstone conduit signal on a colour you pick."]},
       "es_es": {"title": "Canales por color",
@@ -513,12 +567,36 @@
       "en_us": {"title": "Filters", "subtitle": "Bouncers for your pipes.",
         "text": ["Paper around a hopper, or around a bucket. Slot one into a connection and only what it lists gets through; use it while sneaking to set it up as an allow or a deny list.",
                  "{page}",
-                 "The advanced, limited and big filters come later, from a Z-Logic Controller, comparators and a skeletal contractor or shulker shells."]},
+                 "The [quest:eio_filter_advanced|advanced and big] filters and the [quest:eio_filter_limited|limited] one come later, from a Z-Logic Controller, comparators and a skeletal contractor or shulker shells."]},
       "es_es": {"title": "Filtros", "subtitle": "Patovicas para tus caños.",
         "text": ["Papel alrededor de una tolva, o de un cubo. Poné uno en una conexión y sólo pasa lo que lista; usalo agachado para configurarlo como lista permitida o prohibida.",
                  "{page}",
-                 "Los filtros avanzado, limitado y grande vienen después, con un controlador lógico Z, comparadores y un contractor esquelético o caparazones de shulker."]},
+                 "Los filtros [quest:eio_filter_advanced|avanzado y grande] y el [quest:eio_filter_limited|limitado] vienen después, con un controlador lógico Z, comparadores y un contractor esquelético o caparazones de shulker."]},
       "sources": ["jar:enderio-8.2.11-beta.jar:data/enderio/recipe/basic_item_filter.json", "jar:enderio-8.2.11-beta.jar:data/enderio/recipe/basic_fluid_filter.json", "jar:enderio-8.2.11-beta.jar:data/enderio/recipe/advanced_item_filter.json", "jar:enderio-8.2.11-beta.jar:data/enderio/recipe/limited_item_filter.json", "jar:enderio-8.2.11-beta.jar:data/enderio/recipe/big_item_filter.json", "jar:enderio-8.2.11-beta.jar:data/enderio/recipe/big_advanced_item_filter.json", "jar:enderio-8.2.11-beta.jar:assets/enderio/lang/en_us.json#tooltip.enderio.filter.unconfigured_hint", "jar:enderio-8.2.11-beta.jar:assets/enderio/lang/en_us.json#gui.enderio.filter.allow_list"]
+    },
+    {
+      "key": "eio_filter_advanced", "role": "side", "deps": ["eio_filters"], "group": "conduits",
+      "task": {"item": "enderio:advanced_item_filter"},
+      "at": {"x": -3.0, "y": -14.6},
+      "en_us": {"title": "Advanced and Big Filters", "subtitle": "For when 'iron pickaxe' isn't specific enough.",
+        "text": ["A Z-Logic Controller in paper and redstone makes the [item:enderio:advanced_item_filter|Advanced Item Filter]: 18 slots that can match components, so an enchanted book isn't just any book, and sort tools by wear, from untouched to nearly broken.",
+                 "{page}",
+                 "The [item:enderio:big_item_filter|Big Item Filter] trades both for 36 slots (a skeletal contractor and obsidian dust); two shulker shells around an advanced filter make the [item:enderio:big_advanced_item_filter|Big Advanced Item Filter], with both."]},
+      "es_es": {"title": "Filtros avanzados y grandes", "subtitle": "Para cuando «pico de hierro» no alcanza.",
+        "text": ["Un controlador lógico Z entre papel y redstone da el [item:enderio:advanced_item_filter|Filtro de ítems avanzado]: 18 ranuras que pueden comparar componentes, así un libro encantado no es un libro cualquiera, y separar herramientas por desgaste, de nuevas a casi rotas.",
+                 "{page}",
+                 "El [item:enderio:big_item_filter|Filtro de ítems grande] cambia las dos cosas por 36 ranuras (un contractor esquelético y polvo de obsidiana); dos caparazones de shulker alrededor de uno avanzado dan el [item:enderio:big_advanced_item_filter|Filtro de ítems grande avanzado], con las dos."]},
+      "sources": ["jar:enderio-8.2.11-beta.jar:data/enderio/recipe/advanced_item_filter.json", "jar:enderio-8.2.11-beta.jar:data/enderio/recipe/big_item_filter.json", "jar:enderio-8.2.11-beta.jar:data/enderio/recipe/big_advanced_item_filter.json", "jar:enderio-8.2.11-beta.jar:com/enderio/enderio/content/filters/item/general/EnderItemFilterItem$Type.class#BASIC(1 row), ADVANCED(2 rows, components, damage), BIG(4 rows), BIG_ADVANCED(4 rows, components, damage)", "jar:enderio-8.2.11-beta.jar:com/enderio/enderio/content/filters/item/general/DamageFilterMode.class#(ignore, up to or more than 25/50/75%, not damaged, only damaged, damageable, not damageable)"]
+    },
+    {
+      "key": "eio_filter_limited", "role": "side", "deps": ["eio_filter_advanced"], "group": "conduits",
+      "task": {"item": "enderio:limited_item_filter"},
+      "at": {"x": -3.0, "y": -18.0},
+      "en_us": {"title": "Limited Item Filter", "subtitle": "Enough is enough. Exactly sixteen is enough.",
+        "text": ["An advanced filter between two comparators. Each of its 18 slots holds a stack whose size is a cap: on an insert connection it lets that item in only while the target holds fewer. A furnace keeps sixteen coal and the rest waits in the chest."]},
+      "es_es": {"title": "Filtro de ítems limitado", "subtitle": "Basta es basta. Dieciséis justos es basta.",
+        "text": ["Un filtro avanzado entre dos comparadores. Cada una de sus 18 ranuras lleva una pila cuyo tamaño es un tope: en una conexión de inserción deja entrar ese ítem sólo mientras el destino tenga menos. Un horno se queda con dieciséis carbones y el resto espera en el cofre."]},
+      "sources": ["jar:enderio-8.2.11-beta.jar:data/enderio/recipe/limited_item_filter.json", "jar:enderio-8.2.11-beta.jar:com/enderio/enderio/content/filters/item/limited/LimitedItemFilter.class#SLOT_COUNT=18, test(target: passes at most the slot's count minus what the target holds)", "jar:enderio-8.2.11-beta.jar:com/enderio/enderio/content/filters/item/limited/LimitedItemFilterSlot.class#processResource(keeps the stack size)", "jar:enderio-8.2.11-beta.jar:com/enderio/enderio/content/conduits/type/item/ItemConduitTicker.class#(insert filter tested against the target inventory)"]
     },
     {
       "key": "eio_conduits_energetic", "role": "side", "deps": ["eio_item_conduit"], "group": "conduits",
@@ -593,6 +671,16 @@
       "sources": ["jar:enderio-8.2.11-beta.jar:data/enderio/recipe/fluid_tank.json", "jar:enderio-8.2.11-beta.jar:data/enderio/recipe/pressurized_fluid_tank.json", "jar:enderio-8.2.11-beta.jar:com/enderio/enderio/content/storage/fluid_tank/FluidTankBlockEntity$Standard.class#16000", "jar:enderio-8.2.11-beta.jar:com/enderio/enderio/content/storage/fluid_tank/FluidTankBlockEntity$Enhanced.class#32000", "jar:enderio-8.2.11-beta.jar:data/enderio/recipe/tank_fill/experience_bottle.json", "jar:enderio-8.2.11-beta.jar:data/enderio/recipe/drain.json", "jar:enderio-8.2.11-beta.jar:assets/enderio/lang/en_us.json#tooltip.enderio.machine.status.drain.no_source", "jar:enderio-8.2.11-beta.jar:com/enderio/enderio/config/machines/common/EnergyConfig.class#DRAIN_USAGE=10"]
     },
     {
+      "key": "eio_insulation", "role": "side", "deps": ["eio_tanks"], "group": "conduits",
+      "task": {"item": "enderio:industrial_insulation"},
+      "at": {"x": 7.5, "y": -4.4},
+      "en_us": {"title": "Industrial Insulation", "subtitle": "A sponge that isn't afraid of lava.",
+        "text": ["Lapis dust, wool and iron or tin dust in the smelter. Placed, it clears the fluids around it as far as a sponge reaches, lava and modded ones included, and drains waterlogged blocks. It never gets wet: break it and place it again."]},
+      "es_es": {"title": "Aislante industrial", "subtitle": "Una esponja que no le tiene miedo a la lava.",
+        "text": ["Polvo de lapislázuli, lana y polvo de hierro o de estaño en la fundición. Al ponerlo, quita los fluidos de alrededor hasta donde llega una esponja, la lava y los de otros mods incluidos, y seca los bloques anegados. Nunca se moja: rompelo y volvé a ponerlo."]},
+      "sources": ["jar:enderio-8.2.11-beta.jar:data/enderio/recipe/alloy_smelting/industrial_insulation.json", "jar:enderio-8.2.11-beta.jar:data/enderio/tags/item/insulation_metals.json", "jar:enderio-8.2.11-beta.jar:com/enderio/enderio/content/misc_blocks/IndustrialInsulationBlock.class#tryAbsorbWater(MAX_RANGE=6, MAX_REPLACES=64; any LiquidBlock or BucketPickup; never turns into a wet sponge)", "jar:server-1.21.1-20240808.144430-srg.jar:net/minecraft/world/level/block/SpongeBlock.class#MAX_DEPTH=6, MAX_COUNT=64"]
+    },
+    {
       "key": "eio_dark_steel", "role": "step", "deps": ["eio_smelter"], "group": "dark",
       "task": {"item": "enderio:dark_steel_ingot", "count": 8},
       "at": {"x": -8.5, "y": 4.4},
@@ -639,12 +727,36 @@
       "en_us": {"title": "Dark steel blocks", "subtitle": "Tougher than they look. They look tough.",
         "text": ["Three ingots make twelve ladders that climb faster than wooden ones, and dark steel bars, obsidian and grains make [item:enderio:reinforced_obsidian_block|Reinforced Obsidian]: the Wither can't break it.",
                  "{page}",
-                 "Doors, trapdoors and pressure plates come in dark steel too, and wool silences most pressure plates. A lever with redstone resets itself after 5 seconds; each extra redstone lengthens it, up to 5 minutes, and a redstone torch inverts it."]},
+                 "Dark steel doors and trapdoors open only with redstone, like iron ones, but shrug off explosions."]},
       "es_es": {"title": "Bloques de acero oscuro", "subtitle": "Más duros de lo que parecen. Y parecen duros.",
         "text": ["Tres lingotes dan doce escaleras que suben más rápido que las de madera, y barrotes de acero oscuro, obsidiana y granos dan [item:enderio:reinforced_obsidian_block|Obsidiana reforzada]: el Wither no la puede romper.",
                  "{page}",
-                 "También hay puertas, trampillas y placas de presión de acero oscuro, y la lana silencia casi todas las placas. Una palanca con redstone se resetea sola a los 5 segundos; cada redstone extra la estira, hasta 5 minutos, y una antorcha de redstone la invierte."]},
-      "sources": ["jar:enderio-8.2.11-beta.jar:data/enderio/recipe/dark_steel_ladder.json", "jar:enderio-8.2.11-beta.jar:assets/enderio/lang/en_us.json#tooltip.enderio.dark_steel_ladder.faster", "jar:enderio-8.2.11-beta.jar:data/enderio/recipe/reinforced_obsidian_block.json", "jar:enderio-8.2.11-beta.jar:data/minecraft/tags/block/wither_immune.json", "jar:enderio-8.2.11-beta.jar:data/enderio/recipe/silent_oak_pressure_plate.json", "jar:enderio-8.2.11-beta.jar:data/enderio/recipe/resetting_lever_five.json", "jar:enderio-8.2.11-beta.jar:data/enderio/recipe/resetting_lever_three_hundred.json", "jar:enderio-8.2.11-beta.jar:data/enderio/recipe/resetting_lever_five_inv.json"]
+                 "Las puertas y trampillas de acero oscuro se abren sólo con redstone, como las de hierro, pero aguantan explosiones."]},
+      "sources": ["jar:enderio-8.2.11-beta.jar:data/enderio/recipe/dark_steel_ladder.json", "jar:enderio-8.2.11-beta.jar:assets/enderio/lang/en_us.json#tooltip.enderio.dark_steel_ladder.faster", "jar:enderio-8.2.11-beta.jar:data/enderio/recipe/reinforced_obsidian_block.json", "jar:enderio-8.2.11-beta.jar:data/minecraft/tags/block/wither_immune.json", "jar:enderio-8.2.11-beta.jar:data/enderio/recipe/dark_steel_door.json", "jar:enderio-8.2.11-beta.jar:data/enderio/recipe/dark_steel_trapdoor.json", "jar:enderio-8.2.11-beta.jar:com/enderio/enderio/init/EIOBlocks.class#DARK_STEEL_DOOR, DARK_STEEL_TRAPDOOR(BlockSetType.IRON, strength 5.0/2000.0)"]
+    },
+    {
+      "key": "eio_plates", "role": "side", "deps": ["eio_dark_blocks"], "group": "dark",
+      "task": {"any": ["enderio:silent_dark_steel_pressure_plate", "enderio:silent_soularium_pressure_plate", "enderio:silent_oak_pressure_plate", "enderio:silent_spruce_pressure_plate", "enderio:silent_birch_pressure_plate", "enderio:silent_jungle_pressure_plate", "enderio:silent_acacia_pressure_plate", "enderio:silent_dark_oak_pressure_plate", "enderio:silent_crimson_pressure_plate", "enderio:silent_warped_pressure_plate", "enderio:silent_stone_pressure_plate", "enderio:silent_polished_blackstone_pressure_plate", "enderio:silent_light_weighted_pressure_plate", "enderio:silent_heavy_weighted_pressure_plate"], "title": {"en_us": "Any silent pressure plate", "es_es": "Cualquier placa de presión silenciosa"}},
+      "at": {"x": -10.9, "y": 11.4},
+      "en_us": {"title": "Silent Pressure Plates", "subtitle": "Sneaking, now with hardware support.",
+        "text": ["Wool on top of most pressure plates, Ender IO's own included, silences them. Two dark steel ingots make a plate that only notices players; two soularium, one that only notices monsters. A trap that lets you walk by.",
+                 "{page}",
+                 "[warn|A silent stone or blackstone plate reacts to dropped items too], like a wooden one."]},
+      "es_es": {"title": "Placas de presión silenciosas", "subtitle": "El sigilo, ahora con soporte técnico.",
+        "text": ["Lana encima de casi cualquier placa de presión la silencia, las de Ender IO incluidas. Dos lingotes de acero oscuro dan una placa que sólo nota jugadores; dos de soularium, una que sólo nota monstruos. Una trampa que a vos te deja pasar.",
+                 "{page}",
+                 "[warn|Una placa de piedra o de piedra negra pulida silenciosa también reacciona a ítems tirados], como una de madera."]},
+      "sources": ["jar:enderio-8.2.11-beta.jar:data/enderio/recipe/silent_oak_pressure_plate.json", "jar:enderio-8.2.11-beta.jar:data/enderio/recipe/silent_dark_steel_pressure_plate.json", "jar:enderio-8.2.11-beta.jar:data/enderio/recipe/dark_steel_pressure_plate.json", "jar:enderio-8.2.11-beta.jar:data/enderio/recipe/soularium_pressure_plate.json", "jar:enderio-8.2.11-beta.jar:com/enderio/enderio/init/EIOBlocks.class#DARK_STEEL_PRESSURE_PLATE(PLAYER), SOULARIUM_PRESSURE_PLATE(HOSTILE_MOB), silent plates of oak, spruce, birch, jungle, acacia, dark oak, crimson, warped, stone, polished blackstone and both weighted plates", "jar:enderio-8.2.11-beta.jar:com/enderio/enderio/content/misc_blocks/EIOPressurePlateBlock.class#PLAYER, HOSTILE_MOB(Enemy)", "jar:enderio-8.2.11-beta.jar:com/enderio/enderio/foundation/block/EIOBlockSetType.class#SILENT(PressurePlateSensitivity.EVERYTHING, SoundEvents.EMPTY)", "jar:server-1.21.1-20240808.144430-srg.jar:net/minecraft/world/level/block/state/properties/BlockSetType.class#STONE, POLISHED_BLACKSTONE(PressurePlateSensitivity.MOBS)", "jar:server-1.21.1-20240808.144430-srg.jar:net/minecraft/world/level/block/PressurePlateBlock.class#getSignalStrength(EVERYTHING counts any entity)"]
+    },
+    {
+      "key": "eio_levers", "role": "side", "deps": ["eio_dark_blocks"], "group": "dark",
+      "task": {"any": ["enderio:resetting_lever_five", "enderio:resetting_lever_ten", "enderio:resetting_lever_thirty", "enderio:resetting_lever_sixty", "enderio:resetting_lever_three_hundred", "enderio:resetting_lever_five_inv", "enderio:resetting_lever_ten_inv", "enderio:resetting_lever_thirty_inv", "enderio:resetting_lever_sixty_inv", "enderio:resetting_lever_three_hundred_inv"], "title": {"en_us": "Any resetting lever", "es_es": "Cualquier palanca con retorno"}},
+      "at": {"x": -8.1, "y": 11.4},
+      "en_us": {"title": "Resetting Levers", "subtitle": "Flip it and walk away.",
+        "text": ["A lever with redstone springs back by itself after 5 seconds; two, three, four or five redstone make it 10, 30, 60 or 300. A redstone torch inverts it: on until you pull it, off for the delay. A door that shuts behind you, no clock needed."]},
+      "es_es": {"title": "Palancas con retorno", "subtitle": "Bajala y andá tranquilo.",
+        "text": ["Una palanca con redstone vuelve sola a los 5 segundos; con dos, tres, cuatro o cinco redstone, a los 10, 30, 60 o 300. Una antorcha de redstone la invierte: prendida hasta que la bajás, apagada durante la espera. Una puerta que se cierra detrás tuyo, sin armar un reloj."]},
+      "sources": ["jar:enderio-8.2.11-beta.jar:data/enderio/recipe/resetting_lever_five.json", "jar:enderio-8.2.11-beta.jar:data/enderio/recipe/resetting_lever_ten.json", "jar:enderio-8.2.11-beta.jar:data/enderio/recipe/resetting_lever_thirty.json", "jar:enderio-8.2.11-beta.jar:data/enderio/recipe/resetting_lever_sixty.json", "jar:enderio-8.2.11-beta.jar:data/enderio/recipe/resetting_lever_three_hundred.json", "jar:enderio-8.2.11-beta.jar:data/enderio/recipe/resetting_lever_five_inv.json", "jar:enderio-8.2.11-beta.jar:com/enderio/enderio/init/EIOBlocks.class#registerResettingLever(5, 10, 30, 60, 300 seconds; inverted)", "jar:enderio-8.2.11-beta.jar:com/enderio/enderio/content/misc_blocks/ResettingLeverBlock.class#useWithoutItem(scheduleTick delay), tick(pulls back), getSignal(inverted: 15 - signal)"]
     },
     {
       "key": "eio_end_steel", "role": "side", "deps": ["eio_dark_steel"], "group": "dark",
@@ -670,6 +782,20 @@
                  "{page}",
                  "La luz solar líquida despeja el cielo en un [quest:eio_weather|obelisco del clima] y la semilla de nube trae lluvia; el destilado nutritivo y el combustible de cohete alimentan el [quest:eio_soul_engine|motor de almas]."]},
       "sources": ["jar:enderio-8.2.11-beta.jar:data/enderio/recipe/vat.json", "jar:enderio-8.2.11-beta.jar:com/enderio/enderio/content/machines/vat/VatBlockEntity.class#(MachineBlockEntity: no energy)", "jar:enderio-8.2.11-beta.jar:data/enderio/recipe/fermenting/fluid_nutrient_distillation_still.json", "jar:enderio-8.2.11-beta.jar:data/enderio/recipe/fermenting/fluid_hootch_still.json", "jar:enderio-8.2.11-beta.jar:data/enderio/recipe/fermenting/fluid_rocket_fuel_still.json", "jar:enderio-8.2.11-beta.jar:data/enderio/data_maps/item/vat_reagent.json", "jar:enderio-8.2.11-beta.jar:data/enderio/recipe/clear.json", "jar:enderio-8.2.11-beta.jar:data/enderio/recipe/rain.json"]
+    },
+    {
+      "key": "eio_fire_water", "role": "side", "deps": ["eio_vat"], "group": "dark",
+      "task": {"item": "enderio:fire_water_bucket"},
+      "at": {"x": -3.9, "y": 10.2},
+      "en_us": {"title": "Fire Water", "subtitle": "Pour it on bedrock, not on your house.",
+        "text": ["Hootch with blaze powder and redstone ferments into Fire Water. Poured on bedrock in the Overworld, now and then it does what a bedrock fire does, no flint and steel needed: one to three [item:enderio:grains_of_infinity|Grains of Infinity], sometimes a suspicious seed.",
+                 "{page}",
+                 "[warn|It sets fire to anything flammable around it, like lava.] On deepslate it drops a grain 40% of the time and turns the block into cobblestone."]},
+      "es_es": {"title": "Agua de fuego", "subtitle": "Echala sobre piedra base, no sobre tu casa.",
+        "text": ["Hootch con polvo de blaze y redstone fermenta en agua de fuego. Volcada sobre piedra base en el Overworld, cada tanto hace lo mismo que un fuego sobre piedra base, sin mechero: de uno a tres [item:enderio:grains_of_infinity|Granos de infinito], a veces una semilla sospechosa.",
+                 "{page}",
+                 "[warn|Prende fuego lo inflamable que tenga alrededor, como la lava.] Sobre pizarra profunda suelta un grano el 40% de las veces y deja el bloque hecho roca."]},
+      "sources": ["jar:enderio-8.2.11-beta.jar:data/enderio/recipe/fermenting/fluid_fire_water_still.json", "jar:enderio-8.2.11-beta.jar:com/enderio/enderio/content/misc_blocks/FireWaterFluid.class#randomTick(performFireCrafting on the block below, spreadFire)", "jar:enderio-8.2.11-beta.jar:com/enderio/enderio/content/fire_crafting/FireCraftingManager.class#tryPerformFireCrafting(base block below, dimension), spawnInfinityDrops", "jar:enderio-8.2.11-beta.jar:data/enderio/recipe/fire_crafting/bedrock_infinity.json", "jar:enderio-8.2.11-beta.jar:data/enderio/recipe/fire_crafting/deepslate_infinity.json"]
     },
     {
       "key": "eio_enchanter", "role": "side", "deps": ["eio_dark_steel"], "group": "dark",
@@ -792,14 +918,48 @@
       "tasks": [{"item": "enderio:aversion_obelisk"}, {"item": "enderio:basic_soul_filter"}],
       "at": {"x": 21.2, "y": 4.6},
       "en_us": {"title": "Obelisks", "subtitle": "Crowd control, soul by soul.",
-        "text": ["A soul filter, paper around a soul vial, tells an obelisk which mobs it acts on. The [item:enderio:aversion_obelisk|Aversion Obelisk] stops them spawning within 16 blocks, the attractor pulls them in from 8, and the relocator moves new spawns beside itself.",
+        "text": ["A soul filter, paper around a soul vial, tells an obelisk which mobs it acts on: up to nine souls, as an allow or a deny list. The [item:enderio:aversion_obelisk|Aversion Obelisk], an enderman head over energetic alloy and soularium, stops them spawning up to 16 blocks away.",
                  "{page}",
-                 "The inhibitor needs no filter: it stops every teleport within 16 blocks, endermen included. Each obelisk can show its range."]},
+                 "It only stops natural spawns, so spawners keep working. It needs a capacitor and power, like the attractor, relocator and inhibitor: a double-layer capacitor doubles their reach, an octadic triples it, and a smaller range in the screen draws less power. The screen can also show the range."]},
       "es_es": {"title": "Obeliscos", "subtitle": "Control de multitudes, alma por alma.",
-        "text": ["Un filtro de almas, papel alrededor de un frasco de almas, le dice a un obelisco sobre qué mobs actúa. El [item:enderio:aversion_obelisk|Obelisco de la aversión] les impide aparecer a 16 bloques, el atractor los arrastra desde 8, y el reubicador lleva a su lado a los que aparecen.",
+        "text": ["Un filtro de almas, papel alrededor de un frasco de almas, le dice a un obelisco sobre qué mobs actúa: hasta nueve almas, como lista permitida o prohibida. El [item:enderio:aversion_obelisk|Obelisco de la aversión], una cabeza de enderman sobre aleación energética y soularium, les impide aparecer a 16 bloques o menos.",
                  "{page}",
-                 "El inhibidor no pide filtro: frena todo teletransporte a 16 bloques, endermen incluidos. Cada obelisco puede mostrar su alcance."]},
-      "sources": ["jar:enderio-8.2.11-beta.jar:data/enderio/recipe/aversion_obelisk.json", "jar:enderio-8.2.11-beta.jar:data/enderio/recipe/basic_soul_filter.json", "jar:enderio-8.2.11-beta.jar:com/enderio/enderio/content/machines/obelisks/aversion/AversionObeliskBlockEntity.class#handleSpawnEvent(setSpawnCancelled)", "jar:enderio-8.2.11-beta.jar:com/enderio/enderio/content/machines/obelisks/attractor/AttractorObeliskBlockEntity.class#(navigation moveTo)", "jar:enderio-8.2.11-beta.jar:com/enderio/enderio/content/machines/obelisks/relocator/RelocatorObeliskBlockEntity.class#handleSpawnEvent(teleportTo beside)", "jar:enderio-8.2.11-beta.jar:com/enderio/enderio/content/machines/obelisks/inhibitor/InhibitorObeliskBlockEntity.class#requiresFilter=false, handleTeleportEvent", "jar:enderio-8.2.11-beta.jar:com/enderio/enderio/config/machines/common/MachinesCommonConfig.class#obelisk ranges 16/8/16/16", "jar:enderio-8.2.11-beta.jar:assets/enderio/lang/en_us.json#gui.enderio.machine.range.show"]
+                 "Sólo frena las apariciones naturales: los spawners siguen andando. Pide capacitor y energía, igual que el atractor, el reubicador y el inhibidor: uno de doble capa les duplica el alcance, uno octádico se lo triplica, y un rango más chico en la pantalla consume menos. La pantalla también puede mostrar el rango."]},
+      "sources": ["jar:enderio-8.2.11-beta.jar:data/enderio/recipe/aversion_obelisk.json", "jar:enderio-8.2.11-beta.jar:data/enderio/recipe/basic_soul_filter.json", "jar:enderio-8.2.11-beta.jar:com/enderio/enderio/content/filters/soul/EnderSoulFilterItem$Type.class#BASIC(1 row of 9)", "jar:enderio-8.2.11-beta.jar:com/enderio/enderio/content/filters/soul/EnderSoulFilter.class#test(isDenyList)", "jar:enderio-8.2.11-beta.jar:com/enderio/enderio/content/machines/obelisks/aversion/AversionObeliskManager.class#onSpawnEvent(MobSpawnType.NATURAL only)", "jar:enderio-8.2.11-beta.jar:com/enderio/enderio/content/machines/obelisks/aversion/AversionObeliskBlockEntity.class#handleSpawnEvent(setSpawnCancelled), RANGE(LinearScalable x capacitor level), CapacitorSupport.REQUIRED", "jar:enderio-8.2.11-beta.jar:com/enderio/enderio/content/machines/obelisks/ObeliskBlockEntity.class#getPerTickEnergyCost(max use x range / max range), updateLocations(AABB inflate(range))", "jar:enderio-8.2.11-beta.jar:com/enderio/enderio/config/machines/common/MachinesCommonConfig.class#aversionRange=16", "jar:enderio-8.2.11-beta.jar:com/enderio/enderio/init/EIOItems.class#DOUBLE_LAYER_CAPACITOR(2.0), OCTADIC_CAPACITOR(3.0)", "jar:enderio-8.2.11-beta.jar:assets/enderio/lang/en_us.json#gui.enderio.machine.range.show"]
+    },
+    {
+      "key": "eio_obelisk_attractor", "role": "side", "deps": ["eio_obelisks"], "group": "souls",
+      "task": {"item": "enderio:attractor_obelisk"},
+      "at": {"x": 24.6, "y": 4.6},
+      "en_us": {"title": "Attractor Obelisk", "subtitle": "Come closer. I don't bite. The grinder does.",
+        "text": ["An [item:enderio:enticing_crystal|Enticing Crystal] on top, energetic alloy, soularium and an energized gear around an ensouled chassis. The mobs its soul filter lists walk to it from up to 8 blocks away; slimes and phantoms chase it, ghasts get dragged in, bosses stay put."]},
+      "es_es": {"title": "Obelisco atractor", "subtitle": "Acercate, que no muerdo. La picadora sí.",
+        "text": ["Un [item:enderio:enticing_crystal|Cristal tentador] arriba, aleación energética, soularium y un engranaje energizado alrededor de un chasis con alma. Los mobs de su filtro de almas, a 8 bloques o menos, caminan hasta él; los slimes y los fantasmas lo persiguen, a los ghasts los arrastra y los jefes no se mueven."]},
+      "sources": ["jar:enderio-8.2.11-beta.jar:data/enderio/recipe/attractor_obelisk.json", "jar:enderio-8.2.11-beta.jar:com/enderio/enderio/content/machines/obelisks/attractor/AttractorObeliskBlockEntity.class#doAttract(PathfinderMob walks to it; Slime and Phantom target a fake player there; Ghast pulled; bosses skipped), RANGE(LinearScalable)", "jar:enderio-8.2.11-beta.jar:com/enderio/enderio/config/machines/common/MachinesCommonConfig.class#attractorRange=8, attractorAttractBosses=false", "jar:enderio-8.2.11-beta.jar:com/enderio/enderio/content/machines/obelisks/ObeliskBlockEntity.class#requiresFilter=true, updateLocations(AABB inflate(range))"]
+    },
+    {
+      "key": "eio_obelisk_relocator", "role": "side", "deps": ["eio_obelisks"], "group": "souls",
+      "task": {"item": "enderio:relocator_obelisk"},
+      "at": {"x": 24.6, "y": 8.0},
+      "en_us": {"title": "Relocator Obelisk", "subtitle": "Spawn wherever you like, as long as it's here.",
+        "text": ["Prismarine on top of an [item:enderio:aversion_obelisk|Aversion Obelisk]. It doesn't cancel spawns, it moves them: a listed mob that spawns naturally up to 16 blocks away appears within 5 blocks of the obelisk instead. Build the killing floor around it."]},
+      "es_es": {"title": "Obelisco reubicador", "subtitle": "Aparecé donde quieras, mientras sea acá.",
+        "text": ["Prismarina encima de un [item:enderio:aversion_obelisk|Obelisco de la aversión]. No cancela las apariciones, las muda: un mob de la lista que aparece de forma natural a 16 bloques o menos aparece, en cambio, a menos de 5 bloques del obelisco. Armá la sala de matanza alrededor."]},
+      "sources": ["jar:enderio-8.2.11-beta.jar:data/enderio/recipe/relocator_obelisk.json", "jar:enderio-8.2.11-beta.jar:com/enderio/enderio/content/machines/obelisks/relocator/RelocatorObeliskManager.class#onSpawnEvent(MobSpawnType.NATURAL only)", "jar:enderio-8.2.11-beta.jar:com/enderio/enderio/content/machines/obelisks/relocator/RelocatorObeliskBlockEntity.class#handleSpawnEvent(teleportTo up to 5 blocks from it, y -1..+1)", "jar:enderio-8.2.11-beta.jar:com/enderio/enderio/config/machines/common/MachinesCommonConfig.class#relocatorRange=16"]
+    },
+    {
+      "key": "eio_obelisk_inhibitor", "role": "side", "deps": ["eio_obelisks"], "group": "souls",
+      "task": {"item": "enderio:inhibitor_obelisk"},
+      "at": {"x": 24.6, "y": 11.4},
+      "en_us": {"title": "Inhibitor Obelisk", "subtitle": "Stay put. Yes, you too, enderman.",
+        "text": ["An [item:enderio:ender_crystal|Ender Crystal] on top and an infinity bimetal gear in the middle; it needs no filter. Any teleport that starts or ends up to 16 blocks away fails: endermen, shulkers, ender pearls, chorus fruit.",
+                 "{page}",
+                 "[warn|Your own staff of travelling and anchors fail too], so keep it away from your travel network. Only commands get through."]},
+      "es_es": {"title": "Obelisco inhibidor", "subtitle": "Quieto ahí. Sí, vos también, enderman.",
+        "text": ["Un [item:enderio:ender_crystal|Cristal ender] arriba y un engranaje bimetálico de infinito en el medio; no pide filtro. Falla todo teletransporte que empiece o termine a 16 bloques o menos: endermen, shulkers, perlas de ender, frutas chorus.",
+                 "{page}",
+                 "[warn|Tu bastón de viaje y tus anclas también fallan]: ponelo lejos de tu red de viaje. Sólo los comandos pasan."]},
+      "sources": ["jar:enderio-8.2.11-beta.jar:data/enderio/recipe/inhibitor_obelisk.json", "jar:enderio-8.2.11-beta.jar:com/enderio/enderio/content/machines/obelisks/inhibitor/InhibitorObeliskBlockEntity.class#requiresFilter=false, handleTeleportEvent(target or origin in range)", "jar:enderio-8.2.11-beta.jar:com/enderio/enderio/content/machines/obelisks/inhibitor/InhibitorObeliskManager.class#onTeleportEvent(every EntityTeleportEvent but TeleportCommand and SpreadPlayersCommand)", "jar:enderio-8.2.11-beta.jar:com/enderio/enderio/config/machines/common/MachinesCommonConfig.class#inhibitorRange=16", "jar:neoforge-21.1.249-server.jar:net/minecraft/world/entity/monster/EnderMan.class#teleport(EventHooks.onEnderTeleport)", "jar:neoforge-21.1.249-server.jar:net/minecraft/world/entity/monster/Shulker.class#teleportSomewhere(EventHooks.onEnderTeleport)", "jar:neoforge-21.1.249-server.jar:net/minecraft/world/entity/projectile/ThrownEnderpearl.class#onHit(EventHooks.onEnderPearlLand)", "jar:neoforge-21.1.249-server.jar:net/minecraft/world/item/ChorusFruitItem.class#finishUsingItem(EventHooks.onChorusFruitTeleport)", "jar:enderio-8.2.11-beta.jar:com/enderio/enderio/content/travel/TravelHandler.class#teleportEvent(EntityTeleportEvent before every staff blink and anchor jump)"]
     },
     {
       "key": "eio_glass_tokens", "role": "side", "deps": ["eio_soul_binder"], "group": "souls",
@@ -882,10 +1042,28 @@
       "task": {"item": "enderio:travel_anchor", "count": 2},
       "at": {"x": 14.0, "y": -8.2},
       "en_us": {"title": "Travel Anchor", "subtitle": "Jump here, land there.",
-        "text": ["Iron, conduit binder, a pulsating crystal and, in this pack, a [item:mekanism:alloy_reinforced|Reinforced Alloy] (act III, where the top binder was). Stand on one, look at another within 96 blocks and jump: you're on top of it."]},
+        "text": ["Iron, conduit binder, a pulsating crystal and, in this pack, a [item:mekanism:alloy_reinforced|Reinforced Alloy] (act III, where the top binder was). Stand on one, look at another within 96 blocks and jump: you're on top of it.",
+                 "{page}",
+                 "An anchor you aim at has to be more than 5 blocks away, with nothing solid on top. Its screen gives it a name and an icon, and can hide it: a hidden anchor still works as an elevator stop, but you can't aim at it."]},
       "es_es": {"title": "Ancla de viaje", "subtitle": "Saltás acá, caés allá.",
-        "text": ["Hierro, aglutinante de conductos, un cristal pulsante y, en este pack, una [item:mekanism:alloy_reinforced|Aleación reforzada] (acto III, donde iba el aglutinante de arriba). Parate en una, mirá otra a menos de 96 bloques y saltá: estás arriba de ella."]},
-      "sources": ["repo:pack/kubejs/server_scripts/entrelumen_pingpong_balance.js#enderio:travel_anchor", "jar:enderio-8.2.11-beta.jar:data/enderio/recipe/travel_anchor.json", "jar:enderio-8.2.11-beta.jar:com/enderio/enderio/config/base/common/BaseCommonConfig.class#items.travelling blockToBlockRange=96", "jar:enderio-8.2.11-beta.jar:com/enderio/enderio/client/content/travel/TravelClientEventHandler.class#movementInputUpdate(jump on an anchor -> blockTeleport)"]
+        "text": ["Hierro, aglutinante de conductos, un cristal pulsante y, en este pack, una [item:mekanism:alloy_reinforced|Aleación reforzada] (acto III, donde iba el aglutinante de arriba). Parate en una, mirá otra a menos de 96 bloques y saltá: estás arriba de ella.",
+                 "{page}",
+                 "Un ancla a la que apuntás tiene que estar a más de 5 bloques y sin nada sólido encima. Su pantalla le pone nombre e ícono, y puede ocultarla: oculta sigue sirviendo de parada de ascensor, pero no se la puede apuntar."]},
+      "sources": ["repo:pack/kubejs/server_scripts/entrelumen_pingpong_balance.js#enderio:travel_anchor", "jar:enderio-8.2.11-beta.jar:data/enderio/recipe/travel_anchor.json", "jar:enderio-8.2.11-beta.jar:com/enderio/enderio/config/base/common/BaseCommonConfig.class#items.travelling blockToBlockRange=96", "jar:enderio-8.2.11-beta.jar:com/enderio/enderio/client/content/travel/TravelClientEventHandler.class#movementInputUpdate(jump on an anchor -> blockTeleport)", "jar:enderio-8.2.11-beta.jar:com/enderio/enderio/content/travel/TravelHandler.class#getTeleportAnchorTarget(canTeleportTo, distance > 5, within 15 degrees, isTeleportPositionClear), getElevatorAnchorTarget(canJumpTo)", "jar:enderio-8.2.11-beta.jar:com/enderio/enderio/content/travel/travel_anchor/AnchorTravelTarget.class#canTravelTo=isVisible, canJumpTo=true", "jar:enderio-8.2.11-beta.jar:com/enderio/enderio/content/travel/travel_anchor/TravelAnchorBlockEntity.class#(name, GHOST slot sets the icon, isVisible)"]
+    },
+    {
+      "key": "eio_coordinates", "role": "side", "deps": ["eio_travel"], "group": "travel",
+      "tasks": [{"item": "enderio:coordinate_selector"}, {"item": "enderio:location_printout"}],
+      "at": {"x": 17.5, "y": -4.4},
+      "en_us": {"title": "Coordinate Selector", "subtitle": "X marks the spot. So do Y and Z.",
+        "text": ["Four conductive alloy, an ender pearl and a compass. Aim it at a block up to 64 blocks away, or use it on one, with paper in your inventory: name the spot and it prints a [item:enderio:location_printout|Location Printout] with its coordinates and dimension.",
+                 "{page}",
+                 "Nothing in this version reads printouts: they're notes. Hand one to a teammate to find your anchors; sneak and use it to look at it again."]},
+      "es_es": {"title": "Selector de coordenadas", "subtitle": "La X marca el lugar. La Y y la Z, también.",
+        "text": ["Cuatro de aleación conductora, una perla de ender y una brújula. Apuntalo a un bloque a no más de 64 bloques, o usalo sobre uno, con papel en el inventario: ponele nombre al lugar y te da una [item:enderio:location_printout|Impresión de ubicación] con sus coordenadas y su dimensión.",
+                 "{page}",
+                 "En esta versión nada lee las impresiones: son notas. Pasale una a alguien del equipo para que encuentre tus anclas; agachate y usala para volver a verla."]},
+      "sources": ["jar:enderio-8.2.11-beta.jar:data/enderio/recipe/coordinate_selector.json", "jar:enderio-8.2.11-beta.jar:com/enderio/enderio/content/tools/coordinate_selector/CoordinateSelectorItem.class#use(clip 64 blocks), useOn, checkPaper", "jar:enderio-8.2.11-beta.jar:com/enderio/enderio/content/tools/coordinate_selector/CoordinateMenu.class#removed(takes one paper, gives a Location Printout with the selection and the name)", "jar:enderio-8.2.11-beta.jar:com/enderio/enderio/content/tools/coordinate_selector/LocationPrintoutItem.class#use(while crouching reopens it), appendHoverText(x y z and dimension)", "jar:enderio-8.2.11-beta.jar:com/enderio/enderio/init/EIODataComponents.class#COORDINATE_SELECTION(read only by the selector, the printout and their menu)"]
     },
     {
       "key": "eio_anchor_tip", "role": "tip", "deps": ["eio_travel"], "group": "travel",
