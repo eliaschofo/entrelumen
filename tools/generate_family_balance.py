@@ -126,6 +126,14 @@ def swapped_loot(path, old, new, why, *, count, staged):
     return {'path': path, 'op': 'swap_loot', 'old': old, 'new': new, 'count': count, 'staged': staged, 'why': why}
 
 
+def ported_loot(path, why):
+    """Write a pinned JAR's pre-1.21 loot table (data/<ns>/loot_tables/...) at the loot_table/ path, the only
+    folder 1.21 reads, converted by port_loot_table. No pinned JAR may ship the new path: once upstream
+    does, the port has to go."""
+    assert '/loot_tables/' in path, f'{path}: not a pre-1.21 loot table path'
+    return {'path': path, 'op': 'port_loot', 'to': path.replace('/loot_tables/', '/loot_table/', 1), 'why': why}
+
+
 def tagged(path, values, why):
     """Add values to a pinned tag with a merging pack file of the same path; the upstream file stays."""
     return {'path': path, 'op': 'tag_values', 'values': list(values), 'why': why}
@@ -403,6 +411,19 @@ PINGPONG_BROKEN_RECIPES = [
     ('mekanism:sawing/trapdoor/aeronos', "Ad Astra's Mekanism compat in the pre-1.21 format (mainOutput, forge: tags)"),
     ('mekanism:sawing/trapdoor/glacian', "Ad Astra's Mekanism compat in the pre-1.21 format (mainOutput, forge: tags)"),
     ('mekanism:sawing/trapdoor/strophar', "Ad Astra's Mekanism compat in the pre-1.21 format (mainOutput, forge: tags)"),
+]
+
+# Ad Astra 1.16.19 keeps its chest loot in the 1.20 folder, which 1.21.1 never loads, so every chest of its
+# planet structures got the empty table (28 September 2026). The templates' LootTable tags name exactly
+# these six tables (python tools/check_loot_tables.py --structures adastra-); minecraft:loot is its legacy
+# Beyond Earth table, which the Venus templates still name.
+AD_ASTRA_CHEST_LOOT = [
+    ('data/ad_astra/loot_tables/chests/dungeon/moon/dungeon_chest.json', 'Moon dungeon rooms'),
+    ('data/ad_astra/loot_tables/chests/dungeon/moon/large_dungeon_chest.json', 'Moon dungeon boss, main and war rooms'),
+    ('data/ad_astra/loot_tables/chests/temple/mars/temple.json', 'Mars temple'),
+    ('data/ad_astra/loot_tables/chests/village/moon/blacksmith.json', 'Lunarian metalworks and lunar tower smithy'),
+    ('data/ad_astra/loot_tables/chests/village/moon/house.json', 'Lunarian bedrooms, grove and lunar tower'),
+    ('data/minecraft/loot_tables/loot.json', 'Pygro village and pygro tower on Venus'),
 ]
 
 
@@ -802,7 +823,7 @@ FAMILIES = {
             # recipe's own shards and the Horizon Chart still makes the Orb (docs/design/mod-pingpong.md).
             swapped_loot('data/eternal_starlight/loot_table/bosses/the_gatekeeper.json', ORB, SHARD,
                          'First-win Orb becomes the gated recipe\'s shards', count=4, staged=ORB),
-        ],
+        ] + [ported_loot(path, f'Ad Astra chest loot in the 1.20 folder: {where}') for path, where in AD_ASTRA_CHEST_LOOT],
         'offer_swaps': [
             offer_swap('eternal_starlight:the_gatekeeper', ORB, SHARD,
                        'GatekeeperTrades sells the Orb for one coin; the same coin buys the recipe\'s shards',
@@ -1244,6 +1265,57 @@ def disabled_placeholder(data):
     return {'type': 'neoforge:false'} in data.get('neoforge:conditions', [])
 
 
+# 1.20.1 enchant_randomly without "enchantments" drew from every discoverable enchantment. 1.21.1 without
+# "options" draws from the whole registry (Soul Speed, Swift Sneak, Wind Burst and every mod enchantment),
+# so the port names the tag 1.21.1's own tables use for that draw (chests/simple_dungeon): the non-treasure
+# enchantments plus mending, frost walker and the two curses.
+RANDOM_LOOT_ENCHANTMENTS = '#minecraft:on_random_loot'
+
+
+def port_loot_table(table, where):
+    """Return (the 1.21.1 form of a 1.20.1 loot table, the (pool, entry, function) indexes given options).
+
+    Only what both codecs read alike passes through: item entries, set_count and constant or uniform
+    counts and rolls. Anything else (set_nbt, conditions, other functions) fails until its conversion is
+    written, so a table never loads with a silently different meaning."""
+    def rl(value):
+        return value if ':' in value else f'minecraft:{value}'
+
+    def constant(value):
+        return isinstance(value, (int, float)) and not isinstance(value, bool)
+
+    def number(value, at):
+        """A constant, or a uniform {min, max} of constants, typed or not: both codecs read these alike."""
+        uniform = (isinstance(value, dict) and set(value) - {'type'} == {'min', 'max'}
+                   and rl(value.get('type', 'uniform')) == 'minecraft:uniform'
+                   and constant(value['min']) and constant(value['max']))
+        assert constant(value) or uniform, f'{where}: {at} is not a constant or uniform number'
+
+    extra = set(table) - {'type', 'pools', '_comment'}
+    assert not extra, f'{where}: table fields without a conversion: {sorted(extra)}'
+    result, added = copy.deepcopy(table), []
+    for p, pool in enumerate(result['pools']):
+        assert set(pool) <= {'rolls', 'bonus_rolls', 'entries'}, f'{where}: pool {p} has fields without a conversion'
+        number(pool['rolls'], f'pool {p} rolls')
+        number(pool.get('bonus_rolls', 0), f'pool {p} bonus_rolls')
+        for e, entry in enumerate(pool['entries']):
+            at = f'{where}: pool {p} entry {e}'
+            assert rl(entry['type']) == 'minecraft:item', f'{at} is not an item entry'
+            assert set(entry) <= {'type', 'name', 'weight', 'quality', 'functions'}, f'{at} has fields without a conversion'
+            for f, function in enumerate(entry.get('functions', [])):
+                name = rl(function['function'])
+                if name == 'minecraft:set_count':
+                    assert set(function) <= {'function', 'count', 'add'}, f'{at}: set_count fields changed'
+                    number(function['count'], f'pool {p} entry {e} count')
+                elif name == 'minecraft:enchant_randomly':
+                    assert set(function) == {'function'}, f'{at}: enchant_randomly with 1.20 fields'
+                    function['options'] = RANDOM_LOOT_ENCHANTMENTS
+                    added.append((p, e, f))
+                else:
+                    raise AssertionError(f'{at} needs a conversion for {name}')
+    return result, added
+
+
 def build_data(name, found=None):
     """Return {path below pack/kubejs/data: JSON text} for this family's upstream data overrides."""
     family = FAMILIES[name]
@@ -1272,6 +1344,19 @@ def build_data(name, found=None):
             assert not set(spec['values']) & set(upstream), f"{spec['path']}: already tagged upstream"
             outputs_by_path[spec['path'][len('data/'):]] = json.dumps(
                 {'replace': False, 'values': spec['values']}, indent=2, ensure_ascii=False) + '\n'
+            continue
+        if spec['op'] == 'port_loot':
+            assert len(sources) == 1, f"{spec['path']}: expected one pinned upstream file, found {len(sources)}"
+            assert not found.get(spec['to']), f"{spec['to']}: a pinned JAR ships the 1.21 table now; drop the port"
+            target = spec['to'][len('data/'):]
+            assert target not in outputs_by_path, f"{spec['to']}: written twice"
+            original = json.loads(sources[0][2])
+            result, added = port_loot_table(original, spec['path'])
+            reverse = copy.deepcopy(result)
+            for p, e, f in added:
+                del reverse['pools'][p]['entries'][e]['functions'][f]['options']
+            assert reverse == original, f"{spec['path']}: the port changed more than the 1.21 conversion"
+            outputs_by_path[target] = json.dumps(result, indent=2, ensure_ascii=False) + '\n'
             continue
         if spec['op'] == 'copy':
             assert len(sources) == spec['owners'], \
