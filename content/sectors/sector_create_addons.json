@@ -8,21 +8,21 @@
   "emblem": "create_enchantment_industry:textures/item/experience_bucket.png",
   "title": {"en_us": "Create · Addons", "es_es": "Create · Complementos"},
   "subtitle": {
-    "en_us": ["Eight addons on one pegboard: liquid experience, smarter gearboxes, new fans, copycat blocks, tubes you ride, a kitchen, a chisel and storage on the move."],
-    "es_es": ["Ocho complementos en un tablero: experiencia líquida, cajas más vivas, ventiladores nuevos, bloques imitadores, tubos para viajar, una cocina, un cincel y almacenamiento que se mueve."]
+    "en_us": ["Nine addons on one pegboard: liquid experience, smarter gearboxes, new fans, copycat blocks, tubes you ride, a kitchen, a chisel, storage on the move and stronger magnets."],
+    "es_es": ["Nueve complementos en un tablero: experiencia líquida, cajas más vivas, ventiladores nuevos, bloques imitadores, tubos para viajar, una cocina, un cincel, almacenamiento que se mueve e imanes más fuertes."]
   },
   "entry": "cad_xp",
   "figures": {
     "beam": {"kind": "line", "from": [-12, -6], "to": [12, -6], "count": 5},
-    "beam2": {"kind": "line", "from": [18, -6], "to": [30, -6], "count": 3}
+    "beam2": {"kind": "line", "from": [18, -6], "to": [36, -6], "count": 4}
   },
   "art": [
     {"id": "banner", "texture": "entrelumen:textures/gui/quests/banner_create.png", "x": 0, "y": -10.4, "scale": 1, "order": -1},
     {"id": "title", "label": {"en_us": "Create · Addons", "es_es": "Create · Complementos"}, "x": 0, "y": -10.4, "scale": 2, "bold": true},
-    {"id": "beam", "line": [[-15.2, -6], [33.2, -6]], "alpha": 150, "thickness_px": 4},
+    {"id": "beam", "line": [[-15.2, -6], [39.2, -6]], "alpha": 150, "thickness_px": 4},
     {"id": "string_a", "line": [[-12, -6], [-12, 7.6]], "alpha": 60},
     {"id": "string_b", "line": [[-6, -6], [-6, 7.6]], "alpha": 60},
-    {"id": "string_c", "line": [[0, -6], [0, -2.6]], "alpha": 60},
+    {"id": "string_c", "line": [[0, -6], [0, 4.2]], "alpha": 60},
     {"id": "string_d", "line": [[6, -6], [6, 0.8]], "alpha": 60},
     {"id": "string_e", "line": [[12, -6], [12, -2.6]], "alpha": 60},
     {"id": "label_a", "label": {"en_us": "Enchantment Industry", "es_es": "Enchantment Industry"}, "x": -12, "y": -7.9, "scale": 1},
@@ -33,10 +33,11 @@
     {"id": "medallion", "texture": "entrelumen:textures/gui/quests/medallion.png", "x": -18.1, "y": -6, "scale": 2, "order": 0, "click": "chapter:sector_create_kinetics", "hover": {"en_us": "Back to Create · Kinetics", "es_es": "Volver a Create · Cinética"}},
     {"id": "bucket", "texture": "create_enchantment_industry:textures/item/experience_bucket.png", "x": -18.1, "y": -6, "scale": 4, "order": 1},
     {"id": "label_f", "label": {"en_us": "Farmer's Delight", "es_es": "Farmer's Delight"}, "x": 18, "y": -7.9, "scale": 1},
-    {"id": "string_f", "line": [[18, -6], [18, 0.8]], "alpha": 60},
+    {"id": "string_f", "line": [[18, -6], [18, -2.6]], "alpha": 60},
     {"id": "label_g", "label": {"en_us": "Rechiseled", "es_es": "Rechiseled"}, "x": 24, "y": -7.9, "scale": 1},
     {"id": "label_h", "label": {"en_us": "Storage in motion", "es_es": "Almacenamiento en movimiento"}, "x": 30, "y": -7.9, "scale": 1},
-    {"id": "string_h", "line": [[30, -6], [30, -2.6]], "alpha": 60}
+    {"id": "string_h", "line": [[30, -6], [30, -2.6]], "alpha": 60},
+    {"id": "label_i", "label": {"en_us": "New Age", "es_es": "New Age"}, "x": 36, "y": -7.9, "scale": 1}
   ],
   "quests": [
     {
@@ -114,6 +115,34 @@
       "sources": ["jar:create-enchantment-industry-2.5.3b.jar:assets/create_enchantment_industry/lang/en_us.json"]
     },
     {
+      "key": "cad_infuser", "role": "side", "deps": ["cad_enchanter"],
+      "task": {"item": "create_enchantment_industry:infuser"},
+      "at": {"x": -14.8, "y": 4.2},
+      "en_us": {"title": "Infusion on tap", "subtitle": "The enchanting table's other job, minus the clicking.",
+        "text": ["A brass sheet, a spout and three nixie tubes make an [item:create_enchantment_industry:infuser|Infuser]. Over a basin it runs Apothic Enchanting's infusion recipes: the bookshelves around it give the stats, and it pays in liquid experience instead of levels.",
+                 "{page}",
+                 "[tip] It ignores a recipe's stat maximums, so Infused Dragon's Breath no longer needs quanta kept under 30. Flimsy Ender Leads come out as [item:apothic_enchanting:ender_lead|Ender Leads], the thread of the woven bag."]},
+      "es_es": {"title": "Infusión en serie", "subtitle": "El otro laburo de la mesa de encantamiento, sin tanto clic.",
+        "text": ["Una lámina de latón, un surtidor y tres tubos Nixie hacen un [item:create_enchantment_industry:infuser|Infusor]. Sobre una cuenca hace las recetas de infusión de Apothic Enchanting: las bibliotecas de alrededor dan las estadísticas y paga con experiencia líquida en vez de niveles.",
+                 "{page}",
+                 "[tip] Ignora los máximos de estadísticas de cada receta: el aliento de dragón infundido ya no pide quanta por debajo de 30. Las riendas de ender endebles salen [item:apothic_enchanting:ender_lead|Riendas de ender], el hilo de la bolsa tejida."]},
+      "sources": ["jar:create-enchantment-industry-2.5.3b.jar:data/create_enchantment_industry/recipe/crafting/infuser.json", "jar:create-enchantment-industry-2.5.3b.jar:assets/create_enchantment_industry/lang/en_us.json#create_enchantment_industry.ponder.infuser.text_1", "jar:create-enchantment-industry-2.5.3b.jar:assets/create_enchantment_industry/lang/en_us.json#create_enchantment_industry.ponder.infuser.text_2", "jar:create-enchantment-industry-2.5.3b.jar:assets/create_enchantment_industry/lang/en_us.json#create_enchantment_industry.ponder.infuser.text_3", "jar:create-enchantment-industry-2.5.3b.jar:assets/create_enchantment_industry/lang/en_us.json#create_enchantment_industry.ponder.infuser.text_4", "jar:create-enchantment-industry-2.5.3b.jar:plus/dragons/createenchantmentindustry/integration/apothic_enchanting/common/processing/infuser/InfuserBlockEntity.class#getBasin", "jar:ApothicEnchanting-1.21.1-1.6.1.jar:data/apothic_enchanting/recipe/infusion/infused_breath.json", "jar:ApothicEnchanting-1.21.1-1.6.1.jar:data/apothic_enchanting/recipe/infusion/ender_lead.json"]
+    },
+    {
+      "key": "cad_woven_bag", "role": "side", "deps": ["cad_infuser"],
+      "task": {"item": "create_enchantment_industry:ender_woven_bag"},
+      "at": {"x": -14.8, "y": 7.6},
+      "en_us": {"title": "Mobs to go",
+        "text": ["Six Ender Leads around a rose quartz lamp, a precision mechanism and a brass casing make an [item:create_enchantment_industry:ender_woven_bag|Ender Woven Bag]. It pulls nearby mobs in and keeps them; its light comes on when it is full, and a redstone signal lets them out.",
+                 "{page}",
+                 "It works on a contraption too, and there it lets its mobs out when it faces a redstone block: a delivery van for your mob farm."]},
+      "es_es": {"title": "Mobs para llevar",
+        "text": ["Seis riendas de ender alrededor de una lámpara de cuarzo rosado, un mecanismo de precisión y un revestimiento de latón hacen una [item:create_enchantment_industry:ender_woven_bag|Bolsa tejida de ender]. Atrae a los mobs cercanos y los guarda; la luz se prende cuando está llena y una señal de redstone los suelta.",
+                 "{page}",
+                 "También anda sobre una estructura de Create, y ahí suelta a sus mobs cuando queda frente a un bloque de redstone: un delivery para tu granja de mobs."]},
+      "sources": ["jar:create-enchantment-industry-2.5.3b.jar:data/create_enchantment_industry/recipe/crafting/ender_woven_bag.json", "jar:create-enchantment-industry-2.5.3b.jar:assets/create_enchantment_industry/lang/en_us.json#create_enchantment_industry.ponder.ender_woven_bag.text_1", "jar:create-enchantment-industry-2.5.3b.jar:assets/create_enchantment_industry/lang/en_us.json#create_enchantment_industry.ponder.ender_woven_bag.text_2", "jar:create-enchantment-industry-2.5.3b.jar:assets/create_enchantment_industry/lang/en_us.json#create_enchantment_industry.ponder.ender_woven_bag.text_3", "jar:create-enchantment-industry-2.5.3b.jar:assets/create_enchantment_industry/lang/en_us.json#create_enchantment_industry.ponder.ender_woven_bag.text_4", "jar:create-enchantment-industry-2.5.3b.jar:assets/create_enchantment_industry/lang/en_us.json#create_enchantment_industry.ponder.ender_woven_bag_on_contraption.text_2"]
+    },
+    {
       "key": "cad_forger", "role": "step", "deps": ["cad_enchanter"],
       "task": {"item": "create_enchantment_industry:blaze_forger"},
       "at": {"x": -12, "y": 4.2},
@@ -145,18 +174,18 @@
       "sources": ["jar:create-enchantment-industry-2.5.3b.jar:assets/create_enchantment_industry/lang/en_us.json"]
     },
     {
-      "key": "cad_super_goal", "role": "capstone", "deps": ["cad_super"], "curve": {"cad_super": -0.18},
+      "key": "cad_super_goal", "role": "capstone", "deps": ["cad_forger"], "curve": {"cad_forger": -0.2},
       "task": {"type": "advancement", "advancement": "create_enchantment_industry:transcendent_overclock", "icon": "create_enchantment_industry:super_enchanting_template"},
       "icon": "create_enchantment_industry:super_enchanting_template",
       "at": {"x": 0, "y": 10.8},
       "en_us": {"title": "Past the cap", "subtitle": "Level limits were more of a suggestion.",
-        "text": ["Strike [item:create_enchantment_industry:super_experience_block|Blocks of Super Experience] with lightning, craft a [item:create_enchantment_industry:super_enchanting_template|Super Enchanting Template] and run a seething enchanter by a lightning rod until an enchantment goes past its vanilla cap."]},
+        "text": ["Strike [item:create_enchantment_industry:super_experience_block|Blocks of Super Experience] with lightning, craft a [item:create_enchantment_industry:super_enchanting_template|Super Enchanting Template] and run a [quest:cad_super|seething] enchanter by a lightning rod until an enchantment goes past its vanilla cap."]},
       "es_es": {"title": "Más allá del tope", "subtitle": "El límite de nivel era una sugerencia.",
-        "text": ["Pegale un rayo a [item:create_enchantment_industry:super_experience_block|Bloques de Superexperiencia], fabricá una [item:create_enchantment_industry:super_enchanting_template|Súper Plantilla de Encantamiento] y hacé hervir un encantador junto a un pararrayos hasta que un encantamiento pase su tope de vanilla."]},
+        "text": ["Pegale un rayo a [item:create_enchantment_industry:super_experience_block|Bloques de Superexperiencia], fabricá una [item:create_enchantment_industry:super_enchanting_template|Súper Plantilla de Encantamiento] y hacé [quest:cad_super|hervir] un encantador junto a un pararrayos hasta que un encantamiento pase su tope de vanilla."]},
       "sources": ["jar:create-enchantment-industry-2.5.3b.jar:data/create_enchantment_industry/advancement/transcendent_overclock.json"]
     },
     {
-      "key": "cad_connected", "role": "milestone", "deps": ["crb_gearbox"],
+      "key": "cad_connected", "role": "milestone", "deps": ["crb_casing"],
       "task": {"item": "create_connected:six_way_gearbox"},
       "at": {"figure": "beam", "slot": 1},
       "en_us": {"title": "The missing parts",
@@ -176,7 +205,7 @@
       "sources": ["jar:create_connected-1.3.3-mc1.21.1.jar:data/create_connected/advancement/kinetic_battery.json"]
     },
     {
-      "key": "cad_shear_pin", "role": "side", "deps": ["cad_connected"],
+      "key": "cad_shear_pin", "role": "side", "deps": ["cad_connected"], "curve": {"cad_connected": -0.27},
       "task": {"type": "advancement", "advancement": "create_connected:shear_pin", "icon": "create_connected:shear_pin"},
       "icon": "create_connected:shear_pin",
       "at": {"x": -6, "y": 0.8},
@@ -201,11 +230,13 @@
       "key": "cad_conn_logi", "role": "side", "deps": ["cad_shear_pin"],
       "task": {"item": "create_connected:empty_fan_catalyst"},
       "at": {"x": -6, "y": 4.2},
-      "en_us": {"title": "Tidy logistics",
-        "text": ["A brass chute moves 64 items at once, an inventory bridge lets one funnel reach two chests, the item silo is a vault standing up, and an [item:create_connected:empty_fan_catalyst|Empty Fan Catalyst] holds lava or water for fan processing, no spills."]},
-      "es_es": {"title": "Logística prolija",
-        "text": ["Un ducto de latón mueve 64 ítems de una, un puente de inventario deja que un embudo llegue a dos cofres, el silo es una bóveda parada y un [item:create_connected:empty_fan_catalyst|Catalizador de ventilador vacío] guarda lava o agua para procesar con ventilador, sin derrames."]},
-      "sources": ["jar:create_connected-1.3.3-mc1.21.1.jar:assets/create_connected/lang/en_us.json"]
+      "en_us": {"title": "Catalysts in a cage",
+        "text": ["Brass and iron bars make an [item:create_connected:empty_fan_catalyst|Empty Fan Catalyst]. Fill it and a fan blows through it as if through the real thing, with no spills: lava, water, soul sand or netherrack, and the new fan types of the Dragons Plus panel.",
+                 "[tip] A [item:create_connected:brass_chute|Brass Chute] moves 64 items at a time."]},
+      "es_es": {"title": "Catalizadores enjaulados",
+        "text": ["Latón y barrotes de hierro hacen un [item:create_connected:empty_fan_catalyst|Catalizador de ventilador vacío]. Llenalo y el ventilador sopla a través de él como si fuera lo de verdad, sin derrames: lava, agua, arena de almas o netherrack, y los tipos nuevos del panel de Dragons Plus.",
+                 "[tip] Un [item:create_connected:brass_chute|Ducto de latón] mueve 64 ítems de una."]},
+      "sources": ["jar:create_connected-1.3.3-mc1.21.1.jar:data/create_connected/recipe/crafting/kinetics/empty_fan_catalyst.json", "jar:create_connected-1.3.3-mc1.21.1.jar:data/create_connected/recipe/item_application/blasting_catalyst_from_empty.json", "jar:create_connected-1.3.3-mc1.21.1.jar:data/create_connected/recipe/item_application/splashing_catalyst_from_empty.json", "jar:create_connected-1.3.3-mc1.21.1.jar:data/create_connected/recipe/item_application/haunting_catalyst_from_empty.json", "jar:create_connected-1.3.3-mc1.21.1.jar:data/create_connected/recipe/item_application/smoking_catalyst_from_empty.json", "jar:create_connected-1.3.3-mc1.21.1.jar:assets/create_connected/lang/en_us.json#block.create_connected.fan_blasting_catalyst.tooltip.summary", "jar:create_connected-1.3.3-mc1.21.1.jar:assets/create_connected/lang/en_us.json#block.create_connected.brass_chute.tooltip.summary"]
     },
     {
       "key": "cad_conn_pack", "role": "info", "deps": ["cad_conn_logi"],
@@ -219,7 +250,31 @@
       "sources": ["pack/config/create_connected-common.toml"]
     },
     {
-      "key": "cad_dragons", "role": "milestone", "deps": ["crb_tank"],
+      "key": "cad_inventory_bridge", "role": "side", "deps": ["cad_connected"],
+      "tasks": [{"item": "create_connected:inventory_access_port", "count": 2}, {"item": "create_connected:inventory_bridge"}],
+      "at": {"x": -3.3, "y": -2.6},
+      "en_us": {"title": "Ports and bridges", "subtitle": "Reach in from anywhere.",
+        "text": ["A brass casing, a chute and an electron tube make two [item:create_connected:inventory_access_port|Inventory Access Ports]. Stuck to a chest, a port lets the funnels and arms on it reach the chest as if they touched it. Two ports make an [item:create_connected:inventory_bridge|Inventory Bridge], which reaches two inventories at once.",
+                 "{page}",
+                 "[tip] The bridge's filter slots pick the side each item goes to, and items matching neither are refused. Neither ports nor bridges chain, and a redstone signal turns them off."]},
+      "es_es": {"title": "Puertos y puentes", "subtitle": "Llegá al cofre desde cualquier lado.",
+        "text": ["Un revestimiento de latón, un ducto y un tubo de electrones hacen dos [item:create_connected:inventory_access_port|Puertos de acceso al inventario]. Pegado a un cofre, un puerto deja que los embudos y brazos puestos en él lleguen al cofre como si lo tocaran. Dos puertos hacen un [item:create_connected:inventory_bridge|Puente de inventario], que llega a dos inventarios a la vez.",
+                 "{page}",
+                 "[tip] Las ranuras de filtro del puente eligen a qué lado va cada ítem, y lo que no coincide con ninguno se rechaza. Ni los puertos ni los puentes se encadenan, y una señal de redstone los apaga."]},
+      "sources": ["jar:create_connected-1.3.3-mc1.21.1.jar:data/create_connected/recipe/crafting/kinetics/inventory_access_port.json", "jar:create_connected-1.3.3-mc1.21.1.jar:data/create_connected/recipe/crafting/kinetics/inventory_bridge.json", "jar:create_connected-1.3.3-mc1.21.1.jar:assets/create_connected/lang/en_us.json#create_connected.ponder.inventory_access_port.text_6", "jar:create_connected-1.3.3-mc1.21.1.jar:assets/create_connected/lang/en_us.json#create_connected.ponder.inventory_access_port.text_7", "jar:create_connected-1.3.3-mc1.21.1.jar:assets/create_connected/lang/en_us.json#create_connected.ponder.inventory_access_port.text_8", "jar:create_connected-1.3.3-mc1.21.1.jar:assets/create_connected/lang/en_us.json#create_connected.ponder.inventory_bridge.text_1", "jar:create_connected-1.3.3-mc1.21.1.jar:assets/create_connected/lang/en_us.json#create_connected.ponder.inventory_bridge.text_3", "jar:create_connected-1.3.3-mc1.21.1.jar:assets/create_connected/lang/en_us.json#create_connected.ponder.inventory_bridge.text_5", "jar:create_connected-1.3.3-mc1.21.1.jar:assets/create_connected/lang/en_us.json#create_connected.ponder.inventory_bridge_filter.text_1", "jar:create_connected-1.3.3-mc1.21.1.jar:assets/create_connected/lang/en_us.json#create_connected.ponder.inventory_bridge_filter.text_2"]
+    },
+    {
+      "key": "cad_silo", "role": "side", "deps": ["cad_conn_logi"],
+      "task": {"item": "create_connected:item_silo", "count": 4},
+      "at": {"x": -3.3, "y": 4.2},
+      "en_us": {"title": "Stand it up", "subtitle": "Same vault, better posture.",
+        "text": ["The vault's recipe turned on its side (iron sheet, barrel, iron sheet in a row) makes an [item:create_connected:item_silo|Item Silo]: a vault that grows upward instead of sideways, and rides contraptions like one. A vault and a silo swap for each other in the crafting grid."]},
+      "es_es": {"title": "Parala", "subtitle": "La misma bóveda, mejor postura.",
+        "text": ["La receta de la bóveda, acostada (lámina de hierro, barril y lámina de hierro en fila), hace un [item:create_connected:item_silo|Silo]: una bóveda que crece para arriba en vez de para el costado, y que viaja en estructuras de Create igual que ella. Bóveda y silo se cambian uno por otro en la mesa."]},
+      "sources": ["jar:create_connected-1.3.3-mc1.21.1.jar:data/create_connected/recipe/crafting/kinetics/item_silo.json", "jar:create_connected-1.3.3-mc1.21.1.jar:data/create_connected/recipe/crafting/kinetics/item_silo_from_conversion.json", "jar:create_connected-1.3.3-mc1.21.1.jar:data/create_connected/recipe/crafting/kinetics/item_vault_from_conversion.json", "jar:create-1.21.1-6.0.10.jar:data/create/recipe/crafting/kinetics/item_vault.json", "jar:create_connected-1.3.3-mc1.21.1.jar:assets/create_connected/lang/en_us.json#block.create_connected.item_silo.tooltip.summary", "jar:create_connected-1.3.3-mc1.21.1.jar:com/hlysine/create_connected/content/itemsilo/ItemSiloMountedStorage.class"]
+    },
+    {
+      "key": "cad_dragons", "role": "milestone", "deps": ["crb_burner"],
       "task": {"item": "create_dragons_plus:fluid_hatch"},
       "at": {"figure": "beam", "slot": 2},
       "en_us": {"title": "Dragons Plus",
@@ -231,12 +286,67 @@
     {
       "key": "cad_fans", "role": "tip", "deps": ["cad_dragons"],
       "task": {"type": "checkmark"},
+      "icon": "aether:golden_aercloud",
+      "at": {"x": 2.9, "y": -2.6},
+      "en_us": {"title": "Clouds that enchant",
+        "text": ["[tip] A fan blowing through a [item:aether:golden_aercloud|Golden Aercloud] from the Aether runs its altar recipes in bulk: it enchants, repairs gear and even hatches Moa eggs."]},
+      "es_es": {"title": "Nubes que encantan",
+        "text": ["[tip] Un ventilador que sopla a través de una [item:aether:golden_aercloud|Aeronube dorada] del Aether hace sus recetas de altar en cantidad: encanta, repara equipo y hasta empolla huevos de moa."]},
+      "sources": ["jar:CreateDragonsPlus-1.11.9.jar:assets/create_dragons_plus/lang/en_us.json#create_dragons_plus.ponder.bulk_enchanting.text_1", "jar:CreateDragonsPlus-1.11.9.jar:assets/create_dragons_plus/lang/en_us.json#create_dragons_plus.ponder.bulk_enchanting.text_2", "jar:CreateDragonsPlus-1.11.9.jar:assets/create_dragons_plus/lang/en_us.json#create_dragons_plus.ponder.bulk_enchanting.text_3", "jar:CreateDragonsPlus-1.11.9.jar:assets/create_dragons_plus/lang/en_us.json#create_dragons_plus.ponder.bulk_enchanting.text_4"]
+    },
+    {
+      "key": "cad_freezing", "role": "side", "deps": ["cad_dragons"],
+      "task": {"item": "minecraft:breeze_rod", "count": 4},
       "at": {"x": 0, "y": -2.6},
-      "en_us": {"title": "New fan catalysts",
-        "text": ["[tip] Liquid dye colours items, mobs and worn armour; powder snow freezes; a dragon head or dragon's breath does Ending; a golden aercloud runs Aether altar recipes in bulk. The recipe viewer lists each catalyst."]},
-      "es_es": {"title": "Catalizadores nuevos",
-        "text": ["[tip] El tinte líquido colorea ítems, mobs y armadura puesta; la nieve polvo congela; una cabeza o aliento de dragón hace el Ending; una nube dorada del Aether hace recetas del altar en cantidad. El visor de recetas muestra cada catalizador."]},
-      "sources": ["jar:CreateDragonsPlus-1.11.9.jar:data/create_dragons_plus/recipe"]
+      "en_us": {"title": "Deep freeze", "subtitle": "Even a blaze needs to chill.",
+        "text": ["A fan blowing through powder snow freezes what it carries: ice packs down, then turns into [item:minecraft:blue_ice|Blue Ice], magma cream becomes slime and a blaze rod cools into a [item:minecraft:breeze_rod|Breeze Rod]. Mobs in the stream freeze and stop burning.",
+                 "{page}",
+                 "[tip] A powder snow bucket on an [quest:cad_conn_logi|Empty Fan Catalyst] makes a freezing catalyst that never spills."]},
+      "es_es": {"title": "Congelado en serie", "subtitle": "Hasta un blaze necesita bajar un cambio.",
+        "text": ["Un ventilador que sopla a través de nieve polvo congela lo que lleva: el hielo se compacta y después pasa a [item:minecraft:blue_ice|Hielo azul], la crema de magma se vuelve slime y una vara de blaze se enfría en una [item:minecraft:breeze_rod|Vara de breeze]. Los mobs de la corriente se congelan y dejan de arder.",
+                 "{page}",
+                 "[tip] Un cubo con nieve polvo sobre un [quest:cad_conn_logi|Catalizador de ventilador vacío] hace un catalizador de congelación que nunca se derrama."]},
+      "sources": ["jar:CreateDragonsPlus-1.11.9.jar:data/create_dragons_plus/recipe/freezing", "jar:CreateDragonsPlus-1.11.9.jar:assets/create_dragons_plus/lang/en_us.json#create_dragons_plus.ponder.bulk_freezing.text_1", "jar:CreateDragonsPlus-1.11.9.jar:plus/dragons/createdragonsplus/common/kinetics/fan/freezing/FreezingFanProcessingType.class#affectEntity", "jar:CreateDragonsPlus-1.11.9.jar:plus/dragons/createdragonsplus/common/registry/CDPBlockFreezers.class", "jar:create_connected-1.3.3-mc1.21.1.jar:data/create_connected/recipe/item_application/freezing_catalyst_from_empty.json", "jar:create_connected-1.3.3-mc1.21.1.jar:data/create_dragons_plus/tags/block/passive_block_freezers.json"]
+    },
+    {
+      "key": "cad_sanding", "role": "side", "deps": ["cad_freezing"],
+      "task": {"type": "observation", "observe": "block", "target": "create_connected:fan_sanding_catalyst", "ticks": 40, "icon": "create_connected:fan_sanding_catalyst", "title": {"en_us": "Look at a sanding catalyst", "es_es": "Mirá un catalizador de lijado"}},
+      "at": {"x": 0, "y": 0.8},
+      "en_us": {"title": "Polish in bulk", "subtitle": "Sandpaper, but it's weather.",
+        "text": ["Dragons Plus sands with quicksand, and no mod here has any. Apply sand to an [quest:cad_conn_logi|Empty Fan Catalyst] instead: a fan through it runs Create's sandpaper recipes in bulk, so rose quartz comes out as [item:create:polished_rose_quartz|Polished Rose Quartz] by the beltful."]},
+      "es_es": {"title": "Pulido a granel", "subtitle": "Papel de lija, pero con viento.",
+        "text": ["Dragons Plus lija con arenas movedizas, y acá ningún mod las tiene. Aplicale arena a un [quest:cad_conn_logi|Catalizador de ventilador vacío]: un ventilador a través de él hace las recetas de papel de lija en cantidad, y el cuarzo rosado sale [item:create:polished_rose_quartz|Cuarzo rosado pulido] de a cintas enteras."]},
+      "sources": ["jar:CreateDragonsPlus-1.11.9.jar:data/create_dragons_plus/tags/block/fan_processing_catalysts/sanding.json", "jar:CreateDragonsPlus-1.11.9.jar:plus/dragons/createdragonsplus/common/kinetics/fan/sanding/SandingFanProcessingType.class#isValidAt", "jar:CreateDragonsPlus-1.11.9.jar:assets/create_dragons_plus/lang/en_us.json#create_dragons_plus.ponder.bulk_sanding.text_2", "jar:create_connected-1.3.3-mc1.21.1.jar:data/create_dragons_plus/tags/block/fan_processing_catalysts/sanding.json", "jar:create_connected-1.3.3-mc1.21.1.jar:data/create_connected/recipe/item_application/sanding_catalyst_from_empty.json", "jar:create-1.21.1-6.0.10.jar:data/create/recipe/sandpaper_polishing/rose_quartz.json", "catalog/curated.json (no pinned JAR defines #c:quicksands)"]
+    },
+    {
+      "key": "cad_coloring", "role": "side", "deps": ["cad_sanding"],
+      "task": {"any": ["#c:buckets/dye"], "icon": "create_dragons_plus:red_dye_bucket", "title": {"en_us": "Any liquid dye bucket", "es_es": "Un balde de tinte líquido cualquiera"}},
+      "at": {"x": 0, "y": 4.2},
+      "en_us": {"title": "Paint job", "subtitle": "Sixteen colours, no brushes.",
+        "text": ["A mixer turns a dye and 250 mB of water into 250 mB of liquid dye. A fan blowing through it dyes items in bulk (the recipe viewer lists which), recolours sheep and other mobs, and dyes the armour they wear.",
+                 "{page}",
+                 "[tip] A dye bucket on an [quest:cad_conn_logi|Empty Fan Catalyst] makes a dyeing catalyst of that colour, with no puddle to step in."]},
+      "es_es": {"title": "Mano de pintura", "subtitle": "Dieciséis colores, sin pincel.",
+        "text": ["Una mezcladora convierte un tinte y 250 mB de agua en 250 mB de tinte líquido. Un ventilador que sopla a través de él tiñe ítems en cantidad (el visor de recetas dice cuáles), le cambia el color a ovejas y otros mobs, y tiñe la armadura que llevan puesta.",
+                 "{page}",
+                 "[tip] Un balde de tinte sobre un [quest:cad_conn_logi|Catalizador de ventilador vacío] hace un catalizador de teñido de ese color, sin charco para pisar."]},
+      "sources": ["jar:CreateDragonsPlus-1.11.9.jar:data/create_dragons_plus/recipe/mixing/red_dye_from_item.json", "jar:CreateDragonsPlus-1.11.9.jar:data/c/tags/item/buckets/dye.json", "jar:CreateDragonsPlus-1.11.9.jar:assets/create_dragons_plus/lang/en_us.json#create_dragons_plus.ponder.bulk_coloring.text_1", "jar:CreateDragonsPlus-1.11.9.jar:assets/create_dragons_plus/lang/en_us.json#create_dragons_plus.ponder.bulk_coloring.text_2", "jar:CreateDragonsPlus-1.11.9.jar:assets/create_dragons_plus/lang/en_us.json#create_dragons_plus.ponder.bulk_coloring.text_3", "jar:CreateDragonsPlus-1.11.9.jar:assets/create_dragons_plus/lang/en_us.json#create_dragons_plus.ponder.bulk_coloring.text_4", "jar:create_connected-1.3.3-mc1.21.1.jar:data/create_connected/recipe/item_application/red_dyeing_catalyst_dragons_plus_from_empty.json"]
+    },
+    {
+      "key": "cad_dragon_breath", "role": "side", "deps": ["cad_coloring"],
+      "tasks": [{"item": "create_dragons_plus:dragon_breath_bucket"}, {"item": "minecraft:chorus_fruit", "count": 8}],
+      "at": {"x": 2.9, "y": 4.2},
+      "en_us": {"title": "Dragon's breath, piped", "subtitle": "Handle with a fan.",
+        "text": ["An item drain turns each bottle of dragon's breath into 250 mB of fluid and a spout bottles it back; four fill a [item:create_dragons_plus:dragon_breath_bucket|Dragon's Breath Bucket]. It fills cauldrons too, and where flowing breath meets lava it hardens into end stone.",
+                 "{page}",
+                 "A fan through the breath, or through a dragon head, runs Bulk Ending: cobblestone becomes end stone, stone bricks become end stone bricks, apples become [item:minecraft:chorus_fruit|Chorus Fruit] and leather becomes phantom membrane. Mobs in the stream take instant damage; the undead enjoy it.",
+                 "[tip] An [quest:cad_infuser|Infuser] over a basin of breath turns 250 mB into 750 mB of Infused Dragon's Breath, the fluid behind the [quest:cad_apotheosis|salvaging fan]."]},
+      "es_es": {"title": "Aliento de dragón, por caño", "subtitle": "Se maneja con ventilador.",
+        "text": ["Un escurridor convierte cada frasco de aliento de dragón en 250 mB de fluido y un surtidor lo vuelve a embotellar; cuatro llenan un [item:create_dragons_plus:dragon_breath_bucket|Balde de aliento de dragón]. También llena calderos, y donde el aliento que corre toca lava se endurece en piedra del End.",
+                 "{page}",
+                 "Un ventilador a través del aliento, o de una cabeza de dragón, hace el Ending en cantidad: la roca pasa a piedra del End, los ladrillos de piedra a ladrillos de piedra del End, las manzanas a [item:minecraft:chorus_fruit|Fruta chorus] y el cuero a membrana de fantasma. Los mobs en la corriente reciben daño instantáneo; a los no muertos les encanta.",
+                 "[tip] Un [quest:cad_infuser|Infusor] sobre una cuenca con aliento convierte 250 mB en 750 mB de aliento de dragón infundido, el fluido del [quest:cad_apotheosis|ventilador que desarma]."]},
+      "sources": ["jar:CreateDragonsPlus-1.11.9.jar:data/create_dragons_plus/recipe/emptying/dragon_breath.json", "jar:CreateDragonsPlus-1.11.9.jar:data/create_dragons_plus/recipe/filling/dragon_breath.json", "jar:CreateDragonsPlus-1.11.9.jar:assets/create_dragons_plus/lang/en_us.json#create_dragons_plus.ponder.dragon_breath_fluid.text_1", "jar:CreateDragonsPlus-1.11.9.jar:assets/create_dragons_plus/lang/en_us.json#create_dragons_plus.ponder.dragon_breath_fluid.text_2", "jar:CreateDragonsPlus-1.11.9.jar:assets/create_dragons_plus/lang/en_us.json#create_dragons_plus.ponder.bulk_ending.text_1", "jar:CreateDragonsPlus-1.11.9.jar:data/create_dragons_plus/recipe/ending", "jar:CreateDragonsPlus-1.11.9.jar:plus/dragons/createdragonsplus/common/kinetics/fan/ending/EndingFanProcessingType.class#affectEntity", "jar:create-enchantment-industry-2.5.3b.jar:data/create_enchantment_industry/recipe/infusing/infused_dragon_breath.json"]
     },
     {
       "key": "cad_copycats", "role": "milestone", "deps": ["crb_brass"],
@@ -311,12 +421,23 @@
     {
       "key": "cad_kitchen", "role": "tip", "deps": ["cad_slicer"],
       "task": {"type": "checkmark"},
-      "at": {"x": 18, "y": 0.8},
+      "icon": "farmersdelight:cutting_board",
+      "at": {"x": 15.2, "y": -2.6},
       "en_us": {"title": "A kitchen on autopilot",
-        "text": ["[tip] With Central Kitchen, a Mechanical Arm puts raw ingredients on a cutting board and serves plated portions of a feast without bowls, and a funnel takes finished food out of a cooking pot."]},
+        "text": ["[tip] Cutting boards automate too: a Mechanical Arm puts raw ingredients on a [item:farmersdelight:cutting_board|Cutting Board] and a deployer holding a knife in Use mode cuts them. Arms also take servings off feasts and slices off pies, and leave the last one in place."]},
       "es_es": {"title": "Una cocina en piloto automático",
-        "text": ["[tip] Con Central Kitchen, un brazo mecánico pone ingredientes crudos en la tabla de cortar y sirve porciones de un festín sin cuencos, y un embudo saca la comida lista de la olla."]},
-      "sources": ["jar:create-central-kitchen-2.6.2.jar:assets/create_central_kitchen/lang/en_us.json#create_central_kitchen.ponder.cutting_board.text_2", "jar:create-central-kitchen-2.6.2.jar:assets/create_central_kitchen/lang/en_us.json#create_central_kitchen.ponder.cultural_delights_portioning.text_1", "jar:create-central-kitchen-2.6.2.jar:assets/create_central_kitchen/lang/en_us.json#create_central_kitchen.ponder.cooking_pot.text_1"]
+        "text": ["[tip] La tabla también se automatiza: un brazo mecánico pone ingredientes crudos en la [item:farmersdelight:cutting_board|Tabla de picar] y un desplegador con un cuchillo en modo usar los corta. Los brazos también sacan porciones de banquetes y tartas, y dejan la última en su lugar."]},
+      "sources": ["jar:create-central-kitchen-2.6.2.jar:assets/create_central_kitchen/lang/en_us.json#create_central_kitchen.ponder.cutting_board.text_2", "jar:create-central-kitchen-2.6.2.jar:assets/create_central_kitchen/lang/en_us.json#create_central_kitchen.ponder.cutting_board.text_3", "jar:create-central-kitchen-2.6.2.jar:assets/create_central_kitchen/lang/en_us.json#create_central_kitchen.ponder.portionable_foods.text_1", "jar:create-central-kitchen-2.6.2.jar:assets/create_central_kitchen/lang/en_us.json#create_central_kitchen.ponder.portionable_foods.text_2", "pack/config/create_central_kitchen-common.toml"]
+    },
+    {
+      "key": "cad_cooking_pot", "role": "side", "deps": ["cad_slicer"],
+      "task": {"any": ["farmersdelight:beef_stew", "farmersdelight:chicken_soup", "farmersdelight:vegetable_soup", "farmersdelight:fish_stew", "farmersdelight:pumpkin_soup", "farmersdelight:baked_cod_stew", "farmersdelight:noodle_soup", "farmersdelight:bone_broth"], "count": 16, "title": {"en_us": "Sixteen bowls from the pot", "es_es": "Dieciséis platos de la olla"}},
+      "at": {"x": 20.8, "y": -2.6},
+      "en_us": {"title": "Pot on the line", "subtitle": "Nobody stirs by hand anymore.",
+        "text": ["Central Kitchen hooks the [item:farmersdelight:cooking_pot|Cooking Pot] up to Create: a packager unpacks the ingredients into it (factory gauges help order them), a mechanical arm adds the bowls, and an arm or a funnel takes the meal out. A blaze burner underneath counts as heat."]},
+      "es_es": {"title": "La olla en cadena", "subtitle": "Ya nadie revuelve a mano.",
+        "text": ["Central Kitchen conecta la [item:farmersdelight:cooking_pot|Olla] a Create: un empaquetador le desempaca los ingredientes (los medidores industriales ayudan a pedirlos), un brazo mecánico pone los bols y un brazo o un embudo saca la comida. Un quemador de blaze abajo cuenta como calor."]},
+      "sources": ["jar:create-central-kitchen-2.6.2.jar:plus/dragons/createcentralkitchen/integration/farmersdelight/ponder/FDPonderScenes.class#cookingPot", "jar:create-central-kitchen-2.6.2.jar:assets/create_central_kitchen/lang/en_us.json#create_central_kitchen.ponder.shared.package_automate_ingredient_insertion", "jar:create-central-kitchen-2.6.2.jar:assets/create_central_kitchen/lang/en_us.json#create_central_kitchen.ponder.shared.useful_factory_gauges", "jar:create-central-kitchen-2.6.2.jar:assets/create_central_kitchen/lang/en_us.json#create_central_kitchen.ponder.shared.arm_automate_container_insertion", "jar:create-central-kitchen-2.6.2.jar:assets/create_central_kitchen/lang/en_us.json#create_central_kitchen.ponder.shared.arm_take_out_food", "jar:create-central-kitchen-2.6.2.jar:assets/create_central_kitchen/lang/en_us.json#create_central_kitchen.ponder.cooking_pot.text_1", "jar:create-central-kitchen-2.6.2.jar:assets/create_central_kitchen/lang/en_us.json#create_central_kitchen.ponder.heat_source.text_2", "jar:FarmersDelight-1.21.1-1.3.3.jar:data/c/tags/item/foods/soup.json"]
     },
     {
       "key": "cad_chisel", "role": "side", "deps": ["crb_casing"],
@@ -329,7 +450,7 @@
       "sources": ["jar:rechiseledcreate-1.1.1-neoforge-mc1.21.jar:data/rechiseledcreate/recipe/mechanical_chisel.json", "jar:rechiseledcreate-1.1.1-neoforge-mc1.21.jar:META-INF/neoforge.mods.toml"]
     },
     {
-      "key": "cad_storage_cart", "role": "milestone", "deps": ["crb_belt"],
+      "key": "cad_storage_cart", "role": "milestone", "deps": ["crb_press"],
       "task": {"item": "sophisticatedstorageinmotion:storage_minecart"},
       "at": {"figure": "beam2", "slot": 2},
       "en_us": {"title": "Storage on rails",
@@ -347,6 +468,22 @@
       "es_es": {"title": "Mejoras que viajan",
         "text": ["[tip] Dos integraciones chicas hacen que las mochilas y el almacenamiento de Sophisticated funcionen completos sobre estructuras de Create: sus mejoras siguen andando mientras la estructura se mueve."]},
       "sources": ["jar:sophisticatedbackpackscreateintegration-1.21.1-0.1.8.134.jar:META-INF/neoforge.mods.toml", "jar:sophisticatedstoragecreateintegration-1.21.1-0.1.21.209.jar:META-INF/neoforge.mods.toml"]
+    },
+    {
+      "key": "cad_magnets", "role": "side", "deps": ["cpw_coil"],
+      "task": {"any": ["create_new_age:redstone_magnet", "create_new_age:layered_magnet", "create_new_age:fluxuated_magnetite", "create_new_age:netherite_magnet"], "count": 8, "title": {"en_us": "Eight magnets for one coil", "es_es": "Ocho imanes para una bobina"}},
+      "at": {"figure": "beam2", "slot": 3},
+      "en_us": {"title": "A ring of magnets", "subtitle": "Opposites attract; netherite, most of all.",
+        "text": ["Eight magnets ring a [item:create_new_age:generator_coil|Generator Coil] and their force adds up; each block's tooltip shows its own. Magnetite gives 1, a [item:create_new_age:redstone_magnet|Redstone Magnet] 2, a [item:create_new_age:layered_magnet|Layered Magnet] 4, [item:create_new_age:fluxuated_magnetite|Fluxuated Magnetite] 8 and a [item:create_new_age:netherite_magnet|Netherite Magnet] 24.",
+                 "{page}",
+                 "More force turns a bigger share of the coil's stress into current, but the coil also draws more stress: size the rotation for it.",
+                 "[tip] A redstone magnet is a redstone block in iron nuggets; a layered one, overcharged iron and gold; fluxuated magnetite, magnetite with overcharged gold and diamond; a netherite magnet, scrap and five overcharged diamonds."]},
+      "es_es": {"title": "Un anillo de imanes", "subtitle": "Los opuestos se atraen; la netherita, más que nadie.",
+        "text": ["Ocho imanes rodean una [item:create_new_age:generator_coil|Bobina del generador] y su fuerza se suma; el tooltip de cada bloque muestra la suya. La magnetita da 1, un [item:create_new_age:redstone_magnet|Imán de redstone] 2, un [item:create_new_age:layered_magnet|Imán en capas] 4, la [item:create_new_age:fluxuated_magnetite|Magnetita fluxuada] 8 y un [item:create_new_age:netherite_magnet|Imán de netherita] 24.",
+                 "{page}",
+                 "Más fuerza convierte una parte mayor del estrés de la bobina en corriente, pero la bobina también pide más estrés: dimensioná la rotación para eso.",
+                 "[tip] El imán de redstone es un bloque de redstone rodeado de pepitas de hierro; el de capas, hierro y oro sobrecargados; la magnetita fluxuada, magnetita con oro y diamante sobrecargados; el de netherita, fragmentos y cinco diamantes sobrecargados."]},
+      "sources": ["jar:create-new-age-1.2.0+neoforge-mc1.21.1.jar:org/antarcticgardens/cna/CNABlocks.class#<clinit>(ImplementedMagnetBlock.simple: magnetite_block 1, redstone_magnet 2, layered_magnet 4, fluxuated_magnetite 8, netherite_magnet 24)", "jar:create-new-age-1.2.0+neoforge-mc1.21.1.jar:org/antarcticgardens/cna/content/electricity/generation/magnet/ImplementedMagnetBlock.class#appendHoverText", "jar:create-new-age-1.2.0+neoforge-mc1.21.1.jar:org/antarcticgardens/cna/content/electricity/generation/coil/GeneratorCoilBlockEntity.class#magnetPositions", "jar:create-new-age-1.2.0+neoforge-mc1.21.1.jar:org/antarcticgardens/cna/content/electricity/generation/coil/GeneratorCoilBlockEntity.class#calculateStressApplied", "jar:create-new-age-1.2.0+neoforge-mc1.21.1.jar:assets/create_new_age/lang/en_us.json#create_new_age.ponder.generation.text_3", "jar:create-new-age-1.2.0+neoforge-mc1.21.1.jar:assets/create_new_age/lang/en_us.json#create_new_age.ponder.generation.text_6", "jar:create-new-age-1.2.0+neoforge-mc1.21.1.jar:data/create_new_age/recipe/shaped/redstone_magnet.json", "jar:create-new-age-1.2.0+neoforge-mc1.21.1.jar:data/create_new_age/recipe/shaped/layered_magnet.json", "jar:create-new-age-1.2.0+neoforge-mc1.21.1.jar:data/create_new_age/recipe/shaped/fluxuated_magnetite.json", "jar:create-new-age-1.2.0+neoforge-mc1.21.1.jar:data/create_new_age/recipe/shaped/netherite_magnet.json"]
     }
   ]
 }
