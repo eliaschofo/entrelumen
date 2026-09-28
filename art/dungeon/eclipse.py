@@ -255,6 +255,10 @@ L,,,#####
 """                                  # the cloister: a cross of processional arms, gold at the crossing
 
 
+KIND_NAMES = {0: 'Sala del ocaso', 1: 'Rotonda solar', 2: 'Claustro', 'portal': 'Rotonda del portal',
+              'arena': 'Arena', 'sun': 'Sol oscuro', 'guard': 'Antesala', 'corridor': 'Vía procesional'}
+
+
 def kind_of(role, variant):
     if role in ('quiet', 'fight'):
         return variant % 3

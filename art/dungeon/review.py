@@ -190,6 +190,20 @@ def room_image(ts, name, scale=6):
     return im, share, darkest, ms
 
 
+ROLE_ES = {'quiet': 'quieta', 'fight': 'combate', 'guard': 'guardia', 'start': 'inicio', 'exit': 'escalera',
+           'shrine': 'santuario', 'seal': 'sello', 'vault': 'bóveda', 'vestibule': 'vestíbulo', 'arena': 'arena',
+           'arena_center': 'centro de la arena', 'portal': 'portal'}
+
+
+def label(ts, name):
+    """'Aljibe · combate, puertas nesw' for a template name."""
+    role, mask, var = name.rsplit('_', 2)
+    corridor = kit.is_corridor(role, mask_doors(mask), int(var))
+    kind = 'corridor' if corridor else ts.kind_of(role, int(var))
+    return '%s · %s, %s' % (ts.KIND_NAMES.get(kind, kind), ROLE_ES.get(role, role),
+                            'sin puertas' if mask == 'x' else 'puertas ' + mask)
+
+
 def contact_sheet(ts, names, path, title):
     tiles = []
     for n in names:
@@ -210,7 +224,7 @@ def contact_sheet(ts, names, path, title):
     for i, (n, im, share, darkest) in enumerate(tiles):
         c, r = i % cols, i // cols
         x0, y0 = 20 + c * tw, 130 + r * (th + 44)
-        d.text((x0 + 12, y0 + 6), '%s   luz %d%% (mín. %d)' % (n, round(share * 100), darkest),
+        d.text((x0 + 12, y0 + 6), '%s   luz %d%% (mín. %d)' % (label(ts, n), round(share * 100), darkest),
                font=font(17, True), fill=INK)
         sheet.paste(im, (x0 + (tw - im.size[0]) // 2, y0 + 30))
     sheet.save(path)

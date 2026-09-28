@@ -219,6 +219,10 @@ x,x..,...
 SALA = MARTINETE
 
 
+KIND_NAMES = {0: 'Nave de forja', 1: 'Hornos', 2: 'Crisol', 'guard': 'Martinete', 'arena': 'Martinete',
+              'corridor': 'Galería de colada'}
+
+
 def kind_of(role, variant):
     if role in ('quiet', 'fight'):
         return variant % 3

@@ -186,6 +186,10 @@ def disc(r2=R2, top=9, spring=6):
     return lambda dx, dz, y: dx * dx + dz * dz <= dome(r2, y, top, spring)
 
 
+KIND_NAMES = {0: 'Bosque de cristal', 1: 'Drusa', 2: 'Grieta', 'guard': 'Gran hueco', 'arena': 'Gran hueco',
+              'corridor': 'Veta'}
+
+
 def kind_of(role, variant):
     if role in ('quiet', 'fight'):
         return variant % 3

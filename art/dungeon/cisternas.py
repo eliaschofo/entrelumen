@@ -346,6 +346,10 @@ def corridor(variant):
     return v
 
 
+KIND_NAMES = {0: 'Aljibe', 1: 'Rotonda', 2: 'Galería', 'guard': 'Sala de bombas', 'arena': 'Sala',
+              'corridor': 'Conducto'}
+
+
 def kind_of(role, variant):
     if role in ('quiet', 'fight'):
         return variant % 3
