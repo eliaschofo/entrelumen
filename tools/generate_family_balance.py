@@ -564,6 +564,9 @@ UPSTREAM = {
     'psi:cad_core_hyperclocked': 'psi:assembler', 'psi:cad_core_radiative': 'psi:assembler',
     'create_new_age:shaped/generator_coil': 'create_new_age:shaped/carbon_brushes',
     'create_new_age:shaped/advanced_solar_heating_plate': 'create_new_age:shaped/carbon_brushes',
+    'ad_astra_giselle_addon:crafting/automation_nasa_workbench': 'ad_astra:nasa_workbench',
+    'advancedperipherals:me_bridge': 'ae2:network/blocks/controller',
+    'advancedperipherals:rs_bridge': 'refinedstorage:controller',
 }
 # Oritech 0.19 copies Mekanism's alloys in its foundry and its circuits in its atomic forge. Those routes
 # skipped the metallurgic infuser, the way into Mekanism that the calibration frame opens, and with it
@@ -961,6 +964,20 @@ FAMILIES = {
             disabled('data/minecraft/advancement/wander_add_map.json',
                      "Dungeons and Taverns wandering-trader hook with a missing parent and a missing reward function"),
         ],
+    },
+    # Round 5 of the mod ping-pong, batch 3 (docs/design/mod-pingpong.md, «Lote 3»): compat between systems the
+    # pack already has. Giselle's automated NASA workbench is made from the NASA workbench (atomic alloy, Act V),
+    # and Advanced Peripherals' ME and RS bridges need a network whose controller already takes the routing
+    # matrix, so neither needs a gate of its own (UPSTREAM rule). Advanced Peripherals' AE2 disk cells (1M to
+    # 256M bytes from ComputerCraft disks and processors) would skip MEGA Cells, the Act IV route to large cells,
+    # so they go; its chunk controller only makes the chunky turtle, which the pack's server config turns off.
+    'pingpong5compat': {
+        'script': 'entrelumen_pingpong5compat_balance.js',
+        'tag': 'ENTRELUMEN_PINGPONG5_COMPAT_BALANCE',
+        'namespaces': {'advancedperipherals', 'ad_astra_giselle_addon', 'polyeng', 'apothic_compat', 'irons_apothic'},
+        'changes': [],
+        'removals': [f'advancedperipherals:ae_disk_cell_{size}' for size in ('1m', '4m', '16m', '64m', '256m')]
+                    + ['advancedperipherals:chunk_controller'],
     },
     # The progression batch of 24 September 2026 (docs/design/progression-functions.md): gates of the
     # reference-packs proposal, one component per function, the top armor in Act VI and the vein

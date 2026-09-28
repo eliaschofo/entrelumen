@@ -10,6 +10,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.gametest.framework.GameTest;
 import net.minecraft.gametest.framework.GameTestHelper;
 import net.minecraft.network.Connection;
@@ -24,6 +25,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.animal.Pig;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.CropBlock;
 import net.minecraft.world.level.block.FarmBlock;
@@ -42,7 +44,9 @@ import org.slf4j.Logger;
  * server, Create Collision Fix only sits beside the Create build it patches, Better Compatibility Checker
  * reports this pack and version, and NaNny cancels damage that is not a number. Batch 2 (information and
  * comfort): the batch is loaded without FindMe, and RightClickHarvest cannot harvest through a foreign
- * FTB Chunks claim.
+ * FTB Chunks claim. Batch 3 (compat): the batch is loaded, Advanced Peripherals' AE2 disk cells and chunk
+ * controller have no recipe, its server settings keep the player detector and chat box local and the chunky
+ * turtle off, it gives no book on join, and Carry On refuses the new peripherals and rocket blocks.
  */
 @GameTestHolder("entrelumen")
 @PrefixGameTestTemplate(false)
@@ -58,6 +62,17 @@ public final class ModPingpongRound5FullpackGameTests {
       "ae2ct", "wits", "chunky", "pingwheel");
   static final List<String> INFORMATION_CLIENT = List.of("bridgingmod", "yet_another_config_lib_v3", "bwncr",
       "yeetusexperimentus", "dynamic_fps");
+  /** Batch 3 mods (all have a server side). */
+  static final List<String> COMPAT = List.of("apothic_compat", "irons_apothic", "polyeng", "ad_astra_giselle_addon",
+      "advancedperipherals");
+  /** Removed by the pingpong5compat family: large cells skip MEGA Cells (Act IV); the controller only makes the chunky turtle. */
+  static final List<String> COMPAT_REMOVED = List.of("advancedperipherals:ae_disk_cell_1m", "advancedperipherals:ae_disk_cell_4m",
+      "advancedperipherals:ae_disk_cell_16m", "advancedperipherals:ae_disk_cell_64m", "advancedperipherals:ae_disk_cell_256m",
+      "advancedperipherals:chunk_controller");
+  /** Round 5 blocks Carry On must refuse (pack/config/carryon-common.toml). */
+  static final List<String> CARRY_ON_REFUSED = new ArrayList<>(List.of("advancedperipherals:me_bridge",
+      "advancedperipherals:inventory_manager", "advancedperipherals:player_detector", "ad_astra_giselle_addon:fuel_loader",
+      "ad_astra_giselle_addon:automation_nasa_workbench"));
   /** Create Collision Fix patches exactly this Create build; it goes when Create moves to 6.0.11 (PR #10301). */
   static final String PATCHED_CREATE = "6.0.10";
 
@@ -235,5 +250,51 @@ public final class ModPingpongRound5FullpackGameTests {
         channel.finishAndReleaseAll();
       }
     }
+  }
+
+  // ---- Batch 3 ---------------------------------------------------------------------------------
+
+  static Object configValue(String holder, String field) throws ReflectiveOperationException {
+    Object config = Class.forName("de.srendi.advancedperipherals.common.configuration.APConfig").getField(holder).get(null);
+    Object value = config.getClass().getField(field).get(config);
+    return value.getClass().getMethod("get").invoke(value);
+  }
+
+  @GameTest(template = "empty", timeoutTicks = 20)
+  public static void pingpongRound5CompatLoaded(GameTestHelper helper) throws ReflectiveOperationException {
+    List<String> problems = new ArrayList<>();
+    COMPAT.stream().filter(mod -> !ModList.get().isLoaded(mod)).forEach(mod -> problems.add(mod + " not loaded"));
+    var recipes = helper.getLevel().getRecipeManager();
+    COMPAT_REMOVED.stream().filter(recipe -> recipes.byKey(id(recipe)).isPresent())
+        .forEach(recipe -> problems.add(recipe + " still has a recipe"));
+    // pack/defaultconfigs/Advancedperipherals/peripherals.toml and pack/config/Advancedperipherals/world.toml
+    Map<String, Object> expected = new LinkedHashMap<>();
+    expected.put("PERIPHERALS_CONFIG.playerDetMaxRange", 128);
+    expected.put("PERIPHERALS_CONFIG.playerSpyStatistics", false);
+    expected.put("PERIPHERALS_CONFIG.chatBoxMaxRange", 256);
+    expected.put("PERIPHERALS_CONFIG.chatBoxPreventRunCommand", true);
+    expected.put("PERIPHERALS_CONFIG.enableChunkyTurtle", false);
+    expected.put("WORLD_CONFIG.givePlayerBookOnJoin", false);
+    for (var entry : expected.entrySet()) {
+      String[] path = entry.getKey().split("\\.");
+      Object actual = configValue(path[0], path[1]);
+      if (!entry.getValue().equals(actual)) problems.add(entry.getKey() + " is " + actual);
+    }
+    helper.assertTrue(problems.isEmpty(), "Round 5 batch 3: " + problems);
+    helper.succeed();
+  }
+
+  @GameTest(template = "empty", timeoutTicks = 20)
+  public static void carryOnRefusesRound5Blocks(GameTestHelper helper) throws ReflectiveOperationException {
+    var permitted = Class.forName("tschipp.carryon.common.config.ListHandler").getMethod("isPermitted", Block.class);
+    List<String> carried = new ArrayList<>(), absent = new ArrayList<>();
+    for (String name : CARRY_ON_REFUSED) {
+      var block = BuiltInRegistries.BLOCK.getOptional(id(name));
+      if (block.isEmpty()) absent.add(name);
+      else if ((boolean) permitted.invoke(null, block.get())) carried.add(name);
+    }
+    helper.assertTrue(absent.isEmpty(), "Round 5 blacklist test blocks not registered: " + absent);
+    helper.assertTrue(carried.isEmpty(), "Carry On may pick up: " + carried);
+    helper.succeed();
   }
 }

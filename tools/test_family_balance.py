@@ -299,6 +299,17 @@ class FamilyBalanceTest(unittest.TestCase):
         self.assertEqual({change['act'] for change in family['changes']}, {'II', 'III', 'IV'})
         self.assertEqual({spec['op'] for spec in family['data']}, {'copy', 'disable'})
 
+    def test_round_five_compat_removes_large_cells_and_leaves_bridges_upstream(self):
+        family = balance.FAMILIES['pingpong5compat']
+        # MEGA Cells (Act IV) stays the only route to 1M+ cells; the chunky turtle is off in the server config.
+        self.assertEqual(family['changes'], [])
+        self.assertEqual({rid for rid in family['removals'] if 'ae_disk_cell' in rid},
+                         {f'advancedperipherals:ae_disk_cell_{s}' for s in ('1m', '4m', '16m', '64m', '256m')})
+        self.assertIn('advancedperipherals:chunk_controller', family['removals'])
+        self.assertEqual(balance.UPSTREAM['ad_astra_giselle_addon:crafting/automation_nasa_workbench'], 'ad_astra:nasa_workbench')
+        self.assertEqual(balance.UPSTREAM['advancedperipherals:me_bridge'], 'ae2:network/blocks/controller')
+        self.assertEqual(balance.UPSTREAM['advancedperipherals:rs_bridge'], 'refinedstorage:controller')
+
     def test_copy_keeps_one_owner_of_a_shared_path_and_can_move_the_other(self):
         path = 'data/patchouli/recipe/guide_book.json'
         first = {'type': 'minecraft:crafting_shapeless', 'result': {'id': 'patchouli:guide_book'}, 'n': 1}

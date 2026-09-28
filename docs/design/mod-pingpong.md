@@ -587,3 +587,43 @@ Todos tienen los mismos bytes en Modrinth salvo AE2: Crafting Tree, que no está
   - `tools/check_keybinds.py`: 0 choques.
 - **Chunky:** hay que probar que las ruinas salen igual en chunks pregenerados. La ruina de inicio se coloca en `ServerStartedEvent`, antes de cualquier `/chunky start`, y el resto de las ruinas todavía no está en `main`. La QA pregenera un cuadrado alrededor del inicio y vuelve a correr la prueba de la ruina.
 - **GameTests:** `pingponground5informationloaded` (el lote cargado, los de cliente fuera del servidor dedicado, FindMe ausente) y `rightclickharvestrespectsforeignclaims`. En esta última, dos jugadores de prueba en un reclamo real de FTB Chunks: el dueño cosecha y su trigo vuelve a edad 0, y el trigo que toca el visitante sigue maduro.
+
+### Lote 3 · Compat entre sistemas que ya tenemos
+
+Familia `catalog/families/pingpong5-compat.json`: 5 mods y ninguna librería nueva. El lock pasa a **353 / 301**; ninguna entrada previa cambió.
+
+| Mod | Versión | Fuente | Acto | Para qué |
+|---|---|---|---|---|
+| Apothic Category Compat | 2.0.2 | CF 1516278/8219980 (FTB) | I-V | Armas a distancia de Cataclysm, Twilight Forest y Undergarden entran en la categoría arco de Apotheosis (un mapa de datos). |
+| Apotheosis x Iron's Spellbooks Compat | 2.2.1 | CF 1244863/8480849 (FTB y Craftoria; no está en Modrinth) | II-IV | Afijos y gemas de Apotheosis para el equipo de Iron's. |
+| Polymorphic Energistics | 0.4.1 | CF 941096/5545923 (ATM10) | III | Elegir la salida cuando dos recetas chocan al codificar un patrón de AE2. |
+| Ad-Astra: Giselle Addon | 8.1 | CF 714958/8676868 (ATM10) | V | Mejoras de espacio para la MekaSuit y la armadura de PneumaticCraft, cargador de combustible, sensor de cohete y mesa NASA automática. |
+| Advanced Peripherals | 0.8.0a (alfa) | CF 431725/8666472 (ATM10 y FTB; no está en Modrinth) | III-V | Periféricos de ComputerCraft: puentes a AE2 y RS, detectores, gestor de inventario, chat, escáner geológico y tortugas autómatas. |
+
+- **Versiones:**
+  - Iron's Apothic se fija en 2.2.1, la que usan FTB Evolution y Craftoria con las mismas Apotheosis 8.7.0 e Iron's 3.16.3 del lock. Las 2.2.4 a 2.2.6 salieron en la última semana.
+  - Giselle queda en 8.1 (ATM10, con Ad Astra 1.16.19); las 8.2 a 8.4 sólo están en CurseForge y no traen changelog.
+  - Advanced Peripherals queda en 0.8.0a, la de ATM10 y FTB con CC: Tweaked; la 0.7.62b es beta de otra serie.
+- **Relaciones de CurseForge** (`cfRelations` de la familia):
+  - CC: Tweaked 282001, que piden Advanced Peripherals y More Red CCT, se cumple con el CC: Tweaked 1.120.2 del proyecto 1676502 que ya estaba: provee el mismo `computercraft` y su `mods.toml` sólo pide `[1.119.0,)`.
+  - Botarium (704113) queda exento para Giselle 8.1: el `mods.toml` no lo pide (Ad Astra 1.16 pasó a Common Storage Lib) y ATM10 lo trae sin Botarium.
+- **Escalonado** (familia `pingpong5compat` de `tools/generate_family_balance.py`, script `entrelumen_pingpong5compat_balance.js`):
+  - **Se quitan** las cinco celdas de disco AE2 de Advanced Peripherals: de 1M a 256M bytes, con disquetes de ComputerCraft y procesadores. Saltearían MEGA Cells, la ruta del acto IV a las celdas grandes.
+  - **También se quita** el controlador de chunks, que sólo sirve para armar la tortuga que carga chunks.
+  - **Quedan nativos** (regla `UPSTREAM`): la mesa NASA automática de Giselle se hace con la mesa NASA, que ya lleva la aleación atómica (V). Los puentes ME y RS necesitan una red cuyo controlador ya pide la Matriz de Enrutamiento. El censo proponía la Matriz en el puente ME, pero la Matriz ya está en 7 de 8 y el puente no abre ninguna función.
+  - Los módulos de MekaSuit de Giselle piden el traje espacial, y la mejora de oxígeno de PneumaticCraft también.
+- **Config de Advanced Peripherals:**
+  - `pack/config/Advancedperipherals/world.toml`: `givePlayerBookOnJoin = false`. Es el único regalo de primer ingreso de los lotes 1 a 3 (`tools/audit_first_join.py`); sin esto, el jugador nuevo ya no llegaba con las manos vacías.
+  - `pack/defaultconfigs/Advancedperipherals/peripherals.toml` (se copia a cada mundo nuevo):
+    - el detector de jugadores lee posiciones hasta 128 bloques (antes, infinito y entre dimensiones) y no informa estadísticas;
+    - el chat alcanza 256 bloques y no puede adjuntar `run_command`;
+    - la tortuga que carga chunks queda apagada, porque los chunks forzados pasan por FTB Chunks y sus límites.
+- **Teclas:**
+  - El atajo de las gafas inteligentes venía en G, la tecla fija de Curios. El preset lo deja sin asignar: sólo sirve con el módulo de atajos puesto en las gafas, y cada uno lo asigna al armarlo.
+  - Ctrl izquierdo para ver descripciones se mantiene apretado y sólo actúa en pantallas.
+- **Carry On:** `advancedperipherals:*` y `ad_astra_giselle_addon:*` quedan en la lista negra.
+- **Afijos de hechizo de Iron's Apothic:** quedan nativos. Tienen 140 afijos y 23 gemas en su propio espacio; siguen la rareza de Apotheosis, que en el pack atan los World Tiers de la campaña. Hay que mirarlos en juego.
+- **Apothic Category Compat:** su mapa de datos también nombra armas de mods que no tenemos (Alex's Caves, Alex's Mobs, Born in Chaos). El arranque dirá si NeoForge las ignora en silencio.
+- **GameTests:**
+  - `pingponground5compatloaded`: el lote cargado, sin recetas de las celdas ni del controlador, y los seis valores de config de Advanced Peripherals leídos del mod.
+  - `carryonrefusesround5blocks`: la lista crece con cada lote.
