@@ -4431,7 +4431,6 @@ const entrelumenAuditTargets = {
     "productivebees:breeding_chamber",
     "productivebees:catcher",
     "productivebees:centrifuge",
-    "productivebees:configurable_bee",
     "productivebees:configurable_comb",
     "productivebees:configurable_honeycomb",
     "productivebees:draconic_chunk",
@@ -5419,7 +5418,7 @@ const entrelumenAuditTargets = {
       "output": "farmersdelight:flint_knife"
     }
   ],
-  "signature": "0a5eb1b2d58c63ee"
+  "signature": "9272c76381cdbd4b"
 };
 
 ServerEvents.afterRecipes(event => {

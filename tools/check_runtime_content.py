@@ -126,8 +126,9 @@ def targets():
             item_id = value.get('id', '')
             if re.fullmatch(r'[a-z0-9_.-]+:[a-z0-9_./-]+', item_id):
                 items.add(item_id)
-            for child in value.values():
-                collect(child)
+            for key, child in value.items():
+                if key != 'components':  # data components name entities and other ids that are not items
+                    collect(child)
         elif isinstance(value, list):
             for child in value:
                 collect(child)
