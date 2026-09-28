@@ -40,9 +40,11 @@ import net.minecraft.world.level.block.state.properties.AttachFace;
 public final class EnvesVaults {
   private EnvesVaults() {}
 
-  /** The glyphs' faces, as the clue behind the gate shows them (the glyph stone's states look the same). */
-  static final List<Block> GLYPH_BLOCKS = List.of(Blocks.CHISELED_QUARTZ_BLOCK, Blocks.CHISELED_RED_SANDSTONE, Blocks.CHISELED_TUFF,
-      Blocks.CHISELED_DEEPSLATE);
+  /** A glyph stone showing a glyph: the gate's stones and the clue behind the bars are the same block, so they read the same. */
+  static BlockState glyph(int glyph) {
+    return EnvesContent.GLYPH.get().defaultBlockState().setValue(EnvesContentBlocks.Glyph.GLYPH, glyph);
+  }
+
   static final long SALT = 51;
 
   /** A gate seen from outside: rows bottom to top, each left to right; the door's outward side and the viewer's right. */
@@ -200,13 +202,11 @@ public final class EnvesVaults {
     List<BlockPos> bottom = gate.rows().getFirst();
     switch (p.kind) {
       case "vault_glyphs" -> {
-        for (int i = 0; i < 3; i++)
-          level.setBlock(bottom.get(i), EnvesContent.GLYPH.get().defaultBlockState().setValue(EnvesContentBlocks.Glyph.GLYPH, p.state[i]),
-              Block.UPDATE_ALL);
+        for (int i = 0; i < 3; i++) level.setBlock(bottom.get(i), glyph(p.state[i]), Block.UPDATE_ALL);
         for (int k = 0; k < 3; k++) {
           BlockPos clue = p.extras.get(k);
           level.setBlock(clue.below(), Blocks.CALCITE.defaultBlockState(), Block.UPDATE_ALL);
-          level.setBlock(clue, GLYPH_BLOCKS.get(p.solution[k]).defaultBlockState(), Block.UPDATE_ALL);
+          level.setBlock(clue, glyph(p.solution[k]), Block.UPDATE_ALL);
         }
       }
       case "vault_braziers" -> {

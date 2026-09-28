@@ -19,9 +19,9 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 /**
  * The Envés's puzzle and shrine blocks. They only hold their look; a click on one is answered by
  * {@link EnvesPuzzles} (braziers, mirrors, glyph stones) or {@link EnvesShrines} (the altar) before the
- * block is asked, so the same block serves every seal and vault. Placeholder looks, all from vanilla
- * textures: a blackstone bowl with fire, a quartz mirror on a calcite foot, four vanilla chiseled
- * faces, the respawn anchor.
+ * block is asked, so the same block serves every seal and vault. Their looks are the pack's own
+ * (art/authoring/draw_enves_blocks.py): an upturned bell that holds sour fire, a two-faced mirror
+ * between two corner posts, four glyphs inlaid in gold, a drop of sour light in a crown of ribs.
  */
 public final class EnvesContentBlocks {
   private EnvesContentBlocks() {}
@@ -92,7 +92,7 @@ public final class EnvesContentBlocks {
     }
   }
 
-  /** A glyph stone of a vault's lock: four faces, each a vanilla chiseled block. */
+  /** A glyph stone of a vault's lock and of its clue: four glyphs, told apart by shape. */
   public static final class Glyph extends Answering {
     public static final MapCodec<Glyph> CODEC = simpleCodec(Glyph::new);
     public static final IntegerProperty GLYPH = IntegerProperty.create("glyph", 0, EnvesPuzzleRules.GLYPHS - 1);

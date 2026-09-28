@@ -57,6 +57,23 @@ BLOCKS = (MODULES + ['module_top', 'module_bottom'] + list(SHELVES) + sorted(set
              'terraform_altar_top', 'peace_altar_top', 'growth_altar_top', 'time_altar_top',
              'repose_altar_top', 'altar_voxels'])
 PALETTE_TEXTURES = {'block/altar_voxels'}   # one texel per colour; exempt from the per-texture colour budget
+# The Envés's puzzle and shrine blocks (art/authoring/draw_enves_blocks.py): their grids, their sculpted models
+# (JSON sources in art/models/block/) and the blockstates, which keep the block logic's state names.
+ENVES_TEXTURES = ['enves_shrine_plinth', 'enves_shrine_bone', 'enves_shrine_bone_top', 'enves_gold', 'enves_shrine_heart',
+                  'enves_shrine_heart_dead', 'enves_brazier_bell', 'enves_brazier_bell_top', 'enves_brazier_embers',
+                  'enves_brazier_ash', 'enves_brazier_flame', 'enves_mirror_glass', 'enves_mirror_bone', 'enves_mirror_foot',
+                  'enves_glyph_top'] + ['enves_glyph_%d' % i for i in range(4)]
+ANIMATED_BLOCKS = {'enves_brazier_flame': 4}                   # frame grids <name>__f<N>.txt, like animated items
+FLAME_ANIMATION = {'animation': {'frametime': 3}}
+ENVES_MODELS = ['enves_shrine', 'enves_shrine_spent', 'enves_brazier', 'enves_brazier_lit', 'enves_mirror'] + [
+    'enves_glyph_%d' % i for i in range(4)]
+ENVES_STATES = {                                              # state -> (model, y rotation)
+    'enves_shrine': {'spent=false': ('enves_shrine', 0), 'spent=true': ('enves_shrine_spent', 0)},
+    'enves_brazier': {'lit=false': ('enves_brazier', 0), 'lit=true': ('enves_brazier_lit', 0)},
+    'enves_mirror': {'aim=0': ('enves_mirror', 0), 'aim=1': ('enves_mirror', 90)},   # aim 1 is aim 0 turned 90 degrees
+    'enves_glyph': {'glyph=%d' % i: ('enves_glyph_%d' % i, 0) for i in range(4)},
+}
+BLOCKS += ENVES_TEXTURES
 
 COMPONENT_NAMES = {
     'calibration_frame': ('Calibration Frame', 'Marco de calibración'),
@@ -135,7 +152,15 @@ def expected():
         else:
             images['item/' + name] = read_grid(GRIDS / 'item' / f'{name}.txt')
     for name in BLOCKS:
-        images['block/' + name] = read_grid(GRIDS / 'block' / f'{name}.txt')
+        if name in ANIMATED_BLOCKS:
+            frames = [read_grid(GRIDS / 'block' / f'{name}__f{i}.txt') for i in range(ANIMATED_BLOCKS[name])]
+            images['block/' + name] = frames[0]
+            strip = Image.new('RGBA', (16, 16 * len(frames)), (0, 0, 0, 0))
+            for i, frame in enumerate(frames):
+                strip.alpha_composite(frame, (0, 16 * i))
+            strips['block/' + name] = strip
+        else:
+            images['block/' + name] = read_grid(GRIDS / 'block' / f'{name}.txt')
     def js(obj):
         return (json.dumps(obj, ensure_ascii=False, indent=2) + '\n').encode('utf-8')
     for key, image in images.items():
@@ -143,7 +168,8 @@ def expected():
         out[('pack', f'textures/{key}.png')] = data
         out[('mod', f'textures/{key}.png')] = data
         if key in strips:
-            anim = FIRE_ANIMATION if key.startswith('item/luminosity_') else ANIMATION
+            anim = (FIRE_ANIMATION if key.startswith('item/luminosity_') else FLAME_ANIMATION if key.startswith('block/')
+                    else ANIMATION)
             out[('pack', f'textures/{key}.png.mcmeta')] = js(anim)
             out[('mod', f'textures/{key}.png.mcmeta')] = js(anim)
     # Heliodor compass: 32 traced vanilla frames per destination colour (art/authoring/trace_compass.py).
@@ -195,10 +221,13 @@ def expected():
                        for name, (side, top, bottom) in LIBRARY.items()})
     for name in SCULPTED:
         new_blocks[name] = json.loads((ART / 'models/block' / f'{name}.json').read_text(encoding='utf-8'))
-    for name in BLOCK_MODELS_ONLY:
+    for name in BLOCK_MODELS_ONLY + ENVES_MODELS:
         model = json.loads((ART / 'models/block' / f'{name}.json').read_text(encoding='utf-8'))
         for dest in ('pack', 'mod'):
             out[(dest, f'models/block/{name}.json')] = js(model)
+    for block, variants in ENVES_STATES.items():
+        out[('mod', f'blockstates/{block}.json')] = js({'variants': {
+            state: dict({'model': 'entrelumen:block/' + model}, **({'y': y} if y else {})) for state, (model, y) in variants.items()}})
     for name, model in new_blocks.items():
         for dest in ('pack', 'mod'):
             out[(dest, f'models/block/{name}.json')] = js(model)
