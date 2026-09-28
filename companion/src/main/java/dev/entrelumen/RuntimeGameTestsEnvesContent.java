@@ -185,10 +185,33 @@ public final class RuntimeGameTestsEnvesContent {
     player.serverLevel().getChunkSource().move(player);
   }
 
+  private static final net.minecraft.server.level.TicketType<net.minecraft.world.level.ChunkPos> HOLD =
+      net.minecraft.server.level.TicketType.create("entrelumen_enves_hold", java.util.Comparator.comparingLong(
+          net.minecraft.world.level.ChunkPos::toLong));
+
   /**
-   * Every chunk within {@code radius} blocks of {@code center} ticks its entities. A test player's
-   * chunks load at the disk's pace, which a GameTest server running ahead of real time outruns.
+   * Loads the chunks within {@code radius} blocks of {@code center} now and keeps their entities ticking
+   * until {@link #letGo}. A GameTest server runs far ahead of real time: chunks a test player asks for
+   * arrive at the disk's pace, long after a test's ticks have run out.
    */
+  static List<net.minecraft.world.level.ChunkPos> hold(ServerLevel level, BlockPos center, int radius) {
+    List<net.minecraft.world.level.ChunkPos> held = new ArrayList<>();
+    for (int cx = (center.getX() - radius) >> 4; cx <= (center.getX() + radius) >> 4; cx++)
+      for (int cz = (center.getZ() - radius) >> 4; cz <= (center.getZ() + radius) >> 4; cz++) {
+        var chunk = new net.minecraft.world.level.ChunkPos(cx, cz);
+        level.getChunkSource().addRegionTicket(HOLD, chunk, 2, chunk);
+        level.getChunk(cx, cz);
+        held.add(chunk);
+      }
+    return held;
+  }
+
+  static void letGo(ServerLevel level, List<net.minecraft.world.level.ChunkPos> held) {
+    for (var chunk : held) level.getChunkSource().removeRegionTicket(HOLD, chunk, 2, chunk);
+    held.clear();
+  }
+
+  /** Every chunk within {@code radius} blocks of {@code center} ticks its entities. */
   static boolean ticking(ServerLevel level, BlockPos center, int radius) {
     for (int cx = (center.getX() - radius) >> 4; cx <= (center.getX() + radius) >> 4; cx++)
       for (int cz = (center.getZ() - radius) >> 4; cz <= (center.getZ() + radius) >> 4; cz++)
@@ -417,8 +440,10 @@ public final class RuntimeGameTestsEnvesContent {
     List<Mob> spawned = new ArrayList<>();
     AtomicLong started = new AtomicLong();
     long born = level.getGameTime();
+    var held = hold(level, center, 10);
     new Script(helper, () -> {
       spawned.forEach(Mob::discard);
+      letGo(level, held);
       qa.close();
     }).then(() -> vulnerable(player, born) && ticking(level, center, 10), () -> {
       // Veloz and Blindado: modifiers.
@@ -900,8 +925,10 @@ public final class RuntimeGameTestsEnvesContent {
     AtomicReference<WhiteWither> boss = new AtomicReference<>();
     AtomicLong telegraphAt = new AtomicLong(-1), chargeAt = new AtomicLong(-1);
     AtomicReference<Float> before = new AtomicReference<>();
+    var held = hold(level, home, (int) WhiteWither.ARENA_RADIUS);
     new Script(helper, () -> {
       if (boss.get() != null) boss.get().discard();
+      letGo(level, held);
       qa.close();
     }).then(() -> ticking(level, home, (int) WhiteWither.ARENA_RADIUS), () -> {
       // The whole arena ticks before it wakes: the charge runs out of the test's own chunk.

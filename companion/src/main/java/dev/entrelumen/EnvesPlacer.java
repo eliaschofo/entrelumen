@@ -173,9 +173,9 @@ public final class EnvesPlacer {
   // ---- Ticking ------------------------------------------------------------------------------
 
   static synchronized void tick(MinecraftServer server) {
-    if (leftovers > 0) {
-      LOGGER.info("Envés: {} entities of ended attempts were dropped as their chunks loaded", leftovers);
-      leftovers = 0;
+    if (!LEFTOVERS.isEmpty()) {
+      LOGGER.info("Envés: entities of ended attempts dropped as their chunks loaded: {}", LEFTOVERS);
+      LEFTOVERS.clear();
     }
     if (JOBS.isEmpty()) return;
     ServerLevel level = Enves.level(server);
@@ -398,8 +398,8 @@ public final class EnvesPlacer {
     Clearable.tryClear(entity);
   }
 
-  /** Entities of ended attempts dropped as their chunks loaded, since the last report (server thread). */
-  private static int leftovers;
+  /** Entities of ended attempts dropped as their chunks loaded since the last report, by type (server thread). */
+  private static final java.util.Map<String, Integer> LEFTOVERS = new java.util.TreeMap<>();
 
   /**
    * An entity coming back from disk into a slot without an open attempt is one a wipe could not see (its
@@ -415,7 +415,7 @@ public final class EnvesPlacer {
     Optional<Attempt> attempt = EnvesData.get(level.getServer()).inSlot(slot);
     if (attempt.isPresent() && attempt.get().status == Status.OPEN) return;
     event.setCanceled(true);
-    leftovers++;
+    LEFTOVERS.merge(BuiltInRegistries.ENTITY_TYPE.getKey(event.getEntity().getType()).toString(), 1, Integer::sum);
   }
 
   private static int discardEntities(ServerLevel level, Attempt attempt) {
