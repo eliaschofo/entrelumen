@@ -772,8 +772,8 @@ public final class RuntimeGameTestsEnvesContent {
           EnvesPuzzles.click(level, attempt, puzzle, 2, player);
           helper.assertTrue(java.util.Arrays.equals(puzzle.state, code), "the stone did not turn");
           helper.assertTrue(!puzzle.solved && puzzle.misses == 1, "the literal reading opened the glyphs or went unnoticed");
-          var clue = level.getBlockState(puzzle.extras.get(0)).getBlock();
-          helper.assertTrue(clue == EnvesVaults.GLYPH_BLOCKS.get(code[0]), "the clue behind the bars is not the code");
+          helper.assertTrue(level.getBlockState(puzzle.extras.get(0)) == EnvesVaults.glyph(code[0]),
+              "the clue behind the bars is not the code");
         }
         solve(level, attempt, puzzle, player);
         helper.assertTrue(puzzle.solved, kind + " was not solved");
