@@ -109,7 +109,9 @@ Opcionales para más adelante: una textura de línea por motivo (`dependency_lin
 
 ## Validación
 
-Estáticas, sobre `origin/main` 81bd9a4 más esta rama:
+**Estado al 27/9** (main 156fc68): 118 capítulos (8 de historia, 43 guías, 66 cadenas y el hub) y 5.105 quests, por encima de las 4.790 de ATM10. Pasan `generate_quests.py --check`, `test_sector_book.py`, `test_quest_book.py`, `check_guides.py` (4.933 quests de guías y cadenas, sin errores) y `format_sector.py --check`; la auditoría KubeJS cubre 5.007 ítems. La carga del libro completo en un servidor no se volvió a probar desde el registro de abajo: queda para el próximo arranque de QA del pack completo, junto con las tareas de «cualquiera de estos».
+
+El registro que sigue es el del motor v3, sobre `origin/main` 81bd9a4 más su rama:
 
 - `python tools/generate_quests.py --check`: 97 capítulos (8 de historia, 83 guías, 5 cadenas y el hub), 1.992 quests y 18 tablas; IDs globales, grafo sin ciclos y paridad EN/ES.
 - `tools/test_generate_quests.py` (36 pruebas: los digests semánticos de la historia no se mueven), `tools/test_quest_book.py` (14: libro, hub, recompensas, tema y que la historia no hable de sí misma) y `tools/test_sector_book.py` (27: texto enriquecido, geometría, curvas, gramática, estándar de cadena, cada función del catálogo usada, tablas con IDs enteros exactos, cajas moderadas y sin salidas con puerta, formas y textos del companion).
