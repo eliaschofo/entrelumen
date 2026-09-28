@@ -23,6 +23,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.TicketType;
+import net.minecraft.world.Clearable;
 import net.minecraft.world.RandomizableContainer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
@@ -242,6 +243,8 @@ public final class EnvesPlacer {
   }
 
   private static void finish(MinecraftServer server, ServerLevel level, EnvesData data, Attempt attempt, Job job) {
+    // A chunk's entities load a little after the chunk: what was not there when the wipe began goes now.
+    if (job.wipe) discardEntities(level, attempt);
     release(level, job);
     JOBS.remove(job);
     if (job.wipe) {
@@ -349,8 +352,22 @@ public final class EnvesPlacer {
       for (int x = 0; x < EnvesGeometry.CELL; x++)
         for (int z = 0; z < EnvesGeometry.CELL; z++) {
           pos.set(origin.getX() + x, origin.getY() + y, origin.getZ() + z);
-          if (!level.getBlockState(pos).isAir()) level.setBlock(pos, air, WIPE_FLAGS);
+          BlockState state = level.getBlockState(pos);
+          if (state.isAir()) continue;
+          if (state.hasBlockEntity()) emptyContainer(level, pos);
+          level.setBlock(pos, air, WIPE_FLAGS);
         }
+  }
+
+  /**
+   * A container goes with its room, contents and all: a chest removed by {@code setBlock} drops what it
+   * holds, and an unopened one rolls its loot table first, which would leave the loot floating in the
+   * slot for the next attempt to find.
+   */
+  private static void emptyContainer(ServerLevel level, BlockPos pos) {
+    var entity = level.getBlockEntity(pos);
+    if (entity instanceof RandomizableContainer loot) loot.setLootTable(null);
+    Clearable.tryClear(entity);
   }
 
   private static void discardEntities(ServerLevel level, Attempt attempt) {

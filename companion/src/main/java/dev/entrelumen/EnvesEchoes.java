@@ -390,6 +390,11 @@ public final class EnvesEchoes {
       }
       if (!(mob.level() instanceof ServerLevel level)) continue;
       var data = mob.getData(ATTACHMENT.get());
+      if ((now + mob.getId()) % 20 == 0 && stale(server, level, data)) {
+        mob.discard();
+        LIVE.remove(mob);
+        continue;
+      }
       EnvesAffixes.tick(level, mob, data, now);
       if ((now + mob.getId()) % 10 == 0 && level.getNearestPlayer(mob, 32) != null) {
         double w = mob.getBbWidth() * 0.6, h = mob.getBbHeight();
@@ -399,6 +404,15 @@ public final class EnvesEchoes {
           level.sendParticles(ParticleTypes.END_ROD, mob.getX(), mob.getY() + h * 0.6, mob.getZ(), 1, w, h * 0.3, w, 0.005);
       }
     }
+  }
+
+  /**
+   * An echo in the Envés whose attempt is over (or gone): one that stood in a chunk the wipe loaded
+   * too late to see, or came back from disk after it. Echoes elsewhere (the tests') are left alone.
+   */
+  static boolean stale(net.minecraft.server.MinecraftServer server, ServerLevel level, Data data) {
+    if (level != Enves.level(server)) return false;
+    return EnvesData.get(server).attempt(data.attempt()).map(a -> a.status != EnvesData.Status.OPEN).orElse(true);
   }
 
   /**

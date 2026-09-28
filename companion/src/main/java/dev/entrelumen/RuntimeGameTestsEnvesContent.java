@@ -11,8 +11,10 @@ import dev.entrelumen.EnvesPuzzleRules.SealVariant;
 import dev.entrelumen.EnvesPuzzleRules.VaultPuzzle;
 import dev.entrelumen.EnvesRuns.Puzzle;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -227,6 +229,7 @@ public final class RuntimeGameTestsEnvesContent {
     Attempt attempt = attempt(player, seedWith(s -> !EnvesLayout.descent(s).floor(1).withRole(EnvesLayout.Role.FIGHT).isEmpty()));
     AtomicReference<List<Mob>> group = new AtomicReference<>();
     AtomicReference<Vec3> fell = new AtomicReference<>();
+    Set<UUID> lying = new HashSet<>();
     new Script(helper, () -> {
       end(player, attempt);
       qa.close();
@@ -261,11 +264,15 @@ public final class RuntimeGameTestsEnvesContent {
       helper.assertTrue(elites >= 1 && elites <= 2, "one or two elites: " + elites);
       Mob elite = mobs.stream().filter(m -> EnvesEchoes.data(m).orElseThrow().roleOf() == Role.ELITE).findFirst().orElseThrow();
       fell.set(elite.position());
+      for (ItemEntity item : player.serverLevel().getEntitiesOfClass(ItemEntity.class, new AABB(BlockPos.containing(fell.get())).inflate(24)))
+        lying.add(item.getUUID());
       slay(elite, player);
       for (Mob mob : mobs)
         if (mob != elite && EnvesEchoes.data(mob).orElseThrow().roleOf() == Role.ESCORT) slay(mob, player);
-    }).then(() -> !player.serverLevel().getEntitiesOfClass(ItemEntity.class, new AABB(BlockPos.containing(fell.get())).inflate(6)).isEmpty(), () -> {
-      var items = player.serverLevel().getEntitiesOfClass(ItemEntity.class, new AABB(BlockPos.containing(fell.get())).inflate(16));
+    }).then(() -> !player.serverLevel().getEntitiesOfClass(ItemEntity.class, new AABB(BlockPos.containing(fell.get())).inflate(6),
+        item -> !lying.contains(item.getUUID())).isEmpty(), () -> {
+      var items = player.serverLevel().getEntitiesOfClass(ItemEntity.class, new AABB(BlockPos.containing(fell.get())).inflate(16),
+          item -> !lying.contains(item.getUUID()));
       int shards = 0;
       var plain = List.of(Items.EMERALD, Items.DIAMOND, Items.ECHO_SHARD, Items.IRON_INGOT, Items.GOLD_INGOT, Items.AMETHYST_SHARD,
           Items.HEART_OF_THE_SEA);
@@ -280,7 +287,83 @@ public final class RuntimeGameTestsEnvesContent {
     }).run();
   }
 
+  // ---- The wipe -----------------------------------------------------------------------------
+
+  /** Loads a chunk without ticking it, as the wipe does, so what lies there can be looked at. */
+  private static final net.minecraft.server.level.TicketType<net.minecraft.world.level.ChunkPos> LOOK =
+      net.minecraft.server.level.TicketType.create("entrelumen_enves_look", java.util.Comparator.comparingLong(
+          net.minecraft.world.level.ChunkPos::toLong));
+
+  @GameTest(template = "empty", timeoutTicks = 24000, batch = "enves_content")
+  public static void anEndedAttemptLeavesNeitherLootNorEchoesInItsSlot(GameTestHelper helper) {
+    var qa = new QaPlayer(helper, "SlotSweeper");
+    ServerPlayer player = qa.player;
+    Attempt attempt = attempt(player, seedWith(s -> !EnvesLayout.descent(s).floor(1).withRole(EnvesLayout.Role.FIGHT).isEmpty()
+        && !EnvesLayout.descent(s).floor(1).withRole(EnvesLayout.Role.VAULT).isEmpty()));
+    AtomicReference<BlockPos> chest = new AtomicReference<>(), room = new AtomicReference<>();
+    List<net.minecraft.world.level.ChunkPos> looked = new ArrayList<>();
+    AtomicLong loaded = new AtomicLong(-1);
+    new Script(helper, () -> {
+      ServerLevel level = Enves.level(player.server);
+      for (var chunk : looked) level.getChunkSource().removeRegionTicket(LOOK, chunk, 0, chunk);
+      end(player, attempt);
+      qa.close();
+    }).then(() -> attempt.status == Status.OPEN, () -> {
+      helper.assertTrue(Enves.enter(player), "could not enter");
+      arrived(player);
+      player.setInvulnerable(true);
+      ServerLevel level = player.serverLevel();
+      var floor = Enves.floor(level, attempt, 1);
+      int vault = floor.layout().withRole(EnvesLayout.Role.VAULT).getFirst();
+      chest.set(floor.markers(vault).stream().filter(m -> m.marker().kind() == EnvesMarkers.Kind.CHEST).findFirst().orElseThrow().pos());
+      helper.assertTrue(level.getBlockEntity(chest.get()) instanceof net.minecraft.world.RandomizableContainer box && box.getLootTable() != null,
+          "the vault's chest is not there, unopened");
+      int fight = floor.layout().withRole(EnvesLayout.Role.FIGHT).getFirst();
+      room.set(floor.origin(fight).offset(EnvesGeometry.C, 1, EnvesGeometry.C));
+      moveTo(player, EnvesEchoes.safeSpot(level, room.get(), 6));
+    }).then(() -> echoes(attempt).size() >= 2, () -> {
+      // One falls and leaves its loot on the floor; the rest are alive when the attempt ends.
+      slay(echoes(attempt).getFirst(), player);
+      Enves.end(player.server, attempt, EnvesHooks.EndReason.ADMIN);
+    }).then(() -> EnvesData.get(player.server).attempt(attempt.id).isEmpty(), () -> {
+      ServerLevel level = Enves.level(player.server);
+      for (BlockPos pos : List.of(chest.get(), room.get())) {
+        var chunk = new net.minecraft.world.level.ChunkPos(pos);
+        if (looked.contains(chunk)) continue;
+        looked.add(chunk);
+        level.getChunkSource().addRegionTicket(LOOK, chunk, 0, chunk);
+      }
+    }).then(() -> looked.stream().allMatch(chunk -> Enves.level(player.server).areEntitiesLoaded(chunk.toLong())), () ->
+        loaded.set(Enves.level(player.server).getGameTime())
+    ).then(() -> Enves.level(player.server).getGameTime() - loaded.get() > 25, () -> {
+      ServerLevel level = Enves.level(player.server);
+      helper.assertTrue(level.getBlockState(chest.get()).isAir(), "the vault's chest outlived the wipe");
+      for (BlockPos pos : List.of(chest.get(), room.get())) {
+        var left = level.getEntitiesOfClass(net.minecraft.world.entity.Entity.class, new AABB(pos).inflate(12, 24, 12),
+            e -> e instanceof ItemEntity || EnvesEchoes.isEcho(e));
+        helper.assertTrue(left.isEmpty(), "the wipe left " + left.stream().map(e -> e instanceof ItemEntity item
+            ? item.getItem().toString() : e.getType().toShortString()).toList() + " near " + pos.toShortString());
+      }
+    }).run();
+  }
+
   // ---- Affixes ------------------------------------------------------------------------------
+
+  /**
+   * Puts gear on and applies its attribute modifiers: a player without a client never runs the living
+   * tick where worn gear's modifiers are applied.
+   */
+  static void wear(ServerPlayer player, net.minecraft.world.item.Item... pieces) {
+    for (var piece : pieces) {
+      ItemStack stack = new ItemStack(piece);
+      var slot = player.getEquipmentSlotForItem(stack);
+      player.setItemSlot(slot, stack);
+      stack.forEachModifier(slot, (attribute, modifier) -> {
+        var instance = player.getAttribute(attribute);
+        if (instance != null) instance.addOrUpdateTransientModifier(modifier);
+      });
+    }
+  }
 
   private static Attempt loose(ServerPlayer player) {
     return new Attempt(UUID.randomUUID(), player.getUUID(), 4095, 7, Tier.FRONTIER, player.getUUID(), 0);
@@ -310,13 +393,10 @@ public final class RuntimeGameTestsEnvesContent {
     BlockPos center = helper.absolutePos(new BlockPos(2, 1, 2));
     platform(level, center, 9);
     player.teleportTo(level, center.getX() + 0.5, center.getY(), center.getZ() + 0.5, 0f, 0f);
+    arrived(player);
     player.getAttribute(Attributes.MAX_HEALTH).setBaseValue(200);
     player.setHealth(200);
-    // Diamond armor from the start: its modifiers apply when the player ticks, before the checks.
-    for (var piece : List.of(Items.DIAMOND_HELMET, Items.DIAMOND_CHESTPLATE, Items.DIAMOND_LEGGINGS, Items.DIAMOND_BOOTS)) {
-      ItemStack stack = new ItemStack(piece);
-      player.setItemSlot(player.getEquipmentSlotForItem(stack), stack);
-    }
+    wear(player, Items.DIAMOND_HELMET, Items.DIAMOND_CHESTPLATE, Items.DIAMOND_LEGGINGS, Items.DIAMOND_BOOTS);
     Attempt attempt = loose(player);
     List<Mob> spawned = new ArrayList<>();
     AtomicLong started = new AtomicLong();
@@ -767,6 +847,8 @@ public final class RuntimeGameTestsEnvesContent {
     level.setBlockAndUpdate(dirt, Blocks.DIRT.defaultBlockState());
     fragile.add(dirt);
     player.teleportTo(level, home.getX() + 0.5, home.getY(), home.getZ() + 10.5, 180f, 0f);
+    // The player's chunks tick: the charge leaves the test's own chunk.
+    arrived(player);
     player.getAttribute(Attributes.MAX_HEALTH).setBaseValue(400);
     player.setHealth(400);
     Attempt attempt = loose(player);

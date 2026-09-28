@@ -63,8 +63,9 @@ class EnvesTilesetsTest {
   }
 
   private static EnvesConfig.Settings settings() throws IOException {
+    // The offering names the mod's own shard besides vanilla items.
     return EnvesConfig.parse(JsonParser.parseString(Files.readString(DATA.resolve("enves/config.json"))),
-        id -> id.startsWith("minecraft:"));
+        id -> id.startsWith("minecraft:") || id.startsWith("entrelumen:"));
   }
 
   private static String folder(String tileset) throws IOException {

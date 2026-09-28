@@ -87,7 +87,7 @@ Roles por piso:
 - Al pagar se colocan el vestíbulo y el piso I; el siguiente, cuando alguien llega a la guardia, a la escalera o prende todos los sellos.
 - Celda por celda, del inicio hacia afuera, con 6 ms por tick. Los chunks cargan en segundo plano con un ticket por trabajo y las plantillas se leen fuera del hilo del servidor.
 - Bajo cada celda va una capa de roca donde la losa está abierta, hasta que el piso de abajo la reemplaza.
-- Al terminar un intento se borra su parcela, bloques y entidades, en franjas de capas por tick, y queda libre.
+- Al terminar un intento se borra su parcela, bloques y entidades, en franjas de capas por tick, y queda libre. Los contenedores se vacían antes de borrarlos: un cofre que se quita con `setBlock` tira lo que tiene, y uno sin abrir tira antes su loot, que quedaba flotando en la parcela para el intento siguiente. Las entidades se barren al empezar y otra vez al terminar el borrado, porque las de un chunk cargan un poco después que el chunk.
 - Si el servidor se apaga a mitad de un piso o de un borrado, lo retoma al arrancar.
 
 ### El intento
@@ -327,7 +327,7 @@ Un eco es un mob del pack condensado por la luz agria (`EnvesEchoes`):
 - **Escalado:** la vida base del eco (su entrada en la tabla, o la del rol) por el multiplicador del tier del intento y el del piso. Todo el daño que hace (golpes, proyectiles, hechizos, AoE) se multiplica por su factor: el de la entrada o el del rol, por el del tier y el del piso. Además suma la armadura del tier.
 - **El tier del intento manda, no el del jugador:** a los ecos no les llegan los aumentos de tier de Apotheosis (se marca `apotheosis:tier_augments_applied`) ni el `FinalizeSpawnEvent`, así que ningún mod los convierte en sus élites o invasores. Un jugador de Pinnacle que farmea un intento de Frontier pelea ecos de Frontier.
 - **Sin basura:** las caídas propias del mob y su equipo se descartan. Suelta sólo la tabla de su rol: las escoltas, nada (sólo experiencia); los élites, guardianes y campeones, esquirlas y algo más.
-- Persisten, no juntan cosas del piso y no se lastiman entre ellos.
+- Persisten, no juntan cosas del piso y no se lastiman entre ellos. Un eco cuyo intento terminó o ya no existe se descarta solo (uno que un borrado no alcanzó a ver, o que vuelve del disco después).
 
 **Por piso** (IDs verificados en los JAR fijados: `ModEntities` de L_Ender's Cataclysm 3.33 y el registro de Mowzie's Mobs 1.8.2). Vida base a Frontier en el piso I, antes del multiplicador del piso; «daño ×» multiplica el daño propio del mob. El respaldo vanilla sólo se usa si el mod falta:
 
@@ -534,9 +534,10 @@ Los espejos se quedaron en los sellos: el umbral de una bóveda no tiene lugar p
   - las dos ofrendas;
   - que las siete tablas carguen y paguen;
   - el Wither blanco sin grifeo, flotando bajo, con la embestida avisada, golpeando y expuesto;
-  - su aparición en la arena, el portal y el cofre al caer.
+  - su aparición en la arena, el portal y el cofre al caer;
+  - que un intento terminado no deje loot ni ecos en su parcela: el cofre de la bóveda se va sin tirar lo suyo y los ecos, vivos o caídos, con él.
 
-  Los casos del motor (`RuntimeGameTestsEnves`) corren con los ganchos simples (`@BeforeBatch`).
+  Los casos del motor (`RuntimeGameTestsEnves`) corren con los ganchos simples (`@BeforeBatch`). Los jugadores de prueba no tienen cliente: sus chunks se cargan a mano (`arrived`) y la armadura que se ponen aplica sus modificadores a mano (`wear`), porque el tick de entidad viva de un jugador lo dispara la conexión.
 - **GameTests de pack completo** (`EnvesContentFullpackGameTests`):
   - cada eco de las tablas es un mob vivo de su mod;
   - la sala del piso I trae draugr de Cataclysm sin los aumentos de Apotheosis;
@@ -552,7 +553,7 @@ Los espejos se quedaron en los sellos: el umbral de una bóveda no tiene lugar p
   - si los mobs de Cataclysm con animación de muerte sueltan algo por fuera del evento de caídas.
 - Arte propio del altar, el brasero y el espejo, y un modelo propio del jefe (hoy es el Wither vanilla repintado).
 - Un curio único del jefe (fuera de esta iteración) y el canje de esquirlas en Solsticio.
-- Los tilesets II–V: las cerraduras y acertijos revisan el lugar y cambian de tipo si el arte nuevo no lo deja, pero conviene mirarlos con el arte final.
+- Los tilesets II–V ya tienen plantillas propias (rama `feature/enves-tilesets`, en `main`). Con ellas pasaron los GameTests de los sellos del piso III (Fundición) y del jefe en la arena del V (El Eclipse); las cerraduras se probaron en el piso I. Las cerraduras y acertijos revisan el lugar y cambian de tipo si el arte no los deja: falta mirarlos en juego en II y IV.
 
 ## Para decidir
 
