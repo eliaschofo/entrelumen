@@ -444,7 +444,7 @@
       "sources": ["jar:sushigocrafting-1.21-0.6.5.jar:data/sushigocrafting/recipe/rice_cooker.json", "jar:sushigocrafting-1.21-0.6.5.jar:assets/sushigocrafting/patchouli_books/sushigocrafting/en_us/entries/using_tools/rice_cooker.json", "jar:sushigocrafting-1.21-0.6.5.jar:assets/sushigocrafting/patchouli_books/sushigocrafting/en_us/entries/world/crops.json"]
     },
     {
-      "key": "fkc_sushi_board", "role": "side", "deps": ["fkc_sushi_rice"], "group": "sushi",
+      "key": "fkc_sushi_board", "role": "step", "deps": ["fkc_sushi_rice"], "group": "sushi",
       "tasks": [{"item": "sushigocrafting:cleaver_knife"}, {"item": "sushigocrafting:cutting_board"}],
       "icon": "sushigocrafting:cleaver_knife",
       "at": {"x": -6.1, "y": 6.2},
@@ -455,7 +455,7 @@
       "sources": ["jar:sushigocrafting-1.21-0.6.5.jar:data/sushigocrafting/recipe/cleaver_knife.json", "jar:sushigocrafting-1.21-0.6.5.jar:data/sushigocrafting/recipe/cutting_board.json", "jar:sushigocrafting-1.21-0.6.5.jar:data/sushigocrafting/recipe/cutting_board/crab.json", "jar:sushigocrafting-1.21-0.6.5.jar:assets/sushigocrafting/patchouli_books/sushigocrafting/en_us/entries/using_tools/cutting_board.json"]
     },
     {
-      "key": "fkc_nori", "role": "side", "deps": ["fkc_sushi_rice"], "group": "sushi",
+      "key": "fkc_nori", "role": "step", "deps": ["fkc_sushi_rice"], "group": "sushi",
       "task": {"item": "sushigocrafting:nori_sheets", "count": 4},
       "at": {"x": -8.3, "y": 8.0},
       "en_us": {"title": "Pressed seaweed",
@@ -476,7 +476,7 @@
       "sources": ["jar:sushigocrafting-1.21-0.6.5.jar:data/sushigocrafting/loot_table/entities/tuna.json", "jar:sushigocrafting-1.21-0.6.5.jar:data/sushigocrafting/loot_table/entities/shrimp.json", "jar:sushigocrafting-1.21-0.6.5.jar:assets/sushigocrafting/patchouli_books/sushigocrafting/en_us/entries/world/tobiko.json", "jar:sushigocrafting-1.21-0.6.5.jar:assets/sushigocrafting/patchouli_books/sushigocrafting/en_us/entries/world/fish.json"]
     },
     {
-      "key": "fkc_sushi_roller", "role": "milestone", "deps": ["fkc_nori", "fkc_sushi_catch"], "group": "sushi",
+      "key": "fkc_sushi_roller", "role": "milestone", "deps": ["fkc_nori", "fkc_sushi_board"], "group": "sushi",
       "tasks": [{"item": "sushigocrafting:roller"}, {"item": "sushigocrafting:salmon_maki"}],
       "icon": "sushigocrafting:salmon_maki",
       "at": {"x": -8.3, "y": 10.2},
@@ -498,7 +498,7 @@
       "sources": ["jar:sushigocrafting-1.21-0.6.5.jar:assets/sushigocrafting/patchouli_books/sushigocrafting/en_us/entries/getting_started/effects.json", "jar:sushigocrafting-1.21-0.6.5.jar:assets/sushigocrafting/lang/en_us.json#effect.sushigocrafting.acquired_taste.description"]
     },
     {
-      "key": "farming_satiety_hearts", "role": "milestone", "deps": ["fkc_nourishment"], "group": "menu",
+      "key": "farming_satiety_hearts", "role": "milestone", "deps": ["farming_kitchen_feasts"], "group": "menu",
       "task": {"item": "solcarrot:food_book"},
       "at": {"x": 0, "y": 6.6},
       "en_us": {"title": "Hearts for variety", "subtitle": "An apple a day is not enough.",
