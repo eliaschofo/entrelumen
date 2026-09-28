@@ -156,6 +156,48 @@
         "simulated.keyinfo.rotate_mode"
       ],
       "reason": "Create Simulated rotates a structure while Tab is held during a Creative Physics Staff drag; the player list showing at the same time is harmless, and the staff is creative only."
+    },
+    {
+      "keys": [
+        "key.jump",
+        "key.createrailgrinding.grind_jump"
+      ],
+      "reason": "Rail Grinding jumps off a rail with the normal jump key while grinding."
+    },
+    {
+      "keys": [
+        "key.sneak",
+        "key.createrailgrinding.grind_crouch"
+      ],
+      "reason": "Rail Grinding crouches on a rail with the normal sneak key."
+    },
+    {
+      "keys": [
+        "key.aether.gravitite_jump_ability.desc",
+        "key.createrailgrinding.grind_jump"
+      ],
+      "reason": "Both read the jump key in their own state: gravitite armor boosts a jump, Rail Grinding jumps off a rail."
+    },
+    {
+      "keys": [
+        "key.createrailgrinding.grind_jump",
+        "key.the_bumblezone.beehemoth_up"
+      ],
+      "reason": "Both read the jump key in their own state: riding a Beehemoth, or grinding a rail."
+    },
+    {
+      "keys": [
+        "key.createrailgrinding.grind_jump",
+        "pneumaticcraft.boots.jet_boots"
+      ],
+      "reason": "Both read the jump key in their own state: jet boots flying, or grinding a rail."
+    },
+    {
+      "keys": [
+        "key.familiarslib.summoning_key",
+        "key.loadToolbarActivator"
+      ],
+      "reason": "Vanilla loads a saved hotbar with X only in creative; in survival X summons the familiar."
     }
   ],
   "keys": {
@@ -381,6 +423,20 @@
       ],
       "evidence": "Apotheosis 8.7.0."
     },
+    "key.ars_affinity.ability": {
+      "default": "key.keyboard.f",
+      "contexts": [
+        "world"
+      ],
+      "evidence": "Ars Affinity 1.1.1 ArsAffinityClient: vanilla KeyMapping, GLFW 70; fires the active affinity ability."
+    },
+    "key.ars_affinity.affinity_ui": {
+      "default": "key.keyboard.left.bracket",
+      "contexts": [
+        "world"
+      ],
+      "evidence": "Ars Affinity 1.1.1 ArsAffinityClient: vanilla KeyMapping, GLFW 91; opens the affinity screen."
+    },
     "key.ars_elemental.open_pouch": {
       "default": "key.keyboard.j",
       "contexts": [
@@ -584,6 +640,28 @@
         "screen:crafting"
       ],
       "evidence": "Crafting Tweaks 21.1.11: crafting-grid screens."
+    },
+    "key.createrailgrinding.catch": {
+      "default": "key.keyboard.space:SHIFT",
+      "contexts": [
+        "world"
+      ],
+      "evidence": "Create: Train Track Rail Grinding 1.2.2 ModKeyMappings: KeyConflictContext.IN_GAME, KeyModifier.SHIFT + GLFW 32 (Shift+Space); the rail catch action."
+    },
+    "key.createrailgrinding.grind_crouch": {
+      "default": "key.keyboard.left.shift",
+      "contexts": [
+        "world"
+      ],
+      "evidence": "Create: Train Track Rail Grinding 1.2.2 ModKeyMappings: KeyConflictContext.IN_GAME, GLFW 340; crouches while grinding.",
+      "hold": true
+    },
+    "key.createrailgrinding.grind_jump": {
+      "default": "key.keyboard.space",
+      "contexts": [
+        "world"
+      ],
+      "evidence": "Create: Train Track Rail Grinding 1.2.2 ModKeyMappings: KeyConflictContext.IN_GAME, GLFW 32; jumps off a rail while grinding."
     },
     "key.curios.open.desc": {
       "default": "key.keyboard.g",
@@ -792,6 +870,90 @@
       ],
       "evidence": "ExtendedAE 2.2.35 PatternHotKey: tooltip of the encoded pattern under the cursor.",
       "hover": "ae2-pattern"
+    },
+    "key.familiarslib.familiar_quick_summon_1": {
+      "default": "key.keyboard.unknown",
+      "contexts": [
+        "world"
+      ],
+      "evidence": "FamiliarsLib 1.8 KeyMappings: Iron's ExtendedKeyMapping, KeyConflictContext.IN_GAME, InputConstants.UNKNOWN (unbound); quick summon slot 1."
+    },
+    "key.familiarslib.familiar_quick_summon_10": {
+      "default": "key.keyboard.unknown",
+      "contexts": [
+        "world"
+      ],
+      "evidence": "FamiliarsLib 1.8 KeyMappings: Iron's ExtendedKeyMapping, KeyConflictContext.IN_GAME, InputConstants.UNKNOWN (unbound); quick summon slot 10."
+    },
+    "key.familiarslib.familiar_quick_summon_2": {
+      "default": "key.keyboard.unknown",
+      "contexts": [
+        "world"
+      ],
+      "evidence": "FamiliarsLib 1.8 KeyMappings: Iron's ExtendedKeyMapping, KeyConflictContext.IN_GAME, InputConstants.UNKNOWN (unbound); quick summon slot 2."
+    },
+    "key.familiarslib.familiar_quick_summon_3": {
+      "default": "key.keyboard.unknown",
+      "contexts": [
+        "world"
+      ],
+      "evidence": "FamiliarsLib 1.8 KeyMappings: Iron's ExtendedKeyMapping, KeyConflictContext.IN_GAME, InputConstants.UNKNOWN (unbound); quick summon slot 3."
+    },
+    "key.familiarslib.familiar_quick_summon_4": {
+      "default": "key.keyboard.unknown",
+      "contexts": [
+        "world"
+      ],
+      "evidence": "FamiliarsLib 1.8 KeyMappings: Iron's ExtendedKeyMapping, KeyConflictContext.IN_GAME, InputConstants.UNKNOWN (unbound); quick summon slot 4."
+    },
+    "key.familiarslib.familiar_quick_summon_5": {
+      "default": "key.keyboard.unknown",
+      "contexts": [
+        "world"
+      ],
+      "evidence": "FamiliarsLib 1.8 KeyMappings: Iron's ExtendedKeyMapping, KeyConflictContext.IN_GAME, InputConstants.UNKNOWN (unbound); quick summon slot 5."
+    },
+    "key.familiarslib.familiar_quick_summon_6": {
+      "default": "key.keyboard.unknown",
+      "contexts": [
+        "world"
+      ],
+      "evidence": "FamiliarsLib 1.8 KeyMappings: Iron's ExtendedKeyMapping, KeyConflictContext.IN_GAME, InputConstants.UNKNOWN (unbound); quick summon slot 6."
+    },
+    "key.familiarslib.familiar_quick_summon_7": {
+      "default": "key.keyboard.unknown",
+      "contexts": [
+        "world"
+      ],
+      "evidence": "FamiliarsLib 1.8 KeyMappings: Iron's ExtendedKeyMapping, KeyConflictContext.IN_GAME, InputConstants.UNKNOWN (unbound); quick summon slot 7."
+    },
+    "key.familiarslib.familiar_quick_summon_8": {
+      "default": "key.keyboard.unknown",
+      "contexts": [
+        "world"
+      ],
+      "evidence": "FamiliarsLib 1.8 KeyMappings: Iron's ExtendedKeyMapping, KeyConflictContext.IN_GAME, InputConstants.UNKNOWN (unbound); quick summon slot 8."
+    },
+    "key.familiarslib.familiar_quick_summon_9": {
+      "default": "key.keyboard.unknown",
+      "contexts": [
+        "world"
+      ],
+      "evidence": "FamiliarsLib 1.8 KeyMappings: Iron's ExtendedKeyMapping, KeyConflictContext.IN_GAME, InputConstants.UNKNOWN (unbound); quick summon slot 9."
+    },
+    "key.familiarslib.screen_key": {
+      "default": "key.keyboard.h",
+      "contexts": [
+        "world"
+      ],
+      "evidence": "FamiliarsLib 1.8 KeyMappings: Iron's ExtendedKeyMapping, KeyConflictContext.IN_GAME, GLFW 72; opens the familiar selection screen."
+    },
+    "key.familiarslib.summoning_key": {
+      "default": "key.keyboard.x",
+      "contexts": [
+        "world"
+      ],
+      "evidence": "FamiliarsLib 1.8 KeyMappings: Iron's ExtendedKeyMapping, KeyConflictContext.IN_GAME, GLFW 88; summons or recalls the selected familiar."
     },
     "key.fireNobu": {
       "default": "key.mouse.left",

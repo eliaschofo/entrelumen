@@ -758,3 +758,56 @@ Familia `catalog/families/pingpong5-aeronautics.json`: 3 JARs. El lock pasa a **
 - **GameTests:** `pingponground5aeronauticsloaded` (los seis mods cargados, contando el paquete, Sable y el addon, y el ensamblador con el núcleo). `carryonrefusesround5blocks` suma el ensamblador, el cojinete de hélice y el soporte de rueda.
 - **Costo:** pendiente de medir, con el método de la ronda (misma semilla, generación de chunks, ticks y memoria) contra los lotes 1 a 6. Queda o sale con esos números; decide Elias.
 - **Ganchos para las quests** (si se queda): ensamblador físico (`simulated:physics_assembler`), cojinete de hélice (`aeronautics:propeller_bearing`), quemador y globo (`aeronautics:adjustable_burner`, `aeronautics:white_envelope`), levitita (`aeronautics:levitite`), volante y acelerador (`simulated:steering_wheel`, `simulated:throttle_lever`), mesa de navegación (`simulated:navigation_table`), soporte de rueda (`offroad:wheel_mount`) y conector de acople (`simulated:docking_connector`).
+
+## Ronda 6 (27/9): contenido de la búsqueda hacia afuera
+
+Los mods de contenido aprobados de la [búsqueda hacia afuera](../research/mod-outward.md), después de la ronda 5 y en la misma rama. Familia `catalog/families/pingpong6.json`: 7 mods y 1 librería. El lock pasa a **373 / 319**; ninguna entrada previa cambió. Sigue la regla de la ronda: versión de la nota de la búsqueda, fuente oficial y bytes verificados.
+
+| Mod | Versión | Fuente | Acto | Para qué |
+|---|---|---|---|---|
+| Create: Train Track Rail Grinding | 1.2.2 | CF 1545733/8543987 (los mismos bytes en Modrinth; MIT) | II | Deslizarse por las vías de Create sin perder impulso, con botas de buceo o el encantamiento de botas que trae. |
+| Create: Integrated Farming | 1.4.1c | CF 1249131/8847936 (los mismos bytes en Modrinth) | II | Cosechadora de vacío, redes de pesca para trenes y barcos, y gallineros que se alimentan con spouts. |
+| Croptopia & Botany Pots compat | 1.0.0 | CF 1553397/8143070 (los mismos bytes en Modrinth; MIT) | I-II | Los cultivos y árboles de Croptopia crecen en las macetas: 85 recetas de datos, sin ítems. |
+| Alshanex's Familiars | 4.0.4 | CF 1171602/8966342 (sólo CurseForge) | II-V | Familiares magos de Iron's que se doman y pelean con hechizos, con sus estructuras, fragmentos y rituales. Necesita FamiliarsLib 1.8 (CF 1316458/8966334). |
+| Ars Affinity | 1.1.1 | CF 1319260/7416588 (sólo CurseForge; MIT) | II-IV | Afinidad por escuela de Ars: pasivas que se ganan lanzando hechizos y una habilidad activa. |
+| Psionic Utilities | 1.4 | CF 611991/8358809 (los mismos bytes en Modrinth) | III | Colores y atajos para el programador de Psi. Sólo cliente: sus 13 mixins son de cliente. |
+| Irons Spell N FTB Teams | 1.0.0 (beta) | CF 1610802/8435267 (los mismos bytes en Modrinth; GPL) | II-VI | Las invocaciones de Iron's no atacan a los compañeros de equipo de FTB Teams de su dueño. |
+
+- **Petrol's Parts queda afuera.** Pide Petrolpark's Library `[1.5.5,1.6.0)`, y cada 1.5.x fija JEI en un rango angosto: 1.5.5 y 1.5.6 piden `[19.44,19.45)`, de 1.5.7 a 1.5.9 `[19.52,19.53)` y 1.5.10 `[19.53,19.54)`. El lock tiene JEI 19.50.0.414, el de ATM10 con el que se revisaron los mixins obligatorios de FTB XMod Compat sobre JEI. NeoForge rechaza una dependencia opcional presente fuera de su rango, así que el cliente no arrancaría. Puede entrar junto con una actualización de JEI, que obliga a revisar esos mixins, y además ata Create a `[6.0.10,6.0.11)`.
+- **Versiones:**
+  - Integrated Farming se fija en 1.4.1c: desde 1.4.2 pide Supplementaries 3.9.9 y el lock tiene 3.9.5. Pide Create Dragons Plus `[1.11.1,)` (hay 1.11.9); sus mixins para Sable y otros mods son condicionales.
+  - Familiars 4.0.4 y FamiliarsLib 1.8 sólo están en CurseForge (Modrinth llega a 4.0.3 y 1.7.1), y salen juntos.
+  - Ars Affinity se compiló contra Ars 5.10. Sus cuatro objetivos de mixin existen en Ars 5.13.1 con la misma firma (`SpellResolver.onResolveEffect`, `GuiSpellBook.init` y el `BaseScreen` de nuggets 1.1.0.48, que trae Ars; se revisó con `javap`). Falta el arranque.
+  - El mixin de Irons Spell N FTB Teams va a la cabeza de `IMagicSummon.isAlliedHelper`, que existe igual en Iron's 3.16.3.
+- **Escalonado:** ninguno; todos siguen escaleras que ya existen.
+  - Rail Grinding necesita botas de buceo de Create o su encantamiento.
+  - La cosechadora de vacío pide latón y la cosechadora mecánica.
+  - El libro de familiares pide un libro de hechizos de diamante y mithril de Iron's; los amuletos y la caja de Pandora, mithril y elixires.
+  - Ars Affinity crece con los hechizos que el jugador ya lanza.
+  - Las macetas y sus tiers ya los escalona el balance de recursos (`generate_resource_balance.py` no cambia: 1105 cambios).
+- **Mundo de Familiars** (se mide con la pregeneración de la ronda):
+  - cuatro estructuras: campamento de cazadores (bosques, cada unos 40 chunks), cementerio (valle de almas del Nether), laboratorio del End (biomas de ciudades del End) y la isla de origen (océanos, en anillos concéntricos como las fortalezas);
+  - familiares salvajes: druida en bosques, escarchado en nieve, cazador en bosques, junglas y taigas, mago en montañas, abrasador en el Nether y guerrero dragón en el End;
+  - 17 modificadores de botín en cofres vanilla y de Iron's, y en algunas criaturas;
+  - los familiares no se pueden capturar (`c:capturing_not_supported`).
+  - Lo de «su mago carga creepers» resultó al revés: su único código de creepers es un mixin que los hace huir del familiar mago (`AvoidEntityGoal` a 6 bloques, como con los gatos).
+- **Integrated Farming** trae mixins condicionales para Sable: si Aeronautics se queda, las redes y cosechadoras funcionan en estructuras de Sable.
+- **Croptopia & Botany Pots compat** es de un solo autor. Si se rompe, sus JSON (MIT) pueden pasar al generador.
+- **Teclas** (`tools/check_keybinds.py`: 0 choques):
+  - la habilidad de Ars Affinity venía en F, que es cambiar de mano: pasa a **Mouse 4**, al lado de Ping Wheel;
+  - la pantalla de afinidades venía en `[`, el tipo de minimapa de JourneyMap: queda sin asignar (el libro de hechizos suma su botón);
+  - la pantalla de familiares venía en H, la de Eternal Starlight: pasa a **Shift+J**;
+  - invocar al familiar queda en X y comparte a propósito con cargar una barra guardada, que vanilla sólo usa en creativo;
+  - enganchar un riel venía en Shift+Espacio y tapaba el salto agachado: queda sin asignar, porque clic derecho sobre la vía con la mano vacía hace lo mismo;
+  - saltar y agacharse en el riel comparten a propósito las teclas de siempre;
+  - las diez invocaciones rápidas vienen sin asignar.
+- **Carry On:** `create_integrated_farming:*` y `alshanex_familiars:*`.
+- **Primer ingreso:** ningún regalo (`tools/audit_first_join.py`).
+- **GameTests** (`ModPingpongRound6FullpackGameTests`):
+  - `pingponground6loaded`: los siete mods cargados, Psionic Utilities fuera del servidor dedicado y Petrol's Parts ausente;
+  - `ironssummonsspareftbteammates`: la prueba que pedía la búsqueda. Dos jugadores de prueba forman un grupo real de FTB y un tercero queda solo; un oso polar invocado para el dueño tiene que tratar al compañero como aliado y al tercero no.
+- **Ganchos para las quests:**
+  - Rail Grinding: botas de buceo con el encantamiento (`createrailgrinding:railgrind_enchantment`), en el capítulo de trenes de Create.
+  - Integrated Farming: cosechadora de vacío (`create_integrated_farming:vacuum_harvester`), red de pesca (`create_integrated_farming:fishing_net`) y gallinero (`create_integrated_farming:roost`).
+  - Familiars: libro de familiares (`alshanex_familiars:familiar_spellbook`), cama y almacén de familiares (`alshanex_familiars:pet_bed`, `alshanex_familiars:familiar_storage`) y la estación de encogimiento (`alshanex_familiars:shrinking_station`).
+  - Ars Affinity: no tiene ítems propios que pedir; una quest puede explicar la habilidad en Mouse 4.

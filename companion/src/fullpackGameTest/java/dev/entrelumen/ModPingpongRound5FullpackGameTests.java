@@ -261,7 +261,8 @@ public final class ModPingpongRound5FullpackGameTests {
     }
   }
 
-  private static final class Session implements AutoCloseable {
+  /** A mock player on a real connection (also used by the round 6 GameTests). */
+  static final class Session implements AutoCloseable {
     final ServerPlayer player;
     final Connection connection;
     final EmbeddedChannel channel;
