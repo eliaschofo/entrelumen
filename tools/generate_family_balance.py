@@ -542,7 +542,9 @@ FUNCTION_MEMBERS = {
     'teleport': ['justdirethings:portalgun', 'justdirethings:portalgun_v2', 'enderio:travel_anchor',
                  'enderio:staff_of_travelling', 'draconicevolution:tools/dislocator', 'rftoolsutility:matter_receiver'],
     'remote_inventory': ['enderstorage:ender_chest', 'enderstorage:ender_tank', 'enderstorage:ender_pouch'],
-    'wireless_energy': ['fluxnetworks:flux_plug', 'rftoolspower:dimensionalcell_simple', 'rftoolspower:dimensionalcell'],
+    'wireless_energy': ['fluxnetworks:flux_plug', 'rftoolspower:dimensionalcell_simple', 'rftoolspower:dimensionalcell',
+                        'extended_industrialization:machines/tesla_coil/craft',
+                        'extended_industrialization:machines/tesla_tower/craft'],
     'jetpack': ['ironjetpacks:strap', 'oritech:crafting/basicjetpack', 'oritech:crafting/basicjetpackalt',
                 'modern_industrialization:armor/diesel_jetpack'],
     'area_mining': ['mininggadgets:mininggadget_simple', 'mininggadgets:mininggadget', 'mininggadgets:mininggadget_fancy',
@@ -554,6 +556,7 @@ FUNCTION_MEMBERS = {
     'reactor': ['create_new_age:mechanical_crafting/reactor_rod', 'industrialforegoing:dissolution_chamber/infinity_nuke',
                 'oritech:crafting/nuke', 'oritech:crafting/nukebetter'],
     'renewal': ['justdirethings:time_wand'],
+    'endgame_reactor': ['dysoncubeproject:em_railejector_controller'],
 }
 # Recipes that are left native on purpose because another gate already covers them (they need a gated
 # piece to work) or because they are pieces built by the dozen; docs/design/recipe-design-rules.md.
@@ -567,6 +570,8 @@ UPSTREAM = {
     'ad_astra_giselle_addon:crafting/automation_nasa_workbench': 'ad_astra:nasa_workbench',
     'advancedperipherals:me_bridge': 'ae2:network/blocks/controller',
     'advancedperipherals:rs_bridge': 'refinedstorage:controller',
+    'extended_industrialization:machines/tesla_receiver/craft': 'extended_industrialization:machines/tesla_coil/craft',
+    'dysoncubeproject:ray_receiver_controller': 'dysoncubeproject:em_railejector_controller',
 }
 # Oritech 0.19 copies Mekanism's alloys in its foundry and its circuits in its atomic forge. Those routes
 # skipped the metallurgic infuser, the way into Mekanism that the calibration frame opens, and with it
@@ -886,8 +891,11 @@ FAMILIES = {
             shaped('enderio:octadic_capacitor', 0, 1, tag('c:ingots/vibrant_alloy'), ATOMIC, 'V', 'Highest Ender IO machine tier'),
             # Modern Industrialization: each staged controller keeps its shaped recipe; its assembler twin is removed.
             shaped('modern_industrialization:armor/diesel_jetpack', 2, 1, None, ALLOY_III, 'III', 'Powered flight, first tier'),
+            # Extended Industrialization (round 5) unpacks its nano gravichestplate back into this one; the nano
+            # piece is packed from this gravichestplate, so the unpacker returns it rather than making a new one.
             shaped('modern_industrialization:armor/gravichestplate', 2, 1, item('modern_industrialization:superconductor_plate'),
-                   HZ, 'IV', 'Creative-style flight'),
+                   HZ, 'IV', 'Creative-style flight',
+                   alternates=['extended_industrialization:tool/nano_suit_gravichestplate_downgrade']),
             paired('modern_industrialization:electric_age/machine/electric_quarry_asbl', [(0, 0), (0, 2)],
                    item('modern_industrialization:large_motor'), IRONWOOD, 'IV', 'Ores from power without world mining'),
             shaped('modern_industrialization:electric_age/machine/nuclear_reactor_asbl', 0, 1,
@@ -978,6 +986,41 @@ FAMILIES = {
         'changes': [],
         'removals': [f'advancedperipherals:ae_disk_cell_{size}' for size in ('1m', '4m', '16m', '64m', '256m')]
                     + ['advancedperipherals:chunk_controller'],
+    },
+    # Round 5, batch 4 (docs/design/mod-pingpong.md, «Lote 4»): technology and redstone. Extended
+    # Industrialization's solar panels, processing array and tools follow MI's own circuit ladder (analog LV,
+    # electronic MV, digital HV), so they stay native; its tesla coil and tower are wireless energy, whose
+    # members take the act III alloy wherever they come from (the receivers need a transmitter, UPSTREAM), and
+    # their MI assembler twins go. The Dyson rail ejector is a vanilla-cheap recipe for endgame power: the
+    # atomic alloy (Act V) replaces one slab; the ray receiver only collects ejected sails. Industrialization
+    # Overdrive's pieces already need MI's electronic to EV tiers, and More Red is logic.
+    'pingpong5tech': {
+        'script': 'entrelumen_pingpong5tech_balance.js',
+        'tag': 'ENTRELUMEN_PINGPONG5_TECH_BALANCE',
+        'namespaces': {'extended_industrialization', 'industrialization_overdrive', 'dysoncubeproject', 'morered',
+                       'moreredxcctcompat', 'tesseract_api'},
+        'changes': [
+            paired('extended_industrialization:machines/tesla_coil/craft', [(0, 0), (0, 2)], None, ALLOY_III, 'III',
+                   'Wireless energy: the act III alloy beside the silver top load'),
+            shaped('extended_industrialization:machines/tesla_tower/craft', 0, 1,
+                   item('modern_industrialization:clean_stainless_steel_machine_casing'), ALLOY_III, 'III',
+                   'Long-range wireless energy: the alloy crowns the tower'),
+            shaped('dysoncubeproject:em_railejector_controller', 2, 1, item('minecraft:smooth_stone_slab'), ATOMIC, 'V',
+                   'The Dyson sphere, endgame power: the atomic alloy in the ejector base'),
+        ] + [
+            # EI packs a nano piece with MI's quantum upgrade into quantum nano armor: the same top-armor jump as
+            # MI's quantum armor (Act VI), so it takes the same habitation Luminosity as a third packer input.
+            function_appended('top_armor', f'extended_industrialization:tool/nano_suit_{piece}_quantum_upgrade', 'item_inputs',
+                              'Quantum nano armor, Act VI: the packer takes a third input, as MI quantum armor does',
+                              limit=3, extra={'amount': 1}, runtime_field='itemInputs',
+                              add=LUMINOSITY[TOP_ARMOR['modern_industrialization']])
+            for piece in ('helmet', 'chestplate', 'leggings', 'boots')
+        ],
+        # The coil and the receiver convert into each other in the crafting grid; only receiver -> coil
+        # would skip the gate, so it goes (a gated coil still turns into a receiver).
+        'removals': ['extended_industrialization:machines/tesla_coil/assembler',
+                     'extended_industrialization:machines/tesla_tower/assembler',
+                     'extended_industrialization:machines/tesla_coil/craft/from_tesla_receiver'],
     },
     # The progression batch of 24 September 2026 (docs/design/progression-functions.md): gates of the
     # reference-packs proposal, one component per function, the top armor in Act VI and the vein

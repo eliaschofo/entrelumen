@@ -310,6 +310,28 @@ class FamilyBalanceTest(unittest.TestCase):
         self.assertEqual(balance.UPSTREAM['advancedperipherals:me_bridge'], 'ae2:network/blocks/controller')
         self.assertEqual(balance.UPSTREAM['advancedperipherals:rs_bridge'], 'refinedstorage:controller')
 
+    def test_round_five_tech_stages_wireless_energy_and_the_dyson_sphere(self):
+        family = balance.FAMILIES['pingpong5tech']
+        by_id = {change['id']: change for change in family['changes']}
+        # Wireless energy keeps Act III in every mod; the Dyson sphere is endgame power (Act V).
+        for recipe in ('extended_industrialization:machines/tesla_coil/craft', 'extended_industrialization:machines/tesla_tower/craft'):
+            self.assertEqual(by_id[recipe]['add'], balance.ALLOY_III)
+            self.assertIn(recipe, balance.FUNCTION_MEMBERS['wireless_energy'])
+        self.assertEqual(by_id['dysoncubeproject:em_railejector_controller']['add'], balance.ATOMIC)
+        self.assertIn('dysoncubeproject:em_railejector_controller', balance.FUNCTION_MEMBERS['endgame_reactor'])
+        # Solar panels follow MI's circuit ladder: no gate; the receiver -> coil conversion would skip one.
+        self.assertFalse(any('solar_panel' in rid for rid in by_id))
+        self.assertIn('extended_industrialization:machines/tesla_coil/craft/from_tesla_receiver', family['removals'])
+        self.assertEqual(balance.UPSTREAM['dysoncubeproject:ray_receiver_controller'], 'dysoncubeproject:em_railejector_controller')
+        # EI's quantum nano armor is the same Act VI jump as MI's quantum armor: the same Luminosity, packed third.
+        for piece in ('helmet', 'chestplate', 'leggings', 'boots'):
+            change = by_id[f'extended_industrialization:tool/nano_suit_{piece}_quantum_upgrade']
+            self.assertEqual((change['function'], change['op'], change['act']), ('top_armor', 'append', 'VI'))
+            self.assertEqual(change['add'], balance.LUMINOSITY[balance.TOP_ARMOR['modern_industrialization']])
+        pingpong = {c['id']: c for c in balance.FAMILIES['pingpong']['changes']}
+        self.assertIn('extended_industrialization:tool/nano_suit_gravichestplate_downgrade',
+                      pingpong['modern_industrialization:armor/gravichestplate']['alternates'])
+
     def test_copy_keeps_one_owner_of_a_shared_path_and_can_move_the_other(self):
         path = 'data/patchouli/recipe/guide_book.json'
         first = {'type': 'minecraft:crafting_shapeless', 'result': {'id': 'patchouli:guide_book'}, 'n': 1}

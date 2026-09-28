@@ -23,6 +23,7 @@ import net.minecraft.server.network.CommonListenerCookie;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.animal.Pig;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.block.Block;
@@ -46,7 +47,10 @@ import org.slf4j.Logger;
  * comfort): the batch is loaded without FindMe, and RightClickHarvest cannot harvest through a foreign
  * FTB Chunks claim. Batch 3 (compat): the batch is loaded, Advanced Peripherals' AE2 disk cells and chunk
  * controller have no recipe, its server settings keep the player detector and chat box local and the chunky
- * turtle off, it gives no book on join, and Carry On refuses the new peripherals and rocket blocks.
+ * turtle off, it gives no book on join, and Carry On refuses the new peripherals and rocket blocks. Batch 4
+ * (technology): the batch is loaded, the tesla coil and tower take the act III alloy, the Dyson rail
+ * ejector the atomic alloy and EI's quantum nano armor the habitation Luminosity in the loaded recipe
+ * manager, and the routes around them are gone.
  */
 @GameTestHolder("entrelumen")
 @PrefixGameTestTemplate(false)
@@ -69,10 +73,27 @@ public final class ModPingpongRound5FullpackGameTests {
   static final List<String> COMPAT_REMOVED = List.of("advancedperipherals:ae_disk_cell_1m", "advancedperipherals:ae_disk_cell_4m",
       "advancedperipherals:ae_disk_cell_16m", "advancedperipherals:ae_disk_cell_64m", "advancedperipherals:ae_disk_cell_256m",
       "advancedperipherals:chunk_controller");
+  /** Batch 4 mods (all have a server side). */
+  static final List<String> TECH = List.of("extended_industrialization", "tesseract_api", "industrialization_overdrive",
+      "dysoncubeproject", "morered", "moreredxcctcompat");
+  /** pingpong5tech gates: recipe and the act material it must consume. */
+  static final Map<String, String> TECH_STAGED = Map.of(
+      "extended_industrialization:machines/tesla_coil/craft", "mekanism:alloy_reinforced",
+      "extended_industrialization:machines/tesla_tower/craft", "mekanism:alloy_reinforced",
+      "dysoncubeproject:em_railejector_controller", "mekanism:alloy_atomic");
+  /** EI's quantum nano armor (MI packer): the habitation Luminosity, like MI's quantum armor (Act VI). */
+  static final List<String> TECH_TOP_ARMOR = List.of("helmet", "chestplate", "leggings", "boots").stream()
+      .map(piece -> "extended_industrialization:tool/nano_suit_" + piece + "_quantum_upgrade").toList();
+  /** Routes around those gates, removed by pingpong5tech. */
+  static final List<String> TECH_REMOVED = List.of("extended_industrialization:machines/tesla_coil/assembler",
+      "extended_industrialization:machines/tesla_tower/assembler",
+      "extended_industrialization:machines/tesla_coil/craft/from_tesla_receiver");
   /** Round 5 blocks Carry On must refuse (pack/config/carryon-common.toml). */
   static final List<String> CARRY_ON_REFUSED = new ArrayList<>(List.of("advancedperipherals:me_bridge",
       "advancedperipherals:inventory_manager", "advancedperipherals:player_detector", "ad_astra_giselle_addon:fuel_loader",
-      "ad_astra_giselle_addon:automation_nasa_workbench"));
+      "ad_astra_giselle_addon:automation_nasa_workbench", "extended_industrialization:tesla_coil",
+      "extended_industrialization:processing_array", "industrialization_overdrive:multi_processing_array",
+      "dysoncubeproject:em_railejector_controller", "morered:soldering_table"));
   /** Create Collision Fix patches exactly this Create build; it goes when Create moves to 6.0.11 (PR #10301). */
   static final String PATCHED_CREATE = "6.0.10";
 
@@ -295,6 +316,49 @@ public final class ModPingpongRound5FullpackGameTests {
     }
     helper.assertTrue(absent.isEmpty(), "Round 5 blacklist test blocks not registered: " + absent);
     helper.assertTrue(carried.isEmpty(), "Carry On may pick up: " + carried);
+    helper.succeed();
+  }
+
+  // ---- Batch 4 ---------------------------------------------------------------------------------
+
+  @GameTest(template = "empty", timeoutTicks = 20)
+  public static void pingpongRound5TechLoaded(GameTestHelper helper) {
+    List<String> problems = new ArrayList<>();
+    TECH.stream().filter(mod -> !ModList.get().isLoaded(mod)).forEach(mod -> problems.add(mod + " not loaded"));
+    var recipes = helper.getLevel().getRecipeManager();
+    TECH_STAGED.forEach((recipe, material) -> {
+      var holder = recipes.byKey(id(recipe));
+      var item = BuiltInRegistries.ITEM.getOptional(id(material));
+      if (holder.isEmpty() || item.isEmpty()) {
+        problems.add(recipe + (holder.isEmpty() ? " is not loaded" : " names an unregistered " + material));
+        return;
+      }
+      ItemStack stack = new ItemStack(item.get());
+      if (holder.get().value().getIngredients().stream().noneMatch(ingredient -> ingredient.test(stack)))
+        problems.add(recipe + " does not consume " + material);
+    });
+    TECH_REMOVED.stream().filter(recipe -> recipes.byKey(id(recipe)).isPresent())
+        .forEach(recipe -> problems.add(recipe + " still has a recipe"));
+    ItemStack luminosity = new ItemStack(BuiltInRegistries.ITEM.get(id("entrelumen:luminosity_habitation")));
+    for (String recipe : TECH_TOP_ARMOR) {
+      var holder = recipes.byKey(id(recipe));
+      if (holder.isEmpty()) {
+        problems.add(recipe + " is not loaded");
+        continue;
+      }
+      try {
+        // Modern Industrialization's MachineRecipe keeps its inputs in the public itemInputs list.
+        Object value = holder.get().value();
+        boolean takes = false;
+        for (Object input : (List<?>) value.getClass().getField("itemInputs").get(value))
+          takes |= ((net.minecraft.world.item.crafting.Ingredient) input.getClass().getMethod("ingredient").invoke(input))
+              .test(luminosity);
+        if (!takes) problems.add(recipe + " does not take the habitation Luminosity");
+      } catch (ReflectiveOperationException failure) {
+        problems.add(recipe + ": " + failure);
+      }
+    }
+    helper.assertTrue(problems.isEmpty(), "Round 5 batch 4: " + problems);
     helper.succeed();
   }
 }

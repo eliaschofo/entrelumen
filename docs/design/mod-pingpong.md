@@ -627,3 +627,37 @@ Familia `catalog/families/pingpong5-compat.json`: 5 mods y ninguna librería nue
 - **GameTests:**
   - `pingponground5compatloaded`: el lote cargado, sin recetas de las celdas ni del controlador, y los seis valores de config de Advanced Peripherals leídos del mod.
   - `carryonrefusesround5blocks`: la lista crece con cada lote.
+
+### Lote 4 · Tecnología y redstone
+
+Familia `catalog/families/pingpong5-tech.json`: 5 mods y 1 librería (Tesseract API), todo de la instancia ATM10. El lock pasa a **359 / 307**; ninguna entrada previa cambió.
+
+| Mod | Versión | Fuente | Acto | Para qué |
+|---|---|---|---|---|
+| Extended Industrialization | 1.16.2 | CF 1068418/8708268 | II-V | Amplía Modern Industrialization: calderas y paneles solares, energía inalámbrica tesla, máquinas grandes, matriz de procesamiento, granjero, encadenador de máquinas, traje nano y herramientas eléctricas. Necesita Tesseract API 1.12.16 (CF 1067672/8708086). |
+| Industrialization Overdrive | 1.12.2 | CF 1089065/8742295 (no está en Modrinth) | III-V | Constructor de multibloques de MI, matriz de procesamiento múltiple, horno de pirólisis y la herramienta Vajra. |
+| Dyson Cube Project | 1.0.5 | CF 1345066/8082907 (no está en Modrinth) | V | Esfera de Dyson: se lanzan velas solares a órbita y un receptor cobra su energía. |
+| More Red | 6.0.0.3 | CF 387638/5763286 | II-VI | Compuertas lógicas de redstone, cables de colores y agrupados, mesa de soldar. |
+| More Red x CC:Tweaked Compat | 1.3.0 (beta) | CF 867286/6165477 | III-V | ComputerCraft lee y escribe los cables agrupados de More Red. |
+
+- **Escalonado** (familia `pingpong5tech`, script `entrelumen_pingpong5tech_balance.js`):
+  - **Tesla** (función «energía inalámbrica», acto III, como el enchufe de Flux y las celdas dimensionales): la bobina lleva la aleación reforzada en las dos esquinas libres de arriba (`ZLZ / EHE / BCB`) y la torre, en lugar de una de sus dos carcasas (`AZA / DHD / ACA`). Se quitan sus gemelos del ensamblador de MI y la conversión receptor → bobina, que salteaba el gate; la bobina se sigue convirtiendo en receptor. Los receptores y escotillas quedan nativos (`UPSTREAM`: sin transmisor no reciben nada).
+  - **Esfera de Dyson** (función «reactor final», acto V): su receta es de hierro, cobre y diamante, así que sin gate la esfera salía en el acto I. El expulsor lleva la aleación atómica en lugar de una losa. El receptor queda nativo: sólo cobra velas ya lanzadas.
+  - **Armadura nano cuántica de EI**: un empaquetador de MI suma pieza nano y mejora cuántica. Es el mismo salto que la armadura cuántica de MI (acto VI), así que lleva la misma Luminosidad de Habitabilidad como tercera entrada, en las cuatro piezas.
+  - **La pechera gravitatoria nano de EI** se desempaca en la de MI, pero se empaqueta a partir de ella. El gate de la de MI (Carta de Horizonte) la declara como ruta alternativa: devuelve la pechera que ya existía.
+  - **Nativos a propósito:** los paneles solares, las calderas solares, la matriz de procesamiento y las herramientas de EI siguen la escalera de circuitos de MI (analógico LV, electrónico MV, digital HV), que ya los ubica. Lo mismo vale para las piezas de Industrialization Overdrive, que piden de MV a EV (la Vajra, cryofluid y circuitos digitales), y para la lógica de More Red. El censo proponía componentes para los paneles LV/HV, el constructor, la matriz y la Vajra. Por las reglas del playtest (lo que va por docenas y los escalones internos de un mod no piden componentes) quedan con la escalera de MI.
+  - `FUNCTION_MEMBERS` suma la bobina y la torre a la energía inalámbrica y el expulsor al reactor final; los tests lo comprueban.
+- **Almost Unified:**
+  - El polvo de netherita de EI entra en `c:dusts/netherite`, que ya se unifica (gana el de Mekanism).
+  - El lingote de aleación roja de More Red se etiqueta `c:ingots/redstone_alloy` a propósito, igual que la aleación de Ender IO: las recetas de cada mod aceptan la del otro. No se unifica (`redstone_alloy` no está en la lista de materiales).
+  - Ese cruce deja hacer en la mesa (cobre o hierro y 4 de redstone) la aleación que Ender IO pide para 13 recetas (conductos de redstone, filtros, cuba), sin pasar por su fundidora, que es una máquina temprana sin gate. Queda anotado; no rompe un acto.
+- **Esfera de Dyson, balance** (config nativa): 20 FE/t por vela, hasta 50 millones de velas. Cada vela cuesta 3 cobres, 4 paneles de vidrio y 2 lapislázulis. Diez mil velas dan 200.000 FE/t, y la esfera no tiene tope práctico. Queda para probar en juego frente a Powah, los reactores y New Age antes de tocar la config.
+- **Teclas:** EI trae cinco atajos del traje nano, sin asignar. Los demás no registran teclas.
+- **Carry On:** `extended_industrialization:*`, `industrialization_overdrive:*`, `dysoncubeproject:*` y `morered:*`.
+- **GameTests:** `pingponground5techloaded` controla:
+  - el lote cargado;
+  - la bobina y la torre con aleación reforzada y el expulsor con aleación atómica, en el gestor de recetas cargado;
+  - las cuatro piezas nano cuánticas con la Luminosidad, leídas de la lista de entradas de MI;
+  - que no queden las rutas quitadas.
+
+  `carryonrefusesround5blocks` suma cinco bloques de este lote.
