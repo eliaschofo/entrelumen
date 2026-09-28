@@ -1098,7 +1098,9 @@ const entrelumenAuditTargets = {
     "easy_villagers:trader",
     "elevatorid:elevator_white",
     "enderio:advanced_capacitor_bank",
+    "enderio:advanced_item_filter",
     "enderio:alloy_smelter",
+    "enderio:attractor_obelisk",
     "enderio:aversion_obelisk",
     "enderio:basic_capacitor",
     "enderio:basic_capacitor_bank",
@@ -1111,6 +1113,7 @@ const entrelumenAuditTargets = {
     "enderio:conduit_binder",
     "enderio:conduit_facade",
     "enderio:conduit_probe",
+    "enderio:coordinate_selector",
     "enderio:crafter",
     "enderio:dark_steel_grinding_ball",
     "enderio:dark_steel_ingot",
@@ -1129,12 +1132,18 @@ const entrelumenAuditTargets = {
     "enderio:energetic_photovoltaic_module",
     "enderio:ensouled_chassis",
     "enderio:enticing_crystal",
+    "enderio:fire_water_bucket",
     "enderio:fluid_tank",
     "enderio:fused_quartz",
     "enderio:glider",
     "enderio:grains_of_infinity",
     "enderio:impulse_hopper",
+    "enderio:industrial_insulation",
+    "enderio:inhibitor_obelisk",
     "enderio:iron_gear",
+    "enderio:limited_item_filter",
+    "enderio:liquid_sunshine_bucket",
+    "enderio:location_printout",
     "enderio:loot_capacitor",
     "enderio:monster_token",
     "enderio:octadic_capacitor",
@@ -1143,8 +1152,13 @@ const entrelumenAuditTargets = {
     "enderio:pulsating_alloy_ingot",
     "enderio:pulsating_crystal",
     "enderio:redstone_alloy_ingot",
+    "enderio:redstone_and_filter",
+    "enderio:redstone_timer_filter",
     "enderio:reinforced_obsidian_block",
+    "enderio:relocator_obelisk",
+    "enderio:resetting_lever_five",
     "enderio:sag_mill",
+    "enderio:silent_dark_steel_pressure_plate",
     "enderio:silicon",
     "enderio:slice_and_splice",
     "enderio:soul_binder",
@@ -4947,7 +4961,7 @@ const entrelumenAuditTargets = {
       "output": "farmersdelight:flint_knife"
     }
   ],
-  "signature": "a2b39f460cfe032b"
+  "signature": "cb0b1ac5b73652d2"
 };
 
 ServerEvents.afterRecipes(event => {

@@ -520,6 +520,44 @@
       "hide_until_deps_complete": true
     },
     {
+      "id": "78DA0040032ADA50",
+      "x": -21.0,
+      "y": -7.8,
+      "shape": "diamond",
+      "size": 1.0,
+      "preset": "el_side",
+      "dependencies": [
+        "019C6B4F05FF7D12"
+      ],
+      "tasks": [
+        {
+          "id": "4CF9F8DE15739C72",
+          "type": "item",
+          "item": {
+            "id": "enderio:liquid_sunshine_bucket",
+            "count": 1
+          },
+          "count": 1,
+          "consume_items": false
+        }
+      ],
+      "rewards": [
+        {
+          "id": "03D6AE3F07746DA5",
+          "type": "xp",
+          "xp": 8
+        }
+      ],
+      "tags": [
+        "entrelumen_side"
+      ],
+      "optional": true,
+      "icon": {
+        "id": "enderio:liquid_sunshine_bucket"
+      },
+      "hide_until_deps_complete": true
+    },
+    {
       "id": "019C6B4F05FF7D12",
       "x": -17.5,
       "y": -7.8,
@@ -559,7 +597,7 @@
     },
     {
       "id": "25C8FD789B52567E",
-      "x": -21.0,
+      "x": -24.5,
       "y": -7.8,
       "shape": "diamond",
       "size": 1.0,
@@ -972,6 +1010,31 @@
       "hide_until_deps_complete": true
     },
     {
+      "id": "5D78D666B40ED14D",
+      "x": -14.0,
+      "y": -11.2,
+      "shape": "el_tag",
+      "size": 1.0,
+      "preset": "el_tip",
+      "dependencies": [
+        "258C299283890FE1"
+      ],
+      "tasks": [
+        {
+          "id": "7F2CD2BCE23D1FBF",
+          "type": "checkmark"
+        }
+      ],
+      "rewards": [],
+      "tags": [
+        "entrelumen_tip"
+      ],
+      "optional": true,
+      "icon_scale": 0.75,
+      "disable_toast": true,
+      "hide_lock_icon": true
+    },
+    {
       "id": "3B1B081436182957",
       "x": -10.5,
       "y": -7.8,
@@ -1158,9 +1221,9 @@
       "id": "5EC07ABB15BBC805",
       "x": 4.0,
       "y": -7.8,
-      "shape": "diamond",
+      "shape": "square",
       "size": 1.0,
-      "preset": "el_side",
+      "preset": "el_step",
       "dependencies": [
         "5D34C9D6A9BFD890"
       ],
@@ -1184,9 +1247,8 @@
         }
       ],
       "tags": [
-        "entrelumen_side"
+        "entrelumen_step"
       ],
-      "optional": true,
       "icon": {
         "id": "enderio:pulsating_alloy_ingot"
       }
@@ -1233,8 +1295,7 @@
         "components": {
           "ftbquests:icon": "enderio:textures/gui/sprites/conduit_icon/item.png"
         }
-      },
-      "hide_until_deps_complete": true
+      }
     },
     {
       "id": "3FD5746CCA83F27A",
@@ -1335,6 +1396,94 @@
       }
     },
     {
+      "id": "7F12844DDDB0A550",
+      "x": -3.0,
+      "y": -11.6,
+      "shape": "diamond",
+      "size": 1.0,
+      "preset": "el_side",
+      "dependencies": [
+        "27DD38D5B417A9E9"
+      ],
+      "tasks": [
+        {
+          "id": "131FA09A79EDDAF0",
+          "type": "item",
+          "item": {
+            "id": "ftbfiltersystem:smart_filter",
+            "count": 1,
+            "components": {
+              "ftbfiltersystem:filter": "or(item(enderio:redstone_and_filter)item(enderio:redstone_or_filter)item(enderio:redstone_xor_filter)item(enderio:redstone_nand_filter)item(enderio:redstone_nor_filter)item(enderio:redstone_xnor_filter)item(enderio:redstone_not_filter))"
+            }
+          },
+          "count": 1,
+          "consume_items": false,
+          "icon": {
+            "id": "enderio:redstone_and_filter"
+          }
+        }
+      ],
+      "rewards": [
+        {
+          "id": "2EBACE73AEA5AFC9",
+          "type": "xp",
+          "xp": 8
+        }
+      ],
+      "tags": [
+        "entrelumen_side"
+      ],
+      "optional": true,
+      "icon": {
+        "id": "enderio:redstone_and_filter"
+      },
+      "hide_until_deps_complete": true
+    },
+    {
+      "id": "417D82DCD738CAB4",
+      "x": -6.5,
+      "y": -14.6,
+      "shape": "diamond",
+      "size": 1.0,
+      "preset": "el_side",
+      "dependencies": [
+        "7F12844DDDB0A550"
+      ],
+      "tasks": [
+        {
+          "id": "382985DAF33C046B",
+          "type": "item",
+          "item": {
+            "id": "ftbfiltersystem:smart_filter",
+            "count": 1,
+            "components": {
+              "ftbfiltersystem:filter": "or(item(enderio:redstone_timer_filter)item(enderio:redstone_sensor_filter)item(enderio:redstone_toggle_filter)item(enderio:redstone_counting_filter))"
+            }
+          },
+          "count": 1,
+          "consume_items": false,
+          "icon": {
+            "id": "enderio:redstone_timer_filter"
+          }
+        }
+      ],
+      "rewards": [
+        {
+          "id": "602B5A5CE878E9BD",
+          "type": "xp",
+          "xp": 8
+        }
+      ],
+      "tags": [
+        "entrelumen_side"
+      ],
+      "optional": true,
+      "icon": {
+        "id": "enderio:redstone_timer_filter"
+      },
+      "hide_until_deps_complete": true
+    },
+    {
       "id": "5DD4477B3B2385DE",
       "x": -6.5,
       "y": -11.2,
@@ -1384,13 +1533,13 @@
     },
     {
       "id": "1A8066C2C936454C",
-      "x": -3.0,
-      "y": -11.6,
+      "x": 7.5,
+      "y": -11.2,
       "shape": "el_tag",
       "size": 1.0,
       "preset": "el_tip",
       "dependencies": [
-        "27DD38D5B417A9E9"
+        "4CAD7C2A3A85D688"
       ],
       "tasks": [
         {
@@ -1452,6 +1601,82 @@
       "optional": true,
       "icon": {
         "id": "enderio:basic_item_filter"
+      },
+      "hide_until_deps_complete": true
+    },
+    {
+      "id": "10D4E2BDD7F0631E",
+      "x": -3.0,
+      "y": -14.6,
+      "shape": "diamond",
+      "size": 1.0,
+      "preset": "el_side",
+      "dependencies": [
+        "7C1DD4EA390A0EC6"
+      ],
+      "tasks": [
+        {
+          "id": "643F9847298E36B5",
+          "type": "item",
+          "item": {
+            "id": "enderio:advanced_item_filter",
+            "count": 1
+          },
+          "count": 1,
+          "consume_items": false
+        }
+      ],
+      "rewards": [
+        {
+          "id": "71D4108862B94744",
+          "type": "xp",
+          "xp": 8
+        }
+      ],
+      "tags": [
+        "entrelumen_side"
+      ],
+      "optional": true,
+      "icon": {
+        "id": "enderio:advanced_item_filter"
+      },
+      "hide_until_deps_complete": true
+    },
+    {
+      "id": "0DD11BACC0E7C89D",
+      "x": -3.0,
+      "y": -18.0,
+      "shape": "diamond",
+      "size": 1.0,
+      "preset": "el_side",
+      "dependencies": [
+        "10D4E2BDD7F0631E"
+      ],
+      "tasks": [
+        {
+          "id": "6BE798231DBF6F66",
+          "type": "item",
+          "item": {
+            "id": "enderio:limited_item_filter",
+            "count": 1
+          },
+          "count": 1,
+          "consume_items": false
+        }
+      ],
+      "rewards": [
+        {
+          "id": "7F3FC44CDF4E48C0",
+          "type": "xp",
+          "xp": 8
+        }
+      ],
+      "tags": [
+        "entrelumen_side"
+      ],
+      "optional": true,
+      "icon": {
+        "id": "enderio:limited_item_filter"
       },
       "hide_until_deps_complete": true
     },
@@ -1770,6 +1995,44 @@
       "hide_until_deps_complete": true
     },
     {
+      "id": "4C38BF6AE75BD3CD",
+      "x": 7.5,
+      "y": -4.4,
+      "shape": "diamond",
+      "size": 1.0,
+      "preset": "el_side",
+      "dependencies": [
+        "4419E9DC3558865A"
+      ],
+      "tasks": [
+        {
+          "id": "6129B584D680A830",
+          "type": "item",
+          "item": {
+            "id": "enderio:industrial_insulation",
+            "count": 1
+          },
+          "count": 1,
+          "consume_items": false
+        }
+      ],
+      "rewards": [
+        {
+          "id": "5543DEA3BD64208F",
+          "type": "xp",
+          "xp": 8
+        }
+      ],
+      "tags": [
+        "entrelumen_side"
+      ],
+      "optional": true,
+      "icon": {
+        "id": "enderio:industrial_insulation"
+      },
+      "hide_until_deps_complete": true
+    },
+    {
       "id": "60F9F4CA4CAA8196",
       "x": -8.5,
       "y": 4.4,
@@ -1978,6 +2241,94 @@
       }
     },
     {
+      "id": "01E0AD2C3FF10A52",
+      "x": -10.9,
+      "y": 11.4,
+      "shape": "diamond",
+      "size": 1.0,
+      "preset": "el_side",
+      "dependencies": [
+        "614FDF9DEE894FE3"
+      ],
+      "tasks": [
+        {
+          "id": "491B4B77A0B66D5F",
+          "type": "item",
+          "item": {
+            "id": "ftbfiltersystem:smart_filter",
+            "count": 1,
+            "components": {
+              "ftbfiltersystem:filter": "or(item(enderio:silent_dark_steel_pressure_plate)item(enderio:silent_soularium_pressure_plate)item(enderio:silent_oak_pressure_plate)item(enderio:silent_spruce_pressure_plate)item(enderio:silent_birch_pressure_plate)item(enderio:silent_jungle_pressure_plate)item(enderio:silent_acacia_pressure_plate)item(enderio:silent_dark_oak_pressure_plate)item(enderio:silent_crimson_pressure_plate)item(enderio:silent_warped_pressure_plate)item(enderio:silent_stone_pressure_plate)item(enderio:silent_polished_blackstone_pressure_plate)item(enderio:silent_light_weighted_pressure_plate)item(enderio:silent_heavy_weighted_pressure_plate))"
+            }
+          },
+          "count": 1,
+          "consume_items": false,
+          "icon": {
+            "id": "enderio:silent_dark_steel_pressure_plate"
+          }
+        }
+      ],
+      "rewards": [
+        {
+          "id": "6D61B1F00B2209E1",
+          "type": "xp",
+          "xp": 8
+        }
+      ],
+      "tags": [
+        "entrelumen_side"
+      ],
+      "optional": true,
+      "icon": {
+        "id": "enderio:silent_dark_steel_pressure_plate"
+      },
+      "hide_until_deps_complete": true
+    },
+    {
+      "id": "0F323C914FA33BE3",
+      "x": -8.1,
+      "y": 11.4,
+      "shape": "diamond",
+      "size": 1.0,
+      "preset": "el_side",
+      "dependencies": [
+        "614FDF9DEE894FE3"
+      ],
+      "tasks": [
+        {
+          "id": "3636211248CDB818",
+          "type": "item",
+          "item": {
+            "id": "ftbfiltersystem:smart_filter",
+            "count": 1,
+            "components": {
+              "ftbfiltersystem:filter": "or(item(enderio:resetting_lever_five)item(enderio:resetting_lever_ten)item(enderio:resetting_lever_thirty)item(enderio:resetting_lever_sixty)item(enderio:resetting_lever_three_hundred)item(enderio:resetting_lever_five_inv)item(enderio:resetting_lever_ten_inv)item(enderio:resetting_lever_thirty_inv)item(enderio:resetting_lever_sixty_inv)item(enderio:resetting_lever_three_hundred_inv))"
+            }
+          },
+          "count": 1,
+          "consume_items": false,
+          "icon": {
+            "id": "enderio:resetting_lever_five"
+          }
+        }
+      ],
+      "rewards": [
+        {
+          "id": "6B3A7A663BE7BD7D",
+          "type": "xp",
+          "xp": 8
+        }
+      ],
+      "tags": [
+        "entrelumen_side"
+      ],
+      "optional": true,
+      "icon": {
+        "id": "enderio:resetting_lever_five"
+      },
+      "hide_until_deps_complete": true
+    },
+    {
       "id": "5129ED4E41F37A2B",
       "x": -12.3,
       "y": 4.4,
@@ -2050,6 +2401,44 @@
       "icon": {
         "id": "enderio:vat"
       }
+    },
+    {
+      "id": "7659E93C20581BC2",
+      "x": -3.9,
+      "y": 10.2,
+      "shape": "diamond",
+      "size": 1.0,
+      "preset": "el_side",
+      "dependencies": [
+        "121C58CC59F088F1"
+      ],
+      "tasks": [
+        {
+          "id": "3FA0D6F656CA95D2",
+          "type": "item",
+          "item": {
+            "id": "enderio:fire_water_bucket",
+            "count": 1
+          },
+          "count": 1,
+          "consume_items": false
+        }
+      ],
+      "rewards": [
+        {
+          "id": "04A6532C0DF98E3C",
+          "type": "xp",
+          "xp": 8
+        }
+      ],
+      "tags": [
+        "entrelumen_side"
+      ],
+      "optional": true,
+      "icon": {
+        "id": "enderio:fire_water_bucket"
+      },
+      "hide_until_deps_complete": true
     },
     {
       "id": "3369900C1032C87F",
@@ -2483,6 +2872,120 @@
       }
     },
     {
+      "id": "10EAA924300B41A4",
+      "x": 24.6,
+      "y": 4.6,
+      "shape": "diamond",
+      "size": 1.0,
+      "preset": "el_side",
+      "dependencies": [
+        "02E5F91D7575EC21"
+      ],
+      "tasks": [
+        {
+          "id": "2EF2B048F451CC2C",
+          "type": "item",
+          "item": {
+            "id": "enderio:attractor_obelisk",
+            "count": 1
+          },
+          "count": 1,
+          "consume_items": false
+        }
+      ],
+      "rewards": [
+        {
+          "id": "09E65FFF35506DBA",
+          "type": "xp",
+          "xp": 8
+        }
+      ],
+      "tags": [
+        "entrelumen_side"
+      ],
+      "optional": true,
+      "icon": {
+        "id": "enderio:attractor_obelisk"
+      },
+      "hide_until_deps_complete": true
+    },
+    {
+      "id": "7374C26E9ECA287A",
+      "x": 24.6,
+      "y": 8.0,
+      "shape": "diamond",
+      "size": 1.0,
+      "preset": "el_side",
+      "dependencies": [
+        "02E5F91D7575EC21"
+      ],
+      "tasks": [
+        {
+          "id": "69EB4CBF3794615B",
+          "type": "item",
+          "item": {
+            "id": "enderio:relocator_obelisk",
+            "count": 1
+          },
+          "count": 1,
+          "consume_items": false
+        }
+      ],
+      "rewards": [
+        {
+          "id": "33E8DAAD27D678AE",
+          "type": "xp",
+          "xp": 8
+        }
+      ],
+      "tags": [
+        "entrelumen_side"
+      ],
+      "optional": true,
+      "icon": {
+        "id": "enderio:relocator_obelisk"
+      },
+      "hide_until_deps_complete": true
+    },
+    {
+      "id": "40D1D0464F984914",
+      "x": 24.6,
+      "y": 11.4,
+      "shape": "diamond",
+      "size": 1.0,
+      "preset": "el_side",
+      "dependencies": [
+        "02E5F91D7575EC21"
+      ],
+      "tasks": [
+        {
+          "id": "5002647AC73E45BB",
+          "type": "item",
+          "item": {
+            "id": "enderio:inhibitor_obelisk",
+            "count": 1
+          },
+          "count": 1,
+          "consume_items": false
+        }
+      ],
+      "rewards": [
+        {
+          "id": "14D1C2ACECC51360",
+          "type": "xp",
+          "xp": 8
+        }
+      ],
+      "tags": [
+        "entrelumen_side"
+      ],
+      "optional": true,
+      "icon": {
+        "id": "enderio:inhibitor_obelisk"
+      },
+      "hide_until_deps_complete": true
+    },
+    {
       "id": "7FA0FE7B6CF3E4F6",
       "x": 15.5,
       "y": 7.891,
@@ -2761,6 +3264,53 @@
       ],
       "icon": {
         "id": "enderio:travel_anchor"
+      }
+    },
+    {
+      "id": "1CBC5CD12D589E2C",
+      "x": 17.5,
+      "y": -4.4,
+      "shape": "diamond",
+      "size": 1.0,
+      "preset": "el_side",
+      "dependencies": [
+        "1D4A911B1A08FD3B"
+      ],
+      "tasks": [
+        {
+          "id": "5FCD86095DB2E7CE",
+          "type": "item",
+          "item": {
+            "id": "enderio:coordinate_selector",
+            "count": 1
+          },
+          "count": 1,
+          "consume_items": false
+        },
+        {
+          "id": "3F232E4F03B8B8D8",
+          "type": "item",
+          "item": {
+            "id": "enderio:location_printout",
+            "count": 1
+          },
+          "count": 1,
+          "consume_items": false
+        }
+      ],
+      "rewards": [
+        {
+          "id": "6087EF79A0B8C11B",
+          "type": "xp",
+          "xp": 8
+        }
+      ],
+      "tags": [
+        "entrelumen_side"
+      ],
+      "optional": true,
+      "icon": {
+        "id": "enderio:coordinate_selector"
       }
     },
     {
@@ -3075,7 +3625,7 @@
     {
       "id": "76F362FE547FBCFE",
       "linked_quest": "780224C0B0190A32",
-      "x": 24.4,
+      "x": 28.0,
       "y": 6.5,
       "shape": "octagon",
       "size": 1.0
@@ -3716,9 +4266,9 @@
     },
     {
       "id": "56B6B14251850041",
-      "x": -19.25,
+      "x": -21.0,
       "y": -6.1,
-      "width": 6.25,
+      "width": 10.3333,
       "height": 6.1333,
       "rotation": 0.0,
       "image": "entrelumen:textures/gui/quests/px.png",
@@ -3729,7 +4279,7 @@
     },
     {
       "id": "517316F3250117BB",
-      "x": -21.6429,
+      "x": -25.1429,
       "y": -8.4429,
       "width": 0.6667,
       "height": 0.6667,
@@ -3762,7 +4312,7 @@
     },
     {
       "id": "3C2E755F835C3B4F",
-      "x": -21.6429,
+      "x": -25.1429,
       "y": -3.7571,
       "width": 0.6667,
       "height": 0.6667,
@@ -3773,7 +4323,7 @@
     },
     {
       "id": "729879EF23EBF09F",
-      "x": -19.25,
+      "x": -21.0,
       "y": -9.0093,
       "width": 2.0,
       "height": 0.375,
@@ -3857,9 +4407,9 @@
     {
       "id": "758612D54C63E270",
       "x": 0.5,
-      "y": -9.4857,
+      "y": -11.1857,
       "width": 18.5,
-      "height": 14.1,
+      "height": 18.0667,
       "rotation": 0.0,
       "image": "entrelumen:textures/gui/quests/px.png",
       "color": 4157024,
@@ -3870,7 +4420,7 @@
     {
       "id": "655546734365C7DA",
       "x": -7.1429,
-      "y": -15.2429,
+      "y": -18.6429,
       "width": 0.6667,
       "height": 0.6667,
       "rotation": 0.0,
@@ -3881,7 +4431,7 @@
     {
       "id": "15493B69B7068330",
       "x": 8.1429,
-      "y": -15.2429,
+      "y": -18.6429,
       "width": 0.6667,
       "height": 0.6667,
       "rotation": 90.0,
@@ -3914,7 +4464,7 @@
     {
       "id": "7BC359FAFE617584",
       "x": 0.5,
-      "y": -15.8093,
+      "y": -19.2093,
       "width": 2.4167,
       "height": 0.375,
       "rotation": 0.0,
@@ -4066,10 +4616,10 @@
     },
     {
       "id": "49069F19488F3CD0",
-      "x": -9.5935,
-      "y": 6.575,
-      "width": 13.5848,
-      "height": 7.2417,
+      "x": -9.1935,
+      "y": 7.9,
+      "width": 14.5182,
+      "height": 10.3333,
       "rotation": 0.0,
       "image": "entrelumen:textures/gui/quests/px.png",
       "color": 4157024,
@@ -4090,7 +4640,7 @@
     },
     {
       "id": "71AA2C8BC5767FC8",
-      "x": -4.0571,
+      "x": -3.2571,
       "y": 3.7571,
       "width": 0.6667,
       "height": 0.6667,
@@ -4101,8 +4651,8 @@
     },
     {
       "id": "39681A191A721466",
-      "x": -4.0571,
-      "y": 9.3929,
+      "x": -3.2571,
+      "y": 12.0429,
       "width": 0.6667,
       "height": 0.6667,
       "rotation": 180.0,
@@ -4113,7 +4663,7 @@
     {
       "id": "0C15C4CCAE47B26A",
       "x": -15.1299,
-      "y": 9.3929,
+      "y": 12.0429,
       "width": 0.6667,
       "height": 0.6667,
       "rotation": 270.0,
@@ -4123,8 +4673,8 @@
     },
     {
       "id": "78CAB25F9B37A342",
-      "x": -9.5935,
-      "y": 9.9593,
+      "x": -9.1935,
+      "y": 12.6093,
       "width": 3.1667,
       "height": 0.375,
       "rotation": 0.0,
@@ -4136,9 +4686,9 @@
     },
     {
       "id": "454191D583E9BD41",
-      "x": 10.3464,
+      "x": 11.8,
       "y": 7.9857,
-      "width": 28.6417,
+      "width": 32.0333,
       "height": 11.0667,
       "rotation": 0.0,
       "image": "entrelumen:textures/gui/quests/px.png",
@@ -4160,7 +4710,7 @@
     },
     {
       "id": "1E46F1EE03A22E24",
-      "x": 22.3357,
+      "x": 25.2429,
       "y": 3.5286,
       "width": 0.6667,
       "height": 0.6667,
@@ -4171,7 +4721,7 @@
     },
     {
       "id": "47539AEB45F9FD5C",
-      "x": 22.3357,
+      "x": 25.2429,
       "y": 12.4429,
       "width": 0.6667,
       "height": 0.6667,
@@ -4193,7 +4743,7 @@
     },
     {
       "id": "1EA83E1FF23CEAED",
-      "x": 10.3464,
+      "x": 11.8,
       "y": 13.0093,
       "width": 1.375,
       "height": 0.375,
