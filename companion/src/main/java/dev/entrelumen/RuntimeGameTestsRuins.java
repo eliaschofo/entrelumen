@@ -374,6 +374,36 @@ public final class RuntimeGameTestsRuins {
 
   private static final org.slf4j.Logger LOGGER = com.mojang.logging.LogUtils.getLogger();
 
+  /**
+   * The Atlas recipe replaces a lost Atlas once the team took one from the Signal Tower's pedestal, not
+   * before (Elias, 27 September): until then the inventory's grid gives no result.
+   */
+  @GameTest(template = "empty", timeoutTicks = 200, batch = "ruins")
+  public static void theAtlasRecipeWaitsForTheSignalTowersPedestal(GameTestHelper helper) {
+    var player = arrive(helper, "AtlasCopier", new BlockPos(1, 1, 1));
+    var menu = player.inventoryMenu;
+    var atlas = BuiltInRegistries.ITEM.get(ResourceLocation.parse(AtlasGate.ATLAS));
+    try {
+      var campaign = Entrelumen.current(player);
+      campaign.act = 1;
+      team(player).gifts.remove(AtlasGate.ATLAS);
+      menu.getSlot(1).set(new ItemStack(Items.COPPER_INGOT));
+      menu.getSlot(3).set(new ItemStack(Items.BOOK));
+      helper.assertTrue(menu.getSlot(0).getItem().isEmpty(), "An Atlas before the pedestal: " + menu.getSlot(0).getItem());
+      team(player).gifts.add(AtlasGate.ATLAS);
+      menu.slotsChanged(menu.getCraftSlots());
+      helper.assertTrue(menu.getSlot(0).getItem().is(atlas), "No Atlas after the pedestal: " + menu.getSlot(0).getItem());
+      team(player).gifts.remove(AtlasGate.ATLAS);
+      campaign.act = 2;
+      menu.slotsChanged(menu.getCraftSlots());
+      helper.assertTrue(menu.getSlot(0).getItem().is(atlas), "A campaign past act I cannot replace its Atlas");
+      helper.succeed();
+    } finally {
+      menu.getCraftSlots().clearContent();
+      leave(player);
+    }
+  }
+
   // ---- A ring under water (Elias, 27 September: a ruin never fails to place) ----------------------
 
   /** The superflat test world's ground and the sea the next two cases raise on it. */
