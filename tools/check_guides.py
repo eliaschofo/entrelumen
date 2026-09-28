@@ -46,6 +46,13 @@ missing item voids the whole filter. Every tag must be defined by a pinned JAR, 
 c: tags (its universal JAR in the Gradle cache), the companion or pack/kubejs/data, and must hold at
 least one item of the pinned JARs.
 
+Images (image_budget, warnings only): every chapter is compiled in memory (generate_quests.generate_book, nothing
+written) and its chapter images counted. Above IMAGE_BUDGET (700) a chapter warns, and the run prints the book
+total and the heaviest chapters: FTB syncs every image at login and draws every image of an open chapter each
+frame, a cost that client QA has not measured yet. A "presentation": 2 chapter also has to start as a sketch
+(Elias, 28/9): at most SKETCH_SHARE of its strong images (alpha above quest_art.FAINT, and every item render) may
+show before any quest is done; the rest arrive with their quests.
+
 Registry caches live outside the repository, one file per set of JARs, so worktrees with different
 locks do not rebuild each other's.
 """
@@ -68,6 +75,8 @@ GROUPS = {'tech', 'magic', 'exploration', 'qol', 'entrelumen'}
 TYPES = {'checkmark', 'item', 'dimension', 'advancement'}
 ACTS = {'I', 'II', 'III', 'IV', 'V', 'VI', 'any'}
 MAX_TITLE, MAX_DESC = 60, 1100
+IMAGE_BUDGET = 700     # images per chapter; ATM10's heaviest chapter has 132
+SKETCH_SHARE = 0.4     # share of a v2 chapter's strong images that may show on a fresh book
 FORMAT_CODE = re.compile(r'&(#[0-9A-Fa-f]{6}|[0-9a-fk-or])')
 ID = re.compile(r'^[a-z0-9_.-]+:[a-z0-9_./-]+$')
 _ITEMS = None
@@ -1016,6 +1025,35 @@ def check_reward_tables(errors):
             errors.append(f'reward table {name}: icon {spec["icon"]} not found')
 
 
+def image_budget(warnings, flt=''):
+    """Images of every compiled chapter: a warning above IMAGE_BUDGET or for a v2 chapter that does not start as a
+    sketch; prints the book total and the heaviest chapters."""
+    import generate_quests
+    files = generate_quests.generate_book()
+    v2 = {d['chapter'] for d in quest_engine.load_sectors() if d.get('presentation', 1) >= 2}
+    counts = {}
+    for path, text in files.items():
+        if path.parent.name != 'chapters' or path.suffix != '.snbt':
+            continue
+        images = json.loads(text).get('images', [])
+        counts[path.stem] = len(images)
+        if flt and flt not in path.stem:
+            continue
+        if len(images) > IMAGE_BUDGET:
+            warnings.append(f'{path.stem}: {len(images)} images, over the budget of {IMAGE_BUDGET}: one large picture '
+                            'instead of many chips where it reads the same')
+        if path.stem in v2:
+            strong = [i for i in images if i['image'].startswith('item:') or i.get('alpha', 255) > quest_art.FAINT]
+            fresh = [i for i in strong if not i.get('dependency')]
+            if strong and len(fresh) > SKETCH_SHARE * len(strong):
+                warnings.append(f'{path.stem}: {len(fresh)} of {len(strong)} strong images show before any quest '
+                                f'({len(fresh) / len(strong):.0%}, limit {SKETCH_SHARE:.0%}): start as a sketch, and let '
+                                'paths, scene pieces, props and light arrive with their quests (reveal, grow)')
+    ranked = sorted(counts.items(), key=lambda kv: -kv[1])
+    print(f'IMAGES: {sum(counts.values())} in the book ({len(counts)} chapters); heaviest: '
+          + ', '.join(f'{name} {n}' for name, n in ranked[:3]))
+
+
 def main():
     flt = sys.argv[1] if len(sys.argv) > 1 else ''
     errors, chapters, keys, warnings = [], set(), set(), []
@@ -1044,12 +1082,16 @@ def main():
         sectors += 1
     if not flt:
         check_reward_tables(errors)
+    try:
+        image_budget(warnings, flt)
+    except AssertionError as e:   # the book does not compile: generate_quests.py reports it in full
+        warnings.append(f'image budget not counted: the book does not compile ({e})')
     for w in warnings:
         print('WARN', w)
     for e in errors:
         print('ERROR', e)
     print(f'{"FAIL" if errors else "PASS"}: {len(chapters)} guide chapters, {sectors} sector chapters, {total} quests, '
-          f'{len(errors)} errors, {len(warnings)} copy warnings')
+          f'{len(errors)} errors, {len(warnings)} warnings')
     return 1 if errors else 0
 
 

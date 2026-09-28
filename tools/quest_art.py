@@ -18,6 +18,12 @@ images, on top of the kinds tools/quest_engine.py already draws (texture, panel,
 Every kind takes "order", "alpha", "tint" (the image colour), "rotation", "reveal" (appears when that quest is
 complete: fog of war, lamps that light, drawings that grow), "hover" and "click".
 
+The drawing completes itself as the player progresses (Elias, 28/9: a v2 chapter starts as a sketch):
+- a path can run "through" quests (their keys, mixed with [x, y] points) and "grow": each stretch appears with
+  the next quest along it, so rivers, shafts and pipes draw themselves as you go;
+- "sketch" on a path, picture, sprite or frame also draws a faint chalk copy that is there from the start, under
+  the finished drawing that "reveal" or "grow" brings in.
+
 What FTB syncs to the client limits the vocabulary: a chapter image travels as Icon.toString(), so the
 "; u0=… tile_size=…" properties an ImageIcon can parse are lost on the way (ImageIcon.toString is the bare
 texture). No crops and no tiling: a repeated pattern is repeated images. Atlas sprites and item icons survive.
@@ -42,11 +48,19 @@ KINDS = ("lettering", "path", "mosaic", "scatter", "frame", "glow", "text", "ite
 DECOR_SIZES = (0.5, 0.75, 1.0, 1.5, 2.0, 3.0, 4.0)
 DEFAULT_ORDER = {"picture": -5, "sprite": -4, "item": -1, "path": -2, "mosaic": -3, "glow": -4, "scatter": -4,
                  "frame": -3, "text": 5, "lettering": 5}
+# The chalk sketch a drawing starts from: the book's label cream, faint. Anything this faint (or fainter) counts
+# as sketch for the sketch-first check of tools/check_guides.py.
+SKETCH_COLOR, SKETCH_ALPHA, SKETCH_WIDTH = "#E8DCB5", 64, 0.08
+FAINT = 90
+SKETCHABLE = ("path", "picture", "sprite", "frame")
 
 
 def kind_of(art):
-    if any(k in art for k in ("texture", "panel", "line", "label")) and not any(k in art for k in KINDS[:6]):
+    if any(k in art for k in ("texture", "panel", "line", "label")) and not any(k in art for k in KINDS[:6]) \
+            and "through" not in art:
         return None   # a legacy kind of quest_engine.art_image
+    if "through" in art and "lettering" not in art:
+        return "path"
     return next((k for k in KINDS if k in art), None)
 
 
@@ -174,6 +188,13 @@ def art_images(chapter, i, art, palette, languages, ctx, by_key):
         return [img]
     key = f"{chapter}:art:{art.get('id', i)}"
     extra = _extra(art, key, by_key, languages, DEFAULT_ORDER[kind])
+    assert not ("grow" in art and "reveal" in art), f"{key}: grow reveals stretch by stretch; drop reveal"
+    assert "grow" not in art or kind == "path", f"{key}: only a path grows"
+    sketch = sketch_images(key, kind, art, extra, ctx) if art.get("sketch") else []
+    return sketch + drawn_images(key, kind, art, extra, languages, ctx, by_key)
+
+
+def drawn_images(key, kind, art, extra, languages, ctx, by_key):
     rot = float(art.get("rotation", 0.0))
     if kind == "picture":
         img = _pic(key, art["x"], art["y"], art["w"], art["h"], art["picture"], extra, ctx, rot)
@@ -193,41 +214,130 @@ def art_images(chapter, i, art, palette, languages, ctx, by_key):
         e = dict(extra)
         e.setdefault("alpha", 160)
         return [_hover(_pic(key, art["glow"][0], art["glow"][1], 2 * r, 2 * r, FLASH, e, ctx), art, languages, key)]
-    if kind in ("path", "mosaic", "scatter", "frame"):
-        pieces = {"path": path_images, "mosaic": mosaic_images, "scatter": scatter_images, "frame": frame_images}[kind]
+    if kind == "path":
+        return [_hover(img, art, languages, key) for img in path_images(key, art, extra, ctx, by_key)]
+    if kind in ("mosaic", "scatter", "frame"):
+        pieces = {"mosaic": mosaic_images, "scatter": scatter_images, "frame": frame_images}[kind]
         return [_hover(img, art, languages, key) for img in pieces(key, art, extra, ctx)]
     if kind == "text":
         return [text_image(key, art, art["x"], art["y"], art["text"], rot, extra, languages)]
     return lettering_images(key, art, extra, languages)
 
 
-def path_images(key, art, extra, ctx):
-    pts = [tuple(p) for p in art["path"]]
+def sketch_images(key, kind, art, extra, ctx):
+    """The faint chalk copy a drawing starts from: there from the start, no reveal, no click, one order below.
+    A path becomes a thin line along the same route; a picture, sprite or frame, the same shape tinted and faint.
+    Items cannot be sketched: FTB draws item images with their own colours and no alpha."""
+    assert kind in SKETCHABLE, f"{key}: sketch works on {', '.join(SKETCHABLE)} (an item image ignores alpha)"
+    spec = {} if art["sketch"] is True else dict(art["sketch"])
+    assert set(spec) <= {"color", "alpha", "width"}, f"{key}: sketch takes color, alpha and width"
+    color, alpha = spec.get("color", SKETCH_COLOR), spec.get("alpha", SKETCH_ALPHA)
+    assert 0 < alpha <= FAINT, f"{key}: a sketch is faint (alpha up to {FAINT})"
+    base = {"order": extra["order"] - 1, "position_locked": True, "alpha": alpha}
+    rot = float(art.get("rotation", 0.0))
+    if kind == "path":
+        pencil = {k: art[k] for k in ("path", "through", "closed", "smooth") if k in art}
+        pencil.update(color=color, width=spec.get("width", SKETCH_WIDTH))
+        return path_images(f"{key}:sketch", pencil, base, ctx, {})
+    tinted = dict(base, color=qe.rgb(color))
+    if kind == "picture":
+        return [_pic(f"{key}:sketch", art["x"], art["y"], art["w"], art["h"], art["picture"], tinted, ctx, rot)]
+    if kind == "sprite":
+        cells = art.get("cells") or [[art["x"], art["y"]]]
+        w, h = art.get("w", art.get("cell", 1.0)), art.get("h", art.get("cell", 1.0))
+        return [_pic(f"{key}:sketch:{n}", cx, cy, w, h, art["sprite"], tinted, ctx, rot)
+                for n, (cx, cy) in enumerate(cells)]
+    outline = {k: art[k] for k in ("frame", "thickness_px") if k in art}
+    outline.update(color=color, corners=False)
+    return frame_images(f"{key}:sketch", outline, base, ctx)
+
+
+def route(key, art, ctx, by_key):
+    """A path's points and the quest that reveals each of its segments (None: always there).
+    "through" mixes quest keys (their positions) and [x, y] points; "grow": true reveals each stretch with the
+    next quest along the route, and a list gives one quest (or null) per segment."""
+    if "through" in art:
+        placed = ctx.get("placed", {})
+        pts, keys = [], []
+        for w in art["through"]:
+            if isinstance(w, str):
+                assert w in placed, f"{key}: through unknown quest {w}"
+                pts.append(tuple(placed[w]))
+                keys.append(w)
+            else:
+                pts.append(tuple(w))
+                keys.append(None)
+    else:
+        pts = [tuple(p) for p in art["path"]]
+        keys = [None] * len(pts)
     assert len(pts) >= 2, f"{key}: a path needs two points"
     if art.get("closed"):
         pts.append(pts[0])
-    pts = smooth(pts, int(art.get("smooth", 1)))
+        keys.append(keys[0])
+    segments = len(pts) - 1
+    grow = art.get("grow")
+    if grow is True:
+        assert any(keys), f"{key}: grow: true needs quest keys in through"
+        reveal = []
+        for j in range(segments):
+            ahead = next((k for k in keys[j + 1:] if k), None)
+            reveal.append(ahead or next(k for k in reversed(keys[:j + 1]) if k))
+    elif isinstance(grow, list):
+        assert len(grow) == segments, f"{key}: grow lists one quest (or null) per segment ({segments})"
+        reveal = list(grow)
+    else:
+        assert grow in (None, False), f"{key}: grow is true or a list"
+        reveal = [None] * segments
+    for k in reveal:
+        assert k is None or k in by_key, f"{key}: grow quest {k}"
+    return pts, reveal
+
+
+def spans(pts, steps, reveal):
+    """The smoothed curve in stretches that appear together: one stretch when the whole path shows at once, else
+    one per segment of the route (smooth() cut at the original points). Returns (stretch, quest) pairs."""
+    full = smooth(pts, steps)
+    if len(set(reveal)) == 1:
+        return [(full, reveal[0])]
+    if steps <= 1 or len(pts) < 3:
+        return [([pts[j], pts[j + 1]], reveal[j]) for j in range(len(pts) - 1)]
+    return [(full[j * steps:j * steps + steps + 1], reveal[j]) for j in range(len(pts) - 1)]
+
+
+def path_images(key, art, extra, ctx, by_key):
+    pts, reveal = route(key, art, ctx, by_key)
     width = art.get("width", 0.2)
+    pieces = spans(pts, int(art.get("smooth", 1)), reveal)
     out = []
+
+    def with_reveal(e, quest):
+        return e if quest is None else dict(e, dependency=qe.stable_id("quest:" + quest))
     if "dots" in art or "items" in art:
         spec = art.get("dots") or "item:" + art["items"]
         size = art.get("size", width)
-        for n, (x, y) in enumerate(resample(pts, art.get("step", 1.0))):
-            out.append(_pic(f"{key}:{n}", x, y, size, size, spec, extra, ctx, float(art.get("rotation", 0.0))))
+        for j, (span, quest) in enumerate(pieces):
+            e = with_reveal(extra, quest)
+            for n, (x, y) in enumerate(resample(span, art.get("step", 1.0))):
+                if j and not n:
+                    continue   # the stretch before ends on this point
+                out.append(_pic(f"{key}:{len(out)}", x, y, size, size, spec, e, ctx, float(art.get("rotation", 0.0))))
         return out
     spec = art.get("texture") or art.get("sprite") or art.get("color")
     assert spec, f"{key}: a path draws a color, a texture, a sprite, dots or items"
-    if "step" in art:
-        pts = resample(pts, art["step"])
     overlap = art.get("overlap", 1.04 if spec.startswith("#") else 1.0)
     turn = bool(art.get("turn"))   # the texture's grain runs top to bottom (a shaft, a pipe): turn it along the path
-    for n, ((x0, y0), (x1, y1)) in enumerate(zip(pts, pts[1:])):
-        length = math.hypot(x1 - x0, y1 - y0)
-        if length < 1e-6:
-            continue
-        angle = math.degrees(math.atan2(y1 - y0, x1 - x0)) + float(art.get("rotation", 0.0))
-        w, h = (width, length * overlap) if turn else (length * overlap, width)
-        out.append(_pic(f"{key}:{n}", (x0 + x1) / 2, (y0 + y1) / 2, w, h, spec, extra, ctx, angle + (90.0 if turn else 0.0)))
+    for span, quest in pieces:
+        e = with_reveal(extra, quest)
+        if "step" in art:
+            span = resample(span, art["step"])
+        for (x0, y0), (x1, y1) in zip(span, span[1:]):
+            length = math.hypot(x1 - x0, y1 - y0)
+            if length < 1e-6:
+                continue
+            angle = math.degrees(math.atan2(y1 - y0, x1 - x0)) + float(art.get("rotation", 0.0))
+            w, h = (width, length * overlap) if turn else (length * overlap, width)
+            out.append(_pic(f"{key}:{len(out)}", (x0 + x1) / 2, (y0 + y1) / 2, w, h, spec, e, ctx,
+                            angle + (90.0 if turn else 0.0)))
     return out
 
 

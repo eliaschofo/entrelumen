@@ -13,6 +13,7 @@ import quest_engine as qe
 import quest_text
 import build_quest_placeholders as placeholders
 from test_presentation import Canvas, Fonts, Pilots, TextMarkup  # noqa: F401  presentation v2 runs with the book
+from test_kit import Draft, Drawing, RenderLock  # noqa: F401  and so does its kit
 from generate_quests import OUT, THEME, FTBQ_LANG, LOCALES, generate_book, load_book, load_chapters, load_guides, stable_id
 
 
