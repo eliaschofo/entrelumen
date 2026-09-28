@@ -257,10 +257,11 @@ class QuestBook(unittest.TestCase):
                 c = self.quests[stable_id('quest:' + q['key'])]
                 if q.get('type', 'item') != 'checkmark':
                     self.assertEqual(c['rewards'], [{'id': stable_id(f"reward:{q['key']}:xp"), 'type': 'xp', 'xp': table['guides']['xp'][data['act']]}])
-        # The whole book, if nothing were spent, stays under 60,000 points for the full ~5,500-quest book
-        # (Elias, 27/9: raise the cap rather than pay XP only on milestones); 5 to 15 points per guide
-        # quest, times its role: still less than a few mob kills each.
-        self.assertLess(total['guide'] + total['story'], 60000)
+        # The whole book, if nothing were spent, stays under 80,000 points for the full ~6,500-quest book
+        # (Elias, 27/9: raise the cap rather than pay XP only on milestones; raised again on 28/9 as the
+        # depth waves grew the book); 5 to 15 points per guide quest, times its role: still less than a few
+        # mob kills each.
+        self.assertLess(total['guide'] + total['story'], 80000)
         self.assertTrue(all(x <= 15 for x in table['guides']['xp'].values()))
 
     def test_every_quest_has_one_colour_tag_and_the_theme_colours_them(self):

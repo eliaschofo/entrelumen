@@ -61,7 +61,7 @@ Fuentes: 15 descargas del CDN oficial de Modrinth con SHA-1 y SHA-512 de la API 
 | Oritech | 1.2.11 | CF 1030830/8754466 (ATM10) | III-V | Jetpacks (III), exo-jetpack (IV), taladro profundo (IV), controlador de spawner (IV), bombas (IV), acelerador de partículas (V). Sin estrella del Nether por colisión de partículas. |
 | Ender IO | 8.2.11-beta | CF 64578/8192838 (ATM10) | II-V | Ancla y bastón de viaje (III), spawner con energía (IV), capacitor octádico (V). |
 | Mahou Tsukai | 1.36.27 | CF 342543/8212674 (ATM10) | III-IV | Progresión nativa. |
-| Ad Astra | 1.16.19 | CF 635042/8758526 (ATM10) | V | El banco NASA pide un Bus del Arca: los cohetes y los planetas se abren construyendo el Arca. |
+| Ad Astra | 1.16.19 | CF 635042/8758526 (ATM10) | V | El banco NASA pide una aleación atómica (acto V) desde la auditoría de recetas (71254d3): los cohetes y los planetas se abren en el acto V. |
 | Deep Aether | 1.1.5.1 | Modrinth gcHIih5B/MSW5emg8 | IV | Amplía el Aether por su mismo portal; requiere el Aether 1.5.10 del lock. |
 | Eternal Starlight | 0.9.0 | CF 1080592/8668881 (ATM10) | IV | El Orbe de la Profecía pide una Carta de Horizonte (acto del observatorio). |
 | The Undergarden | 0.9.6 | CF 379849/7862546 (ATM10) | III | El catalizador pide una Matriz de Enrutamiento. |

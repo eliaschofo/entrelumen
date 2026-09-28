@@ -43,7 +43,7 @@ Son 174 quests (antes 171) y 45 tareas de campaña (antes 42). El capítulo late
 | Cierre del acto IV (`atlas_voices`) | cuatro proyectos | cuatro + **`heliodor_heart`** | Ver el Corazón. |
 | Escalonado de recetas (KubeJS, datos) | por componente de acto | **sin cambios** | Ninguna receta usaba componentes del acto 6. El bus del Arca y el motor de renovación ya eran del acto V. Lo luminoso sigue en el VI por las Luminosidades. |
 | Perla divina (material de la familia luminosa) | acto VI (Summit tras el V) | **acto V** | Summit ahora abre con el V. No cambia ninguna receta: todo lo luminoso ya pide Luminosidades (VI). |
-| Acceso a dimensiones: Ad Astra (banco NASA, bus del Arca), Eternal Starlight (Orbe de la Profecía, carta de horizontes), The Undergarden (catalizador, matriz de distribución) | V, IV, III | **sin cambios** | Van por componente, no por número de acto. |
+| Acceso a dimensiones: Ad Astra (banco NASA, aleación atómica), Eternal Starlight (Orbe de la Profecía, carta de horizontes), The Undergarden (catalizador, matriz de distribución) | V, IV, III | **sin cambios** | Van por componente, no por número de acto. |
 | Psi (pedido del 24/9) | II: el ensamblador de CAD pedía un marco de calibración | **III**: el ensamblador pide un regulador de energía | Psi entero en el III; los núcleos de psigema ya pedían una matriz de distribución (III). |
 | `/entrelumen admin set <acto>` | 1–6 | 1–6 | — |
 | Campañas guardadas (`CampaignData` v2 → v3) | acto 6 = construir el Arca | acto 6 sin `last_horizon` → **5**; con `last_horizon` → queda en 6 | Migración única al leer; se reescribe en el próximo guardado. Módulos, lotes y depósitos intactos. |
