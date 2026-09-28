@@ -661,3 +661,53 @@ Familia `catalog/families/pingpong5-tech.json`: 5 mods y 1 librería (Tesseract 
   - que no queden las rutas quitadas.
 
   `carryonrefusesround5blocks` suma cinco bloques de este lote.
+
+### Lote 5 · Neo Vitae
+
+Familia `catalog/families/pingpong5-neovitae.json`: 2 mods, ninguna librería nueva. El lock pasa a **361 / 309**; ninguna entrada previa cambió.
+
+| Mod | Versión | Fuente | Acto | Para qué |
+|---|---|---|---|---|
+| Neo Vitae | 1.1.28 | CF 1404763/8976888 (CDN; los mismos bytes en Modrinth) | III-IV | El sucesor de Blood Magic: el Ara Vitae y sus niveles, orbes, sigilos, runas, alquimia, la forja del fuego infernal, rituales y las mazmorras del Reino Demoníaco, su dimensión (`neovitae:dungeon`). |
+| Sanguine Neural Networks | 2.0 | CF 1111092/8815455 (CDN; los mismos bytes en Modrinth) | IV | Sangre para el altar desde un modelo de datos de Hostile Neural Networks, sin granja de criaturas. Trae el sacrificador virtual y la estructura Suffering Inc. |
+
+- **Versión.** ATM10 y FTB Evolution fijan Neo Vitae 1.1.15, y Craftoria una 1.1.2x. Entra 1.1.28 por arreglos que un servidor público necesita:
+  - 1.1.26 y 1.1.27: la Linterna de Sangre ya no corre su chequeo de spawn durante la generación de chunks (tumbaba al servidor explorando), ya no crashea cuando otro mod hace aparecer animales cerca y ya no carga chunks de más;
+  - 1.1.22: se cierra un duplicado de experiencia con los tomos, las redes de enrutamiento ya no cargan chunks remotos y un depósito grande ya no deja el saldo de sangre en negativo;
+  - 1.1.16: las invocaciones del Sigilo de Nigromancia tienen un tope por jugador (10) y ya no pagan sangre muriendo en pinchos, y el Nexo del Tormento reparte botín de Apotheosis según el World Tier del dueño;
+  - 1.1.28 sólo reparte más llaves de mazmorra en el Reino.
+- **Escalonado** (familia `neovitae` de `tools/generate_family_balance.py`, script `entrelumen_neovitae_balance.js`):
+  - **El Ara Vitae abre el mod entero** (acto III): el Núcleo de Propagación llena su hueco de arriba (`sZs / sfs / ggg`), como el ensamblador de Psi. Todo lo demás sale del altar: las tablillas, los orbes, la forja (pide una Tabula Rasa), las runas, los sigilos y la mesa de alquimia. `tools/check_recipe_design.py` lo anota como hito del Núcleo (fan-out 6).
+  - **La piedra ritual maestra** (acto IV) lleva hierro de bosque (ironwood) en las dos esquinas de arriba (`ZsZ / scs / oso`). Todos los rituales la necesitan, incluidos los de mazmorra, que abren el Reino Demoníaco. La piedra ritual imperfecta (lluvia, resistencia y otros menores) queda con el altar.
+  - **El sacrificador virtual** de Sanguine Neural Networks lleva ironwood en sus esquinas libres (`ZDZ / SOS / BCB`, acto IV). Suffering Inc. se arma con él.
+- **El teleposer sale, con sus tres focos y la cadena del Sigilo de Teleposición** (el reactivo pide un teleposer). Intercambia bloques enteros, contenedores y spawners incluidos, en un cubo de hasta 7×7×7 que arranca arriba del teleposer (`x, z` en `[−r, r]`, `y` en `[1, 2r+1]`). Lo hace con `setBlock` en `Utils.swapLocations` y sólo mira un tag de bedrock y portales: ni `BreakEvent`, ni FTB Chunks, ni `StructureProtection`. Puesto junto al borde de un reclamo o de una ruina de Heliodor, se lleva lo de adentro. Puede volver si más adelante un gancho del companion le hace respetar reclamos y `StructureProtection`.
+- **El resto respeta la protección.** Rituales, sigilos, cargas explosivas, el área de la Lex Vitae y el enrutador pasan por `BlockProtectionHelper`, que publica `BreakEvent` y `EntityPlaceEvent` con un jugador falso del dueño, así que FTB Chunks y `StructureProtection` pueden negarse. La captura de spawners con una gema de Spiritus ya la cubren la protección de uso de ítems de las ruinas y la de interacción de FTB Chunks.
+- **Dimensión:** `neovitae:dungeon`, sólo por rituales. El mod no suma estructuras, biomas ni menas al Overworld (no trae modificadores de bioma ni sets de estructuras). Yeetus Experimentus (lote 2) evita el aviso experimental.
+- **Almost Unified:** el salitre y el azufre de Neo Vitae entran en `c:dusts/saltpeter` y `c:dusts/sulfur`, que ya se unifican (gana Immersive Engineering por prioridad de mod). El hierro infernal (`hellforged`) es sólo de Neo Vitae.
+- **Primer ingreso:** ningún regalo (`tools/audit_first_join.py`). El libro guía se fabrica con un libro y redstone.
+- **Teclas:**
+  - editar el HUD venía en H, que ya usa Eternal Starlight: el preset la deja sin asignar;
+  - cambiar el modo de la Lex Vitae venía en el punto, que es el acelerador de Iron Jetpacks: pasa a **Shift+punto**, sólo con la Lex Vitae en la mano;
+  - el Escudo de Sangre es el botón de usar con un orbe en la otra mano, como un escudo (compartido a propósito con `key.use`);
+  - el rayo de la Lex Vitae y la guía vienen sin asignar;
+  - `tools/check_keybinds.py`: 0 choques.
+- **Carry On:** `neovitae:*` y `sanguine_networks:*`.
+- **EMI Loot** muestra las tablas de Neo Vitae (cofres de mazmorra, criaturas): no son de la campaña.
+- **GameTests:** `pingponground5neovitaeloaded` controla:
+  - los dos mods cargados;
+  - el altar con el Núcleo y la piedra maestra y el sacrificador con ironwood, en el gestor de recetas cargado;
+  - las seis recetas del teleposer ausentes;
+  - la dimensión `neovitae:dungeon` cargada.
+
+  `carryonrefusesround5blocks` suma el altar, la piedra maestra, la forja y el sacrificador.
+- **Ganchos para las quests** (cadena propia de Neo Vitae; no se tocó contenido de quests):
+  1. Ara Vitae (`neovitae:ara_vitae`, acto III, con el Núcleo de Propagación).
+  2. Orbe Novicius (`neovitae:blood_orb_weak`), Tabula Rasa (`neovitae:tabula_rasa`) y la primera runa (`neovitae:rune_blank`, `neovitae:rune_sacrifice`).
+  3. Forja del fuego infernal (`neovitae:hellfire_forge`) y gema de Spiritus menor (`neovitae:spiritus_gem_petty`).
+  4. Sigilos: adivinación, agua, lava y aire (`neovitae:sigil_divination`, `neovitae:sigil_water`, `neovitae:sigil_lava`, `neovitae:sigil_air`).
+  5. Orbes Discipulus y Veneficus (`neovitae:blood_orb_apprentice`, `neovitae:blood_orb_magician`) y Tabula Animata (`neovitae:tabula_animata`).
+  6. Acto IV: piedra ritual maestra (`neovitae:master_ritual_stone`, con ironwood), cristal de activación débil (`neovitae:activation_crystal_weak`) y adivinador ritual (`neovitae:ritual_diviner`).
+  7. El Reino Demoníaco: la dimensión `neovitae:dungeon` por un ritual de mazmorra, demonita cruda (`neovitae:raw_demonite`) y lingote infernal (`neovitae:ingot_hellforged`).
+  8. Orbe Magus (`neovitae:blood_orb_master`), Tabula Spiritus (`neovitae:tabula_spiritus`) y la Lex Vitae (`neovitae:lex_vitae`).
+  9. Sanguine Neural Networks: sacrificador virtual (`sanguine_networks:virtual_sacrificer`) con un modelo de datos de HNN.
+- **Pendiente en juego:** el HUD y el altar en un cliente, una bajada al Reino Demoníaco y lo que pesan las Linternas de Sangre.

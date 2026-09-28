@@ -1022,6 +1022,32 @@ FAMILIES = {
                      'extended_industrialization:machines/tesla_tower/assembler',
                      'extended_industrialization:machines/tesla_coil/craft/from_tesla_receiver'],
     },
+    # Round 5, batch 5 (docs/design/mod-pingpong.md, «Lote 5»): Neo Vitae, Elias's choice of 27 September for
+    # acts III-IV with its own dimension. The Ara Vitae opens the whole mod, so it takes a component, like Psi's
+    # assembler: the propagation core (new life) fills its free top slot. Every ritual needs a master ritual
+    # stone, and the Demon Realm's dungeons are opened by rituals (Breaching the Edge, Highway to Hell), so the
+    # stone takes the act IV material in its two top corners. Sanguine Neural Networks' virtual sacrificer turns
+    # Hostile Neural Networks models into blood without a farm: Act IV too, ironwood in its free corners.
+    'neovitae': {
+        'script': 'entrelumen_neovitae_balance.js',
+        'tag': 'ENTRELUMEN_NEOVITAE_BALANCE',
+        'namespaces': {'neovitae', 'sanguine_networks'},
+        'changes': [
+            shaped('neovitae:ara_vitae', 0, 1, None, PC, 'III',
+                   'The Ara Vitae opens Neo Vitae: the propagation core crowns the altar'),
+            paired('neovitae:ritual_stone_master', [(0, 0), (0, 2)], tag('c:obsidians'), IRONWOOD, 'IV',
+                   'Every ritual and the Demon Realm gateways: Twilight ironwood in the top corners'),
+            paired('sanguine_networks:virtual_sacrificer', [(0, 0), (0, 2)], None, IRONWOOD, 'IV',
+                   'Blood from data models instead of a farm: ironwood beside the sacrifice rune'),
+        ],
+        # The teleposer swaps whole blocks (containers and spawners too) in a cube up to 7x7x7 beyond it with
+        # setBlock: no BreakEvent, no FTB Chunks claim and no ruin protection, only a bedrock/portal
+        # blacklist tag (Utils.swapLocations, 1.1.28). It goes with its foci and the teleposition sigil,
+        # whose reagent needs a teleposer; rituals, sigils and charges ask BlockProtectionHelper and stay.
+        'removals': ['neovitae:teleposer', 'neovitae:ara_vitae/teleposer_focus',
+                     'neovitae:ara_vitae/enhanced_teleposer_focus', 'neovitae:reinforced_teleposer_focus',
+                     'neovitae:alchemytable/reagent_teleposition', 'neovitae:array/teleposition_sigil'],
+    },
     # The progression batch of 24 September 2026 (docs/design/progression-functions.md): gates of the
     # reference-packs proposal, one component per function, the top armor in Act VI and the vein
     # resonator tiers. The closure check is per item (PROTECTED, component inputs), not per namespace:

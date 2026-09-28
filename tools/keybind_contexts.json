@@ -142,6 +142,13 @@
         "key.openManual"
       ],
       "reason": "McJty manual only for a McJty item under the cursor; F1 extended info is the quest screen help."
+    },
+    {
+      "keys": [
+        "key.use",
+        "key.neovitae.blood_shield"
+      ],
+      "reason": "Neo Vitae raises the Blood Shield with the use button while a blood orb is in the off hand, like a vanilla shield."
     }
   ],
   "keys": {
@@ -1991,6 +1998,44 @@
         "world"
       ],
       "evidence": "More Overlays 1.24.2: vanilla ctor (UNIVERSAL), overlay toggles in the world."
+    },
+    "key.neovitae.blood_shield": {
+      "default": "key.mouse.right",
+      "contexts": [
+        "world"
+      ],
+      "gate": "held:neovitae-orb",
+      "evidence": "Neo Vitae 1.1.28 BloodShieldKeyHandler: mouse button 1 while a blood orb is in the off hand raises the Blood Shield."
+    },
+    "key.neovitae.edit_hud": {
+      "default": "key.keyboard.h",
+      "contexts": [
+        "world"
+      ],
+      "evidence": "Neo Vitae 1.1.28 ClientModEventHandler: vanilla constructor, GLFW 72 (H); opens the HUD layout editor."
+    },
+    "key.neovitae.lex_beam": {
+      "default": "key.keyboard.unknown",
+      "contexts": [
+        "world"
+      ],
+      "gate": "held:neovitae-lex",
+      "evidence": "Neo Vitae 1.1.28: key code -1 (unbound); fires the Lex Vitae beam."
+    },
+    "key.neovitae.lex_mode": {
+      "default": "key.keyboard.period",
+      "contexts": [
+        "world"
+      ],
+      "gate": "held:neovitae-lex",
+      "evidence": "Neo Vitae 1.1.28 LexVitaeBeamHandler: consumeClick of GLFW 46 (period) cycles the Lex Vitae mode."
+    },
+    "key.neovitae.open_guide": {
+      "default": "key.keyboard.unknown",
+      "contexts": [
+        "world"
+      ],
+      "evidence": "Neo Vitae 1.1.28: key code -1 (unbound); opens the Modonomicon guide."
     },
     "key.nextDestination": {
       "default": "key.keyboard.right.bracket",

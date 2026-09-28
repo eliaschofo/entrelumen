@@ -119,6 +119,7 @@ HITOS = {
         'entrelumen:growth_altar_duplication': 'copia del Altar de Crecimiento',
         'entrelumen:renewal_altar_duplication': 'copia del Altar de Renovación',
         'botanypotstiers:elite_upgrade': 'macetas Elite',
+        'neovitae:ara_vitae': 'Neo Vitae entero: el altar de sangre (Elias, 27/9)',
     },
     'entrelumen:power_regulator': {
         'entrelumen:integration/workshop_hands': 'Núcleo de Manipulación',

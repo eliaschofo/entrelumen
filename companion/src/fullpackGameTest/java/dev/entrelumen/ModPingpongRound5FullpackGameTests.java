@@ -11,11 +11,13 @@ import java.util.regex.Pattern;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.gametest.framework.GameTest;
 import net.minecraft.gametest.framework.GameTestHelper;
 import net.minecraft.network.Connection;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.PacketFlow;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -88,12 +90,26 @@ public final class ModPingpongRound5FullpackGameTests {
   static final List<String> TECH_REMOVED = List.of("extended_industrialization:machines/tesla_coil/assembler",
       "extended_industrialization:machines/tesla_tower/assembler",
       "extended_industrialization:machines/tesla_coil/craft/from_tesla_receiver");
+  /** Batch 5 mods (both have a server side). */
+  static final List<String> NEOVITAE = List.of("neovitae", "sanguine_networks");
+  /** neovitae gates: the altar opens the mod (Act III); rituals and the SNN sacrificer take Act IV ironwood. */
+  static final Map<String, String> NEOVITAE_STAGED = Map.of(
+      "neovitae:ara_vitae", "entrelumen:propagation_core",
+      "neovitae:ritual_stone_master", "twilightforest:ironwood_ingot",
+      "sanguine_networks:virtual_sacrificer", "twilightforest:ironwood_ingot");
+  /** Teleposers swap blocks with no protection event (Utils.swapLocations): removed with their foci and sigil. */
+  static final List<String> NEOVITAE_REMOVED = List.of("neovitae:teleposer", "neovitae:ara_vitae/teleposer_focus",
+      "neovitae:ara_vitae/enhanced_teleposer_focus", "neovitae:reinforced_teleposer_focus",
+      "neovitae:alchemytable/reagent_teleposition", "neovitae:array/teleposition_sigil");
+  /** Neo Vitae's own dimension, the Demon Realm dungeons (Elias, 27 September). */
+  static final String NEOVITAE_DIMENSION = "neovitae:dungeon";
   /** Round 5 blocks Carry On must refuse (pack/config/carryon-common.toml). */
   static final List<String> CARRY_ON_REFUSED = new ArrayList<>(List.of("advancedperipherals:me_bridge",
       "advancedperipherals:inventory_manager", "advancedperipherals:player_detector", "ad_astra_giselle_addon:fuel_loader",
       "ad_astra_giselle_addon:automation_nasa_workbench", "extended_industrialization:tesla_coil",
       "extended_industrialization:processing_array", "industrialization_overdrive:multi_processing_array",
-      "dysoncubeproject:em_railejector_controller", "morered:soldering_table"));
+      "dysoncubeproject:em_railejector_controller", "morered:soldering_table", "neovitae:ara_vitae",
+      "neovitae:master_ritual_stone", "neovitae:hellfire_forge", "sanguine_networks:virtual_sacrificer"));
   /** Create Collision Fix patches exactly this Create build; it goes when Create moves to 6.0.11 (PR #10301). */
   static final String PATCHED_CREATE = "6.0.10";
 
@@ -326,17 +342,7 @@ public final class ModPingpongRound5FullpackGameTests {
     List<String> problems = new ArrayList<>();
     TECH.stream().filter(mod -> !ModList.get().isLoaded(mod)).forEach(mod -> problems.add(mod + " not loaded"));
     var recipes = helper.getLevel().getRecipeManager();
-    TECH_STAGED.forEach((recipe, material) -> {
-      var holder = recipes.byKey(id(recipe));
-      var item = BuiltInRegistries.ITEM.getOptional(id(material));
-      if (holder.isEmpty() || item.isEmpty()) {
-        problems.add(recipe + (holder.isEmpty() ? " is not loaded" : " names an unregistered " + material));
-        return;
-      }
-      ItemStack stack = new ItemStack(item.get());
-      if (holder.get().value().getIngredients().stream().noneMatch(ingredient -> ingredient.test(stack)))
-        problems.add(recipe + " does not consume " + material);
-    });
+    staged(helper, TECH_STAGED, problems);
     TECH_REMOVED.stream().filter(recipe -> recipes.byKey(id(recipe)).isPresent())
         .forEach(recipe -> problems.add(recipe + " still has a recipe"));
     ItemStack luminosity = new ItemStack(BuiltInRegistries.ITEM.get(id("entrelumen:luminosity_habitation")));
@@ -359,6 +365,38 @@ public final class ModPingpongRound5FullpackGameTests {
       }
     }
     helper.assertTrue(problems.isEmpty(), "Round 5 batch 4: " + problems);
+    helper.succeed();
+  }
+
+  /** Each recipe must load and consume its act material (a shaped grid's getIngredients). */
+  static void staged(GameTestHelper helper, Map<String, String> gates, List<String> problems) {
+    var recipes = helper.getLevel().getRecipeManager();
+    gates.forEach((recipe, material) -> {
+      var holder = recipes.byKey(id(recipe));
+      var item = BuiltInRegistries.ITEM.getOptional(id(material));
+      if (holder.isEmpty() || item.isEmpty()) {
+        problems.add(recipe + (holder.isEmpty() ? " is not loaded" : " names an unregistered " + material));
+        return;
+      }
+      ItemStack stack = new ItemStack(item.get());
+      if (holder.get().value().getIngredients().stream().noneMatch(ingredient -> ingredient.test(stack)))
+        problems.add(recipe + " does not consume " + material);
+    });
+  }
+
+  // ---- Batch 5 ---------------------------------------------------------------------------------
+
+  @GameTest(template = "empty", timeoutTicks = 20)
+  public static void pingpongRound5NeoVitaeLoaded(GameTestHelper helper) {
+    List<String> problems = new ArrayList<>();
+    NEOVITAE.stream().filter(mod -> !ModList.get().isLoaded(mod)).forEach(mod -> problems.add(mod + " not loaded"));
+    staged(helper, NEOVITAE_STAGED, problems);
+    var recipes = helper.getLevel().getRecipeManager();
+    NEOVITAE_REMOVED.stream().filter(recipe -> recipes.byKey(id(recipe)).isPresent())
+        .forEach(recipe -> problems.add(recipe + " still has a recipe"));
+    var dungeon = ResourceKey.create(Registries.DIMENSION, id(NEOVITAE_DIMENSION));
+    if (helper.getLevel().getServer().getLevel(dungeon) == null) problems.add(NEOVITAE_DIMENSION + " is not loaded");
+    helper.assertTrue(problems.isEmpty(), "Round 5 batch 5: " + problems);
     helper.succeed();
   }
 }

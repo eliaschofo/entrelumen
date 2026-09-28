@@ -332,6 +332,20 @@ class FamilyBalanceTest(unittest.TestCase):
         self.assertIn('extended_industrialization:tool/nano_suit_gravichestplate_downgrade',
                       pingpong['modern_industrialization:armor/gravichestplate']['alternates'])
 
+    def test_round_five_neo_vitae_opens_at_the_altar_and_rituals_wait_for_act_four(self):
+        family = balance.FAMILIES['neovitae']
+        by_id = {change['id']: change for change in family['changes']}
+        # The Ara Vitae opens the whole mod (Act III, a component like Psi's assembler); every ritual,
+        # the Demon Realm gateways included, needs the master ritual stone (Act IV).
+        self.assertEqual((by_id['neovitae:ara_vitae']['add'], by_id['neovitae:ara_vitae']['act']), (balance.PC, 'III'))
+        for recipe in ('neovitae:ritual_stone_master', 'sanguine_networks:virtual_sacrificer'):
+            self.assertEqual((by_id[recipe]['add'], by_id[recipe]['act']), (balance.IRONWOOD, 'IV'))
+        # Teleposers swap blocks without a protection event: gone with their foci and the sigil chain.
+        self.assertEqual(set(family['removals']), {
+            'neovitae:teleposer', 'neovitae:ara_vitae/teleposer_focus', 'neovitae:ara_vitae/enhanced_teleposer_focus',
+            'neovitae:reinforced_teleposer_focus', 'neovitae:alchemytable/reagent_teleposition',
+            'neovitae:array/teleposition_sigil'})
+
     def test_copy_keeps_one_owner_of_a_shared_path_and_can_move_the_other(self):
         path = 'data/patchouli/recipe/guide_book.json'
         first = {'type': 'minecraft:crafting_shapeless', 'result': {'id': 'patchouli:guide_book'}, 'n': 1}
