@@ -13,7 +13,7 @@ Per quest:
    125 in ES);
 3. enumerations become lists: "intro: a, b, c and d" (three or more short items) and "a; b" clauses, one [li]
    each; three or more short sentences in a row after the lead, one [li] each; a long two-sentence paragraph
-   becomes two paragraphs;
+   becomes two paragraphs. A secret keeps its punchline whole: a lead and its sentences, no lists;
 4. a list item that names an item whose inventory icon is its own flat, still texture opens with that icon,
    [li:<item>]; any other item keeps the plain bullet (tools/preview/mcassets.flat_icon reads the pinned JARs);
 5. numbers get [hl|…]; one number that is the quest's star (its task count, a ×N multiplier, or a number in the
@@ -40,7 +40,7 @@ LOCALES = ("en_us", "es_es")
 LEAD_MAX = {"en_us": 110, "es_es": 125}   # visible characters of a lead: about two lines of bold text at GUI 2
 ITEM_MAX = 110       # a sentence that becomes a list item
 ENUM_ITEM_MAX = 48   # a comma-separated item of "intro: a, b and c"
-ENUM_ITEM_WORDS = 6  # and its words (the longest item at most three times the shortest)
+ENUM_ITEM_WORDS = 6  # and its words (the longest item at most three times, and two words more than, the shortest)
 PARA_MAX = 120       # a paragraph longer than about two lines gets split when it has two sentences
 MAX_CALLOUTS = 2
 V2_MARK = re.compile(r"^\[(lead|li|careful|note)\b|\[(big)\||\[icon:")
@@ -55,7 +55,7 @@ WARN_START = {
     "es_es": re.compile(r"^(ojo|cuidado|atención|nunca|no\s+(pongas|mezcles|uses|dejes|rompas))\b", re.I),
 }
 WARN_ANY = re.compile(r"\b(explod\w*|explosion|destroy\w*|is lost|are lost|gets? lost|burns? up|catch(es)? fire|"
-                      r"melts? down|meltdown)\b", re.I)
+                      r"melts? down)\b", re.I)   # "meltdown" alone names a thing; "melts down" warns
 NOTE_ANY = {
     # "In this pack…", "Pack change:", or a part that takes an act material ("takes a Reinforced Alloy (act III)")
     "en_us": re.compile(r"\b(in this pack|this pack's|the pack's|pack change)\b"
@@ -215,7 +215,7 @@ def enumeration(masked, tags, lang):
         # a list is parallel: "the tidy way to tell a piston, bearing or gantry where to stop" is one phrase, not
         # three items (seven words, one word, four words)
         words = [len(visible(t, tags).split()) for t in items]
-        if max(words) > ENUM_ITEM_WORDS or max(words) > 3 * min(words):
+        if max(words) > ENUM_ITEM_WORDS or max(words) > 3 * min(words) or max(words) - min(words) > 2:
             return None
     return intro + ":", [capital(t) for t in items]
 
@@ -353,6 +353,9 @@ class Draft:
             if en and en[0].kind in ("tip", "raw", "li"):
                 out["en_us"] += en
                 out["es_es"] += es
+            elif en and q.get("role") == "secret":   # a secret is a joke: its sentences stay together
+                out["en_us"].append(Block("plain", " ".join(b.text for b in en), en[0].tags))
+                out["es_es"].append(Block("plain", " ".join(b.text for b in es), es[0].tags))
             elif en:
                 self.shape(key, en, es, out)
             for c in careful_after.get(i, []):
