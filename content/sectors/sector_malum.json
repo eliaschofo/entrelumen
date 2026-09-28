@@ -30,17 +30,17 @@
     "harvest": {"label": {"en_us": "The harvest", "es_es": "La cosecha"}},
     "altar": {"label": {"en_us": "Around the altar", "es_es": "Alrededor del altar"}},
     "gear": {"label": {"en_us": "Soulstained gear", "es_es": "Equipo manchado de alma"}},
-    "trinkets": {"label": {"en_us": "Trinkets and runes", "es_es": "Accesorios y runas"}},
     "crucible": {"label": {"en_us": "Focusing", "es_es": "Focalización"}},
-    "totems": {"label": {"en_us": "Totem magic", "es_es": "Magia de tótems"}},
     "soulwood": {"label": {"en_us": "Soulwood and blight", "es_es": "Soulwood y plaga"}},
-    "oaths": {"label": {"en_us": "Oaths", "es_es": "Juramentos"}},
     "well": {"label": {"en_us": "The Weeping Well", "es_es": "El Pozo Lloroso"}},
     "pewter": {"label": {"en_us": "Malignant Pewter", "es_es": "Peltre maligno"}}
   },
   "links": [
     {"target": "voices_spirits", "at": {"x": 2.755, "y": -6.652}},
-    {"target": "voices_soul_steel", "at": {"x": 6.652, "y": 2.755}}
+    {"target": "voices_soul_steel", "at": {"x": 6.652, "y": 2.755}},
+    {"target": "malum_staff", "at": {"x": -9.687, "y": 9.687}},
+    {"target": "malum_workbench", "at": {"x": 8.3, "y": 14.376}},
+    {"target": "malum_imitation", "at": {"x": -12.943, "y": -3.468}}
   ],
   "art": [
     {"id": "banner", "texture": "entrelumen:textures/gui/quests/banner_plain.png", "x": -20, "y": -22.6, "scale": 1, "order": -1, "color": "#7E2C80"},
@@ -56,7 +56,8 @@
     {"id": "shard_earthen", "texture": "malum:textures/item/spirit_shard.png", "x": 0.0, "y": 3.1, "scale": 2, "order": -1, "color": "#48EE19"},
     {"id": "shard_wicked", "texture": "malum:textures/item/spirit_shard.png", "x": -2.192, "y": 2.192, "scale": 2, "order": -1, "color": "#792CEC"},
     {"id": "shard_infernal", "texture": "malum:textures/item/spirit_shard.png", "x": -3.1, "y": 0.0, "scale": 2, "order": -1, "color": "#FA9A1F"},
-    {"id": "shard_eldritch", "texture": "malum:textures/item/spirit_shard.png", "x": -2.192, "y": -2.192, "scale": 2, "order": -1, "color": "#CB0CF8"}
+    {"id": "shard_eldritch", "texture": "malum:textures/item/spirit_shard.png", "x": -2.192, "y": -2.192, "scale": 2, "order": -1, "color": "#CB0CF8"},
+    {"id": "to_rites", "label": {"en_us": "» Rites and artifice", "es_es": "» Ritos y artificio"}, "x": -20, "y": -14.2, "scale": 1, "click": "chapter:sector_malum_rites", "tint": "#D9B8F0"}
   ],
   "quests": [
     {
@@ -330,11 +331,11 @@
       "task": {"item": "malum:fused_consciousness"},
       "at": {"x": 0.0, "y": 0.0},
       "en_us": {"title": "Fused Consciousness", "subtitle": "The blueprint of everything, pocket-sized.",
-        "text": ["Give the Complete Design back to the Well. What returns is a [item:malum:fused_consciousness|Fused Consciousness]: the eight arcana and the void in one thought. The Belt of the Limitless, the Sundering Anchor, Unwinding Chaos and the Stellar Mechanism are built on it.",
+        "text": ["Give the Complete Design back to the Well. What returns is a [item:malum:fused_consciousness|Fused Consciousness]: the eight arcana and the void in one thought. The [quest:malum_belt_limitless|Belt of the Limitless], the Sundering Anchor, Unwinding Chaos and the [quest:malum_stellar|Stellar Mechanism] are built on it.",
                  "{page}",
                  "The altar, the crucible, the totems and the Well have all answered you. What remains of Malum is built from this thought."]},
       "es_es": {"title": "Conciencia fundida", "subtitle": "El plano de todo, en tamaño bolsillo.",
-        "text": ["Devolvele el diseño completo al Pozo. Lo que vuelve es una [item:malum:fused_consciousness|conciencia fundida]: las ocho arcanas y el vacío en un solo pensamiento. El cinturón de los ilimitados, el ancla quebrantadora, el caos desatado y el mecanismo estelar se construyen sobre ella.",
+        "text": ["Devolvele el diseño completo al Pozo. Lo que vuelve es una [item:malum:fused_consciousness|conciencia fundida]: las ocho arcanas y el vacío en un solo pensamiento. El [quest:malum_belt_limitless|cinturón de los ilimitados], el ancla quebrantadora, el caos desatado y el [quest:malum_stellar|mecanismo estelar] se construyen sobre ella.",
                  "{page}",
                  "El altar, el crisol, los tótems y el Pozo ya te contestaron. Lo que queda de Malum se construye a partir de este pensamiento."]},
       "sources": ["jar:malum-1.21.1-1.8.2.jar:data/malum/recipe/void_favor/fused_consciousness.json", "jar:malum-1.21.1-1.8.2.jar:data/malum/recipe/spirit_infusion/belt_of_the_limitless.json", "jar:malum-1.21.1-1.8.2.jar:data/malum/recipe/spirit_infusion/sundering_anchor.json", "jar:malum-1.21.1-1.8.2.jar:data/malum/recipe/spirit_infusion/unwinding_chaos.json", "jar:malum-1.21.1-1.8.2.jar:data/malum/recipe/spirit_infusion/stellar_mechanism.json", "jar:malum-1.21.1-1.8.2.jar:assets/malum/lang/en_us.json#malum.gui.book.entry.page.text.void.fused_consciousness.1"]
@@ -462,26 +463,6 @@
       "sources": ["jar:malum-1.21.1-1.8.2.jar:data/malum/recipe/spirit_infusion/soul_stained_steel_scythe.json", "jar:malum-1.21.1-1.8.2.jar:assets/malum/lang/en_us.json#malum.gui.book.entry.page.text.soulstained_scythe.1"]
     },
     {
-      "key": "malum_spoils", "role": "side", "deps": ["malum_steel_gear"], "group": "gear",
-      "task": {"item": "malum:ring_of_esoteric_spoils"},
-      "at": {"x": 16.034, "y": 4.296},
-      "en_us": {"title": "Ring of Esoteric Spoils", "subtitle": "Where the extra comes from, nobody asks.",
-        "text": ["An Ornate Ring, Soulstained Steel on leather, goes on the altar with eight Refined Soulstone and eight each of Wicked, Arcane and Eldritch. Every soul you shatter then gives up one extra spirit."]},
-      "es_es": {"title": "Anillo de botines esotéricos", "subtitle": "De dónde sale el extra, nadie pregunta.",
-        "text": ["Un anillo ornado, acero manchado de alma sobre cuero, va al altar con ocho piedras de alma refinadas y ocho malévolos, ocho arcanos y ocho eldritch. Desde entonces cada alma que rompés entrega un espíritu de más."]},
-      "sources": ["jar:malum-1.21.1-1.8.2.jar:data/malum/recipe/ornate_ring.json", "jar:malum-1.21.1-1.8.2.jar:data/malum/recipe/spirit_infusion/ring_of_esoteric_spoils.json", "jar:malum-1.21.1-1.8.2.jar:assets/malum/lang/en_us.json#malum.gui.book.entry.page.text.ring_of_esoteric_spoils.1"]
-    },
-    {
-      "key": "malum_narrow_edge", "role": "side", "deps": ["malum_spoils"], "group": "gear",
-      "task": {"item": "malum:necklace_of_the_narrow_edge"},
-      "at": {"x": 19.125, "y": 5.125},
-      "en_us": {"title": "Necklace of the Narrow Edge",
-        "text": ["An Ornate Necklace with a block and two ingots of iron, fed sixteen Wicked, sixteen Earthen and eight Eldritch. It trades the scythe's sweep for a strong single-target hit. Wind Nuclei and wind charges make the rings that reshape Rebound and Ascension."]},
-      "es_es": {"title": "Collar del bisel angosto",
-        "text": ["Un collar ornado con un bloque y dos lingotes de hierro, con dieciséis malévolos, dieciséis terrestres y ocho eldritch. Cambia el barrido de la guadaña por un golpe fuerte a un solo blanco. Con núcleos de viento y cargas de viento se hacen los anillos que cambian Rebote y Ascensión."]},
-      "sources": ["jar:malum-1.21.1-1.8.2.jar:data/malum/recipe/ornate_necklace.json", "jar:malum-1.21.1-1.8.2.jar:data/malum/recipe/spirit_infusion/necklace_of_the_narrow_edge.json", "jar:malum-1.21.1-1.8.2.jar:data/malum/recipe/spirit_infusion/ring_of_the_howling_maelstrom.json", "jar:malum-1.21.1-1.8.2.jar:data/malum/recipe/spirit_infusion/ring_of_the_rising_edge.json", "jar:malum-1.21.1-1.8.2.jar:assets/malum/lang/en_us.json#malum.gui.book.entry.page.text.necklace_of_the_narrow_edge.1", "jar:malum-1.21.1-1.8.2.jar:assets/malum/lang/en_us.json#malum.gui.book.entry.page.text.necklace_of_the_narrow_edge.ring_of_the_howling_maelstrom.2"]
-    },
-    {
       "key": "malum_armor", "role": "side", "deps": ["malum_steel"], "group": "gear",
       "tasks": [{"item": "malum:soul_stained_steel_helmet"}, {"item": "malum:soul_stained_steel_chestplate"}, {"item": "malum:soul_stained_steel_leggings"}, {"item": "malum:soul_stained_steel_boots"}],
       "at": {"x": 11.605, "y": 6.7},
@@ -504,44 +485,6 @@
       "es_es": {"title": "Armadura de cazador de almas", "subtitle": "Cuero con opiniones sobre la magia.",
         "text": ["Armadura de cuero en el altar con seda tejida con alma, piedra de alma refinada y más cuero, con aéreos y terrestres. Protege más o menos como el cuero, pero amplifica tu poder arcano, y con Iron's Spellbooks instalado también suma poder de hechizo."]},
       "sources": ["jar:malum-1.21.1-1.8.2.jar:data/malum/recipe/spirit_infusion/soul_hunter_robe.json", "jar:malum-1.21.1-1.8.2.jar:data/malum/recipe/spirit_infusion/soul_hunter_cloak.json", "jar:malum-1.21.1-1.8.2.jar:assets/malum/lang/en_us.json#malum.gui.book.entry.page.text.soulhunter_armor.1", "jar:malum-1.21.1-1.8.2.jar:com/sammy/malum/compat/irons_spellbooks/IronsSpellsCompat$LoadedOnly.class"]
-    },
-    {
-      "key": "malum_trinkets", "role": "side", "deps": ["malum_calx"], "group": "trinkets", "sequential": true,
-      "tasks": [{"item": "malum:gilded_ring"}, {"item": "malum:ring_of_curative_talent"}],
-      "at": {"x": 6.7, "y": 11.605},
-      "en_us": {"title": "Rings of the harvest",
-        "text": ["A [item:malum:gilded_ring|Gilded Ring] is Hallowed Gold on leather. On the altar with four Living Flesh, four calx and a ghast tear, fed Sacred and Arcane, it becomes the [item:malum:ring_of_curative_talent|Ring of Curative Talent]: every spirit you pick up heals you a little.",
-                 "{page}",
-                 "[tip] Before any effect, Hallowed Gold trinkets add armor and Soulstained Steel ones add toughness."]},
-      "es_es": {"title": "Anillos de la cosecha",
-        "text": ["Un [item:malum:gilded_ring|anillo dorado] es oro sagrado sobre cuero. En el altar con cuatro carnes vivas, cuatro calx y una lágrima de ghast, con sagrados y arcanos, se vuelve el [item:malum:ring_of_curative_talent|anillo de talento curativo]: cada espíritu que juntás te cura un poco.",
-                 "{page}",
-                 "[tip] Antes de cualquier efecto, los accesorios de oro sagrado suman armadura y los de acero manchado de alma, dureza."]},
-      "sources": ["jar:malum-1.21.1-1.8.2.jar:data/malum/recipe/gilded_ring.json", "jar:malum-1.21.1-1.8.2.jar:data/malum/recipe/spirit_infusion/ring_of_curative_talent.json", "jar:malum-1.21.1-1.8.2.jar:assets/malum/lang/en_us.json#malum.gui.book.entry.page.text.reactive_trinkets.ring_of_curative_talent.1", "jar:malum-1.21.1-1.8.2.jar:assets/malum/lang/en_us.json#malum.gui.book.entry.page.text.spirit_trinkets.2"]
-    },
-    {
-      "key": "malum_workbench", "role": "side", "deps": ["malum_trinkets"], "group": "trinkets",
-      "task": {"item": "malum:runic_workbench"},
-      "at": {"x": 8.3, "y": 14.376},
-      "en_us": {"title": "The Runic Workbench",
-        "text": ["A Runewood pedestal on the altar with four Runewood planks, four Soulwoven Silk and two Hallowed Gold, fed sixteen Sacred, Arcane and Aqueous. It carves runes from four base blocks and sixteen or thirty-two spirits."]},
-      "es_es": {"title": "El banco de trabajo rúnico",
-        "text": ["Un pedestal de runewood en el altar con cuatro tablones de runewood, cuatro de seda tejida con alma y dos de oro sagrado, con dieciséis sagrados, arcanos y acuosos. Talla runas con cuatro bloques base y dieciséis o treinta y dos espíritus."]},
-      "sources": ["jar:malum-1.21.1-1.8.2.jar:data/malum/recipe/spirit_infusion/runic_workbench.json", "jar:malum-1.21.1-1.8.2.jar:data/malum/recipe/runeworking/rune_of_reinforcement.json", "jar:malum-1.21.1-1.8.2.jar:data/malum/recipe/runeworking/rune_of_stone_ward.json", "jar:malum-1.21.1-1.8.2.jar:assets/malum/lang/en_us.json#malum.gui.book.entry.page.text.runeworking.3"]
-    },
-    {
-      "key": "malum_runes", "role": "side", "deps": ["malum_workbench"], "group": "trinkets",
-      "tasks": [{"item": "malum:runic_brooch"}, {"item": "malum:rune_of_reinforcement"}],
-      "at": {"x": 9.9, "y": 17.147},
-      "en_us": {"title": "Brooches and runes",
-        "text": ["Runes need slots that only brooches open. The [item:malum:runic_brooch|Runic Brooch] trades ring space for two rune slots, one per palm. Four Tainted Rock and sixteen Arcane carve the [item:malum:rune_of_reinforcement|Rune of Reinforcement], which strengthens Soul Ward.",
-                 "{page}",
-                 "You wear one brooch at a time: the Glass Brooch opens its two rune slots with max health instead of ring space. Wooden runes, carved from planks with thirty-two spirits, carry a totem rite's aura at half strength."]},
-      "es_es": {"title": "Broches y runas",
-        "text": ["Las runas necesitan ranuras que sólo abren los broches. El [item:malum:runic_brooch|broche rúnico] cambia espacio de anillos por dos ranuras de runa, una por palma. Cuatro de roca manchada y dieciséis arcanos tallan la [item:malum:rune_of_reinforcement|runa de refuerzo], que fortalece la Guarda de alma.",
-                 "{page}",
-                 "Se usa un broche por vez: el broche de vidrio abre sus dos ranuras de runa con vida máxima en lugar de espacio de anillos. Las runas de madera, talladas en tablones con treinta y dos espíritus, llevan el aura de un rito de tótem a media potencia."]},
-      "sources": ["jar:malum-1.21.1-1.8.2.jar:data/malum/recipe/runic_brooch.json", "jar:malum-1.21.1-1.8.2.jar:data/malum/curios/slots/rune.json", "jar:malum-1.21.1-1.8.2.jar:data/malum/curios/slots/brooch.json", "jar:malum-1.21.1-1.8.2.jar:com/sammy/malum/common/item/curiosities/curios/brooches/CurioRunicBrooch.class", "jar:malum-1.21.1-1.8.2.jar:assets/malum/lang/en_us.json#malum.gui.book.entry.page.text.runic_brooch.1", "jar:malum-1.21.1-1.8.2.jar:data/malum/recipe/runeworking/rune_of_reinforcement.json", "jar:malum-1.21.1-1.8.2.jar:assets/malum/lang/en_us.json#malum.gui.book.entry.page.text.rune_of_reinforcement.1", "jar:malum-1.21.1-1.8.2.jar:assets/malum/lang/en_us.json#malum.gui.book.entry.page.text.glass_brooch.1", "jar:malum-1.21.1-1.8.2.jar:assets/malum/lang/en_us.json#malum.gui.book.entry.page.text.rune_of_stone_ward.1"]
     },
     {
       "key": "malum_repair", "role": "side", "deps": ["malum_crucible"], "group": "crucible",
@@ -582,92 +525,6 @@
       "sources": ["jar:malum-1.21.1-1.8.2.jar:data/malum/recipe/spirit_infusion/iron_impetus.json", "jar:malum-1.21.1-1.8.2.jar:data/malum/recipe/spirit_crucible/node_focusing_iron.json", "jar:malum-1.21.1-1.8.2.jar:data/malum/recipe/iron_from_node_smelting.json", "jar:malum-1.21.1-1.8.2.jar:data/malum/recipe/spirit_infusion/cobalt_impetus.json", "repo:catalog/curated.json", "jar:malum-1.21.1-1.8.2.jar:assets/malum/lang/en_us.json#malum.gui.book.entry.page.text.focus_metals.1", "jar:malum-1.21.1-1.8.2.jar:assets/malum/lang/en_us.json#malum.gui.book.entry.page.text.focus_metals.2"]
     },
     {
-      "key": "malum_augments", "role": "side", "deps": ["malum_nodes"], "group": "crucible",
-      "tasks": [{"item": "malum:accelerating_inlay"}, {"item": "malum:tuning_fork"}],
-      "at": {"x": 0.0, "y": 16.9},
-      "en_us": {"title": "Tuning the crucible",
-        "text": ["Augments go in a catalyzer, or up to four in the crucible itself. The [item:malum:accelerating_inlay|Accelerating Inlay] (calx, Astral Weave and soulstone) speeds focusing with no drawback. A [item:malum:tuning_fork|Tuning Fork] shows every attribute and lets you raise one at the cost of the others.",
-                 "{page}",
-                 "The Prismatic Focus Lens lowers instability, the Mending Diffuser may mend the impetus after each cycle, and the Shielding Apparatus can absorb the damage outright, at the cost of some speed."]},
-      "es_es": {"title": "Afinar el crisol",
-        "text": ["Los aumentos van en un catalizador, o hasta cuatro en el crisol mismo. La [item:malum:accelerating_inlay|incrustación aceleradora] (calx, tejido astral y soulstone) acelera la focalización sin contras. Una [item:malum:tuning_fork|tenaza de afinación] muestra cada atributo y te deja subir uno a costa de los demás.",
-                 "{page}",
-                 "La lente de foco prismático baja la inestabilidad, el difusor de reparación puede arreglar el impulso después de cada ciclo, y el aparato de protección puede absorber el daño entero a cambio de algo de velocidad."]},
-      "sources": ["jar:malum-1.21.1-1.8.2.jar:assets/malum/lang/en_us.json#malum.gui.book.entry.page.text.crucible_augmentation.2", "jar:malum-1.21.1-1.8.2.jar:assets/malum/lang/en_us.json#malum.gui.book.entry.page.text.crucible_augmentation.3", "jar:malum-1.21.1-1.8.2.jar:data/malum/recipe/spirit_infusion/accelerating_inlay.json", "jar:malum-1.21.1-1.8.2.jar:assets/malum/lang/en_us.json#malum.gui.book.entry.page.text.accelerating_inlay.1", "jar:malum-1.21.1-1.8.2.jar:data/malum/recipe/spirit_infusion/tuning_fork.json", "jar:malum-1.21.1-1.8.2.jar:assets/malum/lang/en_us.json#malum.gui.book.entry.page.text.prismatic_focus_lens.1", "jar:malum-1.21.1-1.8.2.jar:assets/malum/lang/en_us.json#malum.gui.book.entry.page.text.mending_diffuser.1", "jar:malum-1.21.1-1.8.2.jar:assets/malum/lang/en_us.json#malum.gui.book.entry.page.text.shielding_apparatus.1"]
-    },
-    {
-      "key": "malum_catalyzer", "role": "side", "deps": ["malum_ether"], "group": "crucible",
-      "task": {"item": "malum:spirit_catalyzer"},
-      "at": {"x": -2.786, "y": 13.107},
-      "en_us": {"title": "The Spirit Catalyzer",
-        "text": ["A Twisted Rock pedestal with four of each rock and one Ether, fed eight Infernal and eight Aerial. Each fueled catalyzer near a crucible speeds focusing, up to eight of them, but instability grows with each one and can wear the impetus faster."]},
-      "es_es": {"title": "El catalizador espiritual",
-        "text": ["Un pedestal de roca torcida con cuatro de cada roca y un éter, con ocho infernales y ocho aéreos. Cada catalizador con combustible cerca de un crisol acelera la focalización, hasta ocho, pero la inestabilidad sube con cada uno y puede gastar el impulso más rápido."]},
-      "sources": ["jar:malum-1.21.1-1.8.2.jar:data/malum/recipe/spirit_infusion/spirit_catalyzer.json", "jar:malum-1.21.1-1.8.2.jar:assets/malum/lang/en_us.json#malum.gui.book.entry.page.text.crucible_acceleration.2", "jar:malum-1.21.1-1.8.2.jar:assets/malum/lang/en_us.json#malum.gui.book.entry.page.text.crucible_acceleration.3"]
-    },
-    {
-      "key": "malum_tip_runes", "role": "tip", "deps": ["malum_totems"], "group": "totems",
-      "task": {"type": "checkmark"},
-      "at": {"x": -7.59, "y": 11.043},
-      "en_us": {"title": "Reading a totem",
-        "text": ["[tip] Runes count upward from the base. A lesser rite is Arcane plus two of one spirit; a greater rite puts Eldritch first, then Arcane, then two of the spirit. A Soulwood base turns every rite into a different one.",
-                 "{page}",
-                 "On Runewood, the lesser and greater rites are: Sacred, [hl|Healing] and [hl|Nurturing]; Wicked, [hl|Harming] and [hl|Culling]; Earthen, [hl|Stone Ward] and [hl|Creation]; Infernal, [hl|Burning Fervor] and [hl|Smelting]; Aerial, [hl|Howling Gale] and [hl|Gravity]; Aqueous, [hl|Flowing Grasp] and [hl|Soaking]."]},
-      "es_es": {"title": "Leer un tótem",
-        "text": ["[tip] Las runas se cuentan desde la base hacia arriba. Un rito menor es arcano más dos de un mismo espíritu; uno mayor pone eldritch primero, después arcano y después dos del espíritu. Una base de soulwood cambia cada rito por otro distinto.",
-                 "{page}",
-                 "Sobre runewood, los ritos menor y mayor son: sagrado, [hover|Curación|Rite of Healing] y [hover|Crianza|Rite of Nurturing]; malévolo, [hover|Daño|Rite of Harming] y [hover|Sacrificio|Rite of Culling]; terrestre, [hover|Guarda de piedra|Rite of the Stone Ward] y [hover|Creación|Rite of Creation]; infernal, [hover|Fervor ardiente|Rite of the Burning Fervor] y [hover|Fundición|Rite of Smelting]; aéreo, [hover|Vendaval aullante|Rite of the Howling Gale] y [hover|Gravedad|Rite of Gravity]; acuoso, [hover|Agarre fluido|Rite of the Flowing Grasp] y [hover|Remojo|Rite of Soaking]."]},
-      "sources": ["jar:malum-1.21.1-1.8.2.jar:com/sammy/malum/core/systems/rite/SpiritRiteTypeBuilder.class", "jar:malum-1.21.1-1.8.2.jar:com/sammy/malum/common/block/curiosities/totem/TotemBaseBlockEntity.class", "jar:malum-1.21.1-1.8.2.jar:com/sammy/malum/registry/common/magic/rite/MalumSpiritRiteTypes.class", "jar:malum-1.21.1-1.8.2.jar:assets/malum/lang/en_us.json#malum.gui.rite.rite_of_nurturing", "jar:malum-1.21.1-1.8.2.jar:assets/malum/lang/en_us.json#malum.gui.rite.rite_of_culling", "jar:malum-1.21.1-1.8.2.jar:assets/malum/lang/en_us.json#malum.gui.rite.rite_of_creation", "jar:malum-1.21.1-1.8.2.jar:assets/malum/lang/en_us.json#malum.gui.rite.rite_of_smelting", "jar:malum-1.21.1-1.8.2.jar:assets/malum/lang/en_us.json#malum.gui.rite.rite_of_gravity", "jar:malum-1.21.1-1.8.2.jar:assets/malum/lang/en_us.json#malum.gui.rite.rite_of_soaking", "jar:malum-1.21.1-1.8.2.jar:assets/malum/lang/en_us.json#malum.gui.book.entry.page.text.unchained_rite.2"]
-    },
-    {
-      "key": "malum_staff", "role": "side", "deps": ["malum_totems"], "group": "totems",
-      "task": {"item": "malum:totemic_staff"},
-      "at": {"x": -9.687, "y": 9.687},
-      "en_us": {"title": "The Totemic Staff",
-        "text": ["A Runewood plank on top of two sticks. Holding it shows the area each totem affects, and using it on an engraved rune lights the rune up without starting a rite."]},
-      "es_es": {"title": "El bastón totémico",
-        "text": ["Un tablón de runewood sobre dos palos. Con él en la mano ves el área que afecta cada tótem, y usarlo sobre una runa grabada la enciende sin arrancar ningún rito."]},
-      "sources": ["jar:malum-1.21.1-1.8.2.jar:data/malum/recipe/totemic_staff.json", "jar:malum-1.21.1-1.8.2.jar:assets/malum/lang/en_us.json#malum.gui.book.entry.page.text.managing_totems.2", "jar:malum-1.21.1-1.8.2.jar:assets/malum/lang/en_us.json#malum.gui.book.entry.page.text.managing_totems.3"]
-    },
-    {
-      "key": "malum_arcana_pylon", "role": "side", "deps": ["malum_staff"], "group": "totems",
-      "task": {"item": "malum:arcana_pylon"},
-      "at": {"x": -11.95, "y": 11.95},
-      "en_us": {"title": "The Arcana Pylon",
-        "text": ["A Runewood Obelisk with eight Refined Soulstone, four Hex Ash and two Soulwood planks, fed eight Aerial, Aqueous, Earthen and Infernal. Fed Arcane, each pylon speeds a nearby altar by half, up to four; fed an elemental spirit, it strengthens matching rite and rune auras."]},
-      "es_es": {"title": "El pilón de arcanas",
-        "text": ["Un obelisco de runewood con ocho piedras de alma refinadas, cuatro cenizas hex y dos tablones de soulwood, con ocho aéreos, acuosos, terrestres e infernales. Con arcanos, cada pilón le suma la mitad de velocidad a un altar cercano, hasta cuatro; con un espíritu elemental, potencia las auras de ritos y runas de ese elemento."]},
-      "sources": ["jar:malum-1.21.1-1.8.2.jar:data/malum/recipe/spirit_infusion/arcana_pylon.json", "jar:malum-1.21.1-1.8.2.jar:assets/malum/lang/en_us.json#malum.gui.book.entry.page.text.aura_empowerment.1", "jar:malum-1.21.1-1.8.2.jar:assets/malum/lang/en_us.json#malum.gui.book.entry.page.text.aura_empowerment.elemental.1", "jar:malum-1.21.1-1.8.2.jar:assets/malum/lang/en_us.json#malum.gui.book.entry.page.text.aura_empowerment.other_pylon_applications.arcane.1"]
-    },
-    {
-      "key": "malum_anchor", "role": "side", "deps": ["malum_first_rite"], "group": "totems",
-      "task": {"item": "malum:rite_anchor"},
-      "at": {"x": -11.238, "y": 7.298},
-      "en_us": {"title": "Rite Anchors",
-        "text": ["Greater rites send out a bound locus that wanders at four blocks per second. A [item:malum:rite_anchor|Rite Anchor] socketed with a spirit steers any locus that passes: Arcane turns it, Aerial doubles its speed, Infernal its distance, Earthen its impact and Aqueous its potency.",
-                 "{page}",
-                 "Anchors stop working while powered by redstone, and a locus crossing Tainted Rock does nothing and does not age."]},
-      "es_es": {"title": "Anclas de rito",
-        "text": ["Los ritos mayores largan un locus atado que vaga a cuatro bloques por segundo. Un [item:malum:rite_anchor|ancla de rito] con un espíritu encastrado guía a cualquier locus que pase: arcano lo desvía, aéreo le duplica la velocidad, infernal la distancia, terrestre el impacto y acuoso la potencia.",
-                 "{page}",
-                 "Las anclas dejan de andar con señal de redstone, y un locus que cruza roca manchada no hace nada ni envejece."]},
-      "sources": ["jar:malum-1.21.1-1.8.2.jar:data/malum/recipe/spirit_infusion/rite_anchor.json", "jar:malum-1.21.1-1.8.2.jar:assets/malum/lang/en_us.json#malum.gui.book.entry.page.text.locus_management.2", "jar:malum-1.21.1-1.8.2.jar:assets/malum/lang/en_us.json#malum.gui.book.entry.page.text.locus_management.3", "jar:malum-1.21.1-1.8.2.jar:assets/malum/lang/en_us.json#malum.gui.book.entry.page.text.locus_management.5", "jar:malum-1.21.1-1.8.2.jar:assets/malum/lang/en_us.json#malum.gui.book.entry.page.text.locus_management.arcane.1", "jar:malum-1.21.1-1.8.2.jar:assets/malum/lang/en_us.json#malum.gui.book.entry.page.text.locus_management.aerial.1", "jar:malum-1.21.1-1.8.2.jar:assets/malum/lang/en_us.json#malum.gui.book.entry.page.text.locus_management.infernal.1", "jar:malum-1.21.1-1.8.2.jar:assets/malum/lang/en_us.json#malum.gui.book.entry.page.text.locus_management.earthen.1", "jar:malum-1.21.1-1.8.2.jar:assets/malum/lang/en_us.json#malum.gui.book.entry.page.text.locus_management.aqueous.1"]
-    },
-    {
-      "key": "malum_waveform", "role": "side", "deps": ["malum_anchor"], "group": "totems",
-      "task": {"item": "malum:waveform_runewood_totem_base"},
-      "at": {"x": -13.922, "y": 9.041},
-      "en_us": {"title": "Waveform totems",
-        "text": ["Copper blocks, redstone, Runewood and Ether make four Waveform Totem Bases. They hold the rite's energy until a redstone pulse fires it; only the pulse's rising edge counts, and an observer shows when the rite is ready.",
-                 "{page}",
-                 "The same copper and Ether make four spirit diodes that bend redstone signals, one per element, and the Artificer's Claw tunes their delays."]},
-      "es_es": {"title": "Tótems de forma de onda",
-        "text": ["Bloques de cobre, redstone, runewood y éter hacen cuatro bases de tótem de forma de onda. Guardan la energía del rito hasta que un pulso de redstone lo dispara; sólo cuenta el flanco de subida del pulso, y un observador avisa cuándo el rito está listo.",
-                 "{page}",
-                 "El mismo cobre y el éter hacen cuatro diodos espirituales que doblan señales de redstone, uno por elemento, y la garra del artífice ajusta sus demoras."]},
-      "sources": ["jar:malum-1.21.1-1.8.2.jar:data/malum/recipe/spirit_infusion/waveform_runewood_totem_base.json", "jar:malum-1.21.1-1.8.2.jar:assets/malum/lang/en_us.json#malum.gui.book.entry.page.text.totem_magic.waveform_totemancy.2", "jar:malum-1.21.1-1.8.2.jar:assets/malum/lang/en_us.json#malum.gui.book.entry.page.text.totem_magic.waveform_totemancy.3", "jar:malum-1.21.1-1.8.2.jar:data/malum/recipe/spirit_infusion/wavemaker.json", "jar:malum-1.21.1-1.8.2.jar:data/malum/recipe/spirit_infusion/artificers_claw.json", "jar:malum-1.21.1-1.8.2.jar:assets/malum/lang/en_us.json#malum.gui.book.entry.page.text.basic_artifice.1", "jar:malum-1.21.1-1.8.2.jar:assets/malum/lang/en_us.json#malum.gui.book.entry.page.text.basic_artifice.artificers_claw.1"]
-    },
-    {
       "key": "malum_blight", "role": "side", "deps": ["malum_soulwood"], "group": "soulwood",
       "task": {"item": "malum:blighted_gunk", "count": 4},
       "at": {"x": -12.943, "y": 3.468},
@@ -682,21 +539,7 @@
       "sources": ["jar:malum-1.21.1-1.8.2.jar:assets/malum/lang/en_us.json#malum.gui.book.entry.page.text.blight.intro.2", "jar:malum-1.21.1-1.8.2.jar:assets/malum/lang/en_us.json#malum.gui.book.entry.page.text.blight.composition.1", "jar:malum-1.21.1-1.8.2.jar:assets/malum/lang/en_us.json#malum.gui.book.entry.page.text.blight.spread.1", "jar:malum-1.21.1-1.8.2.jar:assets/malum/lang/en_us.json#malum.gui.book.entry.page.text.blight.flora.1", "jar:malum-1.21.1-1.8.2.jar:data/malum/loot_table/blocks/blighted_earth.json"]
     },
     {
-      "key": "malum_unchained", "role": "side", "deps": ["malum_blight"], "group": "soulwood",
-      "task": {"item": "malum:soulwood_sapling"},
-      "at": {"x": -16.034, "y": 4.296},
-      "en_us": {"title": "The Unchained Rite",
-        "text": ["Five Arcane runes on a Soulwood base run the Unchained Rite: its locus travels through blight and transmutes the block sitting on top. Runewood becomes Soulwood, so a Runewood Sapling set on blight comes back as a [item:malum:soulwood_sapling|Soulwood Sapling].",
-                 "{page}",
-                 "Stone steps down to cobblestone, gravel, sand and finally blight; dirt goes to rooted dirt, grass and moss. [warn|Every step ends in more blight], but the locus dies where the blight ends, so its edge is also the rite's fence."]},
-      "es_es": {"title": "El Rito desencadenado",
-        "text": ["Cinco runas arcanas sobre una base de soulwood hacen el Rito desencadenado: su locus viaja por la plaga y transmuta el bloque que tiene encima. El runewood se vuelve soulwood, así que un plantón de runewood sobre plaga vuelve como [item:malum:soulwood_sapling|plantón de soulwood].",
-                 "{page}",
-                 "La piedra baja a roca, grava, arena y al final plaga; la tierra pasa a tierra enraizada, césped y musgo. [warn|Cada paso termina en más plaga], pero el locus muere donde se acaba la plaga: su borde es también el alambrado del rito."]},
-      "sources": ["jar:malum-1.21.1-1.8.2.jar:assets/malum/lang/en_us.json#malum.gui.rite.unchained_rite.effect", "jar:malum-1.21.1-1.8.2.jar:assets/malum/lang/en_us.json#malum.gui.book.entry.page.text.unchained_rite", "jar:malum-1.21.1-1.8.2.jar:assets/malum/lang/en_us.json#malum.gui.book.entry.page.text.unchained_rite.soulwood.1", "jar:malum-1.21.1-1.8.2.jar:data/malum/recipe/spirit_transmutation/soulwood/soulwood_sapling_soulwood_transmutation.json", "jar:malum-1.21.1-1.8.2.jar:data/malum/recipe/spirit_transmutation/cobblestone_from_stone.json", "jar:malum-1.21.1-1.8.2.jar:data/malum/recipe/spirit_transmutation/rooted_dirt_from_dirt.json", "jar:malum-1.21.1-1.8.2.jar:assets/malum/lang/en_us.json#malum.gui.book.entry.page.text.unchained_transmutation.stone.1", "jar:malum-1.21.1-1.8.2.jar:assets/malum/lang/en_us.json#malum.gui.book.entry.page.text.unchained_transmutation.dirt.1"]
-    },
-    {
-      "key": "malum_strange_crystal", "role": "secret", "deps": ["malum_unchained"], "group": "soulwood",
+      "key": "malum_strange_crystal", "role": "secret", "deps": ["malum_blight"], "group": "soulwood",
       "task": {"item": "malum:strange_crystal"},
       "at": {"x": -19.125, "y": 5.125},
       "en_us": {"title": "A plant made of crystal", "subtitle": "Pretty. Useless. Grows anyway.",
@@ -714,56 +557,6 @@
       "es_es": {"title": "Savia maldita",
         "text": ["Los troncos de soulwood rezuman savia mucho más seguido que los de runewood. Embotellada igual, la [item:malum:cursed_sap|savia maldita] no cura: te sube la fuerza de ataque y te da resistencia al daño."]},
       "sources": ["jar:malum-1.21.1-1.8.2.jar:assets/malum/lang/en_us.json#malum.gui.book.entry.page.text.soulwood.cursed_sap.1", "jar:malum-1.21.1-1.8.2.jar:com/sammy/malum/common/block/nature/soulwood/SapFilledSoulwoodLogBlock.class"]
-    },
-    {
-      "key": "malum_tip_soulwood", "role": "tip", "deps": ["malum_soulwood"],
-      "task": {"type": "checkmark"},
-      "at": {"x": -6.652, "y": 2.755},
-      "en_us": {"title": "Soulwood rites",
-        "text": ["[tip] On a Soulwood base the same runes do something else: Healing becomes [hl|Nourishment], Stone Ward becomes [hl|Oaken Might], Burning Fervor becomes [hl|Fiery Embrace], Smelting becomes [hl|Quickening] for furnaces, and Nurturing becomes [hl|Lust]."]},
-      "es_es": {"title": "Ritos de soulwood",
-        "text": ["[tip] Sobre una base de soulwood las mismas runas hacen otra cosa: Curación pasa a [hover|Nutrición|Rite of Nourishment], Guarda de piedra a [hover|Poder de roble|Rite of the Oaken Might], Fervor ardiente a [hover|Abrazo ígneo|Rite of the Fiery Embrace], Fundición a [hover|Aceleración|Rite of Quickening] de hornos, y Crianza a [hover|Lujuria|Rite of Lust]."]},
-      "sources": ["jar:malum-1.21.1-1.8.2.jar:com/sammy/malum/registry/common/magic/rite/MalumSpiritRiteTypes.class", "jar:malum-1.21.1-1.8.2.jar:assets/malum/lang/en_us.json#malum.gui.rite.rite_of_nourishment.effect", "jar:malum-1.21.1-1.8.2.jar:assets/malum/lang/en_us.json#malum.gui.rite.rite_of_the_oaken_might.effect", "jar:malum-1.21.1-1.8.2.jar:assets/malum/lang/en_us.json#malum.gui.rite.rite_of_the_fiery_embrace.effect", "jar:malum-1.21.1-1.8.2.jar:assets/malum/lang/en_us.json#malum.gui.rite.rite_of_quickening.effect", "jar:malum-1.21.1-1.8.2.jar:assets/malum/lang/en_us.json#malum.gui.rite.rite_of_lust.effect", "jar:malum-1.21.1-1.8.2.jar:assets/malum/lang/en_us.json#malum.gui.book.entry.page.text.unchained_rite.2"]
-    },
-    {
-      "key": "malum_prospector", "role": "side", "deps": ["malum_cthonic"],
-      "task": {"item": "malum:belt_of_the_prospector"},
-      "at": {"x": -13.506, "y": -1.599},
-      "en_us": {"title": "Belt of the Prospector", "subtitle": "Greed, with a fortune enchantment.",
-        "text": ["A Gilded Belt with one Cthonic Gold and four each of raw gold, iron and copper, fed thirty-two Earthen and Infernal and sixteen Arcane. Mining precious ore grants Avarice, a chance at an extra Fortune level, and your explosions dig with Fortune III."]},
-      "es_es": {"title": "Cinturón del prospector", "subtitle": "Codicia, con encantamiento de fortuna.",
-        "text": ["Un cinturón dorado con un oro ctónico y cuatro de oro, hierro y cobre en bruto, con treinta y dos terrestres e infernales y dieciséis arcanos. Picar minerales preciosos da Avaricia, chance de un nivel extra de Fortuna, y tus explosiones cavan con Fortuna III."]},
-      "sources": ["jar:malum-1.21.1-1.8.2.jar:data/malum/recipe/gilded_belt.json", "jar:malum-1.21.1-1.8.2.jar:data/malum/recipe/spirit_infusion/belt_of_the_prospector.json", "jar:malum-1.21.1-1.8.2.jar:assets/malum/lang/en_us.json#malum.gui.book.entry.page.text.belt_of_the_prospector.avarice.1", "jar:malum-1.21.1-1.8.2.jar:assets/malum/lang/en_us.json#malum.gui.book.entry.page.text.belt_of_the_prospector.2"]
-    },
-    {
-      "key": "malum_paracausal", "role": "side", "deps": ["malum_brazier"], "group": "oaths",
-      "task": {"item": "malum:paracausal_flame"},
-      "at": {"x": -12.943, "y": -3.468},
-      "en_us": {"title": "Paracausal Flame",
-        "text": ["Ether on the altar with eight Hex Ash, four Warp Flux and two crying obsidian, fed eight Arcane and eight Eldritch. Light the brazier with it instead of Ether and the geas you assemble burns away instead of binding."]},
-      "es_es": {"title": "Llama paracausal",
-        "text": ["Éter en el altar con ocho cenizas hex, cuatro de flujo de deformación y dos obsidianas llorosas, con ocho arcanos y ocho eldritch. Si encendés el brasero con ella en vez de éter, el geas que armás se quema en lugar de atarse."]},
-      "sources": ["jar:malum-1.21.1-1.8.2.jar:data/malum/recipe/spirit_infusion/paracausal_flame.json", "jar:malum-1.21.1-1.8.2.jar:assets/malum/lang/en_us.json#malum.gui.book.entry.page.text.undoing_geas_bindings.1", "jar:malum-1.21.1-1.8.2.jar:assets/malum/lang/en_us.json#malum.gui.book.entry.page.text.undoing_geas_bindings.2"]
-    },
-    {
-      "key": "malum_tyrving", "role": "side", "deps": ["malum_paracausal"], "group": "oaths",
-      "task": {"item": "malum:tyrving"},
-      "at": {"x": -16.034, "y": -4.296},
-      "en_us": {"title": "Tyrving", "subtitle": "No sweep, all grudge.",
-        "text": ["A Soulstained sword with sixteen Twisted Rock, eight Soulwood planks and a Paracausal Flame. Each hit adds magic damage that grows with the target's soul and snaps back a moment later. It cannot sweep, and it repairs with obsidian."]},
-      "es_es": {"title": "Tyrving", "subtitle": "Nada de barrido, todo rencor.",
-        "text": ["Una espada de acero manchado de alma con dieciséis de roca torcida, ocho tablones de soulwood y una llama paracausal. Cada golpe suma daño mágico que crece con el alma del blanco y rebota un instante después. No barre, y se repara con obsidiana."]},
-      "sources": ["jar:malum-1.21.1-1.8.2.jar:data/malum/recipe/spirit_infusion/tyrving.json", "jar:malum-1.21.1-1.8.2.jar:assets/malum/lang/en_us.json#malum.gui.book.entry.page.text.tyrving.2", "jar:malum-1.21.1-1.8.2.jar:assets/malum/lang/en_us.json#malum.gui.book.entry.page.text.tyrving.3", "jar:malum-1.21.1-1.8.2.jar:data/malum/recipe/spirit_repair/tyrving_restoration.json"]
-    },
-    {
-      "key": "malum_plinth", "role": "info", "deps": ["malum_brazier"],
-      "task": {"type": "checkmark"},
-      "at": {"x": -6.652, "y": -2.755},
-      "en_us": {"title": "The Ritual Plinth",
-        "text": ["Malum 1.8.2 registers a Ritual Plinth but gives it no recipe and no rituals; its Encyclopedia page only says the future holds secrets. Bound, lasting magic lives in the Soulbinding Brazier."]},
-      "es_es": {"title": "El plinto ritual",
-        "text": ["Malum 1.8.2 registra un plinto ritual, pero no le da receta ni rituales; su página de la Enciclopedia sólo dice que el futuro guarda secretos. La magia atada y duradera vive en el brasero de atadura de almas."]},
-      "sources": ["jar:malum-1.21.1-1.8.2.jar:assets/malum/lang/en_us.json#malum.gui.book.entry.page.text.ritual_magic.1", "jar:malum-1.21.1-1.8.2.jar:com/sammy/malum/common/block/curiosities/ritual_plinth/RitualPlinthBlockEntity.class", "jar:malum-1.21.1-1.8.2.jar:data/malum/loot_table/blocks/ritual_plinth.json", "repo:tools/recipe_of.py"]
     },
     {
       "key": "malum_esoterica", "role": "side", "deps": ["malum_well"], "group": "well",
@@ -796,17 +589,7 @@
       "sources": ["jar:malum-1.21.1-1.8.2.jar:data/malum/recipe/void_favor/tophat.json"]
     },
     {
-      "key": "malum_void_runes", "role": "side", "deps": ["malum_void_materials"], "group": "well",
-      "task": {"item": "malum:rune_of_bolstering"},
-      "at": {"x": -9.475, "y": -9.475},
-      "en_us": {"title": "Voidish runes",
-        "text": ["Carve runes on Null Slate instead of Tainted Rock and they come out warped: four slate and sixteen of a spirit each. Sacred gives the [item:malum:rune_of_bolstering|Rune of Bolstering], extra health past full; Arcane gives Spell Mastery, staves charging twice as fast."]},
-      "es_es": {"title": "Runas del vacío",
-        "text": ["Tallá runas sobre pizarra nula en vez de roca manchada y salen torcidas: cuatro pizarras y dieciséis de un espíritu cada una. Sagrado da una [item:malum:rune_of_bolstering|runa de refuerzo] que te pone vida extra por encima del máximo; arcano da la runa de maestría en hechizos, que carga los bastones el doble de rápido."]},
-      "sources": ["jar:malum-1.21.1-1.8.2.jar:data/malum/recipe/runeworking/rune_of_bolstering.json", "jar:malum-1.21.1-1.8.2.jar:data/malum/recipe/runeworking/rune_of_spell_mastery.json", "jar:malum-1.21.1-1.8.2.jar:assets/malum/lang/en_us.json#malum.gui.book.entry.page.text.void.runes.1", "jar:malum-1.21.1-1.8.2.jar:assets/malum/lang/en_us.json#malum.gui.book.entry.page.text.void.rune_of_bolstering.1", "jar:malum-1.21.1-1.8.2.jar:assets/malum/lang/en_us.json#malum.gui.book.entry.page.text.void.rune_of_spell_mastery.1"]
-    },
-    {
-      "key": "malum_hex_staff", "role": "side", "deps": ["malum_void_runes"], "group": "well",
+      "key": "malum_hex_staff", "role": "side", "deps": ["malum_void_materials"], "group": "well",
       "task": {"item": "malum:mnemonic_hex_staff"},
       "at": {"x": -11.738, "y": -11.738},
       "en_us": {"title": "The Mnemonic Hex Staff",
@@ -818,16 +601,6 @@
                  "{page}",
                  "Dos de peltre maligno y ocho sales del vacío lo vuelven el cetro de erosión, cuyos rayos le sacan un décimo de magia al blanco en cada golpe."]},
       "sources": ["jar:malum-1.21.1-1.8.2.jar:data/malum/recipe/spirit_infusion/mnemonic_hex_staff.json", "jar:malum-1.21.1-1.8.2.jar:assets/malum/lang/en_us.json#malum.gui.book.entry.page.text.void.staves_as_foci.4", "jar:malum-1.21.1-1.8.2.jar:data/malum/recipe/spirit_infusion/erosion_scepter.json", "jar:malum-1.21.1-1.8.2.jar:assets/malum/lang/en_us.json#malum.gui.book.entry.page.text.void.erosion_scepter.2", "jar:malum-1.21.1-1.8.2.jar:assets/malum/lang/en_us.json#malum.gui.book.entry.page.text.void.erosion_scepter.3"]
-    },
-    {
-      "key": "malum_void_trinkets", "role": "side", "deps": ["malum_hex_staff"], "group": "well",
-      "task": {"item": "malum:ring_of_growing_flesh"},
-      "at": {"x": -14.001, "y": -14.001},
-      "en_us": {"title": "Overclocked rings",
-        "text": ["Sixteen Null Slate and eight Void Salts push the Ring of Curative Talent into the [item:malum:ring_of_growing_flesh|Ring of Growing Flesh]: every spirit you collect now grants extra health instead of healing. Null Slate with Mnemonic Fragments does the same for Manaweaving and Esoteric Spoils."]},
-      "es_es": {"title": "Anillos sobreexigidos",
-        "text": ["Dieciséis pizarras nulas y ocho sales del vacío llevan el anillo de talento curativo al [item:malum:ring_of_growing_flesh|anillo de carne creciente]: cada espíritu que juntás ahora da vida extra en lugar de curar. Pizarra nula con fragmentos mnémicos hace lo mismo con tejido de maná y botines esotéricos."]},
-      "sources": ["jar:malum-1.21.1-1.8.2.jar:data/malum/recipe/spirit_infusion/ring_of_growing_flesh.json", "jar:malum-1.21.1-1.8.2.jar:assets/malum/lang/en_us.json#malum.gui.book.entry.page.text.void.ring_of_growing_flesh.1", "jar:malum-1.21.1-1.8.2.jar:data/malum/recipe/spirit_infusion/ring_of_echoing_arcana.json", "jar:malum-1.21.1-1.8.2.jar:data/malum/recipe/spirit_infusion/ring_of_the_endless_well.json"]
     },
     {
       "key": "malum_pewter", "role": "milestone", "deps": ["malum_umbral"], "group": "pewter", "sequential": true,
