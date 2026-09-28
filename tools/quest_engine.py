@@ -748,16 +748,20 @@ def extra_rewards(q, chapter, tables, gated=frozenset()):
     return out
 
 
+LOCAL_ORDER_SPAN = 1_000_000  # a chapter table's order_index: start + its ID modulo this, whatever other chapters add
+
+
 def build_local_tables(sectors, start, gated=frozenset(), taken=()):
     """The sectors' own reward tables -> (tables by local_table key, files by name, titles by locale).
 
     A table is {"title": {en_us, es_es}, "rolls": draws (1), "entries": [{"item", "count", "weight", "components"}]}.
-    Its ID is table_id("<chapter>/<name>"), so it never moves when other tables come or go; order_index follows
-    the book's tables (start), chapter by chapter; the file is reward_tables/<chapter>__<name>.snbt. With no
-    icon of its own FTB cycles through the entries' icons (RewardTable.getAltIcon)."""
+    Its ID is table_id("<chapter>/<name>"), so it never moves when other tables come or go; so does its order_index,
+    start + ID % LOCAL_ORDER_SPAN, which keeps a chapter's files byte-identical when another chapter adds tables; the
+    file is reward_tables/<chapter>__<name>.snbt. With no icon of its own FTB cycles through the entries' icons
+    (RewardTable.getAltIcon)."""
     tables, files, languages = {}, {}, {lang: {} for lang in LOCALES}
     ids = set(taken)
-    index = start
+    orders = {}
     for data in sorted(sectors, key=lambda d: d["chapter"]):
         chapter = data["chapter"]
         specs = data.get("reward_tables", {})
@@ -797,11 +801,13 @@ def build_local_tables(sectors, start, gated=frozenset(), taken=()):
                 stacks.append(r["item"])
                 rewards.append({"id": stable_id(f"reward_table:{key}:{i}"), **r})
             filename = f"{chapter}__{name}"
+            index = start + long_id % LOCAL_ORDER_SPAN
+            assert index not in orders, f"{where}: its order index collides with {orders.get(index)}: rename one of the two"
+            orders[index] = key
             files[filename] = {"id": tid, "order_index": index, "loot_size": rolls, "use_title": True, "rewards": rewards}
             for lang in LOCALES:
                 languages[lang][f"reward_table.{tid}.title"] = title[lang]
             tables[key] = {"id": tid, "long": long_id, "file": filename}
-            index += 1
     return tables, files, languages
 
 

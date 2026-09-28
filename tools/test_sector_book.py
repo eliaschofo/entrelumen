@@ -604,16 +604,29 @@ class QuestRewards(unittest.TestCase):
         cls.guides = load_guides(cls.book)
         cls.sectors = {s["chapter"]: s for s in qe.load_sectors()}
         cls.gated = gated_outputs()
+        cls.base = cls.stripped()
         cls.data = cls.fixture()
         cls.files = generate_book(cls.story, cls.guides, cls.book, cls.with_sector(cls.data))
         cls.chapter = json.loads(cls.files[OUT / "chapters" / (cls.CHAPTER + ".snbt")])
-        cls.disk = json.loads((OUT / "chapters" / (cls.CHAPTER + ".snbt")).read_text(encoding="utf-8"))
+        # The same book with the chapter's own rewards stripped: the tests never depend on what the chain gives today.
+        cls.base_files = generate_book(cls.story, cls.guides, cls.book, cls.with_sector(cls.base))
+        cls.disk = json.loads(cls.base_files[OUT / "chapters" / (cls.CHAPTER + ".snbt")])
+
+    @classmethod
+    def stripped(cls):
+        """The bees chapter without any reward of its own."""
+        data = copy.deepcopy(cls.sectors[cls.CHAPTER])
+        data.pop("reward_tables", None)
+        for q in data["quests"]:
+            for field in ("rewards", "reward_table", "reward_choice"):
+                q.pop(field, None)
+        return data
 
     @classmethod
     def fixture(cls):
         """The bees chapter with a bee, a perfect gene and combs on its diamond milestone, a random gene on the iron
         milestone and a choice of bees on the crystalline one."""
-        data = copy.deepcopy(cls.sectors[cls.CHAPTER])
+        data = cls.stripped()
         quests = {q["key"]: q for q in data["quests"]}
         quests["bees_diamond"]["rewards"] = [egg("productivebees:diamond"), egg("productivebees:iron", count=2),
                                              gene("productivity", "productivity.very_high"),
@@ -652,11 +665,15 @@ class QuestRewards(unittest.TestCase):
         other["quests"][0]["reward_table"] = "aa_first"  # a chapter sorted before, with a table of its own
         other["reward_tables"] = {"aa_first": {"title": {"en_us": "Odds", "es_es": "Cosas"},
                                                "entries": [{"item": "minecraft:honeycomb"}]}}
+        _, alone_files, _ = qe.build_local_tables([self.data], 18, self.gated)
         both, files, _ = qe.build_local_tables([self.data, other], 18, self.gated)
         for key, table in alone.items():
             self.assertEqual(both[key]["id"], table["id"])
-        self.assertEqual([t["order_index"] for t in files.values()], [18, 19, 20])  # after the book's 18, by chapter
-        self.assertEqual(files["sector_aa__aa_first"]["order_index"], 18)
+        # The order index follows the ID too, so a chapter that adds tables moves no other chapter's files.
+        for name, table in alone_files.items():
+            self.assertEqual(files[name], table)
+        self.assertEqual(files["sector_aa__aa_first"]["order_index"],
+                         18 + qe.table_id("sector_aa/aa_first") % qe.LOCAL_ORDER_SPAN)
 
     def test_quest_rewards_come_on_top_of_the_role(self):
         role = self.quest(self.disk, "bees_diamond")["rewards"]
@@ -687,7 +704,8 @@ class QuestRewards(unittest.TestCase):
     def test_chapter_tables_compile_to_reward_table_files(self):
         genes = json.loads(self.files[OUT / "reward_tables" / "sector_bees_breeding__perfect_genes.snbt"])
         key = "sector_bees_breeding/perfect_genes"
-        self.assertEqual(genes, {"id": "000000003F3DF4D3", "order_index": 18, "loot_size": 2, "use_title": True, "rewards": [
+        self.assertEqual(genes, {"id": "000000003F3DF4D3", "order_index": 18 + 0x3F3DF4D3 % qe.LOCAL_ORDER_SPAN,
+                                 "loot_size": 2, "use_title": True, "rewards": [
             {"id": stable_id(f"reward_table:{key}:0"), "type": "item", "item": {"id": "productivebees:gene", "count": 1,
              "components": {"productivebees:gene_group": {"attribute": "productivity", "value": "productivity.very_high",
                                                           "purity": 100}}}, "count": 1, "weight": 3.0},
@@ -695,7 +713,8 @@ class QuestRewards(unittest.TestCase):
              "components": {"productivebees:gene_group": {"attribute": "endurance", "value": "endurance.strong",
                                                           "purity": 100}}}, "count": 1, "weight": 1.5}]})
         bees = json.loads(self.files[OUT / "reward_tables" / "sector_bees_breeding__starter_bees.snbt"])
-        self.assertEqual((bees["id"], bees["order_index"], bees["loot_size"]), ("0000000075A01016", 19, 1))
+        self.assertEqual((bees["id"], bees["order_index"], bees["loot_size"]),
+                         ("0000000075A01016", 18 + 0x75A01016 % qe.LOCAL_ORDER_SPAN, 1))
         self.assertEqual([r["weight"] for r in bees["rewards"]], [1.0, 1.0])
         for lang, titles in (("en_us", ("A perfect gene", "Pick a bee")), ("es_es", ("Un gen perfecto", "Elegí una abeja"))):
             strings = json.loads(self.files[OUT / "lang" / f"{lang}.snbt"])
@@ -707,13 +726,13 @@ class QuestRewards(unittest.TestCase):
     def test_every_other_file_stays_byte_identical(self):
         changed = {OUT / "chapters" / (self.CHAPTER + ".snbt"), OUT / "lang" / "en_us.snbt", OUT / "lang" / "es_es.snbt"}
         new = {OUT / "reward_tables" / f"{self.CHAPTER}__{n}.snbt" for n in ("perfect_genes", "starter_bees")}
-        self.assertEqual({p for p in self.files if not p.exists()}, new)
+        self.assertEqual({p for p in self.files if p not in self.base_files}, new)
         for path, content in self.files.items():
             if path not in changed | new:
                 with self.subTest(path=path.name):
-                    self.assertEqual(content, path.read_text(encoding="utf-8"))
+                    self.assertEqual(content, self.base_files[path])
         for lang in LOCALES:
-            before = json.loads((OUT / "lang" / f"{lang}.snbt").read_text(encoding="utf-8"))
+            before = json.loads(self.base_files[OUT / "lang" / f"{lang}.snbt"])
             after = json.loads(self.files[OUT / "lang" / f"{lang}.snbt"])
             self.assertEqual({k: after[k] for k in before}, before)
             self.assertEqual(set(after) - set(before), {"reward_table.000000003F3DF4D3.title",
