@@ -326,14 +326,14 @@ Un eco es un mob del pack condensado por la luz agria (`EnvesEchoes`):
 - **Aura pálida:** partículas del color de la luz agria dos veces por segundo cerca de un jugador, y una chispa extra en los que tienen afijos.
 - **Escalado:** la vida base del eco (su entrada en la tabla, o la del rol) por el multiplicador del tier del intento y el del piso. Todo el daño que hace (golpes, proyectiles, hechizos, AoE) se multiplica por su factor: el de la entrada o el del rol, por el del tier y el del piso. Además suma la armadura del tier.
 - **El tier del intento manda, no el del jugador:** a los ecos no les llegan los aumentos de tier de Apotheosis (se marca `apotheosis:tier_augments_applied`) ni el `FinalizeSpawnEvent`, así que ningún mod los convierte en sus élites o invasores. Un jugador de Pinnacle que farmea un intento de Frontier pelea ecos de Frontier.
-- **Sin basura:** las caídas del mob y su equipo se tiran. Suelta sólo la tabla de su rol: las escoltas, nada (sólo experiencia); los élites, guardianes y campeones, esquirlas y algo más.
+- **Sin basura:** las caídas propias del mob y su equipo se descartan. Suelta sólo la tabla de su rol: las escoltas, nada (sólo experiencia); los élites, guardianes y campeones, esquirlas y algo más.
 - Persisten, no juntan cosas del piso y no se lastiman entre ellos.
 
 **Por piso** (IDs verificados en los JAR fijados: `ModEntities` de L_Ender's Cataclysm 3.33 y el registro de Mowzie's Mobs 1.8.2). Vida base a Frontier en el piso I, antes del multiplicador del piso; «daño ×» multiplica el daño propio del mob. El respaldo vanilla sólo se usa si el mod falta:
 
-| Piso | Escoltas (peso) | Élites: vida, daño ×, peso, respaldo | Campeón: vida, daño ×, respaldo |
+| Piso | Escoltas (peso) | Élites: vida, daño ×, peso, respaldo | Campeón: vida, daño × (respaldo: wither skeleton) |
 |---|---|---|---|
-| I · Osarios | esqueleto con arco y casco de malla (3), stray con arco (2) | `cataclysm:draugr` 60, ×1,2, 3, zombie; `elite_draugr` 75, ×1,15, 2, husk | `cataclysm:royal_draugr` 180, ×1,4, wither skeleton |
+| I · Osarios | esqueleto con arco y casco de malla (3), stray con arco (2) | `cataclysm:draugr` 60, ×1,2, 3, zombie; `elite_draugr` 75, ×1,15, 2, husk | `cataclysm:royal_draugr` 180, ×1,4 |
 | II · Cisternas | drowned con tridente | `deepling_brute` 85, ×1,1, 3, zombie; `deepling_angler` 60, ×1,1, 2, drowned; `deepling_priest` 55, ×1,2, 2, bruja | `cataclysm:coral_golem` 220, ×1,1 |
 | III · Fundición | wither skeleton (3), blaze (2) | `ignited_berserker` 80, ×1,0, 3, vindicador; `ignited_revenant` 90, ×1,0, 2, blaze | `cataclysm:the_prowler` 240, ×0,9 |
 | IV · Geodas | vex | `the_watcher` 50, ×1,2, 3, vex; `amethyst_crab` 110, ×0,8, 2, zombie | `cataclysm:ender_golem` 260, ×1,0 |
