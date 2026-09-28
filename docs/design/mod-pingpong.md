@@ -445,3 +445,48 @@ El libro no usa nada de esto hoy. Queda anotado para revisarlo en el cliente.
   - el clic que abre la receta;
   - los waystones en el mapa de FTB Chunks.
 - **Cadenas que esquivaron el «cualquiera de estos»** con un logro en lugar de los ítems, o pidiendo un ítem por varios: su conversión a `any` la programa el controlador.
+
+## Botines de jefe y la puerta de Starlight (27/9)
+
+Arreglos que encontraron los que escriben las quests. La regla del pack sigue siendo que el Wither es la única fuente de estrellas del Nether, y ahora las estrellas también pagan la puerta del Envés.
+
+### Botines de jefe
+
+Familia nueva `boss_drops` de `tools/generate_family_balance.py` (script `entrelumen_boss_drops_balance.js`):
+
+| Fuente | Qué hacía | Cambio |
+|---|---|---|
+| Theurgy, incubación | La licuefacción convierte una estrella o un huevo de dragón en varios azufres, y la incubación rearmaba cada uno. | Salen `theurgy:incubation/nether_star` y `theurgy:incubation/dragon_egg`. La licuefacción y la calcinación siguen consumiendo estrellas. |
+| RFTools Utility, generador de criaturas | Un Wither por 0,1 estrella de materia y 20.000 FE, y el Wither suelta una estrella entera. | Sale `rftoolsutility:minecraft_wither`. |
+| Oritech, controlador de spawner | Atrapa cualquier mob que lo pisa salvo el Dragón: un Wither costaba unas decenas de almas. | `#c:bosses` se suma a `oritech:spawner_blacklist`, con un archivo que se fusiona con el de Oritech. |
+| Bumblezone, la Reina | Pagaba estrellas por jalea real, y la abeja real de Productive Bees hace jalea sin fin. | La estrella sale de las recompensas por frasco y por cubo o bloque. |
+
+Ender IO (frascos de alma y spawner motorizado), Industrial Foregoing (herramienta de captura, y con ella el duplicador) y Apothic Spawners (captura y huevos) ya rechazan `#c:bosses`, y la rienda de ender tampoco toma jefes. La trampa de jefes de Forbidden Arcanus los captura para soltarlos y pelearlos, y Silent Gear sólo parte y rearma estrellas: ninguna fuente nueva.
+
+Quedan para decidir con Elias, sin tocar:
+
+- **Hostile Neural Networks.** El modelo del Wither, entrenado matando Withers, simula estrellas con FE y matrices de predicción. La guía de jefes lo presenta como la granja de estrellas del acto IV.
+- **Occultism, campo de batalla dimensional.** Con una gema trinidad, que no tiene lista negra, clona un Wither capturado y lo mata a cambio de datura: una estrella por victoria (`battlefield/minecraft/wither`).
+- **Huevos de dragón.** Los hacen el modelo del dragón de HNN, el campo de batalla (uno de cada cuatro), la nucleosíntesis de Mekanism (un huevo y 4 mB de antimateria) y la Reina (cubo o bloque de jalea). Draconic Evolution ya deja un huevo cada vez que se mata al dragón.
+- **El dragón del generador de RFTools** (100.000 FE) sigue: sin la pelea del End no deja corazón ni huevo, pero Draconic Evolution le suma unos 64 de polvo de draconio.
+
+### La puerta de Starlight
+
+Eternal Starlight es del acto IV: la receta del Orbe de la Profecía lleva una Carta de horizontes (familia `pingpong`). Pero el Guardián, cuyas ruinas salen en todo el Overworld, soltaba un Orbe en la primera victoria, también a quien ya mató al Dragón, y vendía más por una moneda de plata, que cuesta dos lingotes de hierro o una esmeralda. Los cristales estelares crecen sólo dentro de Starlight, así que sacar el Orbe a secas cerraría la dimensión:
+
+- La primera victoria suelta, en lugar del Orbe, los cuatro fragmentos de cristal estelar azul que pide la receta escalonada (`swapped_loot`; el generador cuenta los fragmentos en la receta editada).
+- El trueque del Orbe pasa a cuatro fragmentos por la misma moneda. Los trueques del Guardián están en código (`GatekeeperTrades`), así que el script de la familia los cambia cuando la entidad entra al mundo (`EntityEvents.spawned`), sin Java en el companion.
+- Las ruinas siguen como están: dan el marco del portal y la pelea, y el Orbe espera a la Carta.
+
+### Verificación (27/9)
+
+- `tools/generate_family_balance.py --check` pasa en las nueve familias, y `tools/test_family_balance.py` también (36 tests, 11 nuevos: los techos de Eterna, el ancla del Refugio, la forma de los aumentos, estos botines y la puerta de Starlight). Pasan además las 33 verificaciones de Python de CI, `check_guides.py` y el build del companion con sus 250 tests de JUnit.
+- Servidor descartable con el pack completo (274 JARs de servidor, `-Xmx4G`) y una sonda de KubeJS:
+  - las tres recetas quitadas no están, y la del zombi del generador de RFTools y la del Orbe sí;
+  - la lista negra de Oritech toma al Wither y al Dragón, no al zombi;
+  - ninguna recompensa de la Reina por frasco, cubo o bloque de jalea paga estrellas;
+  - tres tiradas de primera victoria del Guardián dieron la Tablilla y cuatro fragmentos, nunca un Orbe;
+  - un Guardián invocado vende cuatro fragmentos por una moneda donde vendía el Orbe (`offers-swapped`), con los demás trueques intactos;
+  - la infusión de la rienda oculta pide 80 de Eterna, 85 de Quanta y 60 de Arcana.
+- El primer arranque cortó la sonda por un método sobrecargado de Rhino; el segundo, ya corregido, terminó limpio. Los únicos errores del log son los conocidos de siempre, ninguno de estos archivos. El servidor se borró después.
+- Pendiente: probarlo en un cliente (el trueque en la pantalla del Guardián, el texto de las quests) y una pelea real con el Guardián.
