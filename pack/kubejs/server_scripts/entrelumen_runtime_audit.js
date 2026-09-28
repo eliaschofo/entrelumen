@@ -288,6 +288,7 @@ const entrelumenAuditTargets = {
     "aether:enchanted_berry",
     "aether:enchanted_gravitite",
     "aether:freezer",
+    "aether:golden_aercloud",
     "aether:golden_amber",
     "aether:golden_dart",
     "aether:golden_dart_shooter",
@@ -801,15 +802,23 @@ const entrelumenAuditTargets = {
     "create:wrench",
     "create:zinc_ingot",
     "create_connected:empty_fan_catalyst",
+    "create_connected:fan_sanding_catalyst",
+    "create_connected:inventory_access_port",
+    "create_connected:inventory_bridge",
+    "create_connected:item_silo",
     "create_connected:kinetic_battery",
     "create_connected:shear_pin",
     "create_connected:six_way_gearbox",
+    "create_dragons_plus:dragon_breath_bucket",
     "create_dragons_plus:fluid_hatch",
+    "create_dragons_plus:red_dye_bucket",
     "create_enchantment_industry:blaze_enchanter",
     "create_enchantment_industry:blaze_forger",
     "create_enchantment_industry:brass_bookshelf",
+    "create_enchantment_industry:ender_woven_bag",
     "create_enchantment_industry:experience_bucket",
     "create_enchantment_industry:experience_hatch",
+    "create_enchantment_industry:infuser",
     "create_enchantment_industry:mechanical_grindstone",
     "create_enchantment_industry:printer",
     "create_enchantment_industry:super_enchanting_template",
@@ -824,6 +833,7 @@ const entrelumenAuditTargets = {
     "create_new_age:magnetite_block",
     "create_new_age:overcharged_iron",
     "create_new_age:reactor_rod",
+    "create_new_age:redstone_magnet",
     "create_new_age:reinforced_motor",
     "create_new_age:street_light",
     "createaddition:alternator",
@@ -1670,6 +1680,7 @@ const entrelumenAuditTargets = {
     "friendsandfoes:totem_of_freezing",
     "friendsandfoes:totem_of_illusion",
     "friendsandfoes:wildfire_crown",
+    "ftbfiltersystem:smart_filter",
     "ftbquests:custom_icon",
     "ftbquests:lootcrate",
     "functionalstorage:armory_cabinet",
@@ -2833,6 +2844,7 @@ const entrelumenAuditTargets = {
     "minecraft:bow",
     "minecraft:bowl",
     "minecraft:bread",
+    "minecraft:breeze_rod",
     "minecraft:brewing_stand",
     "minecraft:brick",
     "minecraft:bricks",
@@ -4925,7 +4937,7 @@ const entrelumenAuditTargets = {
       "output": "farmersdelight:flint_knife"
     }
   ],
-  "signature": "27a9d3cdd17626e5"
+  "signature": "c66b1666c768d2b8"
 };
 
 ServerEvents.afterRecipes(event => {
