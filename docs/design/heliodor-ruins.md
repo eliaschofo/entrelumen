@@ -190,7 +190,7 @@ Las notas de Terra van en atriles. Los medidores dan los números.
 
 **Números.** Valores de Create 6.0.10 en el pack, los de `CStress` sin override en `pack/config`: la rueda hidráulica grande da 128 SU por RPM a 4 RPM (512 SU), la bomba mecánica pesa 4 SU por RPM y el rodamiento, 4. **R = 128 RPM.** Es la mayor velocidad 4·2^k con la que las cuatro bombas (4 × 4 × R = 2048 SU) entran en las cuatro ruedas juntas (2048 SU); Create sobrecarga sólo si el estrés supera la capacidad. Una rueda sola mueve las cuatro bombas a 32 RPM como mucho, y a 2R piden 4096 SU y se sobrecargan. De 4 a 128 RPM hacen falta cinco pasos de engranaje grande contra chico. El runtime calcula R en vivo con `BlockStressValues` (`RuinRules.pumpSpeed`), así que el desafío y las notas siguen a la config si cambia. La QA comprueba que el pack da 128.
 
-**Desvíos del diseño, y por qué.**
+**Desvíos del diseño, y por qué.** Los dos primeros quedaron decididos el 27/9: van las cuatro bombas en una red y la ruina exige el sentido de giro, porque en Create 6 las bombas no se invierten.
 - En Create 6 la bomba mecánica empuja siempre hacia donde mira: el sentido de giro no cambia el flujo. Por eso «dos bombas miran al revés» no se puede hacer con bombas reales. Las cuatro miran para arriba, o sea que sacan agua del foso, y la ruina exige el sentido de giro: las de las diagonales con x·z > 0 tienen que girar en negativo (el signo de Create sobre su eje) y las otras dos en positivo. Una bomba al revés se nota: salen burbujas en su toma, humo en su puerto, y avisa «Esta bomba gira al revés: escupe el agua».
 - Las cuatro bombas tienen que estar en **una sola red**. Con redes separadas, cada rueda movería su bomba a 128 RPM sola (512 SU) y no haría falta unir nada, y el diseño pide unir las cuatro.
 - El disco del banco tiene 4,5 de radio, 9 de diámetro como dice el doc. El comentario del arte decía 4,2, que dejaba afuera la celda de arriba de cada puerto de bomba.
@@ -402,7 +402,7 @@ Elias no quiere «una losa flotando», ni «media estructura destruyendo el pais
 
 - Arte de las diez ruinas a escala final (Elias revisa una por una). El exportador y las pruebas sólo dependen del contrato de marcadores.
 - Los modelos de la lista de arte provisorio.
-- Motor de Terra: que Elias confirme los dos desvíos (el sentido de las bombas lo exige la ruina; las cuatro en una red) y que la revisión del arte corrija lo que hoy repone el exportador.
+- Motor de Terra: que la revisión del arte corrija lo que hoy repone el exportador. Los dos desvíos quedaron decididos el 27/9.
 - El Atlas: ¿se saca la receta (cobre sobre un libro, 24/9) ahora que el Atlas espera en la Torre?
 - El Observatorio sobre el vacío: qué enciende las lentes (hoy un Ojo de Ender cada una, un dato de su JSON) y si los cuatro nidos deben pelearse todos o alcanza el primero (hoy uno por equipo). Los nidos del arte están dentro de los pilones: los shulkers salen en la primera columna libre de al lado.
 - La ruina inicial (`HeliodorRuins`, de main) sigue con su colocación propia, sin la barba ni el suelo del sitio.
