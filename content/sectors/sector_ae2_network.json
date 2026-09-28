@@ -49,7 +49,7 @@
     {"id": "qnb_ring5", "texture": "ae2:textures/block/quantum_ring.png", "x": 18.6, "y": -1.6, "scale": 2, "order": -1},
     {"id": "qnb_ring6", "texture": "ae2:textures/block/quantum_ring.png", "x": 18.6, "y": 0.0, "scale": 2, "order": -1},
     {"id": "qnb_ring7", "texture": "ae2:textures/block/quantum_ring.png", "x": 18.6, "y": 1.6, "scale": 2, "order": -1},
-    {"id": "next", "texture": "ae2:textures/item/processing_pattern.png", "x": 27.8, "y": 1.4, "scale": 2, "order": 0, "click": "chapter:sector_ae2_automation", "hover": {"en_us": "On to AE2 · Automation and Addons", "es_es": "Seguir a AE2 · Automatización y complementos"}},
+    {"id": "next", "texture": "ae2:textures/item/processing_pattern.png", "x": 27.8, "y": 1.4, "scale": 2, "order": 0, "click": "chapter:sector_ae2_automation", "hover": {"en_us": "On to AE2 · Automation", "es_es": "Seguir a AE2 · Automatización"}},
     {"id": "sun", "texture": "entrelumen:textures/gui/quests/sun_heliodor.png", "x": 23, "y": 0, "scale": 1, "order": -2, "alpha": 150, "reveal": "ae2_mastery"}
   ],
   "quests": [
@@ -423,6 +423,16 @@
       "sources": ["jar:appliedenergistics2-19.2.17.jar:assets/ae2/ae2guide/items-blocks-machines/energy_cells.md", "jar:appliedenergistics2-19.2.17.jar:data/ae2/recipe/network/blocks/energy_dense_energy_cell.json", "jar:appliedenergistics2-19.2.17.jar:data/ae2/recipe/network/wireless_terminal.json"]
     },
     {
+      "key": "ae2_energy_emitter", "role": "side", "deps": ["ae2_dense_cell"], "group": "power",
+      "task": {"item": "ae2:energy_level_emitter"},
+      "at": {"x": -12.25, "y": -11.0},
+      "en_us": {"title": "Low battery",
+        "text": ["A redstone torch, a charged certus crystal and a calculation processor make an [item:ae2:energy_level_emitter|ME Energy Level Emitter]. It reads the energy stored in the network, not items: start a generator when the cells run low and stop it when they're full."]},
+      "es_es": {"title": "Batería baja",
+        "text": ["Una antorcha de redstone, un cristal de certus cargado y un procesador de cálculo hacen un [item:ae2:energy_level_emitter|Emisor de Nivel de Energía ME]. Lee la energía guardada en la red, no ítems: prendé un generador cuando las celdas bajan y apagalo cuando están llenas."]},
+      "sources": ["jar:appliedenergistics2-19.2.17.jar:assets/ae2/ae2guide/items-blocks-machines/level_emitter.md", "jar:appliedenergistics2-19.2.17.jar:data/ae2/recipe/network/parts/energy_level_emitter.json"]
+    },
+    {
       "key": "ae2_vibration", "role": "side", "deps": ["ae2_energy"], "group": "power",
       "task": {"item": "ae2:vibration_chamber"},
       "at": {"x": -9.5, "y": -6.4},
@@ -565,6 +575,16 @@
       "sources": ["jar:appliedenergistics2-19.2.17.jar:assets/ae2/ae2guide/items-blocks-machines/cable_anchor.md", "jar:appliedenergistics2-19.2.17.jar:assets/ae2/ae2guide/items-blocks-machines/facades.md", "jar:appliedenergistics2-19.2.17.jar:assets/ae2/ae2guide/items-blocks-machines/network_tool.md"]
     },
     {
+      "key": "ae2_flat_parts", "role": "tip", "deps": ["ae2_network_tool"], "group": "control",
+      "task": {"type": "checkmark"},
+      "at": {"x": 3.1, "y": -5.9},
+      "en_us": {"title": "Flat parts",
+        "text": ["[tip] Interfaces and pattern providers turn flat in a crafting grid and back. Flat ones sit on a cable, several per block, and don't connect networks through their face: the easy border for a subnet. Sneak-use a wrench to pull off a single part."]},
+      "es_es": {"title": "Piezas planas",
+        "text": ["[tip] Las interfaces y los proveedores de patrones se vuelven planos en la mesa y al revés. Los planos van sobre un cable, varios por bloque, y no conectan redes por su cara: el borde fácil de una subred. Agachado, una llave saca una sola pieza."]},
+      "sources": ["jar:appliedenergistics2-19.2.17.jar:assets/ae2/ae2guide/ae2-mechanics/cable-subparts.md", "jar:appliedenergistics2-19.2.17.jar:assets/ae2/ae2guide/items-blocks-machines/interface.md", "jar:appliedenergistics2-19.2.17.jar:assets/ae2/ae2guide/items-blocks-machines/pattern_provider.md"]
+    },
+    {
       "key": "ae2_buses", "role": "side", "deps": ["ae2_controller"], "group": "buses",
       "tasks": [{"item": "ae2:import_bus"}, {"item": "ae2:export_bus"}],
       "at": {"x": -2.2, "y": 5.9},
@@ -615,6 +635,16 @@
       "sources": ["jar:appliedenergistics2-19.2.17.jar:assets/ae2/ae2guide/items-blocks-machines/upgrade_cards.md", "jar:appliedenergistics2-19.2.17.jar:assets/ae2/ae2guide/items-blocks-machines/import_bus.md"]
     },
     {
+      "key": "ae2_cell_cards", "role": "side", "deps": ["ae2_cards"], "group": "buses",
+      "tasks": [{"item": "ae2:equal_distribution_card"}, {"item": "ae2:void_card"}],
+      "at": {"x": -2.2, "y": 10.5},
+      "en_us": {"title": "Cards for cells",
+        "text": ["Two cards go on cells, in the cell workbench. An [item:ae2:equal_distribution_card|Equal Distribution Card] splits a partitioned cell evenly between its items; an [item:ae2:void_card|Overflow Destruction Card] deletes what arrives once the cell, or that item's share, is full."]},
+      "es_es": {"title": "Tarjetas para celdas",
+        "text": ["Dos tarjetas van en las celdas, en la mesa de celdas. Una [item:ae2:equal_distribution_card|Tarjeta Equal Distribution] reparte una celda particionada en partes iguales entre sus ítems; una [item:ae2:void_card|Tarjeta de recargo de descarga] borra lo que llega cuando la celda, o la parte de ese ítem, está llena."]},
+      "sources": ["jar:appliedenergistics2-19.2.17.jar:assets/ae2/ae2guide/items-blocks-machines/upgrade_cards.md", "jar:appliedenergistics2-19.2.17.jar:data/ae2/recipe/materials/carddistribution.json", "jar:appliedenergistics2-19.2.17.jar:data/ae2/recipe/materials/cardvoid.json"]
+    },
+    {
       "key": "ae2_planes", "role": "side", "deps": ["ae2_interface"], "group": "buses",
       "task": {"item": "ae2:formation_plane"},
       "at": {"x": 0.3, "y": 8.2},
@@ -646,9 +676,9 @@
       "sources": ["jar:appliedenergistics2-19.2.17.jar:assets/ae2/ae2guide/items-blocks-machines/monitors.md", "jar:appliedenergistics2-19.2.17.jar:data/ae2/recipe/network/parts/monitors_storage.json"]
     },
     {
-      "key": "ae2_planes_tip", "role": "tip", "deps": ["ae2_planes"],
+      "key": "ae2_planes_tip", "role": "tip", "deps": ["ae2_planes"], "group": "buses",
       "task": {"type": "checkmark"},
-      "at": {"x": -2.5, "y": 10.9},
+      "at": {"x": 0.3, "y": 10.5},
       "en_us": {"title": "Plane tricks",
         "text": ["[tip] Annihilation planes take pickaxe enchantments: Fortune multiplies ore drops, Silk Touch keeps blocks whole. Face one up at the very top of the world and it gathers sky stone dust from nothing."]},
       "es_es": {"title": "Trucos de paneles",
