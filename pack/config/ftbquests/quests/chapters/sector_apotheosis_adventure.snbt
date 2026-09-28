@@ -1169,7 +1169,10 @@
       ],
       "optional": true,
       "icon": {
-        "id": "minecraft:spawner"
+        "id": "ftbquests:custom_icon",
+        "components": {
+          "ftbquests:icon": "apotheosis:textures/blocks/boss_spawner.png"
+        }
       },
       "disable_toast": true,
       "hide_lock_icon": true
@@ -1237,6 +1240,33 @@
       "hide_lock_icon": true
     },
     {
+      "id": "45FAFFA50C505D1C",
+      "x": -13.2,
+      "y": 5.4,
+      "shape": "circle",
+      "size": 0.75,
+      "preset": "el_info",
+      "dependencies": [
+        "7904F35EDB118489"
+      ],
+      "tasks": [
+        {
+          "id": "4ADDBE9B4F0E5A4E",
+          "type": "checkmark"
+        }
+      ],
+      "rewards": [],
+      "tags": [
+        "entrelumen_info"
+      ],
+      "optional": true,
+      "icon": {
+        "id": "minecraft:spawner"
+      },
+      "disable_toast": true,
+      "hide_lock_icon": true
+    },
+    {
       "id": "71BCDEB56D856B4E",
       "x": 3.2,
       "y": 7.8,
@@ -1299,6 +1329,147 @@
       "icon": {
         "id": "apotheosis:sigil_of_malice"
       }
+    },
+    {
+      "id": "612CD8086FE74C5B",
+      "x": 3.2,
+      "y": 4.6,
+      "shape": "el_tag",
+      "size": 1.0,
+      "preset": "el_tip",
+      "dependencies": [
+        "71BCDEB56D856B4E"
+      ],
+      "tasks": [
+        {
+          "id": "28503D4D3BD4F478",
+          "type": "checkmark"
+        }
+      ],
+      "rewards": [],
+      "tags": [
+        "entrelumen_tip"
+      ],
+      "optional": true,
+      "icon_scale": 0.75,
+      "disable_toast": true,
+      "hide_lock_icon": true
+    },
+    {
+      "id": "7AF5662234017803",
+      "x": 9.6,
+      "y": 4.6,
+      "shape": "circle",
+      "size": 0.75,
+      "preset": "el_info",
+      "dependencies": [
+        "71BCDEB56D856B4E"
+      ],
+      "tasks": [
+        {
+          "id": "3C648733061EC924",
+          "type": "checkmark"
+        }
+      ],
+      "rewards": [],
+      "tags": [
+        "entrelumen_info"
+      ],
+      "optional": true,
+      "icon": {
+        "id": "ftbquests:custom_icon",
+        "components": {
+          "ftbquests:entity_face": "minecraft:skeleton_horse"
+        }
+      },
+      "disable_toast": true,
+      "hide_lock_icon": true
+    },
+    {
+      "id": "55B825A10C4018FB",
+      "x": 9.6,
+      "y": 7.8,
+      "shape": "el_star",
+      "size": 1.0,
+      "preset": "el_secret",
+      "dependencies": [
+        "5AB22608149A92E7"
+      ],
+      "tasks": [
+        {
+          "id": "27F610E8727DFFDA",
+          "type": "item",
+          "item": {
+            "id": "ftbfiltersystem:smart_filter",
+            "count": 1,
+            "components": {
+              "ftbfiltersystem:filter": "or(item(apotheosis:music_disc_flash)item(apotheosis:music_disc_glimmer)item(apotheosis:music_disc_shimmer))"
+            }
+          },
+          "count": 1,
+          "consume_items": false,
+          "icon": {
+            "id": "apotheosis:music_disc_flash"
+          }
+        }
+      ],
+      "rewards": [
+        {
+          "id": "2195B15A312E0F82",
+          "type": "xp",
+          "xp": 8
+        },
+        {
+          "id": "4F876527D40E99EC",
+          "type": "random",
+          "table_id": 1306562842
+        },
+        {
+          "id": "5841683478ADD8C4",
+          "type": "toast",
+          "description": "entrelumen.quests.toast.secret",
+          "auto": "invisible"
+        }
+      ],
+      "tags": [
+        "entrelumen_secret"
+      ],
+      "optional": true,
+      "icon": {
+        "id": "apotheosis:music_disc_flash"
+      },
+      "invisible": true,
+      "hide_dependency_lines": true
+    },
+    {
+      "id": "21221E9000F809E7",
+      "x": 3.2,
+      "y": 11.0,
+      "shape": "circle",
+      "size": 0.75,
+      "preset": "el_info",
+      "dependencies": [
+        "71BCDEB56D856B4E"
+      ],
+      "tasks": [
+        {
+          "id": "311524A6EE0CA83E",
+          "type": "checkmark"
+        }
+      ],
+      "rewards": [],
+      "tags": [
+        "entrelumen_info"
+      ],
+      "optional": true,
+      "icon": {
+        "id": "ftbquests:custom_icon",
+        "components": {
+          "ftbquests:entity_face": "minecraft:blaze"
+        }
+      },
+      "disable_toast": true,
+      "hide_lock_icon": true
     },
     {
       "id": "1C881E982AEC5E3A",
@@ -1988,9 +2159,9 @@
     {
       "id": "1463052471C2C815",
       "x": -14.7464,
-      "y": 8.6,
+      "y": 7.0536,
       "width": 5.775,
-      "height": 2.1667,
+      "height": 5.775,
       "rotation": 0.0,
       "image": "entrelumen:textures/gui/quests/px.png",
       "color": 3811925,
@@ -2001,7 +2172,7 @@
     {
       "id": "6B98FAC164623519",
       "x": -16.9357,
-      "y": 7.9571,
+      "y": 4.8643,
       "width": 0.6667,
       "height": 0.6667,
       "rotation": 0.0,
@@ -2012,7 +2183,7 @@
     {
       "id": "78B55F66399074A3",
       "x": -12.5571,
-      "y": 7.9571,
+      "y": 4.8643,
       "width": 0.6667,
       "height": 0.6667,
       "rotation": 90.0,
@@ -2045,7 +2216,7 @@
     {
       "id": "7E7A34EDC21F52CB",
       "x": -14.7464,
-      "y": 7.3907,
+      "y": 4.2979,
       "width": 3.5417,
       "height": 0.375,
       "rotation": 0.0,
@@ -2057,10 +2228,10 @@
     },
     {
       "id": "036D6A62E0C19E28",
-      "x": 4.8536,
-      "y": 6.2536,
-      "width": 5.775,
-      "height": 5.775,
+      "x": 6.4,
+      "y": 6.2,
+      "width": 9.6333,
+      "height": 5.9,
       "rotation": 0.0,
       "image": "entrelumen:textures/gui/quests/px.png",
       "color": 3811925,
@@ -2070,8 +2241,8 @@
     },
     {
       "id": "7014010D4B0E9F4E",
-      "x": 2.6643,
-      "y": 4.0643,
+      "x": 2.5571,
+      "y": 3.9571,
       "width": 0.6667,
       "height": 0.6667,
       "rotation": 0.0,
@@ -2081,8 +2252,8 @@
     },
     {
       "id": "6951447A389F2EAD",
-      "x": 7.0429,
-      "y": 4.0643,
+      "x": 10.2429,
+      "y": 3.9571,
       "width": 0.6667,
       "height": 0.6667,
       "rotation": 90.0,
@@ -2092,7 +2263,7 @@
     },
     {
       "id": "035CB92390A6A238",
-      "x": 7.0429,
+      "x": 10.2429,
       "y": 8.4429,
       "width": 0.6667,
       "height": 0.6667,
@@ -2103,7 +2274,7 @@
     },
     {
       "id": "38FE68886B127B15",
-      "x": 2.6643,
+      "x": 2.5571,
       "y": 8.4429,
       "width": 0.6667,
       "height": 0.6667,
@@ -2114,9 +2285,9 @@
     },
     {
       "id": "6A0E55BE3590CF84",
-      "x": 8.5643,
-      "y": 6.2536,
-      "width": 2.4167,
+      "x": 12.6036,
+      "y": 6.2,
+      "width": 4.375,
       "height": 0.375,
       "rotation": 0.0,
       "image": "",

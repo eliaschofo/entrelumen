@@ -362,6 +362,7 @@ const entrelumenAuditTargets = {
     "apotheosis:gold_upgrade_smithing_template",
     "apotheosis:iron_upgrade_smithing_template",
     "apotheosis:luminous_crystal_shard",
+    "apotheosis:music_disc_flash",
     "apotheosis:mysterious_scrap_metal",
     "apotheosis:potion_charm",
     "apotheosis:reforging_table",
@@ -1877,6 +1878,7 @@ const entrelumenAuditTargets = {
     "immersiveengineering:manual",
     "immersiveengineering:metal_barrel",
     "immersiveengineering:metal_press",
+    "immersiveengineering:minecart_woodencrate",
     "immersiveengineering:mixer",
     "immersiveengineering:mold_bullet_casing",
     "immersiveengineering:mold_packing_4",
@@ -2821,11 +2823,13 @@ const entrelumenAuditTargets = {
     "mekanisticrouters:chemical_module_mk1",
     "mekanisticrouters:chemical_refill_module",
     "mekanisticrouters:chemical_upgrade",
+    "mekmm:ambient_gas_collector",
     "mekmm:basic_dissolving_factory",
     "mekmm:basic_oxidizing_factory",
     "mekmm:cnc_lathe",
     "mekmm:cnc_rolling_mill",
     "mekmm:cnc_stamper",
+    "mekmm:empty_crystal",
     "mekmm:large_antiprotonic_nucleosynthesizer",
     "mekmm:large_chemical_infuser",
     "mekmm:large_electrolytic_separator",
@@ -2834,6 +2838,8 @@ const entrelumenAuditTargets = {
     "mekmm:large_solar_neutron_activator",
     "mekmm:planting_station",
     "mekmm:presser",
+    "mekmm:recycler",
+    "mekmm:scrap_box",
     "mekmm:wireless_charging_station",
     "mekmm:wireless_transmission_station",
     "merequester:requester",
@@ -4961,7 +4967,7 @@ const entrelumenAuditTargets = {
       "output": "farmersdelight:flint_knife"
     }
   ],
-  "signature": "cb0b1ac5b73652d2"
+  "signature": "d8b576d9458569df"
 };
 
 ServerEvents.afterRecipes(event => {
