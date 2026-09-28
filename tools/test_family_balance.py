@@ -307,10 +307,25 @@ class FamilyBalanceTest(unittest.TestCase):
         with unittest.mock.patch.dict(balance.FAMILIES, {'probe': {'data': specs}}):
             out = {k: json.loads(v) for k, v in balance.build_data('probe', found).items()}
         self.assertEqual(out, {'patchouli/recipe/guide_book.json': first, 'beta/recipe/book.json': second})
-        for spec in (balance.copied(path, 'alpha-', '', owners=3), balance.copied(path, 'gamma-', '', owners=2)):
+        # A copy never lands on a path that a pinned JAR already ships.
+        taken = dict(found, **{'data/beta/recipe/book.json': [('beta-2.jar', '', b'{}')]})
+        for spec, where in ((balance.copied(path, 'alpha-', '', owners=3), found),
+                            (balance.copied(path, 'gamma-', '', owners=2), found),
+                            (balance.copied(path, 'beta-', '', owners=2, to='data/beta/recipe/book.json'), taken)):
             with unittest.mock.patch.dict(balance.FAMILIES, {'probe': {'data': [spec]}}):
                 with self.assertRaises(AssertionError):
-                    balance.build_data('probe', found)
+                    balance.build_data('probe', where)
+
+    @unittest.skipUnless(lock_available(), 'Pinned dependency JARs are not available on this machine')
+    def test_every_compact_machines_room_template_loads(self):
+        # Compact Machines ships its room templates in an optional datapack no world enables by itself; the
+        # industrial family loads all of it, so a template the mod adds later fails here.
+        shipped = {path[len(balance.CM_BASIC):] for path in pinned_data()
+                   if path.startswith(balance.CM_BASIC + 'data/')}
+        copies = {spec['to'] for spec in balance.FAMILIES['industrial']['data'] if spec['op'] == 'copy'}
+        self.assertEqual(shipped, set(balance.CM_ROOM_FILES))
+        self.assertLessEqual(shipped, copies)
+        self.assertEqual(len(shipped), 24)
 
     def test_loop_check_catches_uncrafting_and_gate_leaks(self):
         lum = balance.LUMINOSITY['arcane']
@@ -627,6 +642,76 @@ GATEKEEPER_LOOT = {'type': 'eternal_starlight:boss', 'pools': [
          'max_inclusive': 1}]}]}]}
 
 
+BOSS_TAG = 'c:bosses'
+# NeoForge 21.1.249 defines c:bosses as the Ender Dragon, the Wither and an optional #forge:bosses (no pinned
+# JAR ships that one); vanilla has no such tag.
+NEOFORGE_BOSSES = ('minecraft:ender_dragon', 'minecraft:wither', '#forge:bosses')
+# Quest bosses (role "boss" with a kill task) that stay out of c:bosses. None shows a boss bar (no
+# ServerBossEvent in its class) and no mod tags it as a boss, so each waits for Elias's call (28 September
+# 2026); until then c:bosses does not cover it. An entry no quest needs any more fails too.
+UNTAGGED_QUEST_BOSSES = {
+    'minecraft:warden': 'Vanilla, no boss bar; neither vanilla, NeoForge nor a pinned mod tags it',
+    'evilcraft:werewolf': 'A villager turned on full-moon nights; EvilCraft already keeps its spirit out of boxes',
+    'immersiveengineering:fusilier': "IE's raid variant of a pillager",
+    'immersiveengineering:commando': "IE's raid variant of a vindicator, evoker or ravager",
+    'immersiveengineering:bulwark': "IE's raid variant of a vindicator, evoker or ravager",
+    'irons_spellbooks:ice_spider': "A snow hunter; Iron's Spells tags only the Dead King and Tyros",
+    'occultism:afrit_wild': 'The Afrit of an open conjure ritual',
+    'occultism:marid_unbound': "The Marid of Tibira's Attraction",
+    'eternal_starlight:permafrost': "An ESBoss without a boss bar; Eternal Starlight's own c:bosses leaves it out",
+}
+
+
+def entity_tags(found):
+    """Every entity type tag as the pack loads it: the pinned JARs' files, the companion's and the pack's (tags
+    merge across datapacks), plus NeoForge's own c:bosses. Values keep their #references."""
+    tags = {BOSS_TAG: list(NEOFORGE_BOSSES)}
+
+    def add(tag, data):
+        members = tags.setdefault(tag, [])
+        for value in data.get('values', []):
+            value = value['id'] if isinstance(value, dict) else value
+            if value not in members:
+                members.append(value)
+
+    for path, owners in found.items():
+        match = re.fullmatch(r'data/([^/]+)/tags/entity_type/(.+)\.json', path)
+        if match:
+            for _, _, raw in owners:
+                add(f'{match.group(1)}:{match.group(2)}', json.loads(raw))
+    for base in (balance.COMPANION_DATA, balance.PACK_DATA):
+        for path in base.glob('*/tags/entity_type/**/*.json'):
+            namespace, rest = path.relative_to(base).as_posix().split('/tags/entity_type/', 1)
+            add(f"{namespace}:{rest.removesuffix('.json')}", json.loads(path.read_text(encoding='utf-8')))
+    return tags
+
+
+def tag_members(tags, tag, seen=frozenset()):
+    """The entity IDs of a tag, nested #tags resolved."""
+    out = set()
+    for value in tags.get(tag, []):
+        if value.startswith('#'):
+            if value[1:] not in seen:
+                out |= tag_members(tags, value[1:], seen | {tag})
+        else:
+            out.add(value)
+    return out
+
+
+def quest_boss_kills():
+    """{entity: [quest keys]} for every quest with the boss role and a kill task, in sectors and guides."""
+    kills = {}
+    for folder in ('content/sectors', 'content/guides'):
+        for path in sorted((ROOT / folder).glob('*.json')):
+            for quest in json.loads(path.read_text(encoding='utf-8')).get('quests', []):
+                if quest.get('role') != 'boss':
+                    continue
+                for task in quest.get('tasks') or [quest.get('task') or {}]:
+                    if task.get('type') == 'kill':
+                        kills.setdefault(task['entity'], []).append(quest['key'])
+    return kills
+
+
 class BossDropsTest(unittest.TestCase):
     """The balance batch of 27 September 2026 (docs/design/mod-pingpong.md#botines-de-jefe)."""
 
@@ -636,7 +721,9 @@ class BossDropsTest(unittest.TestCase):
                                                    'rftoolsutility:minecraft_wither', 'rftoolsutility:minecraft_ender_dragon'})
         tags = [s for s in family['data'] if s['op'] == 'tag_values']
         self.assertEqual([(s['path'], s['values']) for s in tags],
-                         [('data/oritech/tags/entity_type/spawner_blacklist.json', ['#c:bosses'])])
+                         [('data/c/tags/entity_type/bosses.json',
+                           ['deeperdarker:stalker', 'draconicevolution:draconic_guardian', 'friendsandfoes:wildfire']),
+                          ('data/oritech/tags/entity_type/spawner_blacklist.json', ['#c:bosses'])])
         queen = [s for s in family['data'] if s['op'] == 'remove_values']
         self.assertEqual(len(queen), 2)
         self.assertTrue(all(v['item']['id'] == balance.NETHER_STAR for s in queen for v in s['values']))
@@ -662,6 +749,35 @@ class BossDropsTest(unittest.TestCase):
         self.assertEqual(boss_recipes, {'rftoolsutility:minecraft_wither', 'rftoolsutility:minecraft_ender_dragon'})
         self.assertLessEqual(boss_recipes, set(balance.FAMILIES['boss_drops']['removals']))
         self.assertIn('rftoolsutility:minecraft_zombie', spawns)
+
+    @unittest.skipUnless(lock_available(), 'Pinned dependency JARs are not available on this machine')
+    def test_every_quest_boss_is_a_tagged_boss(self):
+        # The capture tools and spawners that keep bosses out (Ender IO, Industrial Foregoing, Apothic Spawners,
+        # Carry On, Oritech) read c:bosses: a boss the quests send players after must be in it, or be listed.
+        tags = entity_tags(pinned_data())
+        bosses = tag_members(tags, BOSS_TAG)
+
+        def tagged(entity):
+            if entity.startswith('#'):
+                return entity[1:] == BOSS_TAG or bool(tag_members(tags, entity[1:])) and tag_members(tags, entity[1:]) <= bosses
+            return entity in bosses
+
+        kills = quest_boss_kills()
+        self.assertIn('friendsandfoes:wildfire', kills)
+        untagged = {entity: keys for entity, keys in kills.items() if not tagged(entity)}
+        self.assertEqual(sorted(untagged), sorted(UNTAGGED_QUEST_BOSSES), untagged)
+        self.assertTrue(all(reason.strip() for reason in UNTAGGED_QUEST_BOSSES.values()))
+
+    @unittest.skipUnless(lock_available(), 'Pinned dependency JARs are not available on this machine')
+    def test_no_boss_spirit_can_be_boxed(self):
+        # EvilCraft takes no tags: its spirit blacklist (regular expressions) names every boss of c:bosses.
+        config = (ROOT / 'pack/config/evilcraft-common.toml').read_text(encoding='utf-8')
+        (listed,) = re.findall(r'^\s*entityBlacklist = (\[.*\])$', config, re.M)
+        patterns = json.loads(listed)
+        bosses = tag_members(entity_tags(pinned_data()), BOSS_TAG)
+        self.assertLessEqual({'friendsandfoes:wildfire', 'deeperdarker:stalker', 'draconicevolution:draconic_guardian'}, bosses)
+        missing = sorted(b for b in bosses if not any(re.fullmatch(p, b) for p in patterns))
+        self.assertEqual(missing, [])
 
     def test_swapped_loot_pays_exactly_the_staged_recipe(self):
         spec = balance.swapped_loot(GATEKEEPER, balance.ORB, balance.SHARD, '', count=4, staged=balance.ORB)

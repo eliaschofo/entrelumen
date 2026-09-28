@@ -9,8 +9,8 @@
     "es_es": "Herramientas de construcción"
   },
   "subtitle": {
-    "en_us": "Framed blocks, tiny tiles, construction sticks, gadgets and measuring tape: detail and scale.",
-    "es_es": "Bloques enmarcados, piezas diminutas, varas de construcción, gadgets y cinta métrica: detalle y escala."
+    "en_us": "Framed blocks, tiny tiles and measuring tape: the detail work.",
+    "es_es": "Bloques enmarcados, piezas diminutas y cinta métrica: el trabajo fino."
   },
   "quests": [
     {
@@ -25,15 +25,16 @@
       },
       "en_us": [
         "Tools for Builders",
-        "Two kinds of tools: some for &edetail&r (shapes smaller than a block, blocks that wear any texture) and some for &escale&r (placing, swapping and copying hundreds of blocks at once). Only the heavy machines at the end wait for the story.\n\nScaffolding optional. Taste not included."
+        "Tools for &edetail&r: shapes smaller than a block and blocks that wear any texture. Only the heavy machine at the end waits for the story.\n\nScaffolding optional. Taste not included.\n\nScale hangs with the gadgets: [quest:building_tools_stick|sticks] and [quest:building_tools_gadgets|gadgets] that place, swap and copy hundreds of blocks at once."
       ],
       "es_es": [
         "Herramientas para constructores",
-        "Dos tipos de herramientas: para el &edetalle&r (formas más chicas que un bloque, bloques que se visten con cualquier textura) y para la &eescala&r (poner, cambiar y copiar cientos de bloques a la vez). Sólo las máquinas pesadas del final esperan a la historia.\n\nAndamios opcionales. El buen gusto no viene incluido."
+        "Herramientas para el &edetalle&r: formas más chicas que un bloque y bloques que se visten con cualquier textura. Sólo la máquina pesada del final espera a la historia.\n\nAndamios opcionales. El buen gusto no viene incluido.\n\nLa escala cuelga con los aparatos: [quest:building_tools_stick|varas] y [quest:building_tools_gadgets|aparatos] que ponen, cambian y copian cientos de bloques a la vez."
       ],
       "sources": [
         "repo:docs/design/builder-utilities-family.md",
-        "repo:docs/research/reference-packs.md"
+        "repo:docs/research/reference-packs.md",
+        "repo:content/sectors/sector_gadgets.json"
       ]
     },
     {
@@ -236,15 +237,16 @@
       },
       "en_us": [
         "Pack Change: Heavy Builders",
-        "The &eRFTools Builder&r needs a Handling Core and the &eMining Gadgets&r a reinforced alloy, both act III, because they move or mine huge volumes.\n\nEverything else here is free from day one."
+        "The &eRFTools Builder&r needs a Handling Core, act III, because it moves huge volumes.\n\nEverything else here is free from day one.\n\nThe [quest:gd_mg|Mining Gadgets] wait for act III too, with a reinforced alloy."
       ],
       "es_es": [
         "Cambio del pack: los pesados",
-        "El &eRFTools Builder&r pide un Núcleo de manipulación y los &eMining Gadgets&r una aleación reforzada, ambos del acto III, porque mueven o minan volúmenes enormes.\n\nTodo lo demás de acá está libre desde el primer día."
+        "El &eRFTools Builder&r pide un Núcleo de manipulación, del acto III, porque mueve volúmenes enormes.\n\nTodo lo demás de acá está libre desde el primer día.\n\nLos [quest:gd_mg|Mining Gadgets] también esperan al acto III, con una aleación reforzada."
       ],
       "sources": [
         "repo:pack/kubejs/server_scripts/entrelumen_rftools_balance.js",
-        "repo:pack/kubejs/server_scripts/entrelumen_industrial_balance.js"
+        "repo:pack/kubejs/server_scripts/entrelumen_industrial_balance.js",
+        "repo:content/sectors/sector_gadgets.json"
       ]
     },
     {
@@ -263,14 +265,15 @@
       },
       "en_us": [
         "Tip: a Builder's Workflow",
-        "Measure with the tape, flatten with the Altar of Levelling or a Destruction Gadget, raise walls with a Construction Stick, swap materials with the Exchanging Gadget, then add detail with FramedBlocks, Macaw's and LittleTiles.\n\nThen Copy-Paste your best house and call it a street."
+        "Measure with the tape, flatten with the Altar of Levelling or a [quest:bg_destroy|Destruction Gadget], raise walls with a [quest:building_tools_stick|Construction Stick], swap materials with the [quest:bg_exchange|Exchanging Gadget], then add detail with FramedBlocks, Macaw's and LittleTiles.\n\nThen [quest:bg_copy|copy and paste] your best house and call it a street."
       ],
       "es_es": [
         "Truco: el método del constructor",
-        "Medí con la cinta, aplaná con el Altar de Nivelación o un Destruction Gadget, levantá paredes con una Vara de construcción, cambiá materiales con el Exchanging Gadget y después sumá detalle con FramedBlocks, Macaw's y LittleTiles.\n\nDespués copiá y pegá tu mejor casa y llamala calle."
+        "Medí con la cinta, aplaná con el Altar de Nivelación o un [quest:bg_destroy|Aparato de destrucción], levantá paredes con una [quest:building_tools_stick|Vara de construcción], cambiá materiales con el [quest:bg_exchange|Aparato de intercambio] y después sumá detalle con FramedBlocks, Macaw's y LittleTiles.\n\nDespués [quest:bg_copy|copiá y pegá] tu mejor casa y llamala calle."
       ],
       "sources": [
-        "repo:docs/design/builder-utilities-family.md"
+        "repo:docs/design/builder-utilities-family.md",
+        "repo:content/sectors/sector_gadgets.json"
       ]
     },
     {
@@ -289,14 +292,15 @@
       },
       "en_us": [
         "Detail and Scale",
-        "Pieces smaller than a block, any texture on any shape, thousands of blocks placed without breaking a sweat.\n\nEvery good house needs a garden. The farming chapters are next door."
+        "Pieces smaller than a block and any texture on any shape. Thousands of blocks placed without breaking a sweat: [chapter:sector_gadgets|Gadgets and Helpers].\n\nEvery good house needs a garden. The farming chapters are next door."
       ],
       "es_es": [
         "Detalle y escala",
-        "Piezas más chicas que un bloque, cualquier textura en cualquier forma, miles de bloques puestos sin transpirar.\n\nToda buena casa necesita una huerta. Los capítulos de granjas están al lado."
+        "Piezas más chicas que un bloque y cualquier textura en cualquier forma. Miles de bloques puestos sin transpirar: [chapter:sector_gadgets|Aparatos y ayudantes].\n\nToda buena casa necesita una huerta. Los capítulos de granjas están al lado."
       ],
       "sources": [
-        "repo:content/guides/README.md"
+        "repo:content/guides/README.md",
+        "repo:content/sectors/sector_gadgets.json"
       ]
     }
   ]

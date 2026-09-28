@@ -5,3 +5,4 @@ Capítulos de quests que documentan el pack para quien recién empieza: cada mod
 - `emblem`: textura del ítem clave, dibujada 4× sobre el medallón del capítulo. Tiene que existir en un JAR fijado, ser cuadrada (16 o 32 px) y quieta.
 - Una tarea con `tag` también nombra el `item` concreto que FTB va a pedir: no hay mod de filtros. Para metales unificados, el que elige Almost Unified.
 - Una tarea de ítem pide el ítem que el jugador realmente recibe: si Almost Unified lo reemplaza, va el unificado.
+- Una descripción enlaza quests o capítulos como las cadenas: `[quest:clave|texto]` y `[chapter:nombre|texto]` (ver [el formato de las cadenas](../sectors/README.md)). Ese párrafo va sin códigos `&`, que FTB no lee dentro de un texto con enlace, y los dos idiomas enlazan lo mismo. `tools/generate_quests.py` rechaza un destino que no existe.

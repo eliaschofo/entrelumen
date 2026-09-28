@@ -9,8 +9,8 @@
     "es_es": "Ayudas en el mundo"
   },
   "subtitle": {
-    "en_us": "Ultimine, Carry On, pocket villagers, elevators, lights, beds for the road and small fixes.",
-    "es_es": "Ultimine, Carry On, aldeanos de bolsillo, ascensores, luces, camas de viaje y arreglos chicos."
+    "en_us": "Ultimine, Carry On, beds for the road and small fixes.",
+    "es_es": "Ultimine, Carry On, camas de viaje y arreglos chicos."
   },
   "quests": [
     {
@@ -25,14 +25,15 @@
       },
       "en_us": [
         "Work Smarter Outside",
-        "Inventory helpers save clicks; these save hours. Mining veins, moving chests, pocketing villagers, climbing, lighting and sleeping far from home, each with a limit the pack sets.\n\nKnow the limit and nothing surprises you. Mostly."
+        "Inventory helpers save clicks; these save hours. Mining veins, moving chests and sleeping far from home, each with a limit the pack sets.\n\nKnow the limit and nothing surprises you. Mostly.\n\n[quest:qol_world_villagers|Pocket villagers], [quest:qol_world_elevators|elevators] and [quest:qol_world_torchmaster|lights you can't see] hang with the gadgets."
       ],
       "es_es": [
         "Trabajá mejor afuera",
-        "Las ayudas de inventario ahorran clics; estas ahorran horas. Minar vetas, mudar cofres, guardar aldeanos en el bolsillo, subir, iluminar y dormir lejos de casa, cada una con un límite que fija el pack.\n\nConocé el límite y nada te sorprende. Casi nada."
+        "Las ayudas de inventario ahorran clics; estas ahorran horas. Minar vetas, mudar cofres y dormir lejos de casa, cada una con un límite que fija el pack.\n\nConocé el límite y nada te sorprende. Casi nada.\n\n[quest:qol_world_villagers|Los aldeanos de bolsillo], [quest:qol_world_elevators|los ascensores] y [quest:qol_world_torchmaster|las luces que no se ven] cuelgan con los aparatos."
       ],
       "sources": [
-        "repo:docs/design/qol-parity.md"
+        "repo:docs/design/qol-parity.md",
+        "repo:content/sectors/sector_gadgets.json"
       ]
     },
     {
@@ -251,8 +252,8 @@
       "deps": [
         "qol_world_small_fixes"
       ],
-      "type": "item",
-      "item": "dummmmmmy:target_dummy",
+      "type": "checkmark",
+      "icon": "dummmmmmy:target_dummy",
       "optional": true,
       "layout": {
         "x": 15,
@@ -262,13 +263,14 @@
       },
       "en_us": [
         "Tip: Test Your Damage",
-        "A &eTarget Dummy&r shows the damage of every hit and your damage per second. Compare weapons, enchantments and Apotheosis gems before a boss, not during."
+        "Hit numbers, damage per second and a dummy that never dies: [quest:creatures_welcome|the training yard]."
       ],
       "es_es": [
         "Truco: probá tu daño",
-        "Un &eMuñeco de práctica&r muestra el daño de cada golpe y tu daño por segundo. Compará armas, encantamientos y gemas de Apotheosis antes de un jefe, no durante."
+        "Los números de cada golpe, el daño por segundo y un muñeco que nunca muere: [quest:creatures_welcome|el patio de práctica]."
       ],
       "sources": [
+        "repo:content/sectors/sector_creatures.json#creatures_welcome",
         "jar:dummmmmmy-neoforge-1.21-2.1.0.jar:assets/dummmmmmy/lang/en_us.json"
       ]
     },
@@ -314,14 +316,15 @@
       },
       "en_us": [
         "A Lighter World",
-        "Veins in one swing, chests on your back, villagers in your pocket, elevators, lit caves and a bed anywhere.\n\nThe world is just as big. It just weighs less now."
+        "Veins in one swing, chests on your back and a bed anywhere.\n\nThe world is just as big. It just weighs less now.\n\nThe rest of the toolbox: [chapter:sector_gadgets|Gadgets and Helpers]."
       ],
       "es_es": [
         "Un mundo más liviano",
-        "Vetas de un golpe, cofres a cuestas, aldeanos en el bolsillo, ascensores, cuevas iluminadas y una cama en cualquier lado.\n\nEl mundo sigue igual de grande. Sólo pesa menos."
+        "Vetas de un golpe, cofres a cuestas y una cama en cualquier lado.\n\nEl mundo sigue igual de grande. Sólo pesa menos.\n\nEl resto de la caja de herramientas: [chapter:sector_gadgets|Aparatos y ayudantes]."
       ],
       "sources": [
-        "repo:content/guides/README.md"
+        "repo:content/guides/README.md",
+        "repo:content/sectors/sector_gadgets.json"
       ]
     }
   ]

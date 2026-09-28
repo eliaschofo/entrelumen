@@ -504,16 +504,42 @@ def generate_all(chapters, book=None):
 
 
 GUIDE_TYPES = {"checkmark", "item", "dimension", "advancement"}
+GUIDE_LINKS = {"quest", "chapter"}
 
 
-def generate_guide(data, group_id, order_index, book, languages, seen_ids):
-    """One guide chapter of content/guides (validated against the pinned JARs by tools/check_guides.py)."""
+def guide_lines(description, lang, ctx, where):
+    """A guide description as quest_desc lines. A paragraph with a [quest:key|text] or [chapter:name|text]
+    link compiles like a sector's rich text (quest_engine.compile_paragraph); it takes no & codes, which
+    FTB does not read inside a text component. Every other paragraph stays plain."""
+    lines = []
+    for line in paragraphs(description):
+        tags = {m.group(1) for m in quest_engine.TAG.finditer(line)}
+        if tags:
+            assert tags <= GUIDE_LINKS, f"{where}: guides only take [quest:...] and [chapter:...] links"
+            assert not FORMAT_CODE.search(line), f"{where}: a paragraph with a link takes no & codes"
+            line = quest_engine.compile_paragraph(line, lang, ctx, where)[0]
+        lines.append(line)
+    return lines
+
+
+def generate_guide(data, group_id, order_index, book, languages, seen_ids, all_keys=frozenset(),
+                   chapter_names=frozenset()):
+    """One guide chapter of content/guides (validated against the pinned JARs by tools/check_guides.py).
+    all_keys and chapter_names are the book's quest keys and chapters, the targets its links may name."""
     name = data["chapter"]
     assert re.fullmatch(r"guide_[a-z0-9_]+", name), name
     quests = data["quests"]
     keys = {q["key"] for q in quests}
     assert len(keys) == len(quests), f"duplicate key in {name}"
     chapter_id = stable_id("chapter:" + name)
+
+    def resolver(kind, known):
+        def resolve(target, where):
+            assert target in known, f"{where}: link to unknown {kind} {target}"
+            return stable_id(f"{kind}:{target}")
+        return resolve
+    ctx = {"items": set(), "names": set(), "keys": set(), "textures": set(),
+           "resolve_quest": resolver("quest", all_keys), "resolve_chapter": resolver("chapter", chapter_names)}
     roots = [q for q in quests if not q["deps"]]
     assert roots, f"{name}: no entry quest"
     entry = min(roots, key=lambda q: (q["layout"]["x"], abs(q["layout"]["y"])))
@@ -563,7 +589,9 @@ def generate_guide(data, group_id, order_index, book, languages, seen_ids):
             check_formatting(title, f"{key}/title/{lang}", False)
             check_formatting(description, f"{key}/{lang}", True)
             languages[lang][f"quest.{qid}.title"] = title
-            languages[lang][f"quest.{qid}.quest_desc"] = paragraphs(description)
+            languages[lang][f"quest.{qid}.quest_desc"] = guide_lines(description, lang, ctx, f"{key}/{lang}")
+        links = {lang: sorted(m.group(1, 2) for m in quest_engine.TAG.finditer(q[lang][1])) for lang in LOCALES}
+        assert links["en_us"] == links["es_es"], f"{key}: EN and ES link to different quests or chapters"
     # Medallion with the guide's key item, left of the entry node (FTB Evolution's chapter emblem, redrawn).
     x0 = extents(placed)[0]
     mx, my = x0 - 0.6 - 64 * 2 / NODE_PX * VISUAL / 2, entry["layout"]["y"]
@@ -713,7 +741,7 @@ def generate_book(chapters=None, guides=None, book=None, sectors=None):
             presets.update(sector_presets)
             glyphs |= sector_ctx.get("glyphs", set())
         else:
-            chapter = generate_guide(data, gid, order[gid], book, languages, seen)
+            chapter = generate_guide(data, gid, order[gid], book, languages, seen, all_keys, chapter_names)
         files[OUT / "chapters" / (data["chapter"] + ".snbt")] = snbt(chapter)
     if guides:
         assert set(first) == {g["id"] for g in book["groups"]}, "every group needs guides"
