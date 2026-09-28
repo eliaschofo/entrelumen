@@ -17,7 +17,6 @@ import net.minecraft.server.level.ServerBossEvent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
 import net.minecraft.world.BossEvent;
 import net.minecraft.world.damagesource.DamageSource;
@@ -106,15 +105,7 @@ public class WhiteWither extends WitherBoss {
     return home;
   }
 
-  /** The line of the coming charge (for the tests): start, direction and length. */
-  public Vec3 chargeFrom() {
-    return chargeFrom;
-  }
-
-  public Vec3 chargeDir() {
-    return chargeDir;
-  }
-
+  /** The length of the coming charge's line (for the tests). */
   public double chargeLength() {
     return chargeLength;
   }

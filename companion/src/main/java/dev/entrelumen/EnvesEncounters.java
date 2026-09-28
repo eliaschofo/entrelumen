@@ -24,7 +24,7 @@ import net.minecraft.world.phys.Vec3;
 public final class EnvesEncounters {
   private EnvesEncounters() {}
 
-  static final long SALT_FIGHT = 41, SALT_GUARD = 42, SALT_TREASURE = 43;
+  static final long SALT_FIGHT = 41, SALT_GUARD = 42;
 
   static void roomEntered(EnvesHooks.Floor floor, int cell, EnvesLayout.Role role, List<EnvesHooks.WorldMarker> spawns,
       ServerPlayer first) {

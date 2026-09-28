@@ -13,7 +13,6 @@ import java.util.Random;
 import java.util.Set;
 import java.util.function.Consumer;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.item.Item;
@@ -339,9 +338,5 @@ public final class EnvesLoot {
   /** Whether Apotheosis answers (for the tests and the logs). */
   public static boolean apotheosis() {
     return Apoth.ready();
-  }
-
-  static Item shard() {
-    return BuiltInRegistries.ITEM.get(ResourceLocation.fromNamespaceAndPath("entrelumen", "sour_light_shard"));
   }
 }

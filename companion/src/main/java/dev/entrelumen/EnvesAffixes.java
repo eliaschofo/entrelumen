@@ -84,9 +84,6 @@ public final class EnvesAffixes {
       event.getEntity().igniteForTicks(EnvesAffix.BURNING_FIRE_TICKS);
   }
 
-  /** The echo is hit (nothing yet: Blindado is all armor). */
-  static void onHurt(LivingIncomingDamageEvent event, Mob echo, EnvesEchoes.Data data) {}
-
   /** After a blow landed: Vampírico heals a share of it. */
   static void afterHit(LivingDamageEvent.Post event, Mob echo, EnvesEchoes.Data data) {
     if (!data.has(EnvesAffix.VAMPIRIC) || event.getNewDamage() <= 0 || !echo.isAlive()) return;

@@ -41,11 +41,6 @@ public final class EnvesEchoTables {
         if (ResourceLocation.tryParse(slot.getValue()) == null) throw new IllegalArgumentException("bad item " + slot.getValue());
       }
     }
-
-    /** Every item id this entry may equip. */
-    public List<String> items() {
-      return List.copyOf(equipment.values());
-    }
   }
 
   /** A tileset's echoes; {@code treasure} may be null. */

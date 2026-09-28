@@ -45,13 +45,6 @@ public final class EnvesContentConfig {
     return tables;
   }
 
-  /** Test hook: replaces the balance and returns the previous one. */
-  static EnvesBalance.Settings swap(EnvesBalance.Settings replacement) {
-    var previous = balance;
-    balance = replacement;
-    return previous;
-  }
-
   record Loaded(EnvesBalance.Settings balance, Map<String, EnvesEchoTables.Table> tables) {}
 
   public static final class Listener extends SimplePreparableReloadListener<Loaded> {

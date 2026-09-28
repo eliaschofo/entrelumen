@@ -506,9 +506,6 @@ public final class EnvesSeals {
       state(floor, cell);
       dress(floor, cell);
     }
-    var runs = EnvesRuns.get(floor.level().getServer());
-    runs.run(floor.attempt().id).floor(floor.depth()).dressed = true;
-    runs.setDirty();
   }
 
   /** The server stopped: every circle's bar goes. */

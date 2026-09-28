@@ -125,7 +125,7 @@ public final class EnvesRuns extends SavedData {
   /** One floor of an attempt. */
   public static final class Floor {
     public String blessing = "";
-    public boolean blessingTaken, dressed;
+    public boolean blessingTaken;
     /** The shrine's altar, once placed. */
     public BlockPos shrine;
     public UUID champion;
@@ -143,7 +143,6 @@ public final class EnvesRuns extends SavedData {
       CompoundTag tag = new CompoundTag();
       tag.putString("blessing", blessing);
       tag.putBoolean("blessingTaken", blessingTaken);
-      tag.putBoolean("dressed", dressed);
       if (shrine != null) tag.putLong("shrine", shrine.asLong());
       if (champion != null) tag.putUUID("champion", champion);
       tag.putBoolean("championSpawned", championSpawned);
@@ -162,7 +161,6 @@ public final class EnvesRuns extends SavedData {
       Floor f = new Floor();
       f.blessing = tag.getString("blessing");
       f.blessingTaken = tag.getBoolean("blessingTaken");
-      f.dressed = tag.getBoolean("dressed");
       if (tag.contains("shrine")) f.shrine = BlockPos.of(tag.getLong("shrine"));
       if (tag.hasUUID("champion")) f.champion = tag.getUUID("champion");
       f.championSpawned = tag.getBoolean("championSpawned");

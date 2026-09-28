@@ -39,7 +39,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.GameType;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.entity.ChestBlockEntity;
 import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
@@ -172,6 +171,28 @@ public final class RuntimeGameTestsEnvesContent {
     return EnvesEchoes.of(attempt.id).stream().filter(Mob::isAlive).toList();
   }
 
+  /** Kills a mob as a player's blow would, past any damage cap a mod puts on its bosses. */
+  static void slay(Mob mob, ServerPlayer player) {
+    mob.setHealth(0);
+    mob.die(player.damageSources().playerAttack(player));
+  }
+
+  /** Items that count as gear: enchanted, or carrying Apotheosis affixes. */
+  static boolean gear(ItemStack stack) {
+    var affixes = net.minecraft.core.registries.BuiltInRegistries.DATA_COMPONENT_TYPE.get(
+        ResourceLocation.fromNamespaceAndPath("apotheosis", "affixes"));
+    return stack.getMaxStackSize() == 1 && (stack.isEnchanted() || (affixes != null && stack.has(affixes)));
+  }
+
+  /** Apothic Attributes' random crits would make exact damage checks flaky on the full pack. */
+  static void noCrits(ServerPlayer player) {
+    net.minecraft.core.registries.BuiltInRegistries.ATTRIBUTE.getHolder(ResourceLocation.fromNamespaceAndPath("apothic_attributes", "crit_chance"))
+        .ifPresent(holder -> {
+          var instance = player.getAttribute(holder);
+          if (instance != null) instance.setBaseValue(0);
+        });
+  }
+
   private static String key(Mob mob) {
     return mob.getCustomName() != null && mob.getCustomName().getContents() instanceof TranslatableContents t ? t.getKey() : "";
   }
@@ -219,9 +240,9 @@ public final class RuntimeGameTestsEnvesContent {
       helper.assertTrue(elites >= 1 && elites <= 2, "one or two elites: " + elites);
       Mob elite = mobs.stream().filter(m -> EnvesEchoes.data(m).orElseThrow().roleOf() == Role.ELITE).findFirst().orElseThrow();
       fell.set(elite.position());
-      elite.hurt(player.damageSources().playerAttack(player), 10_000);
+      slay(elite, player);
       for (Mob mob : mobs)
-        if (mob != elite && EnvesEchoes.data(mob).orElseThrow().roleOf() == Role.ESCORT) mob.hurt(player.damageSources().playerAttack(player), 10_000);
+        if (mob != elite && EnvesEchoes.data(mob).orElseThrow().roleOf() == Role.ESCORT) slay(mob, player);
     }).then(() -> !player.serverLevel().getEntitiesOfClass(ItemEntity.class, new AABB(BlockPos.containing(fell.get())).inflate(6)).isEmpty(), () -> {
       var items = player.serverLevel().getEntitiesOfClass(ItemEntity.class, new AABB(BlockPos.containing(fell.get())).inflate(16));
       int shards = 0;
@@ -230,7 +251,9 @@ public final class RuntimeGameTestsEnvesContent {
       for (ItemEntity item : items) {
         ItemStack stack = item.getItem();
         if (stack.is(EnvesContent.SOUR_LIGHT_SHARD.get())) shards += stack.getCount();
-        else helper.assertTrue(plain.contains(stack.getItem()), "an echo dropped something of its own: " + stack);
+        else helper.assertTrue(plain.contains(stack.getItem())
+            || net.minecraft.core.registries.BuiltInRegistries.ITEM.getKey(stack.getItem()).getNamespace().equals("apotheosis"),
+            "an echo dropped something of its own: " + stack);
       }
       helper.assertTrue(shards >= 1, "an elite always drops a shard");
     }).run();
@@ -243,7 +266,8 @@ public final class RuntimeGameTestsEnvesContent {
   }
 
   private static Mob echo(ServerLevel level, Attempt attempt, BlockPos at, ServerPlayer target, EnvesAffix... affixes) {
-    var entry = new EnvesEchoTables.Entry("minecraft:zombie", 1, null, 40.0, 1.0, Map.of(), "");
+    // Husks: they do not burn under the test level's sky.
+    var entry = new EnvesEchoTables.Entry("minecraft:husk", 1, null, 40.0, 1.0, Map.of(), "");
     Mob mob = EnvesEchoes.spawn(level, new EnvesEchoes.Spec(entry, Role.ELITE, attempt, 1, List.of(affixes)), Vec3.atBottomCenterOf(at), target);
     if (mob == null) throw new IllegalStateException("no echo");
     return mob;
@@ -310,7 +334,9 @@ public final class RuntimeGameTestsEnvesContent {
       player.invulnerableTime = 0;
       player.hurt(level.damageSources().mobAttack(piercer), 10);
       float pierceLoss = 200 - player.getHealth();
-      helper.assertTrue(pierceLoss > plainLoss * 1.8, "Perforante did " + pierceLoss + " against " + plainLoss);
+      helper.assertTrue(plainLoss < 9, "the diamond armor stopped nothing: " + plainLoss);
+      helper.assertTrue(pierceLoss - plainLoss >= (10 - plainLoss) * 0.45,
+          "Perforante did " + pierceLoss + " against " + plainLoss + ": armor should keep only half its part");
       for (EquipmentSlot slot : List.of(EquipmentSlot.HEAD, EquipmentSlot.CHEST, EquipmentSlot.LEGS, EquipmentSlot.FEET))
         player.setItemSlot(slot, ItemStack.EMPTY);
       player.setHealth(200);
@@ -356,6 +382,7 @@ public final class RuntimeGameTestsEnvesContent {
     script.then(() -> attempt.status == Status.OPEN, () -> {
       helper.assertTrue(Enves.enter(player), "could not enter");
       player.hasChangedDimension();
+      noCrits(player);
       ServerLevel level = player.serverLevel();
       // Away from the stairwell in the middle of the start room.
       BlockPos arrival = Enves.arrival(player.server, attempt, 1);
@@ -496,7 +523,7 @@ public final class RuntimeGameTestsEnvesContent {
             helper.assertTrue(guardian instanceof Mob, "the guardian is gone");
             var data = EnvesEchoes.data(guardian).orElseThrow();
             helper.assertTrue(data.roleOf() == Role.GUARDIAN && data.affixes().size() == 3, "a floor III guardian has three affixes");
-            ((Mob) guardian).hurt(player.damageSources().playerAttack(player), 100_000);
+            slay((Mob) guardian, player);
           }
           case CIRCLE -> helper.assertTrue(!Enves.lightSeal(player, seal.get()) && state.circle, "the circle did not wake");
           case PUZZLE -> {
@@ -609,7 +636,7 @@ public final class RuntimeGameTestsEnvesContent {
     }).then(() -> attempt.floor(2).placement == Placement.READY, () -> waitFrom.set(player.serverLevel().getGameTime()))
         .then(() -> player.serverLevel().getGameTime() - waitFrom.get() > 40, () -> {
           helper.assertTrue(!attempt.floor(1).stairOpen, "the stair opened with its champion standing");
-          champion.get().hurt(player.damageSources().playerAttack(player), 100_000);
+          slay(champion.get(), player);
         }).then(() -> attempt.floor(1).stairOpen, () -> {}).run();
   }
 
@@ -678,11 +705,11 @@ public final class RuntimeGameTestsEnvesContent {
         helper.assertTrue(shards >= 1, name + " gave no shards");
         if (name.equals("boss")) {
           helper.assertTrue(shards >= 12 && shards <= 16, "the boss chest's shards: " + shards);
-          long gear = items.stream().filter(s -> s.isEnchanted() && s.getMaxStackSize() == 1).count();
+          long gear = items.stream().filter(RuntimeGameTestsEnvesContent::gear).count();
           helper.assertTrue(gear == 3, "the boss chest gives three pieces, got " + gear + ": " + items);
         }
         if (name.equals("vault")) {
-          long gear = items.stream().filter(s -> s.isEnchanted() && s.getMaxStackSize() == 1).count();
+          long gear = items.stream().filter(RuntimeGameTestsEnvesContent::gear).count();
           helper.assertTrue(gear == 2, "a vault gives two pieces, got " + gear);
         }
       }
@@ -776,7 +803,7 @@ public final class RuntimeGameTestsEnvesContent {
       var floor = Enves.floor(player.serverLevel(), attempt, EnvesLayout.BOSS_DEPTH);
       int portal = floor.layout().exit();
       chest.set(floor.markers(portal).stream().filter(m -> m.marker().kind() == EnvesMarkers.Kind.CHEST).findFirst().orElseThrow());
-      helper.assertTrue(!player.serverLevel().getBlockState(chest.get().pos()).is(Blocks.CHEST), "the boss chest stood before the boss fell");
+      helper.assertTrue(player.serverLevel().getBlockState(chest.get().pos()).isAir(), "the boss chest stood before the boss fell");
       helper.assertTrue(!attempt.bossDefeated, "floor V began defeated");
       int center = floor.layout().withRole(EnvesLayout.Role.ARENA_CENTER).getFirst();
       moveTo(player, EnvesEchoes.safeSpot(player.serverLevel(), floor.origin(center).offset(EnvesGeometry.C + 3, 1, EnvesGeometry.C), 4));
@@ -793,8 +820,9 @@ public final class RuntimeGameTestsEnvesContent {
       for (var m : floor.markers(floor.layout().exit()))
         if (m.marker().kind() == EnvesMarkers.Kind.EXIT_PORTAL)
           helper.assertTrue(level.getBlockState(m.pos()).getValue(EnvesPortalBlock.ACTIVE), "the victory portal is dark");
-      helper.assertTrue(level.getBlockEntity(chest.get().pos()) instanceof ChestBlockEntity box && box.getLootTable() != null
-          && box.getLootTable().location().toString().equals("entrelumen:enves/boss"), "no boss chest rose by the portal");
+      helper.assertTrue(level.getBlockEntity(chest.get().pos()) instanceof net.minecraft.world.RandomizableContainer box
+          && box.getLootTable() != null && box.getLootTable().location().toString().equals("entrelumen:enves/boss"),
+          "no boss chest rose by the portal");
     }).run();
   }
 }

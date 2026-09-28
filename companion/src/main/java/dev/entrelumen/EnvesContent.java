@@ -2,7 +2,6 @@ package dev.entrelumen;
 
 import java.util.List;
 import net.minecraft.ChatFormatting;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.MinecraftServer;
@@ -192,9 +191,5 @@ public final class EnvesContent {
       tooltip.add(Component.translatable("item.entrelumen.sour_light_shard.lore").withStyle(ChatFormatting.GRAY, ChatFormatting.ITALIC));
       tooltip.add(Component.translatable("item.entrelumen.sour_light_shard.use").withStyle(ChatFormatting.BLUE));
     }
-  }
-
-  static boolean shard(ItemStack stack) {
-    return stack.is(SOUR_LIGHT_SHARD.get()) || BuiltInRegistries.ITEM.getKey(stack.getItem()).getPath().equals("sour_light_shard");
   }
 }

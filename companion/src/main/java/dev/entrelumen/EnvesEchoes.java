@@ -357,7 +357,6 @@ public final class EnvesEchoes {
       event.setAmount(event.getAmount() * attackerData.get().damage());
       EnvesAffixes.onHit(event, (Mob) attacker, attackerData.get());
     }
-    data(event.getEntity()).ifPresent(data -> EnvesAffixes.onHurt(event, (Mob) event.getEntity(), data));
   }
 
   static void onDamaged(LivingDamageEvent.Post event) {
