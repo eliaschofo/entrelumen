@@ -56,14 +56,15 @@
       "sources": ["jar:ars_elemental-1.21.1-0.7.10.1.jar:data/ars_elemental/recipe"]
     },
     {
-      "key": "arsadd_schools", "role": "tip", "deps": ["arssrc_essences"], "exclusive": 1, "hide_lines": true,
-      "task": {"type": "checkmark"},
+      "key": "arsadd_schools", "role": "step", "deps": ["arssrc_essences"], "exclusive": 1, "hide_lines": true,
+      "task": {"any": ["ars_nouveau:fire_essence", "ars_nouveau:water_essence", "ars_nouveau:earth_essence", "ars_nouveau:air_essence"], "count": 3, "title": {"en_us": "Three elemental essences", "es_es": "Tres esencias elementales"}},
+      "icon": "minecraft:amethyst_shard",
       "at": {"x": 0.0, "y": -14.5},
       "en_us": {"title": "Pick a school", "subtitle": "Loyalty has perks.",
-        "text": ["[tip] With Ars Elemental, most glyphs belong to a school, and gear attuned to one boosts or discounts it. Choose one lesser focus below: the other three close for this book, not for the game."]},
+        "text": ["Three essences of your element, an amethyst shard and three gold make its lesser focus. With Ars Elemental most glyphs belong to a school, and gear attuned to one boosts it. Pick one focus: the other three close in this book, not in the game."]},
       "es_es": {"title": "Elegí una escuela", "subtitle": "La lealtad tiene premio.",
-        "text": ["[tip] Con Ars Elemental, casi todos los glifos son de una escuela, y el equipo afinado a una la potencia o la abarata. Elegí un foco menor de abajo: los otros tres se cierran en este libro, no en el juego."]},
-      "sources": ["jar:ars_elemental-1.21.1-0.7.10.1.jar:assets/ars_elemental/lang/en_us.json"]
+        "text": ["Tres esencias de tu elemento, un fragmento de amatista y tres oros hacen su foco menor. Con Ars Elemental casi todos los glifos son de una escuela, y el equipo afinado a una la potencia. Elegí un foco: los otros tres se cierran en este libro, no en el juego."]},
+      "sources": ["jar:ars_elemental-1.21.1-0.7.10.1.jar:data/ars_elemental/recipe/lesser_fire_focus.json", "jar:ars_elemental-1.21.1-0.7.10.1.jar:data/ars_elemental/recipe/lesser_water_focus.json", "jar:ars_elemental-1.21.1-0.7.10.1.jar:data/ars_elemental/recipe/lesser_earth_focus.json", "jar:ars_elemental-1.21.1-0.7.10.1.jar:data/ars_elemental/recipe/lesser_air_focus.json", "jar:ars_elemental-1.21.1-0.7.10.1.jar:assets/ars_elemental/lang/en_us.json"]
     },
     {
       "key": "arsadd_focus_fire", "role": "side", "deps": ["arsadd_schools"],
@@ -226,6 +227,36 @@
       "sources": ["jar:ars_elemental-1.21.1-0.7.10.1.jar:data/ars_elemental/recipe/air_focus.json", "jar:ars_elemental-1.21.1-0.7.10.1.jar:assets/ars_elemental/lang/en_us.json#tooltip.ars_elemental.focus_element_mana.air"]
     },
     {
+      "key": "arsadd_school_armor", "role": "side", "deps": ["arsadd_mark"], "reveal": true, "hide_lines": true,
+      "task": {"any": ["ars_elemental:fire_robes", "ars_elemental:fire_hat", "ars_elemental:fire_leggings", "ars_elemental:fire_boots", "ars_elemental:fire_tunic", "ars_elemental:fire_hood", "ars_elemental:fire_pants", "ars_elemental:fire_shoes", "ars_elemental:fire_chestplate", "ars_elemental:fire_helmet", "ars_elemental:fire_leggings_heavy", "ars_elemental:fire_boots_heavy", "ars_elemental:aqua_robes", "ars_elemental:aqua_hat", "ars_elemental:aqua_leggings", "ars_elemental:aqua_boots", "ars_elemental:aqua_tunic", "ars_elemental:aqua_hood", "ars_elemental:aqua_pants", "ars_elemental:aqua_shoes", "ars_elemental:aqua_chestplate", "ars_elemental:aqua_helmet", "ars_elemental:aqua_leggings_heavy", "ars_elemental:aqua_boots_heavy", "ars_elemental:earth_robes", "ars_elemental:earth_hat", "ars_elemental:earth_leggings", "ars_elemental:earth_boots", "ars_elemental:earth_tunic", "ars_elemental:earth_hood", "ars_elemental:earth_pants", "ars_elemental:earth_shoes", "ars_elemental:earth_chestplate", "ars_elemental:earth_helmet", "ars_elemental:earth_leggings_heavy", "ars_elemental:earth_boots_heavy", "ars_elemental:air_robes", "ars_elemental:air_hat", "ars_elemental:air_leggings", "ars_elemental:air_boots", "ars_elemental:air_tunic", "ars_elemental:air_hood", "ars_elemental:air_pants", "ars_elemental:air_shoes", "ars_elemental:air_chestplate", "ars_elemental:air_helmet", "ars_elemental:air_leggings_heavy", "ars_elemental:air_boots_heavy"], "title": {"en_us": "Any elemental armor piece", "es_es": "Cualquier pieza de armadura elemental"}},
+      "icon": "ars_elemental:fire_robes",
+      "at": {"x": -2.46, "y": -6.77},
+      "en_us": {"title": "Dressed for your element", "subtitle": "Fireproof, and stylish about it.",
+        "text": ["A [item:ars_elemental:mark_of_mastery|Mark of Mastery], a netherite ingot and two essences at the apparatus turn tier 3 Ars armor into its elemental cut, 7000 Source, threads and enchantments kept. Each piece boosts and discounts its school and blunts that element's harm.",
+                 "{page}",
+                 "A full set of one element turns the harm it blocks into mana and adds a trick: fire puts you out at once, water refills your air, earth feeds you when you starve underground, air all but cancels falls."]},
+      "es_es": {"title": "Vestido de tu elemento", "subtitle": "A prueba de fuego, y con estilo.",
+        "text": ["Una [item:ars_elemental:mark_of_mastery|marca de maestría], un lingote de netherita y dos esencias en el aparato convierten la armadura de Ars de nivel 3 en su corte elemental, 7000 de Fuente, con hilos y encantamientos. Cada pieza potencia y abarata su escuela y amortigua el daño de ese elemento.",
+                 "{page}",
+                 "El juego completo de un elemento convierte en maná el daño que frena y suma un truco: el fuego se apaga al instante, el agua te devuelve el aire, la tierra te alimenta si pasás hambre bajo tierra y el aire casi anula las caídas."]},
+      "sources": ["jar:ars_elemental-1.21.1-0.7.10.1.jar:data/ars_elemental/recipe/fire_robes.json (sauce:armor_upgrade: mark_of_mastery, netherite_ingot, two essences on arcanist_robes, 7000 Source)", "jar:ars_elemental-1.21.1-0.7.10.1.jar:data/ars_elemental/recipe/fire_tunic.json (on sorcerer_robes)", "jar:ars_elemental-1.21.1-0.7.10.1.jar:data/ars_elemental/recipe/fire_chestplate.json (on battlemage_robes)", "jar:ars_elemental-1.21.1-0.7.10.1.jar:assets/ars_elemental/lang/en_us.json#ars_elemental.page.armor_set.wip (keeps enchants and threads, base armor at tier 3)", "jar:ars_elemental-1.21.1-0.7.10.1.jar:assets/ars_elemental/lang/en_us.json#ars_elemental.page.armor_set.fire", "jar:ars_elemental-1.21.1-0.7.10.1.jar:assets/ars_elemental/lang/en_us.json#ars_elemental.armor_set.fire.desc, aqua.desc, earth.desc, air.desc"]
+    },
+    {
+      "key": "arsadd_turrets", "role": "side", "deps": ["arsadd_gfocus_fire", "arsadd_gfocus_water", "arsadd_gfocus_earth", "arsadd_gfocus_air"], "any_dep": true, "hide_lines": true,
+      "task": {"any": ["ars_elemental:fire_turret", "ars_elemental:water_turret", "ars_elemental:earth_turret", "ars_elemental:air_turret"], "title": {"en_us": "Any elemental turret", "es_es": "Cualquier torreta elemental"}},
+      "icon": "ars_elemental:fire_turret",
+      "at": {"x": 2.46, "y": -6.77},
+      "en_us": {"title": "Turrets with a school", "subtitle": "Sentries that went to school.",
+        "text": ["Imbue an [item:ars_nouveau:spell_turret|Enchanted Spell Turret] with three essences and a major focus, 5000 Source: an [item:ars_elemental:fire_turret|elemental turret], with the focus sealed inside. Its spells trigger that focus's combos and cost 65% less when they carry a glyph of its school.",
+                 "{page}",
+                 "Three manipulation essences and a Focus of Block Shaping make a Manipulation one, no mark needed."]},
+      "es_es": {"title": "Torretas con escuela", "subtitle": "Centinelas que fueron a la escuela.",
+        "text": ["Imbuí una [item:ars_nouveau:spell_turret|Torreta de Hechizos] con tres esencias y un foco mayor, 5000 de Fuente: una [item:ars_elemental:fire_turret|torreta infundida], con el foco sellado adentro. Sus hechizos disparan los combos de ese foco y cuestan 65% menos si llevan un glifo de su escuela.",
+                 "{page}",
+                 "Tres esencias de manipulación y un enfoque de formación de bloques hacen la de manipulación, sin ninguna marca."]},
+      "sources": ["jar:ars_elemental-1.21.1-0.7.10.1.jar:data/ars_elemental/recipe/fire_turret.json (imbuement: spell_turret, three fire essences and fire_focus, 5000 Source)", "jar:ars_elemental-1.21.1-0.7.10.1.jar:data/ars_elemental/recipe/manipulation_turret.json (three manipulation essences and shapers_focus)", "jar:ars_elemental-1.21.1-0.7.10.1.jar:assets/ars_elemental/lang/en_us.json#ars_elemental.page1.elemental_turrets"]
+    },
+    {
       "key": "arsadd_necrotic", "role": "side", "deps": ["arswild_focus"], "hide_lines": true,
       "task": {"item": "ars_elemental:necrotic_focus"},
       "at": {"x": 0, "y": -19.7},
@@ -266,6 +297,21 @@
       "sources": ["jar:ars_elemental-1.21.1-0.7.10.1.jar:data/ars_elemental/recipe/base_bangle.json", "jar:ars_elemental-1.21.1-0.7.10.1.jar:assets/ars_elemental/lang/en_us.json#ars_elemental.page1.base_bangle"]
     },
     {
+      "key": "arsadd_bangles", "role": "side", "deps": ["arsadd_bangle"],
+      "task": {"any": ["ars_elemental:fire_bangle", "ars_elemental:water_bangle", "ars_elemental:earth_bangle", "ars_elemental:air_bangle", "ars_elemental:anima_bangle", "ars_elemental:summon_bangle"], "title": {"en_us": "Any attuned bangle", "es_es": "Cualquier brazalete afinado"}},
+      "icon": "ars_elemental:fire_bangle",
+      "at": {"figure": "B", "slot": 1, "out": 2.3},
+      "en_us": {"title": "A bangle per school", "subtitle": "Accessorize, then incinerate.",
+        "text": ["Three essences and a catalyst attune the Enchanter's Bangle at the apparatus: fire charge, powder snow, cobweb or piston. A [item:ars_elemental:fire_bangle|Fire Bangle] and its kin boost their school's damage and mark your hits: fire burns, water freezes, earth snares, air knocks back.",
+                 "{page}",
+                 "Anima and summoning get theirs too: two anima essences, a ghast tear and a wither rose, or two conjuration essences, a bone and a Wilden horn."]},
+      "es_es": {"title": "Un brazalete por escuela", "subtitle": "Primero los accesorios, después el incendio.",
+        "text": ["Tres esencias y un catalizador afinan el Brazalete del encantador en el aparato: carga ígnea, nieve polvo, telaraña o pistón. Un [item:ars_elemental:fire_bangle|brazalete de fuego] y sus parientes potencian el daño de su escuela y marcan tus golpes: el fuego quema, el agua congela, la tierra enreda y el aire empuja.",
+                 "{page}",
+                 "Ánima e invocación también tienen el suyo: dos esencias de ánima, una lágrima de ghast y una rosa marchita, o dos esencias de conjuración, un hueso y un cuerno de Wilden."]},
+      "sources": ["jar:ars_elemental-1.21.1-0.7.10.1.jar:data/ars_elemental/recipe/fire_bangle.json", "jar:ars_elemental-1.21.1-0.7.10.1.jar:data/ars_elemental/recipe/water_bangle.json", "jar:ars_elemental-1.21.1-0.7.10.1.jar:data/ars_elemental/recipe/earth_bangle.json", "jar:ars_elemental-1.21.1-0.7.10.1.jar:data/ars_elemental/recipe/air_bangle.json", "jar:ars_elemental-1.21.1-0.7.10.1.jar:data/ars_elemental/recipe/anima_bangle.json", "jar:ars_elemental-1.21.1-0.7.10.1.jar:data/ars_elemental/recipe/summon_bangle.json", "jar:ars_elemental-1.21.1-0.7.10.1.jar:assets/ars_elemental/lang/en_us.json#ars_elemental.page.fire_bangle, water_bangle, earth_bangle, air_bangle"]
+    },
+    {
       "key": "arsadd_relays", "role": "side", "deps": ["arsadd_pouch"],
       "task": {"item": "ars_elemental:air_relay"},
       "at": {"figure": "B", "slot": 2},
@@ -274,6 +320,20 @@
       "es_es": {"title": "Relés con elemento",
         "text": ["Dos esencias y dos diamantes sobre un relé le suben capacidad y velocidad. La versión de teletransporte, el [item:ars_elemental:air_relay|Relé de viento], además deja de perder Fuente en los saltos largos."]},
       "sources": ["jar:ars_elemental-1.21.1-0.7.10.1.jar:data/ars_elemental/recipe/air_relay.json", "jar:ars_elemental-1.21.1-0.7.10.1.jar:assets/ars_elemental/lang/en_us.json#ars_elemental.page1.elemental_relays"]
+    },
+    {
+      "key": "arsadd_prisms", "role": "side", "deps": ["arsadd_pouch"],
+      "tasks": [{"item": "ars_elemental:advanced_prism"}, {"any": ["ars_elemental:acceleration_prism_lens", "ars_elemental:deceleration_prism_lens", "ars_elemental:arc_prism_lens", "ars_elemental:homing_prism_lens", "ars_elemental:piercing_prism_lens", "ars_elemental:chaining_prism_lens"], "title": {"en_us": "Any prism lens", "es_es": "Cualquier lente de prisma"}}],
+      "at": {"x": 13.31, "y": -7.93},
+      "en_us": {"title": "Prisms with a lens", "subtitle": "Aim once, bend forever.",
+        "text": ["A spell prism ringed with quartz and four Source Gems: the [item:ars_elemental:advanced_prism|Advanced Spell Prism]. Aim it at a block with the dominion wand and fit a lens to speed spells up, slow them down, arc them, make them home, pierce more or chain its own glyphs on.",
+                 "{page}",
+                 "Five lenses are quartz imbued with manipulation essence and the glyph they copy, 2000 Source; the chaining one is quartz with a Source Gem block and blank parchment at the apparatus, scribed like a spell. Piercing and chaining spend Source on every shot."]},
+      "es_es": {"title": "Prismas con lente", "subtitle": "Apuntá una vez, desviá para siempre.",
+        "text": ["Un prisma de hechizos rodeado de cuarzo y cuatro gemas fuente: el [item:ars_elemental:advanced_prism|prisma de hechizos avanzado]. Apuntalo a un bloque con la varita de dominio y ponele una lente para acelerar, frenar, curvar, teledirigir, atravesar más o encadenarle sus propios glifos al hechizo.",
+                 "{page}",
+                 "Cinco lentes son cuarzo imbuido con esencia de manipulación y el glifo que copian, 2000 de Fuente; la de encadenar es cuarzo con un bloque de gemas fuente y un pergamino vacío en el aparato, y se inscribe como un hechizo. Atravesar y encadenar gastan Fuente en cada disparo."]},
+      "sources": ["jar:ars_elemental-1.21.1-0.7.10.1.jar:data/ars_elemental/recipe/advanced_prism.json", "jar:ars_elemental-1.21.1-0.7.10.1.jar:data/ars_elemental/recipe/acceleration_prism_lens.json (imbuement: quartz, manipulation essence, glyph, 2000 Source)", "jar:ars_elemental-1.21.1-0.7.10.1.jar:data/ars_elemental/recipe/chaining_prism_lens.json", "jar:ars_elemental-1.21.1-0.7.10.1.jar:assets/ars_elemental/lang/en_us.json#ars_elemental.page1.advanced_prism, page2, page3", "jar:ars_elemental-1.21.1-0.7.10.1.jar:assets/ars_elemental/lang/en_us.json#ars_elemental.lens.*"]
     },
     {
       "key": "arsadd_upstream", "role": "side", "deps": ["arsadd_pouch"],
@@ -355,6 +415,31 @@
       "es_es": {"title": "Marca de tecnomancia", "subtitle": "Mitad mago, mitad mecánico.",
         "text": ["Un Tributo Salvaje con los dos mecanismos, esencia de manipulación, hierro, cobre, cinc y placas de latón y oro, 10000 de Fuente: la [item:ars_technica:mark_of_technomancy|Marca de tecnomancia]. Con netherita y latón vuelve los ropajes de arcanista ropajes de tecnomante."]},
       "sources": ["jar:ars_technica-1.21.1-2.7.6.jar:data/ars_technica/recipe/mark_of_technomancy.json", "jar:ars_technica-1.21.1-2.7.6.jar:data/ars_technica/recipe/technomancer_chestplate_default.json"]
+    },
+    {
+      "key": "arsadd_techno_armor", "role": "side", "deps": ["arsadd_technomancy"],
+      "task": {"any": ["ars_technica:technomancer_chestplate", "ars_technica:technomancer_helmet", "ars_technica:technomancer_leggings", "ars_technica:technomancer_boots", "ars_technica:artificer_tunic", "ars_technica:artificer_cap", "ars_technica:artificer_pants", "ars_technica:artificer_shoes", "ars_technica:machinaguard_chestplate", "ars_technica:machinaguard_helmet", "ars_technica:machinaguard_leggings", "ars_technica:machinaguard_boots"], "title": {"en_us": "Any technomancer armor piece", "es_es": "Cualquier pieza de armadura de tecnomante"}},
+      "icon": "ars_technica:technomancer_chestplate",
+      "at": {"figure": "C", "slot": 4, "out": 2.3},
+      "en_us": {"title": "Robes with a toolbelt", "subtitle": "Goggles included.",
+        "text": ["The [item:ars_technica:mark_of_technomancy|Mark of Technomancy], netherite and two brass ingots turn tier 3 Ars armor into a technomancer cut, 7000 Source: Artificer from Sorcerer, Technomancer from Arcanist, Machinaguard from Battlemage. Each piece boosts manipulation glyphs and blunts saws and crushers.",
+                 "{page}",
+                 "The hat shows what Create's engineer's goggles show, and a full set speeds up nearby schematicannons. A Mark of Mastery works in place of the Mark of Technomancy."]},
+      "es_es": {"title": "Túnica con caja de herramientas", "subtitle": "Gafas incluidas.",
+        "text": ["La [item:ars_technica:mark_of_technomancy|marca de tecnomancia], netherita y dos lingotes de latón convierten la armadura de Ars de nivel 3 en un corte de tecnomante, 7000 de Fuente: artífice desde hechicero, tecnomante desde arcanista, maquinaguardia desde mago de combate. Cada pieza potencia los glifos de manipulación y amortigua sierras y trituradoras.",
+                 "{page}",
+                 "El sombrero muestra lo que muestran las gafas de ingeniero de Create, y el juego completo acelera los cañones de esquemas cercanos. Una marca de maestría sirve en lugar de la de tecnomancia."]},
+      "sources": ["jar:ars_technica-1.21.1-2.7.6.jar:data/ars_technica/recipe/technomancer_chestplate_default.json (sauce:armor_upgrade, tier 3: mark_of_technomancy, netherite, two brass ingots on arcanist_robes, 7000 Source)", "jar:ars_technica-1.21.1-2.7.6.jar:data/ars_technica/recipe/artificer_tunic_default.json (on sorcerer_robes)", "jar:ars_technica-1.21.1-2.7.6.jar:data/ars_technica/recipe/machinaguard_chestplate_default.json (on battlemage_robes)", "jar:ars_technica-1.21.1-2.7.6.jar:data/ars_technica/recipe/technomancer_chestplate.json (mark_of_mastery variant, loads with ars_elemental)", "jar:ars_technica-1.21.1-2.7.6.jar:assets/ars_technica/lang/en_us.json#ars_technica.page.armor_set.technomancer", "jar:ars_technica-1.21.1-2.7.6.jar:assets/ars_technica/lang/en_us.json#ars_technica.patchouli.technomancer.perks"]
+    },
+    {
+      "key": "arsadd_pocket_factory", "role": "side", "deps": ["arsadd_calibrated"],
+      "task": {"item": "ars_technica:pocket_factory"},
+      "at": {"x": 15.0, "y": 3.2},
+      "en_us": {"title": "Pocket Factory", "subtitle": "The author's own soundtrack.",
+        "text": ["Burn any music disc blank with fire essence at the apparatus, then press it between two brass plates and two Source Gems: the [item:ars_technica:pocket_factory|Music Disc] Pocket Factory, two and a half minutes by zeroregard, who also made Ars Technica."]},
+      "es_es": {"title": "Pocket Factory", "subtitle": "La banda sonora del propio autor.",
+        "text": ["Borrá cualquier disco de música con esencia de fuego en el aparato y prensalo entre dos placas de latón y dos gemas fuente: el [item:ars_technica:pocket_factory|disco de música] «Pocket Factory», dos minutos y medio de zeroregard, que también hizo Ars Technica."]},
+      "sources": ["jar:ars_technica-1.21.1-2.7.6.jar:data/ars_technica/recipe/blank_disc.json", "jar:ars_technica-1.21.1-2.7.6.jar:data/ars_technica/recipe/pocket_factory.json", "jar:ars_technica-1.21.1-2.7.6.jar:data/ars_technica/jukebox_song/pocket_factory.json (153.6 s)", "jar:ars_technica-1.21.1-2.7.6.jar:assets/ars_technica/lang/en_us.json#item.ars_technica.pocket_factory.desc", "jar:ars_technica-1.21.1-2.7.6.jar:META-INF/neoforge.mods.toml (authors=zeroregard)"]
     },
     {
       "key": "arsadd_me_jar", "role": "side", "deps": ["arsadd_arseng"],
@@ -526,6 +611,20 @@
       "es_es": {"title": "Un portal que todavía zumba", "subtitle": "Cuidado con el escalón.",
         "text": ["Encontraste un portal de teletransporte en ruinas. Tirá un pergamino de explorador en su marco y te deja cerca de una estructura: cuál, lo decide el pergamino."]},
       "sources": ["jar:ars_additions-1.21.1-21.3.0.jar:data/ars_additions/advancement/find_ruined_portal.json", "jar:ars_additions-1.21.1-21.3.0.jar:assets/ars_additions/lang/en_us.json#tooltip.ars_additions.exploration_warp_scroll.use"]
+    },
+    {
+      "key": "arsadd_codex", "role": "side", "deps": ["arsadd_charms"],
+      "task": {"item": "ars_additions:codex_entry"},
+      "at": {"x": -17.27, "y": 5.3},
+      "en_us": {"title": "Pages from a lost codex", "subtitle": "Homework from a vanished school.",
+        "text": ["Chests in nexus towers, arcane libraries and ruined warp portals hold one to four [item:ars_additions:codex_entry|Codex Entries], and dungeon, temple and stronghold chests sometimes one. Use an entry to learn a random tier 1 glyph you don't know yet, plus a little experience.",
+                 "{page}",
+                 "[warn|No chest in this pack holds the Lost or Ancient entries, for tiers 2 and 3.]"]},
+      "es_es": {"title": "Páginas de un códice perdido", "subtitle": "Tarea de una escuela que ya no existe.",
+        "text": ["Los cofres de las torres del nexo, las bibliotecas arcanas y los portales de teletransporte en ruinas guardan de una a cuatro [item:ars_additions:codex_entry|Entradas de códice], y los de mazmorras, templos y fortalezas a veces una. Usá una y aprendés un glifo de nivel 1 al azar que no sepas, más un poco de experiencia.",
+                 "{page}",
+                 "[warn|Ningún cofre de este pack guarda las entradas Perdida o Antigua, de niveles 2 y 3.]"]},
+      "sources": ["jar:ars_additions-1.21.1-21.3.0.jar:data/ars_additions/loot_table/chests/nexus_tower.json (codex_entry 1-4)", "jar:ars_additions-1.21.1-21.3.0.jar:data/ars_additions/loot_table/chests/arcane_library.json", "jar:ars_additions-1.21.1-21.3.0.jar:data/ars_additions/loot_table/chests/ruined_portal.json", "jar:ars_additions-1.21.1-21.3.0.jar:com/github/jarva/arsadditions/setup/registry/AddonSetup.class (CODEX_ENTRY into DungeonLootTables.BASIC_LOOT)", "jar:ars_nouveau-1.21.1-5.13.1.jar:data/ars_nouveau/loot_modifiers/dungeon_loot.json (vanilla dungeon, temple, mineshaft and stronghold chests)", "jar:ars_additions-1.21.1-21.3.0.jar:com/github/jarva/arsadditions/common/item/CodexEntry.class (random unknown glyph of its tier, starters excluded, experience orb)", "jar:ars_additions-1.21.1-21.3.0.jar:com/github/jarva/arsadditions/common/item/CodexEntryLost.class, CodexEntryAncient.class (tiers 2 and 3; no loot table or recipe in any pinned JAR or pack/kubejs)"]
     },
     {
       "key": "arsadd_controle_remote", "role": "side", "deps": ["arsadd_stability"],
