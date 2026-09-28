@@ -455,6 +455,7 @@ class Draft:
         for t in tasks:
             if isinstance(t, dict) and int(t.get("count", 1)) >= 2:
                 stars.add(str(int(t["count"])))
+        counts = set(stars)
         for lang in LOCALES:
             for field in ("title", "subtitle"):
                 for m in re.finditer(r"\d+", q[lang].get(field) or ""):
@@ -473,6 +474,8 @@ class Draft:
                         self.note(key, f"[big] candidate {m.group(1)} has no twin in ES; left as [hl]")
                         continue
                     big = (i, m.span(1), twin.span(1))
+                    why = "a multiplier" if multiplier else ("the task count" if value in counts else "in the title")
+                    self.note(key, f"[big|{m.group(1)}] ({why}): keep it only if it is the number that sums the quest up")
                     break
         for i, (a, b) in enumerate(blocks):
             for lang, block in (("en_us", a), ("es_es", b)):
