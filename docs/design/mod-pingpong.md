@@ -501,7 +501,7 @@ Seguimiento (27/9, rama `fix/balance-rftools-dragon`): sale `rftoolsutility:mine
 
 ## Ronda 5 (27/9): censo de ATM10, FTB Evolution y Craftoria
 
-Rama `feature/mods-r5`. Entran los 31 ADD del [censo](../research/mod-census.md), con las decisiones de Elias del 27/9: «sumar genuinamente todo lo que MEJORE la experiencia y robustezca al pack (no sumar por sumar)»; Neo Vitae sí, en los actos III-IV y con su dimensión; Iris sí, con los shaders apagados y sin shaderpack; Create Aeronautics a prueba, en su propio lote y medido. El controlador sumó Create Collision Fix y, desde la [búsqueda hacia afuera](../research/mod-outward.md), tres arreglos al lote 1, tres comodidades al lote 2 y Sanguine Neural Networks al de Neo Vitae. Un commit (o un grupo chico) por lote, para mergear de a uno.
+Rama `feature/mods-r5`. De los 31 ADD del [censo](../research/mod-census.md) entraron 30 (FindMe quedó afuera), con las decisiones de Elias del 27/9: «sumar genuinamente todo lo que MEJORE la experiencia y robustezca al pack (no sumar por sumar)»; Neo Vitae sí, en los actos III-IV y con su dimensión; Iris sí, con los shaders apagados y sin shaderpack; Create Aeronautics a prueba, en su propio lote y medido. El controlador sumó Create Collision Fix y, desde la [búsqueda hacia afuera](../research/mod-outward.md), tres arreglos al lote 1, tres comodidades al lote 2 y Sanguine Neural Networks al de Neo Vitae. Un commit (o un grupo chico) por lote, para mergear de a uno. Con los siete lotes, el lock pasa de 316 cliente / 274 servidor a **365 / 312** (362 / 309 sin Aeronautics).
 
 **Qué versión se fija.** La que usa un pack de referencia (primero ATM10) cuando cumple las dependencias del lock: esos packs corren el mismo NeoForge 21.1 con cientos de mods, y su pin es evidencia de que carga. Un archivo oficial más nuevo entra sólo si arregla algo que necesitamos, y se dice por qué. Cada JAR sale de la fuente oficial:
 
@@ -759,6 +759,44 @@ Familia `catalog/families/pingpong5-aeronautics.json`: 3 JARs. El lock pasa a **
 - **Costo:** pendiente de medir, con el método de la ronda (misma semilla, generación de chunks, ticks y memoria) contra los lotes 1 a 6. Queda o sale con esos números; decide Elias.
 - **Ganchos para las quests** (si se queda): ensamblador físico (`simulated:physics_assembler`), cojinete de hélice (`aeronautics:propeller_bearing`), quemador y globo (`aeronautics:adjustable_burner`, `aeronautics:white_envelope`), levitita (`aeronautics:levitite`), volante y acelerador (`simulated:steering_wheel`, `simulated:throttle_lever`), mesa de navegación (`simulated:navigation_table`), soporte de rueda (`offroad:wheel_mount`) y conector de acople (`simulated:docking_connector`).
 
+### Ganchos para las quests (lotes 1 a 4)
+
+No se tocó contenido de quests. Los lotes 5 y 7 tienen su propia lista más arriba. Los lotes 1 y 2 no traen ítems. Ping Wheel se puede enseñar con una quest de casilla: marcar un lugar con Mouse 5 para el grupo.
+
+- **Advanced Peripherals** (acto III-V): puente ME (`advancedperipherals:me_bridge`), gestor de inventario (`advancedperipherals:inventory_manager`) y detector de jugadores (`advancedperipherals:player_detector`), en el capítulo de ComputerCraft.
+- **Giselle** (acto V): cargador de combustible (`ad_astra_giselle_addon:fuel_loader`) y mesa NASA automática (`ad_astra_giselle_addon:automation_nasa_workbench`), en el de Ad Astra.
+- **Extended Industrialization** (acto III-VI): bobina tesla (`extended_industrialization:tesla_coil`, energía inalámbrica) y matriz de procesamiento (`extended_industrialization:processing_array`).
+- **Industrialization Overdrive:** matriz de procesamiento múltiple (`industrialization_overdrive:multi_processing_array`).
+- **Dyson Cube Project** (acto V): expulsor (`dysoncubeproject:em_railejector_controller`), como meta de energía final junto a la fusión.
+- **More Red** (acto II): mesa de soldar (`morered:soldering_table`), en redstone.
+
+### Quedó afuera (ronda 5)
+
+- **FindMe** (lote 2): saca ítems de contenedores ajenos sin abrirlos ni preguntarle a FTB Chunks.
+- **El teleposer de Neo Vitae** (lote 5), con sus focos y el Sigilo de Teleposición: intercambia bloques sin evento de protección. El resto de Neo Vitae entra.
+
+### Rendimiento y QA (pendiente)
+
+Todo lo de runtime corre junto, con el lock del servidor de QA, cuando la máquina tenga RAM. El plan está en `mods-r5-20260927/runtime_all.sh` (recibos fuera del repo):
+
+- **QA** del final de la rama (ronda 6 incluida): arranque completo y las GameTests de las rondas 5 y 6. En QA, una línea de Neruina cuenta como error.
+- **Rendimiento**, con el método de la ronda 4: servidor dedicado, semilla 71942026, 90 s en reposo y cuatro sondas de 256 chunks (Overworld dos veces, Nether y End). Se compara en orden ABBA: `main` en f3696ac, los lotes 1 a 6, más Aeronautics y más la ronda 6 (el mundo de Familiars entra ahí).
+- **Arranque de humo del 27/9:** se probó con `-Xmx3584M` y 4,6 GB libres. Todos los mods de los lotes 1 a 5 cargaron y el arranque llegó a la carga de datapacks, pero a los 112 s la RAM libre bajó de 700 MB y el guardián cortó el servidor. El pack completo pide unos 6 a 7 GB libres para arrancar con 4 GB de heap.
+
+### Pendiente para Elias
+
+- **Create Aeronautics:** se queda o sale con los números de costo.
+- **Petrol's Parts** (ronda 6): entraría con una actualización de JEI, y eso obliga a revisar los mixins de FTB XMod Compat.
+- **En un cliente:**
+  - lotes 1 y 2: Entity Culling con renderizadores grandes, Yeetus y EMI Loot sin el botín de la campaña;
+  - lote 6: los shaders apagados;
+  - lote 5: el altar y el HUD de Neo Vitae.
+- **En juego:**
+  - la esfera de Dyson frente a las demás fuentes de energía;
+  - los afijos de hechizo de Iron's Apothic;
+  - una bajada al Reino Demoníaco;
+  - si el ensamblador de Aeronautics se lleva bloques de un reclamo vecino.
+
 ## Ronda 6 (27/9): contenido de la búsqueda hacia afuera
 
 Los mods de contenido aprobados de la [búsqueda hacia afuera](../research/mod-outward.md), después de la ronda 5 y en la misma rama. Familia `catalog/families/pingpong6.json`: 7 mods y 1 librería. El lock pasa a **373 / 319**; ninguna entrada previa cambió. Sigue la regla de la ronda: versión de la nota de la búsqueda, fuente oficial y bytes verificados.
@@ -811,3 +849,4 @@ Los mods de contenido aprobados de la [búsqueda hacia afuera](../research/mod-o
   - Integrated Farming: cosechadora de vacío (`create_integrated_farming:vacuum_harvester`), red de pesca (`create_integrated_farming:fishing_net`) y gallinero (`create_integrated_farming:roost`).
   - Familiars: libro de familiares (`alshanex_familiars:familiar_spellbook`), cama y almacén de familiares (`alshanex_familiars:pet_bed`, `alshanex_familiars:familiar_storage`) y la estación de encogimiento (`alshanex_familiars:shrinking_station`).
   - Ars Affinity: no tiene ítems propios que pedir; una quest puede explicar la habilidad en Mouse 4.
+- **Runtime (pendiente):** corre junto con el de la ronda 5 (ver «Rendimiento y QA»). El arranque confirma los mixins de Ars Affinity e Irons Spell N FTB Teams, y la pregeneración mide el mundo de Familiars.
