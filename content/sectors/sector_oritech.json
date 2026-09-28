@@ -8,8 +8,8 @@
   "emblem": "oritech:textures/item/fluxite.png",
   "title": {"en_us": "Oritech", "es_es": "Oritech"},
   "subtitle": {
-    "en_us": ["From nickel to the particle accelerator: machines on cores and addons, generators and the reactor, the Enderic Laser and the Atomic Forge, bedrock mining, exo suits and jetpacks."],
-    "es_es": ["Del níquel al acelerador de partículas: máquinas sobre núcleos y complementos, generadores y el reactor, el láser endérico y la forja atómica, minería de roca base, exotrajes y jetpacks."]
+    "en_us": ["From nickel to prometheum: machines on cores and addons, generators, pipes and poles, the Enderic Laser and the Atomic Forge, bedrock mining, exo suits and jetpacks. The reactor and the accelerator are in Core and Particles."],
+    "es_es": ["Del níquel al prometheum: máquinas sobre núcleos y complementos, generadores, caños y postes, el láser endérico y la forja atómica, minería de roca base, exotrajes y jetpacks. El reactor y el acelerador están en Núcleo y partículas."]
   },
   "entry": "ori_resources",
   "center": [0, 0],
@@ -26,21 +26,19 @@
     "impact": {"kind": "ring", "cx": 0, "cy": 0, "r": 3.5, "count": 16, "start": 11.25, "draw": [{"style": "ring", "r": 2.15, "segments": 32, "color": "#7FDCEB", "alpha": 150, "thickness_px": 2}, {"style": "spokes", "from_r": 2.45, "to_r": 3.55, "color": "#7FDCEB", "alpha": 130, "thickness_px": 2}]}
   },
   "groups": {
-    "logistics": {"label": {"en_us": "Pipes and poles", "es_es": "Caños y postes"}},
+    "logistics": {"label": {"en_us": "Pipes, poles and tanks", "es_es": "Caños, postes y tanques"}, "axis": "x"},
     "power": {"label": {"en_us": "Generators", "es_es": "Generadores"}},
     "ores": {"label": {"en_us": "Ore processing", "es_es": "Procesar minerales"}},
     "addons": {"label": {"en_us": "Addons", "es_es": "Complementos"}},
     "laser": {"label": {"en_us": "Laser work", "es_es": "Laburo de láser"}},
     "exo": {"label": {"en_us": "Exo suit and jetpacks", "es_es": "Exotraje y jetpacks"}},
-    "reactor": {"label": {"en_us": "Reactor", "es_es": "Reactor"}},
-    "arcane": {"label": {"en_us": "Arcane machines", "es_es": "Máquinas arcanas"}},
-    "mining": {"label": {"en_us": "Mining the bedrock", "es_es": "Minar la roca base"}},
-    "ring": {"label": {"en_us": "What the ring makes", "es_es": "Lo que da el anillo"}},
-    "gantry": {"label": {"en_us": "Gantries", "es_es": "Pórticos"}, "caption": "below"}
+    "mining": {"label": {"en_us": "Mining the bedrock", "es_es": "Minar la roca base"}}
   },
   "links": [
     {"target": "voices_ironwood", "at": {"x": 13.644, "y": 7.563}},
-    {"target": "world_atomic_alloy", "at": {"x": 9.959, "y": 8.356}}
+    {"target": "world_atomic_alloy", "at": {"x": 9.959, "y": 8.356}},
+    {"target": "ori_accelerator", "at": {"x": 6.715, "y": 7.658}},
+    {"target": "ori_reactor", "at": {"x": 10.478, "y": -9.435}}
   ],
   "art": [
     {"id": "banner", "texture": "entrelumen:textures/gui/quests/banner_plain.png", "x": -17.0, "y": -19.2, "scale": 2, "order": -1, "color": "#D18B33"},
@@ -49,6 +47,7 @@
     {"id": "medallion", "texture": "entrelumen:textures/gui/quests/medallion.png", "x": -27.3, "y": -19.2, "scale": 2, "order": 0, "click": "chapter:sun_of_heliodor", "hover": {"en_us": "Back to the Sun of Heliodor", "es_es": "Volver al Sol de Heliodor"}},
     {"id": "emblem", "texture": "oritech:textures/item/fluxite.png", "x": -27.3, "y": -19.2, "scale": 4, "order": 1},
     {"id": "motto", "label": {"en_us": "grind · alloy · lase · collide", "es_es": "moler · alear · disparar · chocar"}, "x": -25.0, "y": -16.5, "scale": 1, "align": "start", "font": "minecraft:alt", "tint": "#C9A77A"},
+    {"id": "to_core", "label": {"en_us": "» Core and particles", "es_es": "» Núcleo y partículas"}, "x": -25.0, "y": -15.4, "scale": 1, "align": "start", "click": "chapter:sector_oritech_core", "order": 5},
     {"id": "zero", "label": {"en_us": "0 m/s", "es_es": "0 m/s"}, "x": 0.0, "y": 8.363, "scale": 1, "tint": "#A9C7CE", "order": 2},
     {"id": "speed_0", "label": {"en_us": "10", "es_es": "10"}, "x": -3.54, "y": 8.546, "scale": 1, "tint": "#A9C7CE", "order": 2},
     {"id": "speed_1", "label": {"en_us": "100", "es_es": "100"}, "x": -8.546, "y": 3.54, "scale": 1, "tint": "#A9C7CE", "order": 2},
@@ -290,21 +289,7 @@
       "sources": ["jar:oritech-neoforge-1.21.1-1.2.11.jar:data/oritech/recipe/motor/overchargedcrystal.json", "jar:oritech-neoforge-1.21.1-1.2.11.jar:data/oritech/recipe/particle/overcharged_crystal.json", "jar:oritech-neoforge-1.21.1-1.2.11.jar:data/oritech/recipe/motor/advbattery.json", "jar:oritech-neoforge-1.21.1-1.2.11.jar:data/oritech/recipe/centrifuge/fluid/advbatteryacid.json"]
     },
     {
-      "key": "ori_accelerator", "role": "milestone", "deps": ["ori_overcharged"],
-      "tasks": [{"item": "oritech:accelerator_controller"}, {"item": "oritech:accelerator_ring", "count": 16}, {"item": "oritech:accelerator_motor", "count": 4}, {"item": "oritech:accelerator_sensor"}],
-      "at": {"x": 6.715, "y": 7.658},
-      "en_us": {"title": "Particle Accelerator", "subtitle": "Round and round, faster and faster.",
-        "text": ["Guide rings lay the track, and right-clicking one bends it 45°. Each pass through a powered linear motor adds 1 m/s and costs the particle's speed times 10 RF. The controller shoots any item into a straight ring set right behind it; here it needs an [item:mekanism:alloy_atomic|Atomic Alloy] (act V).",
-                 "{page}",
-                 "Faster particles turn wider: the last full turn must sit at least the square root of the speed over 2.5 blocks back, and guides can stand up to the square root over 2 apart, 2 to 10. A [item:oritech:accelerator_sensor|Sensor] and a comparator read the speed; a powered bend becomes a switch."]},
-      "es_es": {"title": "Acelerador de partículas", "subtitle": "Vuelta y vuelta, cada vez más rápido.",
-        "text": ["Los anillos guía arman la pista, y clic derecho a uno lo dobla 45°. Cada pasada por un motor lineal con energía suma 1 m/s y cuesta la velocidad de la partícula por 10 RF. El controlador dispara cualquier ítem a un anillo recto puesto justo detrás; acá pide una [item:mekanism:alloy_atomic|Aleación Atómica] (acto V).",
-                 "{page}",
-                 "Las partículas más rápidas doblan más abierto: la última curva completa tiene que quedar al menos a la raíz de la velocidad sobre 2,5 bloques, y las guías pueden separarse hasta la raíz sobre 2, entre 2 y 10. Un [item:oritech:accelerator_sensor|Sensor de acelerador de partículas] y un comparador leen la velocidad; una curva con señal se vuelve desvío."]},
-      "sources": ["jar:oritech-neoforge-1.21.1-1.2.11.jar:data/oritech/recipe/crafting/particlecontroller.json", "repo:pack/kubejs/server_scripts/entrelumen_pingpong_balance.js", "jar:oritech-neoforge-1.21.1-1.2.11.jar:data/oritech/recipe/crafting/acceleratorring.json", "jar:oritech-neoforge-1.21.1-1.2.11.jar:data/oritech/recipe/crafting/particlemotor.json", "jar:oritech-neoforge-1.21.1-1.2.11.jar:data/oritech/recipe/crafting/particlesensor.json", "jar:oritech-neoforge-1.21.1-1.2.11.jar:assets/oracle_index/books/oritech/docs/particle_accelerator.mdx", "jar:oritech-neoforge-1.21.1-1.2.11.jar:rearth/oritech/init/OritechConfig.class#bendFactor", "jar:oritech-neoforge-1.21.1-1.2.11.jar:rearth/oritech/init/OritechConfig.class#maxGateDist", "jar:oritech-neoforge-1.21.1-1.2.11.jar:rearth/oritech/init/OritechConfig.class#accelerationRFCost"]
-    },
-    {
-      "key": "ori_prometheum", "role": "milestone", "deps": ["ori_accelerator"],
+      "key": "ori_prometheum", "role": "milestone", "deps": ["ori_overcharged"],
       "task": {"item": "oritech:prometheum_ingot"},
       "at": {"x": 3.752, "y": 10.163},
       "en_us": {"title": "Prometheum", "subtitle": "Fire, borrowed from the gods.",
@@ -400,58 +385,6 @@
       "sources": ["jar:oritech-neoforge-1.21.1-1.2.11.jar:data/oritech/recipe/crafting/solar.json", "jar:oritech-neoforge-1.21.1-1.2.11.jar:rearth/oritech/block/entity/generators/BigSolarPanelEntity.class#getProductionRate", "jar:oritech-neoforge-1.21.1-1.2.11.jar:rearth/oritech/block/entity/generators/BigSolarPanelEntity.class#getCorePositions", "jar:oritech-neoforge-1.21.1-1.2.11.jar:rearth/oritech/init/BlockContent.class#MACHINE_CORE_1", "jar:oritech-neoforge-1.21.1-1.2.11.jar:rearth/oritech/init/OritechConfig$Generators.class#solarGeneratorData"]
     },
     {
-      "key": "ori_reactor", "role": "milestone", "deps": ["ori_forge"], "group": "reactor",
-      "tasks": [{"item": "oritech:reactor_controller"}, {"item": "oritech:reactor_wall", "count": 24}, {"item": "oritech:reactor_fuel_port"}, {"item": "oritech:reactor_energy_port"}],
-      "at": {"x": 10.478, "y": -9.435},
-      "en_us": {"title": "Nuclear Reactor", "subtitle": "Safety first. Or second.",
-        "text": ["[item:oritech:reactor_wall|Reactor Walls] frame a box up to 64 per side, with the controller and energy ports set in the walls and a fuel port on the roof above each rod column. Design one layer: a taller reactor repeats it, and its power and fuel use grow with the height.",
-                 "{page}",
-                 "Each [item:oritech:reactor_energy_port|Reactor Energy Port] sends out up to 25,000 RF/t, so a big reactor needs several with superconductors behind them. A rod kept above 2,000 °C for 30 seconds melts down, and sirens sound well before that."]},
-      "es_es": {"title": "Reactor nuclear", "subtitle": "La seguridad primero. O segundo.",
-        "text": ["Las [item:oritech:reactor_wall|Paredes de reactor] arman una caja de hasta 64 por lado, con el controlador y los puertos de energía en las paredes y un puerto de combustible en el techo sobre cada columna de barras. Diseñá una capa: un reactor más alto la repite, y su energía y su consumo crecen con la altura.",
-                 "{page}",
-                 "Cada [item:oritech:reactor_energy_port|Puerto de energía del reactor] saca hasta 25.000 RF/t, así que uno grande pide varios con superconductores detrás. Una barra que pasa 30 segundos arriba de 2.000 °C se funde, y bastante antes suenan sirenas."]},
-      "sources": ["jar:oritech-neoforge-1.21.1-1.2.11.jar:data/oritech/recipe/crafting/controller.json", "jar:oritech-neoforge-1.21.1-1.2.11.jar:data/oritech/recipe/crafting/reactorplatingcrafting.json", "jar:oritech-neoforge-1.21.1-1.2.11.jar:data/oritech/recipe/crafting/fuelport.json", "jar:oritech-neoforge-1.21.1-1.2.11.jar:data/oritech/recipe/crafting/energyport.json", "jar:oritech-neoforge-1.21.1-1.2.11.jar:rearth/oritech/init/OritechConfig.class#maxSize", "jar:oritech-neoforge-1.21.1-1.2.11.jar:rearth/oritech/init/OritechConfig.class#reactorMaxEnergyOutput", "jar:oritech-neoforge-1.21.1-1.2.11.jar:rearth/oritech/init/OritechConfig.class#maxHeat", "jar:oritech-neoforge-1.21.1-1.2.11.jar:rearth/oritech/init/OritechConfig.class#maxUnstableTicks", "jar:oritech-neoforge-1.21.1-1.2.11.jar:assets/oracle_index/books/oritech/docs/reactor/introduction.mdx", "jar:oritech-neoforge-1.21.1-1.2.11.jar:assets/oracle_index/books/oritech/docs/reactor/components.mdx"]
-    },
-    {
-      "key": "ori_uranium", "role": "side", "deps": ["ori_reactor"], "group": "reactor",
-      "task": {"item": "oritech:uranium_pellet", "count": 8},
-      "at": {"x": 11.578, "y": -11.501},
-      "en_us": {"title": "Uranium Pellets",
-        "text": ["Uranium veins cling to cave walls and floors between Y -64 and -24. The forge turns copper dust and two raw uranium into a [item:oritech:uranium_gem|Uranium Gem]; the Assembler presses two gems and plastic with nickel, adamant or duratium into two, three or four [item:oritech:uranium_pellet|Uranium Pellets].",
-                 "{page}",
-                 "[tip] Test a new design on small pellets: they burn a tenth as long, so an overheating reactor goes quiet sooner."]},
-      "es_es": {"title": "Pastillas de uranio",
-        "text": ["Las vetas de uranio se pegan a paredes y pisos de cuevas entre Y -64 y -24. La forja convierte polvo de cobre y dos de uranio en bruto en una [item:oritech:uranium_gem|Gema de uranio]; el Ensamblador prensa dos gemas y plástico con níquel, adamantio o duratium en dos, tres o cuatro [item:oritech:uranium_pellet|Pastillas de uranio].",
-                 "{page}",
-                 "[tip] Probá un diseño nuevo con pastillas chicas: duran la décima parte, así que un reactor que se recalienta se apaga antes."]},
-      "sources": ["jar:oritech-neoforge-1.21.1-1.2.11.jar:data/oritech/worldgen/placed_feature/uranium_patch.json", "jar:oritech-neoforge-1.21.1-1.2.11.jar:data/oritech/worldgen/configured_feature/uranium_patch.json", "jar:oritech-neoforge-1.21.1-1.2.11.jar:data/oritech/recipe/atomicforge/urandust.json", "jar:oritech-neoforge-1.21.1-1.2.11.jar:data/oritech/recipe/assembler/uranpelletbasic.json", "jar:oritech-neoforge-1.21.1-1.2.11.jar:data/oritech/recipe/assembler/uranpelletbetter.json", "jar:oritech-neoforge-1.21.1-1.2.11.jar:data/oritech/recipe/assembler/uranpelletult.json", "jar:oritech-neoforge-1.21.1-1.2.11.jar:data/oritech/recipe/reactorgen/pellet.json", "jar:oritech-neoforge-1.21.1-1.2.11.jar:data/oritech/recipe/reactorgen/smallpellet.json", "jar:oritech-neoforge-1.21.1-1.2.11.jar:assets/oracle_index/books/oritech/docs/reactor/designs.mdx"]
-    },
-    {
-      "key": "ori_cooling", "role": "side", "deps": ["ori_reactor"], "group": "reactor",
-      "tasks": [{"item": "oritech:reactor_heat_pipe", "count": 4}, {"item": "oritech:reactor_vent", "count": 4}, {"item": "oritech:reactor_condenser", "count": 2}, {"item": "oritech:cooler_block"}],
-      "at": {"x": 12.649, "y": -10.312},
-      "en_us": {"title": "Heat Pipes, Vents and Ice",
-        "text": ["Heat pipes pull heat off the rods and spread it; a vent sheds 4 heat plus a hundredth of its hottest neighbour's; a [item:oritech:reactor_condenser|Reactor Heat Absorber] takes 16 from every neighbour but eats ice from the port above its column.",
-                 "{page}",
-                 "The [item:oritech:cooler_block|Industrial Chiller] freezes a bucket of water into three ice in 200 ticks, twice as fast in cold biomes. Ice, packed ice and blue ice all cool the same."]},
-      "es_es": {"title": "Caños de calor, ventilación y hielo",
-        "text": ["Los caños de calor sacan el calor de las barras y lo reparten; una ventilación descarga 4 de calor más la centésima parte del de su vecino más caliente; un [item:oritech:reactor_condenser|Absorbedor de calor del reactor] le saca 16 a cada vecino pero come hielo del puerto sobre su columna.",
-                 "{page}",
-                 "El [item:oritech:cooler_block|Enfriador industrial] congela un balde de agua en tres de hielo en 200 ticks, el doble de rápido en biomas fríos. Hielo, hielo compacto y hielo azul enfrían igual."]},
-      "sources": ["jar:oritech-neoforge-1.21.1-1.2.11.jar:rearth/oritech/init/OritechConfig.class#ventBaseRate", "jar:oritech-neoforge-1.21.1-1.2.11.jar:rearth/oritech/init/OritechConfig.class#ventRelativeRate", "jar:oritech-neoforge-1.21.1-1.2.11.jar:rearth/oritech/init/OritechConfig.class#absorberRate", "jar:oritech-neoforge-1.21.1-1.2.11.jar:assets/oracle_index/books/oritech/docs/reactor/components.mdx", "jar:oritech-neoforge-1.21.1-1.2.11.jar:data/oritech/recipe/cooler/ice.json", "jar:oritech-neoforge-1.21.1-1.2.11.jar:assets/oracle_index/books/oritech/content/machines/processing/cooler_block.mdx", "jar:oritech-neoforge-1.21.1-1.2.11.jar:assets/oracle_index/books/oritech/content/nuclear/reactor_absorber_port.mdx", "jar:oritech-neoforge-1.21.1-1.2.11.jar:data/oritech/recipe/crafting/cooler.json"]
-    },
-    {
-      "key": "ori_reactor_tip", "role": "tip", "deps": ["ori_reactor"], "group": "reactor",
-      "task": {"type": "checkmark"},
-      "at": {"x": 13.377, "y": -12.044},
-      "en_us": {"title": "Count the Pulses",
-        "text": ["[tip] A single rod pulses once, a double four times, a quad twelve; each neighbouring rod or neutron reflector adds more. Every pulse makes 64 RF/t per layer, but heat grows with the square: a lone quad rod gives 768 RF/t and 76 heat."]},
-      "es_es": {"title": "Contá los pulsos",
-        "text": ["[tip] Una barra simple pulsa una vez, una doble cuatro, una cuádruple doce; cada barra vecina o reflector de neutrones suma más. Cada pulso da 64 RF/t por capa, pero el calor crece con el cuadrado: una barra cuádruple sola da 768 RF/t y 76 de calor."]},
-      "sources": ["jar:oritech-neoforge-1.21.1-1.2.11.jar:rearth/oritech/init/BlockContent.class#REACTOR_QUAD_ROD", "jar:oritech-neoforge-1.21.1-1.2.11.jar:rearth/oritech/init/OritechConfig.class#rfPerPulse", "jar:oritech-neoforge-1.21.1-1.2.11.jar:rearth/oritech/block/entity/reactor/ReactorControllerBlockEntity.class", "jar:oritech-neoforge-1.21.1-1.2.11.jar:assets/oracle_index/books/oritech/docs/reactor/components.mdx"]
-    },
-    {
       "key": "ori_addons", "role": "side", "deps": ["ori_processing_unit"], "group": "addons",
       "tasks": [{"item": "oritech:machine_speed_addon"}, {"item": "oritech:machine_efficiency_addon"}],
       "at": {"x": -9.423, "y": -9.561},
@@ -522,6 +455,16 @@
                  "{page}",
                  "Cada empalme pide su reserva de 50.000.000 RF llena y se come los complementos para siempre. Calderas de vapor, unidades de control, proxys de inventario y complementos cazadores no se empalman."]},
       "sources": ["jar:oritech-neoforge-1.21.1-1.2.11.jar:rearth/oritech/init/OritechStartupConfig.class#ultimateAddonSpeed", "jar:oritech-neoforge-1.21.1-1.2.11.jar:rearth/oritech/init/OritechStartupConfig.class#ultimateAddonEfficiency", "jar:oritech-neoforge-1.21.1-1.2.11.jar:rearth/oritech/init/OritechConfig$AddonConfig.class#addonShrinkerRF", "jar:oritech-neoforge-1.21.1-1.2.11.jar:rearth/oritech/block/entity/interaction/ShrinkerBlockEntity.class#getCorePositions", "jar:oritech-neoforge-1.21.1-1.2.11.jar:assets/oracle_index/books/oritech/content/machines/utility/shrinker_block.mdx", "jar:oritech-neoforge-1.21.1-1.2.11.jar:assets/oracle_index/books/oritech/content/machines/addons/machine_combi_addon.mdx", "jar:oritech-neoforge-1.21.1-1.2.11.jar:data/oritech/recipe/crafting/addon/ultimate.json", "jar:oritech-neoforge-1.21.1-1.2.11.jar:data/oritech/recipe/crafting/shrinker.json"]
+    },
+    {
+      "key": "ori_proxy", "role": "side", "deps": ["ori_addons"], "group": "addons",
+      "task": {"item": "oritech:machine_inventory_proxy_addon"},
+      "at": {"x": -8.9, "y": -11.2},
+      "en_us": {"title": "Inventory Proxy",
+        "text": ["Five carbon fibre, a processing unit, two chests and a motor. An [item:oritech:machine_inventory_proxy_addon|Inventory Proxy Addon] stands for one slot of its machine, picked in its screen: a pipe on it fills or empties that slot and no other."]},
+      "es_es": {"title": "Proxy de inventario",
+        "text": ["Cinco de fibra de carbono, una unidad de procesamiento, dos cofres y un motor. Un [item:oritech:machine_inventory_proxy_addon|Complemento proxy de inventario] representa un solo casillero de su máquina, elegido en su pantalla: un caño en él llena o vacía ese casillero y ningún otro."]},
+      "sources": ["jar:oritech-neoforge-1.21.1-1.2.11.jar:data/oritech/recipe/crafting/addon/invproxy.json", "jar:oritech-neoforge-1.21.1-1.2.11.jar:rearth/oritech/block/entity/addons/InventoryProxyAddonBlockEntity.class", "jar:oritech-neoforge-1.21.1-1.2.11.jar:assets/oracle_index/books/oritech/content/machines/addons/machine_inventory_proxy_addon.mdx"]
     },
     {
       "key": "ori_fragment", "role": "side", "deps": ["ori_centrifuge"], "group": "ores",
@@ -608,38 +551,28 @@
       "sources": ["jar:oritech-neoforge-1.21.1-1.2.11.jar:data/oritech/recipe/crafting/_pole.json", "jar:oritech-neoforge-1.21.1-1.2.11.jar:rearth/oritech/init/OritechConfig$PowerPoleConfig.class#minRange", "jar:oritech-neoforge-1.21.1-1.2.11.jar:rearth/oritech/init/OritechConfig$PowerPoleConfig.class#maxRange", "jar:oritech-neoforge-1.21.1-1.2.11.jar:rearth/oritech/init/OritechConfig$PowerPoleConfig.class#energyCapacity", "jar:oritech-neoforge-1.21.1-1.2.11.jar:assets/oracle_index/books/oritech/content/logistics/power_pole_block.mdx", "jar:oritech-neoforge-1.21.1-1.2.11.jar:assets/oracle_index/books/oritech/content/equipment/wrench.mdx"]
     },
     {
-      "key": "ori_frames", "role": "side", "deps": ["ori_laser_arm"], "group": "gantry",
-      "task": {"item": "oritech:machine_frame_block", "count": 16},
-      "at": {"x": -4.864, "y": -6.225},
-      "en_us": {"title": "Machine Frames",
-        "text": ["Nickel and iron bars make sixteen. Lay them as a hollow rectangle up to 64 long: gantry machines clamp onto any edge, even a corner, and work the layer below the frame. Several machines can share one frame."]},
-      "es_es": {"title": "Marcos de máquina",
-        "text": ["Níquel y barrotes de hierro dan dieciséis. Armá con ellos un rectángulo hueco de hasta 64 de largo: las máquinas de pórtico se enganchan en cualquier borde, hasta en una esquina, y trabajan la capa de abajo del marco. Varias máquinas pueden compartir un marco."]},
-      "sources": ["jar:oritech-neoforge-1.21.1-1.2.11.jar:data/oritech/recipe/crafting/frame.json", "jar:oritech-neoforge-1.21.1-1.2.11.jar:rearth/oritech/init/OritechConfig$ProcessingMachines.class#machineFrameMaxLength", "jar:oritech-neoforge-1.21.1-1.2.11.jar:assets/oracle_index/books/oritech/content/machines/gantries/machine_frame_block.mdx"]
+      "key": "ori_tank", "role": "side", "deps": ["ori_pipes"], "group": "logistics",
+      "task": {"item": "oritech:small_tank_block", "count": 2},
+      "at": {"x": -7.0, "y": 12.8},
+      "en_us": {"title": "Portable Tank",
+        "text": ["Six copper, two fluid pipes and a glass block. A [item:oritech:small_tank_block|Portable Tank] holds 256 buckets and keeps them when broken; stacked tanks pour down into the one below, and a comparator reads how full it is."]},
+      "es_es": {"title": "Tanque portable",
+        "text": ["Seis de cobre, dos caños de fluidos y un bloque de vidrio. Un [item:oritech:small_tank_block|Tanque portable] guarda 256 baldes y los conserva al romperlo; los tanques apilados vuelcan en el de abajo, y un comparador lee cuán lleno está."]},
+      "sources": ["jar:oritech-neoforge-1.21.1-1.2.11.jar:data/oritech/recipe/crafting/stank.json", "jar:oritech-neoforge-1.21.1-1.2.11.jar:rearth/oritech/init/OritechConfig.class#portableTankCapacityBuckets", "jar:oritech-neoforge-1.21.1-1.2.11.jar:rearth/oritech/block/entity/storage/SmallTankEntity.class#outputToBelow", "jar:oritech-neoforge-1.21.1-1.2.11.jar:rearth/oritech/block/entity/storage/SmallTankEntity.class#getComparatorOutput", "jar:oritech-neoforge-1.21.1-1.2.11.jar:rearth/oritech/item/other/SmallFluidTankBlockItem.class"]
     },
     {
-      "key": "ori_destroyer", "role": "side", "deps": ["ori_frames"], "group": "gantry",
-      "tasks": [{"item": "oritech:destroyer_block"}, {"item": "oritech:quarry_addon"}],
-      "at": {"x": -3.248, "y": -5.457},
-      "en_us": {"title": "Block Destroyer",
-        "text": ["An Enderic Laser, a Pulverizer, four motors and plating. On a frame it breaks the layer below; each [item:oritech:quarry_addon|Quarry Addon] multiplies its depth by eight: 8, 64, then 512 blocks. On a laser the same addon widens the beam by one."]},
-      "es_es": {"title": "Bloque Destructor",
-        "text": ["Un Láser endérico, un Pulverizador, cuatro motores y revestimiento. Sobre un marco rompe la capa de abajo; cada [item:oritech:quarry_addon|Complemento de cantera] multiplica su profundidad por ocho: 8, 64 y después 512 bloques. En un láser el mismo complemento ensancha el rayo en uno."]},
-      "sources": ["jar:oritech-neoforge-1.21.1-1.2.11.jar:data/oritech/recipe/crafting/destroyer.json", "jar:oritech-neoforge-1.21.1-1.2.11.jar:data/oritech/recipe/crafting/addon/quarry.json", "jar:oritech-neoforge-1.21.1-1.2.11.jar:assets/oracle_index/books/oritech/content/machines/gantries/destroyer_block.mdx", "jar:oritech-neoforge-1.21.1-1.2.11.jar:assets/oracle_index/books/oritech/content/machines/addons/quarry_addon.mdx", "jar:oritech-neoforge-1.21.1-1.2.11.jar:rearth/oritech/block/entity/interaction/DestroyerBlockEntity.class#getCorePositions"]
-    },
-    {
-      "key": "ori_farm", "role": "side", "deps": ["ori_frames"], "group": "gantry",
-      "tasks": [{"item": "oritech:placer_block"}, {"item": "oritech:fertilizer_block"}, {"item": "oritech:treefeller_block"}],
-      "at": {"x": -4.509, "y": -4.472},
-      "en_us": {"title": "Farms on a Frame",
-        "text": ["The [item:oritech:placer_block|Placer] plants seeds and saplings only where they can grow; the [item:oritech:fertilizer_block|Fertilizer] hydrates the farmland and boosts growth for a quarter bucket per block, far stronger on mineral slurry. A crop filter on the Destroyer leaves unripe crops alone.",
+      "key": "ori_item_filter", "role": "side", "deps": ["ori_pipes"], "group": "logistics",
+      "task": {"item": "oritech:item_filter_block", "count": 2},
+      "at": {"x": -3.0, "y": 14.7},
+      "en_us": {"title": "Item Filter",
+        "text": ["Seven planks around a processing unit, on plating. Place the [item:oritech:item_filter_block|Item Filter] against the inventory it should fill: it accepts only what its list allows, from pipes on any side, and passes it straight in. It holds one item at a time and never pulls on its own.",
                  "{page}",
-                 "The [item:oritech:treefeller_block|Tree Cutter] needs no frame: it fells whole trees in front of it, up to 8,000 blocks each, and keeps the saplings and fruit."]},
-      "es_es": {"title": "Granjas sobre un marco",
-        "text": ["El [item:oritech:placer_block|Bloque Colocador] planta semillas y brotes sólo donde pueden crecer; el [item:oritech:fertilizer_block|Bloque Fertilizador] humedece la tierra de cultivo y acelera el crecimiento por un cuarto de balde por bloque, mucho más con lodo mineral. Un filtro de cultivos en el Destructor deja en paz lo que no maduró.",
+                 "[tip] This pack has FTB Filter System, so a [item:ftbfiltersystem:smart_filter|Smart Filter] in the list matches whole tags, mods or anything its expression can say."]},
+      "es_es": {"title": "Filtro de objetos",
+        "text": ["Siete tablones alrededor de una unidad de procesamiento, sobre revestimiento. Poné el [item:oritech:item_filter_block|Filtro de Objetos] contra el inventario que tiene que llenar: acepta sólo lo que permite su lista, de caños por cualquier lado, y lo pasa derecho. Guarda un ítem por vez y nunca tira por su cuenta.",
                  "{page}",
-                 "El [item:oritech:treefeller_block|Cortador de árboles] no necesita marco: tala árboles enteros frente a él, de hasta 8.000 bloques cada uno, y se queda con los brotes y la fruta."]},
-      "sources": ["jar:oritech-neoforge-1.21.1-1.2.11.jar:data/oritech/recipe/crafting/placer.json", "jar:oritech-neoforge-1.21.1-1.2.11.jar:data/oritech/recipe/crafting/fertilizer.json", "jar:oritech-neoforge-1.21.1-1.2.11.jar:data/oritech/recipe/crafting/treefeller.json", "jar:oritech-neoforge-1.21.1-1.2.11.jar:rearth/oritech/init/OritechConfig$FertilizerConfig.class#liquidPerBlockUsage", "jar:oritech-neoforge-1.21.1-1.2.11.jar:assets/oracle_index/books/oritech/content/machines/gantries/placer_block.mdx", "jar:oritech-neoforge-1.21.1-1.2.11.jar:assets/oracle_index/books/oritech/content/machines/gantries/fertilizer_block.mdx", "jar:oritech-neoforge-1.21.1-1.2.11.jar:assets/oracle_index/books/oritech/content/machines/addons/crop_filter_addon.mdx", "jar:oritech-neoforge-1.21.1-1.2.11.jar:rearth/oritech/block/entity/interaction/TreefellerBlockEntity.class", "jar:oritech-neoforge-1.21.1-1.2.11.jar:assets/oracle_index/books/oritech/content/machines/utility/treefeller_block.mdx"]
+                 "[tip] Este pack trae FTB Filter System, así que un [item:ftbfiltersystem:smart_filter|Filtro inteligente] en la lista acepta tags enteros, mods o lo que diga su expresión."]},
+      "sources": ["jar:oritech-neoforge-1.21.1-1.2.11.jar:data/oritech/recipe/crafting/itemfilter.json", "jar:oritech-neoforge-1.21.1-1.2.11.jar:rearth/oritech/block/blocks/pipes/item/ItemFilterBlock.class#getStateForPlacement", "jar:oritech-neoforge-1.21.1-1.2.11.jar:rearth/oritech/block/entity/pipes/ItemFilterBlockEntity.class#serverTick", "jar:oritech-neoforge-1.21.1-1.2.11.jar:rearth/oritech/block/entity/pipes/ItemFilterBlockEntity$FilterBlockInventory.class#canInsert", "repo:catalog/curated.json", "jar:oritech-neoforge-1.21.1-1.2.11.jar:assets/oracle_index/books/oritech/content/logistics/item_filter_block.mdx"]
     },
     {
       "key": "ori_hunter", "role": "side", "deps": ["ori_laser_arm"], "group": "laser",
@@ -730,83 +663,9 @@
       "sources": ["jar:oritech-neoforge-1.21.1-1.2.11.jar:data/oritech/recipe/crafting/boostedelytra.json", "jar:oritech-neoforge-1.21.1-1.2.11.jar:data/oritech/recipe/crafting/exoboostedelytra.json", "jar:oritech-neoforge-1.21.1-1.2.11.jar:rearth/oritech/init/OritechStartupConfig.class#elytraJetpack", "jar:oritech-neoforge-1.21.1-1.2.11.jar:rearth/oritech/init/OritechStartupConfig.class#exoElytraJetpack", "jar:oritech-neoforge-1.21.1-1.2.11.jar:assets/oracle_index/books/oritech/content/equipment/jetpack.mdx", "repo:pack/config/oritech-startup.toml"]
     },
     {
-      "key": "ori_cyber", "role": "side", "deps": ["ori_gear"], "group": "exo",
-      "tasks": [{"item": "oritech:augment_application_block"}, {"item": "oritech:simple_augment_station"}],
-      "at": {"x": 4.907, "y": -14.364},
-      "en_us": {"title": "Cybernetic Augmentation", "subtitle": "Flesh is optional.",
-        "text": ["The [item:oritech:augment_application_block|Cybernetic Augmentation Center] sits on ten cores, and each of its up to three research stations needs three more. Walk into the center to research and install permanent upgrades: health, reach, speed, night vision and, from the arcane station, flight.",
-                 "{page}",
-                 "[tip] Hold [key:key.oritech.augment_screen] to switch installed augments on and off."]},
-      "es_es": {"title": "Aumento cibernético", "subtitle": "La carne es opcional.",
-        "text": ["El [item:oritech:augment_application_block|Centro de aumento cibernético] va sobre diez núcleos, y cada una de sus hasta tres estaciones de investigación pide tres más. Entrá caminando al centro para investigar e instalar mejoras permanentes: vida, alcance, velocidad, visión nocturna y, desde la estación arcana, vuelo.",
-                 "{page}",
-                 "[tip] Mantené [key:key.oritech.augment_screen] para prender y apagar los aumentos instalados."]},
-      "sources": ["jar:oritech-neoforge-1.21.1-1.2.11.jar:data/oritech/recipe/crafting/augment/applicator.json", "jar:oritech-neoforge-1.21.1-1.2.11.jar:data/oritech/recipe/crafting/augment/basic.json", "jar:oritech-neoforge-1.21.1-1.2.11.jar:rearth/oritech/block/entity/augmenter/AugmentApplicationEntity.class#getCorePositions", "jar:oritech-neoforge-1.21.1-1.2.11.jar:rearth/oritech/block/entity/augmenter/AugmentResearchStationBlockEntity.class#getCorePositions", "jar:oritech-neoforge-1.21.1-1.2.11.jar:assets/oracle_index/books/oritech/content/machines/augmentations/augment_application_block.mdx", "jar:oritech-neoforge-1.21.1-1.2.11.jar:data/oritech/recipe/augment/flight.json", "jar:oritech-neoforge-1.21.1-1.2.11.jar:data/oritech/recipe/augment/hpboost.json", "repo:pack/config/entrelumen/client-preset.json"]
-    },
-    {
-      "key": "ori_collide_tip", "role": "tip", "deps": ["ori_accelerator"], "group": "ring",
-      "task": {"type": "checkmark"},
-      "at": {"x": 8.156, "y": 10.662},
-      "en_us": {"title": "One Fast, One Still",
-        "text": ["[tip] Collision energy is the sum of both speeds, whatever the items. Bring one particle up to speed, then drop a still one into the same ring: 5,000 m/s against 0 is 5,000 J, and only one of them cost you power."]},
-      "es_es": {"title": "Uno rápido, uno quieto",
-        "text": ["[tip] La energía del choque es la suma de las dos velocidades, sean cuales sean los ítems. Llevá una partícula a velocidad y después soltá una quieta en el mismo anillo: 5.000 m/s contra 0 son 5.000 J, y sólo una te costó energía."]},
-      "sources": ["jar:oritech-neoforge-1.21.1-1.2.11.jar:assets/oracle_index/books/oritech/docs/particle_accelerator.mdx"]
-    },
-    {
-      "key": "ori_collisions_low", "role": "side", "deps": ["ori_accelerator"], "group": "ring",
-      "tasks": [{"item": "minecraft:echo_shard", "count": 4}, {"item": "minecraft:netherite_scrap", "count": 2}],
-      "at": {"x": 6.83, "y": 11.556},
-      "en_us": {"title": "Small Collisions",
-        "text": ["At 500 J two coal dusts fuse into a diamond and two gold dusts into platinum dust; at 1,000 J an ender pearl and an amethyst shard give an [item:minecraft:echo_shard|Echo Shard]; at 2,500 J adamant dust and netherrack give [item:minecraft:netherite_scrap|Netherite Scrap]."]},
-      "es_es": {"title": "Choques chicos",
-        "text": ["A 500 J dos polvos de carbón se funden en un diamante y dos polvos de oro en polvo de platino; a 1.000 J una perla de ender y un fragmento de amatista dan un [item:minecraft:echo_shard|Fragmento resonante]; a 2.500 J polvo de adamantio y netherrack dan [item:minecraft:netherite_scrap|Fragmentos de netherita]."]},
-      "sources": ["jar:oritech-neoforge-1.21.1-1.2.11.jar:data/oritech/recipe/particle/diamond.json", "jar:oritech-neoforge-1.21.1-1.2.11.jar:data/oritech/recipe/particle/platinum_dust.json", "jar:oritech-neoforge-1.21.1-1.2.11.jar:data/oritech/recipe/particle/echo_shard.json", "jar:oritech-neoforge-1.21.1-1.2.11.jar:data/oritech/recipe/particle/netherite.json"]
-    },
-    {
-      "key": "ori_collisions_high", "role": "side", "deps": ["ori_collisions_low"], "group": "ring",
-      "tasks": [{"item": "minecraft:heavy_core"}, {"item": "minecraft:elytra"}],
-      "at": {"x": 7.781, "y": 12.966},
-      "en_us": {"title": "Big Collisions",
-        "text": ["At 8,000 J reinforced deepslate, which the forge makes from deepslate and two duratium, meets duratium dust and becomes a [item:minecraft:heavy_core|Heavy Core]. At 10,000 J a feather and a saddle become [item:minecraft:elytra|Elytra].",
-                 "{page}",
-                 "[tip] The heavy core is the head of an [item:oritech:electric_mace|Electric Mace]: three adamant, carbon fibre and two advanced batteries finish it, and every hit calls lightning."]},
-      "es_es": {"title": "Choques grandes",
-        "text": ["A 8.000 J la pizarra profunda reforzada, que la forja hace con pizarra profunda y dos de duratium, choca con polvo de duratium y da un [item:minecraft:heavy_core|Núcleo pesado]. A 10.000 J una pluma y una montura dan [item:minecraft:elytra|Élitros].",
-                 "{page}",
-                 "[tip] El núcleo pesado es la cabeza de una [item:oritech:electric_mace|Maza eléctrica]: tres de adamantio, fibra de carbono y dos baterías avanzadas la terminan, y cada golpe llama rayos."]},
-      "sources": ["jar:oritech-neoforge-1.21.1-1.2.11.jar:data/oritech/recipe/particle/heavy_core.json", "jar:oritech-neoforge-1.21.1-1.2.11.jar:data/oritech/recipe/atomicforge/reinfdeepslate.json", "jar:oritech-neoforge-1.21.1-1.2.11.jar:data/oritech/recipe/particle/elytra.json", "jar:oritech-neoforge-1.21.1-1.2.11.jar:data/oritech/recipe/crafting/_emace.json", "jar:oritech-neoforge-1.21.1-1.2.11.jar:assets/oracle_index/books/oritech/content/equipment/electric_mace.mdx"]
-    },
-    {
-      "key": "ori_tachyon", "role": "side", "deps": ["ori_accelerator"], "group": "ring",
-      "task": {"item": "oritech:particle_collector_block", "count": 4},
-      "at": {"x": 9.107, "y": 12.071},
-      "en_us": {"title": "Tachyon Absorber",
-        "text": ["Fast collisions throw tachyons out in random directions, more and farther the harder the hit. Absorbers around the impact turn them back into energy, up to four times what the acceleration cost; each one holds 1,000,000 RF.",
-                 "{page}",
-                 "[tip] Set absorbers farther back to spread the load: past about 10,000 J even distant ones overflow."]},
-      "es_es": {"title": "Absorbedor de taquiones",
-        "text": ["Los choques rápidos tiran taquiones en direcciones al azar, más y más lejos cuanto más fuerte el golpe. Los absorbedores alrededor del impacto los vuelven energía, hasta cuatro veces lo que costó acelerar; cada uno guarda 1.000.000 RF.",
-                 "{page}",
-                 "[tip] Poné los absorbedores más atrás para repartir la carga: arriba de unos 10.000 J hasta los lejanos se desbordan."]},
-      "sources": ["jar:oritech-neoforge-1.21.1-1.2.11.jar:data/oritech/recipe/crafting/particlecollector.json", "jar:oritech-neoforge-1.21.1-1.2.11.jar:rearth/oritech/init/OritechConfig.class#collectorEnergyStorage", "jar:oritech-neoforge-1.21.1-1.2.11.jar:assets/oracle_index/books/oritech/docs/particle_accelerator.mdx", "jar:oritech-neoforge-1.21.1-1.2.11.jar:assets/oracle_index/books/oritech/content/particle/particle_collector_block.mdx"]
-    },
-    {
-      "key": "ori_railgun", "role": "side", "deps": ["ori_accelerator"], "group": "ring",
-      "task": {"item": "oritech:portable_laser"},
-      "at": {"x": 10.058, "y": 13.48},
-      "en_us": {"title": "Enderic Railgun",
-        "text": ["An Enderic Laser, a linear motor, three adamant and two advanced batteries: a handheld laser holding 5,000,000 RF. Mining mode breaks blocks up to 128 away; combat mode only hits mobs, blasts for 100,000 RF a shot and turns creepers charged.",
-                 "[warn|Combat mode explodes]: keep it away from your own walls."]},
-      "es_es": {"title": "Cañón de riel endérico",
-        "text": ["Un Láser endérico, un motor lineal, tres de adamantio y dos baterías avanzadas: un láser de mano que guarda 5.000.000 RF. En modo minería rompe bloques hasta a 128; en modo combate sólo le pega a los mobs, explota por 100.000 RF el tiro y deja cargados a los creepers.",
-                 "[warn|El modo combate explota]: tenelo lejos de tus propias paredes."]},
-      "sources": ["jar:oritech-neoforge-1.21.1-1.2.11.jar:data/oritech/recipe/crafting/portablelaser.json", "jar:oritech-neoforge-1.21.1-1.2.11.jar:rearth/oritech/init/OritechStartupConfig$PortableLaserConfig.class", "jar:oritech-neoforge-1.21.1-1.2.11.jar:assets/oracle_index/books/oritech/content/equipment/portable_laser.mdx"]
-    },
-    {
-      "key": "ori_budding", "role": "side", "deps": ["ori_overcharged"], "group": "ring",
+      "key": "ori_budding", "role": "side", "deps": ["ori_overcharged"],
       "task": {"item": "minecraft:budding_amethyst"},
-      "at": {"x": 8.731, "y": 14.375},
+      "at": {"x": 11.3, "y": 7.2},
       "en_us": {"title": "A Geode at Home",
         "text": ["The Assembler grows a [item:minecraft:budding_amethyst|Budding Amethyst] from two amethyst shards, enderic compound and an overcharged crystal. Set it beside your laser and the fluxite mine moves home."]},
       "es_es": {"title": "Una geoda en casa",
@@ -835,48 +694,6 @@
       "sources": ["jar:oritech-neoforge-1.21.1-1.2.11.jar:data/oritech/recipe/crafting/deepdrill.json", "repo:pack/kubejs/server_scripts/entrelumen_pingpong_balance.js", "jar:oritech-neoforge-1.21.1-1.2.11.jar:rearth/oritech/block/entity/interaction/DeepDrillEntity.class#getCorePositions", "jar:oritech-neoforge-1.21.1-1.2.11.jar:rearth/oritech/init/OritechConfig$DeepDrillConfig.class#stepsPerOre", "jar:oritech-neoforge-1.21.1-1.2.11.jar:rearth/oritech/init/OritechConfig$DeepDrillConfig.class#energyPerStep", "jar:oritech-neoforge-1.21.1-1.2.11.jar:assets/oracle_index/books/oritech/content/machines/utility/deep_drill_block.mdx", "jar:oritech-neoforge-1.21.1-1.2.11.jar:data/oritech/recipe/deepdrill/iron.json"]
     },
     {
-      "key": "ori_logistics", "role": "side", "deps": ["ori_drill"], "group": "mining",
-      "task": {"item": "oritech:drone_port_block", "count": 2},
-      "at": {"x": 16.64, "y": 5.087},
-      "en_us": {"title": "Drone Port",
-        "text": ["Two ports on eleven cores each, at least 50 blocks apart and linked with the designator, fly items between bases in a fixed time; with a Fluid Addon on both, fluids too. The energy grows with the square root of the distance, and both ends must be loaded.",
-                 "{page}",
-                 "[tip] A port sends to one place but receives from many; a busy sender can clog a receiver for the rest."]},
-      "es_es": {"title": "Puerto de drones",
-        "text": ["Dos puertos de once núcleos cada uno, a 50 bloques o más y unidos con el designador, llevan ítems entre bases en un tiempo fijo; con un Complemento de fluidos en ambos, también fluidos. La energía crece con la raíz de la distancia, y los dos extremos tienen que estar cargados.",
-                 "{page}",
-                 "[tip] Un puerto manda a un solo lugar pero recibe de muchos; un emisor muy activo puede trabar a un receptor para los demás."]},
-      "sources": ["jar:oritech-neoforge-1.21.1-1.2.11.jar:data/oritech/recipe/crafting/droneport.json", "jar:oritech-neoforge-1.21.1-1.2.11.jar:rearth/oritech/block/entity/interaction/DronePortEntity.class", "jar:oritech-neoforge-1.21.1-1.2.11.jar:rearth/oritech/block/entity/interaction/DronePortEntity.class#getCorePositions", "jar:oritech-neoforge-1.21.1-1.2.11.jar:assets/oracle_index/books/oritech/content/machines/utility/drone_port_block.mdx"]
-    },
-    {
-      "key": "ori_arcane", "role": "side", "deps": ["ori_compensator"], "group": "arcane",
-      "tasks": [{"item": "oritech:enchantment_catalyst_block"}, {"item": "oritech:enchanter_block"}],
-      "at": {"x": 13.107, "y": -2.786},
-      "en_us": {"title": "Catalyst and Enchanter",
-        "text": ["The [item:oritech:enchantment_catalyst_block|Arcane Catalyst] stores the souls of mobs dying within 16 blocks: 50 at most, one more for every 20 RF/t a laser feeds it. The [item:oritech:enchanter_block|Stabilized Enchanter] spends them at 512 RF/t to apply exactly the enchantment you pick.",
-                 "{page}",
-                 "[warn|A catalyst holding more souls than it can take explodes after three seconds], so keep its laser running. A max-level book placed in it pushes an item past the vanilla cap, at an exponential soul bill."]},
-      "es_es": {"title": "Catalizador y encantador",
-        "text": ["El [item:oritech:enchantment_catalyst_block|Catalizador arcano] guarda las almas de los mobs que mueren a 16 bloques: 50 como mucho, una más por cada 20 RF/t que le da un láser. El [item:oritech:enchanter_block|Encantador estabilizado] las gasta a 512 RF/t para aplicar justo el encantamiento que elijas.",
-                 "{page}",
-                 "[warn|Un catalizador con más almas de las que aguanta explota a los tres segundos], así que no le cortes el láser. Un libro de nivel máximo puesto en él lleva un ítem más allá del tope normal, a un precio en almas exponencial."]},
-      "sources": ["jar:oritech-neoforge-1.21.1-1.2.11.jar:data/oritech/recipe/crafting/catalyst.json", "jar:oritech-neoforge-1.21.1-1.2.11.jar:data/oritech/recipe/crafting/enchanter.json", "jar:oritech-neoforge-1.21.1-1.2.11.jar:rearth/oritech/init/OritechConfig.class#catalystBaseSouls", "jar:oritech-neoforge-1.21.1-1.2.11.jar:rearth/oritech/init/OritechConfig.class#catalystRFPerSoul", "jar:oritech-neoforge-1.21.1-1.2.11.jar:assets/oracle_index/books/oritech/content/arcane/enchantment_catalyst_block.mdx", "jar:oritech-neoforge-1.21.1-1.2.11.jar:assets/oracle_index/books/oritech/content/arcane/enchanter_block.mdx"]
-    },
-    {
-      "key": "ori_spawner", "role": "side", "deps": ["ori_arcane"], "group": "arcane",
-      "tasks": [{"item": "oritech:spawner_controller_block"}, {"item": "oritech:spawner_cage_block", "count": 8}],
-      "at": {"x": 14.77, "y": -3.139},
-      "en_us": {"title": "Spawner Controller",
-        "text": ["The first mob to walk over the controller sets its type for good; build the cage it highlights underneath. Each spawn costs souls, the square root of the mob's health. Here the controller takes an [item:twilightforest:ironwood_ingot|Ironwood Ingot] (act IV).",
-                 "{page}",
-                 "[tip] Soul Flowers planted on soul soil release a soul when harvested: souls without killing anything."]},
-      "es_es": {"title": "Controlador de generador",
-        "text": ["El primer mob que pisa el controlador fija su tipo para siempre; armá debajo la jaula que resalta. Cada aparición cuesta almas, la raíz cuadrada de la vida del mob. Acá el controlador pide un [item:twilightforest:ironwood_ingot|Lingote de madera de hierro] (acto IV).",
-                 "{page}",
-                 "[tip] Las Flores del alma plantadas en tierra de almas sueltan un alma al cosecharlas: almas sin matar a nadie."]},
-      "sources": ["jar:oritech-neoforge-1.21.1-1.2.11.jar:data/oritech/recipe/crafting/spawner.json", "repo:pack/kubejs/server_scripts/entrelumen_pingpong_balance.js", "jar:oritech-neoforge-1.21.1-1.2.11.jar:assets/oracle_index/books/oritech/content/arcane/spawner_controller_block.mdx", "jar:oritech-neoforge-1.21.1-1.2.11.jar:assets/oracle_index/books/oritech/content/arcane/spawner_cage_block.mdx", "jar:oritech-neoforge-1.21.1-1.2.11.jar:assets/oracle_index/books/oritech/content/arcane/wither_crop_block.mdx", "jar:oritech-neoforge-1.21.1-1.2.11.jar:data/oritech/recipe/crafting/cage.json", "jar:oritech-neoforge-1.21.1-1.2.11.jar:data/oritech/recipe/crafting/witherrose.json"]
-    },
-    {
       "key": "ori_unholy", "role": "secret", "deps": ["ori_compensator"],
       "task": {"type": "advancement", "advancement": "minecraft:oritech/unholy", "icon": "oritech:unholy_intelligence"},
       "icon": "oritech:unholy_intelligence",
@@ -888,41 +705,15 @@
       "sources": ["jar:oritech-neoforge-1.21.1-1.2.11.jar:data/minecraft/advancement/oritech/unholy.json", "jar:oritech-neoforge-1.21.1-1.2.11.jar:assets/oracle_index/books/oritech/content/components/unholy_intelligence.mdx", "jar:oritech-neoforge-1.21.1-1.2.11.jar:data/oritech/recipe/atomicforge/compensatoralt.json", "jar:oritech-neoforge-1.21.1-1.2.11.jar:data/oritech/recipe/crafting/droneport.json", "jar:oritech-neoforge-1.21.1-1.2.11.jar:data/oritech/recipe/crafting/catalyst.json", "jar:oritech-neoforge-1.21.1-1.2.11.jar:data/oritech/recipe/biogen/vex.json"]
     },
     {
-      "key": "ori_overenchanted", "role": "secret", "deps": ["ori_arcane"], "group": "arcane",
-      "task": {"type": "advancement", "advancement": "minecraft:oritech/overenchanted", "icon": "minecraft:enchanted_book"},
-      "icon": "minecraft:enchanted_book",
-      "at": {"x": 16.531, "y": -3.514},
-      "en_us": {"title": "Past the Cap", "subtitle": "Ten is just a number.",
-        "text": ["An item with an enchantment at level ten. The catalyst's hyper enchanting goes further still, and every extra level costs exponentially more souls."]},
-      "es_es": {"title": "Más allá del tope", "subtitle": "Diez es sólo un número.",
-        "text": ["Un ítem con un encantamiento a nivel diez. El hiperencantamiento del catalizador sigue más arriba, y cada nivel extra cuesta exponencialmente más almas."]},
-      "sources": ["jar:oritech-neoforge-1.21.1-1.2.11.jar:data/minecraft/advancement/oritech/overenchanted.json", "jar:oritech-neoforge-1.21.1-1.2.11.jar:assets/oracle_index/books/oritech/content/arcane/enchantment_catalyst_block.mdx", "jar:oritech-neoforge-1.21.1-1.2.11.jar:rearth/oritech/init/OritechConfig.class#catalystHyperExpFactor"]
-    },
-    {
-      "key": "ori_black_hole", "role": "secret", "deps": ["ori_accelerator"],
-      "task": {"type": "observation", "observe": "block", "target": "oritech:black_hole_block", "ticks": 40, "icon": "oritech:particle_collector_block", "title": {"en_us": "Look into a black hole", "es_es": "Mirá un agujero negro"}},
-      "icon": "oritech:particle_collector_block",
-      "at": {"x": 4.062, "y": 2.74},
-      "en_us": {"title": "Event Horizon", "subtitle": "Don't feed it the base.",
-        "text": ["A particle faster than 15,000 m/s hit a portal and tore a hole in the world. It swallows blocks up to 16 away, one by one, and throws 50,000 RF of tachyons at an absorber in line for each: a generator that eats the scenery.",
-                 "{page}",
-                 "Before that: fire charges colliding above 5,000 J open a Nether portal, and ender pearls above 10,000 J an End portal."]},
-      "es_es": {"title": "Horizonte de sucesos", "subtitle": "No le des de comer la base.",
-        "text": ["Una partícula a más de 15.000 m/s pegó en un portal y abrió un agujero en el mundo. Se traga bloques hasta a 16, de a uno, y por cada uno tira 50.000 RF de taquiones a un absorbedor en línea: un generador que se come el paisaje.",
-                 "{page}",
-                 "Antes de eso: cargas ígneas chocando arriba de 5.000 J abren un portal al Nether, y perlas de ender arriba de 10.000 J uno al End."]},
-      "sources": ["jar:oritech-neoforge-1.21.1-1.2.11.jar:rearth/oritech/block/entity/accelerator/AcceleratorControllerBlockEntity.class#handleParticleBlockCollision", "jar:oritech-neoforge-1.21.1-1.2.11.jar:rearth/oritech/block/entity/accelerator/AcceleratorControllerBlockEntity.class#onParticleCollided", "jar:oritech-neoforge-1.21.1-1.2.11.jar:rearth/oritech/block/entity/accelerator/BlackHoleBlockEntity.class", "jar:oritech-neoforge-1.21.1-1.2.11.jar:rearth/oritech/init/OritechConfig.class#blackHoleRequiredSpeed", "jar:oritech-neoforge-1.21.1-1.2.11.jar:rearth/oritech/init/OritechConfig.class#pullRange", "jar:oritech-neoforge-1.21.1-1.2.11.jar:rearth/oritech/init/OritechConfig.class#blackHoleTachyonEnergy", "jar:oritech-neoforge-1.21.1-1.2.11.jar:rearth/oritech/init/OritechConfig.class#netherPortalRequiredSpeed", "jar:oritech-neoforge-1.21.1-1.2.11.jar:rearth/oritech/init/OritechConfig.class#endPortalRequiredSpeed", "jar:oritech-neoforge-1.21.1-1.2.11.jar:assets/oracle_index/books/oritech/docs/particle_accelerator.mdx"]
-    },
-    {
-      "key": "ori_tainted", "role": "secret", "deps": ["ori_refinery"],
-      "task": {"type": "observation", "observe": "block", "target": "oritech:tainted_refinery_block", "ticks": 40, "icon": "oritech:refinery_block", "title": {"en_us": "Look at a Tainted Refinery", "es_es": "Mirá una refinería corrompida"}},
-      "icon": "oritech:refinery_block",
+      "key": "ori_gold_gem", "role": "secret", "deps": ["ori_gems"],
+      "task": {"type": "advancement", "advancement": "minecraft:oritech/gold_gem", "icon": "oritech:gold_gem", "title": {"en_us": "Get a gold gem", "es_es": "Conseguí una gema de oro"}},
+      "icon": "oritech:gold_gem",
       "at": {"x": -16.803, "y": -1.977},
-      "en_us": {"title": "Happy Accident", "subtitle": "It was like that when I got here.",
-        "text": ["A Refinery blew up next to a charged Arcane Catalyst and came back tainted. It swallows all the power you feed it, runs faster with arcane blocks in sight, yields more with sculk around, and keeps a single output."]},
-      "es_es": {"title": "Accidente feliz", "subtitle": "Ya estaba así cuando llegué.",
-        "text": ["Una Refinería explotó al lado de un Catalizador arcano cargado y volvió corrompida. Se come toda la energía que le des, anda más rápido con bloques arcanos a la vista, rinde más con sculk alrededor y se queda con una sola salida."]},
-      "sources": ["jar:oritech-neoforge-1.21.1-1.2.11.jar:assets/oracle_index/books/oritech/content/arcane/tainted_refinery.mdx", "jar:oritech-neoforge-1.21.1-1.2.11.jar:rearth/oritech/block/entity/processing/TaintedRefineryBlockEntity.class"]
+      "en_us": {"title": "Alchemist's Margin", "subtitle": "Gold in, more gold out.",
+        "text": ["A [item:oritech:gold_gem|Gold Gem], spun from a gold clump the same way as iron. Two of them melt into three gold ingots in the Foundry: the only alchemy Oritech needs is a centrifuge."]},
+      "es_es": {"title": "Margen de alquimista", "subtitle": "Entra oro, sale más oro.",
+        "text": ["Una [item:oritech:gold_gem|Gema de oro], centrifugada de un grumo de oro igual que el hierro. Dos se funden en tres lingotes de oro en la Fundición: la única alquimia que Oritech necesita es una centrífuga."]},
+      "sources": ["jar:oritech-neoforge-1.21.1-1.2.11.jar:data/minecraft/advancement/oritech/gold_gem.json", "jar:oritech-neoforge-1.21.1-1.2.11.jar:data/oritech/recipe/centrifuge/clump/gold.json", "jar:oritech-neoforge-1.21.1-1.2.11.jar:data/oritech/recipe/foundry/alloy/gem/gold.json"]
     },
     {
       "key": "ori_bounty", "role": "bounty", "deps": ["ori_motor"],
