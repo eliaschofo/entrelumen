@@ -192,116 +192,10 @@
       ]
     },
     {
-      "key": "qol_world_villagers",
-      "deps": [
-        "qol_world_carry"
-      ],
-      "type": "item",
-      "item": "easy_villagers:trader",
-      "layout": {
-        "x": 3,
-        "y": 6,
-        "size": 1.25,
-        "shape": "circle"
-      },
-      "en_us": [
-        "Villagers in Your Pocket",
-        "&eEasy Villagers&r turns villagers into items: look at one and press &eAlt+O&r, then place it anywhere or inside one of its blocks: &eTrader&r (compact trading), &eFarmer&r (it grows crops), &eBreeder&r, &eIncubator&r and &eConverter&r (more villagers, grown babies, cured zombies).\n\nIn a trading screen, &eC&r cycles its trades."
-      ],
-      "es_es": [
-        "Aldeanos de bolsillo",
-        "&eEasy Villagers&r convierte aldeanos en ítems: miralo, apretá &eAlt+O&r y ponelo en cualquier lado o en uno de sus bloques: &eTrader&r (comercio compacto), &eFarmer&r (cultiva), &eBreeder&r, &eIncubator&r y &eConverter&r (más aldeanos, bebés que crecen, zombis curados).\n\nEn la pantalla de comercio, &eC&r rota sus ofertas."
-      ],
-      "sources": [
-        "jar:easy-villagers-neoforge-1.21.1-1.1.42.jar:assets/easy_villagers/lang/en_us.json",
-        "repo:docs/design/qol-functional-decor-family.md",
-        "repo:pack/config/defaultoptions/keybindings.txt"
-      ]
-    },
-    {
-      "key": "qol_world_villagers_gated",
-      "deps": [
-        "qol_world_villagers"
-      ],
-      "type": "checkmark",
-      "icon": "easy_villagers:iron_farm",
-      "layout": {
-        "x": 6,
-        "y": 7,
-        "size": 1.0,
-        "shape": "pentagon"
-      },
-      "en_us": [
-        "Pack Change: Two Blocks Wait",
-        "The &eIron Farm&r needs a Living Matrix (act II) and the &eAuto Trader&r a Handling Core (act III), each on the top of its drawing; the other Easy Villagers blocks keep their native recipes.\n\nWorth knowing later: villagers settled in Solsticio's trading hall trade cheaper forever."
-      ],
-      "es_es": [
-        "Cambio del pack: dos esperan",
-        "La &eIron Farm&r pide una Matriz viva (acto II) y el &eAuto Trader&r un Núcleo de manipulación (acto III), cada uno arriba de su dibujo; los demás bloques de Easy Villagers conservan sus recetas nativas.\n\nPara más adelante: los aldeanos asentados en la sala de comercio de Solsticio comercian más barato para siempre."
-      ],
-      "sources": [
-        "repo:pack/kubejs/server_scripts/entrelumen_qol_balance.js",
-        "repo:docs/design/solsticio-commerce.md"
-      ]
-    },
-    {
-      "key": "qol_world_elevators",
+      "key": "qol_world_sleep",
       "deps": [
         "qol_world_ultimine_rightclick",
         "qol_world_carry"
-      ],
-      "type": "item",
-      "item": "elevatorid:elevator_white",
-      "layout": {
-        "x": 9,
-        "y": 0,
-        "size": 1.0,
-        "shape": "circle"
-      },
-      "en_us": [
-        "Elevators",
-        "Two &eElevator&r blocks in the same column, with room to stand on each: &ejump&r to go up, &esneak&r to go down, instantly. They come in all sixteen dye colors.\n\nIf one refuses to teleport, try two of the same color: the server may require it."
-      ],
-      "es_es": [
-        "Ascensores",
-        "Dos bloques de &eAscensor&r en la misma columna, con lugar para pararse en cada uno: &esaltá&r para subir, &eagachate&r para bajar, al instante. Vienen en los dieciséis colores de tinte.\n\nSi alguno no te lleva, probá con dos del mismo color: el servidor puede exigirlo."
-      ],
-      "sources": [
-        "jar:elevatorid-neoforge-1.21.1-1.11.4.jar:assets/elevatorid/lang/en_us.json",
-        "jar:elevatorid-neoforge-1.21.1-1.11.4.jar:com/vsngarcia/Config$CommonGeneral.class"
-      ]
-    },
-    {
-      "key": "qol_world_torchmaster",
-      "deps": [
-        "qol_world_elevators"
-      ],
-      "type": "item",
-      "item": "torchmaster:feral_flare_lantern",
-      "layout": {
-        "x": 12,
-        "y": -2,
-        "size": 1.0,
-        "shape": "circle"
-      },
-      "en_us": [
-        "Light Without Torch Spam",
-        "The &eFeral Flare Lantern&r places invisible lights in dark areas around it, great for caves; the &eFrozen Pearl&r clears them; the &eDread Lamp&r stops bats, squid and other passive spawns nearby.\n\nThe Mega Torch is gone here: the Altar of Peace does its job."
-      ],
-      "es_es": [
-        "Luz sin llenar todo de antorchas",
-        "La &eFeral Flare Lantern&r pone luces invisibles en las zonas oscuras a su alrededor, ideal para cuevas; la &eFrozen Pearl&r las borra; la &eDread Lamp&r evita murciélagos, calamares y otras apariciones pacíficas cerca.\n\nAcá no hay Mega Torch: el Altar de Paz hace su trabajo."
-      ],
-      "sources": [
-        "jar:torchmaster-neoforge-1.21.1-21.1.9.jar:assets/torchmaster/lang/en_us.json",
-        "repo:pack/kubejs/server_scripts/entrelumen_qol_balance.js",
-        "repo:docs/design/ark-altars.md"
-      ]
-    },
-    {
-      "key": "qol_world_sleep",
-      "deps": [
-        "qol_world_elevators"
       ],
       "type": "item",
       "item": "comforts:sleeping_bag_red",
@@ -327,7 +221,6 @@
     {
       "key": "qol_world_small_fixes",
       "deps": [
-        "qol_world_torchmaster",
         "qol_world_sleep"
       ],
       "type": "checkmark",
@@ -382,7 +275,7 @@
     {
       "key": "qol_world_peace_link",
       "deps": [
-        "qol_world_torchmaster"
+        "qol_world_small_fixes"
       ],
       "type": "checkmark",
       "optional": true,
@@ -409,8 +302,7 @@
     {
       "key": "qol_world_close",
       "deps": [
-        "qol_world_small_fixes",
-        "qol_world_villagers_gated"
+        "qol_world_small_fixes"
       ],
       "type": "checkmark",
       "icon": "minecraft:lantern",
