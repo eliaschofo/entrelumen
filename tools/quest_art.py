@@ -74,14 +74,27 @@ def picture_ref(spec, ctx=None):
     return spec, None
 
 
+def click_target(art):
+    """What a click opens: "click" ("quest:<key>" or "chapter:<name>"), or, for an image that only has a hover
+    note, the quest it reveals with. FTB shows an image's note only to players who can click it
+    (ChapterImageButton.checkMouseOver), so a note without a click would reach nobody but editors."""
+    if "click" in art:
+        return art["click"]
+    if "hover" in art and "reveal" in art:
+        return "quest:" + art["reveal"]
+    return None
+
+
 def _extra(art, key, by_key, languages, default_order):
     extra = {"order": art.get("order", default_order), "position_locked": True}
     if "reveal" in art:
         assert art["reveal"] in by_key, f"{key}: reveal quest {art['reveal']}"
         extra["dependency"] = qe.stable_id("quest:" + art["reveal"])
-    if "click" in art:
-        kind, target = art["click"].split(":", 1)
-        extra["click_action"] = "open_quest:" + qe.stable_id(f"{kind}:{target}")
+    target = click_target(art)
+    if target:
+        kind, name = target.split(":", 1)
+        assert kind in ("quest", "chapter"), f"{key}: click opens quest:<key> or chapter:<name>"
+        extra["click_action"] = "open_quest:" + qe.stable_id(f"{kind}:{name}")
     if "alpha" in art:
         assert 0 <= art["alpha"] <= 255, key
         extra["alpha"] = art["alpha"]
@@ -150,7 +163,15 @@ def art_images(chapter, i, art, palette, languages, ctx, by_key):
     """The chapter images of one art entry (a list); legacy kinds go to quest_engine.art_image."""
     kind = kind_of(art)
     if kind is None:
-        return [qe.art_image(chapter, i, art, palette, languages, ctx, by_key)]
+        img = qe.art_image(chapter, i, art, palette, languages, ctx, by_key)
+        if any(k in art for k in ("panel", "line", "texture")):
+            # quest_engine.art_image drops "reveal" and "click" on panels and lines (writers drew px.png textures
+            # instead): give them back, and give a note its click so players see it.
+            extra = _extra(art, img["id"], by_key, languages, img.get("order", 0))
+            for k in ("dependency", "click_action"):
+                if k in extra and k not in img:
+                    img[k] = extra[k]
+        return [img]
     key = f"{chapter}:art:{art.get('id', i)}"
     extra = _extra(art, key, by_key, languages, DEFAULT_ORDER[kind])
     rot = float(art.get("rotation", 0.0))
@@ -171,15 +192,10 @@ def art_images(chapter, i, art, palette, languages, ctx, by_key):
         r = art.get("r", 1.5)
         e = dict(extra)
         e.setdefault("alpha", 160)
-        return [_pic(key, art["glow"][0], art["glow"][1], 2 * r, 2 * r, FLASH, e, ctx)]
-    if kind == "path":
-        return path_images(key, art, extra, ctx)
-    if kind == "mosaic":
-        return mosaic_images(key, art, extra, ctx)
-    if kind == "scatter":
-        return scatter_images(key, art, extra, ctx)
-    if kind == "frame":
-        return frame_images(key, art, extra, ctx)
+        return [_hover(_pic(key, art["glow"][0], art["glow"][1], 2 * r, 2 * r, FLASH, e, ctx), art, languages, key)]
+    if kind in ("path", "mosaic", "scatter", "frame"):
+        pieces = {"path": path_images, "mosaic": mosaic_images, "scatter": scatter_images, "frame": frame_images}[kind]
+        return [_hover(img, art, languages, key) for img in pieces(key, art, extra, ctx)]
     if kind == "text":
         return [text_image(key, art, art["x"], art["y"], art["text"], rot, extra, languages)]
     return lettering_images(key, art, extra, languages)
@@ -292,7 +308,7 @@ def frame_images(key, art, extra, ctx):
     e.setdefault("alpha", 200)
     for n, (a, b) in enumerate((((x0, y0), (x1, y0)), ((x1, y0), (x1, y1)), ((x1, y1), (x0, y1)), ((x0, y1), (x0, y0)))):
         line = qe.line_image(f"{key}:{n}", a[0], a[1], b[0], b[1], color, e["alpha"], thick, order=e["order"])
-        for k in ("dependency",):
+        for k in ("dependency", "click_action"):
             if k in e:
                 line[k] = e[k]
         out.append(line)
@@ -404,3 +420,24 @@ def references(data):
             if not spec.startswith("#"):
                 picture_ref(spec, ctx)
     return ctx
+
+
+# --------------------------------------------------------------------------------------------------
+# Branch panel captions (quest_engine.decorate_sector)
+
+def caption_style(data, group, palette):
+    """Scale, colour and weight of a branch panel's caption. "caption_scale" (any size, 1.5 and 3 included),
+    "caption_tint" and "caption_bold" on the group; a "presentation": 2 chapter defaults to scale 2."""
+    scale = group.get("caption_scale", 2 if data.get("presentation", 1) >= 2 else 1)
+    assert isinstance(scale, (int, float)) and 0.5 <= scale <= 6, f"{data['chapter']}: caption_scale"
+    return {"scale": scale, "color": group.get("caption_tint", palette["accent"]), "bold": bool(group.get("caption_bold", False))}
+
+
+def lint(data):
+    """Warnings for tools/check_guides.py: art whose note no player will see."""
+    out = []
+    for i, art in enumerate(data.get("art", [])):
+        if "hover" in art and not click_target(art):
+            out.append(f"{data['chapter']}: art {art.get('id', i)} has a hover note but no click (nor a reveal to open): "
+                       "FTB shows image notes only on clickable images")
+    return out

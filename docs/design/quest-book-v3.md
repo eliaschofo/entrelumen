@@ -170,6 +170,8 @@ Tiene tinte, alfa, rotación, orden, clic, nota al pasar el mouse y `dependency`
 - Pero la imagen viaja del servidor al cliente como `Icon.toString()` (`ChapterImage.writeNetData`), y `ImageIcon.toString()` devuelve sólo la ruta de la textura.
 - Resultado: no hay recorte ni mosaico. Un patrón repetido son varias imágenes; una hoja de sprites no se puede recortar. Los sprites del atlas y `item:` sí llegan enteros.
 
+**Notas al pasar el mouse: sólo con clic.** `ChapterImageButton.checkMouseOver` sólo reconoce el mouse sobre una imagen que tiene una acción de clic, salvo para quien edita el libro. Una imagen con nota y sin clic nunca le muestra la nota a un jugador. Nueve adornos del libro estaban así el 28/9. La v2 le da a esas notas el clic de la quest que las revela, y `check_guides.py` avisa de las que no tienen ni clic ni revelado.
+
 **Quests sin tareas.** No sirven para encender cosas: FTB las completa recién cuando el jugador entra al mundo (`ServerQuestFile.checkQuestBookOnLogin`), no en vivo. Para que algo aparezca al avanzar, está la `dependency` de una imagen.
 
 ### Qué hace legible el texto en los packs de referencia
@@ -222,7 +224,10 @@ El tope, la paridad de idiomas y las frases prohibidas los sigue revisando el mo
   - `generate_quests.py`: escribe las fuentes y no cuenta los adornos;
   - `check_guides.py`: revisa texturas, sprites, ítems e íconos;
   - `content/quest_book.json`: colores (transparentes) del rol `decor`.
-- **Pruebas:** `tools/test_presentation.py` (20), que también corren dentro de `tools/test_sector_book.py`.
+- **Dos límites que reportaron los redactores**, resueltos en el mismo módulo:
+  - `line` y `panel` ignoraban `reveal` y `click` (`art_image` no les pasaba esos datos), y por eso se dibujaban con `px.png`. Ahora los respetan. Las 196 líneas con `reveal` que ya había (Logística, Psi, RFTools) aparecen, por fin, con su quest.
+  - Los rótulos de los paneles de rama tenían escala 1 fija. Ahora toman `caption_scale`, `caption_tint` y `caption_bold` (escala 2 por defecto en un capítulo con `"presentation": 2`; `quest_art.caption_style`). Los rótulos de arte (`label`, `text`) ya aceptaban cualquier `scale`; la v2 suma `rotation` y fuentes.
+- **Pruebas:** `tools/test_presentation.py` (23), que también corren dentro de `tools/test_sector_book.py`.
 
 ### Piloto: Create · Cinética y Mekanism · Básico
 

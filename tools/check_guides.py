@@ -1040,6 +1040,7 @@ def main():
         if flt and flt not in p.stem:
             continue
         total += check_sector(p, errors, all_keys)
+        warnings += quest_art.lint(json.loads(p.read_text(encoding='utf-8')))   # notes no player would see
         sectors += 1
     if not flt:
         check_reward_tables(errors)

@@ -1127,18 +1127,19 @@ def decorate_sector(data, motif, figures, placed, nodes, languages, ctx, by_key)
             dx, dy = ex - pcx, ey - pcy
             where = ("below" if dy > 0 else "above") if abs(dy) >= abs(dx) else ("right" if dx > 0 else "left")
         xs, ys = [x for x, y in corners], [y for x, y in corners]
+        cap = quest_art.caption_style(data, group, palette)   # size, tint and weight (presentation v2)
         if where == "above":
             img = label(f"{name}:group:{gid}:label", (min(xs) + max(xs)) / 2, min(ys) - 0.12, group["label"], languages,
-                        scale=1, color=palette["accent"], anchor="bottom")
+                        anchor="bottom", **cap)
         elif where == "below":
             img = label(f"{name}:group:{gid}:label", (min(xs) + max(xs)) / 2, max(ys) + 0.12, group["label"], languages,
-                        scale=1, color=palette["accent"], anchor="top")
+                        anchor="top", **cap)
         elif where == "right":
             img = label(f"{name}:group:{gid}:label", max(xs) + 0.2, (min(ys) + max(ys)) / 2, group["label"], languages,
-                        scale=1, color=palette["accent"], align="start")
+                        align="start", **cap)
         else:
             img = label(f"{name}:group:{gid}:label", min(xs) - 0.2, (min(ys) + max(ys)) / 2, group["label"], languages,
-                        scale=1, color=palette["accent"], align="end")
+                        align="end", **cap)
         images.append(img)
     for i, art in enumerate(data.get("art", [])):
         images += quest_art.art_images(name, i, art, palette, languages, ctx, by_key)

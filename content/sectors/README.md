@@ -15,7 +15,7 @@ Un archivo `sector_<nombre>.json` por capítulo, en el formato de `tools/format_
 | `entry` | Clave de la quest de entrada (sin dependencias locales) |
 | `center` | Opcional: centro del dibujo; los paneles de rama se orientan radiales a él |
 | `figures` | Figuras con nombre: `ring`, `arc` o `line`. Dan posiciones (`slot`) y se dibujan con `draw` |
-| `groups` | Paneles de rama: `label` por idioma, `axis` (`radial`, `auto`, `x`, `y` o grados), `caption` |
+| `groups` | Paneles de rama: `label` por idioma, `axis` (`radial`, `auto`, `x`, `y` o grados), `caption`; el rótulo toma `caption_scale` (cualquier tamaño: 1,5, 2, 3…; 1 por defecto, 2 en un capítulo con `"presentation": 2`), `caption_tint` y `caption_bold` |
 | `links` | Enlaces a quests de otros capítulos: `target` y `at` |
 | `art` | Imágenes: `texture` (a escala entera), `label`, `line`, `panel`; con `click`, `hover`, `reveal`, `alpha`. Presentación v2: los tipos de [abajo](#arte-presentación-v2) |
 | `reward_tables` | Opcional: tablas de recompensa propias del capítulo, por nombre (ver [Recompensas propias](#recompensas-propias)) |
@@ -180,6 +180,12 @@ Los íconos son glifos de una fuente que `generate_quests.py` escribe en el comp
 | `item` | `item` (id), `x`, `y`, `size` | El ítem en 3D (`item:<id>`), como en el inventario; ignora `tint` y `alpha` |
 | `sprite` | `sprite` (`ns:block/…` o una carpeta del atlas), `x`, `y`, `w`, `h` o `cells` [[x, y]…] + `cell` | Un sprite del atlas de bloques, animado en el juego |
 | `picture` | `picture` (`ns:textures/….png`), `x`, `y`, `w`, `h` | Cualquier textura estirada a cualquier tamaño: una pintura del mod, una placa |
+
+`line` y `panel` (los del motor) también respetan `reveal` y `click` desde el 28/9: ya no hace falta dibujarlos con `px.png` para que aparezcan con su quest o abran algo.
+
+**Notas al pasar el mouse.** FTB muestra la nota (`hover`) de una imagen sólo si la imagen tiene un clic: sin clic, sólo la ve quien edita el libro (`ChapterImageButton.checkMouseOver`). Por eso:
+- una imagen con `hover` y `reveal` pero sin `click` abre, al hacerle clic, la quest que la revela;
+- una con `hover` y sin ninguno de los dos queda como aviso en `check_guides.py`: hay que darle un `click`.
 
 Un dibujable es una textura (`ns:textures/….png`), un sprite (`ns:block/…`), `item:<id>` o un color `#rrggbb`. FTB manda cada imagen al cliente como texto, así que no hay recortes ni mosaicos: un patrón repetido son varias imágenes. `check_guides.py` revisa que las texturas y los ítems existan en los JAR fijados y que cada sprite esté en el atlas de bloques.
 

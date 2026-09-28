@@ -177,6 +177,37 @@ class Canvas(unittest.TestCase):
         with self.assertRaises(AssertionError):
             self.compile({"lettering": {"en_us": "RIVER", "es_es": "RÍO"}, "path": [[0, 0], [8, 2]]})
 
+    def test_lines_and_panels_keep_reveal_and_click(self):
+        imgs, _, _ = self.compile({"line": [[0, 0], [3, 0]], "reveal": "q"})
+        self.assertEqual(imgs[0]["dependency"], qe.stable_id("quest:q"))
+        imgs, _, _ = self.compile({"panel": [0, 0, 3, 2], "click": "quest:q"})
+        self.assertEqual(imgs[0]["click_action"], "open_quest:" + qe.stable_id("quest:q"))
+
+    def test_a_hover_note_gets_a_click_so_players_see_it(self):
+        # ChapterImageButton.checkMouseOver: without a click action only editors get the tooltip
+        for art in ({"line": [[0, 0], [3, 0]], "reveal": "q", "hover": {"en_us": "A note", "es_es": "Una nota"}},
+                    {"glow": [0, 0], "reveal": "q", "hover": {"en_us": "A note", "es_es": "Una nota"}}):
+            imgs, languages, _ = self.compile(art)
+            with self.subTest(art=art):
+                self.assertEqual(imgs[0]["click_action"], "open_quest:" + qe.stable_id("quest:q"))
+                self.assertEqual(languages["es_es"][f"image.{imgs[0]['id']}.title"], "Una nota")
+        imgs, languages, _ = self.compile({"path": [[0, 0], [4, 0]], "color": "#FFFFFF", "width": 0.2, "step": 1.0,
+                                           "click": "quest:q", "hover": {"en_us": "River", "es_es": "Río"}})
+        self.assertTrue(all(languages["en_us"][f"image.{i['id']}.title"] == "River" for i in imgs))
+        warned = quest_art.lint({"chapter": "sector_t", "art": [{"id": "x", "texture": "a:textures/b.png", "x": 0, "y": 0,
+                                                                  "hover": {"en_us": "n", "es_es": "n"}}]})
+        self.assertEqual(len(warned), 1)
+
+    def test_branch_captions_take_a_size(self):
+        palette = {"accent": "#E5A16A"}
+        self.assertEqual(quest_art.caption_style({"chapter": "c"}, {}, palette)["scale"], 1)       # untouched chapters
+        self.assertEqual(quest_art.caption_style({"chapter": "c", "presentation": 2}, {}, palette)["scale"], 2)
+        style = quest_art.caption_style({"chapter": "c"}, {"caption_scale": 1.5, "caption_tint": "#FFFFFF", "caption_bold": True}, palette)
+        self.assertEqual(style, {"scale": 1.5, "color": "#FFFFFF", "bold": True})
+        languages = {lang: {} for lang in LOCALES}
+        img = qe.label("k", 0, 0, {"en_us": "Belts", "es_es": "Cintas"}, languages, **style)
+        self.assertAlmostEqual(img["height"], 9 * 1.5 / qe.NODE_PX, places=3)
+
     def test_decor_is_a_toy_and_never_content(self):
         out = quest_art.decor({"key": "d", "task": {"type": "checkmark"}, "size": 1.5}, {"rewards": [{"type": "xp"}]})
         self.assertEqual((out["optional"], out["rewards"], out["hide_lock_icon"], out["disable_toast"]), (True, [], True, True))
