@@ -309,8 +309,8 @@ class Sectors(unittest.TestCase):
     def test_sector_standard_is_met(self):
         # docs/design/quest-book-v3.md, "Estándar de una cadena".
         counts = {"sector_create_kinetics": (45, 90), "sector_create_logistics": (45, 90),
-                  "sector_create_addons": (20, 40), "sector_ars_nouveau": (60, 110),
-                  "sector_ars_addons": (40, 70)}
+                  "sector_create_addons": (20, 90), "sector_ars_nouveau": (60, 110),
+                  "sector_ars_addons": (40, 90)}  # depth follows the mod (Elias, 27/9): addons may grow to the cap
         for name, data in self.sectors.items():
             roles = [q["role"] for q in data["quests"]]
             with self.subTest(sector=name):
