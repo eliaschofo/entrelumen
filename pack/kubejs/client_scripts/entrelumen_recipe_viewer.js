@@ -9,3 +9,12 @@
 RecipeViewerEvents.removeRecipes(event => {
   event.remove(['twilightforest:emperors_cloth_recipe', 'twilightforest:emperors_cloth_smithing'])
 })
+
+// Campaign loot stays out of the viewers (docs/design/mod-pingpong.md, round 5, batch 2). FTB XMod Compat
+// 21.1.11 adds a JEI category (RecipeType ftbquests:loot_crate) that lists every quest loot crate with
+// its weights, the summit and commission crates included; JEI hides it here. EMI gets the same category
+// through its JEI bridge (JemiCategory takes the RecipeType UID) and hides it with EMI Loot's
+// ENTRELUMEN tables in kubejs/assets/emi/recipe/filters/entrelumen_hidden_loot.json.
+RecipeViewerEvents.removeCategories(event => {
+  event.remove(['ftbquests:loot_crate'])
+})

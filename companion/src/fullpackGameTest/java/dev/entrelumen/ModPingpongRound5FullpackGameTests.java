@@ -1,17 +1,34 @@
 package dev.entrelumen;
 
+import com.mojang.authlib.GameProfile;
 import com.mojang.logging.LogUtils;
+import io.netty.channel.embedded.EmbeddedChannel;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.gametest.framework.GameTest;
 import net.minecraft.gametest.framework.GameTestHelper;
+import net.minecraft.network.Connection;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.protocol.PacketFlow;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.server.network.CommonListenerCookie;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.animal.Pig;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.CropBlock;
+import net.minecraft.world.level.block.FarmBlock;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.Vec3;
 import net.neoforged.fml.ModList;
 import net.neoforged.fml.loading.FMLEnvironment;
 import net.neoforged.fml.loading.FMLPaths;
@@ -23,7 +40,9 @@ import org.slf4j.Logger;
  * QA-JAR-only checks of round 5 of the mod ping-pong (docs/design/mod-pingpong.md, «Ronda 5»), one group per
  * batch. Batch 1 (robustness): the server-side fixes are loaded, the client-only ones stay off the dedicated
  * server, Create Collision Fix only sits beside the Create build it patches, Better Compatibility Checker
- * reports this pack and version, and NaNny cancels damage that is not a number.
+ * reports this pack and version, and NaNny cancels damage that is not a number. Batch 2 (information and
+ * comfort): the batch is loaded without FindMe, and RightClickHarvest cannot harvest through a foreign
+ * FTB Chunks claim.
  */
 @GameTestHolder("entrelumen")
 @PrefixGameTestTemplate(false)
@@ -34,6 +53,11 @@ public final class ModPingpongRound5FullpackGameTests {
   /** Batch 1 client-only mods: the server install leaves them out (catalog clientOnly). */
   static final List<String> ROBUSTNESS_CLIENT = List.of("entityculling", "crash_assistant", "sodium_extra",
       "cmpreviewfixer", "derenderpatcher");
+  /** Batch 2 mods with a server side. */
+  static final List<String> INFORMATION = List.of("emi_loot", "fzzy_config", "emi_ores", "rightclickharvest", "jamlib",
+      "ae2ct", "wits", "chunky", "pingwheel");
+  static final List<String> INFORMATION_CLIENT = List.of("bridgingmod", "yet_another_config_lib_v3", "bwncr",
+      "yeetusexperimentus", "dynamic_fps");
   /** Create Collision Fix patches exactly this Create build; it goes when Create moves to 6.0.11 (PR #10301). */
   static final String PATCHED_CREATE = "6.0.10";
 
@@ -85,5 +109,131 @@ public final class ModPingpongRound5FullpackGameTests {
     pig.discard();
     helper.assertTrue(Float.isFinite(after) && after == before, "NaN damage changed health " + before + " -> " + after);
     helper.succeed();
+  }
+
+  // ---- Batch 2 ---------------------------------------------------------------------------------
+
+  @GameTest(template = "empty", timeoutTicks = 20)
+  public static void pingpongRound5InformationLoaded(GameTestHelper helper) {
+    List<String> problems = new ArrayList<>();
+    INFORMATION.stream().filter(mod -> !ModList.get().isLoaded(mod)).forEach(mod -> problems.add(mod + " not loaded"));
+    if (FMLEnvironment.dist.isDedicatedServer())
+      INFORMATION_CLIENT.stream().filter(mod -> ModList.get().isLoaded(mod))
+          .forEach(mod -> problems.add(mod + " is client-only but loaded on the dedicated server"));
+    // FindMe 3.3.4 pulls items out of any container in range without asking FTB Chunks; it stays out.
+    if (ModList.get().isLoaded("findme")) problems.add("findme is loaded");
+    helper.assertTrue(problems.isEmpty(), "Round 5 batch 2: " + problems);
+    helper.succeed();
+  }
+
+  /**
+   * RightClickHarvest 4.6.1 posts a BreakEvent before each harvest (RightClickHarvestPlatformImpl), which a
+   * real FTB Chunks claim refuses to another team. High over the test, in one chunk: the owner claims it and
+   * harvests their ripe wheat, which replants at age 0; the visitor's right click on the other ripe wheat
+   * leaves it untouched. The mock players, the claim and the blocks are given back however the case ends.
+   */
+  @GameTest(template = "empty", timeoutTicks = 200)
+  public static void rightClickHarvestRespectsForeignClaims(GameTestHelper helper) {
+    ServerLevel level = helper.getLevel();
+    ChunkPos chunk = new ChunkPos(helper.absolutePos(BlockPos.ZERO));
+    int y = level.getMaxBuildHeight() - 12;
+    BlockPos own = new BlockPos(chunk.getMinBlockX() + 7, y + 1, chunk.getMinBlockZ() + 7);
+    BlockPos foreign = own.east();
+    List<Runnable> cleanup = new ArrayList<>();
+    Runnable close = () -> {
+      for (int i = cleanup.size() - 1; i >= 0; i--) cleanup.get(i).run();
+      cleanup.clear();
+    };
+    try {
+      for (BlockPos crop : List.of(own, foreign)) {
+        level.setBlock(crop.below(), Blocks.FARMLAND.defaultBlockState().setValue(FarmBlock.MOISTURE, 7), 2);
+        level.setBlock(crop, ((CropBlock) Blocks.WHEAT).getStateForAge(7), 2);
+        cleanup.add(() -> {
+          level.setBlock(crop, Blocks.AIR.defaultBlockState(), 2);
+          level.setBlock(crop.below(), Blocks.AIR.defaultBlockState(), 2);
+        });
+      }
+      // Player names are at most 16 characters: FTB Teams syncs them with the vanilla name codec.
+      Session owner = new Session(helper, "R5HarvestOwner");
+      cleanup.add(owner::close);
+      Session visitor = new Session(helper, "R5HarvestVisitor");
+      cleanup.add(visitor::close);
+      owner.player.teleportTo(own.getX() + 0.5, own.getY() + 1.0, own.getZ() - 1.5);
+      int claimed = owner.player.server.getCommands().getDispatcher().execute("ftbchunks claim",
+          owner.player.createCommandSourceStack().withSuppressedOutput());
+      helper.assertTrue(claimed > 0, "FTB Chunks did not claim the owner's chunk");
+      cleanup.add(() -> unclaim(owner.player, own));
+      visitor.player.teleportTo(foreign.getX() + 0.5, foreign.getY() + 1.0, foreign.getZ() - 1.5);
+      rightClick(visitor.player, foreign);
+      rightClick(owner.player, own);
+      int ownAge = age(level, own), foreignAge = age(level, foreign);
+      LOGGER.info("ENTRELUMEN_ROUND5 harvest ownAge={} foreignAge={} ownerWheat={}", ownAge, foreignAge,
+          owner.player.getInventory().countItem(Items.WHEAT));
+      helper.assertTrue(ownAge == 0, "The owner's right click did not harvest and replant their wheat (age " + ownAge + ")");
+      helper.assertTrue(foreignAge == 7, "The visitor harvested wheat inside a foreign claim (age " + foreignAge + ")");
+    } catch (com.mojang.brigadier.exceptions.CommandSyntaxException failure) {
+      close.run();
+      throw new IllegalStateException("FTB Chunks claim failed", failure);
+    } catch (RuntimeException | Error failure) {
+      close.run();
+      throw failure;
+    }
+    close.run();
+    helper.succeed();
+  }
+
+  private static int age(ServerLevel level, BlockPos pos) {
+    var state = level.getBlockState(pos);
+    return state.getBlock() instanceof CropBlock crop ? crop.getAge(state) : -1;
+  }
+
+  private static void rightClick(ServerPlayer player, BlockPos pos) {
+    var hit = new BlockHitResult(Vec3.atCenterOf(pos), Direction.UP, pos, false);
+    player.gameMode.useItemOn(player, player.serverLevel(), player.getMainHandItem(), InteractionHand.MAIN_HAND, hit);
+  }
+
+  private static void unclaim(ServerPlayer owner, BlockPos pos) {
+    try {
+      owner.teleportTo(pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() - 1.5);
+      owner.server.getCommands().getDispatcher().execute("ftbchunks unclaim",
+          owner.createCommandSourceStack().withSuppressedOutput());
+    } catch (com.mojang.brigadier.exceptions.CommandSyntaxException ignored) {
+      // A claim left over the empty sky is harmless, and the next run's claim reports it.
+    }
+  }
+
+  private static final class Session implements AutoCloseable {
+    final ServerPlayer player;
+    final Connection connection;
+    final EmbeddedChannel channel;
+    private boolean closed;
+
+    Session(GameTestHelper helper, String name) {
+      var cookie = CommonListenerCookie.createInitial(new GameProfile(UUID.randomUUID(), name), false);
+      player = new ServerPlayer(helper.getLevel().getServer(), helper.getLevel(), cookie.gameProfile(),
+          cookie.clientInformation());
+      connection = new Connection(PacketFlow.SERVERBOUND);
+      channel = new EmbeddedChannel(connection);
+      try {
+        net.neoforged.neoforge.network.registration.NetworkRegistry.configureMockConnection(connection);
+        player.server.getPlayerList().placeNewPlayer(connection, player, cookie);
+        player.getInventory().clearContent();
+      } catch (RuntimeException | Error failure) {
+        close();
+        throw failure;
+      }
+    }
+
+    @Override
+    public void close() {
+      if (closed) return;
+      closed = true;
+      try {
+        connection.disconnect(Component.literal("Entrelumen round 5 QA finished"));
+        connection.handleDisconnection();
+      } finally {
+        channel.finishAndReleaseAll();
+      }
+    }
   }
 }

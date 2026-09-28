@@ -550,3 +550,40 @@ Todos salvo Compact Machines Preview Fixer tienen los mismos bytes en Modrinth, 
 - **Escalonado:** ninguno; no agregan ítems.
 - **Teclas:** sólo Entity Culling registra dos, sin asignar (`key.entityculling.toggle` y `toggleBoxes`); quedan en `tools/keybind_contexts.json`.
 - **GameTests:** `pingponground5robustnessloaded` (los de servidor cargados, los de cliente fuera del servidor dedicado, Create en la versión que parchea el hotfix, BCC con el nombre y la versión del pack) y `nannycancelsnandamage` (un cerdo que recibe daño NaN conserva la vida).
+
+### Lote 2 · Información y comodidad
+
+Familia `catalog/families/pingpong5-information.json`: 11 mods y 3 librerías. El lock pasa a **348 / 296**; ninguna entrada previa cambió.
+
+| Mod | Versión | Fuente | Lado | Para qué |
+|---|---|---|---|---|
+| EMI Loot | 0.7.9 | CF 681783/7417271 (Craftoria) | ambos | EMI muestra qué sueltan criaturas, bloques y cofres; necesita Fzzy Config 0.7.6 (CF 1005914/7568897, ATM10). |
+| EMI Ores | 1.3 | CF 974009/8254306 (Craftoria) | ambos | EMI muestra en qué alturas y biomas sale cada mineral. |
+| RightClickHarvest | 4.6.1 | CF 452834/7508749 (FTB) | ambos | Clic derecho sobre un cultivo maduro: cosecha y replanta. Necesita JamLib 1.3.6 (CF 623764/7766752, FTB). |
+| AE2: Crafting Tree | 1.1.1 | CF 1086241/7182163 (ATM10; no está en Modrinth) | ambos | El estado de un pedido de AE2 muestra el árbol entero y los patrones que faltan. |
+| Bridging Mod | 2.6.2 | CF 533942/6269728 (ATM10) | cliente | Coloca bloques hacia afuera desde el borde en que estás parado. Necesita YetAnotherConfigLib 3.8.2 (CF 667299/7437845, ATM10), también de cliente. |
+| WITS | 1.3.1 | CF 909375/8412915 (ATM10) | ambos | `/wits` dice en qué estructura estás parado. |
+| Bad Wither No Cookie | 3.20.4 | CF 261251/8135209 (ATM10) | cliente | Los sonidos del Wither y del Dragón se oyen sólo cerca. |
+| Yeetus Experimentus | 87.0.0 | CF 635427/5444189 (ATM10) | cliente | Sin el aviso de «ajustes experimentales» al crear o abrir un mundo. |
+| Chunky | 1.4.23 | CF 485681/6383261 | ambos | Pregenera el mundo antes de abrir un servidor. |
+| Dynamic FPS | 3.11.4 | CF 335493/7546938 | cliente | Baja FPS y volumen con la ventana en segundo plano. |
+| Ping Wheel | 1.12.2 (beta) | CF 734339/7996932 | ambos | Marca un lugar o una criatura para tu grupo de FTB Teams (Mouse 5). |
+
+Todos tienen los mismos bytes en Modrinth salvo AE2: Crafting Tree, que no está ahí.
+
+- **FindMe queda afuera** (ver «Quedó afuera»): el servidor busca en todo contenedor dentro del radio y deja sacar ítems sin abrirlo ni preguntarle a FTB Chunks (`PositionRequestMessage` y `PullItemRequestMessage` de 3.3.4, leídos con `javap`). Su config sólo tiene el radio.
+- **RightClickHarvest respeta los reclamos:** en NeoForge publica un `BreakEvent` antes de cada cosecha y un `EntityPlaceEvent` antes de replantar (`RightClickHarvestPlatformImpl`), y FTB Chunks los cancela en un reclamo ajeno. Config por defecto: sin azada obligatoria, sin costo de hambre ni de experiencia. Los cultivos de Mystical Agriculture son `CropBlock`, así que se cosechan igual que al romperlos.
+- **Yeetus Experimentus hace falta:** `WorldDimensions.checkStability` (servidor 1.21.1 parchado por NeoForge 21.1.249) marca como experimental toda dimensión que no es vanilla, y el pack tiene más de diez. Los tres packs de referencia lo traen. Falta verlo en cliente.
+- **EMI Loot no muestra el botín de la campaña.** No tiene un ajuste por tabla, pero nombra cada receta `emi_loot:/<categoría>/<espacio>/<ruta>` (`ChestLootRecipe.getId` y sus hermanas). El filtro de datos de EMI (`pack/kubejs/assets/emi/recipe/filters/entrelumen_hidden_loot.json`) oculta toda tabla `entrelumen:*`: la del taller de Terra, las de bloques y las del Envés (`entrelumen:enves/<tipo>`), que entran con su rama.
+  - **Las cajas de loot de las quests no son tablas de botín:** son tablas de recompensas de FTB Quests. Las muestra FTB XMod Compat (ya en `main`) con la categoría de JEI `ftbquests:loot_crate`, con pesos, incluidas las cajas de las cumbres y los encargos. EMI la importa con el mismo ID (`JemiCategory`). El mismo filtro la oculta en EMI, y `RecipeViewerEvents.removeCategories` la oculta en JEI (`pack/kubejs/client_scripts/entrelumen_recipe_viewer.js`). La categoría «Quests» de XMod queda: sólo lista quests que el jugador ya puede empezar.
+  - `tools/check_recipe_design.py` suma la regla 6, que prueba el filtro contra IDs de ejemplo de las cinco categorías: oculta los de `entrelumen` y no los de otros mods. También exige la categoría en EMI y en JEI.
+- **Dynamic FPS** (`pack/config/dynamic_fps.json`, parcial: el mod guarda sólo lo que difiere de sus valores): desenfocado a 15 FPS (de fábrica, 1), sin el modo inactivo por batería, sin el indicador de batería y sin descargar las librerías nativas de batería.
+- **Ping Wheel:** queda en `AUTO`. Un grupo de FTB Teams ve sólo sus pings; un jugador sin grupo, todos. Trae traducción al español argentino.
+- **Teclas:**
+  - Bridging Mod venía en la coma, que ya usa Iron Jetpacks para bajar el empuje. El preset la pasa a **Alt+coma**.
+  - Ping Wheel usa Mouse 5 para marcar y deja sin asignar su pantalla de ajustes.
+  - FindMe tenía Y y el teclado numérico, pero quedó afuera.
+  - Dynamic FPS trae dos teclas sin asignar.
+  - `tools/check_keybinds.py`: 0 choques.
+- **Chunky:** hay que probar que las ruinas salen igual en chunks pregenerados. La ruina de inicio se coloca en `ServerStartedEvent`, antes de cualquier `/chunky start`, y el resto de las ruinas todavía no está en `main`. La QA pregenera un cuadrado alrededor del inicio y vuelve a correr la prueba de la ruina.
+- **GameTests:** `pingponground5informationloaded` (el lote cargado, los de cliente fuera del servidor dedicado, FindMe ausente) y `rightclickharvestrespectsforeignclaims`. En esta última, dos jugadores de prueba en un reclamo real de FTB Chunks: el dueño cosecha y su trigo vuelve a edad 0, y el trigo que toca el visitante sigue maduro.
