@@ -22,7 +22,8 @@
     "books": {"label": {"en_us": "Ancient books", "es_es": "Libros antiguos"}, "axis": "x", "caption": "above"},
     "battlemage": {"label": {"en_us": "Battlemage gear", "es_es": "Equipo de mago de batalla"}, "axis": "x", "caption": "below"},
     "curios": {"label": {"en_us": "Rings and charms", "es_es": "Anillos y amuletos"}, "axis": "x", "caption": "below"},
-    "jewelry": {"label": {"en_us": "Iron's Gems 'n Jewelry", "es_es": "Iron's Gems 'n Jewelry"}, "axis": "x", "caption": "below"}
+    "jewelry": {"label": {"en_us": "Iron's Gems 'n Jewelry", "es_es": "Iron's Gems 'n Jewelry"}, "axis": "x", "caption": "below"},
+    "pocket": {"label": {"en_us": "The Pocket Dimension", "es_es": "La dimensión de bolsillo"}, "axis": "y", "caption": "above"}
   },
   "links": [
     {"target": "irons_cauldron", "at": {"x": -6.4, "y": 5.0}},
@@ -194,6 +195,48 @@
       "sources": ["jar:irons_spellbooks-1.21.1-3.16.3.jar:data/irons_spellbooks/recipe/portal_frame.json", "jar:irons_spellbooks-1.21.1-3.16.3.jar:assets/irons_spellbooks/lang/en_us.json#block.irons_spellbooks.portal_frame.desc", "jar:irons_spellbooks-1.21.1-3.16.3.jar:assets/irons_spellbooks/lang/en_us.json#ui.irons_spellbooks.portal_target_failure", "jar:irons_spellbooks-1.21.1-3.16.3.jar:io/redspace/ironsspellbooks/config/ServerConfigs.class#portalFrameRestrictDye, portalFrameRestrictBreaking"]
     },
     {
+      "key": "irons_pocket_research", "role": "info", "deps": ["irons_school_eldritch"], "group": "pocket",
+      "task": {"type": "checkmark"},
+      "icon": "irons_spellbooks:eldritch_manuscript",
+      "at": {"x": -28.2, "y": -15.0},
+      "en_us": {"title": "Seven forbidden spells", "subtitle": "Choose wisely. Or at least choose.",
+        "text": ["Using an Eldritch Manuscript opens a circle of seven spells: Abyssal Shroud, Eldritch Blast, Planar Sight, Pocket Dimension, Sculk Tentacles, Sonic Boom and Telekinesis. Press and hold one to learn it; each costs a manuscript, and only a learned one can be forged or cast."]},
+      "es_es": {"title": "Siete hechizos prohibidos", "subtitle": "Elegí bien. O por lo menos elegí.",
+        "text": ["Usar un Manuscrito de Eldritch abre un círculo de siete hechizos: Manto Abismal, Descarga Eldritch, Visión Planar, Dimensión de bolsillo, Tentáculos Sculk, Estallido Sónico y Telequinesis. Mantené apretado uno para aprenderlo; cada uno cuesta un manuscrito, y sólo uno aprendido se forja o se lanza."]},
+      "sources": ["jar:irons_spellbooks-1.21.1-3.16.3.jar:io/redspace/ironsspellbooks/gui/EldritchResearchScreen.class (a circle of spell nodes)", "jar:irons_spellbooks-1.21.1-3.16.3.jar:io/redspace/ironsspellbooks/spells/eldritch/ (AbyssalShroud, EldritchBlast, PlanarSight, PocketDimension, SculkTentacles, SonicBoom, Telekinesis)", "jar:irons_spellbooks-1.21.1-3.16.3.jar:assets/irons_spellbooks/lang/en_us.json#ui.irons_spellbooks.research_warning (Hold to Learn, 1 Manuscript)", "jar:irons_spellbooks-1.21.1-3.16.3.jar:assets/irons_spellbooks/lang/en_us.json#ui.irons_spellbooks.cast_error_unlearned", "jar:irons_spellbooks-1.21.1-3.16.3.jar:io/redspace/ironsspellbooks/gui/scroll_forge/ScrollForgeScreen.class (UNLEARNED_ERROR)", "jar:irons_spellbooks-1.21.1-3.16.3.jar:assets/irons_spellbooks/lang/es_es.json#spell.irons_spellbooks.abyssal_shroud, planar_sight, sculk_tentacles, sonic_boom, telekinesis"]
+    },
+    {
+      "key": "irons_pocket", "role": "side", "deps": ["irons_pocket_research"], "group": "pocket",
+      "tasks": [{"type": "dimension", "dimension": "irons_spellbooks:pocket_dimension", "icon": {"texture": "irons_spellbooks:textures/gui/spell_icons/pocket_dimension.png"}, "title": {"en_us": "Enter your pocket dimension", "es_es": "Entrá a tu dimensión de bolsillo"}}, {"type": "observation", "observe": "block", "target": "irons_spellbooks:pocket_dimension_portal_frame", "ticks": 20, "icon": {"texture": "irons_spellbooks:textures/block/pocket_dimension_portal_frame.png"}, "title": {"en_us": "Look at the frame that leads back", "es_es": "Mirá el marco que te devuelve"}}],
+      "icon": {"texture": "irons_spellbooks:textures/gui/spell_icons/pocket_dimension.png"},
+      "at": {"x": -28.2, "y": -12.2},
+      "en_us": {"title": "A room off the map", "subtitle": "No rent, no neighbours, no windows.",
+        "text": ["Pocket Dimension is a Legendary Eldritch spell: forge its scroll with [item:irons_spellbooks:legendary_ink|Legendary Ink] and an echo shard, or find one. Cast it out of combat, 300 mana and two seconds of charge, and you step into a room that is yours alone; the frame inside walks you back to where you cast."]},
+      "es_es": {"title": "Un cuarto fuera del mapa", "subtitle": "Sin alquiler, sin vecinos, sin ventanas.",
+        "text": ["Dimensión de bolsillo es un hechizo Eldritch Legendario: forjá su pergamino con [item:irons_spellbooks:legendary_ink|Tinta Legendaria] y un fragmento de eco, o encontrá uno. Lanzalo fuera de combate, 300 de maná y dos segundos de carga, y entrás a un cuarto que es sólo tuyo; el marco de adentro te devuelve a donde lo lanzaste."]},
+      "sources": ["jar:irons_spellbooks-1.21.1-3.16.3.jar:io/redspace/ironsspellbooks/spells/eldritch/PocketDimensionSpell.class (min rarity LEGENDARY, max level 1, 60 s cooldown, cast time 40 ticks LONG, 300 mana, no cast in combat or inside the pocket)", "jar:irons_spellbooks-1.21.1-3.16.3.jar:data/irons_spellbooks/tags/item/eldritch_focus.json (echo_shard)", "jar:irons_spellbooks-1.21.1-3.16.3.jar:data/irons_spellbooks/dimension/pocket_dimension.json", "jar:irons_spellbooks-1.21.1-3.16.3.jar:io/redspace/ironsspellbooks/capabilities/magic/PocketDimensionManager.class (one room per player UUID; the frame is the portal's second end, the cast spot the first)", "jar:irons_spellbooks-1.21.1-3.16.3.jar:assets/irons_spellbooks/lang/en_us.json#spell.irons_spellbooks.pocket_dimension.guide", "jar:irons_spellbooks-1.21.1-3.16.3.jar:data/irons_spellbooks/structure/pocket_room.nbt (irons_spellbooks:pocket_dimension_portal_frame, two blocks tall, by the floor)"]
+    },
+    {
+      "key": "irons_pocket_room", "role": "tip", "deps": ["irons_pocket"], "group": "pocket",
+      "task": {"type": "checkmark"},
+      "at": {"x": -29.6, "y": -9.4},
+      "en_us": {"title": "Seven by seven",
+        "text": ["[tip] The room is a seven-by-seven voidstone floor under a shaft 27 blocks high, walled in barrier: build up, not out. It is the same room every time, so whatever you leave there stays."]},
+      "es_es": {"title": "Siete por siete",
+        "text": ["[tip] El cuarto es un piso de piedra del vacío de siete por siete bajo un tiro de 27 bloques de alto, rodeado de barrera: se construye para arriba, no para los costados. Es el mismo cuarto cada vez, así que lo que dejás ahí se queda."]},
+      "sources": ["jar:irons_spellbooks-1.21.1-3.16.3.jar:data/irons_spellbooks/structure/pocket_room.nbt (16x32x16: 49 voidstone at y 1, air from y 2 to 28 over x and z 4 to 10, barrier around, the portal frame)", "jar:irons_spellbooks-1.21.1-3.16.3.jar:io/redspace/ironsspellbooks/capabilities/magic/PocketDimensionManager.class#maybeGeneratePocketRoom, tick (every 100 ticks, a player outside the 16x16 cell goes back to the frame)"]
+    },
+    {
+      "key": "irons_pocket_rules", "role": "tip", "deps": ["irons_pocket"], "group": "pocket",
+      "task": {"type": "checkmark"},
+      "at": {"x": -26.8, "y": -9.4},
+      "en_us": {"title": "House rules", "subtitle": "Tidy, dark and pearl-proof.",
+        "text": ["[tip] Inside, ender pearls and chorus fruit fail and the spell won't cast again. Beds, respawn anchors, waystones, warp plates, spatial pylons and portal frames refuse to be placed: the frame is the way out."]},
+      "es_es": {"title": "Reglas de la casa", "subtitle": "Ordenada, oscura y a prueba de perlas.",
+        "text": ["[tip] Adentro fallan las perlas de ender y la fruta coral, y el hechizo no se vuelve a lanzar. Camas, nexos de reaparición, waystones, placas de warp, pilones espaciales y marcos de portal no se dejan poner: la salida es el marco."]},
+      "sources": ["jar:irons_spellbooks-1.21.1-3.16.3.jar:io/redspace/ironsspellbooks/player/ServerPlayerEvents.class#preventPocketDimensionTeleportation (cancels EntityTeleportEvent in the pocket, except commands)", "jar:irons_spellbooks-1.21.1-3.16.3.jar:data/irons_spellbooks/tags/block/pocket_dimension_prevent_placement.json", "jar:irons_spellbooks-1.21.1-3.16.3.jar:io/redspace/ironsspellbooks/player/ServerPlayerEvents.class (RightClickBlock with a block of that tag in the pocket is cancelled)", "jar:irons_spellbooks-1.21.1-3.16.3.jar:assets/irons_spellbooks/lang/en_us.json#ui.irons_spellbooks.cast_error_dimension", "jar:irons_spellbooks-1.21.1-3.16.3.jar:data/irons_spellbooks/dimension_type/pocket_dimension_type.json (bed_works false, respawn_anchor_works false)"]
+    },
+    {
       "key": "irons_wayward", "role": "step", "deps": ["irons_essence"], "group": "king",
       "task": {"item": "irons_spellbooks:wayward_compass"},
       "at": {"x": -3.4, "y": -9.6},
@@ -322,7 +365,7 @@
       "sources": ["jar:irons_spellbooks-1.21.1-3.16.3.jar:data/irons_spellbooks/recipe/alchemist_cauldron/brew_timeless_slurry.json", "jar:irons_spellbooks-1.21.1-3.16.3.jar:data/irons_spellbooks/recipe/decrepit_scythe_repair.json", "jar:irons_spellbooks-1.21.1-3.16.3.jar:data/irons_spellbooks/recipe/legionnaire_flamberge_repair.json", "jar:irons_spellbooks-1.21.1-3.16.3.jar:data/irons_spellbooks/loot_table/chests/citadel/rampart_chest.json"]
     },
     {
-      "key": "irons_spider_den", "role": "step", "deps": ["irons_school_ice"], "group": "spider",
+      "key": "irons_spider_den", "role": "step", "deps": ["irons_cloth"], "group": "spider",
       "task": {"type": "structure", "structure": "irons_spellbooks:ice_spider_den", "title": {"en_us": "Find an Ice Spider Den", "es_es": "Encontrá una guarida de Araña de Hielo"}, "icon": "irons_spellbooks:furled_map_ice_spider_den"},
       "icon": "irons_spellbooks:furled_map_ice_spider_den",
       "at": {"x": 11.6, "y": -1.6},

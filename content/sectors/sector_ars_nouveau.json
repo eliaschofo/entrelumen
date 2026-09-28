@@ -22,7 +22,8 @@
     "NE": {"kind": "ring", "cx": 14.0, "cy": -14.0, "r": 3.3, "count": 8, "start": -90, "draw": [{"style": "ring", "r": 3.3, "alpha": 70, "segments": 32}]},
     "NW": {"kind": "ring", "cx": -14.0, "cy": -14.0, "r": 3.3, "count": 8, "start": -90, "draw": [{"style": "ring", "r": 3.3, "alpha": 70, "segments": 32}]},
     "SE": {"kind": "ring", "cx": 14.0, "cy": 14.0, "r": 3.3, "count": 7, "start": -90, "draw": [{"style": "ring", "r": 3.3, "alpha": 70, "segments": 32}]},
-    "SW": {"kind": "ring", "cx": -14.0, "cy": 14.0, "r": 3.3, "count": 8, "start": -90, "draw": [{"style": "ring", "r": 3.3, "alpha": 70, "segments": 32}]}
+    "SW": {"kind": "ring", "cx": -14.0, "cy": 14.0, "r": 3.3, "count": 8, "start": -90, "draw": [{"style": "ring", "r": 3.3, "alpha": 70, "segments": 32}]},
+    "forms": {"kind": "arc", "cx": 0, "cy": 0, "r": 24.0, "count": 5, "start": 258, "span": 18}
   },
   "links": [
     {"target": "crafts_living", "at": {"x": 5.6, "y": -2.6}},
@@ -34,7 +35,7 @@
     {"id": "runes", "label": {"en_us": "four schools one circle", "es_es": "cuatro escuelas un circulo"}, "x": -22.0, "y": -23.4, "scale": 1, "font": "minecraft:alt"},
     {"id": "medallion", "texture": "entrelumen:textures/gui/quests/medallion.png", "x": -24.0, "y": -19.8, "scale": 2, "order": 0, "click": "chapter:sun_of_heliodor", "hover": {"en_us": "Back to the Sun of Heliodor", "es_es": "Volver al Sol de Heliodor"}},
     {"id": "gem", "texture": "ars_nouveau:textures/item/source_gem.png", "x": -24.0, "y": -19.8, "scale": 4, "order": 1},
-    {"id": "label_n", "label": {"en_us": "Spellcraft", "es_es": "Hechicería"}, "x": -5.6, "y": -22.4, "scale": 1},
+    {"id": "label_n", "label": {"en_us": "Spellcraft", "es_es": "Hechicería"}, "x": -7.4, "y": -21.6, "scale": 1},
     {"id": "label_e", "label": {"en_us": "Source", "es_es": "Fuente"}, "x": 22.3, "y": -5.2, "scale": 1},
     {"id": "label_s", "label": {"en_us": "Rituals and familiars", "es_es": "Rituales y familiares"}, "x": 7.2, "y": 23.1, "scale": 1},
     {"id": "label_w", "label": {"en_us": "Creatures at work", "es_es": "Criaturas que trabajan"}, "x": -22.3, "y": 6.8, "scale": 1},
@@ -125,11 +126,11 @@
       "en_us": {"title": "Grammar with consequences",
         "text": ["[tip] One Form first (Projectile flies, Touch hits close, Self hits you), then Effects. An augment only changes the glyph to its left. The book's tier caps the glyph tier: novice 1, mage 2, archmage 3."]},
       "es_es": {"title": "Gramática con consecuencias",
-        "text": ["[tip] Primero una Forma (Proyectil vuela, Toque pega cerca, Uno mismo te pega a vos), después Efectos. Un aumento sólo cambia el glifo de su izquierda. El nivel del libro limita el del glifo: novato 1, mago 2, archimago 3."]},
+        "text": ["[tip] Primero una Forma (Proyectil vuela, Tocar pega cerca, Uno mismo te pega a vos), después Efectos. Un aumento sólo cambia el glifo de su izquierda. El nivel del libro limita el del glifo: novato 1, mago 2, archimago 3."]},
       "sources": ["jar:ars_nouveau-1.21.1-5.13.1.jar:assets/ars_nouveau/lang/en_us.json"]
     },
     {
-      "key": "arsspell_amplify", "role": "step", "deps": ["arsspell_light"],
+      "key": "arsspell_amplify", "role": "step", "deps": ["arsspell_scribes"],
       "task": {"item": "ars_nouveau:glyph_amplify"},
       "at": {"figure": "N", "slot": 4},
       "en_us": {"title": "Amplify eats a diamond pick", "subtitle": "The pick dies so the spell can dig.",
@@ -147,6 +148,59 @@
       "es_es": {"title": "Cada glifo paga alquiler",
         "text": ["[tip] Un hechizo cuesta la suma de sus glifos. Cada glifo que aprendés además sube tu maná máximo, aunque no lo uses nunca; los niveles del libro, las túnicas y los amuletos suman más."]},
       "sources": ["jar:ars_nouveau-1.21.1-5.13.1.jar:assets/ars_nouveau/lang/en_us.json"]
+    },
+    {
+      "key": "arsspell_projectile", "role": "info", "deps": ["arsspell_grammar"],
+      "task": {"type": "checkmark"},
+      "icon": "ars_nouveau:glyph_projectile",
+      "at": {"figure": "forms", "slot": 0},
+      "en_us": {"title": "Projectile", "subtitle": "Point, click, no regrets.",
+        "text": ["You know it from the first page. The bolt flies until it hits something and runs the rest of the spell there, for 10 mana. Accelerate and Decelerate set its speed, each Split adds a bolt, Pierce goes through one more target and Sensitive makes it hit grass and flowers."]},
+      "es_es": {"title": "Proyectil", "subtitle": "Apuntá, hacé clic, cero culpa.",
+        "text": ["Lo sabés desde la primera página. El rayo vuela hasta pegar en algo y ahí corre el resto del hechizo, por 10 de maná. Acelerar y Decelerar le cambian la velocidad, cada Dividir suma un rayo, Atravesar pasa un blanco más y Sensible lo hace pegar en el pasto y las flores."]},
+      "sources": ["jar:ars_nouveau-1.21.1-5.13.1.jar:com/hollingsworth/arsnouveau/common/spell/method/MethodProjectile.class (defaultedStarterGlyph; getDefaultManaCost 10; augments Accelerate, Decelerate, Pierce, Split, Sensitive; summonProjectiles fires 1 + Split bolts)", "jar:ars_nouveau-1.21.1-5.13.1.jar:com/hollingsworth/arsnouveau/api/registry/GlyphRegistry.class#getDefaultStartingSpells", "jar:ars_nouveau-1.21.1-5.13.1.jar:assets/ars_nouveau/lang/en_us.json#ars_nouveau.augment_desc.glyph_projectile_glyph_pierce", "jar:ars_nouveau-1.21.1-5.13.1.jar:assets/ars_nouveau/lang/en_us.json#ars_nouveau.augment_desc.glyph_projectile_glyph_sensitive"]
+    },
+    {
+      "key": "arsspell_touch", "role": "info", "deps": ["arsspell_grammar"],
+      "task": {"type": "checkmark"},
+      "icon": "ars_nouveau:glyph_touch",
+      "at": {"figure": "forms", "slot": 1},
+      "en_us": {"title": "Touch", "subtitle": "Magic at arm's length.",
+        "text": ["Also known from the start. It works on the block or creature you use the book on, for 5 mana, and fizzles in empty air. Touch, Break is a pickaxe that never wears out; Sensitive lets it reach air and fluids too."]},
+      "es_es": {"title": "Tocar", "subtitle": "Magia al alcance de la mano.",
+        "text": ["También viene de fábrica. Actúa sobre el bloque o la criatura donde usás el libro, por 5 de maná, y en el aire vacío no hace nada. Tocar y Romper es un pico que nunca se gasta; Sensible le deja alcanzar también el aire y los líquidos."]},
+      "sources": ["jar:ars_nouveau-1.21.1-5.13.1.jar:com/hollingsworth/arsnouveau/common/spell/method/MethodTouch.class (defaultedStarterGlyph; getDefaultManaCost 5; onCast without a target returns FAILURE; augment Sensitive)", "jar:ars_nouveau-1.21.1-5.13.1.jar:assets/ars_nouveau/lang/en_us.json#ars_nouveau.augment_desc.glyph_touch_glyph_sensitive", "jar:ars_nouveau-1.21.1-5.13.1.jar:assets/ars_nouveau/lang/en_us.json#ars_nouveau.glyph_desc.glyph_break"]
+    },
+    {
+      "key": "arsspell_self", "role": "info", "deps": ["arsspell_grammar"],
+      "task": {"type": "checkmark"},
+      "icon": "ars_nouveau:glyph_self",
+      "at": {"figure": "forms", "slot": 2},
+      "en_us": {"title": "Self", "subtitle": "Self-care, arcane edition.",
+        "text": ["The third form you start with. The spell lands on you, for 10 mana, and takes no augments: Self, Leap throws you where you look; Self, Heal mends you for a little hunger; Self, Conjure Magelight gives night vision."]},
+      "es_es": {"title": "Uno mismo", "subtitle": "Autocuidado, edición arcana.",
+        "text": ["La tercera forma que viene de fábrica; en el libro figura como Ser. El hechizo cae sobre vos, por 10 de maná, y no acepta aumentos: con Salto te tira hacia donde mirás, con Sanar te cura a cambio de un poco de hambre y con Conjurar luz mágica te da visión nocturna."]},
+      "sources": ["jar:ars_nouveau-1.21.1-5.13.1.jar:com/hollingsworth/arsnouveau/common/spell/method/MethodSelf.class (defaultedStarterGlyph; getDefaultManaCost 10; getCompatibleAugments empty)", "jar:ars_nouveau-1.21.1-5.13.1.jar:assets/ars_nouveau/lang/es_es.json#ars_nouveau.glyph_name.glyph_self", "jar:ars_nouveau-1.21.1-5.13.1.jar:assets/ars_nouveau/lang/en_us.json#ars_nouveau.glyph_desc.glyph_leap", "jar:ars_nouveau-1.21.1-5.13.1.jar:assets/ars_nouveau/lang/en_us.json#ars_nouveau.glyph_desc.glyph_heal", "jar:ars_nouveau-1.21.1-5.13.1.jar:assets/ars_nouveau/lang/en_us.json#ars_nouveau.glyph_desc.glyph_light"]
+    },
+    {
+      "key": "arsspell_underfoot", "role": "side", "deps": ["arsspell_grammar"],
+      "task": {"item": "ars_nouveau:glyph_underfoot"},
+      "at": {"figure": "forms", "slot": 3},
+      "en_us": {"title": "Underfoot", "subtitle": "Dig straight down. Carefully.",
+        "text": ["Iron boots and a wooden pressure plate teach it at the table: a tier 1 form, 5 mana, that hits the block you stand on. Underfoot, Break digs straight down; add AOE and the floor opens three by three."]},
+      "es_es": {"title": "Debajo de los pies", "subtitle": "Cavar derecho para abajo. Con cuidado.",
+        "text": ["Unas botas de hierro y una placa de presión de madera la enseñan en la mesa: una forma de nivel 1, 5 de maná, que pega en el bloque que pisás. Debajo de los pies y Romper cava derecho para abajo; sumale Área y el piso se abre de tres por tres."]},
+      "sources": ["jar:ars_nouveau-1.21.1-5.13.1.jar:data/ars_nouveau/recipe/glyph_underfoot.json", "jar:ars_nouveau-1.21.1-5.13.1.jar:com/hollingsworth/arsnouveau/common/spell/method/MethodUnderfoot.class (BlockHitResult at blockPosition().below(); getDefaultManaCost 5)", "jar:ars_nouveau-1.21.1-5.13.1.jar:assets/ars_nouveau/lang/en_us.json#ars_nouveau.glyph_desc.glyph_underfoot", "jar:ars_nouveau-1.21.1-5.13.1.jar:assets/ars_nouveau/lang/en_us.json#ars_nouveau.glyph_desc.glyph_aoe"]
+    },
+    {
+      "key": "arsspell_pantomime", "role": "side", "deps": ["arsspell_grammar"],
+      "task": {"item": "ars_nouveau:glyph_pantomime"},
+      "at": {"figure": "forms", "slot": 4},
+      "en_us": {"title": "Pantomime", "subtitle": "Mime a wall until there is one.",
+        "text": ["Eight glass blocks teach it at the table: a tier 1 form, 5 mana, that hits the spot two blocks past your eyes, air or not, three when you look down. Amplify pushes it a block out, Dampen pulls it in; Pantomime, Conjure Mageblock builds on nothing."]},
+      "es_es": {"title": "Pantomima", "subtitle": "Hacé la mímica de una pared hasta que aparezca.",
+        "text": ["Ocho bloques de vidrio la enseñan en la mesa: una forma de nivel 1, 5 de maná, que pega en el lugar a dos bloques de tus ojos, sea aire o no; tres si mirás para abajo. Amplificar lo aleja un bloque y Atenuar lo acerca; Pantomima y Conjurar bloque mágico construyen sobre la nada."]},
+      "sources": ["jar:ars_nouveau-1.21.1-5.13.1.jar:data/ars_nouveau/recipe/glyph_pantomime.json", "jar:ars_nouveau-1.21.1-5.13.1.jar:com/hollingsworth/arsnouveau/common/spell/method/MethodPantomime.class#findPosition (2 blocks from the eyes, 3 when pitch >= 45, +1 per Amplify, 1 with Dampen; hit marked inside; getDefaultManaCost 5)", "jar:ars_nouveau-1.21.1-5.13.1.jar:com/hollingsworth/arsnouveau/common/spell/effect/EffectPhantomBlock.class#onResolveBlock (an inside hit places the Mage Block on that spot)", "jar:ars_nouveau-1.21.1-5.13.1.jar:assets/ars_nouveau/lang/en_us.json#ars_nouveau.glyph_desc.glyph_pantomime"]
     },
     {
       "key": "arsspell_light", "role": "side", "deps": ["arsspell_scribes"],
@@ -751,7 +805,7 @@
       "sources": ["jar:ars_nouveau-1.21.1-5.13.1.jar:assets/ars_nouveau/lang/en_us.json"]
     },
     {
-      "key": "arsarmor_table", "role": "step", "deps": ["arssrc_robes"], "hide_lines": true,
+      "key": "arsarmor_table", "role": "step", "deps": ["arssrc_fiber"], "hide_lines": true,
       "task": {"item": "ars_nouveau:alteration_table"},
       "at": {"x": 14.0, "y": -14.0},
       "en_us": {"title": "The tailor's bench", "subtitle": "Measure twice, enchant once.",
@@ -991,7 +1045,7 @@
       "sources": ["jar:ars_nouveau-1.21.1-5.13.1.jar:data/ars_nouveau/recipe/splash_flask_cannon.json", "jar:ars_nouveau-1.21.1-5.13.1.jar:data/ars_nouveau/recipe/lingering_flask_cannon.json", "jar:ars_nouveau-1.21.1-5.13.1.jar:assets/ars_nouveau/lang/en_us.json#ars_nouveau.page1.flask_cannons"]
     },
     {
-      "key": "arsscry_crystal", "role": "step", "deps": ["arsrit_scrying"], "hide_lines": true,
+      "key": "arsscry_crystal", "role": "step", "deps": ["arssrc_gem"], "hide_lines": true,
       "tasks": [{"item": "ars_nouveau:scryers_crystal"}, {"item": "ars_nouveau:scryer_scroll"}],
       "at": {"figure": "SE", "slot": 4},
       "en_us": {"title": "A window anywhere",
