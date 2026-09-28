@@ -178,4 +178,20 @@ class RuinRulesTest {
     assertFalse(RuinRules.resetDue(40_000, 51_999, 12_000));
     assertTrue(RuinRules.resetDue(40_000, 52_000, 12_000), "Ten minutes empty");
   }
+
+  @Test
+  void aSearchWidensRingByRingJustOutsideTheLast() {
+    assertArrayEquals(new int[] {400, 1200}, RuinRules.ring(400, 1200, 0), "ring 0 is the definition's");
+    assertArrayEquals(new int[] {1200, 2000}, RuinRules.ring(400, 1200, 1));
+    assertArrayEquals(new int[] {2000, 2800}, RuinRules.ring(400, 1200, 2));
+    assertArrayEquals(new int[] {500, 756}, RuinRules.ring(250, 500, 1), "a narrow ring widens by at least 256");
+    int[] last = RuinRules.ring(400, 1200, RuinRules.WIDER_RINGS);
+    assertEquals(1200 + RuinRules.WIDER_RINGS * 800, last[1], "the cap: four more rings");
+    assertEquals("entrelumen:viaduct", RuinRules.ringKey("entrelumen:viaduct", 0), "ring 0 keeps its sites");
+    assertNotEquals(RuinRules.ringKey("entrelumen:viaduct", 1), RuinRules.ringKey("entrelumen:viaduct", 2));
+    for (int[] c : RuinRules.candidates(7L, RuinRules.ringKey("entrelumen:viaduct", 2), 0, 0, 2000, 2800, 48)) {
+      double r = Math.hypot(c[0], c[1]);
+      assertTrue(r >= 1999 && r <= 2801, "a candidate of ring 2 at " + r);
+    }
+  }
 }

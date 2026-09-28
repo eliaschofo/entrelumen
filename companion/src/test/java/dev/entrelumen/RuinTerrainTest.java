@@ -150,6 +150,35 @@ class RuinTerrainTest {
   }
 
   @Test
+  void anIsletIsFlatAroundTheRuinThenABeachThenASlopeIntoTheSeabed() {
+    int depth = 12;
+    for (double d = 0; d <= RuinTerrain.ISLET_TOP - 2; d += 0.5)
+      assertEquals(RuinTerrain.ISLET_HEIGHT, RuinTerrain.islet(d, depth, -1), "flat over the footprint and the margin at " + d);
+    int previous = RuinTerrain.ISLET_HEIGHT, seen = 0;
+    for (double d = 0; d < 200; d += 1) {
+      int h = RuinTerrain.islet(d, depth, 0.3);
+      assertTrue(h <= previous, "the islet never rises going out: " + h + " after " + previous + " at " + d);
+      assertTrue(previous - h <= 2, "no cliff: a step of " + (previous - h) + " at " + d);
+      previous = h;
+      if (h < -depth) {
+        seen++;
+        assertTrue(d <= RuinTerrain.isletReach(depth), "the islet ends within its reach: " + d);
+        break;
+      }
+    }
+    assertEquals(1, seen, "the slope fades into the seabed");
+    // The shore: above the water on the flat top, at the water's level at the end of the beach.
+    double shore = RuinTerrain.ISLET_TOP + RuinTerrain.ISLET_BEACH;
+    assertEquals(0, RuinTerrain.islet(shore, depth, 0));
+    assertTrue(RuinTerrain.islet(shore + 1, depth, 0) < 0, "under water past the beach");
+    assertTrue(RuinTerrain.isletReach(60) <= RuinTerrain.ISLET_TOP + 2 + RuinTerrain.ISLET_BEACH + RuinTerrain.ISLET_SLOPE + 1,
+        "a deep sea caps the slope");
+    assertEquals(0, RuinTerrain.outside(5, 5, 0, 0, 10, 10));
+    assertEquals(3, RuinTerrain.outside(13, 5, 0, 0, 10, 10));
+    assertEquals(5, RuinTerrain.outside(13, 14, 0, 0, 10, 10));
+  }
+
+  @Test
   void aSiteRockMarkerNamesItsBoxAndItsPlaceholders() {
     var crag = RuinMarkers.parse("site_rock size=41,17,41 rock=minecraft:stone,minecraft:andesite,minecraft:tuff").orElseThrow();
     assertEquals(RuinMarkers.Kind.SITE_ROCK, crag.kind());

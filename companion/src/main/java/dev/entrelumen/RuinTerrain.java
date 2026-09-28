@@ -158,6 +158,44 @@ public final class RuinTerrain {
     return best;
   }
 
+  // ---- The islet (an ocean world) -------------------------------------------------------------
+
+  /**
+   * An islet raised under a ruin whose every site was under water (Elias, 27 September): its flat top
+   * stands {@link #ISLET_HEIGHT} over the water and reaches {@link #ISLET_TOP} past the footprint (the
+   * blend's widest margin and a little more, so the ruin's margin stays on land), a beach
+   * {@link #ISLET_BEACH} wide goes down to the water, and under it a slope fades into the seabed over
+   * about one and a half times the depth (at most {@link #ISLET_SLOPE}).
+   */
+  public static final int ISLET_HEIGHT = 2, ISLET_TOP = MAX_MARGIN + 2, ISLET_BEACH = 4, ISLET_SLOPE = 48,
+      ISLET_MAX_DEPTH = 64;
+
+  /**
+   * The islet's surface over a column, relative to the water's surface: {@code d} is the column's
+   * distance past the footprint (0 inside it), {@code depth} how far under the water the seabed lies
+   * there and {@code wobble} (-1..1) a ragged shore. Below {@code -depth} the islet does not reach.
+   */
+  public static int islet(double d, int depth, double wobble) {
+    double top = ISLET_TOP + 2 * wobble;
+    if (d <= top) return ISLET_HEIGHT;
+    double beach = (d - top) / ISLET_BEACH;
+    if (beach <= 1) return (int) Math.round(ISLET_HEIGHT - (ISLET_HEIGHT + 0.5) * beach);
+    double slope = Math.max(4, Math.min(depth * 1.5, ISLET_SLOPE));
+    double t = (d - top - ISLET_BEACH) / slope;
+    return (int) Math.floor(-1 - (Math.max(depth, 1) - 1 + 0.5) * weight(t));
+  }
+
+  /** How far past the footprint an islet over water {@code depth} deep reaches. */
+  public static int isletReach(int depth) {
+    return ISLET_TOP + 2 + ISLET_BEACH + (int) Math.ceil(Math.max(4, Math.min(depth * 1.5, ISLET_SLOPE))) + 1;
+  }
+
+  /** The distance from a column to a footprint (inclusive block bounds), 0 inside it. */
+  public static double outside(int x, int z, int x0, int z0, int x1, int z1) {
+    int dx = Math.max(0, Math.max(x0 - x, x - x1)), dz = Math.max(0, Math.max(z0 - z, z - z1));
+    return Math.sqrt(dx * (double) dx + dz * (double) dz);
+  }
+
   // ---- The site's rock ------------------------------------------------------------------------
 
   /**

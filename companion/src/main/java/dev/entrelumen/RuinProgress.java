@@ -9,8 +9,8 @@ import net.minecraft.world.level.saveddata.SavedData;
 
 /**
  * Each campaign's progress in the Heliodor ruins, persisted in {@code entrelumen_ruin_progress}:
- * solved challenges, lit nodes, filled sockets, the generation of every key piece handed over and
- * the ruins visited. Keys are {@code <ruin id>|<challenge>}. A new party starts from its founder's
+ * solved challenges, lit nodes, filled sockets, the generation of every key piece handed over, the
+ * ruins visited and the gifts a pedestal handed over. Keys are {@code <ruin id>|<challenge>}. A new party starts from its founder's
  * record, like its campaign and its compass.
  */
 public final class RuinProgress extends SavedData {
@@ -23,6 +23,8 @@ public final class RuinProgress extends SavedData {
     /** Ruin id to the generation of the last piece its pedestal gave (absent: never). */
     public final Map<String, Integer> pieces = new TreeMap<>();
     public final Set<String> visited = new TreeSet<>();
+    /** Items a pedestal handed to the team as gifts (the Signal Tower's Atlas): its recipe opens then. */
+    public final Set<String> gifts = new TreeSet<>();
 
     Team copy() {
       Team copy = new Team();
@@ -31,6 +33,7 @@ public final class RuinProgress extends SavedData {
       filled.forEach((key, value) -> copy.filled.put(key, new TreeSet<>(value)));
       copy.pieces.putAll(pieces);
       copy.visited.addAll(visited);
+      copy.gifts.addAll(gifts);
       return copy;
     }
 
@@ -106,6 +109,7 @@ public final class RuinProgress extends SavedData {
       Team team = new Team();
       for (Tag value : entry.getList("solved", Tag.TAG_STRING)) team.solved.add(value.getAsString());
       for (Tag value : entry.getList("visited", Tag.TAG_STRING)) team.visited.add(value.getAsString());
+      for (Tag value : entry.getList("gifts", Tag.TAG_STRING)) team.gifts.add(value.getAsString());
       readSets(entry.getCompound("lit"), team.lit);
       readSets(entry.getCompound("filled"), team.filled);
       CompoundTag pieces = entry.getCompound("pieces");
@@ -145,6 +149,7 @@ public final class RuinProgress extends SavedData {
       CompoundTag entry = new CompoundTag();
       entry.put("solved", strings(team.solved));
       entry.put("visited", strings(team.visited));
+      entry.put("gifts", strings(team.gifts));
       entry.put("lit", writeSets(team.lit));
       entry.put("filled", writeSets(team.filled));
       CompoundTag pieces = new CompoundTag();

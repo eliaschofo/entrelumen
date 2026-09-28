@@ -564,9 +564,11 @@ public final class RuinChallenges {
         }
       }
     }
-    // Gifts wait on the pedestal too (the Signal Tower's Atlas): one for a player who carries none.
+    // Gifts wait on the pedestal too (the Signal Tower's Atlas): one for a player who carries none. The
+    // team has taken it from here, which opens its recipe (AtlasGate).
     if (solved)
       for (String gift : definition.gifts()) {
+        if (team.gifts.add(gift)) progress.setDirty();
         Item item = BuiltInRegistries.ITEM.get(ResourceLocation.parse(gift));
         if (item == net.minecraft.world.item.Items.AIR || player.getInventory().countItem(item) > 0) continue;
         ItemStack stack = new ItemStack(item);
