@@ -50,3 +50,22 @@ ServerEvents.afterRecipes(event => {
   console.info('[ENTRELUMEN_PINGPONG_BALANCE] ' + JSON.stringify({status: failed.length ? 'failed-loaded-check' : 'loaded-ingredient-check',
     signature: entrelumenPingpongSignature, checked: entrelumenPingpongRows.length + entrelumenPingpongRemovals.length, failed: failed}));
 });
+const entrelumenPingpongOfferSwaps = [{"entity":"eternal_starlight:the_gatekeeper","from":"eternal_starlight:orb_of_prophecy","to":"eternal_starlight:blue_starlight_crystal_shard","count":4}];
+entrelumenPingpongOfferSwaps.forEach(swap => {
+  // EntityJoinLevelEvent: new spawns and chunk loads alike; a swapped merchant saves its new offers.
+  EntityEvents.spawned(swap.entity, event => {
+    var items = Java.loadClass('net.minecraft.core.registries.BuiltInRegistries').ITEM;
+    var MerchantOffer = Java.loadClass('net.minecraft.world.item.trading.MerchantOffer');
+    var offers = event.entity.getOffers();
+    var swapped = 0;
+    for (var i = 0; i < offers.size(); i++) {
+      var offer = offers.get(i);
+      if (String(items.getKey(offer.getResult().getItem())) !== swap.from) continue;
+      offers.set(i, new MerchantOffer(offer.getItemCostA(), offer.getItemCostB(), Item.of(swap.to, swap.count),
+        offer.getUses(), offer.getMaxUses(), offer.getXp(), offer.getPriceMultiplier(), offer.getDemand()));
+      swapped++;
+    }
+    if (swapped) console.info('[ENTRELUMEN_PINGPONG_BALANCE] ' + JSON.stringify({status: 'offers-swapped', entity: swap.entity,
+      from: swap.from, to: swap.to, count: swap.count, offers: swapped}));
+  });
+});

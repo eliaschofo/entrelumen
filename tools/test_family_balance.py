@@ -1,6 +1,7 @@
 """Static checks for generated family staging scripts; JAR-backed checks when the lock is local."""
 from __future__ import annotations
 
+import functools
 import hashlib
 from collections import Counter
 import importlib.util
@@ -273,7 +274,10 @@ class FamilyBalanceTest(unittest.TestCase):
         self.assertEqual(by_id['refinedstorage:controller']['add'], balance.RM)
         self.assertIn('modern_industrialization:electric_age/machine/assembler/replicator', family['removals'])
         self.assertIn('oritech:particle/nether_star', family['removals'])
-        self.assertTrue(all(spec['op'] == 'disable' for spec in family['data']))
+        # Broken upstream recipes are disabled; the only other override is the Gatekeeper's first-win loot.
+        self.assertEqual(len([s for s in family['data'] if s['op'] == 'disable']), len(balance.PINGPONG_BROKEN_RECIPES))
+        self.assertEqual([s['path'] for s in family['data'] if s['op'] != 'disable'],
+                         ['data/eternal_starlight/loot_table/bosses/the_gatekeeper.json'])
 
     def test_round_four_stages_heliodor_solar_tech_and_psi(self):
         family = balance.FAMILIES['pingpong4']
@@ -519,6 +523,182 @@ class FamilyBalanceTest(unittest.TestCase):
                 for relative, text in {**balance.build_data(name), **balance.build_additions(name),
                                        **balance.creation_files(name)}.items():
                     self.assertEqual((balance.PACK_DATA / relative).read_text(encoding='utf-8'), text)
+
+
+@functools.lru_cache(maxsize=1)
+def pinned_data():
+    return balance.data_files()
+
+
+def upstream(path, data, jar='Mod-x.jar'):
+    return {path: [(jar, '', json.dumps(data).encode())]}
+
+
+AUGMENT = {'neoforge:conditions': [{'type': 'neoforge:mod_loaded', 'modid': 'apothic_enchanting'}],
+           'type': 'apotheosis:attribute',
+           'modifier': {'attribute': 'apothic_enchanting:max_eterna', 'operation': 'add_value', 'value': -70.0},
+           'modifier_id': 'apotheosis:haven/max_eterna', 'sort_index': 90, 'target': 'players', 'tier': 'haven'}
+LADDER = {'base': 100.0, 'min': 0.0, 'max': 100.0,
+          'tiers': {'haven': {'ceiling': 45.0}, 'frontier': {'ceiling': 75.0}, 'ascent': {'ceiling': 90.0},
+                    'summit': {'ceiling': 100.0}, 'pinnacle': {'ceiling': 100.0}}}
+
+
+class EternaCeilingTest(unittest.TestCase):
+    """World Tier Eterna ceilings (docs/design/apotheosis-family.md#world-tier-eterna-ceilings)."""
+
+    def test_ring_sums_like_the_table_builder(self):
+        self.assertEqual(balance.best_eterna([]), 0.0)
+        self.assertEqual(balance.best_eterna([(3.0, 45.0)]), 45.0)  # fifteen hellshelves
+        self.assertEqual(balance.best_eterna([(3.0, 100.0)]), 96.0)  # 32 blocks never reach 100
+        self.assertEqual(balance.best_eterna([(5.0, 90.0), (20.0, 100.0)]), 100.0)  # one draconic on top of 90
+        self.assertEqual(balance.best_eterna([(15.0, 60.0), (1.0, 40.0)]), 60.0)  # each bucket clamps to its max
+
+    def test_haven_counts_crafted_shelves_and_infusions_open_with_frontier(self):
+        stats = {'x:hell': (3.0, 45.0), 'x:infused': (5.0, 60.0), 'x:deep': (5.0, 75.0), 'x:end': (5.0, 90.0)}
+        recipes = [('x:hell', [[1]], 0.0), ('x:infused', [['x:hell']], 45.0), ('x:deep', [['x:infused']], 60.0),
+                   ('x:end', [['x:deep'], [4]], 0.0)]
+        acts = {'haven': (1, 2), 'frontier': (3, 3), 'ascent': (4, 4), 'summit': (5, 5), 'pinnacle': (6, 6)}
+        tiers, first = balance.walk_ladder(recipes, stats, {}, acts, 0.0, 100.0)
+        self.assertEqual({t: r['ceiling'] for t, r in tiers.items()},
+                         {'haven': 45.0, 'frontier': 75.0, 'ascent': 90.0, 'summit': 90.0, 'pinnacle': 90.0})
+        self.assertEqual(first, {'x:hell': 'haven', 'x:infused': 'frontier', 'x:deep': 'frontier', 'x:end': 'ascent'})
+        # The infusion runs at Haven's own ceiling: counted there, it would chain the ladder into act I.
+        with unittest.mock.patch.object(balance, 'INFUSION_OPENS', 'haven'):
+            loose, _ = balance.walk_ladder(recipes, stats, {}, acts, 0.0, 100.0)
+        self.assertEqual(loose['haven']['ceiling'], 75.0)
+
+    def test_tiers_read_their_acts_from_the_companion(self):
+        self.assertEqual(balance.tier_acts(), {'haven': (1, 2), 'frontier': (3, 3), 'ascent': (4, 4),
+                                               'summit': (5, 5), 'pinnacle': (6, 6)})
+
+    def test_augment_override_keeps_its_shape_and_disables_at_the_base(self):
+        spec, model = balance.eterna_ceiling('haven'), json.loads(json.dumps(LADDER))
+        source = [('Apotheosis-x.jar', '', json.dumps(AUGMENT).encode())]
+        out = json.loads(balance.eterna_override(spec, source, model))
+        self.assertEqual(out['modifier']['value'], -55.0)
+        self.assertEqual({k: v for k, v in out.items() if k != 'modifier'}, {k: v for k, v in AUGMENT.items() if k != 'modifier'})
+        model['tiers']['haven']['ceiling'] = 100.0
+        off = json.loads(balance.eterna_override(spec, source, model))
+        self.assertEqual(off['neoforge:conditions'], [{'type': 'neoforge:false'}] + AUGMENT['neoforge:conditions'])
+        self.assertEqual(off['modifier'], AUGMENT['modifier'])
+        self.assertIsNone(balance.eterna_override(balance.eterna_ceiling('pinnacle'), [], model))
+        model['tiers']['pinnacle']['ceiling'] = 90.0
+        with self.assertRaises(AssertionError):  # a tier without an upstream augment would need a new file
+            balance.eterna_override(balance.eterna_ceiling('pinnacle'), [], model)
+        for drift in ({'target': 'monsters'}, {'extra': 1}, {'neoforge:conditions': []}):
+            with self.subTest(drift=drift), self.assertRaises(AssertionError):
+                balance.eterna_override(spec, [('Apotheosis-x.jar', '', json.dumps(dict(AUGMENT, **drift)).encode())], model)
+
+    def test_every_pinned_max_eterna_augment_needs_a_spec(self):
+        found = upstream('data/apotheosis/tier_augments/haven/max_eterna.json', AUGMENT, 'Apotheosis-x.jar')
+        probe = {'probe': {'data': [balance.eterna_ceiling('haven')]}}
+        with unittest.mock.patch.object(balance, 'eterna_ceilings', return_value=LADDER), \
+                unittest.mock.patch.dict(balance.FAMILIES, probe), unittest.mock.patch.dict(balance.ETERNA_REPORT):
+            self.assertEqual(len(balance.build_data('probe', found)), 1)
+            found.update(upstream('data/other/tier_augments/x.json', AUGMENT))
+            with self.assertRaises(AssertionError):
+                balance.build_data('probe', found)
+
+    @unittest.skipUnless(lock_available(), 'Pinned dependency JARs are not available on this machine')
+    def test_ceilings_follow_the_staging_of_the_pinned_jars(self):
+        found = pinned_data()
+        model = balance.eterna_ceilings(found)
+        self.assertEqual((model['base'], model['min'], model['max']), (100.0, 0.0, 100.0))
+        self.assertEqual({t: r['ceiling'] for t, r in model['tiers'].items()},
+                         {'haven': 45.0, 'frontier': 75.0, 'ascent': 90.0, 'summit': 100.0, 'pinnacle': 100.0})
+        self.assertEqual(sorted(balance.eterna_augment_paths(found)),
+                         [f'data/apotheosis/tier_augments/{t}/max_eterna.json' for t in ('ascent', 'frontier', 'haven', 'summit')])
+        # Nothing is typed by hand: an act material that moves later moves the ceiling with it.
+        with unittest.mock.patch.dict(balance.STAGE_MATERIALS, {balance.ZANITE: 'V'}):
+            self.assertEqual(balance.eterna_ceilings(found)['tiers']['ascent']['ceiling'], 80.0)
+
+
+ORB_RECIPE = {'type': 'minecraft:crafting_shaped', 'category': 'misc',
+              'key': {'C': {'item': balance.SHARD}, 'G': {'item': 'minecraft:glass'}},
+              'pattern': ['GCG', 'CCC', 'GCG'], 'result': {'count': 1, 'id': balance.ORB}}
+GATEKEEPER = 'data/eternal_starlight/loot_table/bosses/the_gatekeeper.json'
+GATEKEEPER_LOOT = {'type': 'eternal_starlight:boss', 'pools': [
+    {'rolls': 1.0, 'entries': [{'type': 'minecraft:item', 'name': 'eternal_starlight:book'}]},
+    {'rolls': 1.0, 'entries': [{'type': 'minecraft:item', 'name': balance.ORB, 'conditions': [
+        {'condition': 'eternal_starlight:boss_challenge_count', 'boss_id': 'eternal_starlight:the_gatekeeper',
+         'max_inclusive': 1}]}]}]}
+
+
+class BossDropsTest(unittest.TestCase):
+    """The balance batch of 27 September 2026 (docs/design/mod-pingpong.md#botines-de-jefe)."""
+
+    def test_boss_drops_close_the_star_loops_the_audit_found(self):
+        family = balance.FAMILIES['boss_drops']
+        self.assertEqual(set(family['removals']), {'theurgy:incubation/nether_star', 'theurgy:incubation/dragon_egg',
+                                                   'rftoolsutility:minecraft_wither'})
+        tags = [s for s in family['data'] if s['op'] == 'tag_values']
+        self.assertEqual([(s['path'], s['values']) for s in tags],
+                         [('data/oritech/tags/entity_type/spawner_blacklist.json', ['#c:bosses'])])
+        queen = [s for s in family['data'] if s['op'] == 'remove_values']
+        self.assertEqual(len(queen), 2)
+        self.assertTrue(all(v['item']['id'] == balance.NETHER_STAR for s in queen for v in s['values']))
+        # No generated family recreates a star: every addition and creation leaves them to the Wither.
+        for name, other in balance.FAMILIES.items():
+            for recipe in other.get('additions', []) + other.get('creations', []):
+                self.assertNotEqual(recipe.get('output', recipe['id']), balance.NETHER_STAR, name)
+
+    def test_swapped_loot_pays_exactly_the_staged_recipe(self):
+        spec = balance.swapped_loot(GATEKEEPER, balance.ORB, balance.SHARD, '', count=4, staged=balance.ORB)
+        found = {**upstream(GATEKEEPER, GATEKEEPER_LOOT), **upstream('data/eternal_starlight/recipe/orb_of_prophecy.json', ORB_RECIPE)}
+        self.assertEqual(balance.staged_uses(balance.ORB, balance.SHARD, ORB_RECIPE), 4)
+        with unittest.mock.patch.dict(balance.FAMILIES, {'probe': {'data': [spec]}}):
+            out = json.loads(balance.build_data('probe', found)[GATEKEEPER[len('data/'):]])
+            entry = out['pools'][1]['entries'][0]
+            self.assertEqual(entry['name'], balance.SHARD)
+            self.assertEqual(entry['functions'], [{'function': 'minecraft:set_count', 'count': 4}])
+            self.assertEqual(entry['conditions'], GATEKEEPER_LOOT['pools'][1]['entries'][0]['conditions'])
+            self.assertEqual(out['pools'][0], GATEKEEPER_LOOT['pools'][0])
+        twice = json.loads(json.dumps(GATEKEEPER_LOOT))
+        twice['pools'][0]['entries'].append({'type': 'minecraft:item', 'name': balance.ORB})
+        for bad_spec, bad_found in ((dict(spec, count=5), found), (spec, {**found, **upstream(GATEKEEPER, twice)})):
+            with unittest.mock.patch.dict(balance.FAMILIES, {'probe': {'data': [bad_spec]}}), self.assertRaises(AssertionError):
+                balance.build_data('probe', bad_found)
+
+    def test_tag_values_merge_and_refuse_a_value_already_tagged(self):
+        path = 'data/oritech/tags/entity_type/spawner_blacklist.json'
+        spec = balance.tagged(path, ['#c:bosses'], '')
+        with unittest.mock.patch.dict(balance.FAMILIES, {'probe': {'data': [spec]}}):
+            out = balance.build_data('probe', upstream(path, {'values': ['minecraft:ender_dragon']}))
+            self.assertEqual(json.loads(out[path[len('data/'):]]), {'replace': False, 'values': ['#c:bosses']})
+            with self.assertRaises(AssertionError):
+                balance.build_data('probe', upstream(path, {'values': ['#c:bosses']}))
+
+    def test_occult_lead_needs_an_ascent_table(self):
+        path = 'data/apothic_enchanting/recipe/infusion/occult_ender_lead.json'
+        native = {'type': 'apothic_enchanting:infusion', 'input': {'item': 'apothic_enchanting:ender_lead'},
+                  'requirements': {'eterna': 75, 'quanta': 85, 'arcana': 60},
+                  'max_requirements': {'eterna': -1, 'quanta': -1, 'arcana': 85},
+                  'result': {'id': 'apothic_enchanting:occult_ender_lead', 'count': 1}}
+        with unittest.mock.patch.object(balance, 'eterna_ceilings', return_value=LADDER):
+            for eterna, fits in ((80, True), (75, False), (95, False)):
+                spec = balance.infusion_eterna(path, eterna, 'ascent', '')
+                with self.subTest(eterna=eterna), unittest.mock.patch.dict(balance.FAMILIES, {'probe': {'data': [spec]}}):
+                    if fits:
+                        out = json.loads(balance.build_data('probe', upstream(path, native))[path[len('data/'):]])
+                        self.assertEqual(out['requirements'], {'eterna': 80, 'quanta': 85, 'arcana': 60})
+                        self.assertEqual(out['max_requirements'], native['max_requirements'])
+                    else:
+                        with self.assertRaises(AssertionError):
+                            balance.build_data('probe', upstream(path, native))
+        (gate,) = [s for s in balance.FAMILIES['apotheosis']['data'] if s['op'] == 'infusion_eterna']
+        self.assertEqual((gate['path'], gate['eterna'], gate['tier']), (path, 80, 'ascent'))
+
+    def test_the_gatekeeper_trades_the_orbs_shards_for_the_same_coin(self):
+        (swap,) = balance.FAMILIES['pingpong']['offer_swaps']
+        self.assertEqual((swap['entity'], swap['old'], swap['new'], swap['count']),
+                         ('eternal_starlight:the_gatekeeper', balance.ORB, balance.SHARD, 4))
+        (loot,) = [s for s in balance.FAMILIES['pingpong']['data'] if s['op'] == 'swap_loot']
+        self.assertEqual((loot['old'], loot['new'], loot['count']), (balance.ORB, balance.SHARD, swap['count']))
+        script = (ROOT / 'pack/kubejs/server_scripts/entrelumen_pingpong_balance.js').read_text(encoding='utf-8')
+        self.assertIn('const entrelumenPingpongOfferSwaps = [{"entity":"eternal_starlight:the_gatekeeper",'
+                      f'"from":"{balance.ORB}","to":"{balance.SHARD}","count":4}}];', script)
+        self.assertIn("EntityEvents.spawned(swap.entity", script)
+        self.assertEqual(balance.render_offer_swaps({'tag': 'X'}, 'p'), '')
 
 
 if __name__ == '__main__':

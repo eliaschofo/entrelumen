@@ -27,9 +27,10 @@ A second use on the same item has nothing left to restore and charges nothing. E
 
 Separating compound books is available elsewhere, and earlier than a finished Ark:
 
-- the Apothic Enchanting Library of Alexandria (deposit a book, extract each enchantment losslessly, around Act III);
-- the [Atlas Library](apotheosis-family.md#atlas-library) (Act V);
-- the Actually Additions Atomic Reconstructor, which splits a book for 155,000 CF (`booklet.actuallyadditions.chapter.bookSplitting`).
+- the Apothic Enchanting libraries: deposit a book and extract each enchantment losslessly, in the Enchantment Library, whose infused shelves Haven's 45-Eterna ceiling already allows (up to level XVI), and in the Library of Alexandria from Act V (up to XXXI);
+- the [Atlas Library](apotheosis-family.md#atlas-library) (Act V).
+
+Actually Additions 1.3.26 does not split books. Its lang file still carries an orphan `booklet.actuallyadditions.chapter.bookSplitting` string, but no booklet entry or code uses it; the Lens of Disenchanting moves the first enchantment of an enchanted item, never a book, onto a book for 250,000 CF (`LensDisenchanting.invoke`).
 
 Equipment disenchanting is also covered several times: Apothic scrap, improved scrap and extraction tomes, EvilCraft's Purifier with a Blook, Tombstone's Book of Disenchantment, the Draconic Evolution Disenchanter, the Industrial Foregoing Enchantment Extractor, the Actually Additions Lens of Disenchanting and the Create: Enchantment Industry grindstone.
 

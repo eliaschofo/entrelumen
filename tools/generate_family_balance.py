@@ -119,6 +119,30 @@ def rewritten(path, expect, value, why):
     return {'path': path, 'op': 'rewrite', 'expect': expect, 'value': value, 'why': why}
 
 
+def swapped_loot(path, old, new, why, *, count, staged):
+    """Turn a loot table's single plain entry for `old` into `count` of `new`, keeping its conditions and
+    every other pool. `staged` names the recipe of `old` that this family gates: `count` must be exactly
+    how many `new` that staged recipe takes, so the drop is the gated recipe's material, not the item."""
+    return {'path': path, 'op': 'swap_loot', 'old': old, 'new': new, 'count': count, 'staged': staged, 'why': why}
+
+
+def tagged(path, values, why):
+    """Add values to a pinned tag with a merging pack file of the same path; the upstream file stays."""
+    return {'path': path, 'op': 'tag_values', 'values': list(values), 'why': why}
+
+
+def infusion_eterna(path, eterna, tier, why):
+    """Set an Apothic infusion's Eterna requirement so it first fits `tier`'s ceiling (derived by
+    eterna_ceilings) and not the previous tier's; the input, result and other requirements stay native."""
+    return {'path': path, 'op': 'infusion_eterna', 'eterna': eterna, 'tier': tier, 'why': why}
+
+
+def offer_swap(entity, old, new, why, *, count, staged):
+    """At runtime, turn a merchant entity's offers of `old` into `count` of `new` at the same cost, uses and
+    experience: for trades defined in code, with no data path. `staged` and `count` as in swapped_loot."""
+    return {'entity': entity, 'old': old, 'new': new, 'count': count, 'staged': staged, 'why': why}
+
+
 def tag(value):
     return {'tag': value}
 
@@ -558,6 +582,13 @@ RESONATOR_RECIPES = [
          function='area_mining'),
 ]
 
+ORB, SHARD = 'eternal_starlight:orb_of_prophecy', 'eternal_starlight:blue_starlight_crystal_shard'
+# The Bee Queen's rewards that pay a Nether Star for royal jelly, which Productive Bees' royal bee makes
+# without end (bee_produce/the_bublezone/royal_bee, centrifuge/the_bumblezone/honeycomb_royal).
+QUEEN_STAR = {'item': {'id': NETHER_STAR, 'count': 1}, 'required': True}
+QUEEN_STAR_BOTTLE = dict(QUEEN_STAR, xp_reward=10, weight=1)
+QUEEN_STAR_BUCKET = dict(QUEEN_STAR, xp_reward=50, weight=80)
+
 FAMILIES = {
     'industrial': {
         'script': 'entrelumen_industrial_balance.js',
@@ -679,8 +710,12 @@ FAMILIES = {
             campaign_tier('ascent', 'minecraft:impossible', 'Granted by the companion after Act III'),
             campaign_tier('summit', 'minecraft:impossible', 'Granted by the companion after Act IV (Act V, the Ark)'),
             campaign_tier('pinnacle', 'minecraft:impossible', 'Granted by the companion at the Ark activation (Act VI)'),
-        ] + [eterna_ceiling(tier) for tier in ETERNA_TIERS]
-        + [augmented(m) for m in AUGMENTS] + [augmented(m, inverse=True) for m in AUGMENTS],
+        ] + [eterna_ceiling(tier) for tier in ETERNA_TIERS] + [
+            # The occult ender lead rewrites a found spawner's mob: a mob farm, which the pack opens in act IV
+            # (FUNCTIONS['mob_farm']). Its native 75 Eterna fell inside Frontier's ceiling (act III).
+            infusion_eterna('data/apothic_enchanting/recipe/infusion/occult_ender_lead.json', 80, 'ascent',
+                            'Spawner mob rewriting is a mob farm: act IV, where the 80-Eterna shelves arrive'),
+        ] + [augmented(m) for m in AUGMENTS] + [augmented(m, inverse=True) for m in AUGMENTS],
         'additions': [
             recipe('entrelumen:cartographer_shelf', ['PMP', 'BFB', 'PMP'],
                    {'P': tag('minecraft:planks'), 'M': item('minecraft:map'), 'B': item('minecraft:bookshelf'),
@@ -760,7 +795,19 @@ FAMILIES = {
         # Upstream recipes that fail to parse on 1.21.1 (pre-1.21 result/ingredient formats, forge: tags or
         # removed spirit keys); disabled so the log stays clean, listed in docs/design/mod-pingpong.md.
         'data': [disabled(f"data/{rid.split(':')[0]}/recipe/{rid.split(':')[1]}.json", why)
-                 for rid, why in PINGPONG_BROKEN_RECIPES],
+                 for rid, why in PINGPONG_BROKEN_RECIPES] + [
+            # The Orb of Prophecy recipe above is the act IV gate to Starlight, but the Gatekeeper, whose
+            # portal ruins spawn across the Overworld, dropped an Orb on the first win and sold more for one
+            # coin. Starlight crystals only grow inside Starlight, so the Gatekeeper keeps paying the
+            # recipe's own shards and the Horizon Chart still makes the Orb (docs/design/mod-pingpong.md).
+            swapped_loot('data/eternal_starlight/loot_table/bosses/the_gatekeeper.json', ORB, SHARD,
+                         'First-win Orb becomes the gated recipe\'s shards', count=4, staged=ORB),
+        ],
+        'offer_swaps': [
+            offer_swap('eternal_starlight:the_gatekeeper', ORB, SHARD,
+                       'GatekeeperTrades sells the Orb for one coin; the same coin buys the recipe\'s shards',
+                       count=4, staged=ORB),
+        ],
     },
     # Round 4 of the mod ping-pong (docs/design/mod-pingpong.md): Create: New Age is Heliodor's solar and
     # electric technology, so its key pieces carry the act components; Psi is Terra's programmable magic.
@@ -876,6 +923,33 @@ FAMILIES = {
                        'sound': {'sound_id': 'minecraft:item.axe.strip'},
                        'tool': [{'type': 'farmersdelight:item_ability', 'action': 'axe_strip'}, {'tag': 'minecraft:axes'}]},
                       'Pre-1.21 result, sound and tool format rejected by the 1.21 cutting codec'),
+        ],
+    },
+    # Boss drops stay with their bosses (story bible; docs/design/mod-pingpong.md#botines-de-jefe): the Wither
+    # is the only source of Nether stars, which the Envés door also takes. Round 1 of the ping-pong removed
+    # Modern Industrialization's and Oritech's star recipes (pingpong family); the quest writers' audit of
+    # 27 September 2026 found these loops. Ender IO, Industrial Foregoing and Apothic Spawners already
+    # refuse #c:bosses in their capture tools and spawners.
+    'boss_drops': {
+        'script': 'entrelumen_boss_drops_balance.js',
+        'tag': 'ENTRELUMEN_BOSS_DROPS_BALANCE',
+        'namespaces': {'theurgy', 'rftoolsutility', 'oritech', 'the_bumblezone'},
+        'changes': [],
+        'removals': [
+            # Liquefaction turns a star or a dragon egg into several sulfurs; incubation turned each back.
+            'theurgy:incubation/nether_star',
+            'theurgy:incubation/dragon_egg',
+            # A Wither for 0.1 star of matter and 20,000 FE, which drops a whole star.
+            'rftoolsutility:minecraft_wither',
+        ],
+        'data': [
+            tagged('data/oritech/tags/entity_type/spawner_blacklist.json', ['#c:bosses'],
+                   'The spawner controller caught any mob that stepped on it but the Ender Dragon: a Wither '
+                   'for a few dozen souls'),
+            without_values('data/the_bumblezone/bz_bee_queen_trades/royal_jelly_bottle_trades.json',
+                           'possible_rewards', [QUEEN_STAR_BOTTLE], 'Royal jelly is renewable through royal bees'),
+            without_values('data/the_bumblezone/bz_bee_queen_trades/royal_jelly_bucket_block_trades.json',
+                           'possible_rewards', [QUEEN_STAR_BUCKET], 'Royal jelly is renewable through royal bees'),
         ],
     },
 }
@@ -1136,7 +1210,20 @@ def build(name):
         assert rid in recipes, f'Missing native recipe to remove {rid}'
         used_files[recipes[rid][1]] = sources[recipes[rid][1]]
         removals.append(rid)
+    for swap in family.get('offer_swaps', []):
+        native, filename = recipes[swap['staged']]
+        assert outputs(native) == {swap['old']}, f"{swap['entity']}: {swap['staged']} does not make {swap['old']}"
+        assert swap['count'] == staged_uses(swap['staged'], swap['new'], native), \
+            f"{swap['entity']}: the staged {swap['staged']} does not take {swap['count']} {swap['new']}"
+        used_files[filename] = sources[filename]
     return rows, removals, dict(sorted(used_files.items())), len(recipes)
+
+
+def staged_uses(recipe_id, item_id, native):
+    """How many `item_id` the shaped recipe `recipe_id` takes once this generator's edit is applied."""
+    (change,) = [c for family in FAMILIES.values() for c in family.get('changes', []) if c['id'] == recipe_id]
+    craft = inner(transform(change, native))
+    return sum(c != ' ' and craft['key'][c] == {'item': item_id} for row in craft['pattern'] for c in row)
 
 
 def data_files():
@@ -1174,6 +1261,14 @@ def build_data(name, found=None):
             text = eterna_override(spec, sources, model)
             if text is not None:  # a tier without an upstream augment already sits at the base
                 outputs_by_path[spec['path'][len('data/'):]] = text
+            continue
+        if spec['op'] == 'tag_values':
+            # Tags merge across datapacks, so the pack file carries only the new values.
+            assert len(sources) == 1, f"{spec['path']}: expected one pinned tag, found {len(sources)}"
+            upstream = [v['id'] if isinstance(v, dict) else v for v in json.loads(sources[0][2]).get('values', [])]
+            assert not set(spec['values']) & set(upstream), f"{spec['path']}: already tagged upstream"
+            outputs_by_path[spec['path'][len('data/'):]] = json.dumps(
+                {'replace': False, 'values': spec['values']}, indent=2, ensure_ascii=False) + '\n'
             continue
         if spec['op'] == 'copy':
             assert len(sources) == spec['owners'], \
@@ -1252,6 +1347,33 @@ def build_data(name, found=None):
             result[spec['field']] = [v for v in values if v not in spec['values']]
             reverse = copy.deepcopy(result)
             reverse[spec['field']] = [v for v in original[spec['field']]]
+        elif spec['op'] == 'swap_loot':
+            hits = [(p, e) for p, pool in enumerate(result.get('pools', [])) for e, entry in enumerate(pool['entries'])
+                    if entry.get('type') == 'minecraft:item' and entry.get('name') == spec['old']]
+            assert len(hits) == 1, f"{spec['path']}: expected one {spec['old']} entry, found {len(hits)}"
+            ((p, e),) = hits
+            entry = result['pools'][p]['entries'][e]
+            assert 'functions' not in entry, f"{spec['path']}: the {spec['old']} entry already has functions"
+            ns, rid = spec['staged'].split(':', 1)
+            native = json.loads(found[f'data/{ns}/recipe/{rid}.json'][0][2])
+            assert spec['count'] == staged_uses(spec['staged'], spec['new'], native), \
+                f"{spec['path']}: the staged {spec['staged']} does not take {spec['count']} {spec['new']}"
+            entry.update(name=spec['new'], functions=[{'function': 'minecraft:set_count', 'count': spec['count']}])
+            reverse = copy.deepcopy(result)
+            reverse['pools'][p]['entries'][e]['name'] = spec['old']
+            del reverse['pools'][p]['entries'][e]['functions']
+        elif spec['op'] == 'infusion_eterna':
+            model = model or eterna_ceilings(found)
+            tiers = list(model['tiers'])
+            index = tiers.index(spec['tier'])
+            below = model['tiers'][tiers[index - 1]]['ceiling'] if index else model['min']
+            assert below < spec['eterna'] <= model['tiers'][spec['tier']]['ceiling'], \
+                f"{spec['path']}: {spec['eterna']} Eterna does not first fit {spec['tier']}"
+            assert original.get('type') == 'apothic_enchanting:infusion' \
+                and isinstance(original['requirements'].get('eterna'), (int, float)), f"{spec['path']}: changed upstream"
+            result['requirements'] = dict(original['requirements'], eterna=spec['eterna'])
+            reverse = copy.deepcopy(result)
+            reverse['requirements'] = original['requirements']
         else:
             raise AssertionError(f"Unknown data operation {spec['op']}")
         assert reverse == original, f"{spec['path']}: unrelated upstream data changed"
@@ -1360,8 +1482,8 @@ def shelf_routes(found, stats):
     """(routes, crafted): every loaded recipe that makes a shelf as (shelf, recipe JSON), with
     the families' edits applied, their removals dropped and their additions included; and the shelves any
     recipe makes before removals, so only a shelf with no recipe at all is a world block (amethyst clusters)."""
-    edits = {change['id']: (name, change) for name, family in FAMILIES.items() for change in family['changes']}
-    removed = {rid for family in FAMILIES.values() for rid in family['removals']}
+    edits = {change['id']: (name, change) for name, family in FAMILIES.items() for change in family.get('changes', [])}
+    removed = {rid for family in FAMILIES.values() for rid in family.get('removals', [])}
     routes, crafted = [], set()
     for path, owners in found.items():
         rid = recipe_id_from_name(path)
@@ -1495,8 +1617,15 @@ def eterna_ceilings(found):
         recipes.append((shelf, [sorted({c if c in stats else item_act(c, design_acts) for c in choices(slot, tags)},
                                        key=str) for slot in slots], needs))
     world = {block: 1 for block in stats if block not in crafted}
+    tiers, first = walk_ladder(recipes, stats, world, tier_acts(), low, high)
+    return {'base': base, 'min': low, 'max': high, 'tiers': tiers, 'shelves': first}
+
+
+def walk_ladder(recipes, stats, world, acts_by_tier, low, high):
+    """(tiers, first tier of each shelf) for eterna_ceilings: tiers in story order, the ceiling of each the
+    best Eterna of the shelves its acts open, infusions counted from INFUSION_OPENS on as the ceiling rises."""
     ceiling, tiers, first = low, {}, {}
-    for index, (tier, (start, last)) in enumerate(tier_acts().items()):
+    for index, (tier, (start, last)) in enumerate(acts_by_tier.items()):
         opens = index >= ETERNA_TIERS.index(INFUSION_OPENS)
         limit = ceiling if opens else low
         while True:
@@ -1510,7 +1639,7 @@ def eterna_ceilings(found):
             first.setdefault(shelf, tier)
         tiers[tier] = {'acts': (start, last), 'ceiling': ceiling,
                        'top': sorted(s for s in acts if min(high, stats[s][1]) >= ceiling)}
-    return {'base': base, 'min': low, 'max': high, 'tiers': tiers, 'shelves': first}
+    return tiers, first
 
 
 def eterna_override(spec, sources, model):
@@ -2051,7 +2180,38 @@ def render(name, rows, removals, used_files):
             f'const {prefix}Sources = {json.dumps(used_files, separators=(",", ":"))};\n'
             f'const {prefix}Rows = {json.dumps(rows, ensure_ascii=False, separators=(",", ":"))};\n'
             f'const {prefix}Removals = {json.dumps(removals)};\n' + body + render_tags(family)
-            + render_additions(family, prefix) + render_creations(family, prefix))
+            + render_additions(family, prefix) + render_creations(family, prefix) + render_offer_swaps(family, prefix))
+
+
+OFFER_SWAP_RUNTIME = '''
+SWAPS.forEach(swap => {
+  // EntityJoinLevelEvent: new spawns and chunk loads alike; a swapped merchant saves its new offers.
+  EntityEvents.spawned(swap.entity, event => {
+    var items = Java.loadClass('net.minecraft.core.registries.BuiltInRegistries').ITEM;
+    var MerchantOffer = Java.loadClass('net.minecraft.world.item.trading.MerchantOffer');
+    var offers = event.entity.getOffers();
+    var swapped = 0;
+    for (var i = 0; i < offers.size(); i++) {
+      var offer = offers.get(i);
+      if (String(items.getKey(offer.getResult().getItem())) !== swap.from) continue;
+      offers.set(i, new MerchantOffer(offer.getItemCostA(), offer.getItemCostB(), Item.of(swap.to, swap.count),
+        offer.getUses(), offer.getMaxUses(), offer.getXp(), offer.getPriceMultiplier(), offer.getDemand()));
+      swapped++;
+    }
+    if (swapped) console.info('[TAG] ' + JSON.stringify({status: 'offers-swapped', entity: swap.entity,
+      from: swap.from, to: swap.to, count: swap.count, offers: swapped}));
+  });
+});
+'''
+
+
+def render_offer_swaps(family, prefix):
+    swaps = [{'entity': s['entity'], 'from': s['old'], 'to': s['new'], 'count': s['count']}
+             for s in family.get('offer_swaps', [])]
+    if not swaps:
+        return ''
+    return (f'const {prefix}OfferSwaps = {json.dumps(swaps, separators=(",", ":"))};\n'
+            + OFFER_SWAP_RUNTIME.lstrip('\n').replace('SWAPS', prefix + 'OfferSwaps').replace('TAG', family['tag']))
 
 
 def render_additions(family, prefix):
