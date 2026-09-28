@@ -177,7 +177,7 @@ Fuentes:
 
 | Mod | Versión | Fuente | Acto | Escalonado o integración |
 |---|---|---|---|---|
-| Psi | 1.21.1-110 | Modrinth pOeA0exL/j9TFdTKC | III | Entero en el acto III (Elias, 24/9; antes el ensamblador era del II). El Ensamblador de CAD pide un Regulador de Energía (III): sin él no hay CAD ni hechizos. Los núcleos de psigema (hiperacelerado y radiativo) piden una Matriz de Distribución (III). |
+| Psi | 1.21.1-110 | Modrinth pOeA0exL/j9TFdTKC | III | Entero en el acto III (Elias, 24/9; antes el ensamblador era del II). El Ensamblador de CAD pide un Regulador de Energía (III): sin él no hay CAD ni hechizos. Los núcleos de psigema (hiperacelerado y radiativo) quedan nativos: el Ensamblador ya los cierra (`UPSTREAM` en `tools/generate_family_balance.py`, [recipe-design-rules](recipe-design-rules.md)). |
 | Create: New Age | 1.2.0+mc1.21.1 | Modrinth FTeXqI9v/IwtuwMZy | II-IV | La tecnología de Heliodor; ver la tabla de abajo. |
 | Create: Central Kitchen | 2.6.2 | Modrinth btq68HMO/whbguqT1 | II | Automatiza la olla de cocción, la sartén, la cocina, la tabla de cortar con brazo mecánico y los banquetes. |
 | Create Slice & Dice | 4.3.4 | Modrinth GmjmRQ0A/D6mQaFRW | II | Rebanadora para las recetas de la tabla de cortar, aspersores y fertilizante líquido. |
