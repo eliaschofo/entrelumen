@@ -5,12 +5,12 @@
   "icon": "minecraft:nether_star",
   "emblem": "minecraft:textures/item/nether_star.png",
   "title": {
-    "en_us": "Bosses: vanilla and Mowzie's",
-    "es_es": "Jefes: vanilla y Mowzie's"
+    "en_us": "Vanilla bosses",
+    "es_es": "Jefes vanilla"
   },
   "subtitle": {
-    "en_us": "The Wither, the Dragon and the Elder Guardian as materials, plus Mowzie's optional mini-bosses.",
-    "es_es": "El Wither, el Dragón y el Guardián anciano como materiales, más los minijefes opcionales de Mowzie's."
+    "en_us": "The Wither, the Dragon and the Elder Guardian as materials.",
+    "es_es": "El Wither, el Dragón y el Guardián anciano como materiales."
   },
   "quests": [
     {
@@ -25,11 +25,11 @@
       },
       "en_us": [
         "Materials, not milestones",
-        "The Wither, the Ender Dragon and the Elder Guardian matter for their drops: nether stars, dragon hearts and wet sponges feed Luminous gear and act VI's creative items. The compass passes their lairs in act V.\n\nMowzie's Mobs adds optional mini-bosses with unique weapons for acts II to IV. None of them closes an act; all of them hit hard."
+        "The Wither, the Ender Dragon and the Elder Guardian matter for their drops: nether stars, dragon hearts and wet sponges feed Luminous gear and act VI's creative items. The compass passes their lairs in act V.\n\nMowzie's Mobs bosses live in Creatures and Bosses now, with the rest of the pack's wildlife."
       ],
       "es_es": [
         "Materiales, no hitos",
-        "El Wither, el Dragón del End y el Guardián Anciano importan por sus drops: estrellas del Nether, corazones de dragón y esponjas mojadas alimentan el equipo Luminoso y los ítems creativos del acto VI. La brújula pasa por sus guaridas en el acto V.\n\nMowzie's Mobs suma minijefes opcionales con armas únicas para los actos II a IV. Ninguno cierra un acto; todos pegan fuerte."
+        "El Wither, el Dragón del End y el Guardián Anciano importan por sus drops: estrellas del Nether, corazones de dragón y esponjas mojadas alimentan el equipo Luminoso y los ítems creativos del acto VI. La brújula pasa por sus guaridas en el acto V.\n\nLos jefes de Mowzie's Mobs ahora viven en Criaturas y jefes, con el resto de la fauna del pack."
       ],
       "sources": [
         "repo:docs/design/story-bible.md",
@@ -325,261 +325,6 @@
       ]
     },
     {
-      "key": "mowzie_intro",
-      "deps": [
-        "bosses_welcome"
-      ],
-      "type": "checkmark",
-      "icon": "mowziesmobs:wrought_helmet",
-      "layout": {
-        "x": 0,
-        "y": -7,
-        "size": 1.5,
-        "shape": "hexagon"
-      },
-      "en_us": [
-        "Mowzie's Mobs",
-        "A handful of detailed creatures and four headline mini-bosses in a natural difficulty chain: the Ferrous Wroughtnaut underground, the Frostmaw in the cold, Tongbi the Sculptor in the mountains and Umvuthi the Sunbird with its tribe.\n\nOptional, acts II to IV here, and their prizes never break. Worth the detour."
-      ],
-      "es_es": [
-        "Mowzie's Mobs",
-        "Algunas criaturas muy detalladas y cuatro minijefes principales en una cadena natural de dificultad: el Caballero de hierro forjado bajo tierra, el Frostmaw en el frío, Tongbi el escultor en las montañas y Umvuthi, el ave solar, con su tribu.\n\nOpcionales, actos II a IV acá, y sus premios nunca se rompen. Valen el desvío."
-      ],
-      "sources": [
-        "repo:docs/design/mod-pingpong.md",
-        "jar:mowziesmobs-1.21.1-1.8.2.jar:assets/mowziesmobs/lang/en_us.json",
-        "https://www.minecraft-guides.com/mod/mowzies-mobs/wiki/ferrous-wroughtnaut/",
-        "jar:mowziesmobs-1.21.1-1.8.2.jar:com/bobmowzie/mowziesmobs/server/config/ConfigHandler$BiomeConfig.class"
-      ]
-    },
-    {
-      "key": "mowzie_wroughtnaut",
-      "deps": [
-        "mowzie_intro"
-      ],
-      "type": "advancement",
-      "advancement": "mowziesmobs:kill_ferrous_wroughtnaut",
-      "icon": "mowziesmobs:wrought_axe",
-      "layout": {
-        "x": 3,
-        "y": -7,
-        "size": 1.5,
-        "shape": "gear"
-      },
-      "en_us": [
-        "The Ferrous Wroughtnaut",
-        "An armored giant asleep in a Wrought Chamber, roughly between Y 20 and Y 50. Dodge its huge axe, wait for the swing to end and hit its exposed back (Just a Flesh Wound).\n\nPrize: the unbreakable Axe of a Thousand Metals (right-click sweeps an arc, sneak-right-click sends a shockwave) and the unbreakable Wrought Helm."
-      ],
-      "es_es": [
-        "El Caballero de hierro forjado",
-        "Un gigante acorazado que duerme en una Cámara forjada, más o menos entre Y 20 e Y 50. Esquivá su hacha enorme, esperá que termine el golpe y pegale en la espalda expuesta («Just a Flesh Wound»).\n\nPremio: el Hacha de mil metales, irrompible (clic derecho barre en arco, agachado y clic derecho lanza una onda), y el Yelmo forjado, también irrompible."
-      ],
-      "sources": [
-        "jar:mowziesmobs-1.21.1-1.8.2.jar:data/mowziesmobs/advancement/kill_ferrous_wroughtnaut.json",
-        "jar:mowziesmobs-1.21.1-1.8.2.jar:assets/mowziesmobs/lang/en_us.json",
-        "https://www.minecraft-guides.com/mod/mowzies-mobs/wiki/ferrous-wroughtnaut/"
-      ]
-    },
-    {
-      "key": "mowzie_frostmaw",
-      "deps": [
-        "mowzie_wroughtnaut"
-      ],
-      "type": "advancement",
-      "advancement": "mowziesmobs:kill_frostmaw",
-      "icon": "mowziesmobs:ice_crystal",
-      "layout": {
-        "x": 6,
-        "y": -7,
-        "size": 1.5,
-        "shape": "gear"
-      },
-      "en_us": [
-        "The Frostmaw",
-        "A huge ice ape asleep in cold biomes (Rude Awakening is killing it). It freezes you in place; fire damage breaks Frozen early.\n\nIt carries an Ice Crystal that channels an icy whirlwind and recharges in your inventory. You can steal it instead of fighting (Big Brain Time). The ape will not be pleased."
-      ],
-      "es_es": [
-        "El Frostmaw",
-        "Un simio de hielo enorme que duerme en los biomas fríos («Rude Awakening» es matarlo). Te congela en el lugar; el daño por fuego rompe antes el Congelado.\n\nLleva un Cristal de hielo que canaliza un torbellino helado y se recarga en el inventario. Podés robárselo en vez de pelear («Big Brain™ Time»). Al simio no le va a gustar."
-      ],
-      "sources": [
-        "jar:mowziesmobs-1.21.1-1.8.2.jar:data/mowziesmobs/advancement/kill_frostmaw.json",
-        "jar:mowziesmobs-1.21.1-1.8.2.jar:data/mowziesmobs/advancement/steal_ice_crystal.json",
-        "jar:mowziesmobs-1.21.1-1.8.2.jar:assets/mowziesmobs/lang/en_us.json"
-      ]
-    },
-    {
-      "key": "mowzie_sculptor",
-      "deps": [
-        "mowzie_frostmaw"
-      ],
-      "type": "advancement",
-      "advancement": "mowziesmobs:sculptor_challenge",
-      "icon": "mowziesmobs:earthrend_gauntlet",
-      "layout": {
-        "x": 9,
-        "y": -7,
-        "size": 1.5,
-        "shape": "gear"
-      },
-      "en_us": [
-        "Tongbi, the Sculptor",
-        "He waits in a mountain monastery. Give him a Bluff Rod, from a Bluff, to start his test: climb the course he raises and right-click him at the top in time, without placing or breaking blocks, teleporting or flying (You Must Believe).\n\nPassing earns the Earthrend Gauntlet: throw boulders, tunnel and ride pillars of earth. Geomancer robes and beads boost it."
-      ],
-      "es_es": [
-        "Tongbi, el escultor",
-        "Espera en un monasterio de montaña. Dale una Vara de bluff, que suelta un Bluff, para empezar su prueba: subí el recorrido que levanta y hacé clic derecho sobre él arriba a tiempo, sin poner ni romper bloques, teletransportarte ni volar («You Must Believe»).\n\nAprobar da el Guantelete terráqueo: lanzar rocas, cavar túneles y subir en pilares de tierra. La túnica y las cuentas de geomante lo potencian."
-      ],
-      "sources": [
-        "jar:mowziesmobs-1.21.1-1.8.2.jar:data/mowziesmobs/advancement/sculptor_challenge.json",
-        "jar:mowziesmobs-1.21.1-1.8.2.jar:data/mowziesmobs/advancement/kill_bluff.json",
-        "jar:mowziesmobs-1.21.1-1.8.2.jar:data/mowziesmobs/loot_table/entities/bluff.json",
-        "jar:mowziesmobs-1.21.1-1.8.2.jar:assets/mowziesmobs/lang/en_us.json"
-      ]
-    },
-    {
-      "key": "mowzie_umvuthi",
-      "deps": [
-        "mowzie_sculptor"
-      ],
-      "type": "advancement",
-      "advancement": "mowziesmobs:kill_umvuthi",
-      "icon": "mowziesmobs:sol_visage",
-      "layout": {
-        "x": 12,
-        "y": -7,
-        "size": 1.5,
-        "shape": "gear"
-      },
-      "en_us": [
-        "Umvuthi, the Sunbird",
-        "Umvuthi rules a grove guarded by masked Umvuthana. Beat a Raptor for a mask (Masquerade), then fight the Sunbird (Praise the Sun).\n\nIt drops the unbreakable Sol Visage: wear it and right-click another mask to summon followers. The six masks give Strength, Speed, Haste, Resistance, Jump Boost or Health Boost."
-      ],
-      "es_es": [
-        "Umvuthi, el ave solar",
-        "Umvuthi gobierna una arboleda custodiada por Umvuthana enmascarados. Vencé a un rapaz para conseguir una máscara («Masquerade») y después peleá con el Ave solar («Praise the Sun»).\n\nSuelta el Semblante solar, irrompible: puesto, clic derecho con otra máscara invoca seguidores. Las seis máscaras dan Fuerza, Velocidad, Prisa minera, Resistencia, Supersalto o Salud mejorada."
-      ],
-      "sources": [
-        "jar:mowziesmobs-1.21.1-1.8.2.jar:data/mowziesmobs/advancement/kill_umvuthi.json",
-        "jar:mowziesmobs-1.21.1-1.8.2.jar:data/mowziesmobs/advancement/kill_umvuthana_raptor.json",
-        "jar:mowziesmobs-1.21.1-1.8.2.jar:assets/mowziesmobs/lang/en_us.json"
-      ]
-    },
-    {
-      "key": "mowzie_blessing",
-      "deps": [
-        "mowzie_umvuthi"
-      ],
-      "type": "advancement",
-      "advancement": "mowziesmobs:suns_blessing",
-      "optional": true,
-      "icon": "mowziesmobs:umvuthana_mask_fury",
-      "layout": {
-        "x": 15,
-        "y": -7,
-        "size": 1.0,
-        "shape": "circle"
-      },
-      "en_us": [
-        "Heliomancer",
-        "Sneak into a grove wearing a mask (Birds of a Feather) and Umvuthi may grant the Sun's Blessing (Heliomancer). With an empty hand: Sunstrike, Solar Flare, Solar Beam and Supernova, paid in blessing time that only starts counting when you use one; the Sunbird refills it for free later.\n\nSun magic in a pack about Heliodor's light. Of course."
-      ],
-      "es_es": [
-        "Heliomante",
-        "Entrá a escondidas a una arboleda con una máscara puesta («Birds of a Feather») y Umvuthi te puede dar la Bendición del sol («Heliomancer»). Con la mano vacía: Golpe de sol, Llamarada solar, Rayo solar y Supernova, que se pagan con tiempo de bendición que recién corre cuando usás una; el Ave solar lo repone gratis más tarde.\n\nMagia del sol en un pack sobre la luz de Heliodor. Obvio."
-      ],
-      "sources": [
-        "jar:mowziesmobs-1.21.1-1.8.2.jar:data/mowziesmobs/advancement/sneak_grove.json",
-        "jar:mowziesmobs-1.21.1-1.8.2.jar:data/mowziesmobs/advancement/suns_blessing.json",
-        "jar:mowziesmobs-1.21.1-1.8.2.jar:assets/mowziesmobs/lang/en_us.json"
-      ]
-    },
-    {
-      "key": "mowzie_grottol",
-      "deps": [
-        "mowzie_wroughtnaut"
-      ],
-      "type": "advancement",
-      "advancement": "mowziesmobs:kill_grottol_fortune",
-      "optional": true,
-      "icon": "mowziesmobs:captured_grottol",
-      "layout": {
-        "x": 3,
-        "y": -10,
-        "size": 1.0,
-        "shape": "circle"
-      },
-      "en_us": [
-        "The Grottol",
-        "Diamond-crusted cave critters that flee on sight. Kill one with a Fortune pickaxe for extra diamonds (Double Or Nothing!), or with Silk Touch to capture it whole (You're Coming With Me).\n\nIt is a rock with legs and a diamond problem."
-      ],
-      "es_es": [
-        "El Grútgol",
-        "Bichitos de cueva cubiertos de diamantes que huyen apenas te ven. Matá uno con un pico con Fortuna para sacar diamantes extra («Double Or Nothing!»), o con Toque de seda para llevártelo entero («You're Coming With Me»).\n\nEs una piedra con patas y un problema de diamantes."
-      ],
-      "sources": [
-        "jar:mowziesmobs-1.21.1-1.8.2.jar:data/mowziesmobs/advancement/kill_grottol_fortune.json",
-        "jar:mowziesmobs-1.21.1-1.8.2.jar:data/mowziesmobs/advancement/kill_grottol_silk_touch.json",
-        "jar:mowziesmobs-1.21.1-1.8.2.jar:assets/mowziesmobs/lang/en_us.json"
-      ]
-    },
-    {
-      "key": "mowzie_naga",
-      "deps": [
-        "mowzie_umvuthi"
-      ],
-      "type": "advancement",
-      "advancement": "mowziesmobs:kill_naga",
-      "optional": true,
-      "icon": "mowziesmobs:naga_fang",
-      "layout": {
-        "x": 12,
-        "y": -10,
-        "size": 1.0,
-        "shape": "circle"
-      },
-      "en_us": [
-        "The flying Naga",
-        "Not the Twilight one: Mowzie's Naga is a winged sea serpent that spits poison (Wingin' It). Its Naga Fang brews Poison Resistance, makes the Naga Fang Dagger (poison, double damage from behind) and makes darts for the Blowgun."
-      ],
-      "es_es": [
-        "La Naga voladora",
-        "No es la de Twilight: la Naga de Mowzie's es una serpiente marina con alas que escupe veneno («Wingin' It»). Su Colmillo de naga da la Poción de resistencia al veneno, la Daga de colmillo (veneno y doble daño por la espalda) y los dardos de la Cerbatana."
-      ],
-      "sources": [
-        "jar:mowziesmobs-1.21.1-1.8.2.jar:data/mowziesmobs/advancement/kill_naga.json",
-        "jar:mowziesmobs-1.21.1-1.8.2.jar:assets/mowziesmobs/lang/en_us.json"
-      ]
-    },
-    {
-      "key": "mowzie_small",
-      "deps": [
-        "mowzie_intro"
-      ],
-      "type": "checkmark",
-      "optional": true,
-      "icon": "mowziesmobs:foliaath_seed",
-      "layout": {
-        "x": 0,
-        "y": -10,
-        "size": 0.85,
-        "shape": "circle"
-      },
-      "en_us": [
-        "Smaller creatures",
-        "Foliaaths are carnivorous plants; their seed grows a pet if you feed it meat for two days. Lanterns drift at night and drop Luminous Jelly (brief night vision). Elokosa Howlers drop moon paws that inflict Weakness, Slowness, Mining Fatigue, Fragility or Eclipse on nearby mobs."
-      ],
-      "es_es": [
-        "Criaturas menores",
-        "Los Foliaaths son plantas carnívoras; su semilla da una mascota si le das carne durante dos días. Las Linternas flotan de noche y sueltan Gelatina luminosa (visión nocturna breve). Los Elokosa Howlers sueltan patas lunares que provocan Debilidad, Lentitud, Fatiga minera, Fragilidad o Eclipse a los mobs cercanos."
-      ],
-      "sources": [
-        "jar:mowziesmobs-1.21.1-1.8.2.jar:data/mowziesmobs/advancement/kill_foliaath.json",
-        "jar:mowziesmobs-1.21.1-1.8.2.jar:data/mowziesmobs/advancement/kill_elokosa_howler.json",
-        "jar:mowziesmobs-1.21.1-1.8.2.jar:assets/mowziesmobs/lang/en_us.json"
-      ]
-    },
-    {
       "key": "bosses_pack",
       "deps": [
         "bosses_welcome"
@@ -613,8 +358,7 @@
       "deps": [
         "bosses_dragon",
         "bosses_wither",
-        "bosses_monument",
-        "mowzie_umvuthi"
+        "bosses_monument"
       ],
       "type": "checkmark",
       "icon": "minecraft:dragon_egg",
@@ -626,11 +370,11 @@
       },
       "en_us": [
         "Trophy wall",
-        "Nether star, wet sponge, dragon's breath and Elytra from the vanilla bosses; an axe, a helm, a crystal, a gauntlet and the blessing of the sun from Mowzie's.\n\nNone of it was required. All of it makes the rest easier."
+        "Nether star, wet sponge, dragon's breath and Elytra from the vanilla bosses.\n\nNone of it was required. All of it makes the rest easier."
       ],
       "es_es": [
         "Pared de trofeos",
-        "Estrella del Nether, esponja mojada, aliento de dragón y élitros de los jefes vanilla; un hacha, un yelmo, un cristal, un guantelete y la bendición del sol de Mowzie's.\n\nNada de esto era obligatorio. Todo hace más fácil lo que sigue."
+        "Estrella del Nether, esponja mojada, aliento de dragón y élitros de los jefes vanilla.\n\nNada de esto era obligatorio. Todo hace más fácil lo que sigue."
       ],
       "sources": [
         "repo:docs/design/story-bible.md"
