@@ -6,6 +6,9 @@ repeated element of a list-based machine recipe. Serializer, result, count,
 conditions and every other ingredient stay native; a reverse edit must recover
 the original JSON exactly. Removals name exact native IDs. Nothing here checks
 teams, acts, provenance or gifts: stages describe acquisition only.
+
+The apotheosis family also sets each World Tier's Eterna ceiling from this staging:
+the best Eterna the shelves of the tier's acts reach (see eterna_ceilings).
 """
 from __future__ import annotations
 
@@ -15,6 +18,7 @@ import hashlib
 import json
 from pathlib import Path
 import re
+import struct
 import zipfile
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -123,6 +127,16 @@ def campaign_tier(tier, trigger, why):
     """Replace an Apotheosis World Tier advancement's criteria with one campaign criterion."""
     return {'path': f'data/apotheosis/advancement/progression/{tier}.json', 'op': 'campaign_tier',
             'trigger': trigger, 'description': f'entrelumen.apotheosis.tier.{tier}.desc', 'why': why}
+
+
+# World Tiers in story order; the companion's ApotheosisTiers constants give the act that opens each one.
+ETERNA_TIERS = ('haven', 'frontier', 'ascent', 'summit', 'pinnacle')
+
+
+def eterna_ceiling(tier):
+    """Set a World Tier's max_eterna augment to the ceiling eterna_ceilings derives for it."""
+    return {'path': f'data/apotheosis/tier_augments/{tier}/max_eterna.json', 'op': 'eterna_ceiling', 'tier': tier,
+            'why': 'The Eterna ceiling equals the best Eterna of the shelves the story unlocks by then'}
 
 
 def augmented(modifier, *, inverse=False):
@@ -665,7 +679,8 @@ FAMILIES = {
             campaign_tier('ascent', 'minecraft:impossible', 'Granted by the companion after Act III'),
             campaign_tier('summit', 'minecraft:impossible', 'Granted by the companion after Act IV (Act V, the Ark)'),
             campaign_tier('pinnacle', 'minecraft:impossible', 'Granted by the companion at the Ark activation (Act VI)'),
-        ] + [augmented(m) for m in AUGMENTS] + [augmented(m, inverse=True) for m in AUGMENTS],
+        ] + [eterna_ceiling(tier) for tier in ETERNA_TIERS]
+        + [augmented(m) for m in AUGMENTS] + [augmented(m, inverse=True) for m in AUGMENTS],
         'additions': [
             recipe('entrelumen:cartographer_shelf', ['PMP', 'BFB', 'PMP'],
                    {'P': tag('minecraft:planks'), 'M': item('minecraft:map'), 'B': item('minecraft:bookshelf'),
@@ -1146,8 +1161,20 @@ def build_data(name, found=None):
         return {}
     found = found if found is not None else data_files()
     outputs_by_path = {}
+    model = None
     for spec in family['data']:
         sources = found.get(spec['path'], [])
+        if spec['op'] == 'eterna_ceiling':
+            if model is None:
+                model = eterna_ceilings(found)
+                covered = {s['path'] for s in family['data'] if s['op'] == 'eterna_ceiling'}
+                assert eterna_augment_paths(found) <= covered, \
+                    f'Unhandled max_eterna augments: {sorted(eterna_augment_paths(found) - covered)}'
+            ETERNA_REPORT[name] = {tier: row['ceiling'] for tier, row in model['tiers'].items()}
+            text = eterna_override(spec, sources, model)
+            if text is not None:  # a tier without an upstream augment already sits at the base
+                outputs_by_path[spec['path'][len('data/'):]] = text
+            continue
         if spec['op'] == 'copy':
             assert len(sources) == spec['owners'], \
                 f"{spec['path']}: expected {spec['owners']} pinned owners, found {len(sources)}"
@@ -1230,6 +1257,304 @@ def build_data(name, found=None):
         assert reverse == original, f"{spec['path']}: unrelated upstream data changed"
         outputs_by_path[spec['path'][len('data/'):]] = json.dumps(result, indent=2, ensure_ascii=False) + '\n'
     return outputs_by_path
+
+
+# ---- apotheosis family: World Tier Eterna ceilings (27 September 2026) ----------------------------
+# Apotheosis 8.7.0 lowers the apothic_enchanting:max_eterna player attribute per World Tier
+# (data/apotheosis/tier_augments/<tier>/max_eterna.json), and the table offers and infuses with
+# min(shelf Eterna, attribute) (EnchantmentTableStats.eterna(Player)). Those caps trailed the pack's
+# shelf staging by a tier, so 100 Eterna only worked in act VI. Each ceiling is now the best Eterna the
+# shelves of the tier's acts reach, so no World Tier caps a shelf its own acts let a player build
+# (docs/design/apotheosis-family.md#world-tier-eterna-ceilings).
+MAX_ETERNA = 'apothic_enchanting:max_eterna'
+MAX_ETERNA_CLASS = 'dev/shadowsoffire/apothic_enchanting/Ench$Attributes.class'
+TABLE_RING = 32  # vanilla EnchantingTableBlock.BOOKSHELF_OFFSETS: the 5x5 ring on two layers
+# The design's first rung (docs/design/apotheosis-family.md): acts I-II climb with crafted shelves.
+# An infusion runs at exactly Haven's crafted ceiling, and counting its shelves there would chain the
+# whole native ladder (infused 60-65, deepshelves 70-75) into act I; infused shelves count from here.
+INFUSION_OPENS = 'frontier'
+AUGMENT_FIELDS = {'neoforge:conditions', 'type', 'modifier', 'modifier_id', 'sort_index', 'target', 'tier'}
+STATS_PATH = re.compile(r'data/[^/]+/enchanting_stats/.+\.json$')
+AUGMENT_PATH = re.compile(r'data/[^/]+/tier_augments/.+\.json$')
+ETERNA_REPORT = {}  # family -> {tier: ceiling}, for the status line
+
+
+def attribute_range(code, name):
+    """(default, min, max) of the RangedAttribute a compiled class builds under `name`: the class's
+    constant pool, then `ldc name` followed by three double pushes and invokespecial."""
+    assert code[:4] == b'\xca\xfe\xba\xbe', 'Not a class file'
+    sizes = {3: 4, 4: 4, 5: 8, 6: 8, 7: 2, 8: 2, 9: 4, 10: 4, 11: 4, 12: 4, 15: 3, 16: 2, 17: 4, 18: 4, 19: 2, 20: 2}
+    count, offset, index, pool = struct.unpack('>H', code[8:10])[0], 10, 1, {}
+    while index < count:
+        tag = code[offset]
+        if tag == 1:
+            size = 2 + struct.unpack('>H', code[offset + 1:offset + 3])[0]
+            pool[index] = code[offset + 3:offset + 1 + size].decode('utf-8', 'replace')
+        else:
+            size = sizes[tag]
+            body = code[offset + 1:offset + 1 + size]
+            pool[index] = struct.unpack('>d', body)[0] if tag == 6 else (tag, body)
+        offset += 1 + size
+        index += 2 if tag in (5, 6) else 1
+    strings = [i for i, v in pool.items()
+               if isinstance(v, tuple) and v[0] == 8 and pool.get(struct.unpack('>H', v[1])[0]) == name]
+    assert len(strings) == 1, f'{name}: expected one string constant, found {len(strings)}'
+    loads = ([bytes([0x12, strings[0]])] if strings[0] < 256 else []) + [b'\x13' + struct.pack('>H', strings[0])]
+    built = []
+    for load in loads:
+        start = code.find(load)
+        while start != -1:
+            at, values = start + len(load), []
+            while len(values) < 3:
+                if code[at] in (0x0e, 0x0f):  # dconst_0, dconst_1
+                    values.append(float(code[at] - 0x0e))
+                    at += 1
+                elif code[at] == 0x14 and isinstance(pool.get(struct.unpack('>H', code[at + 1:at + 3])[0]), float):
+                    values.append(pool[struct.unpack('>H', code[at + 1:at + 3])[0]])  # ldc2_w double
+                    at += 3
+                else:
+                    break
+            if len(values) == 3 and code[at] == 0xb7:  # invokespecial RangedAttribute.<init>
+                built.append(tuple(values))
+            start = code.find(load, start + 1)
+    assert len(built) == 1, f'{name}: expected one RangedAttribute construction, found {built}'
+    return built[0]
+
+
+def tier_acts():
+    """{tier: (first act, last act)} from the companion's ApotheosisTiers constants; Haven opens at act I."""
+    java = (ROOT / 'companion/src/main/java/dev/entrelumen/ApotheosisTiers.java').read_text(encoding='utf-8')
+    match = re.search(r'int FRONTIER_ACT = (\d+), ASCENT_ACT = (\d+), SUMMIT_ACT = (\d+), PINNACLE_ACT = (\d+);', java)
+    assert match, 'ApotheosisTiers.java: the act that opens each World Tier moved'
+    firsts = [1] + [int(act) for act in match.groups()]
+    last = max(ACTS.values())
+    assert firsts == sorted(set(firsts)) and firsts[-1] <= last, f'World Tier acts out of order: {firsts}'
+    return {tier: (first, end) for tier, first, end in zip(ETERNA_TIERS, firsts, [f - 1 for f in firsts[1:]] + [last])}
+
+
+def enchanting_stats(found):
+    """{block: (eterna, max Eterna)} for every block the enchanting_stats registry gives positive Eterna:
+    the pinned JARs (Occultism ships two files under data/apotheosis), the companion and pack data, with
+    the codec's defaults (eterna 0, maxEterna 30). Shelves that only take Eterna away never raise a table."""
+    files = {}
+    for path, owners in found.items():
+        if STATS_PATH.match(path):
+            assert len(owners) == 1, f'{path}: shipped by several pinned JARs'
+            files[path] = json.loads(owners[0][2])
+    for base in (COMPANION_DATA, PACK_DATA):
+        for path in base.glob('*/enchanting_stats/**/*.json'):
+            files['data/' + path.relative_to(base).as_posix()] = read(path)
+    stats, named = {}, set()
+    for path, data in sorted(files.items()):
+        blocks = list(data.get('blocks', [])) + ([data['block']] if 'block' in data else [])
+        assert named.isdisjoint(blocks), f'{path}: a block has two enchanting_stats files'
+        named.update(blocks)
+        eterna, top = float(data['stats'].get('eterna', 0)), float(data['stats'].get('maxEterna', 30))
+        if eterna > 0 and top > 0:
+            assert blocks and 'tag' not in data, f'{path}: Eterna given by block tag is not modelled'
+            stats.update({block: (eterna, top) for block in blocks})
+    return stats
+
+
+def shelf_routes(found, stats):
+    """(routes, crafted): every loaded recipe that makes a shelf as (shelf, recipe JSON), with
+    the families' edits applied, their removals dropped and their additions included; and the shelves any
+    recipe makes before removals, so only a shelf with no recipe at all is a world block (amethyst clusters)."""
+    edits = {change['id']: (name, change) for name, family in FAMILIES.items() for change in family['changes']}
+    removed = {rid for family in FAMILIES.values() for rid in family['removals']}
+    routes, crafted = [], set()
+    for path, owners in found.items():
+        rid = recipe_id_from_name(path)
+        if rid is None:
+            continue
+        try:
+            recipe = json.loads(owners[0][2])  # the first pinned owner, as load_recipes reads it
+        except (ValueError, UnicodeDecodeError):
+            continue
+        made = outputs(recipe) & set(stats) if isinstance(recipe, dict) else set()
+        crafted |= made
+        conditions = recipe.get('neoforge:conditions', []) if made else []
+        if not made or rid in removed or {'type': 'neoforge:false'} in conditions:
+            continue
+        assert not conditions, f'{rid}: conditional shelf recipe'
+        if rid in edits:
+            name, change = edits[rid]
+            assert name == 'apotheosis', f'{rid}: shelf recipe staged outside the apotheosis family'
+            recipe = transform(change, recipe)
+        routes += [(shelf, recipe) for shelf in sorted(made)]
+    for family in FAMILIES.values():
+        for addition in family.get('additions', []):
+            if addition['id'] in stats:
+                crafted.add(addition['id'])
+                routes.append((addition['id'], {'type': 'minecraft:crafting_shaped', 'pattern': addition['pattern'],
+                                                'key': addition['key']}))
+    return routes, crafted
+
+
+def shelf_recipe(recipe):
+    """([ingredient per slot], Eterna the table needs) of a crafting or Apothic infusion recipe."""
+    namespace, _, kind = recipe['type'].rpartition(':')
+    if namespace in ('', 'minecraft') and kind == 'crafting_shaped':
+        body = inner(recipe)
+        return [body['key'][symbol] for symbol in sorted({c for row in body['pattern'] for c in row} - {' '})], 0.0
+    if namespace in ('', 'minecraft') and kind == 'crafting_shapeless':
+        return list(recipe['ingredients']), 0.0
+    if namespace == 'apothic_enchanting' and kind in ('infusion', 'keep_nbt_infusion'):
+        return [recipe['input']], float(recipe['requirements']['eterna'])
+    raise AssertionError(f"{recipe['type']}: shelf recipe type the ceiling model does not read")
+
+
+def choices(ingredient, tags):
+    """Items an ingredient accepts. None stands for the vanilla members of a vanilla or common tag, which
+    are outside the lock (the Minecraft and NeoForge JARs are not pinned) and count from act I."""
+    if isinstance(ingredient, list):
+        return [c for part in ingredient for c in choices(part, tags)]
+    if 'item' in ingredient:
+        return [ingredient['item']]
+    if 'items' in ingredient:  # neoforge:components
+        return [ingredient['items']] if isinstance(ingredient['items'], str) else list(ingredient['items'])
+    if 'children' in ingredient:  # neoforge:compound
+        return [c for child in ingredient['children'] for c in choices(child, tags)]
+    if 'tag' in ingredient:
+        members, vanilla = sorted(tags.get(ingredient['tag'], ())), ingredient['tag'].split(':')[0] in ('minecraft', 'c')
+        assert members or vanilla, f"{ingredient['tag']}: empty mod tag in a shelf recipe"
+        return members + ([None] if vanilla else [])
+    raise AssertionError(f'Unread shelf ingredient {ingredient}')
+
+
+def item_act(item_id, design_acts):
+    """Act of a non-shelf ingredient: this generator's act materials, components and vanilla acts, else I."""
+    if item_id is None:
+        return 1
+    if item_id in STAGE_MATERIALS:
+        return ACTS[STAGE_MATERIALS[item_id]]
+    if item_id in LUMINOSITY.values():
+        return ACTS[LUMINOSITY_ACT]
+    if item_id in VANILLA_ACTS:
+        return ACTS[VANILLA_ACTS[item_id]]
+    assert not item_id.startswith('entrelumen:') or design_acts.get(item_id), f'{item_id}: ENTRELUMEN item without an act'
+    return design_acts.get(item_id, 1)
+
+
+def obtainable(recipes, stats, world, last, limit):
+    """{shelf: first act} of the shelves a team can make by act `last` when the table infuses up to
+    `limit` Eterna. `recipes` holds (shelf, [act options per slot], Eterna needed), where an option is an
+    act or a shelf ID; a route's act is its latest slot, each slot its earliest option."""
+    acts = dict(world)
+    changed = True
+    while changed:
+        changed = False
+        for shelf, slots, needs in recipes:
+            if needs > limit:
+                continue
+            act = 1
+            for options in slots:
+                known = [acts[o] if o in stats else o for o in options if o not in stats or o in acts]
+                if not known:
+                    break
+                act = max(act, min(known))
+            else:
+                if act <= last and act < acts.get(shelf, last + 1):
+                    acts[shelf] = act
+                    changed = True
+    return acts
+
+
+def best_eterna(shelves):
+    """Highest Eterna a TABLE_RING-block ring of (eterna, max) shelves reaches, summed the way
+    EnchantmentTableStats.Builder.build does: buckets by max Eterna, ascending, each clamped to its max."""
+    best = {0: 0.0}
+    for eterna, top in sorted(set(shelves), key=lambda shelf: (shelf[1], shelf[0])):
+        nxt = dict(best)
+        for used, value in best.items():
+            for extra in range(1, TABLE_RING - used + 1):
+                nxt[used + extra] = max(nxt.get(used + extra, 0.0), min(top, value + extra * eterna))
+        best = nxt
+    return max(best.values())
+
+
+def eterna_ceilings(found):
+    """The World Tier ladder: {'base', 'min', 'max' of the attribute, 'tiers': {tier: {'acts', 'ceiling',
+    'top'}}, 'shelves': {shelf: tier it first counts in}}.
+
+    Walks the tiers in story order. A tier's shelves are those whose recipes the staging opens by its
+    last act; an infusion counts once the ceiling covers its Eterna (from INFUSION_OPENS on), so the
+    ceiling rises from the previous one until the shelves it lets a team infuse reach no further.
+    Quanta and Arcana windows are not modelled."""
+    lock, paths = lock_entries()
+    (apothic,) = [e['filename'] for e in lock['mods'] if e['filename'].startswith('ApothicEnchanting-')]
+    with zipfile.ZipFile(Path(paths[apothic])) as jar:
+        base, low, high = attribute_range(jar.read(MAX_ETERNA_CLASS), MAX_ETERNA)
+    assert low <= base <= high, f'{MAX_ETERNA}: base {base} outside [{low}, {high}]'
+    stats = enchanting_stats(found)
+    routes, crafted = shelf_routes(found, stats)
+    tags, (_, design_acts) = tag_members(found), component_sources()
+    recipes = []
+    for shelf, recipe in routes:
+        slots, needs = shelf_recipe(recipe)
+        recipes.append((shelf, [sorted({c if c in stats else item_act(c, design_acts) for c in choices(slot, tags)},
+                                       key=str) for slot in slots], needs))
+    world = {block: 1 for block in stats if block not in crafted}
+    ceiling, tiers, first = low, {}, {}
+    for index, (tier, (start, last)) in enumerate(tier_acts().items()):
+        opens = index >= ETERNA_TIERS.index(INFUSION_OPENS)
+        limit = ceiling if opens else low
+        while True:
+            acts = obtainable(recipes, stats, world, last, limit)
+            reach = min(high, best_eterna([stats[shelf] for shelf in acts]))
+            if not opens or reach <= limit:
+                break
+            limit = reach
+        ceiling = max(ceiling, reach)
+        for shelf in sorted(acts):
+            first.setdefault(shelf, tier)
+        tiers[tier] = {'acts': (start, last), 'ceiling': ceiling,
+                       'top': sorted(s for s in acts if min(high, stats[s][1]) >= ceiling)}
+    return {'base': base, 'min': low, 'max': high, 'tiers': tiers, 'shelves': first}
+
+
+def eterna_override(spec, sources, model):
+    """The tier's upstream max_eterna augment carrying ceiling - base, or disabled (neoforge:false before
+    its own condition) when that is 0; type, target, sort index, ID and condition stay native. A tier
+    without an upstream augment must already sit at the base. Fails when the upstream file changes shape."""
+    tier, ceiling = spec['tier'], model['tiers'][spec['tier']]['ceiling']
+    value = ceiling - model['base']
+    assert model['min'] <= ceiling <= model['max'], f"{tier}: ceiling {ceiling} outside the attribute's range"
+    if not sources:
+        assert value == 0, f"{spec['path']}: no upstream augment to carry {value}"
+        return None
+    assert len(sources) == 1 and sources[0][0].startswith('Apotheosis-'), f"{spec['path']}: expected Apotheosis alone"
+    original = json.loads(sources[0][2])
+    modifier = original.get('modifier', {})
+    assert set(original) == AUGMENT_FIELDS and original['type'] == 'apotheosis:attribute' \
+        and original['target'] == 'players' and original['tier'] == tier \
+        and original['modifier_id'] == f'apotheosis:{tier}/max_eterna' and isinstance(original['sort_index'], int) \
+        and original['neoforge:conditions'] == [{'type': 'neoforge:mod_loaded', 'modid': 'apothic_enchanting'}] \
+        and set(modifier) == {'attribute', 'operation', 'value'} and modifier['attribute'] == MAX_ETERNA \
+        and modifier['operation'] == 'add_value' and isinstance(modifier['value'], (int, float)), \
+        f"{spec['path']}: upstream augment changed shape"
+    if value == 0:
+        conditions = [{'type': 'neoforge:false'}] + original['neoforge:conditions']
+        result = {'neoforge:conditions': conditions, **{k: v for k, v in original.items() if k != 'neoforge:conditions'}}
+        reverse = dict(result, **{'neoforge:conditions': conditions[1:]})
+    else:
+        result = copy.deepcopy(original)
+        result['modifier']['value'] = value
+        reverse = copy.deepcopy(result)
+        reverse['modifier']['value'] = modifier['value']
+    assert reverse == original, f"{spec['path']}: unrelated upstream data changed"
+    return json.dumps(result, indent=2, ensure_ascii=False) + '\n'
+
+
+def eterna_augment_paths(found):
+    """Every pinned tier augment that moves max_eterna, so an augment at a new path cannot slip past."""
+    moved = set()
+    for path, owners in found.items():
+        if AUGMENT_PATH.match(path):
+            for _, _, raw in owners:
+                if json.loads(raw).get('modifier', {}).get('attribute') == MAX_ETERNA:
+                    moved.add(path)
+    return moved
 
 
 COMPANION_LANG = ROOT / 'companion/src/main/resources/assets/entrelumen/lang/en_us.json'
@@ -1410,8 +1735,9 @@ def item_model_sources():
     return found
 
 
-def tag_members():
-    """Item tags of the pinned JARs, the companion and pack data, resolved to item IDs."""
+def tag_members(found=None):
+    """Item tags of the pinned JARs (or of `found`, their data_files), the companion and pack data,
+    resolved to item IDs."""
     raw = {}
 
     def add(namespace, path, data):
@@ -1419,16 +1745,22 @@ def tag_members():
         for value in data.get('values', []):
             values.append(value['id'] if isinstance(value, dict) else value)
 
-    lock, paths = lock_entries()
-    for entry in lock['mods']:
-        with zipfile.ZipFile(Path(paths[entry['filename']])) as jar:
-            for name in jar.namelist():
-                match = re.match(r'data/([^/]+)/tags/items?/(.+)\.json$', name)
-                if match:
-                    try:
-                        add(match.group(1), match.group(2), json.loads(jar.read(name)))
-                    except (ValueError, UnicodeDecodeError):
-                        continue
+    if found is None:
+        lock, paths = lock_entries()
+        found = {}
+        for entry in lock['mods']:
+            with zipfile.ZipFile(Path(paths[entry['filename']])) as jar:
+                for name in jar.namelist():
+                    if re.match(r'data/([^/]+)/tags/items?/(.+)\.json$', name):
+                        found.setdefault(name, []).append((entry['filename'], entry['sha256'], jar.read(name)))
+    for name, owners in found.items():
+        match = re.match(r'data/([^/]+)/tags/items?/(.+)\.json$', name)
+        if match:
+            for _, _, text in owners:
+                try:
+                    add(match.group(1), match.group(2), json.loads(text))
+                except (ValueError, UnicodeDecodeError):
+                    continue
     for base in (COMPANION_DATA, PACK_DATA):
         for path in base.glob('*/tags/*/**/*.json'):
             match = re.match(r'([^/]+)/tags/items?/(.+)\.json$', path.relative_to(base).as_posix())
@@ -1762,7 +2094,9 @@ def main():
                           'changed': len(rows), 'removed': len(removals), 'dataOverrides': len(overrides),
                           'addedRecipes': len(additions),
                           'creations': len(FAMILIES[name].get('creations', [])),
-                          'acts': sorted({r['act'] for r in rows}), 'runtime': 'pending'}))
+                          'acts': sorted({r['act'] for r in rows}),
+                          **({'eternaCeilings': ETERNA_REPORT[name]} if name in ETERNA_REPORT else {}),
+                          'runtime': 'pending'}))
 
 
 if __name__ == '__main__':
