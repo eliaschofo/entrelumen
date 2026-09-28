@@ -49,7 +49,7 @@ Required libraries resolved automatically: Cloth Config 15.0.140 (348521 / 57291
 | `justdirethings:time_wand` | renewal engine (one blazegold ingot) | V | Block tick acceleration |
 | `justdirethings:paradoxmachine` | Ark bus (one eclipse alloy ingot) | V | Area snapshot/restoration |
 | `compactmachines:personal_shrinking_device` | handling core (one iron ingot) | III | Entering and building compact rooms |
-| `hostilenetworks:sim_chamber` | ecosystem capsule (one ender pearl) | IV | Entity-free mob drops |
+| `hostilenetworks:sim_chamber` | ecosystem capsule (in place of the obsidian) | IV | Entity-free mob drops |
 | `draconicevolution:components/wyvern_core` | Ark bus (one draconium ingot) | V | Wyvern tier, energy core, flight module, reactor parts |
 | `draconicevolution:components/awakened_core` | renewal engine (one awakened ingot of four) | V | Awakened tier |
 | `draconicevolution:tools/dislocator` | routing matrix (one blaze powder) | III | Dislocator teleports and their derivatives |
