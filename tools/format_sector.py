@@ -1,6 +1,6 @@
-"""Canonical layout for content/sectors/sector_*.json: one line per figure, link and image; each quest as a
-short block (identity and flags, task, icon, position, one line per language, sources). Keeps diffs
-readable when several writers add quests to the same chapter.
+"""Canonical layout for content/sectors/sector_*.json: one line per figure, link, image and reward table; each
+quest as a short block (identity and flags, task, rewards, icon, position, one line per language, sources).
+Keeps diffs readable when several writers add quests to the same chapter.
 
 usage: python tools/format_sector.py [--check] [files...]   (default: every content/sectors/sector_*.json)
 """
@@ -11,9 +11,10 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 SECTORS = ROOT / "content" / "sectors"
-LINE_LISTS = ("figures", "links", "art", "groups")
+LINE_LISTS = ("figures", "links", "art", "groups", "reward_tables")
 HEAD = ("key", "role", "deps")
-BLOCK = ("task", "tasks", "icon", "at", "en_us", "es_es", "sources")
+ROWS = ("task", "tasks", "rewards", "icon", "at")
+BLOCK = ROWS + ("en_us", "es_es", "sources")
 
 
 def compact(value):
@@ -35,7 +36,7 @@ def quest_block(q):
     head = [f'"{k}": {compact(q[k])}' for k in HEAD if k in q]
     head += [f'"{k}": {compact(v)}' for k, v in q.items() if k not in HEAD and k not in BLOCK]
     rows = ["      " + ", ".join(head)]
-    for k in ("task", "tasks", "icon", "at"):
+    for k in ROWS:
         if k in q:
             rows.append(f'      "{k}": {compact(q[k])}')
     for lang in ("en_us", "es_es"):

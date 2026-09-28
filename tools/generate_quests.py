@@ -682,11 +682,21 @@ def generate_book(chapters=None, guides=None, book=None, sectors=None):
     assert len(sector_keys) == len(set(sector_keys)) and not all_keys & set(sector_keys), "duplicate sector quest key"
     all_keys |= set(sector_keys)
     chapter_names = names | {g["chapter"] for g in guides} | {sec["chapter"] for sec in sectors}
-    tables, table_files, table_langs = quest_engine.build_reward_tables(book, gated_outputs())
+    gated = gated_outputs()
+    tables, table_files, table_langs = quest_engine.build_reward_tables(book, gated)
     for name, table in table_files.items():
         files[OUT / "reward_tables" / (name + ".snbt")] = snbt(table)
         for lang in LOCALES:
             languages[lang][f"reward_table.{table['id']}.title"] = book["reward_tables"][name]["title"][lang]
+    # The chapters' own tables come after the book's: their IDs and the book's never move.
+    local_tables, local_files, local_langs = quest_engine.build_local_tables(
+        sectors, len(table_files), gated, {t["long"] for t in tables.values()})
+    for name, table in local_files.items():
+        assert name not in table_files, f"reward table file {name}"
+        files[OUT / "reward_tables" / (name + ".snbt")] = snbt(table)
+    for lang in LOCALES:
+        languages[lang].update(local_langs[lang])
+    tables = {**tables, **local_tables}
     ordered = sorted(list(guides) + list(sectors), key=lambda g: group_order(g, book))
     order = {}
     presets = {}
@@ -698,7 +708,7 @@ def generate_book(chapters=None, guides=None, book=None, sectors=None):
         order[gid] = order.get(gid, -1) + 1
         if data.get("format") == "sector":
             chapter, _ctx, sector_presets = quest_engine.compile_sector(
-                data, book, tables, languages, seen, all_keys, chapter_names, gid, order[gid])
+                data, book, tables, languages, seen, all_keys, chapter_names, gid, order[gid], gated)
             presets.update(sector_presets)
         else:
             chapter = generate_guide(data, gid, order[gid], book, languages, seen)
@@ -740,7 +750,7 @@ def main():
     sectors=quest_engine.load_sectors()
     quests=sum(len(d['quests']) for d in chapters)+sum(len(g['quests']) for g in guides)+sum(len(x['quests']) for x in sectors)
     print(f"PASS: {len(chapters)+len(guides)+len(sectors)+1} chapters ({len(chapters)} story, {len(guides)} guides, "
-          f"{len(sectors)} sectors, hub), {quests} quests, {len([t for t in book['reward_tables'] if not t.startswith('_')])} reward tables, "
+          f"{len(sectors)} sectors, hub), {quests} quests, {len([p for p in files if p.parent == OUT / 'reward_tables'])} reward tables, "
           f"{len(book['groups'])} groups, global IDs/DAG, EN/ES parity; runtime not verified.")
 
 

@@ -15,7 +15,9 @@ docs/design/quest-book-v3.md; copy rules: docs/design/quest-copy.md):
   exclusive branches, N-of-M capstones, repeatable bounties;
 - item tasks that accept any of several items or item tags: an FTB Filter System smart filter, which
   FTB Quests matches through FTB XMod Compat (both must be in catalog/curated.json);
-- reward tables and loot crates tiered by act, choice rewards, secret toasts and capstone fanfares;
+- reward tables and loot crates tiered by act, choice rewards, secret toasts and capstone fanfares; on top,
+  the items a quest names itself (with data components) and each chapter's own reward tables, drawn at
+  random or chosen by the player;
 - the FTB theme for all of it and the companion's ftbquests-namespace strings (shape names, crate
   names, toast texts).
 
@@ -634,9 +636,178 @@ def crate_stack(table):
 
 ACT_TIER = {"any": 1, "I": 1, "II": 2, "III": 3, "IV": 4, "V": 5, "VI": 6}
 
+# --------------------------------------------------------------------------------------------------
+# Rewards a quest names itself: items ("rewards") and the chapter's own reward tables ("reward_tables",
+# picked at random with "reward_table" or chosen by the player with "reward_choice"). They come on top of
+# the role's rewards. The FTB side, read in FTB Quests 2101.1.34:
+# - ItemReward.readData: "item" goes through QuestObjectBase.itemOrMissingFromNBT, which hands a compound
+#   without the legacy "Count"/"tag" keys whole to ItemStack.parse (1.21.1 ItemStack.CODEC: "id", "count"
+#   1..99, "components"); "count" outside the stack is the reward's amount. When the stack does not parse,
+#   FTB shows its missing item instead: DataComponentPatch refuses an unregistered or non-persistent
+#   component type, so check_guides.py checks every key against the pinned JARs.
+# - BaseQuestFile.loadRewardTableFile reads every reward_tables/*.snbt: "id", "order_index" and the file
+#   name, which RewardTable.sanitizeFilename keeps only when it is [a-z0-9_] without edge underscores.
+# - RandomReward.claim draws loot_size times with replacement (RewardTable.generateWeightedRandomRewards,
+#   empty weight left out); a ChoiceReward lets the player pick one entry (ClaimChoiceRewardMessage), so
+#   weights and loot_size do not count there.
+# - FTB Library's SNBT reader turns a JSON int into an IntTag (a bigger one into a double), a decimal into a
+#   DoubleTag and true/false into bytes, and refuses a list that mixes tag types, which fails the whole file.
+EXTRA_REWARDS = ("rewards", "reward_table", "reward_choice")
+REWARD_MAX_COUNT = 64   # moderate, like the book's tables
+TABLE_MAX_ROLLS = 8
+TABLE_NAME = re.compile(r"[a-z0-9]+(?:_[a-z0-9]+)*")
 
-def sector_rewards(q, role, act, book, tables):
-    """Reward cadence by role (quest_book.json "sector_rewards"); tables by act."""
+
+def snbt_kind(value, where):
+    """The NBT tag FTB Library's SNBT reader makes of a JSON component value, after checking that it reads
+    back as written: no null, ints within int range, finite decimals, no control characters, lists of one
+    kind. Returns "byte", "int", "double", "string", "list" or "compound"."""
+    if isinstance(value, bool):
+        return "byte"
+    if isinstance(value, int):
+        assert -2 ** 31 <= value < 2 ** 31, f"{where}: {value} is beyond int range (FTB reads it as a double)"
+        return "int"
+    if isinstance(value, float):
+        assert math.isfinite(value), f"{where}: {value} is not a number"
+        return "double"
+    if isinstance(value, str):
+        assert not re.search(r"[\x00-\x1f\x7f]", value), f"{where}: control character in {value!r}"
+        return "string"
+    if isinstance(value, list):
+        kinds = {snbt_kind(v, f"{where}[{i}]") for i, v in enumerate(value)}
+        assert len(kinds) <= 1, f"{where}: a list mixes {sorted(kinds)} (SNBT lists hold one tag type)"
+        return "list"
+    if isinstance(value, dict):
+        for k, v in value.items():
+            assert not re.search(r"[\x00-\x1f\x7f]", k), f"{where}: control character in key {k!r}"
+            snbt_kind(v, f"{where}.{k}")
+        return "compound"
+    raise AssertionError(f"{where}: {value!r} has no SNBT form")
+
+
+def check_components(components, where):
+    """Data components of a reward stack: {"<registered type>": value}, as ItemStack.CODEC reads them."""
+    assert isinstance(components, dict) and components, f"{where}: components map component types to values"
+    for k, v in components.items():
+        assert ID.fullmatch(k), f"{where}: component type {k!r} (namespace:path; removing one with ! is not supported)"
+        snbt_kind(v, f"{where}: {k}")
+    return components
+
+
+def reward_item(spec, where, gated=frozenset(), weighted=False):
+    """{"item", "count", "components"} (and "weight" in a table) -> an FTB item reward without its id. Like the
+    book's tables: at most 64, never ENTRELUMEN's own items nor outputs of gated recipes."""
+    allowed = ("item", "count", "components") + (("weight",) if weighted else ())
+    assert isinstance(spec, dict) and set(spec) <= set(allowed), f"{where}: a reward takes {', '.join(allowed)}"
+    item = spec.get("item")
+    assert isinstance(item, str) and ID.fullmatch(item), f"{where}: item id"
+    assert not item.startswith("entrelumen:"), f"{where}: {item} is one of ENTRELUMEN's own items"
+    assert item not in gated, f"{where}: {item} comes from a gated recipe"
+    count = spec.get("count", 1)
+    assert type(count) is int and 1 <= count <= REWARD_MAX_COUNT, f"{where}: count is 1..{REWARD_MAX_COUNT}"
+    stack = {"id": item, "count": 1}
+    if "components" in spec:
+        stack["components"] = check_components(spec["components"], where)
+    out = {"type": "item", "item": stack, "count": count}
+    if weighted:
+        weight = spec.get("weight", 1)
+        assert type(weight) in (int, float) and math.isfinite(weight) and weight > 0, f"{where}: weight > 0"
+        out["weight"] = float(weight)
+    return out
+
+
+def local_table(chapter, name):
+    """Key of a chapter's own reward table, among the book's tables (whose names never hold a slash)."""
+    return f"{chapter}/{name}"
+
+
+def extra_rewards(q, chapter, tables, gated=frozenset()):
+    """The items, reward table and choice a quest names itself. IDs follow the quest key and the item or table
+    name, not the position, so reordering the list never hands out a claimed reward again; a second stack of
+    the same item (another bee type, say) is ':2'."""
+    key = q["key"]
+    out = []
+    rewards = q.get("rewards", [])
+    assert isinstance(rewards, list) and (rewards or "rewards" not in q), f"{key}: rewards is a list of items"
+    stacks, seen = [], {}
+    for i, spec in enumerate(rewards):
+        r = reward_item(spec, f"{key}: reward {i}", gated)
+        assert r["item"] not in stacks, f"{key}: reward {i} repeats {r['item']['id']}: add up the counts"
+        stacks.append(r["item"])
+        item = r["item"]["id"]
+        seen[item] = seen.get(item, 0) + 1
+        suffix = "" if seen[item] == 1 else f":{seen[item]}"
+        out.append({"id": stable_id(f"reward:{key}:item:{item}{suffix}"), **r})
+    for field, kind in (("reward_table", "random"), ("reward_choice", "choice")):
+        if field in q:
+            name = q[field]
+            assert chapter and isinstance(name, str) and local_table(chapter, name) in tables, \
+                f"{key}: {field} {name!r} is not a reward table of {chapter}"
+            out.append({"id": stable_id(f"reward:{key}:{field}:{name}"), "type": kind,
+                        "table_id": tables[local_table(chapter, name)]["long"]})
+    return out
+
+
+def build_local_tables(sectors, start, gated=frozenset(), taken=()):
+    """The sectors' own reward tables -> (tables by local_table key, files by name, titles by locale).
+
+    A table is {"title": {en_us, es_es}, "rolls": draws (1), "entries": [{"item", "count", "weight", "components"}]}.
+    Its ID is table_id("<chapter>/<name>"), so it never moves when other tables come or go; order_index follows
+    the book's tables (start), chapter by chapter; the file is reward_tables/<chapter>__<name>.snbt. With no
+    icon of its own FTB cycles through the entries' icons (RewardTable.getAltIcon)."""
+    tables, files, languages = {}, {}, {lang: {} for lang in LOCALES}
+    ids = set(taken)
+    index = start
+    for data in sorted(sectors, key=lambda d: d["chapter"]):
+        chapter = data["chapter"]
+        specs = data.get("reward_tables", {})
+        assert isinstance(specs, dict), f"{chapter}: reward_tables maps names to tables"
+        uses = {}
+        for q in data["quests"]:
+            for field in ("reward_table", "reward_choice"):
+                if isinstance(q.get(field), str):
+                    uses.setdefault(q[field], set()).add(field)
+        for name in sorted(specs):
+            spec = specs[name]
+            where = f"{chapter}: reward table {name}"
+            assert TABLE_NAME.fullmatch(name), f"{where}: the name is lowercase words joined by _"
+            assert name in uses, f"{where}: no quest uses it"
+            assert isinstance(spec, dict) and set(spec) <= {"title", "rolls", "entries"}, \
+                f"{where}: a table takes title, rolls and entries"
+            title = spec.get("title")
+            assert isinstance(title, dict) and set(title) == set(LOCALES), f"{where}: title in en_us and es_es"
+            for lang in LOCALES:
+                assert isinstance(title[lang], str) and title[lang].strip() == title[lang] and title[lang] \
+                    and len(title[lang]) <= MAX_TITLE and not re.search(r"[&§\[\]{}]", title[lang]), f"{where}: title"
+            rolls = spec.get("rolls", 1)
+            assert type(rolls) is int and 1 <= rolls <= TABLE_MAX_ROLLS, f"{where}: rolls is 1..{TABLE_MAX_ROLLS}"
+            assert rolls == 1 or "reward_table" in uses[name], \
+                f"{where}: a choice gives one entry; rolls only counts for reward_table"
+            entries = spec.get("entries")
+            assert isinstance(entries, list) and entries, f"{where}: entries is a list of items"
+            key = local_table(chapter, name)
+            long_id = table_id(key)
+            assert long_id not in ids, f"{where}: table ID collision"
+            ids.add(long_id)
+            tid = f"{long_id:016X}"
+            rewards, stacks = [], []
+            for i, entry in enumerate(entries):
+                r = reward_item(entry, f"{where}, entry {i}", gated, weighted=True)
+                assert r["item"] not in stacks, f"{where}: entry {i} repeats {r['item']['id']}: add up the weights"
+                stacks.append(r["item"])
+                rewards.append({"id": stable_id(f"reward_table:{key}:{i}"), **r})
+            filename = f"{chapter}__{name}"
+            files[filename] = {"id": tid, "order_index": index, "loot_size": rolls, "use_title": True, "rewards": rewards}
+            for lang in LOCALES:
+                languages[lang][f"reward_table.{tid}.title"] = title[lang]
+            tables[key] = {"id": tid, "long": long_id, "file": filename}
+            index += 1
+    return tables, files, languages
+
+
+def sector_rewards(q, role, act, book, tables, chapter=None, gated=frozenset()):
+    """Reward cadence by role (quest_book.json "sector_rewards"); tables by act. What the quest names itself
+    (extra_rewards) comes on top."""
     rules = book["sector_rewards"]
     key = q["key"]
     base = book["rewards"]["guides"]["xp"][act]
@@ -644,6 +815,7 @@ def sector_rewards(q, role, act, book, tables):
     xp = rules["xp"].get(role, 0) * base
     tasks = tasks_of(q)
     if all(t.get("type", "item" if "item" in t else "") == "checkmark" for t in tasks):
+        assert not [f for f in EXTRA_REWARDS if f in q], f"{key}: a free click never pays: drop its rewards"
         return []  # a free click never pays
     if xp:
         out.append({"id": stable_id(f"reward:{key}:xp"), "type": "xp", "xp": xp})
@@ -665,11 +837,13 @@ def sector_rewards(q, role, act, book, tables):
     if role == "capstone":
         out.append({"id": stable_id(f"reward:{key}:fanfare"), "type": "command", "auto": "invisible",
                     "command": rules["fanfare"], "permission_level": 2, "silent": True})
-    return out
+    return out + extra_rewards(q, chapter, tables, gated)
 
 
-def compile_sector(data, book, tables, languages, seen_ids, all_keys, chapter_ids, group_id, order_index):
-    """One sector chapter -> FTB chapter dict (lang entries go into languages). Returns (chapter, needs)."""
+def compile_sector(data, book, tables, languages, seen_ids, all_keys, chapter_ids, group_id, order_index,
+                   gated=frozenset()):
+    """One sector chapter -> FTB chapter dict (lang entries go into languages). Returns (chapter, needs).
+    tables holds the book's tables and the chapters' own (build_local_tables)."""
     name = data["chapter"]
     assert re.fullmatch(r"sector_[a-z0-9_]+", name), name
     motif = book["motifs"][data["motif"]]
@@ -749,7 +923,7 @@ def compile_sector(data, book, tables, languages, seen_ids, all_keys, chapter_id
         presets[preset] = {"shape": shape, "size": size}
         out = {"id": qid, "x": x, "y": y, "shape": shape, "size": size, "preset": preset,
                "dependencies": [stable_id("quest:" + d) for d in q["deps"]],
-               "tasks": [], "rewards": sector_rewards(q, role, act, book, tables),
+               "tasks": [], "rewards": sector_rewards(q, role, act, book, tables, name, gated),
                "tags": [f"entrelumen_{role}"]}
         for d in q["deps"]:
             assert d in all_keys, f"{key}: missing dependency {d}"

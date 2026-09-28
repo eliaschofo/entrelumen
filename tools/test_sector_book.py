@@ -476,14 +476,16 @@ class Sectors(unittest.TestCase):
 
     def test_reward_tables_are_moderate_and_safe(self):
         spec = {k: v for k, v in self.book["reward_tables"].items() if not k.startswith("_")}
-        self.assertEqual(set(self.tables), set(spec))
+        # The book's tables and the chapters' own (reward_tables/<chapter>__<name>.snbt, ID from "<chapter>/<name>").
+        local = {f"{c}__{n}": qe.local_table(c, n) for c, s in self.sectors.items() for n in s.get("reward_tables", {})}
+        self.assertEqual(set(self.tables), set(spec) | set(local))
         crates = [t for t in self.tables.values() if "loot_crate" in t]
         self.assertEqual(len(crates), 6)
         ids = set()
         for name, t in self.tables.items():
             with self.subTest(table=name):
-                self.assertEqual(t["id"], f"{qe.table_id(name):016X}")
-                self.assertLess(qe.table_id(name), 2 ** 31)  # read back exactly as an SNBT int (see table_id)
+                self.assertEqual(t["id"], f"{qe.table_id(local.get(name, name)):016X}")
+                self.assertLess(qe.table_id(local.get(name, name)), 2 ** 31)  # read back exactly as an SNBT int
                 self.assertTrue(t["use_title"])
                 for r in t["rewards"]:
                     self.assertNotIn(r["id"], ids)
@@ -528,6 +530,13 @@ class Sectors(unittest.TestCase):
             self.assertIn("entrelumen.quests.toast.secret", strings)
         self.assertEqual(placeholders.check(), [])
 
+    def test_the_generated_book_is_what_the_repository_holds(self):
+        # Byte for byte, every chapter, table, language and data file (what generate_quests.py --check holds).
+        for path, content in self.files.items():
+            with self.subTest(path=path.name):
+                self.assertTrue(path.exists())
+                self.assertEqual(content, path.read_text(encoding="utf-8"))
+
     def test_story_semantics_do_not_move(self):
         # The story chapters keep their v2 digests (test_generate_quests.py); the book only adds.
         for data in self.story:
@@ -562,6 +571,324 @@ class Sectors(unittest.TestCase):
             with self.subTest(message=message):
                 with self.assertRaisesRegex(AssertionError, message):
                     generate_book(self.story, self.guides, self.book, sectors)
+
+
+def egg(bee, **extra):
+    """A Productive Bees spawn egg of one bee type, the way the mod builds it (BeeCreator.getSpawnEgg)."""
+    return {"item": "productivebees:spawn_egg_configurable_bee", **extra,
+            "components": {"minecraft:entity_data": {"id": "productivebees:configurable_bee", "type": bee}}}
+
+
+def gene(attribute, value, purity=100, **extra):
+    return {"item": "productivebees:gene", **extra,
+            "components": {"productivebees:gene_group": {"attribute": attribute, "value": value, "purity": purity}}}
+
+
+class QuestRewards(unittest.TestCase):
+    """Items a quest names itself and a chapter's own reward tables (quest_engine.extra_rewards and
+    build_local_tables), on top of the role's rewards. The FTB side is in docs/design/quest-book-v3.md; loading them
+    on a server is still pending."""
+    # The book's 18 tables, as players' progress and every random, choice and loot reward already hold them.
+    BOOK_TABLES = {"choice_1": 0x14466D3A, "choice_2": 0x1998C87C, "choice_3": 0x61FBC412, "choice_4": 0x0323851D,
+                   "choice_5": 0x3EF33D8B, "choice_6": 0x67F55CD0, "crate_1": 0x19FA24E6, "crate_2": 0x6551780F,
+                   "crate_3": 0x5B3962F9, "crate_4": 0x70F8C581, "crate_5": 0x4D29D48E, "crate_6": 0x7EF5DAAD,
+                   "supplies_1": 0x624A0EA0, "supplies_2": 0x4DE0911A, "supplies_3": 0x47901A17,
+                   "supplies_4": 0x467286CE, "supplies_5": 0x12D36307, "supplies_6": 0x5C4C41E9}
+    CHAPTER = "sector_bees_breeding"
+
+    @classmethod
+    def setUpClass(cls):
+        from generate_quests import gated_outputs
+        cls.book = load_book()
+        cls.story = load_chapters()
+        cls.guides = load_guides(cls.book)
+        cls.sectors = {s["chapter"]: s for s in qe.load_sectors()}
+        cls.gated = gated_outputs()
+        cls.data = cls.fixture()
+        cls.files = generate_book(cls.story, cls.guides, cls.book, cls.with_sector(cls.data))
+        cls.chapter = json.loads(cls.files[OUT / "chapters" / (cls.CHAPTER + ".snbt")])
+        cls.disk = json.loads((OUT / "chapters" / (cls.CHAPTER + ".snbt")).read_text(encoding="utf-8"))
+
+    @classmethod
+    def fixture(cls):
+        """The bees chapter with a bee, a perfect gene and combs on its diamond milestone, a random gene on the iron
+        milestone and a choice of bees on the crystalline one."""
+        data = copy.deepcopy(cls.sectors[cls.CHAPTER])
+        quests = {q["key"]: q for q in data["quests"]}
+        quests["bees_diamond"]["rewards"] = [egg("productivebees:diamond"), egg("productivebees:iron", count=2),
+                                             gene("productivity", "productivity.very_high"),
+                                             {"item": "minecraft:honeycomb", "count": 8}]
+        quests["bees_iron"]["reward_table"] = "perfect_genes"
+        quests["bees_crystalline"]["reward_choice"] = "starter_bees"
+        data["reward_tables"] = {
+            "starter_bees": {"title": {"en_us": "Pick a bee", "es_es": "Elegí una abeja"},
+                             "entries": [egg("productivebees:iron"), egg("productivebees:gold")]},
+            "perfect_genes": {"title": {"en_us": "A perfect gene", "es_es": "Un gen perfecto"}, "rolls": 2,
+                              "entries": [gene("productivity", "productivity.very_high", weight=3),
+                                          gene("endurance", "endurance.strong", weight=1.5)]}}
+        return data
+
+    @classmethod
+    def with_sector(cls, data):
+        return [s for s in cls.sectors.values() if s["chapter"] != data["chapter"]] + [data]
+
+    def quest(self, chapter, key):
+        return next(q for q in chapter["quests"] if q["id"] == stable_id("quest:" + key))
+
+    def test_the_book_tables_keep_their_ids_and_order(self):
+        for files in (self.files, {p: p.read_text(encoding="utf-8") for p in (OUT / "reward_tables").glob("*.snbt")}):
+            for index, (name, long_id) in enumerate(sorted(self.BOOK_TABLES.items())):
+                with self.subTest(table=name):
+                    self.assertEqual(qe.table_id(name), long_id)
+                    table = json.loads(files[OUT / "reward_tables" / (name + ".snbt")])
+                    self.assertEqual((table["id"], table["order_index"]), (f"{long_id:016X}", index))
+
+    def test_chapter_tables_have_stable_ids(self):
+        # table_id("<chapter>/<name>"): the chapter and the name, never the order or the other tables.
+        self.assertEqual(qe.table_id("sector_bees_breeding/perfect_genes"), 0x3F3DF4D3)
+        self.assertEqual(qe.table_id("sector_bees_breeding/starter_bees"), 0x75A01016)
+        alone, _, _ = qe.build_local_tables([self.data], 18, self.gated)
+        other = copy.deepcopy(self.sectors["sector_aa"])
+        other["quests"][0]["reward_table"] = "aa_first"  # a chapter sorted before, with a table of its own
+        other["reward_tables"] = {"aa_first": {"title": {"en_us": "Odds", "es_es": "Cosas"},
+                                               "entries": [{"item": "minecraft:honeycomb"}]}}
+        both, files, _ = qe.build_local_tables([self.data, other], 18, self.gated)
+        for key, table in alone.items():
+            self.assertEqual(both[key]["id"], table["id"])
+        self.assertEqual([t["order_index"] for t in files.values()], [18, 19, 20])  # after the book's 18, by chapter
+        self.assertEqual(files["sector_aa__aa_first"]["order_index"], 18)
+
+    def test_quest_rewards_come_on_top_of_the_role(self):
+        role = self.quest(self.disk, "bees_diamond")["rewards"]
+        rewards = self.quest(self.chapter, "bees_diamond")["rewards"]
+        self.assertEqual(rewards[:len(role)], role)
+        entity = lambda bee: {"minecraft:entity_data": {"id": "productivebees:configurable_bee", "type": bee}}
+        self.assertEqual(rewards[len(role):], [
+            {"id": stable_id("reward:bees_diamond:item:productivebees:spawn_egg_configurable_bee"), "type": "item",
+             "item": {"id": "productivebees:spawn_egg_configurable_bee", "count": 1,
+                      "components": entity("productivebees:diamond")}, "count": 1},
+            {"id": stable_id("reward:bees_diamond:item:productivebees:spawn_egg_configurable_bee:2"), "type": "item",
+             "item": {"id": "productivebees:spawn_egg_configurable_bee", "count": 1,
+                      "components": entity("productivebees:iron")}, "count": 2},
+            {"id": stable_id("reward:bees_diamond:item:productivebees:gene"), "type": "item",
+             "item": {"id": "productivebees:gene", "count": 1, "components": {"productivebees:gene_group": {
+                 "attribute": "productivity", "value": "productivity.very_high", "purity": 100}}}, "count": 1},
+            {"id": stable_id("reward:bees_diamond:item:minecraft:honeycomb"), "type": "item",
+             "item": {"id": "minecraft:honeycomb", "count": 1}, "count": 8}])
+        self.assertEqual(rewards[len(role)]["id"], "7B1BB78E79ADACC5")  # reward IDs are progress: pinned
+        iron = self.quest(self.chapter, "bees_iron")["rewards"]
+        self.assertEqual(iron[:-1], self.quest(self.disk, "bees_iron")["rewards"])
+        self.assertEqual(iron[-1], {"id": stable_id("reward:bees_iron:reward_table:perfect_genes"), "type": "random",
+                                    "table_id": 0x3F3DF4D3})
+        crystalline = self.quest(self.chapter, "bees_crystalline")["rewards"]
+        self.assertEqual(crystalline[-1], {"id": stable_id("reward:bees_crystalline:reward_choice:starter_bees"),
+                                           "type": "choice", "table_id": 0x75A01016})
+
+    def test_chapter_tables_compile_to_reward_table_files(self):
+        genes = json.loads(self.files[OUT / "reward_tables" / "sector_bees_breeding__perfect_genes.snbt"])
+        key = "sector_bees_breeding/perfect_genes"
+        self.assertEqual(genes, {"id": "000000003F3DF4D3", "order_index": 18, "loot_size": 2, "use_title": True, "rewards": [
+            {"id": stable_id(f"reward_table:{key}:0"), "type": "item", "item": {"id": "productivebees:gene", "count": 1,
+             "components": {"productivebees:gene_group": {"attribute": "productivity", "value": "productivity.very_high",
+                                                          "purity": 100}}}, "count": 1, "weight": 3.0},
+            {"id": stable_id(f"reward_table:{key}:1"), "type": "item", "item": {"id": "productivebees:gene", "count": 1,
+             "components": {"productivebees:gene_group": {"attribute": "endurance", "value": "endurance.strong",
+                                                          "purity": 100}}}, "count": 1, "weight": 1.5}]})
+        bees = json.loads(self.files[OUT / "reward_tables" / "sector_bees_breeding__starter_bees.snbt"])
+        self.assertEqual((bees["id"], bees["order_index"], bees["loot_size"]), ("0000000075A01016", 19, 1))
+        self.assertEqual([r["weight"] for r in bees["rewards"]], [1.0, 1.0])
+        for lang, titles in (("en_us", ("A perfect gene", "Pick a bee")), ("es_es", ("Un gen perfecto", "Elegí una abeja"))):
+            strings = json.loads(self.files[OUT / "lang" / f"{lang}.snbt"])
+            self.assertEqual((strings["reward_table.000000003F3DF4D3.title"], strings["reward_table.0000000075A01016.title"]),
+                             titles)
+        # The SNBT FTB reads back: an int stays an int, a weight a double, the components a compound.
+        self.assertIn('"purity": 100\n', self.files[OUT / "reward_tables" / "sector_bees_breeding__perfect_genes.snbt"])
+
+    def test_every_other_file_stays_byte_identical(self):
+        changed = {OUT / "chapters" / (self.CHAPTER + ".snbt"), OUT / "lang" / "en_us.snbt", OUT / "lang" / "es_es.snbt"}
+        new = {OUT / "reward_tables" / f"{self.CHAPTER}__{n}.snbt" for n in ("perfect_genes", "starter_bees")}
+        self.assertEqual({p for p in self.files if not p.exists()}, new)
+        for path, content in self.files.items():
+            if path not in changed | new:
+                with self.subTest(path=path.name):
+                    self.assertEqual(content, path.read_text(encoding="utf-8"))
+        for lang in LOCALES:
+            before = json.loads((OUT / "lang" / f"{lang}.snbt").read_text(encoding="utf-8"))
+            after = json.loads(self.files[OUT / "lang" / f"{lang}.snbt"])
+            self.assertEqual({k: after[k] for k in before}, before)
+            self.assertEqual(set(after) - set(before), {"reward_table.000000003F3DF4D3.title",
+                                                         "reward_table.0000000075A01016.title"})
+        # In the chapter itself only the three quests with rewards of their own change.
+        moved = [q["id"] for q, d in zip(self.chapter["quests"], self.disk["quests"]) if q != d]
+        self.assertEqual(moved, [stable_id("quest:" + k) for k in ("bees_crystalline", "bees_iron", "bees_diamond")])
+
+    def test_bad_rewards_are_rejected(self):
+        def rewards(specs):
+            q = {"key": "probe", "rewards": specs}
+            return lambda: qe.extra_rewards(q, self.CHAPTER, {}, self.gated)
+        ok = gene("productivity", "productivity.very_high")
+        cases = [(rewards([{"item": "minecraft:honeycomb", "count": 0}]), "count is 1..64"),
+                 (rewards([{"item": "minecraft:honeycomb", "count": 65}]), "count is 1..64"),
+                 (rewards([{"item": "minecraft:honeycomb", "count": "2"}]), "count is 1..64"),
+                 (rewards([{"item": "minecraft:honeycomb", "amount": 2}]), "a reward takes item, count, components"),
+                 (rewards([{"item": "Honeycomb"}]), "item id"),
+                 (rewards([{"item": "entrelumen:heliodor_lens"}]), "ENTRELUMEN's own"),
+                 (rewards([{"item": next(i for i in sorted(self.gated) if not i.startswith("entrelumen:"))}]),
+                  "gated recipe"),
+                 (rewards([{"item": "minecraft:stone", "components": {}}]), "components map"),
+                 (rewards([{"item": "minecraft:stone", "components": {"Custom Data": 1}}]), "component type"),
+                 (rewards([{"item": "minecraft:stone", "components": {"!minecraft:food": {}}}]), "removing one"),
+                 (rewards([{"item": "minecraft:stone", "components": {"minecraft:custom_data": {"a": None}}}]), "no SNBT form"),
+                 (rewards([{"item": "minecraft:stone", "components": {"minecraft:custom_data": {"a": [1, 2.5]}}}]), "mixes"),
+                 (rewards([{"item": "minecraft:stone", "components": {"minecraft:custom_data": {"a": 2 ** 40}}}]), "int range"),
+                 (rewards([{"item": "minecraft:stone", "components": {"minecraft:custom_data": {"a": float("nan")}}}]), "not a number"),
+                 (rewards([ok, dict(ok)]), "repeats productivebees:gene"),
+                 (rewards([]), "rewards is a list"),
+                 (rewards({"item": "minecraft:stone"}), "rewards is a list"),
+                 (lambda: qe.extra_rewards({"key": "probe", "reward_table": "nope"}, self.CHAPTER, {}, self.gated),
+                  "not a reward table of sector_bees_breeding"),
+                 # A chapter's tables are its own: another chapter's name does not resolve.
+                 (lambda: qe.extra_rewards({"key": "probe", "reward_choice": "starter_bees"}, "sector_aa",
+                                           {qe.local_table(self.CHAPTER, "starter_bees"): {"long": 1}}, self.gated),
+                  "not a reward table of sector_aa")]
+        for run, message in cases:
+            with self.subTest(message=message):
+                with self.assertRaisesRegex(AssertionError, message):
+                    run()
+        # A free click never pays, not even with rewards of its own.
+        tip = {"key": "probe", "task": {"type": "checkmark"}, "rewards": [{"item": "minecraft:honeycomb"}]}
+        with self.assertRaisesRegex(AssertionError, "a free click never pays"):
+            qe.sector_rewards(tip, "tip", "IV", self.book, {}, self.CHAPTER, self.gated)
+
+    def test_bad_chapter_tables_are_rejected(self):
+        def table(mutate):
+            data = copy.deepcopy(self.data)
+            mutate(data, data["reward_tables"]["perfect_genes"])
+            return lambda: qe.build_local_tables([data], 18, self.gated)
+
+        def unused(data, spec):
+            next(q for q in data["quests"] if q["key"] == "bees_iron").pop("reward_table")
+
+        def choice_rolls(data, spec):
+            data["reward_tables"]["starter_bees"]["rolls"] = 2
+
+        def rename(data, spec):
+            data["reward_tables"]["Perfect-Genes"] = data["reward_tables"].pop("perfect_genes")
+            next(q for q in data["quests"] if q["key"] == "bees_iron")["reward_table"] = "Perfect-Genes"
+        cases = [(table(lambda d, s: s.update(rolls=0)), "rolls is 1..8"),
+                 (table(lambda d, s: s.update(rolls=9)), "rolls is 1..8"),
+                 (table(lambda d, s: s.update(entries=[])), "entries is a list"),
+                 (table(lambda d, s: s["entries"][0].update(weight=0)), "weight > 0"),
+                 (table(lambda d, s: s["entries"][0].update(weight=True)), "weight > 0"),
+                 (table(lambda d, s: s["entries"].append(copy.deepcopy(s["entries"][0]))), "repeats productivebees:gene"),
+                 (table(lambda d, s: s.update(icon="minecraft:honeycomb")), "a table takes title, rolls and entries"),
+                 (table(lambda d, s: s["title"].pop("es_es")), "title in en_us and es_es"),
+                 (table(lambda d, s: s["title"].update(en_us="[b|Genes]")), "title"),
+                 (table(unused), "no quest uses it"),
+                 (table(choice_rolls), "a choice gives one entry"),
+                 (table(rename), "lowercase words joined by _")]
+        for run, message in cases:
+            with self.subTest(message=message):
+                with self.assertRaisesRegex(AssertionError, message):
+                    run()
+
+    def test_formatter_gives_rewards_a_row_and_each_table_a_line(self):
+        import format_sector
+        text = format_sector.dumps(self.data)
+        self.assertEqual(json.loads(text), self.data)
+        self.assertIn('\n      "rewards": [{"item": "productivebees:spawn_egg_configurable_bee", ', text)
+        self.assertIn('\n    "perfect_genes": {"title": ', text)
+        self.assertIn('\n    "starter_bees": {"title": ', text)
+
+    def test_check_guides_checks_rewards_against_the_jars(self):
+        # check_guides.py against a small stand-in of the pinned JARs (the real one reads them; CI has none).
+        import tempfile
+        from pathlib import Path
+        import check_guides as cg
+        items = {"productivebees:spawn_egg_configurable_bee", "productivebees:gene", "minecraft:honeycomb",
+                 "minecraft:stone", "productivebees:configurable_honeycomb", "minecraft:diamond"}
+        reg = {"advancements": set(), "entities": {"productivebees:configurable_bee", "productivebees:creeper_bee"},
+               "structures": set(), "structure_tags": set(), "lang": set(), "item_tags": {}, "item_owner": {},
+               "item_tags_all": {"c:storage_blocks/calorite": []}}
+        not_empty = {"type": "neoforge:not", "value": {"type": "neoforge:tag_empty", "tag": "c:storage_blocks/calorite"}}
+        components = {"types": {"minecraft": {"entity_data", "custom_data", "creative_slot_lock"},
+                                "productivebees": {"gene_group", "bee_type"}},
+                      "bees": {"productivebees:diamond": [[]], "productivebees:iron": [[]], "productivebees:gold": [[]],
+                               "productivebees:calorite": [[not_empty]],
+                               # defined twice: it loads when one of the two files does
+                               "productivebees:butcher": [[{"type": "neoforge:not", "value": {
+                                   "type": "neoforge:mod_loaded", "modid": "productivemetalworks"}}],
+                                   [{"type": "neoforge:mod_loaded", "modid": "productivemetalworks"}]]}}
+        saved = (cg._ITEMS, cg._SECTOR, cg._LOCKED, cg._COMPONENTS, cg._BEE_TAGS)
+        cg._ITEMS, cg._SECTOR, cg._LOCKED, cg._COMPONENTS = (items, {"minecraft", "productivebees"}), reg, {"productivebees"}, components
+
+        def run(mutate=lambda data: None):
+            data = copy.deepcopy(self.data)
+            data["quests"] = [q for q in data["quests"] if q["key"] in ("bees_diamond", "bees_iron", "bees_crystalline")]
+            for q in data["quests"]:
+                q.update(deps=[], icon="minecraft:diamond", task={"type": "checkmark"})
+                q.pop("tasks", None)
+                q["en_us"]["text"], q["es_es"]["text"] = ["Bees."], ["Abejas."]
+            data.update(icon="minecraft:diamond", emblem="entrelumen:textures/gui/quests/px.png", art=[], figures={})
+            mutate(data)
+            with tempfile.TemporaryDirectory() as tmp:
+                path = Path(tmp) / "sector_probe.json"
+                path.write_text(json.dumps(data), encoding="utf-8")
+                errors = []
+                cg.check_sector(path, errors, {q["key"] for q in data["quests"]})
+            return " | ".join(errors)
+
+        def diamond(data):
+            return next(q for q in data["quests"] if q["key"] == "bees_diamond")
+        try:
+            self.assertEqual(run(lambda d: diamond(d)["rewards"].append(egg("productivebees:butcher"))), "")
+            cases = [(lambda d: diamond(d)["rewards"].append({"item": "minecraft:nope"}), "item minecraft:nope not found"),
+                     (lambda d: diamond(d)["rewards"].append({"item": "minecraft:stone", "count": 0}), "count 0 must be"),
+                     (lambda d: d["reward_tables"]["perfect_genes"]["entries"][0].update(weight=0), "weight 0 must be"),
+                     (lambda d: diamond(d)["rewards"].append(
+                         {"item": "minecraft:stone", "components": {"minecraft:custom_datta": {}}}),
+                      "minecraft:custom_datta is registered by no pinned JAR of minecraft"),
+                     (lambda d: diamond(d)["rewards"].append(
+                         {"item": "minecraft:stone", "components": {"nope:thing": 1}}), "no pinned JAR owns the namespace nope"),
+                     (lambda d: diamond(d)["rewards"].append(
+                         {"item": "minecraft:stone", "components": {"Custom Data": 1}}), "'Custom Data' is not namespace:path"),
+                     (lambda d: diamond(d)["rewards"].append(
+                         {"item": "minecraft:stone", "components": {"minecraft:creative_slot_lock": {}}}), "not persistent"),
+                     (lambda d: diamond(d)["rewards"].append(
+                         {"item": "minecraft:stone", "components": {"entrelumen:nope": 1}}), "not registered by the companion"),
+                     (lambda d: diamond(d)["rewards"].append(egg("productivebees:diamnd")), "'productivebees:diamnd' is defined by no"),
+                     (lambda d: diamond(d)["rewards"].append(egg("productivebees:calorite")), "switched off in this pack"),
+                     (lambda d: diamond(d)["rewards"].append({"item": "productivebees:spawn_egg_configurable_bee", "components": {
+                         "minecraft:entity_data": {"type": "productivebees:iron"}}}), "needs the entity \"id\""),
+                     (lambda d: diamond(d)["rewards"].append(gene("productivity", "productivity.veryhigh")), "gene value"),
+                     (lambda d: diamond(d)["rewards"].append(gene("speed", "speed.high")), "gene attribute 'speed'"),
+                     (lambda d: diamond(d)["rewards"].append(gene("productivity", "productivity.high", 101)), "gene purity 101"),
+                     (lambda d: diamond(d)["rewards"].append(gene("type", "productivebees:diamnd")), "type gene: bee type"),
+                     (lambda d: diamond(d).update(reward_table="nope"), "reward_table 'nope' is not in this chapter"),
+                     (lambda d: next(q for q in d["quests"] if q["key"] == "bees_iron").pop("reward_table"),
+                      "reward table perfect_genes is used by no quest")]
+            errors = run(lambda d: [mutate(d) for mutate, _ in cases])  # one run: each fault names itself
+            for _, message in cases:
+                with self.subTest(message=message):
+                    self.assertIn(message, errors)
+            self.assertEqual(errors.count(" | ") + 1, len(cases))
+            self.assertIs(cg.condition_holds(not_empty, items, cg.known_item_tags(reg)), False)
+            self.assertIsNone(cg.condition_holds({"type": "productivelib:fluid_tag_empty", "tag": "c:oil"}, items, {}))
+        finally:
+            cg._ITEMS, cg._SECTOR, cg._LOCKED, cg._COMPONENTS, cg._BEE_TAGS = saved
+
+    def test_check_guides_reads_component_types_from_class_files(self):
+        import check_guides as cg
+        # A minimal class file: constant pool [Utf8 "bee_type", String #1, Utf8 DataComponentType, Long 7 (two slots)].
+        def utf8(s):
+            return b"\x01" + len(s).to_bytes(2, "big") + s.encode()
+        pool = utf8("bee_type") + b"\x08\x00\x01" + utf8(cg.DATA_COMPONENT_TYPE) + b"\x05" + (7).to_bytes(8, "big") + utf8("tail")
+        data = b"\xca\xfe\xba\xbe\x00\x00\x00\x41" + (7).to_bytes(2, "big") + pool
+        literals, constants = cg.class_constants(data)
+        self.assertEqual(literals, {"bee_type"})
+        self.assertIn(cg.DATA_COMPONENT_TYPE, constants)
+        self.assertIn("tail", constants)  # the long's second slot was skipped
+        self.assertIsNone(cg.class_constants(b"not a class"))
 
 
 if __name__ == "__main__":
