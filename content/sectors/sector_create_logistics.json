@@ -38,13 +38,13 @@
   ],
   "quests": [
     {
-      "key": "clg_sturdy", "role": "entry", "deps": ["cbr_spout"],
+      "key": "clg_sturdy", "role": "entry", "deps": ["crk_crushing"],
       "task": {"item": "create:sturdy_sheet", "count": 8},
       "at": {"figure": "rail", "slot": 0},
       "en_us": {"title": "Sturdy Sheet", "subtitle": "Rails start with rocks.",
-        "text": ["Crush obsidian into [item:create:powdered_obsidian|Powdered Obsidian], then a short sequence: a spout adds 500 mB of lava, a press stamps it twice. One of each over a looping belt keeps the [item:create:sturdy_sheet|Sturdy Sheets] coming."]},
+        "text": ["Crush obsidian into [item:create:powdered_obsidian|Powdered Obsidian], then a short sequence: a [quest:cbr_spout|spout] adds 500 mB of lava, a press stamps it twice. One of each over a looping belt keeps the [item:create:sturdy_sheet|Sturdy Sheets] coming."]},
       "es_es": {"title": "Lámina robusta", "subtitle": "Las vías empiezan con piedras.",
-        "text": ["Triturá obsidiana en [item:create:powdered_obsidian|Polvo de obsidiana] y después una secuencia corta: un surtidor agrega 500 mB de lava, una prensa la estampa dos veces. Uno de cada uno sobre una cinta que vuelve y las [item:create:sturdy_sheet|Láminas robustas] no paran."]},
+        "text": ["Triturá obsidiana en [item:create:powdered_obsidian|Polvo de obsidiana] y después una secuencia corta: un [quest:cbr_spout|surtidor] agrega 500 mB de lava, una prensa la estampa dos veces. Uno de cada uno sobre una cinta que vuelve y las [item:create:sturdy_sheet|Láminas robustas] no paran."]},
       "sources": ["jar:create-1.21.1-6.0.10.jar:data/create/recipe/sequenced_assembly/sturdy_sheet.json", "jar:create-1.21.1-6.0.10.jar:data/create/recipe/crushing/obsidian.json"]
     },
     {
@@ -302,10 +302,12 @@
       "task": {"item": "create:stock_link", "count": 2},
       "at": {"figure": "chain", "slot": 4},
       "en_us": {"title": "Stock Link",
-        "text": ["A transmitter on an item vault: a [item:create:stock_link|Stock Link]. Linked packagers show their inventory to the whole network, at any range; the parcels still need a real route."]},
+        "text": ["A transmitter on an item vault: a [item:create:stock_link|Stock Link]. Linked packagers show their inventory to the whole network, at any range; the parcels still need a real route.",
+                 "[tip] Full redstone power silences a link; a weaker signal lowers its priority, so other links serve first."]},
       "es_es": {"title": "Enlace de existencias",
-        "text": ["Un transmisor sobre una bóveda: un [item:create:stock_link|Enlace de existencias]. Los empaquetadores enlazados muestran su inventario a toda la red, a cualquier distancia; los paquetes igual necesitan un camino real."]},
-      "sources": ["jar:create-1.21.1-6.0.10.jar:data/create/recipe/crafting/logistics/stock_link.json"]
+        "text": ["Un transmisor sobre una bóveda: un [item:create:stock_link|Enlace de existencias]. Los empaquetadores enlazados muestran su inventario a toda la red, a cualquier distancia; los paquetes igual necesitan un camino real.",
+                 "[tip] Con redstone al máximo, un enlace se calla; con una señal más débil baja su prioridad y los demás atienden primero."]},
+      "sources": ["jar:create-1.21.1-6.0.10.jar:data/create/recipe/crafting/logistics/stock_link.json", "jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#create.ponder.stock_link"]
     },
     {
       "key": "clg_ticker", "role": "milestone", "deps": ["clg_link"],
@@ -361,7 +363,75 @@
       "sources": ["jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#create.ponder.repackager"]
     },
     {
-      "key": "cpw_mill", "role": "step", "deps": ["crb_press"], "group": "additions",
+      "key": "clg_pkg_filter", "role": "side", "deps": ["clg_packager"],
+      "task": {"item": "create:package_filter"},
+      "at": {"x": 14.2, "y": -11.6},
+      "en_us": {"title": "Sorting by label", "subtitle": "The mailroom's secret weapon.",
+        "text": ["Zinc nuggets and wool make a [item:create:package_filter|Package Filter]. Give it an address and, in any filter slot, it matches the packages bound there: funnels, tunnels, smart chutes. Addresses take * as a wildcard.",
+                 "[tip] A mechanical saw unpacks packages straight onto a belt."]},
+      "es_es": {"title": "Ordenar por etiqueta", "subtitle": "El arma secreta de la sala de correo.",
+        "text": ["Pepitas de cinc y lana dan un [item:create:package_filter|Filtro de paquetes]. Con una dirección cargada, en cualquier ranura de filtro reconoce los paquetes que van ahí: embudos, túneles, ductos inteligentes. Las direcciones aceptan * como comodín.",
+                 "[tip] Una sierra mecánica abre los paquetes directo sobre una cinta."]},
+      "sources": ["jar:create-1.21.1-6.0.10.jar:data/create/recipe/crafting/kinetics/package_filter.json", "jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#item.create.package_filter.tooltip.summary", "jar:create-1.21.1-6.0.10.jar:com/simibubi/create/content/logistics/box/PackageItem.class", "jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#create.ponder.packager_address"]
+    },
+    {
+      "key": "clg_ship_to", "role": "tip", "deps": ["clg_ticker"],
+      "task": {"type": "checkmark"},
+      "at": {"x": 0.6, "y": -6.9},
+      "en_us": {"title": "Ship to",
+        "text": ["[tip] Every stock ticker order carries the address you type, so filters, frogports and postboxes steer it home. Lines starting with # on a clipboard you hold or keep nearby autocomplete addresses, like #storage or #factory."]},
+      "es_es": {"title": "Enviar a",
+        "text": ["[tip] Cada pedido del telégrafo lleva la dirección que escribas, así que filtros, ranapuertos y buzones lo llevan a destino. Las líneas que empiezan con # en un portapapeles en la mano o cerca autocompletan direcciones, como #almacen o #fabrica."]},
+      "sources": ["jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#create.ponder.stock_ticker_address", "jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#create.gui.address_box.clipboard_tip_1", "jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#create.gui.address_box.clipboard_tip_4"]
+    },
+    {
+      "key": "clg_restock", "role": "tip", "deps": ["clg_gauge"],
+      "task": {"type": "checkmark"},
+      "at": {"x": 1.5, "y": -12.4},
+      "en_us": {"title": "Restock, step by step",
+        "text": ["[tip] Tune the gauge to a stock link before placing it on a packager. Click it with the item to watch, type the address the refill should come to, then hold right-click to set the target. Short of it, the network ships more."]},
+      "es_es": {"title": "Reponer, paso a paso",
+        "text": ["[tip] Sintonizá el medidor con un enlace de existencias antes de ponerlo sobre un empaquetador. Clic con el ítem a vigilar, escribí la dirección adonde tiene que llegar la reposición y mantené clic derecho para fijar la meta. Si falta, la red manda más."]},
+      "sources": ["jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#create.ponder.factory_gauge_restocker", "jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#create.gui.factory_panel.restocker_address_tip"]
+    },
+    {
+      "key": "clg_recipe_board", "role": "side", "deps": ["clg_gauge"],
+      "task": {"item": "create:factory_gauge", "count": 4},
+      "at": {"x": -1.2, "y": -12.4},
+      "en_us": {"title": "A factory on the wall", "subtitle": "Arrows are the new conveyor belts.",
+        "text": ["A factory gauge off a packager watches the whole network. Connect ingredient gauges to it, set the batch and the address where it gets made, and it keeps its item stocked by sending ingredients there. Green arrows: target met.",
+                 "{page}",
+                 "The outputs have to come back to a linked inventory. Each gauge on the board keeps its own item, so one wall of gauges can run a whole production chain."]},
+      "es_es": {"title": "Una fábrica en la pared", "subtitle": "Las flechas son las nuevas cintas.",
+        "text": ["Un medidor industrial que no está sobre un empaquetador vigila toda la red. Conectale medidores de ingredientes, fijá el lote y la dirección donde se fabrica, y mantiene su ítem mandando ingredientes ahí. Flechas verdes: meta cumplida.",
+                 "{page}",
+                 "Lo fabricado tiene que volver a un inventario enlazado. Cada medidor del tablero mantiene su propio ítem, así que una pared de medidores puede llevar toda una cadena de producción."]},
+      "sources": ["jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#create.ponder.factory_gauge_recipe"]
+    },
+    {
+      "key": "clg_autocraft", "role": "side", "deps": ["clg_recipe_board"],
+      "task": {"item": "create:repackager"},
+      "at": {"x": -3.9, "y": -12.4},
+      "en_us": {"title": "Crafting by mail", "subtitle": "Unwrap, craft, ship back.",
+        "text": ["For a crafting-table recipe the gauge can send the ingredients already arranged: unwrapped into a 3×3 of connected mechanical crafters, they craft at once. A [item:create:repackager|Re-Packager], a packager crafted alone, keeps each order whole."]},
+      "es_es": {"title": "Fabricar por correo", "subtitle": "Desempacar, fabricar, devolver.",
+        "text": ["Para recetas de mesa, el medidor puede mandar los ingredientes ya acomodados: desempacados en un 3×3 de ensambladores mecánicos conectados, fabrican de una. Un [item:create:repackager|Reempaquetador], un empaquetador solo en la mesa, mantiene cada pedido entero."]},
+      "sources": ["jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#create.ponder.factory_gauge_crafting", "jar:create-1.21.1-6.0.10.jar:data/create/recipe/crafting/logistics/repackager_from_conversion.json"]
+    },
+    {
+      "key": "clg_shopping", "role": "side", "deps": ["clg_shop"],
+      "task": {"item": "create:shopping_list"},
+      "at": {"x": -2.5, "y": -9.5},
+      "en_us": {"title": "At the counter", "subtitle": "Items only. No haggling.",
+        "text": ["With an empty hand, click a priced table cloth: you get a [item:create:shopping_list|Shopping List]. Add to it, then hand it to the keeper to pay; the goods leave boxed. Payments pile up inside the stock ticker block.",
+                 "[tip] Lock the keeper's network and other players can only buy through lists."]},
+      "es_es": {"title": "En el mostrador", "subtitle": "Se paga con ítems. Sin regatear.",
+        "text": ["Con la mano vacía, hacé clic en un mantel con precio: te da una [item:create:shopping_list|Lista de la Compra]. Sumale cosas y dásela al encargado para pagar; la mercadería sale empaquetada. Los pagos se juntan dentro del bloque del telégrafo.",
+                 "[tip] Bloqueá la red del encargado y los demás sólo pueden comprar con listas."]},
+      "sources": ["jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#create.ponder.table_cloth", "jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#create.stock_keeper.shopping_list_empty_hand", "jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#create.table_cloth.hand_to_shop_keeper", "jar:create-1.21.1-6.0.10.jar:assets/create/lang/en_us.json#create.gui.stock_keeper.network_lock_tip"]
+    },
+    {
+      "key": "cpw_mill", "role": "side", "deps": ["crb_press"], "group": "additions",
       "task": {"item": "createaddition:rolling_mill"},
       "at": {"figure": "wire", "slot": 0},
       "en_us": {"title": "Rolling Mill",
@@ -391,7 +461,7 @@
       "sources": ["jar:createaddition-1.7.0.jar:data/createaddition/recipe/mixing"]
     },
     {
-      "key": "cpw_spool", "role": "step", "deps": ["cpw_mill"], "group": "additions",
+      "key": "cpw_spool", "role": "side", "deps": ["cpw_mill"], "group": "additions",
       "task": {"item": "createaddition:copper_spool", "count": 4},
       "at": {"figure": "wire", "slot": 1},
       "en_us": {"title": "Wires and connectors",
@@ -401,7 +471,7 @@
       "sources": ["jar:createaddition-1.7.0.jar:assets/createaddition/lang/en_us.json#createaddition.connector"]
     },
     {
-      "key": "cpw_alternator", "role": "milestone", "deps": ["cpw_spool"], "group": "additions",
+      "key": "cpw_alternator", "role": "side", "deps": ["cpw_spool"], "group": "additions",
       "task": {"item": "createaddition:alternator"},
       "at": {"figure": "wire", "slot": 2},
       "en_us": {"title": "Rotation to current",
@@ -411,7 +481,7 @@
       "sources": ["jar:createaddition-1.7.0.jar:assets/createaddition/lang/en_us.json#block.createaddition.alternator"]
     },
     {
-      "key": "cpw_motor", "role": "step", "deps": ["cpw_alternator"], "group": "additions",
+      "key": "cpw_motor", "role": "side", "deps": ["cpw_alternator"], "group": "additions",
       "task": {"item": "createaddition:electric_motor"},
       "at": {"figure": "wire", "slot": 3},
       "en_us": {"title": "And back again",
@@ -441,7 +511,46 @@
       "sources": ["jar:createaddition-1.7.0.jar:data/createaddition/recipe/charging"]
     },
     {
-      "key": "cpw_ores", "role": "step", "deps": [],
+      "key": "cpw_relay", "role": "side", "deps": ["cpw_spool"],
+      "task": {"item": "createaddition:redstone_relay"},
+      "at": {"x": -13.8, "y": 9.8},
+      "en_us": {"title": "A switch for current", "subtitle": "Redstone says when.",
+        "text": ["Two small connectors, an electron tube and redstone on stone make a [item:createaddition:redstone_relay|Redstone Relay]. Power only passes from its input connector to its output while it gets a redstone signal: a breaker a lever can throw."]},
+      "es_es": {"title": "Una llave para la corriente", "subtitle": "La redstone dice cuándo.",
+        "text": ["Dos conectores pequeños, un tubo de electrones y redstone sobre piedra dan un [item:createaddition:redstone_relay|Relé de redstone]. La energía pasa de su conector de entrada al de salida sólo mientras recibe señal de redstone: un disyuntor que maneja una palanca."]},
+      "sources": ["jar:createaddition-1.7.0.jar:data/createaddition/recipe/crafting/redstone_relay.json", "jar:createaddition-1.7.0.jar:assets/createaddition/lang/en_us.json#block.createaddition.redstone_relay.tooltip.summary"]
+    },
+    {
+      "key": "cpw_cc", "role": "side", "deps": ["cpw_motor"],
+      "task": {"item": "computercraft:computer_normal"},
+      "icon": "computercraft:computer_normal",
+      "at": {"x": -7.4, "y": 9.8},
+      "en_us": {"title": "Motor on a script", "subtitle": "rotate(90), then a coffee.",
+        "text": ["A computer beside an [item:createaddition:electric_motor|Electric Motor] drives it through peripheral.wrap: setSpeed and stop, plus rotate and translate, which give the seconds a turn of N degrees or a move of N blocks takes. Sleep that long, then stop.",
+                 "{page}",
+                 "[tip] Accumulators, portable interfaces and relays answer too; /cca_api opens the full list, and [quest:cc_create|Create and computers] covers boards, gauges and pulleys."]},
+      "es_es": {"title": "Motor con guion", "subtitle": "rotate(90), y después un café.",
+        "text": ["Una computadora al lado de un [item:createaddition:electric_motor|Motor eléctrico] lo maneja con peripheral.wrap: setSpeed y stop, más rotate y translate, que dan los segundos que tarda un giro de N grados o un avance de N bloques. Esperás eso y frenás.",
+                 "{page}",
+                 "[tip] Acumuladores, interfaces portátiles y relés también responden; /cca_api abre la lista completa, y [quest:cc_create|Create y las computadoras] cubre pantallas, medidores y poleas."]},
+      "sources": ["jar:createaddition-1.7.0.jar:assets/createaddition/lang/en_us.json#createaddition.ponder.cc_electric_motor.text_2", "jar:createaddition-1.7.0.jar:assets/createaddition/lang/en_us.json#createaddition.ponder.cc_electric_motor.text_3", "jar:createaddition-1.7.0.jar:com/mrh0/createaddition/compat/computercraft/ElectricMotorPeripheral.class", "jar:createaddition-1.7.0.jar:com/mrh0/createaddition/compat/computercraft/ModularAccumulatorPeripheral.class", "jar:createaddition-1.7.0.jar:com/mrh0/createaddition/compat/computercraft/PortableEnergyInterfacePeripheral.class", "jar:createaddition-1.7.0.jar:com/mrh0/createaddition/compat/computercraft/RedstoneRelayPeripheral.class"]
+    },
+    {
+      "key": "cpw_pei", "role": "side", "deps": ["cpw_accumulator"],
+      "task": {"item": "createaddition:portable_energy_interface", "count": 2},
+      "at": {"x": -4.2, "y": 9.8},
+      "en_us": {"title": "Charge on the move", "subtitle": "A pit stop without stopping.",
+        "text": ["Brass casing, a chute and a copper spool make a [item:createaddition:portable_energy_interface|Portable Energy Interface]. One on a contraption and one on the ground, one or two blocks apart, couple as they pass; the ground one speaks for every accumulator aboard.",
+                 "{page}",
+                 "Energy follows each connector's push or pull setting; once it stops flowing for a while, the contraption moves on. Redstone on the ground interface keeps it from coupling."]},
+      "es_es": {"title": "Carga en movimiento", "subtitle": "Una parada en boxes sin parar.",
+        "text": ["Revestimiento de latón, un ducto y un carrete de cobre dan una [item:createaddition:portable_energy_interface|Interfaz de energía portátil]. Una en el artefacto y otra en el piso, a uno o dos bloques, se acoplan al cruzarse; la del piso habla por todos los acumuladores a bordo.",
+                 "{page}",
+                 "La energía sigue el modo empujar o tirar de cada conector; cuando deja de correr un rato, el artefacto sigue viaje. Con redstone, la interfaz del piso no se acopla."]},
+      "sources": ["jar:createaddition-1.7.0.jar:data/createaddition/recipe/crafting/portable_energy_interface.json", "jar:createaddition-1.7.0.jar:assets/createaddition/lang/en_us.json#createaddition.ponder.pei_transfer.text_3", "jar:createaddition-1.7.0.jar:assets/createaddition/lang/en_us.json#createaddition.ponder.pei_transfer.text_5", "jar:createaddition-1.7.0.jar:assets/createaddition/lang/en_us.json#createaddition.ponder.pei_redstone.text_1"]
+    },
+    {
+      "key": "cpw_ores", "role": "side", "deps": [],
       "task": {"item": "create_new_age:magnetite_block", "count": 4},
       "at": {"figure": "sun", "slot": 0},
       "en_us": {"title": "Magnetite and thorium",
@@ -463,7 +572,7 @@
       "sources": ["jar:create-new-age-1.2.0+neoforge-mc1.21.1.jar:assets/create_new_age/lang/en_us.json"]
     },
     {
-      "key": "cpw_coil", "role": "milestone", "deps": ["cpw_ores"],
+      "key": "cpw_coil", "role": "side", "deps": ["cpw_ores"],
       "task": {"item": "create_new_age:generator_coil"},
       "at": {"figure": "sun", "slot": 1},
       "en_us": {"title": "Generator Coil",
@@ -479,13 +588,13 @@
       "task": {"type": "checkmark"},
       "at": {"figure": "sun", "slot": 1, "out": 2.4},
       "en_us": {"title": "Magnet ladder",
-        "text": ["[tip] Weakest to strongest: Redstone, Layered, Netherite, Fluxuated Magnetite. The goggles show a coil's force and efficiency. Better magnets first: efficiency is free power."]},
+        "text": ["[tip] Magnetic force per block: magnetite 1, redstone 2, layered 4, fluxuated magnetite 8, netherite 24. The goggles show a coil's force and efficiency. Better magnets first: efficiency is free power."]},
       "es_es": {"title": "Escalera de imanes",
-        "text": ["[tip] Del más débil al más fuerte: de redstone, en capas, de netherita y magnetita fluxuada. Las gafas muestran la fuerza y la eficiencia de la bobina. Primero mejores imanes: la eficiencia es energía gratis."]},
-      "sources": ["jar:create-new-age-1.2.0+neoforge-mc1.21.1.jar:assets/create_new_age/lang/en_us.json#block.create_new_age.fluxuated_magnetite"]
+        "text": ["[tip] Fuerza magnética por bloque: magnetita 1, de redstone 2, en capas 4, magnetita fluxuada 8, de netherita 24. Las gafas muestran la fuerza y la eficiencia de la bobina. Primero mejores imanes: la eficiencia es energía gratis."]},
+      "sources": ["jar:create-new-age-1.2.0+neoforge-mc1.21.1.jar:org/antarcticgardens/cna/CNABlocks.class", "jar:create-new-age-1.2.0+neoforge-mc1.21.1.jar:assets/create_new_age/lang/en_us.json#block.create_new_age.fluxuated_magnetite"]
     },
     {
-      "key": "cpw_wire", "role": "step", "deps": ["cpw_coil"],
+      "key": "cpw_wire", "role": "side", "deps": ["cpw_coil"],
       "task": {"item": "create_new_age:copper_wire", "count": 16},
       "at": {"figure": "sun", "slot": 2},
       "en_us": {"title": "Copper Wire",
@@ -495,7 +604,7 @@
       "sources": ["jar:create-new-age-1.2.0+neoforge-mc1.21.1.jar:data/create_new_age/recipe/cutting"]
     },
     {
-      "key": "cpw_energiser", "role": "milestone", "deps": ["cpw_wire"],
+      "key": "cpw_energiser", "role": "side", "deps": ["cpw_wire"],
       "task": {"item": "create_new_age:overcharged_iron", "count": 8},
       "icon": "create_new_age:basic_energiser",
       "at": {"figure": "sun", "slot": 3},
@@ -516,7 +625,7 @@
       "sources": ["jar:create-new-age-1.2.0+neoforge-mc1.21.1.jar:data/create_new_age/recipe/sequenced_assembly"]
     },
     {
-      "key": "cpw_na_motor", "role": "step", "deps": ["cpw_energiser"],
+      "key": "cpw_na_motor", "role": "side", "deps": ["cpw_energiser"],
       "task": {"item": "create_new_age:basic_motor"},
       "at": {"figure": "sun", "slot": 4},
       "en_us": {"title": "Basic Motor",
@@ -526,7 +635,7 @@
       "sources": ["tools/generate_family_balance.py#create_new_age:shaped/advanced_motor"]
     },
     {
-      "key": "cpw_solar", "role": "step", "deps": ["cpw_na_motor"],
+      "key": "cpw_solar", "role": "side", "deps": ["cpw_na_motor"],
       "task": {"item": "create_new_age:basic_solar_heating_plate", "count": 4},
       "at": {"figure": "sun", "slot": 5},
       "en_us": {"title": "Solar heating",
@@ -538,7 +647,7 @@
       "sources": ["tools/generate_family_balance.py#create_new_age:shaped/basic_solar_heating_plate"]
     },
     {
-      "key": "cpw_heater", "role": "step", "deps": ["cpw_solar"],
+      "key": "cpw_heater", "role": "side", "deps": ["cpw_solar"],
       "task": {"item": "create_new_age:heater"},
       "at": {"figure": "sun", "slot": 6},
       "en_us": {"title": "A boiler that eats sunlight",
@@ -568,7 +677,7 @@
       "sources": ["jar:create-new-age-1.2.0+neoforge-mc1.21.1.jar:assets/create_new_age/lang/en_us.json#block.create_new_age.street_light"]
     },
     {
-      "key": "cpw_mastery", "role": "milestone", "deps": ["cpw_na_motor", "cpw_heater"],
+      "key": "cpw_mastery", "role": "side", "deps": ["cpw_na_motor", "cpw_heater"],
       "task": {"item": "create_new_age:reinforced_motor"},
       "at": {"x": 9.5, "y": 12.5},
       "en_us": {"title": "Heliodor's loop, closed",
