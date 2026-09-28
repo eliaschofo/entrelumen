@@ -543,10 +543,10 @@ Los espejos se quedaron en los sellos: el umbral de una bóveda no tiene lugar p
   - la sala del piso I trae draugr de Cataclysm sin los aumentos de Apotheosis;
   - el cofre del jefe a Frontier da tres piezas épicas y dos gemas de Apotheosis;
   - el cofre que aparece al caer el jefe es de Lootr.
-- **Corrida del 27/9** sobre `main` 6bef925 (con los tilesets II–V):
-  - GameTests aislados: los 132 del mod pasan, los del contenido incluidos;
-  - QA de pack completo (274 JAR de servidor, `-Xmx4G`): pasan los 20 casos del Envés, los del contenido corridos con los mobs y el loot reales y los del motor, sin watchdog. Fervor se midió primero contra un golpe fijo y falló: el pack le saca a un golpe de jugador contra una oveja un 29% por su cuenta, así que ahora se compara contra el mismo golpe sin bendición;
-  - al terminar, ni el mundo de los GameTests ni el del QA tienen ítems sueltos en el Envés (antes del arreglo del borrado, cada parcela reutilizada guardaba el loot de los cofres del intento anterior).
+- **Corrida del 27/9:**
+  - GameTests aislados sobre `main` bcc30b9: pasan los 159 del mod, los del contenido y los del motor del Envés incluidos;
+  - QA de pack completo (274 JAR de servidor, `-Xmx4G`), sobre la rama antes de los últimos arreglos del borrado: pasan los 20 casos del Envés, los del contenido corridos con los mobs y el loot reales y los del motor, sin watchdog. Fervor se midió primero contra un golpe fijo y falló: el pack le saca a un golpe de jugador contra una oveja un 29% por su cuenta, así que ahora se compara contra el mismo golpe sin bendición;
+  - el mundo de los GameTests anteriores al arreglo del borrado guardaba en cada parcela reutilizada el loot de los cofres del intento anterior (cientos de ítems: esquirlas, equipo, pociones); después del arreglo, ni ese mundo ni el del QA tienen ítems sueltos en el Envés. En la última corrida, el log muestra ecos, un Wither blanco e ítems de intentos terminados que volvieron del disco durante el borrado y no volvieron a entrar.
 
 ### Para una segunda pasada
 
