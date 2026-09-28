@@ -717,14 +717,14 @@
       "en_us": {"title": "Spawner", "subtitle": "Mobs to order.",
         "text": ["A full syringe in the [item:rftoolsutility:spawner|Spawner] picks the mob. [item:rftoolsutility:matter_beamer|Matter Beamers], linked with the wrench and given a redstone signal, feed it the three materials that mob's recipe lists, and FE does the rest: 800 FE for a zombie, 1,000 for a blaze.",
                  "{page}",
-                 "Pack change: the Spawner takes an [item:twilightforest:ironwood_ingot|Ironwood Ingot] (act IV) in a bottom corner.",
+                 "Pack change: the Spawner takes an [item:twilightforest:ironwood_ingot|Ironwood Ingot] (act IV) in a bottom corner, and it has no Wither or Ender Dragon recipe: no boss comes out of a machine here.",
                  "[tip] Infuse the beamers: they send more per pulse for less FE. Materials the mob doesn't need are ignored."]},
       "es_es": {"title": "Generador de criaturas", "subtitle": "Mobs a pedido.",
         "text": ["Una jeringa llena en el [item:rftoolsutility:spawner|Generador de criaturas] elige el mob. Los [item:rftoolsutility:matter_beamer|Emisores de materia], vinculados con la llave y con señal de redstone, le mandan los tres materiales que pide la receta de ese mob, y el FE hace el resto: 800 FE por zombi, 1.000 por blaze.",
                  "{page}",
-                 "Cambio del pack: el Generador de criaturas lleva un [item:twilightforest:ironwood_ingot|Lingote de madera de hierro] (acto IV) en una esquina de abajo.",
+                 "Cambio del pack: el Generador de criaturas lleva un [item:twilightforest:ironwood_ingot|Lingote de madera de hierro] (acto IV) en una esquina de abajo, y no tiene receta de Wither ni de Dragón del End: acá ningún jefe sale de una máquina.",
                  "[tip] Infusioná los emisores: mandan más por pulso con menos FE. Los materiales que el mob no necesita se ignoran."]},
-      "sources": ["jar:rftoolsutility-1.21-7.0.12.jar:data/rftoolsutility/recipe/spawner.json", "jar:rftoolsutility-1.21-7.0.12.jar:data/rftoolsutility/recipe/matter_beamer.json", "repo:pack/kubejs/server_scripts/entrelumen_rftools_balance.js", "repo:tools/generate_rftools_balance.py#CHANGES", "jar:rftoolsutility-1.21-7.0.12.jar:assets/rftoolsbase/patchouli_books/manual/en_us/entries/machines/spawner.json", "jar:rftoolsutility-1.21-7.0.12.jar:assets/rftoolsbase/patchouli_books/manual/en_us/entries/machines/matter_beamer.json", "jar:rftoolsutility-1.21-7.0.12.jar:data/rftoolsutility/recipe/minecraft_zombie.json", "jar:rftoolsutility-1.21-7.0.12.jar:data/rftoolsutility/recipe/minecraft_blaze.json"]
+      "sources": ["jar:rftoolsutility-1.21-7.0.12.jar:data/rftoolsutility/recipe/spawner.json", "jar:rftoolsutility-1.21-7.0.12.jar:data/rftoolsutility/recipe/matter_beamer.json", "repo:pack/kubejs/server_scripts/entrelumen_rftools_balance.js", "repo:tools/generate_rftools_balance.py#CHANGES", "jar:rftoolsutility-1.21-7.0.12.jar:assets/rftoolsbase/patchouli_books/manual/en_us/entries/machines/spawner.json", "jar:rftoolsutility-1.21-7.0.12.jar:assets/rftoolsbase/patchouli_books/manual/en_us/entries/machines/matter_beamer.json", "jar:rftoolsutility-1.21-7.0.12.jar:data/rftoolsutility/recipe/minecraft_zombie.json", "jar:rftoolsutility-1.21-7.0.12.jar:data/rftoolsutility/recipe/minecraft_blaze.json", "repo:pack/kubejs/server_scripts/entrelumen_boss_drops_balance.js"]
     },
     {
       "key": "rft_wither_syringe", "role": "secret", "deps": ["rft_syringe"], "group": "environment",
@@ -732,10 +732,10 @@
       "icon": "rftoolsutility:syringe",
       "at": {"x": -6.6, "y": 10.718},
       "en_us": {"title": "A sample from the Wither", "subtitle": "Ten jabs. It noticed.",
-        "text": ["The syringe takes bosses like any other mob: ten hits and it's full. In this pack the Spawner has no Wither recipe, though: a Wither for a tenth of a star would have printed stars."]},
+        "text": ["The syringe takes bosses like any other mob: ten hits and it's full. In this pack the Spawner makes no bosses, though: a Wither for a tenth of a star would have printed stars."]},
       "es_es": {"title": "Una muestra del Wither", "subtitle": "Diez pinchazos. Se dio cuenta.",
-        "text": ["La jeringa acepta jefes como a cualquier otro mob: diez golpes y se llena. Eso sí, en este pack el Generador de criaturas no tiene receta de Wither: uno por la décima parte de una estrella habría impreso estrellas."]},
-      "sources": ["jar:rftoolsutility-1.21-7.0.12.jar:mcjty/rftoolsutility/modules/spawner/data/SyringeData.class (mob, level) as rftoolsutility:syringe_data", "jar:rftoolsutility-1.21-7.0.12.jar:mcjty/rftoolsutility/modules/spawner/SpawnerConfiguration.class#maxMobInjections=10", "jar:rftoolsutility-1.21-7.0.12.jar:data/rftoolsutility/recipe/minecraft_wither.json", "repo:pack/kubejs/server_scripts/entrelumen_boss_drops_balance.js"]
+        "text": ["La jeringa acepta jefes como a cualquier otro mob: diez golpes y se llena. Eso sí, en este pack el Generador de criaturas no hace jefes: un Wither por la décima parte de una estrella habría impreso estrellas."]},
+      "sources": ["jar:rftoolsutility-1.21-7.0.12.jar:mcjty/rftoolsutility/modules/spawner/data/SyringeData.class (mob, level) as rftoolsutility:syringe_data", "jar:rftoolsutility-1.21-7.0.12.jar:mcjty/rftoolsutility/modules/spawner/SpawnerConfiguration.class#maxMobInjections=10", "jar:rftoolsutility-1.21-7.0.12.jar:data/rftoolsutility/recipe/minecraft_wither.json", "jar:rftoolsutility-1.21-7.0.12.jar:data/rftoolsutility/recipe/minecraft_ender_dragon.json", "repo:pack/kubejs/server_scripts/entrelumen_boss_drops_balance.js"]
     },
     {
       "key": "rft_xnet", "role": "milestone", "deps": ["rft_frame"],
