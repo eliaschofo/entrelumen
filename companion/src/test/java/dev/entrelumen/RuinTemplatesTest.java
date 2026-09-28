@@ -203,6 +203,25 @@ class RuinTemplatesTest {
         "the observatory's own masonry is drawn as it is");
   }
 
+  /** The Void Observatory (Elias, 27 September): each islet's nest guards that islet's two lenses. */
+  @Test
+  void theVoidObservatorysIsletsEachGuardTheirOwnLenses() throws Exception {
+    var found = read("entrelumen:ruins/void_observatory");
+    var definition = RuinDefinitionsTest.shipped(mod -> true).get("entrelumen:void_observatory");
+    List<String> islets = List.of("ne", "se", "sw", "nw");
+    for (String islet : islets) {
+      assertEquals(1, found.of(RuinMarkers.Kind.BOSS, "nest_" + islet).size(), "one nest on islet " + islet);
+      assertEquals(2, found.of(RuinMarkers.Kind.SOCKET, "lenses_" + islet).size(), "two lenses on islet " + islet);
+      assertEquals(List.of("nest_" + islet), definition.challenges().get("lenses_" + islet).requires(),
+          "the islet's lenses wait for its own nest");
+    }
+    assertEquals(4, found.of(RuinMarkers.Kind.BOSS).size());
+    assertEquals(8, found.of(RuinMarkers.Kind.SOCKET).size());
+    var lenses = islets.stream().map(i -> "lenses_" + i).toList();
+    assertEquals(new TreeSet<>(lenses), new TreeSet<>(definition.pedestal()), "the Star Chart needs every lens");
+    assertEquals(new TreeSet<>(lenses), new TreeSet<>(definition.gates().get("chart_room")), "and so does the chart room");
+  }
+
   @Test
   void theSanctuaryStonesHaveOneStrictOrder() throws Exception {
     var orders = read("entrelumen:ruins/twilight_sanctuary").of(RuinMarkers.Kind.BRAZIER, "stones").stream()

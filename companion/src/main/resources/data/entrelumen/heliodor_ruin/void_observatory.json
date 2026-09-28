@@ -12,7 +12,7 @@
   "project": "world_network",
   "loot": "entrelumen:chests/ruin_act5_void_observatory",
   "challenges": {
-    "nests": {
+    "nest_ne": {
       "type": "boss",
       "entity": "minecraft:shulker",
       "name": "entrelumen.ruin.boss.nest_guard",
@@ -24,21 +24,84 @@
         "minecraft:generic.armor": 6
       }
     },
-    "lenses": {
+    "nest_se": {
+      "type": "boss",
+      "entity": "minecraft:shulker",
+      "name": "entrelumen.ruin.boss.nest_guard",
+      "count": 3,
+      "radius": 14,
+      "color": "purple",
+      "attributes": {
+        "minecraft:generic.max_health": 60,
+        "minecraft:generic.armor": 6
+      }
+    },
+    "nest_sw": {
+      "type": "boss",
+      "entity": "minecraft:shulker",
+      "name": "entrelumen.ruin.boss.nest_guard",
+      "count": 3,
+      "radius": 14,
+      "color": "purple",
+      "attributes": {
+        "minecraft:generic.max_health": 60,
+        "minecraft:generic.armor": 6
+      }
+    },
+    "nest_nw": {
+      "type": "boss",
+      "entity": "minecraft:shulker",
+      "name": "entrelumen.ruin.boss.nest_guard",
+      "count": 3,
+      "radius": 14,
+      "color": "purple",
+      "attributes": {
+        "minecraft:generic.max_health": 60,
+        "minecraft:generic.armor": 6
+      }
+    },
+    "lenses_ne": {
       "type": "offering",
       "item": "minecraft:ender_eye",
       "requires": [
-        "nests"
+        "nest_ne"
+      ]
+    },
+    "lenses_se": {
+      "type": "offering",
+      "item": "minecraft:ender_eye",
+      "requires": [
+        "nest_se"
+      ]
+    },
+    "lenses_sw": {
+      "type": "offering",
+      "item": "minecraft:ender_eye",
+      "requires": [
+        "nest_sw"
+      ]
+    },
+    "lenses_nw": {
+      "type": "offering",
+      "item": "minecraft:ender_eye",
+      "requires": [
+        "nest_nw"
       ]
     }
   },
   "pedestal": [
-    "lenses"
+    "lenses_ne",
+    "lenses_se",
+    "lenses_sw",
+    "lenses_nw"
   ],
   "gates": {
     "chart_room": [
-      "lenses"
+      "lenses_ne",
+      "lenses_se",
+      "lenses_sw",
+      "lenses_nw"
     ]
   },
-  "note": "Act V landmark (Elias, 26 September): shulker nests guard the four islets; an Eye of Ender in every lens socket aligns the telescope and opens the chart room under the deck, where the Star Chart waits."
+  "note": "Act V landmark (Elias, 26-27 September): each of the four islets has its own shulker nest, which rises when a team member comes near it and guards that islet's two lenses; an Eye of Ender in every lens aligns the telescope and opens the chart room under the deck, where the Star Chart waits."
 }

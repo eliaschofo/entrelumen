@@ -249,7 +249,7 @@ Una ruina es un JSON en `data/entrelumen/heliodor_ruin/<id>.json` (datapack, rec
 | `twilight_sanctuary` | superficie del Twilight Forest, 150–500 | `stones`: las ocho piedras en orden de brújula (desde el norte, en sentido horario) | `cellar` (`stones`): piso falso de musgo | Testimonio del Bosque | `spectral_archive` |
 | `sun_antechamber` | cielo del Aether, 150–500 | `offerings`: un lingote de oro en cada islote | — | Llave del Sol | `heliodor_heart` |
 | `light_temple` | superficie, 400–1200 (gigante del acto IV desde el 26/9) | `offerings`: piedra luminosa al final de cada escalera; `lamps`: las cuatro lámparas de los obeliscos; `keeper`: el Custodio de la Luz (evocador, 200 de vida), que se levanta después de las otras dos | — | Llama Sagrada | `spectral_archive` |
-| `void_observatory` | cielo del End, 150–500 (gigante del acto V desde el 26/9) | `nests`: los nidos de shulkers que guardan los islotes (tres shulkers de 60 de vida, en el primer nido al que se acerca el equipo); `lenses`: un Ojo de Ender en cada una de las ocho lentes de los islotes (pide `nests`), que alinea el telescopio | `chart_room` (`lenses`): las cuatro escotillas del puente sobre las escaleras de la sala de cartas | Carta Estelar | `world_network` |
+| `void_observatory` | cielo del End, 150–500 (gigante del acto V desde el 26/9) | Por islote (`ne`, `se`, `sw`, `nw`; decidido el 27/9): `nest_<islote>`, su nido de shulkers (tres de 60 de vida), que sale cuando un miembro del equipo se acerca a ese islote (14 bloques del nido); `lenses_<islote>`, un Ojo de Ender en cada una de sus dos lentes (pide su nido). Las ocho lentes alinean el telescopio | `chart_room` (las cuatro `lenses_<islote>`): las cuatro escotillas del puente sobre las escaleras de la sala de cartas | Carta Estelar | `world_network` |
 
 Los ítems de las ofrendas, los jefes y sus atributos son datos: se cambian en el JSON.
 
@@ -404,5 +404,5 @@ Elias no quiere «una losa flotando», ni «media estructura destruyendo el pais
 - Arte de las diez ruinas a escala final (Elias revisa una por una). El exportador y las pruebas sólo dependen del contrato de marcadores.
 - Los modelos de la lista de arte provisorio.
 - Motor de Terra: que la revisión del arte corrija lo que hoy repone el exportador. Los dos desvíos quedaron decididos el 27/9.
-- El Observatorio sobre el vacío: qué enciende las lentes (hoy un Ojo de Ender cada una, un dato de su JSON) y si los cuatro nidos deben pelearse todos o alcanza el primero (hoy uno por equipo). Los nidos del arte están dentro de los pilones: los shulkers salen en la primera columna libre de al lado.
+- El Observatorio sobre el vacío: los nidos del arte están dentro de los pilones, así que los shulkers salen en la primera columna libre de al lado.
 - La ruina inicial (`HeliodorRuins`, de main) sigue con su colocación propia, sin la barba ni el suelo del sitio.

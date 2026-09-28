@@ -93,7 +93,7 @@ CHALLENGES = {
     "twilight_sanctuary": {"stones": "stones"},
     "sun_antechamber": {"sockets": "offerings"},
     "light_temple": {"sockets": "offerings", "braziers": "lamps", "boss": "keeper"},
-    "void_observatory": {"shulker_nests": "nests", "lens_sockets": "lenses"},
+    "void_observatory": {"shulker_nests": "nest", "lens_sockets": "lenses"},
 }
 SOCKET_LOOK = {"dome_greenhouse": "pot", "sun_antechamber": "altar", "light_temple": "altar",
                "void_observatory": "altar"}
@@ -657,6 +657,11 @@ def relay_check(name: str, v: dict, mk: dict, marks: dict):
             raise SystemExit(f"{name}: relay floor {floor['floor']} is already solved in its starting state")
 
 
+def islet(p) -> str:
+    """The Void Observatory's islet a cell belongs to, by its diagonal: ne, nw, se or sw (north is -z)."""
+    return ("n" if p[2] < 0 else "s") + ("e" if p[0] > 0 else "w")
+
+
 def markers(name: str, v: dict, mk: dict, extra: dict | None = None) -> dict[tuple[int, int, int], str]:
     """Centred cell -> marker metadata (block= is added from the art cell later unless given)."""
     c = CHALLENGES[name]
@@ -713,11 +718,12 @@ def markers(name: str, v: dict, mk: dict, extra: dict | None = None) -> dict[tup
         put(p, f"mirror challenge={c['mirrors']} facing={DIRECTIONS[(aim + 4) % 8]}")
     for p in mk.get("offering_sockets", []):
         put(p, f"socket challenge={c['sockets']} look={SOCKET_LOOK[name]}")
-    # The Void Observatory: a lens on each islet (two by symmetry), shulker nests guarding them.
+    # The Void Observatory: each islet (ne, se, sw, nw) has its nest and two lenses, and its nest guards
+    # them: nest_<islet> and lenses_<islet>.
     for p in mk.get("lens_sockets", []):
-        put(p, f"socket challenge={c['lens_sockets']} look={SOCKET_LOOK[name]}")
+        put(p, f"socket challenge={c['lens_sockets']}_{islet(p)} look={SOCKET_LOOK[name]}")
     for p in mk.get("shulker_nests", []):
-        put(p, f"boss challenge={c['shulker_nests']}")
+        put(p, f"boss challenge={c['shulker_nests']}_{islet(p)}")
     # Standing stones are read like the compass: from the north, clockwise.
     stones = sorted(mk.get("order_stones", []), key=lambda p: math.atan2(p[0], -p[2]) % (2 * math.pi))
     for order, p in enumerate(stones, 1):
