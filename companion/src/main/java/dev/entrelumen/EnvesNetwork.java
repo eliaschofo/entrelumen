@@ -19,7 +19,7 @@ import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
  * client sends the gate's choice back, which the server validates again.
  */
 public final class EnvesNetwork {
-  static final int MAX_CELLS = EnvesLayout.CELLS, MAX_MATES = 64, MAX_TIERS = 8;
+  static final int MAX_CELLS = EnvesLayout.CELLS, MAX_MATES = 64, MAX_TIERS = 8, MAX_OFFERS = EnvesOffering.MAX_OFFERS;
 
   private EnvesNetwork() {}
 
@@ -129,14 +129,26 @@ public final class EnvesNetwork {
     }
   }
 
-  /** What the gate shows one player. {@code state}: see {@link EnvesEntrance.GateState}. */
-  public record Gate(int state, String offeringItem, int offeringCount, boolean hasOffering, List<Integer> tiers,
-      int attemptTier, int frontline, int poolLeft, int poolTotal) implements CustomPacketPayload {
+  /** One way to pay the gate, as the gate shows it to one player. */
+  public record Offer(String item, int count, boolean affordable) {}
+
+  /**
+   * What the gate shows one player. {@code state}: see {@link EnvesEntrance.GateState}. {@code offers}:
+   * the alternatives of the offering, in the config's order.
+   */
+  public record Gate(int state, List<Offer> offers, List<Integer> tiers, int attemptTier, int frontline, int poolLeft,
+      int poolTotal) implements CustomPacketPayload {
     public static final Type<Gate> TYPE = new Type<>(id("enves_gate"));
     public static final StreamCodec<RegistryFriendlyByteBuf, Gate> CODEC = StreamCodec.ofMember(Gate::write, Gate::read);
 
     public Gate {
+      offers = List.copyOf(offers);
       tiers = List.copyOf(tiers);
+    }
+
+    /** Whether the player carries any of the offers. */
+    public boolean hasOffering() {
+      return offers.stream().anyMatch(Offer::affordable);
     }
 
     @Override
@@ -146,9 +158,12 @@ public final class EnvesNetwork {
 
     private void write(RegistryFriendlyByteBuf buf) {
       buf.writeVarInt(state);
-      buf.writeUtf(offeringItem, 256);
-      buf.writeVarInt(offeringCount);
-      buf.writeBoolean(hasOffering);
+      buf.writeVarInt(offers.size());
+      for (Offer offer : offers) {
+        buf.writeUtf(offer.item(), 256);
+        buf.writeVarInt(offer.count());
+        buf.writeBoolean(offer.affordable());
+      }
       buf.writeVarInt(tiers.size());
       for (int tier : tiers) buf.writeVarInt(tier);
       buf.writeVarInt(attemptTier);
@@ -159,27 +174,31 @@ public final class EnvesNetwork {
 
     private static Gate read(RegistryFriendlyByteBuf buf) {
       int state = buf.readVarInt();
-      String item = buf.readUtf(256);
-      int count = buf.readVarInt();
-      boolean has = buf.readBoolean();
+      int o = bounded(buf, MAX_OFFERS);
+      List<Offer> offers = new ArrayList<>(o);
+      for (int i = 0; i < o; i++) offers.add(new Offer(buf.readUtf(256), buf.readVarInt(), buf.readBoolean()));
       int n = bounded(buf, MAX_TIERS);
       List<Integer> tiers = new ArrayList<>(n);
       for (int i = 0; i < n; i++) tiers.add(buf.readVarInt());
-      return new Gate(state, item, count, has, tiers, buf.readVarInt(), buf.readVarInt(), buf.readVarInt(), buf.readVarInt());
+      return new Gate(state, offers, tiers, buf.readVarInt(), buf.readVarInt(), buf.readVarInt(), buf.readVarInt());
     }
   }
 
   public enum Action {OPEN, ENTER, GIVE_UP}
 
-  /** The gate screen's choice; {@code tier} only matters for {@link Action#OPEN}. */
-  public record GateAction(Action action, int tier) implements CustomPacketPayload {
+  /**
+   * The gate screen's choice; {@code tier} and {@code offer} (the index of the offering paid, -1 for
+   * the first the player carries) only matter for {@link Action#OPEN}.
+   */
+  public record GateAction(Action action, int tier, int offer) implements CustomPacketPayload {
     public static final Type<GateAction> TYPE = new Type<>(id("enves_gate_action"));
     public static final StreamCodec<RegistryFriendlyByteBuf, GateAction> CODEC = StreamCodec.ofMember(
         (action, buf) -> {
           buf.writeEnum(action.action());
           buf.writeVarInt(action.tier());
+          buf.writeVarInt(action.offer() + 1);
         },
-        buf -> new GateAction(buf.readEnum(Action.class), buf.readVarInt()));
+        buf -> new GateAction(buf.readEnum(Action.class), buf.readVarInt(), buf.readVarInt() - 1));
 
     @Override
     public Type<GateAction> type() {
@@ -193,7 +212,7 @@ public final class EnvesNetwork {
   public static Consumer<Gate> gateReceiver = gate -> {};
 
   public static void register(RegisterPayloadHandlersEvent event) {
-    var registrar = event.registrar("1");
+    var registrar = event.registrar("2");
     registrar.playToClient(Hud.TYPE, Hud.CODEC, (hud, context) -> context.enqueueWork(() -> hudReceiver.accept(hud)));
     registrar.playToClient(MapView.TYPE, MapView.CODEC, (map, context) -> context.enqueueWork(() -> mapReceiver.accept(map)));
     registrar.playToClient(Gate.TYPE, Gate.CODEC, (gate, context) -> context.enqueueWork(() -> gateReceiver.accept(gate)));

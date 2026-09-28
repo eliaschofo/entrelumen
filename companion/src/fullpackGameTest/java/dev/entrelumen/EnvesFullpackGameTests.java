@@ -99,7 +99,7 @@ public final class EnvesFullpackGameTests {
     var qa = new QaPlayer(helper, "EnvesPack");
     ServerPlayer player = qa.player;
     Entrelumen.current(player).act = ApotheosisTiers.FRONTIER_ACT;
-    player.getInventory().add(new ItemStack(Items.NETHERITE_BLOCK));
+    player.getInventory().add(new ItemStack(Items.NETHER_STAR));
     helper.assertTrue(Enves.open(player, Tier.FRONTIER) == null, "The gate refused the offering");
     Attempt attempt = Enves.attemptOf(player).orElseThrow();
     var provider = StageHelper.getInstance().getProvider();

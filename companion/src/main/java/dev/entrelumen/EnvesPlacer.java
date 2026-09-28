@@ -23,6 +23,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.TicketType;
+import net.minecraft.world.Clearable;
 import net.minecraft.world.RandomizableContainer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
@@ -33,6 +34,7 @@ import net.minecraft.world.level.block.ChestBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
 import net.minecraft.world.phys.AABB;
+import net.neoforged.neoforge.event.entity.EntityJoinLevelEvent;
 import net.neoforged.fml.ModList;
 import org.slf4j.Logger;
 
@@ -66,7 +68,8 @@ public final class EnvesPlacer {
     final boolean wipe;
     final List<int[]> steps = new ArrayList<>();
     final Set<ChunkPos> chunks = new LinkedHashSet<>();
-    int next;
+    int next, swept;
+    long settlingSince = -1;
     boolean started;
     long nanos, worst, worstCell;
     String worstName = "";
@@ -80,6 +83,11 @@ public final class EnvesPlacer {
   }
 
   private static final List<Job> JOBS = new ArrayList<>();
+  /**
+   * How long a finished wipe waits at most for its chunks' entities to load before its last sweep: real
+   * time, since loading is disk work and a server behind or ahead of 20 ticks a second changes nothing.
+   */
+  static final long SETTLE_NANOS = 30_000_000_000L;
 
   private EnvesPlacer() {}
 
@@ -165,6 +173,10 @@ public final class EnvesPlacer {
   // ---- Ticking ------------------------------------------------------------------------------
 
   static synchronized void tick(MinecraftServer server) {
+    if (!LEFTOVERS.isEmpty()) {
+      LOGGER.info("Envés: entities of ended attempts dropped as their chunks loaded: {}", LEFTOVERS);
+      LEFTOVERS.clear();
+    }
     if (JOBS.isEmpty()) return;
     ServerLevel level = Enves.level(server);
     if (level == null) return;
@@ -207,7 +219,8 @@ public final class EnvesPlacer {
         job.worst = Math.max(job.worst, spent);
         job.ticks++;
       }
-      if (job.next >= job.steps.size()) finish(server, level, data, a, job);
+      // A wipe's chunks load their entities after the chunks themselves: its last sweep waits for them.
+      if (job.next >= job.steps.size() && (!job.wipe || settled(level, job))) finish(server, level, data, a, job);
       if (worked && System.nanoTime() - start >= BUDGET_NANOS) return;
     }
   }
@@ -222,7 +235,7 @@ public final class EnvesPlacer {
     }
     for (ChunkPos chunk : job.chunks) level.getChunkSource().addRegionTicket(TICKET, chunk, 0, job.id);
     if (job.wipe) {
-      discardEntities(level, attempt);
+      job.swept += discardEntities(level, attempt);
     } else {
       attempt.floor(job.depth).placement = Placement.PLACING;
       EnvesData.get(level.getServer()).setDirty();
@@ -234,6 +247,22 @@ public final class EnvesPlacer {
     job.chunks.clear();
   }
 
+  /** Every chunk of the wipe has its entities loaded, or the wait ran out (and the log says so). */
+  private static boolean settled(ServerLevel level, Job job) {
+    boolean loaded = true;
+    for (ChunkPos chunk : job.chunks)
+      if (!level.areEntitiesLoaded(chunk.toLong())) {
+        loaded = false;
+        break;
+      }
+    if (loaded) return true;
+    long now = System.nanoTime();
+    if (job.settlingSince < 0) job.settlingSince = now;
+    if (now - job.settlingSince < SETTLE_NANOS) return false;
+    LOGGER.warn("Envés: the entities of a wiped slot did not load in {} s; its last sweep goes without them", SETTLE_NANOS / 1_000_000_000L);
+    return true;
+  }
+
   private static boolean chunksReady(ServerLevel level, BlockPos origin) {
     for (int cx = origin.getX() >> 4; cx <= (origin.getX() + EnvesGeometry.CELL - 1) >> 4; cx++)
       for (int cz = origin.getZ() >> 4; cz <= (origin.getZ() + EnvesGeometry.CELL - 1) >> 4; cz++)
@@ -242,12 +271,14 @@ public final class EnvesPlacer {
   }
 
   private static void finish(MinecraftServer server, ServerLevel level, EnvesData data, Attempt attempt, Job job) {
+    // Every chunk's entities have loaded by now: what was not there when the wipe began goes too.
+    if (job.wipe) job.swept += discardEntities(level, attempt);
     release(level, job);
     JOBS.remove(job);
     if (job.wipe) {
       data.remove(attempt.id);
-      LOGGER.info("Envés: slot {} wiped ({} cells, {} ms over {} ticks, worst tick {} ms, worst step {} ms)", attempt.slot,
-          job.steps.size() / WIPE_BANDS, job.nanos / 1_000_000, job.ticks, job.worst / 1_000_000, job.worstCell / 1_000_000);
+      LOGGER.info("Envés: slot {} wiped ({} cells, {} entities, {} ms over {} ticks, worst tick {} ms, worst step {} ms)", attempt.slot,
+          job.steps.size() / WIPE_BANDS, job.swept, job.nanos / 1_000_000, job.ticks, job.worst / 1_000_000, job.worstCell / 1_000_000);
       return;
     }
     attempt.floor(job.depth).placement = Placement.READY;
@@ -349,16 +380,51 @@ public final class EnvesPlacer {
       for (int x = 0; x < EnvesGeometry.CELL; x++)
         for (int z = 0; z < EnvesGeometry.CELL; z++) {
           pos.set(origin.getX() + x, origin.getY() + y, origin.getZ() + z);
-          if (!level.getBlockState(pos).isAir()) level.setBlock(pos, air, WIPE_FLAGS);
+          BlockState state = level.getBlockState(pos);
+          if (state.isAir()) continue;
+          if (state.hasBlockEntity()) emptyContainer(level, pos);
+          level.setBlock(pos, air, WIPE_FLAGS);
         }
   }
 
-  private static void discardEntities(ServerLevel level, Attempt attempt) {
+  /**
+   * A container goes with its room, contents and all: a chest removed by {@code setBlock} drops what it
+   * holds, and an unopened one rolls its loot table first, which would leave the loot floating in the
+   * slot for the next attempt to find.
+   */
+  private static void emptyContainer(ServerLevel level, BlockPos pos) {
+    var entity = level.getBlockEntity(pos);
+    if (entity instanceof RandomizableContainer loot) loot.setLootTable(null);
+    Clearable.tryClear(entity);
+  }
+
+  /** Entities of ended attempts dropped as their chunks loaded since the last report, by type (server thread). */
+  private static final java.util.Map<String, Integer> LEFTOVERS = new java.util.TreeMap<>();
+
+  /**
+   * An entity coming back from disk into a slot without an open attempt is one a wipe could not see (its
+   * chunk's entities loaded after the last sweep): it never rejoins, so the next attempt finds nothing
+   * of it. A forming attempt has no entities of its own yet.
+   */
+  static void onEntityJoin(EntityJoinLevelEvent event) {
+    if (!event.loadedFromDisk() || event.getEntity() instanceof Player) return;
+    if (!(event.getLevel() instanceof ServerLevel level) || !level.dimension().equals(Enves.LEVEL)) return;
+    BlockPos pos = event.getEntity().blockPosition();
+    int slot = EnvesGeometry.slotAt(pos.getX(), pos.getZ());
+    if (slot < 0) return;
+    Optional<Attempt> attempt = EnvesData.get(level.getServer()).inSlot(slot);
+    if (attempt.isPresent() && attempt.get().status == Status.OPEN) return;
+    event.setCanceled(true);
+    LEFTOVERS.merge(BuiltInRegistries.ENTITY_TYPE.getKey(event.getEntity().getType()).toString(), 1, Integer::sum);
+  }
+
+  private static int discardEntities(ServerLevel level, Attempt attempt) {
     int x0 = EnvesGeometry.slotX(attempt.slot), z0 = EnvesGeometry.slotZ(attempt.slot);
     AABB box = new AABB(x0 - 2, EnvesGeometry.VOID_Y - 32, z0 - 2, x0 + EnvesLayout.W * EnvesGeometry.CELL + 2,
         EnvesGeometry.floorY(0) + EnvesGeometry.FLOOR_H + 8, z0 + EnvesLayout.H * EnvesGeometry.CELL + 2);
-    for (Entity entity : level.getEntitiesOfClass(Entity.class, box, entity -> !(entity instanceof Player)))
-      entity.discard();
+    var entities = level.getEntitiesOfClass(Entity.class, box, entity -> !(entity instanceof Player));
+    entities.forEach(Entity::discard);
+    return entities.size();
   }
 
   // ---- Default hooks ------------------------------------------------------------------------

@@ -202,8 +202,13 @@ public final class EnvesEntrance {
     var attempt = Enves.attemptOf(player);
     GateState state = attempt.isEmpty() ? GateState.READY
         : attempt.get().status == Status.OPEN ? GateState.OPEN : GateState.FORMING;
-    return new EnvesNetwork.Gate(state.ordinal(), settings.offeringItem(), settings.offeringCount(),
-        Enves.countOffering(player) >= settings.offeringCount(), tiers,
+    List<EnvesNetwork.Offer> offers = new ArrayList<>();
+    var affordable = EnvesOffering.affordable(player);
+    for (int i = 0; i < settings.offerings().size(); i++) {
+      var offer = settings.offerings().get(i);
+      offers.add(new EnvesNetwork.Offer(offer.item(), offer.count(), affordable.get(i)));
+    }
+    return new EnvesNetwork.Gate(state.ordinal(), offers, tiers,
         attempt.map(a -> a.tier.ordinal()).orElse(-1), attempt.map(a -> a.frontline).orElse(0),
         attempt.map(a -> a.poolLeft).orElse(0), attempt.map(a -> a.poolTotal).orElse(0));
   }
@@ -214,7 +219,7 @@ public final class EnvesEntrance {
     switch (action.action()) {
       case OPEN -> {
         if (action.tier() < 0 || action.tier() >= Tier.values().length) return;
-        var refusal = Enves.open(player, Tier.values()[action.tier()]);
+        var refusal = Enves.open(player, Tier.values()[action.tier()], action.offer());
         player.displayClientMessage(Component.translatable(refusal == null ? "entrelumen.enves.forming"
             : "entrelumen.enves.refused." + refusal.name().toLowerCase(java.util.Locale.ROOT)), true);
       }

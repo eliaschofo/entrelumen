@@ -68,11 +68,19 @@ public final class EnvesHooks {
     void place(Floor floor, int cell, List<WorldMarker> gate, WorldMarker mechanism);
   }
 
-  /** Seal rooms: whether a member may light the seal now, and what follows once lit. */
+  /**
+   * Seal rooms: whether a member may light the seal now, and what follows once lit. The stairwell of a
+   * floor opens when every seal burns, the floor below is ready and {@link #stairMayOpen} agrees (the
+   * content keeps it shut until the floor's champion falls).
+   */
   public interface Seals {
     boolean mayLight(Floor floor, int cell, ServerPlayer player);
 
     default void lit(Floor floor, int cell, ServerPlayer player, int lit, int total) {}
+
+    default boolean stairMayOpen(Floor floor) {
+      return true;
+    }
   }
 
   /**
@@ -92,6 +100,9 @@ public final class EnvesHooks {
     default void playerFell(EnvesData.Attempt attempt, ServerPlayer player, int left) {}
 
     default void attemptEnded(EnvesData.Attempt attempt, EndReason reason) {}
+
+    /** The boss fell (or an operator said so): the victory portal is awake. */
+    default void bossDefeated(EnvesData.Attempt attempt) {}
   }
 
   static final Encounters NO_ENCOUNTERS = (floor, cell, role, spawns, first) -> {};
@@ -161,5 +172,37 @@ public final class EnvesHooks {
 
   public static void setLifecycle(Lifecycle hook) {
     lifecycle = Objects.requireNonNull(hook);
+  }
+
+  /** Puts every hook back to the engine's plain default (the engine's own tests run on these). */
+  public static void reset() {
+    encounters = NO_ENCOUNTERS;
+    chests = EnvesPlacer::defaultChest;
+    shrines = EnvesPlacer::defaultShrine;
+    vaults = EnvesPlacer::defaultVault;
+    seals = ALWAYS_LIGHT;
+    boss = NO_BOSS;
+    lifecycle = NOTHING;
+  }
+
+  private static final ThreadLocal<Boolean> FORCING = ThreadLocal.withInitial(() -> false);
+
+  /**
+   * Whether an operator is lighting seals by command right now: the seals' hook lets them light and
+   * waives what else bars the stair.
+   */
+  public static boolean forcing() {
+    return FORCING.get();
+  }
+
+  /** Runs {@code action} as an operator's forcing (see {@link #forcing}). */
+  public static <T> T forcing(java.util.function.Supplier<T> action) {
+    boolean before = FORCING.get();
+    FORCING.set(true);
+    try {
+      return action.get();
+    } finally {
+      FORCING.set(before);
+    }
   }
 }

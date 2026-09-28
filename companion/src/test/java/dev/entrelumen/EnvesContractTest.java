@@ -168,9 +168,10 @@ class EnvesContractTest {
   @Test
   void theDataFilesParseWithTheOffering() throws IOException {
     var settings = EnvesConfig.parse(JsonParser.parseString(Files.readString(DATA.resolve("enves/config.json"))),
-        id -> id.startsWith("minecraft:"));
-    assertEquals("minecraft:netherite_block", settings.offeringItem());
-    assertEquals(1, settings.offeringCount());
+        id -> id.startsWith("minecraft:") || id.equals("entrelumen:sour_light_shard"));
+    // Elias, 27/9: a Nether star per attempt, or sour light shards in its place.
+    assertEquals(List.of(new EnvesOffering.Offer("minecraft:nether_star", 1), new EnvesOffering.Offer("entrelumen:sour_light_shard", 64)),
+        settings.offerings());
     assertEquals(3, settings.fallsPerMember());
     assertEquals(10, settings.abandonMinutes());
     assertEquals(List.of("osarios", "cisternas", "fundicion", "geodas", "eclipse"), settings.tilesets());
@@ -186,6 +187,13 @@ class EnvesContractTest {
         "{\"offering\": {\"item\": \"minecraft:nothing\", \"count\": 1}}"), id -> false));
     assertThrows(IllegalArgumentException.class, () -> EnvesConfig.parse(JsonParser.parseString(
         "{\"offering\": {\"item\": \"minecraft:diamond\", \"count\": 0}}"), id -> true));
+    assertThrows(IllegalArgumentException.class, () -> EnvesConfig.parse(JsonParser.parseString(
+        "{\"offering\": [{\"item\": \"minecraft:diamond\"}, {\"item\": \"minecraft:diamond\", \"count\": 2}]}"), id -> true),
+        "the same item twice");
+    assertThrows(IllegalArgumentException.class, () -> EnvesConfig.parse(JsonParser.parseString("{\"offering\": []}"), id -> true));
+    var single = EnvesConfig.parse(JsonParser.parseString("{\"offering\": {\"item\": \"minecraft:diamond\", \"count\": 3}}"),
+        id -> true);
+    assertEquals(List.of(new EnvesOffering.Offer("minecraft:diamond", 3)), single.offerings(), "the engine's first schema still reads");
   }
 
   @Test

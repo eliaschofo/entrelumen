@@ -32,15 +32,18 @@ public final class EnvesConfig {
   public static final ResourceLocation CONFIG = ResourceLocation.fromNamespaceAndPath("entrelumen", "enves/config.json");
 
   /**
-   * {@code offering}: the item and count one attempt costs (Elias, 26/9: one netherite block).
+   * {@code offerings}: what one attempt costs, any one of them (Elias, 27/9: a Nether star, or sour
+   * light shards in its place; see {@link EnvesOffering}).
    * {@code tilesets}: the tileset of floors I–V in order (the vestibule uses floor I's).
    * {@code chestLootTable}: the loot table of a chest marker; {@code {kind}}, {@code {tier}} and
    * {@code {floor}} are replaced.
    */
-  public record Settings(String offeringItem, int offeringCount, int fallsPerMember, int abandonMinutes,
+  public record Settings(List<EnvesOffering.Offer> offerings, int fallsPerMember, int abandonMinutes,
       String stairSealBlock, String vaultGateBlock, double roomChestChance, String chestLootTable,
       Set<String> deniedCommands, List<String> tilesets, boolean mapStage) {
     public Settings {
+      offerings = List.copyOf(offerings);
+      if (offerings.isEmpty()) throw new IllegalArgumentException("at least one offering");
       deniedCommands = Set.copyOf(deniedCommands);
       tilesets = List.copyOf(tilesets);
     }
@@ -60,7 +63,11 @@ public final class EnvesConfig {
     }
   }
 
-  public static final Settings DEFAULTS = new Settings("minecraft:netherite_block", 1, 3, 10,
+  /** One Nether star, or 64 sour light shards (a full descent drops about twice that; see the docs). */
+  public static final List<EnvesOffering.Offer> DEFAULT_OFFERINGS = List.of(
+      new EnvesOffering.Offer("minecraft:nether_star", 1), new EnvesOffering.Offer("entrelumen:sour_light_shard", 64));
+
+  public static final Settings DEFAULTS = new Settings(DEFAULT_OFFERINGS, 3, 10,
       "minecraft:reinforced_deepslate", "minecraft:iron_bars", 0.25, "entrelumen:enves/{kind}",
       Set.of("home", "homes", "sethome", "rtp", "wild", "back", "spawn", "tpa", "tpahere", "tpaccept", "warp", "warps"),
       List.of("osarios", "cisternas", "fundicion", "geodas", "eclipse"), true);
@@ -111,16 +118,10 @@ public final class EnvesConfig {
   public static Settings parse(JsonElement element, Predicate<String> itemExists) {
     JsonObject root = element.getAsJsonObject();
     Settings d = DEFAULTS;
-    String item = d.offeringItem();
-    int count = d.offeringCount();
-    if (root.has("offering")) {
-      JsonObject offering = root.getAsJsonObject("offering");
-      item = offering.get("item").getAsString();
-      count = offering.has("count") ? offering.get("count").getAsInt() : 1;
-    }
-    if (ResourceLocation.tryParse(item) == null || !itemExists.test(item))
-      throw new IllegalArgumentException("Unknown offering item " + item);
-    if (count < 1 || count > 64) throw new IllegalArgumentException("Offering count must be 1..64: " + count);
+    List<EnvesOffering.Offer> offerings = d.offerings();
+    if (root.has("offering")) offerings = EnvesOffering.parse(root.get("offering"), itemExists);
+    else for (var offer : offerings)
+      if (!itemExists.test(offer.item())) throw new IllegalArgumentException("Unknown offering item " + offer.item());
     int falls = intOr(root, "falls_per_member", d.fallsPerMember());
     if (falls < 1 || falls > 20) throw new IllegalArgumentException("falls_per_member must be 1..20");
     int minutes = intOr(root, "abandon_minutes", d.abandonMinutes());
@@ -141,7 +142,7 @@ public final class EnvesConfig {
       if (sets.size() != EnvesLayout.FLOORS)
         throw new IllegalArgumentException("tilesets needs one entry per floor (" + EnvesLayout.FLOORS + ")");
     }
-    return new Settings(item, count, falls, minutes, stringOr(root, "stair_seal_block", d.stairSealBlock()),
+    return new Settings(offerings, falls, minutes, stringOr(root, "stair_seal_block", d.stairSealBlock()),
         stringOr(root, "vault_gate_block", d.vaultGateBlock()), chance,
         stringOr(root, "chest_loot_table", d.chestLootTable()), denied, sets,
         !root.has("ftb_chunks_map_stage") || root.get("ftb_chunks_map_stage").getAsBoolean());
@@ -229,8 +230,8 @@ public final class EnvesConfig {
       tilesets = loaded.tilesets();
       indexes = loaded.indexes();
       EnvesTemplates.clear();
-      LOGGER.info("Envés: offering {} x{}, {} tilesets, template folders {}", settings.offeringItem(),
-          settings.offeringCount(), tilesets.size(), indexes.keySet());
+      LOGGER.info("Envés: offerings {}, {} tilesets, template folders {}", settings.offerings(), tilesets.size(),
+          indexes.keySet());
     }
   }
 }
