@@ -21,7 +21,7 @@
     "reforge": {"label": {"en_us": "Salvaging and reforging", "es_es": "Reciclaje y reforjado"}, "axis": "x", "caption": "below"},
     "charms": {"label": {"en_us": "Charms and potions", "es_es": "Amuletos y pociones"}, "axis": "x", "caption": "above"},
     "world": {"label": {"en_us": "Out in the world", "es_es": "Por el mundo"}, "axis": "x", "caption": "above"},
-    "invaders": {"label": {"en_us": "Invaders", "es_es": "Invasores"}, "axis": "x", "caption": "right"},
+    "invaders": {"label": {"en_us": "Invaders and elites", "es_es": "Invasores y élites"}, "axis": "x", "caption": "right"},
     "augment": {"label": {"en_us": "Augmenting", "es_es": "Aumentación"}, "axis": "y", "caption": "right"}
   },
   "links": [
@@ -338,13 +338,13 @@
     {
       "key": "aadv_dungeons", "role": "info", "deps": ["aadv_invaders"], "group": "invaders",
       "task": {"type": "checkmark"},
-      "icon": "minecraft:spawner",
+      "icon": {"texture": "apotheosis:textures/blocks/boss_spawner.png"},
       "at": {"x": 6.4, "y": 4.6},
-      "en_us": {"title": "Cages, elites and rogue spawners",
-        "text": ["Underground dungeons hold a Caged Invader that wakes when you come within eight blocks, in any tier. Elites take the place of normal mobs without warning. Rogue spawners sit alone in caves over a chest: brutal ones spawn slow, tough mobs, swarm ones many weak ones."]},
-      "es_es": {"title": "Jaulas, élites y generadores rebeldes",
-        "text": ["Las mazmorras subterráneas guardan un Invasor enjaulado que despierta cuando te acercás a ocho bloques, en cualquier nivel. Las élites ocupan el lugar de criaturas comunes sin avisar. Los generadores rebeldes están solos en cuevas sobre un cofre: los brutales sacan criaturas lentas y duras, los de enjambre muchas débiles."]},
-      "sources": ["jar:Apotheosis-1.21.1-8.7.0.jar:dev/shadowsoffire/apotheosis/mobs/BossSpawnerBlock.class#inflate(8)", "jar:Apotheosis-1.21.1-8.7.0.jar:assets/apotheosis/patchouli_books/apoth_chronicle/en_us/entries/adventure/mobs/invader_dungeons.json", "jar:Apotheosis-1.21.1-8.7.0.jar:assets/apotheosis/patchouli_books/apoth_chronicle/en_us/entries/adventure/mobs/elites.json", "jar:Apotheosis-1.21.1-8.7.0.jar:assets/apotheosis/patchouli_books/apoth_chronicle/en_us/entries/adventure/rogue_spawners/brutal_spawners.json", "jar:Apotheosis-1.21.1-8.7.0.jar:assets/apotheosis/patchouli_books/apoth_chronicle/en_us/entries/adventure/rogue_spawners/swarm_spawners.json", "jar:Apotheosis-1.21.1-8.7.0.jar:dev/shadowsoffire/apotheosis/spawner/RogueSpawner.class#place"]
+      "en_us": {"title": "Caged Invaders", "subtitle": "Please do not feed the invader.",
+        "text": ["Hidden rooms deep in the caves each hold a Caged Invader and a few chests. Come within eight blocks and it breaks free, in any tier; in Haven it is the only invader you will meet. Its rarity follows your tier, and it drops the usual trophy."]},
+      "es_es": {"title": "Invasores enjaulados", "subtitle": "No alimentar al invasor.",
+        "text": ["Salas escondidas en lo hondo de las cuevas guardan un Invasor enjaulado y unos cofres. Acercate a ocho bloques y se libera, en cualquier nivel; en el Refugio es el único invasor que vas a cruzar. Su rareza sigue a tu nivel y suelta el trofeo de siempre."]},
+      "sources": ["jar:Apotheosis-1.21.1-8.7.0.jar:assets/apotheosis/patchouli_books/apoth_chronicle/en_us/entries/adventure/mobs/invader_dungeons.json", "jar:Apotheosis-1.21.1-8.7.0.jar:dev/shadowsoffire/apotheosis/mobs/BossSpawnerBlock$BossSpawnerTile.class#inflate(8)", "jar:Apotheosis-1.21.1-8.7.0.jar:dev/shadowsoffire/apotheosis/mobs/BossSpawnerBlock$BossSpawnerTile.class#GenContext.forPlayerAtPos", "jar:Apotheosis-1.21.1-8.7.0.jar:dev/shadowsoffire/apotheosis/mobs/types/Invader.class#LootRarity.random(GenContext)", "jar:Apotheosis-1.21.1-8.7.0.jar:data/apotheosis/data_maps/dimension_type/invader_spawn_rules.json#haven 0.0", "jar:Apotheosis-1.21.1-8.7.0.jar:assets/apotheosis/patchouli_books/apoth_chronicle/en_us/entries/adventure/mobs/invader_items.json", "repo:pack/config/apotheosis/apotheosis.cfg#Generation Dimension Whitelist"]
     },
     {
       "key": "aadv_tower", "role": "side", "deps": ["aadv_welcome"], "group": "world",
@@ -369,14 +369,25 @@
       "sources": ["jar:Apotheosis-1.21.1-8.7.0.jar:data/apotheosis/wanderer_trades/beacon.json", "jar:Apotheosis-1.21.1-8.7.0.jar:data/apotheosis/wanderer_trades/totem_of_undying.json", "jar:Apotheosis-1.21.1-8.7.0.jar:data/apotheosis/wanderer_trades/skeleton_skull.json", "jar:Apotheosis-1.21.1-8.7.0.jar:data/apotheosis/wanderer_trades/rare_gear/bonesplitter.json", "repo:pack/config/apotheosis/apotheosis.cfg#Underground Trader"]
     },
     {
+      "key": "aadv_rogue", "role": "info", "deps": ["aadv_welcome"], "group": "world",
+      "task": {"type": "checkmark"},
+      "icon": "minecraft:spawner",
+      "at": {"x": -13.2, "y": 5.4},
+      "en_us": {"title": "Rogue spawners",
+        "text": ["Some caves hide a lone spawner over a chest. Brutal ones send fireproof zombies or pillagers with half again their health every 10 to 20 seconds; swarm ones pour out sped-up spiders, silverfish or baby zombies. About one chest in nine is the valuable kind."]},
+      "es_es": {"title": "Generadores rebeldes",
+        "text": ["Algunas cuevas esconden un generador solo sobre un cofre. Los brutales mandan zombis o saqueadores inmunes al fuego y con la mitad más de vida cada 10 a 20 segundos; los de enjambre largan arañas, lepismas o zombis bebé acelerados. Más o menos un cofre de cada nueve es de los valiosos."]},
+      "sources": ["jar:Apotheosis-1.21.1-8.7.0.jar:data/apotheosis/rogue_spawners/brutal/zombie.json", "jar:Apotheosis-1.21.1-8.7.0.jar:data/apotheosis/rogue_spawners/brutal/husk.json", "jar:Apotheosis-1.21.1-8.7.0.jar:data/apotheosis/rogue_spawners/brutal/pillager.json", "jar:Apotheosis-1.21.1-8.7.0.jar:data/apotheosis/rogue_spawners/swarm/spider.json", "jar:Apotheosis-1.21.1-8.7.0.jar:data/apotheosis/rogue_spawners/swarm/silverfish.json", "jar:Apotheosis-1.21.1-8.7.0.jar:data/apotheosis/rogue_spawners/swarm/baby_zombie.json", "jar:Apotheosis-1.21.1-8.7.0.jar:dev/shadowsoffire/apotheosis/spawner/RogueSpawner.class#place", "jar:Apotheosis-1.21.1-8.7.0.jar:data/apotheosis/loot_table/chests/chest_valuable.json", "repo:pack/config/apotheosis/apotheosis.cfg#Spawner Value Chance"]
+    },
+    {
       "key": "aadv_invaders", "role": "info", "deps": ["aadv_tiers"], "group": "invaders",
       "task": {"type": "checkmark"},
       "icon": "minecraft:beacon",
       "at": {"x": 3.2, "y": 7.8},
       "en_us": {"title": "Invaders from the sky",
-        "text": ["From Frontier on, an Apothic Invader can land nearby with a noise, a chat message and a beacon beam, in full enchanted gear. It always drops one affix item of its rarity, named after it. Here at most one comes every ten minutes, almost three times as often in the Twilight Forest."]},
+        "text": ["From Frontier on, an Apothic Invader can land nearby with a noise, a chat message and a beacon beam, in full enchanted gear. It always drops one affix item of its rarity, named after it. Here at most one comes every ten minutes, two to three times as often in the Twilight Forest."]},
       "es_es": {"title": "Invasores del cielo",
-        "text": ["Desde la Frontera puede caer cerca un Invasor Apótico, con estruendo, mensaje en el chat y un rayo de faro, con equipo encantado completo. Siempre suelta un ítem con afijos de su rareza y con su nombre. Acá llega como mucho uno cada diez minutos, casi tres veces más seguido en el Twilight Forest."]},
+        "text": ["Desde la Frontera puede caer cerca un Invasor Apótico, con estruendo, mensaje en el chat y un rayo de faro, con equipo encantado completo. Siempre suelta un ítem con afijos de su rareza y con su nombre. Acá llega como mucho uno cada diez minutos, entre dos y tres veces más seguido en el Twilight Forest."]},
       "sources": ["jar:Apotheosis-1.21.1-8.7.0.jar:assets/apotheosis/patchouli_books/apoth_chronicle/en_us/entries/adventure/mobs/invaders.json", "jar:Apotheosis-1.21.1-8.7.0.jar:assets/apotheosis/patchouli_books/apoth_chronicle/en_us/entries/adventure/mobs/invader_items.json", "repo:pack/config/apotheosis/apotheosis.cfg#Boss Spawn Cooldown", "jar:Apotheosis-1.21.1-8.7.0.jar:data/apotheosis/data_maps/dimension_type/invader_spawn_rules.json"]
     },
     {
@@ -392,6 +403,52 @@
                  "{page}",
                  "Su primo, el sello de supremacía, sólo sale de Gateways to Eternity, que este pack no incluye."]},
       "sources": ["jar:Apotheosis-1.21.1-8.7.0.jar:dev/shadowsoffire/apotheosis/recipe/MaliceRecipe.class", "jar:Apotheosis-1.21.1-8.7.0.jar:dev/shadowsoffire/apotheosis/affix/AffixHelper.class#applyMalice (1.5x)", "jar:Apotheosis-1.21.1-8.7.0.jar:data/apotheosis/loot_table/entity/boss_drops.json", "jar:Apotheosis-1.21.1-8.7.0.jar:data/apotheosis/apothic_invaders/overworld/zombie.json#bonus_loot", "jar:Apotheosis-1.21.1-8.7.0.jar:data/apotheosis/gateways/endless_invader.json"]
+    },
+    {
+      "key": "aadv_invader_rarity", "role": "tip", "deps": ["aadv_invaders"], "group": "invaders",
+      "task": {"type": "checkmark"},
+      "at": {"x": 3.2, "y": 4.6},
+      "en_us": {"title": "Size up an invader",
+        "text": ["[tip] Look at an invader and Jade names its rarity and lists its boss modifiers. Name and outline wear that rarity's colour, Uncommon to Mythic, and it shows: a Mythic zombie carries 110 to 180 extra health, an Uncommon one 20 to 60."]},
+      "es_es": {"title": "Medí al invasor",
+        "text": ["[tip] Mirá a un invasor y Jade te dice su rareza y lista los modificadores del jefe. El nombre y el contorno llevan el color de esa rareza, de Poco común a Mítico, y se nota: un zombi Mítico trae de 110 a 180 de vida extra; uno Poco común, de 20 a 60."]},
+      "sources": ["jar:Apotheosis-1.21.1-8.7.0.jar:assets/apotheosis/patchouli_books/apoth_chronicle/en_us/entries/adventure/mobs/invaders.json#Invader Rarities", "jar:Apotheosis-1.21.1-8.7.0.jar:dev/shadowsoffire/apotheosis/compat/AdventureHwylaPlugin.class", "jar:Apotheosis-1.21.1-8.7.0.jar:dev/shadowsoffire/apotheosis/util/CommonTooltipUtil.class#appendBossData", "jar:Apotheosis-1.21.1-8.7.0.jar:assets/apotheosis/lang/es_es.json#info.apotheosis.boss_modifiers", "jar:Apotheosis-1.21.1-8.7.0.jar:data/apotheosis/apothic_invaders/overworld/zombie.json#stats", "jar:Jade-1.21.1-NeoForge-15.10.6.jar:META-INF/neoforge.mods.toml"]
+    },
+    {
+      "key": "aadv_elites", "role": "info", "deps": ["aadv_invaders"], "group": "invaders",
+      "task": {"type": "checkmark"},
+      "icon": {"entity": "minecraft:skeleton_horse"},
+      "at": {"x": 9.6, "y": 4.6},
+      "en_us": {"title": "Elites", "subtitle": "They don't ring the doorbell.",
+        "text": ["From Frontier on, a monster may spawn named and empowered, without warning: a Honeyed Archer riding an angry bee, an Undead Knight on a skeleton horse, or in the Nether a Withering Archer trailing a cloud of wither. Some carry an affix item.",
+                 "{page}",
+                 "At Pinnacle, one goat in two hundred is Craig the Eternal: four times the size, 4,096 extra health and a sheep called jeb_ at its side."]},
+      "es_es": {"title": "Élites", "subtitle": "No tocan el timbre.",
+        "text": ["Desde la Frontera, un monstruo puede aparecer con nombre y potenciado, sin aviso: un arquero meloso montado en una abeja furiosa, un caballero no muerto en un caballo esqueleto o, en el Nether, un arquero marchito con una nube de marchitez encima. Algunos llevan un ítem con afijos.",
+                 "{page}",
+                 "En el Pináculo, una cabra de cada doscientas es Craig el Eterno: cuatro veces más grande, 4.096 de vida extra y una oveja llamada jeb_ al lado."]},
+      "sources": ["jar:Apotheosis-1.21.1-8.7.0.jar:assets/apotheosis/patchouli_books/apoth_chronicle/en_us/entries/adventure/mobs/elites.json", "jar:Apotheosis-1.21.1-8.7.0.jar:data/apotheosis/apothic_elites/overworld/honeyed_archer.json", "jar:Apotheosis-1.21.1-8.7.0.jar:data/apotheosis/apothic_elites/overworld/undead_knight.json", "jar:Apotheosis-1.21.1-8.7.0.jar:data/apotheosis/apothic_elites/the_nether/withering_archer.json", "jar:Apotheosis-1.21.1-8.7.0.jar:data/apotheosis/apothic_elites/overworld/craig.json", "jar:Apotheosis-1.21.1-8.7.0.jar:dev/shadowsoffire/apotheosis/mobs/ApothMobEvents.class#EliteRegistry.getRandomItem, Elite.getChance", "jar:Apotheosis-1.21.1-8.7.0.jar:assets/apotheosis/lang/es_es.json#elite.apotheosis.craig"]
+    },
+    {
+      "key": "aadv_boss_music", "role": "secret", "deps": ["aadv_malice"], "group": "invaders", "hide_lines": true,
+      "task": {"any": ["apotheosis:music_disc_flash", "apotheosis:music_disc_glimmer", "apotheosis:music_disc_shimmer"], "title": {"en_us": "One of the three invader discs", "es_es": "Uno de los tres discos de invasor"}},
+      "at": {"x": 9.6, "y": 7.8},
+      "en_us": {"title": "Boss music", "subtitle": "Every fight deserves a soundtrack.",
+        "text": ["Twelve kinds of invader, wolves and evokers among them, roll a richer bonus: a gem, a Sigil of Malice or, one time in twenty, a music disc. Renren's Flash, Caner Crebes' Glimmer or Chamberlain Kaifry's Shimmer."]},
+      "es_es": {"title": "Música de jefe", "subtitle": "Toda pelea merece banda sonora.",
+        "text": ["Doce clases de invasor, entre ellas lobos e invocadores, tiran un bonus más rico: una gema, un sello de malicia o, una vez de cada veinte, un disco de música. Flash de Renren, Glimmer de Caner Crebes o Shimmer de Chamberlain Kaifry."]},
+      "sources": ["jar:Apotheosis-1.21.1-8.7.0.jar:data/apotheosis/loot_table/entity/rare_boss_drops.json", "jar:Apotheosis-1.21.1-8.7.0.jar:data/apotheosis/apothic_invaders/overworld/wolf.json#bonus_loot", "jar:Apotheosis-1.21.1-8.7.0.jar:data/apotheosis/apothic_invaders/the_end/evoker.json#bonus_loot", "jar:Apotheosis-1.21.1-8.7.0.jar:data/apotheosis/tags/item/boss_music_discs.json", "jar:Apotheosis-1.21.1-8.7.0.jar:data/apotheosis/jukebox_song/flash.json", "jar:Apotheosis-1.21.1-8.7.0.jar:data/apotheosis/jukebox_song/glimmer.json", "jar:Apotheosis-1.21.1-8.7.0.jar:data/apotheosis/jukebox_song/shimmer.json", "jar:Apotheosis-1.21.1-8.7.0.jar:assets/apotheosis/lang/en_us.json#jukebox_song.apotheosis.flash"]
+    },
+    {
+      "key": "aadv_invader_worlds", "role": "info", "deps": ["aadv_invaders"],
+      "task": {"type": "checkmark"},
+      "icon": {"entity": "minecraft:blaze"},
+      "at": {"x": 3.2, "y": 11.0},
+      "en_us": {"title": "Invaders abroad",
+        "text": ["The Nether has six invaders of its own, blazes and piglin brutes among them, and they can land anywhere under its roof. The End's five come down only on the outer islands. The Twilight Forest has eight, kobolds and goblin knights among them, two to three times as often as the Overworld."]},
+      "es_es": {"title": "Invasores en otros mundos",
+        "text": ["El Nether tiene seis invasores propios, blazes y piglins brutos entre ellos, y pueden caer en cualquier lugar bajo su techo. Los cinco del End bajan sólo en las islas exteriores. El Twilight Forest tiene ocho, kobolds y caballeros goblin entre ellos, entre dos y tres veces más seguido que el mundo normal."]},
+      "sources": ["jar:Apotheosis-1.21.1-8.7.0.jar:data/apotheosis/apothic_invaders/the_nether/blaze.json", "jar:Apotheosis-1.21.1-8.7.0.jar:data/apotheosis/apothic_invaders/the_nether/piglin_brute.json", "jar:Apotheosis-1.21.1-8.7.0.jar:data/apotheosis/apothic_invaders/the_end/shulker.json", "jar:Apotheosis-1.21.1-8.7.0.jar:data/apotheosis/apothic_invaders/twilight/kobold.json", "jar:Apotheosis-1.21.1-8.7.0.jar:data/apotheosis/apothic_invaders/twilight/goblin_knight.json", "jar:Apotheosis-1.21.1-8.7.0.jar:data/apotheosis/data_maps/dimension_type/invader_spawn_rules.json", "jar:Apotheosis-1.21.1-8.7.0.jar:dev/shadowsoffire/apotheosis/mobs/util/SurfaceType.class#SURFACE_OUTER_END (|x| or |z| > 1024)"]
     },
     {
       "key": "aadv_wither", "role": "boss", "deps": ["aadv_summit"],

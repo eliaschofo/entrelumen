@@ -25,7 +25,7 @@
   "groups": {
     "items": {"label": {"en_us": "Items", "es_es": "Ítems"}, "axis": "x", "caption": "above"},
     "fluids": {"label": {"en_us": "Fluids", "es_es": "Fluidos"}, "axis": "x", "caption": "above"},
-    "chemicals": {"label": {"en_us": "Chemicals and bridges", "es_es": "Químicos y puentes"}, "axis": "x", "caption": "below"},
+    "chemicals": {"label": {"en_us": "Chemicals, bridges and matter", "es_es": "Químicos, puentes y materia"}, "axis": "x", "caption": "below"},
     "teleport": {"label": {"en_us": "Teleportation", "es_es": "Teletransporte"}, "axis": "x", "caption": "left"},
     "qio": {"label": {"en_us": "Quantum Item Orchestration", "es_es": "Orquestación cuántica de ítems"}, "axis": "x", "caption": "above"},
     "mining": {"label": {"en_us": "Robit and mining", "es_es": "Robit y minería"}, "axis": "x", "caption": "below"},
@@ -302,6 +302,40 @@
       "sources": ["jar:mekanisticrouters-1.2.0.jar:data/mekanisticrouters/recipe/chemical_module_mk1.json", "jar:mekanisticrouters-1.2.0.jar:assets/mekanisticrouters/lang/en_us.json#mekanisticrouters.itemText.usage.item.chemical_module_mk1", "jar:mekanisticrouters-1.2.0.jar:assets/mekanisticrouters/lang/en_us.json#mekanisticrouters.itemText.usage.item.chemical_module_mk2", "jar:mekanisticrouters-1.2.0.jar:assets/mekanisticrouters/lang/en_us.json#mekanisticrouters.itemText.usage.item.chemical_refill_module"]
     },
     {
+      "key": "mkl_mm_recycler", "role": "side", "deps": ["mkb_machines", "mkb_compressor"], "group": "chemicals", "sequential": true,
+      "tasks": [{"item": "mekmm:recycler"}, {"item": "mekmm:scrap_box"}],
+      "at": {"x": -24.5, "y": 8.8},
+      "en_us": {"title": "Recycler", "subtitle": "A trash can with benefits.",
+        "text": ["A crusher wrapped in infused alloy, advanced circuits and osmium makes MoreMachine's [item:mekmm:recycler|Recycler]. It eats stone, dirt and substrate: one in six comes out as [item:mekmm:scrap|Scrap], three in seven for substrate, and the rest is gone. The Osmium Compressor packs 64 scrap into a [item:mekmm:scrap_box|Scrap Box]."]},
+      "es_es": {"title": "Reciclador", "subtitle": "Un tacho de basura con beneficios.",
+        "text": ["Un triturador envuelto en aleación infusionada, circuitos avanzados y osmio da el [item:mekmm:recycler|Reciclador] de MoreMachine. Se come piedra, tierra y sustrato: uno de cada seis sale como [item:mekmm:scrap|Chatarra], tres de cada siete si es sustrato, y el resto desaparece. El Compresor de osmio junta 64 de chatarra en una [item:mekmm:scrap_box|Caja de chatarra]."]},
+      "sources": ["jar:mekmm-1.21.1-1.4.1.jar:data/mekmm/recipe/recycler.json", "jar:mekmm-1.21.1-1.4.1.jar:data/mekmm/recipe/recycler/from_stone.json", "jar:mekmm-1.21.1-1.4.1.jar:data/mekmm/recipe/recycler/from_dirt.json", "jar:mekmm-1.21.1-1.4.1.jar:data/mekmm/recipe/recycler/from_substrate.json", "jar:mekmm-1.21.1-1.4.1.jar:data/mekmm/recipe/compressing/scrap_box.json", "jar:mekmm-1.21.1-1.4.1.jar:assets/mekmm/lang/en_us.json#description.mekmm.recycler", "jar:neoforge-21.1.249-universal.jar:data/c/tags/item/stones.json", "repo:pack/kubejs/server_scripts/entrelumen_more_machine_balance.js"]
+    },
+    {
+      "key": "mkl_mm_gas_collector", "role": "side", "deps": ["mkl_chem_tanks"], "group": "chemicals",
+      "task": {"item": "mekmm:ambient_gas_collector"},
+      "at": {"x": -15.5, "y": 8.8},
+      "en_us": {"title": "Ambient Gas Collector", "subtitle": "Bottled nothing.",
+        "text": ["Two atomic alloys, an ultimate pressurized tube, two ultimate chemical tanks, a steel casing and three osmium blocks make the [item:mekmm:ambient_gas_collector|Ambient Gas Collector]. With open air right above it, it draws Unstable Dimensional Gas out of nothing, slowly: about a millibucket a second, faster with speed upgrades."]},
+      "es_es": {"title": "Colector de gas ambiental", "subtitle": "Nada, embotellada.",
+        "text": ["Dos aleaciones atómicas, un tubo presurizado definitivo, dos tanques químicos definitivos, una carcasa de acero y tres bloques de osmio hacen el [item:mekmm:ambient_gas_collector|Colector de gas ambiental]. Con aire libre justo encima, saca Gas dimensional inestable de la nada, despacio: más o menos un milibalde por segundo, más rápido con mejoras de velocidad."]},
+      "sources": ["jar:mekmm-1.21.1-1.4.1.jar:data/mekmm/recipe/ambient_gas_collector.json", "jar:mekmm-1.21.1-1.4.1.jar:com/jerry/mekmm/common/tile/machine/TileEntityAmbientGasCollector.class#suck (air above), ticksRequired 19, SPEED upgrade", "jar:mekmm-1.21.1-1.4.1.jar:com/jerry/mekmm/common/config/MoreMachineGeneralConfig.class#gasCollectAmount (default 1)", "jar:mekmm-1.21.1-1.4.1.jar:assets/mekmm/lang/en_us.json#info.mekmm.jei.unstable_dimensional_gas", "jar:mekmm-1.21.1-1.4.1.jar:assets/mekmm/lang/en_us.json#description.mekmm.ambient_gas_collector"]
+    },
+    {
+      "key": "mkl_mm_crystal", "role": "side", "deps": ["mkl_mm_recycler", "mkl_mm_gas_collector"], "group": "chemicals",
+      "task": {"item": "mekmm:empty_crystal"},
+      "at": {"x": -20, "y": 8.8},
+      "en_us": {"title": "Empty Crystal", "subtitle": "Patience, crystallised.",
+        "text": ["The Pressurized Reaction Chamber turns 64 Scrap Boxes, 10,000 mB of Unstable Dimensional Gas and 10,000 mB of liquid D-T fuel into one [item:mekmm:empty_crystal|Empty Crystal] and 1,000 mB of nuclear waste. Sixty-four crystals and antimatter in the Antiprotonic Nucleosynthesizer make one UU Matter.",
+                 "{page}",
+                 "ENTRELUMEN switches MoreMachine's replicators off, so UU Matter only buys two decorative dolls. The crystal is the trophy; the rest is bragging."]},
+      "es_es": {"title": "Cristal vacío", "subtitle": "Paciencia, cristalizada.",
+        "text": ["La Cámara de reacción presurizada convierte 64 cajas de chatarra, 10.000 mB de Gas dimensional inestable y 10.000 mB de combustible D-T líquido en un [item:mekmm:empty_crystal|Cristal vacío] y 1.000 mB de residuos nucleares. Sesenta y cuatro cristales y antimateria en el Nucleosintetizador antiprotónico dan una Materia UU.",
+                 "{page}",
+                 "ENTRELUMEN apaga los replicadores de MoreMachine, así que la Materia UU sólo compra dos muñecos decorativos. El cristal es el trofeo; lo demás es para presumir."]},
+      "sources": ["jar:mekmm-1.21.1-1.4.1.jar:data/mekmm/recipe/reaction/empty_crystal.json", "jar:mekmm-1.21.1-1.4.1.jar:data/mekmm/recipe/nucleosynthesizing/uu_matter.json", "jar:mekmm-1.21.1-1.4.1.jar:data/mekmm/recipe/compressing/author_doll.json", "jar:mekmm-1.21.1-1.4.1.jar:data/mekmm/recipe/compressing/modeler_doll.json", "jar:mekmm-1.21.1-1.4.1.jar:assets/mekmm/lang/en_us.json#description.mekmm.author_doll", "jar:MekanismGenerators-1.21.1-10.7.19.85.jar:data/c/tags/fluid/fusion_fuel.json", "repo:pack/kubejs/server_scripts/entrelumen_more_machine_balance.js", "repo:pack/kubejs/data/mekmm/data_maps/item/item_replicator.json", "repo:docs/design/more-machine-audit.md"]
+    },
+    {
       "key": "mkl_teleport_core", "role": "step", "deps": ["mkb_mastery"], "group": "teleport",
       "task": {"item": "mekanism:teleportation_core", "count": 2},
       "at": {"x": -4.5, "y": -12.6},
@@ -312,7 +346,7 @@
       "sources": ["jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/teleportation_core.json", "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/teleporter.json", "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/quantum_entangloporter.json", "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/qio_drive_array.json", "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/recipe/digital_miner.json", "jar:Mekanism-1.21.1-10.7.19.85.jar:data/mekanism/advancement/teleportation_core.json"]
     },
     {
-      "key": "mkl_frame", "role": "step", "deps": ["mkb_glowstone", "mkb_obsidian"], "group": "teleport",
+      "key": "mkl_frame", "role": "step", "deps": ["mkb_compressor", "mkb_obsidian"], "group": "teleport",
       "task": {"item": "mekanism:teleporter_frame", "count": 9},
       "at": {"x": 4.5, "y": -12.6},
       "en_us": {"title": "Teleporter Frame",
