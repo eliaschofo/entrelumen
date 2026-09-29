@@ -320,6 +320,41 @@ Cada quest se compila con `quest_engine.quest_copy`, el mismo control que usa el
 - Una pintura grande antes que muchas fichas donde se lee igual: un fondo es una imagen, no un mosaico de 200.
 - Lo que cuestan en FPS y en la sincronización al entrar no está medido. FTB manda todas las imágenes al cliente al entrar y dibuja las de un capítulo abierto en cada cuadro. Queda para la QA del cliente, y hasta entonces los 700 son un techo prudente, no una medición.
 
+### Las familias Create y Mekanism, enteras (28 de septiembre)
+
+Con el kit, las otras seis cadenas de las dos familias del piloto pasaron a la v2. Conservan todas sus claves, tareas, dependencias, recompensas, datos y fuentes; cambian la posición, el dibujo y la forma del texto.
+
+**Texto.** `quest_draft.py` hizo el borrador de las 339 quests. A mano se escribieron 113: sobre todo leads que el borrador dejó sin decidir y listas que no eran paralelas. En el camino, el borrador aprendió cuatro cosas que ahora hace solo:
+- una lista de comas pide ítems parejos;
+- una oración sobre el pack mismo pasa a `[note]`;
+- un secreto conserva su remate entero;
+- cada `[big]` que pone aparece en el reporte, con su motivo.
+
+**Escenas.** Cada familia reusa su escena y cada capítulo toma otra parte:
+- **Create · Contraptions:** un molino de viento en la caverna. El rodamiento es el eje y las cuatro aspas son las cuatro ramas: la tela de vela de Create sube paño por paño con sus quests. El mástil baja hasta los rieles, que se tienden para los dos lados, y la vagoneta que se hace el camino pone el último tramo. Juguete: un barrilete.
+- **Create · Lógica y medición:** la sala de control. Un tablero de tiza en la pared; desde la palanca, dos pistas de redstone se dibujan hasta la consola del final. Cada módulo recibe su panel con su primera quest, y al final aparece un asiento frente a la consola. Juguete: el timbre.
+- **Create · Vías y energía:** la misma pintura de la caverna que Cinética, con la vía de Create tendida delante, quest por quest, y el portal del Nether arriba de ella. La cadena de paquetes cierra su vuelta eslabón por eslabón. El cable de cobre de Crafts & Additions prende sus lámparas y el sol de Heliodor de New Age se enciende al cerrar el círculo. Juguete: el silbato.
+- **Create · Complementos:** el tablero de nueve complementos del subtítulo, hecho tablero de herramientas, con un compartimento por addon. Adentro corre la experiencia líquida hasta el rayo del final, se curva el hipertubo, se junta el aliento de dragón y humea la olla. Juguete: la tarta de experiencia.
+- **Mekanism · Energía y reactores:** la central de la misma planta, en corte, un piso por era. Generadores abajo; vapor y almacenamiento; fisión y el laboratorio de radiación; el CFS y la fusión arriba; en la azotea, la antimateria como un sol chiquito. Cada multibloque está dibujado con sus propios bloques y aparece con su hito. La energía, el vapor y el combustible corren por el edificio, y el cielo se llena de estrellas por era. Juguete: la palanca general.
+- **Mekanism · Logística y equipo:** el ala de logística y la armería de la misma planta. Un transportador con lingotes, caños de agua hasta el tanque dinámico, tubos químicos. El piso cuántico tiene el portal y los racks OEC; el sótano, el minero en la roca; en el medio, la bahía del MekaTraje con el sol. Juguete: fuegos artificiales.
+
+**Los pilotos también arrancan como boceto.** En Cinética, la pintura, el río, la rueda, el eje (que ahora crece tramo por tramo), las cintas, la sala de calderas, el pozo, los estratos, la pizarra, el estante y la mesa llegan con sus quests. En Básico, el edificio, cada piso, las escaleras peldaño por peldaño, el chorro de menas, los caños, la torre, la veta, el anexo, las chimeneas y las estrellas.
+
+**Imágenes y boceto** (`check_guides.py`, el 28/9):
+
+| Capítulo | Imágenes | Visibles al empezar (fuertes) |
+|---|---|---|
+| Create · Cinética | 591 | 3% |
+| Create · Contraptions | 477 | 10% |
+| Create · Lógica y medición | 300 | 5% |
+| Create · Vías y energía | 355 | 4% |
+| Create · Complementos | 307 | 5% |
+| Mekanism · Básico | 430 | 7% |
+| Mekanism · Energía y reactores | 555 | 3% |
+| Mekanism · Logística y equipo | 328 | 4% |
+
+Vistas previas en `E:/Elias/Codex/Entrelumen-ssd/previews/wt-presentation/`: el boceto, el avance (50%) y el final de cada capítulo, más las hojas de paneles de Contraptions.
+
 ### Límites de la v2
 
 - **Nada se vio en el cliente:** las dos fuentes, los glifos de ítems, los sprites animados, las imágenes `item:`, los rótulos girados y los adornos están leídos del código y compilados, y las vistas previas los imitan.
