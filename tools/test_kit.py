@@ -202,12 +202,22 @@ class RenderLock(unittest.TestCase):
         self.assertFalse(self.path.exists())
 
     def test_a_live_owner_makes_the_next_render_wait(self):
-        with self.lock():
+        with self.lock(slots=1):
             ticks = iter(range(0, 10 ** 6, 60))
-            other = self.lock(max_wait=120, clock=lambda: next(ticks))
+            other = self.lock(max_wait=120, clock=lambda: next(ticks), slots=1)
             with self.assertRaises(TimeoutError):
                 other.acquire()
         self.assertTrue(any("waiting" in line for line in self.log))
+
+    def test_two_slots_let_a_second_render_in_and_make_the_third_wait(self):
+        with self.lock(slots=2) as first, self.lock(slots=2) as second:
+            self.assertEqual((first.path.name, second.path.name), ("render.lock", "render.lock.2"))
+            ticks = iter(range(0, 10 ** 6, 60))
+            third = self.lock(max_wait=120, clock=lambda: next(ticks), slots=2)
+            with self.assertRaises(TimeoutError):
+                third.acquire()
+        self.assertFalse(self.path.exists())
+        self.assertFalse(self.path.with_name("render.lock.2").exists())
 
     def test_a_dead_owner_is_cleared(self):
         self.path.mkdir()
@@ -227,7 +237,8 @@ class RenderLock(unittest.TestCase):
     def test_waits_while_memory_is_short(self):
         reads = iter([1 * 2 ** 30, 1.2 * 2 ** 30, 2 * 2 ** 30])
         slept = []
-        free = render_lock.wait_for_memory(read=lambda: next(reads), sleep=slept.append, log=self.log.append)
+        free = render_lock.wait_for_memory(read=lambda: next(reads), sleep=slept.append, log=self.log.append,
+                                           minimum=int(1.5 * 2 ** 30))
         self.assertEqual((free, len(slept)), (2 * 2 ** 30, 2))
         ticks = iter(range(0, 10 ** 6, 600))
         with self.assertRaises(TimeoutError):

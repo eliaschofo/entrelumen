@@ -1,14 +1,15 @@
-"""One preview render at a time on this PC, and none while RAM is short.
+"""At most two preview renders at a time on this PC (ENTRELUMEN_RENDER_SLOTS), and none while RAM is short.
 
 The PC has 16 GB for five or six working sessions, so previews queue: a render takes the lock folder
-E:/Elias/Codex/Entrelumen-ssd/render.lock (ENTRELUMEN_RENDER_LOCK overrides it) with os.mkdir, which either
-creates it or fails, atomically. Inside goes owner.json: process id and start time, host, working folder,
+E:/Elias/Codex/Entrelumen-ssd/render.lock (ENTRELUMEN_RENDER_LOCK overrides it), or the next free slot folder
+render.lock.2 and so on, with os.mkdir, which either creates it or fails, atomically. A Pillow render peaks near
+200 MB, so two slots fit (29/9: one slot left writers queuing half an hour). Inside goes owner.json: process id and start time, host, working folder,
 command and since when. The lock is released on exit: the context manager, atexit, and SIGINT, SIGTERM and
 SIGBREAK turned into a normal exit. A process killed outright cannot release, so a lock whose owner process is
 gone (or is another process with the same id) is stale, and the next render clears it: its owner.json and the
 empty folder, nothing else. A lock folder that holds anything else, or is a link, is left alone and reported.
 
-Before each chapter, a render also waits while free memory is under 1.5 GB: MemFree of /proc/meminfo where it
+Before each chapter, a render also waits while free memory is under 0.8 GB: MemFree of /proc/meminfo where it
 exists (Linux, Git Bash), else Windows' available physical memory (what Git Bash's /proc/meminfo calls MemFree).
 The renderer is Pillow only: it never starts a browser.
 """
@@ -24,9 +25,10 @@ from pathlib import Path
 
 LOCK = Path(os.environ.get("ENTRELUMEN_RENDER_LOCK", "E:/Elias/Codex/Entrelumen-ssd/render.lock"))
 OWNER = "owner.json"
-MIN_FREE = int(1.5 * 2 ** 30)
+MIN_FREE = int(0.8 * 2 ** 30)
 POLL = 5.0
-MAX_WAIT = 30 * 60
+MAX_WAIT = 60 * 60
+SLOTS = max(1, int(os.environ.get("ENTRELUMEN_RENDER_SLOTS", "2")))
 YOUNG = 60.0   # a lock folder without owner.json may be a render writing it: wait this long before calling it stale
 
 
@@ -133,8 +135,11 @@ class LockError(RuntimeError):
 
 
 class RenderLock:
-    def __init__(self, path=LOCK, max_wait=MAX_WAIT, poll=POLL, log=print, sleep=time.sleep, clock=time.monotonic):
-        self.path = Path(path)
+    def __init__(self, path=LOCK, max_wait=MAX_WAIT, poll=POLL, log=print, sleep=time.sleep, clock=time.monotonic,
+                 slots=SLOTS):
+        base = Path(path)
+        self.slots = [base] + [base.with_name(f"{base.name}.{i}") for i in range(2, max(1, slots) + 1)]
+        self.path = base
         self.max_wait, self.poll, self.log, self.sleep, self.clock = max_wait, poll, log, sleep, clock
         self.held = False
         self.owner = None
@@ -189,31 +194,43 @@ class RenderLock:
         start = self.clock()
         told = False
         while True:
-            try:
-                os.mkdir(self.path)
-            except FileExistsError:
-                self._guard()
-                seen = self.read_owner()
-                if self.stale():
-                    self.clear_stale(seen)
-                    continue
-                waited = self.clock() - start
-                if waited >= self.max_wait:
-                    raise TimeoutError(f"render: {self.path} still held after {waited / 60:.0f} min by {describe(seen)}")
-                if not told:
-                    self.log(f"render: waiting for {describe(seen)} to finish")
-                    told = True
-                self.sleep(self.poll)
-                continue
-            self.owner = {"pid": os.getpid(), "started": process_start(os.getpid()), "host": socket.gethostname(),
-                          "cwd": os.getcwd(), "command": " ".join(sys.argv)[:300],
-                          "since": time.strftime("%Y-%m-%d %H:%M:%S")}
-            tmp = self.path / f"{OWNER}.tmp"
-            tmp.write_text(json.dumps(self.owner), encoding="utf-8")
-            os.replace(tmp, self.path / OWNER)
-            self.held = True
-            atexit.register(self.release)
-            return self
+            for slot in self.slots:
+                self.path = slot
+                try:
+                    os.mkdir(slot)
+                except FileExistsError:
+                    self._guard()
+                    seen = self.read_owner()
+                    if self.stale():
+                        self.clear_stale(seen)
+                        try:
+                            os.mkdir(slot)
+                        except FileExistsError:
+                            continue
+                    else:
+                        continue
+                return self._take()
+            self.path = self.slots[0]
+            seen = self.read_owner()
+            waited = self.clock() - start
+            if waited >= self.max_wait:
+                raise TimeoutError(f"render: {len(self.slots)} render slot(s) still held after {waited / 60:.0f} min, "
+                                   f"the first by {describe(seen)}")
+            if not told:
+                self.log(f"render: all {len(self.slots)} slot(s) busy, the first with {describe(seen)}: waiting")
+                told = True
+            self.sleep(self.poll)
+
+    def _take(self):
+        self.owner = {"pid": os.getpid(), "started": process_start(os.getpid()), "host": socket.gethostname(),
+                      "cwd": os.getcwd(), "command": " ".join(sys.argv)[:300],
+                      "since": time.strftime("%Y-%m-%d %H:%M:%S")}
+        tmp = self.path / f"{OWNER}.tmp"
+        tmp.write_text(json.dumps(self.owner), encoding="utf-8")
+        os.replace(tmp, self.path / OWNER)
+        self.held = True
+        atexit.register(self.release)
+        return self
 
     def release(self):
         if not self.held:
