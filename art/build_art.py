@@ -41,6 +41,15 @@ ITEMS += list(ANIMATED) + sorted(HANDHELD) + ['luminous_helmet', 'luminous_chest
 # The ten key pieces of the Heliodor ruins (art/authoring/draw_key_pieces.py).
 ITEMS += ['signal_ember', 'terra_blueprint', 'route_seal', 'mother_seed', 'heliodor_crucible', 'voices_eyepiece',
           'forest_testimony', 'sun_key', 'sacred_flame', 'star_chart']
+# Terra's hydroponic garden (art/authoring/draw_terra_garden.py): the plan, the grow lamp (animated, frametime 2
+# like the luminosities) and two blocks, the trough (cube_bottom_top) and the core (orientable, three looks).
+ITEMS += ['terra_garden_plan']
+ANIMATED['terra_grow_lamp'] = 8
+ITEMS += ['terra_grow_lamp']
+TERRA_TROUGH = ('hydroponic_trough', 'hydroponic_trough_top', 'hydroponic_trough_bottom')
+TERRA_CORE_FRONTS = {'unbuilt': 'terra_garden_core_front', 'built': 'terra_garden_core_front_built',
+                     'growing': 'terra_garden_core_front_growing'}
+TERRA_CORE_FACES = ('terra_garden_core', 'terra_garden_core_top', 'terra_garden_core_bottom')
 ARMOR_LAYERS = ['luminous_layer_1', 'luminous_layer_2']   # 64x32 PNG sources in art/armor/
 COMPASS_DIMENSIONS = ['overworld', 'nether', 'end', 'aether', 'twilight', 'other']   # entrelumen:dimension 0..5
 # Enchanting shelves (cube_column: side + end) and the Atlas Library (cube_bottom_top).
@@ -74,6 +83,7 @@ ENVES_STATES = {                                              # state -> (model,
     'enves_glyph': {'glyph=%d' % i: ('enves_glyph_%d' % i, 0) for i in range(4)},
 }
 BLOCKS += ENVES_TEXTURES
+BLOCKS += list(TERRA_TROUGH) + list(TERRA_CORE_FACES) + list(TERRA_CORE_FRONTS.values())
 
 COMPONENT_NAMES = {
     'calibration_frame': ('Calibration Frame', 'Marco de calibración'),
@@ -168,8 +178,8 @@ def expected():
         out[('pack', f'textures/{key}.png')] = data
         out[('mod', f'textures/{key}.png')] = data
         if key in strips:
-            anim = (FIRE_ANIMATION if key.startswith('item/luminosity_') else FLAME_ANIMATION if key.startswith('block/')
-                    else ANIMATION)
+            anim = (FIRE_ANIMATION if key.startswith(('item/luminosity_', 'item/terra_grow_lamp'))
+                    else FLAME_ANIMATION if key.startswith('block/') else ANIMATION)
             out[('pack', f'textures/{key}.png.mcmeta')] = js(anim)
             out[('mod', f'textures/{key}.png.mcmeta')] = js(anim)
     # Heliodor compass: 32 traced vanilla frames per destination colour (art/authoring/trace_compass.py).
@@ -233,6 +243,30 @@ def expected():
             out[(dest, f'models/block/{name}.json')] = js(model)
             out[(dest, f'models/item/{name}.json')] = js({'parent': 'entrelumen:block/' + name})
         out[('mod', f'blockstates/{name}.json')] = js({'variants': {'': {'model': 'entrelumen:block/' + name}}})
+    # Terra's garden: the trough is one cube; the core is orientable (its lamp on the front) with three looks.
+    side, top, bottom = TERRA_TROUGH
+    trough = js({'parent': 'minecraft:block/cube_bottom_top', 'textures': {
+        'side': 'entrelumen:block/' + side, 'top': 'entrelumen:block/' + top, 'bottom': 'entrelumen:block/' + bottom}})
+    for dest in ('pack', 'mod'):
+        out[(dest, 'models/block/hydroponic_trough.json')] = trough
+        out[(dest, 'models/item/hydroponic_trough.json')] = js({'parent': 'entrelumen:block/hydroponic_trough'})
+    out[('mod', 'blockstates/hydroponic_trough.json')] = js({'variants': {'': {'model': 'entrelumen:block/hydroponic_trough'}}})
+    side, top, bottom = TERRA_CORE_FACES
+    core_models = {}
+    for state, front in TERRA_CORE_FRONTS.items():
+        name = 'terra_garden_core' + ('' if state == 'unbuilt' else '_' + state)
+        core_models[state] = name
+        model = js({'parent': 'minecraft:block/orientable_with_bottom', 'textures': {
+            'front': 'entrelumen:block/' + front, 'side': 'entrelumen:block/' + side,
+            'top': 'entrelumen:block/' + top, 'bottom': 'entrelumen:block/' + bottom}})
+        for dest in ('pack', 'mod'):
+            out[(dest, f'models/block/{name}.json')] = model
+    for dest in ('pack', 'mod'):
+        out[(dest, 'models/item/terra_garden_core.json')] = js({'parent': 'entrelumen:block/terra_garden_core_growing'})
+    turns = {'north': 0, 'east': 90, 'south': 180, 'west': 270}
+    out[('mod', 'blockstates/terra_garden_core.json')] = js({'variants': {
+        f'facing={facing},garden={state}': dict({'model': 'entrelumen:block/' + model}, **({'y': y} if y else {}))
+        for facing, y in turns.items() for state, model in core_models.items()}})
     return images, out, strips
 
 
