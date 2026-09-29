@@ -756,7 +756,7 @@ Familia `catalog/families/pingpong5-aeronautics.json`: 3 JARs. El lock pasa a **
 - **Carry On:** `aeronautics:*`, `simulated:*`, `offroad:*` y `sable:*`.
 - **Primer ingreso:** ningún regalo (`tools/audit_first_join.py`).
 - **GameTests:** `pingponground5aeronauticsloaded` (los seis mods cargados, contando el paquete, Sable y el addon, y el ensamblador con el núcleo). `carryonrefusesround5blocks` suma el ensamblador, el cojinete de hélice y el soporte de rueda.
-- **Costo:** pendiente de medir, con el método de la ronda (misma semilla, generación de chunks, ticks y memoria) contra los lotes 1 a 6. Queda o sale con esos números; decide Elias.
+- **Costo:** diferido a la fase final de pruebas (Elias 29/9); se mide con el método de la ronda (misma semilla, generación de chunks, ticks y memoria) contra los lotes 1 a 6. Queda o sale con esos números; decide Elias.
 - **Ganchos para las quests** (si se queda): ensamblador físico (`simulated:physics_assembler`), cojinete de hélice (`aeronautics:propeller_bearing`), quemador y globo (`aeronautics:adjustable_burner`, `aeronautics:white_envelope`), levitita (`aeronautics:levitite`), volante y acelerador (`simulated:steering_wheel`, `simulated:throttle_lever`), mesa de navegación (`simulated:navigation_table`), soporte de rueda (`offroad:wheel_mount`) y conector de acople (`simulated:docking_connector`).
 
 ### Ganchos para las quests (lotes 1 a 4)
@@ -775,12 +775,13 @@ No se tocó contenido de quests. Los lotes 5 y 7 tienen su propia lista más arr
 - **FindMe** (lote 2): saca ítems de contenedores ajenos sin abrirlos ni preguntarle a FTB Chunks.
 - **El teleposer de Neo Vitae** (lote 5), con sus focos y el Sigilo de Teleposición: intercambia bloques sin evento de protección. El resto de Neo Vitae entra.
 
-### Rendimiento y QA (pendiente)
+### Rendimiento y QA (diferidos a la fase final de pruebas, Elias 29/9)
 
-Todo lo de runtime corre junto, con el lock del servidor de QA, cuando la máquina tenga RAM. El plan está en `mods-r5-20260927/runtime_all.sh` (recibos fuera del repo):
+Regla de Elias del 29/9: todas las pruebas en juego y de runtime pasan al final del proyecto, y el resto avanza sin ellas. La rama se mergea sin la QA de servidor ni las mediciones. Lo de abajo queda listo para esa fase: corre junto, con el lock del servidor de QA, cuando la máquina tenga RAM. El plan está en `mods-r5-20260927/runtime_all.sh` (recibos fuera del repo):
 
 - **QA** del final de la rama (rondas 6 y 7 incluidas): arranque completo y las GameTests de las rondas 5 a 7. En QA, una línea de Neruina cuenta como error.
 - **Rendimiento**, con el método de la ronda 4: servidor dedicado, semilla 71942026, 90 s en reposo y cuatro sondas de 256 chunks (Overworld dos veces, Nether y End). Se compara en orden ABBA: la base de `main`, los lotes 1 a 6, más Aeronautics y el final de la rama con las rondas 6 y 7 (ahí entran el mundo de Familiars y las menas de Agradditions). El script toma cada estado de la rama misma, así que un rebase no lo desactualiza.
+- **Las 15 GameTests listas** para esa fase (`runtime_all.sh`): pingponground5robustnessloaded, nannycancelsnandamage, pingponground5informationloaded, rightclickharvestrespectsforeignclaims, pingponground5compatloaded, carryonrefusesround5blocks, pingponground5techloaded, pingponground5neovitaeloaded, pingponground5aeronauticsloaded, pingponground6loaded, ironssummonsspareftbteammates, pingponground7loaded, carryonrefusesround7blocks, squatgrowadvanceswheatbutnotmysticalcrops, hardcorerevivaldownsandrescuesincoop.
 - **Arranque de humo del 27/9:** se probó con `-Xmx3584M` y 4,6 GB libres. Todos los mods de los lotes 1 a 5 cargaron y el arranque llegó a la carga de datapacks, pero a los 112 s la RAM libre bajó de 700 MB y el guardián cortó el servidor. El pack completo pide unos 6 a 7 GB libres para arrancar con 4 GB de heap.
 
 ### Pendiente para Elias
@@ -849,7 +850,7 @@ Los mods de contenido aprobados de la [búsqueda hacia afuera](../research/mod-o
   - Integrated Farming: cosechadora de vacío (`create_integrated_farming:vacuum_harvester`), red de pesca (`create_integrated_farming:fishing_net`) y gallinero (`create_integrated_farming:roost`).
   - Familiars: libro de familiares (`alshanex_familiars:familiar_spellbook`), cama y almacén de familiares (`alshanex_familiars:pet_bed`, `alshanex_familiars:familiar_storage`) y la estación de encogimiento (`alshanex_familiars:shrinking_station`).
   - Ars Affinity: no tiene ítems propios que pedir; una quest puede explicar la habilidad en Mouse 4.
-- **Runtime (pendiente):** corre junto con el de la ronda 5 (ver «Rendimiento y QA»). El arranque confirma los mixins de Ars Affinity e Irons Spell N FTB Teams, y la pregeneración mide el mundo de Familiars.
+- **Runtime (diferido a la fase final de pruebas, Elias 29/9):** corre junto con el de la ronda 5 (ver «Rendimiento y QA»). El arranque confirma los mixins de Ars Affinity e Irons Spell N FTB Teams, y la pregeneración mide el mundo de Familiars.
 
 ## Ronda 7 (28/9): las preguntas de la búsqueda hacia afuera
 
@@ -945,6 +946,14 @@ Pedido de Elias: «me gustaría que haya TWERK pero tipo x5 veces más lento y n
 - **GameTests:** `pingponground7loaded` lee la config cargada por el mod (los siete valores y cuatro entradas de la lista), y `squatgrowadvanceswheatbutnotmysticalcrops` hace que un jugador de prueba se agache 400 veces (`SquatAction.performAction`, lo que llama el mixin de agacharse) junto a un trigo y a un cultivo de inferium: el trigo tiene que avanzar y el de Mystical Agriculture quedarse en edad 0.
 - **Ganchos para las quests:** ninguno propio; una quest de casilla puede enseñar el «twerk» en el capítulo de granja.
 
+### Industrialization Overdrive: ya estaba, se queda en 1.12.2
+
+Ya entró en el lote 4 (1.12.2, de la instancia de ATM10); no hay que sumarlo. Se revisó si convenía subir a la 1.14.0, la última (13/9), y se decidió **quedarse en 1.12.2**:
+
+- **Compatibilidad con nuestro Modern Industrialization 2.5.6:** las tres versiones la declaran. La 1.12.2 pide MI `[2.4.2,2.6)` y Tesseract API `[1.12.0,1.13)`; la 1.13.0 y la 1.14.0 piden MI `[2.5.4,2.6)` y Tesseract `[1.12.16,1.13)`. Tesseract 1.12.16 está en el lock. Ninguna necesita un arreglo nuestro.
+- **La 1.14.0 no arregla nada que necesitemos y trae contenido sin revisar:** una máquina nueva (el apilador de mejoras, con su receta), 21 clases más, la receta de la terminal cambiada y la del ensamblador de la terminal quitada. Sube la superficie del lote 4 sin un motivo; la 1.13.0 ni siquiera está en Modrinth. Regla de la ronda: un pin de un pack de referencia primero, y uno más nuevo sólo si arregla algo.
+- **Extended Industrialization 1.16.2 y Tesseract API 1.12.16** están en el lock, de los dos lados. Subir a la 1.14.0 queda como opción para la fase final, con las recetas nuevas revisadas.
+
 ### Animus, pospuesto
 
 Elias lo aprobó a condición de que se arregle el crash del cliente en multijugador, y no está arreglado. En 5.2.13, la última de 1.21.1, `ItemSpearBound.hurtEnemy` llama a `consumeEV` antes de mirar si corre en el cliente, y `consumeEV` usa la red de sangre que `getAnima` devuelve nula en un cliente conectado a un servidor (leído con `javap`; [TeamDman/Animus#156](https://github.com/TeamDman/Animus/issues/156), abierto el 27/9; la rama 1.21.1 no tiene commits desde el 14/9). Se revisa con la próxima versión. Si entra, también hay que resolver su sigilo que acelera bloques ×32.
@@ -961,4 +970,4 @@ Create Big Cannons, Brewin' and Chewin', Better Fusion Reactor, Mekanism Nuclear
   - `squatgrowadvanceswheatbutnotmysticalcrops`, de arriba;
   - `hardcorerevivaldownsandrescuesincoop`: con dos jugadores de prueba conectados, un golpe letal deja caído al primero, vivo; el segundo lo levanta por el camino de rescate del propio mod.
 - `tools/test_family_balance.py` suma los dos tests de arriba. Pasan las familias (14), el diseño de recetas, el lock de los dos lados y la compilación de las GameTests. Ninguno de los tres regala nada al primer ingreso.
-- El runtime entra en la misma cola que las rondas 5 y 6.
+- El runtime entra en la misma cola que las rondas 5 y 6, diferida a la fase final de pruebas (Elias 29/9).
