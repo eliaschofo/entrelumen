@@ -109,10 +109,10 @@ class QuestBook(unittest.TestCase):
         # since the Ars guides became the Ars sector chapter (its archwood task names the log), the
         # Mekanism guides the Mekanism sector chapters (their steel task names IE's ingot), the Aether
         # guide the Aether chains (the Moa egg is the aether:obtain_egg advancement) and the Occultism
-        # guides the Occultism sector chapters (the first ritual is its advancement now).
+        # guides the Occultism sector chapters (the first ritual is its advancement now), and the last one
+        # left since the Tombstone guide became the Tombstone chain (29/9): no guide has a tag task now.
         tagged = {q['key']: q['item'] for g in self.guides for q in g['quests'] if 'tag' in q}
-        self.assertEqual(tagged['tombstone_graves'], 'tombstone:dark_marble')
-        self.assertEqual(len(tagged), 1)
+        self.assertEqual(tagged, {})
 
     def test_story_node_grammar(self):
         # Hito hexagon 2, act finale hexagon 3, observed journey octagon 2, task square 1,
@@ -302,7 +302,9 @@ class QuestBook(unittest.TestCase):
 
     def test_guide_without_concrete_item_rejected(self):
         guides = copy.deepcopy(self.guides)
-        quest = next(q for g in guides for q in g['quests'] if q['key'] == 'tombstone_graves')
+        # No guide keeps a tag task since 29/9, so make one: a tag without its concrete item must fail.
+        quest = next(q for g in guides for q in g['quests'] if 'item' in q)
+        quest['tag'] = 'c:ingots/iron'
         del quest['item']
         with self.assertRaisesRegex(AssertionError, 'concrete item'):
             generate_book(self.story, guides, self.book)
