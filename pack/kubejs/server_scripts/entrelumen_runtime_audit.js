@@ -1991,6 +1991,7 @@ const entrelumenAuditTargets = {
     "forbidden_arcanus:ender_pearl_fragment",
     "forbidden_arcanus:eternal_stella",
     "forbidden_arcanus:ferrognetic_mixture",
+    "forbidden_arcanus:forbiddenomicon",
     "forbidden_arcanus:fungyss",
     "forbidden_arcanus:gilded_chiseled_polished_darkstone",
     "forbidden_arcanus:golden_dragon_scale",
@@ -4355,6 +4356,7 @@ const entrelumenAuditTargets = {
     "occultism:spirit_attuned_crystal",
     "occultism:spirit_attuned_gem",
     "occultism:spirit_grindstone",
+    "occultism:spirit_lantern",
     "occultism:stable_wormhole",
     "occultism:storage_controller",
     "occultism:storage_controller_stabilized",
@@ -5789,7 +5791,7 @@ const entrelumenAuditTargets = {
       "output": "farmersdelight:flint_knife"
     }
   ],
-  "signature": "347b159e08cd40dc"
+  "signature": "9b53c94e8588ef5c"
 };
 
 ServerEvents.afterRecipes(event => {
