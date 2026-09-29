@@ -3291,6 +3291,7 @@ const entrelumenAuditTargets = {
     "minecraft:campfire",
     "minecraft:candle",
     "minecraft:carrot",
+    "minecraft:carved_pumpkin",
     "minecraft:chest",
     "minecraft:chiseled_tuff",
     "minecraft:chorus_flower",
@@ -5635,7 +5636,7 @@ const entrelumenAuditTargets = {
       "output": "farmersdelight:flint_knife"
     }
   ],
-  "signature": "e1dc1ad566b7dcdd"
+  "signature": "8a542e9baa1540f0"
 };
 
 ServerEvents.afterRecipes(event => {
