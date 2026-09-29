@@ -14,7 +14,8 @@
   "entry": "farming_fields_knife",
   "links": [
     {"target": "exchange_nursery", "at": {"x": 13.2, "y": 0.0}},
-    {"target": "entrelumen_altars_growth", "at": {"x": 11.8, "y": 21.6}}
+    {"target": "entrelumen_altars_growth", "at": {"x": 11.8, "y": 21.6}},
+    {"target": "farming_fields_pots", "at": {"x": 5.6, "y": -6.6}}
   ],
   "art": [
     {"id": "horizon", "picture": "herbsandharvest:textures/gui/guide/chapters/intro/crops.png", "x": 1.0, "y": -14.97, "w": 27.0, "h": 13.94, "alpha": 200, "order": -9, "reveal": "farming_fields_fd_crops", "sketch": true},
@@ -953,38 +954,6 @@
       "es_es": {"title": "Vender el excedente",
         "text": ["[tip] Los granjeros aldeanos novatos y aprendices a veces compran cosechas de Farmer's Delight, y el comerciante errante a veces vende sus semillas."]},
       "sources": ["jar:FarmersDelight-1.21.1-1.3.3.jar:vectorwing/farmersdelight/common/Configuration.class#enableFarmerFDTrades", "jar:FarmersDelight-1.21.1-1.3.3.jar:vectorwing/farmersdelight/common/Configuration.class#enableWanderingTraderFDTrades"]
-    },
-    {
-      "key": "farming_fields_pots", "role": "side", "deps": ["farming_fields_market"],
-      "task": {"item": "botanypots:terracotta_botany_pot"},
-      "at": {"x": 5.6, "y": -6.6},
-      "en_us": {"title": "A farm in a pot", "subtitle": "Farming, apartment edition.",
-        "text": ["[lead] A [item:botanypots:terracotta_botany_pot|Botany Pot] grows a crop or a sapling without a field.",
-                 "Soil and seed in, harvest out; its tooltip shows the time and yield.",
-                 "A [item:botanypots:terracotta_hopper_botany_pot|Hopper Botany Pot] drops the harvest into the container below."]},
-      "es_es": {"title": "Una granja en una maceta", "subtitle": "Agricultura, versión departamento.",
-        "text": ["[lead] Una [item:botanypots:terracotta_botany_pot|Maceta botánica] cultiva una planta o un brote sin campo.",
-                 "Tierra y semilla adentro, cosecha afuera; el tooltip muestra el tiempo y el rendimiento.",
-                 "Una [item:botanypots:terracotta_hopper_botany_pot|Maceta botánica con tolva] deja la cosecha en el contenedor de abajo."]},
-      "sources": ["jar:botanypots-neoforge-1.21.1-21.1.44.jar:assets/botanypots/lang/en_us.json", "repo:docs/design/quest-coverage-plan.md"]
-    },
-    {
-      "key": "farming_fields_pot_tiers", "role": "side", "deps": ["farming_fields_pots"],
-      "task": {"item": "botanypotstiers:elite_upgrade"},
-      "at": {"x": 8.2, "y": -6.6},
-      "en_us": {"title": "Pot tiers by act",
-        "text": ["[lead] Better pots cost the act's component, once per tier.",
-                 "[li] Elite: a Propagation Core (III)",
-                 "[li] Ultra: an Ecosystem Capsule (IV)",
-                 "[li] Mega: a Renewal Engine (V)",
-                 "An upgrade applied to a placed pot of the tier below keeps what is in it."]},
-      "es_es": {"title": "Niveles de maceta por acto",
-        "text": ["[lead] Las macetas mejores cuestan el componente del acto, una vez por nivel.",
-                 "[li] Elite: un Núcleo de propagación (III)",
-                 "[li] Ultra: una Cápsula de ecosistema (IV)",
-                 "[li] Mega: un Motor de renovación (V)",
-                 "La mejora aplicada a una maceta puesta del nivel anterior conserva lo que tiene adentro."]},
-      "sources": ["repo:docs/design/resource-balance.md", "repo:pack/kubejs/server_scripts/entrelumen_resource_balance.js", "jar:botanypotstiers-neoforge-1.21.1-7.0.11.jar:assets/botanypotstiers/lang/en_us.json"]
     },
     {
       "key": "ffc_nether_soil", "role": "side", "deps": ["farming_fields_rich_soil"], "sequential": true,
