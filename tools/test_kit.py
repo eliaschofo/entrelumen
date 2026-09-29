@@ -69,6 +69,17 @@ class Draft(unittest.TestCase):
         self.assertEqual(q["es_es"]["text"], ["[lead] Un reactor da energía.", "[careful] Pasado el [hl|100%] explota."])
         self.assertEqual(d.stats["careful"], 1)
 
+    def test_pack_changes_become_notes(self):
+        q, d = draft(quest(["A motor turns current into rotation. Pack change: the advanced one takes a Reinforced Alloy (act III)."],
+                           ["Un motor vuelve la corriente rotación. Cambio del pack: el avanzado pide una Aleación reforzada (acto III)."]))
+        self.assertEqual(q["en_us"]["text"], ["[lead] A motor turns current into rotation.",
+                                              "[note] The advanced one takes a Reinforced Alloy (act III)."])
+        self.assertEqual(q["es_es"]["text"][1], "[note] El avanzado pide una Aleación reforzada (acto III).")
+        self.assertEqual(d.stats["note"], 1)
+        # a recipe that merely names an act material stays in the text
+        q, _ = draft(quest(["Iron and a Frame (act II) make it. It hums."], ["Hierro y un Marco (acto II) lo arman. Zumba."]))
+        self.assertNotIn("[note]", " ".join(q["en_us"]["text"]))
+
     def test_icons_only_for_flat_items(self):
         flat = {"m:flat": "m:textures/item/flat.png"}.get
         q, _ = draft(quest(["Two parts make it. [item:m:flat|Gear] goes first. [item:m:cube|Block] goes next. Done then."],
