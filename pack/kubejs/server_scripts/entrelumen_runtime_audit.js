@@ -3477,6 +3477,7 @@ const entrelumenAuditTargets = {
     "minecraft:lodestone",
     "minecraft:magma_block",
     "minecraft:map",
+    "minecraft:minecart",
     "minecraft:moss_block",
     "minecraft:mossy_cobblestone",
     "minecraft:mossy_stone_bricks",
@@ -3531,7 +3532,6 @@ const entrelumenAuditTargets = {
     "minecraft:redstone_lamp",
     "minecraft:redstone_torch",
     "minecraft:reinforced_deepslate",
-    "minecraft:repeater",
     "minecraft:rotten_flesh",
     "minecraft:saddle",
     "minecraft:sand",
@@ -5789,7 +5789,7 @@ const entrelumenAuditTargets = {
       "output": "farmersdelight:flint_knife"
     }
   ],
-  "signature": "93e9001f881f7ed7"
+  "signature": "347b159e08cd40dc"
 };
 
 ServerEvents.afterRecipes(event => {
