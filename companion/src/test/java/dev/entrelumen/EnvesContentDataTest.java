@@ -224,6 +224,6 @@ class EnvesContentDataTest {
           "placeholders differ in " + key);
     }
     assertEquals("Esquirla de luz agria", es.get("item.entrelumen.sour_light_shard"));
-    assertEquals("Wither blanco", es.get("entity.entrelumen.white_wither"));
+    assertEquals("La Luz Agria", es.get("entity.entrelumen.white_wither"));
   }
 }

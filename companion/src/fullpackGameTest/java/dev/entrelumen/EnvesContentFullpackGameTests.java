@@ -37,7 +37,7 @@ import net.neoforged.neoforge.registries.NeoForgeRegistries;
  * QA-JAR-only checks of the Envés's content with the whole pack: every echo of the tables is a live
  * mob of its mod, a floor I fight fills with Cataclysm's draugr (not their vanilla fallbacks) that
  * Apotheosis's tier augments leave alone, the chests give Apotheosis affix gear and gems at the
- * attempt's rarity, and the boss chest that rises when the White Wither falls is Lootr's.
+ * attempt's rarity, and the boss chest that rises when the Sour Light falls is Lootr's.
  */
 @GameTestHolder("entrelumen")
 @PrefixGameTestTemplate(false)
@@ -205,7 +205,7 @@ public final class EnvesContentFullpackGameTests {
             var run = EnvesRuns.get(player.server).run(attempt.id);
             if (!run.bossSpawned) return;
             var boss = EnvesEchoes.find(run.boss).orElse(null);
-            helper.assertTrue(boss instanceof WhiteWither, "no White Wither");
+            helper.assertTrue(boss instanceof WhiteWither, "no Sour Light");
             ((WhiteWither) boss).kill();
             stage.set(3);
           }

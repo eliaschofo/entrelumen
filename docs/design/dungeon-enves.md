@@ -9,7 +9,7 @@ Plano del controlador, 26 de septiembre de 2026. Pedido de Elias:
 - loot que escala con la dificultad y que obliga a equiparse: nada de «refined obsidian y listo»;
 - pocos enemigos fuertes y divertidos, nada de tormentas de entidades ni spawners, y nada de basura en el inventario.
 
-**Estado (27/9).** El motor está hecho: la dimensión, el intento con su ofrenda y su bolsa de caídas, el generador en Java, las plantillas de Osarios con marcadores, la colocación por ticks, las reglas y el mapa con niebla ([El motor](#el-motor)). La primera iteración del contenido también: ecos con afijos, campeones de escalera, santuarios, sellos en tres variantes, cerraduras de bóveda, loot con Apotheosis y esquirlas de luz agria, el Wither blanco y la ofrenda de estrella o esquirlas ([Contenido construido](#contenido-construido-279)). Cisternas, Fundición, Geodas y El Eclipse usan por ahora las salas de Osarios con una paleta provisoria; otro worker dibuja su arte.
+**Estado (27/9).** El motor está hecho: la dimensión, el intento con su ofrenda y su bolsa de caídas, el generador en Java, las plantillas de Osarios con marcadores, la colocación por ticks, las reglas y el mapa con niebla ([El motor](#el-motor)). La primera iteración del contenido también: ecos con afijos, campeones de escalera, santuarios, sellos en tres variantes, cerraduras de bóveda, loot con Apotheosis y esquirlas de luz agria, la Luz Agria y la ofrenda de estrella o esquirlas ([Contenido construido](#contenido-construido-279)). Cisternas, Fundición, Geodas y El Eclipse usan por ahora las salas de Osarios con una paleta provisoria; otro worker dibuja su arte.
 
 - `art/dungeon/drlg.py` es el oráculo del generador y dibuja el plano de revisión;
 - `art/dungeon/tiles.py` hace las salas y sus marcadores; `tools/export_enves_tiles.py` las escribe como NBT.
@@ -98,7 +98,7 @@ Roles por piso:
   - sin intento: la ofrenda y la dificultad, cualquier tier desde Haven hasta el del equipo;
   - con intento abierto: entrar, al inicio del piso más hondo que alcanzó el grupo, o abandonarlo.
   El servidor revalida cada elección.
-- La bolsa tiene 3 caídas por integrante conectado al pagar. Cada caída adentro resta una:
+- La bolsa empieza vacía y cada integrante le suma 3 caídas **la primera vez que entra a ese intento**: una vez por jugador y por intento, y salir y volver a entrar no suma. Cada caída adentro resta una:
   - se conserva todo: `keepInventory` rige sólo para esa muerte, así que Curios, mochilas y tumbas se comportan igual;
   - se reaparece al inicio del piso donde te caíste;
   - la caída que vacía la bolsa termina el intento: todos vuelven a la antecámara y la puerta pide otra ofrenda.
@@ -179,11 +179,11 @@ Cada gancho recibe un `EnvesHooks.Floor`: el nivel, el intento (tier, semilla, p
 
 ### Pruebas
 
-- JUnit: `EnvesLayoutTest` (invariantes, 2000 semillas), `EnvesRulesTest` (bolsa, tiers, abandono, escalera, vuelo, comandos, niebla) y `EnvesContractTest` (marcadores, plantillas, escalera, datos, parcelas).
+- JUnit: `EnvesLayoutTest` (invariantes, 2000 semillas), `EnvesRulesTest` (bolsa por primera entrada, tiers, abandono, escalera, vuelo, comandos, niebla) y `EnvesContractTest` (marcadores, plantillas, escalera, datos, parcelas).
 - GameTests (`RuntimeGameTestsEnves`):
   - el sello abre sólo con Frontier y no spoilea;
   - la ofrenda abre un intento a la dificultad elegida;
-  - la bolsa compartida, con reaparición al inicio del piso, inventario intacto y expulsión;
+  - la bolsa compartida (vacía al pagar; 3 caídas por integrante en su primera entrada y ninguna en las siguientes), con reaparición al inicio del piso, inventario intacto y expulsión;
   - indestructible y sin atajos: perlas, chorus, cruces de dimensión y vuelo;
   - el piso siguiente llega con la guardia y la escalera atraviesa la losa.
 
@@ -205,7 +205,7 @@ Cada gancho recibe un `EnvesHooks.Floor`: el nivel, el intento (tier, semilla, p
   - gemas;
   - la bóveda paga más;
   - el cofre del jefe da tres piezas de la rareza alta del tier.
-- **Propuesta:** un curio único por jefe, como los objetos que se persiguen en Diablo.
+- **Un curio único del jefe**, como los objetos que se persiguen en Diablo. Elias aprobó «uno solo, con un efecto que se note» (29/9); la propuesta está en [Curio único de la Luz Agria](#curio-único-de-la-luz-agria-propuesta-299) y no se construye hasta que la vea.
 
 ## Reglas del Envés
 
@@ -218,12 +218,12 @@ Cada gancho recibe un `EnvesHooks.Floor`: el nivel, el intento (tier, semilla, p
 - **Intento, caídas y muerte (Elias, 26/9):**
   - la puerta se abre con una ofrenda, y cada ofrenda es un intento: desde el 27/9, **una estrella del Nether o 64 esquirlas de luz agria** (antes, un bloque de netherita);
   - adentro se conserva el inventario y se reaparece al inicio del piso;
-  - el grupo comparte una bolsa de caídas de 3 por integrante (dos jugadores, seis caídas), sin importar quién las gaste;
+  - el grupo comparte una bolsa de caídas: cada integrante suma 3 la primera vez que entra al intento (dos jugadores adentro, seis caídas), sin importar quién las gaste. Elias (29/9): antes se contaban los conectados al pagar y los que llegaban tarde no sumaban;
   - cuando la bolsa se vacía, todos vuelven afuera, la puerta se cierra y pide otra ofrenda.
 
 ## Jefe (Elias, 26/9)
 
-Uno propio. Para la v1.0, y probablemente más allá, va un reemplazo provisorio: un **Wither blanco, luminoso**. El modelo propio queda para el futuro y no frena el lanzamiento.
+Uno propio. Para la v1.0, y probablemente más allá, va un reemplazo provisorio: un jefe con el cuerpo del Wither vanilla, **blanco y luminoso** (**la Luz Agria**, ver [Decisiones de Elias (29/9)](#decisiones-de-elias-299)). El modelo propio queda para el futuro y no frena el lanzamiento.
 
 - **Movimiento:** casi no vuela. Levita unos bloques sobre el piso y se desliza.
 - **Ataques:**
@@ -269,7 +269,7 @@ Los pisos ya tienen tema. Los enemigos salen de mods que ya están en el pack (I
 | II · Cisternas | canales de agua, caños de cobre, pasarelas | `minecraft:drowned` con tridente | `cataclysm:deepling_brute`, `deepling_angler`, `deepling_priest` | `cataclysm:coral_golem` | Agua que te frena y enemigos que la aprovechan |
 | III · Fundición | piedra negra, canales de lava tras rejas, cadenas | `minecraft:blaze`, `minecraft:wither_skeleton` | `cataclysm:ignited_revenant`, `cataclysm:ignited_berserker` | `cataclysm:the_prowler` | Fuego y embestidas: resistencia al fuego obligatoria |
 | IV · Geodas | amatista, calcita, cristales que brillan | `minecraft:vex` | `cataclysm:amethyst_crab`, `cataclysm:the_watcher` | `cataclysm:ender_golem` | Enemigos que teletransportan y proyectiles de cristal |
-| V · El Eclipse | obsidiana, obsidiana llorosa, oro, un sol oscuro | ecos menores del jefe | — | — | El Wither blanco: embestida telegrafiada y calaveras |
+| V · El Eclipse | obsidiana, obsidiana llorosa, oro, un sol oscuro | ecos menores del jefe | — | — | La Luz Agria: embestida telegrafiada y calaveras |
 
 - **Tesoro que camina:** un `mowziesmobs:grottol` (el topo que come cristales) aparece a veces en las Geodas y huye. Si lo agarrás, suelta gemas.
 - **Afijos de élite** (1 en el piso I, hasta 3 en el IV):
@@ -301,10 +301,10 @@ Los pisos ya tienen tema. Los enemigos salen de mods que ya están en el pack (I
 
 ## Decisiones de Elias (27/9)
 
-- **Primera iteración completa** con el contenido propuesto: pisos, ecos, afijos, santuarios, sellos, bóvedas, loot y el Wither blanco. Elias dirige recién sobre algo tangible, así que se construye entero y se le muestra.
+- **Primera iteración completa** con el contenido propuesto: pisos, ecos, afijos, santuarios, sellos, bóvedas, loot y el jefe. Elias dirige recién sobre algo tangible, así que se construye entero y se le muestra.
 - **Ofrenda:** pasa de un bloque de netherite a **una estrella del Nether** por intento, o, en su lugar, **una cantidad de esquirlas de luz agria**. La cantidad va en `config.json` y se calibra para que la estrella sea sobre todo el pago de las primeras bajadas: una bajada completa deja más esquirlas de las que pide la puerta.
 - **Esquirlas de luz agria:** la moneda del Envés. Más adelante se van a canjear en Solsticio, así que está bien que sobren. El canje no entra en esta iteración.
-- **Nombres provisorios:** el Envés y el Wither blanco (EN «the Envés», «White Wither»). Los curios únicos del jefe quedan fuera de esta iteración.
+- **Nombres provisorios:** el Envés y el Wither blanco (EN «the Envés», «White Wither»). *Cerrado el 29/9: el jefe se llama la Luz Agria; ver [Decisiones de Elias (29/9)](#decisiones-de-elias-299).* Los curios únicos del jefe quedan fuera de esta iteración.
 
 ## Contenido construido (27/9)
 
@@ -337,7 +337,7 @@ Un eco es un mob del pack condensado por la luz agria (`EnvesEchoes`):
 | II · Cisternas | drowned con tridente | `deepling_brute` 85, ×1,1, 3, zombie; `deepling_angler` 60, ×1,1, 2, drowned; `deepling_priest` 55, ×1,2, 2, bruja | `cataclysm:coral_golem` 220, ×1,1 |
 | III · Fundición | wither skeleton (3), blaze (2) | `ignited_berserker` 80, ×1,0, 3, vindicador; `ignited_revenant` 90, ×1,0, 2, blaze | `cataclysm:the_prowler` 240, ×0,9 |
 | IV · Geodas | vex | `the_watcher` 50, ×1,2, 3, vex; `amethyst_crab` 110, ×0,8, 2, zombie | `cataclysm:ender_golem` 260, ×1,0 |
-| V · El Eclipse | «Eco menor»: wither skeleton con espada de piedra | — | — (el Wither blanco) |
+| V · El Eclipse | «Eco menor»: wither skeleton con espada de piedra | — | — (la Luz Agria) |
 
 El tesoro de las Geodas es `mowziesmobs:grottol`: aparece en el 20% de las salas de combate del piso IV, huye y se entierra en el piso (la losa de las Geodas es basalto liso, que puede cavar). Sólo lo lastima un pico que rompa diamante; si lo agarrás, suelta dos gemas y 2–4 esquirlas. Al aparecer avisa: «Un grottol sale del cristal y huye. Sólo un pico le quiebra el caparazón.»
 
@@ -367,7 +367,7 @@ Los pesos de rareza son los propios de Apotheosis para cada tier. El techo nunca
 | Élite | 70 (las tablas dan la suya) | 1,15 | 20 | I: 1 · II: 1–2 · III: 2 · IV: 2–3 |
 | Guardián de sello | 110 | 1,25 | 35 | los del élite + 1, hasta 3 |
 | Campeón | 200 (las tablas dan la suya) | 1,35 | 60 | 3 |
-| Wither blanco | 600 | 1,0 | 300 | — |
+| La Luz Agria | 600 | 1,0 | 300 | — |
 
 La experiencia se multiplica por la vida × del tier. Ejemplos:
 - Un élite de Frontier tiene entre 55 y 110 de vida en el piso I y 399 en el IV a Pinnacle.
@@ -414,7 +414,7 @@ Entradas propias, resueltas en el momento: la de Apotheosis por reflexión, y si
 | `enves/echo_champion` | 3–4 esquirlas + 1 por piso; una pieza una rareza más arriba; 50% una gema; 50% un material |
 | `enves/grottol` | dos gemas; 2–4 esquirlas |
 
-Los cofres son de Lootr, uno por jugador. El del jefe no está hasta que el Wither blanco cae, así nadie lo saquea pasándole por al lado.
+Los cofres son de Lootr, uno por jugador. El del jefe no está hasta que la Luz Agria cae, así nadie lo saquea pasándole por al lado.
 
 ### Esquirlas de luz agria y la ofrenda
 
@@ -478,11 +478,11 @@ Lo que pide está detrás de los barrotes o en el umbral de enfrente. Al resolve
 
 Los espejos se quedaron en los sellos: el umbral de una bóveda no tiene lugar para una grilla de luz. Si otro tileset no deja lugar para los glifos, la cerradura pasa a braseros; si faltan paredes para las palancas, a glifos.
 
-### El Wither blanco
+### La Luz Agria
 
-`entrelumen:white_wither`, provisorio que queda en la v1.0:
+`entrelumen:white_wither` (el ID no cambia; el nombre es «la Luz Agria», EN «the Sour Light»), provisorio que queda en la v1.0:
 - **Cuerpo y textura:** es el cuerpo del Wither vanilla con la textura de marfil y oro de `art/authoring/draw_white_wither.py`. El brillo se dibuja a plena luz y late durante el aviso de la embestida. Las calaveras (`entrelumen:sour_skull`) usan el mismo marfil.
-- **Aparición:** se condensa al pisar el centro de la arena del piso V. Pasa 3 s sin recibir daño mientras sube, con la barra de jefe blanca con muescas «Wither blanco».
+- **Aparición:** se condensa al pisar el centro de la arena del piso V. Pasa 3 s sin recibir daño mientras sube, con la barra de jefe blanca con muescas «La Luz Agria».
 - **Casi no vuela:** flota a 2,5 bloques del piso y se desliza (0,16 bloques por tick) alrededor de su blanco a unos 9 bloques, sin alejarse más de 24 del centro de la arena.
 - **Calaveras:** tres, una por cabeza, cada 2 s (1,3 s bajo la mitad de la vida). Hacen 8 × el factor del tier y el piso y marchitan 4 s. No rompen nada: ni bloques ni lo que un proyectil pueda romper.
 - **Embestida muy telegrafiada**, cada 8 s (5,6 s bajo la mitad de la vida) si su blanco está a 5–26 bloques y lo ve:
@@ -533,7 +533,7 @@ Los espejos se quedaron en los sellos: el umbral de una bóveda no tiene lugar p
   - el campeón que cierra la escalera;
   - las dos ofrendas;
   - que las siete tablas carguen y paguen;
-  - el Wither blanco sin grifeo, flotando bajo, con la embestida avisada, golpeando y expuesto;
+  - la Luz Agria sin grifeo, flotando bajo, con la embestida avisada, golpeando y expuesto;
   - su aparición en la arena, el portal y el cofre al caer;
   - que un intento terminado no deje loot ni ecos en su parcela: el cofre de la bóveda se va sin tirar lo suyo y los ecos, vivos o caídos, con él.
 
@@ -546,11 +546,11 @@ Los espejos se quedaron en los sellos: el umbral de una bóveda no tiene lugar p
 - **Corrida del 27/9:**
   - GameTests aislados sobre `main` bcc30b9: pasan los 159 del mod, los del contenido y los del motor del Envés incluidos;
   - QA de pack completo (274 JAR de servidor, `-Xmx4G`), sobre la rama antes de los últimos arreglos del borrado: pasan los 20 casos del Envés, los del contenido corridos con los mobs y el loot reales y los del motor, sin watchdog. Fervor se midió primero contra un golpe fijo y falló: el pack le saca a un golpe de jugador contra una oveja un 29% por su cuenta, así que ahora se compara contra el mismo golpe sin bendición;
-  - el mundo de los GameTests anteriores al arreglo del borrado guardaba en cada parcela reutilizada el loot de los cofres del intento anterior (cientos de ítems: esquirlas, equipo, pociones); después del arreglo, ni ese mundo ni el del QA tienen ítems sueltos en el Envés. En la última corrida, el log muestra ecos, un Wither blanco e ítems de intentos terminados que volvieron del disco durante el borrado y no volvieron a entrar.
+  - el mundo de los GameTests anteriores al arreglo del borrado guardaba en cada parcela reutilizada el loot de los cofres del intento anterior (cientos de ítems: esquirlas, equipo, pociones); después del arreglo, ni ese mundo ni el del QA tienen ítems sueltos en el Envés. En la última corrida, el log muestra ecos, la Luz Agria e ítems de intentos terminados que volvieron del disco durante el borrado y no volvieron a entrar.
 
 ### Arte propio de los bloques (28/9)
 
-Los cuatro bloques del contenido dejaron los looks prestados de vanilla. Son una sola familia: el marfil y el oro del Wither blanco (`art/authoring/draw_white_wither.py`), los huesos de Osarios, una piedra oscura propia y la luz agria (las rampas TIP, BODY y ROT de `art/authoring/draw_enves.py`) como lo único que brilla.
+Los cuatro bloques del contenido dejaron los looks prestados de vanilla. Son una sola familia: el marfil y el oro de la Luz Agria (`art/authoring/draw_white_wither.py`), los huesos de Osarios, una piedra oscura propia y la luz agria (las rampas TIP, BODY y ROT de `art/authoring/draw_enves.py`) como lo único que brilla.
 
 - **Fuentes:** las grillas de 16 × 16 están en `art/grids/block/enves_*.txt` y los modelos en `art/models/block/enves_*.json`. Los escribe `art/authoring/draw_enves_blocks.py`, y `art/build_art.py` los lleva al mod con sus blockstates, que conservan los nombres de estado de la lógica.
 - **Un texel por unidad:** cada cara mide lo mismo que su UV y nada se reescala. El vidrio del espejo y las costillas diagonales del altar giran 45° sin reescalar; las piezas centradas en el eje del bloque apoyan su UV en texels enteros.
@@ -595,14 +595,46 @@ Ninguna textura ajena entra al repositorio: las referencias sólo se ven.
   - la lectura del aviso de la embestida;
   - si los mobs de Cataclysm con animación de muerte sueltan algo por fuera del evento de caídas.
 - Un modelo propio del jefe (hoy es el Wither vanilla repintado). El arte del altar, el brasero, el espejo y las piedras de glifo ya es propio (28/9).
-- Un curio único del jefe (fuera de esta iteración) y el canje de esquirlas en Solsticio.
+- El curio único del jefe (propuesta del 29/9, sin construir) y el canje de esquirlas en Solsticio.
 - Los tilesets II–V ya tienen plantillas propias (rama `feature/enves-tilesets`, en `main`). Con ellas pasaron los GameTests de los sellos del piso III (Fundición) y del jefe en la arena del V (El Eclipse); las cerraduras se probaron en el piso I. Las cerraduras y acertijos revisan el lugar y cambian de tipo si el arte no los deja: falta mirarlos en juego en II y IV.
+
+## Decisiones de Elias (29/9)
+
+- **El jefe se llama «la Luz Agria»** (EN «the Sour Light»); el descenso sigue siendo «el Envés». **Los dos nombres son finales.** Cambió todo lo que ve el jugador (nombre de la entidad, que sale en la barra de jefe y en los mensajes de muerte, y los avisos de aparición y de embestida) y esta documentación. No hay logros, tooltips ni misiones que lo nombren. **El ID `entrelumen:white_wither` y todos los internos siguen igual**, así que los mundos guardados, los tags y los tests no se tocan: la clase Java `WhiteWither`, las texturas `white_wither` y `art/authoring/draw_white_wither.py` conservan el nombre.
+- **La bolsa de caídas.** Cada integrante suma 3 caídas **la primera vez que entra a ese intento**, una vez por jugador y por intento. La bolsa empieza en 0 y quien llega tarde también suma. Antes se contaba a los conectados al pagar. Salir y volver a entrar no suma. Un intento guardado antes del cambio da por pagos a los que ya estaban adentro (`EnvesData.Attempt.joined`). Al entrar, el grupo lee `entrelumen.enves.joined`; el aviso de la puerta al pagar (`entrelumen.enves.opened`) explica la regla.
+- **El corazón del sol conserva el pedestal en el centro.** Decidido: se abren las ocho celdas de afuera y quedan el centro y el pedestal, la única fuente de brújulas de los que llegan tarde ([heliodor-compass.md](heliodor-compass.md)). Sin cambios de código.
+- **Afrit y Marid cuentan como jefes.** Sólo el Afrit y el Marid desatados de Occultism (`occultism:afrit_wild` y `occultism:marid_unbound`, «Unbound Afrit» y «Unbound Marid» en el JAR fijado 1.224.4; los ligados `occultism:afrit` y `occultism:marid` no) entran en `#c:bosses` (familia `boss_drops` de `tools/generate_family_balance.py`) y en la lista negra de espíritus de EvilCraft: ninguna máquina los captura ni los genera. Los demás jefes de misión sin etiqueta siguen permitidos, con la razón «Elias 29/9: farmable»: el Warden, el hombre lobo de EvilCraft, el Fusilier, el Commando y el Bulwark de IE, la araña de hielo y el Permafrost. Ver [mod-pingpong.md](mod-pingpong.md#botines-de-jefe).
+- **Un curio único del jefe: «uno solo, con un efecto que se note».** Aprobado el concepto; falta que Elias vea la propuesta y el arte de abajo antes de construirlo.
+
+## Curio único de la Luz Agria (propuesta 29/9)
+
+**Es sólo una propuesta: no hay código, datos ni textura en el juego.** Para que Elias la mire y decida.
+
+- **Nombre:** *Grillete Agrio* (EN *Sour Shackle*). Un curio de la ranura `bracelet`, de a uno por jugador.
+- **Efecto, con números.** Un ciclo corto que se siente en cada pelea:
+  - **Marca:** cada golpe tuyo que conecta (cuerpo a cuerpo o proyectil) suma una marca al objetivo, hasta 5; dura 6 s desde la última.
+  - **Agriar:** al llegar a la 5.ª marca, la luz agria estalla: 3× el daño del golpe que puso la última marca, como daño mágico que ignora la mitad de la armadura, sobre el objetivo y a 3 bloques a su alrededor (a los de alrededor, la mitad), y marchita 3 s. Enfriamiento de 8 s. Contra jefes cuenta un 60%, así no le acorta la pelea a ningún jefe, la Luz Agria incluida.
+  - **Costo:** con el Grillete puesto, la regeneración natural es la mitad. Es la otra mitad de la decisión: querer el ciclo pide jugar agresivo y con sustain propio.
+  - Los números viven en `balance.json` y se afinan con el resto.
+- **Por qué no pisa a Apotheosis ni a los curios que hay:**
+  - Los afijos y las gemas de Apotheosis dan atributos (daño, crítico, robo de vida, resistencias). El Grillete es una mecánica con estado (las marcas y el estallido), no un atributo, así que no compite con una gema ni suma a esa cuenta; escala con tu golpe, no con un número propio.
+  - La ranura `bracelet` es la que menos gente usa. Verificado en los JAR fijados, con `data/curios/tags/item/*.json`: `charm` está llena (nuestros resonadores de veta, los tótems de Friends&Foes, los charms de Ars Additions y Twilight Forest, los imanes, Apotheosis y otros) y Artifacts usa `belt`, `curio`, `feet`, `hands`, `head` y `necklace`. En `bracelet` sólo hay los bangles de Ars Elemental y el brazalete de Silent Gear.
+  - Como la ranura tiene dueños, el Grillete cuesta elegirlo (contra un bangle de hechizos o el brazalete de Silent Gear) y cuesta la regeneración: no es mejor que otro curio en todo, sólo distinto.
+- **Regla de caída.** Sale del cofre del jefe (`enves/boss`, Lootr), una tirada por jugador y por victoria:
+  - Haven no lo da (es el tier de farmeo). Frontier 10%, Ascent 15%, Summit 20%, Pinnacle 30%.
+  - Protección contra la mala suerte: cada victoria sin curio suma +10% para ese jugador, hasta asegurarlo, y se reinicia cuando cae. Eso guarda un número por jugador (no por intento).
+  - Es único: si ya lo tenés, en su lugar caen 24 esquirlas de luz agria (la moneda del Envés, para el canje futuro en Solsticio).
+- **Lore.** La luz agria era la que Terra quería hacer buena. Cuando la fusión falló, Terra armó un recipiente para contenerla y Bodhi lo selló, a las apuradas, antes de que el Sun Spirit congelara todo. El Grillete es el sello de Bodhi, lo único del recipiente que no se rompió cuando la Luz Agria cayó: te lo ponés y contiene la luz por vos, a costa de tu propia fuerza. Descripción: «El sello que Bodhi puso sobre lo que Terra encerró. Late cuando pegás. Lo sostiene tu aliento.»
+- **Arte.** Borrador 16 × 16, simétrico, en la familia marfil y oro del jefe con la luz agria de las esquirlas: un anillo visto de frente, una gema de luz agria sobre el eje donde cierra y las dos bisagras espejadas. Se dibuja con `art/authoring/draw_enves_curio.py` (mitad izquierda a mano, la derecha por espejo, con un assert de simetría), que **no** escribe en `art/grids/item` y por eso `art/build_art.py` no lo exporta. Hoja de revisión: `E:/Temp/Elias/claude/C--Users-elias-Documents-Codex-2026-09-12-h/39181316-8996-4d78-bc8f-017b1c5c55c6/scratchpad/enves-curio/sour_shackle_review.png`.
+  - **Referencias vistas** (renderizadas desde los JAR fijados a 10×, con su rango y proporciones en la hoja): `artifacts:textures/item/withered_bracelet.png` (Artifacts 13.2.3; un anillo de unos 13 px con el agujero oscuro y la banda sombreada de arriba abajo), `ars_elemental:textures/item/fire_bangle.png` y `base_bangle.png` (Ars Elemental 0.7.10.1; un anillo de oro inclinado con la gema en la banda de abajo a la derecha, asimétrico), `minecraft:textures/item/nether_star.png` (una luz que sale del núcleo, simétrica) y nuestra `sour_light_shard`.
+  - Tomé la silueta de anillo, el agujero oscuro y el sombreado de arriba abajo; la gema lleva el color. Cambié lo asimétrico: el anillo se ve de frente, la gema va sobre el eje y las bisagras se espejan, que es el canon del pack.
+  - Falta verlo a escala real dentro del juego y en la ranura de Curios.
 
 ## Para decidir
 
-- El nombre del descenso y el del jefe.
-- Si hay curios únicos del jefe.
-- La bolsa se cuenta con los integrantes conectados al pagar; los que entran después no suman caídas. ¿O cada integrante suma 3 al entrar por primera vez?
-- El corazón del sol: se abren las ocho celdas de afuera y quedan el centro y el pedestal, porque el pedestal es la única fuente de brújulas de los que llegan tarde (docs/design/heliodor-compass.md). ¿Otro lugar para el pedestal?
+- ~~El nombre del descenso y el del jefe.~~ Cerrado el 29/9: el Envés y la Luz Agria ([arriba](#decisiones-de-elias-299)).
+- ~~Si hay curios únicos del jefe.~~ Sí, uno solo; falta que Elias apruebe [la propuesta y el arte](#curio-único-de-la-luz-agria-propuesta-299).
+- ~~La bolsa se cuenta con los integrantes conectados al pagar.~~ Cerrado el 29/9: cada integrante suma 3 la primera vez que entra.
+- ~~El corazón del sol: ¿otro lugar para el pedestal?~~ Cerrado el 29/9: se queda en el centro.
 - La escalera de la ruina inicial (arte de `sealed_stair()`) se baja caminando; para subir hay que saltar en las esquinas del anillo de 3 × 3. Su pie no llevaba a la antecámara: se le abrió una puerta y un piso.
 - Los fosos de huesos del arte bajan un bloque bajo la losa, fuera de la plantilla de 12: hoy su fondo es la roca de abajo o el techo del piso siguiente.

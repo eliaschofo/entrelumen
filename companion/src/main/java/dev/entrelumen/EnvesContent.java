@@ -35,7 +35,7 @@ import net.neoforged.neoforge.registries.NeoForgeRegistries;
 
 /**
  * The content of the Envés (docs/design/dungeon-enves.md, «Contenido»): what it registers (the sour
- * light shard, the puzzle blocks, the White Wither and its skull, the loot vocabulary, the echo
+ * light shard, the puzzle blocks, the Sour Light and its skull, the loot vocabulary, the echo
  * attachment), the hooks it plugs into the engine ({@link EnvesHooks}) and its ticking.
  */
 public final class EnvesContent {

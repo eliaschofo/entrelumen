@@ -288,19 +288,34 @@ public final class Enves {
     UUID team = teamOf(payer);
     Attempt attempt = new Attempt(UUID.randomUUID(), team, data.freeSlot(), seed, tier, payer.getUUID(),
         server.overworld().getGameTime());
-    int members = onlineMembers(server, team).size();
-    attempt.poolTotal = attempt.poolLeft = EnvesRules.pool(members, EnvesConfig.settings().fallsPerMember());
+    // The pool starts empty: each member adds their falls the first time they enter (joinPool).
     data.add(attempt);
     EnvesPlacer.queue(server, attempt, EnvesGeometry.VESTIBULE);
     EnvesPlacer.queue(server, attempt, 1);
     WAITING.put(payer.getUUID(), attempt.id);
     EnvesHooks.lifecycle().attemptOpened(attempt);
-    LOGGER.info("Envés: {} opened attempt {} for team {} in slot {} at {} (pool {})",
-        payer.getGameProfile().getName(), attempt.id, team, attempt.slot, tier, attempt.poolTotal);
+    LOGGER.info("Envés: {} opened attempt {} for team {} in slot {} at {}",
+        payer.getGameProfile().getName(), attempt.id, team, attempt.slot, tier);
     for (ServerPlayer member : onlineMembers(server, team))
       member.sendSystemMessage(Component.translatable("entrelumen.enves.opened", payer.getDisplayName(),
-          Component.translatable(tier.nameKey), attempt.poolTotal));
+          Component.translatable(tier.nameKey), EnvesConfig.settings().fallsPerMember()));
     return attempt;
+  }
+
+  /**
+   * A member's first entry into the attempt adds their falls to the group's pool, once per player per
+   * attempt (Elias, 29/9); later entries add nothing. Returns the falls added.
+   */
+  static int joinPool(MinecraftServer server, Attempt attempt, ServerPlayer player) {
+    int grant = EnvesRules.joinGrant(attempt.joined.add(player.getUUID()), EnvesConfig.settings().fallsPerMember());
+    if (grant == 0) return 0;
+    attempt.poolTotal += grant;
+    attempt.poolLeft += grant;
+    EnvesData.get(server).setDirty();
+    for (ServerPlayer member : onlineMembers(server, attempt.team))
+      member.sendSystemMessage(Component.translatable("entrelumen.enves.joined", player.getDisplayName(), grant,
+          attempt.poolLeft, attempt.poolTotal));
+    return grant;
   }
 
   /** Moves a member into the team's open attempt, at the deepest floor the group reached. */
@@ -314,6 +329,7 @@ public final class Enves {
     if (!move(player, level(player.server), Vec3.atBottomCenterOf(arrival), ARRIVAL_YAW)) return false;
     a.depthOf.put(player.getUUID(), depth);
     a.emptySince = -1;
+    joinPool(player.server, a, player);
     EnvesData.get(player.server).setDirty();
     player.level().playSound(null, arrival, SoundEvents.RESPAWN_ANCHOR_SET_SPAWN, SoundSource.PLAYERS, 0.8f, 0.7f);
     player.displayClientMessage(Component.translatable("entrelumen.enves.entered",

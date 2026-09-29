@@ -178,12 +178,13 @@ public final class RuntimeGameTestsEnves {
     helper.assertTrue(Enves.open(player, Tier.HAVEN) == null, "A lower difficulty must be allowed");
     helper.assertTrue(player.getInventory().countItem(Items.NETHER_STAR) == 1, "The offering was not taken exactly once");
     Attempt attempt = Enves.attemptOf(player).orElseThrow();
-    helper.assertTrue(attempt.tier == Tier.HAVEN && attempt.poolTotal == 3 && attempt.poolLeft == 3,
-        "One member online makes a pool of three: " + attempt.poolTotal);
+    helper.assertTrue(attempt.tier == Tier.HAVEN && attempt.poolTotal == 0 && attempt.poolLeft == 0,
+        "The pool starts empty until somebody goes in: " + attempt.poolTotal);
     helper.assertTrue(Enves.open(player, Tier.HAVEN) == Enves.Refusal.ALREADY_OPEN, "A second attempt opened for the team");
     when(helper, () -> attempt.status == Status.OPEN, () -> {
       try {
         helper.assertTrue(Enves.enter(player), "The payer could not enter");
+        helper.assertTrue(attempt.poolTotal == 3 && attempt.poolLeft == 3, "The payer's first entry did not add three falls: " + attempt.poolTotal);
         helper.assertTrue(Enves.inEnves(player) && Enves.attemptAt(player.server, player.blockPosition()).isPresent(),
             "The payer is not inside the attempt's slot");
         BlockPos arrival = Enves.arrival(player.server, attempt, 1);
@@ -220,14 +221,20 @@ public final class RuntimeGameTestsEnves {
       throw new IllegalStateException(e);
     }
     Attempt attempt = openFor(helper, founder.player, Tier.FRONTIER);
-    helper.assertTrue(attempt.poolTotal == 6, "Two members online make six falls, got " + attempt.poolTotal);
+    helper.assertTrue(attempt.poolTotal == 0, "The pool must start empty, got " + attempt.poolTotal);
     helper.assertTrue(attempt.team.equals(party.getId()), "The attempt is not the party's");
     AtomicInteger stage = new AtomicInteger();
     helper.onEachTick(() -> {
       if (stage.get() != 0 || attempt.status != Status.OPEN) return;
       stage.set(1);
       try {
-        helper.assertTrue(Enves.enter(founder.player) && Enves.enter(guest.player), "The party could not enter");
+        helper.assertTrue(Enves.enter(founder.player), "The founder could not enter");
+        helper.assertTrue(attempt.poolTotal == 3, "The founder's entry adds three falls, got " + attempt.poolTotal);
+        helper.assertTrue(Enves.enter(guest.player), "The guest could not enter");
+        helper.assertTrue(attempt.poolTotal == 6 && attempt.poolLeft == 6, "A latecomer's first entry adds three more, got " + attempt.poolTotal);
+        // Entering again adds nothing: once per player per attempt.
+        helper.assertTrue(Enves.enter(guest.player), "The guest could not enter again");
+        helper.assertTrue(attempt.poolTotal == 6 && attempt.poolLeft == 6, "A second entry added falls: " + attempt.poolTotal);
         // A real client confirms the dimension change; until then the server keeps the player invulnerable.
         founder.player.hasChangedDimension();
         guest.player.hasChangedDimension();

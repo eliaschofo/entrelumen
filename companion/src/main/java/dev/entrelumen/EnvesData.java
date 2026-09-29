@@ -5,15 +5,18 @@ import java.util.ArrayList;
 import java.util.BitSet;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 import java.util.UUID;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.StringTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.level.saveddata.SavedData;
@@ -132,6 +135,8 @@ public final class EnvesData extends SavedData {
     public final long openedAt;
     public Status status = Status.FORMING;
     public int poolTotal, poolLeft;
+    /** The members who already entered and paid their falls into the pool: once per player per attempt. */
+    public final Set<UUID> joined = new HashSet<>();
     /** Deepest floor anyone of the group has reached. */
     public int frontline = 1;
     /** Game time since which nobody of the group is inside; -1 while someone is. */
@@ -172,6 +177,9 @@ public final class EnvesData extends SavedData {
       tag.putString("status", status.name());
       tag.putInt("poolTotal", poolTotal);
       tag.putInt("poolLeft", poolLeft);
+      ListTag joinedList = new ListTag();
+      for (UUID member : joined) joinedList.add(StringTag.valueOf(member.toString()));
+      tag.put("joined", joinedList);
       tag.putInt("frontline", frontline);
       tag.putLong("emptySince", emptySince);
       tag.putBoolean("bossDefeated", bossDefeated);
@@ -200,6 +208,13 @@ public final class EnvesData extends SavedData {
       }
       a.poolTotal = tag.getInt("poolTotal");
       a.poolLeft = tag.getInt("poolLeft");
+      for (Tag member : tag.getList("joined", Tag.TAG_STRING)) {
+        try {
+          a.joined.add(UUID.fromString(member.getAsString()));
+        } catch (IllegalArgumentException ignored) {
+          // a corrupt id only lets that member pay their falls once more
+        }
+      }
       a.frontline = Math.clamp(tag.getInt("frontline"), 1, EnvesLayout.FLOORS);
       a.emptySince = tag.getLong("emptySince");
       a.bossDefeated = tag.getBoolean("bossDefeated");
@@ -211,6 +226,9 @@ public final class EnvesData extends SavedData {
           // a corrupt key only loses that member's floor
         }
       }
+      // An attempt saved before the pool grew with each first entry counted its members when it opened:
+      // whoever was already inside has paid.
+      if (!tag.contains("joined", Tag.TAG_LIST)) a.joined.addAll(a.depthOf.keySet());
       ListTag list = tag.getList("floors", Tag.TAG_COMPOUND);
       for (int i = 0; i < Math.min(list.size(), a.floors.length); i++) a.floors[i] = FloorState.load(list.getCompound(i));
       return a;

@@ -24,7 +24,7 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 
 /**
- * The White Wither on the client: the vanilla Wither's model and scale with the ivory texture painted
+ * The Sour Light on the client: the vanilla Wither's model and scale with the ivory texture painted
  * on its UV ({@code art/authoring/draw_white_wither.py}) and its gold glow drawn full-bright; the glow
  * throbs while it winds up a charge. Its skulls wear the same ivory.
  */
@@ -82,7 +82,7 @@ public final class EnvesContentClient {
     }
   }
 
-  /** The White Wither's skull, in its ivory. */
+  /** The Sour Light's skull, in its ivory. */
   public static final class SkullRenderer extends WitherSkullRenderer {
     public SkullRenderer(EntityRendererProvider.Context context) {
       super(context);

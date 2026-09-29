@@ -34,8 +34,10 @@ import net.minecraft.world.phys.Vec3;
 import org.joml.Vector3f;
 
 /**
- * The White Wither, the Envés's boss (placeholder that stays for v1.0; Elias, 26/9): the vessel Terra
- * built and Bodhi sealed round the sour light. The vanilla Wither's body with its own texture, and its
+ * The Sour Light (in Spanish, la Luz Agria; the name is final, Elias 29/9), the Envés's boss
+ * (placeholder model that stays for v1.0; Elias, 26/9): the vessel Terra built and Bodhi sealed round
+ * the sour light. The entity id stays {@code entrelumen:white_wither} and so does this class, so saves,
+ * tags and tests keep working. The vanilla Wither's body with its own texture, and its
  * own mind:
  * <ul>
  * <li>it barely flies: it hovers {@link EnvesBalance.Boss#hover} blocks over the arena's floor and

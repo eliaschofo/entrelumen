@@ -18,7 +18,7 @@ import net.minecraft.world.phys.Vec3;
  * The encounters hook (docs/design/dungeon-enves.md, «Encuentros»): the first time someone of the
  * group steps into a fight room, the floor's echo table fills its spawn points with one elite and one
  * or two escorts, or two elites; the guard room gets the stair's champion (three affixes) with its
- * escorts, and the stair waits for it; the arena's centre wakes the White Wither. Sometimes a grottol
+ * escorts, and the stair waits for it; the arena's centre wakes the Sour Light. Sometimes a grottol
  * digs out in the Geodes and runs.
  */
 public final class EnvesEncounters {

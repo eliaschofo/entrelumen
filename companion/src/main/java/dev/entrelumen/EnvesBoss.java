@@ -17,7 +17,7 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.phys.Vec3;
 
 /**
- * Floor V, El Eclipse (docs/design/dungeon-enves.md, «Jefe»): the White Wither wakes when somebody of
+ * Floor V, El Eclipse (docs/design/dungeon-enves.md, «Jefe»): the Sour Light wakes when somebody of
  * the group steps into the middle of the arena, and the attempt's World Tier sets its health and
  * damage. When it falls the victory portal wakes ({@link Enves#bossDefeated}) and the boss chest (a
  * Lootr chest of {@code entrelumen:enves/boss}, one loot per player) rises by the portal: it is not
@@ -34,7 +34,7 @@ public final class EnvesBoss {
     runs.setDirty();
   }
 
-  /** Somebody steps into the middle of the arena: the White Wither condenses. */
+  /** Somebody steps into the middle of the arena: the Sour Light condenses. */
   static WhiteWither awaken(EnvesHooks.Floor floor, BlockPos center, ServerPlayer first) {
     if (floor.attempt().bossDefeated) return null;
     var runs = EnvesRuns.get(floor.level().getServer());
