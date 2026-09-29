@@ -550,6 +550,8 @@ Los espejos se quedaron en los sellos: el umbral de una bóveda no tiene lugar p
 
 ### Arte propio de los bloques (28/9)
 
+**Aprobado por Elias.** El relicario y la campana del revés el 28/9; el espejo y las piedras de glifo el 29/9, en sus hojas de revisión. Falta verlos en el juego.
+
 Los cuatro bloques del contenido dejaron los looks prestados de vanilla. Son una sola familia: el marfil y el oro de la Luz Agria (`art/authoring/draw_white_wither.py`), los huesos de Osarios, una piedra oscura propia y la luz agria (las rampas TIP, BODY y ROT de `art/authoring/draw_enves.py`) como lo único que brilla.
 
 - **Fuentes:** las grillas de 16 × 16 están en `art/grids/block/enves_*.txt` y los modelos en `art/models/block/enves_*.json`. Los escribe `art/authoring/draw_enves_blocks.py`, y `art/build_art.py` los lleva al mod con sus blockstates, que conservan los nombres de estado de la lógica.

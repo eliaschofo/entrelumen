@@ -1,5 +1,7 @@
 # Solsticio v8: el plano urbano en bloques (26 de septiembre de 2026)
 
+**Aprobada por Elias (29/9)** en sus vistas renderizadas (vista general, templo, talleres y eje). Falta verla en el juego.
+
 La ciudadela en terrazas (v7) se reemplaza por la ciudad del plano urbano (`art/concepts/solsticio_plan.py`), que Elias aprobó: el Eje del Sol, dos bulevares en anillo, radiales, calles y pasajes; plazas en los nudos; el Parque del Mediodía con su lago; manzanas con fachada continua y patio; seis barrios. La fase 1 levantó el terreno, la red y la volumetría; la fase 2 la vistió; el pase solarpunk (Elias: «le falta vidrio, vitrales y cobre») le puso encima vidrio, vitrales, cobre, sol y verde, sin tocar la paleta cálida.
 
 - Generador: `art/solsticio/city8.py` (terreno, red, volumetría, cobre y vitrales compartidos, marcadores, controles), `net8.py` (niveles), `landmarks8.py` (hitos y la Cascada del Fin), `dress8.py` (fachadas, interiores y vida de calle), `solar8.py` (el pase solarpunk y el cierre: paneles de vidrio unidos y seguridad de redstone), `export8.py` (plantilla), `grid8.py` (grilla compacta), `render8.py` (renders locales).

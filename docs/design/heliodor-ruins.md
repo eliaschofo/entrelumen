@@ -29,6 +29,8 @@ Diseño del controlador, 24 de septiembre de 2026; sistema del Plan v2 en el jue
 
 Los bocetos anteriores (`ruin_atlas.py`, `ruins_acts.py`, `ruins_dims.py`) quedan como referencia.
 
+**Aprobadas por Elias (29/9).** Revisó las once ruinas de la tabla, de la inicial al Observatorio sobre el vacío, en sus vistas renderizadas y las aprobó todas. Falta verlas en el juego, que queda para cuando juegue el pack completo.
+
 ## Decisiones de forma
 
 - **Simetría.** Cada ruina es simétrica bajo rotaciones de 90° y espejos. El deterioro también: grietas, musgo, piezas caídas y huecos salen de funciones de `(a, b) = orden(|x|, |z|)`. La única excepción es la orientación de un atril.
