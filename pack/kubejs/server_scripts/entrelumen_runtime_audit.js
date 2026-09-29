@@ -1007,6 +1007,7 @@ const entrelumenAuditTargets = {
     "create_enchantment_industry:brass_bookshelf",
     "create_enchantment_industry:ender_woven_bag",
     "create_enchantment_industry:experience_bucket",
+    "create_enchantment_industry:experience_cake",
     "create_enchantment_industry:experience_hatch",
     "create_enchantment_industry:infuser",
     "create_enchantment_industry:mechanical_grindstone",
@@ -5634,7 +5635,7 @@ const entrelumenAuditTargets = {
       "output": "farmersdelight:flint_knife"
     }
   ],
-  "signature": "7521892c5f23b909"
+  "signature": "e1dc1ad566b7dcdd"
 };
 
 ServerEvents.afterRecipes(event => {
