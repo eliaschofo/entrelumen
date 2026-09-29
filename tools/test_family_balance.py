@@ -279,7 +279,9 @@ class FamilyBalanceTest(unittest.TestCase):
         self.assertEqual(len([s for s in family['data'] if s['op'] == 'disable']), len(balance.PINGPONG_BROKEN_RECIPES))
         self.assertEqual([s['to'] for s in family['data'] if s['op'] == 'port_loot'],
                          [path.replace('/loot_tables/', '/loot_table/') for path, _ in balance.AD_ASTRA_CHEST_LOOT])
-        self.assertEqual([s['path'] for s in family['data'] if s['op'] not in ('disable', 'port_loot')],
+        integrity = ('port_loot', 'alias_loot', 'retarget_template', 'structure_off', 'self_drop')
+        self.assertEqual(sum(s['op'] in integrity[1:] for s in family['data']), len(balance.LOOT_INTEGRITY))
+        self.assertEqual([s['path'] for s in family['data'] if s['op'] not in ('disable',) + integrity],
                          ['data/eternal_starlight/loot_table/bosses/the_gatekeeper.json'])
 
     def test_round_four_stages_heliodor_solar_tech_and_psi(self):
@@ -839,7 +841,8 @@ class BossDropsTest(unittest.TestCase):
 
 
 class PortedLootTest(unittest.TestCase):
-    """Ad Astra's chest loot in the 1.20 folder, ported to 1.21 (docs/design/mod-pingpong.md)."""
+    """Loot and structures that did not load in 1.21: ports, aliases, a retargeted pool and an empty structure
+    turned off (docs/design/mod-pingpong.md)."""
 
     def test_ported_loot_moves_a_120_table_and_converts_only_what_121_reads_differently(self):
         path = 'data/x/loot_tables/chests/a.json'
@@ -882,10 +885,100 @@ class PortedLootTest(unittest.TestCase):
         found = pinned_data()
         (jar,) = [path for name, path in loot.pinned_jars().items() if name.startswith('adastra-')]
         named = set(loot.structure_loot_tables(jar))
-        ports = [s for s in balance.FAMILIES['pingpong']['data'] if s['op'] == 'port_loot']
+        chests = {path for path, _ in balance.AD_ASTRA_CHEST_LOOT}
+        ports = [s for s in balance.FAMILIES['pingpong']['data'] if s['op'] == 'port_loot' and s['path'] in chests]
         ids = {re.sub(r'^data/([^/]+)/loot_table/(.+)\.json$', r'\1:\2', s['to']) for s in ports}
         self.assertEqual(ids, named)
         self.assertTrue(all(len(found[s['path']]) == 1 and s['to'] not in found for s in ports))
+
+    @unittest.skipUnless(lock_available(), 'Pinned dependency JARs are not available on this machine')
+    def test_ports_and_aliases_add_no_act_material(self):
+        # Vanilla targets are left out: vanilla tables hold no mod item.
+        found = pinned_data()
+        tables = []
+        for spec in balance.FAMILIES['pingpong']['data']:
+            if spec['op'] == 'port_loot':
+                tables.append(json.loads((balance.PACK_DATA / spec['to'][len('data/'):]).read_text(encoding='utf-8')))
+            elif spec['op'] == 'alias_loot':
+                namespace, rest = spec['target'].split(':', 1)
+                owners = found.get(f'data/{namespace}/loot_table/{rest}.json', [])
+                self.assertTrue(owners or namespace == 'minecraft', spec['target'])
+                tables += [json.loads(owner[2]) for owner in owners]
+        names = set(re.findall(r'"name": "([^"]+)"', json.dumps(tables)))
+        self.assertEqual(len(tables), 6 + 6)  # 6 ports; 6 aliases target a mod table
+        self.assertFalse({n for n in names if n in balance.STAGE_MATERIALS or n.startswith('entrelumen:')})
+
+    def test_self_drop_is_vanillas_form_written_from_the_block_id_alone(self):
+        spec = balance.self_drop('x:tiny_skull', '')
+        self.assertEqual(spec['path'], 'data/x/loot_table/blocks/tiny_skull.json')
+        with unittest.mock.patch.dict(balance.FAMILIES, {'probe': {'data': [spec]}}):
+            # The mod's own 1.20-folder table is never read: only the block ID reaches the output.
+            theirs = upstream('data/x/loot_tables/blocks/tiny_skull.json', {'type': 'minecraft:block', 'pools': [
+                {'rolls': 1.0, 'entries': [{'type': 'minecraft:item', 'name': 'x:other_item'}]}]})
+            out = json.loads(balance.build_data('probe', theirs)['x/loot_table/blocks/tiny_skull.json'])
+            self.assertEqual(out, {'type': 'minecraft:block', 'pools': [{
+                'bonus_rolls': 0.0, 'conditions': [{'condition': 'minecraft:survives_explosion'}],
+                'entries': [{'type': 'minecraft:item', 'name': 'x:tiny_skull'}], 'rolls': 1.0}],
+                'random_sequence': 'x:blocks/tiny_skull'})
+            with self.assertRaises(AssertionError):  # the mod ships a 1.21 table now
+                balance.build_data('probe', upstream(spec['path'], out))
+
+    def test_alias_rolls_its_target_once_and_goes_when_the_table_ships(self):
+        spec = balance.aliased_loot('x:chests/raw_meat', 'x:chests/meat', '')
+        self.assertEqual(spec['path'], 'data/x/loot_table/chests/raw_meat.json')
+        meat = {'type': 'minecraft:chest', 'pools': []}
+        with unittest.mock.patch.dict(balance.FAMILIES, {'probe': {'data': [spec]}}):
+            out = balance.build_data('probe', upstream('data/x/loot_table/chests/meat.json', meat))
+            self.assertEqual(json.loads(out['x/loot_table/chests/raw_meat.json']),
+                             {'type': 'minecraft:chest', 'pools': [{'rolls': 1, 'entries': [
+                                 {'type': 'minecraft:loot_table', 'value': 'x:chests/meat'}]}]})
+            for found in ({},  # the target does not load
+                          {**upstream('data/x/loot_table/chests/meat.json', meat), **upstream(spec['path'], meat)},
+                          {**upstream('data/x/loot_table/chests/meat.json', meat),
+                           **upstream('data/x/loot_tables/chests/raw_meat.json', meat)}):  # in the 1.20 folder: port it
+                with self.subTest(found=sorted(found)), self.assertRaises(AssertionError):
+                    balance.build_data('probe', found)
+        # A vanilla target is left to tools/check_loot_tables.py, which reads the vanilla JAR.
+        vanilla = balance.aliased_loot('x:chests/leatherworker', 'minecraft:chests/village/village_tannery', '')
+        with unittest.mock.patch.dict(balance.FAMILIES, {'probe': {'data': [vanilla]}}):
+            self.assertIn('x/loot_table/chests/leatherworker.json', balance.build_data('probe', {}))
+
+    def test_retarget_points_only_the_missing_template_at_the_shipped_one(self):
+        path = 'data/x/worldgen/template_pool/rooms.json'
+        pool = {'fallback': 'minecraft:empty', 'elements': [
+            {'weight': 60, 'element': {'element_type': 'minecraft:single_pool_element', 'location': 'x:library',
+                                       'processors': 'minecraft:empty', 'projection': 'rigid'}},
+            {'weight': 30, 'element': {'element_type': 'minecraft:list_pool_element', 'projection': 'rigid', 'elements': [
+                {'element_type': 'minecraft:single_pool_element', 'location': 'x:hall', 'processors': 'minecraft:empty',
+                 'projection': 'rigid'}]}}]}
+        spec = balance.retargeted_template(path, 'x:library', 'x:libary', '')
+        with unittest.mock.patch.dict(balance.FAMILIES, {'probe': {'data': [spec]}}):
+            out = json.loads(balance.build_data('probe', upstream(path, pool), {'x:libary', 'x:hall'})['x/worldgen/template_pool/rooms.json'])
+            expected = json.loads(json.dumps(pool))
+            expected['elements'][0]['element']['location'] = 'x:libary'
+            self.assertEqual(out, expected)
+            for templates in ({'x:libary', 'x:library'}, {'x:hall'}):  # upstream fixed it, or the target is gone
+                with self.subTest(templates=sorted(templates)), self.assertRaises(AssertionError):
+                    balance.build_data('probe', upstream(path, pool), templates)
+
+    def test_structure_off_empties_the_biome_tag_only_an_empty_structure_uses(self):
+        structure = {'type': 'minecraft:jigsaw', 'start_pool': 'x:bullet_start', 'biomes': '#x:has_structure/bullet',
+                     'step': 'surface_structures'}
+        pool = {'fallback': 'minecraft:empty', 'elements': [{'weight': 1, 'element': {
+            'element_type': 'minecraft:single_pool_element', 'location': 'x:bullet', 'processors': 'minecraft:empty',
+            'projection': 'rigid'}}]}
+        found = {**upstream('data/x/worldgen/structure/bullet.json', structure),
+                 **upstream('data/x/worldgen/template_pool/bullet_start.json', pool),
+                 **upstream('data/x/tags/worldgen/biome/has_structure/bullet.json', {'values': ['x:venus']})}
+        spec = balance.structure_off('x:bullet', '')
+        with unittest.mock.patch.dict(balance.FAMILIES, {'probe': {'data': [spec]}}):
+            out = balance.build_data('probe', found, set())
+            self.assertEqual(out, {'x/tags/worldgen/biome/has_structure/bullet.json': '{\n  "replace": true,\n  "values": []\n}\n'})
+            shared = {**found, **upstream('data/x/worldgen/structure/tower.json', dict(structure, start_pool='x:tower'))}
+            for broken, templates in ((found, {'x:bullet'}),  # the template ships: the structure is not empty
+                                      (shared, set())):       # another structure uses the same tag
+                with self.subTest(templates=sorted(templates)), self.assertRaises(AssertionError):
+                    balance.build_data('probe', broken, templates)
 
 
 if __name__ == '__main__':

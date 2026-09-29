@@ -136,6 +136,37 @@ def ported_loot(path, why):
     return {'path': path, 'op': 'port_loot', 'to': path.replace('/loot_tables/', '/loot_table/', 1), 'why': why}
 
 
+def aliased_loot(table, target, why):
+    """A loot table that structure chests name but no pinned JAR ships, rolling `target` once so those chests
+    get exactly `target`'s loot. `target` must load: a pinned JAR ships it, or it is vanilla (which
+    tools/check_loot_tables.py resolves). Once a pinned JAR ships `table`, the alias has to go."""
+    namespace, rest = table.split(':', 1)
+    return {'path': f'data/{namespace}/loot_table/{rest}.json', 'op': 'alias_loot', 'target': target, 'why': why}
+
+
+def self_drop(block, why):
+    """Our own block loot table for a block whose mod ships none that 1.21 loads, written from scratch in
+    vanilla's self-drop form (one roll of the block's item, survives_explosion); nothing but the block ID comes
+    from the mod. Once a pinned JAR ships the 1.21 table, ours has to go."""
+    namespace, rest = block.split(':', 1)
+    return {'path': f'data/{namespace}/loot_table/blocks/{rest}.json', 'op': 'self_drop', 'block': block, 'why': why}
+
+
+def retargeted_template(path, old, new, why):
+    """Point the elements of a pinned template pool that name the missing template `old` at the shipped `new`;
+    every other element stays native."""
+    return {'path': path, 'op': 'retarget_template', 'old': old, 'new': new, 'why': why}
+
+
+def structure_off(structure, why):
+    """Keep a structure whose start pool places only missing templates from generating, by emptying
+    (replace: true) the biome tag that only it uses. The structure stays registered, so saves and commands
+    that name it keep working."""
+    namespace, rest = structure.split(':', 1)
+    return {'path': f'data/{namespace}/worldgen/structure/{rest}.json', 'op': 'structure_off',
+            'structure': structure, 'why': why}
+
+
 def tagged(path, values, why, *, owners=1):
     """Add values to a pinned tag with a merging pack file of the same path; the upstream files stay.
     `owners` is the exact number of pinned JARs shipping the path (a c: tag often has several)."""
@@ -427,6 +458,48 @@ AD_ASTRA_CHEST_LOOT = [
     ('data/ad_astra/loot_tables/chests/village/moon/blacksmith.json', 'Lunarian metalworks and lunar tower smithy'),
     ('data/ad_astra/loot_tables/chests/village/moon/house.json', 'Lunarian bedrooms, grove and lunar tower'),
     ('data/minecraft/loot_tables/loot.json', 'Pygro village and pygro tower on Venus'),
+]
+
+# Loot integrity pass of 28 September 2026 (docs/design/mod-pingpong.md), from
+# python tools/check_loot_tables.py --structures '': template pools that name missing templates, and chests
+# of generating structures whose table no pinned JAR ships. An alias rolls its target once: the mod's own
+# table under another ID, the table the same room's other chests use, or the vanilla table the mod gives
+# the same building elsewhere. Left alone: Towns and Towers' forest ruins large house names
+# wythers:chests/village/forest_ruins_big_house (Wythers is not in the pack), and Dungeons and Taverns'
+# ruin_town_loot_chest_1..7 templates are placed by no pool or jigsaw.
+HIDEOUT = 'Dungeons and Taverns illager hideout barrels: {} was never shipped; the chests of the same rooms use {}'
+LOOT_INTEGRITY = [
+    retargeted_template('data/ad_astra/worldgen/template_pool/dungeon/moon/room.json', 'ad_astra:dungeon/moon/library',
+                        'ad_astra:dungeon/moon/libary', 'Moon dungeon library: the pool asks for library, the JAR ships libary.nbt'),
+    structure_off('ad_astra:venus_bullet', 'Its only template, ad_astra:venus_bullet, is not in the JAR: every start '
+                  'was an empty 2x2x2 piece with thin beard terrain and a /locate hit'),
+    # Enderman Overhaul is all rights reserved: its 1.20-folder table is not copied, the drop is written anew.
+    self_drop('endermanoverhaul:tiny_skull', 'The tiny skull block dropped nothing: its only table is in the 1.20 folder'),
+    aliased_loot('minecraft:chests/altar_camp', 'deep_aether:chests/dungeon/altar_camp',
+                 'Deep Aether altar camp: the table ships as deep_aether:chests/dungeon/altar_camp'),
+    aliased_loot('minecraft:chests/village_desert_house', 'minecraft:chests/village/village_desert_house',
+                 "Cataclysm's desert occupied village: 2 of its 9 desert house chests miss the village/ folder"),
+    aliased_loot('nova_structures:pots/pot_piglins', 'nova_structures:pots/pot_piglin',
+                 'Dungeons and Taverns piglin donjon pots: the table is pot_piglin'),
+    aliased_loot('nova_structures:chests/illager_hideout_raw_vegitarian', 'nova_structures:chests/illager_hideout_vegitarian',
+                 HIDEOUT.format('raw_vegitarian', 'vegitarian')),
+    aliased_loot('nova_structures:chests/illager_hideout_raw_trash', 'nova_structures:chests/illager_hideout_trash',
+                 HIDEOUT.format('raw_trash', 'trash')),
+    aliased_loot('nova_structures:chests/illager_hideout_lesser_meat', 'nova_structures:chests/illager_hideout_meat',
+                 HIDEOUT.format('lesser_meat', 'meat')),
+    aliased_loot('nova_structures:chests/illager_hideout_raw_weaponry', 'nova_structures:chests/illager_hideout_weaponry',
+                 HIDEOUT.format('raw_weaponry', 'weaponry')),
+    aliased_loot('minecraft:chests/village/village_leatherworker', 'minecraft:chests/village/village_tannery',
+                 "Towns and Towers' iberian and swamp leatherworkers; its birch forest and forest ruins ones use the tannery"),
+    aliased_loot('kaisyn:village/village_birch_forest_house', 'minecraft:chests/village/village_plains_house',
+                 "Towns and Towers' birch forest small house; the village's other houses use the plains house table"),
+    aliased_loot('kaisyn:village/village_forest_ruins/forest_ruins_butcher', 'minecraft:chests/village/village_butcher',
+                 "Towns and Towers' forest ruins library house, butcher chest; the village's butchers use the butcher table"),
+    aliased_loot('kaisyn:village/village_forest_ruins/forest_ruins_library', 'minecraft:chests/village/village_cartographer',
+                 "Towns and Towers' forest ruins library; vanilla has no library chest and its library houses keep a "
+                 'cartographer chest'),
+    aliased_loot('kaisyn:village/village_forest_ruins/forest_ruins_temple', 'minecraft:chests/village/village_temple',
+                 "Towns and Towers' forest ruins temple; the same temple's other chest uses the temple table"),
 ]
 
 
@@ -840,7 +913,8 @@ FAMILIES = {
             # recipe's own shards and the Horizon Chart still makes the Orb (docs/design/mod-pingpong.md).
             swapped_loot('data/eternal_starlight/loot_table/bosses/the_gatekeeper.json', ORB, SHARD,
                          'First-win Orb becomes the gated recipe\'s shards', count=4, staged=ORB),
-        ] + [ported_loot(path, f'Ad Astra chest loot in the 1.20 folder: {where}') for path, where in AD_ASTRA_CHEST_LOOT],
+        ] + [ported_loot(path, f'Ad Astra chest loot in the 1.20 folder: {where}') for path, where in AD_ASTRA_CHEST_LOOT]
+          + LOOT_INTEGRITY,
         'offer_swaps': [
             offer_swap('eternal_starlight:the_gatekeeper', ORB, SHARD,
                        'GatekeeperTrades sells the Orb for one coin; the same coin buys the recipe\'s shards',
@@ -1291,6 +1365,57 @@ def disabled_placeholder(data):
     return {'type': 'neoforge:false'} in data.get('neoforge:conditions', [])
 
 
+def template_files():
+    """Structure templates the pinned JARs ship, as namespaced IDs."""
+    lock, paths = lock_entries()
+    found = set()
+    for entry in lock['mods']:
+        with zipfile.ZipFile(Path(paths[entry['filename']])) as jar:
+            for name in jar.namelist():
+                match = re.match(r'data/([^/]+)/structure/(.+)\.nbt$', name)
+                if match:
+                    found.add(f'{match.group(1)}:{match.group(2)}')
+    return found
+
+
+def pool_locations(value, at=()):
+    """(path, template) for every element of a template pool with a location, list elements included."""
+    if isinstance(value, dict):
+        if isinstance(value.get('location'), str):
+            yield at, value['location']
+        for key, child in value.items():
+            if isinstance(child, (dict, list)):
+                yield from pool_locations(child, at + (key,))
+    elif isinstance(value, list):
+        for i, child in enumerate(value):
+            yield from pool_locations(child, at + (i,))
+
+
+def element_at(root, at):
+    """The value at a path of keys and indexes, as pool_locations yields them."""
+    for key in at:
+        root = root[key]
+    return root
+
+
+def full_id(value):
+    return value if ':' in value else f'minecraft:{value}'
+
+
+def alias_table(target):
+    """A chest table that rolls `target` once: a nested table entry runs every pool of `target`."""
+    return {'type': 'minecraft:chest', 'pools': [{'rolls': 1, 'entries': [{'type': 'minecraft:loot_table', 'value': target}]}]}
+
+
+def self_drop_table(block):
+    """Vanilla's self-drop block table (BlockLootSubProvider.dropSelf), keys in its datagen order."""
+    namespace, rest = block.split(':', 1)
+    return {'type': 'minecraft:block', 'pools': [{
+        'bonus_rolls': 0.0, 'conditions': [{'condition': 'minecraft:survives_explosion'}],
+        'entries': [{'type': 'minecraft:item', 'name': block}], 'rolls': 1.0}],
+        'random_sequence': f'{namespace}:blocks/{rest}'}
+
+
 # 1.20.1 enchant_randomly without "enchantments" drew from every discoverable enchantment. 1.21.1 without
 # "options" draws from the whole registry (Soul Speed, Swift Sneak, Wind Burst and every mod enchantment),
 # so the port names the tag 1.21.1's own tables use for that draw (chests/simple_dungeon): the non-treasure
@@ -1342,16 +1467,57 @@ def port_loot_table(table, where):
     return result, added
 
 
-def build_data(name, found=None):
-    """Return {path below pack/kubejs/data: JSON text} for this family's upstream data overrides."""
+def build_data(name, found=None, templates=None):
+    """Return {path below pack/kubejs/data: JSON text} for this family's upstream data overrides.
+
+    `templates` holds the pinned structure template IDs (template_files() when a spec needs them)."""
     family = FAMILIES[name]
     if not family.get('data'):
         return {}
     found = found if found is not None else data_files()
+    if templates is None and any(s['op'] in ('retarget_template', 'structure_off') for s in family['data']):
+        templates = template_files()
     outputs_by_path = {}
     model = None
     for spec in family['data']:
         sources = found.get(spec['path'], [])
+        if spec['op'] == 'alias_loot':
+            assert not sources, f"{spec['path']}: a pinned JAR ships this table now; drop the alias"
+            old_folder = spec['path'].replace('/loot_table/', '/loot_tables/', 1)
+            assert not found.get(old_folder), f"{old_folder}: the mod ships it in the 1.20 folder; port it instead"
+            namespace, rest = spec['target'].split(':', 1)
+            assert found.get(f'data/{namespace}/loot_table/{rest}.json') or namespace == 'minecraft', \
+                f"{spec['path']}: no pinned JAR ships the target {spec['target']}"
+            target = spec['path'][len('data/'):]
+            assert target not in outputs_by_path, f"{spec['path']}: written twice"
+            outputs_by_path[target] = json.dumps(alias_table(spec['target']), indent=2, ensure_ascii=False) + '\n'
+            continue
+        if spec['op'] == 'self_drop':
+            assert not sources, f"{spec['path']}: a pinned JAR ships this table now; drop ours"
+            target = spec['path'][len('data/'):]
+            assert target not in outputs_by_path, f"{spec['path']}: written twice"
+            outputs_by_path[target] = json.dumps(self_drop_table(spec['block']), indent=2) + '\n'
+            continue
+        if spec['op'] == 'structure_off':
+            assert len(sources) == 1, f"{spec['path']}: expected one pinned structure, found {len(sources)}"
+            structure = json.loads(sources[0][2])
+            biomes, start = structure.get('biomes'), structure.get('start_pool')
+            assert isinstance(biomes, str) and biomes.startswith('#'), f"{spec['path']}: its biomes are not a tag"
+            shared = sorted(path for path, owners in found.items() if path != spec['path']
+                            and re.match(r'data/[^/]+/worldgen/structure/.+\.json$', path)
+                            and any(f'"{biomes}"'.encode() in owner[2] for owner in owners))
+            assert not shared, f"{spec['path']}: {biomes} is also the biome tag of {shared}"
+            namespace, rest = full_id(start).split(':', 1)
+            pool = found[f'data/{namespace}/worldgen/template_pool/{rest}.json']
+            assert len(pool) == 1, f"{spec['path']}: expected one pinned start pool"
+            locations = [full_id(location) for _, location in pool_locations(json.loads(pool[0][2]).get('elements', []))]
+            assert locations and not set(locations) & templates, \
+                f"{spec['path']}: its start pool places a shipped template, so the structure is not empty"
+            namespace, rest = full_id(biomes[1:]).split(':', 1)
+            tag = f'data/{namespace}/tags/worldgen/biome/{rest}.json'
+            assert found.get(tag), f'{tag}: no pinned JAR ships the tag'
+            outputs_by_path[tag[len('data/'):]] = json.dumps({'replace': True, 'values': []}, indent=2) + '\n'
+            continue
         if spec['op'] == 'eterna_ceiling':
             if model is None:
                 model = eterna_ceilings(found)
@@ -1480,6 +1646,17 @@ def build_data(name, found=None):
             reverse = copy.deepcopy(result)
             reverse['pools'][p]['entries'][e]['name'] = spec['old']
             del reverse['pools'][p]['entries'][e]['functions']
+        elif spec['op'] == 'retarget_template':
+            old, new = full_id(spec['old']), full_id(spec['new'])
+            assert old not in templates, f"{spec['path']}: a pinned JAR ships {old} now; drop the retarget"
+            assert new in templates, f"{spec['path']}: no pinned JAR ships {new}"
+            hits = [(at, location) for at, location in pool_locations(result) if full_id(location) == old]
+            assert hits, f"{spec['path']}: no element names {old}"
+            for at, _ in hits:
+                element_at(result, at)['location'] = new
+            reverse = copy.deepcopy(result)
+            for at, location in hits:
+                element_at(reverse, at)['location'] = location
         elif spec['op'] == 'infusion_eterna':
             model = model or eterna_ceilings(found)
             tiers = list(model['tiers'])
