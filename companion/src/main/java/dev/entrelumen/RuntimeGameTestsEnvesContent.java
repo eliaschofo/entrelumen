@@ -54,7 +54,7 @@ import net.neoforged.neoforge.gametest.PrefixGameTestTemplate;
  * Isolated GameTests of the Envés's content (excluded from the distributable jar): echoes filling a
  * room at the attempt's scale with their own drops, each elite affix, the shrines' blessings, the three
  * seal variants, every vault lock, the stair's champion, the gate's two offerings, the loot tables, and
- * the White Wither (no griefing, low flight, a told charge, the defeat hook and its chest). The pack's
+ * the Sour Light (no griefing, low flight, a told charge, the defeat hook and its chest). The pack's
  * mods are absent here, so echoes are their vanilla fallbacks and loot its plain fallback; the full-pack
  * GameTests check the real mobs and Apotheosis items.
  */
@@ -895,7 +895,7 @@ public final class RuntimeGameTestsEnvesContent {
     }).run();
   }
 
-  // ---- The White Wither ---------------------------------------------------------------------
+  // ---- The Sour Light ---------------------------------------------------------------------
 
   @GameTest(template = "empty", timeoutTicks = 1200, batch = "enves_boss_arena")
   public static void theWhiteWitherBreaksNothingHoversLowAndTellsItsCharge(GameTestHelper helper) {
@@ -933,11 +933,11 @@ public final class RuntimeGameTestsEnvesContent {
     }).then(() -> ticking(level, home, (int) WhiteWither.ARENA_RADIUS), () -> {
       // The whole arena ticks before it wakes: the charge runs out of the test's own chunk.
       boss.set(EnvesBoss.spawn(level, attempt, home));
-      helper.assertTrue(boss.get() != null, "no White Wither");
+      helper.assertTrue(boss.get() != null, "no Sour Light");
       helper.assertTrue(!boss.get().hurt(level.damageSources().playerAttack(player), 50), "hurt while condensing");
     }).then(() -> boss.get().phase() == WhiteWither.Phase.FIGHT && vulnerable(player, born), () -> {
       double height = boss.get().getY() - home.getY();
-      helper.assertTrue(height > 1.5 && height < 3.5, "the White Wither does not hover low: " + height);
+      helper.assertTrue(height > 1.5 && height < 3.5, "the Sour Light does not hover low: " + height);
       boss.get().setTarget(player);
       // Hurting a wither makes the vanilla one break the blocks round it; this one must not.
       boss.get().hurt(level.damageSources().playerAttack(player), 5);
@@ -971,7 +971,7 @@ public final class RuntimeGameTestsEnvesContent {
       float lost = health - boss.get().getHealth();
       helper.assertTrue(lost > 10 * (1 + EnvesContentConfig.balance().boss().exposedBonus()) * 0.5, "exposed, it took only " + lost);
     }).then(() -> level.getGameTime() - chargeAt.get() > 60, () -> {
-      for (BlockPos pos : fragile) helper.assertTrue(!level.getBlockState(pos).isAir(), "the White Wither broke " + pos);
+      for (BlockPos pos : fragile) helper.assertTrue(!level.getBlockState(pos).isAir(), "the Sour Light broke " + pos);
     }).run();
   }
 
@@ -1000,7 +1000,7 @@ public final class RuntimeGameTestsEnvesContent {
     }).then(() -> EnvesRuns.get(player.server).run(attempt.id).bossSpawned, () -> {
       var run = EnvesRuns.get(player.server).run(attempt.id);
       var boss = EnvesEchoes.find(run.boss).orElse(null);
-      helper.assertTrue(boss instanceof WhiteWither, "the arena woke no White Wither");
+      helper.assertTrue(boss instanceof WhiteWither, "the arena woke no Sour Light");
       var data = EnvesEchoes.data(boss).orElseThrow();
       helper.assertTrue(data.roleOf() == Role.BOSS && ((WhiteWither) boss).getMaxHealth() == 1020, "Frontier's boss has 1020 health");
       ((WhiteWither) boss).kill();

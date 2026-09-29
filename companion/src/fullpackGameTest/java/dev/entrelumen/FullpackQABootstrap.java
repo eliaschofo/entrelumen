@@ -97,7 +97,7 @@ public final class FullpackQABootstrap {
       GameTestRegistry.register(RuntimeGameTestsRuins.class);
       // Terra's Engine (26 September): the Sunken Workshop's Create puzzle with the pinned Create.
       GameTestRegistry.register(RuinWorkshopFullpackGameTests.class);
-      // The Envés's content (27 September): echoes, affixes, shrines, seals, vaults, the White Wither and its loot.
+      // The Envés's content (27 September): echoes, affixes, shrines, seals, vaults, the Sour Light and its loot.
       GameTestRegistry.register(RuntimeGameTestsEnvesContent.class);
       GameTestRegistry.register(EnvesContentFullpackGameTests.class);
       Set<String> expected = new TreeSet<>();

@@ -1062,10 +1062,13 @@ FAMILIES = {
             # spawner that refuses the tag refuses them: the Wildfire (Friends&Foes 4.0.27, the only loot
             # table with crown fragments; no boss bar, but a boss of the quests), the Stalker (Deeper and
             # Darker, a ServerBossEvent in its class) and the Chaos Guardian (Draconic Evolution, the fight
-            # manager's ShieldedServerBossInfo). EvilCraft, which takes no tags, lists the same bosses in
-            # pack/config/evilcraft-common.toml.
+            # manager's ShieldedServerBossInfo), and, by Elias's call of 29 September 2026, Occultism's unbound
+            # Afrit and Marid (`afrit_wild` and `marid_unbound`, "Unbound Afrit" and "Unbound Marid" in the
+            # pinned 1.224.4 lang; the bound `afrit` and `marid` familiars stay out). EvilCraft, which takes
+            # no tags, lists the same bosses in pack/config/evilcraft-common.toml.
             tagged('data/c/tags/entity_type/bosses.json',
-                   ['deeperdarker:stalker', 'draconicevolution:draconic_guardian', 'friendsandfoes:wildfire'],
+                   ['deeperdarker:stalker', 'draconicevolution:draconic_guardian', 'friendsandfoes:wildfire',
+                    'occultism:afrit_wild', 'occultism:marid_unbound'],
                    'Quest bosses that machines could capture or spawn', owners=10),
             tagged('data/oritech/tags/entity_type/spawner_blacklist.json', ['#c:bosses'],
                    'The spawner controller caught any mob that stepped on it but the Ender Dragon: a Wither '

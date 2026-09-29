@@ -33,10 +33,11 @@ class EnvesRulesTest {
   }
 
   @Test
-  void theGroupSharesThreeFallsPerMemberAndTheLastOneEndsIt() {
-    assertEquals(6, EnvesRules.pool(2, 3), "two players, six falls");
-    assertEquals(3, EnvesRules.pool(0, 3), "the payer always counts");
-    int left = EnvesRules.pool(2, 3);
+  void eachMemberAddsThreeFallsOnTheirFirstEntryOnlyAndTheLastFallEndsIt() {
+    assertEquals(3, EnvesRules.joinGrant(true, 3), "a first entry adds three falls");
+    assertEquals(0, EnvesRules.joinGrant(false, 3), "a later entry adds nothing");
+    assertEquals(1, EnvesRules.joinGrant(true, 0), "a member always adds at least one");
+    int left = EnvesRules.joinGrant(true, 3) + EnvesRules.joinGrant(true, 3); // two members, six falls
     for (int fall = 1; fall < 6; fall++) {
       left = EnvesRules.afterFall(left);
       assertFalse(EnvesRules.exhausted(left), "fall " + fall + " of six keeps the attempt");

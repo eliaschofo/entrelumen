@@ -12,7 +12,7 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 
 /**
- * The White Wither's skull: a wither skull that bursts without breaking anything. Its damage is the
+ * The Sour Light's skull: a wither skull that bursts without breaking anything. Its damage is the
  * boss's {@link EnvesBalance.Boss#skullDamage}, scaled by the attempt like every echo's; it withers for
  * four seconds, whatever the difficulty.
  */

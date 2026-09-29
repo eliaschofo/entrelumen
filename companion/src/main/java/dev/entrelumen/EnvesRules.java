@@ -43,9 +43,12 @@ public final class EnvesRules {
 
   // ---- The fall pool ------------------------------------------------------------------------
 
-  /** The group's falls: {@code perMember} for every member online when the attempt starts. */
-  public static int pool(int members, int perMember) {
-    return Math.max(1, members) * Math.max(1, perMember);
+  /**
+   * The falls a member adds to the group's pool (Elias, 29/9): {@code perMember} the first time they
+   * enter the attempt, and nothing on any later entry. The pool starts empty.
+   */
+  public static int joinGrant(boolean firstEntry, int perMember) {
+    return firstEntry ? Math.max(1, perMember) : 0;
   }
 
   /** Falls left after one more fall; the attempt fails when this reaches 0. */

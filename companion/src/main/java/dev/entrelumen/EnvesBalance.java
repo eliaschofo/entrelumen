@@ -31,7 +31,7 @@ public final class EnvesBalance {
     GUARDIAN,
     /** The stair's champion in the guard room: three affixes, and the stair waits for it. */
     CHAMPION,
-    /** The White Wither. */
+    /** The Sour Light. */
     BOSS,
     /** The grottol of the Geodes: runs, and pays if caught. */
     TREASURE;
@@ -109,7 +109,7 @@ public final class EnvesBalance {
     }
   }
 
-  /** The White Wither's attacks, before scaling: skull and charge damage, the telegraph and the opening. */
+  /** The Sour Light's attacks, before scaling: skull and charge damage, the telegraph and the opening. */
   public record Boss(double skullDamage, double chargeDamage, int telegraphTicks, int exposedTicks, double exposedBonus,
       double hover, int chargeCooldown) {}
 

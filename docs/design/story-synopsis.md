@@ -33,7 +33,7 @@
 
 **El Envés (Elias, 26/9):**
 - es la **luz agria** (*sour light*): la luminosidad que se pudrió en el experimento fallido;
-- alguien la **contuvo en un wither**, y ese recipiente es el Wither blanco;
+- alguien la **contuvo en un wither**, y ese recipiente es la **Luz Agria** (*the Sour Light*, el jefe del Envés; nombre final, Elias 29/9);
 - el recipiente se filtra: la luz agria le da forma al Envés, que copia lo que tocó y se reacomoda en cada apertura, y condensa ecos como enemigos;
 - la netherita es lo único que no puede comer, por eso la puerta la usa de contrapeso.
 

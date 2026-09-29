@@ -103,7 +103,9 @@ public final class EnvesCommands {
     var attempt = Enves.attemptOf(player);
     if (attempt.isEmpty() || attempt.get().floor(depth).placement != EnvesData.Placement.READY) return 0;
     BlockPos arrival = Enves.arrival(player.server, attempt.get(), depth);
-    return Enves.move(player, Enves.level(player.server), Vec3.atBottomCenterOf(arrival), Enves.ARRIVAL_YAW) ? 1 : 0;
+    boolean moved = Enves.move(player, Enves.level(player.server), Vec3.atBottomCenterOf(arrival), Enves.ARRIVAL_YAW);
+    if (moved) Enves.joinPool(player.server, attempt.get(), player); // a first entry by any road pays its falls
+    return moved ? 1 : 0;
   }
 
   private static int lightAll(ServerPlayer player) {

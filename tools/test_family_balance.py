@@ -649,18 +649,18 @@ BOSS_TAG = 'c:bosses'
 # JAR ships that one); vanilla has no such tag.
 NEOFORGE_BOSSES = ('minecraft:ender_dragon', 'minecraft:wither', '#forge:bosses')
 # Quest bosses (role "boss" with a kill task) that stay out of c:bosses. None shows a boss bar (no
-# ServerBossEvent in its class) and no mod tags it as a boss, so each waits for Elias's call (28 September
-# 2026); until then c:bosses does not cover it. An entry no quest needs any more fails too.
+# ServerBossEvent in its class) and no mod tags it as a boss. Elias decided on 29 September 2026: only
+# Occultism's unbound Afrit and Marid join c:bosses (boss_drops family); these stay allowed to machines,
+# each for the same reason, «Elias 29/9: farmable». An entry no quest needs any more fails too.
+FARMABLE = 'Elias 29/9: farmable'
 UNTAGGED_QUEST_BOSSES = {
-    'minecraft:warden': 'Vanilla, no boss bar; neither vanilla, NeoForge nor a pinned mod tags it',
-    'evilcraft:werewolf': 'A villager turned on full-moon nights; EvilCraft already keeps its spirit out of boxes',
-    'immersiveengineering:fusilier': "IE's raid variant of a pillager",
-    'immersiveengineering:commando': "IE's raid variant of a vindicator, evoker or ravager",
-    'immersiveengineering:bulwark': "IE's raid variant of a vindicator, evoker or ravager",
-    'irons_spellbooks:ice_spider': "A snow hunter; Iron's Spells tags only the Dead King and Tyros",
-    'occultism:afrit_wild': 'The Afrit of an open conjure ritual',
-    'occultism:marid_unbound': "The Marid of Tibira's Attraction",
-    'eternal_starlight:permafrost': "An ESBoss without a boss bar; Eternal Starlight's own c:bosses leaves it out",
+    'minecraft:warden': f'{FARMABLE} (vanilla, no boss bar; neither vanilla, NeoForge nor a pinned mod tags it)',
+    'evilcraft:werewolf': f'{FARMABLE} (a villager turned on full-moon nights; EvilCraft already keeps its spirit out of boxes)',
+    'immersiveengineering:fusilier': f"{FARMABLE} (IE's raid variant of a pillager)",
+    'immersiveengineering:commando': f"{FARMABLE} (IE's raid variant of a vindicator, evoker or ravager)",
+    'immersiveengineering:bulwark': f"{FARMABLE} (IE's raid variant of a vindicator, evoker or ravager)",
+    'irons_spellbooks:ice_spider': f"{FARMABLE} (a snow hunter; Iron's Spells tags only the Dead King and Tyros)",
+    'eternal_starlight:permafrost': f"{FARMABLE} (an ESBoss without a boss bar; Eternal Starlight's own c:bosses leaves it out)",
 }
 
 
@@ -724,7 +724,8 @@ class BossDropsTest(unittest.TestCase):
         tags = [s for s in family['data'] if s['op'] == 'tag_values']
         self.assertEqual([(s['path'], s['values']) for s in tags],
                          [('data/c/tags/entity_type/bosses.json',
-                           ['deeperdarker:stalker', 'draconicevolution:draconic_guardian', 'friendsandfoes:wildfire']),
+                           ['deeperdarker:stalker', 'draconicevolution:draconic_guardian', 'friendsandfoes:wildfire',
+                            'occultism:afrit_wild', 'occultism:marid_unbound']),
                           ('data/oritech/tags/entity_type/spawner_blacklist.json', ['#c:bosses'])])
         queen = [s for s in family['data'] if s['op'] == 'remove_values']
         self.assertEqual(len(queen), 2)
@@ -766,6 +767,10 @@ class BossDropsTest(unittest.TestCase):
 
         kills = quest_boss_kills()
         self.assertIn('friendsandfoes:wildfire', kills)
+        # Elias 29/9: Occultism's unbound Afrit and Marid are bosses now (the bound ones are not).
+        self.assertLessEqual({'occultism:afrit_wild', 'occultism:marid_unbound'}, set(kills) & bosses)
+        self.assertFalse({'occultism:afrit', 'occultism:marid'} & bosses)
+        self.assertTrue(all(reason.startswith(FARMABLE) for reason in UNTAGGED_QUEST_BOSSES.values()))
         untagged = {entity: keys for entity, keys in kills.items() if not tagged(entity)}
         self.assertEqual(sorted(untagged), sorted(UNTAGGED_QUEST_BOSSES), untagged)
         self.assertTrue(all(reason.strip() for reason in UNTAGGED_QUEST_BOSSES.values()))
@@ -777,7 +782,8 @@ class BossDropsTest(unittest.TestCase):
         (listed,) = re.findall(r'^\s*entityBlacklist = (\[.*\])$', config, re.M)
         patterns = json.loads(listed)
         bosses = tag_members(entity_tags(pinned_data()), BOSS_TAG)
-        self.assertLessEqual({'friendsandfoes:wildfire', 'deeperdarker:stalker', 'draconicevolution:draconic_guardian'}, bosses)
+        self.assertLessEqual({'friendsandfoes:wildfire', 'deeperdarker:stalker', 'draconicevolution:draconic_guardian',
+                              'occultism:afrit_wild', 'occultism:marid_unbound'}, bosses)
         missing = sorted(b for b in bosses if not any(re.fullmatch(p, b) for p in patterns))
         self.assertEqual(missing, [])
 
