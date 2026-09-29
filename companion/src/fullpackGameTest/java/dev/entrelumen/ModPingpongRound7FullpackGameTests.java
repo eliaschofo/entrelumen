@@ -22,7 +22,7 @@ import org.slf4j.Logger;
 @GameTestHolder("entrelumen")
 @PrefixGameTestTemplate(false)
 public final class ModPingpongRound7FullpackGameTests {
-  static final List<String> ROUND7 = List.of("mysticalagradditions", "hardcorerevival", "me_beam_former");
+  static final List<String> ROUND7 = List.of("mysticalagradditions", "hardcorerevival", "me_beam_former", "squatgrow");
   /** Animus waits for TeamDman/Animus#156 (the bound spear crashes multiplayer clients in 5.2.13). */
   static final List<String> ROUND7_DEFERRED = List.of("animusnv");
   /** pingpong7 gate: insanium only from supremium blocks around the master crystal, with the Nature Luminosity. */
@@ -53,7 +53,81 @@ public final class ModPingpongRound7FullpackGameTests {
     Object config = Class.forName(REVIVAL_CONFIG).getMethod("getActive").invoke(null);
     for (String field : List.of("disableInSingleplayer", "disableInLonelyMultiplayer"))
       if (!(boolean) config.getClass().getField(field).get(config)) problems.add("Hardcore Revival " + field + " is off");
+    // pack/config/squatgrow-common.yaml: five times slower than the defaults (Elias, 29 September).
+    Object squat = Class.forName("dev.wuffs.squatgrow.SquatGrow").getField("config").get(null);
+    Map<String, Object> expected = new java.util.LinkedHashMap<>();
+    expected.put("chance", 0.2f);
+    expected.put("randomTickMultiplier", 2);
+    expected.put("range", 2);
+    expected.put("sugarcaneMultiplier", 1);
+    expected.put("enableMysticalCrops", false);
+    expected.put("enableAE2Accelerator", false);
+    expected.put("enableDirtToGrass", false);
+    expected.put("requireHoe", false);
+    expected.forEach((field, want) -> {
+      try {
+        Object have = squat.getClass().getField(field).get(squat);
+        if (!want.equals(have)) problems.add("Squat Grow " + field + " is " + have);
+      } catch (ReflectiveOperationException failure) {
+        problems.add("Squat Grow " + field + ": " + failure);
+      }
+    });
+    List<?> ignored = (List<?>) squat.getClass().getField("ignoreList").get(squat);
+    for (String entry : List.of("minecraft:grass_block", "mysticalagriculture:*", "mysticalagradditions:*", "#mysticalagriculture:crops"))
+      if (!ignored.contains(entry)) problems.add("Squat Grow ignoreList lacks " + entry);
     helper.assertTrue(problems.isEmpty(), "Round 7: " + problems);
+    helper.succeed();
+  }
+
+  /**
+   * Squat Grow next to a wheat crop advances it, and next to a Mystical Agriculture crop, which extends CropBlock
+   * and would grow through the plain crop action, it does not (the pack's ignoreList). A mock player squats
+   * (SquatAction.performAction, what the crouch mixin calls) a few hundred times beside both; the blocks go back
+   * to air however the case ends.
+   */
+  @GameTest(template = "empty", timeoutTicks = 200)
+  public static void squatGrowAdvancesWheatButNotMysticalCrops(GameTestHelper helper) throws Exception {
+    var level = helper.getLevel();
+    var chunk = new net.minecraft.world.level.ChunkPos(helper.absolutePos(net.minecraft.core.BlockPos.ZERO));
+    int y = level.getMaxBuildHeight() - 12;
+    var wheat = new net.minecraft.core.BlockPos(chunk.getMinBlockX() + 7, y + 1, chunk.getMinBlockZ() + 7);
+    var mystical = wheat.east(2).south(0);
+    var ma = BuiltInRegistries.BLOCK.get(ResourceLocation.parse("mysticalagriculture:inferium_crop"));
+    Deque<AutoCloseable> cleanup = new ArrayDeque<>();
+    try {
+      for (var pos : List.of(wheat, mystical)) {
+        level.setBlock(pos.below(), net.minecraft.world.level.block.Blocks.FARMLAND.defaultBlockState()
+            .setValue(net.minecraft.world.level.block.FarmBlock.MOISTURE, 7), 2);
+        cleanup.push(() -> {
+          level.setBlock(pos, net.minecraft.world.level.block.Blocks.AIR.defaultBlockState(), 2);
+          level.setBlock(pos.below(), net.minecraft.world.level.block.Blocks.AIR.defaultBlockState(), 2);
+        });
+      }
+      level.setBlock(wheat, net.minecraft.world.level.block.Blocks.WHEAT.defaultBlockState(), 2);
+      level.setBlock(mystical, ma.defaultBlockState(), 2);
+      var player = new ModPingpongRound5FullpackGameTests.Session(helper, "R7Squatter");
+      cleanup.push(player);
+      Vec3 stand = Vec3.atBottomCenterOf(wheat.east().south());
+      player.player.teleportTo(stand.x, stand.y, stand.z);
+      var action = Class.forName("dev.wuffs.squatgrow.SquatAction").getMethod("performAction", Player.class);
+      for (int i = 0; i < 400; i++) action.invoke(null, player.player);
+      int wheatAge = level.getBlockState(wheat).getValue(net.minecraft.world.level.block.CropBlock.AGE);
+      var maState = level.getBlockState(mystical);
+      int maAge = maState.getBlock() instanceof net.minecraft.world.level.block.CropBlock crop ? crop.getAge(maState) : -1;
+      LOGGER.info("ENTRELUMEN_ROUND7 squat wheatAge={} mysticalAge={}", wheatAge, maAge);
+      helper.assertTrue(wheatAge > 0, "Squatting next to wheat did not advance it (age " + wheatAge + ")");
+      helper.assertTrue(maAge == 0, "Squatting advanced a Mystical Agriculture crop (age " + maAge + ")");
+    } finally {
+      Exception first = null;
+      while (!cleanup.isEmpty()) {
+        try {
+          cleanup.pop().close();
+        } catch (Exception failure) {
+          if (first == null) first = failure;
+        }
+      }
+      if (first != null) throw first;
+    }
     helper.succeed();
   }
 

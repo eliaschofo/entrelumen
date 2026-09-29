@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "about": "Mod ping-pong round 7 (docs/design/mod-pingpong.md#ronda-7-289-las-preguntas-de-la-búsqueda-hacia-afuera): the outward-search ASKs Elias approved on 28 September. Mystical Agradditions' insanium tier and its star, egg, draconium and nitro seeds open in Act VI (pingpong7 family of tools/generate_family_balance.py); ME Beam Former comes without its uncapped energy tower; Hardcore Revival adds a co-op downed state. Animus is deferred: its bound spear still crashes multiplayer clients in 5.2.13 (TeamDman/Animus#156).",
+  "about": "Mod ping-pong round 7 (docs/design/mod-pingpong.md#ronda-7-289-las-preguntas-de-la-búsqueda-hacia-afuera): the outward-search ASKs Elias approved on 28 September. Mystical Agradditions' insanium tier and its star, egg, draconium and nitro seeds open in Act VI (pingpong7 family of tools/generate_family_balance.py); ME Beam Former comes without its uncapped energy tower; Hardcore Revival adds a co-op downed state; Squat Grow (Elias, 29 September: «twerk pero 5 veces más lento y nerfeado») lets a squat grow plants at a fifth of its default speed. Animus is deferred: its bound spear still crashes multiplayer clients in 5.2.13 (TeamDman/Animus#156).",
   "content": {
     "mysticalagradditions": [
       "VI",
@@ -14,7 +14,8 @@
     ]
   },
   "qol": {
-    "hardcorerevival": "A player at zero health is knocked out for two minutes instead of dying, and a teammate can rescue them; off in single player and when alone on a server"
+    "hardcorerevival": "A player at zero health is knocked out for two minutes instead of dying, and a teammate can rescue them; off in single player and when alone on a server",
+    "squatgrow": "Crouching next to crops grows them, five times slower than its defaults: a 5x5 area at 0.2 x 2 random ticks per squat, with no sugar cane bonus, no Mystical Agriculture crops, no AE2 crystals and no dirt-to-grass"
   },
   "clientOnly": [],
   "performance": [],
@@ -95,6 +96,31 @@
         "downloadUrl": "https://cdn.modrinth.com/data/wug9w09r/versions/qA81ofpM/me_beam_former-1.21.1-1.3.0.jar"
       },
       "evidence": "Official CurseForge CDN; byte length matched the official file record (https://www.curseforge.com/api/v1/mods/1351545/files/7765462); identical bytes on Modrinth, SHA-512 matched"
+    },
+    {
+      "modIds": [
+        "squatgrow"
+      ],
+      "filename": "squatgrow-neoforge-21.1.4+mc1.21.1.jar",
+      "sha256": "737bb355c49f1439d4e085e5c4b7d2dcd8df8e66a3d125f3c7ce538fdec982b7",
+      "dependencies": [
+        "architectury [13.0.1,)",
+        "minecraft [1.21,)",
+        "neoforge [2,)"
+      ],
+      "license": "All rights reserved",
+      "projectID": 515698,
+      "fileID": 8495735,
+      "side": "Client & Server",
+      "sourceUrl": "https://www.curseforge.com/minecraft/mc-mods/squat-grow/files/8495735",
+      "downloadUrl": "https://edge.forgecdn.net/files/8495/735/squatgrow-neoforge-21.1.4%2Bmc1.21.1.jar",
+      "sourceSha512": "732debf8416fed4d4d46f5f8931c3610f4c4eb879627858b64363c01db6b85be093c5e1f9791d08173281b180b5489bddb5694ddd26c8e232f1451892cf4ff26",
+      "modrinthMapping": {
+        "projectId": "b5JMdB5V",
+        "versionId": "NZp6wTbs",
+        "downloadUrl": "https://cdn.modrinth.com/data/b5JMdB5V/versions/NZp6wTbs/squatgrow-neoforge-21.1.4%2Bmc1.21.1.jar"
+      },
+      "evidence": "Official CurseForge CDN; byte length matched the official file record (https://www.curseforge.com/api/v1/mods/515698/files/8495735); FTB Evolution 1.43.1 ships the same CurseForge file with the same SHA-1; identical bytes on Modrinth, SHA-512 matched"
     }
   ]
 }

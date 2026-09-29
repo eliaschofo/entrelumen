@@ -853,13 +853,14 @@ Los mods de contenido aprobados de la [búsqueda hacia afuera](../research/mod-o
 
 ## Ronda 7 (28/9): las preguntas de la búsqueda hacia afuera
 
-Elias decidió el 28/9 las 15 preguntas de la [búsqueda hacia afuera](../research/mod-outward.md#preguntas-para-elias). Entran tres, Animus queda pospuesto y el resto sale. Familia `catalog/families/pingpong7.json`: 3 mods, ninguna librería nueva. El lock pasa de 373 / 319 a **376 / 322**; ninguna entrada previa cambió.
+Elias decidió el 28/9 las 15 preguntas de la [búsqueda hacia afuera](../research/mod-outward.md#preguntas-para-elias). Entran tres, Animus queda pospuesto y el resto sale; el 29/9 se suma Squat Grow (ver abajo). Familia `catalog/families/pingpong7.json`: 4 mods, ninguna librería nueva. El lock pasa de 373 / 319 a **377 / 323**; ninguna entrada previa cambió.
 
 | Mod | Versión | Fuente | Acto | Para qué |
 |---|---|---|---|---|
 | Mystical Agradditions | 8.0.14 | CF 256247/8515974 (FTB Evolution trae el mismo archivo; MIT) | VI | El sexto tier de Mystical Agriculture: insanium y semillas de estrella del Nether, huevo de dragón, draconio despertado y cristal nitro. Suma menas de inferium y prosperidad en el Nether y el End. |
 | ME Beam Former | 1.3.0 | CF 1351545/7765462 (los mismos bytes en Modrinth; LGPL) | III | Rayos visibles que llevan una red ME hasta 32 bloques por el aire. |
 | Hardcore Revival | 21.1.22 | CF 274036/8837401 (los mismos bytes en Modrinth) | todos | En co-op, un jugador sin vida queda caído dos minutos y un compañero lo puede levantar. |
+| Squat Grow | 21.1.4 | CF 515698/8495735 (los mismos bytes en Modrinth; FTB Evolution trae el mismo archivo) | I-VI | Agacharse junto a un cultivo lo hace crecer, cinco veces más lento que por defecto. |
 
 ### Mystical Agradditions: el insanium, en el acto VI
 
@@ -910,6 +911,40 @@ Elias decidió el 28/9 las 15 preguntas de la [búsqueda hacia afuera](../resear
 - **Distribución:** el archivo es «todos los derechos reservados». CurseForge lo referencia por ID y los mismos bytes están en Modrinth para la exportación `.mrpack`.
 - **Sin teclas:** se rescata con el botón de usar.
 
+### Squat Grow, cinco veces más lento (Elias, 29/9)
+
+Pedido de Elias: «me gustaría que haya TWERK pero tipo x5 veces más lento y nerfeado».
+
+- **El mod.** Squat Grow 21.1.4, de Gaz (nanite/FTB), «todos los derechos reservados». La página cede la distribución a FeedTheBeast y CurseForge para modpacks: el pin lleva `allowModDistribution: true` (dato del controlador; el flag de la API de CurseForge no se pudo leer desde acá, respondió 403) y FTB Evolution 1.43.1 trae el mismo archivo. Depende de Architectury 13.0.1 y de Cloth Config, que el lock ya tiene. Es de ambos lados: un mixin en el jugador dispara la acción y el cliente sincroniza con el servidor si el jugador la tiene prendida (`SquatGrowEnabledPacket`).
+- **Qué hace.** Cada vez que el jugador se agacha, sobre los bloques a su alrededor aplica la magia de un ítem según el bloque:
+  - un cultivo de vainilla (`CropBlock`) crece como con un polvo de hueso;
+  - lo que se puede fertilizar y los tallos, igual;
+  - la caña de azúcar, el cactus y los tallos reciben ticks aleatorios extra (`randomTickMultiplier`, y `sugarcaneMultiplier` para la caña);
+  - con Mystical Agriculture, sus cultivos, y con AE2, los cristales;
+  - de yapa, `enableDirtToGrass` convierte tierra en pasto.
+- **Config** (`pack/config/squatgrow-common.yaml`; el nombre y el formato salen del JAR: Cloth Config AutoConfig con su serializador YAML, `squatgrow-common.yaml`, que construye el objeto desde el archivo y deja el valor por defecto de toda clave que falte):
+
+| Opción | Valor | Por defecto | Para qué |
+|---|---|---|---|
+| `chance` | 0,2 | 0,5 | Junto con el multiplicador: 0,2 × 2 = 0,4 ticks aleatorios por sentadilla y bloque, contra 0,5 × 4 = 2 por defecto: cinco veces más lento. |
+| `randomTickMultiplier` | 2 | 4 | Ídem. |
+| `range` | 2 | 3 | Un área de 5×5 en lugar de 7×7. |
+| `sugarcaneMultiplier` | 1 | 4 | La caña sin el ×4. |
+| `enableMysticalCrops` | false | true | Las semillas de recursos de Mystical Agriculture son progresión. |
+| `enableAE2Accelerator` | false | true | El crecimiento de cristales de AE2 es una puerta de tecnología pensada. |
+| `enableDirtToGrass` | false | true | Recorta los extras. |
+
+  `requireHoe` (false) y el resto quedan por defecto.
+- **La lista de ignorados** (`ignoreList`) conserva la de fábrica (pasto, hierba, netherrack y las dos nylium) y suma lo que un agachado no debe acelerar. Ojo con una cosa que el JAR no avisa: los cultivos de Mystical Agriculture extienden `CropBlock`, así que la acción común de cultivos los haría crecer igual con `enableMysticalCrops` apagado (esa opción sólo apaga una acción extra que también los toca). La lista los frena de verdad. Se compara por identificador exacto, por espacio de nombres con `mod:*` y por tag con `#`:
+  - `#mysticalagriculture:crops` y `mysticalagriculture:*`;
+  - `mysticalagradditions:*`: Agradditions usa la misma clase de cultivo;
+  - los cultivos de recurso o de progresión que hay en los JAR fijados: `oritech:*` (el cultivo marchito), `occultism:*` (la datura), `actuallyadditions:*` (loto negro y café), `silentgear:*` (lino) y `ars_nouveau:*` (la flor de mago).
+
+  Los cultivos de comida (Farmer's Delight, Croptopia, Pam's, Herbs and Harvest, Aether's Delight y demás) sí crecen: son el sentido del mod.
+- **Números.** El «5×» sale de la cuenta de arriba (0,4 contra 2 ticks por bloque y sentadilla); además el área baja de 49 a 25 bloques, así que por sentadilla el efecto total ronda una décima parte. No se midió en juego.
+- **GameTests:** `pingponground7loaded` lee la config cargada por el mod (los siete valores y cuatro entradas de la lista), y `squatgrowadvanceswheatbutnotmysticalcrops` hace que un jugador de prueba se agache 400 veces (`SquatAction.performAction`, lo que llama el mixin de agacharse) junto a un trigo y a un cultivo de inferium: el trigo tiene que avanzar y el de Mystical Agriculture quedarse en edad 0.
+- **Ganchos para las quests:** ninguno propio; una quest de casilla puede enseñar el «twerk» en el capítulo de granja.
+
 ### Animus, pospuesto
 
 Elias lo aprobó a condición de que se arregle el crash del cliente en multijugador, y no está arreglado. En 5.2.13, la última de 1.21.1, `ItemSpearBound.hurtEnemy` llama a `consumeEV` antes de mirar si corre en el cliente, y `consumeEV` usa la red de sangre que `getAnima` devuelve nula en un cliente conectado a un servidor (leído con `javap`; [TeamDman/Animus#156](https://github.com/TeamDman/Animus/issues/156), abierto el 27/9; la rama 1.21.1 no tiene commits desde el 14/9). Se revisa con la próxima versión. Si entra, también hay que resolver su sigilo que acelera bloques ×32.
@@ -921,8 +956,9 @@ Create Big Cannons, Brewin' and Chewin', Better Fusion Reactor, Mekanism Nuclear
 ### Verificación (estática)
 
 - **GameTests** (`ModPingpongRound7FullpackGameTests`):
-  - `pingponground7loaded`: los tres mods cargados, Animus ausente, el bloque de insanium con la Luminosidad, las dos recetas quitadas y la config co-op de Hardcore Revival leída del mod;
+  - `pingponground7loaded`: los cuatro mods cargados, Animus ausente, el bloque de insanium con la Luminosidad, las dos recetas quitadas y las configs de Hardcore Revival (co-op) y de Squat Grow leídas del mod;
   - `carryonrefusesround7blocks`;
+  - `squatgrowadvanceswheatbutnotmysticalcrops`, de arriba;
   - `hardcorerevivaldownsandrescuesincoop`: con dos jugadores de prueba conectados, un golpe letal deja caído al primero, vivo; el segundo lo levanta por el camino de rescate del propio mod.
 - `tools/test_family_balance.py` suma los dos tests de arriba. Pasan las familias (14), el diseño de recetas, el lock de los dos lados y la compilación de las GameTests. Ninguno de los tres regala nada al primer ingreso.
 - El runtime entra en la misma cola que las rondas 5 y 6.
