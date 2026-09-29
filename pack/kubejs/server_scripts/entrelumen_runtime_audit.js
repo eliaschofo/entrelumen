@@ -3424,6 +3424,7 @@ const entrelumenAuditTargets = {
     "minecraft:fishing_rod",
     "minecraft:flint",
     "minecraft:flint_and_steel",
+    "minecraft:flowering_azalea_leaves",
     "minecraft:furnace",
     "minecraft:gilded_blackstone",
     "minecraft:glass",
@@ -5791,7 +5792,7 @@ const entrelumenAuditTargets = {
       "output": "farmersdelight:flint_knife"
     }
   ],
-  "signature": "9b53c94e8588ef5c"
+  "signature": "591ea656a4336a23"
 };
 
 ServerEvents.afterRecipes(event => {
