@@ -4,492 +4,463 @@
   "act": "VI",
   "icon": "entrelumen:luminous_ingot",
   "emblem": "entrelumen:textures/item/luminous_sword.png",
-  "title": {
-    "en_us": "Luminosities and Luminous Gear",
-    "es_es": "Luminosidades y equipo luminoso"
-  },
+  "title": {"en_us": "Luminosities and Luminous Gear", "es_es": "Luminosidades y equipo luminoso"},
   "subtitle": {
     "en_us": "Six Luminosities, one ingot, the best gear in the pack and creative items made of light.",
     "es_es": "Seis Luminosidades, un lingote, el mejor equipo del pack e ítems creativos hechos de luz."
   },
+  "presentation": 2,
+  "art": [
+    {"id": "title", "text": {"en_us": "Luminosities and Luminous Gear", "es_es": "Luminosidades y equipo luminoso"}, "x": -2.0, "y": -14.4, "scale": 3, "align": "start", "tint": "#F3E3B0"},
+    {"id": "hall", "frame": [-1.0, -13.0, 34.4, 12.8], "color": "#6F7FD8", "alpha": 70, "fill": "#151A33", "fill_alpha": 60, "corners": false, "reveal": "entrelumen_luminous_welcome", "order": -9, "sketch": true},
+    {"id": "motes_warm", "scatter": ["minecraft:textures/particle/flash.png"], "region": [-0.5, -12.5, 33.9, 12.3], "count": 22, "size": [0.25, 0.55], "alphas": [30, 110], "seed": 3, "tint": "#FFE9A8", "reveal": "entrelumen_luminous_welcome", "order": -8, "avoid": []},
+    {"id": "motes_cool", "scatter": ["minecraft:textures/particle/flash.png"], "region": [-0.5, -12.5, 33.9, 12.3], "count": 16, "size": [0.25, 0.5], "alphas": [30, 100], "seed": 8, "tint": "#BFE6FF", "reveal": "entrelumen_luminous_welcome", "order": -8, "avoid": []},
+    {"id": "halo", "glow": [13.5, 0.9], "r": 7.4, "tint": "#FFF1B8", "alpha": 55, "reveal": "entrelumen_luminous_six", "order": -7},
+    {"id": "stand_pole", "picture": "minecraft:textures/block/oak_planks.png", "x": 13.5, "y": 1.4, "w": 0.34, "h": 8.0, "reveal": "entrelumen_luminous_welcome", "sketch": true, "order": -5},
+    {"id": "stand_shoulders", "picture": "minecraft:textures/block/oak_planks.png", "x": 13.5, "y": -0.7999999999999999, "w": 4.2, "h": 0.32, "reveal": "entrelumen_luminous_welcome", "sketch": true, "order": -5},
+    {"id": "stand_hips", "picture": "minecraft:textures/block/oak_planks.png", "x": 13.5, "y": 2.0, "w": 2.3, "h": 0.3, "reveal": "entrelumen_luminous_welcome", "sketch": true, "order": -5},
+    {"id": "stand_base", "picture": "minecraft:textures/block/smooth_stone.png", "x": 13.5, "y": 5.45, "w": 3.8, "h": 0.5, "reveal": "entrelumen_luminous_welcome", "sketch": true, "order": -5},
+    {"id": "orbit", "path": [[18.8, 0.9], [18.09, 3.55], [16.15, 5.49], [13.5, 6.2], [10.85, 5.49], [8.91, 3.55], [8.2, 0.9], [8.91, -1.75], [10.85, -3.69], [13.5, -4.4], [16.15, -3.69], [18.09, -1.75]], "closed": true, "smooth": 2, "color": "#F3E3B0", "width": 0.07, "alpha": 150, "reveal": "entrelumen_luminous_six", "sketch": true, "order": -6},
+    {"id": "slot_engineering", "glow": [13.5, -4.4], "r": 1.1, "tint": "#E07B39", "alpha": 60, "order": -6},
+    {"id": "glow_engineering", "glow": [13.5, -4.4], "r": 1.9, "tint": "#E07B39", "alpha": 150, "reveal": "entrelumen_luminous_six", "order": -4},
+    {"id": "core_engineering", "glow": [13.5, -4.4], "r": 0.95, "tint": "#FFFFFF", "alpha": 150, "reveal": "entrelumen_luminous_six", "order": -3},
+    {"id": "lum_engineering", "item": "entrelumen:luminosity_engineering", "x": 13.5, "y": -4.4, "size": 1.15, "reveal": "entrelumen_luminous_six", "order": -2},
+    {"id": "slot_arcane", "glow": [18.09, -1.75], "r": 1.1, "tint": "#A66BE8", "alpha": 60, "order": -6},
+    {"id": "glow_arcane", "glow": [18.09, -1.75], "r": 1.9, "tint": "#A66BE8", "alpha": 150, "reveal": "entrelumen_luminous_six", "order": -4},
+    {"id": "core_arcane", "glow": [18.09, -1.75], "r": 0.95, "tint": "#FFFFFF", "alpha": 150, "reveal": "entrelumen_luminous_six", "order": -3},
+    {"id": "lum_arcane", "item": "entrelumen:luminosity_arcane", "x": 18.09, "y": -1.75, "size": 1.15, "reveal": "entrelumen_luminous_six", "order": -2},
+    {"id": "slot_nature", "glow": [18.09, 3.55], "r": 1.1, "tint": "#6CC66C", "alpha": 60, "order": -6},
+    {"id": "glow_nature", "glow": [18.09, 3.55], "r": 1.9, "tint": "#6CC66C", "alpha": 150, "reveal": "entrelumen_luminous_six", "order": -4},
+    {"id": "core_nature", "glow": [18.09, 3.55], "r": 0.95, "tint": "#FFFFFF", "alpha": 150, "reveal": "entrelumen_luminous_six", "order": -3},
+    {"id": "lum_nature", "item": "entrelumen:luminosity_nature", "x": 18.09, "y": 3.55, "size": 1.15, "reveal": "entrelumen_luminous_six", "order": -2},
+    {"id": "slot_exploration", "glow": [13.5, 6.2], "r": 1.1, "tint": "#7CC8F0", "alpha": 60, "order": -6},
+    {"id": "glow_exploration", "glow": [13.5, 6.2], "r": 1.9, "tint": "#7CC8F0", "alpha": 150, "reveal": "entrelumen_luminous_six", "order": -4},
+    {"id": "core_exploration", "glow": [13.5, 6.2], "r": 0.95, "tint": "#FFFFFF", "alpha": 150, "reveal": "entrelumen_luminous_six", "order": -3},
+    {"id": "lum_exploration", "item": "entrelumen:luminosity_exploration", "x": 13.5, "y": 6.2, "size": 1.15, "reveal": "entrelumen_luminous_six", "order": -2},
+    {"id": "slot_logistics", "glow": [8.91, 3.55], "r": 1.1, "tint": "#3CC7B4", "alpha": 60, "order": -6},
+    {"id": "glow_logistics", "glow": [8.91, 3.55], "r": 1.9, "tint": "#3CC7B4", "alpha": 150, "reveal": "entrelumen_luminous_six", "order": -4},
+    {"id": "core_logistics", "glow": [8.91, 3.55], "r": 0.95, "tint": "#FFFFFF", "alpha": 150, "reveal": "entrelumen_luminous_six", "order": -3},
+    {"id": "lum_logistics", "item": "entrelumen:luminosity_logistics", "x": 8.91, "y": 3.55, "size": 1.15, "reveal": "entrelumen_luminous_six", "order": -2},
+    {"id": "slot_habitation", "glow": [8.91, -1.75], "r": 1.1, "tint": "#F2B84B", "alpha": 60, "order": -6},
+    {"id": "glow_habitation", "glow": [8.91, -1.75], "r": 1.9, "tint": "#F2B84B", "alpha": 150, "reveal": "entrelumen_luminous_six", "order": -4},
+    {"id": "core_habitation", "glow": [8.91, -1.75], "r": 0.95, "tint": "#FFFFFF", "alpha": 150, "reveal": "entrelumen_luminous_six", "order": -3},
+    {"id": "lum_habitation", "item": "entrelumen:luminosity_habitation", "x": 8.91, "y": -1.75, "size": 1.15, "reveal": "entrelumen_luminous_six", "order": -2},
+    {"id": "ingot_glow", "glow": [13.5, 0.6000000000000001], "r": 2.0, "tint": "#F3E3B0", "alpha": 130, "reveal": "entrelumen_luminous_ingot", "order": -4},
+    {"id": "ingot_item", "item": "entrelumen:luminous_ingot", "x": 13.5, "y": 0.6000000000000001, "size": 1.5, "reveal": "entrelumen_luminous_ingot", "order": -3},
+    {"id": "gear_chestplate", "picture": "entrelumen:textures/item/luminous_chestplate.png", "x": 13.5, "y": 0.75, "w": 3.2, "h": 3.2, "reveal": "entrelumen_luminous_smithing", "sketch": true, "order": -1},
+    {"id": "gear_leggings", "picture": "entrelumen:textures/item/luminous_leggings.png", "x": 13.5, "y": 3.1, "w": 3.2, "h": 3.2, "reveal": "entrelumen_luminous_stats", "sketch": true, "order": -1},
+    {"id": "gear_boots", "picture": "entrelumen:textures/item/luminous_boots.png", "x": 13.5, "y": 4.9, "w": 3.2, "h": 3.2, "reveal": "entrelumen_luminous_never_breaks", "sketch": true, "order": -1},
+    {"id": "gear_helmet", "picture": "entrelumen:textures/item/luminous_helmet.png", "x": 13.5, "y": -1.35, "w": 3.2, "h": 3.2, "reveal": "entrelumen_luminous_set_bonus", "sketch": true, "order": -1},
+    {"id": "gear_glow", "glow": [13.5, 1.5], "r": 4.6, "tint": "#FFF1B8", "alpha": 100, "reveal": "entrelumen_luminous_dynlight", "order": -5},
+    {"id": "sun", "picture": "entrelumen:textures/gui/quests/sun_heliodor.png", "x": 2.6, "y": -10.6, "w": 2.4, "h": 2.4, "reveal": "entrelumen_luminous_light_repair", "order": -3},
+    {"id": "sun_glow", "glow": [2.6, -10.6], "r": 3.4, "alpha": 90, "reveal": "entrelumen_luminous_light_repair", "order": -4},
+    {"id": "sword_piece", "picture": "entrelumen:textures/item/luminous_sword.png", "x": 16.2, "y": 1.1, "w": 3.0, "h": 3.0, "reveal": "entrelumen_luminous_sword", "sketch": true, "order": 0},
+    {"id": "wings_l", "path": [[11.9, -0.4999999999999999], [10.1, -2.5], [9.5, -0.09999999999999998]], "smooth": 3, "color": "#FFE9A8", "width": 0.16, "alpha": 170, "reveal": "entrelumen_luminous_set_bonus", "order": -3},
+    {"id": "wings_r", "path": [[15.1, -0.4999999999999999], [16.9, -2.5], [17.5, -0.09999999999999998]], "smooth": 3, "color": "#FFE9A8", "width": 0.16, "alpha": 170, "reveal": "entrelumen_luminous_set_bonus", "order": -3},
+    {"id": "grid_frame", "frame": [0.30000000000000004, -8.299999999999999, 3.2, -5.3999999999999995], "color": "#E8DCB5", "thickness_px": 1.5, "alpha": 90, "corners": false, "sketch": true, "reveal": "entrelumen_luminous_six"},
+    {"id": "grid_lums", "mosaic": [0.4, -8.2], "cell": 0.9, "rows": ["E.X", "A.L", "N.H"], "reveal": "entrelumen_luminous_six", "order": -3, "legend": {"E": "item:entrelumen:luminosity_engineering", "X": "item:entrelumen:luminosity_exploration", "A": "item:entrelumen:luminosity_arcane", "L": "item:entrelumen:luminosity_logistics", "N": "item:entrelumen:luminosity_nature", "H": "item:entrelumen:luminosity_habitation"}},
+    {"id": "grid_mid", "mosaic": [0.4, -8.2], "cell": 0.9, "rows": [".Y.", ".G.", ".Z."], "reveal": "entrelumen_luminous_ingot", "order": -3, "legend": {"Y": "item:naturesaura:sky_ingot", "G": "item:apotheosis:godforged_pearl", "Z": "item:mekanism:alloy_atomic"}},
+    {"id": "cgrid_frame", "frame": [25.5, -9.5, 28.250000000000004, -6.750000000000001], "color": "#E8DCB5", "thickness_px": 1.5, "alpha": 90, "corners": false, "sketch": true, "reveal": "entrelumen_luminous_sword"},
+    {"id": "cgrid", "mosaic": [25.6, -9.4], "cell": 0.85, "rows": ["PXP", "MCM", "SXS"], "reveal": "entrelumen_luminous_creative", "order": -3, "legend": {"P": "item:entrelumen:luminosity_engineering", "S": "item:entrelumen:luminosity_logistics", "X": "item:draconicevolution:dragon_heart", "M": "item:mekanism:pellet_antimatter", "C": "item:mekanism:ultimate_energy_cube"}},
+    {"id": "carrow", "path": [[28.500000000000004, -8.125], [29.450000000000003, -8.125]], "color": "#F3E3B0", "width": 0.14, "alpha": 200, "reveal": "entrelumen_luminous_creative", "order": -2},
+    {"id": "carrow_h1", "path": [[29.450000000000003, -8.125], [29.1, -8.425]], "color": "#F3E3B0", "width": 0.14, "alpha": 200, "reveal": "entrelumen_luminous_creative", "order": -2},
+    {"id": "carrow_h2", "path": [[29.450000000000003, -8.125], [29.1, -7.825]], "color": "#F3E3B0", "width": 0.14, "alpha": 200, "reveal": "entrelumen_luminous_creative", "order": -2},
+    {"id": "cresult", "item": "mekanism:creative_energy_cube", "x": 30.450000000000003, "y": -8.125, "size": 1.7, "reveal": "entrelumen_luminous_creative", "order": -1},
+    {"id": "cglow", "glow": [30.450000000000003, -8.125], "r": 2.0, "tint": "#F3E3B0", "alpha": 120, "reveal": "entrelumen_luminous_creative", "order": -4},
+    {"id": "shelf_0", "item": "create:creative_motor", "x": 26.1, "y": -5.6, "size": 1.2, "reveal": "entrelumen_luminous_creative", "order": -1},
+    {"id": "shelf_1", "item": "ars_nouveau:creative_source_jar", "x": 27.7, "y": -5.6, "size": 1.2, "reveal": "entrelumen_luminous_creative", "order": -1},
+    {"id": "shelf_2", "item": "draconicevolution:creative_capacitor", "x": 29.3, "y": -5.6, "size": 1.2, "reveal": "entrelumen_luminous_creative", "order": -1},
+    {"id": "boss_0", "item": "minecraft:nether_star", "x": 30.2, "y": -3.7, "size": 1.0, "reveal": "entrelumen_luminous_boss_drops", "order": -1},
+    {"id": "boss_1", "item": "draconicevolution:dragon_heart", "x": 33.0, "y": -3.7, "size": 1.0, "reveal": "entrelumen_luminous_boss_drops", "order": -1},
+    {"id": "boss_2", "item": "minecraft:wet_sponge", "x": 31.6, "y": -0.5, "size": 1.0, "reveal": "entrelumen_luminous_boss_drops", "order": -1},
+    {"id": "dupe_a", "item": "minecraft:nether_star", "x": 27.2, "y": -0.5, "size": 0.9, "reveal": "entrelumen_luminous_no_dupes", "order": -1},
+    {"id": "dupe_b", "item": "minecraft:nether_star", "x": 28.8, "y": -0.5, "size": 0.9, "reveal": "entrelumen_luminous_no_dupes", "order": -1},
+    {"id": "dupe_x1", "path": [[26.6, -1.1], [29.400000000000002, 0.09999999999999987]], "color": "#FF5A4A", "width": 0.12, "reveal": "entrelumen_luminous_no_dupes", "order": 0},
+    {"id": "dupe_x2", "path": [[26.6, 0.09999999999999987], [29.400000000000002, -1.1]], "color": "#FF5A4A", "width": 0.12, "reveal": "entrelumen_luminous_no_dupes", "order": 0},
+    {"id": "emerald_0", "item": "minecraft:emerald_block", "x": -0.2, "y": 5.9, "size": 0.55, "reveal": "entrelumen_luminous_budget", "order": -1},
+    {"id": "emerald_1", "item": "minecraft:emerald_block", "x": 0.35, "y": 5.9, "size": 0.55, "reveal": "entrelumen_luminous_budget", "order": -1},
+    {"id": "emerald_2", "item": "minecraft:emerald_block", "x": 0.9, "y": 5.9, "size": 0.55, "reveal": "entrelumen_luminous_budget", "order": -1},
+    {"id": "emerald_3", "item": "minecraft:emerald_block", "x": 1.45, "y": 5.9, "size": 0.55, "reveal": "entrelumen_luminous_budget", "order": -1},
+    {"id": "emerald_4", "item": "minecraft:emerald_block", "x": 0.07, "y": 5.4, "size": 0.55, "reveal": "entrelumen_luminous_budget", "order": -1},
+    {"id": "emerald_5", "item": "minecraft:emerald_block", "x": 0.62, "y": 5.4, "size": 0.55, "reveal": "entrelumen_luminous_budget", "order": -1},
+    {"id": "emerald_6", "item": "minecraft:emerald_block", "x": 1.17, "y": 5.4, "size": 0.55, "reveal": "entrelumen_luminous_budget", "order": -1},
+    {"id": "emerald_7", "item": "minecraft:emerald_block", "x": 1.72, "y": 5.4, "size": 0.55, "reveal": "entrelumen_luminous_budget", "order": -1},
+    {"id": "cable_boss", "through": ["entrelumen_luminous_boss_drops", "entrelumen_luminous_close"], "color": "#F3E3B0", "width": 0.12, "alpha": 200, "grow": ["entrelumen_luminous_boss_drops"], "sketch": true, "order": -6},
+    {"id": "cable_dupes", "through": ["entrelumen_luminous_no_dupes", "entrelumen_luminous_close"], "color": "#F3E3B0", "width": 0.12, "alpha": 200, "grow": ["entrelumen_luminous_no_dupes"], "sketch": true, "order": -6},
+    {"id": "cable_dyn", "through": ["entrelumen_luminous_dynlight", "entrelumen_luminous_close"], "color": "#F3E3B0", "width": 0.12, "alpha": 200, "grow": ["entrelumen_luminous_dynlight"], "sketch": true, "order": -6},
+    {"id": "finale", "glow": [13.5, 0.9], "r": 10.0, "tint": "#FFF1B8", "alpha": 60, "reveal": "entrelumen_luminous_close", "order": 3},
+    {"id": "spark_engineering_0", "glow": [14.3, 0.9], "r": 0.35, "tint": "#E07B39", "alpha": 200, "reveal": "entrelumen_luminous_toy_sparks", "order": 2},
+    {"id": "spark_engineering_1", "glow": [14.52, 2.0], "r": 0.35, "tint": "#E07B39", "alpha": 200, "reveal": "entrelumen_luminous_toy_sparks", "order": 2},
+    {"id": "spark_engineering_2", "glow": [13.35, 3.09], "r": 0.35, "tint": "#E07B39", "alpha": 200, "reveal": "entrelumen_luminous_toy_sparks", "order": 2},
+    {"id": "spark_arcane_0", "glow": [12.88, 1.4], "r": 0.35, "tint": "#A66BE8", "alpha": 200, "reveal": "entrelumen_luminous_toy_sparks", "order": 2},
+    {"id": "spark_arcane_1", "glow": [12.01, 0.69], "r": 0.35, "tint": "#A66BE8", "alpha": 200, "reveal": "entrelumen_luminous_toy_sparks", "order": 2},
+    {"id": "spark_arcane_2", "glow": [12.24, -0.9], "r": 0.35, "tint": "#A66BE8", "alpha": 200, "reveal": "entrelumen_luminous_toy_sparks", "order": 2},
+    {"id": "spark_nature_0", "glow": [13.67, 0.12], "r": 0.35, "tint": "#6CC66C", "alpha": 200, "reveal": "entrelumen_luminous_toy_sparks", "order": 2},
+    {"id": "spark_nature_1", "glow": [14.79, 0.13], "r": 0.35, "tint": "#6CC66C", "alpha": 200, "reveal": "entrelumen_luminous_toy_sparks", "order": 2},
+    {"id": "spark_nature_2", "glow": [15.61, 1.51], "r": 0.35, "tint": "#6CC66C", "alpha": 200, "reveal": "entrelumen_luminous_toy_sparks", "order": 2},
+    {"id": "spark_exploration_0", "glow": [13.86, 1.61], "r": 0.35, "tint": "#7CC8F0", "alpha": 200, "reveal": "entrelumen_luminous_toy_sparks", "order": 2},
+    {"id": "spark_exploration_1", "glow": [12.99, 2.31], "r": 0.35, "tint": "#7CC8F0", "alpha": 200, "reveal": "entrelumen_luminous_toy_sparks", "order": 2},
+    {"id": "spark_exploration_2", "glow": [11.47, 1.76], "r": 0.35, "tint": "#7CC8F0", "alpha": 200, "reveal": "entrelumen_luminous_toy_sparks", "order": 2},
+    {"id": "spark_logistics_0", "glow": [12.77, 0.57], "r": 0.35, "tint": "#3CC7B4", "alpha": 200, "reveal": "entrelumen_luminous_toy_sparks", "order": 2},
+    {"id": "spark_logistics_1", "glow": [13.01, -0.52], "r": 0.35, "tint": "#3CC7B4", "alpha": 200, "reveal": "entrelumen_luminous_toy_sparks", "order": 2},
+    {"id": "spark_logistics_2", "glow": [14.53, -1.04], "r": 0.35, "tint": "#3CC7B4", "alpha": 200, "reveal": "entrelumen_luminous_toy_sparks", "order": 2},
+    {"id": "spark_habitation_0", "glow": [14.27, 0.69], "r": 0.35, "tint": "#F2B84B", "alpha": 200, "reveal": "entrelumen_luminous_toy_sparks", "order": 2},
+    {"id": "spark_habitation_1", "glow": [14.77, 1.69], "r": 0.35, "tint": "#F2B84B", "alpha": 200, "reveal": "entrelumen_luminous_toy_sparks", "order": 2},
+    {"id": "spark_habitation_2", "glow": [13.92, 3.06], "r": 0.35, "tint": "#F2B84B", "alpha": 200, "reveal": "entrelumen_luminous_toy_sparks", "order": 2},
+    {"id": "anvil", "item": "minecraft:anvil", "x": 1.75, "y": -4.2, "size": 1.1, "reveal": "entrelumen_luminous_toy_anvil", "order": -1},
+    {"id": "anvil_spark_1", "glow": [1.0, -4.699999999999999], "r": 0.5, "tint": "#FFD98A", "alpha": 200, "reveal": "entrelumen_luminous_toy_anvil", "order": 1},
+    {"id": "anvil_spark_2", "glow": [2.8, -4.8999999999999995], "r": 0.4, "tint": "#FFD98A", "alpha": 200, "reveal": "entrelumen_luminous_toy_anvil", "order": 1}
+  ],
   "quests": [
     {
-      "key": "entrelumen_luminous_welcome",
-      "deps": [],
-      "type": "checkmark",
-      "layout": {
-        "x": 0,
-        "y": 0,
-        "size": 2.0,
-        "shape": "hexagon"
-      },
-      "en_us": [
-        "Light, Held in Your Hand",
-        "Heliodor's light, held in six shapes, is the pack's final material. Only Solsticio's natives trade the six &6Luminosities&r, and from them come the &eLuminous Ingot&r, by far the strongest gear in the pack and the recipes for creative items.\n\nThe top of the ladder, and it glows."
-      ],
-      "es_es": [
-        "La luz en tu mano",
-        "La luz de Heliodor, sostenida en seis formas, es el material final del pack. Sólo los nativos de Solsticio intercambian las seis &6Luminosidades&r, y de ellas salen el &eLingote Luminoso&r, por lejos el mejor equipo del pack y las recetas de los ítems creativos.\n\nLa cima de la escalera, y brilla."
-      ],
-      "sources": [
-        "repo:docs/design/luminous-gear.md",
-        "repo:docs/design/story-bible.md"
-      ]
+      "key": "entrelumen_luminous_welcome", "deps": [], "type": "checkmark", "layout": {"x": 0.0, "y": 0.9, "size": 2.0, "shape": "hexagon"},
+      "en_us": {"title": "Light, Held in Your Hand", "subtitle": "The top of the ladder, and it glows.",
+        "text": ["[lead] Heliodor's light, held in six shapes, is the pack's final material.",
+                 "Only Solsticio's natives trade the six [item:entrelumen:luminosity_arcane|Luminosities]. From them come:",
+                 "[li] The [item:entrelumen:luminous_ingot|Luminous Ingot]",
+                 "[li] By far the strongest gear in the pack",
+                 "[li] The recipes for creative items"]},
+      "es_es": {"title": "La luz en tu mano", "subtitle": "La cima de la escalera, y brilla.",
+        "text": ["[lead] La luz de Heliodor, sostenida en seis formas, es el material final del pack.",
+                 "Sólo los nativos de Solsticio intercambian las seis [item:entrelumen:luminosity_arcane|Luminosidades]. De ellas salen:",
+                 "[li] El [item:entrelumen:luminous_ingot|Lingote Luminoso]",
+                 "[li] Por lejos el mejor equipo del pack",
+                 "[li] Las recetas de los ítems creativos"]},
+      "sources": ["repo:docs/design/luminous-gear.md", "repo:docs/design/story-bible.md"]
     },
     {
-      "key": "entrelumen_luminous_six",
-      "deps": [
-        "entrelumen_luminous_welcome"
-      ],
-      "type": "item",
-      "item": "entrelumen:luminosity_arcane",
-      "layout": {
-        "x": 3,
-        "y": 0,
-        "size": 1.5,
-        "shape": "square"
-      },
-      "en_us": [
-        "The Six Luminosities",
-        "One per discipline: &6Engineering&r copper-orange, &5Arcane&r violet, &aNature&r green, &bExploration&r sky blue, &3Logistics&r turquoise and &eHabitation&r warm gold.\n\nNo recipe makes them, and the pack removes any that would. Only Solsticio's awake natives sell them."
-      ],
-      "es_es": [
-        "Las seis Luminosidades",
-        "Una por disciplina: &6Ingeniería&r cobre anaranjado, &5Arcana&r violeta, &aNaturaleza&r verde, &bExploración&r celeste, &3Logística&r turquesa y &eHabitabilidad&r dorado cálido.\n\nNinguna receta las hace, y el pack quita cualquiera que lo intente. Sólo las venden los nativos despiertos de Solsticio."
-      ],
-      "sources": [
-        "repo:docs/design/luminous-gear.md",
-        "repo:pack/kubejs/server_scripts/entrelumen_luminous_balance.js",
-        "repo:docs/design/solsticio-commerce.md"
-      ]
+      "key": "entrelumen_luminous_six", "deps": ["entrelumen_luminous_welcome"], "type": "item", "item": "entrelumen:luminosity_arcane", "layout": {"x": 2.3, "y": 0.9, "size": 1.5, "shape": "square"},
+      "en_us": {"title": "The Six Luminosities",
+        "text": ["[lead] One per discipline, and no recipe makes them.",
+                 "[li] [item:entrelumen:luminosity_engineering|Engineering]: copper-orange",
+                 "[li] [item:entrelumen:luminosity_arcane|Arcane]: violet",
+                 "[li] [item:entrelumen:luminosity_nature|Nature]: green",
+                 "[li] [item:entrelumen:luminosity_exploration|Exploration]: sky blue",
+                 "[li] [item:entrelumen:luminosity_logistics|Logistics]: turquoise",
+                 "[li] [item:entrelumen:luminosity_habitation|Habitation]: warm gold",
+                 "{page}",
+                 "The pack removes any recipe that would make one. Only Solsticio's awake natives sell them."]},
+      "es_es": {"title": "Las seis Luminosidades",
+        "text": ["[lead] Una por disciplina, y ninguna receta las hace.",
+                 "[li] [item:entrelumen:luminosity_engineering|Ingeniería]: cobre anaranjado",
+                 "[li] [item:entrelumen:luminosity_arcane|Arcana]: violeta",
+                 "[li] [item:entrelumen:luminosity_nature|Naturaleza]: verde",
+                 "[li] [item:entrelumen:luminosity_exploration|Exploración]: celeste",
+                 "[li] [item:entrelumen:luminosity_logistics|Logística]: turquesa",
+                 "[li] [item:entrelumen:luminosity_habitation|Habitabilidad]: dorado cálido",
+                 "{page}",
+                 "El pack quita cualquier receta que las haga. Sólo las venden los nativos despiertos de Solsticio."]},
+      "sources": ["repo:docs/design/luminous-gear.md", "repo:pack/kubejs/server_scripts/entrelumen_luminous_balance.js", "repo:docs/design/solsticio-commerce.md"]
     },
     {
-      "key": "entrelumen_luminous_ingot",
-      "deps": [
-        "entrelumen_luminous_six"
-      ],
-      "type": "item",
-      "item": "entrelumen:luminous_ingot",
-      "layout": {
-        "x": 6,
-        "y": 0,
-        "size": 1.5,
-        "shape": "hexagon"
-      },
-      "en_us": [
-        "The Luminous Ingot",
-        "Six Luminosities, one of each, fill the outer columns of the grid. The middle column fuses magic, the divine and the machine: a Nature's Aura &esky ingot&r, an Apotheosis &egodforged pearl&r and a Mekanism &eatomic alloy&r. One recipe, one ingot.\n\nFireproof, faintly glowing, and it repairs any luminous piece at an anvil."
-      ],
-      "es_es": [
-        "El Lingote Luminoso",
-        "Seis Luminosidades, una de cada una, llenan las columnas de afuera de la grilla. La del medio funde la magia, lo divino y la máquina: un &elingote celeste&r de Nature's Aura, una &eperla forjada por dioses&r de Apotheosis y una &ealeación atómica&r de Mekanism. Una receta, un lingote.\n\nA prueba de fuego, con un brillo tenue, y repara cualquier pieza luminosa en el yunque."
-      ],
-      "sources": [
-        "repo:docs/design/luminous-gear.md",
-        "repo:pack/kubejs/data/entrelumen/recipe/luminous_ingot.json"
-      ]
+      "key": "entrelumen_luminous_ingot", "deps": ["entrelumen_luminous_six"], "type": "item", "item": "entrelumen:luminous_ingot", "layout": {"x": 4.5, "y": 0.9, "size": 1.5, "shape": "hexagon"},
+      "en_us": {"title": "The Luminous Ingot",
+        "text": ["[lead] Six Luminosities, one of each, fill the outer columns of the grid.",
+                 "The middle column fuses magic, the divine and the machine:",
+                 "[li] A Nature's Aura [item:naturesaura:sky_ingot|sky ingot]",
+                 "[li] An Apotheosis [item:apotheosis:godforged_pearl|godforged pearl]",
+                 "[li] A Mekanism [item:mekanism:alloy_atomic|atomic alloy]",
+                 "One recipe, one ingot.",
+                 "{page}",
+                 "Fireproof, faintly glowing, and it repairs any luminous piece at an anvil.",
+                 "Once you have one, Mystical Agriculture can grow more: its seed takes [hl|four] ingots and its supremium essence gives one back for [hl|eight]."]},
+      "es_es": {"title": "El Lingote Luminoso",
+        "text": ["[lead] Seis Luminosidades, una de cada una, llenan las columnas de afuera de la grilla.",
+                 "La del medio funde la magia, lo divino y la máquina:",
+                 "[li] Un [item:naturesaura:sky_ingot|lingote celeste] de Nature's Aura",
+                 "[li] Una [item:apotheosis:godforged_pearl|perla forjada por dioses] de Apotheosis",
+                 "[li] Una [item:mekanism:alloy_atomic|aleación atómica] de Mekanism",
+                 "Una receta, un lingote.",
+                 "{page}",
+                 "A prueba de fuego, con un brillo tenue, y repara cualquier pieza luminosa en el yunque.",
+                 "Con uno en mano, Mystical Agriculture cultiva más: la semilla cuesta [hl|cuatro] lingotes y [hl|ocho] esencias dan uno."]},
+      "sources": ["repo:docs/design/luminous-gear.md", "repo:pack/kubejs/data/entrelumen/recipe/luminous_ingot.json", "repo:pack/kubejs/data/entrelumen/recipe/luminous_ingot_from_essence.json"]
     },
     {
-      "key": "entrelumen_luminous_ingredients",
-      "deps": [
-        "entrelumen_luminous_ingot"
-      ],
-      "type": "item",
-      "item": "mekanism:alloy_atomic",
-      "optional": true,
-      "layout": {
-        "x": 6,
-        "y": -3,
-        "size": 1.0,
-        "shape": "circle"
-      },
-      "en_us": [
-        "Gathering the Middle Column",
-        "The &esky ingot&r is Nature's Aura magic, from its altar and aura. The &egodforged pearl&r only comes from salvaging mythic Apotheosis loot, which drops from World Tier Summit on. The &eatomic alloy&r is Mekanism's top alloy.\n\nAll three are Ark materials too, so your act V setup keeps paying off."
-      ],
-      "es_es": [
-        "Juntar la columna del medio",
-        "El &elingote celeste&r es magia de Nature's Aura, de su altar y su aura. La &eperla forjada por dioses&r sólo sale de reciclar botín mítico de Apotheosis, que cae desde el World Tier Cumbre. La &ealeación atómica&r es la aleación más alta de Mekanism.\n\nLas tres son también materiales del Arca, así que lo que armaste en el acto V sigue rindiendo."
-      ],
-      "sources": [
-        "repo:docs/design/luminous-gear.md",
-        "repo:content/integration-design.json"
-      ]
+      "key": "entrelumen_luminous_ingredients", "deps": ["entrelumen_luminous_ingot"], "type": "item", "item": "mekanism:alloy_atomic", "optional": true, "layout": {"x": 4.6, "y": -2.7, "size": 1.0, "shape": "circle"},
+      "en_us": {"title": "Gathering the Middle Column",
+        "text": ["[lead] All three are Ark materials too, so your act V setup keeps paying off.",
+                 "[li] [item:naturesaura:sky_ingot|Sky ingot]: Nature's Aura magic, from its altar and aura",
+                 "[li] [item:apotheosis:godforged_pearl|Godforged pearl]: only from salvaging mythic Apotheosis loot, which drops from World Tier Summit on",
+                 "[li] [item:mekanism:alloy_atomic|Atomic alloy]: Mekanism's top alloy"]},
+      "es_es": {"title": "Juntar la columna del medio",
+        "text": ["[lead] Las tres son también materiales del Arca, así que lo que armaste en el acto V sigue rindiendo.",
+                 "[li] [item:naturesaura:sky_ingot|Lingote celeste]: magia de Nature's Aura, de su altar y su aura",
+                 "[li] [item:apotheosis:godforged_pearl|Perla forjada por dioses]: sólo sale de reciclar botín mítico de Apotheosis, que cae desde el World Tier Cumbre",
+                 "[li] [item:mekanism:alloy_atomic|Aleación atómica]: la aleación más alta de Mekanism"]},
+      "sources": ["repo:docs/design/luminous-gear.md", "repo:content/integration-design.json"]
     },
     {
-      "key": "entrelumen_luminous_smithing",
-      "deps": [
-        "entrelumen_luminous_ingot"
-      ],
-      "type": "item",
-      "item": "entrelumen:luminous_chestplate",
-      "layout": {
-        "x": 9,
-        "y": 0,
-        "size": 1.5,
-        "shape": "square"
-      },
-      "en_us": [
-        "Netherite, Then Luminous",
-        "The nine luminous pieces (four armor, five tools and weapons) come from the smithing table, like netherite from diamond: a &enether star&r as the template, the matching &enetherite&r piece and a &eLuminous Ingot&r. Enchantments, affixes, gems, name and wear carry over.\n\nA full kit: 9 ingots, 9 stars, 9 netherite pieces."
-      ],
-      "es_es": [
-        "De netherita a luminoso",
-        "Las nueve piezas luminosas (cuatro de armadura, cinco herramientas y armas) salen de la mesa de herrería, como la netherita desde el diamante: una &eestrella del Nether&r como plantilla, la pieza de &enetherita&r correspondiente y un &eLingote Luminoso&r. Se conservan encantamientos, afijos, gemas, nombre y desgaste.\n\nUn equipo completo: 9 lingotes, 9 estrellas, 9 piezas de netherita."
-      ],
-      "sources": [
-        "repo:docs/design/luminous-gear.md",
-        "repo:pack/kubejs/server_scripts/entrelumen_luminous_balance.js"
-      ]
+      "key": "entrelumen_luminous_smithing", "deps": ["entrelumen_luminous_ingot"], "type": "item", "item": "entrelumen:luminous_chestplate", "layout": {"x": 6.8, "y": 0.9, "size": 1.5, "shape": "square"},
+      "en_us": {"title": "Netherite, Then Luminous",
+        "text": ["[lead] Like netherite from diamond, at the smithing table.",
+                 "The nine luminous pieces are four armor and five tools and weapons. Each takes:",
+                 "[li] A [item:minecraft:nether_star|nether star] as the template",
+                 "[li] The matching netherite piece",
+                 "[li] A [item:entrelumen:luminous_ingot|Luminous Ingot]",
+                 "Enchantments, affixes, gems, name and wear carry over.",
+                 "{page}",
+                 "A full kit: [hl|9] ingots, [hl|9] stars, [hl|9] netherite pieces."]},
+      "es_es": {"title": "De netherita a luminoso",
+        "text": ["[lead] Como la netherita desde el diamante, en la mesa de herrería.",
+                 "Las nueve piezas luminosas son cuatro de armadura y cinco herramientas y armas. Cada una lleva:",
+                 "[li] Una [item:minecraft:nether_star|estrella del Nether] como plantilla",
+                 "[li] La pieza de netherita correspondiente",
+                 "[li] Un [item:entrelumen:luminous_ingot|Lingote Luminoso]",
+                 "Se conservan encantamientos, afijos, gemas, nombre y desgaste.",
+                 "{page}",
+                 "Un equipo completo: [hl|9] lingotes, [hl|9] estrellas, [hl|9] piezas de netherita."]},
+      "sources": ["repo:docs/design/luminous-gear.md", "repo:pack/kubejs/server_scripts/entrelumen_luminous_balance.js"]
     },
     {
-      "key": "entrelumen_luminous_stats",
-      "deps": [
-        "entrelumen_luminous_smithing"
-      ],
-      "type": "item",
-      "item": "entrelumen:luminous_sword",
-      "layout": {
-        "x": 12,
-        "y": -2.5,
-        "size": 1.25,
-        "shape": "circle"
-      },
-      "en_us": [
-        "By Far the Strongest",
-        "Armor &e60&r for the set (12, 22, 16, 10), toughness &e15&r and knockback resistance 0.25 per piece (immune with all four), enchantability &e60&r. Tools mine at speed &e60&r, harvest everything and last 32,768 uses; the sword hits for &e30&r at 1.6 per second, the axe &e32&r at 1.0.\n\nAttributeFix lifts vanilla's armor cap, so none of it is wasted."
-      ],
-      "es_es": [
-        "Por lejos el más fuerte",
-        "Armadura &e60&r en el set (12, 22, 16, 10), dureza &e15&r y resistencia al empuje 0,25 por pieza (inmune con las cuatro), encantabilidad &e60&r. Las herramientas minan a velocidad &e60&r, cosechan todo y duran 32.768 usos; la espada pega &e30&r a 1,6 por segundo, el hacha &e32&r a 1,0.\n\nAttributeFix levanta el tope de armadura de vanilla, así que nada se desperdicia."
-      ],
-      "sources": [
-        "repo:docs/design/luminous-gear.md",
-        "repo:companion/src/main/java/dev/entrelumen/LuminousRules.java",
-        "repo:docs/design/small-qol-family.md"
-      ]
+      "key": "entrelumen_luminous_stats", "deps": ["entrelumen_luminous_smithing"], "type": "item", "item": "entrelumen:luminous_sword", "layout": {"x": 7.0, "y": -6.0, "size": 1.25, "shape": "circle"},
+      "en_us": {"title": "By Far the Strongest",
+        "text": ["[lead] Nothing else in the pack gets close: armor and mining speed both hit [hl|60].",
+                 "[li] Armor [hl|60] for the set ([hl|12], [hl|22], [hl|16], [hl|10])",
+                 "[li] Toughness [hl|15]; knockback resistance [hl|0.25] per piece (immune with all four)",
+                 "[li] Enchantability [hl|60]",
+                 "{page}",
+                 "Tools harvest everything and last [hl|32,768] uses.",
+                 "The sword hits for [hl|30] at [hl|1.6] per second, the axe [hl|32] at [hl|1.0].",
+                 "AttributeFix lifts vanilla's armor cap, so none of it is wasted."]},
+      "es_es": {"title": "Por lejos el más fuerte",
+        "text": ["[lead] Nada más en el pack se le acerca: armadura y velocidad de minado llegan a [hl|60].",
+                 "[li] Armadura [hl|60] en el set ([hl|12], [hl|22], [hl|16], [hl|10])",
+                 "[li] Dureza [hl|15]; resistencia al empuje [hl|0,25] por pieza (inmune con las cuatro)",
+                 "[li] Encantabilidad [hl|60]",
+                 "{page}",
+                 "Las herramientas cosechan todo y duran [hl|32.768] usos.",
+                 "La espada pega [hl|30] a [hl|1,6] por segundo, el hacha [hl|32] a [hl|1,0].",
+                 "AttributeFix levanta el tope de armadura de vanilla, así que nada se desperdicia."]},
+      "sources": ["repo:docs/design/luminous-gear.md", "repo:companion/src/main/java/dev/entrelumen/LuminousRules.java", "repo:docs/design/small-qol-family.md"]
     },
     {
-      "key": "entrelumen_luminous_never_breaks",
-      "deps": [
-        "entrelumen_luminous_smithing"
-      ],
-      "type": "checkmark",
+      "key": "entrelumen_luminous_never_breaks", "deps": ["entrelumen_luminous_smithing"], "type": "checkmark", "layout": {"x": 7.0, "y": 7.8, "size": 1.25, "shape": "circle"},
       "icon": "minecraft:anvil",
-      "layout": {
-        "x": 12,
-        "y": 0.5,
-        "size": 1.25,
-        "shape": "circle"
-      },
-      "en_us": [
-        "It Never Breaks",
-        "At its last durability point a piece goes &edim&r: armor stops protecting, tools mine at hand speed and weapons lose their bonus, like an elytra that stops gliding. Repair it and it lights up again.\n\nFireproof, and both Mending and the Luminous Ingot at an anvil work."
-      ],
-      "es_es": [
-        "Nunca se rompe",
-        "En su último punto de durabilidad, una pieza se &eapaga&r: la armadura no protege, las herramientas minan a velocidad de puño y las armas pierden su bonus, como unas élitros que dejan de planear. Reparala y se vuelve a encender.\n\nA prueba de fuego, y funcionan tanto Reparación como el Lingote Luminoso en el yunque."
-      ],
-      "sources": [
-        "repo:docs/design/luminous-gear.md",
-        "repo:companion/src/main/java/dev/entrelumen/LuminousRules.java"
-      ]
+      "en_us": {"title": "It Never Breaks",
+        "text": ["[lead] At its last durability point a piece goes [hl|dim], not broken.",
+                 "[li] Armor stops protecting",
+                 "[li] Tools mine at hand speed",
+                 "[li] Weapons lose their bonus",
+                 "Like an elytra that stops gliding. Repair it and it lights up again.",
+                 "{page}",
+                 "Fireproof, and both Mending and the [item:entrelumen:luminous_ingot|Luminous Ingot] at an [item:minecraft:anvil|anvil] work."]},
+      "es_es": {"title": "Nunca se rompe",
+        "text": ["[lead] En su último punto de durabilidad, una pieza se [hl|apaga], no se rompe.",
+                 "[li] La armadura no protege",
+                 "[li] Las herramientas minan a velocidad de puño",
+                 "[li] Las armas pierden su bonus",
+                 "Como unas élitros que dejan de planear. Reparala y se vuelve a encender.",
+                 "{page}",
+                 "A prueba de fuego, y funcionan tanto Reparación como el [item:entrelumen:luminous_ingot|Lingote Luminoso] en el [item:minecraft:anvil|yunque]."]},
+      "sources": ["repo:docs/design/luminous-gear.md", "repo:companion/src/main/java/dev/entrelumen/LuminousRules.java"]
     },
     {
-      "key": "entrelumen_luminous_light_repair",
-      "deps": [
-        "entrelumen_luminous_never_breaks"
-      ],
-      "type": "checkmark",
-      "optional": true,
+      "key": "entrelumen_luminous_light_repair", "deps": ["entrelumen_luminous_never_breaks"], "type": "checkmark", "optional": true, "layout": {"x": 13.5, "y": 10.6, "size": 1.0, "shape": "circle"},
       "icon": "minecraft:sunflower",
-      "layout": {
-        "x": 15,
-        "y": 0.5,
-        "size": 1.0,
-        "shape": "circle"
-      },
-      "en_us": [
-        "Repaired by Light",
-        "Once a second, the light at your eyes repairs every luminous piece you carry, wear or hold: brightness minus 11 points each, nothing below light 12, about 4 a second in full sun. The night sky does not count.\n\nA drained chestplate is whole in under 17 minutes of sun. Solar-powered, like Heliodor."
-      ],
-      "es_es": [
-        "Reparado por la luz",
-        "Una vez por segundo, la luz a la altura de tus ojos repara cada pieza luminosa que llevás, tenés puesta o en la mano: brillo menos 11 puntos cada una, nada por debajo de luz 12, unos 4 por segundo a pleno sol. El cielo de noche no cuenta.\n\nUna pechera agotada queda entera en menos de 17 minutos de sol. A energía solar, como Heliodor."
-      ],
-      "sources": [
-        "repo:docs/design/luminous-gear.md",
-        "repo:companion/src/main/java/dev/entrelumen/LuminousRules.java"
-      ]
+      "en_us": {"title": "Repaired by Light", "subtitle": "Solar-powered, like Heliodor.",
+        "text": ["[lead] Once a second, the light at your eyes repairs every luminous piece you carry, wear or hold.",
+                 "[li] Brightness minus [hl|11] points each; nothing below light [hl|12]",
+                 "[li] About [hl|4] a second in full sun; the night sky does not count",
+                 "{page}",
+                 "A drained chestplate is whole in under [hl|17] minutes of sun."]},
+      "es_es": {"title": "Reparado por la luz", "subtitle": "A energía solar, como Heliodor.",
+        "text": ["[lead] Una vez por segundo, la luz a la altura de tus ojos repara cada pieza luminosa que llevás, tenés puesta o en la mano.",
+                 "[li] Brillo menos [hl|11] puntos cada una; nada por debajo de luz [hl|12]",
+                 "[li] Unos [hl|4] por segundo a pleno sol; el cielo de noche no cuenta",
+                 "{page}",
+                 "Una pechera agotada queda entera en menos de [hl|17] minutos de sol."]},
+      "sources": ["repo:docs/design/luminous-gear.md", "repo:companion/src/main/java/dev/entrelumen/LuminousRules.java"]
     },
     {
-      "key": "entrelumen_luminous_set_bonus",
-      "deps": [
-        "entrelumen_luminous_stats"
-      ],
-      "type": "item",
-      "item": "entrelumen:luminous_helmet",
-      "layout": {
-        "x": 15,
-        "y": -2.5,
-        "size": 1.5,
-        "shape": "hexagon"
-      },
-      "en_us": [
-        "The Full Set: Flight",
-        "All four armor pieces, lit: &ecreative-style flight&r without energy, steady night vision and no fall damage. Take one off and only the set's flight goes; other flight sources keep working. If you were airborne, you get 8 seconds of slow falling.\n\nLosing the set never kills you. Gravity asks nicely first."
-      ],
-      "es_es": [
-        "El set completo: vuelo",
-        "Las cuatro piezas de armadura, encendidas: &evuelo como en creativo&r sin energía, visión nocturna estable y nada de daño por caída. Sacate una y sólo se va el vuelo del set; otras fuentes de vuelo siguen andando. Si estabas en el aire, recibís 8 segundos de caída lenta.\n\nPerder el set nunca te mata. La gravedad primero pide permiso."
-      ],
-      "sources": [
-        "repo:docs/design/luminous-gear.md",
-        "repo:companion/src/main/java/dev/entrelumen/Luminous.java"
-      ]
+      "key": "entrelumen_luminous_set_bonus", "deps": ["entrelumen_luminous_stats"], "type": "item", "item": "entrelumen:luminous_helmet", "layout": {"x": 13.5, "y": -8.9, "size": 1.5, "shape": "hexagon"},
+      "en_us": {"title": "The Full Set: Flight", "subtitle": "Gravity asks nicely first.",
+        "text": ["[lead] All four armor pieces, lit: you fly.",
+                 "[li] Creative-style flight without energy",
+                 "[li] Steady night vision",
+                 "[li] No fall damage",
+                 "Take one off and only the set's flight goes; other flight sources keep working.",
+                 "{page}",
+                 "If you were airborne, you get [hl|8] seconds of slow falling.",
+                 "Losing the set never kills you."]},
+      "es_es": {"title": "El set completo: vuelo", "subtitle": "La gravedad primero pide permiso.",
+        "text": ["[lead] Las cuatro piezas de armadura, encendidas: volás.",
+                 "[li] Vuelo como en creativo sin energía",
+                 "[li] Visión nocturna estable",
+                 "[li] Nada de daño por caída",
+                 "Sacate una y sólo se va el vuelo del set; otras fuentes de vuelo siguen andando.",
+                 "{page}",
+                 "Si estabas en el aire, recibís [hl|8] segundos de caída lenta.",
+                 "Perder el set nunca te mata."]},
+      "sources": ["repo:docs/design/luminous-gear.md", "repo:companion/src/main/java/dev/entrelumen/Luminous.java"]
     },
     {
-      "key": "entrelumen_luminous_sword",
-      "deps": [
-        "entrelumen_luminous_set_bonus"
-      ],
-      "type": "item",
-      "item": "entrelumen:luminous_sword",
-      "optional": true,
-      "layout": {
-        "x": 18,
-        "y": -2.5,
-        "size": 1.0,
-        "shape": "diamond"
-      },
-      "en_us": [
-        "The Luminous Sword",
-        "Every hit marks the target with Glowing for 5 seconds and deals &e25% more&r damage to undead. Handy in the Twilight Forest and against the Wither's escort.\n\nThe undead never liked the light."
-      ],
-      "es_es": [
-        "La Espada luminosa",
-        "Cada golpe marca al objetivo con Brillo durante 5 segundos y hace un &e25% más&r de daño a los no muertos. Útil en el Twilight Forest y contra la escolta del Wither.\n\nA los no muertos nunca les gustó la luz."
-      ],
-      "sources": [
-        "repo:docs/design/luminous-gear.md",
-        "repo:companion/src/main/java/dev/entrelumen/LuminousRules.java"
-      ]
+      "key": "entrelumen_luminous_sword", "deps": ["entrelumen_luminous_set_bonus"], "type": "item", "item": "entrelumen:luminous_sword", "optional": true, "layout": {"x": 20.0, "y": -6.0, "size": 1.0, "shape": "diamond"},
+      "en_us": {"title": "The Luminous Sword", "subtitle": "The undead never liked the light.",
+        "text": ["[lead] Every hit marks the target with Glowing for [hl|5] seconds.",
+                 "It also deals [hl|25%] more damage to undead.",
+                 "Handy in the Twilight Forest and against the Wither's escort."]},
+      "es_es": {"title": "La Espada luminosa", "subtitle": "A los no muertos nunca les gustó la luz.",
+        "text": ["[lead] Cada golpe marca al objetivo con Brillo durante [hl|5] segundos.",
+                 "Además hace un [hl|25%] más de daño a los no muertos.",
+                 "Útil en el Twilight Forest y contra la escolta del Wither."]},
+      "sources": ["repo:docs/design/luminous-gear.md", "repo:companion/src/main/java/dev/entrelumen/LuminousRules.java"]
     },
     {
-      "key": "entrelumen_luminous_dynlight",
-      "deps": [
-        "entrelumen_luminous_light_repair"
-      ],
-      "type": "checkmark",
-      "optional": true,
+      "key": "entrelumen_luminous_dynlight", "deps": ["entrelumen_luminous_light_repair"], "type": "checkmark", "optional": true, "layout": {"x": 20.0, "y": 7.8, "size": 1.0, "shape": "diamond"},
       "icon": "minecraft:glowstone",
-      "layout": {
-        "x": 18,
-        "y": 0.5,
-        "size": 1.0,
-        "shape": "diamond"
-      },
-      "en_us": [
-        "Gear That Lights the Way",
-        "With LambDynamicLights, lit luminous armor and tools shine at full brightness around you, and the ingot and Luminosities glow a little in hand. Dim pieces give no light.\n\nCaves hate you now."
-      ],
-      "es_es": [
-        "Equipo que alumbra",
-        "Con LambDynamicLights, la armadura y las herramientas luminosas encendidas brillan al máximo a tu alrededor, y el lingote y las Luminosidades dan un poco de luz en la mano. Las piezas apagadas no alumbran.\n\nLas cuevas ahora te odian."
-      ],
-      "sources": [
-        "repo:docs/design/luminous-gear.md",
-        "repo:companion/src/main/resources/assets/entrelumen/dynamiclights/item/luminous_gear.json"
-      ]
+      "en_us": {"title": "Gear That Lights the Way", "subtitle": "Caves hate you now.",
+        "text": ["[lead] With LambDynamicLights, your lit gear shines at full brightness around you.",
+                 "The ingot and Luminosities glow a little in hand. Dim pieces give no light."]},
+      "es_es": {"title": "Equipo que alumbra", "subtitle": "Las cuevas ahora te odian.",
+        "text": ["[lead] Con LambDynamicLights, tu equipo encendido brilla al máximo a tu alrededor.",
+                 "El lingote y las Luminosidades dan un poco de luz en la mano. Las piezas apagadas no alumbran."]},
+      "sources": ["repo:docs/design/luminous-gear.md", "repo:companion/src/main/resources/assets/entrelumen/dynamiclights/item/luminous_gear.json"]
     },
     {
-      "key": "entrelumen_luminous_silent_gear",
-      "deps": [
-        "entrelumen_luminous_smithing"
-      ],
-      "type": "item",
-      "item": "silentgear:material_book",
-      "optional": true,
-      "layout": {
-        "x": 9,
-        "y": 3.5,
-        "size": 1.0,
-        "shape": "circle"
-      },
-      "en_us": [
-        "Luminous in Silent Gear",
-        "The ingot is also a &eSilent Gear&r material, the best of all 138, with its own trait, &eRadiant&r: radiant pieces count toward the luminous set bonus, give dynamic light and are repaired by light. The main part adds Holy V, Lustrous V, Refractive and Kitty Vision, and is fireproof.\n\nSalvaging it never returns Luminosities."
-      ],
-      "es_es": [
-        "Luminoso en Silent Gear",
-        "El lingote también es un material de &eSilent Gear&r, el mejor de sus 138, con un rasgo propio, &eRadiante&r: las piezas radiantes cuentan para el bonus del set luminoso, dan luz dinámica y se reparan con la luz. La parte principal suma Sagrado V, Lustroso V, Refractivo y Visión felina, y es a prueba de fuego.\n\nDesarmarlo nunca devuelve Luminosidades."
-      ],
-      "sources": [
-        "repo:docs/design/luminous-gear.md",
-        "repo:companion/src/main/resources/data/entrelumen/silentgear_materials/luminous.json",
-        "repo:companion/src/main/resources/data/entrelumen/silentgear_traits/radiant.json"
-      ]
+      "key": "entrelumen_luminous_silent_gear", "deps": ["entrelumen_luminous_smithing"], "type": "item", "item": "silentgear:material_book", "optional": true, "layout": {"x": 4.2, "y": 4.8, "size": 1.0, "shape": "circle"},
+      "en_us": {"title": "Luminous in Silent Gear",
+        "text": ["[lead] The ingot is also a Silent Gear material, the best of all [hl|138].",
+                 "Its own trait, [hl|Radiant]: radiant pieces count toward the luminous set bonus, give dynamic light and are repaired by light.",
+                 "{page}",
+                 "The main part adds Holy V, Lustrous V, Refractive and Kitty Vision, and is fireproof.",
+                 "[careful] Salvaging it never returns Luminosities."]},
+      "es_es": {"title": "Luminoso en Silent Gear",
+        "text": ["[lead] El lingote también es un material de Silent Gear, el mejor de sus [hl|138].",
+                 "Un rasgo propio, [hl|Radiante]: las piezas radiantes cuentan para el bonus del set luminoso, dan luz dinámica y se reparan con la luz.",
+                 "{page}",
+                 "La parte principal suma Sagrado V, Lustroso V, Refractivo y Visión felina, y es a prueba de fuego.",
+                 "[careful] Desarmarlo nunca devuelve Luminosidades."]},
+      "sources": ["repo:docs/design/luminous-gear.md", "repo:companion/src/main/resources/data/entrelumen/silentgear_materials/luminous.json", "repo:companion/src/main/resources/data/entrelumen/silentgear_traits/radiant.json"]
     },
     {
-      "key": "entrelumen_luminous_vs_top",
-      "deps": [
-        "entrelumen_luminous_stats"
-      ],
-      "type": "checkmark",
-      "optional": true,
+      "key": "entrelumen_luminous_vs_top", "deps": ["entrelumen_luminous_stats"], "type": "checkmark", "optional": true, "layout": {"x": 16.6, "y": -12.4, "size": 1.0, "shape": "diamond"},
       "icon": "minecraft:shield",
-      "layout": {
-        "x": 12,
-        "y": 3.5,
-        "size": 1.0,
-        "shape": "diamond"
-      },
-      "en_us": [
-        "Quirk: Two Rivals Remain",
-        "Two powered systems still do something luminous does not: a charged MekaSuit can absorb up to all damage, and Draconic's chaotic shield grows with damage modules.\n\nThey are the ceiling for players who build the infrastructure; luminous is cheaper and needs no power."
-      ],
-      "es_es": [
-        "Particularidad: dos rivales",
-        "Dos sistemas con energía todavía hacen algo que el luminoso no: una MekaSuit cargada puede absorber hasta todo el daño, y el escudo caótico de Draconic crece con módulos de daño.\n\nSon el techo para quien arma la infraestructura; lo luminoso es más barato y no necesita energía."
-      ],
-      "sources": [
-        "repo:docs/design/luminous-gear.md"
-      ]
+      "en_us": {"title": "Quirk: Two Rivals Remain",
+        "text": ["[lead] Two powered systems still do something luminous does not.",
+                 "[li] A charged [item:mekanism:mekasuit_bodyarmor|MekaSuit] can absorb up to all damage",
+                 "[li] Draconic's chaotic shield grows with damage modules",
+                 "They are the ceiling for players who build the infrastructure; luminous is cheaper and needs no power."]},
+      "es_es": {"title": "Particularidad: dos rivales",
+        "text": ["[lead] Dos sistemas con energía todavía hacen algo que el luminoso no.",
+                 "[li] Una [item:mekanism:mekasuit_bodyarmor|MekaSuit] cargada puede absorber hasta todo el daño",
+                 "[li] El escudo caótico de Draconic crece con módulos de daño",
+                 "Son el techo para quien arma la infraestructura; lo luminoso es más barato y no necesita energía."]},
+      "sources": ["repo:docs/design/luminous-gear.md"]
     },
     {
-      "key": "entrelumen_luminous_creative",
-      "deps": [
-        "entrelumen_luminous_sword",
-        "entrelumen_luminous_vs_top"
-      ],
-      "type": "item",
-      "item": "mekanism:creative_energy_cube",
-      "layout": {
-        "x": 18,
-        "y": 4,
-        "size": 1.5,
-        "shape": "hexagon"
-      },
-      "en_us": [
-        "Creative Items From Light",
-        "Twelve creative items get a recipe here, never a sale: among them Mekanism's energy cube (it comes out full), Create's creative motor, Ars Nouveau's source jar and Draconic's capacitor. Each grid is symmetric: Luminosities of two disciplines in the corners, two boss drops on the axis, the mod's expensive material and its best non-creative version in the middle.\n\n48 Luminosities for all twelve."
-      ],
-      "es_es": [
-        "Ítems creativos hechos de luz",
-        "Doce ítems creativos tienen receta acá, nunca venta: entre ellos el cubo de energía de Mekanism (sale lleno), el motor creativo de Create, la jarra de fuente de Ars Nouveau y el capacitor de Draconic. Cada grilla es simétrica: Luminosidades de dos disciplinas en las esquinas, dos drops de jefe en el eje, y el material caro del mod y su mejor versión no creativa en el medio.\n\n48 Luminosidades para los doce."
-      ],
-      "sources": [
-        "repo:docs/design/luminous-gear.md",
-        "repo:pack/kubejs/server_scripts/entrelumen_luminous_balance.js",
-        "repo:pack/kubejs/data/entrelumen/recipe/creative"
-      ]
+      "key": "entrelumen_luminous_creative", "deps": ["entrelumen_luminous_sword", "entrelumen_luminous_vs_top"], "type": "item", "item": "mekanism:creative_energy_cube", "layout": {"x": 25.0, "y": -2.2, "size": 1.5, "shape": "hexagon"},
+      "en_us": {"title": "Creative Items From Light",
+        "text": ["[lead] Twelve creative items get a recipe here, never a sale.",
+                 "All twelve cost [big|48] Luminosities.",
+                 "Among them:",
+                 "[li] Mekanism's [item:mekanism:creative_energy_cube|energy cube] (it comes out full)",
+                 "[li] Create's [item:create:creative_motor|creative motor]",
+                 "[li] Ars Nouveau's [item:ars_nouveau:creative_source_jar|source jar]",
+                 "[li] Draconic's [item:draconicevolution:creative_capacitor|capacitor]",
+                 "{page}",
+                 "Each grid is symmetric:",
+                 "[li] Luminosities of two disciplines in the corners",
+                 "[li] Two boss drops on the axis",
+                 "[li] The mod's expensive material and its best non-creative version in the middle"]},
+      "es_es": {"title": "Ítems creativos hechos de luz",
+        "text": ["[lead] Doce ítems creativos tienen receta acá, nunca venta.",
+                 "Los doce cuestan [big|48] Luminosidades.",
+                 "Entre ellos:",
+                 "[li] El [item:mekanism:creative_energy_cube|cubo de energía] de Mekanism (sale lleno)",
+                 "[li] El [item:create:creative_motor|motor creativo] de Create",
+                 "[li] La [item:ars_nouveau:creative_source_jar|jarra de fuente] de Ars Nouveau",
+                 "[li] El [item:draconicevolution:creative_capacitor|capacitor] de Draconic",
+                 "{page}",
+                 "Cada grilla es simétrica:",
+                 "[li] Luminosidades de dos disciplinas en las esquinas",
+                 "[li] Dos drops de jefe en el eje",
+                 "[li] El material caro del mod y su mejor versión no creativa en el medio"]},
+      "sources": ["repo:docs/design/luminous-gear.md", "repo:pack/kubejs/server_scripts/entrelumen_luminous_balance.js", "repo:pack/kubejs/data/entrelumen/recipe/creative"]
     },
     {
-      "key": "entrelumen_luminous_boss_drops",
-      "deps": [
-        "entrelumen_luminous_creative"
-      ],
-      "type": "item",
-      "item": "minecraft:nether_star",
-      "optional": true,
-      "layout": {
-        "x": 21,
-        "y": 4,
-        "size": 1.0,
-        "shape": "diamond"
-      },
-      "en_us": [
-        "The Boss Drops Matter",
-        "Creative recipes use a &enether star&r (Wither), a &edragon heart&r (Draconic Evolution's Ender Dragon drop) and a &ewet sponge&r (Elder Guardian), and every luminous piece takes a star as its template.\n\nAct VI wants more than one of each: farm the Wither and pay the dragon a few more visits."
-      ],
-      "es_es": [
-        "Los drops de jefe importan",
-        "Las recetas creativas usan una &eestrella del Nether&r (Wither), un &ecorazón de dragón&r (el drop de Draconic Evolution del Ender Dragon) y una &eesponja mojada&r (Guardián Anciano), y cada pieza luminosa lleva una estrella como plantilla.\n\nEl acto VI pide más de uno de cada uno: farmeá al Wither y visitá al dragón unas cuantas veces más."
-      ],
-      "sources": [
-        "repo:docs/design/luminous-gear.md",
-        "repo:docs/design/story-bible.md"
-      ]
+      "key": "entrelumen_luminous_boss_drops", "deps": ["entrelumen_luminous_creative"], "type": "item", "item": "minecraft:nether_star", "optional": true, "layout": {"x": 31.6, "y": -2.2, "size": 1.0, "shape": "diamond"},
+      "en_us": {"title": "The Boss Drops Matter",
+        "text": ["[lead] Act VI wants more than one of each: farm the Wither and pay the dragon a few more visits.",
+                 "[li] [item:minecraft:nether_star|Nether star]: the Wither",
+                 "[li] [item:draconicevolution:dragon_heart|Dragon heart]: Draconic Evolution's Ender Dragon drop",
+                 "[li] [item:minecraft:wet_sponge|Wet sponge]: the Elder Guardian",
+                 "Creative recipes use all three, and every luminous piece takes a star as its template."]},
+      "es_es": {"title": "Los drops de jefe importan",
+        "text": ["[lead] El acto VI pide más de uno de cada uno: farmeá al Wither y visitá al dragón unas cuantas veces más.",
+                 "[li] [item:minecraft:nether_star|Estrella del Nether]: el Wither",
+                 "[li] [item:draconicevolution:dragon_heart|Corazón de dragón]: drop del Ender Dragon en Draconic Evolution",
+                 "[li] [item:minecraft:wet_sponge|Esponja mojada]: el Guardián Anciano",
+                 "Las recetas creativas usan los tres, y cada pieza luminosa lleva una estrella como plantilla."]},
+      "sources": ["repo:docs/design/luminous-gear.md", "repo:docs/design/story-bible.md"]
     },
     {
-      "key": "entrelumen_luminous_no_dupes",
-      "deps": [
-        "entrelumen_luminous_creative"
-      ],
-      "type": "checkmark",
+      "key": "entrelumen_luminous_no_dupes", "deps": ["entrelumen_luminous_creative"], "type": "checkmark", "layout": {"x": 28.8, "y": 1.4, "size": 1.0, "shape": "pentagon"},
       "icon": "minecraft:barrier",
-      "layout": {
-        "x": 21,
-        "y": 1,
-        "size": 1.0,
-        "shape": "pentagon"
-      },
-      "en_us": [
-        "Pack Change: No Duplicators",
-        "Creative items that copy items get no recipe: the creative crate, storage cell and bin, Functional Storage's creative vending upgrade, the creative router module and Sophisticated's infinity upgrades. They would clone Luminosities, stars and pearls.\n\nNo recipe turns luminous or creative items back into their inputs either."
-      ],
-      "es_es": [
-        "Cambio del pack: sin duplicadores",
-        "Los ítems creativos que copian ítems no tienen receta: la caja, la celda de almacenamiento y el contenedor creativos, la mejora de venta creativa de Functional Storage, el módulo creativo de los routers y las mejoras de infinito de Sophisticated. Clonarían Luminosidades, estrellas y perlas.\n\nTampoco hay receta que devuelva lo luminoso o lo creativo a sus ingredientes."
-      ],
-      "sources": [
-        "repo:docs/design/luminous-gear.md",
-        "repo:pack/kubejs/server_scripts/entrelumen_luminous_balance.js"
-      ]
+      "en_us": {"title": "Pack Change: No Duplicators",
+        "text": ["[lead] Creative items that copy items get no recipe: they would clone Luminosities, stars and pearls.",
+                 "[li] The creative crate, storage cell and bin",
+                 "[li] Functional Storage's creative vending upgrade",
+                 "[li] The creative router module",
+                 "[li] Sophisticated's infinity upgrades",
+                 "{page}",
+                 "[note] No recipe turns luminous or creative items back into their inputs either."]},
+      "es_es": {"title": "Cambio del pack: sin duplicadores",
+        "text": ["[lead] Los ítems creativos que copian ítems no tienen receta: clonarían Luminosidades, estrellas y perlas.",
+                 "[li] La caja, la celda de almacenamiento y el contenedor creativos",
+                 "[li] La mejora de venta creativa de Functional Storage",
+                 "[li] El módulo creativo de los routers",
+                 "[li] Las mejoras de infinito de Sophisticated",
+                 "{page}",
+                 "[note] Tampoco hay receta que devuelva lo luminoso o lo creativo a sus ingredientes."]},
+      "sources": ["repo:docs/design/luminous-gear.md", "repo:pack/kubejs/server_scripts/entrelumen_luminous_balance.js"]
     },
     {
-      "key": "entrelumen_luminous_budget",
-      "deps": [
-        "entrelumen_luminous_six"
-      ],
-      "type": "checkmark",
-      "optional": true,
+      "key": "entrelumen_luminous_budget", "deps": ["entrelumen_luminous_six"], "type": "checkmark", "optional": true, "layout": {"x": 1.0, "y": 4.4, "size": 1.0, "shape": "diamond"},
       "icon": "minecraft:emerald_block",
-      "layout": {
-        "x": 3,
-        "y": 3.5,
-        "size": 1.0,
-        "shape": "diamond"
-      },
-      "en_us": [
-        "Tip: Count Your Light",
-        "A full luminous set takes 54 Luminosities (nine ingots), and all twelve creative items 48 more. Each awake native sells up to four per restock, once a game day.\n\nWake all six early in act VI and visit often; after the liberation, prices drop further."
-      ],
-      "es_es": [
-        "Truco: contá tu luz",
-        "Un equipo luminoso completo pide 54 Luminosidades (nueve lingotes), y los doce ítems creativos, 48 más. Cada nativo despierto vende hasta cuatro por reposición, una vez por día de juego.\n\nDespertá a los seis temprano en el acto VI y visitalos seguido; después de la liberación, los precios bajan más."
-      ],
-      "sources": [
-        "repo:docs/design/luminous-gear.md",
-        "repo:docs/design/solsticio-commerce.md"
-      ]
+      "en_us": {"title": "Tip: Count Your Light",
+        "text": ["[lead] A full luminous set takes [hl|54] Luminosities (nine ingots), and the twelve creative items [hl|48] more.",
+                 "Each awake native sells up to [hl|four] per restock, once a game day.",
+                 "Wake all six early in act VI and visit often; after the liberation, prices drop further."]},
+      "es_es": {"title": "Truco: contá tu luz",
+        "text": ["[lead] Un equipo luminoso completo pide [hl|54] Luminosidades (nueve lingotes), y los doce ítems creativos, [hl|48] más.",
+                 "Cada nativo despierto vende hasta [hl|cuatro] por reposición, una vez por día de juego.",
+                 "Despertá a los seis temprano en el acto VI y visitalos seguido; después de la liberación, los precios bajan más."]},
+      "sources": ["repo:docs/design/luminous-gear.md", "repo:docs/design/solsticio-commerce.md"]
     },
     {
-      "key": "entrelumen_luminous_close",
-      "deps": [
-        "entrelumen_luminous_boss_drops",
-        "entrelumen_luminous_no_dupes",
-        "entrelumen_luminous_dynlight"
-      ],
-      "type": "item",
-      "item": "entrelumen:luminous_ingot",
-      "layout": {
-        "x": 24,
-        "y": 2,
-        "size": 2.0,
-        "shape": "hexagon"
-      },
-      "en_us": [
-        "The Brightest Things You Own",
-        "Gear that never breaks and flies, and creative items forged from light: the top of ENTRELUMEN's ladder.\n\nWhat you do with it is yours. The city and the world stay open, and now you glow in the dark."
-      ],
-      "es_es": [
-        "Lo más brillante que tenés",
-        "Equipo que nunca se rompe y vuela, e ítems creativos forjados con luz: la cima de la escalera de ENTRELUMEN.\n\nLo que hagas con eso es tuyo. La ciudad y el mundo siguen abiertos, y ahora brillás en la oscuridad."
-      ],
-      "sources": [
-        "repo:docs/design/luminous-gear.md"
-      ]
+      "key": "entrelumen_luminous_close", "deps": ["entrelumen_luminous_boss_drops", "entrelumen_luminous_no_dupes", "entrelumen_luminous_dynlight"], "type": "item", "item": "entrelumen:luminous_ingot", "layout": {"x": 27.6, "y": 7.4, "size": 2.0, "shape": "hexagon"}, "hide_lines": true,
+      "en_us": {"title": "The Brightest Things You Own",
+        "text": ["[lead] Gear that never breaks and flies, and creative items forged from light.",
+                 "The top of ENTRELUMEN's ladder. What you do with it is yours.",
+                 "The city and the world stay open, and now you glow in the dark."]},
+      "es_es": {"title": "Lo más brillante que tenés",
+        "text": ["[lead] Equipo que nunca se rompe y vuela, e ítems creativos forjados con luz.",
+                 "La cima de la escalera de ENTRELUMEN. Lo que hagas con eso es tuyo.",
+                 "La ciudad y el mundo siguen abiertos, y ahora brillás en la oscuridad."]},
+      "sources": ["repo:docs/design/luminous-gear.md"]
+    },
+    {
+      "key": "entrelumen_luminous_toy_sparks", "role": "decor", "deps": [], "type": "checkmark", "optional": true, "layout": {"x": 24.0, "y": 11.0, "size": 0.75, "shape": "none"},
+      "icon": "minecraft:glowstone_dust",
+      "en_us": {"title": "Shake the Orbit",
+        "text": ["[lead] Six colors, one click, a little confetti.",
+                 "Each Luminosity keeps the color of its discipline; here they just throw it around."]},
+      "es_es": {"title": "Sacudir la órbita",
+        "text": ["[lead] Seis colores, un clic, un poco de confeti.",
+                 "Cada Luminosidad conserva el color de su disciplina; acá lo tiran por el aire."]},
+      "sources": ["repo:docs/design/luminous-gear.md"]
+    },
+    {
+      "key": "entrelumen_luminous_toy_anvil", "role": "decor", "deps": [], "type": "checkmark", "optional": true, "layout": {"x": 0.6, "y": 8.4, "size": 0.75, "shape": "none"},
+      "icon": "minecraft:anvil",
+      "en_us": {"title": "The Anvil Test",
+        "text": ["[lead] One click, one clang, a shower of sparks.",
+                 "At a real anvil the ingot mends any luminous piece; in the book it only throws the sparks."]},
+      "es_es": {"title": "La prueba del yunque",
+        "text": ["[lead] Un clic, un golpe, una lluvia de chispas.",
+                 "En un yunque de verdad el lingote repara cualquier pieza luminosa; en el libro sólo tira las chispas."]},
+      "sources": ["repo:docs/design/luminous-gear.md", "repo:companion/src/main/java/dev/entrelumen/LuminousRules.java"]
     }
   ]
 }
