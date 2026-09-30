@@ -8,8 +8,8 @@
   "emblem": "create_enchantment_industry:textures/item/experience_bucket.png",
   "title": {"en_us": "Create · Addons", "es_es": "Create · Complementos"},
   "subtitle": {
-    "en_us": ["Nine addons on one pegboard: liquid experience, smarter gearboxes, new fans, copycat blocks, tubes you ride, a kitchen, a chisel, storage on the move and stronger magnets."],
-    "es_es": ["Nueve complementos en un tablero: experiencia líquida, cajas más vivas, ventiladores nuevos, bloques imitadores, tubos para viajar, una cocina, un cincel, almacenamiento que se mueve e imanes más fuertes."]
+    "en_us": ["Ten addons on one pegboard: liquid experience, smarter gearboxes, new fans, copycat blocks, tubes you ride, a kitchen, a chisel, storage on the move, stronger magnets and a farm that fishes."],
+    "es_es": ["Diez complementos en un tablero: experiencia líquida, cajas más vivas, ventiladores nuevos, bloques imitadores, tubos para viajar, una cocina, un cincel, almacenamiento que se mueve, imanes más fuertes y una granja que pesca."]
   },
   "entry": "cad_xp",
   "presentation": 2,
@@ -64,7 +64,19 @@
     {"id": "title", "text": {"en_us": "CREATE", "es_es": "CREATE"}, "x": -27.4, "y": -23.6, "scale": 4, "bold": true, "tint": "#F3E7C6", "align": "start", "order": 6},
     {"id": "subtitle", "text": {"en_us": "Addons", "es_es": "Complementos"}, "x": -27.299999999999997, "y": -21.3, "scale": 2, "tint": "#E8B04A", "align": "start", "order": 6},
     {"id": "medallion", "texture": "entrelumen:textures/gui/quests/medallion.png", "x": -32.8, "y": -23.0, "scale": 2, "order": 0, "click": "chapter:sun_of_heliodor", "hover": {"en_us": "Back to the Sun of Heliodor", "es_es": "Volver al Sol de Heliodor"}},
-    {"id": "emblem", "picture": "create:textures/gui/logo.png", "x": -32.8, "y": -23.0, "w": 3.2, "h": 3.2, "order": 1}
+    {"id": "emblem", "picture": "create:textures/gui/logo.png", "x": -32.8, "y": -23.0, "w": 3.2, "h": 3.2, "order": 1},
+    {"id": "board2", "frame": [-27.6, 9.6, 27.6, 22.6], "color": "#C8814A", "alpha": 210, "thickness_px": 3, "fill": "#2A1F14", "fill_alpha": 220, "reveal": "cif_vacuum", "sketch": {"alpha": 70}, "order": -10},
+    {"id": "box_cif", "frame": [-26.7, 10.4, 26.7, 21.8], "color": "#E8B04A", "alpha": 190, "thickness_px": 1, "fill": "#171109", "fill_alpha": 150, "reveal": "cif_vacuum", "sketch": {"alpha": 60}, "order": -8},
+    {"id": "cap_cif", "text": {"en_us": "Integrated Farming", "es_es": "Integrated Farming"}, "x": -26.1, "y": 11.2, "scale": 2, "tint": "#F3E7C6", "order": 6, "align": "start"},
+    {"id": "cif_vac_item", "item": "create_integrated_farming:vacuum_harvester", "x": -19.0, "y": 15.4, "size": 1.6, "reveal": "cif_vacuum", "order": -3},
+    {"id": "cif_vac_glow", "glow": [-21.0, 15.4], "r": 3.2, "tint": "#B8FF8A", "alpha": 90, "reveal": "cif_vacuum", "order": -9},
+    {"id": "cif_crops", "sprite": "minecraft:block/wheat_stage7", "cells": [[-18.5, 20.4], [-17.5, 20.4], [-16.5, 20.4], [-15.5, 20.4], [-14.5, 20.4]], "cell": 1.0, "alpha": 255, "reveal": "cif_vacuum", "order": -4},
+    {"id": "cif_water", "sprite": "minecraft:block/water_still", "cells": [[-3.0, 19.4], [-2.0, 19.4], [-1.0, 19.4], [0.0, 19.4], [1.0, 19.4]], "cell": 1.0, "tint": "#3C6FD8", "alpha": 190, "reveal": "cif_net", "order": -5},
+    {"id": "cif_net_item", "item": "create_integrated_farming:fishing_net", "x": 0.9, "y": 15.4, "size": 1.5, "reveal": "cif_net", "order": -3},
+    {"id": "cif_roost_item", "item": "create_integrated_farming:roost", "x": 11.9, "y": 15.4, "size": 1.6, "reveal": "cif_roost", "order": -3},
+    {"id": "cif_egg0", "picture": "minecraft:textures/item/egg.png", "x": 11.8, "y": 19.8, "w": 0.9, "h": 0.9, "reveal": "cif_roost_eggs", "order": -3},
+    {"id": "cif_egg1", "picture": "minecraft:textures/item/egg.png", "x": 12.8, "y": 19.8, "w": 0.9, "h": 0.9, "reveal": "cif_roost_eggs", "order": -3},
+    {"id": "cif_egg2", "picture": "minecraft:textures/item/egg.png", "x": 13.8, "y": 19.8, "w": 0.9, "h": 0.9, "reveal": "cif_roost_eggs", "order": -3}
   ],
   "quests": [
     {
@@ -684,6 +696,104 @@
         "text": ["[lead] Alguien dejó una tarta de experiencia en el estante.",
                  "Sin premio: igual la torta es mentira."]},
       "sources": ["docs/design/quest-book-v3.md#presentación-v2-28-de-septiembre-de-2026"]
+    },
+    {
+      "key": "cif_vacuum", "role": "milestone", "deps": ["ctr_harvester", "cbr_casing"],
+      "task": {"item": "create_integrated_farming:vacuum_harvester"},
+      "at": {"x": -21.0, "y": 15.4},
+      "en_us": {"title": "Every crop, at once", "subtitle": "The harvester that took a deep breath.",
+        "text": ["[lead] A harvester with lungs: it charges up, then pulls in every ripe crop around it in one go.",
+                 "A [item:create_integrated_farming:vacuum_harvester|Vacuum Harvester] is a [item:create:mechanical_harvester|Mechanical Harvester], an [item:create:encased_fan|Encased Fan], a [item:create:brass_casing|Brass Casing] and a [item:create:chute|Chute], no pattern needed.",
+                 "Reach: [big|10] blocks around, one up and down.",
+                 "{page}",
+                 "[li] Rotation charges the chamber: 64 RPM takes 30 seconds",
+                 "[li] More RPM charges it faster and costs proportionally more stress",
+                 "[li] The crops stay inside; take them from any side except the shaft's"]},
+      "es_es": {"title": "Todos los cultivos, de una", "subtitle": "La cosechadora que respiró hondo.",
+        "text": ["[lead] Una cosechadora con pulmones: se carga y después aspira todos los cultivos maduros a su alrededor de una vez.",
+                 "Una [item:create_integrated_farming:vacuum_harvester|Cosechadora de vacío] es una [item:create:mechanical_harvester|Cosechadora mecánica], un [item:create:encased_fan|Ventilador revestido], un [item:create:brass_casing|Revestimiento de Latón] y un [item:create:chute|Ducto], sin forma fija.",
+                 "Alcance: [big|10] bloques a la redonda, uno arriba y uno abajo.",
+                 "{page}",
+                 "[li] La rotación carga la cámara: a 64 RPM tarda 30 segundos",
+                 "[li] Más RPM la cargan más rápido y gastan proporcionalmente más estrés",
+                 "[li] Los cultivos quedan adentro; sacalos por cualquier lado menos el del eje"]},
+      "sources": ["jar:create-integrated-farming-1.4.1c.jar:data/create_integrated_farming/recipe/crafting/vacuum_harvester.json", "jar:create-integrated-farming-1.4.1c.jar:assets/create_integrated_farming/lang/en_us.json#create_integrated_farming.ponder.vacuum_harvester.operate.text_1..text_4", "jar:create-integrated-farming-1.4.1c.jar:plus/dragons/createintegratedfarming/config/CIFServerConfig.class#vacuumHarvesterRange=10(horizontal radius, vertical +-1),vacuumHarvesterChargeTime=600 ticks at 64 RPM"]
+    },
+    {
+      "key": "cif_vacuum_move", "role": "tip", "deps": ["cif_vacuum"],
+      "task": {"type": "checkmark"},
+      "at": {"x": -13.5, "y": 15.4},
+      "en_us": {"title": "Charged on the move",
+        "text": ["[tip] On a [quest:ctr_harvester|contraption] the chamber charges on its own fixed timer, even standing still, and each pulse harvests the whole area around it. [quest:ctr_controls|Contraption Controls] pause it."]},
+      "es_es": {"title": "Cargada en marcha",
+        "text": ["[tip] En una [quest:ctr_harvester|máquina en movimiento] la cámara se carga con su propio temporizador fijo, incluso parada, y cada pulso cosecha toda el área a su alrededor. Los [quest:ctr_controls|Controles de máquina] la pausan."]},
+      "sources": ["jar:create-integrated-farming-1.4.1c.jar:assets/create_integrated_farming/lang/en_us.json#create_integrated_farming.ponder.vacuum_harvester.contraption.text_1..text_4", "jar:create-integrated-farming-1.4.1c.jar:plus/dragons/createintegratedfarming/config/CIFServerConfig.class#Comments.vacuumHarvesterChargeTime(contraption-mounted uses it directly)"]
+    },
+    {
+      "key": "cif_compat", "role": "tip", "deps": ["cif_vacuum"],
+      "task": {"type": "checkmark"},
+      "at": {"x": -21.0, "y": 19.8},
+      "en_us": {"title": "Arms and spouts learn tricks",
+        "text": ["[tip] A [item:create:spout|Spout] speeds up the rotting of Farmer's Delight [item:farmersdelight:organic_compost|Organic Compost]. A [item:create:mechanical_arm|Mechanical Arm] harvests Twilight Delight's Huge Water Lilies and My Nether's Delight's Powdery Crops, bullet peppers included, without breaking the plant."]},
+      "es_es": {"title": "Brazos y surtidores aprenden trucos",
+        "text": ["[tip] Un [item:create:spout|Surtidor] acelera el podrido del [item:farmersdelight:organic_compost|Abono orgánico] de Farmer's Delight. Un [item:create:mechanical_arm|Brazo mecánico] cosecha los Nenúfares gigantes de Twilight Delight y los Cultivos polvorientos de My Nether's Delight, pimientos bala incluidos, sin romper la planta."]},
+      "sources": ["jar:create-integrated-farming-1.4.1c.jar:assets/create_integrated_farming/lang/en_us.json#create_integrated_farming.ponder.spout.catalyze_organic_compost.text_1", "jar:create-integrated-farming-1.4.1c.jar:assets/create_integrated_farming/lang/en_us.json#create_integrated_farming.ponder.mechanical_arm.harvest_lily_pads.text_1..text_3, harvest_powdery_crops.text_1..text_3", "jar:create-integrated-farming-1.4.1c.jar:plus/dragons/createintegratedfarming/integration/farmersdelight/registry/FDBlockSpoutingBehaviours.class"]
+    },
+    {
+      "key": "cif_net", "role": "side", "deps": ["crb_windmill"],
+      "task": {"item": "create_integrated_farming:fishing_net", "count": 2},
+      "at": {"x": -1.0, "y": 15.4},
+      "en_us": {"title": "A net in motion", "subtitle": "Fishing while the windmill turns.",
+        "text": ["[lead] Move a Fishing Net through open water on a contraption and it fishes like a player with a rod.",
+                 "A Farmer's Delight [item:farmersdelight:safety_net|Safety Net], two sticks and [item:create:andesite_alloy|Andesite Alloy] make two [item:create_integrated_farming:fishing_net|Fishing Nets]. They count as windmill sails, so a [quest:crb_windmill|windmill bearing] does the sailing.",
+                 "{page}",
+                 "[li] It only fishes while moving, and slowly: a rod's lure time, multiplied by 8",
+                 "[li] Small creatures in the water are caught and turned into their drops, plus [item:create:experience_nugget|Nuggets of Experience]"]},
+      "es_es": {"title": "Una red en movimiento", "subtitle": "Pescar mientras gira el molino.",
+        "text": ["[lead] Movela por aguas abiertas en una máquina y la Red de pesca pesca como un jugador con caña.",
+                 "Una [item:farmersdelight:safety_net|Red de seguridad] de Farmer's Delight, dos palos y [item:create:andesite_alloy|Aleación de andesita] hacen dos [item:create_integrated_farming:fishing_net|Redes de pesca]. Cuentan como velas de molino, así que un [quest:crb_windmill|rodamiento de molino] hace de barco.",
+                 "{page}",
+                 "[li] Sólo pesca en movimiento, y despacio: el tiempo de un señuelo de caña, multiplicado por 8",
+                 "[li] Las criaturas chicas del agua se capturan y se convierten en sus drops, más [item:create:experience_nugget|Pepitas de experiencia]"]},
+      "sources": ["jar:create-integrated-farming-1.4.1c.jar:data/create_integrated_farming/recipe/crafting/fishing_net.json", "jar:create-integrated-farming-1.4.1c.jar:data/create/tags/block/windmill_sails.json", "jar:create-integrated-farming-1.4.1c.jar:assets/create_integrated_farming/lang/en_us.json#create_integrated_farming.ponder.fishing_net.text_1..text_3", "jar:create-integrated-farming-1.4.1c.jar:plus/dragons/createintegratedfarming/config/CIFServerConfig.class#fishingNetCooldownMultiplier=8,fishingNetCaptureCreatureInWater=true,fishingNetCapturedCreatureDropExpNugget=true", "docs/design/mod-pingpong.md#ronda-6-279 (lava net needs Nether Depths Upgrade, Tide, Starcatcher or Confluence: none in the pack)"]
+    },
+    {
+      "key": "cif_roost", "role": "milestone", "deps": ["ffc_straw"],
+      "task": {"item": "create_integrated_farming:roost"},
+      "at": {"x": 10.0, "y": 15.4},
+      "en_us": {"title": "A henhouse with a mechanism", "subtitle": "Eggs, delivered.",
+        "text": ["[lead] Click a chicken with an empty Roost and it moves in.",
+                 "Bamboo, [item:farmersdelight:canvas|Canvas] and wheat make a [item:create_integrated_farming:roost|Roost]. A lead brings a bird in or out, and baby birds can't be caught.",
+                 "[li] It lays by itself: an egg every 5 to 10 minutes",
+                 "[li] The eggs pile up in its inventory: nine slots"]},
+      "es_es": {"title": "Un gallinero con mecanismo", "subtitle": "Huevos a domicilio.",
+        "text": ["[lead] Un clic a una gallina con el Gallinero vacío y se muda.",
+                 "Bambú, [item:farmersdelight:canvas|Tela] y trigo hacen un [item:create_integrated_farming:roost|Gallinero]. Con una correa entra o sale el ave, y las crías no se pueden atrapar.",
+                 "[li] Pone solo: un huevo cada 5 a 10 minutos",
+                 "[li] Los huevos se juntan en su inventario: nueve espacios"]},
+      "sources": ["jar:create-integrated-farming-1.4.1c.jar:data/create_integrated_farming/recipe/crafting/roost.json", "jar:create-integrated-farming-1.4.1c.jar:assets/create_integrated_farming/lang/en_us.json#create_integrated_farming.ponder.roost.catch.text_1..text_4, roost.lead.text_1..text_3", "jar:create-integrated-farming-1.4.1c.jar:plus/dragons/createintegratedfarming/common/ranching/roost/AnimalRoostBlockEntity.class#minimumProductionTicks=6000,maximumProductionTicks=11999", "jar:create-integrated-farming-1.4.1c.jar:plus/dragons/createintegratedfarming/config/CIFServerConfig.class#roostingInventorySlotCount=9"]
+    },
+    {
+      "key": "cif_roost_feed", "role": "tip", "deps": ["cif_roost"],
+      "task": {"type": "checkmark"},
+      "at": {"x": 17.0, "y": 15.4},
+      "en_us": {"title": "Feed it for faster eggs",
+        "text": ["[tip] Feeding is optional. Seeds bring the next egg forward by two minutes, once every 20 to 40 seconds. A belt feeds from the front, an arm can feed, and a Spout can pour 100 mB of plant oil: seed, plant or vegetable oil all count."]},
+      "es_es": {"title": "Dale de comer y ponen antes",
+        "text": ["[tip] Darles de comer es opcional. Las semillas adelantan el próximo huevo dos minutos, una vez cada 20 a 40 segundos. Una cinta alimenta de frente, un brazo puede alimentar y un surtidor puede volcar 100 mB de aceite vegetal: sirven el aceite de semillas, el de planta y el vegetal."]},
+      "sources": ["jar:create-integrated-farming-1.4.1c.jar:data/create_integrated_farming/data_maps/item/chicken_food.json", "jar:create-integrated-farming-1.4.1c.jar:data/create_integrated_farming/data_maps/fluid/chicken_food.json", "jar:create-integrated-farming-1.4.1c.jar:assets/create_integrated_farming/lang/en_us.json#create_integrated_farming.ponder.roost.raise.text_1..text_4", "jar:createaddition-1.7.0.jar:data/c/tags/fluid/plantoil.json", "jar:ImmersiveEngineering-1.21.1-12.4.2-194.jar:data/c/tags/fluid/plantoil.json", "jar:pneumaticcraft-repressurized-8.2.23+mc1.21.1.jar:data/c/tags/fluid/plantoil.json"]
+    },
+    {
+      "key": "cif_roost_eggs", "role": "side", "deps": ["cif_roost"],
+      "task": {"item": "minecraft:egg", "count": 16},
+      "at": {"x": 10.0, "y": 19.8},
+      "en_us": {"title": "Eggs on tap", "subtitle": "Sixteen, no hens harassed.",
+        "text": ["[lead] Sixteen eggs from a roost, none of them fetched by hand.",
+                 "Goggles on the roost show the time to the next egg, and warn when its inventory is full."]},
+      "es_es": {"title": "Huevos de canilla", "subtitle": "Dieciséis, sin perseguir gallinas.",
+        "text": ["[lead] Dieciséis huevos de un gallinero, ninguno juntado a mano.",
+                 "Con las gafas puestas, el gallinero muestra el tiempo hasta el próximo huevo y avisa cuando su inventario está lleno."]},
+      "sources": ["jar:create-integrated-farming-1.4.1c.jar:assets/create_integrated_farming/lang/en_us.json#create_integrated_farming.goggles.roost.next_output, goggles.roost.output_inventory_full", "jar:create-integrated-farming-1.4.1c.jar:data/create_integrated_farming/loot_table/gameplay/roost/chicken.json"]
     }
   ]
 }
