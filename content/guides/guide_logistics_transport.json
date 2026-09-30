@@ -4,299 +4,316 @@
   "act": "any",
   "icon": "pipez:item_pipe",
   "emblem": "pipez:textures/item/wrench.png",
-  "title": {
-    "en_us": "Moving Items, Fluids and Energy",
-    "es_es": "Mover ítems, fluidos y energía"
-  },
+  "title": {"en_us": "Moving Items, Fluids and Energy", "es_es": "Mover ítems, fluidos y energía"},
   "subtitle": {
     "en_us": "Pipes, filters, laser nodes, routers and cables: which one to use and how energy crosses between mods.",
     "es_es": "Caños, filtros, nodos láser, routers y cables: cuál usar y cómo pasa la energía de un mod a otro."
   },
   "quests": [
     {
-      "key": "logistics_transport_welcome",
-      "deps": [],
-      "type": "checkmark",
-      "layout": {
-        "x": 0,
-        "y": 0,
-        "size": 2.0,
-        "shape": "hexagon"
-      },
-      "en_us": [
-        "Stop Carrying, Start Piping",
-        "Sooner or later everything should flow on its own: ore to the crusher, ingots to chests, fuel to generators, power to machines. The pack's transport systems overlap on purpose, from the simplest to the most flexible.\n\nPick the one whose style you like. Nobody is grading the spaghetti."
-      ],
-      "es_es": [
-        "Dejá de cargar, empezá a entubar",
-        "Tarde o temprano todo tiene que fluir solo: mineral a la trituradora, lingotes a los cofres, combustible a los generadores, energía a las máquinas. Los sistemas de transporte del pack se superponen a propósito, del más simple al más flexible.\n\nElegí el que te guste. Nadie le pone nota a los fideos."
-      ],
-      "sources": [
-        "repo:catalog/curated.json"
-      ]
+      "key": "logistics_transport_welcome", "deps": [], "type": "checkmark", "layout": {"x": 0, "y": 0, "size": 2.0, "shape": "hexagon"},
+      "en_us": {"title": "Stop Carrying, Start Piping", "subtitle": "Ore in, ingots out.",
+        "text": ["[lead] Sooner or later, everything should flow on its own.",
+                 "[li] Ore to the crusher",
+                 "[li] Ingots to the chests",
+                 "[li] Fuel to the generators",
+                 "[li] Power to the machines",
+                 "The pack's transport systems overlap on purpose, from the simplest to the most flexible. Pick the one whose style you like. Nobody is grading the spaghetti."]},
+      "es_es": {"title": "Dejá de cargar, empezá a entubar", "subtitle": "Mineral adentro, lingotes afuera.",
+        "text": ["[lead] Tarde o temprano, todo tiene que fluir solo.",
+                 "[li] Mineral a la trituradora",
+                 "[li] Lingotes a los cofres",
+                 "[li] Combustible a los generadores",
+                 "[li] Energía a las máquinas",
+                 "Los sistemas de transporte del pack se superponen a propósito, del más simple al más flexible. Elegí el que te guste. Nadie le pone nota a los fideos."]},
+      "sources": ["repo:catalog/curated.json"]
     },
     {
-      "key": "logistics_transport_early",
-      "deps": [
-        "logistics_transport_welcome"
-      ],
-      "type": "item",
-      "item": "minecraft:hopper",
-      "optional": true,
-      "layout": {
-        "x": 3,
-        "y": -3,
-        "size": 1.0,
-        "shape": "circle"
-      },
-      "en_us": [
-        "Early: Hoppers and Create",
-        "Before pipes, you already have vanilla hoppers and droppers, and Create's belts, chutes, funnels and mechanical arm, which move items with rotation and look great doing it.\n\nCreate's logistics has its own chapter."
-      ],
-      "es_es": [
-        "Temprano: tolvas y Create",
-        "Antes de los caños ya tenés tolvas y soltadores de vanilla, y las cintas, tolvas inclinadas, embudos y el brazo mecánico de Create, que mueven ítems con rotación y quedan hermosos.\n\nLa logística de Create tiene su propio capítulo."
-      ],
-      "sources": [
-        "https://wiki.createmod.net/users/getting-started"
-      ]
+      "key": "logistics_transport_early", "deps": ["logistics_transport_welcome"], "type": "item", "item": "minecraft:hopper", "optional": true, "layout": {"x": 4.5, "y": -7.6, "size": 1.0, "shape": "circle"}, "hide_lines": true,
+      "en_us": {"title": "Early: Hoppers and Create", "subtitle": "Rotation looks good on you.",
+        "text": ["[lead] Before any pipe, you can already move items.",
+                 "[li:minecraft:hopper] [item:minecraft:hopper|Hoppers] and [item:minecraft:dropper|droppers] from vanilla",
+                 "[li] Create's belts, chutes, funnels and mechanical arm",
+                 "Create moves items with rotation and looks great doing it.",
+                 "[note] Create's logistics has its own chapter: [chapter:sector_create_logistics|Create · Rails and Power]."]},
+      "es_es": {"title": "Temprano: tolvas y Create", "subtitle": "La rotación te queda bien.",
+        "text": ["[lead] Antes de cualquier caño, ya podés mover ítems.",
+                 "[li:minecraft:hopper] [item:minecraft:hopper|Tolvas] y [item:minecraft:dropper|soltadores] de vanilla",
+                 "[li] Las cintas, tolvas inclinadas, embudos y el brazo mecánico de Create",
+                 "Create mueve ítems con rotación y queda hermoso.",
+                 "[note] La logística de Create tiene su propio capítulo: [chapter:sector_create_logistics|Create · Vías y energía]."]},
+      "sources": ["https://wiki.createmod.net/users/getting-started"]
     },
     {
-      "key": "logistics_transport_fluids",
-      "deps": [
-        "logistics_transport_welcome"
-      ],
-      "type": "item",
-      "item": "mekanism:basic_mechanical_pipe",
-      "optional": true,
-      "layout": {
-        "x": 9,
-        "y": -3,
-        "size": 1.0,
-        "shape": "circle"
-      },
-      "en_us": [
-        "Fluids",
-        "Fluid pipes work like item pipes: Pipez fluid pipes, Mekanism mechanical pipes, Create fluid pipes driven by a mechanical pump, and Ender Storage tanks for long distances.\n\nA Fluid Trash Can at the end of a line voids the overflow."
-      ],
-      "es_es": [
-        "Fluidos",
-        "Los caños de fluidos funcionan como los de ítems: caños de Pipez, tubos mecánicos de Mekanism, caños de Create movidos por una bomba mecánica y tanques de Ender Storage para distancias largas.\n\nUna papelera de fluidos al final de la línea elimina el sobrante."
-      ],
-      "sources": [
-        "jar:pipez-neoforge-1.21.1-1.2.31.jar:assets/pipez/lang/en_us.json",
-        "jar:trashcans-1.1.0-neoforge-mc1.21.jar:assets/trashcans/lang/en_us.json"
-      ]
+      "key": "logistics_transport_fluids", "deps": ["logistics_transport_welcome"], "type": "item", "item": "mekanism:basic_mechanical_pipe", "optional": true, "layout": {"x": 5.5, "y": 0, "size": 1.0, "shape": "circle"}, "hide_lines": true,
+      "en_us": {"title": "Fluids", "subtitle": "Same idea, wetter.",
+        "text": ["[lead] Fluid pipes work like item pipes.",
+                 "[li] [hl|Pipez] fluid pipes",
+                 "[li] [item:mekanism:basic_mechanical_pipe|Mekanism mechanical pipes]",
+                 "[li] Create fluid pipes, driven by a mechanical pump",
+                 "[li] [hl|Ender Storage] tanks for long distances",
+                 "A [item:trashcans:liquid_trash_can|Fluid Trash Can] at the end of a line voids the overflow."]},
+      "es_es": {"title": "Fluidos", "subtitle": "La misma idea, más mojada.",
+        "text": ["[lead] Los caños de fluidos funcionan como los de ítems.",
+                 "[li] Caños de fluidos de [hl|Pipez]",
+                 "[li] [item:mekanism:basic_mechanical_pipe|Tubos mecánicos de Mekanism]",
+                 "[li] Caños de Create, movidos por una bomba mecánica",
+                 "[li] Tanques de [hl|Ender Storage] para distancias largas",
+                 "Una [item:trashcans:liquid_trash_can|papelera de fluidos] al final de la línea elimina el sobrante."]},
+      "sources": ["jar:pipez-neoforge-1.21.1-1.2.31.jar:assets/pipez/lang/en_us.json", "jar:trashcans-1.1.0-neoforge-mc1.21.jar:assets/trashcans/lang/en_us.json"]
     },
     {
-      "key": "logistics_transport_create_bridge",
-      "deps": [
-        "logistics_transport_welcome"
-      ],
-      "type": "item",
-      "item": "createaddition:alternator",
-      "layout": {
-        "x": 12,
-        "y": -1.5,
-        "size": 1.0,
-        "shape": "circle"
-      },
-      "en_us": [
-        "Rotation and Electricity",
-        "&eCreate: Crafts and Additions&r has the &eAlternator&r (rotation to FE) and &eElectric Motor&r (FE to rotation), with wires. &eCreate: New Age&r, Heliodor's own technology, spins a &eGenerator Coil&r between magnets, collects it with carbon brushes and turns it back into rotation with motors.\n\nIts carbon brushes take an Energy Coupler (act II), and its better motors act materials."
-      ],
-      "es_es": [
-        "Rotación y electricidad",
-        "&eCreate: Crafts and Additions&r tiene el &eAlternador&r (rotación a FE) y el &eMotor eléctrico&r (FE a rotación), con cables. &eCreate: New Age&r, la tecnología propia de Heliodor, hace girar una &eBobina generadora&r entre imanes, junta la energía con escobillas de carbón y la vuelve rotación con motores.\n\nSus escobillas llevan un Acoplador de energía (acto II), y sus mejores motores materiales de acto."
-      ],
-      "sources": [
-        "jar:createaddition-1.7.0.jar:assets/createaddition/lang/en_us.json",
-        "repo:docs/design/mod-pingpong.md",
-        "repo:pack/kubejs/server_scripts/entrelumen_pingpong4_balance.js"
-      ]
+      "key": "logistics_transport_create_bridge", "deps": ["logistics_transport_welcome"], "type": "item", "item": "createaddition:alternator", "layout": {"x": 5.5, "y": 4.5, "size": 1.0, "shape": "circle"}, "hide_lines": true,
+      "en_us": {"title": "Rotation and Electricity", "subtitle": "Spin it, plug it, spin it again.",
+        "text": ["[lead] Create trades rotation for electricity, and back.",
+                 "[li] [hl|Create: Crafts and Additions]: the [item:createaddition:alternator|Alternator] turns rotation into FE",
+                 "[li] Its [item:createaddition:electric_motor|Electric Motor] turns FE into rotation, with wires between them",
+                 "{page}",
+                 "[hl|Create: New Age], Heliodor's own technology, spins a [hl|Generator Coil] between magnets, collects it with carbon brushes and turns it back into rotation with motors.",
+                 "[note] Its carbon brushes take an Energy Coupler (act II), and its better motors act materials."]},
+      "es_es": {"title": "Rotación y electricidad", "subtitle": "Giralo, enchufalo, giralo de nuevo.",
+        "text": ["[lead] Create cambia rotación por electricidad, y al revés.",
+                 "[li] [hl|Create: Crafts and Additions]: el [item:createaddition:alternator|Alternador] convierte rotación en FE",
+                 "[li] Su [item:createaddition:electric_motor|Motor eléctrico] convierte FE en rotación, con cables de por medio",
+                 "{page}",
+                 "[hl|Create: New Age], la tecnología propia de Heliodor, hace girar una [hl|Bobina generadora] entre imanes, junta la energía con escobillas de carbón y la vuelve rotación con motores.",
+                 "[note] Sus escobillas llevan un Acoplador de energía (acto II), y sus mejores motores materiales de acto."]},
+      "sources": ["jar:createaddition-1.7.0.jar:assets/createaddition/lang/en_us.json", "repo:docs/design/mod-pingpong.md", "repo:pack/kubejs/server_scripts/entrelumen_pingpong4_balance.js"]
     },
     {
-      "key": "logistics_transport_mekanism",
-      "deps": [
-        "logistics_transport_welcome"
-      ],
-      "type": "item",
-      "item": "mekanism:basic_logistical_transporter",
-      "layout": {
-        "x": 6,
-        "y": 4.5,
-        "size": 1.0,
-        "shape": "circle"
-      },
-      "en_us": [
-        "Mekanism Transmitters",
-        "&eLogistical transporters&r for items, &emechanical pipes&r for fluids, &epressurized tubes&r for chemicals and &euniversal cables&r for energy, four tiers each; transporters can be color-coded and sorted with a &eLogistical Sorter&r.\n\nMachines pick what each face does in their &eside configuration&r tab, and &eMekanism Covers&r hide transmitters behind any block's look."
-      ],
-      "es_es": [
-        "Transmisores de Mekanism",
-        "&eTransportadores logísticos&r para ítems, &etubos mecánicos&r para fluidos, &etubos presurizados&r para químicos y &ecables universales&r para energía, cuatro niveles cada uno; los transportadores se colorean y ordenan con un &eClasificador logístico&r.\n\nLas máquinas eligen qué hace cada cara en su pestaña de &econfiguración de lados&r, y &eMekanism Covers&r esconde los transmisores detrás del aspecto de cualquier bloque."
-      ],
-      "sources": [
-        "jar:Mekanism-1.21.1-10.7.19.85.jar:assets/mekanism/lang/en_us.json",
-        "jar:mekanismcovers-1.3-BETA+1.21.jar:assets/mekanismcovers/lang/en_us.json"
-      ]
+      "key": "logistics_transport_mekanism", "deps": ["logistics_transport_welcome"], "type": "item", "item": "mekanism:basic_logistical_transporter", "layout": {"x": 9, "y": -4.5, "size": 1.0, "shape": "circle"}, "hide_lines": true,
+      "en_us": {"title": "Mekanism Transmitters", "subtitle": "One family, four tiers.",
+        "text": ["[lead] One family carries everything, in four tiers each.",
+                 "[li] [item:mekanism:basic_logistical_transporter|Logistical transporters]: items",
+                 "[li] [item:mekanism:basic_mechanical_pipe|Mechanical pipes]: fluids",
+                 "[li] [item:mekanism:basic_pressurized_tube|Pressurized tubes]: chemicals",
+                 "[li] [item:mekanism:basic_universal_cable|Universal cables]: energy",
+                 "{page}",
+                 "Transporters can be color-coded and sorted with a [item:mekanism:logistical_sorter|Logistical Sorter].",
+                 "Machines pick what each face does in their [hl|side configuration] tab.",
+                 "[tip] [hl|Mekanism Covers] hides transmitters behind any block's look.",
+                 "More in [chapter:sector_mekanism_logistics|Mekanism · Logistics and gear]."]},
+      "es_es": {"title": "Transmisores de Mekanism", "subtitle": "Una familia, cuatro niveles.",
+        "text": ["[lead] Una sola familia lleva todo, en cuatro niveles cada una.",
+                 "[li] [item:mekanism:basic_logistical_transporter|Transportadores logísticos]: ítems",
+                 "[li] [item:mekanism:basic_mechanical_pipe|Tubos mecánicos]: fluidos",
+                 "[li] [item:mekanism:basic_pressurized_tube|Tubos presurizados]: químicos",
+                 "[li] [item:mekanism:basic_universal_cable|Cables universales]: energía",
+                 "{page}",
+                 "Los transportadores se colorean y ordenan con un [item:mekanism:logistical_sorter|Clasificador logístico].",
+                 "Las máquinas eligen qué hace cada cara en su pestaña de [hl|configuración de lados].",
+                 "[tip] [hl|Mekanism Covers] esconde los transmisores detrás del aspecto de cualquier bloque.",
+                 "Más en [chapter:sector_mekanism_logistics|Mekanism · Logística y equipo]."]},
+      "sources": ["jar:Mekanism-1.21.1-10.7.19.85.jar:assets/mekanism/lang/en_us.json", "jar:mekanismcovers-1.3-BETA+1.21.jar:assets/mekanismcovers/lang/en_us.json"]
     },
     {
-      "key": "logistics_transport_xnet",
-      "deps": [
-        "logistics_transport_create_bridge"
-      ],
-      "type": "item",
-      "item": "xnet:connector_blue",
-      "layout": {
-        "x": 15,
-        "y": 0,
-        "size": 1.0,
-        "shape": "pentagon"
-      },
-      "en_us": [
-        "XNet: One Controller (Act III)",
-        "Connectors touch the machines, thin cables join them to a &eController&r, and its menu defines up to eight channels (item, fluid, energy or logic) with rules per connector: a whole logistics network, hidden.\n\nThe controller takes a reinforced alloy, so it arrives in act III; routers need a controller anyway. Its manual is craftable."
-      ],
-      "es_es": [
-        "XNet: un controlador (acto III)",
-        "Los conectores tocan las máquinas, cables finitos los unen a un &eControlador&r, y su menú define hasta ocho canales (ítems, fluidos, energía o lógica) con reglas por conector: una red logística entera, escondida.\n\nEl controlador lleva una aleación reforzada, así que llega en el acto III; los routers igual necesitan un controlador. Su manual se fabrica."
-      ],
-      "sources": [
-        "jar:xnet-1.21-7.0.7.jar:assets/xnet/lang/en_us.json",
-        "repo:pack/kubejs/server_scripts/entrelumen_rftools_balance.js"
-      ]
+      "key": "logistics_transport_xnet", "deps": ["logistics_transport_create_bridge"], "type": "item", "item": "xnet:connector_blue", "layout": {"x": 11.5, "y": 4.5, "size": 1.0, "shape": "pentagon"}, "hide_lines": true,
+      "en_us": {"title": "XNet: One Controller (Act III)", "subtitle": "A whole network, hidden.",
+        "text": ["[lead] A whole logistics network, hidden behind thin cables.",
+                 "[li] [item:xnet:connector_blue|Connectors] touch the machines",
+                 "[li] Thin cables join them to a [item:xnet:controller|Controller]",
+                 "[li] Its menu defines up to [hl|8] channels: item, fluid, energy or logic, with rules per connector",
+                 "{page}",
+                 "[note] The controller takes a reinforced alloy, so it arrives in act III; routers need a controller anyway.",
+                 "Its manual is craftable. More in [chapter:sector_rftools|RFTools and XNet]."]},
+      "es_es": {"title": "XNet: un controlador (acto III)", "subtitle": "Una red entera, escondida.",
+        "text": ["[lead] Una red logística entera, escondida detrás de cables finitos.",
+                 "[li] Los [item:xnet:connector_blue|conectores] tocan las máquinas",
+                 "[li] Cables finitos los unen a un [item:xnet:controller|Controlador]",
+                 "[li] Su menú define hasta [hl|8] canales: ítems, fluidos, energía o lógica, con reglas por conector",
+                 "{page}",
+                 "[note] El controlador lleva una aleación reforzada, así que llega en el acto III; los routers igual necesitan un controlador.",
+                 "Su manual se fabrica. Más en [chapter:sector_rftools|RFTools y XNet]."]},
+      "sources": ["jar:xnet-1.21-7.0.7.jar:assets/xnet/lang/en_us.json", "repo:pack/kubejs/server_scripts/entrelumen_rftools_balance.js"]
     },
     {
-      "key": "logistics_transport_tunnels",
-      "deps": [
-        "logistics_transport_mekanism"
-      ],
-      "type": "item",
-      "item": "integratedtunnels:part_importer_item",
-      "optional": true,
-      "layout": {
-        "x": 18,
-        "y": 3,
-        "size": 1.0,
-        "shape": "circle"
-      },
-      "en_us": [
-        "Integrated Tunnels",
-        "For programmers: items, fluids and energy through Integrated Dynamics networks, with importers and exporters driven by variable cards and logic. The most flexible system here, and the slowest to learn.\n\nIts guide is the Integrated Dynamics manual, craftable from day one."
-      ],
-      "es_es": [
-        "Integrated Tunnels",
-        "Para quienes programan: ítems, fluidos y energía por redes de Integrated Dynamics, con importadores y exportadores manejados por tarjetas de variables y lógica. El sistema más flexible de acá, y el más lento de aprender.\n\nSu guía es el manual de Integrated Dynamics, que se fabrica desde el primer día."
-      ],
-      "sources": [
-        "jar:integratedtunnels-1.21.1-neoforge-1.10.0-729.jar:META-INF/neoforge.mods.toml",
-        "repo:pack/config/integrateddynamics-common.toml"
-      ]
+      "key": "logistics_transport_tunnels", "deps": ["logistics_transport_mekanism"], "type": "item", "item": "integratedtunnels:part_importer_item", "optional": true, "layout": {"x": 16, "y": -4.5, "size": 1.0, "shape": "circle"}, "hide_lines": true,
+      "en_us": {"title": "Integrated Tunnels", "subtitle": "For those who program their pipes.",
+        "text": ["[lead] For programmers: the most flexible system here, and the slowest to learn.",
+                 "[li] Items, fluids and energy through Integrated Dynamics networks",
+                 "[li] Importers and exporters driven by variable cards and logic",
+                 "{page}",
+                 "Its guide is the Integrated Dynamics manual, craftable from day one. More in [chapter:sector_id|Integrated Dynamics and Tunnels]."]},
+      "es_es": {"title": "Integrated Tunnels", "subtitle": "Para quienes programan sus caños.",
+        "text": ["[lead] Para quienes programan: el sistema más flexible de acá, y el más lento de aprender.",
+                 "[li] Ítems, fluidos y energía por redes de Integrated Dynamics",
+                 "[li] Importadores y exportadores manejados por tarjetas de variables y lógica",
+                 "{page}",
+                 "Su guía es el manual de Integrated Dynamics, que se fabrica desde el primer día. Más en [chapter:sector_id|Integrated Dynamics y Tunnels]."]},
+      "sources": ["jar:integratedtunnels-1.21.1-neoforge-1.10.0-729.jar:META-INF/neoforge.mods.toml", "repo:pack/config/integrateddynamics-common.toml"]
     },
     {
-      "key": "logistics_transport_which",
-      "deps": [
-        "logistics_transport_xnet"
-      ],
-      "type": "checkmark",
+      "key": "logistics_transport_which", "deps": ["logistics_transport_xnet"], "type": "checkmark", "layout": {"x": 17.5, "y": 4.5, "size": 1.25, "shape": "diamond"}, "hide_lines": true,
       "icon": "minecraft:comparator",
-      "layout": {
-        "x": 18,
-        "y": -1,
-        "size": 1.25,
-        "shape": "diamond"
-      },
-      "en_us": [
-        "Which One Should I Use?",
-        "A few machines: &ePipez&r, extracting only where needed. A dense room: &eLaserIO&r. A big, tidy base: &eXNet&r from act III, or a storage network. Placing, breaking and odd jobs: &eModular Routers&r. A factory worth watching: &eCreate&r.\n\nMixing is fine: most bases end up with three of them."
-      ],
-      "es_es": [
-        "¿Cuál uso?",
-        "Pocas máquinas: &ePipez&r, extrayendo sólo donde hace falta. Una sala densa: &eLaserIO&r. Una base grande y prolija: &eXNet&r desde el acto III, o una red de almacenamiento. Poner, romper y trabajos raros: &eModular Routers&r. Una fábrica que da gusto mirar: &eCreate&r.\n\nMezclar está bien: casi todas las bases terminan con tres."
-      ],
-      "sources": [
-        "repo:docs/design/qol-parity.md"
-      ]
+      "en_us": {"title": "Which One Should I Use?", "subtitle": "Most bases end up with three.",
+        "text": ["[lead] Pick by the base you are building.",
+                 "[li] A few machines: [hl|Pipez], extracting only where needed",
+                 "[li] A dense room: [chapter:sector_logistics|LaserIO]",
+                 "[li] A big, tidy base: [chapter:sector_rftools|XNet] from act III, or a [chapter:guide_logistics_networks|storage network]",
+                 "[li] Placing, breaking and odd jobs: [chapter:sector_routers|Modular Routers]",
+                 "[li] A factory worth watching: [chapter:sector_create_logistics|Create]",
+                 "{page}",
+                 "Mixing is fine: most bases end up with three of them."]},
+      "es_es": {"title": "¿Cuál uso?", "subtitle": "Casi todas terminan con tres.",
+        "text": ["[lead] Elegí según la base que estás armando.",
+                 "[li] Pocas máquinas: [hl|Pipez], extrayendo sólo donde hace falta",
+                 "[li] Una sala densa: [chapter:sector_logistics|LaserIO]",
+                 "[li] Una base grande y prolija: [chapter:sector_rftools|XNet] desde el acto III, o una [chapter:guide_logistics_networks|red de almacenamiento]",
+                 "[li] Poner, romper y trabajos raros: [chapter:sector_routers|Modular Routers]",
+                 "[li] Una fábrica que da gusto mirar: [chapter:sector_create_logistics|Create]",
+                 "{page}",
+                 "Mezclar está bien: casi todas las bases terminan con tres."]},
+      "sources": ["repo:docs/design/qol-parity.md"]
     },
     {
-      "key": "logistics_transport_tip_filters",
-      "deps": [
-        "logistics_transport_mekanism"
-      ],
-      "type": "checkmark",
-      "optional": true,
+      "key": "logistics_transport_tip_filters", "deps": ["logistics_transport_mekanism"], "type": "checkmark", "optional": true, "layout": {"x": 9, "y": -8.0, "size": 1.0, "shape": "diamond"},
       "icon": "minecraft:name_tag",
-      "layout": {
-        "x": 12,
-        "y": 4.5,
-        "size": 1.0,
-        "shape": "diamond"
-      },
-      "en_us": [
-        "Tip: Filter With Tags",
-        "&e#c:ores&r catches every ore from every mod and &e#c:ingots&r every ingot: Pipez filters take a #tag, and LaserIO has a Tag Filter.\n\nF3+H shows an item's tags in its tooltip, and EMI searches them with #."
-      ],
-      "es_es": [
-        "Truco: filtrá con tags",
-        "&e#c:ores&r atrapa todos los minerales de todos los mods y &e#c:ingots&r todos los lingotes: los filtros de Pipez aceptan un #tag, y LaserIO tiene un Filtro de tags.\n\nF3+H muestra los tags de un ítem en su tooltip, y EMI los busca con #."
-      ],
-      "sources": [
-        "jar:pipez-neoforge-1.21.1-1.2.31.jar:assets/pipez/lang/en_us.json",
-        "jar:laserio-1.9.11.jar:assets/laserio/lang/en_us.json"
-      ]
+      "en_us": {"title": "Tip: Filter With Tags",
+        "text": ["[tip] One tag filter catches an item from every mod.",
+                 "[li] [hl|#c:ores] catches every ore from every mod",
+                 "[li] [hl|#c:ingots] catches every ingot",
+                 "[li:laserio:filter_tag] Pipez filters take a #tag, and LaserIO has a [item:laserio:filter_tag|Tag Filter]",
+                 "Turn on advanced tooltips to see an item's tags, and search them in EMI with #."]},
+      "es_es": {"title": "Truco: filtrá con tags",
+        "text": ["[tip] Un filtro de tags atrapa un ítem de cada mod.",
+                 "[li] [hl|#c:ores] atrapa todos los minerales de todos los mods",
+                 "[li] [hl|#c:ingots] atrapa todos los lingotes",
+                 "[li:laserio:filter_tag] Los filtros de Pipez aceptan un #tag, y LaserIO tiene un [item:laserio:filter_tag|Filtro de tags]",
+                 "Activá los tooltips avanzados para ver los tags de un ítem, y buscalos en EMI con #."]},
+      "sources": ["jar:pipez-neoforge-1.21.1-1.2.31.jar:assets/pipez/lang/en_us.json", "jar:laserio-1.9.11.jar:assets/laserio/lang/en_us.json"]
     },
     {
-      "key": "logistics_transport_tip_overflow",
-      "deps": [
-        "logistics_transport_welcome"
-      ],
-      "type": "checkmark",
-      "optional": true,
+      "key": "logistics_transport_tip_overflow", "deps": ["logistics_transport_welcome"], "type": "checkmark", "optional": true, "layout": {"x": 11, "y": 2.6, "size": 1.0, "shape": "diamond"}, "hide_lines": true,
       "icon": "minecraft:barrel",
-      "layout": {
-        "x": 9,
-        "y": 3,
-        "size": 1.0,
-        "shape": "diamond"
-      },
-      "en_us": [
-        "Quirk: a Full Chest Stops All",
-        "When the destination fills, the line backs up and the machine upstream stops. Plan for overflow: a Void upgrade in a drawer, a Trash Can at the end of the line, or a second destination further down.\n\nEvery factory learns this once."
-      ],
-      "es_es": [
-        "Particularidad: cofre lleno",
-        "Cuando el destino se llena, la línea se tranca y la máquina de antes se detiene. Planeá el sobrante: una mejora de Vacío en un cajón, una papelera al final o un segundo destino más adelante.\n\nToda fábrica lo aprende una vez."
-      ],
-      "sources": [
-        "jar:pipez-neoforge-1.21.1-1.2.31.jar:assets/pipez/lang/en_us.json"
-      ]
+      "en_us": {"title": "Quirk: a Full Chest Stops All", "subtitle": "Every factory learns it once.",
+        "text": ["[lead] When the destination fills, the line backs up and the machine upstream stops.",
+                 "Plan for the overflow:",
+                 "[li] A [hl|Void] upgrade in a drawer",
+                 "[li] A [item:trashcans:item_trash_can|Trash Can] at the end of the line",
+                 "[li] A second destination further down",
+                 "Every factory learns this once."]},
+      "es_es": {"title": "Particularidad: cofre lleno", "subtitle": "Toda fábrica lo aprende una vez.",
+        "text": ["[lead] Cuando el destino se llena, la línea se tranca y la máquina de antes se detiene.",
+                 "Planeá el sobrante:",
+                 "[li] Una mejora de [hl|Vacío] en un cajón",
+                 "[li] Una [item:trashcans:item_trash_can|papelera] al final de la línea",
+                 "[li] Un segundo destino más adelante",
+                 "Toda fábrica lo aprende una vez."]},
+      "sources": ["jar:pipez-neoforge-1.21.1-1.2.31.jar:assets/pipez/lang/en_us.json"]
     },
     {
-      "key": "logistics_transport_close",
-      "deps": [
-        "logistics_transport_which",
-        "logistics_transport_tunnels"
-      ],
-      "type": "checkmark",
+      "key": "logistics_transport_close", "deps": ["logistics_transport_which", "logistics_transport_tunnels"], "type": "checkmark", "layout": {"x": 23, "y": 0, "size": 2.0, "shape": "hexagon"}, "hide_lines": true,
       "icon": "ae2:controller",
-      "layout": {
-        "x": 21,
-        "y": 0,
-        "size": 2.0,
-        "shape": "hexagon"
-      },
-      "en_us": [
-        "Things Flow on Their Own",
-        "Items, fluids and energy now move without you. The last step is a storage network that knows where everything is and crafts on request.\n\nThe spaghetti is optional. The satisfaction is not."
-      ],
-      "es_es": [
-        "Las cosas fluyen solas",
-        "Ítems, fluidos y energía ya se mueven sin vos. El último paso es una red de almacenamiento que sabe dónde está todo y fabrica a pedido.\n\nLos fideos son opcionales. La satisfacción, no."
-      ],
-      "sources": [
-        "repo:content/guides/README.md"
-      ]
+      "en_us": {"title": "Things Flow on Their Own", "subtitle": "Nobody carried anything.",
+        "text": ["[lead] Items, fluids and energy now move without you.",
+                 "The last step is a storage network that knows where everything is and crafts on request: [chapter:guide_logistics_networks|Storage Networks: AE2 or Refined Storage].",
+                 "The spaghetti is optional. The satisfaction is not."]},
+      "es_es": {"title": "Las cosas fluyen solas", "subtitle": "Nadie cargó nada.",
+        "text": ["[lead] Ítems, fluidos y energía ya se mueven sin vos.",
+                 "El último paso es una red de almacenamiento que sabe dónde está todo y fabrica a pedido: [chapter:guide_logistics_networks|Redes de almacenamiento: AE2 o Refined Storage].",
+                 "Los fideos son opcionales. La satisfacción, no."]},
+      "sources": ["repo:content/guides/README.md"]
+    },
+    {
+      "key": "logistics_transport_toy_lever", "role": "decor", "deps": [], "type": "checkmark", "optional": true, "layout": {"x": -2.0, "y": 5.8, "size": 0.75, "shape": "none"},
+      "icon": "minecraft:lever",
+      "en_us": {"title": "Throw the Lever",
+        "text": ["[lead] Every line at once, with a spark running down each.",
+                 "Items, fluids and energy all leave the same room together."]},
+      "es_es": {"title": "Tirar la palanca",
+        "text": ["[lead] Todas las líneas a la vez, con una chispa recorriendo cada una.",
+                 "Ítems, fluidos y energía salen juntos de la misma sala."]},
+      "sources": ["repo:catalog/curated.json"]
+    },
+    {
+      "key": "logistics_transport_toy_spaghetti", "role": "decor", "deps": [], "type": "checkmark", "optional": true, "layout": {"x": 25.0, "y": 6.9, "size": 0.75, "shape": "none"},
+      "icon": "minecraft:string",
+      "en_us": {"title": "Spaghetti Corner",
+        "text": ["[lead] Every base has one, and nobody is grading it.",
+                 "Seven pipes, no plan, and it still delivers."]},
+      "es_es": {"title": "El rincón de los fideos",
+        "text": ["[lead] Toda base tiene uno, y nadie le pone nota.",
+                 "Siete caños, ningún plan, y igual entrega."]},
+      "sources": ["repo:catalog/curated.json"]
     }
+  ],
+  "presentation": 2,
+  "motif": "logistics",
+  "medallion": {"x": -6.4, "y": -8.2},
+  "art": [
+    {"id": "title", "text": {"en_us": "Moving Items, Fluids and Energy", "es_es": "Mover ítems, fluidos y energía"}, "x": -3.4, "y": -9.6, "scale": 3, "tint": "#F3E7C6", "align": "start"},
+    {"id": "src_chest", "item": "minecraft:barrel", "x": -2.7, "y": -2.5, "size": 1.3, "reveal": "logistics_transport_welcome"},
+    {"id": "src_bucket", "picture": "minecraft:textures/item/water_bucket.png", "x": -3.1, "y": 0.05, "w": 1.1, "h": 1.1, "reveal": "logistics_transport_welcome"},
+    {"id": "src_gen", "item": "createaddition:alternator", "x": -2.7, "y": 2.5, "size": 1.4, "reveal": "logistics_transport_welcome"},
+    {"id": "src_item_feed", "path": [[-1.9, -1.9], [-0.95, -0.85]], "color": "#F2CB3A", "width": 0.2, "reveal": "logistics_transport_welcome", "order": -4},
+    {"id": "src_fluid_feed", "path": [[-2.4, 0.05], [-1.05, 0.05]], "color": "#35D6EE", "width": 0.2, "reveal": "logistics_transport_welcome", "order": -4},
+    {"id": "src_energy_feed", "path": [[-1.9, 1.85], [-0.95, 0.85]], "color": "#EA5B3A", "width": 0.2, "reveal": "logistics_transport_welcome", "order": -4},
+    {"id": "j_item", "picture": "pipez:textures/block/item_pipe.png", "x": 1.25, "y": -1.5, "w": 0.8, "h": 0.8, "reveal": "logistics_transport_welcome"},
+    {"id": "j_fluid", "picture": "pipez:textures/block/fluid_pipe.png", "x": 1.6, "y": 0.0, "w": 0.8, "h": 0.8, "reveal": "logistics_transport_welcome"},
+    {"id": "j_energy", "picture": "pipez:textures/block/energy_pipe.png", "x": 1.25, "y": 1.5, "w": 0.8, "h": 0.8, "reveal": "logistics_transport_welcome"},
+    {"id": "line_items", "through": ["logistics_transport_welcome", [2.4, -4.5], "logistics_transport_mekanism", "logistics_transport_tunnels", "logistics_transport_close"], "color": "#F2CB3A", "width": 0.42, "smooth": 4, "grow": true, "sketch": true, "order": -4},
+    {"id": "line_fluids", "through": ["logistics_transport_welcome", "logistics_transport_fluids", [11, 0], "logistics_transport_close"], "sprite": "minecraft:block/water_still", "tint": "#35D6EE", "width": 0.5, "step": 0.8, "grow": true, "sketch": true, "order": -4},
+    {"id": "line_energy", "through": ["logistics_transport_welcome", [2.4, 4.5], "logistics_transport_create_bridge", "logistics_transport_xnet", "logistics_transport_which", "logistics_transport_close"], "color": "#EA5B3A", "width": 0.32, "smooth": 4, "grow": true, "sketch": true, "order": -4},
+    {"id": "flow_items", "through": ["logistics_transport_welcome", [2.4, -4.5], "logistics_transport_mekanism", "logistics_transport_tunnels", "logistics_transport_close"], "dots": "minecraft:textures/item/iron_ingot.png", "size": 0.46, "step": 1.2, "smooth": 4, "grow": true, "order": -2},
+    {"id": "flow_energy", "through": ["logistics_transport_welcome", [2.4, 4.5], "logistics_transport_create_bridge", "logistics_transport_xnet", "logistics_transport_which", "logistics_transport_close"], "dots": "#FFD27A", "size": 0.16, "step": 0.9, "smooth": 4, "grow": true, "order": -2},
+    {"id": "stub_early", "path": [[4.5, -4.5], [4.5, -7.0]], "color": "#F2CB3A", "width": 0.24, "reveal": "logistics_transport_early", "order": -4},
+    {"id": "early_dropper", "picture": "minecraft:textures/block/dropper_front.png", "x": 6.0, "y": -7.6, "w": 0.9, "h": 0.9, "reveal": "logistics_transport_early", "order": -4},
+    {"id": "early_hopper", "picture": "minecraft:textures/item/hopper.png", "x": 7.1, "y": -7.6, "w": 0.8, "h": 0.8, "reveal": "logistics_transport_early", "order": -4},
+    {"id": "tier_0", "picture": "#B8BCC4", "x": 7.9, "y": -3.2, "w": 0.45, "h": 0.45, "alpha": 255, "reveal": "logistics_transport_mekanism", "order": -3},
+    {"id": "tier_1", "picture": "#E14B3B", "x": 8.65, "y": -3.2, "w": 0.45, "h": 0.45, "alpha": 255, "reveal": "logistics_transport_mekanism", "order": -3},
+    {"id": "tier_2", "picture": "#3D8BF2", "x": 9.4, "y": -3.2, "w": 0.45, "h": 0.45, "alpha": 255, "reveal": "logistics_transport_mekanism", "order": -3},
+    {"id": "tier_3", "picture": "#B16BFF", "x": 10.15, "y": -3.2, "w": 0.45, "h": 0.45, "alpha": 255, "reveal": "logistics_transport_mekanism", "order": -3},
+    {"id": "mek_sorter", "picture": "mekanism:textures/block/models/logistical_sorter.png", "x": 10.9, "y": -3.2, "w": 0.7, "h": 0.7, "reveal": "logistics_transport_mekanism", "order": -4},
+    {"id": "tag_filter", "picture": "laserio:textures/item/filter_tag.png", "x": 10.4, "y": -8.0, "w": 0.8, "h": 0.8, "reveal": "logistics_transport_tip_filters", "order": -4},
+    {"id": "tag_text", "text": {"en_us": "#c:ores  #c:ingots", "es_es": "#c:ores  #c:ingots"}, "x": 11.1, "y": -8.0, "scale": 1, "tint": "#E8DCB5", "align": "start", "reveal": "logistics_transport_tip_filters"},
+    {"id": "logic_cable", "path": [[14.0, -6.2], [18.0, -6.2]], "color": "#66D9EF", "width": 0.1, "reveal": "logistics_transport_tunnels", "order": -3},
+    {"id": "var_a", "picture": "integrateddynamics:textures/item/variable.png", "x": 14.8, "y": -6.2, "w": 0.7, "h": 0.7, "reveal": "logistics_transport_tunnels", "order": -4},
+    {"id": "var_b", "picture": "integrateddynamics:textures/item/variable.png", "x": 16.4, "y": -6.2, "w": 0.7, "h": 0.7, "reveal": "logistics_transport_tunnels", "order": -4},
+    {"id": "var_dir", "picture": "integrateddynamics:textures/item/logic_director.png", "x": 17.6, "y": -6.2, "w": 0.7, "h": 0.7, "reveal": "logistics_transport_tunnels", "order": -4},
+    {"id": "stub_overflow", "path": [[11, 0.0], [11, 2.1]], "color": "#35D6EE", "width": 0.24, "reveal": "logistics_transport_tip_overflow", "order": -4},
+    {"id": "trash_item", "item": "trashcans:item_trash_can", "x": 12.6, "y": 2.6, "size": 0.9, "reveal": "logistics_transport_tip_overflow"},
+    {"id": "trash_fluid", "item": "trashcans:liquid_trash_can", "x": 13.7, "y": 2.6, "size": 0.9, "reveal": "logistics_transport_tip_overflow"},
+    {"id": "void_up", "picture": "functionalstorage:textures/item/void_upgrade.png", "x": 14.8, "y": 2.6, "w": 0.8, "h": 0.8, "reveal": "logistics_transport_tip_overflow", "order": -4},
+    {"id": "alt_item", "item": "createaddition:alternator", "x": 5.0, "y": 6.4, "size": 1.0, "reveal": "logistics_transport_create_bridge"},
+    {"id": "motor_item", "item": "createaddition:electric_motor", "x": 6.3, "y": 6.4, "size": 1.0, "reveal": "logistics_transport_create_bridge"},
+    {"id": "wire", "path": [[5.5, 6.9], [6.0, 7.3], [6.5, 6.9]], "color": "#C8814A", "width": 0.08, "reveal": "logistics_transport_create_bridge", "order": -3},
+    {"id": "xnet_ctl", "item": "xnet:controller", "x": 11.5, "y": 6.4, "size": 1.0, "reveal": "logistics_transport_xnet"},
+    {"id": "ch_0", "picture": "#E14B3B", "x": 9.95, "y": 7.6, "w": 0.3, "h": 0.3, "alpha": 255, "reveal": "logistics_transport_xnet", "order": -3},
+    {"id": "ch_1", "picture": "#F2CB3A", "x": 10.4, "y": 7.6, "w": 0.3, "h": 0.3, "alpha": 255, "reveal": "logistics_transport_xnet", "order": -3},
+    {"id": "ch_2", "picture": "#5FD16A", "x": 10.85, "y": 7.6, "w": 0.3, "h": 0.3, "alpha": 255, "reveal": "logistics_transport_xnet", "order": -3},
+    {"id": "ch_3", "picture": "#35D6EE", "x": 11.3, "y": 7.6, "w": 0.3, "h": 0.3, "alpha": 255, "reveal": "logistics_transport_xnet", "order": -3},
+    {"id": "ch_4", "picture": "#3D8BF2", "x": 11.75, "y": 7.6, "w": 0.3, "h": 0.3, "alpha": 255, "reveal": "logistics_transport_xnet", "order": -3},
+    {"id": "ch_5", "picture": "#B16BFF", "x": 12.2, "y": 7.6, "w": 0.3, "h": 0.3, "alpha": 255, "reveal": "logistics_transport_xnet", "order": -3},
+    {"id": "ch_6", "picture": "#F28AC8", "x": 12.65, "y": 7.6, "w": 0.3, "h": 0.3, "alpha": 255, "reveal": "logistics_transport_xnet", "order": -3},
+    {"id": "ch_7", "picture": "#DDDDDD", "x": 13.1, "y": 7.6, "w": 0.3, "h": 0.3, "alpha": 255, "reveal": "logistics_transport_xnet", "order": -3},
+    {"id": "board_0", "picture": "pipez:textures/block/item_pipe.png", "x": 15.5, "y": 6.5, "w": 0.75, "h": 0.75, "reveal": "logistics_transport_which", "order": -4},
+    {"id": "board_1", "picture": "laserio:textures/block/laser_node.png", "x": 16.5, "y": 6.5, "w": 0.75, "h": 0.75, "reveal": "logistics_transport_which", "order": -4},
+    {"id": "board_2", "picture": "xnet:textures/block/cable1/connector.png", "x": 17.5, "y": 6.5, "w": 0.75, "h": 0.75, "reveal": "logistics_transport_which", "order": -4},
+    {"id": "board_3", "picture": "modularrouters:textures/item/module/puller_module_1.png", "x": 18.5, "y": 6.5, "w": 0.75, "h": 0.75, "reveal": "logistics_transport_which", "order": -4},
+    {"id": "board_4", "picture": "create:textures/item/brass_ingot.png", "x": 19.5, "y": 6.5, "w": 0.75, "h": 0.75, "reveal": "logistics_transport_which", "order": -4},
+    {"id": "board_bar", "path": [[15.0, 7.3], [20.0, 7.3]], "color": "#8A6A45", "width": 0.16, "reveal": "logistics_transport_which", "order": -4},
+    {"id": "out_items", "path": [[23.9, -0.7], [26.5, -3.2]], "color": "#F2CB3A", "width": 0.32, "reveal": "logistics_transport_close", "order": -4},
+    {"id": "out_fluids", "path": [[24.0, 0.0], [26.6, 0.0]], "sprite": "minecraft:block/water_still", "tint": "#35D6EE", "width": 0.42, "step": 0.6, "reveal": "logistics_transport_close", "order": -4},
+    {"id": "out_energy", "path": [[23.9, 0.7], [26.5, 3.2]], "color": "#EA5B3A", "width": 0.26, "reveal": "logistics_transport_close", "order": -4},
+    {"id": "furnace_off", "picture": "minecraft:textures/block/furnace_front.png", "x": 27.6, "y": -3.2, "w": 1.5, "h": 1.5, "reveal": "logistics_transport_close", "sketch": true, "order": -5},
+    {"id": "furnace_on", "picture": "minecraft:textures/block/furnace_front_on.png", "x": 27.6, "y": -3.2, "w": 1.5, "h": 1.5, "reveal": "logistics_transport_close", "order": -4},
+    {"id": "furnace_glow", "glow": [27.6, -3.2], "r": 2.2, "tint": "#FF9F4A", "alpha": 110, "reveal": "logistics_transport_close", "order": -8},
+    {"id": "cauldron", "item": "minecraft:cauldron", "x": 27.6, "y": 0.0, "size": 1.5, "reveal": "logistics_transport_close"},
+    {"id": "lamp_off", "picture": "minecraft:textures/block/redstone_lamp.png", "x": 27.6, "y": 3.2, "w": 1.5, "h": 1.5, "reveal": "logistics_transport_close", "sketch": true, "order": -5},
+    {"id": "lamp_on", "picture": "minecraft:textures/block/redstone_lamp_on.png", "x": 27.6, "y": 3.2, "w": 1.5, "h": 1.5, "reveal": "logistics_transport_close", "order": -4},
+    {"id": "lamp_glow", "glow": [27.6, 3.2], "r": 2.4, "tint": "#FFD27A", "alpha": 130, "reveal": "logistics_transport_close", "order": -8},
+    {"id": "l_items", "text": {"en_us": "Items", "es_es": "Ítems"}, "x": 29.3, "y": -3.2, "scale": 2, "tint": "#F2CB3A", "align": "start", "reveal": "logistics_transport_close"},
+    {"id": "l_fluids", "text": {"en_us": "Fluids", "es_es": "Fluidos"}, "x": 29.3, "y": 0.0, "scale": 2, "tint": "#35D6EE", "align": "start", "reveal": "logistics_transport_close"},
+    {"id": "l_energy", "text": {"en_us": "Energy", "es_es": "Energía"}, "x": 29.3, "y": 3.2, "scale": 2, "tint": "#EA5B3A", "align": "start", "reveal": "logistics_transport_close"},
+    {"id": "pulse_items", "through": ["logistics_transport_welcome", [2.4, -4.5], "logistics_transport_mekanism", "logistics_transport_tunnels", "logistics_transport_close"], "dots": "#FFFFFF", "size": 0.2, "step": 0.7, "smooth": 4, "alpha": 255, "reveal": "logistics_transport_toy_lever", "order": -1},
+    {"id": "pulse_fluids", "through": ["logistics_transport_welcome", "logistics_transport_fluids", [11, 0], "logistics_transport_close"], "dots": "#DFF9FF", "size": 0.2, "step": 0.7, "alpha": 255, "reveal": "logistics_transport_toy_lever", "order": -1},
+    {"id": "pulse_energy", "through": ["logistics_transport_welcome", [2.4, 4.5], "logistics_transport_create_bridge", "logistics_transport_xnet", "logistics_transport_which", "logistics_transport_close"], "dots": "#FFFFFF", "size": 0.2, "step": 0.7, "smooth": 4, "alpha": 255, "reveal": "logistics_transport_toy_lever", "order": -1},
+    {"id": "noodle_0", "path": [[26.6, 5.7], [28.1, 6.23], [29.6, 5.98], [31.1, 5.32], [32.6, 5.21]], "color": "#F2CB3A", "width": 0.2, "smooth": 3, "reveal": "logistics_transport_toy_spaghetti", "order": -2},
+    {"id": "noodle_1", "path": [[26.6, 6.63], [28.1, 6.64], [29.6, 6.01], [31.1, 5.65], [32.6, 6.1]], "color": "#35D6EE", "width": 0.2, "smooth": 3, "reveal": "logistics_transport_toy_spaghetti", "order": -2},
+    {"id": "noodle_2", "path": [[26.6, 7.24], [28.1, 6.72], [29.6, 6.18], [31.1, 6.4], [32.6, 7.06]], "color": "#EA5B3A", "width": 0.2, "smooth": 3, "reveal": "logistics_transport_toy_spaghetti", "order": -2},
+    {"id": "noodle_3", "path": [[26.6, 7.44], [28.1, 6.78], [29.6, 6.74], [31.1, 7.37], [32.6, 7.75]], "color": "#F2CB3A", "width": 0.2, "smooth": 3, "reveal": "logistics_transport_toy_spaghetti", "order": -2},
+    {"id": "noodle_4", "path": [[26.6, 7.46], [28.1, 7.16], [29.6, 7.65], [31.1, 8.22], [32.6, 8.02]], "color": "#35D6EE", "width": 0.2, "smooth": 3, "reveal": "logistics_transport_toy_spaghetti", "order": -2},
+    {"id": "noodle_5", "path": [[26.6, 7.66], [28.1, 7.94], [29.6, 8.6], [31.1, 8.67], [32.6, 8.05]], "color": "#EA5B3A", "width": 0.2, "smooth": 3, "reveal": "logistics_transport_toy_spaghetti", "order": -2},
+    {"id": "noodle_6", "path": [[26.6, 8.27], [28.1, 8.92], [29.6, 9.24], [31.1, 8.77], [32.6, 8.19]], "color": "#F2CB3A", "width": 0.2, "smooth": 3, "reveal": "logistics_transport_toy_spaghetti", "order": -2}
   ]
 }
