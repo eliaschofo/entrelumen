@@ -4,419 +4,321 @@
   "act": "any",
   "icon": "apotheosis:gem",
   "emblem": "apotheosis:textures/items/gems/default.png",
-  "title": {
-    "en_us": "World Tiers: the Story Decides",
-    "es_es": "World Tiers: decide la historia"
-  },
+  "title": {"en_us": "World Tiers: the Story Decides", "es_es": "World Tiers: decide la historia"},
   "subtitle": {
     "en_us": "Apotheosis difficulty tiers, raised by the story and never by you.",
     "es_es": "Los niveles de dificultad de Apotheosis: los sube la historia, nunca vos."
   },
+  "presentation": 2,
+  "art": [
+    {"id": "title", "text": {"en_us": "World Tiers: the Story Decides", "es_es": "World Tiers: decide la historia"}, "x": -8.0, "y": -7.8, "scale": 3, "align": "start", "tint": "#E8B04A"},
+    {"id": "ground", "frame": [-8.4, -9.2, 32.2, 8.6], "color": "#5E8C4A", "thickness_px": 2.0, "alpha": 170, "fill": "#14241C", "fill_alpha": 190, "corners": true, "reveal": "entrelumen_world_tiers_welcome", "sketch": true, "order": -12},
+    {"id": "meadow", "frame": [-2.6, -3.6, 5.6, 4.6], "color": "#5E8C4A", "thickness_px": 1.0, "alpha": 90, "fill": "#3E6B35", "fill_alpha": 50, "corners": false, "reveal": "entrelumen_world_tiers_welcome", "sketch": true, "order": -9},
+    {"id": "flowers", "scatter": ["minecraft:textures/block/poppy.png", "minecraft:textures/block/dandelion.png", "minecraft:textures/block/cornflower.png", "minecraft:textures/block/oxeye_daisy.png", "minecraft:textures/block/azure_bluet.png"], "region": [-2.4, -3.4, 5.4, 4.4], "count": 18, "size": [0.35, 0.5], "seed": 17, "reveal": "entrelumen_world_tiers_welcome", "avoid": [[0, 0, 1.5], [3.6, 0, 1.2], [1.4, 2.8, 1.3], [7.2, -2.2, 0.8]]},
+    {"id": "road_a", "through": ["entrelumen_world_tiers_welcome", "entrelumen_world_tiers_ladder"], "texture": "minecraft:textures/block/dirt_path_top.png", "width": 0.8, "step": 0.8, "grow": true, "sketch": true, "order": -6},
+    {"id": "road_b", "through": ["entrelumen_world_tiers_ladder", [7.2, 0.0], "entrelumen_world_tiers_details"], "texture": "minecraft:textures/block/dirt_path_top.png", "width": 0.8, "step": 0.8, "grow": true, "sketch": true, "order": -6},
+    {"id": "road_tip", "through": ["entrelumen_world_tiers_details", "entrelumen_world_tiers_tip_prepare"], "texture": "minecraft:textures/block/dirt_path_top.png", "width": 0.6, "step": 0.8, "grow": true, "sketch": true, "order": -6},
+    {"id": "road_north", "through": ["entrelumen_world_tiers_details", [12.4, -1.8], "entrelumen_world_tiers_invaders", "entrelumen_world_tiers_augments", "entrelumen_world_tiers_requires"], "texture": "minecraft:textures/block/gravel.png", "width": 0.8, "step": 0.8, "grow": true, "sketch": true, "order": -6},
+    {"id": "road_mid", "through": ["entrelumen_world_tiers_details", "entrelumen_world_tiers_rarity", "entrelumen_world_tiers_pearl", "entrelumen_world_tiers_ops"], "texture": "minecraft:textures/block/cobblestone.png", "width": 0.8, "step": 0.8, "grow": true, "sketch": true, "order": -6},
+    {"id": "road_south", "through": ["entrelumen_world_tiers_rarity", "entrelumen_world_tiers_enchanting", "entrelumen_world_tiers_library"], "texture": "minecraft:textures/block/stone_bricks.png", "width": 0.8, "step": 0.8, "grow": true, "sketch": true, "order": -6},
+    {"id": "road_end_a", "through": ["entrelumen_world_tiers_ops", "entrelumen_world_tiers_close"], "texture": "minecraft:textures/block/polished_tuff.png", "width": 0.8, "step": 0.8, "grow": true, "sketch": true, "order": -6},
+    {"id": "road_end_b", "through": ["entrelumen_world_tiers_library", [21.4, 5.6], [25.0, 4.6], "entrelumen_world_tiers_close"], "texture": "minecraft:textures/block/polished_tuff.png", "width": 0.8, "step": 0.8, "grow": true, "sketch": true, "order": -6},
+    {"id": "lane_threats", "text": {"en_us": "Threats", "es_es": "Amenazas"}, "x": 20.7, "y": -5.4, "scale": 2, "tint": "#E8DCB5", "reveal": "entrelumen_world_tiers_invaders"},
+    {"id": "lane_loot", "text": {"en_us": "Loot", "es_es": "Botín"}, "x": 16.6, "y": -1.5, "scale": 2, "tint": "#E8DCB5", "reveal": "entrelumen_world_tiers_rarity"},
+    {"id": "lane_enchanting", "text": {"en_us": "Enchanting", "es_es": "Encantar"}, "x": 16.6, "y": 6.6, "scale": 2, "tint": "#E8DCB5", "reveal": "entrelumen_world_tiers_enchanting"},
+    {"id": "stele_haven", "picture": "minecraft:textures/block/polished_tuff.png", "x": 1.4, "y": 2.8, "w": 1.2, "h": 1.8, "reveal": "entrelumen_world_tiers_ladder", "sketch": true, "order": -5},
+    {"id": "stele_cap_haven", "picture": "minecraft:textures/block/calcite.png", "x": 1.4, "y": 1.7499999999999998, "w": 1.5, "h": 0.35, "reveal": "entrelumen_world_tiers_ladder", "order": -5},
+    {"id": "stele_rune_haven", "picture": "apotheosis:textures/gui/book/haven_icon.png", "x": 1.4, "y": 2.65, "w": 0.95, "h": 0.95, "reveal": "entrelumen_world_tiers_ladder", "order": -4},
+    {"id": "stele_glow_haven", "glow": [1.4, 2.65], "r": 2.3, "alpha": 150, "tint": "#C9D6C0", "reveal": "entrelumen_world_tiers_ladder"},
+    {"id": "stele_name_haven", "text": {"en_us": "Haven", "es_es": "Refugio"}, "x": 1.4, "y": 4.3, "scale": 2, "tint": "#C9D6C0", "reveal": "entrelumen_world_tiers_ladder"},
+    {"id": "stele_frontier", "picture": "minecraft:textures/block/polished_tuff.png", "x": 12.0, "y": -5.2, "w": 1.2, "h": 1.8, "reveal": "entrelumen_world_tiers_invaders", "sketch": true, "order": -5},
+    {"id": "stele_cap_frontier", "picture": "minecraft:textures/block/calcite.png", "x": 12.0, "y": -6.25, "w": 1.5, "h": 0.35, "reveal": "entrelumen_world_tiers_invaders", "order": -5},
+    {"id": "stele_rune_frontier", "picture": "apotheosis:textures/items/spawner_runes/frontier_spawner_upgrade_rune.png", "x": 12.0, "y": -5.3500000000000005, "w": 0.95, "h": 0.95, "reveal": "entrelumen_world_tiers_invaders", "order": -4},
+    {"id": "stele_glow_frontier", "glow": [12.0, -5.3500000000000005], "r": 2.3, "alpha": 150, "tint": "#3FBF5A", "reveal": "entrelumen_world_tiers_invaders"},
+    {"id": "stele_name_frontier", "text": {"en_us": "Frontier", "es_es": "Frontera"}, "x": 12.0, "y": -3.7, "scale": 2, "tint": "#3FBF5A", "reveal": "entrelumen_world_tiers_invaders"},
+    {"id": "stele_ascent", "picture": "minecraft:textures/block/polished_tuff.png", "x": 12.3, "y": 2.9, "w": 1.2, "h": 1.8, "reveal": "entrelumen_world_tiers_rarity", "sketch": true, "order": -5},
+    {"id": "stele_cap_ascent", "picture": "minecraft:textures/block/calcite.png", "x": 12.3, "y": 1.8499999999999999, "w": 1.5, "h": 0.35, "reveal": "entrelumen_world_tiers_rarity", "order": -5},
+    {"id": "stele_rune_ascent", "picture": "apotheosis:textures/items/spawner_runes/ascent_spawner_upgrade_rune.png", "x": 12.3, "y": 2.75, "w": 0.95, "h": 0.95, "reveal": "entrelumen_world_tiers_rarity", "order": -4},
+    {"id": "stele_glow_ascent", "glow": [12.3, 2.75], "r": 2.3, "alpha": 150, "tint": "#5B6FFF", "reveal": "entrelumen_world_tiers_rarity"},
+    {"id": "stele_name_ascent", "text": {"en_us": "Ascent", "es_es": "Ascenso"}, "x": 12.3, "y": 4.4, "scale": 2, "tint": "#5B6FFF", "reveal": "entrelumen_world_tiers_rarity"},
+    {"id": "stele_summit", "picture": "minecraft:textures/block/polished_tuff.png", "x": 20.9, "y": 2.4, "w": 1.2, "h": 1.8, "reveal": "entrelumen_world_tiers_pearl", "sketch": true, "order": -5},
+    {"id": "stele_cap_summit", "picture": "minecraft:textures/block/calcite.png", "x": 20.9, "y": 1.3499999999999999, "w": 1.5, "h": 0.35, "reveal": "entrelumen_world_tiers_pearl", "order": -5},
+    {"id": "stele_rune_summit", "picture": "apotheosis:textures/items/spawner_runes/summit_spawner_upgrade_rune.png", "x": 20.9, "y": 2.25, "w": 0.95, "h": 0.95, "reveal": "entrelumen_world_tiers_pearl", "order": -4},
+    {"id": "stele_glow_summit", "glow": [20.9, 2.25], "r": 2.3, "alpha": 150, "tint": "#E45AD0", "reveal": "entrelumen_world_tiers_pearl"},
+    {"id": "stele_name_summit", "text": {"en_us": "Summit", "es_es": "Cumbre"}, "x": 20.9, "y": 3.9, "scale": 2, "tint": "#E45AD0", "reveal": "entrelumen_world_tiers_pearl"},
+    {"id": "stele_pinnacle", "picture": "minecraft:textures/block/polished_tuff.png", "x": 27.0, "y": -3.6, "w": 1.2, "h": 1.8, "reveal": "entrelumen_world_tiers_close", "sketch": true, "order": -5},
+    {"id": "stele_cap_pinnacle", "picture": "minecraft:textures/block/calcite.png", "x": 27.0, "y": -4.65, "w": 1.5, "h": 0.35, "reveal": "entrelumen_world_tiers_close", "order": -5},
+    {"id": "stele_rune_pinnacle", "picture": "apotheosis:textures/items/spawner_runes/pinnacle_spawner_upgrade_rune.png", "x": 27.0, "y": -3.75, "w": 0.95, "h": 0.95, "reveal": "entrelumen_world_tiers_close", "order": -4},
+    {"id": "stele_glow_pinnacle", "glow": [27.0, -3.75], "r": 2.3, "alpha": 150, "tint": "#FF8A2A", "reveal": "entrelumen_world_tiers_close"},
+    {"id": "stele_name_pinnacle", "text": {"en_us": "Pinnacle", "es_es": "Pináculo"}, "x": 27.0, "y": -2.1, "scale": 2, "tint": "#FF8A2A", "reveal": "entrelumen_world_tiers_close"},
+    {"id": "city_0", "picture": "minecraft:textures/block/calcite.png", "x": 29.4, "y": 3.7, "w": 0.6, "h": 1.8, "reveal": "entrelumen_world_tiers_close", "sketch": true},
+    {"id": "city_1", "picture": "minecraft:textures/block/calcite.png", "x": 30.1, "y": 3.3000000000000003, "w": 0.6, "h": 2.6, "reveal": "entrelumen_world_tiers_close", "sketch": true},
+    {"id": "city_2", "picture": "minecraft:textures/block/calcite.png", "x": 30.8, "y": 3.85, "w": 0.6, "h": 1.5, "reveal": "entrelumen_world_tiers_close", "sketch": true},
+    {"id": "city_3", "picture": "minecraft:textures/block/calcite.png", "x": 31.4, "y": 3.5, "w": 0.6, "h": 2.2, "reveal": "entrelumen_world_tiers_close", "sketch": true},
+    {"id": "pinnacle_glow", "glow": [27.0, 0.6], "r": 5.0, "alpha": 110, "tint": "#FF8A2A", "reveal": "entrelumen_world_tiers_close"},
+    {"id": "shelf_a", "picture": "entrelumen:textures/block/patina_shelf.png", "x": 12.4, "y": 6.4, "w": 0.9, "h": 0.9, "reveal": "entrelumen_world_tiers_enchanting"},
+    {"id": "shelf_b", "picture": "entrelumen:textures/block/lumen_shelf.png", "x": 13.4, "y": 6.4, "w": 0.9, "h": 0.9, "reveal": "entrelumen_world_tiers_enchanting"},
+    {"id": "library_pic", "picture": "entrelumen:textures/block/atlas_library_top.png", "x": 20.0, "y": 5.6, "w": 1.0, "h": 1.0, "reveal": "entrelumen_world_tiers_library"},
+    {"id": "pearl_pic", "item": "apotheosis:godforged_pearl", "x": 22.4, "y": 2.3, "size": 0.9, "reveal": "entrelumen_world_tiers_pearl"},
+    {"id": "dial", "picture": "minecraft:textures/block/redstone_lamp.png", "x": 5.3, "y": 3.4, "w": 1.0, "h": 1.0, "reveal": "entrelumen_world_tiers_toy_dial"},
+    {"id": "dial_lock", "item": "minecraft:barrier", "x": 5.3, "y": 3.4, "size": 0.9, "reveal": "entrelumen_world_tiers_toy_dial"},
+    {"id": "dial_no", "text": {"en_us": "Disabled.", "es_es": "Deshabilitado."}, "x": 5.3, "y": 4.7, "scale": 2, "tint": "#FF8C7A", "reveal": "entrelumen_world_tiers_toy_dial"},
+    {"id": "lamp_0", "item": "minecraft:lantern", "x": 1.6, "y": -1.8, "size": 0.55, "reveal": "entrelumen_world_tiers_toy_lamps"},
+    {"id": "lamp_glow_0", "glow": [1.6, -1.8], "r": 1.2, "alpha": 140, "reveal": "entrelumen_world_tiers_toy_lamps"},
+    {"id": "lamp_1", "item": "minecraft:lantern", "x": 5.4, "y": -1.6, "size": 0.55, "reveal": "entrelumen_world_tiers_toy_lamps"},
+    {"id": "lamp_glow_1", "glow": [5.4, -1.6], "r": 1.2, "alpha": 140, "reveal": "entrelumen_world_tiers_toy_lamps"},
+    {"id": "lamp_2", "item": "minecraft:lantern", "x": 9.0, "y": -1.3, "size": 0.55, "reveal": "entrelumen_world_tiers_toy_lamps"},
+    {"id": "lamp_glow_2", "glow": [9.0, -1.3], "r": 1.2, "alpha": 140, "reveal": "entrelumen_world_tiers_toy_lamps"},
+    {"id": "lamp_3", "item": "minecraft:lantern", "x": 5.4, "y": 1.6, "size": 0.55, "reveal": "entrelumen_world_tiers_toy_lamps"},
+    {"id": "lamp_glow_3", "glow": [5.4, 1.6], "r": 1.2, "alpha": 140, "reveal": "entrelumen_world_tiers_toy_lamps"},
+    {"id": "lamp_4", "item": "minecraft:lantern", "x": 9.0, "y": 1.7, "size": 0.55, "reveal": "entrelumen_world_tiers_toy_lamps"},
+    {"id": "lamp_glow_4", "glow": [9.0, 1.7], "r": 1.2, "alpha": 140, "reveal": "entrelumen_world_tiers_toy_lamps"}
+  ],
   "quests": [
     {
-      "key": "entrelumen_world_tiers_welcome",
-      "deps": [],
-      "type": "checkmark",
-      "layout": {
-        "x": 0,
-        "y": 0,
-        "size": 2.0,
-        "shape": "hexagon"
-      },
-      "en_us": [
-        "A World That Grows With You",
-        "Apotheosis has five &eWorld Tiers&r: Haven, Frontier, Ascent, Summit and Pinnacle. Each makes monsters tougher and loot better. Here the &estory&r raises them: when your team's campaign reaches a new stage, the world climbs one tier by itself.\n\nNo guessing whether you are ready. The story decides; you survive it."
-      ],
-      "es_es": [
-        "Un mundo que crece con vos",
-        "Apotheosis tiene cinco &eWorld Tiers&r: Refugio, Frontera, Ascenso, Cumbre y Pináculo. Cada uno endurece a los monstruos y mejora el botín. Acá los sube la &ehistoria&r: cuando la campaña de tu equipo llega a una etapa nueva, el mundo sube un nivel solo.\n\nNada de adivinar si estás listo. La historia decide; vos sobrevivís."
-      ],
-      "sources": [
-        "repo:docs/design/apotheosis-family.md",
-        "jar:Apotheosis-1.21.1-8.7.0.jar:assets/apotheosis/lang/en_us.json",
-        "repo:docs/design/story-bible.md"
-      ]
+      "key": "entrelumen_world_tiers_welcome", "deps": [], "type": "checkmark", "layout": {"x": 0, "y": 0, "size": 2.0, "shape": "hexagon"},
+      "en_us": {"title": "A World That Grows With You", "subtitle": "Difficulty on a schedule.",
+        "text": ["[lead] The story raises the tiers: when your team's campaign reaches a new stage, the world climbs one by itself.",
+                 "Apotheosis has five [hl|World Tiers]: Haven, Frontier, Ascent, Summit and Pinnacle. Each makes monsters tougher and loot better.",
+                 "No guessing whether you are ready. The story decides; you survive it."]},
+      "es_es": {"title": "Un mundo que crece con vos", "subtitle": "Dificultad con horario.",
+        "text": ["[lead] La historia sube los niveles: cuando la campaña de tu equipo llega a una etapa nueva, el mundo sube uno solo.",
+                 "Apotheosis tiene cinco [hl|World Tiers]: Refugio, Frontera, Ascenso, Cumbre y Pináculo. Cada uno endurece a los monstruos y mejora el botín.",
+                 "Nada de adivinar si estás listo. La historia decide; vos sobrevivís."]},
+      "sources": ["repo:docs/design/apotheosis-family.md", "jar:Apotheosis-1.21.1-8.7.0.jar:assets/apotheosis/lang/en_us.json", "repo:docs/design/story-bible.md"]
     },
     {
-      "key": "entrelumen_world_tiers_ladder",
-      "deps": [
-        "entrelumen_world_tiers_welcome"
-      ],
-      "type": "checkmark",
+      "key": "entrelumen_world_tiers_ladder", "deps": ["entrelumen_world_tiers_welcome"], "type": "checkmark", "layout": {"x": 3.6, "y": 0, "size": 1.5, "shape": "square"},
       "icon": "minecraft:ladder",
-      "layout": {
-        "x": 3,
-        "y": 0,
-        "size": 1.5,
-        "shape": "square"
-      },
-      "en_us": [
-        "The Ladder",
-        "- &eHaven&r: from the start, through acts I and II;\n- &eFrontier&r: once act II is complete;\n- &eAscent&r: once act III is complete, as the expeditions begin;\n- &eSummit&r: once act IV is complete and the Ark begins;\n- &ePinnacle&r: when your team activates the Ark and opens act VI.\n\nChat announces each step: \"The story sets your World Tier to...\"."
-      ],
-      "es_es": [
-        "La escalera",
-        "- &eRefugio&r: desde el principio, durante los actos I y II;\n- &eFrontera&r: cuando se completa el acto II;\n- &eAscenso&r: cuando se completa el acto III, al empezar las expediciones;\n- &eCumbre&r: cuando se completa el acto IV y empieza el Arca;\n- &ePináculo&r: cuando tu equipo activa el Arca y abre el acto VI.\n\nEl chat anuncia cada paso: \"La historia fija tu Nivel de Mundo en...\"."
-      ],
-      "sources": [
-        "repo:companion/src/main/java/dev/entrelumen/ApotheosisTiers.java",
-        "repo:companion/src/main/java/dev/entrelumen/ApotheosisTiers.java",
-        "note:reflects feature/acts-renumber, merged into main on 24/9 (Summit opens with act V, Pinnacle with act VI)",
-        "repo:companion/src/main/resources/assets/entrelumen/lang/es_es.json"
-      ]
+      "en_us": {"title": "The Ladder",
+        "text": ["[lead] Each tier opens with a milestone of the story:",
+                 "[li] [hl|Haven]: from the start, through acts I and II",
+                 "[li] [hl|Frontier]: once act II is complete",
+                 "[li] [hl|Ascent]: once act III is complete, as the expeditions begin",
+                 "[li] [hl|Summit]: once act IV is complete, as the Ark begins",
+                 "[li] [hl|Pinnacle]: when your team activates the Ark and opens act VI",
+                 "{page}",
+                 "Chat announces each step: \"The story sets your World Tier to...\"."]},
+      "es_es": {"title": "La escalera",
+        "text": ["[lead] Cada nivel se abre con un hito de la historia:",
+                 "[li] [hl|Refugio]: desde el principio, durante los actos I y II",
+                 "[li] [hl|Frontera]: al completar el acto II",
+                 "[li] [hl|Ascenso]: al completar el acto III, cuando empiezan las expediciones",
+                 "[li] [hl|Cumbre]: al completar el acto IV, cuando empieza el Arca",
+                 "[li] [hl|Pináculo]: cuando tu equipo activa el Arca y abre el acto VI",
+                 "{page}",
+                 "El chat anuncia cada paso: \"La historia fija tu Nivel de Mundo en...\"."]},
+      "sources": ["repo:companion/src/main/java/dev/entrelumen/ApotheosisTiers.java", "repo:companion/src/main/java/dev/entrelumen/ApotheosisTiers.java", "note:reflects feature/acts-renumber, merged into main on 24/9 (Summit opens with act V, Pinnacle with act VI)", "repo:companion/src/main/resources/assets/entrelumen/lang/es_es.json"]
     },
     {
-      "key": "entrelumen_world_tiers_never_down",
-      "deps": [
-        "entrelumen_world_tiers_ladder"
-      ],
-      "type": "checkmark",
+      "key": "entrelumen_world_tiers_never_down", "deps": ["entrelumen_world_tiers_ladder"], "type": "checkmark", "layout": {"x": 7.2, "y": -2.2, "size": 1.25, "shape": "circle"},
       "icon": "minecraft:arrow",
-      "layout": {
-        "x": 6,
-        "y": -2,
-        "size": 1.25,
-        "shape": "circle"
-      },
-      "en_us": [
-        "It Only Goes Up",
-        "Your tier is the &ehighest you ever reached&r. Dying, leaving a team or joining one that is behind never lowers it; joining one that is ahead raises you at once.\n\nIt is stored on you, so it follows you across dimensions and restarts. Like prices: it only goes up."
-      ],
-      "es_es": [
-        "Sólo sube",
-        "Tu nivel es el &emás alto que alcanzaste&r. Morir, dejar un equipo o entrar a uno que va atrás nunca lo baja; entrar a uno que va adelante te sube en el acto.\n\nSe guarda en vos, así que te sigue entre dimensiones y reinicios. Como los precios: sólo sube."
-      ],
-      "sources": [
-        "repo:docs/design/apotheosis-family.md",
-        "repo:companion/src/main/java/dev/entrelumen/ApotheosisTiers.java"
-      ]
+      "en_us": {"title": "It Only Goes Up", "subtitle": "Like prices.",
+        "text": ["[lead] Your tier is the [hl|highest you ever reached].",
+                 "Dying, leaving a team or joining one that is behind never lowers it; joining one that is ahead raises you at once.",
+                 "It is stored on you, so it follows you across dimensions and restarts. Like prices: it only goes up."]},
+      "es_es": {"title": "Sólo sube", "subtitle": "Como los precios.",
+        "text": ["[lead] Tu nivel es el [hl|más alto que alcanzaste].",
+                 "Morir, dejar un equipo o entrar a uno que va atrás nunca lo baja; entrar a uno que va adelante te sube en el acto.",
+                 "Se guarda en vos, así que te sigue entre dimensiones y reinicios. Como los precios: sólo sube."]},
+      "sources": ["repo:docs/design/apotheosis-family.md", "repo:companion/src/main/java/dev/entrelumen/ApotheosisTiers.java"]
     },
     {
-      "key": "entrelumen_world_tiers_no_choice",
-      "deps": [
-        "entrelumen_world_tiers_ladder"
-      ],
-      "type": "checkmark",
+      "key": "entrelumen_world_tiers_no_choice", "deps": ["entrelumen_world_tiers_ladder"], "type": "checkmark", "layout": {"x": 7.2, "y": 2.2, "size": 1.0, "shape": "pentagon"},
       "icon": "minecraft:barrier",
-      "layout": {
-        "x": 6,
-        "y": 2,
-        "size": 1.0,
-        "shape": "pentagon"
-      },
-      "en_us": [
-        "Pack Change: Hands Off the Dial",
-        "&eCtrl+T&r still opens Apotheosis's World Tier screen, where you can read every tier's details, but the activate button stays disabled. If anything moves your tier outside the story, the pack puts it back within a second.\n\nYou may look. You may not touch."
-      ],
-      "es_es": [
-        "Cambio del pack: no se elige",
-        "&eCtrl+T&r sigue abriendo la pantalla de World Tiers de Apotheosis, donde podés leer los detalles de cada nivel, pero el botón de activar queda deshabilitado. Si algo mueve tu nivel por fuera de la historia, el pack lo devuelve en un segundo.\n\nSe mira y no se toca."
-      ],
-      "sources": [
-        "repo:pack/config/apotheosis/apotheosis.cfg",
-        "repo:docs/design/apotheosis-family.md",
-        "jar:Apotheosis-1.21.1-8.7.0.jar:assets/apotheosis/lang/en_us.json",
-        "repo:pack/config/defaultoptions/keybindings.txt"
-      ]
+      "en_us": {"title": "Pack Change: Hands Off the Dial", "subtitle": "You may look. You may not touch.",
+        "text": ["[lead] You can read every tier's details, but the activate button stays disabled.",
+                 "[key:key.apotheosis.open_world_tier_select] still opens Apotheosis's World Tier screen.",
+                 "[note] If anything moves your tier outside the story, the pack puts it back within a second."]},
+      "es_es": {"title": "Cambio del pack: no se elige", "subtitle": "Se mira y no se toca.",
+        "text": ["[lead] Podés leer los detalles de cada nivel, pero el botón de activar queda deshabilitado.",
+                 "[key:key.apotheosis.open_world_tier_select] sigue abriendo la pantalla de World Tiers de Apotheosis.",
+                 "[note] Si algo mueve tu nivel por fuera de la historia, el pack lo devuelve en un segundo."]},
+      "sources": ["repo:pack/config/apotheosis/apotheosis.cfg", "repo:docs/design/apotheosis-family.md", "jar:Apotheosis-1.21.1-8.7.0.jar:assets/apotheosis/lang/en_us.json", "repo:pack/config/defaultoptions/keybindings.txt"]
     },
     {
-      "key": "entrelumen_world_tiers_details",
-      "deps": [
-        "entrelumen_world_tiers_never_down",
-        "entrelumen_world_tiers_no_choice"
-      ],
-      "type": "checkmark",
+      "key": "entrelumen_world_tiers_details", "deps": ["entrelumen_world_tiers_never_down", "entrelumen_world_tiers_no_choice"], "type": "checkmark", "layout": {"x": 10.8, "y": 0, "size": 1.25, "shape": "circle"}, "hide_lines": true,
       "icon": "minecraft:book",
-      "layout": {
-        "x": 9,
-        "y": 0,
-        "size": 1.25,
-        "shape": "circle"
-      },
-      "en_us": [
-        "Read the Details",
-        "On the World Tier screen, the details button lists what each tier changes: buffs and debuffs for players and monsters, and the odds of each loot rarity and gem purity.\n\nApotheosis's guidebook, the Chronicle of Shadows, explains rarities, affixes and gems."
-      ],
-      "es_es": [
-        "Leé los detalles",
-        "En la pantalla de World Tiers, el botón de detalles lista lo que cambia cada nivel: mejoras y penalizaciones para jugadores y monstruos, y la probabilidad de cada rareza de botín y pureza de gema.\n\nEl libro guía de Apotheosis, la Chronicle of Shadows, explica rarezas, afijos y gemas."
-      ],
-      "sources": [
-        "jar:Apotheosis-1.21.1-8.7.0.jar:assets/apotheosis/lang/en_us.json"
-      ]
+      "en_us": {"title": "Read the Details",
+        "text": ["[lead] The World Tier screen lists what each tier changes.",
+                 "The details button shows buffs and debuffs for players and monsters, and the odds of each loot rarity and gem purity.",
+                 "[tip] Apotheosis's guidebook, the Chronicle of Shadows, explains rarities, affixes and gems."]},
+      "es_es": {"title": "Leé los detalles",
+        "text": ["[lead] La pantalla de World Tiers lista lo que cambia cada nivel.",
+                 "El botón de detalles muestra mejoras y penalizaciones para jugadores y monstruos, y la probabilidad de cada rareza de botín y pureza de gema.",
+                 "[tip] El libro guía de Apotheosis, la Chronicle of Shadows, explica rarezas, afijos y gemas."]},
+      "sources": ["jar:Apotheosis-1.21.1-8.7.0.jar:assets/apotheosis/lang/en_us.json"]
     },
     {
-      "key": "entrelumen_world_tiers_invaders",
-      "deps": [
-        "entrelumen_world_tiers_details"
-      ],
-      "type": "checkmark",
+      "key": "entrelumen_world_tiers_invaders", "deps": ["entrelumen_world_tiers_details"], "type": "checkmark", "layout": {"x": 14.6, "y": -3.4, "size": 1.25, "shape": "circle"}, "hide_lines": true,
       "icon": "minecraft:zombie_head",
-      "layout": {
-        "x": 12,
-        "y": -2.5,
-        "size": 1.25,
-        "shape": "circle"
-      },
-      "en_us": [
-        "Invaders From Frontier On",
-        "From &eFrontier&r, Apotheosis &einvaders&r can appear: tough mini-bosses in affixed gear. Haven has none, and no epic or mythic loot. The pack spaces them 10 minutes apart instead of three.\n\nThey like the Twilight Forest. Dress for the occasion."
-      ],
-      "es_es": [
-        "Invasores desde Frontera",
-        "Desde &eFrontera&r pueden aparecer los &einvasores&r de Apotheosis: minijefes duros con equipo con afijos. Refugio no tiene, ni botín épico o mítico. El pack los espacia 10 minutos en vez de tres.\n\nLes gusta el Twilight Forest. Andá vestido para la ocasión."
-      ],
-      "sources": [
-        "jar:Apotheosis-1.21.1-8.7.0.jar:assets/apotheosis/lang/en_us.json",
-        "repo:docs/design/apotheosis-family.md",
-        "repo:pack/config/apotheosis/apotheosis.cfg"
-      ]
+      "en_us": {"title": "Invaders From Frontier On",
+        "text": ["[lead] From [hl|Frontier], Apotheosis [hl|invaders] can appear: tough mini-bosses in affixed gear.",
+                 "Haven has none, and no epic or mythic loot. The pack spaces them [big|10] minutes apart instead of three.",
+                 "They like the Twilight Forest. Dress for the occasion."]},
+      "es_es": {"title": "Invasores desde Frontera",
+        "text": ["[lead] Desde [hl|Frontera] pueden aparecer los [hl|invasores] de Apotheosis: minijefes duros con equipo con afijos.",
+                 "Refugio no tiene, ni botín épico o mítico. El pack los espacia [big|10] minutos en vez de tres.",
+                 "Les gusta el Twilight Forest. Andá vestido para la ocasión."]},
+      "sources": ["jar:Apotheosis-1.21.1-8.7.0.jar:assets/apotheosis/lang/en_us.json", "repo:docs/design/apotheosis-family.md", "repo:pack/config/apotheosis/apotheosis.cfg"]
     },
     {
-      "key": "entrelumen_world_tiers_rarity",
-      "deps": [
-        "entrelumen_world_tiers_details"
-      ],
-      "type": "item",
-      "item": "apotheosis:salvaging_table",
-      "layout": {
-        "x": 12,
-        "y": 0.5,
-        "size": 1.25,
-        "shape": "circle"
-      },
-      "en_us": [
-        "Loot Rarity by Tier",
-        "Better rarities only drop at higher tiers: in this pack &euncommon&r materials come from Haven on, &erare&r ones higher up, &eepic&r from Ascent and &emythic&r from Summit.\n\nSalvage affixed loot at a &eSalvaging Table&r for the rarity materials that reforging and gems use. That sword with the silly name is an ingredient."
-      ],
-      "es_es": [
-        "Rareza del botín por nivel",
-        "Las mejores rarezas sólo caen en niveles altos: en este pack los materiales &epoco comunes&r salen desde Refugio, los &eraros&r más arriba, los &eépicos&r desde Ascenso y los &emíticos&r desde Cumbre.\n\nDesarmá el botín con afijos en una &eMesa de reciclaje&r para sacar los materiales de rareza que piden el reforjado y las gemas. Esa espada con nombre ridículo es un ingrediente."
-      ],
-      "sources": [
-        "repo:docs/design/apotheosis-family.md",
-        "repo:docs/design/luminous-gear.md"
-      ]
+      "key": "entrelumen_world_tiers_rarity", "deps": ["entrelumen_world_tiers_details"], "type": "item", "item": "apotheosis:salvaging_table", "layout": {"x": 14.6, "y": 0.6, "size": 1.25, "shape": "circle"}, "hide_lines": true,
+      "en_us": {"title": "Loot Rarity by Tier",
+        "text": ["[lead] Better rarities only drop at higher tiers. In this pack:",
+                 "[li] [hl|Uncommon] materials: from Haven on",
+                 "[li] [hl|Rare]: higher up",
+                 "[li] [hl|Epic]: from Ascent",
+                 "[li] [hl|Mythic]: from Summit",
+                 "{page}",
+                 "Salvage affixed loot at a [item:apotheosis:salvaging_table|Salvaging Table] for the rarity materials that reforging and gems use.",
+                 "That sword with the silly name is an ingredient."]},
+      "es_es": {"title": "Rareza del botín por nivel",
+        "text": ["[lead] Las mejores rarezas sólo caen en niveles altos. En este pack:",
+                 "[li] Materiales [hl|poco comunes]: desde Refugio",
+                 "[li] [hl|Raros]: más arriba",
+                 "[li] [hl|Épicos]: desde Ascenso",
+                 "[li] [hl|Míticos]: desde Cumbre",
+                 "{page}",
+                 "Desarmá el botín con afijos en una [item:apotheosis:salvaging_table|Mesa de reciclaje] para sacar los materiales de rareza que piden el reforjado y las gemas.",
+                 "Esa espada con nombre ridículo es un ingrediente."]},
+      "sources": ["repo:docs/design/apotheosis-family.md", "repo:docs/design/luminous-gear.md"]
     },
     {
-      "key": "entrelumen_world_tiers_augments",
-      "deps": [
-        "entrelumen_world_tiers_invaders",
-        "entrelumen_world_tiers_rarity"
-      ],
-      "type": "item",
-      "item": "entrelumen:augment_spawn_count",
-      "layout": {
-        "x": 15,
-        "y": -2.5,
-        "size": 1.0,
-        "shape": "pentagon"
-      },
-      "en_us": [
-        "Spawner Augments Follow Tiers",
-        "Apotheosis's spawner runes are replaced by ENTRELUMEN &espawner augments&r: copper medallions that tweak a spawner where it stands. Each takes an act component, from act III to act V, in place of Apotheosis's materials.\n\nSilk Touch does not pick up spawners in this pack."
-      ],
-      "es_es": [
-        "Aumentos de spawner por nivel",
-        "Las runas de spawner de Apotheosis se reemplazan por los &eaumentos de spawner&r de ENTRELUMEN: medallones de cobre que ajustan un spawner en su lugar. Cada uno lleva un componente de acto, del III al V, en lugar de los materiales de Apotheosis.\n\nEn este pack el Toque de seda no levanta spawners."
-      ],
-      "sources": [
-        "repo:docs/design/apotheosis-family.md",
-        "repo:pack/config/apothic_spawners.cfg"
-      ]
+      "key": "entrelumen_world_tiers_augments", "deps": ["entrelumen_world_tiers_invaders", "entrelumen_world_tiers_rarity"], "type": "item", "item": "entrelumen:augment_spawn_count", "layout": {"x": 18.6, "y": -3.4, "size": 1.0, "shape": "pentagon"},
+      "en_us": {"title": "Spawner Augments Follow Tiers",
+        "text": ["[lead] Apotheosis's spawner runes are replaced by ENTRELUMEN [hl|spawner augments].",
+                 "Copper medallions that tweak a spawner where it stands. Each takes an act component, from act III to act V, in place of Apotheosis's materials.",
+                 "[note] Silk Touch does not pick up spawners in this pack."]},
+      "es_es": {"title": "Aumentos de spawner por nivel",
+        "text": ["[lead] Las runas de spawner de Apotheosis se reemplazan por los [hl|aumentos de spawner] de ENTRELUMEN.",
+                 "Medallones de cobre que ajustan un spawner en su lugar. Cada uno lleva un componente de acto, del III al V, en lugar de los materiales de Apotheosis.",
+                 "[note] En este pack el Toque de seda no levanta spawners."]},
+      "sources": ["repo:docs/design/apotheosis-family.md", "repo:pack/config/apothic_spawners.cfg"]
     },
     {
-      "key": "entrelumen_world_tiers_pearl",
-      "deps": [
-        "entrelumen_world_tiers_rarity"
-      ],
-      "type": "item",
-      "item": "apotheosis:godforged_pearl",
-      "layout": {
-        "x": 15,
-        "y": 0.5,
-        "size": 1.25,
-        "shape": "circle"
-      },
-      "en_us": [
-        "The Godforged Pearl",
-        "The &eLuminous Ingot&r needs Apotheosis's &eGodforged Pearl&r, which only comes from salvaging mythic loot. Mythic loot starts at Summit, so the pearl arrives with the Ark act, right before Solsticio.\n\nMythic drops go to the Salvaging Table, not to the trophy shelf."
-      ],
-      "es_es": [
-        "La Perla forjada por dioses",
-        "El &eLingote Luminoso&r pide la &ePerla forjada por dioses&r de Apotheosis, que sólo sale de reciclar botín mítico. El mítico empieza en Cumbre, así que la perla llega con el acto del Arca, justo antes de Solsticio.\n\nLos drops míticos van a la mesa de reciclaje, no a la vitrina."
-      ],
-      "sources": [
-        "repo:docs/design/luminous-gear.md",
-        "repo:companion/src/main/java/dev/entrelumen/ApotheosisTiers.java",
-        "note:reflects feature/acts-renumber, merged into main on 24/9 (Summit opens with act V, Pinnacle with act VI)"
-      ]
+      "key": "entrelumen_world_tiers_pearl", "deps": ["entrelumen_world_tiers_rarity"], "type": "item", "item": "apotheosis:godforged_pearl", "layout": {"x": 18.6, "y": 0.6, "size": 1.25, "shape": "circle"}, "hide_lines": true,
+      "en_us": {"title": "The Godforged Pearl", "subtitle": "Mythic, but salvaged.",
+        "text": ["[lead] The [item:entrelumen:luminous_ingot|Luminous Ingot] needs Apotheosis's [item:apotheosis:godforged_pearl|Godforged Pearl].",
+                 "It only comes from salvaging mythic loot. Mythic loot starts at Summit, so the pearl arrives with the Ark act, right before Solsticio.",
+                 "Mythic drops go to the Salvaging Table, not to the trophy shelf."]},
+      "es_es": {"title": "La Perla forjada por dioses", "subtitle": "Mítica, pero reciclada.",
+        "text": ["[lead] El [item:entrelumen:luminous_ingot|Lingote Luminoso] pide la [item:apotheosis:godforged_pearl|Perla forjada por dioses] de Apotheosis.",
+                 "Sólo sale de reciclar botín mítico. El mítico empieza en Cumbre, así que la perla llega con el acto del Arca, justo antes de Solsticio.",
+                 "Los drops míticos van a la mesa de reciclaje, no a la vitrina."]},
+      "sources": ["repo:docs/design/luminous-gear.md", "repo:companion/src/main/java/dev/entrelumen/ApotheosisTiers.java", "note:reflects feature/acts-renumber, merged into main on 24/9 (Summit opens with act V, Pinnacle with act VI)"]
     },
     {
-      "key": "entrelumen_world_tiers_enchanting",
-      "deps": [
-        "entrelumen_world_tiers_rarity"
-      ],
-      "type": "item",
-      "item": "entrelumen:lumen_shelf",
-      "optional": true,
-      "layout": {
-        "x": 12,
-        "y": 3.5,
-        "size": 1.0,
-        "shape": "circle"
-      },
-      "en_us": [
-        "Enchanting Climbs in Steps",
-        "The pack spaces Apothic Enchanting's shelves by act, and your World Tier's Eterna ceiling keeps pace: 45 in acts I and II, 75 in act III, 90 in act IV and 100 from act V. Four ENTRELUMEN shelves join the ladder: Cartographer's, Patina, Lumen and Horizon.\n\nFrom act V, the Atlas Library writes any eligible enchantment up to level 40."
-      ],
-      "es_es": [
-        "Encantar también va por escalones",
-        "El pack escalona los estantes de Apothic Enchanting por acto, y el techo de Eterna de tu Nivel de Mundo los acompaña: 45 en los actos I y II, 75 en el III, 90 en el IV y 100 desde el V. Cuatro estantes de ENTRELUMEN se suman a la escalera: del cartógrafo, de pátina, de lumen y del horizonte.\n\nDesde el acto V, la Biblioteca del Atlas escribe cualquier encantamiento elegible hasta el nivel 40."
-      ],
-      "sources": [
-        "repo:docs/design/apotheosis-family.md#World Tier Eterna ceilings",
-        "repo:pack/kubejs/data/entrelumen/tier_augments/haven/max_eterna.json",
-        "repo:pack/kubejs/data/entrelumen/tier_augments/frontier/max_eterna.json",
-        "repo:pack/kubejs/data/entrelumen/tier_augments/ascent/max_eterna.json",
-        "repo:pack/kubejs/data/apotheosis/tier_augments/summit/max_eterna.json",
-        "repo:companion/src/main/java/dev/entrelumen/AtlasLibraryLedger.java"
-      ]
+      "key": "entrelumen_world_tiers_enchanting", "deps": ["entrelumen_world_tiers_rarity"], "type": "item", "item": "entrelumen:lumen_shelf", "optional": true, "layout": {"x": 14.6, "y": 4.6, "size": 1.0, "shape": "circle"}, "hide_lines": true,
+      "en_us": {"title": "Enchanting Climbs in Steps",
+        "text": ["[lead] The pack spaces Apothic Enchanting's shelves by act, and your tier's Eterna ceiling keeps pace:",
+                 "[li] Acts I and II: [hl|45]",
+                 "[li] Act III: [hl|75]",
+                 "[li] Act IV: [hl|90]",
+                 "[li] From act V: [hl|100]",
+                 "{page}",
+                 "Four ENTRELUMEN shelves join the ladder: Cartographer's, Patina, Lumen and Horizon.",
+                 "From act V, the [item:entrelumen:atlas_library|Atlas Library] writes any eligible enchantment up to level [hl|40]."]},
+      "es_es": {"title": "Encantar también va por escalones",
+        "text": ["[lead] El pack escalona los estantes de Apothic Enchanting por acto, y el techo de Eterna de tu nivel los acompaña:",
+                 "[li] Actos I y II: [hl|45]",
+                 "[li] Acto III: [hl|75]",
+                 "[li] Acto IV: [hl|90]",
+                 "[li] Desde el acto V: [hl|100]",
+                 "{page}",
+                 "Cuatro estantes de ENTRELUMEN se suman a la escalera: del cartógrafo, de pátina, de lumen y del horizonte.",
+                 "Desde el acto V, la [item:entrelumen:atlas_library|Biblioteca del Atlas] escribe cualquier encantamiento elegible hasta el nivel [hl|40]."]},
+      "sources": ["repo:docs/design/apotheosis-family.md#World Tier Eterna ceilings", "repo:pack/kubejs/data/entrelumen/tier_augments/haven/max_eterna.json", "repo:pack/kubejs/data/entrelumen/tier_augments/frontier/max_eterna.json", "repo:pack/kubejs/data/entrelumen/tier_augments/ascent/max_eterna.json", "repo:pack/kubejs/data/apotheosis/tier_augments/summit/max_eterna.json", "repo:companion/src/main/java/dev/entrelumen/AtlasLibraryLedger.java"]
     },
     {
-      "key": "entrelumen_world_tiers_library",
-      "deps": [
-        "entrelumen_world_tiers_enchanting"
-      ],
-      "type": "item",
-      "item": "entrelumen:atlas_library",
-      "optional": true,
-      "layout": {
-        "x": 15,
-        "y": 3.5,
-        "size": 1.0,
-        "shape": "circle"
-      },
-      "en_us": [
-        "The Atlas Library",
-        "An upgrade on Apothic's Ender Library: deposit enchanted books into a shared pool of &elumen&r, then write any eligible enchantment onto a book, even ones you never deposited. Its level cap follows the Eterna around it; 100 Eterna reaches level 40.\n\nA deposit is worth less than writing costs, curses are refused and breaking it keeps the pool. No infinite loops, sorry."
-      ],
-      "es_es": [
-        "La Biblioteca del Atlas",
-        "Una mejora de la Ender Library de Apothic: depositá libros encantados en un fondo compartido de &elumen&r y después escribí en un libro cualquier encantamiento elegible, incluso los que nunca depositaste. Su tope de nivel sigue la Eterna que la rodea; con 100 llega al nivel 40.\n\nDepositar vale menos de lo que cuesta escribir, las maldiciones se rechazan y romperla conserva el fondo. Nada de bucles infinitos, perdón."
-      ],
-      "sources": [
-        "repo:docs/design/apotheosis-family.md",
-        "repo:companion/src/main/java/dev/entrelumen/AtlasLibraryBlockEntity.java"
-      ]
+      "key": "entrelumen_world_tiers_library", "deps": ["entrelumen_world_tiers_enchanting"], "type": "item", "item": "entrelumen:atlas_library", "optional": true, "layout": {"x": 18.6, "y": 4.6, "size": 1.0, "shape": "circle"}, "hide_lines": true,
+      "en_us": {"title": "The Atlas Library",
+        "text": ["[lead] Deposit enchanted books into a shared pool of [hl|lumen], then write any eligible enchantment onto a book.",
+                 "Even ones you never deposited. It upgrades Apothic's Ender Library, and its level cap follows the Eterna around it: [hl|100] Eterna reaches level [hl|40].",
+                 "{page}",
+                 "A deposit is worth less than writing costs, curses are refused and breaking it keeps the pool. No infinite loops, sorry."]},
+      "es_es": {"title": "La Biblioteca del Atlas",
+        "text": ["[lead] Depositá libros encantados en un fondo compartido de [hl|lumen] y escribí en un libro cualquier encantamiento elegible.",
+                 "Incluso los que nunca depositaste. Mejora la Ender Library de Apothic, y su tope de nivel sigue la Eterna de alrededor: con [hl|100] llega al nivel [hl|40].",
+                 "{page}",
+                 "Depositar vale menos de lo que cuesta escribir, las maldiciones se rechazan y romperla conserva el fondo. Nada de bucles infinitos, perdón."]},
+      "sources": ["repo:docs/design/apotheosis-family.md", "repo:companion/src/main/java/dev/entrelumen/AtlasLibraryBlockEntity.java"]
     },
     {
-      "key": "entrelumen_world_tiers_tip_prepare",
-      "deps": [
-        "entrelumen_world_tiers_details"
-      ],
-      "type": "checkmark",
-      "optional": true,
+      "key": "entrelumen_world_tiers_tip_prepare", "deps": ["entrelumen_world_tiers_details"], "type": "checkmark", "optional": true, "layout": {"x": 9.4, "y": 4.8, "size": 1.0, "shape": "diamond"}, "hide_lines": true,
       "icon": "minecraft:iron_chestplate",
-      "layout": {
-        "x": 9,
-        "y": 4,
-        "size": 1.0,
-        "shape": "diamond"
-      },
-      "en_us": [
-        "Tip: Gear Up Before Advancing",
-        "The world hardens the moment an act closes, so upgrade before pressing Advance on acts II and III: better armor, a few gems, food for the satiety buffs.\n\nThere is no timer. The current tier will wait as long as you like."
-      ],
-      "es_es": [
-        "Truco: equipate antes de avanzar",
-        "El mundo se endurece apenas cierra un acto, así que mejorá el equipo antes de apretar Avanzar en los actos II y III: mejor armadura, algunas gemas, comida para los buffs de saciedad.\n\nNo hay reloj. El nivel actual te espera todo lo que haga falta."
-      ],
-      "sources": [
-        "repo:docs/design/apotheosis-family.md",
-        "repo:companion/src/main/java/dev/entrelumen/ApotheosisTiers.java"
-      ]
+      "en_us": {"title": "Tip: Gear Up Before Advancing",
+        "text": ["[lead] The world hardens the moment an act closes: upgrade before pressing Advance on acts II and III.",
+                 "[li] Better armor",
+                 "[li] A few gems",
+                 "[li] Food for the satiety buffs",
+                 "There is no timer. The current tier will wait as long as you like."]},
+      "es_es": {"title": "Truco: equipate antes de avanzar",
+        "text": ["[lead] El mundo se endurece apenas cierra un acto: mejorá el equipo antes de apretar Avanzar en los actos II y III.",
+                 "[li] Mejor armadura",
+                 "[li] Algunas gemas",
+                 "[li] Comida para los buffs de saciedad",
+                 "No hay reloj. El nivel actual te espera todo lo que haga falta."]},
+      "sources": ["repo:docs/design/apotheosis-family.md", "repo:companion/src/main/java/dev/entrelumen/ApotheosisTiers.java"]
     },
     {
-      "key": "entrelumen_world_tiers_requires",
-      "deps": [
-        "entrelumen_world_tiers_augments"
-      ],
-      "type": "checkmark",
-      "optional": true,
+      "key": "entrelumen_world_tiers_requires", "deps": ["entrelumen_world_tiers_augments"], "type": "checkmark", "optional": true, "layout": {"x": 22.8, "y": -3.4, "size": 1.0, "shape": "diamond"}, "hide_lines": true,
       "icon": "apotheosis:boss_summoner",
-      "layout": {
-        "x": 18,
-        "y": -3,
-        "size": 1.0,
-        "shape": "diamond"
-      },
-      "en_us": [
-        "Quirk: Items That Need a Tier",
-        "Some Apotheosis items say \"Requires World Tier\" and stay inert until your tier gets there. The story raises it, so just keep advancing the Atlas.\n\nNo button to press. Well, there is one, but it is disabled."
-      ],
-      "es_es": [
-        "Particularidad: ítems con nivel",
-        "Algunos ítems de Apotheosis dicen \"Requiere World Tier\" y quedan inertes hasta que tu nivel llega. Lo sube la historia, así que seguí avanzando el Atlas.\n\nNo hay botón que apretar. Bueno, hay uno, pero está deshabilitado."
-      ],
-      "sources": [
-        "jar:Apotheosis-1.21.1-8.7.0.jar:assets/apotheosis/lang/en_us.json",
-        "repo:docs/design/apotheosis-family.md"
-      ]
+      "en_us": {"title": "Quirk: Items That Need a Tier",
+        "text": ["[lead] Some Apotheosis items say \"Requires World Tier\" and stay inert until your tier gets there.",
+                 "The story raises it, so just keep advancing the Atlas.",
+                 "No button to press. Well, there is one, but it is disabled."]},
+      "es_es": {"title": "Particularidad: ítems con nivel",
+        "text": ["[lead] Algunos ítems de Apotheosis dicen \"Requiere World Tier\" y quedan inertes hasta que tu nivel llega.",
+                 "Lo sube la historia, así que seguí avanzando el Atlas.",
+                 "No hay botón que apretar. Bueno, hay uno, pero está deshabilitado."]},
+      "sources": ["jar:Apotheosis-1.21.1-8.7.0.jar:assets/apotheosis/lang/en_us.json", "repo:docs/design/apotheosis-family.md"]
     },
     {
-      "key": "entrelumen_world_tiers_ops",
-      "deps": [
-        "entrelumen_world_tiers_augments",
-        "entrelumen_world_tiers_pearl"
-      ],
-      "type": "checkmark",
-      "optional": true,
+      "key": "entrelumen_world_tiers_ops", "deps": ["entrelumen_world_tiers_augments", "entrelumen_world_tiers_pearl"], "type": "checkmark", "optional": true, "layout": {"x": 22.8, "y": 0.2, "size": 1.0, "shape": "pentagon"},
       "icon": "minecraft:command_block",
-      "layout": {
-        "x": 18,
-        "y": 0,
-        "size": 1.0,
-        "shape": "pentagon"
-      },
-      "en_us": [
-        "For Operators",
-        "&e/entrelumen admin set <act>&r moves the story, and the tier with it. The tier still never drops: lowering it means clearing the player's stored story tier offline, deliberately not a command. Apotheosis's own tier command is undone at the next sync."
-      ],
-      "es_es": [
-        "Para operadores",
-        "&e/entrelumen admin set <acto>&r mueve la historia, y con ella el nivel. El nivel igual nunca baja: bajarlo implica borrar sin conexión el nivel de historia guardado del jugador, que a propósito no es un comando. El comando de nivel propio de Apotheosis se revierte en la siguiente sincronización."
-      ],
-      "sources": [
-        "repo:docs/design/apotheosis-family.md",
-        "repo:companion/src/main/java/dev/entrelumen/ApotheosisTiers.java"
-      ]
+      "en_us": {"title": "For Operators",
+        "text": ["[lead] [hl|/entrelumen admin set <act>] moves the story, and the tier with it.",
+                 "The tier still never drops: lowering it means clearing the player's stored story tier offline, deliberately not a command.",
+                 "Apotheosis's own tier command is undone at the next sync."]},
+      "es_es": {"title": "Para operadores",
+        "text": ["[lead] [hl|/entrelumen admin set <acto>] mueve la historia, y con ella el nivel.",
+                 "El nivel igual nunca baja: bajarlo implica borrar sin conexión el nivel de historia guardado del jugador, que a propósito no es un comando.",
+                 "El comando de nivel propio de Apotheosis se revierte en la siguiente sincronización."]},
+      "sources": ["repo:docs/design/apotheosis-family.md", "repo:companion/src/main/java/dev/entrelumen/ApotheosisTiers.java"]
     },
     {
-      "key": "entrelumen_world_tiers_close",
-      "deps": [
-        "entrelumen_world_tiers_ops",
-        "entrelumen_world_tiers_library"
-      ],
-      "type": "checkmark",
+      "key": "entrelumen_world_tiers_close", "deps": ["entrelumen_world_tiers_ops", "entrelumen_world_tiers_library"], "type": "checkmark", "layout": {"x": 27.0, "y": 0.6, "size": 2.0, "shape": "hexagon"},
       "icon": "minecraft:nether_star",
-      "layout": {
-        "x": 21,
-        "y": 0,
-        "size": 2.0,
-        "shape": "hexagon"
-      },
-      "en_us": [
-        "Difficulty With a Reason",
-        "Five tiers, raised by the story and never lowered, each with tougher monsters and better loot. Play the acts at your own pace.\n\nThe world keeps time with you, not with the clock."
-      ],
-      "es_es": [
-        "Dificultad con motivo",
-        "Cinco niveles, que sube la historia y nunca bajan, cada uno con monstruos más duros y mejor botín. Jugá los actos a tu ritmo.\n\nEl mundo va a tu paso, no al del reloj."
-      ],
-      "sources": [
-        "repo:docs/design/apotheosis-family.md"
-      ]
+      "en_us": {"title": "Difficulty With a Reason",
+        "text": ["[lead] Five tiers, raised by the story and never lowered, each with tougher monsters and better loot.",
+                 "Play the acts at your own pace. The world keeps time with you, not with the clock."]},
+      "es_es": {"title": "Dificultad con motivo",
+        "text": ["[lead] Cinco niveles, que sube la historia y nunca bajan, cada uno con monstruos más duros y mejor botín.",
+                 "Jugá los actos a tu ritmo. El mundo va a tu paso, no al del reloj."]},
+      "sources": ["repo:docs/design/apotheosis-family.md"]
+    },
+    {
+      "key": "entrelumen_world_tiers_toy_dial", "role": "decor", "deps": [], "type": "checkmark", "optional": true, "layout": {"x": 4.4, "y": 6.6, "size": 0.75, "shape": "none"},
+      "icon": "minecraft:barrier",
+      "en_us": {"title": "Try the Dial",
+        "text": ["[lead] Go on, give it a turn.",
+                 "Nothing happens, exactly as documented."]},
+      "es_es": {"title": "Probar la perilla",
+        "text": ["[lead] Dale, probá girarla.",
+                 "No pasa nada, tal como está documentado."]},
+      "sources": ["repo:pack/config/apotheosis/apotheosis.cfg"]
+    },
+    {
+      "key": "entrelumen_world_tiers_toy_lamps", "role": "decor", "deps": [], "type": "checkmark", "optional": true, "layout": {"x": 3.6, "y": -3.2, "size": 0.75, "shape": "none"},
+      "icon": "minecraft:lantern",
+      "en_us": {"title": "Light the Road",
+        "text": ["[lead] Five lanterns along the start of the road.",
+                 "The tiers arrive on the story's schedule, but the lanterns are yours."]},
+      "es_es": {"title": "Prender el camino",
+        "text": ["[lead] Cinco faroles a lo largo del comienzo del camino.",
+                 "Los niveles llegan con el horario de la historia, pero los faroles son tuyos."]},
+      "sources": ["repo:docs/design/apotheosis-family.md"]
     }
   ]
 }
