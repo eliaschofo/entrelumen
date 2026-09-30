@@ -303,7 +303,7 @@ Los pisos ya tienen tema. Los enemigos salen de mods que ya están en el pack (I
 
 - **Primera iteración completa** con el contenido propuesto: pisos, ecos, afijos, santuarios, sellos, bóvedas, loot y el jefe. Elias dirige recién sobre algo tangible, así que se construye entero y se le muestra.
 - **Ofrenda:** pasa de un bloque de netherite a **una estrella del Nether** por intento, o, en su lugar, **una cantidad de esquirlas de luz agria**. La cantidad va en `config.json` y se calibra para que la estrella sea sobre todo el pago de las primeras bajadas: una bajada completa deja más esquirlas de las que pide la puerta.
-- **Esquirlas de luz agria:** la moneda del Envés. Más adelante se van a canjear en Solsticio, así que está bien que sobren. El canje no entra en esta iteración.
+- **Esquirlas de luz agria:** la moneda del Envés. Más adelante se van a canjear en Solsticio, así que está bien que sobren. *El canje se diseñó el 30/9: ver [Esquirlas de luz agria](solsticio-commerce.md#sour-light-shards-30-september-2026).*
 - **Nombres provisorios:** el Envés y el Wither blanco (EN «the Envés», «White Wither»). *Cerrado el 29/9: el jefe se llama la Luz Agria; ver [Decisiones de Elias (29/9)](#decisiones-de-elias-299).* Los curios únicos del jefe quedan fuera de esta iteración.
 
 ## Contenido construido (27/9)
@@ -418,7 +418,7 @@ Los cofres son de Lootr, uno por jugador. El del jefe no está hasta que la Luz 
 
 ### Esquirlas de luz agria y la ofrenda
 
-- `entrelumen:sour_light_shard` («Esquirla de luz agria»): la moneda del Envés, apilable a 64 y de rareza poco común. Tooltip: «Luz que se agrió en la fusión fallida, condensada por el Envés.» y «La moneda del Envés: su puerta acepta esquirlas en lugar de una estrella del Nether.» El arte es el del 16×16 de `art/build_art.py`.
+- `entrelumen:sour_light_shard` («Esquirla de luz agria»): la moneda del Envés, apilable a 64 y de rareza poco común. Tooltip: «Luz que se agrió en la fusión fallida, condensada por el Envés.», «La moneda del Envés: su puerta acepta esquirlas en lugar de una estrella del Nether.» y, desde el 30/9, «Más adelante, Cenit, en Solsticio, las cambia por rarezas.» El arte es el del 16×16 de `art/build_art.py`.
 - **La ofrenda:** una estrella del Nether **o 64 esquirlas**. La pantalla de la puerta muestra las dos; el jugador elige cuál paga, empezando por la primera que lleva, y el servidor lo vuelve a juzgar.
 - **Calibración** (`EnvesContentDataTest`, 200 descensos, con el grupo pasando por el 70% de las salas y resolviendo tres de cada cuatro bóvedas):
 
@@ -428,7 +428,7 @@ Los cofres son de Lootr, uno por jugador. El del jefe no está hasta que la Luz 
 | Los pisos I–III | 80 |
 | El descenso completo, con el jefe | 141 |
 
-Morir en el piso I no paga la próxima puerta. Llegar a la Fundición la paga. Un descenso completo deja más del doble, y el sobrante es para el canje futuro en Solsticio. La estrella queda como el precio de los primeros descensos. En grupo, cada jugador tiene su propio loot de los cofres de Lootr, así que las esquirlas de cofre se multiplican; las de ecos se comparten.
+Morir en el piso I no paga la próxima puerta. Llegar a la Fundición la paga. Un descenso completo deja más del doble, y el sobrante es para el canje en Solsticio (Cenit, siete ofertas desde el acto VI; ver [solsticio-commerce.md](solsticio-commerce.md#sour-light-shards-30-september-2026)). La estrella queda como el precio de los primeros descensos. En grupo, cada jugador tiene su propio loot de los cofres de Lootr, así que las esquirlas de cofre se multiplican; las de ecos se comparten.
 
 ### Santuarios
 
@@ -597,7 +597,7 @@ Ninguna textura ajena entra al repositorio: las referencias sólo se ven.
   - la lectura del aviso de la embestida;
   - si los mobs de Cataclysm con animación de muerte sueltan algo por fuera del evento de caídas.
 - Un modelo propio del jefe (hoy es el Wither vanilla repintado). El arte del altar, el brasero, el espejo y las piedras de glifo ya es propio (28/9).
-- Ver en el juego el [Grillete Agrio](#el-grillete-agrio-299) (sin probar en el juego) y hacer el canje de esquirlas en Solsticio.
+- Ver en el juego el [Grillete Agrio](#el-grillete-agrio-299) (sin probar en el juego) y probar el canje de esquirlas de Cenit en Solsticio (hecho el 30/9, sin GameTest corrido; hay decisiones en «Para decidir» del documento de comercio).
 - Los tilesets II–V ya tienen plantillas propias (rama `feature/enves-tilesets`, en `main`). Con ellas pasaron los GameTests de los sellos del piso III (Fundición) y del jefe en la arena del V (El Eclipse); las cerraduras se probaron en el piso I. Las cerraduras y acertijos revisan el lugar y cambian de tipo si el arte no los deja: falta mirarlos en juego en II y IV.
 
 ## Decisiones de Elias (29/9)

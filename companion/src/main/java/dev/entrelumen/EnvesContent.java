@@ -205,6 +205,7 @@ public final class EnvesContent {
     public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltip, TooltipFlag flag) {
       tooltip.add(Component.translatable("item.entrelumen.sour_light_shard.lore").withStyle(ChatFormatting.GRAY, ChatFormatting.ITALIC));
       tooltip.add(Component.translatable("item.entrelumen.sour_light_shard.use").withStyle(ChatFormatting.BLUE));
+      tooltip.add(Component.translatable("item.entrelumen.sour_light_shard.trade").withStyle(ChatFormatting.DARK_GRAY));
     }
   }
 }

@@ -298,6 +298,73 @@ public final class RuntimeGameTestsCommerce {
     helper.succeed();
   }
 
+  /**
+   * Cenit's shard trades (docs/design/solsticio-commerce.md, "Sour light shards"): closed before act VI,
+   * priced in one stack of shards at most, cheaper once liberated, and the emerald totem stays beside them.
+   */
+  @GameTest(template = "empty", timeoutTicks = 100)
+  public static void cenitTakesSourLightShardsOnlyFromActSix(GameTestHelper helper) {
+    var level = helper.getLevel();
+    var data = SolsticioData.get(level.getServer());
+    boolean wasLiberated = data.liberated;
+    floor(helper);
+    BlockPos post = at(helper, 2, 1, 2);
+    var sites = new CommerceSites();
+    var site = new CommerceSites.Site(CommerceRules.Role.SHOP, "rarities", post);
+    sites.sites.add(site);
+    Villager keeper = SolsticioCommerce.spawn(level, sites, site, SolsticioCommerce.LOCAL);
+    try (var qa = new QaPlayer(helper, "ShardQA")) {
+      helper.assertTrue(keeper != null, "No shopkeeper");
+      var player = qa.player;
+      player.teleportTo(post.getX() + 0.5, post.getY(), post.getZ() + 2.5);
+      data.liberated = false;
+      Item shard = EnvesContent.SOUR_LIGHT_SHARD.get();
+      List<MerchantOffer> shardTotems = new ArrayList<>();
+      MerchantOffer emeraldTotem = null;
+      for (MerchantOffer offer : keeper.getOffers()) {
+        if (!offer.getResult().is(Items.TOTEM_OF_UNDYING)) continue;
+        if (offer.getCostA().is(shard)) shardTotems.add(offer);
+        else emeraldTotem = offer;
+      }
+      helper.assertTrue(shardTotems.size() == 1 && emeraldTotem != null,
+          "Cenit needs one totem for shards beside the emerald one: " + shardTotems.size());
+      MerchantOffer totem = shardTotems.getFirst();
+      int nominal = totem.getCostA().getCount();
+      helper.assertTrue(nominal >= 1 && nominal <= 64 && totem.getCostB().isEmpty(),
+          "A shard trade is one stack at most: " + totem.getCostA());
+
+      campaign(player, 5, false);
+      trade(helper, player, keeper);
+      helper.assertTrue(totem.isOutOfStock(), "Act 5 may buy a totem with shards");
+      helper.assertTrue(!emeraldTotem.isOutOfStock(), "The emerald totem waits for act 5, not for act 6");
+      player.closeContainer();
+      helper.assertTrue(!totem.isOutOfStock() && totem.getUses() == 0, "Closing did not restore the shard offer");
+
+      campaign(player, 6, true);
+      trade(helper, player, keeper);
+      helper.assertTrue(!totem.isOutOfStock(), "Act 6 cannot buy a totem with shards");
+      helper.assertTrue(totem.getCostA().getCount() == nominal, "The shard price moved without demand or liberation: "
+          + totem.getCostA());
+      helper.assertTrue(totem.satisfiedBy(new ItemStack(shard, nominal), ItemStack.EMPTY)
+          && !totem.satisfiedBy(new ItemStack(shard, nominal - 1), ItemStack.EMPTY)
+          && !totem.satisfiedBy(new ItemStack(Items.EMERALD, 64), ItemStack.EMPTY),
+          "The totem is not bought with exactly its shards");
+      player.closeContainer();
+
+      data.liberated = true;
+      trade(helper, player, keeper);
+      int liberated = totem.getCostA().getCount();
+      player.closeContainer();
+      helper.assertTrue(liberated == CommerceRules.discounted(nominal, SolsticioCommerce.prices().liberated()) && liberated < nominal,
+          "Liberation did not lower the shard price: " + nominal + " -> " + liberated);
+      helper.assertTrue(totem.getCostA().getCount() == nominal, "The discount outlived the trade");
+    } finally {
+      data.liberated = wasLiberated;
+      if (keeper != null) keeper.discard();
+    }
+    helper.succeed();
+  }
+
   private static Villager plainVillager(ServerLevel level, BlockPos pos, int price) {
     Villager villager = EntityType.VILLAGER.create(level);
     villager.moveTo(Vec3.atBottomCenterOf(pos));
