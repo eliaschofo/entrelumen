@@ -4,381 +4,361 @@
   "act": "V",
   "icon": "minecraft:nether_star",
   "emblem": "minecraft:textures/item/nether_star.png",
-  "title": {
-    "en_us": "Vanilla bosses",
-    "es_es": "Jefes vanilla"
-  },
+  "title": {"en_us": "Vanilla bosses", "es_es": "Jefes vanilla"},
   "subtitle": {
     "en_us": "The Wither, the Dragon and the Elder Guardian as materials.",
     "es_es": "El Wither, el Dragón y el Guardián anciano como materiales."
   },
+  "presentation": 2,
+  "motif": "gear",
+  "medallion": {"x": -5.2, "y": 0.0},
+  "art": [
+    {"id": "title", "text": {"en_us": "Vanilla bosses", "es_es": "Jefes vanilla"}, "x": -2.6, "y": -9.2, "scale": 3, "align": "start", "tint": "#E8B04A"},
+    {"id": "lbl_wither", "text": {"en_us": "Wither", "es_es": "Wither"}, "x": 2.4, "y": -6.85, "scale": 2, "align": "start", "tint": "#C9D2E0"},
+    {"id": "lbl_guardian", "text": {"en_us": "Elder Guardian", "es_es": "Guardián anciano"}, "x": 2.4, "y": -1.45, "scale": 2, "align": "start", "tint": "#9FD6C8"},
+    {"id": "lbl_dragon", "text": {"en_us": "Ender Dragon", "es_es": "Dragón del End"}, "x": 2.4, "y": 3.25, "scale": 2, "align": "start", "tint": "#C9B6FF"},
+    {"id": "lbl_warden", "text": {"en_us": "Warden", "es_es": "Warden"}, "x": -2.3, "y": 8.85, "scale": 2, "align": "start", "tint": "#5CF0E6"},
+    {"id": "wall_wash", "path": [[-3.0, 2.6], [23.4, 2.6]], "color": "#3A2C20", "alpha": 70, "width": 20.8, "order": -9},
+    {"id": "wall", "path": [[-3.0, 2.6], [23.4, 2.6]], "color": "#2A1F16", "alpha": 200, "width": 20.8, "order": -8, "reveal": "bosses_welcome"},
+    {"id": "wall_bricks", "scatter": ["minecraft:textures/block/dark_oak_planks.png", "minecraft:textures/block/spruce_planks.png"], "region": [-2.8, -7.4, 23.2, 12.6], "count": 22, "size": [0.6, 0.9], "alphas": [30, 60], "seed": 5, "order": -7, "avoid": [[8, -5, 2], [12.4, 4.3, 2]]},
+    {"id": "n1_bg", "picture": "#15131A", "x": 8.1, "y": -5.0, "w": 12.2, "h": 4.800000000000001, "alpha": 225, "reveal": "bosses_skulls", "order": -7},
+    {"id": "n1_frame", "frame": [2.0, -7.4, 14.2, -2.6], "color": "#E8B04A", "thickness_px": 2.0, "alpha": 230, "reveal": "bosses_skulls", "sketch": true, "order": -3},
+    {"id": "n2_bg", "picture": "#0B2226", "x": 6.0, "y": 0.10000000000000009, "w": 8.0, "h": 4.2, "alpha": 225, "reveal": "bosses_monument", "order": -7},
+    {"id": "n2_frame", "frame": [2.0, -2.0, 10.0, 2.2], "color": "#E8B04A", "thickness_px": 2.0, "alpha": 230, "reveal": "bosses_monument", "sketch": true, "order": -3},
+    {"id": "n3_bg", "picture": "#15101F", "x": 12.3, "y": 5.199999999999999, "w": 20.6, "h": 4.8, "alpha": 225, "reveal": "bosses_stronghold", "order": -7},
+    {"id": "n3_frame", "frame": [2.0, 2.8, 22.6, 7.6], "color": "#E8B04A", "thickness_px": 2.0, "alpha": 230, "reveal": "bosses_stronghold", "sketch": true, "order": -3},
+    {"id": "n4_bg", "picture": "#061418", "x": 0.9000000000000001, "y": 10.5, "w": 7.0, "h": 4.199999999999999, "alpha": 225, "reveal": "bosses_warden", "order": -7},
+    {"id": "n4_frame", "frame": [-2.6, 8.4, 4.4, 12.6], "color": "#E8B04A", "thickness_px": 2.0, "alpha": 230, "reveal": "bosses_warden", "sketch": true, "order": -3},
+    {"id": "s1_board", "picture": "minecraft:textures/block/dark_oak_planks.png", "x": 8.1, "y": -2.75, "w": 12.0, "h": 0.3, "reveal": "bosses_skulls", "order": -3, "sketch": true},
+    {"id": "s2_board", "picture": "minecraft:textures/block/dark_oak_planks.png", "x": 6.0, "y": 2.05, "w": 7.800000000000001, "h": 0.3, "reveal": "bosses_monument", "order": -3, "sketch": true},
+    {"id": "s3_board", "picture": "minecraft:textures/block/dark_oak_planks.png", "x": 12.3, "y": 7.45, "w": 20.4, "h": 0.3, "reveal": "bosses_stronghold", "order": -3, "sketch": true},
+    {"id": "medal_glow", "glow": [0.0, 0.0], "r": 2.2, "tint": "#FFC060", "alpha": 100, "reveal": "bosses_welcome"},
+    {"id": "lantern_a", "item": "minecraft:lantern", "x": -1.6, "y": -1.7, "size": 0.6, "reveal": "bosses_welcome"},
+    {"id": "lantern_b", "item": "minecraft:lantern", "x": -1.6, "y": 1.7, "size": 0.6, "reveal": "bosses_welcome"},
+    {"id": "skulls_plaque", "picture": "minecraft:textures/block/dark_oak_planks.png", "x": 4.0, "y": -3.65, "w": 1.7, "h": 1.55, "reveal": "bosses_skulls", "sketch": true, "order": -4},
+    {"id": "skulls_rim", "frame": [3.15, -4.425, 4.85, -2.875], "color": "#E8B04A", "thickness_px": 1.5, "alpha": 230, "corners": false, "reveal": "bosses_skulls", "order": -3},
+    {"id": "tsand_0", "picture": "minecraft:textures/block/soul_sand.png", "x": 3.55, "y": -3.65, "w": 0.45, "h": 0.45, "reveal": "bosses_skulls", "order": -2},
+    {"id": "tsand_1", "picture": "minecraft:textures/block/soul_sand.png", "x": 4.0, "y": -3.65, "w": 0.45, "h": 0.45, "reveal": "bosses_skulls", "order": -2},
+    {"id": "tsand_2", "picture": "minecraft:textures/block/soul_sand.png", "x": 4.45, "y": -3.65, "w": 0.45, "h": 0.45, "reveal": "bosses_skulls", "order": -2},
+    {"id": "tsand_3", "picture": "minecraft:textures/block/soul_sand.png", "x": 4.0, "y": -3.2, "w": 0.45, "h": 0.45, "reveal": "bosses_skulls", "order": -2},
+    {"id": "tskull_0", "item": "minecraft:wither_skeleton_skull", "x": 3.55, "y": -4.15, "size": 0.5, "reveal": "bosses_skulls"},
+    {"id": "tskull_1", "item": "minecraft:wither_skeleton_skull", "x": 4.0, "y": -4.15, "size": 0.5, "reveal": "bosses_skulls"},
+    {"id": "tskull_2", "item": "minecraft:wither_skeleton_skull", "x": 4.45, "y": -4.15, "size": 0.5, "reveal": "bosses_skulls"},
+    {"id": "star_plaque", "picture": "minecraft:textures/block/dark_oak_planks.png", "x": 8.0, "y": -3.55, "w": 1.4, "h": 1.3, "reveal": "bosses_wither", "sketch": true, "order": -4},
+    {"id": "star_rim", "frame": [7.3, -4.2, 8.7, -2.9], "color": "#E8B04A", "thickness_px": 1.5, "alpha": 230, "corners": false, "reveal": "bosses_wither", "order": -3},
+    {"id": "star_ghost", "picture": "minecraft:textures/item/nether_star.png", "x": 8.0, "y": -3.55, "w": 0.9, "h": 0.9, "alpha": 55, "order": -2},
+    {"id": "star", "item": "minecraft:nether_star", "x": 8.0, "y": -3.55, "size": 1.0, "reveal": "bosses_wither"},
+    {"id": "star_glow", "glow": [8.0, -3.55], "r": 2.2, "tint": "#FFE9A0", "alpha": 150, "reveal": "bosses_wither"},
+    {"id": "beacon_plaque", "picture": "minecraft:textures/block/dark_oak_planks.png", "x": 12.0, "y": -3.55, "w": 1.4, "h": 1.3, "reveal": "bosses_star_uses", "sketch": true, "order": -4},
+    {"id": "beacon_rim", "frame": [11.3, -4.2, 12.7, -2.9], "color": "#E8B04A", "thickness_px": 1.5, "alpha": 230, "corners": false, "reveal": "bosses_star_uses", "order": -3},
+    {"id": "beacon", "item": "minecraft:beacon", "x": 12.0, "y": -3.55, "size": 0.95, "reveal": "bosses_star_uses"},
+    {"id": "beacon_beam", "path": [[12.0, -4.3], [12.0, -6.9]], "color": "#9DE4FF", "alpha": 130, "width": 0.18, "reveal": "bosses_star_uses", "order": -4},
+    {"id": "beacon_glow", "glow": [12.0, -3.55], "r": 1.8, "tint": "#9DE4FF", "alpha": 130, "reveal": "bosses_star_uses"},
+    {"id": "eye_ghost", "frame": [6.0, -1.5, 9.3, 1.6], "color": "#E8DCB5", "thickness_px": 1.0, "alpha": 70, "corners": false, "order": -6},
+    {"id": "guardian", "mosaic": [6.0, -1.45], "cell": 0.3, "rows": ["..S.....S..", ".S.PPPPP.S.", "..PPPPPPP..", "SPPWWWWWPPS", ".PPWOOOWPP.", "SPPWOKOWPPS", ".PPWOOOWPP.", "..PPWWWPP..", ".S.PPPPP.S.", "..S.....S.."], "legend": {"S": "#4F8F80", "P": "#6FA398", "W": "#EDE8D8", "O": "#E1631E", "K": "#161616"}, "reveal": "bosses_monument", "order": -2},
+    {"id": "sponge_plaque", "picture": "minecraft:textures/block/dark_oak_planks.png", "x": 4.0, "y": 1.2, "w": 1.4, "h": 1.3, "reveal": "bosses_monument", "sketch": true, "order": -4},
+    {"id": "sponge_rim", "frame": [3.3, 0.5499999999999999, 4.7, 1.85], "color": "#E8B04A", "thickness_px": 1.5, "alpha": 230, "corners": false, "reveal": "bosses_monument", "order": -3},
+    {"id": "sponge_ghost", "picture": "minecraft:textures/block/wet_sponge.png", "x": 4.0, "y": 1.2, "w": 0.75, "h": 0.75, "alpha": 55, "order": -2},
+    {"id": "sponge", "item": "minecraft:wet_sponge", "x": 4.0, "y": 1.2, "size": 0.9, "reveal": "bosses_monument"},
+    {"id": "prism_a", "item": "minecraft:prismarine_crystals", "x": 9.55, "y": 0.6, "size": 0.6, "reveal": "bosses_monument"},
+    {"id": "prism_b", "item": "minecraft:prismarine_shard", "x": 9.55, "y": 1.3, "size": 0.6, "reveal": "bosses_monument"},
+    {"id": "guard_glow", "glow": [7.65, 0.1], "r": 2.4, "tint": "#7FE0C8", "alpha": 110, "reveal": "bosses_monument"},
+    {"id": "portal_plaque", "picture": "minecraft:textures/block/dark_oak_planks.png", "x": 4.0, "y": 6.4, "w": 2.4, "h": 1.6, "reveal": "bosses_stronghold", "sketch": true, "order": -4},
+    {"id": "portal_rim", "frame": [2.8, 5.6000000000000005, 5.2, 7.2], "color": "#E8B04A", "thickness_px": 1.5, "alpha": 230, "corners": false, "reveal": "bosses_stronghold", "order": -3},
+    {"id": "portal_frame", "item": "minecraft:end_portal_frame", "x": 4.0, "y": 6.45, "size": 0.9, "reveal": "bosses_stronghold"},
+    {"id": "eye_a", "item": "minecraft:ender_eye", "x": 3.05, "y": 6.3, "size": 0.5, "reveal": "bosses_stronghold"},
+    {"id": "eye_b", "item": "minecraft:ender_eye", "x": 4.95, "y": 6.3, "size": 0.5, "reveal": "bosses_stronghold"},
+    {"id": "crystal_plaque", "picture": "minecraft:textures/block/dark_oak_planks.png", "x": 8.0, "y": 6.4, "w": 1.6, "h": 1.6, "reveal": "bosses_end", "sketch": true, "order": -4},
+    {"id": "crystal_rim", "frame": [7.2, 5.6000000000000005, 8.8, 7.2], "color": "#E8B04A", "thickness_px": 1.5, "alpha": 230, "corners": false, "reveal": "bosses_end", "order": -3},
+    {"id": "crystal", "item": "minecraft:end_crystal", "x": 8.0, "y": 6.4, "size": 1.05, "reveal": "bosses_end"},
+    {"id": "crystal_glow", "glow": [8.0, 6.4], "r": 1.8, "tint": "#FF7AD8", "alpha": 110, "reveal": "bosses_end"},
+    {"id": "head_plaque", "picture": "minecraft:textures/block/dark_oak_planks.png", "x": 12.7, "y": 6.4, "w": 3.2, "h": 1.8, "reveal": "bosses_dragon", "sketch": true, "order": -4},
+    {"id": "head_rim", "frame": [11.1, 5.5, 14.299999999999999, 7.300000000000001], "color": "#E8B04A", "thickness_px": 1.5, "alpha": 230, "corners": false, "reveal": "bosses_dragon", "order": -3},
+    {"id": "head", "item": "minecraft:dragon_head", "x": 12.0, "y": 6.4, "size": 1.3, "reveal": "bosses_dragon"},
+    {"id": "egg", "item": "minecraft:dragon_egg", "x": 13.7, "y": 6.4, "size": 0.9, "reveal": "bosses_dragon"},
+    {"id": "head_glow", "glow": [12.7, 6.4], "r": 2.8, "tint": "#C6A6FF", "alpha": 120, "reveal": "bosses_dragon"},
+    {"id": "breath_plaque", "picture": "minecraft:textures/block/dark_oak_planks.png", "x": 16.4, "y": 6.4, "w": 2.4, "h": 1.4, "reveal": "bosses_breath", "sketch": true, "order": -4},
+    {"id": "breath_rim", "frame": [15.2, 5.7, 17.599999999999998, 7.1000000000000005], "color": "#E8B04A", "thickness_px": 1.5, "alpha": 230, "corners": false, "reveal": "bosses_breath", "order": -3},
+    {"id": "breath_ghost", "picture": "minecraft:textures/item/dragon_breath.png", "x": 16.4, "y": 6.4, "w": 0.7, "h": 0.7, "alpha": 55, "order": -2},
+    {"id": "breath_0", "item": "minecraft:dragon_breath", "x": 15.7, "y": 6.4, "size": 0.65, "reveal": "bosses_breath"},
+    {"id": "breath_1", "item": "minecraft:dragon_breath", "x": 16.4, "y": 6.4, "size": 0.65, "reveal": "bosses_breath"},
+    {"id": "breath_2", "item": "minecraft:dragon_breath", "x": 17.1, "y": 6.4, "size": 0.65, "reveal": "bosses_breath"},
+    {"id": "breath_glow", "glow": [16.4, 6.3], "r": 1.9, "tint": "#D08CFF", "alpha": 130, "reveal": "bosses_breath"},
+    {"id": "elytra_plaque", "picture": "minecraft:textures/block/dark_oak_planks.png", "x": 20.4, "y": 6.35, "w": 2.2, "h": 1.7, "reveal": "bosses_elytra", "sketch": true, "order": -4},
+    {"id": "elytra_rim", "frame": [19.299999999999997, 5.5, 21.5, 7.199999999999999], "color": "#E8B04A", "thickness_px": 1.5, "alpha": 230, "corners": false, "reveal": "bosses_elytra", "order": -3},
+    {"id": "elytra_ghost", "picture": "minecraft:textures/item/elytra.png", "x": 20.4, "y": 6.3, "w": 1.1, "h": 1.1, "alpha": 55, "order": -2},
+    {"id": "elytra", "item": "minecraft:elytra", "x": 20.4, "y": 6.3, "size": 1.5, "reveal": "bosses_elytra"},
+    {"id": "elytra_glow", "glow": [20.4, 6.3], "r": 2.1, "tint": "#BDEFFF", "alpha": 110, "reveal": "bosses_elytra"},
+    {"id": "sculk_floor", "path": [[-2.5, 12.3], [4.3, 12.3]], "color": "#0E4650", "alpha": 200, "width": 0.4, "reveal": "bosses_warden", "order": -6},
+    {"id": "vein", "through": ["bosses_welcome", [0.0, 5.2], "bosses_warden"], "sprite": "minecraft:block/sculk_vein", "width": 0.8, "step": 0.8, "grow": true, "sketch": true, "order": -5},
+    {"id": "warden_ghost", "frame": [1.2, 8.8, 4.0, 11.6], "color": "#E8DCB5", "thickness_px": 1.0, "alpha": 70, "corners": false, "order": -6},
+    {"id": "warden_bust", "mosaic": [1.2, 8.8], "cell": 0.31, "rows": ["..HHHHH..", ".HHHHHHH.", "E.HHHHH.E", "EEHHHHHEE", "..HHHHH..", "HHHHHHHHH", "HHHCCCHHH", "HHCCCCCHH", ".HHCCCHH.", "..HH.HH.."], "legend": {"H": "#0B2B33", "E": "#1F6E7A", "C": "#5CF0E6"}, "reveal": "bosses_warden", "order": -2},
+    {"id": "heart_glow", "glow": [2.65, 10.9], "r": 1.6, "tint": "#5CF0E6", "alpha": 150, "reveal": "bosses_warden"},
+    {"id": "shrieker", "item": "minecraft:sculk_shrieker", "x": -1.6, "y": 9.7, "size": 0.6, "reveal": "bosses_warden"},
+    {"id": "echo", "item": "minecraft:echo_shard", "x": -1.0, "y": 9.7, "size": 0.5, "reveal": "bosses_warden"},
+    {"id": "sparkles", "scatter": ["minecraft:textures/particle/glitter_2.png", "minecraft:textures/particle/glitter_5.png", "minecraft:textures/particle/spark_1.png"], "region": [2.2, -7.2, 22.4, 7.4], "count": 14, "size": [0.3, 0.5], "seed": 12, "tint": "#FFE9A0", "reveal": "bosses_toy_dust", "avoid": [[4, -5, 0.8], [8, -5, 1.3], [12, -5, 0.8], [4, 0, 0.8], [4, 4.3, 0.8], [8, 4.3, 1.2], [12.4, 4.3, 1.3], [16.4, 4.3, 0.8], [20.4, 4.3, 0.8]]},
+    {"id": "ring_0", "glow": [0.0, 10.4], "r": 1.5, "tint": "#5CF0E6", "alpha": 100, "reveal": "bosses_toy_tiptoe", "order": -4},
+    {"id": "ring_1", "glow": [0.0, 10.4], "r": 2.4, "tint": "#5CF0E6", "alpha": 78, "reveal": "bosses_toy_tiptoe", "order": -4},
+    {"id": "ring_2", "glow": [0.0, 10.4], "r": 3.3, "tint": "#5CF0E6", "alpha": 56, "reveal": "bosses_toy_tiptoe", "order": -4},
+    {"id": "gold_frame", "frame": [-3.1, -7.9, 23.5, 13.0], "color": "#E8B04A", "thickness_px": 3.0, "alpha": 230, "reveal": "bosses_mastery", "sketch": true, "order": -3},
+    {"id": "ribbon_w", "through": ["bosses_wither", "bosses_mastery"], "color": "#E8B04A", "alpha": 200, "width": 0.14, "grow": true, "sketch": true, "order": -4},
+    {"id": "ribbon_m", "through": ["bosses_monument", "bosses_mastery"], "color": "#E8B04A", "alpha": 200, "width": 0.14, "grow": true, "sketch": true, "order": -4},
+    {"id": "ribbon_d", "through": ["bosses_dragon", "bosses_mastery"], "color": "#E8B04A", "alpha": 200, "width": 0.14, "grow": true, "sketch": true, "order": -4},
+    {"id": "mastery_glow", "glow": [17.0, -0.6], "r": 4.6, "tint": "#FFD98A", "alpha": 120, "reveal": "bosses_mastery"},
+    {"id": "pedestal", "mosaic": [15.5, 0.55], "cell": 0.5, "rows": ["GGGGGG", "BBBBBB"], "legend": {"G": "minecraft:textures/block/gold_block.png", "B": "minecraft:textures/block/polished_blackstone_bricks.png"}, "reveal": "bosses_mastery", "order": -3},
+    {"id": "ray_0", "path": [[18.2, -0.1], [20.05, 0.66]], "color": "#E8B04A", "alpha": 120, "width": 0.08, "reveal": "bosses_mastery", "order": -6},
+    {"id": "ray_1", "path": [[17.5, 0.6], [18.26, 2.45]], "color": "#E8B04A", "alpha": 120, "width": 0.08, "reveal": "bosses_mastery", "order": -6},
+    {"id": "ray_2", "path": [[16.5, 0.6], [15.74, 2.45]], "color": "#E8B04A", "alpha": 120, "width": 0.08, "reveal": "bosses_mastery", "order": -6},
+    {"id": "ray_3", "path": [[15.8, -0.1], [13.95, 0.66]], "color": "#E8B04A", "alpha": 120, "width": 0.08, "reveal": "bosses_mastery", "order": -6},
+    {"id": "ray_4", "path": [[15.8, -1.1], [13.95, -1.86]], "color": "#E8B04A", "alpha": 120, "width": 0.08, "reveal": "bosses_mastery", "order": -6},
+    {"id": "ray_5", "path": [[16.5, -1.8], [15.74, -3.65]], "color": "#E8B04A", "alpha": 120, "width": 0.08, "reveal": "bosses_mastery", "order": -6},
+    {"id": "ray_6", "path": [[17.5, -1.8], [18.26, -3.65]], "color": "#E8B04A", "alpha": 120, "width": 0.08, "reveal": "bosses_mastery", "order": -6},
+    {"id": "ray_7", "path": [[18.2, -1.1], [20.05, -1.86]], "color": "#E8B04A", "alpha": 120, "width": 0.08, "reveal": "bosses_mastery", "order": -6},
+    {"id": "nameplate", "text": {"en_us": "Trophy wall", "es_es": "Pared de trofeos"}, "x": 17.6, "y": -5.2, "scale": 3, "tint": "#E8B04A", "reveal": "bosses_mastery"}
+  ],
   "quests": [
     {
-      "key": "bosses_welcome",
-      "deps": [],
-      "type": "checkmark",
-      "layout": {
-        "x": 0,
-        "y": 0,
-        "size": 2.0,
-        "shape": "hexagon"
-      },
-      "en_us": [
-        "Materials, not milestones",
-        "The Wither, the Ender Dragon and the Elder Guardian matter for their drops: nether stars, dragon hearts and wet sponges feed Luminous gear and act VI's creative items. The compass passes their lairs in act V.\n\nMowzie's Mobs bosses live in Creatures and Bosses now, with the rest of the pack's wildlife."
-      ],
-      "es_es": [
-        "Materiales, no hitos",
-        "El Wither, el Dragón del End y el Guardián Anciano importan por sus drops: estrellas del Nether, corazones de dragón y esponjas mojadas alimentan el equipo Luminoso y los ítems creativos del acto VI. La brújula pasa por sus guaridas en el acto V.\n\nLos jefes de Mowzie's Mobs ahora viven en Criaturas y jefes, con el resto de la fauna del pack."
-      ],
-      "sources": [
-        "repo:docs/design/story-bible.md",
-        "repo:content/compass_targets.json",
-        "repo:docs/design/mod-pingpong.md"
-      ]
+      "key": "bosses_welcome", "deps": [], "type": "checkmark", "layout": {"x": 0, "y": 0, "size": 2.0, "shape": "hexagon"},
+      "en_us": {"title": "Materials, not milestones", "subtitle": "Bring the trophies. The hooks are ready.",
+        "text": ["[lead] The Wither, the Ender Dragon and the Elder Guardian matter for their drops.",
+                 "[li:minecraft:nether_star] Nether stars",
+                 "[li] Dragon hearts",
+                 "[li] Wet sponges",
+                 "They feed Luminous gear and act [hl|VI]'s creative items. The compass passes their lairs in act [hl|V].",
+                 "{page}",
+                 "[note] Mowzie's Mobs bosses live in [chapter:sector_creatures|Creatures and Bosses] now, with the rest of the pack's wildlife."]},
+      "es_es": {"title": "Materiales, no hitos", "subtitle": "Traé los trofeos. Los ganchos ya están.",
+        "text": ["[lead] El Wither, el Dragón del End y el Guardián Anciano importan por sus drops.",
+                 "[li:minecraft:nether_star] Estrellas del Nether",
+                 "[li] Corazones de dragón",
+                 "[li] Esponjas mojadas",
+                 "Alimentan el equipo Luminoso y los ítems creativos del acto [hl|VI]. La brújula pasa por sus guaridas en el acto [hl|V].",
+                 "{page}",
+                 "[note] Los jefes de Mowzie's Mobs ahora viven en [chapter:sector_creatures|Criaturas y jefes], con el resto de la fauna del pack."]},
+      "sources": ["repo:docs/design/story-bible.md", "repo:content/compass_targets.json", "repo:docs/design/mod-pingpong.md"]
     },
     {
-      "key": "bosses_skulls",
-      "deps": [
-        "bosses_welcome"
-      ],
-      "type": "item",
-      "item": "minecraft:wither_skeleton_skull",
-      "count": 3,
-      "layout": {
-        "x": 3,
-        "y": -3,
-        "size": 1.0,
-        "shape": "circle"
-      },
-      "en_us": [
-        "Three wither skeleton skulls",
-        "Wither skeletons live in Nether fortresses, rebuilt larger by YUNG's. Skulls are a rare drop, so Looting helps a lot.\n\nFour soul sand or soul soil blocks in a T, three skulls on top: that is the Wither. Do it far from home."
-      ],
-      "es_es": [
-        "Tres cráneos de esqueleto wither",
-        "Los esqueletos wither viven en las fortalezas del Nether, rehechas más grandes por YUNG's. Los cráneos salen poco, así que Botín ayuda mucho.\n\nCuatro bloques de arena o tierra de almas en forma de T y tres cráneos arriba: eso es el Wither. Hacelo lejos de casa."
-      ],
-      "sources": [
-        "jar:minecraft_1.21.1_client.jar:data/minecraft/advancement/nether/get_wither_skull.json",
-        "jar:YungsBetterNetherFortresses-1.21.1-NeoForge-3.1.5.jar:data/betterfortresses/worldgen/structure/fortress.json"
-      ]
+      "key": "bosses_skulls", "deps": ["bosses_welcome"], "type": "item", "item": "minecraft:wither_skeleton_skull", "count": 3, "layout": {"x": 4, "y": -5.0, "size": 1.0, "shape": "circle"},
+      "en_us": {"title": "Three wither skeleton skulls",
+        "text": ["[lead] Wither skeletons live in Nether fortresses, rebuilt larger by YUNG's.",
+                 "Skulls are a rare drop, so Looting helps a lot.",
+                 "Four blocks of [item:minecraft:soul_sand|soul sand] or soul soil in a T, three skulls on top: that is the Wither.",
+                 "[careful] Do it far from home."]},
+      "es_es": {"title": "Tres cráneos de esqueleto wither",
+        "text": ["[lead] Los esqueletos wither viven en las fortalezas del Nether, rehechas más grandes por YUNG's.",
+                 "Los cráneos salen poco, así que Botín ayuda mucho.",
+                 "Cuatro bloques de [item:minecraft:soul_sand|arena de almas] o tierra de almas en forma de T y tres cráneos arriba: eso es el Wither.",
+                 "[careful] Hacelo lejos de casa."]},
+      "sources": ["jar:minecraft_1.21.1_client.jar:data/minecraft/advancement/nether/get_wither_skull.json", "jar:YungsBetterNetherFortresses-1.21.1-NeoForge-3.1.5.jar:data/betterfortresses/worldgen/structure/fortress.json"]
     },
     {
-      "key": "bosses_wither",
-      "deps": [
-        "bosses_skulls"
-      ],
-      "type": "item",
-      "item": "minecraft:nether_star",
-      "layout": {
-        "x": 6,
-        "y": -3,
-        "size": 2.0,
-        "shape": "gear"
-      },
-      "en_us": [
-        "The Wither",
-        "Summon it far from your base: it breaks blocks and explodes on spawn. Bring healing, milk for the Wither effect and a strong bow or a Smite sword. It drops a nether star.\n\nHere it is the only star source: the pack removed Modern Industrialization's implosion, Oritech's particle collision and Reliquary's alkahestry recipes."
-      ],
-      "es_es": [
-        "El Wither",
-        "Invocalo lejos de tu base: rompe bloques y explota al aparecer. Llevá curación, leche para el efecto Wither y un buen arco o una espada con Castigo. Suelta una estrella del Nether.\n\nAcá es la única fuente de estrellas: el pack quitó las recetas de implosión de Modern Industrialization, de colisión de partículas de Oritech y de alquimia de Reliquary."
-      ],
-      "sources": [
-        "jar:minecraft_1.21.1_client.jar:data/minecraft/advancement/nether/summon_wither.json",
-        "repo:pack/kubejs/server_scripts/entrelumen_pingpong_balance.js",
-        "repo:pack/kubejs/server_scripts/entrelumen_arcane_balance.js",
-        "repo:docs/design/mod-pingpong.md"
-      ]
+      "key": "bosses_wither", "deps": ["bosses_skulls"], "type": "item", "item": "minecraft:nether_star", "layout": {"x": 8, "y": -5.0, "size": 2.0, "shape": "gear"},
+      "en_us": {"title": "The Wither", "subtitle": "Summoned at your own risk.",
+        "text": ["[lead] Summon it far from your base: it breaks blocks and explodes on spawn.",
+                 "Bring:",
+                 "[li] Healing",
+                 "[li] Milk for the Wither effect",
+                 "[li] A strong bow or a Smite sword",
+                 "It drops a [item:minecraft:nether_star|nether star].",
+                 "{page}",
+                 "[note] Here it is the only star source: the pack removed Modern Industrialization's implosion, Oritech's particle collision and Reliquary's alkahestry recipes."]},
+      "es_es": {"title": "El Wither", "subtitle": "Se invoca bajo tu propio riesgo.",
+        "text": ["[lead] Invocalo lejos de tu base: rompe bloques y explota al aparecer.",
+                 "Llevá:",
+                 "[li] Curación",
+                 "[li] Leche para el efecto Wither",
+                 "[li] Un buen arco o una espada con Castigo",
+                 "Suelta una [item:minecraft:nether_star|estrella del Nether].",
+                 "{page}",
+                 "[note] Acá es la única fuente de estrellas: el pack quitó las recetas de implosión de Modern Industrialization, de colisión de partículas de Oritech y de alquimia de Reliquary."]},
+      "sources": ["jar:minecraft_1.21.1_client.jar:data/minecraft/advancement/nether/summon_wither.json", "repo:pack/kubejs/server_scripts/entrelumen_pingpong_balance.js", "repo:pack/kubejs/server_scripts/entrelumen_arcane_balance.js", "repo:docs/design/mod-pingpong.md"]
     },
     {
-      "key": "bosses_star_uses",
-      "deps": [
-        "bosses_wither"
-      ],
-      "type": "checkmark",
-      "optional": true,
+      "key": "bosses_star_uses", "deps": ["bosses_wither"], "type": "checkmark", "optional": true, "layout": {"x": 12, "y": -5.0, "size": 0.85, "shape": "circle"},
       "icon": "minecraft:beacon",
-      "layout": {
-        "x": 9,
-        "y": -3,
-        "size": 0.85,
-        "shape": "circle"
-      },
-      "en_us": [
-        "What a nether star is for",
-        "Each Luminous piece uses one as its smithing template (nine for a set), several creative items ask for one, and so do beacons, Cataclysm's Harbinger and many high-tier recipes: &eU&r on the star in EMI lists them all.\n\nTired of farming? Train a Hostile Neural Networks Wither model and simulate stars; the Simulation Chamber is an act IV machine here."
-      ],
-      "es_es": [
-        "Para qué sirve la estrella",
-        "Cada pieza Luminosa la usa como plantilla de herrería (nueve para el set), varios ítems creativos piden una, y también los faros, el Heraldo de Cataclysm y muchas recetas de nivel alto: &eU&r sobre la estrella en EMI las muestra todas.\n\n¿Cansado de farmear? Entrená un modelo del Wither de Hostile Neural Networks y simulá estrellas; acá la Cámara de simulación es una máquina del acto IV."
-      ],
-      "sources": [
-        "jar:minecraft_1.21.1_client.jar:data/minecraft/advancement/nether/create_beacon.json",
-        "repo:pack/kubejs/data/entrelumen/recipe/luminous_chestplate.json",
-        "repo:docs/design/luminous-gear.md",
-        "jar:HostileNeuralNetworks-1.21.1-6.5.1.jar:data/hostilenetworks/data_models/wither.json",
-        "repo:pack/kubejs/server_scripts/entrelumen_industrial_balance.js",
-        "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:com/github/L_Ender/cataclysm/entity/InternalAnimationMonster/IABossMonsters/The_Harbinger_Entity.class"
-      ]
+      "en_us": {"title": "What a nether star is for",
+        "text": ["[lead] Each Luminous piece uses one as its smithing template.",
+                 "[li] Nine for a full Luminous set",
+                 "[li] Several creative items",
+                 "[li] [item:minecraft:beacon|Beacons], Cataclysm's Harbinger and many high-tier recipes",
+                 "[tip] Press [key:key.emi.view_uses] on the star in EMI to list them all.",
+                 "{page}",
+                 "Tired of farming? Train a Hostile Neural Networks Wither model and simulate stars; the Simulation Chamber is an act [hl|IV] machine here."]},
+      "es_es": {"title": "Para qué sirve la estrella",
+        "text": ["[lead] Cada pieza Luminosa la usa como plantilla de herrería.",
+                 "[li] Nueve para el set Luminoso completo",
+                 "[li] Varios ítems creativos",
+                 "[li] Los [item:minecraft:beacon|faros], el Heraldo de Cataclysm y muchas recetas de nivel alto",
+                 "[tip] Apretá [key:key.emi.view_uses] sobre la estrella en EMI para verlas todas.",
+                 "{page}",
+                 "¿Cansado de farmear? Entrená un modelo del Wither de Hostile Neural Networks y simulá estrellas; acá la Cámara de simulación es una máquina del acto [hl|IV]."]},
+      "sources": ["jar:minecraft_1.21.1_client.jar:data/minecraft/advancement/nether/create_beacon.json", "repo:pack/kubejs/data/entrelumen/recipe/luminous_chestplate.json", "repo:docs/design/luminous-gear.md", "jar:HostileNeuralNetworks-1.21.1-6.5.1.jar:data/hostilenetworks/data_models/wither.json", "repo:pack/kubejs/server_scripts/entrelumen_industrial_balance.js", "jar:L_Ender's Cataclysm 1.21.1-3.33.jar:com/github/L_Ender/cataclysm/entity/InternalAnimationMonster/IABossMonsters/The_Harbinger_Entity.class"]
     },
     {
-      "key": "bosses_monument",
-      "deps": [
-        "bosses_welcome"
-      ],
-      "type": "item",
-      "item": "minecraft:wet_sponge",
-      "layout": {
-        "x": 3,
-        "y": 0,
-        "size": 1.0,
-        "shape": "circle"
-      },
-      "en_us": [
-        "The monument and the wet sponge",
-        "YUNG's rebuilds ocean monuments, still guarded by Elder Guardians and their Mining Fatigue. In act V the compass counts one done when someone carries a wet sponge, which also goes into the creative fluid tanks.\n\nBring water breathing and Respiration or Depth Strider; the Aether's Neptune armor and Iron Bubble shine here."
-      ],
-      "es_es": [
-        "El monumento y la esponja mojada",
-        "YUNG's rehace los monumentos oceánicos, todavía custodiados por Guardianes Ancianos y su Fatiga minera. En el acto V la brújula da uno por cumplido cuando alguien lleva una esponja mojada, que además va en los tanques de fluidos creativos.\n\nLlevá respiración acuática y Respiración o Agilidad acuática; la armadura de Neptuno y la Burbuja de hierro del Aether rinden acá."
-      ],
-      "sources": [
-        "repo:content/compass_targets.json",
-        "repo:pack/kubejs/data/entrelumen/recipe/creative/mekanism/creative_fluid_tank.json",
-        "jar:YungsBetterOceanMonuments-1.21.1-NeoForge-4.1.2.jar:data/minecraft/tags/worldgen/structure/on_ocean_explorer_maps.json",
-        "jar:YungsBetterOceanMonuments-1.21.1-NeoForge-4.1.2.jar:data/betteroceanmonuments/worldgen/structure/ocean_monument.json",
-        "jar:aether-1.21.1-1.5.10-neoforge.jar:assets/aether/lang/en_us.json"
-      ]
+      "key": "bosses_monument", "deps": ["bosses_welcome"], "type": "item", "item": "minecraft:wet_sponge", "layout": {"x": 4, "y": 0, "size": 1.0, "shape": "circle"},
+      "en_us": {"title": "The monument and the wet sponge",
+        "text": ["[lead] YUNG's rebuilds ocean monuments, still guarded by Elder Guardians.",
+                 "In act [hl|V] the compass counts one done when someone carries a [item:minecraft:wet_sponge|wet sponge], which also goes into the creative fluid tanks.",
+                 "{page}",
+                 "Their Mining Fatigue is the price of admission.",
+                 "[tip] Bring water breathing and Respiration or Depth Strider; the Aether's Neptune armor and Iron Bubble shine here."]},
+      "es_es": {"title": "El monumento y la esponja mojada",
+        "text": ["[lead] YUNG's rehace los monumentos oceánicos, todavía custodiados por Guardianes Ancianos.",
+                 "En el acto [hl|V] la brújula da uno por cumplido cuando alguien lleva una [item:minecraft:wet_sponge|esponja mojada], que además va en los tanques de fluidos creativos.",
+                 "{page}",
+                 "Su Fatiga minera es el precio de entrada.",
+                 "[tip] Llevá respiración acuática y Respiración o Agilidad acuática; la armadura de Neptuno y la Burbuja de hierro del Aether rinden acá."]},
+      "sources": ["repo:content/compass_targets.json", "repo:pack/kubejs/data/entrelumen/recipe/creative/mekanism/creative_fluid_tank.json", "jar:YungsBetterOceanMonuments-1.21.1-NeoForge-4.1.2.jar:data/minecraft/tags/worldgen/structure/on_ocean_explorer_maps.json", "jar:YungsBetterOceanMonuments-1.21.1-NeoForge-4.1.2.jar:data/betteroceanmonuments/worldgen/structure/ocean_monument.json", "jar:aether-1.21.1-1.5.10-neoforge.jar:assets/aether/lang/en_us.json"]
     },
     {
-      "key": "bosses_stronghold",
-      "deps": [
-        "bosses_welcome"
-      ],
-      "type": "advancement",
-      "advancement": "minecraft:story/follow_ender_eye",
+      "key": "bosses_stronghold", "deps": ["bosses_welcome"], "type": "advancement", "advancement": "minecraft:story/follow_ender_eye", "layout": {"x": 4, "y": 4.3, "size": 1.0, "shape": "circle"},
       "icon": "minecraft:ender_eye",
-      "layout": {
-        "x": 3,
-        "y": 3,
-        "size": 1.0,
-        "shape": "circle"
-      },
-      "en_us": [
-        "Eye Spy: the stronghold",
-        "Eyes of Ender still lead to the stronghold, rebuilt larger by YUNG's Better Strongholds. Follow one for Eye Spy. It is an act V compass stop, done when your team reaches the End.\n\nBring spare eyes: some break on the way, always the one you needed."
-      ],
-      "es_es": [
-        "Ojo espía: la fortaleza",
-        "Los ojos de ender siguen llevando a la fortaleza, rehecha más grande por YUNG's Better Strongholds. Seguí uno para «Eye Spy». Es una parada de la brújula del acto V, que se cumple cuando tu equipo llega al End.\n\nLlevá ojos de repuesto: algunos se rompen en el camino, siempre el que necesitabas."
-      ],
-      "sources": [
-        "jar:YungsBetterStrongholds-1.21.1-NeoForge-5.1.3.jar:data/minecraft/tags/worldgen/structure/eye_of_ender_located.json",
-        "jar:YungsBetterStrongholds-1.21.1-NeoForge-5.1.3.jar:assets/betterstrongholds/lang/en_us.json",
-        "jar:minecraft_1.21.1_client.jar:data/minecraft/advancement/story/follow_ender_eye.json",
-        "repo:content/compass_targets.json"
-      ]
+      "en_us": {"title": "Eye Spy: the stronghold",
+        "text": ["[lead] [item:minecraft:ender_eye|Eyes of Ender] still lead to the stronghold, rebuilt larger by YUNG's Better Strongholds.",
+                 "Follow one for the advancement Eye Spy. It is an act [hl|V] compass stop, done when your team reaches the End.",
+                 "[tip] Bring spare eyes: some break on the way, always the one you needed."]},
+      "es_es": {"title": "Ojo espía: la fortaleza",
+        "text": ["[lead] Los [item:minecraft:ender_eye|ojos de ender] siguen llevando a la fortaleza, rehecha más grande por YUNG's Better Strongholds.",
+                 "Seguí uno para el logro «Eye Spy». Es una parada de la brújula del acto [hl|V], que se cumple cuando tu equipo llega al End.",
+                 "[tip] Llevá ojos de repuesto: algunos se rompen en el camino, siempre el que necesitabas."]},
+      "sources": ["jar:YungsBetterStrongholds-1.21.1-NeoForge-5.1.3.jar:data/minecraft/tags/worldgen/structure/eye_of_ender_located.json", "jar:YungsBetterStrongholds-1.21.1-NeoForge-5.1.3.jar:assets/betterstrongholds/lang/en_us.json", "jar:minecraft_1.21.1_client.jar:data/minecraft/advancement/story/follow_ender_eye.json", "repo:content/compass_targets.json"]
     },
     {
-      "key": "bosses_end",
-      "deps": [
-        "bosses_stronghold"
-      ],
-      "type": "dimension",
-      "dimension": "minecraft:the_end",
+      "key": "bosses_end", "deps": ["bosses_stronghold"], "type": "dimension", "dimension": "minecraft:the_end", "layout": {"x": 8, "y": 4.3, "size": 1.75, "shape": "diamond"},
       "icon": "minecraft:end_stone",
-      "layout": {
-        "x": 6,
-        "y": 3,
-        "size": 1.75,
-        "shape": "diamond"
-      },
-      "en_us": [
-        "The End",
-        "YUNG's Better End Island rebuilds the central island and the Dragon's arena, with its own towers and spawn platform. Your team's first arrival is an act V milestone.\n\nBring blocks, a bow, slow falling or a water bucket, and a pumpkin on your head if you would rather not argue with every enderman."
-      ],
-      "es_es": [
-        "El End",
-        "YUNG's Better End Island rehace la isla central y la arena del Dragón, con torres y plataforma de llegada propias. La primera llegada de tu equipo es un hito del acto V.\n\nLlevá bloques, un arco, caída lenta o un balde de agua, y una calabaza en la cabeza si no querés discutir con cada enderman."
-      ],
-      "sources": [
-        "jar:YungsBetterEndIsland-1.21.1-NeoForge-3.1.2.jar:assets/betterendisland/lang/en_us.json",
-        "repo:companion/src/main/java/dev/entrelumen/Expeditions.java",
-        "repo:content/compass_targets.json",
-        "repo:docs/design/exploration-structures-family.md"
-      ]
+      "en_us": {"title": "The End",
+        "text": ["[lead] YUNG's Better End Island rebuilds the central island and the Dragon's arena.",
+                 "It brings its own towers and spawn platform. Your team's first arrival is an act [hl|V] milestone.",
+                 "Bring blocks, a bow, slow falling or a [item:minecraft:water_bucket|water bucket].",
+                 "[tip] Wear a [item:minecraft:carved_pumpkin|pumpkin] on your head if you would rather not argue with every enderman."]},
+      "es_es": {"title": "El End",
+        "text": ["[lead] YUNG's Better End Island rehace la isla central y la arena del Dragón.",
+                 "Trae torres y plataforma de llegada propias. La primera llegada de tu equipo es un hito del acto [hl|V].",
+                 "Llevá bloques, un arco, caída lenta o un [item:minecraft:water_bucket|balde de agua].",
+                 "[tip] Ponete una [item:minecraft:carved_pumpkin|calabaza] en la cabeza si no querés discutir con cada enderman."]},
+      "sources": ["jar:YungsBetterEndIsland-1.21.1-NeoForge-3.1.2.jar:assets/betterendisland/lang/en_us.json", "repo:companion/src/main/java/dev/entrelumen/Expeditions.java", "repo:content/compass_targets.json", "repo:docs/design/exploration-structures-family.md"]
     },
     {
-      "key": "bosses_dragon",
-      "deps": [
-        "bosses_end"
-      ],
-      "type": "advancement",
-      "advancement": "minecraft:end/kill_dragon",
+      "key": "bosses_dragon", "deps": ["bosses_end"], "type": "advancement", "advancement": "minecraft:end/kill_dragon", "layout": {"x": 12.4, "y": 4.3, "size": 2.0, "shape": "gear"},
       "icon": "minecraft:dragon_head",
-      "layout": {
-        "x": 9,
-        "y": 3,
-        "size": 2.0,
-        "shape": "gear"
-      },
-      "en_us": [
-        "Free the End",
-        "Break the End Crystals on the towers first (arrows, or climb to the caged ones), then hit the Dragon when it perches. Killing it completes the act V compass stop.\n\nIt drops a pile of experience, the Dragon Egg, the gateway to the outer islands and, with Draconic Evolution, a Dragon Heart for act VI's creative energy items."
-      ],
-      "es_es": [
-        "Liberar el End",
-        "Primero rompé los Cristales del End de las torres (con flechas, o subiendo a los enjaulados), después pegale al Dragón cuando se posa. Matarlo cumple la parada de la brújula del acto V.\n\nSuelta mucha experiencia, el Huevo de dragón, el portal a las islas exteriores y, con Draconic Evolution, un Corazón de dragón para los ítems creativos de energía del acto VI."
-      ],
-      "sources": [
-        "jar:minecraft_1.21.1_client.jar:data/minecraft/advancement/end/kill_dragon.json",
-        "repo:content/compass_targets.json",
-        "repo:pack/kubejs/data/entrelumen/recipe/creative/mekanism/creative_energy_cube.json",
-        "repo:docs/design/luminous-gear.md",
-        "jar:eternalstarlight-0.9.0+1.21.1+neoforge.jar:assets/eternal_starlight/lang/en_us.json"
-      ]
+      "en_us": {"title": "Free the End",
+        "text": ["[lead] Break the End Crystals on the towers first, then hit the Dragon when it perches.",
+                 "Use arrows, or climb to the caged crystals. Killing the Dragon completes the act [hl|V] compass stop.",
+                 "{page}",
+                 "It drops:",
+                 "[li] A pile of experience",
+                 "[li] The Dragon Egg",
+                 "[li] The gateway to the outer islands",
+                 "[li] With Draconic Evolution, a Dragon Heart for act [hl|VI]'s creative energy items"]},
+      "es_es": {"title": "Liberar el End",
+        "text": ["[lead] Primero rompé los Cristales del End de las torres, después pegale al Dragón cuando se posa.",
+                 "Usá flechas, o subí a los cristales enjaulados. Matar al Dragón cumple la parada de la brújula del acto [hl|V].",
+                 "{page}",
+                 "Suelta:",
+                 "[li] Mucha experiencia",
+                 "[li] El Huevo de dragón",
+                 "[li] El portal a las islas exteriores",
+                 "[li] Con Draconic Evolution, un Corazón de dragón para los ítems creativos de energía del acto [hl|VI]"]},
+      "sources": ["jar:minecraft_1.21.1_client.jar:data/minecraft/advancement/end/kill_dragon.json", "repo:content/compass_targets.json", "repo:pack/kubejs/data/entrelumen/recipe/creative/mekanism/creative_energy_cube.json", "repo:docs/design/luminous-gear.md", "jar:eternalstarlight-0.9.0+1.21.1+neoforge.jar:assets/eternal_starlight/lang/en_us.json"]
     },
     {
-      "key": "bosses_breath",
-      "deps": [
-        "bosses_dragon"
-      ],
-      "type": "advancement",
-      "advancement": "minecraft:end/dragon_breath",
+      "key": "bosses_breath", "deps": ["bosses_dragon"], "type": "advancement", "advancement": "minecraft:end/dragon_breath", "layout": {"x": 16.4, "y": 4.3, "size": 1.0, "shape": "circle"},
       "icon": "minecraft:dragon_breath",
-      "layout": {
-        "x": 12,
-        "y": 3,
-        "size": 1.0,
-        "shape": "circle"
-      },
-      "en_us": [
-        "Bottled dragon's breath",
-        "During the fight the Dragon breathes a purple cloud: catch it in empty bottles (You Need a Mint). It makes lingering potions and shows up in several mod recipes.\n\nNeed more? Four End Crystals on the exit portal bring the Dragon back (The End... Again...)."
-      ],
-      "es_es": [
-        "Aliento de dragón embotellado",
-        "Durante la pelea el Dragón exhala una nube violeta: juntala con frascos vacíos («You Need a Mint»). Hace pociones persistentes y aparece en varias recetas de mods.\n\n¿Hace falta más? Cuatro Cristales del End sobre el portal de salida traen al Dragón de vuelta («The End... Again...»)."
-      ],
-      "sources": [
-        "jar:minecraft_1.21.1_client.jar:data/minecraft/advancement/end/dragon_breath.json",
-        "jar:minecraft_1.21.1_client.jar:data/minecraft/advancement/end/respawn_dragon.json"
-      ]
+      "en_us": {"title": "Bottled dragon's breath",
+        "text": ["[lead] During the fight the Dragon breathes a purple cloud: catch it in empty [item:minecraft:glass_bottle|bottles].",
+                 "That is the advancement You Need a Mint. It makes lingering potions and shows up in several mod recipes.",
+                 "[tip] Need more? Four [item:minecraft:end_crystal|End Crystals] on the exit portal bring the Dragon back, for The End... Again..."]},
+      "es_es": {"title": "Aliento de dragón embotellado",
+        "text": ["[lead] Durante la pelea el Dragón exhala una nube violeta: juntala con [item:minecraft:glass_bottle|frascos] vacíos.",
+                 "Eso es el logro «You Need a Mint». Hace pociones persistentes y aparece en varias recetas de mods.",
+                 "[tip] ¿Hace falta más? Cuatro [item:minecraft:end_crystal|Cristales del End] sobre el portal de salida traen al Dragón de vuelta, para «The End... Again...»."]},
+      "sources": ["jar:minecraft_1.21.1_client.jar:data/minecraft/advancement/end/dragon_breath.json", "jar:minecraft_1.21.1_client.jar:data/minecraft/advancement/end/respawn_dragon.json"]
     },
     {
-      "key": "bosses_elytra",
-      "deps": [
-        "bosses_breath"
-      ],
-      "type": "advancement",
-      "advancement": "minecraft:end/elytra",
-      "optional": true,
+      "key": "bosses_elytra", "deps": ["bosses_breath"], "type": "advancement", "advancement": "minecraft:end/elytra", "optional": true, "layout": {"x": 20.4, "y": 4.3, "size": 1.0, "shape": "circle"},
       "icon": "minecraft:elytra",
-      "layout": {
-        "x": 15,
-        "y": 3,
-        "size": 1.0,
-        "shape": "circle"
-      },
-      "en_us": [
-        "Wings from an End city",
-        "The exit gateway leads to the outer islands, where End city ships hide Elytra (Sky's the Limit), guarded by Shulkers whose shells make shulker boxes.\n\nSolsticio's rarities dealer also sells Elytra, but only from act VI."
-      ],
-      "es_es": [
-        "Alas de una ciudad del End",
-        "El portal de salida lleva a las islas exteriores, donde los barcos de las ciudades del End esconden élitros («Sky's the Limit»), custodiados por Shulkers cuyos caparazones hacen cajas de shulker.\n\nEl comerciante de rarezas de Solsticio también vende élitros, pero recién desde el acto VI."
-      ],
-      "sources": [
-        "jar:minecraft_1.21.1_client.jar:data/minecraft/advancement/end/elytra.json",
-        "repo:companion/src/main/resources/data/entrelumen/solsticio_shops/rarities.json",
-        "repo:docs/design/solsticio-commerce.md"
-      ]
+      "en_us": {"title": "Wings from an End city",
+        "text": ["[lead] The exit gateway leads to the outer islands, where End city ships hide [item:minecraft:elytra|Elytra].",
+                 "That is the advancement Sky's the Limit. Shulkers guard them, and their shells make shulker boxes.",
+                 "[note] Solsticio's rarities dealer also sells Elytra, but only from act [hl|VI]."]},
+      "es_es": {"title": "Alas de una ciudad del End",
+        "text": ["[lead] El portal de salida lleva a las islas exteriores, donde los barcos de las ciudades del End esconden [item:minecraft:elytra|élitros].",
+                 "Eso es el logro «Sky's the Limit». Los Shulkers los custodian, y sus caparazones hacen cajas de shulker.",
+                 "[note] El comerciante de rarezas de Solsticio también vende élitros, pero recién desde el acto [hl|VI]."]},
+      "sources": ["jar:minecraft_1.21.1_client.jar:data/minecraft/advancement/end/elytra.json", "repo:companion/src/main/resources/data/entrelumen/solsticio_shops/rarities.json", "repo:docs/design/solsticio-commerce.md"]
     },
     {
-      "key": "bosses_warden",
-      "deps": [
-        "bosses_welcome"
-      ],
-      "type": "advancement",
-      "advancement": "minecraft:adventure/avoid_vibration",
-      "optional": true,
+      "key": "bosses_warden", "deps": ["bosses_welcome"], "type": "advancement", "advancement": "minecraft:adventure/avoid_vibration", "optional": true, "layout": {"x": 0.0, "y": 10.4, "size": 0.85, "shape": "circle"}, "hide_lines": true,
       "icon": "minecraft:sculk_shrieker",
-      "layout": {
-        "x": 3,
-        "y": 6,
-        "size": 0.85,
-        "shape": "circle"
-      },
-      "en_us": [
-        "The Warden: avoid, do not farm",
-        "Sculk Shriekers summon it from the Deep Dark. It is blind, tracks vibrations and smell, and hits harder than almost anything: sneak, muffle steps with wool, and distract it with snowballs or arrows (Sneak 100).\n\nAncient cities hold echo shards and Swift Sneak books, and Deeper and Darker adds a way into the Otherside."
-      ],
-      "es_es": [
-        "El Warden: evitalo, no lo farmees",
-        "Los Chilladores de sculk lo llaman desde la Oscuridad profunda. Es ciego, sigue vibraciones y olores, y pega más fuerte que casi cualquier cosa: andá agachado, amortiguá los pasos con lana y distraelo con bolas de nieve o flechas («Sneak 100»).\n\nLas ciudades antiguas tienen fragmentos de eco y libros de Sigilo veloz, y Deeper and Darker suma una entrada al Otherside."
-      ],
-      "sources": [
-        "jar:minecraft_1.21.1_client.jar:data/minecraft/advancement/adventure/avoid_vibration.json",
-        "repo:docs/design/exploration-structures-family.md"
-      ]
+      "en_us": {"title": "The Warden: sneak first", "subtitle": "Quiet feet, loud consequences.",
+        "text": ["[lead] Sculk Shriekers summon it from the Deep Dark.",
+                 "It is blind, tracks vibrations and smell, and hits harder than almost anything. For Sneak 100:",
+                 "[li] Sneak",
+                 "[li] Muffle steps with wool",
+                 "[li] Distract it with snowballs or arrows",
+                 "{page}",
+                 "The pack lets machines capture it, so a Warden farm is on the table.",
+                 "Ancient cities hold echo shards and Swift Sneak books, and Deeper and Darker adds a way into the Otherside."]},
+      "es_es": {"title": "El Warden: primero, sigilo", "subtitle": "Pies quietos, consecuencias ruidosas.",
+        "text": ["[lead] Los Chilladores de sculk lo llaman desde la Oscuridad profunda.",
+                 "Es ciego, sigue vibraciones y olores, y pega más fuerte que casi cualquier cosa. Para «Sneak 100»:",
+                 "[li] Andá agachado",
+                 "[li] Amortiguá los pasos con lana",
+                 "[li] Distraelo con bolas de nieve o flechas",
+                 "{page}",
+                 "El pack deja que las máquinas lo capturen, así que una granja de Warden es posible.",
+                 "Las ciudades antiguas tienen fragmentos de eco y libros de Sigilo veloz, y Deeper and Darker suma una entrada al Otherside."]},
+      "sources": ["jar:minecraft_1.21.1_client.jar:data/minecraft/advancement/adventure/avoid_vibration.json", "repo:docs/design/exploration-structures-family.md", "repo:docs/design/mod-pingpong.md"]
     },
     {
-      "key": "bosses_pack",
-      "deps": [
-        "bosses_welcome"
-      ],
-      "type": "checkmark",
+      "key": "bosses_pack", "deps": ["bosses_welcome"], "type": "checkmark", "layout": {"x": 0, "y": -5.0, "size": 1.0, "shape": "rsquare"},
       "icon": "minecraft:wither_skeleton_skull",
-      "layout": {
-        "x": 0,
-        "y": 3,
-        "size": 1.0,
-        "shape": "rsquare"
-      },
-      "en_us": [
-        "What ENTRELUMEN changes",
-        "The Wither is the only nether star source, and Hostile Neural Networks can simulate it once trained. YUNG's replaces fortresses, monuments, strongholds and the End island, so their /locate IDs change (for example betterstrongholds:stronghold). Carry On refuses the Wither, the Elder Guardian, the Warden, the Dragon and Mowzie's bosses.\n\nNice try, though."
-      ],
-      "es_es": [
-        "Qué cambia ENTRELUMEN",
-        "El Wither es la única fuente de estrellas del Nether, y Hostile Neural Networks lo puede simular una vez entrenado. YUNG's reemplaza fortalezas, monumentos, fortalezas del End y la isla del End, así que cambian sus IDs para /locate (por ejemplo betterstrongholds:stronghold). Carry On rechaza al Wither, al Guardián Anciano, al Warden, al Dragón y a los jefes de Mowzie's.\n\nBuen intento, igual."
-      ],
-      "sources": [
-        "repo:docs/design/mod-pingpong.md",
-        "repo:content/compass_targets.json",
-        "repo:pack/config/carryon-common.toml",
-        "jar:YungsBetterStrongholds-1.21.1-NeoForge-5.1.3.jar:assets/betterstrongholds/lang/en_us.json",
-        "jar:HostileNeuralNetworks-1.21.1-6.5.1.jar:data/hostilenetworks/data_models/wither.json"
-      ]
+      "en_us": {"title": "What ENTRELUMEN changes",
+        "text": ["[lead] The Wither is the only nether star source, and Hostile Neural Networks can simulate it once trained.",
+                 "[careful] Carry On refuses the Wither, the Elder Guardian, the Warden, the Dragon and Mowzie's bosses.",
+                 "Nice try, though.",
+                 "{page}",
+                 "YUNG's replaces fortresses, monuments, strongholds and the End island, so their /locate IDs change, for example [hl|betterstrongholds:stronghold]."]},
+      "es_es": {"title": "Qué cambia ENTRELUMEN",
+        "text": ["[lead] El Wither es la única fuente de estrellas del Nether, y Hostile Neural Networks lo puede simular una vez entrenado.",
+                 "[careful] Carry On rechaza al Wither, al Guardián Anciano, al Warden, al Dragón y a los jefes de Mowzie's.",
+                 "Buen intento, igual.",
+                 "{page}",
+                 "YUNG's reemplaza fortalezas, monumentos, fortalezas del End y la isla del End, así que cambian sus IDs para /locate, por ejemplo [hl|betterstrongholds:stronghold]."]},
+      "sources": ["repo:docs/design/mod-pingpong.md", "repo:content/compass_targets.json", "repo:pack/config/carryon-common.toml", "jar:YungsBetterStrongholds-1.21.1-NeoForge-5.1.3.jar:assets/betterstrongholds/lang/en_us.json", "jar:HostileNeuralNetworks-1.21.1-6.5.1.jar:data/hostilenetworks/data_models/wither.json"]
     },
     {
-      "key": "bosses_mastery",
-      "deps": [
-        "bosses_dragon",
-        "bosses_wither",
-        "bosses_monument"
-      ],
-      "type": "checkmark",
+      "key": "bosses_mastery", "deps": ["bosses_dragon", "bosses_wither", "bosses_monument"], "type": "checkmark", "layout": {"x": 17.0, "y": -0.6, "size": 2.25, "shape": "pentagon"},
       "icon": "minecraft:dragon_egg",
-      "layout": {
-        "x": 18,
-        "y": 0,
-        "size": 2.25,
-        "shape": "pentagon"
-      },
-      "en_us": [
-        "Trophy wall",
-        "Nether star, wet sponge, dragon's breath and Elytra from the vanilla bosses.\n\nNone of it was required. All of it makes the rest easier."
-      ],
-      "es_es": [
-        "Pared de trofeos",
-        "Estrella del Nether, esponja mojada, aliento de dragón y élitros de los jefes vanilla.\n\nNada de esto era obligatorio. Todo hace más fácil lo que sigue."
-      ],
-      "sources": [
-        "repo:docs/design/story-bible.md"
-      ]
+      "en_us": {"title": "Trophy wall", "subtitle": "Mounted and polished.",
+        "text": ["[lead] Nether star, wet sponge, dragon's breath and Elytra from the vanilla bosses.",
+                 "None of it was required. All of it makes the rest easier."]},
+      "es_es": {"title": "Pared de trofeos", "subtitle": "Montada y pulida.",
+        "text": ["[lead] Estrella del Nether, esponja mojada, aliento de dragón y élitros de los jefes vanilla.",
+                 "Nada de esto era obligatorio. Todo hace más fácil lo que sigue."]},
+      "sources": ["repo:docs/design/story-bible.md"]
+    },
+    {
+      "key": "bosses_toy_dust", "role": "decor", "deps": [], "type": "checkmark", "optional": true, "layout": {"x": -2.0, "y": -3.3, "size": 0.75, "shape": "none"},
+      "icon": "minecraft:brush",
+      "en_us": {"title": "Dust the Trophies",
+        "text": ["[lead] A brush, a little patience and the whole wall shines.",
+                 "Nobody dusts a trophy wall twice: one click is plenty."]},
+      "es_es": {"title": "Desempolvar los trofeos",
+        "text": ["[lead] Un cepillo, un poco de paciencia y toda la pared brilla.",
+                 "Nadie desempolva una pared de trofeos dos veces: alcanza con un clic."]},
+      "sources": ["https://minecraft.wiki/w/Brush"]
+    },
+    {
+      "key": "bosses_toy_tiptoe", "role": "decor", "deps": [], "type": "checkmark", "optional": true, "layout": {"x": -1.9, "y": 11.6, "size": 0.75, "shape": "none"},
+      "icon": "minecraft:sculk_sensor",
+      "en_us": {"title": "Tiptoe",
+        "text": ["[lead] A sculk sensor hears every step; the Warden hears the rest.",
+                 "In the book the vibrations only make rings. In the world, sneak."]},
+      "es_es": {"title": "De puntillas",
+        "text": ["[lead] Un sensor de sculk oye cada paso; el Warden oye el resto.",
+                 "En el libro las vibraciones sólo hacen ondas. En el mundo, andá agachado."]},
+      "sources": ["jar:minecraft_1.21.1_client.jar:data/minecraft/advancement/adventure/avoid_vibration.json"]
     }
   ]
 }
