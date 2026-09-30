@@ -34,9 +34,9 @@ import net.neoforged.neoforge.client.event.RenderHandEvent;
 import org.joml.Quaternionf;
 
 /**
- * The Sour Shackle's cuff on the client: an ivory band round the wrist of the main arm with five studs,
- * lit one per mark (full-bright), all five for half a second when they burst, then all dark with the
- * band dimmed during the cooldown
+ * The Sour Shackle's cuff on the client: an ivory band round the wrist of the main arm with five marks
+ * floating in a small circle over its front, lit one per mark (full-bright), all five for half a second
+ * when they burst, then all dark with the band dimmed during the cooldown
  * ({@code art/authoring/draw_enves_curio.py} draws the texture, one texel per unit).
  *
  * <ul>
@@ -62,13 +62,17 @@ public final class SourShackleClient {
   // ---- The model: baked once ----------------------------------------------------------------
 
   private static ModelPart band, bandCool;
-  /** Studs by side (0: on the -x face, the right arm's outer side; 1: on the +x face, the left arm's) and kind. */
-  private static final ModelPart[] PIP_LIT = new ModelPart[2], PIP_UNLIT = new ModelPart[2], PIP_COOL = new ModelPart[2];
+  /** The marks by position on their circle and by kind. */
+  private static final ModelPart[] MARK_LIT = new ModelPart[SourShackleRules.MARKS],
+      MARK_UNLIT = new ModelPart[SourShackleRules.MARKS], MARK_COOL = new ModelPart[SourShackleRules.MARKS];
+  /** The circle of marks: radius, centre on the wrist (y), and how far out of the band's front they float. */
+  static final float CIRCLE = 1.2F, CIRCLE_Y = 7.5F, FLOAT = 0.25F, MARK = 0.5F;
 
   /**
-   * The band 5 x 3 x 5 round an arm centred on x = 0 (wrist at y 6..9), and a 0.5 x 1 x 0.5 stud standing out
-   * of either side face at z = 0; five of them, one unit apart, are the marks on the outer side, the one first
-   * person shows. Half a unit wide, they keep a gap of gold between them and read one by one.
+   * The band 5 x 3 x 5 round an arm centred on x = 0 (wrist at y 6..9), and the five marks: 0.5-unit cubes on a
+   * circle of radius {@link #CIRCLE} over the band's front (-z, the face first person shows even behind a held
+   * sword), floating {@link #FLOAT} off it, the first at the top and the rest going round toward the outside of
+   * the right arm.
    */
   static LayerDefinition layer() {
     var mesh = new MeshDefinition();
@@ -77,9 +81,12 @@ public final class SourShackleClient {
     root.addOrReplaceChild("band_cool", CubeListBuilder.create().texOffs(0, 8).addBox(-2.5F, 6F, -2.5F, 5, 3, 5), PartPose.ZERO);
     String[] kinds = {"lit", "unlit", "cool"};
     int[] u = {24, 28, 32};
-    for (int k = 0; k < 3; k++) {
-      root.addOrReplaceChild("pip_" + kinds[k] + "_0", CubeListBuilder.create().texOffs(u[k], 0).addBox(-3F, 7F, -0.25F, 0.5F, 1, 0.5F), PartPose.ZERO);
-      root.addOrReplaceChild("pip_" + kinds[k] + "_1", CubeListBuilder.create().texOffs(u[k], 0).addBox(2.5F, 7F, -0.25F, 0.5F, 1, 0.5F), PartPose.ZERO);
+    for (int i = 0; i < SourShackleRules.MARKS; i++) {
+      double angle = 2 * Math.PI * i / SourShackleRules.MARKS;
+      float x = (float) (-CIRCLE * Math.sin(angle)), y = (float) (CIRCLE_Y - CIRCLE * Math.cos(angle));
+      for (int k = 0; k < 3; k++)
+        root.addOrReplaceChild("mark_" + kinds[k] + "_" + i, CubeListBuilder.create().texOffs(u[k], 0)
+            .addBox(x - MARK / 2, y - MARK / 2, -2.5F - FLOAT - MARK, MARK, MARK, MARK), PartPose.ZERO);
     }
     return LayerDefinition.create(mesh, 64, 16);
   }
@@ -87,10 +94,10 @@ public final class SourShackleClient {
   private static void bake() {
     if (band != null) return;
     ModelPart root = layer().bakeRoot();
-    for (int side = 0; side < 2; side++) {
-      PIP_LIT[side] = root.getChild("pip_lit_" + side);
-      PIP_UNLIT[side] = root.getChild("pip_unlit_" + side);
-      PIP_COOL[side] = root.getChild("pip_cool_" + side);
+    for (int i = 0; i < SourShackleRules.MARKS; i++) {
+      MARK_LIT[i] = root.getChild("mark_lit_" + i);
+      MARK_UNLIT[i] = root.getChild("mark_unlit_" + i);
+      MARK_COOL[i] = root.getChild("mark_cool_" + i);
     }
     bandCool = root.getChild("band_cool");
     band = root.getChild("band");
@@ -109,8 +116,8 @@ public final class SourShackleClient {
   }
 
   /**
-   * Draws the cuff in arm-part space (the pose at the arm's pivot): the band, then the five studs on the
-   * arm's outer side from front to back, the first {@code marks} lit.
+   * Draws the cuff in arm-part space (the pose at the arm's pivot): the band, then the circle of marks, the
+   * first {@code marks} lit. On the left arm the circle is walked the other way, so it mirrors the right.
    */
   static void draw(PoseStack pose, MultiBufferSource buffers, int light, LivingEntity entity, HumanoidArm arm) {
     bake();
@@ -122,13 +129,12 @@ public final class SourShackleClient {
     VertexConsumer out = buffers.getBuffer(RenderType.entityCutout(TEXTURE));
     pose.translate(armCentre(entity, arm) / 16F, 0F, 0F);
     (cooling ? bandCool : band).render(pose, out, light, OverlayTexture.NO_OVERLAY);
-    int side = arm == HumanoidArm.RIGHT ? 0 : 1;             // outer side: -x on the right arm, +x on the left
-    pose.translate(0F, 0F, -2F / 16F);
+    boolean right = arm == HumanoidArm.RIGHT;
     for (int i = 0; i < SourShackleRules.MARKS; i++) {
-      if (cooling) PIP_COOL[side].render(pose, out, light, OverlayTexture.NO_OVERLAY);
-      else if (i < lit) PIP_LIT[side].render(pose, out, LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY);
-      else PIP_UNLIT[side].render(pose, out, light, OverlayTexture.NO_OVERLAY);
-      pose.translate(0F, 0F, 1F / 16F);
+      int at = right ? i : (SourShackleRules.MARKS - i) % SourShackleRules.MARKS;
+      if (cooling) MARK_COOL[at].render(pose, out, light, OverlayTexture.NO_OVERLAY);
+      else if (i < lit) MARK_LIT[at].render(pose, out, LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY);
+      else MARK_UNLIT[at].render(pose, out, light, OverlayTexture.NO_OVERLAY);
     }
   }
 
