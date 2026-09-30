@@ -31,7 +31,7 @@ import net.neoforged.neoforge.gametest.GameTestHolder;
 import net.neoforged.neoforge.gametest.PrefixGameTestTemplate;
 
 /**
- * Isolated GameTests for Terra's hydroponic garden, the 4 x 4 x 4 engine (docs/design/terra-garden.md):
+ * Isolated GameTests for Terra's hydroponic garden, the 3 x 2 x 2 engine (docs/design/terra-garden.md):
  * it stands in every rotation, the grow lamp goes into it and comes back when a block breaks, one batch makes the documented
  * harvest and the outlets export it, the excluded seeds and forbidden drops, and the stop when the store is full. The
  * fixture mod adds torchflower seeds to the exclusion tag and beetroot seeds to the forbidden drops, so
@@ -40,10 +40,10 @@ import net.neoforged.neoforge.gametest.PrefixGameTestTemplate;
 @GameTestHolder("entrelumen")
 @PrefixGameTestTemplate(false)
 public final class RuntimeGameTestsTerraGarden {
-  /** Where the core (the pot) stands in the 11 x 12 x 11 plot: the engine's sump is two blocks below it. */
-  private static final BlockPos CENTRE = new BlockPos(5, 3, 5);
-  /** The outlet on the core's side of the mirror plane, relative to the core in the drawing (facing south). */
-  private static final BlockPos OUTLET = new BlockPos(0, -1, -2);
+  /** Where the core stands in the 11 x 12 x 11 plot: the front of the engine's middle column, bottom layer. */
+  private static final BlockPos CENTRE = new BlockPos(5, 1, 5);
+  /** The outlet, behind the core in the drawing (facing south). */
+  private static final BlockPos OUTLET = new BlockPos(0, 0, -1);
 
   private RuntimeGameTestsTerraGarden() {}
 
@@ -183,27 +183,35 @@ public final class RuntimeGameTestsTerraGarden {
       helper.assertTrue(level.getBlockState(pos).getValue(TerraGardenCoreBlock.GARDEN) == TerraGardenCoreBlock.Garden.GROWING,
           "The woken pot does not glow");
       helper.assertTrue(player.getStats().getValue(Stats.CUSTOM.get(TerraGarden.ACTIVATIONS.get())) == 1, "No activation counted");
+      // formed: every member stops drawing itself and the core draws the engine
+      for (var part : TerraGardenLayout.builtin().parts()) {
+        if (part.core()) continue;
+        var member = level.getBlockState(TerraGardenLayout.world(pos, 0, part.offset()));
+        helper.assertTrue(member.getValue(TerraEngineMemberBlock.FORMED)
+            && member.getRenderShape() == net.minecraft.world.level.block.RenderShape.INVISIBLE, "A member did not form: " + member);
+      }
       // one lamp per engine: a second lamp stays in the hand
       useOn(player, pos, player.getMainHandItem());
       helper.assertTrue(player.getMainHandItem().getCount() == 1, "An awake engine took a second lamp");
       // a player breaks a block of the engine: the block and the lamp drop right there
-      BlockPos grille = TerraGardenLayout.world(pos, 0, new BlockPos(-2, 0, 1));
-      helper.assertTrue(level.getBlockState(grille).is(net.minecraft.world.level.block.Blocks.WAXED_OXIDIZED_COPPER_GRATE),
-          "No grille where the drawing puts one");
+      BlockPos grille = TerraGardenLayout.world(pos, 0, new BlockPos(-1, 0, 0));
+      helper.assertTrue(level.getBlockState(grille).is(TerraGarden.CASING.get()), "No casing where the drawing puts one");
       player.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(Items.DIAMOND_PICKAXE));
       player.gameMode.destroyBlock(grille);
       var box = new net.minecraft.world.phys.AABB(grille).inflate(1.5);
       var drops = level.getEntitiesOfClass(net.minecraft.world.entity.item.ItemEntity.class, box);
       helper.assertTrue(drops.stream().anyMatch(e -> e.getItem().is(TerraGarden.GROW_LAMP.get())), "The lamp did not drop: " + drops);
-      helper.assertTrue(drops.stream().anyMatch(e -> e.getItem().is(Items.WAXED_OXIDIZED_COPPER_GRATE)), "The grille did not drop");
+      helper.assertTrue(drops.stream().anyMatch(e -> e.getItem().is(TerraGarden.CASING_ITEM.get())), "The casing did not drop");
       helper.assertTrue(!core.awake(), "The engine stayed awake without its lamp");
+      BlockPos other = TerraGardenLayout.world(pos, 0, new BlockPos(1, 1, -1));
+      helper.assertTrue(!level.getBlockState(other).getValue(TerraEngineMemberBlock.FORMED), "The engine did not unform");
       drops.forEach(net.minecraft.world.entity.Entity::discard);
       // any other loss (here a block simply vanishing) gives the lamp back at the next check
-      level.setBlock(grille, net.minecraft.world.level.block.Blocks.WAXED_OXIDIZED_COPPER_GRATE.defaultBlockState(), Block.UPDATE_ALL);
+      level.setBlock(grille, TerraGarden.CASING.get().defaultBlockState(), Block.UPDATE_ALL);
       useOn(player, pos, new ItemStack(TerraGarden.GROW_LAMP.get()));
       helper.assertTrue(core.awake(), "The repaired engine did not take a new lamp");
-      BlockPos piston = TerraGardenLayout.world(pos, 0, new BlockPos(1, 1, 1));
-      level.setBlock(piston, net.minecraft.world.level.block.Blocks.AIR.defaultBlockState(), Block.UPDATE_ALL);
+      BlockPos corner = TerraGardenLayout.world(pos, 0, new BlockPos(1, 1, -1));
+      level.setBlock(corner, net.minecraft.world.level.block.Blocks.AIR.defaultBlockState(), Block.UPDATE_ALL);
       core.check(level);
       var back = level.getEntitiesOfClass(net.minecraft.world.entity.item.ItemEntity.class, new net.minecraft.world.phys.AABB(pos).inflate(4));
       helper.assertTrue(!core.awake() && back.stream().anyMatch(e -> e.getItem().is(TerraGarden.GROW_LAMP.get())),
@@ -247,6 +255,7 @@ public final class RuntimeGameTestsTerraGarden {
       var outletHandler = level.getCapability(Capabilities.ItemHandler.BLOCK, outletPos, Direction.NORTH);
       helper.assertTrue(outletHandler != null && !outletHandler.getStackInSlot(1).isEmpty(), "The outlet does not show the store");
       level.setBlock(chestPos, TerraGarden.OUTLET.get().defaultBlockState(), Block.UPDATE_ALL);
+      // (a loose outlet next to the engine is no member of it)
       helper.assertTrue(level.getCapability(Capabilities.ItemHandler.BLOCK, chestPos, Direction.UP) == null,
           "A loose outlet offers a store");
       // a pipe can pull the store through the capability, and never the seed

@@ -12,10 +12,15 @@ grid is built from its left half and mirrored, so symmetry holds by construction
   green bed, the sump).
 - terra_garden_outlet (block): a cut-copper casing with a brass flange round a round port, where the
   harvest leaves the engine.
-- terra_garden_core (block): the pot at the engine's heart, a sculpted model (art/models/block, written
-  here): an 8 x 6 x 8 copper body with a verdigris band and brass rivets, soil on top and a one-texel rim
-  that glows: dark verdigris while the engine is unbuilt, teal once it stands, and a green that breathes
-  (8 frames, emissive) while it grows. Its block entity draws the crop growing in the soil.
+- terra_engine_casing (block): riveted copper plates; the members' look while the engine is unformed.
+- terra_garden_core (block): unformed, a casing cube whose front shows a round window onto a sleeping pot
+  (dark, teal once the engine stands). Formed, one freestyle model over the whole 3 x 2 x 2 engine
+  (engine_model): sump, block, finned cylinder banks, valve covers, four brass pistons, a radiator grille
+  with warm headlamps and a green light strip, a flywheel and a belt to a pulley at the back, exhaust pipes,
+  and on top the heart: a small copper pot whose rim glows a breathing green (8 frames, emissive). Its block
+  entity draws the crop growing in the soil. 1 texel per unit (big boxes are cut at the 16-unit grid),
+  mirror-symmetric about the middle column.
+- terralight_* and the lamp as a block: see below.
 
     python art/authoring/draw_terra_garden.py            # write the grids and the core's models
     python art/authoring/draw_terra_garden.py --check    # compare with the repo
@@ -198,7 +203,7 @@ SOIL = [r + r for r in _SOIL_TILE] * 2
 
 # The rim's glow: 8 frames that breathe from a low green to a bright one and back (frametime 3); dark
 # verdigris while the garden is unbuilt, teal once it stands.
-_GLOW_RAMP = [LEAF[2], LEAF[3], LEAF[4], LEAF[5], '#e2ffb8', LEAF[5], LEAF[4], LEAF[3]]
+_GLOW_RAMP = [LEAF[4], LEAF[5], '#e2ffb8', LEAF[5], LEAF[4], LEAF[3], LEAF[2], LEAF[3]]
 
 
 def glow(colour, edge):
@@ -232,21 +237,128 @@ def _uv_faces(frm, to, tex, emissive=False, sides=('north', 'south', 'east', 'we
     return out
 
 
-def core_model(glow_texture, shift=0):
-    """The pot: an 8 x 6 x 8 copper body with soil on top and a one-texel glowing rim above it, centred on
-    the model's x = 0 (the block's west edge: the engine's mirror plane, facing south), or shifted."""
-    x0, x1, z0, z1 = -4 + shift, 4 + shift, 4, 12
-    elements = [_box((x0, 0, z0), (x1, 6, z1), {**_uv_faces((x0, 0, z0), (x1, 6, z1), '#pot', sides=('north', 'south', 'east', 'west', 'down')),
-                                                  'up': {'uv': [0, 0, 8, 8], 'texture': '#soil'}})]
-    rim = [((x0, 6, z1 - 1), (x1, 7, z1)), ((x0, 6, z0), (x1, 7, z0 + 1)),
-           ((x0, 6, z0 + 1), (x0 + 1, 7, z1 - 1)), ((x1 - 1, 6, z0 + 1), (x1, 7, z1 - 1))]
-    for frm, to in rim:
-        elements.append(_box(frm, to, _uv_faces(frm, to, '#glow', emissive=glow_texture.endswith('_glow'))))
-    model = {'parent': 'minecraft:block/block', 'textures': {
-        'particle': 'entrelumen:block/terra_garden_core_pot', 'pot': 'entrelumen:block/terra_garden_core_pot',
-        'soil': 'entrelumen:block/terra_garden_core_soil', 'glow': 'entrelumen:block/' + glow_texture},
-        'elements': elements}
-    return model
+# ---- the engine: the casing, the unformed core and the formed model --------------------------------
+
+ENGINE_PAL = {
+    'k': CU[0], 'l': CU[1], 'c': CU[2], 'C': CU[3], 'D': CU[4], 'E': CU[5],        # copper
+    'b': BRASS[1], 'B': BRASS[3], 'Y': BRASS[4], 'W': BRASS[5],                      # brass
+    'v': VER[1], 'V': VER[2], 'w': VER[3], 'X': VER[4],                               # verdigris
+    'n': INK, 'g': GLASS[1], 'G': GLASS[3],
+}
+# Casing: riveted copper plates, the members' look while unformed and the formed engine's skin (8 x 8, tiled).
+_CASING_TILE = ['EDDDDDDC', 'DCCCCCCl', 'DCYCCYCl', 'DCCCCCCl', 'DCCCCCCl', 'DCYCCYCl', 'DCCCCCCl', 'Clllllll']
+CASING = [r + r for r in _CASING_TILE] * 2
+# Cooling fins: verdigris ribs.
+_FINS_TILE = ['XXXXXXXX', 'wwwwwwww', 'vvvvvvvv', 'nnnnnnnn', 'XXXXXXXX', 'wwwwwwww', 'vvvvvvvv', 'nnnnnnnn']
+FINS = [r + r for r in _FINS_TILE] * 2
+# Radiator grille: a brass frame round vertical slats.
+GRILLE = mirror(['bBBBBBBB', 'BYYYYYYY', 'BYlClClC', 'BYlClClC', 'BYlClClC', 'BYlClClC', 'BYlClClC', 'BYlClClC',
+                 'BYlClClC', 'BYlClClC', 'BYlClClC', 'BYlClClC', 'BYlClClC', 'BYlClClC', 'BYYYYYYY', 'bBBBBBBB'])
+# Brass: pistons, caps, pipes, the belt.
+_BRASS_TILE = ['WYYYYYYB', 'YBBBBBBb', 'YBBBBBBb', 'YBBBBBBb', 'YBBBBBBb', 'YBBBBBBb', 'YBBBBBBb', 'Bbbbbbbb']
+BRASS_T = [r + r for r in _BRASS_TILE] * 2
+# The flywheel and the pulley: a brass rim, copper spokes, a hub.
+WHEEL = mirror(['.....bBB', '...bBYYY', '..bYYCCC', '.bYCClCC', '.BYCClCC', 'bYCClllC', 'BYCCCClC', 'BYClllCW',
+                'BYClllCW', 'BYCCCClC', 'bYCClllC', '.BYCClCC', '.bYCClCC', '..bYYCCC', '...bBYYY', '.....bBB'])
+# Headlamps: warm light (emissive in the model).
+HEADLIGHT_PAL = {'a': BRASS[2], 'b': STRAW[2], 'c': STRAW[3], 'd': BRASS[5]}
+HEADLIGHT = mirror(['aaaaaaaa', 'abbbbbbb', 'abcccccc', 'abcddddd', 'abcddddd', 'abcddddd', 'abcddddd', 'abcddddd',
+                    'abcddddd', 'abcddddd', 'abcddddd', 'abcddddd', 'abcddddd', 'abcccccc', 'abbbbbbb', 'aaaaaaaa'])
+# The unformed core's front: casing with a round window onto a sleeping pot (dark) or, once the engine
+# stands, a teal one.
+CORE_FRONT_PAL = dict(ENGINE_PAL, **{'t': TEAL[1], 'T': TEAL[2], 'u': TEAL[3], 'm': LEAF[3]})
+
+
+def core_front(built):
+    a, b, c = ('t', 'T', 'u') if built else ('n', 'g', 'G')
+    half = ['EDDDDDDD', 'DCCCCCCC', 'DCYCCCCC', 'DCCCbBBB', 'DCCbB' + a * 3, 'DCCB' + a + b + b + b, 'DCCB' + a + b + c + c,
+            'DCCB' + a + b + c + 'm', 'DCCB' + a + b + 'mm', 'DCCB' + a + b + 'CC', 'DCCB' + a + 'CCC', 'DCCbBCCC',
+            'DCCCbBBB', 'DCYCCCCC', 'DCCCCCCC', 'Clllllll']
+    return mirror(half)
+
+
+def _split(lo, hi):
+    """Cut [lo, hi] at the 16-unit grid so every piece maps inside one 16 x 16 texture."""
+    cuts = [lo]
+    g = (lo // 16 + 1) * 16
+    while g < hi:
+        cuts.append(g)
+        g += 16
+    cuts.append(hi)
+    return list(zip(cuts, cuts[1:]))
+
+
+def engine_boxes(frm, to, tex, emissive=False):
+    """A box as elements of at most 16 units along each axis, UVs taken from the model coordinates modulo 16:
+    1 texel per unit, textures tile seamlessly across the pieces."""
+    out = []
+    for x0, x1 in _split(frm[0], to[0]):
+        for y0, y1 in _split(frm[1], to[1]):
+            for z0, z1 in _split(frm[2], to[2]):
+                bx, by, bz = (x0 // 16) * 16, (y0 // 16) * 16, (z0 // 16) * 16
+                u = (x0 - bx, x1 - bx)
+                v = (16 - (y1 - by), 16 - (y0 - by))
+                w = (z0 - bz, z1 - bz)
+                faces = {'north': [u[0], v[0], u[1], v[1]], 'south': [u[0], v[0], u[1], v[1]],
+                         'east': [w[0], v[0], w[1], v[1]], 'west': [w[0], v[0], w[1], v[1]],
+                         'up': [u[0], w[0], u[1], w[1]], 'down': [u[0], w[0], u[1], w[1]]}
+                element = {'from': [x0, y0, z0], 'to': [x1, y1, z1], 'faces': {}}
+                for side, uv in faces.items():
+                    face = {'uv': uv, 'texture': tex}
+                    if emissive:
+                        face['neoforge_data'] = dict(EMISSIVE)
+                    element['faces'][side] = face
+                out.append(element)
+    return out
+
+
+def mirrored(frm, to):
+    """The box and its mirror about x = 8 (the middle column's axis)."""
+    return [(frm, to), ((16 - to[0], frm[1], frm[2]), (16 - frm[0], to[1], to[2]))]
+
+
+def engine_model():
+    """The formed engine over the whole 3 x 2 x 2 volume, for a core facing south at the front of the middle
+    column: x -16..32, z -16..16 (the back row behind), y 0..32. Mirror-symmetric about x = 8."""
+    parts = []
+
+    def add(frm, to, tex, emissive=False, mirror_it=False, soil=False):
+        for f, t in (mirrored(frm, to) if mirror_it else [(frm, to)]):
+            for element in engine_boxes(f, t, tex, emissive):
+                if soil:
+                    element['faces']['up']['texture'] = '#soil'
+                parts.append(element)
+
+    add((-14, 0, -14), (30, 3, 14), '#casing')                          # sump
+    add((-8, 3, -12), (24, 17, 8), '#casing')                           # engine block
+    add((-14, 5, -10), (-8, 17, 6), '#fins', mirror_it=True)            # cylinder banks with fins
+    add((-15, 17, -11), (-7, 20, 7), '#casing', mirror_it=True)         # valve covers
+    for z in (-7, 1):                                                   # two pistons a side, capped
+        add((-13, 20, z), (-9, 27, z + 4), '#brass', mirror_it=True)
+        add((-14, 27, z - 1), (-8, 29, z + 5), '#brass', mirror_it=True)
+    add((-6, 3, 8), (22, 15, 13), '#grille')                            # radiator grille
+    add((-12, 5, 8), (-8, 9, 12), '#headlight', emissive=True, mirror_it=True)   # headlamps
+    add((-6, 15, 8), (22, 16, 9), '#glow', emissive=True)               # the green light strip over the grille
+    add((1, 3, -15), (15, 17, -12), '#wheel')                           # flywheel at the back
+    add((6, 17, -14), (10, 23, -13), '#brass')                          # the belt up to the pulley
+    add((4, 21, -15), (12, 29, -12), '#wheel')                          # pulley
+    add((-12, 20, -14), (-10, 31, -12), '#brass', mirror_it=True)       # exhaust pipes
+    add((3, 17, -5), (13, 24, 5), '#pot', soil=True)                    # the heart: a small pot on the block
+    for frm, to in (((3, 24, 4), (13, 25, 5)), ((3, 24, -5), (13, 25, -4)), ((3, 24, -4), (4, 25, 4)), ((12, 24, -4), (13, 25, 4))):
+        add(frm, to, '#glow', emissive=True)                            # its glowing rim
+    textures = {'particle': 'entrelumen:block/terra_engine_casing', 'casing': 'entrelumen:block/terra_engine_casing',
+                'fins': 'entrelumen:block/terra_engine_fins', 'grille': 'entrelumen:block/terra_engine_grille',
+                'brass': 'entrelumen:block/terra_engine_brass', 'wheel': 'entrelumen:block/terra_engine_wheel',
+                'headlight': 'entrelumen:block/terra_engine_headlight', 'pot': 'entrelumen:block/terra_garden_core_pot',
+                'soil': 'entrelumen:block/terra_garden_core_soil', 'glow': 'entrelumen:block/terra_garden_core_glow'}
+    return {'parent': 'minecraft:block/block', 'render_type': 'minecraft:cutout', 'textures': textures, 'elements': parts}
+
+
+def core_unformed(built):
+    return {'parent': 'minecraft:block/orientable_with_bottom', 'textures': {
+        'front': 'entrelumen:block/terra_engine_core_front' + ('_built' if built else ''),
+        'side': 'entrelumen:block/terra_engine_casing', 'top': 'entrelumen:block/terra_engine_casing',
+        'bottom': 'entrelumen:block/terra_engine_casing'}}
 
 
 # ---- the Terralight crystal, its shard, its grounding rod and the lamp placed as a block -----------
@@ -377,10 +489,8 @@ def crystal_model(stage):
 
 def models():
     """Block models by name (art/models/block/<name>.json) and the core's item model."""
-    out = {'terra_garden_core': core_model('terra_garden_core_glow_off'),
-           'terra_garden_core_built': core_model('terra_garden_core_glow_dim'),
-           'terra_garden_core_growing': core_model('terra_garden_core_glow'),
-           'terra_garden_core_item': core_model('terra_garden_core_glow', shift=8),
+    out = {'terra_garden_core': core_unformed(False), 'terra_garden_core_built': core_unformed(True),
+           'terra_garden_core_formed': engine_model(),
            'terralight_grounding_rod': rod_model(), 'terra_grow_lamp': lamp_block_model()}
     for stage in range(4):
         out[f'terralight_crystal_{stage}'] = crystal_model(stage)
@@ -397,12 +507,16 @@ def grids():
     out['block/terra_garden_core_pot.txt'] = grid_text(POT_PAL, POT)
     out['block/terra_garden_core_soil.txt'] = grid_text(SOIL_PAL, SOIL)
     for i, colour in enumerate(_GLOW_RAMP):
-        pal, rows = glow(colour, LEAF[1] if i in (0, 7) else LEAF[2])
+        pal, rows = glow(colour, LEAF[1] if i in (6, 5) else LEAF[2])
         out[f'block/terra_garden_core_glow__f{i}.txt'] = grid_text(pal, rows)
-    pal, rows = glow(VER[1], VER[0])
-    out['block/terra_garden_core_glow_off.txt'] = grid_text(pal, rows)
-    pal, rows = glow(TEAL[2], TEAL[1])
-    out['block/terra_garden_core_glow_dim.txt'] = grid_text(pal, rows)
+    out['block/terra_engine_casing.txt'] = grid_text(ENGINE_PAL, CASING)
+    out['block/terra_engine_fins.txt'] = grid_text(ENGINE_PAL, FINS)
+    out['block/terra_engine_grille.txt'] = grid_text(ENGINE_PAL, GRILLE)
+    out['block/terra_engine_brass.txt'] = grid_text(ENGINE_PAL, BRASS_T)
+    out['block/terra_engine_wheel.txt'] = grid_text(ENGINE_PAL, WHEEL)
+    out['block/terra_engine_headlight.txt'] = grid_text(HEADLIGHT_PAL, HEADLIGHT)
+    out['block/terra_engine_core_front.txt'] = grid_text(CORE_FRONT_PAL, core_front(False))
+    out['block/terra_engine_core_front_built.txt'] = grid_text(CORE_FRONT_PAL, core_front(True))
     for stage in range(4):
         out[f'block/terralight_crystal_{stage}.txt'] = grid_text(CRYSTAL_PAL, crystal_stage(stage))
     for i, frame in enumerate(shard_frames()):

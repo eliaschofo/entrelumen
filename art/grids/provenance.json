@@ -743,7 +743,7 @@
       "note": "Terra's grow lamp, the garden's activator (docs/design/terra-garden.md). Mirror-symmetric in every frame. No third-party pixels copied."
     },
     "terra_garden_plan": {
-      "method": "hand-placed on the 16x16 grid from its left half and mirrored: a hanging scroll between two copper rods; verdigris ink on parchment draws the engine's front elevation (pistons and skylight, grilles and the crop in its pot, headlamps over the green bed, the sump)",
+      "method": "hand-placed on the 16x16 grid from its left half and mirrored: a hanging scroll between two copper rods; verdigris ink on parchment draws the engine’s front",
       "authoring": "art/authoring/draw_terra_garden.py",
       "reference_inspected": [
         "minecraft:textures/item/map.png",
@@ -1574,44 +1574,6 @@
       "reference_took": "Copper family: the cut-copper plates and the chiseled frame as engine casing, fresh copper for brass and the oxidized ramp for accents. Flower pot: a small tapered pot with soil a texel under its rim. Verdant froglight: the soft green the heart glows with.",
       "note": "The core glow while the engine grows (docs/design/terra-garden.md). No third-party pixels copied."
     },
-    "terra_garden_core_glow_off": {
-      "method": "hand-placed on the 16x16 grid from its left half and mirrored; the rim unlit, dark verdigris",
-      "authoring": "art/authoring/draw_terra_garden.py",
-      "reference_inspected": [
-        "minecraft:textures/block/cut_copper.png",
-        "minecraft:textures/block/chiseled_copper.png",
-        "minecraft:textures/block/oxidized_copper_grate.png",
-        "minecraft:textures/block/copper_bulb_lit.png",
-        "minecraft:textures/block/piston_top.png",
-        "minecraft:textures/block/verdant_froglight_side.png",
-        "minecraft:textures/block/flower_pot.png",
-        "minecraft:textures/block/hopper_outside.png"
-      ],
-      "reference_sources": [
-        "client 1.21.1 JAR (G:/Elias/Codex/Entrelumen-work/neoform-cache/artifacts/minecraft_1.21.1_client.jar)"
-      ],
-      "reference_took": "Copper family: the cut-copper plates and the chiseled frame as engine casing, fresh copper for brass and the oxidized ramp for accents. Flower pot: a small tapered pot with soil a texel under its rim. Verdant froglight: the soft green the heart glows with.",
-      "note": "The core glow while the engine is unbuilt (docs/design/terra-garden.md). No third-party pixels copied."
-    },
-    "terra_garden_core_glow_dim": {
-      "method": "hand-placed on the 16x16 grid from its left half and mirrored; the rim in teal",
-      "authoring": "art/authoring/draw_terra_garden.py",
-      "reference_inspected": [
-        "minecraft:textures/block/cut_copper.png",
-        "minecraft:textures/block/chiseled_copper.png",
-        "minecraft:textures/block/oxidized_copper_grate.png",
-        "minecraft:textures/block/copper_bulb_lit.png",
-        "minecraft:textures/block/piston_top.png",
-        "minecraft:textures/block/verdant_froglight_side.png",
-        "minecraft:textures/block/flower_pot.png",
-        "minecraft:textures/block/hopper_outside.png"
-      ],
-      "reference_sources": [
-        "client 1.21.1 JAR (G:/Elias/Codex/Entrelumen-work/neoform-cache/artifacts/minecraft_1.21.1_client.jar)"
-      ],
-      "reference_took": "Copper family: the cut-copper plates and the chiseled frame as engine casing, fresh copper for brass and the oxidized ramp for accents. Flower pot: a small tapered pot with soil a texel under its rim. Verdant froglight: the soft green the heart glows with.",
-      "note": "The core glow once the engine stands, not yet woken (docs/design/terra-garden.md). No third-party pixels copied."
-    },
     "terralight_crystal_0": {
       "method": "generated on the 16x16 grid by the authoring script, mirrored: thin upright spikes (Elias: «más finito»), the tallest on the axis, bright tips, stage 0 of 4",
       "authoring": "art/authoring/draw_terra_garden.py",
@@ -1713,6 +1675,150 @@
       ],
       "reference_took": "The lamp item’s hanging flame, as a small cube of light.",
       "note": "Grow lamp placed as a block, its flame (docs/design/terra-garden.md). No third-party pixels copied."
+    },
+    "terra_engine_casing": {
+      "method": "hand-placed on the 16x16 grid from its left half and mirrored; riveted copper plates, an 8 x 8 motif tiled; the members while unformed and the formed engine’s skin",
+      "authoring": "art/authoring/draw_terra_garden.py",
+      "reference_inspected": [
+        "minecraft:textures/block/cut_copper.png",
+        "minecraft:textures/block/copper_grate.png",
+        "minecraft:textures/block/piston_side.png",
+        "minecraft:textures/block/piston_top.png",
+        "minecraft:textures/block/copper_bulb_lit.png",
+        "minecraft:textures/block/grindstone_side.png",
+        "oritech (oritech-neoforge-1.21.1-1.2.11.jar): machine_core blockstates and MachineCoreBlock/MultiblockMachine bytecode, technique only (hidden members, one controller model); no model or texture looked at for copying"
+      ],
+      "reference_sources": [
+        "client 1.21.1 JAR (G:/Elias/Codex/Entrelumen-work/neoform-cache/artifacts/minecraft_1.21.1_client.jar)"
+      ],
+      "reference_took": "Copper family and pistons: plates, rivets and brass for a steampunk engine. Grindstone: a wheel read at block scale. Oritech: members that stop drawing themselves once the machine is assembled and a controller that draws the whole machine.",
+      "note": "Terra’s garden engine (docs/design/terra-garden.md). No third-party pixels copied."
+    },
+    "terra_engine_fins": {
+      "method": "hand-placed on the 16x16 grid from its left half and mirrored; verdigris cooling fins, tiled",
+      "authoring": "art/authoring/draw_terra_garden.py",
+      "reference_inspected": [
+        "minecraft:textures/block/cut_copper.png",
+        "minecraft:textures/block/copper_grate.png",
+        "minecraft:textures/block/piston_side.png",
+        "minecraft:textures/block/piston_top.png",
+        "minecraft:textures/block/copper_bulb_lit.png",
+        "minecraft:textures/block/grindstone_side.png",
+        "oritech (oritech-neoforge-1.21.1-1.2.11.jar): machine_core blockstates and MachineCoreBlock/MultiblockMachine bytecode, technique only (hidden members, one controller model); no model or texture looked at for copying"
+      ],
+      "reference_sources": [
+        "client 1.21.1 JAR (G:/Elias/Codex/Entrelumen-work/neoform-cache/artifacts/minecraft_1.21.1_client.jar)"
+      ],
+      "reference_took": "Copper family and pistons: plates, rivets and brass for a steampunk engine. Grindstone: a wheel read at block scale. Oritech: members that stop drawing themselves once the machine is assembled and a controller that draws the whole machine.",
+      "note": "Terra’s garden engine (docs/design/terra-garden.md). No third-party pixels copied."
+    },
+    "terra_engine_grille": {
+      "method": "hand-placed on the 16x16 grid from its left half and mirrored; the radiator grille: a brass frame round vertical slats",
+      "authoring": "art/authoring/draw_terra_garden.py",
+      "reference_inspected": [
+        "minecraft:textures/block/cut_copper.png",
+        "minecraft:textures/block/copper_grate.png",
+        "minecraft:textures/block/piston_side.png",
+        "minecraft:textures/block/piston_top.png",
+        "minecraft:textures/block/copper_bulb_lit.png",
+        "minecraft:textures/block/grindstone_side.png",
+        "oritech (oritech-neoforge-1.21.1-1.2.11.jar): machine_core blockstates and MachineCoreBlock/MultiblockMachine bytecode, technique only (hidden members, one controller model); no model or texture looked at for copying"
+      ],
+      "reference_sources": [
+        "client 1.21.1 JAR (G:/Elias/Codex/Entrelumen-work/neoform-cache/artifacts/minecraft_1.21.1_client.jar)"
+      ],
+      "reference_took": "Copper family and pistons: plates, rivets and brass for a steampunk engine. Grindstone: a wheel read at block scale. Oritech: members that stop drawing themselves once the machine is assembled and a controller that draws the whole machine.",
+      "note": "Terra’s garden engine (docs/design/terra-garden.md). No third-party pixels copied."
+    },
+    "terra_engine_brass": {
+      "method": "hand-placed on the 16x16 grid from its left half and mirrored; brass for the pistons, caps, belt and exhaust pipes, tiled",
+      "authoring": "art/authoring/draw_terra_garden.py",
+      "reference_inspected": [
+        "minecraft:textures/block/cut_copper.png",
+        "minecraft:textures/block/copper_grate.png",
+        "minecraft:textures/block/piston_side.png",
+        "minecraft:textures/block/piston_top.png",
+        "minecraft:textures/block/copper_bulb_lit.png",
+        "minecraft:textures/block/grindstone_side.png",
+        "oritech (oritech-neoforge-1.21.1-1.2.11.jar): machine_core blockstates and MachineCoreBlock/MultiblockMachine bytecode, technique only (hidden members, one controller model); no model or texture looked at for copying"
+      ],
+      "reference_sources": [
+        "client 1.21.1 JAR (G:/Elias/Codex/Entrelumen-work/neoform-cache/artifacts/minecraft_1.21.1_client.jar)"
+      ],
+      "reference_took": "Copper family and pistons: plates, rivets and brass for a steampunk engine. Grindstone: a wheel read at block scale. Oritech: members that stop drawing themselves once the machine is assembled and a controller that draws the whole machine.",
+      "note": "Terra’s garden engine (docs/design/terra-garden.md). No third-party pixels copied."
+    },
+    "terra_engine_wheel": {
+      "method": "hand-placed on the 16x16 grid from its left half and mirrored; the flywheel and the pulley: a brass rim, copper spokes and a hub",
+      "authoring": "art/authoring/draw_terra_garden.py",
+      "reference_inspected": [
+        "minecraft:textures/block/cut_copper.png",
+        "minecraft:textures/block/copper_grate.png",
+        "minecraft:textures/block/piston_side.png",
+        "minecraft:textures/block/piston_top.png",
+        "minecraft:textures/block/copper_bulb_lit.png",
+        "minecraft:textures/block/grindstone_side.png",
+        "oritech (oritech-neoforge-1.21.1-1.2.11.jar): machine_core blockstates and MachineCoreBlock/MultiblockMachine bytecode, technique only (hidden members, one controller model); no model or texture looked at for copying"
+      ],
+      "reference_sources": [
+        "client 1.21.1 JAR (G:/Elias/Codex/Entrelumen-work/neoform-cache/artifacts/minecraft_1.21.1_client.jar)"
+      ],
+      "reference_took": "Copper family and pistons: plates, rivets and brass for a steampunk engine. Grindstone: a wheel read at block scale. Oritech: members that stop drawing themselves once the machine is assembled and a controller that draws the whole machine.",
+      "note": "Terra’s garden engine (docs/design/terra-garden.md). No third-party pixels copied."
+    },
+    "terra_engine_headlight": {
+      "method": "hand-placed on the 16x16 grid from its left half and mirrored; warm headlamp light, emissive in the model",
+      "authoring": "art/authoring/draw_terra_garden.py",
+      "reference_inspected": [
+        "minecraft:textures/block/cut_copper.png",
+        "minecraft:textures/block/copper_grate.png",
+        "minecraft:textures/block/piston_side.png",
+        "minecraft:textures/block/piston_top.png",
+        "minecraft:textures/block/copper_bulb_lit.png",
+        "minecraft:textures/block/grindstone_side.png",
+        "oritech (oritech-neoforge-1.21.1-1.2.11.jar): machine_core blockstates and MachineCoreBlock/MultiblockMachine bytecode, technique only (hidden members, one controller model); no model or texture looked at for copying"
+      ],
+      "reference_sources": [
+        "client 1.21.1 JAR (G:/Elias/Codex/Entrelumen-work/neoform-cache/artifacts/minecraft_1.21.1_client.jar)"
+      ],
+      "reference_took": "Copper family and pistons: plates, rivets and brass for a steampunk engine. Grindstone: a wheel read at block scale. Oritech: members that stop drawing themselves once the machine is assembled and a controller that draws the whole machine.",
+      "note": "Terra’s garden engine (docs/design/terra-garden.md). No third-party pixels copied."
+    },
+    "terra_engine_core_front": {
+      "method": "hand-placed on the 16x16 grid from its left half and mirrored; the unformed core’s front: casing round a dark window with a sleeping sprout",
+      "authoring": "art/authoring/draw_terra_garden.py",
+      "reference_inspected": [
+        "minecraft:textures/block/cut_copper.png",
+        "minecraft:textures/block/copper_grate.png",
+        "minecraft:textures/block/piston_side.png",
+        "minecraft:textures/block/piston_top.png",
+        "minecraft:textures/block/copper_bulb_lit.png",
+        "minecraft:textures/block/grindstone_side.png",
+        "oritech (oritech-neoforge-1.21.1-1.2.11.jar): machine_core blockstates and MachineCoreBlock/MultiblockMachine bytecode, technique only (hidden members, one controller model); no model or texture looked at for copying"
+      ],
+      "reference_sources": [
+        "client 1.21.1 JAR (G:/Elias/Codex/Entrelumen-work/neoform-cache/artifacts/minecraft_1.21.1_client.jar)"
+      ],
+      "reference_took": "Copper family and pistons: plates, rivets and brass for a steampunk engine. Grindstone: a wheel read at block scale. Oritech: members that stop drawing themselves once the machine is assembled and a controller that draws the whole machine.",
+      "note": "Terra’s garden engine (docs/design/terra-garden.md). No third-party pixels copied."
+    },
+    "terra_engine_core_front_built": {
+      "method": "hand-placed on the 16x16 grid from its left half and mirrored; the unformed core’s front once the engine stands: the window turns teal",
+      "authoring": "art/authoring/draw_terra_garden.py",
+      "reference_inspected": [
+        "minecraft:textures/block/cut_copper.png",
+        "minecraft:textures/block/copper_grate.png",
+        "minecraft:textures/block/piston_side.png",
+        "minecraft:textures/block/piston_top.png",
+        "minecraft:textures/block/copper_bulb_lit.png",
+        "minecraft:textures/block/grindstone_side.png",
+        "oritech (oritech-neoforge-1.21.1-1.2.11.jar): machine_core blockstates and MachineCoreBlock/MultiblockMachine bytecode, technique only (hidden members, one controller model); no model or texture looked at for copying"
+      ],
+      "reference_sources": [
+        "client 1.21.1 JAR (G:/Elias/Codex/Entrelumen-work/neoform-cache/artifacts/minecraft_1.21.1_client.jar)"
+      ],
+      "reference_took": "Copper family and pistons: plates, rivets and brass for a steampunk engine. Grindstone: a wheel read at block scale. Oritech: members that stop drawing themselves once the machine is assembled and a controller that draws the whole machine.",
+      "note": "Terra’s garden engine (docs/design/terra-garden.md). No third-party pixels copied."
     }
   },
   "armor": {

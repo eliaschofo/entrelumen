@@ -42,13 +42,14 @@ ITEMS += list(ANIMATED) + sorted(HANDHELD) + ['luminous_helmet', 'luminous_chest
 ITEMS += ['signal_ember', 'terra_blueprint', 'route_seal', 'mother_seed', 'heliodor_crucible', 'voices_eyepiece',
           'forest_testimony', 'sun_key', 'sacred_flame', 'star_chart']
 # Terra's hydroponic garden (art/authoring/draw_terra_garden.py): the plan, the grow lamp (animated, frametime 2
-# like the luminosities), the outlet (one cube) and the core's pot, a sculpted model (art/models/block) whose rim
-# glows (dark, teal, or a breathing green: 8 frames).
+# like the luminosities) and the engine: casing and outlet members, the core (a casing cube with a window while
+# unformed, one sculpted model of the whole engine once formed, art/models/block) and the pot's breathing glow.
 ITEMS += ['terra_garden_plan']
 ANIMATED['terra_grow_lamp'] = 8
 ITEMS += ['terra_grow_lamp']
 TERRA_BLOCKS = ['terra_garden_outlet', 'terra_garden_core_pot', 'terra_garden_core_soil', 'terra_garden_core_glow',
-                'terra_garden_core_glow_off', 'terra_garden_core_glow_dim']
+                'terra_engine_casing', 'terra_engine_fins', 'terra_engine_grille', 'terra_engine_brass',
+                'terra_engine_wheel', 'terra_engine_headlight', 'terra_engine_core_front', 'terra_engine_core_front_built']
 # The Terralight crystal (four cross stages), its grounding rod and the lamp placed as a block; the shard shimmers
 # in 8 frames like the luminosities.
 ANIMATED['terralight_shard'] = 8
@@ -56,7 +57,7 @@ ITEMS += ['terralight_shard']
 TERRA_BLOCKS += ['terralight_crystal_%d' % i for i in range(4)] + ['terralight_grounding_rod', 'terra_grow_lamp_hood',
                                                                    'terra_grow_lamp_flame']
 TERRA_CORE_MODELS = {'unbuilt': 'terra_garden_core', 'built': 'terra_garden_core_built',
-                     'growing': 'terra_garden_core_growing'}
+                     'growing': 'terra_garden_core_formed'}
 ARMOR_LAYERS = ['luminous_layer_1', 'luminous_layer_2']   # 64x32 PNG sources in art/armor/
 COMPASS_DIMENSIONS = ['overworld', 'nether', 'end', 'aether', 'twilight', 'other']   # entrelumen:dimension 0..5
 # Enchanting shelves (cube_column: side + end) and the Atlas Library (cube_bottom_top).
@@ -250,19 +251,22 @@ def expected():
             out[(dest, f'models/block/{name}.json')] = js(model)
             out[(dest, f'models/item/{name}.json')] = js({'parent': 'entrelumen:block/' + name})
         out[('mod', f'blockstates/{name}.json')] = js({'variants': {'': {'model': 'entrelumen:block/' + name}}})
-    # Terra's garden: the outlet is one cube; the core's pot is sculpted, drawn on the engine's mirror plane for a
-    # garden facing south and turned with the garden (south 0, west 90, north 180, east 270).
-    outlet = js({'parent': 'minecraft:block/cube_all', 'textures': {'all': 'entrelumen:block/terra_garden_outlet'}})
-    for dest in ('pack', 'mod'):
-        out[(dest, 'models/block/terra_garden_outlet.json')] = outlet
-        out[(dest, 'models/item/terra_garden_outlet.json')] = js({'parent': 'entrelumen:block/terra_garden_outlet'})
-    out[('mod', 'blockstates/terra_garden_outlet.json')] = js({'variants': {'': {'model': 'entrelumen:block/terra_garden_outlet'}}})
-    for name in list(TERRA_CORE_MODELS.values()) + ['terra_garden_core_item']:
+    # Terra's garden engine: the members (casing, outlet) are cubes that draw nothing once formed (the Oritech
+    # technique: minecraft:block/air); the core's formed model covers the whole engine, turned with it
+    # (south 0, west 90, north 180, east 270).
+    for member in ('terra_engine_casing', 'terra_garden_outlet'):
+        cube = js({'parent': 'minecraft:block/cube_all', 'textures': {'all': 'entrelumen:block/' + member}})
+        for dest in ('pack', 'mod'):
+            out[(dest, f'models/block/{member}.json')] = cube
+            out[(dest, f'models/item/{member}.json')] = js({'parent': 'entrelumen:block/' + member})
+        out[('mod', f'blockstates/{member}.json')] = js({'variants': {
+            'formed=false': {'model': 'entrelumen:block/' + member}, 'formed=true': {'model': 'minecraft:block/air'}}})
+    for name in list(TERRA_CORE_MODELS.values()):
         model = json.loads((ART / 'models/block' / f'{name}.json').read_text(encoding='utf-8'))
         for dest in ('pack', 'mod'):
             out[(dest, f'models/block/{name}.json')] = js(model)
     for dest in ('pack', 'mod'):
-        out[(dest, 'models/item/terra_garden_core.json')] = js({'parent': 'entrelumen:block/terra_garden_core_item'})
+        out[(dest, 'models/item/terra_garden_core.json')] = js({'parent': 'entrelumen:block/terra_garden_core'})
     for name in ['terralight_grounding_rod', 'terra_grow_lamp'] + ['terralight_crystal_%d' % i for i in range(4)]:
         model = json.loads((ART / 'models/block' / f'{name}.json').read_text(encoding='utf-8'))
         for dest in ('pack', 'mod'):
@@ -273,10 +277,15 @@ def expected():
     out[('mod', 'blockstates/terra_grow_lamp.json')] = js({'variants': {'': {'model': 'entrelumen:block/terra_grow_lamp'}}})
     out[('mod', 'blockstates/terralight_crystal.json')] = js({'variants': {
         f'stage={i}': {'model': f'entrelumen:block/terralight_crystal_{i}'} for i in range(4)}})
-    turns = {'south': 0, 'west': 90, 'north': 180, 'east': 270}
+    # the unformed cube is vanilla's orientable (front north); the formed engine is drawn facing south
+    turns = {'north': 0, 'east': 90, 'south': 180, 'west': 270}
+
+    def core_y(facing, state):
+        return (turns[facing] + (180 if state == 'growing' else 0)) % 360
     out[('mod', 'blockstates/terra_garden_core.json')] = js({'variants': {
-        f'facing={facing},garden={state}': dict({'model': 'entrelumen:block/' + model}, **({'y': y} if y else {}))
-        for facing, y in turns.items() for state, model in TERRA_CORE_MODELS.items()}})
+        f'facing={facing},garden={state}': dict({'model': 'entrelumen:block/' + model},
+                                                **({'y': core_y(facing, state)} if core_y(facing, state) else {}))
+        for facing in turns for state, model in TERRA_CORE_MODELS.items()}})
     return images, out, strips
 
 

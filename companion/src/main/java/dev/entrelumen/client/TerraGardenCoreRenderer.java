@@ -17,16 +17,16 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 
 /**
- * Draws the crop growing in the core's pot: the seed's own crop block, small, standing in the soil at the
- * pot's centre (on the engine's mirror plane). While the garden grows the crop runs through its ages,
- * about four a second, so the heart looks alive; otherwise it stands half grown. No seed, no crop.
+ * Draws the crop growing in the formed engine's pot: the seed's own crop block, small, standing in the soil
+ * at the pot's centre, running through its ages about four times a second so the heart looks alive. No seed,
+ * or an unformed engine, no crop.
  */
 @EventBusSubscriber(modid = "entrelumen", bus = EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
 public final class TerraGardenCoreRenderer implements BlockEntityRenderer<TerraGardenCoreEntity> {
-  /** The crop's size against a whole block: about 9 units tall in the 8-unit pot. */
+  /** The crop's size against a whole block: about 9 units tall in the 10-unit pot. */
   private static final float SCALE = 0.56f;
-  /** The soil's height in the pot model. */
-  private static final float SOIL = 6f / 16f;
+  /** The soil's height in the formed engine model (the pot sits on the engine block). */
+  private static final float SOIL = 24f / 16f;
 
   public TerraGardenCoreRenderer(BlockEntityRendererProvider.Context context) {}
 
@@ -35,13 +35,16 @@ public final class TerraGardenCoreRenderer implements BlockEntityRenderer<TerraG
     event.registerBlockEntityRenderer(TerraGarden.CORE_ENTITY.get(), TerraGardenCoreRenderer::new);
   }
 
-  /** The pot's centre in the block, in blocks: half a block to the side the facing puts the mirror plane on. */
+  /**
+   * The pot's centre in the core's cell, in blocks: on the middle column's axis and on the line between the
+   * engine's front and back rows (for a garden facing south, z = 0), turned with the engine.
+   */
   static float[] centre(Direction facing) {
     return switch (facing) {
-      case WEST -> new float[] {0.5f, 0f};
-      case NORTH -> new float[] {1f, 0.5f};
-      case EAST -> new float[] {0.5f, 1f};
-      default -> new float[] {0f, 0.5f};
+      case WEST -> new float[] {1f, 0.5f};
+      case NORTH -> new float[] {0.5f, 1f};
+      case EAST -> new float[] {0f, 0.5f};
+      default -> new float[] {0.5f, 0f};
     };
   }
 
@@ -51,10 +54,11 @@ public final class TerraGardenCoreRenderer implements BlockEntityRenderer<TerraG
     CropBlock crop = TerraGarden.crop(core.seed());
     if (crop == null) return;
     BlockState state = core.getBlockState();
-    boolean growing = state.getValue(TerraGardenCoreBlock.GARDEN) == TerraGardenCoreBlock.Garden.GROWING;
+    // only the formed engine has a pot: unformed, the core is a plain block
+    if (state.getValue(TerraGardenCoreBlock.GARDEN) != TerraGardenCoreBlock.Garden.GROWING) return;
     int max = crop.getMaxAge();
     long time = core.getLevel() == null ? 0 : core.getLevel().getGameTime();
-    int age = growing ? (int) ((time / 5) % (max + 1)) : max / 2;
+    int age = (int) ((time / 5) % (max + 1));
     float[] at = centre(state.getValue(TerraGardenCoreBlock.FACING));
     pose.pushPose();
     pose.translate(at[0], SOIL, at[1]);
@@ -64,9 +68,9 @@ public final class TerraGardenCoreRenderer implements BlockEntityRenderer<TerraG
     pose.popPose();
   }
 
-  /** The crop may stand outside the core's own cell (the pot sits on the block's edge). */
+  /** The crop stands above the core's own cell, on the engine. */
   @Override
   public net.minecraft.world.phys.AABB getRenderBoundingBox(TerraGardenCoreEntity core) {
-    return new net.minecraft.world.phys.AABB(core.getBlockPos()).inflate(1);
+    return new net.minecraft.world.phys.AABB(core.getBlockPos()).inflate(1, 2, 1);
   }
 }

@@ -38,8 +38,8 @@ public final class TerraGardenRules {
   public static final long MILESTONE_HARVESTS = 1_000_000L;
 
   // ---- the measured alternatives (docs/design/terra-garden.md, «Números») ------------------------
-  /** The engine's box: 4 x 4 x 4. */
-  public static final int GARDEN_VOLUME = 4 * 4 * 4;
+  /** The engine's box: 3 wide, 2 deep, 2 tall (twelve factories in it would make 540 wheat/s, under 900). */
+  public static final int GARDEN_VOLUME = 3 * 2 * 2;
   /** More Machine's ultimate planting factory, 8 speed upgrades: 9 processes x 1 op/s x 5 wheat. */
   public static final double PLANTING_FACTORY_WHEAT_PER_SECOND = 9 * (20.0 / 20.0) * 5;
   /** Botany Pots Tiers' mega hopper pot, wheat on the best soil, Efficiency X hoe: 5 rolls per 108 ticks. */

@@ -105,10 +105,27 @@ public final class TerraGardenCoreEntity extends BlockEntity {
     if (was != standing) setChanged();
   }
 
-  /** The lamp comes out as an item at {@code at}, and the engine sleeps until a lamp wakes it again. */
+  /**
+   * Marks the engine's members formed (they stop drawing themselves; the core's model draws the engine) or
+   * plain again. Only members still in place at the engine's rotation are touched.
+   */
+  void setFormed(ServerLevel level, boolean formed) {
+    if (rotation < 0) return;
+    for (var part : TerraGardenLayout.builtin().parts()) {
+      if (part.core()) continue;
+      BlockPos at = TerraGardenLayout.world(worldPosition, rotation, part.offset());
+      if (!level.isLoaded(at)) continue;
+      BlockState state = level.getBlockState(at);
+      if (state.getBlock() instanceof TerraEngineMemberBlock && state.getValue(TerraEngineMemberBlock.FORMED) != formed)
+        level.setBlock(at, state.setValue(TerraEngineMemberBlock.FORMED, formed), net.minecraft.world.level.block.Block.UPDATE_ALL);
+    }
+  }
+
+  /** The lamp comes out as an item at {@code at}, the engine unforms and sleeps until a lamp wakes it again. */
   void releaseLamp(ServerLevel level, BlockPos at) {
     if (!awake) return;
     awake = false;
+    setFormed(level, false);
     net.minecraft.world.level.block.Block.popResource(level, at, new ItemStack(TerraGarden.GROW_LAMP.get()));
     if (!isRemoved() && level.getBlockEntity(worldPosition) == this) updateLook(level);
     setChanged();
@@ -341,6 +358,7 @@ public final class TerraGardenCoreEntity extends BlockEntity {
     awake = true;
     waker = player.getUUID();
     nextBatch = level.getGameTime() + TerraGardenRules.BATCH_TICKS;
+    setFormed(level, true);
     updateLook(level);
     player.awardStat(TerraGarden.ACTIVATIONS.get());
     player.displayClientMessage(Component.translatable("entrelumen.terra_garden.awake"), false);

@@ -18,7 +18,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import org.junit.jupiter.api.Test;
 
-/** Terra's hydroponic garden, the 4 x 4 x 4 engine, without a world: the layout, its rotations and the batch arithmetic. */
+/** Terra's hydroponic garden, the 3 x 2 x 2 engine, without a world: the layout, its rotations and the batch arithmetic. */
 class TerraGardenTest {
   private static final TerraGardenLayout.Definition GARDEN = TerraGardenLayout.builtin();
   /** Copper at any stage or waxed is the plain copper block; a grown vine is a vine (the core's rule). */
@@ -64,37 +64,30 @@ class TerraGardenTest {
   }
 
   @Test
-  void theLayoutHasOneCoreAtTheOriginTwoOutletsAndAGreenBed() {
+  void theEngineIsTwelveBlocksTheCoreInFrontOfTheMiddleColumnAndOneOutletBehindIt() {
+    assertEquals(12, GARDEN.size());
     assertEquals(1, GARDEN.parts().stream().filter(TerraGardenLayout.Part::core).count());
     assertEquals(BlockPos.ZERO, GARDEN.parts().stream().filter(TerraGardenLayout.Part::core).findFirst().orElseThrow().offset());
-    assertEquals(2, GARDEN.count(TerraGardenLayout.OUTLET));
-    assertEquals(4, GARDEN.count(ResourceLocation.withDefaultNamespace("piston")));
-    assertEquals(4, GARDEN.count(ResourceLocation.withDefaultNamespace("verdant_froglight")));
-    assertEquals(57, GARDEN.size());
-    // the pot stands on the green bed, under the skylight
+    assertEquals(1, GARDEN.count(TerraGardenLayout.OUTLET));
+    assertEquals(10, GARDEN.count(ResourceLocation.fromNamespaceAndPath("entrelumen", "terra_engine_casing")));
     Map<BlockPos, ResourceLocation> byPos = new HashMap<>();
     GARDEN.parts().forEach(p -> byPos.put(p.offset(), p.block()));
-    assertEquals(ResourceLocation.withDefaultNamespace("verdant_froglight"), byPos.get(new BlockPos(0, -1, 0)));
-    assertEquals(ResourceLocation.withDefaultNamespace("glass"), byPos.get(new BlockPos(0, 1, 0)));
-    assertNull(byPos.get(new BlockPos(0, 0, 1)), "the heart is open to the front");
+    assertEquals(TerraGardenLayout.OUTLET, byPos.get(new BlockPos(0, 0, -1)), "the outlet is behind the core");
   }
 
   @Test
-  void theLayoutIsMirrorSymmetricAboutThePlaneBetweenTheMiddleColumns() {
+  void theLayoutIsMirrorSymmetricAboutTheMiddleColumn() {
     Map<BlockPos, TerraGardenLayout.Part> byPos = new HashMap<>();
     GARDEN.parts().forEach(p -> byPos.put(p.offset(), p));
     for (var part : GARDEN.parts()) {
-      if (part.core()) continue;   // its model draws the pot on the plane itself
-      var mirror = byPos.get(new BlockPos(-1 - part.offset().getX(), part.offset().getY(), part.offset().getZ()));
+      var mirror = byPos.get(new BlockPos(-part.offset().getX(), part.offset().getY(), part.offset().getZ()));
       assertNotNull(mirror, "no mirror for " + part.offset());
       assertEquals(part.block(), mirror.block(), "mirror of " + part.offset());
-      assertEquals(part.properties().keySet(), mirror.properties().keySet());
     }
-    assertNull(byPos.get(new BlockPos(-1, 0, 0)), "the core's mirror cell is the open heart");
   }
 
   @Test
-  void theGardenIsAFourByFourByFourEngineWithThePotInTheHeart() {
+  void theEngineIsThreeWideTwoDeepTwoTall() {
     int minX = Integer.MAX_VALUE, maxX = Integer.MIN_VALUE, minY = Integer.MAX_VALUE, maxY = Integer.MIN_VALUE;
     int minZ = Integer.MAX_VALUE, maxZ = Integer.MIN_VALUE;
     for (var part : GARDEN.parts()) {
@@ -103,8 +96,8 @@ class TerraGardenTest {
       minY = Math.min(minY, p.getY()); maxY = Math.max(maxY, p.getY());
       minZ = Math.min(minZ, p.getZ()); maxZ = Math.max(maxZ, p.getZ());
     }
-    assertEquals(List.of(-2, 1, -2, 1, -2, 1), List.of(minX, maxX, minY, maxY, minZ, maxZ));
-    assertEquals(TerraGardenRules.GARDEN_VOLUME, 4 * 4 * 4);
+    assertEquals(List.of(-1, 1, 0, 1, -1, 0), List.of(minX, maxX, minY, maxY, minZ, maxZ));
+    assertEquals(TerraGardenRules.GARDEN_VOLUME, 3 * 2 * 2);
   }
 
   @Test
@@ -129,7 +122,7 @@ class TerraGardenTest {
   }
 
   @Test
-  void aMissingOrWrongBlockIsNamedAndWeatheredCopperStillCounts() {
+  void aMissingOrWrongBlockIsNamed() {
     BlockPos core = BlockPos.ZERO;
     World world = World.built(core, 2);
     var outletAt = GARDEN.parts().stream().filter(p -> p.block().equals(TerraGardenLayout.OUTLET)).findFirst().orElseThrow();
@@ -139,23 +132,16 @@ class TerraGardenTest {
     assertFalse(scan.complete());
     assertEquals(List.of(hole), scan.missing());
     world.blocks().put(hole, outletAt.block());
-    // every copper block at another stage, waxed or not: still the garden
-    world.blocks().replaceAll((pos, id) -> id.getPath().startsWith("waxed_oxidized_")
-        ? ResourceLocation.withDefaultNamespace("weathered_" + id.getPath().substring("waxed_oxidized_".length()))
-        : id.getPath().startsWith("waxed_") ? ResourceLocation.withDefaultNamespace(id.getPath().substring("waxed_".length())) : id);
     assertTrue(world.scan(core, 2).complete());
   }
 
   @Test
-  void thePistonsMustPointUpButMayBeExtended() {
+  void aFormedMemberStillCounts() {
     BlockPos core = BlockPos.ZERO;
     World world = World.built(core, 1);
-    var piston = GARDEN.parts().stream().filter(p -> p.block().getPath().equals("piston")).findFirst().orElseThrow();
-    assertEquals(Map.of("facing", "up"), piston.properties());
-    BlockPos at = TerraGardenLayout.world(core, 1, piston.offset());
-    world.properties().put(at, new HashMap<>(Map.of("facing", "north", "extended", "false")));
-    assertEquals(List.of(at), world.scan(core, 1).missing());
-    world.properties().put(at, new HashMap<>(Map.of("facing", "up", "extended", "true")));
+    assertTrue(TerraGardenLayout.IGNORED.contains("formed"));
+    for (var part : GARDEN.parts())
+      if (!part.core()) world.properties().put(TerraGardenLayout.world(core, 1, part.offset()), new HashMap<>(Map.of("formed", "true")));
     assertTrue(world.scan(core, 1).complete());
   }
 
@@ -163,7 +149,7 @@ class TerraGardenTest {
   void anUnloadedChunkNeverCountsAsBuilt() {
     BlockPos core = BlockPos.ZERO;
     World world = World.built(core, 0);
-    var scan = TerraGardenLayout.scan(GARDEN, core, 0, pos -> pos.getY() > 5 ? null : world.blocks().get(pos),
+    var scan = TerraGardenLayout.scan(GARDEN, core, 0, pos -> pos.getY() > 0 ? null : world.blocks().get(pos),
         (pos, name) -> world.properties().getOrDefault(pos, Map.of()).get(name), NORMALISE);
     assertTrue(scan.unloaded());
     assertFalse(scan.complete());
@@ -240,18 +226,11 @@ class TerraGardenTest {
   }
 
   @Test
-  void theExcludedSeedsAreTheBossDropsAndActSixAndAllOptional() throws Exception {
+  void everySeedGoesInButNetherStarsAndDragonEggsAreNeverMade() throws Exception {
+    // Elias, 29 September 2026: «sí, entra todo»
     var tag = resource("/data/entrelumen/tags/item/terra_garden_excluded.json");
     assertFalse(tag.get("replace").getAsBoolean());
-    Set<String> ids = new java.util.HashSet<>();
-    for (var value : tag.getAsJsonArray("values")) {
-      assertFalse(value.getAsJsonObject().get("required").getAsBoolean(), value.toString());
-      ids.add(value.getAsJsonObject().get("id").getAsString());
-    }
-    assertTrue(ids.contains("mysticalagradditions:nether_star_seeds"));
-    assertTrue(ids.contains("mysticalagradditions:dragon_egg_seeds"));
-    assertTrue(ids.containsAll(Set.of("mysticalagradditions:gaia_spirit_seeds", "mysticalagradditions:awakened_draconium_seeds",
-        "mysticalagradditions:neutronium_seeds", "mysticalagradditions:nitro_crystal_seeds")));
+    assertEquals(0, tag.getAsJsonArray("values").size());
     var drops = resource("/data/entrelumen/tags/item/terra_garden_forbidden_drops.json");
     assertEquals(Set.of("minecraft:nether_star", "minecraft:dragon_egg"), new java.util.HashSet<>(
         drops.getAsJsonArray("values").asList().stream().map(v -> v.getAsString()).toList()));
