@@ -4,409 +4,440 @@
   "act": "any",
   "icon": "minecraft:chest",
   "emblem": "toolbelt:textures/item/belt.png",
-  "title": {
-    "en_us": "Inventory Without Pain",
-    "es_es": "Inventario sin sufrir"
-  },
+  "title": {"en_us": "Inventory Without Pain", "es_es": "Inventario sin sufrir"},
   "subtitle": {
     "en_us": "Mouse gestures, sorting, trash, portable stations and the Tool Belt.",
     "es_es": "Gestos del mouse, orden, basura, estaciones portátiles y el cinturón de herramientas."
   },
   "quests": [
     {
-      "key": "qol_inventory_welcome",
-      "deps": [],
-      "type": "checkmark",
-      "layout": {
-        "x": 0,
-        "y": 0,
-        "size": 2.0,
-        "shape": "hexagon"
-      },
-      "en_us": [
-        "Less Clicking, More Playing",
-        "Big pack, big inventory. A handful of small mods remove clicks: drag gestures, one-key sorting, a trash slot, crafting tables on a stick and a tool belt. None of them touches progression.\n\nMoving items should never feel like a second job.\n\nThe magnet hangs with the gadgets: [quest:qol_inventory_magnet|A magnet in your pocket]."
-      ],
-      "es_es": [
-        "Menos clics, más juego",
-        "Pack grande, inventario grande. Varios mods chicos ahorran clics: gestos de arrastre, orden con una tecla, un casillero de basura, mesas de trabajo en un palo y un cinturón de herramientas. Ninguno toca la progresión.\n\nMover ítems nunca debería sentirse como un segundo trabajo.\n\nEl imán cuelga con los aparatos: [quest:qol_inventory_magnet|Un imán en el bolsillo]."
-      ],
-      "sources": [
-        "repo:docs/design/qol-parity.md",
-        "repo:catalog/curated.json",
-        "repo:content/sectors/sector_gadgets.json"
-      ]
+      "key": "qol_inventory_welcome", "deps": [], "type": "checkmark", "layout": {"x": 0, "y": 0, "size": 2.0, "shape": "hexagon"},
+      "en_us": {"title": "Less Clicking, More Playing", "subtitle": "Moving items is not a second job.",
+        "text": ["[lead] Big pack, big inventory, so a handful of small mods remove the clicks.",
+                 "[li] Drag gestures",
+                 "[li] One-key sorting",
+                 "[li] A trash slot",
+                 "[li] Crafting tables on a stick",
+                 "[li] A tool belt",
+                 "None of them touches progression. The magnet hangs with the gadgets: [quest:qol_inventory_magnet|A magnet in your pocket]."]},
+      "es_es": {"title": "Menos clics, más juego", "subtitle": "Mover ítems no es un segundo trabajo.",
+        "text": ["[lead] Pack grande, inventario grande: varios mods chicos ahorran los clics.",
+                 "[li] Gestos de arrastre",
+                 "[li] Orden con una tecla",
+                 "[li] Un casillero de basura",
+                 "[li] Mesas de trabajo en un palo",
+                 "[li] Un cinturón de herramientas",
+                 "Ninguno toca la progresión. El imán cuelga con los aparatos: [quest:qol_inventory_magnet|Un imán en el bolsillo]."]},
+      "sources": ["repo:docs/design/qol-parity.md", "repo:catalog/curated.json", "repo:content/sectors/sector_gadgets.json"]
     },
     {
-      "key": "qol_inventory_mouse",
-      "deps": [
-        "qol_inventory_welcome"
-      ],
-      "type": "checkmark",
+      "key": "qol_inventory_mouse", "deps": ["qol_inventory_welcome"], "type": "checkmark", "layout": {"x": 4.4, "y": -2, "size": 1.0, "shape": "square"},
       "icon": "minecraft:string",
-      "layout": {
-        "x": 3,
-        "y": -2,
-        "size": 1.0,
-        "shape": "square"
-      },
-      "en_us": [
-        "Mouse Tweaks",
-        "In any inventory: hold &eright click&r and drag over empty slots to drop one item in each; hold &eleft click&r with a stack and drag to gather the same kind; &eShift&r plus left-drag with an empty hand sends every slot you touch across; the &emouse wheel&r over an item moves it one at a time."
-      ],
-      "es_es": [
-        "Mouse Tweaks",
-        "En cualquier inventario: mantené el &eclic derecho&r y arrastrá sobre casilleros vacíos para dejar uno en cada uno; con una pila, mantené el &eclic izquierdo&r y arrastrá para juntar los del mismo tipo; &eShift&r y arrastrar con clic izquierdo con la mano vacía manda al otro lado cada casillero que tocás; la &erueda&r sobre un ítem lo pasa de a uno."
-      ],
-      "sources": [
-        "jar:MouseTweaks-neoforge-mc1.21-2.26.1.jar:META-INF/neoforge.mods.toml",
-        "repo:docs/design/qol-parity.md"
-      ]
+      "en_us": {"title": "Mouse Tweaks",
+        "text": ["[lead] Four mouse gestures that work in any inventory.",
+                 "[li] [icon:right_click] Hold and drag over empty slots: one item in each",
+                 "[li] [icon:click] Hold with a stack and drag: gathers the same kind",
+                 "[li] [hl|Shift] and left-drag with an empty hand: sends every slot you touch across",
+                 "[li] Mouse wheel over an item: moves it one at a time"]},
+      "es_es": {"title": "Mouse Tweaks",
+        "text": ["[lead] Cuatro gestos del mouse que sirven en cualquier inventario.",
+                 "[li] [icon:right_click] Mantené y arrastrá sobre casilleros vacíos: uno en cada uno",
+                 "[li] [icon:click] Mantené con una pila y arrastrá: junta los del mismo tipo",
+                 "[li] [hl|Shift] y arrastrar con clic izquierdo con la mano vacía: manda al otro lado cada casillero que tocás",
+                 "[li] Rueda sobre un ítem: lo pasa de a uno"]},
+      "sources": ["jar:MouseTweaks-neoforge-mc1.21-2.26.1.jar:META-INF/neoforge.mods.toml", "repo:docs/design/qol-parity.md"]
     },
     {
-      "key": "qol_inventory_sort",
-      "deps": [
-        "qol_inventory_welcome"
-      ],
-      "type": "checkmark",
+      "key": "qol_inventory_sort", "deps": ["qol_inventory_welcome"], "type": "checkmark", "layout": {"x": 4.4, "y": 2, "size": 1.0, "shape": "square"},
       "icon": "minecraft:hopper",
-      "layout": {
-        "x": 3,
-        "y": 2,
-        "size": 1.0,
-        "shape": "square"
-      },
-      "en_us": [
-        "Sorting With Inventory Tweaks",
-        "&eInventory Tweaks Refoxed&r is the pack's only sorter: the &ebackslash&r key sorts your inventory and the &egrave-accent&r key the open chest (check Controls for your layout's labels).\n\nIt also refills a hotbar slot from your inventory when a tool breaks or a stack runs out."
-      ],
-      "es_es": [
-        "Ordenar con Inventory Tweaks",
-        "&eInventory Tweaks Refoxed&r es el único ordenador del pack: la tecla de la &ebarra invertida&r ordena tu inventario y la del &eacento grave&r el cofre abierto (mirá en Controles la etiqueta de tu distribución).\n\nAdemás repone un casillero de la barra desde tu inventario cuando se rompe una herramienta o se acaba una pila."
-      ],
-      "sources": [
-        "jar:invtweaks-1.21.1-1.3.2.jar:invtweaks/events/KeyMappings.class",
-        "jar:invtweaks-1.21.1-1.3.2.jar:invtweaks/config/InvTweaksConfig.class",
-        "repo:docs/design/qol-parity.md"
-      ]
+      "en_us": {"title": "Sorting With Inventory Tweaks",
+        "text": ["[lead] The pack's only sorter: one key for your inventory, another for the open chest.",
+                 "[li] [key:key.invtweaks_sort_player.desc]: your inventory",
+                 "[li] [key:key.invtweaks_sort_inventory.desc]: the open chest",
+                 "[hl|Inventory Tweaks Refoxed] also refills a hotbar slot from your inventory when a tool breaks or a stack runs out."]},
+      "es_es": {"title": "Ordenar con Inventory Tweaks",
+        "text": ["[lead] El único ordenador del pack: una tecla para tu inventario y otra para el cofre abierto.",
+                 "[li] [key:key.invtweaks_sort_player.desc]: tu inventario",
+                 "[li] [key:key.invtweaks_sort_inventory.desc]: el cofre abierto",
+                 "[hl|Inventory Tweaks Refoxed] además repone un casillero de la barra desde tu inventario cuando se rompe una herramienta o se acaba una pila."]},
+      "sources": ["jar:invtweaks-1.21.1-1.3.2.jar:invtweaks/events/KeyMappings.class", "jar:invtweaks-1.21.1-1.3.2.jar:invtweaks/config/InvTweaksConfig.class", "repo:docs/design/qol-parity.md"]
     },
     {
-      "key": "qol_inventory_vanilla_tricks",
-      "deps": [
-        "qol_inventory_mouse"
-      ],
-      "type": "checkmark",
-      "optional": true,
-      "layout": {
-        "x": 6,
-        "y": -4,
-        "size": 1.0,
-        "shape": "diamond"
-      },
-      "en_us": [
-        "Vanilla Tricks Worth Knowing",
-        "&eDouble-click&r gathers every item of a kind onto the cursor; &eShift+double-click&r moves all those stacks across. &e1-9&r swap the hovered slot with the hotbar, &eF&r with the offhand. &eQ&r over a slot drops one, &eCtrl+Q&r the whole stack.\n\nMinecraft had these all along. Nobody told you."
-      ],
-      "es_es": [
-        "Trucos de vanilla",
-        "&eDoble clic&r junta en el cursor todos los ítems de un tipo; &eShift+doble clic&r manda todas esas pilas al otro lado. &e1-9&r intercambian el casillero apuntado con la barra, &eF&r con la mano secundaria. &eQ&r sobre un casillero tira uno, &eCtrl+Q&r la pila entera.\n\nMinecraft los tuvo siempre. Nadie te avisó."
-      ],
-      "sources": [
-        "https://minecraft.wiki/w/Controls"
-      ]
+      "key": "qol_inventory_vanilla_tricks", "deps": ["qol_inventory_mouse"], "type": "checkmark", "optional": true, "layout": {"x": 8.7, "y": -4, "size": 1.0, "shape": "diamond"},
+      "en_us": {"title": "Vanilla Tricks Worth Knowing", "subtitle": "Minecraft had these all along.",
+        "text": ["[lead] Double-click gathers every item of a kind onto the cursor.",
+                 "[li] [icon:click] Double-click: gathers the kind onto the cursor",
+                 "[li] [hl|Shift]-double-click: moves all those stacks across",
+                 "{page}",
+                 "[li] [key:key.hotbar.1] to [key:key.hotbar.9]: swap the hovered slot with that hotbar slot",
+                 "[li] [key:key.swapOffhand]: swap it with the offhand",
+                 "[li] [key:key.drop] over a slot drops one; hold [hl|Ctrl] and it drops the whole stack",
+                 "Nobody told you."]},
+      "es_es": {"title": "Trucos de vanilla", "subtitle": "Minecraft los tuvo siempre.",
+        "text": ["[lead] El doble clic junta en el cursor todos los ítems de un tipo.",
+                 "[li] [icon:click] Doble clic: junta el tipo en el cursor",
+                 "[li] [hl|Shift] y doble clic: manda todas esas pilas al otro lado",
+                 "{page}",
+                 "[li] [key:key.hotbar.1] a [key:key.hotbar.9]: intercambian el casillero apuntado con ese de la barra",
+                 "[li] [key:key.swapOffhand]: lo intercambia con la mano secundaria",
+                 "[li] [key:key.drop] sobre un casillero tira uno; con [hl|Ctrl] apretada, la pila entera",
+                 "Nadie te avisó."]},
+      "sources": ["https://minecraft.wiki/w/Controls"]
     },
     {
-      "key": "qol_inventory_crafting_tweaks",
-      "deps": [
-        "qol_inventory_mouse",
-        "qol_inventory_sort"
-      ],
-      "type": "item",
-      "item": "minecraft:crafting_table",
-      "layout": {
-        "x": 6,
-        "y": 0,
-        "size": 1.25,
-        "shape": "circle"
-      },
-      "en_us": [
-        "Crafting Tweaks",
-        "Small buttons beside the crafting grid &erotate&r it, &ebalance&r and &espread&r ingredients, and &eclear&r it back to your inventory (force clear drops items if you are full). They show up on many modded stations too.\n\nWith EMI's + button, shaped recipes become painless."
-      ],
-      "es_es": [
-        "Crafting Tweaks",
-        "Unos botoncitos al lado de la grilla de crafteo la &erotan&r, &eequilibran&r y &ereparten&r los ingredientes y la &evacían&r a tu inventario (el vaciado forzado tira los ítems si estás lleno). También aparecen en muchas estaciones de mods.\n\nCon el botón + de EMI, las recetas con forma dejan de doler."
-      ],
-      "sources": [
-        "jar:craftingtweaks-neoforge-1.21.1-21.1.11.jar:assets/craftingtweaks/lang/en_us.json"
-      ]
+      "key": "qol_inventory_crafting_tweaks", "deps": ["qol_inventory_mouse", "qol_inventory_sort"], "type": "item", "item": "minecraft:crafting_table", "layout": {"x": 8.7, "y": 0, "size": 1.25, "shape": "circle"},
+      "en_us": {"title": "Crafting Tweaks",
+        "text": ["[lead] Small buttons beside the [item:minecraft:crafting_table|crafting] grid do the boring part.",
+                 "[li] Rotate the grid",
+                 "[li] Balance and spread the ingredients",
+                 "[li] Clear it back to your inventory",
+                 "[careful] Force clear drops the items if your inventory is full.",
+                 "They show up on many modded stations too. With EMI's [hl|+] button, shaped recipes become painless."]},
+      "es_es": {"title": "Crafting Tweaks",
+        "text": ["[lead] Unos botoncitos al lado de la grilla de [item:minecraft:crafting_table|crafteo] hacen la parte aburrida.",
+                 "[li] Rotan la grilla",
+                 "[li] Equilibran y reparten los ingredientes",
+                 "[li] La vacían a tu inventario",
+                 "[careful] El vaciado forzado tira los ítems si estás lleno.",
+                 "También aparecen en muchas estaciones de mods. Con el botón [hl|+] de EMI, las recetas con forma dejan de doler."]},
+      "sources": ["jar:craftingtweaks-neoforge-1.21.1-21.1.11.jar:assets/craftingtweaks/lang/en_us.json"]
     },
     {
-      "key": "qol_inventory_fuel",
-      "deps": [
-        "qol_inventory_sort"
-      ],
-      "type": "item",
-      "item": "minecraft:furnace",
-      "optional": true,
-      "layout": {
-        "x": 6,
-        "y": 4,
-        "size": 1.0,
-        "shape": "circle"
-      },
-      "en_us": [
-        "Fuel Goes Where It Should",
-        "&eFuel Goes Here&r sends Shift-clicked coal, charcoal or any fuel to a furnace's fuel slot first, not the input.\n\nFast Workbench and Fast Furnace cache recipe lookups, so crafting and smelting stay quick with this many recipes."
-      ],
-      "es_es": [
-        "El combustible va donde va",
-        "&eFuel Goes Here&r manda el carbón, el carbón vegetal o cualquier combustible que pasás con Shift+clic al casillero de combustible del horno, no al de entrada.\n\nFast Workbench y Fast Furnace guardan en caché la búsqueda de recetas, así fabricar y fundir sigue siendo rápido con tantas recetas."
-      ],
-      "sources": [
-        "repo:docs/design/small-qol-family.md",
-        "jar:FastWorkbench-1.21.1-9.1.3.jar:META-INF/neoforge.mods.toml",
-        "jar:FastFurnace-1.21.1-9.0.1.jar:META-INF/neoforge.mods.toml"
-      ]
+      "key": "qol_inventory_fuel", "deps": ["qol_inventory_sort"], "type": "item", "item": "minecraft:furnace", "optional": true, "layout": {"x": 8.7, "y": 4, "size": 1.0, "shape": "circle"},
+      "en_us": {"title": "Fuel Goes Where It Should",
+        "text": ["[lead] Shift-click sends fuel to the furnace's fuel slot, not to the input.",
+                 "[hl|Fuel Goes Here] does it for [item:minecraft:coal|coal], [item:minecraft:charcoal|charcoal] and any other fuel.",
+                 "Fast Workbench and Fast Furnace cache recipe lookups, so crafting and smelting stay quick with this many recipes."]},
+      "es_es": {"title": "El combustible va donde va",
+        "text": ["[lead] El clic con Shift manda el combustible al casillero de combustible del horno, no al de entrada.",
+                 "[hl|Fuel Goes Here] lo hace con [item:minecraft:coal|carbón], [item:minecraft:charcoal|carbón vegetal] y cualquier otro combustible.",
+                 "Fast Workbench y Fast Furnace guardan en caché la búsqueda de recetas, así fabricar y fundir sigue siendo rápido con tantas recetas."]},
+      "sources": ["repo:docs/design/small-qol-family.md", "jar:FastWorkbench-1.21.1-9.1.3.jar:META-INF/neoforge.mods.toml", "jar:FastFurnace-1.21.1-9.0.1.jar:META-INF/neoforge.mods.toml"]
     },
     {
-      "key": "qol_inventory_trash",
-      "deps": [
-        "qol_inventory_crafting_tweaks"
-      ],
-      "type": "item",
-      "item": "trashcans:item_trash_can",
-      "layout": {
-        "x": 9,
-        "y": -2,
-        "size": 1.0,
-        "shape": "circle"
-      },
-      "en_us": [
-        "Getting Rid of Things",
-        "&eTrashSlot&r adds a trash slot to your inventory; it keeps the last item until you trash another, so a misclick can be undone. &eTrash Cans&r are blocks that void whatever pipes send them (items, fluids, energy or everything), with a 9-entry filter on the item and fluid ones.\n\nFarm overflow goes to a can, not to the floor."
-      ],
-      "es_es": [
-        "Deshacerse de cosas",
-        "&eTrashSlot&r agrega un casillero de basura al inventario; guarda el último ítem hasta que tires otro, así un clic equivocado tiene arreglo. Las &eTrash Cans&r son bloques que eliminan lo que les manden los caños (ítems, fluidos, energía o todo), con filtro de 9 entradas en las de ítems y fluidos.\n\nEl sobrante de las granjas va a una papelera, no al piso."
-      ],
-      "sources": [
-        "jar:trashslot-neoforge-1.21.1-21.1.11.jar:assets/trashslot/lang/en_us.json",
-        "jar:trashcans-1.1.0-neoforge-mc1.21.jar:assets/trashcans/lang/en_us.json"
-      ]
+      "key": "qol_inventory_trash", "deps": ["qol_inventory_crafting_tweaks"], "type": "item", "item": "trashcans:item_trash_can", "layout": {"x": 13, "y": -2, "size": 1.0, "shape": "circle"},
+      "en_us": {"title": "Getting Rid of Things",
+        "text": ["[lead] A trash slot for you, and trash cans for your pipes.",
+                 "[li] [hl|TrashSlot]: a slot in your inventory that keeps the last item until you trash another, so a misclick can be undone",
+                 "[li] [item:trashcans:item_trash_can|Trash Cans]: blocks that void whatever pipes send them, be it items, fluids, energy or everything",
+                 "{page}",
+                 "The item and fluid cans take a filter of [hl|9] entries.",
+                 "Farm overflow goes to a can, not to the floor."]},
+      "es_es": {"title": "Deshacerse de cosas",
+        "text": ["[lead] Un casillero de basura para vos y papeleras para tus caños.",
+                 "[li] [hl|TrashSlot]: un casillero del inventario que guarda el último ítem hasta que tires otro, así un clic equivocado tiene arreglo",
+                 "[li] [item:trashcans:item_trash_can|Trash Cans]: bloques que eliminan lo que les manden los caños, sean ítems, fluidos, energía o todo",
+                 "{page}",
+                 "Las de ítems y fluidos aceptan un filtro de [hl|9] entradas.",
+                 "El sobrante de las granjas va a una papelera, no al piso."]},
+      "sources": ["jar:trashslot-neoforge-1.21.1-21.1.11.jar:assets/trashslot/lang/en_us.json", "jar:trashcans-1.1.0-neoforge-mc1.21.jar:assets/trashcans/lang/en_us.json"]
     },
     {
-      "key": "qol_inventory_trash_quirk",
-      "deps": [
-        "qol_inventory_trash"
-      ],
-      "type": "checkmark",
-      "optional": true,
-      "layout": {
-        "x": 12,
-        "y": -4,
-        "size": 1.0,
-        "shape": "diamond"
-      },
-      "en_us": [
-        "Quirk: TrashSlot on Servers",
-        "TrashSlot works in single player, but on a dedicated server only if the server has it too; otherwise it says so in chat and turns itself off.\n\nA Trash Can block does the same job for everyone."
-      ],
-      "es_es": [
-        "Particularidad: TrashSlot",
-        "TrashSlot funciona en un jugador, pero en un servidor dedicado sólo si el servidor también lo tiene; si no, lo avisa en el chat y se apaga.\n\nUna papelera (bloque) hace el mismo trabajo para todos."
-      ],
-      "sources": [
-        "jar:trashslot-neoforge-1.21.1-21.1.11.jar:assets/trashslot/lang/en_us.json",
-        "repo:catalog/curated.json"
-      ]
+      "key": "qol_inventory_trash_quirk", "deps": ["qol_inventory_trash"], "type": "checkmark", "optional": true, "layout": {"x": 17.4, "y": -4.4, "size": 1.0, "shape": "diamond"},
+      "en_us": {"title": "TrashSlot on Servers", "subtitle": "Single player is fine.",
+        "text": ["[lead] On a dedicated server, TrashSlot only works if the server has it too.",
+                 "Otherwise it says so in chat and turns itself off.",
+                 "A [item:trashcans:item_trash_can|Trash Can] block does the same job for everyone."]},
+      "es_es": {"title": "TrashSlot en servidores", "subtitle": "En un jugador no hay drama.",
+        "text": ["[lead] En un servidor dedicado, TrashSlot sólo funciona si el servidor también lo tiene.",
+                 "Si no, lo avisa en el chat y se apaga.",
+                 "Una papelera ([item:trashcans:item_trash_can|Trash Can], el bloque) hace el mismo trabajo para todos."]},
+      "sources": ["jar:trashslot-neoforge-1.21.1-21.1.11.jar:assets/trashslot/lang/en_us.json", "repo:catalog/curated.json"]
     },
     {
-      "key": "qol_inventory_stick",
-      "deps": [
-        "qol_inventory_crafting_tweaks"
-      ],
-      "type": "item",
-      "item": "crafting_on_a_stick:crafting_table",
-      "layout": {
-        "x": 9,
-        "y": 2,
-        "size": 1.0,
-        "shape": "circle"
-      },
-      "en_us": [
-        "Stations on a Stick",
-        "&eCrafting On A Stick&r turns the crafting table, stonecutter, loom, cartography table, smithing table, grindstone and anvil into hotbar items you right-click to open anywhere.\n\nPerfect for early expeditions, when every slot counts."
-      ],
-      "es_es": [
-        "Estaciones en un palo",
-        "&eCrafting On A Stick&r convierte la mesa de crafteo, el cortapiedras, el telar, la mesa de cartografía, la de herrería, la afiladora y el yunque en ítems de la barra que abrís con clic derecho en cualquier lado.\n\nIdeal para las primeras expediciones, cuando cada casillero cuenta."
-      ],
-      "sources": [
-        "jar:crafting_on_a_stick-1.21.0.6.jar:assets/crafting_on_a_stick/lang/en_us.json",
-        "repo:docs/design/qol-batch-one.md"
-      ]
+      "key": "qol_inventory_stick", "deps": ["qol_inventory_crafting_tweaks"], "type": "item", "item": "crafting_on_a_stick:crafting_table", "layout": {"x": 13, "y": 2, "size": 1.0, "shape": "circle"},
+      "en_us": {"title": "Stations on a Stick",
+        "text": ["[lead] Seven workstations that take one hotbar slot each.",
+                 "[icon:right_click] Right-click one to open its station anywhere:",
+                 "[li:crafting_on_a_stick:crafting_table] Crafting table",
+                 "[li:crafting_on_a_stick:stonecutter] Stonecutter",
+                 "[li:crafting_on_a_stick:loom] Loom",
+                 "[li:crafting_on_a_stick:cartography_table] Cartography table",
+                 "[li:crafting_on_a_stick:smithing_table] Smithing table",
+                 "[li:crafting_on_a_stick:grindstone] Grindstone",
+                 "[li:crafting_on_a_stick:anvil] Anvil",
+                 "{page}",
+                 "[tip] Perfect for early expeditions, when every slot counts."]},
+      "es_es": {"title": "Estaciones en un palo",
+        "text": ["[lead] Siete estaciones de trabajo que ocupan un casillero de la barra cada una.",
+                 "[icon:right_click] Clic derecho en una para abrir su estación en cualquier lado:",
+                 "[li:crafting_on_a_stick:crafting_table] Mesa de crafteo",
+                 "[li:crafting_on_a_stick:stonecutter] Cortapiedras",
+                 "[li:crafting_on_a_stick:loom] Telar",
+                 "[li:crafting_on_a_stick:cartography_table] Mesa de cartografía",
+                 "[li:crafting_on_a_stick:smithing_table] Mesa de herrería",
+                 "[li:crafting_on_a_stick:grindstone] Afiladora",
+                 "[li:crafting_on_a_stick:anvil] Yunque",
+                 "{page}",
+                 "[tip] Ideal para las primeras expediciones, cuando cada casillero cuenta."]},
+      "sources": ["jar:crafting_on_a_stick-1.21.0.6.jar:assets/crafting_on_a_stick/lang/en_us.json", "repo:docs/design/qol-batch-one.md"]
     },
     {
-      "key": "qol_inventory_belt",
-      "deps": [
-        "qol_inventory_stick"
-      ],
-      "type": "item",
-      "item": "toolbelt:belt",
-      "layout": {
-        "x": 12,
-        "y": 0,
-        "size": 1.5,
-        "shape": "hexagon"
-      },
-      "en_us": [
-        "The Tool Belt",
-        "A &eTool Belt&r (leather, string and an iron ingot) goes in its own slot, and its tools leave your hotbar free: hold &eR&r for the radial menu, &eShift+R&r for the belt's slots.\n\nIt starts small; combine it with a &eBelt Pouch&r in an anvil for more room."
-      ],
-      "es_es": [
-        "El cinturón de herramientas",
-        "El &eTool Belt&r (cuero, hilo y un lingote de hierro) va en su propia ranura, y sus herramientas te liberan la barra: mantené &eR&r para el menú radial, &eShift+R&r para sus ranuras.\n\nEmpieza chico; combinalo con un &eBelt Pouch&r en un yunque para más lugar."
-      ],
-      "sources": [
-        "jar:ToolBelt-1.21.1-2.2.10.jar:data/toolbelt/recipe/belt.json",
-        "jar:ToolBelt-1.21.1-2.2.10.jar:assets/toolbelt/lang/de_de.json",
-        "repo:pack/config/defaultoptions/keybindings.txt"
-      ]
+      "key": "qol_inventory_belt", "deps": ["qol_inventory_stick"], "type": "item", "item": "toolbelt:belt", "layout": {"x": 17.4, "y": 0, "size": 1.5, "shape": "hexagon"},
+      "en_us": {"title": "The Tool Belt",
+        "text": ["[lead] A belt in its own slot keeps your tools off the hotbar.",
+                 "The [item:toolbelt:belt|Tool Belt] takes:",
+                 "[li:minecraft:leather] Leather",
+                 "[li:minecraft:string] String",
+                 "[li:minecraft:iron_ingot] An iron ingot",
+                 "Hold [key:key.toolbelt.open] for the radial menu, [key:key.toolbelt.slot] for the belt's slots.",
+                 "{page}",
+                 "[tip] It starts small: combine it with a [item:toolbelt:pouch|Belt Pouch] in an anvil for more room."]},
+      "es_es": {"title": "El cinturón de herramientas",
+        "text": ["[lead] Un cinturón en su propia ranura saca las herramientas de tu barra.",
+                 "El [item:toolbelt:belt|Tool Belt] lleva:",
+                 "[li:minecraft:leather] Cuero",
+                 "[li:minecraft:string] Hilo",
+                 "[li:minecraft:iron_ingot] Un lingote de hierro",
+                 "Mantené [key:key.toolbelt.open] para el menú radial, [key:key.toolbelt.slot] para las ranuras del cinturón.",
+                 "{page}",
+                 "[tip] Empieza chico: combinalo con un [item:toolbelt:pouch|Belt Pouch] en un yunque para más lugar."]},
+      "sources": ["jar:ToolBelt-1.21.1-2.2.10.jar:data/toolbelt/recipe/belt.json", "jar:ToolBelt-1.21.1-2.2.10.jar:assets/toolbelt/lang/de_de.json", "repo:pack/config/defaultoptions/keybindings.txt"]
     },
     {
-      "key": "qol_inventory_tome",
-      "deps": [
-        "qol_inventory_stick"
-      ],
-      "type": "item",
-      "item": "akashictome:tome",
-      "optional": true,
-      "layout": {
-        "x": 12,
-        "y": 4,
-        "size": 1.0,
-        "shape": "circle"
-      },
-      "en_us": [
-        "One Book for All Books",
-        "The &eAkashic Tome&r (a book and a bookshelf) stores every guide book in one item: craft it with a book to add it, then &eShift+right-click&r to pick which one it becomes.\n\nArs Nouveau, Integrated Dynamics, PneumaticCraft, Psi and friends, all in one pocket."
-      ],
-      "es_es": [
-        "Un libro para todos los libros",
-        "El &eTomo Akáshico&r (un libro y una estantería) guarda todos los libros guía en un solo ítem: fabricalo con un libro para sumarlo y después &eShift+clic derecho&r para elegir en cuál se convierte.\n\nArs Nouveau, Integrated Dynamics, PneumaticCraft, Psi y compañía, en un solo bolsillo."
-      ],
-      "sources": [
-        "jar:AkashicTome-1.8-30.jar:data/akashictome/recipe/tome.json",
-        "jar:AkashicTome-1.8-30.jar:assets/akashictome/lang/en_us.json"
-      ]
+      "key": "qol_inventory_tome", "deps": ["qol_inventory_stick"], "type": "item", "item": "akashictome:tome", "optional": true, "layout": {"x": 17.4, "y": 4, "size": 1.0, "shape": "circle"},
+      "en_us": {"title": "One Book for All Books",
+        "text": ["[lead] Every guide book in one item, in one pocket.",
+                 "The [item:akashictome:tome|Akashic Tome] is a book and a bookshelf.",
+                 "[li] Craft it with a guide book to add it",
+                 "[li] [icon:right_click] [hl|Shift] and right-click to pick which book it becomes",
+                 "Ars Nouveau, Integrated Dynamics, PneumaticCraft, Psi and friends all fit."]},
+      "es_es": {"title": "Un libro para todos los libros",
+        "text": ["[lead] Todos los libros guía en un solo ítem, en un solo bolsillo.",
+                 "El [item:akashictome:tome|Tomo Akáshico] es un libro y una estantería.",
+                 "[li] Fabricalo con un libro guía para sumarlo",
+                 "[li] [icon:right_click] [hl|Shift] y clic derecho para elegir en cuál se convierte",
+                 "Ars Nouveau, Integrated Dynamics, PneumaticCraft, Psi y compañía entran todos."]},
+      "sources": ["jar:AkashicTome-1.8-30.jar:data/akashictome/recipe/tome.json", "jar:AkashicTome-1.8-30.jar:assets/akashictome/lang/en_us.json"]
     },
     {
-      "key": "qol_inventory_collectors",
-      "deps": [
-        "qol_inventory_belt"
-      ],
-      "type": "item",
-      "item": "itemcollectors:basic_collector",
-      "optional": true,
-      "layout": {
-        "x": 15,
-        "y": 2,
-        "size": 1.0,
-        "shape": "circle"
-      },
-      "en_us": [
-        "Item Collectors",
-        "An &eItem Collector&r (an ender pearl on obsidian) picks up dropped items around it and holds them for a hopper or pipe; the advanced one has a configurable range and a filter.\n\nPut one under a tree farm or in a mob room. Fewer loose items, less lag."
-      ],
-      "es_es": [
-        "Colectores de ítems",
-        "Un &eColector de ítems&r (una perla de ender sobre obsidiana) junta los ítems tirados a su alrededor y los guarda para una tolva o un caño; el avanzado tiene alcance configurable y filtro.\n\nPoné uno debajo de una granja de árboles o en una sala de mobs. Menos ítems sueltos, menos lag."
-      ],
-      "sources": [
-        "jar:itemcollectors-1.1.10-neoforge-mc1.21.jar:data/itemcollectors/recipe/basic_collector.json",
-        "jar:itemcollectors-1.1.10-neoforge-mc1.21.jar:assets/itemcollectors/lang/en_us.json"
-      ]
+      "key": "qol_inventory_collectors", "deps": ["qol_inventory_belt"], "type": "item", "item": "itemcollectors:basic_collector", "optional": true, "layout": {"x": 21.75, "y": -2.6, "size": 1.0, "shape": "circle"},
+      "en_us": {"title": "Item Collectors",
+        "text": ["[lead] A collector picks up the items dropped around it and holds them for a hopper or pipe.",
+                 "The [item:itemcollectors:basic_collector|Item Collector] is an ender pearl on obsidian; the [item:itemcollectors:advanced_collector|advanced one] has a configurable range and a filter.",
+                 "[tip] Put one under a tree farm or in a mob room: fewer loose items, less lag."]},
+      "es_es": {"title": "Colectores de ítems",
+        "text": ["[lead] Un colector junta los ítems tirados a su alrededor y los guarda para una tolva o un caño.",
+                 "El [item:itemcollectors:basic_collector|Colector de ítems] es una perla de ender sobre obsidiana; el [item:itemcollectors:advanced_collector|avanzado] tiene alcance configurable y filtro.",
+                 "[tip] Poné uno debajo de una granja de árboles o en una sala de mobs: menos ítems sueltos, menos lag."]},
+      "sources": ["jar:itemcollectors-1.1.10-neoforge-mc1.21.jar:data/itemcollectors/recipe/basic_collector.json", "jar:itemcollectors-1.1.10-neoforge-mc1.21.jar:assets/itemcollectors/lang/en_us.json"]
     },
     {
-      "key": "qol_inventory_clumps",
-      "deps": [
-        "qol_inventory_collectors"
-      ],
-      "type": "checkmark",
-      "optional": true,
+      "key": "qol_inventory_clumps", "deps": ["qol_inventory_collectors"], "type": "checkmark", "optional": true, "layout": {"x": 26, "y": -4.4, "size": 1.0, "shape": "diamond"},
       "icon": "minecraft:experience_bottle",
-      "layout": {
-        "x": 15,
-        "y": 5,
-        "size": 1.0,
-        "shape": "diamond"
-      },
-      "en_us": [
-        "Tip: Experience in Clumps",
-        "&eClumps&r merges nearby experience orbs into one, so a mob farm or a big smelting session no longer carpets the floor with orbs, and picking them up is instant.\n\nLess disco, more XP."
-      ],
-      "es_es": [
-        "Truco: experiencia en grumos",
-        "&eClumps&r junta los orbes de experiencia cercanos en uno, así una granja de mobs o una fundición grande ya no alfombran el piso de orbes, y levantarlos es instantáneo.\n\nMenos boliche, más experiencia."
-      ],
-      "sources": [
-        "jar:Clumps-neoforge-1.21.1-19.0.0.1.jar:META-INF/neoforge.mods.toml"
-      ]
+      "en_us": {"title": "Experience in Clumps", "subtitle": "Less disco, more XP.",
+        "text": ["[tip] [hl|Clumps] merges nearby experience orbs into one.",
+                 "A mob farm or a big smelting session no longer carpets the floor with orbs, and picking them up is instant."]},
+      "es_es": {"title": "Experiencia en grumos", "subtitle": "Menos boliche, más experiencia.",
+        "text": ["[tip] [hl|Clumps] junta los orbes de experiencia cercanos en uno.",
+                 "Una granja de mobs o una fundición grande ya no alfombran el piso de orbes, y levantarlos es instantáneo."]},
+      "sources": ["jar:Clumps-neoforge-1.21.1-19.0.0.1.jar:META-INF/neoforge.mods.toml"]
     },
     {
-      "key": "qol_inventory_backpack_link",
-      "deps": [
-        "qol_inventory_belt",
-        "qol_inventory_tome"
-      ],
-      "type": "item",
-      "item": "sophisticatedbackpacks:backpack",
-      "layout": {
-        "x": 18,
-        "y": 0,
-        "size": 2.0,
-        "shape": "hexagon"
-      },
-      "en_us": [
-        "A Real Backpack",
-        "Sophisticated Backpacks carry dozens of slots, open with &eB&r and take upgrades that pick up, sort, restock and feed you. Start with a basic one.\n\nTiers and upgrades: the Storage chapter."
-      ],
-      "es_es": [
-        "Una mochila de verdad",
-        "Las mochilas de Sophisticated Backpacks tienen decenas de casilleros, se abren con &eB&r y aceptan mejoras que recogen, ordenan, reponen y te dan de comer. Empezá por una básica.\n\nNiveles y mejoras: capítulo de Almacenamiento."
-      ],
-      "sources": [
-        "jar:sophisticatedbackpacks-1.21.1-3.25.78.2107.jar:assets/sophisticatedbackpacks/lang/en_us.json",
-        "repo:pack/config/defaultoptions/keybindings.txt"
-      ]
+      "key": "qol_inventory_backpack_link", "deps": ["qol_inventory_belt", "qol_inventory_tome"], "type": "item", "item": "sophisticatedbackpacks:backpack", "layout": {"x": 26, "y": 1.6, "size": 2.0, "shape": "hexagon"},
+      "en_us": {"title": "A Real Backpack",
+        "text": ["[lead] Dozens of slots, and upgrades that do the chores.",
+                 "[li] Opens with [key:key.sophisticatedbackpacks.open_backpack]",
+                 "[li] Upgrades pick up, sort, restock and feed you",
+                 "Start with a basic [item:sophisticatedbackpacks:backpack|backpack]. Tiers and upgrades: [chapter:sector_storage|Storage and Backpacks]."]},
+      "es_es": {"title": "Una mochila de verdad",
+        "text": ["[lead] Decenas de casilleros, y mejoras que hacen los mandados.",
+                 "[li] Se abre con [key:key.sophisticatedbackpacks.open_backpack]",
+                 "[li] Las mejoras recogen, ordenan, reponen y te dan de comer",
+                 "Empezá por una [item:sophisticatedbackpacks:backpack|mochila] básica. Niveles y mejoras: [chapter:sector_storage|Almacenamiento y mochilas]."]},
+      "sources": ["jar:sophisticatedbackpacks-1.21.1-3.25.78.2107.jar:assets/sophisticatedbackpacks/lang/en_us.json", "repo:pack/config/defaultoptions/keybindings.txt"]
     },
     {
-      "key": "qol_inventory_pack_empty",
-      "deps": [
-        "qol_inventory_welcome"
-      ],
-      "type": "checkmark",
-      "optional": true,
+      "key": "qol_inventory_pack_empty", "deps": ["qol_inventory_welcome"], "type": "checkmark", "optional": true, "layout": {"x": 0, "y": 4.2, "size": 1.0, "shape": "pentagon"},
       "icon": "minecraft:bundle",
-      "layout": {
-        "x": 0,
-        "y": 4,
-        "size": 1.0,
-        "shape": "pentagon"
-      },
-      "en_us": [
-        "Pack Change: Nothing to Start",
-        "No mod puts items in your inventory when you join: books, kits and plushies are all switched off, and everything here is crafted from ordinary materials.\n\nWhy: the start chapter, Waking Among Ruins."
-      ],
-      "es_es": [
-        "Cambio del pack: sin regalos",
-        "Ningún mod te pone ítems en el inventario al entrar: libros, kits y peluches están apagados, y todo lo de acá se fabrica con materiales comunes.\n\nPor qué: capítulo del inicio, Despertar entre ruinas."
-      ],
-      "sources": [
-        "repo:docs/design/heliodor-compass.md",
-        "repo:pack/config/ars_nouveau-common.toml"
-      ]
+      "en_us": {"title": "Pack Change: Nothing to Start",
+        "text": ["[lead] No mod puts items in your inventory when you join.",
+                 "Books, kits and plushies are all switched off, and everything here is crafted from ordinary materials.",
+                 "Why: [chapter:guide_entrelumen_start|Waking Among Ruins]."]},
+      "es_es": {"title": "Cambio del pack: sin regalos",
+        "text": ["[lead] Ningún mod te pone ítems en el inventario al entrar.",
+                 "Libros, kits y peluches están apagados, y todo lo de acá se fabrica con materiales comunes.",
+                 "Por qué: [chapter:guide_entrelumen_start|Despertar entre ruinas]."]},
+      "sources": ["repo:docs/design/heliodor-compass.md", "repo:pack/config/ars_nouveau-common.toml"]
+    },
+    {
+      "key": "qol_inventory_toy_dirt", "role": "decor", "deps": [], "type": "checkmark", "optional": true, "layout": {"x": 29.95, "y": 13.35, "size": 0.75, "shape": "none"},
+      "icon": "minecraft:dirt",
+      "en_us": {"title": "Admit the Dirt",
+        "text": ["[lead] Every inventory has one stack of dirt nobody remembers.",
+                 "Click to admit yours. The sorter is not judging."]},
+      "es_es": {"title": "Admitir la tierra",
+        "text": ["[lead] Todo inventario tiene una pila de tierra de la que nadie se acuerda.",
+                 "Un clic para admitir la tuya. El ordenador no juzga."]},
+      "sources": ["https://minecraft.wiki/w/Dirt"]
+    },
+    {
+      "key": "qol_inventory_toy_shake", "role": "decor", "deps": [], "type": "checkmark", "optional": true, "layout": {"x": 3.5, "y": 16.0, "size": 1.0, "shape": "none"},
+      "icon": "minecraft:string",
+      "en_us": {"title": "Shake the Backpack",
+        "text": ["[lead] One shake and half the pack ends up on the bench.",
+                 "It sorts itself out again. That is what the other quests are for."]},
+      "es_es": {"title": "Sacudir la mochila",
+        "text": ["[lead] Una sacudida y media mochila termina en el banco.",
+                 "Se vuelve a ordenar sola. Para eso están las otras quests."]},
+      "sources": ["repo:docs/design/qol-parity.md"]
     }
+  ],
+  "presentation": 2,
+  "art": [
+    {"id": "title", "text": {"en_us": "Inventory Without Pain", "es_es": "Inventario sin sufrir"}, "x": -5.6, "y": -8.0, "scale": 3, "tint": "#E8B04A", "align": "start"},
+    {"id": "wall", "picture": "#2E3742", "x": 13.9, "y": 7.0, "w": 40.6, "h": 27.2, "reveal": "qol_inventory_welcome", "order": -12},
+    {"id": "wall_rail", "picture": "#4A5563", "x": 13.9, "y": -6.525, "w": 40.6, "h": 0.15, "reveal": "qol_inventory_welcome", "order": -11},
+    {"id": "wall_base", "picture": "#232A33", "x": 13.9, "y": 20.45, "w": 40.6, "h": 0.3, "reveal": "qol_inventory_welcome", "order": -11},
+    {"id": "bench_sketch", "picture": "#8FA0B5", "x": 14.0, "y": 22.1, "w": 42.0, "h": 3.0, "alpha": 40, "order": -9},
+    {"id": "bench_top", "picture": "#B57F4A", "x": 14.0, "y": 21.25, "w": 42.0, "h": 1.3, "reveal": "qol_inventory_welcome", "order": -9},
+    {"id": "bench_edge", "picture": "#D9A56A", "x": 14.0, "y": 20.67, "w": 42.0, "h": 0.14, "reveal": "qol_inventory_welcome", "order": -8},
+    {"id": "bench_front", "picture": "#6E4A2C", "x": 14.0, "y": 22.75, "w": 42.0, "h": 1.7, "reveal": "qol_inventory_welcome", "order": -9},
+    {"id": "bench_seam_0", "picture": "#4E3320", "x": 2.535, "y": 21.4, "w": 0.07, "h": 1.0, "reveal": "qol_inventory_welcome", "order": -8},
+    {"id": "bench_seam_1", "picture": "#4E3320", "x": 10.035, "y": 21.4, "w": 0.07, "h": 1.0, "reveal": "qol_inventory_welcome", "order": -8},
+    {"id": "bench_seam_2", "picture": "#4E3320", "x": 18.535, "y": 21.4, "w": 0.07, "h": 1.0, "reveal": "qol_inventory_welcome", "order": -8},
+    {"id": "bench_seam_3", "picture": "#4E3320", "x": 27.035, "y": 21.4, "w": 0.07, "h": 1.0, "reveal": "qol_inventory_welcome", "order": -8},
+    {"id": "bench_seam_h", "picture": "#4E3320", "x": 14.0, "y": 21.93, "w": 42.0, "h": 0.06, "reveal": "qol_inventory_welcome", "order": -8},
+    {"id": "bag_sketch", "picture": "#E8DCB5", "x": 3.5, "y": 15.4, "w": 6.6, "h": 10.0, "alpha": 50, "order": -9},
+    {"id": "bag_outline", "picture": "#4E301B", "x": 3.5, "y": 15.4, "w": 6.6, "h": 10.0, "reveal": "qol_inventory_welcome", "order": -9},
+    {"id": "bag_body", "picture": "#7A4E2D", "x": 3.5, "y": 15.4, "w": 6.0, "h": 9.4, "reveal": "qol_inventory_welcome", "order": -8},
+    {"id": "bag_shade", "picture": "#6A4326", "x": 3.5, "y": 19.35, "w": 6.0, "h": 1.5, "reveal": "qol_inventory_welcome", "order": -7},
+    {"id": "bag_strap_l", "picture": "#5B3A22", "x": 1.9, "y": 15.8, "w": 0.6, "h": 8.4, "reveal": "qol_inventory_welcome", "order": -6},
+    {"id": "bag_strap_r", "picture": "#5B3A22", "x": 5.1, "y": 15.8, "w": 0.6, "h": 8.4, "reveal": "qol_inventory_welcome", "order": -6},
+    {"id": "mouth", "picture": "#241509", "x": 3.5, "y": 10.4, "w": 5.4, "h": 1.0, "reveal": "qol_inventory_welcome", "order": -6},
+    {"id": "pocket_left_sketch", "picture": "#E8DCB5", "x": -0.15, "y": 16.2, "w": 1.5, "h": 4.4, "alpha": 50, "order": -6},
+    {"id": "pocket_left_out", "picture": "#4E301B", "x": -0.15, "y": 16.2, "w": 1.74, "h": 4.64, "reveal": "qol_inventory_welcome", "order": -6},
+    {"id": "pocket_left_open", "picture": "#2A1A0F", "x": -0.15, "y": 16.2, "w": 1.5, "h": 4.4, "reveal": "qol_inventory_welcome", "order": -5},
+    {"id": "pocket_left_flap", "picture": "#8F5F38", "x": -0.15, "y": 15.304, "w": 1.74, "h": 2.848, "reveal": "qol_inventory_trash", "order": -4},
+    {"id": "pocket_left_stitch", "picture": "#C89B62", "x": -0.15, "y": 16.638, "w": 1.6, "h": 0.06, "reveal": "qol_inventory_trash", "order": -3},
+    {"id": "pocket_left_buckle", "picture": "#D9A441", "x": -0.15, "y": 16.528, "w": 0.44, "h": 0.44, "reveal": "qol_inventory_trash", "order": -3},
+    {"id": "pocket_right_sketch", "picture": "#E8DCB5", "x": 7.15, "y": 16.2, "w": 1.5, "h": 4.4, "alpha": 50, "order": -6},
+    {"id": "pocket_right_out", "picture": "#4E301B", "x": 7.15, "y": 16.2, "w": 1.74, "h": 4.64, "reveal": "qol_inventory_welcome", "order": -6},
+    {"id": "pocket_right_open", "picture": "#2A1A0F", "x": 7.15, "y": 16.2, "w": 1.5, "h": 4.4, "reveal": "qol_inventory_welcome", "order": -5},
+    {"id": "pocket_right_flap", "picture": "#8F5F38", "x": 7.15, "y": 15.304, "w": 1.74, "h": 2.848, "reveal": "qol_inventory_stick", "order": -4},
+    {"id": "pocket_right_stitch", "picture": "#C89B62", "x": 7.15, "y": 16.638, "w": 1.6, "h": 0.06, "reveal": "qol_inventory_stick", "order": -3},
+    {"id": "pocket_right_buckle", "picture": "#D9A441", "x": 7.15, "y": 16.528, "w": 0.44, "h": 0.44, "reveal": "qol_inventory_stick", "order": -3},
+    {"id": "pocket_front_sketch", "picture": "#E8DCB5", "x": 3.5, "y": 17.55, "w": 3.2, "h": 4.3, "alpha": 50, "order": -6},
+    {"id": "pocket_front_out", "picture": "#4E301B", "x": 3.5, "y": 17.55, "w": 3.44, "h": 4.54, "reveal": "qol_inventory_welcome", "order": -6},
+    {"id": "pocket_front_open", "picture": "#2A1A0F", "x": 3.5, "y": 17.55, "w": 3.2, "h": 4.3, "reveal": "qol_inventory_welcome", "order": -5},
+    {"id": "pocket_front_flap", "picture": "#8F5F38", "x": 3.5, "y": 16.673, "w": 3.44, "h": 2.786, "reveal": "qol_inventory_sort", "order": -4},
+    {"id": "pocket_front_stitch", "picture": "#C89B62", "x": 3.5, "y": 17.976, "w": 3.3, "h": 0.06, "reveal": "qol_inventory_sort", "order": -3},
+    {"id": "pocket_front_buckle", "picture": "#D9A441", "x": 3.5, "y": 17.866, "w": 0.44, "h": 0.44, "reveal": "qol_inventory_sort", "order": -3},
+    {"id": "lid", "picture": "#8F5F38", "x": 3.5, "y": 10.55, "w": 7.0, "h": 2.1, "reveal": "qol_inventory_backpack_link", "order": -3},
+    {"id": "lid_stitch", "picture": "#C89B62", "x": 3.5, "y": 11.35, "w": 6.7, "h": 0.1, "reveal": "qol_inventory_backpack_link", "order": -2},
+    {"id": "lid_buckle", "picture": "#D9A441", "x": 3.5, "y": 11.55, "w": 1.0, "h": 1.3, "reveal": "qol_inventory_backpack_link", "order": -2},
+    {"id": "bag_glow", "glow": [3.5, 15.0], "r": 6.5, "tint": "#FFD98A", "alpha": 70, "reveal": "qol_inventory_backpack_link"},
+    {"id": "spill_mouth", "scatter": ["minecraft:textures/item/iron_ingot.png", "minecraft:textures/item/gold_ingot.png", "minecraft:textures/item/coal.png", "minecraft:textures/item/apple.png", "minecraft:textures/item/bread.png", "minecraft:textures/item/arrow.png", "minecraft:textures/item/bone.png", "minecraft:textures/item/string.png", "minecraft:textures/item/stick.png", "minecraft:textures/item/diamond.png", "minecraft:textures/item/redstone.png", "minecraft:textures/item/cooked_beef.png", "minecraft:textures/item/carrot.png", "minecraft:textures/item/gunpowder.png", "minecraft:textures/block/cobblestone.png", "minecraft:textures/block/oak_planks.png", "minecraft:textures/block/dirt.png", "minecraft:textures/block/gravel.png", "minecraft:textures/block/sand.png"], "region": [0.9, 8.6, 6.1, 10.6], "count": 7, "size": [0.8, 1.1], "alphas": [70, 90], "seed": 3, "spin": true, "order": -5},
+    {"id": "spill_floor", "scatter": ["minecraft:textures/item/iron_ingot.png", "minecraft:textures/item/gold_ingot.png", "minecraft:textures/item/coal.png", "minecraft:textures/item/apple.png", "minecraft:textures/item/bread.png", "minecraft:textures/item/arrow.png", "minecraft:textures/item/bone.png", "minecraft:textures/item/string.png", "minecraft:textures/item/stick.png", "minecraft:textures/item/diamond.png", "minecraft:textures/item/redstone.png", "minecraft:textures/item/cooked_beef.png", "minecraft:textures/item/carrot.png", "minecraft:textures/item/gunpowder.png", "minecraft:textures/block/cobblestone.png", "minecraft:textures/block/oak_planks.png", "minecraft:textures/block/dirt.png", "minecraft:textures/block/gravel.png", "minecraft:textures/block/sand.png"], "region": [7.6, 16.6, 15.6, 20.0], "count": 22, "size": [0.85, 1.25], "alphas": [70, 90], "seed": 11, "spin": true, "order": -5},
+    {"id": "spill_air", "scatter": ["minecraft:textures/item/iron_ingot.png", "minecraft:textures/item/gold_ingot.png", "minecraft:textures/item/coal.png", "minecraft:textures/item/apple.png", "minecraft:textures/item/bread.png", "minecraft:textures/item/arrow.png", "minecraft:textures/item/bone.png", "minecraft:textures/item/string.png", "minecraft:textures/item/stick.png", "minecraft:textures/item/diamond.png", "minecraft:textures/item/redstone.png", "minecraft:textures/item/cooked_beef.png", "minecraft:textures/item/carrot.png", "minecraft:textures/item/gunpowder.png", "minecraft:textures/block/cobblestone.png", "minecraft:textures/block/oak_planks.png", "minecraft:textures/block/dirt.png", "minecraft:textures/block/gravel.png", "minecraft:textures/block/sand.png"], "region": [6.4, 9.8, 12.5, 15.8], "count": 9, "size": [0.8, 1.15], "alphas": [60, 82], "seed": 5, "spin": true, "order": -5},
+    {"id": "panel_sketch", "picture": "#8FA0B5", "x": 24.9, "y": 12.875, "w": 16.4, "h": 7.55, "alpha": 46, "order": -9},
+    {"id": "panel", "picture": "#242C36", "x": 24.9, "y": 12.875, "w": 16.4, "h": 7.55, "reveal": "qol_inventory_welcome", "order": -9},
+    {"id": "panel_rim", "picture": "#4A5563", "x": 24.9, "y": 9.17, "w": 16.4, "h": 0.14, "reveal": "qol_inventory_welcome", "order": -8},
+    {"id": "panel_label", "text": {"en_us": "Your inventory", "es_es": "Tu inventario"}, "x": 16.7, "y": 8.35, "scale": 2, "tint": "#E8DCB5", "align": "start"},
+    {"id": "slot_0_0", "picture": "minecraft:textures/gui/sprites/container/slot.png", "x": 17.95, "y": 10.35, "w": 1.5, "h": 1.5, "tint": "#8794A6", "alpha": 255, "reveal": "qol_inventory_welcome", "order": -7},
+    {"id": "slot_0_1", "picture": "minecraft:textures/gui/sprites/container/slot.png", "x": 19.45, "y": 10.35, "w": 1.5, "h": 1.5, "tint": "#8794A6", "alpha": 255, "reveal": "qol_inventory_welcome", "order": -7},
+    {"id": "slot_0_2", "picture": "minecraft:textures/gui/sprites/container/slot.png", "x": 20.95, "y": 10.35, "w": 1.5, "h": 1.5, "tint": "#8794A6", "alpha": 255, "reveal": "qol_inventory_welcome", "order": -7},
+    {"id": "slot_0_3", "picture": "minecraft:textures/gui/sprites/container/slot.png", "x": 22.45, "y": 10.35, "w": 1.5, "h": 1.5, "tint": "#8794A6", "alpha": 255, "reveal": "qol_inventory_welcome", "order": -7},
+    {"id": "slot_0_4", "picture": "minecraft:textures/gui/sprites/container/slot.png", "x": 23.95, "y": 10.35, "w": 1.5, "h": 1.5, "tint": "#8794A6", "alpha": 255, "reveal": "qol_inventory_welcome", "order": -7},
+    {"id": "slot_0_5", "picture": "minecraft:textures/gui/sprites/container/slot.png", "x": 25.45, "y": 10.35, "w": 1.5, "h": 1.5, "tint": "#8794A6", "alpha": 255, "reveal": "qol_inventory_welcome", "order": -7},
+    {"id": "slot_0_6", "picture": "minecraft:textures/gui/sprites/container/slot.png", "x": 26.95, "y": 10.35, "w": 1.5, "h": 1.5, "tint": "#8794A6", "alpha": 255, "reveal": "qol_inventory_welcome", "order": -7},
+    {"id": "slot_0_7", "picture": "minecraft:textures/gui/sprites/container/slot.png", "x": 28.45, "y": 10.35, "w": 1.5, "h": 1.5, "tint": "#8794A6", "alpha": 255, "reveal": "qol_inventory_welcome", "order": -7},
+    {"id": "slot_0_8", "picture": "minecraft:textures/gui/sprites/container/slot.png", "x": 29.95, "y": 10.35, "w": 1.5, "h": 1.5, "tint": "#8794A6", "alpha": 255, "reveal": "qol_inventory_welcome", "order": -7},
+    {"id": "slot_1_0", "picture": "minecraft:textures/gui/sprites/container/slot.png", "x": 17.95, "y": 11.85, "w": 1.5, "h": 1.5, "tint": "#8794A6", "alpha": 255, "reveal": "qol_inventory_welcome", "order": -7},
+    {"id": "slot_1_1", "picture": "minecraft:textures/gui/sprites/container/slot.png", "x": 19.45, "y": 11.85, "w": 1.5, "h": 1.5, "tint": "#8794A6", "alpha": 255, "reveal": "qol_inventory_welcome", "order": -7},
+    {"id": "slot_1_2", "picture": "minecraft:textures/gui/sprites/container/slot.png", "x": 20.95, "y": 11.85, "w": 1.5, "h": 1.5, "tint": "#8794A6", "alpha": 255, "reveal": "qol_inventory_welcome", "order": -7},
+    {"id": "slot_1_3", "picture": "minecraft:textures/gui/sprites/container/slot.png", "x": 22.45, "y": 11.85, "w": 1.5, "h": 1.5, "tint": "#8794A6", "alpha": 255, "reveal": "qol_inventory_welcome", "order": -7},
+    {"id": "slot_1_4", "picture": "minecraft:textures/gui/sprites/container/slot.png", "x": 23.95, "y": 11.85, "w": 1.5, "h": 1.5, "tint": "#8794A6", "alpha": 255, "reveal": "qol_inventory_welcome", "order": -7},
+    {"id": "slot_1_5", "picture": "minecraft:textures/gui/sprites/container/slot.png", "x": 25.45, "y": 11.85, "w": 1.5, "h": 1.5, "tint": "#8794A6", "alpha": 255, "reveal": "qol_inventory_welcome", "order": -7},
+    {"id": "slot_1_6", "picture": "minecraft:textures/gui/sprites/container/slot.png", "x": 26.95, "y": 11.85, "w": 1.5, "h": 1.5, "tint": "#8794A6", "alpha": 255, "reveal": "qol_inventory_welcome", "order": -7},
+    {"id": "slot_1_7", "picture": "minecraft:textures/gui/sprites/container/slot.png", "x": 28.45, "y": 11.85, "w": 1.5, "h": 1.5, "tint": "#8794A6", "alpha": 255, "reveal": "qol_inventory_welcome", "order": -7},
+    {"id": "slot_1_8", "picture": "minecraft:textures/gui/sprites/container/slot.png", "x": 29.95, "y": 11.85, "w": 1.5, "h": 1.5, "tint": "#8794A6", "alpha": 255, "reveal": "qol_inventory_welcome", "order": -7},
+    {"id": "slot_2_0", "picture": "minecraft:textures/gui/sprites/container/slot.png", "x": 17.95, "y": 13.35, "w": 1.5, "h": 1.5, "tint": "#8794A6", "alpha": 255, "reveal": "qol_inventory_welcome", "order": -7},
+    {"id": "slot_2_1", "picture": "minecraft:textures/gui/sprites/container/slot.png", "x": 19.45, "y": 13.35, "w": 1.5, "h": 1.5, "tint": "#8794A6", "alpha": 255, "reveal": "qol_inventory_welcome", "order": -7},
+    {"id": "slot_2_2", "picture": "minecraft:textures/gui/sprites/container/slot.png", "x": 20.95, "y": 13.35, "w": 1.5, "h": 1.5, "tint": "#8794A6", "alpha": 255, "reveal": "qol_inventory_welcome", "order": -7},
+    {"id": "slot_2_3", "picture": "minecraft:textures/gui/sprites/container/slot.png", "x": 22.45, "y": 13.35, "w": 1.5, "h": 1.5, "tint": "#8794A6", "alpha": 255, "reveal": "qol_inventory_welcome", "order": -7},
+    {"id": "slot_2_4", "picture": "minecraft:textures/gui/sprites/container/slot.png", "x": 23.95, "y": 13.35, "w": 1.5, "h": 1.5, "tint": "#8794A6", "alpha": 255, "reveal": "qol_inventory_welcome", "order": -7},
+    {"id": "slot_2_5", "picture": "minecraft:textures/gui/sprites/container/slot.png", "x": 25.45, "y": 13.35, "w": 1.5, "h": 1.5, "tint": "#8794A6", "alpha": 255, "reveal": "qol_inventory_welcome", "order": -7},
+    {"id": "slot_2_6", "picture": "minecraft:textures/gui/sprites/container/slot.png", "x": 26.95, "y": 13.35, "w": 1.5, "h": 1.5, "tint": "#8794A6", "alpha": 255, "reveal": "qol_inventory_welcome", "order": -7},
+    {"id": "slot_2_7", "picture": "minecraft:textures/gui/sprites/container/slot.png", "x": 28.45, "y": 13.35, "w": 1.5, "h": 1.5, "tint": "#8794A6", "alpha": 255, "reveal": "qol_inventory_welcome", "order": -7},
+    {"id": "slot_2_8", "picture": "minecraft:textures/gui/sprites/container/slot.png", "x": 29.95, "y": 13.35, "w": 1.5, "h": 1.5, "tint": "#8794A6", "alpha": 255, "reveal": "qol_inventory_welcome", "order": -7},
+    {"id": "hot_0", "picture": "minecraft:textures/gui/sprites/container/slot.png", "x": 17.95, "y": 15.4, "w": 1.5, "h": 1.5, "tint": "#8794A6", "alpha": 255, "reveal": "qol_inventory_welcome", "order": -7},
+    {"id": "hot_1", "picture": "minecraft:textures/gui/sprites/container/slot.png", "x": 19.45, "y": 15.4, "w": 1.5, "h": 1.5, "tint": "#8794A6", "alpha": 255, "reveal": "qol_inventory_welcome", "order": -7},
+    {"id": "hot_2", "picture": "minecraft:textures/gui/sprites/container/slot.png", "x": 20.95, "y": 15.4, "w": 1.5, "h": 1.5, "tint": "#8794A6", "alpha": 255, "reveal": "qol_inventory_welcome", "order": -7},
+    {"id": "hot_3", "picture": "minecraft:textures/gui/sprites/container/slot.png", "x": 22.45, "y": 15.4, "w": 1.5, "h": 1.5, "tint": "#8794A6", "alpha": 255, "reveal": "qol_inventory_welcome", "order": -7},
+    {"id": "hot_4", "picture": "minecraft:textures/gui/sprites/container/slot.png", "x": 23.95, "y": 15.4, "w": 1.5, "h": 1.5, "tint": "#8794A6", "alpha": 255, "reveal": "qol_inventory_welcome", "order": -7},
+    {"id": "hot_5", "picture": "minecraft:textures/gui/sprites/container/slot.png", "x": 25.45, "y": 15.4, "w": 1.5, "h": 1.5, "tint": "#8794A6", "alpha": 255, "reveal": "qol_inventory_welcome", "order": -7},
+    {"id": "hot_6", "picture": "minecraft:textures/gui/sprites/container/slot.png", "x": 26.95, "y": 15.4, "w": 1.5, "h": 1.5, "tint": "#8794A6", "alpha": 255, "reveal": "qol_inventory_welcome", "order": -7},
+    {"id": "hot_7", "picture": "minecraft:textures/gui/sprites/container/slot.png", "x": 28.45, "y": 15.4, "w": 1.5, "h": 1.5, "tint": "#8794A6", "alpha": 255, "reveal": "qol_inventory_welcome", "order": -7},
+    {"id": "hot_8", "picture": "minecraft:textures/gui/sprites/container/slot.png", "x": 29.95, "y": 15.4, "w": 1.5, "h": 1.5, "tint": "#8794A6", "alpha": 255, "reveal": "qol_inventory_welcome", "order": -7},
+    {"id": "stack_0_0", "picture": "minecraft:textures/item/coal.png", "x": 17.95, "y": 10.35, "w": 1.0, "h": 1.0, "reveal": "qol_inventory_sort", "order": -6},
+    {"id": "stack_0_1", "picture": "minecraft:textures/item/copper_ingot.png", "x": 19.45, "y": 10.35, "w": 1.0, "h": 1.0, "reveal": "qol_inventory_sort", "order": -6},
+    {"id": "stack_0_2", "picture": "minecraft:textures/item/iron_ingot.png", "x": 20.95, "y": 10.35, "w": 1.0, "h": 1.0, "reveal": "qol_inventory_sort", "order": -6},
+    {"id": "stack_0_3", "picture": "minecraft:textures/item/gold_ingot.png", "x": 22.45, "y": 10.35, "w": 1.0, "h": 1.0, "reveal": "qol_inventory_sort", "order": -6},
+    {"id": "stack_0_4", "picture": "minecraft:textures/item/redstone.png", "x": 23.95, "y": 10.35, "w": 1.0, "h": 1.0, "reveal": "qol_inventory_sort", "order": -6},
+    {"id": "stack_0_5", "picture": "minecraft:textures/item/lapis_lazuli.png", "x": 25.45, "y": 10.35, "w": 1.0, "h": 1.0, "reveal": "qol_inventory_sort", "order": -6},
+    {"id": "stack_0_6", "picture": "minecraft:textures/item/quartz.png", "x": 26.95, "y": 10.35, "w": 1.0, "h": 1.0, "reveal": "qol_inventory_sort", "order": -6},
+    {"id": "stack_0_7", "picture": "minecraft:textures/item/diamond.png", "x": 28.45, "y": 10.35, "w": 1.0, "h": 1.0, "reveal": "qol_inventory_sort", "order": -6},
+    {"id": "stack_0_8", "picture": "minecraft:textures/item/emerald.png", "x": 29.95, "y": 10.35, "w": 1.0, "h": 1.0, "reveal": "qol_inventory_sort", "order": -6},
+    {"id": "stack_1_0", "picture": "minecraft:textures/block/cobblestone.png", "x": 17.95, "y": 11.85, "w": 1.0, "h": 1.0, "reveal": "qol_inventory_sort", "order": -6},
+    {"id": "stack_1_1", "picture": "minecraft:textures/block/stone_bricks.png", "x": 19.45, "y": 11.85, "w": 1.0, "h": 1.0, "reveal": "qol_inventory_sort", "order": -6},
+    {"id": "stack_1_2", "picture": "minecraft:textures/block/oak_planks.png", "x": 20.95, "y": 11.85, "w": 1.0, "h": 1.0, "reveal": "qol_inventory_sort", "order": -6},
+    {"id": "stack_1_3", "picture": "minecraft:textures/block/oak_log.png", "x": 22.45, "y": 11.85, "w": 1.0, "h": 1.0, "reveal": "qol_inventory_sort", "order": -6},
+    {"id": "stack_1_4", "picture": "minecraft:textures/block/bricks.png", "x": 23.95, "y": 11.85, "w": 1.0, "h": 1.0, "reveal": "qol_inventory_sort", "order": -6},
+    {"id": "stack_1_5", "picture": "minecraft:textures/block/glass.png", "x": 25.45, "y": 11.85, "w": 1.0, "h": 1.0, "reveal": "qol_inventory_sort", "order": -6},
+    {"id": "stack_1_6", "picture": "minecraft:textures/block/sand.png", "x": 26.95, "y": 11.85, "w": 1.0, "h": 1.0, "reveal": "qol_inventory_sort", "order": -6},
+    {"id": "stack_1_7", "picture": "minecraft:textures/block/gravel.png", "x": 28.45, "y": 11.85, "w": 1.0, "h": 1.0, "reveal": "qol_inventory_sort", "order": -6},
+    {"id": "stack_1_8", "picture": "minecraft:textures/block/stone.png", "x": 29.95, "y": 11.85, "w": 1.0, "h": 1.0, "reveal": "qol_inventory_sort", "order": -6},
+    {"id": "stack_2_0", "picture": "minecraft:textures/item/bread.png", "x": 17.95, "y": 13.35, "w": 1.0, "h": 1.0, "reveal": "qol_inventory_sort", "order": -6},
+    {"id": "stack_2_1", "picture": "minecraft:textures/item/cooked_beef.png", "x": 19.45, "y": 13.35, "w": 1.0, "h": 1.0, "reveal": "qol_inventory_sort", "order": -6},
+    {"id": "stack_2_2", "picture": "minecraft:textures/item/apple.png", "x": 20.95, "y": 13.35, "w": 1.0, "h": 1.0, "reveal": "qol_inventory_sort", "order": -6},
+    {"id": "stack_2_3", "picture": "minecraft:textures/item/carrot.png", "x": 22.45, "y": 13.35, "w": 1.0, "h": 1.0, "reveal": "qol_inventory_sort", "order": -6},
+    {"id": "stack_2_4", "picture": "minecraft:textures/item/baked_potato.png", "x": 23.95, "y": 13.35, "w": 1.0, "h": 1.0, "reveal": "qol_inventory_sort", "order": -6},
+    {"id": "stack_2_5", "picture": "minecraft:textures/item/bone.png", "x": 25.45, "y": 13.35, "w": 1.0, "h": 1.0, "reveal": "qol_inventory_sort", "order": -6},
+    {"id": "stack_2_6", "picture": "minecraft:textures/item/string.png", "x": 26.95, "y": 13.35, "w": 1.0, "h": 1.0, "reveal": "qol_inventory_sort", "order": -6},
+    {"id": "stack_2_7", "picture": "minecraft:textures/item/gunpowder.png", "x": 28.45, "y": 13.35, "w": 1.0, "h": 1.0, "reveal": "qol_inventory_sort", "order": -6},
+    {"id": "spread_0", "picture": "minecraft:textures/block/cobblestone.png", "x": 17.95, "y": 15.4, "w": 0.85, "h": 0.85, "reveal": "qol_inventory_mouse", "order": -6},
+    {"id": "spread_1", "picture": "minecraft:textures/block/cobblestone.png", "x": 19.45, "y": 15.4, "w": 0.85, "h": 0.85, "reveal": "qol_inventory_mouse", "order": -6},
+    {"id": "spread_2", "picture": "minecraft:textures/block/cobblestone.png", "x": 20.95, "y": 15.4, "w": 0.85, "h": 0.85, "reveal": "qol_inventory_mouse", "order": -6},
+    {"id": "spread_3", "picture": "minecraft:textures/block/cobblestone.png", "x": 22.45, "y": 15.4, "w": 0.85, "h": 0.85, "reveal": "qol_inventory_mouse", "order": -6},
+    {"id": "spread_4", "picture": "minecraft:textures/block/cobblestone.png", "x": 23.95, "y": 15.4, "w": 0.85, "h": 0.85, "reveal": "qol_inventory_mouse", "order": -6},
+    {"id": "spread_5", "picture": "minecraft:textures/block/cobblestone.png", "x": 25.45, "y": 15.4, "w": 0.85, "h": 0.85, "reveal": "qol_inventory_mouse", "order": -6},
+    {"id": "spread_6", "picture": "minecraft:textures/block/cobblestone.png", "x": 26.95, "y": 15.4, "w": 0.85, "h": 0.85, "reveal": "qol_inventory_mouse", "order": -6},
+    {"id": "spread_7", "picture": "minecraft:textures/block/cobblestone.png", "x": 28.45, "y": 15.4, "w": 0.85, "h": 0.85, "reveal": "qol_inventory_mouse", "order": -6},
+    {"id": "spread_8", "picture": "minecraft:textures/block/cobblestone.png", "x": 29.95, "y": 15.4, "w": 0.85, "h": 0.85, "reveal": "qol_inventory_mouse", "order": -6},
+    {"id": "free_3", "picture": "minecraft:textures/gui/sprites/container/slot.png", "x": 22.45, "y": 15.4, "w": 1.5, "h": 1.5, "tint": "#8794A6", "alpha": 255, "reveal": "qol_inventory_belt", "order": -5},
+    {"id": "free_4", "picture": "minecraft:textures/gui/sprites/container/slot.png", "x": 23.95, "y": 15.4, "w": 1.5, "h": 1.5, "tint": "#8794A6", "alpha": 255, "reveal": "qol_inventory_belt", "order": -5},
+    {"id": "free_5", "picture": "minecraft:textures/gui/sprites/container/slot.png", "x": 25.45, "y": 15.4, "w": 1.5, "h": 1.5, "tint": "#8794A6", "alpha": 255, "reveal": "qol_inventory_belt", "order": -5},
+    {"id": "free_6", "picture": "minecraft:textures/gui/sprites/container/slot.png", "x": 26.95, "y": 15.4, "w": 1.5, "h": 1.5, "tint": "#8794A6", "alpha": 255, "reveal": "qol_inventory_belt", "order": -5},
+    {"id": "free_7", "picture": "minecraft:textures/gui/sprites/container/slot.png", "x": 28.45, "y": 15.4, "w": 1.5, "h": 1.5, "tint": "#8794A6", "alpha": 255, "reveal": "qol_inventory_belt", "order": -5},
+    {"id": "free_8", "picture": "minecraft:textures/gui/sprites/container/slot.png", "x": 29.95, "y": 15.4, "w": 1.5, "h": 1.5, "tint": "#8794A6", "alpha": 255, "reveal": "qol_inventory_belt", "order": -5},
+    {"id": "stick_0", "item": "crafting_on_a_stick:crafting_table", "x": 17.95, "y": 15.4, "size": 1.05, "reveal": "qol_inventory_stick"},
+    {"id": "stick_1", "item": "crafting_on_a_stick:stonecutter", "x": 19.45, "y": 15.4, "size": 1.05, "reveal": "qol_inventory_stick"},
+    {"id": "stick_2", "item": "crafting_on_a_stick:loom", "x": 20.95, "y": 15.4, "size": 1.05, "reveal": "qol_inventory_stick"},
+    {"id": "selection", "picture": "minecraft:textures/gui/sprites/hud/hotbar_selection.png", "x": 17.95, "y": 15.4, "w": 2.025, "h": 1.95, "reveal": "qol_inventory_vanilla_tricks", "order": -4},
+    {"id": "num_0", "text": {"en_us": "1", "es_es": "1"}, "x": 17.95, "y": 16.5, "scale": 1, "tint": "#F2D060", "reveal": "qol_inventory_vanilla_tricks"},
+    {"id": "num_1", "text": {"en_us": "2", "es_es": "2"}, "x": 19.45, "y": 16.5, "scale": 1, "tint": "#F2D060", "reveal": "qol_inventory_vanilla_tricks"},
+    {"id": "num_2", "text": {"en_us": "3", "es_es": "3"}, "x": 20.95, "y": 16.5, "scale": 1, "tint": "#F2D060", "reveal": "qol_inventory_vanilla_tricks"},
+    {"id": "num_3", "text": {"en_us": "4", "es_es": "4"}, "x": 22.45, "y": 16.5, "scale": 1, "tint": "#F2D060", "reveal": "qol_inventory_vanilla_tricks"},
+    {"id": "num_4", "text": {"en_us": "5", "es_es": "5"}, "x": 23.95, "y": 16.5, "scale": 1, "tint": "#F2D060", "reveal": "qol_inventory_vanilla_tricks"},
+    {"id": "num_5", "text": {"en_us": "6", "es_es": "6"}, "x": 25.45, "y": 16.5, "scale": 1, "tint": "#F2D060", "reveal": "qol_inventory_vanilla_tricks"},
+    {"id": "num_6", "text": {"en_us": "7", "es_es": "7"}, "x": 26.95, "y": 16.5, "scale": 1, "tint": "#F2D060", "reveal": "qol_inventory_vanilla_tricks"},
+    {"id": "num_7", "text": {"en_us": "8", "es_es": "8"}, "x": 28.45, "y": 16.5, "scale": 1, "tint": "#F2D060", "reveal": "qol_inventory_vanilla_tricks"},
+    {"id": "num_8", "text": {"en_us": "9", "es_es": "9"}, "x": 29.95, "y": 16.5, "scale": 1, "tint": "#F2D060", "reveal": "qol_inventory_vanilla_tricks"},
+    {"id": "trash_slot", "picture": "minecraft:textures/gui/sprites/container/slot.png", "x": 32.15, "y": 15.4, "w": 1.5, "h": 1.5, "tint": "#B87878", "alpha": 255, "reveal": "qol_inventory_trash", "order": -7},
+    {"id": "trash_x1", "picture": "#FF6A5A", "x": 32.15, "y": 15.4, "w": 0.6, "h": 0.08, "rotation": 45, "reveal": "qol_inventory_trash", "order": -5},
+    {"id": "trash_x2", "picture": "#FF6A5A", "x": 32.15, "y": 15.4, "w": 0.6, "h": 0.08, "rotation": -45, "reveal": "qol_inventory_trash", "order": -5},
+    {"id": "dirt_toy", "picture": "minecraft:textures/block/dirt.png", "x": 29.95, "y": 13.35, "w": 1.0, "h": 1.0, "reveal": "qol_inventory_toy_dirt", "order": -6},
+    {"id": "prop_crafting", "item": "minecraft:crafting_table", "x": 17.0, "y": 19.75, "size": 1.6, "reveal": "qol_inventory_crafting_tweaks"},
+    {"id": "prop_furnace", "item": "minecraft:furnace", "x": 20.0, "y": 19.75, "size": 1.6, "reveal": "qol_inventory_fuel"},
+    {"id": "prop_coal", "picture": "minecraft:textures/item/coal.png", "x": 20.0, "y": 18.2, "w": 0.8, "h": 0.8, "reveal": "qol_inventory_fuel", "order": -4},
+    {"id": "prop_trash", "item": "trashcans:item_trash_can", "x": 23.0, "y": 19.75, "size": 1.6, "reveal": "qol_inventory_trash"},
+    {"id": "prop_belt", "item": "toolbelt:belt", "x": 26.0, "y": 19.75, "size": 1.6, "reveal": "qol_inventory_belt"},
+    {"id": "prop_tome", "item": "akashictome:tome", "x": 29.0, "y": 19.75, "size": 1.4, "reveal": "qol_inventory_tome"},
+    {"id": "prop_xp", "item": "minecraft:experience_bottle", "x": 31.6, "y": 19.75, "size": 1.3, "reveal": "qol_inventory_clumps"},
+    {"id": "xp_glow", "glow": [31.6, 19.75], "r": 1.6, "tint": "#9BE08A", "alpha": 130, "reveal": "qol_inventory_clumps"},
+    {"id": "prop_collector", "item": "itemcollectors:basic_collector", "x": 9.5, "y": 19.75, "size": 1.7, "reveal": "qol_inventory_collectors"},
+    {"id": "collect_path", "path": [[13.4, 19.1], [12.0, 19.400000000000002], [10.8, 19.6]], "dots": "minecraft:textures/item/ender_pearl.png", "size": 0.5, "step": 0.9, "alpha": 200, "reveal": "qol_inventory_collectors", "order": -3},
+    {"id": "shake_1", "scatter": ["minecraft:textures/item/iron_ingot.png", "minecraft:textures/item/apple.png", "minecraft:textures/item/coal.png", "minecraft:textures/item/bone.png", "minecraft:textures/item/arrow.png", "minecraft:textures/item/bread.png"], "region": [-1.6, 12.5, 8.6, 19.900000000000002], "count": 9, "size": [0.9, 1.2], "seed": 21, "spin": true, "reveal": "qol_inventory_toy_shake", "avoid": [[3.5, 16.0, 3.6]], "order": -4}
   ]
 }

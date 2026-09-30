@@ -4,647 +4,830 @@
   "act": "any",
   "icon": "minecraft:knowledge_book",
   "emblem": "minecraft:textures/item/knowledge_book.png",
-  "title": {
-    "en_us": "Recipes and Information",
-    "es_es": "Recetas e información"
-  },
+  "title": {"en_us": "Recipes and Information", "es_es": "Recetas e información"},
   "subtitle": {
     "en_us": "EMI, Jade and the tooltips: how to find out what anything does without leaving the game.",
     "es_es": "EMI, Jade y los tooltips: cómo averiguar qué hace cualquier cosa sin salir del juego."
   },
   "quests": [
     {
-      "key": "qol_recipes_welcome",
-      "deps": [],
-      "type": "checkmark",
-      "layout": {
-        "x": 0,
-        "y": 0,
-        "size": 2.0,
-        "shape": "hexagon"
-      },
-      "en_us": [
-        "Where Answers Live",
-        "Three hundred mods, and nobody remembers every recipe. You do not need a wiki: the game tells you how to make an item, what it is for, what a block holds and what an enchantment or effect does.\n\nR, U and a little curiosity replace most forum threads."
-      ],
-      "es_es": [
-        "Donde viven las respuestas",
-        "Trescientos mods, y nadie se acuerda de todas las recetas. No hace falta una wiki: el juego te dice cómo se fabrica un ítem, para qué sirve, qué tiene adentro un bloque y qué hace un encantamiento o un efecto.\n\nR, U y un poco de curiosidad reemplazan casi cualquier foro."
-      ],
-      "sources": [
-        "repo:docs/design/qol-parity.md",
-        "repo:catalog/curated.json"
-      ]
+      "key": "qol_recipes_welcome", "deps": [], "type": "checkmark", "layout": {"x": 0, "y": 0, "size": 2.0, "shape": "hexagon"},
+      "en_us": {"title": "Where Answers Live", "subtitle": "Nobody remembers every recipe.",
+        "text": ["[lead] You do not need a wiki: the game answers all of these.",
+                 "[li] How to make an item",
+                 "[li] What it is for",
+                 "[li] What a block holds",
+                 "[li] What an enchantment or effect does",
+                 "[hl|R], [hl|U] and a little curiosity replace most forum threads."]},
+      "es_es": {"title": "Donde viven las respuestas", "subtitle": "Nadie se acuerda de todas las recetas.",
+        "text": ["[lead] No hace falta una wiki: el juego contesta todo esto.",
+                 "[li] Cómo se fabrica un ítem",
+                 "[li] Para qué sirve",
+                 "[li] Qué tiene adentro un bloque",
+                 "[li] Qué hace un encantamiento o un efecto",
+                 "[hl|R], [hl|U] y un poco de curiosidad reemplazan casi cualquier foro."]},
+      "sources": ["repo:docs/design/qol-parity.md", "repo:catalog/curated.json"]
     },
     {
-      "key": "qol_recipes_emi_panel",
-      "deps": [
-        "qol_recipes_welcome"
-      ],
-      "type": "checkmark",
+      "key": "qol_recipes_emi_panel", "deps": ["qol_recipes_welcome"], "type": "checkmark", "layout": {"x": 4.35, "y": 0, "size": 1.5, "shape": "square"},
       "icon": "minecraft:crafting_table",
-      "layout": {
-        "x": 3,
-        "y": 0,
-        "size": 1.5,
-        "shape": "square"
-      },
-      "en_us": [
-        "EMI: the Item List",
-        "The item column on the right of your inventory is &eEMI&r, the recipe viewer; its search bar sits at the bottom. Names follow your game language, and untranslated mods show English. &eCtrl+F&r jumps to the search, &eCtrl+O&r hides the whole overlay, and the mouse wheel turns pages."
-      ],
-      "es_es": [
-        "EMI: la lista de ítems",
-        "La columna de ítems a la derecha del inventario es &eEMI&r, el visor de recetas; su buscador está abajo. Los nombres siguen el idioma del juego, y los mods sin traducción aparecen en inglés. &eCtrl+F&r salta al buscador, &eCtrl+O&r oculta todo EMI y la rueda del mouse pasa de página."
-      ],
-      "sources": [
-        "jar:emi-1.1.24+1.21.1+neoforge.jar:dev/emi/emi/config/EmiConfig.class",
-        "jar:emi-1.1.24+1.21.1+neoforge.jar:assets/emi/lang/en_us.json"
-      ]
+      "en_us": {"title": "EMI: the Item List",
+        "text": ["[lead] The item column on the right of your inventory is EMI, the recipe viewer.",
+                 "[li] The search bar sits at the bottom",
+                 "[li] [hl|Ctrl] + [hl|F] jumps to it; [hl|Ctrl] + [hl|O] hides the whole overlay",
+                 "[li] The mouse wheel turns pages",
+                 "Names follow your game language, and untranslated mods show English."]},
+      "es_es": {"title": "EMI: la lista de ítems",
+        "text": ["[lead] La columna de ítems a la derecha del inventario es EMI, el visor de recetas.",
+                 "[li] El buscador está abajo",
+                 "[li] [hl|Ctrl] + [hl|F] salta a él; [hl|Ctrl] + [hl|O] oculta todo EMI",
+                 "[li] La rueda del mouse pasa de página",
+                 "Los nombres siguen el idioma del juego, y los mods sin traducción aparecen en inglés."]},
+      "sources": ["jar:emi-1.1.24+1.21.1+neoforge.jar:dev/emi/emi/config/EmiConfig.class", "jar:emi-1.1.24+1.21.1+neoforge.jar:assets/emi/lang/en_us.json"]
     },
     {
-      "key": "qol_recipes_emi_recipes",
-      "deps": [
-        "qol_recipes_emi_panel"
-      ],
-      "type": "checkmark",
-      "layout": {
-        "x": 6,
-        "y": -1.5,
-        "size": 1.0,
-        "shape": "circle"
-      },
-      "en_us": [
-        "R: How Do I Make This?",
-        "Hover any item, in EMI or any inventory, and press &eR&r (or left-click it in the list): every recipe that makes it appears, one tab per machine or crafting type. Hover a tab's icon to see which blocks run it, and &eBackspace&r goes back.\n\nThe most-pressed key in the pack, by a mile."
-      ],
-      "es_es": [
-        "R: ¿cómo se hace esto?",
-        "Pasá el mouse sobre cualquier ítem, de EMI o de cualquier inventario, y apretá &eR&r (o clic izquierdo en la lista): aparecen todas las recetas que lo hacen, una pestaña por máquina o tipo de fabricación. Pasale el mouse al ícono de una pestaña para ver qué bloques la hacen, y &eRetroceso&r vuelve atrás.\n\nLa tecla más apretada del pack, lejos."
-      ],
-      "sources": [
-        "jar:emi-1.1.24+1.21.1+neoforge.jar:dev/emi/emi/config/EmiConfig.class"
-      ]
+      "key": "qol_recipes_emi_recipes", "deps": ["qol_recipes_emi_panel"], "type": "checkmark", "layout": {"x": 8.7, "y": -1.6, "size": 1.0, "shape": "circle"},
+      "en_us": {"title": "R: How Do I Make This?", "subtitle": "The most-pressed key in the pack.",
+        "text": ["[lead] Hover an item and press [hl|R]: every recipe that makes it appears.",
+                 "[li] Works in EMI or any inventory; left-click the item in the list does the same",
+                 "[li] One tab per machine or crafting type",
+                 "[li] Hover a tab's icon to see which blocks run it",
+                 "[li] [hl|Backspace] goes back"]},
+      "es_es": {"title": "R: ¿cómo se hace esto?", "subtitle": "La tecla más apretada del pack.",
+        "text": ["[lead] Apuntá un ítem y apretá [hl|R]: aparecen todas las recetas que lo hacen.",
+                 "[li] Sirve en EMI o en cualquier inventario; clic izquierdo en la lista hace lo mismo",
+                 "[li] Una pestaña por máquina o tipo de fabricación",
+                 "[li] Pasale el mouse al ícono de una pestaña para ver qué bloques la hacen",
+                 "[li] [hl|Retroceso] vuelve atrás"]},
+      "sources": ["jar:emi-1.1.24+1.21.1+neoforge.jar:dev/emi/emi/config/EmiConfig.class"]
     },
     {
-      "key": "qol_recipes_emi_uses",
-      "deps": [
-        "qol_recipes_emi_panel"
-      ],
-      "type": "checkmark",
-      "layout": {
-        "x": 6,
-        "y": 1.5,
-        "size": 1.0,
-        "shape": "circle"
-      },
-      "en_us": [
-        "U: What Is This For?",
-        "&eU&r over an item (or right-click in the list) shows every recipe that uses it: the fastest way to decide whether that strange drop is worth keeping.\n\nTry U on a machine to see everything it can process."
-      ],
-      "es_es": [
-        "U: ¿para qué sirve esto?",
-        "&eU&r sobre un ítem (o clic derecho en la lista) muestra todas las recetas que lo usan: la forma más rápida de decidir si ese drop raro vale la pena.\n\nProbá U sobre una máquina para ver todo lo que procesa."
-      ],
-      "sources": [
-        "jar:emi-1.1.24+1.21.1+neoforge.jar:dev/emi/emi/config/EmiConfig.class"
-      ]
+      "key": "qol_recipes_emi_uses", "deps": ["qol_recipes_emi_panel"], "type": "checkmark", "layout": {"x": 8.7, "y": 1.6, "size": 1.0, "shape": "circle"},
+      "en_us": {"title": "U: What Is This For?",
+        "text": ["[lead] [hl|U] over an item shows every recipe that uses it.",
+                 "Right-click in the list does the same: the fastest way to decide whether that strange drop is worth keeping.",
+                 "[tip] Try [hl|U] on a machine to see everything it can process."]},
+      "es_es": {"title": "U: ¿para qué sirve esto?",
+        "text": ["[lead] [hl|U] sobre un ítem muestra todas las recetas que lo usan.",
+                 "Clic derecho en la lista hace lo mismo: la forma más rápida de decidir si ese drop raro vale la pena.",
+                 "[tip] Probá [hl|U] sobre una máquina para ver todo lo que procesa."]},
+      "sources": ["jar:emi-1.1.24+1.21.1+neoforge.jar:dev/emi/emi/config/EmiConfig.class"]
     },
     {
-      "key": "qol_recipes_emi_search",
-      "deps": [
-        "qol_recipes_emi_recipes"
-      ],
-      "type": "checkmark",
-      "optional": true,
-      "layout": {
-        "x": 9,
-        "y": -3,
-        "size": 1.0,
-        "shape": "diamond"
-      },
-      "en_us": [
-        "Search Like a Pro",
-        "EMI search understands prefixes: &e@create&r filters by mod, &e#c:ingots&r by tag, &e$fortune&r searches tooltips, a leading &e-&r excludes (&edirt -@minecraft&r), &e|&r means or (&etin|lead&r), slashes make a regular expression and quotes keep spaces together.\n\nTry one and you will never scroll again."
-      ],
-      "es_es": [
-        "Buscá como un profesional",
-        "El buscador de EMI entiende prefijos: &e@create&r filtra por mod, &e#c:ingots&r por tag, &e$fortuna&r busca en los tooltips, un &e-&r adelante excluye (&etierra -@minecraft&r), &e|&r significa «o» (&eestaño|plomo&r), las barras hacen una expresión regular y las comillas mantienen juntos los espacios.\n\nProbá uno y no volvés a scrollear."
-      ],
-      "sources": [
-        "jar:emi-1.1.24+1.21.1+neoforge.jar:dev/emi/emi/search/QueryType.class",
-        "jar:emi-1.1.24+1.21.1+neoforge.jar:dev/emi/emi/search/EmiSearch$CompiledQuery.class"
-      ]
+      "key": "qol_recipes_emi_search", "deps": ["qol_recipes_emi_recipes"], "type": "checkmark", "optional": true, "layout": {"x": 13.05, "y": -3.4, "size": 1.0, "shape": "diamond"},
+      "en_us": {"title": "Search Like a Pro", "subtitle": "Try one and you will never scroll again.",
+        "text": ["[lead] EMI search understands prefixes.",
+                 "[li] [hl|@create]: filters by mod",
+                 "[li] [hl|#c:ingots]: filters by tag",
+                 "[li] [hl|$fortune]: searches tooltips",
+                 "[li] A leading [hl|-] excludes: [hl|dirt -@minecraft]",
+                 "{page}",
+                 "[li] A bar means or: tin|lead",
+                 "[li] Slashes make a regular expression",
+                 "[li] Quotes keep spaces together"]},
+      "es_es": {"title": "Buscá como un profesional", "subtitle": "Probá uno y no volvés a scrollear.",
+        "text": ["[lead] El buscador de EMI entiende prefijos.",
+                 "[li] [hl|@create]: filtra por mod",
+                 "[li] [hl|#c:ingots]: filtra por tag",
+                 "[li] [hl|$fortuna]: busca en los tooltips",
+                 "[li] Un [hl|-] adelante excluye: [hl|tierra -@minecraft]",
+                 "{page}",
+                 "[li] Una barra significa «o»: estaño|plomo",
+                 "[li] Las barras hacen una expresión regular",
+                 "[li] Las comillas mantienen juntos los espacios"]},
+      "sources": ["jar:emi-1.1.24+1.21.1+neoforge.jar:dev/emi/emi/search/QueryType.class", "jar:emi-1.1.24+1.21.1+neoforge.jar:dev/emi/emi/search/EmiSearch$CompiledQuery.class"]
     },
     {
-      "key": "qol_recipes_emi_favorites",
-      "deps": [
-        "qol_recipes_emi_recipes",
-        "qol_recipes_emi_uses"
-      ],
-      "type": "checkmark",
-      "layout": {
-        "x": 9,
-        "y": 0,
-        "size": 1.0,
-        "shape": "circle"
-      },
-      "en_us": [
-        "A: Favorites",
-        "&eA&r over an item pins it to the favorites bar on the left; A on a recipe pins that exact recipe, and A again removes it. Favorites survive between sessions.\n\nKeep there what you craft often: rations, torches, the next act component."
-      ],
-      "es_es": [
-        "A: favoritos",
-        "&eA&r sobre un ítem lo fija en la barra de favoritos de la izquierda; A sobre una receta fija esa receta exacta, y A otra vez lo saca. Los favoritos se conservan entre sesiones.\n\nTené ahí lo que fabricás seguido: raciones, antorchas, el próximo componente de acto."
-      ],
-      "sources": [
-        "jar:emi-1.1.24+1.21.1+neoforge.jar:dev/emi/emi/config/EmiConfig.class",
-        "jar:emi-1.1.24+1.21.1+neoforge.jar:assets/emi/lang/en_us.json"
-      ]
+      "key": "qol_recipes_emi_favorites", "deps": ["qol_recipes_emi_recipes", "qol_recipes_emi_uses"], "type": "checkmark", "layout": {"x": 13.05, "y": 0, "size": 1.0, "shape": "circle"},
+      "en_us": {"title": "A: Favorites",
+        "text": ["[lead] [hl|A] over an item pins it to the favorites bar on the left.",
+                 "[li] [hl|A] on a recipe pins that exact recipe; [hl|A] again removes it",
+                 "[li] Favorites survive between sessions",
+                 "[tip] Keep there what you craft often: rations, torches, the next act component."]},
+      "es_es": {"title": "A: favoritos",
+        "text": ["[lead] [hl|A] sobre un ítem lo fija en la barra de favoritos de la izquierda.",
+                 "[li] [hl|A] sobre una receta fija esa receta exacta; [hl|A] otra vez la saca",
+                 "[li] Los favoritos se conservan entre sesiones",
+                 "[tip] Tené ahí lo que fabricás seguido: raciones, antorchas, el próximo componente de acto."]},
+      "sources": ["jar:emi-1.1.24+1.21.1+neoforge.jar:dev/emi/emi/config/EmiConfig.class", "jar:emi-1.1.24+1.21.1+neoforge.jar:assets/emi/lang/en_us.json"]
     },
     {
-      "key": "qol_recipes_emi_fill",
-      "deps": [
-        "qol_recipes_emi_uses"
-      ],
-      "type": "checkmark",
-      "layout": {
-        "x": 9,
-        "y": 3,
-        "size": 1.0,
-        "shape": "circle"
-      },
-      "en_us": [
-        "The + Button Fills the Grid",
-        "The small &e+&r beside a recipe moves its ingredients from your inventory into the open grid or machine, and &eShift+click&r fills as many batches as you can afford.\n\nOpen the crafting table first, then look up the recipe. The other way round, nothing happens."
-      ],
-      "es_es": [
-        "El botón + llena la grilla",
-        "El botoncito &e+&r al lado de una receta pasa sus ingredientes de tu inventario a la grilla o máquina abierta, y &eShift+clic&r llena todas las tandas que te alcancen.\n\nPrimero abrí la mesa de crafteo y después buscá la receta. Al revés, no pasa nada."
-      ],
-      "sources": [
-        "jar:emi-1.1.24+1.21.1+neoforge.jar:dev/emi/emi/config/EmiConfig.class",
-        "jar:emi-1.1.24+1.21.1+neoforge.jar:assets/emi/lang/en_us.json"
-      ]
+      "key": "qol_recipes_emi_fill", "deps": ["qol_recipes_emi_uses"], "type": "checkmark", "layout": {"x": 13.05, "y": 3.4, "size": 1.0, "shape": "circle"},
+      "en_us": {"title": "The + Button Fills the Grid",
+        "text": ["[lead] The small [hl|+] beside a recipe moves its ingredients into the open grid or machine.",
+                 "[li] [hl|Shift] and click: fills as many batches as you can afford",
+                 "[tip] Open the crafting table first, then look up the recipe. The other way round, nothing happens."]},
+      "es_es": {"title": "El botón + llena la grilla",
+        "text": ["[lead] El botoncito [hl|+] al lado de una receta pasa sus ingredientes a la grilla o máquina abierta.",
+                 "[li] [hl|Shift] y clic: llena todas las tandas que te alcancen",
+                 "[tip] Primero abrí la mesa de crafteo y después buscá la receta. Al revés, no pasa nada."]},
+      "sources": ["jar:emi-1.1.24+1.21.1+neoforge.jar:dev/emi/emi/config/EmiConfig.class", "jar:emi-1.1.24+1.21.1+neoforge.jar:assets/emi/lang/en_us.json"]
     },
     {
-      "key": "qol_recipes_emi_tree",
-      "deps": [
-        "qol_recipes_emi_favorites"
-      ],
-      "type": "checkmark",
+      "key": "qol_recipes_emi_tree", "deps": ["qol_recipes_emi_favorites"], "type": "checkmark", "layout": {"x": 17.4, "y": 0, "size": 1.5, "shape": "hexagon"},
       "icon": "minecraft:oak_sapling",
-      "layout": {
-        "x": 12,
-        "y": 0,
-        "size": 1.5,
-        "shape": "hexagon"
-      },
-      "en_us": [
-        "The Recipe Tree",
-        "On a recipe, &eView Recipe Tree&r draws the whole chain down to raw materials with the total cost. Click a node to pick its recipe (Shift lets EMI choose from your inventory), right-click to fold a branch, and crafting mode adds &bsynthetic favorites&r: the steps you still have to make.\n\nMade for act components."
-      ],
-      "es_es": [
-        "El árbol de recetas",
-        "En una receta, &eVer Árbol de Recetas&r dibuja toda la cadena hasta las materias primas con el costo total. Clic en un nodo para elegir su receta (con Shift, EMI elige según tu inventario), clic derecho pliega una rama, y el modo fabricación agrega &bfavoritos sintéticos&r: los pasos que te faltan.\n\nHecho para los componentes de acto."
-      ],
-      "sources": [
-        "jar:emi-1.1.24+1.21.1+neoforge.jar:assets/emi/lang/en_us.json"
-      ]
+      "en_us": {"title": "The Recipe Tree", "subtitle": "Made for act components.",
+        "text": ["[lead] One button draws the whole chain down to raw materials, with the total cost.",
+                 "[li] On a recipe: [hl|View Recipe Tree]",
+                 "[li] Click a node to pick its recipe; with [hl|Shift], EMI chooses from your inventory",
+                 "[li] Right-click a node to fold a branch",
+                 "{page}",
+                 "Crafting mode adds [hl|synthetic favorites]: the steps you still have to make."]},
+      "es_es": {"title": "El árbol de recetas", "subtitle": "Hecho para los componentes de acto.",
+        "text": ["[lead] Un botón dibuja toda la cadena hasta las materias primas, con el costo total.",
+                 "[li] En una receta: [hl|Ver Árbol de Recetas]",
+                 "[li] Clic en un nodo para elegir su receta; con [hl|Shift], EMI elige según tu inventario",
+                 "[li] Clic derecho en un nodo pliega una rama",
+                 "{page}",
+                 "El modo fabricación agrega [hl|favoritos sintéticos]: los pasos que te faltan."]},
+      "sources": ["jar:emi-1.1.24+1.21.1+neoforge.jar:assets/emi/lang/en_us.json"]
     },
     {
-      "key": "qol_recipes_emi_defaults",
-      "deps": [
-        "qol_recipes_emi_tree"
-      ],
-      "type": "checkmark",
-      "optional": true,
-      "layout": {
-        "x": 12,
-        "y": -3,
-        "size": 1.0,
-        "shape": "diamond"
-      },
-      "en_us": [
-        "Default Recipes",
-        "When an item has several recipes, &eCtrl+click&r the output of the one you prefer to make it the default for the tree and synthetic favorites.\n\nHandy when the same plate comes from Create, Immersive Engineering and Mekanism and you only built one of them."
-      ],
-      "es_es": [
-        "Recetas por defecto",
-        "Cuando un ítem tiene varias recetas, &eCtrl+clic&r sobre la salida de la que preferís la vuelve la receta por defecto del árbol y de los favoritos sintéticos.\n\nÚtil cuando la misma placa sale de Create, Immersive Engineering y Mekanism y sólo armaste uno."
-      ],
-      "sources": [
-        "jar:emi-1.1.24+1.21.1+neoforge.jar:dev/emi/emi/config/EmiConfig.class",
-        "jar:emi-1.1.24+1.21.1+neoforge.jar:assets/emi/lang/en_us.json"
-      ]
+      "key": "qol_recipes_emi_defaults", "deps": ["qol_recipes_emi_tree"], "type": "checkmark", "optional": true, "layout": {"x": 17.4, "y": -3.4, "size": 1.0, "shape": "diamond"},
+      "en_us": {"title": "Default Recipes",
+        "text": ["[lead] Pick the recipe you prefer once and the tree remembers.",
+                 "[icon:click] [hl|Ctrl] + click the output of the one you prefer: it becomes the default for the tree and for synthetic favorites.",
+                 "Handy when the same plate comes from Create, Immersive Engineering and Mekanism and you only built one of them."]},
+      "es_es": {"title": "Recetas por defecto",
+        "text": ["[lead] Elegí una vez la receta que preferís y el árbol se acuerda.",
+                 "[icon:click] [hl|Ctrl] + clic sobre la salida de la que preferís: la vuelve la receta por defecto del árbol y de los favoritos sintéticos.",
+                 "Útil cuando la misma placa sale de Create, Immersive Engineering y Mekanism y sólo armaste uno."]},
+      "sources": ["jar:emi-1.1.24+1.21.1+neoforge.jar:dev/emi/emi/config/EmiConfig.class", "jar:emi-1.1.24+1.21.1+neoforge.jar:assets/emi/lang/en_us.json"]
     },
     {
-      "key": "qol_recipes_jei_backend",
-      "deps": [
-        "qol_recipes_emi_fill"
-      ],
-      "type": "checkmark",
-      "optional": true,
-      "layout": {
-        "x": 12,
-        "y": 3,
-        "size": 1.0,
-        "shape": "circle"
-      },
-      "en_us": [
-        "Why JEI Is Installed Too",
-        "EMI is the viewer you see, but JEI stays so that add-ons written for it still reach you: EMI reads JEI plugins and shows their pages inside its own interface, from Mekanism multiblocks to villager professions.\n\nA page that looks slightly different probably comes from a JEI plugin."
-      ],
-      "es_es": [
-        "Por qué también está JEI",
-        "El visor que ves es EMI, pero JEI se queda para que te lleguen los complementos escritos para él: EMI lee los plugins de JEI y muestra sus páginas en su propia interfaz, de los multibloques de Mekanism a las profesiones de aldeanos.\n\nUna página que se ve un poco distinta probablemente viene de un plugin de JEI."
-      ],
-      "sources": [
-        "jar:emi-1.1.24+1.21.1+neoforge.jar:dev/emi/emi/jemi/JemiPlugin.class",
-        "repo:docs/design/qol-parity.md"
-      ]
+      "key": "qol_recipes_jei_backend", "deps": ["qol_recipes_emi_fill"], "type": "checkmark", "optional": true, "layout": {"x": 17.4, "y": 3.4, "size": 1.0, "shape": "circle"},
+      "en_us": {"title": "Why JEI Is Installed Too",
+        "text": ["[lead] EMI is the viewer you see; JEI stays so the add-ons written for it still reach you.",
+                 "EMI reads JEI plugins and shows their pages inside its own interface, from Mekanism multiblocks to villager professions.",
+                 "[note] A page that looks slightly different probably comes from a JEI plugin."]},
+      "es_es": {"title": "Por qué también está JEI",
+        "text": ["[lead] El visor que ves es EMI; JEI se queda para que te lleguen los complementos escritos para él.",
+                 "EMI lee los plugins de JEI y muestra sus páginas en su propia interfaz, de los multibloques de Mekanism a las profesiones de aldeanos.",
+                 "[note] Una página que se ve un poco distinta probablemente viene de un plugin de JEI."]},
+      "sources": ["jar:emi-1.1.24+1.21.1+neoforge.jar:dev/emi/emi/jemi/JemiPlugin.class", "repo:docs/design/qol-parity.md"]
     },
     {
-      "key": "qol_recipes_jei_addons",
-      "deps": [
-        "qol_recipes_jei_backend"
-      ],
-      "type": "checkmark",
-      "optional": true,
+      "key": "qol_recipes_jei_addons", "deps": ["qol_recipes_jei_backend"], "type": "checkmark", "optional": true, "layout": {"x": 21.75, "y": 2.2, "size": 1.0, "shape": "circle"},
       "icon": "minecraft:brush",
-      "layout": {
-        "x": 15,
-        "y": 3,
-        "size": 1.0,
-        "shape": "circle"
-      },
-      "en_us": [
-        "Pages You Did Not Know About",
-        "&eJust Enough Professions&r (which workstation gives which job), &eJust Enough Breeding&r (what each animal eats), &eJust Enough Archaeology&r (what each suspicious block drops), &eJust Enough Mekanism Multiblocks&r (sizes and parts) and &eSmithing Template Viewer&r (what each template makes).\n\nU over a lectern, a cow or a brush finds them fast."
-      ],
-      "es_es": [
-        "Páginas escondidas",
-        "&eJust Enough Professions&r (qué estación da cada oficio), &eJust Enough Breeding&r (qué come cada animal), &eJust Enough Archaeology&r (qué suelta cada bloque sospechoso), &eJust Enough Mekanism Multiblocks&r (tamaños y piezas) y &eSmithing Template Viewer&r (qué hace cada plantilla).\n\nU sobre un atril, una vaca o un cepillo las encuentra rápido."
-      ],
-      "sources": [
-        "jar:JustEnoughProfessions-neoforge-1.21.1-4.0.5.jar:META-INF/neoforge.mods.toml",
-        "jar:justenoughbreeding-neoforge-1.21.1-3.2.1.jar:META-INF/neoforge.mods.toml",
-        "jar:jearchaeology-1.21.1-1.2.0.jar:META-INF/neoforge.mods.toml",
-        "jar:JustEnoughMekanismMultiblocks-1.21.1-7.18.jar:META-INF/neoforge.mods.toml",
-        "repo:docs/design/qol-batch-one.md"
-      ]
+      "en_us": {"title": "Pages You Did Not Know About",
+        "text": ["[lead] Five add-ons with pages you probably never opened.",
+                 "[li] [hl|Just Enough Professions]: which workstation gives which job",
+                 "[li] [hl|Just Enough Breeding]: what each animal eats",
+                 "[li] [hl|Just Enough Archaeology]: what each suspicious block drops",
+                 "{page}",
+                 "[li] [hl|Just Enough Mekanism Multiblocks]: sizes and parts",
+                 "[li] [hl|Smithing Template Viewer]: what each template makes",
+                 "[tip] [hl|U] over a [item:minecraft:lectern|lectern], a cow or a [item:minecraft:brush|brush] finds them fast."]},
+      "es_es": {"title": "Páginas escondidas",
+        "text": ["[lead] Cinco complementos con páginas que seguro nunca abriste.",
+                 "[li] [hl|Just Enough Professions]: qué estación da cada oficio",
+                 "[li] [hl|Just Enough Breeding]: qué come cada animal",
+                 "[li] [hl|Just Enough Archaeology]: qué suelta cada bloque sospechoso",
+                 "{page}",
+                 "[li] [hl|Just Enough Mekanism Multiblocks]: tamaños y piezas",
+                 "[li] [hl|Smithing Template Viewer]: qué hace cada plantilla",
+                 "[tip] [hl|U] sobre un [item:minecraft:lectern|atril], una vaca o un [item:minecraft:brush|cepillo] las encuentra rápido."]},
+      "sources": ["jar:JustEnoughProfessions-neoforge-1.21.1-4.0.5.jar:META-INF/neoforge.mods.toml", "jar:justenoughbreeding-neoforge-1.21.1-3.2.1.jar:META-INF/neoforge.mods.toml", "jar:jearchaeology-1.21.1-1.2.0.jar:META-INF/neoforge.mods.toml", "jar:JustEnoughMekanismMultiblocks-1.21.1-7.18.jar:META-INF/neoforge.mods.toml", "repo:docs/design/qol-batch-one.md"]
     },
     {
-      "key": "qol_recipes_jade_hud",
-      "deps": [
-        "qol_recipes_welcome"
-      ],
-      "type": "checkmark",
+      "key": "qol_recipes_jade_hud", "deps": ["qol_recipes_welcome"], "type": "checkmark", "layout": {"x": 4.35, "y": 4, "size": 1.5, "shape": "square"},
       "icon": "minecraft:spyglass",
-      "layout": {
-        "x": 3,
-        "y": 4,
-        "size": 1.5,
-        "shape": "square"
-      },
-      "en_us": [
-        "Jade: What Am I Looking At?",
-        "The small panel at the top of the screen is &eJade&r: the name of the block or creature you look at, its mod and useful state such as a machine's energy, a crop's growth or a furnace's progress; Jade Addons covers more mods.\n\nThe mod name alone solves half the questions in a big pack."
-      ],
-      "es_es": [
-        "Jade: ¿qué estoy mirando?",
-        "El panelcito de arriba de la pantalla es &eJade&r: el nombre del bloque o criatura que mirás, su mod y estado útil como la energía de una máquina, el crecimiento de un cultivo o el progreso de un horno; Jade Addons suma más mods.\n\nSólo el nombre del mod resuelve la mitad de las dudas en un pack grande."
-      ],
-      "sources": [
-        "jar:Jade-1.21.1-NeoForge-15.10.6.jar:snownee/jade/JadeClient.class",
-        "jar:JadeAddons-1.21.1-NeoForge-6.1.1.jar:META-INF/neoforge.mods.toml",
-        "repo:docs/design/qol-parity.md"
-      ]
+      "en_us": {"title": "Jade: What Am I Looking At?",
+        "text": ["[lead] The small panel at the top of the screen is Jade.",
+                 "It names the block or creature you look at, its mod, and useful state:",
+                 "[li] A machine's energy",
+                 "[li] A crop's growth",
+                 "[li] A furnace's progress",
+                 "Jade Addons covers more mods.",
+                 "[tip] The mod name alone solves half the questions in a big pack."]},
+      "es_es": {"title": "Jade: ¿qué estoy mirando?",
+        "text": ["[lead] El panelcito de arriba de la pantalla es Jade.",
+                 "Dice el nombre del bloque o la criatura que mirás, su mod y estado útil:",
+                 "[li] La energía de una máquina",
+                 "[li] El crecimiento de un cultivo",
+                 "[li] El progreso de un horno",
+                 "Jade Addons suma más mods.",
+                 "[tip] Sólo el nombre del mod resuelve la mitad de las dudas en un pack grande."]},
+      "sources": ["jar:Jade-1.21.1-NeoForge-15.10.6.jar:snownee/jade/JadeClient.class", "jar:JadeAddons-1.21.1-NeoForge-6.1.1.jar:META-INF/neoforge.mods.toml", "repo:docs/design/qol-parity.md"]
     },
     {
-      "key": "qol_recipes_jade_keys",
-      "deps": [
-        "qol_recipes_jade_hud"
-      ],
-      "type": "checkmark",
-      "optional": true,
-      "layout": {
-        "x": 6,
-        "y": 5,
-        "size": 1.0,
-        "shape": "diamond"
-      },
-      "en_us": [
-        "Jade's Keypad Keys",
-        "&eNumpad 0&r opens Jade's settings (hide lines you do not care about), &eNumpad 1&r hides the panel, &eNumpad 2&r toggles fluids, and &eNumpad 3&r and &eNumpad 4&r show recipes and uses of what you are looking at.\n\nNo keypad? Rebind them in Controls. Laptops, we see you."
-      ],
-      "es_es": [
-        "Las teclas numéricas de Jade",
-        "&eNum 0&r abre la configuración de Jade (ocultá lo que no te interesa), &eNum 1&r oculta el panel, &eNum 2&r alterna los fluidos, y &eNum 3&r y &eNum 4&r muestran recetas y usos de lo que estás mirando.\n\n¿Sin teclado numérico? Reasignalas en Controles. Te vemos, notebook."
-      ],
-      "sources": [
-        "jar:Jade-1.21.1-NeoForge-15.10.6.jar:snownee/jade/JadeClient.class",
-        "jar:Jade-1.21.1-NeoForge-15.10.6.jar:assets/jade/lang/en_us.json"
-      ]
+      "key": "qol_recipes_jade_keys", "deps": ["qol_recipes_jade_hud"], "type": "checkmark", "optional": true, "layout": {"x": 8.7, "y": 5.2, "size": 1.0, "shape": "diamond"},
+      "en_us": {"title": "Jade's Keypad Keys", "subtitle": "Laptops, we see you.",
+        "text": ["[lead] Five keypad keys tame Jade's panel.",
+                 "[li] [key:key.jade.config]: settings; hide the lines you do not care about",
+                 "[li] [key:key.jade.show_overlay]: hides the panel",
+                 "[li] [key:key.jade.toggle_liquid]: toggles fluids",
+                 "[li] [key:key.jade.show_recipes] and [key:key.jade.show_uses]: recipes and uses of what you are looking at",
+                 "No keypad? Rebind them in Controls."]},
+      "es_es": {"title": "Las teclas numéricas de Jade", "subtitle": "Te vemos, notebook.",
+        "text": ["[lead] Cinco teclas del teclado numérico domestican el panel de Jade.",
+                 "[li] [key:key.jade.config]: configuración; ocultá lo que no te interesa",
+                 "[li] [key:key.jade.show_overlay]: oculta el panel",
+                 "[li] [key:key.jade.toggle_liquid]: alterna los fluidos",
+                 "[li] [key:key.jade.show_recipes] y [key:key.jade.show_uses]: recetas y usos de lo que estás mirando",
+                 "¿Sin teclado numérico? Reasignalas en Controles."]},
+      "sources": ["jar:Jade-1.21.1-NeoForge-15.10.6.jar:snownee/jade/JadeClient.class", "jar:Jade-1.21.1-NeoForge-15.10.6.jar:assets/jade/lang/en_us.json"]
     },
     {
-      "key": "qol_recipes_tooltips",
-      "deps": [
-        "qol_recipes_jade_hud"
-      ],
-      "type": "checkmark",
+      "key": "qol_recipes_tooltips", "deps": ["qol_recipes_jade_hud"], "type": "checkmark", "layout": {"x": 8.7, "y": 7.6, "size": 1.25, "shape": "circle"},
       "icon": "minecraft:enchanted_book",
-      "layout": {
-        "x": 6,
-        "y": 7,
-        "size": 1.25,
-        "shape": "circle"
-      },
-      "en_us": [
-        "Tooltips That Explain",
-        "&eEnchantment Descriptions&r explains every enchantment; &eAppleSkin&r shows a food's hunger and saturation and previews them on the bar; &eEquipment Compare&r sets armor or weapons beside yours while you hold &eLeft Shift&r; and &eF3+H&r, extended by Better Advanced Tooltips, adds IDs, durability and technical data."
-      ],
-      "es_es": [
-        "Tooltips que explican",
-        "&eEnchantment Descriptions&r explica cada encantamiento; &eAppleSkin&r muestra el hambre y la saturación de una comida y los anticipa en la barra; &eEquipment Compare&r pone armaduras o armas al lado de las tuyas mientras mantenés &eShift izquierdo&r; y &eF3+H&r, ampliado por Better Advanced Tooltips, suma IDs, durabilidad y datos técnicos."
-      ],
-      "sources": [
-        "jar:enchdesc-neoforge-1.21.1-21.1.11.jar:net/darkhax/enchdesc/common/impl/Config.class",
-        "jar:appleskin-neoforge-mc1.21-3.0.9.jar:META-INF/neoforge.mods.toml",
-        "repo:docs/design/qol-tooltips.md"
-      ]
+      "en_us": {"title": "Tooltips That Explain",
+        "text": ["[lead] Four mods make every tooltip say more.",
+                 "[li] [hl|Enchantment Descriptions]: explains every enchantment",
+                 "[li] [hl|AppleSkin]: a food's hunger and saturation, previewed on the bar",
+                 "[li] [hl|Equipment Compare]: armor or weapons beside yours while you hold [key:equipmentcompare.key.showTooltips]",
+                 "{page}",
+                 "Advanced tooltips (the debug screen key plus [hl|H]), extended by [hl|Better Advanced Tooltips], add IDs, durability and technical data."]},
+      "es_es": {"title": "Tooltips que explican",
+        "text": ["[lead] Cuatro mods hacen que cada tooltip diga más.",
+                 "[li] [hl|Enchantment Descriptions]: explica cada encantamiento",
+                 "[li] [hl|AppleSkin]: el hambre y la saturación de una comida, anticipados en la barra",
+                 "[li] [hl|Equipment Compare]: armaduras o armas al lado de las tuyas mientras mantenés [key:equipmentcompare.key.showTooltips]",
+                 "{page}",
+                 "Los tooltips avanzados (la tecla de la pantalla de depuración más [hl|H]), ampliados por [hl|Better Advanced Tooltips], suman IDs, durabilidad y datos técnicos."]},
+      "sources": ["jar:enchdesc-neoforge-1.21.1-21.1.11.jar:net/darkhax/enchdesc/common/impl/Config.class", "jar:appleskin-neoforge-mc1.21-3.0.9.jar:META-INF/neoforge.mods.toml", "repo:docs/design/qol-tooltips.md"]
     },
     {
-      "key": "qol_recipes_shulker_preview",
-      "deps": [
-        "qol_recipes_tooltips"
-      ],
-      "type": "checkmark",
-      "optional": true,
+      "key": "qol_recipes_shulker_preview", "deps": ["qol_recipes_tooltips"], "type": "checkmark", "optional": true, "layout": {"x": 13.05, "y": 8.0, "size": 1.0, "shape": "circle"},
       "icon": "minecraft:shulker_box",
-      "layout": {
-        "x": 9,
-        "y": 7,
-        "size": 1.0,
-        "shape": "circle"
-      },
-      "en_us": [
-        "Peek Inside Containers",
-        "&eShulker Box Tooltip&r shows a shulker box's contents without placing it: &eLeft Shift&r for a compact view, &eAlt+Shift&r for the full grid, &eLeft Ctrl&r to lock the preview.\n\nSophisticated Backpacks list their contents when you hold Shift over them."
-      ],
-      "es_es": [
-        "Mirá adentro de los contenedores",
-        "&eShulker Box Tooltip&r muestra el contenido de una caja de shulker sin colocarla: &eShift izquierdo&r para la vista compacta, &eAlt+Shift&r para la grilla completa, &eCtrl izquierdo&r para fijar la vista.\n\nLas mochilas de Sophisticated Backpacks listan lo que llevan si mantenés Shift sobre ellas."
-      ],
-      "sources": [
-        "jar:shulkerboxtooltip-neoforge-5.1.9+1.21.1.jar:META-INF/neoforge.mods.toml",
-        "repo:docs/design/qol-tooltips.md"
-      ]
+      "en_us": {"title": "Peek Inside Containers",
+        "text": ["[lead] See what is inside a [item:minecraft:shulker_box|shulker box] without placing it.",
+                 "[hl|Shulker Box Tooltip] does it:",
+                 "[li] [hl|Left Shift]: compact view",
+                 "[li] [hl|Alt] and [hl|Shift]: the full grid",
+                 "[li] [hl|Left Ctrl]: locks the preview",
+                 "[tip] [item:sophisticatedbackpacks:backpack|Sophisticated Backpacks] list their contents when you hold [hl|Shift] over them."]},
+      "es_es": {"title": "Mirá adentro de los contenedores",
+        "text": ["[lead] Mirá qué hay adentro de una [item:minecraft:shulker_box|caja de shulker] sin colocarla.",
+                 "[hl|Shulker Box Tooltip] lo hace:",
+                 "[li] [hl|Shift izquierdo]: vista compacta",
+                 "[li] [hl|Alt] y [hl|Shift]: la grilla completa",
+                 "[li] [hl|Ctrl izquierdo]: fija la vista",
+                 "[tip] Las mochilas de [item:sophisticatedbackpacks:backpack|Sophisticated Backpacks] listan lo que llevan si mantenés [hl|Shift] sobre ellas."]},
+      "sources": ["jar:shulkerboxtooltip-neoforge-5.1.9+1.21.1.jar:META-INF/neoforge.mods.toml", "repo:docs/design/qol-tooltips.md"]
     },
     {
-      "key": "qol_recipes_effects",
-      "deps": [
-        "qol_recipes_tooltips"
-      ],
-      "type": "checkmark",
-      "optional": true,
+      "key": "qol_recipes_effects", "deps": ["qol_recipes_tooltips"], "type": "checkmark", "optional": true, "layout": {"x": 13.05, "y": 5.9, "size": 1.0, "shape": "circle"},
       "icon": "minecraft:potion",
-      "layout": {
-        "x": 9,
-        "y": 5,
-        "size": 1.0,
-        "shape": "circle"
-      },
-      "en_us": [
-        "What Does This Effect Do?",
-        "Search an effect's name in EMI: &eJust Enough Effect Descriptions&r adds a page per effect with an explanation and the items that cause it.\n\nHandy for the satiety system's random buffs and the potions from Solsticio's apothecary."
-      ],
-      "es_es": [
-        "¿Qué hace este efecto?",
-        "Buscá el nombre de un efecto en EMI: &eJust Enough Effect Descriptions&r suma una página por efecto con su explicación y los ítems que lo causan.\n\nÚtil para los efectos aleatorios del sistema de saciedad y las pociones de la boticaria de Solsticio."
-      ],
-      "sources": [
-        "jar:jeed-1.21-2.3.4-neoforge.jar:META-INF/neoforge.mods.toml",
-        "repo:docs/design/qol-tooltips.md"
-      ]
+      "en_us": {"title": "What Does This Effect Do?",
+        "text": ["[lead] Search an effect's name in EMI and read its page.",
+                 "[hl|Just Enough Effect Descriptions] adds a page per effect with an explanation and the items that cause it.",
+                 "[tip] Handy for the satiety system's random buffs and the potions from Solsticio's apothecary."]},
+      "es_es": {"title": "¿Qué hace este efecto?",
+        "text": ["[lead] Buscá el nombre de un efecto en EMI y leé su página.",
+                 "[hl|Just Enough Effect Descriptions] suma una página por efecto con su explicación y los ítems que lo causan.",
+                 "[tip] Útil para los efectos aleatorios del sistema de saciedad y las pociones de la boticaria de Solsticio."]},
+      "sources": ["jar:jeed-1.21-2.3.4-neoforge.jar:META-INF/neoforge.mods.toml", "repo:docs/design/qol-tooltips.md"]
     },
     {
-      "key": "qol_recipes_polymorph",
-      "deps": [
-        "qol_recipes_welcome"
-      ],
-      "type": "checkmark",
+      "key": "qol_recipes_polymorph", "deps": ["qol_recipes_welcome"], "type": "checkmark", "layout": {"x": 4.35, "y": -4, "size": 1.0, "shape": "square"},
       "icon": "minecraft:crafter",
-      "layout": {
-        "x": 3,
-        "y": -4,
-        "size": 1.0,
-        "shape": "square"
-      },
-      "en_us": [
-        "Two Recipes, One Grid",
-        "When two recipes share a pattern, &ePolymorph&r adds a small button beside the output slot so you can pick the result.\n\nIf the table hands you the \"wrong\" item, look for that button before blaming the recipe."
-      ],
-      "es_es": [
-        "Dos recetas, una grilla",
-        "Cuando dos recetas comparten patrón, &ePolymorph&r agrega un botoncito al lado del casillero de salida para que elijas el resultado.\n\nSi la mesa te da el ítem «equivocado», buscá ese botón antes de culpar a la receta."
-      ],
-      "sources": [
-        "jar:polymorph-neoforge-1.1.0+1.21.1.jar:assets/polymorph/lang/en_us.json",
-        "repo:docs/design/qol-parity.md"
-      ]
+      "en_us": {"title": "Two Recipes, One Grid",
+        "text": ["[lead] When two recipes share a pattern, a small button lets you pick the result.",
+                 "[hl|Polymorph] adds it beside the output slot.",
+                 "[tip] If the table hands you the \"wrong\" item, look for that button before blaming the recipe."]},
+      "es_es": {"title": "Dos recetas, una grilla",
+        "text": ["[lead] Cuando dos recetas comparten patrón, un botoncito te deja elegir el resultado.",
+                 "[hl|Polymorph] lo agrega al lado del casillero de salida.",
+                 "[tip] Si la mesa te da el ítem «equivocado», buscá ese botón antes de culpar a la receta."]},
+      "sources": ["jar:polymorph-neoforge-1.1.0+1.21.1.jar:assets/polymorph/lang/en_us.json", "repo:docs/design/qol-parity.md"]
     },
     {
-      "key": "qol_recipes_books",
-      "deps": [
-        "qol_recipes_welcome"
-      ],
-      "type": "item",
-      "item": "minecraft:book",
+      "key": "qol_recipes_books", "deps": ["qol_recipes_welcome"], "type": "item", "item": "minecraft:book", "layout": {"x": 0, "y": -4, "size": 1.0, "shape": "circle"},
       "icon": "minecraft:writable_book",
-      "layout": {
-        "x": 0,
-        "y": -4,
-        "size": 1.0,
-        "shape": "circle"
-      },
-      "en_us": [
-        "Guide Books Are Crafted",
-        "Nobody hands you a book on login, but every manual is still craftable: Ars Nouveau's Tattered Tome, the Integrated Dynamics manual, the Actually Additions booklet, Modern Industrialization's guidebook, Silent Gear's material book, the PneumaticCraft and Psi manuals and more.\n\nEMI has each recipe, and the Akashic Tome keeps them all in one."
-      ],
-      "es_es": [
-        "Los libros guía se fabrican",
-        "Nadie te regala un libro al entrar, pero todos los manuales se fabrican: la Libreta gastada de Ars Nouveau, el manual de Integrated Dynamics, el folleto de Actually Additions, la guía de Modern Industrialization, el libro de materiales de Silent Gear, los manuales de PneumaticCraft y Psi y más.\n\nEMI tiene cada receta, y el Tomo Akáshico los junta a todos."
-      ],
-      "sources": [
-        "repo:docs/design/heliodor-compass.md",
-        "repo:pack/config/ars_nouveau-common.toml",
-        "repo:pack/config/silentgear-common.toml"
-      ]
+      "en_us": {"title": "Guide Books Are Crafted",
+        "text": ["[lead] Nobody hands you a book on login, but every manual is still craftable:",
+                 "[li] Ars Nouveau's [item:ars_nouveau:worn_notebook|Tattered Tome]",
+                 "[li] The [item:integrateddynamics:on_the_dynamics_of_integration|Integrated Dynamics manual]",
+                 "[li] The [item:actuallyadditions:booklet|Actually Additions booklet]",
+                 "[li] Modern Industrialization's [item:modern_industrialization:guidebook|guidebook]",
+                 "{page}",
+                 "[li] Silent Gear's [item:silentgear:material_book|material book]",
+                 "[li] The [item:pneumaticcraft:manual|PneumaticCraft manual] and the Psi one, and more",
+                 "EMI has each recipe, and the [item:akashictome:tome|Akashic Tome] keeps them all in one."]},
+      "es_es": {"title": "Los libros guía se fabrican",
+        "text": ["[lead] Nadie te regala un libro al entrar, pero todos los manuales se fabrican:",
+                 "[li] La [item:ars_nouveau:worn_notebook|Libreta gastada] de Ars Nouveau",
+                 "[li] El [item:integrateddynamics:on_the_dynamics_of_integration|manual de Integrated Dynamics]",
+                 "[li] El [item:actuallyadditions:booklet|folleto de Actually Additions]",
+                 "[li] La [item:modern_industrialization:guidebook|guía] de Modern Industrialization",
+                 "{page}",
+                 "[li] El [item:silentgear:material_book|libro de materiales] de Silent Gear",
+                 "[li] Los manuales de [item:pneumaticcraft:manual|PneumaticCraft] y de Psi, y más",
+                 "EMI tiene cada receta, y el [item:akashictome:tome|Tomo Akáshico] los junta a todos."]},
+      "sources": ["repo:docs/design/heliodor-compass.md", "repo:pack/config/ars_nouveau-common.toml", "repo:pack/config/silentgear-common.toml"]
     },
     {
-      "key": "qol_recipes_tip_modname",
-      "deps": [
-        "qol_recipes_emi_tree"
-      ],
-      "type": "checkmark",
-      "optional": true,
-      "layout": {
-        "x": 15,
-        "y": -1.5,
-        "size": 1.0,
-        "shape": "diamond"
-      },
-      "en_us": [
-        "Tip: Which Mod Is This?",
-        "Item tooltips in EMI end with the mod's name in blue italics, and Jade shows it for blocks in the world.\n\nWhen a wiki and the game disagree, trust the game: the pack changes some recipes, and EMI always shows the version you really have."
-      ],
-      "es_es": [
-        "Truco: ¿de qué mod es esto?",
-        "Los tooltips de EMI terminan con el nombre del mod en azul y cursiva, y Jade lo muestra para los bloques del mundo.\n\nCuando una wiki y el juego no coinciden, confiá en el juego: el pack cambia algunas recetas, y EMI siempre muestra la versión que tenés de verdad."
-      ],
-      "sources": [
-        "jar:Jade-1.21.1-NeoForge-15.10.6.jar:assets/jade/lang/en_us.json",
-        "repo:docs/design/resource-balance.md"
-      ]
+      "key": "qol_recipes_tip_modname", "deps": ["qol_recipes_emi_tree"], "type": "checkmark", "optional": true, "layout": {"x": 21.75, "y": -3.4, "size": 1.0, "shape": "diamond"},
+      "en_us": {"title": "Which Mod Is This?",
+        "text": ["[tip] Item tooltips in EMI end with the mod's name in blue italics, and Jade shows it for blocks in the world.",
+                 "When a wiki and the game disagree, trust the game: the pack changes some recipes, and EMI always shows the version you really have."]},
+      "es_es": {"title": "¿De qué mod es esto?",
+        "text": ["[tip] Los tooltips de EMI terminan con el nombre del mod en azul y cursiva, y Jade lo muestra para los bloques del mundo.",
+                 "Cuando una wiki y el juego no coinciden, confiá en el juego: el pack cambia algunas recetas, y EMI siempre muestra la versión que tenés de verdad."]},
+      "sources": ["jar:Jade-1.21.1-NeoForge-15.10.6.jar:assets/jade/lang/en_us.json", "repo:docs/design/resource-balance.md"]
     },
     {
-      "key": "qol_recipes_pack_components",
-      "deps": [
-        "qol_recipes_emi_tree"
-      ],
-      "type": "checkmark",
+      "key": "qol_recipes_pack_components", "deps": ["qol_recipes_emi_tree"], "type": "checkmark", "layout": {"x": 21.75, "y": 0, "size": 1.0, "shape": "pentagon"},
       "icon": "entrelumen:calibration_frame",
-      "layout": {
-        "x": 15,
-        "y": 0,
-        "size": 1.0,
-        "shape": "pentagon"
-      },
-      "en_us": [
-        "Pack Change: One Slot for the Act",
-        "Milestones swap one slot on their drawing's axis for an &6act component&r (Calibration Frame, Routing Matrix, Spectral Lens...): the AE2 and Refined Storage controllers, the Digital Miner or the Botany Pots upgrades. Other steps take an act material: a Mekanism alloy, ironwood or zanite.\n\nUnfamiliar ENTRELUMEN item in a grid? Press &eR&r on it; the Atlas chapter has the rest."
-      ],
-      "es_es": [
-        "Cambio del pack: un casillero",
-        "Los hitos cambian un casillero del eje de su dibujo por un &6componente de acto&r (Marco de calibración, Matriz de distribución, Lente espectral...): los controladores de AE2 y Refined Storage, el Minero digital o las mejoras de Botany Pots. Los otros escalones llevan un material de acto: una aleación de Mekanism, ironwood o zanita.\n\n¿Un ítem de ENTRELUMEN desconocido en una grilla? Apretá &eR&r sobre él; el capítulo del Atlas tiene el resto."
-      ],
-      "sources": [
-        "repo:pack/kubejs/server_scripts/entrelumen_pingpong_balance.js",
-        "repo:pack/kubejs/server_scripts/entrelumen_rftools_balance.js",
-        "repo:pack/kubejs/server_scripts/entrelumen_qol_balance.js",
-        "repo:docs/design/resource-balance.md"
-      ]
+      "en_us": {"title": "Pack Change: One Slot for the Act",
+        "text": ["[lead] Milestones swap one slot on their drawing's axis for an act component.",
+                 "[li] [item:entrelumen:calibration_frame|Calibration Frame]",
+                 "[li] [item:entrelumen:routing_matrix|Routing Matrix]",
+                 "[li] [item:entrelumen:spectral_lens|Spectral Lens], and more",
+                 "{page}",
+                 "The AE2 and Refined Storage controllers, the Digital Miner and the Botany Pots upgrades are the ones that ask for them. Other steps take an act material: a Mekanism alloy, [item:twilightforest:ironwood_ingot|ironwood] or [item:aether:zanite_gemstone|zanite].",
+                 "[tip] Unfamiliar ENTRELUMEN item in a grid? Press [hl|R] on it; [chapter:guide_entrelumen_atlas|The Living Atlas] has the rest."]},
+      "es_es": {"title": "Cambio del pack: un casillero",
+        "text": ["[lead] Los hitos cambian un casillero del eje de su dibujo por un componente de acto.",
+                 "[li] [item:entrelumen:calibration_frame|Marco de calibración]",
+                 "[li] [item:entrelumen:routing_matrix|Matriz de distribución]",
+                 "[li] [item:entrelumen:spectral_lens|Lente espectral], y más",
+                 "{page}",
+                 "Los controladores de AE2 y Refined Storage, el Minero digital y las mejoras de Botany Pots son los que las piden. Los otros escalones llevan un material de acto: una aleación de Mekanism, [item:twilightforest:ironwood_ingot|ironwood] o [item:aether:zanite_gemstone|zanita].",
+                 "[tip] ¿Un ítem de ENTRELUMEN desconocido en una grilla? Apretá [hl|R] sobre él; [chapter:guide_entrelumen_atlas|El Atlas Vivo] tiene el resto."]},
+      "sources": ["repo:pack/kubejs/server_scripts/entrelumen_pingpong_balance.js", "repo:pack/kubejs/server_scripts/entrelumen_rftools_balance.js", "repo:pack/kubejs/server_scripts/entrelumen_qol_balance.js", "repo:docs/design/resource-balance.md"]
     },
     {
-      "key": "qol_recipes_pack_kitchen",
-      "deps": [
-        "qol_recipes_pack_components"
-      ],
-      "type": "checkmark",
-      "optional": true,
+      "key": "qol_recipes_pack_kitchen", "deps": ["qol_recipes_pack_components"], "type": "checkmark", "optional": true, "layout": {"x": 26.1, "y": -2.6, "size": 1.0, "shape": "pentagon"},
       "icon": "farmersdelight:cooking_pot",
-      "layout": {
-        "x": 15,
-        "y": -3,
-        "size": 1.0,
-        "shape": "pentagon"
-      },
-      "en_us": [
-        "Pack Change: One Route per Recipe",
-        "Where mods copy each other's recipes, the pack switches off the copies so each recipe shows once in EMI; the kitchen machines are the classic case (see The Kitchen).\n\nApotheosis's own item comparison is off too: Equipment Compare already does it on Shift."
-      ],
-      "es_es": [
-        "Cambio del pack: una sola ruta",
-        "Donde los mods se copian recetas, el pack apaga las copias para que cada receta aparezca una vez en EMI; las máquinas de cocina son el caso clásico (mirá La cocina).\n\nLa comparación de ítems de Apotheosis también está apagada: Equipment Compare ya la hace con Shift."
-      ],
-      "sources": [
-        "repo:pack/config/sliceanddice-common.toml",
-        "repo:pack/config/create_central_kitchen-common.toml",
-        "repo:docs/design/apotheosis-family.md",
-        "repo:docs/design/mod-pingpong.md"
-      ]
+      "en_us": {"title": "Pack Change: One Route per Recipe",
+        "text": ["[lead] Where mods copy each other's recipes, the pack switches off the copies.",
+                 "Each recipe shows once in EMI; the kitchen machines are the classic case ([chapter:sector_farm_kitchen|Farm · Kitchen]).",
+                 "[note] Apotheosis's own item comparison is off too: Equipment Compare already does it on [hl|Shift]."]},
+      "es_es": {"title": "Cambio del pack: una sola ruta",
+        "text": ["[lead] Donde los mods se copian recetas, el pack apaga las copias.",
+                 "Cada receta aparece una vez en EMI; las máquinas de cocina son el caso clásico ([chapter:sector_farm_kitchen|Granja · Cocina]).",
+                 "[note] La comparación de ítems de Apotheosis también está apagada: Equipment Compare ya la hace con [hl|Shift]."]},
+      "sources": ["repo:pack/config/sliceanddice-common.toml", "repo:pack/config/create_central_kitchen-common.toml", "repo:docs/design/apotheosis-family.md", "repo:docs/design/mod-pingpong.md"]
     },
     {
-      "key": "qol_recipes_pack_exclusive",
-      "deps": [
-        "qol_recipes_jei_addons"
-      ],
-      "type": "checkmark",
-      "optional": true,
+      "key": "qol_recipes_pack_exclusive", "deps": ["qol_recipes_jei_addons"], "type": "checkmark", "optional": true, "layout": {"x": 21.75, "y": 5.4, "size": 1.0, "shape": "pentagon"},
       "icon": "entrelumen:luminosity_logistics",
-      "layout": {
-        "x": 15,
-        "y": 6,
-        "size": 1.0,
-        "shape": "pentagon"
-      },
-      "en_us": [
-        "Pack Change: No Recipe on Purpose",
-        "The six &6Luminosities&r (only Solsticio's natives trade them), item duplicators such as the creative crate, storage cell, bin and infinity upgrades, and Torchmaster's Mega Torch (the Altar of Peace replaces it) have no recipe at all.\n\nWhen U shows uses but R shows nothing, read the tooltip: it usually says where the item comes from."
-      ],
-      "es_es": [
-        "Cambio del pack: sin receta",
-        "Las seis &6Luminosidades&r (sólo las intercambian los nativos de Solsticio), los duplicadores como la caja, la celda y el contenedor creativos y las mejoras de infinito, y la Mega Torch de Torchmaster (la reemplaza el Altar de Paz) no tienen receta.\n\nCuando U muestra usos pero R no muestra nada, leé el tooltip: suele decir de dónde sale el ítem."
-      ],
-      "sources": [
-        "repo:pack/kubejs/server_scripts/entrelumen_luminous_balance.js",
-        "repo:docs/design/luminous-gear.md",
-        "repo:pack/kubejs/server_scripts/entrelumen_qol_balance.js"
-      ]
+      "en_us": {"title": "Pack Change: No Recipe on Purpose",
+        "text": ["[lead] Some items have no recipe at all, on purpose.",
+                 "[li] The six [hl|Luminosities]: only Solsticio's natives trade them",
+                 "[li] Item duplicators, such as the creative crate, storage cell, bin and infinity upgrades",
+                 "[li] Torchmaster's Mega Torch: the Altar of Peace replaces it",
+                 "{page}",
+                 "[tip] When [hl|U] shows uses but [hl|R] shows nothing, read the tooltip: it usually says where the item comes from."]},
+      "es_es": {"title": "Cambio del pack: sin receta",
+        "text": ["[lead] Algunos ítems no tienen receta, a propósito.",
+                 "[li] Las seis [hl|Luminosidades]: sólo las intercambian los nativos de Solsticio",
+                 "[li] Duplicadores de ítems, como la caja, la celda y el contenedor creativos y las mejoras de infinito",
+                 "[li] La Mega Torch de Torchmaster: la reemplaza el Altar de Paz",
+                 "{page}",
+                 "[tip] Cuando [hl|U] muestra usos pero [hl|R] no muestra nada, leé el tooltip: suele decir de dónde sale el ítem."]},
+      "sources": ["repo:pack/kubejs/server_scripts/entrelumen_luminous_balance.js", "repo:docs/design/luminous-gear.md", "repo:pack/kubejs/server_scripts/entrelumen_qol_balance.js"]
     },
     {
-      "key": "qol_recipes_light_overlay",
-      "deps": [
-        "qol_recipes_jade_hud"
-      ],
-      "type": "checkmark",
-      "optional": true,
+      "key": "qol_recipes_light_overlay", "deps": ["qol_recipes_jade_hud"], "type": "checkmark", "optional": true, "layout": {"x": 0, "y": 4, "size": 1.0, "shape": "circle"},
       "icon": "minecraft:torch",
-      "layout": {
-        "x": 0,
-        "y": 4,
-        "size": 1.0,
-        "shape": "circle"
-      },
-      "en_us": [
-        "F7 and F9: Light and Chunk Lines",
-        "&eMore Overlays&r adds two world toggles: &eF7&r marks blocks where hostile mobs can spawn because the light is too low, and &eF9&r draws chunk borders, handy before claiming land or building a chunk-sized farm.\n\nLight a cave with F7 on until no marks remain."
-      ],
-      "es_es": [
-        "F7 y F9: luz y bordes de chunk",
-        "&eMore Overlays&r suma dos interruptores: &eF7&r marca los bloques donde pueden aparecer mobs hostiles por falta de luz, y &eF9&r dibuja los bordes de los chunks, útil antes de reclamar terreno o armar una granja del tamaño de un chunk.\n\nIluminá una cueva con F7 prendido hasta que no quede ninguna marca."
-      ],
-      "sources": [
-        "jar:moreoverlays-1.24.2-mc1.21.1-neoforge.jar:at/ridgo8/moreoverlays/KeyBindings.class"
-      ]
+      "en_us": {"title": "Light and Chunk Lines",
+        "text": ["[lead] Two world toggles from More Overlays: light and chunk borders.",
+                 "[li] [key:key.moreoverlays.lightoverlay.desc]: marks blocks where hostile mobs can spawn because the light is too low",
+                 "[li] [key:key.moreoverlays.chunkbounds.desc]: draws chunk borders",
+                 "{page}",
+                 "Chunk borders are handy before claiming land or building a chunk-sized farm.",
+                 "[tip] Light a cave with the first one on until no marks remain."]},
+      "es_es": {"title": "Luz y bordes de chunk",
+        "text": ["[lead] Dos interruptores del mundo de More Overlays: luz y bordes de chunk.",
+                 "[li] [key:key.moreoverlays.lightoverlay.desc]: marca los bloques donde pueden aparecer mobs hostiles por falta de luz",
+                 "[li] [key:key.moreoverlays.chunkbounds.desc]: dibuja los bordes de los chunks",
+                 "{page}",
+                 "Los bordes sirven antes de reclamar terreno o armar una granja del tamaño de un chunk.",
+                 "[tip] Iluminá una cueva con el primero prendido hasta que no quede ninguna marca."]},
+      "sources": ["jar:moreoverlays-1.24.2-mc1.21.1-neoforge.jar:at/ridgo8/moreoverlays/KeyBindings.class"]
     },
     {
-      "key": "qol_recipes_close",
-      "deps": [
-        "qol_recipes_pack_components",
-        "qol_recipes_jei_addons",
-        "qol_recipes_effects"
-      ],
-      "type": "checkmark",
+      "key": "qol_recipes_close", "deps": ["qol_recipes_pack_components", "qol_recipes_jei_addons", "qol_recipes_effects"], "type": "checkmark", "layout": {"x": 26.1, "y": 2.2, "size": 2.0, "shape": "hexagon"},
       "icon": "minecraft:compass",
-      "layout": {
-        "x": 18,
-        "y": 1.5,
-        "size": 2.0,
-        "shape": "hexagon"
-      },
-      "en_us": [
-        "You Can Look Anything Up",
-        "R for recipes, U for uses, A for favorites, the tree for long chains, Jade for the world and tooltips for everything else.\n\nThe wiki can rest now."
-      ],
-      "es_es": [
-        "Ya podés buscar cualquier cosa",
-        "R para recetas, U para usos, A para favoritos, el árbol para cadenas largas, Jade para el mundo y los tooltips para todo lo demás.\n\nLa wiki ya puede descansar."
-      ],
-      "sources": [
-        "repo:content/guides/README.md"
-      ]
+      "en_us": {"title": "You Can Look Anything Up", "subtitle": "The wiki can rest now.",
+        "text": ["[lead] Recipes, uses, favorites, the tree, Jade and tooltips: all inside the game.",
+                 "[li] [hl|R] for recipes",
+                 "[li] [hl|U] for uses",
+                 "[li] [hl|A] for favorites",
+                 "[li] The tree for long chains",
+                 "[li] Jade for the world",
+                 "[li] Tooltips for everything else"]},
+      "es_es": {"title": "Ya podés buscar cualquier cosa", "subtitle": "La wiki ya puede descansar.",
+        "text": ["[lead] Recetas, usos, favoritos, el árbol, Jade y tooltips: todo dentro del juego.",
+                 "[li] [hl|R] para recetas",
+                 "[li] [hl|U] para usos",
+                 "[li] [hl|A] para favoritos",
+                 "[li] El árbol para cadenas largas",
+                 "[li] Jade para el mundo",
+                 "[li] Tooltips para todo lo demás"]},
+      "sources": ["repo:content/guides/README.md"]
+    },
+    {
+      "key": "qol_recipes_emi_loot", "deps": ["qol_recipes_jei_addons"], "type": "checkmark", "optional": true, "layout": {"x": 26.1, "y": 5.4, "size": 1.0, "shape": "circle"},
+      "icon": "minecraft:chest",
+      "en_us": {"title": "EMI Loot: What Drops Where", "subtitle": "Every drop table, one press away.",
+        "text": ["[lead] EMI Loot adds a page for every drop table: chests, blocks, mobs, fishing and more.",
+                 "[hl|R] on an item lists the pages that drop it:",
+                 "[li] [hl|Chest Loot]",
+                 "[li] [hl|Block Drops] and [hl|Mob Drops]",
+                 "[li] [hl|Gameplay Drops]: fishing, bartering",
+                 "[li] [hl|Archaeology Loot]",
+                 "{page}",
+                 "Each drop shows its chance, and a tooltip for every condition: killed by a player, needs a tool, and so on.",
+                 "[note] The pack hides the campaign's own loot: ENTRELUMEN's loot tables and the quest loot crates never appear here."]},
+      "es_es": {"title": "EMI Loot: qué suelta cada cosa", "subtitle": "Cada tabla de botín, a una tecla.",
+        "text": ["[lead] EMI Loot suma una página por cada tabla de botín: cofres, bloques, criaturas, pesca y más.",
+                 "[hl|R] sobre un ítem lista las páginas que lo sueltan:",
+                 "[li] [hl|Chest Loot]",
+                 "[li] [hl|Block Drops] y [hl|Mob Drops]",
+                 "[li] [hl|Gameplay Drops]: pesca, trueque",
+                 "[li] [hl|Archaeology Loot]",
+                 "{page}",
+                 "Cada botín muestra su probabilidad, y un tooltip por cada condición: muerto por un jugador, requiere una herramienta, etcétera.",
+                 "[note] El pack oculta el botín de la campaña: las tablas de botín de ENTRELUMEN y las cajas de botín de las quests no aparecen acá."]},
+      "sources": ["jar:emi_loot-0.7.9+1.21+neoforge.jar:assets/emi_loot/lang/en_us.json", "jar:emi_loot-0.7.9+1.21+neoforge.jar:META-INF/neoforge.mods.toml", "repo:pack/kubejs/assets/emi/recipe/filters/entrelumen_hidden_loot.json", "repo:docs/design/mod-pingpong.md"]
+    },
+    {
+      "key": "qol_recipes_emi_ores", "deps": ["qol_recipes_emi_loot"], "type": "checkmark", "optional": true, "layout": {"x": 30.45, "y": 5.4, "size": 1.0, "shape": "circle"},
+      "icon": "minecraft:iron_ore",
+      "en_us": {"title": "EMI Ores: Where to Dig", "subtitle": "Height, biomes and odds.",
+        "text": ["[lead] Press [hl|R] on an ore and EMI tells you where the world generates it.",
+                 "[hl|Ore Generation] pages show:",
+                 "[li] Veins per chunk, or 1 in N chunks when it is rare",
+                 "[li] The height range and its shape: uniform, triangular or trapezoid",
+                 "[li] Where it is most common",
+                 "{page}",
+                 "[li] The biomes where it shows up",
+                 "[li] Hold [hl|Shift] for the height values of your current dimension, or for relative ones",
+                 "[hl|Geode Generation] does the same for geodes.",
+                 "[note] Heights apply to the dimension you are in, which may not contain that ore."]},
+      "es_es": {"title": "EMI Ores: dónde cavar", "subtitle": "Altura, biomas y probabilidades.",
+        "text": ["[lead] Apretá [hl|R] sobre un mineral y EMI te dice dónde lo genera el mundo.",
+                 "Las páginas de [hl|Ore Generation] muestran:",
+                 "[li] Vetas por chunk, o 1 en N chunks si es raro",
+                 "[li] El rango de altura y su forma: uniforme, triangular o trapezoidal",
+                 "[li] Dónde es más común",
+                 "{page}",
+                 "[li] Los biomas donde aparece",
+                 "[li] Mantené [hl|Shift] para ver las alturas de tu dimensión actual, o las relativas",
+                 "[hl|Geode Generation] hace lo mismo con las geodas.",
+                 "[note] Las alturas valen para la dimensión en la que estás, que puede no tener ese mineral."]},
+      "sources": ["jar:emi_ores-1.3+1.21.1+neoforge.jar:assets/emi_ores/lang/en_us.json", "jar:emi_ores-1.3+1.21.1+neoforge.jar:META-INF/neoforge.mods.toml", "jar:emi_ores-1.3+1.21.1+neoforge.jar:cc/abbie/emi_ores/compat/emi/recipe/OreGenEmiRecipe.class", "repo:docs/design/mod-pingpong.md"]
+    },
+    {
+      "key": "qol_recipes_ae2_tree", "deps": ["qol_recipes_emi_tree"], "type": "checkmark", "optional": true, "layout": {"x": 21.75, "y": -1.7, "size": 1.0, "shape": "circle"},
+      "icon": "ae2:controller",
+      "en_us": {"title": "AE2: See the Crafting Tree",
+        "text": ["[lead] AE2's crafting confirmation screen can draw the whole tree of what it is about to craft.",
+                 "[li] The [hl|Show Crafting Tree] button sits on that screen",
+                 "[li] Each node counts what is being crafted, needed, used, missing and stored",
+                 "{page}",
+                 "[li] [hl|Show Missing Only] keeps only what you still lack",
+                 "[li] The settings offer a compact tree (beta) and a screenshot of the tree",
+                 "[note] The button waits for AE2 to finish its calculation.",
+                 "The autocrafting itself: [chapter:sector_ae2_automation|AE2 · Automation]."]},
+      "es_es": {"title": "AE2: ver el árbol de crafteo",
+        "text": ["[lead] La pantalla de confirmación de crafteo de AE2 puede dibujar el árbol entero de lo que va a fabricar.",
+                 "[li] El botón [hl|Show Crafting Tree] está en esa pantalla",
+                 "[li] Cada nodo cuenta lo que se fabrica, se necesita, se usa, falta y está guardado",
+                 "{page}",
+                 "[li] [hl|Show Missing Only] deja sólo lo que todavía te falta",
+                 "[li] Las opciones ofrecen un árbol compacto (beta) y una captura del árbol",
+                 "[note] El botón espera a que AE2 termine su cálculo.",
+                 "El autocrafteo en sí: [chapter:sector_ae2_automation|AE2 · Automatización]."]},
+      "sources": ["jar:ae2ct-1.21.1-1.1.1.jar:assets/ae2ct/lang/en_us.json", "jar:ae2ct-1.21.1-1.1.1.jar:com/neuvillette/ae2ct/mixin/Ae2CraftConfirmScreen.class"]
+    },
+    {
+      "key": "qol_recipes_toy_bell", "role": "decor", "deps": [], "type": "checkmark", "optional": true, "layout": {"x": 11.4, "y": 19.8, "size": 1.0, "shape": "none"},
+      "icon": "minecraft:bell",
+      "en_us": {"title": "Ring the Desk Bell",
+        "text": ["[lead] One tap and the whole reference desk hears it.",
+                 "Nobody answers. It is a very quiet library."]},
+      "es_es": {"title": "Tocar la campanita",
+        "text": ["[lead] Un toque y todo el escritorio de consulta se entera.",
+                 "Nadie contesta. Es una biblioteca muy tranquila."]},
+      "sources": ["https://minecraft.wiki/w/Bell"]
+    },
+    {
+      "key": "qol_recipes_toy_drawer", "role": "decor", "deps": [], "type": "checkmark", "optional": true, "layout": {"x": 5.15, "y": 19.05, "size": 0.75, "shape": "none"},
+      "icon": "minecraft:name_tag",
+      "en_us": {"title": "The Unlabelled Drawer",
+        "text": ["[lead] Every catalogue has one drawer nobody labelled.",
+                 "Inside: a name tag with no name."]},
+      "es_es": {"title": "El cajón sin rótulo",
+        "text": ["[lead] Todo fichero tiene un cajón que nadie rotuló.",
+                 "Adentro: una etiqueta sin nombre."]},
+      "sources": ["https://minecraft.wiki/w/Name_Tag"]
     }
-  ]
+  ],
+  "art": [
+    {"id": "title", "text": {"en_us": "Recipes and Information", "es_es": "Recetas e información"}, "x": -5.6, "y": -8.0, "scale": 3, "tint": "#E8B04A", "align": "start"},
+    {"id": "wall", "picture": "#2E3742", "x": 13.9, "y": 7.0, "w": 40.6, "h": 27.2, "reveal": "qol_recipes_welcome", "order": -12},
+    {"id": "wall_rail", "picture": "#4A5563", "x": 13.9, "y": -6.525, "w": 40.6, "h": 0.15, "reveal": "qol_recipes_welcome", "order": -11},
+    {"id": "wall_base", "picture": "#232A33", "x": 13.9, "y": 20.45, "w": 40.6, "h": 0.3, "reveal": "qol_recipes_welcome", "order": -11},
+    {"id": "bench_sketch", "picture": "#8FA0B5", "x": 14.0, "y": 22.1, "w": 42.0, "h": 3.0, "alpha": 40, "order": -9},
+    {"id": "bench_top", "picture": "#B57F4A", "x": 14.0, "y": 21.25, "w": 42.0, "h": 1.3, "reveal": "qol_recipes_welcome", "order": -9},
+    {"id": "bench_edge", "picture": "#D9A56A", "x": 14.0, "y": 20.67, "w": 42.0, "h": 0.14, "reveal": "qol_recipes_welcome", "order": -8},
+    {"id": "bench_front", "picture": "#6E4A2C", "x": 14.0, "y": 22.75, "w": 42.0, "h": 1.7, "reveal": "qol_recipes_welcome", "order": -9},
+    {"id": "bench_seam_0", "picture": "#4E3320", "x": 2.535, "y": 21.4, "w": 0.07, "h": 1.0, "reveal": "qol_recipes_welcome", "order": -8},
+    {"id": "bench_seam_1", "picture": "#4E3320", "x": 10.035, "y": 21.4, "w": 0.07, "h": 1.0, "reveal": "qol_recipes_welcome", "order": -8},
+    {"id": "bench_seam_2", "picture": "#4E3320", "x": 18.535, "y": 21.4, "w": 0.07, "h": 1.0, "reveal": "qol_recipes_welcome", "order": -8},
+    {"id": "bench_seam_3", "picture": "#4E3320", "x": 27.035, "y": 21.4, "w": 0.07, "h": 1.0, "reveal": "qol_recipes_welcome", "order": -8},
+    {"id": "bench_seam_h", "picture": "#4E3320", "x": 14.0, "y": 21.93, "w": 42.0, "h": 0.06, "reveal": "qol_recipes_welcome", "order": -8},
+    {"id": "cab_sketch", "picture": "#E8DCB5", "x": 1.625, "y": 15.825, "w": 14.85, "h": 9.15, "alpha": 46, "order": -9},
+    {"id": "cab", "picture": "#4E3320", "x": 1.625, "y": 15.825, "w": 14.85, "h": 9.15, "reveal": "qol_recipes_welcome", "order": -9},
+    {"id": "cab_top", "picture": "#7A5230", "x": 1.625, "y": 11.14, "w": 15.15, "h": 0.22, "reveal": "qol_recipes_welcome", "order": -8},
+    {"id": "cab_label", "text": {"en_us": "The card catalogue", "es_es": "El fichero"}, "x": -5.8, "y": 9.75, "scale": 2, "tint": "#E8DCB5", "align": "start"},
+    {"id": "d_emi_panel_sk", "picture": "#E8DCB5", "x": -4.25, "y": 12.45, "w": 2.2, "h": 1.5, "alpha": 46, "order": -8},
+    {"id": "d_emi_panel_cl", "picture": "#8B5E3B", "x": -4.25, "y": 12.45, "w": 2.2, "h": 1.5, "reveal": "qol_recipes_welcome", "order": -7},
+    {"id": "d_emi_panel_cp", "picture": "#D9C9A0", "x": -4.25, "y": 12.03, "w": 1.1, "h": 0.34, "reveal": "qol_recipes_welcome", "order": -6},
+    {"id": "d_emi_panel_in", "picture": "#150C06", "x": -4.25, "y": 12.01, "w": 2.2, "h": 0.62, "reveal": "qol_recipes_emi_panel", "order": -4},
+    {"id": "d_emi_panel_card", "picture": "#EADFC0", "x": -4.25, "y": 11.885, "w": 1.44, "h": 0.87, "reveal": "qol_recipes_emi_panel", "order": -3},
+    {"id": "d_emi_panel_icon", "picture": "minecraft:textures/item/book.png", "x": -4.25, "y": 11.68, "w": 0.62, "h": 0.62, "reveal": "qol_recipes_emi_panel", "order": -2},
+    {"id": "d_emi_panel_front", "picture": "#9C6A42", "x": -4.25, "y": 13.0, "w": 2.2, "h": 1.5, "reveal": "qol_recipes_emi_panel", "order": -1},
+    {"id": "d_emi_panel_plate", "picture": "#D9C9A0", "x": -4.25, "y": 12.58, "w": 1.1, "h": 0.34, "reveal": "qol_recipes_emi_panel", "order": 0},
+    {"id": "d_emi_panel_knob", "picture": "#D9A441", "x": -4.25, "y": 13.24, "w": 0.32, "h": 0.28, "reveal": "qol_recipes_emi_panel", "order": 0},
+    {"id": "d_emi_recipes_sk", "picture": "#E8DCB5", "x": -4.25, "y": 14.65, "w": 2.2, "h": 1.5, "alpha": 46, "order": -8},
+    {"id": "d_emi_recipes_cl", "picture": "#8B5E3B", "x": -4.25, "y": 14.65, "w": 2.2, "h": 1.5, "reveal": "qol_recipes_welcome", "order": -7},
+    {"id": "d_emi_recipes_cp", "picture": "#D9C9A0", "x": -4.25, "y": 14.23, "w": 1.1, "h": 0.34, "reveal": "qol_recipes_welcome", "order": -6},
+    {"id": "d_emi_recipes_in", "picture": "#150C06", "x": -4.25, "y": 14.21, "w": 2.2, "h": 0.62, "reveal": "qol_recipes_emi_recipes", "order": -4},
+    {"id": "d_emi_recipes_card", "picture": "#EADFC0", "x": -4.25, "y": 14.085, "w": 1.44, "h": 0.87, "reveal": "qol_recipes_emi_recipes", "order": -3},
+    {"id": "d_emi_recipes_icon", "picture": "minecraft:textures/item/knowledge_book.png", "x": -4.25, "y": 13.88, "w": 0.62, "h": 0.62, "reveal": "qol_recipes_emi_recipes", "order": -2},
+    {"id": "d_emi_recipes_front", "picture": "#9C6A42", "x": -4.25, "y": 15.2, "w": 2.2, "h": 1.5, "reveal": "qol_recipes_emi_recipes", "order": -1},
+    {"id": "d_emi_recipes_plate", "picture": "#D9C9A0", "x": -4.25, "y": 14.78, "w": 1.1, "h": 0.34, "reveal": "qol_recipes_emi_recipes", "order": 0},
+    {"id": "d_emi_recipes_knob", "picture": "#D9A441", "x": -4.25, "y": 15.44, "w": 0.32, "h": 0.28, "reveal": "qol_recipes_emi_recipes", "order": 0},
+    {"id": "d_emi_uses_sk", "picture": "#E8DCB5", "x": -4.25, "y": 16.85, "w": 2.2, "h": 1.5, "alpha": 46, "order": -8},
+    {"id": "d_emi_uses_cl", "picture": "#8B5E3B", "x": -4.25, "y": 16.85, "w": 2.2, "h": 1.5, "reveal": "qol_recipes_welcome", "order": -7},
+    {"id": "d_emi_uses_cp", "picture": "#D9C9A0", "x": -4.25, "y": 16.43, "w": 1.1, "h": 0.34, "reveal": "qol_recipes_welcome", "order": -6},
+    {"id": "d_emi_uses_in", "picture": "#150C06", "x": -4.25, "y": 16.41, "w": 2.2, "h": 0.62, "reveal": "qol_recipes_emi_uses", "order": -4},
+    {"id": "d_emi_uses_card", "picture": "#EADFC0", "x": -4.25, "y": 16.285, "w": 1.44, "h": 0.87, "reveal": "qol_recipes_emi_uses", "order": -3},
+    {"id": "d_emi_uses_icon", "picture": "minecraft:textures/item/hopper.png", "x": -4.25, "y": 16.08, "w": 0.62, "h": 0.62, "reveal": "qol_recipes_emi_uses", "order": -2},
+    {"id": "d_emi_uses_front", "picture": "#9C6A42", "x": -4.25, "y": 17.4, "w": 2.2, "h": 1.5, "reveal": "qol_recipes_emi_uses", "order": -1},
+    {"id": "d_emi_uses_plate", "picture": "#D9C9A0", "x": -4.25, "y": 16.98, "w": 1.1, "h": 0.34, "reveal": "qol_recipes_emi_uses", "order": 0},
+    {"id": "d_emi_uses_knob", "picture": "#D9A441", "x": -4.25, "y": 17.64, "w": 0.32, "h": 0.28, "reveal": "qol_recipes_emi_uses", "order": 0},
+    {"id": "d_emi_search_sk", "picture": "#E8DCB5", "x": -4.25, "y": 19.05, "w": 2.2, "h": 1.5, "alpha": 46, "order": -8},
+    {"id": "d_emi_search_cl", "picture": "#8B5E3B", "x": -4.25, "y": 19.05, "w": 2.2, "h": 1.5, "reveal": "qol_recipes_welcome", "order": -7},
+    {"id": "d_emi_search_cp", "picture": "#D9C9A0", "x": -4.25, "y": 18.63, "w": 1.1, "h": 0.34, "reveal": "qol_recipes_welcome", "order": -6},
+    {"id": "d_emi_search_in", "picture": "#150C06", "x": -4.25, "y": 18.61, "w": 2.2, "h": 0.62, "reveal": "qol_recipes_emi_search", "order": -4},
+    {"id": "d_emi_search_card", "picture": "#EADFC0", "x": -4.25, "y": 18.485, "w": 1.44, "h": 0.87, "reveal": "qol_recipes_emi_search", "order": -3},
+    {"id": "d_emi_search_icon", "picture": "minecraft:textures/item/name_tag.png", "x": -4.25, "y": 18.28, "w": 0.62, "h": 0.62, "reveal": "qol_recipes_emi_search", "order": -2},
+    {"id": "d_emi_search_front", "picture": "#9C6A42", "x": -4.25, "y": 19.6, "w": 2.2, "h": 1.5, "reveal": "qol_recipes_emi_search", "order": -1},
+    {"id": "d_emi_search_plate", "picture": "#D9C9A0", "x": -4.25, "y": 19.18, "w": 1.1, "h": 0.34, "reveal": "qol_recipes_emi_search", "order": 0},
+    {"id": "d_emi_search_knob", "picture": "#D9A441", "x": -4.25, "y": 19.84, "w": 0.32, "h": 0.28, "reveal": "qol_recipes_emi_search", "order": 0},
+    {"id": "d_emi_favorites_sk", "picture": "#E8DCB5", "x": -1.9, "y": 12.45, "w": 2.2, "h": 1.5, "alpha": 46, "order": -8},
+    {"id": "d_emi_favorites_cl", "picture": "#8B5E3B", "x": -1.9, "y": 12.45, "w": 2.2, "h": 1.5, "reveal": "qol_recipes_welcome", "order": -7},
+    {"id": "d_emi_favorites_cp", "picture": "#D9C9A0", "x": -1.9, "y": 12.03, "w": 1.1, "h": 0.34, "reveal": "qol_recipes_welcome", "order": -6},
+    {"id": "d_emi_favorites_in", "picture": "#150C06", "x": -1.9, "y": 12.01, "w": 2.2, "h": 0.62, "reveal": "qol_recipes_emi_favorites", "order": -4},
+    {"id": "d_emi_favorites_card", "picture": "#EADFC0", "x": -1.9, "y": 11.885, "w": 1.44, "h": 0.87, "reveal": "qol_recipes_emi_favorites", "order": -3},
+    {"id": "d_emi_favorites_icon", "picture": "minecraft:textures/item/nether_star.png", "x": -1.9, "y": 11.68, "w": 0.62, "h": 0.62, "reveal": "qol_recipes_emi_favorites", "order": -2},
+    {"id": "d_emi_favorites_front", "picture": "#9C6A42", "x": -1.9, "y": 13.0, "w": 2.2, "h": 1.5, "reveal": "qol_recipes_emi_favorites", "order": -1},
+    {"id": "d_emi_favorites_plate", "picture": "#D9C9A0", "x": -1.9, "y": 12.58, "w": 1.1, "h": 0.34, "reveal": "qol_recipes_emi_favorites", "order": 0},
+    {"id": "d_emi_favorites_knob", "picture": "#D9A441", "x": -1.9, "y": 13.24, "w": 0.32, "h": 0.28, "reveal": "qol_recipes_emi_favorites", "order": 0},
+    {"id": "d_emi_fill_sk", "picture": "#E8DCB5", "x": -1.9, "y": 14.65, "w": 2.2, "h": 1.5, "alpha": 46, "order": -8},
+    {"id": "d_emi_fill_cl", "picture": "#8B5E3B", "x": -1.9, "y": 14.65, "w": 2.2, "h": 1.5, "reveal": "qol_recipes_welcome", "order": -7},
+    {"id": "d_emi_fill_cp", "picture": "#D9C9A0", "x": -1.9, "y": 14.23, "w": 1.1, "h": 0.34, "reveal": "qol_recipes_welcome", "order": -6},
+    {"id": "d_emi_fill_in", "picture": "#150C06", "x": -1.9, "y": 14.21, "w": 2.2, "h": 0.62, "reveal": "qol_recipes_emi_fill", "order": -4},
+    {"id": "d_emi_fill_card", "picture": "#EADFC0", "x": -1.9, "y": 14.085, "w": 1.44, "h": 0.87, "reveal": "qol_recipes_emi_fill", "order": -3},
+    {"id": "d_emi_fill_icon", "picture": "minecraft:textures/item/iron_ingot.png", "x": -1.9, "y": 13.88, "w": 0.62, "h": 0.62, "reveal": "qol_recipes_emi_fill", "order": -2},
+    {"id": "d_emi_fill_front", "picture": "#9C6A42", "x": -1.9, "y": 15.2, "w": 2.2, "h": 1.5, "reveal": "qol_recipes_emi_fill", "order": -1},
+    {"id": "d_emi_fill_plate", "picture": "#D9C9A0", "x": -1.9, "y": 14.78, "w": 1.1, "h": 0.34, "reveal": "qol_recipes_emi_fill", "order": 0},
+    {"id": "d_emi_fill_knob", "picture": "#D9A441", "x": -1.9, "y": 15.44, "w": 0.32, "h": 0.28, "reveal": "qol_recipes_emi_fill", "order": 0},
+    {"id": "d_emi_tree_sk", "picture": "#E8DCB5", "x": -1.9, "y": 16.85, "w": 2.2, "h": 1.5, "alpha": 46, "order": -8},
+    {"id": "d_emi_tree_cl", "picture": "#8B5E3B", "x": -1.9, "y": 16.85, "w": 2.2, "h": 1.5, "reveal": "qol_recipes_welcome", "order": -7},
+    {"id": "d_emi_tree_cp", "picture": "#D9C9A0", "x": -1.9, "y": 16.43, "w": 1.1, "h": 0.34, "reveal": "qol_recipes_welcome", "order": -6},
+    {"id": "d_emi_tree_in", "picture": "#150C06", "x": -1.9, "y": 16.41, "w": 2.2, "h": 0.62, "reveal": "qol_recipes_emi_tree", "order": -4},
+    {"id": "d_emi_tree_card", "picture": "#EADFC0", "x": -1.9, "y": 16.285, "w": 1.44, "h": 0.87, "reveal": "qol_recipes_emi_tree", "order": -3},
+    {"id": "d_emi_tree_icon", "picture": "minecraft:textures/block/oak_sapling.png", "x": -1.9, "y": 16.08, "w": 0.62, "h": 0.62, "reveal": "qol_recipes_emi_tree", "order": -2},
+    {"id": "d_emi_tree_front", "picture": "#9C6A42", "x": -1.9, "y": 17.4, "w": 2.2, "h": 1.5, "reveal": "qol_recipes_emi_tree", "order": -1},
+    {"id": "d_emi_tree_plate", "picture": "#D9C9A0", "x": -1.9, "y": 16.98, "w": 1.1, "h": 0.34, "reveal": "qol_recipes_emi_tree", "order": 0},
+    {"id": "d_emi_tree_knob", "picture": "#D9A441", "x": -1.9, "y": 17.64, "w": 0.32, "h": 0.28, "reveal": "qol_recipes_emi_tree", "order": 0},
+    {"id": "d_emi_defaults_sk", "picture": "#E8DCB5", "x": -1.9, "y": 19.05, "w": 2.2, "h": 1.5, "alpha": 46, "order": -8},
+    {"id": "d_emi_defaults_cl", "picture": "#8B5E3B", "x": -1.9, "y": 19.05, "w": 2.2, "h": 1.5, "reveal": "qol_recipes_welcome", "order": -7},
+    {"id": "d_emi_defaults_cp", "picture": "#D9C9A0", "x": -1.9, "y": 18.63, "w": 1.1, "h": 0.34, "reveal": "qol_recipes_welcome", "order": -6},
+    {"id": "d_emi_defaults_in", "picture": "#150C06", "x": -1.9, "y": 18.61, "w": 2.2, "h": 0.62, "reveal": "qol_recipes_emi_defaults", "order": -4},
+    {"id": "d_emi_defaults_card", "picture": "#EADFC0", "x": -1.9, "y": 18.485, "w": 1.44, "h": 0.87, "reveal": "qol_recipes_emi_defaults", "order": -3},
+    {"id": "d_emi_defaults_icon", "picture": "minecraft:textures/item/paper.png", "x": -1.9, "y": 18.28, "w": 0.62, "h": 0.62, "reveal": "qol_recipes_emi_defaults", "order": -2},
+    {"id": "d_emi_defaults_front", "picture": "#9C6A42", "x": -1.9, "y": 19.6, "w": 2.2, "h": 1.5, "reveal": "qol_recipes_emi_defaults", "order": -1},
+    {"id": "d_emi_defaults_plate", "picture": "#D9C9A0", "x": -1.9, "y": 19.18, "w": 1.1, "h": 0.34, "reveal": "qol_recipes_emi_defaults", "order": 0},
+    {"id": "d_emi_defaults_knob", "picture": "#D9A441", "x": -1.9, "y": 19.84, "w": 0.32, "h": 0.28, "reveal": "qol_recipes_emi_defaults", "order": 0},
+    {"id": "d_jei_backend_sk", "picture": "#E8DCB5", "x": 0.45, "y": 12.45, "w": 2.2, "h": 1.5, "alpha": 46, "order": -8},
+    {"id": "d_jei_backend_cl", "picture": "#8B5E3B", "x": 0.45, "y": 12.45, "w": 2.2, "h": 1.5, "reveal": "qol_recipes_welcome", "order": -7},
+    {"id": "d_jei_backend_cp", "picture": "#D9C9A0", "x": 0.45, "y": 12.03, "w": 1.1, "h": 0.34, "reveal": "qol_recipes_welcome", "order": -6},
+    {"id": "d_jei_backend_in", "picture": "#150C06", "x": 0.45, "y": 12.01, "w": 2.2, "h": 0.62, "reveal": "qol_recipes_jei_backend", "order": -4},
+    {"id": "d_jei_backend_card", "picture": "#EADFC0", "x": 0.45, "y": 11.885, "w": 1.44, "h": 0.87, "reveal": "qol_recipes_jei_backend", "order": -3},
+    {"id": "d_jei_backend_icon", "picture": "minecraft:textures/item/comparator.png", "x": 0.45, "y": 11.68, "w": 0.62, "h": 0.62, "reveal": "qol_recipes_jei_backend", "order": -2},
+    {"id": "d_jei_backend_front", "picture": "#9C6A42", "x": 0.45, "y": 13.0, "w": 2.2, "h": 1.5, "reveal": "qol_recipes_jei_backend", "order": -1},
+    {"id": "d_jei_backend_plate", "picture": "#D9C9A0", "x": 0.45, "y": 12.58, "w": 1.1, "h": 0.34, "reveal": "qol_recipes_jei_backend", "order": 0},
+    {"id": "d_jei_backend_knob", "picture": "#D9A441", "x": 0.45, "y": 13.24, "w": 0.32, "h": 0.28, "reveal": "qol_recipes_jei_backend", "order": 0},
+    {"id": "d_jei_addons_sk", "picture": "#E8DCB5", "x": 0.45, "y": 14.65, "w": 2.2, "h": 1.5, "alpha": 46, "order": -8},
+    {"id": "d_jei_addons_cl", "picture": "#8B5E3B", "x": 0.45, "y": 14.65, "w": 2.2, "h": 1.5, "reveal": "qol_recipes_welcome", "order": -7},
+    {"id": "d_jei_addons_cp", "picture": "#D9C9A0", "x": 0.45, "y": 14.23, "w": 1.1, "h": 0.34, "reveal": "qol_recipes_welcome", "order": -6},
+    {"id": "d_jei_addons_in", "picture": "#150C06", "x": 0.45, "y": 14.21, "w": 2.2, "h": 0.62, "reveal": "qol_recipes_jei_addons", "order": -4},
+    {"id": "d_jei_addons_card", "picture": "#EADFC0", "x": 0.45, "y": 14.085, "w": 1.44, "h": 0.87, "reveal": "qol_recipes_jei_addons", "order": -3},
+    {"id": "d_jei_addons_icon", "picture": "minecraft:textures/item/brush.png", "x": 0.45, "y": 13.88, "w": 0.62, "h": 0.62, "reveal": "qol_recipes_jei_addons", "order": -2},
+    {"id": "d_jei_addons_front", "picture": "#9C6A42", "x": 0.45, "y": 15.2, "w": 2.2, "h": 1.5, "reveal": "qol_recipes_jei_addons", "order": -1},
+    {"id": "d_jei_addons_plate", "picture": "#D9C9A0", "x": 0.45, "y": 14.78, "w": 1.1, "h": 0.34, "reveal": "qol_recipes_jei_addons", "order": 0},
+    {"id": "d_jei_addons_knob", "picture": "#D9A441", "x": 0.45, "y": 15.44, "w": 0.32, "h": 0.28, "reveal": "qol_recipes_jei_addons", "order": 0},
+    {"id": "d_polymorph_sk", "picture": "#E8DCB5", "x": 0.45, "y": 16.85, "w": 2.2, "h": 1.5, "alpha": 46, "order": -8},
+    {"id": "d_polymorph_cl", "picture": "#8B5E3B", "x": 0.45, "y": 16.85, "w": 2.2, "h": 1.5, "reveal": "qol_recipes_welcome", "order": -7},
+    {"id": "d_polymorph_cp", "picture": "#D9C9A0", "x": 0.45, "y": 16.43, "w": 1.1, "h": 0.34, "reveal": "qol_recipes_welcome", "order": -6},
+    {"id": "d_polymorph_in", "picture": "#150C06", "x": 0.45, "y": 16.41, "w": 2.2, "h": 0.62, "reveal": "qol_recipes_polymorph", "order": -4},
+    {"id": "d_polymorph_card", "picture": "#EADFC0", "x": 0.45, "y": 16.285, "w": 1.44, "h": 0.87, "reveal": "qol_recipes_polymorph", "order": -3},
+    {"id": "d_polymorph_icon", "picture": "minecraft:textures/item/amethyst_shard.png", "x": 0.45, "y": 16.08, "w": 0.62, "h": 0.62, "reveal": "qol_recipes_polymorph", "order": -2},
+    {"id": "d_polymorph_front", "picture": "#9C6A42", "x": 0.45, "y": 17.4, "w": 2.2, "h": 1.5, "reveal": "qol_recipes_polymorph", "order": -1},
+    {"id": "d_polymorph_plate", "picture": "#D9C9A0", "x": 0.45, "y": 16.98, "w": 1.1, "h": 0.34, "reveal": "qol_recipes_polymorph", "order": 0},
+    {"id": "d_polymorph_knob", "picture": "#D9A441", "x": 0.45, "y": 17.64, "w": 0.32, "h": 0.28, "reveal": "qol_recipes_polymorph", "order": 0},
+    {"id": "d_books_sk", "picture": "#E8DCB5", "x": 0.45, "y": 19.05, "w": 2.2, "h": 1.5, "alpha": 46, "order": -8},
+    {"id": "d_books_cl", "picture": "#8B5E3B", "x": 0.45, "y": 19.05, "w": 2.2, "h": 1.5, "reveal": "qol_recipes_welcome", "order": -7},
+    {"id": "d_books_cp", "picture": "#D9C9A0", "x": 0.45, "y": 18.63, "w": 1.1, "h": 0.34, "reveal": "qol_recipes_welcome", "order": -6},
+    {"id": "d_books_in", "picture": "#150C06", "x": 0.45, "y": 18.61, "w": 2.2, "h": 0.62, "reveal": "qol_recipes_books", "order": -4},
+    {"id": "d_books_card", "picture": "#EADFC0", "x": 0.45, "y": 18.485, "w": 1.44, "h": 0.87, "reveal": "qol_recipes_books", "order": -3},
+    {"id": "d_books_icon", "picture": "minecraft:textures/item/writable_book.png", "x": 0.45, "y": 18.28, "w": 0.62, "h": 0.62, "reveal": "qol_recipes_books", "order": -2},
+    {"id": "d_books_front", "picture": "#9C6A42", "x": 0.45, "y": 19.6, "w": 2.2, "h": 1.5, "reveal": "qol_recipes_books", "order": -1},
+    {"id": "d_books_plate", "picture": "#D9C9A0", "x": 0.45, "y": 19.18, "w": 1.1, "h": 0.34, "reveal": "qol_recipes_books", "order": 0},
+    {"id": "d_books_knob", "picture": "#D9A441", "x": 0.45, "y": 19.84, "w": 0.32, "h": 0.28, "reveal": "qol_recipes_books", "order": 0},
+    {"id": "d_jade_hud_sk", "picture": "#E8DCB5", "x": 2.8, "y": 12.45, "w": 2.2, "h": 1.5, "alpha": 46, "order": -8},
+    {"id": "d_jade_hud_cl", "picture": "#8B5E3B", "x": 2.8, "y": 12.45, "w": 2.2, "h": 1.5, "reveal": "qol_recipes_welcome", "order": -7},
+    {"id": "d_jade_hud_cp", "picture": "#D9C9A0", "x": 2.8, "y": 12.03, "w": 1.1, "h": 0.34, "reveal": "qol_recipes_welcome", "order": -6},
+    {"id": "d_jade_hud_in", "picture": "#150C06", "x": 2.8, "y": 12.01, "w": 2.2, "h": 0.62, "reveal": "qol_recipes_jade_hud", "order": -4},
+    {"id": "d_jade_hud_card", "picture": "#EADFC0", "x": 2.8, "y": 11.885, "w": 1.44, "h": 0.87, "reveal": "qol_recipes_jade_hud", "order": -3},
+    {"id": "d_jade_hud_icon", "picture": "minecraft:textures/item/spyglass.png", "x": 2.8, "y": 11.68, "w": 0.62, "h": 0.62, "reveal": "qol_recipes_jade_hud", "order": -2},
+    {"id": "d_jade_hud_front", "picture": "#9C6A42", "x": 2.8, "y": 13.0, "w": 2.2, "h": 1.5, "reveal": "qol_recipes_jade_hud", "order": -1},
+    {"id": "d_jade_hud_plate", "picture": "#D9C9A0", "x": 2.8, "y": 12.58, "w": 1.1, "h": 0.34, "reveal": "qol_recipes_jade_hud", "order": 0},
+    {"id": "d_jade_hud_knob", "picture": "#D9A441", "x": 2.8, "y": 13.24, "w": 0.32, "h": 0.28, "reveal": "qol_recipes_jade_hud", "order": 0},
+    {"id": "d_jade_keys_sk", "picture": "#E8DCB5", "x": 2.8, "y": 14.65, "w": 2.2, "h": 1.5, "alpha": 46, "order": -8},
+    {"id": "d_jade_keys_cl", "picture": "#8B5E3B", "x": 2.8, "y": 14.65, "w": 2.2, "h": 1.5, "reveal": "qol_recipes_welcome", "order": -7},
+    {"id": "d_jade_keys_cp", "picture": "#D9C9A0", "x": 2.8, "y": 14.23, "w": 1.1, "h": 0.34, "reveal": "qol_recipes_welcome", "order": -6},
+    {"id": "d_jade_keys_in", "picture": "#150C06", "x": 2.8, "y": 14.21, "w": 2.2, "h": 0.62, "reveal": "qol_recipes_jade_keys", "order": -4},
+    {"id": "d_jade_keys_card", "picture": "#EADFC0", "x": 2.8, "y": 14.085, "w": 1.44, "h": 0.87, "reveal": "qol_recipes_jade_keys", "order": -3},
+    {"id": "d_jade_keys_icon", "picture": "minecraft:textures/block/tripwire_hook.png", "x": 2.8, "y": 13.88, "w": 0.62, "h": 0.62, "reveal": "qol_recipes_jade_keys", "order": -2},
+    {"id": "d_jade_keys_front", "picture": "#9C6A42", "x": 2.8, "y": 15.2, "w": 2.2, "h": 1.5, "reveal": "qol_recipes_jade_keys", "order": -1},
+    {"id": "d_jade_keys_plate", "picture": "#D9C9A0", "x": 2.8, "y": 14.78, "w": 1.1, "h": 0.34, "reveal": "qol_recipes_jade_keys", "order": 0},
+    {"id": "d_jade_keys_knob", "picture": "#D9A441", "x": 2.8, "y": 15.44, "w": 0.32, "h": 0.28, "reveal": "qol_recipes_jade_keys", "order": 0},
+    {"id": "d_light_overlay_sk", "picture": "#E8DCB5", "x": 2.8, "y": 16.85, "w": 2.2, "h": 1.5, "alpha": 46, "order": -8},
+    {"id": "d_light_overlay_cl", "picture": "#8B5E3B", "x": 2.8, "y": 16.85, "w": 2.2, "h": 1.5, "reveal": "qol_recipes_welcome", "order": -7},
+    {"id": "d_light_overlay_cp", "picture": "#D9C9A0", "x": 2.8, "y": 16.43, "w": 1.1, "h": 0.34, "reveal": "qol_recipes_welcome", "order": -6},
+    {"id": "d_light_overlay_in", "picture": "#150C06", "x": 2.8, "y": 16.41, "w": 2.2, "h": 0.62, "reveal": "qol_recipes_light_overlay", "order": -4},
+    {"id": "d_light_overlay_card", "picture": "#EADFC0", "x": 2.8, "y": 16.285, "w": 1.44, "h": 0.87, "reveal": "qol_recipes_light_overlay", "order": -3},
+    {"id": "d_light_overlay_icon", "picture": "minecraft:textures/block/torch.png", "x": 2.8, "y": 16.08, "w": 0.62, "h": 0.62, "reveal": "qol_recipes_light_overlay", "order": -2},
+    {"id": "d_light_overlay_front", "picture": "#9C6A42", "x": 2.8, "y": 17.4, "w": 2.2, "h": 1.5, "reveal": "qol_recipes_light_overlay", "order": -1},
+    {"id": "d_light_overlay_plate", "picture": "#D9C9A0", "x": 2.8, "y": 16.98, "w": 1.1, "h": 0.34, "reveal": "qol_recipes_light_overlay", "order": 0},
+    {"id": "d_light_overlay_knob", "picture": "#D9A441", "x": 2.8, "y": 17.64, "w": 0.32, "h": 0.28, "reveal": "qol_recipes_light_overlay", "order": 0},
+    {"id": "d_tip_modname_sk", "picture": "#E8DCB5", "x": 2.8, "y": 19.05, "w": 2.2, "h": 1.5, "alpha": 46, "order": -8},
+    {"id": "d_tip_modname_cl", "picture": "#8B5E3B", "x": 2.8, "y": 19.05, "w": 2.2, "h": 1.5, "reveal": "qol_recipes_welcome", "order": -7},
+    {"id": "d_tip_modname_cp", "picture": "#D9C9A0", "x": 2.8, "y": 18.63, "w": 1.1, "h": 0.34, "reveal": "qol_recipes_welcome", "order": -6},
+    {"id": "d_tip_modname_in", "picture": "#150C06", "x": 2.8, "y": 18.61, "w": 2.2, "h": 0.62, "reveal": "qol_recipes_tip_modname", "order": -4},
+    {"id": "d_tip_modname_card", "picture": "#EADFC0", "x": 2.8, "y": 18.485, "w": 1.44, "h": 0.87, "reveal": "qol_recipes_tip_modname", "order": -3},
+    {"id": "d_tip_modname_icon", "picture": "minecraft:textures/item/feather.png", "x": 2.8, "y": 18.28, "w": 0.62, "h": 0.62, "reveal": "qol_recipes_tip_modname", "order": -2},
+    {"id": "d_tip_modname_front", "picture": "#9C6A42", "x": 2.8, "y": 19.6, "w": 2.2, "h": 1.5, "reveal": "qol_recipes_tip_modname", "order": -1},
+    {"id": "d_tip_modname_plate", "picture": "#D9C9A0", "x": 2.8, "y": 19.18, "w": 1.1, "h": 0.34, "reveal": "qol_recipes_tip_modname", "order": 0},
+    {"id": "d_tip_modname_knob", "picture": "#D9A441", "x": 2.8, "y": 19.84, "w": 0.32, "h": 0.28, "reveal": "qol_recipes_tip_modname", "order": 0},
+    {"id": "d_tooltips_sk", "picture": "#E8DCB5", "x": 5.15, "y": 12.45, "w": 2.2, "h": 1.5, "alpha": 46, "order": -8},
+    {"id": "d_tooltips_cl", "picture": "#8B5E3B", "x": 5.15, "y": 12.45, "w": 2.2, "h": 1.5, "reveal": "qol_recipes_welcome", "order": -7},
+    {"id": "d_tooltips_cp", "picture": "#D9C9A0", "x": 5.15, "y": 12.03, "w": 1.1, "h": 0.34, "reveal": "qol_recipes_welcome", "order": -6},
+    {"id": "d_tooltips_in", "picture": "#150C06", "x": 5.15, "y": 12.01, "w": 2.2, "h": 0.62, "reveal": "qol_recipes_tooltips", "order": -4},
+    {"id": "d_tooltips_card", "picture": "#EADFC0", "x": 5.15, "y": 11.885, "w": 1.44, "h": 0.87, "reveal": "qol_recipes_tooltips", "order": -3},
+    {"id": "d_tooltips_icon", "picture": "minecraft:textures/item/enchanted_book.png", "x": 5.15, "y": 11.68, "w": 0.62, "h": 0.62, "reveal": "qol_recipes_tooltips", "order": -2},
+    {"id": "d_tooltips_front", "picture": "#9C6A42", "x": 5.15, "y": 13.0, "w": 2.2, "h": 1.5, "reveal": "qol_recipes_tooltips", "order": -1},
+    {"id": "d_tooltips_plate", "picture": "#D9C9A0", "x": 5.15, "y": 12.58, "w": 1.1, "h": 0.34, "reveal": "qol_recipes_tooltips", "order": 0},
+    {"id": "d_tooltips_knob", "picture": "#D9A441", "x": 5.15, "y": 13.24, "w": 0.32, "h": 0.28, "reveal": "qol_recipes_tooltips", "order": 0},
+    {"id": "d_shulker_preview_sk", "picture": "#E8DCB5", "x": 5.15, "y": 14.65, "w": 2.2, "h": 1.5, "alpha": 46, "order": -8},
+    {"id": "d_shulker_preview_cl", "picture": "#8B5E3B", "x": 5.15, "y": 14.65, "w": 2.2, "h": 1.5, "reveal": "qol_recipes_welcome", "order": -7},
+    {"id": "d_shulker_preview_cp", "picture": "#D9C9A0", "x": 5.15, "y": 14.23, "w": 1.1, "h": 0.34, "reveal": "qol_recipes_welcome", "order": -6},
+    {"id": "d_shulker_preview_in", "picture": "#150C06", "x": 5.15, "y": 14.21, "w": 2.2, "h": 0.62, "reveal": "qol_recipes_shulker_preview", "order": -4},
+    {"id": "d_shulker_preview_card", "picture": "#EADFC0", "x": 5.15, "y": 14.085, "w": 1.44, "h": 0.87, "reveal": "qol_recipes_shulker_preview", "order": -3},
+    {"id": "d_shulker_preview_icon", "picture": "minecraft:textures/item/shulker_shell.png", "x": 5.15, "y": 13.88, "w": 0.62, "h": 0.62, "reveal": "qol_recipes_shulker_preview", "order": -2},
+    {"id": "d_shulker_preview_front", "picture": "#9C6A42", "x": 5.15, "y": 15.2, "w": 2.2, "h": 1.5, "reveal": "qol_recipes_shulker_preview", "order": -1},
+    {"id": "d_shulker_preview_plate", "picture": "#D9C9A0", "x": 5.15, "y": 14.78, "w": 1.1, "h": 0.34, "reveal": "qol_recipes_shulker_preview", "order": 0},
+    {"id": "d_shulker_preview_knob", "picture": "#D9A441", "x": 5.15, "y": 15.44, "w": 0.32, "h": 0.28, "reveal": "qol_recipes_shulker_preview", "order": 0},
+    {"id": "d_effects_sk", "picture": "#E8DCB5", "x": 5.15, "y": 16.85, "w": 2.2, "h": 1.5, "alpha": 46, "order": -8},
+    {"id": "d_effects_cl", "picture": "#8B5E3B", "x": 5.15, "y": 16.85, "w": 2.2, "h": 1.5, "reveal": "qol_recipes_welcome", "order": -7},
+    {"id": "d_effects_cp", "picture": "#D9C9A0", "x": 5.15, "y": 16.43, "w": 1.1, "h": 0.34, "reveal": "qol_recipes_welcome", "order": -6},
+    {"id": "d_effects_in", "picture": "#150C06", "x": 5.15, "y": 16.41, "w": 2.2, "h": 0.62, "reveal": "qol_recipes_effects", "order": -4},
+    {"id": "d_effects_card", "picture": "#EADFC0", "x": 5.15, "y": 16.285, "w": 1.44, "h": 0.87, "reveal": "qol_recipes_effects", "order": -3},
+    {"id": "d_effects_icon", "picture": "minecraft:textures/item/glistering_melon_slice.png", "x": 5.15, "y": 16.08, "w": 0.62, "h": 0.62, "reveal": "qol_recipes_effects", "order": -2},
+    {"id": "d_effects_front", "picture": "#9C6A42", "x": 5.15, "y": 17.4, "w": 2.2, "h": 1.5, "reveal": "qol_recipes_effects", "order": -1},
+    {"id": "d_effects_plate", "picture": "#D9C9A0", "x": 5.15, "y": 16.98, "w": 1.1, "h": 0.34, "reveal": "qol_recipes_effects", "order": 0},
+    {"id": "d_effects_knob", "picture": "#D9A441", "x": 5.15, "y": 17.64, "w": 0.32, "h": 0.28, "reveal": "qol_recipes_effects", "order": 0},
+    {"id": "d_toy_drawer_sk", "picture": "#E8DCB5", "x": 5.15, "y": 19.05, "w": 2.2, "h": 1.5, "alpha": 46, "order": -8},
+    {"id": "d_toy_drawer_cl", "picture": "#8B5E3B", "x": 5.15, "y": 19.05, "w": 2.2, "h": 1.5, "reveal": "qol_recipes_welcome", "order": -7},
+    {"id": "d_toy_drawer_cp", "picture": "#D9C9A0", "x": 5.15, "y": 18.63, "w": 1.1, "h": 0.34, "reveal": "qol_recipes_welcome", "order": -6},
+    {"id": "d_toy_drawer_in", "picture": "#150C06", "x": 5.15, "y": 18.61, "w": 2.2, "h": 0.62, "reveal": "qol_recipes_toy_drawer", "order": -4},
+    {"id": "d_toy_drawer_card", "picture": "#EADFC0", "x": 5.15, "y": 18.485, "w": 1.44, "h": 0.87, "reveal": "qol_recipes_toy_drawer", "order": -3},
+    {"id": "d_toy_drawer_icon", "picture": "minecraft:textures/item/name_tag.png", "x": 5.15, "y": 18.28, "w": 0.62, "h": 0.62, "reveal": "qol_recipes_toy_drawer", "order": -2},
+    {"id": "d_toy_drawer_front", "picture": "#9C6A42", "x": 5.15, "y": 19.6, "w": 2.2, "h": 1.5, "reveal": "qol_recipes_toy_drawer", "order": -1},
+    {"id": "d_toy_drawer_plate", "picture": "#D9C9A0", "x": 5.15, "y": 19.18, "w": 1.1, "h": 0.34, "reveal": "qol_recipes_toy_drawer", "order": 0},
+    {"id": "d_toy_drawer_knob", "picture": "#D9A441", "x": 5.15, "y": 19.84, "w": 0.32, "h": 0.28, "reveal": "qol_recipes_toy_drawer", "order": 0},
+    {"id": "d_emi_loot_sk", "picture": "#E8DCB5", "x": 7.5, "y": 12.45, "w": 2.2, "h": 1.5, "alpha": 46, "order": -8},
+    {"id": "d_emi_loot_cl", "picture": "#8B5E3B", "x": 7.5, "y": 12.45, "w": 2.2, "h": 1.5, "reveal": "qol_recipes_welcome", "order": -7},
+    {"id": "d_emi_loot_cp", "picture": "#D9C9A0", "x": 7.5, "y": 12.03, "w": 1.1, "h": 0.34, "reveal": "qol_recipes_welcome", "order": -6},
+    {"id": "d_emi_loot_in", "picture": "#150C06", "x": 7.5, "y": 12.01, "w": 2.2, "h": 0.62, "reveal": "qol_recipes_emi_loot", "order": -4},
+    {"id": "d_emi_loot_card", "picture": "#EADFC0", "x": 7.5, "y": 11.885, "w": 1.44, "h": 0.87, "reveal": "qol_recipes_emi_loot", "order": -3},
+    {"id": "d_emi_loot_icon", "picture": "minecraft:textures/item/bone.png", "x": 7.5, "y": 11.68, "w": 0.62, "h": 0.62, "reveal": "qol_recipes_emi_loot", "order": -2},
+    {"id": "d_emi_loot_front", "picture": "#9C6A42", "x": 7.5, "y": 13.0, "w": 2.2, "h": 1.5, "reveal": "qol_recipes_emi_loot", "order": -1},
+    {"id": "d_emi_loot_plate", "picture": "#D9C9A0", "x": 7.5, "y": 12.58, "w": 1.1, "h": 0.34, "reveal": "qol_recipes_emi_loot", "order": 0},
+    {"id": "d_emi_loot_knob", "picture": "#D9A441", "x": 7.5, "y": 13.24, "w": 0.32, "h": 0.28, "reveal": "qol_recipes_emi_loot", "order": 0},
+    {"id": "d_emi_ores_sk", "picture": "#E8DCB5", "x": 7.5, "y": 14.65, "w": 2.2, "h": 1.5, "alpha": 46, "order": -8},
+    {"id": "d_emi_ores_cl", "picture": "#8B5E3B", "x": 7.5, "y": 14.65, "w": 2.2, "h": 1.5, "reveal": "qol_recipes_welcome", "order": -7},
+    {"id": "d_emi_ores_cp", "picture": "#D9C9A0", "x": 7.5, "y": 14.23, "w": 1.1, "h": 0.34, "reveal": "qol_recipes_welcome", "order": -6},
+    {"id": "d_emi_ores_in", "picture": "#150C06", "x": 7.5, "y": 14.21, "w": 2.2, "h": 0.62, "reveal": "qol_recipes_emi_ores", "order": -4},
+    {"id": "d_emi_ores_card", "picture": "#EADFC0", "x": 7.5, "y": 14.085, "w": 1.44, "h": 0.87, "reveal": "qol_recipes_emi_ores", "order": -3},
+    {"id": "d_emi_ores_icon", "picture": "minecraft:textures/item/raw_iron.png", "x": 7.5, "y": 13.88, "w": 0.62, "h": 0.62, "reveal": "qol_recipes_emi_ores", "order": -2},
+    {"id": "d_emi_ores_front", "picture": "#9C6A42", "x": 7.5, "y": 15.2, "w": 2.2, "h": 1.5, "reveal": "qol_recipes_emi_ores", "order": -1},
+    {"id": "d_emi_ores_plate", "picture": "#D9C9A0", "x": 7.5, "y": 14.78, "w": 1.1, "h": 0.34, "reveal": "qol_recipes_emi_ores", "order": 0},
+    {"id": "d_emi_ores_knob", "picture": "#D9A441", "x": 7.5, "y": 15.44, "w": 0.32, "h": 0.28, "reveal": "qol_recipes_emi_ores", "order": 0},
+    {"id": "d_ae2_tree_sk", "picture": "#E8DCB5", "x": 7.5, "y": 16.85, "w": 2.2, "h": 1.5, "alpha": 46, "order": -8},
+    {"id": "d_ae2_tree_cl", "picture": "#8B5E3B", "x": 7.5, "y": 16.85, "w": 2.2, "h": 1.5, "reveal": "qol_recipes_welcome", "order": -7},
+    {"id": "d_ae2_tree_cp", "picture": "#D9C9A0", "x": 7.5, "y": 16.43, "w": 1.1, "h": 0.34, "reveal": "qol_recipes_welcome", "order": -6},
+    {"id": "d_ae2_tree_in", "picture": "#150C06", "x": 7.5, "y": 16.41, "w": 2.2, "h": 0.62, "reveal": "qol_recipes_ae2_tree", "order": -4},
+    {"id": "d_ae2_tree_card", "picture": "#EADFC0", "x": 7.5, "y": 16.285, "w": 1.44, "h": 0.87, "reveal": "qol_recipes_ae2_tree", "order": -3},
+    {"id": "d_ae2_tree_icon", "picture": "minecraft:textures/block/birch_sapling.png", "x": 7.5, "y": 16.08, "w": 0.62, "h": 0.62, "reveal": "qol_recipes_ae2_tree", "order": -2},
+    {"id": "d_ae2_tree_front", "picture": "#9C6A42", "x": 7.5, "y": 17.4, "w": 2.2, "h": 1.5, "reveal": "qol_recipes_ae2_tree", "order": -1},
+    {"id": "d_ae2_tree_plate", "picture": "#D9C9A0", "x": 7.5, "y": 16.98, "w": 1.1, "h": 0.34, "reveal": "qol_recipes_ae2_tree", "order": 0},
+    {"id": "d_ae2_tree_knob", "picture": "#D9A441", "x": 7.5, "y": 17.64, "w": 0.32, "h": 0.28, "reveal": "qol_recipes_ae2_tree", "order": 0},
+    {"id": "d_blank_sk", "picture": "#E8DCB5", "x": 7.5, "y": 19.05, "w": 2.2, "h": 1.5, "alpha": 46, "order": -8},
+    {"id": "d_blank_cl", "picture": "#8B5E3B", "x": 7.5, "y": 19.05, "w": 2.2, "h": 1.5, "reveal": "qol_recipes_welcome", "order": -7},
+    {"id": "d_blank_cp", "picture": "#D9C9A0", "x": 7.5, "y": 18.63, "w": 1.1, "h": 0.34, "reveal": "qol_recipes_welcome", "order": -6},
+    {"id": "book_sketch", "picture": "#E8DCB5", "x": 23.7, "y": 15.85, "w": 18.2, "h": 8.9, "alpha": 46, "order": -9},
+    {"id": "book_cover", "picture": "#5B3A22", "x": 23.7, "y": 15.85, "w": 18.2, "h": 8.9, "reveal": "qol_recipes_welcome", "order": -9},
+    {"id": "page_l", "picture": "#EADFC0", "x": 19.3, "y": 15.85, "w": 8.6, "h": 8.1, "reveal": "qol_recipes_welcome", "order": -8},
+    {"id": "page_r", "picture": "#EADFC0", "x": 28.1, "y": 15.85, "w": 8.6, "h": 8.1, "reveal": "qol_recipes_welcome", "order": -8},
+    {"id": "gutter", "picture": "#B8A77E", "x": 23.7, "y": 15.85, "w": 0.3, "h": 8.1, "reveal": "qol_recipes_welcome", "order": -7},
+    {"id": "book_label", "text": {"en_us": "The recipe book", "es_es": "El libro de recetas"}, "x": 14.6, "y": 9.75, "scale": 2, "tint": "#E8DCB5", "align": "start"},
+    {"id": "g_0", "picture": "#C9BB92", "x": 16.6, "y": 13.8, "w": 1.3, "h": 1.3, "reveal": "qol_recipes_emi_recipes", "order": -6},
+    {"id": "g_1", "picture": "#C9BB92", "x": 18.0, "y": 13.8, "w": 1.3, "h": 1.3, "reveal": "qol_recipes_emi_recipes", "order": -6},
+    {"id": "g_2", "picture": "#C9BB92", "x": 19.4, "y": 13.8, "w": 1.3, "h": 1.3, "reveal": "qol_recipes_emi_recipes", "order": -6},
+    {"id": "g_3", "picture": "#C9BB92", "x": 16.6, "y": 15.2, "w": 1.3, "h": 1.3, "reveal": "qol_recipes_emi_recipes", "order": -6},
+    {"id": "g_4", "picture": "#C9BB92", "x": 18.0, "y": 15.2, "w": 1.3, "h": 1.3, "reveal": "qol_recipes_emi_recipes", "order": -6},
+    {"id": "g_5", "picture": "#C9BB92", "x": 19.4, "y": 15.2, "w": 1.3, "h": 1.3, "reveal": "qol_recipes_emi_recipes", "order": -6},
+    {"id": "g_6", "picture": "#C9BB92", "x": 16.6, "y": 16.6, "w": 1.3, "h": 1.3, "reveal": "qol_recipes_emi_recipes", "order": -6},
+    {"id": "g_7", "picture": "#C9BB92", "x": 18.0, "y": 16.6, "w": 1.3, "h": 1.3, "reveal": "qol_recipes_emi_recipes", "order": -6},
+    {"id": "g_8", "picture": "#C9BB92", "x": 19.4, "y": 16.6, "w": 1.3, "h": 1.3, "reveal": "qol_recipes_emi_recipes", "order": -6},
+    {"id": "gi_0", "picture": "minecraft:textures/item/iron_ingot.png", "x": 16.6, "y": 13.8, "w": 1.0, "h": 1.0, "reveal": "qol_recipes_emi_recipes", "order": -5},
+    {"id": "gi_1", "picture": "minecraft:textures/item/iron_ingot.png", "x": 18.0, "y": 13.8, "w": 1.0, "h": 1.0, "reveal": "qol_recipes_emi_recipes", "order": -5},
+    {"id": "gi_2", "picture": "minecraft:textures/item/iron_ingot.png", "x": 19.4, "y": 13.8, "w": 1.0, "h": 1.0, "reveal": "qol_recipes_emi_recipes", "order": -5},
+    {"id": "gi_4", "picture": "minecraft:textures/item/stick.png", "x": 18.0, "y": 15.2, "w": 1.0, "h": 1.0, "reveal": "qol_recipes_emi_recipes", "order": -5},
+    {"id": "gi_7", "picture": "minecraft:textures/item/stick.png", "x": 18.0, "y": 16.6, "w": 1.0, "h": 1.0, "reveal": "qol_recipes_emi_recipes", "order": -5},
+    {"id": "g_arrow", "text": {"en_us": "→", "es_es": "→"}, "x": 21.15, "y": 15.2, "scale": 3, "tint": "#6B5A3A", "shadow": false, "reveal": "qol_recipes_emi_recipes"},
+    {"id": "g_out_slot", "picture": "#C9BB92", "x": 22.6, "y": 15.2, "w": 1.6, "h": 1.6, "reveal": "qol_recipes_emi_recipes", "order": -6},
+    {"id": "g_out", "picture": "minecraft:textures/item/iron_pickaxe.png", "x": 22.6, "y": 15.2, "w": 1.25, "h": 1.25, "reveal": "qol_recipes_emi_recipes", "order": -5},
+    {"id": "star", "picture": "minecraft:textures/item/nether_star.png", "x": 15.6, "y": 12.4, "w": 0.8, "h": 0.8, "reveal": "qol_recipes_emi_favorites", "order": -4},
+    {"id": "plus_bg", "picture": "#5FAE58", "x": 22.2, "y": 17.85, "w": 1.0, "h": 1.0, "reveal": "qol_recipes_emi_fill", "order": -5},
+    {"id": "plus", "text": {"en_us": "+", "es_es": "+"}, "x": 22.2, "y": 17.85, "scale": 2.4, "tint": "#FFFFFF", "reveal": "qol_recipes_emi_fill"},
+    {"id": "tree_line_0", "path": [[28.1, 18.35], [26.1, 19.05]], "color": "#6B5A3A", "width": 0.09, "reveal": "qol_recipes_emi_tree", "order": -6},
+    {"id": "tree_line_1", "path": [[28.1, 18.35], [30.1, 19.05]], "color": "#6B5A3A", "width": 0.09, "reveal": "qol_recipes_emi_tree", "order": -6},
+    {"id": "tree_root", "picture": "minecraft:textures/item/iron_pickaxe.png", "x": 28.1, "y": 18.05, "w": 0.95, "h": 0.95, "reveal": "qol_recipes_emi_tree", "order": -5},
+    {"id": "tree_k0", "picture": "minecraft:textures/item/iron_ingot.png", "x": 26.1, "y": 19.35, "w": 0.8, "h": 0.8, "reveal": "qol_recipes_emi_tree", "order": -5},
+    {"id": "tree_k1", "picture": "minecraft:textures/item/stick.png", "x": 30.1, "y": 19.35, "w": 0.8, "h": 0.8, "reveal": "qol_recipes_emi_tree", "order": -5},
+    {"id": "u_src_slot", "picture": "#C9BB92", "x": 24.9, "y": 14.0, "w": 1.3, "h": 1.3, "reveal": "qol_recipes_emi_uses", "order": -6},
+    {"id": "u_src", "picture": "minecraft:textures/item/iron_ingot.png", "x": 24.9, "y": 14.0, "w": 1.0, "h": 1.0, "reveal": "qol_recipes_emi_uses", "order": -5},
+    {"id": "u_arrow", "text": {"en_us": "→", "es_es": "→"}, "x": 26.3, "y": 14.0, "scale": 2.5, "tint": "#6B5A3A", "shadow": false, "reveal": "qol_recipes_emi_uses"},
+    {"id": "u_slot_0", "picture": "#C9BB92", "x": 27.6, "y": 14.0, "w": 1.2, "h": 1.2, "reveal": "qol_recipes_emi_uses", "order": -6},
+    {"id": "u_0", "picture": "minecraft:textures/item/bucket.png", "x": 27.6, "y": 14.0, "w": 0.95, "h": 0.95, "reveal": "qol_recipes_emi_uses", "order": -5},
+    {"id": "u_slot_1", "picture": "#C9BB92", "x": 29.1, "y": 14.0, "w": 1.2, "h": 1.2, "reveal": "qol_recipes_emi_uses", "order": -6},
+    {"id": "u_1", "picture": "minecraft:textures/item/shears.png", "x": 29.1, "y": 14.0, "w": 0.95, "h": 0.95, "reveal": "qol_recipes_emi_uses", "order": -5},
+    {"id": "u_slot_2", "picture": "#C9BB92", "x": 30.6, "y": 14.0, "w": 1.2, "h": 1.2, "reveal": "qol_recipes_emi_uses", "order": -6},
+    {"id": "u_2", "picture": "minecraft:textures/item/minecart.png", "x": 30.6, "y": 14.0, "w": 0.95, "h": 0.95, "reveal": "qol_recipes_emi_uses", "order": -5},
+    {"id": "search_bar", "picture": "#C9BB92", "x": 27.6, "y": 12.5, "w": 6.8, "h": 0.7, "reveal": "qol_recipes_emi_search", "order": -6},
+    {"id": "search_text", "text": {"en_us": "@create  #c:ingots", "es_es": "@create  #c:ingots"}, "x": 24.4, "y": 12.5, "scale": 1, "tint": "#6B5A3A", "shadow": false, "align": "start", "reveal": "qol_recipes_emi_search"},
+    {"id": "tip_box", "frame": [24.4, 15.2, 30.2, 17.15], "color": "#6B3FA0", "thickness_px": 2.0, "fill": "#1B0A2E", "fill_alpha": 255, "corners": false, "reveal": "qol_recipes_tooltips", "order": -4},
+    {"id": "tip_l1", "text": {"en_us": "Iron Pickaxe", "es_es": "Pico de hierro"}, "x": 24.7, "y": 15.75, "scale": 1.2, "tint": "#FFFFFF", "align": "start", "reveal": "qol_recipes_tooltips"},
+    {"id": "tip_l2", "text": {"en_us": "Minecraft", "es_es": "Minecraft"}, "x": 24.7, "y": 16.6, "scale": 1, "tint": "#5F7FFF", "align": "start", "shadow": false, "reveal": "qol_recipes_tip_modname"},
+    {"id": "jade_bg", "picture": "#1A1F26", "x": 18.05, "y": 18.7, "w": 4.7, "h": 1.7, "reveal": "qol_recipes_jade_hud", "order": -5},
+    {"id": "jade_item", "item": "minecraft:crafting_table", "x": 16.55, "y": 18.7, "size": 1.1, "reveal": "qol_recipes_jade_hud"},
+    {"id": "jade_l1", "text": {"en_us": "Crafting Table", "es_es": "Mesa de crafteo"}, "x": 17.3, "y": 18.4, "scale": 1, "tint": "#FFFFFF", "align": "start", "reveal": "qol_recipes_jade_hud"},
+    {"id": "jade_l2", "text": {"en_us": "Minecraft", "es_es": "Minecraft"}, "x": 17.3, "y": 19.05, "scale": 1, "tint": "#5F7FFF", "align": "start", "shadow": false, "reveal": "qol_recipes_jade_hud"},
+    {"id": "poly_bg", "picture": "#B8A77E", "x": 22.65, "y": 16.6, "w": 1.8, "h": 0.9, "reveal": "qol_recipes_polymorph", "order": -5},
+    {"id": "poly_a", "picture": "minecraft:textures/item/iron_pickaxe.png", "x": 22.2, "y": 16.6, "w": 0.6, "h": 0.6, "reveal": "qol_recipes_polymorph", "order": -4},
+    {"id": "poly_b", "picture": "minecraft:textures/item/iron_axe.png", "x": 23.1, "y": 16.6, "w": 0.6, "h": 0.6, "reveal": "qol_recipes_polymorph", "order": -4},
+    {"id": "bm_0_rib", "picture": "#E0574F", "x": 16.7, "y": 11.15, "w": 1.0, "h": 1.2, "reveal": "qol_recipes_emi_recipes", "order": -6},
+    {"id": "bm_0_tip", "picture": "#E0574F", "x": 16.42, "y": 11.875, "w": 0.44, "h": 0.25, "reveal": "qol_recipes_emi_recipes", "order": -6},
+    {"id": "bm_0_tip2", "picture": "#E0574F", "x": 16.98, "y": 11.875, "w": 0.44, "h": 0.25, "reveal": "qol_recipes_emi_recipes", "order": -6},
+    {"id": "bm_0_lab", "text": {"en_us": "R", "es_es": "R"}, "x": 16.7, "y": 11.15, "scale": 1.6, "tint": "#1A1410", "shadow": false, "bold": true, "reveal": "qol_recipes_emi_recipes"},
+    {"id": "bm_1_rib", "picture": "#4F86E0", "x": 18.3, "y": 11.15, "w": 1.0, "h": 1.2, "reveal": "qol_recipes_emi_uses", "order": -6},
+    {"id": "bm_1_tip", "picture": "#4F86E0", "x": 18.02, "y": 11.875, "w": 0.44, "h": 0.25, "reveal": "qol_recipes_emi_uses", "order": -6},
+    {"id": "bm_1_tip2", "picture": "#4F86E0", "x": 18.58, "y": 11.875, "w": 0.44, "h": 0.25, "reveal": "qol_recipes_emi_uses", "order": -6},
+    {"id": "bm_1_lab", "text": {"en_us": "U", "es_es": "U"}, "x": 18.3, "y": 11.15, "scale": 1.6, "tint": "#1A1410", "shadow": false, "bold": true, "reveal": "qol_recipes_emi_uses"},
+    {"id": "bm_2_rib", "picture": "#E8B04A", "x": 19.9, "y": 11.15, "w": 1.0, "h": 1.2, "reveal": "qol_recipes_emi_favorites", "order": -6},
+    {"id": "bm_2_tip", "picture": "#E8B04A", "x": 19.62, "y": 11.875, "w": 0.44, "h": 0.25, "reveal": "qol_recipes_emi_favorites", "order": -6},
+    {"id": "bm_2_tip2", "picture": "#E8B04A", "x": 20.18, "y": 11.875, "w": 0.44, "h": 0.25, "reveal": "qol_recipes_emi_favorites", "order": -6},
+    {"id": "bm_2_lab", "text": {"en_us": "A", "es_es": "A"}, "x": 19.9, "y": 11.15, "scale": 1.6, "tint": "#1A1410", "shadow": false, "bold": true, "reveal": "qol_recipes_emi_favorites"},
+    {"id": "bm_3_rib", "picture": "#58B36B", "x": 26.4, "y": 11.15, "w": 1.0, "h": 1.2, "reveal": "qol_recipes_jade_hud", "order": -6},
+    {"id": "bm_3_tip", "picture": "#58B36B", "x": 26.12, "y": 11.875, "w": 0.44, "h": 0.25, "reveal": "qol_recipes_jade_hud", "order": -6},
+    {"id": "bm_3_tip2", "picture": "#58B36B", "x": 26.68, "y": 11.875, "w": 0.44, "h": 0.25, "reveal": "qol_recipes_jade_hud", "order": -6},
+    {"id": "bm_3_lab", "text": {"en_us": "i", "es_es": "i"}, "x": 26.4, "y": 11.15, "scale": 1.6, "tint": "#1A1410", "shadow": false, "bold": true, "reveal": "qol_recipes_jade_hud"},
+    {"id": "bm_4_rib", "picture": "#A56BD9", "x": 28.2, "y": 11.15, "w": 1.0, "h": 1.2, "reveal": "qol_recipes_tooltips", "order": -6},
+    {"id": "bm_4_tip", "picture": "#A56BD9", "x": 27.92, "y": 11.875, "w": 0.44, "h": 0.25, "reveal": "qol_recipes_tooltips", "order": -6},
+    {"id": "bm_4_tip2", "picture": "#A56BD9", "x": 28.48, "y": 11.875, "w": 0.44, "h": 0.25, "reveal": "qol_recipes_tooltips", "order": -6},
+    {"id": "bm_4_lab", "text": {"en_us": "?", "es_es": "?"}, "x": 28.2, "y": 11.15, "scale": 1.6, "tint": "#1A1410", "shadow": false, "bold": true, "reveal": "qol_recipes_tooltips"},
+    {"id": "note_pack_components", "picture": "#F4E27A", "x": 5.0, "y": 10.05, "w": 1.0, "h": 1.0, "rotation": -6, "reveal": "qol_recipes_pack_components", "order": -4},
+    {"id": "note_pack_components_mark", "text": {"en_us": "!", "es_es": "!"}, "x": 5.0, "y": 10.05, "scale": 2, "tint": "#7A4B1A", "shadow": false, "bold": true, "rotation": -6, "reveal": "qol_recipes_pack_components"},
+    {"id": "note_pack_kitchen", "picture": "#F4E27A", "x": 6.7, "y": 9.95, "w": 1.0, "h": 1.0, "rotation": 5, "reveal": "qol_recipes_pack_kitchen", "order": -4},
+    {"id": "note_pack_kitchen_mark", "text": {"en_us": "!", "es_es": "!"}, "x": 6.7, "y": 9.95, "scale": 2, "tint": "#7A4B1A", "shadow": false, "bold": true, "rotation": 5, "reveal": "qol_recipes_pack_kitchen"},
+    {"id": "note_pack_exclusive", "picture": "#F4E27A", "x": 8.4, "y": 10.1, "w": 1.0, "h": 1.0, "rotation": -3, "reveal": "qol_recipes_pack_exclusive", "order": -4},
+    {"id": "note_pack_exclusive_mark", "text": {"en_us": "!", "es_es": "!"}, "x": 8.4, "y": 10.1, "scale": 2, "tint": "#7A4B1A", "shadow": false, "bold": true, "rotation": -3, "reveal": "qol_recipes_pack_exclusive"},
+    {"id": "lamp", "item": "minecraft:lantern", "x": 13.3, "y": 19.9, "size": 1.2, "reveal": "qol_recipes_welcome"},
+    {"id": "bell_glow", "glow": [11.4, 19.8], "r": 1.7, "tint": "#FFD98A", "alpha": 130, "reveal": "qol_recipes_toy_bell"},
+    {"id": "bell_ding", "text": {"en_us": "ding!", "es_es": "¡ding!"}, "x": 11.4, "y": 18.1, "scale": 2, "tint": "#E8B04A", "reveal": "qol_recipes_toy_bell"},
+    {"id": "desk_glow", "glow": [23.7, 16.0], "r": 9.0, "tint": "#FFD98A", "alpha": 60, "reveal": "qol_recipes_close", "order": -3}
+  ],
+  "presentation": 2
 }
