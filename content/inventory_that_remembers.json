@@ -5,18 +5,18 @@
   "title": {"en_us": "An Inventory That Remembers", "es_es": "El inventario que recuerda"},
   "autofocus": "inventory_field_note",
   "milestones": [],
-  "layout_groups": {"threshold": {"en_us": "Mara's margin", "es_es": "El margen de Mara"}, "field": {"en_us": "What travels with you", "es_es": "Lo que llevás encima"}, "workshop": {"en_us": "A bench with a memory", "es_es": "Un taller con memoria"}, "return": {"en_us": "The return route", "es_es": "El camino de vuelta"}, "future": {"en_us": "One shelf stays local", "es_es": "Un estante queda cerca"}},
+  "layout_groups": {"threshold": {"en_us": "J.'s margin", "es_es": "El margen de J."}, "field": {"en_us": "What travels with you", "es_es": "Lo que llevás encima"}, "workshop": {"en_us": "A bench with a memory", "es_es": "Un taller con memoria"}, "return": {"en_us": "The return route", "es_es": "El camino de vuelta"}, "future": {"en_us": "One shelf stays local", "es_es": "Un estante queda cerca"}},
   "quests": [
     {
       "key": "inventory_field_note", "deps": ["signal"], "type": "checkmark", "optional": true, "layout": {"group": "threshold", "x": 0, "y": 0, "size": 0.75, "shape": "circle", "hide_dependent_lines": false},
       "icon": "entrelumen:atlas",
       "en_us": {"title": "Self-check: Two columns in the margin",
-        "text": ["[lead] After the first light answered, Mara drew TAKE and LEAVE beside the map.",
+        "text": ["[lead] After the first light answered, J. drew TAKE and LEAVE beside the map.",
                  "Choose one supply to carry through a hurried return and one material to leave at the workshop. Decide which column each belongs in, then mark this note.",
                  "{page}",
                  "[note] Nothing here is taken from you: an item task only checks that you carry it, and each self-check is yours to mark after you try it. None of it holds up the journey."]},
       "es_es": {"title": "Autoevaluación: Dos columnas al margen",
-        "text": ["[lead] Después de la primera respuesta luminosa, Mara dibujó LLEVAR y DEJAR junto al mapa.",
+        "text": ["[lead] Después de la primera respuesta luminosa, J. dibujó LLEVAR y DEJAR junto al mapa.",
                  "Elegí una provisión que llevarías incluso en un regreso apurado y un material que dejarías en el taller. Decidí en qué columna va cada uno y después marcá esta nota.",
                  "{page}",
                  "[note] Acá no se te quita nada: una tarea de objeto sólo revisa que lo lleves, y cada autoevaluación la marcás vos después de probarla. Nada de esto detiene el viaje."]}
@@ -228,13 +228,13 @@
                  "Close its terminal and take one food stack and one repair supply from the local shelf. Decide which reserve should remain within reach if the network is unavailable.",
                  "{page}",
                  "Mark this note after you can retrieve both without the terminal, then restock the shelf for the next return.",
-                 "Sera's later sketches show a digital network; Mara keeps a physical shelf beside the bench."]},
+                 "T.'s later sketches show a digital network; J. keeps a physical shelf beside the bench."]},
       "es_es": {"title": "Autoevaluación: Un estante sin la red",
         "text": ["[lead] Cuando tengas AE2, comprobá que una reserva física siga sirviendo sin ella.",
                  "Cerrá su terminal y sacá una pila de comida y un insumo de reparación del estante local. Decidí qué reserva debería seguir al alcance si la red no está disponible.",
                  "{page}",
                  "Marcá esta nota cuando puedas retirar ambos sin usar el terminal y reponé el estante para el próximo regreso.",
-                 "Los dibujos posteriores de Sera muestran una red digital; Mara conserva un estante físico junto a la mesa."]}
+                 "Los dibujos posteriores de T. muestran una red digital; J. conserva un estante físico junto a la mesa."]}
     },
     {
       "key": "inventory_toy_keepsake", "role": "decor", "deps": [], "type": "checkmark", "optional": true, "layout": {"group": "future", "x": 10.5, "y": 5.25, "size": 0.75, "shape": "none"},
@@ -316,7 +316,7 @@
     {"id": "network_drive", "picture": "ae2:textures/block/drive/drive_front.png", "x": 7.8, "y": 9.3, "w": 1.1, "h": 1.1, "alpha": 55, "order": -6},
     {"id": "network_terminal", "picture": "ae2:textures/item/wireless_terminal.png", "x": 9.3, "y": 9.3, "w": 0.8, "h": 0.8, "alpha": 55, "order": -6},
     {"id": "network_cable", "path": [[3.2, 9.3], [7.2, 9.3]], "color": "#E8DCB5", "width": 0.05, "alpha": 55, "order": -6},
-    {"id": "sera_note", "text": {"en_us": "S.", "es_es": "S."}, "x": 10.4, "y": 10.2, "scale": 1, "font": "minecraft:alt", "tint": "#9DC3FF", "alpha": 90},
+    {"id": "network_note", "text": {"en_us": "T.", "es_es": "T."}, "x": 10.4, "y": 10.2, "scale": 1, "font": "minecraft:alt", "tint": "#9DC3FF", "alpha": 90},
     {"id": "keepsake_glow", "glow": [10.5, 5.25], "r": 0.8, "alpha": 140, "reveal": "inventory_toy_keepsake"},
     {"id": "keepsake_petals", "scatter": ["minecraft:textures/particle/cherry_0.png", "minecraft:textures/particle/cherry_3.png"], "region": [9.9, 4.6, 11.1, 5.9], "count": 4, "size": [0.18, 0.28], "seed": 12, "spin": true, "reveal": "inventory_toy_keepsake", "avoid": [[10.5, 5.25, 0.35]], "order": -3}
   ]

@@ -511,6 +511,8 @@ class ChapterContracts(unittest.TestCase):
    for text in texts:
     self.assertIsNone(re.search(r'\b(Mara|Ivo|Sera)\b',text),'a voice of the old story remains')
     self.assertIn('Heliodor',text)
+   # The side chapter (the inventory that remembers) speaks with the same initials as act I.
+   self.assertIsNone(re.search(r'\b(Mara|Ivo|Sera)\b',self.act_text(self.chapters[7],locale)),'a voice of the old story remains')
    # The limbo of light is named only once the Atlas speaks clearly, in act V.
    self.assertTrue(all('Entrelumen' not in text for text in texts[:4]));self.assertIn('Entrelumen',texts[4])
    for name in ('Terra','Juan','Bodhi','Aurelia'):self.assertIn(name,'\n'.join(texts[:4]))
