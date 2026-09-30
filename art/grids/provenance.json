@@ -1665,7 +1665,7 @@
       "note": "Grow lamp placed as a block (docs/design/terra-garden.md). No third-party pixels copied."
     },
     "terra_grow_lamp_flame": {
-      "method": "4 frames (frametime 3) of the flame’s gold core in a green edge, emissive in the model",
+      "method": "4 frames (frametime 3) of the light inside the bulb: a green edge round a 2 x 2 sunlight-white heart, emissive in the model",
       "authoring": "art/authoring/draw_terra_garden.py",
       "reference_inspected": [
         "entrelumen:textures/item/terra_grow_lamp.png (ours)"
@@ -1673,8 +1673,22 @@
       "reference_sources": [
         "client 1.21.1 JAR (G:/Elias/Codex/Entrelumen-work/neoform-cache/artifacts/minecraft_1.21.1_client.jar)"
       ],
-      "reference_took": "The lamp item’s hanging flame, as a small cube of light.",
+      "reference_took": "The lamp item's hanging flame, as the small cube of light inside the bulb.",
       "note": "Grow lamp placed as a block, its flame (docs/design/terra-garden.md). No third-party pixels copied."
+    },
+    "terra_grow_lamp_glass": {
+      "method": "hand-placed from its left half and mirrored; only the centred 6 x 6 window is mapped: a pale glass frame, clear (cut-out) panes and two glints",
+      "authoring": "art/authoring/draw_terra_garden.py",
+      "reference_inspected": [
+        "minecraft:textures/block/glass.png",
+        "minecraft:textures/block/lantern.png",
+        "entrelumen:textures/item/terra_grow_lamp.png (ours)"
+      ],
+      "reference_sources": [
+        "client 1.21.1 JAR (G:/Elias/Codex/Entrelumen-work/neoform-cache/artifacts/minecraft_1.21.1_client.jar)"
+      ],
+      "reference_took": "Vanilla glass: a light frame and clear panes with a glint; the lantern's scale for a hanging light.",
+      "note": "The grow lamp's 3D bulb (docs/design/terra-garden.md). No third-party pixels copied."
     },
     "terra_engine_casing": {
       "method": "hand-placed on the 16x16 grid from its left half and mirrored; riveted copper plates, an 8 x 8 motif tiled; the members while unformed and the formed engine’s skin",

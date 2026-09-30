@@ -54,7 +54,7 @@ TERRA_BLOCKS = ['terra_garden_outlet', 'terra_garden_core_pot', 'terra_garden_co
 # in 8 frames like the luminosities.
 ANIMATED['terralight_shard'] = 8
 ITEMS += ['terralight_shard']
-TERRA_BLOCKS += ['terralight_crystal_%d' % i for i in range(4)] + ['terralight_grounding_rod', 'terra_grow_lamp_hood',
+TERRA_BLOCKS += ['terralight_crystal_%d' % i for i in range(4)] + ['terralight_grounding_rod', 'terra_grow_lamp_hood', 'terra_grow_lamp_glass',
                                                                    'terra_grow_lamp_flame']
 TERRA_CORE_MODELS = {'unbuilt': 'terra_garden_core', 'built': 'terra_garden_core_built',
                      'growing': 'terra_garden_core_formed'}
@@ -274,6 +274,13 @@ def expected():
     for dest in ('pack', 'mod'):
         out[(dest, 'models/item/terralight_grounding_rod.json')] = js({'parent': 'entrelumen:block/terralight_grounding_rod'})
     out[('mod', 'blockstates/terralight_grounding_rod.json')] = js({'variants': {'': {'model': 'entrelumen:block/terralight_grounding_rod'}}})
+    # the grow lamp's item: 3D in hand, on the ground and in frames; the flat animated icon in the inventory
+    import importlib.util
+    spec = importlib.util.spec_from_file_location('draw_terra_garden', ART / 'authoring' / 'draw_terra_garden.py')
+    terra = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(terra)
+    for dest in ('pack', 'mod'):
+        out[(dest, 'models/item/terra_grow_lamp.json')] = js(terra.LAMP_ITEM_MODEL)
     out[('mod', 'blockstates/terra_grow_lamp.json')] = js({'variants': {'': {'model': 'entrelumen:block/terra_grow_lamp'}}})
     out[('mod', 'blockstates/terralight_crystal.json')] = js({'variants': {
         f'stage={i}': {'model': f'entrelumen:block/terralight_crystal_{i}'} for i in range(4)}})

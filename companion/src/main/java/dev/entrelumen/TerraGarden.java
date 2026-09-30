@@ -147,7 +147,9 @@ public final class TerraGarden {
       () -> new Block(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_LIGHT_GREEN).strength(1f)
           .sound(SoundType.LANTERN).noOcclusion().lightLevel(state -> 12)) {
         private static final net.minecraft.world.phys.shapes.VoxelShape SHAPE = net.minecraft.world.phys.shapes.Shapes.or(
-            Block.box(4, 8, 4, 12, 13, 12), Block.box(7, 13, 7, 9, 16, 9), Block.box(5, 3, 5, 11, 8, 11));
+            // the 3D lamp (art/authoring/draw_terra_garden.py, LAMP_PARTS): plate, stem, hood and rim, caged bulb
+            Block.box(5, 15, 5, 11, 16, 11), Block.box(7, 11, 7, 9, 15, 9), Block.box(3, 8, 3, 13, 11, 13),
+            Block.box(2, 7, 2, 14, 8, 14), Block.box(4, 0, 4, 12, 7, 12));
 
         @Override
         protected net.minecraft.world.phys.shapes.VoxelShape getShape(net.minecraft.world.level.block.state.BlockState state,

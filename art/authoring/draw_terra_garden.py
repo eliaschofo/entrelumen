@@ -20,7 +20,9 @@ grid is built from its left half and mirrored, so symmetry holds by construction
   and on top the heart: a small copper pot whose rim glows a breathing green (8 frames, emissive). Its block
   entity draws the crop growing in the soil. 1 texel per unit (big boxes are cut at the 16-unit grid),
   mirror-symmetric about the middle column.
-- terralight_* and the lamp as a block: see below.
+- terra_grow_lamp as a block (and in hand): a 3D solarpunk grow lamp, copper plate, brass stem and cage,
+  verdigris hood, a glass bulb and the green light inside (emissive, 4 frames); 13 elements, symmetric.
+- terralight_*: see below.
 
     python art/authoring/draw_terra_garden.py            # write the grids and the core's models
     python art/authoring/draw_terra_garden.py --check    # compare with the repo
@@ -449,10 +451,11 @@ def rod_rows():
     return ['.......' + c + '.......' for c in _ROD_COLUMN]
 
 
-# The lamp as a block: a verdigris hood and a flame that breathes (4 frames).
+# The lamp as a block: a verdigris hood, a glass bulb and the green light inside it (4 frames).
 HOOD_PAL = {'k': VER[0], 'v': VER[1], 'V': VER[2], 'w': VER[3], 'W': VER[4]}
 _HOOD_TILE = ['WWWWWWWW', 'wwwwwwww', 'wVwVVwVw', 'VVVVVVVV', 'vVvvvvVv', 'vvvvvvvv', 'kvkvvkvk', 'kkkkkkkk']
 HOOD = [r + r for r in _HOOD_TILE] * 2
+# The light breathes: a green edge round a 2 x 2 sunlight-white heart (the item's flame, as a cube).
 _FLAME_RAMP = [(LEAF[4], STRAW[3]), (LEAF[5], BRASS[5]), ('#e2ffb8', '#fffbe6'), (LEAF[5], BRASS[5])]
 
 
@@ -460,8 +463,15 @@ def lamp_flame(frame):
     edge, core = _FLAME_RAMP[frame]
     rows = []
     for y in range(16):
-        rows.append(''.join('b' if max(abs(x - 7.5), abs(y - 7.5)) < 3 else 'a' for x in range(16)))
+        rows.append(''.join('b' if max(abs(x - 7.5), abs(y - 7.5)) < 1 else 'a' for x in range(16)))
     return {'a': edge, 'b': core}, rows
+
+
+# The bulb's glass: only the centred 6 x 6 window is mapped (columns and rows 5-10): a pale frame, clear
+# panes (cut out) and two glints, mirrored.
+GLASS_PAL = {'g': GLASS[2], 'G': GLASS[4], 'h': '#f4fbff'}
+_GLASS_HALF = ['........'] * 5 + ['.....GGG', '.....gh.', '.....g..', '.....g..', '.....g..', '.....ggg'] + ['........'] * 5
+LAMP_GLASS = mirror(_GLASS_HALF)
 
 
 def rod_model():
@@ -473,13 +483,67 @@ def rod_model():
             'rod': 'entrelumen:block/terralight_grounding_rod'}, 'elements': [_box(frm, to, faces)]}
 
 
+def _centred_faces(frm, to, tex, emissive=False, uv_origin=None):
+    """Faces at 1 texel per unit whose UVs sit centred on the texture (or start at uv_origin), so a
+    symmetric texture maps symmetrically onto a symmetric element."""
+    w, h, d = to[0] - frm[0], to[1] - frm[1], to[2] - frm[2]
+    size = {'north': (w, h), 'south': (w, h), 'east': (d, h), 'west': (d, h), 'up': (w, d), 'down': (w, d)}
+    out = {}
+    for side, (u, v) in size.items():
+        u0, v0 = uv_origin if uv_origin else (8 - u / 2, 8 - v / 2)
+        face = {'uv': [u0, v0, u0 + u, v0 + v], 'texture': tex}
+        if emissive:
+            face['neoforge_data'] = dict(EMISSIVE)
+        out[side] = face
+    return out
+
+
+# The grow lamp placed as a block (and, in hand, as an item): hung from a copper plate by a brass stem, a
+# verdigris hood over a copper rim, a glass bulb in a four-rib brass cage and, inside it, the green light
+# (emissive, 4 frames). 13 elements, symmetric about x = 8 and z = 8; it hangs over the Terralight crystal.
+LAMP_PARTS = [
+    ((5, 15, 5), (11, 16, 11), '#copper', None),      # ceiling plate
+    ((7, 12, 7), (9, 15, 9), '#brass', None),         # stem
+    ((6, 11, 6), (10, 12, 10), '#brass', None),       # collar
+    ((5, 10, 5), (11, 11, 11), '#hood', (0, 2)),      # hood, top
+    ((3, 8, 3), (13, 10, 13), '#hood', (0, 3)),       # hood, skirt
+    ((2, 7, 2), (14, 8, 14), '#copper', (2, 0)),      # rim
+    ((5, 1, 5), (11, 7, 11), '#glass', None),         # bulb
+    ((6, 2, 6), (10, 6, 10), '#light', None),         # the light (emissive)
+    ((7, 0, 7), (9, 1, 9), '#brass', None),           # the bulb's tip
+    ((4, 1, 4), (5, 7, 5), '#brass', None),           # cage ribs at the bulb's corners
+    ((11, 1, 4), (12, 7, 5), '#brass', None),
+    ((4, 1, 11), (5, 7, 12), '#brass', None),
+    ((11, 1, 11), (12, 7, 12), '#brass', None),
+]
+
+
 def lamp_block_model():
-    elements = [_box((7, 13, 7), (9, 16, 9), _uv_faces((7, 13, 7), (9, 16, 9), '#hood')),
-                _box((4, 8, 4), (12, 13, 12), _uv_faces((4, 8, 4), (12, 13, 12), '#hood')),
-                _box((5, 3, 5), (11, 8, 11), _uv_faces((5, 3, 5), (11, 8, 11), '#flame', emissive=True))]
-    return {'parent': 'minecraft:block/block', 'textures': {'particle': 'entrelumen:block/terra_grow_lamp_hood',
-            'hood': 'entrelumen:block/terra_grow_lamp_hood', 'flame': 'entrelumen:block/terra_grow_lamp_flame'},
+    elements = [_box(frm, to, _centred_faces(frm, to, tex, emissive=(tex == '#light'), uv_origin=origin))
+                for frm, to, tex, origin in LAMP_PARTS]
+    textures = {'particle': 'entrelumen:block/terra_grow_lamp_hood', 'hood': 'entrelumen:block/terra_grow_lamp_hood',
+                'copper': 'entrelumen:block/terra_engine_casing', 'brass': 'entrelumen:block/terra_engine_brass',
+                'glass': 'entrelumen:block/terra_grow_lamp_glass', 'light': 'entrelumen:block/terra_grow_lamp_flame'}
+    return {'parent': 'minecraft:block/block', 'render_type': 'minecraft:cutout', 'textures': textures,
             'elements': elements}
+
+
+# The item: the 3D lamp in hand, on the ground and in a frame; the flat animated icon in the inventory,
+# where the luminosities' language reads and a 3D lamp at 16 px is a smudge (NeoForge's separate transforms).
+LAMP_ITEM_MODEL = {
+    'loader': 'neoforge:separate_transforms',
+    'gui_light': 'front',
+    'base': {'parent': 'entrelumen:block/terra_grow_lamp', 'display': {
+        'thirdperson_righthand': {'rotation': [75, 45, 0], 'translation': [0, 2.5, 0], 'scale': [0.5, 0.5, 0.5]},
+        'thirdperson_lefthand': {'rotation': [75, 45, 0], 'translation': [0, 2.5, 0], 'scale': [0.5, 0.5, 0.5]},
+        'firstperson_righthand': {'rotation': [0, 45, 0], 'translation': [0, 2, 0], 'scale': [0.6, 0.6, 0.6]},
+        'firstperson_lefthand': {'rotation': [0, 225, 0], 'translation': [0, 2, 0], 'scale': [0.6, 0.6, 0.6]},
+        'ground': {'rotation': [0, 0, 0], 'translation': [0, 3, 0], 'scale': [0.4, 0.4, 0.4]},
+        'fixed': {'rotation': [0, 0, 0], 'translation': [0, 0, 0], 'scale': [0.8, 0.8, 0.8]},
+        'head': {'rotation': [0, 0, 0], 'translation': [0, 10, 0], 'scale': [0.9, 0.9, 0.9]}}},
+    'perspectives': {'gui': {'parent': 'minecraft:item/generated',
+                             'textures': {'layer0': 'entrelumen:item/terra_grow_lamp'}}},
+}
 
 
 def crystal_model(stage):
@@ -526,6 +590,7 @@ def grids():
     for i in range(4):
         pal, rows = lamp_flame(i)
         out[f'block/terra_grow_lamp_flame__f{i}.txt'] = grid_text(pal, rows)
+    out['block/terra_grow_lamp_glass.txt'] = grid_text(GLASS_PAL, LAMP_GLASS)
     return out
 
 

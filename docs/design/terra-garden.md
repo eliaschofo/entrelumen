@@ -188,7 +188,8 @@ Segunda red: `entrelumen:terra_garden_forbidden_drops` (`minecraft:nether_star`,
   - varilla;
   - cristal: cuatro etapas cruzadas, agujas finas color menta;
   - fragmento: 8 cuadros, en el lenguaje de las Luminosidades;
-  - la lámpara como bloque: campana y llama animada.
+  - la lámpara en 3D (pedido de Elias: «que la terra lamp tenga un modelo 3D también»): cuelga de una placa de cobre por un vástago de latón, con campana de verdín, aro de cobre y una bombita de vidrio en una jaula de cuatro varillas de latón. Adentro está la luz verde, emisiva y animada en 4 cuadros. Son 13 elementos, simétricos en los dos ejes y a 1 texel por unidad, y cuelga sobre el cristal de terraluz.
+  - el ítem de la lámpara se ve en 3D en la mano, en el suelo y en los marcos. En el inventario usa el ícono plano animado, con el lenguaje de las Luminosidades (`neoforge:separate_transforms`): a 16 px, la lámpara en 3D es una mancha.
 - **Modelos:** `terra_garden_core` (sin armar), `terra_garden_core_built` (armado, a la espera de la lámpara) y `terra_garden_core_formed` (el motor entero, 60 elementos, simétrico).
 - **Blockstates:** los miembros tienen `formed=false` (su cubo) y `formed=true` (`minecraft:block/air`). El núcleo gira con su frente. Su modelo formado está dibujado mirando al sur, así que lleva 180° más.
 - **Vistas de revisión:** son renders de software (`art/structures/terra_garden_render.py`), no capturas:
@@ -196,6 +197,7 @@ Segunda red: `entrelumen:terra_garden_forbidden_drops` (`minecraft:nether_star`,
   - sin formar de frente y de atrás;
   - una maqueta del fantasma;
   - la maceta y su luz en la oscuridad.
+  - la lámpara puesta sobre el montaje (de día y de noche), de cerca, en la mano y en una ranura (el plano contra el 3D).
 
 ## Pruebas
 
