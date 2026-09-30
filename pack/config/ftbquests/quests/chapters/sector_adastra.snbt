@@ -2936,6 +2936,532 @@
       "hide_lock_icon": true,
       "hide_dependency_lines": true,
       "hide_dependent_lines": true
+    },
+    {
+      "id": "791DCE8FDDD416DC",
+      "x": 35.0,
+      "y": -9.5,
+      "shape": "square",
+      "size": 1.0,
+      "preset": "el_step",
+      "dependencies": [
+        "34ED3B3386C3A8B0"
+      ],
+      "tasks": [
+        {
+          "id": "0A167109EDB7EBB2",
+          "type": "item",
+          "item": {
+            "id": "dysoncubeproject:solar_sail",
+            "count": 1
+          },
+          "count": 8,
+          "consume_items": false
+        }
+      ],
+      "rewards": [
+        {
+          "id": "541DA3946AB6CFDC",
+          "type": "xp",
+          "xp": 15
+        }
+      ],
+      "tags": [
+        "entrelumen_step"
+      ],
+      "icon": {
+        "id": "dysoncubeproject:solar_sail"
+      }
+    },
+    {
+      "id": "18E62B921F979526",
+      "x": 31.0,
+      "y": -13.0,
+      "shape": "square",
+      "size": 1.0,
+      "preset": "el_step",
+      "dependencies": [
+        "791DCE8FDDD416DC"
+      ],
+      "tasks": [
+        {
+          "id": "1837DDA0FD2A9CAD",
+          "type": "item",
+          "item": {
+            "id": "dysoncubeproject:beam",
+            "count": 1
+          },
+          "count": 4,
+          "consume_items": false
+        }
+      ],
+      "rewards": [
+        {
+          "id": "41FD297FDF1BB78F",
+          "type": "xp",
+          "xp": 15
+        }
+      ],
+      "tags": [
+        "entrelumen_step"
+      ],
+      "icon": {
+        "id": "dysoncubeproject:beam"
+      }
+    },
+    {
+      "id": "7190364FD58891F9",
+      "x": 35.5,
+      "y": -16.5,
+      "shape": "circle",
+      "size": 2.0,
+      "preset": "el_milestone_adastra",
+      "dependencies": [
+        "18E62B921F979526"
+      ],
+      "tasks": [
+        {
+          "id": "3072BC3F3FFA41D0",
+          "type": "item",
+          "item": {
+            "id": "dysoncubeproject:em_railejector_controller",
+            "count": 1
+          },
+          "count": 1,
+          "consume_items": false
+        }
+      ],
+      "rewards": [
+        {
+          "id": "7886006A8DD5DD4D",
+          "type": "xp",
+          "xp": 30
+        },
+        {
+          "id": "345F4629AE5241B4",
+          "type": "choice",
+          "table_id": 1056128395
+        }
+      ],
+      "tags": [
+        "entrelumen_milestone"
+      ],
+      "icon": {
+        "id": "dysoncubeproject:em_railejector_controller"
+      }
+    },
+    {
+      "id": "1363239C071BAA00",
+      "x": 42.0,
+      "y": -17.6,
+      "shape": "circle",
+      "size": 2.0,
+      "preset": "el_milestone_adastra",
+      "dependencies": [
+        "7190364FD58891F9"
+      ],
+      "tasks": [
+        {
+          "id": "5F28F7850E946964",
+          "type": "item",
+          "item": {
+            "id": "dysoncubeproject:ray_receiver_controller",
+            "count": 1
+          },
+          "count": 1,
+          "consume_items": false
+        }
+      ],
+      "rewards": [
+        {
+          "id": "5FAF3D8289BD262E",
+          "type": "xp",
+          "xp": 30
+        },
+        {
+          "id": "57BC6B8A7BD2570A",
+          "type": "choice",
+          "table_id": 1056128395
+        }
+      ],
+      "tags": [
+        "entrelumen_milestone"
+      ],
+      "icon": {
+        "id": "dysoncubeproject:ray_receiver_controller"
+      }
+    },
+    {
+      "id": "790FADA081FAFA81",
+      "x": 30.5,
+      "y": -18.6,
+      "shape": "el_tag",
+      "size": 1.0,
+      "preset": "el_tip",
+      "dependencies": [
+        "7190364FD58891F9"
+      ],
+      "tasks": [
+        {
+          "id": "3ADBFA2F196AF2E3",
+          "type": "checkmark"
+        }
+      ],
+      "rewards": [],
+      "tags": [
+        "entrelumen_tip"
+      ],
+      "optional": true,
+      "icon_scale": 0.75,
+      "disable_toast": true,
+      "hide_lock_icon": true
+    },
+    {
+      "id": "1ED15A7CC4D0F7E6",
+      "x": 47.5,
+      "y": -18.4,
+      "shape": "el_star",
+      "size": 1.0,
+      "preset": "el_secret",
+      "dependencies": [
+        "1363239C071BAA00"
+      ],
+      "tasks": [
+        {
+          "id": "6762BE4BEC96D542",
+          "type": "advancement",
+          "advancement": "dysoncubeproject:main/em_railejector_controller/5",
+          "criterion": "",
+          "icon": {
+            "id": "dysoncubeproject:solar_sail"
+          }
+        }
+      ],
+      "rewards": [
+        {
+          "id": "616AC786F326D4A0",
+          "type": "xp",
+          "xp": 15
+        },
+        {
+          "id": "3F96CF3CA973E8EA",
+          "type": "random",
+          "table_id": 315843335
+        },
+        {
+          "id": "3DEB5C612CB312E9",
+          "type": "toast",
+          "description": "entrelumen.quests.toast.secret",
+          "auto": "invisible"
+        }
+      ],
+      "tags": [
+        "entrelumen_secret"
+      ],
+      "optional": true,
+      "invisible": true
+    },
+    {
+      "id": "43F1747A62190179",
+      "x": -29.6,
+      "y": -2.0,
+      "shape": "diamond",
+      "size": 1.0,
+      "preset": "el_side",
+      "dependencies": [
+        "1D2D65C4B7DDAB39"
+      ],
+      "tasks": [
+        {
+          "id": "6AFC13718F10846A",
+          "type": "item",
+          "item": {
+            "id": "ad_astra_giselle_addon:oxygen_can",
+            "count": 1
+          },
+          "count": 1,
+          "consume_items": false
+        }
+      ],
+      "rewards": [
+        {
+          "id": "57E450A1D0E08D9D",
+          "type": "xp",
+          "xp": 15
+        }
+      ],
+      "tags": [
+        "entrelumen_side"
+      ],
+      "optional": true,
+      "icon": {
+        "id": "ad_astra_giselle_addon:oxygen_can"
+      }
+    },
+    {
+      "id": "27F9C9504E77F3A8",
+      "x": -34.2,
+      "y": -2.0,
+      "shape": "diamond",
+      "size": 1.0,
+      "preset": "el_side",
+      "dependencies": [
+        "43F1747A62190179"
+      ],
+      "tasks": [
+        {
+          "id": "43EE37A8BBA6FD08",
+          "type": "item",
+          "item": {
+            "id": "ad_astra_giselle_addon:netherite_oxygen_can",
+            "count": 1
+          },
+          "count": 1,
+          "consume_items": false
+        }
+      ],
+      "rewards": [
+        {
+          "id": "7C50DEFC1654FA82",
+          "type": "xp",
+          "xp": 15
+        }
+      ],
+      "tags": [
+        "entrelumen_side"
+      ],
+      "optional": true,
+      "icon": {
+        "id": "ad_astra_giselle_addon:netherite_oxygen_can"
+      },
+      "hide_until_deps_complete": true
+    },
+    {
+      "id": "5235D123D1619087",
+      "x": -25.0,
+      "y": -2.0,
+      "shape": "diamond",
+      "size": 1.0,
+      "preset": "el_side",
+      "dependencies": [
+        "43F1747A62190179"
+      ],
+      "tasks": [
+        {
+          "id": "3E95E3C6FD769715",
+          "type": "item",
+          "item": {
+            "id": "ftbfiltersystem:smart_filter",
+            "count": 1,
+            "components": {
+              "ftbfiltersystem:filter": "or(item(ad_astra_giselle_addon:module_space_breathing_unit)item(ad_astra_giselle_addon:module_gravity_normalizing_unit)item(ad_astra_giselle_addon:module_space_fire_proof_unit)item(ad_astra_giselle_addon:module_acid_rain_proof_unit))"
+            }
+          },
+          "count": 1,
+          "consume_items": false,
+          "icon": {
+            "id": "ad_astra_giselle_addon:module_space_breathing_unit"
+          }
+        }
+      ],
+      "rewards": [
+        {
+          "id": "4B098CFDF945E1E6",
+          "type": "xp",
+          "xp": 15
+        }
+      ],
+      "tags": [
+        "entrelumen_side"
+      ],
+      "optional": true,
+      "icon": {
+        "id": "ad_astra_giselle_addon:module_space_breathing_unit"
+      },
+      "hide_until_deps_complete": true
+    },
+    {
+      "id": "0E3AD3D6AAE1539C",
+      "x": -20.4,
+      "y": -2.0,
+      "shape": "diamond",
+      "size": 1.0,
+      "preset": "el_side",
+      "dependencies": [
+        "5235D123D1619087"
+      ],
+      "tasks": [
+        {
+          "id": "4A10550469AF7AC6",
+          "type": "item",
+          "item": {
+            "id": "ftbfiltersystem:smart_filter",
+            "count": 1,
+            "components": {
+              "ftbfiltersystem:filter": "or(item(ad_astra_giselle_addon:pneumatic_space_breathing_upgrade)item(ad_astra_giselle_addon:pneumatic_gravity_normalizing_upgrade)item(ad_astra_giselle_addon:pneumatic_space_fire_proof_upgrade)item(ad_astra_giselle_addon:pneumatic_acid_rain_proof_upgrade))"
+            }
+          },
+          "count": 1,
+          "consume_items": false,
+          "icon": {
+            "id": "ad_astra_giselle_addon:pneumatic_space_breathing_upgrade"
+          }
+        }
+      ],
+      "rewards": [
+        {
+          "id": "5C48A225DCCFA490",
+          "type": "xp",
+          "xp": 15
+        }
+      ],
+      "tags": [
+        "entrelumen_side"
+      ],
+      "optional": true,
+      "icon": {
+        "id": "ad_astra_giselle_addon:pneumatic_space_breathing_upgrade"
+      },
+      "hide_until_deps_complete": true
+    },
+    {
+      "id": "27D6B3C514337E19",
+      "x": -29.6,
+      "y": -6.5,
+      "shape": "el_tag",
+      "size": 1.0,
+      "preset": "el_tip",
+      "dependencies": [
+        "43F1747A62190179"
+      ],
+      "tasks": [
+        {
+          "id": "0D19BC480842312F",
+          "type": "checkmark"
+        }
+      ],
+      "rewards": [],
+      "tags": [
+        "entrelumen_tip"
+      ],
+      "optional": true,
+      "icon_scale": 0.75,
+      "disable_toast": true,
+      "hide_lock_icon": true
+    },
+    {
+      "id": "021AB88CF5E56668",
+      "x": -38.8,
+      "y": -2.0,
+      "shape": "diamond",
+      "size": 1.0,
+      "preset": "el_side",
+      "dependencies": [
+        "55E62F8CB61E0090"
+      ],
+      "tasks": [
+        {
+          "id": "6C85CFDA1A56F9AC",
+          "type": "item",
+          "item": {
+            "id": "ad_astra_giselle_addon:fuel_loader",
+            "count": 1
+          },
+          "count": 1,
+          "consume_items": false
+        }
+      ],
+      "rewards": [
+        {
+          "id": "14B78357B85C6165",
+          "type": "xp",
+          "xp": 15
+        }
+      ],
+      "tags": [
+        "entrelumen_side"
+      ],
+      "optional": true,
+      "icon": {
+        "id": "ad_astra_giselle_addon:fuel_loader"
+      },
+      "hide_dependency_lines": true
+    },
+    {
+      "id": "166CD3692901A134",
+      "x": -38.8,
+      "y": -6.5,
+      "shape": "diamond",
+      "size": 1.0,
+      "preset": "el_side",
+      "dependencies": [
+        "021AB88CF5E56668"
+      ],
+      "tasks": [
+        {
+          "id": "38DF9A8E2A32387D",
+          "type": "item",
+          "item": {
+            "id": "ad_astra_giselle_addon:rocket_sensor",
+            "count": 1
+          },
+          "count": 1,
+          "consume_items": false
+        }
+      ],
+      "rewards": [
+        {
+          "id": "496DB05444815381",
+          "type": "xp",
+          "xp": 15
+        }
+      ],
+      "tags": [
+        "entrelumen_side"
+      ],
+      "optional": true,
+      "icon": {
+        "id": "ad_astra_giselle_addon:rocket_sensor"
+      },
+      "hide_until_deps_complete": true
+    },
+    {
+      "id": "562886487964B9B3",
+      "x": -34.2,
+      "y": -6.5,
+      "shape": "diamond",
+      "size": 1.0,
+      "preset": "el_side",
+      "dependencies": [
+        "4B7A356D731AFC7A"
+      ],
+      "tasks": [
+        {
+          "id": "4ACC10024EDE1205",
+          "type": "item",
+          "item": {
+            "id": "ad_astra_giselle_addon:automation_nasa_workbench",
+            "count": 1
+          },
+          "count": 1,
+          "consume_items": false
+        }
+      ],
+      "rewards": [
+        {
+          "id": "0579B06EC8A71A19",
+          "type": "xp",
+          "xp": 15
+        }
+      ],
+      "tags": [
+        "entrelumen_side"
+      ],
+      "optional": true,
+      "icon": {
+        "id": "ad_astra_giselle_addon:automation_nasa_workbench"
+      },
+      "hide_dependency_lines": true
     }
   ],
   "quest_links": [
@@ -8706,6 +9232,1820 @@
       "order": 5,
       "position_locked": true,
       "dependency": "4BA52976F8727EBB"
+    },
+    {
+      "id": "2FBD11C92284F020",
+      "x": 25.6071,
+      "y": -15.0,
+      "width": 8.4167,
+      "height": 0.75,
+      "rotation": 0.0,
+      "image": "",
+      "text_on_image": true,
+      "text_shadow": true,
+      "order": 5,
+      "text_h_align": "start",
+      "position_locked": true
+    },
+    {
+      "id": "37CF007A4B4D8770",
+      "x": 45.945,
+      "y": -9.91,
+      "width": 1.1965,
+      "height": 0.0933,
+      "rotation": 96.4044,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "order": -5,
+      "position_locked": true,
+      "alpha": 64,
+      "color": 15260853
+    },
+    {
+      "id": "2AC582E5027097CD",
+      "x": 45.725,
+      "y": -8.955,
+      "width": 1.1973,
+      "height": 0.0933,
+      "rotation": 109.5367,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "order": -5,
+      "position_locked": true,
+      "alpha": 64,
+      "color": 15260853
+    },
+    {
+      "id": "4D910E5F87FE03B0",
+      "x": 45.3,
+      "y": -8.075,
+      "width": 1.1884,
+      "height": 0.0933,
+      "rotation": 122.0674,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "order": -5,
+      "position_locked": true,
+      "alpha": 64,
+      "color": 15260853
+    },
+    {
+      "id": "3A7AB91F00CE5558",
+      "x": 44.69,
+      "y": -7.31,
+      "width": 1.2011,
+      "height": 0.0933,
+      "rotation": 135.0,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "order": -5,
+      "position_locked": true,
+      "alpha": 64,
+      "color": 15260853
+    },
+    {
+      "id": "587791E7191DA8E2",
+      "x": 43.925,
+      "y": -6.7,
+      "width": 1.1884,
+      "height": 0.0933,
+      "rotation": 147.9326,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "order": -5,
+      "position_locked": true,
+      "alpha": 64,
+      "color": 15260853
+    },
+    {
+      "id": "7E549BAA088FC784",
+      "x": 43.045,
+      "y": -6.275,
+      "width": 1.1973,
+      "height": 0.0933,
+      "rotation": 160.4633,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "order": -5,
+      "position_locked": true,
+      "alpha": 64,
+      "color": 15260853
+    },
+    {
+      "id": "1E34A9F8B306639A",
+      "x": 42.09,
+      "y": -6.055,
+      "width": 1.1965,
+      "height": 0.0933,
+      "rotation": 173.5956,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "order": -5,
+      "position_locked": true,
+      "alpha": 64,
+      "color": 15260853
+    },
+    {
+      "id": "2DFA1287C21B4538",
+      "x": 41.11,
+      "y": -6.055,
+      "width": 1.1965,
+      "height": 0.0933,
+      "rotation": -173.5956,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "order": -5,
+      "position_locked": true,
+      "alpha": 64,
+      "color": 15260853
+    },
+    {
+      "id": "45BA657DBC6B8524",
+      "x": 40.155,
+      "y": -6.275,
+      "width": 1.1973,
+      "height": 0.0933,
+      "rotation": -160.4633,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "order": -5,
+      "position_locked": true,
+      "alpha": 64,
+      "color": 15260853
+    },
+    {
+      "id": "3216436B158CE057",
+      "x": 39.275,
+      "y": -6.7,
+      "width": 1.1884,
+      "height": 0.0933,
+      "rotation": -147.9326,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "order": -5,
+      "position_locked": true,
+      "alpha": 64,
+      "color": 15260853
+    },
+    {
+      "id": "0F03D4E80916D35E",
+      "x": 38.51,
+      "y": -7.31,
+      "width": 1.2011,
+      "height": 0.0933,
+      "rotation": -135.0,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "order": -5,
+      "position_locked": true,
+      "alpha": 64,
+      "color": 15260853
+    },
+    {
+      "id": "0DE51C742114B49D",
+      "x": 37.9,
+      "y": -8.075,
+      "width": 1.1884,
+      "height": 0.0933,
+      "rotation": -122.0674,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "order": -5,
+      "position_locked": true,
+      "alpha": 64,
+      "color": 15260853
+    },
+    {
+      "id": "4C21FC42B3BE9F84",
+      "x": 37.475,
+      "y": -8.955,
+      "width": 1.1973,
+      "height": 0.0933,
+      "rotation": -109.5367,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "order": -5,
+      "position_locked": true,
+      "alpha": 64,
+      "color": 15260853
+    },
+    {
+      "id": "46F291D844BE0339",
+      "x": 37.255,
+      "y": -9.91,
+      "width": 1.1965,
+      "height": 0.0933,
+      "rotation": -96.4044,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "order": -5,
+      "position_locked": true,
+      "alpha": 64,
+      "color": 15260853
+    },
+    {
+      "id": "4E3A1BA2E81442B2",
+      "x": 37.255,
+      "y": -10.89,
+      "width": 1.1965,
+      "height": 0.0933,
+      "rotation": -83.5956,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "order": -5,
+      "position_locked": true,
+      "alpha": 64,
+      "color": 15260853
+    },
+    {
+      "id": "1C08B8B7E9EBF369",
+      "x": 37.475,
+      "y": -11.845,
+      "width": 1.1973,
+      "height": 0.0933,
+      "rotation": -70.4633,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "order": -5,
+      "position_locked": true,
+      "alpha": 64,
+      "color": 15260853
+    },
+    {
+      "id": "06AC5988CEA2FEBD",
+      "x": 37.9,
+      "y": -12.725,
+      "width": 1.1884,
+      "height": 0.0933,
+      "rotation": -57.9326,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "order": -5,
+      "position_locked": true,
+      "alpha": 64,
+      "color": 15260853
+    },
+    {
+      "id": "26CED6968F0B9F7E",
+      "x": 38.51,
+      "y": -13.49,
+      "width": 1.2011,
+      "height": 0.0933,
+      "rotation": -45.0,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "order": -5,
+      "position_locked": true,
+      "alpha": 64,
+      "color": 15260853
+    },
+    {
+      "id": "27F5BBF07B30A2BE",
+      "x": 39.275,
+      "y": -14.1,
+      "width": 1.1884,
+      "height": 0.0933,
+      "rotation": -32.0674,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "order": -5,
+      "position_locked": true,
+      "alpha": 64,
+      "color": 15260853
+    },
+    {
+      "id": "2C3801403C60C25A",
+      "x": 40.155,
+      "y": -14.525,
+      "width": 1.1973,
+      "height": 0.0933,
+      "rotation": -19.5367,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "order": -5,
+      "position_locked": true,
+      "alpha": 64,
+      "color": 15260853
+    },
+    {
+      "id": "074452FE7003CE94",
+      "x": 41.11,
+      "y": -14.745,
+      "width": 1.1965,
+      "height": 0.0933,
+      "rotation": -6.4044,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "order": -5,
+      "position_locked": true,
+      "alpha": 64,
+      "color": 15260853
+    },
+    {
+      "id": "6F53B0D2FBFE8E82",
+      "x": 42.09,
+      "y": -14.745,
+      "width": 1.1965,
+      "height": 0.0933,
+      "rotation": 6.4044,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "order": -5,
+      "position_locked": true,
+      "alpha": 64,
+      "color": 15260853
+    },
+    {
+      "id": "6F2DBC1D4B03E97F",
+      "x": 43.045,
+      "y": -14.525,
+      "width": 1.1973,
+      "height": 0.0933,
+      "rotation": 19.5367,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "order": -5,
+      "position_locked": true,
+      "alpha": 64,
+      "color": 15260853
+    },
+    {
+      "id": "6545E828657D881E",
+      "x": 43.925,
+      "y": -14.1,
+      "width": 1.1884,
+      "height": 0.0933,
+      "rotation": 32.0674,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "order": -5,
+      "position_locked": true,
+      "alpha": 64,
+      "color": 15260853
+    },
+    {
+      "id": "3BCB429536683F15",
+      "x": 44.69,
+      "y": -13.49,
+      "width": 1.2011,
+      "height": 0.0933,
+      "rotation": 45.0,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "order": -5,
+      "position_locked": true,
+      "alpha": 64,
+      "color": 15260853
+    },
+    {
+      "id": "1AA3D3A74753AD37",
+      "x": 45.3,
+      "y": -12.725,
+      "width": 1.1884,
+      "height": 0.0933,
+      "rotation": 57.9326,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "order": -5,
+      "position_locked": true,
+      "alpha": 64,
+      "color": 15260853
+    },
+    {
+      "id": "5D612C8C8A15666F",
+      "x": 45.725,
+      "y": -11.845,
+      "width": 1.1973,
+      "height": 0.0933,
+      "rotation": 70.4633,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "order": -5,
+      "position_locked": true,
+      "alpha": 64,
+      "color": 15260853
+    },
+    {
+      "id": "473D4E09B6198308",
+      "x": 45.945,
+      "y": -10.89,
+      "width": 1.1965,
+      "height": 0.0933,
+      "rotation": 83.5956,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "order": -5,
+      "position_locked": true,
+      "alpha": 64,
+      "color": 15260853
+    },
+    {
+      "id": "358D8D78538954FC",
+      "x": 46.0,
+      "y": -10.4,
+      "width": 0.2333,
+      "height": 0.2333,
+      "rotation": 0.0,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "order": -4,
+      "position_locked": true,
+      "dependency": "7190364FD58891F9",
+      "alpha": 255,
+      "color": 16765562
+    },
+    {
+      "id": "7748A3B2E1A7F3AF",
+      "x": 45.8854,
+      "y": -9.407,
+      "width": 0.2333,
+      "height": 0.2333,
+      "rotation": 0.0,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "order": -4,
+      "position_locked": true,
+      "dependency": "7190364FD58891F9",
+      "alpha": 255,
+      "color": 16765562
+    },
+    {
+      "id": "7EB6F8BB5E5C5440",
+      "x": 45.5456,
+      "y": -8.4671,
+      "width": 0.2333,
+      "height": 0.2333,
+      "rotation": 0.0,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "order": -4,
+      "position_locked": true,
+      "dependency": "7190364FD58891F9",
+      "alpha": 255,
+      "color": 16765562
+    },
+    {
+      "id": "11EF9D21AE553C58",
+      "x": 45.0063,
+      "y": -7.6263,
+      "width": 0.2333,
+      "height": 0.2333,
+      "rotation": 0.0,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "order": -4,
+      "position_locked": true,
+      "dependency": "7190364FD58891F9",
+      "alpha": 255,
+      "color": 16765562
+    },
+    {
+      "id": "25EFD1B8CB42299F",
+      "x": 44.2912,
+      "y": -6.9294,
+      "width": 0.2333,
+      "height": 0.2333,
+      "rotation": 0.0,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "order": -4,
+      "position_locked": true,
+      "dependency": "7190364FD58891F9",
+      "alpha": 255,
+      "color": 16765562
+    },
+    {
+      "id": "245E1F6BD0370AE3",
+      "x": 43.4363,
+      "y": -6.4138,
+      "width": 0.2333,
+      "height": 0.2333,
+      "rotation": 0.0,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "order": -4,
+      "position_locked": true,
+      "dependency": "7190364FD58891F9",
+      "alpha": 255,
+      "color": 16765562
+    },
+    {
+      "id": "23DCBF7BEE60896C",
+      "x": 42.4892,
+      "y": -6.0998,
+      "width": 0.2333,
+      "height": 0.2333,
+      "rotation": 0.0,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "order": -4,
+      "position_locked": true,
+      "dependency": "7190364FD58891F9",
+      "alpha": 255,
+      "color": 16765562
+    },
+    {
+      "id": "2394B4E0814B7F03",
+      "x": 41.4954,
+      "y": -6.0117,
+      "width": 0.2333,
+      "height": 0.2333,
+      "rotation": 0.0,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "order": -4,
+      "position_locked": true,
+      "dependency": "7190364FD58891F9",
+      "alpha": 255,
+      "color": 16765562
+    },
+    {
+      "id": "7B0CB468244928AA",
+      "x": 40.5078,
+      "y": -6.1498,
+      "width": 0.2333,
+      "height": 0.2333,
+      "rotation": 0.0,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "order": -4,
+      "position_locked": true,
+      "dependency": "7190364FD58891F9",
+      "alpha": 255,
+      "color": 16765562
+    },
+    {
+      "id": "70894BD9E94DBCDC",
+      "x": 39.5779,
+      "y": -6.5102,
+      "width": 0.2333,
+      "height": 0.2333,
+      "rotation": 0.0,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "order": -4,
+      "position_locked": true,
+      "dependency": "7190364FD58891F9",
+      "alpha": 255,
+      "color": 16765562
+    },
+    {
+      "id": "7135398DCB5F1D5D",
+      "x": 38.7519,
+      "y": -7.0681,
+      "width": 0.2333,
+      "height": 0.2333,
+      "rotation": 0.0,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "order": -4,
+      "position_locked": true,
+      "dependency": "7190364FD58891F9",
+      "alpha": 255,
+      "color": 16765562
+    },
+    {
+      "id": "212F5B3402BC8E8F",
+      "x": 38.0735,
+      "y": -7.798,
+      "width": 0.2333,
+      "height": 0.2333,
+      "rotation": 0.0,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "order": -4,
+      "position_locked": true,
+      "dependency": "7190364FD58891F9",
+      "alpha": 255,
+      "color": 16765562
+    },
+    {
+      "id": "37A25FC90BF78F61",
+      "x": 37.5787,
+      "y": -8.6629,
+      "width": 0.2333,
+      "height": 0.2333,
+      "rotation": 0.0,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "order": -4,
+      "position_locked": true,
+      "dependency": "7190364FD58891F9",
+      "alpha": 255,
+      "color": 16765562
+    },
+    {
+      "id": "4D8E909BA2AFD15A",
+      "x": 37.2881,
+      "y": -9.6154,
+      "width": 0.2333,
+      "height": 0.2333,
+      "rotation": 0.0,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "order": -4,
+      "position_locked": true,
+      "dependency": "7190364FD58891F9",
+      "alpha": 255,
+      "color": 16765562
+    },
+    {
+      "id": "453338378E79D2EF",
+      "x": 37.2235,
+      "y": -10.6092,
+      "width": 0.2333,
+      "height": 0.2333,
+      "rotation": 0.0,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "order": -4,
+      "position_locked": true,
+      "dependency": "7190364FD58891F9",
+      "alpha": 255,
+      "color": 16765562
+    },
+    {
+      "id": "26EAE197B650A899",
+      "x": 37.385,
+      "y": -11.5914,
+      "width": 0.2333,
+      "height": 0.2333,
+      "rotation": 0.0,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "order": -4,
+      "position_locked": true,
+      "dependency": "7190364FD58891F9",
+      "alpha": 255,
+      "color": 16765562
+    },
+    {
+      "id": "3812EB1E34AE2720",
+      "x": 37.7661,
+      "y": -12.5113,
+      "width": 0.2333,
+      "height": 0.2333,
+      "rotation": 0.0,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "order": -4,
+      "position_locked": true,
+      "dependency": "7190364FD58891F9",
+      "alpha": 255,
+      "color": 16765562
+    },
+    {
+      "id": "4455CC06610D8D2B",
+      "x": 38.3425,
+      "y": -13.3225,
+      "width": 0.2333,
+      "height": 0.2333,
+      "rotation": 0.0,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "order": -4,
+      "position_locked": true,
+      "dependency": "7190364FD58891F9",
+      "alpha": 255,
+      "color": 16765562
+    },
+    {
+      "id": "3297FD8DA4FAA325",
+      "x": 39.0872,
+      "y": -13.9824,
+      "width": 0.2333,
+      "height": 0.2333,
+      "rotation": 0.0,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "order": -4,
+      "position_locked": true,
+      "dependency": "7190364FD58891F9",
+      "alpha": 255,
+      "color": 16765562
+    },
+    {
+      "id": "6628AFB6CB4ADC03",
+      "x": 39.9621,
+      "y": -14.4565,
+      "width": 0.2333,
+      "height": 0.2333,
+      "rotation": 0.0,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "order": -4,
+      "position_locked": true,
+      "dependency": "7190364FD58891F9",
+      "alpha": 255,
+      "color": 16765562
+    },
+    {
+      "id": "46899F39F257150E",
+      "x": 40.92,
+      "y": -14.7237,
+      "width": 0.2333,
+      "height": 0.2333,
+      "rotation": 0.0,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "order": -4,
+      "position_locked": true,
+      "dependency": "7190364FD58891F9",
+      "alpha": 255,
+      "color": 16765562
+    },
+    {
+      "id": "3532CBCDFB8F7ACE",
+      "x": 41.9137,
+      "y": -14.7648,
+      "width": 0.2333,
+      "height": 0.2333,
+      "rotation": 0.0,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "order": -4,
+      "position_locked": true,
+      "dependency": "7190364FD58891F9",
+      "alpha": 255,
+      "color": 16765562
+    },
+    {
+      "id": "38B1EBCD352BE020",
+      "x": 42.8906,
+      "y": -14.5798,
+      "width": 0.2333,
+      "height": 0.2333,
+      "rotation": 0.0,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "order": -4,
+      "position_locked": true,
+      "dependency": "7190364FD58891F9",
+      "alpha": 255,
+      "color": 16765562
+    },
+    {
+      "id": "74DEDAB40A7D8134",
+      "x": 43.8005,
+      "y": -14.178,
+      "width": 0.2333,
+      "height": 0.2333,
+      "rotation": 0.0,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "order": -4,
+      "position_locked": true,
+      "dependency": "7190364FD58891F9",
+      "alpha": 255,
+      "color": 16765562
+    },
+    {
+      "id": "0D443098633E22DF",
+      "x": 44.5969,
+      "y": -13.5831,
+      "width": 0.2333,
+      "height": 0.2333,
+      "rotation": 0.0,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "order": -4,
+      "position_locked": true,
+      "dependency": "7190364FD58891F9",
+      "alpha": 255,
+      "color": 16765562
+    },
+    {
+      "id": "0612BD4CDF3C2D67",
+      "x": 45.2382,
+      "y": -12.8236,
+      "width": 0.2333,
+      "height": 0.2333,
+      "rotation": 0.0,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "order": -4,
+      "position_locked": true,
+      "dependency": "7190364FD58891F9",
+      "alpha": 255,
+      "color": 16765562
+    },
+    {
+      "id": "1768C1FDCF22A47B",
+      "x": 45.6917,
+      "y": -11.9388,
+      "width": 0.2333,
+      "height": 0.2333,
+      "rotation": 0.0,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "order": -4,
+      "position_locked": true,
+      "dependency": "7190364FD58891F9",
+      "alpha": 255,
+      "color": 16765562
+    },
+    {
+      "id": "238CDB218A20EC0E",
+      "x": 45.9354,
+      "y": -10.9754,
+      "width": 0.2333,
+      "height": 0.2333,
+      "rotation": 0.0,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "order": -4,
+      "position_locked": true,
+      "dependency": "7190364FD58891F9",
+      "alpha": 255,
+      "color": 16765562
+    },
+    {
+      "id": "53ED2BB069C370CD",
+      "x": 46.0,
+      "y": -10.4,
+      "width": 0.2333,
+      "height": 0.2333,
+      "rotation": 0.0,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "order": -4,
+      "position_locked": true,
+      "dependency": "7190364FD58891F9",
+      "alpha": 255,
+      "color": 16765562
+    },
+    {
+      "id": "47CCBA2BEC19B4A8",
+      "x": 47.1,
+      "y": -10.4,
+      "width": 0.21,
+      "height": 0.21,
+      "rotation": 0.0,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "order": -4,
+      "position_locked": true,
+      "dependency": "1363239C071BAA00",
+      "alpha": 255,
+      "color": 16771496
+    },
+    {
+      "id": "439F0F098E63CB53",
+      "x": 46.9864,
+      "y": -9.3073,
+      "width": 0.21,
+      "height": 0.21,
+      "rotation": 0.0,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "order": -4,
+      "position_locked": true,
+      "dependency": "1363239C071BAA00",
+      "alpha": 255,
+      "color": 16771496
+    },
+    {
+      "id": "4F0C5BC63B388EED",
+      "x": 46.6561,
+      "y": -8.2605,
+      "width": 0.21,
+      "height": 0.21,
+      "rotation": 0.0,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "order": -4,
+      "position_locked": true,
+      "dependency": "1363239C071BAA00",
+      "alpha": 255,
+      "color": 16771496
+    },
+    {
+      "id": "0E4803C7610175B3",
+      "x": 46.1271,
+      "y": -7.3002,
+      "width": 0.21,
+      "height": 0.21,
+      "rotation": 0.0,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "order": -4,
+      "position_locked": true,
+      "dependency": "1363239C071BAA00",
+      "alpha": 255,
+      "color": 16771496
+    },
+    {
+      "id": "45590D4B3EE32C36",
+      "x": 45.4144,
+      "y": -6.4673,
+      "width": 0.21,
+      "height": 0.21,
+      "rotation": 0.0,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "order": -4,
+      "position_locked": true,
+      "dependency": "1363239C071BAA00",
+      "alpha": 255,
+      "color": 16771496
+    },
+    {
+      "id": "4FEC819322D5FAD5",
+      "x": 44.5531,
+      "y": -5.7901,
+      "width": 0.21,
+      "height": 0.21,
+      "rotation": 0.0,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "order": -4,
+      "position_locked": true,
+      "dependency": "1363239C071BAA00",
+      "alpha": 255,
+      "color": 16771496
+    },
+    {
+      "id": "5783F0BC83F0DD59",
+      "x": 43.5764,
+      "y": -5.2936,
+      "width": 0.21,
+      "height": 0.21,
+      "rotation": 0.0,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "order": -4,
+      "position_locked": true,
+      "dependency": "1363239C071BAA00",
+      "alpha": 255,
+      "color": 16771496
+    },
+    {
+      "id": "2421E3E8344CC101",
+      "x": 42.5217,
+      "y": -4.9982,
+      "width": 0.21,
+      "height": 0.21,
+      "rotation": 0.0,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "order": -4,
+      "position_locked": true,
+      "dependency": "1363239C071BAA00",
+      "alpha": 255,
+      "color": 16771496
+    },
+    {
+      "id": "0A6675334B6A5BD9",
+      "x": 41.4291,
+      "y": -4.92,
+      "width": 0.21,
+      "height": 0.21,
+      "rotation": 0.0,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "order": -4,
+      "position_locked": true,
+      "dependency": "1363239C071BAA00",
+      "alpha": 255,
+      "color": 16771496
+    },
+    {
+      "id": "663C6D03647D4C9E",
+      "x": 40.3425,
+      "y": -5.062,
+      "width": 0.21,
+      "height": 0.21,
+      "rotation": 0.0,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "order": -4,
+      "position_locked": true,
+      "dependency": "1363239C071BAA00",
+      "alpha": 255,
+      "color": 16771496
+    },
+    {
+      "id": "71A7F8DD1140573A",
+      "x": 39.3056,
+      "y": -5.4188,
+      "width": 0.21,
+      "height": 0.21,
+      "rotation": 0.0,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "order": -4,
+      "position_locked": true,
+      "dependency": "1363239C071BAA00",
+      "alpha": 255,
+      "color": 16771496
+    },
+    {
+      "id": "4C590F4380980319",
+      "x": 38.3559,
+      "y": -5.9694,
+      "width": 0.21,
+      "height": 0.21,
+      "rotation": 0.0,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "order": -4,
+      "position_locked": true,
+      "dependency": "1363239C071BAA00",
+      "alpha": 255,
+      "color": 16771496
+    },
+    {
+      "id": "13E46BD7560D82FA",
+      "x": 37.5338,
+      "y": -6.6981,
+      "width": 0.21,
+      "height": 0.21,
+      "rotation": 0.0,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "order": -4,
+      "position_locked": true,
+      "dependency": "1363239C071BAA00",
+      "alpha": 255,
+      "color": 16771496
+    },
+    {
+      "id": "7E1E5449328778E6",
+      "x": 36.88,
+      "y": -7.5808,
+      "width": 0.21,
+      "height": 0.21,
+      "rotation": 0.0,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "order": -4,
+      "position_locked": true,
+      "dependency": "1363239C071BAA00",
+      "alpha": 255,
+      "color": 16771496
+    },
+    {
+      "id": "461714FA79286AC7",
+      "x": 36.4219,
+      "y": -8.5783,
+      "width": 0.21,
+      "height": 0.21,
+      "rotation": 0.0,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "order": -4,
+      "position_locked": true,
+      "dependency": "1363239C071BAA00",
+      "alpha": 255,
+      "color": 16771496
+    },
+    {
+      "id": "4F721E41913D86EA",
+      "x": 36.1673,
+      "y": -9.6448,
+      "width": 0.21,
+      "height": 0.21,
+      "rotation": 0.0,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "order": -4,
+      "position_locked": true,
+      "dependency": "1363239C071BAA00",
+      "alpha": 255,
+      "color": 16771496
+    },
+    {
+      "id": "0A28AF61A6C7F672",
+      "x": 36.1303,
+      "y": -10.7404,
+      "width": 0.21,
+      "height": 0.21,
+      "rotation": 0.0,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "order": -4,
+      "position_locked": true,
+      "dependency": "1363239C071BAA00",
+      "alpha": 255,
+      "color": 16771496
+    },
+    {
+      "id": "17AF61A5CB116788",
+      "x": 36.3075,
+      "y": -11.8213,
+      "width": 0.21,
+      "height": 0.21,
+      "rotation": 0.0,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "order": -4,
+      "position_locked": true,
+      "dependency": "1363239C071BAA00",
+      "alpha": 255,
+      "color": 16771496
+    },
+    {
+      "id": "305557E9CB23003D",
+      "x": 36.6954,
+      "y": -12.8459,
+      "width": 0.21,
+      "height": 0.21,
+      "rotation": 0.0,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "order": -4,
+      "position_locked": true,
+      "dependency": "1363239C071BAA00",
+      "alpha": 255,
+      "color": 16771496
+    },
+    {
+      "id": "43E81016E2C76C49",
+      "x": 37.2807,
+      "y": -13.7712,
+      "width": 0.21,
+      "height": 0.21,
+      "rotation": 0.0,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "order": -4,
+      "position_locked": true,
+      "dependency": "1363239C071BAA00",
+      "alpha": 255,
+      "color": 16771496
+    },
+    {
+      "id": "37419B7FC3C9C007",
+      "x": 38.0388,
+      "y": -14.5623,
+      "width": 0.21,
+      "height": 0.21,
+      "rotation": 0.0,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "order": -4,
+      "position_locked": true,
+      "dependency": "1363239C071BAA00",
+      "alpha": 255,
+      "color": 16771496
+    },
+    {
+      "id": "5685C2AB785EC269",
+      "x": 38.9378,
+      "y": -15.1892,
+      "width": 0.21,
+      "height": 0.21,
+      "rotation": 0.0,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "order": -4,
+      "position_locked": true,
+      "dependency": "1363239C071BAA00",
+      "alpha": 255,
+      "color": 16771496
+    },
+    {
+      "id": "203D04EC0AF65AF1",
+      "x": 39.9416,
+      "y": -15.6316,
+      "width": 0.21,
+      "height": 0.21,
+      "rotation": 0.0,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "order": -4,
+      "position_locked": true,
+      "dependency": "1363239C071BAA00",
+      "alpha": 255,
+      "color": 16771496
+    },
+    {
+      "id": "5D8E5E2BA6D27F06",
+      "x": 41.014,
+      "y": -15.8656,
+      "width": 0.21,
+      "height": 0.21,
+      "rotation": 0.0,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "order": -4,
+      "position_locked": true,
+      "dependency": "1363239C071BAA00",
+      "alpha": 255,
+      "color": 16771496
+    },
+    {
+      "id": "2C4218D9FE2DBA19",
+      "x": 42.1126,
+      "y": -15.8795,
+      "width": 0.21,
+      "height": 0.21,
+      "rotation": 0.0,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "order": -4,
+      "position_locked": true,
+      "dependency": "1363239C071BAA00",
+      "alpha": 255,
+      "color": 16771496
+    },
+    {
+      "id": "292ED3094F6D271E",
+      "x": 43.1889,
+      "y": -15.6589,
+      "width": 0.21,
+      "height": 0.21,
+      "rotation": 0.0,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "order": -4,
+      "position_locked": true,
+      "dependency": "1363239C071BAA00",
+      "alpha": 255,
+      "color": 16771496
+    },
+    {
+      "id": "7074B61A2ED51B3B",
+      "x": 44.1986,
+      "y": -15.2284,
+      "width": 0.21,
+      "height": 0.21,
+      "rotation": 0.0,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "order": -4,
+      "position_locked": true,
+      "dependency": "1363239C071BAA00",
+      "alpha": 255,
+      "color": 16771496
+    },
+    {
+      "id": "6C5195B27836E6F9",
+      "x": 45.1059,
+      "y": -14.6124,
+      "width": 0.21,
+      "height": 0.21,
+      "rotation": 0.0,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "order": -4,
+      "position_locked": true,
+      "dependency": "1363239C071BAA00",
+      "alpha": 255,
+      "color": 16771496
+    },
+    {
+      "id": "69007457CE134DCC",
+      "x": 45.874,
+      "y": -13.8305,
+      "width": 0.21,
+      "height": 0.21,
+      "rotation": 0.0,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "order": -4,
+      "position_locked": true,
+      "dependency": "1363239C071BAA00",
+      "alpha": 255,
+      "color": 16771496
+    },
+    {
+      "id": "458BFBDE41009478",
+      "x": 46.4715,
+      "y": -12.9128,
+      "width": 0.21,
+      "height": 0.21,
+      "rotation": 0.0,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "order": -4,
+      "position_locked": true,
+      "dependency": "1363239C071BAA00",
+      "alpha": 255,
+      "color": 16771496
+    },
+    {
+      "id": "77E668BF82B2791E",
+      "x": 46.872,
+      "y": -11.8931,
+      "width": 0.21,
+      "height": 0.21,
+      "rotation": 0.0,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "order": -4,
+      "position_locked": true,
+      "dependency": "1363239C071BAA00",
+      "alpha": 255,
+      "color": 16771496
+    },
+    {
+      "id": "5FB5F2D267D31CAB",
+      "x": 47.063,
+      "y": -10.8148,
+      "width": 0.21,
+      "height": 0.21,
+      "rotation": 0.0,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "order": -4,
+      "position_locked": true,
+      "dependency": "1363239C071BAA00",
+      "alpha": 255,
+      "color": 16771496
+    },
+    {
+      "id": "22E1169A0DE00B52",
+      "x": 47.1,
+      "y": -10.4,
+      "width": 0.21,
+      "height": 0.21,
+      "rotation": 0.0,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "order": -4,
+      "position_locked": true,
+      "dependency": "1363239C071BAA00",
+      "alpha": 255,
+      "color": 16771496
+    },
+    {
+      "id": "0EB36DE737A6CBC8",
+      "x": 43.6635,
+      "y": -14.5458,
+      "width": 0.5865,
+      "height": 0.5865,
+      "rotation": 231.6272,
+      "image": "dysoncubeproject:textures/item/solar_sail.png",
+      "order": -3,
+      "position_locked": true,
+      "dependency": "7190364FD58891F9",
+      "alpha": 220
+    },
+    {
+      "id": "27EDF0CE4A2621DD",
+      "x": 41.1067,
+      "y": -6.1736,
+      "width": 0.6497,
+      "height": 0.6497,
+      "rotation": 352.0946,
+      "image": "dysoncubeproject:textures/item/solar_sail.png",
+      "order": -3,
+      "position_locked": true,
+      "dependency": "7190364FD58891F9",
+      "alpha": 200
+    },
+    {
+      "id": "7F80A6B7A77FF18A",
+      "x": 45.5587,
+      "y": -8.2953,
+      "width": 0.816,
+      "height": 0.816,
+      "rotation": 295.0753,
+      "image": "dysoncubeproject:textures/item/solar_sail.png",
+      "order": -3,
+      "position_locked": true,
+      "dependency": "7190364FD58891F9",
+      "alpha": 204
+    },
+    {
+      "id": "4B884AA4898FD648",
+      "x": 47.6692,
+      "y": -11.2838,
+      "width": 0.7128,
+      "height": 0.7128,
+      "rotation": 194.2166,
+      "image": "dysoncubeproject:textures/item/solar_sail.png",
+      "order": -3,
+      "position_locked": true,
+      "dependency": "7190364FD58891F9",
+      "alpha": 236
+    },
+    {
+      "id": "05E87EC12F4DF67B",
+      "x": 46.3372,
+      "y": -9.7253,
+      "width": 0.868,
+      "height": 0.868,
+      "rotation": 182.6092,
+      "image": "dysoncubeproject:textures/item/solar_sail.png",
+      "order": -3,
+      "position_locked": true,
+      "dependency": "7190364FD58891F9",
+      "alpha": 248
+    },
+    {
+      "id": "6BE4BF2F87758FE9",
+      "x": 36.4367,
+      "y": -9.1537,
+      "width": 0.7782,
+      "height": 0.7782,
+      "rotation": 194.8137,
+      "image": "dysoncubeproject:textures/item/solar_sail.png",
+      "order": -3,
+      "position_locked": true,
+      "dependency": "7190364FD58891F9",
+      "alpha": 225
+    },
+    {
+      "id": "7EDA11F8BBF15438",
+      "x": 43.345,
+      "y": -15.2411,
+      "width": 0.6393,
+      "height": 0.6393,
+      "rotation": 128.2843,
+      "image": "dysoncubeproject:textures/item/solar_sail.png",
+      "order": -3,
+      "position_locked": true,
+      "dependency": "7190364FD58891F9",
+      "alpha": 243
+    },
+    {
+      "id": "66ED9D0630E3D6FF",
+      "x": 43.7548,
+      "y": -14.8795,
+      "width": 0.6519,
+      "height": 0.6519,
+      "rotation": 10.1316,
+      "image": "dysoncubeproject:textures/item/solar_sail.png",
+      "order": -3,
+      "position_locked": true,
+      "dependency": "7190364FD58891F9",
+      "alpha": 219
+    },
+    {
+      "id": "63A75D340A1183FA",
+      "x": 45.5998,
+      "y": -11.2102,
+      "width": 0.7347,
+      "height": 0.7347,
+      "rotation": 15.6541,
+      "image": "dysoncubeproject:textures/item/solar_sail.png",
+      "order": -3,
+      "position_locked": true,
+      "dependency": "7190364FD58891F9",
+      "alpha": 212
+    },
+    {
+      "id": "7493E3EC491B7C3C",
+      "x": 44.7409,
+      "y": -13.6406,
+      "width": 0.6061,
+      "height": 0.6061,
+      "rotation": 99.5571,
+      "image": "dysoncubeproject:textures/item/solar_sail.png",
+      "order": -3,
+      "position_locked": true,
+      "dependency": "7190364FD58891F9",
+      "alpha": 215
+    },
+    {
+      "id": "315BF49B45AB769E",
+      "x": 41.85,
+      "y": -15.75,
+      "width": 4.5041,
+      "height": 0.1867,
+      "rotation": -85.3645,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "order": -5,
+      "position_locked": true,
+      "dependency": "1363239C071BAA00",
+      "alpha": 230,
+      "color": 16771496
+    },
+    {
+      "id": "4A6FA8B984724AB8",
+      "x": 42.0,
+      "y": -17.6,
+      "width": 7.0,
+      "height": 7.0,
+      "rotation": 0.0,
+      "image": "minecraft:textures/particle/flash.png",
+      "order": -8,
+      "position_locked": true,
+      "dependency": "1363239C071BAA00",
+      "alpha": 110,
+      "color": 16765562
+    },
+    {
+      "id": "21C0913A4DEC8DAA",
+      "x": 36.9,
+      "y": -9.5,
+      "width": 1.5167,
+      "height": 1.5167,
+      "rotation": 0.0,
+      "image": "item:dysoncubeproject:solar_sail_package",
+      "order": -3,
+      "position_locked": true,
+      "dependency": "791DCE8FDDD416DC"
+    },
+    {
+      "id": "1C94C1B406185E4F",
+      "x": 29.1,
+      "y": -13.0,
+      "width": 1.5167,
+      "height": 1.5167,
+      "rotation": 0.0,
+      "image": "item:dysoncubeproject:beam_package",
+      "order": -3,
+      "position_locked": true,
+      "dependency": "18E62B921F979526"
+    },
+    {
+      "id": "315E71102F97540B",
+      "x": 33.3,
+      "y": -16.5,
+      "width": 2.1,
+      "height": 2.1,
+      "rotation": 0.0,
+      "image": "item:dysoncubeproject:em_railejector_controller",
+      "order": -3,
+      "position_locked": true,
+      "dependency": "7190364FD58891F9"
+    },
+    {
+      "id": "61B54531AEB1A48E",
+      "x": 44.3,
+      "y": -17.6,
+      "width": 2.1,
+      "height": 2.1,
+      "rotation": 0.0,
+      "image": "item:dysoncubeproject:ray_receiver_controller",
+      "order": -3,
+      "position_locked": true,
+      "dependency": "1363239C071BAA00"
+    },
+    {
+      "id": "7DF1104881807B9F",
+      "x": -30.3,
+      "y": -9.6,
+      "width": 29.848,
+      "height": 0.0833,
+      "rotation": 0.0,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "color": 15260853,
+      "alpha": 64,
+      "order": -5,
+      "position_locked": true
+    },
+    {
+      "id": "453F5E7AFCFE36C3",
+      "x": -18.0,
+      "y": -4.7,
+      "width": 11.8907,
+      "height": 0.0833,
+      "rotation": 90.0,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "color": 15260853,
+      "alpha": 64,
+      "order": -5,
+      "position_locked": true
+    },
+    {
+      "id": "6EE030AB416DDF1D",
+      "x": -30.3,
+      "y": 0.2,
+      "width": 29.848,
+      "height": 0.0833,
+      "rotation": 180.0,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "color": 15260853,
+      "alpha": 64,
+      "order": -5,
+      "position_locked": true
+    },
+    {
+      "id": "35E68DAA90EFB341",
+      "x": -42.6,
+      "y": -4.7,
+      "width": 11.8907,
+      "height": 0.0833,
+      "rotation": -90.0,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "color": 15260853,
+      "alpha": 64,
+      "order": -5,
+      "position_locked": true
+    },
+    {
+      "id": "69F5B1C4C50CFA2F",
+      "x": -30.3,
+      "y": -4.7,
+      "width": 28.7,
+      "height": 11.4333,
+      "rotation": 0.0,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "order": -5,
+      "position_locked": true,
+      "dependency": "43F1747A62190179",
+      "alpha": 150,
+      "color": 1778227
+    },
+    {
+      "id": "34C530218E862868",
+      "x": -30.3,
+      "y": -9.6,
+      "width": 29.848,
+      "height": 0.0833,
+      "rotation": 0.0,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "color": 8161704,
+      "alpha": 190,
+      "order": -4,
+      "position_locked": true,
+      "dependency": "43F1747A62190179"
+    },
+    {
+      "id": "14867516199D8123",
+      "x": -18.0,
+      "y": -4.7,
+      "width": 11.8907,
+      "height": 0.0833,
+      "rotation": 90.0,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "color": 8161704,
+      "alpha": 190,
+      "order": -4,
+      "position_locked": true,
+      "dependency": "43F1747A62190179"
+    },
+    {
+      "id": "660E88667D8BCEE0",
+      "x": -30.3,
+      "y": 0.2,
+      "width": 29.848,
+      "height": 0.0833,
+      "rotation": 180.0,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "color": 8161704,
+      "alpha": 190,
+      "order": -4,
+      "position_locked": true,
+      "dependency": "43F1747A62190179"
+    },
+    {
+      "id": "5B163C8244514047",
+      "x": -42.6,
+      "y": -4.7,
+      "width": 11.8907,
+      "height": 0.0833,
+      "rotation": -90.0,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "color": 8161704,
+      "alpha": 190,
+      "order": -4,
+      "position_locked": true,
+      "dependency": "43F1747A62190179"
+    },
+    {
+      "id": "36DEC9BC678D6FE5",
+      "x": -42.3143,
+      "y": -9.3143,
+      "width": 0.6667,
+      "height": 0.6667,
+      "rotation": 0.0,
+      "image": "entrelumen:textures/gui/quests/corner.png",
+      "order": -3,
+      "position_locked": true,
+      "dependency": "43F1747A62190179"
+    },
+    {
+      "id": "055ABA8D35EC8855",
+      "x": -18.2857,
+      "y": -9.3143,
+      "width": 0.6667,
+      "height": 0.6667,
+      "rotation": 90.0,
+      "image": "entrelumen:textures/gui/quests/corner.png",
+      "order": -3,
+      "position_locked": true,
+      "dependency": "43F1747A62190179"
+    },
+    {
+      "id": "406317BB1EC6DE92",
+      "x": -18.2857,
+      "y": -0.0857,
+      "width": 0.6667,
+      "height": 0.6667,
+      "rotation": 180.0,
+      "image": "entrelumen:textures/gui/quests/corner.png",
+      "order": -3,
+      "position_locked": true,
+      "dependency": "43F1747A62190179"
+    },
+    {
+      "id": "76ED580232D44D31",
+      "x": -42.3143,
+      "y": -0.0857,
+      "width": 0.6667,
+      "height": 0.6667,
+      "rotation": 270.0,
+      "image": "entrelumen:textures/gui/quests/corner.png",
+      "order": -3,
+      "position_locked": true,
+      "dependency": "43F1747A62190179"
+    },
+    {
+      "id": "67729EAC930B4618",
+      "x": -30.3,
+      "y": -9.0,
+      "width": 4.875,
+      "height": 0.5625,
+      "rotation": 0.0,
+      "image": "",
+      "text_on_image": true,
+      "text_shadow": true,
+      "order": 5,
+      "position_locked": true
+    },
+    {
+      "id": "0DCD0E5E2B609F99",
+      "x": -29.6,
+      "y": -2.0,
+      "width": 6.5333,
+      "height": 6.5333,
+      "rotation": 0.0,
+      "image": "minecraft:textures/particle/flash.png",
+      "order": -5,
+      "position_locked": true,
+      "dependency": "43F1747A62190179",
+      "alpha": 90,
+      "color": 10478591
+    },
+    {
+      "id": "3349F9D6DCD6E380",
+      "x": -31.9,
+      "y": -2.0,
+      "width": 5.5813,
+      "height": 0.0933,
+      "rotation": 0.0,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "order": -4,
+      "position_locked": true,
+      "alpha": 64,
+      "color": 15260853
+    },
+    {
+      "id": "728E1482E73D70AD",
+      "x": -27.3,
+      "y": -2.0,
+      "width": 5.5813,
+      "height": 0.0933,
+      "rotation": 0.0,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "order": -4,
+      "position_locked": true,
+      "alpha": 64,
+      "color": 15260853
+    },
+    {
+      "id": "27BE1D2766355CBE",
+      "x": -22.7,
+      "y": -2.0,
+      "width": 5.5813,
+      "height": 0.0933,
+      "rotation": 0.0,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "order": -4,
+      "position_locked": true,
+      "alpha": 64,
+      "color": 15260853
+    },
+    {
+      "id": "2EB072B0AB7654AF",
+      "x": -31.9,
+      "y": -2.0,
+      "width": 5.5813,
+      "height": 0.1633,
+      "rotation": 0.0,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "order": -3,
+      "position_locked": true,
+      "alpha": 255,
+      "dependency": "43F1747A62190179",
+      "color": 10335464
+    },
+    {
+      "id": "3D5C4634B8EBE260",
+      "x": -27.3,
+      "y": -2.0,
+      "width": 5.5813,
+      "height": 0.1633,
+      "rotation": 0.0,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "order": -3,
+      "position_locked": true,
+      "alpha": 255,
+      "dependency": "5235D123D1619087",
+      "color": 10335464
+    },
+    {
+      "id": "59461D858029D681",
+      "x": -22.7,
+      "y": -2.0,
+      "width": 5.5813,
+      "height": 0.1633,
+      "rotation": 0.0,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "order": -3,
+      "position_locked": true,
+      "alpha": 255,
+      "dependency": "0E3AD3D6AAE1539C",
+      "color": 10335464
+    },
+    {
+      "id": "2508A2052A563FFA",
+      "x": -27.8,
+      "y": -2.0,
+      "width": 1.5167,
+      "height": 1.5167,
+      "rotation": 0.0,
+      "image": "item:ad_astra_giselle_addon:oxygen_can",
+      "order": -3,
+      "position_locked": true,
+      "dependency": "43F1747A62190179"
+    },
+    {
+      "id": "189A22DD89803889",
+      "x": -32.4,
+      "y": -2.0,
+      "width": 1.5167,
+      "height": 1.5167,
+      "rotation": 0.0,
+      "image": "item:ad_astra_giselle_addon:netherite_oxygen_can",
+      "order": -3,
+      "position_locked": true,
+      "dependency": "27F9C9504E77F3A8"
+    },
+    {
+      "id": "27EF20D83188A488",
+      "x": -23.2,
+      "y": -2.0,
+      "width": 1.5167,
+      "height": 1.5167,
+      "rotation": 0.0,
+      "image": "item:ad_astra_giselle_addon:module_space_breathing_unit",
+      "order": -3,
+      "position_locked": true,
+      "dependency": "5235D123D1619087"
+    },
+    {
+      "id": "40B1C7A4A98105EB",
+      "x": -18.6,
+      "y": -2.0,
+      "width": 1.5167,
+      "height": 1.5167,
+      "rotation": 0.0,
+      "image": "item:ad_astra_giselle_addon:pneumatic_space_breathing_upgrade",
+      "order": -3,
+      "position_locked": true,
+      "dependency": "0E3AD3D6AAE1539C"
+    },
+    {
+      "id": "4DF9AF7FBCB7C9A3",
+      "x": -37.0,
+      "y": -2.0,
+      "width": 1.6333,
+      "height": 1.6333,
+      "rotation": 0.0,
+      "image": "item:ad_astra_giselle_addon:fuel_loader",
+      "order": -3,
+      "position_locked": true,
+      "dependency": "021AB88CF5E56668"
+    },
+    {
+      "id": "08E59FD764ADF221",
+      "x": -37.0,
+      "y": -6.5,
+      "width": 1.6333,
+      "height": 1.6333,
+      "rotation": 0.0,
+      "image": "item:ad_astra_giselle_addon:rocket_sensor",
+      "order": -3,
+      "position_locked": true,
+      "dependency": "166CD3692901A134"
+    },
+    {
+      "id": "45581AD0EE276456",
+      "x": -32.4,
+      "y": -6.5,
+      "width": 1.6333,
+      "height": 1.6333,
+      "rotation": 0.0,
+      "image": "item:ad_astra_giselle_addon:automation_nasa_workbench",
+      "order": -3,
+      "position_locked": true,
+      "dependency": "562886487964B9B3"
     }
   ]
 }

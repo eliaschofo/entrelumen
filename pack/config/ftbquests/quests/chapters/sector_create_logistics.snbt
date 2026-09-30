@@ -2230,6 +2230,228 @@
       "hide_lock_icon": true,
       "hide_dependency_lines": true,
       "hide_dependent_lines": true
+    },
+    {
+      "id": "1DA3C78126C6F199",
+      "x": -16.5,
+      "y": -8.0,
+      "shape": "diamond",
+      "size": 1.0,
+      "preset": "el_side",
+      "dependencies": [
+        "42C367280974A1FA"
+      ],
+      "tasks": [
+        {
+          "id": "465756CC01190A63",
+          "type": "item",
+          "item": {
+            "id": "create:copper_diving_boots",
+            "count": 1
+          },
+          "count": 1,
+          "consume_items": false
+        }
+      ],
+      "rewards": [
+        {
+          "id": "142AD72FF14DDAF0",
+          "type": "xp",
+          "xp": 8
+        }
+      ],
+      "tags": [
+        "entrelumen_side"
+      ],
+      "optional": true,
+      "icon": {
+        "id": "create:copper_diving_boots"
+      }
+    },
+    {
+      "id": "7606033A8EBADD24",
+      "x": -11.5,
+      "y": -10.5,
+      "shape": "gear",
+      "size": 2.0,
+      "preset": "el_milestone_create",
+      "dependencies": [
+        "1DA3C78126C6F199"
+      ],
+      "tasks": [
+        {
+          "id": "5D10B4387061AD35",
+          "type": "advancement",
+          "advancement": "createrailgrinding:railgrind_advancement",
+          "criterion": "",
+          "icon": {
+            "id": "create:copper_diving_boots"
+          }
+        }
+      ],
+      "rewards": [
+        {
+          "id": "0FE9234C4BF47F7E",
+          "type": "xp",
+          "xp": 16
+        },
+        {
+          "id": "45DE6DFE2A185421",
+          "type": "choice",
+          "table_id": 429443196
+        }
+      ],
+      "tags": [
+        "entrelumen_milestone"
+      ]
+    },
+    {
+      "id": "3A4EC2FCDC9ADFD5",
+      "x": -7.2,
+      "y": -8.4,
+      "shape": "diamond",
+      "size": 1.0,
+      "preset": "el_side",
+      "dependencies": [
+        "7606033A8EBADD24"
+      ],
+      "tasks": [
+        {
+          "id": "3DC1F940E2F3E50C",
+          "type": "advancement",
+          "advancement": "createrailgrinding:railgrind_effect_advancement",
+          "criterion": "",
+          "icon": {
+            "id": "create:bar_of_chocolate"
+          }
+        }
+      ],
+      "rewards": [
+        {
+          "id": "798B81049ECA8260",
+          "type": "xp",
+          "xp": 8
+        }
+      ],
+      "tags": [
+        "entrelumen_side"
+      ],
+      "optional": true
+    },
+    {
+      "id": "71B3DBB2AC31DBD4",
+      "x": -12.0,
+      "y": -14.6,
+      "shape": "el_tag",
+      "size": 1.0,
+      "preset": "el_tip",
+      "dependencies": [
+        "7606033A8EBADD24"
+      ],
+      "tasks": [
+        {
+          "id": "05A9BCEF791FE854",
+          "type": "checkmark"
+        }
+      ],
+      "rewards": [],
+      "tags": [
+        "entrelumen_tip"
+      ],
+      "optional": true,
+      "icon_scale": 0.75,
+      "disable_toast": true,
+      "hide_lock_icon": true
+    },
+    {
+      "id": "46E91BA644B36303",
+      "x": -16.0,
+      "y": -13.0,
+      "shape": "el_star",
+      "size": 1.0,
+      "preset": "el_secret",
+      "dependencies": [
+        "7606033A8EBADD24"
+      ],
+      "tasks": [
+        {
+          "id": "44009A4F2646EC65",
+          "type": "advancement",
+          "advancement": "createrailgrinding:falldamage_negate_advancement",
+          "criterion": "",
+          "icon": {
+            "id": "create:netherite_diving_boots"
+          }
+        }
+      ],
+      "rewards": [
+        {
+          "id": "25DB2EFB6F792A4B",
+          "type": "xp",
+          "xp": 8
+        },
+        {
+          "id": "13E891B3E2432458",
+          "type": "random",
+          "table_id": 1306562842
+        },
+        {
+          "id": "51FDBA4B682136FC",
+          "type": "toast",
+          "description": "entrelumen.quests.toast.secret",
+          "auto": "invisible"
+        }
+      ],
+      "tags": [
+        "entrelumen_secret"
+      ],
+      "optional": true,
+      "invisible": true
+    },
+    {
+      "id": "4F8AF81884636D89",
+      "x": -7.0,
+      "y": -12.6,
+      "shape": "el_star",
+      "size": 1.0,
+      "preset": "el_secret",
+      "dependencies": [
+        "7606033A8EBADD24"
+      ],
+      "tasks": [
+        {
+          "id": "3CD281FC771C6FE7",
+          "type": "advancement",
+          "advancement": "createrailgrinding:custom_boots_advancement",
+          "criterion": "",
+          "icon": {
+            "id": "create:copper_diving_boots"
+          }
+        }
+      ],
+      "rewards": [
+        {
+          "id": "28609F763538B6DB",
+          "type": "xp",
+          "xp": 8
+        },
+        {
+          "id": "0BABD45009745C79",
+          "type": "random",
+          "table_id": 1306562842
+        },
+        {
+          "id": "6C1788FFC00AC66B",
+          "type": "toast",
+          "description": "entrelumen.quests.toast.secret",
+          "auto": "invisible"
+        }
+      ],
+      "tags": [
+        "entrelumen_secret"
+      ],
+      "optional": true,
+      "invisible": true
     }
   ],
   "quest_links": [
@@ -6853,6 +7075,354 @@
       "position_locked": true,
       "dependency": "222F96F4796FE56F",
       "alpha": 129
+    },
+    {
+      "id": "07295F26B94DA838",
+      "x": -12.1929,
+      "y": -17.6,
+      "width": 6.0833,
+      "height": 0.75,
+      "rotation": 0.0,
+      "image": "",
+      "text_on_image": true,
+      "text_shadow": true,
+      "order": 5,
+      "text_h_align": "start",
+      "position_locked": true
+    },
+    {
+      "id": "2A4B04EFDFD34DE7",
+      "x": -14.0,
+      "y": -9.25,
+      "width": 6.7827,
+      "height": 0.0933,
+      "rotation": -26.5651,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "order": -6,
+      "position_locked": true,
+      "alpha": 64,
+      "color": 15260853
+    },
+    {
+      "id": "61A1C77F1EECD301",
+      "x": -9.35,
+      "y": -9.45,
+      "width": 5.8063,
+      "height": 0.0933,
+      "rotation": 26.0296,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "order": -6,
+      "position_locked": true,
+      "alpha": 64,
+      "color": 15260853
+    },
+    {
+      "id": "1CF5A7AB5BC9DE8F",
+      "x": -16.0528,
+      "y": -8.2236,
+      "width": 1.1667,
+      "height": 1.1667,
+      "rotation": 63.4349,
+      "image": "minecraft:block/rail",
+      "order": -5,
+      "position_locked": true,
+      "dependency": "7606033A8EBADD24"
+    },
+    {
+      "id": "60601C8151013DAB",
+      "x": -15.1584,
+      "y": -8.6708,
+      "width": 1.1667,
+      "height": 1.1667,
+      "rotation": 63.4349,
+      "image": "minecraft:block/rail",
+      "order": -5,
+      "position_locked": true,
+      "dependency": "7606033A8EBADD24"
+    },
+    {
+      "id": "6FA35CFBB26A5791",
+      "x": -14.2639,
+      "y": -9.118,
+      "width": 1.1667,
+      "height": 1.1667,
+      "rotation": 63.4349,
+      "image": "minecraft:block/rail",
+      "order": -5,
+      "position_locked": true,
+      "dependency": "7606033A8EBADD24"
+    },
+    {
+      "id": "0966989C18BE121A",
+      "x": -13.3695,
+      "y": -9.5652,
+      "width": 1.1667,
+      "height": 1.1667,
+      "rotation": 63.4349,
+      "image": "minecraft:block/rail",
+      "order": -5,
+      "position_locked": true,
+      "dependency": "7606033A8EBADD24"
+    },
+    {
+      "id": "470EFA3F27C31C4C",
+      "x": -12.4751,
+      "y": -10.0125,
+      "width": 1.1667,
+      "height": 1.1667,
+      "rotation": 63.4349,
+      "image": "minecraft:block/rail",
+      "order": -5,
+      "position_locked": true,
+      "dependency": "7606033A8EBADD24"
+    },
+    {
+      "id": "473AFBB29F4C56E7",
+      "x": -11.7639,
+      "y": -10.368,
+      "width": 1.1667,
+      "height": 0.6885,
+      "rotation": 63.4349,
+      "image": "minecraft:block/rail",
+      "order": -5,
+      "position_locked": true,
+      "dependency": "7606033A8EBADD24"
+    },
+    {
+      "id": "60102D1DD18BFF7B",
+      "x": -11.0507,
+      "y": -10.2806,
+      "width": 1.1667,
+      "height": 1.1667,
+      "rotation": 116.0296,
+      "image": "minecraft:block/rail",
+      "order": -5,
+      "position_locked": true,
+      "dependency": "3A4EC2FCDC9ADFD5"
+    },
+    {
+      "id": "245890CD3DB6F440",
+      "x": -10.1521,
+      "y": -9.8417,
+      "width": 1.1667,
+      "height": 1.1667,
+      "rotation": 116.0296,
+      "image": "minecraft:block/rail",
+      "order": -5,
+      "position_locked": true,
+      "dependency": "3A4EC2FCDC9ADFD5"
+    },
+    {
+      "id": "2AD27061F71C4BF9",
+      "x": -9.2536,
+      "y": -9.4029,
+      "width": 1.1667,
+      "height": 1.1667,
+      "rotation": 116.0296,
+      "image": "minecraft:block/rail",
+      "order": -5,
+      "position_locked": true,
+      "dependency": "3A4EC2FCDC9ADFD5"
+    },
+    {
+      "id": "3B19A7D2DE5463D4",
+      "x": -8.355,
+      "y": -8.9641,
+      "width": 1.1667,
+      "height": 1.1667,
+      "rotation": 116.0296,
+      "image": "minecraft:block/rail",
+      "order": -5,
+      "position_locked": true,
+      "dependency": "3A4EC2FCDC9ADFD5"
+    },
+    {
+      "id": "1868B5C06DF5796A",
+      "x": -7.5529,
+      "y": -8.5723,
+      "width": 1.1667,
+      "height": 0.9163,
+      "rotation": 116.0296,
+      "image": "minecraft:block/rail",
+      "order": -5,
+      "position_locked": true,
+      "dependency": "3A4EC2FCDC9ADFD5"
+    },
+    {
+      "id": "684D87DD737DA250",
+      "x": -12.4957,
+      "y": -10.7027,
+      "width": 0.2091,
+      "height": 0.2091,
+      "rotation": 0.0,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "order": -2,
+      "position_locked": true,
+      "dependency": "7606033A8EBADD24",
+      "alpha": 233,
+      "color": 16762992
+    },
+    {
+      "id": "1B067669A9CC1462",
+      "x": -11.0987,
+      "y": -9.9006,
+      "width": 0.2276,
+      "height": 0.2276,
+      "rotation": 0.0,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "order": -2,
+      "position_locked": true,
+      "dependency": "7606033A8EBADD24",
+      "alpha": 230,
+      "color": 16762992
+    },
+    {
+      "id": "2A127760C366B794",
+      "x": -9.6165,
+      "y": -10.8654,
+      "width": 0.2961,
+      "height": 0.2961,
+      "rotation": 0.0,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "order": -2,
+      "position_locked": true,
+      "dependency": "7606033A8EBADD24",
+      "alpha": 226,
+      "color": 16762992
+    },
+    {
+      "id": "60B48CCDFB02FDE8",
+      "x": -12.5187,
+      "y": -11.5664,
+      "width": 0.3128,
+      "height": 0.3128,
+      "rotation": 0.0,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "order": -2,
+      "position_locked": true,
+      "dependency": "7606033A8EBADD24",
+      "alpha": 221,
+      "color": 16762992
+    },
+    {
+      "id": "24D75D4E5F56B586",
+      "x": -10.8486,
+      "y": -11.7591,
+      "width": 0.2815,
+      "height": 0.2815,
+      "rotation": 0.0,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "order": -2,
+      "position_locked": true,
+      "dependency": "7606033A8EBADD24",
+      "alpha": 232,
+      "color": 16762992
+    },
+    {
+      "id": "572B9EE8E9E1F6FD",
+      "x": -10.4357,
+      "y": -10.0881,
+      "width": 0.1903,
+      "height": 0.1903,
+      "rotation": 0.0,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "order": -2,
+      "position_locked": true,
+      "dependency": "7606033A8EBADD24",
+      "alpha": 232,
+      "color": 16762992
+    },
+    {
+      "id": "4E95613BC7F73D2F",
+      "x": -10.6863,
+      "y": -9.8736,
+      "width": 0.2137,
+      "height": 0.2137,
+      "rotation": 0.0,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "order": -2,
+      "position_locked": true,
+      "dependency": "7606033A8EBADD24",
+      "alpha": 244,
+      "color": 16762992
+    },
+    {
+      "id": "3FB569F9DF8B94B9",
+      "x": -9.7364,
+      "y": -11.6049,
+      "width": 0.2082,
+      "height": 0.2082,
+      "rotation": 0.0,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "order": -2,
+      "position_locked": true,
+      "dependency": "7606033A8EBADD24",
+      "alpha": 201,
+      "color": 16762992
+    },
+    {
+      "id": "635251BB0CDDA58A",
+      "x": -12.5754,
+      "y": -9.7759,
+      "width": 0.2214,
+      "height": 0.2214,
+      "rotation": 0.0,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "order": -2,
+      "position_locked": true,
+      "dependency": "7606033A8EBADD24",
+      "alpha": 234,
+      "color": 16762992
+    },
+    {
+      "id": "3E6523265C8A2148",
+      "x": -11.5,
+      "y": -10.5,
+      "width": 6.0667,
+      "height": 6.0667,
+      "rotation": 0.0,
+      "image": "minecraft:textures/particle/flash.png",
+      "order": -4,
+      "position_locked": true,
+      "dependency": "7606033A8EBADD24",
+      "alpha": 110,
+      "color": 16762992
+    },
+    {
+      "id": "2C0962831C130DB6",
+      "x": -14.6,
+      "y": -8.0,
+      "width": 1.75,
+      "height": 1.75,
+      "rotation": 0.0,
+      "image": "item:create:copper_diving_boots",
+      "order": -3,
+      "position_locked": true,
+      "dependency": "1DA3C78126C6F199"
+    },
+    {
+      "id": "2777A5FA13E68DCD",
+      "x": -5.3,
+      "y": -8.4,
+      "width": 1.5167,
+      "height": 1.5167,
+      "rotation": 0.0,
+      "image": "createrailgrinding:textures/mob_effect/railgrindboost.png",
+      "order": -3,
+      "position_locked": true,
+      "dependency": "3A4EC2FCDC9ADFD5"
+    },
+    {
+      "id": "4EF7B04ED1696A0E",
+      "x": -5.1,
+      "y": -12.6,
+      "width": 1.5167,
+      "height": 1.5167,
+      "rotation": 0.0,
+      "image": "createrailgrinding:textures/item/custom_diving_boots.png",
+      "order": -3,
+      "position_locked": true,
+      "dependency": "4F8AF81884636D89"
     }
   ]
 }

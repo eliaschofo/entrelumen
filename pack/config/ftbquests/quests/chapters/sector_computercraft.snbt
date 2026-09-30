@@ -1406,6 +1406,1370 @@
       "hide_lock_icon": true,
       "hide_dependency_lines": true,
       "hide_dependent_lines": true
+    },
+    {
+      "id": "545A5C6DEA9489D3",
+      "x": -28.0,
+      "y": -11.0,
+      "shape": "square",
+      "size": 1.0,
+      "preset": "el_step",
+      "dependencies": [
+        "750F233DF2536F5C"
+      ],
+      "tasks": [
+        {
+          "id": "6234ABC608CF5C8E",
+          "type": "item",
+          "item": {
+            "id": "morered:red_alloy_ingot",
+            "count": 1
+          },
+          "count": 4,
+          "consume_items": false
+        }
+      ],
+      "rewards": [
+        {
+          "id": "3C54647E625969F1",
+          "type": "xp",
+          "xp": 10
+        }
+      ],
+      "tags": [
+        "entrelumen_step"
+      ],
+      "icon": {
+        "id": "morered:red_alloy_ingot"
+      }
+    },
+    {
+      "id": "7705F996A4275960",
+      "x": -23.5,
+      "y": -11.0,
+      "shape": "square",
+      "size": 1.0,
+      "preset": "el_step",
+      "dependencies": [
+        "545A5C6DEA9489D3"
+      ],
+      "tasks": [
+        {
+          "id": "636CEE04058031FC",
+          "type": "item",
+          "item": {
+            "id": "morered:red_alloy_wire",
+            "count": 1
+          },
+          "count": 12,
+          "consume_items": false
+        }
+      ],
+      "rewards": [
+        {
+          "id": "1FFD8852DA111AE0",
+          "type": "xp",
+          "xp": 10
+        }
+      ],
+      "tags": [
+        "entrelumen_step"
+      ],
+      "icon": {
+        "id": "morered:red_alloy_wire"
+      }
+    },
+    {
+      "id": "228908574EB660E2",
+      "x": -19.0,
+      "y": -11.0,
+      "shape": "square",
+      "size": 1.0,
+      "preset": "el_step",
+      "dependencies": [
+        "7705F996A4275960"
+      ],
+      "tasks": [
+        {
+          "id": "05C5C5BE52EAA080",
+          "type": "item",
+          "item": {
+            "id": "ftbfiltersystem:smart_filter",
+            "count": 1,
+            "components": {
+              "ftbfiltersystem:filter": "item_tag(morered:colored_network_cables)"
+            }
+          },
+          "count": 8,
+          "consume_items": false,
+          "icon": {
+            "id": "morered:red_network_cable"
+          }
+        }
+      ],
+      "rewards": [
+        {
+          "id": "079BFFF21B438C08",
+          "type": "xp",
+          "xp": 10
+        }
+      ],
+      "tags": [
+        "entrelumen_step"
+      ],
+      "icon": {
+        "id": "morered:red_network_cable"
+      }
+    },
+    {
+      "id": "76EBDE04A6D8011A",
+      "x": -28.0,
+      "y": -6.5,
+      "shape": "rsquare",
+      "size": 2.0,
+      "preset": "el_milestone_computercraft",
+      "dependencies": [
+        "545A5C6DEA9489D3"
+      ],
+      "tasks": [
+        {
+          "id": "24F1FE87C95C11E3",
+          "type": "item",
+          "item": {
+            "id": "morered:soldering_table",
+            "count": 1
+          },
+          "count": 1,
+          "consume_items": false
+        }
+      ],
+      "rewards": [
+        {
+          "id": "2E77047B40B187B6",
+          "type": "xp",
+          "xp": 20
+        },
+        {
+          "id": "14BE08D09E11BD7D",
+          "type": "choice",
+          "table_id": 1643889682
+        }
+      ],
+      "tags": [
+        "entrelumen_milestone"
+      ],
+      "icon": {
+        "id": "morered:soldering_table"
+      }
+    },
+    {
+      "id": "25ECE1B6A496B673",
+      "x": -23.5,
+      "y": -6.5,
+      "shape": "diamond",
+      "size": 1.0,
+      "preset": "el_side",
+      "dependencies": [
+        "76EBDE04A6D8011A"
+      ],
+      "tasks": [
+        {
+          "id": "36F6B96E555777F1",
+          "type": "item",
+          "item": {
+            "id": "ftbfiltersystem:smart_filter",
+            "count": 1,
+            "components": {
+              "ftbfiltersystem:filter": "or(item(morered:not_gate)item(morered:and_gate)item(morered:or_gate)item(morered:xor_gate)item(morered:nand_gate)item(morered:nor_gate)item(morered:xnor_gate))"
+            }
+          },
+          "count": 1,
+          "consume_items": false,
+          "icon": {
+            "id": "morered:and_gate"
+          }
+        }
+      ],
+      "rewards": [
+        {
+          "id": "440A2AA4400567E0",
+          "type": "xp",
+          "xp": 10
+        }
+      ],
+      "tags": [
+        "entrelumen_side"
+      ],
+      "optional": true,
+      "icon": {
+        "id": "morered:and_gate"
+      }
+    },
+    {
+      "id": "6C5A66C4B14A0997",
+      "x": -23.5,
+      "y": -2.0,
+      "shape": "diamond",
+      "size": 1.0,
+      "preset": "el_side",
+      "dependencies": [
+        "25ECE1B6A496B673"
+      ],
+      "tasks": [
+        {
+          "id": "3C679EE659F0DA79",
+          "type": "item",
+          "item": {
+            "id": "morered:latch",
+            "count": 1
+          },
+          "count": 1,
+          "consume_items": false
+        },
+        {
+          "id": "3F1E0534373EF400",
+          "type": "item",
+          "item": {
+            "id": "morered:pulse_gate",
+            "count": 1
+          },
+          "count": 1,
+          "consume_items": false
+        },
+        {
+          "id": "4D363973818172A4",
+          "type": "item",
+          "item": {
+            "id": "morered:multiplexer",
+            "count": 1
+          },
+          "count": 1,
+          "consume_items": false
+        }
+      ],
+      "rewards": [
+        {
+          "id": "20A77AB640B29B4F",
+          "type": "xp",
+          "xp": 10
+        }
+      ],
+      "tags": [
+        "entrelumen_side"
+      ],
+      "optional": true,
+      "icon": {
+        "id": "morered:latch"
+      },
+      "hide_until_deps_complete": true
+    },
+    {
+      "id": "78F66A085673BA3A",
+      "x": -28.0,
+      "y": -2.0,
+      "shape": "diamond",
+      "size": 1.0,
+      "preset": "el_side",
+      "dependencies": [
+        "76EBDE04A6D8011A"
+      ],
+      "tasks": [
+        {
+          "id": "12652FE2D0996875",
+          "type": "item",
+          "item": {
+            "id": "morered:redwire_post",
+            "count": 1
+          },
+          "count": 2,
+          "consume_items": false
+        },
+        {
+          "id": "66105D6BEEFA5413",
+          "type": "item",
+          "item": {
+            "id": "morered:redwire_spool",
+            "count": 1
+          },
+          "count": 1,
+          "consume_items": false
+        }
+      ],
+      "rewards": [
+        {
+          "id": "3460125396927F59",
+          "type": "xp",
+          "xp": 10
+        }
+      ],
+      "tags": [
+        "entrelumen_side"
+      ],
+      "optional": true,
+      "icon": {
+        "id": "morered:redwire_post"
+      }
+    },
+    {
+      "id": "0F4FFC57F9930986",
+      "x": -19.0,
+      "y": -6.5,
+      "shape": "rsquare",
+      "size": 2.0,
+      "preset": "el_milestone_computercraft",
+      "dependencies": [
+        "228908574EB660E2"
+      ],
+      "tasks": [
+        {
+          "id": "505D11736A52FCDA",
+          "type": "item",
+          "item": {
+            "id": "morered:bundled_network_cable",
+            "count": 1
+          },
+          "count": 3,
+          "consume_items": false
+        }
+      ],
+      "rewards": [
+        {
+          "id": "1F6184ED5FFF2CE0",
+          "type": "xp",
+          "xp": 20
+        },
+        {
+          "id": "444E48879C1FCA00",
+          "type": "choice",
+          "table_id": 1643889682
+        }
+      ],
+      "tags": [
+        "entrelumen_milestone"
+      ],
+      "icon": {
+        "id": "morered:bundled_network_cable"
+      }
+    },
+    {
+      "id": "11230792A171DDB7",
+      "x": -19.0,
+      "y": -2.0,
+      "shape": "diamond",
+      "size": 1.0,
+      "preset": "el_side",
+      "dependencies": [
+        "0F4FFC57F9930986"
+      ],
+      "tasks": [
+        {
+          "id": "5E5B98078DAC370E",
+          "type": "item",
+          "item": {
+            "id": "ftbfiltersystem:smart_filter",
+            "count": 1,
+            "components": {
+              "ftbfiltersystem:filter": "or(item(morered:bitwise_and_gate)item(morered:bitwise_or_gate)item(morered:bitwise_xor_gate)item(morered:bitwise_xnor_gate)item(morered:bitwise_not_gate)item(morered:bitwise_diode))"
+            }
+          },
+          "count": 1,
+          "consume_items": false,
+          "icon": {
+            "id": "morered:bitwise_and_gate"
+          }
+        },
+        {
+          "id": "6E7F6BE8167258A5",
+          "type": "item",
+          "item": {
+            "id": "morered:hexidecrubrometer",
+            "count": 1
+          },
+          "count": 1,
+          "consume_items": false
+        }
+      ],
+      "rewards": [
+        {
+          "id": "4CD299C952CEFAEB",
+          "type": "xp",
+          "xp": 10
+        }
+      ],
+      "tags": [
+        "entrelumen_side"
+      ],
+      "optional": true,
+      "icon": {
+        "id": "morered:bitwise_and_gate"
+      }
+    },
+    {
+      "id": "77AA659F22232B4D",
+      "x": -19.0,
+      "y": 2.5,
+      "shape": "rsquare",
+      "size": 2.0,
+      "preset": "el_milestone_computercraft",
+      "dependencies": [
+        "11230792A171DDB7"
+      ],
+      "tasks": [
+        {
+          "id": "5DE76133D22A2C10",
+          "type": "item",
+          "item": {
+            "id": "morered:bundled_network_cable",
+            "count": 1
+          },
+          "count": 1,
+          "consume_items": false
+        },
+        {
+          "id": "07CAA7A50B69DD83",
+          "type": "item",
+          "item": {
+            "id": "computercraft:computer_normal",
+            "count": 1
+          },
+          "count": 1,
+          "consume_items": false
+        }
+      ],
+      "rewards": [
+        {
+          "id": "1779257C1EE4D2AA",
+          "type": "xp",
+          "xp": 20
+        },
+        {
+          "id": "7CF7B585B639816B",
+          "type": "choice",
+          "table_id": 1643889682
+        }
+      ],
+      "tags": [
+        "entrelumen_milestone"
+      ],
+      "icon": {
+        "id": "morered:bundled_network_cable"
+      }
+    },
+    {
+      "id": "127AE1089D6762B8",
+      "x": -23.5,
+      "y": 2.5,
+      "shape": "el_tag",
+      "size": 1.0,
+      "preset": "el_tip",
+      "dependencies": [
+        "77AA659F22232B4D"
+      ],
+      "tasks": [
+        {
+          "id": "6BDF25F006CCA007",
+          "type": "checkmark"
+        }
+      ],
+      "rewards": [],
+      "tags": [
+        "entrelumen_tip"
+      ],
+      "optional": true,
+      "icon_scale": 0.75,
+      "disable_toast": true,
+      "hide_lock_icon": true
+    },
+    {
+      "id": "414CFDF761C93378",
+      "x": 33.0,
+      "y": 13.5,
+      "shape": "square",
+      "size": 1.0,
+      "preset": "el_step",
+      "dependencies": [
+        "06E2AB6EF48F3F74"
+      ],
+      "tasks": [
+        {
+          "id": "125A242666732084",
+          "type": "item",
+          "item": {
+            "id": "advancedperipherals:peripheral_casing",
+            "count": 1
+          },
+          "count": 4,
+          "consume_items": false
+        }
+      ],
+      "rewards": [
+        {
+          "id": "7828BA525C5DDA1A",
+          "type": "xp",
+          "xp": 10
+        }
+      ],
+      "tags": [
+        "entrelumen_step"
+      ],
+      "icon": {
+        "id": "advancedperipherals:peripheral_casing"
+      }
+    },
+    {
+      "id": "3A1502CC1FC841AE",
+      "x": 37.0,
+      "y": 3.5,
+      "shape": "rsquare",
+      "size": 2.0,
+      "preset": "el_milestone_computercraft",
+      "dependencies": [
+        "414CFDF761C93378"
+      ],
+      "tasks": [
+        {
+          "id": "0016BEF255F48AC3",
+          "type": "item",
+          "item": {
+            "id": "advancedperipherals:inventory_manager",
+            "count": 1
+          },
+          "count": 1,
+          "consume_items": false
+        },
+        {
+          "id": "1A7657E7ACD23617",
+          "type": "item",
+          "item": {
+            "id": "advancedperipherals:memory_card",
+            "count": 1
+          },
+          "count": 1,
+          "consume_items": false
+        }
+      ],
+      "rewards": [
+        {
+          "id": "1F3A0AC71AA66675",
+          "type": "xp",
+          "xp": 20
+        },
+        {
+          "id": "2C6856C38592E6E7",
+          "type": "choice",
+          "table_id": 1643889682
+        }
+      ],
+      "tags": [
+        "entrelumen_milestone"
+      ],
+      "icon": {
+        "id": "advancedperipherals:inventory_manager"
+      }
+    },
+    {
+      "id": "6175FBB4882E26D9",
+      "x": 41.6,
+      "y": 3.5,
+      "shape": "rsquare",
+      "size": 2.0,
+      "preset": "el_milestone_computercraft",
+      "dependencies": [
+        "3A1502CC1FC841AE"
+      ],
+      "tasks": [
+        {
+          "id": "35B9EF8F72B61D39",
+          "type": "item",
+          "item": {
+            "id": "advancedperipherals:me_bridge",
+            "count": 1
+          },
+          "count": 1,
+          "consume_items": false
+        }
+      ],
+      "rewards": [
+        {
+          "id": "2978B5C29FAD04FD",
+          "type": "xp",
+          "xp": 20
+        },
+        {
+          "id": "4E45632F929EBCFD",
+          "type": "choice",
+          "table_id": 1643889682
+        }
+      ],
+      "tags": [
+        "entrelumen_milestone"
+      ],
+      "icon": {
+        "id": "advancedperipherals:me_bridge"
+      }
+    },
+    {
+      "id": "79A737CFF8A73D1A",
+      "x": 46.2,
+      "y": 3.5,
+      "shape": "diamond",
+      "size": 1.0,
+      "preset": "el_side",
+      "dependencies": [
+        "6175FBB4882E26D9"
+      ],
+      "tasks": [
+        {
+          "id": "5F1500F1CA346B56",
+          "type": "item",
+          "item": {
+            "id": "advancedperipherals:cable_p2p_tunnel",
+            "count": 1
+          },
+          "count": 1,
+          "consume_items": false
+        }
+      ],
+      "rewards": [
+        {
+          "id": "5F472C402494E14A",
+          "type": "xp",
+          "xp": 10
+        }
+      ],
+      "tags": [
+        "entrelumen_side"
+      ],
+      "optional": true,
+      "icon": {
+        "id": "advancedperipherals:cable_p2p_tunnel"
+      }
+    },
+    {
+      "id": "2F50ACFE7F2FA7DB",
+      "x": 50.8,
+      "y": 3.5,
+      "shape": "diamond",
+      "size": 1.0,
+      "preset": "el_side",
+      "dependencies": [
+        "79A737CFF8A73D1A"
+      ],
+      "tasks": [
+        {
+          "id": "006A7277624D648C",
+          "type": "item",
+          "item": {
+            "id": "advancedperipherals:rs_bridge",
+            "count": 1
+          },
+          "count": 1,
+          "consume_items": false
+        }
+      ],
+      "rewards": [
+        {
+          "id": "3D7B7D0CA9D6B2E3",
+          "type": "xp",
+          "xp": 10
+        }
+      ],
+      "tags": [
+        "entrelumen_side"
+      ],
+      "optional": true,
+      "icon": {
+        "id": "advancedperipherals:rs_bridge"
+      },
+      "hide_until_deps_complete": true
+    },
+    {
+      "id": "0F08D912AA075E59",
+      "x": 37.0,
+      "y": 8.5,
+      "shape": "diamond",
+      "size": 1.0,
+      "preset": "el_side",
+      "dependencies": [
+        "414CFDF761C93378"
+      ],
+      "tasks": [
+        {
+          "id": "6B4B43049F6F5D1B",
+          "type": "item",
+          "item": {
+            "id": "advancedperipherals:player_detector",
+            "count": 1
+          },
+          "count": 1,
+          "consume_items": false
+        }
+      ],
+      "rewards": [
+        {
+          "id": "42A9EF4A1F1FE6E6",
+          "type": "xp",
+          "xp": 10
+        }
+      ],
+      "tags": [
+        "entrelumen_side"
+      ],
+      "optional": true,
+      "icon": {
+        "id": "advancedperipherals:player_detector"
+      }
+    },
+    {
+      "id": "7D9C86B3B5FBDB85",
+      "x": 41.6,
+      "y": 8.5,
+      "shape": "diamond",
+      "size": 1.0,
+      "preset": "el_side",
+      "dependencies": [
+        "0F08D912AA075E59"
+      ],
+      "tasks": [
+        {
+          "id": "6AFCCE6B5A3226ED",
+          "type": "item",
+          "item": {
+            "id": "advancedperipherals:environment_detector",
+            "count": 1
+          },
+          "count": 1,
+          "consume_items": false
+        }
+      ],
+      "rewards": [
+        {
+          "id": "67DC30A292D78F06",
+          "type": "xp",
+          "xp": 10
+        }
+      ],
+      "tags": [
+        "entrelumen_side"
+      ],
+      "optional": true,
+      "icon": {
+        "id": "advancedperipherals:environment_detector"
+      },
+      "hide_until_deps_complete": true
+    },
+    {
+      "id": "5593F591D54F36EF",
+      "x": 46.2,
+      "y": 8.5,
+      "shape": "diamond",
+      "size": 1.0,
+      "preset": "el_side",
+      "dependencies": [
+        "7D9C86B3B5FBDB85"
+      ],
+      "tasks": [
+        {
+          "id": "1405DA692F3C6A66",
+          "type": "item",
+          "item": {
+            "id": "advancedperipherals:geo_scanner",
+            "count": 1
+          },
+          "count": 1,
+          "consume_items": false
+        }
+      ],
+      "rewards": [
+        {
+          "id": "575094ED2DA5229B",
+          "type": "xp",
+          "xp": 10
+        }
+      ],
+      "tags": [
+        "entrelumen_side"
+      ],
+      "optional": true,
+      "icon": {
+        "id": "advancedperipherals:geo_scanner"
+      },
+      "hide_until_deps_complete": true
+    },
+    {
+      "id": "2F70810A9E6FF997",
+      "x": 50.8,
+      "y": 8.5,
+      "shape": "diamond",
+      "size": 1.0,
+      "preset": "el_side",
+      "dependencies": [
+        "5593F591D54F36EF"
+      ],
+      "tasks": [
+        {
+          "id": "276CB115C6D0BB8F",
+          "type": "item",
+          "item": {
+            "id": "advancedperipherals:distance_detector",
+            "count": 1
+          },
+          "count": 1,
+          "consume_items": false
+        }
+      ],
+      "rewards": [
+        {
+          "id": "4A787EB49A356BF2",
+          "type": "xp",
+          "xp": 10
+        }
+      ],
+      "tags": [
+        "entrelumen_side"
+      ],
+      "optional": true,
+      "icon": {
+        "id": "advancedperipherals:distance_detector"
+      },
+      "hide_until_deps_complete": true
+    },
+    {
+      "id": "42FF9E819BB49FA7",
+      "x": 55.4,
+      "y": 8.5,
+      "shape": "diamond",
+      "size": 1.0,
+      "preset": "el_side",
+      "dependencies": [
+        "2F70810A9E6FF997"
+      ],
+      "tasks": [
+        {
+          "id": "0B8A1D4F612C059F",
+          "type": "item",
+          "item": {
+            "id": "advancedperipherals:chat_box",
+            "count": 1
+          },
+          "count": 1,
+          "consume_items": false
+        }
+      ],
+      "rewards": [
+        {
+          "id": "0110157428265952",
+          "type": "xp",
+          "xp": 10
+        }
+      ],
+      "tags": [
+        "entrelumen_side"
+      ],
+      "optional": true,
+      "icon": {
+        "id": "advancedperipherals:chat_box"
+      },
+      "hide_until_deps_complete": true
+    },
+    {
+      "id": "09ED4BA5CB335EC2",
+      "x": 37.0,
+      "y": 13.5,
+      "shape": "diamond",
+      "size": 1.0,
+      "preset": "el_side",
+      "dependencies": [
+        "414CFDF761C93378"
+      ],
+      "tasks": [
+        {
+          "id": "133B2F7EBD0CEB8E",
+          "type": "item",
+          "item": {
+            "id": "advancedperipherals:block_reader",
+            "count": 1
+          },
+          "count": 1,
+          "consume_items": false
+        },
+        {
+          "id": "41D5A5F7E56032AC",
+          "type": "item",
+          "item": {
+            "id": "advancedperipherals:nbt_storage",
+            "count": 1
+          },
+          "count": 1,
+          "consume_items": false
+        }
+      ],
+      "rewards": [
+        {
+          "id": "0D0CA53ED1E0B262",
+          "type": "xp",
+          "xp": 10
+        }
+      ],
+      "tags": [
+        "entrelumen_side"
+      ],
+      "optional": true,
+      "icon": {
+        "id": "advancedperipherals:block_reader"
+      }
+    },
+    {
+      "id": "3F14DA18B7AEECE8",
+      "x": 41.6,
+      "y": 13.5,
+      "shape": "diamond",
+      "size": 1.0,
+      "preset": "el_side",
+      "dependencies": [
+        "09ED4BA5CB335EC2"
+      ],
+      "tasks": [
+        {
+          "id": "22EEB8509A8EBE6B",
+          "type": "item",
+          "item": {
+            "id": "advancedperipherals:energy_detector",
+            "count": 1
+          },
+          "count": 1,
+          "consume_items": false
+        },
+        {
+          "id": "5BCC84D7514697BD",
+          "type": "item",
+          "item": {
+            "id": "advancedperipherals:fluid_detector",
+            "count": 1
+          },
+          "count": 1,
+          "consume_items": false
+        },
+        {
+          "id": "4F6BC032CF150AC4",
+          "type": "item",
+          "item": {
+            "id": "advancedperipherals:gas_detector",
+            "count": 1
+          },
+          "count": 1,
+          "consume_items": false
+        }
+      ],
+      "rewards": [
+        {
+          "id": "3A5C0A4CDDF418AC",
+          "type": "xp",
+          "xp": 10
+        }
+      ],
+      "tags": [
+        "entrelumen_side"
+      ],
+      "optional": true,
+      "icon": {
+        "id": "advancedperipherals:energy_detector"
+      },
+      "hide_until_deps_complete": true
+    },
+    {
+      "id": "1023C310BE7F0791",
+      "x": 46.2,
+      "y": 13.5,
+      "shape": "diamond",
+      "size": 1.0,
+      "preset": "el_side",
+      "dependencies": [
+        "3F14DA18B7AEECE8"
+      ],
+      "tasks": [
+        {
+          "id": "4DF88DD62605642B",
+          "type": "item",
+          "item": {
+            "id": "advancedperipherals:smart_rail",
+            "count": 1
+          },
+          "count": 1,
+          "consume_items": false
+        }
+      ],
+      "rewards": [
+        {
+          "id": "533A615BD0D32016",
+          "type": "xp",
+          "xp": 10
+        }
+      ],
+      "tags": [
+        "entrelumen_side"
+      ],
+      "optional": true,
+      "icon": {
+        "id": "advancedperipherals:smart_rail"
+      },
+      "hide_until_deps_complete": true
+    },
+    {
+      "id": "1515E7A59AC855E8",
+      "x": 50.8,
+      "y": 13.5,
+      "shape": "el_tag",
+      "size": 1.0,
+      "preset": "el_tip",
+      "dependencies": [
+        "1023C310BE7F0791"
+      ],
+      "tasks": [
+        {
+          "id": "23FD9E586460645F",
+          "type": "checkmark"
+        }
+      ],
+      "rewards": [],
+      "tags": [
+        "entrelumen_tip"
+      ],
+      "optional": true,
+      "icon_scale": 0.75,
+      "disable_toast": true,
+      "hide_lock_icon": true
+    },
+    {
+      "id": "4F558C749AEB029C",
+      "x": 37.0,
+      "y": 18.5,
+      "shape": "rsquare",
+      "size": 2.0,
+      "preset": "el_milestone_computercraft",
+      "dependencies": [
+        "414CFDF761C93378"
+      ],
+      "tasks": [
+        {
+          "id": "6A19727984CFCE67",
+          "type": "item",
+          "item": {
+            "id": "advancedperipherals:weak_automata_core",
+            "count": 1
+          },
+          "count": 1,
+          "consume_items": false
+        }
+      ],
+      "rewards": [
+        {
+          "id": "19CB9BA98BC63237",
+          "type": "xp",
+          "xp": 20
+        },
+        {
+          "id": "2689A23C7F9A5059",
+          "type": "choice",
+          "table_id": 1643889682
+        }
+      ],
+      "tags": [
+        "entrelumen_milestone"
+      ],
+      "icon": {
+        "id": "advancedperipherals:weak_automata_core"
+      }
+    },
+    {
+      "id": "65017E3D205103AA",
+      "x": 41.6,
+      "y": 16.7,
+      "shape": "diamond",
+      "size": 1.0,
+      "preset": "el_side",
+      "dependencies": [
+        "4F558C749AEB029C"
+      ],
+      "tasks": [
+        {
+          "id": "2A574ACFF51C1985",
+          "type": "item",
+          "item": {
+            "id": "advancedperipherals:husbandry_automata_core",
+            "count": 1
+          },
+          "count": 1,
+          "consume_items": false
+        }
+      ],
+      "rewards": [
+        {
+          "id": "60815B217F3801D9",
+          "type": "xp",
+          "xp": 10
+        }
+      ],
+      "tags": [
+        "entrelumen_side"
+      ],
+      "optional": true,
+      "icon": {
+        "id": "advancedperipherals:husbandry_automata_core"
+      }
+    },
+    {
+      "id": "2A657B15B5ED7030",
+      "x": 41.6,
+      "y": 20.3,
+      "shape": "diamond",
+      "size": 1.0,
+      "preset": "el_side",
+      "dependencies": [
+        "4F558C749AEB029C"
+      ],
+      "tasks": [
+        {
+          "id": "3C3EF38DD39EA61B",
+          "type": "item",
+          "item": {
+            "id": "advancedperipherals:end_automata_core",
+            "count": 1
+          },
+          "count": 1,
+          "consume_items": false
+        }
+      ],
+      "rewards": [
+        {
+          "id": "5BC9011A35E285AA",
+          "type": "xp",
+          "xp": 10
+        }
+      ],
+      "tags": [
+        "entrelumen_side"
+      ],
+      "optional": true,
+      "icon": {
+        "id": "advancedperipherals:end_automata_core"
+      }
+    },
+    {
+      "id": "0B9CD358F1BE9771",
+      "x": 46.2,
+      "y": 18.5,
+      "shape": "diamond",
+      "size": 1.0,
+      "preset": "el_side",
+      "dependencies": [
+        "65017E3D205103AA",
+        "2A657B15B5ED7030"
+      ],
+      "tasks": [
+        {
+          "id": "19EFC0B6161F9B60",
+          "type": "item",
+          "item": {
+            "id": "ftbfiltersystem:smart_filter",
+            "count": 1,
+            "components": {
+              "ftbfiltersystem:filter": "or(item(advancedperipherals:overpowered_weak_automata_core)item(advancedperipherals:overpowered_husbandry_automata_core)item(advancedperipherals:overpowered_end_automata_core))"
+            }
+          },
+          "count": 1,
+          "consume_items": false,
+          "icon": {
+            "id": "advancedperipherals:overpowered_weak_automata_core"
+          }
+        }
+      ],
+      "rewards": [
+        {
+          "id": "0B43100CA87A5592",
+          "type": "xp",
+          "xp": 10
+        }
+      ],
+      "tags": [
+        "entrelumen_side"
+      ],
+      "optional": true,
+      "icon": {
+        "id": "advancedperipherals:overpowered_weak_automata_core"
+      },
+      "hide_until_deps_complete": true
+    },
+    {
+      "id": "2BF1815D505C9636",
+      "x": 50.8,
+      "y": 18.5,
+      "shape": "el_tag",
+      "size": 1.0,
+      "preset": "el_tip",
+      "dependencies": [
+        "0B9CD358F1BE9771"
+      ],
+      "tasks": [
+        {
+          "id": "5839F6BC3FFF5682",
+          "type": "checkmark"
+        }
+      ],
+      "rewards": [],
+      "tags": [
+        "entrelumen_tip"
+      ],
+      "optional": true,
+      "icon_scale": 0.75,
+      "disable_toast": true,
+      "hide_lock_icon": true
+    },
+    {
+      "id": "4912036DA803D1D0",
+      "x": 37.0,
+      "y": 23.5,
+      "shape": "rsquare",
+      "size": 2.0,
+      "preset": "el_milestone_computercraft",
+      "dependencies": [
+        "414CFDF761C93378"
+      ],
+      "tasks": [
+        {
+          "id": "6F1D0050898B497A",
+          "type": "item",
+          "item": {
+            "id": "advancedperipherals:smart_glasses",
+            "count": 1
+          },
+          "count": 1,
+          "consume_items": false
+        },
+        {
+          "id": "763253927A9150AD",
+          "type": "item",
+          "item": {
+            "id": "advancedperipherals:smart_glasses_interface",
+            "count": 1
+          },
+          "count": 1,
+          "consume_items": false
+        }
+      ],
+      "rewards": [
+        {
+          "id": "4C2D0D81456D931B",
+          "type": "xp",
+          "xp": 20
+        },
+        {
+          "id": "624D86627547695D",
+          "type": "choice",
+          "table_id": 1643889682
+        }
+      ],
+      "tags": [
+        "entrelumen_milestone"
+      ],
+      "icon": {
+        "id": "advancedperipherals:smart_glasses"
+      }
+    },
+    {
+      "id": "267F8BAFF7FD7EA1",
+      "x": 41.6,
+      "y": 23.5,
+      "shape": "diamond",
+      "size": 1.0,
+      "preset": "el_side",
+      "dependencies": [
+        "4912036DA803D1D0"
+      ],
+      "tasks": [
+        {
+          "id": "44A1C59B1E5E044B",
+          "type": "item",
+          "item": {
+            "id": "advancedperipherals:overlay_module",
+            "count": 1
+          },
+          "count": 1,
+          "consume_items": false
+        },
+        {
+          "id": "0CB71E5D358842CC",
+          "type": "item",
+          "item": {
+            "id": "advancedperipherals:nightvision_module",
+            "count": 1
+          },
+          "count": 1,
+          "consume_items": false
+        },
+        {
+          "id": "60784C6C47AA6A52",
+          "type": "item",
+          "item": {
+            "id": "advancedperipherals:hotkey_module",
+            "count": 1
+          },
+          "count": 1,
+          "consume_items": false
+        }
+      ],
+      "rewards": [
+        {
+          "id": "2BD1FA2A247804D1",
+          "type": "xp",
+          "xp": 10
+        }
+      ],
+      "tags": [
+        "entrelumen_side"
+      ],
+      "optional": true,
+      "icon": {
+        "id": "advancedperipherals:overlay_module"
+      }
+    },
+    {
+      "id": "66AF60160D119A98",
+      "x": 46.2,
+      "y": 23.5,
+      "shape": "diamond",
+      "size": 1.0,
+      "preset": "el_side",
+      "dependencies": [
+        "267F8BAFF7FD7EA1"
+      ],
+      "tasks": [
+        {
+          "id": "163D71C4DB6F6851",
+          "type": "item",
+          "item": {
+            "id": "advancedperipherals:keyboard",
+            "count": 1
+          },
+          "count": 1,
+          "consume_items": false
+        }
+      ],
+      "rewards": [
+        {
+          "id": "3D326EAE232E1069",
+          "type": "xp",
+          "xp": 10
+        }
+      ],
+      "tags": [
+        "entrelumen_side"
+      ],
+      "optional": true,
+      "icon": {
+        "id": "advancedperipherals:keyboard"
+      },
+      "hide_until_deps_complete": true
     }
   ],
   "quest_links": [
@@ -5949,6 +7313,1944 @@
       "order": 6,
       "text_h_align": "start",
       "position_locked": true
+    },
+    {
+      "id": "7B374D5B6D0CCD11",
+      "x": -23.5,
+      "y": -13.6,
+      "width": 17.2293,
+      "height": 0.0417,
+      "rotation": 0.0,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "color": 15260853,
+      "alpha": 70,
+      "order": -10,
+      "position_locked": true
+    },
+    {
+      "id": "369954EC032218B8",
+      "x": -16.4,
+      "y": -4.3,
+      "width": 22.568,
+      "height": 0.0417,
+      "rotation": 90.0,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "color": 15260853,
+      "alpha": 70,
+      "order": -10,
+      "position_locked": true
+    },
+    {
+      "id": "502935AAC04457AF",
+      "x": -23.5,
+      "y": 5.0,
+      "width": 17.2293,
+      "height": 0.0417,
+      "rotation": 180.0,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "color": 15260853,
+      "alpha": 70,
+      "order": -10,
+      "position_locked": true
+    },
+    {
+      "id": "7BF959781177F858",
+      "x": -30.6,
+      "y": -4.3,
+      "width": 22.568,
+      "height": 0.0417,
+      "rotation": -90.0,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "color": 15260853,
+      "alpha": 70,
+      "order": -10,
+      "position_locked": true
+    },
+    {
+      "id": "388D862347D5DC69",
+      "x": -23.5,
+      "y": -4.3,
+      "width": 16.5667,
+      "height": 21.7,
+      "rotation": 0.0,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "order": -10,
+      "position_locked": true,
+      "dependency": "545A5C6DEA9489D3",
+      "alpha": 170,
+      "color": 726540
+    },
+    {
+      "id": "588FB40A5D629819",
+      "x": -23.5,
+      "y": -13.6,
+      "width": 17.2293,
+      "height": 0.0417,
+      "rotation": 0.0,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "color": 6266970,
+      "alpha": 190,
+      "order": -9,
+      "position_locked": true,
+      "dependency": "545A5C6DEA9489D3"
+    },
+    {
+      "id": "5D727DC7F34D1149",
+      "x": -16.4,
+      "y": -4.3,
+      "width": 22.568,
+      "height": 0.0417,
+      "rotation": 90.0,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "color": 6266970,
+      "alpha": 190,
+      "order": -9,
+      "position_locked": true,
+      "dependency": "545A5C6DEA9489D3"
+    },
+    {
+      "id": "7E8771CFC4C06D5E",
+      "x": -23.5,
+      "y": 5.0,
+      "width": 17.2293,
+      "height": 0.0417,
+      "rotation": 180.0,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "color": 6266970,
+      "alpha": 190,
+      "order": -9,
+      "position_locked": true,
+      "dependency": "545A5C6DEA9489D3"
+    },
+    {
+      "id": "4F3C7745193339C2",
+      "x": -30.6,
+      "y": -4.3,
+      "width": 22.568,
+      "height": 0.0417,
+      "rotation": -90.0,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "color": 6266970,
+      "alpha": 190,
+      "order": -9,
+      "position_locked": true,
+      "dependency": "545A5C6DEA9489D3"
+    },
+    {
+      "id": "385B7BEE850EEDAF",
+      "x": -28.6607,
+      "y": -12.9,
+      "width": 3.125,
+      "height": 0.5625,
+      "rotation": 0.0,
+      "image": "",
+      "text_on_image": true,
+      "text_shadow": true,
+      "order": 6,
+      "text_h_align": "start",
+      "position_locked": true
+    },
+    {
+      "id": "219C27FE1CFB927D",
+      "x": -25.75,
+      "y": -11.0,
+      "width": 5.46,
+      "height": 0.0933,
+      "rotation": 0.0,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "order": -6,
+      "position_locked": true,
+      "alpha": 64,
+      "color": 15260853
+    },
+    {
+      "id": "3DE3C3E8A77D8179",
+      "x": -21.25,
+      "y": -11.0,
+      "width": 5.46,
+      "height": 0.0933,
+      "rotation": 0.0,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "order": -6,
+      "position_locked": true,
+      "alpha": 64,
+      "color": 15260853
+    },
+    {
+      "id": "3B7013DD69873EAA",
+      "x": -25.75,
+      "y": -11.0,
+      "width": 5.46,
+      "height": 0.2333,
+      "rotation": 0.0,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "order": -5,
+      "position_locked": true,
+      "alpha": 255,
+      "dependency": "7705F996A4275960",
+      "color": 14169130
+    },
+    {
+      "id": "420F43F9397E8343",
+      "x": -21.25,
+      "y": -11.0,
+      "width": 5.46,
+      "height": 0.2333,
+      "rotation": 0.0,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "order": -5,
+      "position_locked": true,
+      "alpha": 255,
+      "dependency": "228908574EB660E2",
+      "color": 14169130
+    },
+    {
+      "id": "61FE7216574DA2C7",
+      "x": -28.0,
+      "y": -8.75,
+      "width": 5.46,
+      "height": 0.0933,
+      "rotation": 90.0,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "order": -6,
+      "position_locked": true,
+      "alpha": 64,
+      "color": 15260853
+    },
+    {
+      "id": "502C07E813A71314",
+      "x": -28.0,
+      "y": -4.25,
+      "width": 5.46,
+      "height": 0.0933,
+      "rotation": 90.0,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "order": -6,
+      "position_locked": true,
+      "alpha": 64,
+      "color": 15260853
+    },
+    {
+      "id": "415874929F600A5C",
+      "x": -28.0,
+      "y": -8.75,
+      "width": 5.46,
+      "height": 0.2333,
+      "rotation": 90.0,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "order": -5,
+      "position_locked": true,
+      "alpha": 255,
+      "dependency": "76EBDE04A6D8011A",
+      "color": 14169130
+    },
+    {
+      "id": "3B915E85198E7211",
+      "x": -28.0,
+      "y": -4.25,
+      "width": 5.46,
+      "height": 0.2333,
+      "rotation": 90.0,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "order": -5,
+      "position_locked": true,
+      "alpha": 255,
+      "dependency": "78F66A085673BA3A",
+      "color": 14169130
+    },
+    {
+      "id": "3D3D1F1381DA8288",
+      "x": -25.75,
+      "y": -6.5,
+      "width": 5.46,
+      "height": 0.0933,
+      "rotation": 0.0,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "order": -6,
+      "position_locked": true,
+      "alpha": 64,
+      "color": 15260853
+    },
+    {
+      "id": "30C3EE165FF32F62",
+      "x": -23.5,
+      "y": -4.25,
+      "width": 5.46,
+      "height": 0.0933,
+      "rotation": 90.0,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "order": -6,
+      "position_locked": true,
+      "alpha": 64,
+      "color": 15260853
+    },
+    {
+      "id": "76035C358696AD6A",
+      "x": -25.75,
+      "y": -6.5,
+      "width": 5.46,
+      "height": 0.2333,
+      "rotation": 0.0,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "order": -5,
+      "position_locked": true,
+      "alpha": 255,
+      "dependency": "25ECE1B6A496B673",
+      "color": 15254586
+    },
+    {
+      "id": "0C6FBD88A369FFA8",
+      "x": -23.5,
+      "y": -4.25,
+      "width": 5.46,
+      "height": 0.2333,
+      "rotation": 90.0,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "order": -5,
+      "position_locked": true,
+      "alpha": 255,
+      "dependency": "6C5A66C4B14A0997",
+      "color": 15254586
+    },
+    {
+      "id": "0181D2AAE07B15DE",
+      "x": -19.0,
+      "y": -8.75,
+      "width": 5.46,
+      "height": 0.0933,
+      "rotation": 90.0,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "order": -6,
+      "position_locked": true,
+      "alpha": 64,
+      "color": 15260853
+    },
+    {
+      "id": "5B2599532042EF51",
+      "x": -19.0,
+      "y": -8.75,
+      "width": 5.46,
+      "height": 0.2333,
+      "rotation": 90.0,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "order": -5,
+      "position_locked": true,
+      "alpha": 255,
+      "dependency": "0F4FFC57F9930986",
+      "color": 14169130
+    },
+    {
+      "id": "278ED1F00A105224",
+      "x": -19.3,
+      "y": -4.25,
+      "width": 5.46,
+      "height": 0.105,
+      "rotation": 90.0,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "order": -4,
+      "position_locked": true,
+      "alpha": 255,
+      "dependency": "11230792A171DDB7",
+      "color": 14697786
+    },
+    {
+      "id": "5D28551E6C94BA6A",
+      "x": -19.3,
+      "y": 0.25,
+      "width": 5.46,
+      "height": 0.105,
+      "rotation": 90.0,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "order": -4,
+      "position_locked": true,
+      "alpha": 255,
+      "dependency": "77AA659F22232B4D",
+      "color": 14697786
+    },
+    {
+      "id": "0AF35426B21CFEC1",
+      "x": -19.1,
+      "y": -4.25,
+      "width": 5.46,
+      "height": 0.105,
+      "rotation": 90.0,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "order": -4,
+      "position_locked": true,
+      "alpha": 255,
+      "dependency": "11230792A171DDB7",
+      "color": 3832800
+    },
+    {
+      "id": "3D2F4ADCD8C33EE3",
+      "x": -19.1,
+      "y": 0.25,
+      "width": 5.46,
+      "height": 0.105,
+      "rotation": 90.0,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "order": -4,
+      "position_locked": true,
+      "alpha": 255,
+      "dependency": "77AA659F22232B4D",
+      "color": 3832800
+    },
+    {
+      "id": "29D4F4D994876777",
+      "x": -18.9,
+      "y": -4.25,
+      "width": 5.46,
+      "height": 0.105,
+      "rotation": 90.0,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "order": -4,
+      "position_locked": true,
+      "alpha": 255,
+      "dependency": "11230792A171DDB7",
+      "color": 4177754
+    },
+    {
+      "id": "038EDC35486110F9",
+      "x": -18.9,
+      "y": 0.25,
+      "width": 5.46,
+      "height": 0.105,
+      "rotation": 90.0,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "order": -4,
+      "position_locked": true,
+      "alpha": 255,
+      "dependency": "77AA659F22232B4D",
+      "color": 4177754
+    },
+    {
+      "id": "74BE807B5A495563",
+      "x": -18.7,
+      "y": -4.25,
+      "width": 5.46,
+      "height": 0.105,
+      "rotation": 90.0,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "order": -4,
+      "position_locked": true,
+      "alpha": 255,
+      "dependency": "11230792A171DDB7",
+      "color": 15254586
+    },
+    {
+      "id": "5E78F5EB0C47D39C",
+      "x": -18.7,
+      "y": 0.25,
+      "width": 5.46,
+      "height": 0.105,
+      "rotation": 90.0,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "order": -4,
+      "position_locked": true,
+      "alpha": 255,
+      "dependency": "77AA659F22232B4D",
+      "color": 15254586
+    },
+    {
+      "id": "0044919073C947D3",
+      "x": -19.0,
+      "y": 2.5,
+      "width": 6.0667,
+      "height": 6.0667,
+      "rotation": 0.0,
+      "image": "minecraft:textures/particle/flash.png",
+      "order": -8,
+      "position_locked": true,
+      "dependency": "77AA659F22232B4D",
+      "alpha": 100,
+      "color": 14605932
+    },
+    {
+      "id": "00EDE4AF4AA403EC",
+      "x": -26.2,
+      "y": -11.0,
+      "width": 1.5167,
+      "height": 1.5167,
+      "rotation": 0.0,
+      "image": "item:morered:red_alloy_ingot",
+      "order": -3,
+      "position_locked": true,
+      "dependency": "545A5C6DEA9489D3"
+    },
+    {
+      "id": "5A4A0ADEEE45A357",
+      "x": -21.7,
+      "y": -11.0,
+      "width": 1.5167,
+      "height": 1.5167,
+      "rotation": 0.0,
+      "image": "item:morered:red_alloy_wire",
+      "order": -3,
+      "position_locked": true,
+      "dependency": "7705F996A4275960"
+    },
+    {
+      "id": "35B09A625F7EA435",
+      "x": -17.3,
+      "y": -11.0,
+      "width": 1.5167,
+      "height": 1.5167,
+      "rotation": 0.0,
+      "image": "item:morered:red_network_cable",
+      "order": -3,
+      "position_locked": true,
+      "dependency": "228908574EB660E2"
+    },
+    {
+      "id": "0E6232EE3E0B0A6A",
+      "x": -26.2,
+      "y": -6.5,
+      "width": 1.8667,
+      "height": 1.8667,
+      "rotation": 0.0,
+      "image": "item:morered:soldering_table",
+      "order": -3,
+      "position_locked": true,
+      "dependency": "76EBDE04A6D8011A"
+    },
+    {
+      "id": "4FAD5840713D3290",
+      "x": -21.7,
+      "y": -6.5,
+      "width": 1.6333,
+      "height": 1.6333,
+      "rotation": 0.0,
+      "image": "item:morered:and_gate",
+      "order": -3,
+      "position_locked": true,
+      "dependency": "25ECE1B6A496B673"
+    },
+    {
+      "id": "4576346F76BEC0D1",
+      "x": -17.3,
+      "y": -6.5,
+      "width": 1.5167,
+      "height": 1.5167,
+      "rotation": 0.0,
+      "image": "item:morered:bundled_network_cable",
+      "order": -3,
+      "position_locked": true,
+      "dependency": "0F4FFC57F9930986"
+    },
+    {
+      "id": "6CB7ED8CD55E6F9F",
+      "x": -26.2,
+      "y": -2.0,
+      "width": 1.6333,
+      "height": 1.6333,
+      "rotation": 0.0,
+      "image": "item:morered:redwire_post",
+      "order": -3,
+      "position_locked": true,
+      "dependency": "78F66A085673BA3A"
+    },
+    {
+      "id": "633B492033040C73",
+      "x": -21.7,
+      "y": -2.0,
+      "width": 1.6333,
+      "height": 1.6333,
+      "rotation": 0.0,
+      "image": "item:morered:latch",
+      "order": -3,
+      "position_locked": true,
+      "dependency": "6C5A66C4B14A0997"
+    },
+    {
+      "id": "19E89F0C6800DD6E",
+      "x": -17.3,
+      "y": -2.0,
+      "width": 1.6333,
+      "height": 1.6333,
+      "rotation": 0.0,
+      "image": "item:morered:hexidecrubrometer",
+      "order": -3,
+      "position_locked": true,
+      "dependency": "11230792A171DDB7"
+    },
+    {
+      "id": "0A94F098BB637B04",
+      "x": -17.3,
+      "y": 2.5,
+      "width": 1.75,
+      "height": 1.75,
+      "rotation": 0.0,
+      "image": "item:computercraft:computer_normal",
+      "order": -3,
+      "position_locked": true,
+      "dependency": "77AA659F22232B4D"
+    },
+    {
+      "id": "2E0F9638EE89A7D8",
+      "x": 46.8,
+      "y": -1.6,
+      "width": 36.8853,
+      "height": 0.0417,
+      "rotation": 0.0,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "color": 15260853,
+      "alpha": 70,
+      "order": -10,
+      "position_locked": true
+    },
+    {
+      "id": "2738BFD50D812843",
+      "x": 62.0,
+      "y": 12.8,
+      "width": 34.944,
+      "height": 0.0417,
+      "rotation": 90.0,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "color": 15260853,
+      "alpha": 70,
+      "order": -10,
+      "position_locked": true
+    },
+    {
+      "id": "0456C60A8A799AD9",
+      "x": 46.8,
+      "y": 27.2,
+      "width": 36.8853,
+      "height": 0.0417,
+      "rotation": 180.0,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "color": 15260853,
+      "alpha": 70,
+      "order": -10,
+      "position_locked": true
+    },
+    {
+      "id": "0B61ECFB4B430E61",
+      "x": 31.6,
+      "y": 12.8,
+      "width": 34.944,
+      "height": 0.0417,
+      "rotation": -90.0,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "color": 15260853,
+      "alpha": 70,
+      "order": -10,
+      "position_locked": true
+    },
+    {
+      "id": "6FB12830E1C5E942",
+      "x": 46.8,
+      "y": 12.8,
+      "width": 35.4667,
+      "height": 33.6,
+      "rotation": 0.0,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "order": -10,
+      "position_locked": true,
+      "dependency": "414CFDF761C93378",
+      "alpha": 150,
+      "color": 1447432
+    },
+    {
+      "id": "03438BBF8429AAA0",
+      "x": 46.8,
+      "y": -1.6,
+      "width": 36.8853,
+      "height": 0.0417,
+      "rotation": 0.0,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "color": 13092974,
+      "alpha": 160,
+      "order": -9,
+      "position_locked": true,
+      "dependency": "414CFDF761C93378"
+    },
+    {
+      "id": "019ACA7726AEB4D0",
+      "x": 62.0,
+      "y": 12.8,
+      "width": 34.944,
+      "height": 0.0417,
+      "rotation": 90.0,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "color": 13092974,
+      "alpha": 160,
+      "order": -9,
+      "position_locked": true,
+      "dependency": "414CFDF761C93378"
+    },
+    {
+      "id": "7D34B1F5A086B297",
+      "x": 46.8,
+      "y": 27.2,
+      "width": 36.8853,
+      "height": 0.0417,
+      "rotation": 180.0,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "color": 13092974,
+      "alpha": 160,
+      "order": -9,
+      "position_locked": true,
+      "dependency": "414CFDF761C93378"
+    },
+    {
+      "id": "2135EAAE493301FB",
+      "x": 31.6,
+      "y": 12.8,
+      "width": 34.944,
+      "height": 0.0417,
+      "rotation": -90.0,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "color": 13092974,
+      "alpha": 160,
+      "order": -9,
+      "position_locked": true,
+      "dependency": "414CFDF761C93378"
+    },
+    {
+      "id": "6264A798F98F12AB",
+      "x": 36.4714,
+      "y": -0.2,
+      "width": 9.5,
+      "height": 0.75,
+      "rotation": 0.0,
+      "image": "",
+      "text_on_image": true,
+      "text_shadow": true,
+      "order": 6,
+      "text_h_align": "start",
+      "position_locked": true
+    },
+    {
+      "id": "22E55DBD9EE1D5D4",
+      "x": 54.8732,
+      "y": 3.5,
+      "width": 3.4375,
+      "height": 0.5625,
+      "rotation": 0.0,
+      "image": "",
+      "text_on_image": true,
+      "text_shadow": true,
+      "order": 6,
+      "text_h_align": "start",
+      "position_locked": true,
+      "dependency": "3A1502CC1FC841AE"
+    },
+    {
+      "id": "4E3D2E5001A886A5",
+      "x": 59.2321,
+      "y": 8.5,
+      "width": 2.875,
+      "height": 0.5625,
+      "rotation": 0.0,
+      "image": "",
+      "text_on_image": true,
+      "text_shadow": true,
+      "order": 6,
+      "text_h_align": "start",
+      "position_locked": true,
+      "dependency": "0F08D912AA075E59"
+    },
+    {
+      "id": "450435AEFCD8CE5E",
+      "x": 54.7393,
+      "y": 13.5,
+      "width": 3.125,
+      "height": 0.5625,
+      "rotation": 0.0,
+      "image": "",
+      "text_on_image": true,
+      "text_shadow": true,
+      "order": 6,
+      "text_h_align": "start",
+      "position_locked": true,
+      "dependency": "09ED4BA5CB335EC2"
+    },
+    {
+      "id": "623992429EB506E5",
+      "x": 54.2304,
+      "y": 18.5,
+      "width": 1.9375,
+      "height": 0.5625,
+      "rotation": 0.0,
+      "image": "",
+      "text_on_image": true,
+      "text_shadow": true,
+      "order": 6,
+      "text_h_align": "start",
+      "position_locked": true,
+      "dependency": "4F558C749AEB029C"
+    },
+    {
+      "id": "77D0D3E8D55C9C5C",
+      "x": 50.1518,
+      "y": 23.5,
+      "width": 2.6875,
+      "height": 0.5625,
+      "rotation": 0.0,
+      "image": "",
+      "text_on_image": true,
+      "text_shadow": true,
+      "order": 6,
+      "text_h_align": "start",
+      "position_locked": true,
+      "dependency": "4912036DA803D1D0"
+    },
+    {
+      "id": "41E177FD585159CF",
+      "x": 33.0,
+      "y": 13.5,
+      "width": 7.0,
+      "height": 7.0,
+      "rotation": 0.0,
+      "image": "minecraft:textures/particle/flash.png",
+      "order": -8,
+      "position_locked": true,
+      "dependency": "414CFDF761C93378",
+      "alpha": 100,
+      "color": 14605932
+    },
+    {
+      "id": "43753B1CC9B7EECB",
+      "x": 35.0,
+      "y": 8.5,
+      "width": 13.068,
+      "height": 0.0933,
+      "rotation": -68.1986,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "order": -7,
+      "position_locked": true,
+      "alpha": 70,
+      "color": 15260853
+    },
+    {
+      "id": "24AEF945DA72017F",
+      "x": 35.0,
+      "y": 8.5,
+      "width": 13.068,
+      "height": 0.35,
+      "rotation": -68.1986,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "order": -6,
+      "position_locked": true,
+      "dependency": "3A1502CC1FC841AE",
+      "color": 5197647,
+      "alpha": 255
+    },
+    {
+      "id": "5958BB0C32E727A6",
+      "x": 35.0,
+      "y": 8.5,
+      "width": 13.068,
+      "height": 0.105,
+      "rotation": -68.1986,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "order": -5,
+      "position_locked": true,
+      "dependency": "3A1502CC1FC841AE",
+      "color": 9408399,
+      "alpha": 255
+    },
+    {
+      "id": "26A115F1D671F583",
+      "x": 35.0,
+      "y": 11.0,
+      "width": 7.7691,
+      "height": 0.0933,
+      "rotation": -51.3402,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "order": -7,
+      "position_locked": true,
+      "alpha": 70,
+      "color": 15260853
+    },
+    {
+      "id": "1B9EC67A3F123289",
+      "x": 35.0,
+      "y": 11.0,
+      "width": 7.7691,
+      "height": 0.35,
+      "rotation": -51.3402,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "order": -6,
+      "position_locked": true,
+      "dependency": "0F08D912AA075E59",
+      "color": 5197647,
+      "alpha": 255
+    },
+    {
+      "id": "52FF0848E143D18B",
+      "x": 35.0,
+      "y": 11.0,
+      "width": 7.7691,
+      "height": 0.105,
+      "rotation": -51.3402,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "order": -5,
+      "position_locked": true,
+      "dependency": "0F08D912AA075E59",
+      "color": 9408399,
+      "alpha": 255
+    },
+    {
+      "id": "28A9BCA03A38053B",
+      "x": 35.0,
+      "y": 13.5,
+      "width": 4.8533,
+      "height": 0.0933,
+      "rotation": 0.0,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "order": -7,
+      "position_locked": true,
+      "alpha": 70,
+      "color": 15260853
+    },
+    {
+      "id": "28271F885285E321",
+      "x": 35.0,
+      "y": 13.5,
+      "width": 4.8533,
+      "height": 0.35,
+      "rotation": 0.0,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "order": -6,
+      "position_locked": true,
+      "dependency": "09ED4BA5CB335EC2",
+      "color": 5197647,
+      "alpha": 255
+    },
+    {
+      "id": "3F799FE245850D43",
+      "x": 35.0,
+      "y": 13.5,
+      "width": 4.8533,
+      "height": 0.105,
+      "rotation": 0.0,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "order": -5,
+      "position_locked": true,
+      "dependency": "09ED4BA5CB335EC2",
+      "color": 9408399,
+      "alpha": 255
+    },
+    {
+      "id": "5A3B9FEE3C7EC7BB",
+      "x": 35.0,
+      "y": 16.0,
+      "width": 7.7691,
+      "height": 0.0933,
+      "rotation": 51.3402,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "order": -7,
+      "position_locked": true,
+      "alpha": 70,
+      "color": 15260853
+    },
+    {
+      "id": "58E089B22D1CACCB",
+      "x": 35.0,
+      "y": 16.0,
+      "width": 7.7691,
+      "height": 0.35,
+      "rotation": 51.3402,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "order": -6,
+      "position_locked": true,
+      "dependency": "4F558C749AEB029C",
+      "color": 5197647,
+      "alpha": 255
+    },
+    {
+      "id": "2220532E3587E1AF",
+      "x": 35.0,
+      "y": 16.0,
+      "width": 7.7691,
+      "height": 0.105,
+      "rotation": 51.3402,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "order": -5,
+      "position_locked": true,
+      "dependency": "4F558C749AEB029C",
+      "color": 9408399,
+      "alpha": 255
+    },
+    {
+      "id": "49B7174500EA77CB",
+      "x": 35.0,
+      "y": 18.5,
+      "width": 13.068,
+      "height": 0.0933,
+      "rotation": 68.1986,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "order": -7,
+      "position_locked": true,
+      "alpha": 70,
+      "color": 15260853
+    },
+    {
+      "id": "37B7D87DC53EFB2C",
+      "x": 35.0,
+      "y": 18.5,
+      "width": 13.068,
+      "height": 0.35,
+      "rotation": 68.1986,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "order": -6,
+      "position_locked": true,
+      "dependency": "4912036DA803D1D0",
+      "color": 5197647,
+      "alpha": 255
+    },
+    {
+      "id": "0EA189BD48E8C238",
+      "x": 35.0,
+      "y": 18.5,
+      "width": 13.068,
+      "height": 0.105,
+      "rotation": 68.1986,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "order": -5,
+      "position_locked": true,
+      "dependency": "4912036DA803D1D0",
+      "color": 9408399,
+      "alpha": 255
+    },
+    {
+      "id": "4D0B563ADF68A747",
+      "x": 39.3,
+      "y": 3.5,
+      "width": 5.5813,
+      "height": 0.0933,
+      "rotation": 0.0,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "order": -7,
+      "position_locked": true,
+      "alpha": 70,
+      "color": 15260853
+    },
+    {
+      "id": "6A62D6D12581BEFC",
+      "x": 43.9,
+      "y": 3.5,
+      "width": 5.5813,
+      "height": 0.0933,
+      "rotation": 0.0,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "order": -7,
+      "position_locked": true,
+      "alpha": 70,
+      "color": 15260853
+    },
+    {
+      "id": "667DD72C9A109F52",
+      "x": 48.5,
+      "y": 3.5,
+      "width": 5.5813,
+      "height": 0.0933,
+      "rotation": 0.0,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "order": -7,
+      "position_locked": true,
+      "alpha": 70,
+      "color": 15260853
+    },
+    {
+      "id": "3F1AF9F3889C490C",
+      "x": 39.3,
+      "y": 3.5,
+      "width": 5.5813,
+      "height": 0.35,
+      "rotation": 0.0,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "order": -6,
+      "position_locked": true,
+      "dependency": "6175FBB4882E26D9",
+      "color": 5197647,
+      "alpha": 255
+    },
+    {
+      "id": "70792A04284813C6",
+      "x": 43.9,
+      "y": 3.5,
+      "width": 5.5813,
+      "height": 0.35,
+      "rotation": 0.0,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "order": -6,
+      "position_locked": true,
+      "dependency": "79A737CFF8A73D1A",
+      "color": 5197647,
+      "alpha": 255
+    },
+    {
+      "id": "0EEBE736504CC6BE",
+      "x": 48.5,
+      "y": 3.5,
+      "width": 5.5813,
+      "height": 0.35,
+      "rotation": 0.0,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "order": -6,
+      "position_locked": true,
+      "dependency": "2F50ACFE7F2FA7DB",
+      "color": 5197647,
+      "alpha": 255
+    },
+    {
+      "id": "2E6614643B0BE2D9",
+      "x": 39.3,
+      "y": 3.5,
+      "width": 5.5813,
+      "height": 0.105,
+      "rotation": 0.0,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "order": -5,
+      "position_locked": true,
+      "dependency": "6175FBB4882E26D9",
+      "color": 9408399,
+      "alpha": 255
+    },
+    {
+      "id": "573F8F729EAA079C",
+      "x": 43.9,
+      "y": 3.5,
+      "width": 5.5813,
+      "height": 0.105,
+      "rotation": 0.0,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "order": -5,
+      "position_locked": true,
+      "dependency": "79A737CFF8A73D1A",
+      "color": 9408399,
+      "alpha": 255
+    },
+    {
+      "id": "0981C9E1BFD765E0",
+      "x": 48.5,
+      "y": 3.5,
+      "width": 5.5813,
+      "height": 0.105,
+      "rotation": 0.0,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "order": -5,
+      "position_locked": true,
+      "dependency": "2F50ACFE7F2FA7DB",
+      "color": 9408399,
+      "alpha": 255
+    },
+    {
+      "id": "5E9D2F12EE2C93A0",
+      "x": 39.3,
+      "y": 8.5,
+      "width": 5.5813,
+      "height": 0.0933,
+      "rotation": 0.0,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "order": -7,
+      "position_locked": true,
+      "alpha": 70,
+      "color": 15260853
+    },
+    {
+      "id": "3B0F607400BCF174",
+      "x": 43.9,
+      "y": 8.5,
+      "width": 5.5813,
+      "height": 0.0933,
+      "rotation": 0.0,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "order": -7,
+      "position_locked": true,
+      "alpha": 70,
+      "color": 15260853
+    },
+    {
+      "id": "7DF24BAE7069D220",
+      "x": 48.5,
+      "y": 8.5,
+      "width": 5.5813,
+      "height": 0.0933,
+      "rotation": 0.0,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "order": -7,
+      "position_locked": true,
+      "alpha": 70,
+      "color": 15260853
+    },
+    {
+      "id": "798C866002D4B803",
+      "x": 53.1,
+      "y": 8.5,
+      "width": 5.5813,
+      "height": 0.0933,
+      "rotation": 0.0,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "order": -7,
+      "position_locked": true,
+      "alpha": 70,
+      "color": 15260853
+    },
+    {
+      "id": "15533B66E57C448C",
+      "x": 39.3,
+      "y": 8.5,
+      "width": 5.5813,
+      "height": 0.35,
+      "rotation": 0.0,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "order": -6,
+      "position_locked": true,
+      "dependency": "7D9C86B3B5FBDB85",
+      "color": 5197647,
+      "alpha": 255
+    },
+    {
+      "id": "65056EA474959E47",
+      "x": 43.9,
+      "y": 8.5,
+      "width": 5.5813,
+      "height": 0.35,
+      "rotation": 0.0,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "order": -6,
+      "position_locked": true,
+      "dependency": "5593F591D54F36EF",
+      "color": 5197647,
+      "alpha": 255
+    },
+    {
+      "id": "073D3D3AB378B17E",
+      "x": 48.5,
+      "y": 8.5,
+      "width": 5.5813,
+      "height": 0.35,
+      "rotation": 0.0,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "order": -6,
+      "position_locked": true,
+      "dependency": "2F70810A9E6FF997",
+      "color": 5197647,
+      "alpha": 255
+    },
+    {
+      "id": "08C66313898AC076",
+      "x": 53.1,
+      "y": 8.5,
+      "width": 5.5813,
+      "height": 0.35,
+      "rotation": 0.0,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "order": -6,
+      "position_locked": true,
+      "dependency": "42FF9E819BB49FA7",
+      "color": 5197647,
+      "alpha": 255
+    },
+    {
+      "id": "04F67DFA63EF4107",
+      "x": 39.3,
+      "y": 8.5,
+      "width": 5.5813,
+      "height": 0.105,
+      "rotation": 0.0,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "order": -5,
+      "position_locked": true,
+      "dependency": "7D9C86B3B5FBDB85",
+      "color": 9408399,
+      "alpha": 255
+    },
+    {
+      "id": "1E26CF584A3C17C1",
+      "x": 43.9,
+      "y": 8.5,
+      "width": 5.5813,
+      "height": 0.105,
+      "rotation": 0.0,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "order": -5,
+      "position_locked": true,
+      "dependency": "5593F591D54F36EF",
+      "color": 9408399,
+      "alpha": 255
+    },
+    {
+      "id": "5B76ED23BC3AC0A7",
+      "x": 48.5,
+      "y": 8.5,
+      "width": 5.5813,
+      "height": 0.105,
+      "rotation": 0.0,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "order": -5,
+      "position_locked": true,
+      "dependency": "2F70810A9E6FF997",
+      "color": 9408399,
+      "alpha": 255
+    },
+    {
+      "id": "7B7D3C9E03E217A8",
+      "x": 53.1,
+      "y": 8.5,
+      "width": 5.5813,
+      "height": 0.105,
+      "rotation": 0.0,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "order": -5,
+      "position_locked": true,
+      "dependency": "42FF9E819BB49FA7",
+      "color": 9408399,
+      "alpha": 255
+    },
+    {
+      "id": "5CF78606E5ED2344",
+      "x": 39.3,
+      "y": 13.5,
+      "width": 5.5813,
+      "height": 0.0933,
+      "rotation": 0.0,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "order": -7,
+      "position_locked": true,
+      "alpha": 70,
+      "color": 15260853
+    },
+    {
+      "id": "629B2A0F05F4C593",
+      "x": 43.9,
+      "y": 13.5,
+      "width": 5.5813,
+      "height": 0.0933,
+      "rotation": 0.0,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "order": -7,
+      "position_locked": true,
+      "alpha": 70,
+      "color": 15260853
+    },
+    {
+      "id": "0811D404FCE2D7A8",
+      "x": 48.5,
+      "y": 13.5,
+      "width": 5.5813,
+      "height": 0.0933,
+      "rotation": 0.0,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "order": -7,
+      "position_locked": true,
+      "alpha": 70,
+      "color": 15260853
+    },
+    {
+      "id": "6337D403DBB8C3A5",
+      "x": 39.3,
+      "y": 13.5,
+      "width": 5.5813,
+      "height": 0.35,
+      "rotation": 0.0,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "order": -6,
+      "position_locked": true,
+      "dependency": "3F14DA18B7AEECE8",
+      "color": 5197647,
+      "alpha": 255
+    },
+    {
+      "id": "0F744DA712A14DE0",
+      "x": 43.9,
+      "y": 13.5,
+      "width": 5.5813,
+      "height": 0.35,
+      "rotation": 0.0,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "order": -6,
+      "position_locked": true,
+      "dependency": "1023C310BE7F0791",
+      "color": 5197647,
+      "alpha": 255
+    },
+    {
+      "id": "0B5B7D7E828CEE81",
+      "x": 48.5,
+      "y": 13.5,
+      "width": 5.5813,
+      "height": 0.35,
+      "rotation": 0.0,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "order": -6,
+      "position_locked": true,
+      "dependency": "1515E7A59AC855E8",
+      "color": 5197647,
+      "alpha": 255
+    },
+    {
+      "id": "37869C5699DD3061",
+      "x": 39.3,
+      "y": 13.5,
+      "width": 5.5813,
+      "height": 0.105,
+      "rotation": 0.0,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "order": -5,
+      "position_locked": true,
+      "dependency": "3F14DA18B7AEECE8",
+      "color": 9408399,
+      "alpha": 255
+    },
+    {
+      "id": "6AE4D5790ACBE999",
+      "x": 43.9,
+      "y": 13.5,
+      "width": 5.5813,
+      "height": 0.105,
+      "rotation": 0.0,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "order": -5,
+      "position_locked": true,
+      "dependency": "1023C310BE7F0791",
+      "color": 9408399,
+      "alpha": 255
+    },
+    {
+      "id": "2AA7F7C3E7B32FE8",
+      "x": 48.5,
+      "y": 13.5,
+      "width": 5.5813,
+      "height": 0.105,
+      "rotation": 0.0,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "order": -5,
+      "position_locked": true,
+      "dependency": "1515E7A59AC855E8",
+      "color": 9408399,
+      "alpha": 255
+    },
+    {
+      "id": "0228E969288E2024",
+      "x": 39.3,
+      "y": 23.5,
+      "width": 5.5813,
+      "height": 0.0933,
+      "rotation": 0.0,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "order": -7,
+      "position_locked": true,
+      "alpha": 70,
+      "color": 15260853
+    },
+    {
+      "id": "2AAAC777192E83D1",
+      "x": 43.9,
+      "y": 23.5,
+      "width": 5.5813,
+      "height": 0.0933,
+      "rotation": 0.0,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "order": -7,
+      "position_locked": true,
+      "alpha": 70,
+      "color": 15260853
+    },
+    {
+      "id": "3CE33A822EB52536",
+      "x": 39.3,
+      "y": 23.5,
+      "width": 5.5813,
+      "height": 0.35,
+      "rotation": 0.0,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "order": -6,
+      "position_locked": true,
+      "dependency": "267F8BAFF7FD7EA1",
+      "color": 5197647,
+      "alpha": 255
+    },
+    {
+      "id": "6D54B84FE7B3B231",
+      "x": 43.9,
+      "y": 23.5,
+      "width": 5.5813,
+      "height": 0.35,
+      "rotation": 0.0,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "order": -6,
+      "position_locked": true,
+      "dependency": "66AF60160D119A98",
+      "color": 5197647,
+      "alpha": 255
+    },
+    {
+      "id": "4E3B46B05C49196E",
+      "x": 39.3,
+      "y": 23.5,
+      "width": 5.5813,
+      "height": 0.105,
+      "rotation": 0.0,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "order": -5,
+      "position_locked": true,
+      "dependency": "267F8BAFF7FD7EA1",
+      "color": 9408399,
+      "alpha": 255
+    },
+    {
+      "id": "7D269B6E2504F02B",
+      "x": 43.9,
+      "y": 23.5,
+      "width": 5.5813,
+      "height": 0.105,
+      "rotation": 0.0,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "order": -5,
+      "position_locked": true,
+      "dependency": "66AF60160D119A98",
+      "color": 9408399,
+      "alpha": 255
+    },
+    {
+      "id": "6054431AB595073E",
+      "x": 39.3,
+      "y": 17.6,
+      "width": 5.9934,
+      "height": 0.0933,
+      "rotation": -21.3706,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "order": -7,
+      "position_locked": true,
+      "alpha": 70,
+      "color": 15260853
+    },
+    {
+      "id": "6E93A219664A651D",
+      "x": 43.9,
+      "y": 17.6,
+      "width": 5.9934,
+      "height": 0.0933,
+      "rotation": 21.3706,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "order": -7,
+      "position_locked": true,
+      "alpha": 70,
+      "color": 15260853
+    },
+    {
+      "id": "7E6C604623CA2A40",
+      "x": 39.3,
+      "y": 17.6,
+      "width": 5.9934,
+      "height": 0.35,
+      "rotation": -21.3706,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "order": -6,
+      "position_locked": true,
+      "dependency": "65017E3D205103AA",
+      "color": 5197647,
+      "alpha": 255
+    },
+    {
+      "id": "556C7F5E286A63EC",
+      "x": 43.9,
+      "y": 17.6,
+      "width": 5.9934,
+      "height": 0.35,
+      "rotation": 21.3706,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "order": -6,
+      "position_locked": true,
+      "dependency": "0B9CD358F1BE9771",
+      "color": 5197647,
+      "alpha": 255
+    },
+    {
+      "id": "2B6C83125508C461",
+      "x": 39.3,
+      "y": 17.6,
+      "width": 5.9934,
+      "height": 0.105,
+      "rotation": -21.3706,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "order": -5,
+      "position_locked": true,
+      "dependency": "65017E3D205103AA",
+      "color": 9408399,
+      "alpha": 255
+    },
+    {
+      "id": "3CF31D016F33F1B5",
+      "x": 43.9,
+      "y": 17.6,
+      "width": 5.9934,
+      "height": 0.105,
+      "rotation": 21.3706,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "order": -5,
+      "position_locked": true,
+      "dependency": "0B9CD358F1BE9771",
+      "color": 9408399,
+      "alpha": 255
+    },
+    {
+      "id": "22028E847FC5D2CD",
+      "x": 39.3,
+      "y": 19.4,
+      "width": 5.9934,
+      "height": 0.0933,
+      "rotation": 21.3706,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "order": -7,
+      "position_locked": true,
+      "alpha": 70,
+      "color": 15260853
+    },
+    {
+      "id": "7B7648213505BFAE",
+      "x": 43.9,
+      "y": 19.4,
+      "width": 5.9934,
+      "height": 0.0933,
+      "rotation": -21.3706,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "order": -7,
+      "position_locked": true,
+      "alpha": 70,
+      "color": 15260853
+    },
+    {
+      "id": "46CCDF9672FA6797",
+      "x": 39.3,
+      "y": 19.4,
+      "width": 5.9934,
+      "height": 0.35,
+      "rotation": 21.3706,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "order": -6,
+      "position_locked": true,
+      "dependency": "2A657B15B5ED7030",
+      "color": 5197647,
+      "alpha": 255
+    },
+    {
+      "id": "5F77DE45E4610707",
+      "x": 43.9,
+      "y": 19.4,
+      "width": 5.9934,
+      "height": 0.35,
+      "rotation": -21.3706,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "order": -6,
+      "position_locked": true,
+      "dependency": "0B9CD358F1BE9771",
+      "color": 5197647,
+      "alpha": 255
+    },
+    {
+      "id": "68DDBAF3BC68C6B3",
+      "x": 39.3,
+      "y": 19.4,
+      "width": 5.9934,
+      "height": 0.105,
+      "rotation": 21.3706,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "order": -5,
+      "position_locked": true,
+      "dependency": "2A657B15B5ED7030",
+      "color": 9408399,
+      "alpha": 255
+    },
+    {
+      "id": "214CD8E7BA778994",
+      "x": 43.9,
+      "y": 19.4,
+      "width": 5.9934,
+      "height": 0.105,
+      "rotation": -21.3706,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "order": -5,
+      "position_locked": true,
+      "dependency": "0B9CD358F1BE9771",
+      "color": 9408399,
+      "alpha": 255
+    },
+    {
+      "id": "35D40733E0BC0C50",
+      "x": 48.5,
+      "y": 18.5,
+      "width": 5.5813,
+      "height": 0.0933,
+      "rotation": 0.0,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "order": -7,
+      "position_locked": true,
+      "alpha": 70,
+      "color": 15260853
+    },
+    {
+      "id": "05EAFDB5E2C0DA1F",
+      "x": 48.5,
+      "y": 18.5,
+      "width": 5.5813,
+      "height": 0.35,
+      "rotation": 0.0,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "order": -6,
+      "position_locked": true,
+      "dependency": "2BF1815D505C9636",
+      "color": 5197647,
+      "alpha": 255
+    },
+    {
+      "id": "1CFCF78E27430FEB",
+      "x": 48.5,
+      "y": 18.5,
+      "width": 5.5813,
+      "height": 0.105,
+      "rotation": 0.0,
+      "image": "entrelumen:textures/gui/quests/px.png",
+      "order": -5,
+      "position_locked": true,
+      "dependency": "2BF1815D505C9636",
+      "color": 9408399,
+      "alpha": 255
+    },
+    {
+      "id": "03E575868C394828",
+      "x": 34.9,
+      "y": 13.5,
+      "width": 1.75,
+      "height": 1.75,
+      "rotation": 0.0,
+      "image": "item:advancedperipherals:peripheral_casing",
+      "order": -3,
+      "position_locked": true,
+      "dependency": "414CFDF761C93378"
+    },
+    {
+      "id": "6A91CC55ACB24206",
+      "x": 38.9,
+      "y": 3.5,
+      "width": 1.6333,
+      "height": 1.6333,
+      "rotation": 0.0,
+      "image": "item:advancedperipherals:inventory_manager",
+      "order": -3,
+      "position_locked": true,
+      "dependency": "3A1502CC1FC841AE"
+    },
+    {
+      "id": "42C496371EB990D9",
+      "x": 43.5,
+      "y": 3.5,
+      "width": 1.6333,
+      "height": 1.6333,
+      "rotation": 0.0,
+      "image": "item:advancedperipherals:me_bridge",
+      "order": -3,
+      "position_locked": true,
+      "dependency": "6175FBB4882E26D9"
+    },
+    {
+      "id": "4E42FF0EE8835170",
+      "x": 48.1,
+      "y": 3.5,
+      "width": 1.5167,
+      "height": 1.5167,
+      "rotation": 0.0,
+      "image": "item:advancedperipherals:cable_p2p_tunnel",
+      "order": -3,
+      "position_locked": true,
+      "dependency": "79A737CFF8A73D1A"
+    },
+    {
+      "id": "45C4C9EC5AF663BC",
+      "x": 52.7,
+      "y": 3.5,
+      "width": 1.6333,
+      "height": 1.6333,
+      "rotation": 0.0,
+      "image": "item:advancedperipherals:rs_bridge",
+      "order": -3,
+      "position_locked": true,
+      "dependency": "2F50ACFE7F2FA7DB"
+    },
+    {
+      "id": "573A3F794B7B7A10",
+      "x": 38.9,
+      "y": 8.5,
+      "width": 1.6333,
+      "height": 1.6333,
+      "rotation": 0.0,
+      "image": "item:advancedperipherals:player_detector",
+      "order": -3,
+      "position_locked": true,
+      "dependency": "0F08D912AA075E59"
+    },
+    {
+      "id": "2B370B8AB3211806",
+      "x": 43.5,
+      "y": 8.5,
+      "width": 1.6333,
+      "height": 1.6333,
+      "rotation": 0.0,
+      "image": "item:advancedperipherals:environment_detector",
+      "order": -3,
+      "position_locked": true,
+      "dependency": "7D9C86B3B5FBDB85"
+    },
+    {
+      "id": "39E3BCC739759692",
+      "x": 48.1,
+      "y": 8.5,
+      "width": 1.6333,
+      "height": 1.6333,
+      "rotation": 0.0,
+      "image": "item:advancedperipherals:geo_scanner",
+      "order": -3,
+      "position_locked": true,
+      "dependency": "5593F591D54F36EF"
+    },
+    {
+      "id": "59E08C673B296753",
+      "x": 52.7,
+      "y": 8.5,
+      "width": 1.6333,
+      "height": 1.6333,
+      "rotation": 0.0,
+      "image": "item:advancedperipherals:distance_detector",
+      "order": -3,
+      "position_locked": true,
+      "dependency": "2F70810A9E6FF997"
+    },
+    {
+      "id": "6ED55A1A79AB3C86",
+      "x": 57.3,
+      "y": 8.5,
+      "width": 1.6333,
+      "height": 1.6333,
+      "rotation": 0.0,
+      "image": "item:advancedperipherals:chat_box",
+      "order": -3,
+      "position_locked": true,
+      "dependency": "42FF9E819BB49FA7"
+    },
+    {
+      "id": "6AA2F3ABDE172CCF",
+      "x": 38.9,
+      "y": 13.5,
+      "width": 1.6333,
+      "height": 1.6333,
+      "rotation": 0.0,
+      "image": "item:advancedperipherals:nbt_storage",
+      "order": -3,
+      "position_locked": true,
+      "dependency": "09ED4BA5CB335EC2"
+    },
+    {
+      "id": "23F50483110B089A",
+      "x": 43.5,
+      "y": 13.5,
+      "width": 1.6333,
+      "height": 1.6333,
+      "rotation": 0.0,
+      "image": "item:advancedperipherals:energy_detector",
+      "order": -3,
+      "position_locked": true,
+      "dependency": "3F14DA18B7AEECE8"
+    },
+    {
+      "id": "59EDD78AED5179AC",
+      "x": 48.1,
+      "y": 13.5,
+      "width": 1.5167,
+      "height": 1.5167,
+      "rotation": 0.0,
+      "image": "item:advancedperipherals:smart_rail",
+      "order": -3,
+      "position_locked": true,
+      "dependency": "1023C310BE7F0791"
+    },
+    {
+      "id": "4D8F6354AE00AF11",
+      "x": 38.9,
+      "y": 18.5,
+      "width": 1.6333,
+      "height": 1.6333,
+      "rotation": 0.0,
+      "image": "item:advancedperipherals:weak_automata_core",
+      "order": -3,
+      "position_locked": true,
+      "dependency": "4F558C749AEB029C"
+    },
+    {
+      "id": "1E596BC04A327DA6",
+      "x": 43.5,
+      "y": 16.7,
+      "width": 1.5167,
+      "height": 1.5167,
+      "rotation": 0.0,
+      "image": "item:advancedperipherals:husbandry_automata_core",
+      "order": -3,
+      "position_locked": true,
+      "dependency": "65017E3D205103AA"
+    },
+    {
+      "id": "31EAE70479BE0C4D",
+      "x": 43.5,
+      "y": 20.3,
+      "width": 1.5167,
+      "height": 1.5167,
+      "rotation": 0.0,
+      "image": "item:advancedperipherals:end_automata_core",
+      "order": -3,
+      "position_locked": true,
+      "dependency": "2A657B15B5ED7030"
+    },
+    {
+      "id": "424CCDD1CED58660",
+      "x": 48.1,
+      "y": 18.5,
+      "width": 1.5167,
+      "height": 1.5167,
+      "rotation": 0.0,
+      "image": "item:advancedperipherals:overpowered_weak_automata_core",
+      "order": -3,
+      "position_locked": true,
+      "dependency": "0B9CD358F1BE9771"
+    },
+    {
+      "id": "68C0164B5F438B5A",
+      "x": 38.9,
+      "y": 23.5,
+      "width": 1.6333,
+      "height": 1.6333,
+      "rotation": 0.0,
+      "image": "item:advancedperipherals:smart_glasses",
+      "order": -3,
+      "position_locked": true,
+      "dependency": "4912036DA803D1D0"
+    },
+    {
+      "id": "462B8BBD3F62EF5B",
+      "x": 43.5,
+      "y": 23.5,
+      "width": 1.5167,
+      "height": 1.5167,
+      "rotation": 0.0,
+      "image": "item:advancedperipherals:overlay_module",
+      "order": -3,
+      "position_locked": true,
+      "dependency": "267F8BAFF7FD7EA1"
+    },
+    {
+      "id": "24096D79C64E1E4D",
+      "x": 48.1,
+      "y": 23.5,
+      "width": 1.6333,
+      "height": 1.6333,
+      "rotation": 0.0,
+      "image": "item:advancedperipherals:keyboard",
+      "order": -3,
+      "position_locked": true,
+      "dependency": "66AF60160D119A98"
     }
   ]
 }
