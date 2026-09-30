@@ -4,414 +4,309 @@
   "act": "II",
   "icon": "entrelumen:terra_arm",
   "emblem": "entrelumen:textures/item/terra_arm.png",
-  "title": {
-    "en_us": "Terra's Arm",
-    "es_es": "El Brazo de Terra"
-  },
+  "title": {"en_us": "Terra's Arm", "es_es": "El Brazo de Terra"},
   "subtitle": {
     "en_us": "Heliodor's inventor built herself a longer reach. Three more blocks, and a lot of scaffolding you will not need.",
     "es_es": "La inventora de Heliodor se hizo un alcance más largo. Tres bloques más y muchos andamios que no vas a necesitar."
   },
+  "presentation": 2,
+  "medallion": {"x": -6.0, "y": 1.0},
+  "art": [
+    {"id": "title", "text": {"en_us": "Terra's Arm", "es_es": "El Brazo de Terra"}, "x": -8.4, "y": -8.8, "scale": 3, "align": "start", "tint": "#E8B04A"},
+    {"id": "bench", "frame": [-9.0, -10.2, 41.4, 11.6], "color": "#8A5A32", "thickness_px": 2.0, "alpha": 200, "fill": "#2A1D14", "fill_alpha": 170, "corners": true, "reveal": "entrelumen_terra_arm_welcome", "sketch": true, "order": -14},
+    {"id": "sheet", "frame": [-3.0, -7.4, 39.4, 9.0], "color": "#9FD8E6", "thickness_px": 1.5, "alpha": 170, "fill": "#123F52", "fill_alpha": 190, "corners": false, "reveal": "entrelumen_terra_arm_welcome", "sketch": true, "order": -12},
+    {"id": "grid_v0", "path": [[0, -7.2], [0, 8.8]], "color": "#9FD8E6", "width": 0.035, "alpha": 34, "reveal": "entrelumen_terra_arm_welcome", "order": -11},
+    {"id": "grid_v1", "path": [[3, -7.2], [3, 8.8]], "color": "#9FD8E6", "width": 0.035, "alpha": 34, "reveal": "entrelumen_terra_arm_welcome", "order": -11},
+    {"id": "grid_v2", "path": [[6, -7.2], [6, 8.8]], "color": "#9FD8E6", "width": 0.035, "alpha": 34, "reveal": "entrelumen_terra_arm_welcome", "order": -11},
+    {"id": "grid_v3", "path": [[9, -7.2], [9, 8.8]], "color": "#9FD8E6", "width": 0.035, "alpha": 34, "reveal": "entrelumen_terra_arm_welcome", "order": -11},
+    {"id": "grid_v4", "path": [[12, -7.2], [12, 8.8]], "color": "#9FD8E6", "width": 0.035, "alpha": 34, "reveal": "entrelumen_terra_arm_welcome", "order": -11},
+    {"id": "grid_v5", "path": [[15, -7.2], [15, 8.8]], "color": "#9FD8E6", "width": 0.035, "alpha": 34, "reveal": "entrelumen_terra_arm_welcome", "order": -11},
+    {"id": "grid_v6", "path": [[18, -7.2], [18, 8.8]], "color": "#9FD8E6", "width": 0.035, "alpha": 34, "reveal": "entrelumen_terra_arm_welcome", "order": -11},
+    {"id": "grid_v7", "path": [[21, -7.2], [21, 8.8]], "color": "#9FD8E6", "width": 0.035, "alpha": 34, "reveal": "entrelumen_terra_arm_welcome", "order": -11},
+    {"id": "grid_v8", "path": [[24, -7.2], [24, 8.8]], "color": "#9FD8E6", "width": 0.035, "alpha": 34, "reveal": "entrelumen_terra_arm_welcome", "order": -11},
+    {"id": "grid_v9", "path": [[27, -7.2], [27, 8.8]], "color": "#9FD8E6", "width": 0.035, "alpha": 34, "reveal": "entrelumen_terra_arm_welcome", "order": -11},
+    {"id": "grid_v10", "path": [[30, -7.2], [30, 8.8]], "color": "#9FD8E6", "width": 0.035, "alpha": 34, "reveal": "entrelumen_terra_arm_welcome", "order": -11},
+    {"id": "grid_v11", "path": [[33, -7.2], [33, 8.8]], "color": "#9FD8E6", "width": 0.035, "alpha": 34, "reveal": "entrelumen_terra_arm_welcome", "order": -11},
+    {"id": "grid_v12", "path": [[36, -7.2], [36, 8.8]], "color": "#9FD8E6", "width": 0.035, "alpha": 34, "reveal": "entrelumen_terra_arm_welcome", "order": -11},
+    {"id": "grid_h0", "path": [[-2.8, -6], [39.2, -6]], "color": "#9FD8E6", "width": 0.035, "alpha": 34, "reveal": "entrelumen_terra_arm_welcome", "order": -11},
+    {"id": "grid_h1", "path": [[-2.8, -3], [39.2, -3]], "color": "#9FD8E6", "width": 0.035, "alpha": 34, "reveal": "entrelumen_terra_arm_welcome", "order": -11},
+    {"id": "grid_h2", "path": [[-2.8, 0], [39.2, 0]], "color": "#9FD8E6", "width": 0.035, "alpha": 34, "reveal": "entrelumen_terra_arm_welcome", "order": -11},
+    {"id": "grid_h3", "path": [[-2.8, 3], [39.2, 3]], "color": "#9FD8E6", "width": 0.035, "alpha": 34, "reveal": "entrelumen_terra_arm_welcome", "order": -11},
+    {"id": "grid_h4", "path": [[-2.8, 6], [39.2, 6]], "color": "#9FD8E6", "width": 0.035, "alpha": 34, "reveal": "entrelumen_terra_arm_welcome", "order": -11},
+    {"id": "plate_label", "text": {"en_us": "Exploded view", "es_es": "Vista explotada"}, "x": 10.5, "y": -6.4, "scale": 2, "tint": "#9FD8E6", "reveal": "entrelumen_terra_arm_welcome"},
+    {"id": "plan", "picture": "entrelumen:textures/item/terra_blueprint.png", "x": -1.6, "y": -6.0, "w": 1.4, "h": 1.4, "reveal": "entrelumen_terra_arm_welcome", "rotation": -12},
+    {"id": "axis", "through": ["entrelumen_terra_arm_welcome", "entrelumen_terra_arm_earn", "entrelumen_terra_arm_wear", "entrelumen_terra_arm_effect", "entrelumen_terra_arm_blocks_only"], "dots": "#9FD8E6", "size": 0.14, "step": 0.5, "grow": true, "sketch": true, "order": -6},
+    {"id": "mount", "picture": "minecraft:textures/block/copper_block.png", "x": 4.4, "y": 0.0, "w": 2.6, "h": 3.4, "reveal": "entrelumen_terra_arm_earn", "sketch": true, "order": -8},
+    {"id": "mount_top", "picture": "minecraft:textures/block/cut_copper.png", "x": 4.4, "y": -2.0, "w": 2.6, "h": 0.7, "reveal": "entrelumen_terra_arm_earn", "order": -8},
+    {"id": "mount_bolts", "item": "minecraft:iron_ingot", "x": 4.4, "y": 2.2, "size": 0.6, "reveal": "entrelumen_terra_arm_earn"},
+    {"id": "sleeve", "picture": "minecraft:textures/block/copper_grate.png", "x": 9.0, "y": 0.0, "w": 3.0, "h": 2.0, "reveal": "entrelumen_terra_arm_wear", "sketch": true, "order": -8},
+    {"id": "strap_1", "path": [[8.1, -1.0], [8.1, 1.0]], "color": "#4B2E1A", "width": 0.22, "reveal": "entrelumen_terra_arm_wear", "order": -7},
+    {"id": "strap_2", "path": [[9.9, -1.0], [9.9, 1.0]], "color": "#4B2E1A", "width": 0.22, "reveal": "entrelumen_terra_arm_wear", "order": -7},
+    {"id": "core", "picture": "minecraft:textures/block/chiseled_copper.png", "x": 13.6, "y": 0.0, "w": 2.6, "h": 2.6, "reveal": "entrelumen_terra_arm_effect", "sketch": true, "order": -8},
+    {"id": "core_lamp", "picture": "minecraft:textures/block/copper_bulb_lit.png", "x": 13.6, "y": 0.0, "w": 1.5, "h": 1.5, "reveal": "entrelumen_terra_arm_effect", "order": -7},
+    {"id": "core_glow", "glow": [13.6, 0.0], "r": 3.0, "alpha": 120, "reveal": "entrelumen_terra_arm_effect"},
+    {"id": "palm", "picture": "minecraft:textures/block/oxidized_cut_copper.png", "x": 18.2, "y": 0.0, "w": 2.4, "h": 2.2, "reveal": "entrelumen_terra_arm_blocks_only", "sketch": true, "order": -8},
+    {"id": "finger_0", "picture": "#C8814A", "x": 20.7, "y": -0.8, "w": 2.6, "h": 0.3, "reveal": "entrelumen_terra_arm_blocks_only", "order": -8},
+    {"id": "finger_tip_0", "picture": "#E8B04A", "x": 21.95, "y": -0.8, "w": 0.3, "h": 0.3, "reveal": "entrelumen_terra_arm_blocks_only", "order": -7},
+    {"id": "finger_1", "picture": "#C8814A", "x": 20.7, "y": -0.27, "w": 2.6, "h": 0.3, "reveal": "entrelumen_terra_arm_blocks_only", "order": -8},
+    {"id": "finger_tip_1", "picture": "#E8B04A", "x": 21.95, "y": -0.27, "w": 0.3, "h": 0.3, "reveal": "entrelumen_terra_arm_blocks_only", "order": -7},
+    {"id": "finger_2", "picture": "#C8814A", "x": 20.7, "y": 0.27, "w": 2.6, "h": 0.3, "reveal": "entrelumen_terra_arm_blocks_only", "order": -8},
+    {"id": "finger_tip_2", "picture": "#E8B04A", "x": 21.95, "y": 0.27, "w": 0.3, "h": 0.3, "reveal": "entrelumen_terra_arm_blocks_only", "order": -7},
+    {"id": "finger_3", "picture": "#C8814A", "x": 20.7, "y": 0.8, "w": 2.6, "h": 0.3, "reveal": "entrelumen_terra_arm_blocks_only", "order": -8},
+    {"id": "finger_tip_3", "picture": "#E8B04A", "x": 21.95, "y": 0.8, "w": 0.3, "h": 0.3, "reveal": "entrelumen_terra_arm_blocks_only", "order": -7},
+    {"id": "reach_short", "path": [[22.0, -6.0], [24.7, -6.0]], "color": "#9FD8E6", "width": 0.08, "reveal": "entrelumen_terra_arm_effect", "order": -5},
+    {"id": "reach_long", "path": [[22.0, -5.2], [26.5, -5.2]], "color": "#E8B04A", "width": 0.1, "reveal": "entrelumen_terra_arm_effect", "order": -5},
+    {"id": "reach_tick_0", "path": [[22.0, -6.25], [22.0, -5.75]], "color": "#9FD8E6", "width": 0.08, "reveal": "entrelumen_terra_arm_effect", "order": -5},
+    {"id": "reach_tick_1", "path": [[24.7, -6.25], [24.7, -5.75]], "color": "#9FD8E6", "width": 0.08, "reveal": "entrelumen_terra_arm_effect", "order": -5},
+    {"id": "reach_tick_2", "path": [[22.0, -5.45], [22.0, -4.95]], "color": "#E8B04A", "width": 0.08, "reveal": "entrelumen_terra_arm_effect", "order": -5},
+    {"id": "reach_tick_3", "path": [[26.5, -5.45], [26.5, -4.95]], "color": "#E8B04A", "width": 0.08, "reveal": "entrelumen_terra_arm_effect", "order": -5},
+    {"id": "reach_l45", "text": {"en_us": "4.5", "es_es": "4,5"}, "x": 21.0, "y": -6.0, "scale": 2, "tint": "#9FD8E6", "reveal": "entrelumen_terra_arm_effect"},
+    {"id": "reach_l75", "text": {"en_us": "7.5", "es_es": "7,5"}, "x": 21.0, "y": -5.2, "scale": 2, "tint": "#E8B04A", "reveal": "entrelumen_terra_arm_effect"},
+    {"id": "arm", "picture": "entrelumen:textures/item/terra_arm.png", "x": 35.4, "y": 0.8, "w": 5.4, "h": 5.4, "reveal": "entrelumen_terra_arm_close", "sketch": true, "order": -8},
+    {"id": "arm_glow", "glow": [35.4, 0.8], "r": 4.6, "alpha": 100, "reveal": "entrelumen_terra_arm_close"},
+    {"id": "arm_label", "text": {"en_us": "Assembled", "es_es": "Armado"}, "x": 35.4, "y": -2.6, "scale": 2, "tint": "#9FD8E6", "reveal": "entrelumen_terra_arm_close"},
+    {"id": "anvil", "item": "minecraft:anvil", "x": 39.4, "y": -8.6, "size": 1.3, "reveal": "entrelumen_terra_arm_earn"},
+    {"id": "smithing", "item": "minecraft:smithing_table", "x": -7.4, "y": -5.2, "size": 1.3, "reveal": "entrelumen_terra_arm_welcome"},
+    {"id": "copper_bits", "scatter": ["minecraft:textures/item/copper_ingot.png", "minecraft:textures/item/raw_copper.png", "minecraft:textures/item/amethyst_shard.png"], "region": [-8.6, 9.6, 41.0, 11.2], "count": 14, "size": [0.5, 0.8], "seed": 6, "reveal": "entrelumen_terra_arm_earn"},
+    {"id": "bench_top_bits", "scatter": ["minecraft:textures/item/copper_ingot.png", "minecraft:textures/item/raw_copper.png"], "region": [8.0, -9.9, 39.0, -7.8], "count": 8, "size": [0.5, 0.8], "seed": 13, "reveal": "entrelumen_terra_arm_wear"},
+    {"id": "scaffold", "item": "minecraft:scaffolding", "x": -7.6, "y": 7.2, "size": 1.1, "reveal": "entrelumen_terra_arm_toy_scaffold"},
+    {"id": "scaffold_x1", "path": [[-8.4, 6.4], [-6.8, 8.0]], "color": "#FF5A4A", "width": 0.12, "reveal": "entrelumen_terra_arm_toy_scaffold", "order": 0},
+    {"id": "scaffold_x2", "path": [[-8.4, 8.0], [-6.8, 6.4]], "color": "#FF5A4A", "width": 0.12, "reveal": "entrelumen_terra_arm_toy_scaffold", "order": 0},
+    {"id": "hello", "text": {"en_us": "Hi, Terra.", "es_es": "Hola, Terra."}, "x": 35.4, "y": 4.6, "scale": 2, "tint": "#E8DCB5", "rotation": -6, "reveal": "entrelumen_terra_arm_toy_wave"}
+  ],
   "quests": [
     {
-      "key": "entrelumen_terra_arm_welcome",
-      "deps": [],
-      "type": "checkmark",
-      "layout": {
-        "x": 0,
-        "y": 0,
-        "size": 2.0,
-        "shape": "hexagon"
-      },
-      "en_us": [
-        "An Arm Built to Reach",
-        "Terra, Heliodor's inventor, built herself a cyborg arm to reach where the machine would not let her. It closes act II and does one thing: it lets you reach blocks from farther away.\n\nSmall on paper. Huge the first time you roof a house without scaffolding."
-      ],
-      "es_es": [
-        "Un brazo hecho para alcanzar",
-        "Terra, la inventora de Heliodor, se hizo un brazo ciborg para llegar adonde la máquina no la dejaba. Cierra el acto II y hace una sola cosa: te deja alcanzar bloques desde más lejos.\n\nPoca cosa en el papel. Enorme la primera vez que techás una casa sin andamios."
-      ],
-      "sources": [
-        "repo:docs/design/heliodor-ruins.md",
-        "repo:companion/src/main/java/dev/entrelumen/TerraArm.java",
-        "repo:docs/design/story-bible.md"
-      ]
+      "key": "entrelumen_terra_arm_welcome", "deps": [], "type": "checkmark", "layout": {"x": 0, "y": 0, "size": 2.0, "shape": "hexagon"},
+      "en_us": {"title": "An Arm Built to Reach", "subtitle": "Reach is a kind of freedom.",
+        "text": ["[lead] Terra, Heliodor's inventor, built herself a cyborg arm to reach where the machine would not let her.",
+                 "It closes act II and does one thing: it lets you reach blocks from farther away.",
+                 "Small on paper. Huge the first time you roof a house without scaffolding."]},
+      "es_es": {"title": "Un brazo hecho para alcanzar", "subtitle": "Alcance es una forma de libertad.",
+        "text": ["[lead] Terra, la inventora de Heliodor, se hizo un brazo ciborg para llegar adonde la máquina no la dejaba.",
+                 "Cierra el acto II y hace una sola cosa: te deja alcanzar bloques desde más lejos.",
+                 "Poca cosa en el papel. Enorme la primera vez que techás una casa sin andamios."]},
+      "sources": ["repo:docs/design/heliodor-ruins.md", "repo:companion/src/main/java/dev/entrelumen/TerraArm.java", "repo:docs/design/story-bible.md"]
     },
     {
-      "key": "entrelumen_terra_arm_earn",
-      "deps": [
-        "entrelumen_terra_arm_welcome"
-      ],
-      "type": "item",
-      "item": "entrelumen:terra_arm",
-      "layout": {
-        "x": 3,
-        "y": 0,
-        "size": 1.5,
-        "shape": "square"
-      },
-      "en_us": [
-        "Earn It in Act II",
-        "Finish act II's four prototype projects (Calibration Frame, Energy Coupler, Living Matrix and Travel Rations), then deliver &eWorkshop Archive&r: three paper and a copper ingot. The Atlas hands &eTerra's Arm&r to whoever delivers.\n\nNo recipe. The sunken workshop ruin also keeps one in a chest."
-      ],
-      "es_es": [
-        "Ganalo en el acto II",
-        "Cerrá los cuatro proyectos de prototipo del acto II (Marco de calibración, Acoplador de energía, Matriz viva y Provisiones de viaje) y entregá &eArchivo del taller&r: tres papeles y un lingote de cobre. El Atlas le da el &eBrazo de Terra&r a quien entrega.\n\nNo tiene receta. La ruina del taller hundido también guarda uno en un cofre."
-      ],
-      "sources": [
-        "repo:companion/src/main/resources/data/entrelumen/campaign/projects.json",
-        "repo:docs/design/heliodor-ruins.md",
-        "repo:companion/src/main/resources/assets/entrelumen/lang/es_es.json"
-      ]
+      "key": "entrelumen_terra_arm_earn", "deps": ["entrelumen_terra_arm_welcome"], "type": "item", "item": "entrelumen:terra_arm", "layout": {"x": 4.4, "y": 0, "size": 1.5, "shape": "square"}, "hide_lines": true,
+      "en_us": {"title": "Earn It in Act II",
+        "text": ["[lead] Deliver [hl|Workshop Archive] and the Atlas hands [item:entrelumen:terra_arm|Terra's Arm] to whoever delivers.",
+                 "Before that, finish act II's four prototype projects:",
+                 "[li:entrelumen:calibration_frame] [item:entrelumen:calibration_frame|Calibration Frame]",
+                 "[li:entrelumen:energy_coupler] [item:entrelumen:energy_coupler|Energy Coupler]",
+                 "[li:entrelumen:living_matrix] [item:entrelumen:living_matrix|Living Matrix]",
+                 "[li:entrelumen:ration_bundle] [item:entrelumen:ration_bundle|Travel Rations]",
+                 "Workshop Archive asks for [hl|3] [item:minecraft:paper|paper] and a [item:minecraft:copper_ingot|copper ingot].",
+                 "{page}",
+                 "No recipe. The sunken workshop ruin also keeps one in a chest."]},
+      "es_es": {"title": "Ganalo en el acto II",
+        "text": ["[lead] Entregá [hl|Archivo del taller] y el Atlas le da el [item:entrelumen:terra_arm|Brazo de Terra] a quien entrega.",
+                 "Antes, cerrá los cuatro proyectos de prototipo del acto II:",
+                 "[li:entrelumen:calibration_frame] [item:entrelumen:calibration_frame|Marco de calibración]",
+                 "[li:entrelumen:energy_coupler] [item:entrelumen:energy_coupler|Acoplador de energía]",
+                 "[li:entrelumen:living_matrix] [item:entrelumen:living_matrix|Matriz viva]",
+                 "[li:entrelumen:ration_bundle] [item:entrelumen:ration_bundle|Provisiones de viaje]",
+                 "Archivo del taller pide [hl|3] [item:minecraft:paper|papeles] y un [item:minecraft:copper_ingot|lingote de cobre].",
+                 "{page}",
+                 "No tiene receta. La ruina del taller hundido también guarda uno en un cofre."]},
+      "sources": ["repo:companion/src/main/resources/data/entrelumen/campaign/projects.json", "repo:docs/design/heliodor-ruins.md", "repo:companion/src/main/resources/assets/entrelumen/lang/es_es.json"]
     },
     {
-      "key": "entrelumen_terra_arm_wear",
-      "deps": [
-        "entrelumen_terra_arm_earn"
-      ],
-      "type": "checkmark",
+      "key": "entrelumen_terra_arm_wear", "deps": ["entrelumen_terra_arm_earn"], "type": "checkmark", "layout": {"x": 9.0, "y": 0, "size": 1.25, "shape": "circle"}, "hide_lines": true,
       "icon": "minecraft:leather_chestplate",
-      "layout": {
-        "x": 6,
-        "y": 0,
-        "size": 1.25,
-        "shape": "circle"
-      },
-      "en_us": [
-        "Wear It on a Hand",
-        "It is a curio: press &eG&r (or use the Curios button in your inventory) and put the arm in a &ehands&r slot, which the pack guarantees every player.\n\nIn a pocket it does nothing. Arms work better attached."
-      ],
-      "es_es": [
-        "Ponételo en una mano",
-        "Es un curio: apretá &eG&r (o usá el botón de Curios del inventario) y poné el brazo en una ranura de &emanos&r, que el pack le garantiza a todo jugador.\n\nEn el bolsillo no hace nada. Los brazos andan mejor puestos."
-      ],
-      "sources": [
-        "repo:companion/src/main/java/dev/entrelumen/TerraArm.java",
-        "repo:companion/src/main/resources/data/entrelumen/curios/entities/terra_arm.json",
-        "jar:curios-neoforge-9.5.1+1.21.1.jar:META-INF/neoforge.mods.toml"
-      ]
+      "en_us": {"title": "Wear It on a Hand",
+        "text": ["[lead] It is a curio: it only works in a [hl|hands] slot.",
+                 "Press [key:key.curios.open.desc] (or use the Curios button in your inventory) and put the arm in one. The pack guarantees every player that slot.",
+                 "In a pocket it does nothing. Arms work better attached."]},
+      "es_es": {"title": "Ponételo en una mano",
+        "text": ["[lead] Es un curio: sólo funciona en una ranura de [hl|manos].",
+                 "Apretá [key:key.curios.open.desc] (o usá el botón de Curios del inventario) y poné el brazo ahí. El pack le garantiza esa ranura a todo jugador.",
+                 "En el bolsillo no hace nada. Los brazos andan mejor puestos."]},
+      "sources": ["repo:companion/src/main/java/dev/entrelumen/TerraArm.java", "repo:companion/src/main/resources/data/entrelumen/curios/entities/terra_arm.json", "jar:curios-neoforge-9.5.1+1.21.1.jar:META-INF/neoforge.mods.toml"]
     },
     {
-      "key": "entrelumen_terra_arm_effect",
-      "deps": [
-        "entrelumen_terra_arm_wear"
-      ],
-      "type": "checkmark",
+      "key": "entrelumen_terra_arm_effect", "deps": ["entrelumen_terra_arm_wear"], "type": "checkmark", "layout": {"x": 13.6, "y": 0, "size": 1.5, "shape": "hexagon"}, "hide_lines": true,
       "icon": "minecraft:spyglass",
-      "layout": {
-        "x": 9,
-        "y": 0,
-        "size": 1.5,
-        "shape": "hexagon"
-      },
-      "en_us": [
-        "Three More Blocks",
-        "Worn, it adds &e+3 block reach&r: break, place and use blocks from 7.5 blocks away instead of 4.5. The tooltip shows the bonus in blue, like vanilla attribute lines.\n\nIt is checked twice a second, so it switches on a moment after you put it on."
-      ],
-      "es_es": [
-        "Tres bloques más",
-        "Puesto, suma &e+3 de alcance de bloques&r: rompés, ponés y usás bloques desde 7,5 de distancia en vez de 4,5. El tooltip muestra el bonus en azul, como las líneas de atributos de vanilla.\n\nSe revisa dos veces por segundo, así que se activa un momento después de ponértelo."
-      ],
-      "sources": [
-        "repo:docs/design/heliodor-ruins.md",
-        "note:reflects feature/acts-renumber, merged into main on 24/9 (reach bonus +3, tooltip effect line; main still has +5)",
-        "repo:companion/src/main/java/dev/entrelumen/TerraArm.java"
-      ]
+      "en_us": {"title": "Three More Blocks", "subtitle": "Roofs, meet the ground.",
+        "text": ["[lead] Worn, it adds [hl|+3 block reach].",
+                 "Break, place and use blocks from [big|7.5] blocks away, not [hl|4.5].",
+                 "The tooltip shows the bonus in blue, like vanilla attribute lines.",
+                 "[note] It is checked twice a second, so it switches on a moment after you put it on."]},
+      "es_es": {"title": "Tres bloques más", "subtitle": "Techos, conozcan el piso.",
+        "text": ["[lead] Puesto, suma [hl|+3 de alcance de bloques].",
+                 "Rompés, ponés y usás bloques desde [big|7,5] de distancia, no [hl|4,5].",
+                 "El tooltip muestra el bonus en azul, como las líneas de atributos de vanilla.",
+                 "[note] Se revisa dos veces por segundo, así que se activa un momento después de ponértelo."]},
+      "sources": ["repo:docs/design/heliodor-ruins.md", "note:reflects feature/acts-renumber, merged into main on 24/9 (reach bonus +3, tooltip effect line; main still has +5)", "repo:companion/src/main/java/dev/entrelumen/TerraArm.java"]
     },
     {
-      "key": "entrelumen_terra_arm_blocks_only",
-      "deps": [
-        "entrelumen_terra_arm_effect"
-      ],
-      "type": "checkmark",
+      "key": "entrelumen_terra_arm_blocks_only", "deps": ["entrelumen_terra_arm_effect"], "type": "checkmark", "layout": {"x": 18.2, "y": 0, "size": 1.25, "shape": "pentagon"}, "hide_lines": true,
       "icon": "minecraft:iron_sword",
-      "layout": {
-        "x": 12,
-        "y": -2,
-        "size": 1.25,
-        "shape": "pentagon"
-      },
-      "en_us": [
-        "Blocks, Not Swords",
-        "Only &eblock&r reach grows. Attacking and interacting with creatures keep the normal range, so it gives no edge in combat.\n\nTerra built a tool, not a weapon."
-      ],
-      "es_es": [
-        "Bloques, no espadas",
-        "Sólo crece el alcance de &ebloques&r. Atacar e interactuar con criaturas conserva el rango normal, así que no da ventaja en combate.\n\nTerra hizo una herramienta, no un arma."
-      ],
-      "sources": [
-        "repo:docs/design/heliodor-ruins.md",
-        "repo:companion/src/main/java/dev/entrelumen/TerraArm.java"
-      ]
+      "en_us": {"title": "Blocks, Not Swords", "subtitle": "A tool, not a weapon.",
+        "text": ["[lead] Only [hl|block] reach grows.",
+                 "Attacking and interacting with creatures keep the normal range, so it gives no edge in combat.",
+                 "Terra built a tool, not a weapon."]},
+      "es_es": {"title": "Bloques, no espadas", "subtitle": "Herramienta, no arma.",
+        "text": ["[lead] Sólo crece el alcance de [hl|bloques].",
+                 "Atacar e interactuar con criaturas conserva el rango normal, así que no da ventaja en combate.",
+                 "Terra hizo una herramienta, no un arma."]},
+      "sources": ["repo:docs/design/heliodor-ruins.md", "repo:companion/src/main/java/dev/entrelumen/TerraArm.java"]
     },
     {
-      "key": "entrelumen_terra_arm_no_stack",
-      "deps": [
-        "entrelumen_terra_arm_effect"
-      ],
-      "type": "checkmark",
-      "optional": true,
+      "key": "entrelumen_terra_arm_no_stack", "deps": ["entrelumen_terra_arm_effect"], "type": "checkmark", "optional": true, "layout": {"x": 13.6, "y": 3.8, "size": 1.0, "shape": "diamond"},
       "icon": "minecraft:iron_ingot",
-      "layout": {
-        "x": 12,
-        "y": 2,
-        "size": 1.0,
-        "shape": "diamond"
-      },
-      "en_us": [
-        "Quirk: Two Arms, Same Reach",
-        "Players have two hands slots, but a second arm adds nothing: the bonus is one modifier, on or off, and taking off one of two keeps it. Other sources of block reach do stack with its flat +3."
-      ],
-      "es_es": [
-        "Particularidad: dos brazos",
-        "Los jugadores tienen dos ranuras de manos, pero un segundo brazo no suma: el bonus es un solo modificador, prendido o apagado, y sacarte uno de dos lo conserva. Otras fuentes de alcance de bloques sí se suman a su +3 fijo."
-      ],
-      "sources": [
-        "repo:docs/design/heliodor-ruins.md",
-        "repo:companion/src/main/java/dev/entrelumen/TerraArm.java"
-      ]
+      "en_us": {"title": "Quirk: Two Arms, Same Reach",
+        "text": ["[lead] Players have two hands slots, but a second arm adds nothing.",
+                 "The bonus is one modifier, on or off, and taking off one of two keeps it.",
+                 "Other sources of block reach do stack with its flat [hl|+3]."]},
+      "es_es": {"title": "Particularidad: dos brazos",
+        "text": ["[lead] Los jugadores tienen dos ranuras de manos, pero un segundo brazo no suma.",
+                 "El bonus es un solo modificador, prendido o apagado, y sacarte uno de dos lo conserva.",
+                 "Otras fuentes de alcance de bloques sí se suman a su [hl|+3] fijo."]},
+      "sources": ["repo:docs/design/heliodor-ruins.md", "repo:companion/src/main/java/dev/entrelumen/TerraArm.java"]
     },
     {
-      "key": "entrelumen_terra_arm_building",
-      "deps": [
-        "entrelumen_terra_arm_blocks_only"
-      ],
-      "type": "item",
-      "item": "constructionstick:iron_stick",
-      "optional": true,
-      "layout": {
-        "x": 15,
-        "y": -3,
-        "size": 1.0,
-        "shape": "diamond"
-      },
-      "en_us": [
-        "Tip: Building Tall",
-        "Place the top rows of a wall, a roof ridge or a ceiling light without scaffolding, and reach across gaps. With a Construction Stick, extend faces you could not reach before.\n\nScaffolding makers hate this one trick."
-      ],
-      "es_es": [
-        "Truco: construir en altura",
-        "Poné las últimas filas de una pared, la cumbrera de un techo o una luz de techo sin andamios, y alcanzá del otro lado de un hueco. Con una Vara de construcción, extendé caras que antes no alcanzabas.\n\nLos fabricantes de andamios odian este truco."
-      ],
-      "sources": [
-        "repo:docs/design/heliodor-ruins.md",
-        "repo:docs/design/qol-parity.md"
-      ]
+      "key": "entrelumen_terra_arm_building", "deps": ["entrelumen_terra_arm_blocks_only"], "type": "item", "item": "constructionstick:iron_stick", "optional": true, "layout": {"x": 23.4, "y": -3.4, "size": 1.0, "shape": "diamond"},
+      "en_us": {"title": "Tip: Building Tall",
+        "text": ["[lead] Place the top rows of a wall, a roof ridge or a ceiling light without scaffolding.",
+                 "Reach across gaps too. With a [item:constructionstick:iron_stick|Construction Stick], extend faces you could not reach before.",
+                 "Scaffolding makers hate this one trick."]},
+      "es_es": {"title": "Truco: construir en altura",
+        "text": ["[lead] Poné las últimas filas de una pared, la cumbrera de un techo o una luz de techo sin andamios.",
+                 "Alcanzá también del otro lado de un hueco. Con una [item:constructionstick:iron_stick|Vara de construcción], extendé caras que antes no alcanzabas.",
+                 "Los fabricantes de andamios odian este truco."]},
+      "sources": ["repo:docs/design/heliodor-ruins.md", "repo:docs/design/qol-parity.md"]
     },
     {
-      "key": "entrelumen_terra_arm_machines",
-      "deps": [
-        "entrelumen_terra_arm_blocks_only"
-      ],
-      "type": "item",
-      "item": "laserio:laser_node",
-      "optional": true,
-      "layout": {
-        "x": 15,
-        "y": -0.5,
-        "size": 1.0,
-        "shape": "diamond"
-      },
-      "en_us": [
-        "Tip: Machine Rooms",
-        "Reach the machine behind another, the lever past a pipe run or the chest at the back of a shelf without walking around. Dense rooms of LaserIO nodes and Create contraptions get much friendlier."
-      ],
-      "es_es": [
-        "Truco: salas de máquinas",
-        "Alcanzá la máquina de atrás, la palanca del otro lado de los caños o el cofre del fondo de un estante sin dar la vuelta. Las salas densas de nodos de LaserIO y artefactos de Create se vuelven mucho más amables."
-      ],
-      "sources": [
-        "repo:docs/design/heliodor-ruins.md"
-      ]
+      "key": "entrelumen_terra_arm_machines", "deps": ["entrelumen_terra_arm_blocks_only"], "type": "item", "item": "laserio:laser_node", "optional": true, "layout": {"x": 23.6, "y": 0.2, "size": 1.0, "shape": "diamond"}, "hide_lines": true,
+      "en_us": {"title": "Tip: Machine Rooms",
+        "text": ["[lead] Reach what is behind, without walking around:",
+                 "[li] The machine behind another",
+                 "[li] The lever past a pipe run",
+                 "[li] The chest at the back of a shelf",
+                 "Dense rooms of [item:laserio:laser_node|LaserIO nodes] and Create contraptions get much friendlier."]},
+      "es_es": {"title": "Truco: salas de máquinas",
+        "text": ["[lead] Alcanzá lo de atrás sin dar la vuelta:",
+                 "[li] La máquina de atrás",
+                 "[li] La palanca del otro lado de los caños",
+                 "[li] El cofre del fondo de un estante",
+                 "Las salas densas de [item:laserio:laser_node|nodos de LaserIO] y artefactos de Create se vuelven mucho más amables."]},
+      "sources": ["repo:docs/design/heliodor-ruins.md"]
     },
     {
-      "key": "entrelumen_terra_arm_farming",
-      "deps": [
-        "entrelumen_terra_arm_no_stack"
-      ],
-      "type": "item",
-      "item": "minecraft:oak_log",
-      "optional": true,
-      "layout": {
-        "x": 15,
-        "y": 2,
-        "size": 1.0,
-        "shape": "diamond"
-      },
-      "en_us": [
-        "Tip: Fields and Trees",
-        "Harvest a wider strip of field from the path, reach the top logs and fruit of tall trees, and plant without stepping on farmland. With Ultimine, start a vein you would otherwise have to climb to."
-      ],
-      "es_es": [
-        "Truco: campos y árboles",
-        "Cosechá una franja más ancha desde el camino, alcanzá los troncos y frutas de arriba de los árboles altos y plantá sin pisar la tierra arada. Con Ultimine, empezá una veta a la que si no tendrías que trepar."
-      ],
-      "sources": [
-        "repo:docs/design/heliodor-ruins.md",
-        "jar:ftb-ultimine-neoforge-2101.1.15.jar:assets/ftbultimine/lang/en_us.json"
-      ]
+      "key": "entrelumen_terra_arm_farming", "deps": ["entrelumen_terra_arm_no_stack"], "type": "item", "item": "minecraft:oak_log", "optional": true, "layout": {"x": 18.0, "y": 4.4, "size": 1.0, "shape": "diamond"},
+      "en_us": {"title": "Tip: Fields and Trees",
+        "text": ["[lead] Harvest and plant from the path, without walking the field:",
+                 "[li] A wider strip of field",
+                 "[li] The top logs and fruit of tall trees",
+                 "[li] Planting without stepping on farmland",
+                 "With Ultimine, start a vein you would otherwise have to climb to."]},
+      "es_es": {"title": "Truco: campos y árboles",
+        "text": ["[lead] Cosechá y plantá desde el camino, sin pisar el campo:",
+                 "[li] Una franja más ancha de campo",
+                 "[li] Los troncos y frutas de arriba de los árboles altos",
+                 "[li] Plantar sin pisar la tierra arada",
+                 "Con Ultimine, empezá una veta a la que si no tendrías que trepar."]},
+      "sources": ["repo:docs/design/heliodor-ruins.md", "jar:ftb-ultimine-neoforge-2101.1.15.jar:assets/ftbultimine/lang/en_us.json"]
     },
     {
-      "key": "entrelumen_terra_arm_carry",
-      "deps": [
-        "entrelumen_terra_arm_farming"
-      ],
-      "type": "checkmark",
-      "optional": true,
+      "key": "entrelumen_terra_arm_carry", "deps": ["entrelumen_terra_arm_farming"], "type": "checkmark", "optional": true, "layout": {"x": 22.2, "y": 4.4, "size": 1.0, "shape": "diamond"},
       "icon": "minecraft:chest",
-      "layout": {
-        "x": 18,
-        "y": 2,
-        "size": 1.0,
-        "shape": "diamond"
-      },
-      "en_us": [
-        "Quirk: Carry On Reaches Too",
-        "The pack scales Carry On's pick-up distance with your reach, so the arm also lets you lift chests, furnaces and animals from farther away."
-      ],
-      "es_es": [
-        "Particularidad: Carry On también",
-        "El pack escala la distancia para levantar de Carry On con tu alcance, así que con el brazo también levantás cofres, hornos y animales desde más lejos."
-      ],
-      "sources": [
-        "repo:pack/config/carryon-common.toml",
-        "repo:docs/design/heliodor-ruins.md"
-      ]
+      "en_us": {"title": "Quirk: Carry On Reaches Too",
+        "text": ["[lead] The arm also lifts chests, furnaces and animals from farther away.",
+                 "[note] The pack scales Carry On's pick-up distance with your reach."]},
+      "es_es": {"title": "Particularidad: Carry On también",
+        "text": ["[lead] El brazo también levanta cofres, hornos y animales desde más lejos.",
+                 "[note] El pack escala la distancia para levantar de Carry On con tu alcance."]},
+      "sources": ["repo:pack/config/carryon-common.toml", "repo:docs/design/heliodor-ruins.md"]
     },
     {
-      "key": "entrelumen_terra_arm_protection",
-      "deps": [
-        "entrelumen_terra_arm_building"
-      ],
-      "type": "checkmark",
-      "optional": true,
+      "key": "entrelumen_terra_arm_protection", "deps": ["entrelumen_terra_arm_building"], "type": "checkmark", "optional": true, "layout": {"x": 27.2, "y": -3.4, "size": 1.0, "shape": "pentagon"},
       "icon": "minecraft:shield",
-      "layout": {
-        "x": 18,
-        "y": -2,
-        "size": 1.0,
-        "shape": "pentagon"
-      },
-      "en_us": [
-        "Reach Opens No Doors",
-        "More reach bypasses nothing: Heliodor's ruins, Solsticio outside your plot and other teams' claims refuse breaking and placing from any distance, and the server checks.\n\nThe long arm of the law is still longer."
-      ],
-      "es_es": [
-        "El alcance no abre puertas",
-        "Más alcance no esquiva nada: las ruinas de Heliodor, Solsticio fuera de tu lote y los reclamos de otros equipos rechazan romper y poner desde cualquier distancia, y lo revisa el servidor.\n\nEl largo brazo de la ley sigue siendo más largo."
-      ],
-      "sources": [
-        "repo:docs/design/solsticio.md",
-        "repo:companion/src/main/java/dev/entrelumen/StructureProtection.java"
-      ]
+      "en_us": {"title": "Reach Opens No Doors",
+        "text": ["[lead] More reach bypasses nothing: these refuse breaking and placing from any distance.",
+                 "[li] Heliodor's ruins",
+                 "[li] Solsticio, outside your plot",
+                 "[li] Other teams' claims",
+                 "The server checks. The long arm of the law is still longer."]},
+      "es_es": {"title": "El alcance no abre puertas",
+        "text": ["[lead] Más alcance no esquiva nada: estos lugares rechazan romper y poner desde cualquier distancia.",
+                 "[li] Las ruinas de Heliodor",
+                 "[li] Solsticio, fuera de tu lote",
+                 "[li] Los reclamos de otros equipos",
+                 "Lo revisa el servidor. El largo brazo de la ley sigue siendo más largo."]},
+      "sources": ["repo:docs/design/solsticio.md", "repo:companion/src/main/java/dev/entrelumen/StructureProtection.java"]
     },
     {
-      "key": "entrelumen_terra_arm_one_per_campaign",
-      "deps": [
-        "entrelumen_terra_arm_wear"
-      ],
-      "type": "checkmark",
+      "key": "entrelumen_terra_arm_one_per_campaign", "deps": ["entrelumen_terra_arm_wear"], "type": "checkmark", "layout": {"x": 9.0, "y": -3.9, "size": 1.25, "shape": "pentagon"},
       "icon": "minecraft:player_head",
-      "layout": {
-        "x": 6,
-        "y": 3.5,
-        "size": 1.25,
-        "shape": "pentagon"
-      },
-      "en_us": [
-        "One Arm per Campaign",
-        "Atlas rewards come once per campaign, to whoever delivers, so the Atlas gives a team one arm: hand it to your main builder or pass it around. Replaying or reconnecting never makes a second.\n\nIt survives fire and lava, and Tombstone keeps it in your grave if you die."
-      ],
-      "es_es": [
-        "Un brazo por campaña",
-        "Las recompensas del Atlas llegan una vez por campaña, a quien entrega, así que el Atlas le da un solo brazo al equipo: dáselo a quien más construye o pásenselo. Repetir o reconectarse nunca da otro.\n\nResiste el fuego y la lava, y si morís, Tombstone lo guarda en tu tumba."
-      ],
-      "sources": [
-        "repo:companion/src/main/resources/data/entrelumen/campaign/projects.json",
-        "repo:companion/src/main/java/dev/entrelumen/Entrelumen.java",
-        "repo:companion/src/main/java/dev/entrelumen/TerraArm.java"
-      ]
+      "en_us": {"title": "One Arm per Campaign",
+        "text": ["[lead] The Atlas gives a team one arm.",
+                 "Atlas rewards come once per campaign, to whoever delivers: hand it to your main builder or pass it around. Replaying or reconnecting never makes a second.",
+                 "It survives fire and lava, and Tombstone keeps it in your grave if you die."]},
+      "es_es": {"title": "Un brazo por campaña",
+        "text": ["[lead] El Atlas le da un solo brazo al equipo.",
+                 "Las recompensas del Atlas llegan una vez por campaña, a quien entrega: dáselo a quien más construye o pásenselo. Repetir o reconectarse nunca da otro.",
+                 "Resiste el fuego y la lava, y si morís, Tombstone lo guarda en tu tumba."]},
+      "sources": ["repo:companion/src/main/resources/data/entrelumen/campaign/projects.json", "repo:companion/src/main/java/dev/entrelumen/Entrelumen.java", "repo:companion/src/main/java/dev/entrelumen/TerraArm.java"]
     },
     {
-      "key": "entrelumen_terra_arm_lore",
-      "deps": [
-        "entrelumen_terra_arm_earn"
-      ],
-      "type": "checkmark",
-      "optional": true,
+      "key": "entrelumen_terra_arm_lore", "deps": ["entrelumen_terra_arm_earn"], "type": "checkmark", "optional": true, "layout": {"x": 4.4, "y": 3.8, "size": 1.0, "shape": "diamond"},
       "icon": "entrelumen:heliodor_relic_2",
-      "layout": {
-        "x": 3,
-        "y": 3.5,
-        "size": 1.0,
-        "shape": "diamond"
-      },
-      "en_us": [
-        "Terra's Story",
-        "Terra wanted technology to make life in Heliodor better, and she built the Atlas from inside the light. At the close of act II the Atlas returns her arm to you and, for the first time, half-speaks her name.\n\nHer later gifts, the Terraprism among them, come in the story's final act."
-      ],
-      "es_es": [
-        "La historia de Terra",
-        "Terra quería que la tecnología mejorara la vida en Heliodor, y construyó el Atlas desde adentro de la luz. Al cierre del acto II el Atlas te devuelve su brazo y, por primera vez, dice su nombre a medias.\n\nSus regalos posteriores, entre ellos el Terraprisma, llegan en el acto final de la historia."
-      ],
-      "sources": [
-        "repo:docs/design/story-bible.md",
-        "repo:docs/design/quest-lore.md"
-      ]
+      "en_us": {"title": "Terra's Story",
+        "text": ["[lead] Terra wanted technology to make life in Heliodor better.",
+                 "She built the Atlas from inside the light. At the close of act II it returns her arm to you and, for the first time, half-speaks her name.",
+                 "Her later gifts, the Terraprism among them, come in the story's final act."]},
+      "es_es": {"title": "La historia de Terra",
+        "text": ["[lead] Terra quería que la tecnología mejorara la vida en Heliodor.",
+                 "Construyó el Atlas desde adentro de la luz. Al cierre del acto II te devuelve su brazo y, por primera vez, dice su nombre a medias.",
+                 "Sus regalos posteriores, entre ellos el Terraprisma, llegan en el acto final de la historia."]},
+      "sources": ["repo:docs/design/story-bible.md", "repo:docs/design/quest-lore.md"]
     },
     {
-      "key": "entrelumen_terra_arm_without_curios",
-      "deps": [
-        "entrelumen_terra_arm_no_stack"
-      ],
-      "type": "checkmark",
-      "optional": true,
+      "key": "entrelumen_terra_arm_without_curios", "deps": ["entrelumen_terra_arm_no_stack"], "type": "checkmark", "optional": true, "layout": {"x": 10.0, "y": 6.8, "size": 1.0, "shape": "diamond"},
       "icon": "minecraft:item_frame",
-      "layout": {
-        "x": 9,
-        "y": 3.5,
-        "size": 1.0,
-        "shape": "diamond"
-      },
-      "en_us": [
-        "Quirk: a Curio by Data",
-        "Held in your hand, in armor slots or in a backpack, the arm is a trophy with a line of lore. It only works from the Curios hands slot, which the pack adds by data even if other mods stop adding it."
-      ],
-      "es_es": [
-        "Particularidad: curio por datos",
-        "En la mano, en las ranuras de armadura o en una mochila, el brazo es un trofeo con una línea de lore. Sólo funciona desde la ranura de manos de Curios, que el pack agrega por datos aunque otros mods dejen de agregarla."
-      ],
-      "sources": [
-        "repo:companion/src/main/java/dev/entrelumen/TerraArm.java",
-        "repo:companion/src/main/resources/data/entrelumen/curios/entities/terra_arm.json"
-      ]
+      "en_us": {"title": "Quirk: a Curio by Data",
+        "text": ["[lead] Anywhere but a hands slot, the arm is a trophy with a line of lore.",
+                 "In your hand, in armor slots or in a backpack it does nothing.",
+                 "The pack adds the Curios hands slot by data, even if other mods stop adding it."]},
+      "es_es": {"title": "Particularidad: curio por datos",
+        "text": ["[lead] Fuera de una ranura de manos, el brazo es un trofeo con una línea de lore.",
+                 "En la mano, en las ranuras de armadura o en una mochila no hace nada.",
+                 "El pack agrega por datos la ranura de manos de Curios, aunque otros mods dejen de agregarla."]},
+      "sources": ["repo:companion/src/main/java/dev/entrelumen/TerraArm.java", "repo:companion/src/main/resources/data/entrelumen/curios/entities/terra_arm.json"]
     },
     {
-      "key": "entrelumen_terra_arm_close",
-      "deps": [
-        "entrelumen_terra_arm_protection",
-        "entrelumen_terra_arm_carry",
-        "entrelumen_terra_arm_machines"
-      ],
-      "type": "item",
-      "item": "entrelumen:terra_arm",
-      "layout": {
-        "x": 21,
-        "y": 0,
-        "size": 2.0,
-        "shape": "hexagon"
-      },
-      "en_us": [
-        "Three Blocks Closer",
-        "Put it on, look up at the unfinished roof, and finish it from the ground.\n\nTerra would be glad to see it working again."
-      ],
-      "es_es": [
-        "Tres bloques más cerca",
-        "Ponételo, mirá el techo sin terminar y terminalo desde el piso.\n\nA Terra le gustaría verlo funcionar otra vez."
-      ],
-      "sources": [
-        "repo:docs/design/heliodor-ruins.md"
-      ]
+      "key": "entrelumen_terra_arm_close", "deps": ["entrelumen_terra_arm_protection", "entrelumen_terra_arm_carry", "entrelumen_terra_arm_machines"], "type": "item", "item": "entrelumen:terra_arm", "layout": {"x": 29.0, "y": 0.8, "size": 2.0, "shape": "hexagon"},
+      "en_us": {"title": "Three Blocks Closer",
+        "text": ["[lead] Put it on, look up at the unfinished roof, and finish it from the ground.",
+                 "Terra would be glad to see it working again."]},
+      "es_es": {"title": "Tres bloques más cerca",
+        "text": ["[lead] Ponételo, mirá el techo sin terminar y terminalo desde el piso.",
+                 "A Terra le gustaría verlo funcionar otra vez."]},
+      "sources": ["repo:docs/design/heliodor-ruins.md"]
+    },
+    {
+      "key": "entrelumen_terra_arm_toy_scaffold", "role": "decor", "deps": [], "type": "checkmark", "optional": true, "layout": {"x": -7.6, "y": 4.6, "size": 0.75, "shape": "none"},
+      "icon": "minecraft:scaffolding",
+      "en_us": {"title": "Bin the Scaffolding",
+        "text": ["[lead] One crossed-out stack of scaffolding, courtesy of three extra blocks.",
+                 "It will come back the first time the arm is in a pocket."]},
+      "es_es": {"title": "Tirar los andamios",
+        "text": ["[lead] Una pila de andamios tachada, cortesía de tres bloques de más.",
+                 "Vuelve la primera vez que el brazo esté en el bolsillo."]},
+      "sources": ["repo:docs/design/heliodor-ruins.md"]
+    },
+    {
+      "key": "entrelumen_terra_arm_toy_wave", "role": "decor", "deps": [], "type": "checkmark", "optional": true, "layout": {"x": 32.4, "y": 4.4, "size": 0.75, "shape": "none"},
+      "icon": "minecraft:player_head",
+      "en_us": {"title": "Give It a Wave",
+        "text": ["[lead] The arm waves back.",
+                 "Terra would approve: someone finally took it out of the pocket."]},
+      "es_es": {"title": "Saludar",
+        "text": ["[lead] El brazo devuelve el saludo.",
+                 "Terra aprobaría: alguien por fin lo sacó del bolsillo."]},
+      "sources": ["repo:docs/design/story-bible.md"]
     }
   ]
 }
