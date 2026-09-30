@@ -42,7 +42,8 @@ class ProjectValidationTest {
       assertEquals(java.util.Set.of("atlas_voices"), project.prerequisites());
       // Ruins v2, roster of 26 September: the Star Chart went to the network; the settlement takes no piece.
       assertEquals(java.util.Map.of(item, 1), project.items());
-      assertTrue(project.reward().isEmpty());
+      // 29 September: Renewable Horizons hands over Terra's plan of the hydroponic garden (terra-garden.md).
+      assertEquals(id.equals("renewal_engine") ? "entrelumen:terra_garden_plan" : "", project.reward());
       var missing = definitions.deepCopy();
       missing.remove(id);
       assertTrue(assertThrows(IllegalArgumentException.class,

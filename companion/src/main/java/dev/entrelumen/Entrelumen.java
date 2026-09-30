@@ -93,6 +93,8 @@ public final class Entrelumen {
     RuinContent.register(bus);
     TerraArm.register(bus);
     SourShackle.register(bus);
+    TerraGarden.register(bus);
+    Terralight.register(bus);
     VeinResonator.register(bus);
     HeliodorHeart.register(bus);
     Solsticio.register(bus, container);
@@ -100,6 +102,9 @@ public final class Entrelumen {
     if (container != null)
       container.registerConfig(net.neoforged.fml.config.ModConfig.Type.SERVER, ArkEffects.SPEC,
           "entrelumen-ark-server.toml");
+    if (container != null)
+      container.registerConfig(net.neoforged.fml.config.ModConfig.Type.SERVER, Terralight.SPEC,
+          "entrelumen-terralight-server.toml");
     ArkState.register();
     ArkEffects.register(bus);
     ArkCommands.register();
