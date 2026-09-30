@@ -263,7 +263,7 @@ class ChapterContracts(unittest.TestCase):
   # Ark v2: the Nature Module quest joined act III.
   self.assertEqual(hashlib.sha256(chr(10).join(ids).encode()).hexdigest(),'a6632786811972fa3b4678ef2be405bdad865ba67e155039455b3bc20d20eb9b')
  def test_act_four_campaign_and_observers(self):
-  chapter=self.chapters[3];self.assertEqual(len(chapter['quests']),32)
+  chapter=self.chapters[3];self.assertEqual(len(counted(chapter)),32)
   source={q['milestone']:q for q in chapter['quests'] if 'milestone' in q}
   expected={'spectral_archive':['exchange_archive'],'horizon_survey':['exchange_archive','voices_aether','voices_twilight'],
    'pollinator_treaty':['exchange_archive','voices_bumblezone'],'sealed_memory':['exchange_archive','voices_archive'],
@@ -322,7 +322,7 @@ class ChapterContracts(unittest.TestCase):
   ids=[stable_id('quest:'+q['key']) for q in self.chapters[3]['quests']]
   self.assertEqual([q['id'] for q in compiled['quests']],ids)
   added={stable_id('quest:voices_sun_spirit'),stable_id('quest:voices_heart'),stable_id('quest:voices_arcane')}
-  kept=[q for q in compiled['quests'] if q['id'] not in added]
+  kept=[q for q in content(compiled['quests']) if q['id'] not in added]
   self.assertEqual(len(kept),29)
   chorus=next(q for q in compiled['quests'] if q['id']==stable_id('quest:voices_chorus'))
   self.assertEqual(chorus['dependencies'][-2:],[stable_id('quest:voices_heart'),stable_id('quest:voices_arcane')])
@@ -331,7 +331,7 @@ class ChapterContracts(unittest.TestCase):
   spirit=next(q for q in compiled['quests'] if q['id']==stable_id('quest:voices_sun_spirit'))
   self.assertEqual((spirit['tasks'][0]['milestone'],spirit['dependencies']),('heart_recovered',[]))
  def test_act_five_authority_recipe_counts_and_rewards(self):
-  chapter=self.chapters[4];self.assertEqual(len(chapter['quests']),24)
+  chapter=self.chapters[4];self.assertEqual(len(counted(chapter)),24)
   projects=json.loads((ROOT/'companion/src/main/resources/data/entrelumen/campaign/projects.json').read_text(encoding='utf-8'))
   source={q['milestone']:q for q in chapter['quests'] if 'milestone' in q}
   self.assertEqual({m:q['deps'] for m,q in source.items()},
@@ -356,7 +356,7 @@ class ChapterContracts(unittest.TestCase):
    for ingredient in recipe['inputs']:
     self.assertEqual(material_quests[ingredient['id']],ingredient['count'])
   out=generate_all(self.chapters);compiled=json.loads(out[OUT/'chapters/world_we_build.snbt'])
-  self.assertEqual(len(compiled['quests']),24)
+  self.assertEqual(len(content(compiled['quests'])),24)
   self.assertEqual(sum(q['tasks'][0]['type']=='entrelumen:campaign' for q in compiled['quests']),4)
   self.assert_act_rewards(compiled,5)
   for q in compiled['quests']:
@@ -382,13 +382,13 @@ class ChapterContracts(unittest.TestCase):
    'world_network':('three paper and one copper ingot','tres papeles y un lingote de cobre'),
    'world_optional_panel':('ComputerCraft','ComputerCraft')}
   for key,terms in required.items():
-   for locale,term in zip(('en_us','es_es'),terms):self.assertIn(term,source[key][locale][1])
+   for locale,term in zip(('en_us','es_es'),terms):self.assertIn(term,desc(source[key],locale))
   for key in ('world_buffer_trial','world_renewal_trial','world_habitation_trial','world_optional_panel'):
    self.assertEqual(source[key]['type'],'checkmark');self.assertTrue(source[key]['optional'])
-   self.assertIn('self-reported',source[key]['en_us'][1]);self.assertIn('autoevaluado',source[key]['es_es'][1])
+   self.assertIn('self-reported',desc(source[key],'en_us'));self.assertIn('autoevaluado',desc(source[key],'es_es'))
   for q in source.values():
    for locale in ('en_us','es_es'):
-    for value in q[locale]:
+    for value in copy_texts(q,locale):
      self.assertNotIn('\ufffd',value);self.assertNotIn('\u00c3',value)
  def test_act_five_optional_practice_cannot_gate_campaign(self):
   quests={q['key']:q for chapter in self.chapters for q in chapter['quests']}
@@ -423,7 +423,7 @@ class ChapterContracts(unittest.TestCase):
   # Ark v2 (25 September 2026): no batches; one module per act, delivered by an Atlas project of that act.
   chapter=self.chapters[5]
   self.assertEqual(chapter['chapter'],'last_horizon')
-  self.assertEqual(len(chapter['quests']),11)
+  self.assertEqual(len(counted(chapter)),11)
   source={q['milestone']:q for q in chapter['quests'] if 'milestone' in q}
   self.assertEqual(set(source),set(chapter['milestones']))
   self.assertEqual(set(source),{'end_arrival','logistics_module','engineering_module','last_horizon'})
@@ -457,7 +457,7 @@ class ChapterContracts(unittest.TestCase):
   out=generate_all(self.chapters)
   compiled=json.loads(out[OUT/'chapters/last_horizon.snbt'])
   mapping=json.loads(out[ROOT/'content/campaign_task_ids.json'])
-  self.assertEqual(len(compiled['quests']),11)
+  self.assertEqual(len(content(compiled['quests'])),11)
   self.assertEqual(semantic_digest(out[OUT/'chapters/last_horizon.snbt']),SEMANTIC['last_horizon'])
   # 55 before Ark v2 (25 September 2026), minus the six batch milestones.
   self.assertEqual(len(mapping),49)
@@ -476,10 +476,10 @@ class ChapterContracts(unittest.TestCase):
    'horizon_end_arrival':('server witnesses real entry','servidor observa la entrada'),
    'horizon_last':('crouch and interact','agachate e interactuá')}
   for key,terms in required.items():
-   for locale,term in zip(('en_us','es_es'),terms):self.assertIn(term,source[key][locale][1])
+   for locale,term in zip(('en_us','es_es'),terms):self.assertIn(term,desc(source[key],locale))
   for q in source.values():
    for locale in ('en_us','es_es'):
-    for value in q[locale]:
+    for value in copy_texts(q,locale):
      self.assertNotIn('\ufffd',value);self.assertNotIn('\u00c3',value)
  # Lore rewrite of 24 September 2026 (docs/design/story-bible.md, docs/design/quest-lore.md).
  def act_text(self,data,locale):
@@ -540,29 +540,29 @@ class ChapterContracts(unittest.TestCase):
    ['engineering_module','logistics_module','renewal_engine','resilient_backbone','settlement_supply','world_network'])
   sixth=self.chapters[6]
   missions=['solsticio_arrival',*SOLSTICIO_STORY]
-  self.assertEqual((sixth['chapter'],sixth['milestones'],[q['key'] for q in sixth['quests']]),('solsticio',missions,missions))
+  self.assertEqual((sixth['chapter'],sixth['milestones'],[q['key'] for q in counted(sixth)]),('solsticio',missions,missions))
   entry=sixth['quests'][0]
   self.assertEqual((entry['deps'],entry['milestone'],entry['layout']['shape']),(['horizon_last'],'solsticio_arrival','hexagon'))
-  for locale,term in (('en_us','Light Key'),('es_es','Llave de Luz')):self.assertIn(term,entry[locale][1])
+  for locale,term in (('en_us','Light Key'),('es_es','Llave de Luz')):self.assertIn(term,desc(entry,locale))
  def test_act_six_missions_name_their_people_and_relics(self):
   # docs/design/act-six.md: eleven missions, one final, every mission a campaign milestone in the book.
-  quests={q['key']:q for q in self.chapters[6]['quests']}
+  quests={q['key']:q for q in counted(self.chapters[6])}
   self.assertEqual(len(quests),11)
   self.assertTrue(all(q['milestone']==key and q['layout']['shape']=='hexagon' and not q.get('optional') for key,q in quests.items()))
   who={'solsticio_mayor':'Aurelia','solsticio_seeds':'Juan','solsticio_harvest':'Juan','solsticio_power':'Terra',
        'solsticio_terraprism':'Terra','solsticio_good_works':'Bodhi','solsticio_blessing':'Bodhi',
        'solsticio_accord':'Aurelia','solsticio_elections':'Aurelia'}
   for key,name in who.items():
-   for locale in ('en_us','es_es'):self.assertIn(name,quests[key][locale][1],key)
+   for locale in ('en_us','es_es'):self.assertIn(name,desc(quests[key],locale),key)
   names={locale:json.loads((ROOT/f'companion/src/main/resources/assets/entrelumen/lang/{locale}.json').read_text(encoding='utf-8'))
          for locale in ('en_us','es_es')}
   for key,relic in (('solsticio_harvest',1),('solsticio_terraprism',2),('solsticio_blessing',3)):
    self.assertEqual(quests[key]['icon'],f'entrelumen:heliodor_relic_{relic}')
    for locale in ('en_us','es_es'):
-    self.assertIn(names[locale][f'item.entrelumen.heliodor_relic_{relic}'].lower(),quests[key][locale][1].lower(),key)
+    self.assertIn(names[locale][f'item.entrelumen.heliodor_relic_{relic}'].lower(),desc(quests[key],locale).lower(),key)
   for locale,terms in (('en_us',('Heart of Heliodor','Broken Light Key','Luminosity','Generator Coils','Advanced Solar Heating Plates')),
                        ('es_es',('Corazón de Heliodor','Llave de Luz rota','Luminosidad','bobinas del generador','placas solares avanzadas'))):
-   text='\n'.join(q[locale][1] for q in quests.values())
+   text='\n'.join(desc(q,locale) for q in quests.values())
    for term in terms:self.assertIn(term,text)
   # The last mission closes the story.
   self.assertEqual(self.chapters[6]['milestones'][-1],'solsticio_elections')
