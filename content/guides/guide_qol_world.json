@@ -4,328 +4,309 @@
   "act": "any",
   "icon": "minecraft:iron_pickaxe",
   "emblem": "minecraft:textures/item/iron_pickaxe.png",
-  "title": {
-    "en_us": "Helpers in the World",
-    "es_es": "Ayudas en el mundo"
-  },
+  "title": {"en_us": "Helpers in the World", "es_es": "Ayudas en el mundo"},
   "subtitle": {
     "en_us": "Ultimine, Carry On, beds for the road and small fixes.",
     "es_es": "Ultimine, Carry On, camas de viaje y arreglos chicos."
   },
+  "presentation": 2,
+  "motif": "gadgets",
   "quests": [
     {
-      "key": "qol_world_welcome",
-      "deps": [],
-      "type": "checkmark",
-      "layout": {
-        "x": 0,
-        "y": 0,
-        "size": 2.0,
-        "shape": "hexagon"
-      },
-      "en_us": [
-        "Work Smarter Outside",
-        "Inventory helpers save clicks; these save hours. Mining veins, moving chests and sleeping far from home, each with a limit the pack sets.\n\nKnow the limit and nothing surprises you. Mostly.\n\n[quest:qol_world_villagers|Pocket villagers], [quest:qol_world_elevators|elevators] and [quest:qol_world_torchmaster|lights you can't see] hang with the gadgets."
-      ],
-      "es_es": [
-        "Trabajá mejor afuera",
-        "Las ayudas de inventario ahorran clics; estas ahorran horas. Minar vetas, mudar cofres y dormir lejos de casa, cada una con un límite que fija el pack.\n\nConocé el límite y nada te sorprende. Casi nada.\n\n[quest:qol_world_villagers|Los aldeanos de bolsillo], [quest:qol_world_elevators|los ascensores] y [quest:qol_world_torchmaster|las luces que no se ven] cuelgan con los aparatos."
-      ],
-      "sources": [
-        "repo:docs/design/qol-parity.md",
-        "repo:content/sectors/sector_gadgets.json"
-      ]
+      "key": "qol_world_welcome", "deps": [], "type": "checkmark", "layout": {"x": 0, "y": 0, "size": 2.0, "shape": "hexagon"},
+      "en_us": {"title": "Work Smarter Outside", "subtitle": "Know the limit and nothing surprises you. Mostly.",
+        "text": ["[lead] Inventory helpers save clicks; these save hours.",
+                 "[li] Mining whole veins",
+                 "[li] Moving chests",
+                 "[li] Sleeping far from home",
+                 "Each one has a limit the pack sets.",
+                 "[quest:qol_world_villagers|Pocket villagers], [quest:qol_world_elevators|elevators] and [quest:qol_world_torchmaster|lights you can't see] hang with the gadgets."]},
+      "es_es": {"title": "Trabajá mejor afuera", "subtitle": "Conocé el límite y nada te sorprende. Casi nada.",
+        "text": ["[lead] Las ayudas de inventario ahorran clics; estas ahorran horas.",
+                 "[li] Minar vetas enteras",
+                 "[li] Mudar cofres",
+                 "[li] Dormir lejos de casa",
+                 "Cada una tiene un límite que fija el pack.",
+                 "[quest:qol_world_villagers|Los aldeanos de bolsillo], [quest:qol_world_elevators|los ascensores] y [quest:qol_world_torchmaster|las luces que no se ven] cuelgan con los aparatos."]},
+      "sources": ["repo:docs/design/qol-parity.md", "repo:content/sectors/sector_gadgets.json"]
     },
     {
-      "key": "qol_world_ultimine",
-      "deps": [
-        "qol_world_welcome"
-      ],
-      "type": "checkmark",
+      "key": "qol_world_ultimine", "deps": ["qol_world_welcome"], "type": "checkmark", "layout": {"x": 3, "y": -2, "size": 1.5, "shape": "square"},
       "icon": "minecraft:diamond_pickaxe",
-      "layout": {
-        "x": 3,
-        "y": -2,
-        "size": 1.5,
-        "shape": "square"
-      },
-      "en_us": [
-        "Ultimine: One Swing, One Vein",
-        "Hold &eV&r and break a block: every connected block of the same kind goes with it, up to the reach of your vein resonator (&e8&r, &e16&r, &e32&r or &e64&r blocks by tier); it goes in a Curios charm slot, and without one Ultimine is off. Each extra block costs hunger and tool durability, so eat and bring a good pick; the HUD warns when you are too hungry.\n\nIt respects claims and ruins."
-      ],
-      "es_es": [
-        "Ultimine: un golpe, una veta",
-        "Mantené &eV&r y rompé un bloque: todos los conectados del mismo tipo caen con él, hasta el alcance de tu resonador de vetas (&e8&r, &e16&r, &e32&r o &e64&r bloques según el tier); va en un slot de amuleto de Curios y sin él Ultimine no anda. Cada bloque extra cuesta hambre y durabilidad, así que comé y llevá un buen pico; el HUD avisa cuando tenés demasiada hambre.\n\nRespeta los reclamos y las ruinas."
-      ],
-      "sources": [
-        "jar:ftb-ultimine-neoforge-2101.1.15.jar:dev/ftb/mods/ftbultimine/config/FTBUltimineServerConfig.class",
-        "jar:ftb-ultimine-neoforge-2101.1.15.jar:assets/ftbultimine/lang/en_us.json",
-        "repo:pack/config/defaultoptions/keybindings.txt",
-        "repo:docs/design/progression-functions.md",
-        "repo:pack/config/ftbultimine-server.snbt"
-      ]
+      "en_us": {"title": "Ultimine: One Swing, One Vein",
+        "text": ["[lead] Hold [key:key.ftbultimine] and break a block: every connected block of the same kind goes with it.",
+                 "The reach comes from your [item:entrelumen:vein_resonator_1|vein resonator], worn in a Curios charm slot: [hl|8], [hl|16], [hl|32] or [hl|64] blocks by tier. Without one, Ultimine is off.",
+                 "{page}",
+                 "[careful] Each extra block costs hunger and tool durability: eat first and bring a good pick.",
+                 "The HUD warns you when you are too hungry.",
+                 "[note] It respects claims and ruins."]},
+      "es_es": {"title": "Ultimine: un golpe, una veta",
+        "text": ["[lead] Mantené [key:key.ftbultimine] y rompé un bloque: todos los conectados del mismo tipo caen con él.",
+                 "El alcance sale de tu [item:entrelumen:vein_resonator_1|resonador de vetas], en un slot de amuleto de Curios: [hl|8], [hl|16], [hl|32] o [hl|64] bloques según el tier. Sin él, Ultimine no anda.",
+                 "{page}",
+                 "[careful] Cada bloque extra cuesta hambre y durabilidad: comé primero y llevá un buen pico.",
+                 "El HUD avisa cuando tenés demasiada hambre.",
+                 "[note] Respeta los reclamos y las ruinas."]},
+      "sources": ["jar:ftb-ultimine-neoforge-2101.1.15.jar:dev/ftb/mods/ftbultimine/config/FTBUltimineServerConfig.class", "jar:ftb-ultimine-neoforge-2101.1.15.jar:assets/ftbultimine/lang/en_us.json", "repo:pack/config/defaultoptions/keybindings.txt", "repo:docs/design/progression-functions.md", "repo:pack/config/ftbultimine-server.snbt"]
     },
     {
-      "key": "qol_world_ultimine_shapes",
-      "deps": [
-        "qol_world_ultimine"
-      ],
-      "type": "checkmark",
-      "optional": true,
-      "layout": {
-        "x": 6,
-        "y": -4,
-        "size": 1.0,
-        "shape": "diamond"
-      },
-      "en_us": [
-        "Ultimine Shapes",
-        "With V held, &eShift&r and the wheel (or up and down) cycle shapes: &eShapeless&r follows the vein (ores, trees), &eSmall&r and &eLarge tunnel (3x3)&r dig corridors, &eSmall square (3x3)&r clears flat ground, and &eMining&r and &eEscape tunnel&r do branch mining and a staircase up.\n\nThe outline shows what breaks before you swing."
-      ],
-      "es_es": [
-        "Formas de Ultimine",
-        "Con V apretada, &eShift&r y la rueda (o arriba y abajo) cambian la forma: &eSin forma&r sigue la veta (minerales, árboles), &eTúnel chico&r y &egrande (3x3)&r cavan pasillos, &eCuadrado chico (3x3)&r limpia un plano, y &eTúnel minero&r y &ede escape&r hacen minería en ramas y una escalera hacia arriba.\n\nEl contorno muestra lo que se rompe antes del golpe."
-      ],
-      "sources": [
-        "jar:ftb-ultimine-neoforge-2101.1.15.jar:assets/ftbultimine/lang/en_us.json"
-      ]
+      "key": "qol_world_ultimine_shapes", "deps": ["qol_world_ultimine"], "type": "checkmark", "optional": true, "layout": {"x": 6, "y": -4, "size": 1.0, "shape": "diamond"},
+      "en_us": {"title": "Ultimine Shapes",
+        "text": ["[lead] With [key:key.ftbultimine] held, [hl|Shift] and the wheel (or up and down) cycle the shape.",
+                 "[li] [hl|Shapeless]: follows the vein (ores, trees)",
+                 "[li] [hl|Small] and [hl|Large tunnel (3x3)]: dig corridors",
+                 "[li] [hl|Small square (3x3)]: clears flat ground",
+                 "[li] [hl|Mining] and [hl|Escape tunnel]: branch mining and a staircase up",
+                 "{page}",
+                 "[tip] The outline shows what breaks before you swing."]},
+      "es_es": {"title": "Formas de Ultimine",
+        "text": ["[lead] Con [key:key.ftbultimine] apretada, [hl|Shift] y la rueda (o arriba y abajo) cambian la forma.",
+                 "[li] [hl|Sin forma]: sigue la veta (minerales, árboles)",
+                 "[li] [hl|Túnel chico] y [hl|grande (3x3)]: cavan pasillos",
+                 "[li] [hl|Cuadrado chico (3x3)]: limpia un plano",
+                 "[li] [hl|Túnel minero] y [hl|de escape]: minería en ramas y una escalera hacia arriba",
+                 "{page}",
+                 "[tip] El contorno muestra lo que se rompe antes del golpe."]},
+      "sources": ["jar:ftb-ultimine-neoforge-2101.1.15.jar:assets/ftbultimine/lang/en_us.json"]
     },
     {
-      "key": "qol_world_ultimine_rightclick",
-      "deps": [
-        "qol_world_ultimine"
-      ],
-      "type": "checkmark",
+      "key": "qol_world_ultimine_rightclick", "deps": ["qol_world_ultimine"], "type": "checkmark", "layout": {"x": 6, "y": -1, "size": 1.0, "shape": "circle"},
       "icon": "minecraft:iron_hoe",
-      "layout": {
-        "x": 6,
-        "y": -1,
-        "size": 1.0,
-        "shape": "circle"
-      },
-      "en_us": [
-        "Ultimine With Right Click",
-        "With V held, right-click actions multiply too: an &eaxe&r strips logs or scrapes and unwaxes copper, a &eshovel&r makes paths, a &ehoe&r tills a whole field, and on crops it harvests every ripe one in reach.\n\nEven without V, right-clicking a ripe crop harvests it."
-      ],
-      "es_es": [
-        "Ultimine con clic derecho",
-        "Con V apretada, el clic derecho también se multiplica: el &ehacha&r descorteza troncos o raspa y desencera cobre, la &epala&r hace caminos, la &eazada&r ara un campo entero, y sobre cultivos cosecha todos los maduros al alcance.\n\nAun sin V, clic derecho sobre un cultivo maduro lo cosecha."
-      ],
-      "sources": [
-        "jar:ftb-ultimine-neoforge-2101.1.15.jar:dev/ftb/mods/ftbultimine/config/FTBUltimineServerConfig.class"
-      ]
+      "en_us": {"title": "Ultimine With Right Click",
+        "text": ["[lead] With [key:key.ftbultimine] held, right-click actions multiply too.",
+                 "[li] [icon:right_click] An [hl|axe] strips logs, or scrapes and unwaxes copper",
+                 "[li] [icon:right_click] A [hl|shovel] makes paths",
+                 "[li] [icon:right_click] A [hl|hoe] tills a whole field",
+                 "[li] [icon:right_click] On crops, it harvests every ripe one in reach",
+                 "[tip] Even without [key:key.ftbultimine], right-clicking a ripe crop harvests it."]},
+      "es_es": {"title": "Ultimine con clic derecho",
+        "text": ["[lead] Con [key:key.ftbultimine] apretada, el clic derecho también se multiplica.",
+                 "[li] [icon:right_click] El [hl|hacha] descorteza troncos, o raspa y desencera cobre",
+                 "[li] [icon:right_click] La [hl|pala] hace caminos",
+                 "[li] [icon:right_click] La [hl|azada] ara un campo entero",
+                 "[li] [icon:right_click] Sobre cultivos, cosecha todos los maduros al alcance",
+                 "[tip] Aun sin [key:key.ftbultimine], el clic derecho sobre un cultivo maduro lo cosecha."]},
+      "sources": ["jar:ftb-ultimine-neoforge-2101.1.15.jar:dev/ftb/mods/ftbultimine/config/FTBUltimineServerConfig.class"]
     },
     {
-      "key": "qol_world_carry",
-      "deps": [
-        "qol_world_welcome"
-      ],
-      "type": "checkmark",
+      "key": "qol_world_carry", "deps": ["qol_world_welcome"], "type": "checkmark", "layout": {"x": 3, "y": 2, "size": 1.5, "shape": "square"},
       "icon": "minecraft:chest",
-      "layout": {
-        "x": 3,
-        "y": 2,
-        "size": 1.5,
-        "shape": "square"
-      },
-      "en_us": [
-        "Carry On: Pick Up a Chest",
-        "With an &eempty hand&r, &esneak and right-click&r a chest, furnace or barrel to lift it with everything inside, and right-click again to set it down; passive animals and villagers ride along too.\n\nYou move slower, heavier blocks slow you more, and you cannot attack. Only blocks with an inventory lift."
-      ],
-      "es_es": [
-        "Carry On: levantá un cofre",
-        "Con la &emano vacía&r, &eagachate y hacé clic derecho&r en un cofre, horno o barril para levantarlo con todo adentro, y clic derecho otra vez para apoyarlo; también cargás animales pacíficos y aldeanos.\n\nVas más lento, los bloques más pesados te frenan más y no podés atacar. Sólo se levantan bloques con inventario."
-      ],
-      "sources": [
-        "repo:pack/config/carryon-common.toml",
-        "jar:carryon-neoforge-1.21.1-2.2.6.13.jar:META-INF/neoforge.mods.toml"
-      ]
+      "en_us": {"title": "Carry On: Pick Up a Chest",
+        "text": ["[lead] Lift a chest with everything inside, and set it down somewhere else.",
+                 "[li] With an [hl|empty hand], sneak and [icon:right_click] right-click a [item:minecraft:chest|chest], furnace or barrel to lift it",
+                 "[li] Right-click again to set it down",
+                 "[li] Passive animals and villagers ride along too",
+                 "{page}",
+                 "[careful] You move slower, heavier blocks slow you more, and you cannot attack.",
+                 "Only blocks with an inventory lift."]},
+      "es_es": {"title": "Carry On: levantá un cofre",
+        "text": ["[lead] Levantá un cofre con todo adentro y apoyalo en otro lado.",
+                 "[li] Con la [hl|mano vacía], agachate y hacé [icon:right_click] clic derecho en un [item:minecraft:chest|cofre], horno o barril para levantarlo",
+                 "[li] Clic derecho otra vez para apoyarlo",
+                 "[li] También cargás animales pacíficos y aldeanos",
+                 "{page}",
+                 "[careful] Vas más lento, los bloques más pesados te frenan más y no podés atacar.",
+                 "Sólo se levantan bloques con inventario."]},
+      "sources": ["repo:pack/config/carryon-common.toml", "jar:carryon-neoforge-1.21.1-2.2.6.13.jar:META-INF/neoforge.mods.toml"]
     },
     {
-      "key": "qol_world_carry_limits",
-      "deps": [
-        "qol_world_carry"
-      ],
-      "type": "checkmark",
+      "key": "qol_world_carry_limits", "deps": ["qol_world_carry"], "type": "checkmark", "layout": {"x": 6, "y": 2, "size": 1.0, "shape": "pentagon"},
       "icon": "minecraft:barrier",
-      "layout": {
-        "x": 6,
-        "y": 2,
-        "size": 1.0,
-        "shape": "pentagon"
-      },
-      "en_us": [
-        "What Carry On Refuses",
-        "A long blacklist keeps things from breaking: every ENTRELUMEN block, spawners, vaults and Lootr chests; whole mods with multiblocks or networks (Create, AE2, Refined Storage, MI, Oritech, IE, Industrial Foregoing, Powah, Functional and Sophisticated Storage, Ender Storage, Farmer's Delight, FramedBlocks, LittleTiles, Waystones); Mekanism casings and ports; Ender IO conduits; hostiles, bosses, frames and armor stands."
-      ],
-      "es_es": [
-        "Lo que Carry On no levanta",
-        "Una lista negra larga evita que se rompa algo: todos los bloques de ENTRELUMEN, spawners, bóvedas y cofres de Lootr; mods enteros con multibloques o redes (Create, AE2, Refined Storage, MI, Oritech, IE, Industrial Foregoing, Powah, Functional y Sophisticated Storage, Ender Storage, Farmer's Delight, FramedBlocks, LittleTiles, Waystones); carcasas y puertos de Mekanism; conductos de Ender IO; hostiles, jefes, marcos y soportes."
-      ],
-      "sources": [
-        "repo:pack/config/carryon-common.toml",
-        "repo:docs/design/mod-pingpong.md"
-      ]
+      "en_us": {"title": "What Carry On Refuses",
+        "text": ["[lead] A long blacklist keeps things from breaking.",
+                 "[li] Every ENTRELUMEN block, spawners, vaults and Lootr chests",
+                 "[li] Mekanism casings and ports, Ender IO conduits",
+                 "[li] Hostiles, bosses, frames and armor stands",
+                 "{page}",
+                 "Whole mods with multiblocks or networks: Create, AE2, Refined Storage, MI, Oritech, IE, Industrial Foregoing, Powah, Functional and Sophisticated Storage, Ender Storage, Farmer's Delight, FramedBlocks, LittleTiles, Waystones."]},
+      "es_es": {"title": "Lo que Carry On no levanta",
+        "text": ["[lead] Una lista negra larga evita que se rompa algo.",
+                 "[li] Todos los bloques de ENTRELUMEN, spawners, bóvedas y cofres de Lootr",
+                 "[li] Carcasas y puertos de Mekanism, conductos de Ender IO",
+                 "[li] Hostiles, jefes, marcos y soportes",
+                 "{page}",
+                 "Mods enteros con multibloques o redes: Create, AE2, Refined Storage, MI, Oritech, IE, Industrial Foregoing, Powah, Functional y Sophisticated Storage, Ender Storage, Farmer's Delight, FramedBlocks, LittleTiles, Waystones."]},
+      "sources": ["repo:pack/config/carryon-common.toml", "repo:docs/design/mod-pingpong.md"]
     },
     {
-      "key": "qol_world_carry_stack",
-      "deps": [
-        "qol_world_carry_limits"
-      ],
-      "type": "checkmark",
-      "optional": true,
-      "layout": {
-        "x": 9,
-        "y": 3.5,
-        "size": 1.0,
-        "shape": "diamond"
-      },
-      "en_us": [
-        "Quirk: Stacks, Players, Reach",
-        "Carried animals stack on top of each other, up to 10. Players can be picked up too, so behave in co-op. Pick-up distance follows your reach, so Terra's Arm stretches it as well.\n\nA tower of ten sheep is technically allowed."
-      ],
-      "es_es": [
-        "Particularidad: pilas y jugadores",
-        "Los animales cargados se apilan uno sobre otro, hasta 10. También se puede levantar a otros jugadores, así que portate bien en cooperativo. La distancia para levantar sigue tu alcance, así que el Brazo de Terra también la estira.\n\nUna torre de diez ovejas está técnicamente permitida."
-      ],
-      "sources": [
-        "repo:pack/config/carryon-common.toml"
-      ]
+      "key": "qol_world_carry_stack", "deps": ["qol_world_carry_limits"], "type": "checkmark", "optional": true, "layout": {"x": 9, "y": 2.5, "size": 1.0, "shape": "diamond"},
+      "en_us": {"title": "Quirk: Stacks, Players, Reach", "subtitle": "A tower of ten sheep is technically allowed.",
+        "text": ["[lead] Carried animals stack on top of each other, up to [hl|10].",
+                 "[li] Players can be picked up too, so behave in co-op",
+                 "[li] Pick-up distance follows your reach, so Terra's Arm stretches it as well"]},
+      "es_es": {"title": "Particularidad: pilas y jugadores", "subtitle": "Una torre de diez ovejas está técnicamente permitida.",
+        "text": ["[lead] Los animales cargados se apilan uno sobre otro, hasta [hl|10].",
+                 "[li] También se puede levantar a otros jugadores, así que portate bien en cooperativo",
+                 "[li] La distancia para levantar sigue tu alcance, así que el Brazo de Terra también la estira"]},
+      "sources": ["repo:pack/config/carryon-common.toml"]
     },
     {
-      "key": "qol_world_sleep",
-      "deps": [
-        "qol_world_ultimine_rightclick",
-        "qol_world_carry"
-      ],
-      "type": "item",
-      "item": "comforts:sleeping_bag_red",
-      "layout": {
-        "x": 12,
-        "y": 2,
-        "size": 1.0,
-        "shape": "circle"
-      },
-      "en_us": [
-        "Beds for the Road",
-        "&eComforts&r adds the &eSleeping Bag&r, for nights far from home (it can wear out), and the &eHammock&r, hung between two &eRope and Nail&r blocks, for sleeping through the day.\n\nThe server decides how many players must sleep to skip time. Somebody will always be mining."
-      ],
-      "es_es": [
-        "Camas para el camino",
-        "&eComforts&r suma la &eBolsa de dormir&r, para las noches lejos de casa (se puede gastar), y la &eHamaca&r, colgada entre dos bloques de &eSoga y clavo&r, para dormir de día.\n\nEl servidor decide cuántos tienen que dormir para saltar el tiempo. Siempre hay uno minando."
-      ],
-      "sources": [
-        "jar:comforts-neoforge-9.0.5+1.21.1.jar:assets/comforts/lang/en_us.json",
-        "jar:comforts-neoforge-9.0.5+1.21.1.jar:com/illusivesoulworks/comforts/common/ComfortsConfig$Server.class"
-      ]
+      "key": "qol_world_sleep", "deps": ["qol_world_ultimine_rightclick", "qol_world_carry"], "type": "item", "item": "comforts:sleeping_bag_red", "layout": {"x": 12, "y": 2, "size": 1.0, "shape": "circle"},
+      "en_us": {"title": "Beds for the Road", "subtitle": "Somebody will always be mining.",
+        "text": ["[lead] Sleep anywhere with a bag, and through the day in a hammock.",
+                 "[li] The [item:comforts:sleeping_bag_red|Sleeping Bag] is for nights far from home, and it can wear out",
+                 "[li] The [hl|Hammock], hung between two [item:comforts:rope_and_nail|Rope and Nail] blocks, is for sleeping through the day",
+                 "The server decides how many players must sleep to skip time."]},
+      "es_es": {"title": "Camas para el camino", "subtitle": "Siempre hay uno minando.",
+        "text": ["[lead] Dormí donde sea con una bolsa, y de día en una hamaca.",
+                 "[li] La [item:comforts:sleeping_bag_red|Bolsa de dormir] es para las noches lejos de casa, y se puede gastar",
+                 "[li] La [hl|Hamaca], colgada entre dos bloques de [item:comforts:rope_and_nail|Soga y clavo], es para dormir de día",
+                 "El servidor decide cuántos tienen que dormir para saltar el tiempo."]},
+      "sources": ["jar:comforts-neoforge-9.0.5+1.21.1.jar:assets/comforts/lang/en_us.json", "jar:comforts-neoforge-9.0.5+1.21.1.jar:com/illusivesoulworks/comforts/common/ComfortsConfig$Server.class"]
     },
     {
-      "key": "qol_world_small_fixes",
-      "deps": [
-        "qol_world_sleep"
-      ],
-      "type": "checkmark",
+      "key": "qol_world_small_fixes", "deps": ["qol_world_sleep"], "type": "checkmark", "layout": {"x": 15, "y": 0, "size": 1.25, "shape": "square"},
       "icon": "minecraft:sweet_berries",
-      "layout": {
-        "x": 15,
-        "y": 0,
-        "size": 1.25,
-        "shape": "square"
-      },
-      "en_us": [
-        "Small Fixes You Will Notice",
-        "&eClean Swing&r hits mobs through tall grass, &eHey Berry Shut Up&r lets leggings and boots shrug off berry bushes and cactus, &eAccelerated Decay&r drops leaves fast after you fell a tree, boats hop ashore or survive lava (Jump Boat, Fireproof Boats), and &eJust Zoom&r zooms on &eZ&r."
-      ],
-      "es_es": [
-        "Arreglos chicos que vas a notar",
-        "&eClean Swing&r golpea a los mobs a través del pasto alto, &eHey Berry Shut Up&r deja que pantalones y botas ignoren arbustos de bayas y cactus, &eAccelerated Decay&r hace caer rápido las hojas después de talar, los botes saltan a la orilla o resisten la lava (Jump Boat, Fireproof Boats) y &eJust Zoom&r hace zoom con &eZ&r."
-      ],
-      "sources": [
-        "repo:docs/design/small-qol-family.md",
-        "repo:docs/design/qol-batch-one.md",
-        "jar:heyberryshutup-1.21.0-2.0.4.jar:cy/jdkdigital/heyberryshutup/Config$Common.class",
-        "jar:justzoom_neoforge_2.1.0_MC_1.21.1.jar:de/keksuccino/justzoom/KeyMappings.class"
-      ]
+      "en_us": {"title": "Small Fixes You Will Notice",
+        "text": ["[lead] Six small mods fix small annoyances.",
+                 "[li] [hl|Clean Swing]: hits mobs through tall grass",
+                 "[li] [hl|Hey Berry Shut Up]: leggings and boots ignore berry bushes and cactus",
+                 "[li] [hl|Accelerated Decay]: leaves drop fast after felling",
+                 "[li] [hl|Jump Boat] and [hl|Fireproof Boats]: hop ashore, survive lava",
+                 "[li] [hl|Just Zoom]: zoom with [key:justzoom.keybinds.keybind.zoom]"]},
+      "es_es": {"title": "Arreglos chicos que vas a notar",
+        "text": ["[lead] Seis mods chicos arreglan molestias chicas.",
+                 "[li] [hl|Clean Swing]: golpea mobs a través del pasto alto",
+                 "[li] [hl|Hey Berry Shut Up]: pantalones y botas ignoran arbustos de bayas y cactus",
+                 "[li] [hl|Accelerated Decay]: las hojas caen rápido al talar",
+                 "[li] [hl|Jump Boat] y [hl|Fireproof Boats]: saltan a la orilla, resisten la lava",
+                 "[li] [hl|Just Zoom]: zoom con [key:justzoom.keybinds.keybind.zoom]"]},
+      "sources": ["repo:docs/design/small-qol-family.md", "repo:docs/design/qol-batch-one.md", "jar:heyberryshutup-1.21.0-2.0.4.jar:cy/jdkdigital/heyberryshutup/Config$Common.class", "jar:justzoom_neoforge_2.1.0_MC_1.21.1.jar:de/keksuccino/justzoom/KeyMappings.class"]
     },
     {
-      "key": "qol_world_dummy",
-      "deps": [
-        "qol_world_small_fixes"
-      ],
-      "type": "checkmark",
+      "key": "qol_world_dummy", "deps": ["qol_world_small_fixes"], "type": "checkmark", "optional": true, "layout": {"x": 16.6, "y": 2.6, "size": 1.0, "shape": "circle"},
       "icon": "dummmmmmy:target_dummy",
-      "optional": true,
-      "layout": {
-        "x": 15,
-        "y": 3.5,
-        "size": 1.0,
-        "shape": "circle"
-      },
-      "en_us": [
-        "Tip: Test Your Damage",
-        "Hit numbers, damage per second and a dummy that never dies: [quest:creatures_welcome|the training yard]."
-      ],
-      "es_es": [
-        "Truco: probá tu daño",
-        "Los números de cada golpe, el daño por segundo y un muñeco que nunca muere: [quest:creatures_welcome|el patio de práctica]."
-      ],
-      "sources": [
-        "repo:content/sectors/sector_creatures.json#creatures_welcome",
-        "jar:dummmmmmy-neoforge-1.21-2.1.0.jar:assets/dummmmmmy/lang/en_us.json"
-      ]
+      "en_us": {"title": "Tip: Test Your Damage",
+        "text": ["[tip] Hit numbers, damage per second and a dummy that never dies: [quest:creatures_welcome|the training yard]."]},
+      "es_es": {"title": "Truco: probá tu daño",
+        "text": ["[tip] Los números de cada golpe, el daño por segundo y un muñeco que nunca muere: [quest:creatures_welcome|el patio de práctica]."]},
+      "sources": ["repo:content/sectors/sector_creatures.json#creatures_welcome", "jar:dummmmmmy-neoforge-1.21-2.1.0.jar:assets/dummmmmmy/lang/en_us.json"]
     },
     {
-      "key": "qol_world_peace_link",
-      "deps": [
-        "qol_world_small_fixes"
-      ],
-      "type": "checkmark",
-      "optional": true,
+      "key": "qol_world_peace_link", "deps": ["qol_world_small_fixes"], "type": "checkmark", "optional": true, "layout": {"x": 15, "y": -3.5, "size": 1.0, "shape": "diamond"},
       "icon": "entrelumen:peace_altar",
-      "layout": {
-        "x": 15,
-        "y": -3.5,
-        "size": 1.0,
-        "shape": "diamond"
-      },
-      "en_us": [
-        "Tip: Safe Zones Come Later",
-        "A whole base free of natural hostile spawns is the &eAltar of Peace&r, an act III reward (see The Six Altars of Heliodor).\n\nUntil then, light is your friend: &eF7&r shows where mobs can spawn."
-      ],
-      "es_es": [
-        "Truco: la paz llega después",
-        "Una base entera sin apariciones hostiles naturales es el &eAltar de Paz&r, recompensa del acto III (mirá Los seis altares de Heliodor).\n\nHasta entonces, la luz es tu amiga: &eF7&r muestra dónde pueden aparecer mobs."
-      ],
-      "sources": [
-        "repo:docs/design/ark-altars.md",
-        "repo:companion/src/main/java/dev/entrelumen/PeaceAltarEntity.java"
-      ]
+      "en_us": {"title": "Tip: Safe Zones Come Later",
+        "text": ["[tip] Until then, light is your friend: [key:key.moreoverlays.lightoverlay.desc] shows where mobs can spawn.",
+                 "A whole base free of natural hostile spawns is the [item:entrelumen:peace_altar|Altar of Peace], an act III reward (see [chapter:guide_entrelumen_altars|The Six Altars of Heliodor])."]},
+      "es_es": {"title": "Truco: la paz llega después",
+        "text": ["[tip] Hasta entonces, la luz es tu amiga: [key:key.moreoverlays.lightoverlay.desc] muestra dónde pueden aparecer mobs.",
+                 "Una base entera sin apariciones hostiles naturales es el [item:entrelumen:peace_altar|Altar de Paz], recompensa del acto III (mirá [chapter:guide_entrelumen_altars|Los seis altares de Heliodor])."]},
+      "sources": ["repo:docs/design/ark-altars.md", "repo:companion/src/main/java/dev/entrelumen/PeaceAltarEntity.java"]
     },
     {
-      "key": "qol_world_close",
-      "deps": [
-        "qol_world_small_fixes"
-      ],
-      "type": "checkmark",
+      "key": "qol_world_close", "deps": ["qol_world_small_fixes"], "type": "checkmark", "layout": {"x": 18, "y": 0, "size": 2.0, "shape": "hexagon"},
       "icon": "minecraft:lantern",
-      "layout": {
-        "x": 18,
-        "y": 0,
-        "size": 2.0,
-        "shape": "hexagon"
-      },
-      "en_us": [
-        "A Lighter World",
-        "Veins in one swing, chests on your back and a bed anywhere.\n\nThe world is just as big. It just weighs less now.\n\nThe rest of the toolbox: [chapter:sector_gadgets|Gadgets and Helpers]."
-      ],
-      "es_es": [
-        "Un mundo más liviano",
-        "Vetas de un golpe, cofres a cuestas y una cama en cualquier lado.\n\nEl mundo sigue igual de grande. Sólo pesa menos.\n\nEl resto de la caja de herramientas: [chapter:sector_gadgets|Aparatos y ayudantes]."
-      ],
-      "sources": [
-        "repo:content/guides/README.md",
-        "repo:content/sectors/sector_gadgets.json"
-      ]
+      "en_us": {"title": "A Lighter World",
+        "text": ["[lead] Veins in one swing, chests on your back and a bed anywhere.",
+                 "The world is just as big. It just weighs less now.",
+                 "The rest of the toolbox: [chapter:sector_gadgets|Gadgets and Helpers]."]},
+      "es_es": {"title": "Un mundo más liviano",
+        "text": ["[lead] Vetas de un golpe, cofres a cuestas y una cama en cualquier lado.",
+                 "El mundo sigue igual de grande. Sólo pesa menos.",
+                 "El resto de la caja de herramientas: [chapter:sector_gadgets|Aparatos y ayudantes]."]},
+      "sources": ["repo:content/guides/README.md", "repo:content/sectors/sector_gadgets.json"]
+    },
+    {
+      "key": "qol_world_toy_hit", "role": "decor", "deps": [], "type": "checkmark", "optional": true, "layout": {"x": 20.7, "y": 0.4, "size": 1.5, "shape": "none"},
+      "icon": "minecraft:iron_sword",
+      "en_us": {"title": "Hit the Dummy",
+        "text": ["[lead] Swing at the dummy and the numbers fly.",
+                 "Each hit shows its damage, and it never dies, so you can test a new weapon in peace."]},
+      "es_es": {"title": "Pegale al muñeco",
+        "text": ["[lead] Pegale al muñeco y los números vuelan.",
+                 "Cada golpe muestra su daño, y no muere nunca, así que podés probar un arma nueva tranquilo."]},
+      "sources": ["jar:dummmmmmy-neoforge-1.21-2.1.0.jar:assets/dummmmmmy/lang/en_us.json"]
+    },
+    {
+      "key": "qol_world_toy_prickle", "role": "decor", "deps": [], "type": "checkmark", "optional": true, "layout": {"x": 14.2, "y": 2.7, "size": 1.5, "shape": "none"},
+      "icon": "minecraft:leather_boots",
+      "en_us": {"title": "Prickly Test",
+        "text": ["[lead] Walk through the bush in leggings and boots and it does not sting.",
+                 "Bare legs still feel every thorn."]},
+      "es_es": {"title": "Prueba de pinchos",
+        "text": ["[lead] Cruzá el arbusto con pantalones y botas y no pincha.",
+                 "Con las piernas al aire, cada espina se siente."]},
+      "sources": ["jar:heyberryshutup-1.21.0-2.0.4.jar:cy/jdkdigital/heyberryshutup/Config$Common.class"]
     }
+  ],
+  "art": [
+    {"id": "title", "text": {"en_us": "Helpers in the World", "es_es": "Ayudas en el mundo"}, "x": -3.0, "y": -8.2, "scale": 3, "align": "start", "tint": "#F2C14E"},
+    {"id": "bench", "frame": [-3.0, -6.6, 21.6, 11.6], "color": "#D9B98C", "alpha": 200, "thickness_px": 2.0, "fill": "#3A2C1E", "fill_alpha": 40, "corners": true, "reveal": "qol_world_welcome", "sketch": true, "order": -9},
+    {"id": "plank_0", "picture": "minecraft:textures/block/spruce_planks.png", "x": -1.9, "y": 10.8, "w": 2.2, "h": 1.0, "alpha": 210, "reveal": "qol_world_welcome", "order": -7},
+    {"id": "plank_1", "picture": "minecraft:textures/block/spruce_planks.png", "x": 0.30000000000000027, "y": 10.8, "w": 2.2, "h": 1.0, "alpha": 210, "reveal": "qol_world_welcome", "order": -7},
+    {"id": "plank_2", "picture": "minecraft:textures/block/spruce_planks.png", "x": 2.5000000000000004, "y": 10.8, "w": 2.2, "h": 1.0, "alpha": 210, "reveal": "qol_world_welcome", "order": -7},
+    {"id": "plank_3", "picture": "minecraft:textures/block/spruce_planks.png", "x": 4.700000000000001, "y": 10.8, "w": 2.2, "h": 1.0, "alpha": 210, "reveal": "qol_world_welcome", "order": -7},
+    {"id": "plank_4", "picture": "minecraft:textures/block/spruce_planks.png", "x": 6.9, "y": 10.8, "w": 2.2, "h": 1.0, "alpha": 210, "reveal": "qol_world_welcome", "order": -7},
+    {"id": "plank_5", "picture": "minecraft:textures/block/spruce_planks.png", "x": 9.1, "y": 10.8, "w": 2.2, "h": 1.0, "alpha": 210, "reveal": "qol_world_welcome", "order": -7},
+    {"id": "plank_6", "picture": "minecraft:textures/block/spruce_planks.png", "x": 11.3, "y": 10.8, "w": 2.2, "h": 1.0, "alpha": 210, "reveal": "qol_world_welcome", "order": -7},
+    {"id": "plank_7", "picture": "minecraft:textures/block/spruce_planks.png", "x": 13.500000000000002, "y": 10.8, "w": 2.2, "h": 1.0, "alpha": 210, "reveal": "qol_world_welcome", "order": -7},
+    {"id": "plank_8", "picture": "minecraft:textures/block/spruce_planks.png", "x": 15.700000000000001, "y": 10.8, "w": 2.2, "h": 1.0, "alpha": 210, "reveal": "qol_world_welcome", "order": -7},
+    {"id": "plank_9", "picture": "minecraft:textures/block/spruce_planks.png", "x": 17.900000000000002, "y": 10.8, "w": 2.2, "h": 1.0, "alpha": 210, "reveal": "qol_world_welcome", "order": -7},
+    {"id": "plank_10", "picture": "minecraft:textures/block/spruce_planks.png", "x": 20.1, "y": 10.8, "w": 2.2, "h": 1.0, "alpha": 210, "reveal": "qol_world_welcome", "order": -7},
+    {"id": "sky", "frame": [-2.4, -6.0, 21.0, 5.0], "color": "#8EC5F0", "alpha": 90, "thickness_px": 1.0, "fill": "#8EC5F0", "fill_alpha": 90, "corners": false, "reveal": "qol_world_welcome", "sketch": true, "order": -6},
+    {"id": "grass", "frame": [-2.4, 4.95, 21.0, 5.5], "color": "#5FA04A", "alpha": 230, "thickness_px": 1.0, "fill": "#5FA04A", "fill_alpha": 230, "corners": false, "reveal": "qol_world_welcome", "sketch": true, "order": -6},
+    {"id": "soil", "frame": [-2.4, 5.5, 21.0, 6.8], "color": "#7B5A3A", "alpha": 230, "thickness_px": 1.0, "fill": "#7B5A3A", "fill_alpha": 230, "corners": false, "reveal": "qol_world_welcome", "sketch": true, "order": -6},
+    {"id": "stone", "frame": [-2.4, 6.8, 21.0, 9.9], "color": "#6E7784", "alpha": 230, "thickness_px": 1.0, "fill": "#6E7784", "fill_alpha": 230, "corners": false, "reveal": "qol_world_welcome", "sketch": true, "order": -6},
+    {"id": "cloud_a", "mosaic": [0.6, -5.4], "cell": 0.35, "legend": {"W": "#F4F8FF"}, "alpha": 200, "rows": ["..WWW....", ".WWWWWW..", "WWWWWWWWW"], "reveal": "qol_world_welcome", "order": -5},
+    {"id": "cloud_b", "mosaic": [11.0, -5.7], "cell": 0.35, "legend": {"W": "#F4F8FF"}, "alpha": 200, "rows": ["...WWW...", ".WWWWWWW.", "WWWWWWWWW"], "reveal": "qol_world_welcome", "order": -5},
+    {"id": "pick_sil", "picture": "minecraft:textures/item/diamond_pickaxe.png", "x": 2.4, "y": 4.1, "w": 1.4, "h": 1.4, "tint": "#1B130D", "alpha": 90, "order": -3, "rotation": 0},
+    {"id": "pick", "item": "minecraft:diamond_pickaxe", "x": 2.4, "y": 4.1, "size": 1.4, "reveal": "qol_world_ultimine", "order": -2, "rotation": 0},
+    {"id": "ore_0", "picture": "minecraft:textures/block/diamond_ore.png", "x": 1.8, "y": 7.4, "w": 0.9, "h": 0.9, "reveal": "qol_world_ultimine", "sketch": true, "order": -4},
+    {"id": "ore_1", "picture": "minecraft:textures/block/diamond_ore.png", "x": 2.7, "y": 7.4, "w": 0.9, "h": 0.9, "reveal": "qol_world_ultimine", "sketch": true, "order": -4},
+    {"id": "ore_2", "picture": "minecraft:textures/block/diamond_ore.png", "x": 3.6, "y": 7.4, "w": 0.9, "h": 0.9, "reveal": "qol_world_ultimine", "sketch": true, "order": -4},
+    {"id": "ore_3", "picture": "minecraft:textures/block/diamond_ore.png", "x": 1.8, "y": 8.3, "w": 0.9, "h": 0.9, "reveal": "qol_world_ultimine", "sketch": true, "order": -4},
+    {"id": "ore_4", "picture": "minecraft:textures/block/diamond_ore.png", "x": 2.7, "y": 8.3, "w": 0.9, "h": 0.9, "reveal": "qol_world_ultimine", "sketch": true, "order": -4},
+    {"id": "ore_5", "picture": "minecraft:textures/block/diamond_ore.png", "x": 3.6, "y": 8.3, "w": 0.9, "h": 0.9, "reveal": "qol_world_ultimine", "sketch": true, "order": -4},
+    {"id": "vein_outline", "frame": [1.3, 6.95, 4.2, 8.75], "color": "#F2C14E", "alpha": 240, "thickness_px": 2.0, "corners": false, "reveal": "qol_world_ultimine", "order": -1},
+    {"id": "tunnel", "frame": [5.4, 7.0, 7.4, 9.0], "color": "#E8DCB5", "alpha": 230, "thickness_px": 2.0, "fill": "#1B130D", "fill_alpha": 170, "corners": false, "reveal": "qol_world_ultimine_shapes", "sketch": true, "order": -4},
+    {"id": "tun_v0", "path": [[6.07, 7.0], [6.07, 9.0]], "color": "#E8DCB5", "alpha": 130, "width": 0.04, "reveal": "qol_world_ultimine_shapes"},
+    {"id": "tun_h0", "path": [[5.4, 7.67], [7.4, 7.67]], "color": "#E8DCB5", "alpha": 130, "width": 0.04, "reveal": "qol_world_ultimine_shapes"},
+    {"id": "tun_v1", "path": [[6.73, 7.0], [6.73, 9.0]], "color": "#E8DCB5", "alpha": 130, "width": 0.04, "reveal": "qol_world_ultimine_shapes"},
+    {"id": "tun_h1", "path": [[5.4, 8.33], [7.4, 8.33]], "color": "#E8DCB5", "alpha": 130, "width": 0.04, "reveal": "qol_world_ultimine_shapes"},
+    {"id": "crop_0", "picture": "minecraft:textures/block/wheat_stage7.png", "x": 6.3, "y": 4.45, "w": 0.75, "h": 0.75, "reveal": "qol_world_ultimine_rightclick", "sketch": true, "order": -3},
+    {"id": "crop_1", "picture": "minecraft:textures/block/wheat_stage7.png", "x": 6.85, "y": 4.45, "w": 0.75, "h": 0.75, "reveal": "qol_world_ultimine_rightclick", "sketch": true, "order": -3},
+    {"id": "crop_2", "picture": "minecraft:textures/block/wheat_stage7.png", "x": 7.4, "y": 4.45, "w": 0.75, "h": 0.75, "reveal": "qol_world_ultimine_rightclick", "sketch": true, "order": -3},
+    {"id": "crop_3", "picture": "minecraft:textures/block/wheat_stage7.png", "x": 7.95, "y": 4.45, "w": 0.75, "h": 0.75, "reveal": "qol_world_ultimine_rightclick", "sketch": true, "order": -3},
+    {"id": "hoe_sil", "picture": "minecraft:textures/item/iron_hoe.png", "x": 8.9, "y": 4.1, "w": 1.2, "h": 1.2, "tint": "#1B130D", "alpha": 90, "order": -3, "rotation": 0},
+    {"id": "hoe", "item": "minecraft:iron_hoe", "x": 8.9, "y": 4.1, "size": 1.2, "reveal": "qol_world_ultimine_rightclick", "order": -2, "rotation": 0},
+    {"id": "barrel_sil", "picture": "minecraft:textures/block/barrel_side.png", "x": 0.9, "y": 4.2, "w": 1.3, "h": 1.3, "tint": "#1B130D", "alpha": 90, "order": -3, "rotation": 0},
+    {"id": "barrel", "item": "minecraft:barrel", "x": 0.9, "y": 4.2, "size": 1.3, "reveal": "qol_world_carry", "order": -2, "rotation": 0},
+    {"id": "spawner_sil", "picture": "minecraft:textures/block/spawner.png", "x": 4.3, "y": 4.2, "w": 1.2, "h": 1.2, "tint": "#1B130D", "alpha": 90, "order": -3, "rotation": 0},
+    {"id": "spawner", "item": "minecraft:spawner", "x": 4.3, "y": 4.2, "size": 1.2, "reveal": "qol_world_carry_limits", "order": -2, "rotation": 0},
+    {"id": "no_spawner_1", "path": [[3.6, 3.5], [5.0, 4.9]], "color": "#E5533D", "width": 0.13, "reveal": "qol_world_carry_limits", "order": 0},
+    {"id": "no_spawner_2", "path": [[3.6, 4.9], [5.0, 3.5]], "color": "#E5533D", "width": 0.13, "reveal": "qol_world_carry_limits", "order": 0},
+    {"id": "wool_0_sil", "picture": "minecraft:textures/block/white_wool.png", "x": 10.6, "y": 4.4, "w": 0.85, "h": 0.85, "tint": "#1B130D", "alpha": 90, "order": -3, "rotation": 0},
+    {"id": "wool_0", "item": "minecraft:white_wool", "x": 10.6, "y": 4.4, "size": 0.85, "reveal": "qol_world_carry_stack", "order": -2, "rotation": 0},
+    {"id": "wool_1_sil", "picture": "minecraft:textures/block/white_wool.png", "x": 10.6, "y": 3.6500000000000004, "w": 0.85, "h": 0.85, "tint": "#1B130D", "alpha": 90, "order": -3, "rotation": 0},
+    {"id": "wool_1", "item": "minecraft:white_wool", "x": 10.6, "y": 3.6500000000000004, "size": 0.85, "reveal": "qol_world_carry_stack", "order": -2, "rotation": 0},
+    {"id": "wool_2_sil", "picture": "minecraft:textures/block/white_wool.png", "x": 10.6, "y": 2.9000000000000004, "w": 0.85, "h": 0.85, "tint": "#1B130D", "alpha": 90, "order": -3, "rotation": 0},
+    {"id": "wool_2", "item": "minecraft:white_wool", "x": 10.6, "y": 2.9000000000000004, "size": 0.85, "reveal": "qol_world_carry_stack", "order": -2, "rotation": 0},
+    {"id": "bag_sil", "picture": "minecraft:textures/block/red_wool.png", "x": 12.4, "y": 4.3, "w": 1.4, "h": 1.4, "tint": "#1B130D", "alpha": 90, "order": -3, "rotation": 0},
+    {"id": "bag", "item": "comforts:sleeping_bag_red", "x": 12.4, "y": 4.3, "size": 1.4, "reveal": "qol_world_sleep", "order": -2, "rotation": 0},
+    {"id": "berry_sil", "picture": "minecraft:textures/block/sweet_berry_bush_stage3.png", "x": 14.3, "y": 4.5, "w": 0.9, "h": 0.9, "tint": "#1B130D", "alpha": 90, "order": -3},
+    {"id": "berry", "sprite": "minecraft:block/sweet_berry_bush_stage3", "x": 14.3, "y": 4.5, "w": 0.9, "h": 0.9, "reveal": "qol_world_small_fixes"},
+    {"id": "cactus", "sprite": "minecraft:block/cactus_side", "x": 14.95, "y": 4.25, "w": 0.7, "h": 1.5, "reveal": "qol_world_small_fixes"},
+    {"id": "grass_tuft", "sprite": "minecraft:block/short_grass", "cells": [[12.9, 4.55], [13.4, 4.55]], "cell": 0.8, "tint": "#79C05A", "reveal": "qol_world_small_fixes"},
+    {"id": "boat_sil", "picture": "minecraft:textures/item/oak_boat.png", "x": 16.5, "y": 4.3, "w": 1.3, "h": 1.3, "tint": "#1B130D", "alpha": 90, "order": -3, "rotation": 0},
+    {"id": "boat", "item": "minecraft:oak_boat", "x": 16.5, "y": 4.3, "size": 1.3, "reveal": "qol_world_small_fixes", "order": -2, "rotation": 0},
+    {"id": "spy", "item": "minecraft:spyglass", "x": 16.9, "y": -1.7, "size": 1.0, "reveal": "qol_world_small_fixes"},
+    {"id": "leaves", "scatter": ["minecraft:textures/block/oak_leaves.png"], "region": [12.6, 0.8, 16.0, 4.2], "count": 5, "size": [0.3, 0.45], "seed": 6, "tint": "#6BA84F", "reveal": "qol_world_small_fixes", "avoid": [[15, 0, 1.4], [14.2, 2.7, 1.3]]},
+    {"id": "dummy_sil", "picture": "minecraft:textures/block/hay_block_side.png", "x": 18.0, "y": 4.05, "w": 1.7, "h": 1.7, "tint": "#1B130D", "alpha": 90, "order": -3, "rotation": 0},
+    {"id": "dummy", "item": "dummmmmmy:target_dummy", "x": 18.0, "y": 4.05, "size": 1.7, "reveal": "qol_world_dummy", "order": -2, "rotation": 0},
+    {"id": "cave", "frame": [15.4, 7.0, 20.4, 9.5], "color": "#E8DCB5", "alpha": 200, "thickness_px": 2.0, "fill": "#1B130D", "fill_alpha": 200, "corners": false, "reveal": "qol_world_peace_link", "order": -4},
+    {"id": "spawn_x_0", "text": {"en_us": "X", "es_es": "X"}, "x": 16.3, "y": 8.1, "scale": 2, "tint": "#E5533D", "reveal": "qol_world_peace_link"},
+    {"id": "spawn_x_1", "text": {"en_us": "X", "es_es": "X"}, "x": 17.6, "y": 8.7, "scale": 2, "tint": "#E5533D", "reveal": "qol_world_peace_link"},
+    {"id": "spawn_x_2", "text": {"en_us": "X", "es_es": "X"}, "x": 18.7, "y": 7.8, "scale": 2, "tint": "#E5533D", "reveal": "qol_world_peace_link"},
+    {"id": "spawn_x_3", "text": {"en_us": "X", "es_es": "X"}, "x": 19.6, "y": 8.6, "scale": 2, "tint": "#E5533D", "reveal": "qol_world_peace_link"},
+    {"id": "altar_sil", "picture": "minecraft:textures/block/stone_bricks.png", "x": 19.9, "y": 4.1, "w": 1.6, "h": 1.6, "tint": "#1B130D", "alpha": 90, "order": -3, "rotation": 0},
+    {"id": "altar", "item": "entrelumen:peace_altar", "x": 19.9, "y": 4.1, "size": 1.6, "reveal": "qol_world_peace_link", "order": -2, "rotation": 0},
+    {"id": "altar_glow", "glow": [19.9, 4.1], "r": 2.0, "alpha": 130, "tint": "#7FE0A0", "reveal": "qol_world_peace_link"},
+    {"id": "sun", "picture": "#FFE08A", "x": 19.4, "y": -4.6, "w": 1.3, "h": 1.3, "reveal": "qol_world_close", "order": -4},
+    {"id": "sun_glow", "glow": [19.4, -4.6], "r": 3.4, "alpha": 200, "tint": "#FFE08A", "reveal": "qol_world_close"},
+    {"id": "hit_0", "text": {"en_us": "12", "es_es": "12"}, "x": 19.2, "y": 2.9, "scale": 2, "tint": "#F2C14E", "reveal": "qol_world_toy_hit"},
+    {"id": "hit_1", "text": {"en_us": "7", "es_es": "7"}, "x": 17.4, "y": 2.2, "scale": 2, "tint": "#E8DCB5", "reveal": "qol_world_toy_hit"},
+    {"id": "hit_2", "text": {"en_us": "31", "es_es": "31"}, "x": 20.2, "y": 2.3, "scale": 2, "tint": "#E5533D", "reveal": "qol_world_toy_hit"},
+    {"id": "boots", "item": "minecraft:leather_boots", "x": 15.65, "y": 4.3, "size": 0.9, "reveal": "qol_world_toy_prickle"},
+    {"id": "boots_ok", "text": {"en_us": "OK", "es_es": "OK"}, "x": 15.65, "y": 3.45, "scale": 2, "tint": "#7FD65C", "reveal": "qol_world_toy_prickle"}
   ]
 }
